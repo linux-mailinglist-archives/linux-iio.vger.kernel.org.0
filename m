@@ -1,156 +1,247 @@
-Return-Path: <linux-iio+bounces-7458-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7459-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A0E92B14B
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 09:37:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B0092B1F7
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 10:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE9762825C6
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 07:37:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648D5280FC7
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 08:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6B614374C;
-	Tue,  9 Jul 2024 07:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5386A152175;
+	Tue,  9 Jul 2024 08:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqlOdBIy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9VQouwJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5258827713;
-	Tue,  9 Jul 2024 07:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6615C1D556;
+	Tue,  9 Jul 2024 08:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720510648; cv=none; b=bjJM2QiKl2njvx1M7Nic8U3XnN9oM1eJDmTcUyF7TGZQgUOuF76/4aoyvvkdlfGXUEdr0r6p1KKE9xplwUHZ5f3puy5yzvwTKq5+lsc8b1NHzhiB5EQv56w6lxic/XCsxOEhp//2TPAdKSfSM8mD24J/z8OzxdUyKnuvYuAg8N4=
+	t=1720513273; cv=none; b=jmy7LdjWInwdctVh8GXLe/yxjy3ie0FWKBb7kBniaAVKL9LNDMY4cOtaRdGrG9ceupB8hqeIx8YOZJVxsJaud5rJaijpHoPhsN/TDoFkAFwevEL6DRKy/nV02/OzdSDPN4eVT1JEfqHwpWKpd0Sfaw3vjJFFduMEBdpVcvG8AGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720510648; c=relaxed/simple;
-	bh=HyE1OC2jUz69RbLf+QbjEwXtvPn9VOx/T6a0hK703Co=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rVxSUV2qRQVewxFQOqFsC0eAl/FyFMflykLPgT3MvZ/JTWDbpfdkK/q1eNii0r+BUOPVcJUUX4xInPCbPjpIUqaZNHP5FUJ+mxpIFqAoX71YXICR0a17HgwboujFeR9HETdBiFpMXG/BOSiWRxFtPEPPqM6KLgeqb8CeSxf+ISA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqlOdBIy; arc=none smtp.client-ip=209.85.208.177
+	s=arc-20240116; t=1720513273; c=relaxed/simple;
+	bh=d2qIWg94Pgm0hhjuDcO+Aopiw+vdWMVSPCeQhYGUSBs=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=mp6QkecbbeHmoLwMGW3llM3FPBHCuZq4fYuJ2VCWq3dZEKWjU5fX2nVG1Z20xTEs5s8OxIRkzppolSPrRtsfCjxrY1h/jwNdH7YMpOlQfLM7uti0ntzlQAELUQtZ41ezdYJEQ1fGK4mEWZrTipVNW0LfVF9koIhevq+WXY9Yz1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9VQouwJ; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ee910d6aaeso53860861fa.1;
-        Tue, 09 Jul 2024 00:37:27 -0700 (PDT)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42671a676c7so4781915e9.3;
+        Tue, 09 Jul 2024 01:21:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720510645; x=1721115445; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gJblcrgCB69StiCEtXH3DZ/GYofswUEElGj+y5LAqrc=;
-        b=dqlOdBIy3T1ujy5KSBThBeW3TzJu9lv6DKxYBcQtxLtfurTbhJ1MiTNQ07KZV7+IXo
-         3OIRr/paFAnPf4a8eMasuDEb/R3/SD3I3cq85jKVMEUO5at0/xvoa5qc0OuFjD3tO5zC
-         AwZs49ySZ5KjqQW2zejnVASd2oFWWdWjUvPIB1a/ihlRVrg11/nzwcGacdMjJkqWFlua
-         PtgDtwD3HVsjP3JqZan6PnibLC8XuiAc5hQEWDdmJG19ftpdkVlgT32L/1M06Kz9T2sd
-         pQdsb7eNRaUZljbP6KvNBac82kBJagY2GozJuZvRq6fM+JJKxoOZ5nXnAXjRLOLXjWW0
-         xPsQ==
+        d=gmail.com; s=20230601; t=1720513270; x=1721118070; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5Oyx6FrKL7238jfjI4xQrSfHoIpZUun53kvKziTOzlU=;
+        b=Z9VQouwJrK4NQ9TludR0GoP1HdVKEL9ksLmGUDJl+NlDQEU+A29dLfqUlcimEGPgz1
+         qOm7E6EYWEH6cuw/NsDRIHaX37oyZ2PdNwk47i0c5sK/tnRWAhQ2+9Q+gUoHpTqcXhqp
+         0emw7MsXlp/L+Py2MObcPt9HMYfXzUsIZgFmSoRvkT2dJ2Ni0NnTxawUqwS+Ok4Z3vwG
+         9jBrysYeHLh57iHVp+etbXH/hy74uM37TWq/YznRO/I6QhbEYEEoTUdcnti4SVwszlse
+         qkYX+j/OzX7m6BiPKblTEW/KiAeFKU4mtol1+GHLp00hmlJWFm2HRSj8C+LrZSPnbT/e
+         FeyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720510645; x=1721115445;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gJblcrgCB69StiCEtXH3DZ/GYofswUEElGj+y5LAqrc=;
-        b=JXYdjJXgYM+vce3xZKaS8ooJWfcYIDe7JY8QNbQR6B38TwVhCM32d2zXmJhvovcQ0p
-         x2izwinsBR7cEIENZOvTSQXZX/aQ/rnLqYUN+3fElYap5HanS7IgBOtt9wEdme2gHEwX
-         rWvmqpa/LDAOs+tXT5mtDK6PdZCTVhHuVedAMbxyUpsEYcpdRG2yZg6VEcoj3365V7FY
-         GNFbbNm4B79aaM2e4ZteDGgEWc0mZmMDvEALD/f2ifnGC6gjIEor2alRxevYAWhhikAr
-         JBOd+mgsHtCNLdHuS9s6Fv7a8PE1rsc2xhDxpwVuhal4cCPc+/C3Ex30bQHDM6DZSqv/
-         QKgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVO+eYYpy3xqfkuvyIsxu7JgjeQwt8+YJKOgPVmB7mD0GtTy1E3yqMBKSfoQD2AIAr3wlxQ8eSCo2ZkuAl5ap5EcRNau2KgwjaYnpWiq7odRf+Fs2ECrdApiZGmJ/Cl4NkA8JDKzdPAgcqsIDrIKfgdCZO44ZbxoWnfHb7fd9pqsI74VzDK0pExxH6HuUj9ccAuvkucnn3Fnxq/cOdTWg==
-X-Gm-Message-State: AOJu0YyQf4X9/PE7s57PAS01EbDBgqscgUUYr5Y8EgjhQqSJch2dlFmE
-	jj6RL+NiW9o1KD28TXW6Hs102tiLADOVBBt/DKvWCXJaJ9Q5UWht
-X-Google-Smtp-Source: AGHT+IF1DuvD0MmXmObeiIwlMnO3IreBxRQdx/tSoUTS0K1lrv/8qspqFspqy+cy1inG25V9c4HGcw==
-X-Received: by 2002:a05:6512:31c8:b0:52d:b118:5063 with SMTP id 2adb3069b0e04-52eb99cc6camr965176e87.47.1720510645078;
-        Tue, 09 Jul 2024 00:37:25 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-594bd459e2csm737131a12.65.2024.07.09.00.37.24
+        d=1e100.net; s=20230601; t=1720513270; x=1721118070;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5Oyx6FrKL7238jfjI4xQrSfHoIpZUun53kvKziTOzlU=;
+        b=ocXyiUtr9IfxqH3NhhPt8iwDuiRudz611/OtmiypCqpQRCUKAoCz6xpO2P1NzI3dK8
+         mnPKdfCPUF4qFXSpegmOvDNDKlE7CtH37HG0PS5MXaVw5kVOtKa0o1BoauEWtn+b0fnI
+         aMue6/fOKljruki+EtS/P5G/q684GkewD1WA57uhrRZn72AtWyEf67S9IkTc+RTli/lv
+         z2a7lokKRXfHXtDnKDInW95dbpz6xfecQoMiPc8jKUcTTm5XW2f1Klgm0kBJWSB9BIpY
+         WcaWTn0mL1NjanN+n6JYzBSfs3/PZl6ZUlVZoXN4E0Ru2GosOHf7D1kw+LaTy1T8CHrD
+         Zg+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUKuyOGnm3qWNkOj39i+G2oOY8jalk7kSUnC/enMX/+Z8jf87sYUBXqr442RIOKEAI79JJWe1r13PhPjoEQ7NrpwhshsoNOwOCuXWtyMT7oJReslh5avkqz5YYiP/Jn1MpzpFGYxO1YwiAuPO3k2kNm205Meh14zV220GIBUavRb+PEBw==
+X-Gm-Message-State: AOJu0YzXEeiV3PlHN9xfj6ey3VvlNqlfJe/Lt88JBeZgZ1D9G3FBR2oO
+	iQF9Sh+Sb0XJIZgTJoPCBs9iqox+xu22lHFqjVxPL6v+iwX50xjGWKTnje35
+X-Google-Smtp-Source: AGHT+IEsdZTff0seLeEKmalSeHclTahjKFRJCT8BMEFjVHxoSZqlVJTz3vfZ+XNndSOkmnCEOeEEMA==
+X-Received: by 2002:a7b:cb92:0:b0:426:5ef5:bcb1 with SMTP id 5b1f17b1804b1-426706c62fbmr11566485e9.6.1720513269502;
+        Tue, 09 Jul 2024 01:21:09 -0700 (PDT)
+Received: from localhost (host-79-55-57-217.retail.telecomitalia.it. [79.55.57.217])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f6e0b6bsm29339845e9.3.2024.07.09.01.21.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 00:37:24 -0700 (PDT)
-Message-ID: <5c7fcaa93c8184dd62beeccccfa07e144042fdc4.camel@gmail.com>
-Subject: Re: [PATCH v6 6/7] iio: adc: Add support for AD4000
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org, 
- lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-  nuno.sa@analog.com, dlechner@baylibre.com, corbet@lwn.net, 
- marcelo.schmitt1@gmail.com
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Tue, 09 Jul 2024 09:41:18 +0200
-In-Reply-To: <628a85cb8cbee32ea7d2930c63e73f2ef449a800.1719686465.git.marcelo.schmitt@analog.com>
-References: <cover.1719686465.git.marcelo.schmitt@analog.com>
-	 <628a85cb8cbee32ea7d2930c63e73f2ef449a800.1719686465.git.marcelo.schmitt@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 
+        Tue, 09 Jul 2024 01:21:09 -0700 (PDT)
+Date: Tue, 09 Jul 2024 10:21:07 +0200
+From: Matteo Martelli <matteomartelli3@gmail.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Marius Cristea <marius.cristea@microchip.com>, 
+ Matteo Martelli <matteomartelli3@gmail.com>, 
+ linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Message-ID: <668cf2f3ece62_1f6ba37012@njaxe.notmuch>
+In-Reply-To: <20240708173439.000070b4@Huawei.com>
+References: <20240704-iio-pac1921-v2-0-0deb95a48409@gmail.com>
+ <20240704-iio-pac1921-v2-2-0deb95a48409@gmail.com>
+ <20240707160442.6bab64c9@jic23-huawei>
+ <668bec2a8b23a_6e037017@njaxe.notmuch>
+ <20240708173439.000070b4@Huawei.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: add support for pac1921
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 2024-06-29 at 16:06 -0300, Marcelo Schmitt wrote:
-> Add support for AD4000 series of low noise, low power, high speed,
-> successive approximation register (SAR) ADCs.
->=20
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
-
-Hi Marcelo,
-
-LGTM. Only one thing that needs to be addressed. With that,
-
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-
-> =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0 12 +
-> =C2=A0drivers/iio/adc/Makefile |=C2=A0=C2=A0 1 +
-> =C2=A0drivers/iio/adc/ad4000.c | 708 ++++++++++++++++++++++++++++++++++++=
-+++
-> =C2=A04 files changed, 722 insertions(+)
-> =C2=A0create mode 100644 drivers/iio/adc/ad4000.c
->=20
+Jonathan Cameron wrote:
+...
+> > I could add the shunt-resistor controls to allow calibration as Marius
+> > suggested, but that's also a custom ABI, what are your thoughts on this?
+> 
+> This would actually be a generalization of existing device specific ABI
+> that has been through review in the past.
+> See Documentation/ABI/testing/sysfs-bus-iio-adc-pac1934
+> for example (similar in other places).
+> So if you want to do this move that ABI up a level to cover multiple devices
+> (removing the entries in specific files as you do so).
+> 
+I would do this in a separate commit, would you prefer it in this same patch
+set or in another separate patch?
 
 ...
+> > 
+> > > > +
+> > > > +What:		/sys/bus/iio/devices/iio:deviceX/resolution_bits_available
+> > > > +KernelVersion:	6.10
+> > > > +Contact:	linux-iio@vger.kernel.org
+> > > > +Description:
+> > > > +		List all possible ADC measurement resolutions: "11 14"
+> > > > +
+> > > > +What:		/sys/bus/iio/devices/iio:deviceX/integration_samples
+> > > > +KernelVersion:	6.10
+> > > > +Contact:	linux-iio@vger.kernel.org
+> > > > +Description:
+> > > > +		Number of samples taken during a full integration period. Can be
+> > > > +		set to any power of 2 value from 1 (default) to 2048.
+> > > > +		This attribute affects the integration time: higher the number
+> > > > +		of samples, longer the integration time. See Table 4-5 in device
+> > > > +		datasheet for details.  
+> > > 
+> > > Sounds like oversampling_ratio which is standards ABI. So use that or explain
+> > > why you can't here.  
+> > 
+> > I am not sure that this is an oversampling ratio but correct me if I am wrong:
+> > generally by increasing the oversampling you would have additional samples in a
+> > fixed time period, while in this case by increasing the number of samples you
+> > would still have the same number of samples in a fixed time period, but you
+> > would have a longer integration period. So maybe the comment is not very
+> > clear since this parameter actually means "the number of samples required to
+> > complete the integration period".
+> 
+> No. Oversampling is independent of the sampling period in general (though
+> here the 'integration time' is very confusing terminology.  You may
+> have to have sampling_frequency (if provided) updated to incorporate that
+> the device can't deliver data as quickly.
+> 
+> > 
+> > Initially I thought to let the user edit this by writing the integration_time
+> > control (which is currently read-only), but since the integration period
+> > depends also on the resolution and whether filters are enabled or not, it would
+> > have introduced some confusion: what parameter is being changed upon
+> > integretion_time write? Maybe after removing resolution and filter controls
+> > there would be no such confusion anymore.
+> 
+> Hmm. The documentation seems to have an unusual definition of 'integration' time.
+> That looks like 1/sampling_frequency.  In an oversampling device integration time
+> is normally about a single sample, not the aggregate of sampling and read out
+> etc.
+> 
+> I guess here the complexity is that integration time isn't about the time
+> taken for a capacitor to charge, but more the time over which power is computed.
+> But then the value is divided by number of samples so I'm even more confused.
+> 
+> If we just read 'integration time' as data acquisition time, it makes a lot
+> more sense.
+> 
+I think I now get what you are suggesting, please correct me otherwise:
 
->=20
-> +	st->gain_milli =3D 1000;
-> +	if (chip->has_hardware_gain &&
-> +	=C2=A0=C2=A0=C2=A0 device_property_present(dev, "adi,gain-milli")) {
-> +		ret =3D device_property_read_u16(dev, "adi,gain-milli",
-> +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &st->gain_milli);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to read gain
-> property\n");
-> +	}
+1. Let's consider the sampling frequency as how often the device provides
+   computed ("integrated") measurements to the host, so this would be
+   1/"integration period". This is not the internal ADC sampling rate.
 
-The above is odd. Why not reading directly device_property_read_u16()? Skip=
- the
-call to device_property_present().=C2=A0
+2. I will expose sampling_frequency (RO), oversampling_ratio (R/W) and
+   oversampling_ratio_available (RO) to the user, where oversampling_ratio
+   corresponds to what the datasheet refers to as the "number of ADC samples to
+   complete an integration".
 
-But most importantly, you're not doing any validation on gain_milli which i=
-s an
-enum (by looking at the bindings). So in theory even 0 would be accepted wh=
-ich
-would lead to a divide by 0 later on. I would do:
+3. When the user writes the oversampling_ratio, the sampling_frequency gets
+   updated accordingly.
 
-if (chip->has_hardware_gain) {
-	ret =3D device_property_read_u16(...)
-	if (!ret) {
-		/* validate here for a proper value /*
-	}
-}
+4. With two real examples:
+    4.1. The user writes 16 to oversampling_ratio, then reads 43.478 from
+      sampling_frequency: with 16 samples the "integration period" is 23ms
+      (from Table 4-5) so 1/0.023 => 43.478 Hz
+    4.2. The user writes 2048 to oversampling_ratio, then reads 0.34 from
+      sampling_frequency: with 2048 samples the "integration period" is 2941ms
+      (from Table 4-5) so 1/2.941 => 0.34 Hz
 
-You can also check for ret < 0 and -EINVAL to detect an invalid devicetree
-parameter instead of completely ignoring return codes (but for non mandator=
-y
-properties one typically does not care much - up to you)
+5. Do not expose the integration_time control to avoid confusion: the so called
+   "integration period" can be derived from the sampling frequency as
+   1/sampling_frequency.
 
-- Nuno S=C3=A1
+...
+> > > > +static int pac1921_update_cfg_reg(struct pac1921_priv *priv, unsigned int reg,
+> > > > +				  unsigned int mask, unsigned int val)
+> > > > +{
+> > > > +	/* Enter READ state before configuration */
+> > > > +	int ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
+> > > > +				     PAC1921_INT_CFG_INTEN, 0);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	/* Update configuration value */
+> > > > +	ret = regmap_update_bits(priv->regmap, reg, mask, val);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	/* Re-enable integration and reset start time */
+> > > > +	ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
+> > > > +				 PAC1921_INT_CFG_INTEN, PAC1921_INT_CFG_INTEN);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	priv->integr_start_time = jiffies;  
+> > > 
+> > > Add a comment for why this value.
+> > >  
+> > Could you elaborate what's confusing here? The comment above states "reset
+> > start time", maybe I should move it above the assignment of
+> > priv->integr_start_time? Or it's the use of jiffies that it's confusing?
+> 
+> Why is it jiffies?   Why not jiffies * 42?
+> I'm looking for a datasheet reference for why the particular value is used.
+> 
+I used jiffies just to track the elapsed time between readings. Something I am
+not considering here? Of course jiffies granularity might be larger than the
+minimum sampling frequency. Is there a common better approach?
 
+...
+> For future reference, no need to acknowledge stuff you agree
+> with.  Much better to crop to the places where there are questions or responses
+> as it saves time for the next step of the discussion!
+Ok....oops!
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+
+Thanks,
+Matteo
 

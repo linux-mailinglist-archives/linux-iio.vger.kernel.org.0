@@ -1,247 +1,127 @@
-Return-Path: <linux-iio+bounces-7459-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7460-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B0092B1F7
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 10:21:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6928A92B21E
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 10:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648D5280FC7
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 08:21:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A7251C2233E
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 08:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5386A152175;
-	Tue,  9 Jul 2024 08:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AE51527AA;
+	Tue,  9 Jul 2024 08:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9VQouwJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmMmKGCb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6615C1D556;
-	Tue,  9 Jul 2024 08:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7517615279B;
+	Tue,  9 Jul 2024 08:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720513273; cv=none; b=jmy7LdjWInwdctVh8GXLe/yxjy3ie0FWKBb7kBniaAVKL9LNDMY4cOtaRdGrG9ceupB8hqeIx8YOZJVxsJaud5rJaijpHoPhsN/TDoFkAFwevEL6DRKy/nV02/OzdSDPN4eVT1JEfqHwpWKpd0Sfaw3vjJFFduMEBdpVcvG8AGA=
+	t=1720513585; cv=none; b=QYXrLSL41K4rS4mVxrtx4X/DCet7xnnA0Z5gPjL4K8c73q4Zq9vbolpoh4EtetLpnUVqY3PgdP0enXtYRv3ESP0tS4KZJopwktDg5tkcF789/+2srfrOPOn3/MBq8lhSEYpGTguA8Cg8wC/YzPaqll4wTh65iMZIDsGOAvuUerg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720513273; c=relaxed/simple;
-	bh=d2qIWg94Pgm0hhjuDcO+Aopiw+vdWMVSPCeQhYGUSBs=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=mp6QkecbbeHmoLwMGW3llM3FPBHCuZq4fYuJ2VCWq3dZEKWjU5fX2nVG1Z20xTEs5s8OxIRkzppolSPrRtsfCjxrY1h/jwNdH7YMpOlQfLM7uti0ntzlQAELUQtZ41ezdYJEQ1fGK4mEWZrTipVNW0LfVF9koIhevq+WXY9Yz1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9VQouwJ; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42671a676c7so4781915e9.3;
-        Tue, 09 Jul 2024 01:21:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720513270; x=1721118070; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5Oyx6FrKL7238jfjI4xQrSfHoIpZUun53kvKziTOzlU=;
-        b=Z9VQouwJrK4NQ9TludR0GoP1HdVKEL9ksLmGUDJl+NlDQEU+A29dLfqUlcimEGPgz1
-         qOm7E6EYWEH6cuw/NsDRIHaX37oyZ2PdNwk47i0c5sK/tnRWAhQ2+9Q+gUoHpTqcXhqp
-         0emw7MsXlp/L+Py2MObcPt9HMYfXzUsIZgFmSoRvkT2dJ2Ni0NnTxawUqwS+Ok4Z3vwG
-         9jBrysYeHLh57iHVp+etbXH/hy74uM37TWq/YznRO/I6QhbEYEEoTUdcnti4SVwszlse
-         qkYX+j/OzX7m6BiPKblTEW/KiAeFKU4mtol1+GHLp00hmlJWFm2HRSj8C+LrZSPnbT/e
-         FeyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720513270; x=1721118070;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5Oyx6FrKL7238jfjI4xQrSfHoIpZUun53kvKziTOzlU=;
-        b=ocXyiUtr9IfxqH3NhhPt8iwDuiRudz611/OtmiypCqpQRCUKAoCz6xpO2P1NzI3dK8
-         mnPKdfCPUF4qFXSpegmOvDNDKlE7CtH37HG0PS5MXaVw5kVOtKa0o1BoauEWtn+b0fnI
-         aMue6/fOKljruki+EtS/P5G/q684GkewD1WA57uhrRZn72AtWyEf67S9IkTc+RTli/lv
-         z2a7lokKRXfHXtDnKDInW95dbpz6xfecQoMiPc8jKUcTTm5XW2f1Klgm0kBJWSB9BIpY
-         WcaWTn0mL1NjanN+n6JYzBSfs3/PZl6ZUlVZoXN4E0Ru2GosOHf7D1kw+LaTy1T8CHrD
-         Zg+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUKuyOGnm3qWNkOj39i+G2oOY8jalk7kSUnC/enMX/+Z8jf87sYUBXqr442RIOKEAI79JJWe1r13PhPjoEQ7NrpwhshsoNOwOCuXWtyMT7oJReslh5avkqz5YYiP/Jn1MpzpFGYxO1YwiAuPO3k2kNm205Meh14zV220GIBUavRb+PEBw==
-X-Gm-Message-State: AOJu0YzXEeiV3PlHN9xfj6ey3VvlNqlfJe/Lt88JBeZgZ1D9G3FBR2oO
-	iQF9Sh+Sb0XJIZgTJoPCBs9iqox+xu22lHFqjVxPL6v+iwX50xjGWKTnje35
-X-Google-Smtp-Source: AGHT+IEsdZTff0seLeEKmalSeHclTahjKFRJCT8BMEFjVHxoSZqlVJTz3vfZ+XNndSOkmnCEOeEEMA==
-X-Received: by 2002:a7b:cb92:0:b0:426:5ef5:bcb1 with SMTP id 5b1f17b1804b1-426706c62fbmr11566485e9.6.1720513269502;
-        Tue, 09 Jul 2024 01:21:09 -0700 (PDT)
-Received: from localhost (host-79-55-57-217.retail.telecomitalia.it. [79.55.57.217])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f6e0b6bsm29339845e9.3.2024.07.09.01.21.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 01:21:09 -0700 (PDT)
-Date: Tue, 09 Jul 2024 10:21:07 +0200
-From: Matteo Martelli <matteomartelli3@gmail.com>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Marius Cristea <marius.cristea@microchip.com>, 
- Matteo Martelli <matteomartelli3@gmail.com>, 
- linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <668cf2f3ece62_1f6ba37012@njaxe.notmuch>
-In-Reply-To: <20240708173439.000070b4@Huawei.com>
-References: <20240704-iio-pac1921-v2-0-0deb95a48409@gmail.com>
- <20240704-iio-pac1921-v2-2-0deb95a48409@gmail.com>
- <20240707160442.6bab64c9@jic23-huawei>
- <668bec2a8b23a_6e037017@njaxe.notmuch>
- <20240708173439.000070b4@Huawei.com>
-Subject: Re: [PATCH v2 2/2] iio: adc: add support for pac1921
+	s=arc-20240116; t=1720513585; c=relaxed/simple;
+	bh=DQXqTceuPgF9OQltzo0vtIsyhQq7u/ghbwpcEelhGYI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QJn2eojZSY0Xu5GZmhJ7HLxYw+qMY0RuMm+q5NcCalc+0JwlfsDgCYCj0rgTmS6S3ngK9RLqvtw2dFeszWmcvQxxWqFdz0otCYz+vgTDZr6CrL3Vy4HMZeInvweq2ipAkgaPSUj9/v0gppX0gfyCCdF3VzzpBYru58vOxw0yUHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmMmKGCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DABCC3277B;
+	Tue,  9 Jul 2024 08:26:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720513584;
+	bh=DQXqTceuPgF9OQltzo0vtIsyhQq7u/ghbwpcEelhGYI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fmMmKGCbD/bz/WDj1NnksYZX3nHbWz4VeTrzg2ncxIP4I/NOzlxaPru/9VlrxFk4y
+	 YfIOkLcJ88UjJfCHvOykxXBqR7uVuCIw0tqeJw0RHtHSqR0vZeBwTYWWaSTwE/qw4h
+	 nnaB5POtaPicJ2hOMmBAlunWn0q7w6fZIwOcQkM2QQfHT0V7ozmDhc9cNuX1R/47PB
+	 //eV4LJx/MThyBShANmAC9NQG5UFTXdbbRI0fIFyiMd4jAZpJ/iYKvC3a/H7MFwO9e
+	 hlyNUqpBQCQLFc28CBkp94QYtOpOGZb7c7HRopt6Shg/gGTswK9tGjGMdxjvTag6e8
+	 0e8WWeWvJfR4g==
+Message-ID: <9c6d56a4-6797-4748-b08f-710b4a0b5280@kernel.org>
+Date: Tue, 9 Jul 2024 10:26:17 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: ltrf216a: Document
+ LTR-308 support
+To: Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org
+Cc: Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Shreeya Patel <shreeya.patel@collabora.com>, devicetree@vger.kernel.org
+References: <20240708114227.18283-1-marex@denx.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240708114227.18283-1-marex@denx.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Jonathan Cameron wrote:
-...
-> > I could add the shunt-resistor controls to allow calibration as Marius
-> > suggested, but that's also a custom ABI, what are your thoughts on this?
+On 08/07/2024 13:41, Marek Vasut wrote:
+> Document LiteOn LTR-308 support in LTR-F216A bindings.
 > 
-> This would actually be a generalization of existing device specific ABI
-> that has been through review in the past.
-> See Documentation/ABI/testing/sysfs-bus-iio-adc-pac1934
-> for example (similar in other places).
-> So if you want to do this move that ABI up a level to cover multiple devices
-> (removing the entries in specific files as you do so).
+> The two devices seem to have almost identical register map, except that
+> the LTR-308 does not have three CLEAR_DATA registers, which are unused
+> by this driver. Furthermore, LTR-308 and LTR-F216A use different lux
+> calculation constants, 0.6 and 0.45 respectively.
 > 
-I would do this in a separate commit, would you prefer it in this same patch
-set or in another separate patch?
-
-...
-> > 
-> > > > +
-> > > > +What:		/sys/bus/iio/devices/iio:deviceX/resolution_bits_available
-> > > > +KernelVersion:	6.10
-> > > > +Contact:	linux-iio@vger.kernel.org
-> > > > +Description:
-> > > > +		List all possible ADC measurement resolutions: "11 14"
-> > > > +
-> > > > +What:		/sys/bus/iio/devices/iio:deviceX/integration_samples
-> > > > +KernelVersion:	6.10
-> > > > +Contact:	linux-iio@vger.kernel.org
-> > > > +Description:
-> > > > +		Number of samples taken during a full integration period. Can be
-> > > > +		set to any power of 2 value from 1 (default) to 2048.
-> > > > +		This attribute affects the integration time: higher the number
-> > > > +		of samples, longer the integration time. See Table 4-5 in device
-> > > > +		datasheet for details.  
-> > > 
-> > > Sounds like oversampling_ratio which is standards ABI. So use that or explain
-> > > why you can't here.  
-> > 
-> > I am not sure that this is an oversampling ratio but correct me if I am wrong:
-> > generally by increasing the oversampling you would have additional samples in a
-> > fixed time period, while in this case by increasing the number of samples you
-> > would still have the same number of samples in a fixed time period, but you
-> > would have a longer integration period. So maybe the comment is not very
-> > clear since this parameter actually means "the number of samples required to
-> > complete the integration period".
-> 
-> No. Oversampling is independent of the sampling period in general (though
-> here the 'integration time' is very confusing terminology.  You may
-> have to have sampling_frequency (if provided) updated to incorporate that
-> the device can't deliver data as quickly.
-> 
-> > 
-> > Initially I thought to let the user edit this by writing the integration_time
-> > control (which is currently read-only), but since the integration period
-> > depends also on the resolution and whether filters are enabled or not, it would
-> > have introduced some confusion: what parameter is being changed upon
-> > integretion_time write? Maybe after removing resolution and filter controls
-> > there would be no such confusion anymore.
-> 
-> Hmm. The documentation seems to have an unusual definition of 'integration' time.
-> That looks like 1/sampling_frequency.  In an oversampling device integration time
-> is normally about a single sample, not the aggregate of sampling and read out
-> etc.
-> 
-> I guess here the complexity is that integration time isn't about the time
-> taken for a capacitor to charge, but more the time over which power is computed.
-> But then the value is divided by number of samples so I'm even more confused.
-> 
-> If we just read 'integration time' as data acquisition time, it makes a lot
-> more sense.
-> 
-I think I now get what you are suggesting, please correct me otherwise:
-
-1. Let's consider the sampling frequency as how often the device provides
-   computed ("integrated") measurements to the host, so this would be
-   1/"integration period". This is not the internal ADC sampling rate.
-
-2. I will expose sampling_frequency (RO), oversampling_ratio (R/W) and
-   oversampling_ratio_available (RO) to the user, where oversampling_ratio
-   corresponds to what the datasheet refers to as the "number of ADC samples to
-   complete an integration".
-
-3. When the user writes the oversampling_ratio, the sampling_frequency gets
-   updated accordingly.
-
-4. With two real examples:
-    4.1. The user writes 16 to oversampling_ratio, then reads 43.478 from
-      sampling_frequency: with 16 samples the "integration period" is 23ms
-      (from Table 4-5) so 1/0.023 => 43.478 Hz
-    4.2. The user writes 2048 to oversampling_ratio, then reads 0.34 from
-      sampling_frequency: with 2048 samples the "integration period" is 2941ms
-      (from Table 4-5) so 1/2.941 => 0.34 Hz
-
-5. Do not expose the integration_time control to avoid confusion: the so called
-   "integration period" can be derived from the sampling frequency as
-   1/sampling_frequency.
-
-...
-> > > > +static int pac1921_update_cfg_reg(struct pac1921_priv *priv, unsigned int reg,
-> > > > +				  unsigned int mask, unsigned int val)
-> > > > +{
-> > > > +	/* Enter READ state before configuration */
-> > > > +	int ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
-> > > > +				     PAC1921_INT_CFG_INTEN, 0);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	/* Update configuration value */
-> > > > +	ret = regmap_update_bits(priv->regmap, reg, mask, val);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	/* Re-enable integration and reset start time */
-> > > > +	ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
-> > > > +				 PAC1921_INT_CFG_INTEN, PAC1921_INT_CFG_INTEN);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	priv->integr_start_time = jiffies;  
-> > > 
-> > > Add a comment for why this value.
-> > >  
-> > Could you elaborate what's confusing here? The comment above states "reset
-> > start time", maybe I should move it above the assignment of
-> > priv->integr_start_time? Or it's the use of jiffies that it's confusing?
-> 
-> Why is it jiffies?   Why not jiffies * 42?
-> I'm looking for a datasheet reference for why the particular value is used.
-> 
-I used jiffies just to track the elapsed time between readings. Something I am
-not considering here? Of course jiffies granularity might be larger than the
-minimum sampling frequency. Is there a common better approach?
-
-...
-> For future reference, no need to acknowledge stuff you agree
-> with.  Much better to crop to the places where there are questions or responses
-> as it saves time for the next step of the discussion!
-Ok....oops!
-
-> 
-> Thanks,
-> 
-> Jonathan
+> https://optoelectronics.liteon.com/upload/download/DS86-2016-0027/LTR-308ALS_Final_%20DS_V1%201.pdf
+> https://optoelectronics.liteon.com/upload/download/DS86-2019-0016/LTR-F216A_Final_DS_V1.4.PDF
 > 
 
-Thanks,
-Matteo
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+
 

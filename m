@@ -1,416 +1,152 @@
-Return-Path: <linux-iio+bounces-7469-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7471-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E71892B646
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 13:12:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170A792BA08
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 14:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9479E1F23A28
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 11:12:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D841C21798
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 12:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E10157E61;
-	Tue,  9 Jul 2024 11:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F3015699E;
+	Tue,  9 Jul 2024 12:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="lgVPDxg9"
+	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20230601.gappssmtp.com header.i=@thegoodpenguin-co-uk.20230601.gappssmtp.com header.b="q0TiX4GI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CB3158858
-	for <linux-iio@vger.kernel.org>; Tue,  9 Jul 2024 11:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A02915539D
+	for <linux-iio@vger.kernel.org>; Tue,  9 Jul 2024 12:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720523501; cv=none; b=LKnCUJO+lFytOfejb9o1zzSlxhl9eOmFa/QvhOTk0VbuOdvS5JhQCEEBkfWyhsFUdIJH0jsUYnNw0uiM4yMYvDhCTcfnq7euTHcLF7TnD3uLVaGFKt4w27FhPUVYcdYo8hgHbo9+FeewAz/O7H+XoHdybVU6xSF20E/rjUQDCt8=
+	t=1720529769; cv=none; b=o/pyFpB64Ic4lEBCYoO2ef9LUDrtzu8gDAXpYhE/dYf2Rxh5STaqQjj/FSlWQf3ahwP2KiiolLc3xcTvAgN/S5JlpTqif0gHaXuIC2CGKyYIZgKi5T9rsqC0waEXX4YLgf67vGNf+zpguorGVKfrl8mUzNxH+MP65Lj7rRlXjr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720523501; c=relaxed/simple;
-	bh=mIc8cdfVRPXmxVLFiNbyxGXSotI9LgS9R1xB3cY+/mw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=pkzDZwVSXhFBZqB7+dcCf1f2rpXczVsxn2IFie8DB5uwmQWJeWq3txi+9qnqO8Co8HUasYDih5K8ubsKb28ilMwaAB6t/v6CFFd2S5bJTqR7Xk+FQaeciqHhu1ErL01Sc9/BtdMgfSLjRGYgiFNWL9+y/h6/8v/uXVQ99+oRcNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=lgVPDxg9; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 469B6396004305;
-	Tue, 9 Jul 2024 07:11:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=a4mDY
-	0r955OSY6grK89Xi6KkFWQA3o0QoT0LGnChgqs=; b=lgVPDxg96DuBOdKWQ0KQ4
-	iIqmEvjpydf7b+3Yeml+BShM1QzH4US/Uf/WaufwAeerFOhSu9pDMJF3NzjWhYXh
-	7CKDZo7CvEzoJILc/IzplUR6ZvCFRpo+6pMvchr0ujMGQPbw9Ov/DJ3lrbZ093mY
-	8VvlAUZcWiZGQbfpcJcxdOW0nhu07EflAM5DcqsigLT0H7aTp1qnr9q6j1m+Rw8H
-	pb1Ief9BAnK0CI0iFZyNJ4qBw1Mr7CiHZrTJswm8nYd00iEfEElibOpI0x9H9M5C
-	onUsG0oP9NS4JsiHqe6Xty+10futcfbDRAiupK9X6CbPXaqgtvnMDc296TyqCbgw
-	Q==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 408y9291p0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jul 2024 07:11:10 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 469BB9FC046296
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 9 Jul 2024 07:11:09 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 9 Jul 2024
- 07:11:08 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 9 Jul 2024 07:11:08 -0400
-Received: from [127.0.0.1] ([10.44.3.56])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 469BAlgs032387;
-	Tue, 9 Jul 2024 07:11:01 -0400
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Tue, 9 Jul 2024 13:14:36 +0200
-Subject: [PATCH 9/9] iio: adc: ad9467: add digital interface test to
- debugfs
+	s=arc-20240116; t=1720529769; c=relaxed/simple;
+	bh=1mQ27usrQvicYMPygqOYmyZaZ+dqCqB7Hb9uZJQFy0E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rUg4SLSPD2q541kHApYBkesOhnJhVw5JEuDmEzW/v+cdV8U2Y9E7mUPRN7Ju7vx1LTlGRPoKlGz2yhbfOlxbIs4n9XmDDgVUMtaWZhn2ORqz8W9MlrrPAukcgMc3s9M/95x4IiXoPIWZT7BsQyK/jcPLEhv5a8NVdPNrVlPoDok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk; spf=pass smtp.mailfrom=thegoodpenguin.co.uk; dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20230601.gappssmtp.com header.i=@thegoodpenguin-co-uk.20230601.gappssmtp.com header.b=q0TiX4GI; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thegoodpenguin.co.uk
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ee98947f70so42080581fa.1
+        for <linux-iio@vger.kernel.org>; Tue, 09 Jul 2024 05:56:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=thegoodpenguin-co-uk.20230601.gappssmtp.com; s=20230601; t=1720529765; x=1721134565; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nr1AM+fDk7Hri75Oy0exjRtso/vQOFRBiEuG64RKjDU=;
+        b=q0TiX4GIJ7pR4UUm3UFs7b3Z+6glz9+K1ZSd+RQGqxFQu2+H5kf2uAbi73xXxxdgRm
+         /P7u6Wp9GR/ynybID00+H5UX/qDNBOBBkdWFaHXsi1CiB35uVZp6vtPMUl8CHVb3/IZG
+         2XgKqBggfC1AvpErg44sOKowX1honCN2R/PvGCRApv3zOGm399jauPjJj0KppiF8fpyo
+         sgQFZq81lS7DUFtQbfGWmhCDLusNaG8JksNNfkDkvAjwroogFgGBhzJo2zuSKziugzfh
+         lq1C4jwXmX4fMsaw9x9hk694vycLLYFt/W1cu6OLOrM4rqefioR9JbmtPAkwKdBQ7+Pt
+         NPMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720529765; x=1721134565;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Nr1AM+fDk7Hri75Oy0exjRtso/vQOFRBiEuG64RKjDU=;
+        b=QR/3qCK1JAZYQeHKuImyBr23JQUBV6JGd7N6ylopt/nAkO/xdP0E17SybPx4itoTWd
+         et1HyTAkNYkbH8OLBp5/L+YbTKv4lrHAsGNrNHi4MdTSYdzouRIR2LJ0abSo5EGNnlGS
+         44f8pNdDlLWfkRmfDGEMj6Ydbs29RRva28Eqnbaw2rOFMKE8RYMGUo5lWxOPEbbT5Yfm
+         vG+uc2jZOxq4xVqSURMmHdMQDheHL+gEaszeslmEVMYJ01S8MemL7Dq8CV2Dr0iyESqi
+         spPS5bW34waJvVSjOlaBZkOzDKzj0c/QTVqydz3JV9LXXkpPDPT4SMSVxxu3Ndu2ON/9
+         746Q==
+X-Gm-Message-State: AOJu0YzMh+oALO5/PKa8VLcpJ72Bl/UOFrGjAuJFcfJYMFld5bX+ElKQ
+	lKU+akOkTYe8EPZrKRDKlbqhXIDC55bFkNsiqYJK01n34HDK6Qc8wBoxLxEekbvOzp8XPAKYUta
+	t
+X-Google-Smtp-Source: AGHT+IG8GHZ17xgCFUdlojYt9fTp4hlfExAQp6WMhX5pGinWdORsY5x+HIh9yisJj1/RYwlO0CeyAg==
+X-Received: by 2002:a2e:9259:0:b0:2ec:5843:2fbd with SMTP id 38308e7fff4ca-2eeb3188e5cmr15954351fa.41.1720529765143;
+        Tue, 09 Jul 2024 05:56:05 -0700 (PDT)
+Received: from carbon.local (aztw-29-b2-v4wan-166913-cust1764.vm26.cable.virginm.net. [82.37.38.229])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cde7e095sm2496757f8f.23.2024.07.09.05.56.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jul 2024 05:56:04 -0700 (PDT)
+From: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+To: jic23@cam.ac.uk
+Cc: linux-iio@vger.kernel.org,
+	Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+Subject: [PATCH 1/2] dt-bindings: iio: humidity: add ENS21x sensor family
+Date: Tue,  9 Jul 2024 13:55:34 +0100
+Message-Id: <20240709125534.988703-1-jfelmeden@thegoodpenguin.co.uk>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240709-dev-iio-backend-add-debugfs-v1-9-fb4b8f2373c7@analog.com>
-References: <20240709-dev-iio-backend-add-debugfs-v1-0-fb4b8f2373c7@analog.com>
-In-Reply-To: <20240709-dev-iio-backend-add-debugfs-v1-0-fb4b8f2373c7@analog.com>
-To: <linux-iio@vger.kernel.org>
-CC: Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich
-	<Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Olivier
- Moysan <olivier.moysan@foss.st.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720523683; l=10407;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=mIc8cdfVRPXmxVLFiNbyxGXSotI9LgS9R1xB3cY+/mw=;
- b=oiO70dp1cEUAMEb/JaTQNELJcoJ5AyjUk9zgAI1XSvSFASZXcwBGeBRzPDp6CSU0Wi/ivGmUB
- IhQ04l0oYlpCHcQOJtk2+03t4TU5w6VQVM6ITsjmtyYej4ywyHdBiWc
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 1CLNC3h0A1-nFvP8PcqVStzA6Z2Blhbs
-X-Proofpoint-ORIG-GUID: 1CLNC3h0A1-nFvP8PcqVStzA6Z2Blhbs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-09_02,2024-07-08_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=999 priorityscore=1501 adultscore=0 malwarescore=0 bulkscore=0
- spamscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 impostorscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407090077
+Content-Transfer-Encoding: 8bit
 
-One useful thing to do (in case of problems) in this high speed devices
-with digital interfaces is to try different test patterns to see if the
-interface is working properly (and properly calibrated). Hence add this
-to debugfs.
+Add device tree documentation for ENS21x family of temperature and
+humidity sensors
 
-On top of this, for some test patterns, the backend may have a matching
-validator block which can be helpful in identifying possible issues. For
-the other patterns some test equipment must be used so one can look into
-the signal and see how it looks like.
-
-Hence, we also add the backend debugfs interface with
-iio_backend_debugfs_add().
-
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
 ---
- drivers/iio/adc/ad9467.c | 188 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 188 insertions(+)
+ .../iio/humidity/sciosense,ens21x.yaml        | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index 2f4bbbd5611c..ce0bae94aa3a 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -15,6 +15,7 @@
- #include <linux/kernel.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
-+#include <linux/seq_file.h>
- #include <linux/err.h>
- #include <linux/delay.h>
- #include <linux/gpio/consumer.h>
-@@ -136,6 +137,8 @@ struct ad9467_chip_info {
- 	unsigned int num_channels;
- 	const unsigned int (*scale_table)[2];
- 	int num_scales;
-+	unsigned long test_mask;
-+	unsigned int test_mask_len;
- 	unsigned long max_rate;
- 	unsigned int default_output_mode;
- 	unsigned int vref_mask;
-@@ -147,11 +150,19 @@ struct ad9467_chip_info {
- 	bool has_dco_invert;
- };
- 
-+struct ad9467_chan_test_mode {
-+	struct ad9467_state *st;
-+	unsigned int idx;
-+	u8 mode;
-+};
+diff --git a/Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml b/Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml
+new file mode 100644
+index 000000000000..3140349a58b8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml
+@@ -0,0 +1,50 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/humidity/sciosense,ens21x.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- struct ad9467_state {
- 	const struct ad9467_chip_info *info;
- 	struct iio_backend *back;
- 	struct spi_device *spi;
- 	struct clk *clk;
-+	/* used for debugfs */
-+	struct ad9467_chan_test_mode *chan_test;
- 	unsigned int output_mode;
- 	unsigned int (*scales)[2];
- 	/*
-@@ -308,6 +319,23 @@ static const struct iio_chan_spec ad9652_channels[] = {
- 	AD9467_CHAN(1, BIT(IIO_CHAN_INFO_SCALE), 1, 16, 's'),
- };
- 
-+static const char * const ad9467_test_modes[] = {
-+	[AN877_ADC_TESTMODE_OFF] = "off",
-+	[AN877_ADC_TESTMODE_MIDSCALE_SHORT] = "midscale_short",
-+	[AN877_ADC_TESTMODE_POS_FULLSCALE] = "pos_fullscale",
-+	[AN877_ADC_TESTMODE_NEG_FULLSCALE] = "neg_fullscale",
-+	[AN877_ADC_TESTMODE_ALT_CHECKERBOARD] = "checkerboard",
-+	[AN877_ADC_TESTMODE_PN23_SEQ] = "prbs23",
-+	[AN877_ADC_TESTMODE_PN9_SEQ] = "prbs9",
-+	[AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE] = "one_zero_toggle",
-+	[AN877_ADC_TESTMODE_USER] = "user",
-+	[AN877_ADC_TESTMODE_BIT_TOGGLE] = "bit_toggle",
-+	[AN877_ADC_TESTMODE_SYNC] = "sync",
-+	[AN877_ADC_TESTMODE_ONE_BIT_HIGH] = "one_bit_high",
-+	[AN877_ADC_TESTMODE_MIXED_BIT_FREQUENCY] = "mixed_bit_frequency",
-+	[AN877_ADC_TESTMODE_RAMP] = "ramp",
-+};
++title: ScioSense ENS21x temperature and humidity sensor
 +
- static const struct ad9467_chip_info ad9467_chip_tbl = {
- 	.name = "ad9467",
- 	.id = CHIPID_AD9467,
-@@ -317,6 +345,9 @@ static const struct ad9467_chip_info ad9467_chip_tbl = {
- 	.channels = ad9467_channels,
- 	.num_channels = ARRAY_SIZE(ad9467_channels),
- 	.test_points = AD9647_MAX_TEST_POINTS,
-+	.test_mask = GENMASK(AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE,
-+			     AN877_ADC_TESTMODE_OFF),
-+	.test_mask_len = AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE + 1,
- 	.default_output_mode = AD9467_DEF_OUTPUT_MODE,
- 	.vref_mask = AD9467_REG_VREF_MASK,
- 	.num_lanes = 8,
-@@ -331,6 +362,8 @@ static const struct ad9467_chip_info ad9434_chip_tbl = {
- 	.channels = ad9434_channels,
- 	.num_channels = ARRAY_SIZE(ad9434_channels),
- 	.test_points = AD9647_MAX_TEST_POINTS,
-+	.test_mask = GENMASK(AN877_ADC_TESTMODE_USER, AN877_ADC_TESTMODE_OFF),
-+	.test_mask_len = AN877_ADC_TESTMODE_USER + 1,
- 	.default_output_mode = AD9434_DEF_OUTPUT_MODE,
- 	.vref_mask = AD9434_REG_VREF_MASK,
- 	.num_lanes = 6,
-@@ -345,6 +378,9 @@ static const struct ad9467_chip_info ad9265_chip_tbl = {
- 	.channels = ad9467_channels,
- 	.num_channels = ARRAY_SIZE(ad9467_channels),
- 	.test_points = AD9647_MAX_TEST_POINTS,
-+	.test_mask = GENMASK(AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE,
-+			     AN877_ADC_TESTMODE_OFF),
-+	.test_mask_len = AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE + 1,
- 	.default_output_mode = AD9265_DEF_OUTPUT_MODE,
- 	.vref_mask = AD9265_REG_VREF_MASK,
- 	.has_dco = true,
-@@ -360,6 +396,9 @@ static const struct ad9467_chip_info ad9643_chip_tbl = {
- 	.channels = ad9643_channels,
- 	.num_channels = ARRAY_SIZE(ad9643_channels),
- 	.test_points = AD9647_MAX_TEST_POINTS,
-+	.test_mask = BIT(AN877_ADC_TESTMODE_RAMP) |
-+		GENMASK(AN877_ADC_TESTMODE_MIXED_BIT_FREQUENCY, AN877_ADC_TESTMODE_OFF),
-+	.test_mask_len = AN877_ADC_TESTMODE_RAMP + 1,
- 	.vref_mask = AD9643_REG_VREF_MASK,
- 	.has_dco = true,
- 	.has_dco_invert = true,
-@@ -375,6 +414,9 @@ static const struct ad9467_chip_info ad9649_chip_tbl = {
- 	.channels = ad9649_channels,
- 	.num_channels = ARRAY_SIZE(ad9649_channels),
- 	.test_points = AD9649_TEST_POINTS,
-+	.test_mask = GENMASK(AN877_ADC_TESTMODE_MIXED_BIT_FREQUENCY,
-+			     AN877_ADC_TESTMODE_OFF),
-+	.test_mask_len = AN877_ADC_TESTMODE_MIXED_BIT_FREQUENCY + 1,
- 	.has_dco = true,
- 	.has_dco_invert = true,
- 	.dco_en = AN877_ADC_DCO_DELAY_ENABLE,
-@@ -389,6 +431,9 @@ static const struct ad9467_chip_info ad9652_chip_tbl = {
- 	.channels = ad9652_channels,
- 	.num_channels = ARRAY_SIZE(ad9652_channels),
- 	.test_points = AD9647_MAX_TEST_POINTS,
-+	.test_mask = GENMASK(AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE,
-+			     AN877_ADC_TESTMODE_OFF),
-+	.test_mask_len = AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE + 1,
- 	.vref_mask = AD9652_REG_VREF_MASK,
- 	.has_dco = true,
- };
-@@ -933,6 +978,128 @@ static int ad9467_iio_backend_get(struct ad9467_state *st)
- 	return -ENODEV;
- }
- 
-+static int ad9467_test_mode_available_show(struct seq_file *s, void *ignored)
-+{
-+	struct ad9467_state *st = s->private;
-+	unsigned int bit;
++maintainers:
++  - Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
 +
-+	for_each_set_bit(bit, &st->info->test_mask, st->info->test_mask_len)
-+		seq_printf(s, "%s\n", ad9467_test_modes[bit]);
++description: |
++  Temperature and Humidity sensor.
 +
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(ad9467_test_mode_available);
++  Datasheet:
++    https://www.sciosense.com/wp-content/uploads/2024/04/ENS21x-Datasheet.pdf
++    https://www.sciosense.com/wp-content/uploads/2023/12/ENS210-Datasheet.pdf
 +
-+static ssize_t ad9467_chan_test_mode_read(struct file *file,
-+					  char __user *userbuf, size_t count,
-+					  loff_t *ppos)
-+{
-+	struct ad9467_chan_test_mode *chan = file->private_data;
-+	struct ad9467_state *st = chan->st;
-+	char buf[128] = {0};
-+	size_t len;
-+	int ret;
++properties:
++  compatible:
++    enum:
++      - sciosense,ens210
++      - sciosense,ens210a
++      - sciosense,ens211
++      - sciosense,ens212
++      - sciosense,ens213a
++      - sciosense,ens215
 +
-+	if (chan->mode == AN877_ADC_TESTMODE_PN9_SEQ ||
-+	    chan->mode == AN877_ADC_TESTMODE_PN23_SEQ) {
-+		len = scnprintf(buf, sizeof(buf), "Running \"%s\" Test:\n\t",
-+				ad9467_test_modes[chan->mode]);
++  reg:
++    maxItems: 1
 +
-+		ret = iio_backend_debugfs_print_chan_status(st->back, chan->idx,
-+							    buf + len,
-+							    sizeof(buf) - len);
-+		if (ret < 0)
-+			return ret;
-+		len += ret;
-+	} else if (chan->mode == AN877_ADC_TESTMODE_OFF) {
-+		len = scnprintf(buf, sizeof(buf), "No test Running...\n");
-+	} else {
-+		len = scnprintf(buf, sizeof(buf), "Running \"%s\" Test on CH:%u\n",
-+				ad9467_test_modes[chan->mode], chan->idx);
-+	}
++required:
++  - compatible
++  - reg
 +
-+	return simple_read_from_buffer(userbuf, count, ppos, buf, len);
-+}
++unevaluatedProperties: false
 +
-+static ssize_t ad9467_chan_test_mode_write(struct file *file,
-+					   const char __user *userbuf,
-+					   size_t count, loff_t *ppos)
-+{
-+	struct ad9467_chan_test_mode *chan = file->private_data;
-+	struct ad9467_state *st = chan->st;
-+	char test_mode[32] = {0};
-+	unsigned int mode;
-+	int ret;
++examples:
++  - |
++    i2c {
++       #address-cells = <1>;
++       #size-cells = <0>;
 +
-+	ret = simple_write_to_buffer(test_mode, sizeof(test_mode) - 1, ppos,
-+				     userbuf, count);
-+	if (ret < 0)
-+		return ret;
++       temperature-sensor@43 {
++           compatible = "sciosense,ens210";
++           reg = <0x43>;
++       };
++    };
++...
 +
-+	for_each_set_bit(mode, &st->info->test_mask, st->info->test_mask_len) {
-+		if (sysfs_streq(test_mode, ad9467_test_modes[mode]))
-+			break;
-+	}
-+
-+	if (mode == st->info->test_mask_len)
-+		return -EINVAL;
-+
-+	guard(mutex)(&st->lock);
-+
-+	if (mode == AN877_ADC_TESTMODE_OFF) {
-+		unsigned int out_mode;
-+
-+		if (chan->mode == AN877_ADC_TESTMODE_PN9_SEQ ||
-+		    chan->mode == AN877_ADC_TESTMODE_PN23_SEQ) {
-+			ret = ad9467_backend_testmode_off(st, chan->idx);
-+			if (ret)
-+				return ret;
-+		}
-+
-+		ret = ad9467_testmode_set(st, chan->idx, mode);
-+		if (ret)
-+			return ret;
-+
-+		out_mode = st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
-+		ret = ad9467_outputmode_set(st, out_mode);
-+		if (ret)
-+			return ret;
-+	} else {
-+		ret = ad9467_outputmode_set(st, st->info->default_output_mode);
-+		if (ret)
-+			return ret;
-+
-+		ret = ad9467_testmode_set(st, chan->idx, mode);
-+		if (ret)
-+			return ret;
-+
-+		/*  some patterns have a backend matching monitoring block */
-+		if (mode == AN877_ADC_TESTMODE_PN9_SEQ) {
-+			ret = ad9467_backend_testmode_on(st, chan->idx,
-+							 IIO_BACKEND_ADI_PRBS_9A);
-+			if (ret)
-+				return ret;
-+		} else if (mode == AN877_ADC_TESTMODE_PN23_SEQ) {
-+			ret = ad9467_backend_testmode_on(st, chan->idx,
-+							 IIO_BACKEND_ADI_PRBS_23A);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	chan->mode = mode;
-+
-+	return count;
-+}
-+
-+static const struct file_operations ad9467_chan_test_mode_fops = {
-+	.open = simple_open,
-+	.read = ad9467_chan_test_mode_read,
-+	.write = ad9467_chan_test_mode_write,
-+	.llseek = default_llseek,
-+	.owner = THIS_MODULE,
-+};
-+
- static ssize_t ad9467_dump_calib_table(struct file *file,
- 				       char __user *userbuf,
- 				       size_t count, loff_t *ppos)
-@@ -971,12 +1138,33 @@ static void ad9467_debugfs_init(struct iio_dev *indio_dev)
- {
- 	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
- 	struct ad9467_state *st = iio_priv(indio_dev);
-+	char attr_name[32];
-+	unsigned int chan;
- 
- 	if (!IS_ENABLED(CONFIG_DEBUG_FS))
- 		return;
- 
-+	st->chan_test = devm_kcalloc(&st->spi->dev, st->info->num_channels,
-+				     sizeof(*st->chan_test), GFP_KERNEL);
-+	if (!st->chan_test)
-+		return;
-+
- 	debugfs_create_file("calibration_table_dump", 0400, d, st,
- 			    &ad9467_calib_table_fops);
-+
-+	for (chan = 0; chan < st->info->num_channels; chan++) {
-+		snprintf(attr_name, sizeof(attr_name), "in_voltage%u_test_mode",
-+			 chan);
-+		st->chan_test[chan].idx = chan;
-+		st->chan_test[chan].st = st;
-+		debugfs_create_file(attr_name, 0600, d, &st->chan_test[chan],
-+				    &ad9467_chan_test_mode_fops);
-+	}
-+
-+	debugfs_create_file("in_voltage_test_mode_available", 0400, d, st,
-+			    &ad9467_test_mode_available_fops);
-+
-+	iio_backend_debugfs_add(st->back, indio_dev);
- }
- 
- static int ad9467_probe(struct spi_device *spi)
-
 -- 
-2.45.2
+2.39.2
 
 

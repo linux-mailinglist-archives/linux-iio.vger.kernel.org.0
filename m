@@ -1,501 +1,127 @@
-Return-Path: <linux-iio+bounces-7485-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7486-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B5192D1E9
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 14:48:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC26192D203
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 14:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49F732851EF
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 12:48:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDD471C20C3B
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 12:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0B4192486;
-	Wed, 10 Jul 2024 12:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B853D1922D6;
+	Wed, 10 Jul 2024 12:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20230601.gappssmtp.com header.i=@thegoodpenguin-co-uk.20230601.gappssmtp.com header.b="ujvIKcDk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D0aRfbJP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275CC1922DB
-	for <linux-iio@vger.kernel.org>; Wed, 10 Jul 2024 12:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D75C18FDD4;
+	Wed, 10 Jul 2024 12:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720615706; cv=none; b=tImMIup/u5ALfwJQEGFJCsjX6jExeL7QJu7NPsbQUqffqBomv9Lt/hcPNz/ZYf3H7E2y9Cg8i9EFe3dsbBd5G0tcS1MsmAJsBJuvrLm0YbU2e03nfr2WepWNX8G1THRJ9hPQzl6wuQ0vtBFzgBYXuaVt5e04Qfazxi7RVYQ+7oc=
+	t=1720616077; cv=none; b=stkK1eyNlgpsCfjYomLAFOjpnE5BXNWVt6WxFE2GRA2ccfK3L9lNPonTdDgbsKCoTJIUdF6ILb8alLcKzheKqTlCAFP2ZyiZvxsUtjtTqKJwcbGqh9tlOfXqD5dhJg/OyauotfWWPtX8tgFrd5+s47/sYAvE/+guGSVkbKWcOTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720615706; c=relaxed/simple;
-	bh=ICLsqNvL10hXdLP4anyG8IgZQB0UXih4s9woLNjMGJc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Zxf7wDkAzAGq0hIObPRNb/F8M6CjnGxqhRa24AeZtuPkA/6BjzTFophzi41kxhjAqo4ze0hy8zBWKsKQ4lBCPCLbvX4Kh0cDyrWX/dK2dF/xQtyv0wUN2wEEhJTF01qnf14U2ssnQkQDFb9LyrPbytazRa8qyFDjbAcE7lDwWsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk; spf=pass smtp.mailfrom=thegoodpenguin.co.uk; dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20230601.gappssmtp.com header.i=@thegoodpenguin-co-uk.20230601.gappssmtp.com header.b=ujvIKcDk; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thegoodpenguin.co.uk
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4257d5fc9b7so52312915e9.2
-        for <linux-iio@vger.kernel.org>; Wed, 10 Jul 2024 05:48:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thegoodpenguin-co-uk.20230601.gappssmtp.com; s=20230601; t=1720615702; x=1721220502; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qd8lfk/DK5nljoGwbuoQZrtP2AYKa+u/2J2wl4uBopE=;
-        b=ujvIKcDkIMFYhb0VPv5b75Gyrmz9Ljy/eh5HxV3zVmbTOUYgdnrTVbV6SQ8lUyfvTF
-         jylOS5rcdfZoJ35FXz++/6GueueQJZGvUxdlYpUBHaPs6Ul0efWeUl9QQXH/SR1TaCSZ
-         edmwMLZn2OtL+XKRsqQTvqkEujcM8Ll9tuQBEISL5aospvOVcxAjqCOmHR6tqJMAYe6P
-         Tg8ifvcmqk9sDwVd07heP0t41U63dn/tIrHHmrfyrW5atn7LV6Hkdu6jheQ0SWqcnb4l
-         qDa6qLaG2wncpPHNGgxocMOzCnCzCads3h4/LKjPLYR0EjK9FAeUJ2SCWQ7eA5PVil4/
-         6V9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720615702; x=1721220502;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qd8lfk/DK5nljoGwbuoQZrtP2AYKa+u/2J2wl4uBopE=;
-        b=duY/P2AqxUgskwZYs/bSKgekVC0OV0B1dYISH2O7RI570uSp5Db1rOmZPvsEvCHQiO
-         iUoHJ69cUN2L2QbLe8DWmJ1aZMZJAwbpldDGFPNTVoEBo5xhtmZFB9Q3scp26bu2iQMp
-         lFTUMOVq0wklzF0dGOGa88Zd233PbI0/cYFcGW737pXZUpzw8I2Jb1ftn6QJSL1RRgdw
-         jINt7eIpauwxDSFerkLLoCyQtOX56byZYVzyf2HV607JI0KWyp3LCuxJ2fXOaGbcmpKP
-         tCX7F/+Xjis5rf8SYr0DXom4bO/dKWLnYAQu/Mj8FszhV1r92hjdo2BzyJpzsNIGNM2P
-         qQzw==
-X-Gm-Message-State: AOJu0YywH+HL2MybifIs+t1ZbBdinKmKTs3weaIWigRmFa/uwwQSeoL5
-	PyzIjK2Y3sAHJfRSJhIoyRArHdVtDV8PFMGPyhqHGs67PukXEPmJsSKC6c/DzWM=
-X-Google-Smtp-Source: AGHT+IGaC4d8YQKP4fRloL0gmKj5TXHGRUwhP1szuWm+VOGH2Gm+2W7Q8lfCH3XXRm+ElgFpCHwvew==
-X-Received: by 2002:adf:fd50:0:b0:367:9114:4693 with SMTP id ffacd0b85a97d-367cea91f0bmr4409870f8f.31.1720615702326;
-        Wed, 10 Jul 2024 05:48:22 -0700 (PDT)
-Received: from carbon.local (aztw-29-b2-v4wan-166913-cust1764.vm26.cable.virginm.net. [82.37.38.229])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266ac156easm118051395e9.38.2024.07.10.05.48.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jul 2024 05:48:21 -0700 (PDT)
-From: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
-Date: Wed, 10 Jul 2024 13:48:03 +0100
-Subject: [PATCH v2 2/2] iio: humidity: Add support for ENS21x
+	s=arc-20240116; t=1720616077; c=relaxed/simple;
+	bh=K3TmIC7D5tdilQjAq3IIc26du5uWh1BnMCHJaRv0P8I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V4YavcrxNbheeqPN2yLEUgf4Z1iDLE1B/DtjXErLP5Xro3504pm2vIk+mPaE4An8RPp3aygL1FMOXIoVafVD7DmhMH2zht82H9Jjnfk89pm0YoTpjh7CMeWr1X493PbISWanTNWubImPXWe4OyaRSkId17RyQJeLRZZQAuU7t4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D0aRfbJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1F6C32781;
+	Wed, 10 Jul 2024 12:54:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720616077;
+	bh=K3TmIC7D5tdilQjAq3IIc26du5uWh1BnMCHJaRv0P8I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=D0aRfbJPE+e/erD9C5NqMu3iHhkP6o2M7plmschfuwXET8/6dArSAkIOtEnpT1K2r
+	 R6Ng4DTUeBxDp9elstdpbQccqAD2SVbDZlvk5sqVvkRfoTaFyLjHH6iTyo+SuO1Syv
+	 j1af46Ef2UnhV390RHTKZDLGEdNvH9DRyooRo08fgwtsqh0BPXcY4fkp1qiAvNGCFl
+	 rxIigWw+DEchpjHsnX8uxOD+0TeCob4L37hsOBw3numnGIqrvoG4TxKrL5SkiN3UZX
+	 rPWVdwrDy1qsZkC1vCnX2DGSaSP/RMLqWsViuQoUjeQtjrF8F2qZuq3nHYq3NdXQO/
+	 /tPQuw6hg3CHQ==
+Message-ID: <3e0d6c4b-bbf8-4f4a-897c-fdaa101dd380@kernel.org>
+Date: Wed, 10 Jul 2024 14:54:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240710-ens21x-v2-2-a37c22018b0c@thegoodpenguin.co.uk>
-References: <20240710-ens21x-v2-0-a37c22018b0c@thegoodpenguin.co.uk>
-In-Reply-To: <20240710-ens21x-v2-0-a37c22018b0c@thegoodpenguin.co.uk>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: humidity: add ENS21x sensor
+ family
+To: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720615699; l=11621;
- i=jfelmeden@thegoodpenguin.co.uk; s=20240709; h=from:subject:message-id;
- bh=ICLsqNvL10hXdLP4anyG8IgZQB0UXih4s9woLNjMGJc=;
- b=v+GmbBcVz4P/veqebW9/smRlocYCEac15rFLHXADcTpEM3g4IatWcu6Q7VV/CFeyVA6TZ9Oa0
- LD81Uv1qvjUBOa0y7XlYCfPfww/sbHLB8vO4t5gjc3qv5aqwFVM0HbQ
-X-Developer-Key: i=jfelmeden@thegoodpenguin.co.uk; a=ed25519;
- pk=tePkZ5iJ3ejQ2O3vjhsj7GrLYcyJN1o1sMT3IEXvKo0=
+References: <20240710-ens21x-v2-0-a37c22018b0c@thegoodpenguin.co.uk>
+ <20240710-ens21x-v2-1-a37c22018b0c@thegoodpenguin.co.uk>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240710-ens21x-v2-1-a37c22018b0c@thegoodpenguin.co.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add support for ENS210/ENS210A/ENS211/ENS212/ENS213A/ENS215.
+On 10/07/2024 14:48, Joshua Felmeden wrote:
+> Add device tree documentation for ENS21x family of temperature and
+> humidity sensors
+> 
+> Signed-off-by: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+> ---
 
-The ENS21x is a family of temperature and relative humidity sensors with
-accuracies tailored to the needs of specific applications.
+It does not look like you tested the bindings, at least after quick
+look. Please run `make dt_binding_check` (see
+Documentation/devicetree/bindings/writing-schema.rst for instructions).
+Maybe you need to update your dtschema and yamllint.
 
-Signed-off-by: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
----
- drivers/iio/humidity/Kconfig  |  11 ++
- drivers/iio/humidity/Makefile |   1 +
- drivers/iio/humidity/ens21x.c | 346 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 358 insertions(+)
-
-diff --git a/drivers/iio/humidity/Kconfig b/drivers/iio/humidity/Kconfig
-index b15b7a3b66d5..ff62abf730d1 100644
---- a/drivers/iio/humidity/Kconfig
-+++ b/drivers/iio/humidity/Kconfig
-@@ -25,6 +25,17 @@ config DHT11
- 	  Other sensors should work as well as long as they speak the
- 	  same protocol.
- 
-+config ENS21X
-+	tristate "ENS21X temperature and humidity sensor"
-+	depends on I2C
-+	help
-+	  Say yes here to get support for the ScioSense ENS21X family of
-+	  humidity and temperature sensors.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ens21x.
-+
-+
- config HDC100X
- 	tristate "TI HDC100x relative humidity and temperature sensor"
- 	depends on I2C
-diff --git a/drivers/iio/humidity/Makefile b/drivers/iio/humidity/Makefile
-index 5fbeef299f61..26590d06d11f 100644
---- a/drivers/iio/humidity/Makefile
-+++ b/drivers/iio/humidity/Makefile
-@@ -5,6 +5,7 @@
- 
- obj-$(CONFIG_AM2315) += am2315.o
- obj-$(CONFIG_DHT11) += dht11.o
-+obj-$(CONFIG_ENS21X) += ens21x.o
- obj-$(CONFIG_HDC100X) += hdc100x.o
- obj-$(CONFIG_HDC2010) += hdc2010.o
- obj-$(CONFIG_HDC3020) += hdc3020.o
-diff --git a/drivers/iio/humidity/ens21x.c b/drivers/iio/humidity/ens21x.c
-new file mode 100644
-index 000000000000..7b2e279d1559
---- /dev/null
-+++ b/drivers/iio/humidity/ens21x.c
-@@ -0,0 +1,346 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * ens21x.c - Support for ScioSense ens21x
-+ *           temperature & humidity sensor
-+ *
-+ * (7-bit I2C slave address 0x43 ENS210)
-+ * (7-bit I2C slave address 0x43 ENS210A)
-+ * (7-bit I2C slave address 0x44 ENS211)
-+ * (7-bit I2C slave address 0x45 ENS212)
-+ * (7-bit I2C slave address 0x46 ENS213A)
-+ * (7-bit I2C slave address 0x47 ENS215)
-+ *
-+ * Datasheet:
-+ *  https://www.sciosense.com/wp-content/uploads/2024/04/ENS21x-Datasheet.pdf
-+ *  https://www.sciosense.com/wp-content/uploads/2023/12/ENS210-Datasheet.pdf
-+ */
-+
-+#include <linux/types.h>
-+#include <linux/i2c.h>
-+#include <linux/delay.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/crc7.h>
-+
-+/* register definitions */
-+#define ENS21X_REG_PART_ID		0x00
-+#define ENS21X_REG_DIE_REV		0x02
-+#define ENS21X_REG_UID			0x04
-+#define ENS21X_REG_SYS_CTRL		0x10
-+#define ENS21X_REG_SYS_STAT		0x11
-+#define ENS21X_REG_SENS_RUN		0x21
-+#define ENS21X_REG_SENS_START		0x22
-+#define ENS21X_REG_SENS_STOP		0x23
-+#define ENS21X_REG_SENS_STAT		0x24
-+#define ENS21X_REG_T_VAL		0x30
-+#define ENS21X_REG_H_VAL		0x33
-+
-+/* value definitions */
-+#define ENS21X_SENS_START_T_START		BIT(0)
-+#define ENS21X_SENS_START_H_START		BIT(1)
-+
-+#define ENS21X_SENS_STAT_T_ACTIVE		BIT(0)
-+#define ENS21X_SENS_STAT_H_ACTIVE		BIT(1)
-+
-+#define ENS21X_SYS_CTRL_LOW_POWER_ENABLE	BIT(0)
-+#define ENS21X_SYS_CTRL_SYS_RESET		BIT(7)
-+
-+#define ENS21X_SYS_STAT_SYS_ACTIVE		BIT(0)
-+
-+/* magic constants */
-+#define ENS21X_CONST_TEMP_SCALE_INT 15 /* integer part of temperature scale (1/64) */
-+#define ENS21X_CONST_TEMP_SCALE_DEC 625000 /* decimal part of temperature scale */
-+#define ENS21X_CONST_HUM_SCALE_INT 1 /* integer part of humidity scale (1/512) */
-+#define ENS21X_CONST_HUM_SCALE_DEC 953125 /* decimal part of humidity scale */
-+#define ENS21X_CONST_TEMP_OFFSET_INT -17481 /* temperature offset (64 * -273.15) */
-+#define ENS21X_CONST_TEMP_OFFSET_DEC 600000 /* decimal part of offset */
-+#define ENS210_CONST_CONVERSION_TIME 130
-+#define ENS212_CONST_CONVERSION_TIME 32
-+#define ENS215_CONST_CONVERSION_TIME 132
-+
-+static const struct of_device_id ens21x_of_match[];
-+
-+struct ens21x_dev {
-+	struct i2c_client *client;
-+	struct mutex lock;
-+	int part_id;
-+};
-+
-+enum ens21x_partnumber {
-+	ENS210	= 0x0210,
-+	ENS210A	= 0xa210,
-+	ENS211	= 0x0211,
-+	ENS212	= 0x0212,
-+	ENS213A	= 0xa213,
-+	ENS215	= 0x0215,
-+};
-+
-+/* calculate 17-bit crc7 */
-+static u8 ens21x_crc7(u32 val)
-+{
-+	u32 val_be = (htonl(val & 0x1ffff) >> 0x8);
-+
-+	return crc7_be(0xde, (u8 *)&val_be, 3) >> 1;
-+}
-+
-+static int ens21x_get_measurement(struct iio_dev *indio_dev, bool temp, int *val)
-+{
-+	u32 regval, regval_le;
-+	int ret, tries;
-+	struct ens21x_dev *dev_data = iio_priv(indio_dev);
-+
-+	/* assert read */
-+	i2c_smbus_write_byte_data(dev_data->client, ENS21X_REG_SENS_START,
-+				  temp ? ENS21X_SENS_START_T_START :
-+					 ENS21X_SENS_START_H_START);
-+
-+	/* wait for conversion to be ready */
-+	switch (dev_data->part_id) {
-+	case ENS210:
-+	case ENS210A:
-+		msleep(ENS210_CONST_CONVERSION_TIME);
-+		break;
-+	case ENS211:
-+	case ENS212:
-+		msleep(ENS212_CONST_CONVERSION_TIME);
-+		break;
-+	case ENS213A:
-+	case ENS215:
-+		msleep(ENS215_CONST_CONVERSION_TIME);
-+		break;
-+	default:
-+		dev_err(&dev_data->client->dev, "unrecognised device");
-+		return -ENODEV;
-+	}
-+
-+	tries = 10;
-+	while (tries-- > 0) {
-+		usleep_range(4000, 5000);
-+		ret = i2c_smbus_read_byte_data(dev_data->client,
-+					       ENS21X_REG_SENS_STAT);
-+		if (ret < 0)
-+			continue;
-+		if (!(ret & (temp ? ENS21X_SENS_STAT_T_ACTIVE :
-+				    ENS21X_SENS_STAT_H_ACTIVE)))
-+			break;
-+	}
-+	if (tries < 0) {
-+		dev_err(&indio_dev->dev, "timeout waiting for sensor reading\n");
-+		return -EIO;
-+	}
-+
-+	/* perform read */
-+	ret = i2c_smbus_read_i2c_block_data(
-+		dev_data->client, temp ? ENS21X_REG_T_VAL : ENS21X_REG_H_VAL, 3,
-+		(u8 *)&regval_le);
-+	if (ret < 0) {
-+		dev_err(&dev_data->client->dev, "failed to read register");
-+		return -EIO;
-+	} else if (ret == 3) {
-+		regval = le32_to_cpu(regval_le);
-+		if (ens21x_crc7(regval) == ((regval >> 17) & 0x7f)) {
-+			*val = regval & 0xffff;
-+			return IIO_VAL_INT;
-+		}
-+		/* crc fail */
-+		dev_err(&indio_dev->dev, "ens invalid crc\n");
-+		return -EIO;
-+	}
-+
-+	dev_err(&indio_dev->dev, "expected 3 bytes, received %d\n", ret);
-+	return -EIO;
-+}
-+
-+static int ens21x_read_raw(struct iio_dev *indio_dev,
-+			   struct iio_chan_spec const *channel, int *val,
-+			   int *val2, long mask)
-+{
-+	struct ens21x_dev *dev_data = iio_priv(indio_dev);
-+	int ret = -EINVAL;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		mutex_lock(&dev_data->lock);
-+		ret = ens21x_get_measurement(
-+			indio_dev, channel->type == IIO_TEMP, val);
-+		mutex_unlock(&dev_data->lock);
-+		break;
-+	case IIO_CHAN_INFO_SCALE:
-+		if (channel->type == IIO_TEMP) {
-+			*val = ENS21X_CONST_TEMP_SCALE_INT;
-+			*val2 = ENS21X_CONST_TEMP_SCALE_DEC;
-+		} else {
-+			*val = ENS21X_CONST_HUM_SCALE_INT;
-+			*val2 = ENS21X_CONST_HUM_SCALE_DEC;
-+		}
-+		ret = IIO_VAL_INT_PLUS_MICRO;
-+		break;
-+	case IIO_CHAN_INFO_OFFSET:
-+		if (channel->type == IIO_TEMP) {
-+			*val = ENS21X_CONST_TEMP_OFFSET_INT;
-+			*val2 = ENS21X_CONST_TEMP_OFFSET_DEC;
-+			ret = IIO_VAL_INT_PLUS_MICRO;
-+			break;
-+		}
-+		*val = 0;
-+		ret =  IIO_VAL_INT;
-+		break;
-+	default:
-+		break;
-+	}
-+	return ret;
-+}
-+
-+static const struct iio_chan_spec ens21x_channels[] = {
-+	/* Temperature channel */
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE) |
-+				      BIT(IIO_CHAN_INFO_OFFSET),
-+	},
-+	/* Humidity channel */
-+	{
-+		.type = IIO_HUMIDITYRELATIVE,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE) |
-+				      BIT(IIO_CHAN_INFO_OFFSET),
-+	}
-+};
-+
-+static const struct iio_info ens21x_info = {
-+	.read_raw = ens21x_read_raw,
-+};
-+
-+static int ens21x_probe(struct i2c_client *client)
-+{
-+	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-+	const struct of_device_id *match;
-+	struct ens21x_dev *dev_data;
-+	struct iio_dev *indio_dev;
-+	uint16_t part_id_le, part_id;
-+	int ret, tries;
-+
-+	if (!i2c_check_functionality(client->adapter,
-+			I2C_FUNC_SMBUS_WRITE_BYTE_DATA |
-+			I2C_FUNC_SMBUS_WRITE_BYTE |
-+			I2C_FUNC_SMBUS_READ_I2C_BLOCK)) {
-+		dev_err(&client->dev,
-+			"adapter does not support some i2c transactions\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	match = i2c_of_match_device(ens21x_of_match, client);
-+	if (!match)
-+		return -ENODEV;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*dev_data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	dev_data = iio_priv(indio_dev);
-+	i2c_set_clientdata(client, indio_dev);
-+	dev_data->client = client;
-+	mutex_init(&dev_data->lock);
-+
-+	/* reset device */
-+	ret = i2c_smbus_write_byte_data(client, ENS21X_REG_SYS_CTRL,
-+					ENS21X_SYS_CTRL_SYS_RESET);
-+	if (ret)
-+		return ret;
-+
-+	/* wait for device to become active */
-+	usleep_range(4000, 5000);
-+
-+	/* disable low power mode */
-+	ret = i2c_smbus_write_byte_data(client, ENS21X_REG_SYS_CTRL, 0x00);
-+	if (ret)
-+		return ret;
-+
-+	/* wait for device to become active */
-+	tries = 10;
-+	while (tries-- > 0) {
-+		msleep(20);
-+		ret = i2c_smbus_read_byte_data(client, ENS21X_REG_SYS_STAT);
-+		if (ret < 0)
-+			return ret;
-+		if (ret & ENS21X_SYS_STAT_SYS_ACTIVE)
-+			break;
-+	}
-+	if (tries < 0) {
-+		dev_err(&client->dev,
-+			"timeout waiting for ens21x to become active\n");
-+		return -EIO;
-+	}
-+
-+	/* get part_id */
-+	part_id_le = i2c_smbus_read_word_data(client, ENS21X_REG_PART_ID);
-+	if (part_id_le < 0)
-+		return part_id_le;
-+	part_id = le16_to_cpu(part_id_le);
-+
-+	if (part_id != id->driver_data) {
-+		dev_err(&client->dev,
-+			"Part ID does not match (0x%04x != 0x%04lx)\n", part_id,
-+			id->driver_data);
-+		return -ENODEV;
-+	}
-+
-+	/* reenable low power */
-+	ret = i2c_smbus_write_byte_data(client, ENS21X_REG_SYS_CTRL,
-+					ENS21X_SYS_CTRL_LOW_POWER_ENABLE);
-+	if (ret)
-+		return ret;
-+
-+	dev_data->part_id = part_id;
-+
-+	indio_dev->name = id->name;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = ens21x_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(ens21x_channels);
-+	indio_dev->info = &ens21x_info;
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+
-+static const struct of_device_id ens21x_of_match[] = {
-+	{ .compatible = "sciosense,ens210", .data = (void *)ENS210},
-+	{ .compatible = "sciosense,ens210a", .data = (void *)ENS210A },
-+	{ .compatible = "sciosense,ens211", .data = (void *)ENS211},
-+	{ .compatible = "sciosense,ens212", .data = (void *)ENS212},
-+	{ .compatible = "sciosense,ens213a", .data = (void *)ENS213A },
-+	{ .compatible = "sciosense,ens215", .data = (void *)ENS215},
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, ens21x_of_match);
-+
-+static const struct i2c_device_id ens21x_id[] = {
-+	{"ens210", ENS210},
-+	{"ens210a", ENS210A},
-+	{"ens211", ENS211},
-+	{"ens212", ENS212},
-+	{"ens213a", ENS213A},
-+	{"ens215", ENS215},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, ens21x_id);
-+
-+static struct i2c_driver ens21x_driver = {
-+	.probe = ens21x_probe,
-+	.id_table = ens21x_id,
-+	.driver = {
-+		.name = "ens21x",
-+		.of_match_table = ens21x_of_match,
-+	},
-+};
-+
-+module_i2c_driver(ens21x_driver);
-+
-+MODULE_DESCRIPTION("ScioSense ENS21x temperature and humidity sensor driver");
-+MODULE_AUTHOR("Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>");
-+MODULE_LICENSE("GPL");
-+
-
--- 
-2.39.2
+Best regards,
+Krzysztof
 
 

@@ -1,127 +1,145 @@
-Return-Path: <linux-iio+bounces-7486-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7487-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC26192D203
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 14:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B257692D2AE
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 15:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDD471C20C3B
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 12:54:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41D91C20F9A
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 13:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B853D1922D6;
-	Wed, 10 Jul 2024 12:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E6D192B79;
+	Wed, 10 Jul 2024 13:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D0aRfbJP"
+	dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20230601.gappssmtp.com header.i=@thegoodpenguin-co-uk.20230601.gappssmtp.com header.b="l2NFXUf7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D75C18FDD4;
-	Wed, 10 Jul 2024 12:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C906E18FDD7
+	for <linux-iio@vger.kernel.org>; Wed, 10 Jul 2024 13:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720616077; cv=none; b=stkK1eyNlgpsCfjYomLAFOjpnE5BXNWVt6WxFE2GRA2ccfK3L9lNPonTdDgbsKCoTJIUdF6ILb8alLcKzheKqTlCAFP2ZyiZvxsUtjtTqKJwcbGqh9tlOfXqD5dhJg/OyauotfWWPtX8tgFrd5+s47/sYAvE/+guGSVkbKWcOTQ=
+	t=1720617850; cv=none; b=kGa3MTttjaj4o9VykN82NxD1KLhtWMwSan8MsC8+X4BEuD0mH8IiMO/5jQjzz1BWVM+NBvSd1u/YjmwGx2g/z/L0T+8zCOKlusDLuLuqv7Q9dmNlvg4Ey8B28LpYFoIBoGyCJcqgk8Eji5fnjDX3oF07Q+7b9rvk0xkRedrgLIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720616077; c=relaxed/simple;
-	bh=K3TmIC7D5tdilQjAq3IIc26du5uWh1BnMCHJaRv0P8I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V4YavcrxNbheeqPN2yLEUgf4Z1iDLE1B/DtjXErLP5Xro3504pm2vIk+mPaE4An8RPp3aygL1FMOXIoVafVD7DmhMH2zht82H9Jjnfk89pm0YoTpjh7CMeWr1X493PbISWanTNWubImPXWe4OyaRSkId17RyQJeLRZZQAuU7t4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D0aRfbJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1F6C32781;
-	Wed, 10 Jul 2024 12:54:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720616077;
-	bh=K3TmIC7D5tdilQjAq3IIc26du5uWh1BnMCHJaRv0P8I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=D0aRfbJPE+e/erD9C5NqMu3iHhkP6o2M7plmschfuwXET8/6dArSAkIOtEnpT1K2r
-	 R6Ng4DTUeBxDp9elstdpbQccqAD2SVbDZlvk5sqVvkRfoTaFyLjHH6iTyo+SuO1Syv
-	 j1af46Ef2UnhV390RHTKZDLGEdNvH9DRyooRo08fgwtsqh0BPXcY4fkp1qiAvNGCFl
-	 rxIigWw+DEchpjHsnX8uxOD+0TeCob4L37hsOBw3numnGIqrvoG4TxKrL5SkiN3UZX
-	 rPWVdwrDy1qsZkC1vCnX2DGSaSP/RMLqWsViuQoUjeQtjrF8F2qZuq3nHYq3NdXQO/
-	 /tPQuw6hg3CHQ==
-Message-ID: <3e0d6c4b-bbf8-4f4a-897c-fdaa101dd380@kernel.org>
-Date: Wed, 10 Jul 2024 14:54:31 +0200
+	s=arc-20240116; t=1720617850; c=relaxed/simple;
+	bh=XEswd7G3NMioyfs4GwFmiPiHGWFlBhQ8U8B5l/NmoeU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hjO8JJdapqCaAhoBIuBDEV9p9gljwg/cciryh54LqU3yZcLL4h4htO+hGSljdX/3t+g7C2m4/T4hDvce3Z8mBzQzxDkevJe5WX5tFm8of0kziiG41RO3UI3kKmmoRIFG9o14r8Nkob7Bsv29LbmiN2XEAqHdnsEYuiWbPgYVAlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk; spf=pass smtp.mailfrom=thegoodpenguin.co.uk; dkim=pass (2048-bit key) header.d=thegoodpenguin-co-uk.20230601.gappssmtp.com header.i=@thegoodpenguin-co-uk.20230601.gappssmtp.com header.b=l2NFXUf7; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thegoodpenguin.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thegoodpenguin.co.uk
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-36798779d75so5488491f8f.3
+        for <linux-iio@vger.kernel.org>; Wed, 10 Jul 2024 06:24:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=thegoodpenguin-co-uk.20230601.gappssmtp.com; s=20230601; t=1720617847; x=1721222647; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9ivCGozbpK+ETB64ZM9eDQNZHQrEIzP30tKXkrTTX5s=;
+        b=l2NFXUf7XH/vnYXwDtCsPCccLufKgSxsAvy3NVUhFbmqA/kgv54/zi6sYzZ4m3ETIM
+         GSrtLNaqH5LQ+IoMCQ1Q6XnxM2qwxTP3ApgNZitDSHckClAi0gzs7TPbzCA0VyKr0EMB
+         lrhqZ/rTxeeJiuYxXv/s+csX0BNOoj4Rutc80l9zAODtJPkutMXMx6j0pZlRhRPhiFR4
+         Qk67PiOpyBUFo4d8f/ZdwVkUxLOoKxvVl9vOhNCCuNAWE+ByWFd0Vlnfgvp80NDezjaT
+         ogZC2v6SGwvue+ZJNIEt61bFi5vvAWyMcVcLm7utF43KP8I3khOf3dKpdjDY3wULk0Cl
+         M34A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720617847; x=1721222647;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9ivCGozbpK+ETB64ZM9eDQNZHQrEIzP30tKXkrTTX5s=;
+        b=whSobxaRl6mC4XztJ+mQOxT+LY95AfJb0mm4jhe5cE6CGjKKK4gMbyhHw0n/dZW0lx
+         dd41EFzaFAqwddPqzZ7sFgcIIN9eicEVp/MRH5R+wg2rH5f+6g7cWYNtSpBgiV1dDOma
+         hwM77yHs9FnnewHuwJrHmctwxHvogZWsPBrvMtwz+wHARfP8iWFITf3WM5KS2wTlMYEn
+         vsxnjyl03bmcjma85HoHRbuZ+SGobcXP7pe2Nn0n7CTduPz5U+R6Bg40G2YkZBSbqf+d
+         wMr2KvmIHFbvGnptnYrzSRt8rWB/a/nAGD5jbkRmEx0Upik8hCyWTvtHIEKilfcNEXq+
+         E+iQ==
+X-Gm-Message-State: AOJu0YzO9Tl0pth5TSbhYgxvq1peq90eMp5o0wRf+lnASROTY+jXY5yB
+	G+aeXlzirQVPWAyPSEwaqGFowZielFW7mB+yqIzlxfJ/TuLfcEHn/9ci5i3InrA=
+X-Google-Smtp-Source: AGHT+IEmhRrwKCYh1YmiWvZ5eWN/nNChU0nF5E/gTBTmD1mh4AFNNFtH3MF11iYc1sXwYKKEwv9TaQ==
+X-Received: by 2002:a05:6000:1864:b0:367:9cd5:c608 with SMTP id ffacd0b85a97d-367cea962b4mr5497949f8f.36.1720617847311;
+        Wed, 10 Jul 2024 06:24:07 -0700 (PDT)
+Received: from carbon.local (aztw-29-b2-v4wan-166913-cust1764.vm26.cable.virginm.net. [82.37.38.229])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266d0185d9sm106441025e9.3.2024.07.10.06.24.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jul 2024 06:24:06 -0700 (PDT)
+From: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+Subject: [PATCH v3 0/2] iio: humidity: Add support for en21x sensor family
+Date: Wed, 10 Jul 2024 14:24:03 +0100
+Message-Id: <20240710-ens21x-v3-0-4e3fbcf2a7fb@thegoodpenguin.co.uk>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: humidity: add ENS21x sensor
- family
-To: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240710-ens21x-v2-0-a37c22018b0c@thegoodpenguin.co.uk>
- <20240710-ens21x-v2-1-a37c22018b0c@thegoodpenguin.co.uk>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240710-ens21x-v2-1-a37c22018b0c@thegoodpenguin.co.uk>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHOLjmYC/zWOSw6DMAxEr4K8bpAx/cGq96hYQDAhqkhoEhAV4
+ u5NQV1Zb/Q04xU8O80eymQFx7P22poI+SkB2ddGsdBtZCCkM96wEGw8ZYu4d3TJsbjGyxDl0XG
+ nl73oWR3s+D3FvnCE0NSehbTDoEOZBKscK/iZvfbBus/+wUy7eoxl+B+bSaCo85skwuzeoHyEn
+ pW17chGTdqk0qbTC6pt275TlkTk0QAAAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720617846; l=1529;
+ i=jfelmeden@thegoodpenguin.co.uk; s=20240709; h=from:subject:message-id;
+ bh=XEswd7G3NMioyfs4GwFmiPiHGWFlBhQ8U8B5l/NmoeU=;
+ b=H6X1pWFXTqbE2qx9tCG4ALFpsffXpMDl9no1+47kxo6MdM1C0oKEyEUgzwZa5WSgdCHwdCu4C
+ POoVAHgOyKdCnf0Kk27r4FJxI0zkHU76JgmwXWTjW8DviK+0GVaPGbC
+X-Developer-Key: i=jfelmeden@thegoodpenguin.co.uk; a=ed25519;
+ pk=tePkZ5iJ3ejQ2O3vjhsj7GrLYcyJN1o1sMT3IEXvKo0=
 
-On 10/07/2024 14:48, Joshua Felmeden wrote:
-> Add device tree documentation for ENS21x family of temperature and
-> humidity sensors
-> 
-> Signed-off-by: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
-> ---
+This patch series adds support for the
+ENS210/ENS210A/ENS211/ENS212/ENS213A/ENS215 temperature and humidity
+sensors.
 
-It does not look like you tested the bindings, at least after quick
-look. Please run `make dt_binding_check` (see
-Documentation/devicetree/bindings/writing-schema.rst for instructions).
-Maybe you need to update your dtschema and yamllint.
+Patch 1 adds the required device tree bindings.
+
+Patch 2 adds the driver, providing the probe and read functions.
+
+Signed-off-by: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+
+changelog v1 -> v2:
+sciosense,ens21x.yaml: Add supply to documentation
+sciosense,ens21x.yaml: Add fallback to compatible strings
+ens21x.c: Move i2c_device_id next to of_device_id
+ens21x.c: Use i2c_of_match_device() instead of of_match_device()
+
+Many thanks for taking the time to review my patch.
+
+Thanks,
+Josh
+
+---
+changelog v2 -> v3:
+sciosense,ens21x.yaml: Update yaml to match dt_binding_check
+
+- Link to V1: https://lore.kernel.org/all/20240709-ens21x-v1-2-678521433cdd@thegoodpenguin.co.uk/
+- Link to v2: https://lore.kernel.org/r/20240710-ens21x-v2-0-a37c22018b0c@thegoodpenguin.co.uk
+
+---
+Joshua Felmeden (2):
+      dt-bindings: iio: humidity: add ENS21x sensor family
+      iio: humidity: Add support for ENS21x
+
+ .../bindings/iio/humidity/sciosense,ens21x.yaml    |  55 ++++
+ drivers/iio/humidity/Kconfig                       |  11 +
+ drivers/iio/humidity/Makefile                      |   1 +
+ drivers/iio/humidity/ens21x.c                      | 346 +++++++++++++++++++++
+ 4 files changed, 413 insertions(+)
+---
+base-commit: 1ebab783647a9e3bf357002d5c4ff060c8474a0a
+change-id: 20240709-ens21x-8f2530968f2e
 
 Best regards,
-Krzysztof
+-- 
+Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
 
 

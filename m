@@ -1,74 +1,48 @@
-Return-Path: <linux-iio+bounces-7480-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7481-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2420392C352
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 20:33:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D431892CEE0
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 12:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7E401F2418E
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Jul 2024 18:33:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F00728460F
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Jul 2024 10:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E3718003E;
-	Tue,  9 Jul 2024 18:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6CB18FA35;
+	Wed, 10 Jul 2024 10:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f3wgpTzP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JnD3ha88"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BA81B86E4;
-	Tue,  9 Jul 2024 18:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0602F43156;
+	Wed, 10 Jul 2024 10:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720549988; cv=none; b=pATITgVXjyjWwX7Xl0/xeJW/wXV1Nzqqml3slJRleJY7mO9TaYU8o68gO/77pkBNHPPTdMCa7+nUK/kqBUyrUxWc0WQr46H8AhTlmuH6FJKh3emJEC7ezqEI7VGkOnYsWWis08XiK87BAq4PJTWVNMjGCfAF4QJNsx9/3SvGzFc=
+	t=1720606168; cv=none; b=jY4H7QI9jFLXPper5R9iRlfyj3oKNhePUCRGenwmYkMaXUbHZM7OCuUjtrPZIy1HieFZeo7nvMKYB6TpajHdyfO9F0Jqv8+I+BSzrLBu6pFCvwhJ22F9pJVd+rS6jiXx7ds1B/lzMv/5sPStqb5g5ncU+vURE73wnTyVM9YOKik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720549988; c=relaxed/simple;
-	bh=o7KezNssQ10KvpArozHaQDe0vjPmXwq+WBOthEhLB8s=;
+	s=arc-20240116; t=1720606168; c=relaxed/simple;
+	bh=YeOOqgqihShtVaR4aobEpHkV+3/ihbCPBoX+nXP4imc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jZZ6ldreUDJRgX+7ndyk9olQOUup7JevHeY9A8zLcNN9Qa0lXRSSVg1ff4u5rkFktyp3e2z3ifzR1wH5gG0+B/aXgI4tWJ/iysPL3nGwQc2/gjYjtPraagMln3j1l+k7W5ylNJn6S+wJcyDR0sb4ofIC1BV83epyDKlNKoPLs6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f3wgpTzP; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-52e99060b41so5924461e87.2;
-        Tue, 09 Jul 2024 11:33:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720549985; x=1721154785; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qQvoh/iNTo3TxS26T9ik+xylt2WEP99UjL3OjvGhQKQ=;
-        b=f3wgpTzPyG4pT78beBhwK1NyaNHB2V1VGH51bkdGguBUnoV/T5p076l+p3r7+LdCn1
-         aaglEda3dqHXakXAR2OlZ9FI3N0m18w4nQTo3R2MI7xq7+hf35SImzjZ6lrl3w9r+UoH
-         BMFoprQ8Ss0IKe/tEW/URD+Y71FZcq0Df27NdS95Zg/wkwZgWgxhwoHWNdVcNYWEjece
-         0d1Y4/puLW+rIVSr5hDPNLVszkXSbq0DTdiOvGPvZM9PSpYbQZzSrtBsf9eQACti9QKl
-         1l8HXKK3cMZNIKILz5rplrfIlkqSqOtJAj/n69+U3LOU676dUE6xphd45ZalBCK6el9l
-         lpBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720549985; x=1721154785;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qQvoh/iNTo3TxS26T9ik+xylt2WEP99UjL3OjvGhQKQ=;
-        b=ZVhMhD74UOTuQE8pM797rUARTJkpAnY7+6eB7pJfH+IhgIq4Rj4REP4LqVCmKCj22j
-         v7etGYBm2X8v7kRMCiI31oQGxEgObBs2/FXc+FiiQ/alXvJ8OVr731PaGX+0TodGpXUT
-         tpEZCGH+v3dP5PKVdEbZgXWeIyoou8gpgHT+LLFzk5uchFcFdgw+a226t34CVfvc+f6d
-         lhu/Nc/uQDsiWPwUGnRC9xTnRCNXTbITtbkouZQ3SRHYjM6pgaOehA2mOZ21fVR0295k
-         8JwQqzL4RHbwO/miMQOgYcG6pOKiPiiOjl3aFHZxTMOuJ0Ku1ED2hxY3onYbm5kTlD06
-         qZPw==
-X-Forwarded-Encrypted: i=1; AJvYcCXgHS16Ijt86oohdMiGAWHiYcxtRjH4o074QXOTDdfJzaUg66VZpk+TyP7+qZJY9L2F28y6uJCa75AXD2HYpn8DpfQJd+AY68AMOBXzPTxAuiesQHCn+k0lQQF/502ypBewaTiidkVmtyMAo6cfe6KwgeR1yYvHIK11IIDtj2blV8B8bg==
-X-Gm-Message-State: AOJu0YzBatt1r7zQ8ECVcBjc7pFy0mxh8mshslvUzT4VVcTuJpllMM0V
-	MLhyVdpZOSrA67YsxuzhBcqbmgQ9qnnhvFz1OND/2pPSmiyfEpCf
-X-Google-Smtp-Source: AGHT+IGdA6qBs/h5ifQa1NLYmmqBaEPCm7bXVlEOtK8ASpi7E8t7wW94TgDIp5nw4qBgiqUe1GdzHw==
-X-Received: by 2002:ac2:5605:0:b0:52e:97b3:42a1 with SMTP id 2adb3069b0e04-52eb9995536mr1796703e87.24.1720549984595;
-        Tue, 09 Jul 2024 11:33:04 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52eb8e493cdsm313069e87.85.2024.07.09.11.33.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jul 2024 11:33:03 -0700 (PDT)
-Message-ID: <2b66ea94-dd77-4e86-b09b-c00523bdbf75@gmail.com>
-Date: Tue, 9 Jul 2024 21:33:02 +0300
+	 In-Reply-To:Content-Type; b=RVF2zvFuhFLg6sdk8en0FiVSqbmmnzKeAaFi4DZ36zv5ySQWNhVuRpgHmvhCCdUiPeEQlmZwWebxB92AZjG5L8kxqwzNHlMEhJH6SnXlnlVnZ6rRgqcoaPm3Tx0E0noW0ekYAqMpF8GDuDkzc7/tlGj9/LjMsrSwLJp06o9RQBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JnD3ha88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD60C32781;
+	Wed, 10 Jul 2024 10:09:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720606167;
+	bh=YeOOqgqihShtVaR4aobEpHkV+3/ihbCPBoX+nXP4imc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JnD3ha88K7DkkntKt9UlcD+9HmgoBYN3T8c0dpyiFyQjy1CKoCrElTXyDlOf/O/n8
+	 +xkitYfn5pc2z73Ucg/upY6bJ4/pwi3QCtJxx6z3olBFpZuqmesY305clciDvsd7j9
+	 vIfPCexDNkfhA98cFOtbjC/hbbEtJLN4f4Mk3tgtXTt7pziQ5gKFTcZ4ausC+5Lisy
+	 KK/B8zAlf+bfzFqiKY0p9EqqEJDlIWzdUVLFuCtSKR2JK7VLHzO59BqB2Cq9vOVymB
+	 VHf676l7/lG6qjUcLK6R22EAFd8ZfGZ5kyg9vvCXLWz3U1h2slJygKavNzWQfU2USX
+	 BQcuKh3WLiI3w==
+Message-ID: <54468cb8-9603-430e-8d09-ba2a243ff552@kernel.org>
+Date: Wed, 10 Jul 2024 12:09:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,80 +50,132 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] dt-bindings: iio: rename bu27034 file
-To: Conor Dooley <conor@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+Subject: Re: [PATCH 1/2] dt-bindings: iio: humidity: add ENS21x sensor family
+To: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1720176341.git.mazziesaccount@gmail.com>
- <f83cf0d6f5b0ed391703ea3908ebd65b3f6e5c87.1720176341.git.mazziesaccount@gmail.com>
- <20240708-eloquent-overdrive-092c7678f913@spud>
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240708-eloquent-overdrive-092c7678f913@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240709-ens21x-v1-0-678521433cdd@thegoodpenguin.co.uk>
+ <20240709-ens21x-v1-1-678521433cdd@thegoodpenguin.co.uk>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240709-ens21x-v1-1-678521433cdd@thegoodpenguin.co.uk>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 7/8/24 20:05, Conor Dooley wrote:
-> On Fri, Jul 05, 2024 at 01:54:26PM +0300, Matti Vaittinen wrote:
->> The BU27034NUC was cancelled before it entered mass production. It was
->> replaced by a new variant BU27034ANUC (note, added 'A'). The new
->> variant gained a few significant changes, like removal of the 3.rd data
->> channel and dropping some of the gain settings. This means that, from
->> software point of view these ICs are incompatible. Lux calculation based
->> on the data from the sensors needs to be done differently, and on the
->> BU27034ANUC the channel 3 data is missing. Also, the gain setting
->> differencies matter.
->>
->> The old sensor should not be out there so the compatible was dropped and
->> a new compatible was added for the bu27034anuc. Move the yaml file so
->> the file name matches the binding and change the $id.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> ---
->> Revision history:
->> v1 => v2:
->> - New patch
->> ---
->>   .../iio/light/{rohm,bu27034.yaml => rohm,bu27034anuc.yaml}      | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>   rename Documentation/devicetree/bindings/iio/light/{rohm,bu27034.yaml => rohm,bu27034anuc.yaml} (92%)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml b/Documentation/devicetree/bindings/iio/light/rohm,bu27034anuc.yaml
->> similarity index 92%
->> rename from Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
->> rename to Documentation/devicetree/bindings/iio/light/rohm,bu27034anuc.yaml
->> index 535bd18348ac..fc3d826ed8ba 100644
->> --- a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
->> +++ b/Documentation/devicetree/bindings/iio/light/rohm,bu27034anuc.yaml
->> @@ -1,7 +1,7 @@
->>   # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>   %YAML 1.2
->>   ---
->> -$id: http://devicetree.org/schemas/iio/light/rohm,bu27034.yaml#
->> +$id: http://devicetree.org/schemas/iio/light/rohm,bu27034anuc.yaml#
->>   $schema: http://devicetree.org/meta-schemas/core.yaml#
+On 09/07/2024 18:36, Joshua Felmeden wrote:
+> Add device tree documentation for ENS21x family of temperature and
+> humidity sensors
 > 
-> IMO this should be squashed.
+> Signed-off-by: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
 
-I've no objections to squashing this. The main motivation of having it 
-as a separate patch was to point out the file rename for reviewers and 
-ask if it is Ok. Furthermore, if there was a reason not to do the 
-rename, then this patch could've been just dropped while the rest of the 
-series could've been applied.
 
-Thanks for the review!
+I believe that's either RESEND or v2, so you are supposed to mark it in
+patch prefix accordingly. If it is v2, then provide also changelog under
+--- or in cover letter.
 
-Yours,
-	-- Matti
+> ---
+>  .../bindings/iio/humidity/sciosense,ens21x.yaml    | 50 ++++++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml b/Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml
+> new file mode 100644
+> index 000000000000..3140349a58b8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/humidity/sciosense,ens21x.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ScioSense ENS21x temperature and humidity sensor
+> +
+> +maintainers:
+> +  - Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+> +
+> +description: |
+> +  Temperature and Humidity sensor.
+> +
+> +  Datasheet:
+> +    https://www.sciosense.com/wp-content/uploads/2024/04/ENS21x-Datasheet.pdf
+> +    https://www.sciosense.com/wp-content/uploads/2023/12/ENS210-Datasheet.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - sciosense,ens210
+> +      - sciosense,ens210a
+> +      - sciosense,ens211
+> +      - sciosense,ens212
+> +      - sciosense,ens213a
+> +      - sciosense,ens215
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Driver suggests these are compatible, so I would normally expect using
+one as fallback for others.
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+
+Missing supply.
+
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +unevaluatedProperties: false
+
+This must be additionalProperties instead.
+
+Best regards,
+Krzysztof
 
 

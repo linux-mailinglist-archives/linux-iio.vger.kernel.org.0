@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-7516-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7517-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE7D92F0E5
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 23:17:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4F792F0E7
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 23:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5751C2295C
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 21:17:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 653CB282FD2
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 21:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7D21A0715;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F3B1A08AC;
 	Thu, 11 Jul 2024 21:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GQ3erRy/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b8OGIiJ5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6B01A00EB;
-	Thu, 11 Jul 2024 21:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F3A1A01D9;
+	Thu, 11 Jul 2024 21:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720732586; cv=none; b=qlabfqmhBdLgjsdiKer/FfS7cG9klabtB6UX4yPiFEca3xZZvLOHu6jOmZPhk1Qm/n/JPlyv/JsuSztacMUCD/W6tuqZzKNpOUz8Fiu0JZme2xTiSwlDCsGNPwF7WPIFwqMznLqZGZGGBp4svHb4Fqoi+Z8vH8I6nXUz0t0vGnA=
+	t=1720732587; cv=none; b=up8dZs5DL1knXlsm7HGb3mNsVph2OXBv9BLCIQE7lz+qYPEN9laO9AlaFGIJq5Est/zfsDjjJ3oMjAr0/KJQFlh5agcZGi1qTIO+O1TPXBIoBETAmAkbg8wRZXr5mkPxUgbescwJr6y4VGfHH733OnNWE2GrV1mMmWfmRWlXvyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720732586; c=relaxed/simple;
-	bh=oNz9jbnau5US66OL2TkVYMflazhurOtygod0jl8rWz4=;
+	s=arc-20240116; t=1720732587; c=relaxed/simple;
+	bh=dKyWi8LcT1C1CFo4MuCPSYE2WNQ7OFauCzJpwZMvqqY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TjoB327NRCiUO8z6LkoB3hqbk1dOYsfVJGAuxl8Jl40NZALsdt5/37telECS8OnuMcQj5poOL0ht8nukpVFf69GP1X6az/dU4iZW6lxPMm6CrUfVIZKU/Wb/J7SWu450uGkbDoRemNTfKIgUKVPBbe8THfvmw7esyx4JzT3Gt4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GQ3erRy/; arc=none smtp.client-ip=209.85.208.176
+	 MIME-Version; b=KPNdJjzMuh/51hprqjOP3k5NsGjWlTZHTV3gJli3qUggrM/tyWQm3pyRXlUt/qimuMT3J0SlweoeNklxEAjr1cDQr43pfJpleKxcBupUPLxljpbiJth0VeVyCHFwXLwi51PZB/csV1ZjmY2v8pI5gwg/zwWf3XZWeV+TkbDC5IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b8OGIiJ5; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2eeb1ba0481so17161141fa.2;
-        Thu, 11 Jul 2024 14:16:24 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-58ef19aa6b3so867709a12.1;
+        Thu, 11 Jul 2024 14:16:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720732583; x=1721337383; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720732584; x=1721337384; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eCp4C86w9awpHIw8DaJsMnbo3g5VipSX+X5uHPVqBok=;
-        b=GQ3erRy/GF71EVkXkuVZalM3BvOR/JNzNJpyyjURiCIhFMcBlwf1yYtKxiM9KgPe4P
-         FpI6cH6QJI0gTpUs7g+m+L7dOJjL+j/llT0mjFPb2Mv97FlkRIk/AH1OJXBrbaPd/9zU
-         9DGQnr/wkbYhIwiMTpixS50psNly+HmOnoR5P1ykhe3Vfj0DSWLJ4iCxGtMMLDYWOaS2
-         ylG+p7EgeMaOvGbbn1LzVwq6+tecnfjxxgmXk4f4+1HRmtivFuc9a0g3FHj0/TmJUj6S
-         fcsZ92pYiYXqWrlbEqZhljv5LcPA9qEoHi57LnU9awz50m+RsgpljK6u18eeiv1yeb6d
-         U7Vg==
+        bh=CYcXNPOh0TR9ECTWQep62KZXJN1EG0+nQZbBk6Melzg=;
+        b=b8OGIiJ5cz2b8yXq/KE0HvLwJVAn5RTYAxF7/ZSyqci0T5Oy643EeEV//Z2ZqCSnIe
+         klj1uQS+OlOJeysunwjYoUMLT/AjIxVs4mWXr08AChVfSl5jXxRnIKpnxhxgqWJEiihd
+         b8zm3o8Yo0SDf+qoM6RP9zwNw763eGc9F3hgD3PBMgDAODX3QPu+A0aZXqf9uLUhxSC5
+         aKLPJkjOIYe9+A57T+ZJOhS7PGbTsanY5lwgZUYrFLE8GRuRiNLP+WhMBwJAhOFNPjp1
+         /lHeb6i5ylNicFqfVQJiU64+FZhwo5vmmJdft+lKvmOj020hhHxkY/xbkCpg+Vh4WoSN
+         6koQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720732583; x=1721337383;
+        d=1e100.net; s=20230601; t=1720732584; x=1721337384;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eCp4C86w9awpHIw8DaJsMnbo3g5VipSX+X5uHPVqBok=;
-        b=Ve2tgJ2vW1Bsl9mwx8bBSFFiOGFIuUwfg8t/Qof+hrcROQMJPOWVgPzw8ss0fW5SK3
-         6Gvw4cLt4y9B+pEP5FRWy/bEYpqrAneX/GvJoELepk7eUr4tsGBqkLZD67gkEA85dAmo
-         k6gMlYJ59ysjBolYjtx5tB9NFFYfsGuTseFZmfSt+9Wus0YjXhzf2n4cvUxn/lT57F8Y
-         tf3LS98Mdt3nczpyx30xmVc/Ujz5f6s7hYJUeJsjx/uQsIOlglTHwCRknsoYNbbU1zMx
-         jwu+1PQGqcr8Q49/d9ZqkmZJCUAGXnIW93Iy+nU4Ie6buDtVAfGZQMJ8gQxt0gRRZ8jK
-         7Q0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVcw5kJv+1huXZhdqHc+91rF+SQbtg9YA4SKUWG9IyXSPfvrSbzYXLg8RAR93Pxd4QZIxb7orUZZYqVWhIbF/Bsw85QlGE9TtoPU0uZlkcb0tGKd3g5jGCzeLqc4i8C2OCS3/2GcVvsQE9OvPYWCk44WSNYZMz2uR0FmIHRTg6sTZMGZg==
-X-Gm-Message-State: AOJu0YzBlKQforv08KU74ZwHc+K+3q3HAGd5kw5oomhl+bipI3JxCMVB
-	bT8FFlGVh0EREDR0YuMqfw0I89fEopyZ7t7BcNaLgeHwBN1GvtSk
-X-Google-Smtp-Source: AGHT+IEYZLAB94CBOmZJVnkxcftaT7/EGoAOq6CXg50riSEJYqiv8MglGKQVpKvOSm6lRLQ5iAFNLw==
-X-Received: by 2002:a05:651c:102f:b0:2ec:1a8b:c374 with SMTP id 38308e7fff4ca-2eeb3198692mr60717471fa.45.1720732582984;
-        Thu, 11 Jul 2024 14:16:22 -0700 (PDT)
+        bh=CYcXNPOh0TR9ECTWQep62KZXJN1EG0+nQZbBk6Melzg=;
+        b=KkNLBIlzCAfn8bE7Yq8chS3xoK5j68kG/6IM+JUW4VMDuzVqiIDCLINOCk8GRarK2i
+         KfL71/DGzEtumvegCSNlFnJVEki5ScqW14gx8p24A62yvsk6jh3VOEFJE+B/DviZoL/n
+         z6/7dDe5/HV37bxc2EbNmNlmKVOjYM8ZKGab/5UpHEIZ6GRyg6hdFioAy7sI98KOQ10g
+         UPNujPOvfOhwEmKqgj20xbiLbux19snAyea6c76XZgsummxoADijgJAbVu2cFX0qV67u
+         qltHAcSCXvtVd8RRePeX5qJ6ECZC4cKEjk7qMdsVsmrHS2TLpzeCH06Usool2k6cDE9z
+         Z4LA==
+X-Forwarded-Encrypted: i=1; AJvYcCWLiDBoXUK35qba/EYzTEPCypj+vf17BeUlT6OREwWKw4DMTNTtOvsKY35DByzMtj9Rm9NXXSvpP2tUTLdayMSdYvzIM46ttn4ZekhiXmY6Nl+cip+xNWKQPlAb9qf2QKifBlNsYrjQtHpv2kjqET4O8e6XWWnOywfKCg7v/dfy9qcrkQ==
+X-Gm-Message-State: AOJu0YytbQPSuRcGJD9z7trmNflxjEYMmGKMWgoY+FwvztUpawEyjZdm
+	XPnqFY6vDWOWsaUovE6rTAf06vqQZiBIMMHVtVo2poZQV3Brgsu6Uzyp8yNtwaA=
+X-Google-Smtp-Source: AGHT+IFWGpm4uzU78tmcS1v8Zu0tJZv9xaswEb3PNtUV/MczU98LOEwk36+ssRUHVZg3Oxm5a9/hxg==
+X-Received: by 2002:a05:6402:430b:b0:58c:3252:3ab8 with SMTP id 4fb4d7f45d1cf-594bcba83fcmr10193206a12.37.1720732584286;
+        Thu, 11 Jul 2024 14:16:24 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:3e02:47b2:c845:ae3a])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-594bd45a1b6sm3815737a12.60.2024.07.11.14.16.22
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-594bd45a1b6sm3815737a12.60.2024.07.11.14.16.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 14:16:22 -0700 (PDT)
+        Thu, 11 Jul 2024 14:16:23 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -85,9 +85,9 @@ Cc: vassilisamir@gmail.com,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 05/10] iio: pressure: bmp280: Add support for bmp280 soft reset
-Date: Thu, 11 Jul 2024 23:15:53 +0200
-Message-Id: <20240711211558.106327-6-vassilisamir@gmail.com>
+Subject: [PATCH v1 06/10] iio: pressure: bmp280: Remove config error check for IIR filter updates
+Date: Thu, 11 Jul 2024 23:15:54 +0200
+Message-Id: <20240711211558.106327-7-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240711211558.106327-1-vassilisamir@gmail.com>
 References: <20240711211558.106327-1-vassilisamir@gmail.com>
@@ -99,84 +99,74 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The BM(P/E)28x devices have an option for soft reset which is also
-recommended by the Bosch Sensortech BME2 Sensor API to be used before the
-initial configuration of the device.
+When there is a change in the configuration of the BMP3xx device, several
+steps take place. These steps include:
 
-Link: https://github.com/boschsensortec/BME280_SensorAPI/blob/bme280_v3.5.1/bme280.c#L429
+1) Update the OSR settings and check if there was an update
+2) Update the ODR settings and check if there was an update
+3) Update the IIR settings and check if there was an update
+4) Check if there was an update with the following procedure:
+	a) Set sensor to SLEEP mode and after to NORMAL mode to trigger
+	   a new measurement.
+	b) Wait the maximum amount possible depending on the OSR settings
+	c) Check the configuration error register if there was an error
+	   during the configuration of the sensor.
+
+This check is necessary, because there could be a case where the OSR is
+too high for the requested ODR so either the ODR needs to be slower or the
+OSR needs to be less. This is something that is checked internally by the
+sensor when it runs in NORMAL mode.
+
+In the BMP58x devices the previous steps are done internally by the sensor.
+
+The IIR filter settings do not depend on the OSR or ODR settings, and there
+is no need to run a check in case they change.
+
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/pressure/bmp280-core.c | 28 ++++++++++++++++++++++++++++
- drivers/iio/pressure/bmp280.h      |  3 +++
- 2 files changed, 31 insertions(+)
+ drivers/iio/pressure/bmp280-core.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 9c32266403bd..caee586b2268 100644
+index caee586b2268..9c99373d66ec 100644
 --- a/drivers/iio/pressure/bmp280-core.c
 +++ b/drivers/iio/pressure/bmp280-core.c
-@@ -958,6 +958,32 @@ static const unsigned long bme280_avail_scan_masks[] = {
- 	0
- };
+@@ -1548,14 +1548,12 @@ static int bmp380_chip_config(struct bmp280_data *data)
+ 	change = change || aux;
  
-+static int bmp280_preinit(struct bmp280_data *data)
-+{
-+	unsigned int reg;
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, BMP280_REG_RESET, BMP280_RST_SOFT_CMD);
-+	if (ret) {
-+		dev_err(data->dev, "Failed to reset device.\n");
-+		return ret;
-+	}
-+
-+	usleep_range(data->start_up_time, data->start_up_time + 500);
-+
-+	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
-+	if (ret) {
-+		dev_err(data->dev, "Failed to read status register.\n");
-+		return ret;
-+	}
-+	if (reg & BMP280_REG_STATUS_IM_UPDATE) {
-+		dev_err(data->dev, "Failed to copy NVM contents.\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int bmp280_chip_config(struct bmp280_data *data)
- {
- 	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
-@@ -1074,6 +1100,7 @@ const struct bmp280_chip_info bmp280_chip_info = {
- 	.read_temp = bmp280_read_temp,
- 	.read_press = bmp280_read_press,
- 	.read_calib = bmp280_read_calib,
-+	.preinit = bmp280_preinit,
+ 	/* Set filter data */
+-	ret = regmap_update_bits_check(data->regmap, BMP380_REG_CONFIG, BMP380_FILTER_MASK,
+-				       FIELD_PREP(BMP380_FILTER_MASK, data->iir_filter_coeff),
+-				       &aux);
++	ret = regmap_update_bits(data->regmap, BMP380_REG_CONFIG, BMP380_FILTER_MASK,
++				 FIELD_PREP(BMP380_FILTER_MASK, data->iir_filter_coeff));
+ 	if (ret) {
+ 		dev_err(data->dev, "failed to write config register\n");
+ 		return ret;
+ 	}
+-	change = change || aux;
  
- 	.trigger_handler = bmp280_trigger_handler,
- };
-@@ -1191,6 +1218,7 @@ const struct bmp280_chip_info bme280_chip_info = {
- 	.read_press = bmp280_read_press,
- 	.read_humid = bme280_read_humid,
- 	.read_calib = bme280_read_calib,
-+	.preinit = bmp280_preinit,
+ 	if (change) {
+ 		/*
+@@ -2144,15 +2142,13 @@ static int bmp580_chip_config(struct bmp280_data *data)
+ 	reg_val = FIELD_PREP(BMP580_DSP_IIR_PRESS_MASK, data->iir_filter_coeff) |
+ 		  FIELD_PREP(BMP580_DSP_IIR_TEMP_MASK, data->iir_filter_coeff);
  
- 	.trigger_handler = bme280_trigger_handler,
- };
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index 56c01f224728..02647454bd02 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -205,6 +205,9 @@
- #define BMP280_REG_CONFIG		0xF5
- #define BMP280_REG_CTRL_MEAS		0xF4
- #define BMP280_REG_STATUS		0xF3
-+#define BMP280_REG_STATUS_IM_UPDATE	BIT(0)
-+#define BMP280_REG_RESET		0xE0
-+#define BMP280_RST_SOFT_CMD		0xB6
+-	ret = regmap_update_bits_check(data->regmap, BMP580_REG_DSP_IIR,
+-				       BMP580_DSP_IIR_PRESS_MASK |
+-				       BMP580_DSP_IIR_TEMP_MASK,
+-				       reg_val, &aux);
++	ret = regmap_update_bits(data->regmap, BMP580_REG_DSP_IIR,
++				 BMP580_DSP_IIR_PRESS_MASK |
++				 BMP580_DSP_IIR_TEMP_MASK, reg_val);
+ 	if (ret) {
+ 		dev_err(data->dev, "failed to write config register\n");
+ 		return ret;
+ 	}
+-	change = change || aux;
  
- #define BMP280_REG_COMP_TEMP_START	0x88
- #define BMP280_COMP_TEMP_REG_COUNT	6
+ 	/* Restore sensor to normal operation mode */
+ 	ret = regmap_write_bits(data->regmap, BMP580_REG_ODR_CONFIG,
 -- 
 2.25.1
 

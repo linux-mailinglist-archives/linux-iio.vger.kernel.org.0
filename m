@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-7520-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7521-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B79092F0F1
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 23:18:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BEA92F0F3
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 23:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AEBDB2349E
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 21:18:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75B511C21B7F
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 21:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43E51A08B0;
-	Thu, 11 Jul 2024 21:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E271A2C10;
+	Thu, 11 Jul 2024 21:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GsgHAtYA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L+vA9+1t"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2931A0AF1;
-	Thu, 11 Jul 2024 21:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EE71A08C3;
+	Thu, 11 Jul 2024 21:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720732591; cv=none; b=XcANpEA1yIbeBberW0tptrYVl5rXfqOpVIbqoaq2bVtBtan2nQ+sscjcXAtHF1oP7+u6fuysBkJ0pVMC/FX4MeQIfxOcZRV9jdhtw6gR3IA9ue1yezHtGtATVWDBecBjSVh6WH+nKSoP/13S2JbxBE61tCPLIz8mHeRCeutUVOY=
+	t=1720732592; cv=none; b=QmvEGAFU/cCzOmtlb7BB+1NzPlgZxoRvjegP57Lhoaclt07rPrPWEQ52n1iU/5THyqM9vqPacXjGRwXj8ktTC24RfIvEL9SUx+g/xp6KB/abBOFB8bhbAc5NU99xHfDaJfzfLrlT3Exn2/nkZY+yiSU69JroX8j6R87JTFv6G6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720732591; c=relaxed/simple;
-	bh=mXlp8AXeYs1aDEecQQhE5xrrli/ravongaTp4YEvJjM=;
+	s=arc-20240116; t=1720732592; c=relaxed/simple;
+	bh=aSBhTkkoLHZFWl60nBtEjUz2JQQz1WXc3mxknELd6WE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZYbzggS0h7qmZxh54bdhO2Xl3AWOBdD4rx0QHpS8SN4kGK279Zq6615kvXOI4dJYtmOSiRvXw+6p1Pndoxq1N32Rhz/fl/u/IsolGH/clXbhy7RTdNq/U7cvffn+tjZbet0aNVvotMAneznngHb6plSh9v0YagTSsTj0Z36XvcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GsgHAtYA; arc=none smtp.client-ip=209.85.208.44
+	 MIME-Version; b=PPKz2J1l06z0cJwpta8H2P5cENs/1KF2mrSEjPU++7fC3r2QpcHb+jh9TNZ4pqpUOnpegh/BvGuRYCLAgjQ7D9qtiKIFonAcPBdBUZ6W/GcBbZiktPsDecZSe/Tg6deyywBMfNsygL17/n1aos+W5jf0GOXAR8tCBlTWVOP5WXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L+vA9+1t; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5854ac817afso1742481a12.2;
-        Thu, 11 Jul 2024 14:16:29 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-595856e2336so2235134a12.1;
+        Thu, 11 Jul 2024 14:16:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720732588; x=1721337388; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720732589; x=1721337389; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ERqlFA6Bq2+zv49jpttYmy1q1HQyui34ltOA6nDZRxM=;
-        b=GsgHAtYAkGwRCEL2hwQ2ZHnY+1yRM6r/wa4cM6SetuRfx9gg/4wrCQIHS7eJqDEEVW
-         9hXfc2nMQl9l/eej4tpSuFIE5BU740/FtdPQok4pxufZJZDxs0FF4iNph24R4a+xZXJk
-         vjYMtZdybujD7G/qDu4EMfYIDh74iJT+hCSR2x93p/7NPdddpHZUxn3V6l+Bq8al9gtE
-         VFPJ/fz2yZAiPo+Z+ot98R+yBJZ8cge52amJ+cYVwiRvPgCVEEX8br/t+DZTfNnvR8aN
-         NNEtMt6CHpo654Tc7JdpEKKOdGFqmN/qpuC1KAezFDgXUHWhzWhpi4yMDlhnPfcJBITX
-         qmLw==
+        bh=JCKKw6ZGeRpSiHrVmvFeUrR/FKl0FfFZJqKXYoh168A=;
+        b=L+vA9+1tHVSIBKtvjlFReVowz8Lggid7v/Rf/i0yJRwIvOcSCZriI57TwrbAZiBsyP
+         hPGESLuWuWduru0YnZxkhDdjoEIj3Sx/YvaYXWqFeeh45SQLDQFgvQXtdMPx1Wd2cFjL
+         TLuyu5eIUaC65q8MLLvo3uJoGDzuEO9ZSWnXL/guSJ5Fso45cfv/ttOc5hGQqqeEV9mQ
+         73sMti52LUVPAGFHC5TLDBO8x/Q9+SjyvFf2YbsJmI8j6ab7ucLKc6QZ3TNI9k+77/yM
+         SNKiJHtFVEC7Iglv2LKgikcj+9BjcU4KX7XJBXwclrH6FaGUhATIxSwIDI22wA3klNSW
+         bz2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720732588; x=1721337388;
+        d=1e100.net; s=20230601; t=1720732589; x=1721337389;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ERqlFA6Bq2+zv49jpttYmy1q1HQyui34ltOA6nDZRxM=;
-        b=GJ64IubndiEBxBJiWt+mhkIa2DA5Azikxxd9KKBqEw/E91ZzC/UFTwQLhVKCaHLl1D
-         a20aOT/JJWiFo9TrCJrKKl3qI7ycSD2d5Yxf4RInwDEmKqWqvFvT3dXCkf9z/3trSRcR
-         j4jkFiPI1/No/rIVa2gM7J2Muw/aRWg/hBmfocXjVoTFh+CxPF343zLMjQAdlnAqBJ+X
-         KVb/892TBWR5s59XxzRz0WZ4eM8xhOoe41YTAIdQP+Fm9qDUP6qGVaqcIwA9LzSYV4zk
-         88wOiXyQ1gFPuVcqJV3T45C3KmpYbXlw8Q5t6f8x6llmP0qsWIre4cPOH0wSXYwGTL5t
-         fu4g==
-X-Forwarded-Encrypted: i=1; AJvYcCWcG2RYI1uPnbdPX8jNvq0fuzlnxlBMpPHho5AHskBcFYrXgZwkS/uIxdo4jqwg6J1R+rMVnYcH0sO5ddJ65G0rhC+bpPUjd6AGC1qd6l1NxHtOVorQJxgjUAbf4aIimfUJm9ixZQEQzQX/N5YvJIaAWZUViv10jN5QzwMWVI3IXH0UPQ==
-X-Gm-Message-State: AOJu0YzyaWKHUT5+tJ8R2laK+yqebSEm5uoDIk911FFbq8725YIQNBFB
-	9X8+mWaXkPEsJk7+DIu1RoXjbkVfGUMVCXzswX0YDx5JD0WKNQo1
-X-Google-Smtp-Source: AGHT+IGm7EgVWvkJNX/R8I+9PeJdcZv20AS+90ljfrjvX7Rk42cZ++VCnMjDtswmCoZdhZb1/VaYDA==
-X-Received: by 2002:a50:ee93:0:b0:57c:fda3:b669 with SMTP id 4fb4d7f45d1cf-594bb180488mr5340564a12.17.1720732587637;
-        Thu, 11 Jul 2024 14:16:27 -0700 (PDT)
+        bh=JCKKw6ZGeRpSiHrVmvFeUrR/FKl0FfFZJqKXYoh168A=;
+        b=g6xPyEH+QvPsaflKLy+8m/ulsN1ZPBWGFhixKqwLIDU6hH0iS/Yjjjx5wK1t5rBVFU
+         Me5SnWD21NbQCRZcAPLJyJ33RHVtLsuk2h9xY5tyWlRXjDOOjR+/viFN4auQ2LRjbNmi
+         AcOIETsI03xiRvykKB/4oFdPB6bGQ0KrGCKjzSQ0nE+PloSXRHo+l+N9YqAx68YNPRyi
+         QbEeGRJ+EGw8OJQOE/Cbjm+2RzgxrCRNHq4c5x6QIT3U/9cRBgNhtg/rJu+FVXD6HFsA
+         wSXFNvc+uLG4qgH99rLZNPgxeS/UXyNVq4Nxq5dNEYWSmaaF6wwDZeBGvPRzfqPaeGQ+
+         awmA==
+X-Forwarded-Encrypted: i=1; AJvYcCUtIqwsuLO1rkoqXP2JfjfCF4myasHQEkEEdsK/edjK+hSaLi/X4qBy192PCs52F4b4daXoVKhdiWqIFVXAdR08Q8Trd5siKvefVlAD9JFt2XUKtugg+CtI427OwCMysOb8flM+HvPo5cn5YyO1u3F/ECv4DBIr8TFxAOZT6HrPbdHTog==
+X-Gm-Message-State: AOJu0YwDeARt3nFnRfjsHF9N1jwP2SpaDH3QXh/tCH3b5YNPM0Ihi6sN
+	Y1GBbW6l1J8Cuerhcxy4rsmQdkU7IlVe380maHa0TEUAv8K2qk4h
+X-Google-Smtp-Source: AGHT+IGE4NWKCAqde8ANroEgTkk0EAevT8quSYx4DopJTl9SwToGdvgXUADw+1bALN6TzndvFNmHhA==
+X-Received: by 2002:a05:6402:2107:b0:58c:36e:51bf with SMTP id 4fb4d7f45d1cf-59963bf43a4mr693987a12.3.1720732588654;
+        Thu, 11 Jul 2024 14:16:28 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:3e02:47b2:c845:ae3a])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-594bd45a1b6sm3815737a12.60.2024.07.11.14.16.26
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-594bd45a1b6sm3815737a12.60.2024.07.11.14.16.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 14:16:27 -0700 (PDT)
+        Thu, 11 Jul 2024 14:16:28 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -85,9 +85,9 @@ Cc: vassilisamir@gmail.com,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 09/10] iio: pressure: bmp280: Add data ready trigger support
-Date: Thu, 11 Jul 2024 23:15:57 +0200
-Message-Id: <20240711211558.106327-10-vassilisamir@gmail.com>
+Subject: [PATCH v1 10/10] iio: pressure bmp280: Move bmp085 interrupt to new configuration
+Date: Thu, 11 Jul 2024 23:15:58 +0200
+Message-Id: <20240711211558.106327-11-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240711211558.106327-1-vassilisamir@gmail.com>
 References: <20240711211558.106327-1-vassilisamir@gmail.com>
@@ -99,425 +99,182 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The BMP3xx and BMP5xx sensors have an interrupt pin which can be used as
-a trigger for when there are data ready in the sensor for pick up.
+This commit intends to add the old BMP085 sensor to the new IRQ interface
+of the sensor consistence. No functional changes intended.
 
-This use case is used along with NORMAL_MODE in the sensor, which allows
-the sensor to do consecutive measurements depending on the ODR rate value.
-
-The trigger pin can be configured to be open-drain or push-pull and either
-rising or falling edge.
-
-No support is added yet for interrupts for FIFO, WATERMARK and out of range
-values.
+The BMP085 sensor is equivalent with the BMP180 with the only difference of
+BMP085 having an extra interrupt pin to inform about an End of Conversion.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/pressure/bmp280-core.c   | 271 ++++++++++++++++++++++++++-
- drivers/iio/pressure/bmp280-regmap.c |   2 +-
- drivers/iio/pressure/bmp280.h        |  23 ++-
- 3 files changed, 290 insertions(+), 6 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 72 +++++++++++++++++++++++-------
+ drivers/iio/pressure/bmp280-i2c.c  |  4 +-
+ drivers/iio/pressure/bmp280-spi.c  |  4 +-
+ drivers/iio/pressure/bmp280.h      |  1 +
+ 4 files changed, 60 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index fc8d42880eb8..ee9b9676ad10 100644
+index ee9b9676ad10..f0443016a2f7 100644
 --- a/drivers/iio/pressure/bmp280-core.c
 +++ b/drivers/iio/pressure/bmp280-core.c
-@@ -37,12 +37,14 @@
- #include <linux/module.h>
- #include <linux/nvmem-provider.h>
- #include <linux/pm_runtime.h>
-+#include <linux/property.h>
- #include <linux/random.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- 
- #include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
-+#include <linux/iio/trigger.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
- 
-@@ -1770,6 +1772,129 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 	return 0;
+@@ -3073,13 +3073,19 @@ static irqreturn_t bmp085_eoc_irq(int irq, void *d)
+ 	return IRQ_HANDLED;
  }
  
-+static void bmp380_trigger_reenable(struct iio_trigger *trig)
-+{
-+	struct bmp280_data *data = iio_trigger_get_drvdata(trig);
-+	unsigned int tmp;
-+	int ret;
-+
-+	ret = regmap_read(data->regmap, BMP380_REG_INT_STATUS, &tmp);
-+	if (ret)
-+		dev_err(data->dev, "Failed to reset interrupt\n");
-+}
-+
-+static int bmp380_data_rdy_trigger_set_state(struct iio_trigger *trig,
-+					     bool state)
-+{
-+	struct bmp280_data *data = iio_trigger_get_drvdata(trig);
-+	int ret;
-+
-+	guard(mutex)(&data->lock);
-+
-+	ret = regmap_update_bits(data->regmap, BMP380_REG_INT_CTRL,
-+				 BMP380_INT_CTRL_DRDY_EN,
-+				 FIELD_PREP(BMP380_INT_CTRL_DRDY_EN,
-+					    state ? 1 : 0));
-+	if (ret) {
-+		dev_err(data->dev, "Could not enable/disable interrupt\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct iio_trigger_ops bmp380_trigger_ops = {
-+	.set_trigger_state = &bmp380_data_rdy_trigger_set_state,
-+	.reenable = &bmp380_trigger_reenable,
-+};
-+
-+static int bmp380_int_config(struct bmp280_data *data)
-+{
-+	int ret, int_cfg = FIELD_PREP(BMP380_INT_CTRL_OPEN_DRAIN,
-+				      data->trig_open_drain) |
-+			   FIELD_PREP(BMP380_INT_CTRL_LEVEL,
-+				      data->trig_active_high);
-+
-+	ret = regmap_update_bits(data->regmap, BMP380_REG_INT_CTRL,
-+				 BMP380_INT_CTRL_SETTINGS_MASK, int_cfg);
-+	if (ret) {
-+		dev_err(data->dev, "Could not set interrupt settings\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int bmp380_trigger_probe(struct iio_dev *indio_dev)
-+{
+-static int bmp085_fetch_eoc_irq(struct device *dev,
+-				const char *name,
+-				int irq,
+-				struct bmp280_data *data)
++static int bmp085_trigger_probe(struct iio_dev *indio_dev)
+ {
 +	struct bmp280_data *data = iio_priv(indio_dev);
++	struct device *dev = data->dev;
 +	struct fwnode_handle *fwnode;
-+	int ret, irq, irq_type;
-+	struct irq_data *desc;
+ 	unsigned long irq_trig;
+-	int ret;
++	int ret, irq;
 +
 +	fwnode = dev_fwnode(data->dev);
 +	if (!fwnode)
 +		return -ENODEV;
 +
-+	irq = fwnode_irq_get_byname(fwnode, "DRDY");
-+	if (!irq) {
-+		dev_err(data->dev, "No DRDY interrupt found\n");
-+		return -ENODEV;
-+	}
-+
-+	desc = irq_get_irq_data(irq);
-+	if (!desc)
-+		return -EINVAL;
-+
-+	irq_type = irqd_get_trigger_type(desc);
-+	switch (irq_type) {
-+	case IRQF_TRIGGER_RISING:
-+		data->trig_active_high = true;
-+		break;
-+	case IRQF_TRIGGER_FALLING:
-+		data->trig_active_high = false;
-+		break;
-+	default:
-+		dev_err(data->dev, "Invalid interrupt type specified\n");
-+		return -EINVAL;
-+	}
-+
-+	data->trig_open_drain = fwnode_property_read_bool(fwnode,
-+							  "int-open-drain");
-+
-+	ret = bmp380_int_config(data);
-+	if (ret)
-+		return ret;
-+
-+	data->trig = devm_iio_trigger_alloc(data->dev, "%s-dev%d",
-+					    indio_dev->name,
-+					    iio_device_id(indio_dev));
-+	if (!data->trig)
-+		return -ENOMEM;
-+
-+	data->trig->ops = &bmp380_trigger_ops;
-+	iio_trigger_set_drvdata(data->trig, data);
-+
-+	ret = devm_request_irq(data->dev, irq,
-+			       &iio_trigger_generic_data_rdy_poll,
-+			       IRQF_ONESHOT, indio_dev->name, data->trig);
-+	if (ret) {
-+		dev_err(data->dev, "request irq failed\n");
-+		return ret;
-+	}
-+
-+	ret = devm_iio_trigger_register(data->dev, data->trig);
-+	if (ret) {
-+		dev_err(data->dev, "iio trigger register failed\n");
-+		return ret;
-+	}
-+
-+	indio_dev->trig = iio_trigger_get(data->trig);
-+
-+	return 0;
-+}
-+
-+
- static irqreturn_t bmp380_trigger_handler(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
-@@ -1863,6 +1988,7 @@ const struct bmp280_chip_info bmp380_chip_info = {
- 	.wait_conv = bmp380_wait_conv,
- 	.preinit = bmp380_preinit,
++	irq = fwnode_irq_get(fwnode, 0);
  
-+	.trigger_probe = bmp380_trigger_probe,
- 	.trigger_handler = bmp380_trigger_handler,
- };
- EXPORT_SYMBOL_NS(bmp380_chip_info, IIO_BMP280);
-@@ -2400,6 +2526,135 @@ static int bmp580_chip_config(struct bmp280_data *data)
+ 	irq_trig = irqd_get_trigger_type(irq_get_irq_data(irq));
+ 	if (irq_trig != IRQF_TRIGGER_RISING) {
+@@ -3089,13 +3095,12 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
+ 
+ 	init_completion(&data->done);
+ 
+-	ret = devm_request_threaded_irq(dev,
+-			irq,
+-			bmp085_eoc_irq,
+-			NULL,
+-			irq_trig,
+-			name,
+-			data);
++	ret = devm_request_irq(dev,
++			       irq,
++			       bmp085_eoc_irq,
++			       irq_trig,
++			       indio_dev->name,
++			       data);
+ 	if (ret) {
+ 		/* Bail out without IRQ but keep the driver in place */
+ 		dev_err(dev, "unable to request DRDY IRQ\n");
+@@ -3106,6 +3111,44 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
  	return 0;
  }
  
-+static void bmp580_trigger_reenable(struct iio_trigger *trig)
-+{
-+	struct bmp280_data *data = iio_trigger_get_drvdata(trig);
-+	unsigned int tmp;
-+	int ret;
++const struct bmp280_chip_info bmp085_chip_info = {
++	.id_reg = bmp180_chip_info.id_reg,
++	.chip_id = bmp180_chip_info.chip_id,
++	.num_chip_id = bmp180_chip_info.num_chip_id,
++	.regmap_config = bmp180_chip_info.regmap_config,
++	.start_up_time = bmp180_chip_info.start_up_time,
++	.channels = bmp180_chip_info.channels,
++	.num_channels = bmp180_chip_info.num_channels,
++	.avail_scan_masks = bmp180_chip_info.avail_scan_masks,
 +
-+	ret = regmap_read(data->regmap, BMP580_REG_INT_STATUS, &tmp);
-+	if (ret)
-+		dev_err(data->dev, "Failed to reset interrupt\n");
-+}
++	.oversampling_temp_avail = bmp180_chip_info.oversampling_temp_avail,
++	.num_oversampling_temp_avail =
++		bmp180_chip_info.num_oversampling_temp_avail,
++	.oversampling_temp_default = bmp180_chip_info.oversampling_temp_default,
 +
-+static int bmp580_data_rdy_trigger_set_state(struct iio_trigger *trig,
-+					     bool state)
-+{
-+	struct bmp280_data *data = iio_trigger_get_drvdata(trig);
-+	int ret;
++	.oversampling_press_avail = bmp180_chip_info.oversampling_press_avail,
++	.num_oversampling_press_avail =
++		bmp180_chip_info.num_oversampling_press_avail,
++	.oversampling_press_default =
++		bmp180_chip_info.oversampling_press_default,
 +
-+	guard(mutex)(&data->lock);
++	.temp_coeffs = bmp180_chip_info.temp_coeffs,
++	.temp_coeffs_type = bmp180_chip_info.temp_coeffs_type,
++	.press_coeffs = bmp180_chip_info.press_coeffs,
++	.press_coeffs_type = bmp180_chip_info.press_coeffs_type,
 +
-+	ret = regmap_update_bits(data->regmap, BMP580_REG_INT_CONFIG,
-+				 BMP580_INT_CONFIG_INT_EN,
-+				 FIELD_PREP(BMP580_INT_CONFIG_INT_EN,
-+					    state ? 1 : 0));
-+	if (ret) {
-+		dev_err(data->dev, "Could not enable/disable interrupt\n");
-+		return ret;
-+	}
++	.chip_config = bmp180_chip_info.chip_config,
++	.read_temp = bmp180_chip_info.read_temp,
++	.read_press = bmp180_chip_info.read_press,
++	.read_calib = bmp180_chip_info.read_calib,
++	.set_mode = bmp180_chip_info.set_mode,
++	.wait_conv = bmp180_chip_info.wait_conv,
 +
-+	return 0;
-+}
-+
-+static const struct iio_trigger_ops bmp580_trigger_ops = {
-+	.set_trigger_state = &bmp580_data_rdy_trigger_set_state,
-+	.reenable = &bmp580_trigger_reenable,
++	.trigger_probe = bmp085_trigger_probe,
++	.trigger_handler = bmp180_trigger_handler,
 +};
++EXPORT_SYMBOL_NS(bmp085_chip_info, IIO_BMP280);
 +
-+static int bmp580_int_config(struct bmp280_data *data)
-+{
-+	int ret, int_cfg = FIELD_PREP(BMP580_INT_CONFIG_OPEN_DRAIN,
-+				      data->trig_open_drain) |
-+			   FIELD_PREP(BMP580_INT_CONFIG_LEVEL,
-+				      data->trig_active_high);
-+
-+	ret = regmap_update_bits(data->regmap, BMP580_REG_INT_CONFIG,
-+				 BMP580_INT_CONFIG_MASK, int_cfg);
-+	if (ret) {
-+		dev_err(data->dev, "Could not set interrupt settings\n");
-+		return ret;
-+	}
-+
-+	ret = regmap_set_bits(data->regmap, BMP580_REG_INT_SOURCE,
-+			      BMP580_INT_SOURCE_DRDY);
-+	if (ret) {
-+		dev_err(data->dev, "Could not set interrupt source\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int bmp580_trigger_probe(struct iio_dev *indio_dev)
-+{
-+	struct bmp280_data *data = iio_priv(indio_dev);
-+	struct fwnode_handle *fwnode;
-+	int ret, irq, irq_type;
-+	struct irq_data *desc;
-+
-+	fwnode = dev_fwnode(data->dev);
-+	if (!fwnode)
-+		return -ENODEV;
-+
-+	irq = fwnode_irq_get_byname(fwnode, "DRDY");
-+	if (!irq) {
-+		dev_err(data->dev, "No DRDY interrupt found\n");
-+		return -ENODEV;
-+	}
-+
-+	desc = irq_get_irq_data(irq);
-+	if (!desc)
-+		return -EINVAL;
-+
-+	irq_type = irqd_get_trigger_type(desc);
-+	switch (irq_type) {
-+	case IRQF_TRIGGER_RISING:
-+		data->trig_active_high = true;
-+		break;
-+	case IRQF_TRIGGER_FALLING:
-+		data->trig_active_high = false;
-+		break;
-+	default:
-+		dev_err(data->dev, "Invalid interrupt type specified\n");
-+		return -EINVAL;
-+	}
-+
-+	data->trig_open_drain = fwnode_property_read_bool(fwnode,
-+							  "int-open-drain");
-+
-+	ret = bmp580_int_config(data);
-+	if (ret)
-+		return ret;
-+
-+	data->trig = devm_iio_trigger_alloc(data->dev, "%s-dev%d",
-+					    indio_dev->name,
-+					    iio_device_id(indio_dev));
-+	if (!data->trig)
-+		return -ENOMEM;
-+
-+	data->trig->ops = &bmp580_trigger_ops;
-+	iio_trigger_set_drvdata(data->trig, data);
-+
-+	ret = devm_request_irq(data->dev, irq,
-+			       &iio_trigger_generic_data_rdy_poll,
-+			       IRQF_ONESHOT, indio_dev->name, data->trig);
-+	if (ret) {
-+		dev_err(data->dev, "request irq failed\n");
-+		return ret;
-+	}
-+
-+	ret = devm_iio_trigger_register(data->dev, data->trig);
-+	if (ret) {
-+		dev_err(data->dev, "iio trigger register failed\n");
-+		return ret;
-+	}
-+
-+	indio_dev->trig = iio_trigger_get(data->trig);
-+
-+	return 0;
-+}
-+
- static irqreturn_t bmp580_trigger_handler(int irq, void *p)
+ static int bmp280_buffer_preenable(struct iio_dev *indio_dev)
  {
- 	struct iio_poll_func *pf = p;
-@@ -2476,6 +2731,7 @@ const struct bmp280_chip_info bmp580_chip_info = {
- 	.wait_conv = bmp580_wait_conv,
- 	.preinit = bmp580_preinit,
- 
-+	.trigger_probe = bmp580_trigger_probe,
- 	.trigger_handler = bmp580_trigger_handler,
- };
- EXPORT_SYMBOL_NS(bmp580_chip_info, IIO_BMP280);
-@@ -3020,10 +3276,17 @@ int bmp280_common_probe(struct device *dev,
- 	 * however as it happens, the BMP085 shares the chip ID of BMP180
+ 	struct bmp280_data *data = iio_priv(indio_dev);
+@@ -3277,11 +3320,6 @@ int bmp280_common_probe(struct device *dev,
  	 * so we look for an IRQ if we have that.
  	 */
--	if (irq > 0 && (chip_id  == BMP180_CHIP_ID)) {
--		ret = bmp085_fetch_eoc_irq(dev, name, irq, data);
--		if (ret)
--			return ret;
-+	if (irq > 0) {
-+		if (chip_id == BMP180_CHIP_ID) {
-+			ret = bmp085_fetch_eoc_irq(dev, name, irq, data);
-+			if (ret)
-+				return ret;
-+		}
-+		if (data->chip_info->trigger_probe) {
-+			ret = data->chip_info->trigger_probe(indio_dev);
-+			if (ret)
-+				return ret;
-+		}
- 	}
+ 	if (irq > 0) {
+-		if (chip_id == BMP180_CHIP_ID) {
+-			ret = bmp085_fetch_eoc_irq(dev, name, irq, data);
+-			if (ret)
+-				return ret;
+-		}
+ 		if (data->chip_info->trigger_probe) {
+ 			ret = data->chip_info->trigger_probe(indio_dev);
+ 			if (ret)
+diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp280-i2c.c
+index 5c3a63b4327c..2f7b25984c7b 100644
+--- a/drivers/iio/pressure/bmp280-i2c.c
++++ b/drivers/iio/pressure/bmp280-i2c.c
+@@ -27,7 +27,7 @@ static int bmp280_i2c_probe(struct i2c_client *client)
+ }
  
- 	ret = data->chip_info->set_mode(data, BMP280_SLEEP);
-diff --git a/drivers/iio/pressure/bmp280-regmap.c b/drivers/iio/pressure/bmp280-regmap.c
-index d27d68edd906..cccdf8fc6c09 100644
---- a/drivers/iio/pressure/bmp280-regmap.c
-+++ b/drivers/iio/pressure/bmp280-regmap.c
-@@ -109,7 +109,7 @@ static bool bmp380_is_writeable_reg(struct device *dev, unsigned int reg)
- 	case BMP380_REG_FIFO_WATERMARK_LSB:
- 	case BMP380_REG_FIFO_WATERMARK_MSB:
- 	case BMP380_REG_POWER_CONTROL:
--	case BMP380_REG_INT_CONTROL:
-+	case BMP380_REG_INT_CTRL:
- 	case BMP380_REG_IF_CONFIG:
- 	case BMP380_REG_ODR:
- 	case BMP380_REG_OSR:
+ static const struct of_device_id bmp280_of_i2c_match[] = {
+-	{ .compatible = "bosch,bmp085", .data = &bmp180_chip_info },
++	{ .compatible = "bosch,bmp085", .data = &bmp085_chip_info },
+ 	{ .compatible = "bosch,bmp180", .data = &bmp180_chip_info },
+ 	{ .compatible = "bosch,bmp280", .data = &bmp280_chip_info },
+ 	{ .compatible = "bosch,bme280", .data = &bme280_chip_info },
+@@ -38,7 +38,7 @@ static const struct of_device_id bmp280_of_i2c_match[] = {
+ MODULE_DEVICE_TABLE(of, bmp280_of_i2c_match);
+ 
+ static const struct i2c_device_id bmp280_i2c_id[] = {
+-	{"bmp085", (kernel_ulong_t)&bmp180_chip_info },
++	{"bmp085", (kernel_ulong_t)&bmp085_chip_info },
+ 	{"bmp180", (kernel_ulong_t)&bmp180_chip_info },
+ 	{"bmp280", (kernel_ulong_t)&bmp280_chip_info },
+ 	{"bme280", (kernel_ulong_t)&bme280_chip_info },
+diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+index d18549d9bb64..49aa8c2cd85b 100644
+--- a/drivers/iio/pressure/bmp280-spi.c
++++ b/drivers/iio/pressure/bmp280-spi.c
+@@ -114,7 +114,7 @@ static int bmp280_spi_probe(struct spi_device *spi)
+ }
+ 
+ static const struct of_device_id bmp280_of_spi_match[] = {
+-	{ .compatible = "bosch,bmp085", .data = &bmp180_chip_info },
++	{ .compatible = "bosch,bmp085", .data = &bmp085_chip_info },
+ 	{ .compatible = "bosch,bmp180", .data = &bmp180_chip_info },
+ 	{ .compatible = "bosch,bmp181", .data = &bmp180_chip_info },
+ 	{ .compatible = "bosch,bmp280", .data = &bmp280_chip_info },
+@@ -126,7 +126,7 @@ static const struct of_device_id bmp280_of_spi_match[] = {
+ MODULE_DEVICE_TABLE(of, bmp280_of_spi_match);
+ 
+ static const struct spi_device_id bmp280_spi_id[] = {
+-	{ "bmp085", (kernel_ulong_t)&bmp180_chip_info },
++	{ "bmp085", (kernel_ulong_t)&bmp085_chip_info },
+ 	{ "bmp180", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp181", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp280", (kernel_ulong_t)&bmp280_chip_info },
 diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index 93c006c33552..73d0d25ae0f4 100644
+index 73d0d25ae0f4..1c1e3001efc9 100644
 --- a/drivers/iio/pressure/bmp280.h
 +++ b/drivers/iio/pressure/bmp280.h
-@@ -55,8 +55,17 @@
- #define BMP580_CMD_NVM_WRITE_SEQ_1	0xA0
- #define BMP580_CMD_SOFT_RESET		0xB6
- 
-+#define BMP580_INT_STATUS_DRDY_MASK	BIT(0)
- #define BMP580_INT_STATUS_POR_MASK	BIT(4)
- 
-+#define BMP580_INT_SOURCE_DRDY		BIT(0)
-+
-+#define BMP580_INT_CONFIG_MASK		GENMASK(3, 0)
-+#define BMP580_INT_CONFIG_LATCH		BIT(0)
-+#define BMP580_INT_CONFIG_LEVEL		BIT(1)
-+#define BMP580_INT_CONFIG_OPEN_DRAIN	BIT(2)
-+#define BMP580_INT_CONFIG_INT_EN	BIT(3)
-+
- #define BMP580_STATUS_CORE_RDY_MASK	BIT(0)
- #define BMP580_STATUS_NVM_RDY_MASK	BIT(1)
- #define BMP580_STATUS_NVM_ERR_MASK	BIT(2)
-@@ -117,7 +126,7 @@
- #define BMP380_REG_OSR			0x1C
- #define BMP380_REG_POWER_CONTROL	0x1B
- #define BMP380_REG_IF_CONFIG		0x1A
--#define BMP380_REG_INT_CONTROL		0x19
-+#define BMP380_REG_INT_CTRL		0x19
- #define BMP380_REG_INT_STATUS		0x11
- #define BMP380_REG_EVENT		0x10
- #define BMP380_REG_STATUS		0x03
-@@ -175,6 +184,14 @@
- #define BMP380_TEMP_MEAS_OFFSET		163
- #define BMP380_PRESS_MEAS_OFFSET	392
- 
-+#define BMP380_INT_STATUS_DRDY		BIT(3)
-+
-+#define BMP380_INT_CTRL_SETTINGS_MASK	GENMASK(2, 0)
-+#define BMP380_INT_CTRL_OPEN_DRAIN	BIT(0)
-+#define BMP380_INT_CTRL_LEVEL		BIT(1)
-+#define BMP380_INT_CTRL_LATCH		BIT(2)
-+#define BMP380_INT_CTRL_DRDY_EN		BIT(6)
-+
- #define BMP380_MIN_TEMP			-4000
- #define BMP380_MAX_TEMP			8500
- #define BMP380_MIN_PRES			3000000
-@@ -399,6 +416,9 @@ struct bmp280_data {
- 	struct regmap *regmap;
- 	struct completion done;
- 	bool use_eoc;
-+	bool trig_open_drain;
-+	bool trig_active_high;
-+	struct iio_trigger *trig;
- 	const struct bmp280_chip_info *chip_info;
- 	union {
- 		struct bmp180_calib bmp180;
-@@ -497,6 +517,7 @@ struct bmp280_chip_info {
- 	int (*set_mode)(struct bmp280_data *data, u8 mode);
- 	int (*wait_conv)(struct bmp280_data *data);
- 
-+	int (*trigger_probe)(struct iio_dev *indio_dev);
- 	irqreturn_t (*trigger_handler)(int irq, void *p);
+@@ -522,6 +522,7 @@ struct bmp280_chip_info {
  };
  
+ /* Chip infos for each variant */
++extern const struct bmp280_chip_info bmp085_chip_info;
+ extern const struct bmp280_chip_info bmp180_chip_info;
+ extern const struct bmp280_chip_info bmp280_chip_info;
+ extern const struct bmp280_chip_info bme280_chip_info;
 -- 
 2.25.1
 

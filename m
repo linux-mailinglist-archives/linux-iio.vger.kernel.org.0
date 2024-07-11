@@ -1,71 +1,71 @@
-Return-Path: <linux-iio+bounces-7498-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7500-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3538392E755
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 13:44:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B79392E75B
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 13:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE1B0281153
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 11:44:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E88181F21F68
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 11:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E7215ADB8;
-	Thu, 11 Jul 2024 11:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB2515FCE5;
+	Thu, 11 Jul 2024 11:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="XwI6pj06"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="PYhhOb0Q"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BC21591E2;
-	Thu, 11 Jul 2024 11:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CC115F404;
+	Thu, 11 Jul 2024 11:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720698207; cv=none; b=Sxm9YdWy8N7IvtyJq78a4kbOio70Bnx4+N0nRCncHCyz3MpRuF76p3eKIC6nL3mfb21BFORPHRLOeJNvLItBgq0rni9Yx3IPAzzGunlfAO3SI/9usjaxQ3guxy1xJ1PVjLKNlzlo1sCSdiT1xAYgBIY0xD1YRIm2il1JHSBMfBQ=
+	t=1720698215; cv=none; b=p79sINqGK+m8DkTffBnxBIIm7WwoHI+AaQba/xohEPiPdDgdX+s+dlHE1fPTAxXdz68VKIwjrfKTicxd76/4GsJCnJ6COnmAY6VGTbQX324Vqbgjtdg/ZWVo1YJmjhj9Z7XjsbsJlxQNl0hkYVbTtE7o/Twz+lVkKPriXm5V2c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720698207; c=relaxed/simple;
-	bh=J6ETjuUPlcdEmgCHpLOodXcl4zZTiPQwAz2z9xqxgic=;
+	s=arc-20240116; t=1720698215; c=relaxed/simple;
+	bh=E9C6CXhaWa0/Pvzd3uAOcmqt/1RpAso/yWt7fQVSMGM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sg2RNGMiwZjrXz7OYid9imv/lcC2o0YJJfVP7oKY1L9JRkC8p/coNiPRGawA8HlmkY9btqwg4Q0FrxDJweDcuJahhcG5H1bPagx0bsd9x0jBGusXIoOB8A8vO9STrOIO4CjOaSpSw3jpylu2yMn+STFXjI6Euiak/7MB3Iy/khg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=XwI6pj06; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=o6IVTsnn0mAFwG3HyGKXfdSO202eRc84pSLYJulUabhBUsSESn+9pdbHf7/hv1CEDD3qDN1sIgPyD3RivHVhPickjriMwctFRb1N78NRjfS7lBZ8Obj38kCUYss2e1L517GRAVPuvhoH4aEw0OmvTcSangjaiR01Fa3YmMg0xfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=PYhhOb0Q; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46B8FgR7029765;
-	Thu, 11 Jul 2024 07:43:10 -0400
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46B8Etuw029787;
+	Thu, 11 Jul 2024 07:43:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=4Ra/3
-	Py1UOQGZySGnp99NxDXhywcyehYoVTxR51bCUM=; b=XwI6pj0632B5dTqtWPtZk
-	TFAUcyMzYB69G5DdnPP/soCNZWRZV54E1W9VcNAn7kXqjji2O8Q4qBZX4F5i6Tg+
-	ktUdMMQ1bPCb7a8i22FQ2lR9Y2+Hx0MRfywAQa6SllfJwBKbskwlxErXUEBvG+pg
-	nZ1+jBVlV/Ytdpg6Zzb/e/fDkoO81K99m3KubchVLv5FNVeyXNUZob6sL5nJMC7b
-	wnfd9cygviBwsB7agki+k8ocA+ifSl0n7lTgdsCsiO4hDTMg6oLKDk3rtLHxW8bn
-	Id6KeKJyRpFY6y/g4KUcZJeaQVHLIPsFTe9+H+7n9b++lRy5GbPyT0RLf6KgX9C8
-	w==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 408fy4cnp8-1
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=oxDoC
+	UMQ23Ljwb7MN36FP+bX2uW0velm6L+jmNtsi2A=; b=PYhhOb0QuJIYdzD9nIQAS
+	AidTcRoPOSNNfYkL8gfJ5qcdCjkthKeX4LwUSo7zRxw4h567tp/OBN+v7GSWDAwI
+	YOqSSNo3K0biNhfAMN6SPfpsngEfzPeTgxo/MXvas6hXtnMCLimB6SZON5a+X815
+	R8r5qNWBwKB+qP5cJ2o+SuErFNmimbwk2hR56UUkBk+IIi+Y3V20GGnbvqpqw9Ot
+	272G9P9AFV/Vpl7CMQtP27XAWraV9HaasstzAMPkFw2Mr9ZPS/5coYspE22OvP0D
+	anmywxj3DoSVch6TG7iDQlZsRm6RF3k3YOvlLrXyo4PEuhlXI2C8M9rq7sGT5/Ww
+	Q==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 408fy4cnpg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jul 2024 07:43:10 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 46BBh8p4008056
+	Thu, 11 Jul 2024 07:43:16 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 46BBhF3O022864
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 11 Jul 2024 07:43:08 -0400
+	Thu, 11 Jul 2024 07:43:15 -0400
 Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 11 Jul 2024 07:43:08 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ 15.2.986.14; Thu, 11 Jul 2024 07:43:14 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
  ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 11 Jul 2024 07:43:07 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 11 Jul 2024 07:43:07 -0400
+ 15.2.986.14; Thu, 11 Jul 2024 07:43:14 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 11 Jul 2024 07:43:14 -0400
 Received: from kim-VirtualBox.ad.analog.com (KPALLER2-L03.ad.analog.com [10.117.220.23])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 46BBgTQe013318;
-	Thu, 11 Jul 2024 07:42:58 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 46BBgTQf013318;
+	Thu, 11 Jul 2024 07:43:05 -0400
 From: Kim Seer Paller <kimseer.paller@analog.com>
 To: <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         <devicetree@vger.kernel.org>
@@ -85,11 +85,11 @@ CC: Jonathan Cameron <jic23@kernel.org>,
         =?UTF-8?q?Nuno=20S=C3=A1?=
 	<noname.nuno@gmail.com>,
         Kim Seer Paller <kimseer.paller@analog.com>,
-        "Conor
- Dooley" <conor.dooley@microchip.com>
-Subject: [PATCH v6 5/6] dt-bindings: iio: dac: Add adi,ltc2672.yaml
-Date: Thu, 11 Jul 2024 19:42:20 +0800
-Message-ID: <20240711114221.62386-6-kimseer.paller@analog.com>
+        Nuno Sa
+	<nuno.sa@analog.com>
+Subject: [PATCH v6 6/6] iio: dac: ltc2664: Add driver for LTC2664 and LTC2672
+Date: Thu, 11 Jul 2024 19:42:21 +0800
+Message-ID: <20240711114221.62386-7-kimseer.paller@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240711114221.62386-1-kimseer.paller@analog.com>
 References: <20240711114221.62386-1-kimseer.paller@analog.com>
@@ -102,207 +102,819 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: YoLCvXAdepIZjpiAd1v4N6Mu6b0QfU-c
-X-Proofpoint-ORIG-GUID: YoLCvXAdepIZjpiAd1v4N6Mu6b0QfU-c
+X-Proofpoint-GUID: XsI2dAJe5mgAeErO-Ys83Q7Excf-FdUB
+X-Proofpoint-ORIG-GUID: XsI2dAJe5mgAeErO-Ys83Q7Excf-FdUB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-11_06,2024-07-11_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
  suspectscore=0 adultscore=0 mlxscore=0 phishscore=0 mlxlogscore=999
- clxscore=1011 impostorscore=0 priorityscore=1501 lowpriorityscore=0
+ clxscore=1015 impostorscore=0 priorityscore=1501 lowpriorityscore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2406140001 definitions=main-2407110083
 
-Add documentation for ltc2672.
+LTC2664 4 channel, 12-/16-Bit Voltage Output SoftSpan DAC
+LTC2672 5 channel, 12-/16-Bit Current Output Softspan DAC
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 ---
- .../bindings/iio/dac/adi,ltc2672.yaml         | 160 ++++++++++++++++++
- MAINTAINERS                                   |   1 +
- 2 files changed, 161 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
+ MAINTAINERS               |   1 +
+ drivers/iio/dac/Kconfig   |  11 +
+ drivers/iio/dac/Makefile  |   1 +
+ drivers/iio/dac/ltc2664.c | 735 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 748 insertions(+)
+ create mode 100644 drivers/iio/dac/ltc2664.c
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
-new file mode 100644
-index 000000000000..4c78e46c58d8
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
-@@ -0,0 +1,160 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/dac/adi,ltc2672.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices LTC2672 DAC
-+
-+maintainers:
-+  - Michael Hennerich <michael.hennerich@analog.com>
-+  - Kim Seer Paller <kimseer.paller@analog.com>
-+
-+description: |
-+  Analog Devices LTC2672 5 channel, 12-/16-Bit, 300mA DAC
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2672.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ltc2672
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 50000000
-+
-+  vcc-supply:
-+    description: Analog Supply Voltage Input.
-+
-+  v-neg-supply:
-+    description: Negative Supply Voltage Input.
-+
-+  vdd0-supply:
-+    description: Positive Supply Voltage Input for DAC OUT0.
-+
-+  vdd1-supply:
-+    description: Positive Supply Voltage Input for DAC OUT1.
-+
-+  vdd2-supply:
-+    description: Positive Supply Voltage Input for DAC OUT2.
-+
-+  vdd3-supply:
-+    description: Positive Supply Voltage Input for DAC OUT3.
-+
-+  vdd4-supply:
-+    description: Positive Supply Voltage Input for DAC OUT4.
-+
-+  iovcc-supply:
-+    description: Digital Input/Output Supply Voltage.
-+
-+  ref-supply:
-+    description:
-+      Reference Input/Output. The voltage at the REF pin sets the full-scale
-+      range of all channels. If not provided the internal reference is used and
-+      also provided on the VREF pin.
-+
-+  reset-gpios:
-+    description:
-+      Active Low Asynchronous Clear Input. A logic low at this level triggered
-+      input clears the device to the default reset code and output range, which
-+      is zero-scale with the outputs off. The control registers are cleared to
-+      zero.
-+    maxItems: 1
-+
-+  adi,rfsadj-ohms:
-+    description:
-+      If FSADJ is tied to VCC, an internal RFSADJ (20 kΩ) is selected, which
-+      results in nominal output ranges. When an external resistor of 19 kΩ to
-+      41 kΩ can be used instead by connecting the resistor between FSADJ and GND
-+      it controls the scaling of the ranges, and the internal resistor is
-+      automatically disconnected.
-+    minimum: 19000
-+    maximum: 41000
-+    default: 20000
-+
-+  io-channels:
-+    description:
-+      ADC channel to monitor voltages and currents at the MUX pin.
-+    maxItems: 1
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+patternProperties:
-+  "^channel@[0-4]$":
-+    $ref: dac.yaml
-+    type: object
-+    additionalProperties: false
-+
-+    properties:
-+      reg:
-+        description: The channel number representing the DAC output channel.
-+        maximum: 4
-+
-+      adi,toggle-mode:
-+        description:
-+          Set the channel as a toggle enabled channel. Toggle operation enables
-+          fast switching of a DAC output between two different DAC codes without
-+          any SPI transaction.
-+        type: boolean
-+
-+      output-range-microamp:
-+        items:
-+          - const: 0
-+          - enum: [3125000, 6250000, 12500000, 25000000, 50000000, 100000000,
-+                   200000000, 300000000]
-+
-+    required:
-+      - reg
-+      - output-range-microamp
-+
-+required:
-+  - compatible
-+  - reg
-+  - spi-max-frequency
-+  - vcc-supply
-+  - iovcc-supply
-+  - v-neg-supply
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        dac@0 {
-+            compatible = "adi,ltc2672";
-+            reg = <0>;
-+            spi-max-frequency = <10000000>;
-+
-+            vcc-supply = <&vcc>;
-+            iovcc-supply = <&vcc>;
-+            ref-supply = <&vref>;
-+            v-neg-supply = <&vneg>;
-+
-+            io-channels = <&adc 0>;
-+
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            channel@0 {
-+                    reg = <0>;
-+                    adi,toggle-mode;
-+                    output-range-microamp = <0 3125000>;
-+            };
-+
-+            channel@1 {
-+                    reg = <1>;
-+                    output-range-microamp = <0 6250000>;
-+            };
-+        };
-+    };
-+...
 diff --git a/MAINTAINERS b/MAINTAINERS
-index c25863321328..d54b56aca1b2 100644
+index d54b56aca1b2..cb67bf03d6b0 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -13087,6 +13087,7 @@ L:	linux-iio@vger.kernel.org
- S:	Supported
+@@ -13088,6 +13088,7 @@ S:	Supported
  W:	https://ez.analog.com/linux-software-drivers
  F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
-+F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
+ F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
++F:	drivers/iio/dac/ltc2664.c
  
  LTC2688 IIO DAC DRIVER
  M:	Nuno Sá <nuno.sa@analog.com>
+diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+index a2596c2d3de3..1cfd7e2a622f 100644
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -371,6 +371,17 @@ config LTC2632
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called ltc2632.
+ 
++config LTC2664
++	tristate "Analog Devices LTC2664 and LTC2672 DAC SPI driver"
++	depends on SPI
++	select REGMAP
++	help
++	  Say yes here to build support for Analog Devices
++	  LTC2664 and LTC2672 converters (DAC).
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called ltc2664.
++
+ config M62332
+ 	tristate "Mitsubishi M62332 DAC driver"
+ 	depends on I2C
+diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
+index 8432a81a19dc..2cf148f16306 100644
+--- a/drivers/iio/dac/Makefile
++++ b/drivers/iio/dac/Makefile
+@@ -37,6 +37,7 @@ obj-$(CONFIG_DS4424) += ds4424.o
+ obj-$(CONFIG_LPC18XX_DAC) += lpc18xx_dac.o
+ obj-$(CONFIG_LTC1660) += ltc1660.o
+ obj-$(CONFIG_LTC2632) += ltc2632.o
++obj-$(CONFIG_LTC2664) += ltc2664.o
+ obj-$(CONFIG_LTC2688) += ltc2688.o
+ obj-$(CONFIG_M62332) += m62332.o
+ obj-$(CONFIG_MAX517) += max517.o
+diff --git a/drivers/iio/dac/ltc2664.c b/drivers/iio/dac/ltc2664.c
+new file mode 100644
+index 000000000000..666ecdeb5f96
+--- /dev/null
++++ b/drivers/iio/dac/ltc2664.c
+@@ -0,0 +1,735 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * LTC2664 4 channel, 12-/16-Bit Voltage Output SoftSpan DAC driver
++ * LTC2672 5 channel, 12-/16-Bit Current Output Softspan DAC driver
++ *
++ * Copyright 2024 Analog Devices Inc.
++ */
++
++#include <linux/bitfield.h>
++#include <linux/cleanup.h>
++#include <linux/device.h>
++#include <linux/gpio/consumer.h>
++#include <linux/iio/iio.h>
++#include <linux/kernel.h>
++#include <linux/math64.h>
++#include <linux/module.h>
++#include <linux/mod_devicetable.h>
++#include <linux/mutex.h>
++#include <linux/property.h>
++#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++
++#define LTC2664_CMD_WRITE_N(n)		(0x00 + (n))
++#define LTC2664_CMD_UPDATE_N(n)		(0x10 + (n))
++#define LTC2664_CMD_WRITE_N_UPDATE_ALL	0x20
++#define LTC2664_CMD_WRITE_N_UPDATE_N(n)	(0x30 + (n))
++#define LTC2664_CMD_POWER_DOWN_N(n)	(0x40 + (n))
++#define LTC2664_CMD_POWER_DOWN_ALL	0x50
++#define LTC2664_CMD_SPAN_N(n)		(0x60 + (n))
++#define LTC2664_CMD_CONFIG		0x70
++#define LTC2664_CMD_MUX			0xB0
++#define LTC2664_CMD_TOGGLE_SEL		0xC0
++#define LTC2664_CMD_GLOBAL_TOGGLE	0xD0
++#define LTC2664_CMD_NO_OPERATION	0xF0
++#define LTC2664_REF_DISABLE		0x0001
++#define LTC2664_MSPAN_SOFTSPAN		7
++
++#define LTC2672_MAX_CHANNEL		5
++#define LTC2672_MAX_SPAN		7
++#define LTC2672_SCALE_MULTIPLIER(n)	(50 * BIT(n))
++
++enum {
++	LTC2664_SPAN_RANGE_0V_5V,
++	LTC2664_SPAN_RANGE_0V_10V,
++	LTC2664_SPAN_RANGE_M5V_5V,
++	LTC2664_SPAN_RANGE_M10V_10V,
++	LTC2664_SPAN_RANGE_M2V5_2V5,
++};
++
++enum {
++	LTC2664_INPUT_A,
++	LTC2664_INPUT_B,
++	LTC2664_INPUT_B_AVAIL,
++	LTC2664_POWERDOWN,
++	LTC2664_POWERDOWN_MODE,
++	LTC2664_TOGGLE_EN,
++	LTC2664_GLOBAL_TOGGLE,
++};
++
++static const u16 ltc2664_mspan_lut[8][2] = {
++	{ LTC2664_SPAN_RANGE_M10V_10V, 32768 }, /* MPS2=0, MPS1=0, MSP0=0 (0)*/
++	{ LTC2664_SPAN_RANGE_M5V_5V, 32768 }, /* MPS2=0, MPS1=0, MSP0=1 (1)*/
++	{ LTC2664_SPAN_RANGE_M2V5_2V5, 32768 }, /* MPS2=0, MPS1=1, MSP0=0 (2)*/
++	{ LTC2664_SPAN_RANGE_0V_10V, 0 }, /* MPS2=0, MPS1=1, MSP0=1 (3)*/
++	{ LTC2664_SPAN_RANGE_0V_10V, 32768 }, /* MPS2=1, MPS1=0, MSP0=0 (4)*/
++	{ LTC2664_SPAN_RANGE_0V_5V, 0 }, /* MPS2=1, MPS1=0, MSP0=1 (5)*/
++	{ LTC2664_SPAN_RANGE_0V_5V, 32768 }, /* MPS2=1, MPS1=1, MSP0=0 (6)*/
++	{ LTC2664_SPAN_RANGE_0V_5V, 0 } /* MPS2=1, MPS1=1, MSP0=1 (7)*/
++};
++
++struct ltc2664_state;
++
++struct ltc2664_chip_info {
++	const char *name;
++	int (*scale_get)(const struct ltc2664_state *st, int c);
++	int (*offset_get)(const struct ltc2664_state *st, int c);
++	int measurement_type;
++	unsigned int num_channels;
++	const int (*span_helper)[2];
++	unsigned int num_span;
++	unsigned int internal_vref_mv;
++	bool manual_span_support;
++	bool rfsadj_support;
++};
++
++struct ltc2664_chan {
++	/* indicates if the channel should be toggled */
++	bool toggle_chan;
++	/* indicates if the channel is in powered down state */
++	bool powerdown;
++	/* span code of the channel */
++	u8 span;
++	/* raw data of the current state of the chip registers (A/B) */
++	u16 raw[2];
++};
++
++struct ltc2664_state {
++	struct spi_device *spi;
++	struct regmap *regmap;
++	struct ltc2664_chan channels[LTC2672_MAX_CHANNEL];
++	/* lock to protect against multiple access to the device and shared data */
++	struct mutex lock;
++	const struct ltc2664_chip_info *chip_info;
++	struct iio_chan_spec *iio_channels;
++	int vref_mv;
++	u32 rfsadj_ohms;
++	u32 toggle_sel;
++	bool global_toggle;
++};
++
++static const int ltc2664_span_helper[][2] = {
++	{ 0, 5000 },
++	{ 0, 10000 },
++	{ -5000, 5000 },
++	{ -10000, 10000 },
++	{ -2500, 2500 },
++};
++
++static const int ltc2672_span_helper[][2] = {
++	{ 0, 0 },
++	{ 0, 3125 },
++	{ 0, 6250 },
++	{ 0, 12500 },
++	{ 0, 25000 },
++	{ 0, 50000 },
++	{ 0, 100000 },
++	{ 0, 200000 },
++	{ 0, 300000 },
++};
++
++static int ltc2664_scale_get(const struct ltc2664_state *st, int c)
++{
++	const struct ltc2664_chan *chan = &st->channels[c];
++	const int (*span_helper)[2] = st->chip_info->span_helper;
++	int span, fs;
++
++	span = chan->span;
++	if (span < 0)
++		return span;
++
++	fs = span_helper[span][1] - span_helper[span][0];
++
++	return fs * st->vref_mv / 2500;
++}
++
++static int ltc2672_scale_get(const struct ltc2664_state *st, int c)
++{
++	const struct ltc2664_chan *chan = &st->channels[c];
++	int span, fs;
++
++	span = chan->span - 1;
++	if (span < 0)
++		return span;
++
++	fs = 1000 * st->vref_mv;
++
++	if (span == LTC2672_MAX_SPAN)
++		return mul_u64_u32_div(4800, fs, st->rfsadj_ohms);
++
++	return mul_u64_u32_div(LTC2672_SCALE_MULTIPLIER(span), fs, st->rfsadj_ohms);
++}
++
++static int ltc2664_offset_get(const struct ltc2664_state *st, int c)
++{
++	const struct ltc2664_chan *chan = &st->channels[c];
++	int span;
++
++	span = chan->span;
++	if (span < 0)
++		return span;
++
++	if (st->chip_info->span_helper[span][0] < 0)
++		return -32768;
++
++	return 0;
++}
++
++static int ltc2664_dac_code_write(struct ltc2664_state *st, u32 chan, u32 input,
++				  u16 code)
++{
++	struct ltc2664_chan *c = &st->channels[chan];
++	int ret, reg;
++
++	guard(mutex)(&st->lock);
++	/* select the correct input register to write to */
++	if (c->toggle_chan) {
++		ret = regmap_write(st->regmap, LTC2664_CMD_TOGGLE_SEL,
++				   input << chan);
++		if (ret)
++			return ret;
++	}
++	/*
++	 * If in toggle mode the dac should be updated by an
++	 * external signal (or sw toggle) and not here.
++	 */
++	if (st->toggle_sel & BIT(chan))
++		reg = LTC2664_CMD_WRITE_N(chan);
++	else
++		reg = LTC2664_CMD_WRITE_N_UPDATE_N(chan);
++
++	ret = regmap_write(st->regmap, reg, code);
++	if (ret)
++		return ret;
++
++	c->raw[input] = code;
++
++	if (c->toggle_chan) {
++		ret = regmap_write(st->regmap, LTC2664_CMD_TOGGLE_SEL,
++				   st->toggle_sel);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static void ltc2664_dac_code_read(struct ltc2664_state *st, u32 chan, u32 input,
++				  u32 *code)
++{
++	guard(mutex)(&st->lock);
++	*code = st->channels[chan].raw[input];
++}
++
++static const int ltc2664_raw_range[] = { 0, 1, U16_MAX };
++
++static int ltc2664_read_avail(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan,
++			      const int **vals, int *type, int *length,
++			      long info)
++{
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		*vals = ltc2664_raw_range;
++		*type = IIO_VAL_INT;
++
++		return IIO_AVAIL_RANGE;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ltc2664_read_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan, int *val,
++			    int *val2, long info)
++{
++	struct ltc2664_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		ltc2664_dac_code_read(st, chan->channel, LTC2664_INPUT_A, val);
++
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_OFFSET:
++		*val = st->chip_info->offset_get(st, chan->channel);
++
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		*val = st->chip_info->scale_get(st, chan->channel);
++
++		*val2 = 16;
++		return IIO_VAL_FRACTIONAL_LOG2;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ltc2664_write_raw(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan, int val,
++			     int val2, long info)
++{
++	struct ltc2664_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		if (val > U16_MAX || val < 0)
++			return -EINVAL;
++
++		return ltc2664_dac_code_write(st, chan->channel,
++					      LTC2664_INPUT_A, val);
++	default:
++		return -EINVAL;
++	}
++}
++
++static ssize_t ltc2664_reg_bool_get(struct iio_dev *indio_dev,
++				    uintptr_t private,
++				    const struct iio_chan_spec *chan,
++				    char *buf)
++{
++	struct ltc2664_state *st = iio_priv(indio_dev);
++	u32 val;
++
++	guard(mutex)(&st->lock);
++	switch (private) {
++	case LTC2664_POWERDOWN:
++		val = st->channels[chan->channel].powerdown;
++
++		return sysfs_emit(buf, "%u\n", val);
++	case LTC2664_POWERDOWN_MODE:
++		return sysfs_emit(buf, "42kohm_to_gnd\n");
++	case LTC2664_TOGGLE_EN:
++		val = !!(st->toggle_sel & BIT(chan->channel));
++
++		return sysfs_emit(buf, "%u\n", val);
++	case LTC2664_GLOBAL_TOGGLE:
++		val = st->global_toggle;
++
++		return sysfs_emit(buf, "%u\n", val);
++	default:
++		return -EINVAL;
++	}
++}
++
++static ssize_t ltc2664_reg_bool_set(struct iio_dev *indio_dev,
++				    uintptr_t private,
++				    const struct iio_chan_spec *chan,
++				    const char *buf, size_t len)
++{
++	struct ltc2664_state *st = iio_priv(indio_dev);
++	int ret;
++	bool en;
++
++	ret = kstrtobool(buf, &en);
++	if (ret)
++		return ret;
++
++	guard(mutex)(&st->lock);
++	switch (private) {
++	case LTC2664_POWERDOWN:
++		ret = regmap_write(st->regmap,
++				   en ? LTC2664_CMD_POWER_DOWN_N(chan->channel) :
++				   LTC2664_CMD_UPDATE_N(chan->channel), en);
++		if (ret)
++			return ret;
++
++		st->channels[chan->channel].powerdown = en;
++
++		return len;
++	case LTC2664_TOGGLE_EN:
++		if (en)
++			st->toggle_sel |= BIT(chan->channel);
++		else
++			st->toggle_sel &= ~BIT(chan->channel);
++
++		ret = regmap_write(st->regmap, LTC2664_CMD_TOGGLE_SEL,
++				   st->toggle_sel);
++		if (ret)
++			return ret;
++
++		return len;
++	case LTC2664_GLOBAL_TOGGLE:
++		ret = regmap_write(st->regmap, LTC2664_CMD_GLOBAL_TOGGLE, en);
++		if (ret)
++			return ret;
++
++		st->global_toggle = en;
++
++		return len;
++	default:
++		return -EINVAL;
++	}
++}
++
++static ssize_t ltc2664_dac_input_read(struct iio_dev *indio_dev,
++				      uintptr_t private,
++				      const struct iio_chan_spec *chan,
++				      char *buf)
++{
++	struct ltc2664_state *st = iio_priv(indio_dev);
++	u32 val;
++
++	if (private == LTC2664_INPUT_B_AVAIL)
++		return sysfs_emit(buf, "[%u %u %u]\n", ltc2664_raw_range[0],
++				  ltc2664_raw_range[1],
++				  ltc2664_raw_range[2] / 4);
++
++	ltc2664_dac_code_read(st, chan->channel, private, &val);
++
++	return sysfs_emit(buf, "%u\n", val);
++}
++
++static ssize_t ltc2664_dac_input_write(struct iio_dev *indio_dev,
++				       uintptr_t private,
++				       const struct iio_chan_spec *chan,
++				       const char *buf, size_t len)
++{
++	struct ltc2664_state *st = iio_priv(indio_dev);
++	int ret;
++	u16 val;
++
++	if (private == LTC2664_INPUT_B_AVAIL)
++		return -EINVAL;
++
++	ret = kstrtou16(buf, 10, &val);
++	if (ret)
++		return ret;
++
++	ret = ltc2664_dac_code_write(st, chan->channel, private, val);
++	if (ret)
++		return ret;
++
++	return len;
++}
++
++static int ltc2664_reg_access(struct iio_dev *indio_dev,
++			      unsigned int reg,
++			      unsigned int writeval,
++			      unsigned int *readval)
++{
++	struct ltc2664_state *st = iio_priv(indio_dev);
++
++	if (readval)
++		return -EOPNOTSUPP;
++
++	return regmap_write(st->regmap, reg, writeval);
++}
++
++#define LTC2664_CHAN_EXT_INFO(_name, _what, _shared, _read, _write) {	\
++	.name = _name,							\
++	.read = (_read),						\
++	.write = (_write),						\
++	.private = (_what),						\
++	.shared = (_shared),						\
++}
++
++/*
++ * For toggle mode we only expose the symbol attr (sw_toggle) in case a TGPx is
++ * not provided in dts.
++ */
++static const struct iio_chan_spec_ext_info ltc2664_toggle_sym_ext_info[] = {
++	LTC2664_CHAN_EXT_INFO("raw0", LTC2664_INPUT_A, IIO_SEPARATE,
++			      ltc2664_dac_input_read, ltc2664_dac_input_write),
++	LTC2664_CHAN_EXT_INFO("raw1", LTC2664_INPUT_B, IIO_SEPARATE,
++			      ltc2664_dac_input_read, ltc2664_dac_input_write),
++	LTC2664_CHAN_EXT_INFO("powerdown", LTC2664_POWERDOWN, IIO_SEPARATE,
++			      ltc2664_reg_bool_get, ltc2664_reg_bool_set),
++	LTC2664_CHAN_EXT_INFO("powerdown_mode", LTC2664_POWERDOWN_MODE,
++			      IIO_SEPARATE, ltc2664_reg_bool_get, NULL),
++	LTC2664_CHAN_EXT_INFO("symbol", LTC2664_GLOBAL_TOGGLE, IIO_SEPARATE,
++			      ltc2664_reg_bool_get, ltc2664_reg_bool_set),
++	LTC2664_CHAN_EXT_INFO("toggle_en", LTC2664_TOGGLE_EN,
++			      IIO_SEPARATE, ltc2664_reg_bool_get,
++			      ltc2664_reg_bool_set),
++	{ }
++};
++
++static const struct iio_chan_spec_ext_info ltc2664_ext_info[] = {
++	LTC2664_CHAN_EXT_INFO("powerdown", LTC2664_POWERDOWN, IIO_SEPARATE,
++			      ltc2664_reg_bool_get, ltc2664_reg_bool_set),
++	LTC2664_CHAN_EXT_INFO("powerdown_mode", LTC2664_POWERDOWN_MODE,
++			      IIO_SEPARATE, ltc2664_reg_bool_get, NULL),
++	{ }
++};
++
++static const struct iio_chan_spec ltc2664_channel_template = {
++	.indexed = 1,
++	.output = 1,
++	.info_mask_separate = BIT(IIO_CHAN_INFO_SCALE) |
++			      BIT(IIO_CHAN_INFO_OFFSET) |
++			      BIT(IIO_CHAN_INFO_RAW),
++	.info_mask_separate_available = BIT(IIO_CHAN_INFO_RAW),
++	.ext_info = ltc2664_ext_info,
++};
++
++static const struct ltc2664_chip_info ltc2664_chip = {
++	.name = "ltc2664",
++	.scale_get = ltc2664_scale_get,
++	.offset_get = ltc2664_offset_get,
++	.measurement_type = IIO_VOLTAGE,
++	.num_channels = 4,
++	.span_helper = ltc2664_span_helper,
++	.num_span = ARRAY_SIZE(ltc2664_span_helper),
++	.internal_vref_mv = 2500,
++	.manual_span_support = true,
++	.rfsadj_support = false,
++};
++
++static const struct ltc2664_chip_info ltc2672_chip = {
++	.name = "ltc2672",
++	.scale_get = ltc2672_scale_get,
++	.offset_get = ltc2664_offset_get,
++	.measurement_type = IIO_CURRENT,
++	.num_channels = 5,
++	.span_helper = ltc2672_span_helper,
++	.num_span = ARRAY_SIZE(ltc2672_span_helper),
++	.internal_vref_mv = 1250,
++	.manual_span_support = false,
++	.rfsadj_support = true,
++};
++
++static int ltc2664_set_span(const struct ltc2664_state *st, int min, int max,
++			    int chan)
++{
++	const struct ltc2664_chip_info *chip_info = st->chip_info;
++	const int (*span_helper)[2] = chip_info->span_helper;
++	int span, ret;
++
++	for (span = 0; span < chip_info->num_span; span++) {
++		if (min == span_helper[span][0] && max == span_helper[span][1])
++			break;
++	}
++
++	if (span == chip_info->num_span)
++		return -EINVAL;
++
++	ret = regmap_write(st->regmap, LTC2664_CMD_SPAN_N(chan), span);
++	if (ret)
++		return ret;
++
++	return span;
++}
++
++static int ltc2664_channel_config(struct ltc2664_state *st)
++{
++	const struct ltc2664_chip_info *chip_info = st->chip_info;
++	struct device *dev = &st->spi->dev;
++	u32 reg, tmp[2], mspan;
++	int ret, span = 0;
++
++	mspan = LTC2664_MSPAN_SOFTSPAN;
++	ret = device_property_read_u32(dev, "adi,manual-span-operation-config",
++				       &mspan);
++	if (!ret) {
++		if (!chip_info->manual_span_support)
++			return dev_err_probe(dev, -EINVAL,
++			       "adi,manual-span-operation-config not supported\n");
++
++		if (mspan > ARRAY_SIZE(ltc2664_mspan_lut))
++			return dev_err_probe(dev, -EINVAL,
++			       "adi,manual-span-operation-config not in range\n");
++	}
++
++	st->rfsadj_ohms = 20000;
++	ret = device_property_read_u32(dev, "adi,rfsadj-ohms", &st->rfsadj_ohms);
++	if (!ret) {
++		if (!chip_info->rfsadj_support)
++			return dev_err_probe(dev, -EINVAL,
++					     "adi,rfsadj-ohms not supported\n");
++
++		if (st->rfsadj_ohms < 19000 || st->rfsadj_ohms > 41000)
++			return dev_err_probe(dev, -EINVAL,
++					     "adi,rfsadj-ohms not in range\n");
++	}
++
++	device_for_each_child_node_scoped(dev, child) {
++		struct ltc2664_chan *chan;
++
++		ret = fwnode_property_read_u32(child, "reg", &reg);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Failed to get reg property\n");
++
++		if (reg >= chip_info->num_channels)
++			return dev_err_probe(dev, -EINVAL,
++					     "reg bigger than: %d\n",
++					     chip_info->num_channels);
++
++		chan = &st->channels[reg];
++
++		if (fwnode_property_read_bool(child, "adi,toggle-mode")) {
++			chan->toggle_chan = true;
++			/* assume sw toggle ABI */
++			st->iio_channels[reg].ext_info = ltc2664_toggle_sym_ext_info;
++
++			/*
++			 * Clear IIO_CHAN_INFO_RAW bit as toggle channels expose
++			 * out_voltage/current_raw{0|1} files.
++			 */
++			__clear_bit(IIO_CHAN_INFO_RAW,
++				    &st->iio_channels[reg].info_mask_separate);
++		}
++
++		chan->raw[0] = ltc2664_mspan_lut[mspan][1];
++		chan->raw[1] = ltc2664_mspan_lut[mspan][1];
++
++		chan->span = ltc2664_mspan_lut[mspan][0];
++
++		ret = fwnode_property_read_u32_array(child, "output-range-microvolt",
++						     tmp, ARRAY_SIZE(tmp));
++		if (!ret && mspan == LTC2664_MSPAN_SOFTSPAN) {
++			chan->span = ltc2664_set_span(st, tmp[0] / 1000,
++						      tmp[1] / 1000, reg);
++			if (span < 0)
++				return dev_err_probe(dev, span,
++						     "Failed to set span\n");
++		}
++
++		ret = fwnode_property_read_u32_array(child, "output-range-microamp",
++						     tmp, ARRAY_SIZE(tmp));
++		if (!ret) {
++			chan->span = ltc2664_set_span(st, 0, tmp[1] / 1000, reg);
++			if (span < 0)
++				return dev_err_probe(dev, span,
++						     "Failed to set span\n");
++		}
++	}
++
++	return 0;
++}
++
++static int ltc2664_setup(struct ltc2664_state *st)
++{
++	const struct ltc2664_chip_info *chip_info = st->chip_info;
++	struct gpio_desc *gpio;
++	int ret, i;
++
++	/* If we have a clr/reset pin, use that to reset the chip. */
++	gpio = devm_gpiod_get_optional(&st->spi->dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(gpio))
++		return dev_err_probe(&st->spi->dev, PTR_ERR(gpio),
++				     "Failed to get reset gpio");
++	if (gpio) {
++		fsleep(1000);
++		gpiod_set_value_cansleep(gpio, 0);
++	}
++
++	/*
++	 * Duplicate the default channel configuration as it can change during
++	 * @ltc2664_channel_config()
++	 */
++	st->iio_channels = devm_kcalloc(&st->spi->dev,
++					chip_info->num_channels,
++					sizeof(struct iio_chan_spec),
++					GFP_KERNEL);
++	if (!st->iio_channels)
++		return -ENOMEM;
++
++	for (i = 0; i < chip_info->num_channels; i++) {
++		st->iio_channels[i] = ltc2664_channel_template;
++		st->iio_channels[i].type = chip_info->measurement_type;
++		st->iio_channels[i].channel = i;
++	}
++
++	ret = ltc2664_channel_config(st);
++	if (ret)
++		return ret;
++
++	return regmap_set_bits(st->regmap, LTC2664_CMD_CONFIG, LTC2664_REF_DISABLE);
++}
++
++static const struct regmap_config ltc2664_regmap_config = {
++	.reg_bits = 8,
++	.val_bits = 16,
++	.max_register = LTC2664_CMD_NO_OPERATION,
++};
++
++static const struct iio_info ltc2664_info = {
++	.write_raw = ltc2664_write_raw,
++	.read_raw = ltc2664_read_raw,
++	.read_avail = ltc2664_read_avail,
++	.debugfs_reg_access = ltc2664_reg_access,
++};
++
++static int ltc2664_probe(struct spi_device *spi)
++{
++	static const char * const regulators[] = { "vcc", "iovcc", "v-neg" };
++	const struct ltc2664_chip_info *chip_info;
++	struct device *dev = &spi->dev;
++	struct iio_dev *indio_dev;
++	struct ltc2664_state *st;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++	st->spi = spi;
++
++	chip_info = spi_get_device_match_data(spi);
++	if (!chip_info)
++		return -ENODEV;
++
++	st->chip_info = chip_info;
++
++	mutex_init(&st->lock);
++
++	st->regmap = devm_regmap_init_spi(spi, &ltc2664_regmap_config);
++	if (IS_ERR(st->regmap))
++		return dev_err_probe(dev, PTR_ERR(st->regmap),
++				     "Failed to init regmap");
++
++	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulators),
++					     regulators);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to enable regulators\n");
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "ref");
++	if (ret < 0 && ret != -ENODEV)
++		return ret;
++
++	st->vref_mv = ret > 0 ? ret / 1000 :  chip_info->internal_vref_mv;
++
++	ret = ltc2664_setup(st);
++	if (ret)
++		return ret;
++
++	indio_dev->name = chip_info->name;
++	indio_dev->info = &ltc2664_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->channels = st->iio_channels;
++	indio_dev->num_channels = chip_info->num_channels;
++
++	return devm_iio_device_register(dev, indio_dev);
++}
++
++static const struct spi_device_id ltc2664_id[] = {
++	{ "ltc2664", (kernel_ulong_t)&ltc2664_chip },
++	{ "ltc2672", (kernel_ulong_t)&ltc2672_chip },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, ltc2664_id);
++
++static const struct of_device_id ltc2664_of_id[] = {
++	{ .compatible = "adi,ltc2664", .data = &ltc2664_chip },
++	{ .compatible = "adi,ltc2672", .data = &ltc2672_chip },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ltc2664_of_id);
++
++static struct spi_driver ltc2664_driver = {
++	.driver = {
++		.name = "ltc2664",
++		.of_match_table = ltc2664_of_id,
++	},
++	.probe = ltc2664_probe,
++	.id_table = ltc2664_id,
++};
++module_spi_driver(ltc2664_driver);
++
++MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
++MODULE_AUTHOR("Kim Seer Paller <kimseer.paller@analog.com>");
++MODULE_DESCRIPTION("Analog Devices LTC2664 and LTC2672 DAC");
++MODULE_LICENSE("GPL");
 -- 
 2.34.1
 

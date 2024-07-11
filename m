@@ -1,287 +1,239 @@
-Return-Path: <linux-iio+bounces-7492-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7493-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C37192E08D
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 09:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F12DD92E355
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 11:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C94FBB211C2
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 07:08:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60932B229E8
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 09:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EBA12FB0B;
-	Thu, 11 Jul 2024 07:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172E615572F;
+	Thu, 11 Jul 2024 09:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HEZ6tKvB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZCWGq6zS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D2812FF71;
-	Thu, 11 Jul 2024 07:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1111527AA;
+	Thu, 11 Jul 2024 09:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720681704; cv=none; b=NgLNv84Ts+9ifDaCLJlN+cEuihlnF6gStDGWr1QSwoBX9hf+QEFyLa7E8hAgsgQAfLmnwYbaS+DC7qExAAtGTc/EPqUUlDnIUfX4blULNWswqBjW35p558vScyOTXbEfG2PSg3JbK7pTHxLjkx4CaebLPmh4aV06h+FZXwt5llE=
+	t=1720689622; cv=none; b=bBR6uN0f8wwZ6IulknT2xWZfGTofp4lBclKHIXAzy1sfgqWK2+OS24Ph1PCQ70jLYQPWeiLRV8XHrzQFKzl1dzQtNIvVof14nKKzMQL5jv7GzqFdy9SR+CttaN0CTH3I3b/X0XbjqxS4NKMy3dq485XxI+xFIl4nJFVzz6Li/30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720681704; c=relaxed/simple;
-	bh=tS+OusqglwII9Oh8jwE+31yUzsC3175g4YbMyRvsVrs=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=Fb5gWJ92Rk8877hgx9mw+8svHJf9PsDwXVPIoXo46q64LvqxQNN8yZBuHaclk1JsWR8Ye3M9uaszU+oxjo6WCe42srb4OfOL3diVnxFkGHm9v9djp1PgHuj5+XpSSWeXxwU8g3ItRiB9Sp3tZVjHitVJsP3Mu8xfdYkvWqobdN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HEZ6tKvB; arc=none smtp.client-ip=209.85.167.43
+	s=arc-20240116; t=1720689622; c=relaxed/simple;
+	bh=gwvvVLcKzF8lKnY96RVzXjOMU6Nj0tPSKdiRsfBXs4o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=is46Iq72O+PAnSpeQNCoylRa8y0NuchKFfGp0XhTsRqoJzFCARCq6cXb+8N1cqboVrUnz6ciQshihbDjq7tJ94wKG1LO7WDbwJK2kTl17aFeQD3Dyr0rsfzkpi1BJlO4BAg17kNpMSkw3g+71Zn7A8NNZHeuipl3rcp9OOLXdr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZCWGq6zS; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52e9f863c46so624809e87.1;
-        Thu, 11 Jul 2024 00:08:22 -0700 (PDT)
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2eea7e2b0e6so7144051fa.3;
+        Thu, 11 Jul 2024 02:20:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720681701; x=1721286501; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tS+OusqglwII9Oh8jwE+31yUzsC3175g4YbMyRvsVrs=;
-        b=HEZ6tKvBtHcoa1/Gvrv33CpmDYg6l7SH/HEbaidTDYeEfXRWgpighPcaiNG+oEc5pl
-         lr1Nlkg1dIcAE4Vs52uNdh6pfDItTc7t2XzRp1grwzR5I/+lPzpxmRG/nx2AC/TvypwJ
-         AeKDjnxvkiKFFXg1PTrdtxxG/h6+SLb3I1WHQb2KpVtH6WUWxS9l8QWsbKVjoRFiPRXM
-         CKI+nXXFppaQutdMQWrr1sOxWXiCPdp4CgNx4HGwZCtkzhLUNsjXaFbyP47RYpItQi5l
-         MXC0GYg72ArGMIhFNDv5U/E+eOyUcL+BzvzeeLga23fE0GqLHBdOwPi4uj7NeiPJuPea
-         /Kiw==
+        d=gmail.com; s=20230601; t=1720689619; x=1721294419; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=veH0AMOxhpArs3tYp8swPvMrbzFjXttVAA+G9fEZU0s=;
+        b=ZCWGq6zSyIXcXrbwVk37vb4SRcca6taUQ2alAhTEcCHMw1j1xRuudSISDLTUNVhLC4
+         7/PFf12CaaY0xW9TYYHHF7FzhTS/t7ccX155gxNzt8uVSqMA+9Nz9Ipj/uqP7qTkxwDu
+         PcoD6aRoMZOhr31fGSGH8KjclEADSoCyJ3WgdOCYGiHQIRX68qJXyf6h6Ki5L5UJLvu+
+         3E6OZniUILgmz0ptbzNEUuqMdMC1gSExzlDjt+MZb8/tF0wHXwhglifY0GXyZUzgY/dh
+         ocY3YraW+0ptR+EbyDPXu0TxVKHT8GT/shkJfG1DM/Q+qZ3YrEgj+c3lYCm0hbhjFlQT
+         PPOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720681701; x=1721286501;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tS+OusqglwII9Oh8jwE+31yUzsC3175g4YbMyRvsVrs=;
-        b=sr56movDL24Lxsk3g/LTIGybPvKWlFdFiN3rtOAvdQ80zT1NEW/b3XTL0aHsVEtTfL
-         2bZ+o5ddV3MAL1b6aBLQim76CXTwvsyP0PrlLmIClI152L6oo8Ajx7cFAQB66EWkGySE
-         pTuznilp7vROA1ojUy3tsAL64h/07Zcq2nFkTbGj0RPR/gxwmp4F8ZmGt7eKGTHfeyW9
-         3YlxvDW8ma/0uvnq/tdL9LL5UFYpV0ewFS1DAQQvKjGmAGdDtN+A735EkABh9OppY75q
-         owN0e6K3315RKP0wpnYkaoJp+ZtjHfgSq7X06U+Ruf2jlua1s7O83gh7VoNCO4cwFGTo
-         NNqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUubLSL3BAqsm7bCIaiopyzzN55ocbWES6uM7l0p/rQN+LOHIMKmzXspqSTON5BS0C+l5UHlq1Zvz4d9pt4xRUHY/s9FAWXtjZG2SSGCU67TPi9NvTpQoRk2lgscdaE4ZPCYdaGI1UEWuAzZ/oVmjgLVIfz+hb8+Wf46BCmFexogABQ3Q==
-X-Gm-Message-State: AOJu0Yz5iTVawrBDmSFMTlMtBT8ifCLzJXa6NvJ9wVdmu4y1yIYusDIz
-	fiwroLjo8KKpDyJrq4u24XfIfKuZe8e0OWrh93gkW6F3Vmr4O4YRIT3ebEq/
-X-Google-Smtp-Source: AGHT+IF8ndhQWKLZYKZRgh0LQz+uDp0LDnnrjbssWSZHZB+zwt1PnkHq99C0weqNdu2BHIrqHiDw5g==
-X-Received: by 2002:a05:6512:3b82:b0:52c:fd49:d42 with SMTP id 2adb3069b0e04-52eb9990d58mr4801546e87.14.1720681700618;
-        Thu, 11 Jul 2024 00:08:20 -0700 (PDT)
-Received: from localhost (host-79-55-57-217.retail.telecomitalia.it. [79.55.57.217])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f6e097bsm107815295e9.6.2024.07.11.00.08.19
+        d=1e100.net; s=20230601; t=1720689619; x=1721294419;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=veH0AMOxhpArs3tYp8swPvMrbzFjXttVAA+G9fEZU0s=;
+        b=sJDD3QJAhdQnCmugy48u88PbgPiseXmYUS4ecOYbEzntLA/QbpnaPOeIVUxqqQH9Vx
+         6wq+57zm50gyAuAT5BHU/FSszsZKalR9DJer1UH3qfa3T0a6+LXaMfcBXcWs9iX/caGU
+         TVcNnncr49DCjBsByZcRSlF8x2nk5XvfB1jcehwN/vac7KgE3gRr/FRI+aVCXnMvCCVL
+         eGdgbWw40M2R1ZMD15wIZm4lCHBAjhONwJ2oSdXSbIsoG4wEY0Yhlf+JbWHyTqaPQyLL
+         pZxsb+oPtWcIi2HeNge6BI/i240hYoyWqdZFN6EJ6Uq3ChnOlica2wzRHaxi9MXLl1o7
+         eTug==
+X-Forwarded-Encrypted: i=1; AJvYcCXjgMGlFNVzXh4DOkj72YHuWrC9HgS2UIURm0NrDNAPFYOMxgL7JWpeKaJd4p5WQQLUSlrTxbfcLhgM0xvWnCehnKmvR+fzAdFRqmJYEjNmaS4k3uP9oQbfVX4J41ODDO9nJf0KVxxeyQH9RXfor6IVkBXK+GqrbGk/7zfL3lh0uYUFBg==
+X-Gm-Message-State: AOJu0YwT8rBjP8kP8G9q5FgOKwFwa8st6Zg2Jw1FYSIKB0VUofLrc4fN
+	TRaS84g1lOjEQVDdR9FciPRP//focPkU9v0wez+m3JrvTDgeq6/f
+X-Google-Smtp-Source: AGHT+IFNF3nE9tcbqgLUaGvr4jaJp7NNEj5UW6Mh4jCkQTmKxAAjFECZKcf2WAsdzOsFmkmOm0DtOA==
+X-Received: by 2002:a05:6512:3f0a:b0:52c:ebd0:609 with SMTP id 2adb3069b0e04-52eb999116cmr5720327e87.7.1720689618767;
+        Thu, 11 Jul 2024 02:20:18 -0700 (PDT)
+Received: from nsa.fritz.box ([2001:a61:359b:e801:d44:32b3:6924:10d1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cdfab141sm7212348f8f.96.2024.07.11.02.20.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 00:08:20 -0700 (PDT)
-Date: Thu, 11 Jul 2024 09:08:18 +0200
-From: Matteo Martelli <matteomartelli3@gmail.com>
-To: Marius.Cristea@microchip.com, 
- jic23@kernel.org, 
- matteomartelli3@gmail.com
-Cc: robh@kernel.org, 
- krzk+dt@kernel.org, 
- conor+dt@kernel.org, 
- devicetree@vger.kernel.org, 
- lars@metafoo.de, 
- linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <668f84e2f3e10_2b423707a@njaxe.notmuch>
-In-Reply-To: <88a54c736e0c39ead34dbde53c813526484d767d.camel@microchip.com>
-References: <20240704-iio-pac1921-v2-0-0deb95a48409@gmail.com>
- <20240704-iio-pac1921-v2-2-0deb95a48409@gmail.com>
- <20240707160442.6bab64c9@jic23-huawei>
- <668bec2a8b23a_6e037017@njaxe.notmuch>
- <88a54c736e0c39ead34dbde53c813526484d767d.camel@microchip.com>
-Subject: Re: [PATCH v2 2/2] iio: adc: add support for pac1921
+        Thu, 11 Jul 2024 02:20:18 -0700 (PDT)
+Message-ID: <ccce603d36fa2fd590b563955bcd2cda085773e5.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: dac: support the ad8460 Waveform DAC
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, "Tinaco, Mariel"
+	 <Mariel.Tinaco@analog.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
+ <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark
+ Brown <broonie@kernel.org>, "Hennerich, Michael"
+ <Michael.Hennerich@analog.com>,  Marcelo Schmitt
+ <marcelo.schmitt1@gmail.com>, Dimitri Fedrau <dima.fedrau@gmail.com>,
+ Guenter Roeck <linux@roeck-us.net>, Nuno Sa <nuno.sa@analog.com>
+Date: Thu, 11 Jul 2024 11:20:17 +0200
+In-Reply-To: <20240708170504.00006c9d@Huawei.com>
+References: <20240510064053.278257-1-Mariel.Tinaco@analog.com>
+	 <20240510064053.278257-3-Mariel.Tinaco@analog.com>
+	 <20240511174405.10d7fce8@jic23-huawei>
+	 <SJ0PR03MB62241801F72B21EEC9CDCCBD91D42@SJ0PR03MB6224.namprd03.prod.outlook.com>
+	 <20240628194546.2f608365@jic23-huawei>
+	 <SJ0PR03MB62246270CC24E70732D0288F91DA2@SJ0PR03MB6224.namprd03.prod.outlook.com>
+	 <20240708170504.00006c9d@Huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-Hi Marius,
+On Mon, 2024-07-08 at 17:05 +0100, Jonathan Cameron wrote:
+> On Mon, 8 Jul 2024 05:17:55 +0000
+> "Tinaco, Mariel" <Mariel.Tinaco@analog.com> wrote:
+>=20
+> > > -----Original Message-----
+> > > From: Jonathan Cameron <jic23@kernel.org>
+> > > Sent: Saturday, June 29, 2024 2:46 AM
+> > > To: Tinaco, Mariel <Mariel.Tinaco@analog.com>
+> > > Cc: linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> > > kernel@vger.kernel.org; Lars-Peter Clausen <lars@metafoo.de>; Rob Her=
+ring
+> > > <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Do=
+oley
+> > > <conor+dt@kernel.org>; Liam Girdwood <lgirdwood@gmail.com>; Mark Brow=
+n
+> > > <broonie@kernel.org>; Hennerich, Michael <Michael.Hennerich@analog.co=
+m>;
+> > > Marcelo Schmitt <marcelo.schmitt1@gmail.com>; Dimitri Fedrau
+> > > <dima.fedrau@gmail.com>; Guenter Roeck <linux@roeck-us.net>
+> > > Subject: Re: [PATCH 2/2] iio: dac: support the ad8460 Waveform DAC
+> > >=20
+> > > [External]
+> > > =C2=A0=20
+> > > > > > +};
+> > > > > > +
+> > > > > > +static int ad8460_get_powerdown_mode(struct iio_dev *indio_dev=
+,
+> > > > > > +				=C2=A0=C2=A0=C2=A0=C2=A0 const struct iio_chan_spec *chan)=
+ {
+> > > > > > +	return 0;=C2=A0=20
+> > > > >=20
+> > > > > Why have the stubs in here?=C2=A0=20
+> > > >=20
+> > > > Should I move the stubs to a different place in the code or remove
+> > > > them altogether since there is only a single powerdown mode availab=
+le=C2=A0=20
+> > > Ah. I'd not really understood what was going on here.=C2=A0 This is f=
+ine as is.
+> > > =C2=A0=20
+> > > > > AD8460_HVDAC_DATA_WORD_HIGH(index),=C2=A0=20
+> > > > > > +			=C2=A0=C2=A0=C2=A0 ((val >> 8) & 0xFF));=C2=A0=20
+> > > > >=20
+> > > > > bulk write? or do these need to be ordered?=C2=A0=20
+> > > >=20
+> > > > For this I used bulk read/write this way.
+> > > >=20
+> > > > static int ad8460_set_hvdac_word(struct ad8460_state *state,
+> > > > 				 int index,
+> > > > 				 int val)
+> > > > {
+> > > > 	u8 regvals[AD8460_DATA_BYTE_WORD_LENGTH];=C2=A0=20
+> > > regmap bulk accesses (when spi anyway) should be provided with DMA sa=
+fe
+> > > buffers.
+> > > Easiest way to do that is add one with __aligned(IIO_DMA_MINALIGN) to=
+ the
+> > > end of the ad8460_state structure.=C2=A0 Possibly you'll need a lock =
+to protect it -
+> > > I
+> > > haven't checked.=C2=A0=20
+> > > >=20
+> > > > 	regvals[0] =3D val & 0xFF;
+> > > > 	regvals[1] =3D (val >> 8) & 0xFF;=C2=A0=20
+> > >=20
+> > > That is an endian conversion so use appropriate endian function to fi=
+ll it
+> > > efficiently and document clearly what is going on.
+> > >=20
+> > >=20
+> > > 	put_unaligned_le16()
+> > > =C2=A0=20
+> > > >=20
+> > > > 	return regmap_bulk_write(state->regmap,=C2=A0=20
+> > > AD8460_HVDAC_DATA_WORD_LOW(index),=C2=A0=20
+> > > > 				 regvals,=C2=A0=20
+> > > AD8460_DATA_BYTE_WORD_LENGTH); }=C2=A0=20
+> > > >=20
+> > > > =C2=A0
+> > > > > > +}=C2=A0=20
+> > > =C2=A0=20
+> > > > > > +	state->regmap =3D devm_regmap_init_spi(spi,
+> > > > > > &ad8460_regmap_config);
+> > > > > > +	if (IS_ERR(state->regmap))
+> > > > > > +		return dev_err_probe(&spi->dev, PTR_ERR(state->regmap),
+> > > > > > +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to initialize regmap");
+> > > > > > +
+> > > > > > +	ret =3D devm_iio_dmaengine_buffer_setup_ext(&spi->dev, indio_=
+dev,
+> > > > > > +"tx",
+> > > > > > +=C2=A0=20
+> > > > > IIO_BUFFER_DIRECTION_OUT);
+> > > > >=20
+> > > > > Ah. I take back my binding comment. I assume this is mapping some
+> > > > > non standard interface for the parallel data flow?=C2=A0=20
+> > > >=20
+> > > > Yes, the HDL side doesn't follow yet the standard IIO backend from
+> > > > which this driver was tested=C2=A0=20
+> > >=20
+> > > Hmm. I'd like to see this brought inline with the other iio backend d=
+rivers if
+> > > possible.=C2=A0=20
+> >=20
+> > Does this mean that we would need to implement an AXI IP core on the
+> > FPGA side to be able to test this?
+>=20
+> Don't think so.=C2=A0 That framework is meant to support any equivalent I=
+P.
+> So whatever you have should be supportable. Maybe it's somewhat of a stub
+> driver though if there isn't anything controllable.
+>=20
+> It's Nuno's area of expertise though +CC.
+>=20
 
-Marius.Cristea@ wrote:
-> > I think that the OUT pin might not be used at all in many use cases
-> > so I would
-> > leave the OUT pin setting as fixed for now and maybe extend it in the=
+Hi Jonathan,
 
-> > future
-> > when more use cases arise. I am open to reconsider this though.
-> > =
+Yeah, I did reply David (IIRC) about the very same question. In the design/=
+HW Mariel
+is working on the DAC is directly connected to the DMA core which is handle=
+d already
+by a proper dma controller driver. So in this case I'm really not seeing th=
+e backend
+need right now (maybe in the future we may have another design for this dev=
+ice that
+could justify for a backend device but no idea on that).
 
-> =
-
-> The OUT functionality could be set from the device tree.
-
-I think this should to be controlled during runtime since it's a configur=
-ation
-that changes the device operation mode and so also what measurements are
-exposed to the user. An additional DT property could be useful but I am n=
-ot
-sure it would fit in the DT scope.
-Anyway I will leave this for future extensions.
-
-...
-> > > > ---
-> > > > =C2=A0.../ABI/testing/sysfs-bus-iio-adc-pac1921=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 45 +
-> > > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 7 +
-> > > > =C2=A0drivers/iio/adc/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 10 +
-> > > > =C2=A0drivers/iio/adc/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 1 +
-> > > > =C2=A0drivers/iio/adc/pac1921.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1038
-> > > > ++++++++++++++++++++
-> > > > =C2=A05 files changed, 1101 insertions(+)
-> > > > =
-
-> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1921
-> > > > b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1921
-> > > > new file mode 100644
-> > > > index 000000000000..4a32e2d4207b
-> > > > --- /dev/null
-> > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1921
-> > > Quite a bit of custom ABI in here.
-> > > =
-
-> > > Rule of thumb is that custom ABI is more or less pointless ABI for
-> > > 99% of users
-> > > because standard userspace won't use it.=C2=A0 So keep that in mind=
- when
-> > > defining it.
-> > > =
-
-> > > > @@ -0,0 +1,45 @@
-> > > > +What:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0
-> > > > /sys/bus/iio/devices/iio:deviceX/resolution_bits
-> > > > +KernelVersion:=C2=A0=C2=A0=C2=A0=C2=A0 6.10
-> > > > +Contact:=C2=A0=C2=A0 linux-iio@vger.kernel.org
-> > > > +Description:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ADC=
- measurement resolution. Can be either 11 bits or
-> > > > 14 bits
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (de=
-fault). The driver sets the same resolution for
-> > > > both VBUS and
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 VSE=
-NSE measurements even if the hardware could be
-> > > > configured to
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mea=
-sure VBUS and VSENSE with different resolutions.
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Thi=
-s attribute affects the integration time: with 14
-> > > > bits
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 res=
-olution the integration time is increased by a
-> > > > factor of
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1.9=
- (the driver considers a factor of 2). See Table
-> > > > 4-5 in
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev=
-ice datasheet for details.
-> > > =
-
-> > > Is the integration time ever high enough that it matters?
-> > > People tend not to do power measurement 'quickly'.
-> > > =
-
-> > > If we are doing it quickly then you'll probably want to be
-> > > providing buffered
-> > > support and that does allow you to 'read' the resolution for a part=
-
-> > > where
-> > > it changes for some other reason.=C2=A0=C2=A0 I haven't yet underst=
-ood this
-> > > case.
-> > =
-
-> > I will remove this control and fix the resolution bits to 14 (highest=
-
-> > value),
-> > same as the HW default.
-> =
-
-> The resolution could be set from the device tree. As default it could
-> be 14 bits like into the hardware. The user could add
-> "microchip,low_resolution_voltage" into the device tree in order to use=
-
-> only 11 bits for voltage samples.
-
-I think this should be controlled during runtime since it does not depend=
- on
-the HW design but more on the user preferences about measurements precisi=
-on.
-As Jonathan pointed out, since custom ABIs should be avoided when possibl=
-e, I
-will leave it out from now until it becomes necessary and fix the resolut=
-ion to
-14 bits, as the HW default.
-
-...
-> > > > +What:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 /sys/bus/iio/devices/iio:devices/filters_en
-> > > > +KernelVersion:=C2=A0=C2=A0=C2=A0=C2=A0 6.10
-> > > > +Contact:=C2=A0=C2=A0 linux-iio@vger.kernel.org
-> > > > +Description:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Att=
-ribute to enable/disable ADC post filters. Enabled
-> > > > by
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 def=
-ault.
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Thi=
-s attribute affects the integration time: with
-> > > > filters
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ena=
-bled the integration time is increased by 50%. See
-> > > > Table 4-5
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 in =
-device datasheet for details.
-> > > =
-
-> > > Do we have any idea what this filter is? Datasheet seems very vague=
-
-> > > indeed and from
-> > > a control point of view that makes this largely useless. How does
-> > > userspace know
-> > > whether to turn it on?
-> > > =
-
-> > > We have an existing filter ABI but with so little information no
-> > > way to fit this in.
-> > > Gut feeling, leave it on all the time and drop the control
-> > > interface.
-> > =
-
-> > I will remove this control and leave it on all the time as the HW
-> > default.
-> > =
-
-> =
-
-> The filters could be enabled from the device tree. As default it could
-> be disabled.
-> As a small detail here this is a post processing digital filter that
-> could be enabled/disabled inside the PAC module.
-> =
-
-
-Same reasoning of the resolution_bits parameter applies here. I will fix =
+As you mention, we could very well do a stub platform driver so we can use =
 the
-filters to enabled, as the HW default. If there is any particular reason =
-to
-prefer the filters fixed as disabled I will change that.
+backend framework (like dma-backend or something) that could pretty much be=
+ a stub
+for the DMA controller. But is it worth it though? We'd actually be "lying"=
+ in terms
+of HW description as the DMA is a property of the actual converter.
 
-...
-> Thanks,
-> Marius
+- Nuno S=C3=A1
 
-Thanks,
-Matteo=
 

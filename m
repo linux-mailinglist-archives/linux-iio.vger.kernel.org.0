@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-7506-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7508-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA7E92EF6E
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 21:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1937A92EF72
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 21:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D75285DBB
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 19:16:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C299E28612F
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Jul 2024 19:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5555716EBFC;
-	Thu, 11 Jul 2024 19:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D444316F0DE;
+	Thu, 11 Jul 2024 19:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="shR8Z7tw"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IntTiFHK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD8316B75D
-	for <linux-iio@vger.kernel.org>; Thu, 11 Jul 2024 19:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D935A16EB45
+	for <linux-iio@vger.kernel.org>; Thu, 11 Jul 2024 19:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720725359; cv=none; b=uwvCX9HpF1EMlBRZULyu1It0SlV7xYG4sfvf4zTzBtvjjmdqooSVCXU6RujI/Afujkr2IcSRzVfqpm7oQXhknWKfw64b9cZE7lZ9Hrq4XHZBFJW6tSAzWYe2bxjGuOEy/4Pi2YfK0Rvm0PT7YcyHmfZWJSdBXhQ1QkqAo09Hdxg=
+	t=1720725360; cv=none; b=X+4REwZ1TVCXUBfPwxUB1rwxMiRPVwOcvgMHcbUvHU8BvaARMYix7gHIMUR7sRAMa7Oupwzq0fKEFkUSRmVLTDugR+ayZjh0lrTVYslsvzRZdwbRXVpOZGphd5vuJ/ej8aQqDyWBn4qBpsIU9Mrj741U+RqwT2I3edAAHpni6ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720725359; c=relaxed/simple;
-	bh=gfHiONb+cHJIVTqfB/9PNM4sr78jejHlJxtoIigQzJE=;
+	s=arc-20240116; t=1720725360; c=relaxed/simple;
+	bh=Zl28lamu8bfNw29kdHvoVwJYwbyLiFEG01EB42lEnY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QeUKd9lHVUwqq7Lv9RRs8La5cLrz5WoKTzgFeKzBxQK7dQcj9pdi+ELGcU3iswIs2opx3zlOABrEVO3nDVcqkEBXpugg26gGp6OQirVvzm0eupjYdYM8xCD0YGMpH8ULzyycIgBEafFQ2ZmMStLu51EXMzWTpgrTcka5lmNAaBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=shR8Z7tw; arc=none smtp.client-ip=209.85.160.44
+	 MIME-Version:Content-Type; b=qvaRh5VyYI7+F+Orw9YBd4xP6X2qOSOK8j9Md+I11v2gUpl9U+/vWzRB3wtjDuSBBlQ6gg0eiU4KO4tDBhQ3fpv6X5qg6cOb2W8jlUbqilTxWnWExlAf7ih6n5d8GvPP0xXykFHNZwZfoa5mnjLd0L+4Bw3nXaE3rIsDx57TDR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IntTiFHK; arc=none smtp.client-ip=209.85.161.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-25e171122fcso577498fac.0
-        for <linux-iio@vger.kernel.org>; Thu, 11 Jul 2024 12:15:56 -0700 (PDT)
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5c2011716a3so577914eaf.1
+        for <linux-iio@vger.kernel.org>; Thu, 11 Jul 2024 12:15:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1720725356; x=1721330156; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1720725357; x=1721330157; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DXl8ONeqJDCtJjXFOdFbBuLWW4pS+f6rPe69JfJPHDY=;
-        b=shR8Z7twutTDFOCdjLvQhuqQvaOqZGgCpdwT5r9xzhfvHHVnTw7wxVuB3zVYxEujV+
-         FzW9jGI/W3XKo4j7ShCBCHRinmYuHvfX/yZ4LA5RdBGn7QQa+wOFmzVP4MAd2wklMf+p
-         2LmmrhQqzqZkr+mI6RvSlnvs9j1ob7mI3Vlcyhkf8Q6DKRLboXtnPjzX6vRfCvmO9Brk
-         y2jwJdDfIYigrQuSYRC4RZkEMviKrN3kerW7s33Y/HoGhjBEvmuJER0Ye/mxadDMA8w/
-         lI/3d+EoEbU5Y93m7TeVi9niHkZsQdRLmUTcS7TYZOknjpkpk/ktqUwGn5CR0t/V6l8q
-         ItqQ==
+        bh=nOvptkyPOhmMTBfm95EGBi42iyZaTibRLeL+Z8m3ZYk=;
+        b=IntTiFHKfPTeDk+Gftq2nBHegDl3JZBq7tGtx/a1ikNZkf+jSVRHH3Ae45S/lNVe3M
+         WEyMfcVc6eIes6dw4Ix+7OKE8mdtgVFbtfPIbtNk/NE9Cz0aZ6dI3ghABDB7feeatq0g
+         pnIL0OaA2hFW1msR+wS2q8Tq+NgDJIBdYKNuJLfS8oGTY2+WO0d5SVUmXagjCwVI0YQB
+         4TGDmn3XwcYD+oxNTFoFqMJzhJnPR2AkhuPSTYPnqVq6a1nzdDVFg5sUEUfKvfhGlvlD
+         ELy8F61zUrgH9RjFXIiFC7+lS27pl7rGgOGIVRZJIhggESd0usKbMs9UVZlVg/+LxGbe
+         xidA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720725356; x=1721330156;
+        d=1e100.net; s=20230601; t=1720725357; x=1721330157;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DXl8ONeqJDCtJjXFOdFbBuLWW4pS+f6rPe69JfJPHDY=;
-        b=jhbjKAuykharkSsaaOZUTIHP/v8zPfSy0CiN7lutiWvSrxzvpAQjjK5yzTuxm7BeOb
-         AtiOYqBE64Pdr9Pb6GJ2yqx+RRjibC4/HIhF1abrkeeoWGghxPbVpKaPIhWRsjV5eApE
-         zw4xT0uRaLa/TRjjDTbbRHF/N+/U+r9gdbel6hk/GMPcnqnGwfb6wYagR8M69yWXCztq
-         KDCnEy+xALL8MGXp2Lz3ycYp/nCFZUzZ5yZkQ9MyNqWMWMvU+LtCmjKA56h54GSKmxmh
-         RM/BipMKWOQyq/d+qTlcrzZWh0yKDt0xr0BWRK9zAhIhMu1GF4/8vpWyBYH13RFrpJYX
-         lBww==
-X-Forwarded-Encrypted: i=1; AJvYcCWpO8lHfFC0rJXV+/HMDNeCk0828NEj2o6SrNWXPVm+qkIIL2Qe28kCXrpHQoaECeWzXAqMpleZGnjVUPiZjqMcHQ2Q6WBc5qqp
-X-Gm-Message-State: AOJu0YwJnpNZXut607ZzfNUMKsoUH8zs7j0eefW4kMxWsD6D+3dqwbEH
-	/cTa1ktm36Br2AwIp4u9lRqlEX1//MJnRmZNpD7K11XgcCfhsBW+cjlyxyQU+9A=
-X-Google-Smtp-Source: AGHT+IFGBzIS69PrcU1224cquu79zc+Im3Rapec/YVgIdzE9YQciBWM9pLTqaUBNywANmN9AxdffWg==
-X-Received: by 2002:a05:6870:a70d:b0:255:43c:dd22 with SMTP id 586e51a60fabf-26052d6b533mr224007fac.21.1720725355847;
-        Thu, 11 Jul 2024 12:15:55 -0700 (PDT)
+        bh=nOvptkyPOhmMTBfm95EGBi42iyZaTibRLeL+Z8m3ZYk=;
+        b=AsKYnxWB0tUQxlmDifrUS6BK2O1bwccaGTAosIGK3r4y/YqMHevyYsXin++4HLOF5S
+         6gh7EfdTwK6THzSmTo7M6od/sOFoZpUfy+yegwuaqsU85/ckYtz5Zm29UY3WUm0hNa7j
+         qbEGR47sw8DejjRv3KEA9Ex/xJFlcOIcdLO2M9RB23Eue4JpnrNCJijVFiFMx1UyafNm
+         xKDWCpH2ELCBAOfnrBa0B/nWEOi9Ffy02vYpEBFwuld7kMvcXs2yV1tlbQyZl7aBc4kK
+         UgAU2VQlyzlJ+nZQWjyU/qW3BRiqeZ3cB52g46d5N8nMYZeBqkPaY8UNlNx+2TEBvoDU
+         Khuw==
+X-Forwarded-Encrypted: i=1; AJvYcCVojcj+cy6ebaTkmd0MmHD2bEurlfJOhST2i3S24gbXLfbRPXsq/fooBKCJPOfh4gV87NuyHBCTcPUq9gUciHLo/D3o8gH+H3kr
+X-Gm-Message-State: AOJu0Yzgfrz0WVbLXWBtfoZU4o9e+ypG12UfhaNv3T1mdrg3NADmCk8/
+	v48a/Y7/G11sxchhTcUSXFIw0bzjpon3BWLBu5TP0DXu9B9azfrvdWj0IBaYEfM=
+X-Google-Smtp-Source: AGHT+IEBxAMek0a1jTTlnV/+i34Uqrcz9Cy0jtLaGjwvGVF1TlUFGcsTUMcFdcUpfhDv/onz3Ebe5g==
+X-Received: by 2002:a05:6870:3117:b0:254:b318:8a05 with SMTP id 586e51a60fabf-25eaec74a0cmr7461529fac.57.1720725356789;
+        Thu, 11 Jul 2024 12:15:56 -0700 (PDT)
 Received: from localhost.localdomain (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
         by smtp.gmail.com with ESMTPSA id 586e51a60fabf-25eaa083bbcsm1826670fac.26.2024.07.11.12.15.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 12:15:55 -0700 (PDT)
+        Thu, 11 Jul 2024 12:15:56 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Rob Herring <robh@kernel.org>,
@@ -80,10 +80,10 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v4 1/3] dt-bindings: iio: adc: add AD4695 and similar ADCs
-Date: Thu, 11 Jul 2024 14:15:41 -0500
-Message-ID: <20240711-iio-adc-ad4695-v4-1-c31621113b57@baylibre.com>
+	Ramona Gradinariu <ramona.gradinariu@analog.com>
+Subject: [PATCH v4 2/3] iio: adc: ad4695: Add driver for AD4695 and similar ADCs
+Date: Thu, 11 Jul 2024 14:15:42 -0500
+Message-ID: <20240711-iio-adc-ad4695-v4-2-c31621113b57@baylibre.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240711-iio-adc-ad4695-v4-0-c31621113b57@baylibre.com>
 References: <20240711-iio-adc-ad4695-v4-0-c31621113b57@baylibre.com>
@@ -97,341 +97,815 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.14.0
 Content-Transfer-Encoding: 8bit
 
-Add device tree bindings for AD4695 and similar ADCs.
+This is a new driver for Analog Devices Inc. AD4695 and similar ADCs.
+The initial driver supports initializing the chip including configuring
+all possible LDO and reference voltage sources as well as any possible
+voltage input channel wiring configuration.
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Only the 4-wire SPI wiring mode where the CNV pin is tied to the CS pin
+is supported at this time. And reading sample data from the ADC can only
+be done in direct mode for now.
+
+Co-developed-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
-Note, this may trigger a DT build warning "common-mode-channel: missing
-type definition" if the builder doesn't include the recently added
-common-mode-channel property [1]. This should be safe to ignore (passes
-make dt_binding_check locally).
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=d86deaec1c5b0fb60c3619e8d2ae7a1d722fd2ad
-
 v4 changes:
-* Picked up Conor's reviewed-by tag.
+* moved dt-bindings #include
+* don't initialize mask/val to 0
+* remove xfer[0].bits_per_word = 8;
+* reduce duplicate code in ad4695_read_one_sample()
+* pass st instead of indio_dev to ad4695_parse_channel_cfg()
 
 v3 changes:
-* Change interrupts to be per pin instead of per signal.
-* Drop diff-channels and single-channel properties.
-* Odd numbered pins added to common-mode-channel property enum.
-* REFGND and COM values changes to avoid confusion with pin numbers.
-* Add inX-supply properties for odd numbed input pins.
+* always include all channels, not just ones customized in DT
+* rework channel fwnode parsing for DT changes
 
 v2 changes:
-* Drop *-wlcsp compatible strings
-* Don't use fallback compatible strings
-* Reword supply descriptions
-* Use standard channel properties instead of adi,pin-pairing
-* Fix unnecessary | character
-* Fix missing blank line
-* Add header file with common mode channel macros
+* rework register definition macros
+* remove code structure comments at top level
+* remove simple wrapper functions around regmap functions
+* rework channel fwnode parsing for DT changes
+* fix missing return value check
 ---
- .../devicetree/bindings/iio/adc/adi,ad4695.yaml    | 256 +++++++++++++++++++++
- MAINTAINERS                                        |  10 +
- include/dt-bindings/iio/adi,ad4695.h               |   9 +
- 3 files changed, 275 insertions(+)
+ MAINTAINERS              |   1 +
+ drivers/iio/adc/Kconfig  |  11 +
+ drivers/iio/adc/Makefile |   1 +
+ drivers/iio/adc/ad4695.c | 719 +++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 732 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
-new file mode 100644
-index 000000000000..a2e824e26691
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
-@@ -0,0 +1,256 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad4695.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices Easy Drive Multiplexed SAR Analog to Digital Converters
-+
-+maintainers:
-+  - Michael Hennerich <Michael.Hennerich@analog.com>
-+  - Nuno Sá <nuno.sa@analog.com>
-+
-+description: |
-+  A family of similar multi-channel analog to digital converters with SPI bus.
-+
-+  * https://www.analog.com/en/products/ad4695.html
-+  * https://www.analog.com/en/products/ad4696.html
-+  * https://www.analog.com/en/products/ad4697.html
-+  * https://www.analog.com/en/products/ad4698.html
-+
-+$ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad4695
-+      - adi,ad4696
-+      - adi,ad4697
-+      - adi,ad4698
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 80000000
-+
-+  spi-cpol: true
-+  spi-cpha: true
-+
-+  spi-rx-bus-width:
-+    minimum: 1
-+    maximum: 4
-+
-+  avdd-supply:
-+    description: Analog power supply.
-+
-+  vio-supply:
-+    description: I/O pin power supply.
-+
-+  ldo-in-supply:
-+    description: Internal LDO Input. Mutually exclusive with vdd-supply.
-+
-+  vdd-supply:
-+    description: Core power supply. Mutually exclusive with ldo-in-supply.
-+
-+  ref-supply:
-+    description:
-+      External reference voltage. Mutually exclusive with refin-supply.
-+
-+  refin-supply:
-+    description:
-+      Internal reference buffer input. Mutually exclusive with ref-supply.
-+
-+  com-supply:
-+    description: Common voltage supply for pseudo-differential analog inputs.
-+
-+  adi,no-ref-current-limit:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      When this flag is present, the REF Overvoltage Reduced Current protection
-+      is disabled.
-+
-+  adi,no-ref-high-z:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Enable this flag if the ref-supply requires Reference Input High-Z Mode
-+      to be disabled for proper operation.
-+
-+  cnv-gpios:
-+    description: The Convert Input (CNV). If omitted, CNV is tied to SPI CS.
-+    maxItems: 1
-+
-+  reset-gpios:
-+    description: The Reset Input (RESET). Should be configured GPIO_ACTIVE_LOW.
-+    maxItems: 1
-+
-+  interrupts:
-+    minItems: 1
-+    items:
-+      - description: Signal coming from the BSY_ALT_GP0 pin (ALERT or BUSY).
-+      - description: Signal coming from the GP2 pin (ALERT).
-+      - description: Signal coming from the GP3 pin (BUSY).
-+
-+  interrupt-names:
-+    minItems: 1
-+    items:
-+      - const: gp0
-+      - const: gp2
-+      - const: gp3
-+
-+  gpio-controller: true
-+
-+  "#gpio-cells":
-+    const: 2
-+    description: |
-+      The first cell is the GPn number: 0 to 3.
-+      The second cell takes standard GPIO flags.
-+
-+  "#address-cells":
-+    const: 1
-+
-+  "#size-cells":
-+    const: 0
-+
-+patternProperties:
-+  "^in(?:[13579]|1[135])-supply$":
-+    description:
-+      Optional voltage supply for odd numbered channels when they are used as
-+      the negative input for a pseudo-differential channel.
-+
-+  "^channel@[0-9a-f]$":
-+    type: object
-+    $ref: adc.yaml
-+    unevaluatedProperties: false
-+    description:
-+      Describes each individual channel. In addition the properties defined
-+      below, bipolar from adc.yaml is also supported.
-+
-+    properties:
-+      reg:
-+        maximum: 15
-+
-+      common-mode-channel:
-+        description:
-+          Describes the common mode channel for single channels. 0xFF is REFGND
-+          and OxFE is COM. Macros are available for these values in
-+          dt-bindings/iio/adi,ad4695.h. Values 1 to 15 correspond to INx inputs.
-+          Only odd numbered INx inputs can be used as common mode channels.
-+        items:
-+          enum: [1, 3, 5, 7, 9, 11, 13, 15, 0xFE, 0xFF]
-+        default: 0xFF
-+
-+      adi,no-high-z:
-+        $ref: /schemas/types.yaml#/definitions/flag
-+        description:
-+          Enable this flag if the input pin requires the Analog Input High-Z
-+          Mode to be disabled for proper operation.
-+
-+    required:
-+      - reg
-+
-+    allOf:
-+      # bipolar mode can't be used with REFGND
-+      - if:
-+          properties:
-+            common-mode-channel:
-+              const: 0xFF
-+        then:
-+          properties:
-+            bipolar: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - avdd-supply
-+  - vio-supply
-+
-+allOf:
-+  - oneOf:
-+      - required:
-+          - ldo-in-supply
-+      - required:
-+          - vdd-supply
-+
-+  - oneOf:
-+      - required:
-+          - ref-supply
-+      - required:
-+          - refin-supply
-+
-+  # the internal reference buffer always requires high-z mode
-+  - if:
-+      required:
-+        - refin-supply
-+    then:
-+      properties:
-+        adi,no-ref-high-z: false
-+
-+  # limit channels for 8-channel chips
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad4697
-+              - adi,ad4698
-+    then:
-+      patternProperties:
-+        "^in(?:9|1[135])-supply$": false
-+        "^channel@[0-7]$":
-+          properties:
-+            reg:
-+              maximum: 7
-+            common-mode-channel:
-+              items:
-+                enum: [1, 3, 5, 7, 0xFE, 0xFF]
-+        "^channel@[8-9a-f]$": false
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/iio/adi,ad4695.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+            compatible = "adi,ad4695";
-+            reg = <0>;
-+            spi-cpol;
-+            spi-cpha;
-+            spi-max-frequency = <80000000>;
-+            avdd-supply = <&power_supply>;
-+            ldo-in-supply = <&power_supply>;
-+            vio-supply = <&io_supply>;
-+            refin-supply = <&supply_5V>;
-+            com-supply = <&supply_2V5>;
-+            in3-supply = <&supply_2V5>;
-+            reset-gpios = <&gpio 1 GPIO_ACTIVE_LOW>;
-+
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            /* Pseudo-differential channel between IN0 and REFGND. */
-+            channel@0 {
-+                reg = <0>;
-+            };
-+
-+            /* Pseudo-differential channel between IN1 and COM. */
-+            channel@1 {
-+                reg = <1>;
-+                common-mode-channel = <AD4695_COMMON_MODE_COM>;
-+                bipolar;
-+            };
-+
-+            /* Pseudo-differential channel between IN2 and IN3. */
-+            channel@2 {
-+                reg = <2>;
-+                common-mode-channel = <3>;
-+                bipolar;
-+            };
-+        };
-+    };
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 06ecfa64a39a..4aea2efd307d 100644
+index 4aea2efd307d..1e97a4b929c2 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1208,6 +1208,16 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
- F:	drivers/iio/adc/ad4130.c
+@@ -1216,6 +1216,7 @@ L:	linux-iio@vger.kernel.org
+ S:	Supported
+ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
++F:	drivers/iio/adc/ad4695.c
+ F:	include/dt-bindings/iio/adi,ad4695.h
  
-+ANALOG DEVICES INC AD4695 DRIVER
-+M:	Michael Hennerich <michael.hennerich@analog.com>
-+M:	Nuno Sá <nuno.sa@analog.com>
-+R:	David Lechner <dlechner@baylibre.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
-+F:	include/dt-bindings/iio/adi,ad4695.h
-+
  ANALOG DEVICES INC AD7091R DRIVER
- M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
- L:	linux-iio@vger.kernel.org
-diff --git a/include/dt-bindings/iio/adi,ad4695.h b/include/dt-bindings/iio/adi,ad4695.h
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index f60fe85a30d5..81464bb209ea 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -36,6 +36,17 @@ config AD4130
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called ad4130.
+ 
++config AD4695
++	tristate "Analog Device AD4695 ADC Driver"
++	depends on SPI
++	select REGMAP_SPI
++	help
++	  Say yes here to build support for Analog Devices AD4695 and similar
++	  analog to digital converters (ADC).
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called ad4695.
++
+ config AD7091R
+ 	tristate
+ 
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index d370e066544e..b1bda281c10f 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -7,6 +7,7 @@
+ obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
+ obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
+ obj-$(CONFIG_AD4130) += ad4130.o
++obj-$(CONFIG_AD4695) += ad4695.o
+ obj-$(CONFIG_AD7091R) += ad7091r-base.o
+ obj-$(CONFIG_AD7091R5) += ad7091r5.o
+ obj-$(CONFIG_AD7091R8) += ad7091r8.o
+diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
 new file mode 100644
-index 000000000000..9fbef542bf67
+index 000000000000..b427731e8c81
 --- /dev/null
-+++ b/include/dt-bindings/iio/adi,ad4695.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
++++ b/drivers/iio/adc/ad4695.c
+@@ -0,0 +1,719 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * SPI ADC driver for Analog Devices Inc. AD4695 and similar chips
++ *
++ * https://www.analog.com/en/products/ad4695.html
++ * https://www.analog.com/en/products/ad4696.html
++ * https://www.analog.com/en/products/ad4697.html
++ * https://www.analog.com/en/products/ad4698.html
++ *
++ * Copyright 2024 Analog Devices Inc.
++ * Copyright 2024 BayLibre, SAS
++ */
 +
-+#ifndef _DT_BINDINGS_ADI_AD4695_H
-+#define _DT_BINDINGS_ADI_AD4695_H
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/compiler.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/gpio/consumer.h>
++#include <linux/iio/iio.h>
++#include <linux/property.h>
++#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++#include <linux/units.h>
 +
-+#define AD4695_COMMON_MODE_REFGND	0xFF
-+#define AD4695_COMMON_MODE_COM		0xFE
++#include <dt-bindings/iio/adi,ad4695.h>
 +
-+#endif /* _DT_BINDINGS_ADI_AD4695_H */
++/* AD4695 registers */
++#define AD4695_REG_SPI_CONFIG_A				0x0000
++#define   AD4695_REG_SPI_CONFIG_A_SW_RST		  (BIT(7) | BIT(0))
++#define AD4695_REG_SPI_CONFIG_B				0x0001
++#define   AD4695_REG_SPI_CONFIG_B_INST_MODE		  BIT(7)
++#define AD4695_REG_DEVICE_TYPE				0x0003
++#define AD4695_REG_SCRATCH_PAD				0x000A
++#define AD4695_REG_VENDOR_L				0x000C
++#define AD4695_REG_VENDOR_H				0x000D
++#define AD4695_REG_LOOP_MODE				0x000E
++#define AD4695_REG_SPI_CONFIG_C				0x0010
++#define   AD4695_REG_SPI_CONFIG_C_MB_STRICT		  BIT(7)
++#define AD4695_REG_SPI_STATUS				0x0011
++#define AD4695_REG_STATUS				0x0014
++#define AD4695_REG_ALERT_STATUS1			0x0015
++#define AD4695_REG_ALERT_STATUS2			0x0016
++#define AD4695_REG_CLAMP_STATUS				0x001A
++#define AD4695_REG_SETUP				0x0020
++#define   AD4695_REG_SETUP_LDO_EN			  BIT(4)
++#define   AD4695_REG_SETUP_SPI_MODE			  BIT(2)
++#define   AD4695_REG_SETUP_SPI_CYC_CTRL			  BIT(1)
++#define AD4695_REG_REF_CTRL				0x0021
++#define   AD4695_REG_REF_CTRL_OV_MODE			  BIT(7)
++#define   AD4695_REG_REF_CTRL_VREF_SET			  GENMASK(4, 2)
++#define   AD4695_REG_REF_CTRL_REFHIZ_EN			  BIT(1)
++#define   AD4695_REG_REF_CTRL_REFBUF_EN			  BIT(0)
++#define AD4695_REG_SEQ_CTRL				0x0022
++#define   AD4695_REG_SEQ_CTRL_STD_SEQ_EN		  BIT(7)
++#define   AD4695_REG_SEQ_CTRL_NUM_SLOTS_AS		  GENMASK(6, 0)
++#define AD4695_REG_AC_CTRL				0x0023
++#define AD4695_REG_STD_SEQ_CONFIG			0x0024
++#define AD4695_REG_GPIO_CTRL				0x0026
++#define AD4695_REG_GP_MODE				0x0027
++#define AD4695_REG_TEMP_CTRL				0x0029
++#define AD4695_REG_CONFIG_IN(n)				(0x0030 | (n))
++#define   AD4695_REG_CONFIG_IN_MODE			  BIT(6)
++#define   AD4695_REG_CONFIG_IN_PAIR			  GENMASK(5, 4)
++#define   AD4695_REG_CONFIG_IN_AINHIGHZ_EN		  BIT(3)
++#define AD4695_REG_UPPER_IN(n)				(0x0040 | (2 * (n)))
++#define AD4695_REG_LOWER_IN(n)				(0x0060 | (2 * (n)))
++#define AD4695_REG_HYST_IN(n)				(0x0080 | (2 * (n)))
++#define AD4695_REG_OFFSET_IN(n)				(0x00A0 | (2 * (n)))
++#define AD4695_REG_GAIN_IN(n)				(0x00C0 | (2 * (n)))
++#define AD4695_REG_AS_SLOT(n)				(0x0100 | (n))
++#define   AD4695_REG_AS_SLOT_INX			  GENMASK(3, 0)
++#define AD4695_MAX_REG					0x017F
++
++/* Conversion mode commands */
++#define AD4695_CMD_EXIT_CNV_MODE	0x0A
++#define AD4695_CMD_TEMP_CHAN		0x0F
++#define AD4695_CMD_VOLTAGE_CHAN(n)	(0x10 | (n))
++
++/* timing specs */
++#define AD4695_T_CONVERT_NS		415
++#define AD4695_T_WAKEUP_HW_MS		3
++#define AD4695_T_WAKEUP_SW_MS		3
++#define AD4695_T_REFBUF_MS		100
++#define AD4695_REG_ACCESS_SCLK_HZ	(10 * MEGA)
++
++#define AD4695_MAX_CHANNELS		16
++
++enum ad4695_in_pair {
++	AD4695_IN_PAIR_REFGND,
++	AD4695_IN_PAIR_COM,
++	AD4695_IN_PAIR_EVEN_ODD,
++};
++
++struct ad4695_chip_info {
++	const char *name;
++	int max_sample_rate;
++	u8 num_voltage_inputs;
++};
++
++struct ad4695_channel_config {
++	unsigned int channel;
++	bool highz_en;
++	bool bipolar;
++	enum ad4695_in_pair pin_pairing;
++	unsigned int common_mode_mv;
++};
++
++struct ad4695_state {
++	struct spi_device *spi;
++	struct regmap *regmap;
++	struct gpio_desc *reset_gpio;
++	struct iio_chan_spec iio_chan[AD4695_MAX_CHANNELS + 1];
++	struct ad4695_channel_config channels_cfg[AD4695_MAX_CHANNELS];
++	const struct ad4695_chip_info *chip_info;
++	/* Reference voltage. */
++	unsigned int vref_mv;
++	/* Common mode input pin voltage. */
++	unsigned int com_mv;
++	/* Raw conversion data received. */
++	u16 raw_data __aligned(IIO_DMA_MINALIGN);
++	/* Commands to send for single conversion. */
++	u16 cnv_cmd;
++	u8 cnv_cmd2;
++};
++
++static const struct regmap_range ad4695_regmap_rd_ranges[] = {
++	regmap_reg_range(AD4695_REG_SPI_CONFIG_A, AD4695_REG_SPI_CONFIG_B),
++	regmap_reg_range(AD4695_REG_DEVICE_TYPE, AD4695_REG_DEVICE_TYPE),
++	regmap_reg_range(AD4695_REG_SCRATCH_PAD, AD4695_REG_SCRATCH_PAD),
++	regmap_reg_range(AD4695_REG_VENDOR_L, AD4695_REG_LOOP_MODE),
++	regmap_reg_range(AD4695_REG_SPI_CONFIG_C, AD4695_REG_SPI_STATUS),
++	regmap_reg_range(AD4695_REG_STATUS, AD4695_REG_ALERT_STATUS2),
++	regmap_reg_range(AD4695_REG_CLAMP_STATUS, AD4695_REG_CLAMP_STATUS),
++	regmap_reg_range(AD4695_REG_SETUP, AD4695_REG_TEMP_CTRL),
++	regmap_reg_range(AD4695_REG_CONFIG_IN(0), AD4695_MAX_REG),
++};
++
++static const struct regmap_access_table ad4695_regmap_rd_table = {
++	.yes_ranges = ad4695_regmap_rd_ranges,
++	.n_yes_ranges = ARRAY_SIZE(ad4695_regmap_rd_ranges),
++};
++
++static const struct regmap_range ad4695_regmap_wr_ranges[] = {
++	regmap_reg_range(AD4695_REG_SPI_CONFIG_A, AD4695_REG_SPI_CONFIG_B),
++	regmap_reg_range(AD4695_REG_SCRATCH_PAD, AD4695_REG_SCRATCH_PAD),
++	regmap_reg_range(AD4695_REG_LOOP_MODE, AD4695_REG_LOOP_MODE),
++	regmap_reg_range(AD4695_REG_SPI_CONFIG_C, AD4695_REG_SPI_STATUS),
++	regmap_reg_range(AD4695_REG_SETUP, AD4695_REG_TEMP_CTRL),
++	regmap_reg_range(AD4695_REG_CONFIG_IN(0), AD4695_MAX_REG),
++};
++
++static const struct regmap_access_table ad4695_regmap_wr_table = {
++	.yes_ranges = ad4695_regmap_wr_ranges,
++	.n_yes_ranges = ARRAY_SIZE(ad4695_regmap_wr_ranges),
++};
++
++static const struct regmap_config ad4695_regmap_config = {
++	.name = "ad4695",
++	.reg_bits = 16,
++	.val_bits = 8,
++	.max_register = AD4695_MAX_REG,
++	.rd_table = &ad4695_regmap_rd_table,
++	.wr_table = &ad4695_regmap_wr_table,
++	.can_multi_write = true,
++};
++
++static const struct iio_chan_spec ad4695_channel_template = {
++	.type = IIO_VOLTAGE,
++	.indexed = 1,
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++			      BIT(IIO_CHAN_INFO_SCALE) |
++			      BIT(IIO_CHAN_INFO_OFFSET),
++	.scan_type = {
++		.sign = 'u',
++		.realbits = 16,
++		.storagebits = 16,
++	},
++};
++
++static const struct iio_chan_spec ad4695_temp_channel_template = {
++	.address = AD4695_CMD_TEMP_CHAN,
++	.type = IIO_TEMP,
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++			      BIT(IIO_CHAN_INFO_SCALE) |
++			      BIT(IIO_CHAN_INFO_OFFSET),
++	.scan_type = {
++		.sign = 's',
++		.realbits = 16,
++		.storagebits = 16,
++	},
++};
++
++static const char * const ad4695_power_supplies[] = {
++	"avdd", "vio"
++};
++
++static const struct ad4695_chip_info ad4695_chip_info = {
++	.name = "ad4695",
++	.max_sample_rate = 500 * KILO,
++	.num_voltage_inputs = 16,
++};
++
++static const struct ad4695_chip_info ad4696_chip_info = {
++	.name = "ad4696",
++	.max_sample_rate = 1 * MEGA,
++	.num_voltage_inputs = 16,
++};
++
++static const struct ad4695_chip_info ad4697_chip_info = {
++	.name = "ad4697",
++	.max_sample_rate = 500 * KILO,
++	.num_voltage_inputs = 8,
++};
++
++static const struct ad4695_chip_info ad4698_chip_info = {
++	.name = "ad4698",
++	.max_sample_rate = 1 * MEGA,
++	.num_voltage_inputs = 8,
++};
++
++/**
++ * ad4695_set_single_cycle_mode - Set the device in single cycle mode
++ * @st: The AD4695 state
++ * @channel: The first channel to read
++ *
++ * As per the datasheet, to enable single cycle mode, we need to set
++ * STD_SEQ_EN=0, NUM_SLOTS_AS=0 and CYC_CTRL=1 (Table 15). Setting SPI_MODE=1
++ * triggers the first conversion using the channel in AS_SLOT0.
++ *
++ * Context: can sleep, must be called with iio_device_claim_direct held
++ * Return: 0 on success, a negative error code on failure
++ */
++static int ad4695_set_single_cycle_mode(struct ad4695_state *st,
++					unsigned int channel)
++{
++	int ret;
++
++	ret = regmap_clear_bits(st->regmap, AD4695_REG_SEQ_CTRL,
++				AD4695_REG_SEQ_CTRL_STD_SEQ_EN |
++				AD4695_REG_SEQ_CTRL_NUM_SLOTS_AS);
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4695_REG_AS_SLOT(0),
++			   FIELD_PREP(AD4695_REG_AS_SLOT_INX, channel));
++	if (ret)
++		return ret;
++
++	return regmap_set_bits(st->regmap, AD4695_REG_SETUP,
++			       AD4695_REG_SETUP_SPI_MODE |
++			       AD4695_REG_SETUP_SPI_CYC_CTRL);
++}
++
++static int ad4695_set_ref_voltage(struct ad4695_state *st, int vref_mv)
++{
++	u8 val;
++
++	if (vref_mv >= 2400 && vref_mv <= 2750)
++		val = 0;
++	else if (vref_mv > 2750 && vref_mv <= 3250)
++		val = 1;
++	else if (vref_mv > 3250 && vref_mv <= 3750)
++		val = 2;
++	else if (vref_mv > 3750 && vref_mv <= 4500)
++		val = 3;
++	else if (vref_mv > 4500 && vref_mv <= 5100)
++		val = 4;
++	else
++		return -EINVAL;
++
++	return regmap_update_bits(st->regmap, AD4695_REG_REF_CTRL,
++				  AD4695_REG_REF_CTRL_VREF_SET,
++				  FIELD_PREP(AD4695_REG_REF_CTRL_VREF_SET, val));
++}
++
++static int ad4695_write_chn_cfg(struct ad4695_state *st,
++				struct ad4695_channel_config *cfg)
++{
++	u32 mask, val;
++
++	mask = AD4695_REG_CONFIG_IN_MODE;
++	val = FIELD_PREP(AD4695_REG_CONFIG_IN_MODE, cfg->bipolar ? 1 : 0);
++
++	mask |= AD4695_REG_CONFIG_IN_PAIR;
++	val |= FIELD_PREP(AD4695_REG_CONFIG_IN_PAIR, cfg->pin_pairing);
++
++	mask |= AD4695_REG_CONFIG_IN_AINHIGHZ_EN;
++	val |= FIELD_PREP(AD4695_REG_CONFIG_IN_AINHIGHZ_EN, cfg->highz_en ? 1 : 0);
++
++	return regmap_update_bits(st->regmap, AD4695_REG_CONFIG_IN(cfg->channel),
++				  mask, val);
++}
++
++/**
++ * ad4695_read_one_sample - Read a single sample using single-cycle mode
++ * @st: The AD4695 state
++ * @address: The address of the channel to read
++ *
++ * Upon successful return, the sample will be stored in `st->raw_data`.
++ *
++ * Context: can sleep, must be called with iio_device_claim_direct held
++ * Return: 0 on success, a negative error code on failure
++ */
++static int ad4695_read_one_sample(struct ad4695_state *st, unsigned int address)
++{
++	struct spi_transfer xfer[2] = { };
++	int ret, i = 0;
++
++	ret = ad4695_set_single_cycle_mode(st, address);
++	if (ret)
++		return ret;
++
++	/*
++	 * Setting the first channel to the temperature channel isn't supported
++	 * in single-cycle mode, so we have to do an extra xfer to read the
++	 * temperature.
++	 */
++	if (address == AD4695_CMD_TEMP_CHAN) {
++		/* We aren't reading, so we can make this a short xfer. */
++		st->cnv_cmd2 = AD4695_CMD_TEMP_CHAN << 3;
++		xfer[0].tx_buf = &st->cnv_cmd2;
++		xfer[0].len = 1;
++		xfer[0].cs_change = 1;
++		xfer[0].cs_change_delay.value = AD4695_T_CONVERT_NS;
++		xfer[0].cs_change_delay.unit = SPI_DELAY_UNIT_NSECS;
++
++		i = 1;
++	}
++
++	/* Then read the result and exit conversion mode. */
++	st->cnv_cmd = AD4695_CMD_EXIT_CNV_MODE << 11;
++	xfer[i].bits_per_word = 16;
++	xfer[i].tx_buf = &st->cnv_cmd;
++	xfer[i].rx_buf = &st->raw_data;
++	xfer[i].len = 2;
++
++	return spi_sync_transfer(st->spi, xfer, i + 1);
++}
++
++static int ad4695_read_raw(struct iio_dev *indio_dev,
++			   struct iio_chan_spec const *chan,
++			   int *val, int *val2, long mask)
++{
++	struct ad4695_state *st = iio_priv(indio_dev);
++	struct ad4695_channel_config *cfg = &st->channels_cfg[chan->scan_index];
++	u8 realbits = chan->scan_type.realbits;
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++			ret = ad4695_read_one_sample(st, chan->address);
++			if (ret)
++				return ret;
++
++			if (chan->scan_type.sign == 's')
++				*val = sign_extend32(st->raw_data, realbits - 1);
++			else
++				*val = st->raw_data;
++
++			return IIO_VAL_INT;
++		}
++		unreachable();
++	case IIO_CHAN_INFO_SCALE:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			*val = st->vref_mv;
++			*val2 = chan->scan_type.realbits;
++			return IIO_VAL_FRACTIONAL_LOG2;
++		case IIO_TEMP:
++			/* T_scale (°C) = raw * V_REF (mV) / (-1.8 mV/°C * 2^16) */
++			*val = st->vref_mv * -556;
++			*val2 = 16;
++			return IIO_VAL_FRACTIONAL_LOG2;
++		default:
++			return -EINVAL;
++		}
++	case IIO_CHAN_INFO_OFFSET:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			if (cfg->pin_pairing == AD4695_IN_PAIR_COM)
++				*val = st->com_mv * (1 << realbits) / st->vref_mv;
++			else if (cfg->pin_pairing == AD4695_IN_PAIR_EVEN_ODD)
++				*val = cfg->common_mode_mv * (1 << realbits) / st->vref_mv;
++			else
++				*val = 0;
++
++			return IIO_VAL_INT;
++		case IIO_TEMP:
++			/* T_offset (°C) = -725 mV / (-1.8 mV/°C) */
++			/* T_offset (raw) = T_offset (°C) * (-1.8 mV/°C) * 2^16 / V_REF (mV) */
++			*val = -47513600;
++			*val2 = st->vref_mv;
++			return IIO_VAL_FRACTIONAL;
++		default:
++			return -EINVAL;
++		}
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad4695_debugfs_reg_access(struct iio_dev *indio_dev, unsigned int reg,
++				     unsigned int writeval, unsigned int *readval)
++{
++	struct ad4695_state *st = iio_priv(indio_dev);
++
++	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++		if (readval)
++			return regmap_read(st->regmap, reg, readval);
++
++		return regmap_write(st->regmap, reg, writeval);
++	}
++
++	unreachable();
++}
++
++static const struct iio_info ad4695_info = {
++	.read_raw = &ad4695_read_raw,
++	.debugfs_reg_access = &ad4695_debugfs_reg_access,
++};
++
++static int ad4695_parse_channel_cfg(struct ad4695_state *st)
++{
++	struct device *dev = &st->spi->dev;
++	struct ad4695_channel_config *chan_cfg;
++	struct iio_chan_spec *iio_chan;
++	int ret, i;
++
++	/* populate defaults */
++	for (i = 0; i < st->chip_info->num_voltage_inputs; i++) {
++		chan_cfg = &st->channels_cfg[i];
++		iio_chan = &st->iio_chan[i];
++
++		chan_cfg->highz_en = true;
++		chan_cfg->channel = i;
++
++		*iio_chan = ad4695_channel_template;
++		iio_chan->channel = i;
++		iio_chan->scan_index = i;
++		iio_chan->address = AD4695_CMD_VOLTAGE_CHAN(i);
++	}
++
++	/* modify based on firmware description */
++	device_for_each_child_node_scoped(dev, child) {
++		u32 reg, val;
++
++		ret = fwnode_property_read_u32(child, "reg", &reg);
++		if (ret)
++			return dev_err_probe(dev, ret,
++				"failed to read reg property (%s)\n",
++				fwnode_get_name(child));
++
++		if (reg >= st->chip_info->num_voltage_inputs)
++			return dev_err_probe(dev, -EINVAL,
++				"reg out of range (%s)\n",
++				fwnode_get_name(child));
++
++		iio_chan = &st->iio_chan[reg];
++		chan_cfg = &st->channels_cfg[reg];
++
++		chan_cfg->highz_en = !fwnode_property_read_bool(child, "adi,no-high-z");
++		chan_cfg->bipolar = fwnode_property_read_bool(child, "bipolar");
++
++		ret = fwnode_property_read_u32(child, "common-mode-channel", &val);
++		if (ret && ret != -EINVAL)
++			return dev_err_probe(dev, ret,
++				"failed to read common-mode-channel (%s)\n",
++				fwnode_get_name(child));
++
++		if (ret == -EINVAL || val == AD4695_COMMON_MODE_REFGND)
++			chan_cfg->pin_pairing = AD4695_IN_PAIR_REFGND;
++		else if (val == AD4695_COMMON_MODE_COM)
++			chan_cfg->pin_pairing = AD4695_IN_PAIR_COM;
++		else
++			chan_cfg->pin_pairing = AD4695_IN_PAIR_EVEN_ODD;
++
++		if (chan_cfg->pin_pairing == AD4695_IN_PAIR_EVEN_ODD &&
++		    val % 2 == 0)
++			return dev_err_probe(dev, -EINVAL,
++				"common-mode-channel must be odd number (%s)\n",
++				fwnode_get_name(child));
++
++		if (chan_cfg->pin_pairing == AD4695_IN_PAIR_EVEN_ODD &&
++		    val != reg + 1)
++			return dev_err_probe(dev, -EINVAL,
++				"common-mode-channel must be next consecutive channel (%s)\n",
++				fwnode_get_name(child));
++
++		if (chan_cfg->pin_pairing == AD4695_IN_PAIR_EVEN_ODD) {
++			char name[5];
++
++			snprintf(name, sizeof(name), "in%d", reg + 1);
++
++			ret = devm_regulator_get_enable_read_voltage(dev, name);
++			if (ret < 0)
++				return dev_err_probe(dev, ret,
++					"failed to get %s voltage (%s)\n",
++					name, fwnode_get_name(child));
++
++			chan_cfg->common_mode_mv = ret / 1000;
++		}
++
++		if (chan_cfg->bipolar && chan_cfg->pin_pairing == AD4695_IN_PAIR_REFGND)
++			return dev_err_probe(dev, -EINVAL,
++				"bipolar mode is not available for inputs paired with REFGND (%s).\n",
++				fwnode_get_name(child));
++
++		if (chan_cfg->bipolar)
++			iio_chan->scan_type.sign = 's';
++
++		ret = ad4695_write_chn_cfg(st, chan_cfg);
++		if (ret)
++			return ret;
++	}
++
++	/* Temperature channel must be next scan index after voltage channels. */
++	st->iio_chan[i] = ad4695_temp_channel_template;
++	st->iio_chan[i].scan_index = i;
++
++	return 0;
++}
++
++static int ad4695_probe(struct spi_device *spi)
++{
++	struct device *dev = &spi->dev;
++	struct ad4695_state *st;
++	struct iio_dev *indio_dev;
++	struct gpio_desc *cnv_gpio;
++	bool use_internal_ldo_supply;
++	bool use_internal_ref_buffer;
++	int ret;
++
++	cnv_gpio = devm_gpiod_get_optional(dev, "cnv", GPIOD_OUT_LOW);
++	if (IS_ERR(cnv_gpio))
++		return dev_err_probe(dev, PTR_ERR(cnv_gpio), "Failed to get CNV GPIO\n");
++
++	/* Driver currently requires CNV pin to be connected to SPI CS */
++	if (cnv_gpio)
++		return dev_err_probe(dev, -ENODEV, "CNV GPIO is not supported\n");
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++	st->spi = spi;
++
++	st->chip_info = spi_get_device_match_data(spi);
++	if (!st->chip_info)
++		return -EINVAL;
++
++	/* Registers cannot be read at the max allowable speed */
++	spi->max_speed_hz = AD4695_REG_ACCESS_SCLK_HZ;
++
++	st->regmap = devm_regmap_init_spi(spi, &ad4695_regmap_config);
++	if (IS_ERR(st->regmap))
++		return dev_err_probe(dev, PTR_ERR(st->regmap), "Failed to initialize regmap\n");
++
++	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(ad4695_power_supplies),
++					     ad4695_power_supplies);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to enable power supplies\n");
++
++	/* If LDO_IN supply is present, then we are using internal LDO. */
++	ret = devm_regulator_get_enable_optional(dev, "ldo-in");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "Failed to enable LDO_IN supply\n");
++
++	use_internal_ldo_supply = ret == 0;
++
++	if (!use_internal_ldo_supply) {
++		/* Otherwise we need an external VDD supply. */
++		ret = devm_regulator_get_enable(dev, "vdd");
++		if (ret < 0)
++			return dev_err_probe(dev, ret, "Failed to enable VDD supply\n");
++	}
++
++	/* If REFIN supply is given, then we are using internal buffer */
++	ret = devm_regulator_get_enable_read_voltage(dev, "refin");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "Failed to get REFIN voltage\n");
++
++	if (ret != -ENODEV) {
++		st->vref_mv = ret / 1000;
++		use_internal_ref_buffer = true;
++	} else {
++		/* Otherwise, we need an external reference. */
++		ret = devm_regulator_get_enable_read_voltage(dev, "ref");
++		if (ret < 0)
++			return dev_err_probe(dev, ret, "Failed to get REF voltage\n");
++
++		st->vref_mv = ret / 1000;
++		use_internal_ref_buffer = false;
++	}
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "com");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "Failed to get COM voltage\n");
++
++	st->com_mv = ret == -ENODEV ? 0 : ret / 1000;
++
++	/*
++	 * Reset the device using hardware reset if available or fall back to
++	 * software reset.
++	 */
++
++	st->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(st->reset_gpio))
++		return PTR_ERR(st->reset_gpio);
++
++	if (st->reset_gpio) {
++		gpiod_set_value(st->reset_gpio, 0);
++		msleep(AD4695_T_WAKEUP_HW_MS);
++	} else {
++		ret = regmap_write(st->regmap, AD4695_REG_SPI_CONFIG_A,
++				   AD4695_REG_SPI_CONFIG_A_SW_RST);
++		if (ret)
++			return ret;
++
++		msleep(AD4695_T_WAKEUP_SW_MS);
++	}
++
++	/* Needed for debugfs since it only access registers 1 byte at a time. */
++	ret = regmap_set_bits(st->regmap, AD4695_REG_SPI_CONFIG_C,
++			      AD4695_REG_SPI_CONFIG_C_MB_STRICT);
++	if (ret)
++		return ret;
++
++	/* Disable internal LDO if it isn't needed. */
++	ret = regmap_update_bits(st->regmap, AD4695_REG_SETUP,
++				 AD4695_REG_SETUP_LDO_EN,
++				 FIELD_PREP(AD4695_REG_SETUP_LDO_EN,
++					    use_internal_ldo_supply ? 1 : 0));
++	if (ret)
++		return ret;
++
++	/* configure reference supply */
++
++	if (device_property_present(dev, "adi,no-ref-current-limit")) {
++		ret = regmap_set_bits(st->regmap, AD4695_REG_REF_CTRL,
++				      AD4695_REG_REF_CTRL_OV_MODE);
++		if (ret)
++			return ret;
++	}
++
++	if (device_property_present(dev, "adi,no-ref-high-z")) {
++		if (use_internal_ref_buffer)
++			return dev_err_probe(dev, -EINVAL,
++				"Cannot disable high-Z mode for internal reference buffer\n");
++
++		ret = regmap_clear_bits(st->regmap, AD4695_REG_REF_CTRL,
++					AD4695_REG_REF_CTRL_REFHIZ_EN);
++		if (ret)
++			return ret;
++	}
++
++	ret = ad4695_set_ref_voltage(st, st->vref_mv);
++	if (ret)
++		return ret;
++
++	if (use_internal_ref_buffer) {
++		ret = regmap_set_bits(st->regmap, AD4695_REG_REF_CTRL,
++				      AD4695_REG_REF_CTRL_REFBUF_EN);
++		if (ret)
++			return ret;
++
++		/* Give the capacitor some time to charge up. */
++		msleep(AD4695_T_REFBUF_MS);
++	}
++
++	ret = ad4695_parse_channel_cfg(st);
++	if (ret)
++		return ret;
++
++	indio_dev->name = st->chip_info->name;
++	indio_dev->info = &ad4695_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->channels = st->iio_chan;
++	indio_dev->num_channels = st->chip_info->num_voltage_inputs + 1;
++
++	return devm_iio_device_register(dev, indio_dev);
++}
++
++static const struct spi_device_id ad4695_spi_id_table[] = {
++	{ .name = "ad4695", .driver_data = (kernel_ulong_t)&ad4695_chip_info },
++	{ .name = "ad4696", .driver_data = (kernel_ulong_t)&ad4696_chip_info },
++	{ .name = "ad4697", .driver_data = (kernel_ulong_t)&ad4697_chip_info },
++	{ .name = "ad4698", .driver_data = (kernel_ulong_t)&ad4698_chip_info },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, ad4695_spi_id_table);
++
++static const struct of_device_id ad4695_of_match_table[] = {
++	{ .compatible = "adi,ad4695", .data = &ad4695_chip_info, },
++	{ .compatible = "adi,ad4696", .data = &ad4696_chip_info, },
++	{ .compatible = "adi,ad4697", .data = &ad4697_chip_info, },
++	{ .compatible = "adi,ad4698", .data = &ad4698_chip_info, },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ad4695_of_match_table);
++
++static struct spi_driver ad4695_driver = {
++	.driver = {
++		.name = "ad4695",
++		.of_match_table = ad4695_of_match_table,
++	},
++	.probe = ad4695_probe,
++	.id_table = ad4695_spi_id_table,
++};
++module_spi_driver(ad4695_driver);
++
++MODULE_AUTHOR("Ramona Gradinariu <ramona.gradinariu@analog.com>");
++MODULE_AUTHOR("David Lechner <dlechner@baylibre.com>");
++MODULE_DESCRIPTION("Analog Devices AD4695 ADC driver");
++MODULE_LICENSE("GPL");
 
 -- 
 2.43.0

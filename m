@@ -1,109 +1,123 @@
-Return-Path: <linux-iio+bounces-7543-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7544-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEAF892FA9D
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 14:48:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AC792FC9D
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 16:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 718E51F21802
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 12:48:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 145D91C2239A
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 14:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7151A16F293;
-	Fri, 12 Jul 2024 12:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA5A170854;
+	Fri, 12 Jul 2024 14:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ll9xEbdL"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="nks7UVPQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.15.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2658313A86D;
-	Fri, 12 Jul 2024 12:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E171E4A9;
+	Fri, 12 Jul 2024 14:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720788487; cv=none; b=VO+zl09BpS8Vp1qS5srk7bz+qlwecRg7ZGXMOvgv8leX8mL8NVJQi1QZ6PWRAoaZXWBY8+NgevZwR9GrAUSfYzoRjtwLrJkmksIlaPeD/FvO+RvpJnrKfNSBMJNMqg6LITEWrN0PN0Vl9x2R3/zTycGQxxh0vjFXEGCGAdB3izs=
+	t=1720794815; cv=none; b=EfbtuUT2vwj11NkBsd3S/iwPzQYWPO6G9p1056gdQ2ER7v5RgQgj1u2CUIe5Uiz99MbFYUhRWo+0z+TapQdA9g1KF+r3jWpdpf91TRShUDM5lktc/b8oidcdv+gliV6CufKEhyL5HhmIaRcjvYrKhR3h5JerG8OK/gWYDBMVFys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720788487; c=relaxed/simple;
-	bh=46Q0ZvCymXTxS+vBDw0PBnbHl7pEy8ma/fSI/DbxI/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fbnGP/IWHFRI+c6gm+tam7k7MbKOqrAjo1DQ9rL/THJZZYS9E78+oH4fCURZWUmYpfnv7MhJbtgO2LX9wekAsMr0JklPJX/klzwlLRpNqI04PQaGTfPiS6TvZLGpivyqkvjBDaqQT7DpwpO1+Y5FLcWIww7gq7xVdnrz5ybZwIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ll9xEbdL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93573C32782;
-	Fri, 12 Jul 2024 12:48:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720788486;
-	bh=46Q0ZvCymXTxS+vBDw0PBnbHl7pEy8ma/fSI/DbxI/E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ll9xEbdLdzajib1VDz8l2rm/aHWCaDtTEulfWEWYQo7/KnF4Mk0LulGREBZDriOj7
-	 tqdtVLmtASSy0wxOJLX/7osVKGWtSsDYnWMRUKg2rsPo4F/3YWwcK8oeTYu1XjNeNJ
-	 xQUFOOnydeP2jhi2uxXNjafUlDT1q9aUPAlgnP08yDZvZS6SnFn4H78djC3UTtkIBW
-	 Hra2xHCFt+jWrD5PEt3XcAZl7KuDqXEOQ+jQjwlb4+SpaoESHVIsfZuQfdDCG9c0Os
-	 DiVXJLkFJ4BcPQLUNfNWFFzbiuhMwVaaMWmt2x8MDMtnqpLsqQ25Mz/29H/IJivVDs
-	 enAwf8KeDJvow==
-Date: Fri, 12 Jul 2024 06:48:05 -0600
-From: Rob Herring <robh@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, krzk+dt@kernel.org,
-	conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
-	ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
-	biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
-	semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 08/10] dt-bindings: iio: pressure: bmp085: Add
- interrupts for BMP3xx and BMP5xx devices
-Message-ID: <20240712124805.GA461461-robh@kernel.org>
-References: <20240711211558.106327-1-vassilisamir@gmail.com>
- <20240711211558.106327-9-vassilisamir@gmail.com>
+	s=arc-20240116; t=1720794815; c=relaxed/simple;
+	bh=z0ahnSbppYt7pmmF7PIuvpeQfD5WebtYXp3vsX/l3/8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=LOGDDsK7nkXYf0HnbXF1g9I0QDOLRVBmEaoqCAboRyPwNowOTxKutPQe9kJ/rm0v/KTwtBB4FNd0SH1+O5RkWA6KM2QZkeqBGjW+ZbpJXVdRQbJLO99M+FH8xtt5DjMlqx8kQlYRsJjhSSRDmug3It+rnXVDKAzuVEvyKr7PX1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=nks7UVPQ; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1720794792; x=1721399592; i=markus.elfring@web.de;
+	bh=hxuT+Hbd7wy8hEc4HWbbzcHkmuz5r+aDxi/+eSIYkro=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=nks7UVPQQOIV8NaVs+uRUWtJlePZd8jO5RKBspn3BRQ2gxA7WN2AFgS1CxfFvPFE
+	 lcfH0DSaO24AlSotJndPBEoSU3opXpx1EMYdEgvxdoNQfgY74hNtiCOUfmpD3DIt2
+	 8M8ilFS0nQ2Y8JBqB4Y5F/LrxbyIBFXjGqfgbe66uZBHMSLXmq+tQHPo97hoQTrW7
+	 AQkIoNlaSafOU0tzVVEToEiQzCCUD/LeySOWvHjYVBGBxLlsBC00YeaLHo2lCkx7e
+	 WF94FRUGKbn/xj9yU96UBW/w61xg3T1xUqHEIK843XffSBf0BONUve+FQb91ENFlk
+	 xWr+g0VHIo7kSt8NlA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MwR4D-1sBhvB15iH-00qrLJ; Fri, 12
+ Jul 2024 16:33:12 +0200
+Message-ID: <dc509d3a-7e25-49f3-94a2-5a6bb36f062d@web.de>
+Date: Fri, 12 Jul 2024 16:33:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240711211558.106327-9-vassilisamir@gmail.com>
+User-Agent: Mozilla Thunderbird
+To: shuaijie wang <wangshuaijie@awinic.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Waqar Hameed <waqar.hameed@axis.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, kangjiajun@awinic.com,
+ Nick Li <liweilei@awinic.com>
+References: <20240712113200.2468249-3-wangshuaijie@awinic.com>
+Subject: Re: [PATCH V3 2/2] Add support for Awinic proximity sensor
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240712113200.2468249-3-wangshuaijie@awinic.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:H4eKD3Uf3BiWxrVZItGUlQHqUbqukHshvVPZ1sli3mcpJPkqjN3
+ NUCi6quSvopxXguieyg8dn2k6yxTZnLppk6TKyzi1/fJpNpk4f7pe9ovOT7eFgCCfVHWNes
+ C29SUNLoLjU1sVOjXordv6yPOrxtqbwdPiWNCtG5fnU9/pURpxgnfhAOqJR0DwDrrl8DGjB
+ TMqP/t5z2ZK8FdSMt7ZUg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:op1lem1IDBY=;syVkAhnEwc2HUnMLJE8lKkQuPT7
+ 7j50q8aG7IHbM9M7bbRqVEDoJB8OXmCCtkP61ZZiyQ+4ULTSSLwH3c+mCui5Ljn8PPAy7e485
+ rupH36UbuZki4UKrFpx/N9n/aNsVT3RCVLflRxaBj6wJTIdG3DpTMmSb4MK7XtzcO2WkxpH+R
+ q1/zt9Wo5pf+HrEZv+Med2gfWiZMSDlJEHDMI6K3PDkxo2zNu39c1NnrgxdjG/Wuc/GTxSLTY
+ wml38XcrnL6B2+0UTRYXSgUJp8sPiXMvYCo9uejqOIqfjiXdMXUGvk5331cuAiUlPz4dL/4WU
+ 3gHPVE4NOKlKq71PNSMfpM0HzGdsiAUtmeYAh25KuOv0CBruSHx1Ngday01RZFxnUsXQFXmfu
+ H5iLD4K3F0u+fwfLkxDCM1n2kUvd5sV9P6T6tiH+6D4JEL3yBsd82rjn8Vg8aBRERBwr3p6Ig
+ SgcxSjiyzbxGZx8b4z10jKEisrf8+fD3zeiru6CAcyHkTsvp+vj5awTZbVxqalreCoMCNyGqM
+ G3Wk5TkIOOeG8lxc5viJ7+C3EOmeeEuFKk3tmu7vO4Sc2arAFCOXzCjknYSND4jiMl0/qLkfC
+ EZsI3siLpc2kDMScYq/+rd1AzniGk0pVpenc30NrJjispKx9OY0zttpyt9nRuw3U/NRD3SXQw
+ Oyh7o52iofyLIxzlFxjkRDp0owSrENQQO67w0Zgco0kG6ZXvtm+Q6ONevXcyfEUm0sDOvMO10
+ 1IzfvMiRTRTHNORDLgsP9tec4opqOgZC7wF7TNm6NYjq9hTlpBGqpNQK8K1odOqecnkg3K9ua
+ UJVNpf1VXIxK8D/FZrtHAW8A==
 
-On Thu, Jul 11, 2024 at 11:15:56PM +0200, Vasileios Amoiridis wrote:
-> Add interrupt options for BMP3xx and BMP5xx devices as well.
-> 
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> ---
->  .../devicetree/bindings/iio/pressure/bmp085.yaml    | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> index 6fda887ee9d4..f06f119963bc 100644
-> --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> @@ -48,9 +48,20 @@ properties:
->  
->    interrupts:
->      description:
-> -      interrupt mapping for IRQ (BMP085 only)
-> +      interrupt mapping for IRQ. Supported in BMP085, BMP3xx, BMP5xx
->      maxItems: 1
->  
-> +  interrupt-names:
-> +    maxItems: 1
-> +    items:
-> +      enum:
-> +        - DRDY
+Please add a subsystem specification to the message subject.
+
+
+=E2=80=A6
+> +++ b/drivers/iio/proximity/aw_sar.c
+> @@ -0,0 +1,1850 @@
+=E2=80=A6
+> +static ssize_t
+> +update_reg_store(struct device *dev, struct device_attribute *attr, con=
+st char *buf, size_t count)
+> +{
+=E2=80=A6
+> +	if (flag =3D=3D AW_TRUE) {
+> +		mutex_lock(&aw_sar_lock);
+> +		aw_sar_soft_reset(p_sar);
+> +		aw_sar_update_reg_set_func(p_sar);
+> +		mutex_unlock(&aw_sar_lock);
+> +	}
 > +
-> +  int-open-drain:
+> +	return count;
+> +}
+=E2=80=A6
 
-Use the existing 'drive-open-drain' property.
+Under which circumstances would you become interested to apply a statement
+like =E2=80=9Cguard(mutex)(&aw_sar_lock);=E2=80=9D?
+https://elixir.bootlin.com/linux/v6.10-rc7/source/include/linux/mutex.h#L1=
+96
 
-> +    desription:
-> +      set if the interrupt pin should be configured as open drain.
-> +      If not set, defaults to push-pull configuration.
-> +
->  required:
->    - compatible
->    - vddd-supply
-> -- 
-> 2.25.1
-> 
+Regards,
+Markus
 

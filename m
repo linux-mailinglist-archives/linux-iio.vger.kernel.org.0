@@ -1,273 +1,164 @@
-Return-Path: <linux-iio+bounces-7572-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7573-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC85B9300EF
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 21:23:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF009930110
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 21:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 775D51F22A0D
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:23:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C1F28195D
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978853D969;
-	Fri, 12 Jul 2024 19:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB353A8D2;
+	Fri, 12 Jul 2024 19:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="pZRdu8Ex"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bLENL5rZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05204087C;
-	Fri, 12 Jul 2024 19:22:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986B7381A4
+	for <linux-iio@vger.kernel.org>; Fri, 12 Jul 2024 19:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720812180; cv=none; b=YeAteRxP5eLAVGPpyKtK6gw4oixZ36ExFgcB9TQzEkk+LLsaSPl2HUreVDZ4FIuBhCGIKr0kCiavY05uhWWL9n9dMeUe/tcs222fofRtRf1PIYIKq108ZoNbA0ezzPgneGtgNKPWs4psSVNSIqUJHiYj/6X4pX6pTTbJP/IQoIA=
+	t=1720813423; cv=none; b=dK+ORBTpyEyZ8yJvAwY6wW+690kDhFttfVyxR2uDC4wvvc4oM8uw+c5My4pAztgu3WaucN1460W/ea/ltPAeYv5l+VwC8g7NxDiwY5z4p9tPBxVaZhtsA+wmet+vkSrMUNCBdRlF8E7slaj5NXkLYERIl6U/sGotGcb50cIc/Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720812180; c=relaxed/simple;
-	bh=g13WrOL9RR+0/33ECCCm/OP0ozcduPmhYTGxplJ9ERg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CiW+LgwZ65zbEWHJT/nttF9rQj4XqSXLGw32DANmqyeRQ5A/xpvEPMdDJM+H3nXLDrt7tBmhyvCYm4uvoczdO25qzWZ8hIt+Q4DomsYDiy7NUpNA8cwFlTgfXhiNX0zVxvjM9Xzt1ncMsNZzThpOilkxiaJK5ItYcYIrWUL9PRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=pZRdu8Ex; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46CDPxt5029770;
-	Fri, 12 Jul 2024 15:22:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=kwfRM
-	9rYU+1UHCv0jBGzjSFGOPdot3LEqLtZ1g1hwm4=; b=pZRdu8ExykrR4aoy2O4NY
-	fWsCXs1R1dRDAgqcw+ralqFYt7k0w6rlf3oPvTqPZAxjZTVm99Ri6fHea7LhyNdO
-	EcxQymsXYmfamOgOeOChnUGOHKl05vtK4/VyefzqM7heoheoCOiW2a1RFtzPeBDd
-	RTIZbAkYODQCmnoz0X9dJ9x+0QHz8gZ6+kLN7TWXzzZZ/o8qjxyRXuuFD5qRek8R
-	FvO1pfxfkbpTmUAa7g3Q8xIQUVcvsQlw9Ejj+Ko0OA3xNcMbjRzCOhapvGdGyNoh
-	0P+qJxn9lGxrW4buYwV0Qt4AprAYTwi8cISoaISqXZwI07G6WuCZ41ymB3L7Px5z
-	A==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 408fy4j8u1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jul 2024 15:22:43 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 46CJMgbN009453
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 12 Jul 2024 15:22:42 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 12 Jul
- 2024 15:22:41 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 12 Jul 2024 15:22:40 -0400
-Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.129])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 46CJMPEm004374;
-	Fri, 12 Jul 2024 15:22:27 -0400
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
-To: <broonie@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <nuno.sa@analog.com>, <dlechner@baylibre.com>, <corbet@lwn.net>,
-        <marcelo.schmitt1@gmail.com>
-CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v7 7/7] Documentation: Add AD4000 documentation
-Date: Fri, 12 Jul 2024 16:22:25 -0300
-Message-ID: <aeee5fd9deccf85beadecf58c9b938b97a3aeba5.1720810545.git.marcelo.schmitt@analog.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1720810545.git.marcelo.schmitt@analog.com>
-References: <cover.1720810545.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1720813423; c=relaxed/simple;
+	bh=1lEUspWAaO5u1XSmEkkpRCZaASP5SBuIUGMnwoj8aY4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pG95yXzHKh9EwumUfl3AtgyNUJdXXXZrQF+ItElE1KoWG/BzDF8QlYtPC75oRWzdRHTC/RG7Yr/lJ6XhpPJsbesbcC7LcgmcYNjG/0Pt0jEbKW6gST8da9+a+Z4uEeZbdEEkRuIV3rFEEjIVGjMX5pO6RcCD94Cb7dsbafBAz94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bLENL5rZ; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a77c25beae1so272643066b.2
+        for <linux-iio@vger.kernel.org>; Fri, 12 Jul 2024 12:43:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720813419; x=1721418219; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jdmhCOprl+my3R8CgZP6ngYaYIZyq201uioObhwKcnA=;
+        b=bLENL5rZ5aNqqbfRvgVtWWvJ6+r7lOnAq5pOe/wGhANz3o35o7V1kqAeSX7X6lNUQ8
+         dJRC+V11e+L3bPKcdzbYsDnUAId/bV02/tXxnX0MKGAiPgrx9bCaCRqSq1l0l+85Xdjz
+         pp0kRELmW8p+TmUDoYvHSP0ysTZaYXfwn/GE8E7KuT/fl7xtuSCu3MZNkJ2ok7WpFLh2
+         ROm7zAb3hZsKr/yPA9QTHokBzhhr1Foh/9924+8T8DxoFmLhVVk0ovfjsPv0B0epqOpb
+         IOUS57ssmMo4oxJcH4R3FV9fqDE4q/JuLXc3j4AtCzjtf5tzs/5O7TDeBkAHf8vQLvhd
+         RlMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720813419; x=1721418219;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jdmhCOprl+my3R8CgZP6ngYaYIZyq201uioObhwKcnA=;
+        b=h55VTex6sYfTVV6GVp9J6I1x7/uc94y3LdQTyHO9O8nE0Lw71mCDerbuwbIEoVk628
+         X+Mx5PR+wiJbO1/mFqPQES3OD3gaU7jt/+QR6v9hyEJvK9hJFr+4f5nGDZaSWzYVptJI
+         EiHAwBKGatDc9LmOPMDN1sxVcYGaBydg70KRjY3Kpje3mp/n9QXjcM4juD5LPp+HNyAf
+         bJF8hdkvAbHBg+JefSuhFoK6WX7qTJ+FSRgmWyAztFTlkEinmfPcBnoc5Nwmd4J0sOsj
+         oKfLBpD+7sZfCnacv+DnzkhAgOzhYkacBGhEmr+Vsxw133l0P4GCUjj/Fu37IIfqmBcS
+         4l/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUAft7AlvPwSk/qw+x2jYJJjjYgdj0wC6arrSh1ApPcVspFrWvx3wp19yxAAbPPjcBcRW7o1Ac22eZPtCBkXRWIj7tGclfYmHxV
+X-Gm-Message-State: AOJu0Yyz6M+kKpbUyVnG6HKCuKeQuu8mYWvdo67YIO8pvYJN/imMLmCd
+	s7Z9YvnTMo0bnnrKFBTfc42QUGylM7kIH02/Np0IFHm6mePokEdVi6RJXCMJ0So=
+X-Google-Smtp-Source: AGHT+IENsgMX+uB30BzFuKiY0VK7jTYuAcwlOSncj3lPj2Y1ijF/x3cXaWJqdaGwyXkblGalqYwh7Q==
+X-Received: by 2002:a17:907:38f:b0:a77:e48d:bad with SMTP id a640c23a62f3a-a780b6b1f20mr818567666b.32.1720813418498;
+        Fri, 12 Jul 2024 12:43:38 -0700 (PDT)
+Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a6bc8a2sm377290966b.15.2024.07.12.12.43.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Jul 2024 12:43:37 -0700 (PDT)
+Message-ID: <ec59e5a0-81c1-4a2a-be9d-b28fa63ee473@linaro.org>
+Date: Fri, 12 Jul 2024 21:43:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: ZMVklnvOaRqWegDOyEEWTTcHWmSutFYL
-X-Proofpoint-ORIG-GUID: ZMVklnvOaRqWegDOyEEWTTcHWmSutFYL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-12_15,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- suspectscore=0 adultscore=0 mlxscore=0 phishscore=0 mlxlogscore=999
- clxscore=1015 impostorscore=0 priorityscore=1501 lowpriorityscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407120130
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] ARM: dts: qcom: Add support for MBG TM for pm8775 on
+ SA8775P
+To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Amit Kucheria <amitk@kernel.org>,
+ Thara Gopinath <thara.gopinath@gmail.com>,
+ Bjorn Andersson <andersson@kernel.org>
+Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, Taniya Das
+ <quic_tdas@quicinc.com>, Jishnu Prakash <quic_jprakash@quicinc.com>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-pm@vger.kernel.org, Ajit Pandey <quic_ajipan@quicinc.com>,
+ Imran Shaik <quic_imrashai@quicinc.com>,
+ Jagadeesh Kona <quic_jkona@quicinc.com>
+References: <20240712-mbg-tm-support-v1-0-7d78bec920ca@quicinc.com>
+ <20240712-mbg-tm-support-v1-5-7d78bec920ca@quicinc.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240712-mbg-tm-support-v1-5-7d78bec920ca@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
----
- Documentation/iio/ad4000.rst | 131 +++++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst  |   1 +
- MAINTAINERS                  |   1 +
- 3 files changed, 133 insertions(+)
- create mode 100644 Documentation/iio/ad4000.rst
+On 12.07.2024 2:43 PM, Satya Priya Kakitapalli wrote:
+> Add support for MBG TM peripheral for pm8775 sail pmics on SA8775P.
+> 
+> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+> ---
+>  arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi | 120 ++++++++++++++++++++++++++++
+>  1 file changed, 120 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
+> index bd4f5f51e094..69910306885e 100644
+> --- a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
+> @@ -89,6 +89,62 @@ trip1 {
+>  				};
+>  			};
+>  		};
+> +
+> +		pmm8654au_0_mbg_tm: pmm8654au_0_mbg_tz {
+> +			polling-delay-passive = <100>;
+> +			polling-delay = <0>;
 
-diff --git a/Documentation/iio/ad4000.rst b/Documentation/iio/ad4000.rst
-new file mode 100644
-index 000000000000..de8fd3ae6e62
---- /dev/null
-+++ b/Documentation/iio/ad4000.rst
-@@ -0,0 +1,131 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+=============
-+AD4000 driver
-+=============
-+
-+Device driver for Analog Devices Inc. AD4000 series of ADCs.
-+
-+Supported devices
-+=================
-+
-+* `AD4000 <https://www.analog.com/AD4000>`_
-+* `AD4001 <https://www.analog.com/AD4001>`_
-+* `AD4002 <https://www.analog.com/AD4002>`_
-+* `AD4003 <https://www.analog.com/AD4003>`_
-+* `AD4004 <https://www.analog.com/AD4004>`_
-+* `AD4005 <https://www.analog.com/AD4005>`_
-+* `AD4006 <https://www.analog.com/AD4006>`_
-+* `AD4007 <https://www.analog.com/AD4007>`_
-+* `AD4008 <https://www.analog.com/AD4008>`_
-+* `AD4010 <https://www.analog.com/AD4010>`_
-+* `AD4011 <https://www.analog.com/AD4011>`_
-+* `AD4020 <https://www.analog.com/AD4020>`_
-+* `AD4021 <https://www.analog.com/AD4021>`_
-+* `AD4022 <https://www.analog.com/AD4022>`_
-+* `ADAQ4001 <https://www.analog.com/ADAQ4001>`_
-+* `ADAQ4003 <https://www.analog.com/ADAQ4003>`_
-+
-+Wiring connections
-+------------------
-+
-+Devices of the AD4000 series can be connected to the SPI host controller in a
-+few different modes.
-+
-+CS mode, 3-wire turbo mode
-+^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Datasheet "3-wire" mode is what most resembles standard SPI connection which,
-+for these devices, comprises of connecting the controller CS line to device CNV
-+pin and other SPI lines as usual. This configuration is (misleadingly) called
-+"CS Mode, 3-Wire Turbo Mode" connection in datasheets.
-+NOTE: The datasheet definition of 3-wire mode for the AD4000 series is NOT the
-+same of standard spi-3wire mode.
-+This is the only connection mode that allows configuration register access but
-+it requires the SPI controller to support the ``SPI_MOSI_IDLE_HIGH`` feature.
-+
-+Omit the ``adi,sdi-pin`` property in device tree to select this mode.
-+
-+::
-+
-+                                         +-------------+
-+     + ----------------------------------| SDO         |
-+     |                                   |             |
-+     |               +-------------------| CS          |
-+     |               v                   |             |
-+     |    +--------------------+         |     HOST    |
-+     |    |        CNV         |         |             |
-+     +--->| SDI   AD4000   SDO |-------->| SDI         |
-+          |        SCK         |         |             |
-+          +--------------------+         |             |
-+                    ^                    |             |
-+                    +--------------------| SCLK        |
-+                                         +-------------+
-+
-+CS mode, 3-wire, without busy indicator
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Another wiring configuration supported as "3-wire" mode has the SDI pin
-+hard-wired to digital input/output interface supply (VIO). In this setup, the
-+controller is not required to support ``SPI_MOSI_IDLE_HIGH`` but register access
-+is not possible. This connection mode saves one wire and works with any SPI
-+controller.
-+
-+Set the ``adi,sdi-pin`` device tree property to ``"high"`` to select this mode.
-+
-+::
-+
-+                                         +-------------+
-+                    +--------------------| CS          |
-+                    v                    |             |
-+    VIO   +--------------------+         |     HOST    |
-+     |    |        CNV         |         |             |
-+     +--->| SDI   AD4000   SDO |-------->| SDI         |
-+          |        SCK         |         |             |
-+          +--------------------+         |             |
-+                    ^                    |             |
-+                    +--------------------| SCLK        |
-+                                         +-------------+
-+
-+Alternatively, a GPIO may be connected to the device CNV pin. This is similar to
-+the previous wiring configuration but saves the use of a CS line.
-+
-+::
-+
-+                                         +-------------+
-+                    +--------------------| GPIO        |
-+                    v                    |             |
-+    VIO   +--------------------+         |     HOST    |
-+     |    |        CNV         |         |             |
-+     +--->| SDI   AD4000   SDO |-------->| SDI         |
-+          |        SCK         |         |             |
-+          +--------------------+         |             |
-+                    ^                    |             |
-+                    +--------------------| SCLK        |
-+                                         +-------------+
-+
-+CS mode, 4-wire without busy indicator
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+In datasheet "4-wire" mode, the controller CS line is connected to the ADC SDI
-+pin and a GPIO is connected to the ADC CNV pin. This connection mode may better
-+suit scenarios where multiple ADCs can share one CNV trigger.
-+
-+Set ``adi,sdi-pin`` to ``"cs"`` to select this mode.
-+
-+
-+::
-+
-+                                         +-------------+
-+     + ----------------------------------| CS          |
-+     |                                   |             |
-+     |               +-------------------| GPIO        |
-+     |               v                   |             |
-+     |    +--------------------+         |     HOST    |
-+     |    |        CNV         |         |             |
-+     +--->| SDI   AD4000   SDO |-------->| SDI         |
-+          |        SCK         |         |             |
-+          +--------------------+         |             |
-+                    ^                    |             |
-+                    +--------------------| SCLK        |
-+                                         +-------------+
-diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-index 9cb4c50cb20d..19722393d0a6 100644
---- a/Documentation/iio/index.rst
-+++ b/Documentation/iio/index.rst
-@@ -18,6 +18,7 @@ Industrial I/O Kernel Drivers
- .. toctree::
-    :maxdepth: 1
- 
-+   ad4000
-    ad7944
-    adis16475
-    adis16480
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 88c32e4364d9..b9dbf094ca84 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1205,6 +1205,7 @@ L:	linux-iio@vger.kernel.org
- S:	Supported
- W:	https://ez.analog.com/linux-software-drivers
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
-+F:	Documentation/iio/ad4000.rst
- F:	drivers/iio/adc/ad4000.c
- 
- ANALOG DEVICES INC AD4130 DRIVER
--- 
-2.43.0
+0 is the default polling delay, you can drop this
 
+Konrad
 

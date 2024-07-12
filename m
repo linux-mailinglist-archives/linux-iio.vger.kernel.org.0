@@ -1,64 +1,64 @@
-Return-Path: <linux-iio+bounces-7541-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7542-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C68B92FA8F
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 14:46:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E0C92FA93
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 14:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E394FB2235A
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 12:46:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EC4B1F22B91
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 12:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A24C16F855;
-	Fri, 12 Jul 2024 12:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B2717166A;
+	Fri, 12 Jul 2024 12:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eBIEwsE3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IJTjXy04"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D13D16F85B;
-	Fri, 12 Jul 2024 12:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA0B16F85B;
+	Fri, 12 Jul 2024 12:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720788307; cv=none; b=g5lHuvqBp0m9DsB5bYkE6u8cYHAMc7+9THOJp1aXI57TM/MrdCWCPDKGHxk0K74WmvO4cxA78rj8eNsLs2turq6jRR/p7E7qP2bfBBK4Pc9XeMI/0AU3S46pMZNG6gCNC7NPtRtaT8LpFQd0Xrt94w8g3bfK9kYpmdBoWmF4Cc0=
+	t=1720788315; cv=none; b=gf+Defsj8HUgKLbdauZ+XsNSyj4DWrdArBg/F6FAPerqyVLMKWe032eePvI+8diCrqt3tqIyrmJdRFPxaFXUmMfjAuofVkGBX75y1zYmeJu/2y9dLZTcB4DTZgQi7kCqW7iElVN/qQyt9MZRvvP25B0R5GCLXAGErMh11lxwSB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720788307; c=relaxed/simple;
-	bh=/NnIWX63FeKLVuoHGgZe6A4FAbULEhPeW8E6yv8jWHc=;
+	s=arc-20240116; t=1720788315; c=relaxed/simple;
+	bh=xT3vdgzfitnNc45nl9KNHLr746ozbECZ34w19TY+CLQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=RkXsQEbOO/FNS781mZ5Xehy96iYHOpoJSxx44XWC3wa2pS+CDtom2joH9+uNWpkd3GcKIct6pkjMnSL19nvF4BT40Ti2LnKxQ7h9wdVBFUgkiHyW74RRtmdabS1VgplGwNQODQcrq0jwdluK+tLoR99Eplrz1minRSD0YUit3NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eBIEwsE3; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:CC; b=a6odkT09twu/3EYxTUuzpyQLQotILpnVLZvIVXJ9IPzz+tmp3z7e5J5dH2RBXhzmXGonqLP28ux8KRdJcX24bRky+0Z6rLo19iUnAwcyv2Z9sHBgXrtn8QqLBfTqTGUF/ubUi7/AGvfLQkHQnV7GgLB/bjQ1+XDzgzi3xvwel+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IJTjXy04; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46C7LhWS030226;
-	Fri, 12 Jul 2024 12:44:48 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46CBAer6007447;
+	Fri, 12 Jul 2024 12:44:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ThRMC8FcCjQyzFvD1AUwqljCoPTz+CquU0rhPU6flz8=; b=eBIEwsE3OUWlpHFh
-	gZAIXNZGffRpiArRkIHTsK1nHccfQd1feA68Kp7eZQNEJbSSNyu/epfzHWT3amux
-	GOwwxDHpLHrSk08yT4KI6Z+xFCwn/Lap2sJQHOjjGFkwzGuv5tdexwfWYUP3TDNL
-	fjrqPByvss/bCrcq266Iyp9Bwcsg+hm7CD7h22dIb3InyI7gez5+Y+jo6MZTUHOw
-	fBgk81vsP0Iq2Q9LgHVZ3fzn9jCgKN5FYcLgf5qw2P+zrZOIXnH2LP+X0jjCRDy0
-	FmnGAzBIB1yBARE5fEDFvtyIIyi4dJ5cOmY62kRhI+bYOqmJWFCM1s/N9Qrgxub9
-	l6N/WA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40ajbqteaw-1
+	LRIVKzH1hSjxSuvugXYotptQy+3/BurYv3ZsB9X2wks=; b=IJTjXy04IXXlH8yO
+	yBJA8SrsIw4Gk9ZpePLi5+nOS+qRNnoUZyUSw17xA6Sdk+roi0qF9krwIBdmKEnD
+	dRGyCYXeOHAx55URoqRtFL9A+8MeC41nFariZgHFxkSi7Xn6TRXnU4RfhX/cRL4F
+	uoMU+fvP1rs+CGo3EGZGWs5Awf4gAFB8attTs/DiNfhMsZCeVGuBzpcb5EDvX6O9
+	F5y28ulHmXYCzTqYqKe4OchZLg/lGuZ4mKJH2kyyhVOPhmGZihWZjYkPMByvJ1NS
+	YZHc7hEhCYe9Yerji4YQ9Ao9v9auqOVS3ndHdD3tkNZdFtyCRhln+X0E00gF3hKP
+	RyI4Og==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40ac0gkh2f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jul 2024 12:44:48 +0000 (GMT)
+	Fri, 12 Jul 2024 12:44:55 +0000 (GMT)
 Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46CCikl0010100
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46CCirf0028069
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jul 2024 12:44:46 GMT
+	Fri, 12 Jul 2024 12:44:53 GMT
 Received: from hu-skakitap-hyd.qualcomm.com (10.80.80.8) by
  nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 12 Jul 2024 05:44:39 -0700
+ 15.2.1544.9; Fri, 12 Jul 2024 05:44:46 -0700
 From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Date: Fri, 12 Jul 2024 18:13:31 +0530
-Subject: [PATCH 4/5] ARM: dts: qcom: Add vadc support for pm8775 pmic on
+Date: Fri, 12 Jul 2024 18:13:32 +0530
+Subject: [PATCH 5/5] ARM: dts: qcom: Add support for MBG TM for pm8775 on
  SA8775P
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240712-mbg-tm-support-v1-4-7d78bec920ca@quicinc.com>
+Message-ID: <20240712-mbg-tm-support-v1-5-7d78bec920ca@quicinc.com>
 References: <20240712-mbg-tm-support-v1-0-7d78bec920ca@quicinc.com>
 In-Reply-To: <20240712-mbg-tm-support-v1-0-7d78bec920ca@quicinc.com>
 To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
@@ -101,155 +101,181 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01c.na.qualcomm.com (10.47.97.35)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ryM9PU3dxq8UJyvRcwGzmwAejAH0g0wz
-X-Proofpoint-ORIG-GUID: ryM9PU3dxq8UJyvRcwGzmwAejAH0g0wz
+X-Proofpoint-ORIG-GUID: nYXH9ngSNr5YB03qH1V5mF878LG88bvj
+X-Proofpoint-GUID: nYXH9ngSNr5YB03qH1V5mF878LG88bvj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-12_09,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=989 bulkscore=0
- phishscore=0 adultscore=0 priorityscore=1501 impostorscore=0 spamscore=0
- malwarescore=0 suspectscore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2406140001
- definitions=main-2407120086
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 mlxlogscore=823
+ mlxscore=0 impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407120086
 
-Add support for reading the adc channels of pm8775 on SA8775P platforms.
+Add support for MBG TM peripheral for pm8775 sail pmics on SA8775P.
 
 Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 ---
- arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi | 90 +++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi | 120 ++++++++++++++++++++++++++++
+ 1 file changed, 120 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
-index 1369c3d43f86..bd4f5f51e094 100644
+index bd4f5f51e094..69910306885e 100644
 --- a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
-@@ -1,8 +1,10 @@
- // SPDX-License-Identifier: BSD-3-Clause
- /*
-  * Copyright (c) 2023, Linaro Limited
-+ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
-+#include <dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8775.h>
- #include <dt-bindings/input/input.h>
- #include <dt-bindings/spmi/spmi.h>
- 
-@@ -105,6 +107,28 @@ pmm8654au_0: pmic@0 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
-+		pmm8654au_0_adc: vadc@8000 {
-+			compatible = "qcom,spmi-adc5-gen3";
-+			reg = <0x8000>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			interrupts-extended = <&spmi_bus 0x0 0x80 0x1 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "adc-sdam0";
-+			#io-channel-cells = <1>;
+@@ -89,6 +89,62 @@ trip1 {
+ 				};
+ 			};
+ 		};
 +
-+			pmm8654au_0_die_temp {
-+				reg = <PM8775_ADC5_GEN3_DIE_TEMP(0)>;
-+				label = "pmm8654au_0_die_temp";
-+				qcom,pre-scaling = <1 1>;
-+			};
++		pmm8654au_0_mbg_tm: pmm8654au_0_mbg_tz {
++			polling-delay-passive = <100>;
++			polling-delay = <0>;
++			thermal-sensors = <&pmm8654au_0_tz>;
 +
-+			pmm8654au_0_vph_pwr {
-+				reg = <PM8775_ADC5_GEN3_VPH_PWR(0)>;
-+				label = "pmm8654au_0_vph_pwr";
-+				qcom,pre-scaling = <1 3>;
++			trips {
++				trip0 {
++					temperature = <115000>;
++					hysteresis = <5000>;
++					type = "passive";
++				};
 +			};
 +		};
 +
- 		pmm8654au_0_temp_alarm: temp-alarm@a00 {
- 			compatible = "qcom,spmi-temp-alarm";
- 			reg = <0xa00>;
-@@ -162,6 +186,28 @@ pmm8654au_1: pmic@2 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
-+		pmm8654au_1_adc: vadc@8000 {
-+			compatible = "qcom,spmi-adc5-gen3";
-+			reg = <0x8000>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			interrupts-extended = <&spmi_bus 0x2 0x80 0x1 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "adc-sdam0";
-+			#io-channel-cells = <1>;
++		pmm8654au_1_mbg_tm: pmm8654au_1_mbg_tz {
++			polling-delay-passive = <100>;
++			polling-delay = <0>;
++			thermal-sensors = <&pmm8654au_1_tz>;
 +
-+			pmm8654au_1_die_temp {
-+				reg = <PM8775_ADC5_GEN3_DIE_TEMP(2)>;
-+				label = "pmm8654au_1_die_temp";
-+				qcom,pre-scaling = <1 1>;
-+			};
-+
-+			pmm8654au_1_vph_pwr {
-+				reg = <PM8775_ADC5_GEN3_VPH_PWR(2)>;
-+				label = "pmm8654au_1_vph_pwr";
-+				qcom,pre-scaling = <1 3>;
++			trips {
++				trip0 {
++					temperature = <115000>;
++					hysteresis = <5000>;
++					type = "passive";
++				};
 +			};
 +		};
 +
- 		pmm8654au_1_temp_alarm: temp-alarm@a00 {
- 			compatible = "qcom,spmi-temp-alarm";
- 			reg = <0xa00>;
-@@ -186,6 +232,28 @@ pmm8654au_2: pmic@4 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
-+		pmm8654au_2_adc: vadc@8000 {
-+			compatible = "qcom,spmi-adc5-gen3";
-+			reg = <0x8000>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			interrupts-extended = <&spmi_bus 0x4 0x80 0x1 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "adc-sdam0";
-+			#io-channel-cells = <1>;
++		pmm8654au_2_mbg_tm: pmm8654au_2_mbg_tz {
++			polling-delay-passive = <100>;
++			polling-delay = <0>;
++			thermal-sensors = <&pmm8654au_2_tz>;
 +
-+			pmm8654au_2_die_temp {
-+				reg = <PM8775_ADC5_GEN3_DIE_TEMP(4)>;
-+				label = "pmm8654au_2_die_temp";
-+				qcom,pre-scaling = <1 1>;
-+			};
-+
-+			pmm8654au_2_vph_pwr {
-+				reg = <PM8775_ADC5_GEN3_VPH_PWR(4)>;
-+				label = "pmm8654au_2_vph_pwr";
-+				qcom,pre-scaling = <1 3>;
++			trips {
++				trip0 {
++					temperature = <115000>;
++					hysteresis = <5000>;
++					type = "passive";
++				};
 +			};
 +		};
 +
- 		pmm8654au_2_temp_alarm: temp-alarm@a00 {
- 			compatible = "qcom,spmi-temp-alarm";
- 			reg = <0xa00>;
-@@ -210,6 +278,28 @@ pmm8654au_3: pmic@6 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
-+		pmm8654au_3_adc: vadc@8000 {
-+			compatible = "qcom,spmi-adc5-gen3";
-+			reg = <0x8000>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			interrupts-extended = <&spmi_bus 0x6 0x80 0x1 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "adc-sdam0";
-+			#io-channel-cells = <1>;
++		pmm8654au_3_mbg_tm: pmm8654au_3_mbg_tz {
++			polling-delay-passive = <100>;
++			polling-delay = <0>;
++			thermal-sensors = <&pmm8654au_3_tz>;
 +
-+			pmm8654au_3_die_temp {
-+				reg = <PM8775_ADC5_GEN3_DIE_TEMP(6)>;
-+				label = "pmm8654au_3_die_temp";
-+				qcom,pre-scaling = <1 1>;
-+			};
-+
-+			pmm8654au_3_vph_pwr {
-+				reg = <PM8775_ADC5_GEN3_VPH_PWR(6)>;
-+				label = "pmm8654au_3_vph_pwr";
-+				qcom,pre-scaling = <1 3>;
++			trips {
++				trip0 {
++					temperature = <115000>;
++					hysteresis = <5000>;
++					type = "passive";
++				};
 +			};
 +		};
+ 	};
+ 
+ 	reboot-mode {
+@@ -180,6 +236,22 @@ reboot_reason: reboot-reason@48 {
+ 		};
+ 	};
+ 
++	pmm8654au_sail_0: pmic@1 {
++		compatible = "qcom,pmm8654au", "qcom,spmi-pmic";
++		reg = <0x1 SPMI_USID>;
++		#address-cells = <1>;
++		#size-cells = <0>;
 +
- 		pmm8654au_3_temp_alarm: temp-alarm@a00 {
- 			compatible = "qcom,spmi-temp-alarm";
- 			reg = <0xa00>;
++		pmm8654au_0_tz: qcom,mbg-tm@d700 {
++			compatible = "qcom,spmi-mgb-tm";
++			reg = <0xd700>;
++			io-channels = <&pmm8654au_0_adc PM8775_ADC5_GEN3_DIE_TEMP(0)>;
++			io-channel-names = "thermal";
++			interrupts-extended = <&spmi_bus 0x1 0xd7 0x0 IRQ_TYPE_EDGE_RISING>;
++			#thermal-sensor-cells = <0>;
++		};
++	};
++
+ 	pmm8654au_1: pmic@2 {
+ 		compatible = "qcom,pmm8654au", "qcom,spmi-pmic";
+ 		reg = <0x2 SPMI_USID>;
+@@ -226,6 +298,22 @@ pmm8654au_1_gpios: gpio@8800 {
+ 		};
+ 	};
+ 
++	pmm8654au_sail_1: pmic@3 {
++		compatible = "qcom,pmm8654au", "qcom,spmi-pmic";
++		reg = <0x3 SPMI_USID>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		pmm8654au_1_tz: qcom,mbg-tm@d700 {
++			compatible = "qcom,spmi-mgb-tm";
++			reg = <0xd700>;
++			io-channels = <&pmm8654au_1_adc PM8775_ADC5_GEN3_DIE_TEMP(2)>;
++			io-channel-names = "thermal";
++			interrupts-extended = <&spmi_bus 0x3 0xd7 0x0 IRQ_TYPE_EDGE_RISING>;
++			#thermal-sensor-cells = <0>;
++		};
++	};
++
+ 	pmm8654au_2: pmic@4 {
+ 		compatible = "qcom,pmm8654au", "qcom,spmi-pmic";
+ 		reg = <0x4 SPMI_USID>;
+@@ -272,6 +360,22 @@ pmm8654au_2_gpios: gpio@8800 {
+ 		};
+ 	};
+ 
++	pmm8654au_sail_2: pmic@5 {
++		compatible = "qcom,pmm8654au", "qcom,spmi-pmic";
++		reg = <0x5 SPMI_USID>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		pmm8654au_2_tz: qcom,mbg-tm@d700 {
++			compatible = "qcom,spmi-mgb-tm";
++			reg = <0xd700>;
++			io-channels = <&pmm8654au_2_adc PM8775_ADC5_GEN3_DIE_TEMP(4)>;
++			io-channel-names = "thermal";
++			interrupts-extended = <&spmi_bus 0x5 0xd7 0x0 IRQ_TYPE_EDGE_RISING>;
++			#thermal-sensor-cells = <0>;
++		};
++	};
++
+ 	pmm8654au_3: pmic@6 {
+ 		compatible = "qcom,pmm8654au", "qcom,spmi-pmic";
+ 		reg = <0x6 SPMI_USID>;
+@@ -317,4 +421,20 @@ pmm8654au_3_gpios: gpio@8800 {
+ 			#interrupt-cells = <2>;
+ 		};
+ 	};
++
++	pmm8654au_sail_3: pmic@7 {
++		compatible = "qcom,pmm8654au", "qcom,spmi-pmic";
++		reg = <0x7 SPMI_USID>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		pmm8654au_3_tz: qcom,mbg-tm@d700 {
++			compatible = "qcom,spmi-mgb-tm";
++			reg = <0xd700>;
++			io-channels = <&pmm8654au_3_adc PM8775_ADC5_GEN3_DIE_TEMP(6)>;
++			io-channel-names = "thermal";
++			interrupts-extended = <&spmi_bus 0x7 0xd7 0x0 IRQ_TYPE_EDGE_RISING>;
++			#thermal-sensor-cells = <0>;
++		};
++	};
+ };
 
 -- 
 2.25.1

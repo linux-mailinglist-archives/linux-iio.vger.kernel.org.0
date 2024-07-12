@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-7559-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7560-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E6792FF21
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:10:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A16392FF4B
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1C101C21793
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 17:10:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1D871F21CAA
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 17:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D44417A581;
-	Fri, 12 Jul 2024 17:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84982176AD4;
+	Fri, 12 Jul 2024 17:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TI4vQiKN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bX2UJ4T1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3962D178365;
-	Fri, 12 Jul 2024 17:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316A317C6B;
+	Fri, 12 Jul 2024 17:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720804008; cv=none; b=Ydeu8ZcOPsqccNSREH43tCsiBxfCjlmsNcr6CKmF2ZcJkkO9g0rAOAHHw7/x6ChnKjPCoj69xekdXSy9Ofsq6F6AXO2NFzh2fD6bfh4XhXwmF4Luv6xZU0kuNwz/6QFU/3a7tTR+95HUZyDjI4w+WaScDCZ1b7ZGEDy0Snn8lhQ=
+	t=1720804406; cv=none; b=Iv0YQdfmBboNfeL/Zo/bB6Bh/ycECH6CwYCyDFuhP3dR24YM3Ma5M2hyBS2k1Q1xL1mDO/WnlztfLGVltG4jMCGfmUZKMO+JIuR9GnuKnGxe0dcfIaTpYmSvu+G/F4OjOjrVmKsxu93Rk6gQrikjQJKwGqHbmayUM4mR3pflL0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720804008; c=relaxed/simple;
-	bh=PUqWn4jllh5OewXcguzC8AZTOPOBJ1djS1slHZD/dQw=;
+	s=arc-20240116; t=1720804406; c=relaxed/simple;
+	bh=BC2o51l++B6qfPOoy83p3Zssk/5Y2C5t/nDEBU6cW84=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p1v9Cgxm2oLe4k8PH0DGQS+p2K78A56bjw+vbSiZRT+xAcXawafNmyzjt5vBc5WKBEPxwS1ty85WUvkYIOl3SEiaH49fUCgyFlHMuTRWe8/TFqmNVw6tdNVhF/f2Ib7Zr4Pl66DGFdACuW1FKvnaAxhUeBSH0OlTlEyLj9AhVYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TI4vQiKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DDDC32782;
-	Fri, 12 Jul 2024 17:06:40 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=udONQprwNgcTe0R0Fraef8jl+wm+SnHNbI/qniIkA3UVfEm8jk+Nl2nadZpqkIl+l05xhbXl0f0JvPWefxYS/Sln1J46/8oI/+VUeX2LgxH/Eh84Xk0ttWPeC1NcihcfCxw1g9vSfjSg5SA6NpKrjD2mV1tkii2idOStybLEeHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bX2UJ4T1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A246C32782;
+	Fri, 12 Jul 2024 17:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720804007;
-	bh=PUqWn4jllh5OewXcguzC8AZTOPOBJ1djS1slHZD/dQw=;
+	s=k20201202; t=1720804405;
+	bh=BC2o51l++B6qfPOoy83p3Zssk/5Y2C5t/nDEBU6cW84=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TI4vQiKNYcQW76zn9bSXm7bwg2Vk21+efa6J9unwqghhqx1A7JxQNcU7VjzOT3eVv
-	 6CyouinCvTUlOsSXbjCnhD3jZ0zt4UFHsxch5M6aNkMMtBot/uouLQ0uoLnJOtJGQx
-	 1FVH8PJeN+yuX3PUB01LjTAfqFvNIl66BY6jFwoUwyc5YPTn5XFhjfya7sA1bWdIY5
-	 ExS7GiSEF37sxQx3IcY5AjutScCizih4wVZkPgxjrPxXoBWTgj/RVbW4C9YLxsvybW
-	 rNPdbYiZoWVP8dnfVwjUxsSxsG+66Ide+iaI2UIMqaFGAXuleCxmDVIvIei85ev99S
-	 Ma6IQBWIG6+ZQ==
-Message-ID: <014934b1-1fa9-42e1-8c2a-29b65731240d@kernel.org>
-Date: Fri, 12 Jul 2024 19:06:38 +0200
+	b=bX2UJ4T16kwYutfIyvHhrErXaLkAFRNCwYcMJ0Fmx1d+pbo6JlufFNZxayN5uhYeM
+	 1iyCdsZglIvLnez+EkGN3ditWvgFo89RCWvLVNfL7TIf2PWLVNbS04F2VIfhJw+FrQ
+	 n23wcl3jpltkj8kb/hQJOp1T54bmOrEAbnyoALReNithOqC2kqHF0jbC/SWs0ziwG+
+	 TLeSDYbaT4EOa0Rcc+sBt0VQNG7x3aH8UwBTq4urbLeD08j1RBRQMklv0w1qp/eFzR
+	 zkcj77GAeX3GOmqxZEDimX7ILdT4NCjji7ITL8w886hBdQrp1CuanpSZGY4I6JPH2o
+	 en/Xpwj0tMwjA==
+Message-ID: <26b8fe36-da94-4552-8e50-3b38c8b3fb0d@kernel.org>
+Date: Fri, 12 Jul 2024 19:13:15 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] dt-bindings: iio: adc: Add ADC5 GEN3 Channel info for
- pm8775 PMIC
+Subject: Re: [PATCH 4/5] ARM: dts: qcom: Add vadc support for pm8775 pmic on
+ SA8775P
 To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -69,7 +69,7 @@ Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, Taniya Das
  Imran Shaik <quic_imrashai@quicinc.com>,
  Jagadeesh Kona <quic_jkona@quicinc.com>
 References: <20240712-mbg-tm-support-v1-0-7d78bec920ca@quicinc.com>
- <20240712-mbg-tm-support-v1-1-7d78bec920ca@quicinc.com>
+ <20240712-mbg-tm-support-v1-4-7d78bec920ca@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -115,22 +115,49 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240712-mbg-tm-support-v1-1-7d78bec920ca@quicinc.com>
+In-Reply-To: <20240712-mbg-tm-support-v1-4-7d78bec920ca@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/07/2024 14:43, Satya Priya Kakitapalli wrote:
-> Add definitions for ADC5 GEN3 virtual channels(combination of ADC channel
-> number and PMIC SID number) used by PM8775.
+> Add support for reading the adc channels of pm8775 on SA8775P platforms.
 > 
 > Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 > ---
->  .../iio/adc/qcom,spmi-adc5-gen3-pm8775.h           | 42 ++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
+>  arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi | 90 +++++++++++++++++++++++++++++
+>  1 file changed, 90 insertions(+)
 > 
+> diff --git a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
+> index 1369c3d43f86..bd4f5f51e094 100644
+> --- a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
+> @@ -1,8 +1,10 @@
+>  // SPDX-License-Identifier: BSD-3-Clause
+>  /*
+>   * Copyright (c) 2023, Linaro Limited
+> + * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
+>   */
+>  
+> +#include <dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8775.h>
+>  #include <dt-bindings/input/input.h>
+>  #include <dt-bindings/spmi/spmi.h>
+>  
+> @@ -105,6 +107,28 @@ pmm8654au_0: pmic@0 {
+>  		#address-cells = <1>;
+>  		#size-cells = <0>;
+>  
+> +		pmm8654au_0_adc: vadc@8000 {
+> +			compatible = "qcom,spmi-adc5-gen3";
+> +			reg = <0x8000>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			interrupts-extended = <&spmi_bus 0x0 0x80 0x1 IRQ_TYPE_EDGE_RISING>;
+> +			interrupt-names = "adc-sdam0";
+> +			#io-channel-cells = <1>;
+> +
+> +			pmm8654au_0_die_temp {
 
-This is part of binding patch, so squash it.
-
+Please read DTS coding style first and your internal guideline go/upstream.
 
 Best regards,
 Krzysztof

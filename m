@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-7552-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7554-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1434192FE15
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 18:04:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F14892FE17
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 18:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1FB5B21F50
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 16:04:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA8D81F22107
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 16:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B3717623E;
-	Fri, 12 Jul 2024 16:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA15E176AA2;
+	Fri, 12 Jul 2024 16:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QnmO49jl"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KeMt8SQl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D6F175545
-	for <linux-iio@vger.kernel.org>; Fri, 12 Jul 2024 16:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC63917557E
+	for <linux-iio@vger.kernel.org>; Fri, 12 Jul 2024 16:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720800247; cv=none; b=IJDoWvWjadGm5014qN+ETbbavs66YK7B5NQ2OxEMEjq8Yk5ptTaZ0j6LIArJq+6hQDpGVVFRCd5oEKHlqNH4uqrTOKEXnI+0Ge0Af+2oHHuhiltsn7UkwiHWd0xDlLF0LY1MLHQvmTW1cSXSGltiAz1Jm8B3OG0NXSBR3F2ttD0=
+	t=1720800248; cv=none; b=gkNjPunhN6iaVWZdTt1yN165jpIqJvnWD5JKhI1ZBYaUCokyDN5rlmArH5zJDKldLKx9GpWSwqpifq0jybr9VUjMr+Ao2L0jN0aX2PvNABD/2kGUMtZXmslHxN6TVIFrcrau1gChl67nGkIx2lcyTyrNhgJk8Lm5BOvnPFXuUso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720800247; c=relaxed/simple;
-	bh=Y/k/wdBv/5beOfFpJAQFfQXG5QorlewTAyQxhJSger4=;
+	s=arc-20240116; t=1720800248; c=relaxed/simple;
+	bh=LiCm3tBJ7AYWSQZO/TCKsxT1uryLYML0nN19d4B4ZF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=to68mJ4VT3ktQgUsLgUy0mPHjLq7p5Si2RT3D2Q3L/3tt23pb8CVwGviHo4kk6/VHU0THXr8usonYkGSI3AnPdpdIGmDoSjvy0djIOkCuiBu8zorPI+o4PhRp1fGw90chShxtlJaabOio5+plychYufz+U8nF5fS9vD9Q1mVkrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QnmO49jl; arc=none smtp.client-ip=209.85.210.42
+	 MIME-Version:Content-Type; b=pWw76Tb2V+2EO2Jq06JHkCYB0OP8G6uwmhhHbGXAUuVUHRzstMho8SPR/TIajLaocR36OpzHhJAcS2f++T4RLXm6r+ZZXo1wcQalPNtpqlCI/k5qTwKDF/u4tannpjGeYtTs24ojc1I4A8GuJNS4bE9r4eXsLRE1n7zwlIGuJTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KeMt8SQl; arc=none smtp.client-ip=209.85.160.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7037c464792so1128396a34.2
-        for <linux-iio@vger.kernel.org>; Fri, 12 Jul 2024 09:04:05 -0700 (PDT)
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-25e3bc751daso1170541fac.3
+        for <linux-iio@vger.kernel.org>; Fri, 12 Jul 2024 09:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1720800245; x=1721405045; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1720800246; x=1721405046; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Xtk0UvTBio0HdPiv9SeTHdQ/nYZSzty+YaDbepVhjDk=;
-        b=QnmO49jlVfOP5X+O3cHivPKymPZJd4lFil1HBGfoJ4qvg0IbvoPY9m5+ZokpaLpA7I
-         n8X+LlmymvsfE/47bQaV69wiGdOq4DIOIeymue6tFahIFyx3XueT678CYrhADLp/U35t
-         Gi78sFv2PYchfiYGMJJjcs0AWleJTuJu94gBBTtU8xO8uKivjWKDpyDYaZLwxW6btNlt
-         9HKfm4CxTucC66ijB11ptNxaug7uHPVY68m4fGMTJbf3ITmjFrlBnF7oE+XFFtCBNzaJ
-         1/uzj0V7sXa3Wd5Rm1QFGSoM+Cl5wZWSzfM94o0qaRY9aHu+SOodD7Wo0atNq0RXYVqV
-         SAXQ==
+        bh=6yfWKG0y/JQs2Xv+AEtYK/Qt5yfxPJbz/kYQptJy6iA=;
+        b=KeMt8SQlM0UjK4ie+NebsRt8QVaRmBzyREDsbvp7BBBBXeUmIwCVV5au67+bk861oH
+         IsXsIQH3dygQEvxQoRPNyhGIxOf8yJuEho4nI5YEMbeimzXkOpx0NxjRhaVYJKwwtyYz
+         cOx8nSo/DmI68jo9Z16I+/oZzrqnOXz26e3kAVXvF3a7rRh0xO/eQDScyzb99PTmNGAG
+         /Iu9RWgUogGmojxW/iFu0ohf4Pf8/pDH6uPShT1o1p/5y6e32OVoEuphuGzaksFqB618
+         R6QuWo8qXf3i9ylXRnMw8uOg/JxnaPTRSevR327PEuRzrtd8Fh/B+PwPHsRXW7WxhypW
+         2TmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720800245; x=1721405045;
+        d=1e100.net; s=20230601; t=1720800246; x=1721405046;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Xtk0UvTBio0HdPiv9SeTHdQ/nYZSzty+YaDbepVhjDk=;
-        b=eQXyOneyyjJZCCq1+HHus3njBYvh091+tZ6hOBVpTqu7kY5+M4SyzT7iSpYDbsV6n8
-         TyxRpox56nBxna7vq3uzcGKYqmnXALP8uYS+3Bxvc2huQROMXPh451LEXBlRqWDGjTi0
-         xZ9aB7CpPrY0KLnswNx7k3ulnudV3OMqWr6J7abAplK/XVb3KVdlU2T7VSIP/CTwEjna
-         fyLvQmDiFTLd2tYmoZMFEYh9e/vQpJYlxl2vV9JLFJ2ICRQP550TwJheJZzkCI5p5ka8
-         HusQLiEFLqb3MSwd6A9gGOuRHqqGNi51GLiYHL0Iht29zP3TBx9Fgj22ejT1FKk256Y4
-         2LFg==
-X-Forwarded-Encrypted: i=1; AJvYcCVxu5Xm51OtgdrAxy+RH3Nibaa5Gv8mg8Co0oQQz8rbMetHv0Rkuick1ZBOH43V+i4qM63cruMWsfoqYR+tGm5EP0e1XeR8oqUB
-X-Gm-Message-State: AOJu0Yzhc15OS5d3qB+ilLcoZKwBVHog4d7RSst+QIEWTJepxslW99ne
-	pciLOkIojKbz8W/yRWQtuIfZ0YBvAq8vNOQrc0iQRb5TeC6SA1ValCs4uZe8AWk=
-X-Google-Smtp-Source: AGHT+IH9XtVdLylUZCQ+EzQ5KpOpsjBt1EAapLPX8XGhtAR2cvYah4rBJcTwPGQIOWEJcZUPCn7lRA==
-X-Received: by 2002:a05:6870:d612:b0:25e:8509:160e with SMTP id 586e51a60fabf-25eae74a09amr10623112fac.3.1720800244908;
-        Fri, 12 Jul 2024 09:04:04 -0700 (PDT)
+        bh=6yfWKG0y/JQs2Xv+AEtYK/Qt5yfxPJbz/kYQptJy6iA=;
+        b=PoGuyxnyZ+geu8RhKTk1uslGlKz7UzT/BT7m3DrIcaKtYiRamJdu8LHlblBhW0qYkJ
+         C65FmaZhzGCZpEurCeTHkBw7N8UTH1/oWgf4izKj78r10JExfiedjKysg00uyBgUN4HL
+         0Dg7wL/yeJw2UadPLtwtR8lttszL3Y56dvEhYfgzw3Bck7AMftYHXB6B/49vy9IJT7tI
+         Ehg/2FHx8hgi8VmU9OaaQoo0o8vr9CabXfIGi44GL69Kw4oUHvJwUAUtAHd2fqFa1xoB
+         730keBO4xjjAhQ9HGlQo4U95VvJx/uA6sWPtW2/4zm5vI19KtPyZ+qr7qe5sdseCB6aN
+         +iqg==
+X-Forwarded-Encrypted: i=1; AJvYcCXT8gJeT/afGAM1odGkbpjP0KFp2SjXxfpgvcA9m3z23sZkDEunZrhvFCh+g1LfmNsoNpr2grHcxBBQP1VS4Gm6c1Zzs+TCaAm9
+X-Gm-Message-State: AOJu0YwDQIkJfNY3hrDRBrV6XotJ0jQyuPP1Ftvr46czZxAiQHffV3L+
+	DmGCs1pPnVn5JkqoQatDw/d/9CJW3i46II9Ktw/fFL2+5ZRVdkqM3zA+CZSjiVg=
+X-Google-Smtp-Source: AGHT+IFZ4u28V0aXqe1EKH1JX+VjsznMpOJ+/9Zy0MPgBrfQDd+ZR7G8IEC/bVTMldowmHzd8Hm2Ug==
+X-Received: by 2002:a05:6870:a11a:b0:254:a57e:1aed with SMTP id 586e51a60fabf-25eae84e38dmr10560652fac.26.1720800245795;
+        Fri, 12 Jul 2024 09:04:05 -0700 (PDT)
 Received: from localhost.localdomain (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70374f78d35sm1615131a34.23.2024.07.12.09.04.04
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70374f78d35sm1615131a34.23.2024.07.12.09.04.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jul 2024 09:04:04 -0700 (PDT)
+        Fri, 12 Jul 2024 09:04:05 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Marius Cristea <marius.cristea@microchip.com>,
@@ -77,9 +77,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Mark Brown <broonie@kernel.org>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/6] iio: dac: mcp4728: use devm_regulator_get_enable_read_voltage()
-Date: Fri, 12 Jul 2024 11:03:53 -0500
-Message-ID: <20240712-iio-regulator-refactor-round-3-v1-2-835017bae43d@baylibre.com>
+Subject: [PATCH 3/6] iio: dac: mcp4922: use devm_regulator_get_enable_read_voltage()
+Date: Fri, 12 Jul 2024 11:03:54 -0500
+Message-ID: <20240712-iio-regulator-refactor-round-3-v1-3-835017bae43d@baylibre.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240712-iio-regulator-refactor-round-3-v1-0-835017bae43d@baylibre.com>
 References: <20240712-iio-regulator-refactor-round-3-v1-0-835017bae43d@baylibre.com>
@@ -94,93 +94,83 @@ X-Mailer: b4 0.14.0
 Content-Transfer-Encoding: 8bit
 
 This makes use of the new devm_regulator_get_enable_read_voltage()
-helper function to reduce boilerplate code in the MCP4728 DAC driver.
+helper function to reduce boilerplate code in the MCP4922 DAC driver.
+
+The error message is slightly different because there is only one error
+return path now.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/dac/mcp4728.c | 33 +++++++--------------------------
- 1 file changed, 7 insertions(+), 26 deletions(-)
+ drivers/iio/dac/mcp4922.c | 30 ++++--------------------------
+ 1 file changed, 4 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/iio/dac/mcp4728.c b/drivers/iio/dac/mcp4728.c
-index 300985beb35d..192175dc6419 100644
---- a/drivers/iio/dac/mcp4728.c
-+++ b/drivers/iio/dac/mcp4728.c
-@@ -84,7 +84,6 @@ enum mcp4728_scale {
+diff --git a/drivers/iio/dac/mcp4922.c b/drivers/iio/dac/mcp4922.c
+index da4327624d45..f89af70fa5af 100644
+--- a/drivers/iio/dac/mcp4922.c
++++ b/drivers/iio/dac/mcp4922.c
+@@ -30,7 +30,6 @@ struct mcp4922_state {
+ 	struct spi_device *spi;
+ 	unsigned int value[MCP4922_NUM_CHANNELS];
+ 	unsigned int vref_mv;
+-	struct regulator *vref_reg;
+ 	u8 mosi[2] __aligned(IIO_DMA_MINALIGN);
+ };
  
- struct mcp4728_data {
- 	struct i2c_client *client;
--	struct regulator *vdd_reg;
- 	bool powerdown;
- 	int scales_avail[MCP4728_N_SCALES * 2];
- 	struct mcp4728_channel_data chdata[MCP4728_N_CHANNELS];
-@@ -415,15 +414,9 @@ static void mcp4728_init_scale_avail(enum mcp4728_scale scale, int vref_mv,
- 	data->scales_avail[scale * 2 + 1] = value_micro;
- }
+@@ -132,24 +131,11 @@ static int mcp4922_probe(struct spi_device *spi)
  
--static int mcp4728_init_scales_avail(struct mcp4728_data *data)
-+static int mcp4728_init_scales_avail(struct mcp4728_data *data, int vdd_mv)
- {
--	int ret;
--
--	ret = regulator_get_voltage(data->vdd_reg);
--	if (ret < 0)
+ 	state = iio_priv(indio_dev);
+ 	state->spi = spi;
+-	state->vref_reg = devm_regulator_get(&spi->dev, "vref");
+-	if (IS_ERR(state->vref_reg))
+-		return dev_err_probe(&spi->dev, PTR_ERR(state->vref_reg),
+-				     "Vref regulator not specified\n");
+ 
+-	ret = regulator_enable(state->vref_reg);
+-	if (ret) {
+-		dev_err(&spi->dev, "Failed to enable vref regulator: %d\n",
+-				ret);
 -		return ret;
--
--	mcp4728_init_scale_avail(MCP4728_SCALE_VDD, ret / 1000, data);
-+	mcp4728_init_scale_avail(MCP4728_SCALE_VDD, vdd_mv, data);
- 	mcp4728_init_scale_avail(MCP4728_SCALE_VINT_NO_GAIN, 2048, data);
- 	mcp4728_init_scale_avail(MCP4728_SCALE_VINT_GAIN_X2, 4096, data);
- 
-@@ -530,17 +523,12 @@ static int mcp4728_init_channels_data(struct mcp4728_data *data)
- 	return 0;
- }
- 
--static void mcp4728_reg_disable(void *reg)
--{
--	regulator_disable(reg);
--}
--
- static int mcp4728_probe(struct i2c_client *client)
- {
- 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
- 	struct mcp4728_data *data;
- 	struct iio_dev *indio_dev;
--	int ret;
-+	int ret, vdd_mv;
- 
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (!indio_dev)
-@@ -550,18 +538,11 @@ static int mcp4728_probe(struct i2c_client *client)
- 	i2c_set_clientdata(client, indio_dev);
- 	data->client = client;
- 
--	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
--	if (IS_ERR(data->vdd_reg))
--		return PTR_ERR(data->vdd_reg);
--
--	ret = regulator_enable(data->vdd_reg);
--	if (ret)
-+	ret = devm_regulator_get_enable_read_voltage(&client->dev, "vdd");
+-	}
++	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "vref");
 +	if (ret < 0)
- 		return ret;
++		return dev_err_probe(&spi->dev, ret, "Failed to get vref voltage\n");
  
--	ret = devm_add_action_or_reset(&client->dev, mcp4728_reg_disable,
--				       data->vdd_reg);
--	if (ret)
--		return ret;
-+	vdd_mv = ret / 1000;
+-	ret = regulator_get_voltage(state->vref_reg);
+-	if (ret < 0) {
+-		dev_err(&spi->dev, "Failed to read vref regulator: %d\n",
+-				ret);
+-		goto error_disable_reg;
+-	}
+ 	state->vref_mv = ret / 1000;
  
- 	/*
- 	 * MCP4728 has internal EEPROM that save each channel boot
-@@ -575,7 +556,7 @@ static int mcp4728_probe(struct i2c_client *client)
- 			"failed to read mcp4728 current configuration\n");
+ 	spi_set_drvdata(spi, indio_dev);
+@@ -167,25 +153,17 @@ static int mcp4922_probe(struct spi_device *spi)
+ 	if (ret) {
+ 		dev_err(&spi->dev, "Failed to register iio device: %d\n",
+ 				ret);
+-		goto error_disable_reg;
++		return ret;
  	}
  
--	ret = mcp4728_init_scales_avail(data);
-+	ret = mcp4728_init_scales_avail(data, vdd_mv);
- 	if (ret) {
- 		return dev_err_probe(&client->dev, ret,
- 				     "failed to init scales\n");
+ 	return 0;
+-
+-error_disable_reg:
+-	regulator_disable(state->vref_reg);
+-
+-	return ret;
+ }
+ 
+ static void mcp4922_remove(struct spi_device *spi)
+ {
+ 	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+-	struct mcp4922_state *state;
+ 
+ 	iio_device_unregister(indio_dev);
+-	state = iio_priv(indio_dev);
+-	regulator_disable(state->vref_reg);
+ }
+ 
+ static const struct spi_device_id mcp4922_id[] = {
 
 -- 
 2.43.0

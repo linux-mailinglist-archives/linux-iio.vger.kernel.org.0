@@ -1,48 +1,75 @@
-Return-Path: <linux-iio+bounces-7562-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7563-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812B092FFBF
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:25:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A4B92FFDE
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02D5B1F2388A
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 17:25:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 283CC2844FC
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 17:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F45174EF8;
-	Fri, 12 Jul 2024 17:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4D7176AD6;
+	Fri, 12 Jul 2024 17:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S3BjoMcD"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oWyz6iGL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41C81EB56;
-	Fri, 12 Jul 2024 17:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BF4172777
+	for <linux-iio@vger.kernel.org>; Fri, 12 Jul 2024 17:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720805140; cv=none; b=YK1Rs6fzqqteycR2uq09+W3/ung0WzbkT8k8gWZlh7BP3iIbIYewYtxiyYb6BTzVgmEVfmWy8haorjQHSc0IE/mVjAQ9mStXriEzGklFa6PB4VKgYFdP32Oshrn+A0YQYIowjP87h0Dd6Xoolmyem7QDsVW+WgdPlbn8AS+PZjk=
+	t=1720805833; cv=none; b=u6mb6F6gDTgM6m5uun/wWj6aych+XogNtNzrVCjzmJX+Mc0a90mM3e+GRGhcAnydX5V+HbSFQ67UKulqakFM/Ry3BdDRj34yGhRv/mfV90K50WXnmjAjy8RBEDbxq4vIIDUUz0b1a854cNwiJI72hCSf+ZEQazHpgmMhC3bbVNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720805140; c=relaxed/simple;
-	bh=7CzMpoUeZOc5SI536qiedtA15huojNT7kTfuk9VqqN8=;
+	s=arc-20240116; t=1720805833; c=relaxed/simple;
+	bh=cMVBcb3+PuJ6p9sLI9kDQNdmjy4RrnCDMwKNx1ooWJQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a11M34tMXmUzdtkya9eMx6GRvs/wF9Ru3S1I5DBuA00fgPO1A8M78lS+LEgoNGCmPy1qF+i/Zd9EZEDilU0VHqbE7nxWrr9TK6uEGK8GLVnjoLoP+oMl89GC4N8JIeOH+B9fJIDE/UaW5eXlqhgkC+qTI8k6UfAuHvr8fKihrrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S3BjoMcD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC27C32782;
-	Fri, 12 Jul 2024 17:25:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720805139;
-	bh=7CzMpoUeZOc5SI536qiedtA15huojNT7kTfuk9VqqN8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=S3BjoMcD/paYYvBZIs1/YIS+89ctvOqhKgKjgPaOkFhCi5nABu6wXwDtPoPvFvKn2
-	 47qWRajZz2Jx+Svxbn7JB+3MBim9Im3bXzX1GjncE5JbhFex5cRPtfwpJOzFN1jOuD
-	 9eb8x6NdwH9PwqkioPTctI8JGuqx+X9lTJOzVztLoRFtV6D0EaD6krxa0PqNO86G4H
-	 9UaUFkAwMuoOa5Mc0Buh4W6IW8O22HH7wovDpb6WtXwsSLhQ/GCDCgeFjsXCETCvUU
-	 U5OWrrv3oeC7rVU26GES+cXraE1QLtelSxefMSzImobNTeQ5V5Y4g8HUgwwcTV5+oQ
-	 D1OnH7uRA65vw==
-Message-ID: <7a834db9-4b46-4737-a6c4-52bd38610fca@kernel.org>
-Date: Fri, 12 Jul 2024 19:25:29 +0200
+	 In-Reply-To:Content-Type; b=od03bv3BpEeD15qc3Kud042xelHAMAISQZNRn3SYkYoRPXo2Me9mBdqcSh3tuAAvXeuTFjsFuLcSXFoFEyFANu6LFdR2IsoCaj1Iug2CwSW63LsyDZY3CV6yjjONrjVhfRuxukFZwP7ift9Ah37dv/s4aBpT7fr+YugaUCAp6Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oWyz6iGL; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a77c080b521so284771366b.3
+        for <linux-iio@vger.kernel.org>; Fri, 12 Jul 2024 10:37:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720805831; x=1721410631; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=cMVBcb3+PuJ6p9sLI9kDQNdmjy4RrnCDMwKNx1ooWJQ=;
+        b=oWyz6iGLDTuB6ZTPcLXE+jrWKZxtoODtFNJyCcF6JC0097YWEr8LRrW2i7z9KWI1ej
+         W4dXPP0PsDeSuCC8n1h+3VPBYjU05JnYwQUy+JmqGLPnSahsCNfRyMeza7yt+Dvs+3z/
+         5ZRSkT3We2CaBWutSr7TPGasq/s8XL7Rah0MUBlQtXdeVDE9mmTvVPSK5m/N2YSWxrFP
+         Y1t7WuuvrZwXJQXOLtA1RmSqRqzHEB/ZyaFt4HUvDNPT96+ZNr3ZjoLj2xfgOMxvwhTO
+         5YDbD2E4cMLHL5BF2ExdGpDg3nDLzb3pKiAI9WiH+jirr9Ezgm/6WWaAZ9PCz9uQLtEB
+         oNrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720805831; x=1721410631;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cMVBcb3+PuJ6p9sLI9kDQNdmjy4RrnCDMwKNx1ooWJQ=;
+        b=RQnbLzWkPpNGZpLUaIvNWVoJsm6rhbYe6MYkOZ+itln21OYviDagGWVD6l5W++D/FY
+         6E2Fk6EYyJccMImBete1n3GSHKfVXTw+tr8PQaLJQrgY8r+gVg9KFwxdlGgssv72EY8E
+         eIZIQ7el5QR1uKLwXQiDJ8wmAMHIFglS9nc/7w2+T+xoq4Qt9oN1TkzUmL7gE1zVqUgZ
+         51+ImGaoKr7alFkm/bB0SgfwdST5olCeqR7EuR9ooNdRaEFUxqum7h7i6baU9HAD3TTR
+         3CZgVqc+BDyUklySV1Tl7OrsOkbzWBFeFD+kFX/S6KDJlnaGcb98mUrNHLZrMnKCoFWO
+         K3CA==
+X-Forwarded-Encrypted: i=1; AJvYcCU/79hCvlS5i5pheq8fPVTr5wwekhYQ867DOSCLEM3lrdzwMxrJFIs5R9aCRnmWT/akobVmRr2q+QNRQrMZOhXeMOxqi9kx2hFW
+X-Gm-Message-State: AOJu0YwtIkhG9bo3VYQPViceAjbkFNuNnpp3wh8rSf9MYaLhiii+rEFn
+	wokZtwoowI53jKThqcP8sJ9csMAMIUQP1tkRosFQEW8O5P0kc6X/B2dJKM6wlQ8=
+X-Google-Smtp-Source: AGHT+IEfeXDIhCuqN36CSi8OOwJ0E5Pxn3p4/TIJGAsYWwdtbecnDEpO9dxJ8D+oP/FHGwlUP0W8xg==
+X-Received: by 2002:a17:906:97c3:b0:a77:c2ac:947e with SMTP id a640c23a62f3a-a780b881d20mr848111866b.55.1720805830411;
+        Fri, 12 Jul 2024 10:37:10 -0700 (PDT)
+Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a6e37ffsm361340566b.76.2024.07.12.10.37.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Jul 2024 10:37:09 -0700 (PDT)
+Message-ID: <13bd853c-ab27-4454-8ca3-1d27ad520e3b@linaro.org>
+Date: Fri, 12 Jul 2024 19:37:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -52,15 +79,15 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/5] dt-bindings: thermal: qcom: Add MBG thermal monitor
  bindings
-To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+ Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
  Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
  Lukasz Luba <lukasz.luba@arm.com>, Amit Kucheria <amitk@kernel.org>,
  Thara Gopinath <thara.gopinath@gmail.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>
+ Bjorn Andersson <andersson@kernel.org>
 Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, Taniya Das
  <quic_tdas@quicinc.com>, Jishnu Prakash <quic_jprakash@quicinc.com>,
  linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -70,173 +97,59 @@ Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, Taniya Das
  Jagadeesh Kona <quic_jkona@quicinc.com>
 References: <20240712-mbg-tm-support-v1-0-7d78bec920ca@quicinc.com>
  <20240712-mbg-tm-support-v1-2-7d78bec920ca@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <7a834db9-4b46-4737-a6c4-52bd38610fca@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240712-mbg-tm-support-v1-2-7d78bec920ca@quicinc.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <7a834db9-4b46-4737-a6c4-52bd38610fca@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/07/2024 14:43, Satya Priya Kakitapalli wrote:
-> Add bindings support for the MBG Temp alarm peripheral found on
-> pm8775 pmics.
-> 
-> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-> ---
->  .../bindings/thermal/qcom-spmi-mbg-tm.yaml         | 63 ++++++++++++++++++++++
+On 12.07.2024 7:25 PM, Krzysztof Kozlowski wrote:
+> On 12/07/2024 14:43, Satya Priya Kakitapalli wrote:
+>> Add bindings support for the MBG Temp alarm peripheral found on
+>> pm8775 pmics.
+>>
+>> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+>> ---
 
-A nit, subject: drop second/last, redundant "bindings". The
-"dt-bindings" prefix is already stating that these are bindings.
-See also:
-https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+Please also describe what MBG stands for and how it differs from the
+currently supported temp alarm that's been in use for the past 10 years
+on various PMICs
 
->  1 file changed, 63 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/thermal/qcom-spmi-mbg-tm.yaml b/Documentation/devicetree/bindings/thermal/qcom-spmi-mbg-tm.yaml
-> new file mode 100644
-> index 000000000000..9b6d1bc34a11
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/thermal/qcom-spmi-mbg-tm.yaml
-> @@ -0,0 +1,63 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/thermal/qcom-spmi-mbg-tm.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm Technologies, Inc. SPMI PMIC MBG Thermal Monitoring
-> +
-> +maintainers:
-> +  - Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-> +
-> +description: |
-
-Do not need '|' unless you need to preserve formatting.
-
-> +  Qualcomm's thermal driver for the MBG thermal monitoring device.
-
-Driver as Linux driver? Instead please describe the hardware.
-
-Missing $ref to thermal-sensor.
-
-> +
-> +properties:
-> +  compatible:
-> +    const: qcom,spmi-mbg-tm
-
-Instead use SoC specific compatible.
-
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  io-channels:
-
-Missing constraints. Use items with description.
-> +    description:
-> +      IIO channel specifier for the ADC channel, which reports
-
-And drop redundant part - "IIO channel specifier for". This cannot be
-anything else.
-
-> +      chip die temperature.
-> +
-> +  io-channel-names:
-> +    const: thermal
-> +
-> +  "#thermal-sensor-cells":
-> +    const: 0
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - io-channels
-> +  - io-channel-names
-> +  - "#thermal-sensor-cells"
-
-And this won't be needed.
-
-> +
-> +additionalProperties: false
-
-unevaluatedProperties instead
-
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8775.h>
-> +    spmi_bus {
-
-Eh... No. Is this really directly on SPMI bus? Anyway, use correct node
-names.
-
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      pm8775_sail_1_tz: qcom,mbg-tm@d700 {
-
-Oh no, please don't bring downstream crap.
-
-Do you see any node called like this?
-
-Also, drop unused label.
-
-> +        compatible = "qcom,spmi-mbg-tm";
-> +        reg = <0xd700>;
-> +        interrupts = <0x1 0xd7 0x0 IRQ_TYPE_EDGE_RISING>;
-
-This suggests it is not on SPMI bus but part of PMIC. Why doing
-something entirely different then entire Linux kernel? Do not use
-downstream as template, that's a no go.
-
-Best regards,
-Krzysztof
-
+Konrad
 

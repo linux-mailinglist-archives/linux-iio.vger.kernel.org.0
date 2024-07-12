@@ -1,123 +1,120 @@
-Return-Path: <linux-iio+bounces-7544-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7545-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AC792FC9D
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 16:33:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1056892FCA5
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 16:34:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 145D91C2239A
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 14:33:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9666CB21C4E
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 14:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA5A170854;
-	Fri, 12 Jul 2024 14:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D58171E69;
+	Fri, 12 Jul 2024 14:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="nks7UVPQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyCXAOeI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E171E4A9;
-	Fri, 12 Jul 2024 14:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FB0171E49;
+	Fri, 12 Jul 2024 14:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720794815; cv=none; b=EfbtuUT2vwj11NkBsd3S/iwPzQYWPO6G9p1056gdQ2ER7v5RgQgj1u2CUIe5Uiz99MbFYUhRWo+0z+TapQdA9g1KF+r3jWpdpf91TRShUDM5lktc/b8oidcdv+gliV6CufKEhyL5HhmIaRcjvYrKhR3h5JerG8OK/gWYDBMVFys=
+	t=1720794874; cv=none; b=hE3T95bi2EQtHRCgyrV84QdZpXR/croQAjJk+vVUWbDzZsTU4glfa4clitLQzU/u8SZuc/QMJZopcEuHWUjycLxN+mi6fo1/mQ254i+dVPZ0AcHoFFrj7LfkAXDfCi6qjPy9oOm8Bx7KuOvm9ma2EjRKioOTxKy0UPGtCuOq9Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720794815; c=relaxed/simple;
-	bh=z0ahnSbppYt7pmmF7PIuvpeQfD5WebtYXp3vsX/l3/8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=LOGDDsK7nkXYf0HnbXF1g9I0QDOLRVBmEaoqCAboRyPwNowOTxKutPQe9kJ/rm0v/KTwtBB4FNd0SH1+O5RkWA6KM2QZkeqBGjW+ZbpJXVdRQbJLO99M+FH8xtt5DjMlqx8kQlYRsJjhSSRDmug3It+rnXVDKAzuVEvyKr7PX1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=nks7UVPQ; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1720794792; x=1721399592; i=markus.elfring@web.de;
-	bh=hxuT+Hbd7wy8hEc4HWbbzcHkmuz5r+aDxi/+eSIYkro=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=nks7UVPQQOIV8NaVs+uRUWtJlePZd8jO5RKBspn3BRQ2gxA7WN2AFgS1CxfFvPFE
-	 lcfH0DSaO24AlSotJndPBEoSU3opXpx1EMYdEgvxdoNQfgY74hNtiCOUfmpD3DIt2
-	 8M8ilFS0nQ2Y8JBqB4Y5F/LrxbyIBFXjGqfgbe66uZBHMSLXmq+tQHPo97hoQTrW7
-	 AQkIoNlaSafOU0tzVVEToEiQzCCUD/LeySOWvHjYVBGBxLlsBC00YeaLHo2lCkx7e
-	 WF94FRUGKbn/xj9yU96UBW/w61xg3T1xUqHEIK843XffSBf0BONUve+FQb91ENFlk
-	 xWr+g0VHIo7kSt8NlA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MwR4D-1sBhvB15iH-00qrLJ; Fri, 12
- Jul 2024 16:33:12 +0200
-Message-ID: <dc509d3a-7e25-49f3-94a2-5a6bb36f062d@web.de>
-Date: Fri, 12 Jul 2024 16:33:04 +0200
+	s=arc-20240116; t=1720794874; c=relaxed/simple;
+	bh=Rsc8YZHaNuK+LM4JyoZlYijO2KWuj32xA3bxhSdG1Q8=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=VVKaYQxwnzYGPvNoUZ4YEOWyrW1ILlc4z9tFylWfRAe7wGcb8lTQQ4Fuuhq55/f34NNdnNFf9MNc1z9NPRgz2SN15vQMoKUF6vS8rvCUHGC8wk2ZbPAVQcwtO7g+VHx+ee6vWBJ1U5/SB98oCQSjFUdpOilsaUoN3+HKRpdCFWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyCXAOeI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77F9C32782;
+	Fri, 12 Jul 2024 14:34:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720794874;
+	bh=Rsc8YZHaNuK+LM4JyoZlYijO2KWuj32xA3bxhSdG1Q8=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=kyCXAOeIT4s3VrsTFKGOZ6HJTOOZmELIG6yFsUjVNxpvuXN0kQt870rH0byDWLWeq
+	 Gxk8EYPjJ6UlJgt/7vLUs+2xkZlGm7hh4RVgo0WZUa6bG2d0QfagtsKGr0IhtNqdPw
+	 lwlm5zA8f3lzRoT0h4NAQvNUmlxrLLNoTlxzogQgM7n77GXGPgb97aQES7O/rgKemF
+	 gbgaf3xCVunUWjqQY0YQTiDp9LgaKi2oOAntihc/t4XHaZTT2SnMCOaGrVoc3W5qXL
+	 MqNmOVpVWAsjLOEyyZYdqQqlMl04P8rWZOBIxF/nswGb3+tPDxYrv09sH3ig6tMAKa
+	 b5NurYSXXnMug==
+Date: Fri, 12 Jul 2024 08:34:32 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: shuaijie wang <wangshuaijie@awinic.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Waqar Hameed <waqar.hameed@axis.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, kangjiajun@awinic.com,
- Nick Li <liweilei@awinic.com>
-References: <20240712113200.2468249-3-wangshuaijie@awinic.com>
-Subject: Re: [PATCH V3 2/2] Add support for Awinic proximity sensor
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240712113200.2468249-3-wangshuaijie@awinic.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:H4eKD3Uf3BiWxrVZItGUlQHqUbqukHshvVPZ1sli3mcpJPkqjN3
- NUCi6quSvopxXguieyg8dn2k6yxTZnLppk6TKyzi1/fJpNpk4f7pe9ovOT7eFgCCfVHWNes
- C29SUNLoLjU1sVOjXordv6yPOrxtqbwdPiWNCtG5fnU9/pURpxgnfhAOqJR0DwDrrl8DGjB
- TMqP/t5z2ZK8FdSMt7ZUg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:op1lem1IDBY=;syVkAhnEwc2HUnMLJE8lKkQuPT7
- 7j50q8aG7IHbM9M7bbRqVEDoJB8OXmCCtkP61ZZiyQ+4ULTSSLwH3c+mCui5Ljn8PPAy7e485
- rupH36UbuZki4UKrFpx/N9n/aNsVT3RCVLflRxaBj6wJTIdG3DpTMmSb4MK7XtzcO2WkxpH+R
- q1/zt9Wo5pf+HrEZv+Med2gfWiZMSDlJEHDMI6K3PDkxo2zNu39c1NnrgxdjG/Wuc/GTxSLTY
- wml38XcrnL6B2+0UTRYXSgUJp8sPiXMvYCo9uejqOIqfjiXdMXUGvk5331cuAiUlPz4dL/4WU
- 3gHPVE4NOKlKq71PNSMfpM0HzGdsiAUtmeYAh25KuOv0CBruSHx1Ngday01RZFxnUsXQFXmfu
- H5iLD4K3F0u+fwfLkxDCM1n2kUvd5sV9P6T6tiH+6D4JEL3yBsd82rjn8Vg8aBRERBwr3p6Ig
- SgcxSjiyzbxGZx8b4z10jKEisrf8+fD3zeiru6CAcyHkTsvp+vj5awTZbVxqalreCoMCNyGqM
- G3Wk5TkIOOeG8lxc5viJ7+C3EOmeeEuFKk3tmu7vO4Sc2arAFCOXzCjknYSND4jiMl0/qLkfC
- EZsI3siLpc2kDMScYq/+rd1AzniGk0pVpenc30NrJjispKx9OY0zttpyt9nRuw3U/NRD3SXQw
- Oyh7o52iofyLIxzlFxjkRDp0owSrENQQO67w0Zgco0kG6ZXvtm+Q6ONevXcyfEUm0sDOvMO10
- 1IzfvMiRTRTHNORDLgsP9tec4opqOgZC7wF7TNm6NYjq9hTlpBGqpNQK8K1odOqecnkg3K9ua
- UJVNpf1VXIxK8D/FZrtHAW8A==
-
-Please add a subsystem specification to the message subject.
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Cc: Jishnu Prakash <quic_jprakash@quicinc.com>, 
+ Amit Kucheria <amitk@kernel.org>, linux-iio@vger.kernel.org, 
+ Lukasz Luba <lukasz.luba@arm.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Taniya Das <quic_tdas@quicinc.com>, 
+ Thara Gopinath <thara.gopinath@gmail.com>, Zhang Rui <rui.zhang@intel.com>, 
+ linux-kernel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Kamal Wadhwa <quic_kamalw@quicinc.com>, devicetree@vger.kernel.org, 
+ Jagadeesh Kona <quic_jkona@quicinc.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Imran Shaik <quic_imrashai@quicinc.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, linux-arm-msm@vger.kernel.org, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, 
+ Ajit Pandey <quic_ajipan@quicinc.com>
+In-Reply-To: <20240712-mbg-tm-support-v1-2-7d78bec920ca@quicinc.com>
+References: <20240712-mbg-tm-support-v1-0-7d78bec920ca@quicinc.com>
+ <20240712-mbg-tm-support-v1-2-7d78bec920ca@quicinc.com>
+Message-Id: <172079487284.777333.16103955331263207845.robh@kernel.org>
+Subject: Re: [PATCH 2/5] dt-bindings: thermal: qcom: Add MBG thermal
+ monitor bindings
 
 
-=E2=80=A6
-> +++ b/drivers/iio/proximity/aw_sar.c
-> @@ -0,0 +1,1850 @@
-=E2=80=A6
-> +static ssize_t
-> +update_reg_store(struct device *dev, struct device_attribute *attr, con=
-st char *buf, size_t count)
-> +{
-=E2=80=A6
-> +	if (flag =3D=3D AW_TRUE) {
-> +		mutex_lock(&aw_sar_lock);
-> +		aw_sar_soft_reset(p_sar);
-> +		aw_sar_update_reg_set_func(p_sar);
-> +		mutex_unlock(&aw_sar_lock);
-> +	}
-> +
-> +	return count;
-> +}
-=E2=80=A6
+On Fri, 12 Jul 2024 18:13:29 +0530, Satya Priya Kakitapalli wrote:
+> Add bindings support for the MBG Temp alarm peripheral found on
+> pm8775 pmics.
+> 
+> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+> ---
+>  .../bindings/thermal/qcom-spmi-mbg-tm.yaml         | 63 ++++++++++++++++++++++
+>  1 file changed, 63 insertions(+)
+> 
 
-Under which circumstances would you become interested to apply a statement
-like =E2=80=9Cguard(mutex)(&aw_sar_lock);=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.10-rc7/source/include/linux/mutex.h#L1=
-96
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Regards,
-Markus
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+In file included from Documentation/devicetree/bindings/thermal/qcom-spmi-mbg-tm.example.dts:25:
+./scripts/dtc/include-prefixes/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8775.h:9:10: fatal error: dt-bindings/iio/adc/qcom,spmi-vadc.h: No such file or directory
+    9 | #include <dt-bindings/iio/adc/qcom,spmi-vadc.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make[2]: *** [scripts/Makefile.lib:427: Documentation/devicetree/bindings/thermal/qcom-spmi-mbg-tm.example.dtb] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1430: dt_binding_check] Error 2
+make: *** [Makefile:240: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240712-mbg-tm-support-v1-2-7d78bec920ca@quicinc.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 

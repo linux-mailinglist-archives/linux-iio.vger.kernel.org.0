@@ -1,198 +1,346 @@
-Return-Path: <linux-iio+bounces-7532-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7533-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63DD892F9B2
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 13:49:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA5292F9B6
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 13:52:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01F91F21F6A
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 11:49:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47AD51F22E89
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 11:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78381161939;
-	Fri, 12 Jul 2024 11:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1BA16A93F;
+	Fri, 12 Jul 2024 11:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="NvxPBt4p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dcJ3Gp2k"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013047.outbound.protection.outlook.com [52.101.67.47])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582431411E0;
-	Fri, 12 Jul 2024 11:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720784975; cv=fail; b=gFrzPLs1hoP0/sFjhq97q2IanozvgfWnQJYwFnPihVc/BkjxnIm98YgeuKwc0q3I/xLLFgAd3pVTOJegmlMOo1VSZdUHj+5XSOvy2bPhmXXZzubo3ZA/Fx5HsfKKgh/Mpxrt5/R5SNQhBKL1ciKsUy8cgaPqK9enuqv2P9TCjnQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720784975; c=relaxed/simple;
-	bh=sIdValDDH2yXBJi3rRXzBUktxlnBaIxT9GL6T07WWyo=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nm+XQN2kUVI8sWGTwaVJ3d6NPd1C0o3cJ0iOpnH4YVqq0PoptzzH0rjLbYe9qmWQpbCehj59FJpkV7ZCzOYBZ4b7nWv/DWpwAGwLxcTv9Unma4o9vLlO2MJ5+wkP2wduOgfTlLuN64IznDIzpcoLqJOYs/uHWlmG75XiZb3MNbM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=NvxPBt4p; arc=fail smtp.client-ip=52.101.67.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XZSOm5yQ5nUHI2ss3i9IwicTjPtbAHLNv91ceHvO6Ae7dLfsS2gJQ4Mp1iMqpicPFocmG3pdt0AWW8GuxpKDhNIqEpUZKiP30jtZcj/b/MfyMJNHsu3eXIRH18IA8Q0EtUgDTa5fxsqpbq15qa2JlltMK4fZbqOt0CHCRscN/7VnePmVGv8f2ZN1stmUTxibTodsaFR4z464RD6bdeAHfesnMg1otOMlGY2IikWHqk6AOCIeTPH+Eixzw0WExiW8zDM8wAVTPgB8S+OzbulRT2X6Yr4Ouv88UjlRRpyVZin7L8YJWCPE4/5tEXZusUKBf/i+FmQlpm80VRbfkemdBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MpvbjznTxLZ+DpHkub5e8gFHZM/ZA+67WcC0Z3yHSkE=;
- b=M7qMI/sPWoGHcXiZPzYbjXemnLkxCyAP93VlXVKiXdc3oyBl/siWd5hyYMHWQ5Q7Rzx/P8KXmbYUC8hqbja4ynCMVNNQ6oprBUl0HhQOxpWFspJYtphGFyPKDAuEHpWBJDrahcpTd9TZNMBFTiftR0h0qbP3qcH4MUoVu+tz2IxYKC0+VsHiIhuavN5XUXPuZT2J4R1/I2VyVmY0QD84tNipe6W9U2+xVWRu1BxMGUdLOwcyv+KJLqBFe5j1Hznnr6UFmjIOJUb4lfqjCeIT1Ak6Ncf8p6ybh293y0XMdCHGOG5CTzPGRNMCkochCW8v7xwmToGnSWY2KHF9pA6L7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 195.60.68.100) smtp.rcpttodomain=awinic.com smtp.mailfrom=axis.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MpvbjznTxLZ+DpHkub5e8gFHZM/ZA+67WcC0Z3yHSkE=;
- b=NvxPBt4p25ZYxmIG8NllNnuza4VrjuU3SADQ8RaNdqLWh8B/yvdhJmAGasKOCwe0y54igMVmUbum0X+R/Gcps90vQaoEBeY/UviFlyrwcFdZx4jP7DfP7EBKHaw0eJHQI/tdLSSWQVTFZdaEWhBJAoHuRrNAUE/gnm/mRMoEhKw=
-Received: from AS9PR06CA0258.eurprd06.prod.outlook.com (2603:10a6:20b:45f::30)
- by VI1PR02MB6432.eurprd02.prod.outlook.com (2603:10a6:800:197::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.23; Fri, 12 Jul
- 2024 11:49:29 +0000
-Received: from AM4PEPF00027A60.eurprd04.prod.outlook.com
- (2603:10a6:20b:45f:cafe::e4) by AS9PR06CA0258.outlook.office365.com
- (2603:10a6:20b:45f::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.23 via Frontend
- Transport; Fri, 12 Jul 2024 11:49:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=axis.com;
-Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
- 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com; pr=C
-Received: from mail.axis.com (195.60.68.100) by
- AM4PEPF00027A60.mail.protection.outlook.com (10.167.16.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7762.17 via Frontend Transport; Fri, 12 Jul 2024 11:49:28 +0000
-Received: from pc52311-2249 (10.0.5.60) by se-mail01w.axis.com (10.20.40.7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 12 Jul
- 2024 13:49:28 +0200
-From: Waqar Hameed <waqar.hameed@axis.com>
-To: <wangshuaijie@awinic.com>
-CC: <jic23@kernel.org>, <lars@metafoo.de>, <robh@kernel.org>,
-	<krzk+dt@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<liweilei@awinic.com>, <kangjiajun@awinic.com>
-Subject: Re: [PATCH V3 0/2] Add support for Awinic SAR sensor
-In-Reply-To: <20240712113200.2468249-1-wangshuaijie@awinic.com>
-	(wangshuaijie@awinic.com's message of "Fri, 12 Jul 2024 11:31:58 +0000")
-References: <20240712113200.2468249-1-wangshuaijie@awinic.com>
-Date: Fri, 12 Jul 2024 13:49:28 +0200
-Message-ID: <pndbk32vnhz.fsf@axis.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB7C15EFB7;
+	Fri, 12 Jul 2024 11:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720785127; cv=none; b=eKhckaRy8l6fDATq4kSMUvc592lCIPIWRP9Lt71zy5pXL49dwBEs0V5KyHtwQJnxkqWnFsnurZPw3/38XkxEVbOnxKW/6solTWthpfvwxEEgsnBdzkDtRoen3+qwCzbvxKc+SmycJpVmHxMCdXL0vrcnlNdFqKpKXcIt4t2XCbM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720785127; c=relaxed/simple;
+	bh=bsD+Y3lBDQsozn6E7ODrLjRhG7eiCoBDGZkxWlj2klY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bWcvxzPQYYjx1p6HLisJf6HpWMmEV0s1MlQ3qROUiHXuijqBc8wxJBE+DLV0jFjb/zc/2TqKTsL/OTPOz6KLzGX+T55YEPfaXAzaWkxW0FAVfOJldRgT2pYbcK/pd5NXs45nBj3473AT9H/zeANkG1WtWsk1zky70RHWpBODhAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dcJ3Gp2k; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720785126; x=1752321126;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bsD+Y3lBDQsozn6E7ODrLjRhG7eiCoBDGZkxWlj2klY=;
+  b=dcJ3Gp2kNcZeCFKUQQZG41spKpsoKP94hZZJrf0uRS3zlg9Uhxi6pm9Y
+   7Ct91s0TpFkQFSsHEogg8Pn/+/0kZXDMlx8DryhLSbtoM4mCiYEYgi6BF
+   pWyfuDo4BMlNkTMBSAf0y3+pSZwlQNwSH72d3G8ZVpbeM9oQK2h6bWL6Y
+   xMEiLRZ56zKWacn9BXSCB2Zl6YvI83DFNcZOIvg6ZFmGHonkkNMBDFlBH
+   OPo2uM6lm2BD1AsiBnxrjBwO0UtRE4rqqn37P5g20XQZoGEuKDxr/GAwj
+   Zt+TH7VpOQ6fwUldtOBceFjvs/uvZYAfgHMGmilnlwLFblfYgVm6vELOS
+   Q==;
+X-CSE-ConnectionGUID: i2cmzJ1mSQ2AS27CR+st7Q==
+X-CSE-MsgGUID: FfxWhCIvRVq97006DyDrcQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="18171239"
+X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; 
+   d="scan'208";a="18171239"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 04:51:26 -0700
+X-CSE-ConnectionGUID: r8iYMDWrQS2qIHSv20W1WA==
+X-CSE-MsgGUID: GWNudzkCSUS72bGX0haq0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; 
+   d="scan'208";a="48797070"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 12 Jul 2024 04:51:23 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sSEo4-000aiu-0N;
+	Fri, 12 Jul 2024 11:51:20 +0000
+Date: Fri, 12 Jul 2024 19:50:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] iio: humidity: Add support for ENS21x
+Message-ID: <202407121921.LHla7p7i-lkp@intel.com>
+References: <20240710-ens21x-v3-2-4e3fbcf2a7fb@thegoodpenguin.co.uk>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: se-mail02w.axis.com (10.20.40.8) To se-mail01w.axis.com
- (10.20.40.7)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM4PEPF00027A60:EE_|VI1PR02MB6432:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a4be820-941f-4b75-7a3f-08dca268afb7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FyXLmMnXdhvaLfmZFZNW2DkVNoweCkUAK4Q/z3++n3dScJh/bwX6stA5VHYt?=
- =?us-ascii?Q?qnGV/LvG/cXVE+o08GUUu/D4K/FeJza0u2ZrAYO3rRXaCdUlU5uRvU/76w0e?=
- =?us-ascii?Q?IHKyGM/kF8naCaoFxZeZ3klxv98xJt2DhJgLhHLLePWkVOmzIDI5b8mqd9zE?=
- =?us-ascii?Q?hM7HyW1sHvxh6CSqdbaXJHq9URuHgv77lq+OyYg4PNSKSEgS8HqHStWfoiHE?=
- =?us-ascii?Q?DkQRRNVHL67/8xJawvFHghz8KtzoDWZjps1p1MiF5RPpUqcY82YMiDTy+rvv?=
- =?us-ascii?Q?z0zQp09uVOuftrTgntkfFZHM9HuWCsEi6XfE/DS5kOjxLMiG4GzkdN5IR23f?=
- =?us-ascii?Q?hgNNG6ZBrNMi7IKwIq3BXTuN19bq5O8b9ocCQPx5j6U+JzbzIttrS5rLpPtg?=
- =?us-ascii?Q?mSpqDU2HcCOt70C0t/UR6GX1NuVKOSelzQT55IsFkS9PPNvB1LgptA26ztod?=
- =?us-ascii?Q?O+1aef6AH4u0s4tDdrQaOE1HhoMCJK71sUAECHxUnHXiPA4Ja3XcRG0h1zOD?=
- =?us-ascii?Q?6PYG2Z8O95ulq39TS9vXvOnLS3v3hr9gKMSAWA5zaegEKCQBwZbsyRXupLh4?=
- =?us-ascii?Q?wwPHudoxiHIQpEi2QmfvGJSpCI8OI/TyXcMwVf3JO9tlP3Amh+Ya0unq636k?=
- =?us-ascii?Q?VQvOoOXOvZc0RGPci8Z+HNR+O71fFu/Wcjb75KyEDulCTCpkcJcN2vp3kvas?=
- =?us-ascii?Q?svUetd5l0lvZB67H1Qs0tG9O11qs6TwlexVFATaz5dIwVz0psSQtPUu9nI7F?=
- =?us-ascii?Q?RkQzaH6r0WWUJ0gMFPkboEh2tnHk8mV6MeADxWcPLdzLRsRnkneje/7JvkOU?=
- =?us-ascii?Q?Bke8OHUYB6Fxdxtq1k3/7m3QuYDELD24WxAbgklmrIPxOfK882esRfdddr8A?=
- =?us-ascii?Q?kZJ1X1hHx8vKKl81kwY/MmINQRX/1sYFsuQsbWTn4IRL2cBzXj34BYmjEpkU?=
- =?us-ascii?Q?3fg6HIcdWH+GUccH8UGlNXz3LfD/UMFp7tASccEqXAS47BERCCFmF/zdoaLN?=
- =?us-ascii?Q?Q9OOjqrFhudsnjzzjQVXZb04t9H87Q7wbG3tGHyZKsLPBuxM6O3S59WDL2V0?=
- =?us-ascii?Q?knb0yupFwRfoT1uHaSL9649XCzFfqtilT2vMSCv5AlO8SdLjXKx9PCa3LKL6?=
- =?us-ascii?Q?CqSkA9S4LRUyfoQvBkycq9QKyLywmywjXjqv0+14vdbp/JI3j337g65XPGLA?=
- =?us-ascii?Q?CA2xOQAY8x7L9K7QvvSBwsVoEcUXTlK4GyWymI8qofPfTlTYj/y2w1Bc7GC/?=
- =?us-ascii?Q?xfafZPe1Le69qjg9pw5UL592NkQbuNt90PsMrmjrIYJW5qDVpCdpiuGBHAcO?=
- =?us-ascii?Q?ET1J0u0+MCpUct5aIrwsFu2jtDOZ+T1gi7lfiqYKUOPilZt9cJeZLkWFoRaB?=
- =?us-ascii?Q?eqUTFsWizXeT9q5rDVs/NZH97FXRnVF0HvUp7VKxo/QyDb5gbg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 11:49:28.7634
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a4be820-941f-4b75-7a3f-08dca268afb7
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM4PEPF00027A60.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR02MB6432
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240710-ens21x-v3-2-4e3fbcf2a7fb@thegoodpenguin.co.uk>
 
-On Fri, Jul 12, 2024 at 11:31 +0000 wangshuaijie@awinic.com wrote:
+Hi Joshua,
 
-> From: shuaijie wang <wangshuaijie@awinic.com>
->
-> Add drivers that support Awinic SAR (Specific Absorption Rate)
-> sensors to the Linux kernel.
->
-> The AW9610X series and AW963XX series are high-sensitivity
-> capacitive proximity detection sensors.
->
-> This device detects human proximity and assists electronic devices
-> in reducing SAR to pass SAR related certifications.
->
-> The device reduces RF power and reduces harm when detecting human proximity.
-> Increase power and improve signal quality when the human body is far away.
->
-> This patch implements device initialization, registration,
-> I/O operation handling and interrupt handling, and passed basic testing.
->
-> shuaijie wang (2):
->   dt-bindings: iio: Add YAML to Awinic proximity sensor
->   Add support for Awinic proximity sensor
->
->  .../iio/proximity/awinic,aw96xxx.yaml         |  127 ++
->  drivers/iio/proximity/Kconfig                 |   10 +
->  drivers/iio/proximity/Makefile                |    2 +
->  drivers/iio/proximity/aw9610x.c               | 1150 ++++++++++
->  drivers/iio/proximity/aw963xx.c               | 1371 ++++++++++++
->  drivers/iio/proximity/aw_sar.c                | 1850 +++++++++++++++++
->  drivers/iio/proximity/aw_sar.h                |   23 +
->  drivers/iio/proximity/aw_sar_comm_interface.c |  550 +++++
->  drivers/iio/proximity/aw_sar_comm_interface.h |  172 ++
->  drivers/iio/proximity/aw_sar_type.h           |  371 ++++
->  10 files changed, 5626 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/awinic,aw96xxx.yaml
->  create mode 100644 drivers/iio/proximity/aw9610x.c
->  create mode 100644 drivers/iio/proximity/aw963xx.c
->  create mode 100644 drivers/iio/proximity/aw_sar.c
->  create mode 100644 drivers/iio/proximity/aw_sar.h
->  create mode 100644 drivers/iio/proximity/aw_sar_comm_interface.c
->  create mode 100644 drivers/iio/proximity/aw_sar_comm_interface.h
->  create mode 100644 drivers/iio/proximity/aw_sar_type.h
->
->
-> base-commit: 43db1e03c086ed20cc75808d3f45e780ec4ca26e
+kernel test robot noticed the following build warnings:
 
-This is version 3, but I cannot see a description of the incremental
-changes between the versions (or links) in this cover letter. It will
-therefore make it harder to review...
+[auto build test WARNING on 1ebab783647a9e3bf357002d5c4ff060c8474a0a]
 
-It also looks like the _actual_ commit messages in the patch series have
-some kind of description of the changes from previous versions. That is
-also not correct. Please read
-https://docs.kernel.org/process/submitting-patches.html#respond-to-review-comments
-and
-https://docs.kernel.org/process/submitting-patches.html#the-canonical-patch-format
+url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Felmeden/dt-bindings-iio-humidity-add-ENS21x-sensor-family/20240711-022826
+base:   1ebab783647a9e3bf357002d5c4ff060c8474a0a
+patch link:    https://lore.kernel.org/r/20240710-ens21x-v3-2-4e3fbcf2a7fb%40thegoodpenguin.co.uk
+patch subject: [PATCH v3 2/2] iio: humidity: Add support for ENS21x
+config: loongarch-randconfig-r122-20240712 (https://download.01.org/0day-ci/archive/20240712/202407121921.LHla7p7i-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 14.1.0
+reproduce: (https://download.01.org/0day-ci/archive/20240712/202407121921.LHla7p7i-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407121921.LHla7p7i-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/iio/humidity/ens21x.c:84:23: sparse: sparse: restricted __be32 degrades to integer
+>> drivers/iio/humidity/ens21x.c:143:26: sparse: sparse: cast to restricted __le32
+>> drivers/iio/humidity/ens21x.c:283:19: sparse: sparse: cast to restricted __le16
+
+vim +84 drivers/iio/humidity/ens21x.c
+
+    80	
+    81	/* calculate 17-bit crc7 */
+    82	static u8 ens21x_crc7(u32 val)
+    83	{
+  > 84		u32 val_be = (htonl(val & 0x1ffff) >> 0x8);
+    85	
+    86		return crc7_be(0xde, (u8 *)&val_be, 3) >> 1;
+    87	}
+    88	
+    89	static int ens21x_get_measurement(struct iio_dev *indio_dev, bool temp, int *val)
+    90	{
+    91		u32 regval, regval_le;
+    92		int ret, tries;
+    93		struct ens21x_dev *dev_data = iio_priv(indio_dev);
+    94	
+    95		/* assert read */
+    96		i2c_smbus_write_byte_data(dev_data->client, ENS21X_REG_SENS_START,
+    97					  temp ? ENS21X_SENS_START_T_START :
+    98						 ENS21X_SENS_START_H_START);
+    99	
+   100		/* wait for conversion to be ready */
+   101		switch (dev_data->part_id) {
+   102		case ENS210:
+   103		case ENS210A:
+   104			msleep(ENS210_CONST_CONVERSION_TIME);
+   105			break;
+   106		case ENS211:
+   107		case ENS212:
+   108			msleep(ENS212_CONST_CONVERSION_TIME);
+   109			break;
+   110		case ENS213A:
+   111		case ENS215:
+   112			msleep(ENS215_CONST_CONVERSION_TIME);
+   113			break;
+   114		default:
+   115			dev_err(&dev_data->client->dev, "unrecognised device");
+   116			return -ENODEV;
+   117		}
+   118	
+   119		tries = 10;
+   120		while (tries-- > 0) {
+   121			usleep_range(4000, 5000);
+   122			ret = i2c_smbus_read_byte_data(dev_data->client,
+   123						       ENS21X_REG_SENS_STAT);
+   124			if (ret < 0)
+   125				continue;
+   126			if (!(ret & (temp ? ENS21X_SENS_STAT_T_ACTIVE :
+   127					    ENS21X_SENS_STAT_H_ACTIVE)))
+   128				break;
+   129		}
+   130		if (tries < 0) {
+   131			dev_err(&indio_dev->dev, "timeout waiting for sensor reading\n");
+   132			return -EIO;
+   133		}
+   134	
+   135		/* perform read */
+   136		ret = i2c_smbus_read_i2c_block_data(
+   137			dev_data->client, temp ? ENS21X_REG_T_VAL : ENS21X_REG_H_VAL, 3,
+   138			(u8 *)&regval_le);
+   139		if (ret < 0) {
+   140			dev_err(&dev_data->client->dev, "failed to read register");
+   141			return -EIO;
+   142		} else if (ret == 3) {
+ > 143			regval = le32_to_cpu(regval_le);
+   144			if (ens21x_crc7(regval) == ((regval >> 17) & 0x7f)) {
+   145				*val = regval & 0xffff;
+   146				return IIO_VAL_INT;
+   147			}
+   148			/* crc fail */
+   149			dev_err(&indio_dev->dev, "ens invalid crc\n");
+   150			return -EIO;
+   151		}
+   152	
+   153		dev_err(&indio_dev->dev, "expected 3 bytes, received %d\n", ret);
+   154		return -EIO;
+   155	}
+   156	
+   157	static int ens21x_read_raw(struct iio_dev *indio_dev,
+   158				   struct iio_chan_spec const *channel, int *val,
+   159				   int *val2, long mask)
+   160	{
+   161		struct ens21x_dev *dev_data = iio_priv(indio_dev);
+   162		int ret = -EINVAL;
+   163	
+   164		switch (mask) {
+   165		case IIO_CHAN_INFO_RAW:
+   166			mutex_lock(&dev_data->lock);
+   167			ret = ens21x_get_measurement(
+   168				indio_dev, channel->type == IIO_TEMP, val);
+   169			mutex_unlock(&dev_data->lock);
+   170			break;
+   171		case IIO_CHAN_INFO_SCALE:
+   172			if (channel->type == IIO_TEMP) {
+   173				*val = ENS21X_CONST_TEMP_SCALE_INT;
+   174				*val2 = ENS21X_CONST_TEMP_SCALE_DEC;
+   175			} else {
+   176				*val = ENS21X_CONST_HUM_SCALE_INT;
+   177				*val2 = ENS21X_CONST_HUM_SCALE_DEC;
+   178			}
+   179			ret = IIO_VAL_INT_PLUS_MICRO;
+   180			break;
+   181		case IIO_CHAN_INFO_OFFSET:
+   182			if (channel->type == IIO_TEMP) {
+   183				*val = ENS21X_CONST_TEMP_OFFSET_INT;
+   184				*val2 = ENS21X_CONST_TEMP_OFFSET_DEC;
+   185				ret = IIO_VAL_INT_PLUS_MICRO;
+   186				break;
+   187			}
+   188			*val = 0;
+   189			ret =  IIO_VAL_INT;
+   190			break;
+   191		default:
+   192			break;
+   193		}
+   194		return ret;
+   195	}
+   196	
+   197	static const struct iio_chan_spec ens21x_channels[] = {
+   198		/* Temperature channel */
+   199		{
+   200			.type = IIO_TEMP,
+   201			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+   202					      BIT(IIO_CHAN_INFO_SCALE) |
+   203					      BIT(IIO_CHAN_INFO_OFFSET),
+   204		},
+   205		/* Humidity channel */
+   206		{
+   207			.type = IIO_HUMIDITYRELATIVE,
+   208			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+   209					      BIT(IIO_CHAN_INFO_SCALE) |
+   210					      BIT(IIO_CHAN_INFO_OFFSET),
+   211		}
+   212	};
+   213	
+   214	static const struct iio_info ens21x_info = {
+   215		.read_raw = ens21x_read_raw,
+   216	};
+   217	
+   218	static int ens21x_probe(struct i2c_client *client)
+   219	{
+   220		const struct i2c_device_id *id = i2c_client_get_device_id(client);
+   221		const struct of_device_id *match;
+   222		struct ens21x_dev *dev_data;
+   223		struct iio_dev *indio_dev;
+   224		uint16_t part_id_le, part_id;
+   225		int ret, tries;
+   226	
+   227		if (!i2c_check_functionality(client->adapter,
+   228				I2C_FUNC_SMBUS_WRITE_BYTE_DATA |
+   229				I2C_FUNC_SMBUS_WRITE_BYTE |
+   230				I2C_FUNC_SMBUS_READ_I2C_BLOCK)) {
+   231			dev_err(&client->dev,
+   232				"adapter does not support some i2c transactions\n");
+   233			return -EOPNOTSUPP;
+   234		}
+   235	
+   236		match = i2c_of_match_device(ens21x_of_match, client);
+   237		if (!match)
+   238			return -ENODEV;
+   239	
+   240		indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*dev_data));
+   241		if (!indio_dev)
+   242			return -ENOMEM;
+   243	
+   244		dev_data = iio_priv(indio_dev);
+   245		i2c_set_clientdata(client, indio_dev);
+   246		dev_data->client = client;
+   247		mutex_init(&dev_data->lock);
+   248	
+   249		/* reset device */
+   250		ret = i2c_smbus_write_byte_data(client, ENS21X_REG_SYS_CTRL,
+   251						ENS21X_SYS_CTRL_SYS_RESET);
+   252		if (ret)
+   253			return ret;
+   254	
+   255		/* wait for device to become active */
+   256		usleep_range(4000, 5000);
+   257	
+   258		/* disable low power mode */
+   259		ret = i2c_smbus_write_byte_data(client, ENS21X_REG_SYS_CTRL, 0x00);
+   260		if (ret)
+   261			return ret;
+   262	
+   263		/* wait for device to become active */
+   264		tries = 10;
+   265		while (tries-- > 0) {
+   266			msleep(20);
+   267			ret = i2c_smbus_read_byte_data(client, ENS21X_REG_SYS_STAT);
+   268			if (ret < 0)
+   269				return ret;
+   270			if (ret & ENS21X_SYS_STAT_SYS_ACTIVE)
+   271				break;
+   272		}
+   273		if (tries < 0) {
+   274			dev_err(&client->dev,
+   275				"timeout waiting for ens21x to become active\n");
+   276			return -EIO;
+   277		}
+   278	
+   279		/* get part_id */
+   280		part_id_le = i2c_smbus_read_word_data(client, ENS21X_REG_PART_ID);
+   281		if (part_id_le < 0)
+   282			return part_id_le;
+ > 283		part_id = le16_to_cpu(part_id_le);
+   284	
+   285		if (part_id != id->driver_data) {
+   286			dev_err(&client->dev,
+   287				"Part ID does not match (0x%04x != 0x%04lx)\n", part_id,
+   288				id->driver_data);
+   289			return -ENODEV;
+   290		}
+   291	
+   292		/* reenable low power */
+   293		ret = i2c_smbus_write_byte_data(client, ENS21X_REG_SYS_CTRL,
+   294						ENS21X_SYS_CTRL_LOW_POWER_ENABLE);
+   295		if (ret)
+   296			return ret;
+   297	
+   298		dev_data->part_id = part_id;
+   299	
+   300		indio_dev->name = id->name;
+   301		indio_dev->modes = INDIO_DIRECT_MODE;
+   302		indio_dev->channels = ens21x_channels;
+   303		indio_dev->num_channels = ARRAY_SIZE(ens21x_channels);
+   304		indio_dev->info = &ens21x_info;
+   305	
+   306		return devm_iio_device_register(&client->dev, indio_dev);
+   307	}
+   308	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

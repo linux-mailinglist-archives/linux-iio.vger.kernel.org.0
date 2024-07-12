@@ -1,325 +1,306 @@
-Return-Path: <linux-iio+bounces-7526-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7527-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65E092F5B7
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 08:53:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF2792F871
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 11:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54716283563
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 06:53:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B70F2B23C98
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 09:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4243913D601;
-	Fri, 12 Jul 2024 06:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C561814E2E9;
+	Fri, 12 Jul 2024 09:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e7TKs2gb"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="gW7eA7qc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AC013B2A8;
-	Fri, 12 Jul 2024 06:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720767190; cv=none; b=HzOw/gTt2W1dzKLQ2lSu4GIp498AXTXzFaLpwN5ikRePLTZtEfsN8UQoY5yDrY0AX57CyHIUPo2YCuTiLM/2y7xH11HBL4SQGQEjeG0p+hqyDkOSfL5QIJonRlDdLcPlRWmJc6GCiwWFLkhlE0ArB8ZSEDNPLUZ+huJjNCNcYz4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720767190; c=relaxed/simple;
-	bh=O5VBXpqJ+9U+4H7Q/wM6kgTXFMevkRjYnuE++Y3XvrE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iIHSCA9ubwx1NWxDX05MpWsmXQX2pas6OxnUVzSklKum3mVwfwN2d+PFyN22zmN0yh/Gf2ulh1wxZlWXtalnffSeyvxJLz1RM8nGu93KfoPpmDo24RScUVqxOBerOrnIMNyUSvDU6cykft/gAXIhJ4xv1xsDbRSZTkH6nLTUW1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e7TKs2gb; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a77d9217e6fso218701066b.2;
-        Thu, 11 Jul 2024 23:53:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720767186; x=1721371986; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XXFbQXPtGb/+GNQzqGBVwiqUU8qK0zWwlp6dRJu4EPY=;
-        b=e7TKs2gbGSc/Br9AcqK2VD8eTqvktVkyPprzFpXYKY3+cu1wsH5v+azVY/KSvplUXv
-         WrWzYQjbV36JWIZOOCi8Y+0fgt489PJ272FR0i+EVk2hsl9Kj1bt9YwUvrUajgInrQY8
-         vJVJb4vcXhY3g/kQHHJVBnUJNcCaqSLZ647rsPiKNXTHckjuu7D6G7+R73YqV7eXD/Ye
-         3r0UwZldLgUZ/2rLrsctm5KHHBxiOO4rQZ3ul11GktT0uSv0sV68OmZNMI2rRQMEGDef
-         5fzHeCHCp47JrZe0jIAv+UTHfdENVn0hJ7Jd5VcM5asJX2Vu+/bvpZaDf5S2eachBZM6
-         hVFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720767186; x=1721371986;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XXFbQXPtGb/+GNQzqGBVwiqUU8qK0zWwlp6dRJu4EPY=;
-        b=Sq4issAsTbqp+kjL/9B8Pq2ds3lYQ6zH31e5spVxguSpIBJf1zzmPiQcMz489LTTXK
-         /wGmJcJxyZ8eHYfti/xMXeeXeOi0dcXWYjYnmUH5cQF/OYVYmou0XlD6pol/GjP56rmP
-         2sfiQEv0JTAEtgnNE3zNitR9kLnrsr9kaQghuNXBzrkXCQgiVVQXtwEgG5frIfwNFU4W
-         zWMnOGt2UDYZUcmt0BnlBQss/3mxQ4l64tTuXEySg/UW0U7KPX/7nq4w99m/2hgHqrwx
-         6iq2G1G772uEwom5CSaBPcWbjckHJFCd5pprftwgnmhdsebJTZhO1/Bc5O4wRemp39Ul
-         32XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUS54gm/tPOFCCxx1+8WYPmRjsmyhJlWbcoIEEtX5TxRscQSIu3m4JRIZ0e5giZfijKsFRw37M3A+AKJf7eilnl57NtjQEiQ9iPkH9EP07RXBdvpFsbHORrWqs3RG92IF5aFvN3n1iuXLas7NXa1EutS4JeQowS6tD2mgow1Gmp2BWUww==
-X-Gm-Message-State: AOJu0YzlFRrm6hnbnrVwsYBEpF7lxkkNSIuC/5SOQJzp8qP+XIMVvfE1
-	aFxPlKWrCuYl0hpmaTRFZs35Iq1Vws0UDDgxAXaExx4ePmvJ9sw0
-X-Google-Smtp-Source: AGHT+IFCJKh4sLArYjTnbB0nGhUrzlB2tvngFTC7NTzAQMeZzbab4y1gGt01y8cztsXxNaiOErShrQ==
-X-Received: by 2002:a17:906:3c1a:b0:a77:cd4f:e4ef with SMTP id a640c23a62f3a-a780b89f428mr652622866b.63.1720767186147;
-        Thu, 11 Jul 2024 23:53:06 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a86f636sm315628666b.208.2024.07.11.23.53.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 23:53:05 -0700 (PDT)
-Message-ID: <468b5725d0f191c20ada9524ecb7da8a48d56d97.camel@gmail.com>
-Subject: Re: [PATCH 2/2] iio: dac: support the ad8460 Waveform DAC
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
-	 <Jonathan.Cameron@Huawei.com>, "Tinaco, Mariel" <Mariel.Tinaco@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark
- Brown <broonie@kernel.org>, "Hennerich, Michael"
- <Michael.Hennerich@analog.com>,  Marcelo Schmitt
- <marcelo.schmitt1@gmail.com>, Dimitri Fedrau <dima.fedrau@gmail.com>,
- Guenter Roeck <linux@roeck-us.net>, Nuno Sa <nuno.sa@analog.com>
-Date: Fri, 12 Jul 2024 08:57:00 +0200
-In-Reply-To: <733f4f7b-53b2-46c1-8bf8-5ed357adab30@baylibre.com>
-References: <20240510064053.278257-1-Mariel.Tinaco@analog.com>
-	 <20240510064053.278257-3-Mariel.Tinaco@analog.com>
-	 <20240511174405.10d7fce8@jic23-huawei>
-	 <SJ0PR03MB62241801F72B21EEC9CDCCBD91D42@SJ0PR03MB6224.namprd03.prod.outlook.com>
-	 <20240628194546.2f608365@jic23-huawei>
-	 <SJ0PR03MB62246270CC24E70732D0288F91DA2@SJ0PR03MB6224.namprd03.prod.outlook.com>
-	 <20240708170504.00006c9d@Huawei.com>
-	 <ccce603d36fa2fd590b563955bcd2cda085773e5.camel@gmail.com>
-	 <733f4f7b-53b2-46c1-8bf8-5ed357adab30@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AB61422DE;
+	Fri, 12 Jul 2024 09:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720778052; cv=fail; b=dSSNftw3VMiFdt9jK9q5oVYPJLHa54HLq65hIhvIP1kGK/sqWaR9Fm93UYIusjWBWFBEGs7lCl7XcryXR7xDqFFGQw4IUbEK4tkbHc25wO5pxbWrEYn9El9V/Rk/GmoSNVdmEOd+z8XOfAUwdbhjUD/VD8DI73T7KSFedE8LpoU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720778052; c=relaxed/simple;
+	bh=jkg8bkJ9B8AkoRm2xz+eWvhxgIhzug9uTtNWRgiX3jQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=pAyzsQ9ZdHYTkgDkPnzWU8DrQScoJbp3lK7bxPcvv2UIsyVpdS/AId3Rm9K1pyudFKOrhhuiA9CHZPxJkpbs8Qe7gKCt8bqozY70AffJAl839bOn/WsoS3giUHmujql4YXNEKrZFngd6qoIFVNeynZqLJQU+hD0nrnU7H6j8VMs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=gW7eA7qc; arc=fail smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46C9PTWg029863;
+	Fri, 12 Jul 2024 05:53:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=GDjic
+	Zj7Yb4U7SNWU4NjFV2KREtjGfoToeoGKIgCIOg=; b=gW7eA7qck83iCoAJbk8B+
+	IhBaKfKXUWk9Lv/Qof70ov3CfIdz9G31uVQ84DR4hCDZnZA9vwrDN6rPV4L5vHPc
+	gxH7tAYbnyONQLKqxnxO1oYbLIjpD0NPTWIHFgdkePUoN3JYBMPfnBfP/G/fXxDH
+	kk7rUnXzlqS0f7ycAXylC42Fu9tMAfDr/IH9Tw0IcFMDmo28vtXB9l6F/aa+8UD3
+	zr3RG7/eqApxsNnScmyvw6q9mejzQgLExSaYyr7BOUVr8BBpKLeAV7yPWyKTe0/c
+	yWdA40Sz62W82L8p6JB9EwXF4s4Mw/5/1Wa2OLhG8DfZTzC5hafQye0Axe5+fw1U
+	A==
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2043.outbound.protection.outlook.com [104.47.70.43])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 408fy4gn2y-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jul 2024 05:53:55 -0400 (EDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fWnonWyvP8hTeb7SvBM9kuadyNY9fVMH5KYwfM8RPy8DLQoe/G6MeStCEnPmZuxrdfBSHWR67SFKx5hpVZNjue0QPIxYJVKpSxqAH4Y6faB6EhYfT/RTNgAuwRMtDf3NzTdYMhfsLtxk79g5P/RYMkXWpvgl8Y2VDQBREmJQkxprf/R9sGgMp5WDa4tVa4zm4CUL+Rv5KE/0pTEotpaJKfOAg9fmPsijXJpPAadfuuNspzjaheec4L5r4W99mLmIKodF/7Rq89BUwmARZrFV/gC5/c4mYFAD3C7981swrYZrEsm4kGDfBh085kIH+Rsgb9itpaf2lqI9YVRk3KyOsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GDjicZj7Yb4U7SNWU4NjFV2KREtjGfoToeoGKIgCIOg=;
+ b=W1/UzqaQE0TgElDtw5MOkp80w8pucWmeO7YLcWn1WeN1cI86FxKLnKJ0fmsSh8JndXduSnijkaj7OdzxBZYqcIKGr/7Z93C60K/1yZNRnNJ0v8VkGu5KTd1zZ4wB+mcxKoee4ypDyaScr1OhpWiIj9rhs3LYYrzh3/MXIHTAbo8sXC6ou2oHas1ko1EbJ0giN1Ji5R+bEHeSunM5o1rLSI97nBGmHzqf2ZhGHCJEHKpuawsbnxUkCrMB3Up2wVdwBBIYsm/ldtnPOyZOE3QJZmYGwjwD5ohBDUa+Z6OABI2FFBtsLs0PEEBTPFnPaCXHPG7v9EjEIaj0/nwJ68XDoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+Received: from PH0PR03MB7141.namprd03.prod.outlook.com (2603:10b6:510:296::20)
+ by SJ0PR03MB6222.namprd03.prod.outlook.com (2603:10b6:a03:3aa::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.23; Fri, 12 Jul
+ 2024 09:53:51 +0000
+Received: from PH0PR03MB7141.namprd03.prod.outlook.com
+ ([fe80::c559:3d31:1af3:b01]) by PH0PR03MB7141.namprd03.prod.outlook.com
+ ([fe80::c559:3d31:1af3:b01%3]) with mapi id 15.20.7762.020; Fri, 12 Jul 2024
+ 09:53:50 +0000
+From: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
+To: Rob Herring <robh@kernel.org>, David Lechner <dlechner@baylibre.com>,
+        Conor Dooley <conor+dt@kernel.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Jonathan Cameron
+	<jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood
+	<lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Dimitri Fedrau
+	<dima.fedrau@gmail.com>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        =?iso-8859-1?Q?Nuno_S=E1?= <noname.nuno@gmail.com>
+Subject: RE: [PATCH v6 3/6] dt-bindings: iio: dac: Generalize DAC common
+ properties
+Thread-Topic: [PATCH v6 3/6] dt-bindings: iio: dac: Generalize DAC common
+ properties
+Thread-Index: AQHa04d8+WHyEhvYUkuL5GxJuHjjF7HyIvcAgAC1WSA=
+Date: Fri, 12 Jul 2024 09:53:50 +0000
+Message-ID: 
+ <PH0PR03MB714190FE95B8E9FEBA847C6CF9A62@PH0PR03MB7141.namprd03.prod.outlook.com>
+References: <20240711114221.62386-1-kimseer.paller@analog.com>
+ <20240711114221.62386-4-kimseer.paller@analog.com>
+ <20240711225232.GA3248170-robh@kernel.org>
+In-Reply-To: <20240711225232.GA3248170-robh@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: 
+ =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNca3BhbGxlcj?=
+ =?iso-8859-1?Q?JcYXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZi?=
+ =?iso-8859-1?Q?ODRiYTI5ZTM1Ylxtc2dzXG1zZy1hMTFjYjRlNS00MDM0LTExZWYtYWFmNy?=
+ =?iso-8859-1?Q?1mOGU0M2IzM2Q2NmVcYW1lLXRlc3RcYTExY2I0ZTctNDAzNC0xMWVmLWFh?=
+ =?iso-8859-1?Q?ZjctZjhlNDNiMzNkNjZlYm9keS50eHQiIHN6PSI2MTE0IiB0PSIxMzM2NT?=
+ =?iso-8859-1?Q?I1MTYyNzM0MDI1NjUiIGg9ImJpOFZNaTM5N05KSUdPODZqazJGM25jTFgv?=
+ =?iso-8859-1?Q?dz0iIGlkPSIiIGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk?=
+ =?iso-8859-1?Q?5DZ1VBQUVvQ0FBREZNdEJqUWRUYUFmbWp3d00zTlNvMithUERBemMxS2pZ?=
+ =?iso-8859-1?Q?REFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFFQUFRQUJBQUFBM0xoU2ZnQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBSjRBQUFCaEFHUUFhUUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QU?=
+ =?iso-8859-1?Q?c4QWFnQmxBR01BZEFCekFGOEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFh?=
+ =?iso-8859-1?Q?UUIwQUdrQWRnQmxBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQUFBQUFBQUFBZ0FBQUFBQW5nQU?=
+ =?iso-8859-1?Q?FBR0VBWkFCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdV?=
+ =?iso-8859-1?Q?QVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURFQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FBQUFBQUNlQUFBQVlRQmtB?=
+ =?iso-8859-1?Q?R2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dCdkFHb0FaUUJqQUhRQW?=
+ =?iso-8859-1?Q?N3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21ldGE+?=
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR03MB7141:EE_|SJ0PR03MB6222:EE_
+x-ms-office365-filtering-correlation-id: 6c399fb8-8c07-48ed-0930-08dca2588851
+x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: 
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018;
+x-microsoft-antispam-message-info: 
+ =?iso-8859-1?Q?KkWglWPqsIIiTFNug8g+QEy7jKbNgYagLI2JQGsJkwMheP7LiBzqP69vj/?=
+ =?iso-8859-1?Q?ExNEpO1ovhlD6hnkHqElCldHrkoC7SGOXi4FeKR0rXdFXUEw8hmHFDv1Is?=
+ =?iso-8859-1?Q?6hSGb93Ca0GhqunAnUPVuuC6U83uYmFOIbtPnUAQhgENZdd40RLRQBh7NM?=
+ =?iso-8859-1?Q?+L1pGddLfcGQdhaes6vuhdB6qZTapJ0AYccJFRyizScgZdcoZXTTXI0YAR?=
+ =?iso-8859-1?Q?/LdPAs33HxQLpFtI9WHEZLY8TCs2E8lxFvYPZ9xWicYbeIDlx6DcCWFAuH?=
+ =?iso-8859-1?Q?3t12gyyEv5efSPRqj5uTPxBMwyuWc2xCs4U33wv8ljCDkZtURVtGQGqZJv?=
+ =?iso-8859-1?Q?Z488O8J/wIbUV1rEETjjIfDOULEvbiMDWJfDxfiArS4IcuerAntMLU2TEd?=
+ =?iso-8859-1?Q?d4gUWiqNERs+nKHRIL7mWifA5JG1Bh4ALOoBQSqfsNAALCyXGQckKU4H4G?=
+ =?iso-8859-1?Q?aS4aJXdqJrW0d83luTcGcQKdQL9Q+ks29Ur8PHqOvHWDw3BQ7A6kWNW3bo?=
+ =?iso-8859-1?Q?quMVhjxvQoEyb+wMuhbQPCy2ttHcxFrrQOXmXIqBa5H4++EsdYmb/T4o2i?=
+ =?iso-8859-1?Q?+cvafoAIPc6yYT5dHCaiR/Ep8bzLbx/V2jCcXlP+AjBsMzX6wb+iwq9lrd?=
+ =?iso-8859-1?Q?T679pW8PhjBtys0diufNaPSa3GZesI0AbhoTmvTRVMsTf/RER3DpEG8qk2?=
+ =?iso-8859-1?Q?Zt22DvYFzXpz+qNgD5jXhAOlCU8jEVQ1ybC4P95JF+Rr9GJAPvBp928adA?=
+ =?iso-8859-1?Q?A4sq1rtw9sfC2dXM0Me5UK3ZtZ7vVQcundmIsUxkiJH3jhMh3bT9x+fF1j?=
+ =?iso-8859-1?Q?q6KH1CpcT7557zfWBJalUDFpSGnYmKyXsIOO+YViwTnTGRUVCJk+3OnOsg?=
+ =?iso-8859-1?Q?ZZ5Je4Z5NCXxgld9eUl+50alYSg+7BP59goTV7vmTTn6Jt+vDL8SGLshaY?=
+ =?iso-8859-1?Q?ADEZfCtBllZYC15or3Zaf7vSy70gW3Xys63hX5wP1GRttPxAOV4ptzIKGi?=
+ =?iso-8859-1?Q?U5I92WSA5IQWKWX58cSwVeYZVQhdS87tOKwyAx8fgC6IxzqkzkYbVhLTMh?=
+ =?iso-8859-1?Q?vxsrXIeD5RcN+80hIJFoR+SY0N40qYqX/OHk9X47Y/UH1yC/mbxUQJJn5Z?=
+ =?iso-8859-1?Q?ZdnndszhJ5gqQe2GVH0Rt/4l6XYPexU2jTXnEghD3cZugxp0qMCiCeFZLR?=
+ =?iso-8859-1?Q?Ky+1RpmDGS93GMf6x5hFSGYH1Xba9VL1I1SHxuKqKAP4TuP5GY6PpGLgx4?=
+ =?iso-8859-1?Q?0O0goePOtDL8/Cr8poH+2+cuB5IR7yThfxfM+7yw67aDuA/E4I8uBKlpch?=
+ =?iso-8859-1?Q?mCUDCUxN8ZvBxfoOt/5+vWLJRUSvxi+aNH2csHWYNCFYZy5JwUwc6t4yeI?=
+ =?iso-8859-1?Q?/8/iqb+QOY6w0XCvuMyLdjbsSCy/G+OfkPSIoKZBmD8GDdyq2QMlw=3D?=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB7141.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?iso-8859-1?Q?ZiHbISavF9AfKQjGiDDIo7pDUeLTdJTg/T3WobPfNEUbgIqL4lF0usIlMc?=
+ =?iso-8859-1?Q?NMEZjN6LU/BeL0wTJsw85x1DJI6XVU0haNZ27ahjzIWx4OTCNN6fpk3scq?=
+ =?iso-8859-1?Q?X1CUKiyLSmXBrrWOTEU2ePOEblKuZh2GpIpVM1NYTjSsgXC6gxpAoNQrl0?=
+ =?iso-8859-1?Q?d2kVm/TNGDfkNWRzjgBuuHN7qAg7BUNNCzTsTnJrDg4YRngFBr9Duvj90S?=
+ =?iso-8859-1?Q?Q9RZkBIVDyp7n61EJKf3bgbv57c2dOLroGeQfezO26kPqos1/mYnetXE4V?=
+ =?iso-8859-1?Q?fh4SDqcoyFuLoI3uGs1rPDecmrk9FHzURwBjynSQHCe+nEg3svl6PCd+Wu?=
+ =?iso-8859-1?Q?1PrFC7Yw5WJTGCvCWFnUidcsXR70nsXMRvRghPL3xI/6B+ZVlnJhrwOsrr?=
+ =?iso-8859-1?Q?MIOmtkz5abBI714tsV3hIlZ1U6Oz5FR2NBU/EHi8p/SaEsPUXyirCDHRta?=
+ =?iso-8859-1?Q?dmJGcoHrAIHeh4pU4wEwi9RxIuggo0fC3huWQV9fjjpxCn42AJoa2Aeqj9?=
+ =?iso-8859-1?Q?FIcxo2fCGtvr8u3E/44h+Ar5mi0sysf05Zr4950/T/gj/GXA1TUY9ZL5Qp?=
+ =?iso-8859-1?Q?fp/69LT5vWjuyuAPtFQ6nbXuVe8sJK2sMpNagMd0fRH+yZAfv5lK8jBVZQ?=
+ =?iso-8859-1?Q?DHJHraUeKWSTRjD6qCZYEzGTcKwBg3yTlvEX8oHpl1RkG2Q/YtIhrh3VUw?=
+ =?iso-8859-1?Q?HlVOuAHlw6smj06QCvNWECZGDDGGQMOAU7O8dCEZaNCDQiq9is3/jOQqnB?=
+ =?iso-8859-1?Q?Hg3xanhy0wHX2fTWAC7o0Bz0kVjWA+99Jin+fgLMY7ltUPfq0BqgellAlA?=
+ =?iso-8859-1?Q?rQHcPcxtyclWCvU//rU0urOGCXCMPm0P/ZnNnW2HORbzLcAJI1tjMbtu+k?=
+ =?iso-8859-1?Q?sxcFzyKbR9d9fXk7+4CvAfGMVE82lagIfyNzx+ePQuyk00bhRiPiFd3e0N?=
+ =?iso-8859-1?Q?VBIk25JEjlQDGee3WxcNFLdC4xvJnjiUCAa6/8SF0ZFhNZEtMLu7E6WpEW?=
+ =?iso-8859-1?Q?2HYt6SxrNtlWRNxTeXQk7fnbVniji+18JobxOhWcOaZRJOolsHKIRLx4/b?=
+ =?iso-8859-1?Q?zA+kirN9mLa00DmYMDp6obawYa7URzwO86WKDIbWtFTZd2j+p9IyTZkTrD?=
+ =?iso-8859-1?Q?EpQUagJ49oDGSCbQryO9Qea161LTUS1Kwz7wFo50GGTAz9L+HmRXrEpKoA?=
+ =?iso-8859-1?Q?IVhnmRE+B8ecsnffzb1OiE/va+IyBRwY27ys6HkCB6vqMm1EuyHiCZvJsA?=
+ =?iso-8859-1?Q?7RiuuNXLdChTFgiQrR5ED/YGiXjbKzqFH/1UUS/5f/pjetaJU8tR2lmrNB?=
+ =?iso-8859-1?Q?mdXuJoow+nUmFwzCuHgdtSyrey1mjVjKgOFtSsOmo7sLM+paoKjzyl712c?=
+ =?iso-8859-1?Q?IuIn2TArud3kSYEA1yfWDvNutyQMW+B3qBSsDG1bPpBFplIVZxJK4jy8c3?=
+ =?iso-8859-1?Q?Pt6RZwxuWJH1vhBW0fKRdSRtmmev/0NZA7jH9FCmfHKIAVYAFm8eQNdFJL?=
+ =?iso-8859-1?Q?74FINlRqBuKfhsna+ZZ/qAULxOp33T+nIZevvA/veU9WD/flpsd2vfSZ1a?=
+ =?iso-8859-1?Q?4x7JoJrFXzY6mz5JmdTZ+ycGfo67k4IPwYWIcwncYLUkmDLRZCOmYr6Z/7?=
+ =?iso-8859-1?Q?kASyzrPCnkKOcpz581xCutWwFFj/QAtexo?=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB7141.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c399fb8-8c07-48ed-0930-08dca2588851
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jul 2024 09:53:50.7354
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: slR8cAuhmfQfNXWq2nVbIjfHAlkNQkOvC53/AUZjvTo1pHxrFyNDm00gJQB2tTFZVQbAICs+b/K3eQSGRF0GtVEPwGr5ZrGps6UJGfXbXys=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR03MB6222
+X-Proofpoint-GUID: AlcHCdiLpCPr0Tg_Dgf3BMKxw7kI5VC-
+X-Proofpoint-ORIG-GUID: AlcHCdiLpCPr0Tg_Dgf3BMKxw7kI5VC-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-12_07,2024-07-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ suspectscore=0 adultscore=0 mlxscore=0 phishscore=0 mlxlogscore=999
+ clxscore=1015 impostorscore=0 priorityscore=1501 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407120070
 
-On Thu, 2024-07-11 at 16:31 -0500, David Lechner wrote:
-> On 7/11/24 4:20 AM, Nuno S=C3=A1 wrote:
-> > On Mon, 2024-07-08 at 17:05 +0100, Jonathan Cameron wrote:
-> > > On Mon, 8 Jul 2024 05:17:55 +0000
-> > > "Tinaco, Mariel" <Mariel.Tinaco@analog.com> wrote:
-> > >=20
-> > > > > -----Original Message-----
-> > > > > From: Jonathan Cameron <jic23@kernel.org>
-> > > > > Sent: Saturday, June 29, 2024 2:46 AM
-> > > > > To: Tinaco, Mariel <Mariel.Tinaco@analog.com>
-> > > > > Cc: linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
-> > > > > kernel@vger.kernel.org; Lars-Peter Clausen <lars@metafoo.de>; Rob
-> > > > > Herring
-> > > > > <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Cono=
-r
-> > > > > Dooley
-> > > > > <conor+dt@kernel.org>; Liam Girdwood <lgirdwood@gmail.com>; Mark =
-Brown
-> > > > > <broonie@kernel.org>; Hennerich, Michael
-> > > > > <Michael.Hennerich@analog.com>;
-> > > > > Marcelo Schmitt <marcelo.schmitt1@gmail.com>; Dimitri Fedrau
-> > > > > <dima.fedrau@gmail.com>; Guenter Roeck <linux@roeck-us.net>
-> > > > > Subject: Re: [PATCH 2/2] iio: dac: support the ad8460 Waveform DA=
-C
-> > > > >=20
-> > > > > [External]
-> > > > > =C2=A0=20
-> > > > > > > > +};
-> > > > > > > > +
-> > > > > > > > +static int ad8460_get_powerdown_mode(struct iio_dev *indio=
-_dev,
-> > > > > > > > +				=C2=A0=C2=A0=C2=A0=C2=A0 const struct iio_chan_spec
-> > > > > > > > *chan) {
-> > > > > > > > +	return 0;=C2=A0=20
-> > > > > > >=20
-> > > > > > > Why have the stubs in here?=C2=A0=20
-> > > > > >=20
-> > > > > > Should I move the stubs to a different place in the code or rem=
-ove
-> > > > > > them altogether since there is only a single powerdown mode
-> > > > > > available=C2=A0=20
-> > > > > Ah. I'd not really understood what was going on here.=C2=A0 This =
-is fine as
-> > > > > is.
-> > > > > =C2=A0=20
-> > > > > > > AD8460_HVDAC_DATA_WORD_HIGH(index),=C2=A0=20
-> > > > > > > > +			=C2=A0=C2=A0=C2=A0 ((val >> 8) & 0xFF));=C2=A0=20
-> > > > > > >=20
-> > > > > > > bulk write? or do these need to be ordered?=C2=A0=20
-> > > > > >=20
-> > > > > > For this I used bulk read/write this way.
-> > > > > >=20
-> > > > > > static int ad8460_set_hvdac_word(struct ad8460_state *state,
-> > > > > > 				 int index,
-> > > > > > 				 int val)
-> > > > > > {
-> > > > > > 	u8 regvals[AD8460_DATA_BYTE_WORD_LENGTH];=C2=A0=20
-> > > > > regmap bulk accesses (when spi anyway) should be provided with DM=
-A
-> > > > > safe
-> > > > > buffers.
-> > > > > Easiest way to do that is add one with __aligned(IIO_DMA_MINALIGN=
-) to
-> > > > > the
-> > > > > end of the ad8460_state structure.=C2=A0 Possibly you'll need a l=
-ock to
-> > > > > protect it -
-> > > > > I
-> > > > > haven't checked.=C2=A0=20
-> > > > > >=20
-> > > > > > 	regvals[0] =3D val & 0xFF;
-> > > > > > 	regvals[1] =3D (val >> 8) & 0xFF;=C2=A0=20
-> > > > >=20
-> > > > > That is an endian conversion so use appropriate endian function t=
-o
-> > > > > fill it
-> > > > > efficiently and document clearly what is going on.
-> > > > >=20
-> > > > >=20
-> > > > > 	put_unaligned_le16()
-> > > > > =C2=A0=20
-> > > > > >=20
-> > > > > > 	return regmap_bulk_write(state->regmap,=C2=A0=20
-> > > > > AD8460_HVDAC_DATA_WORD_LOW(index),=C2=A0=20
-> > > > > > 				 regvals,=C2=A0=20
-> > > > > AD8460_DATA_BYTE_WORD_LENGTH); }=C2=A0=20
-> > > > > >=20
-> > > > > > =C2=A0
-> > > > > > > > +}=C2=A0=20
-> > > > > =C2=A0=20
-> > > > > > > > +	state->regmap =3D devm_regmap_init_spi(spi,
-> > > > > > > > &ad8460_regmap_config);
-> > > > > > > > +	if (IS_ERR(state->regmap))
-> > > > > > > > +		return dev_err_probe(&spi->dev, PTR_ERR(state-
-> > > > > > > > >regmap),
-> > > > > > > > +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to initialize
-> > > > > > > > regmap");
-> > > > > > > > +
-> > > > > > > > +	ret =3D devm_iio_dmaengine_buffer_setup_ext(&spi->dev,
-> > > > > > > > indio_dev,
-> > > > > > > > +"tx",
-> > > > > > > > +=C2=A0=20
-> > > > > > > IIO_BUFFER_DIRECTION_OUT);
-> > > > > > >=20
-> > > > > > > Ah. I take back my binding comment. I assume this is mapping =
-some
-> > > > > > > non standard interface for the parallel data flow?=C2=A0=20
-> > > > > >=20
-> > > > > > Yes, the HDL side doesn't follow yet the standard IIO backend f=
-rom
-> > > > > > which this driver was tested=C2=A0=20
-> > > > >=20
-> > > > > Hmm. I'd like to see this brought inline with the other iio backe=
-nd
-> > > > > drivers if
-> > > > > possible.=C2=A0=20
-> > > >=20
-> > > > Does this mean that we would need to implement an AXI IP core on th=
-e
-> > > > FPGA side to be able to test this?
-> > >=20
-> > > Don't think so.=C2=A0 That framework is meant to support any equivale=
-nt IP.
-> > > So whatever you have should be supportable. Maybe it's somewhat of a =
-stub
-> > > driver though if there isn't anything controllable.
-> > >=20
-> > > It's Nuno's area of expertise though +CC.
-> > >=20
-> >=20
-> > Hi Jonathan,
-> >=20
-> > Yeah, I did reply David (IIRC) about the very same question. In the
-> > design/HW Mariel
-> > is working on the DAC is directly connected to the DMA core which is ha=
-ndled
-> > already
-> > by a proper dma controller driver. So in this case I'm really not seein=
-g the
-> > backend
-> > need right now (maybe in the future we may have another design for this
-> > device that
-> > could justify for a backend device but no idea on that).
-> >=20
-> > As you mention, we could very well do a stub platform driver so we can =
-use
-> > the
-> > backend framework (like dma-backend or something) that could pretty muc=
-h be
-> > a stub
-> > for the DMA controller. But is it worth it though? We'd actually be "ly=
-ing"
-> > in terms
-> > of HW description as the DMA is a property of the actual converter.
-> >=20
-> > - Nuno S=C3=A1
-> >=20
-> >=20
+
+
+> -----Original Message-----
+> From: Rob Herring <robh@kernel.org>
+> Sent: Friday, July 12, 2024 6:53 AM
+> To: Paller, Kim Seer <KimSeer.Paller@analog.com>
+> Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org;
+> devicetree@vger.kernel.org; Jonathan Cameron <jic23@kernel.org>; David
+> Lechner <dlechner@baylibre.com>; Lars-Peter Clausen <lars@metafoo.de>;
+> Liam Girdwood <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
+> Dimitri Fedrau <dima.fedrau@gmail.com>; Krzysztof Kozlowski
+> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Hennerich,
+> Michael <Michael.Hennerich@analog.com>; Nuno S=E1
+> <noname.nuno@gmail.com>
+> Subject: Re: [PATCH v6 3/6] dt-bindings: iio: dac: Generalize DAC common
+> properties
 >=20
-> I'm a bit inclined to agree with Jonathan here. I could see someone in th=
-e
-> future,
-> wanting to, e.g., use DMA + a GPIO controller for the parallel interface =
-if
-> they
-> didn't have an FPGA. So it seems a bit more future-proof to just always u=
-se
-> the
-> IIO backend framework for the parallel interface.
-
-I do agree it's more future but guessing usecases is not something I tend t=
-o
-like much (often just results in code that never gets __really__ used). We =
-can
-very well take care of it when a usecase pops up and we have an actual devi=
-ce
-that can be represented by a backend :).
-
+> [External]
 >=20
-> FWIW, I don't think it would be "lying" since the io-backend DT node woul=
-d be
-> representing physical parallel bus between the DMA controller and the ADC
-> chip.
+> On Thu, Jul 11, 2024 at 07:42:18PM +0800, Kim Seer Paller wrote:
+> > Introduce a generalized DAC binding that can be used by DACs that have
+> > similar properties adding output-range-microamp and output-range-
+> microvolt.
+> >
+> > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> > ---
+> >  .../devicetree/bindings/iio/dac/dac.yaml      | 50 +++++++++++++++++++
+> >  1 file changed, 50 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/dac/dac.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/dac/dac.yaml
+> > b/Documentation/devicetree/bindings/iio/dac/dac.yaml
+> > new file mode 100644
+> > index 000000000000..a9787bbcd22b
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/dac/dac.yaml
+> > @@ -0,0 +1,50 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML 1.2
+> > +---
+> > +$id:
+> > +https://urldefense.com/v3/__http://devicetree.org/schemas/iio/dac/dac
+> >
+> +.yaml*__;Iw!!A3Ni8CS0y2Y!7zJ7L3dzud_vULjCirbZeBLxRAdVf8uNPLanf1xKhpv
+> u
+> > +3c3nbMGr57cvS4-EZ4vbO8qbilWaaSXNAT_z$
+> > +$schema:
+> > +https://urldefense.com/v3/__http://devicetree.org/meta-schemas/core.y
+> >
+> +aml*__;Iw!!A3Ni8CS0y2Y!7zJ7L3dzud_vULjCirbZeBLxRAdVf8uNPLanf1xKhpvu3
+> c
+> > +3nbMGr57cvS4-EZ4vbO8qbilWaadHw-qDn$
+> > +
+> > +title: IIO Common Properties for DAC Channels
+> > +
+> > +maintainers:
+> > +  - Jonathan Cameron <jic23@kernel.org>
+> > +
+> > +description:
+> > +  A few properties are defined in a common way for DAC channels.
+> > +
+> > +properties:
+> > +  $nodename:
+> > +    pattern: "^channel(@[0-9a-f]+)?$"
+> > +    description:
+> > +      A channel index should match reg.
+>=20
+> Drop $nodename. That causes this to apply to every matching node and henc=
+e
+> the failures.
+>=20
+> It is also redundant because you define the node name where you reference
+> dac.yaml.
 
-To me, it's really a stretch having a backend with the only reason (op) of
-requesting the DMA channel. I still think you're pushing to much and going
-around with wording to justify for the DMA property :). The parallel bus is=
- part
-of the DAC and directly connects to the DMA data lines so it really looks t=
-o me
-the dma is a property of the actual DAC.
+I've tried to drop $nodename, but it seems it is still facing errors.
+Errors were also encountered with the suggestion from David. I think I will
+revert the changes to the original version, as Conor suggested, since it wa=
+s
+also following the same pattern as the adc.yaml.
 
-That said and Mariel can help here, I did not really looked into the design
-myself and I'm just stating (or what I understood) what Mariel told me. But=
- if
-there's some other piece of HW sitting between the DMA and the bus then it =
-would
-be easier for me to agree even if we don't have any real control over that
-device.
 
-> But if DT maintainers are OK with the idea that a DMA channel can be dire=
-ctly
-> wired to an external chip, I guess I won't complain. :-)
 
-That's the case in here so I don't see why it should be a problem :). It's =
-the
-same with the axi-dac/adc. It's all inside the FPGA but different cores/IPS=
-.
-
-FWIW, I'm ok if we go the backend direction even if I don't fully agree wit=
-h it
-(at least with the understanding I have so far about the design). I definit=
-ely
-want to see more users of it but I also don't think it should be a rule for=
- any
-fairly high speed converter to have a backend associated.
-
-- Nuno S=C3=A1
 
 

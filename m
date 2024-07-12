@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-7561-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7562-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5D392FF53
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:15:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812B092FFBF
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:25:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB3C3286F13
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 17:15:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02D5B1F2388A
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 17:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D64F16191E;
-	Fri, 12 Jul 2024 17:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F45174EF8;
+	Fri, 12 Jul 2024 17:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iv+MkytZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S3BjoMcD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDA9168C4;
-	Fri, 12 Jul 2024 17:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41C81EB56;
+	Fri, 12 Jul 2024 17:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720804513; cv=none; b=f/gr7+R1joTLIoPuEEP6MeITC0Zj8la+PQ4FVYfelBzDMLFaJJMXBTxHafw/4JfOcpPNMLFqE0bR9mvQen/Kw7mICH44GdLHiJOprrXMeefWLwt6yjGGvwh4QPy7SznFLDaL+1tUMWBKYnvFuwQ/wuM/aLYvPgCEGCEbUns56Kg=
+	t=1720805140; cv=none; b=YK1Rs6fzqqteycR2uq09+W3/ung0WzbkT8k8gWZlh7BP3iIbIYewYtxiyYb6BTzVgmEVfmWy8haorjQHSc0IE/mVjAQ9mStXriEzGklFa6PB4VKgYFdP32Oshrn+A0YQYIowjP87h0Dd6Xoolmyem7QDsVW+WgdPlbn8AS+PZjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720804513; c=relaxed/simple;
-	bh=nlOtTdSNfFuEXq4tDVAGI+kGFXiRx0tv7HhD2wADSmI=;
+	s=arc-20240116; t=1720805140; c=relaxed/simple;
+	bh=7CzMpoUeZOc5SI536qiedtA15huojNT7kTfuk9VqqN8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qOxIo9gNBCo+fEgpUG28mPNE4a0GOvEBKQSXeoU1WxTfBt5kd56csnSJ0uTLquQHrdFUr21cERnfLTRghtKxn+svEWTjSWZNjBQbJuB5k60LIQVPO+ny5aa0pFyECYftp75289/tECsM5EsggrcPQquyUq9dzYFy0A+E6M13sXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iv+MkytZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0820AC4AF09;
-	Fri, 12 Jul 2024 17:15:04 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=a11M34tMXmUzdtkya9eMx6GRvs/wF9Ru3S1I5DBuA00fgPO1A8M78lS+LEgoNGCmPy1qF+i/Zd9EZEDilU0VHqbE7nxWrr9TK6uEGK8GLVnjoLoP+oMl89GC4N8JIeOH+B9fJIDE/UaW5eXlqhgkC+qTI8k6UfAuHvr8fKihrrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S3BjoMcD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC27C32782;
+	Fri, 12 Jul 2024 17:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720804513;
-	bh=nlOtTdSNfFuEXq4tDVAGI+kGFXiRx0tv7HhD2wADSmI=;
+	s=k20201202; t=1720805139;
+	bh=7CzMpoUeZOc5SI536qiedtA15huojNT7kTfuk9VqqN8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iv+MkytZrELzIqJXKGmQdw2M82DQ9IxdmDtEKHD6WdC5NqSaTG3RfZLg/LjkrfDEv
-	 GEayakUTcUSV2IVSUoXfiuD7tl6RPeg16tNxPXbqdDTwNr8RSgQ8fK1iE2J9lXoE/6
-	 omQkhTNtLy8RjbPkbbpqUrior6p1Tf4V+ET/MLu5qXo9qsCym2tE0QUPzUv6YAy9l1
-	 z7ipAG3aTJq9HEiWZB66UG+X0a6QvMx8fngTC08Pu29JOxV7fzq1HQDOrsXIUUF/42
-	 SG2E9REzmHIxV7xACMsVnq3tKya1JzP7tI2DSu+MMDhJIsgmsDDEEHWQnem5HhkvqA
-	 8prtWqs70HD6A==
-Message-ID: <dbc13259-7737-49b3-83be-90b58ab0e3b4@kernel.org>
-Date: Fri, 12 Jul 2024 19:15:02 +0200
+	b=S3BjoMcD/paYYvBZIs1/YIS+89ctvOqhKgKjgPaOkFhCi5nABu6wXwDtPoPvFvKn2
+	 47qWRajZz2Jx+Svxbn7JB+3MBim9Im3bXzX1GjncE5JbhFex5cRPtfwpJOzFN1jOuD
+	 9eb8x6NdwH9PwqkioPTctI8JGuqx+X9lTJOzVztLoRFtV6D0EaD6krxa0PqNO86G4H
+	 9UaUFkAwMuoOa5Mc0Buh4W6IW8O22HH7wovDpb6WtXwsSLhQ/GCDCgeFjsXCETCvUU
+	 U5OWrrv3oeC7rVU26GES+cXraE1QLtelSxefMSzImobNTeQ5V5Y4g8HUgwwcTV5+oQ
+	 D1OnH7uRA65vw==
+Message-ID: <7a834db9-4b46-4737-a6c4-52bd38610fca@kernel.org>
+Date: Fri, 12 Jul 2024 19:25:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] ARM: dts: qcom: Add support for MBG TM for pm8775 on
- SA8775P
+Subject: Re: [PATCH 2/5] dt-bindings: thermal: qcom: Add MBG thermal monitor
+ bindings
 To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -69,7 +69,7 @@ Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, Taniya Das
  Imran Shaik <quic_imrashai@quicinc.com>,
  Jagadeesh Kona <quic_jkona@quicinc.com>
 References: <20240712-mbg-tm-support-v1-0-7d78bec920ca@quicinc.com>
- <20240712-mbg-tm-support-v1-5-7d78bec920ca@quicinc.com>
+ <20240712-mbg-tm-support-v1-2-7d78bec920ca@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -115,68 +115,126 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240712-mbg-tm-support-v1-5-7d78bec920ca@quicinc.com>
+In-Reply-To: <20240712-mbg-tm-support-v1-2-7d78bec920ca@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/07/2024 14:43, Satya Priya Kakitapalli wrote:
-> Add support for MBG TM peripheral for pm8775 sail pmics on SA8775P.
+> Add bindings support for the MBG Temp alarm peripheral found on
+> pm8775 pmics.
 > 
 > Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
-
 > ---
->  arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi | 120 ++++++++++++++++++++++++++++
->  1 file changed, 120 insertions(+)
+>  .../bindings/thermal/qcom-spmi-mbg-tm.yaml         | 63 ++++++++++++++++++++++
+
+A nit, subject: drop second/last, redundant "bindings". The
+"dt-bindings" prefix is already stating that these are bindings.
+See also:
+https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+
+>  1 file changed, 63 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
-> index bd4f5f51e094..69910306885e 100644
-> --- a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
-> @@ -89,6 +89,62 @@ trip1 {
->  				};
->  			};
->  		};
+> diff --git a/Documentation/devicetree/bindings/thermal/qcom-spmi-mbg-tm.yaml b/Documentation/devicetree/bindings/thermal/qcom-spmi-mbg-tm.yaml
+> new file mode 100644
+> index 000000000000..9b6d1bc34a11
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/thermal/qcom-spmi-mbg-tm.yaml
+> @@ -0,0 +1,63 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/thermal/qcom-spmi-mbg-tm.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +		pmm8654au_0_mbg_tm: pmm8654au_0_mbg_tz {
-
-This wasn't ever tested and cannot work.
-
-Please read your internal guideline before posting any more work. That
-guideline you have is pretty detailed and offloads community from
-pointing silly issues like - never testing.
-
-> +			polling-delay-passive = <100>;
-> +			polling-delay = <0>;
-> +			thermal-sensors = <&pmm8654au_0_tz>;
+> +title: Qualcomm Technologies, Inc. SPMI PMIC MBG Thermal Monitoring
 > +
-
-...
-
->  	pmm8654au_3: pmic@6 {
->  		compatible = "qcom,pmm8654au", "qcom,spmi-pmic";
->  		reg = <0x6 SPMI_USID>;
-> @@ -317,4 +421,20 @@ pmm8654au_3_gpios: gpio@8800 {
->  			#interrupt-cells = <2>;
->  		};
->  	};
+> +maintainers:
+> +  - Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 > +
-> +	pmm8654au_sail_3: pmic@7 {
-> +		compatible = "qcom,pmm8654au", "qcom,spmi-pmic";
-> +		reg = <0x7 SPMI_USID>;
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
+> +description: |
+
+Do not need '|' unless you need to preserve formatting.
+
+> +  Qualcomm's thermal driver for the MBG thermal monitoring device.
+
+Driver as Linux driver? Instead please describe the hardware.
+
+Missing $ref to thermal-sensor.
+
 > +
-> +		pmm8654au_3_tz: qcom,mbg-tm@d700 {
+> +properties:
+> +  compatible:
+> +    const: qcom,spmi-mbg-tm
 
-Again: do you see anywhere node called "qcom,foo-bar"?
+Instead use SoC specific compatible.
 
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  io-channels:
 
+Missing constraints. Use items with description.
+> +    description:
+> +      IIO channel specifier for the ADC channel, which reports
+
+And drop redundant part - "IIO channel specifier for". This cannot be
+anything else.
+
+> +      chip die temperature.
+> +
+> +  io-channel-names:
+> +    const: thermal
+> +
+> +  "#thermal-sensor-cells":
+> +    const: 0
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - io-channels
+> +  - io-channel-names
+> +  - "#thermal-sensor-cells"
+
+And this won't be needed.
+
+> +
+> +additionalProperties: false
+
+unevaluatedProperties instead
+
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8775.h>
+> +    spmi_bus {
+
+Eh... No. Is this really directly on SPMI bus? Anyway, use correct node
+names.
+
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      pm8775_sail_1_tz: qcom,mbg-tm@d700 {
+
+Oh no, please don't bring downstream crap.
+
+Do you see any node called like this?
+
+Also, drop unused label.
+
+> +        compatible = "qcom,spmi-mbg-tm";
+> +        reg = <0xd700>;
+> +        interrupts = <0x1 0xd7 0x0 IRQ_TYPE_EDGE_RISING>;
+
+This suggests it is not on SPMI bus but part of PMIC. Why doing
+something entirely different then entire Linux kernel? Do not use
+downstream as template, that's a no go.
 
 Best regards,
 Krzysztof

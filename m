@@ -1,74 +1,78 @@
-Return-Path: <linux-iio+bounces-7567-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7568-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70ED9300D3
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 21:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C342B9300D8
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 21:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72BE9282A29
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:21:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A50F28299B
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Jul 2024 19:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2489F2941C;
-	Fri, 12 Jul 2024 19:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4C02C853;
+	Fri, 12 Jul 2024 19:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="zW+CEXpo"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="pZZUUuv8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B86BE65;
-	Fri, 12 Jul 2024 19:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5B82233B;
+	Fri, 12 Jul 2024 19:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720812103; cv=none; b=sPaT0EZJ3PU43o+mNva/Q26myDmdO4TQZOm5UkiGwSL5j3tzFHfafGzLoDBYOBsjvcSOPdjaqQO/Vt3r0qSemZqO8UYaIKeCaXlEcEAzCe8feYQG9zsXA3Fv2mcIegau5bWPOMSAYyepuFife1//HM3osCI6ENH3TRSFaRraQ3c=
+	t=1720812121; cv=none; b=sMNJjMrmRSbw0m5PQdwPMms6/cnPBUXtDuqz0vwg3XNPDn78GAEMOnPluJKUJZuqHT7GEF5BE6pFdquyFCrPz85KjrstjgNom1xHrP3fpEn8jmqKpUBlsf585k0upQwX/fXXj8Ml76Xpn6cnj8+KSKfnaaShzuOZ7h/bZu04my4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720812103; c=relaxed/simple;
-	bh=jGQ2PoYUvkHflH8SIUqzwB3UTXc5MSqu8wv5S/itOP4=;
+	s=arc-20240116; t=1720812121; c=relaxed/simple;
+	bh=CgQqA4ICYS53Rv15rsxmT8HG2x4vMsZc/m80H5tCym8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m5L1taxQlQMSDv8gDJkaT/Fq36YzMno6APb/G1Dfs3nC7LVyow2tNM01+P2nROqamZW8EuJSftCiZ9RELnaCPwbfzYzpwmK1+hpGbw6SYXWWVXK91bYvweZWF8au2TO3zK3CC1Xwsu7e+BI1oEuj00zhzGcksOLUATz4fHioqtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=zW+CEXpo; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=DytkgDRhpKPirgh29BaqIPUc6lx69OrZgUwpLfekS4nLcUmUfG0dJs8X7K2gs6k/DSJ8igGjNxXklWWa+PUMYg5mtGvBlbqQhOVLx+WlOPR9CTGsRRwgL0k7jfF8JgmwLuWykEMvjgz93kkHDQQicrwcfmiO8r/MwrTRAZjk22A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=pZZUUuv8; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46CH32f6007173;
-	Fri, 12 Jul 2024 15:21:25 -0400
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46CFSd0j029863;
+	Fri, 12 Jul 2024 15:21:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=6ZKph
-	/ow5XwUSajbaQGjDr92jQ2XCC56XscUu9U9ivE=; b=zW+CEXpoI+MZHeehqcU4A
-	04lRpMiG+tFOnsMPN9MHk62yAMHLNmGEVPW0n6luWUvqPgMMmJPp/8Kfc9sFPyOZ
-	KWHuf69GXtsrEebcGweU4nuzhajfZFuB14n1Lu8qEqo1+bxusrfcunCAC4BZxtAC
-	K1dXi8MfEssJFkPFsArCN3hIhjs5VOioAwOy5rH+HPBoe/1HkpYNxvaEtO7GCbSI
-	v/O3FNwJ2TgslCCqzMG9IZNKLDjtBFiJoGoniPhmzLUbmxMOmtKmC1Clx42FAyZF
-	WL6qWChJKnk9rHx0CsXfxic+j2coL5ZCb6V32mXZhKDuyk4Lh2OgFdpN0xtROdNW
-	g==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=Xh12B
+	mq9WJFlVsVvwFpX9vTYhwoLptLPLR0BNYHo8K4=; b=pZZUUuv8o0mJWBXgqo2o1
+	SEL8I6SGuAJjd3jFwxrYJAF3ZBbDlpJOkeYIeYKJKlW5FenKVYLnf7Jo4t6VR5dC
+	gL3aEJGnWEAxA1PYQe+yGmfJTBKlMBNSBhULeD1xfFZPRkABZx4pOqDBxHmErPGo
+	kGLsfmA+q3AlsSSdRhtYRQJ+3xrwB/5BW7mBFPwDej+D0BohlVH8JDEt5zOs7WUA
+	uts1Q47q2b+BkoZC4Q6bdSB9+49fWf14yQySmQXD8Lvmh8b3VZmF9llAivwaw9Ab
+	5FPcGFGk57flxslffVWpLfGmbfc8VEiCD0aAi1w/H90ZNvcHUss6tyz1aPEj8XQ4
+	A==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 40b2qp1gyt-1
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 408fy4j8se-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jul 2024 15:21:25 -0400 (EDT)
-Received: from m0375855.ppops.net (m0375855.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46CJLPfq013500;
-	Fri, 12 Jul 2024 15:21:25 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 40b2qp1gyq-1
+	Fri, 12 Jul 2024 15:21:44 -0400 (EDT)
+Received: from m0167088.ppops.net (m0167088.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46CJG7ax015440;
+	Fri, 12 Jul 2024 15:21:44 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 408fy4j8sc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jul 2024 15:21:25 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 46CJLNKt044345
+	Fri, 12 Jul 2024 15:21:44 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 46CJLgIQ009426
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 12 Jul 2024 15:21:23 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 12 Jul
- 2024 15:21:22 -0400
+	Fri, 12 Jul 2024 15:21:42 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 12 Jul 2024 15:21:41 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 12 Jul 2024 15:21:41 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 12 Jul 2024 15:21:22 -0400
+ Transport; Fri, 12 Jul 2024 15:21:41 -0400
 Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.129])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 46CJL4Bh004350;
-	Fri, 12 Jul 2024 15:21:06 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 46CJLNCD004356;
+	Fri, 12 Jul 2024 15:21:26 -0400
 From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 To: <broonie@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <jic23@kernel.org>, <robh+dt@kernel.org>,
@@ -80,9 +84,9 @@ CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>,
         Jonathan Cameron
 	<Jonathan.Cameron@huawei.com>
-Subject: [PATCH v7 2/7] spi: bitbang: Implement support for MOSI idle state configuration
-Date: Fri, 12 Jul 2024 16:21:03 -0300
-Message-ID: <de61a600b56ed9cb714d5ea87afa88948e70041e.1720810545.git.marcelo.schmitt@analog.com>
+Subject: [PATCH v7 3/7] spi: spi-gpio: Add support for MOSI idle state configuration
+Date: Fri, 12 Jul 2024 16:21:23 -0300
+Message-ID: <629c55a10005ba26825c3a6a19184372ef81b3e1.1720810545.git.marcelo.schmitt@analog.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <cover.1720810545.git.marcelo.schmitt@analog.com>
 References: <cover.1720810545.git.marcelo.schmitt@analog.com>
@@ -95,146 +99,65 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: b4ChGGmM4Glof_MXU2qEbTt2T3Tp-2FQ
-X-Proofpoint-ORIG-GUID: 0kb4vWOzwuWNYZ-qlFKgVnrDATUEcZFs
+X-Proofpoint-GUID: mP51hQzfsSERdNkxTrC4u5lYazF8odaz
+X-Proofpoint-ORIG-GUID: mG9cKM1tkfAghRGkhIsWh-PEMUth2Gky
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-12_15,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- phishscore=0 impostorscore=0 mlxscore=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 adultscore=0 lowpriorityscore=0 priorityscore=1501
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ suspectscore=0 adultscore=0 mlxscore=0 phishscore=0 mlxlogscore=999
+ clxscore=1015 impostorscore=0 priorityscore=1501 lowpriorityscore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2406140001 definitions=main-2407120130
 
-Some SPI peripherals may require strict MOSI line state when the controller
-is not clocking out data. Implement support for MOSI idle state
-configuration (low or high) by setting the data output line level on
-controller setup and after transfers. Bitbang operations now call
-controller specific set_mosi_idle() callback to set MOSI to its idle state.
-The MOSI line is kept at its idle state if no tx buffer is provided.
+Implement MOSI idle low and MOSI idle high to better support peripherals
+that request specific MOSI behavior.
 
 Acked-by: Nuno Sa <nuno.sa@analog.com>
 Reviewed-by: David Lechner <dlechner@baylibre.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 ---
- drivers/spi/spi-bitbang.c       | 24 ++++++++++++++++++++++++
- include/linux/spi/spi_bitbang.h |  1 +
- 2 files changed, 25 insertions(+)
+ drivers/spi/spi-gpio.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index afb1b1105ec2..ebe18f0b5d23 100644
---- a/drivers/spi/spi-bitbang.c
-+++ b/drivers/spi/spi-bitbang.c
-@@ -54,21 +54,28 @@ static unsigned int bitbang_txrx_8(struct spi_device *spi,
- 	struct spi_transfer	*t,
- 	unsigned int flags)
- {
-+	struct spi_bitbang	*bitbang;
- 	unsigned int		bits = t->bits_per_word;
- 	unsigned int		count = t->len;
- 	const u8		*tx = t->tx_buf;
- 	u8			*rx = t->rx_buf;
- 
-+	bitbang = spi_controller_get_devdata(spi->controller);
- 	while (likely(count > 0)) {
- 		u8		word = 0;
- 
- 		if (tx)
- 			word = *tx++;
-+		else
-+			word = spi->mode & SPI_MOSI_IDLE_HIGH ? 0xFF : 0;
- 		word = txrx_word(spi, ns, word, bits, flags);
- 		if (rx)
- 			*rx++ = word;
- 		count -= 1;
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 909cce109bba..d3b8c99f0cb4 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -236,6 +236,14 @@ static void spi_gpio_chipselect(struct spi_device *spi, int is_active)
  	}
-+	if (bitbang->set_mosi_idle)
-+		bitbang->set_mosi_idle(spi);
-+
- 	return t->len - count;
  }
  
-@@ -78,21 +85,28 @@ static unsigned int bitbang_txrx_16(struct spi_device *spi,
- 	struct spi_transfer	*t,
- 	unsigned int flags)
++static void spi_gpio_set_mosi_idle(struct spi_device *spi)
++{
++	struct spi_gpio *spi_gpio = spi_to_spi_gpio(spi);
++
++	gpiod_set_value_cansleep(spi_gpio->mosi,
++				 !!(spi->mode & SPI_MOSI_IDLE_HIGH));
++}
++
+ static int spi_gpio_setup(struct spi_device *spi)
  {
-+	struct spi_bitbang	*bitbang;
- 	unsigned int		bits = t->bits_per_word;
- 	unsigned int		count = t->len;
- 	const u16		*tx = t->tx_buf;
- 	u16			*rx = t->rx_buf;
+ 	struct gpio_desc	*cs;
+@@ -411,7 +419,8 @@ static int spi_gpio_probe(struct platform_device *pdev)
  
-+	bitbang = spi_controller_get_devdata(spi->controller);
- 	while (likely(count > 1)) {
- 		u16		word = 0;
+ 	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+ 	host->mode_bits = SPI_3WIRE | SPI_3WIRE_HIZ | SPI_CPHA | SPI_CPOL |
+-			    SPI_CS_HIGH | SPI_LSB_FIRST;
++			  SPI_CS_HIGH | SPI_LSB_FIRST | SPI_MOSI_IDLE_LOW |
++			  SPI_MOSI_IDLE_HIGH;
+ 	if (!spi_gpio->mosi) {
+ 		/* HW configuration without MOSI pin
+ 		 *
+@@ -436,6 +445,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	host->flags |= SPI_CONTROLLER_GPIO_SS;
+ 	bb->chipselect = spi_gpio_chipselect;
+ 	bb->set_line_direction = spi_gpio_set_direction;
++	bb->set_mosi_idle = spi_gpio_set_mosi_idle;
  
- 		if (tx)
- 			word = *tx++;
-+		else
-+			word = spi->mode & SPI_MOSI_IDLE_HIGH ? 0xFFFF : 0;
- 		word = txrx_word(spi, ns, word, bits, flags);
- 		if (rx)
- 			*rx++ = word;
- 		count -= 2;
- 	}
-+	if (bitbang->set_mosi_idle)
-+		bitbang->set_mosi_idle(spi);
-+
- 	return t->len - count;
- }
- 
-@@ -102,21 +116,28 @@ static unsigned int bitbang_txrx_32(struct spi_device *spi,
- 	struct spi_transfer	*t,
- 	unsigned int flags)
- {
-+	struct spi_bitbang	*bitbang;
- 	unsigned int		bits = t->bits_per_word;
- 	unsigned int		count = t->len;
- 	const u32		*tx = t->tx_buf;
- 	u32			*rx = t->rx_buf;
- 
-+	bitbang = spi_controller_get_devdata(spi->controller);
- 	while (likely(count > 3)) {
- 		u32		word = 0;
- 
- 		if (tx)
- 			word = *tx++;
-+		else
-+			word = spi->mode & SPI_MOSI_IDLE_HIGH ? 0xFFFFFFFF : 0;
- 		word = txrx_word(spi, ns, word, bits, flags);
- 		if (rx)
- 			*rx++ = word;
- 		count -= 4;
- 	}
-+	if (bitbang->set_mosi_idle)
-+		bitbang->set_mosi_idle(spi);
-+
- 	return t->len - count;
- }
- 
-@@ -192,6 +213,9 @@ int spi_bitbang_setup(struct spi_device *spi)
- 			goto err_free;
- 	}
- 
-+	if (bitbang->set_mosi_idle)
-+		bitbang->set_mosi_idle(spi);
-+
- 	dev_dbg(&spi->dev, "%s, %u nsec/bit\n", __func__, 2 * cs->nsecs);
- 
- 	return 0;
-diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
-index 7ca08b430ed5..9bbbefef30dc 100644
---- a/include/linux/spi/spi_bitbang.h
-+++ b/include/linux/spi/spi_bitbang.h
-@@ -24,6 +24,7 @@ struct spi_bitbang {
- #define	BITBANG_CS_ACTIVE	1	/* normally nCS, active low */
- #define	BITBANG_CS_INACTIVE	0
- 
-+	void	(*set_mosi_idle)(struct spi_device *spi);
- 	/* txrx_bufs() may handle dma mapping for transfers that don't
- 	 * already have one (transfer.{tx,rx}_dma is zero), or use PIO
- 	 */
+ 	if (host->flags & SPI_CONTROLLER_NO_TX) {
+ 		bb->txrx_word[SPI_MODE_0] = spi_gpio_spec_txrx_word_mode0;
 -- 
 2.43.0
 

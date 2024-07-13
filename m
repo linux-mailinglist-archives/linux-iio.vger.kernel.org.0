@@ -1,135 +1,152 @@
-Return-Path: <linux-iio+bounces-7576-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7577-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A189303CA
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 07:48:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B06F930414
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 08:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 132481F21E2B
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 05:48:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC09A282F4C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 06:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA7C1AAD7;
-	Sat, 13 Jul 2024 05:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FCB1CD37;
+	Sat, 13 Jul 2024 06:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zk3PrVrc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NcyTqJn4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5DD4C8E;
-	Sat, 13 Jul 2024 05:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFBA1B960;
+	Sat, 13 Jul 2024 06:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720849695; cv=none; b=BDvSXWhLOEK7EYRim0rvGsOzyJA6Nll6LhQcHtaq21oemB1Lf3aYy6ru2ei7V0KGrupgXMFLV81gtsCERm7eT5gmsgeQn2/qQDe1QtMqLMS5+80V0QXDyBC305gDqiMLtjYnfV3DvybitRY0rr6aeMI3AT+27GD4w9qkIxK5q/8=
+	t=1720851370; cv=none; b=rUGoP5aahfdG3MmdCwOTQ0hKeFXnSTR45qm5dQWLp8sXwLspnewSabFLpwGuTbkxs1JlGbzkuPDXZb4ytsHT7gtljEgd27sxPNGNrdNLlu5BtrrEO6V3qYfqEBeEkeu4L5GX70KnUEZbPbXpLAEvdV9q6Up7aoWq00To1dvpcdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720849695; c=relaxed/simple;
-	bh=5b7nlYN5UCN9Z2HgLFiZLhBBxSCOHltJ7E6mROeXVOU=;
+	s=arc-20240116; t=1720851370; c=relaxed/simple;
+	bh=KN85+gFWkF03HdphdQDW1hlUh8APmU7td3URDxBVy48=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cgEcsH+OuAiXoqJJ9h4vc6EDMUzbfcuiRHGfb+Y5f394RybcmMgHW6ohTmrZSQOduXUK4PDT7Qyj2jWVASXFkRRp6CgwsHa6iv488Qokc0lpa2zfRA/6AWHoQqVvy6lwUAqtr6nxF/m8V8FiDRejuVDhg1czxuYtYSiSTWXjlEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zk3PrVrc; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52ea34ffcdaso2993254e87.1;
-        Fri, 12 Jul 2024 22:48:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720849692; x=1721454492; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5b7nlYN5UCN9Z2HgLFiZLhBBxSCOHltJ7E6mROeXVOU=;
-        b=Zk3PrVrcwsJaS7e4f1GgtsF9vBicmmrbavWeG1fVueuD3RnQCxLrAmXdhXUHNbqVHt
-         vwlCNHMuXvgXfxpmsM7viwJd2h8LczTF4+Ox2MkpAP7VryabaE38hdxoDY2U+stV16/M
-         Gy0n/VuGg3UzVFdaJ0GbmphXBzcK4s8vd/IF+2Fv1WfRZFbHR3tKYCLSzwP2yF7ZsrU4
-         RLpowroNdgsUZqMWK8LoocvZ7usLYvpNfRb9sDa7iFqLF58eYr4PHgKHyS54Z83bqtVw
-         ZI90oAjcg0pqmPbgb+SDGGwEhYK/Ay2RDZ0qj27sPtrfx/wb4TY8o5RBib1OLiFC+rhN
-         4BBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720849692; x=1721454492;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5b7nlYN5UCN9Z2HgLFiZLhBBxSCOHltJ7E6mROeXVOU=;
-        b=Qry8SI5z8RLBXLRK2DtyHE1UE4pPBUZV9ZXkztyG5BBC/xHfXU7yQXuNbWvXU79/0u
-         xmabGmvb5Pz4U8yx0C0jGWjvMw2rrlUBQG+QmW/I/vdFj07qDCVUHz4sCBicn11FktNH
-         jQBsjgykY83WbAlFgXHLAekX/2+G5339451/2rGkiSFcI0u0fsu8c2pfzyREQPTm8hHT
-         aszhN/H69xS2iFTFR1Fc4l3CWV7wf/APsAeQSQAiOkfawUvuzHulceIQ8dGaJjeO9nxg
-         GLAmN6SPefp62XM/ncQXYV5N4yTQT5B5evcwZMmWqJvStL2zPILQ61mmDujfjch+WNLz
-         LLcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXi5S3BbFEzBD6D1DsSOoeofTc6j2VabscCh/Pv6cNHKqjnCs5j/A5qb+uR/XQBCd+ixoz2n/V5p0m0J/Im5blliRATfJAPh/cSRDr01mHui9J2Q9yqArRF4f4pEpmovKVugDd1EsZS
-X-Gm-Message-State: AOJu0YybodOo6ItmgDfO1ZSAc/V3ZqgMJ5bLlLYMLe8A9sSfJCDL2tZ4
-	Z8lNYIn6BcKVK4X20M0PBQqKvO2oKzMnQkvxMkuW6tJIsBt/FXaS
-X-Google-Smtp-Source: AGHT+IEXmVJ5cycab+t/oirWg73SKE3O6EhCRHZp3Dkg1QZ13yXiKjC+7g2HMZOaMi4KMOugPPklCA==
-X-Received: by 2002:a05:6512:476:b0:52c:db22:efbf with SMTP id 2adb3069b0e04-52eb999547emr7539072e87.16.1720849691706;
-        Fri, 12 Jul 2024 22:48:11 -0700 (PDT)
-Received: from gmail.com (83-233-6-197.cust.bredband2.com. [83.233.6.197])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ed2532789sm80637e87.211.2024.07.12.22.48.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jul 2024 22:48:10 -0700 (PDT)
-Date: Sat, 13 Jul 2024 07:48:08 +0200
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Kent Gustavsson <kent@minoris.se>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] iio: adc: mcp3911: use
- devm_regulator_get_enable_read_voltage()
-Message-ID: <ZpIVGIOkjiRSHq_z@gmail.com>
-References: <20240712-iio-regulator-refactor-round-3-v1-0-835017bae43d@baylibre.com>
- <20240712-iio-regulator-refactor-round-3-v1-6-835017bae43d@baylibre.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hdqJEZCe94Qpp5pqPkFkzROokpHBgvadw4GtGo/hpd/kO8kUkFEc2yzMMDcpuTsbN4f4E+RpzUFcsUUBeImrYViNxkDRpmcgbE55OkZ0pubu5scyq27uI8IMKMaJnXyIzK63hCJmj+SsQrGr2iPo4NoHy8VQ2xTSSVRtBTdTK9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NcyTqJn4; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1720851369; x=1752387369;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KN85+gFWkF03HdphdQDW1hlUh8APmU7td3URDxBVy48=;
+  b=NcyTqJn4XI8d8/fAPo8cQl9CNbs0wijANkjyAHDgEfU+FABqeY6XaaJt
+   XgXoOqAs+vV8QW0M9Xb+G9gEYJf+oJcQ5opWZuIksSZ9kxys2nRrq8Aly
+   BG4FVt24+ZwkE2US2jne64E/b7bd6piKEiZUS/UpPBguSOiQYnky799yh
+   PdVx9Q3vH8y+ct/iem/WGJN7hDknuxElGnPsMi/Djo5blBFTd+n0ZZsGL
+   X3qFWaYkUP/FoXOOtr4HEkeMie2MULyfYx4h9Ch54uFXh/Mu5GDrNQ8Ik
+   ab58qCr/viKvzuFSA0J7XWTaXDOuqQj327PcGymjNnIhZ9HAdgA3a7Ain
+   A==;
+X-CSE-ConnectionGUID: Pelzu2pBTjyBEJUjrfeEmg==
+X-CSE-MsgGUID: WRJqBmpnSbeE/mkUm6zxFA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11131"; a="12532205"
+X-IronPort-AV: E=Sophos;i="6.09,205,1716274800"; 
+   d="scan'208";a="12532205"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 23:16:08 -0700
+X-CSE-ConnectionGUID: F/bBVadJQ4StEAO2fBoYOA==
+X-CSE-MsgGUID: Sjafa8h+T7GCEgWKURv48Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,205,1716274800"; 
+   d="scan'208";a="53683508"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 12 Jul 2024 23:16:06 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sSW39-000blC-1h;
+	Sat, 13 Jul 2024 06:16:03 +0000
+Date: Sat, 13 Jul 2024 14:15:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: wangshuaijie@awinic.com, jic23@kernel.org, lars@metafoo.de,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	waqar.hameed@axis.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, wangshuaijie@awinic.com,
+	liweilei@awinic.com, kangjiajun@awinic.com
+Subject: Re: [PATCH V3 2/2] Add support for Awinic proximity sensor
+Message-ID: <202407131316.CrET2D2p-lkp@intel.com>
+References: <20240712113200.2468249-3-wangshuaijie@awinic.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="EeqRwliEJAvCJg5+"
-Content-Disposition: inline
-In-Reply-To: <20240712-iio-regulator-refactor-round-3-v1-6-835017bae43d@baylibre.com>
-
-
---EeqRwliEJAvCJg5+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240712113200.2468249-3-wangshuaijie@awinic.com>
 
-On Fri, Jul 12, 2024 at 11:03:57AM -0500, David Lechner wrote:
-> This makes use of the new devm_regulator_get_enable_read_voltage()
-> helper function to reduce boilerplate code in the MCP3911 ADC driver.
->=20
-> The error message is slightly changed since there are fewer error
-> return paths.
->=20
-> An extra parameter is added to the config callback to avoid adding
-> state that is not used outside of the probe() function.
->=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Hi,
 
-Reviewed-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+kernel test robot noticed the following build warnings:
 
---EeqRwliEJAvCJg5+
-Content-Type: application/pgp-signature; name="signature.asc"
+[auto build test WARNING on 43db1e03c086ed20cc75808d3f45e780ec4ca26e]
 
------BEGIN PGP SIGNATURE-----
+url:    https://github.com/intel-lab-lkp/linux/commits/wangshuaijie-awinic-com/dt-bindings-iio-Add-YAML-to-Awinic-proximity-sensor/20240712-194024
+base:   43db1e03c086ed20cc75808d3f45e780ec4ca26e
+patch link:    https://lore.kernel.org/r/20240712113200.2468249-3-wangshuaijie%40awinic.com
+patch subject: [PATCH V3 2/2] Add support for Awinic proximity sensor
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20240713/202407131316.CrET2D2p-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240713/202407131316.CrET2D2p-lkp@intel.com/reproduce)
 
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmaSFRMACgkQiIBOb1ld
-UjK5KhAAsjjafm/UEOfjYT4bbFoCf4u1ft1ZuatFQ1gMfnFHgvUIRkODsw9dVBGQ
-FSB88H8bPoV4PLS6naEKiAhl/JuPaqsYVf/2b8eZaAIdrNc+MzDr2LdVT7y0aCVo
-hUN/g6uBFwTaftO93pKUNj0H5NHNS/bhL8EkoJvyKSqqFaHaBXxIgFYTXyU2Wg0v
-PvZ/ac5wCQyQ8Xamj3+3QGhtyYKN47IwFbX08RbedTkkaosmNYdqueiwBMUfNgwx
-Q1a5LFO868FJQ4uy4rJQXkGWySggcSheu6wGWhl6VmPT37rZxy6AJhBOvRWn+8Zq
-mW+y/uIq1Svd+NpWMi0UGB8RrcsyENXZRgkeLHZDNDqBskVjMDQpM2yHf83EVQga
-ZhOLvwDuPhNKyFf6xVheChTw9RIBF7Lvlev4briOwsUnxPfpSGLY0zr1VtLj7YOU
-Tr7c3yF/ExCy+lGMww9jMFRqqwlLyyd0VQSzOJ4PaFqSDKPhPGwTpK5YqqhvTzlS
-MX6vUrasT7GPuVRD6K9HIN3QOSn2ASk6vD9PAYGlUsfWiakzP1MyT+ALmxayAY8h
-BlvqjBRy2ZckhLgpOOOjoi2ncPdtXpp/aNfkGWGV6E02FsNsYCzsXI+yy4X8nqEl
-G68WBi36dFJkiiMK29Ll0IB62NqwvprrwIpyKsG6CTBIFZtbDWU=
-=QH85
------END PGP SIGNATURE-----
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407131316.CrET2D2p-lkp@intel.com/
 
---EeqRwliEJAvCJg5+--
+All warnings (new ones prefixed by >>):
+
+   drivers/iio/proximity/aw9610x.c: In function 'aw9610x_datablock_load':
+>> drivers/iio/proximity/aw9610x.c:665:1: warning: the frame size of 1356 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+     665 | }
+         | ^
+
+
+vim +665 drivers/iio/proximity/aw9610x.c
+
+   634	
+   635	static void aw9610x_datablock_load(struct aw_sar *p_sar, const char *buf)
+   636	{
+   637		struct aw9610x *aw9610x = p_sar->priv_data;
+   638		unsigned char addr_bytes = aw9610x->aw_i2c_package.addr_bytes;
+   639		unsigned char data_bytes = aw9610x->aw_i2c_package.data_bytes;
+   640		unsigned char reg_num = aw9610x->aw_i2c_package.reg_num;
+   641		unsigned char reg_data[220] = { 0 };
+   642		unsigned int databuf[220] = { 0 };
+   643		unsigned char temp_buf[2] = { 0 };
+   644		unsigned int i;
+   645	
+   646		for (i = 0; i < data_bytes * reg_num; i++) {
+   647			if (reg_num < attr_buf[1]) {
+   648				temp_buf[0] = buf[attr_buf[0] + (addr_bytes + i) * 5];
+   649				temp_buf[1] =
+   650					buf[attr_buf[0] + (addr_bytes + i) * 5 + 1];
+   651			} else if (reg_num >= attr_buf[1] && reg_num < attr_buf[3]) {
+   652				temp_buf[0] = buf[attr_buf[2] + (addr_bytes + i) * 5];
+   653				temp_buf[1] =
+   654					buf[attr_buf[2] + (addr_bytes + i) * 5 + 1];
+   655			} else if (reg_num >= attr_buf[3] && reg_num < attr_buf[5]) {
+   656				temp_buf[0] = buf[attr_buf[4] + (addr_bytes + i) * 5];
+   657				temp_buf[1] =
+   658					buf[attr_buf[4] + (addr_bytes + i) * 5 + 1];
+   659			}
+   660			sscanf(temp_buf, "%02x", &databuf[i]);
+   661			reg_data[i] = (unsigned char)databuf[i];
+   662		}
+   663		aw9610x->aw_i2c_package.p_reg_data = reg_data;
+   664		aw9610x_awrw_write_seq(p_sar);
+ > 665	}
+   666	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

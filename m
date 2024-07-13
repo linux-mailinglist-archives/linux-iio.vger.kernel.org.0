@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-7591-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7592-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FD593055C
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 13:06:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D989930566
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 13:14:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2FC6281A76
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 11:06:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40E181F2209F
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 11:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3532A7344C;
-	Sat, 13 Jul 2024 11:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675EC7E57C;
+	Sat, 13 Jul 2024 11:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kB6i54o9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LYjiP49S"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A2260263;
-	Sat, 13 Jul 2024 11:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA6941C77;
+	Sat, 13 Jul 2024 11:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720868804; cv=none; b=nqmuKeaMfcEfQXhi/1Bmyt2If+ZtCsyXESvkIqVvKtv8e/d87H3Ir613VZDeDjZw98BWJmxLLozSnboZrSPJz5c7jIT4OKg6C8yz+K0keJeJo2QM3guF2Db8YTOJ+zT4i8J+7WHDhgFglcwr7+B3SAAGQ0uGY9F9xARSLW61DOQ=
+	t=1720869292; cv=none; b=N5w2yq6BqLqUY+ucXHlSQhm2ohKbPtE21zRF9vyPXZWtGbSbm0CEaF+hPWcn5GK2s82ysOm+cBefUUlIrEb5i0mfBggjAVh7GmmYxYHMs2ot4LTZavx4Slu+SOdQF25QZEKDszi2esfqhZXwgQvk+5prYmlaH/ClkRBDBGIooDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720868804; c=relaxed/simple;
-	bh=LNl41GyuGhQ0j2OQEOuSuugOoEqSw4eJrNiqPr0BM/M=;
+	s=arc-20240116; t=1720869292; c=relaxed/simple;
+	bh=AVTWECknh32vjkZvl6c1yiioF+Jv7m0uf7e+eThQ778=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dbJZP7ovhIx0TU4nDuY5NBRmjaeZSP60iupY9LUTW7oyUFK6mK8aKXTYpe9+iKUgpp5JNEl89x536sVrBmnbIBqk5RnFeZzz9/I/Or4Mo0yNdUd2RgilvhUppcwf5C08hmCDc9zLrbdTPOD7PFElZjsbH3WArNlJFexLO8UgcoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kB6i54o9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C52C32781;
-	Sat, 13 Jul 2024 11:06:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fxkASaFUgAwNJJ6FEGEJWMcSs5w3p0WnRXLCfPrRuOMlZyMwIzpeHdKVE0jf3mcqRBM6tKN/FAwH8O04MRaEulsTfPnwXYFkVOePzPNcokh/yxQw3OcMfnwPPn95HLydkndSlVW3b4J80OhhibVn2/5SH09qha8f1SsrIunMoSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LYjiP49S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30ADC32781;
+	Sat, 13 Jul 2024 11:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720868803;
-	bh=LNl41GyuGhQ0j2OQEOuSuugOoEqSw4eJrNiqPr0BM/M=;
+	s=k20201202; t=1720869291;
+	bh=AVTWECknh32vjkZvl6c1yiioF+Jv7m0uf7e+eThQ778=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kB6i54o9IWa+rzA9MONbSDrVL4sKnOlj0QznlLlUu9luW8wh/11IIO4pMn937ej0X
-	 cwX9kH1lW6QHzzZXBTVIgmZFJ9l9/CxC5ChCCAp0ij0bVgVs71eWw4+VNiBy0U50sU
-	 popKlDoLfnQesKk3FD+pbzbRUZctk2GaNJLweUOltqhmqaHEG+DC1EROpuYoJvmsJM
-	 T2zE1kQ6URA63JGZIL1F9uy6a+WEXUodRZ0aUn3b9Y63MrrIIl+RpM0cTgVju5kRni
-	 ZsvYud7ads9gOCU8EVfBZEHtd/Z3s0FPXPuYU9l8C0cXLM2aOzsOaUFHLLJ45Czy9A
-	 3sFb+XfrOw5aQ==
-Date: Sat, 13 Jul 2024 12:06:35 +0100
+	b=LYjiP49SSjcozMPDbKiuzNGFUJv845ugVw7D7QTvog6QwouHFREDf1+33/2CVKi5U
+	 tXmPMdzKKPdoseJz5FJ/RfkpFBR0QxL0RD8jVQdulVmoAjxM9frqa7B4oq+QD2WwZH
+	 Tj2UuqRIFnNWfxKj3/vqzekMJlxrAYJP+76S7vdJKEz+KtKU444T0Icpuz2dhKCvtL
+	 6Aiietj0t2W+2gT8BDJgcEfDBabkdWlwMeUHdGpwKxW8I4WsKH1tri9YUBffndTfDx
+	 rLh+mABXjqdoD01wfc4yAPqxM1O6XdByXtOyfavnj8AVB3x9boBID0M5AVPUuXTOXB
+	 frO5M7Wk4ikMQ==
+Date: Sat, 13 Jul 2024 12:14:42 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org, Conor Dooley
- <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Lars-Peter
- Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Shreeya Patel
- <shreeya.patel@collabora.com>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: ltrf216a: Document
- LTR-308 support
-Message-ID: <20240713120635.69fcdda1@jic23-huawei>
-In-Reply-To: <9c6d56a4-6797-4748-b08f-710b4a0b5280@kernel.org>
-References: <20240708114227.18283-1-marex@denx.de>
-	<9c6d56a4-6797-4748-b08f-710b4a0b5280@kernel.org>
+To: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: humidity: add ENS21x sensor
+ family
+Message-ID: <20240713121442.0fa8ed2c@jic23-huawei>
+In-Reply-To: <20240710-ens21x-v3-1-4e3fbcf2a7fb@thegoodpenguin.co.uk>
+References: <20240710-ens21x-v3-0-4e3fbcf2a7fb@thegoodpenguin.co.uk>
+	<20240710-ens21x-v3-1-4e3fbcf2a7fb@thegoodpenguin.co.uk>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,38 +64,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 9 Jul 2024 10:26:17 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Wed, 10 Jul 2024 14:24:04 +0100
+Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk> wrote:
 
-> On 08/07/2024 13:41, Marek Vasut wrote:
-> > Document LiteOn LTR-308 support in LTR-F216A bindings.
-> > 
-> > The two devices seem to have almost identical register map, except that
-> > the LTR-308 does not have three CLEAR_DATA registers, which are unused
-> > by this driver. Furthermore, LTR-308 and LTR-F216A use different lux
-> > calculation constants, 0.6 and 0.45 respectively.
-> > 
-> > https://optoelectronics.liteon.com/upload/download/DS86-2016-0027/LTR-308ALS_Final_%20DS_V1%201.pdf
-> > https://optoelectronics.liteon.com/upload/download/DS86-2019-0016/LTR-F216A_Final_DS_V1.4.PDF
-> >   
+> Add device tree documentation for ENS21x family of temperature and
+> humidity sensors
 > 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Applied to the testing branch of iio.git which will get rebase on rc1 once available.
+> Signed-off-by: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+> ---
+>  .../bindings/iio/humidity/sciosense,ens21x.yaml    | 55 ++++++++++++++++++++++
+>  1 file changed, 55 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml b/Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml
+> new file mode 100644
+> index 000000000000..425d3b57f701
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/humidity/sciosense,ens21x.yaml
+> @@ -0,0 +1,55 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/humidity/sciosense,ens21x.yaml#
 
-One minor request for future series. For any multipatch series it's helpful
-to have a cover letter even if there isn't a lot to say.  It always provides
-2 things that are useful:
-1) A title for the series in patchwork.
-2) A place for people to give tags for the whole series in a fashion that
-automation like b4 can pick up.
+Normally we don't allow wild cares in binding names, but in this case the
+datasheet uses this wild cards, so I guess we have strong guarantees
+the manufacturer won't slip something else in the gaps.
 
-Anyhow, not important for a 2 patch series, but a nice to have!
+Even with that in mind I'd rather this was sciosense,ens210.yaml
+
+As much as anything as to not provide more precedence for wild cards in binding
+names that might lead people astray when they don't have such strong guarantees.
+
+Otherwise looks fine to me.
 
 Jonathan
 
-> 
-> Best regards,
-> Krzysztof
+
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ScioSense ENS21x temperature and humidity sensor
+> +
+> +maintainers:
+> +  - Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>
+> +
+> +description: |
+> +  Temperature and Humidity sensor.
+> +
+> +  Datasheet:
+> +    https://www.sciosense.com/wp-content/uploads/2024/04/ENS21x-Datasheet.pdf
+> +    https://www.sciosense.com/wp-content/uploads/2023/12/ENS210-Datasheet.pdf
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - sciosense,ens210a
+> +              - sciosense,ens211
+> +              - sciosense,ens212
+> +              - sciosense,ens213a
+> +              - sciosense,ens215
+> +          - const: sciosense,ens210
+> +      - const: sciosense,ens210
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +       #address-cells = <1>;
+> +       #size-cells = <0>;
+> +
+> +       temperature-sensor@43 {
+> +           compatible = "sciosense,ens210";
+> +           reg = <0x43>;
+> +       };
+> +    };
+> +...
+> +
 > 
 
 

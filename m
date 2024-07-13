@@ -1,57 +1,55 @@
-Return-Path: <linux-iio+bounces-7596-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7597-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1592930581
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 14:06:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE0A930584
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 14:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61916281DCC
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 12:06:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AB2FB213BF
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 12:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF35312FF8F;
-	Sat, 13 Jul 2024 12:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A25F1304AA;
+	Sat, 13 Jul 2024 12:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T33hSnD7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCp5Nqzi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCB11094E;
-	Sat, 13 Jul 2024 12:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93641094E;
+	Sat, 13 Jul 2024 12:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720872388; cv=none; b=hPd87bVnOwKQ2KU7QN4eapWmWII7oQI51AiR289T1ipsEeGbncFC++XU8Rq2FsPWmwmvGaxc6WGRru7ccu7H4xCp5OydtkcztCp+0pAj65PBDCV4JrIfx4AXep+/znBHddiqPla3dTZvAsR6T4S3/LJvjpomXbc5LiCkzf+IseE=
+	t=1720872401; cv=none; b=cbdbC0Ch/GugqHwUdQw15PTW62uCMFOl8mhNaPRZZijiwWZfkQaka5+9NLRpayfpr3TeYs+Z02FDWLh621vpILf3HmOrybeHW7OPD54hHg9B8Ru/Q5SJOEONxb3v4hnUgj+vH72V7luy+k8wSlkMM8zPSagaxPxItihAdqe5ztg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720872388; c=relaxed/simple;
-	bh=WsiOnX/Fe7o9D2h2VvZ0SnTaBaTcoi87BK4kfMgS0Yk=;
+	s=arc-20240116; t=1720872401; c=relaxed/simple;
+	bh=exJRVuts03+xbd5E3jHRZttzHEIn0UyRikFCHT6Lrs4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CKk3FAl5um2UhkEs5JlrrXxAbRAFDVHaW6JdWLI20Bl8fdvzYnNwVK5zhtJHkVE6EqOh6PeayXL6WT7wqrCkEO88o9U/5Xzt8vZxq9WEocbVUn9xdaNQo29Prdvsv4KBYPa833fCtcvzwMyOOy9UsB8U9SwQKP5pip3bt3b70eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T33hSnD7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F50C32781;
-	Sat, 13 Jul 2024 12:06:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XRzAH3FNfh7wEsdOWdSGtSC/di7O4K9fx4MAKsiAZULUcRiiMsg9OOvlzMD27bSs9LWDPOfgYbzHNp141hWzhWRt1ZgAE+iZQxC39Ys01hgQmYs92W00cEBe+FTBr66BXrjhghQFVtjzKKaYRZ4unnhCmpAaJE14HSBLVFjWmok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCp5Nqzi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2B4C32781;
+	Sat, 13 Jul 2024 12:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720872388;
-	bh=WsiOnX/Fe7o9D2h2VvZ0SnTaBaTcoi87BK4kfMgS0Yk=;
+	s=k20201202; t=1720872401;
+	bh=exJRVuts03+xbd5E3jHRZttzHEIn0UyRikFCHT6Lrs4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=T33hSnD7p+sk/89bGGSLclcl+9mLARljfqS33XLM2wvi1pwbTeoaHSm7KWARXp2Hv
-	 anbsgufbwlrLSzrnlZIPyfTU+1KG84oF75dYIk3pDzrFsOlbV3vysay7AIWOfiIqoW
-	 VKNldDjl2XEkQPVOKPNigKz2cY8qA67clalYOi7tqocrU7E3/a3IQjWR27aAWY5u7O
-	 GfSVSX2iFLNBuB+nhvl1TD2EACphdfbb/4LgnOUzPdEQ60z3WbhBokgs7SApFLbGTe
-	 /KJsUZ0GMC+0KqyMdojXuxRqf9LVYzn42/mSCWn4TtmBOJCp5Fg3DeRkkFEVqilij3
-	 rcPWg16pOhh+A==
-Date: Sat, 13 Jul 2024 13:06:20 +0100
+	b=ZCp5NqziwBusPMeRP+xvIbu3d0YplovBG9Fu3g7a188FnVcDVlxsa+RjEkjzJCGzn
+	 NpjYeC5Jna+EwQtcnF7xyoGLyFIOcTQ5gPcmccaznxT/wubhNr6i8d3CO04ilB453m
+	 8rkp20VEJVPjc9x448fRWgrMgUDMGTPo1frwKHSSsnXZb3iKd2D1DIqR90CCtyQCqb
+	 R65F5bK4acEtarmto0PWpRrRVPAYZ5NGjN68b8ZhvrlJaOk5bv1fdXLBR9F1pc4hRb
+	 KfgHWRunFisITx3rw+aOCMyq3DpeWXYp1LqakoikwQU8PFEOGo/dAAvRq+H/qV16LH
+	 4zH2Wxw0B1qiA==
+Date: Sat, 13 Jul 2024 13:06:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Kaustabh Chakraborty <kauschluss@disroot.org>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- conor+dt@kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: iio: light: stk33xx: add compatible
- for stk3013
-Message-ID: <20240713130620.79d47130@jic23-huawei>
-In-Reply-To: <20240712152417.97726-3-kauschluss@disroot.org>
+ conor+dt@kernel.org, Conor Dooley <conor@kernel.org>
+Subject: Re: [PATCH 1/3] iio: light: stk3310: relax chipid check warning
+Message-ID: <20240713130627.3d03290f@jic23-huawei>
+In-Reply-To: <20240712152417.97726-1-kauschluss@disroot.org>
 References: <20240712152417.97726-1-kauschluss@disroot.org>
-	<20240712152417.97726-3-kauschluss@disroot.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,31 +60,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 12 Jul 2024 20:54:02 +0530
+On Fri, 12 Jul 2024 20:54:00 +0530
 Kaustabh Chakraborty <kauschluss@disroot.org> wrote:
 
-> Add the compatible string of stk3013 to the existing list.
-
-Should include how this differs from existing devices such that it doesn't
-make sense to use a fallback compatible.
-
+> In order to allow newer devices which are compatible with existing
+> sensors, issuing a warning for an unknown chipid indicates that
+> something has gone wrong with the init process, which isn't ideal.
+> Swap it with a friendlier info message to get things right.
 > 
+> Suggested-by: Conor Dooley <conor@kernel.org>
 > Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Give the patch series a cover letter next time as it makes it easy for
+people to comment on whole series together + gives the series a nice
+name in patchwork etc.
+
+Plus this isn't (I think) version 1.  So that should be in the patch naming.
+
+Actual change looks fine to me.
+
+Thanks,
+
+Jonathan
+
 > ---
->  Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/iio/light/stk3310.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
-> index f6e22dc9814a..6003da66a7e6 100644
-> --- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
-> +++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
-> @@ -19,6 +19,7 @@ allOf:
->  properties:
->    compatible:
->      enum:
-> +      - sensortek,stk3013
->        - sensortek,stk3310
->        - sensortek,stk3311
->        - sensortek,stk3335
+> diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+> index e3470d6743ef..48a971de6a04 100644
+> --- a/drivers/iio/light/stk3310.c
+> +++ b/drivers/iio/light/stk3310.c
+> @@ -496,7 +496,7 @@ static int stk3310_init(struct iio_dev *indio_dev)
+>  
+>  	ret = stk3310_check_chip_id(chipid);
+>  	if (ret < 0)
+> -		dev_warn(&client->dev, "unknown chip id: 0x%x\n", chipid);
+> +		dev_info(&client->dev, "new unknown chip id: 0x%x\n", chipid);
+>  
+>  	state = STK3310_STATE_EN_ALS | STK3310_STATE_EN_PS;
+>  	ret = stk3310_set_state(data, state);
 
 

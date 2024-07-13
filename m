@@ -1,61 +1,58 @@
-Return-Path: <linux-iio+bounces-7589-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7590-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C73A93054E
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 13:00:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09733930552
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 13:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37184282E81
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 11:00:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5A3F1F21A75
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 11:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3C24D5A2;
-	Sat, 13 Jul 2024 11:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B3860263;
+	Sat, 13 Jul 2024 11:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzcYypRS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eVUVj1WW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4D745C14;
-	Sat, 13 Jul 2024 11:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE81C4C8E;
+	Sat, 13 Jul 2024 11:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720868422; cv=none; b=DFRnP9AAmZAvEh2VHhYqXXkBL7jpQJz5AdEsotHv7uSV3e6iKEBOUX5Is7NrXiPAmmSkATZJPhCv0m4hmRRJwXHun83LnanhlDJq7tOGm1RaE87e5vo0wbOfbDeuWEdeeusf9jYguDwlmCRafW71/dDb+177eAUFGoYPgPolprY=
+	t=1720868488; cv=none; b=mtvSnp3BW8ihDhcK/eQbxk6rDWuu3LDfQd+xooB46eMMBDybM7Mgf3EChwaGUa+Wbha3xPTglYRGa8hi17ZspCsH9Jbki5Rqj1XZsqDQjoXZvzQqxTDNkicGbG/QTDgADy5nxh+mWQpTfH3ZjMfAgoHxwDK3gC9AZvVeuipBk6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720868422; c=relaxed/simple;
-	bh=6MwOyZRCjJkxdmlwhPk2vAqrqZ8cTUIQr3o9S8vkzTY=;
+	s=arc-20240116; t=1720868488; c=relaxed/simple;
+	bh=bTZS6x4uxYP/7fvFmcxrRe472VptIxL6aaOUTbSBiP4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C+HoY6LMzTv2SIltkx/pUa2s35NgFJ7fz+QAQlX3zDloHD6zDMro0l0+n7T9iGgGINY0T3DYg+0dbTWvUapt4qQvTDU6c8W8OQB7dGm86DU8y3eZ/HnvIqAnFTeLilRDWBEHjMyr83a7XYe7mQvMdHxb4ROs/oTLUg+uB9QMX2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzcYypRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880C1C32781;
-	Sat, 13 Jul 2024 11:00:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rNfaHZ07+XEQ41AlSAxxwr+7h/2aI7wRQbn0oCTFj5pKV/fNO4G+qbt/7JYzxBkh9XxBrb1ziSCXqi3TGKPeLmWJ0YgT0ocKsFOD+LPb886JgqqBUfxCcAjnQCzNxUvN3aVmyFeXLH8R+TvRp8bQr8GmO6lWse3nr5ji2b7iumE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eVUVj1WW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1A2C32781;
+	Sat, 13 Jul 2024 11:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720868422;
-	bh=6MwOyZRCjJkxdmlwhPk2vAqrqZ8cTUIQr3o9S8vkzTY=;
+	s=k20201202; t=1720868488;
+	bh=bTZS6x4uxYP/7fvFmcxrRe472VptIxL6aaOUTbSBiP4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UzcYypRS1WEGzDC889pQIEhzvsfGPfcvplBJise752vDZBLZQaWMulCUxvkhdzEOq
-	 5uaFnEkEfvKqrj2zHcPYnqtzkyy2GrzdnTApothF2r91HJn4EZ4C3I43bQ4V8twPJc
-	 iEDNNt9dmWwUHWwcyG52PF2/EY9Kzp9be/kCb5LDVLJW2i1wfA5R3KOHKaQcN+emVK
-	 AXcH+mDgdNOqX7c+J8SwK4ctHu/IHEbtly22hzpkl6o+fQU1ve+mkTheZ8rakOI8L0
-	 4JGbTQUFbP9hO1/czt2VBxtX5KOiCp9FwlaYYggkG8uqEmzQRUocWaU2wEdV+dbmcc
-	 rY4OqmP50RTog==
-Date: Sat, 13 Jul 2024 12:00:13 +0100
+	b=eVUVj1WWcL3xDSRLC0FU4BPiRO2T4in9LHm25ZGt/ej+nXjrETUCLenYj63C2iQCn
+	 p5letp6x27B43JsUprYy4CQGPH1+f+ZecaWkOxidSU9DbQPV77JFBaQE2PZLUH7uDT
+	 6+tE6oOtz4b+fmcX9SMArSLsJ4MBCbTDN1dvVivYsVeElMLrBsjdh1wnVeJ05u8bLz
+	 4cFIQTZMdTCVz06GNvMPvxPTy8AXaccgXKLdng9ftYxkQJQOfZbDBoMynQiMK1WxER
+	 aY3VtCzAuyzfS02S6ZtwFShUgF4E9uHthkE+KnqVuvRbybZMLLyG9o2GOZEqOzDWWJ
+	 D/62ApKoDTCng==
+Date: Sat, 13 Jul 2024 12:01:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Conor Dooley <conor@kernel.org>, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/7] dt-bindings: iio: rename bu27034 file
-Message-ID: <20240713120013.034b4419@jic23-huawei>
-In-Reply-To: <2b66ea94-dd77-4e86-b09b-c00523bdbf75@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/7] ROHM BU27034NUC to ROHM BU27034ANUC
+Message-ID: <20240713120119.7739ed74@jic23-huawei>
+In-Reply-To: <cover.1720176341.git.mazziesaccount@gmail.com>
 References: <cover.1720176341.git.mazziesaccount@gmail.com>
-	<f83cf0d6f5b0ed391703ea3908ebd65b3f6e5c87.1720176341.git.mazziesaccount@gmail.com>
-	<20240708-eloquent-overdrive-092c7678f913@spud>
-	<2b66ea94-dd77-4e86-b09b-c00523bdbf75@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,67 +63,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 9 Jul 2024 21:33:02 +0300
+On Fri, 5 Jul 2024 13:53:35 +0300
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On 7/8/24 20:05, Conor Dooley wrote:
-> > On Fri, Jul 05, 2024 at 01:54:26PM +0300, Matti Vaittinen wrote:  
-> >> The BU27034NUC was cancelled before it entered mass production. It was
-> >> replaced by a new variant BU27034ANUC (note, added 'A'). The new
-> >> variant gained a few significant changes, like removal of the 3.rd data
-> >> channel and dropping some of the gain settings. This means that, from
-> >> software point of view these ICs are incompatible. Lux calculation based
-> >> on the data from the sensors needs to be done differently, and on the
-> >> BU27034ANUC the channel 3 data is missing. Also, the gain setting
-> >> differencies matter.
-> >>
-> >> The old sensor should not be out there so the compatible was dropped and
-> >> a new compatible was added for the bu27034anuc. Move the yaml file so
-> >> the file name matches the binding and change the $id.
-> >>
-> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> >> ---
-> >> Revision history:
-> >> v1 => v2:
-> >> - New patch
-> >> ---
-> >>   .../iio/light/{rohm,bu27034.yaml => rohm,bu27034anuc.yaml}      | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>   rename Documentation/devicetree/bindings/iio/light/{rohm,bu27034.yaml => rohm,bu27034anuc.yaml} (92%)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml b/Documentation/devicetree/bindings/iio/light/rohm,bu27034anuc.yaml
-> >> similarity index 92%
-> >> rename from Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
-> >> rename to Documentation/devicetree/bindings/iio/light/rohm,bu27034anuc.yaml
-> >> index 535bd18348ac..fc3d826ed8ba 100644
-> >> --- a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
-> >> +++ b/Documentation/devicetree/bindings/iio/light/rohm,bu27034anuc.yaml
-> >> @@ -1,7 +1,7 @@
-> >>   # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> >>   %YAML 1.2
-> >>   ---
-> >> -$id: http://devicetree.org/schemas/iio/light/rohm,bu27034.yaml#
-> >> +$id: http://devicetree.org/schemas/iio/light/rohm,bu27034anuc.yaml#
-> >>   $schema: http://devicetree.org/meta-schemas/core.yaml#  
-> > 
-> > IMO this should be squashed.  
+> As discussed here:
+> https://lore.kernel.org/all/ff8d6d14-6b48-4347-8525-e05eeb9721ff@gmail.com/
 > 
-> I've no objections to squashing this. The main motivation of having it 
-> as a separate patch was to point out the file rename for reviewers and 
-> ask if it is Ok. Furthermore, if there was a reason not to do the 
-> rename, then this patch could've been just dropped while the rest of the 
-> series could've been applied.
+> The ROHM BU27034NUC was cancelled before it entered mass-production. A
+> replacement was developed and named to BU27034ANUC. (Note the added
+> 'A' in the model name). The BU27034ANUC has several changes that make
+> the old BU27034NUC driver unusable with it. I was told the old BU27034NUC
+> should not be encountered anywhere.
 > 
-> Thanks for the review!
-I squashed into previous patch whilst applying.
+> Hence, this series converts the rohm-bu27034.c to support the new
+> BU27034ANUC instead of the obsoleted BU27034NUC. Additionally, the
+> series adds a read-only entry for the HARDWAREGAIN to help understanding
+> what part of the scale is contributed by the gain, and what by the
+> integration time. This is useful when figuring out why some transitions
+> from one 'scale' to other are failing.
+Series applied with that tweak to fix the typo that is getting moved in patch 1
+and to squash the first 2 patches.
+
+Applied for now only to the testing branch of iio.git which will become
+togreg after I can rebase on rc1.
 
 Thanks,
 
 Jonathan
 
 > 
-> Yours,
-> 	-- Matti
+> Revision history:
+> 	v1 => v2:
+> 		- Split the one large patch to patches 3 - 6 for easier
+> 		  review. (Please let me know if you wish me to squash
+> 		  them to one).
+> 		- Introduce new compatible for the BU27034ANUC and drop
+> 		  the old one.
+> 		- Add styling fixes as suggested by Jonathan
+> 		- Fix the lux calculation coefficient selection logic
+> 	link to v1:
+> 		https://lore.kernel.org/all/cover.1718013518.git.mazziesaccount@gmail.com/
 > 
+> ---
+> 
+> Matti Vaittinen (7):
+>   dt-bindings: iio: BU27034 => BU27034ANUC
+>   dt-bindings: iio: rename bu27034 file
+>   bu27034: ROHM BU27034NUC to BU27034ANUC
+>   bu27034: ROHM BU27034NUC to BU27034ANUC drop data2
+>   bu27034: ROHM BU27034ANUC correct gains and times
+>   bu27034: ROHM BU27034ANUC correct lux calculation
+>   iio: bu27034: Add a read only HWARDWAREGAIN
+> 
+>  ...ohm,bu27034.yaml => rohm,bu27034anuc.yaml} |  11 +-
+>  drivers/iio/light/rohm-bu27034.c              | 343 +++++-------------
+>  2 files changed, 89 insertions(+), 265 deletions(-)
+>  rename Documentation/devicetree/bindings/iio/light/{rohm,bu27034.yaml => rohm,bu27034anuc.yaml} (66%)
+> 
+> 
+> base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
 
 

@@ -1,200 +1,317 @@
-Return-Path: <linux-iio+bounces-7579-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7580-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28966930496
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 10:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8E39304D1
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 11:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9AE0284001
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 08:51:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F79283323
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 09:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9BB46558;
-	Sat, 13 Jul 2024 08:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089FE4965B;
+	Sat, 13 Jul 2024 09:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ez1yJJY6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="blxb4Yzx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F86D47A64;
-	Sat, 13 Jul 2024 08:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72EB4F1F2;
+	Sat, 13 Jul 2024 09:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720860678; cv=none; b=pzMpQg1Fmvze+tcd8jCfGjT7cwg0mfLN5/TsPNaoFa8QlQP++HGOmIvZWDcKo11KXMEqCvVb2/7QK7Mr26RRQ2bEwE1euqPNV5Xd5Pu7MLlqN7Z61HeK5F7NsEA9d8XXDxfyiIgQZKz92QUgFDwOzuUhVg/Phup4/p7IbeQZe/8=
+	t=1720864653; cv=none; b=hli4fnOqXqg7GnlbtcRFyUV/WxqtSlipPZPDwaaYka7D4F/ChIqBM4f0y0hTLsLFZjj6tC1/LtLkWH31AiPCxXpzF1kZ5Zc1U5l9qYb/bj0l6KqPsv7R/8KzDR0mRv1U+c9yNYJ8Mz+kq/YF6eSctvfOEuHu4nnhzCbjLYEDFms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720860678; c=relaxed/simple;
-	bh=1o1g4gZYrN8TVmq5y5JEEypnsywvx7tYdlf5nmnIfdQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c1XO6HYOpmf8b4yeJgIDZdHlotgC6aOcZmbf68ljRUsdExMN+JujREWk/LkX3zoeyQZHEZbbtjqqVEH3ikKFAWAKfssfsZnDy33kU8EIwNwShdcJOJ7SubwxKJ4Trprq+FCxsh1JMdA3FgjgPj8lb3gHlOUhWBQCgy+ifWDHnfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ez1yJJY6; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720860675; x=1752396675;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1o1g4gZYrN8TVmq5y5JEEypnsywvx7tYdlf5nmnIfdQ=;
-  b=ez1yJJY6r3E9eHkik4qawvHuKdrImnq15JvY5+ZfwjCIJ4vK7e4KiqXD
-   SO6hKhqMW8liavftGesg5LKq2/6WfaS2GaBC1Ux3ObsgJpZkkz+1+teUj
-   hmX4JKbqDe9Wacci+J+i3jVbBT1bTVKUX1kN6t3pAqZqHDPoFXdiT245n
-   s2Lsq7UnNnlWSbDuw1MFJrFp9NhdZvPobhdE4JzlxsC+kkL3rumRr77eO
-   oxxruVxZTEVFT3cDgjmxlF/ZZj10AZt5L4aOpgJ8CM6TjQbrD77iUntU3
-   Zr6BA5iHUt2p7KufnLtPhTYapnx8/lYBtFW07upLqcEwKRoBNfg8zzBU4
-   g==;
-X-CSE-ConnectionGUID: p/cN65IAT/qedSSZhhAWgA==
-X-CSE-MsgGUID: jazdS+dGTmun/Jnoxmq4Bw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11131"; a="18175588"
-X-IronPort-AV: E=Sophos;i="6.09,205,1716274800"; 
-   d="scan'208";a="18175588"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2024 01:51:14 -0700
-X-CSE-ConnectionGUID: HEQp0rVUQHy31iVMhja4CQ==
-X-CSE-MsgGUID: u7SKODaJRFin95NnL/NO4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,205,1716274800"; 
-   d="scan'208";a="54317316"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 13 Jul 2024 01:51:10 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sSYTE-000bte-0o;
-	Sat, 13 Jul 2024 08:51:08 +0000
-Date: Sat, 13 Jul 2024 16:50:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: wangshuaijie@awinic.com, jic23@kernel.org, lars@metafoo.de,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	waqar.hameed@axis.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	wangshuaijie@awinic.com, liweilei@awinic.com, kangjiajun@awinic.com
-Subject: Re: [PATCH V3 2/2] Add support for Awinic proximity sensor
-Message-ID: <202407131612.g95L1k7k-lkp@intel.com>
-References: <20240712113200.2468249-3-wangshuaijie@awinic.com>
+	s=arc-20240116; t=1720864653; c=relaxed/simple;
+	bh=TUxSzenqpbfZ+yzfPlR26KV7WbEyltoPgjXyGzL6LkA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u0LaDC1EkNAhJWrLE1e2uDWw69LxjnqLYywMIqHpjmj/Clduq80KQdRIK4s9R4RndxpblqSh4KS1KaS6GpHW4eFcBERepftAkST83o3O0D/FGv0I+Wtiypmi+hJ6lLR3o+XM3qo2WGKEGHlhTDfH1C+MPyLgkMP6bHZwtBfACAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=blxb4Yzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0D1C32781;
+	Sat, 13 Jul 2024 09:57:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720864653;
+	bh=TUxSzenqpbfZ+yzfPlR26KV7WbEyltoPgjXyGzL6LkA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=blxb4YzxrTHJiwr4Jsqu57D4U9mceUzVXN/amebHV3wGQ7rS0U+MfkbkMyrp20lUV
+	 QT/VfHzLxpvW24F5vRuCgH46NAKLNxDBtu1gAfXerv2G27c6I/KDJ0GHk/JDk0aoqr
+	 FDCWuYlzfLjNjosYrEALdNeL5wlDKCfx5ii25T66EpRu09Lf1tudnCZcCMSg7yeXeF
+	 vYBeznq1tCxiIt+CJZmxObTM12DSnA5Jd3ZBl7GzNEpQKH3zJiIph4KTtw0YVgwP7E
+	 siczhmhsag2ftLt9UWhAtv8XVJcgF/6ZlVMjfo08o1TC1kjavwm+QAW5C9i93Vl/6B
+	 EhTA6fpTUHNRA==
+Date: Sat, 13 Jul 2024 10:57:19 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Jonathan Cameron 
+ <Jonathan.Cameron@Huawei.com>, "Tinaco, Mariel" <Mariel.Tinaco@analog.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ "Hennerich, Michael" <Michael.Hennerich@analog.com>, Marcelo Schmitt
+ <marcelo.schmitt1@gmail.com>, Dimitri Fedrau <dima.fedrau@gmail.com>,
+ Guenter Roeck <linux@roeck-us.net>, Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH 2/2] iio: dac: support the ad8460 Waveform DAC
+Message-ID: <20240713105719.0f9847c9@jic23-huawei>
+In-Reply-To: <468b5725d0f191c20ada9524ecb7da8a48d56d97.camel@gmail.com>
+References: <20240510064053.278257-1-Mariel.Tinaco@analog.com>
+	<20240510064053.278257-3-Mariel.Tinaco@analog.com>
+	<20240511174405.10d7fce8@jic23-huawei>
+	<SJ0PR03MB62241801F72B21EEC9CDCCBD91D42@SJ0PR03MB6224.namprd03.prod.outlook.com>
+	<20240628194546.2f608365@jic23-huawei>
+	<SJ0PR03MB62246270CC24E70732D0288F91DA2@SJ0PR03MB6224.namprd03.prod.outlook.com>
+	<20240708170504.00006c9d@Huawei.com>
+	<ccce603d36fa2fd590b563955bcd2cda085773e5.camel@gmail.com>
+	<733f4f7b-53b2-46c1-8bf8-5ed357adab30@baylibre.com>
+	<468b5725d0f191c20ada9524ecb7da8a48d56d97.camel@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240712113200.2468249-3-wangshuaijie@awinic.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Fri, 12 Jul 2024 08:57:00 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-kernel test robot noticed the following build errors:
+> On Thu, 2024-07-11 at 16:31 -0500, David Lechner wrote:
+> > On 7/11/24 4:20 AM, Nuno S=C3=A1 wrote: =20
+> > > On Mon, 2024-07-08 at 17:05 +0100, Jonathan Cameron wrote: =20
+> > > > On Mon, 8 Jul 2024 05:17:55 +0000
+> > > > "Tinaco, Mariel" <Mariel.Tinaco@analog.com> wrote:
+> > > >  =20
+> > > > > > -----Original Message-----
+> > > > > > From: Jonathan Cameron <jic23@kernel.org>
+> > > > > > Sent: Saturday, June 29, 2024 2:46 AM
+> > > > > > To: Tinaco, Mariel <Mariel.Tinaco@analog.com>
+> > > > > > Cc: linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linu=
+x-
+> > > > > > kernel@vger.kernel.org; Lars-Peter Clausen <lars@metafoo.de>; R=
+ob
+> > > > > > Herring
+> > > > > > <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Co=
+nor
+> > > > > > Dooley
+> > > > > > <conor+dt@kernel.org>; Liam Girdwood <lgirdwood@gmail.com>; Mar=
+k Brown
+> > > > > > <broonie@kernel.org>; Hennerich, Michael
+> > > > > > <Michael.Hennerich@analog.com>;
+> > > > > > Marcelo Schmitt <marcelo.schmitt1@gmail.com>; Dimitri Fedrau
+> > > > > > <dima.fedrau@gmail.com>; Guenter Roeck <linux@roeck-us.net>
+> > > > > > Subject: Re: [PATCH 2/2] iio: dac: support the ad8460 Waveform =
+DAC
+> > > > > >=20
+> > > > > > [External]
+> > > > > > =C2=A0  =20
+> > > > > > > > > +};
+> > > > > > > > > +
+> > > > > > > > > +static int ad8460_get_powerdown_mode(struct iio_dev *ind=
+io_dev,
+> > > > > > > > > +				=C2=A0=C2=A0=C2=A0=C2=A0 const struct iio_chan_spec
+> > > > > > > > > *chan) {
+> > > > > > > > > +	return 0;=C2=A0  =20
+> > > > > > > >=20
+> > > > > > > > Why have the stubs in here?=C2=A0  =20
+> > > > > > >=20
+> > > > > > > Should I move the stubs to a different place in the code or r=
+emove
+> > > > > > > them altogether since there is only a single powerdown mode
+> > > > > > > available=C2=A0  =20
+> > > > > > Ah. I'd not really understood what was going on here.=C2=A0 Thi=
+s is fine as
+> > > > > > is.
+> > > > > > =C2=A0  =20
+> > > > > > > > AD8460_HVDAC_DATA_WORD_HIGH(index),=C2=A0  =20
+> > > > > > > > > +			=C2=A0=C2=A0=C2=A0 ((val >> 8) & 0xFF));=C2=A0  =20
+> > > > > > > >=20
+> > > > > > > > bulk write? or do these need to be ordered?=C2=A0  =20
+> > > > > > >=20
+> > > > > > > For this I used bulk read/write this way.
+> > > > > > >=20
+> > > > > > > static int ad8460_set_hvdac_word(struct ad8460_state *state,
+> > > > > > > 				 int index,
+> > > > > > > 				 int val)
+> > > > > > > {
+> > > > > > > 	u8 regvals[AD8460_DATA_BYTE_WORD_LENGTH];=C2=A0  =20
+> > > > > > regmap bulk accesses (when spi anyway) should be provided with =
+DMA
+> > > > > > safe
+> > > > > > buffers.
+> > > > > > Easiest way to do that is add one with __aligned(IIO_DMA_MINALI=
+GN) to
+> > > > > > the
+> > > > > > end of the ad8460_state structure.=C2=A0 Possibly you'll need a=
+ lock to
+> > > > > > protect it -
+> > > > > > I
+> > > > > > haven't checked.=C2=A0  =20
+> > > > > > >=20
+> > > > > > > 	regvals[0] =3D val & 0xFF;
+> > > > > > > 	regvals[1] =3D (val >> 8) & 0xFF;=C2=A0  =20
+> > > > > >=20
+> > > > > > That is an endian conversion so use appropriate endian function=
+ to
+> > > > > > fill it
+> > > > > > efficiently and document clearly what is going on.
+> > > > > >=20
+> > > > > >=20
+> > > > > > 	put_unaligned_le16()
+> > > > > > =C2=A0  =20
+> > > > > > >=20
+> > > > > > > 	return regmap_bulk_write(state->regmap,=C2=A0  =20
+> > > > > > AD8460_HVDAC_DATA_WORD_LOW(index),=C2=A0  =20
+> > > > > > > 				 regvals,=C2=A0  =20
+> > > > > > AD8460_DATA_BYTE_WORD_LENGTH); }=C2=A0  =20
+> > > > > > >=20
+> > > > > > > =C2=A0 =20
+> > > > > > > > > +}=C2=A0  =20
+> > > > > > =C2=A0  =20
+> > > > > > > > > +	state->regmap =3D devm_regmap_init_spi(spi,
+> > > > > > > > > &ad8460_regmap_config);
+> > > > > > > > > +	if (IS_ERR(state->regmap))
+> > > > > > > > > +		return dev_err_probe(&spi->dev, PTR_ERR(state- =20
+> > > > > > > > > >regmap), =20
+> > > > > > > > > +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to initialize
+> > > > > > > > > regmap");
+> > > > > > > > > +
+> > > > > > > > > +	ret =3D devm_iio_dmaengine_buffer_setup_ext(&spi->dev,
+> > > > > > > > > indio_dev,
+> > > > > > > > > +"tx",
+> > > > > > > > > +=C2=A0  =20
+> > > > > > > > IIO_BUFFER_DIRECTION_OUT);
+> > > > > > > >=20
+> > > > > > > > Ah. I take back my binding comment. I assume this is mappin=
+g some
+> > > > > > > > non standard interface for the parallel data flow?=C2=A0  =
+=20
+> > > > > > >=20
+> > > > > > > Yes, the HDL side doesn't follow yet the standard IIO backend=
+ from
+> > > > > > > which this driver was tested=C2=A0  =20
+> > > > > >=20
+> > > > > > Hmm. I'd like to see this brought inline with the other iio bac=
+kend
+> > > > > > drivers if
+> > > > > > possible.=C2=A0  =20
+> > > > >=20
+> > > > > Does this mean that we would need to implement an AXI IP core on =
+the
+> > > > > FPGA side to be able to test this? =20
+> > > >=20
+> > > > Don't think so.=C2=A0 That framework is meant to support any equiva=
+lent IP.
+> > > > So whatever you have should be supportable. Maybe it's somewhat of =
+a stub
+> > > > driver though if there isn't anything controllable.
+> > > >=20
+> > > > It's Nuno's area of expertise though +CC.
+> > > >  =20
+> > >=20
+> > > Hi Jonathan,
+> > >=20
+> > > Yeah, I did reply David (IIRC) about the very same question. In the
+> > > design/HW Mariel
+> > > is working on the DAC is directly connected to the DMA core which is =
+handled
+> > > already
+> > > by a proper dma controller driver. So in this case I'm really not see=
+ing the
+> > > backend
+> > > need right now (maybe in the future we may have another design for th=
+is
+> > > device that
+> > > could justify for a backend device but no idea on that).
+> > >=20
+> > > As you mention, we could very well do a stub platform driver so we ca=
+n use
+> > > the
+> > > backend framework (like dma-backend or something) that could pretty m=
+uch be
+> > > a stub
+> > > for the DMA controller. But is it worth it though? We'd actually be "=
+lying"
+> > > in terms
+> > > of HW description as the DMA is a property of the actual converter.
+> > >=20
+> > > - Nuno S=C3=A1
+> > >=20
+> > >  =20
+> >=20
+> > I'm a bit inclined to agree with Jonathan here. I could see someone in =
+the
+> > future,
+> > wanting to, e.g., use DMA + a GPIO controller for the parallel interfac=
+e if
+> > they
+> > didn't have an FPGA. So it seems a bit more future-proof to just always=
+ use
+> > the
+> > IIO backend framework for the parallel interface. =20
+>=20
+> I do agree it's more future but guessing usecases is not something I tend=
+ to
+> like much (often just results in code that never gets __really__ used). W=
+e can
+> very well take care of it when a usecase pops up and we have an actual de=
+vice
+> that can be represented by a backend :).
+>=20
+> >=20
+> > FWIW, I don't think it would be "lying" since the io-backend DT node wo=
+uld be
+> > representing physical parallel bus between the DMA controller and the A=
+DC
+> > chip. =20
+>=20
+> To me, it's really a stretch having a backend with the only reason (op) of
+> requesting the DMA channel. I still think you're pushing to much and going
+> around with wording to justify for the DMA property :). The parallel bus =
+is part
+> of the DAC and directly connects to the DMA data lines so it really looks=
+ to me
+> the dma is a property of the actual DAC.
+>=20
+> That said and Mariel can help here, I did not really looked into the desi=
+gn
+> myself and I'm just stating (or what I understood) what Mariel told me. B=
+ut if
+> there's some other piece of HW sitting between the DMA and the bus then i=
+t would
+> be easier for me to agree even if we don't have any real control over that
+> device.
+>=20
+> > But if DT maintainers are OK with the idea that a DMA channel can be di=
+rectly
+> > wired to an external chip, I guess I won't complain. :-) =20
+>=20
+> That's the case in here so I don't see why it should be a problem :). It'=
+s the
+> same with the axi-dac/adc. It's all inside the FPGA but different cores/I=
+PS.
+>=20
+> FWIW, I'm ok if we go the backend direction even if I don't fully agree w=
+ith it
+> (at least with the understanding I have so far about the design). I defin=
+itely
+> want to see more users of it but I also don't think it should be a rule f=
+or any
+> fairly high speed converter to have a backend associated.
 
-[auto build test ERROR on 43db1e03c086ed20cc75808d3f45e780ec4ca26e]
+ok. So short term, DT bindings that document the dma-channel
+and see what the DT maintainers think. Longer term, if things get more
+complex, that can become optional and a backend added.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/wangshuaijie-awinic-com/dt-bindings-iio-Add-YAML-to-Awinic-proximity-sensor/20240712-194024
-base:   43db1e03c086ed20cc75808d3f45e780ec4ca26e
-patch link:    https://lore.kernel.org/r/20240712113200.2468249-3-wangshuaijie%40awinic.com
-patch subject: [PATCH V3 2/2] Add support for Awinic proximity sensor
-config: um-randconfig-002-20240713 (https://download.01.org/0day-ci/archive/20240713/202407131612.g95L1k7k-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project a0c6b8aef853eedaa0980f07c0a502a5a8a9740e)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240713/202407131612.g95L1k7k-lkp@intel.com/reproduce)
+Jonathan
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407131612.g95L1k7k-lkp@intel.com/
+>=20
+> - Nuno S=C3=A1
+>=20
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/locking/locktorture.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/rcu/rcuscale.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/time/time_test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/resource_kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/scftorture.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in mm/dmapool_test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp860.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp865.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp866.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp950.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_ascii.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-1.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-5.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-15.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_koi8-r.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-celtic.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-centeuro.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-croatian.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-cyrillic.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-gaelic.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-greek.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-turkish.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in security/keys/trusted-keys/trusted.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in crypto/curve25519-generic.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/kunit/kunit-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/kunit/kunit-example-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/math/rational-test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/crypto/libdes.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/find_bit_benchmark.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_bpf.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_firmware.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/cpumask_kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_sysctl.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_module.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_sort.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_static_keys.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_static_key_base.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_bitmap.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_blackhole_dev.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_meminit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_objpool.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/atomic64_test.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/asn1_encoder.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/checksum_kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_linear_ranges.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_bits.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/is_signed_type_kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/stackinit_kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in lib/fortify_kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pci/pci-stub.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/vdpa/ifcvf/ifcvf.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/regulator/max20411-regulator.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/regulator/rt4831-regulator.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/serial/8250/serial_cs.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/n_hdlc.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/n_gsm.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/ppdev.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-kunit.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-ram.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-raw-ram.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-slimbus.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-spmi.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mfd/timberdale.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mtd/chips/cfi_util.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/spi/spi-altera-core.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/spmi/hisi-spmi-controller.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/auxdisplay/hd44780_common.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/v4l2-core/v4l2-fwnode.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/common/videobuf2/videobuf2-dvb.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/pci/saa7134/saa7134-alsa.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/pci/saa7134/saa7134-dvb.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/radio/si470x/radio-si470x-common.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/isdn/mISDN/mISDN_core.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/isdn/mISDN/mISDN_dsp.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/host/of_mmc_spi.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/mmc_core.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/sdio_uart.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/parport/parport.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_cif.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_aec.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_netx.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio_mf624.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pcmcia/pcmcia_rsrc.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pcmcia/yenta_socket.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/greybus/greybus.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/buffer/kfifo_buf.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/siox/siox-bus-gpio.o
->> ERROR: modpost: "power_supply_unreg_notifier" [drivers/iio/proximity/awinic_sar.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

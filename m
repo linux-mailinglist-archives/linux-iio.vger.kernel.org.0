@@ -1,344 +1,201 @@
-Return-Path: <linux-iio+bounces-7587-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7588-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7A5930530
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 12:37:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5231793053C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 12:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86828283B45
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 10:37:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 049D11F2240C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Jul 2024 10:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53FED54757;
-	Sat, 13 Jul 2024 10:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A17F7344A;
+	Sat, 13 Jul 2024 10:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TzwtEP3o"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="XETdx1qF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-30.smtpout.orange.fr [80.12.242.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083513BBE1;
-	Sat, 13 Jul 2024 10:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0262347A53;
+	Sat, 13 Jul 2024 10:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720867014; cv=none; b=m583j3BS5a9Ehut5FzvkLx7o2frvEtH6I7WcAWyWTneEeyviwqjICViV++1zxbbvpbT+Rlk13d4tRXjrpZARQ0iwnoR8sZdmrRKYD+vzvNOMTqHSaXp0olBmUg/Qk3ZxKXUcvimsTzT8nDl0RT4gUM2PEsVYRm41zUSA/p5037U=
+	t=1720867540; cv=none; b=f8jGuUZ2oVFEu2mgroaV8H5L3t+GPFQUIT3mhCGH6K8nO5zZ7z6oiCo2ed49Ymc8q2LxwrRfEkD+Ul38OLmJylhkvkhSxSONZipDPFoxDZXruH0wtQ9EH4nROSsG0oXCNZOZQAcAMglAtz6I0dx1t64NzxIltc2f+vPeVkET0Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720867014; c=relaxed/simple;
-	bh=gN98ES3fF03D4wlGhI/C7LubmUn7fkJk0Jap9JMj3MA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HjtZdiKC/9E4IOrbf+2N2A7sA0ykK9A2x5qf9kpba5lgZQcBvQ9By5QGoMrXB7u+xLZhuaGumggYaGLX7hNwDk233RTz4wTketY8fJqWqS+LVlvOdJiVFmx7z1I47+f8UAvcbEY0O4BMs+kqJdQahzPzfdgyZGnNA0rvrFYfYrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TzwtEP3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F23C32781;
-	Sat, 13 Jul 2024 10:36:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720867013;
-	bh=gN98ES3fF03D4wlGhI/C7LubmUn7fkJk0Jap9JMj3MA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TzwtEP3o9pUnkpDmEJ9aKdduN3lofW70OPtCg9MmkyHMHMh1x0uvtpnWWfDrsp7pV
-	 IT03Vwvd55zHJ7H5pbENBx72DfScLUS5bzflgnZ0tHH4eNdyet4ZosHdxovvycLP4M
-	 pLquq2EMS53c2skax39hyxqmMEqwb/U5nycXgsS7be5/p375wmeomim05448dh6io/
-	 SjpwepQhTu8BnF9Ddy1sn6OQz8fde4TWyhhjxnqSWZlRZ4/EzrF4QrlGni9RHAE0UK
-	 dfnfy91dNCbgaqsLxNQAI9ItQuHVk+H9s2K3pghf8aBCxWZVWRt6QWKZJ1caVDETZF
-	 TMx9JYNm2Aesg==
-Date: Sat, 13 Jul 2024 11:36:44 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Marius.Cristea@microchip.com, matteomartelli3@gmail.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- devicetree@vger.kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: add support for pac1921
-Message-ID: <20240713113644.464aa6d0@jic23-huawei>
-In-Reply-To: <20240712-octopus-coerce-52c52e9cfb41@spud>
-References: <20240704-iio-pac1921-v2-0-0deb95a48409@gmail.com>
-	<20240704-iio-pac1921-v2-2-0deb95a48409@gmail.com>
-	<20240707160442.6bab64c9@jic23-huawei>
-	<668bec2a8b23a_6e037017@njaxe.notmuch>
-	<88a54c736e0c39ead34dbde53c813526484d767d.camel@microchip.com>
-	<668f84e2f3e10_2b423707a@njaxe.notmuch>
-	<ea72561a1ab953d3f2a99272c24cf5124c0c72ec.camel@microchip.com>
-	<20240712-octopus-coerce-52c52e9cfb41@spud>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1720867540; c=relaxed/simple;
+	bh=0Sgv7iDpBQpLnt5xMwKPbYl7cBdSmNSaz+6GBBDmHeI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K+8JX8d1+7CuVKF81YAbu8wF1gjxPUmAyA6rc2KJC2bz2kKvA8IccXVkPmVATACQAnEdeKDpePcHhr2865GeGNPvYnJBai3sTg9SLcslAnpiJ/7R0ZXenr3R64R2RucCn2R5CsG2NzJX1CAQjBMTqaRTE0Kdjqmg7Tz2CWkXmE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=XETdx1qF; arc=none smtp.client-ip=80.12.242.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id SaEtsYZnxYjQzSaEusagth; Sat, 13 Jul 2024 12:44:28 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1720867468;
+	bh=sXFkaELaVcONq/wZ2YavLzkpI2a5TGDA0QnUmOOLdDc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=XETdx1qFiWm2wv1qVsnrg5HRDRXJGt17UQMy9937mb67e9lecYyQBUskcGtQKPZG7
+	 Y/liAE57sG+KkX9LUANzSr7nqSJFcFFk6DoSsxG7dspsZq3L8nb3D+FBeDBCwY9YR8
+	 rn4R/t6I/4W26l/FANDYmX5TNIwQjG2w3vSgpdBndQ8//LGwZrsjMC0RQPS7frY1ET
+	 1TZTG5WcejO8ZEEEzR+8brhjNH8qf47U82ZSyHkSMl3w2flVmyCjFM0Pk9l3p+KRxN
+	 DJJAPeWUWBfQTJOByYnlKWHXehIyzx0q0tYzw9d+jNXRX9np993Lkz8YfUbLnd0lNB
+	 dTuLCip7+3ykQ==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Sat, 13 Jul 2024 12:44:28 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <2c0e9d3c-72be-499d-a52e-779d851b37a9@wanadoo.fr>
+Date: Sat, 13 Jul 2024 12:44:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] iio: humidity: Add support for ENS21x
+To: jfelmeden@thegoodpenguin.co.uk
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, jic23@kernel.org,
+ krzk+dt@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, robh@kernel.org
+References: <20240710-ens21x-v3-0-4e3fbcf2a7fb@thegoodpenguin.co.uk>
+ <20240710-ens21x-v3-2-4e3fbcf2a7fb@thegoodpenguin.co.uk>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20240710-ens21x-v3-2-4e3fbcf2a7fb@thegoodpenguin.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, 12 Jul 2024 18:02:54 +0100
-Conor Dooley <conor@kernel.org> wrote:
+Le 10/07/2024 à 15:24, Joshua Felmeden a écrit :
+> Add support for ENS210/ENS210A/ENS211/ENS212/ENS213A/ENS215.
+> 
+> The ENS21x is a family of temperature and relative humidity sensors with
+> accuracies tailored to the needs of specific applications.
+> 
+> Signed-off-by: Joshua Felmeden <jfelmeden-tUaQ5FxYRYX4aQPF92CzsNBc4/FLrbF6@public.gmane.org>
+> ---
+>   drivers/iio/humidity/Kconfig  |  11 ++
+>   drivers/iio/humidity/Makefile |   1 +
+>   drivers/iio/humidity/ens21x.c | 346 ++++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 358 insertions(+)
 
-> On Fri, Jul 12, 2024 at 02:41:51PM +0000, Marius.Cristea@microchip.com wr=
-ote:
-> > Hi Matteo,
-> >=20
-> >=20
-> > On Thu, 2024-07-11 at 09:08 +0200, Matteo Martelli wrote: =20
-> > > EXTERNAL EMAIL: Do not click links or open attachments unless you
-> > > know the content is safe
-> > >=20
-> > > Hi Marius,
-> > >=20
-> > > Marius.Cristea@ wrote: =20
-> > > > > I think that the OUT pin might not be used at all in many use
-> > > > > cases
-> > > > > so I would
-> > > > > leave the OUT pin setting as fixed for now and maybe extend it in
-> > > > > the
-> > > > > future
-> > > > > when more use cases arise. I am open to reconsider this though.
-> > > > >  =20
-> > > >=20
-> > > > The OUT functionality could be set from the device tree. =20
-> > >=20
-> > > I think this should to be controlled during runtime since it's a
-> > > configuration
-> > > that changes the device operation mode and so also what measurements
-> > > are
-> > > exposed to the user. An additional DT property could be useful but I
-> > > am not
-> > > sure it would fit in the DT scope.
-> > > Anyway I will leave this for future extensions.
-> > >  =20
-> >=20
-> > I think there are 2 different things here. Setting the configuration at
-> > startup by hard-coding things at probe time or taken those from device
-> > tree (we can add multiple properties here, as long those properties are
-> > documented into the dt-binding file) and the user controlled part at
-> > runtime.
-> > Because there is no standard interface to change the functionality, it
-> > will be easy to startup from the device tree and let the user to do
-> > some minor adjustments and not hardcode configuration.
+Hi,
 
-There is a quirk here.  If out is wired to an ADC on the SoC for some reason
-then indeed it should be runtime configurable.  If it's wired to some
-types of analog circuitry or a separate thermal monitoring micro controller
-then it 'might' belong in DT because that 'wiring' is not discoverable.
-However, this usecase isn't one anyone has 'yet' asked for so for now
-we have no reason to provide a binding for it.  Also if this wiring
-is the case, we would probably not provide a userspace interface to control
-the pin (smoke might be the result).
+as kernel test robot complained, there will be a v4.
 
-If it's wired to an ADC on the linux running SoC then this is definitely
-a userspace control thing and we've lots of examples on how to do
-that in tree.
+So here are a few nitpicks/questions, in case it helps.
 
-> >=20
-> >  =20
-> > > ... =20
-> > > > > > > ---
-> > > > > > > =C2=A0.../ABI/testing/sysfs-bus-iio-adc-pac1921=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 45 +
-> > > > > > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 7 +
-> > > > > > > =C2=A0drivers/iio/adc/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 10 +
-> > > > > > > =C2=A0drivers/iio/adc/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 1 +
-> > > > > > > =C2=A0drivers/iio/adc/pac1921.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1038
-> > > > > > > ++++++++++++++++++++
-> > > > > > > =C2=A05 files changed, 1101 insertions(+)
-> > > > > > >=20
-> > > > > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-
-> > > > > > > pac1921
-> > > > > > > b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1921
-> > > > > > > new file mode 100644
-> > > > > > > index 000000000000..4a32e2d4207b
-> > > > > > > --- /dev/null
-> > > > > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1921 =20
-> > > > > > Quite a bit of custom ABI in here.
-> > > > > >=20
-> > > > > > Rule of thumb is that custom ABI is more or less pointless ABI
-> > > > > > for
-> > > > > > 99% of users
-> > > > > > because standard userspace won't use it.=C2=A0 So keep that in =
-mind
-> > > > > > when
-> > > > > > defining it.
-> > > > > >  =20
-> > > > > > > @@ -0,0 +1,45 @@
-> > > > > > > +What:
-> > > > > > > /sys/bus/iio/devices/iio:deviceX/resolution_bits
-> > > > > > > +KernelVersion:=C2=A0=C2=A0=C2=A0=C2=A0 6.10
-> > > > > > > +Contact:=C2=A0=C2=A0 linux-iio@vger.kernel.org
-> > > > > > > +Description:
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- ADC measurement resolution. Can be either 11 bits
-> > > > > > > or
-> > > > > > > 14 bits
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- (default). The driver sets the same resolution
-> > > > > > > for
-> > > > > > > both VBUS and
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- VSENSE measurements even if the hardware could be
-> > > > > > > configured to
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- measure VBUS and VSENSE with different
-> > > > > > > resolutions.
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- This attribute affects the integration time: with
-> > > > > > > 14
-> > > > > > > bits
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- resolution the integration time is increased by a
-> > > > > > > factor of
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- 1.9 (the driver considers a factor of 2). See
-> > > > > > > Table
-> > > > > > > 4-5 in
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- device datasheet for details. =20
-> > > > > >=20
-> > > > > > Is the integration time ever high enough that it matters?
-> > > > > > People tend not to do power measurement 'quickly'.
-> > > > > >=20
-> > > > > > If we are doing it quickly then you'll probably want to be
-> > > > > > providing buffered
-> > > > > > support and that does allow you to 'read' the resolution for a
-> > > > > > part
-> > > > > > where
-> > > > > > it changes for some other reason.=C2=A0=C2=A0 I haven't yet und=
-erstood
-> > > > > > this
-> > > > > > case. =20
-> > > > >=20
-> > > > > I will remove this control and fix the resolution bits to 14
-> > > > > (highest
-> > > > > value),
-> > > > > same as the HW default. =20
-> > > >=20
-> > > > The resolution could be set from the device tree. As default it
-> > > > could
-> > > > be 14 bits like into the hardware. The user could add
-> > > > "microchip,low_resolution_voltage" into the device tree in order to
-> > > > use
-> > > > only 11 bits for voltage samples. =20
-> > >=20
-> > > I think this should be controlled during runtime since it does not
-> > > depend on
-> > > the HW design but more on the user preferences about measurements
-> > > precision.
-> > > As Jonathan pointed out, since custom ABIs should be avoided when
-> > > possible, I
-> > > will leave it out from now until it becomes necessary and fix the
-> > > resolution to
-> > > 14 bits, as the HW default.
-> > >  =20
-> >=20
-> > Set the configuration from the device tree, will avoid custom ABI. The
-> > device tree could be changed also at runtime. =20
->=20
-> Custom ABI in devicetree is not a replacement for custom ABI in userspace.
-> If things are fixed by the hardware and non-discoverable, then sure add
-> devicetree properties - but if it is things like "the user wants 11-bit
-> mode", then that does not sound suitable for a devicetree property at
-> all.
+...
 
-Indeed, resolution doesn't belong in device tree as it has nothing to do
-with physical wiring, but is a policy control.  I have no problem with
-providing a userspace ABI, but so far I've not heard a usecase for
-enabling it at all on this device.  Who runs power measurement that
-needs to be a little bit faster than can be done with 14bit all the time?
+> +#include <linux/types.h>
+> +#include <linux/i2c.h>
+> +#include <linux/delay.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/crc7.h>
 
-We have only done resolution control on devices where that resolution is re=
-ally
-changing as a result of some other factor (oversampling ratio or similar)
-so it's been a read only aspect of the ABI.
+Nitpick: usually, it is prefered to keep #include alphabetically ordered.
 
-Note we've been round this resolution question many times and so far
-the number of actual usecases that have materialised is very very small.
+...
 
-Jonathan
+> +
+> +/* magic constants */
+> +#define ENS21X_CONST_TEMP_SCALE_INT 15 /* integer part of temperature scale (1/64) */
+> +#define ENS21X_CONST_TEMP_SCALE_DEC 625000 /* decimal part of temperature scale */
+> +#define ENS21X_CONST_HUM_SCALE_INT 1 /* integer part of humidity scale (1/512) */
+> +#define ENS21X_CONST_HUM_SCALE_DEC 953125 /* decimal part of humidity scale */
+> +#define ENS21X_CONST_TEMP_OFFSET_INT -17481 /* temperature offset (64 * -273.15) */
+> +#define ENS21X_CONST_TEMP_OFFSET_DEC 600000 /* decimal part of offset */
+> +#define ENS210_CONST_CONVERSION_TIME 130
+> +#define ENS212_CONST_CONVERSION_TIME 32
+> +#define ENS215_CONST_CONVERSION_TIME 132
 
+Datasheet says 130 for ENS213A and ENS215.
+Is it a typo?
+If 132 is intentional, maybe a samll comment explaining why would be 
+welcomed?
 
-> And no, you can't just change the devicetree at runtime like that either
-> as far as I understand - that's gonna cause memory leaks etc and I don't
-> think can be done from userspace without out-of-tree patches anyway.
->=20
-> Cheers,
-> Conor.
->=20
-> >  =20
-> > > ... =20
-> > > > > > > +What:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0
-> > > > > > > /sys/bus/iio/devices/iio:devices/filters_en
-> > > > > > > +KernelVersion:=C2=A0=C2=A0=C2=A0=C2=A0 6.10
-> > > > > > > +Contact:=C2=A0=C2=A0 linux-iio@vger.kernel.org
-> > > > > > > +Description:
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- Attribute to enable/disable ADC post filters.
-> > > > > > > Enabled
-> > > > > > > by
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- default.
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- This attribute affects the integration time: with
-> > > > > > > filters
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- enabled the integration time is increased by 50%.
-> > > > > > > See
-> > > > > > > Table 4-5
-> > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- in device datasheet for details. =20
-> > > > > >=20
-> > > > > > Do we have any idea what this filter is? Datasheet seems very
-> > > > > > vague
-> > > > > > indeed and from
-> > > > > > a control point of view that makes this largely useless. How
-> > > > > > does
-> > > > > > userspace know
-> > > > > > whether to turn it on?
-> > > > > >=20
-> > > > > > We have an existing filter ABI but with so little information
-> > > > > > no
-> > > > > > way to fit this in.
-> > > > > > Gut feeling, leave it on all the time and drop the control
-> > > > > > interface. =20
-> > > > >=20
-> > > > > I will remove this control and leave it on all the time as the HW
-> > > > > default.
-> > > > >  =20
-> > > >=20
-> > > > The filters could be enabled from the device tree. As default it
-> > > > could
-> > > > be disabled.
-> > > > As a small detail here this is a post processing digital filter
-> > > > that
-> > > > could be enabled/disabled inside the PAC module.
-> > > >  =20
-> > >=20
-> > > Same reasoning of the resolution_bits parameter applies here. I will
-> > > fix the
-> > > filters to enabled, as the HW default. If there is any particular
-> > > reason to
-> > > prefer the filters fixed as disabled I will change that.
-> > >  =20
-> > If the user can change the on/off for the filters it doesn't matter
-> > what will be the default behavior. Being a single channel device, the
-> > probability for the user to change the filter behavior during runtime
-> > is minimal, that was the main reason for letting the user to change the
-> > configuration from the device tree and not hardcode it.
-> >  =20
-> > > ... =20
-> > > > Thanks,
-> > > > Marius =20
-> > >=20
-> > > Thanks,
-> > > Matteo =20
-> >=20
-> > Thanks,
-> > Marius =20
+...
+
+> +static int ens21x_get_measurement(struct iio_dev *indio_dev, bool temp, int *val)
+> +{
+> +	u32 regval, regval_le;
+> +	int ret, tries;
+> +	struct ens21x_dev *dev_data = iio_priv(indio_dev);
+> +
+> +	/* assert read */
+> +	i2c_smbus_write_byte_data(dev_data->client, ENS21X_REG_SENS_START,
+> +				  temp ? ENS21X_SENS_START_T_START :
+> +					 ENS21X_SENS_START_H_START);
+> +
+> +	/* wait for conversion to be ready */
+> +	switch (dev_data->part_id) {
+> +	case ENS210:
+> +	case ENS210A:
+> +		msleep(ENS210_CONST_CONVERSION_TIME);
+> +		break;
+> +	case ENS211:
+> +	case ENS212:
+> +		msleep(ENS212_CONST_CONVERSION_TIME);
+> +		break;
+> +	case ENS213A:
+> +	case ENS215:
+> +		msleep(ENS215_CONST_CONVERSION_TIME);
+> +		break;
+> +	default:
+> +		dev_err(&dev_data->client->dev, "unrecognised device");
+> +		return -ENODEV;
+> +	}
+> +
+> +	tries = 10;
+> +	while (tries-- > 0) {
+> +		usleep_range(4000, 5000);
+
+We just msleep()'ed the max expected time for the conversion. So, maybe 
+the code could be re-arranged so that this delay is done only if we retry?
+
+> +		ret = i2c_smbus_read_byte_data(dev_data->client,
+> +					       ENS21X_REG_SENS_STAT);
+> +		if (ret < 0)
+> +			continue;
+> +		if (!(ret & (temp ? ENS21X_SENS_STAT_T_ACTIVE :
+> +				    ENS21X_SENS_STAT_H_ACTIVE)))
+> +			break;
+> +	}
+> +	if (tries < 0) {
+> +		dev_err(&indio_dev->dev, "timeout waiting for sensor reading\n");
+> +		return -EIO;
+> +	}
+
+...
+
+> +	indio_dev->name = id->name;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = ens21x_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(ens21x_channels);
+> +	indio_dev->info = &ens21x_info;
+> +
+> +	return devm_iio_device_register(&client->dev, indio_dev);
+> +}
+> +
+> +
+
+Nitpick: unneeded 2nd new line.
+
+> +static const struct of_device_id ens21x_of_match[] = {
+> +	{ .compatible = "sciosense,ens210", .data = (void *)ENS210},
+> +	{ .compatible = "sciosense,ens210a", .data = (void *)ENS210A },
+> +	{ .compatible = "sciosense,ens211", .data = (void *)ENS211},
+
+...
+
+CJ
 
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-7613-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7614-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95995930B03
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2024 19:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F25B8930B06
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2024 19:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 516FE281B23
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2024 17:36:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADD7E281B8E
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Jul 2024 17:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756F513C810;
-	Sun, 14 Jul 2024 17:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C020F13D28F;
+	Sun, 14 Jul 2024 17:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ansari.sh header.i=@ansari.sh header.b="HbVDRnYV"
+	dkim=pass (1024-bit key) header.d=ansari.sh header.i=@ansari.sh header.b="ZodpNyFX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D2913B7AA
-	for <linux-iio@vger.kernel.org>; Sun, 14 Jul 2024 17:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1005F13D276;
+	Sun, 14 Jul 2024 17:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720978543; cv=none; b=YCec+p5jgerBPHRsm8YNSJdYe/f5LvLJcZFCTjDUmX9L52Ao+4iicBWfR84H3xi/TCJjnuLdokSoN5LE6TCGHdx1IbolSfUrntY6dyfQY6EnGdApt2WhfsUL2hkluuHJN7VRh5E3CvOYQgB+qqMCM0Qpr7z0PZfjRqhpgudGKdo=
+	t=1720978546; cv=none; b=XYIfiJa83o0bJMQL6M7awLcHT2yignROtXPfg/oZXc9FEpxP1RXSYfabJuEdgLh/y9+bMH0JMQGuIekffuLe7ey4vTY46L5c8yzze6OnNRLgiHFeRZAJbRM3f8PMfXMERjp9deEjKmM8BGbDYbzdHUs6pnoBo+oXF8mikcby0U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720978543; c=relaxed/simple;
-	bh=3ffxm8F2nNdWFM9u69xqjKBGZVwaGQK7b7vNj9MxvRo=;
+	s=arc-20240116; t=1720978546; c=relaxed/simple;
+	bh=VHWS+gj7xMlpAExhwSL6ooThV5hNxibaLYEH8aR1+Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxsXRzPzrTqaMevijNIc5JmCRHhCvA/czx6MdkzSVL2n3xyXcGilQWZKS8JLc3p/ddiLtVz07EiLfB/QkjpqtuV2r3z3SiaUIyw0sE5B8vvuBJXEeUoJtRQtbyFOAIMsZizM5aq8o3kpMk2Po26MgCsNyWira+lmnhTEug09SXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ansari.sh; spf=pass smtp.mailfrom=ansari.sh; dkim=pass (1024-bit key) header.d=ansari.sh header.i=@ansari.sh header.b=HbVDRnYV; arc=none smtp.client-ip=91.218.175.182
+	 MIME-Version; b=tH2YpxbKR3RN1yx/UgMCGuBbtAGPLXkBYepITiwBrIw9nT5oahEVMrx8omtaX7aQ+7MmaGCM1gfgH9Dbn5I2e9g/0YoURVpui8E4EfYTWjGhM/zVninHFH0rAZGXgbcKQ5KsqkLhodAZbrE5svBaGBoDuyp+qXBKClmj4I7zdPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ansari.sh; spf=pass smtp.mailfrom=ansari.sh; dkim=pass (1024-bit key) header.d=ansari.sh header.i=@ansari.sh header.b=ZodpNyFX; arc=none smtp.client-ip=91.218.175.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ansari.sh
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ansari.sh
 X-Envelope-To: linux-arm-msm@vger.kernel.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh; s=key1;
-	t=1720978539;
+	t=1720978543;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qRweSE5UbZigEyZLVlledQrg52BwjBhiCJ+saT8YwRo=;
-	b=HbVDRnYV7g6GXbXRKVQwUTdYtggd2PflHTVa1XFgbiWZc+Z3ex+hR/OX5dtKooMIAWiJob
-	+XEsKD6rKknkgjjOWiHSeVqtT5NWAjDheOLh2pptUa3UucvypRYLDZCuBJojLsHWOStokm
-	dMozbeL/rv42wedrl0EuHQVEyM8UkiA=
+	bh=qdqvh6SMJ9Blh4+QG2t86TRm3VSmGkFDoB02sCBdXH8=;
+	b=ZodpNyFXij4EaNyLMZEtyVasB7qgZXDO+xd159NYxFpx/kBfaZ4o7ltxlHOQTCKIIUysT7
+	8xP+Y+UO6ThJ74M/+dF00pgXan6vx2FfX4cJChVXe4V6LN9M3wXwkmRxorNxZoCWgt9hni
+	Hqjf8w4jb+o25j4BvIxTtP+0c5QTkLA=
 X-Envelope-To: devicetree@vger.kernel.org
 X-Envelope-To: linux-iio@vger.kernel.org
 X-Envelope-To: rayyan@ansari.sh
@@ -54,7 +54,6 @@ X-Envelope-To: konrad.dybcio@linaro.org
 X-Envelope-To: krzk+dt@kernel.org
 X-Envelope-To: lars@metafoo.de
 X-Envelope-To: linux-kernel@vger.kernel.org
-X-Envelope-To: rafael@kernel.org
 X-Envelope-To: decatf@gmail.com
 X-Envelope-To: robh@kernel.org
 X-Envelope-To: sean@starlabs.systems
@@ -73,13 +72,12 @@ Cc: Rayyan Ansari <rayyan@ansari.sh>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	linux-kernel@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Robert Yang <decatf@gmail.com>,
 	Rob Herring <robh@kernel.org>,
 	Sean Rhodes <sean@starlabs.systems>
-Subject: [PATCH 2/3] iio: accel: kxcjk-1013: Add support for KX022-1020
-Date: Sun, 14 Jul 2024 18:33:04 +0100
-Message-ID: <20240714173431.54332-3-rayyan@ansari.sh>
+Subject: [PATCH 3/3] ARM: dts: qcom: msm8226-microsoft-common: Add inertial sensors
+Date: Sun, 14 Jul 2024 18:33:05 +0100
+Message-ID: <20240714173431.54332-4-rayyan@ansari.sh>
 In-Reply-To: <20240714173431.54332-1-rayyan@ansari.sh>
 References: <20240714173431.54332-1-rayyan@ansari.sh>
 Precedence: bulk
@@ -91,64 +89,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Add compatible for the KX022-1020 accelerometer [1] using the
-KX022-1023 [2] register map as both have an identical i2c interface.
+Add nodes for the Asahi Kasei AK09911 magnetometer and the Kionix
+KX022-1020 accelerometer, both of which are connected over i2c2, in the
+common device tree for msm8x26 Lumias.
 
-[1]: https://kionixfs.azureedge.net/en/datasheet/KX022-1020%20Specifications%20Rev%2012.0.pdf
-[2]: https://kionixfs.azureedge.net/en/datasheet/KX023-1025%20Specifications%20Rev%2012.0.pdf
+Moneypenny (Lumia 630) does not have a magnetometer, and so the node is
+deleted.
+Tesla's (Lumia 830's) magnetometer is currently unknown.
 
 Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
 ---
- drivers/iio/accel/kxcjk-1013.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ .../qcom/qcom-msm8226-microsoft-common.dtsi   | 26 +++++++++++++++++++
+ .../qcom-msm8226-microsoft-moneypenny.dts     |  3 +++
+ .../dts/qcom/qcom-msm8926-microsoft-tesla.dts |  3 +++
+ 3 files changed, 32 insertions(+)
 
-diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-index 8280d2bef0a3..b76df8816323 100644
---- a/drivers/iio/accel/kxcjk-1013.c
-+++ b/drivers/iio/accel/kxcjk-1013.c
-@@ -173,6 +173,7 @@ enum kx_chipset {
- 	KXCJ91008,
- 	KXTJ21009,
- 	KXTF9,
-+	KX0221020,
- 	KX0231025,
- 	KX_MAX_CHIPS /* this must be last */
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-common.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-common.dtsi
+index 8839b23fc693..ca76bf8af75e 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-common.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-common.dtsi
+@@ -84,6 +84,32 @@ smem_region: smem@fa00000 {
+ 	};
  };
-@@ -580,8 +581,8 @@ static int kxcjk1013_chip_init(struct kxcjk1013_data *data)
- 		return ret;
- 	}
  
--	/* On KX023, route all used interrupts to INT1 for now */
--	if (data->chipset == KX0231025 && data->client->irq > 0) {
-+	/* On KX023 and KX022, route all used interrupts to INT1 for now */
-+	if ((data->chipset == KX0231025 || data->chipset == KX0221020) && data->client->irq > 0) {
- 		ret = i2c_smbus_write_byte_data(data->client, KX023_REG_INC4,
- 						KX023_REG_INC4_DRDY1 |
- 						KX023_REG_INC4_WUFI1);
-@@ -1507,6 +1508,7 @@ static int kxcjk1013_probe(struct i2c_client *client)
- 	case KXTF9:
- 		data->regs = &kxtf9_regs;
- 		break;
-+	case KX0221020:
- 	case KX0231025:
- 		data->regs = &kx0231025_regs;
- 		break;
-@@ -1712,6 +1714,7 @@ static const struct i2c_device_id kxcjk1013_id[] = {
- 	{"kxcj91008", KXCJ91008},
- 	{"kxtj21009", KXTJ21009},
- 	{"kxtf9",     KXTF9},
-+	{"kx022-1020", KX0221020},
- 	{"kx023-1025", KX0231025},
- 	{"SMO8500",   KXCJ91008},
- 	{}
-@@ -1724,6 +1727,7 @@ static const struct of_device_id kxcjk1013_of_match[] = {
- 	{ .compatible = "kionix,kxcj91008", },
- 	{ .compatible = "kionix,kxtj21009", },
- 	{ .compatible = "kionix,kxtf9", },
-+	{ .compatible = "kionix,kx022-1020", },
- 	{ .compatible = "kionix,kx023-1025", },
- 	{ }
- };
++&blsp1_i2c2 {
++	status = "okay";
++
++	magnetometer: magnetometer@c {
++		compatible = "asahi-kasei,ak09911";
++		reg = <0x0c>;
++
++		vdd-supply = <&pm8226_l15>;
++		vid-supply = <&pm8226_l6>;
++	};
++
++	accelerometer: accelerometer@1e {
++		compatible = "kionix,kx022-1020";
++		reg = <0x1e>;
++
++		interrupts-extended = <&tlmm 63 IRQ_TYPE_EDGE_RISING>;
++
++		vdd-supply = <&pm8226_l15>;
++		vddio-supply = <&pm8226_l6>;
++
++		mount-matrix = "1",  "0",  "0",
++			       "0", "-1",  "0",
++			       "0",  "0",  "1";
++	};
++};
++
+ &blsp1_i2c5 {
+ 	status = "okay";
+ 
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-moneypenny.dts b/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-moneypenny.dts
+index 992b7115b5f8..a28a83cb5340 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-moneypenny.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-moneypenny.dts
+@@ -10,6 +10,9 @@
+ 
+ #include "qcom-msm8226-microsoft-common.dtsi"
+ 
++/* This device has no magnetometer */
++/delete-node/ &magnetometer;
++
+ / {
+ 	model = "Nokia Lumia 630";
+ 	compatible = "microsoft,moneypenny", "qcom,msm8226";
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-microsoft-tesla.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-microsoft-tesla.dts
+index 53a6d4e85959..55077a5f2e34 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8926-microsoft-tesla.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8926-microsoft-tesla.dts
+@@ -13,6 +13,9 @@
+ /* This device has touchscreen on i2c1 instead */
+ /delete-node/ &touchscreen;
+ 
++/* The magnetometer used on this device is currently unknown */
++/delete-node/ &magnetometer;
++
+ / {
+ 	model = "Nokia Lumia 830";
+ 	compatible = "microsoft,tesla", "qcom,msm8926", "qcom,msm8226";
 -- 
 2.45.2
 

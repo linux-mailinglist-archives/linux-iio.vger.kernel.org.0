@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-7618-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7619-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AFC9930FB1
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 10:26:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F98930FCA
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 10:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD4E61F21D9F
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 08:26:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A42171C20753
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 08:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EEF1849EB;
-	Mon, 15 Jul 2024 08:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E8718562E;
+	Mon, 15 Jul 2024 08:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mhDCmiEb"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wWO/uaC0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934991849C1
-	for <linux-iio@vger.kernel.org>; Mon, 15 Jul 2024 08:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9E91850AE
+	for <linux-iio@vger.kernel.org>; Mon, 15 Jul 2024 08:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721031988; cv=none; b=V5txD/FFzncr2xtMBFXNnCXm/7viPpL44sO8oYUZk0sVGs5sb4PvubQHVYxnakT1DNt8hmJORVDaGldt4kjJn26IydGi05aciPBv16ea661qin3PXyLhLjX7Cr/im8XI3AvktCxrXj4CKcR1zXBUvAtzH5stDQZT3nRiNDsMNW4=
+	t=1721032173; cv=none; b=RtGUwOZ4hWXDdtJAcbPPRRbxZgY/5NufaLEY0DIVxop60D6NkolCIsnEg4tDZeoKEVpZcSmaMsHWAVtlfbB/oLKRtZ6yDroa12JN5FVVRbzOiAH3YQch11THVFjQ5U4Eu7Q2p0uB1zxRFAbiEaFq02iuGxw3SKwW2PhIvWnTfFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721031988; c=relaxed/simple;
-	bh=4rv3ZaLzrCHj+vNPIJxdJ/7xjDGvjfI2TuhuAc/Fqsg=;
+	s=arc-20240116; t=1721032173; c=relaxed/simple;
+	bh=+5lkUx8+mk/uDe8jRuEOjYyNBwIjwxrOZjU46E/SB/s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mUL/UHaWhXgAGIHeM6KnkOJ0AWP/7KXm+Dji+sRResP3SSCxigD65MYhicQ2C9ZY0QUquWZ9ZiIQFmnAKAEOmmQlinOoZlj5wXZ5htuqW9REFfhnvRgYWpvyCxWgsNAdys/B19Tpq+/yyFraerd+13PKcIjl8wGRYQWgeNCHTLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mhDCmiEb; arc=none smtp.client-ip=209.85.208.42
+	 In-Reply-To:Content-Type; b=Dtjkxmem7sFVUR1twDinZsVUCqp8uugkOTZcwCNu1MQuUbvfO3ug1g9DY75hoHIAf5HOg4m+OQD7MmzxueV7VVO29YHjiJynkoxswQoh53/2rwHkuKPxBtIIAZmqK5PXUAc1iRuZ7/RawuknOcYBWxfekQ8uDp/7cGJqn/zQxE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wWO/uaC0; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-58e76294858so8623631a12.0
-        for <linux-iio@vger.kernel.org>; Mon, 15 Jul 2024 01:26:26 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-58c2e5e8649so7491653a12.1
+        for <linux-iio@vger.kernel.org>; Mon, 15 Jul 2024 01:29:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721031985; x=1721636785; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1721032170; x=1721636970; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=izpUMq/N+icXqDvhWPk5JDHQzyB9a4mErF4XUK7MXok=;
-        b=mhDCmiEb+ZuKue99KGk7ASIVQ1ok18zN0TMToACMGNFBZrFwW/79i1YkSQrG9ge8Vg
-         9YU6GODJk83kW5UmRVXUKPidEpxEVJRbIUCY5Yhvx/rWzGvznsk4F5kr2qeJCvuY0/CL
-         AbZUaOh6hjP9v55jcDYKJ1Dkegw5sZ5BlxUUA99mLXax6BONavNdCC7xF53xszNpK7DJ
-         SNVg/YU7C9mFX/WaYVO+jOHDq+Iar1eNJUW/79OI7eY/AzftoLtmyi01Cx9+fbqxsyuZ
-         GE2imd1X6a38nI5vhLAdV+rMrk7jQ2US3q32sULVM94BK9mOLLJlBzkq27haxGCLVfZx
-         B0fA==
+        bh=mLwLwOZkzvKFgw0aI85tugrfuqDFIADceOO8TgNb4Ws=;
+        b=wWO/uaC0iYIDrxslZxsA2EnFnJVa1jXN091/42mrv9l2wuK0l2Ex4sdiqTaXPwien0
+         Qt5E3OjzYaGKEE7puVPrfwjRMO8Qb1bynvYmfO6E0KtixPScKZ7k9vYontTAyr/zbXuC
+         jlNXokUxHu3pbhCyoWuEYDijZH4s4Um2pTJ60x4TVNsU8GBa7RlIvvDXOuEjtkDad8eC
+         VOpz7Gos+71D/L1uhIbWlh80y6c6Fb3YI7avQDVg511lAFon/ql4aQV3ULGMMVNB5DaM
+         xYXKI5iyo/Rrs7x/ZucYZfztgJJMUDvHni8iDkJkQsF97ZnED5ywqFmfXWIAHAMGvCGD
+         gJSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721031985; x=1721636785;
+        d=1e100.net; s=20230601; t=1721032170; x=1721636970;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=izpUMq/N+icXqDvhWPk5JDHQzyB9a4mErF4XUK7MXok=;
-        b=HVHAXh62KnpunRsak4f+9/ClTrcwzrbIL/vDp/6lOl5FITAfe8ifA3Vq12ORR9IySa
-         vhbJNb1NJXZq8tJXKs+mSCRwakzwCSravjfqZ/KVt+jMuIGOqD2zmcagQDunuA5RIQ91
-         5PoLoTLioK0ZEF3XKmqoHaks5szSYd6YQNsL9OUWOJdoYczogEYU5Z6LSIDfmuAN+UR4
-         C3OV8dgVcd/7IlZB93+ljfe5HsQ/8h3VmlLm4TYDqaeDF56oDpwxsYIthZUZfMV6yk1o
-         2q4Ihxjz+QQAy9V82Rh8E/tAqQnSNgT8YC7tb6cODi16TtfmG1urd/YCUfEPTzTYWLWe
-         LoqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVMMAr5fJp5i2FgAAuxdKMWZg94EKF94u6KOSJ3n1NziU9iqILglcfBV/HuHWRA456HEFVo0MUihs+cKLJHYvt2+xVwdYi53w1H
-X-Gm-Message-State: AOJu0YwtMvCKMooDxO/vu//pB2Cv5/O7OrjVEwMCDmddQS3px0h1zE5U
-	vwLTUmcciJVhy40cfwvp0Lw3KoMStA0WWFda88KsAsBzP4BLKINv1qXFiUnSxHo=
-X-Google-Smtp-Source: AGHT+IHIsOArQak5PBruo5Gqh0M5LnWwb41hKRlcAptSfghWsy8ckC66GZbFeNGGR0GbsfD7A43EBQ==
-X-Received: by 2002:a17:906:689b:b0:a72:83ad:f087 with SMTP id a640c23a62f3a-a799cc4f083mr645967966b.10.1721031984494;
-        Mon, 15 Jul 2024 01:26:24 -0700 (PDT)
+        bh=mLwLwOZkzvKFgw0aI85tugrfuqDFIADceOO8TgNb4Ws=;
+        b=weffl4/auvZHNvnvmcw8+WAIHEkfBzz8r5wvRkzu85khUObm1YJrfQOb8tiX8+orR3
+         eQSChKw22Z/Fmzv4w7JM05AAqscNHQhEJnNUJJkJ0o0bI4bMkihLbS+ZWNwbU3JTIxwS
+         4K8en0QQVnGadPFE3MQXea2k7/GS+Pfs2ON3TqNl9Bt9Gl8RPwePBQNMKZGzEw7+FRk4
+         2NGHIg49a3RRG+c9MQaJtD4Flk/wB4/lQikpk8DHckMUj1f/9f5JibVZhp8wVJLxlj7Q
+         wh/D9+4YDH69lCKwYuEhH09jPYxYI+BQc/oOSfkrt/WFbv6l4+NBmOREFxe60dvjpGKc
+         wDWA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQNiITOmRF7nwWC4LI8SRHti/7bWGJW/TzzkYEKCl/7zFUHjDfpdh14GmP0p1Q4WhVMQ1nwtwdyB62HrX8hYjPGAoluOI9bo9v
+X-Gm-Message-State: AOJu0YzxtnMRo7su3hRplSJBgNCHtbWGREXrlR7P6M6FYf9aFCd2JKxr
+	gNKLizu/pMti8G7BPIHtGOs0dGVMDkyI49lGwgw6oHOM3qOc2D7ftcJWNNORuls=
+X-Google-Smtp-Source: AGHT+IFCQ23rjoVs9aGME4gMn1H3EOor3OSdkK43tb2BphIs3M0bnKJ3hC1TalhfJV44PKeWreNDLw==
+X-Received: by 2002:a17:906:d9ca:b0:a6f:20e0:1d1a with SMTP id a640c23a62f3a-a799d3a3a0cmr510710866b.33.1721032169465;
+        Mon, 15 Jul 2024 01:29:29 -0700 (PDT)
 Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5a3ab9sm191062366b.1.2024.07.15.01.26.20
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5a3560sm192390066b.4.2024.07.15.01.29.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 01:26:24 -0700 (PDT)
-Message-ID: <76ac592a-c2a9-413e-848e-a15a36173cf5@linaro.org>
-Date: Mon, 15 Jul 2024 10:26:19 +0200
+        Mon, 15 Jul 2024 01:29:29 -0700 (PDT)
+Message-ID: <27af0c83-21f8-411f-923e-d9adcd4c17a7@linaro.org>
+Date: Mon, 15 Jul 2024 10:29:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,24 +77,19 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] thermal: qcom: Add support for MBG Temp monitor
-To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Amit Kucheria <amitk@kernel.org>,
- Thara Gopinath <thara.gopinath@gmail.com>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: Kamal Wadhwa <quic_kamalw@quicinc.com>, Taniya Das
- <quic_tdas@quicinc.com>, Jishnu Prakash <quic_jprakash@quicinc.com>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-pm@vger.kernel.org, Ajit Pandey <quic_ajipan@quicinc.com>,
- Imran Shaik <quic_imrashai@quicinc.com>,
- Jagadeesh Kona <quic_jkona@quicinc.com>
-References: <20240712-mbg-tm-support-v1-0-7d78bec920ca@quicinc.com>
- <20240712-mbg-tm-support-v1-3-7d78bec920ca@quicinc.com>
+Subject: Re: [PATCH 3/3] ARM: dts: qcom: msm8226-microsoft-common: Add
+ inertial sensors
+To: Rayyan Ansari <rayyan@ansari.sh>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Hans de Goede <hdegoede@redhat.com>, Jonathan Cameron <jic23@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
+ Robert Yang <decatf@gmail.com>, Rob Herring <robh@kernel.org>,
+ Sean Rhodes <sean@starlabs.systems>
+References: <20240714173431.54332-1-rayyan@ansari.sh>
+ <20240714173431.54332-4-rayyan@ansari.sh>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
@@ -132,222 +127,23 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20240712-mbg-tm-support-v1-3-7d78bec920ca@quicinc.com>
+In-Reply-To: <20240714173431.54332-4-rayyan@ansari.sh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12.07.2024 2:43 PM, Satya Priya Kakitapalli wrote:
-> Add driver for the MBG thermal monitoring device. It monitors
-> the die temperature, and when there is a level 1 upper threshold
-> violation, it receives an interrupt over spmi. The driver reads
-> the fault status register and notifies thermal accordingly.
+On 14.07.2024 7:33 PM, Rayyan Ansari wrote:
+> Add nodes for the Asahi Kasei AK09911 magnetometer and the Kionix
+> KX022-1020 accelerometer, both of which are connected over i2c2, in the
+> common device tree for msm8x26 Lumias.
 > 
-> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+> Moneypenny (Lumia 630) does not have a magnetometer, and so the node is
+> deleted.
+> Tesla's (Lumia 830's) magnetometer is currently unknown.
+> 
+> Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
 > ---
 
-[...]
-
->  drivers/thermal/qcom/Kconfig            |  11 ++
->  drivers/thermal/qcom/Makefile           |   1 +
->  drivers/thermal/qcom/qcom-spmi-mbg-tm.c | 269 ++++++++++++++++++++++++++++++++
->  3 files changed, 281 insertions(+)
-> 
-> diff --git a/drivers/thermal/qcom/Kconfig b/drivers/thermal/qcom/Kconfig
-> index 2c7f3f9a26eb..46045094020c 100644
-> --- a/drivers/thermal/qcom/Kconfig
-> +++ b/drivers/thermal/qcom/Kconfig
-> @@ -21,6 +21,17 @@ config QCOM_SPMI_ADC_TM5
->  	  Thermal client sets threshold temperature for both warm and cool and
->  	  gets updated when a threshold is reached.
->  
-> +config QCOM_SPMI_MBG_TM
-> +	tristate "Qualcomm Technologies, Inc. SPMI PMIC MBG Temperature monitor"
-> +	depends on OF && SPMI && IIO
-> +	select REGMAP_SPMI
-> +	help
-> +	 This enables a thermal driver for the MBG thermal monitoring device.
-> +	 It shows up in sysfs as a thermal sensor with two trip points.
-> +	 It notifies the thermal framework when level 1 high threshold is
-> +	 violated. The temperature reported by the thermal sensor reflects
-> +	 the real time die temperature through ADC channel.
-> +
->  config QCOM_SPMI_TEMP_ALARM
->  	tristate "Qualcomm SPMI PMIC Temperature Alarm"
->  	depends on OF && SPMI && IIO
-> diff --git a/drivers/thermal/qcom/Makefile b/drivers/thermal/qcom/Makefile
-> index 0fa2512042e7..bc18e08ee3e2 100644
-> --- a/drivers/thermal/qcom/Makefile
-> +++ b/drivers/thermal/qcom/Makefile
-> @@ -4,5 +4,6 @@ obj-$(CONFIG_QCOM_TSENS)	+= qcom_tsens.o
->  qcom_tsens-y			+= tsens.o tsens-v2.o tsens-v1.o tsens-v0_1.o \
->  				   tsens-8960.o
->  obj-$(CONFIG_QCOM_SPMI_ADC_TM5)	+= qcom-spmi-adc-tm5.o
-> +obj-$(CONFIG_QCOM_SPMI_MBG_TM)	+= qcom-spmi-mbg-tm.o
->  obj-$(CONFIG_QCOM_SPMI_TEMP_ALARM)	+= qcom-spmi-temp-alarm.o
->  obj-$(CONFIG_QCOM_LMH)		+= lmh.o
-> diff --git a/drivers/thermal/qcom/qcom-spmi-mbg-tm.c b/drivers/thermal/qcom/qcom-spmi-mbg-tm.c
-> new file mode 100644
-> index 000000000000..70964ea5a48d
-> --- /dev/null
-> +++ b/drivers/thermal/qcom/qcom-spmi-mbg-tm.c
-> @@ -0,0 +1,269 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +//Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-> +
-> +#include <linux/interrupt.h>
-> +#include <linux/irq.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +#include <linux/thermal.h>
-> +#include <linux/iio/consumer.h>
-> +
-> +#include "../thermal_core.h"
-> +
-> +#define MBG_TEMP_MON_MM_MON2_FAULT_STATUS	0x50
-> +
-> +#define MON_FAULT_STATUS_MASK			GENMASK(7, 6)
-> +#define MON_FAULT_STATUS_SHIFT			6
-> +#define MON2_LVL1_ERR				0x1
-> +
-> +#define MON2_LVL1_UP_THRESH			0x59
-> +
-> +#define MBG_TEMP_MON_MM_MON2_MISC_CFG		0x5f
-> +#define UP_THRESH_EN				BIT(1)
-> +
-> +#define STEP_MV					8
-> +#define MBG_DEFAULT_TEMP_MV			600
-> +#define MBG_TEMP_CONSTANT			1000
-> +#define MIN_TRIP_TEMP				25000
-> +#define MAX_SUPPORTED_TEMP			160000
-> +
-> +struct mbg_tm_chip {
-> +	struct regmap			*map;
-> +	struct device			*dev;
-> +	struct thermal_zone_device	*tz_dev;
-> +	struct mutex                    lock;
-> +	unsigned int			base;
-> +	int				irq;
-> +	int				last_temp;
-> +	bool				last_temp_set;
-> +	struct iio_channel		*adc;
-> +};
-> +
-> +struct mbg_map_table {
-> +	int min_temp;
-> +	int vtemp0;
-> +	int tc;
-> +};
-> +
-> +static const struct mbg_map_table map_table[] = {
-> +	/* minT	vtemp0	tc */
-> +	{ -60000, 4337, 1967 },
-> +	{ -40000, 4731, 1964 },
-> +	{ -20000, 5124, 1957  },
-> +	{ 0,      5515, 1949 },
-> +	{ 20000,  5905, 1940 },
-> +	{ 40000,  6293, 1930 },
-> +	{ 60000,  6679, 1921 },
-> +	{ 80000,  7064, 1910 },
-> +	{ 100000, 7446, 1896 },
-> +	{ 120000, 7825, 1878 },
-> +	{ 140000, 8201, 1859 },
-> +};
-> +
-> +static int mbg_tm_read(struct mbg_tm_chip *chip, u16 addr, int *data)
-> +{
-> +	return regmap_read(chip->map, chip->base + addr, data);
-> +}
-> +
-> +static int mbg_tm_write(struct mbg_tm_chip *chip, u16 addr, int data)
-> +{
-> +	return regmap_write(chip->map, chip->base + addr, data);
-> +}
-> +
-> +static int mbg_tm_reg_update(struct mbg_tm_chip *chip, u16 addr, u8 mask, u8 val)
-> +{
-> +	return regmap_write_bits(chip->map, chip->base + addr, mask, val);
-> +}
-
-You're not saving much on code amount, or readability by adding these
-accessors, r/w are used once and update is used twice.
-
-> +
-> +static int mbg_tm_get_temp(struct thermal_zone_device *tz, int *temp)
-> +{
-> +	struct mbg_tm_chip *chip = thermal_zone_device_priv(tz);
-> +	int ret, milli_celsius;
-> +
-> +	if (!temp)
-> +		return -EINVAL;
-> +
-> +	if (chip->last_temp_set) {
-> +		pr_debug("last_temp: %d\n", chip->last_temp);
-> +		chip->last_temp_set = false;
-
-last_temp_set -> last_thres_crossed?
-
-> +		*temp = chip->last_temp;
-> +		return 0;
-> +	}
-
-[...]
-
-> +
-> +	/* The HW has a limitation that the trip set must be above 25C */
-> +	if (temp > MIN_TRIP_TEMP && temp < INT_MAX) {
-
-INT_MAX -> MAX_SUPPORTED_TEMP?
-
-> +		mbg_tm_reg_update(chip, MBG_TEMP_MON_MM_MON2_MISC_CFG,
-> +					 UP_THRESH_EN, UP_THRESH_EN);
-
-regmap_set_bits
-
-> +		vtemp = temp_to_vtemp(temp);
-> +		ret = mbg_tm_write(chip, MON2_LVL1_UP_THRESH, vtemp);
-
-regmap_write(...., temp_to_vtemp(temp))
-
-> +		if (ret < 0) {
-> +			mutex_unlock(&chip->lock);
-> +			return ret;
-> +		}
-> +	} else {
-> +		dev_dbg(chip->dev, "Setting %d failed, set trip between 25C and INT_MAX\n", temp);
-> +		mbg_tm_reg_update(chip, MBG_TEMP_MON_MM_MON2_MISC_CFG,
-> +					UP_THRESH_EN, 0);
-
-regmap_clear_bits
-
-[...]
-
-> +	val &= MON_FAULT_STATUS_MASK;
-> +	if ((val >> MON_FAULT_STATUS_SHIFT) & MON2_LVL1_ERR) {
-
-FIELD_GET
-
-> +		chip->last_temp_set = true;
-> +		thermal_zone_device_update(chip->tz_dev,
-> +					THERMAL_TRIP_VIOLATED);
-> +		dev_dbg(chip->dev, "Notifying Thermal, fault status=%d\n", val);
-> +	} else {
-> +		dev_dbg(chip->dev, "Lvl 1 upper threshold not violated, ignoring interrupt\n");
-
-Would such spurious IRQs carry any meaning at all?
-
-[...]
-
-> +static struct platform_driver mbg_tm_driver = {
-> +	.driver = {
-> +		.name = "qcom-spmi-mbg-tm",
-> +		.of_match_table = mbg_tm_match_table,
-> +	},
-> +	.probe  = mbg_tm_probe,
-
-Double space
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
 

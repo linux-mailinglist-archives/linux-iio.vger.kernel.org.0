@@ -1,80 +1,48 @@
-Return-Path: <linux-iio+bounces-7620-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7621-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7F7930FD7
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 10:31:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85ABF9310C2
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 11:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF3FF1F21DF3
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 08:31:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 131EBB2366F
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 09:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D144F1836CE;
-	Mon, 15 Jul 2024 08:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC65E18755F;
+	Mon, 15 Jul 2024 08:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GLujtTw8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYOh8/v/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B7013AD16
-	for <linux-iio@vger.kernel.org>; Mon, 15 Jul 2024 08:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEBC187546;
+	Mon, 15 Jul 2024 08:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721032254; cv=none; b=ih1fgQg1D3kLVXjEwWHJ2YSDW2i4CudScXos6VodCFFwOnzpLbRonD06qnRh3Vc4/UBS45bPjpKfDakmBKh/zdIue4bYL7yCYwXf12Ch1nwm73jxTiQCd2vITXoLygt4BS0DqzGEz944dY+A/H+8xNAY+Pj9v+BvAQAqw2ElBHw=
+	t=1721033965; cv=none; b=pDZH9xpoF6LLlm5xeBAqbbPhca2xM9XjI3M65YwHrhAIluH9v8Sb5M4Jir9PiNopqy8hqIKeFY21BSuavMaWFFKsED2xhB7zD5tvszAlvfSupyvL7H6ApZKCmsx8pon/yROIHca7fGL7omCjm9/iipcP2zQ+SILc1QNQUEx3II4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721032254; c=relaxed/simple;
-	bh=+1/E7nz2cgztKWaRiX5gV2VSBb3LIiu/RsBICgWkEw4=;
+	s=arc-20240116; t=1721033965; c=relaxed/simple;
+	bh=y+kTudWLmMVZqjkmKb1Iq2iwCRwyu/ABbyO06TY0Lqk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NB21jbEFXuL7X5vW0lFtUE7U3OkUYgw1dkjkQeBtFH6IvWMw8IHYfMysPzcKe/pbuOp+0LhR5tgOVA12O+Bu1C6BVVYEJrOKg7Oxa7Obwmx2xZVAEcTxdaD9FEePUzGLV0BCEKseHK7Lr1lyGLGA0I8Z2cQ1S/fiTuNyQ7Xrur8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GLujtTw8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721032251;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vWXi1fxR2pAp3kgUhHC9kifjMGGJD4BLGwaCgaR3j84=;
-	b=GLujtTw8vWcA9SUck/4m5gaytLyXP8WwfX5ji9EqGkvkFAzg1Z0cVD8+jmlkrI7Dux5sVs
-	Guk9tWvQkvJpRI2cOIaueNvAZ3LjPMAtJejOO1mdx/xBkY26f9mzpoTiwsxuMjAtvwKZIr
-	sWvMRKfzgePUYVwOvs32bAzZcikbOCQ=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-48bN6i-rM7SAjvuVEy3gng-1; Mon, 15 Jul 2024 04:30:49 -0400
-X-MC-Unique: 48bN6i-rM7SAjvuVEy3gng-1
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-59aeea3d7e2so953809a12.0
-        for <linux-iio@vger.kernel.org>; Mon, 15 Jul 2024 01:30:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721032249; x=1721637049;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vWXi1fxR2pAp3kgUhHC9kifjMGGJD4BLGwaCgaR3j84=;
-        b=vGXACJ505xlFIBDs2ctcWeascjsuTH/sE6at5z1H4RPBH8HykTBBPz8OafCS8nfpWC
-         CWPG9CVBNJG8LqT9aNObvHaFyFnfyE9/vDtqE9NMd4W3L6WzGuFpvMvEjrbsgA1zniwx
-         B+Pmte3zMvvIHhlMCrHBNe0NQabMyFWxQwlRSEQrpvOXniFN4xHIWkf6Dmte5Kk7LhnY
-         QLpTTAG1aE2DzLSCmdWLwAaUDiWWog0fiomIZy+a8psedBKvXbrbGaOgtxZCm2D7l3NF
-         VjhkgnDRyK0f3yvZihcBF4FaABsWyg3uxlCIriyZ/pvCcLMWiO/jvS0jn+lbrPUqfLw7
-         9gAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVAjAc8h9YNYBrLxA51xQmeSKesh0+QJxqaXCao8XC4r995vir6ZlRmu9kOGCqt2bTdWT/iuBFGJ8HZbFf2u/XfDQ9UYYE1OAqm
-X-Gm-Message-State: AOJu0YyYJL2xPb4vzxEznOKX8MYEPOatmmQsSvmzWqdWd7aohE8lQrUx
-	Gt4463fHnPUgANZNloFW6Tafvg8ZTnJvK10aeLZ6pkL7176hVYP4VYCFJLG8KiGaos1vHd4AMaY
-	qRaM/wdSDKpv7t/OcLyJQG7PU5phdcJHh2Y7mRdaIfZW28aCDIBbFJZfTiQ==
-X-Received: by 2002:a17:907:94c7:b0:a72:8a75:6559 with SMTP id a640c23a62f3a-a780b884495mr1463542766b.47.1721032248800;
-        Mon, 15 Jul 2024 01:30:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEne3HPmwCYIiZcxI0J78LWeiGMHddXNYIBZCspIEDNUlljKwv120zbOJeXr389b8IYutZdAw==
-X-Received: by 2002:a17:907:94c7:b0:a72:8a75:6559 with SMTP id a640c23a62f3a-a780b884495mr1463540266b.47.1721032248465;
-        Mon, 15 Jul 2024 01:30:48 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5d00b8sm192741966b.83.2024.07.15.01.30.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 01:30:48 -0700 (PDT)
-Message-ID: <823ce598-dffd-4983-bffa-32559558235d@redhat.com>
-Date: Mon, 15 Jul 2024 10:30:46 +0200
+	 In-Reply-To:Content-Type; b=HzwpKKoI2K9JbeHkavP9DKA9AWU4GOjvKcVZj2keVqJHxDH9p3oui8ViUGcjcfnyrbtpEpWDxSEJvpdvHCBTwAG7MtiYLiHlVI38kYcvWw5MeiawSOn0ffw6xesShZ0b1uNkXa1lai4I4GhaPHGQ1BIquVdz8PImYDv4DAk/qXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYOh8/v/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FD7C4AF0A;
+	Mon, 15 Jul 2024 08:59:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721033964;
+	bh=y+kTudWLmMVZqjkmKb1Iq2iwCRwyu/ABbyO06TY0Lqk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZYOh8/v/YWIs+Ao47qs+d+9EKaxbK0cC0b7Y31tEdLfGSuNpwBYwfPBiD5mHQROPr
+	 W6hwnrWtfpBx+bih/+p3WbvYkxTzgWWTnlDsZckTHHeHk6zqUihvYYYnSm9u89gy5j
+	 G3L/Go11ltDmadciyl16m7/6O89VuMa9T8+ZvB5zRnQOlkrvnoixwA2XJvu1I6Dj9q
+	 3VorcuEWf4aRsIa+zivmdmQA8UzXX9bz0UGOzu8LP9+ijRVKDtAW8ITfp+sIP0u7wa
+	 Who+rhecgtLlW7Zmuwe2qsNygRazAzgQIQKOMX+pYAHpdSvAEWxNrfJW0YOAsnfGAn
+	 WU6Y+sp+TWCtg==
+Message-ID: <a9eed7f2-86d6-471e-883e-acbd89755fec@kernel.org>
+Date: Mon, 15 Jul 2024 10:59:17 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,94 +50,78 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] iio: accel: kxcjk-1013: Add support for KX022-1020
+Subject: Re: [PATCH 1/3] dt-bindings: iio: kionix,kxcjk1013: Document
+ KX022-1020
 To: Rayyan Ansari <rayyan@ansari.sh>, linux-arm-msm@vger.kernel.org,
  devicetree@vger.kernel.org, linux-iio@vger.kernel.org
 Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
  Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, Konrad Dybcio
- <konrad.dybcio@linaro.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Hans de Goede <hdegoede@redhat.com>, Jonathan Cameron <jic23@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
  "Rafael J. Wysocki" <rafael@kernel.org>, Robert Yang <decatf@gmail.com>,
  Rob Herring <robh@kernel.org>, Sean Rhodes <sean@starlabs.systems>
 References: <20240714173431.54332-1-rayyan@ansari.sh>
- <20240714173431.54332-3-rayyan@ansari.sh>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20240714173431.54332-3-rayyan@ansari.sh>
+ <20240714173431.54332-2-rayyan@ansari.sh>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240714173431.54332-2-rayyan@ansari.sh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On 7/14/24 7:33 PM, Rayyan Ansari wrote:
-> Add compatible for the KX022-1020 accelerometer [1] using the
-> KX022-1023 [2] register map as both have an identical i2c interface.
-> 
-> [1]: https://kionixfs.azureedge.net/en/datasheet/KX022-1020%20Specifications%20Rev%2012.0.pdf
-> [2]: https://kionixfs.azureedge.net/en/datasheet/KX023-1025%20Specifications%20Rev%2012.0.pdf
+On 14/07/2024 19:33, Rayyan Ansari wrote:
+> Document the KX022-1020 accelerometer, which has the same register
+> layout as the KX023-1025 and so can use the same driver.
 > 
 > Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
 
-Thanks, patch looks good to me:
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
-> ---
->  drivers/iio/accel/kxcjk-1013.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-> index 8280d2bef0a3..b76df8816323 100644
-> --- a/drivers/iio/accel/kxcjk-1013.c
-> +++ b/drivers/iio/accel/kxcjk-1013.c
-> @@ -173,6 +173,7 @@ enum kx_chipset {
->  	KXCJ91008,
->  	KXTJ21009,
->  	KXTF9,
-> +	KX0221020,
->  	KX0231025,
->  	KX_MAX_CHIPS /* this must be last */
->  };
-> @@ -580,8 +581,8 @@ static int kxcjk1013_chip_init(struct kxcjk1013_data *data)
->  		return ret;
->  	}
->  
-> -	/* On KX023, route all used interrupts to INT1 for now */
-> -	if (data->chipset == KX0231025 && data->client->irq > 0) {
-> +	/* On KX023 and KX022, route all used interrupts to INT1 for now */
-> +	if ((data->chipset == KX0231025 || data->chipset == KX0221020) && data->client->irq > 0) {
->  		ret = i2c_smbus_write_byte_data(data->client, KX023_REG_INC4,
->  						KX023_REG_INC4_DRDY1 |
->  						KX023_REG_INC4_WUFI1);
-> @@ -1507,6 +1508,7 @@ static int kxcjk1013_probe(struct i2c_client *client)
->  	case KXTF9:
->  		data->regs = &kxtf9_regs;
->  		break;
-> +	case KX0221020:
->  	case KX0231025:
->  		data->regs = &kx0231025_regs;
->  		break;
-> @@ -1712,6 +1714,7 @@ static const struct i2c_device_id kxcjk1013_id[] = {
->  	{"kxcj91008", KXCJ91008},
->  	{"kxtj21009", KXTJ21009},
->  	{"kxtf9",     KXTF9},
-> +	{"kx022-1020", KX0221020},
->  	{"kx023-1025", KX0231025},
->  	{"SMO8500",   KXCJ91008},
->  	{}
-> @@ -1724,6 +1727,7 @@ static const struct of_device_id kxcjk1013_of_match[] = {
->  	{ .compatible = "kionix,kxcj91008", },
->  	{ .compatible = "kionix,kxtj21009", },
->  	{ .compatible = "kionix,kxtf9", },
-> +	{ .compatible = "kionix,kx022-1020", },
->  	{ .compatible = "kionix,kx023-1025", },
->  	{ }
->  };
+Best regards,
+Krzysztof
 
 

@@ -1,198 +1,109 @@
-Return-Path: <linux-iio+bounces-7628-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7629-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D54C931A53
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 20:32:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E2C931B5F
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 22:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 233F32830F1
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 18:32:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8ED3BB21C11
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Jul 2024 20:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B28718B1A;
-	Mon, 15 Jul 2024 18:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD9E74409;
+	Mon, 15 Jul 2024 20:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="JRBn5QkJ"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="bEKIgr/P"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851A031758
-	for <linux-iio@vger.kernel.org>; Mon, 15 Jul 2024 18:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB77733C5;
+	Mon, 15 Jul 2024 20:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721068313; cv=none; b=ZK/HJi916nnQQ4+b/IqFYFhaDXsGT69+Z+dusR3Ndw5MUAWuSN0fI3xFmlPWgSo28i1j3jRSB+1Uva3T9PIEuVdsB0o49p8icdMO0PZADTX1voPc3HPWPnPw2NUn8YmTyp353IJE3M1Jex/HgbdRhAX/jl5k/hH+fwA+52yZqhs=
+	t=1721073789; cv=none; b=taPhBql/D7SdUY1jgDsRA7+SVDfuppbpJda7MqUqK1aETdId9vn/N+BVoo8qSUrCrzQ3ko3O27QEp+Kwx6+ul8uTwWIgIfpCXo0zZdJ7cNW4e7ZZbtVG7UebJ3UunyiwSuqcjz+qSe2qz8NYRUlRjee62qGQAi0LKJZYdqoUDLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721068313; c=relaxed/simple;
-	bh=WvUVA4dYsnO3pT80qX0evFD4yD2/e3NkR36i8zd8KAI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fxsXIAoYnbzHhQ2gG21ByvrHsX+ogoip2yf0Df07hXag66L8rYpi+ir1wpZoMdOp5JVl34MDV/mR4UrEFVvbU2zokNl7gH0h8w0+AK06Err13eanD9Bt15+OI7QooK3KSnHHmkyULJ922waYF0DDVTKeSd8u1emlAf4UBG5+/uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=JRBn5QkJ; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id C15438887A;
-	Mon, 15 Jul 2024 20:31:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1721068309;
-	bh=GhPcUF0/Otf5pFSjLPvzpLNUdQ8qiLuLLnBqV4+RCaU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRBn5QkJUbZEZg14A3T/MfvCCP0pX99SgmO6oDKoGA4wsdvPcJL9QoPVs+lwwFRl5
-	 QaBNLd0SmUfQr91Y7so1msXysLSAGrbt4Fnfv7zDGzEJ68feT++NPIKuO5wTWATXnp
-	 7y1zIEnZPdGNMvz4/EujV6sn1hCHVtRvB3j/q2G9w1/N9XhhPqvfeQxN0XIdIGP39S
-	 5iXyttMsmgu347H7+aSiuzmzNrc1Eh6KBpG00xXfRzCZEk6Wdw1JNbsr93Q+jj19OE
-	 TVg6toOxFWbDxzdf1v0K5Kr8PFv3TL39Q+vym5NBxkStKDVeu9neTZ1H4QIDWzmE0u
-	 Yxb1y4qIUYGHg==
-From: Marek Vasut <marex@denx.de>
-To: linux-iio@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 5/5] iio: light: noa1305: Make integration time configurable
-Date: Mon, 15 Jul 2024 20:28:59 +0200
-Message-ID: <20240715183120.143417-5-marex@denx.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240715183120.143417-1-marex@denx.de>
-References: <20240715183120.143417-1-marex@denx.de>
+	s=arc-20240116; t=1721073789; c=relaxed/simple;
+	bh=GRjMyQwWgV2+YhsXoV6AS5YBs/gY+Epu+knjooe+GcY=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=hUMZMsZEtLC1BSD7uucffNSh1vf4FmLx1J509f7JDU9RMP+ce2N1gbg+1My5s1XxnJAlOVY+UyYPSygmOGp3LINV5yye06foC1p6LTN3pYOeGV0QhPUhmmpZwN38OKClt5yjWXy8ztJLupsbuLkZBzNFTpq3DWwVuwrMOe7eXDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=bEKIgr/P; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+Received: from localhost (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id EAC1241335;
+	Mon, 15 Jul 2024 22:02:57 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+	by localhost (disroot.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id hh6BsPkEHeUO; Mon, 15 Jul 2024 22:02:57 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1721073777; bh=GRjMyQwWgV2+YhsXoV6AS5YBs/gY+Epu+knjooe+GcY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bEKIgr/PidKiPHIJYPqs51e42IdroWhXbHEEKuapkswSnmai3p1H983y6g35CKNy/
+	 Mozae1QxNGOIfOwt6AbPDwDQEl867k8tL3gCXOQ3lf2blZihNzXqnfS5qEZ5VJn2lO
+	 zY28t9goVvIZL7IYnK+BI6GMDrVS0wc8DGsalwg4fOurLcaQTUFWnXPUIDbB8esxC/
+	 mF4/A6ymb0HWZ6ugZbRmyq5xPLxKWKRbIxPqahlSo3jmX57Uv6Dupj/P1TLBJu5XxV
+	 U9SAQ5CN+6nGSe66V3e3LrcJhH8Pm6fHUQHJuccl3fAyJ+hJi4U5JJ38nQ99SyOOFJ
+	 PMEcSCXJotBcA==
+Date: Mon, 15 Jul 2024 20:02:57 +0000
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ conor+dt@kernel.org, kauschluss@disroot.org
+Subject: Re: [PATCH 3/3] dt-bindings: iio: light: stk33xx: add compatible for
+ stk3013
+In-Reply-To: <20240713130620.79d47130@jic23-huawei>
+References: <20240712152417.97726-1-kauschluss@disroot.org>
+ <20240712152417.97726-3-kauschluss@disroot.org>
+ <20240713130620.79d47130@jic23-huawei>
+Message-ID: <be34b0b571ddc33351e9eb123410a210@disroot.org>
+X-Sender: kauschluss@disroot.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add another attribute which is the integration time. Report available
-integration time settings, support read of integration time currently
-configured in hardware, and support configuration of integration time
-into hardware.
+On 2024-07-13 12:06, Jonathan Cameron wrote:
+> On Fri, 12 Jul 2024 20:54:02 +0530
+> Kaustabh Chakraborty <kauschluss@disroot.org> wrote:
+> 
+>> Add the compatible string of stk3013 to the existing list.
+> 
+> Should include how this differs from existing devices such that it doesn't
+> make sense to use a fallback compatible.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: "Uwe Kleine-König" <u.kleine-koenig@pengutronix.de>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org
----
- drivers/iio/light/noa1305.c | 61 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+STK3013 is a proximity sensor by Sensortek, bearing chipid of 0x31. Despite
+being marketed as a proximity sensor, it also appears to have ambient
+light sensing capabilities.
 
-diff --git a/drivers/iio/light/noa1305.c b/drivers/iio/light/noa1305.c
-index e778714a942a0..da83425fd9100 100644
---- a/drivers/iio/light/noa1305.c
-+++ b/drivers/iio/light/noa1305.c
-@@ -55,6 +55,17 @@ static int noa1305_scale_available[] = {
- 	1000000, 625 * 77,	/* 6.25 ms */
- };
- 
-+static int noa1305_int_time_available[] = {
-+	0, 800000,		/* 800 ms */
-+	0, 400000,		/* 400 ms */
-+	0, 200000,		/* 200 ms */
-+	0, 100000,		/* 100 ms */
-+	0, 50000,		/* 50 ms */
-+	0, 25000,		/* 25 ms */
-+	0, 12500,		/* 12.5 ms */
-+	0, 6250,		/* 6.25 ms */
-+};
-+
- struct noa1305_priv {
- 	struct i2c_client *client;
- 	struct regmap *regmap;
-@@ -97,12 +108,30 @@ static int noa1305_scale(struct noa1305_priv *priv, int *val, int *val2)
- 	return IIO_VAL_FRACTIONAL;
- }
- 
-+static int noa1305_int_time(struct noa1305_priv *priv, int *val, int *val2)
-+{
-+	int data;
-+	int ret;
-+
-+	ret = regmap_read(priv->regmap, NOA1305_REG_INTEGRATION_TIME, &data);
-+	if (ret < 0)
-+		return ret;
-+
-+	data &= NOA1305_INTEGR_TIME_MASK;
-+	*val = noa1305_int_time_available[2 * data + 0];
-+	*val2 = noa1305_int_time_available[2 * data + 1];
-+
-+	return IIO_VAL_INT_PLUS_MICRO;
-+}
-+
- static const struct iio_chan_spec noa1305_channels[] = {
- 	{
- 		.type = IIO_LIGHT,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
- 		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME),
- 	}
- };
- 
-@@ -120,6 +149,11 @@ static int noa1305_read_avail(struct iio_dev *indio_dev,
- 		*length = ARRAY_SIZE(noa1305_scale_available);
- 		*type = IIO_VAL_FRACTIONAL;
- 		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*vals = noa1305_int_time_available;
-+		*length = ARRAY_SIZE(noa1305_int_time_available);
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -139,14 +173,41 @@ static int noa1305_read_raw(struct iio_dev *indio_dev,
- 		return noa1305_measure(priv, val);
- 	case IIO_CHAN_INFO_SCALE:
- 		return noa1305_scale(priv, val, val2);
-+	case IIO_CHAN_INFO_INT_TIME:
-+		return noa1305_int_time(priv, val, val2);
- 	default:
- 		return -EINVAL;
- 	}
- }
- 
-+static int noa1305_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int val, int val2, long mask)
-+{
-+	struct noa1305_priv *priv = iio_priv(indio_dev);
-+	int i;
-+
-+	if (chan->type != IIO_LIGHT)
-+		return -EINVAL;
-+
-+	if (mask != IIO_CHAN_INFO_INT_TIME)
-+		return -EINVAL;
-+
-+	if (val)	/* >= 1s integration time not supported */
-+		return -EINVAL;
-+
-+	/* Look up integration time register settings and write it if found. */
-+	for (i = 0; i < ARRAY_SIZE(noa1305_int_time_available); i++)
-+		if (noa1305_int_time_available[2 * i + 1] == val2)
-+			return regmap_write(priv->regmap, NOA1305_REG_INTEGRATION_TIME, i);
-+
-+	return -EINVAL;
-+}
-+
- static const struct iio_info noa1305_info = {
- 	.read_avail = noa1305_read_avail,
- 	.read_raw = noa1305_read_raw,
-+	.write_raw = noa1305_write_raw,
- };
- 
- static bool noa1305_writable_reg(struct device *dev, unsigned int reg)
--- 
-2.43.0
+Add the compatible string of stk3013 to the existing list, as a part not
+compatible with other devices.
 
+I hope this is good enough. I couldn't find anything more convincing.
+
+> 
+>> 
+>> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+>> ---
+>>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 1 +
+>>  1 file changed, 1 insertion(+)
+>> 
+>> diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+>> index f6e22dc9814a..6003da66a7e6 100644
+>> --- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+>> @@ -19,6 +19,7 @@ allOf:
+>>  properties:
+>>    compatible:
+>>      enum:
+>> +      - sensortek,stk3013
+>>        - sensortek,stk3310
+>>        - sensortek,stk3311
+>>        - sensortek,stk3335
 

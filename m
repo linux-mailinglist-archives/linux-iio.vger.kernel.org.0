@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-7644-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7645-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD4E932FA3
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 20:05:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A00D932FB1
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 20:07:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A72E52811CB
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 18:05:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 444371F2370D
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 18:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A171A01B7;
-	Tue, 16 Jul 2024 18:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CB51A01A6;
+	Tue, 16 Jul 2024 18:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGpeMa6u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mITIhnpr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1DE1A00EF;
-	Tue, 16 Jul 2024 18:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A13B19AD72
+	for <linux-iio@vger.kernel.org>; Tue, 16 Jul 2024 18:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721153106; cv=none; b=St0/0vOJp5pe676GY6GVWYUblvKDFe3Rj2FjD/Nm8BDjYN1rKKCtOwvRfY6SxuDeK+BhUYEWpxtDqY3womRvRYVIJglAlaH2TarOynsCuNV10GozELmACUrR4pomAg4quRfOFnSIGYqdfiw6qpQNpi64c5xxSrYo64qphtyGAOM=
+	t=1721153208; cv=none; b=UmEVTIG2Fw4O5EJJnK5AsNJd8a06Is9RPReBrSYwet14TT/tVoEdFF2/1EdZdH08IHzxsDfax0XiGCydrxLSwKL1dDStvUGSqTsvauZEfxjrPk7S44ohv/IggRQwGWxYewCaxP+eFO8tyAe0IKNY5FFg7LKs8PlPD7uWHNia0E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721153106; c=relaxed/simple;
-	bh=ASZrSSvR1REVMHOkGE/VS4MXKISPJeRoV8+E3J8ILDQ=;
+	s=arc-20240116; t=1721153208; c=relaxed/simple;
+	bh=2dHZpWMSAeEcCRzU0VOnILGHLE4wQAt+lrBpkyA5LYk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I5Zbuwq1WuHyVc0w7YlaDp6pWM3mmhF6gYkODJWkMjFWc7MIQsLVSXKszL3vwBbU3mIjQ3yeVef3HPWo0Rb1TyVkekOJX1a/YWkdoMJ/qm+tRpcZlEzDgfvk2UR6e5RKq0zVw1iSTQmuwHh47plLERPR2t+K8tHugAW9KN/hswo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGpeMa6u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F880C4AF0B;
-	Tue, 16 Jul 2024 18:05:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UwgKiYB0DoyzqWKjnqgzXEYIVuftuad4QSAjhyAV02DxvXUW3qsBOC78WYz/k8xEjSloyS5gFuYT40es5cAMgPhl6CVETN9wSubnRbXWit/d7+ILOvbHaICswFaA9HyRCoZJwvOskgL2l8ZYbIOS9qzCbKyunWJr7f8SUhpxSqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mITIhnpr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74D2C4AF0B;
+	Tue, 16 Jul 2024 18:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721153105;
-	bh=ASZrSSvR1REVMHOkGE/VS4MXKISPJeRoV8+E3J8ILDQ=;
+	s=k20201202; t=1721153208;
+	bh=2dHZpWMSAeEcCRzU0VOnILGHLE4wQAt+lrBpkyA5LYk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jGpeMa6uejAaurZy2Tl7K2qFNw/vbmwf3rTbXSPG/sPJyoc+8Kgs9GGnxVy/3ornN
-	 uqw5xi6jfLA42cZ8MSTkc8UvLFiNl3s3rG8/XwVJExrIVjSp6RjDnrTjJYUzPAh/Zl
-	 rNegSf47EJ17SjLldw4J0mIWBREJ/KGi+/+ghQf7pj5zUqkXu66SVAwgVfMP5O1Yvq
-	 w52VqxNH//YbpiKsJ9W05cKVbxqVBeAU5cTqcyz6ExDbh4gtahXZAiZAhqxYC+e5Hw
-	 OesR+DP9VwfGrUosg/P06ZjkJyRT79hlvdno297LN0mNte3k/IPPqI6nzn7YKRSGUG
-	 qmmqv3GmYr8bw==
-Date: Tue, 16 Jul 2024 19:04:59 +0100
+	b=mITIhnprSmadvvvrgTB4unnPBBF0cWGpq/3UQdBjuXDhxZE4fNLMQToj8D/MYOBnL
+	 5+NP19OjaexqEgzGatOtvBA3Kjui7a2+Kw8wOrHK/wqdWM3rv03ZJwcGyOuOXOpf3A
+	 +nlyD2icoLz5VKqb5Wbr1KLxrYwezSkno7Um5CBK8I5TPnMVcXSS+HbldEpPZU02L7
+	 z4ZRMqzBUlCkDTNYnREefkLy8h7LvRdOu3FZgi1sHdWF6NQffCy3HImeMsRu5i0XxA
+	 C6vf6Lb1R2Ld0d9nFZfC7GT8cXU/VCU5oVjP2KheGTF0VmEs1k3dE6GhPFAaqkk4Wl
+	 LFd7ayDmRuQKQ==
+Date: Tue, 16 Jul 2024 19:06:43 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: iio: new docs for ad7380 driver
-Message-ID: <20240716190459.7cfad009@jic23-huawei>
-In-Reply-To: <20240709-ad7380-add-docs-v1-1-458ced3dfcc5@baylibre.com>
-References: <20240709-ad7380-add-docs-v1-1-458ced3dfcc5@baylibre.com>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>, "Olivier Moysan"
+ <olivier.moysan@foss.st.com>
+Subject: Re: [PATCH 1/9] iio: backend: remove unused parameter
+Message-ID: <20240716190643.11308b14@jic23-huawei>
+In-Reply-To: <20240709-dev-iio-backend-add-debugfs-v1-1-fb4b8f2373c7@analog.com>
+References: <20240709-dev-iio-backend-add-debugfs-v1-0-fb4b8f2373c7@analog.com>
+	<20240709-dev-iio-backend-add-debugfs-v1-1-fb4b8f2373c7@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,37 +62,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 09 Jul 2024 17:16:46 +0200
-Julien Stephan <jstephan@baylibre.com> wrote:
+On Tue, 9 Jul 2024 13:14:28 +0200
+Nuno Sa <nuno.sa@analog.com> wrote:
 
-> This adds a new page to document how to use the ad7380 ADC driver.
+> Indio_dev was not being used in iio_backend_extend_chan_spec() so remove
+> it.
 > 
-> Credit: this docs is based on ad7944 docs.
-> 
-> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Only thing in here I wondered about is talking about what libiio supports.
-That is likely to change if we get lots of devices with the sort of resolution
-changing that occurs with this one.  Ah well, I guess we will probably get
-stale docs if no one is paying attention.   That happens anyway for so
-many other reasons I'm not that worried about one more.
-
-Applied to the testing branch of iio.git for now as I'll be rebasing on rc1
-once available.
-
-Thanks,
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+I'll pick this one up even if not the rest (not looked yet!)
+as it seems to be obviously correct and makes sense to get
+rid of that parameter now.
 
 Jonathan
-
-
-> +Since the resolution boost feature causes 16-bit chips to now have 18-bit data
-> +which means the storagebits has to change from 16 to 32 bits, we use the new
-> +ext_scan_type feature to allow changing the scan_type at runtime. Unfortunately
-> +libiio does not support it. So when enabling or disabling oversampling, user
-> +must restart iiod using the following command:
-> +
-> +.. code-block:: bash
-> +
-> +	root:~# systemctl restart iiod
-> +
-> +
 

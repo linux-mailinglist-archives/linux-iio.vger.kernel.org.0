@@ -1,62 +1,65 @@
-Return-Path: <linux-iio+bounces-7641-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7642-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61942932EDF
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 19:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D75932F7D
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 19:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9218C1C2215C
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 17:09:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA5881C22649
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 17:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3B519F48C;
-	Tue, 16 Jul 2024 17:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D0E1A01D1;
+	Tue, 16 Jul 2024 17:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ktdtx1l9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYa6DURx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE80619E809;
-	Tue, 16 Jul 2024 17:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7FD19FA94;
+	Tue, 16 Jul 2024 17:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721149740; cv=none; b=raR8qXK7cF/wdP8tMDfIpPBdqp9UrBT4gZPVJDpkyXRSOYXsJYiZ0DpvdmF5WcbXkqtWNjP/k//ovV7YLTfHwnqVV5XOM3LZUfQlLHlkyl3MMKBIHOvdgN52aOkBj690+sdpLRgj7ItzIHzviJQYwXkQPf4Lh/8zW0jXTQ3lpLI=
+	t=1721152368; cv=none; b=J0IYj7uexEYuWzEWu/IGLFx31GXNj91lXX/OntR7d/3JMkwV9Uxr5bKW+qp9+gd+OnKLGeDUSU6XXig6YijocYJTQ1dXp7f6t1qzDivhwuKSTsUehvPrrM6TUng3jj98ER8MDMpLghKySl9HCwgWQPbv2PI8ouTi5GptVLW4AYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721149740; c=relaxed/simple;
-	bh=HdP4DmiZbGFy/iNyjViBsnCN4s5UN330LrizbZ9eO+Y=;
+	s=arc-20240116; t=1721152368; c=relaxed/simple;
+	bh=Z/FuuYAY8mVsV8m3Aa8Y4k9HQ2e8WGXLvtIU2a/I7nQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N3lKXiPMgtY+aQB1j1IFNacAGaxNAk2MPWPwXGrAx9px2+8V5di2D5Ub/QZqTuBWks/LKkrwnj32rScxZzCXPDVyjyrZM+krQ29q0XY1T/wM0Ec+qgPVB6M5vbhiM/ZWol50J8AvqF0TpRDsf2AYE3F5CySpbd5aQWd+m7+UZZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ktdtx1l9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D0BC116B1;
-	Tue, 16 Jul 2024 17:08:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AFDuXsiC299HR+IUTfV2mdFktbQqMJnV9l3USMXEeia8czBcWBK17myv9i6I154yCEd7ZXHClF76fnplM2VTYnRtEXdPQA1nmbB3dSmjs2P4LS5mAZcBfJm08jxphRZhDW1NaAhDR7aXQMDj5WQoNe/LKwm8NQT9d1mPhp+FKb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYa6DURx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F33C116B1;
+	Tue, 16 Jul 2024 17:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721149739;
-	bh=HdP4DmiZbGFy/iNyjViBsnCN4s5UN330LrizbZ9eO+Y=;
+	s=k20201202; t=1721152367;
+	bh=Z/FuuYAY8mVsV8m3Aa8Y4k9HQ2e8WGXLvtIU2a/I7nQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ktdtx1l9qV0UJxtGhey6tCY6gM5HS8tPZyjdV6fseTR6e316UpVs2vCuYgQ6zNk1o
-	 kWtT7wXCX6RK6anPFTl7Yg6tIn4yVdRcNZXTrXFfAmvYvr4WP7c3Mm7eQQl26UL1z+
-	 LEa6RbmHwiBD4Lsu86LMDrMc5KUHTazk2ee7SurDUWlULpjBNIM+0KcfwG6otpaAnI
-	 lGJS3iRyLgTGv5u3csoy765aeC1YKLolicSIFFBFLYl1pTaa3q6ioJoxg7APdvqYHG
-	 2/Xvy107PEiM3NW9pnA3HHZ9Y1iDYsUYq4rCEHiOWPWwtwKcMmEEY98M5mOuv0j9mO
-	 HmmG1ncjEqn4w==
-Date: Tue, 16 Jul 2024 18:08:50 +0100
+	b=lYa6DURxuLaei5aJYfNKzPBBCPBzJHTGOENpjPZt3Jjoo7s8Qr5FgjKjvyWc6Wv5U
+	 dwc50D2XyIVBM97iwmFHO3zpo9RCq5eyCQZOXhYRK/BCVCgstud7c4rLrv4W72qwtC
+	 IItz/1y8S/svfxRnfyqoh2rIYd7TVOIhnSW8DuRbg4adFIV4oafvGYCj8Y3DnD+4EZ
+	 1RVSYKNEwlO2qw+N+6ZN+J6PEwDvEkbHVujFsvVqVzzR1+QMRuivH63O3n6BaPt6aI
+	 m1NDT1BeGwXjBJyNcgmpCKQGMET4N2jozyU7fyiJLv3r6WjYoY6PI1VldZSD3cvouA
+	 TezfQkGNfvZqw==
+Date: Tue, 16 Jul 2024 18:52:38 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Adam Rizkalla <ajarizzo@gmail.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
- petre.rodan@subdimension.ro, mazziesaccount@gmail.com, ak@it-klinger.de,
- ang.iglesiasg@gmail.com, linus.walleij@linaro.org, tgamblin@baylibre.com,
- phil@raspberrypi.com, 579lpy@gmail.com, andriy.shevchenko@linux.intel.com,
- semen.protsenko@linaro.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 1/3] iio: pressure: bmp280: Generalize read_*()
- functions
-Message-ID: <20240716180850.7c6089f2@jic23-huawei>
-In-Reply-To: <ZpROUow6p78VJsrO-ajarizzo@gmail.com>
-References: <20240628171726.124852-1-vassilisamir@gmail.com>
-	<20240628171726.124852-2-vassilisamir@gmail.com>
-	<ZpROUow6p78VJsrO-ajarizzo@gmail.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Ramona Gradinariu
+ <ramona.gradinariu@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Matti Vaittinen
+ <mazziesaccount@gmail.com>, Jun Yan <jerrysteve1101@gmail.com>, Mario
+ Limonciello <mario.limonciello@amd.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Alexander Sverdlin
+ <alexander.sverdlin@siemens.com>, Mehdi Djait <mehdi.djait.k@gmail.com>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
+Subject: Re: [PATCH v5 2/3] iio: accel: add ADXL380 driver
+Message-ID: <20240716185238.72483333@jic23-huawei>
+In-Reply-To: <20240708104114.29894-2-antoniu.miclaus@analog.com>
+References: <20240708104114.29894-1-antoniu.miclaus@analog.com>
+	<20240708104114.29894-2-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,24 +70,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Mon, 8 Jul 2024 13:40:12 +0300
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> >  
-> >  static const int bmp580_odr_table[][2] = {
-> > @@ -1830,6 +1848,9 @@ static int bmp580_chip_config(struct bmp280_data *data)
-> >  
-> >  static const int bmp580_oversampling_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-> >  static const u8 bmp580_chip_ids[] = { BMP580_CHIP_ID, BMP580_CHIP_ID_ALT };
-> > +/* Instead of { 1000, 16 } we do this, to avoid overflow issues */
-> > +static const int bmp580_temp_coeffs[] = { 125, 13 };  
+> The ADXL380/ADXL382 is a low noise density, low power, 3-axis
+> accelerometer with selectable measurement ranges. The ADXL380 supports
+> the +/-4 g, +/-8 g, and +/-16 g ranges, and the ADXL382 supports
+> +/-15 g, +/-30 g and +/-60 g ranges.
+> The ADXL380/ADXL382 offers industry leading noise, enabling precision
+> applications with minimal calibration. The low noise, and low power
+> ADXL380/ADXL382 enables accurate measurement in an environment with
+> high vibration, heart sounds and audio.
 > 
-> I'm not really sure what we gain here from using 125/13 instead of
-> 250/14...but I don't think it hurts either.
+> In addition to its low power consumption, the ADXL380/ADXL382 has many
+> features to enable true system level performance. These include a
+> built-in micropower temperature sensor, single / double / triple tap
+> detection and a state machine to prevent a false triggering. In
+> addition, the ADXL380/ADXL382 has provisions for external control of
+> the sampling time and/or an external clock.
 > 
-> I don't have a way to test this with the latest kernel release
-> currently, but lgtm.
-> 
-> Acked-by: Adam Rizkalla <ajarizzo@gmail.com>
-Series applied.  Thanks
+> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+
+One locking (kind of) issue that I'll tidy up.
+
+Applied to the testing branch of iio.git which will become togreg once
+rebased on rc1 when that is available.
+
+In the meantime 0-day will poke at it and see what we missed.
+
+Thanks,
 
 Jonathan
+
+> diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
+> new file mode 100644
+> index 000000000000..684778ace345
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl380.c
+> @@ -0,0 +1,1906 @@
+;
+> +
+> +static int adxl380_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int *val, int *val2, long info)
+> +{
+> +	struct adxl380_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = iio_device_claim_direct_mode(indio_dev);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = adxl380_read_chn(st, chan->address);
+> +		if (ret)
+> +			return ret;
+
+This returns without release direct mode which means deadlock
+if you enable the buffer (that will wait unlike here).
+
+If nothing else comes up I'll make the minimal change of
+moving this down to after the release.
+
+
+> +
+> +		iio_device_release_direct_mode(indio_dev);
+> +
+> +		*val = sign_extend32(ret >> chan->scan_type.shift,
+> +				     chan->scan_type.realbits - 1);
+> +		return IIO_VAL_INT;
+
+
 

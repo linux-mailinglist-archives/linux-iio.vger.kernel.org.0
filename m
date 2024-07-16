@@ -1,115 +1,134 @@
-Return-Path: <linux-iio+bounces-7635-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7636-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6CF93276F
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 15:27:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35363932CC1
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 17:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A11728174A
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 13:27:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD7811F245D6
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 15:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0379C19AD6A;
-	Tue, 16 Jul 2024 13:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCEB19EEDB;
+	Tue, 16 Jul 2024 15:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y0kHqhkH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ff73kK0S"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B3C199EB0
-	for <linux-iio@vger.kernel.org>; Tue, 16 Jul 2024 13:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5EC1DDCE;
+	Tue, 16 Jul 2024 15:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721136454; cv=none; b=MM284fyRitrLGoBzxERE6bzipB3PQ2OgiHUpAS5L+UZ9jA5Ht1lkJst9K5UkAl7fgDGJHKD/AhgKdmFGOFBcCAi1iQO/IhLFO8oCDx4Vjb1J5u43zdrmhLIVOtXDZgLpMS+8bg4zqe+x7hNDAfrXjg21CEYng88QrGal72adoEg=
+	t=1721145464; cv=none; b=hm1m4TZ7dA86q0FHMH011k9aiy0i8WULz5ptN8GmmfLu3Co3pj8EdejtV4JX6kLiSnrOWZdIiLN3ZXUpK+f1ALhRKxvQIn5VFjhB/V1JN4FazAqTIBMQDfemAmSHEW9Q0H1zdcJe9KpchCLE9FZB4w4YclW0C1DtZn0nTnr1rFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721136454; c=relaxed/simple;
-	bh=L4q/f/OtWa5M69YBoQW2fcIKupxqZNLZsMK3IgdJdtQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mIoeYjJ4l7Hfj2VBpOTokW5v6Ieb/TXYXnCsbrS9NoIgmFIwH2p0xdONlDqUmS0bbWvW6TFGbSXXGfRgEhCLbnxIpIMfO6le9SJ+xIf4FWsaPVuPDQrAga6tf4ci2Gh/nGjDB55YQgPvzL2mPI/Q+EjEIJMYpgj8tTrEhpL041k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y0kHqhkH; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4266182a9d7so35457905e9.0
-        for <linux-iio@vger.kernel.org>; Tue, 16 Jul 2024 06:27:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721136451; x=1721741251; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8nnUYNlwO0k6ZBjwD5Erccb4E+P924xRgxG4C0KqEnM=;
-        b=Y0kHqhkHJN2Ib3B04DpFvaK+tBDfaTUazQrgEW5O0Q338nbodwMT5MyObQeenFtca9
-         HdvTbXsbxCYzC+yVeTmJmFYBprsBFWEwrrI32wfehQe5iiEHz6KND7Hi7zhsr97koO/N
-         FH1Tx6fbdz/vnYQitxM2gGIOW1hefV9EYjJ5oEBVkElMNsPLeY2P1TKu9qyydzHBP7+y
-         T6cFjV6nJWdh8DnQ2mlHLp/cLvwZ2owyvmj5xOQCag9UcPglrUnXAC7jGGagTM6XvgTD
-         HE71gjWuO5tW9q12FHF8HR5zRM+Iovr8/lOoAn5+GrCIg8+5+noi3EgfVKFUB6Qk8FiV
-         a84g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721136451; x=1721741251;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8nnUYNlwO0k6ZBjwD5Erccb4E+P924xRgxG4C0KqEnM=;
-        b=Z8/1igO7mrowjnPQI5HdBRCR4W4MkymrygNlQTw6a6S6eIQmPZD9SAVkjOvIbZDXMu
-         DSyksV1117WZ/mKyuzZXLUOkf4kXgVUXKZlcmMdH6+f1zFoq1+DVN4Y9n+1Onyoe70df
-         NgVT/yn7ze4ufGesAUU9xnGn2t9sbhSSysddoPhEYFosgHeKvbx7HAnwfB1nIZZ7Z1N9
-         j7Z2H9lSFt5rO72aQ9ma5aNgWMpBqZvJPf23BFM+qkaPulh9qRwrGg31N9xv9lr8DjiN
-         /SErbctKZruHBCgntgSJ0pDn8G9BDEbFZy0MM98Eoypq7iukecRgzvmMfb25MpsRC0L3
-         GfUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVoPZTZSMcI86a4s6O+kqWWE7YgrcRYJ6+SJuuIkv7K27Qg4tVOWNKScxDWJlk5d/nmPwsIYTfQacL/9pw1/YOC+YIslGBrIWj4
-X-Gm-Message-State: AOJu0YzI7cE3e7HmW2zT16vFXq4cksdRskKcxlsJeE+g77u3LM0UBLoy
-	11Oiug+m57So00xe+nvtTo4Q5Wa6VRtzj1z4b36OE5XyQjixiGW+8WhddIBkRQI=
-X-Google-Smtp-Source: AGHT+IGhqCHFIX7TkLPtIRTTvgB7kbFHYhFo3zMfT1v/DCloAtgq+4vAX8iGpdJXs9kK8D9hqV8L0Q==
-X-Received: by 2002:a05:600c:5127:b0:426:6099:6eaa with SMTP id 5b1f17b1804b1-427ba6dbd32mr13126415e9.26.1721136451525;
-        Tue, 16 Jul 2024 06:27:31 -0700 (PDT)
-Received: from rayyan-pc.broadband ([2a0a:ef40:ee7:2401:197d:e048:a80f:bc44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4279f2cc2efsm163985725e9.36.2024.07.16.06.27.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jul 2024 06:27:31 -0700 (PDT)
-From: Rayyan Ansari <rayyan.ansari@linaro.org>
-To: devicetree@vger.kernel.org
-Cc: Rayyan Ansari <rayyan.ansari@linaro.org>,
+	s=arc-20240116; t=1721145464; c=relaxed/simple;
+	bh=Zw/kZfjD/Bz3Q0bzXVETkeh8TLPo0MzUudpzhmC0zAU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FXCDGSS2MIuOU4llVHnPLX72OM+pDGRLxd4FNS0FVQkIs7PZ7Vw4F1jCr8o2JN8RevOCdktOubk195Iffv5PAFTyua+c6eQ1BQThYI3sBLBDxRnHZgwRHoepZgS8dbSj4/qh01di3VUV2n9zJbTBlli0HZEXfs6ERrpnfQMTy5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ff73kK0S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E653C4AF0D;
+	Tue, 16 Jul 2024 15:57:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721145464;
+	bh=Zw/kZfjD/Bz3Q0bzXVETkeh8TLPo0MzUudpzhmC0zAU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ff73kK0SsxtPU0jNZC8CPayq1bhwDTXqyhJn+xItFyiEzUlCQDoJiwDVojePN3xzO
+	 v2FyMIXbXk1V+Im+sz1Vao6fB3N+USvJL73YFYyC4axFYEBFaxsLM9QKGas+MRg9/z
+	 mvs46jiXAy2HRI+LCAlWsA6DAxnx/2+NFbc7JRfZaY/qyQM3rrJ2Uf1BhfjIKxHJDC
+	 SFI6TDYWcUnAuwo6UK9SjujbSfXG/6BwhInFWZiW3iG/qCEOM9/6uqks5aHifMVqtd
+	 6Sj9dz01eUXv5/9kiT5Nv42n392MRnb/t8hq67/SCQk1fwpv2p+PgH4Z6lLSwLqond
+	 fC7FbGwjN6wMg==
+Date: Tue, 16 Jul 2024 16:57:39 +0100
+From: Conor Dooley <conor@kernel.org>
+To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dimitri Fedrau <dima.fedrau@gmail.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: magnetometer: bmc150: Document mount-matrix
-Date: Tue, 16 Jul 2024 14:25:09 +0100
-Message-ID: <20240716132512.80337-1-rayyan.ansari@linaro.org>
-X-Mailer: git-send-email 2.45.2
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	"Hennerich, Michael" <Michael.Hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Subject: Re: [PATCH v7 4/6] dt-bindings: iio: dac: Add adi,ltc2664.yaml
+Message-ID: <20240716-supremacy-reseller-4fd6207d2099@spud>
+References: <20240714133000.5866-1-kimseer.paller@analog.com>
+ <20240714133000.5866-5-kimseer.paller@analog.com>
+ <20240715-numbness-chooser-d1bcb0438ba5@spud>
+ <PH0PR03MB7141E98ECA32AF462D3AFF15F9A22@PH0PR03MB7141.namprd03.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="S/Sq9SflmPly9HBb"
+Content-Disposition: inline
+In-Reply-To: <PH0PR03MB7141E98ECA32AF462D3AFF15F9A22@PH0PR03MB7141.namprd03.prod.outlook.com>
 
-Document the mount-matrix property, which is used in device trees such
-as msm8916-samsung-fortuna-common.dtsi, and supported by the driver.
 
-Signed-off-by: Rayyan Ansari <rayyan.ansari@linaro.org>
----
- .../bindings/iio/magnetometer/bosch,bmc150_magn.yaml           | 3 +++
- 1 file changed, 3 insertions(+)
+--S/Sq9SflmPly9HBb
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/iio/magnetometer/bosch,bmc150_magn.yaml b/Documentation/devicetree/bindings/iio/magnetometer/bosch,bmc150_magn.yaml
-index 2867ab6bf9b0..a3838ab0c524 100644
---- a/Documentation/devicetree/bindings/iio/magnetometer/bosch,bmc150_magn.yaml
-+++ b/Documentation/devicetree/bindings/iio/magnetometer/bosch,bmc150_magn.yaml
-@@ -36,6 +36,9 @@ properties:
-   interrupts:
-     maxItems: 1
- 
-+  mount-matrix:
-+    description: an optional 3x3 mounting rotation matrix.
-+
- additionalProperties: false
- 
- required:
--- 
-2.45.2
+On Tue, Jul 16, 2024 at 01:50:23AM +0000, Paller, Kim Seer wrote:
+>=20
+>=20
+> > -----Original Message-----
+> > From: Conor Dooley <conor@kernel.org>
+> > Sent: Tuesday, July 16, 2024 12:18 AM
+> > To: Paller, Kim Seer <KimSeer.Paller@analog.com>
+> > Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org;
+> > devicetree@vger.kernel.org; Jonathan Cameron <jic23@kernel.org>; David
+> > Lechner <dlechner@baylibre.com>; Lars-Peter Clausen <lars@metafoo.de>;
+> > Liam Girdwood <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
+> > Dimitri Fedrau <dima.fedrau@gmail.com>; Krzysztof Kozlowski
+> > <krzk+dt@kernel.org>; Rob Herring <robh@kernel.org>; Conor Dooley
+> > <conor+dt@kernel.org>; Hennerich, Michael
+> > <Michael.Hennerich@analog.com>; Nuno S=E1 <noname.nuno@gmail.com>
+> > Subject: Re: [PATCH v7 4/6] dt-bindings: iio: dac: Add adi,ltc2664.yaml
+> >=20
+> > [External]
+> >=20
+> > On Sun, Jul 14, 2024 at 09:29:58PM +0800, Kim Seer Paller wrote:
+> > > Add documentation for ltc2664.
+> > >
+> > > Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
+> > > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> > > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> >=20
+> > IIRC I gave you a reviewed-by on v5, was there a particular reason you =
+didn't
+> > add it?
+>=20
+> I made changes to the 'output-range-microvolt' logic in v6, which I thoug=
+ht
+> might require a new review. If your 'Reviewed-by' tag still applies, plea=
+se let me know.
 
+IIRC what I said was along the lines of "with the logic from the
+previous version, Reviewed-by: Conor Dooley <conor.dooley@microchip.com>".
+Is that what you did?
+
+--S/Sq9SflmPly9HBb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZpaYcwAKCRB4tDGHoIJi
+0jtJAQD4yF6w6+ILWKBYeXOSNpSJMoQxbyyP3ys/dPPXs0r7cQD9FU17Mb2OWwUC
+6JzcppMb0rWtnUWlH75LHLKz1jPMPgo=
+=EUfU
+-----END PGP SIGNATURE-----
+
+--S/Sq9SflmPly9HBb--
 

@@ -1,54 +1,58 @@
-Return-Path: <linux-iio+bounces-7643-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7644-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047D5932F99
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 20:01:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD4E932FA3
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 20:05:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD32E1F23E1A
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 18:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A72E52811CB
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Jul 2024 18:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B781A01A0;
-	Tue, 16 Jul 2024 18:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A171A01B7;
+	Tue, 16 Jul 2024 18:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k+/F+O79"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGpeMa6u"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214B51F171
-	for <linux-iio@vger.kernel.org>; Tue, 16 Jul 2024 18:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1DE1A00EF;
+	Tue, 16 Jul 2024 18:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721152882; cv=none; b=mO1RKrkaJgLjTxET63dhiyh2vusPZNn3yciZx6RgPjaXRCHHCRJIkGuaCPd/Lh+jAlmm9JW1t5XkpqGP/LE8xNvLC4oJIJNI0WQudMY0/qDjd8Zh+Dr7QWIIhbBj4M2/bJvHuKhNpYJQyvMwg7rQsdkpxd3cgwYUCwI0vnC2FbI=
+	t=1721153106; cv=none; b=St0/0vOJp5pe676GY6GVWYUblvKDFe3Rj2FjD/Nm8BDjYN1rKKCtOwvRfY6SxuDeK+BhUYEWpxtDqY3womRvRYVIJglAlaH2TarOynsCuNV10GozELmACUrR4pomAg4quRfOFnSIGYqdfiw6qpQNpi64c5xxSrYo64qphtyGAOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721152882; c=relaxed/simple;
-	bh=L+R5G3Z09RCdsELLkSTwx7SWLFa8opJgQjedwqh/bLQ=;
+	s=arc-20240116; t=1721153106; c=relaxed/simple;
+	bh=ASZrSSvR1REVMHOkGE/VS4MXKISPJeRoV8+E3J8ILDQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kGgEtsEi2CQpTNbN1/J2pSiUDaQsI+54hzvNKg8uKwWHUQg32SQf9Sc2iDr/SxPgd8ELjKbHW+vKvmLmDIMVn4dwdsqJkTehXxjGQ+zKM/B5tHJLuIswHVPYlvxdyrhOxtLbq2ZszCYt/cB26i45RpBVgjnXP9aCc1290fTydXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k+/F+O79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A001C116B1;
-	Tue, 16 Jul 2024 18:01:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I5Zbuwq1WuHyVc0w7YlaDp6pWM3mmhF6gYkODJWkMjFWc7MIQsLVSXKszL3vwBbU3mIjQ3yeVef3HPWo0Rb1TyVkekOJX1a/YWkdoMJ/qm+tRpcZlEzDgfvk2UR6e5RKq0zVw1iSTQmuwHh47plLERPR2t+K8tHugAW9KN/hswo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGpeMa6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F880C4AF0B;
+	Tue, 16 Jul 2024 18:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721152881;
-	bh=L+R5G3Z09RCdsELLkSTwx7SWLFa8opJgQjedwqh/bLQ=;
+	s=k20201202; t=1721153105;
+	bh=ASZrSSvR1REVMHOkGE/VS4MXKISPJeRoV8+E3J8ILDQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k+/F+O79pYvxgxpBI1jPGENWjvihMEUZD1Bb4DzzxLumbTXC4Qb6fBR3WvmxDrYgu
-	 0UWsGQV/rcjjuIaxbdVGEGffZispcA2r3LJ+aNPSKUqI/u3sGGy12fpuxjf+LtLBV3
-	 r+YlSgUGCp8QaJvDrTiWE+kXd1kBqehsy0aWeM/+4wJP1rUU1G2/On4I5qSC1A4JnX
-	 T3Og0WlVTelMiHa6PtRZsikbqHhriEOQWajeTf2IH4ZsKk0GfMTReRz6lb17cF43+L
-	 tRH1zr23KHfl+/ftCxE92Fw955j+YUBMOfX9Ts4G5NUkTpclp+80zA2XeRH0i1uTSd
-	 zIGTjU9FcDiaQ==
-Date: Tue, 16 Jul 2024 19:01:15 +0100
+	b=jGpeMa6uejAaurZy2Tl7K2qFNw/vbmwf3rTbXSPG/sPJyoc+8Kgs9GGnxVy/3ornN
+	 uqw5xi6jfLA42cZ8MSTkc8UvLFiNl3s3rG8/XwVJExrIVjSp6RjDnrTjJYUzPAh/Zl
+	 rNegSf47EJ17SjLldw4J0mIWBREJ/KGi+/+ghQf7pj5zUqkXu66SVAwgVfMP5O1Yvq
+	 w52VqxNH//YbpiKsJ9W05cKVbxqVBeAU5cTqcyz6ExDbh4gtahXZAiZAhqxYC+e5Hw
+	 OesR+DP9VwfGrUosg/P06ZjkJyRT79hlvdno297LN0mNte3k/IPPqI6nzn7YKRSGUG
+	 qmmqv3GmYr8bw==
+Date: Tue, 16 Jul 2024 19:04:59 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Gustavo Silva <gustavograzs@gmail.com>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: Driver for AMS AS7341
-Message-ID: <20240716190115.3e565521@jic23-huawei>
-In-Reply-To: <hix5scxn4hdii2b2nlaxha4ao73frko6ndzpbuyvhwcl2hveaa@o7zzkkk2fkk3>
-References: <hix5scxn4hdii2b2nlaxha4ao73frko6ndzpbuyvhwcl2hveaa@o7zzkkk2fkk3>
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Lars-Peter
+ Clausen <lars@metafoo.de>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: iio: new docs for ad7380 driver
+Message-ID: <20240716190459.7cfad009@jic23-huawei>
+In-Reply-To: <20240709-ad7380-add-docs-v1-1-458ced3dfcc5@baylibre.com>
+References: <20240709-ad7380-add-docs-v1-1-458ced3dfcc5@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,46 +63,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 9 Jul 2024 14:38:29 -0300
-Gustavo Silva <gustavograzs@gmail.com> wrote:
+On Tue, 09 Jul 2024 17:16:46 +0200
+Julien Stephan <jstephan@baylibre.com> wrote:
 
-> Hello,
+> This adds a new page to document how to use the ad7380 ADC driver.
 > 
-> I am currently developing a driver for the AMS AS7341 spectral color
-> sensor [1], which provides readings for 8 color channels.
+> Credit: this docs is based on ad7944 docs.
 > 
-> In reviewing the IIO channel specifications, I've noticed modifiers are
-> specified for red, green, and blue light intensities only.
-Hi Gustavo,
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Only thing in here I wondered about is talking about what libiio supports.
+That is likely to change if we get lots of devices with the sort of resolution
+changing that occurs with this one.  Ah well, I guess we will probably get
+stale docs if no one is paying attention.   That happens anyway for so
+many other reasons I'm not that worried about one more.
 
-We've always known the current colour approach would prove inadequate at some point.
-The previous discussions (might find them in the archive) included
-trying to actually describe the sensitivity in terms of wavelength.
-Perhaps that is revisiting?
+Applied to the testing branch of iio.git for now as I'll be rebasing on rc1
+once available.
 
-in_intensityX_raw
-in_intensityX_wavelength_centre
-or similar?
-
-I see the datasheet conveniently provides a centre value for each sensor.
-Maybe it's worth considering how representative the full width half maximum value is
-of the data that we get for light sensors.  Perhaps that ABI also makes
-sense?  IIRC we do have a sensors with strong dual peaks though which
-makes this sort of description tricky.
-
+Thanks,
 
 Jonathan
 
 
-> 
-> Is it ok to provide an extended ABI for this sensor or expand the
-> existing ABI would be more suitable? What would be the best approach in
-> this situation?
-> 
-> [1] Datasheet: https://look.ams-osram.com/m/24266a3e584de4db/original/AS7341-DS000504.pdf
-> 
-> Best regards,
-> 
-> Gustavo
-
+> +Since the resolution boost feature causes 16-bit chips to now have 18-bit data
+> +which means the storagebits has to change from 16 to 32 bits, we use the new
+> +ext_scan_type feature to allow changing the scan_type at runtime. Unfortunately
+> +libiio does not support it. So when enabling or disabling oversampling, user
+> +must restart iiod using the following command:
+> +
+> +.. code-block:: bash
+> +
+> +	root:~# systemctl restart iiod
+> +
+> +
 

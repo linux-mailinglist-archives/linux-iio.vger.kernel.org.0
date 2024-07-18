@@ -1,87 +1,84 @@
-Return-Path: <linux-iio+bounces-7703-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7704-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC71934EED
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 16:11:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 077CF934F1F
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 16:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2020EB2116F
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 14:11:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBE53282BB7
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 14:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D370214037F;
-	Thu, 18 Jul 2024 14:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5030113E41A;
+	Thu, 18 Jul 2024 14:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KA8jpdDd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ldidZZrG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87EE84DF5;
-	Thu, 18 Jul 2024 14:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853F913D281
+	for <linux-iio@vger.kernel.org>; Thu, 18 Jul 2024 14:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721311894; cv=none; b=nKiumujLb4U8HrX39+5VSVGrhVP4PVRkvn7iO+n6gDbPJwOpP8N/+FPdw+uQV231MjRLEDOFp3hi2m5MdXHXQ5otxl61Vu+iJ241atMFtEPU6cxv36N9w+DRLPcwqG8PSqugQehTsqW9lHBPuLxCtCjF/pvqJWPi1UrzV313u3s=
+	t=1721313158; cv=none; b=XDMCMbZFTxXqkssgnr5mjRa26aI80F3enZZbgJjmu8MzMGPJ0vGNmTpYsGHNhvGgRRPbr9ttGaIrZ5mZ31K0WWtl4fu29dLzttuQQN1P7+DckB5Vv/d6nMaCglOCahwIHXeqOo7w+WHd3c6ENLCfsRjDkGZ+8lV4VvN4Ee/Mzaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721311894; c=relaxed/simple;
-	bh=2YZH8d86zhNoAXZsmN7Jy0uH6vk5sSR4tnolhTxPdZ0=;
+	s=arc-20240116; t=1721313158; c=relaxed/simple;
+	bh=PmcCoDYyfUiipvAqnGv9JCOzfAV6a1m25qJbFsiJZ6A=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=de23nyOLMYJuajeRfCFGl/Kv8PmoBMWVfq17YP/BALlE4lA3xRywcJZ2vc0h6D+MFEHevsWIKwTWanW0HRSScFEHdm9YWrGvFLMTkVaYB0+xs6ys/lggdAbpUIq5HFTSV7eVSof+8SMsYHrkyysSgNCeECpUzguS2Xj2KVbhdIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KA8jpdDd; arc=none smtp.client-ip=209.85.221.42
+	 Content-Type:MIME-Version; b=rze9dTdawSH3RgzPvKWb22LYhdOStvIfPzej0ha3lryZrh6Q/wbppnmbiL0UWJWK+Ei33Lpj+WOQ7dSNIBK/+OhactPuMz/emhA3mPUFq/VaEfo9w2lW5KliBnFwV4uXHHpKqxrKFU6un11Gm4rNenCQ1YkSikkRKWSdb8VZMpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ldidZZrG; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-368440b073bso512963f8f.0;
-        Thu, 18 Jul 2024 07:11:31 -0700 (PDT)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-367940c57ddso460590f8f.3
+        for <linux-iio@vger.kernel.org>; Thu, 18 Jul 2024 07:32:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721311890; x=1721916690; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721313155; x=1721917955; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=gcgToNk8qcN02adscfnW/Yi93yP0U71w2F/FskS6Zwc=;
-        b=KA8jpdDdMWsEehi3tXpBfnW+IQdzlqRCbTS5uYuKo+4Id+YH5ywSZFU5hkMA73GJSR
-         gtXBADm+89kueQsyCiD771o85Xm/cea6GFapb3gccuvT6sjpVXY1zzIkXnxkM2ChbZH9
-         46M9PNALUlHoBxL9seFxXj+IWcg3nJwD1vUg9TNdkrSoohW9afW+x39dATGB2sCJVC4D
-         CIlDpwX91xnrb8WWr1W2VoabQgeliFslUD/HoWhIhDsOYqcKwnxHRcgUdDi4JQ+690iy
-         YV1GYShI88eAMeun9ZtO0UY2yMC8I4j8LzlphiR9RcTPnEjmpLOLN9/3wByyPfb34Qoj
-         dOAQ==
+        bh=PmcCoDYyfUiipvAqnGv9JCOzfAV6a1m25qJbFsiJZ6A=;
+        b=ldidZZrGKj0GSeAeKiqM4znmGfbMyR1BWh3VZORZ4EByS4ezcQeb1lsfSkKOofIYAW
+         NL+3U0GSqYvbr1Ug5CmKRqt66zei2kno6wFaLrHi1z5xw3wMn1+grU+BzOAfcdGa+fGr
+         T6nHZ6u8WMsYPRrnXotcyx8s+ERXZ0rmYP3fuuoijmTr2NTOy0jFi9IdtF48+3+dxWi+
+         UcoxIY/10Bz4QRU99tqzovO27U+lW2gAhqzpTrJN8IF0paDkUDS3+6WrfycUMLhqy3PO
+         Lc2fbzdYQr67WEC0i2mIJnmTFc4pdfT4T5cDf2PFpP7O9grdq/la+oM/2XONuZcvqIXs
+         H9YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721311890; x=1721916690;
+        d=1e100.net; s=20230601; t=1721313155; x=1721917955;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=gcgToNk8qcN02adscfnW/Yi93yP0U71w2F/FskS6Zwc=;
-        b=pOtyk1lHfpxLYLw/tGjU4xzc+eXlLrvB6RmO70lyNtfyDC5XxiWfMa/FfFi3BKJZKI
-         syCMK3g9ulB8QCC2a68UPN7s8d+qQgReZFLsbMcoOSjHBd89FqdEw68wWrnnBmPj9L4p
-         zwJ1hQgrwLdm7a88/n9/WVLWypgffC3UFzZ+xGKYDQDZXw0o4mfm6pg1LXLJ73yVHWWq
-         LEm2rotNTQr+1/J6Y5eelh94ZbZdjMnITqS6NaLzVFLDTQo6Z+aZF3y7lqDKkAfuwLJr
-         7GU/zD8Co3R3kPTN9Ht3vtKblLqeH8S40eSuaKjD3+XpxekZ+6e93HDisCmS3G0DpkTH
-         2vrA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmIqp7QKX5ysLj7JoYvNCsMdiu5o65XtHGQebHlXK/DOxxiA1/rM7LC+vRtFuGaHI/HbqC81EXOG7WgWF7RWiMCoB6UoIoiASVpkckiWunVrpu6Te6z30ZQMxFAvr/5l5pxEts7SSd5WGp4xNDMM9mVFxWnqRgta70svhsVksmSY8FAg==
-X-Gm-Message-State: AOJu0YxrZ/k2r9r85kb47CqsnBEKuj2b8SC9yO0CwUJ0cKrn2W+dgtYI
-	JPQcsUQz42eA3bzCNT5y5CfPUaSVU8rn2HOzE1iKrkx2eUZYI9Pg
-X-Google-Smtp-Source: AGHT+IG71+3aw2Jq5mJojFBWIZygGTLzj0MfAIrm7rByhpxnpNdP3dntB8pf7/cEMDYT/68KL+i7yw==
-X-Received: by 2002:a5d:6449:0:b0:363:776:821b with SMTP id ffacd0b85a97d-3684b0c42e4mr2153591f8f.0.1721311889901;
-        Thu, 18 Jul 2024 07:11:29 -0700 (PDT)
+        bh=PmcCoDYyfUiipvAqnGv9JCOzfAV6a1m25qJbFsiJZ6A=;
+        b=Z04ZTmJA6FduMykc7vb8BsDLCc8twI6WqC/3NwTJNGTbllTkXwF6Ah38Hcafbr4So/
+         Amjch+FF61rhllGgEckg7VZnBo1Qzveh+PZMteeLfGjsHl855OYzfjK9YdOug/kEOaFG
+         kzS//a0QI3iWRwp1yY0NOGyQairIiblB6oQeUf7WgCOfZyf+lcQ0SxXQe1oyLhTHil+i
+         uUO8eZ0qzJqzBgaJ+nSPlUIgl+qlptL9R3LDKZ4Pifa0kmVm0BomPAHmqKNrRcSWBhc+
+         KZ7OeMtvR6V6rCh6ep7DgDmJDb/Go15EB4F9kjj85quqG4WQB0o3mA07iZEYr6xtBjj4
+         1lrw==
+X-Gm-Message-State: AOJu0YxVnXCx/qlYu7w23R5gvEjFqJVQgSGh0vQ/dqhIvtua13+oNd93
+	ecLnGnOH8INqS3fS77EUolUtsdvSijYbHkCT/jFx9XZM1cSg9JY6
+X-Google-Smtp-Source: AGHT+IE3Z9yM30gwjYZbaQmr6CRvosZyznNHfpiq1uH7JqbyeBQbzkjFCgQGsWRHsHDR44BH8i3xzA==
+X-Received: by 2002:adf:f6c8:0:b0:366:ef25:de51 with SMTP id ffacd0b85a97d-3683171d992mr3889197f8f.49.1721313154575;
+        Thu, 18 Jul 2024 07:32:34 -0700 (PDT)
 Received: from nsa.fritz.box ([2001:a61:359b:e801:d44:32b3:6924:10d1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427d2b1e314sm15669765e9.26.2024.07.18.07.11.29
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3680dabf15dsm14587640f8f.32.2024.07.18.07.32.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jul 2024 07:11:29 -0700 (PDT)
-Message-ID: <5cf5e7d388813fca604b7fc5bdb3bb7296255217.camel@gmail.com>
-Subject: Re: [PATCH v7 4/4] iio: adc: ad7192: Add clock provider
+        Thu, 18 Jul 2024 07:32:34 -0700 (PDT)
+Message-ID: <5a26783c2167310237936d80affe61b43ea84022.camel@gmail.com>
+Subject: Re: [PATCH 3/9] iio: backend: add debugFs interface
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Alisa-Dariana Roman <alisadariana@gmail.com>, Alisa-Dariana Roman
- <alisa.roman@analog.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Michael Hennerich <michael.hennerich@analog.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron
- <jic23@kernel.org>,  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Date: Thu, 18 Jul 2024 16:11:29 +0200
-In-Reply-To: <20240717212535.8348-5-alisa.roman@analog.com>
-References: <20240717212535.8348-1-alisa.roman@analog.com>
-	 <20240717212535.8348-5-alisa.roman@analog.com>
+To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Olivier Moysan
+ <olivier.moysan@foss.st.com>
+Date: Thu, 18 Jul 2024 16:32:33 +0200
+In-Reply-To: <20240716191443.397c1278@jic23-huawei>
+References: 
+	<20240709-dev-iio-backend-add-debugfs-v1-0-fb4b8f2373c7@analog.com>
+	 <20240709-dev-iio-backend-add-debugfs-v1-3-fb4b8f2373c7@analog.com>
+	 <20240716191443.397c1278@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
@@ -92,122 +89,58 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2024-07-18 at 00:25 +0300, Alisa-Dariana Roman wrote:
-> Internal clock of AD719X devices can be made available on MCLK2 pin. Add
-> clock provider to support this functionality when clock cells property
-> is present.
+On Tue, 2024-07-16 at 19:14 +0100, Jonathan Cameron wrote:
+> On Tue, 9 Jul 2024 13:14:30 +0200
+> Nuno Sa <nuno.sa@analog.com> wrote:
 >=20
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> ---
-
-minor thing below you may consider if a re-spin is needed...
-
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-
-> =C2=A0drivers/iio/adc/ad7192.c | 92 +++++++++++++++++++++++++++++++++++++=
-+++
-> =C2=A01 file changed, 92 insertions(+)
+> > This adds a basic debugfs interface for backends. Two new ops are being
+> > added:
+> >=20
+> > =C2=A0* debugfs_reg_access: Analogous to the core IIO one but for backe=
+nd
+> > =C2=A0=C2=A0 devices.
+> > =C2=A0* debugfs_print_chan_status: One useful usecase for this one is f=
+or
+> > =C2=A0=C2=A0 testing test tones in a digital interface and "ask" the ba=
+ckend to
+> > =C2=A0=C2=A0 dump more details on why a test tone might have errors.
+> >=20
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> Debugfs deserved docs as well as sysfs.
+> Same place in Documentation/ABI/
 >=20
-> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index 042319f0c641..3f803b1eefcc 100644
-> --- a/drivers/iio/adc/ad7192.c
-> +++ b/drivers/iio/adc/ad7192.c
-> @@ -8,6 +8,7 @@
-> =C2=A0#include <linux/interrupt.h>
-> =C2=A0#include <linux/bitfield.h>
-> =C2=A0#include <linux/clk.h>
-> +#include <linux/clk-provider.h>
-> =C2=A0#include <linux/device.h>
-> =C2=A0#include <linux/kernel.h>
-> =C2=A0#include <linux/slab.h>
-> @@ -201,6 +202,7 @@ struct ad7192_chip_info {
-> =C2=A0struct ad7192_state {
-> =C2=A0	const struct ad7192_chip_info	*chip_info;
-> =C2=A0	struct clk			*mclk;
-> +	struct clk_hw			int_clk_hw;
-> =C2=A0	u16				int_vref_mv;
-> =C2=A0	u32				aincom_mv;
-> =C2=A0	u32				fclk;
-> @@ -406,6 +408,91 @@ static const char *const ad7192_clock_names[] =3D {
-> =C2=A0	"mclk"
-> =C2=A0};
-> =C2=A0
-> +static struct ad7192_state *clk_hw_to_ad7192(struct clk_hw *hw)
-> +{
-> +	return container_of(hw, struct ad7192_state, int_clk_hw);
-> +}
-> +
-> +static unsigned long ad7192_clk_recalc_rate(struct clk_hw *hw,
-> +					=C2=A0=C2=A0=C2=A0 unsigned long parent_rate)
-> +{
-> +	return AD7192_INT_FREQ_MHZ;
-> +}
-> +
-> +static int ad7192_clk_output_is_enabled(struct clk_hw *hw)
-> +{
-> +	struct ad7192_state *st =3D clk_hw_to_ad7192(hw);
-> +
-> +	return st->clock_sel =3D=3D AD7192_CLK_INT_CO;
-> +}
-> +
-> +static int ad7192_clk_prepare(struct clk_hw *hw)
-> +{
-> +	struct ad7192_state *st =3D clk_hw_to_ad7192(hw);
-> +	int ret;
-> +
-> +	st->mode &=3D ~AD7192_MODE_CLKSRC_MASK;
-> +	st->mode |=3D AD7192_CLK_INT_CO;
-> +
-> +	ret =3D ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->clock_sel =3D AD7192_CLK_INT_CO;
-> +
-> +	return 0;
-> +}
-> +
-> +static void ad7192_clk_unprepare(struct clk_hw *hw)
-> +{
-> +	struct ad7192_state *st =3D clk_hw_to_ad7192(hw);
-> +	int ret;
-> +
-> +	st->mode &=3D ~AD7192_MODE_CLKSRC_MASK;
-> +	st->mode |=3D AD7192_CLK_INT;
-> +
-> +	ret =3D ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-> +	if (ret)
-> +		return;
-> +
-> +	st->clock_sel =3D AD7192_CLK_INT;
-> +}
-> +
-> +static const struct clk_ops ad7192_int_clk_ops =3D {
-> +	.recalc_rate =3D ad7192_clk_recalc_rate,
-> +	.is_enabled =3D ad7192_clk_output_is_enabled,
-> +	.prepare =3D ad7192_clk_prepare,
-> +	.unprepare =3D ad7192_clk_unprepare,
-> +};
-> +
-> +static int ad7192_register_clk_provider(struct ad7192_state *st)
-> +{
-> +	struct device *dev =3D &st->sd.spi->dev;
-> +	struct clk_init_data init =3D {};
-> +	int ret;
-> +
-> +	if (!device_property_present(dev, "#clock-cells"))
-> +		return 0;
-> +
-> +	if (!IS_ENABLED(CONFIG_COMMON_CLK))
-> +		return 0;
+> Obviously we've neglected this in the past, but nice to do it right
+> nor new stuff.
 >=20
 
-nit: This could be the first test to do. No point in calling
-device_property_present() if CONFIG_COMMON_CLK is disabled. FWIW, the compi=
-ler should
-be smart enough to sort things out but it would still be better (for readab=
-ility) to
-have this first.
+I see. So you mean adding debugfs-iio?
+
+There's one thing I'm not sure though... I'm contemplating the case where o=
+ne device
+may have multiple backends in which case I'm doing:
+
+back->name =3D name;
+
+where name comes from FW (DT usually). That obviously means the interface w=
+on't be
+always consistent which I guess it's not a real problem for debugfs?
+
+How would the interface look in the file? Something like?
+
+/sys/kernel/debug/iio/iio:deviceX/<backend_name>_direct_reg_access
+
+Or should we think in a more reliable naming? One option that came to mind =
+is
+
+/sys/kernel/debug/iio/iio:deviceX/backendY_direct_reg_access
+
+where Y would be the corresponding index in io-backend-names.
+
+One thing not optimal with the above would be identifying the actual backen=
+d device.
+It would then maybe make sense having a 'backend_name' interface which I th=
+ink is
+likely too much just for this?
 
 - Nuno S=C3=A1
 

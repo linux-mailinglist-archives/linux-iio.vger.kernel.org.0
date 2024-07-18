@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-7699-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7700-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BE4934E62
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 15:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1C8934E64
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 15:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5E791C228D1
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 13:38:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E9801C22856
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 13:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEAB1420DF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEF81422AD;
 	Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvxk4Nvj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLqYeiuN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA3B140E4D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01501411EE
 	for <linux-iio@vger.kernel.org>; Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721309906; cv=none; b=OwAurgNbbSqCwVcOo0oCIioqSgJoa+xRTxFav45gaK8S8lF47H2Cqr0yvR+SysDPW5Ws3uUanqfMBDZZQ/VJK32McwYdmB9mERgZODQ2VLeWUXs8qV+VzfTxm8MD8Jk2g6YHDmDSlFc7gWv4kDFjKbCz1iyO2eVG0cAA0sV3W24=
+	t=1721309906; cv=none; b=RiDohNNR+M7cHXNUn+repBRFwc8sJuFP8KyxUMq2tBx5wuSw8CjfrYhyroI9Ow1DX9L84XUDVuYrfefDAkQ91GDyHOOreaGeQUghUrSz93bfW74rxmZInNjFLFJWFhdH0iBVXelQf5QWsFQszvyLVnNVyoSD9dWupU7eVXxq/Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721309906; c=relaxed/simple;
-	bh=EZ9UZrCe/4YjLZnoVzNv/ARJNb+jViAGn8zxqAPbsuA=;
+	bh=yZIam3yx92XZW+YQhILDtJcsiTNT5eUuTFoZVW0jIpc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hotbMLzLOCtprIMZ7MfYMXyCkD3XlgxiFZELf6m/cZqi/9oUn4y7yB6xYMPGjjSrWgbSv7+nHvPLNeYIqiSQ2+L/qyI8FISh51VqCt+tjTNRj1/z4TXWSHdbbCBfJLj/ALMtl28Mj+lXnHbWIMtuWHs05ynzEO3JjONWvCShH2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvxk4Nvj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 80D28C4DDE7;
+	 In-Reply-To:To:Cc; b=HeIyDtyCAvzqePo/G3B1Vw4WehHQyD1Ka4jOQ8RPvmDkV7/zdO4Dd3BR5vaniq8XwJRm6wcJ4WCwyJTtRJbaj/qLl4wEW4/7KymYZ7m3Dm2veI+5Ui462Xi2WWr57NLC3uafut1uOeXSlv9AaOTlxWZoU1mIz+0uLbvWAgN7V7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLqYeiuN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 940CEC4AF1B;
 	Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1721309906;
-	bh=EZ9UZrCe/4YjLZnoVzNv/ARJNb+jViAGn8zxqAPbsuA=;
+	bh=yZIam3yx92XZW+YQhILDtJcsiTNT5eUuTFoZVW0jIpc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jvxk4NvjT69Nmuf1XFOanVrYxwjUmgLyNKCwNSITx/Hlha9s0M4cfKEgf7YUzPeI4
-	 V1DW/+utwslhCHRPdd+fzzQ+toiXxtBz8oYmHt+oA+2sxqToQ0OOXnlEnHyYjcPqUD
-	 arvtIKVK36m0vCcvWnZfogGSwZczZRDXQYsZXnybDFqjx3X24yLp0+1ZJo+R/U2TP3
-	 GLkpd6sc6RQ/WzPaJ414WkfPDyHDlTMHoloykuc09XPNAoa+lBqi6W93F8RwXlE/0M
-	 w+Th35VWz+eFAcNjdKoVMrLMXiKEpOMvxAYlpNyzJH3J28MN/lW4FEI5vHni6hBpbe
-	 Gx+/yXxwcUD8g==
+	b=MLqYeiuNHZIchs/4UbD1JTFAw1dLaBvvwwZKIf925E+WTJh159DnXHa9Al6Nna1LE
+	 NTgi7WdQ1SiWqPLJ+dZgXFX/Iu/jjcPaxrobVBSUOaueutsT2cECrFTwl0qT490rO+
+	 tmNbTo5zpo3QxEfnUYr2Daox0unpu0LMefNdDYtxhBIZuXNKlvxM/md9vhnyZ/XRxq
+	 ZVl/Bzha/2FA/3URILp9V5dBId4aCz8zs5bbrynbINJxA8Y6joOKOt7/QEvfQdKvF4
+	 lOm/Qx4RnYhx9GVfXtJGVCEgRFI9O8lTJ7y+K/xihfEjWn+r8Zi6g1Y8Bu2dYtsWbt
+	 s3ldESATFoBVA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 773FEC3DA49;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AA79C3DA6F;
 	Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Thu, 18 Jul 2024 15:38:06 +0200
-Subject: [PATCH 20/22] iio: proximity: hx9023s: make use of
+Date: Thu, 18 Jul 2024 15:38:07 +0200
+Subject: [PATCH 21/22] iio: proximity: sx9500: make use of
  iio_for_each_active_channel()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240718-dev-iio-masklength-private2-v1-20-8e12cd042906@analog.com>
+Message-Id: <20240718-dev-iio-masklength-private2-v1-21-8e12cd042906@analog.com>
 References: <20240718-dev-iio-masklength-private2-v1-0-8e12cd042906@analog.com>
 In-Reply-To: <20240718-dev-iio-masklength-private2-v1-0-8e12cd042906@analog.com>
 To: linux-iio@vger.kernel.org
@@ -64,11 +64,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
  Lars-Peter Clausen <lars@metafoo.de>, Andreas Klinger <ak@it-klinger.de>, 
  Song Qiang <songqiang1304521@gmail.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1721309903; l=1284;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1721309903; l=882;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=5J4ljVqvZC41+4k0k0jyV5NtbaiSrOltZERqD/amCmU=;
- b=z9I/xVnWw4qFt7RCBPr3WfSWATEcbv+auOnEzZcGbCIRTxpe155iqa46TsHlFgR+7T6QgZOKx
- X5Wj80h+geGCIpOzDaibaIzmQXzQyr3OKHvSoG2Jk25w3ZZ5h3u2crE
+ bh=ow/lbjAF7xbc1nHR62ZbO63cFYfGv+YoVHj29IIfWfw=;
+ b=uOkhJEJu+o+1RnNZGbnQMQ23zi/TQX9k7PVWN3vAGC3MRgX2lRd3VaqrlxcuydrtyW4TbXhik
+ m5HmY1HyyMTCozeP8a7ODeW6TpUENNfo5c1teG1w/gcJwfP3v32Km/j
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -84,31 +84,23 @@ no more direct users of it.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/proximity/hx9023s.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/proximity/sx9500.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-index 63e3b56d4f4ce..fe14a62a13428 100644
---- a/drivers/iio/proximity/hx9023s.c
-+++ b/drivers/iio/proximity/hx9023s.c
-@@ -936,7 +936,7 @@ static irqreturn_t hx9023s_trigger_handler(int irq, void *private)
- 		goto out;
- 	}
+diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
+index 92630812ece2..3f4eace05cfc 100644
+--- a/drivers/iio/proximity/sx9500.c
++++ b/drivers/iio/proximity/sx9500.c
+@@ -654,8 +654,7 @@ static irqreturn_t sx9500_trigger_handler(int irq, void *private)
  
--	for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklength) {
+ 	mutex_lock(&data->mutex);
+ 
+-	for_each_set_bit(bit, indio_dev->active_scan_mask,
+-			 indio_dev->masklength) {
 +	iio_for_each_active_channel(indio_dev, bit) {
- 		index = indio_dev->channels[bit].channel;
- 		data->buffer.channels[i++] = cpu_to_le16(data->ch_data[index].diff);
- 	}
-@@ -957,7 +957,7 @@ static int hx9023s_buffer_preenable(struct iio_dev *indio_dev)
- 	unsigned int bit;
- 
- 	guard(mutex)(&data->mutex);
--	for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklength)
-+	iio_for_each_active_channel(indio_dev, bit)
- 		__set_bit(indio_dev->channels[bit].channel, &channels);
- 
- 	hx9023s_update_chan_en(data, channels, data->chan_event);
+ 		ret = sx9500_read_prox_data(data, &indio_dev->channels[bit],
+ 					    &val);
+ 		if (ret < 0)
 
 -- 
 2.45.2

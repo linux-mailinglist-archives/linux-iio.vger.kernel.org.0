@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-7690-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7691-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2ED934E5A
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6638934E5B
 	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 15:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19E8A284C60
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99E21C2290B
 	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 13:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B55A13FD8C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7A1140360;
 	Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0hqtEdd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rmznzegh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148AA13E3E7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DA313E41D
 	for <linux-iio@vger.kernel.org>; Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721309906; cv=none; b=rz6rqvH/kcBXQ8QGhNUviKbg5rCMrLUCnESTyO/XUcDJy9vVgFxnbfOWiYEd0LzPgRhGrgz9rxm/49d3v/1Vq4d/h28dr1unvhCPHn7JuXXeVXdb/qk5jUOJcdrNS8CCNWwLRdUzE2a5JkhVqt9z+NNxKAYhTXIVvOHSyjZozqE=
+	t=1721309906; cv=none; b=l+ZCbytK2deVkGDoSPuoxtIcWYpGe/z0Dv0wwDQC4ieOL5eYnUgYdftHYnbUg3YdIQ+QajNQw+Qzo1uzGisc7uqMQu4ZcVSBy/XLLODNd0C0Cpkx99YD4CrtWwMZHfYAaRnM+IajRBnRK34t/gfEjWcomivJWK20LUy/KNVjLGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721309906; c=relaxed/simple;
-	bh=vwHm1+s8MZtQBVXyjwCqSe5P3D4ZHVEifY6/zt59ycw=;
+	bh=NNjQN7J2L7xaT3aQ9I7ub3B8qixiSexMMl+KIPF+d+8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rpIiPXuAzYwl0hSgfXxq/Scxcpc6jFdsHJH6oQ0Wq2O8IuQ3Hzd9dw19VTA+djWhOMmX88aZHRYVIswfEaW82PRo+8TGpgqj5WydpU7ElreIq7+qY4aq/axk6lltgS7OfBktRGbwBwjWtSNSwZZvHZC9ikyWk4dFEpFZ0NtBNAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0hqtEdd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E396FC4AF4D;
+	 In-Reply-To:To:Cc; b=hquUbnLmqOXE96dYleuQYkAbFcCYK9lapbyZ5bc3hFOB0Sqhkl+J8JqURhA9RMVTpz40KjtZ0KYIN57GSlXEQDJ344anP/CacEMKOjYIFkntNSV5O8iJizro8q6l3WyZXRXWiKGR/m2mlFGxF4szWn+lwbRXxsEj/VvXMHJMY+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rmznzegh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EFFD5C4AF50;
 	Thu, 18 Jul 2024 13:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721309905;
-	bh=vwHm1+s8MZtQBVXyjwCqSe5P3D4ZHVEifY6/zt59ycw=;
+	s=k20201202; t=1721309906;
+	bh=NNjQN7J2L7xaT3aQ9I7ub3B8qixiSexMMl+KIPF+d+8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=C0hqtEddwGKdmgSTR0bh1IFL+IE4se9/hzSvYR5ez14nnpDEQMaXh3rJa4TdtZOY2
-	 DKn2rnAswYHt2NGOnkpn6UG0wv116sYY7jpFK+wON+0O8qk/w5MpZi2SmxXA1MmRQv
-	 UY4+f8QG1xvDkHH1ZIFFA4Y+mAt7qZ7snYbnn/MGtP/fJ/pcSC0dwf++TB0PdN8vyp
-	 ichb+8w64DNcF1hgtiS0jVJnWfOHLVlb6qyd5L1RJjO8uImpwZtDjP35Ui7/BqUfDm
-	 PM6EtEMQ9ZFM/lSrtoIjyV36kC9EfTWgoni57DVFGoY+2P7DJee1NWRb65evCfC3o3
-	 Yn8D/ZigVFmOA==
+	b=rmznzeghNiHLKRwYj+aK9aOAUbOCLHLvhpykOIS9qFXqAnLjmp3olduOP8nQ9x+h4
+	 0/0kxQ+EPlE32gmDYiBnt4q0LzD3HNNe7SqAEYp+LDeotQJzngnS6pFCILxw3clnar
+	 t8/bsFqR9WGiolJRih/GIt93E3SAj1IQEjyauMpwYE629pD2idT+8txhJLIYBprNgj
+	 grzjC/jSiEaOyKWjV3otp/s14Dn3KdRHmqp9M/wo/trzOHgfQ52C2IQo1FHyA6k6nG
+	 RG3aH8+xRsDs+Jx7Zuz4+zB1aluN0QwQIWwhoZ/vo4uwia1EUsrcsym+yPTU+o3c2F
+	 PJSw1RYY4FoEw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD69DC3DA6F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7A75C3DA49;
 	Thu, 18 Jul 2024 13:38:25 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Thu, 18 Jul 2024 15:37:58 +0200
-Subject: [PATCH 12/22] iio: light: adjd_s311: make use of
+Date: Thu, 18 Jul 2024 15:37:59 +0200
+Subject: [PATCH 13/22] iio: light: gp2ap020a00f: make use of
  iio_for_each_active_channel()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240718-dev-iio-masklength-private2-v1-12-8e12cd042906@analog.com>
+Message-Id: <20240718-dev-iio-masklength-private2-v1-13-8e12cd042906@analog.com>
 References: <20240718-dev-iio-masklength-private2-v1-0-8e12cd042906@analog.com>
 In-Reply-To: <20240718-dev-iio-masklength-private2-v1-0-8e12cd042906@analog.com>
 To: linux-iio@vger.kernel.org
@@ -64,11 +64,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
  Lars-Peter Clausen <lars@metafoo.de>, Andreas Klinger <ak@it-klinger.de>, 
  Song Qiang <songqiang1304521@gmail.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1721309903; l=864;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1721309903; l=1716;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=TSHQtCAOvetS9PFuXHMtMqGj6a4Kr9MMSY7AM7lvy6E=;
- b=Ochlt3MUUEAbTKL3DZ+k2tTqiOIXNbQgvZgyAeiR73Zee8PSejrRu3z6DifLNXJhZsanab8xM
- kSIwYxFu1JzDikOBLBG4YLTmKtyXRUDeUnvltLAgo87N5B5A+nOj6p/
+ bh=iVAdgQB+Z4IwxRK4KcX4smk+miW5axW1/Zjw6uLW21E=;
+ b=7K8V1J0806sMudf1VLaWcWBtMWSwCfjZ1Mly0z4YAGqDqP/2zcvrxhbjm8eAGWGeBRexmZ29P
+ /i01BwZhG1VBTPVO4Oc6bvSC29pJ6D9t7jE78bSzDlT27WA+/yhKddQ
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -84,23 +84,43 @@ no more direct users of it.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/light/adjd_s311.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/light/gp2ap020a00f.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/light/adjd_s311.c b/drivers/iio/light/adjd_s311.c
-index 5169f12c3ebaf..c1b43053fbc73 100644
---- a/drivers/iio/light/adjd_s311.c
-+++ b/drivers/iio/light/adjd_s311.c
-@@ -125,8 +125,7 @@ static irqreturn_t adjd_s311_trigger_handler(int irq, void *p)
- 	if (ret < 0)
- 		goto done;
+diff --git a/drivers/iio/light/gp2ap020a00f.c b/drivers/iio/light/gp2ap020a00f.c
+index 757383456da6..b3f87dded040 100644
+--- a/drivers/iio/light/gp2ap020a00f.c
++++ b/drivers/iio/light/gp2ap020a00f.c
+@@ -965,8 +965,7 @@ static irqreturn_t gp2ap020a00f_trigger_handler(int irq, void *data)
+ 	size_t d_size = 0;
+ 	int i, out_val, ret;
  
 -	for_each_set_bit(i, indio_dev->active_scan_mask,
 -		indio_dev->masklength) {
 +	iio_for_each_active_channel(indio_dev, i) {
- 		ret = i2c_smbus_read_word_data(data->client,
- 			ADJD_S311_DATA_REG(i));
- 		if (ret < 0)
+ 		ret = regmap_bulk_read(priv->regmap,
+ 				GP2AP020A00F_DATA_REG(i),
+ 				&priv->buffer[d_size], 2);
+@@ -1397,8 +1396,7 @@ static int gp2ap020a00f_buffer_postenable(struct iio_dev *indio_dev)
+ 	 * two separate IIO channels they are treated in the driver logic
+ 	 * as if they were controlled independently.
+ 	 */
+-	for_each_set_bit(i, indio_dev->active_scan_mask,
+-		indio_dev->masklength) {
++	iio_for_each_active_channel(indio_dev, i) {
+ 		switch (i) {
+ 		case GP2AP020A00F_SCAN_MODE_LIGHT_CLEAR:
+ 			err = gp2ap020a00f_exec_cmd(data,
+@@ -1435,8 +1433,7 @@ static int gp2ap020a00f_buffer_predisable(struct iio_dev *indio_dev)
+ 
+ 	mutex_lock(&data->lock);
+ 
+-	for_each_set_bit(i, indio_dev->active_scan_mask,
+-		indio_dev->masklength) {
++	iio_for_each_active_channel(indio_dev, i) {
+ 		switch (i) {
+ 		case GP2AP020A00F_SCAN_MODE_LIGHT_CLEAR:
+ 			err = gp2ap020a00f_exec_cmd(data,
 
 -- 
 2.45.2

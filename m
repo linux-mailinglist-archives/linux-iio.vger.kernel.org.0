@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-7696-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7697-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E193D934E63
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 15:38:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F816934E60
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 15:38:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D237B21ADD
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECF681F23231
 	for <lists+linux-iio@lfdr.de>; Thu, 18 Jul 2024 13:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30001419A1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6A61420B8;
 	Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y5swMhwz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r7e93tiP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D0D13DDC7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEFC14038F
 	for <linux-iio@vger.kernel.org>; Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721309906; cv=none; b=cTxVtMGaXBqI9Xppip9WxPgpVz9P2lxLSeUDU4Ul4msxO7V2u1Ul32g4sRD4YAPU6i/NQiP68HBrxnM5G1EGpf1kEQt8cKubPNQQrtk+XQUyZUER/bQDgj2tM2ztW/c9caw15wfEg1idcWYptaoZW0iocPB9l6z+SQapunP2Lg4=
+	t=1721309906; cv=none; b=me3+ZRNlB9w9x7a6yf56VuyLM3kGVu0Cof3tN1MZPuiQQXM7x3MlqVbSqEdGZFHoXiDfaL/9StTGKfbMQA0NlKeXhu0+IoPmM8Bp0vjsmQ7XfjYTUHaSDauwspRy2JvEeoA2BkDebWv0/2ZawNXm8iFFnejALKQyQRK0xUzkd1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721309906; c=relaxed/simple;
-	bh=hMRXI4Sv2LfJ5Fb6SHSsAO2Q3C00WA2SOcEUFsjlT7I=;
+	bh=d8EF/kTrIVEsN3ovYThuD8DWN/GxMnbPQ2HCi1/OdAY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EWzMen86l8slETT8geytAfNO8UOd8YxR5H2EpUegEKE+XUwXj/aMX2+ar1uK5yHzNM/sUOkWiEiN5yMNhIfTxpPsppiyZUZ2e9wYor1OPGA/oMBVI/1Lg3XgaXkIxvg7IpbWdle4pX5bxvup20PeGx5poGPgCAOFCIhHT04bR8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5swMhwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4F82FC4AF14;
+	 In-Reply-To:To:Cc; b=FNAIfT9NU9JfTmltJfjXPS2eytIAjCKiSADDqVwqurglVIeVZL+piS2eGDEKS8ZM405HXP8uNM1edVRuLpeHz38QDSC5YLKDBJzHB/gkrpSuHWWrylqPPwGZp1nimP4r0vm8VmjB3n+qH38E/XA4MmvseTtBVlt8674+9bq0o9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r7e93tiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E68FC4AF17;
 	Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1721309906;
-	bh=hMRXI4Sv2LfJ5Fb6SHSsAO2Q3C00WA2SOcEUFsjlT7I=;
+	bh=d8EF/kTrIVEsN3ovYThuD8DWN/GxMnbPQ2HCi1/OdAY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Y5swMhwzEz535svPQx+xu7wFoY0ydFamrTpwIIn0beldKSSNKI4v7ln8wFi826PAA
-	 o3rMdysaCRyOFxKtZKxyl/VDTJL8C5jRyvVNQMBXel4gkdezc1Z4u5L+c0isr5cRnE
-	 CWrKk8zaYxRoA3a9N0F9gIs0VPFv2g77om6D2djxHRl+JOd22+IkmPawZ81MYNWdL5
-	 83WXcoD1TtDnPuYUR5zaNCwJyNgIe1NVjH0+DtB+wayOys4s7LkE0H9Eqt8nWiU8Jq
-	 FI3hNf+u0v6QfVe4wcTOdillUllwelD6zntW8TmN+Q4UgwXThu1VImuZo1w0WJCOLR
-	 wtIZs9YyxyYTA==
+	b=r7e93tiP7vwKe0P8OqWHz9LJtRWwDkDcpFFrscPUpCOcOTkUCUWuUbV19ryL+jbVr
+	 P3Ezy7FwHR27gBP0fEdKQdOztPsp7d+dmC+DIxOcyJSLxA5ZQyFENxOismSd5mGiX0
+	 9o6yn8RguIhwx/xEgcvga3fOH/vpk6Tq3aQmh3ilavzIGipG6L+VZoUZi1R5YQ5JlK
+	 MLN8q0vbmozlWF0vSVkqdw9dgE8SIKcsMDeO+CRpcyu+45FFszYPJT1Q+iqoNw1T96
+	 HZYSn/0dK1Sk00dPA47PrDcW9zYbnpE9hLmrIJvnJwuBjPRDMqofre/xDpiZd6SY6k
+	 IwnHUUIc6dEUg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46AB7C3DA49;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55727C3DA63;
 	Thu, 18 Jul 2024 13:38:26 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Thu, 18 Jul 2024 15:38:03 +0200
-Subject: [PATCH 17/22] iio: light: tcs3472: make use of
- iio_for_each_active_channel()
+Date: Thu, 18 Jul 2024 15:38:04 +0200
+Subject: [PATCH 18/22] iio: magnetometer: rm3100-core: make use of
+ iio_get_masklength()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240718-dev-iio-masklength-private2-v1-17-8e12cd042906@analog.com>
+Message-Id: <20240718-dev-iio-masklength-private2-v1-18-8e12cd042906@analog.com>
 References: <20240718-dev-iio-masklength-private2-v1-0-8e12cd042906@analog.com>
 In-Reply-To: <20240718-dev-iio-masklength-private2-v1-0-8e12cd042906@analog.com>
 To: linux-iio@vger.kernel.org
@@ -64,11 +64,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
  Lars-Peter Clausen <lars@metafoo.de>, Andreas Klinger <ak@it-klinger.de>, 
  Song Qiang <songqiang1304521@gmail.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1721309903; l=848;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1721309903; l=963;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=IBjfNo1AV7gv+op6SVY6NxHjmyuB/chdo1N1zk6XKlA=;
- b=qjuMCDKJWXx9En8/g3lMf9uVczVE+z+w4k8wrugTSpL8hBd3GuU4316lKJMBqDNz5nfCKGjC7
- AtQTXgCza69D19og5UIt9mNcIZokc76dRaa+NFqwU9bod50fMjocKIj
+ bh=frSUer5X5YE5lOu3IYnGGZx2ucpdgn6sI7LuCnpdktI=;
+ b=xdOL+QwavzRfy2D5EBRZBhvnsu2mRXMY8ENP4T+7uGuWmJp+6F/vunrkUg2ztPxgk57BMQnam
+ KvMDhgZR9ChAIDHSxRTeBFFXFrMp9KI6H1M9oATqvQ3f+HnCpTrQ4XP
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -78,29 +78,27 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-Use iio_for_each_active_channel() to iterate over active channels
-accessing '.masklength' so it can be annotated as __private when there are
-no more direct users of it.
+Use iio_get_masklength() to access '.masklength' so it can be annotated
+as __private when there are no more direct users of it.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/light/tcs3472.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/magnetometer/rm3100-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/tcs3472.c b/drivers/iio/light/tcs3472.c
-index 89384dba83dd..04452b4664f3 100644
---- a/drivers/iio/light/tcs3472.c
-+++ b/drivers/iio/light/tcs3472.c
-@@ -383,8 +383,7 @@ static irqreturn_t tcs3472_trigger_handler(int irq, void *p)
- 	if (ret < 0)
- 		goto done;
- 
--	for_each_set_bit(i, indio_dev->active_scan_mask,
--		indio_dev->masklength) {
-+	iio_for_each_active_channel(indio_dev, i) {
- 		ret = i2c_smbus_read_word_data(data->client,
- 			TCS3472_CDATA + 2*i);
- 		if (ret < 0)
+diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
+index 42b70cd42b393..0e03a772fa43d 100644
+--- a/drivers/iio/magnetometer/rm3100-core.c
++++ b/drivers/iio/magnetometer/rm3100-core.c
+@@ -464,7 +464,7 @@ static irqreturn_t rm3100_trigger_handler(int irq, void *p)
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	unsigned long scan_mask = *indio_dev->active_scan_mask;
+-	unsigned int mask_len = indio_dev->masklength;
++	unsigned int mask_len = iio_get_masklength(indio_dev);
+ 	struct rm3100_data *data = iio_priv(indio_dev);
+ 	struct regmap *regmap = data->regmap;
+ 	int ret, i, bit;
 
 -- 
 2.45.2

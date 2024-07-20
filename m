@@ -1,87 +1,91 @@
-Return-Path: <linux-iio+bounces-7755-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7756-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4B693820D
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 18:15:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64AAB938215
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 18:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5811F214C6
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 16:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C6EC1F2153B
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 16:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BE213DDA8;
-	Sat, 20 Jul 2024 16:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA1A13DDA8;
+	Sat, 20 Jul 2024 16:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egsHOapL"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="otOsN3cz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C3B12EBE3
-	for <linux-iio@vger.kernel.org>; Sat, 20 Jul 2024 16:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA4C1DDF6
+	for <linux-iio@vger.kernel.org>; Sat, 20 Jul 2024 16:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721492101; cv=none; b=YwrBVEJo0hZC9C+DDVMx2t0cub37ZdBIivvqIBrdZS5FzffrxC7/xMN6GmIicIhWTypmXz8Wx3mSo2RDFtM6n/0dXOBc+2FAs0xSebNUgVTw9RScoT+CXnx6M0ISMDZCmGsVQvgnLPLG2EUjyK7hNj3oFk61Pat7S7BSQgSBHro=
+	t=1721492554; cv=none; b=i31jXyZoDfoXWAyEmlJ7+dg5NTMWu7PYyHRfXlxgFqQh2/rKXBDp/aKjahna9G3tKyjE9qPQCXAJVNbBd4Bc0E7b/FAzQDqBBjTb+PTVPsv8Wc4X8ANJI8CFSvOdRI4yPqunkuaa6n60Pzz/+FNWcqhljnIbAmt57j3U0+I1WSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721492101; c=relaxed/simple;
-	bh=/5g1QsobQ78H8kQa17zACcnX6hnkw3iyAyTZPTVKj2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A1QLqfFUm955FykgZh0wXd26pjLTUI6I1LiV9LLhoKerqhCLmkcVuKYvCr/t2qWlmGfQpl9rguHklDP8jNefOs7HNELv/oDpD4sqK7wea4rG7MNW5BIJ6oMvd7SgsSbvcIj+bVnazYWKaDt7IiU3k7W7Xdvn85w/8Bx212vpLAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egsHOapL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108DFC2BD10;
-	Sat, 20 Jul 2024 16:14:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721492100;
-	bh=/5g1QsobQ78H8kQa17zACcnX6hnkw3iyAyTZPTVKj2A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=egsHOapLInXzi32q8S46KK74WxWmJCipfLd2eJh/hSSA5vVN2wEBgSTGB0Dn8j7MJ
-	 Jl2eWXwbxDnq+BdIfr2QJ3STuoKGIp5nbM90EfviBegNdm1EGz4+m3wHdZLxPTsQri
-	 wMpjpJqVHq2dHtHPbNdxOAOZVF/0G+F70FLiJaDRJkdz/pMCLC3R2xVK8bA3KQdLfS
-	 n/JJLIiFL9YDHIF8SUKjxNjy1YYK4Cwp3i/FkBBqqweH0Do1Ser9+H2qHUyiyQLyVe
-	 TU2CTFOB3PlAIuBrEJSi37JDPoJXeii3XmfwOl5DI3rtt8rtXwGIGdzkkxWQ4/QgSZ
-	 u59oEOkWS4Vkw==
-Date: Sat, 20 Jul 2024 17:14:54 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, Andreas Klinger <ak@it-klinger.de>, Song Qiang
- <songqiang1304521@gmail.com>
-Subject: Re: [PATCH 22/22] iio: proximity: sx_common: make use of
- iio_for_each_active_channel()
-Message-ID: <20240720171454.61d031e0@jic23-huawei>
-In-Reply-To: <20240718-dev-iio-masklength-private2-v1-22-8e12cd042906@analog.com>
-References: <20240718-dev-iio-masklength-private2-v1-0-8e12cd042906@analog.com>
-	<20240718-dev-iio-masklength-private2-v1-22-8e12cd042906@analog.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1721492554; c=relaxed/simple;
+	bh=Q+FRww8lMVvgUN4jlKgDnjk28Mc/z3098gxjt4z3iHY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cwG8izw4NgniZditVt9uxMXSp57LqilR3uXsvGiOEW7MmqTUJ1PdD+pkWoC22gIxwZvIlrRj8DbXMYy8Kkrzc/o9ng+eFJxNsHAdiG/P2UryBeSXwcouTLo4JBFg1RxbKX9Tbh1aKAiwgPNMYAqMXDE3gvMlZcrhLiSqc1tllJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=otOsN3cz; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 6BB23886B3;
+	Sat, 20 Jul 2024 18:22:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1721492544;
+	bh=miKU7LtSpPcKmy1J0MPamCTU/IjDnOhJOe9UCOTOG40=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=otOsN3cz4b+LhLqA1NwVWJ4J2O7MM2oScqD35fcBOi6YpZ+YelsqfAgCScScDtCaQ
+	 rBZvgBiX2kWUuNkGOLp6A2rwGNv8V7bdGKk3AbmJzSUaA+etlGd471Fji5fcQVNGtu
+	 77LAZiRXrZAH8tZell+ZQ6jwoT7i1oEqfFKJi2qxWRpLQJlCaAPdIq1JcOrlfzTUYs
+	 PyqFcFsbKRQz6MpVsoXEav5q/HQZqpeaB6IQBKSkZ4GItEIw8h8zl0z7Ungo/rf54Q
+	 KIe3LyXkelY5aO35ceYdNuAQ6VmYucCdueYGbXs75+lp5oxMSdMVVAr3EshGZR2fhg
+	 EpUY1MOn0I6oQ==
+Message-ID: <28fadb46-acbd-47d6-906d-2ac4b99db79d@denx.de>
+Date: Sat, 20 Jul 2024 18:22:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] iio: light: noa1305: Simplify noa1305_read_raw()
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Lars-Peter Clausen <lars@metafoo.de>
+References: <20240715183120.143417-1-marex@denx.de>
+ <20240720142928.7a913229@jic23-huawei>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <20240720142928.7a913229@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Thu, 18 Jul 2024 15:38:08 +0200
-Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
-
-> From: Nuno Sa <nuno.sa@analog.com>
+On 7/20/24 3:29 PM, Jonathan Cameron wrote:
+> On Mon, 15 Jul 2024 20:28:55 +0200
+> Marek Vasut <marex@denx.de> wrote:
 > 
-> Use iio_for_each_active_channel() to iterate over active channels
-> accessing '.masklength' so it can be annotated as __private when there are
-> no more direct users of it.
+>> The only channel this hardware supports is IIO_LIGHT, if the channel
+>> is anything else, exit right away. The 'ret' variable is now always
+>> only assigned by noa1305_measure(), do not initialize it anymore.
+>> Update function parameter indent. No functional change.
+>>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+> Hi Marek,
 > 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-I applied them all to the testing branch of iio.git which will be rebased on rc1
-once available then pushed out as togreg for linux-next to pick up.
+> One minor thing - please use a cover letter.
+> Provides an obvious place for me to reply when picking things up and
+> gives the whole series a meaningful title in patchwork.
 
-A few of the functions that got changes were pieces of nastiness that I'd long
-banished from my mind so at least I got to look at those again :)
-Datashuffling logic is 'fun'.
-
-
-Thanks,
-
-Jonathan
+I will keep that in mind, thanks for the reminder.
 

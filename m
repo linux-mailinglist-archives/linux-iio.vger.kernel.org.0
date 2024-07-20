@@ -1,192 +1,209 @@
-Return-Path: <linux-iio+bounces-7739-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7740-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD7E93817D
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 15:36:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2197E938181
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 15:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A29B1C20FA0
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 13:36:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2659281738
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 13:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B3012DD88;
-	Sat, 20 Jul 2024 13:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C9012F581;
+	Sat, 20 Jul 2024 13:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTWgxygu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nfQQtzax"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAF53209;
-	Sat, 20 Jul 2024 13:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748653D0D0;
+	Sat, 20 Jul 2024 13:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721482588; cv=none; b=W7+UUri8Hc3etgerTOOGAgCXXEsxEYtGmh/BZoQ4ISWV5dO5lGpPcRL03oMbyZ+yqk73bUOcI8JdUk1LtfX5lMaJmfu8/N5WFeJa9VmMLzwFTeex1GASMby85HviXKAw5sceuKvZ8wTpGgIE9Z0Vl0XWmoRf0L/2a9WZ9/3BnB8=
+	t=1721482902; cv=none; b=FfXozQCnizXnW/5pjIg7mGpWSsNhkUEFsdirGpXQj+gSDj+xSZfPEmHV8ahDqnMuf8J3kitcbq3Jfzh0I0eKWUxjSN0g/ZPvfY9FdL/kUcLAsfzIf03pyMbmGi7f8fmwOpE3p9DvJ/DW3QVDeQlkU+i5skY/aQYEXT/xeJ95EbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721482588; c=relaxed/simple;
-	bh=whTgYov6R0mAL+CB7A04ZKa4p6RRkvC/wvAPBg7DzT0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jXNt81rtKlsuqVdgcaE1z+kmyrwkSeE9t5kz6hmlhEHUotHpK27pYkVGtPN5xirvJID/ztVQvlB4dVxk1qYR9P4xbPpin50Kc6Iuwc7be41T3+/axZhNOU//HkkH/47nlQVdGQ35vhRdbSIH++oYvpmXlNVaJagA18wkEWxVmIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTWgxygu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4D4C2BD10;
-	Sat, 20 Jul 2024 13:36:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721482588;
-	bh=whTgYov6R0mAL+CB7A04ZKa4p6RRkvC/wvAPBg7DzT0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZTWgxyguzBrhQX5n3cXK3/eqV9EiaIORuxLRQKNSZkfSSJ6BuzFxBMyjh+XRpp5u9
-	 YWDcMUZ0AUQ7b7wk9R4klr7G5xbDPpdRijGIHufe7z0pdGqIr54hA8YOO6ChCxKXnF
-	 tH6NvC1ePRwn9N/rlMIlG7WgjYgZ62EDNQfrhgffdcvvmGW2TZwsDHinhz5lZACY/7
-	 KjfbFuY0nc1/u0hDb1HaLMACGKucV9zSqDboQMRsoA29Wqnrn5fGLKuLbit1YZH4jq
-	 WoJWWuMJIAicgLq3jvv7O8cAYE2BIY4NUktLceM+/svr/clE+4Ei4e7a62qfAr3up0
-	 DZODiwhaShHLw==
-Date: Sat, 20 Jul 2024 14:36:19 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Dragos Bogdan <dragos.bogdan@analog.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: frequency: adf4377: add adf4378 support
-Message-ID: <20240720143619.3d6a976f@jic23-huawei>
-In-Reply-To: <c26f39fc-94bd-40f2-9c3a-7075eb3e6dba@kernel.org>
-References: <20240717093034.9221-1-antoniu.miclaus@analog.com>
-	<20240717093034.9221-2-antoniu.miclaus@analog.com>
-	<c26f39fc-94bd-40f2-9c3a-7075eb3e6dba@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1721482902; c=relaxed/simple;
+	bh=xApXq3YmfH8vE1Zs7BhLfJVd4upponZo1zhYmDwEI8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rzBIN2lih/C9kaTJtF5LmZQIGu5YdFNL0NnOe/iJGdcJ9UcsxW8cAUBrkIQb+L+UlHQ8Xk+MjKqWGek95mhyWrJ8o6yMbwPCcJjdM1IkqfDLpuMc7YN6KDU9oFvFX9GdcQJ4cRQXD/BkyOSWdsniOMyXE5Wg6xWiGIedPG0EIEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nfQQtzax; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721482900; x=1753018900;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xApXq3YmfH8vE1Zs7BhLfJVd4upponZo1zhYmDwEI8A=;
+  b=nfQQtzaxuf3wOSkq2NfQZMRXh/A5pFEfT5NHPkYev7zSgBKYJcwOZiz8
+   QgOH6DJAy+V84o300fvBp4zHbAPoTERGTaGjKsdbM/iahuclBcMgzCUN/
+   X4Bb1Xo7eGPRilivp+YKhNNRzepKY4VrRBB33FxnSicLIwI08ajKgVfJy
+   JqS/Tu5t4rc0FEveFwscaEZIRqlTQU5lbm/UiOFvRDbZRG9YyYo2Sgd3B
+   kkCr2y3ekRHBPYTU2PhnXFIxmymTs0h3BDocye31HrzCjc/MFw5ESsseP
+   EJ1VZ1UomWTKYz85/TUBDeE2HhaW3DVA3WupuIAos6UtzkPwoUOcA73dM
+   Q==;
+X-CSE-ConnectionGUID: DZQIbWljThmoHyxb4/xAmA==
+X-CSE-MsgGUID: 2FRX5z1LR4aUoHyvmKGskQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11139"; a="36535099"
+X-IronPort-AV: E=Sophos;i="6.09,223,1716274800"; 
+   d="scan'208";a="36535099"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2024 06:41:39 -0700
+X-CSE-ConnectionGUID: d3sXdrzzRkmNWtPpjfhoww==
+X-CSE-MsgGUID: qQ4djHPGT0qnkknKbDDnkQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,223,1716274800"; 
+   d="scan'208";a="51369678"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 20 Jul 2024 06:41:37 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sVAL9-000jEw-0I;
+	Sat, 20 Jul 2024 13:41:35 +0000
+Date: Sat, 20 Jul 2024 21:40:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+	robh+dt@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, marius.cristea@microchip.com
+Subject: Re: [PATCH v1 2/2] iio: adc: adding support for PAC194X
+Message-ID: <202407202146.evcwKAKb-lkp@intel.com>
+References: <20240719173855.53261-3-marius.cristea@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240719173855.53261-3-marius.cristea@microchip.com>
 
-On Wed, 17 Jul 2024 11:38:30 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+Hi,
 
-> On 17/07/2024 11:30, Antoniu Miclaus wrote:
-> > Add separate handling for adf4378 within the driver.
-> > 
-> > The main difference between adf4377 and adf4378 is that adf4378 has only
-> > one output which is handled by only one gpio.
-> > 
-> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+kernel test robot noticed the following build warnings:
 
-Replying on top of Krzysztof's review as he is raising very similar
-points to those I was going to make.
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.10 next-20240719]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> > ---
-> >  drivers/iio/frequency/adf4377.c | 25 ++++++++++++++++++-------
-> >  1 file changed, 18 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/drivers/iio/frequency/adf4377.c b/drivers/iio/frequency/adf4377.c
-> > index 9284c13f1abb..e02298a8b47f 100644
-> > --- a/drivers/iio/frequency/adf4377.c
-> > +++ b/drivers/iio/frequency/adf4377.c
-> > @@ -387,6 +387,11 @@
-> >  #define ADF4377_FREQ_PFD_250MHZ			(250 * HZ_PER_MHZ)
-> >  #define ADF4377_FREQ_PFD_320MHZ			(320 * HZ_PER_MHZ)
-> >  
-> > +enum adf4377_dev_type {
-> > +	ADF4377,
-> > +	ADF4378,
-> > +};
-See below - but using an enum for device type is normally a bad sign.
-It means you are adding a bunch of code paths that will need continual
-extension as new chips are added.
+url:    https://github.com/intel-lab-lkp/linux/commits/marius-cristea-microchip-com/dt-bindings-iio-adc-adding-support-for-PAC194X/20240720-014249
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20240719173855.53261-3-marius.cristea%40microchip.com
+patch subject: [PATCH v1 2/2] iio: adc: adding support for PAC194X
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20240720/202407202146.evcwKAKb-lkp@intel.com/config)
+compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project ad154281230d83ee551e12d5be48bb956ef47ed3)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240720/202407202146.evcwKAKb-lkp@intel.com/reproduce)
 
-Much better to add a description of chip features in a const structure.
-> > +
-> >  enum {
-> >  	ADF4377_FREQ,
-> >  };
-> > @@ -402,6 +407,7 @@ enum muxout_select_mode {
-> >  
-> >  struct adf4377_state {
-> >  	struct spi_device	*spi;
-> > +	enum adf4377_dev_type	type;
-> >  	struct regmap		*regmap;
-> >  	struct clk		*clkin;
-> >  	/* Protect against concurrent accesses to the device and data content */
-> > @@ -687,7 +693,7 @@ static void adf4377_gpio_init(struct adf4377_state *st)
-> >  	if (st->gpio_enclk1)
-> >  		gpiod_set_value(st->gpio_enclk1, 1);
-> >  
-> > -	if (st->gpio_enclk2)
-> > +	if (st->gpio_enclk2 && st->type == ADF4377)  
-> 
-> Why? Isn't everything correct for NULL?
-> 
-> >  		gpiod_set_value(st->gpio_enclk2, 1);
-> >  }
-> >  
-> > @@ -889,11 +895,13 @@ static int adf4377_properties_parse(struct adf4377_state *st)
-> >  		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk1),
-> >  				     "failed to get the CE GPIO\n");
-> >  
-> > -	st->gpio_enclk2 = devm_gpiod_get_optional(&st->spi->dev, "clk2-enable",
-> > -						  GPIOD_OUT_LOW);
-> > -	if (IS_ERR(st->gpio_enclk2))
-> > -		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk2),
-> > -				     "failed to get the CE GPIO\n");
-> > +	if (st->type == ADF4377) {  
-> 
-> So the device does not have this pin? Then you should express it in the
-> bindings.
-Agreed: That binding needs to ensure that there isn't a second pin expressed
-for a chip where it makes no sense.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407202146.evcwKAKb-lkp@intel.com/
 
-> 
-> > +		st->gpio_enclk2 = devm_gpiod_get_optional(&st->spi->dev, "clk2-enable",
-> > +							  GPIOD_OUT_LOW);
-> > +		if (IS_ERR(st->gpio_enclk2))
-> > +			return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk2),
-> > +					"failed to get the CE GPIO\n");
-> > +	}
-> >  
-> >  	ret = device_property_match_property_string(&spi->dev, "adi,muxout-select",
-> >  						    adf4377_muxout_modes,
-> > @@ -945,6 +953,7 @@ static int adf4377_probe(struct spi_device *spi)
-> >  
-> >  	st->regmap = regmap;
-> >  	st->spi = spi;
-> > +	st->type = spi_get_device_id(spi)->driver_data;  
-> 
-> 
-> spi_get_device_match_data()
-> 
-> >  	mutex_init(&st->lock);
-> >  
-> >  	ret = adf4377_properties_parse(st);
-> > @@ -964,13 +973,15 @@ static int adf4377_probe(struct spi_device *spi)
-> >  }
-> >  
-> >  static const struct spi_device_id adf4377_id[] = {
-> > -	{ "adf4377", 0 },
-> > +	{ "adf4377", ADF4377 },
-> > +	{ "adf4378", ADF4378 },
-> >  	{}
-> >  };
-> >  MODULE_DEVICE_TABLE(spi, adf4377_id);
-> >  
-> >  static const struct of_device_id adf4377_of_match[] = {
-> >  	{ .compatible = "adi,adf4377" },
-> > +	{ .compatible = "adi,adf4378" },  
-> 
-> Your device ID tables have incoherent match data. Considering that one
-> type is 0, this is error-prone and discouraged.
-Agreed.  Much better to use a pointer to a chip specific structure for these
-thus avoiding the accidental NULL value and turning chip differences into
-data, not code.
+All warnings (new ones prefixed by >>):
 
-> 
-> Best regards,
-> Krzysztof
-> 
+   In file included from drivers/iio/adc/pac1944.c:16:
+   In file included from include/linux/acpi.h:14:
+   In file included from include/linux/device.h:32:
+   In file included from include/linux/device/driver.h:21:
+   In file included from include/linux/module.h:19:
+   In file included from include/linux/elf.h:6:
+   In file included from arch/s390/include/asm/elf.h:173:
+   In file included from arch/s390/include/asm/mmu_context.h:11:
+   In file included from arch/s390/include/asm/pgalloc.h:18:
+   In file included from include/linux/mm.h:2258:
+   include/linux/vmstat.h:500:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     500 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     501 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:507:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     507 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     508 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:514:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     514 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+   include/linux/vmstat.h:519:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     519 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     520 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:528:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     528 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     529 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/iio/adc/pac1944.c:1691:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    1691 |         if (time_after(jiffies, info->chip_reg_data.jiffies_tstamp +
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1692 |                        msecs_to_jiffies(PAC1944_MIN_POLLING_TIME_MS))) {
+         |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/jiffies.h:128:2: note: expanded from macro 'time_after'
+     128 |         (typecheck(unsigned long, a) && \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     129 |          typecheck(unsigned long, b) && \
+         |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     130 |          ((long)((b) - (a)) < 0))
+         |          ~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/adc/pac1944.c:1709:9: note: uninitialized use occurs here
+    1709 |         return ret;
+         |                ^~~
+   drivers/iio/adc/pac1944.c:1691:2: note: remove the 'if' if its condition is always true
+    1691 |         if (time_after(jiffies, info->chip_reg_data.jiffies_tstamp +
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1692 |                        msecs_to_jiffies(PAC1944_MIN_POLLING_TIME_MS))) {
+         |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/adc/pac1944.c:1686:9: note: initialize the variable 'ret' to silence this warning
+    1686 |         int ret;
+         |                ^
+         |                 = 0
+   drivers/iio/adc/pac1944.c:2048:16: warning: variable 'idx' set but not used [-Wunused-but-set-variable]
+    2048 |         int ch, i, j, idx;
+         |                       ^
+   7 warnings generated.
 
+
+vim +1691 drivers/iio/adc/pac1944.c
+
+  1683	
+  1684	static int pac1944_retrieve_data(struct pac1944_chip_info *info, u32 wait_time)
+  1685	{
+  1686		int ret;
+  1687		/*
+  1688		 * Check if the minimal elapsed time has passed and if so,
+  1689		 * re-read the chip, otherwise the cached info is just fine
+  1690		 */
+> 1691		if (time_after(jiffies, info->chip_reg_data.jiffies_tstamp +
+  1692			       msecs_to_jiffies(PAC1944_MIN_POLLING_TIME_MS))) {
+  1693			/*
+  1694			 * We need to re-read the chip values
+  1695			 * call the pac1944_reg_snapshot
+  1696			 */
+  1697			ret = pac1944_reg_snapshot(info, true,
+  1698						   PAC1944_REFRESH_REG_ADDR,
+  1699						   wait_time);
+  1700			/*
+  1701			 * Re-schedule the work for the read registers timeout
+  1702			 * (to prevent chip regs saturation)
+  1703			 */
+  1704			cancel_delayed_work_sync(&info->work_chip_rfsh);
+  1705			schedule_delayed_work(&info->work_chip_rfsh,
+  1706					      msecs_to_jiffies(PAC1944_MAX_RFSH_LIMIT_MS));
+  1707		}
+  1708	
+  1709		return ret;
+  1710	}
+  1711	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

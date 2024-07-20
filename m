@@ -1,91 +1,159 @@
-Return-Path: <linux-iio+bounces-7756-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7757-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64AAB938215
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 18:22:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92FAB938217
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 18:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C6EC1F2153B
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 16:22:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A82F1C20D8B
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 16:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA1A13DDA8;
-	Sat, 20 Jul 2024 16:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38715145B00;
+	Sat, 20 Jul 2024 16:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="otOsN3cz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pPISnTN1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA4C1DDF6
-	for <linux-iio@vger.kernel.org>; Sat, 20 Jul 2024 16:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FB4146A9A;
+	Sat, 20 Jul 2024 16:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721492554; cv=none; b=i31jXyZoDfoXWAyEmlJ7+dg5NTMWu7PYyHRfXlxgFqQh2/rKXBDp/aKjahna9G3tKyjE9qPQCXAJVNbBd4Bc0E7b/FAzQDqBBjTb+PTVPsv8Wc4X8ANJI8CFSvOdRI4yPqunkuaa6n60Pzz/+FNWcqhljnIbAmt57j3U0+I1WSo=
+	t=1721492986; cv=none; b=SESatU+AkrGxyDlQBStyFaoVmQybvKUplUsWshGH2VJ0PfmMXbiSSnNwQxbQd1lx7ctf61zAQipeVbEpfeh8AWgO7w9oP+NkIEMYZHHbbghAsrPjteLGOCO71Q4LT1Asr3xhe+deQyGXRH/aAQKKT9RayDqv2V+qADd8rwN0710=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721492554; c=relaxed/simple;
-	bh=Q+FRww8lMVvgUN4jlKgDnjk28Mc/z3098gxjt4z3iHY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cwG8izw4NgniZditVt9uxMXSp57LqilR3uXsvGiOEW7MmqTUJ1PdD+pkWoC22gIxwZvIlrRj8DbXMYy8Kkrzc/o9ng+eFJxNsHAdiG/P2UryBeSXwcouTLo4JBFg1RxbKX9Tbh1aKAiwgPNMYAqMXDE3gvMlZcrhLiSqc1tllJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=otOsN3cz; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 6BB23886B3;
-	Sat, 20 Jul 2024 18:22:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1721492544;
-	bh=miKU7LtSpPcKmy1J0MPamCTU/IjDnOhJOe9UCOTOG40=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=otOsN3cz4b+LhLqA1NwVWJ4J2O7MM2oScqD35fcBOi6YpZ+YelsqfAgCScScDtCaQ
-	 rBZvgBiX2kWUuNkGOLp6A2rwGNv8V7bdGKk3AbmJzSUaA+etlGd471Fji5fcQVNGtu
-	 77LAZiRXrZAH8tZell+ZQ6jwoT7i1oEqfFKJi2qxWRpLQJlCaAPdIq1JcOrlfzTUYs
-	 PyqFcFsbKRQz6MpVsoXEav5q/HQZqpeaB6IQBKSkZ4GItEIw8h8zl0z7Ungo/rf54Q
-	 KIe3LyXkelY5aO35ceYdNuAQ6VmYucCdueYGbXs75+lp5oxMSdMVVAr3EshGZR2fhg
-	 EpUY1MOn0I6oQ==
-Message-ID: <28fadb46-acbd-47d6-906d-2ac4b99db79d@denx.de>
-Date: Sat, 20 Jul 2024 18:22:23 +0200
+	s=arc-20240116; t=1721492986; c=relaxed/simple;
+	bh=gQAyzRDNgGMdptTRgt7JqtA/m21hfwIwvqB/asm9gPU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LxwGTII3RPJx/4ahtLPf0s9KWigA/hp/wZ9NSm/yGhVvjcqYXHI+O7//HP/5WW6/EaRAzvS70oYw7p8Pc54LidZlM7TuQzClzoPOdkw47JOsplmBsBNd42Ke+Ud5P+PlHFVdtVPWtmvQT+/fMqt7XxoTgjTWST25rPjPEEUFbLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pPISnTN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A0EC4AF0C;
+	Sat, 20 Jul 2024 16:29:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721492985;
+	bh=gQAyzRDNgGMdptTRgt7JqtA/m21hfwIwvqB/asm9gPU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pPISnTN14Noih2Eq5pVeHCeJ1Pg5g7/z5MbscLsRKkxXlezJPBt6VWnrAh1MSwZNb
+	 TwxLi8VDZ9CGpVHttsP+ef2EE342WErTJ4HDEX8ixnNHdFnMoWT7IkOFp6Y+rp+jOF
+	 dXMt4//umlv1Bn8rRE2p0IsZpLWL/EjQXFWN6x4ky+qNdabLB9g3mchcxj/K9Rppxo
+	 68f3niYsToE7o/ORMeTsB/W6DmHPCQsTK2zQxQTJAaciNefXWykHMFNqrhIS7jwCDf
+	 y+HzbIw9T7RmPEHlins+MCfp9p+10maCCz9OvwG66IseAM24JjnuANXtTrraoipwqN
+	 tdIxuDD7fBSmw==
+Date: Sat, 20 Jul 2024 17:29:36 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Mudit Sharma <muditsharma.info@gmail.com>
+Cc: lars@metafoo.de, krzk+dt@kernel.org, conor+dt@kernel.org,
+ robh@kernel.org, linux-kernel@vger.kernel.org, mazziesaccount@gmail.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Ivan Orlov
+ <ivan.orlov0322@gmail.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>
+Subject: Re: [PATCH v8 2/2] iio: light: ROHM BH1745 colour sensor
+Message-ID: <20240720172936.3a406f0c@jic23-huawei>
+In-Reply-To: <20240718220208.331942-2-muditsharma.info@gmail.com>
+References: <20240718220208.331942-1-muditsharma.info@gmail.com>
+	<20240718220208.331942-2-muditsharma.info@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] iio: light: noa1305: Simplify noa1305_read_raw()
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Lars-Peter Clausen <lars@metafoo.de>
-References: <20240715183120.143417-1-marex@denx.de>
- <20240720142928.7a913229@jic23-huawei>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20240720142928.7a913229@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
 
-On 7/20/24 3:29 PM, Jonathan Cameron wrote:
-> On Mon, 15 Jul 2024 20:28:55 +0200
-> Marek Vasut <marex@denx.de> wrote:
-> 
->> The only channel this hardware supports is IIO_LIGHT, if the channel
->> is anything else, exit right away. The 'ret' variable is now always
->> only assigned by noa1305_measure(), do not initialize it anymore.
->> Update function parameter indent. No functional change.
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
-> Hi Marek,
-> 
-> One minor thing - please use a cover letter.
-> Provides an obvious place for me to reply when picking things up and
-> gives the whole series a meaningful title in patchwork.
+On Thu, 18 Jul 2024 23:02:06 +0100
+Mudit Sharma <muditsharma.info@gmail.com> wrote:
 
-I will keep that in mind, thanks for the reminder.
+> Add support for BH1745, which is an I2C colour sensor with red, green,
+> blue and clear channels. It has a programmable active low interrupt
+> pin. Interrupt occurs when the signal from the selected interrupt
+> source channel crosses set interrupt threshold high or low level.
+> 
+> Interrupt source for the device can be configured by enabling the
+> corresponding event. Interrupt latch is always enabled when setting
+> up interrupt.
+> 
+> Add myself as the maintainer for this driver in MAINTAINERS.
+> 
+> Signed-off-by: Mudit Sharma <muditsharma.info@gmail.com>
+> Reviewed-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+> Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+
+Hi Mudit.
+
+Rather than go around again, I've applied a few things I noticed
+and changes Javier suggests whilst picking this up.
+
+I also tweaked a few long lines.
+
+Anyhow, applied to the testing branch of iio.git which will be rebased
+on rc1 once available and pushed out as togreg for linux-next to
+pick up.
+
+Thanks,
+
+Jonathan
+
+
+> +
+> +static irqreturn_t bh1745_trigger_handler(int interrupt, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct bh1745_data *data = iio_priv(indio_dev);
+> +	struct {
+> +		u16 chans[4];
+> +		s64 timestamp __aligned(8);
+> +	} scan;
+> +	u16 value;
+> +	int ret;
+> +	int i;
+> +	int j = 0;
+> +
+> +	for_each_set_bit(i, indio_dev->active_scan_mask, indio_dev->masklength) {
+
+Nuno's new helper iio_for_each_active_channel()
+cleans this up. I'll switch to that whilst applying rather than adding another driver
+for him to convert over.
+
+
+> +		ret = regmap_bulk_read(data->regmap, BH1745_RED_LSB + 2 * i, &value, 2);
+> +		if (ret)
+> +			goto err;
+> +
+> +		scan.chans[j++] = value;
+> +	}
+> +
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+> +
+> +err:
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
+
+> +
+> +static int bh1745_probe(struct i2c_client *client)
+> +{
+> +	int ret;
+> +	int value;
+> +	int part_id;
+> +	struct bh1745_data *data;
+> +	struct iio_dev *indio_dev;
+> +	struct device *dev = &client->dev;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	i2c_set_clientdata(client, indio_dev);
+Trivial, but is this ever used?  I couldn't figure out where it if is.
+So I've dropped it. Shout if it needs to be here.
+
+Jonathan
+
+
 

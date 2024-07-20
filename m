@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-7750-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7751-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA039381F6
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 18:01:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0FF9381F7
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 18:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09802281B59
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 16:01:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D137DB20A4B
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 16:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43C638F83;
-	Sat, 20 Jul 2024 16:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0251512E1DD;
+	Sat, 20 Jul 2024 16:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y3ZyUN7i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mNwlGzhx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FDA1E502
-	for <linux-iio@vger.kernel.org>; Sat, 20 Jul 2024 16:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B540A1E489
+	for <linux-iio@vger.kernel.org>; Sat, 20 Jul 2024 16:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721491309; cv=none; b=MYA0JD8JEtWTTHh49ixaHadsfV5nSdor5Xddo2UQFPooGHXnslkyGoETP0g6pPOhJzGA6je2ZwZ5gOQ4k7PVk/T3rPZRVCjHpRlDZOfGFJfvVM4PGlI1JpHjoOhTZZepXkQvAue4DcOpToipP4w1Af9rZ1ixgRNzS9lmPEJ5U1k=
+	t=1721491375; cv=none; b=i9PzNLY/Uz0OWmfii78BEDpehIe3mXyIE/nI2WnkHikxJLPmViwX8Mdmli4jJinPu/98vwSAjdSfu3zGmLw1118dJURFpfF081l1p1SdkaFX77K23GVhUFts57E0nPZdWyFHCk0TSStO+ow7z5xFxCcAI+GBNxzcURy8QCMYFJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721491309; c=relaxed/simple;
-	bh=x9FCTpih0ovN2atbOvqsAqwy9pyWLGa6UJ2u4i/clKo=;
+	s=arc-20240116; t=1721491375; c=relaxed/simple;
+	bh=L80JlVP/SXea/gYgCn5pZ2mzwD5RV72knMpIBYUH9Go=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fXE41W8dwTftvRwWWJxFDnEMZWEK2iC1jFfCHYCimPhpLRjZ0aRwrk/GjauCUSUzi88B7PFtjHycBgPHHB1W1zfyln42Cun+4qyXz5qIUOST/d5GpXf0lAyNMBlpdBdy6cdU6cacrvfjPabfQQUa6DELsDv6O+cYrY0PG/xoKHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y3ZyUN7i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3AAC2BD10;
-	Sat, 20 Jul 2024 16:01:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rAuXBypoNDWxXH5IGI98uBSm2/HMZVa2z1RaKiRB0zosVSltCO4HOYrBHAIhThvw77Y4NnMoYubVTbJL97U8miRqqQ79cJnkRC/2Tg/Xea2gXf40r2R0clUK71ORPH+LwknZ+ZTSYmZAwTJambLQwku+DcDjCs3+Af6tQNiLDwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mNwlGzhx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83CFC2BD10;
+	Sat, 20 Jul 2024 16:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721491309;
-	bh=x9FCTpih0ovN2atbOvqsAqwy9pyWLGa6UJ2u4i/clKo=;
+	s=k20201202; t=1721491375;
+	bh=L80JlVP/SXea/gYgCn5pZ2mzwD5RV72knMpIBYUH9Go=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Y3ZyUN7iaHAXSVwPl3ASXkyom1grTXsZ11909n1rg7fJZwhuH+vdUDYs6/x6ibnkV
-	 hDwsfQisMNlKNopVCp0XvNS+1b7cO5cOmTDAbq/ZLMo0L6RP2pUZQZti+TTyTHnDtf
-	 zlOtcL7qg6wNg2QOXoF/k+GEDyxIF5y/ua5OwX4lqeG1WZpZLgecM8uASr+NJ854Cj
-	 xiH0SgGtf96mOspBVkax5NEVmoeqRM6gVgoUCqCeEzGSi9RrTj66831oLi/bB5qr+T
-	 xbQHkceswVq80rJnlTXS7SuRLk3bSQveTpWtxoeDRDy+57StybUqCM+oNJPCqyZecf
-	 JMeP5Dj7W4b+w==
-Date: Sat, 20 Jul 2024 17:01:42 +0100
+	b=mNwlGzhx8ysvirRgQlZWxkYrqG3jqBmJjFrpia4kBq7WmO3hgenqmF0CQ7ck7sHs+
+	 PCFBKvSc3T3w56oTsf8+LJ3GZNY5qQswPMPB1bzpV8zb2msSN74eUEZ9LBNpOe3+n4
+	 oSn1loiU43Vh8B5UTVUK1pHUP2KCaSAqJPyPf3SWKC1OOHvMVS16G1rP6UpI1hHppT
+	 svCXfWzKfcnu38qoGgUS8XUo6GLQwQNenVyHxuuZ5tQktZEPyGGMACEA7tLluhDGS0
+	 Bn6pijQmnuTFNofXDH5263+uqRVMNB+lLQHe0ZVGJnaD8TSSRipDp800rcPKLd4wwK
+	 E9sSWwGfdpsLg==
+Date: Sat, 20 Jul 2024 17:02:47 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
  <lars@metafoo.de>, Andreas Klinger <ak@it-klinger.de>, Song Qiang
  <songqiang1304521@gmail.com>
-Subject: Re: [PATCH 03/22] iio: adc: hx711: make use of
+Subject: Re: [PATCH 04/22] iio: dummy: iio_simple_dummy_buffer: use
  iio_for_each_active_channel()
-Message-ID: <20240720170142.6d2c2070@jic23-huawei>
-In-Reply-To: <20240718-dev-iio-masklength-private2-v1-3-8e12cd042906@analog.com>
+Message-ID: <20240720170247.72d84463@jic23-huawei>
+In-Reply-To: <20240718-dev-iio-masklength-private2-v1-4-8e12cd042906@analog.com>
 References: <20240718-dev-iio-masklength-private2-v1-0-8e12cd042906@analog.com>
-	<20240718-dev-iio-masklength-private2-v1-3-8e12cd042906@analog.com>
+	<20240718-dev-iio-masklength-private2-v1-4-8e12cd042906@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,7 +63,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 18 Jul 2024 15:37:49 +0200
+On Thu, 18 Jul 2024 15:37:50 +0200
 Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
 > From: Nuno Sa <nuno.sa@analog.com>
@@ -71,33 +71,8 @@ Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 > Use iio_for_each_active_channel() to iterate over active channels
 > accessing '.masklength' so it can be annotated as __private when there are
 > no more direct users of it.
+Even without the __private bit the new code is nicer!
 > 
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Even before this work from you, this code could certainly have been
-less contrary!
-
 Applied.
-
-> ---
->  drivers/iio/adc/hx711.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/hx711.c b/drivers/iio/adc/hx711.c
-> index b3372ccff7d5..376f4e02de97 100644
-> --- a/drivers/iio/adc/hx711.c
-> +++ b/drivers/iio/adc/hx711.c
-> @@ -363,10 +363,7 @@ static irqreturn_t hx711_trigger(int irq, void *p)
->  
->  	memset(hx711_data->buffer, 0, sizeof(hx711_data->buffer));
->  
-> -	for (i = 0; i < indio_dev->masklength; i++) {
-> -		if (!test_bit(i, indio_dev->active_scan_mask))
-> -			continue;
-> -
-> +	iio_for_each_active_channel(indio_dev, i) {
->  		hx711_data->buffer[j] = hx711_reset_read(hx711_data,
->  					indio_dev->channels[i].channel);
->  		j++;
-> 
-
 

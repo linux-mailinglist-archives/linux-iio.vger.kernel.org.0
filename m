@@ -1,61 +1,58 @@
-Return-Path: <linux-iio+bounces-7731-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7732-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7AC93815E
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 14:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39507938160
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 14:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D360E281AB6
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 12:45:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D37BF281752
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 12:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD083209;
-	Sat, 20 Jul 2024 12:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258FA1E531;
+	Sat, 20 Jul 2024 12:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W1sPbiia"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lBgL4kS0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB21653;
-	Sat, 20 Jul 2024 12:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D276C1DA24;
+	Sat, 20 Jul 2024 12:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721479526; cv=none; b=Xau4qtZtZp8ZEqNxz1MjqTjBEQ2IvRBKI5NbO5dJrKr6ZElczkndBNzsMhoDLPJeXTy/UkGdwHl1pcQghRzKzYJ+6OX8+K6xfow9/k6pJj5yZBGwvoRIvkKdXSOceV/DGcbZPD1yieXamLsh0IhrkKs86N4oX+9N7MvTeGxY2c4=
+	t=1721479840; cv=none; b=VnBgAiNdnB1TjP3O88SYee4a2Ng9wUZ+gtiMyjeGGTBvfUU8yE2phESMIMhj9NPemxO89dQ9ODhP4thi70kz0mwrISIkDYYaFFaflSP/is8Uv53xxvBxdkRb+fv4xbOQaVJrcU+Z+aIiavUR+JsthcM89al0eIdk6fj66FAtKVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721479526; c=relaxed/simple;
-	bh=fOYT0ZSqCfEyo3AFmiH7R7zRioxaEZCje5xbQVslR3c=;
+	s=arc-20240116; t=1721479840; c=relaxed/simple;
+	bh=HV17yG5auF5MNPa0mLRfliQ7owI1hS8cyrzvOwmA8rE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tGQO9LRVej0apsL/h/kEb+0pyedDOo8y8ynt14VC+/k+tfMhovUqroJpAiytbQEiwGcnyGPAuIMCmuiJXb+2mYurjgCxlo9cRdpQqopzQ3fGO0edn6KVRdr4ZyWBFBBPe984hEJdOQHCXBbOSG1Gs4P3stn42r0YkOdVagxn/Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W1sPbiia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F1EC2BD10;
-	Sat, 20 Jul 2024 12:45:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WnUVHVF4vTP7J1Gd/RHrWfQfAkg4no5KkELtu+bl0R5RqdF+Zed6lZeQ7MPRBoptSDk54q4yXNPWKZXf5nq/7iEjmAot155N4mvlgzrfnCd/qMNoFlCyLqYWcJ/6658TDoxARQjP2OLYPSPvwcvcEg05bNCA0Q+IUFRro5JmlLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lBgL4kS0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D30C2BD10;
+	Sat, 20 Jul 2024 12:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721479524;
-	bh=fOYT0ZSqCfEyo3AFmiH7R7zRioxaEZCje5xbQVslR3c=;
+	s=k20201202; t=1721479840;
+	bh=HV17yG5auF5MNPa0mLRfliQ7owI1hS8cyrzvOwmA8rE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W1sPbiiaKXevbLetJ9MCKQgD5MHOzf4Dj+sXEfUio+Vjk4Kgn/SdRbYfvFLEVsAjz
-	 s/9gqR1M8HnSonKPYS2BNZKGLRB6mJ6/cGF/U4HQxlgEnhPpsc1hGw2kOunRPGh5tJ
-	 N4XmRvWpxHnH7eZJfkQpY5/C/aBiu2TwzgczcrTw+epX/os9FzrphATnEOEmy1wFL/
-	 4sKK869lHLnpSrIdIaN/N//cHLxW4VulNu/eV1UTxJ5zFgXdVy1QIJvN0Dscg9ZEEF
-	 GjVA0DG6Oa41P+6xrv1rS1ExMCeFjk9ar5pAkS2VXqmjOvAGixuXHV7zz0yDvjjbtZ
-	 L36vbuovufHHw==
-Date: Sat, 20 Jul 2024 13:45:18 +0100
+	b=lBgL4kS0qUW/RuLubjbG4iN1cuXqgXr57oSsozlsos1cpvGRCjc0zn6onM7/KocXz
+	 fGDc2vCLx1Gt3wjdRx0e1nCWszJDA4QvmQO+RiunBHYjHNoEgKY4rxqe5R7a70pVq8
+	 5ibN+vf0Whq0IjfuS4gavWYG4AZv26ewmYICOMncR4BRg4aSY1yJggSOOY4ScbzUrY
+	 f5yffC0LQDEMiihc0OPwvX/Nn4KY/9IPPc0AZRlD74dws1XqdCIYdsEgMx8nuLxAsA
+	 5opVhD6C/pvzwGqJFgVo9aOCmNah28NWGjRqcORZ+U2elKn9oG0OMj5P9S/6dTutvm
+	 HCf7Dc+rhEBjw==
+Date: Sat, 20 Jul 2024 13:50:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Kaustabh Chakraborty <kauschluss@disroot.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- conor+dt@kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: iio: light: stk33xx: add compatible
- for stk3013
-Message-ID: <20240720134518.61b940e1@jic23-huawei>
-In-Reply-To: <2554b98ddbe3098fa974b651f555a791@disroot.org>
-References: <20240712152417.97726-1-kauschluss@disroot.org>
-	<20240712152417.97726-3-kauschluss@disroot.org>
-	<20240713130620.79d47130@jic23-huawei>
-	<be34b0b571ddc33351e9eb123410a210@disroot.org>
-	<20240716174328.15c250a9@jic23-huawei>
-	<2554b98ddbe3098fa974b651f555a791@disroot.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Marius Cristea <marius.cristea@microchip.com>, Marcus Folkesson
+ <marcus.folkesson@gmail.com>, Kent Gustavsson <kent@minoris.se>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/6] iio: use devm_regulator_get_enable_read_voltage
+ round 3
+Message-ID: <20240720135033.3399e83e@jic23-huawei>
+In-Reply-To: <20240712-iio-regulator-refactor-round-3-v1-0-835017bae43d@baylibre.com>
+References: <20240712-iio-regulator-refactor-round-3-v1-0-835017bae43d@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,91 +63,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 17 Jul 2024 15:58:50 +0000
-Kaustabh Chakraborty <kauschluss@disroot.org> wrote:
+On Fri, 12 Jul 2024 11:03:51 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On 2024-07-16 16:43, Jonathan Cameron wrote:
-> > On Mon, 15 Jul 2024 20:02:57 +0000
-> > Kaustabh Chakraborty <kauschluss@disroot.org> wrote:
-> >   
-> >> On 2024-07-13 12:06, Jonathan Cameron wrote:  
-> >> > On Fri, 12 Jul 2024 20:54:02 +0530
-> >> > Kaustabh Chakraborty <kauschluss@disroot.org> wrote:
-> >> >     
-> >> >> Add the compatible string of stk3013 to the existing list.    
-> >> > 
-> >> > Should include how this differs from existing devices such that it doesn't
-> >> > make sense to use a fallback compatible.    
-> >> 
-> >> STK3013 is a proximity sensor by Sensortek, bearing chipid of 0x31. Despite
-> >> being marketed as a proximity sensor, it also appears to have ambient
-> >> light sensing capabilities.
-> >> 
-> >> Add the compatible string of stk3013 to the existing list, as a part not
-> >> compatible with other devices.  
-> > 
-> > That would be fine, but I'm not seeing any driver code changes, so when
-> > you say not compatible, in what way? If it's register changes in features
-> > we don't support yet or something like that, just add some examples.
-> > 
-> > A different whoami register value isn't sufficient as after the fix
-> > you have as patch 1 that will only result in a message print.  
+> This is the third round of patches to convert IIO drivers to use the
+> new devm_regulator_get_enable_read_voltage() helper function.
 > 
-> I understand that a whoami is not enough to justify not having a fallback
-> compatible. That's why I mentioned it's the most "convincing" argument I
-> could come up with, which is admittedly, isn't enough.
-> 
-> And there really isn't anything feature-wise which sets STK3013 apart from
-> other devices. All register addresses and functions are fully compatible
-> with the current driver.
-> 
-> > 
-> > Obviously doesn't help much for this addition as you are adding the
-> > bypass of the whoami and the new ID in the same series, but we want
-> > to set a precedence for future devices to use fallback compatibles
-> > now that path works.  
-> 
-> I'll add stk3310 as a fallback compatible and change the commit message
-> appropriately. Conor did mention it in the last revision, but I totally
-> missed that. Apologies.
-> 
-> Ending the description with something along the lines of:
-> 
-> The part is fully compatible with the existing implementation of the
-> device driver. Add the compatible string of stk3013 to the existing list,
-> with a fallback of stk3310.
-> 
-> ...would be alright?
+> This time, we are converting some Microchip drivers. These weren't as
+> trivial as some other drivers because of nested functions that need
+> to know info about the reference voltage, but for the most part, should
+> be fairly straightforward. And there is a bonus to remove a remove()
+> callback in one of the drivers.
+Applied 1-4 and 6. Comment outstanding on 5 so I'm assuming I'll see
+a v2 of just that patch at somepoint.
 
-Yes. Looks good.
+Thanks,
 
 Jonathan
 
 > 
-> > 
-> > Jonathan
-> >   
-> >> 
-> >> I hope this is good enough. I couldn't find anything more convincing.
-> >>   
-> >> >     
-> >> >> 
-> >> >> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-> >> >> ---
-> >> >>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 1 +
-> >> >>  1 file changed, 1 insertion(+)
-> >> >> 
-> >> >> diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
-> >> >> index f6e22dc9814a..6003da66a7e6 100644
-> >> >> --- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
-> >> >> +++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
-> >> >> @@ -19,6 +19,7 @@ allOf:
-> >> >>  properties:
-> >> >>    compatible:
-> >> >>      enum:
-> >> >> +      - sensortek,stk3013
-> >> >>        - sensortek,stk3310
-> >> >>        - sensortek,stk3311
-> >> >>        - sensortek,stk3335  
+> ---
+> David Lechner (6):
+>       iio: dac: mcp4728: rename err to ret in probe function
+>       iio: dac: mcp4728: use devm_regulator_get_enable_read_voltage()
+>       iio: dac: mcp4922: use devm_regulator_get_enable_read_voltage()
+>       iio: dac: mcp4922: drop remove() callback
+>       iio: adc: mcp3564: use devm_regulator_get_enable_read_voltage()
+>       iio: adc: mcp3911: use devm_regulator_get_enable_read_voltage()
+> 
+>  drivers/iio/adc/mcp3564.c | 54 +++++++++++++------------------------------
+>  drivers/iio/adc/mcp3911.c | 59 +++++++++++++----------------------------------
+>  drivers/iio/dac/mcp4728.c | 45 +++++++++++-------------------------
+>  drivers/iio/dac/mcp4922.c | 47 ++++++-------------------------------
+>  4 files changed, 52 insertions(+), 153 deletions(-)
+> ---
+> base-commit: 986da024b99a72e64f6bdb3f3f0e52af024b1f50
+> change-id: 20240712-iio-regulator-refactor-round-3-17f2a82d2181
 
 

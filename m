@@ -1,79 +1,78 @@
-Return-Path: <linux-iio+bounces-7717-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7718-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0AC093802F
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 11:20:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EF693805C
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 11:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B18AB2111C
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 09:20:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 728461C20935
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Jul 2024 09:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6094829CFE;
-	Sat, 20 Jul 2024 09:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4007D41D;
+	Sat, 20 Jul 2024 09:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fLxixCzt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IuzQq9Sm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636C622F14;
-	Sat, 20 Jul 2024 09:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A23E55C08;
+	Sat, 20 Jul 2024 09:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721467210; cv=none; b=R/sFvk3whNxUe7/mKJBy9ot7KKhMNxny87lbKNVMXmVwgtdRqFOqTL4fn+E2LNFwpg4urO6VcSW/ISSah/LuZ7RW3/kpfCjWp+rdn/ejCOWhcsqNeDCwXRbkrRNSHXUXhTTll9ppeJPwhWWOCZ5GQtkJsdH9AzLvgjGpUKrV0yQ=
+	t=1721467814; cv=none; b=S4DlQ1UqAolL2CUd5655tEzv2J1oyfQckGXusLl1Bd1Ktmb8i9ep419D6GiY1xz//xwQB7bXhhEw/Mkl6ckTnRsOzjlIfyQ2Vmzt2/Z0/PYznXJrS1VO/1hN9AImdeXMrgNnIOxheq//9G35vZgBtvy/kOzx7B7+NZxGFRxnvlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721467210; c=relaxed/simple;
-	bh=aXf0RhYpLwGl1ZpQsVRJ9rreF9cvCbgkrqqIYoZ7O5Y=;
+	s=arc-20240116; t=1721467814; c=relaxed/simple;
+	bh=a3rPb2yeYm6YZfZtQomB5Xpvt38n+mcAWaElo0/Q6Zo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WmavjY0oNbkvdPjKGgIhF0Kjaj8hq0CyW4fSAc1DTqL541VMJuga/3L/676/huLszr2aEi7TbgG8W1GxyDrCM5PU6F5sG8J2p7h3lV6IRluDb3BwC+2kTFO+OtvI2mTVCSbdkufknr74YWcVOeHSxOAi0vgJeU5yC+NM2MT1RCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fLxixCzt; arc=none smtp.client-ip=198.175.65.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=WLqiy8HBdLQ3rIyjkXabZMlMW5hE1AlYWMRtfaczBHZSQgkDzoNFmgfVqJBkOFgaMcslqR/cXtGj1A+WXe+vOL2kFTY2vLMnfp98CNjdKP+MwlLyKGE0gesAG68CzLFy9PEReePbXDCjdBDElVbqlsPKt4QCETuYhLXzMrHgx9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IuzQq9Sm; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721467209; x=1753003209;
+  t=1721467813; x=1753003813;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=aXf0RhYpLwGl1ZpQsVRJ9rreF9cvCbgkrqqIYoZ7O5Y=;
-  b=fLxixCztyMD9w4BXcsHCVCkYAKQ33rBFWhLeRdnWobgdS9HO1Bv6i5ne
-   re9XpiGdD8cmnusTyCgYGhFvOdNZHy86ad1/na7+zNVLNZfRTrl6Qgtzg
-   m51Spqg8jlisAl3ymwlOfxD9RULMDn4l150lVpeWHFazPm6oKgSvFs0SL
-   BSic6LMKweDIUUua0AELDEC/wOGS8sM358wTf8cEahm98h1TpAEqsAvUx
-   GVO5zoZWQxRtsRGkuqKsGjrTEkPUSIucL+yyx0+j3sz+o885BtYr7qY9s
-   rpctcB3EFbcYXTStEc0AxBv/5M/bDw0xmg7pruBSPBy4Y38jxspvklweb
-   A==;
-X-CSE-ConnectionGUID: QWF25M8ySMSmyvMVIYREaQ==
-X-CSE-MsgGUID: 4/Fk0t5FQOSq+CHUBGjSzg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11138"; a="19222250"
+  bh=a3rPb2yeYm6YZfZtQomB5Xpvt38n+mcAWaElo0/Q6Zo=;
+  b=IuzQq9SmP5eH1cFqTPBTCNUWHWv/IYaXEWpIw/B0RI2HeE14QOspVdqI
+   epEi57MB2IFYxUbtnVTm4PY4/dtNfznI6mJbUYsdzXasFKyRPPxZUL7Gb
+   T03RAhHvKqIvN2aUeB7qtZym8ogt7nQHjGnKA/IrR+JfwfY+YvGkTByvy
+   E6mcHfTpSRWnCb4+xPZlNezxlmvZ+4OR1YOBtEAU7NH5AQKMlKlHBjQIe
+   HFZ45COMpnEDXNUe/q6WbD5kSu4BwIx1J2JYRhGuiOLJku7QOQkU1FAy/
+   fdieUnmRjafGhv+Wvw14CUyoV5JNESbMX8PN3dMUxQ2RfEgtbA3ddL/a/
+   Q==;
+X-CSE-ConnectionGUID: JD8RxLOWSiqG9wwabzh+wA==
+X-CSE-MsgGUID: Ad0ikuZwT0mUjnYPDrlRLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11138"; a="29753361"
 X-IronPort-AV: E=Sophos;i="6.09,223,1716274800"; 
-   d="scan'208";a="19222250"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2024 02:20:08 -0700
-X-CSE-ConnectionGUID: yNJE7YUMRpCngUiVF5Hzxw==
-X-CSE-MsgGUID: IQjQqnNGT4SONSZt/20sDg==
+   d="scan'208";a="29753361"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2024 02:30:12 -0700
+X-CSE-ConnectionGUID: vXA0l/36Q7u9Lgc6VR1cww==
+X-CSE-MsgGUID: d0EPUdaMRmGEdBFg+843JQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,223,1716274800"; 
-   d="scan'208";a="74586696"
+   d="scan'208";a="51380593"
 Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 20 Jul 2024 02:20:05 -0700
+  by orviesa009.jf.intel.com with ESMTP; 20 Jul 2024 02:30:05 -0700
 Received: from kbuild by 68891e0c336b with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sV6G3-000j3x-09;
-	Sat, 20 Jul 2024 09:20:03 +0000
-Date: Sat, 20 Jul 2024 17:19:42 +0800
+	id 1sV6Pj-000j4Q-1m;
+	Sat, 20 Jul 2024 09:30:03 +0000
+Date: Sat, 20 Jul 2024 17:29:59 +0800
 From: kernel test robot <lkp@intel.com>
 To: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v4 2/2] iio: humidity: Add support for ENS210
-Message-ID: <202407201602.KrJ889wu-lkp@intel.com>
+Message-ID: <202407201729.dZc0rJ8y-lkp@intel.com>
 References: <20240719-ens21x-v4-2-6044e48a376a@thegoodpenguin.co.uk>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -95,75 +94,179 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Felmeden/dt-bindin
 base:   1ebab783647a9e3bf357002d5c4ff060c8474a0a
 patch link:    https://lore.kernel.org/r/20240719-ens21x-v4-2-6044e48a376a%40thegoodpenguin.co.uk
 patch subject: [PATCH v4 2/2] iio: humidity: Add support for ENS210
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20240720/202407201602.KrJ889wu-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project ad154281230d83ee551e12d5be48bb956ef47ed3)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240720/202407201602.KrJ889wu-lkp@intel.com/reproduce)
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20240720/202407201729.dZc0rJ8y-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240720/202407201729.dZc0rJ8y-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407201602.KrJ889wu-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407201729.dZc0rJ8y-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
-   In file included from drivers/iio/humidity/ens210.c:19:
-   In file included from include/linux/i2c.h:13:
-   In file included from include/linux/acpi.h:14:
-   In file included from include/linux/device.h:32:
-   In file included from include/linux/device/driver.h:21:
-   In file included from include/linux/module.h:19:
-   In file included from include/linux/elf.h:6:
-   In file included from arch/s390/include/asm/elf.h:173:
-   In file included from arch/s390/include/asm/mmu_context.h:11:
-   In file included from arch/s390/include/asm/pgalloc.h:18:
-   In file included from include/linux/mm.h:2258:
-   include/linux/vmstat.h:500:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     500 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     501 |                            item];
-         |                            ~~~~
-   include/linux/vmstat.h:507:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     507 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     508 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:514:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     514 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:519:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     519 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     520 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:528:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     528 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     529 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
->> drivers/iio/humidity/ens210.c:252:4: warning: format specifies type 'unsigned long' but the argument has underlying type 'unsigned int' [-Wformat]
+   In file included from include/linux/device.h:15,
+                    from include/linux/acpi.h:14,
+                    from include/linux/i2c.h:13,
+                    from drivers/iio/humidity/ens210.c:19:
+   drivers/iio/humidity/ens210.c: In function 'ens210_probe':
+>> drivers/iio/humidity/ens210.c:251:25: warning: format '%lx' expects argument of type 'long unsigned int', but argument 4 has type 'unsigned int' [-Wformat=]
      251 |                         "Part ID does not match (0x%04x != 0x%04lx)\n", part_id,
-         |                                                              ~~~~~
-         |                                                              %04x
-     252 |                         data->chip_info->part_id);
-         |                         ^~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/dev_printk.h:160:67: note: expanded from macro 'dev_info'
-     160 |         dev_printk_index_wrap(_dev_info, KERN_INFO, dev, dev_fmt(fmt), ##__VA_ARGS__)
-         |                                                                  ~~~     ^~~~~~~~~~~
-   include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
+         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/dev_printk.h:110:30: note: in definition of macro 'dev_printk_index_wrap'
      110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-         |                              ~~~    ^~~~~~~~~~~
-   drivers/iio/humidity/ens210.c:200:30: warning: unused variable 'id' [-Wunused-variable]
+         |                              ^~~
+   include/linux/dev_printk.h:160:58: note: in expansion of macro 'dev_fmt'
+     160 |         dev_printk_index_wrap(_dev_info, KERN_INFO, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                          ^~~~~~~
+   drivers/iio/humidity/ens210.c:250:17: note: in expansion of macro 'dev_info'
+     250 |                 dev_info(&client->dev,
+         |                 ^~~~~~~~
+   drivers/iio/humidity/ens210.c:251:66: note: format string is defined here
+     251 |                         "Part ID does not match (0x%04x != 0x%04lx)\n", part_id,
+         |                                                              ~~~~^
+         |                                                                  |
+         |                                                                  long unsigned int
+         |                                                              %04x
+>> drivers/iio/humidity/ens210.c:200:37: warning: unused variable 'id' [-Wunused-variable]
      200 |         const struct i2c_device_id *id = i2c_client_get_device_id(client);
          |                                     ^~
-   7 warnings generated.
+--
+>> drivers/iio/humidity/ens210.c:83: warning: Function parameter or struct member 'chip_info' not described in 'ens210_data'
+>> drivers/iio/humidity/ens210.c:83: warning: Excess struct member 'res_index' description in 'ens210_data'
 
 
-vim +252 drivers/iio/humidity/ens210.c
+vim +251 drivers/iio/humidity/ens210.c
 
+    72	
+    73	/**
+    74	 * struct ens210_data - Humidity/Temperature sensor device structure
+    75	 * @client:	i2c client
+    76	 * @lock:	lock protecting the i2c conversion
+    77	 * @res_index:	index to selected sensor resolution
+    78	 */
+    79	struct ens210_data {
+    80		struct i2c_client *client;
+    81		const struct ens210_chip_info *chip_info;
+    82		struct mutex lock;
+  > 83	};
+    84	
+    85	/* calculate 17-bit crc7 */
+    86	static u8 ens210_crc7(u32 val)
+    87	{
+    88		__be32 val_be = (cpu_to_be32(val & 0x1ffff) >> 0x8);
+    89	
+    90		return crc7_be(0xde, (u8 *)&val_be, 3) >> 1;
+    91	}
+    92	
+    93	static int ens210_get_measurement(struct iio_dev *indio_dev, bool temp, int *val)
+    94	{
+    95		u32 regval;
+    96		u8 regval_le[3];
+    97		int ret;
+    98		struct ens210_data *data = iio_priv(indio_dev);
+    99	
+   100		/* assert read */
+   101		ret = i2c_smbus_write_byte_data(data->client, ENS210_REG_SENS_START,
+   102					  temp ? ENS210_SENS_START_T_START :
+   103						 ENS210_SENS_START_H_START);
+   104		if (ret)
+   105			return ret;
+   106	
+   107		/* wait for conversion to be ready */
+   108		msleep(data->chip_info->conv_time_msec);
+   109	
+   110		ret = i2c_smbus_read_byte_data(data->client,
+   111					       ENS210_REG_SENS_STAT);
+   112		if (ret < 0)
+   113			return ret;
+   114	
+   115		/* perform read */
+   116		ret = i2c_smbus_read_i2c_block_data(
+   117			data->client, temp ? ENS210_REG_T_VAL : ENS210_REG_H_VAL, 3,
+   118			(u8 *)&regval_le);
+   119		if (ret < 0) {
+   120			dev_err(&data->client->dev, "failed to read register");
+   121			return -EIO;
+   122		} else if (ret != 3) {
+   123			dev_err(&indio_dev->dev, "expected 3 bytes, received %d\n", ret);
+   124			return -EIO;
+   125		}
+   126	
+   127		regval = get_unaligned_le24(regval_le);
+   128		if (ens210_crc7(regval) != ((regval >> 17) & 0x7f)) {
+   129			/* crc fail */
+   130			dev_err(&indio_dev->dev, "ens invalid crc\n");
+   131			return -EIO;
+   132		}
+   133	
+   134		*val = regval & 0xffff;
+   135		return IIO_VAL_INT;
+   136	}
+   137	
+   138	static int ens210_read_raw(struct iio_dev *indio_dev,
+   139				   struct iio_chan_spec const *channel, int *val,
+   140				   int *val2, long mask)
+   141	{
+   142		struct ens210_data *data = iio_priv(indio_dev);
+   143		int ret = -EINVAL;
+   144	
+   145		switch (mask) {
+   146		case IIO_CHAN_INFO_RAW:
+   147			scoped_guard(mutex, &data->lock) {
+   148				ret = ens210_get_measurement(
+   149					indio_dev, channel->type == IIO_TEMP, val);
+   150				if (ret)
+   151					return ret;
+   152				return IIO_VAL_INT;
+   153			}
+   154			return ret;
+   155		case IIO_CHAN_INFO_SCALE:
+   156			if (channel->type == IIO_TEMP) {
+   157				*val = 15;
+   158				*val2 = 625000;
+   159			} else {
+   160				*val = 1;
+   161				*val2 = 953125;
+   162			}
+   163			return IIO_VAL_INT_PLUS_MICRO;
+   164		case IIO_CHAN_INFO_OFFSET:
+   165			if (channel->type == IIO_TEMP) {
+   166				*val = -17481;
+   167				*val2 = 600000;
+   168				ret = IIO_VAL_INT_PLUS_MICRO;
+   169				break;
+   170			}
+   171			*val = 0;
+   172			return IIO_VAL_INT;
+   173		default:
+   174			return -EINVAL;
+   175		}
+   176		return ret;
+   177	}
+   178	
+   179	static const struct iio_chan_spec ens210_channels[] = {
+   180		{
+   181			.type = IIO_TEMP,
+   182			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+   183					      BIT(IIO_CHAN_INFO_SCALE) |
+   184					      BIT(IIO_CHAN_INFO_OFFSET),
+   185		},
+   186		{
+   187			.type = IIO_HUMIDITYRELATIVE,
+   188			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+   189					      BIT(IIO_CHAN_INFO_SCALE) |
+   190					      BIT(IIO_CHAN_INFO_OFFSET),
+   191		}
+   192	};
+   193	
+   194	static const struct iio_info ens210_info = {
+   195		.read_raw = ens210_read_raw,
+   196	};
    197	
    198	static int ens210_probe(struct i2c_client *client)
    199	{
-   200		const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ > 200		const struct i2c_device_id *id = i2c_client_get_device_id(client);
    201		struct ens210_data *data;
    202		struct iio_dev *indio_dev;
    203		uint16_t part_id;
@@ -213,9 +316,9 @@ vim +252 drivers/iio/humidity/ens210.c
    247		part_id = i2c_smbus_read_word_data(client, ENS210_REG_PART_ID);
    248	
    249		if (part_id != data->chip_info->part_id) {
-   250			dev_info(&client->dev,
-   251				"Part ID does not match (0x%04x != 0x%04lx)\n", part_id,
- > 252				data->chip_info->part_id);
+ > 250			dev_info(&client->dev,
+ > 251				"Part ID does not match (0x%04x != 0x%04lx)\n", part_id,
+   252				data->chip_info->part_id);
    253		}
    254	
    255		/* reenable low power */

@@ -1,127 +1,116 @@
-Return-Path: <linux-iio+bounces-7765-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7766-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A117938364
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2024 07:29:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D4E93844B
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2024 12:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA5C31F21660
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2024 05:29:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A49C6B20E91
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2024 10:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E6946B5;
-	Sun, 21 Jul 2024 05:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D0E156C63;
+	Sun, 21 Jul 2024 10:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jTfLlca5"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="Nr+QFmvn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45FD3FE4;
-	Sun, 21 Jul 2024 05:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1C515667B;
+	Sun, 21 Jul 2024 10:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721539751; cv=none; b=uaX1p1rO84CL8hpNWKkLkZ2EwHYyS6tv/GwE8h9JR6khliJhOuvHMFNgM/cKw/sQmAvxvpbReTQ1AFPdO/d3oPC2wG8ZFROKGwAJBMJY3gH2gkof92qDZcUxkKOECSDxawBy0E8DHBVqAB8B030/e5yjSrHZsbjIgVC5M+aL6ys=
+	t=1721556965; cv=none; b=nZ0zvURfBk6tAZ0DXkdQrUrfCqw2utaUFAvVt/EH7graffhv/wCVN2NKpzhhXX9tztqaoLtnLnRcvsfLIfBf5fCRzckALxaUWz+FZ8dGVS5JnTxTN6mOydcG5kF2XDSvNqK6u2oM1734YaQV2o1lUDfpTSlsDA3c6BGrLM4kFFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721539751; c=relaxed/simple;
-	bh=DsqyEfIisDMSYLziYw0NB5TjXMJqLhfaN1hqRQ20XnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gY2f3hC4GgPyfz/k00PPW+qlolcJC1cFm4z9anUinTc4Isel3+se8YChPsSLxB9STmIPUKsUIgXjPfpfscXK6A+Sh6Ghlb4qFTFb+Qa3x/wk2cFclwsM0w0LUzOtCVvYUwjigdwrvA1JyyvRx1vLoTu90BKJmYEAttcB2xKJIZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jTfLlca5; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721539749; x=1753075749;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DsqyEfIisDMSYLziYw0NB5TjXMJqLhfaN1hqRQ20XnM=;
-  b=jTfLlca5zDy7CNKn6NiZgxt7IJ1NtNdZID+ETQw/YVbI7n5t7XF/Au6b
-   N1VHGVC0WhCurpl573m3bFvXnVrAc1dToF0GUYbzYBdmybK7HB1DlKOg5
-   gbx4krnWCL1xStCyhsDyZUkHaF3iIfcppqEU+tzD1k2aTeNLJQPErdMNd
-   sEANTiayeP5H5m7GWi3RIIW6EOjOjvpWza1NSmyuVloF0dhQIBpX1b76Y
-   twBjdMbTJDP7GHnvOHSOFGFUbhvb/Mqi6QPDea+olWhzEY+kS2VziQVi7
-   QEjyrwVcA/Tt/MjOwXiekuScNeYGt8XL7/cWuonroTrFB48N7dBmtxl+l
-   w==;
-X-CSE-ConnectionGUID: wS/Jj4nnRYO/OLQuydT4UA==
-X-CSE-MsgGUID: lHaXVgbSToS9pXw/fAZvrA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11139"; a="18995681"
-X-IronPort-AV: E=Sophos;i="6.09,225,1716274800"; 
-   d="scan'208";a="18995681"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2024 22:29:08 -0700
-X-CSE-ConnectionGUID: nOsJWBO+Se6uW4pf31zEpg==
-X-CSE-MsgGUID: w8er+ICMShG6y2/H5bsnkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,225,1716274800"; 
-   d="scan'208";a="56649120"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 20 Jul 2024 22:29:06 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sVP83-000jxW-26;
-	Sun, 21 Jul 2024 05:29:03 +0000
-Date: Sun, 21 Jul 2024 13:28:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Joshua Felmeden <jfelmeden@thegoodpenguin.co.uk>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: humidity: Add support for ENS210
-Message-ID: <202407211229.nP7WkSo5-lkp@intel.com>
-References: <20240719-ens21x-v4-2-6044e48a376a@thegoodpenguin.co.uk>
+	s=arc-20240116; t=1721556965; c=relaxed/simple;
+	bh=nlwMgdDh72Yy3m0/MxrsPqPbdxmP17LFKy0FuK0GHY8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VS74VOibt0wB5yrvw2qQm8yr1ktyoV2w7e/CT7KfVPqS6PGnlPjmpmPnGbTxGYtQkkRfmzaWLRiivrlYDE6eGURI9/S3Myj27ZzlHhR59d445ENsriN386H/YQxqVzBP0MWVayi359jHpuGMykKDiJb1+Vv19h/0v9BoYu4Vb4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=Nr+QFmvn; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+Received: from localhost (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 53FF041A6C;
+	Sun, 21 Jul 2024 12:15:54 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+	by localhost (disroot.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 1mgW2OmlWPGU; Sun, 21 Jul 2024 12:15:53 +0200 (CEST)
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1721556953; bh=nlwMgdDh72Yy3m0/MxrsPqPbdxmP17LFKy0FuK0GHY8=;
+	h=From:Subject:Date:To:Cc;
+	b=Nr+QFmvnI65K1NfdN6Bj4WEBdkhVPnTFJhKA2dFwIcd4eg4LDogKCcyJ3jyvYYYsj
+	 YKhmYcTjglit245dIV5CRh/3CZSgcIH+TwHDgvADqEd0nHJxWV4Pe4LMjAwue85vK8
+	 sN1nWLzMUiMFWSSLu00caghNWMDDfELcZn+3TpvjqdX7nPgdEZ3bZxtdygg2IS/pFC
+	 Tb4Ok1hGdHrLrLdwRqdTFc/YIRCt9T2O5RMnw7BR6btcyHkn3IcqJe+tGPQAeMRdSz
+	 B2hGzIaSU2S2zgh1yn22AFOBb+TYPgjI0+jFKluxd4JgM0RKK4MLFbQHGKpA7EEzEp
+	 lInPWF9WO2Mpg==
+Subject: [PATCH v3 0/3] iio: light: stk3310: stk3013 support
+Date: Sun, 21 Jul 2024 15:44:28 +0530
+Message-Id: <20240721-stk3310-v3-0-98fcb6f551a1@disroot.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240719-ens21x-v4-2-6044e48a376a@thegoodpenguin.co.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAITfnGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDc0MT3eKSbGNjQwNdM1OLNLM0Y5NEc0sLJaDqgqLUtMwKsEnRsbW1AA0
+ mNypZAAAA
+To: Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ Kaustabh Chakraborty <kauschluss@disroot.org>
 
-Hi Joshua,
+STK3013 is a part manufactured by Sensortek which is marketed as a [1]
+"Proximity Sensor". This part is available in several consumer mobile
+devices, including, but not limited to, Samsung Galaxy J7 Prime and
+Samsung Galaxy A2 Core.
 
-kernel test robot noticed the following build warnings:
+The existing ambient light sensor seemed suitable for this chip, and on
+enabling the driver, it was discovered that these "Proximity Sensors" had
+ambient light sensing capabilities as well.
 
-[auto build test WARNING on 1ebab783647a9e3bf357002d5c4ff060c8474a0a]
+The downstream kernel driver shipped with this phone by Samsung [2] exposes
+a sysfs interface for proximity sensing, but leaves out the light sensing
+features, hence there's no such functionality in userspace.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Felmeden/dt-bindings-iio-humidity-add-ENS210-sensor-family/20240719-210648
-base:   1ebab783647a9e3bf357002d5c4ff060c8474a0a
-patch link:    https://lore.kernel.org/r/20240719-ens21x-v4-2-6044e48a376a%40thegoodpenguin.co.uk
-patch subject: [PATCH v4 2/2] iio: humidity: Add support for ENS210
-config: x86_64-randconfig-122-20240721 (https://download.01.org/0day-ci/archive/20240721/202407211229.nP7WkSo5-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240721/202407211229.nP7WkSo5-lkp@intel.com/reproduce)
+The following patch series aims to add support for STK3013 as an
+ambient light/proximity sensor.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407211229.nP7WkSo5-lkp@intel.com/
+[1] https://www.sensortek.com.tw/index.php/en/products/optical-sensor/
+[2] https://github.com/samsungexynos7870/android_kernel_samsung_exynos7870/blob/master/drivers/sensors/stk3013.c
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/humidity/ens210.c:88:26: sparse: sparse: restricted __be32 degrades to integer
->> drivers/iio/humidity/ens210.c:88:53: sparse: sparse: incorrect type in initializer (different base types) @@     expected restricted __be32 [usertype] val_be @@     got unsigned int @@
-   drivers/iio/humidity/ens210.c:88:53: sparse:     expected restricted __be32 [usertype] val_be
-   drivers/iio/humidity/ens210.c:88:53: sparse:     got unsigned int
+Changes in v3:
+- added a cover letter to the patch series
+- added stk3310 as a fallback compatible
 
-vim +88 drivers/iio/humidity/ens210.c
+v2: https://lore.kernel.org/linux-iio/20240712152417.97726-1-kauschluss@disroot.org/
+Changes in v2:
+- added a commit to relax unknown chipid warning
+- missed "v2" in patches
 
-    84	
-    85	/* calculate 17-bit crc7 */
-    86	static u8 ens210_crc7(u32 val)
-    87	{
-  > 88		__be32 val_be = (cpu_to_be32(val & 0x1ffff) >> 0x8);
-    89	
-    90		return crc7_be(0xde, (u8 *)&val_be, 3) >> 1;
-    91	}
-    92	
+v1: https://lore.kernel.org/linux-iio/20240625165122.231182-1-kauschluss@disroot.org/
 
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+---
+Kaustabh Chakraborty (3):
+      iio: light: stk3310: relax chipid check warning
+      iio: light: stk3310: add support for stk3013
+      dt-bindings: iio: light: stk33xx: add compatible for stk3013
+
+ Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 13 +++++++++----
+ drivers/iio/light/stk3310.c                              |  7 ++++++-
+ 2 files changed, 15 insertions(+), 5 deletions(-)
+---
+base-commit: 62c97045b8f720c2eac807a5f38e26c9ed512371
+change-id: 20240714-stk3310-658f6f34a798
+
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Kaustabh Chakraborty <kauschluss@disroot.org>
+
 

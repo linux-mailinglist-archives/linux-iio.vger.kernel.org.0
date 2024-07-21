@@ -1,106 +1,124 @@
-Return-Path: <linux-iio+bounces-7770-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7771-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D4F9384BD
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2024 15:35:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EC5938603
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2024 21:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 414891C20929
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2024 13:35:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17E9EB20BF4
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Jul 2024 19:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9312416630A;
-	Sun, 21 Jul 2024 13:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CAB16A95B;
+	Sun, 21 Jul 2024 19:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C1fNyB/N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4gW2CGO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE26166302;
-	Sun, 21 Jul 2024 13:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FA1168489;
+	Sun, 21 Jul 2024 19:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721568920; cv=none; b=EOhd0uOyuSNyXHn5ducuO5WUawXCbHSlOg/Gi7BI2uj1XnljABeKDEUUt2VLT3JN8T6lGw+DU2ONfHK5mfFqT5hYaTDvvDR5vhecqWdPRDbgCeAI+dEMkAvs1pb+RFafFTrGMsgR6SVAzwytO17URsfF0P86pMoV6npgsp/6o9o=
+	t=1721591506; cv=none; b=CRoMMAYcEdDIlnUi3+RkbmcnQQ+EN4WxGDSAs64E56jCL1xWKSKkmPEY7XeILzE2380J0/xEWE1boNA8KFDvR5BiE6jT0BUTuWYrv2fY061fCU+a1kX/d7q8B2lEBT2CSh5PwxcQy/5Ba+3AdLoxPPsaAjg/Rrh8vNCycBNLd9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721568920; c=relaxed/simple;
-	bh=tGX2yKYZTIt3Q0s/YAylIxLVx4C+iRJs8AHqvQGziNY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FvmDzQtfCZ1XD1mkirAwecCL7cZq/miTeYRTVcSBKwfyswPCb6bVm3QVm7fgILBYdRx6nS0fk2RH+qUzbFGlefXsBG0AXP0XjqTOuV4x+a1+lCyGq0wrhGcZVG2Y+SeNNjDQonnyRTHKLL4FIHFbL0dHtKPcWDoa5tSZYKzUz2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C1fNyB/N; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1721591506; c=relaxed/simple;
+	bh=ojnD7l7U4WXhnJ21gEjURp81rgMITCfE9m6Uir1OCRo=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hPD5BmIhehh1NY+pJKP/34V2PowUwrmtdswBaBBQ8n5mu6dAht2L14qdKdjUh26RW3E2iNHt/4CTxiA1N+7LxjgukOYzRV6E7xwN4fdZFzEaH8grRHKYpqcQiedQIuTwRez4ZwOa6w6PlQrMvDDEPAar0jQj8QY7wdYW5sPMnfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4gW2CGO; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4266ed6c691so22225465e9.3;
-        Sun, 21 Jul 2024 06:35:18 -0700 (PDT)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5a3b866ebc9so1756450a12.3;
+        Sun, 21 Jul 2024 12:51:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721568917; x=1722173717; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tGX2yKYZTIt3Q0s/YAylIxLVx4C+iRJs8AHqvQGziNY=;
-        b=C1fNyB/NK9ZmQsA95C5bC+yvcx4j018IntY7vS7prETMNoNk3kXyAt3W49h6W/xswW
-         vs3GjaLe5ZPMRJ01YZ4slfrQTMslcqv2aHAWus1/fSJtenDerMtkFNZsdIMMkfSGAuCJ
-         Tuj6TywvOQ60qaRy5hxRx7a5LCcBYLzBGVioZLESwg3aQ1KoGqzJJVZy29VnMHcdDxWW
-         E1VetEGbbW4Xldg139XtyX+sLWiDx40oZgbJahj7KCOQpK+CWq4NsrW+sEBOS2adNuE3
-         fcIL5+UNQk9lElg+UABXVZU3inccEhYyZ49v/yJr3fVi1Z7y8QPO5rig56u8vRHJNSql
-         b3TQ==
+        d=gmail.com; s=20230601; t=1721591503; x=1722196303; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OXhJvxTh+FJgkdIwlUcd/DX9E13ffHM6KEgpQ3vYsc4=;
+        b=i4gW2CGOlQLSW4YbeRqaHZGECsat6WKbhtIH21w0aiZdjV29AKJlMOHvKdLzuOZu5C
+         M/RyMo+lBAgt/dN5rAa03gH0/Xa/5VEKuZdrCfCCB3kRLfWVe3jSLJ5FJTRuwjD2sD3x
+         BGZgb3YqKtl9FVlB019v2AbsUl5ajoR71jasJED9vkgSJN7QzpQHwrzwnNqB5z0sIuU+
+         n/FGnudDdNjENU0V14hX5ROijiVtAERAuGZjU+OslLCppocdHGCNi37oq3XU0KE36+9b
+         VYrQbXo/TrSvBNH4lwkDrXJYGcAVbsRhQD+cjzffYNwEz54/JRgL9roQOk+rU44iDvBC
+         JcYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721568917; x=1722173717;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tGX2yKYZTIt3Q0s/YAylIxLVx4C+iRJs8AHqvQGziNY=;
-        b=EefBArOXWZPT4A0bUlRdmYGQynQanT3F7RrlOjV23Y0OYeMg/Mmg/zO5NussstpZ/H
-         T4gSFlJrYCgRSKajIoL7++2lRc9J7yE4URk6qFsB/ZZE+wGr7EHDSnfmDZHut48YNGhe
-         +xRRvk6jak0LR6qS/HUzncBG3ZaatBS1i5SQbxDNmHHe4qJI5xs9+DTbLebPTEgM2aRo
-         tsDH8QGCwpPhmk+OhwjPwJGOVm2B+rT/Rem1pQp/7Q8aSEQ0mu+GIUdumaUoRQqu26Qs
-         B1+l502ojX0DfIT4Shdtzlx/5Kkvuy8gihS3gZaaBBPi/4Ez+Wxbua3GKEs2W1UCBabq
-         xkYw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmlSSit8FO7zgyUrsyp5XNHkLXjEwPypBDRGp04H7ePkoSz9eabOdoXXotOtW1XnfQhflegHliOs/k42MkjfvZBrTy/dYZHxYeG/O51hFEUxJxJ/1iH71PQbpqVW9hggt1PzP9i2zXrSca4rG2+ajAHLEQGe8Y500BfKxd0ef6i4woow==
-X-Gm-Message-State: AOJu0YxGbMvSMm2MIA/pMAj/QOXFxiot3UZfqJ4/Tjfu/Ftce/ew2GHv
-	fkX92QfMl1DU49q1QdRtR+2WTnO/OR01c+g1e0h2MZT6GlftgWEW
-X-Google-Smtp-Source: AGHT+IEcn84Cq+Gii4W3vduMEPECvPWBWA0iK6LpwbsePcodSCViWjBHOrRvWfwO2/rBchjlyKEZyg==
-X-Received: by 2002:a05:600c:cc6:b0:426:6f48:2dad with SMTP id 5b1f17b1804b1-427daa67d53mr29230125e9.35.1721568916747;
-        Sun, 21 Jul 2024 06:35:16 -0700 (PDT)
-Received: from [172.27.139.187] (c7.campus.utcluj.ro. [193.226.6.226])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3687868ac48sm5992440f8f.29.2024.07.21.06.35.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Jul 2024 06:35:16 -0700 (PDT)
-Message-ID: <8b616aec-06ce-462c-9161-1c05adcd1069@gmail.com>
-Date: Sun, 21 Jul 2024 16:35:14 +0300
+        d=1e100.net; s=20230601; t=1721591503; x=1722196303;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OXhJvxTh+FJgkdIwlUcd/DX9E13ffHM6KEgpQ3vYsc4=;
+        b=GQ+4t2YxQ45YwOPWGE6RFGQlsgFC0mzT5XlFhNp1IgzaJNP84oVYBWerjeyGqnvDc4
+         U9SlszOlNLvMjfX7tusGwlY3A/k63WyQQfvTEC6SwogdIDkYYHUcmnwhuOAqYl0T9yod
+         ullCrURbTrTXJ4sP9wnVMYoPPjSHfGHXcLLDoB6Ieu5JebSjn7kKl5bVbLEKvXUw50a7
+         UZN/fk4m6paaFt5X01Vj7uTuC3OR9QNbNaZzUyUB3xTWu95tIUI4fS8LZXaKbpap6gYX
+         tdwvgEfX76QsF/+wIlU/eOUM7BiO9a55q32611NtDmeBi7hX7zj2xjKDW78MH2fXfloe
+         dXRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXIEggjbNpI0x7Thuw34BmtsQnqZ6ZSWxHTtUTJ3vHxUMi9Pwa2zJ+6nQN4YhMkw+2f9FEpsxhQ7sYUty1Q3zRCIw4a6nNcVlwzrYD5mSoHwWNHFFCNmYdkk3t5qJGwqvWuZRlbgnFl7c4T0YmR7r85RjD2vAjOmGtuEDsHxSAzi5ejwQ==
+X-Gm-Message-State: AOJu0YzymlAf+q51Hzc+iDM2C27Cpj+Axptxi18k7JBkfeLTMs5VCCl+
+	cpOxyEXVVQujmtNuZ3YXoNiGdUl0aep2q3J5IzxtKfX2sVcjFf26
+X-Google-Smtp-Source: AGHT+IHBeqZ9eTSz0bR9gAKqLV6LP7oKJq2WEwJizcoWMFJtTzi9WLC2fIcSpqdgq0NvFVRH+UkYIA==
+X-Received: by 2002:a05:6402:528c:b0:5a2:1693:1a2e with SMTP id 4fb4d7f45d1cf-5a479871105mr3211157a12.18.1721591503002;
+        Sun, 21 Jul 2024 12:51:43 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:bc21:fb27:f4e6:6867])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5a30c2f8645sm4909057a12.72.2024.07.21.12.51.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Jul 2024 12:51:42 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Sun, 21 Jul 2024 21:51:40 +0200
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
+	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
+	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
+	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 01/10] iio: pressure: bmp280: Fix regmap for BMP280
+ device
+Message-ID: <20240721195140.GA325365@vamoiridPC>
+References: <20240711211558.106327-1-vassilisamir@gmail.com>
+ <20240711211558.106327-2-vassilisamir@gmail.com>
+ <20240720120429.46aea886@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/4] dt-bindings: iio: adc: ad7192: Add clock provider
-To: Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor@kernel.org>
-Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Michael Hennerich <michael.hennerich@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-References: <20240717212535.8348-1-alisa.roman@analog.com>
- <20240717212535.8348-4-alisa.roman@analog.com>
- <20240718-revisable-penpal-bc06ff6366ab@spud>
- <20240720144257.200b4511@jic23-huawei>
-Content-Language: en-US
-From: Alisa-Dariana Roman <alisadariana@gmail.com>
-In-Reply-To: <20240720144257.200b4511@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240720120429.46aea886@jic23-huawei>
 
-Thank you for suggesting and taking care of the tweaks!
+On Sat, Jul 20, 2024 at 12:04:29PM +0100, Jonathan Cameron wrote:
+> On Thu, 11 Jul 2024 23:15:49 +0200
+> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> 
+> > Up to now, the BMP280 device is using the regmap of the BME280 which
+> > has registers that exist only in the BME280 device.
+> > 
+> > Fixes: 14e8015f8569 ("iio: pressure: bmp280: split driver in logical parts")
+> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> This fix is for an ancient issue (2016) so I'm not going to rush it in
+> but will mark it for stable inclusion.  Advantage of taking this through
+> the main tree is we can move faster with the rest of the series.
+> So applied to the testing branch of iio.git which will be rebase on rc1
+> when available and become togreg for this cycle.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
 
-I just wanted to point out that some little stray changes found their way into this commit:
+Hi Jonathan,
 
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=42991c882f7f264ff8533c289edd015bbc0bc5a7
+No problem at all! Yes indeed it's an old fix and I am in no rush at all
+so th simpler the better :)
 
-Kind regards,
-Alisa-Dariana Roman.
-
+Cheers,
+Vasilis
 

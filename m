@@ -1,226 +1,267 @@
-Return-Path: <linux-iio+bounces-7801-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7802-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E6B9394CF
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 22:38:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2685939610
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 00:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44CFDB214B3
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 20:38:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467731F2259B
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 22:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075BD34CE5;
-	Mon, 22 Jul 2024 20:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE4D47F46;
+	Mon, 22 Jul 2024 22:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Id7/ujMy"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="SLKqfzRj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1168C1C6A8;
-	Mon, 22 Jul 2024 20:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12437376E7
+	for <linux-iio@vger.kernel.org>; Mon, 22 Jul 2024 22:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721680721; cv=none; b=J7jtppBJv++/TcOTYrSUBj2VJe0bZzj6RGoXNCwdoy71ZwSPuCgIq1QFsSS9dcmcW4e7Qup0mzmtt/1Wd5XsHLhaHvHIFk1+99GywdnMJhlA1wPYidhRCI9/Y/p5yl/i5XG/KfhCLzJEl2FmCiaKs428FriZ4myc+DLvVJ6ZPGk=
+	t=1721685689; cv=none; b=AJJzUUHL6pMHGy9Hb+/vMdpFQD1Bp7OzCOU0QbvlGI5xEVgpYhzOZTTpRj7CAbQGujRQ5gUTKuATr2QvS8AMYoj6CkD/Y66C00c89n1ncoDo4dXXNrnTkvy6E6W4tuoZbXK/HmLc9VfrjuXTRyqHbmUXS3YcJcCwmfOyGtgmwHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721680721; c=relaxed/simple;
-	bh=oj7iizPmx9Uac534TDn+iK6P7w94M6HPkwDq4rx9hbg=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LFMoY8ulZ5oEFBblQR3Sw7GwLctgkdcxJqz9vQVr0GUg8WSUlY4TCYfrTFm/zCFDxKE3bZFynPETlI+evvC2cWRv99gmqvBOeCdLfXVobnCCZUqH8s6oDaRzKqqH/e7BMBwPZyZucTfra8aFPEIiEhIUaG/s3Iig6FnJj0Yedas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Id7/ujMy; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5a156556fb4so3834288a12.3;
-        Mon, 22 Jul 2024 13:38:39 -0700 (PDT)
+	s=arc-20240116; t=1721685689; c=relaxed/simple;
+	bh=/ru1Bf2H9W5Kc4MG8k98hW6Wdp+YW4glK8+b1cnQf0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QS0CorKAbp9gAppVSfBNPSAdGU4uXCPCaxXLr3ilvpQbcfmnBQ0t4sSFZUNdDB0cjLwS4mhmL6z1rgy5wCBds07ckmwyYQCLuhvYrI4FX/Oylofrvi1f+YDZ5fNcNC+JeIlZdi6go0hbP5P8Tk0jLcD5edVFWMfMWmR1R2ZA/Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=SLKqfzRj; arc=none smtp.client-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-264545214efso573311fac.3
+        for <linux-iio@vger.kernel.org>; Mon, 22 Jul 2024 15:01:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721680718; x=1722285518; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4soFdbWI6WlrT388kgL0g2NFrLFysdOT5ujOm7GMw3s=;
-        b=Id7/ujMyhKAKwmpJOdwOw5rbUkbf8Q1EDVBgfaIkdvcOclPs8ovFZ7OfhKOCGvgnA+
-         Yv1rJFv+WurV/74a6gVdzFSxjuufuY6OfLh/en20WhnwG7lPE2WCiFIeWOUlMkTGuUJT
-         ox7IIncZ/m7hb7idUdEngpNy/rHcLe83litNUAjeXcqZFrCFhCFtXqu1BL22xR4HmOZZ
-         hDYKXG+SpHWBPJVQApBdLRK5y4cPNeGb88eyhpqDdW1z65EGmVGMyPx83cmxmwPQDpt1
-         JzkFMOjtCaFiJ3qHVGfOsXjW6D5RbtJaI3RryU8LCQ6xU6yYv/4nLiZQJVsWRo372Pfu
-         VTMA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1721685686; x=1722290486; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JAUt/ALexQ1OP269aBEvYCgpzgE08wFzuX6/YmuwpRo=;
+        b=SLKqfzRjxDwjqOUfDwK4XoDQ0BrEtqMUVuPUjv8CfvaQd2kUDJHEgkBVRWXahZ2zC0
+         SGUTZ52lfvyZYcxab7NsERSee2A9/2CvhTgjVMtEPj0EvGuX63I/86JfDj4tmYBTi7m9
+         Ghw4rQBG+vfOh3r72cvGtT+3hRETI0qvoGo1BtVkZZUUWJYXnzE2tUgp+RFQ/yMAqLUY
+         wU6dX2ao0KBRX/YsI+kbZ/vp2bp58st00Lk1KIK5YfoSW189DYqIBDAIq99YSYKfvErq
+         eWIPUBcSkxnoXVWnmCuB2N3sHSPs/bw/L+gEqqsnOWtcdwrBI4WIeljHfoZaCXPWnERA
+         06Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721680718; x=1722285518;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4soFdbWI6WlrT388kgL0g2NFrLFysdOT5ujOm7GMw3s=;
-        b=oh2ubs8Tbo9WG3nnfO50zG26ePY/BINfP0prXadWbZ1X2Xi0iM4WVu6ZhG1I5hZdJq
-         6UMCA+yB9IlYmzpTmipAlwvLqTX6taD3GZr2r3PGyjk/wMi6/KaNpIvlrAtEVxEP3URF
-         YyoNRUgBzEAZs0TE5DUTadQUvjK9MqhT48CAHMvEYsaMgIE6y7UE5CzzK6tLDtxut1+v
-         pN2i7eQVF9yzCiGCN5LmlgI3O16I3Bo8b6T71Vwa/kD4PyjHpKVel8riEz7CY+opqAVh
-         ncivWEoRHvT89Tuf0O3/MWKuYRVvt2NziNAjCzvBg0v5IQhhnNWJFwR9FWGvN1RViF7e
-         Qu1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUv/efd73qOwBWY0+51yHMF3Ful0VWIlevfdc/DJgHwBrp6/MX7sIDqFuRpl0YdQ+idyY/mIfarwttDnoGDvBUrTPcSFRC0dkTGOaLmrUwpuiSSL38BHzlbGbiBXqUJRaT0hjT4T6BUiNDnzErwrBVIQeE+a43l/7KmA65iNnNtxcsoBA==
-X-Gm-Message-State: AOJu0YzI3oWeWqy3YThyj0ps6AWd0qKBS4zJjKduJspWh6jgvORMAeRu
-	pY7ZF4yGAxKpTWJ5KXjSvqMaZnl4H6lsL0THOtnfR5FBpDkm0s5H
-X-Google-Smtp-Source: AGHT+IEhhx04/8t1mBceev5cCkjM+y02k9b7hRo6GVXAdNpYCApOTGeRgRIM6BPwR9J/nTo9Fh/47A==
-X-Received: by 2002:a50:c30f:0:b0:5a3:ca25:56e2 with SMTP id 4fb4d7f45d1cf-5a47afefb48mr4681612a12.23.1721680718093;
-        Mon, 22 Jul 2024 13:38:38 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:a09a:d3e:5e36:412c])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5a30af83e8dsm6610671a12.49.2024.07.22.13.38.36
+        d=1e100.net; s=20230601; t=1721685686; x=1722290486;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JAUt/ALexQ1OP269aBEvYCgpzgE08wFzuX6/YmuwpRo=;
+        b=cu/yRduvr2pgkizLPLTo9M2vV/PhHqCoQHIz9FEferydEaL8Z7pSYZxE0frsohK+Ms
+         u1zyxDkGFurOZnHbpoytiHQxSNO0F/xuDLe/1TgBV/AJLVGRkPk9X+Wr9NWshg+oZSpc
+         1BspYCt7wPneVeZqnVKSEUdgpDY0KReZf1oJ+VQN8eGxjRQ1RTXSQ3opl8XsfA+YFIrO
+         H/hpH8NjzXqF7OqgdcqghWgVK6TbfCNUkF34lPWJkXNAFRzaKZp7NalRMiTDDliPJFtx
+         XKVMWF7HgHFifTMuVXzwMmjvBnxoXh2IjthidbU1wVw3orMaRJ5sGT892/zAjPW1wa/2
+         DkAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU54yLOwOPxxDjE7duCdEAEJXbYNvMh9gNYtDgcZ3ah59mP7XkCbrTr15WgfN5kqUmc6B2EupPpZxgv37vmUeFUTljuZlg7b8dO
+X-Gm-Message-State: AOJu0YyHIiDtRn7lVXSLh8jzdh+GOBq9+Kfjav61FPKa2XnXK5rCBwYk
+	fFAPDwiL41mZuGQfTWJxFWl2/aRXXm3FqsJqMdDuIXgLr/BkJNiSi8PD4JyVHJI=
+X-Google-Smtp-Source: AGHT+IGuWCaXZ/ObQnICIEAQHJbPOg0EjyYDPnmTnt9i4wKh7ZomfYywEjSRg/G2c4JYj8HYTBA/Zg==
+X-Received: by 2002:a05:6870:4714:b0:261:fd5:aa34 with SMTP id 586e51a60fabf-263ab54f89amr4628410fac.30.1721685685764;
+        Mon, 22 Jul 2024 15:01:25 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-708f60a55e1sm1719911a34.11.2024.07.22.15.01.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jul 2024 13:38:37 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Mon, 22 Jul 2024 22:38:34 +0200
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
-	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
-	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
-	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 09/10] iio: pressure: bmp280: Add data ready trigger
- support
-Message-ID: <20240722203834.GA468105@vamoiridPC>
-References: <20240711211558.106327-1-vassilisamir@gmail.com>
- <20240711211558.106327-10-vassilisamir@gmail.com>
- <20240720123727.7598111b@jic23-huawei>
- <20240721235113.GF325365@vamoiridPC>
- <20240722203138.07b21300@jic23-huawei>
+        Mon, 22 Jul 2024 15:01:25 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: Mark Brown <broonie@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>,
+	linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH RFC v3 0/9] spi: axi-spi-engine: add offload support
+Date: Mon, 22 Jul 2024 16:57:07 -0500
+Message-ID: <20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240722203138.07b21300@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.14.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 22, 2024 at 08:31:38PM +0100, Jonathan Cameron wrote:
-> On Mon, 22 Jul 2024 01:51:13 +0200
-> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> 
-> > On Sat, Jul 20, 2024 at 12:37:27PM +0100, Jonathan Cameron wrote:
-> > > On Thu, 11 Jul 2024 23:15:57 +0200
-> > > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> > >   
-> > > > The BMP3xx and BMP5xx sensors have an interrupt pin which can be used as
-> > > > a trigger for when there are data ready in the sensor for pick up.
-> > > > 
-> > > > This use case is used along with NORMAL_MODE in the sensor, which allows
-> > > > the sensor to do consecutive measurements depending on the ODR rate value.
-> > > > 
-> > > > The trigger pin can be configured to be open-drain or push-pull and either
-> > > > rising or falling edge.
-> > > > 
-> > > > No support is added yet for interrupts for FIFO, WATERMARK and out of range
-> > > > values.
-> > > > 
-> > > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>  
-> > > 
-> > > A few minor things inline.
-> > > 
-> > > It might be worth thinking a bit about future fifo support as that can
-> > > get a little messy in a driver that already supports a dataready trigger.
-> > > We end up with no trigger being set meaning use the fifo.  Sometimes
-> > > it makes more sense to not support triggers at all.
-> > > 
-> > > What you have here is fine though as we have a bunch of drivers
-> > > that grew dataready trigger support before adding fifos later
-> > > particularly as often it's a 'new chip' that brings the fifo
-> > > support but maintains backwards compatibility if you don't use it.
-> > >   
-> > 
-> > Hi Jonathan,
-> > 
-> > Thank you very much for your thorough review again!
-> > 
-> > What I could do to make the code even better to be able to accept
-> > FIFO irq support are the following:
-> > 
-> > 1) in the bmp{380/580}_trigger_handler() currently, the data registers
-> > are being read. What I could do is to move the reading of registers
-> > to a separe function like bmpxxx_drdy_trigger_handler() and calling
-> > it inside the bmp{380/580}_trigger_handler() when I have DRDY or
-> > sysfs irq. In order to check the enabled irqs I propose also no.2
-> 
-> You shouldn't get to the trigger_handler by other paths.  But sure 
-> a bit of code reuse might make sense if fifo read out path is same
-> as for other data reads.  Superficially it looks totally different
-> on the bmp380 though as there is a separate fifo register.
-> 
+There is a recap at the end of this cover letter for those not familiar
+with the previous discussions. For those that are, we'll get right to
+the changes since the last version.
 
-So, I don't mean getting into the trigger_handler by other paths. I will
-always end up in the trigger_handler and then, depending on the interrupt
-that was triggered (DRDY, FIFO, etc...) I choose different actions.
+In RFC v2, most of the discussion was around the DT bindings, so that
+is what has mostly changed since then. I think we mostly settled on
+what properties are needed and where they should go. There are probably
+still some details to work out (see PATCH 5/9 for more discussion) but
+I think we have the big-picture stuff figured out.
 
-> > 
-> > 2) in the following bmp{380/580}_trigger_probe() functions instead of
-> > just doing:
-> > 
-> >        irq = fwnode_irq_get_byname(fwnode, "DRDY");
-> >        if (!irq) {
-> >                dev_err(data->dev, "No DRDY interrupt found\n");
-> >                return -ENODEV;
-> >        }
-> > 
-> > I could also use some type of variable like we do for the active
-> > channels in order to track "active/existing irqs".
-> 
-> I think there is only one IRQ on the 380 at least.  So
-> you should only request it once for this driver.  Then software
-> gets to configure what it is for.
-> 
-> However it shouldn't be called DRDY for these parts at least. It's
-> just INT on the datasheet.
-> The interrupt control register value will tell you what is enabled.
-> No need to track it separately.
-> 
+Here is the actual devicetree used for testing to show how it all
+comes together:
 
-So I am a bit confused. Indeed, BMP380 has only irq line. So I understand
-why I should call it INT. The actual IRQ inside the chip that will be 
-triggered needs to be configured by software. I do it through the
-bmp{3/5}80_int_config() function. How am I supposed to know
-which IRQ to enable? Options are:
+	trigger_clk: adc-trigger-clock {
+		compatible = "pwm-clock";
+		#clock-cells = <0>;
+		#trigger-source-cells = <0>;
+		pwms = <&adc_trigger 0 10000>;
+	};
 
-	a) DRDY only
-	b) FIFO only
-	c) both
+	...
 
-How can I inform the driver about which to enable? Shouldn't this go
-through the device-tree?
+	axi_spi_engine_0: spi@44a00000 {
+		compatible = "adi,axi-spi-engine-1.00.a";
+		reg = <0x44a00000 0x1000>;
+		interrupt-parent = <&intc>;
+		interrupts = <0 56 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&clkc 15>, <&spi_clk>;
+		clock-names = "s_axi_aclk", "spi_clk";
 
-> If you mean track the one from the poll function registered for
-> handling triggers - that's an internal detail but you would indeed
-> need to track in your data structures whether that's the trigger
-> currently being used or not (easy to do by comparing iio_dev->trig
-> with a pointer for each trigger in iio_priv() data - so should be no
-> need for separate tracking.
-> 
+		/* offload-specific properties */
+		#spi-offload-cells = <1>;
+		dmas = <&rx_dma 0>;
+		dma-names = "offload0-rx";
+		trigger-sources = <&trigger_clk>;
 
-My idea is that there is one trigger_handler which inside you check
-which interrupt triggered and you choose which path to choose. If that's
-wrong, do you know any specific driver that implements it in the correct
-way? Because in my mind, the iio_dev->trig is one and just inside the
-handler, different functions are called.
+		#address-cells = <1>;
+		#size-cells = <0>;
 
-> Jonathan
-> 
-> 
+		ad7986: adc@0 {
+			compatible = "adi,ad7986";
+			reg = <0>;
+			spi-max-frequency = <111111111>; /* 9 ns period */
+			adi,spi-mode = "single";
+			avdd-supply = <&eval_u12>;
+			dvdd-supply = <&eval_u12>;
+			vio-supply = <&eval_u3>;
+			bvdd-supply = <&eval_u10>;
+			ref-supply = <&eval_u5>;
+			turbo-gpios = <&gpio0 87 GPIO_ACTIVE_HIGH>;
 
-Thanks for the feedback :)
+			spi-offloads = <&axi_spi_engine_0 0>;
+		};
+	};
 
-Cheers,
-Vasilis
+A working branch complete with extra hacks can be found at [1].
 
-> 
-> > 
-> > Like this it would be easier to track the active irqs of the sensor.
-> > 
-> > Let me know what you think, or if I manage to have time I might send
-> > a v2 with those changes even earlier :)
-> > 
-> > Cheers,
-> > Vasilis
-> > 
-> 
+Also, I took a detour looking into what it would take to get Martin
+Sperl's Raspberry Pi DMA offload proof-of-concept [2] updated to work
+with this. This way we could have a second user to help guide the
+design process. Given all of the SPI hardware quirks on that platform
+and the unsolved technical issues, like how to get accurate time delays
+and how to work around the 32-bit DMA word limitation, it would be more
+work than I have time for (at least without someone sponsoring the work).
+
+[1]: https://github.com/dlech/linux/tree/axi-spi-engine-offload-v3
+[2]: https://github.com/msperl/spi-bcm2835/blob/refactor_dmachain_for_prepared_messages/spi-bcm2835dma.c
+
+---
+Changes in v3:
+- See individual patches for more detailed changes.
+- Reworked DT bindings to have things physically connected to the SPI
+  controller be properties of the SPI controller and use more
+  conventional provider/consumer properties.
+- Added more SPI APIs for peripheral drivers to use to get auxillary
+  offload resources, like triggers.
+- Link to v2: https://lore.kernel.org/r/20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com
+
+---
+
+As a recap, here is the background and end goal of this series:
+
+The AXI SPI Engine is a SPI controller that has the ability to record a
+series of SPI transactions and then play them back using a hardware
+trigger. This allows operations to be performed, repeating many times,
+without any CPU intervention. This is needed for achieving high data
+rates (millions of samples per second) from ADCs and DACs that are
+connected via a SPI bus.
+
+The offload hardware interface consists of a trigger input and a data
+output for the RX data. These are connected to other hardware external
+to the SPI controller.
+
+To record one or more transactions, commands and TX data are written
+to memories in the controller (RX buffer is not used since RX data gets
+streamed to an external sink). This sequence of transactions can then be
+played back when the trigger input is asserted.
+
+This series includes core SPI support along with the first SPI
+controller (AXI SPI Engine) and SPI peripheral (AD7944 ADC) that use
+them. This enables capturing analog data at 2 million samples per
+second.
+
+The hardware setup looks like this:
+
++-------------------------------+   +------------------+
+|                               |   |                  |
+|  SOC/FPGA                     |   |  AD7944 ADC      |
+|  +---------------------+      |   |                  |
+|  | AXI SPI Engine      |      |   |                  |
+|  |             SPI Bus ============ SPI Bus          |
+|  |                     |      |   |                  |
+|  |  +---------------+  |      |   |                  |
+|  |  | Offload 0     |  |      |   +------------------+
+|  |  |   RX DATA OUT > > > >   |
+|  |  |    TRIGGER IN < < <  v  |
+|  |  +---------------+  | ^ v  |
+|  +---------------------+ ^ v  |
+|  | AXI PWM             | ^ v  |
+|  |                 CH0 > ^ v  |
+|  +---------------------+   v  |
+|  | AXI DMA             |   v  |
+|  |                 CH0 < < <  |
+|  +---------------------+      |
+|                               |
++-------------------------------+
+
+To: Mark Brown <broonie@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Nuno Sá <nuno.sa@analog.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: David Jander <david@protonic.nl>
+Cc: Martin Sperl <kernel@martin.sperl.org>
+Cc:  <linux-spi@vger.kernel.org>
+Cc:  <devicetree@vger.kernel.org>
+Cc:  <linux-kernel@vger.kernel.org>
+Cc:  <linux-iio@vger.kernel.org>
+
+---
+David Lechner (9):
+      spi: dt-bindings: add spi-offload properties
+      spi: add basic support for SPI offloading
+      spi: add support for hardware triggered offload
+      spi: add offload TX/RX streaming APIs
+      spi: dt-bindings: axi-spi-engine: document spi-offloads
+      spi: axi-spi-engine: implement offload support
+      iio: buffer-dmaengine: generalize requesting DMA channel
+      dt-bindings: iio: adc: adi,ad7944: add SPI offload properties
+      iio: adc: ad7944: add support for SPI offload
+
+ .../devicetree/bindings/iio/adc/adi,ad7944.yaml    |   3 +
+ .../bindings/spi/adi,axi-spi-engine.yaml           |  41 +++
+ .../devicetree/bindings/spi/spi-controller.yaml    |   5 +
+ .../bindings/spi/spi-peripheral-props.yaml         |  11 +
+ drivers/iio/adc/ad7944.c                           | 173 ++++++++++-
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c |  39 ++-
+ drivers/iio/dac/adi-axi-dac.c                      |   3 +-
+ drivers/spi/spi-axi-spi-engine.c                   | 341 ++++++++++++++++++++-
+ drivers/spi/spi.c                                  | 226 +++++++++++++-
+ include/linux/iio/buffer-dmaengine.h               |  11 +-
+ include/linux/spi/spi.h                            | 169 ++++++++++
+ 11 files changed, 989 insertions(+), 33 deletions(-)
+---
+base-commit: 7a891f6a5000f7658274b554cf993dd56aa5adbc
+change-id: 20240510-dlech-mainline-spi-engine-offload-2-afce3790b5ab
 

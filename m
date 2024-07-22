@@ -1,151 +1,226 @@
-Return-Path: <linux-iio+bounces-7800-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7801-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8EB93949B
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 22:07:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E6B9394CF
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 22:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D6A11C216E0
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 20:07:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44CFDB214B3
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 20:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47551CAAC;
-	Mon, 22 Jul 2024 20:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075BD34CE5;
+	Mon, 22 Jul 2024 20:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqh7P3D+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Id7/ujMy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D86717BD5;
-	Mon, 22 Jul 2024 20:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1168C1C6A8;
+	Mon, 22 Jul 2024 20:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721678844; cv=none; b=sXjUIBcn07y3joz3rdhiAbAoA1HZbnSoU8QQNOTJWSWXQMN6bhI/QQk58qwPR9OTw5F42tQeINEMztxkUS2MUXAxmY/B43dvVxr1gG9Fk7bBIcER1G59ZVKwau0fvvK459xSrvtFiCM1nBitZJ41NgstC8bSO6pT2mcsscWHKjY=
+	t=1721680721; cv=none; b=J7jtppBJv++/TcOTYrSUBj2VJe0bZzj6RGoXNCwdoy71ZwSPuCgIq1QFsSS9dcmcW4e7Qup0mzmtt/1Wd5XsHLhaHvHIFk1+99GywdnMJhlA1wPYidhRCI9/Y/p5yl/i5XG/KfhCLzJEl2FmCiaKs428FriZ4myc+DLvVJ6ZPGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721678844; c=relaxed/simple;
-	bh=kraaCRPRs6itOqlil/PUf/b33ue4X1ut9QGclpKorW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YKCT5CkYqvIXsVFnGvppcdKnzvzfIYomLC5TwMVQswr7gU9yFMpHKSZrKFKoWfzYSjpjr7J3YreWs4RoOWUJrYmXSSH0Oxz0d612+hEdp91tiCgCw9HB884NjIJ7NN8rVj5FPxCCtqivcWBMGA3iA5vrTZjgy5trYPY7/Dmrui8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqh7P3D+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB932C116B1;
-	Mon, 22 Jul 2024 20:07:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721678844;
-	bh=kraaCRPRs6itOqlil/PUf/b33ue4X1ut9QGclpKorW0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gqh7P3D+sM193fxeGY6bEuMudt4D75N7f6tpTppaFk8oqYPoVF+6iAE/2kmGVUat3
-	 nxoLmy7e+003BbPO0tU62+AzK0pfU3LrHyibmgH4ScgORB1hhAgRN0DsEe38o/K5Va
-	 QtjCyeH1slEQVt/ckCl6yoY3v7IijfyMoN4zO2qWR2iSclUSUBOmRCBj3rR5YvpK84
-	 cdnnF0gh0HElWcmqK5YWtN7cb0w7sVRvvRrQoJyR3PrDhei5nN9r8cH3l8HraXM6lq
-	 MSRlgg3perOeet6Wj8hcqcSrXkigWoiQ/DpPWONqUn4jeRDbFe8TEIzKRZFEzj5Dm6
-	 YzUwhFnH+/saQ==
-Date: Mon, 22 Jul 2024 21:07:16 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matteo Martelli <matteomartelli3@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marius Cristea <marius.cristea@microchip.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] iio: ABI: generalize shunt_resistor attribute
-Message-ID: <20240722210716.09ca4223@jic23-huawei>
-In-Reply-To: <20240722-iio-pac1921-v3-2-05dc9916cb33@gmail.com>
-References: <20240722-iio-pac1921-v3-0-05dc9916cb33@gmail.com>
-	<20240722-iio-pac1921-v3-2-05dc9916cb33@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1721680721; c=relaxed/simple;
+	bh=oj7iizPmx9Uac534TDn+iK6P7w94M6HPkwDq4rx9hbg=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LFMoY8ulZ5oEFBblQR3Sw7GwLctgkdcxJqz9vQVr0GUg8WSUlY4TCYfrTFm/zCFDxKE3bZFynPETlI+evvC2cWRv99gmqvBOeCdLfXVobnCCZUqH8s6oDaRzKqqH/e7BMBwPZyZucTfra8aFPEIiEhIUaG/s3Iig6FnJj0Yedas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Id7/ujMy; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5a156556fb4so3834288a12.3;
+        Mon, 22 Jul 2024 13:38:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721680718; x=1722285518; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4soFdbWI6WlrT388kgL0g2NFrLFysdOT5ujOm7GMw3s=;
+        b=Id7/ujMyhKAKwmpJOdwOw5rbUkbf8Q1EDVBgfaIkdvcOclPs8ovFZ7OfhKOCGvgnA+
+         Yv1rJFv+WurV/74a6gVdzFSxjuufuY6OfLh/en20WhnwG7lPE2WCiFIeWOUlMkTGuUJT
+         ox7IIncZ/m7hb7idUdEngpNy/rHcLe83litNUAjeXcqZFrCFhCFtXqu1BL22xR4HmOZZ
+         hDYKXG+SpHWBPJVQApBdLRK5y4cPNeGb88eyhpqDdW1z65EGmVGMyPx83cmxmwPQDpt1
+         JzkFMOjtCaFiJ3qHVGfOsXjW6D5RbtJaI3RryU8LCQ6xU6yYv/4nLiZQJVsWRo372Pfu
+         VTMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721680718; x=1722285518;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4soFdbWI6WlrT388kgL0g2NFrLFysdOT5ujOm7GMw3s=;
+        b=oh2ubs8Tbo9WG3nnfO50zG26ePY/BINfP0prXadWbZ1X2Xi0iM4WVu6ZhG1I5hZdJq
+         6UMCA+yB9IlYmzpTmipAlwvLqTX6taD3GZr2r3PGyjk/wMi6/KaNpIvlrAtEVxEP3URF
+         YyoNRUgBzEAZs0TE5DUTadQUvjK9MqhT48CAHMvEYsaMgIE6y7UE5CzzK6tLDtxut1+v
+         pN2i7eQVF9yzCiGCN5LmlgI3O16I3Bo8b6T71Vwa/kD4PyjHpKVel8riEz7CY+opqAVh
+         ncivWEoRHvT89Tuf0O3/MWKuYRVvt2NziNAjCzvBg0v5IQhhnNWJFwR9FWGvN1RViF7e
+         Qu1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUv/efd73qOwBWY0+51yHMF3Ful0VWIlevfdc/DJgHwBrp6/MX7sIDqFuRpl0YdQ+idyY/mIfarwttDnoGDvBUrTPcSFRC0dkTGOaLmrUwpuiSSL38BHzlbGbiBXqUJRaT0hjT4T6BUiNDnzErwrBVIQeE+a43l/7KmA65iNnNtxcsoBA==
+X-Gm-Message-State: AOJu0YzI3oWeWqy3YThyj0ps6AWd0qKBS4zJjKduJspWh6jgvORMAeRu
+	pY7ZF4yGAxKpTWJ5KXjSvqMaZnl4H6lsL0THOtnfR5FBpDkm0s5H
+X-Google-Smtp-Source: AGHT+IEhhx04/8t1mBceev5cCkjM+y02k9b7hRo6GVXAdNpYCApOTGeRgRIM6BPwR9J/nTo9Fh/47A==
+X-Received: by 2002:a50:c30f:0:b0:5a3:ca25:56e2 with SMTP id 4fb4d7f45d1cf-5a47afefb48mr4681612a12.23.1721680718093;
+        Mon, 22 Jul 2024 13:38:38 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:a09a:d3e:5e36:412c])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5a30af83e8dsm6610671a12.49.2024.07.22.13.38.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jul 2024 13:38:37 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Mon, 22 Jul 2024 22:38:34 +0200
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
+	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
+	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
+	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 09/10] iio: pressure: bmp280: Add data ready trigger
+ support
+Message-ID: <20240722203834.GA468105@vamoiridPC>
+References: <20240711211558.106327-1-vassilisamir@gmail.com>
+ <20240711211558.106327-10-vassilisamir@gmail.com>
+ <20240720123727.7598111b@jic23-huawei>
+ <20240721235113.GF325365@vamoiridPC>
+ <20240722203138.07b21300@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240722203138.07b21300@jic23-huawei>
 
-On Mon, 22 Jul 2024 12:03:19 +0200
-Matteo Martelli <matteomartelli3@gmail.com> wrote:
-
-> Move ABI documentation for custom shunt resistor attributes into the
-> generic iio documentation file. Exception for pac1934: leave it
-> untouched since it does not comply with common iio ABI generalization.
+On Mon, Jul 22, 2024 at 08:31:38PM +0100, Jonathan Cameron wrote:
+> On Mon, 22 Jul 2024 01:51:13 +0200
+> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 > 
-> Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
-This stands on it's own even if the driver needs a minor tweak or two yet.
-Hence in the interests of not having to remember I've read it before,
-I've queued this patch up;
-
-
-Applied to the testing branch of iio.git. That will be rebased on rc1 once
-available and pushed out as togreg for linux-next to pick it up.
-
-Thanks,
-
-Jonathan
-
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio             |  8 ++++++++
->  Documentation/ABI/testing/sysfs-bus-iio-adc-max9611 | 17 -----------------
->  Documentation/ABI/testing/sysfs-bus-iio-ina2xx-adc  |  9 ---------
->  3 files changed, 8 insertions(+), 26 deletions(-)
+> > On Sat, Jul 20, 2024 at 12:37:27PM +0100, Jonathan Cameron wrote:
+> > > On Thu, 11 Jul 2024 23:15:57 +0200
+> > > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> > >   
+> > > > The BMP3xx and BMP5xx sensors have an interrupt pin which can be used as
+> > > > a trigger for when there are data ready in the sensor for pick up.
+> > > > 
+> > > > This use case is used along with NORMAL_MODE in the sensor, which allows
+> > > > the sensor to do consecutive measurements depending on the ODR rate value.
+> > > > 
+> > > > The trigger pin can be configured to be open-drain or push-pull and either
+> > > > rising or falling edge.
+> > > > 
+> > > > No support is added yet for interrupts for FIFO, WATERMARK and out of range
+> > > > values.
+> > > > 
+> > > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>  
+> > > 
+> > > A few minor things inline.
+> > > 
+> > > It might be worth thinking a bit about future fifo support as that can
+> > > get a little messy in a driver that already supports a dataready trigger.
+> > > We end up with no trigger being set meaning use the fifo.  Sometimes
+> > > it makes more sense to not support triggers at all.
+> > > 
+> > > What you have here is fine though as we have a bunch of drivers
+> > > that grew dataready trigger support before adding fifos later
+> > > particularly as often it's a 'new chip' that brings the fifo
+> > > support but maintains backwards compatibility if you don't use it.
+> > >   
+> > 
+> > Hi Jonathan,
+> > 
+> > Thank you very much for your thorough review again!
+> > 
+> > What I could do to make the code even better to be able to accept
+> > FIFO irq support are the following:
+> > 
+> > 1) in the bmp{380/580}_trigger_handler() currently, the data registers
+> > are being read. What I could do is to move the reading of registers
+> > to a separe function like bmpxxx_drdy_trigger_handler() and calling
+> > it inside the bmp{380/580}_trigger_handler() when I have DRDY or
+> > sysfs irq. In order to check the enabled irqs I propose also no.2
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index 7cee78ad4108..935d67fd1a43 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -2289,3 +2289,11 @@ KernelVersion:	6.7
->  Contact:	linux-iio@vger.kernel.org
->  Description:
->  		List of available timeout value for tap gesture confirmation.
-> +
-> +What:		/sys/.../iio:deviceX/in_shunt_resistor
-> +What:		/sys/.../iio:deviceX/in_current_shunt_resistor
-> +What:		/sys/.../iio:deviceX/in_power_shunt_resistor
-> +KernelVersion:	6.10
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		The value of current sense resistor in Ohms.
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-max9611 b/Documentation/ABI/testing/sysfs-bus-iio-adc-max9611
-> deleted file mode 100644
-> index 6d2d2b094941..000000000000
-> --- a/Documentation/ABI/testing/sysfs-bus-iio-adc-max9611
-> +++ /dev/null
-> @@ -1,17 +0,0 @@
-> -What:		/sys/bus/iio/devices/iio:deviceX/in_power_shunt_resistor
-> -Date:		March 2017
-> -KernelVersion:	4.12
-> -Contact:	linux-iio@vger.kernel.org
-> -Description: 	The value of the shunt resistor used to compute power drain on
-> -                common input voltage pin (RS+). In Ohms.
-> -
-> -What:		/sys/bus/iio/devices/iio:deviceX/in_current_shunt_resistor
-> -Date:		March 2017
-> -KernelVersion:	4.12
-> -Contact:	linux-iio@vger.kernel.org
-> -Description: 	The value of the shunt resistor used to compute current flowing
-> -                between RS+ and RS- voltage sense inputs. In Ohms.
-> -
-> -These attributes describe a single physical component, exposed as two distinct
-> -attributes as it is used to calculate two different values: power load and
-> -current flowing between RS+ and RS- inputs.
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-ina2xx-adc b/Documentation/ABI/testing/sysfs-bus-iio-ina2xx-adc
-> index 8916f7ec6507..8dbca113112d 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio-ina2xx-adc
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-ina2xx-adc
-> @@ -13,12 +13,3 @@ Description:
->  		available for reading data. However, samples can be occasionally skipped
->  		or repeated, depending on the beat between the capture and conversion
->  		rates.
-> -
-> -What:		/sys/bus/iio/devices/iio:deviceX/in_shunt_resistor
-> -Date:		December 2015
-> -KernelVersion:	4.4
-> -Contact:	linux-iio@vger.kernel.org
-> -Description:
-> -		The value of the shunt resistor may be known only at runtime fom an
-> -		eeprom content read by a client application. This attribute allows to
-> -		set its value in ohms.
+> You shouldn't get to the trigger_handler by other paths.  But sure 
+> a bit of code reuse might make sense if fifo read out path is same
+> as for other data reads.  Superficially it looks totally different
+> on the bmp380 though as there is a separate fifo register.
 > 
 
+So, I don't mean getting into the trigger_handler by other paths. I will
+always end up in the trigger_handler and then, depending on the interrupt
+that was triggered (DRDY, FIFO, etc...) I choose different actions.
+
+> > 
+> > 2) in the following bmp{380/580}_trigger_probe() functions instead of
+> > just doing:
+> > 
+> >        irq = fwnode_irq_get_byname(fwnode, "DRDY");
+> >        if (!irq) {
+> >                dev_err(data->dev, "No DRDY interrupt found\n");
+> >                return -ENODEV;
+> >        }
+> > 
+> > I could also use some type of variable like we do for the active
+> > channels in order to track "active/existing irqs".
+> 
+> I think there is only one IRQ on the 380 at least.  So
+> you should only request it once for this driver.  Then software
+> gets to configure what it is for.
+> 
+> However it shouldn't be called DRDY for these parts at least. It's
+> just INT on the datasheet.
+> The interrupt control register value will tell you what is enabled.
+> No need to track it separately.
+> 
+
+So I am a bit confused. Indeed, BMP380 has only irq line. So I understand
+why I should call it INT. The actual IRQ inside the chip that will be 
+triggered needs to be configured by software. I do it through the
+bmp{3/5}80_int_config() function. How am I supposed to know
+which IRQ to enable? Options are:
+
+	a) DRDY only
+	b) FIFO only
+	c) both
+
+How can I inform the driver about which to enable? Shouldn't this go
+through the device-tree?
+
+> If you mean track the one from the poll function registered for
+> handling triggers - that's an internal detail but you would indeed
+> need to track in your data structures whether that's the trigger
+> currently being used or not (easy to do by comparing iio_dev->trig
+> with a pointer for each trigger in iio_priv() data - so should be no
+> need for separate tracking.
+> 
+
+My idea is that there is one trigger_handler which inside you check
+which interrupt triggered and you choose which path to choose. If that's
+wrong, do you know any specific driver that implements it in the correct
+way? Because in my mind, the iio_dev->trig is one and just inside the
+handler, different functions are called.
+
+> Jonathan
+> 
+> 
+
+Thanks for the feedback :)
+
+Cheers,
+Vasilis
+
+> 
+> > 
+> > Like this it would be easier to track the active irqs of the sensor.
+> > 
+> > Let me know what you think, or if I manage to have time I might send
+> > a v2 with those changes even earlier :)
+> > 
+> > Cheers,
+> > Vasilis
+> > 
+> 
 

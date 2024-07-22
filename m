@@ -1,200 +1,128 @@
-Return-Path: <linux-iio+bounces-7777-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7778-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1B29389A2
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 09:08:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B199389E0
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 09:15:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D59F1C20E7A
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 07:08:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7A281F2182D
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Jul 2024 07:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCB71BC3F;
-	Mon, 22 Jul 2024 07:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7603B3A1B6;
+	Mon, 22 Jul 2024 07:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AQiPduTx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WMbN+HKh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DAB1BC3C
-	for <linux-iio@vger.kernel.org>; Mon, 22 Jul 2024 07:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC0E38DCC;
+	Mon, 22 Jul 2024 07:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721632122; cv=none; b=mjoLJ489oe384rod0DA/3m39Vca2B/FUl+qCjBoJleE7ehg5xvHnLtppgDPP0my/AX0ll8eNbmpJpf0wP3u1ai1ySKCyiQuCv5MBH3yum3ceem98oF/A2bLkUV8uVZR+njQOsmlsEynVvxM3LvSuFiPW/naaEHkn7WUk3LJr4A0=
+	t=1721632482; cv=none; b=mYkF+g8wMQZXlDnypmXAJo2kAc4zA9L96CUEFLHuaFy+UBBXBIwrT2qsjBDjZ6Il+w0TbxGXz1SUWUJXNrEly6eY+g0J0T/PTJ+JRSUvkTxyUAwooa466CF9wOfpv/q7FktPAoXb0zUSSBzZg7ymkcF2jAchtd8Zgm1AVOUIHAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721632122; c=relaxed/simple;
-	bh=9ykHrbxTN5qHzRq35AKNPk+S4OILqbeDYiq9UF0Huiw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sZ6XESgt5Hh5C8pe1ev4x8iTdvjGfCe/8DqnHuS3XsyZMdu9KHZwBrIgdNAdamex9AXU/XIgJFpr1Ej5VbvrBrf3cXzijR6a8Q/50UE4SrvuEl/cT40EDKdsur2bqD5fjiZ3vmPxw22wr8kMVMgJU7l6arlOYjDEeyPYn5vMyCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AQiPduTx; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1721632482; c=relaxed/simple;
+	bh=tr1O+hPwM0KJEn4ww9SJW6izyACl1EooSgjgX+2CExA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KjIp+fe92I8V8j2g8xD/enOpUock3J7BONiO+fClC9xK1FE3YznvnynOC8F2k+04EaJXYxVRwht23JbYikNNLRtKbw/pjZQev5eCV2VhZWLl6O0wDuobnZruTIVxBZHgVtM5BwlI+I2kOpmWwPSbuWZMNd9vqjnpRdcTrxUJ4lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WMbN+HKh; arc=none smtp.client-ip=209.85.160.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a77e7420697so441604666b.1
-        for <linux-iio@vger.kernel.org>; Mon, 22 Jul 2024 00:08:40 -0700 (PDT)
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-44bd4920ef8so20056851cf.0;
+        Mon, 22 Jul 2024 00:14:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721632119; x=1722236919; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oBUR++UY2rPJoRaCksyFBU1M6Sc5em0Zhwl6nLAXkz0=;
-        b=AQiPduTxK014aNX22pQOEUv/9Xaa+/hBbD7pdnqgRM6gV01p1jhdnxH6hpiUVNXLB4
-         RDWflwM/mYrZkx5OPp/1EIPpsf2aUMYFjsEiP1eDP+VnMGU62FUXVVIvTkzMcyv3o6Ly
-         tPtj63cvlcIr77IIYSrGuTqI8rxlUx6PNnrsxJRNRTkVTgQ1K9OAc3DgfWTIDNZ9PudR
-         9mKkQhb0TeirDWisMMlLpDrvJ/Ot8o3XrLCaJh++McZZRex6WwBjOlxnG3NwoZI/ST9u
-         ww1jJXrSpStSwyLgp3ORn/HrvT7uFCerDc8fPg+NxmZoOpY8Z+5xDKWvj/5evZbYNIAz
-         kP2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721632119; x=1722236919;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=gmail.com; s=20230601; t=1721632479; x=1722237279; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=oBUR++UY2rPJoRaCksyFBU1M6Sc5em0Zhwl6nLAXkz0=;
-        b=FhuoDJEuZwDV7EEcNFz5P3+D1V96mC0FTUDp+0MxQTCpiICS2o/bxEv6zZGSXX2/4Q
-         mix/wLFq+2au+3Yx08zonXw3BHI2xk7z2ZwAHkO6Y8mHMOEV+Vga7WfYkokTsWBehjxr
-         XBazhMNXk3A/Bpi3k9kr+AJkOsrmgdGrOTmLof56C1Ce9J2mnOBd39TR8UtICqV426tK
-         OI1RhIe9+hg9WrINsWkXE8m/aT7VZCcsrcqR4Fx0rem38933lZWKDAu0CGBTz47LnC/B
-         +Ke5I841O7FEAWK2iP/iXd/luPFynjFBB8fCpjerCsRLl7IgrL9fdYwim/hxH81VKfr2
-         c+oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTiLPssS86d0OtlJWxwQbMuVsRYnYMjtGJAQIrJwPVgUaZCKyirC9jAua/Y1RAd8XUgQl7XNqKeYhjtgF4K9I8HDJMd6tHrMRe
-X-Gm-Message-State: AOJu0Ywh+md7BXFWa1CtYAPT7uRK5zM3CnaQtXHluOIsMYKJzWBp1pxE
-	S0EWJZW9pttB/eb4pcnd088Wr/B3CcF7sfwqYjQ3KapcqHAbTTiA
-X-Google-Smtp-Source: AGHT+IEExeqQtThLyTgXlPnyJETk1Jl9a3w5BtvjJLfRj9B+oullTSrT9PZEwjRIalDxHD4pedyAPA==
-X-Received: by 2002:a17:907:9727:b0:a79:8290:ab with SMTP id a640c23a62f3a-a7a4bfa1630mr324847566b.15.1721632118780;
-        Mon, 22 Jul 2024 00:08:38 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a3c8bf2d0sm381077266b.105.2024.07.22.00.08.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jul 2024 00:08:38 -0700 (PDT)
-Message-ID: <856445909ebc2e34fbdb3b53a0c9406c9e8e0c1c.camel@gmail.com>
-Subject: Re: [PATCH 3/9] iio: backend: add debugFs interface
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, Lars-Peter
- Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>
-Date: Mon, 22 Jul 2024 09:12:35 +0200
-In-Reply-To: <20240720104315.52dcc2ec@jic23-huawei>
-References: 
-	<20240709-dev-iio-backend-add-debugfs-v1-0-fb4b8f2373c7@analog.com>
-	 <20240709-dev-iio-backend-add-debugfs-v1-3-fb4b8f2373c7@analog.com>
-	 <20240716191443.397c1278@jic23-huawei>
-	 <5a26783c2167310237936d80affe61b43ea84022.camel@gmail.com>
-	 <20240720104315.52dcc2ec@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 
+        bh=GHAnK7eluryXOEPZRmaUZuOauSYKDPyEBhx9PYcGeRQ=;
+        b=WMbN+HKhlSiQJmxQooP0DHOm88dXHKLDWuBxhRtQRE6kUXNua9idI75yhiQl4a6/ki
+         oVFLilpGCbJn4IPJYiTzhl16k43LENErKj8ANe5U700qxP548EfpFckFMLp3RfVVX1Hp
+         PepYjg/f0qcGmyORlHksSDLNR5lnbxecEpAUaS2GnTY+XYlUmC4e65NdHGbdQT4OgGuQ
+         sH/BkZRXMzF83u6I35UU/Hf9fIu5j4eMLHqw8SdFJCmQ3OU4NrJeFoqFV+I9qyLgiVaI
+         FMDPscdFVLFBzKoFRCgrPRUQ03crU1aEW40PEq05e7NOqrhm+lv4+7M4wVdSR3gHpp7n
+         zKrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721632479; x=1722237279;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GHAnK7eluryXOEPZRmaUZuOauSYKDPyEBhx9PYcGeRQ=;
+        b=W0nNRpCpKqF4ptOyZIHY9wnvmlLEf/69JTMZA3T0KwUwZu+WxDrDBp0dnmJ7SZbShn
+         kOfUm/5XtO7DdJh1pqomQxrxlEV/8G5IImXkqq4cKyVxod8cQGY/T8MQtc/CpauTn6aK
+         e0ncd898aHp5CIP5hqkEI3AkqiU77Rg9DYzd/Jm+ZlUm6+OUXMDKYSAPrR6B68XJXWBo
+         j+Kt6w/poJU51UGi80L5/9gIdRhCNG0G6ugNJpvaBeMr/mRxsC3CNj+I27ndMnY+pPvO
+         t3eorBPwKv1eLvOFIaNbGzjrybOXTNPfRM1SXu2Nj8gEEmHsUUeqzVyJyGNS3RB9jsy1
+         AVBw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTJNeRGMbW+Q0kz/hoV6I6LOzPzQBuuh5B9dIoYSoDBhXjvLoqKki2+E9HrmL3tllJ9Po4vtgJB2+5ZfzxLBTkWpNiNdAfyxXTWrugdJR+eMlDefWKzQJWvq8Sih804Pmb6wsn2TDtckgFZTjImMjdMMqr8gb9YnzTfezHFnNF/wnGmw==
+X-Gm-Message-State: AOJu0YwOsStKqhCwm1cRzYoYSzH6avHdNrpwVuKwPPOJULLSPPqNexe8
+	mUhQoc6gJgJhhcb6AaNoSRPabuZWnm+xVhhPd3TUyIfloDeZbSz4
+X-Google-Smtp-Source: AGHT+IFmt0kaRJkF7l1ZGUohrajnngP9LZQ7XiBkhajLauRmvkAVb+EHMoZ67DjkISZfM7G0gN2+zw==
+X-Received: by 2002:a05:6214:29ea:b0:6b2:9d0b:6148 with SMTP id 6a1803df08f44-6b95a7926a4mr101278676d6.53.1721632479495;
+        Mon, 22 Jul 2024 00:14:39 -0700 (PDT)
+Received: from [10.76.84.172] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b7b051c86csm30646556d6.116.2024.07.22.00.14.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Jul 2024 00:14:39 -0700 (PDT)
+Message-ID: <6226f65a-3420-45e0-aeb9-8d31d26a070d@gmail.com>
+Date: Mon, 22 Jul 2024 10:14:34 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 9/9] iio: adc: ad7173: Add support for AD411x devices
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ dumitru.ceclan@analog.com
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240607-ad4111-v7-0-97e3855900a0@analog.com>
+ <20240607-ad4111-v7-9-97e3855900a0@analog.com>
+ <e48b2dee-11d2-4dbc-868d-10870e3c07dd@linaro.org>
+ <68a25946-247d-4351-b847-35605220b16f@gmail.com>
+ <04be66d2-de35-4190-ba9d-011b2b639f94@linaro.org>
+Content-Language: en-US
+From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
+In-Reply-To: <04be66d2-de35-4190-ba9d-011b2b639f94@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, 2024-07-20 at 10:43 +0100, Jonathan Cameron wrote:
-> On Thu, 18 Jul 2024 16:32:33 +0200
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Tue, 2024-07-16 at 19:14 +0100, Jonathan Cameron wrote:
-> > > On Tue, 9 Jul 2024 13:14:30 +0200
-> > > Nuno Sa <nuno.sa@analog.com> wrote:
-> > > =C2=A0=20
-> > > > This adds a basic debugfs interface for backends. Two new ops are b=
-eing
-> > > > added:
-> > > >=20
-> > > > =C2=A0* debugfs_reg_access: Analogous to the core IIO one but for b=
-ackend
-> > > > =C2=A0=C2=A0 devices.
-> > > > =C2=A0* debugfs_print_chan_status: One useful usecase for this one =
-is for
-> > > > =C2=A0=C2=A0 testing test tones in a digital interface and "ask" th=
-e backend to
-> > > > =C2=A0=C2=A0 dump more details on why a test tone might have errors=
-.
-> > > >=20
-> > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>=C2=A0=20
-> > > Debugfs deserved docs as well as sysfs.
-> > > Same place in Documentation/ABI/
-> > >=20
-> > > Obviously we've neglected this in the past, but nice to do it right
-> > > nor new stuff.
-> > > =C2=A0=20
-> >=20
-> > I see. So you mean adding debugfs-iio?
->=20
-> Probably debugfs-iio-backend for this stuff, though we should have
-> a more general doc as well.
->=20
-> >=20
-> > There's one thing I'm not sure though... I'm contemplating the case whe=
-re
-> > one device
-> > may have multiple backends in which case I'm doing:
-> >=20
-> > back->name =3D name;
-> >=20
-> > where name comes from FW (DT usually). That obviously means the interfa=
-ce
-> > won't be
-> > always consistent which I guess it's not a real problem for debugfs?
-> >=20
-> > How would the interface look in the file? Something like?
-> >=20
-> > /sys/kernel/debug/iio/iio:deviceX/<backend_name>_direct_reg_access
->=20
-> That's fine - fairly common sort of thing to see in debugfs.
->=20
-> >=20
-> > Or should we think in a more reliable naming? One option that came to m=
-ind
-> > is
-> >=20
-> > /sys/kernel/debug/iio/iio:deviceX/backendY_direct_reg_access
-> If you were doing this it might be better as a directory.
-> e.g. backendY/direct_reg_access
-> >=20
-> > where Y would be the corresponding index in io-backend-names.
-> >=20
-> > One thing not optimal with the above would be identifying the actual ba=
-ckend
-> > device.
-> > It would then maybe make sense having a 'backend_name' interface which =
-I
-> > think is
-> > likely too much just for this?
-> It kind of depends on your expected usecase.=C2=A0 These are in debugfs s=
-o there
-> is an assumption they aren't a 'normal operation' thing.=C2=A0 So if they
-> are going to typically be poked by a user, then complex file names are fi=
-ne.
-> If it's going to be scripted, then stable names something like
-> backendY/name
-> backendY/direct_reg_access etc
-> would be easier to use.
->=20
+On 16/07/2024 09:31, Krzysztof Kozlowski wrote:
+> On 15/07/2024 19:17, Ceclan, Dumitru wrote:
+>>>
+>>> Please run scripts/checkpatch.pl and fix reported warnings. Then please
+>>> run `scripts/checkpatch.pl --strict` and (probably) fix more warnings.
+>>> Some warnings can be ignored, especially from --strict run, but the code
+>>> here looks like it needs a fix. Feel free to get in touch if the warning
+>>> is not clear.
+>>>
+>>> Best regards,
+>>> Krzysztof
+>>>
+>>
+>> I do not get any warnings, only checks
+>>
+>> If you meant the checks:
+>> - for the alignment check, i would only argue for struct_group(config_props that looks good
+>> - for unnecessary parentheses the compiler warning appears without the parentheses:
+>>       warning: suggest parentheses around comparison in operand of ‘!=’ [-Wparentheses]
+> 
+> Hm, in that case it looks like you documented some entirely different
+> bindings?
+> 
+> Best regards,
+> Krzysztof
+> 
 
-Yeah, I think the main usage (the one I do at least) is for the user to dir=
-ectly
-play and poke with this. However I don't think that the scripting usecase  =
-to be
-that crazy (or unlikely) and I do like stable things :). Also liked your
-suggestion about grouping the interfaces in a backendY directory. We'll lik=
-ely
-need an iio_backend_info struct interface for backends to pass in when
-registering. Maybe too much for a debug interface but this kind of 'info'
-structure may very well be something we'll need in the future. Anyways, I t=
-hink
-I'll give this a try for v2 so we can see how it looks like in practise.
-
-> I'm not bothered as much about consistency of this debug interface as I w=
-ould
-> be about sysfs, so up to you (or other reviewers) for which you prefer.
->=20
-
-Yeah, I was kind of expecting that (no one should blindly rely on debugFS) =
-:)
-
-- Nuno S=C3=A1=20
+On which file checkpatch returned warnings for you?
 

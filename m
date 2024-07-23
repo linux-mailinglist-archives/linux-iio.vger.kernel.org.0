@@ -1,74 +1,75 @@
-Return-Path: <linux-iio+bounces-7814-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7815-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6DE939BD7
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 09:41:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980A5939BF4
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 09:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84F3B282C78
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 07:41:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4780B21097
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 07:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40A314AD3B;
-	Tue, 23 Jul 2024 07:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31AD14BF8D;
+	Tue, 23 Jul 2024 07:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FpYlbAGO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hIPwfBjH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F357842AB3;
-	Tue, 23 Jul 2024 07:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D9014B96D;
+	Tue, 23 Jul 2024 07:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721720465; cv=none; b=idx/ssWsIiFeuw0aYzh2e7Fwl8u/iSNW+XT3HRTD/qVBg8EuKVWK22I6ou+OToJMYgQrWPrBTEBVXZVqOu9flfxM1ydYekKzWTwksBwGo73TcZgrgdcSHB86w6EAmLNlBzqoGSgxD9ouyI2E1rWNODnbBk+HjuGkfdT7Z3EPzk8=
+	t=1721720996; cv=none; b=K+lrc4dfXvJ8SwjERehpRBQagDTwhZ1CoN8RJE+NZ/DI/ieSheyMGp6OqtZV7JbHx48wDhDTrO7KG7r9OsU996Jj+ErlPpmHV1buZQ2ob1uo+6y6jpUHLOXPu4gqb+8zT9gTSXyYfgJro/jttdMLEwhP4gQrjWcuTYEDDRzqW9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721720465; c=relaxed/simple;
-	bh=80lFWu2aU5SuLLK3CqfXAqobVRHpbcPDltb6sY6jPxU=;
+	s=arc-20240116; t=1721720996; c=relaxed/simple;
+	bh=OJ1Lx420+3XCr9wQXYtWQ1EfQYvMybmo8RnuHaRC5F4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qLKbU5uYpqUCq3xaf3msAOqCdnGvsmMV1+6MmQRSKpCkA60IX4lBLMhPokUG4oNfenRyNGTHi0U9sf1+exLIm252OwOH+fJr5fEPZXms9IjfF4+Vnsmz7cP0VbB1H6gEwTAiawISWHQsEVLWt19liHtlMoSjaL2E1aaxkqevsrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FpYlbAGO; arc=none smtp.client-ip=209.85.208.46
+	 Content-Type:MIME-Version; b=n0nudkGYmpZiA3dD/9t2BA64jTmfq+RvpDLA6kwoij/idLycBW0rfofUS5wXOviM9dQfvqJ2NCIEK4S+T1xinQtlH+3HW5/bRSNBt1fsnc0jnHEseFmhBWNk80H7tf6uB+gxkft6WELzxAsvjbnSRU9mZ4rAfwJhp8M/MyTvuNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hIPwfBjH; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5a15692b6f6so4644775a12.0;
-        Tue, 23 Jul 2024 00:41:03 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a77c1658c68so560185366b.0;
+        Tue, 23 Jul 2024 00:49:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721720462; x=1722325262; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721720993; x=1722325793; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=oy9WQJkQk0A8z2TL2FvMGedujDaGcIUK+69tzorF7cQ=;
-        b=FpYlbAGOK2uFLcJ0D5xdU74zkTlIgsv+q7HaKh+Is2sskbZNN5+SIXN4zszPe6nPQS
-         jksD6NIisWHuGKCnDfyVEH/J58Gj+hyCVNQ+N+E+kiXNooJXmSE/EYHclxTrGzrvBezf
-         +Jgi8JS4FTwFN7Qsj1W6MbSgCsWUgiMdH8yxv9bg68EVdwn2jp0IfAaLRr+/74Ij9Q18
-         Yhj5DmwjGC9pDf/8yhjDZetACfS+LJ/jOXqlI2BggVFpb2AD7pBKQHIC/FQaUm5sw2o+
-         BO6myVSpmYEzM0KwBSeH+DEAXnQM9lzbVrY5nbSDzOeRRGogIME5mefOMngRHLErJM2E
-         Lvvg==
+        bh=1IpYYMxxShf6RYVCcuCFgZb/pH86vZOBQuiBP+GbtnQ=;
+        b=hIPwfBjHeCIOB5O8TlrY1Llqwn8/uEMrkqYFg1kjTfeOg2fLLAd67X9Cq4bNfCB/dQ
+         dliVdAPXzjNuBNBc/Ov9WlQpnQn33sxMo5DNzfxzk+3DPLkQgvYtbOGM5Y3K0z8Vw1Ex
+         wYXH+0Wec1FDBad3nsCCd7DfiTLc7h/DiN3jYvSGrG38LBx1J4VNtzRZczSv/nsrwe7M
+         mQfcOYfDi2u/d1Ab5uGsM+IPWk1v1z/bKuJyRQ7ov6DuUAfo1ypZM8Ysnvtih1sEmoCI
+         pWU7DBX+ipP1oL+Imi7/VF/KTjAdE3vLkz+KU7iAjxFMLBx1ePXCdf4eKJOG8mLMgqGX
+         faQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721720462; x=1722325262;
+        d=1e100.net; s=20230601; t=1721720993; x=1722325793;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=oy9WQJkQk0A8z2TL2FvMGedujDaGcIUK+69tzorF7cQ=;
-        b=hvqwdAOudi1AdcqZ7KSdzM1H+7piSQQBA0VdvwCSz5zIkX8cx3OjtVU9v+GImQfpWy
-         hSibBOdshw3cumKW2VE6wKlSbWzki546B4dq8Oy8xnRs6H6IVFom+KSlK0lvRITwnCkw
-         gwy3PF/3ojw9Ww5h2LuT0BEW7K8QMqzrj29f9KsDViKTYcAAkA4LmDTZAFqp0MCFj4vV
-         s1ie2t6uq+Ju4LUo9zYL4tf+kHW/npv2xiqsNIurVHiqRhj7Kj8hdimwjhwyDdJSpC3j
-         JdR2+CIUJrzrnDrzWxSNFcM6eU8TtmrBAjk4U47DInmQdiT6j5Svkb4BvM0v4YszEDRH
-         mcDg==
-X-Forwarded-Encrypted: i=1; AJvYcCUmPJlkfbEd7fPDWpnmojFmfxtukbDRh4Nvi7gWkUswgkSfawQ5zlxJbWFy9LSiPF6qKL+4BZ3YQZMdz9vwqkUfOt5NTzzfettAVzswb+Y9uel+jB7LvMWM8PFiN2veQXQJCb/bkln/CWCzDblOPHEVcS2RFr0qEScgcjHmQieK/AyNoHpsW8B+kNBtvdaE9vrpAHNI8lH1s+K7rDGHYw==
-X-Gm-Message-State: AOJu0YxWmyICE41jmVWlyIr3xJ8FZYNoGbAeQ/2EUAPorDy1fZvoZjvB
-	ksBRxpW+9bwkwZfIHAyFolGvgB9CbrW3uOYIrYHo5BGjS8ElKx0t
-X-Google-Smtp-Source: AGHT+IGaExXGqEYPgYZAArl1P4fXTe5Ofei9ZZZs6/nt/IEkmlG6gI7S075gOxgSP17Yt8Az9ChpOQ==
-X-Received: by 2002:a50:9e29:0:b0:5a3:a4d7:caf5 with SMTP id 4fb4d7f45d1cf-5a943ee0aacmr1369334a12.36.1721720462053;
-        Tue, 23 Jul 2024 00:41:02 -0700 (PDT)
+        bh=1IpYYMxxShf6RYVCcuCFgZb/pH86vZOBQuiBP+GbtnQ=;
+        b=uX+o6NLRrhcRn0MO1TiR7KnoqsVce7A35xLxP6BqNda/dgSXRFv8a8PRzPsrKVCzQi
+         2JgOYm0KIVWpny3HY3wa1s5TqMmM+RYQ+b1gGYmThGgo//aUpvg53UQ1Jn0xLqrtOGL8
+         nwxH2RX8EYox9KEkAInHXZlLJw2vQ9Wb/qqlUoieOBK5YpRGvRmrcPh7qifqitp7RNFK
+         wmfRlHiDB9bimryVmVcjU3/ml5dqGidR0EFyMWnutcKqyCcEpKYoRXnDkAz/A9/S+wb+
+         lumvnXQqMk9oPBQzYEcw2A5AWqQspWlKE1D0nWw8GCC4cFXJrfGHcVfSgf71Ffo4EpNx
+         4eiw==
+X-Forwarded-Encrypted: i=1; AJvYcCV282UuopS9sDo/VUry1X4u0gbCYDcgUyeH32v0B5w17/vhtj1I4LsrPhEeG8+sfZdKHzceDMmmWtPoCq3d7AtckVXDYkBBSW+uf5RgSMf1Y4qjgebqAArgnfu1iH93Roamv49aQWlc7w0gSeywQQ9m/8j0lEGjPlK3UKnI+pIJ8v4vi+lMvb3AJkqHZFgUZ8BJ64MRcVrBQwxS4HK8bQ==
+X-Gm-Message-State: AOJu0YwDQiEsJNJrpC4AfQzDGF0PfX5bAAdWbIRqKjYX1+Vlk1jcJY5f
+	xqSDR67CAOCY54dwPIyM8gMYE2q3kkoQMvxMhrERWTdc2BZiaZQA
+X-Google-Smtp-Source: AGHT+IEVKxcytWZbuj8LykRy0FgifScZhpE9BEtX4YEZKRgZhhrDmjPXCFDpeMajYwqknlC0nVNSKg==
+X-Received: by 2002:a17:907:9802:b0:a77:c8f8:f9d0 with SMTP id a640c23a62f3a-a7a88478687mr167355766b.44.1721720992848;
+        Tue, 23 Jul 2024 00:49:52 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5a7344dd630sm3408572a12.54.2024.07.23.00.41.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a3c7b6622sm510949566b.50.2024.07.23.00.49.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jul 2024 00:41:01 -0700 (PDT)
-Message-ID: <ffa0e8ceea5663fa3d93664735fd867b7b5891b8.camel@gmail.com>
-Subject: Re: [PATCH RFC v3 2/9] spi: add basic support for SPI offloading
+        Tue, 23 Jul 2024 00:49:52 -0700 (PDT)
+Message-ID: <34ff08ef8b550ff2979dc50204fad500b9bb41e3.camel@gmail.com>
+Subject: Re: [PATCH RFC v3 3/9] spi: add support for hardware triggered
+ offload
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
  Jonathan Cameron
@@ -81,11 +82,11 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen
 	 <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-iio@vger.kernel.org
-Date: Tue, 23 Jul 2024 09:44:59 +0200
-In-Reply-To: <20240722-dlech-mainline-spi-engine-offload-2-v3-2-7420e45df69b@baylibre.com>
+Date: Tue, 23 Jul 2024 09:53:50 +0200
+In-Reply-To: <20240722-dlech-mainline-spi-engine-offload-2-v3-3-7420e45df69b@baylibre.com>
 References: 
 	<20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
-	 <20240722-dlech-mainline-spi-engine-offload-2-v3-2-7420e45df69b@baylibre.com>
+	 <20240722-dlech-mainline-spi-engine-offload-2-v3-3-7420e45df69b@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.3 
@@ -97,138 +98,89 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Mon, 2024-07-22 at 16:57 -0500, David Lechner wrote:
-> SPI offloading is a feature that allows the SPI controller to perform
-> transfers without any CPU intervention. This is useful, e.g. for
-> high-speed data acquisition.
+> This extends the SPI framework to support hardware triggered offloading.
+> This allows an arbitrary hardware trigger to be used to start a SPI
+> transfer that was previously set up with spi_offload_prepare().
 >=20
-> This patch adds the basic infrastructure to support SPI offloading. It
-> introduces new callbacks that are to be implemented by controllers with
-> offload capabilities.
+> Since the hardware trigger can happen at any time, this means the SPI
+> bus must be reserved for exclusive use as long as the hardware trigger
+> is enabled. Since a hardware trigger could be enabled indefinitely,
+> we can't use the existing spi_bus_lock() and spi_bus_unlock() functions,
+> otherwise this could cause deadlocks. So we introduce a new flag so that
+> any attempt to lock or use the bus will fail with -EBUSY as long as the
+> hardware trigger is enabled.
 >=20
-> On SPI device probe, the standard spi-offloads devicetree property is
-> parsed and passed to the controller driver to reserve the resources
-> requested by the peripheral via the map_channel() callback.
->=20
-> The peripheral driver can then use spi_offload_prepare() to load a SPI
-> message into the offload hardware.
->=20
-> If the controller supports it, this message can then be passed to the
-> SPI message queue as if it was a normal message. Future patches will
-> will also implement a way to use a hardware trigger to start the message
-> transfers rather than going through the message queue.
+> Peripheral drivers may need to control the trigger source as well. For
+> this, we introduce a new spi_offload_hw_trigger_get_clk() function that
+> can be used to get a clock trigger source. This is intended for used
+> by ADC drivers that will use the clock to control the sample rate.
+> Additional functions to get other types of trigger sources could be
+> added in the future.
 >=20
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
 >=20
+> TODO: Currently, spi_bus_lock() always returns 0, so none of the callers
+> check the return value. All callers will need to be updated first before
+> this can be merged.
+>=20
 > v3 changes:
-> * Minor changes to doc comments.
-> * Changed to use phandle array for spi-offloads.
-> * Changed id to string to make use of spi-offload-names.
+> * renamed enable/disable functions to spi_offload_hw_trigger_*mode*_...
+> * added spi_offload_hw_trigger_get_clk() function
+> * fixed missing EXPORT_SYMBOL_GPL
 >=20
 > v2 changes:
 >=20
-> This is a rework of "spi: add core support for controllers with offload
-> capabilities" from v1.
+> This is split out from "spi: add core support for controllers with
+> offload capabilities".
 >=20
-> The spi_offload_get() function that Nuno didn't like is gone. Instead,
-> there is now a mapping callback that uses the new generic devicetree
-> binding to request resources automatically when a SPI device is probed.
->=20
-
-Given my reply to the cover you can start calling me names already :). But =
-even
-with that function back I think we need a more explicit provider/consumer l=
-ogic.
-
-> The spi_offload_enable/disable() functions for dealing with hardware
-> triggers are deferred to a separate patch.
->=20
-> This leaves adding spi_offload_prepare/unprepare() which have been
-> reworked to be a bit more robust.
->=20
-> In the previous review, Mark suggested that these functions should not
-> be separate from the spi_[un]optimize() functions. I understand the
-> reasoning behind that. However, it seems like there are two different
-> kinds of things going on here. Currently, spi_optimize() only performs
-> operations on the message data structures and doesn't poke any hardware.
-> This makes it free to be use by any peripheral without worrying about
-> tying up any hardware resources while the message is "optimized". On the
-> other hand, spi_offload_prepare() is poking hardware, so we need to be
-> more careful about how it is used. And in these cases, we need a way to
-> specify exactly which hardware resources it should use, which it is
-> currently doing with the extra ID parameter.
+> Mark suggested that the standard SPI APIs should be aware that the
+> hardware trigger is enabled. So I've added some locking for this. Nuno
+> suggested that this might be overly strict though, and that we should
+> let each individual controller driver decide what to do. For our use
+> case though, I think we generally are going to have a single peripheral
+> on the SPI bus, so this seems like a reasonable starting place anyway.
 > ---
-> =C2=A0drivers/spi/spi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 123
-> ++++++++++++++++++++++++++++++++++++++++++++++++
-> =C2=A0include/linux/spi/spi.h |=C2=A0 57 ++++++++++++++++++++++
-> =C2=A02 files changed, 180 insertions(+)
+
+How explicitly do we want to be about returning errors? It seems that if th=
+e
+trigger is enabled we can't anything else on the controller/offload_engine =
+so we
+could very well just hold the controller lock when enabling the trigger and=
+=20
+release it when disabling it. Pretty much the same behavior as spi_bus_lock=
+()...
+
+...
+
 >=20
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index d4da5464dbd0..d01b2e5c8c44 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -2477,6 +2477,51 @@ static int of_spi_parse_dt(struct spi_controller *=
-ctlr,
-> struct spi_device *spi,
-> =C2=A0	of_spi_parse_dt_cs_delay(nc, &spi->cs_hold, "spi-cs-hold-delay-ns"=
-);
-> =C2=A0	of_spi_parse_dt_cs_delay(nc, &spi->cs_inactive, "spi-cs-inactive-
-> delay-ns");
-> =C2=A0
-> +	/* Offloads */
-> +	rc =3D of_count_phandle_with_args(nc, "spi-offloads", "#spi-offload-
-> cells");
-> +	if (rc > 0) {
-> +		int num_offload =3D rc;
 > +
-> +		if (!ctlr->offload_ops) {
-> +			dev_err(&ctlr->dev, "SPI controller doesn't support
-> offloading\n");
-> +			return -EINVAL;
-> +		}
+> +/**
+> + * spi_offload_hw_trigger_get_clk - Get the clock for the offload trigge=
+r
+> + * @spi: SPI device
+> + * @id: Function ID if SPI device uses more than one offload or NULL.
+> + *
+> + * The caller is responsible for calling clk_put() on the returned clock=
+.
+> + *
+> + * Return: The clock for the offload trigger, or negative error code
+> + */
+> +static inline
+> +struct clk *spi_offload_hw_trigger_get_clk(struct spi_device *spi, const=
+ char
+> *id)
+> +{
+> +	struct spi_controller *ctlr =3D spi->controller;
 > +
-> +		for (idx =3D 0; idx < num_offload; idx++) {
-> +			struct of_phandle_args args;
-> +			const char *offload_name =3D NULL;
+> +	if (!ctlr->offload_ops || !ctlr->offload_ops->hw_trigger_get_clk)
+> +		return ERR_PTR(-EOPNOTSUPP);
 > +
-> +			rc =3D of_parse_phandle_with_args(nc, "spi-offloads",
-> +							"#spi-offload-cells",
-> +							idx, &args);
-> +			if (rc) {
-> +				dev_err(&spi->dev, "Failed to parse offload
-> phandle %d: %d\n",
-> +					idx, rc);
-> +				return rc;
-> +			}
-> +
-> +			if (args.np !=3D ctlr->dev.of_node) {
-> +				dev_err(&spi->dev, "Offload phandle %d is not
-> for this SPI controller\n",
-> +					idx);
-> +				of_node_put(args.np);
-> +				return -EINVAL;
-> +			}
-> +
-> +			of_property_read_string_index(nc, "spi-offload-
-> names",
-> +						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 idx, &offload_name);
-> +
-> +			rc =3D ctlr->offload_ops->map_channel(spi,
-> offload_name,
-> +							=C2=A0=C2=A0=C2=A0 args.args,
-> +							=C2=A0=C2=A0=C2=A0 args.args_count);
+> +	return ctlr->offload_ops->hw_trigger_get_clk(spi, id);
+> +}
+>=20
 
-In here, I would expect for the mapping to return something the core could =
-then
-directly pass into the other operations. And hence saving controllers to al=
-ways
-have to do a lookup in all the operations.
-
-It seems we may need a struct spi_offload * object that can be attached to =
-a
-given spi_device and that can be directly passed and used by the specific
-offload operations.=20
+It would be nice if we could have some kind of spi abstraction...
 
 - Nuno S=C3=A1
-
 

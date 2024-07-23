@@ -1,125 +1,136 @@
-Return-Path: <linux-iio+bounces-7827-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7828-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8228C93A512
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 19:40:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFCE93A56E
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 20:20:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35EA11F2322E
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 17:40:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D314B2269C
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 18:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87306158842;
-	Tue, 23 Jul 2024 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD881586CB;
+	Tue, 23 Jul 2024 18:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LosormX3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZsKZiIKH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA52117BD5;
-	Tue, 23 Jul 2024 17:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1AB155351;
+	Tue, 23 Jul 2024 18:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721756426; cv=none; b=ryKzkSKoDzUvwZ5YG96EZsekQ8eJ2HqeuZ308P3riGuqORtq5/QqRvuEcLOyzIWDP7EG14wQ8zwv7LypQEczBbZxOYjA7aE7Phqc5WqnHPkxAZbQA3vtlsaqpnNN1ihoWRWZYdFirRoAkEeJbArX1TXI9+aE+mMYPscyXLbmy3Y=
+	t=1721758793; cv=none; b=Zz+5mZl8fAmJHjj+TuZTE8LesbrsO16VxwJaP838J9rPOzQLgzUNLZYizlOCXurdGyBH6+UPZPzP0JRBFeLNz3O07eLcN/eEFRfXHpLbGC/kaIe3Lu6wEar6pdFwaIlSgwZEbbnq2/g5UW54MM52vznghNkQx+OLnZa5vsroghQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721756426; c=relaxed/simple;
-	bh=RSRCqxursOFG83xu24Rg/zY7XRMsTLA7GJR4OB5mqoo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bWN1IESPBxOcrPtUOD09t+KAGiQAfFzZZXdnvihNcKvT9f0+0qPPyg2+ejDoAPOx49CBeLT3WP0wLO7P71XtEBYSXD5Uu0/lxsppJwkPzxNrjMlQXApugSMfNpwsww52kXbL5mHEbyhoNzdl+x+oia69uF8fzZZgO1+svEZedWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LosormX3; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-427d2c8c632so41571815e9.2;
-        Tue, 23 Jul 2024 10:40:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721756423; x=1722361223; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SLxwM2QcaETAwSelqwRu35+y1sReQfVO3Rz5RGIgoEg=;
-        b=LosormX3zTieUyApDwZmYhkCIeb7clQs+huAU+lH7UNTSNboKBpGc0gcfYPq8WEvEg
-         yyqIeVij7sUGUWsNuoOA+j8TavkkfhuFRMZx8/3Ami0EJrAcGNaX2u5yl6mDlWrkKseg
-         TjlJOwcvHPrs44svOgEOUzfm8BH2x/aGz++kK/W9i7nJi2AYta6b+BXA3vaLIEWa0kI2
-         st5QIiJkn6atzvX56HLiHmMmnMUL4gVMx1gpQxneOe5HoNuzgc/0QNgE5IK6copWapvl
-         z2scsiwybR9UDKo7kca7SaFr6ZDUM/U7teR9ubIjuj1UzD5G2NJyWAAaMRFZPtF1h2vz
-         3Y9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721756423; x=1722361223;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SLxwM2QcaETAwSelqwRu35+y1sReQfVO3Rz5RGIgoEg=;
-        b=qOtHbciawzJEwEEmNfKg942elwHSqh07VV37ZM5KfYV2VWEszSfNfi46AzmpfvIZII
-         W/nKSgVWp7fmUUKu6QVccCiTz6vZ0+LDeiL2WXin0Yodk9kRju/wcJ5/tgKFHbfyW+qL
-         xEqH8xYh7Nl2sTA/ZAOfF3/qJagT1i2TiXSiowgQCSl+F2ILy1hApWqE5eDt6aCh6i+3
-         /RLnIHxao72O4H2kfIIUJtCU716pqW+CQ35zMrWwftjsL34RLytqZzKWrMg5gBFK8dZm
-         EpuK+mRlcMerXg2/HXtKRkp9PRAwoL6976DHB+IsPeAYy/T3TVfzkJ4XIBNTBe5GxBvg
-         XI+A==
-X-Forwarded-Encrypted: i=1; AJvYcCX17G24An8wHU8KU/c1duRbloUQMYY1T8ohMONV6MSB+d4E+WNEy1d2cKbHM3eFKjG16EWN2+UlGeBpImP7T+QvocrgUXYyFFM6GBLvGmhGuPozW9wh7Zyv1EzW/ZPlW5EjEDq9QwkCjAYkZMHeQW45THj+PnesfVDb0AYVUTXs08xi+g2B8/jT
-X-Gm-Message-State: AOJu0YxkwrFetEm+dYFZKxzdxplZFB53BlLiWvwL53FSPJ5BVbEC+QBx
-	b1ouwxCQag4mwP9sGgTtWGDQ09mkSewr2kqQzelO707rEH4AWjD8Jt4TEbyX
-X-Google-Smtp-Source: AGHT+IEaJUyuqn3nMKaYt3qxlDonCo2mG9R8c5t622wHjlD8nREtKHqgDlp+N7WPmsxY5xKcYNBSug==
-X-Received: by 2002:a05:600c:1d17:b0:426:68dd:bc92 with SMTP id 5b1f17b1804b1-427dc53b5eamr74009055e9.5.1721756422914;
-        Tue, 23 Jul 2024 10:40:22 -0700 (PDT)
-Received: from [192.168.0.101] (craw-09-b2-v4wan-169726-cust2117.vm24.cable.virginm.net. [92.238.24.70])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-427d2a8e42bsm212157675e9.30.2024.07.23.10.40.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jul 2024 10:40:22 -0700 (PDT)
-Message-ID: <f799b77b-ff17-4379-9b95-ab7d8ab521dc@gmail.com>
-Date: Tue, 23 Jul 2024 18:40:20 +0100
+	s=arc-20240116; t=1721758793; c=relaxed/simple;
+	bh=37h4Mx2tmdykX5/nhIykgjMyWxpIfLseegeQS0xIZOE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DuLQtzqmSHvBJJLM5sLJxszr7ZXtsKn4yeeFAoflH1SPAJABGN6WDCWI697RqaJ+SXuIarke0Jhwp0gfQOP83D4OOwiC8uovaNaKdEDrineMknFIkYwsc5UHH1c//O+8BeYPg8AcL4SfI/iGD383uK62UrPdvIrz77rJVsnJEP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZsKZiIKH; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721758791; x=1753294791;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=37h4Mx2tmdykX5/nhIykgjMyWxpIfLseegeQS0xIZOE=;
+  b=ZsKZiIKHGxImwbDzrjtrobK5KG9Nv3xa876NX7E3Ytht2vVajr2162YQ
+   9+HtxdxyD5nds6x6IutaClJ6Q2Ve/+skEEDhzxv2X87r9Yj5ncPSzETfe
+   zdv7l2eE5EqmK29+e7lhKEhG2jvBFGhA6eEJRVfBgbQOmus7Fb/v6+UEV
+   yARPVGCIFCNWY5j/UtalOccjT878L0DLc6r3/ZhN6eAQGSgDddkvtIXal
+   HcghvKb0RFrpN/0X6X0bkMc46uEGmW+woLW7gNePTZeeg5P8KEO98kVFa
+   o5UITo46Dbm81CIEnUu1iyzsTD27TSZccQXBJQapdwFDfhpFronpY3SUu
+   Q==;
+X-CSE-ConnectionGUID: EEdyIpr3Ri29zivgI8c9dA==
+X-CSE-MsgGUID: p+yPl02yTxSPQMCiUT0jWA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="30021747"
+X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; 
+   d="scan'208";a="30021747"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2024 11:19:50 -0700
+X-CSE-ConnectionGUID: xB4xfjrmQs20ah3K1Y0U0Q==
+X-CSE-MsgGUID: V4ESnhyESGiCDMXXiOa0QQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; 
+   d="scan'208";a="52924501"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 23 Jul 2024 11:19:47 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sWK6z-000mF6-0E;
+	Tue, 23 Jul 2024 18:19:45 +0000
+Date: Wed, 24 Jul 2024 02:18:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: Matteo Martelli <matteomartelli3@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marius Cristea <marius.cristea@microchip.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Matteo Martelli <matteomartelli3@gmail.com>
+Subject: Re: [PATCH v3 3/3] iio: adc: add support for pac1921
+Message-ID: <202407240123.tjObpf49-lkp@intel.com>
+References: <20240722-iio-pac1921-v3-3-05dc9916cb33@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] iio: pressure: bmp280-core: Make read-only const
- array conversion_time_max static
-To: Dan Carpenter <dan.carpenter@linaro.org>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Vasileios Amoiridis <vassilisamir@gmail.com>, linux-iio@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240722151738.572913-1-colin.i.king@gmail.com>
- <20240722210111.49e66c4e@jic23-huawei>
- <abc73704-17c5-40c4-a92c-b69c571a006f@suswa.mountain>
-Content-Language: en-US
-From: "Colin King (gmail)" <colin.i.king@gmail.com>
-In-Reply-To: <abc73704-17c5-40c4-a92c-b69c571a006f@suswa.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240722-iio-pac1921-v3-3-05dc9916cb33@gmail.com>
 
-On 23/07/2024 18:04, Dan Carpenter wrote:
-> On Mon, Jul 22, 2024 at 09:01:11PM +0100, Jonathan Cameron wrote:
->> On Mon, 22 Jul 2024 16:17:38 +0100
->> Colin Ian King <colin.i.king@gmail.com> wrote:
->>
->>> Don't populate the read-only array conversion_time_max on the stack at
->>> run time, instead make it static.
->>>
->>> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
->>
->> I'm almost 100% the compiler can hoist this off the stack if it feels like
->> it but sure, it might not and adding the static keyword probably obliges
->> it to do so.
-> 
-> You would wish the compiler would do this correctly, but it doesn't.
-> (Or it didn't the last time anyone checked).
+Hi Matteo,
 
- From what I understand, a const variable that's not static is either 
-put in register or on the stack since it's implicitly an auto variable, 
-hence it's populated with the initialization data at run time. Making it 
-static will populate it at compile time. Assuming anything else is 
-problematic.
+kernel test robot noticed the following build errors:
 
-Colin
+[auto build test ERROR on 1ebab783647a9e3bf357002d5c4ff060c8474a0a]
 
-> 
-> regards,
-> dan carpenter
-> 
+url:    https://github.com/intel-lab-lkp/linux/commits/Matteo-Martelli/dt-bindings-iio-adc-add-binding-for-pac1921/20240722-183406
+base:   1ebab783647a9e3bf357002d5c4ff060c8474a0a
+patch link:    https://lore.kernel.org/r/20240722-iio-pac1921-v3-3-05dc9916cb33%40gmail.com
+patch subject: [PATCH v3 3/3] iio: adc: add support for pac1921
+config: um-randconfig-r051-20240723 (https://download.01.org/0day-ci/archive/20240724/202407240123.tjObpf49-lkp@intel.com/config)
+compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240724/202407240123.tjObpf49-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407240123.tjObpf49-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/adc/pac1921.c:892:2: error: initializer element is not constant
+     pac1921_ext_info_scale_avail,
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/adc/pac1921.c:892:2: note: (near initialization for 'pac1921_ext_info_voltage[0]')
+   drivers/iio/adc/pac1921.c:897:2: error: initializer element is not constant
+     pac1921_ext_info_scale_avail,
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/adc/pac1921.c:897:2: note: (near initialization for 'pac1921_ext_info_current[0]')
+   drivers/iio/adc/pac1921.c:898:2: error: initializer element is not constant
+     pac1921_ext_info_rshunt,
+     ^~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/adc/pac1921.c:898:2: note: (near initialization for 'pac1921_ext_info_current[1]')
+
+
+vim +892 drivers/iio/adc/pac1921.c
+
+   890	
+   891	static const struct iio_chan_spec_ext_info pac1921_ext_info_voltage[] = {
+ > 892		pac1921_ext_info_scale_avail,
+   893		{}
+   894	};
+   895	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

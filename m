@@ -1,136 +1,258 @@
-Return-Path: <linux-iio+bounces-7828-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7829-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECFCE93A56E
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 20:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93EF593A786
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 21:00:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D314B2269C
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 18:20:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 068ABB20FCD
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 19:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD881586CB;
-	Tue, 23 Jul 2024 18:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AA913DBA4;
+	Tue, 23 Jul 2024 18:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZsKZiIKH"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QnE1S6JE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1AB155351;
-	Tue, 23 Jul 2024 18:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45E013C3F5
+	for <linux-iio@vger.kernel.org>; Tue, 23 Jul 2024 18:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721758793; cv=none; b=Zz+5mZl8fAmJHjj+TuZTE8LesbrsO16VxwJaP838J9rPOzQLgzUNLZYizlOCXurdGyBH6+UPZPzP0JRBFeLNz3O07eLcN/eEFRfXHpLbGC/kaIe3Lu6wEar6pdFwaIlSgwZEbbnq2/g5UW54MM52vznghNkQx+OLnZa5vsroghQ=
+	t=1721761199; cv=none; b=pagv1PF39bygJzSFT4vel0GjJTmuoqzVumbzAqi4ai/uNMsgLMxTqmMG/gEsLKt2RB8yfbJvRC68Uw20/ZwaPJzNdIX/Ymrbb8U7HEiH+3GfGrbItA5nWNLZRrsyH1G28mUtPHsnO6INh09dwIz3KUdM0BaOA//vX4u7+mE3zl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721758793; c=relaxed/simple;
-	bh=37h4Mx2tmdykX5/nhIykgjMyWxpIfLseegeQS0xIZOE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DuLQtzqmSHvBJJLM5sLJxszr7ZXtsKn4yeeFAoflH1SPAJABGN6WDCWI697RqaJ+SXuIarke0Jhwp0gfQOP83D4OOwiC8uovaNaKdEDrineMknFIkYwsc5UHH1c//O+8BeYPg8AcL4SfI/iGD383uK62UrPdvIrz77rJVsnJEP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZsKZiIKH; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721758791; x=1753294791;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=37h4Mx2tmdykX5/nhIykgjMyWxpIfLseegeQS0xIZOE=;
-  b=ZsKZiIKHGxImwbDzrjtrobK5KG9Nv3xa876NX7E3Ytht2vVajr2162YQ
-   9+HtxdxyD5nds6x6IutaClJ6Q2Ve/+skEEDhzxv2X87r9Yj5ncPSzETfe
-   zdv7l2eE5EqmK29+e7lhKEhG2jvBFGhA6eEJRVfBgbQOmus7Fb/v6+UEV
-   yARPVGCIFCNWY5j/UtalOccjT878L0DLc6r3/ZhN6eAQGSgDddkvtIXal
-   HcghvKb0RFrpN/0X6X0bkMc46uEGmW+woLW7gNePTZeeg5P8KEO98kVFa
-   o5UITo46Dbm81CIEnUu1iyzsTD27TSZccQXBJQapdwFDfhpFronpY3SUu
-   Q==;
-X-CSE-ConnectionGUID: EEdyIpr3Ri29zivgI8c9dA==
-X-CSE-MsgGUID: p+yPl02yTxSPQMCiUT0jWA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11142"; a="30021747"
-X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; 
-   d="scan'208";a="30021747"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2024 11:19:50 -0700
-X-CSE-ConnectionGUID: xB4xfjrmQs20ah3K1Y0U0Q==
-X-CSE-MsgGUID: V4ESnhyESGiCDMXXiOa0QQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,231,1716274800"; 
-   d="scan'208";a="52924501"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 23 Jul 2024 11:19:47 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sWK6z-000mF6-0E;
-	Tue, 23 Jul 2024 18:19:45 +0000
-Date: Wed, 24 Jul 2024 02:18:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matteo Martelli <matteomartelli3@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	s=arc-20240116; t=1721761199; c=relaxed/simple;
+	bh=iyS1ByyUx4twpm9hP+yKFrlEdFKQoGHxhjKyw1jAN64=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Cl9VCdtVLyxYuZG3BJZAsNJ9UkuGSppHBPfJ8usiaVe5HTAWYGsxP3oOQN6i1zrC29FgGCRDByiczPJl94BjD/k2QO2Jtnh5C04+Ua/sSCXEkW4sFMkts5VWQiMFthDslKmovUJC31d+r/0pOlaZZAgz0zMb/3LHhsLg7JA5Bqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QnE1S6JE; arc=none smtp.client-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3d94293f12fso3523855b6e.3
+        for <linux-iio@vger.kernel.org>; Tue, 23 Jul 2024 11:59:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1721761195; x=1722365995; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=upz/OCbfVuYTOG+l6gDkvMC+JV0tNs7jmWYtWPGntn8=;
+        b=QnE1S6JElsVkkeCIxCCYdMSh2fNyeYHYg4EXyl9EkBpLS7w4hVxPIS8OfMIBgBtATc
+         m7PcZntSqmn168TWrobOoZNaXwKsykiRdyKdvwovM2io1T2eqei7RRDnssVIdYMLL0+z
+         BhIqEgCnwfAUgxI//9/FkhMUJJS9i6ojYGFo3Ceik1C5tFIg2LpYV4kydXVOf9L+ZBZM
+         Y23wOmuV/oVCcjYgdnYI21FRaoIzntuJwVMUgnGn4D6K8XyO55cz0I6cYgrvClZzrIB1
+         7tOHsDu/JARZChCq0cxQNhOsHQEeLJ2dMUD3Acp8ph/GrWOyUtNGAnVlr9dnjdxoshLO
+         OEPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721761195; x=1722365995;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=upz/OCbfVuYTOG+l6gDkvMC+JV0tNs7jmWYtWPGntn8=;
+        b=vquCaT9GFXFm2S42Zdum9flWsVTESAGgCasvg790VZAqeZTnD1QBFpayIsJTiPzctH
+         KBuOFEs6VGFw7n9CJlxAptI3tC3J+8QrxCvwhTjb7qTE3rC6yzTa19Qqvli9g7YmwP5r
+         uAxaAxZoQbDNmZ9DRxJO/4N+WswQQLsz0YeJigZfgCAUSwZ/it6lTDGV2Z7Yd+LiIlwz
+         3nRG9nBPq/ZuAQVOdwcAnuoquezaBJXefPBeBhCixrtl+Mqu/4K519g9kppAuuN0Sclg
+         8Rb99uRxt+QRGJGKoMzHKCHLu1JPKvDAIg09mWR7z56ZbCHJTKEjS5C80aWG2xazgwWB
+         0/BA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGgjmBfO0HkF4F4HnuPMJncaLEGK7MTC12bRk25ssIdwAj0bwUb0wUMW9sTnFYXGhBVKFTuswm3h4tpReIuGZkdIm2cMu8y0pk
+X-Gm-Message-State: AOJu0YwEuUAOfwwv7mfvGoRhlVnOvsE3zCoCMCKKXNnqXT31wehJcn5u
+	gKeY1xIMfWfqUF+HHhW6v8laBpx/h7rLR8Xoyfinq4v32eg2w58n+YnNBMg0DCc=
+X-Google-Smtp-Source: AGHT+IHWmxzHoa8Zq3eq10vb/pe8QbH2QvQC7hdWVRqF2Zdoo7oipF+bXn58Y1qBgh1MqL2hHJnofw==
+X-Received: by 2002:a05:6808:308f:b0:3d6:53fc:e813 with SMTP id 5614622812f47-3db06d99e36mr993749b6e.27.1721761195030;
+        Tue, 23 Jul 2024 11:59:55 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dae0981450sm2100211b6e.24.2024.07.23.11.59.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jul 2024 11:59:54 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>,
 	Marius Cristea <marius.cristea@microchip.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Matteo Martelli <matteomartelli3@gmail.com>
-Subject: Re: [PATCH v3 3/3] iio: adc: add support for pac1921
-Message-ID: <202407240123.tjObpf49-lkp@intel.com>
-References: <20240722-iio-pac1921-v3-3-05dc9916cb33@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] iio: adc: mcp3564: use devm_regulator_get_enable_read_voltage()
+Date: Tue, 23 Jul 2024 13:59:50 -0500
+Message-ID: <20240723-iio-regulator-refactor-round-3-v2-1-ae9291201785@baylibre.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240722-iio-pac1921-v3-3-05dc9916cb33@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.14.0
+Content-Transfer-Encoding: 8bit
 
-Hi Matteo,
+This makes use of the new devm_regulator_get_enable_read_voltage()
+helper function to reduce boilerplate code in the MCP3564 ADC driver.
 
-kernel test robot noticed the following build errors:
+The error message is slightly changed since there are fewer error
+return paths.
 
-[auto build test ERROR on 1ebab783647a9e3bf357002d5c4ff060c8474a0a]
+Setting adc->vref_mv is consolidated into a single place to make the
+logic easier to follow.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Matteo-Martelli/dt-bindings-iio-adc-add-binding-for-pac1921/20240722-183406
-base:   1ebab783647a9e3bf357002d5c4ff060c8474a0a
-patch link:    https://lore.kernel.org/r/20240722-iio-pac1921-v3-3-05dc9916cb33%40gmail.com
-patch subject: [PATCH v3 3/3] iio: adc: add support for pac1921
-config: um-randconfig-r051-20240723 (https://download.01.org/0day-ci/archive/20240724/202407240123.tjObpf49-lkp@intel.com/config)
-compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240724/202407240123.tjObpf49-lkp@intel.com/reproduce)
+A use_internal_vref_attr local variable is added to make it more
+obvious what the difference between the two iio info structures is.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407240123.tjObpf49-lkp@intel.com/
+The return value of the "Unknown Vref" dev_err_probe() is hard-coded to
+-ENODEV instead of ret since it was getting a bit far from where ret
+was set and logically that is the only value it could have.
 
-All errors (new ones prefixed by >>):
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
 
->> drivers/iio/adc/pac1921.c:892:2: error: initializer element is not constant
-     pac1921_ext_info_scale_avail,
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/pac1921.c:892:2: note: (near initialization for 'pac1921_ext_info_voltage[0]')
-   drivers/iio/adc/pac1921.c:897:2: error: initializer element is not constant
-     pac1921_ext_info_scale_avail,
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/pac1921.c:897:2: note: (near initialization for 'pac1921_ext_info_current[0]')
-   drivers/iio/adc/pac1921.c:898:2: error: initializer element is not constant
-     pac1921_ext_info_rshunt,
-     ^~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/pac1921.c:898:2: note: (near initialization for 'pac1921_ext_info_current[1]')
+v2 changes:
+* Rename use_auto_zeroing_ref_attr to use_internal_vref_attr
+* Link to v1: https://lore.kernel.org/r/20240712-iio-regulator-refactor-round-3-v1-0-835017bae43d@baylibre.com
 
+(other patches from v1 were already applied, so not included in v2)
 
-vim +892 drivers/iio/adc/pac1921.c
+---
+ drivers/iio/adc/mcp3564.c | 54 ++++++++++++++---------------------------------
+ 1 file changed, 16 insertions(+), 38 deletions(-)
 
-   890	
-   891	static const struct iio_chan_spec_ext_info pac1921_ext_info_voltage[] = {
- > 892		pac1921_ext_info_scale_avail,
-   893		{}
-   894	};
-   895	
+diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
+index d83bed0e63d2..a68f1cd6883e 100644
+--- a/drivers/iio/adc/mcp3564.c
++++ b/drivers/iio/adc/mcp3564.c
+@@ -349,8 +349,6 @@ struct mcp3564_chip_info {
+  * struct mcp3564_state - working data for a ADC device
+  * @chip_info:		chip specific data
+  * @spi:		SPI device structure
+- * @vref:		the regulator device used as a voltage reference in case
+- *			external voltage reference is used
+  * @vref_mv:		voltage reference value in miliVolts
+  * @lock:		synchronize access to driver's state members
+  * @dev_addr:		hardware device address
+@@ -369,7 +367,6 @@ struct mcp3564_chip_info {
+ struct mcp3564_state {
+ 	const struct mcp3564_chip_info	*chip_info;
+ 	struct spi_device		*spi;
+-	struct regulator		*vref;
+ 	unsigned short			vref_mv;
+ 	struct mutex			lock; /* Synchronize access to driver's state members */
+ 	u8				dev_addr;
+@@ -1085,11 +1082,6 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
+ 	return 0;
+ }
+ 
+-static void mcp3564_disable_reg(void *reg)
+-{
+-	regulator_disable(reg);
+-}
+-
+ static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
+ {
+ 	unsigned int pow = adc->chip_info->resolution - 1;
+@@ -1110,7 +1102,7 @@ static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
+ 	}
+ }
+ 
+-static int mcp3564_config(struct iio_dev *indio_dev)
++static int mcp3564_config(struct iio_dev *indio_dev, bool *use_internal_vref_attr)
+ {
+ 	struct mcp3564_state *adc = iio_priv(indio_dev);
+ 	struct device *dev = &adc->spi->dev;
+@@ -1119,6 +1111,7 @@ static int mcp3564_config(struct iio_dev *indio_dev)
+ 	enum mcp3564_ids ids;
+ 	int ret = 0;
+ 	unsigned int tmp = 0x01;
++	bool internal_vref;
+ 	bool err = false;
+ 
+ 	/*
+@@ -1218,36 +1211,22 @@ static int mcp3564_config(struct iio_dev *indio_dev)
+ 
+ 	dev_dbg(dev, "Found %s chip\n", adc->chip_info->name);
+ 
+-	adc->vref = devm_regulator_get_optional(dev, "vref");
+-	if (IS_ERR(adc->vref)) {
+-		if (PTR_ERR(adc->vref) != -ENODEV)
+-			return dev_err_probe(dev, PTR_ERR(adc->vref),
+-					     "failed to get regulator\n");
++	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "Failed to get vref voltage\n");
++
++	internal_vref = ret == -ENODEV;
++	adc->vref_mv = internal_vref ? MCP3564R_INT_VREF_MV : ret / MILLI;
++	*use_internal_vref_attr = internal_vref;
+ 
++	if (internal_vref) {
+ 		/* Check if chip has internal vref */
+ 		if (!adc->have_vref)
+-			return dev_err_probe(dev, PTR_ERR(adc->vref),
+-					     "Unknown Vref\n");
+-		adc->vref = NULL;
++			return dev_err_probe(dev, -ENODEV, "Unknown Vref\n");
++
+ 		dev_dbg(dev, "%s: Using internal Vref\n", __func__);
+ 	} else {
+-		ret = regulator_enable(adc->vref);
+-		if (ret)
+-			return ret;
+-
+-		ret = devm_add_action_or_reset(dev, mcp3564_disable_reg,
+-					       adc->vref);
+-		if (ret)
+-			return ret;
+-
+ 		dev_dbg(dev, "%s: Using External Vref\n", __func__);
+-
+-		ret = regulator_get_voltage(adc->vref);
+-		if (ret < 0)
+-			return dev_err_probe(dev, ret,
+-					     "Failed to read vref regulator\n");
+-
+-		adc->vref_mv = ret / MILLI;
+ 	}
+ 
+ 	ret = mcp3564_parse_fw_children(indio_dev);
+@@ -1350,10 +1329,8 @@ static int mcp3564_config(struct iio_dev *indio_dev)
+ 	tmp_reg |= FIELD_PREP(MCP3564_CONFIG0_CLK_SEL_MASK, MCP3564_CONFIG0_USE_INT_CLK);
+ 	tmp_reg |= MCP3456_CONFIG0_BIT6_DEFAULT;
+ 
+-	if (!adc->vref) {
++	if (internal_vref)
+ 		tmp_reg |= FIELD_PREP(MCP3456_CONFIG0_VREF_MASK, 1);
+-		adc->vref_mv = MCP3564R_INT_VREF_MV;
+-	}
+ 
+ 	ret = mcp3564_write_8bits(adc, MCP3564_CONFIG0_REG, tmp_reg);
+ 
+@@ -1412,6 +1389,7 @@ static int mcp3564_probe(struct spi_device *spi)
+ 	int ret;
+ 	struct iio_dev *indio_dev;
+ 	struct mcp3564_state *adc;
++	bool use_internal_vref_attr;
+ 
+ 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
+ 	if (!indio_dev)
+@@ -1428,7 +1406,7 @@ static int mcp3564_probe(struct spi_device *spi)
+ 	 * enable/disable certain channels
+ 	 * change the sampling rate to the requested value
+ 	 */
+-	ret = mcp3564_config(indio_dev);
++	ret = mcp3564_config(indio_dev, &use_internal_vref_attr);
+ 	if (ret)
+ 		return dev_err_probe(&spi->dev, ret,
+ 				     "Can't configure MCP356X device\n");
+@@ -1440,7 +1418,7 @@ static int mcp3564_probe(struct spi_device *spi)
+ 	indio_dev->name = adc->chip_info->name;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+-	if (!adc->vref)
++	if (use_internal_vref_attr)
+ 		indio_dev->info = &mcp3564r_info;
+ 	else
+ 		indio_dev->info = &mcp3564_info;
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+---
+base-commit: 472438c7e0e2261c6737a8321f46ef176eef1c8f
+change-id: 20240712-iio-regulator-refactor-round-3-17f2a82d2181
 

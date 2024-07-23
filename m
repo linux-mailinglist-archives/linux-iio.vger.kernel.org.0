@@ -1,258 +1,195 @@
-Return-Path: <linux-iio+bounces-7829-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7831-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93EF593A786
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 21:00:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D7B93A9C5
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 01:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 068ABB20FCD
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 19:00:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDEF51C20A73
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Jul 2024 23:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AA913DBA4;
-	Tue, 23 Jul 2024 18:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QnE1S6JE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EF114900E;
+	Tue, 23 Jul 2024 23:20:42 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00174802.pphosted.com (mx0b-00174802.pphosted.com [148.163.137.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45E013C3F5
-	for <linux-iio@vger.kernel.org>; Tue, 23 Jul 2024 18:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721761199; cv=none; b=pagv1PF39bygJzSFT4vel0GjJTmuoqzVumbzAqi4ai/uNMsgLMxTqmMG/gEsLKt2RB8yfbJvRC68Uw20/ZwaPJzNdIX/Ymrbb8U7HEiH+3GfGrbItA5nWNLZRrsyH1G28mUtPHsnO6INh09dwIz3KUdM0BaOA//vX4u7+mE3zl0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721761199; c=relaxed/simple;
-	bh=iyS1ByyUx4twpm9hP+yKFrlEdFKQoGHxhjKyw1jAN64=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Cl9VCdtVLyxYuZG3BJZAsNJ9UkuGSppHBPfJ8usiaVe5HTAWYGsxP3oOQN6i1zrC29FgGCRDByiczPJl94BjD/k2QO2Jtnh5C04+Ua/sSCXEkW4sFMkts5VWQiMFthDslKmovUJC31d+r/0pOlaZZAgz0zMb/3LHhsLg7JA5Bqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QnE1S6JE; arc=none smtp.client-ip=209.85.167.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3d94293f12fso3523855b6e.3
-        for <linux-iio@vger.kernel.org>; Tue, 23 Jul 2024 11:59:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1721761195; x=1722365995; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=upz/OCbfVuYTOG+l6gDkvMC+JV0tNs7jmWYtWPGntn8=;
-        b=QnE1S6JElsVkkeCIxCCYdMSh2fNyeYHYg4EXyl9EkBpLS7w4hVxPIS8OfMIBgBtATc
-         m7PcZntSqmn168TWrobOoZNaXwKsykiRdyKdvwovM2io1T2eqei7RRDnssVIdYMLL0+z
-         BhIqEgCnwfAUgxI//9/FkhMUJJS9i6ojYGFo3Ceik1C5tFIg2LpYV4kydXVOf9L+ZBZM
-         Y23wOmuV/oVCcjYgdnYI21FRaoIzntuJwVMUgnGn4D6K8XyO55cz0I6cYgrvClZzrIB1
-         7tOHsDu/JARZChCq0cxQNhOsHQEeLJ2dMUD3Acp8ph/GrWOyUtNGAnVlr9dnjdxoshLO
-         OEPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721761195; x=1722365995;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=upz/OCbfVuYTOG+l6gDkvMC+JV0tNs7jmWYtWPGntn8=;
-        b=vquCaT9GFXFm2S42Zdum9flWsVTESAGgCasvg790VZAqeZTnD1QBFpayIsJTiPzctH
-         KBuOFEs6VGFw7n9CJlxAptI3tC3J+8QrxCvwhTjb7qTE3rC6yzTa19Qqvli9g7YmwP5r
-         uAxaAxZoQbDNmZ9DRxJO/4N+WswQQLsz0YeJigZfgCAUSwZ/it6lTDGV2Z7Yd+LiIlwz
-         3nRG9nBPq/ZuAQVOdwcAnuoquezaBJXefPBeBhCixrtl+Mqu/4K519g9kppAuuN0Sclg
-         8Rb99uRxt+QRGJGKoMzHKCHLu1JPKvDAIg09mWR7z56ZbCHJTKEjS5C80aWG2xazgwWB
-         0/BA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGgjmBfO0HkF4F4HnuPMJncaLEGK7MTC12bRk25ssIdwAj0bwUb0wUMW9sTnFYXGhBVKFTuswm3h4tpReIuGZkdIm2cMu8y0pk
-X-Gm-Message-State: AOJu0YwEuUAOfwwv7mfvGoRhlVnOvsE3zCoCMCKKXNnqXT31wehJcn5u
-	gKeY1xIMfWfqUF+HHhW6v8laBpx/h7rLR8Xoyfinq4v32eg2w58n+YnNBMg0DCc=
-X-Google-Smtp-Source: AGHT+IHWmxzHoa8Zq3eq10vb/pe8QbH2QvQC7hdWVRqF2Zdoo7oipF+bXn58Y1qBgh1MqL2hHJnofw==
-X-Received: by 2002:a05:6808:308f:b0:3d6:53fc:e813 with SMTP id 5614622812f47-3db06d99e36mr993749b6e.27.1721761195030;
-        Tue, 23 Jul 2024 11:59:55 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dae0981450sm2100211b6e.24.2024.07.23.11.59.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jul 2024 11:59:54 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Marius Cristea <marius.cristea@microchip.com>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio: adc: mcp3564: use devm_regulator_get_enable_read_voltage()
-Date: Tue, 23 Jul 2024 13:59:50 -0500
-Message-ID: <20240723-iio-regulator-refactor-round-3-v2-1-ae9291201785@baylibre.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9008813BAD5
+	for <linux-iio@vger.kernel.org>; Tue, 23 Jul 2024 23:20:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.137.153
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721776842; cv=fail; b=nZmH9I3M0ZFBi1Dd4ICPkcJBQnt/BvVuOpDOE0hvvrYB6oW8qE9Dif1dAMNfsIUPLKIcKNy2LWtlWYcSbIrKv04Czv9IQ+yCaCjMFKfMpB/r8cpYYBIzprv3PBZAEIUgVMTK8//dPl33p3l2yax4HPl6lXollP32jlTkgfaBvsQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721776842; c=relaxed/simple;
+	bh=YVWStPnO7cs21TpVRScTBLWxSq16t/vopxPW1BTniSM=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=m6D+StDCRXPY1/B0zIvEGPmrO7j3jbeWxY6bXCU9Jr8pQFyaPCkBbjJIjipkEn6rfjcFa5hy2EmAVFhH+W6NiZqLGxpY9IKJQUPXAqfZjjToYISHZ3H14vEs8+ND8jcgDxs/V7j2I/r3Z2YiNb+CUyodGmrM1MDe00sjxbL0Smk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=heilatech.com; spf=pass smtp.mailfrom=heilatech.com; arc=fail smtp.client-ip=148.163.137.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=heilatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heilatech.com
+Received: from pps.filterd (m0172410.ppops.net [127.0.0.1])
+	by mx0b-00174802.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46NEGnph030049
+	for <linux-iio@vger.kernel.org>; Tue, 23 Jul 2024 18:07:22 -0500
+Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazlp17012055.outbound.protection.outlook.com [40.93.14.55])
+	by mx0b-00174802.pphosted.com (PPS) with ESMTPS id 40hw1p4v74-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-iio@vger.kernel.org>; Tue, 23 Jul 2024 18:07:21 -0500 (CDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LH8jw3QiracLEn9yAcgc1eIy4yWJ2GJA9EW+P6qwKAS/lbEYhkoCIKvIy3GyAMeZ1g0pQESrDFyaeFb8Ual/yN5wfwUELTzFNplkvRl+Gb9EWLoCNHc7kEXtu5KCSWxC2Aaw1VqBeg/D6zGy+DPn/8E5W6baeBsrJNwlqiA3bgGnpjpiq/GXJqwgMyEyXjMZzKLPyhRVyDnftafjemHhZ75GPYncFlcQJQ0kisZWBQ6Xfjst0fjCe5wjLTv3Si/U54O0oYANdjwocQw+6xbElYSPAd0/nIJ88dxN8wNtObsDzhYX6wFlKG4rz75ybm7hgCAy0s7q3RcKArSypWONgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YVWStPnO7cs21TpVRScTBLWxSq16t/vopxPW1BTniSM=;
+ b=y71pFVH/JbboYfaVg9OsRkQH2g5QJ8GpXKl9Jax4YzMjQZZ47uzkyVJmRykynJOF+HJ0lO18DR538iwGL+5p6QowtU1wjx1Tc/ZJz3MuaaAo711RBt52G3HNAG4wLcHkERhgIeyInYSuuDUE8d2pDLf8cWawiCnr7DkHcsyUyovREgbTlSoUYcn6+POnwG4K3jWWg0vgDYHyHiklPb0+ZPyvF+qCKUL137euDNPhujFeSKfxq1zT2/yUGCm20KLLPi7V7mUhYlDt7GCVm6XeX3023dmKxSZo0mO4lSY7DFoDaFw+TYcvN+ahUGu+/2jpJ8jwCSuxMiAPuqD7mhAJaQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=heilatech.com; dmarc=pass action=none
+ header.from=heilatech.com; dkim=pass header.d=heilatech.com; arc=none
+Received: from SA0PR01MB6170.prod.exchangelabs.com (2603:10b6:806:ec::14) by
+ CH0PR01MB7061.prod.exchangelabs.com (2603:10b6:610:100::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7784.20; Tue, 23 Jul 2024 23:07:20 +0000
+Received: from SA0PR01MB6170.prod.exchangelabs.com
+ ([fe80::560d:33aa:15dc:408d]) by SA0PR01MB6170.prod.exchangelabs.com
+ ([fe80::560d:33aa:15dc:408d%7]) with mapi id 15.20.7784.017; Tue, 23 Jul 2024
+ 23:07:19 +0000
+From: Akash Borde <Akash.Borde@heilatech.com>
+To: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC: Emily Guthrie <Emily.Guthrie@heilatech.com>,
+        Erika Silva
+	<Erika.Silva@heilatech.com>,
+        Bart Oegema <bart.oegema@heilatech.com>
+Subject: [ti-dac5571] Checking compatibility of TI DAC with kernel driver
+Thread-Topic: [ti-dac5571] Checking compatibility of TI DAC with kernel driver
+Thread-Index: AQHa3VURec03RAbWv0OAfFXOC/6ogA==
+Date: Tue, 23 Jul 2024 23:07:19 +0000
+Message-ID: <1261F7BA-D202-4BED-ADB4-87EB75E2C068@heilatech.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA0PR01MB6170:EE_|CH0PR01MB7061:EE_
+x-ms-office365-filtering-correlation-id: d3ae2e73-c8c7-4c2b-2529-08dcab6c3401
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?YzR4bHZGMkR2dERFTXBWeldtQnZnRDR6bS8xRGpEWTYvMjNFbFV1VU5sb2Zm?=
+ =?utf-8?B?a0kxVkpWTEZwejBJYTdiUWhGK3B4NVdBYi9qTTJua0lBbzRKSmU5UWdRL1BZ?=
+ =?utf-8?B?WTJWTUYrWHpKcitqQzhwcW9RRDgyeUJLaXlOckN1RFBvbXhEVFc5NUFiV2Ux?=
+ =?utf-8?B?eEc2TTF6ckNBbFNFUUF0bW1WQ0JXTnROSHA4WHBsYkhhZ3Qwa3p6WitrREQ1?=
+ =?utf-8?B?MGg3MUtSMXNHNlBJL3d6UDZxTENYQjF6Y2xZRm1VbzVtdGxzU04yZUVvRW5y?=
+ =?utf-8?B?ZCtVajBSanljcjdWT205MlhkMUhUQ3h3MkE5R2JMM3FuTGh1cWU4eHBsckQ3?=
+ =?utf-8?B?d2w2bm13eUFRL3ZOdFdpaXZvMFNFOEVDemZLcWVqbVpwUENJN3NKMURRZStZ?=
+ =?utf-8?B?M3puMWZSUmN0VDBqbFpnRVM4Vlh1em02STZoc290NGRXNVVNS2NNQnZFcmtS?=
+ =?utf-8?B?cGNDekZFMU5PREFPS2JPU2dGVnJHZ2VMc0xjS25sNi9BWXExSEJVY08rd0pp?=
+ =?utf-8?B?MnFJdFQ5cjNucFhndTlsZ1V6N2d0Ly9lQzRONm0ybzVPVFJVVmhOakJ3L2k1?=
+ =?utf-8?B?eDlaKzkrbnlCU3FNa21tYnFkcm9oMTBxR1hHZU9CVDZmZkovZUQrUGRmQ3F0?=
+ =?utf-8?B?RTBsMVE2ZHlLY3g2Snh3N0FWNzgwYUE4ME5XaWw2N3VSNnFHOUNDV3U1dlBC?=
+ =?utf-8?B?cmFpU2hQTGdPZjFXUkNzVlhIRkFYM01qdGVxTkE4cHViVjVxWll2RW9NbnB0?=
+ =?utf-8?B?Q3dqd01XblJuSE1BUlN5MUlBNU03Z2VROFA0RWxrZXlKUTg0bU5CTG9ZY1Jl?=
+ =?utf-8?B?QW5zTy9PRTFYRW8rVThxbUZDMGVQc09mZk12SVRYcmMrZlhma1ZMU2tKeDdG?=
+ =?utf-8?B?M3RkdEN4V1pPWUk0QmI5Qlk0aWxBK2JBLzhRa2tPM0NLcnhQM1BPeFEwMUlJ?=
+ =?utf-8?B?S0xKRUhvK0FrOG15MTk5WWxIMUFlQmt6bHhaaWxuVDczVEtCT3h0ZGszTkZv?=
+ =?utf-8?B?TGduWjEydmMzYUhIK2kzcytkNE9yNXFjVXhvSWl5cWxkVFFpdlo2UU14N3pr?=
+ =?utf-8?B?K2x4Y1UyWElpb2NqdlNkYTFLT3lCWlQ5NXozcDlNaytPcVJvVEk0RFFucVdP?=
+ =?utf-8?B?WHVqRnk0ZEEyVDZ0Y2E2c1FvV0hiQU5aTVFTQlNDZU9sMnRvMDdrbktBN2Zm?=
+ =?utf-8?B?VGZFVWovK2U1MnJ3blQ0cVJlYXNMeXdFQ3BRMThKNDFsa25tbk1hVWxlOWs2?=
+ =?utf-8?B?d0MycGM1R0xuVEc2MTU4R0J3cjQwTVhHV3RJdnpFdzhiU3pjcEN6NzlLdE54?=
+ =?utf-8?B?WEExODB4RmFVUzdKbllHR3pORzZpVVBEOXMxR1czUGJodXpHbGh5MVJ0M1RI?=
+ =?utf-8?B?UDBIVDY4aWJRRjBNTFBna0o1ckpGWUlRU3FtdDdnTWoyVW1HYkVJODlDZ0d3?=
+ =?utf-8?B?ZitHYUF2a044R3JleFUrbkNsbmJOT2lMU2MzSHpFWEtHRnBPaDI2UWpzYUNh?=
+ =?utf-8?B?Vmk0ZHlvVjlNRG5kQTM3Ty82NUpxeThEckIyMVpPR2VMTlRZSFY3R1UveUkz?=
+ =?utf-8?B?MWJDZldJVGxOUjNENmRxbDM1d2dvdVhVdzRRdFZHdGtSMHZ1Q1JHU0VFZWpK?=
+ =?utf-8?B?eFhneVJRRXk1ZE5pdGw1bTU0a2sxVnNLOFp6aFNhSHlrSFRUUFlla1l3Y1ZR?=
+ =?utf-8?B?SDJMNzFXM0kxdGp3clB3Mzlzayt2TGFSK0U0U3dYUThHc21iWXdrdlVwYkFB?=
+ =?utf-8?B?b1ZHdDVIdTk2VHEzcFlhTm5qbDJYd2ZjZFZnbnlFNmQzbzI0NEYvcURnUlZm?=
+ =?utf-8?Q?VToWxF0Hh7QHYIqKLEQjgnFqZ3efF5VDu6TqU=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR01MB6170.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?Z1ZSQWRkY2FDWmNCcThYOEljTlBqTzlSd1VwMjNFTVdlb24xT09saEhtdmZN?=
+ =?utf-8?B?WUR0VUxIS1hzZG1WZUR0SmZWZTZ0WDBzMlpkT2EyZGcycDJ1R21ZL1ZDdWxn?=
+ =?utf-8?B?WnhsaXRvWlpOSmJvZ1lLYjNsS3V3K1ZJdmFFY0ZUa2h0UmdzdURVNEZZVjlX?=
+ =?utf-8?B?aXlXclpMQk0ycjJHbHlXbk5LRG5UZUprZ0FCaTFvR3VZMDhFVGVobWwvOEFV?=
+ =?utf-8?B?Y2U3U1dpQ3VueWFDdEpnczhTZTVqUm5ScXU1WkprTlM1d09vRS92Y2Z1NkYv?=
+ =?utf-8?B?dHp2M0tUVUFZait5WEF1eVdCUWkzSjJGSlNlWk5xTjVYVHZmVW1FK0Y4NmVn?=
+ =?utf-8?B?aDlTa0FUbUtXK21CVGVsc1pTSFN2c3pHeHhzdWd4cnlqdHc3L1JqbkRnOHdi?=
+ =?utf-8?B?bzlMem4xa2lZQ0pHSjRNZWwvZ1lCc0RNRGY4NTlvREFhd0p1clFkMVJCSmVv?=
+ =?utf-8?B?QlFVRzJudWphUnFGOFVLMjJVMUJwR01PM1A2eDhIQXFHdXl1VkZvU0JHK2I4?=
+ =?utf-8?B?QXBRZUhHMEZzRjZSeHdnY1cyZWh5L1QyQ1pVWUVBS0xRSERKWlIrNi9Sdi9Q?=
+ =?utf-8?B?TzdUOWJJcEpPSjJLKzdFSVh2N2M3VUdLdzYxdVBMcWg1NXQ1bTAyaG1MeGVo?=
+ =?utf-8?B?cmE2WnJsUUtLTjhrd0lucjdqZTlOWVBDVXdHRVd0c3M3Ujk3QlFyNTYwVVly?=
+ =?utf-8?B?V2J5NU82Z2dKaXVWRlhsRStZMDZwZjBvdmJRbUhRWmJXVWhXVjQvelV0Sm9y?=
+ =?utf-8?B?K3p0b1N1aTBWYmE1SzZ3V3FyV0hhQTRXUi9uTDhWRFBPeUU1ZXFnaWx5OWZo?=
+ =?utf-8?B?Q1dmOWhKUThVVVU5OFVwU3BSbWVwZ2xTSU1jcXEza29jSDU1RjNQZzJTK3p3?=
+ =?utf-8?B?c3owbzVSeHZhM0FxYXZ3NUcwT1FodUdLdXhCaTFISEt1ZmlXOTZLVmJxVHlY?=
+ =?utf-8?B?Mlp1RWwxWUhtYjNYZ2hvdE5nUkVjTzUxNGlkVTI2RS9hd2o3MnAyWHB0UjYx?=
+ =?utf-8?B?UGxiT0ZrWG1jeUZjTjkxUkIzUE82bUZrNjVJa1pldy9TbUdlY3BHMms1Nkti?=
+ =?utf-8?B?VlQ0akExRWFPbGRidzFSbjF5VUR6SWxMKzJPRk0xRlJZWk1Bc3poK1JuajNX?=
+ =?utf-8?B?L25GeXB5STFDcXlnZzh6SXRUbjJIa2VNSXp3RTRGSlN0UjZHVG1iTzM0M0p3?=
+ =?utf-8?B?elh5QW9IbVFsRU9xeW1wWFNCc0tzNTVSbHR0TnVBd0lMMGd0dVlCbWxvNi9u?=
+ =?utf-8?B?SVlMQkh5Zkt2Q1V1QVBsUWpJY1R6MTBOSTFMVmpUM254YnBta2VBdkhBTkJM?=
+ =?utf-8?B?OFpka2FUaXhQY0QwRU80SkVDV0NqbURWTGpJNUdqalVCRFRKWGMwelVIbGtM?=
+ =?utf-8?B?UFlvOWRXQ3hFSkdvTnNzL1dsRE13MHV2RC85MjB2N3NvZzFOT0FLL0NYazVO?=
+ =?utf-8?B?aDJnbFNFWGhPYjJldGExYSs0Zk9QMG9Yb0o3Z0duM2ZvQ0EvQytkN2paL0dr?=
+ =?utf-8?B?WWxwUURqTUNNL1NLcGthWDBDTUN0UUZiTGRGV3VuWXVsUDdXSG5MV0FpRVp0?=
+ =?utf-8?B?SDRrWmhhcVpjdE8yUXFYUzNRNGxaL1d3KytOaUF6MENqK3lQOGpLSjBsQkMy?=
+ =?utf-8?B?U1NpeHFEeCtXUVFnTU1wcHBFNExZZFIwNmhlVk1jeDVFL0w0OVUzK05Md2lM?=
+ =?utf-8?B?aXNvaHFxVEJYWGl6U1pEMmNtTzBRL1BDSnRWV2piY3Fxd1RYSk1yQ3FHZlQ4?=
+ =?utf-8?B?UjhCWWx5YkVWQytsR3o5Z2dlcnF5aUVBQkdOeDRBaGFrSzhxNmx3U0tkdGtx?=
+ =?utf-8?B?ZEdEYnFTemhOeWhxRytTRmFCMmw2RENhMHpWYzNJR3hwQmNkSDVRay9NTVJ4?=
+ =?utf-8?B?R3A1OWZScWxaWDJoU1R0SnVDY043R3FJSDBubmk1QTZmaXIvQlZ5d2x5aUk1?=
+ =?utf-8?B?Zm1ya0oyeGxOYmFUM0tEYmRGYjRhY2hlL2RvMURkUXBESi9tekdsNVRBUkNT?=
+ =?utf-8?B?L3owSjV6bXMvYTNFc25JVEZrN2RXRGNwNWorSnduVE1RWjErSWxBbVNlekNT?=
+ =?utf-8?B?VUFaUlVVWjlVZmUvbjVMVm5RTHNTOHVxdGxjQ0IwK1puOEU0OVVnSFdENzJW?=
+ =?utf-8?B?S3RZdlRScUpKK3U3S0w2aVJ5Y3F4OTZ5akJIa1k1SGR5azNpRnFWaDdUUTVx?=
+ =?utf-8?B?Qmc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D32B138FF9735549BAB1684753CF7434@prod.exchangelabs.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.14.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: heilatech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR01MB6170.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3ae2e73-c8c7-4c2b-2529-08dcab6c3401
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2024 23:07:19.6655
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5d2d3f03-286e-4643-8f5b-10565608e5f8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 161NFC89SCmFhNivrA9cex5OyV6zCkcQxIExmoPSQpmPCeoVCYHaplV14Sds7YX+ktZiV70m4VnfljWd7soXckZXnznPZVSTMMyahfCF8Eg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR01MB7061
+X-Authority-Analysis: v=2.4 cv=EbiaQ+mC c=1 sm=1 tr=0 ts=66a037aa cx=c_pps a=uLgqAjDAh1BxMpLoLcdK2Q==:117 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=4kmOji7k6h8A:10 a=iPDCyfAhTBcA:10 a=sozttTNsAAAA:8 a=NEAV23lmAAAA:8
+ a=jiqXDrDkAAAA:8 a=zesCDFQrFD2TfHMYfIcA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=aeg5Gbbo78KNqacMgKqU:22 a=f0JD9i-elTk4OLjlH16K:22
+X-Proofpoint-GUID: 22k9xIlr9KXxHJMHZ430XUUQr2sQEH-1
+X-Proofpoint-ORIG-GUID: 22k9xIlr9KXxHJMHZ430XUUQr2sQEH-1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-23_15,2024-07-23_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ impostorscore=0 malwarescore=0 adultscore=0 clxscore=1011 mlxlogscore=947
+ bulkscore=0 phishscore=0 spamscore=0 priorityscore=1501 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.21.0-2407110000
+ definitions=main-2407230162
 
-This makes use of the new devm_regulator_get_enable_read_voltage()
-helper function to reduce boilerplate code in the MCP3564 ADC driver.
-
-The error message is slightly changed since there are fewer error
-return paths.
-
-Setting adc->vref_mv is consolidated into a single place to make the
-logic easier to follow.
-
-A use_internal_vref_attr local variable is added to make it more
-obvious what the difference between the two iio info structures is.
-
-The return value of the "Unknown Vref" dev_err_probe() is hard-coded to
--ENODEV instead of ret since it was getting a bit far from where ret
-was set and logically that is the only value it could have.
-
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-
-v2 changes:
-* Rename use_auto_zeroing_ref_attr to use_internal_vref_attr
-* Link to v1: https://lore.kernel.org/r/20240712-iio-regulator-refactor-round-3-v1-0-835017bae43d@baylibre.com
-
-(other patches from v1 were already applied, so not included in v2)
-
----
- drivers/iio/adc/mcp3564.c | 54 ++++++++++++++---------------------------------
- 1 file changed, 16 insertions(+), 38 deletions(-)
-
-diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
-index d83bed0e63d2..a68f1cd6883e 100644
---- a/drivers/iio/adc/mcp3564.c
-+++ b/drivers/iio/adc/mcp3564.c
-@@ -349,8 +349,6 @@ struct mcp3564_chip_info {
-  * struct mcp3564_state - working data for a ADC device
-  * @chip_info:		chip specific data
-  * @spi:		SPI device structure
-- * @vref:		the regulator device used as a voltage reference in case
-- *			external voltage reference is used
-  * @vref_mv:		voltage reference value in miliVolts
-  * @lock:		synchronize access to driver's state members
-  * @dev_addr:		hardware device address
-@@ -369,7 +367,6 @@ struct mcp3564_chip_info {
- struct mcp3564_state {
- 	const struct mcp3564_chip_info	*chip_info;
- 	struct spi_device		*spi;
--	struct regulator		*vref;
- 	unsigned short			vref_mv;
- 	struct mutex			lock; /* Synchronize access to driver's state members */
- 	u8				dev_addr;
-@@ -1085,11 +1082,6 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
- 	return 0;
- }
- 
--static void mcp3564_disable_reg(void *reg)
--{
--	regulator_disable(reg);
--}
--
- static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
- {
- 	unsigned int pow = adc->chip_info->resolution - 1;
-@@ -1110,7 +1102,7 @@ static void mcp3564_fill_scale_tbls(struct mcp3564_state *adc)
- 	}
- }
- 
--static int mcp3564_config(struct iio_dev *indio_dev)
-+static int mcp3564_config(struct iio_dev *indio_dev, bool *use_internal_vref_attr)
- {
- 	struct mcp3564_state *adc = iio_priv(indio_dev);
- 	struct device *dev = &adc->spi->dev;
-@@ -1119,6 +1111,7 @@ static int mcp3564_config(struct iio_dev *indio_dev)
- 	enum mcp3564_ids ids;
- 	int ret = 0;
- 	unsigned int tmp = 0x01;
-+	bool internal_vref;
- 	bool err = false;
- 
- 	/*
-@@ -1218,36 +1211,22 @@ static int mcp3564_config(struct iio_dev *indio_dev)
- 
- 	dev_dbg(dev, "Found %s chip\n", adc->chip_info->name);
- 
--	adc->vref = devm_regulator_get_optional(dev, "vref");
--	if (IS_ERR(adc->vref)) {
--		if (PTR_ERR(adc->vref) != -ENODEV)
--			return dev_err_probe(dev, PTR_ERR(adc->vref),
--					     "failed to get regulator\n");
-+	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
-+	if (ret < 0 && ret != -ENODEV)
-+		return dev_err_probe(dev, ret, "Failed to get vref voltage\n");
-+
-+	internal_vref = ret == -ENODEV;
-+	adc->vref_mv = internal_vref ? MCP3564R_INT_VREF_MV : ret / MILLI;
-+	*use_internal_vref_attr = internal_vref;
- 
-+	if (internal_vref) {
- 		/* Check if chip has internal vref */
- 		if (!adc->have_vref)
--			return dev_err_probe(dev, PTR_ERR(adc->vref),
--					     "Unknown Vref\n");
--		adc->vref = NULL;
-+			return dev_err_probe(dev, -ENODEV, "Unknown Vref\n");
-+
- 		dev_dbg(dev, "%s: Using internal Vref\n", __func__);
- 	} else {
--		ret = regulator_enable(adc->vref);
--		if (ret)
--			return ret;
--
--		ret = devm_add_action_or_reset(dev, mcp3564_disable_reg,
--					       adc->vref);
--		if (ret)
--			return ret;
--
- 		dev_dbg(dev, "%s: Using External Vref\n", __func__);
--
--		ret = regulator_get_voltage(adc->vref);
--		if (ret < 0)
--			return dev_err_probe(dev, ret,
--					     "Failed to read vref regulator\n");
--
--		adc->vref_mv = ret / MILLI;
- 	}
- 
- 	ret = mcp3564_parse_fw_children(indio_dev);
-@@ -1350,10 +1329,8 @@ static int mcp3564_config(struct iio_dev *indio_dev)
- 	tmp_reg |= FIELD_PREP(MCP3564_CONFIG0_CLK_SEL_MASK, MCP3564_CONFIG0_USE_INT_CLK);
- 	tmp_reg |= MCP3456_CONFIG0_BIT6_DEFAULT;
- 
--	if (!adc->vref) {
-+	if (internal_vref)
- 		tmp_reg |= FIELD_PREP(MCP3456_CONFIG0_VREF_MASK, 1);
--		adc->vref_mv = MCP3564R_INT_VREF_MV;
--	}
- 
- 	ret = mcp3564_write_8bits(adc, MCP3564_CONFIG0_REG, tmp_reg);
- 
-@@ -1412,6 +1389,7 @@ static int mcp3564_probe(struct spi_device *spi)
- 	int ret;
- 	struct iio_dev *indio_dev;
- 	struct mcp3564_state *adc;
-+	bool use_internal_vref_attr;
- 
- 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
- 	if (!indio_dev)
-@@ -1428,7 +1406,7 @@ static int mcp3564_probe(struct spi_device *spi)
- 	 * enable/disable certain channels
- 	 * change the sampling rate to the requested value
- 	 */
--	ret = mcp3564_config(indio_dev);
-+	ret = mcp3564_config(indio_dev, &use_internal_vref_attr);
- 	if (ret)
- 		return dev_err_probe(&spi->dev, ret,
- 				     "Can't configure MCP356X device\n");
-@@ -1440,7 +1418,7 @@ static int mcp3564_probe(struct spi_device *spi)
- 	indio_dev->name = adc->chip_info->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
--	if (!adc->vref)
-+	if (use_internal_vref_attr)
- 		indio_dev->info = &mcp3564r_info;
- 	else
- 		indio_dev->info = &mcp3564_info;
-
----
-base-commit: 472438c7e0e2261c6737a8321f46ef176eef1c8f
-change-id: 20240712-iio-regulator-refactor-round-3-17f2a82d2181
+SGksDQoNCkknZCBsaWtlIHRvIHNlZSBpZiB0aGUgVEkgREFDODU2MyBpcyBwb3RlbnRpYWxseSBj
+b21wYXRpYmxlIHdpdGggdGhpcyBleGlzdGluZyBkZXZpY2UgZHJpdmVyIGluIHRoZSBtYWluIGJy
+YW5jaCBvZiB0aGUga2VybmVsLg0KDQpUaGlzIGlzIHRoZSBwYXJ0IEknbSBldmFsdWF0aW5nIGZv
+ciBteSBib2FyZDogaHR0cHM6Ly93d3cudGkuY29tL2xpdC9kcy9zeW1saW5rL2RhYzg1NjMucGRm
+IA0KSGVyZSBpcyB0aGUgbW9zdCBzaW1pbGFyIGtlcm5lbCBkcml2ZXIgSSBjb3VsZCBmaW5kOiBo
+dHRwczovL2dpdGh1Yi5jb20vdG9ydmFsZHMvbGludXgvYmxvYi9tYXN0ZXIvZHJpdmVycy9paW8v
+ZGFjL3RpLWRhYzU1NzEuYw0KDQpJIHNlZSB2ZXJ5IHNpbWlsYXIgREFDcyBpbiB0aGUgY29tcGF0
+aWJsZSBsaXN0IG9mIHRoaXMgZHJpdmVyLCBidXQgbm90IHRoZSBleGFjdCBwYXJ0IG51bWJlciBm
+YW1pbHkgdGhhdCBJJ20gbG9va2luZyBmb3IuDQpJcyB0aGVyZSBhIHdheSB0byB2ZXJpZnkgYSBE
+QUMgb3IgZmFtaWx5IG9mIERBQ3MnIGNvbXBhdGliaWxpdHkgd2l0aCBleGlzdGluZyBkcml2ZXJz
+Pw0KDQpUaGFua3MhDQoNCkFrYXNoIEJvcmRlIHwgRW1iZWRkZWQgU3lzdGVtcyB8IEhlaWxhIFRl
+Y2hub2xvZ2llcw0KaHR0cHM6Ly9oZWlsYXRlY2guY29tLw0KDQo=
 

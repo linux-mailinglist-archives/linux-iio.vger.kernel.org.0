@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-7861-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7862-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C25F93B48A
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 18:09:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 473E693B4AF
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 18:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 547FD28319E
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 16:09:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D0B281BCC
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 16:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FA215CD49;
-	Wed, 24 Jul 2024 16:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECDB15E5CE;
+	Wed, 24 Jul 2024 16:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gyXEaU+5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IzYZj7xP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3B51BF38;
-	Wed, 24 Jul 2024 16:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CF715DBD8;
+	Wed, 24 Jul 2024 16:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721837368; cv=none; b=DwKroXfr+rQM+OEDailuc+qYhkP0GxlOItIx6rw8X8BbndxnB3lWLMYUSXvGE0JXAUzi6K6SPa55DcPQy2hAJ7UsK0Bi4GpIJZ3fJEijoDJVheAdSrsFNMRqH0O5ckWIsCnh4jZfwmXbc6wOfXxY/Xgii9BCzzXDqMfNga8I2P4=
+	t=1721837701; cv=none; b=mQ90oTGSHCubdqS5JA/XA33sb+Inqf1FLe1p41LeXW28PVnVUkv3WkTPj1POqRr+b7Gwl+HhT7+vfkx+EZC9+Bp8hR0452O6mES/UdJxF4h2m5M2sMPHm1m4JJpO0mfYkodctZXKd/Nuk3DiG2ss9gBti5i7YaCwNfbuUJncW9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721837368; c=relaxed/simple;
-	bh=Ae1TsuJM82AmyqCbGZaDDn2GLp1+nwcKq7q33PCnJzk=;
+	s=arc-20240116; t=1721837701; c=relaxed/simple;
+	bh=mIAFeE22s1wAZ4s4OOp4YVKgQBAjBdOfdqtr1K3K/bM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YgR7P4Esfg+Cygq9RVSWi2adMHgzRvTvltnMVOGeE36wIbvl1c1q8UDdozGiW6rodWhIrAa254ZS5LIUhdRrAjGD4E8u/E/jJ/ntBy4Jy/ibkIzdYynVY4UL57VFMmeEdtkOgzBDYfM7OOYhN00DcVl1dA+WWrrT4O7BHx2+wg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gyXEaU+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232AFC32781;
-	Wed, 24 Jul 2024 16:09:21 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=dwfpFQ3Lq4U8oFVwE15+hvzz1gkZoxWIChUPAnQHYvc7YfbK/V5JaGxKFkIQ3pj8DH954t8nSRw0DzNndIsliykS1MpyYYQkhR7wmm7uUO6SOhH4KK1gwjZW10kqUKX+DRQYjOJsFvons/yJNPxOMwCfD77YokNllWNPB9miK9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IzYZj7xP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C66C32781;
+	Wed, 24 Jul 2024 16:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721837368;
-	bh=Ae1TsuJM82AmyqCbGZaDDn2GLp1+nwcKq7q33PCnJzk=;
+	s=k20201202; t=1721837701;
+	bh=mIAFeE22s1wAZ4s4OOp4YVKgQBAjBdOfdqtr1K3K/bM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gyXEaU+5/JxxDzD5YBxEvKhA+gdmfy4WWpy8E/V25vh4SXGNhazZV3e4fFbQ6n+Rb
-	 TJbrsqH6n+KpxCPHMBh+pkzG3lKrnQyy4gBih+3X1qnMjPS/BgGQJHpfPc9JTKS+Hj
-	 j+sX7SKplORBZ/TZSS5xyEaabj9+zVtKEJUXwE1lz5JkESj80iNqhAWtMP4WtST+IM
-	 7bXT8jVIev7aKaSEbyw0lXLyjmEKC0efEd7hm+EMb2Q0XlyrfwJu2G7kMcQmzGsQt+
-	 WHY5Ou4lJHma1Zc2/0pQMCmu9M82LYn7rrr8W/kSD6eAQBSYP6dbZz9YdEgz8LyAjv
-	 1eZqzC8xFfJHg==
-Message-ID: <3ee9644d-ac10-495b-ac7c-fa034f27d27a@kernel.org>
-Date: Wed, 24 Jul 2024 18:09:19 +0200
+	b=IzYZj7xPFk/UIbRnOG94c10juzEns/eJDp9JEmE5j2TuzxaXFyi/Vp52/AZ8AgGF4
+	 1+VX6AhIETDvAxvXEKPUP+mkMOYSg8JjfeowuU0wx342oLKHiwzQaRppKiOjuKq3R+
+	 ZH2BmiKzDgxJj/PvNmBfkSber401AqouwNNozwcf8fEWs39HGu7x6/AsuRxCRkCzye
+	 Sk8DwTYN6p+ibKmedRRjaSwZDiFs1gYYxQ1Avq/SAp7OK9xuN/u3AUp1D7o1qyVrj0
+	 7y091T3PY9BG3ldzbVHfA2vizOU97hgd2z1tYYGAxs5+EecMCWHsWPUSOerPdIb28+
+	 xK3R61Lt86Yxw==
+Message-ID: <7d474c3d-22ed-45d5-8224-caaf124b72a0@kernel.org>
+Date: Wed, 24 Jul 2024 18:14:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] dt-bindings: iio: adc: add a7779 doc
+Subject: Re: [PATCH v4 3/3] drivers: iio: adc: add support for ad777x family
 To: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
  linux-iio@vger.kernel.org
 Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
@@ -61,12 +61,13 @@ Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Nuno Sa <nuno.sa@analog.com>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
  Marius Cristea <marius.cristea@microchip.com>,
- Mike Looijmans <mike.looijmans@topic.nl>, Liam Beguin
- <liambeguin@gmail.com>, Ivan Mikhaylov <fr0st61te@gmail.com>,
- Marcus Folkesson <marcus.folkesson@gmail.com>, linux-kernel@vger.kernel.org,
+ Ivan Mikhaylov <fr0st61te@gmail.com>,
+ Mike Looijmans <mike.looijmans@topic.nl>,
+ Marcus Folkesson <marcus.folkesson@gmail.com>,
+ Liam Beguin <liambeguin@gmail.com>, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org
 References: <20240724155517.12470-1-ramona.nechita@analog.com>
- <20240724155517.12470-3-ramona.nechita@analog.com>
+ <20240724155517.12470-5-ramona.nechita@analog.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -112,31 +113,173 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240724155517.12470-3-ramona.nechita@analog.com>
+In-Reply-To: <20240724155517.12470-5-ramona.nechita@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 24/07/2024 17:54, Ramona Alexandra Nechita wrote:
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
+> Add support for AD7770, AD7771, AD7779 ADCs. The device is capable of
+> sending out data both on DOUT lines interface,as on the SDO line.
+> The driver currently implements only theSDO data streaming mode. SPI
+> communication is used alternatively foraccessingregisters and streaming
 
-<form letter>
-This is a friendly reminder during the review process.
+Typo, please run spell check.
 
-It seems my or other reviewer's previous comments were not fully
-addressed. Maybe the feedback got lost between the quotes, maybe you
-just forgot to apply it. Please go back to the previous discussion and
-either implement all requested changes or keep discussing them.
+Please use subject prefixes matching the subsystem. You can get them for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching. For bindings, the preferred subjects are
+explained here:
+https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
 
-Thank you.
-</form letter>
+There is no "drivers".
+
+> data. Register access are protected by crc8.
+> 
+> Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+> ---
+>  drivers/iio/adc/Kconfig  |  11 +
+>  drivers/iio/adc/Makefile |   1 +
+>  drivers/iio/adc/ad7779.c | 952 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 964 insertions(+)
+>  create mode 100644 drivers/iio/adc/ad7779.c
+> 
+
+The driver has several trivial style issues. Please be sure such
+trivialities are fixed. Get internal review on this. You do need to ask
+community to tell you that you must run checkpatch. Or to tell them that
+indentation/alignment is entirely broken. Grab some colleague of yours
+and perform internal review first. This applies to entire Analog,
+because there is increased amount of contributions from Analog and not
+all of them look like passing basic sanity checks.
+
+By sending code full of silly trivialities, community reviewers might
+feel overwhelmed and quite grumpy.
+
+> +
+> +	indio_dev->trig = iio_trigger_get(st->trig);
+> +
+> +	init_completion(&st->completion);
+> +
+> +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> +										  &iio_pollfunc_store_time,
+> +										  &ad7779_trigger_handler,
+> +										  &ad7779_buffer_setup_ops);
+
+Sorry, tha's not a Linux coding style. Checkpatch will tell you that.
+
+Please run scripts/checkpatch.pl and fix reported warnings. Then please
+run `scripts/checkpatch.pl --strict` and (probably) fix more warnings.
+Some warnings can be ignored, especially from --strict run, but the code
+here looks like it needs a fix. Feel free to get in touch if the warning
+is not clear.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad7779_spi_write_mask(st, AD7779_REG_DOUT_FORMAT,
+> +				    AD7779_DCLK_CLK_DIV_MSK,
+> +				    FIELD_PREP(AD7779_DCLK_CLK_DIV_MSK, 7));
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+> +
+> +static int __maybe_unused ad7779_suspend(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +	struct ad7779_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = ad7779_spi_write_mask(st, AD7779_REG_GENERAL_USER_CONFIG_1,
+> +				    AD7779_MOD_POWERMODE_MSK,
+> +				    FIELD_PREP(AD7779_MOD_POWERMODE_MSK,
+> +					       AD7779_LOW_POWER));
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->power_mode = AD7779_LOW_POWER;
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused ad7779_resume(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +	struct ad7779_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = ad7779_spi_write_mask(st, AD7779_REG_GENERAL_USER_CONFIG_1,
+> +				    AD7779_MOD_POWERMODE_MSK,
+> +				    FIELD_PREP(AD7779_MOD_POWERMODE_MSK,
+> +					       AD7779_HIGH_POWER));
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->power_mode = AD7779_HIGH_POWER;
+> +
+> +	return 0;
+> +}
+> +
+> +static DEFINE_SIMPLE_DEV_PM_OPS(ad7779_pm_ops, ad7779_suspend, ad7779_resume);
+> +
+> +static const struct ad7779_chip_info ad7770_chip_info = {
+> +	.name = "ad7770",
+> +	.channels = ad7779_channels,
+> +};
+> +
+> +static const struct ad7779_chip_info ad7771_chip_info = {
+> +	.name = "ad7771",
+> +	.channels = ad7779_channels_filter,
+> +};
+> +
+> +static const struct ad7779_chip_info AD7779_chip_info = {
+> +	.name = "AD7779",
+
+Hm...
+
+> +	.channels = ad7779_channels,
+> +};
+> +
+> +static const struct spi_device_id ad7779_id[] = {
+> +	{
+> +		.name = "ad7770",
+> +		.driver_data = (kernel_ulong_t)&ad7770_chip_info
+> +	},
+> +	{
+> +		.name = "ad7771",
+> +		.driver_data = (kernel_ulong_t)&ad7771_chip_info
+> +	},
+> +	{
+> +		.name = "AD7779",
+
+Eh...
+
+> +		.driver_data = (kernel_ulong_t)&AD7779_chip_info
+> +	},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(spi, ad7779_id);
+> +
+> +static const struct of_device_id ad7779_of_table[] = {
+> +	{
+> +		.compatible = "adi,ad7770",
+> +		.data = &ad7770_chip_info,
+> +	},
+> +	{
+> +		.compatible = "adi,ad7771",
+> +		.data = &ad7771_chip_info,
+> +	},
+> +	{
+> +		.compatible = "adi,AD7779",
+
+That's not a valid compatible. Only lower-case are allowed.
+
+> +		.data = &AD7779_chip_info,
+> +	},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, ad7779_of_table);
+> +
 
 Best regards,
 Krzysztof

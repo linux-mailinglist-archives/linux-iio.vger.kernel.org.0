@@ -1,131 +1,135 @@
-Return-Path: <linux-iio+bounces-7864-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7865-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FAE293B531
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 18:42:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC1093B539
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 18:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FA241C22032
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 16:42:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CB681F22397
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 16:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A807415EFA4;
-	Wed, 24 Jul 2024 16:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DF215ECEC;
+	Wed, 24 Jul 2024 16:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ag4ZtEJ3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxZHiUvg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B7015ECEB;
-	Wed, 24 Jul 2024 16:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E022561B;
+	Wed, 24 Jul 2024 16:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721839343; cv=none; b=pdBqW1H1N4G1BNsuplHHgdg8fI7YGo77GPaRNmgdoWYmqAISY0SqHFpvCId+KfitLO2WR4qK/k8745BVCC1dToutfPC6is3ZA31IL+MbcAo+k4E6cV83RKQCc4e3fyMSHOHK1kHHJeAdrSWqJlNTxmxBV2i//MXIM+iL67sVe3s=
+	t=1721839433; cv=none; b=AZZOfpNCr9ARe9hfX+maBCEMhuLp/r/iufjF0Q5YlKzNdnGLNArkMjBjbCPmT4U7WG5Y+Ge7Pf5T0vFXswrAWKKGfK855UfVNz79ptTAmmhTKGCC2HNBCi1fFYM0m5EojO1nGZlOaOqzb/K9uuwhqPKDUJBoAlaanUO5KTYSZs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721839343; c=relaxed/simple;
-	bh=4r8Kg7lFeZE2ux1sQl1pYkAw/KLHH60ExTTgysQ9my8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mQWNPTQovqKy2QVrpk/VNEPbgWlKvY99AFqxFwb7B2zRRRpUINK58bNiTRID6XcmLuJb0QYGiWr/1vrBgvfM+f0fY+kM94AFnNJgGvl32W1jWoT0CMkj5d+6jNXlp/pig4KQumXvR201VFlClk5iGTBLZvbzyj3ih0pste6nIos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ag4ZtEJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF34C32781;
-	Wed, 24 Jul 2024 16:42:20 +0000 (UTC)
+	s=arc-20240116; t=1721839433; c=relaxed/simple;
+	bh=5JmJLMt7znCx017pyPoIq7UZLeqlEodflBEYHrF8fZE=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=l8Zoj8ANgcZbCYcazivfQvBYnH1s/XUZu4U27sUadIjmaAjaa2zRZYi/7JJZ40nJ9+F4nCtlhE7wkkp6RB7SNXblOv1ubOpGy5LJ7HJ2EJz3CVEQK9PgfhKQWvQoC8KTu6e/2nB+xfy+FxfszWrmUGjr14LcjA87Zm1b21l1gyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxZHiUvg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C00C32781;
+	Wed, 24 Jul 2024 16:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721839342;
-	bh=4r8Kg7lFeZE2ux1sQl1pYkAw/KLHH60ExTTgysQ9my8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ag4ZtEJ3Sohcltfkb7+G1OLoMNuU+0URAj+F9TbflVFZYl7AojFZx0XaIOuCWl3bS
-	 esLgTwwzq1To0Ac0XxseTtbbuSoyRnCvzPk47V5GG9Y9fTsNohoTkbuxd8UhPYY8zZ
-	 HWmAybj0ucIDcSAtQsHI1syW5JOJNllok3Zvk+/Oohp1Nplq85wA5X815KZ7AzomvX
-	 NxwQ+9wF00ZUL6dwVWzZgUa5RstfeW49kgFHny1vWR1k4U+Rulr68SYHV2iVfa/kZE
-	 0Pvb+p2RyalVZZFtZcSKX31CLGLLfW+IOe0hyxE/xd6LbKnZEF1jCADkgs4dv5BHqE
-	 fAcT4Aj3yt/wQ==
-Date: Wed, 24 Jul 2024 17:42:18 +0100
-From: Conor Dooley <conor@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Alisa-Dariana Roman <alisa.roman@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: ad7192: Fix 'single-channel'
- constraints
-Message-ID: <20240724-graveyard-outshine-a53d36367655@spud>
-References: <20240723230904.1299744-1-robh@kernel.org>
+	s=k20201202; t=1721839433;
+	bh=5JmJLMt7znCx017pyPoIq7UZLeqlEodflBEYHrF8fZE=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=bxZHiUvgdMDRZyD+uEK7AGz9ydWj6piRkVdNTEMzXbUgH6a9S8WhJK2WlTH/UAQT+
+	 i1O5hFChGTrC1kpcn7tU65mAQuQEPTMJkdMls38ULic5J9qhKqHmxETrZb9o2m5JGB
+	 8rsnE9PHCFOljmgiF+JvLIds1sd/s1QgyA/uMat7+ATCfZ6Muc9WTrcxJtYVR4uNe1
+	 S2MmpN+xVRZnM+beliSZALPZo010JzwpZ06hj+9ZVH+KYQ+Q5E+0xbEXD0x0D0iMC/
+	 biOORFTmwTJyQ6jD1ZiD73Yyr6i/Q2TDRKnI7UqhshKwXnzPqlzCvkBp3XWMOuiZNd
+	 IhDYJMcXZfPPQ==
+Date: Wed, 24 Jul 2024 11:43:51 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1olKMOy8cF7B70NW"
-Content-Disposition: inline
-In-Reply-To: <20240723230904.1299744-1-robh@kernel.org>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: fabrice.gasnier@foss.st.com, 
+ Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, alsa-devel@alsa-project.org, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, linux-iio@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>
+In-Reply-To: <20240724153639.803263-5-olivier.moysan@foss.st.com>
+References: <20240724153639.803263-1-olivier.moysan@foss.st.com>
+ <20240724153639.803263-5-olivier.moysan@foss.st.com>
+Message-Id: <172183943127.3135721.14675824897973213166.robh@kernel.org>
+Subject: Re: [PATCH v5 4/9] dt-bindings: iio: dfsdm: move to backend
+ framework
 
 
---1olKMOy8cF7B70NW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Jul 23, 2024 at 06:09:03PM -0500, Rob Herring (Arm) wrote:
-> The 'single-channel' property is an uint32, not an array, so 'items' is
-> an incorrect constraint. This didn't matter until dtschema recently
-> changed how properties are decoded. This results in this warning:
->=20
-> Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dtb: adc@0: \
->   channel@1:single-channel: 1 is not of type 'array'
->=20
-> Fixes: caf7b7632b8d ("dt-bindings: iio: adc: ad7192: Add AD7194 support")
-
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+On Wed, 24 Jul 2024 17:36:32 +0200, Olivier Moysan wrote:
+> Change the DFSDM binding to use the new IIO backend framework,
+> along with the adoption of IIO generic channels.
+> This binding change allows to add scaling support to the DFSDM.
+> 
+> Keep the legacy binding as deprecated for backward compatibility.
+> 
+> The io-backends property is supported only in generic IIO channel
+> binding.
+> 
+> - Channel description with the generic binding (Audio and Analog):
+> 
+>   Properties superseded by generic properties:
+>     st,adc-channels: becomes "reg" property in channel node
+>     st,adc-channel-names: becomes "label" property in channel node
+>   Properties moved to channel child node:
+>     st,adc-channel-types: becomes st,adc-channel-type
+>     st,adc-channel-clk-src, st,adc-alt-channel
+> 
+> - Analog binding:
+> 
+>   DFSDM filter channel is configured as an IIO backend consumer.
+>   Add io-backends property in channel child nodes.
+> 
+>   DFSDM is no more configured as a channel consumer from SD modulator.
+>   Use of io-channels in DFSDM node is deprecated.
+> 
+> - Audio binding:
+> 
+>   DFSDM audio DAI is configured as a channel consumer from DFSDM filter.
+>   No change compare to legacy.
+> 
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
 > ---
->  Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> index a03da9489ed9..190889c7b62a 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> @@ -120,9 +120,8 @@ patternProperties:
->          description:
->            Positive input can be connected to pins AIN1 to AIN16 by choos=
-ing the
->            appropriate value from 1 to 16. Negative input is connected to=
- AINCOM.
-> -        items:
-> -          minimum: 1
-> -          maximum: 16
-> +        minimum: 1
-> +        maximum: 16
-> =20
->      oneOf:
->        - required:
-> --=20
-> 2.43.0
->=20
+>  .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml  | 124 +++++++++++++++---
+>  1 file changed, 108 insertions(+), 16 deletions(-)
+> 
 
---1olKMOy8cF7B70NW
-Content-Type: application/pgp-signature; name="signature.asc"
+My bot found errors running 'make dt_binding_check' on your patch:
 
------BEGIN PGP SIGNATURE-----
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml:421:4: [error] no new line character at the end of file (new-line-at-end-of-file)
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZqEu6gAKCRB4tDGHoIJi
-0rd1AP9bt5CuulmUdKrAYaMmbSBG7huuuJZ+ivBHmlTNOEBgNwD/S1zNH4h4gMUM
-rhwnu+jd3UWV4Ue7R4E06VN4cNs2xQg=
-=JBvp
------END PGP SIGNATURE-----
+dtschema/dtc warnings/errors:
 
---1olKMOy8cF7B70NW--
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240724153639.803263-5-olivier.moysan@foss.st.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 

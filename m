@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-7849-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7853-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560FF93B3EE
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 17:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DD593B3FE
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 17:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 118C6281D9B
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 15:39:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16D7D281D7C
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 15:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A15115B995;
-	Wed, 24 Jul 2024 15:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC81F15E5D1;
+	Wed, 24 Jul 2024 15:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="IQB3RJHv"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="f3BjWzMW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B963D15B102;
-	Wed, 24 Jul 2024 15:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098FD15D5C4;
+	Wed, 24 Jul 2024 15:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721835564; cv=none; b=FViihi/3FATzxLbKAx/oWsYrsz+U+zktccAWJUe9TdOWikXHiAMFdtIi2yVX376jjEsYWbcFA6T4FCUtLrSVx2tqjKu11mMa4FKe4hiCxM4NaZiHffvnzVyXHddi9gQQcw8KfIEJDCXxObiRTF4Lpr3Xb6pyh1evA1JMYLdO564=
+	t=1721835626; cv=none; b=fshB1phUtRJkM+z1RPvPi6PpHVSM7b2buzphugznS6pmlU3xiXRVl2vzpxX+SRXVasy38c9WSms38CZitNiLhzPenDurd3haTcC8Yo9RzOFMeJF9C5y5mLDWQZSv7+if7XtsAdpa3vS0wS4GoxLTOYC6Gadw8QofQRrzZoqZYwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721835564; c=relaxed/simple;
-	bh=yeQfMN7yreKLnANCDTFSWDaOwTj4sS65J0sKMCzIxVk=;
+	s=arc-20240116; t=1721835626; c=relaxed/simple;
+	bh=ACMw6OrhWT8DLEUSXg0DCsjt2bgw9R8f1+y3yiiW0WQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GXZHI2QcS65xI2cukZOpEJyX50lmDDCKdLaDvj7bhAW0OkQB9MTDg5DsZPBqamq5aqBJ4PWijrkXNDkBx39zat//aeODc+rbheWp9QGzjthnXFua5jV4/mvI9tI5+FSRCILHgjICIAdzKo33WPaAmbf3PqVJMzhQMdCGyb5UJx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=IQB3RJHv; arc=none smtp.client-ip=185.132.182.106
+	 MIME-Version:Content-Type; b=NLnl+sr4mQDjRwwFdJ/5+dOpHCDhV+c8dNDfjP4XAWiCYky/A7qAGTf+doZi5gDj/bx3rorpitq0Pj9VH9MSr3kYWC/nmWombMwFr0rdTmjXA8vob9K9xDRIO0KLMpbZfBgq8sgPKp0H6sq2MHYlSzA8W0+lkjahnkIxS6ior6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=f3BjWzMW; arc=none smtp.client-ip=185.132.182.106
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46OBxQ4Z007183;
-	Wed, 24 Jul 2024 17:39:09 +0200
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46OB3vlm014224;
+	Wed, 24 Jul 2024 17:40:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	L/C9dHL921+AiIjkcSXro2gpQoD393DjMVEmput5l44=; b=IQB3RJHvYXrc/tf9
-	YE+ZF0MGxykUYkwDM1oEx3n8U+SxHACF35UZAQThJHPh7wOQ02TADEanHZJy4atE
-	xo2sfwlv1Epd4/l3+Mf553I3hVy/UXrc/ZvgHLFYwpKnwEEJO6HN9ausoObYQkP7
-	3bn54R01iSiPA2Nemdu3DCZ81FaPhRG+tGthnXa9UmYIin1XmDqxGS8H0KwVFQqS
-	vo6qm8u7ExpPY1zGldogZJYolikSDw6ZXCg5s33YmfxBhHlcy8WNutpXTYMbD/qF
-	ukMP3Pq3+ZkDsS21QiG269as3euAY3Jb4hej+bz5VBRfN/6xgXcoMZCt0ZPe2SB1
-	O6C3Dg==
+	/npYISOct7pomZUB0oHtp4IjfuX37MB3TRfqf89/z2s=; b=f3BjWzMW6NZ24H6x
+	ByQ6OqAbEGCvYg9/4qrE1doAG3O8UuMv1X3elOKrJDzaVrxL9BebL9+Q6wu1vWvA
+	WDsjDOyoZ2tfWrz+qdBbpto/oZLTquqBoV5/+DR53uzWHtZHbz43slvL19dKAlFC
+	rBaIRksZfN6uTirX9dF2cZnZR+qLPL3cq6bCFSXJbb0/Y17weY1ssswO9dxG/kf7
+	iTtLTRTjn72gvecqAbSvrRSXjZBLLy7tGqj78QmSJ5qSWLjS5/HhBUV6ar0mkDTT
+	Jbb6XRujufwUP9Zl4Ao2pRmBz/xoDq1i8I5zzeDaCSNQr3ZGRNFPukJBT7EJqSpx
+	EJRwIw==
 Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 40gpt16a12-1
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 40g2nh87s0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jul 2024 17:39:09 +0200 (MEST)
+	Wed, 24 Jul 2024 17:40:12 +0200 (MEST)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 407F940045;
-	Wed, 24 Jul 2024 17:39:05 +0200 (CEST)
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id AE50D40050;
+	Wed, 24 Jul 2024 17:40:07 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 00B2A2414BC;
-	Wed, 24 Jul 2024 17:38:33 +0200 (CEST)
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 0DBD8241B41;
+	Wed, 24 Jul 2024 17:39:34 +0200 (CEST)
 Received: from localhost (10.252.12.39) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Wed, 24 Jul
- 2024 17:38:32 +0200
+ 2024 17:39:33 +0200
 From: Olivier Moysan <olivier.moysan@foss.st.com>
 To: <fabrice.gasnier@foss.st.com>, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
@@ -66,9 +66,9 @@ To: <fabrice.gasnier@foss.st.com>, Jonathan Cameron <jic23@kernel.org>,
         Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
 CC: Olivier Moysan <olivier.moysan@foss.st.com>, <linux-iio@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v5 5/9] dt-bindings: iio: add backend support to sd modulator
-Date: Wed, 24 Jul 2024 17:36:33 +0200
-Message-ID: <20240724153639.803263-6-olivier.moysan@foss.st.com>
+Subject: [PATCH v5 6/9] dt-bindings: iio: add vref support to sd modulator
+Date: Wed, 24 Jul 2024 17:36:34 +0200
+Message-ID: <20240724153639.803263-7-olivier.moysan@foss.st.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240724153639.803263-1-olivier.moysan@foss.st.com>
 References: <20240724153639.803263-1-olivier.moysan@foss.st.com>
@@ -86,60 +86,35 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-24_15,2024-07-24_01,2024-05-17_01
 
-The legacy sd modulator driver registers the sigma delta modulator as
-an IIO channel provider. This implementation is not convenient when the
-SD modulator has to be cascaded with another IIO device. The scaling
-information is distributed across devices, which makes it difficult to
-report consistent scaling data on IIO devices.
-
-The solution is to expose these cascaded IIO devices as an aggregate
-device, which report global scaling information.
-Add IIO backend support to SD modulator to allow scaling information
-management.
+Allow to specify the reference voltage used by the SD modulator.
+When the SD modulator is defined as an IIO backend, the reference
+voltage can be used to evaluate scaling information of the IIO device.
+The reference voltage is not used otherwise.
 
 Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
 ---
- .../bindings/iio/adc/sigma-delta-modulator.yaml | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ .../bindings/iio/adc/sigma-delta-modulator.yaml           | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/iio/adc/sigma-delta-modulator.yaml b/Documentation/devicetree/bindings/iio/adc/sigma-delta-modulator.yaml
-index cab0d425eaa4..b245971fecb0 100644
+index b245971fecb0..ff04ae08f264 100644
 --- a/Documentation/devicetree/bindings/iio/adc/sigma-delta-modulator.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/sigma-delta-modulator.yaml
-@@ -18,18 +18,31 @@ properties:
-       - sd-modulator
-       - ads1201
+@@ -31,6 +31,14 @@ anyOf:
+   - required: ['#io-backend-cells']
+   - required: ['#io-channel-cells']
  
-+  '#io-backend-cells':
-+    const: 0
++if:
++  required:
++    - '#io-backend-cells'
++then:
++  properties:
++    vref-supply:
++      description: Phandle to the vref input analog reference voltage.
 +
-   '#io-channel-cells':
-     const: 0
- 
- required:
-   - compatible
--  - '#io-channel-cells'
-+
-+anyOf:
-+  - required: ['#io-backend-cells']
-+  - required: ['#io-channel-cells']
- 
  additionalProperties: false
  
  examples:
-   - |
--    ads1202: adc {
-+    // Backend binding example. SD modulator configured as an IIO backend device
-+    ads1201_0 {
-+      compatible = "sd-modulator";
-+      #io-backend-cells = <0>;
-+    };
-+
-+    // Legacy binding example. SD modulator configured as an IIO channel provider
-+    ads1201_1 {
-       compatible = "sd-modulator";
-       #io-channel-cells = <0>;
-     };
 -- 
 2.25.1
 

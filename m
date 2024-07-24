@@ -1,101 +1,160 @@
-Return-Path: <linux-iio+bounces-7832-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7834-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753E493AD5C
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 09:45:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E006E93AE51
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 11:09:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E47F1F22C31
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 07:45:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F887B217DC
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 09:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C7361FF0;
-	Wed, 24 Jul 2024 07:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FDF1514F6;
+	Wed, 24 Jul 2024 09:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WIK8fupl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZwaBfV9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10E845016;
-	Wed, 24 Jul 2024 07:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D7B14C58A;
+	Wed, 24 Jul 2024 09:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721807130; cv=none; b=CfXbpXje2spE7x3srrRbYmb/cHQRTvLYeLnJ4WIHUk/2CFCFaTfCeQ9jTLH74U67jNdUSxmeTcrbG1gb/R/oF/pDvsjzUtMr3Fw8fL1OgwFIuDy0z24ipgVktGve5fu9dOhQxSd3Wt6mQNP+hv5LZPUd/JlcKth/JRBOpPH24/0=
+	t=1721812153; cv=none; b=fkhkUQW/GZnAb/UL4CfznwdYStUUfrm1WbivQR/r3RCm+AiJx3ikpRR77Kgx0DCsmLexmfEceroQMmxL1+3CWePzp7xDh74YSBMxIn45kLVwXpkcqo+PCy5D7zovpAYYtibTjLASpUbZgRxOZyAWCjhj7FirDmkpzGN04I8ei+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721807130; c=relaxed/simple;
-	bh=OI34kF7X8iVTXee6Y5kBgaZd1jpEtspvl3Yyd3FdS9I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ijc7VFb6qHtsT2tKnHpeF9n1/k+aL/djl0G+yzZzWqGSw1diRD+36Jq2q8FKDX4Y6WDaZaaS8wHNA3O59NLHug7gA89u8R62M29YG/Gt657C8ivv3wa9EMMluYwC5oEIJV1RQc/iktv34c0YYyibBD8mqar0SKDQ2EUQMqmd4kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WIK8fupl; arc=none smtp.client-ip=209.85.221.50
+	s=arc-20240116; t=1721812153; c=relaxed/simple;
+	bh=72kCNgT09jugqxctXzPAC8JE4tMd0YCkyyplx4RXL/k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iW+3NZnSbcaWBI7PD7TvlE2HCqi/ZzDv61B+lEleBBb0tGjazTTlp/Vd8aqezk0UHdXO3xvU5g/KzuwjPuwxkEN0q5Lo5ebj8UZjr+wit/tuTiZfXcLpAb8B2O834lFLqt8wCBdH2rmkGwrY+UmDV+kRtLyZIwnonwJnw72P3A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZwaBfV9; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-36858357bb7so3528984f8f.2;
-        Wed, 24 Jul 2024 00:45:28 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4266ea6a412so47231645e9.1;
+        Wed, 24 Jul 2024 02:09:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721807127; x=1722411927; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OI34kF7X8iVTXee6Y5kBgaZd1jpEtspvl3Yyd3FdS9I=;
-        b=WIK8fuplmeZFkdAYNka9Q6GuVsZKcMkpIprHU+Gbn3X5LHUc/L3xMBlO0IMRYShS3W
-         ugPUx4Xy55B04Wql91pIPcGFLoVWVAG2ZiLgPtTylfHuOYPE5gO0895iGUqjBS8Yq1cF
-         BEysaZAseBadtp+TSGjnsS9ZdJWY+apY4yBMNBfGYZMbQL0kidqzI/0uN+HxNLFQKrUi
-         OwtzO7wxaR6vCkXSfsrAR0QJIHPTm0vfZwWHkHUZt7ozIEpv4jStMrLL+/C81JgWtYhK
-         QtqLqN5cRH0329BWmRHP0QvNszvM16Prwvv/wBW0O0ZaoWCPx5t+gztVY4zTOIFgrkmS
-         dxkw==
+        d=gmail.com; s=20230601; t=1721812149; x=1722416949; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c5tcFG6nOiiD0Mb9BuxDlKvVb1JQJ5CmyQf8Enf7mbw=;
+        b=JZwaBfV9lh6xrR9PFp+djrirFChPwcLxBIVpM+pLUua0FTN0aVKGNXgTFKVwxbRGYy
+         eQuH8NYwab+mI/nUFZWrERgpXRT/LnVIFssopbIotyGlRe9snCNlNt/8ENqzgfv7TSPr
+         it7HdcP7pNIe/TFRKJ4m/ddPrKRZ2NCT+OqS6cQaQBFUAMCB9K4ZbflB1LEYOpe32h/h
+         KaMLm+XrVWpRbwcBCUF4uxl3/qZiGZVkvfGRr4J4TYuEdsCg6v7FLn8zhmiT0fgugmVM
+         Pww8xACP5jhH53Fm/5Q5aUomLhPvxmU72ABBEN2O9FjUesfaqKB/wO+XkmnlEzbQiDtF
+         PP2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721807127; x=1722411927;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OI34kF7X8iVTXee6Y5kBgaZd1jpEtspvl3Yyd3FdS9I=;
-        b=LsoqUMLqZZoCzXdSa13rveUbvqnVGalaFqdo68/qPS+6UTvV8BKrWN4Ex8CI0j63hT
-         mSMPBtOfYtZyywS9TsUi5ye13jKTricnDdszufPTYlsNeiHGBt5y6AffnDJsq8n12JAo
-         eEBE957+X4zw89eVaspTVmiJdfSD8xvlzxLbBUXpxANkGRyRE9pY3ANkMlXksr8yzUD3
-         le9PmsRX7eyHnUeIudYcKp5Wq1+fqxCGpraM7PN4Iwjqjk9sNksMv0IBLp19eudOzxU9
-         wZO+JJRWWkN7kSEVKuDROZxgQupKXR+41Efb2usQG/2q29gdXM8td0j2v8zpTMXqXC9n
-         /MOg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/+TgN9FvROvw93HXYuhx9VCrUgXeYMkF+5FqXWbk6X8yiai7WZDxSRzlJPoA6XBYpmn0kIuruJsi2sPN7Zax+ndWWKRslm+3HX+9FAgE+WENQeGuxJ2VpwQPP2uV21w2MgCLb7Uem
-X-Gm-Message-State: AOJu0YxGndU7pgMswFWWI0ZxyjBJUmbYgD1j4X1gCaRRgySaah2Dqd04
-	MHVD9Geq9yUl9mpBADCzx+3r2ZiNgTVQnYtEkYwwdoBmU4ZcUypu
-X-Google-Smtp-Source: AGHT+IEaNcBX7cGGdyLqel+HplfZ6jvgHmTwcxh+c2jB56RAhEU74XZM6MHSztGqkV+sLPCFO8ouIw==
-X-Received: by 2002:a5d:6d47:0:b0:368:5a8c:580b with SMTP id ffacd0b85a97d-369f5b2ff3bmr884587f8f.19.1721807126513;
-        Wed, 24 Jul 2024 00:45:26 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:359b:e801:d44:32b3:6924:10d1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3687868482esm13461696f8f.16.2024.07.24.00.45.25
+        d=1e100.net; s=20230601; t=1721812149; x=1722416949;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c5tcFG6nOiiD0Mb9BuxDlKvVb1JQJ5CmyQf8Enf7mbw=;
+        b=YEocZJh0MJvREOIB0Dt+ZpcDkSxpsrsT0cQ2EgNFhyaSyS+upPC+0xV8cPOmZWFG86
+         KR4qnLYv8SdOd8m4pgXb+Ey+TT7URE85pZFsTX5EcvrN01+Vc6r0mVhcsxKAxPkZmql5
+         +RewFtFhb4rTU6m3MHDX0VtyvPxcUKTd+FSpNz85Ct88dYIh0pj/SwjJ+xDvmq9T5t1k
+         CzcqYZ+wE4UByL24HUe+7gZiW0rNf/+ZuJU66RMQ/ZPgJqQXw338ueOr7e/zK/TotrlR
+         3/SV/lEn2S6nuyZJfJG9NMlHbrqQ9ShjeT4O5ClfLrb8jU1l4E8Z2damWHVH7ujZQ50O
+         1raQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHnA8y+arWKHMoRzhOULiaYi0DRG7Yn+IKAl4e3oshFFhl2cbQ2XzGhNurCDYWOJUUu6rdxqsHAkolUH9ntC6RWZCUKFA2bPq84insorkkC+LeJJWyCHfG7yBp1ay0GTH6t8izl3OlOg==
+X-Gm-Message-State: AOJu0YxfEY8SFhMSB4PqWvBHGOsJEL+l3/8nxE9ZY8L6qrWFg4yjhN70
+	YaU7sL8HRYSIvPMzSRggYRUfrk0ufDiIGKROz55atGZYoud8JMqS
+X-Google-Smtp-Source: AGHT+IEO4uS7Z6jfmn3uVcgvmziuYqRM4Cm7eePr+5CeVLpQRirsl8sLQQX6oXYrHUOnq2+L5PLyow==
+X-Received: by 2002:a05:600c:1ca8:b0:426:62c5:473e with SMTP id 5b1f17b1804b1-427dc58f1e8mr85874945e9.26.1721812148313;
+        Wed, 24 Jul 2024 02:09:08 -0700 (PDT)
+Received: from localhost (host-82-58-19-206.retail.telecomitalia.it. [82.58.19.206])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427f93e6795sm20886145e9.36.2024.07.24.02.09.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jul 2024 00:45:26 -0700 (PDT)
-Message-ID: <6fe59ff58e19bf6a8c5c5ca3ff120b4df28f1092.camel@gmail.com>
-Subject: Re: [PATCH] iio: adc: ad7173: Fix incorrect compatible string
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, dumitru.ceclan@analog.com, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 24 Jul 2024 09:45:25 +0200
-In-Reply-To: <20240723111322.324947-1-dumitru.ceclan@analog.com>
-References: <20240723111322.324947-1-dumitru.ceclan@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+        Wed, 24 Jul 2024 02:09:07 -0700 (PDT)
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Subject: [PATCH v4 0/3] iio: adc: add support for pac1921
+Date: Wed, 24 Jul 2024 11:08:30 +0200
+Message-Id: <20240724-iio-pac1921-v4-0-723698e903a3@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI7EoGYC/13MSw6CMBSF4a2Yjq25fdBSR+7DOChtgZsIJWAaD
+ WHvFpyAw3OS75/JFEYME7meZjKGhBPGPg95PhHX2r4JFH3ehAOXoEBRxEgH65jhjGpdW6ityJO
+ RLIYx1PjeavdH3i1Orzh+tnhi6/vraBCHTmIUaCGd1N6wEip1azqLz4uLHVk7ie+tPFqeLfhQm
+ cLKUoL5t2JnOT9asdrCO2OYcpUQe7ssyxfq+hLmHgEAAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Marius Cristea <marius.cristea@microchip.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Matteo Martelli <matteomartelli3@gmail.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.0
 
-On Tue, 2024-07-23 at 14:13 +0300, Dumitru Ceclan wrote:
-> Wrong compatible strings are used for AD411x devices.
-> Fix by adding the missing "adi," prefix.
->=20
-> Fixes: 13d12e3ad12d ("iio: adc: ad7173: Add support for AD411x devices")
-> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> ---
+Add iio driver and DT binding for the Microchip PAC1921 Current/Power
+monitor.
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Implemented most of the features with few limitations listed in the
+driver commit message.
 
+Tested with a Pine64 host board connected to a PAC1921 click board [1]
+via I2C. The PAC1921 click board embeds the Microchip PAC1921 device
+and a 10 mOhms shunt resistor. The PAC1921 datasheet is at [2].
 
+[1]: https://www.mikroe.com/pac1921-click
+[2]: https://ww1.microchip.com/downloads/en/DeviceDoc/PAC1921-Data-Sheet-DS20005293E.pdf
+
+Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
+---
+Changes in v4:
+- DT binding: rename microchip,read-int-gpios to read-integrate-gpios
+- Fix non constant ext info initializers, reported by kernel test robot,
+  ref: https://lore.kernel.org/oe-kbuild-all/202407240123.tjObpf49-lkp@intel.com/
+- Link to v3: https://lore.kernel.org/r/20240722-iio-pac1921-v3-0-05dc9916cb33@gmail.com
+
+Changes in v3:
+- Add shunt_resistor attribute for current channel
+- Generalize shunt_resistor ABI
+- Remove specific pac1921 ABI
+- Remove resolution and filters controls
+- Use scale attributes instead of hwgain attributes to control gains
+- Replace integration_num_samples and integration_time attributes with
+  oversample_ratio and sampling_frequency
+- Consider time to enter integration mode before marking data available
+- Add controls for overflow events
+- Add select fields in Kconfig
+- Refactoring based on Jonathan feedback from v2
+- Link to v2: https://lore.kernel.org/r/20240704-iio-pac1921-v2-0-0deb95a48409@gmail.com
+
+Changes in v2:
+- DT binding: remove vendor specific gains, add vdd-supply, add
+  read/int gpio and fix properties order in example
+- Remove parsing of gains from DT
+- Handle vdd regulator
+- Fix return value in filter_en write handler
+- Link to v1: https://lore.kernel.org/r/20240703-iio-pac1921-v1-0-54c47d9180b6@gmail.com
+
+---
+Matteo Martelli (3):
+      dt-bindings: iio: adc: add binding for pac1921
+      iio: ABI: generalize shunt_resistor attribute
+      iio: adc: add support for pac1921
+
+ Documentation/ABI/testing/sysfs-bus-iio            |    8 +
+ .../ABI/testing/sysfs-bus-iio-adc-max9611          |   17 -
+ Documentation/ABI/testing/sysfs-bus-iio-ina2xx-adc |    9 -
+ .../bindings/iio/adc/microchip,pac1921.yaml        |   71 ++
+ MAINTAINERS                                        |    7 +
+ drivers/iio/adc/Kconfig                            |   13 +
+ drivers/iio/adc/Makefile                           |    1 +
+ drivers/iio/adc/pac1921.c                          | 1263 ++++++++++++++++++++
+ 8 files changed, 1363 insertions(+), 26 deletions(-)
+---
+base-commit: 1ebab783647a9e3bf357002d5c4ff060c8474a0a
+change-id: 20240606-iio-pac1921-77fa0fa3ac11
+
+Best regards,
+-- 
+Matteo Martelli <matteomartelli3@gmail.com>
 
 

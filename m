@@ -1,74 +1,75 @@
-Return-Path: <linux-iio+bounces-7834-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7833-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E006E93AE51
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 11:09:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C77393AE4F
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 11:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F887B217DC
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 09:09:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E796B281258
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Jul 2024 09:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FDF1514F6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBB21509A4;
 	Wed, 24 Jul 2024 09:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZwaBfV9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X8HQGI4r"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D7B14C58A;
-	Wed, 24 Jul 2024 09:09:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A802C1A5;
+	Wed, 24 Jul 2024 09:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721812153; cv=none; b=fkhkUQW/GZnAb/UL4CfznwdYStUUfrm1WbivQR/r3RCm+AiJx3ikpRR77Kgx0DCsmLexmfEceroQMmxL1+3CWePzp7xDh74YSBMxIn45kLVwXpkcqo+PCy5D7zovpAYYtibTjLASpUbZgRxOZyAWCjhj7FirDmkpzGN04I8ei+M=
+	t=1721812152; cv=none; b=b6Ji9k97pd/PFPIF4uSxGQxc7IRxiq6yGvlsN804fMgYoAD7FH4L7TMka+1WO+jXZLXcuhUuyew7tVjRlH/ZMqgxeZGKCSFN845UQzu40ICdAHTavvjY1z5rIvPLf4Fl8o88xLEM9+X8+upYN5yh2ZLn0JrdGSZ10Zj2crdfolo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721812153; c=relaxed/simple;
-	bh=72kCNgT09jugqxctXzPAC8JE4tMd0YCkyyplx4RXL/k=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iW+3NZnSbcaWBI7PD7TvlE2HCqi/ZzDv61B+lEleBBb0tGjazTTlp/Vd8aqezk0UHdXO3xvU5g/KzuwjPuwxkEN0q5Lo5ebj8UZjr+wit/tuTiZfXcLpAb8B2O834lFLqt8wCBdH2rmkGwrY+UmDV+kRtLyZIwnonwJnw72P3A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZwaBfV9; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1721812152; c=relaxed/simple;
+	bh=1ibcJMw5r1LiPdN6w26WAInNcxnWLbS54ysXD0qG/Wo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=YQU2NEUmsgIKDF4ZXo7KbTIRzKOkt50Kc2CBtLRt56yH6yEgPW0UQSWBucoqUJ1Swp9cZCgdC4rIzPNcDMM09+M0ApHGue70zR0OmKM0N5NZ2cGhgyONIe1YwTTdvKCZaOgjiXcuIvc84a2qr79v0u+zF2mxU5A2bsYoTWIHg9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X8HQGI4r; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4266ea6a412so47231645e9.1;
-        Wed, 24 Jul 2024 02:09:10 -0700 (PDT)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-368313809a4so401987f8f.0;
+        Wed, 24 Jul 2024 02:09:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721812149; x=1722416949; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=c5tcFG6nOiiD0Mb9BuxDlKvVb1JQJ5CmyQf8Enf7mbw=;
-        b=JZwaBfV9lh6xrR9PFp+djrirFChPwcLxBIVpM+pLUua0FTN0aVKGNXgTFKVwxbRGYy
-         eQuH8NYwab+mI/nUFZWrERgpXRT/LnVIFssopbIotyGlRe9snCNlNt/8ENqzgfv7TSPr
-         it7HdcP7pNIe/TFRKJ4m/ddPrKRZ2NCT+OqS6cQaQBFUAMCB9K4ZbflB1LEYOpe32h/h
-         KaMLm+XrVWpRbwcBCUF4uxl3/qZiGZVkvfGRr4J4TYuEdsCg6v7FLn8zhmiT0fgugmVM
-         Pww8xACP5jhH53Fm/5Q5aUomLhPvxmU72ABBEN2O9FjUesfaqKB/wO+XkmnlEzbQiDtF
-         PP2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721812149; x=1722416949;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1721812150; x=1722416950; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=c5tcFG6nOiiD0Mb9BuxDlKvVb1JQJ5CmyQf8Enf7mbw=;
-        b=YEocZJh0MJvREOIB0Dt+ZpcDkSxpsrsT0cQ2EgNFhyaSyS+upPC+0xV8cPOmZWFG86
-         KR4qnLYv8SdOd8m4pgXb+Ey+TT7URE85pZFsTX5EcvrN01+Vc6r0mVhcsxKAxPkZmql5
-         +RewFtFhb4rTU6m3MHDX0VtyvPxcUKTd+FSpNz85Ct88dYIh0pj/SwjJ+xDvmq9T5t1k
-         CzcqYZ+wE4UByL24HUe+7gZiW0rNf/+ZuJU66RMQ/ZPgJqQXw338ueOr7e/zK/TotrlR
-         3/SV/lEn2S6nuyZJfJG9NMlHbrqQ9ShjeT4O5ClfLrb8jU1l4E8Z2damWHVH7ujZQ50O
-         1raQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHnA8y+arWKHMoRzhOULiaYi0DRG7Yn+IKAl4e3oshFFhl2cbQ2XzGhNurCDYWOJUUu6rdxqsHAkolUH9ntC6RWZCUKFA2bPq84insorkkC+LeJJWyCHfG7yBp1ay0GTH6t8izl3OlOg==
-X-Gm-Message-State: AOJu0YxfEY8SFhMSB4PqWvBHGOsJEL+l3/8nxE9ZY8L6qrWFg4yjhN70
-	YaU7sL8HRYSIvPMzSRggYRUfrk0ufDiIGKROz55atGZYoud8JMqS
-X-Google-Smtp-Source: AGHT+IEO4uS7Z6jfmn3uVcgvmziuYqRM4Cm7eePr+5CeVLpQRirsl8sLQQX6oXYrHUOnq2+L5PLyow==
-X-Received: by 2002:a05:600c:1ca8:b0:426:62c5:473e with SMTP id 5b1f17b1804b1-427dc58f1e8mr85874945e9.26.1721812148313;
-        Wed, 24 Jul 2024 02:09:08 -0700 (PDT)
+        bh=LLEddhztZC5qsHgleGZvWV3x/LXcD+KsVlwJy5ByJ+A=;
+        b=X8HQGI4rFYx0+br08/kgMpZt16aMNtSwNrQMLLbrGylt+rduOtcZHiF+Ndg0vDD8af
+         ijWI2lskvF/xs8iqWJQR2w5uDs0MbbreplKp0I/WNam5RovClTef/bxdO7fKM5yRsVUU
+         1tnLBdk5br1I/Q5amn+0blarrIaWVs90xx/54q/PL0zVxxN3WRfLmP/zwXIt1br2+a9K
+         oqA7PGBCypHjf/3mqDqFjm/137rpAVf9Ba4lwsDJJsY48gDs/eI+HIWN4uiHRLSLvsJX
+         sjed8BYjE4dOxHZo+69EPwTFtY3yVMg2TRbasEsikx2bZIPR5WqThMzMeMRMr2WgfHrp
+         VOjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721812150; x=1722416950;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LLEddhztZC5qsHgleGZvWV3x/LXcD+KsVlwJy5ByJ+A=;
+        b=dEQtfGaPaft5dYWvWoZR/zhpRpM0xc9s1mjv7RVySbSdCObdY76ClyDPL/a1BZjsEI
+         zS1eRnxBlJXf+VjQyVfqmP/Hq+9XmCNLJTRoSpVQ6jtAv2mIIe2I7OlAhpcFnBjd+nxr
+         vHVOoALfGwgTTBgcMN6mb74bV7VvTU3AVfrgUFygA24vGqv/Ypo4fBuaCo/IUzIjvXpL
+         DuCM+HNtwh1nyguDo01xfjU3ZpsvGG4VZQrvXnITClZMuQGn8EX3MVF0DSyDQEKnCzxN
+         BWXo/1GYd0SQlF8cxVe653ZohrqjgkXchLCX+ftjE148EFjTEzC17MSQXiGl9/9ozu/y
+         uTuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWVXXIbPouxY8GajvIjuKzN6IE2uvOh0fLUMvGXtKsTtgAxLPEHGqspTBKk9LZkFR9ZG0I2zTujKhItPQATk5U2bBSH/7ksOYn1L92roeJuzolbpktDolIOHDX+oxnFX5OyPM008XL2fQ==
+X-Gm-Message-State: AOJu0Yyoc+hOGBylN8aceQe6w5WbaYR4Uji68vjTGrFUEgS+F++605A/
+	6ifiUYFX987UTnJToN2JCZMojlrZMEVO8GkV88FguYSFLpJBGQPe
+X-Google-Smtp-Source: AGHT+IFmTsR+2rzMSFxemDNBAWtpPmYSng7vdiDngTidEkrwQcVGu+qJqvdRQ7dEI4/EnDE/V+rDpg==
+X-Received: by 2002:adf:fe43:0:b0:360:8c88:ab82 with SMTP id ffacd0b85a97d-369f6705c6bmr810530f8f.30.1721812149598;
+        Wed, 24 Jul 2024 02:09:09 -0700 (PDT)
 Received: from localhost (host-82-58-19-206.retail.telecomitalia.it. [82.58.19.206])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427f93e6795sm20886145e9.36.2024.07.24.02.09.07
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36878684801sm13840155f8f.11.2024.07.24.02.09.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jul 2024 02:09:07 -0700 (PDT)
+        Wed, 24 Jul 2024 02:09:09 -0700 (PDT)
 From: Matteo Martelli <matteomartelli3@gmail.com>
-Subject: [PATCH v4 0/3] iio: adc: add support for pac1921
-Date: Wed, 24 Jul 2024 11:08:30 +0200
-Message-Id: <20240724-iio-pac1921-v4-0-723698e903a3@gmail.com>
+Date: Wed, 24 Jul 2024 11:08:31 +0200
+Subject: [PATCH v4 1/3] dt-bindings: iio: adc: add binding for pac1921
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,10 +78,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAI7EoGYC/13MSw6CMBSF4a2Yjq25fdBSR+7DOChtgZsIJWAaD
- WHvFpyAw3OS75/JFEYME7meZjKGhBPGPg95PhHX2r4JFH3ehAOXoEBRxEgH65jhjGpdW6ityJO
- RLIYx1PjeavdH3i1Orzh+tnhi6/vraBCHTmIUaCGd1N6wEip1azqLz4uLHVk7ie+tPFqeLfhQm
- cLKUoL5t2JnOT9asdrCO2OYcpUQe7ssyxfq+hLmHgEAAA==
+Message-Id: <20240724-iio-pac1921-v4-1-723698e903a3@gmail.com>
+References: <20240724-iio-pac1921-v4-0-723698e903a3@gmail.com>
+In-Reply-To: <20240724-iio-pac1921-v4-0-723698e903a3@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -91,70 +91,94 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.14.0
 
-Add iio driver and DT binding for the Microchip PAC1921 Current/Power
-monitor.
+Add binging for Microchip PAC1921 Power/Current monitor
 
-Implemented most of the features with few limitations listed in the
-driver commit message.
-
-Tested with a Pine64 host board connected to a PAC1921 click board [1]
-via I2C. The PAC1921 click board embeds the Microchip PAC1921 device
-and a 10 mOhms shunt resistor. The PAC1921 datasheet is at [2].
-
-[1]: https://www.mikroe.com/pac1921-click
-[2]: https://ww1.microchip.com/downloads/en/DeviceDoc/PAC1921-Data-Sheet-DS20005293E.pdf
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
 ---
-Changes in v4:
-- DT binding: rename microchip,read-int-gpios to read-integrate-gpios
-- Fix non constant ext info initializers, reported by kernel test robot,
-  ref: https://lore.kernel.org/oe-kbuild-all/202407240123.tjObpf49-lkp@intel.com/
-- Link to v3: https://lore.kernel.org/r/20240722-iio-pac1921-v3-0-05dc9916cb33@gmail.com
+ .../bindings/iio/adc/microchip,pac1921.yaml        | 71 ++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
-Changes in v3:
-- Add shunt_resistor attribute for current channel
-- Generalize shunt_resistor ABI
-- Remove specific pac1921 ABI
-- Remove resolution and filters controls
-- Use scale attributes instead of hwgain attributes to control gains
-- Replace integration_num_samples and integration_time attributes with
-  oversample_ratio and sampling_frequency
-- Consider time to enter integration mode before marking data available
-- Add controls for overflow events
-- Add select fields in Kconfig
-- Refactoring based on Jonathan feedback from v2
-- Link to v2: https://lore.kernel.org/r/20240704-iio-pac1921-v2-0-0deb95a48409@gmail.com
+diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1921.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1921.yaml
+new file mode 100644
+index 000000000000..12e56b1b3d3f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1921.yaml
+@@ -0,0 +1,71 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/microchip,pac1921.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Microchip PAC1921 High-Side Power/Current Monitor with Anaog Output
++
++maintainers:
++  - Matteo Martelli <matteomartelli3@gmail.com>
++
++description: |
++  The PAC1921 is a power/current monitoring device with an analog output
++  and I2C/SMBus interface.
++
++  Datasheet can be found here:
++  https://ww1.microchip.com/downloads/en/DeviceDoc/PAC1921-Data-Sheet-DS20005293E.pdf
++
++properties:
++  compatible:
++    const: microchip,pac1921
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++
++  "#io-channel-cells":
++    const: 1
++
++  shunt-resistor-micro-ohms:
++    description:
++      Value in micro Ohms of the shunt resistor connected between
++      the SENSE+ and SENSE- inputs, across which the current is measured.
++      Value is needed to compute the scaling of the measured current.
++
++  label:
++    description: Unique name to identify which device this is.
++
++  read-integrate-gpios:
++    description:
++      READ/INT input pin to control the current state of the device, either in
++      the INTEGRATE state when driven high, or in the READ state when driven low.
++      When not connected the pin is floating and it can be overridden by the
++      INT_EN register bit after asserting the READ/INT_OVR register bit.
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++  - shunt-resistor-micro-ohms
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@4c {
++            compatible = "microchip,pac1921";
++            reg = <0x4c>;
++            vdd-supply = <&vdd>;
++            #io-channel-cells = <1>;
++            label = "vbat";
++            shunt-resistor-micro-ohms = <10000>;
++        };
++    };
++...
 
-Changes in v2:
-- DT binding: remove vendor specific gains, add vdd-supply, add
-  read/int gpio and fix properties order in example
-- Remove parsing of gains from DT
-- Handle vdd regulator
-- Fix return value in filter_en write handler
-- Link to v1: https://lore.kernel.org/r/20240703-iio-pac1921-v1-0-54c47d9180b6@gmail.com
-
----
-Matteo Martelli (3):
-      dt-bindings: iio: adc: add binding for pac1921
-      iio: ABI: generalize shunt_resistor attribute
-      iio: adc: add support for pac1921
-
- Documentation/ABI/testing/sysfs-bus-iio            |    8 +
- .../ABI/testing/sysfs-bus-iio-adc-max9611          |   17 -
- Documentation/ABI/testing/sysfs-bus-iio-ina2xx-adc |    9 -
- .../bindings/iio/adc/microchip,pac1921.yaml        |   71 ++
- MAINTAINERS                                        |    7 +
- drivers/iio/adc/Kconfig                            |   13 +
- drivers/iio/adc/Makefile                           |    1 +
- drivers/iio/adc/pac1921.c                          | 1263 ++++++++++++++++++++
- 8 files changed, 1363 insertions(+), 26 deletions(-)
----
-base-commit: 1ebab783647a9e3bf357002d5c4ff060c8474a0a
-change-id: 20240606-iio-pac1921-77fa0fa3ac11
-
-Best regards,
 -- 
-Matteo Martelli <matteomartelli3@gmail.com>
+2.45.2
 
 

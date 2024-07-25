@@ -1,192 +1,172 @@
-Return-Path: <linux-iio+bounces-7893-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7894-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B13093C8A7
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 21:23:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7595A93CB0C
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 01:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A518C1C20B02
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 19:23:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 304EC28225D
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 23:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7BC33CF1;
-	Thu, 25 Jul 2024 19:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEFC148312;
+	Thu, 25 Jul 2024 23:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="r/UoYBBJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QSmzx+h5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CA41C6BE
-	for <linux-iio@vger.kernel.org>; Thu, 25 Jul 2024 19:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A92314A82;
+	Thu, 25 Jul 2024 23:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721935379; cv=none; b=UNgaj74o8hTfdzEaJbfqlNuwAhOIRF8IogZQygE6/V2HLbKcloq0mTzETsUM4ZwD+1a5aV3MKRNksm8yWzFY0JT3n573HmxQUvCQ/UNoj3nkbw75O2SNYV7IFZiq5jp2fozW5xoro2AERh3X8wom8tk1oxrz5JtnvDdbLZ1P6rc=
+	t=1721949049; cv=none; b=bap8tJs08NQJB6bn5DkE/AMZUJoTEHqsY8FF9nAVJzz0qByyBIsM/xdJ+socUGw9trfs707NJHxD8eAKnJR/cT7B0UcF7MFmt8ActoVQ1V7h7dT5wzs2FFqVeEDd61lRAb+Sx5DzBcc+6QNuUYWwEwKHkC/1jdrIjsT2vncIq3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721935379; c=relaxed/simple;
-	bh=W74KhW7f18fdckH7PTnmfHoJXiOMCXxtfnQ2XKj2YVk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=j9EELJ8SgA15n3uEHsytFdvsqg563GlSzYONPkP8fctY0fxiiARc+OOVDcgNAyPRHZxiOYxi7tthUC+0pE94c+6pHi8w+R2mKmQwPwr05/SZjckQuHz7xbHV0EOYmsrG0xsxA32t21ofPpGZuAg5fEsG7v6DcgPhg+X7BwVY5eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=r/UoYBBJ; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5d5b850d969so151178eaf.0
-        for <linux-iio@vger.kernel.org>; Thu, 25 Jul 2024 12:22:56 -0700 (PDT)
+	s=arc-20240116; t=1721949049; c=relaxed/simple;
+	bh=VnYebjk/GhSb9asuRPpOFP2BMDHhXlf0oWLcJfjitIg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZtjZgy8ct81HsUVeBtWlG5I/8OSiZwxKfbBO+EBNwk5TukxqymZPOxrhmT/RFbMTz7rxqTq5iY4jhhRYad3uaLDtZGLHEkh07LorCSTljouxRzxsyCDVIxRPFFvFgOvUqG4ZdgVyAoPDeLZoqnX2xPVwMXJRMTBW+l/bZIXv4Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QSmzx+h5; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52efba36802so1166564e87.2;
+        Thu, 25 Jul 2024 16:10:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1721935376; x=1722540176; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721949045; x=1722553845; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RQMh1UJAxymzMN0ie+0N/QmjWGT/RhgZsPJdQF8YRPU=;
-        b=r/UoYBBJ3Oye1sxuBHmMI6HcrVE7bRqgsUog/iYYK72qaIdi68L7t+4xXn223Gn/Py
-         1fDz+oLmFqR4mpChqSDB/a4IqbriuOpAWUWio4z0XztHvrwoyEE/cp33D1NRQHYcNGrz
-         eY2lkALflsHeQKGOzNrXG+PksokJ3nAe6OEvSpWIilIRPZ3hmlRJoHAc9ekktgKECO6U
-         BmS33+JxCqjDpXJEgPTACT9yWo9tj4CiQJikvGP06VMi8fx7Hf3UIJ148ATJX/QYqz5p
-         kXLotvuWcdtRw/YYRWXu2HwZ6+8IIyz6OZUnMu1tKl1k5YGPo3P9U/ZLvLfcr+q7ozsV
-         +aOw==
+        bh=xkiAxUA99k94EKGzdDATteXCdqHZl62UByB9jYiwg7Y=;
+        b=QSmzx+h5UzCqpQHAd678n+FlkQ49qrpyX0wTOccd++eaIGaiUhMB1XI54Tw9LMQ5Tf
+         U7RnbL73u/+tKSZt6i2uJvYdTlMBqAy7rPPYgb2T9YmAPtrs0xOIv0VteqY63U+xon29
+         xcZXqPpBigjIxLRzfi0iI7w36zAxILOA2q4kkwNLPj8CZl96+5FX2I8XVYsK4+s93Bx8
+         QatkxkxkcZQ/A1rmjGVrsVuV/QgM/q7QTnUpItLb7NzGoVa7aYjpYFPsHwC1cwu1FfY4
+         tnrNxK5um12dzV6zttlsiF7MdpKwNlH7lV6LS1muy8+/jX2HpWm8/tmJqMkSwLtC9BJ4
+         /kdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721935376; x=1722540176;
+        d=1e100.net; s=20230601; t=1721949045; x=1722553845;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RQMh1UJAxymzMN0ie+0N/QmjWGT/RhgZsPJdQF8YRPU=;
-        b=IKVY78wl+8d5zW1Pk+P1JVqDlTX8gpsAHQ2QCwix32B+SlJ3RJlCnkCFcppdN0eGEP
-         gPpBRaCRrX91s/WY/GSnlAnGZy4C2qed4YOlbIrGdveC2o986nY9TT8+5q/tWqnY5HVi
-         0QM3XzwKsJMUB8o6dNQehvIxVFfPERHVpIq4rKAf4+gI4PAw9QyMShJEzsfVTiiXc0x9
-         1SwVtAcIrVyv5JDg9OCg0YZS6IQCosoaDbrbOUnhMp7+ZXlLzLEAG+B/7n+/bbvTF77P
-         nqD7EvmMlDof7Ql3MZcXMDqGX0MD0Viu+1/3jZqeCH/4nGvxeqBhGdsdpiKTh2l3viUv
-         QqjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX1AGIEwNxi0x95N7qsBiI4qDS0if3wX6fdLySx5jeokxtbqSmkpK2pSfO1QCC2BAzOgSJ6i5B27egsMGYFFqoaAxr1l8F1m/PA
-X-Gm-Message-State: AOJu0YyUkMV6acjBYZ9qbK0izkbmLJURUeWsbIFTR/Xgmf1C5nQ3Um/p
-	BB4pIJ75jxUpM6Ff2Ml0c//v3jb/fT705nRmaO2jzEWdcBjaStmjh1kkN7bvEwHPPJlJuoARX1W
-	7
-X-Google-Smtp-Source: AGHT+IHMS9ikhdwjEYofufmWSmmPD+rPCz3HDWUd5S/cb+div34BY8osZupPZHJa9CXarrFW8kIhUQ==
-X-Received: by 2002:a05:6820:1b09:b0:5c4:7b18:b8eb with SMTP id 006d021491bc7-5d5ad9c892dmr5616917eaf.2.1721935376103;
-        Thu, 25 Jul 2024 12:22:56 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70930778280sm417754a34.64.2024.07.25.12.22.55
+        bh=xkiAxUA99k94EKGzdDATteXCdqHZl62UByB9jYiwg7Y=;
+        b=bfvTobcQD2U1vlDmPpwkqdhAcnw/Wxr1Y5KTgWPEbY/op4y3Wi0ZzodjId8czB8BDl
+         7VrJ9MS9kh1doj25mdnndARLBEYpzAcRNcaVfrnt2dVSOBcRvaATgp1Gh6RFfQvh5u3C
+         95Ffwji9NhMHVPHDfRRmNSko1hx6YFwu02eUeEBrVGDudbqsEQgDdwrIZ5tsQAvn+Gzr
+         ovzBtvIeAXawR79c1q5i8k4lHZOtPQxXY6v0Od3AeQkmmKQU4JLTRrd88pfU9FLllMYt
+         7iA9llsKoM3WkHPjpwSz4f8rNnMlBjrbcCdZpvkd0m1P8RYQfRs8w/lT9Mdc8bdNtFrG
+         8njQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9WGeppXB7TIWmAhdNjlITUfbBemm7F4LZywHWoxP6zUWu3wnpM4ZumrOEDQOwqBGhoBTBBCTYTA08IerWzEF5fURs8ZDzTaggBTYNk4L85SpdAwMeQi4iAzw4UoqF+rlNECqPucLcI9oX3C1C9ohtG9aq6T74FyhlEtOvy/oJggHv8g==
+X-Gm-Message-State: AOJu0Yw5fzE5as+D4f4Lq6XBocF+NZZ7L8rxrIqBWsJSdRjwPDJm74Zc
+	5SFXekcNHdQCGOt/G01kRvKvpHKoSQ5dgjwby3qbnNp5WZayQN616cvKhsK+bOA=
+X-Google-Smtp-Source: AGHT+IHYbl/pfsg1rXzynKAbk7rzdJ6Gtjix8KBNERgF0OsjhkOr02JY+L8gytZO08uVod0jt6HBpw==
+X-Received: by 2002:a05:6512:3a95:b0:52c:dfe6:6352 with SMTP id 2adb3069b0e04-52fd608b82emr2059522e87.48.1721949044811;
+        Thu, 25 Jul 2024 16:10:44 -0700 (PDT)
+Received: from localhost.localdomain ([2a04:ee41:82:7577:4b59:cba2:6db8:9f30])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acab236e3sm115429266b.25.2024.07.25.16.10.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jul 2024 12:22:55 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	kernel@pengutronix.de,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+        Thu, 25 Jul 2024 16:10:43 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andriy.shevchenko@linux.intel.com
+Cc: vassilisamir@gmail.com,
+	ang.iglesiasg@gmail.com,
+	linus.walleij@linaro.org,
+	biju.das.jz@bp.renesas.com,
+	javier.carrasco.cruz@gmail.com,
+	semen.protsenko@linaro.org,
+	579lpy@gmail.com,
+	ak@it-klinger.de,
 	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: ti-tsc2046: use devm_regulator_get_enable_read_voltage()
-Date: Thu, 25 Jul 2024 14:22:51 -0500
-Message-ID: <20240725-iio-regulator-refactor-round-4-v1-1-55e9dc1de325@baylibre.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v2 0/7] pressure: bmp280: Minor cleanup and interrupt support
+Date: Fri, 26 Jul 2024 01:10:32 +0200
+Message-Id: <20240725231039.614536-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.14.0
 Content-Transfer-Encoding: 8bit
 
-Use devm_regulator_get_enable_read_voltage() to replace
-tsc2046_adc_configure_regulator() which does the same thing.
+Based on iio testing branch.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ti-tsc2046.c | 54 ++++++--------------------------------------
- 1 file changed, 7 insertions(+), 47 deletions(-)
+Changes in v2:
 
-diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-index 24b1d4390872..311d97001249 100644
---- a/drivers/iio/adc/ti-tsc2046.c
-+++ b/drivers/iio/adc/ti-tsc2046.c
-@@ -142,7 +142,7 @@ enum tsc2046_state {
- struct tsc2046_adc_priv {
- 	struct spi_device *spi;
- 	const struct tsc2046_adc_dcfg *dcfg;
--	struct regulator *vref_reg;
-+	bool internal_vref;
- 
- 	struct iio_trigger *trig;
- 	struct hrtimer trig_timer;
-@@ -258,7 +258,7 @@ static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
- 	case TI_TSC2046_ADDR_VBAT:
- 	case TI_TSC2046_ADDR_TEMP0:
- 		pd |= TI_TSC2046_SER;
--		if (!priv->vref_reg)
-+		if (priv->internal_vref)
- 			pd |= TI_TSC2046_PD1_VREF_ON;
- 	}
- 
-@@ -741,49 +741,6 @@ static void tsc2046_adc_parse_fwnode(struct tsc2046_adc_priv *priv)
- 	}
- }
- 
--static void tsc2046_adc_regulator_disable(void *data)
--{
--	struct tsc2046_adc_priv *priv = data;
--
--	regulator_disable(priv->vref_reg);
--}
--
--static int tsc2046_adc_configure_regulator(struct tsc2046_adc_priv *priv)
--{
--	struct device *dev = &priv->spi->dev;
--	int ret;
--
--	priv->vref_reg = devm_regulator_get_optional(dev, "vref");
--	if (IS_ERR(priv->vref_reg)) {
--		/* If regulator exists but can't be get, return an error */
--		if (PTR_ERR(priv->vref_reg) != -ENODEV)
--			return PTR_ERR(priv->vref_reg);
--		priv->vref_reg = NULL;
--	}
--	if (!priv->vref_reg) {
--		/* Use internal reference */
--		priv->vref_mv = TI_TSC2046_INT_VREF;
--		return 0;
--	}
--
--	ret = regulator_enable(priv->vref_reg);
--	if (ret)
--		return ret;
--
--	ret = devm_add_action_or_reset(dev, tsc2046_adc_regulator_disable,
--				       priv);
--	if (ret)
--		return ret;
--
--	ret = regulator_get_voltage(priv->vref_reg);
--	if (ret < 0)
--		return ret;
--
--	priv->vref_mv = ret / MILLI;
--
--	return 0;
--}
--
- static int tsc2046_adc_probe(struct spi_device *spi)
- {
- 	const struct tsc2046_adc_dcfg *dcfg;
-@@ -825,10 +782,13 @@ static int tsc2046_adc_probe(struct spi_device *spi)
- 	indio_dev->num_channels = dcfg->num_channels;
- 	indio_dev->info = &tsc2046_adc_info;
- 
--	ret = tsc2046_adc_configure_regulator(priv);
--	if (ret)
-+	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
-+	if (ret < 0 && ret != -ENODEV)
- 		return ret;
- 
-+	priv->internal_vref = ret == -ENODEV;
-+	priv->vref_mv = priv->internal_vref ? TI_TSC2046_INT_VREF : ret / MILLI;
-+
- 	tsc2046_adc_parse_fwnode(priv);
- 
- 	ret = tsc2046_adc_setup_spi_msg(priv);
+[PATCH v2 1/7] <=> [PATCH v1 4/10]
+	- Added comment to enum indexes for humidity parameters
+	- Made more clear the bit handling in case of calib->H4
+
+[PATCH v2 4/7] <=> [PATCH v1 7/10]
+	- Used const arrays for local BMP280_MODE_* variables
+	- Added comment for why we check humidity oversampling
+	- Added comment on stubs
+
+[PATCH v2 5/7] <=> [PATCH v1 8/10]
+	- Used only INT as interrupt since the device has only one irq line
+	- Used drive-open-drain
+
+[PATCH v2 6/7] <=> [PATCH v1 9/10]
+	- Generalized IIO trigger code to be able to adopt more easily FIFO
+	  irqs by using a bmpxxx_irq_thread_handler() function which handles the
+          irq handling.
 
 ---
-base-commit: 472438c7e0e2261c6737a8321f46ef176eef1c8f
-change-id: 20240725-iio-regulator-refactor-round-4-13f032a6f2cc
+v1: https://lore.kernel.org/linux-iio/20240711211558.106327-1-vassilisamir@gmail.com/
+
+Depends on this series [1].
+
+This series aims to add hardware trigger support and extend the functionality
+of the driver. Sensors BMP3xx and BMP5xx have an interrupt pin which can be
+used in order to inform about a specific event in the sensor. For now, the
+data ready event is used, and is added as a DRDY interrupt in the driver.
+
+The interrupt is supported only in rising modes for now, and it doesn't support
+latched mode.
+
+Other interrupts such as, FIFO-FULL, FIFO-WATERMARK, Out of range values etc.
+are not supported for the moment, and only the DRDY interrupt is supported.
+
+While working on the trigger, FORCED MODE instead of NORMAL MODE was added to
+the driver for use in the oneshot capture reads. There is no need for the
+driver to continuously produce data, without using them and without properly
+notifying the user when those data became available. This can produce high
+incosistencies between the acquisition time and the readout of the sensor.
+The data now, in the case of the .read_raw() function is using the FORCED MODE,
+which samples and calculates the values at that moment.
+
+Last commit, is just moving the interrupt interface of a very old sensor to be
+consistent with the new ones, and no functional changes are intended.
+ubject: [PATCH v2 0/7] *** SUBJECT HERE ***
+
+Vasileios Amoiridis (7):
+  iio: pressure: bmp280: Use bulk read for humidity calibration data
+  iio: pressure: bmp280: Add support for bmp280 soft reset
+  iio: pressure: bmp280: Remove config error check for IIR filter
+    updates
+  iio: pressure: bmp280: Use sleep and forced mode for oneshot captures
+  dt-bindings: iio: pressure: bmp085: Add interrupts for BMP3xx and
+    BMP5xx devices
+  iio: pressure: bmp280: Add data ready trigger support
+  iio: pressure bmp280: Move bmp085 interrupt to new configuration
+
+ .../bindings/iio/pressure/bmp085.yaml         |   7 +-
+ drivers/iio/pressure/bmp280-core.c            | 739 ++++++++++++++++--
+ drivers/iio/pressure/bmp280-i2c.c             |   4 +-
+ drivers/iio/pressure/bmp280-regmap.c          |   2 +-
+ drivers/iio/pressure/bmp280-spi.c             |   4 +-
+ drivers/iio/pressure/bmp280.h                 |  51 +-
+ 6 files changed, 715 insertions(+), 92 deletions(-)
+
+
+base-commit: 47ee461357f9da5a35d5f43527b7804a6a5744cb
+-- 
+2.25.1
+
 

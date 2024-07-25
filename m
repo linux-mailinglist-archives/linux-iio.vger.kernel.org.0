@@ -1,176 +1,133 @@
-Return-Path: <linux-iio+bounces-7875-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7876-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4EF93C0CE
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 13:28:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1CE993C17D
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 14:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9FE3282C22
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 11:28:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EE2D1C21A6C
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 12:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145AD199243;
-	Thu, 25 Jul 2024 11:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA52199380;
+	Thu, 25 Jul 2024 12:13:43 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from out28-99.mail.aliyun.com (out28-99.mail.aliyun.com [115.124.28.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA561991CF;
-	Thu, 25 Jul 2024 11:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FC822089;
+	Thu, 25 Jul 2024 12:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721906898; cv=none; b=IVy2PNGSQ+wOmb2elDDf3mR07wWdqXcdQXSxNj2GY5jPyYEc1YOhpTqN+GsGPTMzx4bXdX21988zbkzQ2ifo1Nz+Wf1owGdy5PkAQuMl2jZXiy0S3OD6NdLdR8QRzF525Et90q5nv0VJFEpAXf7WWrPrPUJQBFEpVtQH32h/Zdg=
+	t=1721909623; cv=none; b=ge9AG+Lo+6q0pJqoDbXW3+IMRURNg6ce2Yg27xHgSRVISpnAFfLwsK2VC82awdBotsOUtFi7esy+Z+927TQFth36UgiK2HdXUB/w/u+fijm332mkjYlGa2wvxLZeHmKpeW7yRCY6bIX89RaiPm9tkc3CFnsC7jqj6YXPm6ufcQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721906898; c=relaxed/simple;
-	bh=VAANHyNGA5/VJjDnDk2/qJvUM2HJY5E5xRGSD6Q5CKg=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EzwoqJFqR7CVlCGYzSmubVgPnBaYPxElgYPn2rjcWuWTF/qTOMKffrhN+lblvQVvzORLwIB/fG5SBHnT2mVVR1+I2j3quXCyLrQ8k9nkEa6MtfMMf5X3CgJzVPHo1r3Bx49xN4fptibAeJo+g36L7sI/QYaeXrgGcHTe9kMFXDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WV7r75W2Fz6K5n7;
-	Thu, 25 Jul 2024 19:26:31 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id A74E21400C9;
-	Thu, 25 Jul 2024 19:28:12 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 25 Jul
- 2024 12:28:12 +0100
-Date: Thu, 25 Jul 2024 12:28:11 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Denis Benato <benato.denis96@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Jagath Jog J <jagathjog1996@gmail.com>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, "Luke D . Jones" <luke@ljones.dev>, Jonathan
- LoBue <jlobue10@gmail.com>
-Subject: Re: [PATCH 2/2] iio: bmi323: suspend and resume triggering on
- relevant pm operations
-Message-ID: <20240725122811.00004769@Huawei.com>
-In-Reply-To: <20240725002641.191509-3-benato.denis96@gmail.com>
-References: <20240725002641.191509-1-benato.denis96@gmail.com>
-	<20240725002641.191509-3-benato.denis96@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1721909623; c=relaxed/simple;
+	bh=p+vG2tWN9wZD772RHA71+9xCCaFpZpjigPOUfnzFcSo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nfN3fvcC7TshNeMm6aE6tx6qpWVoZIqoRabCIeDG6s2c+lJVlxZMIW99m9BmoXFLmqmhhE7vfm5z/AkKCyv4KE3A7jMnPGucC2XQG3QE4xtXP08X5XBYkhbX7KSe8jzP2jzRP3KTAdxaueT3MCBHyn3l8Fds4g/S6RUtvoGz2N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=awinic.com; spf=pass smtp.mailfrom=awinic.com; arc=none smtp.client-ip=115.124.28.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=awinic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=awinic.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07479588|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00828105-0.000170853-0.991548;FP=7876820729503270039|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033071083032;MF=wangshuaijie@awinic.com;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.YZXAOr8_1721909576;
+Received: from awinic..(mailfrom:wangshuaijie@awinic.com fp:SMTPD_---.YZXAOr8_1721909576)
+          by smtp.aliyun-inc.com;
+          Thu, 25 Jul 2024 20:13:28 +0800
+From: wangshuaijie@awinic.com
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	waqar.hameed@axis.com,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: wangshuaijie@awinic.com,
+	liweilei@awinic.com,
+	kangjiajun@awinic.com
+Subject: [PATCH V4 0/2] Add support for aw9610x proximity sensor
+Date: Thu, 25 Jul 2024 12:12:50 +0000
+Message-ID: <20240725121252.865836-1-wangshuaijie@awinic.com>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
 
-On Thu, 25 Jul 2024 02:26:41 +0200
-Denis Benato <benato.denis96@gmail.com> wrote:
+From: shuaijie wang <wangshuaijie@awinic.com>
 
-> Prevent triggers from stop working after the device has entered sleep:
-> use iio_device_suspend_triggering and iio_device_resume_triggering helpers.
-> 
-> Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-> ---
->  drivers/iio/imu/bmi323/bmi323.h      |  1 +
->  drivers/iio/imu/bmi323/bmi323_core.c | 29 ++++++++++++++++++++++++++++
->  drivers/iio/imu/bmi323/bmi323_i2c.c  |  1 +
->  drivers/iio/imu/bmi323/bmi323_spi.c  |  1 +
->  4 files changed, 32 insertions(+)
-> 
-> diff --git a/drivers/iio/imu/bmi323/bmi323.h b/drivers/iio/imu/bmi323/bmi323.h
-> index dff126d41658..209bccb1f335 100644
-> --- a/drivers/iio/imu/bmi323/bmi323.h
-> +++ b/drivers/iio/imu/bmi323/bmi323.h
-> @@ -205,5 +205,6 @@
->  struct device;
->  int bmi323_core_probe(struct device *dev);
->  extern const struct regmap_config bmi323_regmap_config;
-> +extern const struct dev_pm_ops bmi323_core_pm_ops;
->  
->  #endif
-> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
-> index d708d1fe3e42..b318544957de 100644
-> --- a/drivers/iio/imu/bmi323/bmi323_core.c
-> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
-> @@ -2121,6 +2121,35 @@ int bmi323_core_probe(struct device *dev)
->  }
->  EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
->  
-> +#if defined(CONFIG_PM)
-> +static int bmi323_core_runtime_suspend(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +
+Add drivers that support Awinic aw9610x proximity sensors.
 
-I want to think about patch 1 for a few days. In meantime.
+The aw9610x series are high-sensitivity capacitive proximity detection
+sensors. This device detects human proximity and assists electronic devices
+in reducing specific absorption rate (SAR) to pass SAR related certifications.
+The device reduces RF power and reduces harm when detecting human proximity. 
+Increase power and improve signal quality when the human body is far away.
 
-> +	int ret = iio_device_suspend_triggering(indio_dev);
+The specific absorption rate (SAR) is a metric that measures the degree of
+absorption of electromagnetic radiation emitted by wireless devices,
+such as mobile phones and tablets, by human tissue.
 
-	return iio_device_suspend_triggering(indio_dev);
+This patch implements device initialization, registration,
+I/O operation handling and interrupt handling, and passed basic testing.
 
-> +
-> +	return ret;
-> +}
-> +
-> +static int bmi323_core_runtime_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +
-> +	int ret = iio_device_resume_triggering(indio_dev);
-> +
-> +	return ret;
+v1->v2:
+-------
+ - Remove unnecessary log printing.
+ - Optimize comment style.
+ - Issues with modifying the device tree.
+ - Optimize code style.
 
-	return iio_device_resume_triggering(indio_dev);
+v2->v3:
+-------
+ - Add a description about the hardware device.
+ - Remove inappropriate configuration items.
+ - Modify the formatting issues.
+ - Modify the structure of the driver.
+ - Change the style of the driver's comments.
+ - Remove unnecessary log printing.
+ - Modify the function used for memory allocation.
+ - Modify the driver registration process.
+ - Remove the functionality related to updating firmware.
+ - Change the input subsystem in the driver to the iio subsystem.
+ - Modify the usage of the interrupt pin.
+ 
+v3->v4:
+-------
+The changes in this patch version are quite significant, and I concur
+with Krzysztof's viewpoint that this driver is indeed overly complex for
+the proximity sensor. Therefore, I have removed the compatibility for the
+aw963xx series, and the driver will now exclusively support the aw9610x series.
 
-> +}
-> +
-> +#endif
-> +
-> +const struct dev_pm_ops bmi323_core_pm_ops = {
-> +#if defined(CONFIG_PM)
+ - Modify the software architecture to remove compatibility for
+   the aw963xx series.
+ - Optimize the parsing of register configuration files (.bin).
+ - Remove unnecessary log printing.
+ - Delete redefinition of true and false.
+ - Remove unnecessary interfaces.
+ - Optimize regulator usage.
+ - Convert the I2C communication interface to regmap.
 
-SET_RUNTIME_PM_OPS() is defined to nothing if CONFIG_PM is
-not enabled so these protections aren't needed.
+shuaijie wang (2):
+  dt-bindings: iio: aw9610x: Add bindings for aw9610x sensor
+  iio: proximity: aw9610x: Add support for aw9610x proximity sensor
+
+ .../iio/proximity/awinic,aw9610x.yaml         |  61 ++
+ drivers/iio/proximity/Kconfig                 |  11 +
+ drivers/iio/proximity/Makefile                |   1 +
+ drivers/iio/proximity/aw9610x.c               | 791 ++++++++++++++++++
+ drivers/iio/proximity/aw9610x.h               | 140 ++++
+ 5 files changed, 1004 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/awinic,aw9610x.yaml
+ create mode 100644 drivers/iio/proximity/aw9610x.c
+ create mode 100644 drivers/iio/proximity/aw9610x.h
 
 
-> +	SET_RUNTIME_PM_OPS(bmi323_core_runtime_suspend,
-> +			   bmi323_core_runtime_resume, NULL)
-> +#endif
-> +};
-> +EXPORT_SYMBOL_NS_GPL(bmi323_core_pm_ops, IIO_BMI323);
-> +
->  MODULE_DESCRIPTION("Bosch BMI323 IMU driver");
->  MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
->  MODULE_LICENSE("GPL");
-> diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
-> index 52140bf05765..79c9b029a209 100644
-> --- a/drivers/iio/imu/bmi323/bmi323_i2c.c
-> +++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
-> @@ -128,6 +128,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_i2c_match);
->  static struct i2c_driver bmi323_i2c_driver = {
->  	.driver = {
->  		.name = "bmi323",
-> +		.pm = &bmi323_core_pm_ops,
-
-pm_ptr() to let the compiler drop bmi323_core_pm_ops if
-!CONFIG_PM
-
->  		.of_match_table = bmi323_of_i2c_match,
->  		.acpi_match_table = bmi323_acpi_match,
->  	},
-> diff --git a/drivers/iio/imu/bmi323/bmi323_spi.c b/drivers/iio/imu/bmi323/bmi323_spi.c
-> index 7b1e8127d0dd..ec3238d93862 100644
-> --- a/drivers/iio/imu/bmi323/bmi323_spi.c
-> +++ b/drivers/iio/imu/bmi323/bmi323_spi.c
-> @@ -79,6 +79,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_spi_match);
->  static struct spi_driver bmi323_spi_driver = {
->  	.driver = {
->  		.name = "bmi323",
-> +		.pm = &bmi323_core_pm_ops,
->  		.of_match_table = bmi323_of_spi_match,
->  	},
->  	.probe = bmi323_spi_probe,
+base-commit: c33ffdb70cc6df4105160f991288e7d2567d7ffa
+-- 
+2.45.1
 
 

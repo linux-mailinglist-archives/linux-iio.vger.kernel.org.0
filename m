@@ -1,255 +1,173 @@
-Return-Path: <linux-iio+bounces-7872-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7873-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D5693BAD8
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 04:33:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC06B93BC87
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 08:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFB821C208DE
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 02:32:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B080285354
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 06:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317BA10A03;
-	Thu, 25 Jul 2024 02:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0FE16C6AC;
+	Thu, 25 Jul 2024 06:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X88QKeSE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YbDpgVsJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440ED380;
-	Thu, 25 Jul 2024 02:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9083519BB7;
+	Thu, 25 Jul 2024 06:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721874776; cv=none; b=vGYAi00aToycA09SX/zHjtf67wvODpW5Vbyeg6PcrzqKgcY2lEUdLkYwxEIsFg44VQ90yn/nA7awFSL8+FIxX6r7xFNkoA3dyK8tAmlsG48Pv+F50v0TX+/I/UXpv1cWthyIZ5dUJ/eY2U4aIuxX+Ad7SYGLHunSBTWdYYACIZA=
+	t=1721888983; cv=none; b=Ebog1IP12b7PHhBGT4iBiWH1G7AYfNIm0T/QBaq3uXBlnjp8mIbyUXTAqYpvR7sqH4XVKncsciaAYTnTtb7ZJnBm7693lA6g4iHd3giVZDg3vMGOlBAZ4eSMPUFbJTBeNX062T9O64Kt72S/J94VtOPn9AxQlNzNBIHyjy3A5R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721874776; c=relaxed/simple;
-	bh=MTAF3tHhSQ+iilx/KM0XPg93Ee6bItA5QT/jXwf2gUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eVC14dKM5HwmYcw8Qw/50EMvKu7Dh4X5yPPZh4qYwwQGJRZjStS23EFDyqpi3nxl9oqcW6y+KuARyH0ZMi/+faXtuU9j6ZHlclSs7NmX2zsAMoJ89ESTAHr67U/FFMjdFRy3+lOLd3NFvGDIIqm9Wbj/XCC7Dx/YWk3No1vfaxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X88QKeSE; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721874773; x=1753410773;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MTAF3tHhSQ+iilx/KM0XPg93Ee6bItA5QT/jXwf2gUc=;
-  b=X88QKeSEbp8Sq/ghWE4UW+Za+abWZEIF2CdOlr1hIuwQmsl2TYPxcWJW
-   KTBRRKF5n21uXeNWjEhiBGVoILeDwOYnWa1bB5CCQ3FBr0LqzZncv8gV8
-   XuRCvSG6xJhoGQ2UTvybyMQtYSgxGu7t+NjE0yaWTGOaguEBGJZGMk9CG
-   3rYYTcgYhETZIoLBTPETEMbTZ5KWaAFo0T5JNnYeEhNDjfyoENfPrBWMs
-   Wxn4Lu23l+/Bi2x7lETh1kRw6bVsTMQgqaECi7VAmXasc7qDolnLSCNA2
-   58yyVl5kieK2v6o0MyidgRIDVDN/gZ5VLZFczzBw22r+4IxSZcg32Gs/r
-   w==;
-X-CSE-ConnectionGUID: /G9LiGIkQU23ACdpNPCVPQ==
-X-CSE-MsgGUID: tHUDYS2mSQelvnNIEbGB/g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="45013475"
-X-IronPort-AV: E=Sophos;i="6.09,234,1716274800"; 
-   d="scan'208";a="45013475"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2024 19:32:51 -0700
-X-CSE-ConnectionGUID: kupUx1grTya+rJrtkMTegw==
-X-CSE-MsgGUID: RpkdS/1HS1+lEdIdex7VVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,234,1716274800"; 
-   d="scan'208";a="52692595"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 24 Jul 2024 19:32:46 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sWoHb-000ngC-33;
-	Thu, 25 Jul 2024 02:32:43 +0000
-Date: Thu, 25 Jul 2024 10:32:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	linux-iio@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Ivan Mikhaylov <fr0st61te@gmail.com>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Liam Beguin <liambeguin@gmail.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] drivers: iio: adc: add support for ad777x family
-Message-ID: <202407251042.LUZ78skF-lkp@intel.com>
-References: <20240724155517.12470-5-ramona.nechita@analog.com>
+	s=arc-20240116; t=1721888983; c=relaxed/simple;
+	bh=xTsGkWYFxVZROtS7ZsX2meQ/hHFUIWIY3sU4i/EzOMY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=UKda/UE/zEPg8eUI9sFL06vOc2UtpdRI+HdzQQh01IwUumH6lcAbkfUhB8x3B1T6uiMS6nYTmxM4Y/C1oag6bEtuFCdge+vC+7u6/1TX48qXbm/gfPaVHztmU0laMljGnpfElHA4vmmI903cKQGBRL2VmMnqAc0YsXvcDJkzvjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YbDpgVsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6AEC116B1;
+	Thu, 25 Jul 2024 06:29:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721888983;
+	bh=xTsGkWYFxVZROtS7ZsX2meQ/hHFUIWIY3sU4i/EzOMY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=YbDpgVsJF/M2qz0YWTNPjTwJ6fvrTK+MvWTWNHaSr+2MFWinwzdzmpn7DVpwtXsiP
+	 gEtZzZmNio9vSpkfytq7GcoQuwO2skpzp1N7IiaVhUWQ2Wn8lXlvcX8Myis7mVAqbU
+	 11WzAF2QvuvYe0u3YYuG7pmt7GTwIRLavyMP8v7axM34oB4oWjKbdlE5hdsOavPpkI
+	 cO+w0QrurNQZxxYGInDt5QGTZJGtUxnua5fF/M3H9ZnqBIkVsNe4S1XP4lXbwLp+ka
+	 dnNkis4ny3pbadvzaL2Z1XZTwDBaKK8H4o5NrsP5jZWV4+OYXSq+NbNvdUb3fVWtuX
+	 TgSDey/IU7Y9A==
+Message-ID: <bfd2a8ea-9ddb-458c-bc34-f850092f0bc1@kernel.org>
+Date: Thu, 25 Jul 2024 08:29:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240724155517.12470-5-ramona.nechita@analog.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] drivers: iio: adc: add support for ad777x family
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+ linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Cosmin Tanislav <cosmin.tanislav@analog.com>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Nuno Sa <nuno.sa@analog.com>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Marius Cristea <marius.cristea@microchip.com>,
+ Ivan Mikhaylov <fr0st61te@gmail.com>,
+ Mike Looijmans <mike.looijmans@topic.nl>,
+ Marcus Folkesson <marcus.folkesson@gmail.com>,
+ Liam Beguin <liambeguin@gmail.com>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20240724155517.12470-1-ramona.nechita@analog.com>
+ <20240724155517.12470-5-ramona.nechita@analog.com>
+ <7d474c3d-22ed-45d5-8224-caaf124b72a0@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <7d474c3d-22ed-45d5-8224-caaf124b72a0@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Ramona,
+On 24/07/2024 18:14, Krzysztof Kozlowski wrote:
+> On 24/07/2024 17:54, Ramona Alexandra Nechita wrote:
+>> Add support for AD7770, AD7771, AD7779 ADCs. The device is capable of
+>> sending out data both on DOUT lines interface,as on the SDO line.
+>> The driver currently implements only theSDO data streaming mode. SPI
+>> communication is used alternatively foraccessingregisters and streaming
+> 
+> Typo, please run spell check.
+> 
+> Please use subject prefixes matching the subsystem. You can get them for
+> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> your patch is touching. For bindings, the preferred subjects are
+> explained here:
+> https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
+> 
+> There is no "drivers".
+> 
+>> data. Register access are protected by crc8.
+>>
+>> Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+>> ---
+>>  drivers/iio/adc/Kconfig  |  11 +
+>>  drivers/iio/adc/Makefile |   1 +
+>>  drivers/iio/adc/ad7779.c | 952 +++++++++++++++++++++++++++++++++++++++
+>>  3 files changed, 964 insertions(+)
+>>  create mode 100644 drivers/iio/adc/ad7779.c
+>>
+> 
+> The driver has several trivial style issues. Please be sure such
+> trivialities are fixed. Get internal review on this. You do need to ask
+> community to tell you that you must run checkpatch. Or to tell them that
+> indentation/alignment is entirely broken. Grab some colleague of yours
+> and perform internal review first. This applies to entire Analog,
+> because there is increased amount of contributions from Analog and not
+> all of them look like passing basic sanity checks.
+> 
+> By sending code full of silly trivialities, community reviewers might
+> feel overwhelmed and quite grumpy.
 
-kernel test robot noticed the following build warnings:
+The amount of trivial warnings pointed out by compilation in separate
+email is as well disappointing. You do not need community to check if
+all variables are used - compilers tell it, so use them. Toolchains and
+static checkers will point some issues without any need of using
+community reviewers. Look, isn't it great? Instead of using human force
+you can use tools...
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.10 next-20240724]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This applies to all Analog contributions - *you must check* your code
+with W=1, sparse, smatch and coccinelle.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ramona-Alexandra-Nechita/dt-bindings-iio-adc-add-a7779-doc/20240725-000001
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240724155517.12470-5-ramona.nechita%40analog.com
-patch subject: [PATCH v4 3/3] drivers: iio: adc: add support for ad777x family
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20240725/202407251042.LUZ78skF-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240725/202407251042.LUZ78skF-lkp@intel.com/reproduce)
+Best regards,
+Krzysztof
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407251042.LUZ78skF-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/iio/adc/ad7779.c:420:5: warning: unused variable 'low' [-Wunused-variable]
-     420 |         u8 low, mid, high;
-         |            ^~~
-   drivers/iio/adc/ad7779.c:420:10: warning: unused variable 'mid' [-Wunused-variable]
-     420 |         u8 low, mid, high;
-         |                 ^~~
-   drivers/iio/adc/ad7779.c:420:15: warning: unused variable 'high' [-Wunused-variable]
-     420 |         u8 low, mid, high;
-         |                      ^~~~
-   drivers/iio/adc/ad7779.c:445:5: warning: variable 'msb' set but not used [-Wunused-but-set-variable]
-     445 |         u8 msb, mid, lsb;
-         |            ^
-   drivers/iio/adc/ad7779.c:445:10: warning: variable 'mid' set but not used [-Wunused-but-set-variable]
-     445 |         u8 msb, mid, lsb;
-         |                 ^
-   drivers/iio/adc/ad7779.c:445:15: warning: variable 'lsb' set but not used [-Wunused-but-set-variable]
-     445 |         u8 msb, mid, lsb;
-         |                      ^
-   drivers/iio/adc/ad7779.c:475:6: warning: unused variable 'ret' [-Wunused-variable]
-     475 |         int ret;
-         |             ^~~
->> drivers/iio/adc/ad7779.c:779:35: warning: variable 'ret' is uninitialized when used here [-Wuninitialized]
-     779 |                 return dev_err_probe(&spi->dev, ret,
-         |                                                 ^~~
-   drivers/iio/adc/ad7779.c:766:9: note: initialize the variable 'ret' to silence this warning
-     766 |         int ret;
-         |                ^
-         |                 = 0
-   8 warnings generated.
-
-
-vim +/ret +779 drivers/iio/adc/ad7779.c
-
-   760	
-   761	static int ad7779_probe(struct spi_device *spi)
-   762	{
-   763		struct iio_dev *indio_dev;
-   764		struct ad7779_state *st;
-   765		struct gpio_desc *reset_gpio, *start_gpio;
-   766		int ret;
-   767	
-   768		indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-   769		if (!indio_dev)
-   770			return -ENOMEM;
-   771	
-   772		st = iio_priv(indio_dev);
-   773	
-   774		st->mclk = devm_clk_get_enabled(&spi->dev, "mclk");
-   775		if (IS_ERR(st->mclk))
-   776			return PTR_ERR(st->mclk);
-   777	
-   778		if (!spi->irq)
- > 779			return dev_err_probe(&spi->dev, ret,
-   780					     "DRDY irq not present\n"); 
-   781	
-   782		reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_LOW);
-   783		if (IS_ERR(reset_gpio))
-   784			return PTR_ERR(reset_gpio);
-   785	
-   786		start_gpio = devm_gpiod_get(&spi->dev, "start", GPIOD_OUT_HIGH);
-   787		if (IS_ERR(start_gpio))
-   788			return PTR_ERR(start_gpio);
-   789	
-   790		crc8_populate_msb(ad7779_crc8_table, AD7779_CRC8_POLY);
-   791		st->spi = spi;
-   792	
-   793		st->chip_info = spi_get_device_match_data(spi);
-   794		if (!st->chip_info)
-   795			return -ENODEV;
-   796	
-   797		ret = ad7779_reset(indio_dev, start_gpio);
-   798		if (ret)
-   799			return ret;
-   800	
-   801		ad7779_powerup(st, start_gpio);
-   802		if (ret)
-   803			return ret;
-   804	
-   805		indio_dev->name = st->chip_info->name;
-   806		indio_dev->info = &ad7779_info;
-   807		indio_dev->modes = INDIO_DIRECT_MODE;
-   808		indio_dev->channels = st->chip_info->channels;
-   809		indio_dev->num_channels = ARRAY_SIZE(ad7779_channels);
-   810	
-   811		st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-dev%d",
-   812						  		indio_dev->name, iio_device_id(indio_dev));
-   813		if (!st->trig)
-   814			return -ENOMEM;
-   815	
-   816		st->trig->ops= &ad7779_trigger_ops;
-   817		st->trig->dev.parent = &spi->dev;
-   818	
-   819		iio_trigger_set_drvdata(st->trig, st);
-   820	
-   821		ret = devm_request_irq(&spi->dev, spi->irq,
-   822							   iio_trigger_generic_data_rdy_poll,
-   823							   IRQF_ONESHOT | IRQF_NO_AUTOEN,
-   824							   indio_dev->name, st->trig);
-   825		if (ret)
-   826			return dev_err_probe(&spi->dev, ret, "request irq %d failed\n",
-   827					     st->spi->irq);
-   828	
-   829		ret = devm_iio_trigger_register(&spi->dev, st->trig);
-   830		if (ret)
-   831			return ret;
-   832	
-   833		indio_dev->trig = iio_trigger_get(st->trig);
-   834	
-   835		init_completion(&st->completion);
-   836	
-   837		ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-   838											  &iio_pollfunc_store_time,
-   839											  &ad7779_trigger_handler,
-   840											  &ad7779_buffer_setup_ops);
-   841		if (ret)
-   842			return ret;
-   843	
-   844		ret = ad7779_spi_write_mask(st, AD7779_REG_DOUT_FORMAT,
-   845					    AD7779_DCLK_CLK_DIV_MSK,
-   846					    FIELD_PREP(AD7779_DCLK_CLK_DIV_MSK, 7));
-   847		if (ret)
-   848			return ret;
-   849	
-   850		return devm_iio_device_register(&spi->dev, indio_dev);
-   851	}
-   852	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

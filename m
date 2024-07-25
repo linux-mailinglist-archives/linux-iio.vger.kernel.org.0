@@ -1,182 +1,246 @@
-Return-Path: <linux-iio+bounces-7870-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7871-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFF493B9CC
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 02:27:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E3693B9F6
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 02:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BECE01C2171E
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 00:27:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4149A1C2188C
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 00:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF1A4687;
-	Thu, 25 Jul 2024 00:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A1B23CB;
+	Thu, 25 Jul 2024 00:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VsvnNWj3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EZectMUm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8726FC6;
-	Thu, 25 Jul 2024 00:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9884690;
+	Thu, 25 Jul 2024 00:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721867254; cv=none; b=fcXwo7BSVT/9dfYN7gXVz/KI0F5Gn7NvMj6AioVdgVuqkb/JCYluNJZdi6fNAwY4z6KBYG1TNYwBQg2Ava+GZEweO7ds43f8Dhx8BZklWhbIB7YEJi6Sy+EFyYySyAK2KHpZ0KZXkIalULOZRZ5nl4U3fFK8diqzLvzlVUcarn4=
+	t=1721868770; cv=none; b=WktIGNLJmOw7I9kBwNAsBSGIU+4kvf9yRlNiCzG0Ugbs+NhYW8NkCQWZoR2ioXmjTUtu5JAD/1JFfmQ2nqHiLvD6F3vapVzsmlPfN4TzvzURl6TWH11JTDHwcKueYBP3kjsfc863fworkuYl8xCihz+QyaiHBQYdJH6UCQdTwzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721867254; c=relaxed/simple;
-	bh=T9DLii8v4aOaUBaU7hCbTIYyBZYb9oXvlzIku2iOGBM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMj181Rk1YaaPtnSRZ/OmVfGX2R4Gth/EYpAI/wyGyqUa6S6iW3V83sCbcSE1MN687x+pbdBD8IaFb3nhO8fzZlWvH5v0GWFnHHLqbiGC3HGMVm7Q23Mn+G2rzv3lmMhxwioW7ldqSqCm9q/lDQKZofpUbdvU3f5mACmv8WGusY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VsvnNWj3; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4266fd39527so2509835e9.1;
-        Wed, 24 Jul 2024 17:27:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721867251; x=1722472051; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sKRmX5Q90wGaZsCyydkQv8Fblb74XnzTuhdZqPGvWi4=;
-        b=VsvnNWj3RVI2JYjVQTHmMK24PX2sa2LkhqDh5uYkcPhVLb4wtti+JrRWDSuRi2newp
-         aLavrzekxCLFZb2VAF4ADW4OvCfkKBcesSnRnEfMHLjoOjB0rgL9TadotjQ/NCRYtl/Q
-         L5VoS8EQx28eODOIaUDIuGIv+Ij3vUt6i4peXvFdqB44dJ9ituQi7ou/W6WpoWwjYhTn
-         QJhwDQVfWgNt7q9xbtaIR+WmMGS98VZm9jEizfjL8wx56hm3BuecHClgs21+Nhh2vhhQ
-         1laZnXKQ5x/Cu5xK7f5fMbGSf3aOAtspNSmlyxlJExAorDfnCMPX+sSvSvHTeYsfok0I
-         gWZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721867251; x=1722472051;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sKRmX5Q90wGaZsCyydkQv8Fblb74XnzTuhdZqPGvWi4=;
-        b=gKwo5DwPn7TDQ7VcM1jh3G08eo+zp57fnFNlGg8w+AhyS9XyK+RmuRj0KTVj7wAS+g
-         b+0byOHQmX3KUiqtj2ZsRcvsk8/sn0emvwNuWbYw8rDZoZrLLRHP0jzIIy29Srg7QYH8
-         Hjugh2/KKfCsXAPCFy5sryOVhYy0gD48QesDTZj2QJ0oIQ0oe9OLutKiqwfcTflEY647
-         DEJ6tJEiQCW4Idj8gnmQsBmB4lXdORnkDYovPK1GvlzgrpO2pPNa+2kbyQNgl0AXLQep
-         b0xIK7/YJ/FtUuzV6drfIRkurZRJqI9wQAD9jlsOssi+TVWu/Zd5jg+83lL/veXYHrDg
-         RgtA==
-X-Forwarded-Encrypted: i=1; AJvYcCXql6+yLi7EQLG8rq+PFlzzo6LgWV9XY/OrQQnsBBNnb6eHV9MMAZ48VsL+I1OVX2W+urFfGWcQoppcXOhXBdVTkqLBgVw4/faCTh2A9JAHj9pmigPSLebmzcT22i9yv1QlyTT8/0Zw
-X-Gm-Message-State: AOJu0YzvR2bU9+23G5t1LMyWpiKKkVZLeFggrCWS0l7z7//1YnXJTMBG
-	gZHOtuS0IRVVBemukWmydjNniXGUi9rQBn+MBpzjMjuQoE/dKCcA17LMDUX3
-X-Google-Smtp-Source: AGHT+IEbH/V1J78wj0w4t7L0lsKvXZ34C8HDFZriiGxjfoioTMkjpZ1CzV/4JpdHFJIkfjsjQvJ+rQ==
-X-Received: by 2002:a05:600c:154f:b0:426:5b3a:96c with SMTP id 5b1f17b1804b1-4280573c824mr3302895e9.28.1721867251063;
-        Wed, 24 Jul 2024 17:27:31 -0700 (PDT)
-Received: from localhost.localdomain ([151.49.92.24])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4280574b0e8sm8233605e9.26.2024.07.24.17.27.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jul 2024 17:27:30 -0700 (PDT)
-From: Denis Benato <benato.denis96@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Jagath Jog J <jagathjog1996@gmail.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Denis Benato <benato.denis96@gmail.com>,
-	"Luke D . Jones" <luke@ljones.dev>,
-	Jonathan LoBue <jlobue10@gmail.com>
-Subject: [PATCH 2/2] iio: bmi323: suspend and resume triggering on relevant pm operations
-Date: Thu, 25 Jul 2024 02:26:41 +0200
-Message-ID: <20240725002641.191509-3-benato.denis96@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725002641.191509-1-benato.denis96@gmail.com>
-References: <20240725002641.191509-1-benato.denis96@gmail.com>
+	s=arc-20240116; t=1721868770; c=relaxed/simple;
+	bh=nN9l10S1PLpLe84PRmRYkGz0bC2R/lDEAnp4HMrQVP4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fVg17+ZOfosrKnWivsu1cXERQaMDs7rTnB9QkPzJRNUlzUZlH04Ob/kSHnDD1DP5DTYICRrfDll59qYUvFvKoxyR/IrJ6uqh7RwPnNSifiGYR6ZT1Xhnui1XTfa4FHJMz1rYEWOB0rN96TIhpAnyIVhssvDjuYIex9CvJPp5vZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EZectMUm; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721868768; x=1753404768;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nN9l10S1PLpLe84PRmRYkGz0bC2R/lDEAnp4HMrQVP4=;
+  b=EZectMUmHi1u1WXYZVmQVaNaGrZyMT3LAbge68tbtNoIZS4HoDBWgfgt
+   VAH6flceplP19eMUECfSNIrVSpuq/78v/FCd3HOLplCxmweRKhEHcxKd0
+   sM5YlqP5FEK/IIw9aq4TkXHWSpoTlvaZk5FaC8qGJEMbxqlwd3P7jw4Tu
+   kYdmLhSnwmuPp2grCRSguY8ne8n/fNmvngbU3GrGhTF9pD+Dx3lzrRB7M
+   RbHEZqmhui4ilbpwX83Njj16rQrfx+HsMEeU9ARBEPDcGFQcEuN7T47AQ
+   g+AMjxHfKMOEXEZfX34HESrkD6DztWr+nChUZyae04nq8hPRGa+Ct0tNc
+   Q==;
+X-CSE-ConnectionGUID: ZCvdstPPSdaOrL/z/UiqiA==
+X-CSE-MsgGUID: trWDR8XqTQehpy/SpX35Nw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="22490602"
+X-IronPort-AV: E=Sophos;i="6.09,234,1716274800"; 
+   d="scan'208";a="22490602"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2024 17:52:48 -0700
+X-CSE-ConnectionGUID: TxDt6hEcT0idrsKdH+w6Yg==
+X-CSE-MsgGUID: Y/48FsoSSlOf12oKqrGo3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,234,1716274800"; 
+   d="scan'208";a="52631100"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 24 Jul 2024 17:52:43 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sWmin-000nbk-0u;
+	Thu, 25 Jul 2024 00:52:41 +0000
+Date: Thu, 25 Jul 2024 08:52:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	linux-iio@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Ivan Mikhaylov <fr0st61te@gmail.com>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Liam Beguin <liambeguin@gmail.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] drivers: iio: adc: add support for ad777x family
+Message-ID: <202407250808.qn23hGFg-lkp@intel.com>
+References: <20240724155517.12470-5-ramona.nechita@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240724155517.12470-5-ramona.nechita@analog.com>
 
-Prevent triggers from stop working after the device has entered sleep:
-use iio_device_suspend_triggering and iio_device_resume_triggering helpers.
+Hi Ramona,
 
-Signed-off-by: Denis Benato <benato.denis96@gmail.com>
----
- drivers/iio/imu/bmi323/bmi323.h      |  1 +
- drivers/iio/imu/bmi323/bmi323_core.c | 29 ++++++++++++++++++++++++++++
- drivers/iio/imu/bmi323/bmi323_i2c.c  |  1 +
- drivers/iio/imu/bmi323/bmi323_spi.c  |  1 +
- 4 files changed, 32 insertions(+)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/iio/imu/bmi323/bmi323.h b/drivers/iio/imu/bmi323/bmi323.h
-index dff126d41658..209bccb1f335 100644
---- a/drivers/iio/imu/bmi323/bmi323.h
-+++ b/drivers/iio/imu/bmi323/bmi323.h
-@@ -205,5 +205,6 @@
- struct device;
- int bmi323_core_probe(struct device *dev);
- extern const struct regmap_config bmi323_regmap_config;
-+extern const struct dev_pm_ops bmi323_core_pm_ops;
- 
- #endif
-diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
-index d708d1fe3e42..b318544957de 100644
---- a/drivers/iio/imu/bmi323/bmi323_core.c
-+++ b/drivers/iio/imu/bmi323/bmi323_core.c
-@@ -2121,6 +2121,35 @@ int bmi323_core_probe(struct device *dev)
- }
- EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
- 
-+#if defined(CONFIG_PM)
-+static int bmi323_core_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+
-+	int ret = iio_device_suspend_triggering(indio_dev);
-+
-+	return ret;
-+}
-+
-+static int bmi323_core_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+
-+	int ret = iio_device_resume_triggering(indio_dev);
-+
-+	return ret;
-+}
-+
-+#endif
-+
-+const struct dev_pm_ops bmi323_core_pm_ops = {
-+#if defined(CONFIG_PM)
-+	SET_RUNTIME_PM_OPS(bmi323_core_runtime_suspend,
-+			   bmi323_core_runtime_resume, NULL)
-+#endif
-+};
-+EXPORT_SYMBOL_NS_GPL(bmi323_core_pm_ops, IIO_BMI323);
-+
- MODULE_DESCRIPTION("Bosch BMI323 IMU driver");
- MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
-index 52140bf05765..79c9b029a209 100644
---- a/drivers/iio/imu/bmi323/bmi323_i2c.c
-+++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
-@@ -128,6 +128,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_i2c_match);
- static struct i2c_driver bmi323_i2c_driver = {
- 	.driver = {
- 		.name = "bmi323",
-+		.pm = &bmi323_core_pm_ops,
- 		.of_match_table = bmi323_of_i2c_match,
- 		.acpi_match_table = bmi323_acpi_match,
- 	},
-diff --git a/drivers/iio/imu/bmi323/bmi323_spi.c b/drivers/iio/imu/bmi323/bmi323_spi.c
-index 7b1e8127d0dd..ec3238d93862 100644
---- a/drivers/iio/imu/bmi323/bmi323_spi.c
-+++ b/drivers/iio/imu/bmi323/bmi323_spi.c
-@@ -79,6 +79,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_spi_match);
- static struct spi_driver bmi323_spi_driver = {
- 	.driver = {
- 		.name = "bmi323",
-+		.pm = &bmi323_core_pm_ops,
- 		.of_match_table = bmi323_of_spi_match,
- 	},
- 	.probe = bmi323_spi_probe,
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.10 next-20240724]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Ramona-Alexandra-Nechita/dt-bindings-iio-adc-add-a7779-doc/20240725-000001
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20240724155517.12470-5-ramona.nechita%40analog.com
+patch subject: [PATCH v4 3/3] drivers: iio: adc: add support for ad777x family
+config: xtensa-allyesconfig (https://download.01.org/0day-ci/archive/20240725/202407250808.qn23hGFg-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240725/202407250808.qn23hGFg-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407250808.qn23hGFg-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/iio/adc/ad7779.c: In function 'ad7779_get_calibbias':
+>> drivers/iio/adc/ad7779.c:420:22: warning: unused variable 'high' [-Wunused-variable]
+     420 |         u8 low, mid, high;
+         |                      ^~~~
+>> drivers/iio/adc/ad7779.c:420:17: warning: unused variable 'mid' [-Wunused-variable]
+     420 |         u8 low, mid, high;
+         |                 ^~~
+>> drivers/iio/adc/ad7779.c:420:12: warning: unused variable 'low' [-Wunused-variable]
+     420 |         u8 low, mid, high;
+         |            ^~~
+   drivers/iio/adc/ad7779.c: In function 'ad7779_set_calibbias':
+>> drivers/iio/adc/ad7779.c:445:22: warning: variable 'lsb' set but not used [-Wunused-but-set-variable]
+     445 |         u8 msb, mid, lsb;
+         |                      ^~~
+>> drivers/iio/adc/ad7779.c:445:17: warning: variable 'mid' set but not used [-Wunused-but-set-variable]
+     445 |         u8 msb, mid, lsb;
+         |                 ^~~
+>> drivers/iio/adc/ad7779.c:445:12: warning: variable 'msb' set but not used [-Wunused-but-set-variable]
+     445 |         u8 msb, mid, lsb;
+         |            ^~~
+   drivers/iio/adc/ad7779.c: In function 'ad7779_read_raw':
+>> drivers/iio/adc/ad7779.c:475:13: warning: unused variable 'ret' [-Wunused-variable]
+     475 |         int ret;
+         |             ^~~
+
+
+vim +/high +420 drivers/iio/adc/ad7779.c
+
+   415	
+   416	static int ad7779_get_calibbias(struct ad7779_state *st, int channel)
+   417	{
+   418		int ret;
+   419		u8 calibbias[3];
+ > 420		u8 low, mid, high;
+   421	
+   422		ret = ad7779_spi_read(st, AD7779_REG_CH_OFFSET_LOWER_BYTE(channel),
+   423				      &calibbias[0]);
+   424		if (ret)
+   425			return ret;
+   426	
+   427		ret = ad7779_spi_read(st, AD7779_REG_CH_OFFSET_MID_BYTE(channel),
+   428					  &calibbias[1]);
+   429		if (ret)
+   430			return ret;
+   431	
+   432		ret = ad7779_spi_read(st,
+   433				      AD7779_REG_CH_OFFSET_UPPER_BYTE(channel),
+   434				      &calibbias[2]);
+   435		if (ret)
+   436			return ret;
+   437	
+   438		return get_unaligned_be24(calibbias);
+   439	}
+   440	
+   441	static int ad7779_set_calibbias(struct ad7779_state *st, int channel, int val)
+   442	{
+   443		int ret;
+   444		u8 calibbias[3];
+ > 445		u8 msb, mid, lsb;
+   446	
+   447		msb = FIELD_GET(AD7779_UPPER, val);
+   448		mid = FIELD_GET(AD7779_MID, val);
+   449		lsb = FIELD_GET(AD7779_LOWER, val);
+   450		put_unaligned_be24(val, calibbias);
+   451		ret = ad7779_spi_write(st,
+   452				       AD7779_REG_CH_OFFSET_UPPER_BYTE(channel),
+   453				       calibbias[0]);
+   454		if (ret)
+   455			return ret;
+   456	
+   457		ret = ad7779_spi_write(st,
+   458				       AD7779_REG_CH_OFFSET_MID_BYTE(channel),
+   459				       calibbias[1]);
+   460		if (ret)
+   461			return ret;
+   462	
+   463		return ad7779_spi_write(st,
+   464					AD7779_REG_CH_OFFSET_LOWER_BYTE(channel),
+   465					calibbias[2]);
+   466	}
+   467	
+   468	static int ad7779_read_raw(struct iio_dev *indio_dev,
+   469				   struct iio_chan_spec const *chan,
+   470				   int *val,
+   471				   int *val2,
+   472				   long mask)
+   473	{
+   474		struct ad7779_state *st = iio_priv(indio_dev);
+ > 475		int ret;
+   476	
+   477		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+   478			switch (mask) {
+   479			case IIO_CHAN_INFO_CALIBSCALE:
+   480				*val = ad7779_get_calibscale(st, chan->channel);
+   481				iio_device_release_direct_mode(indio_dev);
+   482				if (*val < 0)
+   483					return -EINVAL;
+   484				*val2 = GAIN_REL;
+   485				return IIO_VAL_FRACTIONAL;
+   486			case IIO_CHAN_INFO_CALIBBIAS:
+   487				*val = ad7779_get_calibbias(st, chan->channel);
+   488				iio_device_release_direct_mode(indio_dev);
+   489				if (*val < 0)
+   490					return -EINVAL;
+   491				return IIO_VAL_INT;
+   492			case IIO_CHAN_INFO_SAMP_FREQ:
+   493				*val = st->sampling_freq;
+   494				iio_device_release_direct_mode(indio_dev);
+   495				if (*val < 0)
+   496					return -EINVAL;
+   497				return IIO_VAL_INT;
+   498			}
+   499			return -EINVAL;
+   500		}
+   501		unreachable();
+   502	}
+   503	
+
 -- 
-2.45.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

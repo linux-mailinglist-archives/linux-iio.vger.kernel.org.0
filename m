@@ -1,148 +1,169 @@
-Return-Path: <linux-iio+bounces-7888-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7890-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6BB93C36F
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 15:55:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8125493C6A4
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 17:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9859528357E
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 13:55:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34E831F24388
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 15:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B224E19B5B5;
-	Thu, 25 Jul 2024 13:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D6B19D8BD;
+	Thu, 25 Jul 2024 15:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MU519thk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YlKMe7AC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667FE1E528;
-	Thu, 25 Jul 2024 13:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C2019D892;
+	Thu, 25 Jul 2024 15:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721915656; cv=none; b=OxjiRSOzJY1edPn+yKEK2jIayDDDDyjXxbaHzxtIaatkpJlaBq9HBhTDjmRXAiGB9icm2wEWrroQAGMop/c7VtofDaHBFjvhxBrAeYlnI9ifhEHrEcltzqOZyqi+CzQXoPYS3tJ9TBBueJxtNVbe3jcdBSBbaEmc+ZsdxCUuLuI=
+	t=1721921967; cv=none; b=qFaUfFoT0+TMfCKk/sbiMdcW9uUYmubx2YVRuMW91it/6/I2VsDjSC0p/SijQNfrAOQSiUW3IIBOWgI4M+FPKZdEaa2X0QOFH9YEGKMMcKyAayVey758xwck0i5xXx//vpM+sYNgmmPiejwNqtIa1t5SkYJN1u0S9i4uHABgFds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721915656; c=relaxed/simple;
-	bh=QkwNv+vuYe0uHTDbGVG/f6jANCQqZGgAw3yLAcYu+rA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lAxxXaxhbjU1v7kIyd/A1PYBGZxeM7RELOk2ig8ukw6KpqmCQ9XyooP5fatt6Lb1U7GwH7vLv90NT3oNmUsM7qIuZqB5yo3UGjvl30StlnGtad6BeBt//s0WMqVQQrol5p3No3g5p0MQyDk25BxPqNhVM5iA52L6NIpzTgBVetA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MU519thk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F6BC32782;
-	Thu, 25 Jul 2024 13:54:12 +0000 (UTC)
+	s=arc-20240116; t=1721921967; c=relaxed/simple;
+	bh=SpYr0L55Hz3FjEJofLqAKNn+BX8Kmuw3pOqP/1Yo8tU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W27DEW1b4ZdkvcPI45gGwf0napjqqJ04Ukgo1U4cNNynbPN3e0HMKgvkuHP0hqSa+6HWBvo1R/IIehjH89ZBEnv4W0IMmZGwvKbheeOf36cIA1tC5pGHXsZ8xr7kD6ZocaSDRrWXNnfNdV4zsh/FI9VkW88X0/i1J6lHwGvcWH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YlKMe7AC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CD13FC116B1;
+	Thu, 25 Jul 2024 15:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721915656;
-	bh=QkwNv+vuYe0uHTDbGVG/f6jANCQqZGgAw3yLAcYu+rA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MU519thkZw7NMwAgmh7YzJlv3avBxfoXblpC7AJxO0O2iLLho4ThndgAQ2fiuYZlJ
-	 qn5pLhKqOAsEcAXPc1NEf4xy/qsr5bSN5cYRkOvt6NBQm9OJVK2KFWaRj5GRbgMRJ6
-	 ocQVN1UJkz1uQcUwh+ZsdBVFBDtS420epvftYbo2eY9pZg/edbfBQ2jq3Ns8/qiOTr
-	 bXl0GmZZV19OERrQ+t/DUA7X9ZReCu4cZOTQqYI2F4lfVcb/nLnB7aonN5hpLbfqIq
-	 v9Lckl3NGgAPb61bs85qIm3UUTtG27nyLX8gc32WDAIOQSGOBIHmCUC6wwAcD/b6cQ
-	 evbQ53wwhzjjg==
-Message-ID: <d9e0e87c-0332-48b3-879d-258ca0fe58ee@kernel.org>
-Date: Thu, 25 Jul 2024 15:54:10 +0200
+	s=k20201202; t=1721921966;
+	bh=SpYr0L55Hz3FjEJofLqAKNn+BX8Kmuw3pOqP/1Yo8tU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=YlKMe7ACdOyG2QKzwQ0SR0kPnJB1/q87LVz59cjSTSLQQ6f3mwg4cRciJAnuo7sBm
+	 H0suiZE1NlH/xFCrV5kPjBzSjqHOHJslHSjDK+uH6PXa3sms+ut7sojvrLYjLsAXnG
+	 jspev36o/UUm72OLLzkz5/rG1C3Udp5+jiUp2by2gHELtBq+Mz5BqjpkKqJGF7sUvP
+	 P/y7w295U7nHYLfB2PHY/hTjxN5ewXBh3DD3UrT/NJQ77tc5mH3rHXxXUSGrzr9G/e
+	 RDIOEcSxV0bQUJFeSYnF8DihqD3lU84rtD+gjd/jhT69Z9RyzCv+cbR47UFDRJJblI
+	 RNGJ4WXcAcnIQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2DA8C3DA49;
+	Thu, 25 Jul 2024 15:39:26 +0000 (UTC)
+From: Petar Stoykov via B4 Relay <devnull+pd.pstoykov.gmail.com@kernel.org>
+Subject: [PATCH v4 0/3] Add support for Sensirion SDP500
+Date: Thu, 25 Jul 2024 17:37:26 +0200
+Message-Id: <20240725-mainline_sdp500-v4-0-ea2f5b189958@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 1/2] dt-bindings: iio: aw9610x: Add bindings for
- aw9610x sensor
-To: "Rob Herring (Arm)" <robh@kernel.org>, wangshuaijie@awinic.com
-Cc: waqar.hameed@axis.com, liweilei@awinic.com, lars@metafoo.de,
- linux-iio@vger.kernel.org, kangjiajun@awinic.com, jic23@kernel.org,
- linux-kernel@vger.kernel.org, conor+dt@kernel.org,
- devicetree@vger.kernel.org, krzk+dt@kernel.org
-References: <20240725121252.865836-1-wangshuaijie@awinic.com>
- <20240725121252.865836-2-wangshuaijie@awinic.com>
- <172191345400.1572973.8660057237993091930.robh@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <172191345400.1572973.8660057237993091930.robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADZxomYC/3WNwQrCMBBEf6Xs2ciSRNp48j+kSE227UKblESCU
+ vLvxt49vmHmzQ6JIlOCa7NDpMyJg6+gTw3YefATCXaVQaLU2KIU68B+YU+P5LYLokBnxs5qY6T
+ soK62SCO/D+O9rzxzeoX4OQ6y+qX/XVmJKjQoUbdPRUS3qVaWsw0r9KWUL7d/ZH+uAAAA
+To: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Petar Stoykov <pd.pstoykov@gmail.com>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1721921965; l=3607;
+ i=pd.pstoykov@gmail.com; s=20240702; h=from:subject:message-id;
+ bh=SpYr0L55Hz3FjEJofLqAKNn+BX8Kmuw3pOqP/1Yo8tU=;
+ b=lJYI+kAuPeQirrIkMHfHgC3Bort52h8+w01VwR/6FZudzusqFJLXyHqgpM/KgZBDrRL6pOXab
+ lZJJy3D6aiPCZJbCZjfC+9YAs0cHHW+jivfVSxtUZ0a1wtOc1pgQWFD
+X-Developer-Key: i=pd.pstoykov@gmail.com; a=ed25519;
+ pk=oxcGqcVV5O6wqlTh+39SbOwfbpD763i5x4TavUAHiCg=
+X-Endpoint-Received: by B4 Relay for pd.pstoykov@gmail.com/20240702 with
+ auth_id=179
+X-Original-From: Petar Stoykov <pd.pstoykov@gmail.com>
+Reply-To: pd.pstoykov@gmail.com
 
-On 25/07/2024 15:17, Rob Herring (Arm) wrote:
-> 
-> On Thu, 25 Jul 2024 12:12:51 +0000, wangshuaijie@awinic.com wrote:
->> From: shuaijie wang <wangshuaijie@awinic.com>
->>
->> Add device tree bindings for aw9610x proximity sensor.
->>
->> Signed-off-by: shuaijie wang <wangshuaijie@awinic.com>
->> ---
->>  .../iio/proximity/awinic,aw9610x.yaml         | 61 +++++++++++++++++++
->>  1 file changed, 61 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/awinic,aw9610x.yaml
->>
-> 
-> My bot found errors running 'make dt_binding_check' on your patch:
-> 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/proximity/awinic,aw9610x.yaml: $id: Cannot determine base path from $id, relative path/filename doesn't match actual path or filename
->  	 $id: http://devicetree.org/schemas/input/awinic,aw9610x.yaml
->  	file: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/proximity/awinic,aw9610x.yaml
+This patch series introduces support for Sensirion SDP500 in the IIO
+subsystem. The series is split into three patches:
 
-Look, still not tested.
+1. The first patch adds the device tree bindings.
+2. The second patch implements the device driver.
+3. The third patch updates the MAINTAINERS file.
 
-You got comment on v3 that you must it prior to sending. The comment
-also explained how to perform the testing.
+The driver is relatively simple. It provides a way to read the measured
+differential pressure directly in Pa, as the device has a fixed scale
+factor of 1/60. When an applications wants to read the pressure value,
+3 bytes are read from the device, 2 are data and 1 is CRC8. If the crc
+check passes, the raw value is made available.
 
-You responded that you will implement testing but as easily we can see
-here, you still did not test it.
+The initialization of the device just starts the measurement process.
 
-Please, stop wasting our time. TEST your patches BEFORE sending.
+We have been using this device and driver in a product development for
+almost a year now. There the pressure is read every 25ms and is used in a
+control loop. We have not even seen crc errors. We are using the
+"linux-imx" repository and not the mainline one but I see no risky kernel
+functions in use so it should be fine here too.
+
+All feedback is appreciated! Thank you for taking the time to review this.
+
+Changelog
+v1->v2:
+	driver code:
+* Removed the use of wrapper functions for logging
+* Using built-in crc function instead of a custom one
+* Removed the use of a wrapper function for i2c send and receive data
+* Use get_unaligned_be16 instead of custom calculation
+* Removed error log if devm_iio_device_alloc fails
+* indio_dev->name set directly to "sdp500"
+* Updated error logging to use "dev_err_probe" in probe function
+* Added a sensor readout in the probe function (first one is always bad)
+* Used devm_iio_device_register instead of iio_device_register
+* Removed trailing comma in "sdp500_id" data
+* Deleted sdp500_remove after using devm_iio_device_register in probe
+	dt-bindings:
+* Fixed dt-bindings example wording
+* Added vdd-supply in dt-bindings example
+
+v2->v3:
+	driver code:
+* Added link to datasheet at the start of the driver code
+* Removed some unnecessary defines
+* Removed an unused argument of sdp500_start_measurement function
+* Renamed variable that holds the received CRC to "received_crc"
+* Switched to returning RAW and SCALE values instead of PROCESSED
+* Change logging to use data->dev instead of indio_dev->dev.parent
+* Removed unnecessary debug log of the read value from the sensor
+* Added vdd regulator handling
+* Added "sensirion,sdp510" as compatible
+* Removed the aligning of '=' in the sdp500_driver struct
+	dt-bindings:
+* Added "sensirion,sdp510" as possible compatible value in dt-bindings example
+
+Link to v3: https://lore.kernel.org/r/20240702-mainline_sdp500-v3-0-0902047b3eee@gmail.com
+v3->v4:
+	driver code:
+* include linux/mod_devicetable.h
+* limit all lines to 80 characters
+* fix C++ style comment
+	dt-bindings and MAINTAINERS:
+* fix filename
+
+Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
+
+---
+Petar Stoykov (3):
+      dt-bindings: iio: pressure: Add Sensirion SDP500
+      iio: pressure: Add driver for Sensirion SDP500
+      MAINTAINERS: Add Sensirion SDP500
+
+ .../bindings/iio/pressure/sensirion,sdp500.yaml    |  46 ++++++
+ MAINTAINERS                                        |   6 +
+ drivers/iio/pressure/Kconfig                       |   9 ++
+ drivers/iio/pressure/Makefile                      |   1 +
+ drivers/iio/pressure/sdp500.c                      | 157 +++++++++++++++++++++
+ 5 files changed, 219 insertions(+)
+---
+base-commit: ab27740f76654ed58dd32ac0ba0031c18a6dea3b
+change-id: 20240702-mainline_sdp500-0d9f8c499228
 
 Best regards,
-Krzysztof
+-- 
+Petar Stoykov <pd.pstoykov@gmail.com>
+
 
 

@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-7920-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7921-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540C693CF8B
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 10:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4357E93CF8C
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 10:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E25E7B2260A
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 08:23:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2ADDB228F5
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 08:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EBFD178374;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7462C17837A;
 	Fri, 26 Jul 2024 08:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ToXL54IP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhR5MQ1U"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2181369B1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE78177990;
 	Fri, 26 Jul 2024 08:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721982181; cv=none; b=NvQAxIy//jx8/we8YM+eie+LRQG0S/JZXCD+v99Fod2V1A5O3HfzpauyMaLDpZF4oH9q2YxzPkHPSyYeJsyQd6GhXYaJ/opBD6nyQxGf/66fW0JDPoHbgta7NQGNFF6d/4Lpyg5B1+a7qyRWqtYNDGsvR6J2ZpLz5bceDysii40=
+	t=1721982181; cv=none; b=KRrXIj2oPnhJ3nB0ynIk+jUxRqugfPk2tYN8Ly9WksXUIG9TUu6fp7XLKiCWrKGBHf4K6A8dy84otdq4zpnrJNJTvHAnsxLzAGGY64jkiTG5M/Y1olVP7lyOAHMZ+8Kv7xJvfuRCZYhTaWpRyC7X7LKflpwOyf1XL2Me2bkIL5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721982181; c=relaxed/simple;
-	bh=5lWBN3x7yzmJzI21qdeZUQEtQmV1CWl/qAfX28wS1m0=;
+	bh=umD1IXfi/h95QQhMz4eWJTx8O2TaBSWYesNTGeRdxII=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=McXIbEmzqjMrKIrlV7vIfwB5f2Ce/vnR5y0Sz/eS+wWaUXWNolRtnmA6Wdy9FIZNu9lO8yv6TRcXzKK741xRkTK2LrdhV//0xH4JX+sKvrqTKia3E80uYpxpEONPd8Idk7Ne5QZ5/dX+cNL2FJ8VhoV38Zj0TCwUSsEXKdyK2ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ToXL54IP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BFFA9C32782;
+	 In-Reply-To:To:Cc; b=AF7Zang75foNSf/01vvK8zejdaeD9v2z2RR8foxuT+v7W3vtdO39GeBmEj3LdVz14zlcByPCadvZ4khGK+Gnwh+xEAcZ1hKFHr4Yl5a+2HsO01cQsWuaO2ReDGrDrI6br51R9lrAAkTsveW9R5KKofLi0YlLcGhVYYXeVWq87KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhR5MQ1U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CC7CAC4AF0A;
 	Fri, 26 Jul 2024 08:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1721982180;
-	bh=5lWBN3x7yzmJzI21qdeZUQEtQmV1CWl/qAfX28wS1m0=;
+	bh=umD1IXfi/h95QQhMz4eWJTx8O2TaBSWYesNTGeRdxII=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ToXL54IPqtPoxYWXSTUfO+Sg0e81zbStINhnC3eK89B/LbKbucMaE6TRpw86trtGU
-	 YvxhEeyd0t2p5fjV39Dh22uwsdbto7/+C+IdxfeHMwd16m2JeWyT9EYy7ymObKMzF1
-	 1pFq29LqCCTSao+0rtekht/j7nWc++BIHvVmWL4AZ9zwp98rPqq4s5g5ej1F4W8XLD
-	 uUOnzhZL6+CWJkYMqiVhPjMQ7LcUeFHO5xcsL9PifepzxTRnGgstjjuMiE2D9h7390
-	 IXc5Q1k7rCEsK+EPUcY4k4cNQ/ic/Jv39gCpBxuD2cNBeZ0l/izQYmQF/oMfswARyL
-	 RR5n3BmcYB2gw==
+	b=uhR5MQ1UbywD/sGpU7PvS4RRLIDTtWYokMQE7yvKONuRCcB8dIWQ1ztlI9VvqrpCX
+	 hV8f5MdpljPSGrCZIYsMj2d6RAgSLlteVvfmBQ36QoAlFI2VLHeKUhySxMNr6hGa7n
+	 XdtcOtHlxqLq7A66oifTTYY9WwlaA0Tv0fxx3Qv3HLtqiG87V+QUHYymZ6JCreTtfj
+	 PDoAoE2gNQFNKDCjYx7HoGQUVxpCQRSKPQaG5yploCBSJ9vKtJ0Yo31r/s0mfWk/5M
+	 PHoOvfBVDjQttc87gyrKUWU0J0W2qOQMc8xZWIJqbW84HLwUe9xiiqy5gWzsv3li1Q
+	 DNfw1St6Tf7Mg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7464C3DA7F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3D26C52CDA;
 	Fri, 26 Jul 2024 08:23:00 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 26 Jul 2024 10:23:01 +0200
-Subject: [PATCH 09/23] iio: adc: stm32-dfsdm-adc: make use of
- iio_get_masklength()
+Date: Fri, 26 Jul 2024 10:23:02 +0200
+Subject: [PATCH 10/23] iio: adc: ti-adc0832: make use of
+ iio_for_each_active_channel()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240726-dev-iio-masklength-private3-v1-9-82913fc0fb87@analog.com>
+Message-Id: <20240726-dev-iio-masklength-private3-v1-10-82913fc0fb87@analog.com>
 References: <20240726-dev-iio-masklength-private3-v1-0-82913fc0fb87@analog.com>
 In-Reply-To: <20240726-dev-iio-masklength-private3-v1-0-82913fc0fb87@analog.com>
 To: linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
@@ -78,11 +78,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1721982178; l=891;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1721982178; l=925;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=aTgdqh0aJ1pDba+LtwcspxT4H9yCpKDHYZJ0iNZrIwE=;
- b=qTE3TyReW61ZawmIaxnS8JEFNUS99QanZ+9aNsvDcl5dqwoWeW+TXGjOqN0MLDIUIT6EWuKte
- luKnQ1LkDdyA47LQ2ebBiOd5gkHs808gjk6oHb5PyogY8P7nLgx84js
+ bh=/zRhs+O5dU8RBr+bA0UyWxQ7bhGuFDbxpfRgXZ5+WII=;
+ b=MQ4GGvW9pKcxivxR/c6CDelUg6zYahU1CzZdyeqX/tyLj5KopFY4oMsnbX6sseHma8Npd3ZO+
+ TTs6JeQU5sNBUtSFyal4UdETC3vl9Rb3X99qollaj63XIHva8luakJD
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -92,27 +92,29 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-Use iio_get_masklength() to access '.masklength' so it can be annotated
-as __private when there are no more direct users of it.
+Use iio_for_each_active_channel() to iterate over active channels
+accessing '.masklength' so it can be annotated as __private when there are
+no more direct users of it.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/adc/stm32-dfsdm-adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ti-adc0832.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-index fabd654245f5..15b8a4c0b272 100644
---- a/drivers/iio/adc/stm32-dfsdm-adc.c
-+++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -987,7 +987,7 @@ static int stm32_dfsdm_update_scan_mode(struct iio_dev *indio_dev,
- {
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+diff --git a/drivers/iio/adc/ti-adc0832.c b/drivers/iio/adc/ti-adc0832.c
+index b11ce555ba3b..d7800e1fa536 100644
+--- a/drivers/iio/adc/ti-adc0832.c
++++ b/drivers/iio/adc/ti-adc0832.c
+@@ -211,8 +211,7 @@ static irqreturn_t adc0832_trigger_handler(int irq, void *p)
  
--	adc->nconv = bitmap_weight(scan_mask, indio_dev->masklength);
-+	adc->nconv = bitmap_weight(scan_mask, iio_get_masklength(indio_dev));
- 	adc->smask = *scan_mask;
+ 	mutex_lock(&adc->lock);
  
- 	dev_dbg(&indio_dev->dev, "nconv=%d mask=%lx\n", adc->nconv, *scan_mask);
+-	for_each_set_bit(scan_index, indio_dev->active_scan_mask,
+-			 indio_dev->masklength) {
++	iio_for_each_active_channel(indio_dev, scan_index) {
+ 		const struct iio_chan_spec *scan_chan =
+ 				&indio_dev->channels[scan_index];
+ 		int ret = adc0832_adc_conversion(adc, scan_chan->channel,
 
 -- 
 2.45.2

@@ -1,209 +1,143 @@
-Return-Path: <linux-iio+bounces-7953-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7954-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396BC93D8E9
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 21:17:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FB393D9A0
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 22:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61515B220AD
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 19:17:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1C701F226A3
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 20:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF374D8A9;
-	Fri, 26 Jul 2024 19:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E6713A40B;
+	Fri, 26 Jul 2024 20:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="seZDzk5Q"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XxbHQQth"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A2B17E9
-	for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 19:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E2F2E3EB
+	for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 20:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722021426; cv=none; b=gsrYsfK+FMCE9l2nenZ1wK4w/WmRhfiM5+sIpUADMIVp9YiFbjSvzvPGbpVEiHOVnPVjwgRNCBIjdJw7sWHh9MDzDI5RjY4FT2sRM7jkJniRhqyudZLGKIrKAz8zzSrEP+9KmxF6Fr0KhNEYv39wMtfJmbXzEcwfhCJ6cf59afw=
+	t=1722025128; cv=none; b=st/og7knnARcvgPcg7EN14TxM1BzP4I8SnGAI0RErtCO9BvnCoS2xXUelN7GdRpFea/Fd76HSaZHlDNNZFoV0VBqhWld/KNBTfU998JZkGE4NE3y4Q+3clNj1ENoHLyY2uh991Jlhh+SL8L7UQLY+sEGGKQu1gCsL576/U1m5Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722021426; c=relaxed/simple;
-	bh=5I8TDqT8gwa2dtnPuQk5EvL4jvANgXjxbb41CCLtgfA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WoPJ3FBGaOhI0xYdoHL2zONzA2BsLGGXNcrnNZTuCVUM6PAddYeeBjnkx4IqSd/m9MPgKP7SHpqz/PiuLPP+iT8q+u65w5NGbMUy9XdvgkxlTN7yXtEr5RJuUQUm4QCBEfR104MNCLvxg6iLtoRONyWsTjIwg2MsNz+3JG1qlS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=seZDzk5Q; arc=none smtp.client-ip=209.85.160.51
+	s=arc-20240116; t=1722025128; c=relaxed/simple;
+	bh=t/xQJdIhtTXF2hpyrs+YVJQHpTkO6k/STifcvBMXxj4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=njW90bPvFAbzwSwAJs+oBgkXUvG1f2IwK0gOBAvSfBRFNLcqxYnz7f9A4PgIMFW6xRiY52UXG1W+QXF4Bh9Er9leioEb6zqlGy1DYN3Lht96XgAQ+p7kRARadBNWsj64E+wR09c4G68YyN4WJ+hwACYln2+V5HYOa2XEsplpRjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XxbHQQth; arc=none smtp.client-ip=209.85.161.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-260e1b5576aso1084338fac.1
-        for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 12:17:02 -0700 (PDT)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5d5bc93e09dso818818eaf.3
+        for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 13:18:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722021422; x=1722626222; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3s23lfRVw0JnayyoCgMBNHWTryj42pWvQjo3hMq56bk=;
-        b=seZDzk5QEYJEn+rhgG7ZqGLmZ1VLd+OSyifyjRdvVoyNN9CR24m5o/kyYl4vR7my2A
-         WZdenMVABzYTijtMximZLpBzMCjPqeNyfN6y8b1oUyWSmWkUXBuvnakNTtKfAVEqZZTR
-         4aJD1bZLvBMfaJvrRGxNySvFkBldy/SlyHQKu1VPOSsk4AAmOliZ20tP09CwWRUo4nph
-         GEHeJRe+EXM6+N/F8OYWfX/M6vQNvMRo51lr7AI4ld+lf7evRkGLelAegKAeJpziSHHr
-         cLneiekC72yQOevvpiztnBnHRvPyMVc0NGLLdhwE1f92fsiBtGzI6Vu2z5SymTlQHGZ+
-         CXnw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722025124; x=1722629924; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=P5hHnGIRzay4ofgZ9pZK7d/c6GmutY9bb/g6Td7EXnM=;
+        b=XxbHQQthQJe/0/NcVjt8DOHhbExnpdtsVGmXyDX0XtV74t8pVQh3qHd04yb5HW0thS
+         tLItXOcpTfI7D7fGz1hLqC5SpoFpCxrRyEhJRUkrh/R9NeXduJxWnZpTMnhiNOXmxOSz
+         4gwD5ggAXKA9Lc1nZUBrQdUt1FLpFZzKzd3EnmypzMOWKglr8bLS1wid/2ZSSqpxeSCx
+         NhMFMqD/+rfJoiTk4JZC7pHELJiG2W2T7+v8j6PB0kfPAi7TuXJ5A9vqpjXATFLZ49h4
+         rIwx4eHJfsNOwM1wZPy/dncPQIr6d/aPHbqObTs1LkItIaMQQyZ/3vDcT3SpTc9QXg5O
+         uZPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722021422; x=1722626222;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3s23lfRVw0JnayyoCgMBNHWTryj42pWvQjo3hMq56bk=;
-        b=EaWFEKNERW+Yqv/bYy503m66pgGgbu2jS8A6+OY+sIWDpKFm0qM/a2TdqKUyGEvLpI
-         6OUm+VmW4Ks+BxYIcK4zCJbrf7A6E+3uYCN0Xs6ac76ewxk4smgMpSQ9t87w6OGF9aDo
-         gHum7hn0qbOLbdQtcK2wRgv5pJpf9gWWeaTXa9vpD4JBxoLA8nGcmF6Z0y4O1giXRb9I
-         cylKfUG2CIX9yG7qcmY58Rl6falEU9Xec6XexeEmIopsLytw7SlwIZS9vk/n5bgGS4C/
-         NiXYi10AlyEhjSVb4t/tDyeuyppBRLb/48gEns1S11FYLcOc4e+MF+juCs8JnlxlsUyI
-         +ulA==
-X-Forwarded-Encrypted: i=1; AJvYcCWN2WcTagRpU5A/UU8YX7jrgjIZRVl9O9+fKxyeQgaAcjyeJBYzo4HiZr0F7kkM6xZRgbc/+XD1mU3/m8Dt8AEFl50eb3luz6hR
-X-Gm-Message-State: AOJu0YxlGu7zf/4/pV4O+NU1JP+xw1nMx+aEkxqmHcrQGCzQxJKtvJ5A
-	G8Bx4B1MNjBgyf9QMG3phhGjYTe7ZPl6IcVQAPnvYzZ8igY+JDSWZu7YI2ipfLk=
-X-Google-Smtp-Source: AGHT+IF0XA11UwhvqRFdKSWATudhXYz0A2IBpB+/45I1DC8giR/lZ3nfNRSAdGnI4vV3UyV7cO8xrw==
-X-Received: by 2002:a05:6870:b48a:b0:262:32b0:dede with SMTP id 586e51a60fabf-267d4d16709mr992436fac.7.1722021422012;
-        Fri, 26 Jul 2024 12:17:02 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2653e640030sm775424fac.16.2024.07.26.12.17.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jul 2024 12:17:01 -0700 (PDT)
-Message-ID: <9f57e41f-3534-4188-ae78-d323aa45e2a1@baylibre.com>
-Date: Fri, 26 Jul 2024 14:17:00 -0500
+        d=1e100.net; s=20230601; t=1722025124; x=1722629924;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P5hHnGIRzay4ofgZ9pZK7d/c6GmutY9bb/g6Td7EXnM=;
+        b=vA3iMqZNd+lbm3ipUN0S2ERS1/bZpnSYpnPwcAZmebJ929DJef9LbjuGALNtpTh7Rx
+         egEtScUulprVTcn6aM/XSmDffXI10dDxF3RYoYumSTZp6fy3IzVLWqOmS0mqMrTu+/c6
+         wxjjXoVSmgRMDcXLBHBV8XPppowlRGfaE/wyRgfp5bFpx0RbnAIuHHRRm+ZzVQ482Tcs
+         hJOEEZgEhDMJLteykBXaKJ3XaUjwXLkfe0aRCYelF6FjQHg0TPF/zkBwtWmpFlJmOpkI
+         OvHKmun4xJdIYb7wqHFuHu5wJxxH0Lm01dCsHRtNJJyYXENKB+GL6fFhWwUbzv5Yyh0J
+         6Ezw==
+X-Forwarded-Encrypted: i=1; AJvYcCUir0qQOFFckxtdcdwGlxKOUp8wxQMCQTIsVE53qyUj1xzjPr/fmhRJ+6DCdEgNuSaR7oiGQgtId3IGAtDrUAtSQJ1YwCp+O3pg
+X-Gm-Message-State: AOJu0YxxWElsZWh2sahYH0P1wwTG4tyi15hDm5xUhCTUC8C9e9G8DSx3
+	meONWEqLK24Tf+Onhcl/mh8Bl3N7ycsdD37pC3CNvrLPCwAN406mtw0jbg/EJlQ=
+X-Google-Smtp-Source: AGHT+IGG/bK2+K/Da4LrV9CC9/8cFUd5Tm7DlPEasAWLz5DrSZVQzPDUptHwtZjkXTnx9VvbNLUJxA==
+X-Received: by 2002:a05:6820:2292:b0:5c6:658c:a9f6 with SMTP id 006d021491bc7-5d5d0d86e0fmr1046551eaf.2.1722025124053;
+        Fri, 26 Jul 2024 13:18:44 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5d5b346d58csm528585eaf.6.2024.07.26.13.18.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jul 2024 13:18:43 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: backend: spelling: continuous -> continuous
+Date: Fri, 26 Jul 2024 15:18:40 -0500
+Message-ID: <20240726-iio-backend-spelling-continuous-v1-1-467c6e3f78ff@baylibre.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 5/9] spi: dt-bindings: axi-spi-engine: document
- spi-offloads
-To: Rob Herring <robh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>,
- Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
- <20240722-dlech-mainline-spi-engine-offload-2-v3-5-7420e45df69b@baylibre.com>
- <20240726123836.GA998909-robh@kernel.org>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20240726123836.GA998909-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.14.0
+Content-Transfer-Encoding: 8bit
 
-On 7/26/24 7:38 AM, Rob Herring wrote:
-> On Mon, Jul 22, 2024 at 04:57:12PM -0500, David Lechner wrote:
->> The AXI SPI Engine has support for hardware offloading capabilities.
->> There can be up to 32 offload instances per SPI controller, so the
->> bindings limit the value accordingly.
->>
->> Signed-off-by: David Lechner <dlechner@baylibre.com>
->> ---
->>
->> RFC: I have a few questions about this one...
->>
->> 1.  The trigger-source properties are borrowed from the leds bindings.
->>     Do we want to promote this to a generic binding that can be used by
->>     any type of device?
-> 
-> I would make it specific to spi-offload.
+This fixes the spelling in IIO_BACKEND_INTERNAL_CONTINUOUS_WAVE.
 
-OK
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/iio/dac/ad9739a.c     | 2 +-
+ drivers/iio/dac/adi-axi-dac.c | 2 +-
+ include/linux/iio/backend.h   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Meanwhile, we are working on some other ADCs (without SPI offload) and
-finding that they are using basically the same sorts of triggers. And
-on the driver side of things in this series, I'm getting feedback that
-we should have some sort of generic trigger device rather than using,
-e.g. a clk directly. If we need this same sort of trigger abstraction
-for both SPI offloads and IIO device, it does seems like we might want
-to consider something like a new trigger subsystem.
+diff --git a/drivers/iio/dac/ad9739a.c b/drivers/iio/dac/ad9739a.c
+index 9b1570e788b6..799387f21b9f 100644
+--- a/drivers/iio/dac/ad9739a.c
++++ b/drivers/iio/dac/ad9739a.c
+@@ -145,7 +145,7 @@ static int ad9739a_buffer_postdisable(struct iio_dev *indio_dev)
+ 	struct ad9739a_state *st = iio_priv(indio_dev);
+ 
+ 	return iio_backend_data_source_set(st->back, 0,
+-					   IIO_BACKEND_INTERNAL_CONTINUOS_WAVE);
++					   IIO_BACKEND_INTERNAL_CONTINUOUS_WAVE);
+ }
+ 
+ static bool ad9739a_reg_accessible(struct device *dev, unsigned int reg)
+diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
+index 6d56428e623d..e44463f48bf5 100644
+--- a/drivers/iio/dac/adi-axi-dac.c
++++ b/drivers/iio/dac/adi-axi-dac.c
+@@ -452,7 +452,7 @@ static int axi_dac_data_source_set(struct iio_backend *back, unsigned int chan,
+ 	struct axi_dac_state *st = iio_backend_get_priv(back);
+ 
+ 	switch (data) {
+-	case IIO_BACKEND_INTERNAL_CONTINUOS_WAVE:
++	case IIO_BACKEND_INTERNAL_CONTINUOUS_WAVE:
+ 		return regmap_update_bits(st->regmap,
+ 					  AXI_DAC_REG_CHAN_CNTRL_7(chan),
+ 					  AXI_DAC_DATA_SEL,
+diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
+index 4e81931703ab..29c4cf0bd761 100644
+--- a/include/linux/iio/backend.h
++++ b/include/linux/iio/backend.h
+@@ -17,7 +17,7 @@ enum iio_backend_data_type {
+ };
+ 
+ enum iio_backend_data_source {
+-	IIO_BACKEND_INTERNAL_CONTINUOS_WAVE,
++	IIO_BACKEND_INTERNAL_CONTINUOUS_WAVE,
+ 	IIO_BACKEND_EXTERNAL,
+ 	IIO_BACKEND_DATA_SOURCE_MAX
+ };
 
-> 
->>
->> 2.  Some folks are working on adding DMA to TX stream support to the
->>     AXI SPI Engine hardware. I assume that the `dmas` property is like
->>     others where the order/index in the phandle array matters. So this
->>     would mean that for device that only uses 1 out of the 32 offloads
->>     and only uses 1 TX DMA channel, we would have to have 32 <0>s for
->>     each of the possible RX dmas in the array. Any way to do some kind
->>     of mapping to avoid this?
-> 
-> That's why -names exists.
-
-OK
-
-> 
->>
->> 3.  In v2, we discussed about having some sort of data processing unit
->>     between the AXI SPI Engine RX stream interface and the DMA channel
->>     interface on the DMA controller. I haven't included this in the
->>     bindings yet because we don't have a user yet. But it was suggested
->>     that we could use the graph bindings for this. So here is what that
->>     might look like:
->>
->>     Additional property for the AXI SPI Engine controller bindings:
->>
->>         out-ports:
->>             $ref: /schemas/graph.yaml#/properties/ports
->>             unevaluatedProperties: false
->>             patternProperties:
->>             "^port@1?[0-9a-f]$":
->>                 $ref: /schemas/graph.yaml#/properties/port
->>                 unevaluatedProperties: false
->>
->>     And this would be connected to a device node similar to this:
->>
->>         ip-block@3000 {
->>             // Something similar to, but not exactly like
->>             // http://analogdevicesinc.github.io/hdl/library/util_extract/index.html
->>             compatible = "adi,crc-check";
->>             // clock that runs this IP block
->>             clocks = <&sysclk 15>;
->>             // interrupt raised on bad CRC
->>             interrupts = <&intc 99>;
->>             interrupt-names = "crc";
->>             // output stream with CRC byte removed piped to DMA
->>             dmas = <&adc_dma 0>;
->>             dma-names = "rx";
->>
->>             port {
->>                 adc_crc_check: endpoint {
->>                     remote-endpoint: <&offload0_rx>;
->>                 };
->>             };
->>         };
->>
->>     Does this sound reasonable?
-> 
-> Shrug.
-> 
-> Unlike the offload which is internal to the controller driver?
-
-Correct. And in the case of the AXI SPI Engine, the offload is
-part of the controller IP block in hardware as well.
-
-> isn't 
-> this specific to the device because it needs to be aware of any 
-> processing done or not done. Or maybe it wants to configure the 
-> processing.
-
-Yes, the SPI peripheral driver would be the one needing to know
-what sort of data processing unit it is connected to so it knows
-how to configure the chip and how to interpret the received data
-or other signals from the data processing unit.
-
-> 
-> OTOH, maybe this isn't any different than offload?
-
-Also true since the SPI peripheral needs to know what kind of
-capabilities that the offload itself has.
-
-> 
-> Rob
-
+---
+base-commit: 472438c7e0e2261c6737a8321f46ef176eef1c8f
+change-id: 20240726-iio-backend-spelling-continuous-d6801c838fd8
 

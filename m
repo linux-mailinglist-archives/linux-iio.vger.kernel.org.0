@@ -1,594 +1,365 @@
-Return-Path: <linux-iio+bounces-7938-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7939-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF9A93D391
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 14:55:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F8F93D458
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 15:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 318EB1F23D1B
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 12:55:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95DC21C2445F
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 13:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BA117BB19;
-	Fri, 26 Jul 2024 12:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7EC17DE03;
+	Fri, 26 Jul 2024 13:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKjjDiNQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1NaWQUC+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F3917B511;
-	Fri, 26 Jul 2024 12:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327D517D358
+	for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 13:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721998531; cv=none; b=mk/w8LNLRaPXkf0VF790mPuDxAA5nxJobLCmz/hs7NNmDGZUaqRQU8+fFlRIC1QSuesOhOK+x2sAaO2QAEy0/hlaDGWfgJxgnzlScHoz1qY33jlqMV2L8IGnAajT3lAEv+68Cssh/b08/1aVohsDj31B5/g9LD+diuewf3ynsgo=
+	t=1722001111; cv=none; b=sz8MCegShjCeb+6nVwrag0IabB/ZGKpgvIXQy4A98lVZr5Xu/QetxOm2VohyTihqsrqkDns5aCOrBsLxANYI2YRzOf1br6HBoJwyYhL4qy8Dc7os9Y9uda9pNr82m6NAwyciuIJV9Ul7eLUdzrrmfLCHMhjRFGR8PnMhmNcAcmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721998531; c=relaxed/simple;
-	bh=LHCzqSXWzph1gwZ2es/1LUEFrpamFL6O1ZRKAKn8/cY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A4ufoQwO/C4/VOgjrZqB+CRFBsn/riPASBWea+62y/L2kNwMCXXborBsPRspFe8z/wgna6K2XWj2XLM/4e/wbKIq5Q3Q56YOaNY3DId5Zirq+PnAwbpvCZWwnmJ+74gFcxxKuYa8Av6XFgzlRNSJbM+GWowU4/8iED9QlUL/dwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKjjDiNQ; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52f01993090so1841642e87.2;
-        Fri, 26 Jul 2024 05:55:28 -0700 (PDT)
+	s=arc-20240116; t=1722001111; c=relaxed/simple;
+	bh=1Zkeq+FwqQEawcogj4oIwsbpb8D1Iv72qVcSnJf5tMA=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:Mime-Version:
+	 References:In-Reply-To; b=bnJ66cl1Df4k/ijA2jj4itEhm5bWGagm0pz99neRBavvCBYkEIEgioZa7uN98NeMfIb0sVm9DAWm3q8b82LRvDJ2hYqqG8lb2w9YMdHIMY6CMcdwhDqf2F3Q3/ucWzhiQwmIhVoJ+ZuA9fdsmq8i4IiDG2tW3+lBthx+j/xdtbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1NaWQUC+; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4266dc7591fso15440155e9.0
+        for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 06:38:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721998527; x=1722603327; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/VgcYP0mvzLXqK0mAr76XmwDrqyZOFzNL0pvF4cRfTo=;
-        b=kKjjDiNQc0Q0H0x/GP48iwlf0Iv5RvpTsyhxL+dnL3TMP9CJfPPe0Va1QtikbzB0zt
-         QMSqpq5K66L8R8+pXecxdAAd9AWRvFjrlcxw8gdkHPdOPJ0HLZbF6cFimK+eDK1l4vtN
-         tuArveq5cvHTzofwWimtdq8VPfCmfUGAcvj4y1Gd5gQL5QZx41HcOqToWRl12iuI3dEm
-         0M9jIKOj0YkdRhrT11aA1szWRADEUkn1VQFXaNXQH4121qBj8L6fwh1GxcrrFEG0dA3R
-         oQLWoFMKn15Nc8818P0S2RjeGnu2e9OtgotKoKWiiXT0Po4vnhjHj0bHzRbbocQCc72J
-         YavA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722001106; x=1722605906; darn=vger.kernel.org;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:to
+         :from:subject:cc:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GigEj7Lw695sg9deooVuaRWVw5+qGFsdSGqMpUPvSFE=;
+        b=1NaWQUC+lYWv5rEPn5Ato0AIUIK7uiKQjUha6BCl0yPfiL3JIfVzLd9Kheg8s/2jT5
+         hzp3RQOmJjjcbwsLpaMGpzxPGh+bMmsmlUoj5nq7uF5E6Z4GlQOvvtpfUThbD9DZ/CYM
+         yr9ZaPyrG3goy2GXv9/6dXIFCZFG3RovPI3EalyNFsGSUNIbXFGy1dmicmiAFDSCq7gj
+         e7Bt7oiH3FZq1IYNrw5azadPGTseEEYEU4V4x/Y0Pv4v/4Ujc45DAW7m6EGdi3hXpqGT
+         YddW1zeVx0KZyYtCcSIwOUp2cEoWtyIDbrChZluyO+o8J+FtQQEeYmbxLLwksVKTwrLN
+         Q0jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721998527; x=1722603327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1722001106; x=1722605906;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:to
+         :from:subject:cc:message-id:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/VgcYP0mvzLXqK0mAr76XmwDrqyZOFzNL0pvF4cRfTo=;
-        b=jFWBxn0o2jtRjCWH0BZl10Nh8LlASdW/v6QDQzRDnNZEN0XkoQO0yP7fZHt1ATva06
-         A182bIslFwo348oZFAFRENQMUOpn93tPn8ED7d1/ZF3TqqMSOQ09MEwP8ojATeaSYS+9
-         CNtDyxcIe8GRXlChx/EyYgG48InThkG6cQlpKr69Vo3470DVsiO7y9MdpYovXeKu82x8
-         /D/ChnEyOZawdjwgX6K6hxu6EU4EePXxR/7E3Faj7ReqGYD2KOBRjCWamvDFv0BtwohQ
-         Ng3Igxs5WZYIW9v+yr/tZRuUBbwTy4VcmgCgvEJBEEjRAyRy/t+gUM3eo65WFYGw/oD5
-         nrnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU337rYl0wyy+oHrsFQ9RpMvzo2SzPo9Z/sYIvynBvWioLp7VAPGHNOfnwpPYlfgUvW96uqLd/cwp9ODlrp0yXu85xHzyeTQXavleNeX9uAa8hj+PNHLVkjTVz426J3fBElLmN4h0Ft
-X-Gm-Message-State: AOJu0YxV3ICtSMb6ZqxUrWtGYd19ZN2x8Ipoj3S1I9PriYIF3WzUM3de
-	vFaRQF1xpTlJk7/ZD+SF3HDxS1tENBJX6hxhtF2miU5cLI2NXWjSglmClLL43fJpKN1qPJU8t+9
-	mOInVo6UqSW9/RqQW8rep8Zx+ij4=
-X-Google-Smtp-Source: AGHT+IG+AkFqiJIFxaai1NyQzunmBgGC4rWZdzKjNWHB2zFDgZK1oCaANo21NzbRb0wDQnK3wS+VhHjEPrUOlzneDmM=
-X-Received: by 2002:a05:6512:158b:b0:52c:df9d:7cbe with SMTP id
- 2adb3069b0e04-52fd6084327mr3098543e87.39.1721998526541; Fri, 26 Jul 2024
- 05:55:26 -0700 (PDT)
+        bh=GigEj7Lw695sg9deooVuaRWVw5+qGFsdSGqMpUPvSFE=;
+        b=vG5MHzuVE5bfnUQJX1VJ34RdYvhfWAoOFP7Id47UqwnWl9vyN6csVA+n56P3nw++np
+         H8cl88ON8ev/+oLFwEFLpLxTRd+q2kY+GHp7jBbZUDTAq+T/o1yAS8BtyLS8vDYmjveX
+         EpOJ4A6M5WiRN6SgIrIFPKlRjBHxrWTSz6mQjPj8mMekUHV/WMbenJ3B7D1ut6htd4i9
+         K1GezUU0lk7e1/XeQhQ7WRnyODrdAoyuJdS3/pjIA0wBhEUWiMYCkEyViiYhsbmcQJY9
+         pad98cXNNlijVh8hRyBajYId+WH7nOVZTW03rIh54MhWbsrb8wnYNRIhkBfK/ndrUsPM
+         534w==
+X-Gm-Message-State: AOJu0Yz9Of7Vby4BJCJ6h95IGj2fME2xNxqQ2CtouYcmI342hB7HeKGO
+	huCqwgrcBe/cK5D2+oE3TKEVmaNy54cPlHyZE+S9sqDr+Pd6CucyWV7MIPGko1s=
+X-Google-Smtp-Source: AGHT+IGDZyhVw3kXH9RHTJAk2rcXnF8LgZzeybbdjh6TQjgDoePuX2hy6ELD0soTgQTGWbm60VfOjA==
+X-Received: by 2002:a05:600c:548b:b0:426:5f75:1c2c with SMTP id 5b1f17b1804b1-42806b83e4amr35706195e9.11.1722001106301;
+        Fri, 26 Jul 2024 06:38:26 -0700 (PDT)
+Received: from localhost (amontpellier-556-1-151-252.w109-210.abo.wanadoo.fr. [109.210.7.252])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427f940e62dsm123524595e9.39.2024.07.26.06.38.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jul 2024 06:38:25 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 26 Jul 2024 15:38:24 +0200
+Message-Id: <D2ZIG2NK223D.J9VK1MWOICE3@baylibre.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "David Lechner" <dlechner@baylibre.com>
+Subject: Re: [PATCH RFC 2/5] iio: adc: ad4030: add driver for ad4030-24
+From: "Esteban Blanc" <eblanc@baylibre.com>
+To: =?utf-8?q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ <baylibre-upstreaming@groups.io>, "Lars-Peter Clausen" <lars@metafoo.de>,
+ "Michael Hennerich" <Michael.Hennerich@analog.com>, "Jonathan Cameron"
+ <jic23@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Nuno Sa"
+ <nuno.sa@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240718104947.7384-1-abhashkumarjha123@gmail.com> <20240720165554.5fd16ca0@jic23-huawei>
-In-Reply-To: <20240720165554.5fd16ca0@jic23-huawei>
-From: Abhash jha <abhashkumarjha123@gmail.com>
-Date: Fri, 26 Jul 2024 18:25:14 +0530
-Message-ID: <CAG=0RqL1GxCKdzDzUjqECEsfQmunCwnv+g_5cqM1fcfBsg+P0w@mail.gmail.com>
-Subject: Re: [PATCH] iio: light: ltr390: Add configurable gain, resolution and
- ALS reading
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: anshulusr@gmail.com, linux-iio@vger.kernel.org, lars@metafoo.de, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.17.0
+References: <20240627-eblanc-ad4630_v1-v1-0-fdc0610c23b0@baylibre.com>
+ <20240627-eblanc-ad4630_v1-v1-2-fdc0610c23b0@baylibre.com>
+ <0036d44542f8cf45c91c867f0ddd7b45d1904d6b.camel@gmail.com>
+In-Reply-To: <0036d44542f8cf45c91c867f0ddd7b45d1904d6b.camel@gmail.com>
 
-On Sat, Jul 20, 2024 at 9:26=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
+Hi Nuno,
+
+> > +			struct {
+> > +				s32 val[AD4030_MAX_DIFF_CHANNEL_NB];
+> > +				u8 common[AD4030_MAX_COMMON_CHANNEL_NB];
 >
-> On Thu, 18 Jul 2024 16:19:45 +0530
-> Abhash Jha <abhashkumarjha123@gmail.com> wrote:
+> Not sure common makes sense as it comes aggregated with the sample. Maybe=
+ this
+> could as simple as:
 >
-> >  1) Add support for configuring the gain and resolution(integration tim=
-e)
-> >     for the sensor.
-> >  2) Add a channel for ALS and provide support for reading the raw and
-> >     scale values.
-> >  3) Add automatic mode switching between UVS and ALS based on the
-> >     channel type.
-> >  4) Calculate 'counts_per_uvi' based on the current gain and integratio=
+> struct {
+> 	s32 val;
+> 	u64 timestamp __aligned(8);
+> } rx_data ...
+
+See below my answer on channels order and storagebits.
+
+> So, from the datasheet, figure 39 we have something like a multiplexer wh=
+ere we
+> can have:
+>
+> - averaged data;
+> - normal differential;
+> - test pattern (btw, useful to have it in debugfs - but can come later);
+> - 8 common mode bits;
+>
+> While the average, normal and test pattern are really mutual exclusive, t=
+he
+> common mode voltage is different in the way that it's appended to differe=
+ntial
+> sample. Making it kind of an aggregated thingy. Thus I guess it can make =
+sense
+> for us to see them as different channels from a SW perspective (even more=
+ since
+> gain and offset only apply to the differential data). But there are a cou=
+ple of
+> things I don't like (have concerns):
+>
+> * You're pushing the CM channels into the end. So when we a 2 channel dev=
+ice
+> we'll have:
+>
+>  in_voltage0 - diff
+>  in_voltage1 - diff
+>  in_voltage2 - CM associated with chan0
+>  in_voltage0 - CM associated with chan1
+>
+> I think we could make it so the CM channel comes right after the channel =
+where
+> it's data belongs too. So for example, odd channels would be CM channels =
+(and
+> labels could also make sense).
+
+I must agree with you it would make more sense.
+
+> Other thing that came to mind is if we could somehow use differential =3D=
+ true
+> here. Having something like:
+>
+> in_voltage1_in_voltage0_raw - diff data
+> ...
+> And the only thing for CM would be:
+>
+> in_voltage1_raw
+> in_voltage1_scale
+>
+> (not sure if the above is doable with ext_info - maybe only with device_a=
+ttrs)
+>
+> The downside of the above is that we don't have a way to separate the sca=
 n
-> >     time.
->
-> Hi Abhash,
->
-> When a patch lists more than one thing, key thing to think is
-> "maybe this should be multiple patches?"
->
-> Here at very least separate resolution / gain into one or two patches
-> and the new channel support into another.
-> Probably yet another patch for point 4,
->
-> Various other comments inline.
->
-> Jonathan
->
-> >
-> > Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
-> > ---
-> >  drivers/iio/light/ltr390.c | 256 ++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 238 insertions(+), 18 deletions(-)
-> >
-> > diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
-> > index fff1e8990..56f3c74ae 100644
-> > --- a/drivers/iio/light/ltr390.c
-> > +++ b/drivers/iio/light/ltr390.c
-> > @@ -25,19 +25,33 @@
-> >  #include <linux/regmap.h>
-> >
-> >  #include <linux/iio/iio.h>
-> > -
-> > +#include <linux/iio/sysfs.h>
->
-> >  #include <asm/unaligned.h>
-> >
-> >  #define LTR390_MAIN_CTRL      0x00
-> >  #define LTR390_PART_ID             0x06
-> >  #define LTR390_UVS_DATA            0x10
-> >
-> > +#define LTR390_ALS_DATA       0x0D
-> > +#define LTR390_ALS_UVS_GAIN   0x05
-> > +#define LTR390_ALS_UVS_MEAS_RATE 0x04
-> > +#define LTR390_INT_CFG           0x19
-> If these are register addresses put them in numeric order so
-> it is easy to compare with a datasheet table
->
-> > +
-> >  #define LTR390_SW_RESET            BIT(4)
-> >  #define LTR390_UVS_MODE            BIT(3)
-> >  #define LTR390_SENSOR_ENABLE  BIT(1)
-> >
-> >  #define LTR390_PART_NUMBER_ID 0xb
-> >
-> > +#define LTR390_ALS_UVS_GAIN_MASK 0x07
-> > +#define LTR390_ALS_UVS_INT_TIME_MASK 0x70
-> > +#define LTR390_ALS_UVS_INT_TIME_MASK_SHIFT 4
->
-> Used FIELD_GET() and FIELD_PREP() then you never
-> need a separate SHIFT defintion.
->
-> > +
-> > +#define LTR390_SET_ALS_MODE 1
-> > +#define LTR390_SET_UVS_MODE 2
->
-> If these are being use to pick options and not writen to hw
-> use an enum.  I don't think we care what value they take.
->
->
-> > +
-> > +#define LTR390_FRACTIONAL_PRECISION 100
-> > +
-> >  /*
-> >   * At 20-bit resolution (integration time: 400ms) and 18x gain, 2300 c=
-ounts of
-> >   * the sensor are equal to 1 UV Index [Datasheet Page#8].
-> > @@ -60,6 +74,9 @@ struct ltr390_data {
-> >       struct i2c_client *client;
-> >       /* Protects device from simulataneous reads */
-> >       struct mutex lock;
-> > +     int mode;
-> > +     int gain;
-> > +     int int_time_us;
-> >  };
-> >
-> >  static const struct regmap_config ltr390_regmap_config =3D {
-> > @@ -87,36 +104,232 @@ static int ltr390_register_read(struct ltr390_dat=
-a *data, u8 register_address)
-> >       return get_unaligned_le24(recieve_buffer);
-> >  }
-> >
-> > +
-> one blank line is neough.
->
-> > +static int ltr390_set_mode(struct ltr390_data *data, int mode)
-> As suggested above, use an enum for mode. Give than a type name and you
-> can use that here.
->
-> > +{
-> > +     if (data->mode =3D=3D mode)
-> > +             return 0;
-> > +
-> > +     if (mode =3D=3D LTR390_SET_ALS_MODE) {
-> > +             regmap_clear_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_=
-UVS_MODE);
-> > +             data->mode =3D LTR390_SET_ALS_MODE;
-> > +     } else if (mode =3D=3D LTR390_SET_UVS_MODE) {
-> > +             regmap_set_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_UV=
-S_MODE);
-> > +             data->mode =3D LTR390_SET_UVS_MODE;
-> Drop this out of the if / else stack and use
->         data->mode =3D mode;
-> A switch statement may be more appropriate here even if it's a few more l=
-ines of
-> code.
->
-> > +     } else {
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int ltr390_counts_per_uvi(struct ltr390_data *data)
-> > +{
-> > +     int orig_gain =3D 18;
-> > +     int orig_int_time =3D 400;
-> > +     int divisor =3D orig_gain * orig_int_time;
-> > +     int gain =3D data->gain;
-> > +
-> > +     int int_time_ms =3D DIV_ROUND_CLOSEST(data->int_time_us, 1000);
-> > +     int uvi =3D DIV_ROUND_CLOSEST(2300*gain*int_time_ms, divisor);
->
-> Spaces around *
->
-> > +
-> > +     return uvi;
-> > +}
-> > +
-> >  static int ltr390_read_raw(struct iio_dev *iio_device,
-> >                          struct iio_chan_spec const *chan, int *val,
-> >                          int *val2, long mask)
-> >  {
-> > -     int ret;
-> >       struct ltr390_data *data =3D iio_priv(iio_device);
-> > +     int ret;
-> Don't move code unless there is a strong reason. Fine to
-> tidy this sort of thing up, but not in a patch doing anything else
-> as it becomes noise.
->
-> >
-> Almost certainly need locking here as concurrent accesses to sysfs
-> files will result in mode changing whilst the read has not yet happened.
->
-> >       switch (mask) {
-> >       case IIO_CHAN_INFO_RAW:
-> > -             ret =3D ltr390_register_read(data, LTR390_UVS_DATA);
-> > -             if (ret < 0)
-> > -                     return ret;
-> > +             switch (chan->type) {
-> > +             case IIO_UVINDEX:
-> > +                     ret =3D ltr390_set_mode(data, LTR390_SET_UVS_MODE=
-);
-> > +                     if (ret < 0)
-> > +                             return ret;
-> > +
-> > +                 ret =3D ltr390_register_read(data, LTR390_UVS_DATA);
-> Fix the alignment - looks like mix of spaces and tabs.
-> scripts/checkpatch.pl would have pointed that out.
->
-> > +                     if (ret < 0)
-> > +                             return ret;
-> > +
-> > +                     break;
-> > +
-> > +             case IIO_INTENSITY:
-> > +                     ret =3D ltr390_set_mode(data, LTR390_SET_ALS_MODE=
-);
-> > +                     if (ret < 0)
-> > +                             return ret;
-> > +
-> > +                     ret =3D ltr390_register_read(data, LTR390_ALS_DAT=
-A);
-> > +                     if (ret < 0)
-> > +                             return ret;
-> > +                     break;
-> > +
-> > +             default:
-> > +                     ret =3D -EINVAL;
-> return here. Otherwise you overwrite the value below.
->
-> > +             }
-> > +
-> >               *val =3D ret;
-> > -             return IIO_VAL_INT;
-> > +             ret =3D IIO_VAL_INT;
-> return here and drop the break.
-> It is much simpler to follow code if it doesn't unnecessarily not
-> return in cases like this as we have to scroll down to see if anything el=
-se
-> happens.
->
-> > +             break;
-> > +
-> >       case IIO_CHAN_INFO_SCALE:
-> > -             *val =3D LTR390_WINDOW_FACTOR;
-> > -             *val2 =3D LTR390_COUNTS_PER_UVI;
-> > -             return IIO_VAL_FRACTIONAL;
-> > +             mutex_lock(&data->lock);
-> Add appropriate scope using {} and use
-> guard(mutex)(&data->lock) as then in error paths you can
-> return without unlocking...
-> > +
-> > +             switch (chan->type) {
-> > +             case IIO_UVINDEX:
-> > +                     ret =3D ltr390_set_mode(data, LTR390_SET_UVS_MODE=
-);
-> > +                     if (ret < 0)
-> mutex held. Result is deadlock.  Above scoped unlocking avoids that witho=
-ut
-> needing to make sure you unlock in all paths.
->
->
-> > +                             return ret;
-> > +
-> > +                     *val =3D LTR390_WINDOW_FACTOR * LTR390_FRACTIONAL=
-_PRECISION;
-> > +                     *val2 =3D ltr390_counts_per_uvi(data);
-> > +                     ret =3D IIO_VAL_FRACTIONAL;
-> return here.
->
-> > +                     break;
-> > +
-> > +             case IIO_INTENSITY:
-> > +                     ret =3D ltr390_set_mode(data, LTR390_SET_ALS_MODE=
-);
-> > +                     if (ret < 0)
-> > +                             return ret;
-> > +
-> > +                     *val =3D LTR390_WINDOW_FACTOR;
-> > +                     *val2 =3D data->gain;
-> > +
-> > +                     ret =3D IIO_VAL_FRACTIONAL;
-> > +                     break;
-> return here.
-> > +
-> > +             default:
-> > +                     ret =3D -EINVAL;
-> return here.
-> > +             }
-> > +
-> > +             mutex_unlock(&data->lock);
-> With guard() change above, not needed.
-> But close scope here with }
-> > +             break;
-> > +
-> > +     case IIO_CHAN_INFO_INT_TIME:
-> > +             mutex_lock(&data->lock);
-> Given all paths other than invalid ones need the lock, maybe just take
-> it outside of the switch statement - still use guard() though to avoid
-> need to manually unlock.
->
-> > +             *val =3D data->int_time_us;
-> > +             mutex_unlock(&data->lock);
-> > +             ret =3D IIO_VAL_INT;
-> > +             break;
-> > +
-> >       default:
-> > -             return -EINVAL;
-> > +             ret =3D -EINVAL;
-> >       }
-> > +
-> > +     return ret;
-> This is a bad change as now I need to read to end of function in all
-> code paths.  Some code styles insist on single exit points, but
-> the kernel style does not. (not worth a long discussion of why the
-> two common styles came about). Keep those early returns.
->
->
-> >  }
-> >
-> > -static const struct iio_info ltr390_info =3D {
-> > -     .read_raw =3D ltr390_read_raw,
-> > +/* integration time in us */
-> > +static const int ltr390_int_time_map_us[] =3D {400000, 200000, 100000,=
- 50000, 25000, 12500};
-> > +static const int ltr390_gain_map[] =3D {1, 3, 6, 9, 18};
-> > +
-> > +static IIO_CONST_ATTR_INT_TIME_AVAIL("400000 200000 100000 50000 25000=
- 12500");
-> Please use read_avail() callback and the appropriate mask to provide this=
-.
-> That enables it to be used from in kernel consumers and enforces the
-> ABI without a reviewer having to check what you have aligns.
->
-> > +static IIO_CONST_ATTR(gain_available, "1 3 6 9 18");
-> Given we don't have a 'gain' control, what is the available applying to?
->
-The gain gets controlled by writing to the iio_info_scale attribute,
-we write one of the above available values.
-So that we can scale the raw ALS and UVI values. I could use
-read_avail() for this too for the IIO_INFO_SCALE channel. Should I do
-that?
-Can you elaborate more on your comment?
+> elements. Meaning that we don't have a way to specify the scan_type for b=
+oth the
+> common mode and differential voltage. That said, I wonder if it is that u=
+seful
+> to buffer the common mode stuff? Alternatively, we could just have the sc=
+an_type
+> for the diff data and apps really wanting the CM voltage could still acce=
+ss the
+> raw data. Not pretty, I know...
 
-> > +
-> > +static struct attribute *ltr390_attributes[] =3D {
-> > +     &iio_const_attr_integration_time_available.dev_attr.attr,
-> > +     &iio_const_attr_gain_available.dev_attr.attr,
-> > +     NULL,
-> > +};
-> > +
-> > +static const struct attribute_group ltr390_attribute_group =3D {
-> > +     .attrs =3D ltr390_attributes,
-> >  };
-> >
-> > -static const struct iio_chan_spec ltr390_channel =3D {
-> > +static const struct iio_chan_spec ltr390_channels[] =3D {
-> > +     /* UV sensor */
-> > +     {
-> >       .type =3D IIO_UVINDEX,
-> > -     .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INF=
-O_SCALE)
-> > +     .scan_index =3D 0,
-> > +     .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INF=
-O_SCALE),
-> > +     .info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_INT_TIME)
-> Fix style.
->         {
->                 .type =3D ...
->
-> > +     },
-> > +     /* ALS sensor */
-> > +     {
-> > +     .type =3D IIO_INTENSITY,
-> > +     .scan_index =3D 1,
-> > +     .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INF=
-O_SCALE),
-> > +     .info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_INT_TIME)
-> > +     },
-> > +};
-> > +
-> > +static int ltr390_set_gain(struct ltr390_data *data, int val)
+At the moment the way I "separate" them is by looking at the
+`active_scan_mask`. If the user asked for differential channel only, I put =
+the
+chip in differential only mode. If all the channels are asked, I put
+the chip in differential + common mode. This way there is no need to
+separate anything in differential mode. See below for an example where
+this started.
+
+> However, even if we go with the two separate channels there's one thing t=
+hat
+> concerns me. Right now we have diff data with 32 for storage bits and CM =
+data
+> with 8 storage bits which means the sample will be 40 bits and in reality=
+ we
+> just have 32. Sure, now we have SW buffering so we can make it work but t=
+he
+> ultimate goal is to support HW buffering where we won't be able to touch =
+the
+> sample and thus we can't lie about the sample size. Could you run any tes=
+t with
+> this approach on a HW buffer setup?=20
+
+Let's take AD4630-24 in diff+cm mode as an example. We would have 4 channel=
+s:
+- Ch0 diff with 24 bits of realbits and 24 bits of storagebits
+- Ch0 cm with 8 bits of realbits and 8 bits of storagebits
+- Ch1 diff with 24 bits of realbits and 24 bits of storagebits
+- Ch1 cm with 8 bits of realbits and 8 bits of storagebits
+ChX diff realbits + ChX cm realbits =3D 32 bits which is one sample as sent
+by the chip.
+
+The problem I faced when trying to do this in this series is that IIO doesn=
+'t
+seem to like 24 storagebits and the data would get garbled. In diff only
+mode with the same channel setup (selecting only Ch0 diff and Ch1 diff)
+the data is also garbled. I used iio-oscilloscope software to test this set=
+up.
+Here is the output with iio_readdev:
+```
+# iio_readdev -s 1 ad4630-24 voltage0
+WARNING: High-speed mode not enabled
+Unable to refill buffer: Invalid argument (22)
+```
+
+I think this is happening when computing the padding to align ch1 diff.
+In `iio_compute_scan_bytes` this line `bytes =3D ALIGN(bytes, length);`
+will be invoked with bytes =3D 3 and length =3D 3 when selecting ch0 diff
+and ch1 diff (AD4630-24 in differential mode). The output is 5. As
+specified in linux/align.h:
+> @a is a power of 2
+In our case `a` is `length`, and 3 is not a power of 2.
+
+It works fine with Ch0/1 diff with 24 realbits and 32 storagebits with 8
+bits shift.
+
+Intrestingly, a similar setup works great on AD4630-16:
+- Ch0 diff with 16 bits of realbits and 16 bits of storagebits
+- Ch0 cm with 8 bits of realbits and 8 bits of storagebits
+- Ch1 diff with 16 bits of realbits and 16 bits of storagebits
+- Ch1 cm with 8 bits of realbits and 8 bits of storagebits
+
+In `iio_compute_scan_bytes` we will have ALIGN(3, 2) which will output
+4, everything is fine. The output of iio-oscilloscope is as expected,
+a clean sinewave and iio_readdev does not throw an error.
+
+All this to say that at the moment, I'm not sure how I will be able to
+put the CM byte in a separate channel for AD4630-24 without buffering it.
+It would be useful to return a "packed" buffer.
+
+> > +static int ad4030_conversion(struct ad4030_state *st, const struct
+> > iio_chan_spec *chan)
 > > +{
-> > +     int ret, idx;
+> > +	unsigned int bytes_to_read =3D (BITS_TO_BYTES(chan->scan_type.realbit=
+s)
 > > +
-> > +     for (idx =3D 0; idx < ARRAY_SIZE(ltr390_gain_map); idx++) {
-> > +             if (ltr390_gain_map[idx] =3D=3D val) {
-> > +                     mutex_lock(&data->lock);
-> guard here.
-> > +                     ret =3D regmap_update_bits(data->regmap,
-> > +                                             LTR390_ALS_UVS_GAIN,
-> > +                                             LTR390_ALS_UVS_GAIN_MASK,=
- idx);
-> > +                     if (!ret)
->                         if (ret)
->                                 return ret;
-> prefer to keep error paths as the out of line ones as if you review
-> a lot of code, predictability helps review quickly.
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0 ((st->mode =3D=3D AD4030_OUT_DATA_MD_24_DI=
+FF_8_COM
+> > ||
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0 st->mode =3D=3D AD4030_OUT_DATA_MD_16_DIFF=
+_8_COM) ?
+> > 1 : 0)) *
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0 st->chip->num_channels;
+> > +	struct spi_transfer xfer =3D {
+> > +		.rx_buf =3D st->rx_data.raw,
+> > +		.len =3D bytes_to_read,
+> > +	};
+> > +	unsigned char byte_index;
+> > +	unsigned int i;
+> > +	int ret;
+> > +
+> > +	gpiod_set_value_cansleep(st->cnv_gpio, 1);
+> > +	ndelay(AD4030_TCNVH_NS);
+> > +	gpiod_set_value_cansleep(st->cnv_gpio, 0);
+> > +	ndelay(AD4030_TCNVL_NS + AD4030_TCONV_NS);
+> > +
+> > +	ret =3D spi_sync_transfer(st->spi, &xfer, 1);
+> > +	if (ret || (st->mode !=3D AD4030_OUT_DATA_MD_16_DIFF_8_COM &&
+> > +		=C2=A0=C2=A0=C2=A0 st->mode !=3D AD4030_OUT_DATA_MD_24_DIFF_8_COM))
 >
-> > +                             data->gain =3D ltr390_gain_map[idx];
+> You should guarantee that st->mode is not invalid...
+
+I don't see a code path where this could be the case. It's initialized
+at 0 in the probe (a valid value) and always set before `ad4030_conversion`
+in `ad4030_set_mode` called by `ad4030_buffer_preenable`. If the value
+is invalid, this is a driver error, not an invalid input from the user.
+Should I put an assert then?
+
+> > +		return ret;
 > > +
-> > +                     mutex_unlock(&data->lock);
-> > +                     break;
-> > +             }
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int ltr390_set_int_time(struct ltr390_data *data, int val)
+> > +	byte_index =3D st->chip->precision_bits =3D=3D 16 ? 3 : 4;
+> > +	for (i =3D 0; i < st->chip->num_channels; i++)
+>
+> So even for a single channel conversion we are going through all?
+
+Yes. For ad4030-24 (this patch), that ok since num_channels =3D 1.
+For AD4630, we are getting the 2 channels samples anyway. Current
+allowed `scan_mask` are ch0 and ch1 (diff mode) or ch0 to ch3 (diff +
+common mode). The only case I could optimized currently is if I allowed
+scan_mask such as: ch0 & ch2, ch0 & ch1 & ch2, ch0 & ch1 & ch3. I'm not
+sure it makes sense to allow such `scan_mask` since the HW does not
+support it.
+What do you think?
+
+> > +static int ad4030_read_raw(struct iio_dev *indio_dev,
+> > +			=C2=A0=C2=A0 struct iio_chan_spec const *chan, int *val,
+> > +			=C2=A0=C2=A0 int *val2, long info)
 > > +{
-> > +     int ret, idx;
+> > +	struct ad4030_state *st =3D iio_priv(indio_dev);
+> > +	int ret;
 > > +
-> > +     for (idx =3D 0; idx < ARRAY_SIZE(ltr390_int_time_map_us); idx++) =
-{
-> > +             if (ltr390_int_time_map_us[idx] =3D=3D val) {
-> flip logic to reduce indent.
->                 if (ltr390_int_time_map_us[idx] !=3D val)
->                         continue;
+> > +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
 >
->                 guard(mutex)...
+> Oh this is not neat :(. I guess there's still no work to make conditional=
+ guards
+> to look more as the typical pattern...
+
+Yeah... At first I put checks inside each function. Then I put guards
+inside each function. But at the end, almost every arm of the switch
+case needs to be in direct mode so... I can put it back in the function,
+as you wish.
+
+> > +		switch (info) {
+> > +		case IIO_CHAN_INFO_RAW:
+> > +			return ad4030_single_conversion(indio_dev, chan,
+> > val);
+> > +
+> > +		case IIO_CHAN_INFO_SCALE:
+> > +			*val =3D (st->vref_uv * 2) / MILLI;
+> > +			*val2 =3D st->chip->precision_bits;
+> > +			return IIO_VAL_FRACTIONAL_LOG2;
 >
-> > +                     mutex_lock(&data->lock);
-> > +                     ret =3D regmap_update_bits(data->regmap,
-> > +                                             LTR390_ALS_UVS_MEAS_RATE,
-> > +                                             LTR390_ALS_UVS_INT_TIME_M=
-ASK,
-> > +                                             idx<<LTR390_ALS_UVS_INT_T=
-IME_MASK_SHIFT);
-> spaces around <<
-> Though FIELD_PREP() probably better solution.
->
-> > +                     if (!ret)
-> As in previous funciton.
-> > +                             data->int_time_us =3D ltr390_int_time_map=
-_us[idx];
-> > +
-> > +                     mutex_unlock(&data->lock);
-> > +                     break;
-> > +             }
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int ltr390_write_raw(struct iio_dev *indio_dev, struct iio_chan=
-_spec const *chan,
-> > +                             int val, int val2, long mask)
+> I don't think this applies to CM?
+
+Indded. Scale is not available for the CM channels.
+
+> > +static int ad4030_detect_chip_info(const struct ad4030_state *st)
 > > +{
-> > +     struct ltr390_data *data =3D iio_priv(indio_dev);
-> > +     int ret;
+> > +	unsigned int grade;
+> > +	int ret;
 > > +
-> > +     switch (mask) {
-> > +     case IIO_CHAN_INFO_SCALE:
-> > +             if (val2 !=3D 0)
-> > +                     ret =3D -EINVAL;
+> > +	ret =3D regmap_read(st->regmap, AD4030_REG_CHIP_GRADE, &grade);
+> > +	if (ret)
+> > +		return ret;
 > > +
-> > +             ret =3D ltr390_set_gain(data, val);
-> > +             break;
-> > +
-> > +     case IIO_CHAN_INFO_INT_TIME:
-> > +             if (val2 !=3D 0)
-> > +                     ret =3D -EINVAL;
-> > +
-> > +             ret =3D ltr390_set_int_time(data, val);
-> > +             break;
-> > +
-> > +     default:
-> > +             ret =3D -EINVAL;
-> > +     }
-> > +
-> > +     return ret;
-> Use early returns.
+> > +	grade =3D FIELD_GET(AD4030_REG_CHIP_GRADE_MASK_CHIP_GRADE, grade);
+> > +	if (grade !=3D st->chip->grade)
+> > +		return dev_err_probe(&st->spi->dev, -EINVAL,
+> > +				"Unknown grade(%u) for %s\n", grade,
+> > +				st->chip->name);
 >
-> > +}
-> > +
-> > +static const struct iio_info ltr390_info =3D {
-> > +     .attrs =3D &ltr390_attribute_group,
-> > +     .read_raw =3D ltr390_read_raw,
-> > +     .write_raw =3D ltr390_write_raw,
-> >  };
-> >
-> >  static int ltr390_probe(struct i2c_client *client)
-> > @@ -139,11 +352,18 @@ static int ltr390_probe(struct i2c_client *client=
-)
-> >                                    "regmap initialization failed\n");
-> >
-> >       data->client =3D client;
-> > +     /* default value of int time from pg: 15 of the datasheet */
-> I'd spell out integration in the comment.
->
-> > +     data->int_time_us =3D 100000;
-> > +     /* default value of gain from pg: 16 of the datasheet */
-> > +     data->gain =3D 3;
-> > +     /* default mode for ltr390 is ALS mode */
-> > +     data->mode =3D LTR390_SET_ALS_MODE;
-> > +
-> >       mutex_init(&data->lock);
-> >
-> >       indio_dev->info =3D &ltr390_info;
-> > -     indio_dev->channels =3D &ltr390_channel;
-> > -     indio_dev->num_channels =3D 1;
-> > +     indio_dev->channels =3D ltr390_channels;
-> > +     indio_dev->num_channels =3D ARRAY_SIZE(ltr390_channels);
-> >       indio_dev->name =3D "ltr390";
-> >
-> >       ret =3D regmap_read(data->regmap, LTR390_PART_ID, &part_number);
-> > @@ -161,8 +381,7 @@ static int ltr390_probe(struct i2c_client *client)
-> >       /* Wait for the registers to reset before proceeding */
-> >       usleep_range(1000, 2000);
-> >
-> > -     ret =3D regmap_set_bits(data->regmap, LTR390_MAIN_CTRL,
-> > -                           LTR390_SENSOR_ENABLE | LTR390_UVS_MODE);
-> > +     ret =3D regmap_set_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_SE=
-NSOR_ENABLE);
-> >       if (ret)
-> >               return dev_err_probe(dev, ret, "failed to enable the sens=
-or\n");
-> >
-> > @@ -189,6 +408,7 @@ static struct i2c_driver ltr390_driver =3D {
-> >       .probe =3D ltr390_probe,
-> >       .id_table =3D ltr390_id,
-> >  };
-> > +
-> Lack of space is intentional to keep the macro closely coupled to what
-> it applies to.
->
-> >  module_i2c_driver(ltr390_driver);
-> >
-> >  MODULE_AUTHOR("Anshul Dalal <anshulusr@gmail.com>");
->
-ACK. Will do the necessary changes and send V2 after splitting it into
-4 patches (replying again because I missed replying with CC last time)
+> I think in here we still want to proceed and just print a warning...
+
+I've put this in because it's a quick and easy way to check:
+- If the SPI communication is working,
+- If the correct chip is installed. If it's not the correct one, we can
+  be sure that the parameters used to get any data out the chip will be
+  wrong and the data completely useless.
+
+If you feel that there is a use case I missed I will put a warning
+instead, no problem.
+
+
+All the comments I skipped and not replied to will be fixed in a V2.
+
+Best regards,
+
+--=20
+Esteban "Skallwar" Blanc
+BayLibre
 

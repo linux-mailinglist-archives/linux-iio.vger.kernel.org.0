@@ -1,76 +1,75 @@
-Return-Path: <linux-iio+bounces-7942-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7943-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EEC93D5E0
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 17:20:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DE593D5E5
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 17:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00E6EB219C9
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 15:20:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D33D2843B1
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 15:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEF217BB2D;
-	Fri, 26 Jul 2024 15:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C61917C7B2;
+	Fri, 26 Jul 2024 15:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cigl8/tE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="I4MLxprl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EEE178393
-	for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 15:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC5E17B43E
+	for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 15:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722007221; cv=none; b=dUEuer0fmxXntiI+Me0Li5UFkl3Qe/9/mDRmv6MeGLa5uugmPjUHUTmxeN4dnnNqRL3ERkFSjfMAq/Zk1BVoL1QpOgXr8D8ugKczM+jOAX+cRKk7H3Fk6w0CT848Ul3MHRiuZEd2lMRukTN+JuSQKfOfk3q6otvudennHb2DJ20=
+	t=1722007223; cv=none; b=fwzkKjNM/yWfuH+GtztVlxC3Lv4Cw8sFg3q6BfWvaIzvql+vxuu4OK9uEQMO+0BEurAQzxZkP6V4GXv0RtZ936OlVLfyoEGRnYO20/GxX4/EpMyIyacGHX3S1t2JHRS/Fl9NYxF9lLqFPaAb6QvWfiG8hVe4jU0m2igwqyABXJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722007221; c=relaxed/simple;
-	bh=Wssp4WjVtyj6iSp1oTG65Llzl3UO6tQh3DmSYdmkQDY=;
+	s=arc-20240116; t=1722007223; c=relaxed/simple;
+	bh=/b51c7Gh0KEr+9fwhvTP5AZvLEP79dfZE3yqEhmWqmg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TS24vlgDSvJT5Ch47ce8VcUIMZmxHRbLaOjIssmkG1YnF5uh3XpNI/6M/h4jCMkrvHNng06tQV0HdC+7HbGCowCVpaAnFZMQAVuUblwgNFI0nHll6GB7pY0BvbB8u6l2wmHdNImOmSPgPoqbXF/LUfFss9/MzvXkkE/3hGXDwHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cigl8/tE; arc=none smtp.client-ip=209.85.128.46
+	 In-Reply-To:To:Cc; b=L87wjrD+qvkzAec1XElEfTYmKet57t/Qa1CCUkL8roj80u1JDNRycsvwCvNuQ5Wx+j4zGAGfkeWVqrCKPOTKgNAM1Tjt+VO16tsp1eCH+eyLXaTlw1aqxKYmcmfXzJQqU8S5xEMrKXKOfpDeySgnHyrHFPXCy4r8Ny6aBxq0PH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=I4MLxprl; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-427d2cc1c4eso16183445e9.1
-        for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 08:20:19 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42122ac2f38so12479915e9.1
+        for <linux-iio@vger.kernel.org>; Fri, 26 Jul 2024 08:20:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722007218; x=1722612018; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722007219; x=1722612019; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=F2skOjiFYKjk3dOreUHC9yqXYXSEw6vmwROIl1YBK1I=;
-        b=cigl8/tE1FR8rcVO4v8ynSq5gJVi/hxDZ+q4yuQwHUTuFEWaH9dsgUDNTJjma6KbB+
-         jxd5pNSVG8zMmah5KCKyRc3go1kgLRNQO+qXm3IDymNNQOGPAGBGCV9gDrrQzFnju4j5
-         bExVWRgK0Cdx/4J/IHcOUYIhaMag7zMX0y+Dq9dK9bbOgLzInii9pTEX3AVOco7LdyOE
-         3yesCCPsa1QHx6HJXyimPHqdGw+59HGvKoQ8HU+swujfBnxYfbPONfrKH3RtyqdgLmRl
-         JI1DJRbukjjgkdLyxLTwOS/SGPMQfpjLyn4YF35Y4k9GtgjaDQRIjc6bBswk0dhDfqDG
-         Jx/w==
+        bh=tTnR9+wx0EQjyG+dHLGk5jhYlFzNR+TYiB9/k0QU6jg=;
+        b=I4MLxprlMPfKgQfuMmFHWfT11kIqLRWadc/ttXaHIirdVauhhONveiPAS0eXftOko4
+         H6LaYYL6sE7REIDasZ2gconnghw1xBwEbUwbpdTLZqmqVR01740a7O4VIIM7aUbkHTlX
+         +045kADCQxuHPin2NLB7uXYUYuBDBTmNgX1srdRbNqk3Y2OQAEbQ72FRyskswFIAThWc
+         bxwRYgX1+PKFYyj06DeVEauI19sOn8hIh2ctatOu6AuyTcXAM7KpsDC2VwGql53cvQqE
+         fwDBtNbT860CXl3PpbzRFah3liQvjp7MLdt7GOfQquT/d8QNk/6MxxKBn2xQPywc6a9L
+         ugww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722007218; x=1722612018;
+        d=1e100.net; s=20230601; t=1722007219; x=1722612019;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=F2skOjiFYKjk3dOreUHC9yqXYXSEw6vmwROIl1YBK1I=;
-        b=CZ1CYN6zc6V5TAg50UEbuw9S+dLak2eyNxMycVtfLBrcdphOf8PUi88tzdtTvcmU7S
-         BRkwKNVr8eQBuCbAKVi1BKcYW4BlfPzw4D6VvyqWiZTFY29yf6uqY8aQIPae0eiINL8K
-         y9ZWf2W1ZYVJwHoq8JgFlUxKKI5OsX2kpyiWeDbpVi8R9HysTm5j9ZfJ3ZW/UOywvNw6
-         RwmFrkuWXf+fnb0byx3pFeizPAlKze5j9J6RAMe+vXbzCEKfBjr2jvhLRIIRrU2owQ95
-         cpOBqpjUTKmhRBKP44xTpql6P6uEbT4VVPcP/gMXn9dvLNnHf+DR7tEu0FgI3KdfLi3n
-         iFtw==
-X-Forwarded-Encrypted: i=1; AJvYcCW2raOfIkJ09c60d0MpdFInHMC4MDCGP2nMuNpPHTlWQKHzMuwq3YS+kV7KSGnlLltiMJokRsXuEEMvkcsvVbzE+j/R7stEkvL/
-X-Gm-Message-State: AOJu0YwnZdgizHn9SjkE/+ynOYDYmHTbSDIErcJxJCoMK2Ya40xg2bao
-	A0kiaTSu6iesTcpHZfoLP+/BsfVjGO/xikG3WjVQMiD6WQ7+nbc4dgwQ02JVzhI=
-X-Google-Smtp-Source: AGHT+IFhgXrEp98cIlHmXVzQ/og/JHDf0/4SqTgv+8Wp+IUqVkBwBEmreZ0CaMqoA9nNyRqqjl34Kg==
-X-Received: by 2002:a05:600c:1383:b0:428:31c:5a52 with SMTP id 5b1f17b1804b1-42805787ddfmr44873045e9.29.1722007217794;
-        Fri, 26 Jul 2024 08:20:17 -0700 (PDT)
+        bh=tTnR9+wx0EQjyG+dHLGk5jhYlFzNR+TYiB9/k0QU6jg=;
+        b=UzYLyJJMGtoo1AyPShhucZAs/h0pDe0X/+jL1ujTwG+II84dGgySTONKsL32GftlKn
+         3m7JH3anwhLFcGyVneEs/SXKR+KUdYMhy5j+Xgqf6NLyyYYnpNLvmddPOy2hdOd1r2vP
+         lRvQ0hHfYvgCd1tu8jlbOobtOaACVzDPMvCQLgdKSHUPwQ64UZOqhCyyBZhruZ29eTd9
+         Btv5SyV+rmhyYZwihAacxqd5riqO6WzrShmiMaSVS4QjMcDrUREB1mkN9URRcMQyLwL2
+         LipTEYGJv/K7fP27MrsH7aQjE8SelUBuIUtNwTggp42SnWByZspFEDXc2MkDEsmOPQmn
+         ophg==
+X-Forwarded-Encrypted: i=1; AJvYcCVtOoodY3+1OtvizyLN08jyuQtTerutfT73kquyywtZlYTnVdmIUNophL5hyf5ggP4z544bD0zkmoQ7oe0/+r4BlQaP3hBjD7WU
+X-Gm-Message-State: AOJu0Yy8ZQsmvg5OgEvwZSg5K4GaPhV5tfGv4CwGrljHnAo2la9xJ7co
+	O+6P3bQ69xjlr/G8C3jMP5gHfr82XL+ZBDZZsobm/eBzei0R+WqmDpxs9MB7fBk=
+X-Google-Smtp-Source: AGHT+IEkJk+VImlGebjXAAw0Pedy4Tauw51C6OqGZDJpb40MgtggtJhEjsRt/rp/lgTeUv7AEdRocg==
+X-Received: by 2002:a05:600c:1d05:b0:426:698b:791f with SMTP id 5b1f17b1804b1-427f99eeec2mr62843775e9.3.1722007218727;
+        Fri, 26 Jul 2024 08:20:18 -0700 (PDT)
 Received: from [192.168.1.61] (2a02-842a-d52e-6101-6f8f-5617-c4b6-8627.rev.sfr.net. [2a02:842a:d52e:6101:6f8f:5617:c4b6:8627])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36b367c0338sm5500985f8f.1.2024.07.26.08.20.16
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36b367c0338sm5500985f8f.1.2024.07.26.08.20.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jul 2024 08:20:17 -0700 (PDT)
+        Fri, 26 Jul 2024 08:20:18 -0700 (PDT)
 From: Julien Stephan <jstephan@baylibre.com>
-Date: Fri, 26 Jul 2024 17:20:06 +0200
-Subject: [PATCH 1/5] dt-bindings: iio: adc: ad7380: add single-ended
- compatible parts
+Date: Fri, 26 Jul 2024 17:20:07 +0200
+Subject: [PATCH 2/5] ad7380: prepare driver for single-ended parts support
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240726-ad7380-add-single-ended-chips-v1-1-2d628b60ccd1@baylibre.com>
+Message-Id: <20240726-ad7380-add-single-ended-chips-v1-2-2d628b60ccd1@baylibre.com>
 References: <20240726-ad7380-add-single-ended-chips-v1-0-2d628b60ccd1@baylibre.com>
 In-Reply-To: <20240726-ad7380-add-single-ended-chips-v1-0-2d628b60ccd1@baylibre.com>
 To: Michael Hennerich <michael.hennerich@analog.com>, 
@@ -94,53 +93,105 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  Julien Stephan <jstephan@baylibre.com>
 X-Mailer: b4 0.13.0
 
-Adding ad7386/7/8 single-ended compatible parts, and the corresponding
-ad7386-4/7-4/8-4 4 channels.
+ad738x family contains single-ended parts that have a 2:1 mux in front
+of ADC, so the number of IIO channels is different from the number of
+simultaneous channels that can be sampled.
+
+To prepare the support for single-ended parts, introduce a new
+num_simultaneous_channels variable. For currently supported parts,
+num_simultaneous_channels is equal to num_channels minus 1 (the
+timestamps channel)
 
 Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 ---
- Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/iio/adc/ad7380.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-index 899b777017ce..bd19abb867d9 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-@@ -15,10 +15,17 @@ description: |
-   * https://www.analog.com/en/products/ad7381.html
-   * https://www.analog.com/en/products/ad7383.html
-   * https://www.analog.com/en/products/ad7384.html
-+  * https://www.analog.com/en/products/ad7386.html
-+  * https://www.analog.com/en/products/ad7387.html
-+  * https://www.analog.com/en/products/ad7388.html
-   * https://www.analog.com/en/products/ad7380-4.html
-   * https://www.analog.com/en/products/ad7381-4.html
-   * https://www.analog.com/en/products/ad7383-4.html
-   * https://www.analog.com/en/products/ad7384-4.html
-+  * https://www.analog.com/en/products/ad7386-4.html
-+  * https://www.analog.com/en/products/ad7387-4.html
-+  * https://www.analog.com/en/products/ad7388-4.html
-+
+diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
+index 7568cd0a2b32..03bbd561fb23 100644
+--- a/drivers/iio/adc/ad7380.c
++++ b/drivers/iio/adc/ad7380.c
+@@ -80,6 +80,7 @@ struct ad7380_chip_info {
+ 	const char *name;
+ 	const struct iio_chan_spec *channels;
+ 	unsigned int num_channels;
++	unsigned int num_simult_channels;
+ 	const char * const *vcm_supplies;
+ 	unsigned int num_vcm_supplies;
+ 	const unsigned long *available_scan_masks;
+@@ -208,6 +209,7 @@ static const struct ad7380_chip_info ad7380_chip_info = {
+ 	.name = "ad7380",
+ 	.channels = ad7380_channels,
+ 	.num_channels = ARRAY_SIZE(ad7380_channels),
++	.num_simult_channels = 2,
+ 	.available_scan_masks = ad7380_2_channel_scan_masks,
+ 	.timing_specs = &ad7380_timing,
+ };
+@@ -216,6 +218,7 @@ static const struct ad7380_chip_info ad7381_chip_info = {
+ 	.name = "ad7381",
+ 	.channels = ad7381_channels,
+ 	.num_channels = ARRAY_SIZE(ad7381_channels),
++	.num_simult_channels = 2,
+ 	.available_scan_masks = ad7380_2_channel_scan_masks,
+ 	.timing_specs = &ad7380_timing,
+ };
+@@ -224,6 +227,7 @@ static const struct ad7380_chip_info ad7383_chip_info = {
+ 	.name = "ad7383",
+ 	.channels = ad7383_channels,
+ 	.num_channels = ARRAY_SIZE(ad7383_channels),
++	.num_simult_channels = 2,
+ 	.vcm_supplies = ad7380_2_channel_vcm_supplies,
+ 	.num_vcm_supplies = ARRAY_SIZE(ad7380_2_channel_vcm_supplies),
+ 	.available_scan_masks = ad7380_2_channel_scan_masks,
+@@ -234,6 +238,7 @@ static const struct ad7380_chip_info ad7384_chip_info = {
+ 	.name = "ad7384",
+ 	.channels = ad7384_channels,
+ 	.num_channels = ARRAY_SIZE(ad7384_channels),
++	.num_simult_channels = 2,
+ 	.vcm_supplies = ad7380_2_channel_vcm_supplies,
+ 	.num_vcm_supplies = ARRAY_SIZE(ad7380_2_channel_vcm_supplies),
+ 	.available_scan_masks = ad7380_2_channel_scan_masks,
+@@ -244,6 +249,7 @@ static const struct ad7380_chip_info ad7380_4_chip_info = {
+ 	.name = "ad7380-4",
+ 	.channels = ad7380_4_channels,
+ 	.num_channels = ARRAY_SIZE(ad7380_4_channels),
++	.num_simult_channels = 4,
+ 	.available_scan_masks = ad7380_4_channel_scan_masks,
+ 	.timing_specs = &ad7380_4_timing,
+ };
+@@ -252,6 +258,7 @@ static const struct ad7380_chip_info ad7381_4_chip_info = {
+ 	.name = "ad7381-4",
+ 	.channels = ad7381_4_channels,
+ 	.num_channels = ARRAY_SIZE(ad7381_4_channels),
++	.num_simult_channels = 4,
+ 	.available_scan_masks = ad7380_4_channel_scan_masks,
+ 	.timing_specs = &ad7380_4_timing,
+ };
+@@ -260,6 +267,7 @@ static const struct ad7380_chip_info ad7383_4_chip_info = {
+ 	.name = "ad7383-4",
+ 	.channels = ad7383_4_channels,
+ 	.num_channels = ARRAY_SIZE(ad7383_4_channels),
++	.num_simult_channels = 4,
+ 	.vcm_supplies = ad7380_4_channel_vcm_supplies,
+ 	.num_vcm_supplies = ARRAY_SIZE(ad7380_4_channel_vcm_supplies),
+ 	.available_scan_masks = ad7380_4_channel_scan_masks,
+@@ -270,6 +278,7 @@ static const struct ad7380_chip_info ad7384_4_chip_info = {
+ 	.name = "ad7384-4",
+ 	.channels = ad7384_4_channels,
+ 	.num_channels = ARRAY_SIZE(ad7384_4_channels),
++	.num_simult_channels = 4,
+ 	.vcm_supplies = ad7380_4_channel_vcm_supplies,
+ 	.num_vcm_supplies = ARRAY_SIZE(ad7380_4_channel_vcm_supplies),
+ 	.available_scan_masks = ad7380_4_channel_scan_masks,
+@@ -407,7 +416,7 @@ static void ad7380_update_xfers(struct ad7380_state *st,
+ 	 */
+ 	st->xfer[1].bits_per_word = scan_type->realbits;
+ 	st->xfer[1].len = BITS_TO_BYTES(scan_type->storagebits) *
+-			  (st->chip_info->num_channels - 1);
++			  st->chip_info->num_simult_channels;
+ }
  
- $ref: /schemas/spi/spi-peripheral-props.yaml#
- 
-@@ -29,10 +36,16 @@ properties:
-       - adi,ad7381
-       - adi,ad7383
-       - adi,ad7384
-+      - adi,ad7386
-+      - adi,ad7387
-+      - adi,ad7388
-       - adi,ad7380-4
-       - adi,ad7381-4
-       - adi,ad7383-4
-       - adi,ad7384-4
-+      - adi,ad7386-4
-+      - adi,ad7387-4
-+      - adi,ad7388-4
- 
-   reg:
-     maxItems: 1
+ static int ad7380_triggered_buffer_preenable(struct iio_dev *indio_dev)
 
 -- 
 2.45.1

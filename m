@@ -1,126 +1,92 @@
-Return-Path: <linux-iio+bounces-7952-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7947-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DF193D8D4
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 20:59:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D6793D8BB
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 20:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30FE1F22DBA
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 18:59:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA081C22139
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 18:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E19A44C8F;
-	Fri, 26 Jul 2024 18:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601104F218;
+	Fri, 26 Jul 2024 18:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="g4r4XUxS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHKOltY0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB6E33997;
-	Fri, 26 Jul 2024 18:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147CB55893;
+	Fri, 26 Jul 2024 18:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722020335; cv=none; b=TQVRDKRJg8kVnX72bgAtrpFIjCvDJ9eiE8Ih5HkMsxcUQN3isFvMCKUVQOwhVRt2ATKIn4Up8WaQzzIhUgP5BKZDpt6/QmM8b2FnrXFtrhscXK4jESUAPWk7+cFX8pydXxjCLRO0ZeL/GoOhC989y67+ucLwcInLvVdRRkEMs4o=
+	t=1722019982; cv=none; b=YwPJuwYGkwVNbTXPO3CiunKm61eW4eC5m8EXAerIGlT29EaGbFFwz1WdvkY1/VCbF7vkEjtWfcKJZU1S2a1cvr4xbWTdh0m4TiTkkre+9FoWTh3rRNc7wz0888XK5HTFgiEQj8dG6a0y3GcyqFmnFBcEuaZY0lXjdCCl1asUFd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722020335; c=relaxed/simple;
-	bh=gqsayO2XOZitiHAHcVzYIHoEahFIVT/BGll7ip4lfLU=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=nvEA1vi/zN8Nol5ooqkCe6cGaoCJpsWkAh1f2HuhYCoO8fC2BJ0R/fN/jFQnnk/9VBsjs0/XNWZU71itgczJIP2yeoTK2VVgeC4+6wH6rA8rNaprOBncyHrr5492tgYsne2rt1nW20/pPM/M8P07SW3p1EL5XJGAyfgBl7JHaHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=g4r4XUxS; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-Received: from localhost (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id A99734182D;
-	Fri, 26 Jul 2024 20:52:03 +0200 (CEST)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
-	by localhost (disroot.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 1eoXV5XiET3D; Fri, 26 Jul 2024 20:52:02 +0200 (CEST)
+	s=arc-20240116; t=1722019982; c=relaxed/simple;
+	bh=F25meDsgVhT6rrAFlD3i+G73q9RdY7t8Srzr/P23WVo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I31U99SQXv79cF0de4LqcvNrD54v7INtiJhBc5dWaRAUQOgYMkeqypzBPqwvcIkhCNLwyv8hwufzigDZ3Q++XHoRlCUjWieMQuzZ13Y09jFp3JBeBAFEt/EX/K09rNSrLL7X8Rt6IJT8YSlbKr79PAlydbcmob9eHiOI7epwSLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHKOltY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A8CC32782;
+	Fri, 26 Jul 2024 18:53:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722019981;
+	bh=F25meDsgVhT6rrAFlD3i+G73q9RdY7t8Srzr/P23WVo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bHKOltY0k0+NvmxoF9e7wFKNk5OZ1u23kVTaXsxzfiTgOIjhdupDAP/Du8UE0TiwZ
+	 vycPkBoj3lwmrl7FJKLDR/NXzIn+FdwUM73/E4yvn+uWhuvadmQhzWapuJzou9GFTq
+	 BBp/zVe04DFNd5NS9LuZJx+Ns1Y3oMAMsXgRBbZMd26yQa9DiYfynrEoTinird1wM7
+	 fm6zDqOvTD2BWjggGJTp0vfT4lpM+Q1hcFZaI0Y4r4Z6Qibw5BEwrycQm3obHL3xEn
+	 7EOFo2bKEkxynkNQGCHdJ0J4Gk6fjFILpHWUOwU34flXKZq84E5z/GgkSbExUmuPDl
+	 MXEDmsP/ZQxag==
+Date: Fri, 26 Jul 2024 13:52:58 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Alisa-Dariana Roman <alisa.roman@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH] dt-bindings: iio: adc: ad7192: Fix 'single-channel'
+ constraints
+Message-ID: <172201986894.1860751.13842106591481858905.robh@kernel.org>
+References: <20240723230904.1299744-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1722019922; bh=gqsayO2XOZitiHAHcVzYIHoEahFIVT/BGll7ip4lfLU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=g4r4XUxSwuRObHfrAmvzMBRB0Z4k7gifc0BOdQscFj4anZ9qAPoFVD26+Mvxx/KU6
-	 RsfzArKZa9avV8AxurQvSZpC1uG89JW3kkdELwqCxSE88bLVv0xiliYl9GM5h1c/IR
-	 vxSbGC7wt+/yozNqIAwr7wtslcbdg9K8pKadCIdQGU9cq9Ze/2oOffVgg/Qp9RsPnl
-	 xWbqL7XlkTUquWWYi1yN157YyQaqnMd721y2hzlJ1H/waBsmIZb/Q0kqndnGTMNPl0
-	 onPLW5SxwGSluJRQmhIFm3XD4TZOiIHuXbgMPnVAM99KMmA8It+e2Q7rAYW/Iq2Jp6
-	 9O6P5Cr8ybCLQ==
-Date: Fri, 26 Jul 2024 18:52:02 +0000
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, kauschluss@disroot.org
-Subject: Re: [PATCH v3 3/3] dt-bindings: iio: light: stk33xx: add compatible
- for stk3013
-In-Reply-To: <20240722-affection-abstract-57fb331782e3@spud>
-References: <20240721-stk3310-v3-0-98fcb6f551a1@disroot.org>
- <20240721-stk3310-v3-3-98fcb6f551a1@disroot.org>
- <20240722-affection-abstract-57fb331782e3@spud>
-Message-ID: <bb78822b5a45ec1a1eb6c61af66c5cbc@disroot.org>
-X-Sender: kauschluss@disroot.org
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240723230904.1299744-1-robh@kernel.org>
 
-On 2024-07-22 17:05, Conor Dooley wrote:
-> On Sun, Jul 21, 2024 at 03:44:31PM +0530, Kaustabh Chakraborty wrote:
->> STK3013 is a proximity sensor by Sensortek, bearing chipid of 0x31. Despite
->> being marketed as a proximity sensor, it also appears to have ambient
->> light sensing capabilities.
->> 
->> The part is fully compatible with the existing implementation of the
->> device driver. Add the compatible string of stk3013 to the existing
->> list, with a fallback of stk3310.
->> 
->> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
->> ---
->>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 13 +++++++++----
->>  1 file changed, 9 insertions(+), 4 deletions(-)
->> 
->> diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
->> index f6e22dc9814a..d5f6b622c8da 100644
->> --- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
->> +++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
->> @@ -18,10 +18,15 @@ allOf:
->>  
->>  properties:
->>    compatible:
->> -    enum:
->> -      - sensortek,stk3310
->> -      - sensortek,stk3311
->> -      - sensortek,stk3335
->> +    oneOf:
->> +      - enum:
->> +        - sensortek,stk3310
->> +        - sensortek,stk3311
->> +        - sensortek,stk3335
->> +      - items:
->> +        - enum:
->> +          - sensortek,stk3013
->> +        - const: sensortek,stk3310
->>  
-> 
-> ./Documentation/devicetree/bindings/iio/light/stk33xx.yaml:23:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
-> ./Documentation/devicetree/bindings/iio/light/stk33xx.yaml:27:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
-> ./Documentation/devicetree/bindings/iio/light/stk33xx.yaml:28:11: [warning] wrong indentation: expected 12 but found 10 (indentation)
-> 
-> From dt_binding_check, please fix.
 
-Will get fixed in v4.
-Thanks.
-
+On Tue, 23 Jul 2024 18:09:03 -0500, Rob Herring (Arm) wrote:
+> The 'single-channel' property is an uint32, not an array, so 'items' is
+> an incorrect constraint. This didn't matter until dtschema recently
+> changed how properties are decoded. This results in this warning:
 > 
->>    reg:
->>      maxItems: 1
->> 
->> -- 
->> 2.45.2
->>
+> Documentation/devicetree/bindings/iio/adc/adi,ad7192.example.dtb: adc@0: \
+>   channel@1:single-channel: 1 is not of type 'array'
+> 
+> Fixes: caf7b7632b8d ("dt-bindings: iio: adc: ad7192: Add AD7194 support")
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+
+I have other fixes for rc1 already, so I've applied this one.
+
+Rob
 

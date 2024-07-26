@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-7921-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7917-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4357E93CF8C
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 10:23:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B59093CF86
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 10:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2ADDB228F5
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 08:23:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 468171F2164C
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 08:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7462C17837A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56720178364;
 	Fri, 26 Jul 2024 08:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhR5MQ1U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8Hk8lGX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE78177990;
-	Fri, 26 Jul 2024 08:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AD4176FC9;
+	Fri, 26 Jul 2024 08:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721982181; cv=none; b=KRrXIj2oPnhJ3nB0ynIk+jUxRqugfPk2tYN8Ly9WksXUIG9TUu6fp7XLKiCWrKGBHf4K6A8dy84otdq4zpnrJNJTvHAnsxLzAGGY64jkiTG5M/Y1olVP7lyOAHMZ+8Kv7xJvfuRCZYhTaWpRyC7X7LKflpwOyf1XL2Me2bkIL5Y=
+	t=1721982181; cv=none; b=nllMSobhYGf/8LI8u+uyzHFo4nuyoujuRgocgJjqSwA5qbPRut0kFXVCPMaxugn+aJnkL3h3kcsmMUEPcglg9l7rny5WcsAuKfYNs46j5W0DJzGheM6aSdH74nyvxi7Ys/0sa+q9Z80zgIEOAhMWWSNoJ8TFTk4kByjQKQ2g6MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721982181; c=relaxed/simple;
-	bh=umD1IXfi/h95QQhMz4eWJTx8O2TaBSWYesNTGeRdxII=;
+	bh=DYjDQzEKOXmhB8PTzPSGHJzBrh3vcbTTXhqdNbtWjhU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AF7Zang75foNSf/01vvK8zejdaeD9v2z2RR8foxuT+v7W3vtdO39GeBmEj3LdVz14zlcByPCadvZ4khGK+Gnwh+xEAcZ1hKFHr4Yl5a+2HsO01cQsWuaO2ReDGrDrI6br51R9lrAAkTsveW9R5KKofLi0YlLcGhVYYXeVWq87KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhR5MQ1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CC7CAC4AF0A;
+	 In-Reply-To:To:Cc; b=Z5YMN8xXFb4vdnxMUP0kjfFdBmkrZJAiMChY7eEZeECjFQ207NG4ihStt3TBxVlcBOtB56krGYhorh6nUVL/P287EnzkvV4cBr0cVzJyg88fQqcigQDRhEiAuYmDiQzZoilm3BNlZiKzOiynlmXWtyGo1MtR0wc4PPqJePoVTJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8Hk8lGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D9171C4AF1A;
 	Fri, 26 Jul 2024 08:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1721982180;
-	bh=umD1IXfi/h95QQhMz4eWJTx8O2TaBSWYesNTGeRdxII=;
+	bh=DYjDQzEKOXmhB8PTzPSGHJzBrh3vcbTTXhqdNbtWjhU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=uhR5MQ1UbywD/sGpU7PvS4RRLIDTtWYokMQE7yvKONuRCcB8dIWQ1ztlI9VvqrpCX
-	 hV8f5MdpljPSGrCZIYsMj2d6RAgSLlteVvfmBQ36QoAlFI2VLHeKUhySxMNr6hGa7n
-	 XdtcOtHlxqLq7A66oifTTYY9WwlaA0Tv0fxx3Qv3HLtqiG87V+QUHYymZ6JCreTtfj
-	 PDoAoE2gNQFNKDCjYx7HoGQUVxpCQRSKPQaG5yploCBSJ9vKtJ0Yo31r/s0mfWk/5M
-	 PHoOvfBVDjQttc87gyrKUWU0J0W2qOQMc8xZWIJqbW84HLwUe9xiiqy5gWzsv3li1Q
-	 DNfw1St6Tf7Mg==
+	b=H8Hk8lGXCGuqIaXb8Si0n0bpYqZZwOXNroYpkGQxYe6mjRZgcjN7errPH2yT79vR2
+	 1Bm4GvBHD/89LnDRiRshChf1zx4UH62bqTQkFSfH7gxV9AQwmpmZd2MiEGxqlxMJCb
+	 Ar3N5XC7ECs/r/e4N3YDuynJeMP1AlNjEDpwPqok7IVand1arjankDMsJP+/ufnMhv
+	 z/nr4a2GlKYl1fzNDOiAL5ZF1kdExAZUiIRtx5K5ZcgGJp/1r8m+YzRCUhbI6W9MDw
+	 PFiGcjzFNM4SnZKhOAQgPBMBvxnpJ45m7oS8f6NfIaSX64Mr/h7KDYTDYYxEpYpVH5
+	 sfXqDankE6XoA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3D26C52CDA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0A4CC3DA49;
 	Fri, 26 Jul 2024 08:23:00 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 26 Jul 2024 10:23:02 +0200
-Subject: [PATCH 10/23] iio: adc: ti-adc0832: make use of
+Date: Fri, 26 Jul 2024 10:23:03 +0200
+Subject: [PATCH 11/23] iio: adc: ti-adc084s021: make use of
  iio_for_each_active_channel()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240726-dev-iio-masklength-private3-v1-10-82913fc0fb87@analog.com>
+Message-Id: <20240726-dev-iio-masklength-private3-v1-11-82913fc0fb87@analog.com>
 References: <20240726-dev-iio-masklength-private3-v1-0-82913fc0fb87@analog.com>
 In-Reply-To: <20240726-dev-iio-masklength-private3-v1-0-82913fc0fb87@analog.com>
 To: linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
@@ -78,11 +78,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1721982178; l=925;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1721982178; l=929;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=/zRhs+O5dU8RBr+bA0UyWxQ7bhGuFDbxpfRgXZ5+WII=;
- b=MQ4GGvW9pKcxivxR/c6CDelUg6zYahU1CzZdyeqX/tyLj5KopFY4oMsnbX6sseHma8Npd3ZO+
- TTs6JeQU5sNBUtSFyal4UdETC3vl9Rb3X99qollaj63XIHva8luakJD
+ bh=pDmrdCKFwcJ+Q8/Qez1fqIpNvLhBZN1RCKpdGSXSeW8=;
+ b=jXDGG3lYnq+qxjsUL1eRmtxRuz45PCumiCb1suSE7NNVTuUyrTBJ89inAB3uLkgAQpIWkkdGW
+ DFLCbD7PhK6ADOI5S9Cke0sMXm4swWFQ9uRQLHHEIl6fI0OEPmQXk93
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -98,23 +98,23 @@ no more direct users of it.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/adc/ti-adc0832.c | 3 +--
+ drivers/iio/adc/ti-adc084s021.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-adc0832.c b/drivers/iio/adc/ti-adc0832.c
-index b11ce555ba3b..d7800e1fa536 100644
---- a/drivers/iio/adc/ti-adc0832.c
-+++ b/drivers/iio/adc/ti-adc0832.c
-@@ -211,8 +211,7 @@ static irqreturn_t adc0832_trigger_handler(int irq, void *p)
- 
- 	mutex_lock(&adc->lock);
+diff --git a/drivers/iio/adc/ti-adc084s021.c b/drivers/iio/adc/ti-adc084s021.c
+index 1f6e53832e06..4a07c6295a2b 100644
+--- a/drivers/iio/adc/ti-adc084s021.c
++++ b/drivers/iio/adc/ti-adc084s021.c
+@@ -166,8 +166,7 @@ static int adc084s021_buffer_preenable(struct iio_dev *indio_dev)
+ 	int scan_index;
+ 	int i = 0;
  
 -	for_each_set_bit(scan_index, indio_dev->active_scan_mask,
 -			 indio_dev->masklength) {
 +	iio_for_each_active_channel(indio_dev, scan_index) {
- 		const struct iio_chan_spec *scan_chan =
- 				&indio_dev->channels[scan_index];
- 		int ret = adc0832_adc_conversion(adc, scan_chan->channel,
+ 		const struct iio_chan_spec *channel =
+ 			&indio_dev->channels[scan_index];
+ 		adc->tx_buf[i++] = channel->channel << 3;
 
 -- 
 2.45.2

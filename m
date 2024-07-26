@@ -1,37 +1,38 @@
-Return-Path: <linux-iio+bounces-7906-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7907-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810B493CE05
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 08:13:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6916B93CE09
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 08:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332F01F22B90
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 06:13:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA229B21D87
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 06:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64FD17554A;
-	Fri, 26 Jul 2024 06:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615EB176254;
+	Fri, 26 Jul 2024 06:13:36 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out28-98.mail.aliyun.com (out28-98.mail.aliyun.com [115.124.28.98])
+Received: from out28-1.mail.aliyun.com (out28-1.mail.aliyun.com [115.124.28.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0268817335B;
-	Fri, 26 Jul 2024 06:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37DD174ED0;
+	Fri, 26 Jul 2024 06:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721974413; cv=none; b=YkKEJn/01bwoKvvoUKylVxsYZPBWSo6DcATvduy1JWNiKTcsGQJNKTawz8sHBvPn0o4uXeCjWpEpXntDA7Heslp2UeTOhNmB/O93bJEr53PlFTDS6bS+AJBosPc4A3y1ulNI0DmMM9mQROSWXhXWmg+p8/q+PSYvMu5LXm3s7uY=
+	t=1721974416; cv=none; b=QYZR3bTRU7Km3AgRA6K77Op5YK40lJUNA/92LbwKlTEG0kRFzedORFfAJ2NMXlffVcibGBeooMwecHgvxRWMFpGs2mfyBbYMLH/yln7avXq0arh6T+JgTJNCLYGUmsAEYnq6fFxtY9Dp/lYPkrbFUMQzKy7wLfaKDVOojqebmRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721974413; c=relaxed/simple;
-	bh=OsqFdDXDhTAYPmrseEJTJXG4+jpzM4LTHcWyTtaiZQk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p7CWVet/5QjoeKrmN3jYld7BiPNmC+E84ruznccheOVcmX/R+dr7Bfu80Q8BUm8Xpw550+IHz060WHMtPJr4c6eZUI1apJQmqpnbncx5hVvIznoB4X7XpEmUtvc16rE0+RLaQkrLqIqNjP80nMaRZv9VqUS0yv/140xy2qOIJnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=awinic.com; spf=pass smtp.mailfrom=awinic.com; arc=none smtp.client-ip=115.124.28.98
+	s=arc-20240116; t=1721974416; c=relaxed/simple;
+	bh=kOWRqMIbv+HDFq9lWjwDYpjiiev1r4QAJ6bAKAScfbg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gsXynzN2GtKCVIVfFwfRI2wTErHxewxkwoWItwa8EQrOvSrvebVTpHaEgR7rHRLCltSQEwj8ypng7t79MmhFuvthTT+eXkK477hU+hfaM/4cyNzsadC2jKLasl5FCI8vG4mKazMVAqcoTJtSw758fus5DWIrOw3WQpPmlbSju7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=awinic.com; spf=pass smtp.mailfrom=awinic.com; arc=none smtp.client-ip=115.124.28.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=awinic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=awinic.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07462697|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00923975-0.000284541-0.990476;FP=7876803137317225623|6|3|9|0|-1|-1|-1;HT=maildocker-contentspam033071098170;MF=wangshuaijie@awinic.com;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.Ya9xJpx_1721974395;
-Received: from awinic..(mailfrom:wangshuaijie@awinic.com fp:SMTPD_---.Ya9xJpx_1721974395)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0790877|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.235398-0.000975642-0.763626;FP=7422250752346494202|6|3|9|0|-1|-1|-1;HT=maildocker-contentspam033037088118;MF=wangshuaijie@awinic.com;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.Ya9xJxC_1721974401;
+Received: from awinic..(mailfrom:wangshuaijie@awinic.com fp:SMTPD_---.Ya9xJxC_1721974401)
           by smtp.aliyun-inc.com;
-          Fri, 26 Jul 2024 14:13:21 +0800
+          Fri, 26 Jul 2024 14:13:23 +0800
 From: wangshuaijie@awinic.com
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -45,10 +46,12 @@ To: jic23@kernel.org,
 Cc: wangshuaijie@awinic.com,
 	liweilei@awinic.com,
 	kangjiajun@awinic.com
-Subject: [PATCH V5 0/2] Add support for aw9610x proximity sensor
-Date: Fri, 26 Jul 2024 06:13:10 +0000
-Message-ID: <20240726061312.1371450-1-wangshuaijie@awinic.com>
+Subject: [PATCH V5 1/2] dt-bindings: iio: aw9610x: Add bindings for aw9610x sensor
+Date: Fri, 26 Jul 2024 06:13:11 +0000
+Message-ID: <20240726061312.1371450-2-wangshuaijie@awinic.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240726061312.1371450-1-wangshuaijie@awinic.com>
+References: <20240726061312.1371450-1-wangshuaijie@awinic.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,78 +62,81 @@ Content-Transfer-Encoding: 8bit
 
 From: shuaijie wang <wangshuaijie@awinic.com>
 
-Add drivers that support Awinic aw9610x proximity sensors.
+Add device tree bindings for aw9610x proximity sensor.
 
-The aw9610x series are high-sensitivity capacitive proximity detection
-sensors. This device detects human proximity and assists electronic devices
-in reducing specific absorption rate (SAR) to pass SAR related certifications.
-The device reduces RF power and reduces harm when detecting human proximity. 
-Increase power and improve signal quality when the human body is far away.
-
-The specific absorption rate (SAR) is a metric that measures the degree of
-absorption of electromagnetic radiation emitted by wireless devices,
-such as mobile phones and tablets, by human tissue.
-
-This patch implements device initialization, registration,
-I/O operation handling and interrupt handling, and passed basic testing.
-
-v1->v2:
--------
- - Remove unnecessary log printing.
- - Optimize comment style.
- - Issues with modifying the device tree.
- - Optimize code style.
-
-v2->v3:
--------
- - Add a description about the hardware device.
- - Remove inappropriate configuration items.
- - Modify the formatting issues.
- - Modify the structure of the driver.
- - Change the style of the driver's comments.
- - Remove unnecessary log printing.
- - Modify the function used for memory allocation.
- - Modify the driver registration process.
- - Remove the functionality related to updating firmware.
- - Change the input subsystem in the driver to the iio subsystem.
- - Modify the usage of the interrupt pin.
- 
-v3->v4:
--------
-The changes in this patch version are quite significant, and I concur
-with Krzysztof's viewpoint that this driver is indeed overly complex for
-the proximity sensor. Therefore, I have removed the compatibility for the
-aw963xx series, and the driver will now exclusively support the aw9610x series.
-
- - Modify the software architecture to remove compatibility for
-   the aw963xx series.
- - Optimize the parsing of register configuration files (.bin).
- - Remove unnecessary log printing.
- - Delete redefinition of true and false.
- - Remove unnecessary interfaces.
- - Optimize regulator usage.
- - Convert the I2C communication interface to regmap.
-
-v4->v5:
--------
- - Solve errors that occur when executing the make dt_binding_check DT_SCHEMA_FILES.
-
-shuaijie wang (2):
-  dt-bindings: iio: aw9610x: Add bindings for aw9610x sensor
-  iio: proximity: aw9610x: Add support for aw9610x proximity sensor
-
- .../iio/proximity/awinic,aw9610x.yaml         |  61 ++
- drivers/iio/proximity/Kconfig                 |  11 +
- drivers/iio/proximity/Makefile                |   1 +
- drivers/iio/proximity/aw9610x.c               | 791 ++++++++++++++++++
- drivers/iio/proximity/aw9610x.h               | 140 ++++
- 5 files changed, 1004 insertions(+)
+Signed-off-by: shuaijie wang <wangshuaijie@awinic.com>
+---
+ .../iio/proximity/awinic,aw9610x.yaml         | 61 +++++++++++++++++++
+ 1 file changed, 61 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/proximity/awinic,aw9610x.yaml
- create mode 100644 drivers/iio/proximity/aw9610x.c
- create mode 100644 drivers/iio/proximity/aw9610x.h
 
-
-base-commit: 1722389b0d863056d78287a120a1d6cadb8d4f7b
+diff --git a/Documentation/devicetree/bindings/iio/proximity/awinic,aw9610x.yaml b/Documentation/devicetree/bindings/iio/proximity/awinic,aw9610x.yaml
+new file mode 100644
+index 000000000000..631b1fe5a900
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/proximity/awinic,aw9610x.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/proximity/awinic,aw9610x.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Awinic's AW9610X capacitive proximity sensor
++
++maintainers:
++  - Wang Shuaijie <wangshuaijie@awinic.com>
++
++description: |
++  Awinic's AW9610X proximity sensor.
++  The specific absorption rate (SAR) is a metric that measures
++  the degree of absorption of electromagnetic radiation emitted by
++  wireless devices, such as mobile phones and tablets, by human tissue.
++  In mobile phone applications, the proximity sensor is primarily
++  used to detect the proximity of the human body to the phone. When the
++  phone approaches the human body, it will actively reduce the transmit
++  power of the antenna to keep the SAR within a safe range. Therefore,
++  we also refer to the proximity sensor as a SAR sensor.
++
++properties:
++  compatible:
++    enum:
++      - awinic,aw96103
++      - awinic,aw96105
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    description:
++      Generated by the device to announce that a close/far
++      proximity event has happened.
++    maxItems: 1
++
++  vcc-supply:
++    description:
++      Optional regulator for chip, 1.7V-3.6V.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        proximity@12 {
++            compatible = "awinic,aw96103";
++            reg = <0x12>;
++            interrupt-parent = <&gpio>;
++            interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
++        };
++    };
 -- 
 2.45.1
 

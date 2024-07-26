@@ -1,111 +1,106 @@
-Return-Path: <linux-iio+bounces-7902-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7903-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244BE93CB25
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 01:18:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C45393CC0C
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 02:20:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA5352828D4
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Jul 2024 23:18:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1A21C21638
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 00:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525F3143C7B;
-	Thu, 25 Jul 2024 23:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E746F80B;
+	Fri, 26 Jul 2024 00:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KN3fePdw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8EXQuS/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D6EDF6C;
-	Thu, 25 Jul 2024 23:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB2963CB;
+	Fri, 26 Jul 2024 00:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721949509; cv=none; b=sxY4/z/kie7TOrNSSQlCS6SuWAscIqpAzIbbBuukbxNfQIa/3Z5x0neopKMwvZWGx2nIoceoGg7uuZKn9k8dZli6oW2WsdJ+jSjIu2kUxf1wTRTXa7Wv+AVKFpACCI7fGkWvQisGb/+Nv5r/T27R54NAsI4uyd7phTXtXNxf+1U=
+	t=1721953219; cv=none; b=lOYbJAMCIdSgD43w8grvkZIvw45qASZ7HmqQLhQSx/z0WmGIaP+JQ5upmpLYxPmwbufsQwFFoYlDK8MLS1QijSspO6879qpHPbhMGFIQiPf2Oua2cjad2v/D50cc18Pm03kOD4wRvRlYJRz4IzvKuZvJU9v/cRLOaJHUtr7yr14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721949509; c=relaxed/simple;
-	bh=qTguyKQ7f6AzBwJUv00P+vfNkDjNLY7d8gYXe3e3xfc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W1X2WWOFsjg/0ndVU1HM5R/qHDTClQekvsDq3c0QplsjJhGLzAy/ROikeRjY4nx6qfcmSGcJAAmn4hdKbT/fClPSRC7wAtAaR1Dq/8kT5sRVxySI6sz8ULEux0Q6T/PdjHFdYjvZ0ClHj2jlIIlc8o5WkeA5TMzD8GmbnFUK13k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KN3fePdw; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a7a8a4f21aeso141308166b.2;
-        Thu, 25 Jul 2024 16:18:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721949506; x=1722554306; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nWLnOh5ytsf26SCztBMinzCuGggaU98ctSJzSIv1s94=;
-        b=KN3fePdwVSjlIePl/R6h6+O2eIQpjSjasDzuK0pN6XFN1MB3hH4F/2mPPcvVZCvyV1
-         EiiVZTFyD203Jd1yoJDpcjcs/N4OdEF/4gJ30vyRbnKjBMZnfTdYXzPUcLVvC7c0ayhh
-         dhplU8nsa/BJFh/0sY/XS1Rfm7cDh1Uww9We12vaDMpB0iWPhVEJ4MbBEKjTU5iN9zkt
-         m/aPX9niCR5jXfjtsO/umkaV0SM3jrcuiTD1QltNMvdb2U2tDVWGreE+yIMibkDxywII
-         SIxJMZSDwc16pBW+R6L+PDJ9VcNK7C6noQZfHkci1GQUHgO7XNcpmIpXmSI3bb/DYQ3n
-         V4ZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721949506; x=1722554306;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nWLnOh5ytsf26SCztBMinzCuGggaU98ctSJzSIv1s94=;
-        b=W6WBbuzkffyn9Zoh4DLJOPq6Lc7W2p+6zXc5lnv1t476IfIovbfcSs1yyJXUhV9WZ+
-         HVpKv5iHa9mB20ZCb/MQUji5/HA2ObmJErGzGPoPrgWwaZCWyzRi59R2zRmuOlIyIAk2
-         6rU5VM5M9Tdc3jZ3KnfoRdzg1U5dRiwdqOD14lq6gV6tvOJuLznODxqAQm7MLAso2b75
-         qLKqpUPpSgAkUBwg4S43ZFRyQ01kAIwSKN3lRB2m9K6Ury4ddV3Je9F4DbkCXxeuN9q3
-         bTpyF/erxfv6biWzaWAiri0YrvpFgqlqzdKzeFGEz4FJGRx/DQ6UnJYZiBbYoHwKNIaq
-         kVww==
-X-Forwarded-Encrypted: i=1; AJvYcCUFNGVCl/2BxQYXtQnqqIMwadG0JmAOTZUOKHytVh8amaAfXLYsYJTKsH8BvOBEfBd0yBPMGMpPXVF9Nm9PwXmPKlHL6wm7HZB5LYXIrdVjYaXn0ujj77ZLOv5o2NhCw1vsMjFwz19H
-X-Gm-Message-State: AOJu0YyewgjAjFCVEh+P8ZP/Th3Qrkj7m9LRqKc89hcTsHUSNwNJgQCL
-	k/m+YZGJ+brevX7SaAiZWkI4t9vgvCSsgQXW54iSMKcT6bJH0wPO
-X-Google-Smtp-Source: AGHT+IEdW5yrxCYUUf6/iWY6GpgcOqj5BZxN7p8BUBgiBsQlxJaTwZGi46iBJJR2SzQVOPk2WcycsA==
-X-Received: by 2002:a17:907:7e85:b0:a7a:ce2b:d7c7 with SMTP id a640c23a62f3a-a7ace2bdcb3mr234139266b.53.1721949505674;
-        Thu, 25 Jul 2024 16:18:25 -0700 (PDT)
-Received: from localhost.localdomain ([2a04:ee41:82:7577:4b59:cba2:6db8:9f30])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acac61218sm115725466b.94.2024.07.25.16.18.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jul 2024 16:18:25 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: jic23@kernel.org,
-	lars@metafoo.de
-Cc: himanshujha199640@gmail.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: [PATCH] chemical: bme680: Convert to static the const lookup table
-Date: Fri, 26 Jul 2024 01:18:18 +0200
-Message-Id: <20240725231818.615530-1-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1721953219; c=relaxed/simple;
+	bh=UowxC6Hl+spQMsfymKr1EuDGRGLZbprGrQdNhJkgmLA=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=aPXlYi9eR4kMCWjBkuVQf46CAiU0wWAQNReBerHvNeWSbL7ZaBEetZYlHEbdmT0BBwPot5UZ8VmuOGhVWHYJVNMDJ4bpUbaRO5UEuxSkJkGQoH2JwELj6yvjlM3MV0yWofXepXzxK7gCOBSpe5eufLdrt3vI8b9/ICTUmk3Pd3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O8EXQuS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71C8C116B1;
+	Fri, 26 Jul 2024 00:20:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721953219;
+	bh=UowxC6Hl+spQMsfymKr1EuDGRGLZbprGrQdNhJkgmLA=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=O8EXQuS/gSxrsau85WQ3IRevrrfeHm2qwMaoGve/DCMCNxja7sZKwetW2XBu+fdp1
+	 0X4PEMSDeOJyBSOwq5RkX1+LfNNjLpXX0RMaFplyyW+X5AQJxJJuNOjrz7CcZoA0iX
+	 udckSB3vvnC39twkOFv6/SZ1uM44oYUW4SWidpBM6Z3V9HRXm2b2GvzMwoYOyqYN6g
+	 Z0f3FKSmoXyvu367ynGLaFB23+C/oLcuvrD/Iodn+jOM6nFe54BglkN6dqdpp2pkZm
+	 OScLqGcoOKybs1EA3mod5mzX1fz7uLeJHn8YPDawUBe9D6f2DpRFvIELIHO2I/PXFv
+	 QrqgjxaHL2v1A==
+Date: Thu, 25 Jul 2024 19:20:17 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: krzk+dt@kernel.org, semen.protsenko@linaro.org, 
+ linus.walleij@linaro.org, lars@metafoo.de, jic23@kernel.org, 
+ conor+dt@kernel.org, 579lpy@gmail.com, ak@it-klinger.de, 
+ andriy.shevchenko@linux.intel.com, linux-kernel@vger.kernel.org, 
+ javier.carrasco.cruz@gmail.com, linux-iio@vger.kernel.org, 
+ biju.das.jz@bp.renesas.com, devicetree@vger.kernel.org, 
+ ang.iglesiasg@gmail.com
+In-Reply-To: <20240725231039.614536-6-vassilisamir@gmail.com>
+References: <20240725231039.614536-1-vassilisamir@gmail.com>
+ <20240725231039.614536-6-vassilisamir@gmail.com>
+Message-Id: <172195321787.24634.18050300557799081241.robh@kernel.org>
+Subject: Re: [PATCH v2 5/7] dt-bindings: iio: pressure: bmp085: Add
+ interrupts for BMP3xx and BMP5xx devices
 
-By converting it to static, we ensure that this will be placed by the
-compiler in the read-only area.
 
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
----
- drivers/iio/chemical/bme680_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, 26 Jul 2024 01:10:37 +0200, Vasileios Amoiridis wrote:
+> Add interrupt options for BMP3xx and BMP5xx devices as well.
+> 
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/iio/pressure/bmp085.yaml | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
 
-diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index 74ac887d8d8e..5d2e750ca2b9 100644
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -438,7 +438,7 @@ static u32 bme680_compensate_gas(struct bme680_data *data, u16 gas_res_adc,
- 	u32 calc_gas_res;
- 
- 	/* Look up table for the possible gas range values */
--	const u32 lookupTable[16] = {2147483647u, 2147483647u,
-+	static const u32 lookupTable[16] = {2147483647u, 2147483647u,
- 				2147483647u, 2147483647u, 2147483647u,
- 				2126008810u, 2147483647u, 2130303777u,
- 				2147483647u, 2147483647u, 2143188679u,
--- 
-2.25.1
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml: properties:drive-open-drain: 'anyOf' conditional failed, one must be fixed:
+	'desription' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
+	'type' was expected
+	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240725231039.614536-6-vassilisamir@gmail.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

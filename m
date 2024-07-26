@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-7925-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7926-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B61893CF8E
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 10:23:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8D993CF8F
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 10:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27DA3282E0A
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 08:23:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E738282922
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Jul 2024 08:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F8B178389;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A8D17838D;
 	Fri, 26 Jul 2024 08:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXVb1pjr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRpII1Kx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63325178371;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7151E178375;
 	Fri, 26 Jul 2024 08:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721982181; cv=none; b=QWwZA8N8AgYL+CpGJXK2e3cxh9/Md5HtWnX2oE9+icZ6BXCMmQQ3KvyPXhGYUunKg8iLb5Or9VJkEu6fEDJUVeMhUNbklvfueNNMbfpHZH1nFwd/ngMhChp50uQfnU04V9l1lSgf91GfqBqhfo1lyDQcxwoQx4eC9lTNSgtrECM=
+	t=1721982181; cv=none; b=Orl4epgHKqRLzm4U2C8U2c7tZ6jZ+8EzZzm9tyM5OIgl/QoZQDDaBjcixyYw5fisgsPY+cJk7xlIe4z008qGaiDF22yTC0KQmqoDuCy1aiXnUeNVDoyHqoBwOHg8/IgQwsW4ZiA8ymMS415zM7FEjtTTDua5tr0TOipJSXEq6q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1721982181; c=relaxed/simple;
-	bh=s3XYHeiqfx5M0rPGyIr8GFtHULw30fcBEQeLoshTKRM=;
+	bh=23pWAgKQNvp8ViudLo/jPakwoDoYaMh00PxvEu7Tme8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QgTIxr6VXT6eITQyticc3lFzsbnut/0NI3Rzk/Oqmpv+ncnQfnN9s6oh2YITcUfWPv2NxzLyOb1LPKYHLm+3sdSrKGxLqCZNvj1k66hbVaF7LRqAp1HPFzDoPvbiH2hCXao1RdRSc1twR76VvbPG2NQHzVEYwa9D0S0KmriJDEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXVb1pjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 452CFC4AF4D;
+	 In-Reply-To:To:Cc; b=FTJ3FHuQU/8P7TZOBzObpO42MQhNuvAS0gdL+SoKfOtiWeIUr/qBUni64vSHchpQUKnDJ7uYFwxCz2Mrnkh6emkdIUd1+1MZJq6Dvoc7BUAF2c+gCKvn1PFlts38tY7qPN3C7FxLev+7RAznPGDYokcjFosGZiZrSrcclQ+xoqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRpII1Kx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 54173C4AF51;
 	Fri, 26 Jul 2024 08:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1721982181;
-	bh=s3XYHeiqfx5M0rPGyIr8GFtHULw30fcBEQeLoshTKRM=;
+	bh=23pWAgKQNvp8ViudLo/jPakwoDoYaMh00PxvEu7Tme8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XXVb1pjruYJE46zySPWI5Yhw8veWhHjHSjlRvthY5Qjob6BPqTyNnfmAUQ5IXa/Ye
-	 bUFNxkrw4k/F+EEJD7dnTq9PGwCJP0QkBR5mR2zPnTF8a9jnZ3scKR6aqgfVQ5suDJ
-	 9TOgbeiwANwNr/dgQ8ZAKFsrnSJKh/+/+SgmXJGq6tewoW7ayrCn195m6ZnoSMQdaZ
-	 Dhb7e7Q28mOZ2HHAesalDsLHB45u7eZAdsxFZpGzqDgKq0VjkVA1FYXLjU/OlogLI/
-	 vZDHdqLsUxQtr8KbZHFT6ITQ9lgVesPlSotglJUTcRy4+LvFfWa56rBcknhpC6J4ry
-	 M3/3uTM3STnDg==
+	b=eRpII1KxyLroO+W8X1lQkM/J1q8PJrUZ40HHV2QT8U+skY3e1n5Dmp49nYS9HzboP
+	 gDvuqLB826rke7mSp0WazgwFkhX0FR8aTwv42kZg9LLeN7uJl8vzgw1PYKSK/xCdjg
+	 75XHbA71t4FUorSb7ZIwKYdWOraWO/JOi/+ErFugo8E1LXdjdJ3ktkBjLYjvvETcQ3
+	 U4MDjuJo1qgKN1WG3uvpBhHoyUVzVepvouq39BEMYckaq9FIf+w6RwF5mSNBwtrr3p
+	 inyZxRf3q9rixgltNolbELjj2KmxQk7iLjo2uzaJ1qJRan/xSTjvreboXyBTKQdvTa
+	 GWuz5hTVIxyCQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B364C52CDA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4998FC3DA7F;
 	Fri, 26 Jul 2024 08:23:01 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 26 Jul 2024 10:23:09 +0200
-Subject: [PATCH 17/23] iio: adc: ti-ads131e08: make use of
+Date: Fri, 26 Jul 2024 10:23:10 +0200
+Subject: [PATCH 18/23] iio: adc: ti-ads8688: make use of
  iio_for_each_active_channel()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240726-dev-iio-masklength-private3-v1-17-82913fc0fb87@analog.com>
+Message-Id: <20240726-dev-iio-masklength-private3-v1-18-82913fc0fb87@analog.com>
 References: <20240726-dev-iio-masklength-private3-v1-0-82913fc0fb87@analog.com>
 In-Reply-To: <20240726-dev-iio-masklength-private3-v1-0-82913fc0fb87@analog.com>
 To: linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
@@ -78,11 +78,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1721982178; l=906;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1721982178; l=915;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=Wmj4heT1Vtbx3+Qw30Meikm6rdXb9sWv/ExTDPPdk4A=;
- b=0GFuG/6wJrEjIxNPymKrc3E/xuuUKG+CQZ5h5YQM00UjbUYs0fj5bjauhcuGVCMG0z8H47IEP
- R9/V1RWlxOyDxSrc451CqehO5i8yKtdPZt4za9xGbhvcVgRFIb+W0pm
+ bh=CXE9n1OTERPreNfjFIenBnsa4hUQh2QY6CgmvZVjglQ=;
+ b=2LKulSG61dERd041aYUSUleOkTZyYUSHMCQBWl82M2dCuByYPlBFm7A9NwRxgLfy8l3ZQnOo5
+ 8+I8g2/S+1/DVXeMdvi9BcrLXIIY1TRZW5Yln/Tm2DfMzISokyqEPyO
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -98,22 +98,24 @@ no more direct users of it.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/adc/ti-ads131e08.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ti-ads8688.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
-index 96dd9366f8ff..55366ffb0489 100644
---- a/drivers/iio/adc/ti-ads131e08.c
-+++ b/drivers/iio/adc/ti-ads131e08.c
-@@ -637,7 +637,7 @@ static irqreturn_t ads131e08_trigger_handler(int irq, void *private)
- 	if (ret)
- 		goto out;
+diff --git a/drivers/iio/adc/ti-ads8688.c b/drivers/iio/adc/ti-ads8688.c
+index 7a79f0cebfbf..94cc823b26f3 100644
+--- a/drivers/iio/adc/ti-ads8688.c
++++ b/drivers/iio/adc/ti-ads8688.c
+@@ -384,9 +384,7 @@ static irqreturn_t ads8688_trigger_handler(int irq, void *p)
+ 	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8);
+ 	int i, j = 0;
  
--	for_each_set_bit(chn, indio_dev->active_scan_mask, indio_dev->masklength) {
-+	iio_for_each_active_channel(indio_dev, chn) {
- 		src = st->rx_buf + ADS131E08_NUM_STATUS_BYTES + chn * num_bytes;
- 		dest = st->tmp_buf.data + i * ADS131E08_NUM_STORAGE_BYTES;
- 
+-	for (i = 0; i < indio_dev->masklength; i++) {
+-		if (!test_bit(i, indio_dev->active_scan_mask))
+-			continue;
++	iio_for_each_active_channel(indio_dev, i) {
+ 		buffer[j] = ads8688_read(indio_dev, i);
+ 		j++;
+ 	}
 
 -- 
 2.45.2

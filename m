@@ -1,58 +1,61 @@
-Return-Path: <linux-iio+bounces-7962-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7963-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F73193DF45
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 14:27:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD3D93DF48
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 14:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1F71C21107
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 12:27:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76CC22835FA
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 12:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC87A78B50;
-	Sat, 27 Jul 2024 12:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501D578C70;
+	Sat, 27 Jul 2024 12:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhugC3Jp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZhyBL+U"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AD978276;
-	Sat, 27 Jul 2024 12:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BF48F6D;
+	Sat, 27 Jul 2024 12:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722083264; cv=none; b=rZXUksX9L1C8jPioi2zQ2rWMAsZ8I2IUHAvu9raKblcMttO3omST4MiiOc89wgIVSnxt0pwoaA403O8s2GYRbAQLwKfG3FL3LZ8LGBQUoXOGeAnOQeXiPocsLLmCwJmk2mSQ5skC94A5MwascHUbCcFVZUWpavB7qfFvth9WGzQ=
+	t=1722083316; cv=none; b=LlwtwvrXHC8M7PXHKrNuQS5MYzSA7t9SvVCyfRcmZ/U+K3lh4EEBbX5eOqkRTARlw6A/ruVJ8n0w5BSxskVZVeYJ2eMHVPvbyHt6JBkwqAyVpE6Rxjxpu1eSfepo2vHmuLG3BsD6PPREy2AUaNUbAviFhqUDZIXZDgV8xuC0TOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722083264; c=relaxed/simple;
-	bh=VZEg2zc8fwE6kWAYB6Y2R2xxGYcYeWkQAkBModrxHJE=;
+	s=arc-20240116; t=1722083316; c=relaxed/simple;
+	bh=gaWflVk0sdpSfl5Qb8wW22ZLQgPm5FtRJR6Hgel64p0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=htEImw7b4PxunHN4bRq/RkCAdJthafpLydyUAqTx7kaegety9eHBj8V460G9aYRTMdKBOB72iqr4Bs8GGrl38KU9e/A6TANw6+jKmNuSi5yy0conyyRuIvGL8lAU73xs5aDEOfi/Iyf4UAqc8C4Oo5FzUTuc50TF9MGdxrnqAGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhugC3Jp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83046C32781;
-	Sat, 27 Jul 2024 12:27:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EZpkXdRDvEXHTxH8a5hRO0Nun1rs7JwfU5PAz2Rie6w+qBxJhmGA3ODfH7RdYZqwm3c9sCHbXliWNL1QHAPs7NQpkBS/Ihy+dG5W1yFKd3YulvdJvgteylmrDRwm1CIP4x0mM2FAZgrz5psIQYD5yvkDZS5dK75PJfAic8lAbp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZhyBL+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1B4C32781;
+	Sat, 27 Jul 2024 12:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722083264;
-	bh=VZEg2zc8fwE6kWAYB6Y2R2xxGYcYeWkQAkBModrxHJE=;
+	s=k20201202; t=1722083315;
+	bh=gaWflVk0sdpSfl5Qb8wW22ZLQgPm5FtRJR6Hgel64p0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lhugC3Jps/xM7clYXG/7R+Cdbs8/wlAEdA0ftMcLVlKw1puJNUUTaZ2vLIM6284TW
-	 hevPsQw1x0xrWHaLU4k08EFOQadGJhEAaI+UOqOyLghJsE6pX2IHBSLdhObjgUHCdq
-	 hKzZltte33uCXL87On46+6vZ880bNFsU2ygqcYuukrhryrzoDJLo9TBbGAetx10+it
-	 Uq0oXbixkRi5AwVpLPgFKroUdYhRk1Cn3Or+D+5H2wiWPXYRSQHvDc+T5f+g0bFHS7
-	 c5AePof+o67jNAU+3STDxE2O26WZB70fuG5vq8k5pgQtNe0vgmxpRDKpC3hJH2XCBe
-	 Z0zmeQ/PjTV2A==
-Date: Sat, 27 Jul 2024 13:27:35 +0100
+	b=VZhyBL+UGj8eyHg+7qNqpfVI8MeXZqqiI6MA0xIHq11fgvyeklrcZrpu9i9yI4f9E
+	 HHQwU27AQa/74SNjr74FvVG4S4cjXzT7rwK7qMm4TfTP7GIWZ9BD+ki2aFXDJmgt63
+	 LTAABgbpSUxaPJffUtFhOWJCdm8cg/y3gimy2xe3ZHbwUJ00rq2UJXf4Ik217Hr50I
+	 AEslzMGDJGdRYk9aDH8YxYEns3gr51GikqeyGZFw8j2QrQfYW8MDCI41fXus3oZ52A
+	 d+zXbofQxxG8RdVLAVr7GwQ5b+HfvjmiyZkdB818fypynfRaNpZmJBZ2jYf4LcmAWD
+	 2lre8HhiKAJ8A==
+Date: Sat, 27 Jul 2024 13:28:26 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Abhash jha <abhashkumarjha123@gmail.com>
-Cc: anshulusr@gmail.com, linux-iio@vger.kernel.org, lars@metafoo.de,
+To: Matteo Martelli <matteomartelli3@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marius Cristea <marius.cristea@microchip.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: ltr390: Add configurable gain, resolution
- and ALS reading
-Message-ID: <20240727132735.052502ad@jic23-huawei>
-In-Reply-To: <CAG=0RqL1GxCKdzDzUjqECEsfQmunCwnv+g_5cqM1fcfBsg+P0w@mail.gmail.com>
-References: <20240718104947.7384-1-abhashkumarjha123@gmail.com>
-	<20240720165554.5fd16ca0@jic23-huawei>
-	<CAG=0RqL1GxCKdzDzUjqECEsfQmunCwnv+g_5cqM1fcfBsg+P0w@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] iio: ABI: generalize shunt_resistor attribute
+Message-ID: <20240727132826.64c5f2be@jic23-huawei>
+In-Reply-To: <669f733746811_7023703c@njaxe.notmuch>
+References: <20240722-iio-pac1921-v3-0-05dc9916cb33@gmail.com>
+	<20240722-iio-pac1921-v3-2-05dc9916cb33@gmail.com>
+	<20240722210716.09ca4223@jic23-huawei>
+	<669f733746811_7023703c@njaxe.notmuch>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,44 +66,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Tue, 23 Jul 2024 11:09:11 +0200
+Matteo Martelli <matteomartelli3@gmail.com> wrote:
 
-Please crop replies to only leave the section being discussed.
-It saves time for everyone reading the thread.
+> Jonathan Cameron wrote:
+> > On Mon, 22 Jul 2024 12:03:19 +0200
+> > Matteo Martelli <matteomartelli3@gmail.com> wrote:
+> >   
+> > > Move ABI documentation for custom shunt resistor attributes into the
+> > > generic iio documentation file. Exception for pac1934: leave it
+> > > untouched since it does not comply with common iio ABI generalization.
+> > > 
+> > > Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>  
+> > This stands on it's own even if the driver needs a minor tweak or two yet.
+> > Hence in the interests of not having to remember I've read it before,
+> > I've queued this patch up;
+> > 
+> > 
+> > Applied to the testing branch of iio.git. That will be rebased on rc1 once
+> > available and pushed out as togreg for linux-next to pick it up.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> >   
+> Thanks Jonathan, should I remove this commit from next version of this patch
+> series or should I keep posting it?
 
-> > > -static const struct iio_info ltr390_info = {
-> > > -     .read_raw = ltr390_read_raw,
-> > > +/* integration time in us */
-> > > +static const int ltr390_int_time_map_us[] = {400000, 200000, 100000, 50000, 25000, 12500};
-> > > +static const int ltr390_gain_map[] = {1, 3, 6, 9, 18};
-> > > +
-> > > +static IIO_CONST_ATTR_INT_TIME_AVAIL("400000 200000 100000 50000 25000 12500");  
-> > Please use read_avail() callback and the appropriate mask to provide this.
-> > That enables it to be used from in kernel consumers and enforces the
-> > ABI without a reviewer having to check what you have aligns.
-> >  
-> > > +static IIO_CONST_ATTR(gain_available, "1 3 6 9 18");  
-> > Given we don't have a 'gain' control, what is the available applying to?
-> >  
-> The gain gets controlled by writing to the iio_info_scale attribute,
-> we write one of the above available values.
-> So that we can scale the raw ALS and UVI values. I could use
-> read_avail() for this too for the IIO_INFO_SCALE channel. Should I do
-> that?
+Please drop it from future versions.
 
-Yes, it would be appropriate to provide read_avail for IIO_INFO_SCALE
-as that is standard ABI that userspace will have way to interpret.
+> 
+> Best regards,
+> Matteo
 
-> Can you elaborate more on your comment?
-
-Basic rule of thumb is think very hard about whether there is an alternative
-if you are providing attributes directly to an IIO driver.
-There are a few corners where that is necessary for standard ABI
-around FIFOs or certain event related attributes + a few special
-corners for complex hardwware.
-
-None of those apply here, so read_avail callback and choosing standard
-ABI elements to match what you are trying to control / describe is the
-way to go.  That's the stuff that userspace tooling knows how to use.
-
-Jonathan
 

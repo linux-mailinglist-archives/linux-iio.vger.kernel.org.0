@@ -1,60 +1,56 @@
-Return-Path: <linux-iio+bounces-7980-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7981-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FD793DFDE
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 17:06:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C10AD93DFE1
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 17:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3937B2129F
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 15:06:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 714D01F217DC
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 15:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E459D17D373;
-	Sat, 27 Jul 2024 15:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2F917D373;
+	Sat, 27 Jul 2024 15:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hrA1SrV2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdeVVwem"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972541E521;
-	Sat, 27 Jul 2024 15:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164FE1E521;
+	Sat, 27 Jul 2024 15:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722092797; cv=none; b=rxzxPt0UvqQnlhjP782WBtKp+63yGWUTkQilgvdd4LX0YdNQI4lZs3Oz4e8rCxkJiK/XM7LYQ8X9OuZp60VMKIu6sW0VwLZ/JuLlrUqyCVfoSQq+0sLMoUKy1gCN5vgYu3+F/XsQt6bbB6plXeAZhel4/tzself18gm5+EV6Z/E=
+	t=1722092931; cv=none; b=RzXn3sknzCTy4hUIPmU2Z5inzWA+QUVb2U8NzXRb6r+l/bvfrsuSu5go2mt/whs5T019zd84ef7sYh1BEmZDOfF/QqmOC9F6DO4wEobX9bK2FtzfoNHh+k8fAezJnXyS5Esaa5lknwcv41FOx7/tykkMIBFOf+NXwjfR+MIQ8Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722092797; c=relaxed/simple;
-	bh=cmX0UIFq01T8RRA+cBWp3yu4O50rO3JDTINipAtvJBU=;
+	s=arc-20240116; t=1722092931; c=relaxed/simple;
+	bh=Gxx9fjqRR0M6NRF6KXCKoSZ/x9OaIlCJizEOVYY3p7A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F5NgbMyGIob3tvyC9ky253/x7acj/fZygw5+PwfuzVI0IQymGYiYkzP/VNuJCoH9g8Jy+6d9WryKFpUO/J3G5mXj+E8EOdTS4Z4oaqK1Q/2OJL0EwF1BlLhMO3BT8Vi3dkbgWcJTOCIZ13CuPIaE1/jTU1AlpzJExGlN0B/nm2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hrA1SrV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E00C32781;
-	Sat, 27 Jul 2024 15:06:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PlgIjqYOXBzwuX0Fa8yFQxg0G60KkQU1jmhsvi6JOhr0XQ8F61pVUq2duuZElHeDRGdI3MtuD6Cgl7OgsHxFWrhIpO63SDdMHcCJHQA3Z12WC4E8nvAKeC44U8Xcdt7bpoMg32xX0ODlnDnmK2jq5KbEchgguzQVz7LfAVZDMx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdeVVwem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FC1C32781;
+	Sat, 27 Jul 2024 15:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722092797;
-	bh=cmX0UIFq01T8RRA+cBWp3yu4O50rO3JDTINipAtvJBU=;
+	s=k20201202; t=1722092930;
+	bh=Gxx9fjqRR0M6NRF6KXCKoSZ/x9OaIlCJizEOVYY3p7A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hrA1SrV2aA6NGLwbCY1ZUooC2TyuBMPdwWRKsfu9Llfmb+Du22HeaLfhC+CLK6bZv
-	 gapdPitvxtwiYSemQ/rC9VqKeXD3+rq7uMTrPNteZfgj8iFPpbOsBgAHD3wTrSImyx
-	 H8i+MD31f/akcktWORjLObhjP/ByfX7gUZiSnLEiYpPct76mBRkFz3CiVBcsjNj1vL
-	 6HXTJcMjdNV57KGpHPpl/Fa9vgahWqQA2WXo/TOQT7JigV4rU1dTPtVqALBfpVanJS
-	 Td9t9VX/CGcCo6GFidspyM/M5SzwEUlu+XEkBOfVzx+6LZeGIr/rWRvjQdaswy5jUa
-	 K+39wlV+MDWKg==
-Date: Sat, 27 Jul 2024 16:06:28 +0100
+	b=HdeVVwemANAbOjrOwA8UizeoHhLdB6NOr09ggJdlOtQvh0exilIXVk+4rTTSEhGiu
+	 3lmpO0BjX9NBmLXqLfZlkb+10zRWoBmdBECY928ZvejmuRnAWPeesIKty3iip0d76t
+	 ZJbSdPShmVgjJXEXYZ2YVJTei7TlD0HjDnPGj4ShcWrQhmXX+cJ5a4G1L3M6Mf7K1r
+	 qmzWKumCieWY6fNJTE2EzcqPH/dFPmkBoVwe0uSper/SHAYwaKpnnjTkMGAHgRx6Sl
+	 3zKxnI8+q5DeUeJ46TNvLT+YROLynUGVPlmXDW0hOEhdIXSpgfky8RStW8thR5C6BI
+	 QUxxpDWxCalfA==
+Date: Sat, 27 Jul 2024 16:08:44 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: wangshuaijie@awinic.com, lars@metafoo.de, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, waqar.hameed@axis.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, liweilei@awinic.com, kangjiajun@awinic.com
-Subject: Re: [PATCH V5 2/2] iio: proximity: aw9610x: Add support for aw9610x
- proximity sensor
-Message-ID: <20240727160628.115e295e@jic23-huawei>
-In-Reply-To: <3ef6c902-b004-4aa0-96c9-dabd81a01a6a@kernel.org>
-References: <20240726061312.1371450-1-wangshuaijie@awinic.com>
-	<20240726061312.1371450-3-wangshuaijie@awinic.com>
-	<3ef6c902-b004-4aa0-96c9-dabd81a01a6a@kernel.org>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: lars@metafoo.de, himanshujha199640@gmail.com, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] chemical: bme680: Convert to static the const lookup
+ table
+Message-ID: <20240727160844.28875c92@jic23-huawei>
+In-Reply-To: <20240725231818.615530-1-vassilisamir@gmail.com>
+References: <20240725231818.615530-1-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,58 +61,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Fri, 26 Jul 2024 01:18:18 +0200
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> ...
+> By converting it to static, we ensure that this will be placed by the
+> compiler in the read-only area.
 > 
-> > +static int aw9610x_read_chipid(struct aw9610x *aw9610x)
-> > +{
-> > +	unsigned char cnt = 0;
-> > +	u32 reg_val;
-> > +	int ret;
-> > +
-> > +	while (cnt < AW_READ_CHIPID_RETRIES) {
-Why retries? 
-> > +		ret = aw9610x_i2c_read(aw9610x, REG_CHIPID, &reg_val);
-> > +		if (ret < 0) {
-> > +			cnt++;
-> > +			usleep_range(2000, 3000);
-> > +		} else {
-> > +			reg_val = FIELD_GET(AW9610X_CHIPID_MASK, reg_val);
-> > +			break;
-> > +		}
-> > +	}
-> > +
-> > +	if (reg_val == AW9610X_CHIP_ID)
-> > +		return 0;  
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Applied.
+
+> ---
+>  drivers/iio/chemical/bme680_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> So devices are detectable? Encode this in the bindings (oneOf and a
-> fallback compatible) and drop unneeded entry from ID tables.
-
-Hi Krzysztof,
-
-I think this is not a good idea.
-
-Even though these two are detectable, this breaks if along comes a 3rd device
-in the future which is truly compatible with one of these two parts but that
-we don't yet know about (so can't discover). For that part we will want to
-provide a meaningful fallback compatible.
-
-It needs to fallback to either the 3 channel or the 5 channel chip and handle
-it as appropriate. (Note that this difference is non obvious as right now the
-code pretends there are always 5 channels and that needs fixing).
-
-If the chips provided a register that told all the chip specific data like
-how many channels, then sure making one fallback to the other would be fine
-as future devices could use those standard registers.
-
-With just an Id register, we can't discover enough.  Hence these two
-parts should not be listed as compatible with each other.
-
-Jonathan
-
-> 
-> Best regards,
-> Krzysztof
-> 
+> diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+> index 74ac887d8d8e..5d2e750ca2b9 100644
+> --- a/drivers/iio/chemical/bme680_core.c
+> +++ b/drivers/iio/chemical/bme680_core.c
+> @@ -438,7 +438,7 @@ static u32 bme680_compensate_gas(struct bme680_data *data, u16 gas_res_adc,
+>  	u32 calc_gas_res;
+>  
+>  	/* Look up table for the possible gas range values */
+> -	const u32 lookupTable[16] = {2147483647u, 2147483647u,
+> +	static const u32 lookupTable[16] = {2147483647u, 2147483647u,
+>  				2147483647u, 2147483647u, 2147483647u,
+>  				2126008810u, 2147483647u, 2130303777u,
+>  				2147483647u, 2147483647u, 2143188679u,
 
 

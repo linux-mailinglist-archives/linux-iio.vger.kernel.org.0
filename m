@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-7970-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7971-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFF193DF88
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 15:27:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E7093DF90
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 15:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B8651C20E20
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 13:27:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF9E1F21B15
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 13:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E4615DBD6;
-	Sat, 27 Jul 2024 13:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E5E16EB44;
+	Sat, 27 Jul 2024 13:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jeWtmhWH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YB/Qg/Xu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D6715D5C3;
-	Sat, 27 Jul 2024 13:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CF96F2E2;
+	Sat, 27 Jul 2024 13:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722086821; cv=none; b=KvX8c0iXSNxydiiyYtvzW2wALqoh5qdb14FqwrrGTerwmvyFVBz1ncCbtzcVpJR7ZJY0u/p6XfvhwHWrrAIZjOgebUkxd5sdCDK8hkw5wz24SAffOitIrBaEq9hjH0bXRbhh/1iqaSA00E25Cul579Cxxv8godotXXaX6pvdLT0=
+	t=1722087793; cv=none; b=nA1uez6CMfWerO2+6OX7klOFfLIvcyrn6XZ3oz9wJsYwkslkMpUgMQzckFGqZHaRpB7dyPqSaWD6SVAtI5xf0fajxKbMMH2W+RT4OBFL3qRQSQfDl7kUpCAVK7P/Fvx5XCkEXiMkcWsXe0fk3kSmvW5/+jf0C40Ib7GIZYqbqU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722086821; c=relaxed/simple;
-	bh=hfm/a0WJzKDzsAPXoH8vv1DrOwVXSTC9IQm/YjmsKwY=;
+	s=arc-20240116; t=1722087793; c=relaxed/simple;
+	bh=wFih39UP/lYrUW0VAwl6Cavvym7xv6T3EAxKzzMay2w=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fv7j6fIYUp/PWRRmcUdFEr1gNirAADV7E3ThJiWOLHSouFEO5htnVOHLQaZckWdYKxa9zBVAQ1Z1pUwUC6lEDfDhE5ovfeRQSDkpl0PGThPxFeRzhG1CRNsLPYnPy/Tq6YWhTMwYCfLOevuZIRcJc54gnuDZT21dJ8bpDeuvRho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jeWtmhWH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A03C32781;
-	Sat, 27 Jul 2024 13:26:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iT+W17wsVgD1ZcjWhIDQ02MNlHS6aE66BkE/rTLW6FMPdbgyPK0PgOGjKxranG6W2hMjmrY1x995Wr1dUkq4444QW9yDjp3n3k3cdySEypAk3LW5cHGMM1DdreuN02x5ZZUHOpvx7Z+Jq6pqvftfnGx4Cav0efOjD3o3FqnoW3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YB/Qg/Xu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA8CC32781;
+	Sat, 27 Jul 2024 13:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722086820;
-	bh=hfm/a0WJzKDzsAPXoH8vv1DrOwVXSTC9IQm/YjmsKwY=;
+	s=k20201202; t=1722087792;
+	bh=wFih39UP/lYrUW0VAwl6Cavvym7xv6T3EAxKzzMay2w=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jeWtmhWH/yI52jgw83HNHqf/C0n95czBcPQJ8+zBY9Yp9O15lM0i8caFgPM5JKlgS
-	 8m/+0ccWBODrczcueAG5AV9yttxJE93VQCVIlQyhHzwAD3pyWe1ucMWBjYrbJSC4ux
-	 oG4hB2MPwpVisc60xuQN2xQFvRg6FCAeEM95kynWO0wZaPrziphdcx8r5RVWCnmpup
-	 nOH8bppqn+K0AzRv8CQksd5PlO2g//ox7bsf53EGRz0hUNc2lWaRbK5Q3iPy4xFL+X
-	 ysvhhCPPZfit65qm1URaof0kmiTe3xsfwobDx1vyoo3l1Syt+yX1yIKOBve/hMU/R1
-	 GfPiWWyXZdiNQ==
-Date: Sat, 27 Jul 2024 14:26:52 +0100
+	b=YB/Qg/XuKW/IusCtf09xpY4qQlWEWSfPxG3eqqPSEzpgfQQnJ+Y7zIWMwSaeb1Xx2
+	 PDZKfcAPVE9wYGqcL95TlzlbnkwPY5H95eyj1PB+sEJEVsDMkX1/y1ddIvNwaoigO9
+	 nBiuMbJmEUPlecuW93P4+MJCVl8OKLW+dlsjjVvqsONyFVWp+cuB7p52mCI9ja2ieu
+	 rzehqztgR1wZEtSILwWzxvGASdQNuFlZ+qViU/+k98OEYYRLbeCzJ0bEgc5uUa51ps
+	 N/RSMR1B4mbzBqJxICel/PmIMZhdhaiRNKaTJG0geOkTvk9MqK1glHBogu7SfY8aQD
+	 xA6e7WumMzcpQ==
+Date: Sat, 27 Jul 2024 14:43:03 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -52,12 +52,12 @@ Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
  <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org
-Subject: Re: [PATCH RFC v3 3/9] spi: add support for hardware triggered
- offload
-Message-ID: <20240727142652.45942b5c@jic23-huawei>
-In-Reply-To: <20240722-dlech-mainline-spi-engine-offload-2-v3-3-7420e45df69b@baylibre.com>
+Subject: Re: [PATCH RFC v3 7/9] iio: buffer-dmaengine: generalize requesting
+ DMA channel
+Message-ID: <20240727144303.4a8604cb@jic23-huawei>
+In-Reply-To: <20240722-dlech-mainline-spi-engine-offload-2-v3-7-7420e45df69b@baylibre.com>
 References: <20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
-	<20240722-dlech-mainline-spi-engine-offload-2-v3-3-7420e45df69b@baylibre.com>
+	<20240722-dlech-mainline-spi-engine-offload-2-v3-7-7420e45df69b@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,97 +68,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 22 Jul 2024 16:57:10 -0500
+On Mon, 22 Jul 2024 16:57:14 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> This extends the SPI framework to support hardware triggered offloading.
-> This allows an arbitrary hardware trigger to be used to start a SPI
-> transfer that was previously set up with spi_offload_prepare().
+> This patch generalizes the iio_dmaengine_buffer_setup_ext() functions
+> by passing the pointer to the DMA channel as an argument rather than
+> the channel name. This will allow future callers of the function to
+> use other methods to get the DMA channel pointer.
 > 
-> Since the hardware trigger can happen at any time, this means the SPI
-> bus must be reserved for exclusive use as long as the hardware trigger
-> is enabled. Since a hardware trigger could be enabled indefinitely,
-> we can't use the existing spi_bus_lock() and spi_bus_unlock() functions,
-> otherwise this could cause deadlocks. So we introduce a new flag so that
-> any attempt to lock or use the bus will fail with -EBUSY as long as the
-> hardware trigger is enabled.
-> 
-> Peripheral drivers may need to control the trigger source as well. For
-> this, we introduce a new spi_offload_hw_trigger_get_clk() function that
-> can be used to get a clock trigger source. This is intended for used
-> by ADC drivers that will use the clock to control the sample rate.
-> Additional functions to get other types of trigger sources could be
-> added in the future.
+> This aims to keep it as easy to use as possible by stealing ownership
+> of the dma_chan pointer from the caller. This way, dma_request_chan()
+> can be called inline in the function call without any extra error
+> handling.
+
+That's odd enough to be a likely source of future bugs. Doesn't seem
+necessary to me. Just have the extra handling in the few places it's needed.
+
+Or add a wrapper for this case where you just provide the
+channel name as was done before this patch.
+
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> 
-> TODO: Currently, spi_bus_lock() always returns 0, so none of the callers
-> check the return value. All callers will need to be updated first before
-> this can be merged.
-
-If it's going to fail sometimes, probably needs a name that indicates
-that. I'm not sure spi_bus_try_lock() is appropriate though.
-
 > 
 > v3 changes:
-> * renamed enable/disable functions to spi_offload_hw_trigger_*mode*_...
-> * added spi_offload_hw_trigger_get_clk() function
-> * fixed missing EXPORT_SYMBOL_GPL
-> 
-> v2 changes:
-> 
-> This is split out from "spi: add core support for controllers with
-> offload capabilities".
-> 
-> Mark suggested that the standard SPI APIs should be aware that the
-> hardware trigger is enabled. So I've added some locking for this. Nuno
-> suggested that this might be overly strict though, and that we should
-> let each individual controller driver decide what to do. For our use
-> case though, I think we generally are going to have a single peripheral
-> on the SPI bus, so this seems like a reasonable starting place anyway.
+> * This is a new patch in v3.
+
 
 ...
 
-> +int spi_offload_hw_trigger_mode_enable(struct spi_device *spi, const char *id)
-> +{
-> +	struct spi_controller *ctlr = spi->controller;
-> +	unsigned long flags;
-> +	int ret;
-> +
-> +	if (!ctlr->offload_ops || !ctlr->offload_ops->hw_trigger_mode_enable)
-> +		return -EOPNOTSUPP;
-> +
-> +	mutex_lock(&ctlr->bus_lock_mutex);
-> +
-> +	if (ctlr->offload_hw_trigger_mode_enabled) {
-> +		mutex_unlock(&ctlr->bus_lock_mutex);
-> +		return -EBUSY;
-> +	}
-> +
-> +	spin_lock_irqsave(&ctlr->bus_lock_spinlock, flags);
-> +	ctlr->offload_hw_trigger_mode_enabled = true;
-Why do you need to take the spinlock when setting this to true, but not when
-setting it to fast (in the error path below)?
-
-> +	spin_unlock_irqrestore(&ctlr->bus_lock_spinlock, flags);
-> +
-> +	/* TODO: how to wait for empty message queue? */
-> +
-> +	mutex_lock(&ctlr->io_mutex);
-> +	ret = ctlr->offload_ops->hw_trigger_mode_enable(spi, id);
-> +	mutex_unlock(&ctlr->io_mutex);
-> +
-> +	if (ret) {
-> +		ctlr->offload_hw_trigger_mode_enabled = false;
-> +		mutex_unlock(&ctlr->bus_lock_mutex);
-> +		return ret;
-> +	}
-> +
-> +	mutex_unlock(&ctlr->bus_lock_mutex);
-> +
-> +	return 0;
-> +}
-> 
+> @@ -277,22 +282,26 @@ static void __devm_iio_dmaengine_buffer_free(void *buffer)
+>   * devm_iio_dmaengine_buffer_setup_ext() - Setup a DMA buffer for an IIO device
+>   * @dev: Parent device for the buffer
+>   * @indio_dev: IIO device to which to attach this buffer.
+> - * @channel: DMA channel name, typically "rx".
+> + * @chan: DMA channel.
+>   * @dir: Direction of buffer (in or out)
+>   *
+>   * This allocates a new IIO buffer with devm_iio_dmaengine_buffer_alloc()
+>   * and attaches it to an IIO device with iio_device_attach_buffer().
+>   * It also appends the INDIO_BUFFER_HARDWARE mode to the supported modes of the
+>   * IIO device.
+> + *
+> + * This "steals" the @chan pointer, so the caller must not call
+> + * dma_release_channel() on it. @chan is also checked for error, so callers
+> + * can pass the result of dma_request_chan() directly.
+>   */
+>  int devm_iio_dmaengine_buffer_setup_ext(struct device *dev,
+>  					struct iio_dev *indio_dev,
+> -					const char *channel,
+> +					struct dma_chan *chan,
+>  					enum iio_buffer_direction dir)
+>  {
+>  	struct iio_buffer *buffer;
+>  
+> -	buffer = iio_dmaengine_buffer_setup_ext(dev, indio_dev, channel, dir);
+> +	buffer = iio_dmaengine_buffer_setup_ext(dev, indio_dev, chan, dir);
+>  	if (IS_ERR(buffer))
+>  		return PTR_ERR(buffer);
+>  
 
 

@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-7961-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7962-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E448D93DF43
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 14:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F73193DF45
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 14:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BB2D1C20D51
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 12:22:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1F71C21107
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Jul 2024 12:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C906F316;
-	Sat, 27 Jul 2024 12:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC87A78B50;
+	Sat, 27 Jul 2024 12:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T4/dmj1G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhugC3Jp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2484511C83;
-	Sat, 27 Jul 2024 12:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AD978276;
+	Sat, 27 Jul 2024 12:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722082956; cv=none; b=SBVwsOLqVdBSCShpUXOS4T72LKmKPobTfpo7zASjtJfylX+NLBUld2PK0fmR4Nd2+enKNdzKbtjOgUoUYfZdMwF2Hd9oxJkm48THkzU5wjpz7NTbmheGRaTHA4ObROoAkBoz9FMnddn98MJVG0TPZHt2KsWl9n1JXedXarOV98k=
+	t=1722083264; cv=none; b=rZXUksX9L1C8jPioi2zQ2rWMAsZ8I2IUHAvu9raKblcMttO3omST4MiiOc89wgIVSnxt0pwoaA403O8s2GYRbAQLwKfG3FL3LZ8LGBQUoXOGeAnOQeXiPocsLLmCwJmk2mSQ5skC94A5MwascHUbCcFVZUWpavB7qfFvth9WGzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722082956; c=relaxed/simple;
-	bh=9a0Ha8lQOeilHBupsCVrAgqvfXJ+fKamMODcBHyfa+8=;
+	s=arc-20240116; t=1722083264; c=relaxed/simple;
+	bh=VZEg2zc8fwE6kWAYB6Y2R2xxGYcYeWkQAkBModrxHJE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vyx+qdPBT4j/7Qjd5GWwXqtgeX8XoSoqDVT/BPrNgIzTV5ImIOsiPWOO1hm6yRaCqu/wQRbNGY1fSRqdVf6mWS/Mj7H6BCuQd5jfLOy66Fs9HXAbYfoiTcRzHEdIxlfg2E8BVFeVeJYH0wIKIb12KppV2LS/C8gfr6iGk0VWTgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T4/dmj1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F26C32781;
-	Sat, 27 Jul 2024 12:22:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=htEImw7b4PxunHN4bRq/RkCAdJthafpLydyUAqTx7kaegety9eHBj8V460G9aYRTMdKBOB72iqr4Bs8GGrl38KU9e/A6TANw6+jKmNuSi5yy0conyyRuIvGL8lAU73xs5aDEOfi/Iyf4UAqc8C4Oo5FzUTuc50TF9MGdxrnqAGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhugC3Jp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83046C32781;
+	Sat, 27 Jul 2024 12:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722082955;
-	bh=9a0Ha8lQOeilHBupsCVrAgqvfXJ+fKamMODcBHyfa+8=;
+	s=k20201202; t=1722083264;
+	bh=VZEg2zc8fwE6kWAYB6Y2R2xxGYcYeWkQAkBModrxHJE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=T4/dmj1GAkdmw3QNiAzdc2Qj5uZ/7SCICHx55wwy1HCa27bzWQKctlUTp/Nfpq+V5
-	 yyCRQK9diS3i3aNC6mFAKErGwaHxAOSvQw0kRRQIN6fr45q+CK1gCTw1tq+5Vu7BwI
-	 6YO1kyeiFtDM7HaOgdzScwr5P6u6tj+sVz+F8rm5Hb4rhMoItDxYXbVmEchixs3mGb
-	 S72R9Mjf2w4OSbCCtDt/M2zTW6vjWxSzWRaRyHt+Rp+OQvCwBENz0NpOOGtHjQK3AB
-	 3ZOM1HcbePT6oypQesSQSx3wXEAbQcv8J1NVRUEOiStD9wta+WqqUe7UDGf7ELBKCa
-	 jNylbGCG1QVxg==
-Date: Sat, 27 Jul 2024 13:22:27 +0100
+	b=lhugC3Jps/xM7clYXG/7R+Cdbs8/wlAEdA0ftMcLVlKw1puJNUUTaZ2vLIM6284TW
+	 hevPsQw1x0xrWHaLU4k08EFOQadGJhEAaI+UOqOyLghJsE6pX2IHBSLdhObjgUHCdq
+	 hKzZltte33uCXL87On46+6vZ880bNFsU2ygqcYuukrhryrzoDJLo9TBbGAetx10+it
+	 Uq0oXbixkRi5AwVpLPgFKroUdYhRk1Cn3Or+D+5H2wiWPXYRSQHvDc+T5f+g0bFHS7
+	 c5AePof+o67jNAU+3STDxE2O26WZB70fuG5vq8k5pgQtNe0vgmxpRDKpC3hJH2XCBe
+	 Z0zmeQ/PjTV2A==
+Date: Sat, 27 Jul 2024 13:27:35 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: wangshuaijie@awinic.com
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, kangjiajun@awinic.com,
- krzk+dt@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, liweilei@awinic.com, robh@kernel.org,
- waqar.hameed@axis.com
-Subject: Re: [PATCH V3 2/2] Add support for Awinic proximity sensor
-Message-ID: <20240727132227.4d350534@jic23-huawei>
-In-Reply-To: <20240725124732.890375-1-wangshuaijie@awinic.com>
-References: <20240713152700.3c395608@jic23-huawei>
-	<20240725124732.890375-1-wangshuaijie@awinic.com>
+To: Abhash jha <abhashkumarjha123@gmail.com>
+Cc: anshulusr@gmail.com, linux-iio@vger.kernel.org, lars@metafoo.de,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: light: ltr390: Add configurable gain, resolution
+ and ALS reading
+Message-ID: <20240727132735.052502ad@jic23-huawei>
+In-Reply-To: <CAG=0RqL1GxCKdzDzUjqECEsfQmunCwnv+g_5cqM1fcfBsg+P0w@mail.gmail.com>
+References: <20240718104947.7384-1-abhashkumarjha123@gmail.com>
+	<20240720165554.5fd16ca0@jic23-huawei>
+	<CAG=0RqL1GxCKdzDzUjqECEsfQmunCwnv+g_5cqM1fcfBsg+P0w@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,79 +64,43 @@ Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
 
-> >> diff --git a/drivers/iio/proximity/aw9610x.c b/drivers/iio/proximity/aw9610x.c
-> >> new file mode 100644
-> >> index 000000000000..15e53d55d2a1
-> >> --- /dev/null
-> >> +++ b/drivers/iio/proximity/aw9610x.c
-> >> @@ -0,0 +1,1150 @@
-> >> +// SPDX-License-Identifier: GPL-2.0
-> >> +/*
-> >> + * AWINIC sar sensor driver (aw9610x)
-> >> + *
-> >> + * Author: Shuaijie Wang<wangshuaijie@awinic.com>
-> >> + *
-> >> + * Copyright (c) 2024 awinic Technology CO., LTD
-> >> + */
-> >> +#include "aw_sar.h"
-> >> +
-> >> +#define AW9610X_I2C_NAME "aw9610x_sar"
-> >> +#define AW9610X_CHANNEL_MAX	(5)  
-> >
-> >No brackets around numeric values. They add nothing.
+Please crop replies to only leave the section being discussed.
+It saves time for everyone reading the thread.
+
+> > > -static const struct iio_info ltr390_info = {
+> > > -     .read_raw = ltr390_read_raw,
+> > > +/* integration time in us */
+> > > +static const int ltr390_int_time_map_us[] = {400000, 200000, 100000, 50000, 25000, 12500};
+> > > +static const int ltr390_gain_map[] = {1, 3, 6, 9, 18};
+> > > +
+> > > +static IIO_CONST_ATTR_INT_TIME_AVAIL("400000 200000 100000 50000 25000 12500");  
+> > Please use read_avail() callback and the appropriate mask to provide this.
+> > That enables it to be used from in kernel consumers and enforces the
+> > ABI without a reviewer having to check what you have aligns.
 > >  
-> 
-> The patch for v4 will fix these issues.
-
-If you agree with a comment, usual convention to save everyone time is
-don't reply to it and ideally crop that part of the email out entirely.
-
-It is hard to find the active discussions that need replies in an
-email unless it is cropped to make them the only remaining parts.
-
-...
-
-
-> 
-> >> +
-> >> +#define AFE_BASE_ADDR					(0x0000)  
-> >
-> The patch for v4 will fix these issues.
-> 
-> >> +
-> >> +	if (reg_val != AW9610X_CHIP_ID) {
-> >> +		dev_err(p_sar->dev, "unsupport dev, chipid is (0x%04x)", reg_val);  
-> >
-> >
-> >To allow use of fallback compatibles in DT we normally accept chipid missmatches.
-> >So at most dev_info and carry on anyway.
+> > > +static IIO_CONST_ATTR(gain_available, "1 3 6 9 18");  
+> > Given we don't have a 'gain' control, what is the available applying to?
 > >  
-> 
-> Sorry, if the chipid does not match, the driver is likely to encounter issues
-> during operation. We will not consider compatibility with more devices for
-> the time being.
+> The gain gets controlled by writing to the iio_info_scale attribute,
+> we write one of the above available values.
+> So that we can scale the raw ALS and UVI values. I could use
+> read_avail() for this too for the IIO_INFO_SCALE channel. Should I do
+> that?
 
-This discussion has been had many times and the standard approach to this has
-changed over time (in IIO anyway). We have not yet updated all drivers to
-the current policy.
+Yes, it would be appropriate to provide read_avail for IIO_INFO_SCALE
+as that is standard ABI that userspace will have way to interpret.
 
-Current policy is that we do not block probing a chip that firmware has told
-us is compatible on the basis of a failure to match a chip id.
+> Can you elaborate more on your comment?
 
-Print a message to help with any bug report issues you may get.
-+ educate integrators of your device that they must not put false compatibles
-in their firmware.
+Basic rule of thumb is think very hard about whether there is an alternative
+if you are providing attributes directly to an IIO driver.
+There are a few corners where that is necessary for standard ABI
+around FIFOs or certain event related attributes + a few special
+corners for complex hardwware.
 
-> 
-> >> +		return -EINVAL;
-> >> +	}
-> >> +	memcpy(p_sar->chip_name, "AW9610X", 8);
-> >> +
-> >> +	return 0;
-> >> +}
-...
+None of those apply here, so read_avail callback and choosing standard
+ABI elements to match what you are trying to control / describe is the
+way to go.  That's the stuff that userspace tooling knows how to use.
 
-> Kind regards,
-> Wang Shuaijie
-
+Jonathan
 

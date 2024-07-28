@@ -1,62 +1,61 @@
-Return-Path: <linux-iio+bounces-8005-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8006-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C1493E83E
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 18:26:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2704993E896
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 18:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B10301F21410
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 16:26:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9F842813DD
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 16:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516EB1891AE;
-	Sun, 28 Jul 2024 16:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4B26214D;
+	Sun, 28 Jul 2024 16:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="im4CjrhP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8f2uKS8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE54188CA5;
-	Sun, 28 Jul 2024 16:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF92137708;
+	Sun, 28 Jul 2024 16:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722182966; cv=none; b=RVIkafDFj2ZrFrlbHLJ/pBrr2QOdUFb7lewqmyv8Df5s4r5Xh1Ai/C/EGZObIhDHHGsC65k0vTJkdJKphWt5+q/UKG0DTJwOfgMitM9jq4Y2UKYVwYHRAVTVREflTxeacjcMruEN3tEVG0MbvUNy3E04H8HPFVUzQXx7lnn1gcc=
+	t=1722183799; cv=none; b=N1RRNFvvUaio3BQxHwim8/vZc0mdNgMcBHyc7lfFdnrLdmP3yrpKvIaWgoBv7WqnAgJTGFGBeW0tQ2F0bj6zSaDSRYilwydp/nIQKhCBQnRMTRafYBKSI+SxrbphG8GsGS4FdPlk2mZpo2BjQietrh/DVJ574YTbDdf0xkHdFkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722182966; c=relaxed/simple;
-	bh=DG5ulTQk+MG42W/U9N7gwMfUOg5bBXfQjT06OCk3/gE=;
+	s=arc-20240116; t=1722183799; c=relaxed/simple;
+	bh=WyeKyzZehO3UtG2EeJ6HiE4fRSfVItVILunyCsUVLx4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MswCC8Wem19limuAtLTRDEG02PlUAEKPt9uYujT/mWSTxhsd0edOKaAtz5ejGskjW2zusqMpXiiPvUN3xeFEymSSup+l8vKFx+imj6COu6pq2l1CehRN+OyiBe7KRIRLbIYfGvbRC7iqCogcy72Wq6Cl60PGdSJQFdPltTZaMfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=im4CjrhP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAF8C4AF0B;
-	Sun, 28 Jul 2024 16:09:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sGMGXMldbzE3iI8v402XLr4UUNK+TxzeJy3Pk4lQM5TOkdv2Pz7uum8pBgIi865TFOobCKvotQluoNcaD5uhlvZjwnR1pPlZjVOdrg7FIKJIgb0Cr6Zz30H/8FsOKPW6R/OEy09MdeOyEwMIBv+2AS8p7O6TMdPEVEJfGAg90FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8f2uKS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38D7C116B1;
+	Sun, 28 Jul 2024 16:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722182965;
-	bh=DG5ulTQk+MG42W/U9N7gwMfUOg5bBXfQjT06OCk3/gE=;
+	s=k20201202; t=1722183798;
+	bh=WyeKyzZehO3UtG2EeJ6HiE4fRSfVItVILunyCsUVLx4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=im4CjrhPvqFwYPU1Bu6w63799uYd6O5rZtIJ6BhQuOdLumaKqNe4Bh11bcbhzbGLp
-	 CEtXZ74kja4cSjQNU0CqtAD82PX5To1LxBCq4DWOXhB8cGmvgDLYAHGY45bL+hRhw1
-	 WqoSLo1aVW2fnrWCcbS+7/hHz25izTdL9pj4c4DIJavkqw4fhNkozWOvz2okFPbemC
-	 jE09xSPhmZuVLf8utl+gcSM0SgTgPtdkKNHgQZeafbIiIdpP7qFxmWAJNOQtb7b+7/
-	 CymffrCDTsXR3tXkTdcn1e+tnOymfF+IpzE48gPcDpLu3MAkE9h9bWHW+o/LmlQoQH
-	 iTpPa83HsGdcQ==
-Date: Sun, 28 Jul 2024 17:09:15 +0100
+	b=T8f2uKS8SVyCvSj330Fhgjl5hUUaW6Ew6rQ9lC4okS4hIUJixYxUFNEysq+RcZ/rq
+	 MaCw+/pxcuSi0GlYk8KrdOBjhXZPd/QTZd3OZ8F8V4UBUSTMaiM1On8CrnaXXdgRgd
+	 DuVp7R3+MzR3N8xV0ksNoyuD1/4mZd8cofHJbg4oLsqzdCUt09WHzscV2FRlPHT7l6
+	 uvMH9LMCYqudvPx6le/Bm/EAP4npYO1lrB0heTd9EgJe7CFRhclchYniFXPLY4oiKz
+	 tWm7I/DfGiusIMSqduDA6QIO2WLaia+wWkfqso6Z1P7QzLTqzqm8UYh9VX0QYn/wEk
+	 ldJS6NAHQUZ2Q==
+Date: Sun, 28 Jul 2024 17:23:09 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
- ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
- biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
- semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 7/7] iio: pressure bmp280: Move bmp085 interrupt to
- new configuration
-Message-ID: <20240728170915.26b4a01d@jic23-huawei>
-In-Reply-To: <20240725231039.614536-8-vassilisamir@gmail.com>
-References: <20240725231039.614536-1-vassilisamir@gmail.com>
-	<20240725231039.614536-8-vassilisamir@gmail.com>
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH 3/5] ad7380: add support for single-ended parts
+Message-ID: <20240728172309.13155e1b@jic23-huawei>
+In-Reply-To: <20240726-ad7380-add-single-ended-chips-v1-3-2d628b60ccd1@baylibre.com>
+References: <20240726-ad7380-add-single-ended-chips-v1-0-2d628b60ccd1@baylibre.com>
+	<20240726-ad7380-add-single-ended-chips-v1-3-2d628b60ccd1@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,88 +66,122 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 26 Jul 2024 01:10:39 +0200
-Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+On Fri, 26 Jul 2024 17:20:08 +0200
+Julien Stephan <jstephan@baylibre.com> wrote:
 
-> This commit intends to add the old BMP085 sensor to the new IRQ interface
-> of the sensor consistence. No functional changes intended.
+> Adding ad7386/7/8 (16/14/12 bits) unsigned, dual simultaneous sampling,
+> single-ended compatible parts, and the corresponding ad7386-4/7-4/8-4
+> 4 channels.
 > 
-> The BMP085 sensor is equivalent with the BMP180 with the only difference of
-> BMP085 having an extra interrupt pin to inform about an End of Conversion.
+> These parts have a 2:1 multiplexer in front of each ADC. They also include
+> additional configuration registers that allow for either manual selection
+> or automatic switching (sequencer mode), of the multiplexer inputs.
+> This commit focus on integrating manual selection. Sequencer mode will
+> be implemented later.
 > 
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Trivial comments inline + as the build bot pointed out you can't use data from
-one array to fill the other.
-
-Jonathan
-
-> ---
->  drivers/iio/pressure/bmp280-core.c | 72 +++++++++++++++++++++++-------
->  drivers/iio/pressure/bmp280-i2c.c  |  4 +-
->  drivers/iio/pressure/bmp280-spi.c  |  4 +-
->  drivers/iio/pressure/bmp280.h      |  1 +
->  4 files changed, 60 insertions(+), 21 deletions(-)
+> From an IIO point of view, all inputs are exported, i.e ad7386/7/8
+> export 4 channels and ad7386-4/7-4/8-4 export 8 channels.
 > 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 4238f37b7805..e4d017358b68 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -3104,13 +3104,19 @@ static irqreturn_t bmp085_eoc_irq(int irq, void *d)
->  	return IRQ_HANDLED;
->  }
->  
-> -static int bmp085_fetch_eoc_irq(struct device *dev,
-> -				const char *name,
-> -				int irq,
-> -				struct bmp280_data *data)
-> +static int bmp085_trigger_probe(struct iio_dev *indio_dev)
->  {
-> +	struct bmp280_data *data = iio_priv(indio_dev);
-> +	struct device *dev = data->dev;
-> +	struct fwnode_handle *fwnode;
->  	unsigned long irq_trig;
-> -	int ret;
-> +	int ret, irq;
-> +
-> +	fwnode = dev_fwnode(data->dev);
-> +	if (!fwnode)
-> +		return -ENODEV;
-> +
-> +	irq = fwnode_irq_get(fwnode, 0);
->  
->  	irq_trig = irqd_get_trigger_type(irq_get_irq_data(irq));
->  	if (irq_trig != IRQF_TRIGGER_RISING) {
-> @@ -3120,13 +3126,12 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
->  
->  	init_completion(&data->done);
->  
-> -	ret = devm_request_threaded_irq(dev,
-> -			irq,
-> -			bmp085_eoc_irq,
-> -			NULL,
-> -			irq_trig,
-> -			name,
-> -			data);
-> +	ret = devm_request_irq(dev,
-> +			       irq,
-> +			       bmp085_eoc_irq,
-> +			       irq_trig,
-> +			       indio_dev->name,
-> +			       data);
-Whilst here, put some of those parameters on the same line (staying below
-80 chars).
+> Inputs AinX0 of multiplexers correspond to the first half of IIO channels
+> (i.e 0-1 or 0-3) and inputs AinX1 correspond to second half (i.e 2-3 or
+> 4-7). Example for AD7386/7/8 (2 channels parts):
+> 
+>           IIO   | AD7386/7/8
+>                 |         +----------------------------
+>                 |         |     _____        ______
+>                 |         |    |     |      |      |
+>        voltage0 | AinA0 --|--->|     |      |      |
+>                 |         |    | mux |----->| ADCA |---
+>        voltage2 | AinA1 --|--->|     |      |      |
+>                 |         |    |_____|      |_____ |
+>                 |         |     _____        ______
+>                 |         |    |     |      |      |
+>        voltage1 | AinB0 --|--->|     |      |      |
+>                 |         |    | mux |----->| ADCB |---
+>        voltage3 | AinB1 --|--->|     |      |      |
+>                 |         |    |_____|      |______|
+>                 |         |
+>                 |         +----------------------------
+> 
+> When switching channel, the ADC require an additional settling time.
+> According to the datasheet, data is valid on the third CS low. We already
+> have an extra toggle before each read (either direct reads or buffered
+> reads) to sample correct data, so we just add a single CS toggle at the
+> end of the register write.
+> 
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Hi Julien
 
->  	if (ret) {
->  		/* Bail out without IRQ but keep the driver in place */
->  		dev_err(dev, "unable to request DRDY IRQ\n");
-> @@ -3137,6 +3142,44 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
->  	return 0;
->  }
+LGTM - only one trivial comment inline.
+If nothing else comes up I can change that whilst applying.
+I won't be applying today however given this is a new series and has only been
+on the list since Friday.
+
+...
+
+> @@ -92,8 +96,24 @@ enum {
+>  	AD7380_SCAN_TYPE_RESOLUTION_BOOST,
+>  };
 >  
-> +const struct bmp280_chip_info bmp085_chip_info = {
-> +	.id_reg = bmp180_chip_info.id_reg,
-As the build bot has pointed out you can't do this.
-Annoying but just duplicate the original structure with whatever
-changes you need.
+> -/* Extended scan types for 14-bit chips. */
+> -static const struct iio_scan_type ad7380_scan_type_14[] = {
+> +/* Extended scan types for 12-bit unsigned chips. */
+> +static const struct iio_scan_type ad7380_scan_type_12_u[] = {
+> +	[AD7380_SCAN_TYPE_NORMAL] = {
+> +		.sign = 'u',
+> +		.realbits = 12,
+> +		.storagebits = 16,
+> +		.endianness = IIO_CPU
+
+Add trailing commas.  In theory we might expand this structure
+in the future.   The only time we don't add trailing commas is
+for 'null' terminator type entries where we know anything added
+must come before them.
+
+
+> +	},
+> +	[AD7380_SCAN_TYPE_RESOLUTION_BOOST] = {
+> +		.sign = 'u',
+> +		.realbits = 14,
+> +		.storagebits = 16,
+> +		.endianness = IIO_CPU
+> +	},
+> +};
+
+>  
+> +/*
+> + * Single ended parts have a 2:1 multiplexer in front of each ADC.
+> + *
+> + * From an IIO point of view, all inputs are exported, i.e ad7386/7/8
+> + * export 4 channels and ad7386-4/7-4/8-4 export 8 channels.
+> + *
+> + * Inputs AinX0 of multiplexers correspond to the first half of IIO channels
+> + * (i.e 0-1 or 0-3) and inputs AinX1 correspond to second half (i.e 2-3 or
+> + * 4-7). Example for AD7386/7/8 (2 channels parts):
+> + *
+> + *           IIO   | AD7386/7/8
+> + *                 |         +----------------------------
+> + *                 |         |     _____        ______
+> + *                 |         |    |     |      |      |
+> + *        voltage0 | AinA0 --|--->|     |      |      |
+> + *                 |         |    | mux |----->| ADCA |---
+> + *        voltage2 | AinA1 --|--->|     |      |      |
+> + *                 |         |    |_____|      |_____ |
+> + *                 |         |     _____        ______
+> + *                 |         |    |     |      |      |
+> + *        voltage1 | AinB0 --|--->|     |      |      |
+> + *                 |         |    | mux |----->| ADCB |---
+> + *        voltage3 | AinB1 --|--->|     |      |      |
+> + *                 |         |    |_____|      |______|
+> + *                 |         |
+> + *                 |         +----------------------------
+> + *
+> + * Since this is simultaneous sampling for AinX0 OR AinX1 we have two separate
+> + * scan masks.
+> + */
+
+Good. I always like some nice art :)
++ your implementation takes the same approach I would have done.
+
 
 

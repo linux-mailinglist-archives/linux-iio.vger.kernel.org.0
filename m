@@ -1,62 +1,58 @@
-Return-Path: <linux-iio+bounces-8008-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8009-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031D993E8A2
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 18:37:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D89F993E8B1
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 18:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E5C2B216B7
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 16:37:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15C261C216D4
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 16:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD49F53804;
-	Sun, 28 Jul 2024 16:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272A657333;
+	Sun, 28 Jul 2024 16:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFfN+Uz9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVMiBQqs"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E955A35;
-	Sun, 28 Jul 2024 16:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6697A35;
+	Sun, 28 Jul 2024 16:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722184655; cv=none; b=MlbcwEcOEgxvagR4g+J8UJn8l20WW43zaZGl79Ooy4RqfZxGxdUpSCibbGlFDQFJvBAsb4FafC8rWWkKkUXib6O3ZXutFFRfy7r7QA8x2wkAwKYDaeU1+Gm7AsMi1NECmoqLL6kPbFZj2uuvwCpQ/m3nyY3sbN6LUzEwuVdBM18=
+	t=1722185928; cv=none; b=Fdu1KNhJc5GvY0ckliguVkzlK5qAee68Wc143I+cyCk1uE57faBWW1M9SRIZoJRTEe2Db08oFEzfeynLq4+wTrj0LMouxcC4b5pvt4Su0RZJv5LPHrYjD/uL64Dx94lyIQ0wARCnOgQ/WOBycZPnScy01rNOc5ZQpqunSQ/WIxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722184655; c=relaxed/simple;
-	bh=ZIIHf+HwBIHRbom7T8jcOcH7zIjW/YploDXNxkI/jxo=;
+	s=arc-20240116; t=1722185928; c=relaxed/simple;
+	bh=XZSBk3JJomRK7hzplafWAGQGVVQ8bJDO4s0Rz73Sf+M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dHmtiJ2Xd7DLAt6jG+dMdfU6lPujUIJcE1KoCgpTWdw6JnKdpHQJ1NsuO0XpcB08vxsqWEtEtp3xAgyYQ7AY7y9j4Dtd/ZEiLEjRCVe+gJKJGk08UC9/yTiJQeog3sjAFZ6OlB61YylO/vUn//2ulxzyXqbaCupefkFhvK0MsI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFfN+Uz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B25CC116B1;
-	Sun, 28 Jul 2024 16:37:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fzq49H9qNdWzbQNuH5wL0U/PCvcSmJauH0zpCdaB5c8S+EJCpdgysUNPiVM3hk219bL/mXYpbyr4SwU4PfAxxijNT9L84n1TK+ou3VJwiqgR+8VM4uR58EuElTN+gct4VHQc2ixAg+YwaHMHhhNzTIFGgWrTfi+b9myCX14vzgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVMiBQqs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF28C116B1;
+	Sun, 28 Jul 2024 16:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722184654;
-	bh=ZIIHf+HwBIHRbom7T8jcOcH7zIjW/YploDXNxkI/jxo=;
+	s=k20201202; t=1722185928;
+	bh=XZSBk3JJomRK7hzplafWAGQGVVQ8bJDO4s0Rz73Sf+M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lFfN+Uz90m/oAmvHUgbe5h8IlyqbbrDPC39jgTE3wmO2Xqpsw1AYiD0+AKLiBi5Rx
-	 RSTCrPHgMxOl8tQAN7cFk9c24t6J0ESXojkVAmsdO2yI8ANDVKIL6y7+i5WPy++9b4
-	 NJQUgr7mSDOCSiqVvau46e8GxDa/mb3OIeesawUb1IQ/EIEzqlTOIxhB2d3ufbl7qE
-	 ub4XclWf/2oTPqubnf9cNbAkIKJvEGplu0z39SGx6+NXnHBQnj+vEkNtbdoYqzkYtQ
-	 cDOh0QW2rERW2mqaKmG3Bshn86Fstm2jEsZCfHbXj3KORaWUfSC89b1RoP14y3IF9X
-	 METthFbf2KV3w==
-Date: Sun, 28 Jul 2024 17:37:25 +0100
+	b=IVMiBQqsWn/Zd20bFqZklwt/OVi9tvlsUyCS8i/U+YnM4wWIUJgoIg/h9zFMujHnh
+	 NiJ4zMBchMpgqTPXNQOHvI5F51TtP4zbUXpIXbRhBs1yvXHa5vdsBrgOlnfyPkIzgY
+	 1Vo94BQBcCl7j7xDHppRRdcbo51N+RGl6VLf/20JfMQbJ9xeNrfTl3kmOlrqoqsBs1
+	 bkvse1PiDEj0EpZjxK+EAoqcdyshhDBK4XnRM5X4T1XREHI/VYimy/zDV1uZXpgPv0
+	 jcyko50/mWRXKOSsW/rW0WJoYH5iW2msdNILoGxlxwovUHtSMyX75V2aWxSbDAud2e
+	 5/AmlArVd2FHQ==
+Date: Sun, 28 Jul 2024 17:58:41 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH 5/5] docs: iio: ad7380: add support for single-ended
- parts
-Message-ID: <20240728173725.45043f11@jic23-huawei>
-In-Reply-To: <20240726-ad7380-add-single-ended-chips-v1-5-2d628b60ccd1@baylibre.com>
-References: <20240726-ad7380-add-single-ended-chips-v1-0-2d628b60ccd1@baylibre.com>
-	<20240726-ad7380-add-single-ended-chips-v1-5-2d628b60ccd1@baylibre.com>
+To: Abhash Jha <abhashkumarjha123@gmail.com>
+Cc: linux-iio@vger.kernel.org, anshulusr@gmail.com, lars@metafoo.de,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] iio: light: ltr390: Add ALS channel and support
+ for gain and resolution
+Message-ID: <20240728175841.7ca04e58@jic23-huawei>
+In-Reply-To: <20240728151957.310237-2-abhashkumarjha123@gmail.com>
+References: <20240727132735.052502ad@jic23-huawei>
+	<20240728151957.310237-1-abhashkumarjha123@gmail.com>
+	<20240728151957.310237-2-abhashkumarjha123@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,94 +63,84 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 26 Jul 2024 17:20:10 +0200
-Julien Stephan <jstephan@baylibre.com> wrote:
+On Sun, 28 Jul 2024 20:49:55 +0530
+Abhash Jha <abhashkumarjha123@gmail.com> wrote:
 
-> The AD7380 family has some compatible single-ended chips: AD7386/7/8(-4).
-> These single-ended chips have a  2:1 multiplexer in front of each ADC.
-> They also include additional configuration registers that allow for either
-> manual selection or automatic switching (sequencer mode), of the
-> multiplexer inputs. Add a section to describe this.
+>     Add new ALS channel and allow reading raw and scale values.
+>     Also provide gain and resolution configuration for ALS channel.
+>     Add automatic mode switching between the UVS and ALS channel
+>     based on which channel is being accessed.
+>     The default mode in which the sensor start is ALS mode.
+Same issue with indent as in patch 1.
+
 > 
-> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Just one trivial missing space.
+> Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+Later patches should not be in reply to the first one.
+Use a cover letter.
 
-Nice patch set. Thanks,
-
-Jonathan
+Minor comments inline on using the enum to maintain the type of the mode
+setting.
 
 
 > ---
->  Documentation/iio/ad7380.rst | 42 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
+>  drivers/iio/light/ltr390.c | 111 ++++++++++++++++++++++++++++++++-----
+>  1 file changed, 96 insertions(+), 15 deletions(-)
 > 
-> diff --git a/Documentation/iio/ad7380.rst b/Documentation/iio/ad7380.rst
-> index 061cd632b5df..81dfa39519fb 100644
-> --- a/Documentation/iio/ad7380.rst
-> +++ b/Documentation/iio/ad7380.rst
-> @@ -17,10 +17,16 @@ The following chips are supported by this driver:
->  * `AD7381 <https://www.analog.com/en/products/ad7381.html>`_
->  * `AD7383 <https://www.analog.com/en/products/ad7383.html>`_
->  * `AD7384 <https://www.analog.com/en/products/ad7384.html>`_
-> +* `AD7386 <https://www.analog.com/en/products/ad7386.html>`_
-> +* `AD7387 <https://www.analog.com/en/products/ad7387.html>`_
-> +* `AD7388 <https://www.analog.com/en/products/ad7388.html>`_
->  * `AD7380-4 <https://www.analog.com/en/products/ad7380-4.html>`_
->  * `AD7381-4 <https://www.analog.com/en/products/ad7381-4.html>`_
->  * `AD7383-4 <https://www.analog.com/en/products/ad7383-4.html>`_
->  * `AD7384-4 <https://www.analog.com/en/products/ad7384-4.html>`_
-> +* `AD7386-4 <https://www.analog.com/en/products/ad7386-4.html>`_
-> +* `AD7387-4 <https://www.analog.com/en/products/ad7387-4.html>`_
-> +* `AD7388-4 <https://www.analog.com/en/products/ad7388-4.html>`_
+> diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+> index 9f00661c3..d1a259141 100644
+> --- a/drivers/iio/light/ltr390.c
+> +++ b/drivers/iio/light/ltr390.c
+> @@ -62,11 +62,17 @@
+>   */
+>  #define LTR390_WINDOW_FACTOR 1
 >  
->  
->  Supported features
-> @@ -69,6 +75,42 @@ must restart iiod using the following command:
->  
->  	root:~# systemctl restart iiod
->  
-> +Channel selection and sequencer (single-end chips only)
-> +-------------------------------------------------------
+> +enum ltr390_mode {
+> +	LTR390_SET_ALS_MODE,
+> +	LTR390_SET_UVS_MODE,
+> +};
 > +
-> +Single-ended chips of this family (ad7386/7/8(-4)) have a 2:1 multiplexer in
-> +front of each ADC. They also include additional configuration registers that
-allow for either manual selection or automatic switching (sequencer mode),of the
-space after ,
-plus adjust the wrap as that'll make it 81 chars I think.
+>  struct ltr390_data {
+>  	struct regmap *regmap;
+>  	struct i2c_client *client;
+>  	/* Protects device from simulataneous reads */
+>  	struct mutex lock;
+> +	int mode;
+enum ltr380_mode mode;
 
-> +multiplexer inputs.
-> +
-> +From an IIO point of view, all inputs are exported, i.e ad7386/7/8
-> +export 4 channels and ad7386-4/7-4/8-4 export 8 channels.
-> +
-> +Inputs ``AinX0`` of multiplexers correspond to the first half of IIO channels (i.e
-> +0-1 or 0-3) and inputs ``AinX1`` correspond to second half (i.e 2-3 or 4-7).
-> +Example for AD7386/7/8 (2 channels parts):
-> +
-> +.. code-block::
-> +
-> +	   IIO   | AD7386/7/8
-> +	         |         +----------------------------
-> +	         |         |     _____        ______
-> +	         |         |    |     |      |      |
-> +	voltage0 | AinA0 --|--->|     |      |      |
-> +	         |         |    | mux |----->| ADCA |---
-> +	voltage2 | AinA1 --|--->|     |      |      |
-> +	         |         |    |_____|      |_____ |
-> +	         |         |     _____        ______
-> +	         |         |    |     |      |      |
-> +	voltage1 | AinB0 --|--->|     |      |      |
-> +	         |         |    | mux |----->| ADCB |---
-> +	voltage3 | AinB1 --|--->|     |      |      |
-> +	         |         |    |_____|      |______|
-> +	         |         |
-> +	         |         +----------------------------
-> +
-> +
-> +When enabling sequencer mode, the effective sampling rate is divided by two.
+>  	int gain;
+>  	int int_time_us;
+>  };
+> @@ -94,6 +100,28 @@ static int ltr390_register_read(struct ltr390_data *data, u8 register_address)
+>  	return get_unaligned_le24(recieve_buffer);
+>  }
 >  
->  Unimplemented features
->  ----------------------
-> 
+> +static int ltr390_set_mode(struct ltr390_data *data, int mode)
+
+pass in the enum lt380_mode.
+
+> +{
+> +	if (data->mode == mode)
+> +		return 0;
+> +
+> +	switch (mode) {
+> +	case LTR390_SET_ALS_MODE:
+> +		regmap_clear_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_UVS_MODE);
+> +		break;
+> +
+> +	case LTR390_SET_UVS_MODE:
+> +		regmap_set_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_UVS_MODE);
+> +		break;
+> +
+> +	default:
+> +		return -EINVAL;
+Should be able to drop this if passing in the enum as the compiler can see you
+have cases for every value.
+
+> +	}
+> +
+> +	data->mode = mode;
+> +	return 0;
+> +}
+> +
 
 

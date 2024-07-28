@@ -1,189 +1,328 @@
-Return-Path: <linux-iio+bounces-7992-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7993-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508B093E5BE
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 17:04:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AC893E5CA
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 17:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6022C2816D4
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 15:04:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609E71F21254
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 15:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635A750A80;
-	Sun, 28 Jul 2024 15:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF515103F;
+	Sun, 28 Jul 2024 15:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9qATkSA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CVnGz3xz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1611F224DC;
-	Sun, 28 Jul 2024 15:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C593FE55;
+	Sun, 28 Jul 2024 15:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722179055; cv=none; b=YLz9sWKQJpnNq9pho3Xd/7YVqg0TBL3bJOKo/cXdZpBM+ZbFU3dUFjxZDo82o95DBAd95dS0aVibP78QgFF7Jd50dXKuDWEB/vzy9oDQbH5TC01BOUsCICqOZm9MQapOLho0o/aWBIjq0OSxkODmmdNzDfPy4DYmk6rCJRh9GC0=
+	t=1722180036; cv=none; b=iaAxROtq45wjYThONd5sVY5LVjeVsiYwyC1ExYq1l9lVGsJJcMWY3miqMkDAVqfY7OxxA/9S/oeRCR6CYtTK2w1xXFVYEiaMx8pX2NfKfGXMARnWTbHcUd1DoTXMtBgoDy37xvBxq+SjeZXRaTZJdns96ErMJ4bJo4WyhNbvPvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722179055; c=relaxed/simple;
-	bh=LQuwMxDMSVgbGcQjkAKcK62fjlXDEdSv12wT7+vEBHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nr0aO+uNl19cvdAz2L1TbF1tDAsQ3A/YpzdMtdJo4R1VjE3Qm67x+gD81V0p5n8H2Mjt23IgndEad96d7MORgQhVgwuN/a8Ma2ulimVcSeJH4c0xqX8WYE5JjjZzCA+5rYc1Sr9eTA3BrmthUrC+lCpB2mus6fCQ9Lcma8jrB90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9qATkSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791DCC116B1;
-	Sun, 28 Jul 2024 15:04:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722179054;
-	bh=LQuwMxDMSVgbGcQjkAKcK62fjlXDEdSv12wT7+vEBHE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=u9qATkSAiIco0e0sDhKReqYNu17mQRSCxHFLp4vIXgoRNlVQKs0+KFyuRg1Q0/2JT
-	 CWb5nHjQdfU/D/EeSHAwoc+lhYj2t3FOIz+vC8WsB+QmjjwKo6uymkCxdq3aLGCEKH
-	 x34M4h9PU9uNO8XHNzaxWWdaH38jeIIJLI6e81iMd4pAznqosJfiJhEU5OtyllndXu
-	 nLzb4cs0uDPwihlKGaZyq+KGrJrteZcMNbl532B8eplmJ8QfbEeeMO5WBvgY4iyKUv
-	 Gxcwrk3A05LGOcrI1e7SIIPuFzArUG16iZqfuLpaLSrxi3ubF4IgBB400Th9CHkwfX
-	 /bySskCnFVwow==
-Date: Sun, 28 Jul 2024 16:04:08 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: "Esteban Blanc" <eblanc@baylibre.com>
-Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
- <baylibre-upstreaming@groups.io>, "Lars-Peter Clausen" <lars@metafoo.de>,
- "Michael Hennerich" <Michael.Hennerich@analog.com>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Nuno Sa" <nuno.sa@analog.com>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "David Lechner" <dlechner@baylibre.com>
-Subject: Re: [PATCH RFC 2/5] iio: adc: ad4030: add driver for ad4030-24
-Message-ID: <20240728160408.4b810505@jic23-huawei>
-In-Reply-To: <D2ZIG2NK223D.J9VK1MWOICE3@baylibre.com>
-References: <20240627-eblanc-ad4630_v1-v1-0-fdc0610c23b0@baylibre.com>
-	<20240627-eblanc-ad4630_v1-v1-2-fdc0610c23b0@baylibre.com>
-	<0036d44542f8cf45c91c867f0ddd7b45d1904d6b.camel@gmail.com>
-	<D2ZIG2NK223D.J9VK1MWOICE3@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1722180036; c=relaxed/simple;
+	bh=ZPZYOty7vPmPbDULQH68zaMGkRk3k6rDM+cb0rI0Bq8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JaBoSjYKID4gRghzuLqaah6Mm21I2PnZpt6vdlot5zOaf7kfzJlqYyIn98v9B3XL6C0ZxxYoD98xUBbJdlD2DmG6lkiwM48lbnANe+yKhHzSIeVfq2Xtx3XTGrSt2LhfT/q9PfO7lzI8lFVySmVsFxyhzJ18IVBn1aW6wbcXFIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CVnGz3xz; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-260f81f7fb5so1693002fac.0;
+        Sun, 28 Jul 2024 08:20:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722180033; x=1722784833; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WWQtmbGLpCfa96+iJ2bZelo/zIhpTzAVTxEvyYUKtuw=;
+        b=CVnGz3xzDOw60sNHquAGRUtG5+CEbLX7lTN5rRLl1r+WRR93GQ968mz+q7HrNJTkCB
+         GDZOJhq7tbq9tMe3sRb4iIOnkttPokNrSOaS0hmrwOQ4L4Y/YnghhK9qgBQhILASNfkN
+         fkXxEleEWaydJrY7yIc1lzgDaUtGtlmJh7SjJRvz4HTXXcfGe6dj9D6w11Hlmx56ZyJ/
+         oBh900hTFnzmhKBlNEZT5K70vkK/S+zj+6Gr1cDG2t/pURv4PA2WroHm3CO8M9a2Vocp
+         UGY///Fw31MkvJ1v8jK7GtFlOUA+TG53v4RnwpLJLiRAwtJHjXlW2G69zgvoD2N9UYBv
+         7bEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722180033; x=1722784833;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WWQtmbGLpCfa96+iJ2bZelo/zIhpTzAVTxEvyYUKtuw=;
+        b=viboUSlpH+z0oL2LGq9Wz39O0+1I03+4REcdzlriADQXoRbUkZWoAOLKFVR8C3+Loe
+         ob5ttoi1ZVJyN/uD3+U1R9b6YW9+UZ784ITsseC7Khj5YGQ+hp1LZLMv7XW2vaskDzWE
+         89aOnGQL4NJJAwYYqhP/YUPcKzXQjLidsn4qBzff6i//RUcBxBHykPFun/8BQ9vIcSNs
+         2ydE61LJeDF+rFt5GGu0Cyr6CJ/1c5mwkwDzsu9vqF3vfhz9KvC+xSj+ZOlVFJcY4fJt
+         0GBUP9Ie6zZnFDWPwuamLT8IPo4asRbRRfBrREsYiYfnilAdOzsDuV3K2K1QeIEoKe8o
+         LooA==
+X-Forwarded-Encrypted: i=1; AJvYcCWV5rKcOPi+xa7xlk5ZW9PT3ACFuxdRoIeCZxpcUMj0pqoQZ0oCHUrpCeu9RnlT/JDNPzGLzrV03CKcGOI6Qh/GdWz+lQhCWd/8rvPv
+X-Gm-Message-State: AOJu0YzuqyRJ10RqqzIWO4rZhRWXJy9Z8Gd0QLD2B5xTpFWou0RH1prx
+	2++J8XYduunqGvZ/s+DG2VLQ2DBV6urS+Os6wyFEslv8ryOy8+z8onM2Sq1sXAfx6Q==
+X-Google-Smtp-Source: AGHT+IEpPtXHu6qzEmt8Wunqu7lAMY3sRPrB7NPAe2eoRjYtzBRDjKSOQpjYKSgvDDr9tbU0K7RkTQ==
+X-Received: by 2002:a05:6871:58a:b0:254:b74e:d654 with SMTP id 586e51a60fabf-267d4d8ed02mr4938255fac.22.1722180032985;
+        Sun, 28 Jul 2024 08:20:32 -0700 (PDT)
+Received: from localhost.localdomain ([136.233.9.100])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-7a9f817aebasm5836843a12.28.2024.07.28.08.20.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jul 2024 08:20:32 -0700 (PDT)
+From: Abhash Jha <abhashkumarjha123@gmail.com>
+To: linux-iio@vger.kernel.org
+Cc: anshulusr@gmail.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-kernel@vger.kernel.org,
+	Abhash Jha <abhashkumarjha123@gmail.com>
+Subject: [PATCH v2 1/3] iio: light: ltr390: Add configurable gain and resolution
+Date: Sun, 28 Jul 2024 20:49:54 +0530
+Message-ID: <20240728151957.310237-1-abhashkumarjha123@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240727132735.052502ad@jic23-huawei>
+References: <20240727132735.052502ad@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-One quick comment form me inline.
+    Add support for configuring and reading the gain and resolution
+    (integration time). Also provide the available values for gain and
+    resoltion respectively via `read_avail` callback.
 
-The short version is non power of 2 storage is not an option because
-it is a major ABI change and we aren't paying the cost of complexity
-that brings to userspace for a very small number of drivers where
-there is any real advantage to packing them tighter.
+Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+---
+ drivers/iio/light/ltr390.c | 144 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 130 insertions(+), 14 deletions(-)
 
-> 
-> > So, from the datasheet, figure 39 we have something like a multiplexer where we
-> > can have:
-> >
-> > - averaged data;
-> > - normal differential;
-> > - test pattern (btw, useful to have it in debugfs - but can come later);
-> > - 8 common mode bits;
-> >
-> > While the average, normal and test pattern are really mutual exclusive, the
-> > common mode voltage is different in the way that it's appended to differential
-> > sample. Making it kind of an aggregated thingy. Thus I guess it can make sense
-> > for us to see them as different channels from a SW perspective (even more since
-> > gain and offset only apply to the differential data). But there are a couple of
-> > things I don't like (have concerns):
-> >
-> > * You're pushing the CM channels into the end. So when we a 2 channel device
-> > we'll have:
-> >
-> >  in_voltage0 - diff
-> >  in_voltage1 - diff
-> >  in_voltage2 - CM associated with chan0
-> >  in_voltage0 - CM associated with chan1
-> >
-> > I think we could make it so the CM channel comes right after the channel where
-> > it's data belongs too. So for example, odd channels would be CM channels (and
-> > labels could also make sense).  
-> 
-> I must agree with you it would make more sense.
-> 
-> > Other thing that came to mind is if we could somehow use differential = true
-> > here. Having something like:
-> >
-> > in_voltage1_in_voltage0_raw - diff data
-> > ...
-> > And the only thing for CM would be:
-> >
-> > in_voltage1_raw
-> > in_voltage1_scale
-> >
-> > (not sure if the above is doable with ext_info - maybe only with device_attrs)
-> >
-> > The downside of the above is that we don't have a way to separate the scan
-> > elements. Meaning that we don't have a way to specify the scan_type for both the
-> > common mode and differential voltage. That said, I wonder if it is that useful
-> > to buffer the common mode stuff? Alternatively, we could just have the scan_type
-> > for the diff data and apps really wanting the CM voltage could still access the
-> > raw data. Not pretty, I know...  
-> 
-> At the moment the way I "separate" them is by looking at the
-> `active_scan_mask`. If the user asked for differential channel only, I put the
-> chip in differential only mode. If all the channels are asked, I put
-> the chip in differential + common mode. This way there is no need to
-> separate anything in differential mode. See below for an example where
-> this started.
-> 
-> > However, even if we go with the two separate channels there's one thing that
-> > concerns me. Right now we have diff data with 32 for storage bits and CM data
-> > with 8 storage bits which means the sample will be 40 bits and in reality we
-> > just have 32. Sure, now we have SW buffering so we can make it work but the
-> > ultimate goal is to support HW buffering where we won't be able to touch the
-> > sample and thus we can't lie about the sample size. Could you run any test with
-> > this approach on a HW buffer setup?   
-> 
-> Let's take AD4630-24 in diff+cm mode as an example. We would have 4 channels:
-> - Ch0 diff with 24 bits of realbits and 24 bits of storagebits
-> - Ch0 cm with 8 bits of realbits and 8 bits of storagebits
-> - Ch1 diff with 24 bits of realbits and 24 bits of storagebits
-> - Ch1 cm with 8 bits of realbits and 8 bits of storagebits
-> ChX diff realbits + ChX cm realbits = 32 bits which is one sample as sent
-> by the chip.
-> 
-> The problem I faced when trying to do this in this series is that IIO doesn't
-> seem to like 24 storagebits and the data would get garbled. In diff only
-> mode with the same channel setup (selecting only Ch0 diff and Ch1 diff)
-> the data is also garbled. I used iio-oscilloscope software to test this setup.
-> Here is the output with iio_readdev:
-> ```
-> # iio_readdev -s 1 ad4630-24 voltage0
-> WARNING: High-speed mode not enabled
-> Unable to refill buffer: Invalid argument (22)
-> ```
-> 
-> I think this is happening when computing the padding to align ch1 diff.
-> In `iio_compute_scan_bytes` this line `bytes = ALIGN(bytes, length);`
-> will be invoked with bytes = 3 and length = 3 when selecting ch0 diff
-> and ch1 diff (AD4630-24 in differential mode). The output is 5. As
-> specified in linux/align.h:
-> > @a is a power of 2  
-> In our case `a` is `length`, and 3 is not a power of 2.
-> 
-> It works fine with Ch0/1 diff with 24 realbits and 32 storagebits with 8
-> bits shift.
-> 
-> Intrestingly, a similar setup works great on AD4630-16:
-> - Ch0 diff with 16 bits of realbits and 16 bits of storagebits
-> - Ch0 cm with 8 bits of realbits and 8 bits of storagebits
-> - Ch1 diff with 16 bits of realbits and 16 bits of storagebits
-> - Ch1 cm with 8 bits of realbits and 8 bits of storagebits
-> 
-> In `iio_compute_scan_bytes` we will have ALIGN(3, 2) which will output
-> 4, everything is fine. The output of iio-oscilloscope is as expected,
-> a clean sinewave and iio_readdev does not throw an error.
-> 
-> All this to say that at the moment, I'm not sure how I will be able to
-> put the CM byte in a separate channel for AD4630-24 without buffering it.
-> It would be useful to return a "packed" buffer.
+diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+index fff1e8990..9f00661c3 100644
+--- a/drivers/iio/light/ltr390.c
++++ b/drivers/iio/light/ltr390.c
+@@ -25,19 +25,26 @@
+ #include <linux/regmap.h>
+ 
+ #include <linux/iio/iio.h>
+-
++#include <linux/iio/sysfs.h>
+ #include <asm/unaligned.h>
+ 
+-#define LTR390_MAIN_CTRL      0x00
+-#define LTR390_PART_ID	      0x06
+-#define LTR390_UVS_DATA	      0x10
++#define LTR390_MAIN_CTRL		0x00
++#define LTR390_ALS_UVS_MEAS_RATE	0x04
++#define LTR390_ALS_UVS_GAIN		0x05
++#define LTR390_PART_ID			0x06
++#define LTR390_ALS_DATA			0x0D
++#define LTR390_UVS_DATA			0x10
++#define LTR390_INT_CFG			0x19
++
++#define LTR390_PART_NUMBER_ID		0xb
++#define LTR390_ALS_UVS_GAIN_MASK	0x07
++#define LTR390_ALS_UVS_INT_TIME_MASK	0x70
++#define LTR390_ALS_UVS_INT_TIME(x)	FIELD_PREP(LTR390_ALS_UVS_INT_TIME_MASK, x)
+ 
+ #define LTR390_SW_RESET	      BIT(4)
+ #define LTR390_UVS_MODE	      BIT(3)
+ #define LTR390_SENSOR_ENABLE  BIT(1)
+ 
+-#define LTR390_PART_NUMBER_ID 0xb
+-
+ /*
+  * At 20-bit resolution (integration time: 400ms) and 18x gain, 2300 counts of
+  * the sensor are equal to 1 UV Index [Datasheet Page#8].
+@@ -60,6 +67,8 @@ struct ltr390_data {
+ 	struct i2c_client *client;
+ 	/* Protects device from simulataneous reads */
+ 	struct mutex lock;
++	int gain;
++	int int_time_us;
+ };
+ 
+ static const struct regmap_config ltr390_regmap_config = {
+@@ -75,8 +84,6 @@ static int ltr390_register_read(struct ltr390_data *data, u8 register_address)
+ 	int ret;
+ 	u8 recieve_buffer[3];
+ 
+-	guard(mutex)(&data->lock);
+-
+ 	ret = regmap_bulk_read(data->regmap, register_address, recieve_buffer,
+ 			       sizeof(recieve_buffer));
+ 	if (ret) {
+@@ -91,32 +98,135 @@ static int ltr390_read_raw(struct iio_dev *iio_device,
+ 			   struct iio_chan_spec const *chan, int *val,
+ 			   int *val2, long mask)
+ {
+-	int ret;
+ 	struct ltr390_data *data = iio_priv(iio_device);
++	int ret;
+ 
++	guard(mutex)(&data->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 		ret = ltr390_register_read(data, LTR390_UVS_DATA);
+ 		if (ret < 0)
+ 			return ret;
++
+ 		*val = ret;
+ 		return IIO_VAL_INT;
++
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = LTR390_WINDOW_FACTOR;
+ 		*val2 = LTR390_COUNTS_PER_UVI;
+ 		return IIO_VAL_FRACTIONAL;
++
++	case IIO_CHAN_INFO_INT_TIME:
++		*val = data->int_time_us;
++		return IIO_VAL_INT;
++
+ 	default:
+ 		return -EINVAL;
+ 	}
+ }
+ 
+-static const struct iio_info ltr390_info = {
+-	.read_raw = ltr390_read_raw,
+-};
++/* integration time in us */
++static const int ltr390_int_time_map_us[] = {400000, 200000, 100000, 50000, 25000, 12500};
++static const int ltr390_gain_map[] = {1, 3, 6, 9, 18};
+ 
+ static const struct iio_chan_spec ltr390_channel = {
+ 	.type = IIO_UVINDEX,
+-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE)
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
++	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SCALE)
++};
++
++static int ltr390_set_gain(struct ltr390_data *data, int val)
++{
++	int ret, idx;
++
++	for (idx = 0; idx < ARRAY_SIZE(ltr390_gain_map); idx++) {
++		if (ltr390_gain_map[idx] != val)
++			continue;
++
++		guard(mutex)(&data->lock);
++		ret = regmap_update_bits(data->regmap,
++					LTR390_ALS_UVS_GAIN,
++					LTR390_ALS_UVS_GAIN_MASK, idx);
++		if (ret)
++			return ret;
++
++		data->gain = ltr390_gain_map[idx];
++		break;
++	}
++
++	return 0;
++}
++
++static int ltr390_set_int_time(struct ltr390_data *data, int val)
++{
++	int ret, idx;
++
++	for (idx = 0; idx < ARRAY_SIZE(ltr390_int_time_map_us); idx++) {
++		if (ltr390_int_time_map_us[idx] != val)
++			continue;
++
++		guard(mutex)(&data->lock);
++		ret = regmap_update_bits(data->regmap,
++					LTR390_ALS_UVS_MEAS_RATE,
++					LTR390_ALS_UVS_INT_TIME_MASK,
++					LTR390_ALS_UVS_INT_TIME(idx));
++		if (ret)
++			return ret;
++
++		data->int_time_us = ltr390_int_time_map_us[idx];
++		break;
++	}
++
++	return 0;
++}
++
++static int ltr390_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
++				const int **vals, int *type, int *length, long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*length = ARRAY_SIZE(ltr390_gain_map);
++		*type = IIO_VAL_INT;
++		*vals = ltr390_gain_map;
++		return IIO_AVAIL_LIST;
++	case IIO_CHAN_INFO_INT_TIME:
++		*length = ARRAY_SIZE(ltr390_int_time_map_us);
++		*type = IIO_VAL_INT;
++		*vals = ltr390_int_time_map_us;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ltr390_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
++				int val, int val2, long mask)
++{
++	struct ltr390_data *data = iio_priv(indio_dev);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		if (val2 != 0)
++			return -EINVAL;
++
++		return ltr390_set_gain(data, val);
++
++	case IIO_CHAN_INFO_INT_TIME:
++		if (val2 != 0)
++			return -EINVAL;
++
++		return ltr390_set_int_time(data, val);
++
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_info ltr390_info = {
++	.read_raw = ltr390_read_raw,
++	.write_raw = ltr390_write_raw,
++	.read_avail = ltr390_read_avail,
+ };
+ 
+ static int ltr390_probe(struct i2c_client *client)
+@@ -139,6 +249,11 @@ static int ltr390_probe(struct i2c_client *client)
+ 				     "regmap initialization failed\n");
+ 
+ 	data->client = client;
++	/* default value of integration time from pg: 15 of the datasheet */
++	data->int_time_us = 100000;
++	/* default value of gain from pg: 16 of the datasheet */
++	data->gain = 3;
++
+ 	mutex_init(&data->lock);
+ 
+ 	indio_dev->info = &ltr390_info;
+@@ -162,7 +277,7 @@ static int ltr390_probe(struct i2c_client *client)
+ 	usleep_range(1000, 2000);
+ 
+ 	ret = regmap_set_bits(data->regmap, LTR390_MAIN_CTRL,
+-			      LTR390_SENSOR_ENABLE | LTR390_UVS_MODE);
++				LTR390_SENSOR_ENABLE | LTR390_UVS_MODE);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "failed to enable the sensor\n");
+ 
+@@ -189,6 +304,7 @@ static struct i2c_driver ltr390_driver = {
+ 	.probe = ltr390_probe,
+ 	.id_table = ltr390_id,
+ };
++
+ module_i2c_driver(ltr390_driver);
+ 
+ MODULE_AUTHOR("Anshul Dalal <anshulusr@gmail.com>");
+-- 
+2.43.0
 
-Whilst it might be useful to allow non power of 2 storage formats,
-that's a break of the IIO userspace ABI so that isn't an approach to
-consider. You must shuffle the data in the driver.
 

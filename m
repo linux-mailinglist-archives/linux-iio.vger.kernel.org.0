@@ -1,60 +1,58 @@
-Return-Path: <linux-iio+bounces-7998-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7999-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C7B93E5E7
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 17:30:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4535F93E5EA
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 17:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768091C20C62
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 15:30:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CED1328329A
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 15:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7276EB4A;
-	Sun, 28 Jul 2024 15:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E9F5381B;
+	Sun, 28 Jul 2024 15:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+QAy/dH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otXWA9K8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D614847F6B;
-	Sun, 28 Jul 2024 15:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D0B1EB44;
+	Sun, 28 Jul 2024 15:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722180585; cv=none; b=IHfCDUqIp2gv5T3L8vcLfiWKsklK7N8ZjD4EYXqt3QU7vbR4sZhEEPxPI7ER4zREKqMXjwoSDj90+Rw2vbq0vEuLNjovqm31HNaDzzd0SuqXFJWUS09MDMUCHj0M9aLfNKcwGzkW2nP2HRiQ6SaFoyeKN8LTzoqHp6CUsNsl/hU=
+	t=1722180634; cv=none; b=EeecWhOggxExngjc9emSg5iFl++7QA1xmEJ8UAVl964gCYDzwvitrkQBeyjLd44antbFXAv3UN8NUGQj1LxBiOiTAky/2IpupCbb1x1NShqOA8z4I7q5TCVOHkS6aKyIyFpqRfMr6HVe88oMeaRYwiO/12mjIevgtVzr8Kh2NA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722180585; c=relaxed/simple;
-	bh=KMq+FgXoj4NvdR8ebchxV97fWBZs8p3cgBYXpPvYHDs=;
+	s=arc-20240116; t=1722180634; c=relaxed/simple;
+	bh=ukkJD+lDuD4PxWjCXt/b16el8IK3CD/b9wegn3TnEx0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jESEBETtbvdi4gX9MN1LuFWO29YMZkrGw2N0nAS1/RvNKNvvW2odDWrV/tX0RGZ/6NIsvqnwbYRLsasUeTaLis0+VhIEeWoIUVyE7jljUoI+eQmOzWXSdysZhrCOt1ePGOQAfDl9SlkZotUpo063BTszeH62csFfQkkPntapxa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+QAy/dH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D0AC4AF0A;
-	Sun, 28 Jul 2024 15:29:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XxsdZM9pmWFoQYHTgizg5guXO0GfeAyQTxAgMYQtBlNdN8tCIXB6LzoptNGCYJXSGtwLuRuVIdyxqrvSIbDGsFAhg7pzH9riFMKOdII1e0Vx8fLe53FE1JKEuoNXKZQSOBzgZZOpayX1LO5PGvxVZR+guLdhsuwDsxdQXDRCKM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otXWA9K8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C71DC32782;
+	Sun, 28 Jul 2024 15:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722180584;
-	bh=KMq+FgXoj4NvdR8ebchxV97fWBZs8p3cgBYXpPvYHDs=;
+	s=k20201202; t=1722180633;
+	bh=ukkJD+lDuD4PxWjCXt/b16el8IK3CD/b9wegn3TnEx0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=V+QAy/dH1eMB0CddycNqLslSsKubv/AfUPiqz4EjLTittbGcusn7572lfL3pmt2at
-	 TY+ysF1HClTBUXLgXv5MAQtpLYQVgwRWoiL+dHM4bQR6JQnLPl0nmLBTtQjwWwk9IN
-	 OPzotWp/Ro8stp3jliDKH9ekWu552iEbbdydiIueRX8wI8skrBdknsLdD6+s3aZx71
-	 0OrEOYGfxyj9+2pHVXYUOiC9gB9xFJ4xkN2fuqKKxSijxcr9txzENLFa8WKRlFUw5m
-	 F9NbZ7VHH3yeeKBKyQpTYZXcjY9nF3J0Sr23Xu0b+dvMmWlMttb4zZeO0JiObfUFgA
-	 EFjO27XAElOGA==
-Date: Sun, 28 Jul 2024 16:29:36 +0100
+	b=otXWA9K8IhKJsRopRvEzRw2x3zcTg1hW6zS06LHXzueepiVMI+uSC7uFKAIn+JUNS
+	 aBKI18YNZOQ5mLU8SPE04Xtl//1G9NBOIb5FUlG/TG0fODAGvoByWeEIU/LxjqS5Yf
+	 K3hzH9ksVDmu95izyWNNROGKFN3I1ZZ3ZMz/Bi92P3QHuvz1QseOhuSXe9NUcQzl/P
+	 4zAxXcOiNZmIo+9eOyPqUOj4b4okS1TEfdHjClQw/hthtnJvuCKXLoW6xrKcrNIlNB
+	 KxrD3zNCYHy1dOj3SD/Kh9y90HAHh2E/83qaMHJu1V4VEjSjqXRnNVesiRhYWa/96/
+	 5nZuXkG/DtnIA==
+Date: Sun, 28 Jul 2024 16:30:26 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Petar Stoykov via B4 Relay <devnull+pd.pstoykov.gmail.com@kernel.org>
 Cc: pd.pstoykov@gmail.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
  <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
  <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] iio: pressure: Add driver for Sensirion SDP500
-Message-ID: <20240728162936.2866e7e3@jic23-huawei>
-In-Reply-To: <f3772311-baf6-4d45-8678-83ff248dcbf0@linaro.org>
+Subject: Re: [PATCH v4 0/3] Add support for Sensirion SDP500
+Message-ID: <20240728163026.3acadc27@jic23-huawei>
+In-Reply-To: <20240725-mainline_sdp500-v4-0-ea2f5b189958@gmail.com>
 References: <20240725-mainline_sdp500-v4-0-ea2f5b189958@gmail.com>
-	<20240725-mainline_sdp500-v4-2-ea2f5b189958@gmail.com>
-	<f3772311-baf6-4d45-8678-83ff248dcbf0@linaro.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,42 +63,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 28 Jul 2024 11:12:45 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Thu, 25 Jul 2024 17:37:26 +0200
+Petar Stoykov via B4 Relay <devnull+pd.pstoykov.gmail.com@kernel.org> wrote:
 
-> On 25/07/2024 17:37, Petar Stoykov via B4 Relay wrote:
-> > From: Petar Stoykov <pd.pstoykov@gmail.com>
-> > 
-> > Sensirion SDP500 is a digital differential pressure sensor. The sensor is
-> > accessed over I2C.
-> > 
-> > Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
-> > ---  
+> This patch series introduces support for Sensirion SDP500 in the IIO
+> subsystem. The series is split into three patches:
 > 
-> > +
-> > +static const struct i2c_device_id sdp500_id[] = {
-> > +	{ "sdp500" },
-> > +	{ }
-> > +};
-> > +MODULE_DEVICE_TABLE(i2c, sdp500_id);
-> > +
-> > +static const struct of_device_id sdp500_of_match[] = {
-> > +	{ .compatible = "sensirion,sdp500" },
-> > +	{ .compatible = "sensirion,sdp510" },  
-> 
-> Drop, why do you need it? I asked about this last time. Also, your OF
-> table is not in sync with I2C table, so this should raise questions.
-> 
+> 1. The first patch adds the device tree bindings.
+> 2. The second patch implements the device driver.
+> 3. The third patch updates the MAINTAINERS file.
 
-Agreed. I dropped the sdp510 entry whilst applying.
-Petar, if that is wrong for some reason we are missing, then shout.
-This won't go upstream for a little while yet so we can always put
-it back again :)
+Series applied.  Tweaks to patch 2 in reply to that patch.
+
+Thanks
 
 Jonathan
-
-> Best regards,
-> Krzysztof
-> 
-
 

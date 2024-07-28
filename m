@@ -1,59 +1,63 @@
-Return-Path: <linux-iio+bounces-7991-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7992-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6BF93E52A
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 14:53:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 508B093E5BE
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 17:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40130281E25
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 12:53:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6022C2816D4
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 15:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560BB3D0C5;
-	Sun, 28 Jul 2024 12:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635A750A80;
+	Sun, 28 Jul 2024 15:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQbHGsWY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9qATkSA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0683E23776;
-	Sun, 28 Jul 2024 12:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1611F224DC;
+	Sun, 28 Jul 2024 15:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722171196; cv=none; b=QWoDvVYbTsp+PiL5KB5NHRTqsa5+2yLKUuyfdBIzMWX3W3MeSuBD0MfIBwR8ISuek4mNBFXbyIOA+m+5dOLq/O0Qv2Gfn06Afhu7KAjPkT7FAFgQKjZv11wj8btZ7n0hjiRnv9ch6teZqvLhe+vQiAQkf+xzstdDWiTGX8WUMrE=
+	t=1722179055; cv=none; b=YLz9sWKQJpnNq9pho3Xd/7YVqg0TBL3bJOKo/cXdZpBM+ZbFU3dUFjxZDo82o95DBAd95dS0aVibP78QgFF7Jd50dXKuDWEB/vzy9oDQbH5TC01BOUsCICqOZm9MQapOLho0o/aWBIjq0OSxkODmmdNzDfPy4DYmk6rCJRh9GC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722171196; c=relaxed/simple;
-	bh=TmboGPuQj9mN/bGXKeA5r/MC8uaREvD4H0BSkumTuY0=;
+	s=arc-20240116; t=1722179055; c=relaxed/simple;
+	bh=LQuwMxDMSVgbGcQjkAKcK62fjlXDEdSv12wT7+vEBHE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HVi7R7EWhcSX1WhRfDeOy8UKaA6qwQB0KvBVjTXPd68OQKx8CHn8jMu3XF21QeP5sdyZ5GzngmbaEbTLlbkkTVJi9kJf4UXffr6gCmG4ACDhMmW19wBwRoaDxTF1zk7pALfwvsHuSM94QFMMHZ7PXg6L5lOBWkTfsI0wNq41rHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vQbHGsWY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA361C116B1;
-	Sun, 28 Jul 2024 12:53:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nr0aO+uNl19cvdAz2L1TbF1tDAsQ3A/YpzdMtdJo4R1VjE3Qm67x+gD81V0p5n8H2Mjt23IgndEad96d7MORgQhVgwuN/a8Ma2ulimVcSeJH4c0xqX8WYE5JjjZzCA+5rYc1Sr9eTA3BrmthUrC+lCpB2mus6fCQ9Lcma8jrB90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9qATkSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791DCC116B1;
+	Sun, 28 Jul 2024 15:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722171195;
-	bh=TmboGPuQj9mN/bGXKeA5r/MC8uaREvD4H0BSkumTuY0=;
+	s=k20201202; t=1722179054;
+	bh=LQuwMxDMSVgbGcQjkAKcK62fjlXDEdSv12wT7+vEBHE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vQbHGsWYFvbDxJB3eVWUQoAgaopFQLRJJEc/FuTjvn1Jrz5zQoGdWzaSc7om23yOa
-	 K3eKY8Ju2fbAVsj6VbeolnBN9XAAPf09ZYfjit0P+BAzFoGC7PEfv/GzCR002dM9t4
-	 CcBl2T4plIuSnw/IQ5yphFVUhEt8vLlM1vjq/EqE/AM3c+DnoI5YIIaBQwqqBjDyFM
-	 jjfaiJJrDPjNt3mSHbG8VfuLW1QS0duxw29br/7YTwKkb1eEYgTRwQRgyyxRxRtVYU
-	 m6XxbaQJKZRe1Rjg/37tMygBUYzltdbV0JiMYZoS6ueKa8eBx2ccn9ZcFMHKselIBf
-	 dQ5GTrYVofnkg==
-Date: Sun, 28 Jul 2024 13:53:06 +0100
+	b=u9qATkSAiIco0e0sDhKReqYNu17mQRSCxHFLp4vIXgoRNlVQKs0+KFyuRg1Q0/2JT
+	 CWb5nHjQdfU/D/EeSHAwoc+lhYj2t3FOIz+vC8WsB+QmjjwKo6uymkCxdq3aLGCEKH
+	 x34M4h9PU9uNO8XHNzaxWWdaH38jeIIJLI6e81iMd4pAznqosJfiJhEU5OtyllndXu
+	 nLzb4cs0uDPwihlKGaZyq+KGrJrteZcMNbl532B8eplmJ8QfbEeeMO5WBvgY4iyKUv
+	 Gxcwrk3A05LGOcrI1e7SIIPuFzArUG16iZqfuLpaLSrxi3ubF4IgBB400Th9CHkwfX
+	 /bySskCnFVwow==
+Date: Sun, 28 Jul 2024 16:04:08 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matteo Martelli <matteomartelli3@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marius Cristea <marius.cristea@microchip.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] iio: adc: add support for pac1921
-Message-ID: <20240728135306.422713ea@jic23-huawei>
-In-Reply-To: <20240724-iio-pac1921-v4-3-723698e903a3@gmail.com>
-References: <20240724-iio-pac1921-v4-0-723698e903a3@gmail.com>
-	<20240724-iio-pac1921-v4-3-723698e903a3@gmail.com>
+To: "Esteban Blanc" <eblanc@baylibre.com>
+Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
+ <baylibre-upstreaming@groups.io>, "Lars-Peter Clausen" <lars@metafoo.de>,
+ "Michael Hennerich" <Michael.Hennerich@analog.com>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Nuno Sa" <nuno.sa@analog.com>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "David Lechner" <dlechner@baylibre.com>
+Subject: Re: [PATCH RFC 2/5] iio: adc: ad4030: add driver for ad4030-24
+Message-ID: <20240728160408.4b810505@jic23-huawei>
+In-Reply-To: <D2ZIG2NK223D.J9VK1MWOICE3@baylibre.com>
+References: <20240627-eblanc-ad4630_v1-v1-0-fdc0610c23b0@baylibre.com>
+	<20240627-eblanc-ad4630_v1-v1-2-fdc0610c23b0@baylibre.com>
+	<0036d44542f8cf45c91c867f0ddd7b45d1904d6b.camel@gmail.com>
+	<D2ZIG2NK223D.J9VK1MWOICE3@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,509 +68,122 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 24 Jul 2024 11:08:33 +0200
-Matteo Martelli <matteomartelli3@gmail.com> wrote:
+One quick comment form me inline.
 
-> Add support for Microchip PAC1921 Power/Current monitor.
+The short version is non power of 2 storage is not an option because
+it is a major ABI change and we aren't paying the cost of complexity
+that brings to userspace for a very small number of drivers where
+there is any real advantage to packing them tighter.
+
 > 
-> Implemented features:
-> * capture of bus voltage, sense voltage, current and power measurements
->   in free-run integration mode
-> * support for both raw and triggered buffer reading
-> * support for overflow events
-> * scale attributes to control voltage and current gains
-> * oversampling ratio attribute to control the number of integration
->   samples
-> * sampling rate attribute that reflects the integration period
-> * userspace attribute and DT parameter to control shunt resistor
-> * simple power management support
+> > So, from the datasheet, figure 39 we have something like a multiplexer where we
+> > can have:
+> >
+> > - averaged data;
+> > - normal differential;
+> > - test pattern (btw, useful to have it in debugfs - but can come later);
+> > - 8 common mode bits;
+> >
+> > While the average, normal and test pattern are really mutual exclusive, the
+> > common mode voltage is different in the way that it's appended to differential
+> > sample. Making it kind of an aggregated thingy. Thus I guess it can make sense
+> > for us to see them as different channels from a SW perspective (even more since
+> > gain and offset only apply to the differential data). But there are a couple of
+> > things I don't like (have concerns):
+> >
+> > * You're pushing the CM channels into the end. So when we a 2 channel device
+> > we'll have:
+> >
+> >  in_voltage0 - diff
+> >  in_voltage1 - diff
+> >  in_voltage2 - CM associated with chan0
+> >  in_voltage0 - CM associated with chan1
+> >
+> > I think we could make it so the CM channel comes right after the channel where
+> > it's data belongs too. So for example, odd channels would be CM channels (and
+> > labels could also make sense).  
 > 
-> Limitations:
-> * operation mode fixed to free-run integration
-> * READ/INT pin and OUT pin not supported
-> * no controls for measurement resolutions and filters
+> I must agree with you it would make more sense.
 > 
-> Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
-I had a few more bits of feedback + one change was necessary because of
-this crossing with Nuno's series making iio_dev->masklength private.
-Rather than go around again for such trivial things, 
-I've applied it to the testing branch of iio.git with the following diff.
-Note I'll rebase that tree on rc1 once available at which point it'll become
-the togreg branch and get picked up by linux-next etc.
+> > Other thing that came to mind is if we could somehow use differential = true
+> > here. Having something like:
+> >
+> > in_voltage1_in_voltage0_raw - diff data
+> > ...
+> > And the only thing for CM would be:
+> >
+> > in_voltage1_raw
+> > in_voltage1_scale
+> >
+> > (not sure if the above is doable with ext_info - maybe only with device_attrs)
+> >
+> > The downside of the above is that we don't have a way to separate the scan
+> > elements. Meaning that we don't have a way to specify the scan_type for both the
+> > common mode and differential voltage. That said, I wonder if it is that useful
+> > to buffer the common mode stuff? Alternatively, we could just have the scan_type
+> > for the diff data and apps really wanting the CM voltage could still access the
+> > raw data. Not pretty, I know...  
+> 
+> At the moment the way I "separate" them is by looking at the
+> `active_scan_mask`. If the user asked for differential channel only, I put the
+> chip in differential only mode. If all the channels are asked, I put
+> the chip in differential + common mode. This way there is no need to
+> separate anything in differential mode. See below for an example where
+> this started.
+> 
+> > However, even if we go with the two separate channels there's one thing that
+> > concerns me. Right now we have diff data with 32 for storage bits and CM data
+> > with 8 storage bits which means the sample will be 40 bits and in reality we
+> > just have 32. Sure, now we have SW buffering so we can make it work but the
+> > ultimate goal is to support HW buffering where we won't be able to touch the
+> > sample and thus we can't lie about the sample size. Could you run any test with
+> > this approach on a HW buffer setup?   
+> 
+> Let's take AD4630-24 in diff+cm mode as an example. We would have 4 channels:
+> - Ch0 diff with 24 bits of realbits and 24 bits of storagebits
+> - Ch0 cm with 8 bits of realbits and 8 bits of storagebits
+> - Ch1 diff with 24 bits of realbits and 24 bits of storagebits
+> - Ch1 cm with 8 bits of realbits and 8 bits of storagebits
+> ChX diff realbits + ChX cm realbits = 32 bits which is one sample as sent
+> by the chip.
+> 
+> The problem I faced when trying to do this in this series is that IIO doesn't
+> seem to like 24 storagebits and the data would get garbled. In diff only
+> mode with the same channel setup (selecting only Ch0 diff and Ch1 diff)
+> the data is also garbled. I used iio-oscilloscope software to test this setup.
+> Here is the output with iio_readdev:
+> ```
+> # iio_readdev -s 1 ad4630-24 voltage0
+> WARNING: High-speed mode not enabled
+> Unable to refill buffer: Invalid argument (22)
+> ```
+> 
+> I think this is happening when computing the padding to align ch1 diff.
+> In `iio_compute_scan_bytes` this line `bytes = ALIGN(bytes, length);`
+> will be invoked with bytes = 3 and length = 3 when selecting ch0 diff
+> and ch1 diff (AD4630-24 in differential mode). The output is 5. As
+> specified in linux/align.h:
+> > @a is a power of 2  
+> In our case `a` is `length`, and 3 is not a power of 2.
+> 
+> It works fine with Ch0/1 diff with 24 realbits and 32 storagebits with 8
+> bits shift.
+> 
+> Intrestingly, a similar setup works great on AD4630-16:
+> - Ch0 diff with 16 bits of realbits and 16 bits of storagebits
+> - Ch0 cm with 8 bits of realbits and 8 bits of storagebits
+> - Ch1 diff with 16 bits of realbits and 16 bits of storagebits
+> - Ch1 cm with 8 bits of realbits and 8 bits of storagebits
+> 
+> In `iio_compute_scan_bytes` we will have ALIGN(3, 2) which will output
+> 4, everything is fine. The output of iio-oscilloscope is as expected,
+> a clean sinewave and iio_readdev does not throw an error.
+> 
+> All this to say that at the moment, I'm not sure how I will be able to
+> put the CM byte in a separate channel for AD4630-24 without buffering it.
+> It would be useful to return a "packed" buffer.
 
-There are a few things inline that I commented on but didn't touch, so
-please also take a look at those and shout if I messed anything up!
-I've been known to make trivial changes that break a driver completely :(
-
-Thanks,
-
-Jonathan
-
-
-diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
-index a21dd772467e..d04c6685d780 100644
---- a/drivers/iio/adc/pac1921.c
-+++ b/drivers/iio/adc/pac1921.c
-@@ -75,12 +75,12 @@ enum pac1921_mxsl {
-  * Vbus scale (mV) = max_vbus (mV) / dv_gain / resolution
-  */
- static const int pac1921_vbus_scales[][2] = {
--       {31, 280547409},        /* dv_gain x1 */
--       {15, 640273704},        /* dv_gain x2 */
--       {7, 820136852},         /* dv_gain x4 */
--       {3, 910068426},         /* dv_gain x8 */
--       {1, 955034213},         /* dv_gain x16 */
--       {0, 977517106}          /* dv_gain x32 */
-+       { 31, 280547409 },      /* dv_gain x1 */
-+       { 15, 640273704 },      /* dv_gain x2 */
-+       { 7, 820136852 },       /* dv_gain x4 */
-+       { 3, 910068426 },       /* dv_gain x8 */
-+       { 1, 955034213 },       /* dv_gain x16 */
-+       { 0, 977517106 },       /* dv_gain x32 */
- };
- 
- /*
-@@ -91,14 +91,14 @@ static const int pac1921_vbus_scales[][2] = {
-  * Vsense scale (mV) = max_vsense (mV) / di_gain / resolution
-  */
- static const int pac1921_vsense_scales[][2] = {
--       {0, 97751710},          /* di_gain x1 */
--       {0, 48875855},          /* di_gain x2 */
--       {0, 24437927},          /* di_gain x4 */
--       {0, 12218963},          /* di_gain x8 */
--       {0, 6109481},           /* di_gain x16 */
--       {0, 3054740},           /* di_gain x32 */
--       {0, 1527370},           /* di_gain x64 */
--       {0, 763685}             /* di_gain x128 */
-+       { 0, 97751710 },        /* di_gain x1 */
-+       { 0, 48875855 },        /* di_gain x2 */
-+       { 0, 24437927 },        /* di_gain x4 */
-+       { 0, 12218963 },        /* di_gain x8 */
-+       { 0, 6109481 },         /* di_gain x16 */
-+       { 0, 3054740 },         /* di_gain x32 */
-+       { 0, 1527370 },         /* di_gain x64 */
-+       { 0, 763685 },          /* di_gain x128 */
- };
- 
- /*
-@@ -334,7 +334,7 @@ static int pac1921_read_res(struct pac1921_priv *priv, unsigned long reg,
-        if (ret)
-                return ret;
- 
--       *val = (u16)FIELD_GET(PAC1921_RES_MASK, get_unaligned_be16(val));
-+       *val = FIELD_GET(PAC1921_RES_MASK, get_unaligned_be16(val));
- 
-        return 0;
- }
-@@ -612,7 +612,7 @@ static int pac1921_update_int_num_samples(struct pac1921_priv *priv,
-        if (priv->n_samples == n_samples)
-                return 0;
- 
--       reg_val = (u8)FIELD_PREP(PAC1921_INT_CFG_SMPL_MASK, n_samples);
-+       reg_val = FIELD_PREP(PAC1921_INT_CFG_SMPL_MASK, n_samples);
- 
-        ret = pac1921_update_cfg_reg(priv, PAC1921_REG_INT_CFG,
-                                     PAC1921_INT_CFG_SMPL_MASK, reg_val);
-@@ -1017,7 +1017,7 @@ static irqreturn_t pac1921_trigger_handler(int irq, void *p)
-        if (ret)
-                goto done;
- 
--       for_each_set_bit(bit, idev->active_scan_mask, idev->masklength) {
-+       iio_for_each_active_channel(idev, bit) {
-                u16 val;
- 
-                ret = pac1921_read_res(priv, idev->channels[ch].address, &val);
-@@ -1054,8 +1054,8 @@ static int pac1921_init(struct pac1921_priv *priv)
-                return ret;
- 
-        /* Configure gains, use 14-bits measurement resolution (HW default) */
--       val = (u8)FIELD_PREP(PAC1921_GAIN_DI_GAIN_MASK, priv->di_gain) |
--             (u8)FIELD_PREP(PAC1921_GAIN_DV_GAIN_MASK, priv->dv_gain);
-+       val = FIELD_PREP(PAC1921_GAIN_DI_GAIN_MASK, priv->di_gain) |
-+             FIELD_PREP(PAC1921_GAIN_DV_GAIN_MASK, priv->dv_gain);
-        ret = regmap_write(priv->regmap, PAC1921_REG_GAIN_CFG, val);
-        if (ret)
-                return ret;
-@@ -1067,7 +1067,7 @@ static int pac1921_init(struct pac1921_priv *priv)
-         * - set READ/INT pin override (RIOV) to control operation mode via
-         *   register instead of pin
-         */
--       val = (u8)FIELD_PREP(PAC1921_INT_CFG_SMPL_MASK, priv->n_samples) |
-+       val = FIELD_PREP(PAC1921_INT_CFG_SMPL_MASK, priv->n_samples) |
-              PAC1921_INT_CFG_VSFEN | PAC1921_INT_CFG_VBFEN |
-              PAC1921_INT_CFG_RIOV;
-        ret = regmap_write(priv->regmap, PAC1921_REG_INT_CFG, val);
-@@ -1080,8 +1080,8 @@ static int pac1921_init(struct pac1921_priv *priv)
-         * - OUT pin full scale range: 3V (HW detault)
-         * - no timeout, no sleep, no sleep override, no recalc (HW defaults)
-         */
--       val = (u8)FIELD_PREP(PAC1921_CONTROL_MXSL_MASK,
--                            PAC1921_MXSL_VPOWER_FREE_RUN);
-+       val = FIELD_PREP(PAC1921_CONTROL_MXSL_MASK,
-+                        PAC1921_MXSL_VPOWER_FREE_RUN);
-        ret = regmap_write(priv->regmap, PAC1921_REG_CONTROL, val);
-        if (ret)
-                return ret;
-@@ -1153,7 +1153,6 @@ static void pac1921_regulator_disable(void *data)
- 
- static int pac1921_probe(struct i2c_client *client)
- {
--       const struct i2c_device_id *id = i2c_client_get_device_id(client);
-        struct device *dev = &client->dev;
-        struct pac1921_priv *priv;
-        struct iio_dev *indio_dev;
-@@ -1202,8 +1201,7 @@ static int pac1921_probe(struct i2c_client *client)
-        ret = devm_add_action_or_reset(dev, pac1921_regulator_disable,
-                                       priv->vdd);
-        if (ret)
--               return dev_err_probe(
--                       dev, ret,
-+               return dev_err_probe(dev, ret,
-                        "Cannot add action for vdd regulator disposal\n");
- 
-        msleep(PAC1921_POWERUP_TIME_MS);
-@@ -1214,7 +1212,7 @@ static int pac1921_probe(struct i2c_client *client)
- 
-        priv->iio_info = pac1921_iio;
- 
--       indio_dev->name = id->name;
-+       indio_dev->name = "pac1921";
-        indio_dev->info = &priv->iio_info;
-        indio_dev->modes = INDIO_DIRECT_MODE;
-        indio_dev->channels = pac1921_channels;
-
-
-> diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
-> new file mode 100644
-> index 000000000000..a21dd772467e
-> --- /dev/null
-> +++ b/drivers/iio/adc/pac1921.c
-> @@ -0,0 +1,1263 @@
-
-
-> +/*
-> + * Pre-computed scales for SENSE voltage
-> + * format: IIO_VAL_INT_PLUS_NANO
-> + * unit: mV
-> + *
-> + * Vsense scale (mV) = max_vsense (mV) / di_gain / resolution
-> + */
-> +static const int pac1921_vsense_scales[][2] = {
-> +	{0, 97751710},		/* di_gain x1 */
-> +	{0, 48875855},		/* di_gain x2 */
-> +	{0, 24437927},		/* di_gain x4 */
-> +	{0, 12218963},		/* di_gain x8 */
-> +	{0, 6109481},		/* di_gain x16 */
-> +	{0, 3054740},		/* di_gain x32 */
-> +	{0, 1527370},		/* di_gain x64 */
-> +	{0, 763685}		/* di_gain x128 */
-> +};
-trivial but generally prefer { 0, 763685 }, 
-etc
-
-
-
-> +
-> +/*
-> + * Emit on sysfs the list of available scales contained in scales_tbl
-> + *
-> + * TODO:: this function can be replaced with iio_format_avail_list() if the
-> + * latter will ever be exported.
-
-You could just have added a precursor patch doing that.
-If you have time I'd certainly consider a patch that does export that function
-and uses it here.
-
-> + *
-> + * Must be called with lock held if the scales_tbl can change runtime (e.g. for
-> + * the current scales table)
-> + */
-> +static ssize_t pac1921_format_scale_avail(const int (*const scales_tbl)[2],
-> +					  size_t size, char *buf)
-> +{
-> +	ssize_t len = 0;
-> +
-> +	for (unsigned int i = 0; i < size; i++) {
-> +		if (i != 0) {
-> +			len += sysfs_emit_at(buf, len, " ");
-> +			if (len >= PAGE_SIZE)
-> +				return -EFBIG;
-> +		}
-> +		len += sysfs_emit_at(buf, len, "%d.%09d", scales_tbl[i][0],
-> +				     scales_tbl[i][1]);
-> +		if (len >= PAGE_SIZE)
-> +			return -EFBIG;
-> +	}
-> +
-> +	len += sysfs_emit_at(buf, len, "\n");
-> +	return len;
-> +}
-> +
-> +/*
-> + * Read available scales for a specific channel
-> + *
-> + * NOTE: using extended info insted of iio.read_avail() because access to
-> + * current scales must be locked as they depend on shunt resistor which may
-> + * change runtime. Caller of iio.read_avail() would access the table unlocked
-> + * instead.
-
-That's a corner case we should think about closing. Would require an indicator
-to read_avail that the buffer it has been passed is a snapshot that it should
-free on completion of the string building.  I don't like passing ownership
-of data around like that, but it is fiddly to do anything else given
-any simple double buffering is subject to race conditions.
-An alternative would use a key of sometype to associate individual read_avail
-calls with new ones to read_avail_release_resource. That might be cleaner.
-
-oh well, a cleanup job for another day.   I suspect we have drivers today
-that are subject to tearing of their available lists.
-
-
-
-> + */
-> +static ssize_t pac1921_read_scale_avail(struct iio_dev *indio_dev,
-> +					uintptr_t private,
-> +					const struct iio_chan_spec *chan,
-> +					char *buf)
-> +{
-> +	struct pac1921_priv *priv = iio_priv(indio_dev);
-> +	const int (*scales_tbl)[2];
-> +	size_t size;
-> +
-> +	switch (chan->channel) {
-> +	case PAC1921_CHAN_VBUS:
-> +		scales_tbl = pac1921_vbus_scales;
-> +		size = ARRAY_SIZE(pac1921_vbus_scales);
-> +		return pac1921_format_scale_avail(scales_tbl, size, buf);
-> +
-> +	case PAC1921_CHAN_VSENSE:
-> +		scales_tbl = pac1921_vsense_scales;
-> +		size = ARRAY_SIZE(pac1921_vsense_scales);
-> +		return pac1921_format_scale_avail(scales_tbl, size, buf);
-> +
-> +	case PAC1921_CHAN_CURRENT: {
-> +		guard(mutex)(&priv->lock);
-> +		scales_tbl = priv->current_scales;
-> +		size = ARRAY_SIZE(priv->current_scales);
-> +		return pac1921_format_scale_avail(scales_tbl, size, buf);
-> +	}
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +#define PAC1921_EXT_INFO_SCALE_AVAIL {					\
-> +	.name = "scale_available",					\
-> +	.read = pac1921_read_scale_avail,				\
-> +	.shared = IIO_SEPARATE,						\
-> +}
-> +
-> +static const struct iio_chan_spec_ext_info pac1921_ext_info_voltage[] = {
-> +	PAC1921_EXT_INFO_SCALE_AVAIL,
-> +	{}
-> +};
-
-
-> +
-> +static irqreturn_t pac1921_trigger_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *idev = pf->indio_dev;
-> +	struct pac1921_priv *priv = iio_priv(idev);
-> +	int ret;
-> +	int bit;
-> +	int ch = 0;
-> +
-> +	guard(mutex)(&priv->lock);
-> +
-> +	if (!pac1921_data_ready(priv))
-
-Interesting corner case that maybe could have done with a comment.
-Seems could be triggered by a spurious interrupt, or sampling too early.
-
-I think only the second one is likely to happen, so shouldn't be a
-problem to acknowledge that trigger.
-
-> +		goto done;
-> +
-> +	ret = pac1921_check_push_overflow(idev, pf->timestamp);
-> +	if (ret)
-> +		goto done;
-> +
-> +	for_each_set_bit(bit, idev->active_scan_mask, idev->masklength) {
-
-This needs an update as we crossed with Nuno's series that removes access
-to masklength. I can fix whilst applying by using
-iio_for_each_active_channel()
-
-
-> +		u16 val;
-> +
-> +		ret = pac1921_read_res(priv, idev->channels[ch].address, &val);
-> +		if (ret)
-> +			goto done;
-> +
-> +		priv->scan.chan[ch++] = val;
-> +	}
-> +
-> +	iio_push_to_buffers_with_timestamp(idev, &priv->scan, pf->timestamp);
-> +
-> +done:
-> +	iio_trigger_notify_done(idev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +/*
-> + * Initialize device by writing initial configuration and putting it into
-> + * integration state.
-> + *
-> + * Must be called with lock held when called after first initialization
-> + * (e.g. from pm resume)
-> + */
-> +static int pac1921_init(struct pac1921_priv *priv)
-> +{
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	/* Enter READ state before configuration */
-> +	ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
-> +				 PAC1921_INT_CFG_INTEN, 0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Configure gains, use 14-bits measurement resolution (HW default) */
-> +	val = (u8)FIELD_PREP(PAC1921_GAIN_DI_GAIN_MASK, priv->di_gain) |
-> +	      (u8)FIELD_PREP(PAC1921_GAIN_DV_GAIN_MASK, priv->dv_gain);
-
-Why are these cases needed?
-Each of those values is going to fit in a u8 just fine and it's getting
-written to a much larger variable.
-
-
-
-
-> +	ret = regmap_write(priv->regmap, PAC1921_REG_GAIN_CFG, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/*
-> +	 * Configure integration:
-> +	 * - num of integration samples
-> +	 * - filters enabled (HW default)
-> +	 * - set READ/INT pin override (RIOV) to control operation mode via
-> +	 *   register instead of pin
-> +	 */
-> +	val = (u8)FIELD_PREP(PAC1921_INT_CFG_SMPL_MASK, priv->n_samples) |
-> +	      PAC1921_INT_CFG_VSFEN | PAC1921_INT_CFG_VBFEN |
-> +	      PAC1921_INT_CFG_RIOV;
-> +	ret = regmap_write(priv->regmap, PAC1921_REG_INT_CFG, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/*
-> +	 * Init control register:
-> +	 * - VPower free run integration mode
-> +	 * - OUT pin full scale range: 3V (HW detault)
-> +	 * - no timeout, no sleep, no sleep override, no recalc (HW defaults)
-> +	 */
-> +	val = (u8)FIELD_PREP(PAC1921_CONTROL_MXSL_MASK,
-> +			     PAC1921_MXSL_VPOWER_FREE_RUN);
-> +	ret = regmap_write(priv->regmap, PAC1921_REG_CONTROL, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Enable integration */
-> +	ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
-> +				 PAC1921_INT_CFG_INTEN, PAC1921_INT_CFG_INTEN);
-> +	if (ret)
-> +		return ret;
-> +
-> +	priv->first_integr_started = true;
-> +	priv->integr_started_time_jiffies = jiffies;
-> +	priv->integr_period_usecs = pac1921_int_periods_usecs[priv->n_samples];
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int pac1921_probe(struct i2c_client *client)
-> +{
-> +	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-With the change suggested below this wouldn't be needed.
-> +	struct device *dev = &client->dev;
-> +	struct pac1921_priv *priv;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	priv = iio_priv(indio_dev);
-> +	priv->client = client;
-> +	i2c_set_clientdata(client, indio_dev);
-> +
-> +	priv->regmap = devm_regmap_init_i2c(client, &pac1921_regmap_config);
-> +	if (IS_ERR(priv->regmap))
-> +		dev_err_probe(dev, (int)PTR_ERR(priv->regmap),
-> +			      "Cannot initialize register map\n");
-> +
-> +	devm_mutex_init(dev, &priv->lock);
-> +
-> +	priv->dv_gain = PAC1921_DEFAULT_DV_GAIN;
-> +	priv->di_gain = PAC1921_DEFAULT_DI_GAIN;
-> +	priv->n_samples = PAC1921_DEFAULT_NUM_SAMPLES;
-> +
-> +	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-> +				       &priv->rshunt_uohm);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Cannot read shunt resistor property\n");
-> +	if (priv->rshunt_uohm == 0 || priv->rshunt_uohm > INT_MAX)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "Invalid shunt resistor: %u\n",
-> +				     priv->rshunt_uohm);
-> +
-> +	pac1921_calc_current_scales(priv);
-> +
-> +	priv->vdd = devm_regulator_get(dev, "vdd");
-> +	if (IS_ERR(priv->vdd))
-> +		return dev_err_probe(dev, (int)PTR_ERR(priv->vdd),
-> +				     "Cannot get vdd regulator\n");
-> +
-> +	ret = regulator_enable(priv->vdd);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Cannot enable vdd regulator\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, pac1921_regulator_disable,
-> +				       priv->vdd);
-> +	if (ret)
-> +		return dev_err_probe(
-> +			dev, ret,
-Trivial: I'd move the dev, ret to previous line.
-
-> +			"Cannot add action for vdd regulator disposal\n");
-> +
-> +	msleep(PAC1921_POWERUP_TIME_MS);
-> +
-> +	ret = pac1921_init(priv);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Cannot initialize device\n");
-> +
-> +	priv->iio_info = pac1921_iio;
-> +
-> +	indio_dev->name = id->name;
-
-This tends to end up flakey at best when different types of firmware are taken
-into account - IIRC particularly when fallback compatibles are in use.
-So better to switch this to "pac1921" here.
-
-> +	indio_dev->info = &priv->iio_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = pac1921_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(pac1921_channels);
-
-
+Whilst it might be useful to allow non power of 2 storage formats,
+that's a break of the IIO userspace ABI so that isn't an approach to
+consider. You must shuffle the data in the driver.
 

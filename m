@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-8002-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8003-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D43093E70B
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 18:01:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BBF93E76D
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 18:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CFE3281BA1
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 16:01:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56EA41C2108D
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 16:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D852F12F5B3;
-	Sun, 28 Jul 2024 15:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A8064CEC;
+	Sun, 28 Jul 2024 15:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uyIrBEYE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MmvJU13X"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0DA12F5B1;
-	Sun, 28 Jul 2024 15:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7830E3EA9B;
+	Sun, 28 Jul 2024 15:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722181752; cv=none; b=fXhjcn3aYxy7bAiZiP720c7lw4KmDesJ+aqikyNiqdYf7N8DFIwLr7492+wCZ/4V9d6hwPiwNGP8830QWXY6A/DUTf6yGrsEJLaDVjHE21KlH2dhJFfT2DkEYTOQgrD1sgLzxD1QuI59yYua37JD3t8tUCs6WL/rSLBLPmI8fu8=
+	t=1722182254; cv=none; b=hswDWLrkaiLb5Z3Mk2kD2LJ9WzF5UHFytvo7DTqahMiJT1/dxntMPQL9ElRLI0zgrNgUEXdSW9gnrcUrq8KAQzMdLMWRsxhSSl89qVjogOQiULeeOkrpuXnJpR6FexPbUypOchRWhOqy9Y4CynGKXDrIMiLkLcaKfApUCY1xAaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722181752; c=relaxed/simple;
-	bh=TSQSBTiv/2tz4tLXVZIEtWMiDsRu5Y4rPKZ1Gx8SvuY=;
+	s=arc-20240116; t=1722182254; c=relaxed/simple;
+	bh=XjPWs3XZAYVRfacXl3+Xy0bIqT1C+XEC+Fe3jXsbfyU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XXuzyv47YY5UIJrAIq+SRhg/h4/W4b2QaqMDMO915j7FXUzVYuALY/ejeBY9Lb3xgWFJhxFTPY2H8atmUJeCQfgsAL69E/oIJLqUty93JM4wHrKvADLQ5MTjxe3h214qvNB+noj0Wt+bAMfuPA69hXoBsqxk2r4upGpFkYyED5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uyIrBEYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED0EC32782;
-	Sun, 28 Jul 2024 15:49:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=btLN2IkJVfu0kUvU62na+YNQJnqAH5l0hti+8C0bDAiFagYw4ZAfwwM8wsrGOX4f0I9NJm56hp/+rxXDrF4B2EVr1tD0sxkiAzUy8lfUZRRWw8bzZB5I2xMR/zxCEpQExADQ1vDZ3f3udQ3w2zE0MNic5OhAywRTYMZGhRlZF+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MmvJU13X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D48C116B1;
+	Sun, 28 Jul 2024 15:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722181752;
-	bh=TSQSBTiv/2tz4tLXVZIEtWMiDsRu5Y4rPKZ1Gx8SvuY=;
+	s=k20201202; t=1722182254;
+	bh=XjPWs3XZAYVRfacXl3+Xy0bIqT1C+XEC+Fe3jXsbfyU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uyIrBEYEYhLgvg9eta9eIhVHOeIVaBo/7tKpJvgZfTTjwZJUR4LV9HeWCnFNwzyEv
-	 3EXWRoQqVSGomasgrNomsMJJ6SYg4K7jqIge3h2iGJnXbVbGx5hhcK1sNstYylLn0b
-	 jqiscyt+BO+RKMzYnpW4npZUrWbrch9PL9n+sXtIRb4234zM4NmzM8PVq5ML67fbP1
-	 WAa5BN0H6Ak5xWdg27LEj4ACbQ7Hg1n3UhpxXicMAlm6+I49RA6+wlTbGNRl/REG39
-	 D7qF68RsclHLMyL0OUHLTsG3zL8HTFF/p3Iu/VQYzIUpshbvSLRKX9E2KJmRquXcnB
-	 ibxlOoH+J3DYg==
-Date: Sun, 28 Jul 2024 16:49:01 +0100
+	b=MmvJU13XQs8tsHu+Z1WCmY5c7B3qUSM/VT50uFsrJbNlVy/gB+2hb6qsO5UCbUOOR
+	 b5GI8ZFMOOFeliufKV6xfuPqGpdbVDP+L1HwkcBT31lUwaj9PIN/efn3/c4qofKtNV
+	 PDGNAT+I/Ns/r/9mhNs/hkLyT9j7+j2/I/Bh5b1B5AknoNjEu4rvNY9DFopAB5xD+Z
+	 DO6fqNeZ2woPrkK8UD9HEXWs3SqxUwLQIxlZtZpLt7WSvW3B/5352960iCO0qXw9hJ
+	 lTwWe0BU7P4jd/FHAkjQ9hdR22pHYwHfqKBdVQZW3a1BUS+H6QKL+OUF9BFuM19ssb
+	 8hkEw5+9f5QdQ==
+Date: Sun, 28 Jul 2024 16:57:24 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
@@ -51,12 +51,12 @@ Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
  semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/7] iio: pressure: bmp280: Add support for bmp280
- soft reset
-Message-ID: <20240728164901.1f325aa2@jic23-huawei>
-In-Reply-To: <20240725231039.614536-3-vassilisamir@gmail.com>
+Subject: Re: [PATCH v2 4/7] iio: pressure: bmp280: Use sleep and forced mode
+ for oneshot captures
+Message-ID: <20240728165724.75153d08@jic23-huawei>
+In-Reply-To: <20240725231039.614536-5-vassilisamir@gmail.com>
 References: <20240725231039.614536-1-vassilisamir@gmail.com>
-	<20240725231039.614536-3-vassilisamir@gmail.com>
+	<20240725231039.614536-5-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,94 +67,109 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 26 Jul 2024 01:10:34 +0200
+On Fri, 26 Jul 2024 01:10:36 +0200
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> The BM(P/E)28x devices have an option for soft reset which is also
-> recommended by the Bosch Sensortech BME2 Sensor API to be used before the
-> initial configuration of the device.
+> This commit adds forced mode support in sensors BMP28x, BME28x, BMP3xx
+> and BMP58x. Sensors BMP18x and BMP085 are old and do not support this
+> feature so their operation is not affected at all.
 > 
-> Link: https://github.com/boschsensortec/BME280_SensorAPI/blob/bme280_v3.5.1/bme280.c#L429
+> Essentially, up to now, the rest of the sensors were used in normal mode
+> all the time. This means that they are continuously doing measurements
+> even though these measurements are not used. Even though the sensor does
+> provide PM support, to cover all the possible use cases, the sensor needs
+> to go into sleep mode and wake up whenever necessary.
+> 
+> This commit, adds sleep and forced mode support. Essentially, the sensor
+> sleeps all the time except for when a measurement is requested. When there
+> is a request for a measurement, the sensor is put into forced mode, starts
+> the measurement and after it is done we read the output and we put it again
+> in sleep mode.
+> 
+> For really fast and more deterministic measurements, the triggered buffer
+> interface can be used, since the sensor is still used in normal mode for
+> that use case.
+> 
+> This commit does not add though support for DEEP STANDBY, Low Power NORMAL
+> and CONTINUOUS modes, supported only by the BMP58x version.
+> 
 > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Trivial passing comment seeing as you are going do be doing a v3 anyway.
+One question inline about the corner case of buffered capture in progress
+when the machine is suspended.  We'd like the device to carry on feeding
+us data on resume. Does that happen?
 
 Jonathan
 
-> ---
->  drivers/iio/pressure/bmp280-core.c | 28 ++++++++++++++++++++++++++++
->  drivers/iio/pressure/bmp280.h      |  3 +++
->  2 files changed, 31 insertions(+)
-> 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index d5e5eb22667a..acbc33aacc09 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -963,6 +963,32 @@ static const unsigned long bme280_avail_scan_masks[] = {
->  	0
->  };
+
+>  	.trigger_handler = bmp380_trigger_handler,
+> @@ -2085,6 +2239,64 @@ static int bmp580_preinit(struct bmp280_data *data)
+>  	return PTR_ERR_OR_ZERO(devm_nvmem_register(config.dev, &config));
+>  }
 >  
-> +static int bmp280_preinit(struct bmp280_data *data)
+> +static const u8 bmp580_operation_mode[] = { BMP580_MODE_SLEEP,
+> +					    BMP580_MODE_FORCED,
+> +					    BMP580_MODE_NORMAL };
+> +
+
+
+> +
+> +static int bmp580_wait_conv(struct bmp280_data *data)
 > +{
-> +	unsigned int reg;
-> +	int ret;
-> +
-> +	ret = regmap_write(data->regmap, BMP280_REG_RESET, BMP280_RST_SOFT_CMD);
-> +	if (ret) {
-> +		dev_err(data->dev, "Failed to reset device.\n");
-> +		return ret;
-Is this only ever called from probe?
+> +	/*
+> +	 * Taken from datasheet, Section 2 "Specification, Table 3 "Electrical
+> +	 * characteristics
+> +	 */
+> +	const int time_conv_press[] = { 0, 1050, 1785, 3045, 5670, 10920, 21420,
+> +					42420, 84420};
+> +	const int time_conv_temp[] = { 0, 1050, 1105, 1575, 2205, 3465, 6090,
+> +				       11340, 21840};
+space before }
 
-If so, return dev_err_probe() which will save a few lines of code.
+Also stick a static in front of them or Colin will ;)
+Aim being to makes sure they aren't pointlessly allocated on the stack
+if the compiler doesn't do something clever with them.
 
-> +	}
+> +	int meas_time;
 > +
-> +	usleep_range(data->start_up_time, data->start_up_time + 500);
+> +	meas_time = 4000 + time_conv_temp[data->oversampling_temp] +
+> +			   time_conv_press[data->oversampling_press];
 > +
-> +	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
-> +	if (ret) {
-> +		dev_err(data->dev, "Failed to read status register.\n");
-> +		return ret;
-> +	}
-> +	if (reg & BMP280_REG_STATUS_IM_UPDATE) {
-> +		dev_err(data->dev, "Failed to copy NVM contents.\n");
-> +		return ret;
-> +	}
+> +	usleep_range(meas_time, meas_time * 12 / 10);
 > +
 > +	return 0;
 > +}
+>
+>  
+> +/* Keep compatibility with future generations of the sensor */
+> +static int bmp180_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
+> +{
+> +	return 0;
+> +}
 > +
->  static int bmp280_chip_config(struct bmp280_data *data)
->  {
->  	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
-> @@ -1079,6 +1105,7 @@ const struct bmp280_chip_info bmp280_chip_info = {
->  	.read_temp = bmp280_read_temp,
->  	.read_press = bmp280_read_press,
->  	.read_calib = bmp280_read_calib,
-> +	.preinit = bmp280_preinit,
->  
->  	.trigger_handler = bmp280_trigger_handler,
->  };
-> @@ -1196,6 +1223,7 @@ const struct bmp280_chip_info bme280_chip_info = {
->  	.read_press = bmp280_read_press,
->  	.read_humid = bme280_read_humid,
->  	.read_calib = bme280_read_calib,
-> +	.preinit = bmp280_preinit,
->  
->  	.trigger_handler = bme280_trigger_handler,
->  };
-> diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-> index 9bea0b84d2f4..a9f220c1f77a 100644
-> --- a/drivers/iio/pressure/bmp280.h
-> +++ b/drivers/iio/pressure/bmp280.h
-> @@ -205,6 +205,9 @@
->  #define BMP280_REG_CONFIG		0xF5
->  #define BMP280_REG_CTRL_MEAS		0xF4
->  #define BMP280_REG_STATUS		0xF3
-> +#define BMP280_REG_STATUS_IM_UPDATE	BIT(0)
-> +#define BMP280_REG_RESET		0xE0
-> +#define BMP280_RST_SOFT_CMD		0xB6
->  
->  #define BMP280_REG_COMP_TEMP_START	0x88
->  #define BMP280_COMP_TEMP_REG_COUNT	6
+> +/* Keep compatibility with future generations of the sensor */
+> +static int bmp180_wait_conv(struct bmp280_data *data)
+> +{
+> +	return 0;
+> +}
+> +
+> +/* Keep compatibility with future generations of the sensor */
 
+What does this comment mean?  I'm in favour of course, but don't understand
+why it is here and above the stub calls.
+
+
+> @@ -2825,6 +3048,9 @@ static int bmp280_runtime_suspend(struct device *dev)
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct bmp280_data *data = iio_priv(indio_dev);
+>  
+> +	data->chip_info->set_mode(data, BMP280_SLEEP);
+
+What happens if the device is in buffered mode and you suspend?
+I'd expect to see the power mode stashed somewhere and restored in resume.
+
+> +
+> +	usleep_range(2500, 3000);
+>  	return regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
+>  }
+>  
 

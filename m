@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-7993-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7994-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19AC893E5CA
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 17:20:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF8993E5CC
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 17:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609E71F21254
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 15:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63E85281941
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 15:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF515103F;
-	Sun, 28 Jul 2024 15:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B3F4F8A0;
+	Sun, 28 Jul 2024 15:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CVnGz3xz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CwE2jJZF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C593FE55;
-	Sun, 28 Jul 2024 15:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BA13FE55;
+	Sun, 28 Jul 2024 15:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722180036; cv=none; b=iaAxROtq45wjYThONd5sVY5LVjeVsiYwyC1ExYq1l9lVGsJJcMWY3miqMkDAVqfY7OxxA/9S/oeRCR6CYtTK2w1xXFVYEiaMx8pX2NfKfGXMARnWTbHcUd1DoTXMtBgoDy37xvBxq+SjeZXRaTZJdns96ErMJ4bJo4WyhNbvPvk=
+	t=1722180048; cv=none; b=pJZRPziKD5iRoRNPgp1T934UaFSmlvOJVxaK3TUUdIbyo21jXoSiM/aEhX+c/qqcsDzHkQ85WpXKVrRD+qt56mec4Ta2qUbBMXoUM6vAqiT2hwjhhHenH7UAfq8Shdf/MBoA9wj4F7byLRxPWBwRDX9IZ6kIvaJb+dFy+YVN0C0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722180036; c=relaxed/simple;
-	bh=ZPZYOty7vPmPbDULQH68zaMGkRk3k6rDM+cb0rI0Bq8=;
+	s=arc-20240116; t=1722180048; c=relaxed/simple;
+	bh=owexpOXF+wI61BgqHsHNShPLhj3RatWabgrTY7mkeHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JaBoSjYKID4gRghzuLqaah6Mm21I2PnZpt6vdlot5zOaf7kfzJlqYyIn98v9B3XL6C0ZxxYoD98xUBbJdlD2DmG6lkiwM48lbnANe+yKhHzSIeVfq2Xtx3XTGrSt2LhfT/q9PfO7lzI8lFVySmVsFxyhzJ18IVBn1aW6wbcXFIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CVnGz3xz; arc=none smtp.client-ip=209.85.160.51
+	 MIME-Version; b=vGqo94HPT49jMaE7xh5H1LkqdAwaYLlq3pypR56uOa8/QpObAJAvn0aEnqOwPswBEi08EdgV0gCMpL1ii3+2+tfQ9a361gZ7ZekMePSEyFZPV1dFzcilXrx69c2sFiqZrNwl15vfQ94yIF/ziy4zWZ6fKw+xdtB0hh8ooo39lYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CwE2jJZF; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-260f81f7fb5so1693002fac.0;
-        Sun, 28 Jul 2024 08:20:35 -0700 (PDT)
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-70d153fec2fso1922189b3a.1;
+        Sun, 28 Jul 2024 08:20:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722180033; x=1722784833; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722180046; x=1722784846; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WWQtmbGLpCfa96+iJ2bZelo/zIhpTzAVTxEvyYUKtuw=;
-        b=CVnGz3xzDOw60sNHquAGRUtG5+CEbLX7lTN5rRLl1r+WRR93GQ968mz+q7HrNJTkCB
-         GDZOJhq7tbq9tMe3sRb4iIOnkttPokNrSOaS0hmrwOQ4L4Y/YnghhK9qgBQhILASNfkN
-         fkXxEleEWaydJrY7yIc1lzgDaUtGtlmJh7SjJRvz4HTXXcfGe6dj9D6w11Hlmx56ZyJ/
-         oBh900hTFnzmhKBlNEZT5K70vkK/S+zj+6Gr1cDG2t/pURv4PA2WroHm3CO8M9a2Vocp
-         UGY///Fw31MkvJ1v8jK7GtFlOUA+TG53v4RnwpLJLiRAwtJHjXlW2G69zgvoD2N9UYBv
-         7bEA==
+        bh=PG62K3ydvM6FgW1Is7oA+qi+i6CrllaajFqPquOOLx0=;
+        b=CwE2jJZF6wrYBzCMsxEQB+cel6b3YB+reK65xCKKjkV00aM4tVnpA5lS0kxicoRUO2
+         K6b++E5yZCEjaAwew7T0ElqmwFxRuPMCXvHcWEjtHod1GpL6f6IrNKv3h1A09VZ93G7M
+         RKAzNURjRviMcxCo1GF97q68wU1DjMmHjRArWVYZctOR7/WjQ8WhvKoqBiPqUM7eoeFt
+         ykStgX+zgK8nd724NTAyyLqqGW5AEb14ufabOSR6aVVU5O+4xkbtzo56/Zq6mkORpr+5
+         MrmZqHbJVPhtlQAjWIzr6UciemOCb8P25ULvz3t48eecfI5dTOzUaxumb0e/OxQt45kf
+         dl8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722180033; x=1722784833;
+        d=1e100.net; s=20230601; t=1722180046; x=1722784846;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WWQtmbGLpCfa96+iJ2bZelo/zIhpTzAVTxEvyYUKtuw=;
-        b=viboUSlpH+z0oL2LGq9Wz39O0+1I03+4REcdzlriADQXoRbUkZWoAOLKFVR8C3+Loe
-         ob5ttoi1ZVJyN/uD3+U1R9b6YW9+UZ784ITsseC7Khj5YGQ+hp1LZLMv7XW2vaskDzWE
-         89aOnGQL4NJJAwYYqhP/YUPcKzXQjLidsn4qBzff6i//RUcBxBHykPFun/8BQ9vIcSNs
-         2ydE61LJeDF+rFt5GGu0Cyr6CJ/1c5mwkwDzsu9vqF3vfhz9KvC+xSj+ZOlVFJcY4fJt
-         0GBUP9Ie6zZnFDWPwuamLT8IPo4asRbRRfBrREsYiYfnilAdOzsDuV3K2K1QeIEoKe8o
-         LooA==
-X-Forwarded-Encrypted: i=1; AJvYcCWV5rKcOPi+xa7xlk5ZW9PT3ACFuxdRoIeCZxpcUMj0pqoQZ0oCHUrpCeu9RnlT/JDNPzGLzrV03CKcGOI6Qh/GdWz+lQhCWd/8rvPv
-X-Gm-Message-State: AOJu0YzuqyRJ10RqqzIWO4rZhRWXJy9Z8Gd0QLD2B5xTpFWou0RH1prx
-	2++J8XYduunqGvZ/s+DG2VLQ2DBV6urS+Os6wyFEslv8ryOy8+z8onM2Sq1sXAfx6Q==
-X-Google-Smtp-Source: AGHT+IEpPtXHu6qzEmt8Wunqu7lAMY3sRPrB7NPAe2eoRjYtzBRDjKSOQpjYKSgvDDr9tbU0K7RkTQ==
-X-Received: by 2002:a05:6871:58a:b0:254:b74e:d654 with SMTP id 586e51a60fabf-267d4d8ed02mr4938255fac.22.1722180032985;
-        Sun, 28 Jul 2024 08:20:32 -0700 (PDT)
+        bh=PG62K3ydvM6FgW1Is7oA+qi+i6CrllaajFqPquOOLx0=;
+        b=kiKP5CAnghpdLcei/qBS9dHWaNPHETPgs2n3uowivvAGDxHaWIYBpmGTibg4n3lTPP
+         OvgnUFST7nwVcLQUzcM0sHghzJXX8Pz+RGqJ5iat8hl2kAwNFaEqmt6JyknqEVB9fvZ1
+         P+7k0QArtT6lND1iISSGD/9r4xFt86uFKqa9T5iTb1ot1eP6C+fZmwddtXNGhVjYvW6x
+         Y37waceCiRwwQPRxsIGosLmLnJHwdYSkIY2yDJlkznrUF81rV8Xz+yGGG3VFEbjNLJNL
+         STAiJqAnP6d39Flaz3NKsLcR3/XyVPT2CW0pLmsXyQa0gS8tnAKU9h55HlWqUKUYlKUY
+         yWqw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9XzTh+hbruiWc8yqjpUoSxr5RBATWRJ6vLV/gsKmOhEEztPetQ0fnKTkFQqFF07OuXfKX0FpY4to1hQufPAeaFaF8gft+cPoKcNJs
+X-Gm-Message-State: AOJu0Yxp+czFpelnjKK0L/vsmlbtoSBjmTP2zqGfCTu5plp4+2ZoyA7B
+	RX+aXmwnIZmDU7z51nxaKRVm/h4QKK8gtY4vmf8lZ7mD+bbpUAGTeAhm5du3KHfVug==
+X-Google-Smtp-Source: AGHT+IGPIvOF7s3vnbCTPK9auTSkhd7q0XfxQxzRfPm5/aBYIX3fXUZxWfM131zZt6vuQNfxFW3dwA==
+X-Received: by 2002:a05:6a21:3483:b0:1c4:818c:299d with SMTP id adf61e73a8af0-1c4a1179127mr6632320637.11.1722180045901;
+        Sun, 28 Jul 2024 08:20:45 -0700 (PDT)
 Received: from localhost.localdomain ([136.233.9.100])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-7a9f817aebasm5836843a12.28.2024.07.28.08.20.29
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-7a9f817aebasm5836843a12.28.2024.07.28.08.20.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jul 2024 08:20:32 -0700 (PDT)
+        Sun, 28 Jul 2024 08:20:45 -0700 (PDT)
 From: Abhash Jha <abhashkumarjha123@gmail.com>
 To: linux-iio@vger.kernel.org
 Cc: anshulusr@gmail.com,
@@ -74,12 +74,13 @@ Cc: anshulusr@gmail.com,
 	lars@metafoo.de,
 	linux-kernel@vger.kernel.org,
 	Abhash Jha <abhashkumarjha123@gmail.com>
-Subject: [PATCH v2 1/3] iio: light: ltr390: Add configurable gain and resolution
-Date: Sun, 28 Jul 2024 20:49:54 +0530
-Message-ID: <20240728151957.310237-1-abhashkumarjha123@gmail.com>
+Subject: [PATCH v2 2/3] iio: light: ltr390: Add ALS channel and support for gain and resolution
+Date: Sun, 28 Jul 2024 20:49:55 +0530
+Message-ID: <20240728151957.310237-2-abhashkumarjha123@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240727132735.052502ad@jic23-huawei>
+In-Reply-To: <20240728151957.310237-1-abhashkumarjha123@gmail.com>
 References: <20240727132735.052502ad@jic23-huawei>
+ <20240728151957.310237-1-abhashkumarjha123@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -88,240 +89,188 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-    Add support for configuring and reading the gain and resolution
-    (integration time). Also provide the available values for gain and
-    resoltion respectively via `read_avail` callback.
+    Add new ALS channel and allow reading raw and scale values.
+    Also provide gain and resolution configuration for ALS channel.
+    Add automatic mode switching between the UVS and ALS channel
+    based on which channel is being accessed.
+    The default mode in which the sensor start is ALS mode.
 
 Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
 ---
- drivers/iio/light/ltr390.c | 144 +++++++++++++++++++++++++++++++++----
- 1 file changed, 130 insertions(+), 14 deletions(-)
+ drivers/iio/light/ltr390.c | 111 ++++++++++++++++++++++++++++++++-----
+ 1 file changed, 96 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
-index fff1e8990..9f00661c3 100644
+index 9f00661c3..d1a259141 100644
 --- a/drivers/iio/light/ltr390.c
 +++ b/drivers/iio/light/ltr390.c
-@@ -25,19 +25,26 @@
- #include <linux/regmap.h>
+@@ -62,11 +62,17 @@
+  */
+ #define LTR390_WINDOW_FACTOR 1
  
- #include <linux/iio/iio.h>
--
-+#include <linux/iio/sysfs.h>
- #include <asm/unaligned.h>
- 
--#define LTR390_MAIN_CTRL      0x00
--#define LTR390_PART_ID	      0x06
--#define LTR390_UVS_DATA	      0x10
-+#define LTR390_MAIN_CTRL		0x00
-+#define LTR390_ALS_UVS_MEAS_RATE	0x04
-+#define LTR390_ALS_UVS_GAIN		0x05
-+#define LTR390_PART_ID			0x06
-+#define LTR390_ALS_DATA			0x0D
-+#define LTR390_UVS_DATA			0x10
-+#define LTR390_INT_CFG			0x19
++enum ltr390_mode {
++	LTR390_SET_ALS_MODE,
++	LTR390_SET_UVS_MODE,
++};
 +
-+#define LTR390_PART_NUMBER_ID		0xb
-+#define LTR390_ALS_UVS_GAIN_MASK	0x07
-+#define LTR390_ALS_UVS_INT_TIME_MASK	0x70
-+#define LTR390_ALS_UVS_INT_TIME(x)	FIELD_PREP(LTR390_ALS_UVS_INT_TIME_MASK, x)
- 
- #define LTR390_SW_RESET	      BIT(4)
- #define LTR390_UVS_MODE	      BIT(3)
- #define LTR390_SENSOR_ENABLE  BIT(1)
- 
--#define LTR390_PART_NUMBER_ID 0xb
--
- /*
-  * At 20-bit resolution (integration time: 400ms) and 18x gain, 2300 counts of
-  * the sensor are equal to 1 UV Index [Datasheet Page#8].
-@@ -60,6 +67,8 @@ struct ltr390_data {
+ struct ltr390_data {
+ 	struct regmap *regmap;
  	struct i2c_client *client;
  	/* Protects device from simulataneous reads */
  	struct mutex lock;
-+	int gain;
-+	int int_time_us;
++	int mode;
+ 	int gain;
+ 	int int_time_us;
  };
- 
- static const struct regmap_config ltr390_regmap_config = {
-@@ -75,8 +84,6 @@ static int ltr390_register_read(struct ltr390_data *data, u8 register_address)
- 	int ret;
- 	u8 recieve_buffer[3];
- 
--	guard(mutex)(&data->lock);
--
- 	ret = regmap_bulk_read(data->regmap, register_address, recieve_buffer,
- 			       sizeof(recieve_buffer));
- 	if (ret) {
-@@ -91,32 +98,135 @@ static int ltr390_read_raw(struct iio_dev *iio_device,
- 			   struct iio_chan_spec const *chan, int *val,
- 			   int *val2, long mask)
- {
--	int ret;
- 	struct ltr390_data *data = iio_priv(iio_device);
-+	int ret;
- 
-+	guard(mutex)(&data->lock);
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 		ret = ltr390_register_read(data, LTR390_UVS_DATA);
- 		if (ret < 0)
- 			return ret;
-+
- 		*val = ret;
- 		return IIO_VAL_INT;
-+
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = LTR390_WINDOW_FACTOR;
- 		*val2 = LTR390_COUNTS_PER_UVI;
- 		return IIO_VAL_FRACTIONAL;
-+
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*val = data->int_time_us;
-+		return IIO_VAL_INT;
-+
- 	default:
- 		return -EINVAL;
- 	}
+@@ -94,6 +100,28 @@ static int ltr390_register_read(struct ltr390_data *data, u8 register_address)
+ 	return get_unaligned_le24(recieve_buffer);
  }
  
--static const struct iio_info ltr390_info = {
--	.read_raw = ltr390_read_raw,
--};
-+/* integration time in us */
-+static const int ltr390_int_time_map_us[] = {400000, 200000, 100000, 50000, 25000, 12500};
-+static const int ltr390_gain_map[] = {1, 3, 6, 9, 18};
++static int ltr390_set_mode(struct ltr390_data *data, int mode)
++{
++	if (data->mode == mode)
++		return 0;
++
++	switch (mode) {
++	case LTR390_SET_ALS_MODE:
++		regmap_clear_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_UVS_MODE);
++		break;
++
++	case LTR390_SET_UVS_MODE:
++		regmap_set_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_UVS_MODE);
++		break;
++
++	default:
++		return -EINVAL;
++	}
++
++	data->mode = mode;
++	return 0;
++}
++
+ static int ltr390_read_raw(struct iio_dev *iio_device,
+ 			   struct iio_chan_spec const *chan, int *val,
+ 			   int *val2, long mask)
+@@ -104,17 +132,57 @@ static int ltr390_read_raw(struct iio_dev *iio_device,
+ 	guard(mutex)(&data->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		ret = ltr390_register_read(data, LTR390_UVS_DATA);
+-		if (ret < 0)
+-			return ret;
++		switch (chan->type) {
++		case IIO_UVINDEX:
++			ret = ltr390_set_mode(data, LTR390_SET_UVS_MODE);
++			if (ret < 0)
++				return ret;
++
++			ret = ltr390_register_read(data, LTR390_UVS_DATA);
++			if (ret < 0)
++				return ret;
++			break;
++
++		case IIO_INTENSITY:
++			ret = ltr390_set_mode(data, LTR390_SET_ALS_MODE);
++			if (ret < 0)
++				return ret;
++
++			ret = ltr390_register_read(data, LTR390_ALS_DATA);
++			if (ret < 0)
++				return ret;
++			break;
++
++		default:
++			return -EINVAL;
++		}
  
- static const struct iio_chan_spec ltr390_channel = {
- 	.type = IIO_UVINDEX,
--	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE)
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-+	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SCALE)
-+};
+ 		*val = ret;
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_SCALE:
+-		*val = LTR390_WINDOW_FACTOR;
+-		*val2 = LTR390_COUNTS_PER_UVI;
+-		return IIO_VAL_FRACTIONAL;
++		switch (chan->type) {
++		case IIO_UVINDEX:
++			ret = ltr390_set_mode(data, LTR390_SET_UVS_MODE);
++			if (ret < 0)
++				return ret;
 +
-+static int ltr390_set_gain(struct ltr390_data *data, int val)
-+{
-+	int ret, idx;
++			*val = LTR390_WINDOW_FACTOR;
++			*val2 = LTR390_COUNTS_PER_UVI;
++			return IIO_VAL_FRACTIONAL;
 +
-+	for (idx = 0; idx < ARRAY_SIZE(ltr390_gain_map); idx++) {
-+		if (ltr390_gain_map[idx] != val)
-+			continue;
++		case IIO_INTENSITY:
++			ret = ltr390_set_mode(data, LTR390_SET_ALS_MODE);
++			if (ret < 0)
++				return ret;
 +
-+		guard(mutex)(&data->lock);
-+		ret = regmap_update_bits(data->regmap,
-+					LTR390_ALS_UVS_GAIN,
-+					LTR390_ALS_UVS_GAIN_MASK, idx);
-+		if (ret)
-+			return ret;
++			*val = LTR390_WINDOW_FACTOR;
++			*val2 = data->gain;
++			return IIO_VAL_FRACTIONAL;
 +
-+		data->gain = ltr390_gain_map[idx];
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ltr390_set_int_time(struct ltr390_data *data, int val)
-+{
-+	int ret, idx;
-+
-+	for (idx = 0; idx < ARRAY_SIZE(ltr390_int_time_map_us); idx++) {
-+		if (ltr390_int_time_map_us[idx] != val)
-+			continue;
-+
-+		guard(mutex)(&data->lock);
-+		ret = regmap_update_bits(data->regmap,
-+					LTR390_ALS_UVS_MEAS_RATE,
-+					LTR390_ALS_UVS_INT_TIME_MASK,
-+					LTR390_ALS_UVS_INT_TIME(idx));
-+		if (ret)
-+			return ret;
-+
-+		data->int_time_us = ltr390_int_time_map_us[idx];
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ltr390_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+				const int **vals, int *type, int *length, long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		*length = ARRAY_SIZE(ltr390_gain_map);
-+		*type = IIO_VAL_INT;
-+		*vals = ltr390_gain_map;
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*length = ARRAY_SIZE(ltr390_int_time_map_us);
-+		*type = IIO_VAL_INT;
-+		*vals = ltr390_int_time_map_us;
-+		return IIO_AVAIL_LIST;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ltr390_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+				int val, int val2, long mask)
-+{
-+	struct ltr390_data *data = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		if (val2 != 0)
++		default:
 +			return -EINVAL;
-+
-+		return ltr390_set_gain(data, val);
-+
-+	case IIO_CHAN_INFO_INT_TIME:
-+		if (val2 != 0)
-+			return -EINVAL;
-+
-+		return ltr390_set_int_time(data, val);
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info ltr390_info = {
-+	.read_raw = ltr390_read_raw,
-+	.write_raw = ltr390_write_raw,
-+	.read_avail = ltr390_read_avail,
++		}
+ 
+ 	case IIO_CHAN_INFO_INT_TIME:
+ 		*val = data->int_time_us;
+@@ -129,11 +197,23 @@ static int ltr390_read_raw(struct iio_dev *iio_device,
+ static const int ltr390_int_time_map_us[] = {400000, 200000, 100000, 50000, 25000, 12500};
+ static const int ltr390_gain_map[] = {1, 3, 6, 9, 18};
+ 
+-static const struct iio_chan_spec ltr390_channel = {
+-	.type = IIO_UVINDEX,
+-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+-	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
+-	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SCALE)
++static const struct iio_chan_spec ltr390_channels[] = {
++	/* UV sensor */
++	{
++		.type = IIO_UVINDEX,
++		.scan_index = 0,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
++		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SCALE)
++	},
++	/* ALS sensor */
++	{
++		.type = IIO_INTENSITY,
++		.scan_index = 1,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
++		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SCALE)
++	},
  };
  
- static int ltr390_probe(struct i2c_client *client)
-@@ -139,6 +249,11 @@ static int ltr390_probe(struct i2c_client *client)
- 				     "regmap initialization failed\n");
+ static int ltr390_set_gain(struct ltr390_data *data, int val)
+@@ -253,12 +333,14 @@ static int ltr390_probe(struct i2c_client *client)
+ 	data->int_time_us = 100000;
+ 	/* default value of gain from pg: 16 of the datasheet */
+ 	data->gain = 3;
++	/* default mode for ltr390 is ALS mode */
++	data->mode = LTR390_SET_ALS_MODE;
  
- 	data->client = client;
-+	/* default value of integration time from pg: 15 of the datasheet */
-+	data->int_time_us = 100000;
-+	/* default value of gain from pg: 16 of the datasheet */
-+	data->gain = 3;
-+
  	mutex_init(&data->lock);
  
  	indio_dev->info = &ltr390_info;
-@@ -162,7 +277,7 @@ static int ltr390_probe(struct i2c_client *client)
+-	indio_dev->channels = &ltr390_channel;
+-	indio_dev->num_channels = 1;
++	indio_dev->channels = ltr390_channels;
++	indio_dev->num_channels = ARRAY_SIZE(ltr390_channels);
+ 	indio_dev->name = "ltr390";
+ 
+ 	ret = regmap_read(data->regmap, LTR390_PART_ID, &part_number);
+@@ -276,8 +358,7 @@ static int ltr390_probe(struct i2c_client *client)
+ 	/* Wait for the registers to reset before proceeding */
  	usleep_range(1000, 2000);
  
- 	ret = regmap_set_bits(data->regmap, LTR390_MAIN_CTRL,
--			      LTR390_SENSOR_ENABLE | LTR390_UVS_MODE);
-+				LTR390_SENSOR_ENABLE | LTR390_UVS_MODE);
+-	ret = regmap_set_bits(data->regmap, LTR390_MAIN_CTRL,
+-				LTR390_SENSOR_ENABLE | LTR390_UVS_MODE);
++	ret = regmap_set_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_SENSOR_ENABLE);
  	if (ret)
  		return dev_err_probe(dev, ret, "failed to enable the sensor\n");
  
-@@ -189,6 +304,7 @@ static struct i2c_driver ltr390_driver = {
- 	.probe = ltr390_probe,
- 	.id_table = ltr390_id,
- };
-+
- module_i2c_driver(ltr390_driver);
- 
- MODULE_AUTHOR("Anshul Dalal <anshulusr@gmail.com>");
 -- 
 2.43.0
 

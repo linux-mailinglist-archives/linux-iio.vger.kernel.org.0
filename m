@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-7989-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7990-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 225FE93E490
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 12:33:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1A093E495
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 12:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0EB41F215D7
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 10:33:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41E79B21007
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 10:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3093B2BAEF;
-	Sun, 28 Jul 2024 10:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7902BAEF;
+	Sun, 28 Jul 2024 10:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UqChQ7to"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gK8LzaY4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22602BAE3;
-	Sun, 28 Jul 2024 10:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C825638382;
+	Sun, 28 Jul 2024 10:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722162831; cv=none; b=ElKSJZ9JT44XxQZPFlTlmfGp4V501JvSQtK6pD5UVAAW5VjANpxOVn3VTqlq3k5HhsKypZH7selzq+LI9g92NoEKu7Gb06dDvhVe3jyaRJ+yneZim9gw6uy2h+efJcDE/eztIyb29kITlVefFLUw5brHpN0AE8lQSTqvaEwa/No=
+	t=1722162852; cv=none; b=M3vZhL/L9P4MsdzAGE3YpiBllDsS+YXzuEEBBJt+uh9UlfNd5IFou8NTOqqILakzIEeNdNBOhTf1MCoxEr7XTXgnD3pxo91OWY5U3dkPX+fGTiKe+LbMQqZFDfyRXaYygq8d3ecJQXIyL8cl/yO4px1lFc1Cfd+CTj68Akcdf7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722162831; c=relaxed/simple;
-	bh=M+9ZkOB6S8ekUi3Me6QftP/4qTchoGELwu1fdP4Lawo=;
+	s=arc-20240116; t=1722162852; c=relaxed/simple;
+	bh=NjoLF9IWa5VVNreEq2JBC/4UqxuX8lm9q3lxSxaPe6U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nCxgF1fQP4ZGUq5WEz+hg4aN/rkpwxgtU10UzN63s2F6dkkG/bqu5UdWB4ZaS1wsMVRMhw7ABbpygb0cWtx294r+9MnSgWuyHFcwH0KYUoJvWcwwDRL0VGXHShCv9b/dFiVFggbaf+94wBnmq1dgHVdTT0VbY00Rd9/rvuwGLh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UqChQ7to; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04E2C116B1;
-	Sun, 28 Jul 2024 10:33:45 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=MdQBZfGtAgknJfQK8WaSorZ8Jmun3PcFlFeSCzd6Oj6cmGVTCQ+hxRXKnLvuacHzoqegdrLpF3UPu3L87zvW0oL9+VFA8NJyMINOIvgQGRGT8KP2beLyMRGpaTVtGIEa5Qbdda+48TdUQ9ZzLYkxA5jB4IrIOVwfO6K7uarrfAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gK8LzaY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D488C116B1;
+	Sun, 28 Jul 2024 10:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722162830;
-	bh=M+9ZkOB6S8ekUi3Me6QftP/4qTchoGELwu1fdP4Lawo=;
+	s=k20201202; t=1722162852;
+	bh=NjoLF9IWa5VVNreEq2JBC/4UqxuX8lm9q3lxSxaPe6U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UqChQ7toMqoqMa+mslKHeALD8d+sFHEqdQ/6yTHfSF+kfvuxOH+M7wiqViTGDbD/m
-	 UbVZ1oltGc0XpS7jwWo7QtW2te5jXVYD3j1QlLvGwy6m31GWT9VJkcVlBSXoh4n6nL
-	 DCtrXA6Z5kDH68vSGDHuaRqk5TV4KlJFqN2TMzqf63Ek8MMVhar6/a6Te2K2wJR3mt
-	 yicN6DwtYuEtYCLo/+85t27tgPLXRKbv4r5SST8kykwvQrgloivigSc/jaHg7Sr2+r
-	 U9QhFlbe74pclhy9y0oe7HNPyEUdvhhCuk87+rm9aDSLqn3ap1+d/sJTseQwqq1b8I
-	 wXm10UQRIV5/Q==
-Message-ID: <de376c7a-d141-44c6-9cc3-c800443e36b6@kernel.org>
-Date: Sun, 28 Jul 2024 12:33:43 +0200
+	b=gK8LzaY4b3ZdLb8a35WuRxmXJ+39Q0y7mJ8Lm8H02wipBrTQ2HGh+1yp6JBR/1eU+
+	 blbL/Uw5iLQY4FJKYbPVQz5+kN0+Eyx2EGqFealCVXT7B3kxRzsgv/msI2ubrIl7UF
+	 YYwWTZOv5W6UgUFTC8AQhU06Z/q33t22JqKq4mmh14OeiF9ym5whQHZT/YKdY34jY3
+	 2DH4v2RwIA/exAyYWxCKnpj1kMLbcRpCsdfsLTKzFQ2LVxVoa6g/Hk9wWQ4xKTVdb6
+	 owv7Gg5Xcp87lYL3us0wOQ/DVezAJa8H8jLaksKuJg/HxDq7RoFQ0aCWR4zSUeGl01
+	 hsUyYT04wCnIQ==
+Message-ID: <61b71935-0743-4e51-8221-0afc3f0e7b9f@kernel.org>
+Date: Sun, 28 Jul 2024 12:34:06 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -119,46 +119,10 @@ On 26/07/2024 17:20, Julien Stephan wrote:
 > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 > ---
 >  Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> index 899b777017ce..bd19abb867d9 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> @@ -15,10 +15,17 @@ description: |
->    * https://www.analog.com/en/products/ad7381.html
->    * https://www.analog.com/en/products/ad7383.html
->    * https://www.analog.com/en/products/ad7384.html
-> +  * https://www.analog.com/en/products/ad7386.html
-> +  * https://www.analog.com/en/products/ad7387.html
-> +  * https://www.analog.com/en/products/ad7388.html
->    * https://www.analog.com/en/products/ad7380-4.html
->    * https://www.analog.com/en/products/ad7381-4.html
->    * https://www.analog.com/en/products/ad7383-4.html
->    * https://www.analog.com/en/products/ad7384-4.html
-> +  * https://www.analog.com/en/products/ad7386-4.html
-> +  * https://www.analog.com/en/products/ad7387-4.html
-> +  * https://www.analog.com/en/products/ad7388-4.html
-> +
->  
->  $ref: /schemas/spi/spi-peripheral-props.yaml#
->  
-> @@ -29,10 +36,16 @@ properties:
->        - adi,ad7381
->        - adi,ad7383
->        - adi,ad7384
-> +      - adi,ad7386
-> +      - adi,ad7387
-> +      - adi,ad7388
->        - adi,ad7380-4
->        - adi,ad7381-4
->        - adi,ad7383-4
->        - adi,ad7384-4
-> +      - adi,ad7386-4
 
-Lists are ordered alphabetically. Do not add new entries to the end of
-the lists (like in your commit "add support for ad738x-4 4") because
-that is conflict prone.
+FWIW, since ordering is already broken:
+
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof

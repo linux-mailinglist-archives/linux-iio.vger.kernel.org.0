@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-7999-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8000-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4535F93E5EA
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 17:30:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D837D93E5EF
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 17:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CED1328329A
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 15:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D5F52816A4
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Jul 2024 15:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E9F5381B;
-	Sun, 28 Jul 2024 15:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F5137708;
+	Sun, 28 Jul 2024 15:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otXWA9K8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ze9cMx+g"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D0B1EB44;
-	Sun, 28 Jul 2024 15:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613FF1EB44;
+	Sun, 28 Jul 2024 15:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722180634; cv=none; b=EeecWhOggxExngjc9emSg5iFl++7QA1xmEJ8UAVl964gCYDzwvitrkQBeyjLd44antbFXAv3UN8NUGQj1LxBiOiTAky/2IpupCbb1x1NShqOA8z4I7q5TCVOHkS6aKyIyFpqRfMr6HVe88oMeaRYwiO/12mjIevgtVzr8Kh2NA0=
+	t=1722180901; cv=none; b=Gj8L2Ejc3O5L4Bo/vcEL3rBgt1xBKn1x4RpfbJu8um1orUoDLV06oMI1MWmk/Unuc9UlIdXkdFSXl2uJDNKOIDOiJB9+37r8tJWWIJAbWxjwTZFiY7VbA4Tagc+itxNVI/K+EBJ7bg9KGk0dQbyP+GPkULZ+y5TSwcgdiwjs0+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722180634; c=relaxed/simple;
-	bh=ukkJD+lDuD4PxWjCXt/b16el8IK3CD/b9wegn3TnEx0=;
+	s=arc-20240116; t=1722180901; c=relaxed/simple;
+	bh=lmrjcP7e9I1jgSEa3HUsV/XCNO6JpPYOKydZ5MmsqEA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XxsdZM9pmWFoQYHTgizg5guXO0GfeAyQTxAgMYQtBlNdN8tCIXB6LzoptNGCYJXSGtwLuRuVIdyxqrvSIbDGsFAhg7pzH9riFMKOdII1e0Vx8fLe53FE1JKEuoNXKZQSOBzgZZOpayX1LO5PGvxVZR+guLdhsuwDsxdQXDRCKM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otXWA9K8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C71DC32782;
-	Sun, 28 Jul 2024 15:30:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KEKtKyPBjTlSusMOANgPsYu+lIyMqH6TlsxJKJKfAwDoP+dtnrQuWUgg8XKxg/tObKvmYt82TvduQYNCMxnXMMBIrsPSyTzoclRSY11n9iigxc9A5vqEQcUDnlYvMX0NyW5URqN5JRl9YSkgfZXb0iKnk/vbx4KPozFS5gAUNVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ze9cMx+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DF6C116B1;
+	Sun, 28 Jul 2024 15:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722180633;
-	bh=ukkJD+lDuD4PxWjCXt/b16el8IK3CD/b9wegn3TnEx0=;
+	s=k20201202; t=1722180900;
+	bh=lmrjcP7e9I1jgSEa3HUsV/XCNO6JpPYOKydZ5MmsqEA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=otXWA9K8IhKJsRopRvEzRw2x3zcTg1hW6zS06LHXzueepiVMI+uSC7uFKAIn+JUNS
-	 aBKI18YNZOQ5mLU8SPE04Xtl//1G9NBOIb5FUlG/TG0fODAGvoByWeEIU/LxjqS5Yf
-	 K3hzH9ksVDmu95izyWNNROGKFN3I1ZZ3ZMz/Bi92P3QHuvz1QseOhuSXe9NUcQzl/P
-	 4zAxXcOiNZmIo+9eOyPqUOj4b4okS1TEfdHjClQw/hthtnJvuCKXLoW6xrKcrNIlNB
-	 KxrD3zNCYHy1dOj3SD/Kh9y90HAHh2E/83qaMHJu1V4VEjSjqXRnNVesiRhYWa/96/
-	 5nZuXkG/DtnIA==
-Date: Sun, 28 Jul 2024 16:30:26 +0100
+	b=Ze9cMx+g1a8QXsXN9gNBIsmRtV1CKnKvgTyp84eypwLUf3W53VkMimYP7EQ4RhPev
+	 IL46/JaySQem1pxaqr2q+LQzuePCEJEFdA/G4SWDlAxAYVuTVGCy0OCQWtynWcC4aB
+	 XzkjwgqAL4pR/g117DsdbEG/fieWuaRwTBZGyHd8EFJnfvAnOe23vOOBOIwK1XTayq
+	 TVBPfkq3K0an7lakixfb1qmPJVYxSsD2wpvjnXSFO1K+M1d8AidoQcldELgbNdFlvr
+	 8UjNZSjIv1A48qxTMeme8RQNP3/Ddkd1Q7BWcQZgFk9b9YLvbyTGtVO/pq8ZFZYC+m
+	 xXHj0zbIW5C2w==
+Date: Sun, 28 Jul 2024 16:34:54 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Petar Stoykov via B4 Relay <devnull+pd.pstoykov.gmail.com@kernel.org>
-Cc: pd.pstoykov@gmail.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] Add support for Sensirion SDP500
-Message-ID: <20240728163026.3acadc27@jic23-huawei>
-In-Reply-To: <20240725-mainline_sdp500-v4-0-ea2f5b189958@gmail.com>
-References: <20240725-mainline_sdp500-v4-0-ea2f5b189958@gmail.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Oleksij Rempel 
+ <o.rempel@pengutronix.de>, kernel@pengutronix.de, Liam Girdwood
+ <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-tsc2046: use
+ devm_regulator_get_enable_read_voltage()
+Message-ID: <20240728163454.5aeafbe6@jic23-huawei>
+In-Reply-To: <24ca48955e3b005620bded16aabd91aaa6997ad1.camel@gmail.com>
+References: <20240725-iio-regulator-refactor-round-4-v1-1-55e9dc1de325@baylibre.com>
+	<24ca48955e3b005620bded16aabd91aaa6997ad1.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,22 +61,22 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 25 Jul 2024 17:37:26 +0200
-Petar Stoykov via B4 Relay <devnull+pd.pstoykov.gmail.com@kernel.org> wrote:
+On Fri, 26 Jul 2024 12:56:27 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> This patch series introduces support for Sensirion SDP500 in the IIO
-> subsystem. The series is split into three patches:
-> 
-> 1. The first patch adds the device tree bindings.
-> 2. The second patch implements the device driver.
-> 3. The third patch updates the MAINTAINERS file.
+> On Thu, 2024-07-25 at 14:22 -0500, David Lechner wrote:
+> > Use devm_regulator_get_enable_read_voltage() to replace
+> > tsc2046_adc_configure_regulator() which does the same thing.
+> >=20
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> > --- =20
+>=20
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+>=20
+>=20
 
-Series applied.  Tweaks to patch 2 in reply to that patch.
-
-Thanks
-
-Jonathan
+Applied
 

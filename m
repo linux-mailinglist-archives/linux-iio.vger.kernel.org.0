@@ -1,60 +1,57 @@
-Return-Path: <linux-iio+bounces-8030-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8031-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B78993FE71
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 21:40:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B052693FE9E
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 21:54:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 508A31F23DBC
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 19:40:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2ABA1C225E9
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 19:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA830188CAD;
-	Mon, 29 Jul 2024 19:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430E3188CD7;
+	Mon, 29 Jul 2024 19:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k98QF0TB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="id3cqWdu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92517187858;
-	Mon, 29 Jul 2024 19:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00960188CA3;
+	Mon, 29 Jul 2024 19:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722282037; cv=none; b=cGoMwfutE4vv8ruOu2CthTjZHjDltSXfKFNoLJRxVcDQHQwhWez5fKIeI8FBybITdPKr2Xww107oIPgnsKHy2rrIVoinuVz1k5Uv7CNuBeVSP6ETKjwkigS858yuI2u7n1VY9suQd6pLDSCbS62B1Spb8+ko8RvzI2qYyy98nRs=
+	t=1722282817; cv=none; b=n0/t8RCgPOPZVn3ICCUB172Cs2wRCbnkNOrSRMdZto6j03vIQzzzUvdRJmRhWQBkZo+SbOPc7djs+OutltWQbYvNSUOEP870KK21U3vcCIMJ8iBLQR0AvQjLXKsF6p0SE6R8oGkPP/QP7ArVZcStvSYU8ssOsap9LJ7DZEQBXaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722282037; c=relaxed/simple;
-	bh=SBQ2pH87hA0aDlWEhXjDb2G7eJUp6np1Zn/k71CFvCE=;
+	s=arc-20240116; t=1722282817; c=relaxed/simple;
+	bh=J9ybpcNDOP1sUvWx1UQzXipfsAb8eKeVODEPV4snaHo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ksbqpZokCgIkwmOxnCCT0+KhugONJ4/5EKiV8nqq7BiBi23OoV41NX5HhfDxzpNgCPc0Xoyq3uopPRvra+WoTMnxSUE0RJM90Ffknv5KiIuqnhuKI/3qPtPNDdlJlkodKuFGOygKGiS0Acf6EW4vp1u277ysq1O7IVWeMEBaxkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k98QF0TB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EF5C32786;
-	Mon, 29 Jul 2024 19:40:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nV+QG3QNORKSGJ0I1LbWjnTWrZSQ/SDlF9TNY6FQC/Ciq1cR4CH9l6hnaHGTb+qsr564PlEzPxxu2+YuZJoPIiTmn6FsFyK97bdWr50xJPgXZfC9ltO7JA3yQSrpfWZNbrE1GaTyJHTrd3sq25U0z4Gm/HD/OGcCfpzi+4o/tGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=id3cqWdu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E304C32786;
+	Mon, 29 Jul 2024 19:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722282037;
-	bh=SBQ2pH87hA0aDlWEhXjDb2G7eJUp6np1Zn/k71CFvCE=;
+	s=k20201202; t=1722282816;
+	bh=J9ybpcNDOP1sUvWx1UQzXipfsAb8eKeVODEPV4snaHo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k98QF0TB/OGdFu8g7+GgDbj6VjlbTXhQXIaNhxgRzQSFYQiTprTp0ZxMP/TgBukuM
-	 cfdY5vBZSqllwf4v7NUAouDeWHKMGVIDk+9cCKO1KXFQMtFrhlbzZF4nxulsk6WNEH
-	 sl9o9H7H0W4YmTZISeChBIOsVX2YYaN6QbUXHjsflfDJkC1uG/7JbsJ8Io19uHl0Xy
-	 GsdC7imSCUD7V7cVycqpa7JyxoxMBjzNLmKgpWexNqzDVuO/XPGT+ATIWcOjrYupOY
-	 CxfxD2ma3lcx8zT+H+xCkvRgwMVi+jDTx8yYMXl9aMo5LqDCr0xFHRcW1IgLlGdSkJ
-	 cRLZg85bkiq/w==
-Date: Mon, 29 Jul 2024 20:40:30 +0100
+	b=id3cqWdupT2AVW+GqxtImDKo4WKAjeotUzomZ6ci3NfmQmlnt5YV5OEKYiJJEP2oY
+	 TcPEH7mMk5SCzgrNJ4q1zrfjY7zXvB1OL6uGuRR4vPgqrEq4GdgB5qgwjbpSiTFZj/
+	 e3kNzgg0XFjsKBQ9bV9CZ8BqtdbxgOUz9QWjz2kd0G6gcp95czvNIl7LJKYjkJ4a7+
+	 jUEEh5dmzFIMNej5OzoVMQKSHFJ2SABqyX0YsFo9SN/ChN7j+OxZHwiLYAa+bZN2l1
+	 NmwOcsM8RgZDSGPb6Fyje9mvZpKPAkiKjvejdg5te6UD94awlB0hzSOS2OJI//cNB/
+	 yolNQyYqjavgg==
+Date: Mon, 29 Jul 2024 20:53:29 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, nuno.sa@analog.com,
- dlechner@baylibre.com, corbet@lwn.net, marcelo.schmitt1@gmail.com, Marcelo
- Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v6 0/7] Add support for AD4000 series of ADCs
-Message-ID: <20240729204030.038e4aa3@jic23-huawei>
-In-Reply-To: <172227614374.120386.3055005856415965055.b4-ty@kernel.org>
-References: <cover.1719686465.git.marcelo.schmitt@analog.com>
-	<172227614374.120386.3055005856415965055.b4-ty@kernel.org>
+To: Abhash Jha <abhashkumarjha123@gmail.com>
+Cc: linux-iio@vger.kernel.org, anshulusr@gmail.com, lars@metafoo.de,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] iio: light: ltr390: Add ALS channel and support
+ for gain and resolution
+Message-ID: <20240729205329.57390e20@jic23-huawei>
+In-Reply-To: <20240729115056.355466-3-abhashkumarjha123@gmail.com>
+References: <20240729115056.355466-1-abhashkumarjha123@gmail.com>
+	<20240729115056.355466-3-abhashkumarjha123@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,69 +62,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Jul 2024 19:02:23 +0100
-Mark Brown <broonie@kernel.org> wrote:
+On Mon, 29 Jul 2024 17:20:54 +0530
+Abhash Jha <abhashkumarjha123@gmail.com> wrote:
 
-> On Sat, 29 Jun 2024 16:04:00 -0300, Marcelo Schmitt wrote:
-> > This patch series extends the SPI bitbang, gpio, and spi-engine controllers to
-> > support configurable MOSI line idle states.
-> > It then introduces the ad4000 driver which uses the MOSI idle configuration to
-> > provide improved support for the AD4000 series of ADCs.
-> > Documentation is added describing the new extension to the SPI protocol.
-> > The currently supported wiring modes for AD4000 devices were documented under
-> > IIO documentation directory.
-> > 
-> > [...]  
+> Add new ALS channel and allow reading raw and scale values.
+> Also provide gain and resolution configuration for ALS channel.
+> Add automatic mode switching between the UVS and ALS channel
+> based on which channel is being accessed.
+> The default mode in which the sensor start is ALS mode.
 > 
-> Applied to
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-> 
-> Thanks!
-> 
-> [1/7] spi: Enable controllers to extend the SPI protocol with MOSI idle configuration
->       commit: f58872f45c36ded048bccc22701b0986019c24d8
-> [2/7] spi: bitbang: Implement support for MOSI idle state configuration
->       commit: 320f6693097bf89d67f9cabad24a2b911e23073f
-> [3/7] spi: spi-gpio: Add support for MOSI idle state configuration
->       commit: 927d382c7efbcc2206c31fa2f672fa264c0f1d5b
-> [4/7] spi: spi-axi-spi-engine: Add support for MOSI idle configuration
->       commit: a62073f4b2164028fc7c5ae45ceba10c9326cd91
-Hi Mark,
+> Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+Hi Abhash,
 
-Any chance of a tag + you seem to have also picked up the ADC dt binding.
-Patch 5/7. dt-bindings: iio: adc: Add AD4000
-which I'm assuming was not intentional.
+Patch looks good but one quick question.
+Why not present an IIO_LIGHT channel?  Needs to be converted
+to be illuminance (with scale / offset applied) rather than IIO_INTENSITY
+which we use when the frequency response is different from the requirements
+to measure Lux (and the units get very vague!)
 
-I think I only need the definition of SPI_MOSI_IDLE_HIGH
-for 5-7 to build fine.
+Looks like what you have here is close, but not quite the right scale
+factor as not including integration time and the mysterious 0.6 on the datasheet.
 
-If needed, I can use a local value for that in the driver and
-we can follow up with a patch using the main define once the trees
-come together upstream.
+If we can provide a signal scaled to illuminance that tends to be a lot
+more useful for things like screen brightness control because it should
+be close at least to other light sensors.
 
 Jonathan
-
-
-> 
-> All being well this means that it will be integrated into the linux-next
-> tree (usually sometime in the next 24 hours) and sent to Linus during
-> the next merge window (or sooner if it is a bug fix), however if
-> problems are discovered then the patch may be dropped or reverted.
-> 
-> You may get further e-mails resulting from automated or manual testing
-> and review of the tree, please engage with people reporting problems and
-> send followup patches addressing any issues that are reported if needed.
-> 
-> If any updates are required or you are submitting further changes they
-> should be sent as incremental updates against current git, existing
-> patches will not be replaced.
-> 
-> Please add any relevant lists and maintainers to the CCs when replying
-> to this mail.
-> 
-> Thanks,
-> Mark
-> 
-
 

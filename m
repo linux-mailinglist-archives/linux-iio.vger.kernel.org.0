@@ -1,130 +1,146 @@
-Return-Path: <linux-iio+bounces-8024-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8025-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A69093F8DD
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 16:58:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1183393F962
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 17:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B141A1F22A14
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 14:58:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2699D1C22275
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 15:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77332155CB3;
-	Mon, 29 Jul 2024 14:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4431158DA7;
+	Mon, 29 Jul 2024 15:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfwNi6hB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oUAFe3ph"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D97315538C;
-	Mon, 29 Jul 2024 14:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C7F1586FE
+	for <linux-iio@vger.kernel.org>; Mon, 29 Jul 2024 15:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722265115; cv=none; b=mvSr2JBjaL3PsxxSoGLQ3h7nrTtmFQoNrODqwjD/6hRvLzqQl+Oc4Ruzja78tgokl4vl0mPW6dQIQToKRfbzl14vpYXEFTMW4tu32jEEMEbc5OFyL5zOAo4ULZAugvgBrHPvsw8DctmUulxIiASY6+VZmK6d8LKXyEa7xofik2I=
+	t=1722266910; cv=none; b=s85Ot5D58idVR0yd2XJlJAWtXaMLGikIg+KUTtmu9bsO5/BWdXymg9qss7uwCXutXpd80BYJzQuf2YoXmlbAZ0CqxxkQrGgRmLTSq+leGQNNdVHaFUoJWS83OEeRZ44IJdNc419OuKfVoQPUiYXvqnStfT2fGzxpRyHesgLRsD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722265115; c=relaxed/simple;
-	bh=kbaRAF/NbWFFXE3u0pttj5/UNqC198dwrEX0HlvWcB4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=YIU960vEAuUkLhUepLMoj8zHI89yu4yakT5F/9K23zrstJ0BirlOXgBTGcOlVWoH0z79+ltULcC6H8DiTBa1XYkRDteukMrFqSxr53vy6RqsAEzv2djZYHtHhzJs2oH3d7PFNOCIYsUyyA21/YeyOdTVCIznk5ZHDoJLCAT+bjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfwNi6hB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EF1C32786;
-	Mon, 29 Jul 2024 14:58:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722265114;
-	bh=kbaRAF/NbWFFXE3u0pttj5/UNqC198dwrEX0HlvWcB4=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=hfwNi6hBTUt9FQGe28YhjjHWdyO66DPfp6YkFmuya/Uqery3EXBcdiCRcRcKXP1Xd
-	 831cqtNgdxzpLuh7Siy4v9AutY3J+Hz8N++u5lheh5xUxe1N8cj9eStif5OZItSUfy
-	 4hy0BnqUa0Au/IaPEsidmGuqr3mYkHJ0FLBFuZKbcy6x0JmhzxYFR+gR/MJTC9jihv
-	 2BfQmoM9qks/VpxbSRCnXU/SicOo0i/FUMjTm5mGPuu026VA5Vo4fBZp6h4uK0AJ8R
-	 ArvmTI+weDnY183PFYYZ0mUh49jqVbnqek24uK5Mwp2Z7/P6gkVrmNuA5ue17IM6Sw
-	 RpJlCZMGVQr+w==
-Message-ID: <c93a6bf3-7360-4696-833d-82726d10f604@kernel.org>
-Date: Mon, 29 Jul 2024 16:58:29 +0200
+	s=arc-20240116; t=1722266910; c=relaxed/simple;
+	bh=2VdueXarTxYaEFkEX0WeN1UrxcchMky9c16EYjnuL+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=i4Dr1E7XyspE3equxDOhYzl4fLwqpSJzkfPQalh+98n7UUOJhs9mWsYg4OmM9FS6P6+kmzfrM6+B+sEeg9+VBubUnHrDgws5NXQPGmN2ixqnu8iJrlk1XOPjcb+cobj5fbl8Ky1drnh1Ag0lhC1b4PW7zxhGlOJ+TTzuSKWYTB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oUAFe3ph; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5d5af7ae388so1628895eaf.0
+        for <linux-iio@vger.kernel.org>; Mon, 29 Jul 2024 08:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722266908; x=1722871708; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5qOQyuNMTZUfyqAbsLwySAm5kqczSgpJeWoIZn9UUJg=;
+        b=oUAFe3phi+2eBKzQhH1F4D+WATwhpAoBjDiRQInG8UTEsizOWZ8qaB7fwkqFVEHY8M
+         UEXOqhJ2KixcULtOA46COMpcgK1j3hwciz9DogNV3OaO7H/rlCna1mYk6nAjUsaEfaEy
+         C/GCxFk0BfnaYT9AELDSPjD6+5dvkkdo6rbudXb/IwsZnLS6G5e4qI6GZGFhbt9A8mcd
+         EW02QAYNWt/ZnWUt8PZCiquuezwClZAfireBVC9bV0mUXSHDommxEFddk3+B7knV+w8m
+         uB88ltEX16Y7Rp+C2rlfKdV0MOjBODBnCitoF6R9g5ga9MzxjoVuK5Czcmtbqln0uJhJ
+         eDsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722266908; x=1722871708;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5qOQyuNMTZUfyqAbsLwySAm5kqczSgpJeWoIZn9UUJg=;
+        b=oxd7+9z4qfET2RJQux2p5J3kOQb3iXpeX1AF21bTHFb7dGNIn0JZ5RrtgTTA7qoBEE
+         1oSDKsvNyZI0CtLdcVtEWlNpuXZOFtpE1MT3U5Y5Hryw+2ARUfLVHhv949LwUuXX9SiS
+         eZiSairhOxKUubYc6PbA4V3FX8EZrkwHVj3NPKWvs476fhqS+u8vTrgOk5vICkldbyOP
+         KW+kbKA/9/rI7pWLPAuWgAalgeJ50rT3+sso+/eWbZEbJ8DEjHULpFLoHWu7N2OXJJlp
+         l948km+0TMnALv0+0yw5hRNoK85ETf3ju0NYMLsA1fgqtYyXUI+6xZ4KsZF+g/owramL
+         In1g==
+X-Forwarded-Encrypted: i=1; AJvYcCVdB7syf29dV1WdvKLoYdfw3F/VkSbHpPn5KtpRojwBQamD2/87njwIr6CYldFn9bzzyJAvQxV7VAiuxQt6TYan/emR2mca3Ru2
+X-Gm-Message-State: AOJu0YzCiUYBic3gzrFQjYhHmbLzFRfLg1m1/0ZhPUuBDMWwaGv2A72r
+	TUXhwpX0gibFuBBuJ81bN6bPIU7n+EXQPZ2gKoVIb96VDHOYwoIGiSho0DkKT1U=
+X-Google-Smtp-Source: AGHT+IFgMh59C0XIlRKMyr8wkfMpGdx8PqeQNsD/YBhsvAs4P5UXJrO02yYCLrR7pKKTwqKAlx2f4Q==
+X-Received: by 2002:a05:6870:d1ca:b0:254:a218:89e6 with SMTP id 586e51a60fabf-267d67046e1mr3886279fac.23.1722266908048;
+        Mon, 29 Jul 2024 08:28:28 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700::17c0])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7093050a3d0sm2136596a34.14.2024.07.29.08.28.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 08:28:27 -0700 (PDT)
+Date: Mon, 29 Jul 2024 10:28:21 -0500
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, wangshuaijie@awinic.com, jic23@kernel.org,
+	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, waqar.hameed@axis.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, wangshuaijie@awinic.com,
+	liweilei@awinic.com, kangjiajun@awinic.com
+Subject: Re: [PATCH V5 2/2] iio: proximity: aw9610x: Add support for aw9610x
+ proximity sensor
+Message-ID: <7227ddbf-a851-4997-83ba-b8f8c0fcc722@suswa.mountain>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] *** Add ADF4378 Support ***
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Dragos Bogdan <dragos.bogdan@analog.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240729095047.25040-1-antoniu.miclaus@analog.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240729095047.25040-1-antoniu.miclaus@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240726061312.1371450-3-wangshuaijie@awinic.com>
 
-On 29/07/2024 11:50, Antoniu Miclaus wrote:
-> Add support for ADF4378 high performance, ultra-low jitter, integer-N
-> phased locked loop (PLL) with an integrated voltage controlled
-> oscillator (VCO) and system reference (SYSREF) retimer ideally
-> suited for data converter and mixed signal front end (MxFE) clock
-> applications.
-> 
-> The main difference between ADF4377 and ADF4378 is that the second one
-> provides only one output frequency channel which is enable/disabled via
-> one GPIO. 
-> 
-> Both the driver and the bindings are updated to reflect that difference.
+Hi,
 
-That's a v3, but where is the changelog?
+kernel test robot noticed the following build warnings:
 
-Best regards,
-Krzysztof
+url:    https://github.com/intel-lab-lkp/linux/commits/wangshuaijie-awinic-com/dt-bindings-iio-aw9610x-Add-bindings-for-aw9610x-sensor/20240726-141450
+base:   1722389b0d863056d78287a120a1d6cadb8d4f7b
+patch link:    https://lore.kernel.org/r/20240726061312.1371450-3-wangshuaijie%40awinic.com
+patch subject: [PATCH V5 2/2] iio: proximity: aw9610x: Add support for aw9610x proximity sensor
+config: x86_64-randconfig-r071-20240728 (https://download.01.org/0day-ci/archive/20240728/202407282339.D0ICTGHF-lkp@intel.com/config)
+compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202407282339.D0ICTGHF-lkp@intel.com/
+
+smatch warnings:
+drivers/iio/proximity/aw9610x.c:575 aw9610x_read_chipid() error: uninitialized symbol 'reg_val'.
+
+vim +/reg_val +575 drivers/iio/proximity/aw9610x.c
+
+1e0a5bf0d81329 shuaijie wang 2024-07-26  558  static int aw9610x_read_chipid(struct aw9610x *aw9610x)
+1e0a5bf0d81329 shuaijie wang 2024-07-26  559  {
+1e0a5bf0d81329 shuaijie wang 2024-07-26  560  	unsigned char cnt = 0;
+1e0a5bf0d81329 shuaijie wang 2024-07-26  561  	u32 reg_val;
+1e0a5bf0d81329 shuaijie wang 2024-07-26  562  	int ret;
+1e0a5bf0d81329 shuaijie wang 2024-07-26  563  
+1e0a5bf0d81329 shuaijie wang 2024-07-26  564  	while (cnt < AW_READ_CHIPID_RETRIES) {
+
+if cnt == AW_READ_CHIPID_RETRIES then reg_value is uninitialized
+
+1e0a5bf0d81329 shuaijie wang 2024-07-26  565  		ret = aw9610x_i2c_read(aw9610x, REG_CHIPID, &reg_val);
+1e0a5bf0d81329 shuaijie wang 2024-07-26  566  		if (ret < 0) {
+1e0a5bf0d81329 shuaijie wang 2024-07-26  567  			cnt++;
+1e0a5bf0d81329 shuaijie wang 2024-07-26  568  			usleep_range(2000, 3000);
+1e0a5bf0d81329 shuaijie wang 2024-07-26  569  		} else {
+1e0a5bf0d81329 shuaijie wang 2024-07-26  570  			reg_val = FIELD_GET(AW9610X_CHIPID_MASK, reg_val);
+1e0a5bf0d81329 shuaijie wang 2024-07-26  571  			break;
+1e0a5bf0d81329 shuaijie wang 2024-07-26  572  		}
+1e0a5bf0d81329 shuaijie wang 2024-07-26  573  	}
+1e0a5bf0d81329 shuaijie wang 2024-07-26  574  
+1e0a5bf0d81329 shuaijie wang 2024-07-26 @575  	if (reg_val == AW9610X_CHIP_ID)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+It's harmless but the checker is correct to warn
+
+1e0a5bf0d81329 shuaijie wang 2024-07-26  576  		return 0;
+1e0a5bf0d81329 shuaijie wang 2024-07-26  577  
+1e0a5bf0d81329 shuaijie wang 2024-07-26  578  	return -EINVAL;
+1e0a5bf0d81329 shuaijie wang 2024-07-26  579  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 

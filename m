@@ -1,132 +1,252 @@
-Return-Path: <linux-iio+bounces-8034-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8035-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976F193FEF1
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 22:15:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD7D94007C
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 23:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DCF71F2278A
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 20:15:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5B7D1C220B7
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 21:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E093188CAD;
-	Mon, 29 Jul 2024 20:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C6E18C358;
+	Mon, 29 Jul 2024 21:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OwRY8h/k"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="BQmUqUdF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from msa.smtpout.orange.fr (smtp-68.smtpout.orange.fr [80.12.242.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE81A2E859;
-	Mon, 29 Jul 2024 20:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41337D3F1;
+	Mon, 29 Jul 2024 21:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722284145; cv=none; b=hc1jqsOUtN3Ipy9TSWvbUf89bk7mw44uKT1gaySlNCuf4yoIeZrvvvhos+UmezbmdA71txuFjT4ktn+McN+S7FUz0rW1Ua1B1nESUggxghRyAXHnBgkionSu2ilAy7d9PNt8Bz+BJIe6kBgrbMwwzeuiSgLwqwSym9NErR3ySIQ=
+	t=1722288884; cv=none; b=QTDsXZMZKJC03HctRiWu1TADtwhYJeGNanL7PyWZbjLGSWtuuhMBUPHvi+SOVpRAMm7RjJOkX98NsiXc8z9EwMDDo4aUrVS50nPu7LM9HlCswbTnN0CHkyHVRUodGWFco3FfN7ag7HRAXZ60Mz2rPLPh0VXV625es8fnJ5K3ZBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722284145; c=relaxed/simple;
-	bh=G7e0pk1Djj/HwrbGLFs9VMQw5zvXgCjrk/KMk86/0zg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XbaS1EdCZssIgsftfMmDBCdUDZ8b5FpYXjY15/w+9tt74IwwnIBtgaffDR3Q/fhh9IFAn9z8vcXwvwExZYjtR6tHn0HJkQb1ibWMjrAZfCe974v5Gj0D8YJXF+hKuc6lTgbhQo9qkBZyyFYUtoezzkA+l9eih34lTaxyBcOC7kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OwRY8h/k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2358CC32786;
-	Mon, 29 Jul 2024 20:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722284144;
-	bh=G7e0pk1Djj/HwrbGLFs9VMQw5zvXgCjrk/KMk86/0zg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OwRY8h/kXc1796g89XF89iPyKeT5gEe6icYa4V15bFvxARk5wS3zpOrPkT9tPbQ+k
-	 XwBOy0cXkd/VDtkFgtqu6FGrzbCJyXLdZW1yz6qj78a0JRy8TW/oUzOUwz9ZshtmQw
-	 GfdYd8ndYXRtIKZDP6eKJyhPNN00rwfJM50QBmL+/QVoN/p7p5n7QjkMmLL+mJ93uS
-	 rCiKM91K1Ow5g63mvMsTnE6qdfPlP9yBOvLVTeYlZVjKJiUdQB7TkbIhZKVoB12edH
-	 fTaHPokc/n+noHRynUxHEb1hn9WgouUCVimnYGiqz5sLhEBS7891R9epY4RX0QmXnR
-	 a03Eff6Tr0IJg==
-Date: Mon, 29 Jul 2024 21:15:34 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, nuno.sa@analog.com,
- dlechner@baylibre.com, corbet@lwn.net, marcelo.schmitt1@gmail.com, Marcelo
- Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v7 0/7] Add support for AD4000 series of ADCs
-Message-ID: <20240729211534.7389a3e3@jic23-huawei>
-In-Reply-To: <172227614920.120386.13173085650328169447.b4-ty@kernel.org>
-References: <cover.1720810545.git.marcelo.schmitt@analog.com>
-	<172227614920.120386.13173085650328169447.b4-ty@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1722288884; c=relaxed/simple;
+	bh=3+pwqht9xHkMiBhYxd7W7IBBqiquaAIYlWA4EU4Jh5o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ee00tpLpJKpPOqEqZZvGEmqOo7EG/LCq3yPr/nuKPJNw0sgFi8G0PCi4i5UKM426lknu9s/arnZxy5uFyHVvM6h+UVckJa2QrMIq48MitnaD+3G8sjLZOThWLy820XOJrdhc5bLxAXUknvvWVHS43vAgC3VrR59pxlClarmoij4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=BQmUqUdF; arc=none smtp.client-ip=80.12.242.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id YY0ksSWFSN67nYY0lstwr6; Mon, 29 Jul 2024 23:34:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1722288873;
+	bh=ucumROewCOlJ/+rkXDYdvCUcwadsziBKuLfZMTTlVCw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=BQmUqUdFImiktTc2UhLFzwAfTSFqRGo1TXLFX9xhyScHS18InvAC1p7Valv8yvQiB
+	 cBs2QvzMtQbxsyqn9qc11jyIjSaLjeqUQR0/hc4ECUqzjC4AL2ygV8vu8wzBjdNzlL
+	 j8pl7tSVsOBTsrMaIg+i/ryqarHvy+L8hyjisZLGvWfO/fDJS1wID3rL0QSloJafKe
+	 1HkT3yjpUY4M1WlMJTPaoelvV8Y3I4CbOSzfKc1jRES67+A3iNExzfUNr+qtzPE24j
+	 zT+p2KXNj+ToGS/txNbdH9i08GuWHsB/mJFFkyBxtUfyCnnlecNnJJb4ZF+amL/B70
+	 YDToJtZBthbkg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Mon, 29 Jul 2024 23:34:33 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <aeb5e95a-f108-4b23-b14b-c9fe1463775e@wanadoo.fr>
+Date: Mon, 29 Jul 2024 23:34:30 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 2/5] iio: adc: ad4030: add driver for ad4030-24
+To: eblanc@baylibre.com
+Cc: Michael.Hennerich@analog.com, baylibre-upstreaming@groups.io,
+ conor+dt@kernel.org, devicetree@vger.kernel.org, dlechner@baylibre.com,
+ jic23@kernel.org, krzk+dt@kernel.org, lars@metafoo.de,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, nuno.sa@analog.com,
+ robh@kernel.org
+References: <20240627-eblanc-ad4630_v1-v1-0-fdc0610c23b0@baylibre.com>
+ <20240627-eblanc-ad4630_v1-v1-2-fdc0610c23b0@baylibre.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20240627-eblanc-ad4630_v1-v1-2-fdc0610c23b0@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 29 Jul 2024 19:02:29 +0100
-Mark Brown <broonie@kernel.org> wrote:
+Le 27/06/2024 à 13:59, Esteban Blanc a écrit :
+> This adds a new driver for the Analog Devices INC. AD4030-24 ADC.
+> 
+> The driver implements basic support for the AD4030-24 1 channel
+> differential ADC with hardware gain and offset control.
+> 
+> Signed-off-by: Esteban Blanc <eblanc-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+> ---
 
-> On Fri, 12 Jul 2024 16:20:00 -0300, Marcelo Schmitt wrote:
-> > This patch series extends the SPI bitbang, gpio, and spi-engine controllers to
-> > support configurable MOSI line idle states.
-> > It then introduces the ad4000 driver which uses the MOSI idle configuration to
-> > provide improved support for the AD4000 series of ADCs.
-> > Documentation is added describing the new extension to the SPI protocol.
-> > The currently supported wiring modes for AD4000 devices were documented under
-> > IIO documentation directory.
-> > 
-> > [...]  
-> 
-> Applied to
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-> 
-> Thanks!
-> 
-> [1/7] spi: Enable controllers to extend the SPI protocol with MOSI idle configuration
->       commit: f58872f45c36ded048bccc22701b0986019c24d8
-> [2/7] spi: bitbang: Implement support for MOSI idle state configuration
->       commit: 320f6693097bf89d67f9cabad24a2b911e23073f
-> [3/7] spi: spi-gpio: Add support for MOSI idle state configuration
->       commit: 927d382c7efbcc2206c31fa2f672fa264c0f1d5b
-> [4/7] spi: spi-axi-spi-engine: Add support for MOSI idle configuration
->       commit: a62073f4b2164028fc7c5ae45ceba10c9326cd91
-> [5/7] dt-bindings: iio: adc: Add AD4000
->       commit: 96472f18a4affdaff5013a836c48375f1eddb4a4
-Ah. I replied to wrong message.
+Hi,
 
-I suspect you didn't intend to pick up patch 5.
+a few nitpick below, should it help.
 
-Any chance of a tag I can pull to support patches 5-7?
-I need the HIGH flag in patch 1 only.
-If not I'll replace it with a numeric value + comments, and queue up a patch for
-next cycle to switch to the define.
+...
 
-Jonathan
+> +static int ad4030_read_avail(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *channel,
+> +			     const int **vals, int *type,
+> +			     int *length, long mask)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		*vals = ad4030_get_offset_avail(st);
+> +		*type = IIO_VAL_INT;
+> +		return IIO_AVAIL_RANGE;
+> +
+> +	case IIO_CHAN_INFO_CALIBSCALE:
+> +		*vals = (void *)ad4030_gain_avail;
+> +		*type = IIO_VAL_INT_PLUS_MICRO;
+> +		return IIO_AVAIL_RANGE;
 
+Nitpick: in other switch below, there is a blank line before default:
 
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
 
-> 
-> All being well this means that it will be integrated into the linux-next
-> tree (usually sometime in the next 24 hours) and sent to Linus during
-> the next merge window (or sooner if it is a bug fix), however if
-> problems are discovered then the patch may be dropped or reverted.
-> 
-> You may get further e-mails resulting from automated or manual testing
-> and review of the tree, please engage with people reporting problems and
-> send followup patches addressing any issues that are reported if needed.
-> 
-> If any updates are required or you are submitting further changes they
-> should be sent as incremental updates against current git, existing
-> patches will not be replaced.
-> 
-> Please add any relevant lists and maintainers to the CCs when replying
-> to this mail.
-> 
-> Thanks,
-> Mark
-> 
+...
+
+> +static int ad4030_regulators_get(struct ad4030_state *st)
+> +{
+> +	struct device *dev = &st->spi->dev;
+> +	static const char * const ids[] = {"vdd-5v", "vdd-1v8"};
+> +	int ret;
+> +
+> +	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(ids), ids);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to enable regulators\n");
+> +
+> +	st->vio_uv = devm_regulator_get_enable_read_voltage(dev, "vio");
+> +	if (st->vio_uv < 0)
+> +		return dev_err_probe(dev, st->vio_uv,
+> +				     "Failed to enable and read vio voltage");
+
+Nitpick: missing \n
+
+> +
+> +	st->vref_uv = devm_regulator_get_enable_read_voltage(dev, "ref");
+> +	if (st->vref_uv < 0) {
+> +		if (st->vref_uv != -ENODEV)
+> +			return dev_err_probe(dev, st->vref_uv,
+> +					     "Failed to read vref voltage");
+
+Nitpick: missing \n
+
+> +
+> +		/* if not using optional REF, the internal REFIN must be used */
+> +		st->vref_uv = devm_regulator_get_enable_read_voltage(dev, "refin");
+> +		if (st->vref_uv < 0)
+> +			return dev_err_probe(dev, st->vref_uv,
+> +					     "Failed to read vrefin voltage");
+
+Nitpick: missing \n
+
+> +	}
+> +
+> +	if (st->vref_uv < AD4030_VREF_MIN_UV || st->vref_uv > AD4030_VREF_MAX_UV)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "vref(%d) must be in the range [%lu %lu]\n",
+> +				     st->vref_uv, AD4030_VREF_MIN_UV,
+> +				     AD4030_VREF_MAX_UV);
+> +
+> +	return 0;
+> +}
+
+...
+
+> +static int ad4030_probe(struct spi_device *spi)
+> +{
+> +	struct device *dev = &spi->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct ad4030_state *st;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+
+Nitpick: dev could be used. It is the same &spi->dev
+
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +	st->spi = spi;
+> +
+> +	/* Make sure the SPI clock is within range to read register */
+> +	st->conversion_speed_hz = spi->max_speed_hz;
+> +	if (spi->max_speed_hz > AD4030_SPI_MAX_REG_XFER_SPEED)
+> +		spi->max_speed_hz = AD4030_SPI_MAX_REG_XFER_SPEED;
+> +
+> +	st->regmap = devm_regmap_init(&spi->dev, &ad4030_regmap_bus, st,
+
+Nitpick: dev could be used. It is the same &spi->dev
+
+> +				      &ad4030_regmap_config);
+> +	if (IS_ERR(st->regmap))
+> +		dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
+
+Nitpick: dev could be used. It is the same &spi->dev
+
+> +			      "Failed to initialize regmap\n");
+> +
+> +	st->chip = spi_get_device_match_data(spi);
+> +	if (!st->chip)
+> +		return -EINVAL;
+> +
+> +	ret = ad4030_regulators_get(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad4030_reset(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad4030_detect_chip_info(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad4030_config(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->cnv_gpio = devm_gpiod_get(dev, "cnv", GPIOD_OUT_LOW);
+> +	if (IS_ERR(st->cnv_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(st->cnv_gpio),
+> +				     "Failed to get cnv gpio");
+
+Nitpick: missing \n
+
+> +
+> +	indio_dev->name = st->chip->name;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->info = &ad4030_iio_info;
+> +	indio_dev->channels = st->chip->channels;
+> +	indio_dev->num_channels =  2 * st->chip->num_channels + 1;
+
+Nitpick : 2 spaces after =
+
+> +	indio_dev->available_scan_masks = st->chip->available_masks;
+> +	indio_dev->masklength = st->chip->available_masks_len;
+> +
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> +					      iio_pollfunc_store_time,
+> +					      ad4030_trigger_handler,
+> +					      &ad4030_buffer_setup_ops);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to setup triggered buffer\n");
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
+
+...
+
+CJ
 
 

@@ -1,108 +1,112 @@
-Return-Path: <linux-iio+bounces-8027-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8028-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6608593FBD9
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 18:52:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6E093FD04
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 20:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20812282599
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 16:52:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09831282517
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 18:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1F3146A9F;
-	Mon, 29 Jul 2024 16:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87C81741D9;
+	Mon, 29 Jul 2024 18:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iCRixNK1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A30917756;
-	Mon, 29 Jul 2024 16:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7697283A09;
+	Mon, 29 Jul 2024 18:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722271933; cv=none; b=OGW1YrhiUw4mWHwwyer368zx19xFuKGM5UuZaW7MGqFuxcR26safmNP2CknkO7HR0IwN5oS5feDz0/Rc3WbU89FgrT/Mc5vgPjUA4RnVUERY9V0m5MS7m+COnn+Ka31xoiji8sa9vCvy3OEwcDo5hmNrib2bN4Ii9Wt8pA/iK7A=
+	t=1722276147; cv=none; b=mECr9szAoEasQeFa05aZJ85lTY+g2zUh6IskN7WKsn2T8jRjjIUZQyZh9Y2MtNCKFstMA76MS3CbGckC+tqH86Y8C/DgTdbitmYvzNsjun7p8MapeWmItnmoORe6RJfgqqPKT5zwCo/WDOIt58DcCJnXbtRxsX7vHrUblwEKo1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722271933; c=relaxed/simple;
-	bh=B7B6J1Z/yKeVtyZOSRs+2aYFdcDi8KnoZp9Rz3dRt4M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LBIoh7qgLwlqozyeE7NG8AoIaFEtK24M6uAbL4Y0s1o+wCculudguJta9YW+RQ7BCos9a+kwlHfC36eWaPT/Fk+51ECTT2SN9BQGc6iYvBB/N+u1RN016oG+G9tuiO/4qCgKMWCTXpxbSv6MckSJmGdYX7GCtuVQ+UNzfVwcX1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Received: from i5e86192c.versanet.de ([94.134.25.44] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sYTbR-0006KP-Tn; Mon, 29 Jul 2024 18:52:05 +0200
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To: linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
- nuno.sa@analog.com
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Ramona Gradinariu <ramona.gradinariu@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Jonathan Cameron <jic23@kernel.org>,
- Marcus Folkesson <marcus.folkesson@gmail.com>,
- Kent Gustavsson <kent@minoris.se>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Francesco Dolcini <francesco@dolcini.it>,
- =?ISO-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>,
- Haibo Chen <haibo.chen@nxp.com>, Michal Simek <michal.simek@amd.com>,
- Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject:
- Re: [PATCH 06/23] iio: adc: rockchip_saradc: make use of
- iio_for_each_active_channel()
-Date: Mon, 29 Jul 2024 18:52:04 +0200
-Message-ID: <2384416.OYXXYNVTWy@diego>
-In-Reply-To:
- <20240726-dev-iio-masklength-private3-v1-6-82913fc0fb87@analog.com>
-References:
- <20240726-dev-iio-masklength-private3-v1-0-82913fc0fb87@analog.com>
- <20240726-dev-iio-masklength-private3-v1-6-82913fc0fb87@analog.com>
+	s=arc-20240116; t=1722276147; c=relaxed/simple;
+	bh=KoE42wYCFQAOjAZ4a4ADdh/ApdMibPMqpeElX/dPg2s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=WBtNsALp8n8fe2D8gDyRGo/vODuJUHSH4PUVjsbQkUAqShRJTFjF6yXrHwIFaCT2eskt+ri9fvmhxkEnsFIOUfDYi7H4IJaOXuqiVQWY2uXuBqifEUDDAkskMVZv3TNMUV1bUfpg1BGTR5+/YEMJ1J9XhMCvZwTrcVOBQN6yUFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iCRixNK1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049BBC32786;
+	Mon, 29 Jul 2024 18:02:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722276147;
+	bh=KoE42wYCFQAOjAZ4a4ADdh/ApdMibPMqpeElX/dPg2s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=iCRixNK1gsc2ea0kZsxL2LB87W4bxKWS+W19+OZ8bTsXbN+bXNVoBLWozfXiTNul8
+	 lPJXO/8TsKMxmYZ05ThORQgO3juMMh0g4h7GeNpG7Kv+K6k00HLsHmJvY2rNG2irHk
+	 hWaQOLUuylbiv5ZVWt35bdZ31Dy+RC7L28nwxPAYQ3q9ar6OXBi2SD1hi243S4tgSa
+	 IYrnbDyT/CJqlqtASof593xfgyEfv6ZBU8NmQDnwD7Qb1zeD0wuQ4VCuI1LOci9KT1
+	 dtZatEuBB9EJHimMRoutspFhZEXG+qFWlK7JnOQadOESk/xmAPLd+v+auxBJkzxgIA
+	 s4eHYH8XKb6GQ==
+From: Mark Brown <broonie@kernel.org>
+To: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+ nuno.sa@analog.com, dlechner@baylibre.com, corbet@lwn.net, 
+ marcelo.schmitt1@gmail.com, Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <cover.1719686465.git.marcelo.schmitt@analog.com>
+References: <cover.1719686465.git.marcelo.schmitt@analog.com>
+Subject: Re: (subset) [PATCH v6 0/7] Add support for AD4000 series of ADCs
+Message-Id: <172227614374.120386.3055005856415965055.b4-ty@kernel.org>
+Date: Mon, 29 Jul 2024 19:02:23 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-37811
 
-Am Freitag, 26. Juli 2024, 10:22:58 CEST schrieb Nuno Sa via B4 Relay:
-> From: Nuno Sa <nuno.sa@analog.com>
+On Sat, 29 Jun 2024 16:04:00 -0300, Marcelo Schmitt wrote:
+> This patch series extends the SPI bitbang, gpio, and spi-engine controllers to
+> support configurable MOSI line idle states.
+> It then introduces the ad4000 driver which uses the MOSI idle configuration to
+> provide improved support for the AD4000 series of ADCs.
+> Documentation is added describing the new extension to the SPI protocol.
+> The currently supported wiring modes for AD4000 devices were documented under
+> IIO documentation directory.
 > 
-> Use iio_for_each_active_channel() to iterate over active channels
-> accessing '.masklength' so it can be annotated as __private when there are
-> no more direct users of it.
-> 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> [...]
 
-Acked-by: Heiko Stuebner <heiko@sntech.de>
+Applied to
 
-> ---
->  drivers/iio/adc/rockchip_saradc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-> index bbe954a738c7..71f58e3a8307 100644
-> --- a/drivers/iio/adc/rockchip_saradc.c
-> +++ b/drivers/iio/adc/rockchip_saradc.c
-> @@ -370,7 +370,7 @@ static irqreturn_t rockchip_saradc_trigger_handler(int irq, void *p)
->  
->  	mutex_lock(&info->lock);
->  
-> -	for_each_set_bit(i, i_dev->active_scan_mask, i_dev->masklength) {
-> +	iio_for_each_active_channel(i_dev, i) {
->  		const struct iio_chan_spec *chan = &i_dev->channels[i];
->  
->  		ret = rockchip_saradc_conversion(info, chan);
-> 
-> 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
+Thanks!
 
+[1/7] spi: Enable controllers to extend the SPI protocol with MOSI idle configuration
+      commit: f58872f45c36ded048bccc22701b0986019c24d8
+[2/7] spi: bitbang: Implement support for MOSI idle state configuration
+      commit: 320f6693097bf89d67f9cabad24a2b911e23073f
+[3/7] spi: spi-gpio: Add support for MOSI idle state configuration
+      commit: 927d382c7efbcc2206c31fa2f672fa264c0f1d5b
+[4/7] spi: spi-axi-spi-engine: Add support for MOSI idle configuration
+      commit: a62073f4b2164028fc7c5ae45ceba10c9326cd91
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 

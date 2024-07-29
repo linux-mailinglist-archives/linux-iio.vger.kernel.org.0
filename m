@@ -1,61 +1,62 @@
-Return-Path: <linux-iio+bounces-8032-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8033-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A1A93FED6
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 22:11:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9B193FEE3
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 22:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98AACB21FB9
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 20:11:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996AF1F22374
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 20:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9686C188CC8;
-	Mon, 29 Jul 2024 20:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BEF1891D6;
+	Mon, 29 Jul 2024 20:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RwObgNdu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8Iy2am9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C65B43152;
-	Mon, 29 Jul 2024 20:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D021315FA68;
+	Mon, 29 Jul 2024 20:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722283868; cv=none; b=UqzkvDQsKIZqm5KSIK/cgBVe4iBeNasSPyeH8yvByoT+9nOxEid9GJ5WPcBFBqiNqvd0d5ASDw+d4SS/rkuU+cKa1eAmQoXbvxCedFAHbD99JJ/KGJ1HWtTzM9EtHMyINuQZPeqQhRi7tdh4LlrxJqYr+AfzOcQdf8xEcMGP4pU=
+	t=1722284004; cv=none; b=LpB/Er8xmj0JG0SOM36LqSHZdJRb6Ocxo8mGiL4ilzomR/rxW3SUbnuP5nN6JcMedGO+WFUCw+1ZPJwdgHvLEaofDcs2ze+4HaqeoEqflsRVVur7R9qLUBs+wmOfiLrax9gf6r6dy8uTRMhttEYlXlGW9gjIf+y8i4a3mNeGM3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722283868; c=relaxed/simple;
-	bh=uDb5Fh4ZhVMA92QTS5K4scO4cYY50h/RnlGeYZVwiwM=;
+	s=arc-20240116; t=1722284004; c=relaxed/simple;
+	bh=gGPWhEtkSuI4gw/H/rrz1kWifg4thlzksAPcYyJnj/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BVT1OX6q9Qvq6fgowX2NC7vAZjDPbNLy4Pj0BIBunBbxvE64cXC2Xk6OBkPZ956s1DeBtNEUvNaImUd049oSaYUyN6NwKDqWFUY8tU9a6x26YDPzs4+ZxnaV+K85oCSpoiatVb5R/SgPAg79wWYjR6jvCOiq/R4gyy/8Smg1azo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RwObgNdu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9542FC32786;
-	Mon, 29 Jul 2024 20:11:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tHs8XJPq92Bw6WStF9bju9KJ7qRMbIOmUJLqsW3qUCFXW0HNoCDglC0du/nCvzRw/uUhQfYNmSxOEEcXvmN4Dj+tglqa6K1W6yRzW60Wflm7pALdZKxLtiwgWfPLdc9k0Ig0LMJmk//ZWFeg77GV9E9rwIlTw3IXe81w10k6HFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8Iy2am9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8515C32786;
+	Mon, 29 Jul 2024 20:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722283867;
-	bh=uDb5Fh4ZhVMA92QTS5K4scO4cYY50h/RnlGeYZVwiwM=;
+	s=k20201202; t=1722284004;
+	bh=gGPWhEtkSuI4gw/H/rrz1kWifg4thlzksAPcYyJnj/g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RwObgNdu4TuyaneR49qXJ8hUPuHkt2cwiPFRkhiSqKe4isQVyBStcN6WT4FXJVUDG
-	 B82BIpGs86xP4gsgb/nDY32bD8ihwDnCpU98lzsRhUju44RxLR6w9PhKHr5O31r48y
-	 7jpsYUMB1sqDCyZGuwVZVy2INvu24Mv42YTlL7ocCTJ0yMTrWnMZQdVo0XUkk58GZI
-	 oGxwaS3zlEAObNELuHZybqejelAebyRBAAzmpdqWB+vDak7gFifi0+cQdjXt23hf+o
-	 oV115+f799iVMSpMbwY0w1zqI4q3Cbi5BzF4pNHG8kH++58bguAFPfasLJV3urEnyQ
-	 isrKY/CGnIXTQ==
-Date: Mon, 29 Jul 2024 21:11:00 +0100
+	b=m8Iy2am9pROePioztZsl33xXkSdkDesNp8mvififF+1Z+3OZ10zAMFWzEjv5Hs1KO
+	 l0LB4wsyWhhRZNtnmTgd4KYQS301Y9qqLCLjUZvRTxSqOIGhV+1+UQFp56yvijQX0T
+	 2bXD3YZ9+UOsSHjDKdwy051bYjHjCWVyAd1v/5RRL+mLnU5i+qps+czmQoWPJwJHRf
+	 NJJbMuG7E6mJ2XF8ympEDWi/ivx/ewqXawlzDUzKrKch3pSTjjeuSIjk6i0GmMEcJR
+	 JT7kn1W+208bp1deITY8xYaME4rMg6gyxTGU+7xsS60kK7rlvhdn6a6KsnNDjVqnQq
+	 Lm/RDm6FL1sDA==
+Date: Mon, 29 Jul 2024 21:13:16 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matteo Martelli <matteomartelli3@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marius Cristea <marius.cristea@microchip.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] iio: adc: add support for pac1921
-Message-ID: <20240729211100.0d602d6e@jic23-huawei>
-In-Reply-To: <66a784bac1db7_89a37017@njaxe.notmuch>
-References: <20240724-iio-pac1921-v4-0-723698e903a3@gmail.com>
-	<20240724-iio-pac1921-v4-3-723698e903a3@gmail.com>
-	<20240728135306.422713ea@jic23-huawei>
-	<66a784bac1db7_89a37017@njaxe.notmuch>
+To: "Esteban Blanc" <eblanc@baylibre.com>
+Cc: "Lars-Peter Clausen" <lars@metafoo.de>, "Michael Hennerich"
+ <Michael.Hennerich@analog.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Nuno Sa" <nuno.sa@analog.com>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>
+Subject: Re: [PATCH RFC 2/5] iio: adc: ad4030: add driver for ad4030-24
+Message-ID: <20240729211316.3b0d3f8b@jic23-huawei>
+In-Reply-To: <D323OLK1T0CG.1OGNBVY1FDVJT@baylibre.com>
+References: <20240627-eblanc-ad4630_v1-v1-0-fdc0610c23b0@baylibre.com>
+	<20240627-eblanc-ad4630_v1-v1-2-fdc0610c23b0@baylibre.com>
+	<20240629173945.25b72bde@jic23-huawei>
+	<D323OLK1T0CG.1OGNBVY1FDVJT@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,180 +67,119 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-> > > +
-> > > +/*
-> > > + * Emit on sysfs the list of available scales contained in scales_tbl
-> > > + *
-> > > + * TODO:: this function can be replaced with iio_format_avail_list() if the
-> > > + * latter will ever be exported.  
-> > 
-> > You could just have added a precursor patch doing that.
-> > If you have time I'd certainly consider a patch that does export that function
-> > and uses it here.
+On Mon, 29 Jul 2024 16:42:16 +0200
+"Esteban Blanc" <eblanc@baylibre.com> wrote:
+
+> On Sat Jun 29, 2024 at 6:39 PM CEST, Jonathan Cameron wrote:
+> > On Thu, 27 Jun 2024 13:59:13 +0200
+> > Esteban Blanc <eblanc@baylibre.com> wrote:
 > >  
-> I wasn't sure that one usage was enough to justify the export. I could
-> definitely do it, I am assuming it would now go to a new patch series since
-> this has already been merged into testing, right?
-The requirements for justifying exporting an existing function is less
-than it would be to add a new one.  As such I think it makes sense.
-
-As you note, needs a separate patch on top of the tree.
-
+> > > This adds a new driver for the Analog Devices INC. AD4030-24 ADC.
+> > > 
+> > > The driver implements basic support for the AD4030-24 1 channel
+> > > differential ADC with hardware gain and offset control.
+> > > 
+> > > Signed-off-by: Esteban Blanc <eblanc@baylibre.com>  
 > 
-> > > + *
-> > > + * Must be called with lock held if the scales_tbl can change runtime (e.g. for
-> > > + * the current scales table)
-> > > + */
-> > > +static ssize_t pac1921_format_scale_avail(const int (*const scales_tbl)[2],
-> > > +					  size_t size, char *buf)
+> ...
+> 
+> > > +static int ad4030_spi_read(void *context, const void *reg, size_t reg_size,
+> > > +			   void *val, size_t val_size)
 > > > +{
-> > > +	ssize_t len = 0;
+> > > +	struct ad4030_state *st = context;
 > > > +
-> > > +	for (unsigned int i = 0; i < size; i++) {
-> > > +		if (i != 0) {
-> > > +			len += sysfs_emit_at(buf, len, " ");
-> > > +			if (len >= PAGE_SIZE)
-> > > +				return -EFBIG;
-> > > +		}
-> > > +		len += sysfs_emit_at(buf, len, "%d.%09d", scales_tbl[i][0],
-> > > +				     scales_tbl[i][1]);
-> > > +		if (len >= PAGE_SIZE)
-> > > +			return -EFBIG;
-> > > +	}
-> > > +
-> > > +	len += sysfs_emit_at(buf, len, "\n");
-> > > +	return len;
-> > > +}
-> > > +
-> > > +/*
-> > > + * Read available scales for a specific channel
-> > > + *
-> > > + * NOTE: using extended info insted of iio.read_avail() because access to
-> > > + * current scales must be locked as they depend on shunt resistor which may
-> > > + * change runtime. Caller of iio.read_avail() would access the table unlocked
-> > > + * instead.  
-> > 
-> > That's a corner case we should think about closing. Would require an indicator
-> > to read_avail that the buffer it has been passed is a snapshot that it should
-> > free on completion of the string building.  I don't like passing ownership
-> > of data around like that, but it is fiddly to do anything else given
-> > any simple double buffering is subject to race conditions.
-> >  
-> If I understand your suggestion the driver would allocate a new table and copy
-> the values into it at each read_avail() call. Then
-> iio_read_channel_info_avail() would free the buffer if some sort of
-> free-after-use indicator flag is set. I guess such indicator might be set via an
-> additional read_avail function argument (would be an extensive API change) or
-> maybe via a new iio_chan_spec attribute.
-
-Probably needs to be in read_avail() as otherwise we end up with yet more masks.
-However, doesn't need to be global.  read_avail_ext() could be added that
-is used in preference to read_avail() if it is supplied.  That new one can
-be used only be drivers that need to handle the allocation and free.
-However I prefer the explicit resource free option as we can in theory
-at least do much cleverer things than simply freeing the buffer.
-
-> 
-> > An alternative would use a key of sometype to associate individual read_avail
-> > calls with new ones to read_avail_release_resource. That might be cleaner.
-> >   
-> Are you referring to introduce a new read_avail_realease_resource callback that
-> would be called at the end of iio_read_channel_info_avail() if set? Similarly
-> to the previous point the driver would allocate a new table and copy the values
-> into it at each read_avail() call, but the driver would also define a release
-> callback to free such table. If otherwise you are referring to something less
-> trivial, is there a similar API in the kernel that can be referred to for
-> clarity?
-
-Indeed what you suggest. Key is it puts the burden on the driver to do it's
-own management. That avoids handing ownership of the buffer to the core
-which is a pattern I'm not that keen on if we can avoid it.
-
-The new callback would take the buffer pointer that came back from read_avail()
-and pass that back to the driver.  In simple case the driver could just
-free the buffer.  However, it could also do some cleverer stuff to keep
-it around if a write hasn't raced with this code.  That might make sense if
-it's a big table and calculating the values is expensive.
-
-> 
-> > oh well, a cleanup job for another day.   I suspect we have drivers today
-> > that are subject to tearing of their available lists.
-> >   
-> I've just taken a quick look at the other drivers and the following twos seem
-> to have the race condition issue since they are updating an available table
-> during a write_raw() call and also exposing it during a read_avail() call:
-> * drivers/iio/light/as73211.c: see int_time_avail table
-> * drivers/iio/adc/ad7192.c: see filter_freq_avail table
-> 
-> There might be others, I've only looked into those that seemed likely to have
-> this issue after some trivial greps.
-> 
-> Is there already a common way for iio to keep track of open issues (e.g. Issue
-> tracker/TODO lists/etc)?
-
-Not really.  Email to the list tends to be the most we do for tracking.
-I have had various todo lists public over the years, but they tend to rot.
-
-Fix stuff before we forget about it! :(
-
-> 
-
-> > > +static int pac1921_init(struct pac1921_priv *priv)
-> > > +{
-> > > +	unsigned int val;
+> > > +	struct spi_transfer xfer = {
+> > > +		.tx_buf = st->tx_data,
+> > > +		.rx_buf = st->rx_data.raw,
+> > > +		.len = reg_size + val_size,
+> > > +	};
 > > > +	int ret;
 > > > +
-> > > +	/* Enter READ state before configuration */
-> > > +	ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
-> > > +				 PAC1921_INT_CFG_INTEN, 0);
+> > > +	memcpy(st->tx_data, reg, reg_size);
+> > > +
+> > > +	ret = spi_sync_transfer(st->spi, &xfer, 1);
 > > > +	if (ret)
 > > > +		return ret;
 > > > +
-> > > +	/* Configure gains, use 14-bits measurement resolution (HW default) */
-> > > +	val = (u8)FIELD_PREP(PAC1921_GAIN_DI_GAIN_MASK, priv->di_gain) |
-> > > +	      (u8)FIELD_PREP(PAC1921_GAIN_DV_GAIN_MASK, priv->dv_gain);  
-> > 
-> > Why are these cases needed?
-> > Each of those values is going to fit in a u8 just fine and it's getting
-> > written to a much larger variable.
-> >   
-> FIELD_PREP result type would be a long unsigned int due to the GENMASK type and
-> -Wconversion would trigger a warning. The explicit casts is just to address
-> -Wconversion warnings and to "state" that such casts are safe. 
+> > > +	memcpy(val, &st->rx_data.raw[reg_size], val_size);  
+> >
+> > Can you just use spi_write_then_read() here?
+> >  
+> 
+> I was planning on doing that. But I'm getting a timeout issue when
+> using `spi_write_then_read`. I can see the tx_data going out, rx_data
+> is recived but CS is kept asserted. I need to investigate more but in
+> the meantime I'm using this as it is working. I will remove this
+> workaround if I can find a fix and add a comment for now.
+Fair enough. We've had a few drivers where the timing doesn't work
+recently. Definitely good to leave a comment to avoid a 'fix' :)
 
-In these cases the compiler can see the value range so it 'shouldn't' be necessary.
-The compiler should be able to trivially establish there isn't a problem.
-
-I can't see enough of the example to tell if the compiler has the visibility
-of that function call that would be necessary to establish if the value
-is big enough.
-
-Of course, sometimes we get a dumb compiler so maybe it will still warn.
-
-GCC docs state:
-"
-The option should not warn for explicit conversions or for cases where the value
-cannot in fact change despite the implicit conversion."
-https://gcc.gnu.org/wiki/NewWconversion
-
-and we should be in that category here.  A lot of compiler work goes into
-ensuring that the false positive rates for this sort of warning are low.
-This particular case of a mask and shift by compile time constants should
-be easy to figure out!
+> 
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	if (st->chip->precision_bits == 16)
+> > > +		offset <<= 16;
+> > > +	else
+> > > +		offset <<= 8;  
+> >
+> > As below. This is hard tor read. Just use appropriate unaligned gets for the
+> > two cases to extract the write bytes directly.
+> >  
+> > > +	*val = be32_to_cpu(offset);
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int ad4030_set_chan_gain(struct iio_dev *indio_dev, int ch, int gain_int,
+> > > +				int gain_frac)
+> > > +{
+> > > +	struct ad4030_state *st = iio_priv(indio_dev);
+> > > +	__be16 val;
+> > > +	u64 gain;
+> > > +
+> > > +	gain = mul_u32_u32(gain_int, MICRO) + gain_frac;
+> > > +
+> > > +	if (gain > AD4030_REG_GAIN_MAX_GAIN)
+> > > +		return -EINVAL;
+> > > +
+> > > +	val = cpu_to_be16(DIV_ROUND_CLOSEST_ULL(gain * 0x8000, MICRO));
+> > > +
+> > > +	return regmap_bulk_write(st->regmap, AD4030_REG_GAIN_CHAN(ch), &val,
+> > > +			  AD4030_REG_GAIN_BYTES_NB);
+> > > +}
+> > > +
+> > > +static int ad4030_set_chan_offset(struct iio_dev *indio_dev, int ch, int offset)
+> > > +{
+> > > +	struct ad4030_state *st = iio_priv(indio_dev);
+> > > +	__be32 val;
+> > > +
+> > > +	if (offset < st->min_offset || offset > st->max_offset)
+> > > +		return -EINVAL;
+> > > +
+> > > +	val = cpu_to_be32(offset);
+> > > +	if (st->chip->precision_bits == 16)
+> > > +		val >>= 16;
+> > > +	else
+> > > +		val >>= 8;  
+> >
+> > I 'think' I get what this is doing but not 100% sure as it's a bit too unusual
+> > and I'm not even sure what happens if we shift a __be32 value on a little endian
+> > system. I would instead split this into appropriate cpu_to_be24() and cpu_to_be16()
+> > to put the value directly in the right place rather than shifting in place.  
+> 
+> cpu_to_be24 does not exist yet. I will have a look on how to add them.
+Ah. Almost by definition be24 isn't aligned in some cases.
+So put_unaligned_be24() is what you are looking for.
+My mistake!
 
 Jonathan
 
-
-> In this way
-> with -Wconversion (KBUILD_EXTRA_WARN=3) one could easily spot those other
-> implicit casts that would end up with unwanted data corruption. I thought it to
-> be a common practice and I also saw it in some other kernel patches, for
-> example https://lore.kernel.org/all/1540883612.2354.2.camel@smigroup.net/ , but
-> maybe it's not that common as I thought.
-> I also see that maybe in this case casting to unsigned int would have likely
-> been more clear.
 > 
-> Thanks,
-> Matteo Martelli
+> 
+> All the other comments will be addressed in V2.
+> 
+> Best regards,
+> 
 
 

@@ -1,86 +1,81 @@
-Return-Path: <linux-iio+bounces-8016-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8017-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAF693F1E0
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 11:57:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E8493F483
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 13:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F19FB22A05
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 09:57:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A540281C1E
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Jul 2024 11:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBEF144D0F;
-	Mon, 29 Jul 2024 09:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF971474B9;
+	Mon, 29 Jul 2024 11:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="mjgyZYUl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vv/jr/1R"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D73144D13;
-	Mon, 29 Jul 2024 09:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2003C1474A4;
+	Mon, 29 Jul 2024 11:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722246699; cv=none; b=ElMIMbt+0OCImS8AjHnic2Ukwdneea+ze41tiLTm5ESqptRvbDIk4vOVuqPNIthKvN7meDCnb3hBjI/Be80cFdB0iRcAAC5FCcGsMoXVnX077kKQBwHWn5WkQEO6+OCioaYOm9ZOMswmWObqS11PipB7MAMfBPSIJnmdNGaWvtY=
+	t=1722253893; cv=none; b=WeftWWgiNKBF64wM4atTa6VpEd7zhzL1yBS5+qNzblUY13gySZ4ikk2W6vvo7d8LTqmN8bYCZPDtvl2l7bzf+RoCny8sJMlsR0z/jcV08kMC5J+xKzpWjpOylbtGaJOTBGF1pa0TUTCryEmhuDeoDfRToTiSRzT4RBKesApb5AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722246699; c=relaxed/simple;
-	bh=ZQBJlZKEMk+AYWhncHwgqFpngNybTw1NKUfDgxDKNls=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kn5kL1goM/jdeC4zbADj2cFrM3t6Im4mg6yfQs8BUD5nq16+g2UnEn2F56ZVAfxpgMYrM7GlYTQ9AarpSwBchEuTqZqkc+Q/t9INvEDXTsBeQnmryn1S5NMPpWHv7exaN5kt4V5sPcm1wf3C9pIiOAWTI3J7/UvJHlCJDmD6iVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=mjgyZYUl; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46T8oYGQ023433;
-	Mon, 29 Jul 2024 05:51:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=YeAz9
-	rtRZtBb7CVIIm3qK4b4pOOAYtv3k4NsjFl+pts=; b=mjgyZYUlwAQNEv/PDhxLq
-	G2wsrhmqQ0XSNndoPh+zq30WwFm2k3t52m0+bkZftn6HWy3OMMZXssWqwbemes6r
-	5Ho9VkySWU5YehaisQTd3oQcnct7LMGd8Maz4yfHjgJw0pxVt86csnd+r0ysymTR
-	m34bNWmxAdDmGYUz2FH8UgNZz39qCSExSthpOohhQ0QPmZDE8quLg7lz/5oX9w3s
-	PzhRHqnpvJjn3fyJtMB52Y92LaWZVVCM/sy1/E5XNkGM+BEyD1T82vekYXWtqGsi
-	fo0O1Z7NSBtoc0aZRVGV6q31DowMT6mS/Wc4Sxr2z84a2DjgmrNi4NQo83dZheiJ
-	Q==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 40neb9upgh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Jul 2024 05:51:13 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 46T9pCJn015976
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 29 Jul 2024 05:51:12 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 29 Jul
- 2024 05:51:11 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 29 Jul 2024 05:51:10 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.170])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 46T9orqX024934;
-	Mon, 29 Jul 2024 05:51:03 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Lars-Peter Clausen
-	<lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan
- Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof
- Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Dragos
- Bogdan <dragos.bogdan@analog.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 2/2] iio: frequency: adf4377: add adf4378 support
-Date: Mon, 29 Jul 2024 12:50:44 +0300
-Message-ID: <20240729095047.25040-3-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240729095047.25040-1-antoniu.miclaus@analog.com>
-References: <20240729095047.25040-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1722253893; c=relaxed/simple;
+	bh=QyJDpS1atetkwE02EO8YDbcZlCcHohevnyHBEJ3asrs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=clthw+p/IMSI17S+eF6t8O8XB+dCIrXSTsJxJiZc0QYRDODO/Yk9k2/E8Cm4fkG/rr6ns52J9+ctkXbhqo9xinCXdfXH/e2R/9km0WxF/l4l4sC1g5Mjixwh5359jQKtYzC1hI0M0zuR9DCFOvsTU5sQdDx9a1ASh6AcheNk/xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vv/jr/1R; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-70eec5f2401so749198b3a.3;
+        Mon, 29 Jul 2024 04:51:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722253891; x=1722858691; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PwLH/dkMhtoKA+j6b70G4/pP9abL94o4tZuRe7ezv8k=;
+        b=Vv/jr/1RnJCUpQUbmuZZ+NOWNv1iTREzxn+qndpYwC8AqA5vTm0iAwel/NTLVExJww
+         miWNpjItpZzpLbfmE7wz1z57B8GlT3IoJWDid/wDtQkEWAwCfdhBzJuwdRSL3A3lgcTD
+         OJTdP0k4CJSUtuEcDcMs5hVmLf5M4K4s4oiPanqBfEHduh6MG9N2z12H3+BRebxxnp6F
+         os/TLO9g/6jwpvp8lDR6KH9YdpqsmPO1wXOxTkqW7eJxBgMOHFFUI5QDKj+WMzQL54lt
+         X3fbAKJ4dov77BYZqd5ubJmz4TxAC5ACWrTpdvJ15hE92UiPNt+rb66q9AektEWvzNWV
+         xtDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722253891; x=1722858691;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PwLH/dkMhtoKA+j6b70G4/pP9abL94o4tZuRe7ezv8k=;
+        b=welgMPAfsQntWTDc7rTz63A9nlP6s9pJtoFuh3uJsZ9kbXQmNDj74SgNG1q4sMvraO
+         amgqSwfkOd9opOfMIRYOWdluAvZe1c2fAvtQFWdy3kdoHtljvet+ZZ9lRfGIgwIdj1pX
+         enhrhOnEz2ppq1gsH6X+Xom4hiJunDQVjRzBKyIqhu/AlWGju1JfCibDiMbuHWSprhtb
+         4oeUuXIodGaljxLuZE0ywQZLAPu6edGw9CyRImGMZFskDvK3cdUONKML/bcHCb0U2i0j
+         L/WgMnjhYULYTHeox0p/LYdBQNPNNwtaEQ9X9hO5Y+dpSilQC34HVd+l6963MLlYFwaR
+         j84A==
+X-Forwarded-Encrypted: i=1; AJvYcCVirVx5s6XgcR78xlI9aKoxNvTxXb6jbqDdKDLdNzm+Dj0ZxuXLr2fU71BuzYep+xgRM8dwy8wCAyBK/ou7o8yOurrpPoN6NZ5Ur3nt
+X-Gm-Message-State: AOJu0YwoB4djhlfgr2OPzB3ug+UMGsRZwvHLZv2jp8iZItY5HG5anD2Y
+	y7ZRSirjqx+KQbku7v4LtuCZAQ+rQOA2hyfR/5issVUCeSK3fVCE/Cr0XyNu97cf/Q==
+X-Google-Smtp-Source: AGHT+IGCMKQLBBVNDQsjSaibF9kGo6HWr/AwUi9Ems4hsBgVn+yYnNcvExI6qf9tV5fWFYpwe79SGg==
+X-Received: by 2002:a05:6a20:9f89:b0:1c4:d4b2:ffe5 with SMTP id adf61e73a8af0-1c4d4b30374mr1365356637.54.1722253890584;
+        Mon, 29 Jul 2024 04:51:30 -0700 (PDT)
+Received: from localhost.localdomain ([136.233.9.100])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2cd8f7692f0sm6760987a91.1.2024.07.29.04.51.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 04:51:30 -0700 (PDT)
+From: Abhash Jha <abhashkumarjha123@gmail.com>
+To: linux-iio@vger.kernel.org
+Cc: anshulusr@gmail.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-kernel@vger.kernel.org,
+	Abhash Jha <abhashkumarjha123@gmail.com>
+Subject: [PATCH v3 0/3] Minor cleanups and better error handling
+Date: Mon, 29 Jul 2024 17:20:52 +0530
+Message-ID: <20240729115056.355466-1-abhashkumarjha123@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -88,112 +83,70 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: ZfIRsLsbQzKYyYEa3JlxCcViGtf0A1Gs
-X-Proofpoint-GUID: ZfIRsLsbQzKYyYEa3JlxCcViGtf0A1Gs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-29_07,2024-07-26_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0
- mlxlogscore=999 spamscore=0 suspectscore=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2407290066
 
-Add separate handling for adf4378 within the driver.
+Hello,
 
-The main difference between adf4377 and adf4378 is that adf4378 has only
-one output which is handled by only one gpio.
+The first patch in the series adds support for configuring the gain and
+resolution(integration time) of the ltr390 sensor by writing to the
+respective registers. Then the available values for gain and resolution
+that are listed in the datasheet are provided via the `read_avail`
+callback. 
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v3:
- - use separate structures for chip_info instead of array.
- drivers/iio/frequency/adf4377.c | 35 ++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
+The second patch adds a new channel for the ALS feature of the sensor.
+The same configuration of gain and resolution has to be provided for this
+channel as well. As there are two IIO channels now, we would need to
+switch the sensor's mode of operation depending on which sensor is being
+accessed. Hence, mode switching is also provided.
 
-diff --git a/drivers/iio/frequency/adf4377.c b/drivers/iio/frequency/adf4377.c
-index 9284c13f1abb..5613d524deaa 100644
---- a/drivers/iio/frequency/adf4377.c
-+++ b/drivers/iio/frequency/adf4377.c
-@@ -400,7 +400,13 @@ enum muxout_select_mode {
- 	ADF4377_MUXOUT_HIGH = 0x8,
- };
- 
-+struct adf4377_chip_info {
-+	const char *name;
-+	bool has_gpio_enclk2;
-+};
-+
- struct adf4377_state {
-+	const struct adf4377_chip_info	*chip_info;
- 	struct spi_device	*spi;
- 	struct regmap		*regmap;
- 	struct clk		*clkin;
-@@ -889,11 +895,13 @@ static int adf4377_properties_parse(struct adf4377_state *st)
- 		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk1),
- 				     "failed to get the CE GPIO\n");
- 
--	st->gpio_enclk2 = devm_gpiod_get_optional(&st->spi->dev, "clk2-enable",
--						  GPIOD_OUT_LOW);
--	if (IS_ERR(st->gpio_enclk2))
--		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk2),
--				     "failed to get the CE GPIO\n");
-+	if (st->chip_info->has_gpio_enclk2) {
-+		st->gpio_enclk2 = devm_gpiod_get_optional(&st->spi->dev, "clk2-enable",
-+							  GPIOD_OUT_LOW);
-+		if (IS_ERR(st->gpio_enclk2))
-+			return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk2),
-+					"failed to get the CE GPIO\n");
-+	}
- 
- 	ret = device_property_match_property_string(&spi->dev, "adi,muxout-select",
- 						    adf4377_muxout_modes,
-@@ -921,6 +929,16 @@ static int adf4377_freq_change(struct notifier_block *nb, unsigned long action,
- 	return NOTIFY_OK;
- }
- 
-+static const struct adf4377_chip_info adf4377_chip_info = {
-+	.name = "adf4377",
-+	.has_gpio_enclk2 = true,
-+};
-+
-+static const struct adf4377_chip_info adf4378_chip_info = {
-+	.name = "adf4378",
-+	.has_gpio_enclk2 = false,
-+};
-+
- static int adf4377_probe(struct spi_device *spi)
- {
- 	struct iio_dev *indio_dev;
-@@ -945,6 +963,7 @@ static int adf4377_probe(struct spi_device *spi)
- 
- 	st->regmap = regmap;
- 	st->spi = spi;
-+	st->chip_info = spi_get_device_match_data(spi);
- 	mutex_init(&st->lock);
- 
- 	ret = adf4377_properties_parse(st);
-@@ -964,13 +983,15 @@ static int adf4377_probe(struct spi_device *spi)
- }
- 
- static const struct spi_device_id adf4377_id[] = {
--	{ "adf4377", 0 },
-+	{ "adf4377", (kernel_ulong_t)&adf4377_chip_info },
-+	{ "adf4378", (kernel_ulong_t)&adf4378_chip_info },
- 	{}
- };
- MODULE_DEVICE_TABLE(spi, adf4377_id);
- 
- static const struct of_device_id adf4377_of_match[] = {
--	{ .compatible = "adi,adf4377" },
-+	{ .compatible = "adi,adf4377", .data = &adf4377_chip_info },
-+	{ .compatible = "adi,adf4378", .data = &adf4378_chip_info },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, adf4377_of_match);
+Then the third patch adds support for calculating `counts_per_uvi` based
+on the current gain and resolution value.
+
+Changes in v3:
+- Added cover letter to the patch series.
+- Fixed indentation in the patch description.
+- Patch specific changes are listed below.
+
+[PATCH v3 1/3]
+	- Cleaned up the spurious changes made in v2.
+	- ltr390_set_int_time and ltr390_set_gain now return -EINVAL to
+    indicate no match.
+
+[PATCH v3 2/3]
+	- Used enum ltr390_mode inside the ltr390_data struct.
+  - Refactored `ltr390_set_mode` function according to the comments in v2.
+
+[PATCH v3 3/3]
+	- Simplified the formula for `counts_per_uvi` calculation.
+	- Removed spurious whitespace changes introduced in v2.
+
+- Link to v2: https://lore.kernel.org/linux-iio/20240728151957.310237-1-abhashkumarjha123@gmail.com/
+
+Changes in v2:
+- Split the single patch into 3 patches.
+- Used FIELD_PREP to perform bit shifting.
+- Used enum for mode selection instead of defines.
+- Fixed indentation and whitespace issues pointed out in the comments
+- Replaced `mutex_lock(&data->lock)` with `guard(mutex)(&data->lock)`
+- Provided available values for gain and resolution via `read_avail`
+  instead of sysfs attributes.
+- Refactored `ltr390_set_gain` and `ltr390_set_int_time`.
+- Used early returns instead of single exit points.
+
+- Link to v1: https://lore.kernel.org/linux-iio/20240718104947.7384-1-abhashkumarjha123@gmail.com/
+
+Regards,
+Abhash
+
+Abhash Jha (3):
+  iio: light: ltr390: Add configurable gain and resolution
+  iio: light: ltr390: Add ALS channel and support for gain and
+    resolution
+  iio: light: ltr390: Calculate 'counts_per_uvi' dynamically
+
+ drivers/iio/light/ltr390.c | 246 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 225 insertions(+), 21 deletions(-)
+
 -- 
-2.45.2
+2.43.0
 
 

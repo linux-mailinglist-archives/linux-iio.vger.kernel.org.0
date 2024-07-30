@@ -1,56 +1,63 @@
-Return-Path: <linux-iio+bounces-8067-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8068-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C79941F61
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 20:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4621E941F69
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 20:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C5B5281C85
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 18:18:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F5E281C9A
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 18:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD8F18A6AF;
-	Tue, 30 Jul 2024 18:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A83618A6DD;
+	Tue, 30 Jul 2024 18:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltjXVAAD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OTUqP+sO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998021898ED;
-	Tue, 30 Jul 2024 18:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A9018A6D1;
+	Tue, 30 Jul 2024 18:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722363483; cv=none; b=QM+b1IvV//oevJliMlWvPyiA+rAdg4YyKv3ARrRRpx5tdOpMfxvt+4P4EDP0JYhuyTglkltwO0NMH2HgNE3woA+iVavfMPfMWyGn9B1B+c29n7OX0wBiZrGsaWIRMNLXLk8S8WAjafID+cqJPGgln1buFR8HfToZ+ZB9ER4PEB8=
+	t=1722363573; cv=none; b=RWGMtRqgSHSfqaUrZoXF/u1U2c4tsFCvGZIIl3+jdlGeUx+Bw8Q+qCE2chdtiAOFoPzxC52mFkHl/gJppDYJ5kXPWuiNqHBuxvQqtc/Py1oE4q3o83JPyY5+CMPvuijQhcezC69y9WZzWcJmbXA77ARelezM1Mk/24vZNa8W+XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722363483; c=relaxed/simple;
-	bh=zFlEhC7BKi3dbVYdpNsfQlgm4kdJEGt4QToRyq/YG3E=;
+	s=arc-20240116; t=1722363573; c=relaxed/simple;
+	bh=RxSnMRhu64wq5qQ8HmvF7KxdiaI0InhhbVSiBN9Xnfo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VA2E42zr/3yr+Fs+Yy8EA3ymhnPpXerAaAsoqWxF6AEX8q5o40HTL6ctqDIkGHW+QcbzWHtq8iLqshppUCHjec5z23Zrc1oiFWbQyeohl5/hO7q3ElZtzH3Cp6apJGl36stgTv4yKxjYuL6fH5hzSivVPHtfxEvQLKP4KmEPtGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltjXVAAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE36AC32782;
-	Tue, 30 Jul 2024 18:18:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PJzSRM1CWaxiRgjDFlLXG63hbFyEmRj/qaqmePvRkH8BKdjn4FkRzdFvyzAs/2a8STslEHiWwtHYZ0q1uu2yGYFANhpVAf4cgA//YMJdeaAknqrlWbzlxH3KTk+9XQdJ3SkCZPXkHbi5sY1G7cXuOp+1jYhPj6v+GIv/czt69dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OTUqP+sO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3A9C32782;
+	Tue, 30 Jul 2024 18:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722363483;
-	bh=zFlEhC7BKi3dbVYdpNsfQlgm4kdJEGt4QToRyq/YG3E=;
+	s=k20201202; t=1722363572;
+	bh=RxSnMRhu64wq5qQ8HmvF7KxdiaI0InhhbVSiBN9Xnfo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ltjXVAAD08NZYrmEFeb7QQ7QmuPnb0yFj5nGVojqJ3D3MEMTAr5+Rrzwg7jJ7fqCb
-	 nUwUElESkaKn187Aqb2rah32R/0eHLje+2msXr/G8VBE/Bi4BWcYOSkYwrJirxO8eH
-	 7zuaBI7Uxc2jvHEg3TRmppcJtKCgv55xU9CgRL3HIYJExSwRrGH+/1MYnbBebSnLQA
-	 x0sHMDDPsPAQST45w166PsTimsmx49mTwxZjJBn77BT4kgHyWi19uWF96EVRsV6kaY
-	 VoGp3GpOCsCpj6JrxtxHfyRl+AFvtOqg2ZgULV1akwfyvYWVLWvXtIV5ftbhae5gAJ
-	 YAVOcdLtLPrOw==
-Date: Tue, 30 Jul 2024 19:17:56 +0100
+	b=OTUqP+sOp7QOtjw6saoR1RZk04qvW2elmg1Mn0i7f7Avb9A/Oe+CCIrirogkRUhiA
+	 gvsdvm3SxoX7OGrxzIwB/ZB1wpnQ5QfOIVXOyHHrpxmwcqw3LixqQX5TIYbKzpK5l4
+	 +FMpGs6JanFz9brHTiquhDZjsEcZ0qufTaVqqXn4FRJ71Op74hR4yRTgv6LgOUnBVh
+	 a9PYti3+e4jIBc/542LUREFSb2e4gdSIbOgYBVg80cA7p0Q6jamQ8ZMgrtgRIFenlf
+	 MhRH9I9lnFI5Sbsvn/WtA4HEVu6wQyVf2ZhX2XCZGBGapC1/Yb3QowtDzpvlFflpYX
+	 EQDucApEt142w==
+Date: Tue, 30 Jul 2024 19:19:23 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Kaustabh Chakraborty <kauschluss@disroot.org>
-Cc: Conor Dooley <conor@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] iio: light: stk3310: stk3013 support
-Message-ID: <20240730191756.5eabd465@jic23-huawei>
-In-Reply-To: <20240728180541.3aff18e1@jic23-huawei>
-References: <20240727-stk3310-v4-0-02497b1407ba@disroot.org>
-	<20240728180541.3aff18e1@jic23-huawei>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, "Hennerich, Michael" <Michael.Hennerich@analog.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 0/2] *** Add ADF4378 Support ***
+Message-ID: <20240730191923.0ad01e2f@jic23-huawei>
+In-Reply-To: <fc357a23-0d4d-47e8-95fd-6abb4a33e301@kernel.org>
+References: <20240729095047.25040-1-antoniu.miclaus@analog.com>
+	<c93a6bf3-7360-4696-833d-82726d10f604@kernel.org>
+	<CY4PR03MB339984EFB38E801AEEE1368D9BB02@CY4PR03MB3399.namprd03.prod.outlook.com>
+	<fc357a23-0d4d-47e8-95fd-6abb4a33e301@kernel.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,39 +68,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 28 Jul 2024 18:05:41 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Tue, 30 Jul 2024 10:42:51 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> On Sat, 27 Jul 2024 00:23:30 +0530
-> Kaustabh Chakraborty <kauschluss@disroot.org> wrote:
-> 
-> > STK3013 is a part manufactured by Sensortek which is marketed as a [1]
-> > "Proximity Sensor". This part is available in several consumer mobile
-> > devices, including, but not limited to, Samsung Galaxy J7 Prime and
-> > Samsung Galaxy A2 Core.
+> On 30/07/2024 10:23, Miclaus, Antoniu wrote:
+> >> -----Original Message-----
+> >> From: Krzysztof Kozlowski <krzk@kernel.org>
+> >> Sent: Monday, July 29, 2024 5:58 PM
+> >> To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>; Lars-Peter Clausen
+> >> <lars@metafoo.de>; Hennerich, Michael <Michael.Hennerich@analog.com>;
+> >> Jonathan Cameron <jic23@kernel.org>; Rob Herring <robh@kernel.org>;
+> >> Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
+> >> <conor+dt@kernel.org>; Bogdan, Dragos <Dragos.Bogdan@analog.com>;
+> >> linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> >> kernel@vger.kernel.org
+> >> Subject: Re: [PATCH v3 0/2] *** Add ADF4378 Support ***
+> >>
+> >> [External]
+> >>
+> >> On 29/07/2024 11:50, Antoniu Miclaus wrote:  
+> >>> Add support for ADF4378 high performance, ultra-low jitter, integer-N
+> >>> phased locked loop (PLL) with an integrated voltage controlled
+> >>> oscillator (VCO) and system reference (SYSREF) retimer ideally
+> >>> suited for data converter and mixed signal front end (MxFE) clock
+> >>> applications.
+> >>>
+> >>> The main difference between ADF4377 and ADF4378 is that the second one
+> >>> provides only one output frequency channel which is enable/disabled via
+> >>> one GPIO.
+> >>>
+> >>> Both the driver and the bindings are updated to reflect that difference.  
+> >>
+> >> That's a v3, but where is the changelog?  
 > > 
-> > The existing ambient light sensor seemed suitable for this chip, and on
-> > enabling the driver, it was discovered that these "Proximity Sensors" had
-> > ambient light sensing capabilities as well.
-> > 
-> > The downstream kernel driver shipped with this phone by Samsung [2] exposes
-> > a sysfs interface for proximity sensing, but leaves out the light sensing
-> > features, hence there's no such functionality in userspace.
-> > 
-> > The following patch series aims to add support for STK3013 as an
-> > ambient light/proximity sensor.
-> > 
-> > [1] https://www.sensortek.com.tw/index.php/en/products/optical-sensor/
-> > [2] https://github.com/samsungexynos7870/android_kernel_samsung_exynos7870/blob/master/drivers/sensors/stk3013.c  
-> Series LGTM. I'll leave it on list for a few more days though for other
-> review to come in.
+> > Each of the two patches has their own changelog.
+> > For the cover letter there's no changelog since it was added with v3.   
 > 
-> Thanks,
+> Ah, ok, it was not that easy to find, without any spacing from the diffstat.
 > 
-> Jonathan
+> Best regards,
+> Krzysztof
 > 
-Applied and initially pushed out as testing for 0-day to take a first look at
-this.
+Applied to the togreg branch of iio.git and pushed out as testing initially
+for 0-day to take a first look at it.
 
 Thanks,
 

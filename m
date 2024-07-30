@@ -1,156 +1,140 @@
-Return-Path: <linux-iio+bounces-8063-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8064-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9694940E63
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 11:56:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3E7941463
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 16:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5BA1F23FC4
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 09:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CE4E28218E
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 14:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33340197A82;
-	Tue, 30 Jul 2024 09:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540B21A2553;
+	Tue, 30 Jul 2024 14:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="laAYV2YG"
+	dkim=pass (1024-bit key) header.d=dekimo.com header.i=@dekimo.com header.b="NYENibeb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2052.outbound.protection.outlook.com [40.107.103.52])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11021074.outbound.protection.outlook.com [52.101.65.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CB019599C;
-	Tue, 30 Jul 2024 09:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521A21A2542
+	for <linux-iio@vger.kernel.org>; Tue, 30 Jul 2024 14:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.74
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722333285; cv=fail; b=cXW/JopvLjPZbDmgWIjkeSgysug8LDRcESXPZn78xTmBW8owMfn3nrHtT3ge6Ca/ExLYH61kfhCRN1tLEmOb/o5JsH3ofeIV//SeOZQysmn44juljs7CoU+e1dH9KaptTJ6AucWeFF/FVUI/ZaaJyrebN2GP8MjgNMi0Oa42LKI=
+	t=1722349771; cv=fail; b=SuvlsmU6ct/Z0tigmeKMSR2vCdrVaQyxpvgwxm5JIdPau+3T48g+N5xSOIhEx5MMml7AsSAbJL388JXjOK7cGqbF5g9xC39jw8JTdW9V7SoWt26tuq1ac7b0LicQCACNPDU5DlkA/g1tbr6DOsEwN699Um1Wchk9ihpWiK+QGXY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722333285; c=relaxed/simple;
-	bh=/Yx13Y7TSs05VJKZi69JX0OqlXAqv8nvgptjoN844AU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nPnmGZFoCjBMj/EZcK8NOyFYPLWhwUDr0D89uxGt41CvzMJ8GlynI0XxKRZyruHoXK5zLNpavEYvxpOA64u/luH8JwQ/1WfSjdtZPy39Ek/QOuuUctHBsJTMMgodG9y7aADDcosDueDBGn46rfLlKyomOUAjntdgyDfcQpWYQJ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=laAYV2YG; arc=fail smtp.client-ip=40.107.103.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	s=arc-20240116; t=1722349771; c=relaxed/simple;
+	bh=ZcU6ySR6W0r6iiIVXD/y2VnpFfXMLSDqUJjxsoQk8jQ=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Nw2teq3AJHuursn5TQirymO6Eztrn/UtErxW9m5PBExIgtWaCW7IGOS9BVY8BjOIHJUFmQ1duCundnIDUMrgwrpOxY3vnFu4rKE5DSHc4voy3RhbTqDyp+i1y1Ta7gdcsuprMWZIDHr+Tn0rNsIunn3fY8/1Iw9+1rM0u6A8Dpw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dekimo.com; spf=pass smtp.mailfrom=dekimo.com; dkim=pass (1024-bit key) header.d=dekimo.com header.i=@dekimo.com header.b=NYENibeb; arc=fail smtp.client-ip=52.101.65.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dekimo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dekimo.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rZV5Jmo3q+3qB5u70iJdb8vtKjSCwhBjoStnkVnJQlXz5vpg0ztX9JtG4bT6PoHX568W6pTnrDEfoNGwUd+Cx4EkpArc+kMr46LwprM47ZMiXWWKwn11/oSf4QowqcXnehhWI+5ruutBzMZeE9HJyTCFIEZ/REx6p3e59R+vIh862rw0c0aWgL5pvmMP2wChH/YU4u87tQi0/Xu0pu08KwdJMLDTd6GWQGIL60XJQ2fYTOMAs1aJ46daNIrImym8EdDIvvCoZJIPGj7njCxg+N4912DsBdlC0fJgwNkCyZcnX5jQSDcxejct74DQYohPr1ItNG63kUZHfs4uLhuVlg==
+ b=BSY8ZjgXeCFedoPtuk4CoBOdaK53TpJMmUx4WYijONfTL98EGdZtMV4ni6CwopPtI77NzCZFLovIt8KIUtiMSS9fVh1lmMWZrt4XeCEQryahIDqibxVdJ4N9eb0rP2kNSqGgtjxoT/GYbJp7hQs1trJsviYrR1QT3oagYR84XK1x7+LY8K60KFWVKKV/tTZHz6YdA39vn7HeTjmKVXmq7XLtScsXwfxPh9pRyG35pLvCu2igXMTM3O0tv+xgq2vY2+lU3/Z8ZNXDh2LSitSd43j789XC3g9ZxmcoONiXv4S8EocHPYqEm4H1pY0WWLtUuFeCMw2fEDg+RDvBs9qJMw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WkoX6eAnZaQAU/5TOwdVi8tlzn1Z2jN2WJfGy/iPDQA=;
- b=RC2VxdoSh5/QdbCb76UzZB+XJRBljseraV6TSInqEszEq2ojuwneVOJ0H2G2MVONUhkCiOoSH04hxfgKZnHHGx6YCIZG54T6sOepqFaNDv5+D45d2wUTSOmBJdOwT5CXI9X3F99wCq5lJ6OlGeR5NzZslb5oICjBkrtbllh6oyRSTHC3XC1pOHVhWgSxoyq+PN/6jT/+CimmGzudivxziSryK94tQKrCj7QSdiC4likT1QOhfELqnnlP9nQnxFX0l15/ie+4XmCFDMQpuV6Zu8/ZAhJfPVI3/hPja/j9xQoUb1nPq/iXgJSiI1Jkg0LUSAXQJn+GIFH8VPO+M2S2HQ==
+ bh=5l0zb+4ezD5blsQogE1eHbtMow8XVXIbdpqmJU2Vacs=;
+ b=uw1pXB39cDvBCjyhdoj+KsUMT38M0AWQnOABywuxf7u+tRZDbPh/0OxEFP0ZY02LYFvPY56J04DlgmEyxiP3RhF8vRJPW/EWLIbxtRlmnAefVf7fAi6tCeRIWIr9C61iDWUcgs/FoD3x3TZC3pX7c8VVMxA5fQpFuwg0/PvI6RdChq8+c0zUCGMgEcdM0daflb/0eyjlxoAcSrriXrVxisfEEl9QC5IRFDnqL66DqZcmnjnyiKWmkutuVdZlZc5PHMrrPC9N2Ak6pNfwGnfl+oJapDggrtfovb7IV9Ptr1G2KzyI0ryqR0zUBQJrHekw7J5kEyCZSQ2qD8dNfqls9Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=de.bosch.com; dmarc=pass action=none header.from=de.bosch.com;
- dkim=pass header.d=de.bosch.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
+ smtp.mailfrom=dekimo.com; dmarc=pass action=none header.from=dekimo.com;
+ dkim=pass header.d=dekimo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dekimo.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WkoX6eAnZaQAU/5TOwdVi8tlzn1Z2jN2WJfGy/iPDQA=;
- b=laAYV2YGtMzN68sH2a7ECR994oubjpoqmfdBpmB38HsbPvRM6oE4aAQ+tlEWNkG1R8q1vUXehDFftqmlZ1L6ySvNDHGfprE1ekbTOD8e7pquoYsgfAwpRW28sFw2U7mrSHuHjPyaIQUxyhqQERjMtU+Z1ouc5I/IfbE0DoqJ8JiRZIyaMbsdVIKh9W7i/WWFHY6haFqEZal8l9qEpfOVDOXPY2bnRV5RBCaLIqlFjBp4n0/UzSTvajhPrKI0wWZxKtxAGQamxx6rWCY+Ktl0feyJ3jsJEkwWH2e0UBBE2ZXdIPzXdsr3ixjcHqPbaYv2DGkUxqjjvXQdPY/AEy+zQg==
-Received: from AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:315::22)
- by AM7PR10MB3528.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:13a::10) with
+ bh=5l0zb+4ezD5blsQogE1eHbtMow8XVXIbdpqmJU2Vacs=;
+ b=NYENibeb5dsOc1+gAfBB5KD3g96rCTrtUOoUuL6qdNiy5YRQne9mw0Y2NY+D7gK/mYgZ27H0IGcFtvRJNhjxnm8sPleE2HpkQBEQYDs9ZEByJQ6qSDLNqI1ajsCIdFBed15gCCr6pLYFybGY98Ht9IwAQg8mIoJowueb1TJIQnM=
+Received: from DBBPR04MB7915.eurprd04.prod.outlook.com (2603:10a6:10:1ea::20)
+ by AM7PR04MB6949.eurprd04.prod.outlook.com (2603:10a6:20b:102::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
- 2024 09:54:38 +0000
-Received: from AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::6748:a0c9:d73d:db74]) by AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::6748:a0c9:d73d:db74%4]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
- 09:54:38 +0000
-From: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
-To: Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor@kernel.org>
-CC: Krzysztof Kozlowski <krzk@kernel.org>, "lars@metafoo.de"
-	<lars@metafoo.de>, "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"dima.fedrau@gmail.com" <dima.fedrau@gmail.com>, "marcelo.schmitt1@gmail.com"
-	<marcelo.schmitt1@gmail.com>, "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Lorenz Christian (ME-SE/EAD2)"
-	<Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike (ME/PJ-SW3)"
-	<Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
-	<Kai.Dolde@de.bosch.com>
-Subject: RE: [PATCH] dt-bindings: iio: imu: SMI240: add bosch,smi240.yaml
-Thread-Topic: [PATCH] dt-bindings: iio: imu: SMI240: add bosch,smi240.yaml
-Thread-Index: AQHa3chB8xxiR7i0TkqCxVScMqlaI7IF2/MAgAAOijCAABVsgIAEnx6AgARxWBA=
-Date: Tue, 30 Jul 2024 09:54:37 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Tue, 30 Jul
+ 2024 14:29:24 +0000
+Received: from DBBPR04MB7915.eurprd04.prod.outlook.com
+ ([fe80::a9f9:8917:cf3a:501b]) by DBBPR04MB7915.eurprd04.prod.outlook.com
+ ([fe80::a9f9:8917:cf3a:501b%7]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
+ 14:29:24 +0000
+From: Arnout Diels <Arnout.Diels@dekimo.com>
+To: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC: "honda@mechatrax.com" <honda@mechatrax.com>, "Jonathan.Cameron@huawei.com"
+	<Jonathan.Cameron@huawei.com>
+Subject: iio: adc: ad_sigma_delta:  IRQ issue in conjunction with IMX gpio
+ hardware
+Thread-Topic: iio: adc: ad_sigma_delta:  IRQ issue in conjunction with IMX
+ gpio hardware
+Thread-Index: AdrijLBWHpNAiXkwSOK1ujHosVAuUA==
+Date: Tue, 30 Jul 2024 14:29:24 +0000
 Message-ID:
- <AM8PR10MB472120A0BF7377F4D800E165CDB02@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-References: <20240724125115.10110-1-Jianping.Shen@de.bosch.com>
-	<20a8ad37-f6ce-4342-a2f7-bf3495dfeb69@kernel.org>
-	<AM8PR10MB47219903C83BA4F0AFE2DAA3CDAA2@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-	<20240724-ogle-equal-d14de4318080@spud>
- <20240727150011.019344c6@jic23-huawei>
-In-Reply-To: <20240727150011.019344c6@jic23-huawei>
+ <DBBPR04MB79150A4614B6957A759EC31EFEB02@DBBPR04MB7915.eurprd04.prod.outlook.com>
 Accept-Language: en-US
-Content-Language: de-DE
+Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=de.bosch.com;
+ header.d=none;dmarc=none action=none header.from=dekimo.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR10MB4721:EE_|AM7PR10MB3528:EE_
-x-ms-office365-filtering-correlation-id: 2917c69a-a1d2-4e73-161d-08dcb07d9fe8
+x-ms-traffictypediagnostic: DBBPR04MB7915:EE_|AM7PR04MB6949:EE_
+x-ms-office365-filtering-correlation-id: 60524e2d-1a75-411a-f1b0-08dcb0a402b8
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|7416014|1800799024|38070700018;
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
 x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?JSNfREDAaDxfjoL7EfBCtl0N+63/5yArh5hTdUIam0/qEpoSZ7TigFnECU?=
- =?iso-8859-1?Q?5ffQn8Fs0ld/mpBfPWXt2/2XViQcKZ6N/2sA934XO7QNiBV1CcqMCCerzq?=
- =?iso-8859-1?Q?EEEnNMLlsnUq6UI30RL6yiJNdhCTfTHL6L+CMZW2oQfqyCH3ZURhzrGscv?=
- =?iso-8859-1?Q?WpfjUT03GF4mIeX5Rky1Ync5EIHE845Y/VHBGH3+mPKyY1tYThHTJpzxiu?=
- =?iso-8859-1?Q?sHKqo6MAXK/0ETgX8qrlKszeVwKJNI8MLCyDdLf8aue85LOYLs7V4zQslc?=
- =?iso-8859-1?Q?Dv351noBvsfIO25o1x3IeshIbKrbYG7MefOhJHgUgHMXUFu7MQ3SsLfwA9?=
- =?iso-8859-1?Q?zWyUflsE5C+cvTgrMvliwIfISs2es2LLKw+q2ah8YLXxuyZo+I2NnkyuUr?=
- =?iso-8859-1?Q?clxEjWTpmyVZFNFJ2CHUiQkGOOaS1FmlJpJ5bCAuE4s5x01BWDYYq2OuIM?=
- =?iso-8859-1?Q?fQ7BLSW1abbmOd+/2EUxM3SWQ5A0p9kkHR8q8PtoT2zUZX1XoI5MQHaElZ?=
- =?iso-8859-1?Q?1jRzSij6y1ZndRT/DR2EG8EzB1ecm0vVbwUWt49muxzzNYg3qGHA0gUYGc?=
- =?iso-8859-1?Q?vUYaeeXNGtLS2MXdi6vhYui2To2lkakP2tUAR1c26+S+6YmdF5OIFzXIYY?=
- =?iso-8859-1?Q?4+KwvQR9q6eu0+ZNeSm6i+CVP+NIvvYvGGuMjr5jCT/15x59XU6HyAFU7i?=
- =?iso-8859-1?Q?EZTlOJ/CUnnOTF8BGCZXqjEq+hXv5p056uc3tvSplUXPdo8GemzkL3cq1e?=
- =?iso-8859-1?Q?umyYfuCN5LgKrBe5ZZ9fQRhd3IcW/jfpqZkZBWIF3LqmxnfUcjq9utJfyB?=
- =?iso-8859-1?Q?C+LPOCdRvl3gvwWFh4zgUCsp9UaOKYFckqzRtGTYsVA0gw6YOr7bG6c7SU?=
- =?iso-8859-1?Q?Wp9voUdm32MK5RJJ9wvd/jujKqEXzSfzvHobTfezWcSCqI3AfDLs6t8Mqq?=
- =?iso-8859-1?Q?RVD8hR6XyjB5tH99q2p7OUf6uZqT5lbKGRveADDrISjd92kAvbUsiwjtaA?=
- =?iso-8859-1?Q?WeZ668XCyP7dndF9iVFZM9SoDPOCRNQX3NmOVH4eORPj6lfbkg9UEFCtfv?=
- =?iso-8859-1?Q?ARx6QzSE3nrEhZTY8BeW2FK6Oec7SG6T87ou/lCa5LTdNh4/x27Lmh9ySw?=
- =?iso-8859-1?Q?iuntd9h4z72m7Xli+AM5yyNeW5m7Jtr4kMMzK8BR7YQVcTEgF4hJOyJmeB?=
- =?iso-8859-1?Q?LiCJ7ucUwaPH7mHURtowQ0pDH4p/W4oA4Atu80xtTIngLlN9xDxb+n5Ft3?=
- =?iso-8859-1?Q?YKiMldavDAKUC3g8zBcu89zVr/iXv/3eVUtXS1jfUDElmDWUowUOgGAWkf?=
- =?iso-8859-1?Q?J7LEh5ANchultUY4iQ8G2S16mzk1tzH3v2ch9wgsIfyvYsA+yjccG1kkMn?=
- =?iso-8859-1?Q?0reW7F51ZkJZo4CbwhTq9vRe0x8PHiSRnwAhIrYbh2tqHQsIGOn2M=3D?=
+ =?us-ascii?Q?dqBd/SKtftg3f1SugOtO/0Fl1mf/FL8ZgQpdgH9cjoNZ1e/Qqm5p0L2LdtAZ?=
+ =?us-ascii?Q?Q8A2FLeIRvSCie9ySQIcuSAxrHW+xtlMavRRm+2uDpoESL2Qsm5x+Xr8mCbP?=
+ =?us-ascii?Q?hCruxAYkolPLG3yyZ53XHKfNnYrBvaTL+zowtHT+GDnfF7suVEt7o8eCEAal?=
+ =?us-ascii?Q?wwRxBznFLjOadJXDZAoaGiF4sIyPy0XAlPX8nf3TVyG+9VhsN8ErMplZFhJV?=
+ =?us-ascii?Q?7yWFeHLF0yDsazwQ+tCTlbvsIml85+ByU3zWZ/Ft+b4D+tLyq1cAG4inrLMi?=
+ =?us-ascii?Q?QzGTtzvxw1ZD+jBZ73wjUtQaseDMweBXzw4mkPs38JAjQlRqkPxB8fj88uY7?=
+ =?us-ascii?Q?cfx77cqQr0cXkW4KiRMCTpL7vF9TIZ12uu2k3NO6jc+WMihqU5ZL5N4SK34b?=
+ =?us-ascii?Q?UACAgRfOUwSmNWYjd2Ya76C1q+jN4TJqEuQSlj1KCBtXJTedNunujogDSQuW?=
+ =?us-ascii?Q?S0KC4eZ06jj7Rpytrquxa+D0GGz/qoq6ebaZtW9osB7iJcSZc4lMqFR7fjVE?=
+ =?us-ascii?Q?lTnjJmlGGGlhZg3FDzOnQ+KGQyg1xGHverwfovXcZdbfcRLM09ttrdXl1Eu2?=
+ =?us-ascii?Q?l/NWvOJ/a9tK9p19cdT+1e1fVCX2NbpMAjeM459SH4IJ4fcGGCdhJDNk5KSQ?=
+ =?us-ascii?Q?sSg3m6NjEjfYhPUaffOySAH4gQRABrs7InwriwfeT7ckpYyvaSrQtYW+Fe3N?=
+ =?us-ascii?Q?iibK8eMzzSSoNk0TsAgWh9+g1R+4HibBqMXC3qyLv5YO92hS6FvPMvohjTBF?=
+ =?us-ascii?Q?2ZyF9m8KfYZ/TrpGOX9fdvxLSWiI+jhuFQgMVP74NuGQFk0RM1TgxpOFckNG?=
+ =?us-ascii?Q?RbmYcYNrv9y+MKTXq1AMnQYZ4Xj8SZZKG+yOGEC86Dlt9VoZOSKRSY8NtozI?=
+ =?us-ascii?Q?c9MAnUpIvOLYc1WT5GzOju3xQJFnMBYMMGDPstHS3kXlILFJprHHDnt8k4SX?=
+ =?us-ascii?Q?8fa2P6zisWTDUVRtHNnx5WhV325w+mfPHGAnnn7GP4cfKFysdaZzYfTMPGfZ?=
+ =?us-ascii?Q?KNbbYOlPf4hRKK5D764rTW9u3pnJMKKqaxIlWXIc5Dz36Ah4NOX/8+WzF6tM?=
+ =?us-ascii?Q?q+2zPkZJ79Axc5nSMZv8BX4/cPd4FHsjYocTUtKDqJHk4uVlRFoR1qoV10tN?=
+ =?us-ascii?Q?zea7ULAN9cu7PhSuYcR9WxkfLcExmeUnMRyuvy2vPKdFNd9KZFYfCuucvvrE?=
+ =?us-ascii?Q?JPaSeJb/lKkTvfOV56ROTyVP6jbs+Joo+Dz1H5wvlsKsggw4O5EX+pdEQavh?=
+ =?us-ascii?Q?ysCkAkj2sne3AdUAS6CZYuBejnXJvb0f0bvRd5a3WtiuHsVsOjhr+vMufRj0?=
+ =?us-ascii?Q?waRvTm7F89F9H+78TkrLRx2re4omHpm0SmAF349y75sVSCBjTBsHD0q8yW4s?=
+ =?us-ascii?Q?0HYPvhA=3D?=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7915.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?flATRYw9LoMN/ZpyNhaCVxUOlTexL/fOgycH19gQfqLhkIgpkbM7DL/+kU?=
- =?iso-8859-1?Q?f2zqpxNWklWUVFBJA5KAcn2sMHpCOkDHXWgK+DEF8CK9qLxhDKiFAYy5V9?=
- =?iso-8859-1?Q?O2V0EuJkGUKlWSCvKYdu9l0MGcXqYYLe6BZ6UNNJvq3hKTfoEB+fdB/EzD?=
- =?iso-8859-1?Q?wIwvx8wUUGPOzNCOArihrso7LiYt3yT9YeZ3KsZ4NZPjbzzJYcPVj5grJM?=
- =?iso-8859-1?Q?Pc9xB6X6dYfnK321JiAFfOrbI7Pwh5L1aEnwi6THL8uGAUDJdOgmm6Z2Mg?=
- =?iso-8859-1?Q?NRWrKYlYhcr4BEqcweCgZAZB38VYEd9+zfJgkdcObYMxATz5iltUV3i4wh?=
- =?iso-8859-1?Q?xhITtMGeotEAI3Zgy4+xzF3I23x4yslDYdWold8jiRllz65dqI20/IABSR?=
- =?iso-8859-1?Q?KaNbWkvQKFbUXVtMqao3LRcjEZrWkxQpnTl5CNgKTEMftIbOAJ9q4aA7qc?=
- =?iso-8859-1?Q?o9P5QdCLSaAK8pXDxN6YTBEndTkReICsefIKTyOdcf8w7zKv5ZDpKmOHeQ?=
- =?iso-8859-1?Q?XHPLXDZeUsoN5xPvT7xUEHlAFAGbtSE/n4GAYuY4rscTgnlil22sBh/TXG?=
- =?iso-8859-1?Q?1lLNSphVc87rcnWTYHogOsYvudJVieQu0xWuEeG2vuU6cM8E/uagUsKT+M?=
- =?iso-8859-1?Q?ZxjsQCIf/1XFkazRYdI0oriSkJ31tBkMI7bbo9zNRn8Rm/W1AX6qv/jDmd?=
- =?iso-8859-1?Q?PNnjgSV0XZ0lhWXdV88ic+eP11byMzyTdhBkKj+mtWbx8rkE+u0bKiRFDB?=
- =?iso-8859-1?Q?KvViG79/yxFk60V14AwevHvMJuZsg6AgCEwEPzB6ZIuJ2E+k/rVvqtT2/c?=
- =?iso-8859-1?Q?U3dx/j7cBehbk2HS50axPl+LYZwa74Uh1E8AhpOg8tCT/U+aSYsE3QOxxG?=
- =?iso-8859-1?Q?TGC7dkCO8SpViBxa+eDmqNLkESMluonUYWN+tMn6mc6vPs3JPoXrSNVUhA?=
- =?iso-8859-1?Q?u/4Twc9iriDrbvlZphAk9+sw6cFbe0fgDuawOtXkW2BXB18lRE/TbrtOaU?=
- =?iso-8859-1?Q?VvhrZg8DBxwjbYLat6JYDpR5il06hgq+ymHsX3/rXdgjLZEAUowqL3VscD?=
- =?iso-8859-1?Q?fTuIH0Z+KzFRN2W0hzC8sYF+HN2gyMT861oo+j8d1DwkllMmUBjRlB6XM3?=
- =?iso-8859-1?Q?E4aPdxBeHBMhnF69YsbOTOsePJgCjfxG0JRSkAR+4QZf2bbMmFw+CvkFB0?=
- =?iso-8859-1?Q?Sx4OVP/FHO7BI85+UIzVA/GbDyZUHsRVf7U4jsPblU0IXZpKb8zIhKCvJi?=
- =?iso-8859-1?Q?iF3nZnTXUEU7KBOQ5UeptdPXef/PaOLHbH/TVHNMSfk7HUYiqWac6/A2dr?=
- =?iso-8859-1?Q?1AqP8lDitZiAZUWPEKmnQK8FBFDKP1IlIYPCvcHgMUsueCQJU7KNGKowW6?=
- =?iso-8859-1?Q?DFLSsacdYlznyV9HQWS8lpC5RLHt5Wky1ipDkz7CiYbR8MWiyZLbwj743F?=
- =?iso-8859-1?Q?Ydy8joFoz+/r5zORsCyhHxS0RxnckYCn2bzCkfXWC7JH8CAVlK8HGAqdoh?=
- =?iso-8859-1?Q?bXjPImuzyyJDVg6KTxReagOgWYES+Pd4iWkuZTbVBdpvQ+PXACBIia3p+2?=
- =?iso-8859-1?Q?nwJwwVHaQdB+diNfOUO2BU8pXq66eXLJJgzcjNDg7Q7ScMiuFMj3bX5UU5?=
- =?iso-8859-1?Q?YeI6lLbmgf9Ss=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
+ =?us-ascii?Q?NSH5P33oODy+71z5HO15Eg80cesUXX7Npxix3HMyly631jjbTon1X/DI2PuM?=
+ =?us-ascii?Q?YoWVA+YceObZdx0qcy50RLqmqlz2EeMIQY2aA5HBZ2HstlHyNGKkBFXWG5uJ?=
+ =?us-ascii?Q?AbnYFdHR+JP+av+Bx31XORXKVNEakFxtNV7zAi+2zZKTKCWzd6/CcaiJWCj0?=
+ =?us-ascii?Q?y4j9UxmnWgx4Zhwm121jEVCLfsVKBEbJ1dzILR70j0BaAOa5RkNqZmF5SEDp?=
+ =?us-ascii?Q?pO9kRCm68gBpOwul3NPdOLsnhFVFEeKRmJCX5Xq/Hkb+wDg3YmXKafHtab7T?=
+ =?us-ascii?Q?v27aj8f0UQJvnPNkdCqhee2rcwMmCcN34TE1rn22EfQK83/XjOrnnUpCokSv?=
+ =?us-ascii?Q?OzDohx+YKhvLPOhUT9xapC9nmHZArE8kMoRcztGo/rzyeU+tFSLygbAsxClI?=
+ =?us-ascii?Q?EWVQzlzrmtFnTwjNqGA4W+Mw8cpw3ohyEymiXv0G4tKArLQU+dQbFd37CbmF?=
+ =?us-ascii?Q?3BJU1LiA3gMrIp9hiS1ZoYv5C0X/KsXoZsy7wOysk9SFbVompSNBjFbrDSPq?=
+ =?us-ascii?Q?BlriErz1eYJZHDM4/q044gAww4AfsDucs3stLGEYRqplX4oONUc9M3gVA9tO?=
+ =?us-ascii?Q?a3q/QmE3kpCv0IsOcGajhFAjECLgO//Cqu83jOcGyWAkIOR0JQfZ/f4/Fl/i?=
+ =?us-ascii?Q?dmHIz6rG1/7ieGPX+ImNOl50mLTsACpA7LCvieyrYaOzll7xeJ1Ox+7A4ufA?=
+ =?us-ascii?Q?zjnmdldk3DxN8dXi6S6bjStL5BAJL95Vmr1cRw1+gocPWVGueanm6gdF/8Jh?=
+ =?us-ascii?Q?vlxoJdq/9fej/BuvE6WH/bhEY+35lpsqmI7SDmYi0R3g6C6ys2wd71NYa0s2?=
+ =?us-ascii?Q?9/QKLPloxroAgtik4xfReQqDrzIF3jmP3kHWTNvqa5cJVq93Vnoc48CR1Ghs?=
+ =?us-ascii?Q?6X6ObVicZm0PizJ7Q1Iq8lOmNsDjtwxm3zG7yuwc5zRDPOWmVwLvzHhy5h2a?=
+ =?us-ascii?Q?rp0YqAjgB+Tyltc8vfUI0Jh/ypM4qBS6fE19jraKD2aM/CZBsbLaES5WizcQ?=
+ =?us-ascii?Q?VsRdXw5HRWL0egXfMULn+Gu88Dhgcwynx0c7sLJBXqbvROCSwCr4z3zdbTmi?=
+ =?us-ascii?Q?CIA1FOSR8FVnVZ35rc19uTBPrVCCeSwfO7uAtd0DFGH5+6OcWZsTbVSkkoJn?=
+ =?us-ascii?Q?wBJkQUgkJqzsgQ58Ww7ettZ47jOeQ/PjV80qesQ6p8jVThyNOZqfXTPERC1l?=
+ =?us-ascii?Q?4i9XhueBj4Jr0HfatSjCyaKlRCmShJzc2JoBAnfodkoCb+vcA8lCaNKxeeeN?=
+ =?us-ascii?Q?EtFP0rpIWvle93mmwNfZXxdYSlyZ6YtYA+2qbNtRJ94ep0h0VNpToThV0D7v?=
+ =?us-ascii?Q?ycLxcdBCEaBt6j+wkjMl3tfXWUXE6dbAXI+j4I4TBK24M2QKxVOUJyZwDrBa?=
+ =?us-ascii?Q?WBD3gb8HbpRDgZvp6s+w3kJsVB0OjK6Ap6iRBAj4mod4kBeArGxAQCf3rXr2?=
+ =?us-ascii?Q?PcTIhYg1YHS7KQLXOXyEgAxGWluDls2pEx+qg2vxcch5yIwfuAfkE8zG2MTi?=
+ =?us-ascii?Q?87cpbDGWZqw6Gsa4ps2ZCmGsmgbWOBM78Cvw3BxP1RppTY29sjqjZ+VuVItG?=
+ =?us-ascii?Q?1WhqoJCCmgeXeG4lhZv9Af72xO8bdjp/EDhDAQCi?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -158,91 +142,101 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: de.bosch.com
+X-OriginatorOrg: dekimo.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2917c69a-a1d2-4e73-161d-08dcb07d9fe8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2024 09:54:37.9336
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7915.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60524e2d-1a75-411a-f1b0-08dcb0a402b8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2024 14:29:24.6028
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-id: 64c47e2c-9101-4dd0-9d5d-294d60d9e247
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +1rAJbo2gMCWf6fx17mlGw5lxCXXquqkrhsWy5AH98nHHhuEYTd+TXxclg7Ucj9esIlBp5gtq9ff49CEM6DbYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3528
+X-MS-Exchange-CrossTenant-userprincipalname: oG7xkPFQ0fXyAzzYt8YTgG9wKwzlPvki2URS66tSWp67H6F3VIg2sPAYHuiz3cG6hb9GfMKUJdMuDtYMuEZ05A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6949
 
-Hello Jonathan,
+Hello,
 
-Thank you for the explanation !   We will construct the patch-set as you su=
-ggested.=20
+I have a remark regarding ad_sigma_delta's IRQ implementation, especially i=
+n conjunction with gpio chips that do no support disabling IRQ, but do supp=
+ort masking them on a HW level.
 
-Since the rework of the driver still takes some time, we will send the new =
-version once we finish it.
 
-Mit freundlichen Gr=FC=DFen / Best regards
+Specifically I was trying to bring up a ad7192 chip on an IMX8 platform. Th=
+e IMX8 gpio driver (gpio-msc) does not implement interrupt disabling.
+I was the same issue as others have seen, namelijk that when doing single A=
+DC measurments, the values are stale, because the driver does not wait corr=
+ectly for the IRQ to come through.
+The fact that this chip muxes an IRQ line with an SPI MISO line is the fund=
+amental cause of all trouble.=20
 
-Jianping Shen
+For one, this requires hardware designers to typically route the pin to two=
+ MCU peripherals (an SPI pin and a GPIO pin - to avoid having to support bo=
+th gpio interrupts and doing SPI transactions on the same pin). But ok, tha=
+t can be done
+But the second issue, is that on this pin, per definition, not just IRQ edg=
+es will be visible, but also MISO data. The driver has to correctly "time" =
+the enablement of the actual IRQ.
 
-Mobility Electronics - Sensors, Engineering Advanced Development - MEMS Sol=
-utions Software (ME-SE/EAD2)
-Robert Bosch GmbH | Postfach 13 42 | 72703 Reutlingen | GERMANY | www.bosch=
-.com
-Tel. +49 7121 35-37749 | Telefax +49 711 811-509378 | Jianping.Shen@de.bosc=
-h.com
+The ad_sigma_delta driver .. does this, but it can only do so much, if the =
+underlying subsystem is limited.
 
-Sitz: Stuttgart, Registergericht: Amtsgericht Stuttgart, HRB 14000;
-Aufsichtsratsvorsitzender: Prof. Dr. Stefan Asenkerschbaumer;=20
-Gesch=E4ftsf=FChrung: Dr. Stefan Hartung, Dr. Christian Fischer, Dr. Markus=
- Forschner,=20
-Stefan Grosch, Dr. Markus Heyn, Dr. Frank Meyer, Dr. Tanja R=FCckert
+Practically, in case of the IMX8, the *hardware* supports falling-edge dete=
+ction, which is needed and I configured correctly. If this is detetected, t=
+his then always calls <handle_level_irq>.
+The *AD driver* tries to disable and enable IRQ at the right moments using =
+<disable_irq_nosync> and <enable_irq>.
 
------Original Message-----
-From: Jonathan Cameron <jic23@kernel.org>=20
-Sent: Saturday, July 27, 2024 4:00 PM
-To: Conor Dooley <conor@kernel.org>
-Cc: Shen Jianping (ME-SE/EAD2) <Jianping.Shen@de.bosch.com>; Krzysztof Kozl=
-owski <krzk@kernel.org>; lars@metafoo.de; robh@kernel.org; krzk+dt@kernel.o=
-rg; conor+dt@kernel.org; dima.fedrau@gmail.com; marcelo.schmitt1@gmail.com;=
- linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-kernel@vger.k=
-ernel.org; Lorenz Christian (ME-SE/EAD2) <Christian.Lorenz3@de.bosch.com>; =
-Frauendorf Ulrike (ME/PJ-SW3) <Ulrike.Frauendorf@de.bosch.com>; Dolde Kai (=
-ME-SE/PAE-A3) <Kai.Dolde@de.bosch.com>
-Subject: Re: [PATCH] dt-bindings: iio: imu: SMI240: add bosch,smi240.yaml
+But, when reading some single values from sysfs for example, triggering <ad=
+_sigma_delta_single_conversion>, the following scenario plays out:
 
-On Wed, 24 Jul 2024 16:25:39 +0100
-Conor Dooley <conor@kernel.org> wrote:
+- The first time everything goes well:=20
+  > SPI command to start sampling
+  > IRQ enabled (HW unmasked to look for falling edges), to wait for conver=
+sion finished result muxed on nRDY/MISO pin
+  > Falling edge occurs and irq is done, breaking a waiting loop
+    > During the callback, the interrupt is disabled again.=20
 
-> On Wed, Jul 24, 2024 at 02:19:25PM +0000, Shen Jianping (ME-SE/EAD2) wrot=
-e:
-> > Anyway, please send bindings with driver in the same patchset.
-> >  =20
-> > -> It's fine for us. Nevertheless according to the Devicetree (DT)=20
-> > -> binding submitting rules 1.1
-> >=20
-> > " The Documentation/ and include/dt-bindings/ portion of the patch=20
-> > should be a separate patch." See ->=20
-> > https://eur03.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fww
-> > w.kernel.org%2Fdoc%2Fhtml%2Flatest%2Fdevicetree%2Fbindings%2Fsubmitt
-> > ing-patches.html%23i-for-patch-submitters&data=3D05%7C02%7CJianping.Sh
-> > en%40de.bosch.com%7C3d03781ae4564e7e3f7708dcae447463%7C0ae51e1907c84
-> > e4bbb6d648ee58410f4%7C0%7C0%7C638576856248420833%7CUnknown%7CTWFpbGZ
-> > sb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0
-> > %3D%7C0%7C%7C%7C&sdata=3DOEaFoGpb%2F7CVAN2gEpNwG9I1zGBlUNYdLUy%2F7w5Dh
-> > b0%3D&reserved=3D0
-> >=20
-> > Shall we still put the binding and driver in the same patch ? =20
->=20
-> No, different patches please. Also, please fix your mail client so=20
-> that it quotes emails properly.
-To add a little more detail.
-We are looking for a cover letter and a pair of patches.
-1st adds the dt-binding docs.
-2nd provides the driver.
+  > SPi command is sent to read out the data
 
-The cover letter provides a brief summary of the whole series and provides =
-a convenient name for tracking it as a whole.
 
-Take a look at how other recent driver addition patch series have been brok=
-en up.
+But, during the readout command, things go wrong.=20
+Since the hardware -cannot- be disabled, it WILL see another falling edge a=
+t this point. In fact mulitple during that MISO readout.
+What happens then, depends on other settings. Assuming lazy interrupt disab=
+ling is used, this will actually first trigger another interrupt, which the=
+n masks future interrupts on a HW level. (Or, this masking is already done =
+sooner).
+However, crucially, MASKING interrupts on a HW level QUEUES them. The subse=
+quent falling edges on the masked hardware will set a bit in the registers,=
+ and cause the issue the NEXT readout.
 
-Jonathan
+What then happens on the next readout, is that, when the IRQ is again enabl=
+ed, it fires IMMEDIATELY (since the previous falling edge was still 'queued=
+' in hardware).=20
+
+(This then leads to the waiting loop to break too soon, and a stale value t=
+o be returned)
+
+=20
+
+----
+
+The proper way to deal with this, would be to (optionally) -clear- any HW-s=
+aved value when enabling the IRQ. (Or wait a while to "flush" it out as a l=
+ess elegant solution)
+
+What I find strange is that that seemingly the same issue is supposedly rep=
+orted to be fixed last year (https://github.com/torvalds/linux/commit/626d3=
+12028bec44209d0ecd5beaa9b1aa8945f7d).=20
+However, the "fix" here was to disable lazy IRQ. This does not fix anything=
+ when using the IMX8 gpiochip, since this will just mask the HW upfront, ra=
+ther than waiting another IRQ cycle first.
+
+
+
+I'd love to hear your thoughts on this.=20
+
+Kind regards,
+Arnout
+
 

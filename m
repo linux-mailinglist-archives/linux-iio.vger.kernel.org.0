@@ -1,119 +1,248 @@
-Return-Path: <linux-iio+bounces-8062-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8063-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F34940E1E
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 11:43:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9694940E63
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 11:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CB5F1F24520
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 09:43:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5BA1F23FC4
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 09:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0392195805;
-	Tue, 30 Jul 2024 09:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33340197A82;
+	Tue, 30 Jul 2024 09:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MSwSII30"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="laAYV2YG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2052.outbound.protection.outlook.com [40.107.103.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E265118EFE0;
-	Tue, 30 Jul 2024 09:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722332636; cv=none; b=ZJkEU6CPuJ2dHGZtnfikfgbinigpl8nHNo6zYOCupbBSRaFRgO5LeHFzZZwk1u5aVQsRkYTEYlkeJg0zmYF8r0A3EH6t2f/8BauMnH6eXpX0hAivETzG7/2mJMrhiFt4xBoaHX8chEvaR+dTGoE9So8Tnc+BNfcXy+XzSkBhXmw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722332636; c=relaxed/simple;
-	bh=A80x/1Ink67gXVDYHGhR3sHS5VmUIEr38y+FolF9DsY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Yi0qj00SQJHxMqkwvyjnWpeb01D31qVdAMyrVXa9wvHEA936BT5gk2m51Anwx+fTQnj5z5IqEORMHQhlkvB1BaKh63E3pzmwA5sZsX6rcq/YzQps4WWvH3+V96fhbdTSpmlBrzHD/It79m6QSaFtoNieuRV5Y680bhViOkx51no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MSwSII30; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42803bbf842so32122895e9.1;
-        Tue, 30 Jul 2024 02:43:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722332633; x=1722937433; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rif0ScxfI9sioiI9vQsnAaTOQ7QRRDfLNRlXIX8/URA=;
-        b=MSwSII30ATwK8xRLpcS/d/CHRBays6ajEhdiCJ09zC/l7VWGZNfCq3a7V4asf/c7ZW
-         qceOiOs2pBFe9Du9juet3iP3pKCtbBREoEbRAKIb+tdR9ToGoVL7duVHMeVBRDPxaQY9
-         cnv2jQI6U+awZeMuC2m/bjgtWXAJEj3JJbc65MSG9FI5fFcIqlfO9cBTGEiiYitHiZpH
-         g+dAYacgIlmexizk1aSWHNoUHTLKw1csVffxY2Ze9xOSqZhNavqPpbBJdQFgxLdeTcbp
-         AVYjDwvxWnItyJhD/YIjOStNb+5jkpJF45tfN89B9T3assm24KZcFkHFa4h4gIBh+HTX
-         weuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722332633; x=1722937433;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rif0ScxfI9sioiI9vQsnAaTOQ7QRRDfLNRlXIX8/URA=;
-        b=NoCDv7rX5FCiu53zH8PxjnVUPqfcHcgBLPOT9evWHgWYUTnfuihgkiTUS+J+AJ+IXq
-         nsPNffLqCW2cbH1x1Z3OpeluJFLavwexXb9PuGTEVuL+QKtVMdeV8kvrQH/1Bx6to9fd
-         RvYzPr9L8nDy3TlSG2do9mOkYJE1JkYK3E3a01ncB2s7T8y85b+Gr1yjHqArBIEvkxIu
-         vtTzUGAVbhDuoNfSUd4Ph22WnXjVPTKNEhm5EdQ0qE6soLMkLMPxFMBWufvjRBrjb9Gc
-         sSSZhNB7WL66crHDD2tFOxkHpAp+kahrcnEDNz37HinXiR+thaWFHKAVfAekLL099jW4
-         jvtw==
-X-Forwarded-Encrypted: i=1; AJvYcCWWJTuG5AmXTls41eUyzTcSYJT83eZUJIJzsmcb8SN+ToGmt3z1MkOggm+fmrGseIEmjdW/VhhNIMqkzfzL1eCwarZYAE2TTy55q1mJ
-X-Gm-Message-State: AOJu0Yw0Ord5iiYmw1Keax3ioRf8HWp2r5BM4MjzhopwjC6YjQ2dC1Ws
-	jzjO0vQ4EtQycv8JecS2A9RHn7JnUDZk5ZCLQs6ZaqwoTEE+OkqC4SvJBszu
-X-Google-Smtp-Source: AGHT+IGOIgO15lMgF8zOuvqsyofiyO2xLW7TS7Y645+UHjFfUedcjXtR8fPTjl6qNS8G/P79ptqWuw==
-X-Received: by 2002:a05:600c:3c9d:b0:426:6ee7:d594 with SMTP id 5b1f17b1804b1-42811d77889mr82727835e9.7.1722332632929;
-        Tue, 30 Jul 2024 02:43:52 -0700 (PDT)
-Received: from localhost (host-82-58-19-206.retail.telecomitalia.it. [82.58.19.206])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282113ddbcsm35992715e9.19.2024.07.30.02.43.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jul 2024 02:43:52 -0700 (PDT)
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Date: Tue, 30 Jul 2024 11:43:49 +0200
-Subject: [PATCH] iio: remove unneeded assignment in __iio_format_value
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CB019599C;
+	Tue, 30 Jul 2024 09:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722333285; cv=fail; b=cXW/JopvLjPZbDmgWIjkeSgysug8LDRcESXPZn78xTmBW8owMfn3nrHtT3ge6Ca/ExLYH61kfhCRN1tLEmOb/o5JsH3ofeIV//SeOZQysmn44juljs7CoU+e1dH9KaptTJ6AucWeFF/FVUI/ZaaJyrebN2GP8MjgNMi0Oa42LKI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722333285; c=relaxed/simple;
+	bh=/Yx13Y7TSs05VJKZi69JX0OqlXAqv8nvgptjoN844AU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=nPnmGZFoCjBMj/EZcK8NOyFYPLWhwUDr0D89uxGt41CvzMJ8GlynI0XxKRZyruHoXK5zLNpavEYvxpOA64u/luH8JwQ/1WfSjdtZPy39Ek/QOuuUctHBsJTMMgodG9y7aADDcosDueDBGn46rfLlKyomOUAjntdgyDfcQpWYQJ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=laAYV2YG; arc=fail smtp.client-ip=40.107.103.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rZV5Jmo3q+3qB5u70iJdb8vtKjSCwhBjoStnkVnJQlXz5vpg0ztX9JtG4bT6PoHX568W6pTnrDEfoNGwUd+Cx4EkpArc+kMr46LwprM47ZMiXWWKwn11/oSf4QowqcXnehhWI+5ruutBzMZeE9HJyTCFIEZ/REx6p3e59R+vIh862rw0c0aWgL5pvmMP2wChH/YU4u87tQi0/Xu0pu08KwdJMLDTd6GWQGIL60XJQ2fYTOMAs1aJ46daNIrImym8EdDIvvCoZJIPGj7njCxg+N4912DsBdlC0fJgwNkCyZcnX5jQSDcxejct74DQYohPr1ItNG63kUZHfs4uLhuVlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WkoX6eAnZaQAU/5TOwdVi8tlzn1Z2jN2WJfGy/iPDQA=;
+ b=RC2VxdoSh5/QdbCb76UzZB+XJRBljseraV6TSInqEszEq2ojuwneVOJ0H2G2MVONUhkCiOoSH04hxfgKZnHHGx6YCIZG54T6sOepqFaNDv5+D45d2wUTSOmBJdOwT5CXI9X3F99wCq5lJ6OlGeR5NzZslb5oICjBkrtbllh6oyRSTHC3XC1pOHVhWgSxoyq+PN/6jT/+CimmGzudivxziSryK94tQKrCj7QSdiC4likT1QOhfELqnnlP9nQnxFX0l15/ie+4XmCFDMQpuV6Zu8/ZAhJfPVI3/hPja/j9xQoUb1nPq/iXgJSiI1Jkg0LUSAXQJn+GIFH8VPO+M2S2HQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=de.bosch.com; dmarc=pass action=none header.from=de.bosch.com;
+ dkim=pass header.d=de.bosch.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WkoX6eAnZaQAU/5TOwdVi8tlzn1Z2jN2WJfGy/iPDQA=;
+ b=laAYV2YGtMzN68sH2a7ECR994oubjpoqmfdBpmB38HsbPvRM6oE4aAQ+tlEWNkG1R8q1vUXehDFftqmlZ1L6ySvNDHGfprE1ekbTOD8e7pquoYsgfAwpRW28sFw2U7mrSHuHjPyaIQUxyhqQERjMtU+Z1ouc5I/IfbE0DoqJ8JiRZIyaMbsdVIKh9W7i/WWFHY6haFqEZal8l9qEpfOVDOXPY2bnRV5RBCaLIqlFjBp4n0/UzSTvajhPrKI0wWZxKtxAGQamxx6rWCY+Ktl0feyJ3jsJEkwWH2e0UBBE2ZXdIPzXdsr3ixjcHqPbaYv2DGkUxqjjvXQdPY/AEy+zQg==
+Received: from AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:315::22)
+ by AM7PR10MB3528.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:13a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
+ 2024 09:54:38 +0000
+Received: from AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::6748:a0c9:d73d:db74]) by AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::6748:a0c9:d73d:db74%4]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
+ 09:54:38 +0000
+From: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
+To: Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor@kernel.org>
+CC: Krzysztof Kozlowski <krzk@kernel.org>, "lars@metafoo.de"
+	<lars@metafoo.de>, "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"dima.fedrau@gmail.com" <dima.fedrau@gmail.com>, "marcelo.schmitt1@gmail.com"
+	<marcelo.schmitt1@gmail.com>, "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Lorenz Christian (ME-SE/EAD2)"
+	<Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike (ME/PJ-SW3)"
+	<Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
+	<Kai.Dolde@de.bosch.com>
+Subject: RE: [PATCH] dt-bindings: iio: imu: SMI240: add bosch,smi240.yaml
+Thread-Topic: [PATCH] dt-bindings: iio: imu: SMI240: add bosch,smi240.yaml
+Thread-Index: AQHa3chB8xxiR7i0TkqCxVScMqlaI7IF2/MAgAAOijCAABVsgIAEnx6AgARxWBA=
+Date: Tue, 30 Jul 2024 09:54:37 +0000
+Message-ID:
+ <AM8PR10MB472120A0BF7377F4D800E165CDB02@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+References: <20240724125115.10110-1-Jianping.Shen@de.bosch.com>
+	<20a8ad37-f6ce-4342-a2f7-bf3495dfeb69@kernel.org>
+	<AM8PR10MB47219903C83BA4F0AFE2DAA3CDAA2@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+	<20240724-ogle-equal-d14de4318080@spud>
+ <20240727150011.019344c6@jic23-huawei>
+In-Reply-To: <20240727150011.019344c6@jic23-huawei>
+Accept-Language: en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=de.bosch.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM8PR10MB4721:EE_|AM7PR10MB3528:EE_
+x-ms-office365-filtering-correlation-id: 2917c69a-a1d2-4e73-161d-08dcb07d9fe8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|366016|7416014|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?JSNfREDAaDxfjoL7EfBCtl0N+63/5yArh5hTdUIam0/qEpoSZ7TigFnECU?=
+ =?iso-8859-1?Q?5ffQn8Fs0ld/mpBfPWXt2/2XViQcKZ6N/2sA934XO7QNiBV1CcqMCCerzq?=
+ =?iso-8859-1?Q?EEEnNMLlsnUq6UI30RL6yiJNdhCTfTHL6L+CMZW2oQfqyCH3ZURhzrGscv?=
+ =?iso-8859-1?Q?WpfjUT03GF4mIeX5Rky1Ync5EIHE845Y/VHBGH3+mPKyY1tYThHTJpzxiu?=
+ =?iso-8859-1?Q?sHKqo6MAXK/0ETgX8qrlKszeVwKJNI8MLCyDdLf8aue85LOYLs7V4zQslc?=
+ =?iso-8859-1?Q?Dv351noBvsfIO25o1x3IeshIbKrbYG7MefOhJHgUgHMXUFu7MQ3SsLfwA9?=
+ =?iso-8859-1?Q?zWyUflsE5C+cvTgrMvliwIfISs2es2LLKw+q2ah8YLXxuyZo+I2NnkyuUr?=
+ =?iso-8859-1?Q?clxEjWTpmyVZFNFJ2CHUiQkGOOaS1FmlJpJ5bCAuE4s5x01BWDYYq2OuIM?=
+ =?iso-8859-1?Q?fQ7BLSW1abbmOd+/2EUxM3SWQ5A0p9kkHR8q8PtoT2zUZX1XoI5MQHaElZ?=
+ =?iso-8859-1?Q?1jRzSij6y1ZndRT/DR2EG8EzB1ecm0vVbwUWt49muxzzNYg3qGHA0gUYGc?=
+ =?iso-8859-1?Q?vUYaeeXNGtLS2MXdi6vhYui2To2lkakP2tUAR1c26+S+6YmdF5OIFzXIYY?=
+ =?iso-8859-1?Q?4+KwvQR9q6eu0+ZNeSm6i+CVP+NIvvYvGGuMjr5jCT/15x59XU6HyAFU7i?=
+ =?iso-8859-1?Q?EZTlOJ/CUnnOTF8BGCZXqjEq+hXv5p056uc3tvSplUXPdo8GemzkL3cq1e?=
+ =?iso-8859-1?Q?umyYfuCN5LgKrBe5ZZ9fQRhd3IcW/jfpqZkZBWIF3LqmxnfUcjq9utJfyB?=
+ =?iso-8859-1?Q?C+LPOCdRvl3gvwWFh4zgUCsp9UaOKYFckqzRtGTYsVA0gw6YOr7bG6c7SU?=
+ =?iso-8859-1?Q?Wp9voUdm32MK5RJJ9wvd/jujKqEXzSfzvHobTfezWcSCqI3AfDLs6t8Mqq?=
+ =?iso-8859-1?Q?RVD8hR6XyjB5tH99q2p7OUf6uZqT5lbKGRveADDrISjd92kAvbUsiwjtaA?=
+ =?iso-8859-1?Q?WeZ668XCyP7dndF9iVFZM9SoDPOCRNQX3NmOVH4eORPj6lfbkg9UEFCtfv?=
+ =?iso-8859-1?Q?ARx6QzSE3nrEhZTY8BeW2FK6Oec7SG6T87ou/lCa5LTdNh4/x27Lmh9ySw?=
+ =?iso-8859-1?Q?iuntd9h4z72m7Xli+AM5yyNeW5m7Jtr4kMMzK8BR7YQVcTEgF4hJOyJmeB?=
+ =?iso-8859-1?Q?LiCJ7ucUwaPH7mHURtowQ0pDH4p/W4oA4Atu80xtTIngLlN9xDxb+n5Ft3?=
+ =?iso-8859-1?Q?YKiMldavDAKUC3g8zBcu89zVr/iXv/3eVUtXS1jfUDElmDWUowUOgGAWkf?=
+ =?iso-8859-1?Q?J7LEh5ANchultUY4iQ8G2S16mzk1tzH3v2ch9wgsIfyvYsA+yjccG1kkMn?=
+ =?iso-8859-1?Q?0reW7F51ZkJZo4CbwhTq9vRe0x8PHiSRnwAhIrYbh2tqHQsIGOn2M=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?flATRYw9LoMN/ZpyNhaCVxUOlTexL/fOgycH19gQfqLhkIgpkbM7DL/+kU?=
+ =?iso-8859-1?Q?f2zqpxNWklWUVFBJA5KAcn2sMHpCOkDHXWgK+DEF8CK9qLxhDKiFAYy5V9?=
+ =?iso-8859-1?Q?O2V0EuJkGUKlWSCvKYdu9l0MGcXqYYLe6BZ6UNNJvq3hKTfoEB+fdB/EzD?=
+ =?iso-8859-1?Q?wIwvx8wUUGPOzNCOArihrso7LiYt3yT9YeZ3KsZ4NZPjbzzJYcPVj5grJM?=
+ =?iso-8859-1?Q?Pc9xB6X6dYfnK321JiAFfOrbI7Pwh5L1aEnwi6THL8uGAUDJdOgmm6Z2Mg?=
+ =?iso-8859-1?Q?NRWrKYlYhcr4BEqcweCgZAZB38VYEd9+zfJgkdcObYMxATz5iltUV3i4wh?=
+ =?iso-8859-1?Q?xhITtMGeotEAI3Zgy4+xzF3I23x4yslDYdWold8jiRllz65dqI20/IABSR?=
+ =?iso-8859-1?Q?KaNbWkvQKFbUXVtMqao3LRcjEZrWkxQpnTl5CNgKTEMftIbOAJ9q4aA7qc?=
+ =?iso-8859-1?Q?o9P5QdCLSaAK8pXDxN6YTBEndTkReICsefIKTyOdcf8w7zKv5ZDpKmOHeQ?=
+ =?iso-8859-1?Q?XHPLXDZeUsoN5xPvT7xUEHlAFAGbtSE/n4GAYuY4rscTgnlil22sBh/TXG?=
+ =?iso-8859-1?Q?1lLNSphVc87rcnWTYHogOsYvudJVieQu0xWuEeG2vuU6cM8E/uagUsKT+M?=
+ =?iso-8859-1?Q?ZxjsQCIf/1XFkazRYdI0oriSkJ31tBkMI7bbo9zNRn8Rm/W1AX6qv/jDmd?=
+ =?iso-8859-1?Q?PNnjgSV0XZ0lhWXdV88ic+eP11byMzyTdhBkKj+mtWbx8rkE+u0bKiRFDB?=
+ =?iso-8859-1?Q?KvViG79/yxFk60V14AwevHvMJuZsg6AgCEwEPzB6ZIuJ2E+k/rVvqtT2/c?=
+ =?iso-8859-1?Q?U3dx/j7cBehbk2HS50axPl+LYZwa74Uh1E8AhpOg8tCT/U+aSYsE3QOxxG?=
+ =?iso-8859-1?Q?TGC7dkCO8SpViBxa+eDmqNLkESMluonUYWN+tMn6mc6vPs3JPoXrSNVUhA?=
+ =?iso-8859-1?Q?u/4Twc9iriDrbvlZphAk9+sw6cFbe0fgDuawOtXkW2BXB18lRE/TbrtOaU?=
+ =?iso-8859-1?Q?VvhrZg8DBxwjbYLat6JYDpR5il06hgq+ymHsX3/rXdgjLZEAUowqL3VscD?=
+ =?iso-8859-1?Q?fTuIH0Z+KzFRN2W0hzC8sYF+HN2gyMT861oo+j8d1DwkllMmUBjRlB6XM3?=
+ =?iso-8859-1?Q?E4aPdxBeHBMhnF69YsbOTOsePJgCjfxG0JRSkAR+4QZf2bbMmFw+CvkFB0?=
+ =?iso-8859-1?Q?Sx4OVP/FHO7BI85+UIzVA/GbDyZUHsRVf7U4jsPblU0IXZpKb8zIhKCvJi?=
+ =?iso-8859-1?Q?iF3nZnTXUEU7KBOQ5UeptdPXef/PaOLHbH/TVHNMSfk7HUYiqWac6/A2dr?=
+ =?iso-8859-1?Q?1AqP8lDitZiAZUWPEKmnQK8FBFDKP1IlIYPCvcHgMUsueCQJU7KNGKowW6?=
+ =?iso-8859-1?Q?DFLSsacdYlznyV9HQWS8lpC5RLHt5Wky1ipDkz7CiYbR8MWiyZLbwj743F?=
+ =?iso-8859-1?Q?Ydy8joFoz+/r5zORsCyhHxS0RxnckYCn2bzCkfXWC7JH8CAVlK8HGAqdoh?=
+ =?iso-8859-1?Q?bXjPImuzyyJDVg6KTxReagOgWYES+Pd4iWkuZTbVBdpvQ+PXACBIia3p+2?=
+ =?iso-8859-1?Q?nwJwwVHaQdB+diNfOUO2BU8pXq66eXLJJgzcjNDg7Q7ScMiuFMj3bX5UU5?=
+ =?iso-8859-1?Q?YeI6lLbmgf9Ss=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240730-iio-clean-fmt-value-v1-1-3e1c3deafc33@gmail.com>
-X-B4-Tracking: v=1; b=H4sIANS1qGYC/x3MQQqAIBBA0avErBswM6KuEi0GG2ugLLQkiO6et
- HyL/x+IHIQj9MUDgZNE2X1GVRZgF/Izo0zZoJU2qq0ViuxoVyaPbjsx0XoxdrYhoyfjSBvI5RH
- Yyf1fh/F9Pwg7PvhlAAAA
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Matteo Martelli <matteomartelli3@gmail.com>
-X-Mailer: b4 0.14.0
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2917c69a-a1d2-4e73-161d-08dcb07d9fe8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2024 09:54:37.9336
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +1rAJbo2gMCWf6fx17mlGw5lxCXXquqkrhsWy5AH98nHHhuEYTd+TXxclg7Ucj9esIlBp5gtq9ff49CEM6DbYA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3528
 
-Trivial cleanup in __iio_format_value() for the IIO_VAL_FRACTIONAL case
-where tmp1 = vals[1] assignment is unneeded and irrelevant since tmp1 is
-immediately overwritten by the subsequent div_s64_rem() call.
+Hello Jonathan,
 
-Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
----
- drivers/iio/industrialio-core.c | 1 -
- 1 file changed, 1 deletion(-)
+Thank you for the explanation !   We will construct the patch-set as you su=
+ggested.=20
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 0f6cda7ffe45..9e364f9879ef 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -667,7 +667,6 @@ static ssize_t __iio_format_value(char *buf, size_t offset, unsigned int type,
- 					     vals[1]);
- 	case IIO_VAL_FRACTIONAL:
- 		tmp2 = div_s64((s64)vals[0] * 1000000000LL, vals[1]);
--		tmp1 = vals[1];
- 		tmp0 = (int)div_s64_rem(tmp2, 1000000000, &tmp1);
- 		if ((tmp2 < 0) && (tmp0 == 0))
- 			return sysfs_emit_at(buf, offset, "-0.%09u", abs(tmp1));
+Since the rework of the driver still takes some time, we will send the new =
+version once we finish it.
 
----
-base-commit: 1ebab783647a9e3bf357002d5c4ff060c8474a0a
-change-id: 20240730-iio-clean-fmt-value-9c5a42d4fa24
+Mit freundlichen Gr=FC=DFen / Best regards
 
-Best regards,
--- 
-Matteo Martelli <matteomartelli3@gmail.com>
+Jianping Shen
 
+Mobility Electronics - Sensors, Engineering Advanced Development - MEMS Sol=
+utions Software (ME-SE/EAD2)
+Robert Bosch GmbH | Postfach 13 42 | 72703 Reutlingen | GERMANY | www.bosch=
+.com
+Tel. +49 7121 35-37749 | Telefax +49 711 811-509378 | Jianping.Shen@de.bosc=
+h.com
+
+Sitz: Stuttgart, Registergericht: Amtsgericht Stuttgart, HRB 14000;
+Aufsichtsratsvorsitzender: Prof. Dr. Stefan Asenkerschbaumer;=20
+Gesch=E4ftsf=FChrung: Dr. Stefan Hartung, Dr. Christian Fischer, Dr. Markus=
+ Forschner,=20
+Stefan Grosch, Dr. Markus Heyn, Dr. Frank Meyer, Dr. Tanja R=FCckert
+
+-----Original Message-----
+From: Jonathan Cameron <jic23@kernel.org>=20
+Sent: Saturday, July 27, 2024 4:00 PM
+To: Conor Dooley <conor@kernel.org>
+Cc: Shen Jianping (ME-SE/EAD2) <Jianping.Shen@de.bosch.com>; Krzysztof Kozl=
+owski <krzk@kernel.org>; lars@metafoo.de; robh@kernel.org; krzk+dt@kernel.o=
+rg; conor+dt@kernel.org; dima.fedrau@gmail.com; marcelo.schmitt1@gmail.com;=
+ linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-kernel@vger.k=
+ernel.org; Lorenz Christian (ME-SE/EAD2) <Christian.Lorenz3@de.bosch.com>; =
+Frauendorf Ulrike (ME/PJ-SW3) <Ulrike.Frauendorf@de.bosch.com>; Dolde Kai (=
+ME-SE/PAE-A3) <Kai.Dolde@de.bosch.com>
+Subject: Re: [PATCH] dt-bindings: iio: imu: SMI240: add bosch,smi240.yaml
+
+On Wed, 24 Jul 2024 16:25:39 +0100
+Conor Dooley <conor@kernel.org> wrote:
+
+> On Wed, Jul 24, 2024 at 02:19:25PM +0000, Shen Jianping (ME-SE/EAD2) wrot=
+e:
+> > Anyway, please send bindings with driver in the same patchset.
+> >  =20
+> > -> It's fine for us. Nevertheless according to the Devicetree (DT)=20
+> > -> binding submitting rules 1.1
+> >=20
+> > " The Documentation/ and include/dt-bindings/ portion of the patch=20
+> > should be a separate patch." See ->=20
+> > https://eur03.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fww
+> > w.kernel.org%2Fdoc%2Fhtml%2Flatest%2Fdevicetree%2Fbindings%2Fsubmitt
+> > ing-patches.html%23i-for-patch-submitters&data=3D05%7C02%7CJianping.Sh
+> > en%40de.bosch.com%7C3d03781ae4564e7e3f7708dcae447463%7C0ae51e1907c84
+> > e4bbb6d648ee58410f4%7C0%7C0%7C638576856248420833%7CUnknown%7CTWFpbGZ
+> > sb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0
+> > %3D%7C0%7C%7C%7C&sdata=3DOEaFoGpb%2F7CVAN2gEpNwG9I1zGBlUNYdLUy%2F7w5Dh
+> > b0%3D&reserved=3D0
+> >=20
+> > Shall we still put the binding and driver in the same patch ? =20
+>=20
+> No, different patches please. Also, please fix your mail client so=20
+> that it quotes emails properly.
+To add a little more detail.
+We are looking for a cover letter and a pair of patches.
+1st adds the dt-binding docs.
+2nd provides the driver.
+
+The cover letter provides a brief summary of the whole series and provides =
+a convenient name for tracking it as a whole.
+
+Take a look at how other recent driver addition patch series have been brok=
+en up.
+
+Jonathan
 

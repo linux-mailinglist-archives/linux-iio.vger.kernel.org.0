@@ -1,75 +1,72 @@
-Return-Path: <linux-iio+bounces-8060-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8059-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F792940C53
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 10:52:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59082940C51
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 10:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4997D286952
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 08:52:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6D7288AE7
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Jul 2024 08:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43F11940AB;
-	Tue, 30 Jul 2024 08:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEB81940AA;
+	Tue, 30 Jul 2024 08:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="TnWT7G9u"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="ZV7JDa+C"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA9019307F;
-	Tue, 30 Jul 2024 08:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED6919307F;
+	Tue, 30 Jul 2024 08:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722329435; cv=none; b=sY2CowdoOWfaJpqI/D9pT/xgagZaTSAsfw31x/Gu+xXjCpI6Mf/xkfVPa6skTdgxX96DU2RP2x292zhn6vW58ZkA1npeeCA2zGHs1Wnjn6MIRvwx8SvfPSbkP3TGDnvdxg9fYcLP4doTQ8MEAbRT4CK19Ji7gMhambohD10EYZY=
+	t=1722329429; cv=none; b=nDpQV1R69cXfMSWOwePXz1k1gRLgD9SIsJwsxjL6E2Y5I8krPfDby+C6MvcSNNVvmHXImDIMc7/wvmwt4Qs48xKgMrWthF8lxL2zIdb7/4AJ+7HIHbgdq5i0sNC97TXDWRAQB1zSaGyo0bQ5DJOVFcyT0+JrPLe/xwLk4we7u+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722329435; c=relaxed/simple;
-	bh=XB/bhLR6GaFCgO5cNV8B+IxveNKCzNhCjae/ai2Cd7I=;
+	s=arc-20240116; t=1722329429; c=relaxed/simple;
+	bh=YAJyX9l3Yi/Lx7WzuySORntIOdfKPHzA24dOLliZVvA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FNBYPS9gYoedAfK8jPnE8afh2EMMxhI672vutKVYNHgTzxGnM+LGMsA40aKbOayUtOL74/i0y+k8CHPd8Yi3qWczDKjcyonsHSAD5YNR7c94cdLoEG+7FPrz702V1gIhghhUWGinn0NO7T26WR7hQ4WCo8aErWCj/gSVcCkyT7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=TnWT7G9u; arc=none smtp.client-ip=91.207.212.93
+	 MIME-Version:Content-Type; b=Ju+cKrpk7101C2j+LM/G97F+bNW0KH5Elw9lJGf4DIipTIvkKLhsBcCDEfFCx1oZtso8XUcJUmRphd2KSvb4aKRYyo7O9yNZzFkejeMMqTWc09ULaUE9XRRswr2f17KQZFqtQVy1GwtXTwBMX66g2RbPAyn55DnAt2US/pq3kpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=ZV7JDa+C; arc=none smtp.client-ip=91.207.212.93
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46U8HlBL018297;
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46U8HlBM018297;
 	Tue, 30 Jul 2024 10:49:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	y1OM79DOPby+qKGF27hqFHuzawk2ULx/UHydyk9U3D8=; b=TnWT7G9uOeSrBB4G
-	+88B2Cx0kcI3tGSuWakCmhzmrbkIFdC0VNvqhkwFjsDLwtMBs5rAqKnYywTR9K7t
-	DSmT8bdQsD5xfB2vUPB7vpzXkDLB5ufw6Xx6UPW1pLq4IpcQsOSQ0d6jkvO8nsJA
-	Uec0jz5UKdkWH2mA1tO5bmgUdNobhNwZHWfzT0eX1cP68tMgxP5lOEb0Ee3nGgKh
-	Lrlu3b5YlJWE7f2putRc/ZFUWOhJQeve+X3PBDx9ukNwsASjVa7DxuduGUxQf20K
-	n/bsbEq3k+Cu3YZgge8RJ8x/NqeNDS8mFGOORh40FNLJJSaPcl7yq7HncNdWeWh9
-	ib29yQ==
+	6TbKbK2CXkY4DbeUE8q37mE/zwxR7FLL8SGMmGDOnd8=; b=ZV7JDa+CZOKKSCXf
+	Fc0VrwVFaakkR9veQxNJmTOTW2+87TzcBEPRejlOeP5LpnUT/e/9pIQByX9I9EIJ
+	lN/Bn0aOOLm/VgroSIRVu/Z9blS3BzxtZZrWclm7IwaBxk47dTj/t1pkNCMuMBTr
+	QCEQUvoSz+wLiQsKkJTqXJC+X5PoPysoW7/6qw83vCw9EL9//jRizKxC2EDF80Jn
+	NOCsgK65/iTp6iasLiirV+bK5bQqO9/9nNOg2g6KCXUInPtWHSrSjnYuFCGLHTsL
+	KJogVMlllqhwYbfErT3/0FucDiutSpQvPRbmPh08Bs77K22SS+/eNqKxP0R/17Oh
+	bBtbIw==
 Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 40nbuhs1y2-1
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 40nbuhs1xw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Tue, 30 Jul 2024 10:49:58 +0200 (MEST)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id C39AE40048;
-	Tue, 30 Jul 2024 10:49:52 +0200 (CEST)
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 955B340044;
+	Tue, 30 Jul 2024 10:49:49 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C41CB21B507;
-	Tue, 30 Jul 2024 10:49:22 +0200 (CEST)
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id F269B21B509;
+	Tue, 30 Jul 2024 10:49:23 +0200 (CEST)
 Received: from localhost (10.252.3.32) by SHFDAG1NODE1.st.com (10.75.129.69)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Tue, 30 Jul
- 2024 10:49:22 +0200
+ 2024 10:49:23 +0200
 From: Olivier Moysan <olivier.moysan@foss.st.com>
 To: <fabrice.gasnier@foss.st.com>, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
 CC: Olivier Moysan <olivier.moysan@foss.st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v6 7/9] iio: adc: stm32-dfsdm: adopt generic channels bindings
-Date: Tue, 30 Jul 2024 10:46:37 +0200
-Message-ID: <20240730084640.1307938-8-olivier.moysan@foss.st.com>
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v6 8/9] iio: add iio backend support to sd modulator
+Date: Tue, 30 Jul 2024 10:46:38 +0200
+Message-ID: <20240730084640.1307938-9-olivier.moysan@foss.st.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240730084640.1307938-1-olivier.moysan@foss.st.com>
 References: <20240730084640.1307938-1-olivier.moysan@foss.st.com>
@@ -87,311 +84,161 @@ X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-30_09,2024-07-26_01,2024-05-17_01
 
-Move to generic channels binding to ease new backend framework adoption
-and prepare the convergence with MDF IP support on STM32MP2 SoC family.
+The legacy sd modulator driver registers the sigma delta modulator as
+an IIO channel provider. This implementation is not convenient when the
+SD modulator has to be cascaded with another IIO device. The scaling
+information is distributed across devices, which makes it difficult to
+report consistent scaling data on IIO devices.
 
-Legacy binding:
-DFSDM is an IIO channel consumer.
-SD modulator is an IIO channels provider.
-The channel phandles are provided in DT through io-channels property
-and channel indexes through st,adc-channels property.
-
-New binding:
-DFSDM is an IIO channel provider.
-The channel indexes are given by reg property in channel child node.
-
-This new binding is intended to be used with SD modulator IIO backends.
-It does not support SD modulator legacy IIO devices.
-The st,adc-channels property presence is used to discriminate
-between legacy and backend bindings.
-
-The support of the DFSDM legacy channels and SD modulator IIO devices
-is kept for backward compatibility.
+The solution is to expose these cascaded IIO devices as an aggregate
+device, which report global scaling information.
+Add IIO backend support to SD modulator to allow scaling information
+management.
 
 Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
 ---
- drivers/iio/adc/stm32-dfsdm-adc.c | 190 ++++++++++++++++++++++++------
- 1 file changed, 154 insertions(+), 36 deletions(-)
+ drivers/iio/adc/Kconfig            |  1 +
+ drivers/iio/adc/sd_adc_modulator.c | 92 +++++++++++++++++++++++++++++-
+ 2 files changed, 92 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-index 15b8a4c0b272..ebfeefebf698 100644
---- a/drivers/iio/adc/stm32-dfsdm-adc.c
-+++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -666,6 +666,64 @@ static int stm32_dfsdm_channel_parse_of(struct stm32_dfsdm *dfsdm,
- 	return 0;
- }
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index bd028d59db63..43ff8182b2ea 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1195,6 +1195,7 @@ config SD_ADC_MODULATOR
+ 	tristate "Generic sigma delta modulator"
+ 	select IIO_BUFFER
+ 	select IIO_TRIGGERED_BUFFER
++	select IIO_BACKEND
+ 	help
+ 	  Select this option to enables sigma delta modulator. This driver can
+ 	  support generic sigma delta modulators.
+diff --git a/drivers/iio/adc/sd_adc_modulator.c b/drivers/iio/adc/sd_adc_modulator.c
+index 327cc2097f6c..06f9c5cacd53 100644
+--- a/drivers/iio/adc/sd_adc_modulator.c
++++ b/drivers/iio/adc/sd_adc_modulator.c
+@@ -6,11 +6,14 @@
+  * Author: Arnaud Pouliquen <arnaud.pouliquen@st.com>.
+  */
  
-+static int stm32_dfsdm_generic_channel_parse_of(struct stm32_dfsdm *dfsdm,
-+						struct iio_dev *indio_dev,
-+						struct iio_chan_spec *ch,
-+						struct fwnode_handle *node)
++#include <linux/iio/backend.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/triggered_buffer.h>
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
++#include <linux/regulator/consumer.h>
+ 
+ static const struct iio_info iio_sd_mod_iio_info;
+ 
+@@ -24,7 +27,54 @@ static const struct iio_chan_spec iio_sd_mod_ch = {
+ 	},
+ };
+ 
+-static int iio_sd_mod_probe(struct platform_device *pdev)
++struct iio_sd_backend_priv {
++	struct regulator *vref;
++	int vref_mv;
++};
++
++static int iio_sd_mod_enable(struct iio_backend *backend)
 +{
-+	struct stm32_dfsdm_channel *df_ch;
-+	const char *of_str;
-+	int ret, val;
++	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
 +
-+	ret = fwnode_property_read_u32(node, "reg", &ch->channel);
-+	if (ret < 0) {
-+		dev_err(&indio_dev->dev, "Missing channel index %d\n", ret);
-+		return ret;
-+	}
-+
-+	if (ch->channel >= dfsdm->num_chs) {
-+		dev_err(&indio_dev->dev, " Error bad channel number %d (max = %d)\n",
-+			ch->channel, dfsdm->num_chs);
-+		return -EINVAL;
-+	}
-+
-+	ret = fwnode_property_read_string(node, "label", &ch->datasheet_name);
-+	if (ret < 0) {
-+		dev_err(&indio_dev->dev,
-+			" Error parsing 'label' for idx %d\n", ch->channel);
-+		return ret;
-+	}
-+
-+	df_ch =  &dfsdm->ch_list[ch->channel];
-+	df_ch->id = ch->channel;
-+
-+	ret = fwnode_property_read_string(node, "st,adc-channel-type", &of_str);
-+	if (!ret) {
-+		val = stm32_dfsdm_str2val(of_str, stm32_dfsdm_chan_type);
-+		if (val < 0)
-+			return val;
-+	} else {
-+		val = 0;
-+	}
-+	df_ch->type = val;
-+
-+	ret = fwnode_property_read_string(node, "st,adc-channel-clk-src", &of_str);
-+	if (!ret) {
-+		val = stm32_dfsdm_str2val(of_str, stm32_dfsdm_chan_src);
-+		if (val < 0)
-+			return val;
-+	} else {
-+		val = 0;
-+	}
-+	df_ch->src = val;
-+
-+	ret = fwnode_property_read_u32(node, "st,adc-alt-channel", &df_ch->alt_si);
-+	if (ret != -EINVAL)
-+		df_ch->alt_si = 0;
++	if (priv->vref)
++		return regulator_enable(priv->vref);
 +
 +	return 0;
-+}
++};
 +
- static ssize_t dfsdm_adc_audio_get_spiclk(struct iio_dev *indio_dev,
- 					  uintptr_t priv,
- 					  const struct iio_chan_spec *chan,
-@@ -1227,7 +1285,8 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
- 		ret = iio_device_claim_direct_mode(indio_dev);
- 		if (ret)
- 			return ret;
--		ret = iio_hw_consumer_enable(adc->hwc);
-+		if (adc->hwc)
-+			ret = iio_hw_consumer_enable(adc->hwc);
- 		if (ret < 0) {
- 			dev_err(&indio_dev->dev,
- 				"%s: IIO enable failed (channel %d)\n",
-@@ -1236,7 +1295,8 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
- 			return ret;
- 		}
- 		ret = stm32_dfsdm_single_conv(indio_dev, chan, val);
--		iio_hw_consumer_disable(adc->hwc);
-+		if (adc->hwc)
-+			iio_hw_consumer_disable(adc->hwc);
- 		if (ret < 0) {
- 			dev_err(&indio_dev->dev,
- 				"%s: Conversion failed (channel %d)\n",
-@@ -1362,15 +1422,18 @@ static int stm32_dfsdm_dma_request(struct device *dev,
- 	return 0;
- }
- 
--static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev,
--					 struct iio_chan_spec *ch)
-+static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev, struct iio_chan_spec *ch,
-+					 struct fwnode_handle *child)
- {
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
- 	int ret;
- 
--	ret = stm32_dfsdm_channel_parse_of(adc->dfsdm, indio_dev, ch);
-+	if (child)
-+		ret = stm32_dfsdm_generic_channel_parse_of(adc->dfsdm, indio_dev, ch, child);
-+	else /* Legacy binding */
-+		ret = stm32_dfsdm_channel_parse_of(adc->dfsdm, indio_dev, ch);
- 	if (ret < 0)
--		return ret;
-+		return dev_err_probe(&indio_dev->dev, ret, "Failed to parse channel\n");
- 
- 	ch->type = IIO_VOLTAGE;
- 	ch->indexed = 1;
-@@ -1385,6 +1448,7 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev,
- 
- 	if (adc->dev_data->type == DFSDM_AUDIO) {
- 		ch->ext_info = dfsdm_adc_audio_ext_info;
-+		ch->scan_index = 0;
- 	} else {
- 		ch->scan_type.shift = 8;
- 	}
-@@ -1396,20 +1460,67 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev,
- 					  &adc->dfsdm->ch_list[ch->channel]);
- }
- 
-+static int stm32_dfsdm_chan_init(struct iio_dev *indio_dev, struct iio_chan_spec *channels)
++static void iio_sd_mod_disable(struct iio_backend *backend)
 +{
-+	int num_ch = indio_dev->num_channels;
-+	int chan_idx = 0;
++	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
++
++	if (priv->vref)
++		regulator_disable(priv->vref);
++};
++
++static int iio_sd_mod_read(struct iio_backend *backend, struct iio_chan_spec const *chan, int *val,
++			   int *val2, long mask)
++{
++	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*val = priv->vref_mv;
++		return IIO_VAL_INT;
++
++	case IIO_CHAN_INFO_OFFSET:
++		*val = 0;
++		return IIO_VAL_INT;
++	}
++
++	return -EOPNOTSUPP;
++};
++
++static const struct iio_backend_ops sd_backend_ops = {
++	.enable = iio_sd_mod_enable,
++	.disable = iio_sd_mod_disable,
++	.read_raw = iio_sd_mod_read,
++};
++
++static int iio_sd_mod_register(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct iio_dev *iio;
+@@ -45,6 +95,45 @@ static int iio_sd_mod_probe(struct platform_device *pdev)
+ 	return devm_iio_device_register(&pdev->dev, iio);
+ }
+ 
++static int iio_sd_mod_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct regulator *vref;
++	struct iio_sd_backend_priv *priv;
 +	int ret;
 +
-+	for (chan_idx = 0; chan_idx < num_ch; chan_idx++) {
-+		channels[chan_idx].scan_index = chan_idx;
-+		ret = stm32_dfsdm_adc_chan_init_one(indio_dev, &channels[chan_idx], NULL);
-+		if (ret < 0)
-+			return dev_err_probe(&indio_dev->dev, ret, "Channels init failed\n");
-+	}
++	/* If sd modulator is not defined as an IIO backend device, fallback to legacy */
++	if (!device_property_present(dev, "#io-backend-cells"))
++		return iio_sd_mod_register(pdev);
 +
-+	return 0;
-+}
-+
-+static int stm32_dfsdm_generic_chan_init(struct iio_dev *indio_dev, struct iio_chan_spec *channels)
-+{
-+	int chan_idx = 0, ret;
-+
-+	device_for_each_child_node_scoped(&indio_dev->dev, child) {
-+		/* Skip DAI node in DFSDM audio nodes */
-+		if (fwnode_property_present(child, "compatible"))
-+			continue;
-+
-+		channels[chan_idx].scan_index = chan_idx;
-+		ret = stm32_dfsdm_adc_chan_init_one(indio_dev, &channels[chan_idx], child);
-+		if (ret < 0)
-+			return dev_err_probe(&indio_dev->dev, ret, "Channels init failed\n");
-+
-+		chan_idx++;
-+	}
-+
-+	return chan_idx;
-+}
-+
- static int stm32_dfsdm_audio_init(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct iio_chan_spec *ch;
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
- 	struct stm32_dfsdm_channel *d_ch;
--	int ret;
-+	bool legacy = false;
-+	int num_ch, ret;
-+
-+	/* If st,adc-channels is defined legacy binding is used. Else assume generic binding. */
-+	num_ch = of_property_count_u32_elems(indio_dev->dev.of_node, "st,adc-channels");
-+	if (num_ch == 1)
-+		legacy = true;
- 
- 	ch = devm_kzalloc(&indio_dev->dev, sizeof(*ch), GFP_KERNEL);
- 	if (!ch)
- 		return -ENOMEM;
- 
--	ch->scan_index = 0;
-+	indio_dev->num_channels = 1;
-+	indio_dev->channels = ch;
-+
-+	if (legacy)
-+		ret = stm32_dfsdm_chan_init(indio_dev, ch);
-+	else
-+		ret = stm32_dfsdm_generic_chan_init(indio_dev, ch);
- 
--	ret = stm32_dfsdm_adc_chan_init_one(indio_dev, ch);
- 	if (ret < 0) {
- 		dev_err(&indio_dev->dev, "Channels init failed\n");
- 		return ret;
-@@ -1420,9 +1531,6 @@ static int stm32_dfsdm_audio_init(struct device *dev, struct iio_dev *indio_dev)
- 	if (d_ch->src != DFSDM_CHANNEL_SPI_CLOCK_EXTERNAL)
- 		adc->spi_freq = adc->dfsdm->spi_master_freq;
- 
--	indio_dev->num_channels = 1;
--	indio_dev->channels = ch;
--
- 	return stm32_dfsdm_dma_request(dev, indio_dev);
- }
- 
-@@ -1430,43 +1538,53 @@ static int stm32_dfsdm_adc_init(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct iio_chan_spec *ch;
- 	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
--	int num_ch;
--	int ret, chan_idx;
-+	int num_ch, ret;
-+	bool legacy = false;
- 
- 	adc->oversamp = DFSDM_DEFAULT_OVERSAMPLING;
- 	ret = stm32_dfsdm_compute_all_osrs(indio_dev, adc->oversamp);
- 	if (ret < 0)
- 		return ret;
- 
--	num_ch = of_property_count_u32_elems(indio_dev->dev.of_node,
--					     "st,adc-channels");
--	if (num_ch < 0 || num_ch > adc->dfsdm->num_chs) {
--		dev_err(&indio_dev->dev, "Bad st,adc-channels\n");
--		return num_ch < 0 ? num_ch : -EINVAL;
--	}
-+	num_ch = device_get_child_node_count(&indio_dev->dev);
-+	if (!num_ch) {
-+		/* No channels nodes found. Assume legacy binding */
-+		num_ch = of_property_count_u32_elems(indio_dev->dev.of_node, "st,adc-channels");
-+		if (num_ch < 0) {
-+			dev_err(&indio_dev->dev, "Bad st,adc-channels\n");
-+			return num_ch;
-+		}
- 
--	/* Bind to SD modulator IIO device */
--	adc->hwc = devm_iio_hw_consumer_alloc(&indio_dev->dev);
--	if (IS_ERR(adc->hwc))
--		return -EPROBE_DEFER;
-+		legacy = true;
-+	}
- 
--	ch = devm_kcalloc(&indio_dev->dev, num_ch, sizeof(*ch),
--			  GFP_KERNEL);
--	if (!ch)
--		return -ENOMEM;
-+	if (num_ch > adc->dfsdm->num_chs) {
-+		dev_err(&indio_dev->dev, "Number of channel [%d] exceeds [%d]\n",
-+			num_ch, adc->dfsdm->num_chs);
-+		return -EINVAL;
-+	}
-+	indio_dev->num_channels = num_ch;
- 
--	for (chan_idx = 0; chan_idx < num_ch; chan_idx++) {
--		ch[chan_idx].scan_index = chan_idx;
--		ret = stm32_dfsdm_adc_chan_init_one(indio_dev, &ch[chan_idx]);
--		if (ret < 0) {
--			dev_err(&indio_dev->dev, "Channels init failed\n");
--			return ret;
--		}
-+	if (legacy) {
-+		/* Bind to SD modulator IIO device. */
-+		adc->hwc = devm_iio_hw_consumer_alloc(&indio_dev->dev);
-+		if (IS_ERR(adc->hwc))
-+			return dev_err_probe(&indio_dev->dev, -EPROBE_DEFER,
-+					     "waiting for SD modulator\n");
- 	}
- 
--	indio_dev->num_channels = num_ch;
-+	ch = devm_kcalloc(&indio_dev->dev, num_ch, sizeof(*ch), GFP_KERNEL);
-+	if (!ch)
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
 +		return -ENOMEM;
- 	indio_dev->channels = ch;
- 
-+	if (legacy)
-+		ret = stm32_dfsdm_chan_init(indio_dev, ch);
-+	else
-+		ret = stm32_dfsdm_generic_chan_init(indio_dev, ch);
-+	if (ret < 0)
-+		return ret;
 +
- 	init_completion(&adc->completion);
- 
- 	/* Optionally request DMA */
++	/*
++	 * Get regulator reference if any, but don't enable regulator right now.
++	 * Rely on enable and disable callbacks to manage regulator power.
++	 */
++	vref = devm_regulator_get_optional(dev, "vref");
++	if (IS_ERR(vref)) {
++		if (PTR_ERR(vref) != -ENODEV)
++			return dev_err_probe(dev, PTR_ERR(vref), "Failed to get vref\n");
++	} else {
++		/*
++		 * Retrieve voltage right now, as regulator_get_voltage() provides it whatever
++		 * the state of the regulator.
++		 */
++		ret = regulator_get_voltage(vref);
++		if (ret < 0)
++			return ret;
++
++		priv->vref = vref;
++		priv->vref_mv = ret / 1000;
++	}
++
++	return devm_iio_backend_register(&pdev->dev, &sd_backend_ops, priv);
++};
++
+ static const struct of_device_id sd_adc_of_match[] = {
+ 	{ .compatible = "sd-modulator" },
+ 	{ .compatible = "ads1201" },
+@@ -65,3 +154,4 @@ module_platform_driver(iio_sd_mod_adc);
+ MODULE_DESCRIPTION("Basic sigma delta modulator");
+ MODULE_AUTHOR("Arnaud Pouliquen <arnaud.pouliquen@st.com>");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(IIO_BACKEND);
 -- 
 2.25.1
 

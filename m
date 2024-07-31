@@ -1,217 +1,213 @@
-Return-Path: <linux-iio+bounces-8104-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8105-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F073C943154
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 15:49:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0BC943186
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 15:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 328AFB23931
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 13:49:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFBD71F217FA
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 13:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2898F1B3F31;
-	Wed, 31 Jul 2024 13:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3001B3F28;
+	Wed, 31 Jul 2024 13:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mC9XmqHH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUK53iWH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822BE1B3759
-	for <linux-iio@vger.kernel.org>; Wed, 31 Jul 2024 13:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EC71AED53;
+	Wed, 31 Jul 2024 13:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722433694; cv=none; b=Xa2BnuNB43PXwnbOh/GDLrmo3bLZIXaBOmixjBdZDizb80FvIAwUQQZexFSHtya64k6MhoKMvSgmKtlkR4DWktirCVitKGp4YYmiiBwF9Oa5pBg2cH0H2mPMnmE7KipeVYd9g8jb1yTiNv5nX1JwL4twaOxa92ElB1VFt0TJv44=
+	t=1722434256; cv=none; b=beNB8fuc+OsX9ZbnWoDEwy5iSGIzzszv7/4M/oi1H0UmXx9qECMB9KG2cmpwlgfsmEjNby63B6xCfVqkyOx745t15yhyg1lQuyEqNgu/NN6hzvL2wUghlBHAHBotMT23AJ8cXfWxXD8QXr9G+2CIBspzwt8Kg+P1rtS2S9utwbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722433694; c=relaxed/simple;
-	bh=GKmFo3bmFk2IVwRE7ksCrTnyul2s0DsTqMziI0uIR6M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gnw0taJxLL768WGBHfFxx2HR3oP/OaSkV1Ea+6ljcJ5RJxtcJLTpE7CToXiZgUt21M3ju52kwQpdkb0yGYFP7tAtpCNieUz8238f7zZWX8mw/GaOQHG+DxVAqzCGfz5Vg+4XeEIv+OZuP6r0Zxf58HfG4uNVTCyWrBZBOgSsxYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mC9XmqHH; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7a1d7a544e7so410042685a.3
-        for <linux-iio@vger.kernel.org>; Wed, 31 Jul 2024 06:48:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722433690; x=1723038490; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/5uzNUVmRh9vWTdDmOIKmWFbEDxFk4bBzY+xGs2C1kM=;
-        b=mC9XmqHHRWIaRkAua6YWY2ANHgKWx+/6VgwLB51HgTCKWkw7pA2J5OnfWPgAnzmKsE
-         A+FPnPTHTPVY/7fzz28XeBd8nCGzU5m7fTDYNDPVHcK/OXiTWLjYu8rNvxkzmiOV0DtJ
-         0qvqZNBVhTG5a4B/pTUfOR8CtSc30XIif0d9CMQjN2kjBFuIfJQiH6+TIUDSzX/p85E5
-         US/bfBcN2SvhoM5Kot8LmM8w8Db5luvbne1CfNqI0VPt+OSApRdPFr7kVW3epVgApLke
-         8kCwSC+TaN+rqtuGKAAIlaBKpmJgQIOhJPv53VBYtLbCGCelHy59D74IN49SAhL/T05S
-         E9pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722433690; x=1723038490;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/5uzNUVmRh9vWTdDmOIKmWFbEDxFk4bBzY+xGs2C1kM=;
-        b=L3+LAx9QdQP+uTPe05aDH5wUgfrlO7jeN5e49hHA1VvLxl+iPD4PAVnjoX9ve6q6cm
-         OKHd+QHbaww2RIeaoSlqTrL9DSHXuvBxMG6EcEj8LPcJ90Ttxbmt/Q8j7HsZGzV+UOLd
-         zRHEujzMPXxopLF+OfJPhlCx33DKcAkfQQJl+ApFeJ22UQANV+VhLd4pM15+W6QKrB0l
-         agM7NCpISqvXFYMUrWtcHF74Y4dMKyeSA6nFgE7Stll/AL2a/AeutPRlCxokCwTvFod+
-         PhjwofXNHl2JUWL3DrVFDEaN2kRykg/6hbgTDsw0OZz4vpaQReDd50BrHPwy9iUNR3QN
-         rMCQ==
-X-Gm-Message-State: AOJu0YzSiXoQ2/bsZyvWlL9eXjkyJ0CXMiBR3RWc2evs7Dducq4ymvTB
-	VcTVjcVSoWedWG8p7ae4xdfkgkBUxQyHc7p1R/z5kdcx46jxTBBX4Jj55Vyl82E=
-X-Google-Smtp-Source: AGHT+IENXE7gMX9n7xlozfsQwOgjRSJ79Q6Ieiz5vXJp14uZDTYVPDecol5LPvAzsx31osMEowdNBg==
-X-Received: by 2002:a05:620a:c4c:b0:79d:a265:cc95 with SMTP id af79cd13be357-7a1e52fbd12mr1534556885a.65.1722433690459;
-        Wed, 31 Jul 2024 06:48:10 -0700 (PDT)
-Received: from [127.0.1.1] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d73955ccsm746209985a.11.2024.07.31.06.48.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 06:48:10 -0700 (PDT)
-From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Wed, 31 Jul 2024 09:48:05 -0400
-Subject: [PATCH RFC 3/3] docs: iio: new docs for ad7625 driver
+	s=arc-20240116; t=1722434256; c=relaxed/simple;
+	bh=uFoGKzIdPFMKUSrZM250U+sc2Tod50YRaV8VGmHwgjs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XqQUPQOm37M2Tgv7Nv8grCRguKTZUf1oeP6FbIdmguLSGmrg3EJFgzqdaOm2/bywNkwKNSqNq8UZw8LjgBdHfcGUxbrXUrrdWTZYIwaTLGnyHixuxeAdKA81Xp1gH2DDfsGnMabnuikrKfVcR+6XrnaX/G64Otm21EVO0EmHpqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUK53iWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A68FC4AF09;
+	Wed, 31 Jul 2024 13:57:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722434254;
+	bh=uFoGKzIdPFMKUSrZM250U+sc2Tod50YRaV8VGmHwgjs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sUK53iWHOh6KDeXrKBIN3mKbITaM1HW4CqusJ3BBq1PGLZfZJPz8C2uojMC7LDxPU
+	 X5ZPug7Bo2StJEgBNQpUyrTLlx2deztGmqJTRewTfxiwAWJnRqFfnBO2zXWiXb/Lqp
+	 SyhOrh4/xGRz9CyJtdf1PU+D23aTvFW754CPMjFBbeytJrgbF9+peGHn123m7mi3RN
+	 NbICdRcQXQANgwVSACrySqXHuxnKxSc0lPHUuB8zSH+CsOIYJOoRAD89Mr6wfC/vZh
+	 Sk2DyUd82laRxPM/TbxoytEBpZGv9UMcS2wss9jKdTooPOmM5m7pa0rU5BlGtF9fi0
+	 Ud51c6tGRp1mQ==
+Message-ID: <368cc5a8-3ec1-4e91-ae1d-59068f25d8e0@kernel.org>
+Date: Wed, 31 Jul 2024 15:57:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml:
+ Add Sophgo SARADC binding documentation
+To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>,
+ Inochi Amaoto <inochiama@outlook.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <20240731-sg2002-adc-v3-0-5ac40a518c0a@bootlin.com>
+ <20240731-sg2002-adc-v3-1-5ac40a518c0a@bootlin.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240731-sg2002-adc-v3-1-5ac40a518c0a@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240731-ad7625_r1-v1-3-a1efef5a2ab9@baylibre.com>
-References: <20240731-ad7625_r1-v1-0-a1efef5a2ab9@baylibre.com>
-In-Reply-To: <20240731-ad7625_r1-v1-0-a1efef5a2ab9@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- David Lechner <dlechner@baylibre.com>, 
- Uwe Kleine-Konig <u.kleine-koenig@baylibre.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- Trevor Gamblin <tgamblin@baylibre.com>
-X-Mailer: b4 0.14.1
 
-Add documentation for the AD7625/AD7626/AD7960/AD7961 ADCs.
+On 31/07/2024 14:24, Thomas Bonnefille wrote:
+> The Sophgo SARADC is a Successive Approximation ADC that can be found in
+> the Sophgo SoC.
+> 
+> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 
-Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
----
- Documentation/iio/ad7625.rst | 91 ++++++++++++++++++++++++++++++++++++++++++++
- MAINTAINERS                  |  1 +
- 2 files changed, 92 insertions(+)
+A nit, subject: drop second/last, redundant "binding documentation". The
+"dt-bindings" prefix is already stating that these are bindings and this
+is documentation. Cannot be anything else.
+See also:
+https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
 
-diff --git a/Documentation/iio/ad7625.rst b/Documentation/iio/ad7625.rst
-new file mode 100644
-index 000000000000..61761e3b75c3
---- /dev/null
-+++ b/Documentation/iio/ad7625.rst
-@@ -0,0 +1,91 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+====================
-+AD7625 driver
-+====================
-+
-+ADC driver for Analog Devices Inc. AD7625, AD7626, AD7960, and AD7961
-+devices. The module name is ``ad7625``.
-+
-+Supported devices
-+=================
-+
-+The following chips are supported by this driver:
-+
-+* `AD7625 <https://www.analog.com/AD7625>`_
-+* `AD7626 <https://www.analog.com/AD7626>`_
-+* `AD7960 <https://www.analog.com/AD7960>`_
-+* `AD7961 <https://www.analog.com/AD7961>`_
-+
-+The driver requires use of the Pulsar LVDS HDL project:
-+
-+* `Pulsar LVDS HDL <http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html>`_
-+
-+To trigger conversions and enable subsequent data transfer, the devices
-+require coupled PWM signals with a phase offset.
-+
-+Supported features
-+==================
-+
-+Conversion control modes
-+------------------------
-+
-+The driver currently supports one of two possible LVDS conversion control methods.
-+
-+Echoed-Clock interface mode
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+.. code-block::
-+
-+                                                +----------------+
-+                     +xxxxxxxxxxxxxxxxxxxxxxxxxx| CNV            |
-+                     X                          |                |
-+                     v                          |    HOST        |
-+          +----------------------------+        |                |
-+          |      CNV+/CNV-   DCO+/DCO- |xxxxxxx>| CLK_IN         |
-+          |                            |        |                |
-+          |                            |        |                |
-+          |       AD7625         D+/D- |xxxxxxx>| DATA_IN        |
-+          |                            |        |                |
-+          |                            |        |                |
-+          |                  CLK+/CLK- |<xxxxxxx| CLK & CLK_GATE |
-+          +----------------------------+        |                |
-+                                                +----------------+
-+
-+Reference voltage
-+-----------------
-+
-+Three possible reference voltage sources are supported:
-+
-+- Internal reference (only available on AD7625 and AD7626)
-+- External reference and internal buffer
-+- External reference
-+
-+The source is determined by the device tree. If ``ref-supply`` is present, then
-+the external reference is used. If ``refin-supply`` is present, then the internal
-+buffer is used. If neither is present, then the internal reference is used.
-+
-+Unimplemented features
-+----------------------
-+
-+- Self-clocked mode
-+
-+
-+Device attributes
-+=================
-+
-+The AD762x is a fully-differential ADC and has the following attributes:
-+
-++---------------------------------------+--------------------------------------------------------------+
-+| Attribute                             | Description                                                  |
-++=======================================+==============================================================+
-+| ``scale``                             | Scale factor to convert raw value from buffered reads to mV. |
-++---------------------------------------+--------------------------------------------------------------+
-+
-+
-+Device buffers
-+==============
-+
-+This driver supports IIO triggered buffers.
-+
-+See :doc:`iio_devbuf` for more information.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a90972e1c5c5..97c9b03e1cf0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1268,6 +1268,7 @@ S:	Supported
- W:	https://ez.analog.com/linux-software-drivers
- W:	http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
-+F:	Documentation/iio/ad7625.rst
- F:	drivers/iio/adc/ad7625.c
- 
- ANALOG DEVICES INC AD7768-1 DRIVER
 
--- 
-2.39.2
+> ---
+>  .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     | 48 ++++++++++++++++++++++
+>  1 file changed, 48 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+> new file mode 100644
+> index 000000000000..79d8cb52279f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+> @@ -0,0 +1,48 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/sophgo,cv18xx-saradc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title:
+> +  Sophgo CV18XX SoC series 3 channels Successive Approximation Analog to
+> +  Digital Converters
+> +
+> +maintainers:
+> +  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+> +
+> +description:
+> +  Datasheet at https://github.com/sophgo/sophgo-doc/releases
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+
+Drop
+
+> +      - items:
+
+Drop, use const directly.
+
+
+> +          - const: sophgo,cv1800b-saradc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +required:
+> +  - clocks
+> +  - compatible
+> +  - reg
+
+Odd order. compatible is always first. Anyway, list here has the same
+order as "properties:".
+
+> +
+> +unevaluatedProperties: false
+
+I don't see any other $ref. Don't you miss adc.yaml? Or channels? Or
+some more properties? This looks incomplete for ADC.
+
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/sophgo,cv1800.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    adc@30f0000 {
+> +        compatible = "sophgo,cv1800b-saradc";
+> +        clocks = <&clk CLK_SARADC>;
+> +        interrupts = <100 IRQ_TYPE_LEVEL_HIGH>;
+> +        reg = <0x030F0000 0x1000>;
+
+Hex is *always* lower case, see DTS coding style.
+
+Order the properties correctly, so again, please read DTS coding style.
+
+> +    };
+> 
+
+Best regards,
+Krzysztof
 
 

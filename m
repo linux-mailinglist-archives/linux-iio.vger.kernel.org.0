@@ -1,64 +1,65 @@
-Return-Path: <linux-iio+bounces-8117-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8118-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D54943939
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 01:12:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC109439CF
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 02:00:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C091E282CB3
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 23:12:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7CC9285DDE
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 00:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C0116DC2E;
-	Wed, 31 Jul 2024 23:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963AF16DC07;
+	Wed, 31 Jul 2024 23:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="OSxGm6mq"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="sQoIv5i8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from IND01-MAX-obe.outbound.protection.outlook.com (mail-maxind01olkn2042.outbound.protection.outlook.com [40.92.102.42])
+Received: from IND01-BMX-obe.outbound.protection.outlook.com (mail-bmxind01olkn2065.outbound.protection.outlook.com [40.92.103.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D667516D4DD;
-	Wed, 31 Jul 2024 23:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.102.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7543314B097;
+	Wed, 31 Jul 2024 23:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.103.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722467543; cv=fail; b=jYD+z1bzoTWgixte25KsLxiBe0KrGqUvGW6xfZpdJeTKtvKt80byEwWr/IhfDAOsfILlOPzIkEYSDyLn1k8jfYTMg0YHnQSIBElJZJL0xhaHVb/JMMJXDvFDq951D/TFCAc10RCEu7ifAVYYXu0hD6ptsqBCuxZM3B1Pc703uJg=
+	t=1722470266; cv=fail; b=qcqvW+idWxfmIrXi1cee5zzRT17MJns6GQ8RIvlt1bUEaK9malBbP0jNEwMITFx47N2Eue+PE7BJNznFAr6ACq9IO7BpptkvE71P6+OkAdx4nfciYRf3emjy2PNdilz++QovHD3Nqt8ePy42DKkbZy+XmQJMoWY7alRma1VZTDg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722467543; c=relaxed/simple;
-	bh=1poCI6FMiqj3gn86p/edHMjwp81bXFZw26bvGfHlsI4=;
+	s=arc-20240116; t=1722470266; c=relaxed/simple;
+	bh=yNTDBCKtlv61BN/S5BLugGUttSYSYFNBQCewZax/lN4=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=N2xfwbSAIH0MWniz2mS6HsBFuQc5v4F+kmmYOF4TXr9cTH18Dfi7pJUlz7eJS6SY6xGVu4MogobhKWU/ePIDDbV6ywjb+6QuoLuTpOjxuXLXz3Bu2syREIduoLCgxD3tVkcPGQhp4A1qW9eW8xUwMXXJwFW/VQ7DFDbvkpgYP5E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=OSxGm6mq; arc=fail smtp.client-ip=40.92.102.42
+	 Content-Type:MIME-Version; b=WFGAJkZz0NcQFwXfSGITvgWxgzOTFbL0ZB0F+XqoXdTiIhYwicrhMnertCLj7RVaIfOsyZ5teHaWhejIud9f7jouFLhKj71MTrNW6a2it/Q7gDqS+asxBxeK7XTKprWNpKue8bBvZE48c9xTXgZz+KZe2T01n641jCmC02HkeoE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=sQoIv5i8; arc=fail smtp.client-ip=40.92.103.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y25ACk8Oj27DuVehAVGzKZUDYoHIHAaU8aQXlddpF6X/wrXzyh9qNAYr1ZZgD1+vSNybA1Qf+at1kYavF2LKJgqfGZhunYTp9gV7JZgT4P/V7Isy6jJtDDpVV9EiV5WhAUh25SqKdug4QOnFwIq/bi3GQqYDnmF3BkwjvJaTEE7cyPN4JwLLnEgPbgl60KxK1J3zjpnALAqVgKjl8f98y8HvTQy9A5nUwEybJkVCv8HOR+qt5RnHC1wVPs9REWR76wXCLHOQtIaErzPMuVat/iFYYj0/9v1nyWkxV1n6av8/MwLD6RqnXa9pWv+3dpIqRhAd/OphzK8GC+MfmRHw1w==
+ b=dbg8MUsPD8PH/CBMbesaFLExIyi4Nk6pKrgCKOQeInp8U/NjHIHt40b4j+EKfM0j7yUZCMP6Uc9FS1FiWH/e+Pg7cBddalkDps3LQaw+vUpeQsQNkdS7kajibvNKOR0ghw5+EVK96f7kStDSGLkehveFWHDC4629UKH6XKOravCO0AS7zdUGJ1HBS+553gK6YmgHkkWIAZ9cqh/LVKJL7QggZc0js7kRgLeP8nvfxe4h6oktu/W5cANuxfVUEODOJgioN0uRO8fmrPFCkoiGoE50PsvdwMMK5VfDi9YtGgjOiKrLEOVJedhRZC/8wN7pdrrsmpQby5hE8KtbTDp0hw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JdYVQhaoPgoP+0bhuY5+eaJbVv6IcV2MMddPQWlzO64=;
- b=Sf0J0XsTV7VEfcCw1fAYhqExjeU5oX1T5A7jH53Pr+OIDw/616ufovpdcWnTD6a3pH/IVGPI9DSlDKZ3xkJI4hiVjmB8PJhshdAiGxNklsxHqX1xix7Xt67f3ffSEh7sMlIkAXvijVhKZAbtNIxyPLnlv181XkIWUyFEYWy2EAgtfjn1+7V1rFLeuYqkTvA0kBzPGnrjFJh5Ui/n7WkUyTBeH9tgtG3pP/qz/mymOxrIRqlOFU1eELxlZlZek+ne/zTFcFwInWwEg7XX5YJb6TrAk5sPPGwCNtrUzRCHtCa+UMw900Iiwrdb/1JYba5Am2YVPTL77tHR3jeeEsgJnA==
+ bh=lqAwMZ6sF+S/VCYryeumLgFJAAgBUNYz8vYiR7O8iOU=;
+ b=wtaY6WN9SP0OSPPkJ4YhC2qc9IehXk0s/XRgPOB0l5KDNtB0rAk3zMWrzFkI0cxyRssbNYFG+2mfYzJ6lx7gveLGd5+NMe4musm/2o/psQFkKhP3PU2yRpKA2WNepBrsGp5k1sUEbGaXbYBmis9oaKOIohJ7+yZyaFBngPnSIknF9aEhdqs0k+V5ARRXc8Y0lrd8stXm/EZh+dc3GN8Fvdo4tgStj5Ea7ROawPO7DcsC6HdfZsXzSxHVmGKSoUM9w7p2h4PgkLG0eCdgm9ea7dqSXs3L6YfTlTBE6sgOnpgtgMsuZcJ20+VOUxpRPF475azwesech+mnzSFHvarpgQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JdYVQhaoPgoP+0bhuY5+eaJbVv6IcV2MMddPQWlzO64=;
- b=OSxGm6mq0Nf8JP72c54IcdPWflCPEF8ca6SCTfMezOYZusu3Td3KyZ4iB1tXdzhxL2LFliyJuCfYh4NXDKxRcI9O4efW6MhQBTgf083Ce2FhVuQ4v/W9tunDdYAzdqqdcfrRqHrlQ723pmLveWqDKqL/vpTJ0hq2qhXLb1mcpn51mW9SqZTxyBKSV8ftc0Jk1IFXWkEJ1PqEQveU4eXY3zV04L4nEpksJk2SRh8USwMBymjaGHYZZM3Lar1El8NOuCqbwmzUZNEkygBwSqzWMoPEKkwWyNtrxfKSqcgKvEea3Oc+zOIfwynZgHlG7ds3fU340NCkIbPQ+vAO9jwobQ==
-Received: from MA0P287MB2822.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:138::5)
- by MA0P287MB0829.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:e4::6) with
+ bh=lqAwMZ6sF+S/VCYryeumLgFJAAgBUNYz8vYiR7O8iOU=;
+ b=sQoIv5i84HcJvkwWYgt+jmjKL3FBd5aIlXfkI1Dar/tw5pUI8R2nE/GGQfnvH4QdJ4V7OKOMvoJInm5kawjUZuJw+YzuX+3HO6x1oqU+KC0TAP2SEgrV7csv2/+Z+KuBT7IvhZHSGbjmkyR0AwfviILMNb+jUeh4ks/P7apYLAAJaaPFyn4yRTviEjuEEC6VLpkXRI92TOl1K1b0Kh+UdVDo/vvlIIliAiA50kRCP1D1nmuQstilOCUVfqFBv33o/awf6DrQ0nYAFeA0UN2aexxlEHmWHOhU5fiyCsIAJIBOvr2Uxz5us9l0E0E9iSG9PcMFeP5scf2GCaLEqp8bIw==
+Received: from PN1P287MB2818.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:214::7)
+ by PN0P287MB0462.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:122::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.22; Wed, 31 Jul
- 2024 23:12:14 +0000
-Received: from MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
- ([fe80::a94:ad0a:9071:806c]) by MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
- ([fe80::a94:ad0a:9071:806c%6]) with mapi id 15.20.7828.016; Wed, 31 Jul 2024
- 23:12:14 +0000
+ 2024 23:57:37 +0000
+Received: from PN1P287MB2818.INDP287.PROD.OUTLOOK.COM
+ ([fe80::5a8a:9e40:a4e8:3e2d]) by PN1P287MB2818.INDP287.PROD.OUTLOOK.COM
+ ([fe80::5a8a:9e40:a4e8:3e2d%3]) with mapi id 15.20.7828.021; Wed, 31 Jul 2024
+ 23:57:37 +0000
 Message-ID:
- <MA0P287MB2822D15E938706B620BF86B2FEB12@MA0P287MB2822.INDP287.PROD.OUTLOOK.COM>
-Date: Thu, 1 Aug 2024 07:12:09 +0800
+ <PN0P287MB28300F19F9D5F85F3EED942EFEB12@PN0P287MB2830.INDP287.PROD.OUTLOOK.COM>
+Date: Thu, 1 Aug 2024 07:57:21 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] Add SARADC support on Sophgo SoC
+Subject: Re: [PATCH v3 2/3] iio: adc: sophgo-saradc: Add driver for Sophgo
+ SARADC
 To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -70,16 +71,17 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
 References: <20240731-sg2002-adc-v3-0-5ac40a518c0a@bootlin.com>
+ <20240731-sg2002-adc-v3-2-5ac40a518c0a@bootlin.com>
 From: Chen Wang <unicorn_wang@outlook.com>
-In-Reply-To: <20240731-sg2002-adc-v3-0-5ac40a518c0a@bootlin.com>
+In-Reply-To: <20240731-sg2002-adc-v3-2-5ac40a518c0a@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TMN: [F+1BeWT52dJPx8Qi7YoR9gCjEAz4G0Vm]
-X-ClientProxiedBy: SI1PR02CA0053.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::8) To MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:138::5)
+X-TMN: [ncl/nbYVv6jzGTS9htexqRT2CD+RDygs]
+X-ClientProxiedBy: SI2PR02CA0012.apcprd02.prod.outlook.com
+ (2603:1096:4:194::7) To PN0P287MB2830.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:204::14)
 X-Microsoft-Original-Message-ID:
- <f39499e0-9f53-4757-82b3-12af183ea9f1@outlook.com>
+ <640bc146-5c63-48da-b3dd-e3fd2be4b555@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -88,120 +90,130 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MA0P287MB2822:EE_|MA0P287MB0829:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2fcfbfd5-6aaa-49ed-ea8b-08dcb1b636b5
+X-MS-TrafficTypeDiagnostic: PN1P287MB2818:EE_|PN0P287MB0462:EE_
+X-MS-Office365-Filtering-Correlation-Id: fc5d7b9d-ce49-4713-76e8-08dcb1bc8c22
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5072599009|19110799003|8060799006|461199028|1602099012|4302099013|440099028|3412199025;
+	BCL:0;ARA:14566002|19110799003|5072599009|8060799006|461199028|3412199025|440099028;
 X-Microsoft-Antispam-Message-Info:
-	ZhgO+Iaf6KSeejlJjwxi8SEd04Ex7O5IaLhIobKaR22NcQW7W4xZ4oHHd7C/ZvtqgQV8NBLwOqrmh4XX0a9acazgV1zNazyI8GDOuvw7o7JHK2yjPNzI8by2enWhJzqntmWaBVnfArG1GfdulV+b+w+MS2FAcgdMOwIGWcKdpNWKzJF+IEFBxAW06nrmiwiskS5NAtM927pAyiRQ2K3fy51EYtuIR0VvPZWhfOgcEwpN1JPcsrDFbivubmg5/b7lFS7D5n/vgPQ4Z47uHpQUtAUGQjtJMeET3yZClGrvZgLEa/C3MUWMuwELgG1nOrZuVVq0xLAMjCnxMTkxudbcLQF9mSwH7Wcx4gwJpHsCQfNZ9rndsEXr2lYBcNFlYxxC6IYCE/uLnDfseLl30HwbZMVmGg9LQV1L/aJAytuC0SNAqhp8E2q7lXWWQc9C7cV+VfzTjj18WwPgk6X5s6YPrseFfy9XwDd4WEXJEv60XTXq0Ht9+3eTtgqdUd3fHh24dO5do0YhXYkcU3Fk0da6g0ERdLvhPX8eaPo1v1YS9JeoyKTKpsl/eX8qGsLRbrbPF7aJNu47oGO4dPcEX0wZJRGerSW8Gi+IOa7hyPjJjwIeh47CtiQO6/gBLrkliCKz8WyIg1ydyFaHz4FEnBHDpGS9rsn+lW7jeHTvPE1gx/4pYRpD/0882mNAEWG+KZuQxr3K1PAAK9hNPMM78URO8Q+emlYjrj0tgu563bm99Oy1hRejj5VSP1GTplPVVkjIAODDZRA6fne4aUQe1lfEpkzkpQl3JNrGPKNe9cYCF3o=
+	0JuTws2j7iK5CCg7KFhuhEQql8+44qOT+C2fJYN6SoHHBYUJT8JAoCZ7P6SEWvWD0kAbHyQzJxDGQznVeodwhjoOOlM2qseN0Dkabpsz7ake5esxpy5dIQBl5YtEsJ2iSK5YbcIflJ2nqjdi9zFdy0awEP7JaJUqIYhoBVol7fH+0tQbjRsEOV+2cRF/iIgyFPotGSz5nXu5dAbuBlO0FY4KRKTfKeOyon2uctOnLXVMH6Wo61K6npFPlBQlfgdJZmgHoJyQR5C32OkDCiWOr3rUJnFKZzFDU6pke14jekramu23xBo1DBMeIVTnPKSdhWiruZonu5pXhm2xCu9T0jGNnycEscilOart3iCWvY6cga1UrtH3+hrR4l18d2zvq3q2tXqWVMCFJiUGNn0pcDUJjFpx65JaRkaliFE0N2JJKaK04p6KZyIrWsUEQdZiTjVtlWujfPTvR7KYYYa99yV7kW594dr+MsUoRfC8YHKEdCd2lKHfEE3vdQU4Sh860gv30anAwD3vyXdzateL9TeeQjEmZiIBcBVtEPyybg9HjgVNBePwI9ZKnzxPR6KEoinb0ViQJdbS2Yzr22/vySn1gSd2ddyZNSQ/GZKm2XEY4MLVA14GxK77oX/09Dx8K5VKACxPJuvrVYf3LSDobinx+25vtLBNaaKnYTB9GGiPxHA6lf405Qc/+gKfZRb/
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bXBBTGdkLzk4a2Y0amo4eVNsU0FqVjlCbWFSNTlLb3JXWlVENjdsOE16UFJQ?=
- =?utf-8?B?cXhRM2xtTnRhSWxjTDZRTlhoaVBFd3F0amhZK3FpcXdCeVNkenFUUXB6alh1?=
- =?utf-8?B?cDgwMEZ6OXo1V2pZWEtxS2lzSXBJZ210VkdyOUZMVjVMaTlGZHpMT0xFaWcv?=
- =?utf-8?B?MkdUWmhJVHMyUG85OG0waWR2WUVscW5ZVzhiNmZiWStCTHFuL3VwZzQ4UEZ5?=
- =?utf-8?B?S1U1MWZDc1BuKzR6R1lDZ2J3WEFvWkxQVG5CRXczUitZZGtxQXF5enUwc09p?=
- =?utf-8?B?YzdIZnFCR2hzSjJ1RFZ5V2MwMHdWM2E1SjhNVlJ6TXJqaklrT0hZdFZRWUtQ?=
- =?utf-8?B?ZVZsRUZnamlhajl0b0lJdWlHallFWjlLMEpmc2N5L2paZmJ0dGhTUW5yaEc0?=
- =?utf-8?B?YTUyNU5JWmdNUGFJT2lTRWZBYml1cStxYVF3anRLTjRheGR3ZkxHMG5kVGJh?=
- =?utf-8?B?K0hnc2h6bHRzOFZzcmh3dnNwbTRoQzA5VXU0U1R0ZHExMW9kNC9JWUlCck5G?=
- =?utf-8?B?V2VMOFJWTlo4UHNCTXpvOWt1eXQvM1JneUJTU3dMMmlvYWkwRXZ0WEZ6SGpu?=
- =?utf-8?B?enJyVGpVaHNXc0NQOVdNQ2hoSllQSE0xNFBiQjFmZGZ6anArODVRZG95NUF2?=
- =?utf-8?B?dUxnTDhXa1g4UzhDdWx3aGFocGFRd0g1NWRkUGN0ZVVJQzdLTEh0MEVpRTZt?=
- =?utf-8?B?Rk83KzVaeHJXZTUxMmVzV01MTVZzRDdseWk0Y3RRZmk4bEx6Rlk4cFFPUlJN?=
- =?utf-8?B?UE9xYlB6aWZML0JHUGhVdEtqRUJwOVlVbXJmM09wU0pGeEpKNEZTVmhPRVg5?=
- =?utf-8?B?b3lBQi9wVVVtUklqVmxPdlllN2JZYjdkd1FjSFRBVTJXZFdSREpubGxDTEM2?=
- =?utf-8?B?Q1JPVktlMGxkd05DWlhWMVY3REZNVVF6QlFEbWUyWVBYb0NZcE5qYVVvQTRP?=
- =?utf-8?B?b01idkhXd2tPYnJqMVBrQlhMVVVUZStlcnc4SjlLQnBhL1Y4YmoxemhJcmFq?=
- =?utf-8?B?MUNhdityQTdlUzA5Zk1Fa25vc0VHZitPMmxPTUwyc2lpVnFMTmZ5Z0FjS2N4?=
- =?utf-8?B?dFIxTStLdXhabnl4OTVQRmVNR2hHR1FqN080b1QweWRSNTZoVms0c1ZKZG5J?=
- =?utf-8?B?dDRZZTZwSnlkWE03VUdwV25aNUl5ayswWllZYzJoUnJESm1KNG5leE1FSkhS?=
- =?utf-8?B?RXBNdnVJR25UZk9lM05QVFFvcVI3MWZodzdEd1Z0NVVlcE9ncGFvR3ZwVWJR?=
- =?utf-8?B?aytxKytrL2Qyc1dDMk0rdjVYU0lyUHJoeEdacWRVMGlneUtkb3lRRWJDVXFt?=
- =?utf-8?B?ZmlLSFp5ck9pVlI4L2FxVjZ4UnNNUWJOYjhYVWdCYVhNQlg3VDVwNWNTcVFj?=
- =?utf-8?B?Qll3U3RJTW83Y2ZvU2QyWm41bkplVkcwWjBlbGo1UUhaRGhIRW8yVnFxUkxS?=
- =?utf-8?B?NWk4azY4R1VRdmFSSWhRT3ZYN1RleC9WNmRtczQ5VEcrY1k2VkxCc3piVWls?=
- =?utf-8?B?eW92QzZvY0JlNVZTa3BYMU4rcHdDMnRQVlc5OEtkaVJnYy9hVk9DZVdvaWll?=
- =?utf-8?B?YUlJOEVsNFh0RmNuMXNUL2xEdFI4RFZaMmlnLzBjcU91Yzh1elU1anFNR1ox?=
- =?utf-8?B?Ui8zcklKQnl0VEtxWWp2VDBnMTZ3VWdJUVgzN0QvdnFReTlrb2JDeVQySUFD?=
- =?utf-8?Q?Ez3z365Au9j8G8iVn6J0?=
+	=?utf-8?B?NnR2c1RZOTdjUE5mLzEvUjVHUVBsRHBRdVVrTEE5WEwyZjNtWHZpelhtcm1B?=
+ =?utf-8?B?ZDF4eHpFNkJ3dHp6ckxxOERiLzhPSVdlZnp2djlmL3c4aUZnczRaYXFHTENP?=
+ =?utf-8?B?ZUNqL3RRaGYvTjhrSStiQXlXNEhncmVhQ1RxTzc4MEpRdzZLbFc3c1duZi8v?=
+ =?utf-8?B?dzJVNlZwRUZsVTZoT1kwcEVEVU8xVnpET0piL053d1cybXRHWHdza05XdVVv?=
+ =?utf-8?B?ZEtvcGRwMGlyWUJIaWlHancrOThoTUVGOGwxeHFoQ3NvYlc4QzN4MjFPUVc1?=
+ =?utf-8?B?L0ZUd2Yyb2FVb0RNbGRrM0pPL1ZlZ3JRVVJsYXphcEZiZzEwVmVnODVYLzhz?=
+ =?utf-8?B?M2YrdnJYV3dlSU94clZpdHBSSGVXcDhWVnBSVTM1ei9hWXlHcld1OUpKYTRk?=
+ =?utf-8?B?M0xqRzZPZ0RvUG5yZTNHWjBBdkt2RGZDYUZUTWdvay9MTHB1aGhGV2JVa25q?=
+ =?utf-8?B?TEtFcGh4WXBhVzVubW9kZWxzZUlJQTZwOFlsc3BkRnd4VnRIUUI1L1JGY09X?=
+ =?utf-8?B?NW90UVJJU0FqSEYwRFVMT3BwNFFHejE3UHdVODFNd1E3MEhjaGxWZmJ1Uy9H?=
+ =?utf-8?B?WElCblpIZGprSjUwSGhweWZ4VkJQQmUvWlpYcWJNM3E0TXE4bEtlQ1U0VEtT?=
+ =?utf-8?B?WTRSajgzTm9SWis3K3I2SE5xK0ExSWRvRzJvMTJDb0k1NTNQbi8wSVdSL1gx?=
+ =?utf-8?B?aXVFdnhMZFdDbktKMlN1SUhpUVpWY2tSYzhRVENVVXFFelV6UFdDMFI3WitJ?=
+ =?utf-8?B?bklVcWhhTEpDS3d4NWViWm1XK016ZGtNUjBHeW1ITVRHTGVyU2NjYjAyMjZI?=
+ =?utf-8?B?TFZ1NnRhdEZocFp3OXJJVEd4N0lXY0hHcGVUUVBGVjlHRm5XS05lalA1RUtz?=
+ =?utf-8?B?cE5abzNnem1xb3loOWtzdzkzMnpWZlRkaTBLUXI5NTRvUlVSTW1TTWlVT09j?=
+ =?utf-8?B?RC9MWXJIRE4xcEhYaHV5eEszOXhvWUNHUUVOVmlEbDJKYU1IYW9MRWxqMkZx?=
+ =?utf-8?B?K0pmb3NkdzRobGdQT0QwZk8wZWZHRDBHR2FGdE12RUphcjE3elFKeGxmZ3dy?=
+ =?utf-8?B?c2NjeWEyc3NpcXdPQ2hRSWRFYTdESGRxbFdRZi9IeGovcFFjRkxxNWpKcTJK?=
+ =?utf-8?B?bVJFZjhGQ0pvbWFuTmdoKzhvMm0ycGd2cUF1RU5FYytoU2wwZDdhSW4zUzV1?=
+ =?utf-8?B?cG91WUw3QWFETlNLWWtacmE5K1JmcDBPNGJyVHFweE9DYmhOREpNaSszNklC?=
+ =?utf-8?B?Y0xLenNsdnUzZWkyL0R6ZE43bzRwb0NGWjY5Zm5yZUFQM1VRanhSWXhuazZr?=
+ =?utf-8?B?K0FOQldyTEhUd2lFK251cjB0UEJ3SDdCakRXb21TYWlkVGx3QUovMlE2Yk1H?=
+ =?utf-8?B?UU5VNDNlK09ZMm1wOXBPeDlhRCtMelF3cUpIS0kxeXJibjhJNEZDZjNNWnBK?=
+ =?utf-8?B?SVNwUk1yM3ZNR3RIR08vZVZiS0VPcFczWGRCMG5hMG1FSDY2OXhFbmtVRjZV?=
+ =?utf-8?B?UCtNYzlMVTBPL0pRRUlIQjE5OVhyR1dIMVF0RnhubnJEVmtvZCtnc1BOY3h1?=
+ =?utf-8?B?WjlPRG05NW9lODQxWEoxTzBOZUhJbEFER2g5NDdIQ3FMMDJSU1h2amNvcTcx?=
+ =?utf-8?B?QTRmUHdJWlhEdHR4WHlnZHRXRnhtZHd0TXJNWUNBRDhNNWxhZzBRc2lnUjVy?=
+ =?utf-8?Q?tEyT2bgRJyjt7GFTduUJ?=
 X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fcfbfd5-6aaa-49ed-ea8b-08dcb1b636b5
-X-MS-Exchange-CrossTenant-AuthSource: MA0P287MB2822.INDP287.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc5d7b9d-ce49-4713-76e8-08dcb1bc8c22
+X-MS-Exchange-CrossTenant-AuthSource: PN0P287MB2830.INDP287.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2024 23:12:14.2507
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2024 23:57:37.2574
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
 	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0P287MB0829
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN0P287MB0462
 
-Please add the code name of the specific chip product to the 
-patch/commit/email title for easy distinguish.
-
-Sophgo has several product series, not just cv18xx, for example, sg2042 
-etc, and there may be others in the future.
-
-You can refer to this example [1]
-
-[1]: 
-https://lore.kernel.org/linux-riscv/IA1PR20MB4953C1876484E149AA390DD5BB1D2@IA1PR20MB4953.namprd20.prod.outlook.com/
-
-Thanks,
-
-Chen
 
 On 2024/7/31 20:24, Thomas Bonnefille wrote:
-> This patchset adds initial ADC support for Sophgo SoC. This driver can
-> work with or without interrupt and in "Active" and "No-Die" domains
-> depending on if a clock is provided.
->
-> Link: https://github.com/sophgo/sophgo-doc/releases/download/sg2002-trm-v1.0/sg2002_trm_en.pdf
+> This adds a driver for the common Sophgo SARADC.
 >
 > Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 > ---
-> Changes in v3:
-> - Subdivide default cycle configuration into multiple elementary
->    configurations
-> - Fix formatting in the driver
-> - Use devm_mutex_init
-> - Use devm_clk_get_enabled now because the clock is no more optional
-> - Remove handling of Saradc in No-Die Domain as RTC isn't implemented yet
-> - Use cv1800-saradc as default compatible instead of a wildcard
-> - Link to v2: https://lore.kernel.org/r/20240705-sg2002-adc-v2-0-83428c20a9b2@bootlin.com
+>   drivers/iio/adc/Kconfig             |  10 ++
+>   drivers/iio/adc/Makefile            |   1 +
+>   drivers/iio/adc/sophgo-cv18xx-adc.c | 206 ++++++++++++++++++++++++++++++++++++
+>   3 files changed, 217 insertions(+)
 >
-> Changes in v2:
-> - Drop modifications in MAINTAINERS file
-> - Rename the ADC from "sophgo-adc" to "sophgo-cv18xx-adc" to avoid
->    conflict with ADCs available in future Sophgo SoCs.
-> - Reorder nodes in DT to match DTS coding style
-> - Switch from including <linux/of.h> to <linux/mod_devicetable.h>
-> - Use scoped_guard instead of mutex_lock/unlock
-> - Check IRQ Status in the handler
-> - Change IIO device name
-> - Use devm_clk_get_optional_enabled instead of a clock variable
-> - Init completion before the IRQ request
-> - Removed unnecessary iio_info structure in the private data of the
->    driver
-> - Use SoC specific compatible in the bindings and device trees
-> - Link to v1: https://lore.kernel.org/r/20240702-sg2002-adc-v1-0-ac66e076a756@bootlin.com
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index f60fe85a30d5..10d6570233f5 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -1156,6 +1156,16 @@ config SC27XX_ADC
+>   	  This driver can also be built as a module. If so, the module
+>   	  will be called sc27xx_adc.
+>   
+> +config SOPHGO_CV18XX_ADC
+> +	tristate "Sophgo CV18XX series SARADC"
+> +	depends on ARCH_SOPHGO || COMPILE_TEST
+> +	help
+> +	  Say yes here to build support for the SARADC integrated inside
+> +	  the Sophgo CV18XX series SoCs.
+> +
+> +	  This driver can also be built as a module. If so, the module
+> +	  will be called sophgo_adc.
+
+"sophgo_adc"? or "sophgo-cv18xx-adc"
+
+> +
+>   config SPEAR_ADC
+>   	tristate "ST SPEAr ADC"
+>   	depends on PLAT_SPEAR || COMPILE_TEST
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index d370e066544e..24c241b12ef0 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -105,6 +105,7 @@ obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
+>   obj-$(CONFIG_RZG2L_ADC) += rzg2l_adc.o
+>   obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
+>   obj-$(CONFIG_SD_ADC_MODULATOR) += sd_adc_modulator.o
+> +obj-$(CONFIG_SOPHGO_CV18XX_ADC) += sophgo-cv18xx-adc.o
+>   obj-$(CONFIG_SPEAR_ADC) += spear_adc.o
+>   obj-$(CONFIG_STM32_ADC_CORE) += stm32-adc-core.o
+>   obj-$(CONFIG_STM32_ADC) += stm32-adc.o
+> diff --git a/drivers/iio/adc/sophgo-cv18xx-adc.c b/drivers/iio/adc/sophgo-cv18xx-adc.c
+> new file mode 100644
+> index 000000000000..27e1aac9560f
+> --- /dev/null
+> +++ b/drivers/iio/adc/sophgo-cv18xx-adc.c
+> @@ -0,0 +1,206 @@
+> [......]
+> +
+> +static const struct of_device_id cv18xx_adc_match[] = {
+> +	{ .compatible = "sophgo,cv1800b-saradc", },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, cv18xx_adc_match);
+> +
+> +static struct platform_driver cv18xx_adc_driver = {
+> +	.driver	= {
+> +		.name		= "sophgo-saradc",
+Add product name to differ other sogho soc. You can refer to 
+drivers/iio/adc/ti_am335x_adc.c.
+> +		.of_match_table	= cv18xx_adc_match,
+> +	},
+> +	.probe = cv18xx_adc_probe,
+> +};
+> +module_platform_driver(cv18xx_adc_driver);
+> +
+> +MODULE_AUTHOR("Thomas Bonnefille <thomas.bonnefille@bootlin.com>");
+> +MODULE_DESCRIPTION("Sophgo SARADC driver");
+Add product name to differ, don't use general name.
+> +MODULE_LICENSE("GPL");
 >
-> ---
-> Thomas Bonnefille (3):
->        dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml: Add Sophgo SARADC binding documentation
->        iio: adc: sophgo-saradc: Add driver for Sophgo SARADC
->        riscv: dts: sophgo: Add SARADC description
->
->   .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     |  48 +++++
->   arch/riscv/boot/dts/sophgo/cv18xx.dtsi             |   8 +
->   drivers/iio/adc/Kconfig                            |  10 +
->   drivers/iio/adc/Makefile                           |   1 +
->   drivers/iio/adc/sophgo-cv18xx-adc.c                | 206 +++++++++++++++++++++
->   5 files changed, 273 insertions(+)
-> ---
-> base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
-> change-id: 20240527-sg2002-adc-924b862cd3f2
->
-> Best regards,
 

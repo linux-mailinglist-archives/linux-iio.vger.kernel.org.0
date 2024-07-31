@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-8105-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8106-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0BC943186
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 15:58:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E08894318A
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 15:58:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFBD71F217FA
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 13:58:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28C4A28591F
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 13:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3001B3F28;
-	Wed, 31 Jul 2024 13:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0F61B3721;
+	Wed, 31 Jul 2024 13:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUK53iWH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yj73HUxE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EC71AED53;
-	Wed, 31 Jul 2024 13:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443C91AED53;
+	Wed, 31 Jul 2024 13:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722434256; cv=none; b=beNB8fuc+OsX9ZbnWoDEwy5iSGIzzszv7/4M/oi1H0UmXx9qECMB9KG2cmpwlgfsmEjNby63B6xCfVqkyOx745t15yhyg1lQuyEqNgu/NN6hzvL2wUghlBHAHBotMT23AJ8cXfWxXD8QXr9G+2CIBspzwt8Kg+P1rtS2S9utwbk=
+	t=1722434278; cv=none; b=pJ3oVcjdPwc9BUrkpvtfYHK+/mBTakg2vhoAEMh8/IEfdLTu4RPO/0jX+fdoJpG/gsstU3BmQkdVWQA+HcHMOpbsuc7pfS29UKmh3Mg4FyMaoRel6qRCKRvUjZSJvjjvxGqVD0J8YFjst2JNq3IInl7++ed7q+naeN4tJ+1cPvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722434256; c=relaxed/simple;
-	bh=uFoGKzIdPFMKUSrZM250U+sc2Tod50YRaV8VGmHwgjs=;
+	s=arc-20240116; t=1722434278; c=relaxed/simple;
+	bh=uFhGoH9n43TU0g/4Kuq1NYMkKnqHACh4RtqN3VXTunI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XqQUPQOm37M2Tgv7Nv8grCRguKTZUf1oeP6FbIdmguLSGmrg3EJFgzqdaOm2/bywNkwKNSqNq8UZw8LjgBdHfcGUxbrXUrrdWTZYIwaTLGnyHixuxeAdKA81Xp1gH2DDfsGnMabnuikrKfVcR+6XrnaX/G64Otm21EVO0EmHpqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUK53iWH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A68FC4AF09;
-	Wed, 31 Jul 2024 13:57:29 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=e8oubg4cJZTfmU1aZPhpu3WVsKf1vRJ8JIjZCN9qg3duFnMTY9xyd6Zyl2H96chAATD0PW1VxQf9eKBcE6HKj7X/HRvKREF9CfMNJO5DZdp8xsS4t7xAWR2hrBZoeHepw9O2ueObn23VofltK6MwdVjx0xrzClvPrRycBkcxUL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yj73HUxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA9DC116B1;
+	Wed, 31 Jul 2024 13:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722434254;
-	bh=uFoGKzIdPFMKUSrZM250U+sc2Tod50YRaV8VGmHwgjs=;
+	s=k20201202; t=1722434277;
+	bh=uFhGoH9n43TU0g/4Kuq1NYMkKnqHACh4RtqN3VXTunI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sUK53iWHOh6KDeXrKBIN3mKbITaM1HW4CqusJ3BBq1PGLZfZJPz8C2uojMC7LDxPU
-	 X5ZPug7Bo2StJEgBNQpUyrTLlx2deztGmqJTRewTfxiwAWJnRqFfnBO2zXWiXb/Lqp
-	 SyhOrh4/xGRz9CyJtdf1PU+D23aTvFW754CPMjFBbeytJrgbF9+peGHn123m7mi3RN
-	 NbICdRcQXQANgwVSACrySqXHuxnKxSc0lPHUuB8zSH+CsOIYJOoRAD89Mr6wfC/vZh
-	 Sk2DyUd82laRxPM/TbxoytEBpZGv9UMcS2wss9jKdTooPOmM5m7pa0rU5BlGtF9fi0
-	 Ud51c6tGRp1mQ==
-Message-ID: <368cc5a8-3ec1-4e91-ae1d-59068f25d8e0@kernel.org>
-Date: Wed, 31 Jul 2024 15:57:27 +0200
+	b=Yj73HUxE8w2uiinaLs3CV5GxCwZU1UwT1RG0TZ8PgmKEVsmtBLbHXbfLOWsTYqw+D
+	 g25YYeDNxutHnwhGZnEN54rDHlmF6vnEYp9YLrImAnAylZODnEgsoEau1ivgVMIuQH
+	 kPWEbhJyK/XCCjD2YGFD2BT33EQ4RcfB2le53o4V3tAScCS36NiZqw6QpompO8JkP5
+	 1ucEC/zaGn2inP/Mcsy4EH2qC4HjnXM0tF0WfakpYH69sImgv945gEy4Gt7eenYDxM
+	 JbdrjtFAholfxDxRFy3k65AcxJBozZSbijfZY46Mo5Ip9AuIGRF7qUEDrSzLkC37U1
+	 IKt8JQqVvUdFA==
+Message-ID: <9f3399ba-eb45-40d4-8d4b-e4c6c6856fd9@kernel.org>
+Date: Wed, 31 Jul 2024 15:57:49 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,8 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml:
- Add Sophgo SARADC binding documentation
+Subject: Re: [PATCH v3 3/3] riscv: dts: sophgo: Add SARADC description
 To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -64,9 +63,9 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
 References: <20240731-sg2002-adc-v3-0-5ac40a518c0a@bootlin.com>
- <20240731-sg2002-adc-v3-1-5ac40a518c0a@bootlin.com>
-Content-Language: en-US
+ <20240731-sg2002-adc-v3-3-5ac40a518c0a@bootlin.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -110,102 +109,36 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240731-sg2002-adc-v3-1-5ac40a518c0a@bootlin.com>
+In-Reply-To: <20240731-sg2002-adc-v3-3-5ac40a518c0a@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 31/07/2024 14:24, Thomas Bonnefille wrote:
-> The Sophgo SARADC is a Successive Approximation ADC that can be found in
-> the Sophgo SoC.
+> Adds SARADC nodes for the common Successive Approximation Analog to
+> Digital Converter used in Sophgo CV18xx series SoC.
+> This patch adds two nodes for the two controllers the board, one in
+> the Active domain and the other in the No-Die domain.
 > 
 > Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-
-A nit, subject: drop second/last, redundant "binding documentation". The
-"dt-bindings" prefix is already stating that these are bindings and this
-is documentation. Cannot be anything else.
-See also:
-https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
-
-
 > ---
->  .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     | 48 ++++++++++++++++++++++
->  1 file changed, 48 insertions(+)
+>  arch/riscv/boot/dts/sophgo/cv18xx.dtsi | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
-> new file mode 100644
-> index 000000000000..79d8cb52279f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
-> @@ -0,0 +1,48 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/sophgo,cv18xx-saradc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title:
-> +  Sophgo CV18XX SoC series 3 channels Successive Approximation Analog to
-> +  Digital Converters
-> +
-> +maintainers:
-> +  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-> +
-> +description:
-> +  Datasheet at https://github.com/sophgo/sophgo-doc/releases
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
+> diff --git a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
+> index 891932ae470f..e6c1a84d3e55 100644
+> --- a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
+> +++ b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
+> @@ -133,6 +133,14 @@ portd: gpio-controller@0 {
+>  			};
+>  		};
+>  
+> +		saradc: adc@30f0000 {
+> +			compatible = "sophgo,cv1800b-saradc";
+> +			clocks = <&clk CLK_SARADC>;
+> +			interrupts = <100 IRQ_TYPE_LEVEL_HIGH>;
+> +			reg = <0x030F0000 0x1000>;
 
-Drop
-
-> +      - items:
-
-Drop, use const directly.
-
-
-> +          - const: sophgo,cv1800b-saradc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +required:
-> +  - clocks
-> +  - compatible
-> +  - reg
-
-Odd order. compatible is always first. Anyway, list here has the same
-order as "properties:".
-
-> +
-> +unevaluatedProperties: false
-
-I don't see any other $ref. Don't you miss adc.yaml? Or channels? Or
-some more properties? This looks incomplete for ADC.
-
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/sophgo,cv1800.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    adc@30f0000 {
-> +        compatible = "sophgo,cv1800b-saradc";
-> +        clocks = <&clk CLK_SARADC>;
-> +        interrupts = <100 IRQ_TYPE_LEVEL_HIGH>;
-> +        reg = <0x030F0000 0x1000>;
-
-Hex is *always* lower case, see DTS coding style.
-
-Order the properties correctly, so again, please read DTS coding style.
-
-> +    };
-> 
+Please read carefully DTS coding style.
 
 Best regards,
 Krzysztof

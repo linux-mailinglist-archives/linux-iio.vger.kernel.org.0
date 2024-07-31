@@ -1,75 +1,76 @@
-Return-Path: <linux-iio+bounces-8094-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8095-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9B9942EB4
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 14:37:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D241942EB6
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 14:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92B0E28CEEA
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 12:37:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B715E1F26892
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 12:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34071AE87A;
-	Wed, 31 Jul 2024 12:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5001B0105;
+	Wed, 31 Jul 2024 12:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hOfXo+6X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FOeOvseS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A614193072;
-	Wed, 31 Jul 2024 12:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D331A8BED;
+	Wed, 31 Jul 2024 12:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722429450; cv=none; b=nsHLmv5Ems+RXylwmSXehlbYA56OFiIuK59BWu5sxp5vL8t7V4b025Ke6vbgxUtx68HRlaklvSIypn6zOUgKEKV3uUNNMJLVmGYAzlcqg1j9mlg+t9eNLlQv58MN1MXsQ/q9h2Q8vybpC3v1savC5ALLJ6Y8OVtixqsTipSdYkU=
+	t=1722429451; cv=none; b=PF6Thtz1F2pV1Gr1kG8eCM6Tq5FZyiFMe4q1FVoRTlOgdC4Ia0TSYoRGfh9ydbnrZZdBpDDY4XqEjChFNsWNvSH8yURxUBrT9gVaRQ6Vs3rOCCnDXI/EZpszVrEwj6368FtZLbOSW+wTiQBShVB0/tX7hrCAZG54IO4Dw2voLtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722429450; c=relaxed/simple;
-	bh=dzSe2MfEfC34c+4Ae65St3/EyAcbDWKOFlWG9ZEcJrY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HWum5RRtimb2N8+6cbkX4Gq4uXR4Qp7CBFmsfkAp8PqrhLR1acjj9SzBZ5F6r9rYinjULw+7vt/Du+HfAR0MLv3gcj6yS2BxczoaQhYCUPOa7W51Bnn9y4FRUPhZnY4TX2K/85NT5CP0m9CYGxAhHD2rZAnqSSX+Gd0q/FAF+ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hOfXo+6X; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1722429451; c=relaxed/simple;
+	bh=pAZDjeecp6rsXv/22TRVi6mFQYwYZQxzVZ7EkKQ7Log=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GfYl7/t75OYveWdvEqM4gpqSCLvc1qQ1BUsa38rS2VKG1+Y9hNVkyLYt6yPlSXmibPGIsnl9JdOcGZ/sDTDEHyRsMlkri2eUdpnLB6IQ1Vs/5tGhy2AsX/iz7GSPlc0MNJS8KL6YgDWzJqzojWRIJeRzo8xaCopQQtMW2abtrEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FOeOvseS; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4281abc65daso29849835e9.2;
-        Wed, 31 Jul 2024 05:37:28 -0700 (PDT)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-428141be2ddso36651545e9.2;
+        Wed, 31 Jul 2024 05:37:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722429447; x=1723034247; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ln4DNV38+EobFIMTju0Yg2SSs+l0VxUp6Zi2Xe/dcqw=;
-        b=hOfXo+6XUwXWVKqZ5SZ7K0FynGWaQtrfGwb1YCqG5MsBYZtZ3lrmhUH2HhUatBvYLr
-         cDBp0QRmvBKxcFkNfl9ZgLTKj/oqGK8KuaEY+Y9TkjCA+L4vDLdND/Ms96ynN3rN5qJd
-         F76/dSezb2OB/Jw6I7fPvNGMhQmMk18WDWcWc1J+Qt6noxQcfJZcPibMmlc13euVJGZS
-         kjj1m5GfBbGUdoon3NL9vYNyAqDkX9ZLTRL/8xal4xLHobnOxAhVy1oMiqfWjlXa8I/4
-         TKWwTdoPBMM+asOlKPRLAD1pGNyRPDRtlkcmNoA0Z0iWRgf5sKG/5PhGGNhZys6nT1rj
-         tP+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722429447; x=1723034247;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1722429448; x=1723034248; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Ln4DNV38+EobFIMTju0Yg2SSs+l0VxUp6Zi2Xe/dcqw=;
-        b=NujTI655HfxieAkgXEh35wvEPfa+tcPKahNW03i8TRbOTZaUDfusg/hLkKqjRPKmGH
-         PpeeamtblJl6U3HcVTYjD3UB56g4fVcQb6QOh1eChwFNxEXteH7zo+2WZpWtv3H5iiML
-         pIwsdM2zWClcE8bbotJturA55pzNy40aVxsKWBF30WMopajCyDiArWoIAUfMXdPRi8K5
-         FHFPLZ6ktm9m60faAhEr2qFmBp4CwW7+bj1fNGJ9RjVdCeMIlrgY4oz7HydcFK9y0TdN
-         aMRYuQenYBZ7nP9ruS66qYQI9m647Z0rZD3PHNCCxYZi3Z3xIzqHJsg1eFzX/T/V8stU
-         qxOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXC6+yj5hKlTFCXeylDNiayI3woItNIHtk1PPCp7rhKaJXx0S1EFyX6yoKjsPMCy2RFdVP2T+vmIDdlKrP9Ieu6Wu32kozlTnRrZKgionXJvCGJZl2WbKHoUr8U/rRlw4Ehg+oYpVG9
-X-Gm-Message-State: AOJu0Yz0dqxxiIIOUrJAnK6JH0kQo+Q1UlFC8rlbY14h5V5dN9VFHVJY
-	qG3rtoY34WbokI58YZqpX0dqoMe+hmgAynkxNywIyXIOsMQjpIq8
-X-Google-Smtp-Source: AGHT+IHVjYD52SvrfU3XRkigv/pabgZlH5vxxV8RcEdEyZOxMYHxQy04RFrhSOG0fkd92olRajbB4w==
-X-Received: by 2002:a05:600c:a03:b0:427:9db3:46ad with SMTP id 5b1f17b1804b1-42811dd1a29mr87444335e9.23.1722429446942;
-        Wed, 31 Jul 2024 05:37:26 -0700 (PDT)
+        bh=CzcBX9trXfq2k2br88kZQvGfopQSzgfszubMVwGQIRc=;
+        b=FOeOvseSJc4GZeg5tCfraZYUwbIwucWtp/PF8vYYlAqJ6Iu6I3mYIlhiGXDdwA8zgF
+         zaQWdmPq1xsUlELcy4R7Au965FDa43o/fUzCY1DlbXlLIeMlyCE5K/dH5cCqzvh6biTk
+         yUxlu3yFbETJb2MhGtz1KwmC1cojabXhDvEBAXt9rVfh2FnQFSLfFWczuWs51lbw5UrG
+         dL1w0kfwGHvSHZCV3BqXBr+ax3ijD6cl79qxINPWw7jBaZ8BJt0p3r4rKaOhTgJwZX2v
+         3yoEprhjw/tifICXqoK3X6oWTJAJshv0lEiS15sPJZvythlDxV5CHHcAsTCzRUxWELhn
+         nsdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722429448; x=1723034248;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CzcBX9trXfq2k2br88kZQvGfopQSzgfszubMVwGQIRc=;
+        b=HR7+IkuoQAq/N3+aexpx0Uu3CJ83FbtvAtHhAQXBUX9Rbz0gvQiPmNvJe88ymlTGrp
+         NbW9PKQNnHIPlG8oTA3i8/SXgiKsikaakH83nWdYn5jR3gikDozg7Bz+19euA0NOOYda
+         9CxOMpdSonv4grsV8rOJcm+/VtQNJz5/dfnvNuFCA58MWY5INz1Hex01LmKaaX1q5voD
+         4EClyqfCpLmDKaRvjJ+hNZpq6VmeBLq4WgwM9q5sTPlHg3MMyGcD/vPZbQX+jyg/dtZw
+         gjPXJl5JrV2JifwiP+MG7W9qiouEr89hz4uWySNuDz+mOe0ZeO8DC/d0HSK/L/NZ9v4B
+         5xmg==
+X-Forwarded-Encrypted: i=1; AJvYcCW+hdr7q75agwltriNYLEvtDeymJoDjkU7MxCGibWOQ9b4ZBHCTKQvmYCRKRpV/VQ4QwvY36gsV/42fD90Oz+Ay8nXlD1OetBae5c8oZVazq/oekSg/7ipb7MSRToSls5TfFQyKmbKs
+X-Gm-Message-State: AOJu0YxgsKqwD4yZOhJT2mRnUDqUEtMAFGWttSIODNinUq6HYDrdITZZ
+	szVv6S0PFnhUf3MtW0JQoln1bAX5FduAzgQIYPc4nSRCejXCUUu8
+X-Google-Smtp-Source: AGHT+IGwbo9oOCC1QRNLV5d8AI5Ecfn5RWDJx4Hj1H3F0ZUHZ0lL9y4KhWxPenwUj6t+Y93jkskEVw==
+X-Received: by 2002:a05:600c:1390:b0:426:5e91:3ff1 with SMTP id 5b1f17b1804b1-42811dcd2f9mr96458665e9.24.1722429447841;
+        Wed, 31 Jul 2024 05:37:27 -0700 (PDT)
 Received: from HYB-hhAwRlzzMZb.ad.analog.com ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bb64755sm20600465e9.36.2024.07.31.05.37.25
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bb64755sm20600465e9.36.2024.07.31.05.37.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 05:37:26 -0700 (PDT)
+        Wed, 31 Jul 2024 05:37:27 -0700 (PDT)
 From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 X-Google-Original-From: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Subject: [PATCH 0/4] ad7124 fixes and improvements
-Date: Wed, 31 Jul 2024 15:37:21 +0300
-Message-Id: <20240731-ad7124-fix-v1-0-46a76aa4b9be@analog.com>
+Date: Wed, 31 Jul 2024 15:37:22 +0300
+Subject: [PATCH 1/4] iio: adc: ad7124: fix chip ID mismatch
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,9 +79,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAEwqmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDc2ND3cQUc0MjE920zApdY/PE1GTztFSDJLMkJaCGgqJUoDDYsOjY2lo
- AUKAxxFwAAAA=
+Message-Id: <20240731-ad7124-fix-v1-1-46a76aa4b9be@analog.com>
+References: <20240731-ad7124-fix-v1-0-46a76aa4b9be@analog.com>
+In-Reply-To: <20240731-ad7124-fix-v1-0-46a76aa4b9be@analog.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Stefan Popa <stefan.popa@analog.com>, 
  Alexandru Tachici <alexandru.tachici@analog.com>
@@ -88,50 +89,45 @@ Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Dumitru Ceclan <dumitru.ceclan@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722429445; l=1307;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1722429445; l=1054;
  i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
- bh=dzSe2MfEfC34c+4Ae65St3/EyAcbDWKOFlWG9ZEcJrY=;
- b=tAwACJv4nJa3PC2cBpixYO1Nh5oSp59pzwRsyg9VupLJof5NjU9v25gjAxWJvVIV7cHUH47s6
- 7uDmxr7g00FAbaWYCPhUQ7h25HG9EXOA9LAKznCk8iK2dvYqyCoX/AT
+ bh=pAZDjeecp6rsXv/22TRVi6mFQYwYZQxzVZ7EkKQ7Log=;
+ b=NeEEZRkVw4/ZYL9IfEvfTbPWR4tgG/MXAaeWn1+ZjSGidF2KnEovqinKaPEhp1y/DPdH+Crve
+ uBU3sga4qM2DvGxMP9c4yyxmwm1kHeFXW5bfG61ea9DPXqZtVxw68g3
 X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
  pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
 
-This patch series adds fixes and improvements in the ad7124 driver.
+The ad7124_soft_reset() function has the assumption that the chip will
+assert the "power-on reset" bit in the STATUS register after a software
+reset without any delay. The POR bit =0 is used to check if the chip
+initialization is done.
 
-Fixes:
-- properly compare config values
-- add a delay after reset to allow chip initialization
+A chip ID mismatch probe error appears intermittently when the probe
+continues too soon and the ID register does not contain the expected
+value.
 
-Improvements:
-- reduce the number of SPI transfers
-- ensure that after probe the ADC is in idle mode
-  and not continuos conversion mode
+Fix by adding a 200us delay after the software reset command is issued.
 
-Another thing that could be considered is improving the config pop
-behavior as kfifo_get() will return the least recently added config
-instead of the least recently *used* one.
-
-This could be an issue when multiple channels are using the same "old"
-config and the LRU considers that one as the least recently used.
-
-If this is considered a valid issue, I can add another patch for it.
-
+Fixes: b3af341bbd96 ("iio: adc: Add ad7124 support")
 Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
 ---
-Dumitru Ceclan (4):
-      iio: adc: ad7124: fix chip ID mismatch
-      iio: adc: ad7124: fix config comparison
-      iio: adc: ad7124: reduce the number of SPI transfers
-      iio: adc: ad7124: set initial ADC mode to idle
+ drivers/iio/adc/ad7124.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/iio/adc/ad7124.c | 61 ++++++++++++++++++++++++------------------------
- 1 file changed, 31 insertions(+), 30 deletions(-)
----
-base-commit: 380afccc2a55e8015adae4266e8beff96ab620be
-change-id: 20240731-ad7124-fix-37aec7fe0b6b
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index e7b1d517d3de..54d4c5597696 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -762,6 +762,7 @@ static int ad7124_soft_reset(struct ad7124_state *st)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	fsleep(200);
+ 	timeout = 100;
+ 	do {
+ 		ret = ad_sd_read_reg(&st->sd, AD7124_STATUS, 1, &readval);
 
-Best regards,
 -- 
-Dumitru Ceclan <dumitru.ceclan@analog.com>
+2.43.0
 
 

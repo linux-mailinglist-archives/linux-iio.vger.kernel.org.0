@@ -1,131 +1,185 @@
-Return-Path: <linux-iio+bounces-8098-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8099-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C82942EBC
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 14:38:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FD0942ED5
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 14:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3764B24CB6
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 12:38:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C823E1C214BF
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Jul 2024 12:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5F11B14F6;
-	Wed, 31 Jul 2024 12:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116CD1B011A;
+	Wed, 31 Jul 2024 12:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S1qsWHLK"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="SKk6NUS0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02olkn2089.outbound.protection.outlook.com [40.92.43.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B0B1B1406;
-	Wed, 31 Jul 2024 12:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722429454; cv=none; b=KZ5hH3OsFIRvd3uqRB8OExrElszkQm8aUqI0i8ZCM1SI7qWp3NDJt/F8fs9L0I/aVd+rx5ifcK7/bXfV4PwIFx6kcvlHEM52bxJKff/OXKnZjQq6hny+si/enDceDTMfLqQSqPhF8UYmGtLEXGlh6Q1fvTsBzaJIU48z8dyF48U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722429454; c=relaxed/simple;
-	bh=UwRYvAN7LNB8VUvCepUM1zAD2MkiMuj+x2+rgIaqKLM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uDAi6B47fM4SxwDXj0XfDDnVEcLL1U5Uz/gQtkWhyn1z9he5WSfIjm4OokfVCOUr0xs32ksyIliBI2MVKXryRW7apvt1vARioXnSIKckEOLLnsUwYDKXYB6uhQEsszEHiNEnjMRMXA+RpD9JHW/wHA6XgaMG+QZRlgauPTGxrVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S1qsWHLK; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2f149845d81so20095661fa.0;
-        Wed, 31 Jul 2024 05:37:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722429451; x=1723034251; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UU5X7a5HgxCluEnZF+3TvBQHOtwCPJFDpNa5mbVP2Io=;
-        b=S1qsWHLKwEN1m8gE/lFSUE+ctF8Ig1RRuyhT2GZZ8x+CQFgCitDRgmY/j4sWv8W96V
-         0XSuCeUXOHTPtHpvzg9Q5YPONHj0I833KR4TFQfe1dpVEOIss6THSkkJSAZgRtLFPSaJ
-         TV9cGCaZ53W1V+DelixcxCuHBRjApiZUb3spzu4FYYVRcxhEJZbgEMec7faK+LoczDgN
-         leRSRq5NDmLz9rZSk16ljcSQavkU+5WlTmkFcaZvlQvmD6sr1Cy1rYA3oJN79IxaFJSC
-         CXuKl77YaeBukzp0FAULWv6b1ildYBTLMpA0KCetkPlrqz0AiNYWnF0/yqCowjZWENa5
-         Ma/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722429451; x=1723034251;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UU5X7a5HgxCluEnZF+3TvBQHOtwCPJFDpNa5mbVP2Io=;
-        b=ZHyshwSdkhdjLzn7rDqkJH1DOqBsE2grTH2KXDuzfa/YS9uO2bJFyJJi1vuq3TAcQ9
-         nBDjQ0X6zCDmbwRwFiHbiMM8L6+6Tvpb67PK4SWT0JOTd4+/Nw30UrmHQa6A+XH37UDj
-         aWHGBvTeYMuuTxwOpUzRA09DD2rqbDJVDk4eyqr286XimOjLcsZSCQNbcrEDZ3XEUt4n
-         k6tjM5BxxXu9Ime8auv+DxgHu8kASstjcVnQ2HYC2S4VhoScOqoEOc+eAzmjwdDX+JgA
-         cgKWjvWizbt3qkDrGL5DFx+7Gi3B+/ztGUU1YgSbgOwIPb/oqGtpZd12aJbE8yr+1Tre
-         FWAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXmb+gOr6E8gvrLyh9ifLwcLABNdAYrWrUMclxGeihQ1slUo3iNLHpkQ3EKGbU+uz2k9yr6YRMLmHL7eiZ3rm8he6Bf7TonjdO6Yi0ZMalaeqSoMMlU2xpvskXdsrLYUxutSJdXcirX
-X-Gm-Message-State: AOJu0YymabAcpfiEXGW1LZXZy/FdC5tpRlQ1DFLxOk38H3NMMHJrUji7
-	pvjhZ24SJoMG2ZHocT3feD+67LBHP5WVyoAtrgGdO9EEuL/1jGjAA+UJQhoWWjw=
-X-Google-Smtp-Source: AGHT+IHovvG3uQ4gbH4Wp0Lz9szD9FDkQ256iZXVZdBACrDdRWPF6ckXJmyjLshPzmuKCsD+FHD6mA==
-X-Received: by 2002:a2e:9e05:0:b0:2ef:2da9:655d with SMTP id 38308e7fff4ca-2f12ee24b24mr94483741fa.26.1722429450750;
-        Wed, 31 Jul 2024 05:37:30 -0700 (PDT)
-Received: from HYB-hhAwRlzzMZb.ad.analog.com ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bb64755sm20600465e9.36.2024.07.31.05.37.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 05:37:30 -0700 (PDT)
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
-X-Google-Original-From: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Date: Wed, 31 Jul 2024 15:37:25 +0300
-Subject: [PATCH 4/4] iio: adc: ad7124: set initial ADC mode to idle
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25A1B0116;
+	Wed, 31 Jul 2024 12:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.43.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722429712; cv=fail; b=UnRorNK1ifTLNkwolBdGklBeaSnE02Npnxyu9iw/3WhrDviLRNl3AgViHm0zhlyH5zLJfkbauie/lv2XaUT6NOw+qwP4g5HN2gYmuGSlF7n8uaxtoBa5VHjcb5v2iG0GUaJq1MkVwqtj7+ffrlAY5/YZXyCWTXCmEQxebM6/CCw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722429712; c=relaxed/simple;
+	bh=BhTl5Xl6UMBxaqO357EDsNoFxHi++2iBX/bRFkGT2Mk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uJWRM7QorYUJwSt3u9+Hb2s2B0Q+vsPeSbvEvw3nhRRyy/wPC7/S4bwpWBbz4Eoev068XvSTSvfLHFHQpBBuiVCf0QyFY7A0vcIenOi3QgyGB1zrBh/EBiuP12TJpt9t6rae7QnRdfvr1zo4xwFX8M4cc2b3QxJLsmbouXXPeqo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=SKk6NUS0; arc=fail smtp.client-ip=40.92.43.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vRUVbAgqr/A9Av5uc+U4S4yoMMdLGa8o54uhBhgIibzPJpUbESqgp9mF5XWLVjEFnL/WLIprWZm3XNNvnJQ4jEI145+X1aW2P7UXgBaDufAYlfF7qK8x2aw7pRS4jok79cXwXx9pyMVRBWz6qAOJ8JPujbMjhGxWysJgXVvMe1fsYuoTbQCqLXj5hFWY58Up4ntgzRSCkOpLklhQxd2eHLFSudSHKJBsRhiLQvw59PUviqJnHvprA3XZ0bsFrRp2HmoLoTSJkKB+ClDnniIbittcDqZdvX1CI7/KAqPlIWdBK/BM9IfHXKoVmwxr6eqWDE8zThMQma2HMDqKYA7QEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jvAHz4yQAL4uahyHS2xJojklvKG1O9ltEKPyNhuvyus=;
+ b=IIHlh7ZN68gBwVdRqudv9WJdaBCMTxmDSSKaKRVX82xDQVX7RaKo7kKtlqP5pacWgonmmY1kFOry0GP3mivXCGrKhDjKdXbnNYycxvbwUAacDnOTsMst3VkKEDWOgxLwj7YsXLq67Ikemf3R61ERODk5IodbdUtExiXsHRTghosggyEqD6TCHSLGUqnJ/HpMkM9I4ZhenMInJoKFZbV6mAO/LbyAtFD1O3s6Two04o4VMMzmsjo0pk2ag2h7S2E94iL5F941MTLKqN3J9d2pZWFodudZb3s6z0PETpCCAiGJ8S/EUpX7VjvLabk08bJ83qPjgCFuFdgncUKOhEja2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jvAHz4yQAL4uahyHS2xJojklvKG1O9ltEKPyNhuvyus=;
+ b=SKk6NUS0o1Qd1awIM7JuslDyjU7M96InRt1m4lDbDxS4OuIMooJ+Rfx/FY59+DQkE+Csiik56g4BkI0mUcBFIGsykwvDwY4QuZh6UR4xf7/U/frMxQFmkozKbfxQjCi+0xKT27ZFUgeErQk7RIPOHD0Y4HdiuufzGkjb8ViMdbyTGRg2b3vI5WZIWtKZcpn/oXHwhWttEc9B/9MYn6e+yFJoKR+N8bgxWx0KANfmFfrCO0FHV1skS571Xp7pmBIMGzZmvaf+/7oPyXhVG3X+ivZtGCd4hB0jdl4fE1qtTIK81yMNnd1lk3+WVp6tHzUNRpjFjly1eadb91ttVdkNcQ==
+Received: from IA1PR20MB4953.namprd20.prod.outlook.com (2603:10b6:208:3af::19)
+ by IA1PR20MB5075.namprd20.prod.outlook.com (2603:10b6:208:3a4::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.22; Wed, 31 Jul
+ 2024 12:41:48 +0000
+Received: from IA1PR20MB4953.namprd20.prod.outlook.com
+ ([fe80::ab0b:c0d3:1f91:d149]) by IA1PR20MB4953.namprd20.prod.outlook.com
+ ([fe80::ab0b:c0d3:1f91:d149%5]) with mapi id 15.20.7807.026; Wed, 31 Jul 2024
+ 12:41:48 +0000
+Date: Wed, 31 Jul 2024 20:41:16 +0800
+From: Inochi Amaoto <inochiama@outlook.com>
+To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, 
+	Inochi Amaoto <inochiama@outlook.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	=?utf-8?Q?Miqu=C3=A8l?= Raynal <miquel.raynal@bootlin.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml:
+ Add Sophgo SARADC binding documentation
+Message-ID:
+ <IA1PR20MB495346557FA84CC694D184A0BBB12@IA1PR20MB4953.namprd20.prod.outlook.com>
+References: <20240731-sg2002-adc-v3-0-5ac40a518c0a@bootlin.com>
+ <20240731-sg2002-adc-v3-1-5ac40a518c0a@bootlin.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240731-sg2002-adc-v3-1-5ac40a518c0a@bootlin.com>
+X-TMN: [O8KHsFodLQH44roKyqQXHZHp3CaipKc2f0C+yFNzIe8=]
+X-ClientProxiedBy: SGXP274CA0011.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::23)
+ To IA1PR20MB4953.namprd20.prod.outlook.com (2603:10b6:208:3af::19)
+X-Microsoft-Original-Message-ID:
+ <c2damdamehfyjniarkoozv3stf3hqmnpezlexufpz2pwtybvyq@nrsje5mdntw5>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240731-ad7124-fix-v1-4-46a76aa4b9be@analog.com>
-References: <20240731-ad7124-fix-v1-0-46a76aa4b9be@analog.com>
-In-Reply-To: <20240731-ad7124-fix-v1-0-46a76aa4b9be@analog.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Stefan Popa <stefan.popa@analog.com>, 
- Alexandru Tachici <alexandru.tachici@analog.com>
-Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Dumitru Ceclan <dumitru.ceclan@analog.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722429445; l=1102;
- i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
- bh=UwRYvAN7LNB8VUvCepUM1zAD2MkiMuj+x2+rgIaqKLM=;
- b=n0ZRGtPVxpL4Rk05uxWPt43ohRg3mz1iNocDGc8XE1o+kKsqrvXFYtDKdYsWvmLOzCIMj+B3w
- 1+cFmt40UczDA701gzvjQVf6ZAEAsnlfOm3v7aLVWeue2GVoz5meTC6
-X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
- pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR20MB4953:EE_|IA1PR20MB5075:EE_
+X-MS-Office365-Filtering-Correlation-Id: 443afc85-63dc-440d-32b5-08dcb15e2458
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199028|5072599009|19110799003|8060799006|4302099013|3412199025|440099028|1602099012|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	O3lyaCQeQH4z1XiBggPxMYv8mlc4ueWsV4fW9rbpWo1IP0vuiDouN+Q0qMVxKTEZfphExbnN72P8iZ1NCFOXKbg2sgCMFrTxc2gAbU3MzFZGsaR3BOU1HMcA47xqTCN/P8Dx0pl7ssfat84IIi5hPRONFo8Mk6dcAAEhD17njkixokIY+/tw2ido7hjHt9FIVLwEL4K6GgORamIyQhy8GeMqLnewqA4RZMyH6aliNWmv4SzLSIZNH6iIxoXdAkClMBcdeuZA2T7hLXR/cQJnIXsdzzEDoDi9prDP4eDJid6vibmAuUmPsBUaNKBjsRXX/D00s37+DYD7QnWLkOIRBSn0lJNTvDAkp0xYZnuGFUrJDaaYTqLilYkYRlgZJF3hTkLL8mU8BLWJ9Nau8a3NzMtOdmZvzl70g+G0auFKYf+ntPqcWUYEum75uQUPrevVk6NMIdo1TEyLgGmOCgVW525SF/RrqrbrkPjIxOmWWkiCLPbLrgIvNHIX8xsS9VflRBQInej78kNsuX+OHiEQVRc1F0mwhHxiPNxOGRNLfenaf4GWl+KNnpHignOH/2ewE7EvJSkZtZg5XbLaRXe3Pl6M4waMjJj7sOVOSfPQP9+8SwfSHS7Sqxkl2AV/EUe6A2Z53NN7N6gnlglkBjX6frb4ZZDlVqF1TNOLq6ZX69gcKkWu8Q0zlV4KNtlgzB0ADra7lA0YdKhKfXXsz+9ZVklnnbeVaXoKsXmnhkDQV39+JesFQBMU+swK45g/q7kcOAcJ28wZmZiwYnYDmnPOiPHmzzlXp98EPqyctz/hgXWG82KrM7rUPtZvHwla+6GVSB5dM0Xuh9N6RrqB9iTTTA==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GxKNvLDoQLiSzoOlDcFxRSjdkg64XnYBxRwVazbUzef/IsqI6KbsbajYFuEx?=
+ =?us-ascii?Q?g7QMSriK41ewpqy1V2/aLdIhuM04pDYr1wU2jqstVa8oMAvSGBY+pixeMCZ3?=
+ =?us-ascii?Q?LgMWi75i+qYpxXOVxP0IxJGDNPn/IiFH5IQuuPKUdcGn2vPaNI0qduhTZoh6?=
+ =?us-ascii?Q?S7C63Tv92/CyLRkt4MnM2x8qb2QoRItorD5rV/1nNECie0B14PBt7nzjDzPg?=
+ =?us-ascii?Q?ya5Cvm3tKiJyZ332dMmeSZUbiCXOgLvIBAuIpoxz97aNUlFmn5vthgULP3Se?=
+ =?us-ascii?Q?LVQa0MJ4B6/tifr3TGyvcNvXb67apciQ8ZVmN/3fZxfPVTRAlbThcijHORUH?=
+ =?us-ascii?Q?ctWpZYEVpD6mFGqAceAMbcrvAPni8KvZ1ppNv5ldvCOgNfg42AkbS+1gCK5Z?=
+ =?us-ascii?Q?8NVk69XEgemDNiI9luyEF64Il8dRVs6tRA8zZqp4+tzme2K+D7roNnIcfG1d?=
+ =?us-ascii?Q?D0ml63g+5OsmHVvYnaR7X70OC+d+i5P292wJsg0dMEFS8JAzKdx4An1zlT+I?=
+ =?us-ascii?Q?GEKNjRC9EdrzZYrerna2aw/rJiMkGJpjG9La1pUA0WD4mm6T7BXSJRTZbkrc?=
+ =?us-ascii?Q?np1FrBb0rlvt4M6PPD6283NXYPCEwwQ8WT+h5e3TXmJm1JgKvYMUUbTvA4R8?=
+ =?us-ascii?Q?OJvTWILV871b7bU/QGKRXpkWLqhqOehvwGkGu+65ewHelk+1ZKJb3ikmv91n?=
+ =?us-ascii?Q?Z4zUxFF4JPHIQ0r3tmnLkx0rYlzJt7HtTni1rrcPse0bBUoypVqcqKGT3+nv?=
+ =?us-ascii?Q?eZBIuAgW8Umt17l+sLoxWfo78sPDDh/guKiXhQ0rH4wyaWA7lLi5wPnXN4wQ?=
+ =?us-ascii?Q?1KQG3k6g50vtdAJpzoomK3F2kwnxV+TFcuyH0y7HPCgWZTuAV2RGl/vf2n8/?=
+ =?us-ascii?Q?y+5OM7+Eznm2fNyM6St0Ukyh5WQr9zXt/W1aL4WDWHfXEFxiiqqARgveZW+C?=
+ =?us-ascii?Q?ycobQy646dUAhXhod7f74EnaHdhE+m/MH6cXSg5o9c5jZYbW4dl0QgcYNGpH?=
+ =?us-ascii?Q?ldFebpEGf6B5aqVSylWmci5zsB+Mtx7urjvNQYx1iq0x7Sx2g4nf38Y+Btpb?=
+ =?us-ascii?Q?eW35psLqBi2WChyaCOpai+1MjfNLUbaCKwyV/SrxiVh6N265baHjrxY/oMgv?=
+ =?us-ascii?Q?uOrWdcs6iB1EKqeeQUWrWfZ9gryTsqtdGSe3r3xGpQCu01aKwKEsn1FsIVMA?=
+ =?us-ascii?Q?1hZZl83DLlFoXCFVn4VIYu4bJcPuTR4Vw+PJfnk6xe94jGQ6CSrMfuOoo8at?=
+ =?us-ascii?Q?ZNYBXYmv2Z7as2ajeBqf?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 443afc85-63dc-440d-32b5-08dcb15e2458
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR20MB4953.namprd20.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2024 12:41:47.7235
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR20MB5075
 
-During setup the st->adc_control is 0, which corresponds to a continuous
-conversion mode. The reset value for channel 1 is to enable it. The
-combined effect of these two is that the ADC will start conversions for
-channel 1 without them being read.
-This is not neccessarily a problem, but it is an unexpected behavior.
+On Wed, Jul 31, 2024 at 02:24:14PM GMT, Thomas Bonnefille wrote:
+> The Sophgo SARADC is a Successive Approximation ADC that can be found in
+> the Sophgo SoC.
+> 
+> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+> ---
+>  .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     | 48 ++++++++++++++++++++++
+>  1 file changed, 48 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+> new file mode 100644
+> index 000000000000..79d8cb52279f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+> @@ -0,0 +1,48 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/sophgo,cv18xx-saradc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title:
+> +  Sophgo CV18XX SoC series 3 channels Successive Approximation Analog to
+> +  Digital Converters
+> +
+> +maintainers:
+> +  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+> +
+> +description:
+> +  Datasheet at https://github.com/sophgo/sophgo-doc/releases
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - const: sophgo,cv1800b-saradc
 
-Set the ADC state to idle during setup to avoid this.
+There is no need to use "oneOF" and "items"
 
-Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
----
- drivers/iio/adc/ad7124.c | 3 +++
- 1 file changed, 3 insertions(+)
+Suggestions: add a compatible like "cv1800-saradc" as fallback
+and add use "sophgo,cv1800b-saradc" as specific compatible.
+Use the "cv1800-saradc" in the cv18xx.dtsi and override the
+compatible with specific one if necessary.
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 4d63cd5c9d04..47abefd0fe5f 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -899,6 +899,9 @@ static int ad7124_setup(struct ad7124_state *st)
- 	st->adc_control &= ~AD7124_ADC_CTRL_PWR_MSK;
- 	st->adc_control |= AD7124_ADC_CTRL_PWR(power_mode);
- 
-+	st->adc_control &= ~AD7124_ADC_CTRL_MODE_MSK;
-+	st->adc_control |= AD7124_ADC_CTRL_MODE(AD_SD_MODE_IDLE);
-+
- 	mutex_init(&st->cfgs_lock);
- 	INIT_KFIFO(st->live_cfgs_fifo);
- 	for (i = 0; i < st->num_channels; i++) {
+For example:
+- items:
+    - enum:
+        - sophgo,cv1800b-saradc
+    - const: sophgo,cv1800-saradc
+- const: sophgo,cv1800b-saradc
 
--- 
-2.43.0
-
+Regards,
+Inochi
 

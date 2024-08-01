@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-8125-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8126-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16DE8944442
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 08:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A87944445
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 08:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 496611C21B4A
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 06:21:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553711C21A76
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 06:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0FE1A0AF2;
-	Thu,  1 Aug 2024 06:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A8B170A1C;
+	Thu,  1 Aug 2024 06:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dqQd41u2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bovwho/k"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481B2170A2F;
-	Thu,  1 Aug 2024 06:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A471A08A4;
+	Thu,  1 Aug 2024 06:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722492843; cv=none; b=iRn17Yf7jDfoykRjWgrf5CDsBAlSf/jQ5O89JqSCd6G47zOt3iU4DQsMIEr2QAmYRfVFzbIL0hAUNWDmuR+xGemO+ZWTZxlNa109bB2RtG/UYv+BRF9K3Kq/+DV6iw3E+Ac3/9Vhgm7+zth8Nd2Pl2SLyFVfK1dXmAnTAnRP/uo=
+	t=1722492845; cv=none; b=WsxVO4D/hdDZYYyAsncNPdyaxDF41vtQhVKktTiXwuOSrR3w5AqnNq7BLzasiDwW1Dv7yDc6NTSJHA0IH4Ud/ntLEqYSNt6mt+R6Rm40LFeK7fOwrMKUc4a+HsddNP6Cd0XJqC9TRdPtZMN8ykCwQdRSbcv44FROmhch07bwFkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722492843; c=relaxed/simple;
-	bh=yyQNHjFv6OaCNbO9wuo6ZoLCj4JK3H1u8HwFjN8qxho=;
+	s=arc-20240116; t=1722492845; c=relaxed/simple;
+	bh=i0sBRG11zXAIKwjcoVFnL1Y8Swho6X1BW3kA0cfdhTg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Bj7Dh3Czl80JwKMYT0ObmvOqxBwcf43tVTBR2U/b0iA6/MuiVCflt4myieSgdxZ9xa8HzHzPYrS8cqc7TyRym+SgsPYtyE2UmEDxWirS9zFd7MepyZYSacV2bM0sR27gCnClXWfh/nvIq12TUItx6L9DEYRpJCDEu69i6+Z7pQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dqQd41u2; arc=none smtp.client-ip=209.85.167.52
+	 In-Reply-To:To:Cc; b=WyhWA6AjF399m2SYmPrU7pOktBlITWIDTiHAtJiHltUxrpjh7Yhy9qucOZ43dn0b7SjcBSd2YPy0GOTBhe21dPomm9pA9W3x4UIVLfX2lB/J2NUlZ/vCjqtZzdit7ePbXVRgv7AOluQ+q1sZDsKVwR5ZIGyXC0UtbCD6u5d+CsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bovwho/k; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52f04c29588so11410551e87.3;
-        Wed, 31 Jul 2024 23:14:02 -0700 (PDT)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-369c609d0c7so4489185f8f.3;
+        Wed, 31 Jul 2024 23:14:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722492840; x=1723097640; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722492842; x=1723097642; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=enx9v8ZRoRb0TNxn5/5uQkDbor2QF+9a6iuc6VG5jiY=;
-        b=dqQd41u2ovAeeOdENvLN8+kEvkNlwaqugIl+/VxPbEGOtLY4v5g9eStY6L0F9QYhSU
-         uKLJHksJjNtvb1ZkZd9Cun8EQNtyA7Y/DQSrmwvxeHEh+pfPeawvgJ8GpfdWjNhjViU8
-         q6hS2V/cYrmpXHA5HFUaMNMjGPykNfNXQ8Nvf2lmB11CcNjoCKSOTG640ynBEfzDUaNN
-         kY+2xWsaGeXrSglDWZefBsnpHAUHrbHpKVTg7rWdd15UbzD7dzxE7iIZk+iwTN06+aFG
-         rUEoZ0jufFXP7Y2FRXPGMOYRlMr8Qj0oH+YX3PdhlOANNEP3kp0s8GWjGK4WKi8hZKfV
-         8tbg==
+        bh=CNuDB4bLwR4acprYzX2JMVmPgj/lKzcikki7sLZSJG0=;
+        b=Bovwho/k4yDvfqoSjHdLIS60/G7fhkw9rdfCv9uEYqDjtEFk4cZS9/O6QswdOYXJKA
+         AY3WuQTxlxYCCphfZZTiZRJZaqkyZxk7HAGvPfmTLyQwl3SBd2bl6XwJcNlbfrSPmSRm
+         YYP58zxYJx0XYwWO/dAbS/IsqtAc7gSfXxNGNQ+imymm+DD9j2YUkogJKX27EWWoW3+e
+         7LE5DzBHY9A+wzZ5K7LzoUUh56MXS69u/Fnx3aXwquUkcTkBzSnFVfvs4FQGVa+dT5pr
+         ZJYQYpxqxsqslJOHJ6gXABbRiiPdmNGBghY/NyXwTlaN0U27Plf9uC/M1malWdZxm/3g
+         jnQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722492840; x=1723097640;
+        d=1e100.net; s=20230601; t=1722492842; x=1723097642;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=enx9v8ZRoRb0TNxn5/5uQkDbor2QF+9a6iuc6VG5jiY=;
-        b=qxzw/OmThCM4MrKe3ZSbV0PyCwwhdXNTuNM/n5jJFVnIIsvSBAfukD36KxrRqJePnq
-         Gtiz4Y7DBsbqzBvY+yRg+Gl6qn8WQucRcWFDeHE6L4a6j1EFUcpH5XntvHcJ28CbiOB8
-         YEhWdd6NIawB3wm535MFaLfrujJ1nqnN9EaUmPjqYuRD5m+b8n6zf6UpURkuysQC4o9E
-         W7fftGwe5LfDtdxuEyrbAvt5hqxuxSQ8O7qx/H8u8jGUsRmhzXvUixmBXJiygKp2PFxD
-         WoxsI67pqlmwYfHH8BYLmV3I00AK4xE65r1pzDWMTHCZZ0czIbv2ZDJvB4ZX0NQ3VDlB
-         saSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVH3mZvqLvjfjxm/kfI1fTc34KGwRtuOSwj8gvuGl3w9lpGbBeHaERU3oLr3u0UPfCRFspR62reRPjm+TLbJ68IHvUVEFDXpeCI9FVfSREoxsYER8NXMYLimfHWqRwQHVPH1Dybo3NGBojM2MlY8iiFED4dSHmi0c7YZ0Sq1pRbXTGX0w==
-X-Gm-Message-State: AOJu0YzKBednYT4AQ7quraKoBLmuDbvKjWboD4OgtNDXuCbyMZViHYF5
-	SRJuGyRxNaciKs7JjsSoEEKgfHpD4ng78BHolqqLK1Kf4JJa9bOGFH1PX06k
-X-Google-Smtp-Source: AGHT+IHQ5i0GroWo5AeLzUxGRqZlnfM9Dsi09xbpsd44bG5iNXixHisdHZvKayig69C53T7CfBFZJQ==
-X-Received: by 2002:a05:6512:3e14:b0:52c:dc57:868b with SMTP id 2adb3069b0e04-530b61aa001mr839626e87.13.1722492839474;
-        Wed, 31 Jul 2024 23:13:59 -0700 (PDT)
+        bh=CNuDB4bLwR4acprYzX2JMVmPgj/lKzcikki7sLZSJG0=;
+        b=uJMaBKZhAfsf4W+jDJj7HKYcw3kl/UC0wtnJlwqKNe+2LpdTNElpRzwNX0oSWg/+h0
+         s54OvcE8Vzp0a8djD43YvLZc1Xv3NtNJ8J4TEU/N7odi7xYu5RTrpubcHIBx0eRzjqSl
+         vfx0kBXtcJqkf2VMUbWGgV/p3cY6+FhoemEQoROowwofu4vIAMSB63ekYxpJSH4xJciz
+         aKGb9rJfqb/kOhYsbCpkZU04h/y28Bzv+cChRnBQBeciKbdbMY6XzvveGFwl+gihlzGh
+         CEeBRGwtD8UUbNAShJSR+9x7J6UjFCzCiDk85otFkpTlZunL9KN87s5KKCexUtWVEe3B
+         DB0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVoLpqXJEjqrAVJku65sfxrfKxjxWFiHfA9cBcm+v/nloCkqRMEUvoqps7wTmL8LwDKDlMdtQwXhwW+cjd8Hy4N75SpyEjqudRpGnWZ5nmvjsJIGqcNWd1gX19F1zZtM54NIE9F1DAZ+iGudSvpG+6swawm1bXe/UKZiPXl/WQVU+jXtA==
+X-Gm-Message-State: AOJu0YyE4PcmIOk7zx6+KTJtlZqXw+NUfnoCxHtWLQn2r+pjy8XfoUd+
+	U+w7o62yh1WjhbI7xsXXsfZy3nHgHoHsnaSQDJrpxo8BzWbTJIvsfZbtXYBj
+X-Google-Smtp-Source: AGHT+IEvftdwznEgDkq633cEgtwng1mS7I9fQC5OIBPjDd3jttKupLDcxY7G5Nlc3ySfC//AjuL7Gw==
+X-Received: by 2002:a05:6000:1445:b0:368:4b9d:ee2c with SMTP id ffacd0b85a97d-36baace1998mr1455919f8f.19.1722492841664;
+        Wed, 31 Jul 2024 23:14:01 -0700 (PDT)
 Received: from [127.0.1.1] ([213.208.157.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36b367c032bsm18696455f8f.12.2024.07.31.23.13.57
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36b367c032bsm18696455f8f.12.2024.07.31.23.13.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 23:13:59 -0700 (PDT)
+        Wed, 31 Jul 2024 23:14:01 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 01 Aug 2024 08:13:51 +0200
-Subject: [PATCH 2/4] iio: adc: ad7768-1: use device_* to iterate over
+Date: Thu, 01 Aug 2024 08:13:52 +0200
+Subject: [PATCH 3/4] iio: adc: xilinx-ams: use device_* to iterate over
  device child nodes
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240801-device_child_node_access-v1-2-ddfa21bef6f2@gmail.com>
+Message-Id: <20240801-device_child_node_access-v1-3-ddfa21bef6f2@gmail.com>
 References: <20240801-device_child_node_access-v1-0-ddfa21bef6f2@gmail.com>
 In-Reply-To: <20240801-device_child_node_access-v1-0-ddfa21bef6f2@gmail.com>
 To: Suzuki K Poulose <suzuki.poulose@arm.com>, 
@@ -96,46 +96,51 @@ Cc: coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
  linux-leds@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722492833; l=1237;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1722492833; l=1411;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=yyQNHjFv6OaCNbO9wuo6ZoLCj4JK3H1u8HwFjN8qxho=;
- b=oiQRLvjRafZ6kChiVJ1SXsWmSE4ZPM8Bzb8wvKCGEJJKYDspf8vhiz7JFcKhI2WNCnGKJSsdP
- w0X7lZ8NT9fBHmm9TcOg7g6kH5uj3CiLje7PopravaIDQy3sFa+0VMB
+ bh=i0sBRG11zXAIKwjcoVFnL1Y8Swho6X1BW3kA0cfdhTg=;
+ b=7m5HHkACNNgu/mKXKiw3ayPLFGCDzWUt0OJixovqW9e6tKnbUu5tW6DIs8OjCzuCw1sjzjPGM
+ 1aSWHyGe+yAAbReOXBk5pMYYe2cBhrBvsU4VvOuvv1pEID9ysZtlWuo
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Drop the manual access to the fwnode of the device to iterate over its
-child nodes. `device_for_each_child_node` macro provides direct access
-to the child nodes, and given that they are only required within the
-loop, the scoped variant of the macro can be used.
-
-Use the `device_for_each_child_node_scoped` macro to iterate over the
-direct child nodes of the device.
+Use `device_for_each_child_node_scoped()` in `ams_parse_firmware()`
+to explicitly state device child node access, and simplify the child
+node handling as it is not required outside the loop.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/adc/ad7768-1.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/iio/adc/xilinx-ams.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 70a25949142c..721672fe84ab 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -544,13 +544,10 @@ static int ad7768_set_channel_label(struct iio_dev *indio_dev,
- {
- 	struct ad7768_state *st = iio_priv(indio_dev);
- 	struct device *device = indio_dev->dev.parent;
--	struct fwnode_handle *fwnode;
--	struct fwnode_handle *child;
- 	const char *label;
- 	int crt_ch = 0;
+diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+index f051358d6b50..27d5e4a6f9d6 100644
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -1275,7 +1275,6 @@ static int ams_parse_firmware(struct iio_dev *indio_dev)
+ 	struct ams *ams = iio_priv(indio_dev);
+ 	struct iio_chan_spec *ams_channels, *dev_channels;
+ 	struct device *dev = indio_dev->dev.parent;
+-	struct fwnode_handle *child = NULL;
+ 	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	size_t ams_size;
+ 	int ret, ch_cnt = 0, i, rising_off, falling_off;
+@@ -1297,13 +1296,11 @@ static int ams_parse_firmware(struct iio_dev *indio_dev)
+ 		num_channels += ret;
+ 	}
  
--	fwnode = dev_fwnode(device);
 -	fwnode_for_each_child_node(fwnode, child) {
-+	device_for_each_child_node_scoped(device, child) {
- 		if (fwnode_property_read_u32(child, "reg", &crt_ch))
- 			continue;
++	device_for_each_child_node_scoped(dev, child) {
+ 		if (fwnode_device_is_available(child)) {
+ 			ret = ams_init_module(indio_dev, child, ams_channels + num_channels);
+-			if (ret < 0) {
+-				fwnode_handle_put(child);
++			if (ret < 0)
+ 				return ret;
+-			}
  
+ 			num_channels += ret;
+ 		}
 
 -- 
 2.43.0

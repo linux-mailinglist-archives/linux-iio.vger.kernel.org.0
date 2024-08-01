@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-8119-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8120-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E650943BE6
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 02:32:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 924B7943D60
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 02:57:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD9401F222E8
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 00:32:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CCE0282E91
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Aug 2024 00:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAF31A2C14;
-	Thu,  1 Aug 2024 00:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E3E1C5E63;
+	Thu,  1 Aug 2024 00:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFeOk97A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhgIxK6n"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477DF1A2C03;
-	Thu,  1 Aug 2024 00:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE0E1411DE;
+	Thu,  1 Aug 2024 00:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471322; cv=none; b=nYABnMnwH2AuqQ4ZwEzPiO8WdBwPRhTUAE4qIHTrR2k+QnctlWqHybuuaZwAK1EXMEudU1/zbVf1fZkzqhbthIOs8w+9gFwcpTCSNBOeZXc0I3aj0gtAiShXEkayTAoTGZU+AGm2sFsTEmCgsYsWgkGFZpL/n2f2sqlLIYZuO5k=
+	t=1722471878; cv=none; b=tZ0D5/jTeJfUeSKny8TyFxunC/R9B3Kvu21CQqREsqeJ8UpKx0/ipJoWjDvZFNaOEo5arf5O4MCqvFCjgDKrhntnYPVC0AvpaOb/6ZhtRkrINkg/kCC7el7m5fDVXpaEl4SKqypmPdUcVubf6Ub96mzG4OiJwa01oeGCxaeoEH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471322; c=relaxed/simple;
-	bh=v7SxaHk712SJkQcxYXR/E/V6XPOirmkRolJHxkrNSJg=;
+	s=arc-20240116; t=1722471878; c=relaxed/simple;
+	bh=jK++fEcjlrnuZogHA0A28gCg01sR5JP/w9DktcUETgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2M3hztofw3sWZGcOdDl/MKWu8g9mIX8cmYSGtv1KuoQTxnf2Jt58AOQPfNO4em0gW0vLLh0x0Vra1++gLBuSoMR/mIKMNTa1wABM082wYVsOOjp1L3bcKNnb2+VhrhM57BrWlLcHtHSmiwP4DSeU40R0WdZ+OssSFxgLibwbUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UFeOk97A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1B5C4AF0C;
-	Thu,  1 Aug 2024 00:15:21 +0000 (UTC)
+	 MIME-Version; b=CM1gJPdOjhNmhmq0kl944Tl97BjG0tfTyGloVWHTcaPB0tife3gz0NGmPN6Us+QdhWstGuP1HvjaRHZrthJXLsRFgDxzhWbLjj5hIaaikpFT3na1pE81HZOYXOcc0XTgpuIXrqeDo21vV5rx/QY6jWUXzHF5Kwa59TvIsPniQ60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhgIxK6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63845C4AF0C;
+	Thu,  1 Aug 2024 00:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471322;
-	bh=v7SxaHk712SJkQcxYXR/E/V6XPOirmkRolJHxkrNSJg=;
+	s=k20201202; t=1722471878;
+	bh=jK++fEcjlrnuZogHA0A28gCg01sR5JP/w9DktcUETgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFeOk97AO/XcM+8bpnfmNGRVUpwEI+iFtTDrlD9WrOGXNcSGjSHKXgZcr4rRBkoEJ
-	 vfMPSdltcUAzwZnlzdhmtS07BC79gmceA83SoUEUwORR05SH7VV1zbEvXS5Jo/1/4C
-	 B5h7hDLDa9iBgoZORy6cMTVSHqLb0ui5xUJ5MC5sKov7CYdCodAVOB/BxB4wL0h9Wu
-	 3aMfqCktHSW8Wf474+YqmIyBtAdd0miH6IenIvFO73J/Tcr4XVDaqhEWbq+zqGxMC8
-	 vSeWYLvIzLXQE+b+O60bKCIzEFSOBC/eo8oy7pno8ZTx1AKzdpzKhkWtWmwQ4bqd4z
-	 NHXqQfwFO4lYA==
+	b=BhgIxK6nlffsAAtSgRgH/ro4x3w/x2rrBfkk81Lhhe8zes/4AOGfXTaIaYssQEBk9
+	 rjYfIcCkn+msfZMsED08TrglSrESTqeOjZsUmHJXffmSZ0vddFYOYLmJkBokn8YpEU
+	 XqQFvpuYp46dAqWJ4A5hu15gfFsa9RvZmT6/pDmFOjQE9qJabQnMV0O3Za+eQOcT/r
+	 syz+vxEaGgJqbIQ2uEBXSjhikzPgB3FgZX/2vqsG1WVG3Yn6LeNfZhc4KsBjStVIeb
+	 pfAW8zpNMVcJWcxRVxdfaJ73+4MbtGvJWg4T2UHHoAU+Uy34b4fMLNW7mhm6yz7myL
+	 hlCTHc0fGJNRg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,12 +50,12 @@ Cc: Julien Stephan <jstephan@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>,
 	jic23@kernel.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 073/121] driver: iio: add missing checks on iio_info's callback access
-Date: Wed, 31 Jul 2024 20:00:11 -0400
-Message-ID: <20240801000834.3930818-73-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 50/83] driver: iio: add missing checks on iio_info's callback access
+Date: Wed, 31 Jul 2024 20:18:05 -0400
+Message-ID: <20240801002107.3934037-50-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
-References: <20240801000834.3930818-1-sashal@kernel.org>
+In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
+References: <20240801002107.3934037-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.10.2
+X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
 From: Julien Stephan <jstephan@baylibre.com>
@@ -103,10 +103,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 37 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index fa7cc051b4c49..2f185b3869495 100644
+index 5e1a85ca12119..121bde49ccb7d 100644
 --- a/drivers/iio/industrialio-core.c
 +++ b/drivers/iio/industrialio-core.c
-@@ -758,9 +758,11 @@ static ssize_t iio_read_channel_info(struct device *dev,
+@@ -752,9 +752,11 @@ static ssize_t iio_read_channel_info(struct device *dev,
  							INDIO_MAX_RAW_ELEMENTS,
  							vals, &val_len,
  							this_attr->address);
@@ -119,7 +119,7 @@ index fa7cc051b4c49..2f185b3869495 100644
  
  	if (ret < 0)
  		return ret;
-@@ -842,6 +844,9 @@ static ssize_t iio_read_channel_info_avail(struct device *dev,
+@@ -836,6 +838,9 @@ static ssize_t iio_read_channel_info_avail(struct device *dev,
  	int length;
  	int type;
  
@@ -130,7 +130,7 @@ index fa7cc051b4c49..2f185b3869495 100644
  					  &vals, &type, &length,
  					  this_attr->address);
 diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-index 910c1f14abd55..a64f8fbac597e 100644
+index 19f7a91157ee4..f67e4afa5f94b 100644
 --- a/drivers/iio/industrialio-event.c
 +++ b/drivers/iio/industrialio-event.c
 @@ -285,6 +285,9 @@ static ssize_t iio_ev_state_store(struct device *dev,
@@ -164,10 +164,10 @@ index 910c1f14abd55..a64f8fbac597e 100644
  		this_attr->c, iio_ev_attr_type(this_attr),
  		iio_ev_attr_dir(this_attr), iio_ev_attr_info(this_attr),
 diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 485e6fc44a04c..39cf26d69d17a 100644
+index 7a1f6713318a3..b855565384757 100644
 --- a/drivers/iio/inkern.c
 +++ b/drivers/iio/inkern.c
-@@ -543,6 +543,7 @@ EXPORT_SYMBOL_GPL(devm_iio_channel_get_all);
+@@ -562,6 +562,7 @@ EXPORT_SYMBOL_GPL(devm_iio_channel_get_all);
  static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
  			    enum iio_chan_info_enum info)
  {
@@ -175,7 +175,7 @@ index 485e6fc44a04c..39cf26d69d17a 100644
  	int unused;
  	int vals[INDIO_MAX_RAW_ELEMENTS];
  	int ret;
-@@ -554,15 +555,18 @@ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
+@@ -573,15 +574,18 @@ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
  	if (!iio_channel_has_info(chan->channel, info))
  		return -EINVAL;
  
@@ -200,7 +200,7 @@ index 485e6fc44a04c..39cf26d69d17a 100644
  	}
  
  	return ret;
-@@ -750,11 +754,15 @@ static int iio_channel_read_avail(struct iio_channel *chan,
+@@ -801,11 +805,15 @@ static int iio_channel_read_avail(struct iio_channel *chan,
  				  const int **vals, int *type, int *length,
  				  enum iio_chan_info_enum info)
  {
@@ -218,7 +218,7 @@ index 485e6fc44a04c..39cf26d69d17a 100644
  }
  
  int iio_read_avail_channel_attribute(struct iio_channel *chan,
-@@ -917,8 +925,12 @@ EXPORT_SYMBOL_GPL(iio_get_channel_type);
+@@ -995,8 +1003,12 @@ EXPORT_SYMBOL_GPL(iio_get_channel_type);
  static int iio_channel_write(struct iio_channel *chan, int val, int val2,
  			     enum iio_chan_info_enum info)
  {

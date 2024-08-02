@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-8155-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8156-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8A89463C2
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Aug 2024 21:23:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816539463C4
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Aug 2024 21:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 970F8283190
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Aug 2024 19:23:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2EBB1C210AA
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Aug 2024 19:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503EC165F17;
-	Fri,  2 Aug 2024 19:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA1F166F04;
+	Fri,  2 Aug 2024 19:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VtlibLJ+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZfTgWCJy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98580165EEB;
-	Fri,  2 Aug 2024 19:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89624165F0B;
+	Fri,  2 Aug 2024 19:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722626577; cv=none; b=VCjsnlfhyKfoCdKnKPD8d+1rzIy3SowgKD8mqoMXRXfOd24gr58jBPbdg8Fwx1iTnQ6z+LLpKk8x4yPJXF6nHokDHORY+Owf+X1m1YfbFo0ia3AgymFNn7YJ5BLMgLPzg2kSgc/v8VS62IYumxIh2R6P4U+YO0vXs/BGegZWEl8=
+	t=1722626578; cv=none; b=g4DIJj5UVeCF7DkMKXwBao3fC/jfl7B4KxC02EZX9wtpUj3MTB+4ngff/RZW0PQEFwz7Na0bXQFz4y0vzl+PblDt3K3lv5kRcZACDXgdI/JnLEzsL89An0iBNr1wty7aQd7bdXq2adeeula6eXZTCzhmOVkF2v8bbnemC74hIg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722626577; c=relaxed/simple;
-	bh=5a+ymo3BBR1upvcXnfIAo+PqatW4K0NQ636IZHuJqs0=;
+	s=arc-20240116; t=1722626578; c=relaxed/simple;
+	bh=4y5dka9Ir5lnHkbs38KhflB8tgwWZxeU5OvpvbN1pks=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Tz4uk8n4UZYg1/m1TjtokXwsPK5q3IZSqmmYby1nprnu8laSwm6B8rHzOjQivZn6Rh0mV9SA0JInrrDcdoTJbGEIHgJmhvSbgHsa1KWxF5PtEZ7uHGPH8mXu4CY1IGOp+CoMMQhXP4tE/bk/HA8r5eqsV6oiPon3Pn9wmAmnMPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VtlibLJ+; arc=none smtp.client-ip=209.85.167.181
+	 MIME-Version; b=ulyQOOdD3HwHChJFuZK10ay0htC0KlnY+z2QeSHNpUP6VPIjsDHQ4LNCTXE8hrBWdV9JG+kS/iDBJWdiTY/fi6jZKrvOhySbRKZ4sFWty1nOXHW0yyzgsgKFQJGveEdexNKh0PaIhpwom6geSSM5829IhRWLpKrLuTBYIOc9zAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZfTgWCJy; arc=none smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3db22c02a42so5064142b6e.3;
-        Fri, 02 Aug 2024 12:22:55 -0700 (PDT)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3db23a6085aso1950518b6e.1;
+        Fri, 02 Aug 2024 12:22:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722626575; x=1723231375; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722626576; x=1723231376; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VW8pLbjHmp58tJfvrusMBZ0t6nfvqNtc57mmOOIaTIw=;
-        b=VtlibLJ+5oaz1yFscCzxp8ExvjV12oRZ3RM1h1fkByGDXBD1IekYo/7XaMaDz6l6mp
-         AqNObWwR+TSWCrA2GzFLRnFPGL0gGb/DdPOIqossjr2BmazIJplvxCo+jwmCE6haihv7
-         4SRkYpmf3T6raKOUvoaszEcZw+L5Jhcn+2cqtaGRdq5VpP5/MA6nu2Lop2lQsncYKHVL
-         KtLELAMEQEqSt+071KYPb15vn9XdHohc/SYUNdO8Th2AGLbmjld8MsWaO4v0qp+o4Rgz
-         9IHMAe8ldX2x7kdXrJesdgHknE1XmJkln1TtpD1ixbzv+eGWyRv2DuqHdzZgkofOiNo+
-         g69g==
+        bh=TOyuQfbILcMGTmLZPccNjk0siFr1lyw/4cIfSrAVrWo=;
+        b=ZfTgWCJyq3xXgL+N4XQd8rJJoBwB+RZLez5oSlQEutoQqUgeAYB930+3eUKlQiI3FS
+         NYUDVr8igGE+o8Vd53VUDtOvG56DsbrdStrXOoxU4IWIxAPs1q7znSVMgjgggs5v/SsS
+         vR2aiSuDT+IvjLgsatDdwLr6+Oe3qvI88nzWo5mQs7zFNJK1EIawUMkqvpKxuMCbnXAz
+         ZPhUjD8ko6etKinWjzirVutWMfVDGG/1JHmQ8gBgwWJuyTvNRvRkHc+jwV12OV3ttGAt
+         a4s0lr/Gp5t8P0CMi5kBjxU/BoLox+qStalTwO4JQQ6Fz60/AnZs/cy2QZgzSAi+X2YW
+         UteQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722626575; x=1723231375;
+        d=1e100.net; s=20230601; t=1722626576; x=1723231376;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VW8pLbjHmp58tJfvrusMBZ0t6nfvqNtc57mmOOIaTIw=;
-        b=kW+EiVF+MZH2kVTyL83kNWS3tlnxs/jbWZv4CgCUQmjxj+HNj5ZYZm0oe5tCz/z7q5
-         KeTJez2ULt0ifj0gfR0TFQG6FCfRxlkkeuacU6H9P3JYp1ghjHdrcwcSzlMdT1R3zzqM
-         ff/48nmVgIPVar3I8VjeU8xJMYm00PnlCll9BfD6dciVL9s9RGHfVK9IVET4REVgKF5p
-         Ax0l731xDS5/cR9qlSa1EkFSlHNGVTmKlCnP7KSB62S6eNIBM1sK80/z5qXWWSH63Ye/
-         8545PjHyBSExhKlzKwYV222BW+dspmWPmR3RZdHzI1VjvxTP8qZ/p2SKSVpNrken7FnK
-         ancw==
-X-Forwarded-Encrypted: i=1; AJvYcCWW9cAxY8RlppEiBQpt7DRLwBnJDdRZUTkq5wdUWJ/SyCVE+A/Pp9oEmIHGLiLXeWM+iNGoV5cDVK0kJkVRNT1HoeM8+8TFLkFgkXCIhh6aOwdDhalq03CaIYybVkuYhWYTIgw32Q==
-X-Gm-Message-State: AOJu0YzytBbFL6EUCQs0Dc5mw/sqVUKpGcrAWqyobY6iNyQP/Pctkxqd
-	Xt3XWqGd7OZQJ7hXyBe00m9+ksxvtskBKguvGGVPb9DA6IRrDO9Q
-X-Google-Smtp-Source: AGHT+IGLrF7R/GoK7DvLxn2rE5wHYPa4hHdeD3olNUeNmJFauek8wLdUUrmSSS7uheaq9kYw3f4lNA==
-X-Received: by 2002:a05:6808:f8a:b0:3d9:dfef:d7c8 with SMTP id 5614622812f47-3db55817bf8mr5537828b6e.27.1722626574804;
-        Fri, 02 Aug 2024 12:22:54 -0700 (PDT)
+        bh=TOyuQfbILcMGTmLZPccNjk0siFr1lyw/4cIfSrAVrWo=;
+        b=DsVc6KxPwmVe3xMYMKoIY9rbkDgPHyYdssQo0RsysfZnmbezlHtpuiRWXJj1rk+xOF
+         8m50ZYfvteSnsSim5LCmzO4AaDFnKpvJELiBKSHTD/+2h1woOTILEvUX7RfORKu23zsc
+         KTZlwgazLzvb95xGY++cXJtWwxllJqPDbZauvimsxauH4EdGATuvs5ZnJVdDVzJpyO9f
+         qS6LaeC6Eu4so4/UBm9jhpPVUHR8SAE9cxZ8sgrQQk0Y/OnPwBAE8N8N23GdDtkHghI4
+         8UNmNnlNLHSAJ936fSCA+hDk/p+aUDUpruSKLP/vKxMsLaEI4lAnidEDtwigs+qwo7zp
+         nYcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5fDwtcoPtRieTB4+Gm7TXHMpcmRicGskbftlCkq/Lk8yqKzP99Mfc0cs5/bz5YplhS13Vk4UKJk2oytJ88Jo0MbZAPga3mUroPUYYcPB0tOaSdiV+2ASE+zCHG9w19LBefH8lBg==
+X-Gm-Message-State: AOJu0Yxxy83OTLAbKFKidOF23D3BTvXiTlBGUUuxYAjHmmXCY83ybRzr
+	55HGbVaNZfVsx846GI/7kgdGmp04HibQHKfDlOHjl/tT5SOYr5yr
+X-Google-Smtp-Source: AGHT+IFxPdAe/2YdHaq99lURfivc8IRArlYVgwZnu48DQyuvdfvclsbedQRdAd0XWC+Tjce6SDTJNQ==
+X-Received: by 2002:a05:6808:1304:b0:3d5:6529:bea0 with SMTP id 5614622812f47-3db537d3682mr2277502b6e.6.1722626575664;
+        Fri, 02 Aug 2024 12:22:55 -0700 (PDT)
 Received: from localhost.localdomain ([2600:1700:fb0:1bcf::54])
         by smtp.gmail.com with ESMTPSA id 5614622812f47-3db563b7065sm584592b6e.46.2024.08.02.12.22.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Aug 2024 12:22:54 -0700 (PDT)
+        Fri, 02 Aug 2024 12:22:55 -0700 (PDT)
 From: Chris Morgan <macroalpha82@gmail.com>
 To: linux-sunxi@lists.linux.dev
 Cc: linux-pm@vger.kernel.org,
@@ -89,9 +89,9 @@ Cc: linux-pm@vger.kernel.org,
 	lars@metafoo.de,
 	jic23@kernel.org,
 	Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH V2 06/15] power: supply: axp20x_usb_power: add input-current-limit-microamp
-Date: Fri,  2 Aug 2024 14:20:17 -0500
-Message-Id: <20240802192026.446344-7-macroalpha82@gmail.com>
+Subject: [PATCH V2 07/15] dt-bindings: power: supply: axp20x-battery: Add monitored-battery
+Date: Fri,  2 Aug 2024 14:20:18 -0500
+Message-Id: <20240802192026.446344-8-macroalpha82@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240802192026.446344-1-macroalpha82@gmail.com>
 References: <20240802192026.446344-1-macroalpha82@gmail.com>
@@ -105,69 +105,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Chris Morgan <macromorgan@hotmail.com>
 
-Allow users to specify a maximum input current for the device. Some
-devices allow up to 3.25A of input current (such as the AXP717), which
-may be too much for some implementations.
+Document the monitored-battery property, which the existing driver can
+use to set certain properties.
 
 Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 ---
- drivers/power/supply/axp20x_usb_power.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ .../power/supply/x-powers,axp20x-battery-power-supply.yaml  | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/power/supply/axp20x_usb_power.c b/drivers/power/supply/axp20x_usb_power.c
-index cd9e92f2ce71..69fbb5861934 100644
---- a/drivers/power/supply/axp20x_usb_power.c
-+++ b/drivers/power/supply/axp20x_usb_power.c
-@@ -80,6 +80,7 @@ struct axp20x_usb_power {
- 	struct iio_channel *vbus_v;
- 	struct iio_channel *vbus_i;
- 	struct delayed_work vbus_detect;
-+	int max_input_cur;
- 	unsigned int old_status;
- 	unsigned int online;
- 	unsigned int num_irqs;
-@@ -323,6 +324,13 @@ static int axp20x_usb_power_set_input_current_limit(struct axp20x_usb_power *pow
- 	if (intval == -1)
- 		return -EINVAL;
+diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
+index e0b95ecbbebd..f196bf70b248 100644
+--- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
++++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
+@@ -28,6 +28,12 @@ properties:
+           - const: x-powers,axp813-battery-power-supply
+       - const: x-powers,axp813-battery-power-supply
  
-+	if (power->max_input_cur && (intval > power->max_input_cur)) {
-+		dev_warn(power->dev,
-+			 "reqested current %d clamped to max current %d\n",
-+			 intval, power->max_input_cur);
-+		intval = power->max_input_cur;
-+	}
++  monitored-battery:
++    description:
++      Specifies the phandle of an optional simple-battery connected to
++      this gauge.
++    $ref: /schemas/types.yaml#/definitions/phandle
 +
- 	/*
- 	 * BC1.2 detection can cause a race condition if we try to set a current
- 	 * limit while it's in progress. When it finishes it will overwrite the
-@@ -661,6 +669,18 @@ static int axp20x_regmap_field_alloc_optional(struct device *dev,
- 	return 0;
- }
+ required:
+   - compatible
  
-+/* Optionally allow users to specify a maximum charging current. */
-+static void axp20x_usb_power_parse_dt(struct device *dev,
-+				      struct axp20x_usb_power *power)
-+{
-+	int ret;
-+
-+	ret = device_property_read_u32(dev, "input-current-limit-microamp",
-+				       &power->max_input_cur);
-+	if (ret)
-+		dev_dbg(dev, "%s() no input-current-limit specified\n", __func__);
-+}
-+
- static int axp20x_usb_power_probe(struct platform_device *pdev)
- {
- 	struct axp20x_dev *axp20x = dev_get_drvdata(pdev->dev.parent);
-@@ -697,6 +717,8 @@ static int axp20x_usb_power_probe(struct platform_device *pdev)
- 	if (IS_ERR(power->curr_lim_fld))
- 		return PTR_ERR(power->curr_lim_fld);
- 
-+	axp20x_usb_power_parse_dt(&pdev->dev, power);
-+
- 	ret = axp20x_regmap_field_alloc_optional(&pdev->dev, power->regmap,
- 						 axp_data->vbus_valid_bit,
- 						 &power->vbus_valid_bit);
 -- 
 2.34.1
 

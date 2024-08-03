@@ -1,56 +1,55 @@
-Return-Path: <linux-iio+bounces-8198-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8199-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 749669469EF
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Aug 2024 15:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD0D9469F4
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Aug 2024 16:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EF84281ABD
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Aug 2024 13:58:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF93281A01
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Aug 2024 14:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A1F14F9D0;
-	Sat,  3 Aug 2024 13:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FE41509B4;
+	Sat,  3 Aug 2024 14:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dYcrXcWw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUIIn+02"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC09F49659;
-	Sat,  3 Aug 2024 13:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084D51509A2;
+	Sat,  3 Aug 2024 14:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722693522; cv=none; b=M3+0vIoPwMnAT19Dk9wXfWSerQ/KoBBb4oZdc5q/tJZ5cTMohqmmCk4+6OLx97mkNKnId3FD3lq0UZa9prYj92EONXWhwwXCXiBhCJwqvfW9SHtGxfPbg6jG8fwIyV8hhViR3I248wwc84z08lkF8C7bNrj6WSniBRDO2K4zT1k=
+	t=1722693603; cv=none; b=rJY2ugp1l49DZ8ez/hrmPAJQesR+WK9HrjWtvUA2AJS2DMa/4j4f7Di54gIbObZaSuxM/yWPGk2AV3WpC8FBHzEgEiUqVcsvqwW3lY8irYzr5DOM7mFJd6O57ZTj5iuAdgVcfEXQHgyfLVQ2ikBtH9NocifgQHRFtNdhFAdtoMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722693522; c=relaxed/simple;
-	bh=AIeZbb0qUxCQ1LM+7ww/qViytruP6dlDAjaHpz/D+BI=;
+	s=arc-20240116; t=1722693603; c=relaxed/simple;
+	bh=WkWZa+0mangtTlCr2epe0OP1425q3NQWizY05UhJpVo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BQbnKcHwl7665Al8nQ3C7/AvMdlD/SZW/AgWJlNoA4Bdy9hVmjmUO8p3xE50V8IKabfnCSUvr4xkUWQsm4h0OIJtkD/ymiWSpPELm0KHJ8czHyhLh75zN91dNIhhb8052XS33fSWfgEpj6LiEuvWpIqfOypSk4rtO7hVVEZB5hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dYcrXcWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7B4C116B1;
-	Sat,  3 Aug 2024 13:58:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Gk63lXyEBM7aVGFAj2DIn87MNeOCuaHRnHbatZuaHwbKhBb7nxmUbxF1Bqaz69dc2MRtnuBF0mvrbJS99mFgDyIqjFIqJsA+qlfVGDrXurSKcBK0XcQN6zrDWLqBl+k1Dqgzhu4x+7hzRvuUPvftSuZqURZTWR0l+cIXIJuOM+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUIIn+02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBCDC116B1;
+	Sat,  3 Aug 2024 14:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722693522;
-	bh=AIeZbb0qUxCQ1LM+7ww/qViytruP6dlDAjaHpz/D+BI=;
+	s=k20201202; t=1722693602;
+	bh=WkWZa+0mangtTlCr2epe0OP1425q3NQWizY05UhJpVo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dYcrXcWws9dmrvoqXds0UjflzCZDu85f457RZA4wND5EMJP7UgvxNn5lhOEPQhAcM
-	 eTxXVQ7dlLGzvfMfzviLEjzv6nG1tqOb8pfBMGgdQ6HbDgg1kmXlImoiH8OHQ3oN5w
-	 Dd+ban79c86ENC2hhY94JPv0oWkGfoY+oQAZs3UzWAI0rMNRlcfAWZBX1iDRITFmyi
-	 ig98dhOFfk8By5iDuiKWqKKVmFxrI7obbdSUopJJhe2LKRQbDUIrgIZh6Ha9SVgMCV
-	 xt4q39nsrHM+9XfKmffAxR2EKtfgk5OUuY/LrlJM12xE0qXvpP+slAgMzdWTIY1RMX
-	 ZZGQMHUCEa1Ew==
-Date: Sat, 3 Aug 2024 14:58:36 +0100
+	b=UUIIn+02+0vQusls/kCfanFrNSWK1+G005GqUNlL+IV4AJHfR34Q2GfSfQiR/hxg3
+	 7VrlzESiVntb1/DDpHPvWzyL4paEo79J2UZ0ytSqyKmx39MEnuPS8GFTQbEdv6SPCH
+	 qiYGUkH+1iDwyN1UqcF0mrp9TDU1Bx6ZaoJvfpcwScoZaOPzuscpmQDqCrrGa/4MzL
+	 ZDAQugm+IuNYY4Kd/J0V4rrQmT006UT2B14qtftweURgiPvolbMxi1ZOYCvU8Yvrbl
+	 KUlZXnrging/nh3xNSyegICvlXUp2aUGY3P32mUCHGhFYtugMpbRk/fNwfHbsqAaCr
+	 RgqY9MmtMBncw==
+Date: Sat, 3 Aug 2024 14:59:56 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Abhash Jha <abhashkumarjha123@gmail.com>
-Cc: linux-iio@vger.kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] iio: light: apds9960: Add proximity and gesture
- offset calibration
-Message-ID: <20240803145836.4e372899@jic23-huawei>
-In-Reply-To: <20240801143857.16438-2-abhashkumarjha123@gmail.com>
-References: <20240801143857.16438-1-abhashkumarjha123@gmail.com>
-	<20240801143857.16438-2-abhashkumarjha123@gmail.com>
+Cc: linux-iio@vger.kernel.org, anshulusr@gmail.com, lars@metafoo.de,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 0/3] Replaced IIO_INTENSITY channel with IIO_LIGHT
+Message-ID: <20240803145956.2562ad71@jic23-huawei>
+In-Reply-To: <20240731063706.25412-1-abhashkumarjha123@gmail.com>
+References: <20240731063706.25412-1-abhashkumarjha123@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,189 +60,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu,  1 Aug 2024 20:08:57 +0530
+On Wed, 31 Jul 2024 12:07:02 +0530
 Abhash Jha <abhashkumarjha123@gmail.com> wrote:
 
-> Proximity and gesture offset registers perform offset correction to
-> improve cross-talk performance. Added `calibbias` to the proximity
-> and gesture channels.
-> Provided facility to set calibbias based on the channel number.
+> Hello,
 > 
-> Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+Don't change the cover letter title between versions.
+It makes them hard to track.  That title should not reflect changes
+form previous version and it should always tell us which driver
+the modifications are being made to!
 
-I nearly applied this with tweaks, but I think there are enough improvements
-that can be made to make it worth bouncing back to you one more time
-
-Thanks,
-
-Jonathan
-> ---
->  drivers/iio/light/apds9960.c | 69 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 68 insertions(+), 1 deletion(-)
+> The first patch in the series adds support for configuring the gain and
+> resolution(integration time) of the ltr390 sensor by writing to the
+> respective registers. Then the available values for gain and resolution
+> that are listed in the datasheet are provided via the `read_avail`
+> callback. 
 > 
-> diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
-> index 1065a340b..e7f2e129c 100644
-> --- a/drivers/iio/light/apds9960.c
-> +++ b/drivers/iio/light/apds9960.c
-> @@ -146,6 +146,25 @@ struct apds9960_data {
->  
->  	/* gesture buffer */
->  	u8 buffer[4]; /* 4 8-bit channels */
-> +
-> +	/* calibration value buffer */
-> +	int calibbias[5];
-> +};
-> +
-> +enum {
-> +	APDS9960_CHAN_PROXIMITY,
-> +	APDS9960_CHAN_GESTURE_UP,
-> +	APDS9960_CHAN_GESTURE_DOWN,
-> +	APDS9960_CHAN_GESTURE_LEFT,
-> +	APDS9960_CHAN_GESTURE_RIGHT,
-> +};
-> +
-> +static const unsigned int apds9960_offset_regs[] = {
-> +	[APDS9960_CHAN_PROXIMITY] = APDS9960_REG_POFFSET_UR,
-As below - I don't think this needs to be looked up here as it's the only proximity
-channel + we have two registers to over.
-
-Either, make this a 2D array and include both registers + some code below
-to only write a register if non zero, or drop the first entry. Fine to leave
-it as 0 with a comment saying why.
-
-Advantage of a 2D register with 1 or 2 addresses per channel is that you can
-have just one code path below.
-
-> +	[APDS9960_CHAN_GESTURE_UP] = APDS9960_REG_GOFFSET_U,
-> +	[APDS9960_CHAN_GESTURE_DOWN] = APDS9960_REG_GOFFSET_D,
-> +	[APDS9960_CHAN_GESTURE_LEFT] = APDS9960_REG_GOFFSET_L,
-> +	[APDS9960_CHAN_GESTURE_RIGHT] = APDS9960_REG_GOFFSET_R,
->  };
->  
->  static const struct reg_default apds9960_reg_defaults[] = {
-> @@ -255,6 +274,7 @@ static const struct iio_event_spec apds9960_als_event_spec[] = {
->  
->  #define APDS9960_GESTURE_CHANNEL(_dir, _si) { \
->  	.type = IIO_PROXIMITY, \
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_CALIBBIAS), \
->  	.channel = _si + 1, \
->  	.scan_index = _si, \
->  	.indexed = 1, \
-> @@ -282,7 +302,8 @@ static const struct iio_chan_spec apds9960_channels[] = {
->  	{
->  		.type = IIO_PROXIMITY,
->  		.address = APDS9960_REG_PDATA,
-> -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +			BIT(IIO_CHAN_INFO_CALIBBIAS),
->  		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
->  		.channel = 0,
->  		.indexed = 0,
-> @@ -316,6 +337,42 @@ static const struct iio_chan_spec apds9960_channels[] = {
->  	APDS9960_INTENSITY_CHANNEL(BLUE),
->  };
->  
-> +static int apds9960_set_calibbias(struct apds9960_data *data,
-> +		struct iio_chan_spec const *chan, int calibbias)
-> +{
-> +	unsigned int reg;
-> +	int ret;
-> +
-> +	if (calibbias < S8_MIN || calibbias > S8_MAX)
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&data->lock);
-> +	switch (chan->channel) {
-> +	case APDS9960_CHAN_PROXIMITY:
-> +		/* We will be writing the calibbias value to both the */
-> +		/* POFFSET_UR and POFFSET_DL registers */
-Use multiline comment syntax.
-
-		/*
-		 * Write calibbias to both POFFSET_UR adn POFFSET_DL
-		 * registers.
-		 */
-
-> +		reg = apds9960_offset_regs[chan->channel];
-> +		ret = regmap_write(data->regmap, reg, calibbias);
-
-I can't see an advantage in having the local variable reg.
-
-Easier to just put the array inline.
-		ret = regmap_write(data->regmap,
-				   apds9960_offset_regs[chan->channel,
-				   calibbias);
-
-Mind you, this always hits the same register I think. So just
-hardcode the value here.
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret = regmap_write(data->regmap, APDS9960_REG_POFFSET_DL, calibbias);
-> +		if (ret < 0)
-> +			return ret;
-> +		break;
-> +	default:
-Use an explicit type here as will make it more readable.
-Throw in a default with an error return just to make it clear there are
-no other valid values.
-
-As above, I'd suggest you can combine these two paths easily anyway 
-by making the second write optional based on whether offset_regs[chan->channel][1] == 0
-or not.
-
-> +		/* For GOFFSET_x we will be writing to the */
-> +		/* respective offset register */
-Fix this comment as well.  Is it trying to say that unlike the above,
-only only register is relevant?  I'm not sure that's worth saying
-as it's pretty obvious from the code.
-
-> +		reg = apds9960_offset_regs[chan->channel];
-> +		ret = regmap_write(data->regmap, reg, calibbias);
-Similar here.
-
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	data->calibbias[chan->channel] = calibbias;
-Blank line here.
-
-> +	return 0;
-> +}
-> +
->  /* integration time in us */
->  static const int apds9960_int_time[][2] = {
->  	{ 28000, 246},
-> @@ -531,6 +588,12 @@ static int apds9960_read_raw(struct iio_dev *indio_dev,
->  		}
->  		mutex_unlock(&data->lock);
->  		break;
-> +	case IIO_CHAN_INFO_CALIBBIAS:
-> +		mutex_lock(&data->lock);
-> +		*val = data->calibbias[chan->channel];
-> +		ret = IIO_VAL_INT;
-
-This driver would benefit a lot from use of guard() and scoped_guard()
-but that isn't related to this patch beyond this function making
-me take a look at read_raw.
-
-
-> +		mutex_unlock(&data->lock);
-> +		break;
->  	}
->  
->  	return ret;
-> @@ -564,6 +627,10 @@ static int apds9960_write_raw(struct iio_dev *indio_dev,
->  		default:
->  			return -EINVAL;
->  		}
-> +	case IIO_CHAN_INFO_CALIBBIAS:
-> +		if (val2 != 0)
-> +			return -EINVAL;
-> +		return apds9960_set_calibbias(data, chan, val);
->  	default:
->  		return -EINVAL;
->  	}
+> The second patch adds a new channel for the ALS feature of the sensor.
+> The same configuration of gain and resolution has to be provided for this
+> channel as well. As there are two IIO channels now, we would need to
+> switch the sensor's mode of operation depending on which sensor is being
+> accessed. Hence, mode switching is also provided.
+> 
+> Then the third patch adds support for calculating `counts_per_uvi` based
+> on the current gain and resolution value.
+> 
+> Changes in v5:
+> - Replaced the IIO_INTENSITY channel with IIO_LIGHT channel
+> - We calculate the lux value directly using `als_data / (gain * int_time)`
+> - Provided a scale channel where the scale is 0.6 * WINDOW_FACTOR
+> - Link to v4: https://lore.kernel.org/linux-iio/20240730065822.5707-1-abhashkumarjha123@gmail.com/T/#m
+> 
+> Changes in v4:
+> - Added "bitfield.h" include to fix `-Wimplicit-function-declaration`.
+> - Link to v3: https://lore.kernel.org/linux-iio/20240729115056.355466-1-abhashkumarjha123@gmail.com/
+> 
+> Changes in v3:
+> - Added cover letter to the patch series.
+> - Fixed indentation in the patch description.
+> - Patch specific changes are listed below.
+> 
+> [PATCH v3 1/3]
+> 	- Cleaned up the spurious changes made in v2.
+> 	- ltr390_set_int_time and ltr390_set_gain now return -EINVAL to
+> 	indicate no match.
+> 
+> [PATCH v3 2/3]
+> 	- Used enum ltr390_mode inside the ltr390_data struct.
+> 	- Refactored `ltr390_set_mode` function according to the comments in v2.
+> 
+> [PATCH v3 3/3]
+> 	- Simplified the formula for `counts_per_uvi` calculation.
+> 	- Removed spurious whitespace changes introduced in v2.
+> 
+> - Link to v2: https://lore.kernel.org/linux-iio/20240728151957.310237-1-abhashkumarjha123@gmail.com/
+> 
+> Changes in v2:
+> - Split the single patch into 3 patches.
+> - Used FIELD_PREP to perform bit shifting.
+> - Used enum for mode selection instead of defines.
+> - Fixed indentation and whitespace issues pointed out in the comments
+> - Replaced `mutex_lock(&data->lock)` with `guard(mutex)(&data->lock)`
+> - Provided available values for gain and resolution via `read_avail`
+>   instead of sysfs attributes.
+> - Refactored `ltr390_set_gain` and `ltr390_set_int_time`.
+> - Used early returns instead of single exit points.
+> 
+> - Link to v1: https://lore.kernel.org/linux-iio/20240718104947.7384-1-abhashkumarjha123@gmail.com/
+> 
+> Regards,
+> Abhash
+> 
+> Abhash Jha (3):
+>   iio: light: ltr390: Add configurable gain and resolution
+>   iio: light: ltr390: Add ALS channel and support for gain and
+>     resolution
+>   iio: light: ltr390: Calculate 'counts_per_uvi' dynamically
+> 
+>  drivers/iio/light/ltr390.c | 238 ++++++++++++++++++++++++++++++++++---
+>  1 file changed, 220 insertions(+), 18 deletions(-)
+> 
 
 

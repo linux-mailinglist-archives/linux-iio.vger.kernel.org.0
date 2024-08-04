@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-8238-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8239-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B022F946FA2
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 17:38:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B09946FA6
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 17:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590231F21102
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 15:38:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E3181C2114D
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 15:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23D07581D;
-	Sun,  4 Aug 2024 15:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369488174E;
+	Sun,  4 Aug 2024 15:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m59AEzbl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXhtW/7u"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824D09461;
-	Sun,  4 Aug 2024 15:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5BE18040;
+	Sun,  4 Aug 2024 15:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722785896; cv=none; b=pz+74HG10fVSN1BhEydUMdAFd5rQsuLqXQ/tTLPq4vAzI1xC4jsCMG3Y36Xuzs7mL5Oxux+LBE5WM0kEaJZiMJehlctQXL/zk/mr5qnUMRP4mBY8Uf5cC+WqtrUbC5Jz81fu5eWO7Lt0CQangCF8JwPX8RDOPTl8K52EAzNp3JY=
+	t=1722785924; cv=none; b=ummVtPtI+ngoECO/3x+r2D2yhUuJhPx8UZc04zaXneuiI3fYHf9sp+uiIpRkvT+VQabBUxGVYh8odhdJcEt8cgOB9J0fh/S4nbOdG4WsDF0mD0iP8bgQnUllqv0pPK5ridIkoYTzaxXrtmst4biICH+gANNloqMNJ7kuMLixS+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722785896; c=relaxed/simple;
-	bh=/ZMz+ZZ31kuv+mPo053f0S7ocICUyP3EI18O2K2BhOs=;
+	s=arc-20240116; t=1722785924; c=relaxed/simple;
+	bh=R/UbLsXPf3XC9MZvs75ghY9OjVAtrNO+raJtJQ3VF9c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OaSRIoCbWIznvchMaTVly2ya7aYUUTv85vrp07pvva8l85KRYFmTNQIptNN5Eu4Uuuulv4PbKQTWCpROrITGhcuzcsb4hmeSXTHZZdzVONhRqmTuFlLhjlgIZ0X9vkrhscu3UglqipC/uxh07ySF5C7V6ZmWwG12b1krxoQoUPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m59AEzbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855AEC32786;
-	Sun,  4 Aug 2024 15:38:09 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=d1YdauVbxd7NeukM5zs+9gZ5bmIZFFOcLfYk6LRmP7vgRCY7v8t2d5Nyrj3mAp1a4O8yP0rALVs9R9/KoO+v3LTsuIEQKltBbL92NHC+xljHfevEIRNWszohGrKhD2l64BLKkzKZYnA7ZRFSWnuyz/0jGtJgxa1Ns4J7zmPlbM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXhtW/7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C12C32786;
+	Sun,  4 Aug 2024 15:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722785896;
-	bh=/ZMz+ZZ31kuv+mPo053f0S7ocICUyP3EI18O2K2BhOs=;
+	s=k20201202; t=1722785923;
+	bh=R/UbLsXPf3XC9MZvs75ghY9OjVAtrNO+raJtJQ3VF9c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m59AEzblk3vFqSqJqxngdUPui7onDnQnlgnuf96enM2C1yqC8Ex7DQXvaVlsr9gHZ
-	 JWgxZ/vAgyp55l8jU9Sc454cQQh3V7ZAutahgWWVMYIoCbbiCDAv43mIx4BNq9v4fH
-	 TeGAhjGwrZYmJZ9HhQ4TtjlV4p+W7SVXN4apjQuTlE7h3Av4u4B/q+2cwJk4edyY81
-	 9xqNKe70iOq/E8T0kCPZa+z9NHorYpXSj4mmqDWowbApzK/s9v4tDWbtSZtavfXq6w
-	 rU2/kqQMsBKw6Bt2q/rMO0LpgTCCk/OWskOQLStC1Zr0dTrtcG6ucmWU5xo7hf3jJd
-	 heFSvJrmDzlDg==
-Message-ID: <bb4d422a-96c3-40f9-b07b-e9b628ef6d1b@kernel.org>
-Date: Sun, 4 Aug 2024 17:38:07 +0200
+	b=aXhtW/7uBV7lSeV2+5MPwFFWWXR6NcWUz2Z0qN9W44TWCIuIy4cKw8wzdJXxwuh99
+	 KqUScPelGfnN6FlqIwzvovEWhKtWMbW6HXxp9og73ShftVpvOEg7XRIGvUEjp+XhDw
+	 jj1gtgnoPv3db1v6p9H19ZodWLmZS8OQF8951yChG8P3YCnxqMzX3PYO8LMHJVDHor
+	 AfhKaySlmBNmYY6/dQrMnuFY+GKLAJDSaHEQL3Nf/fBWiRuNfDQJB7vFMS6ChFnTOZ
+	 NpBsMnCWuTUemb0OQPbJ9t4kx+CDpDuYMcSnd+zJfYEnMIxci8VIsoxEVYSmDJud2U
+	 JT++1ykgUUnBw==
+Message-ID: <d160a6ae-b0e0-41c7-91d6-a398b89f775f@kernel.org>
+Date: Sun, 4 Aug 2024 17:38:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 07/15] dt-bindings: power: supply: axp20x-battery: Add
- monitored-battery
+Subject: Re: [PATCH V2 09/15] dt-bindings: power: supply: axp20x: Add AXP717
+ compatible
 To: Chris Morgan <macroalpha82@gmail.com>, linux-sunxi@lists.linux.dev
 Cc: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -62,7 +62,7 @@ Cc: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
  jic23@kernel.org, Chris Morgan <macromorgan@hotmail.com>
 References: <20240802192026.446344-1-macroalpha82@gmail.com>
- <20240802192026.446344-8-macroalpha82@gmail.com>
+ <20240802192026.446344-10-macroalpha82@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -108,20 +108,19 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240802192026.446344-8-macroalpha82@gmail.com>
+In-Reply-To: <20240802192026.446344-10-macroalpha82@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 02/08/2024 21:20, Chris Morgan wrote:
 > From: Chris Morgan <macromorgan@hotmail.com>
 > 
-> Document the monitored-battery property, which the existing driver can
-> use to set certain properties.
+> Add support for the AXP717. It has BC 1.2 detection like the AXP813
+> and uses ADC channels like all other AXP devices, but otherwise is
+> very different requiring new registers for most functions.
 > 
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
 
 Best regards,
 Krzysztof

@@ -1,48 +1,74 @@
-Return-Path: <linux-iio+bounces-8240-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8241-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DBE946FA9
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 17:39:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49351946FAA
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 17:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD0241F2135A
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 15:39:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC31F28182E
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 15:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA80A78C8D;
-	Sun,  4 Aug 2024 15:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019EE770E9;
+	Sun,  4 Aug 2024 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKFFO7ZB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9PYLmuf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1569461;
-	Sun,  4 Aug 2024 15:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E349461;
+	Sun,  4 Aug 2024 15:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722785940; cv=none; b=WP1DszvSbZDx+4JXP3VbRoHyd6zvxmzKFA8ckkpGFzOMC4mOSe9D0N50ovz2ExAtT2Q6/mZuM0Oy4M2vQixOTQ3A3uoDibiXDvk5Eyr6A32nBh5IQcyztW0srBu7SIHtYKvxManoTyuE+4MlrmgW0yKtz1nfT0lSIy9tPW4HaYc=
+	t=1722786056; cv=none; b=Y+6vJvO+2ZmokFmm4HafSTsEjokL08pbb+rRxb/0+F/azbM7rZqxbR5wfjTmAgOJ7saEiervSB42C5Yz/KfnlCfiNIxIznnlAC0/1FoSVeCGUaAz5PZeGY5/hfHdgX8FR75LNttEa2kQk0rh9FD+LFY/y/vh4dKgrMIqN6i1SQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722785940; c=relaxed/simple;
-	bh=0RcBONSyvTu2NeDfokbVG8c42Ck7qD/p+n3Ex+8p0Gw=;
+	s=arc-20240116; t=1722786056; c=relaxed/simple;
+	bh=stO15Vp2MTSUoK0r6Bw0WqMsKzKKaQBVjXW35KKw0Wc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LByHKLMDWp+BuJKgM9WFGTLLOwjZxIFsbg3/mBdXJLGVwv2H1ncVpDaNNwxXS7FelBPO+QfjVpO55dkIJ9pGmO78OLz0OU9QD5emQT2IfmKHCzKssN0GvZt7G1ZJaDO965H7L5p9Z1iKm8ZJ/N1Q67cmGzWT62HFMoV0IiQOIAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKFFO7ZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012DAC32786;
-	Sun,  4 Aug 2024 15:38:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722785940;
-	bh=0RcBONSyvTu2NeDfokbVG8c42Ck7qD/p+n3Ex+8p0Gw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aKFFO7ZBD9S9K33HLZY14nwEBO9VDI7jMf9lwwkzryJOcYZt188WUhDcxkwTdyDgs
-	 zmEY/sP5BD2j8qeIigBhV9DrVUZ53MgtNFOR2OeeHAb8dHpUsolUBrhXpIrNDwCJbR
-	 +4IyGJbD2MHgqfVh7LJ5Izalh2PpCHoX0lX0AnlMDe5V0SmHtvOwR+hNZNUc+9lc90
-	 kmDjEc9Q1ASzmHoeXifSFtw4UFyxoWSou3jtqJI+XvyY2Dmabvxwy1wCgI/AEn5Rsy
-	 iZqkLH9ZlY0eDzePLkjNL4dxtcgrNZ/Y/2NItwoOLkKpIpXOAaLoWyMi5ZhwlJiP5O
-	 iltO27ANSFDRg==
-Message-ID: <6318dd03-c41d-4675-af86-c509f02200f9@kernel.org>
-Date: Sun, 4 Aug 2024 17:38:52 +0200
+	 In-Reply-To:Content-Type; b=T+cMFsbblI0t4NTU2YSXKvKfjlK9PMDT4NlMaSQvg/JgcvDuNAvofP0KNccQIZYDtjzS+hHGVc5KT6TZZRLfx3AX9yZc0OvyxyT3MNGcs/nF45vpjqgxqE+nC3SxPYLemCrls5H4+JHHXYrkgTm1nJXwhvdQrAA4Hj4/sugyJuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9PYLmuf; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52f04c29588so15696198e87.3;
+        Sun, 04 Aug 2024 08:40:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722786053; x=1723390853; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qNZb+BVswMBSb2cwkZqZ2BFYdKJnDxJlOV2lgMbFE5k=;
+        b=Z9PYLmuf1c2ZB70Mpeee97L8uRrsbrvSVOtvnN0a5fs9Rc8oQoQoYnZNQ3bhczm3kk
+         rc0DxcUsbvnlRla6+eXUAoOs9uBKMw5HGfSAIsQBFWF+Pb2fMOr6s0jTBOOFmotfpgf1
+         LH4MGd5vHFxPiAKNMjT2vRRVrjcv5SSTNdg6dUA16Y/UtPq1FiImC76l6P1LIXMuRfaP
+         kMC0eX/F7grLtXRz28uG1sx8pX9/p1E8HIbNiHW3h9gAIkAmaLuyUxZGVWrbOj5+NY/j
+         aLhzUwBZdcnacv/V4FtxTU20og4x3XDXZpX+aXZhsshVBNQQyBOZX+ovQpZZflYuNNjq
+         6MMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722786053; x=1723390853;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qNZb+BVswMBSb2cwkZqZ2BFYdKJnDxJlOV2lgMbFE5k=;
+        b=xESOpUTEvP4C0lrMSwT58uHnJfVbsR4ThpJY+oOxalCbt6c8Hsq0Bj0ouw1O8hMzsc
+         x0DnZj9iuwJFmXWBsvcTRDAxt/iNNNw09zLPl1/K6pLGqRfkqe6HyufDch0ayi7FfeaB
+         cJ2bxIVop2svJc+pPJrVW6E/aWh0zC4xvNy+pzHR3GgruVeukZjEFVB3iK23MbwKw7fd
+         lDdLr7zrNI/7upvRtu5uCLOb9oBhaeB4tIIZrloHINy/6ykYdxwx18p+tt3vhL5ET4UE
+         C+2Y6bOhLDAjLwMUhu78aVfdF0QDhwVdEWje5TbIL7wESe3UQ5c6Q8mo9m0m50/se1z3
+         bQ3A==
+X-Forwarded-Encrypted: i=1; AJvYcCW50HDtCL5M6hCwGWVrWHSP4Gx0H8BaEBVTSmJdxxZ54dwfD9t1WguNHtiBh3UWA8jJO7E75fxdLtaXXpg8T5pOH/P28agD+fl6Y7kSEqDDh8LW9wijF/8pgfDv09TQfL4L3QcdrCL7
+X-Gm-Message-State: AOJu0YzZHsKJh6Maptfdiu3kLZV7CxobwY8zlHfVM5H4sOpnI7+XIGBE
+	rNMRhfS/8LTbcjJ+tqJq8ReOXoJtUfryIS09K00mXc22UGhUEws1
+X-Google-Smtp-Source: AGHT+IH2k84BS7srRcYYu8bjFP9JIewD3T1LchYzjZdmwHMc9YReQQB2D56rkmY8UnGSp3mWSlVDew==
+X-Received: by 2002:a05:6512:3105:b0:530:c323:46a8 with SMTP id 2adb3069b0e04-530c32346e8mr2835046e87.23.1722786052592;
+        Sun, 04 Aug 2024 08:40:52 -0700 (PDT)
+Received: from [192.168.1.127] ([151.49.86.220])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9c0b62esm343737066b.62.2024.08.04.08.40.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Aug 2024 08:40:52 -0700 (PDT)
+Message-ID: <b7e91e68-9f5f-4dd0-aa96-e57983e4a56d@gmail.com>
+Date: Sun, 4 Aug 2024 17:40:49 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,91 +76,155 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 10/15] dt-bindings: power: supply: axp20x: Add AXP717
- compatible
-To: Chris Morgan <macroalpha82@gmail.com>, linux-sunxi@lists.linux.dev
-Cc: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
- quentin.schulz@free-electrons.com, mripard@kernel.org,
- tgamblin@baylibre.com, aidanmacdonald.0x0@gmail.com,
- u.kleine-koenig@pengutronix.de, lee@kernel.org, samuel@sholland.org,
- jernej.skrabec@gmail.com, sre@kernel.org, wens@csie.org,
- conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
- jic23@kernel.org, Chris Morgan <macromorgan@hotmail.com>
-References: <20240802192026.446344-1-macroalpha82@gmail.com>
- <20240802192026.446344-11-macroalpha82@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240802192026.446344-11-macroalpha82@gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: bmi323: suspend and resume triggering on
+ relevant pm operations
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Jagath Jog J <jagathjog1996@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "Luke D . Jones" <luke@ljones.dev>,
+ Jonathan LoBue <jlobue10@gmail.com>
+References: <20240727123034.5541-1-benato.denis96@gmail.com>
+ <20240727123034.5541-3-benato.denis96@gmail.com>
+ <20240803164428.50fdd15c@jic23-huawei>
+Content-Language: en-US, it-IT, en-US-large
+From: Denis Benato <benato.denis96@gmail.com>
+In-Reply-To: <20240803164428.50fdd15c@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/08/2024 21:20, Chris Morgan wrote:
-> From: Chris Morgan <macromorgan@hotmail.com>
+On 03/08/24 17:44, Jonathan Cameron wrote:
+> On Sat, 27 Jul 2024 14:30:34 +0200
+> Denis Benato <benato.denis96@gmail.com> wrote:
 > 
-> Add binding information for AXP717.
+>> Prevent triggers from stop working after the device has entered sleep:
+>> use iio_device_suspend_triggering and iio_device_resume_triggering helpers.
 > 
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> ---
->  .../power/supply/x-powers,axp20x-battery-power-supply.yaml       | 1 +
->  1 file changed, 1 insertion(+)
+> Hi Denis,
 > 
-> diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
-> index f196bf70b248..5ccd375eb294 100644
-> --- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
-> +++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
-> @@ -23,6 +23,7 @@ properties:
->        - const: x-powers,axp202-battery-power-supply
->        - const: x-powers,axp209-battery-power-supply
->        - const: x-powers,axp221-battery-power-supply
-> +      - const: x-powers,axp717-battery-power-supply
+Hello Jonathan,
+> I'd got it into my head this was about main suspend / resume, but
+> it's runtime PM. I assume the s2idle uses only that level which is
+> interesting.
+> 
+I have catched the problem with s2idle, but I don-t fully understand
+it will manifest outside of said scenario, nor if it will at all and
+only s2idle is affected.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Anyhow, solution seems safe. We might be able to do something nicer
+> in the long run as potentially we could have the trigger driver
+> notified when all consumers have entered this state at which point it
+> could stop generating triggers at all.
+> Totally agree.
+> Anyhow, that's a job for when we actually care about it.
+> 
+> Applied to the togreg branch of iio.git and pushed out as testing
+> for 0-day to poke at it.
+> 
+I have made a mistake while cleaning up patch 1/2 for submission and lost a piece:
+the pollfunc->irq=0 you suggested in your first mail.
 
-Best regards,
-Krzysztof
+I would be more than happy to provide a v3, but if you prefer I can also send
+a separate patch.
+
+I am sorry about that and I would like guidance on what to do in cases like this.
+> For now I'm not keen to see this pushed into drivers where we don't
+> know if anyone is running into this particular situation.  We can
+> reevaluate that if we start getting lots of reports of this.
+> 
+I catched the issue while developing an application for a handheld PC.
+
+As the application will target these kind of devices we can apply the fix
+to every relevant driver (bmi260 comes to mind) and have that well-tested
+on multiple drivers.
+> I'm also not going to rush this in as a fix. We can consider backporting
+> it once it's been in mainline for a bit and no side effects have
+> shown up.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+Thanks,
+
+Denis
+>>
+>> Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+>> ---
+>>  drivers/iio/imu/bmi323/bmi323.h      |  1 +
+>>  drivers/iio/imu/bmi323/bmi323_core.c | 23 +++++++++++++++++++++++
+>>  drivers/iio/imu/bmi323/bmi323_i2c.c  |  1 +
+>>  drivers/iio/imu/bmi323/bmi323_spi.c  |  1 +
+>>  4 files changed, 26 insertions(+)
+>>
+>> diff --git a/drivers/iio/imu/bmi323/bmi323.h b/drivers/iio/imu/bmi323/bmi323.h
+>> index dff126d41658..209bccb1f335 100644
+>> --- a/drivers/iio/imu/bmi323/bmi323.h
+>> +++ b/drivers/iio/imu/bmi323/bmi323.h
+>> @@ -205,5 +205,6 @@
+>>  struct device;
+>>  int bmi323_core_probe(struct device *dev);
+>>  extern const struct regmap_config bmi323_regmap_config;
+>> +extern const struct dev_pm_ops bmi323_core_pm_ops;
+>>  
+>>  #endif
+>> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
+>> index d708d1fe3e42..4b2b211a3e88 100644
+>> --- a/drivers/iio/imu/bmi323/bmi323_core.c
+>> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
+>> @@ -2121,6 +2121,29 @@ int bmi323_core_probe(struct device *dev)
+>>  }
+>>  EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
+>>  
+>> +#if defined(CONFIG_PM)
+>> +static int bmi323_core_runtime_suspend(struct device *dev)
+>> +{
+>> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>> +
+>> +	return iio_device_suspend_triggering(indio_dev);
+>> +}
+>> +
+>> +static int bmi323_core_runtime_resume(struct device *dev)
+>> +{
+>> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>> +
+>> +	return iio_device_resume_triggering(indio_dev);
+>> +}
+>> +
+>> +#endif
+>> +
+>> +const struct dev_pm_ops bmi323_core_pm_ops = {
+>> +	SET_RUNTIME_PM_OPS(bmi323_core_runtime_suspend,
+>> +			   bmi323_core_runtime_resume, NULL)
+>> +};
+>> +EXPORT_SYMBOL_NS_GPL(bmi323_core_pm_ops, IIO_BMI323);
+>> +
+>>  MODULE_DESCRIPTION("Bosch BMI323 IMU driver");
+>>  MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
+>>  MODULE_LICENSE("GPL");
+>> diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
+>> index 52140bf05765..057342f4f816 100644
+>> --- a/drivers/iio/imu/bmi323/bmi323_i2c.c
+>> +++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
+>> @@ -128,6 +128,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_i2c_match);
+>>  static struct i2c_driver bmi323_i2c_driver = {
+>>  	.driver = {
+>>  		.name = "bmi323",
+>> +		.pm = pm_ptr(&bmi323_core_pm_ops),
+>>  		.of_match_table = bmi323_of_i2c_match,
+>>  		.acpi_match_table = bmi323_acpi_match,
+>>  	},
+>> diff --git a/drivers/iio/imu/bmi323/bmi323_spi.c b/drivers/iio/imu/bmi323/bmi323_spi.c
+>> index 7b1e8127d0dd..487d4ee05246 100644
+>> --- a/drivers/iio/imu/bmi323/bmi323_spi.c
+>> +++ b/drivers/iio/imu/bmi323/bmi323_spi.c
+>> @@ -79,6 +79,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_spi_match);
+>>  static struct spi_driver bmi323_spi_driver = {
+>>  	.driver = {
+>>  		.name = "bmi323",
+>> +		.pm = pm_ptr(&bmi323_core_pm_ops),
+>>  		.of_match_table = bmi323_of_spi_match,
+>>  	},
+>>  	.probe = bmi323_spi_probe,
+> 
 
 

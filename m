@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-8237-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8238-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BC1946F9F
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 17:37:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B022F946FA2
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 17:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC66B1C20D6C
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 15:37:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590231F21102
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Aug 2024 15:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB5974424;
-	Sun,  4 Aug 2024 15:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23D07581D;
+	Sun,  4 Aug 2024 15:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nkgfe0gq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m59AEzbl"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCF19461;
-	Sun,  4 Aug 2024 15:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824D09461;
+	Sun,  4 Aug 2024 15:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722785868; cv=none; b=O3bA1kjFDB8l+OrziOkRJU65D1RRJ6wfaeVeZBVE0JAx1Ux6iJd8FX18JCaMjrJaQ5sKLUs8dRzl9EfWFmQM4Y+2e+K4DL4fr9yrX25pahpWUa5tgNXLrykA5p7tlLnOOSmiAeKCJWwINEMvytghUnmgvC5tTHkVFLg9tjFaU24=
+	t=1722785896; cv=none; b=pz+74HG10fVSN1BhEydUMdAFd5rQsuLqXQ/tTLPq4vAzI1xC4jsCMG3Y36Xuzs7mL5Oxux+LBE5WM0kEaJZiMJehlctQXL/zk/mr5qnUMRP4mBY8Uf5cC+WqtrUbC5Jz81fu5eWO7Lt0CQangCF8JwPX8RDOPTl8K52EAzNp3JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722785868; c=relaxed/simple;
-	bh=1D1yYbizbvTddOa2OzJDc19Z9peLBKTUrhztOTlCwZU=;
+	s=arc-20240116; t=1722785896; c=relaxed/simple;
+	bh=/ZMz+ZZ31kuv+mPo053f0S7ocICUyP3EI18O2K2BhOs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hz4mrMlCa1eFsbuO+sFOffIV9iX1qFyj6WpCYJVWgN7xxnaPKhE2wGYPoX3j6PaIhdTKyuqMF6sPgJbP9wR2KXsk4RgQwY+UCxmy62xTApWSudR+rFU/FKaTnb0oKjsoBW1xFvuSqhQzZRu5VWE/SbZWPSzrUGAVdeX8LtFfDLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nkgfe0gq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A96C32786;
-	Sun,  4 Aug 2024 15:37:40 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=OaSRIoCbWIznvchMaTVly2ya7aYUUTv85vrp07pvva8l85KRYFmTNQIptNN5Eu4Uuuulv4PbKQTWCpROrITGhcuzcsb4hmeSXTHZZdzVONhRqmTuFlLhjlgIZ0X9vkrhscu3UglqipC/uxh07ySF5C7V6ZmWwG12b1krxoQoUPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m59AEzbl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855AEC32786;
+	Sun,  4 Aug 2024 15:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722785867;
-	bh=1D1yYbizbvTddOa2OzJDc19Z9peLBKTUrhztOTlCwZU=;
+	s=k20201202; t=1722785896;
+	bh=/ZMz+ZZ31kuv+mPo053f0S7ocICUyP3EI18O2K2BhOs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Nkgfe0gqFcs19CXUtaOQ2WQnOk7utUyLAbwDFrLni5t/7HAqOBGT6WRvpQFHTZHxz
-	 cFBAvkvR8KJNFU2DASNl1DmvT0iFECnVecGii6XXzzOmgKAk060nzlfswSqF8Zwo3S
-	 m8V4Ww3HGKb79uhpuQ25dw0LCVSxgLM2DyXm2KochuhV2Mid7t2dkUuGnG16areXwv
-	 Ua8ZvKcW60thZwuXiy//47OaNKCWN4EpA4v5lytK2+7XDiuvkb/bdn5c9paSkyH7Mf
-	 vc1X0ZL63ic5BVo03QIVv7leFkSpSjOt4KZbRRHGNpx3a40WtywGD5Fg9lcHCBBvtY
-	 2cqlk/2CLe/AA==
-Message-ID: <f5853d3a-cf67-4d19-8c7f-8901fd361709@kernel.org>
-Date: Sun, 4 Aug 2024 17:37:38 +0200
+	b=m59AEzblk3vFqSqJqxngdUPui7onDnQnlgnuf96enM2C1yqC8Ex7DQXvaVlsr9gHZ
+	 JWgxZ/vAgyp55l8jU9Sc454cQQh3V7ZAutahgWWVMYIoCbbiCDAv43mIx4BNq9v4fH
+	 TeGAhjGwrZYmJZ9HhQ4TtjlV4p+W7SVXN4apjQuTlE7h3Av4u4B/q+2cwJk4edyY81
+	 9xqNKe70iOq/E8T0kCPZa+z9NHorYpXSj4mmqDWowbApzK/s9v4tDWbtSZtavfXq6w
+	 rU2/kqQMsBKw6Bt2q/rMO0LpgTCCk/OWskOQLStC1Zr0dTrtcG6ucmWU5xo7hf3jJd
+	 heFSvJrmDzlDg==
+Message-ID: <bb4d422a-96c3-40f9-b07b-e9b628ef6d1b@kernel.org>
+Date: Sun, 4 Aug 2024 17:38:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 05/15] dt-bindings: power: supply: axp20x: Add
- input-current-limit-microamp
+Subject: Re: [PATCH V2 07/15] dt-bindings: power: supply: axp20x-battery: Add
+ monitored-battery
 To: Chris Morgan <macroalpha82@gmail.com>, linux-sunxi@lists.linux.dev
 Cc: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -62,7 +62,7 @@ Cc: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
  jic23@kernel.org, Chris Morgan <macromorgan@hotmail.com>
 References: <20240802192026.446344-1-macroalpha82@gmail.com>
- <20240802192026.446344-6-macroalpha82@gmail.com>
+ <20240802192026.446344-8-macroalpha82@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -108,38 +108,20 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240802192026.446344-6-macroalpha82@gmail.com>
+In-Reply-To: <20240802192026.446344-8-macroalpha82@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 02/08/2024 21:20, Chris Morgan wrote:
 > From: Chris Morgan <macromorgan@hotmail.com>
 > 
-> Allow specifying a hard limit of the maximum input current. Some PMICs
-> such as the AXP717 can pull up to 3.25A, so allow a value to be
-> specified that clamps this in the event the hardware is not designed
-> for it.
+> Document the monitored-battery property, which the existing driver can
+> use to set certain properties.
 > 
 > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> ---
->  .../power/supply/x-powers,axp20x-usb-power-supply.yaml       | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-> index 34b7959d6772..903e0bac24a0 100644
-> --- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-> +++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-> @@ -31,6 +31,11 @@ properties:
->            - const: x-powers,axp803-usb-power-supply
->            - const: x-powers,axp813-usb-power-supply
->  
-> +  input-current-limit-microamp:
-> +    description:
-> +      Optional value to clamp the maximum input current limit to for
-> +      the device. The supported min and max values will vary based on
-> +      the PMIC revision, consult the datasheet for supported values.
 
-If optional, then missing default. Anyway, you miss constraints.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 
 Best regards,
 Krzysztof

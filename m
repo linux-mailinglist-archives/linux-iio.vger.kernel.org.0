@@ -1,148 +1,166 @@
-Return-Path: <linux-iio+bounces-8249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07EF5947D1C
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2024 16:46:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAE5947D79
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2024 17:01:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B29391F21C1A
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2024 14:46:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8536F1F216BE
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2024 15:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820767F486;
-	Mon,  5 Aug 2024 14:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9D3157468;
+	Mon,  5 Aug 2024 15:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rBMwIb57"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUNOAheP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370BD27456;
-	Mon,  5 Aug 2024 14:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EDA15532E;
+	Mon,  5 Aug 2024 15:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722869188; cv=none; b=bTz9te9Hdz0GvGpyiD4GLj8PP+Duo0TNav8RuM7JE3gdVuvJvQ1lCGNXcCKHVL00wWwVXY9UmzKnvqHZEv1xAhgOgi9QGxcYKPo8sruF27WO7jr7MY1qn2QTM92tPB30aohNTbMa2YrDqv4Rul1iACW9j6itoBHkeiJLf8uA/tw=
+	t=1722870016; cv=none; b=I7Aw2V2ShFFcMERYANRRkMaZn4CRzCZ7DZz6cQRyS5wHAHouBTooejplonI4NRD6PAuZfcV0pAeimX3+6ciG5eUC5j/+F8s3OM5oDZ1G15DJCaEYZjd91aRod80pjoeKySJbmPMr0FmXObx8Ky9xfUKfluYcDXD6KP/+eW2XOLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722869188; c=relaxed/simple;
-	bh=94RXyxSLGcwjU1R2qw3Uebsb4WrWwGJbW2oeNed/Zkg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o6HvI5w+dpTYVHWh17wQce0izctvLpgzcK0td9CcF8AutZtpIzj+Q0UpJHFw/PKqDsPHBfoaJGfpPaBFBOVSaKFWOdsBmV1XqqGMabXWl3ZRCELKAaVOgPS7tkpueFNi18Cpp3/eCF2zmUbYMnKzesjQsBOOUlAv6zqrxCgbOvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rBMwIb57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610F5C32782;
-	Mon,  5 Aug 2024 14:46:23 +0000 (UTC)
+	s=arc-20240116; t=1722870016; c=relaxed/simple;
+	bh=jIaq6vsuhkY+v59gy2RIN65uUrzZIQmOWCABGta2eFA=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=ucChEA2FvUJ89HSq8vF1VkyB/Aoe5fkDoIKniElwO6XTZ+2ZthC3L8StHmi2ZNcpxa0I/Jwt+EU6UOpCd1mZ+oroHacV0yT3qOB8hh1f0cIgHveMRIXcym7aUX3aoT0IFeYSmHYMZndV+RPCQlgEsoVKMGm/71hAsEvNdv/903c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUNOAheP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510FBC4AF1B;
+	Mon,  5 Aug 2024 15:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722869187;
-	bh=94RXyxSLGcwjU1R2qw3Uebsb4WrWwGJbW2oeNed/Zkg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rBMwIb578KOJ8y8fazgn0wUuM+IOsZMWTkLgKsxUHOaOFgKdYHx4W4O7q00Kgja2F
-	 KAtgq+aQWFdwgVYFX2k8PemaY3q56vAdzdPY3Rl11XETgfLa4cxO9Bqhxzre1AnzAb
-	 NNJH+i9NsKoHkzdINRCbEqzOoJu/MpVu2qjgHVP3few2gi7pp3n6/9tqNw7bOetOsL
-	 LtyJSigv1CuPKJG8AXeNK4DHJP5mD8CIRRMjKcEgvOJj/jOUOByrx/EOxZQGHVkNty
-	 HVA4KXUSedNmBJCW4f/11vbb1aHUdZrMikaLltC8DtWxWJfTj7DbrBoKw5Ycs59AII
-	 A69Bznry8HBJQ==
-Message-ID: <4dc17f0c-557b-443b-a6cf-840b1b848b6f@kernel.org>
-Date: Mon, 5 Aug 2024 16:46:21 +0200
+	s=k20201202; t=1722870015;
+	bh=jIaq6vsuhkY+v59gy2RIN65uUrzZIQmOWCABGta2eFA=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=aUNOAhePbdYRdnQ4NLgBWizO6a2ufDlEftJTpPcnoXscyuQVgQ1SgiTStmZk64xfF
+	 knuG0ypn8Yq6ZrBAA+typSGh76Mx6BryZLQrhkVTqlCwOjXqLGVc+mFSytCRKx1Stb
+	 Y2edYu22uNU3rbJ3dschCb+Qcu3VWLp6spk/S53ER/y9mEk8q6Cc8E+5r53kvMZss3
+	 Kb7+uZSuGJzsZhK3icLmDg6gkWMZJVUScy4nyYXmpL8toq86aVoSRc4jNBfoAQLwwh
+	 9kuup35jodzPQrbI2h3JvLChLYj14yirHAyjyNtvx4n8BgRo2DjUtfjMn8K/vUtvhF
+	 LoqdP6PrIuj9Q==
+Date: Mon, 05 Aug 2024 09:00:14 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml:
- Add Sophgo SARADC binding documentation
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>,
- Inochi Amaoto <inochiama@outlook.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20240731-sg2002-adc-v3-0-5ac40a518c0a@bootlin.com>
- <20240731-sg2002-adc-v3-1-5ac40a518c0a@bootlin.com>
- <368cc5a8-3ec1-4e91-ae1d-59068f25d8e0@kernel.org>
- <20240803113959.12aa0c4a@jic23-huawei>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240803113959.12aa0c4a@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Detlev Casanova <detlev.casanova@collabora.com>
+Cc: Elaine Zhang <zhangqing@rock-chips.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Ondrej Jirman <megi@xff.cz>, 
+ Chris Morgan <macromorgan@hotmail.com>, Lee Jones <lee@kernel.org>, 
+ Heiko Stuebner <heiko@sntech.de>, linux-i2c@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+ Jagan Teki <jagan@edgeble.ai>, linux-iio@vger.kernel.org, 
+ Liang Chen <cl@rock-chips.com>, Thomas Gleixner <tglx@linutronix.de>, 
+ linux-serial@vger.kernel.org, Finley Xiao <finley.xiao@rock-chips.com>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ Jimmy Hon <honyuenkwun@gmail.com>, devicetree@vger.kernel.org, 
+ Muhammed Efe Cetin <efectn@protonmail.com>, 
+ Shresth Prasad <shresthprasad7@gmail.com>, 
+ Weizhao Ouyang <weizhao.ouyang@arm.com>, Alexey Charkov <alchark@gmail.com>, 
+ Tim Lunn <tim@feathertop.org>, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ linux-rockchip@lists.infradead.org, kernel@collabora.com, 
+ Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org, 
+ Jonas Karlman <jonas@kwiboo.se>, Dragan Simic <dsimic@manjaro.org>, 
+ Yifeng Zhao <yifeng.zhao@rock-chips.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Andy Yan <andyshrk@163.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In-Reply-To: <20240802214612.434179-1-detlev.casanova@collabora.com>
+References: <20240802214612.434179-1-detlev.casanova@collabora.com>
+Message-Id: <172286966767.2709106.17051987571770592906.robh@kernel.org>
+Subject: Re: [PATCH 00/10] Add device tree for ArmSoM Sige 5 board
 
-On 03/08/2024 12:39, Jonathan Cameron wrote:
->>
->>> +
->>> +unevaluatedProperties: false  
->>
->> I don't see any other $ref. Don't you miss adc.yaml? Or channels? Or
->> some more properties? This looks incomplete for ADC.
-> 
-> It's acceptable on ADCs in particular (but more generally)
-> to just assume all channels are exposed.  They may all be wired
-> to internal power lines anyway, in which case what is there is
-> a chip feature.  This only works if their isn't any channel specific
-> configuration, then not providing the channels child nodes is fine.
-> 
-> However, that requires us to be fairly sure there won't ever be
-> a per channel thing that needs configuring from DT.
-> That's generally only the case in simple devices.
-> 
-> So might be better to put the channels nodes in there and deal with
-> dynamic channel configuration (so don't present any without
-> a channel node) from the start as it's more future proof.
 
-OK. Then anyway this should be additionalProperties: false (unless I
-missed somewhere $ref?).
+On Fri, 02 Aug 2024 17:45:27 -0400, Detlev Casanova wrote:
+> Add the rk3576-armsom-sige5 device tree as well as its rk3576.dtsi base
+> and pinctrl information in rk3576-pinctrl.dtsi.
+> 
+> The other commits add DT bindings documentation for the devices that
+> already work with the current corresponding drivers.
+> 
+> The other bindings and driver implementations are in other patch sets:
+> - PMIC: https://lore.kernel.org/lkml/20240802134736.283851-1-detlev.casanova@collabora.com/
+> - CRU: https://lore.kernel.org/lkml/20240802214053.433493-1-detlev.casanova@collabora.com/
+> - PINCTRL: https://lore.kernel.org/lkml/20240802145458.291890-1-detlev.casanova@collabora.com/
+> - PM DOMAIN: https://lore.kernel.org/lkml/20240802151647.294307-1-detlev.casanova@collabora.com/
+> - DW-MMC: https://lore.kernel.org/lkml/20240802153609.296197-1-detlev.casanova@collabora.com/
+> - GMAC: https://lore.kernel.org/lkml/20240802173918.301668-1-detlev.casanova@collabora.com/
+> 
+> Detlev Casanova (10):
+>   dt-bindings: arm: rockchip: Add ArmSoM Sige 5
+>   dt-bindings: arm: rockchip: Add rk576 compatible string to pmu.yaml
+>   dt-bindings: i2c: i2c-rk3x: Add rk3576 compatible
+>   dt-bindings: iio: adc: Add rockchip,rk3576-saradc string
+>   dt-bindings: mfd: syscon: Add rk3576 QoS register compatible
+>   dt-bindings: serial: snps-dw-apb-uart: Add Rockchip RK3576
+>   dt-bindings: soc: rockchip: Add rk3576 syscon compatibles
+>   dt-bindings: timer: rockchip: Add rk3576 compatible
+>   arm64: dts: rockchip: Add rk3576 SoC base DT
+>   arm64: dts: rockchip: Add rk3576-armsom-sige5 board
+> 
+>  .../devicetree/bindings/arm/rockchip.yaml     |    5 +
+>  .../devicetree/bindings/arm/rockchip/pmu.yaml |    2 +
+>  .../devicetree/bindings/i2c/i2c-rk3x.yaml     |    1 +
+>  .../bindings/iio/adc/rockchip-saradc.yaml     |    3 +
+>  .../devicetree/bindings/mfd/syscon.yaml       |    2 +
+>  .../bindings/serial/snps-dw-apb-uart.yaml     |    1 +
+>  .../devicetree/bindings/soc/rockchip/grf.yaml |   16 +
+>  .../bindings/timer/rockchip,rk-timer.yaml     |    1 +
+>  arch/arm64/boot/dts/rockchip/Makefile         |    1 +
+>  .../boot/dts/rockchip/rk3576-armsom-sige5.dts |  613 ++
+>  .../boot/dts/rockchip/rk3576-pinctrl.dtsi     | 5775 +++++++++++++++++
+>  arch/arm64/boot/dts/rockchip/rk3576.dtsi      | 1635 +++++
+>  12 files changed, 8055 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dts
+>  create mode 100644 arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
+>  create mode 100644 arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> 
+> --
+> 2.46.0
+> 
+> 
+> 
 
-Best regards,
-Krzysztof
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y rockchip/rk3576-armsom-sige5.dtb' for 20240802214612.434179-1-detlev.casanova@collabora.com:
+
+In file included from arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dts:14:
+arch/arm64/boot/dts/rockchip/rk3576.dtsi:6:10: fatal error: dt-bindings/clock/rockchip,rk3576-cru.h: No such file or directory
+    6 | #include <dt-bindings/clock/rockchip,rk3576-cru.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make[3]: *** [scripts/Makefile.lib:434: arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dtb] Error 1
+make[2]: *** [scripts/Makefile.build:485: arch/arm64/boot/dts/rockchip] Error 2
+make[2]: Target 'arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dtb' not remade because of errors.
+make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1389: rockchip/rk3576-armsom-sige5.dtb] Error 2
+make: *** [Makefile:224: __sub-make] Error 2
+make: Target 'rockchip/rk3576-armsom-sige5.dtb' not remade because of errors.
+
+
+
+
 
 

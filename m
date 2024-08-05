@@ -1,130 +1,125 @@
-Return-Path: <linux-iio+bounces-8251-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8252-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7598894805E
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2024 19:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 031AA94828B
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2024 21:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B33B1F23930
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2024 17:33:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC9E91F220BC
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Aug 2024 19:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6351515ECF6;
-	Mon,  5 Aug 2024 17:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C746D16A397;
+	Mon,  5 Aug 2024 19:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eE+l0mzk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJ6NX7jW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28D215C13D;
-	Mon,  5 Aug 2024 17:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A34214A85;
+	Mon,  5 Aug 2024 19:47:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722879222; cv=none; b=Agse7iyqyQbCRpMSxLuUf/G5CKsmRZbulryRPjKP7vv2YYcSz61HJpuuDdm2MuaiZBFtD7CV4u3sT6iOc+ze3DA+O+MQZjG3YrQBEsjXqnlRZMvz7bZ/zLpAVAxjpLttegd+nEMhBIZeBIaApok5VtTQ1vZtLwbsj0aWn9Ff7l4=
+	t=1722887262; cv=none; b=cCqUIpQf4/pvQrS58hDORliOa7AROLdm4JAq+FymajqGOaD+AJs24cUSjNOpITA4QiQmcC1niEkRZQ1XefxEU3JxGnExswi/YxsqhB2VNgwYcq+om5wDnaRqrazhE0OD1yLm04yJ7KpNfe0NsI5KoFj6WM+RFu2xMqyzp1Va7Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722879222; c=relaxed/simple;
-	bh=VDS7j49BPsnFZeqpRirK8AxjIZsyvDDjwjimYbyb+A8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pDumPMU9LClHX3mmL6DECi3VrForATD9bJJv1ysOC6R9sf0aQOduU/T7tw1ZimvxcPUi9gJHDV888HDlH2nQx3yLi7UDWUl1JENp5BXSiduzuuJUtYhTIWCNf8efwsr2fSgp+YVsHG/X8uJRCkolkhPQV5SOzw1fLKrCX7yROrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eE+l0mzk; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7107b16be12so1970606b3a.3;
-        Mon, 05 Aug 2024 10:33:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722879220; x=1723484020; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BC58ALjQ0k/p2Nsr/D+i4BGJm6NI6tNXoREVe12sSXQ=;
-        b=eE+l0mzk8gGTGmOpTSzHI/4aEWkE+MVT7oKpLPK+NhNoFNrll74K6MfTd3Ttcfhj6K
-         gDtishSmPwCThgdolvNx4MEEc1VM0/Zt9YwaoiMRG+V/yzYDhPTlQQy+NMtcanWgxt9J
-         GnrbH7oLoVWR0qcIaR0mjcX0I2mACIN1mH7sFTziJRxp1jjRh2hfQVZOw0D1Qb0Cbk9N
-         feCtwjMh+OC0hoVtMfi9SbkxvPZNfNw9lgc8IZlroFHxJe6/4mxNZFcXPbgf26kE80rz
-         XhG/YFaEwxt93zy+ZHM4n9iE8oiKHOBL4SRR2iJYuEvYi3V+hsN3gyub42n5X3x8FGrJ
-         Hs7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722879220; x=1723484020;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BC58ALjQ0k/p2Nsr/D+i4BGJm6NI6tNXoREVe12sSXQ=;
-        b=ppMqaoJWqyFubzdlMMuwbfNHc21lwrDCisOQZshr1BYtWcnbMjwH7Et11GdsFaS9cJ
-         cFfa9/22YB2tAQRAZCzQ2J0NgYeniIcM5/4uHO7bJscHgqYyHec/F8F+4Rgo5fzsKvoJ
-         2y6Ogr8/mQCTff9UfZ6r/TRlr0t0fGBGfEGEs2znufY8bFolziYwpI9okqgQCkAv9Zsk
-         o/Aof9QBNju/B/ECS9RdMRYPPRbHHVoXTbhh8u75DrV0f6BQhHtI1W1QFn8zFV8nWts7
-         FrlGUv1gCWczdctMN75jeupgiYKqmeifjfebq5KTjNrv9ETLlfFtxgPVBt03HWbb4sWQ
-         BFmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWMFtlJvI7KFvA0wSGdeI8v/MTrScsPVjU1MKl8DTbY8mg6VI5PPDySA4so5Nj0x88aV6oT5e04TSHckNq@vger.kernel.org, AJvYcCVdGbzRD/CY6eUwpiath3NjuAEuSBokSgU3+gEElHzptWiWFMD1Lv+kUFyERO8BJGi5QU87kFw10u0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSPc6gj3x6ArA3wYQjHBjRmrsx2CKv1kVgJ6hQEUG0yuSe4DUa
-	sHqTQ7Z+RN13xryEkou5i2m+MDun/OtmJFCIvphP5NaAeP+deOCN
-X-Google-Smtp-Source: AGHT+IG09fbbSSvmY0g0CZtZReU/Xafert7x3pxP12VhBGiXyRrY3gH9XY2qrh3kran4KU/jGnehWg==
-X-Received: by 2002:a05:6a00:4b4f:b0:70e:8f75:35b2 with SMTP id d2e1a72fcca58-7106cfa6ddbmr11487080b3a.12.1722879219928;
-        Mon, 05 Aug 2024 10:33:39 -0700 (PDT)
-Received: from embed-PC.. ([122.169.160.8])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7106ecdfed4sm5620807b3a.119.2024.08.05.10.33.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 10:33:39 -0700 (PDT)
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
-To: jic23@kernel.org
-Cc: lars@metafoo.de,
-	andriy.shevchenko@linux.intel.com,
-	biju.das.jz@bp.renesas.com,
-	nuno.sa@analog.com,
-	skhan@linuxfoundation.org,
-	rbmarliere@gmail.com,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: accel: bma180: Fix dataready interrupt to use INT2 pin
-Date: Mon,  5 Aug 2024 23:02:37 +0530
-Message-Id: <20240805173237.475797-1-abhishektamboli9@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1722887262; c=relaxed/simple;
+	bh=cuyjByXL2D1AJd9a3vQq1EBfMAign6H9/NzGZnl2f8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XendaSTSbBA2ZzjBuSVv7lQqEFkwWhjzr9eBVtmQqejsoU8yNmaAeHvrwG1IFaY3zYmSj+Fppa6aVP4Jri3/7DQGjRQyrfGvlAoZR8hXB1dJ04ZCQePM7sq8bBY4jrCgyCPGI3+4PHf8pa+fCQomoPfX7aY9zcHJjxJj1+zi8Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJ6NX7jW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F779C32782;
+	Mon,  5 Aug 2024 19:47:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722887261;
+	bh=cuyjByXL2D1AJd9a3vQq1EBfMAign6H9/NzGZnl2f8E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nJ6NX7jWM1JONW67LYY42jJxw3wA9172UTFQsJ2D7BI3J9AwJfNUU9ZTapIHEDTTH
+	 fP5cId5pTdCdTTNfI8GZjRIGthHi4si8FzoPbqsOs8UvTYwC0EuuGYdVJSoaPgrZ8f
+	 rhbMPyMA+VgQy8RA0L+JA5BNCo6RmEyNIR1NviZqNtC7EjoY7jJe+QsjulMbvVATnN
+	 vUMmF86CyN9kA//qJldrArAvvoh15wMemsH/4bzT3HQ1zlN3bdtHZcs+wsDDp498Jm
+	 BSKIcgux8O95t9+lG+4WkJOZ/BsGBxEvdrl0WLqcFxFy8Fdfgad4GeVMlen0ad4COF
+	 fFwka+Tfmelig==
+Date: Mon, 5 Aug 2024 13:47:40 -0600
+From: Rob Herring <robh@kernel.org>
+To: Detlev Casanova <detlev.casanova@collabora.com>
+Cc: linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>,
+	Muhammed Efe Cetin <efectn@protonmail.com>,
+	Andy Yan <andyshrk@163.com>, Jagan Teki <jagan@edgeble.ai>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Shresth Prasad <shresthprasad7@gmail.com>,
+	Ondrej Jirman <megi@xff.cz>,
+	Weizhao Ouyang <weizhao.ouyang@arm.com>,
+	Alexey Charkov <alchark@gmail.com>,
+	Jimmy Hon <honyuenkwun@gmail.com>,
+	Finley Xiao <finley.xiao@rock-chips.com>,
+	Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+	Elaine Zhang <zhangqing@rock-chips.com>,
+	Liang Chen <cl@rock-chips.com>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, linux-i2c@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-serial@vger.kernel.org,
+	kernel@collabora.com
+Subject: Re: [PATCH 02/10] dt-bindings: arm: rockchip: Add rk576 compatible
+ string to pmu.yaml
+Message-ID: <20240805194740.GA3188010-robh@kernel.org>
+References: <20240802214612.434179-1-detlev.casanova@collabora.com>
+ <20240802214612.434179-3-detlev.casanova@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240802214612.434179-3-detlev.casanova@collabora.com>
 
-Update the interrupt configuration to use the INT2 pin for
-the dataready interrupt.
+On Fri, Aug 02, 2024 at 05:45:29PM -0400, Detlev Casanova wrote:
+> Add the compatible for the pmu mfd on rk3576.
 
-Address the FIXME: support using the INT2 pin.
+Typo in the subject. rk576?
 
-Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
----
- drivers/iio/accel/bma180.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
-index 6581772cb0c4..d44409afffbf 100644
---- a/drivers/iio/accel/bma180.c
-+++ b/drivers/iio/accel/bma180.c
-@@ -126,7 +126,7 @@ struct bma180_part_info {
- #define BMA250_SUSPEND_MASK	BIT(7) /* chip will sleep */
- #define BMA250_LOWPOWER_MASK	BIT(6)
- #define BMA250_DATA_INTEN_MASK	BIT(4)
--#define BMA250_INT1_DATA_MASK	BIT(0)
-+#define BMA250_INT2_DATA_MASK	BIT(7)
- #define BMA250_INT_RESET_MASK	BIT(7) /* Reset pending interrupts */
- 
- struct bma180_data {
-@@ -425,10 +425,9 @@ static int bma250_chip_config(struct bma180_data *data)
- 	if (ret)
- 		goto err;
- 	/*
--	 * This enables dataready interrupt on the INT1 pin
--	 * FIXME: support using the INT2 pin
-+	 * This enables dataready interrupt on the INT2 pin
- 	 */
--	ret = bma180_set_bits(data, BMA250_INT_MAP_REG, BMA250_INT1_DATA_MASK, 1);
-+	ret = bma180_set_bits(data, BMA250_INT_MAP_REG, BMA250_INT2_DATA_MASK, 1);
- 	if (ret)
- 		goto err;
- 
--- 
-2.34.1
-
+> 
+> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+> ---
+>  Documentation/devicetree/bindings/arm/rockchip/pmu.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml b/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml
+> index b79c81cd9f0e6..932f981265ccb 100644
+> --- a/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml
+> +++ b/Documentation/devicetree/bindings/arm/rockchip/pmu.yaml
+> @@ -26,6 +26,7 @@ select:
+>            - rockchip,rk3368-pmu
+>            - rockchip,rk3399-pmu
+>            - rockchip,rk3568-pmu
+> +          - rockchip,rk3576-pmu
+>            - rockchip,rk3588-pmu
+>            - rockchip,rv1126-pmu
+>  
+> @@ -43,6 +44,7 @@ properties:
+>            - rockchip,rk3368-pmu
+>            - rockchip,rk3399-pmu
+>            - rockchip,rk3568-pmu
+> +          - rockchip,rk3576-pmu
+>            - rockchip,rk3588-pmu
+>            - rockchip,rv1126-pmu
+>        - const: syscon
+> -- 
+> 2.46.0
+> 
 

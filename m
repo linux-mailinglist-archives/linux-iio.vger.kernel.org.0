@@ -1,105 +1,117 @@
-Return-Path: <linux-iio+bounces-8283-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8280-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C51949523
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 18:04:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F3E949569
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 18:18:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C404B286D81
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 16:04:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6CE9B2F5CF
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 16:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1042C4653A;
-	Tue,  6 Aug 2024 16:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A4D44366;
+	Tue,  6 Aug 2024 15:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFI6D2Yc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlC2lEzS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC92C28683;
-	Tue,  6 Aug 2024 16:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB11643AD5
+	for <linux-iio@vger.kernel.org>; Tue,  6 Aug 2024 15:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722960119; cv=none; b=CzLW8i/6NmaQ/weVStwHfeF+Xrb6DpaESpkfrNVSdmrXAh41vmRzXCEnbrA+QOVN8j9bMkaV/fallL8mN8j1k7lM9QaSZPadKVerEotpXZMKoRa81n2e5b9RYcMITK6oQLcmQaqX0ywjlRENo/zOn30knGD98cz4JWfZNU8JYoo=
+	t=1722959912; cv=none; b=KmPobzSWXtHl9TjKubzZxDCuyoMGhdbA/t0rBVgUOGyeMr11B3nQ8kJ3P6WFX885j/Sc9Iou0P4jwf5DeWfiwnc6qRI53VHrY8TmvYMvSxJtHQe3fNgb/86CS/jlSia1EA5bsYHe9k2yn6YFt+Xt5LIiLa5S8hniwayd5Aaer7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722960119; c=relaxed/simple;
-	bh=3vtD445Fm/8LAmd5d2AXOFWFQRMqgkclZ+9tFFTZK9A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=So00B9GXOiox6rnFeHmPXr+wYQTRcWA5MJVLJVzDFBgUc1QexRQ94+ye4Z+yn0MHr6SqWh6izjj5qn7hnzvJ+w08zjpWhon0DbbOlWPR0B5faKgcOBVWgNM6yiHC2ysuc9vmZyK/Rh+NN72WhUXZAJf5XIsXBGrn+CyWj9hUWDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFI6D2Yc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED39DC32786;
-	Tue,  6 Aug 2024 16:01:56 +0000 (UTC)
+	s=arc-20240116; t=1722959912; c=relaxed/simple;
+	bh=sbZ00yfzNjLOTxJ3M5N/9CqkqyrGqDUCyMF1fuWeas4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LKN1SRZbYBQOeSXVpTO/l13LptVZMOzNLCGLVRN4W/fSuoRkxjcT2cmnLRqxUAkiltyK4mk/exU0UH9SObTUmdu+PQaLiFS72EpkNmjG3czoUWoZy3aQUgpwk73YB9YpGbbCmMJe/TjnPrlFBnrBlzr5RJ7qR6a2uDWnkGAmftM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlC2lEzS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F36AC32786;
+	Tue,  6 Aug 2024 15:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722960119;
-	bh=3vtD445Fm/8LAmd5d2AXOFWFQRMqgkclZ+9tFFTZK9A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JFI6D2Yc54zRK1nBf87IgVWmaQXhaILSt/kgJeIR2uctGm+vOfMdyUlkifKnb5+Ui
-	 hNMXRGg4YKzk32Yq19mgn0X3MuobAKz79JUJM41iq48SLUWug0/LdRgvNOOOgu1cMf
-	 LkMf1njt5DrFhUDukAOZrNzF4N/D1ha7IaBrqwrFaarGiG8aOMqVTqg0WxR7dvuPki
-	 hz3fBV0xCqHYwbq4lcrQpYpVoDAoEFVDr+PJ79Eu8j3AArTRzI3uhAQM73FY+1m3qO
-	 w4gCtwePg9wzV/jp7GruD3SKojMHfZNEumJCuN1zWQwpuQ7tLCcxQUHWAQROP+g+fO
-	 Y73TugISbu6vw==
-Date: Tue, 6 Aug 2024 17:01:54 +0100
-From: Conor Dooley <conor@kernel.org>
-To: =?iso-8859-1?B?QmFybmFi4XMgQ3rpbeFu?= <barnabas.czeman@mainlining.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux@mainlining.org,
-	Danila Tikhonov <danila@jiaxyga.com>
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: imu: magnetometer: Add ak09118
-Message-ID: <20240806-crouch-poker-c8ae9cc07e7f@spud>
-References: <20240806-ak09918-v2-0-c300da66c198@mainlining.org>
- <20240806-ak09918-v2-2-c300da66c198@mainlining.org>
- <20240806-paycheck-visibly-4e114692ae98@spud>
+	s=k20201202; t=1722959910;
+	bh=sbZ00yfzNjLOTxJ3M5N/9CqkqyrGqDUCyMF1fuWeas4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hlC2lEzSrjZohO6/1XHst5moEdVv2OPN80EZuMAn0TzipoUTlS1zxqKg9yLpeXysS
+	 rdsJywfmmVYTXL22KQ9eWuw/y9TRnjMLUSKmxBjuFiDNTU8IF2UwEiTSLGA8S2wsBA
+	 b3HGxiVz0yW8du4YzUUTYMwYmhWmh7yKy8PCXOWqX5ynQIqKElkyQpfDFyrbDEDykl
+	 IrY9Jp1g3PfCO87a1RcMTM4I11OSYA3WpgckAx3lWWvL1HfZXnZ0xJTwGK9yvP7zW4
+	 sy4Sr8C/FOvxrfImIc45qXsPh13Mgp00RCPYCJxeZ6Pud++e7yfTLoOap9xU+P63rh
+	 SIHIgZZOEA8cA==
+Date: Tue, 6 Aug 2024 16:58:23 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Dumitru Ceclan <mitrutzceclan@gmail.com>, Andy Shevchenko
+ <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH] iio: adc: ad_sigma_delta: fix irq_flags on irq request
+Message-ID: <20240806165823.17d0eaf7@jic23-huawei>
+In-Reply-To: <20240806-dev-fix-ad-sigma-delta-v1-1-aa25b173c063@analog.com>
+References: <20240806-dev-fix-ad-sigma-delta-v1-1-aa25b173c063@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="4nDRdZT2HlgzMSJc"
-Content-Disposition: inline
-In-Reply-To: <20240806-paycheck-visibly-4e114692ae98@spud>
-
-
---4nDRdZT2HlgzMSJc
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 06, 2024 at 05:00:44PM +0100, Conor Dooley wrote:
-> On Tue, Aug 06, 2024 at 08:10:19AM +0200, Barnab=E1s Cz=E9m=E1n wrote:
-> > From: Danila Tikhonov <danila@jiaxyga.com>
-> >=20
-> > Document asahi-kasei,ak09918 compatible.
+On Tue, 06 Aug 2024 17:40:49 +0200
+Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+
+> From: Nuno Sa <nuno.sa@analog.com>
 >=20
-> Please explain what makes this device incompatible with those already in
-> the binding and why a fallback is not suitable.
+> With commit 7b0c9f8fa3d2 ("iio: adc: ad_sigma_delta: Add optional irq
+> selection"), we can get the irq line from struct ad_sigma_delta_info
+> instead of the spi device. However, in devm_ad_sd_probe_trigger(), when
+> getting the irq_flags with irq_get_trigger_type() we are still using
+> the spi device irq instead of the one used for devm_request_irq().
+>=20
+> Fixes: 7b0c9f8fa3d2 ("iio: adc: ad_sigma_delta: Add optional irq selectio=
+n")
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-=46rom the driver patch:
-| Add additional AK09118 to the magnetometer driver which has the same
-| register mapping and scaling as the AK09112 device.
+Thanks,
 
-Why isnt a fallback suitable here?
+Jonathan
 
+> ---
+>  drivers/iio/adc/ad_sigma_delta.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_=
+delta.c
+> index 389930186bb6..e2bed2d648f2 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -569,7 +569,7 @@ EXPORT_SYMBOL_NS_GPL(ad_sd_validate_trigger, IIO_AD_S=
+IGMA_DELTA);
+>  static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *=
+indio_dev)
+>  {
+>  	struct ad_sigma_delta *sigma_delta =3D iio_device_get_drvdata(indio_dev=
+);
+> -	unsigned long irq_flags =3D irq_get_trigger_type(sigma_delta->spi->irq);
+> +	unsigned long irq_flags =3D irq_get_trigger_type(sigma_delta->irq_line);
+>  	int ret;
+> =20
+>  	if (dev !=3D &sigma_delta->spi->dev) {
+>=20
+> ---
+> base-commit: 593737c18ae789dc6e4b493510a0c00977972e2e
+> change-id: 20240806-dev-fix-ad-sigma-delta-3d10146d22a6
+> --
+>=20
+> Thanks!
+> - Nuno S=C3=A1
+>=20
+>=20
 
---4nDRdZT2HlgzMSJc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZrJI8gAKCRB4tDGHoIJi
-0hOuAQDDjd6TSxLm8fYz8evmF1fhBUTWM9XpygUdvaSHLB3glAEAup0W2ySfBOwt
-xlNnOgTC++zpo+W/wf2KR5mfgcveCQ8=
-=bfXv
------END PGP SIGNATURE-----
-
---4nDRdZT2HlgzMSJc--
 

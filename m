@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-8258-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8259-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7F59488DF
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 07:21:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047E39488E4
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 07:22:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDD481F2236D
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 05:21:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3629F1C223BE
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 05:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8811BA87B;
-	Tue,  6 Aug 2024 05:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EB91BA87B;
+	Tue,  6 Aug 2024 05:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H3vXgqUI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XO3BN6Sw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0154F1C32;
-	Tue,  6 Aug 2024 05:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A39A1C32;
+	Tue,  6 Aug 2024 05:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722921671; cv=none; b=oqfgj9e2wpaUm6/oBtxeyIvYJ6RZP5mpXnGV5pWTPxqHaggYT5X/yBlF8EQrZmKpdioVFNXv48IBp0MVcMGms+NJ9b40Rzv3cmWb1xJ/V9GtvwMaHVwHJ4J2eLgNROcRwteFYlh9UZFqUvySfHZzirRrfs9veOdqDI6LJgjf3x8=
+	t=1722921763; cv=none; b=PiE5pVuldLYSgOdbCF9nN3S4/4Ul/gKGIn4u5Mn0l3T+kazp1X1T4rc5xmJkAm8jN/Sa6KIG2xdaNIxkvzg65yhXeYBVO8ZzWJTKmPupsOsumrW2g/EUWtYOvHvhOih2TPKwhAmpJT7ZVkt9RkiaZ4xNr/KZaJPhLEO2nqOxn9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722921671; c=relaxed/simple;
-	bh=wGrfMU8ELPDZcJ+2MNbbyepDBmC0Tto7vQPJe+3YzF4=;
+	s=arc-20240116; t=1722921763; c=relaxed/simple;
+	bh=89CyN7nUo75F69ocqp5/a3NwMOIEHh22hlpURDaHJnw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fBv8lmzVQqWCixywBwZJotOxP0vUnuTvd4lAZkwAsnPVDscKBzAGhT8YguEIc3Mz/YqKc6Nn/FwTW7IDIqKWdlIyt6U6TZ/vAdAjDWRNz6CS657vY6gYSsrReX7FDeOeoNZdYp7EMEnbbhADNqMIJoCgOTawTPO+SFnRfONQ7eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H3vXgqUI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54AEC32786;
-	Tue,  6 Aug 2024 05:21:06 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=p+bLROWBFtxmfpy8X12QOn6AYavKiC/dDQBXoQtG1Uz21kTr9qWGm4XeZTW7kB0GjlMs8p9fS/Aa5rFxXSnmbr+rMY/Fkgs/IOxtqSXiYrJWgs3fU3KGlmkaJNWuyDokX02keGDua36LHEbJB2w5rc5xe3+dEBGz2Bl6h64f86c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XO3BN6Sw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C797DC32786;
+	Tue,  6 Aug 2024 05:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722921670;
-	bh=wGrfMU8ELPDZcJ+2MNbbyepDBmC0Tto7vQPJe+3YzF4=;
+	s=k20201202; t=1722921762;
+	bh=89CyN7nUo75F69ocqp5/a3NwMOIEHh22hlpURDaHJnw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=H3vXgqUIvGC8tFuSI2Iz5Qmeq4+QG/UTaCVAJEt570F1F4hnXxkrDAVP0OU1iJEfh
-	 U/Fr8mOuzYgdsZLmV+1/DfLxLeHvS/4xSG9hRn+gWNjRP+NQtAihjHiudrQVzp02+B
-	 TihF3X/H0LjVZgyXTPqFH4Dzwq2hXrkYYvc3Yb3bOQG8Fh2GSvAbZSuRXga2XvP+aQ
-	 yThMS82zL9mA6rJuFvEc68puT981U8631nrqiyXem+lfN2dPoMiXNyHDocPnro0uck
-	 i+b2xB3Xccy1Cmp0o4+2jaT24uSz5JAXOxk+n/dgkB++Wn+Miut0mLINvAe+N7m3eM
-	 ZEo8FTpU/r8sw==
-Message-ID: <2704261f-5b49-4267-a73f-e47ed55a4d47@kernel.org>
-Date: Tue, 6 Aug 2024 07:21:04 +0200
+	b=XO3BN6SwTtFgUkMCp1sN0YmfpWcr4PsL+wRcnGbltJHZUAWb09UvX7IjT6w0Jzx6B
+	 tfO5/uHfGcu3iMfDDHEDsRXQZbM5pTE02RIvTrIfSZot75L9R/JCu9bX12+D3Vhz08
+	 OcyS15pEJNy6zqUhQyk7IJ9jj4Rp78oaBxLVOrAAF0RviegNySyHQizTHrcVEyYfmA
+	 KjoJi+hv9fJi5fhrHLHB9T/rzEvSctNwZo0LxRz3ZoHq0VOys819mP97Jxwty74uix
+	 86wE+QMkWgUDRL/OXICFNzxr2GXJ3dbGAFgN8fDmLNra06r/SXoxIyjyqy7rzDcMMw
+	 k7AO5G2Y3RqrQ==
+Message-ID: <9b01084f-eac3-432e-b221-8a2c35354557@kernel.org>
+Date: Tue, 6 Aug 2024 07:22:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] dt-bindings: iio: imu: magnetometer: Add ak09118
+Subject: Re: [PATCH 3/3] iio: magnetometer: ak8975: Add AK09118 support
 To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -60,7 +60,7 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, linux@mainlining.org,
  Danila Tikhonov <danila@jiaxyga.com>
 References: <20240805-ak09918-v1-0-70837eebd7d8@mainlining.org>
- <20240805-ak09918-v1-2-70837eebd7d8@mainlining.org>
+ <20240805-ak09918-v1-3-70837eebd7d8@mainlining.org>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,39 +106,31 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240805-ak09918-v1-2-70837eebd7d8@mainlining.org>
+In-Reply-To: <20240805-ak09918-v1-3-70837eebd7d8@mainlining.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 On 05/08/2024 22:31, Barnabás Czémán wrote:
 > From: Danila Tikhonov <danila@jiaxyga.com>
 > 
-> Document asahi-kasei,ak09918 compatible.
+> Add additional AK09118 to the magnetometer driver which has the same
+> register mapping and scaling as the AK09112 device.
 > 
 > Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
 > Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-> ---
->  .../devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml        | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
-> index 9790f75fc669..67c60abbfcf0 100644
-> --- a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
-> +++ b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
-> @@ -18,12 +18,14 @@ properties:
->            - asahi-kasei,ak09911
->            - asahi-kasei,ak09912
->            - asahi-kasei,ak09916
-> +          - asahi-kasei,ak09918
->        - enum:
->            - ak8975
->            - ak8963
->            - ak09911
->            - ak09912
->            - ak09916
-> +          - ak09918
 
-No, you cannot grow deprecated list.
+...
+
+>  };
+>  MODULE_DEVICE_TABLE(i2c, ak8975_id);
+> @@ -1081,6 +1114,8 @@ static const struct of_device_id ak8975_of_match[] = {
+>  	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
+>  	{ .compatible = "asahi-kasei,ak09916", .data = &ak_def_array[AK09916] },
+>  	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
+> +	{ .compatible = "asahi-kasei,ak09918", .data = &ak_def_array[AK09918] },
+> +	{ .compatible = "ak09918", .data = &ak_def_array[AK09918] },
+
+NAK. That's not a valid compatible.
 
 Best regards,
 Krzysztof

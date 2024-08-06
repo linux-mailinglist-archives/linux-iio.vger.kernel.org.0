@@ -1,135 +1,122 @@
-Return-Path: <linux-iio+bounces-8285-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8286-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C046949531
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 18:05:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B8C94953C
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 18:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8E141F274A8
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 16:05:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578EF1C20B10
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 16:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB991448F6;
-	Tue,  6 Aug 2024 16:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C331642AAA;
+	Tue,  6 Aug 2024 16:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPhIXBCX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iEGZkpz0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3C757CB6;
-	Tue,  6 Aug 2024 16:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDDC15CB;
+	Tue,  6 Aug 2024 16:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722960174; cv=none; b=LO40Vvwd5e5Byy8LzKJxv+K48FEgst6idN8gvqqGVuvVGGbPKPmn6uco0i4zcsrUrCYzqJiJ18eZKzXnoKV/PnHNmmonLJzk0n7uZgPW35R6hybauTge1dzNeVhebcuhpel4e93FMeK9d9vz61wL9BQlLB+6thDrPHk9iAE2TJs=
+	t=1722960256; cv=none; b=stPE2XpJG1SMkq7jXsDjIdispeCcb/oRQc6GNVUg6u4FuQeBRPWnHCBqqGQO+QNPS0qJ1CONlSkAzxvQpEFd+eI2okcX7QMaTlMKLHLoSUwjOlzBtUcGH1cnzlSYbWKzrrWxDTGSrpXIcl6MhfsZAZjGyzAk9Oq9NsucD5QtJ4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722960174; c=relaxed/simple;
-	bh=mmE7nISQTlHs947A97FdBg7xigtB23cUKh5sgLHolgk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uegmPSWxMS2iTUoprqO6IXBH9YS8aH2/nIQn284UfllkHHrjPR7K3s2MKE2WXPkTLhnzhRggT1QvVEWor+2iUoPsK+wEa/6XN3fi5UkHt9KoiDZYkha+YypbEpNFhKccUw8G90DF3LuK3kdSUM9vycW4xJQS/cYIzXohgXr9H6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPhIXBCX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3070C32786;
-	Tue,  6 Aug 2024 16:02:51 +0000 (UTC)
+	s=arc-20240116; t=1722960256; c=relaxed/simple;
+	bh=fjSPPJzmJA8JFAafZqpeE+4EtoL2c7ZzAn6rqHVfCA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hK/QYI4NJxAqaTiiIHYBtvbkgX2bhsjaFK/9vRpa5Cm8eVBjrezYbC2v25Q0dCxnGouZOlmsZLZq3vFrcZkcjT3p3Mmpi4GDs3VqDLoXA1G/cgldhRQCZa6KbX0s7euWZAvK8yE93KkBlKymedEyW1xEPNe/3bUiq4ODrZhgVYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iEGZkpz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB1AC32786;
+	Tue,  6 Aug 2024 16:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722960174;
-	bh=mmE7nISQTlHs947A97FdBg7xigtB23cUKh5sgLHolgk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gPhIXBCXI33QPugi2D9Jlz4hqEF2gKNiU2ugmF1kYMp8V95UyDvXXVWqfWT0ToFTE
-	 J6xAqGPsVJWwNykht7Vzo3sulNV2OIToNeXX2uaEut6/KdKDowOnQsdCbBCcbBeakt
-	 TVprYuslljLuM4x4XKCWtMQtiJZ3aZYRfycwWvB6zj2iYQSq02MdXns+DABFa8DU7q
-	 hoDcneldpEoAvSIVJtUWNykW2QmDY+e2S5O9SDy3SiydJHXFhzuop7HWr0sOrRZeVP
-	 Jyej7a25HUaKdWuG+xIHpHi7blUVBTLOEr9KhSsBpjXQiJn6pabNpsILYp5QQdjDh5
-	 NN2SzcBdZHjPA==
-Date: Tue, 6 Aug 2024 17:02:49 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-	Matt Ranostay <matt@ranostay.sg>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: iio: asahi-kasei,ak8975: drop incorrect
- AK09116 compatible
-Message-ID: <20240806-unlocked-womankind-f9e5e1d19055@spud>
-References: <20240806053016.6401-1-krzysztof.kozlowski@linaro.org>
- <20240806053016.6401-2-krzysztof.kozlowski@linaro.org>
+	s=k20201202; t=1722960256;
+	bh=fjSPPJzmJA8JFAafZqpeE+4EtoL2c7ZzAn6rqHVfCA0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=iEGZkpz08j8sHFKGt/itZUIkWgpq74ZcSZJB2JZ5/QyMoYgu4RKq4J0t9+lxA6Xb9
+	 pRGZjolLe8xi7r72aj4MhBIyH5wtbePPfz80EBVaxzFWJQJ02oOi8ZN5tNPOimXnH0
+	 RaRhE0sQXzR3/g1NfkZ78r2UjGkqAhcbQqPv+1bG/4T4+Qhx9MkwyqN5fRbhcBIdTa
+	 f6WW2ATS3P6YOtbIGO9RaRWdYRCA5i/sGMy61jceJC/VhQhGZXE3ZiihkLlCxp0KGo
+	 tNZBB9fLgA7E26EjuzqQwy/LH6WgXnabHfbbKWsxNLk9CZpaZAYmz340JiAvK9MSpK
+	 PirhR3m/LzoNg==
+Date: Tue, 6 Aug 2024 17:04:10 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>, lars@metafoo.de,
+ alexandru.tachici@analog.com, Jonathan.Cameron@huawei.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Dumitru Ceclan
+ <dumitru.ceclan@analog.com>
+Subject: Re: [PATCH] iio: adc: ad7124: fix DT configuration parsing
+Message-ID: <20240806170410.4a967dee@jic23-huawei>
+In-Reply-To: <15304301efe5c23d55984f8a1f2a5016d7be213d.camel@gmail.com>
+References: <20240806085133.114547-1-dumitru.ceclan@analog.com>
+	<15304301efe5c23d55984f8a1f2a5016d7be213d.camel@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="L3aXUt6Qton7WWzl"
-Content-Disposition: inline
-In-Reply-To: <20240806053016.6401-2-krzysztof.kozlowski@linaro.org>
-
-
---L3aXUt6Qton7WWzl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 06, 2024 at 07:30:16AM +0200, Krzysztof Kozlowski wrote:
-> All compatibles in this binding without prefixes were deprecated, so
-> adding a new deprecated one after some time is not allowed, because it
-> defies the core logic of deprecating things.
->=20
-> Drop the AK09916 vendorless compatible.
->=20
-> Fixes: 76e28aa97fa0 ("iio: magnetometer: ak8975: add AK09116 support")
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-> ---
->=20
-> Offending commit did not even bother to Cc devicetree mailing list and
-> DT maintainers... Lovely. Let's ignore submitting patches and
-> maintainers just to sneak my important patch into the kernel.
+On Tue, 06 Aug 2024 12:45:06 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-:/
-
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> On Tue, 2024-08-06 at 11:51 +0300, Dumitru Ceclan wrote:
+> > The cfg pointer is set before reading the channel number that the
+> > configuration should point to. This causes configurations to be shifted
+> > by one channel.
+> > For example setting bipolar to the first channel defined in the DT will
+> > cause bipolar mode to be active on the second defined channel.
+> >=20
+> > Fix by moving the cfg pointer setting after reading the channel number.
+> >=20
+> > Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
+> > Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+> > --- =20
+>=20
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
 Thanks,
-Conor.
 
-> ---
->  .../devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml | 1 -
->  1 file changed, 1 deletion(-)
+Jonathan
+
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kas=
-ei,ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/asahi-k=
-asei,ak8975.yaml
-> index 9790f75fc669..fe5145d3b73c 100644
-> --- a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak89=
-75.yaml
-> +++ b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak89=
-75.yaml
-> @@ -23,7 +23,6 @@ properties:
->            - ak8963
->            - ak09911
->            - ak09912
-> -          - ak09916
->          deprecated: true
-> =20
->    reg:
-> --=20
-> 2.43.0
+> > =C2=A0drivers/iio/adc/ad7124.c | 3 +--
+> > =C2=A01 file changed, 1 insertion(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> > index 3beed78496c5..672d41bac8ca 100644
+> > --- a/drivers/iio/adc/ad7124.c
+> > +++ b/drivers/iio/adc/ad7124.c
+> > @@ -839,8 +839,6 @@ static int ad7124_parse_channel_config(struct iio_d=
+ev
+> > *indio_dev,
+> > =C2=A0	st->channels =3D channels;
+> > =C2=A0
+> > =C2=A0	device_for_each_child_node_scoped(dev, child) {
+> > -		cfg =3D &st->channels[channel].cfg;
+> > -
+> > =C2=A0		ret =3D fwnode_property_read_u32(child, "reg", &channel);
+> > =C2=A0		if (ret)
+> > =C2=A0			return ret;
+> > @@ -858,6 +856,7 @@ static int ad7124_parse_channel_config(struct iio_d=
+ev
+> > *indio_dev,
+> > =C2=A0		st->channels[channel].ain =3D AD7124_CHANNEL_AINP(ain[0]) |
+> > =C2=A0						=C2=A0 AD7124_CHANNEL_AINM(ain[1]);
+> > =C2=A0
+> > +		cfg =3D &st->channels[channel].cfg;
+> > =C2=A0		cfg->bipolar =3D fwnode_property_read_bool(child, "bipolar");
+> > =C2=A0
+> > =C2=A0		ret =3D fwnode_property_read_u32(child, "adi,reference-select",
+> > &tmp); =20
+>=20
 >=20
 
---L3aXUt6Qton7WWzl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZrJJKQAKCRB4tDGHoIJi
-0jiaAP9wMLcJ67g8LCyxoJaqYfWHGDNN3yG3hKLzSLeFVelfLAEAhfOBz/tBDM8q
-gtSKmUsVG6aX0tCjuGebpTCc+WVj8gI=
-=ICw5
------END PGP SIGNATURE-----
-
---L3aXUt6Qton7WWzl--
 

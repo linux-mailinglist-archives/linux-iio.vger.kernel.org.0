@@ -1,173 +1,185 @@
-Return-Path: <linux-iio+bounces-8298-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8299-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E655A949715
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 19:48:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C132F949729
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 19:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14E5D1C20994
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 17:48:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16E93B21C2C
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 17:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B36459164;
-	Tue,  6 Aug 2024 17:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1FD7347C;
+	Tue,  6 Aug 2024 17:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AeVhgAe7"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="GUIxXTjD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39612A1C5;
-	Tue,  6 Aug 2024 17:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9167A74E26;
+	Tue,  6 Aug 2024 17:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722966508; cv=none; b=kWP0gov9n8kjenLs4DMVSunoTMH7uNlpDCjTT5eBZAiQyTVNYRb4vkikMaR54fFJkes0f9Xu+Yb2V8ddUHv5yg7257LBbQKGi2Q0uS7cBDOGEVv9CzrOUCk+0tQw5P1QTnScSbJLUueo0V9YL+0m/Gkm9Od60i+QU3QWdBM72Bs=
+	t=1722966901; cv=none; b=mks5aFXdjsuSIc6inhydfLIjcBTWmFp3cIv5kl65JhV5PR3pDg+u1SwHfUf4ilRlF3K/vbTId2d5811Qlp1T3KlkBBSvJ7pjzptTus+XW1nveknpzgJKW8PLTx0hypyhbV/97SF2TIToYyzSlZ/0b8xHHxKhjnjfcdxalwcnPO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722966508; c=relaxed/simple;
-	bh=vBDC4xo9mbVO1SY74xWdWYDnd5MRWexVdsUupjrLjyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gWFG4+xEC0YvZmdUxum2iB7VvMCvIFqxk2meuiU5oL8APZd9TZ4QBQbnYcZ3ALodueuIWlra76GCKf6SBPWPfjIr+9/JeWfw8vitolv6zokK0RvHFfZGsQ3Ig4csm9+1UKIb1ZlcLpOB2YDm4cHfrJ6cHKzwi1Zc7f0JkUmS8hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AeVhgAe7; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-70d18d4b94cso680720b3a.2;
-        Tue, 06 Aug 2024 10:48:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722966506; x=1723571306; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Cdrno72hqQxJb3X2e7mH5XWUDnJWg3spI0M3gLifjw=;
-        b=AeVhgAe79/ITpogYc2gGQzkQGpj2SNulO9IgopU+LZkp/WxxVdAN80LnvSzR2fsR5C
-         NMOX/vEHLT41szR37cHx/MD6G9CoTJ1uoEK4MB3de/1EUXZUqX3liGJhLOBLshJRbht/
-         mTgng7HVzmYjR7TbHP1eBRcI2C5Zr5zA4ZHNj4NLKNXckAwRiOnhABgqRWz/Yph7FcsN
-         OKxB8QK7nlhesTOX/1ORhSk9kMI4kMN1D9CLbXHtM+LYBcHlXoNguJLvxZl5tIMtzN2P
-         +C3rbE1TcqE/pFY7oJYuIQPL8WdOOukjYitNnX78/BxfJ6dqs+zrtQdvqY4ceqBmNuzJ
-         VdNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722966506; x=1723571306;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8Cdrno72hqQxJb3X2e7mH5XWUDnJWg3spI0M3gLifjw=;
-        b=jDh+xGKcNRIBL8GOI8pCAjT3X4kUYH2LFjejCaBmgic4wU6fiJMmcwPoInIaXTsS9H
-         sC25vDr5+V8MT+fpAJzc7Uinbjwro429yoJUxai0v4SQ474UWpe1uSN3Dikr1j6ETDvt
-         vMmjc18ARjWF9ejezXcIBi5wAbPJNB5son+X6nRaZYMAULztUt3+KbO9VxuBaVnjmX/A
-         okzfEo+S6AXk5VC/SuW4tsv8grSyaWcU4qpKa+tKvlDhUy0DSHzu+kd6apCENabZz3/F
-         rCnwyIerymGx7xoKIl0CJhKbsk1kxixUO8GM7toK8nxFmaQWpVPkOAn2zQKBunCqW5RJ
-         LkuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUgyPskx3OVvYuRr/VqlTdvuQ7L6UGRydj+G7VP8ChndOcHqnrDIt9XsvMMYsOGLc0hJEH6H9CDl3o1intinN6IaZUXE55WJ0PdYw4SZxQeIM7R6LQgeBA/9wkJnZCE1kgxKL2YaUd1
-X-Gm-Message-State: AOJu0YzxMKshunSYtgwSAbMR08M4DyBppcWcyTbL2KXVSMULGH4EK7nY
-	1MMBZAnoclgpCsxGoIQ1k+26Q3pZO+EFuaLxEbjjLHiLFvPrei4y
-X-Google-Smtp-Source: AGHT+IHF6ZPuSk0kgk91RJ7K16gv5yUw2DkiVVYF4+Fqgd7PX6IJ8xGEME+Z0x/y2rTs1lRZLulxNg==
-X-Received: by 2002:a05:6a00:c95:b0:70e:9213:f321 with SMTP id d2e1a72fcca58-7106cfcf2a5mr15610008b3a.14.1722966506066;
-        Tue, 06 Aug 2024 10:48:26 -0700 (PDT)
-Received: from embed-PC.myguest.virtualbox.org ([122.169.160.8])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7106ec401c9sm7247174b3a.53.2024.08.06.10.48.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Aug 2024 10:48:25 -0700 (PDT)
-Date: Tue, 6 Aug 2024 23:16:31 +0530
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
+	s=arc-20240116; t=1722966901; c=relaxed/simple;
+	bh=pITPNxK6NWuL3mgYX/ey5UVzu5AmbaccLKqozNMWZMY=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=ChT470qQvJX0SYM2cHhvq+R4XP+d5VLCgHvZqmf/SRhJEDZByiqQ0vxC98B58k8PiBlfDykeU6m/kVa2w4gRA15WsWV9hfSh1XqgXVWEaEfYopMhMc9sZbp87YvZNrzB9mt3mFF/eNaOVn8r6pNqIuOei6PDMV51JDdYzXOfiIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=GUIxXTjD; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+Received: from [127.0.0.1] (254C310E.nat.pool.telekom.hu [37.76.49.14])
+	by mail.mainlining.org (Postfix) with ESMTPSA id 2CEABE450D;
+	Tue,  6 Aug 2024 17:54:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
+	s=psm; t=1722966897;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g9xC00bI7x2D+/ssVTv2fzqiBPxsHC1NlAvczmix+jw=;
+	b=GUIxXTjDHIauCrUXq8q1KdmQ6PL2uU71zUvJ5KOQelYo6sjUQ4sUKntdwBE0VCysq2n+Dg
+	KcxS/6N4L/X7Sg77feb8PzRFsLrF8axWT2yHq5yi+gZr0Ti7e37ZxpmRS9ZldwEzeL6RZD
+	dmJlY5Y7MgSaRrBDUlsjfdzNfv+fVeDml1VrFuW9sMbNGgHwA9vHhMyxsPlIzDWa7uxPkV
+	J/ELvb6IjI0fx0MDrQnsfRBrl7BoTVlRTbguyZ5tMia1cs20FoF8q9zGoFGRcQQ+si79PX
+	O+xPcEOeRusyiI/zxKtNrx23DmCyyyj34tDGSggIDJxj6XuMrADdcCP0KM/P0Q==
+Date: Tue, 06 Aug 2024 19:54:56 +0200
+From: =?ISO-8859-1?Q?Barnab=E1s_Cz=E9m=E1n?= <barnabas.czeman@mainlining.org>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
-	biju.das.jz@bp.renesas.com, nuno.sa@analog.com,
-	skhan@linuxfoundation.org, rbmarliere@gmail.com,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: bma180: Fix dataready interrupt to use INT2
- pin
-Message-ID: <ZrJhd7wd5R+GwoYj@embed-PC.myguest.virtualbox.org>
-References: <20240805173237.475797-1-abhishektamboli9@gmail.com>
- <20240806173228.264f0114@jic23-huawei>
+CC: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Albrieux <jonathan.albrieux@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux@mainlining.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/3=5D_iio=3A_magnetometer=3A_?=
+ =?US-ASCII?Q?ak8975=3A_Fix_reading_for_ak099xx_sensors?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20240806171925.7c512c63@jic23-huawei>
+References: <20240806-ak09918-v2-0-c300da66c198@mainlining.org> <20240806-ak09918-v2-1-c300da66c198@mainlining.org> <20240806171925.7c512c63@jic23-huawei>
+Message-ID: <45915CD6-A9BB-4071-ABCC-8DE76F7066C3@mainlining.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240806173228.264f0114@jic23-huawei>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 06, 2024 at 05:32:28PM +0100, Jonathan Cameron wrote:
-> On Mon,  5 Aug 2024 23:02:37 +0530
-> Abhishek Tamboli <abhishektamboli9@gmail.com> wrote:
-> 
-> > Update the interrupt configuration to use the INT2 pin for
-> > the dataready interrupt.
-> > 
-> > Address the FIXME: support using the INT2 pin.
-> > 
-> > Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
-> Hi Abhishek,
-> 
-> That's not the intent of that FIXME.  It's pointing out that the driver
-> does not currently support the wiring configuration where only INT2 is
-> connected.  The change you have here breaks the configuration where
-> only INT1 is wired or both are wired (as it will register the
-> interrupt handler on the int1 pin, not int2).
-> 
-> I'm guessing that is the situation you have is int2 only?
-> 
-> To handle this you need to add the firmware queries to identify the
-> interrupt by name. See for example driver/iio/imu/bmi323_core.c
-> bmi323_trigger_probe()
-> 
-> 	fwnode = dev_fwnode(data->dev);
-> 	if (!fwnode)
-> 		return -ENODEV;
-> 
-> 	irq = fwnode_irq_get_byname(fwnode, "INT1");
-> 	if (irq > 0) {
-> 		irq_pin = BMI323_IRQ_INT1;
-> 	} else {
-> 		irq = fwnode_irq_get_byname(fwnode, "INT2");
-> 		if (irq < 0)
-> 			return 0;
-> 
-> 		irq_pin = BMI323_IRQ_INT2;
-> 	}
-> 
-> This defaults to INT1 if available, but will find INT2
-> if interrupt-names is provided in DT and specifies that only INT2
-> is present.
-Thank you for the guidance. I see that I misinterpreted the intent of 'FIXME' comment.
-I'll work on implementing the logic to query the firmware for the correct interrupt
-configuration, as you suggested. I'll refer to the example in bmi323_core.c and update 
-the patch accordingly.
 
-Thanks
-Abhishek Tamboli
-> 
-> > ---
-> >  drivers/iio/accel/bma180.c | 7 +++----
-> >  1 file changed, 3 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
-> > index 6581772cb0c4..d44409afffbf 100644
-> > --- a/drivers/iio/accel/bma180.c
-> > +++ b/drivers/iio/accel/bma180.c
-> > @@ -126,7 +126,7 @@ struct bma180_part_info {
-> >  #define BMA250_SUSPEND_MASK	BIT(7) /* chip will sleep */
-> >  #define BMA250_LOWPOWER_MASK	BIT(6)
-> >  #define BMA250_DATA_INTEN_MASK	BIT(4)
-> > -#define BMA250_INT1_DATA_MASK	BIT(0)
-> > +#define BMA250_INT2_DATA_MASK	BIT(7)
-> >  #define BMA250_INT_RESET_MASK	BIT(7) /* Reset pending interrupts */
-> >  
-> >  struct bma180_data {
-> > @@ -425,10 +425,9 @@ static int bma250_chip_config(struct bma180_data *data)
-> >  	if (ret)
-> >  		goto err;
-> >  	/*
-> > -	 * This enables dataready interrupt on the INT1 pin
-> > -	 * FIXME: support using the INT2 pin
-> > +	 * This enables dataready interrupt on the INT2 pin
-> >  	 */
-> > -	ret = bma180_set_bits(data, BMA250_INT_MAP_REG, BMA250_INT1_DATA_MASK, 1);
-> > +	ret = bma180_set_bits(data, BMA250_INT_MAP_REG, BMA250_INT2_DATA_MASK, 1);
-> >  	if (ret)
-> >  		goto err;
-> >  
-> 
+
+On August 6, 2024 6:19:25 PM GMT+02:00, Jonathan Cameron <jic23@kernel=2Eo=
+rg> wrote:
+>On Tue, 06 Aug 2024 08:10:18 +0200
+>Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas=2Eczeman@mainlining=2Eorg> wrote=
+:
+>
+>Hi Barnab=C3=A1s,
+>
+>Welcome to IIO=2E
+>
+>> ST2 register read should be placed after read measurment data,
+>> because it will get correct values after it=2E
+>
+>What is the user visible result of this? Do we detect errors when none
+>are there?  Do we have a datasheet reference for the status being
+>update on the read command, not after the trigger?
+
+Second read will fail=2E In the datasheet ST2 comes after measurment data =
+read=2E Here is some explanation from datasheet=2E
+
+"When ST2 register is read, AK09918 judges that data reading is finished=
+=2E Stored measurement data is
+protected during data reading and data is not updated=2E By reading ST2 re=
+gister, this protection is
+released=2E It is required to read ST2 register after data reading=2E"
+
+So if ST2 is read before measurment it will stuck at protected mode=2E
+>>
+>Needs a Fixes tag to let us know how far to backport the fix=2E
+I think it is broken since 09912 was added but i cannot verify i have only=
+ devices with 09918=2E
+>
+>A few comments inline=2E
+>=20
+>> Signed-off-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas=2Eczeman@mainli=
+ning=2Eorg>
+>> ---
+>>  drivers/iio/magnetometer/ak8975=2Ec | 31 +++++++++++++++--------------=
+--
+>>  1 file changed, 15 insertions(+), 16 deletions(-)
+>>=20
+>> diff --git a/drivers/iio/magnetometer/ak8975=2Ec b/drivers/iio/magnetom=
+eter/ak8975=2Ec
+>> index dd466c5fa621=2E=2E925d76062b3e 100644
+>> --- a/drivers/iio/magnetometer/ak8975=2Ec
+>> +++ b/drivers/iio/magnetometer/ak8975=2Ec
+>> @@ -692,22 +692,7 @@ static int ak8975_start_read_axis(struct ak8975_da=
+ta *data,
+>>  	if (ret < 0)
+>>  		return ret;
+>> =20
+>> -	/* This will be executed only for non-interrupt based waiting case */
+>> -	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
+>> -		ret =3D i2c_smbus_read_byte_data(client,
+>> -					       data->def->ctrl_regs[ST2]);
+>> -		if (ret < 0) {
+>> -			dev_err(&client->dev, "Error in reading ST2\n");
+>> -			return ret;
+>> -		}
+>> -		if (ret & (data->def->ctrl_masks[ST2_DERR] |
+>> -			   data->def->ctrl_masks[ST2_HOFL])) {
+>> -			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
+>> -			return -EINVAL;
+>> -		}
+>> -	}
+>> -
+>This completely removes the check from the _fill_buffer() path
+>
+>> -	return 0;
+>> +	return !(ret & data->def->ctrl_masks[ST1_DRDY]);
+>returning a positive value here is unusual enough you should add a commen=
+t for
+>the function + use that return value=2E
+>
+>>  }
+>> =20
+>>  /* Retrieve raw flux value for one of the x, y, or z axis=2E  */
+>> @@ -731,6 +716,20 @@ static int ak8975_read_axis(struct iio_dev *indio_=
+dev, int index, int *val)
+>>  	ret =3D i2c_smbus_read_i2c_block_data_or_emulated(
+>>  			client, def->data_regs[index],
+>>  			sizeof(rval), (u8*)&rval);
+>No longer gated on ret & data->def->ctrl_masks[ST1_DRDY] which seems unin=
+tentional=2E
+>
+>Still need a check on ret here=2E
+>
+>> +	ret =3D i2c_smbus_read_byte_data(client,
+>> +				       data->def->ctrl_regs[ST2]);
+>> +	if (ret < 0) {
+>> +		dev_err(&client->dev, "Error in reading ST2\n");
+>> +		goto exit;
+>> +	}
+>> +
+>> +	if (ret & (data->def->ctrl_masks[ST2_DERR] |
+>> +		   data->def->ctrl_masks[ST2_HOFL])) {
+>> +		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
+>> +		ret =3D -EINVAL;
+>> +		goto exit;
+>> +	}
+>> +
+>>  	if (ret < 0)
+>>  		goto exit;
+>
+>And this one ends up redundant I think which suggests to me the
+>code is inserted a few lines early=2E
+>
+>> =20
+>>=20
+>
 

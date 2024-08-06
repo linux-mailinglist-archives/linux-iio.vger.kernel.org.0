@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-8293-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8294-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF64A9495E5
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 18:51:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90ED29495EE
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 18:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 704D71F21664
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 16:51:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98FA1B21B88
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 16:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900B346450;
-	Tue,  6 Aug 2024 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E288936AF5;
+	Tue,  6 Aug 2024 16:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdQOXAjW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZ4fjZlM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0D844C81;
-	Tue,  6 Aug 2024 16:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A235618EB0
+	for <linux-iio@vger.kernel.org>; Tue,  6 Aug 2024 16:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722963072; cv=none; b=IyRu14TgT8NxInnlPLPsE7n5+mpH4b4VunlSBA56PAkvHSZH+f3kmPg5QotBpkuj86yqi8LV2Dt5tRCkP5BiGZAymQsLdbosB3tNZMT5cxA0L+RUPQpavbqxwaYGkXLHnNc7gAepL50I1fzPrv1g5JNjVrU8o7hnDinhgxVCB3I=
+	t=1722963222; cv=none; b=uV+UIDIo7qxTmqhUxEdZ39rtGUpxHgMMNElXxC+cRsBoMJRCTJVgxcz7DqUHCKObfT3ml90SAXwSOaCvmzjvSysc0iR1s6JXKlESw5nBnB6X2YXYsBtL4X8Vs/2xIcWns527iybTbi8ig+rGanh7i02dJHgshwSAyUxdlSr+pSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722963072; c=relaxed/simple;
-	bh=17eO7sl2jd1gtxWt8RVlCObOGsTQ5a/P8JFR/vmFREY=;
+	s=arc-20240116; t=1722963222; c=relaxed/simple;
+	bh=qZIjDkYiwI/nGOq+VEWDUuGCZC20Ohksa5GNKYk3IO8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nsPeoHFaLcxg+E0BWZQh9mXa7m8IXQ/SnCudPGTIonA+PdT/W2QTv+0lNoRJLj2IV0wv6ptq+ENsrDLNSZ0IZtp4nhXSHssRf2j/PsBAXUTR1k6q1FxU5b+k/2LkHEYC0R7Ewr2Dd90FnGi+H53LljbhszKOw9agJXgge5tsbFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdQOXAjW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5034C4AF0C;
-	Tue,  6 Aug 2024 16:51:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oiQ20D4AqGlEi5g70ERrUMJHUNAUzMlJOcq7xYvkk/D4kOKzhAVkSyCsyNGaqtfN+2ga2MToulgc6ycyinhqv7OFgwHHrdUV/VMo9iUb4upSR3m/qaiqwvCBhWDg3UQ5gyhZZ/x2ooCn1OxRNK7TZElYJFjByb3d+S2hvuHqz3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZ4fjZlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06208C32786;
+	Tue,  6 Aug 2024 16:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722963071;
-	bh=17eO7sl2jd1gtxWt8RVlCObOGsTQ5a/P8JFR/vmFREY=;
+	s=k20201202; t=1722963222;
+	bh=qZIjDkYiwI/nGOq+VEWDUuGCZC20Ohksa5GNKYk3IO8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BdQOXAjWke+YVJ7M94Cqkn1mWhs11qVSCmbtfOkCA1QjpaAKlMnIAUcR870pXf0WB
-	 G9isqgmLNvGoTCFResa+tSZnKaq25a04mvVUfwf8EL5Wfja5AY4vNNEaxuiHMSzFvl
-	 6kC2yLD94EHYXWLeyo45gQx/ithDK5NN699311Qy9cCdHcV+Mh2vyK3SAsEfGcn3yb
-	 dMv27AGPrZRTHr7n31sZ317TlympdjYTGltXlbaKV2AkUgOzTELjoOp0hlOdAjRRip
-	 FPqFLNDVq/jk5bcCVcKP7gOvO7Qbds3qu0LOUwzgYm+JwessgwHstUMzRlg1WBFRIU
-	 2Cu9FcM5bxemQ==
-Date: Tue, 6 Aug 2024 17:51:06 +0100
+	b=oZ4fjZlMWUCOkl8Qzct9LUZLqvISIgrcrfRhu7b8Qe1HLrRGCkdqCvWnsAwFg0oZy
+	 lgK0mvSjCX8aaiYRmsCUwQwDiBkcIa+LPXEaDlgjneNbY30ZcPsrK54cFgOQvCEs7q
+	 Kzbc8fAi1oh8kr/fX+2QvlWAOmSNOrxS4tulW554RGN6AJo109uik7iMrULGVrg9JA
+	 h+4BAo0MC+XfYEcLMrXsVsF03ARD5EWo1LkBhGvjkfx0tDVBZoS3ke6u8uknaceo/c
+	 t49bTei4ki1IPulpjPhqwZeqb4Dx4WxY53rAD5VcI+bEtsEuWWI75/tiT7YpjJaiJ5
+	 xld/BQ9Q+WRDA==
+Date: Tue, 6 Aug 2024 17:53:24 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Olivier Moysan <olivier.moysan@foss.st.com>
-Cc: <fabrice.gasnier@foss.st.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 8/9] iio: add iio backend support to sd modulator
-Message-ID: <20240806175106.09a53784@jic23-huawei>
-In-Reply-To: <20240730084640.1307938-9-olivier.moysan@foss.st.com>
-References: <20240730084640.1307938-1-olivier.moysan@foss.st.com>
-	<20240730084640.1307938-9-olivier.moysan@foss.st.com>
+To: Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: inv.git-commit@tdk.com, lars@metafoo.de, linux-iio@vger.kernel.org,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH v3 3/4] iio: imu: inv_mpu6050: add new interrupt handler
+ for WoM events
+Message-ID: <20240806175324.3eea67c7@jic23-huawei>
+In-Reply-To: <0ea167a1-75d0-469d-a79f-ff2cb5e81bdc@gmail.com>
+References: <20240311160557.437337-1-inv.git-commit@tdk.com>
+	<20240311160557.437337-4-inv.git-commit@tdk.com>
+	<0ea167a1-75d0-469d-a79f-ff2cb5e81bdc@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,219 +60,205 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 30 Jul 2024 10:46:38 +0200
-Olivier Moysan <olivier.moysan@foss.st.com> wrote:
+On Tue, 23 Jul 2024 11:25:03 +0300
+Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 
-> The legacy sd modulator driver registers the sigma delta modulator as
-> an IIO channel provider. This implementation is not convenient when the
-> SD modulator has to be cascaded with another IIO device. The scaling
-> information is distributed across devices, which makes it difficult to
-> report consistent scaling data on IIO devices.
-> 
-> The solution is to expose these cascaded IIO devices as an aggregate
-> device, which report global scaling information.
-> Add IIO backend support to SD modulator to allow scaling information
-> management.
-> 
-> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-I've applied this fixup given changes in the backend code that crossed
-with this.
+> 11.03.24 6:05 =D0=BF=D0=BF, inv.git-commit@tdk.com:
+> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> >
+> > Add new interrupt handler for generating WoM event from int status regi=
+ster
+> > bits. Launch from interrupt the trigger poll function for data buffer.
+> >
+> > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-diff --git a/drivers/iio/adc/sd_adc_modulator.c b/drivers/iio/adc/sd_adc_modulator.c
-index 06f9c5cacd53..654b6a38b650 100644
---- a/drivers/iio/adc/sd_adc_modulator.c
-+++ b/drivers/iio/adc/sd_adc_modulator.c
-@@ -74,6 +74,11 @@ static const struct iio_backend_ops sd_backend_ops = {
-        .read_raw = iio_sd_mod_read,
- };
- 
-+static const struct iio_backend_info sd_backend_info = {
-+       .name = "sd-modulator",
-+       .ops = &sd_backend_ops,
-+};
-+
- static int iio_sd_mod_register(struct platform_device *pdev)
- {
-        struct device *dev = &pdev->dev;
-@@ -131,7 +136,7 @@ static int iio_sd_mod_probe(struct platform_device *pdev)
-                priv->vref_mv = ret / 1000;
-        }
- 
--       return devm_iio_backend_register(&pdev->dev, &sd_backend_ops, priv);
-+       return devm_iio_backend_register(&pdev->dev, &sd_backend_info, priv);
- };
+Jean-Baptiste,
 
-Please give it a quick spin. Hopefully I didn't break anything.
+Please take a look at this report.  I'd rather not revert the series
+if we can figure out what is wrong and get a fix on top in reasonably
+quickly.
+
+I'd guess a power problem so we are getting interrupts when device is power=
+ed down?
+Hence the reads fail.
 
 Jonathan
 
-> ---
->  drivers/iio/adc/Kconfig            |  1 +
->  drivers/iio/adc/sd_adc_modulator.c | 92 +++++++++++++++++++++++++++++-
->  2 files changed, 92 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index bd028d59db63..43ff8182b2ea 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -1195,6 +1195,7 @@ config SD_ADC_MODULATOR
->  	tristate "Generic sigma delta modulator"
->  	select IIO_BUFFER
->  	select IIO_TRIGGERED_BUFFER
-> +	select IIO_BACKEND
->  	help
->  	  Select this option to enables sigma delta modulator. This driver can
->  	  support generic sigma delta modulators.
-> diff --git a/drivers/iio/adc/sd_adc_modulator.c b/drivers/iio/adc/sd_adc_modulator.c
-> index 327cc2097f6c..06f9c5cacd53 100644
-> --- a/drivers/iio/adc/sd_adc_modulator.c
-> +++ b/drivers/iio/adc/sd_adc_modulator.c
-> @@ -6,11 +6,14 @@
->   * Author: Arnaud Pouliquen <arnaud.pouliquen@st.com>.
->   */
->  
-> +#include <linux/iio/backend.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/triggered_buffer.h>
->  #include <linux/module.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/platform_device.h>
-> +#include <linux/property.h>
-> +#include <linux/regulator/consumer.h>
->  
->  static const struct iio_info iio_sd_mod_iio_info;
->  
-> @@ -24,7 +27,54 @@ static const struct iio_chan_spec iio_sd_mod_ch = {
->  	},
->  };
->  
-> -static int iio_sd_mod_probe(struct platform_device *pdev)
-> +struct iio_sd_backend_priv {
-> +	struct regulator *vref;
-> +	int vref_mv;
-> +};
-> +
-> +static int iio_sd_mod_enable(struct iio_backend *backend)
-> +{
-> +	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
-> +
-> +	if (priv->vref)diff --git a/drivers/iio/adc/sd_adc_modulator.c b/drivers/iio/adc/sd_adc_modulator.c
-index 06f9c5cacd53..654b6a38b650 100644
---- a/drivers/iio/adc/sd_adc_modulator.c
-+++ b/drivers/iio/adc/sd_adc_modulator.c
-@@ -74,6 +74,11 @@ static const struct iio_backend_ops sd_backend_ops = {
-        .read_raw = iio_sd_mod_read,
- };
- 
-+static const struct iio_backend_info sd_backend_info = {
-+       .name = "sd-modulator",
-+       .ops = &sd_backend_ops,
-+};
-+
- static int iio_sd_mod_register(struct platform_device *pdev)
- {
-        struct device *dev = &pdev->dev;
-@@ -131,7 +136,7 @@ static int iio_sd_mod_probe(struct platform_device *pdev)
-                priv->vref_mv = ret / 1000;
-        }
- 
--       return devm_iio_backend_register(&pdev->dev, &sd_backend_ops, priv);
-+       return devm_iio_backend_register(&pdev->dev, &sd_backend_info, priv);
- };
-> +		return regulator_enable(priv->vref);
-> +
-> +	return 0;
-> +};
-> +
-> +static void iio_sd_mod_disable(struct iio_backend *backend)
-> +{
-> +	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
-> +
-> +	if (priv->vref)
-> +		regulator_disable(priv->vref);
-> +};
-> +
-> +static int iio_sd_mod_read(struct iio_backend *backend, struct iio_chan_spec const *chan, int *val,
-> +			   int *val2, long mask)
-> +{
-> +	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = priv->vref_mv;
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		*val = 0;
-> +		return IIO_VAL_INT;
-> +	}
-> +
-> +	return -EOPNOTSUPP;
-> +};
-> +
-> +static const struct iio_backend_ops sd_backend_ops = {
-> +	.enable = iio_sd_mod_enable,
-> +	.disable = iio_sd_mod_disable,
-> +	.read_raw = iio_sd_mod_read,
-> +};
-> +
-> +static int iio_sd_mod_register(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
->  	struct iio_dev *iio;
-> @@ -45,6 +95,45 @@ static int iio_sd_mod_probe(struct platform_device *pdev)
->  	return devm_iio_device_register(&pdev->dev, iio);
->  }
->  
-> +static int iio_sd_mod_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct regulator *vref;
-> +	struct iio_sd_backend_priv *priv;
-> +	int ret;
-> +
-> +	/* If sd modulator is not defined as an IIO backend device, fallback to legacy */
-> +	if (!device_property_present(dev, "#io-backend-cells"))
-> +		return iio_sd_mod_register(pdev);
-> +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	/*
-> +	 * Get regulator reference if any, but don't enable regulator right now.
-> +	 * Rely on enable and disable callbacks to manage regulator power.
-> +	 */
-> +	vref = devm_regulator_get_optional(dev, "vref");
-> +	if (IS_ERR(vref)) {
-> +		if (PTR_ERR(vref) != -ENODEV)
-> +			return dev_err_probe(dev, PTR_ERR(vref), "Failed to get vref\n");
-> +	} else {
-> +		/*
-> +		 * Retrieve voltage right now, as regulator_get_voltage() provides it whatever
-> +		 * the state of the regulator.
-> +		 */
-> +		ret = regulator_get_voltage(vref);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		priv->vref = vref;
-> +		priv->vref_mv = ret / 1000;
-> +	}
-> +
-> +	return devm_iio_backend_register(&pdev->dev, &sd_backend_ops, priv);
-> +};
-> +
->  static const struct of_device_id sd_adc_of_match[] = {
->  	{ .compatible = "sd-modulator" },
->  	{ .compatible = "ads1201" },
-> @@ -65,3 +154,4 @@ module_platform_driver(iio_sd_mod_adc);
->  MODULE_DESCRIPTION("Basic sigma delta modulator");
->  MODULE_AUTHOR("Arnaud Pouliquen <arnaud.pouliquen@st.com>");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(IIO_BACKEND);
+> > ---
+> >   drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  2 +
+> >   drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 11 ---
+> >   drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 69 +++++++++++++++++--
+> >   3 files changed, 66 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/im=
+u/inv_mpu6050/inv_mpu_iio.h
+> > index d5b0465d1f74..ca5f7d45a6d4 100644
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> > @@ -185,6 +185,7 @@ struct inv_mpu6050_hw {
+> >    *  @magn_orient:       magnetometer sensor chip orientation if avail=
+able.
+> >    *  @suspended_sensors:	sensors mask of sensors turned off for suspend
+> >    *  @data:		read buffer used for bulk reads.
+> > + *  @it_timestamp:	interrupt timestamp.
+> >    */
+> >   struct inv_mpu6050_state {
+> >   	struct mutex lock;
+> > @@ -210,6 +211,7 @@ struct inv_mpu6050_state {
+> >   	unsigned int suspended_sensors;
+> >   	bool level_shifter;
+> >   	u8 *data;
+> > +	s64 it_timestamp;
+> >   };
+> >  =20
+> >   /*register and associated bit definition*/
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/i=
+mu/inv_mpu6050/inv_mpu_ring.c
+> > index 13da6f523ca2..e282378ee2ca 100644
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> > @@ -51,21 +51,10 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+> >   	u32 fifo_period;
+> >   	s64 timestamp;
+> >   	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE];
+> > -	int int_status;
+> >   	size_t i, nb;
+> >  =20
+> >   	mutex_lock(&st->lock);
+> >  =20
+> > -	/* ack interrupt and check status */
+> > -	result =3D regmap_read(st->map, st->reg->int_status, &int_status);
+> > -	if (result) {
+> > -		dev_err(regmap_get_device(st->map),
+> > -			"failed to ack interrupt\n");
+> > -		goto flush_fifo;
+> > -	}
+> > -	if (!(int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT))
+> > -		goto end_session;
+> > -
+> >   	if (!(st->chip_config.accl_fifo_enable |
+> >   		st->chip_config.gyro_fifo_enable |
+> >   		st->chip_config.magn_fifo_enable))
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/ii=
+o/imu/inv_mpu6050/inv_mpu_trigger.c
+> > index ec2398a87f45..2514966f6495 100644
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > @@ -6,6 +6,7 @@
+> >   #include <linux/pm_runtime.h>
+> >  =20
+> >   #include <linux/iio/common/inv_sensors_timestamp.h>
+> > +#include <linux/iio/events.h>
+> >  =20
+> >   #include "inv_mpu_iio.h"
+> >  =20
+> > @@ -223,6 +224,65 @@ static const struct iio_trigger_ops inv_mpu_trigge=
+r_ops =3D {
+> >   	.set_trigger_state =3D &inv_mpu_data_rdy_trigger_set_state,
+> >   };
+> >  =20
+> > +static irqreturn_t inv_mpu6050_interrupt_timestamp(int irq, void *p)
+> > +{
+> > +	struct iio_dev *indio_dev =3D p;
+> > +	struct inv_mpu6050_state *st =3D iio_priv(indio_dev);
+> > +
+> > +	st->it_timestamp =3D iio_get_time_ns(indio_dev);
+> > +
+> > +	return IRQ_WAKE_THREAD;
+> > +}
+> > +
+> > +static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
+> > +{
+> > +	struct iio_dev *indio_dev =3D p;
+> > +	struct inv_mpu6050_state *st =3D iio_priv(indio_dev);
+> > +	unsigned int int_status, wom_bits;
+> > +	u64 ev_code;
+> > +	int result;
+> > +
+> > +	switch (st->chip_type) {
+> > +	case INV_MPU6050:
+> > +	case INV_MPU6500:
+> > +	case INV_MPU6515:
+> > +	case INV_MPU6880:
+> > +	case INV_MPU6000:
+> > +	case INV_MPU9150:
+> > +	case INV_MPU9250:
+> > +	case INV_MPU9255:
+> > +		wom_bits =3D INV_MPU6500_BIT_WOM_INT;
+> > +		break;
+> > +	default:
+> > +		wom_bits =3D INV_ICM20608_BIT_WOM_INT;
+> > +		break;
+> > +	}
+> > +
+> > +	scoped_guard(mutex, &st->lock) {
+> > +		/* ack interrupt and check status */
+> > +		result =3D regmap_read(st->map, st->reg->int_status, &int_status);
+> > +		if (result) {
+> > +			dev_err(regmap_get_device(st->map), "failed to ack interrupt\n");
+> > +			return IRQ_HANDLED;
+> > +		}
+> > +
+> > +		/* handle WoM event */
+> > +		if (st->chip_config.wom_en && (int_status & wom_bits)) {
+> > +			ev_code =3D IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_MOD_X_OR_Y_OR_Z,
+> > +						     IIO_EV_TYPE_ROC, IIO_EV_DIR_RISING);
+> > +			iio_push_event(indio_dev, ev_code, st->it_timestamp);
+> > +		}
+> > +	}
+> > +
+> > +	/* handle raw data interrupt */
+> > +	if (int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT) {
+> > +		indio_dev->pollfunc->timestamp =3D st->it_timestamp;
+> > +		iio_trigger_poll_nested(st->trig);
+> > +	}
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> >   int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type)
+> >   {
+> >   	int ret;
+> > @@ -235,11 +295,10 @@ int inv_mpu6050_probe_trigger(struct iio_dev *ind=
+io_dev, int irq_type)
+> >   	if (!st->trig)
+> >   		return -ENOMEM;
+> >  =20
+> > -	ret =3D devm_request_irq(&indio_dev->dev, st->irq,
+> > -			       &iio_trigger_generic_data_rdy_poll,
+> > -			       irq_type,
+> > -			       "inv_mpu",
+> > -			       st->trig);
+> > +	ret =3D devm_request_threaded_irq(&indio_dev->dev, st->irq,
+> > +					&inv_mpu6050_interrupt_timestamp,
+> > +					&inv_mpu6050_interrupt_handle,
+> > +					irq_type, "inv_mpu", indio_dev);
+> >   	if (ret)
+> >   		return ret;
+> >    =20
+>=20
+> Greetings!
+>=20
+> After this patch was applied to Linux kernel I faced a regression on my=20
+> devices LG P895/P880.
+>=20
+> Dmesg is flooded with
+>=20
+> [ 50.035018] inv-mpu6050-i2c 0-0068: failed to ack interrupt -121
+>=20
+> and mpu6050 used on this device refuses to work. It did not occur before=
+=20
+> WoM patches were
+>=20
+> applied and reverting patches restores normal work of mpu6050.
+>=20
+>=20
+> Best regards,
+>=20
+> Svyatoslav R.
+>=20
 
 

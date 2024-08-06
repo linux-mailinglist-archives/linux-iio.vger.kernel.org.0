@@ -1,129 +1,127 @@
-Return-Path: <linux-iio+bounces-8261-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8262-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3C39488F9
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 07:31:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA44594892F
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 08:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B7F6B22E74
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 05:31:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51C8F1F23EA3
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 06:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7DD1B9B4E;
-	Tue,  6 Aug 2024 05:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1295F1BC092;
+	Tue,  6 Aug 2024 06:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ArZifdn9"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="b0F8+7Ak"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625A71BA88D
-	for <linux-iio@vger.kernel.org>; Tue,  6 Aug 2024 05:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF441BBBE6;
+	Tue,  6 Aug 2024 06:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722922229; cv=none; b=b39HR81+2pekQ4QiaadYIDDMUPH7pQoxhdbGGfrL6hJ6STBCK0sIDlLn7eg2sI17OOZwca4vRje64481PPM62vSHsuj6s5YAOeOjjr51Uq+nX6tOsY7Pv6xjjv85lpJ8vE9/7LJDPb87v1K8bOjGdowNED0sUjzSB+GEXfTP0dg=
+	t=1722924625; cv=none; b=HUM0i4tZiwifzk5fLh1r/IS+/mrhjYtTwezPnLkpYzHSd6svtq5UvIy/S2X/BoCAGBWAjQWgR/VqhyhYxc9zjEPGw4ONWDfUpuqgSLzwLU5Bee+g1tsk/cTJ1ATGKQwCofhatV9VRBLPmxGiAFCmOfXc+orhhiQAjeo9/TT5GQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722922229; c=relaxed/simple;
-	bh=lsb6kbh6k72R3qIL5aRMx1yf9phwSqZ6jTpVRAmf60g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gc1vnbnHOCFA6zS//F1pjXYsKOn+Eh/mc4qcWMlv7+8Riiy7DRmJ9Xni3uO2BoxreVqbIiVx6IWEK5iNN2EbxwBnngsOWrofK6CmZbQPSb4W+G7dHocKPPSo9lomBxELJ9TNdLuXtf51XaDISfH/kCMhkhPzNXBjTArYl+cDV78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ArZifdn9; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-36ba3b06186so92743f8f.2
-        for <linux-iio@vger.kernel.org>; Mon, 05 Aug 2024 22:30:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722922223; x=1723527023; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EPCVAIHeH9S7ZymysDPzhcgJG8KdopCxzMAed2EX/U4=;
-        b=ArZifdn9b22o3OuuW/z63a43f82CmpfDcN0NOHoR5LF6NKDUy5kcIuDR1TPJoVeQsr
-         42lHAvBByRhNoqKgjvgKewNR2n8gMdFVUsnbJT11n+m9uc6V63EtSCn3rAkQDdlteUVl
-         n02zl3SuBypN+QS8LMTZoOjDFW9Rk7FPLFxZqiEMkbchki7d9Id/BUjFDJ1rcZ/LzQsu
-         7W3E4ymSZCDuP9bQdZN0Z46HotQPHfPAQBke1mVudSsoKNshAEGrSZmFkWdA0L7OZ5UT
-         Z0GsQDdTe34N+3qpytcXp3KPuUKlc7+0CqC9thXdfwoD4nLz6DLIZ/bM6SQWlxdiq/j5
-         SdbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722922223; x=1723527023;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EPCVAIHeH9S7ZymysDPzhcgJG8KdopCxzMAed2EX/U4=;
-        b=pjAkhBrGgplIvSoRZ+5ICGC2IajQ2Nvw5fONizgDL2SHrDVWBJ3/RJqjxWpywVtiCi
-         +SdazR6UNhbCAbtdet15UXLjeQ5RbWefIGK5/ah4C6v5kkaSVyCzEkHEzIO9G/2pJ4br
-         L9BeUZZDNf4fGy1dSqhHx1yI12ZJl91eEVl2QDCznqDgzmm8aVuckNSW80YC5RW13dl+
-         yzn+t68mHaEjetsZLDxX/SGRHJWaihVLjf3BNgjg6QYPDhWEIgWtV+7XXBtM6j0eGbCD
-         EaT0bmPB1H6LdCd+rEWbPjXJTKjJwhS7c1JY2Njeiw1d9ybLzO5t9oSJeFrGPXU+NVpv
-         dSJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHRQ3JHr2HCyxQhe6YzNNfRPU8FARb/a+2Do5x2lz20zKUteUfj8+DGTwjwZNcd5vkf9KAVo28Is1/PEJv7bDF+zb3oH5mdNmK
-X-Gm-Message-State: AOJu0YwL3/PkuK2FgJJiMKct4olQyjA335j+tyEhrP8EBEGMLn3mb2qz
-	/PQnARx3ofmIcACkhCDkr7GWRqif+nYiKUwLu04StWLiIgPWZ1jphLg6jem9YNU=
-X-Google-Smtp-Source: AGHT+IFlbaZQ/fAx/6gzC6eXx57K1nLvOSyzyU5cUkM/2Lv1iisv8vdtktS+T7sHVnjYtvhEvfewFQ==
-X-Received: by 2002:a5d:47a4:0:b0:368:35db:273c with SMTP id ffacd0b85a97d-36bbc0e435amr11296225f8f.18.1722922222155;
-        Mon, 05 Aug 2024 22:30:22 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbcf0cc8esm11685000f8f.19.2024.08.05.22.30.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 22:30:21 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-	Matt Ranostay <matt@ranostay.sg>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 2/2] dt-bindings: iio: asahi-kasei,ak8975: drop incorrect AK09116 compatible
-Date: Tue,  6 Aug 2024 07:30:16 +0200
-Message-ID: <20240806053016.6401-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240806053016.6401-1-krzysztof.kozlowski@linaro.org>
-References: <20240806053016.6401-1-krzysztof.kozlowski@linaro.org>
+	s=arc-20240116; t=1722924625; c=relaxed/simple;
+	bh=Twr+vUNDMWh20/Auw8fpCEZfivCucrMiX86KHgJbywQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=b9eCLOUJE4uQC4cWaZPVJP4XeKzUfeISfY+QZVw9fnIJQ/ZFxz0S96RdcWezgWbWNtPJrhe5Eg9DCqs6O4jbMtdHIOzzxdiJIi6DRCOVOSjEx000duteGpE6ukskrhUb0be9MiJM+I4ID8l6UADJyErCPfQlIvCc/sRVGrIxZas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=b0F8+7Ak; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+Received: from [192.168.1.90] (86FF4CFD.dsl.pool.telekom.hu [134.255.76.253])
+	by mail.mainlining.org (Postfix) with ESMTPSA id 4D783E450D;
+	Tue,  6 Aug 2024 06:10:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
+	s=psm; t=1722924621;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Rsga1xJfJPrQXQrllrXna2pGVq+a1r3SwVz8K8iMhLQ=;
+	b=b0F8+7AkbW2McHCGlf6oe88N/cNdVmiAQHErlYqd6j7tg83wyHi5MLLKFA1BXc4Pb5Ewt1
+	ykIwNSDT3aIe1gSw5nlSGulO1o3vDo6HG9ZzOPyX1w6wTu3xXaCnIfpHMhphLdq/OyAN7c
+	NHAMhRBIof4T3AXtSJK6ls9lI21qNT+/UJhenwbOxh+p9oTYFt97J4FZnZJzCD3Ar3i6Ib
+	soGPhBdoO9svf+if7a7LmN5BZDeOqsp1kSzA1ZBk1U2D2hCHnxNXvmENd5w5m6umuDcSQN
+	bSpLs9g5cxGy2wigop+DlvyzpO2x5nnlLDtHnGNkG31+Lgqzq7izcRUDU86fhw==
+From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+Subject: [PATCH v2 0/3] Add support for AK09918
+Date: Tue, 06 Aug 2024 08:10:17 +0200
+Message-Id: <20240806-ak09918-v2-0-c300da66c198@mainlining.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAEq+sWYC/2XMQQ7CIBCF4as0sxYz0GrBlfcwXSCdthMVDBiia
+ bi72K3L/+XlWyFRZEpwalaIlDlx8DXUrgG3WD+T4LE2KFQdajwIe0NjpBadPbqJJiNdq6C+n5E
+ mfm/SZai9cHqF+NngLH/rv5GlQNGjbnui69iP+vyw7O/s2c/7EGcYSilfPYh4F6MAAAA=
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux@mainlining.org, 
+ =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>, 
+ Danila Tikhonov <danila@jiaxyga.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1722924621; l=1562;
+ i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
+ bh=Twr+vUNDMWh20/Auw8fpCEZfivCucrMiX86KHgJbywQ=;
+ b=b212hznlhpeLgowt4TPrOQUPZW+lia9ELTKp05oJUNjT4y15zDHLmDGD/wvRndBwi4WFJKI88
+ nq5gipUdblhDMsqi88pTyFCNLHc+rHmyN0LuSjPfCNu7B0K6oHjWKAk
+X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
+ pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
 
-All compatibles in this binding without prefixes were deprecated, so
-adding a new deprecated one after some time is not allowed, because it
-defies the core logic of deprecating things.
+Add support for AK09918 which is register and scaling compatible with
+AK09912.
 
-Drop the AK09916 vendorless compatible.
+It was tested in Xiaomi Redmi 5 Plus (vince).
 
-Fixes: 76e28aa97fa0 ("iio: magnetometer: ak8975: add AK09116 support")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+magnetometer@c {
+  compatible = "asahi-kasei,ak09918";
+  reg = <0x0c>;
+  vdd-supply = <&pm8953_l6>;
+  mount-matrix = "1", "0", "0",
+                 "0", "1", "0",
+                 "0", "0", "1";
+};
+
+Add a fix for data reading according to datasheet [1] (9.4.3.2.)
+ST2 register should be read out after read measurment data as third step.
+ST2 read out is required and get correct value during measurment data
+read.
+
+[1] https://www.akm.com/content/dam/documents/products/electronic-compass/ak09918c/ak09918c-en-datasheet.pdf
+
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+---
+Changes in v2:
+- Remove unnecessary ak09918 compatbile.
+- Link to v1: https://lore.kernel.org/r/20240805-ak09918-v1-0-70837eebd7d8@mainlining.org
 
 ---
+Barnabás Czémán (1):
+      iio: magnetometer: ak8975: Fix reading for ak099xx sensors
 
-Offending commit did not even bother to Cc devicetree mailing list and
-DT maintainers... Lovely. Let's ignore submitting patches and
-maintainers just to sneak my important patch into the kernel.
+Danila Tikhonov (2):
+      dt-bindings: iio: imu: magnetometer: Add ak09118
+      iio: magnetometer: ak8975: Add AK09118 support
+
+ .../iio/magnetometer/asahi-kasei,ak8975.yaml       |  1 +
+ drivers/iio/magnetometer/Kconfig                   |  2 +-
+ drivers/iio/magnetometer/ak8975.c                  | 65 ++++++++++++++++------
+ 3 files changed, 51 insertions(+), 17 deletions(-)
 ---
- .../devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml | 1 -
- 1 file changed, 1 deletion(-)
+base-commit: d6dbc9f56c3a70e915625b6f1887882c23dc5c91
+change-id: 20240805-ak09918-4a6cfef91c32
 
-diff --git a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
-index 9790f75fc669..fe5145d3b73c 100644
---- a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
-+++ b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
-@@ -23,7 +23,6 @@ properties:
-           - ak8963
-           - ak09911
-           - ak09912
--          - ak09916
-         deprecated: true
- 
-   reg:
+Best regards,
 -- 
-2.43.0
+Barnabás Czémán <barnabas.czeman@mainlining.org>
 
 

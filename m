@@ -1,185 +1,140 @@
-Return-Path: <linux-iio+bounces-8299-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8300-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C132F949729
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 19:55:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6AA949966
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 22:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16E93B21C2C
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 17:55:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33E70282D2F
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 20:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1FD7347C;
-	Tue,  6 Aug 2024 17:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127D4158DBA;
+	Tue,  6 Aug 2024 20:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="GUIxXTjD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fNmonm7D"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9167A74E26;
-	Tue,  6 Aug 2024 17:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2295447F6B;
+	Tue,  6 Aug 2024 20:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722966901; cv=none; b=mks5aFXdjsuSIc6inhydfLIjcBTWmFp3cIv5kl65JhV5PR3pDg+u1SwHfUf4ilRlF3K/vbTId2d5811Qlp1T3KlkBBSvJ7pjzptTus+XW1nveknpzgJKW8PLTx0hypyhbV/97SF2TIToYyzSlZ/0b8xHHxKhjnjfcdxalwcnPO8=
+	t=1722977113; cv=none; b=muAMfp4Hpher3W29JyJavwn/Ef0demCKgYZc1cUe3BxtlAUaihLW6xDc1E8G9q5B0JRTWHZzXK7+dQ+km8SXhcvA40KWZxnMsBaDnofA8pEhtvOvPVdU9iQJV2AKF4ykM4D2ext2v39ESPn245Zv7w0BVq6UnWB6+uTjCAPdiKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722966901; c=relaxed/simple;
-	bh=pITPNxK6NWuL3mgYX/ey5UVzu5AmbaccLKqozNMWZMY=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ChT470qQvJX0SYM2cHhvq+R4XP+d5VLCgHvZqmf/SRhJEDZByiqQ0vxC98B58k8PiBlfDykeU6m/kVa2w4gRA15WsWV9hfSh1XqgXVWEaEfYopMhMc9sZbp87YvZNrzB9mt3mFF/eNaOVn8r6pNqIuOei6PDMV51JDdYzXOfiIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=GUIxXTjD; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
-Received: from [127.0.0.1] (254C310E.nat.pool.telekom.hu [37.76.49.14])
-	by mail.mainlining.org (Postfix) with ESMTPSA id 2CEABE450D;
-	Tue,  6 Aug 2024 17:54:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
-	s=psm; t=1722966897;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g9xC00bI7x2D+/ssVTv2fzqiBPxsHC1NlAvczmix+jw=;
-	b=GUIxXTjDHIauCrUXq8q1KdmQ6PL2uU71zUvJ5KOQelYo6sjUQ4sUKntdwBE0VCysq2n+Dg
-	KcxS/6N4L/X7Sg77feb8PzRFsLrF8axWT2yHq5yi+gZr0Ti7e37ZxpmRS9ZldwEzeL6RZD
-	dmJlY5Y7MgSaRrBDUlsjfdzNfv+fVeDml1VrFuW9sMbNGgHwA9vHhMyxsPlIzDWa7uxPkV
-	J/ELvb6IjI0fx0MDrQnsfRBrl7BoTVlRTbguyZ5tMia1cs20FoF8q9zGoFGRcQQ+si79PX
-	O+xPcEOeRusyiI/zxKtNrx23DmCyyyj34tDGSggIDJxj6XuMrADdcCP0KM/P0Q==
-Date: Tue, 06 Aug 2024 19:54:56 +0200
-From: =?ISO-8859-1?Q?Barnab=E1s_Cz=E9m=E1n?= <barnabas.czeman@mainlining.org>
-To: Jonathan Cameron <jic23@kernel.org>
-CC: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Albrieux <jonathan.albrieux@gmail.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux@mainlining.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/3=5D_iio=3A_magnetometer=3A_?=
- =?US-ASCII?Q?ak8975=3A_Fix_reading_for_ak099xx_sensors?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20240806171925.7c512c63@jic23-huawei>
-References: <20240806-ak09918-v2-0-c300da66c198@mainlining.org> <20240806-ak09918-v2-1-c300da66c198@mainlining.org> <20240806171925.7c512c63@jic23-huawei>
-Message-ID: <45915CD6-A9BB-4071-ABCC-8DE76F7066C3@mainlining.org>
+	s=arc-20240116; t=1722977113; c=relaxed/simple;
+	bh=KIuqqmJpBYBODsWb+cOMINZVAttBqf/tOMB2ESlS/cg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Or8h1/et6iMHxbhaW52bv2ageWHKpVUSpu88NSeWxUUU4tocNhMPPbkNc8DVIdw694St7nP2NRoLvGw5nObcO27FCY8gwVwJUsVYZ6h0fHJ+w1L/V1N3aUVSJQ45Gq+pXZH/1MKXsiWJFYInpO0mfUvIfWv2ooSY8zl0Sv3iYwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fNmonm7D; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-36ba3b06186so591658f8f.2;
+        Tue, 06 Aug 2024 13:45:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722977110; x=1723581910; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dOg6CYStGsFYA3cE/78c/lPHwu3rcEs4hIt+mQogWrY=;
+        b=fNmonm7DFpvZTqN6chJOVCfxX3qFEJLnb4hM4pQIN89y09bEzn5QbNl0DgiE1vNR7g
+         UcDE2tTzcr02CKvcnPdjKUs7v6Y/QMCn/0ClmDmBZbNwk5Y5LMeKiQRFZW7hN+JUoAF9
+         IYPru+S/nzRf4C4sSJwDMlo70i95P86fbPxlkYIn6HQCPoWn+imu6gvNTJEhJWkvSLlK
+         syDEoWEunhCa+ez2y+twsbrlDVd+GMOEie8sdPy5Yq1nXukcROwoGMyroKPcME350tzS
+         yCLi9mf3q5IkKqqkJP+gdI/BwkCdqfdaegoD0vpEA/mEygm5I1alYhKSLfBA1SHXcSxX
+         m5GA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722977110; x=1723581910;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dOg6CYStGsFYA3cE/78c/lPHwu3rcEs4hIt+mQogWrY=;
+        b=onEdx+UJFxgMfKwPllMhyE3/ci4EWPJ7KYkAV8HVXQuFg98O7AKQnO37h4E9M/XHuD
+         n9uB4F2BtZ3AFQ4TM+bKKQPSbotGfsymnTn3INTb5wamVc2/+i+MU4uGVxwsPXlqceph
+         V9gj68mRNmu3D0y8/o3pcohp9pEQVj+lujLnaXp8+0nuAU2i0Az3koDxTwvXeZASUJ7n
+         NSi8U36jjQVTPu8YCcFnMqbgTAxtnYbrbTR4oNypJkPb4HdW5I+dE+chz+YQZErOMdSu
+         wRBSZffxm/GYMwGc6Mv0X1lmt5/pxVu9aTfftTGTJa0RK8GHaat99fCtWObhFl2cYyxy
+         QqsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrmj64p6STFQYb2Saqi/7aySe+Mstm3vfGPFJm5gNwYJl/nqtOO4qWPfuzTtjEdUkZx48bCnBqsbrnM2AELS54+rbC21nIn/VT5gwXD3fD7EbHfOtQdyAsvlBz0PgxD5s0Ool2mA==
+X-Gm-Message-State: AOJu0Yxn3ufyWCLO3/m5k/1MswyReE67HW8Aob5HWtj0tnnfsvOhgj7S
+	Z8dmKE0cC/NKmDikrcwcYXsNIzjWU4FHRCQ0jWfi2sS1SlV4bd9S
+X-Google-Smtp-Source: AGHT+IGZSd4SSanfsuHMDv/NQfTB4T/YAdjutfajpEpk6SceNnV3BqFIVTXztk1vx7VerGImtafjvA==
+X-Received: by 2002:adf:9794:0:b0:366:eb61:b47 with SMTP id ffacd0b85a97d-36bbc0c6b4bmr9775385f8f.8.1722977109710;
+        Tue, 06 Aug 2024 13:45:09 -0700 (PDT)
+Received: from ?IPV6:2a10:d582:37c5:0:24ff:23cd:356f:3efc? ([2a10:d582:37c5:0:24ff:23cd:356f:3efc])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd26f8edsm13985739f8f.113.2024.08.06.13.45.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Aug 2024 13:45:09 -0700 (PDT)
+Message-ID: <23e8b9d9-d0e0-44df-b464-fc2d1f2d5507@gmail.com>
+Date: Tue, 6 Aug 2024 21:45:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] iio: light: ROHM BH1745 colour sensor
+To: Matti Vaittinen <mazziesaccount@gmail.com>, jic23@kernel.org,
+ lars@metafoo.de, krzk+dt@kernel.org, conor+dt@kernel.org, robh@kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Ivan Orlov <ivan.orlov0322@gmail.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+References: <20240718220208.331942-1-muditsharma.info@gmail.com>
+ <20240718220208.331942-2-muditsharma.info@gmail.com>
+ <5622f011-222a-459e-9086-138adf0796aa@gmail.com>
+Content-Language: en-US
+From: Mudit Sharma <muditsharma.info@gmail.com>
+In-Reply-To: <5622f011-222a-459e-9086-138adf0796aa@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-
-On August 6, 2024 6:19:25 PM GMT+02:00, Jonathan Cameron <jic23@kernel=2Eo=
-rg> wrote:
->On Tue, 06 Aug 2024 08:10:18 +0200
->Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas=2Eczeman@mainlining=2Eorg> wrote=
-:
->
->Hi Barnab=C3=A1s,
->
->Welcome to IIO=2E
->
->> ST2 register read should be placed after read measurment data,
->> because it will get correct values after it=2E
->
->What is the user visible result of this? Do we detect errors when none
->are there?  Do we have a datasheet reference for the status being
->update on the read command, not after the trigger?
-
-Second read will fail=2E In the datasheet ST2 comes after measurment data =
-read=2E Here is some explanation from datasheet=2E
-
-"When ST2 register is read, AK09918 judges that data reading is finished=
-=2E Stored measurement data is
-protected during data reading and data is not updated=2E By reading ST2 re=
-gister, this protection is
-released=2E It is required to read ST2 register after data reading=2E"
-
-So if ST2 is read before measurment it will stuck at protected mode=2E
+On 05/08/2024 11:28, Matti Vaittinen wrote:
+> On 7/19/24 01:02, Mudit Sharma wrote:
+>> Add support for BH1745, which is an I2C colour sensor with red, green,
+>> blue and clear channels. It has a programmable active low interrupt
+>> pin. Interrupt occurs when the signal from the selected interrupt
+>> source channel crosses set interrupt threshold high or low level.
 >>
->Needs a Fixes tag to let us know how far to backport the fix=2E
-I think it is broken since 09912 was added but i cannot verify i have only=
- devices with 09918=2E
->
->A few comments inline=2E
->=20
->> Signed-off-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas=2Eczeman@mainli=
-ning=2Eorg>
->> ---
->>  drivers/iio/magnetometer/ak8975=2Ec | 31 +++++++++++++++--------------=
---
->>  1 file changed, 15 insertions(+), 16 deletions(-)
->>=20
->> diff --git a/drivers/iio/magnetometer/ak8975=2Ec b/drivers/iio/magnetom=
-eter/ak8975=2Ec
->> index dd466c5fa621=2E=2E925d76062b3e 100644
->> --- a/drivers/iio/magnetometer/ak8975=2Ec
->> +++ b/drivers/iio/magnetometer/ak8975=2Ec
->> @@ -692,22 +692,7 @@ static int ak8975_start_read_axis(struct ak8975_da=
-ta *data,
->>  	if (ret < 0)
->>  		return ret;
->> =20
->> -	/* This will be executed only for non-interrupt based waiting case */
->> -	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
->> -		ret =3D i2c_smbus_read_byte_data(client,
->> -					       data->def->ctrl_regs[ST2]);
->> -		if (ret < 0) {
->> -			dev_err(&client->dev, "Error in reading ST2\n");
->> -			return ret;
->> -		}
->> -		if (ret & (data->def->ctrl_masks[ST2_DERR] |
->> -			   data->def->ctrl_masks[ST2_HOFL])) {
->> -			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
->> -			return -EINVAL;
->> -		}
->> -	}
->> -
->This completely removes the check from the _fill_buffer() path
->
->> -	return 0;
->> +	return !(ret & data->def->ctrl_masks[ST1_DRDY]);
->returning a positive value here is unusual enough you should add a commen=
-t for
->the function + use that return value=2E
->
->>  }
->> =20
->>  /* Retrieve raw flux value for one of the x, y, or z axis=2E  */
->> @@ -731,6 +716,20 @@ static int ak8975_read_axis(struct iio_dev *indio_=
-dev, int index, int *val)
->>  	ret =3D i2c_smbus_read_i2c_block_data_or_emulated(
->>  			client, def->data_regs[index],
->>  			sizeof(rval), (u8*)&rval);
->No longer gated on ret & data->def->ctrl_masks[ST1_DRDY] which seems unin=
-tentional=2E
->
->Still need a check on ret here=2E
->
->> +	ret =3D i2c_smbus_read_byte_data(client,
->> +				       data->def->ctrl_regs[ST2]);
->> +	if (ret < 0) {
->> +		dev_err(&client->dev, "Error in reading ST2\n");
->> +		goto exit;
->> +	}
->> +
->> +	if (ret & (data->def->ctrl_masks[ST2_DERR] |
->> +		   data->def->ctrl_masks[ST2_HOFL])) {
->> +		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
->> +		ret =3D -EINVAL;
->> +		goto exit;
->> +	}
->> +
->>  	if (ret < 0)
->>  		goto exit;
->
->And this one ends up redundant I think which suggests to me the
->code is inserted a few lines early=2E
->
->> =20
->>=20
->
+>> Interrupt source for the device can be configured by enabling the
+>> corresponding event. Interrupt latch is always enabled when setting
+>> up interrupt.
+>>
+>> Add myself as the maintainer for this driver in MAINTAINERS.
+>>
+>> Signed-off-by: Mudit Sharma <muditsharma.info@gmail.com>
+>> Reviewed-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+>> Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> 
+> Hi Mudit & All :)
+> 
+> I know I am late. The series has already been applied (thanks 
+> Jonathan!). I've mostly been offline for the last 1.5 months or so - 
+> "all work and no play makes Jack a dull boy", you know ;)
+> 
+> Anyways, as Jonathan asked me to take a look at the GTS stuff (at v7), I 
+> tried to quickly glance at this. It looks good to me!
+> 
+> Well, the real test will be the users of the sensor driver - so please 
+> let us know if GTS stuff brings problems to users. I am mostly 
+> interested in knowing if gain changes caused by integration time changes 
+> are handled gracefully by the users. :) Well, seeing there is no per- 
+> channel gain or integration time setting, you should be safe from the 
+> worst side-effects :)
+> 
+> Nice driver!
+
+Hi Matti,
+
+Thank you for your review on this :)
+
+Best regards,
+Mudit Sharma
+> 
+> Yours,
+>      -- Matti
+> 
+
 

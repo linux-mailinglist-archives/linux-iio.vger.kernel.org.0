@@ -1,58 +1,62 @@
-Return-Path: <linux-iio+bounces-8286-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8287-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B8C94953C
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 18:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9321894954F
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 18:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578EF1C20B10
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 16:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DD1A1C2171B
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Aug 2024 16:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C331642AAA;
-	Tue,  6 Aug 2024 16:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73877182C5;
+	Tue,  6 Aug 2024 16:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iEGZkpz0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eKOJPj/b"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDDC15CB;
-	Tue,  6 Aug 2024 16:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297B918D63A;
+	Tue,  6 Aug 2024 16:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722960256; cv=none; b=stPE2XpJG1SMkq7jXsDjIdispeCcb/oRQc6GNVUg6u4FuQeBRPWnHCBqqGQO+QNPS0qJ1CONlSkAzxvQpEFd+eI2okcX7QMaTlMKLHLoSUwjOlzBtUcGH1cnzlSYbWKzrrWxDTGSrpXIcl6MhfsZAZjGyzAk9Oq9NsucD5QtJ4Q=
+	t=1722960679; cv=none; b=poYvQa4nwFwrWOBkB3SUljuyAz0qGEG47fqNc452Vlsq5KhL8Yx64R3P2EbF8eq8+/QfMTS20VaCF8xaksruHxai64P0xO8dZlo9Jx7RalLYVxQFNmudl/2KJDEnije4MHX+CYPWqfgS2BH82BZE2tlZJyGSdyez4ObhjA/mHGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722960256; c=relaxed/simple;
-	bh=fjSPPJzmJA8JFAafZqpeE+4EtoL2c7ZzAn6rqHVfCA0=;
+	s=arc-20240116; t=1722960679; c=relaxed/simple;
+	bh=JAFmR3nl8VUWUNjO8vWOcsKijHP8TGLwK1qPQMVyPOQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hK/QYI4NJxAqaTiiIHYBtvbkgX2bhsjaFK/9vRpa5Cm8eVBjrezYbC2v25Q0dCxnGouZOlmsZLZq3vFrcZkcjT3p3Mmpi4GDs3VqDLoXA1G/cgldhRQCZa6KbX0s7euWZAvK8yE93KkBlKymedEyW1xEPNe/3bUiq4ODrZhgVYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iEGZkpz0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB1AC32786;
-	Tue,  6 Aug 2024 16:04:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m2TLJ1C0K+9bN99OUASz5QFvITG168+69ESNu/pV5VEyRnYsTGzMZ38F9X4iFxO3KNvJ6gT16TQqUEtZO09FV8J1OPTAe/TMNlSVo88Sv04O8o1A62tUU7hFhF39w9VnFN3kGlrS+sLhQHSD4Q7ogdjqsJzClKYoeqXL8nlMIc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eKOJPj/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C946C4AF0C;
+	Tue,  6 Aug 2024 16:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722960256;
-	bh=fjSPPJzmJA8JFAafZqpeE+4EtoL2c7ZzAn6rqHVfCA0=;
+	s=k20201202; t=1722960678;
+	bh=JAFmR3nl8VUWUNjO8vWOcsKijHP8TGLwK1qPQMVyPOQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iEGZkpz08j8sHFKGt/itZUIkWgpq74ZcSZJB2JZ5/QyMoYgu4RKq4J0t9+lxA6Xb9
-	 pRGZjolLe8xi7r72aj4MhBIyH5wtbePPfz80EBVaxzFWJQJ02oOi8ZN5tNPOimXnH0
-	 RaRhE0sQXzR3/g1NfkZ78r2UjGkqAhcbQqPv+1bG/4T4+Qhx9MkwyqN5fRbhcBIdTa
-	 f6WW2ATS3P6YOtbIGO9RaRWdYRCA5i/sGMy61jceJC/VhQhGZXE3ZiihkLlCxp0KGo
-	 tNZBB9fLgA7E26EjuzqQwy/LH6WgXnabHfbbKWsxNLk9CZpaZAYmz340JiAvK9MSpK
-	 PirhR3m/LzoNg==
-Date: Tue, 6 Aug 2024 17:04:10 +0100
+	b=eKOJPj/bpbQWlevZiGRo7JDyV9e+D4bMcQJOvwDubUfPWwkm3CAHzrkJXMMbYkymM
+	 zg5EUT9Pc91EPfIm/aaKBzXfSIJRu517iKHfbtT8W/8zz+thb058iGIrSbNsUwGSdh
+	 dMW+zbEtmcFlcCJiEFEJlq97WPIthkhN77y0k2x9WNdHv1Z4xa8JidcHK92e7xXV1z
+	 6MDkLlWLl1Y82sV+lmwpCneQkbEqZEZ+QeJJoq9MlPfVMDnp8h7mCfCGp2x+KbrvDE
+	 97pEHptoZpjaL0ujIgmj4Zf3jNWKsfipSt7AwoSkfBsgMMYrPmRvSv36vD1A6GL7Rv
+	 +JFziTTPOfpyw==
+Date: Tue, 6 Aug 2024 17:11:13 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>, lars@metafoo.de,
- alexandru.tachici@analog.com, Jonathan.Cameron@huawei.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Dumitru Ceclan
- <dumitru.ceclan@analog.com>
-Subject: Re: [PATCH] iio: adc: ad7124: fix DT configuration parsing
-Message-ID: <20240806170410.4a967dee@jic23-huawei>
-In-Reply-To: <15304301efe5c23d55984f8a1f2a5016d7be213d.camel@gmail.com>
-References: <20240806085133.114547-1-dumitru.ceclan@analog.com>
-	<15304301efe5c23d55984f8a1f2a5016d7be213d.camel@gmail.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jonathan Albrieux
+ <jonathan.albrieux@gmail.com>, Matt Ranostay <matt@ranostay.sg>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] dt-bindings: iio: asahi-kasei,ak8975: drop
+ incorrect AK09116 compatible
+Message-ID: <20240806171113.0cf9b992@jic23-huawei>
+In-Reply-To: <20240806-unlocked-womankind-f9e5e1d19055@spud>
+References: <20240806053016.6401-1-krzysztof.kozlowski@linaro.org>
+	<20240806053016.6401-2-krzysztof.kozlowski@linaro.org>
+	<20240806-unlocked-womankind-f9e5e1d19055@spud>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,63 +64,63 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 06 Aug 2024 12:45:06 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Tue, 6 Aug 2024 17:02:49 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-> On Tue, 2024-08-06 at 11:51 +0300, Dumitru Ceclan wrote:
-> > The cfg pointer is set before reading the channel number that the
-> > configuration should point to. This causes configurations to be shifted
-> > by one channel.
-> > For example setting bipolar to the first channel defined in the DT will
-> > cause bipolar mode to be active on the second defined channel.
-> >=20
-> > Fix by moving the cfg pointer setting after reading the channel number.
-> >=20
-> > Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-> > Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> > --- =20
->=20
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+> On Tue, Aug 06, 2024 at 07:30:16AM +0200, Krzysztof Kozlowski wrote:
+> > All compatibles in this binding without prefixes were deprecated, so
+> > adding a new deprecated one after some time is not allowed, because it
+> > defies the core logic of deprecating things.
+> > 
+> > Drop the AK09916 vendorless compatible.
+> > 
+> > Fixes: 76e28aa97fa0 ("iio: magnetometer: ak8975: add AK09116 support")
+> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > 
+> > ---
+> > 
+> > Offending commit did not even bother to Cc devicetree mailing list and
+> > DT maintainers... Lovely. Let's ignore submitting patches and
+> > maintainers just to sneak my important patch into the kernel.
+> 
+> :/
+> 
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-Thanks,
+Let's assume mistake rather than malicious.
+I should have noticed this :(
+
+Anyhow, applied both patches to the togreg branch of iio.git.
+Initially pushed out as testing for 0-day to take a look at other
+stuff that's queued up.
 
 Jonathan
 
->=20
-> > =C2=A0drivers/iio/adc/ad7124.c | 3 +--
-> > =C2=A01 file changed, 1 insertion(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> > index 3beed78496c5..672d41bac8ca 100644
-> > --- a/drivers/iio/adc/ad7124.c
-> > +++ b/drivers/iio/adc/ad7124.c
-> > @@ -839,8 +839,6 @@ static int ad7124_parse_channel_config(struct iio_d=
-ev
-> > *indio_dev,
-> > =C2=A0	st->channels =3D channels;
-> > =C2=A0
-> > =C2=A0	device_for_each_child_node_scoped(dev, child) {
-> > -		cfg =3D &st->channels[channel].cfg;
-> > -
-> > =C2=A0		ret =3D fwnode_property_read_u32(child, "reg", &channel);
-> > =C2=A0		if (ret)
-> > =C2=A0			return ret;
-> > @@ -858,6 +856,7 @@ static int ad7124_parse_channel_config(struct iio_d=
-ev
-> > *indio_dev,
-> > =C2=A0		st->channels[channel].ain =3D AD7124_CHANNEL_AINP(ain[0]) |
-> > =C2=A0						=C2=A0 AD7124_CHANNEL_AINM(ain[1]);
-> > =C2=A0
-> > +		cfg =3D &st->channels[channel].cfg;
-> > =C2=A0		cfg->bipolar =3D fwnode_property_read_bool(child, "bipolar");
-> > =C2=A0
-> > =C2=A0		ret =3D fwnode_property_read_u32(child, "adi,reference-select",
-> > &tmp); =20
->=20
->=20
+> 
+> Thanks,
+> Conor.
+> 
+> > ---
+> >  .../devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml | 1 -
+> >  1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+> > index 9790f75fc669..fe5145d3b73c 100644
+> > --- a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+> > @@ -23,7 +23,6 @@ properties:
+> >            - ak8963
+> >            - ak09911
+> >            - ak09912
+> > -          - ak09916
+> >          deprecated: true
+> >  
+> >    reg:
+> > -- 
+> > 2.43.0
+> > 
 
 

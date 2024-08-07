@@ -1,110 +1,221 @@
-Return-Path: <linux-iio+bounces-8304-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8305-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3198394A4AB
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 11:49:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E2994A823
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 14:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCAA6B22CF8
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 09:48:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C08AD281F18
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 12:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781CE1D1742;
-	Wed,  7 Aug 2024 09:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ECvgJNgS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFCF1E6746;
+	Wed,  7 Aug 2024 12:57:40 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E691D173E;
-	Wed,  7 Aug 2024 09:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005D11E3CBE;
+	Wed,  7 Aug 2024 12:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723024071; cv=none; b=ejO7zIb/79pNtI1W145d3Grf/drJMj9IHbMFfC8poSs+XKnnJYoSWR/YNapPrZoM9t+0FKT251mgFFVn6/kTYtYIXl4rCCAkotuyra3pcmWrZpDisJCT6UZ15BswDSQoVC7DPVJQ1kUN6SLyHhDIKDMe5Jr+OYxWMtqYw9ZJpOk=
+	t=1723035460; cv=none; b=OwqR6uaErj3g3MSTntUglbMWiJ5rD926WBpHZGfSZCSQSocuA/dlXlJCPdY+ZEoMKKqkBXPDQFXTJqdSqRukKrmU3KMi8VvPYsHWg3EfWgJfEtQD1W+AaqsIr5CdHMNY9oxUUKgP/tRUwL9fLjAFfxIDIcSROucY5ragxfImKpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723024071; c=relaxed/simple;
-	bh=/W+05LJJu3p9mNXq4i6BjmOXtbvwMphvQ98oqXMYewE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=nK+Eu1QHB49BpTQGDbtD8f/z3GWH/kfq3Slv0IKrEZUTC1jdvdrXOfBXWmAv7+Bu1H/aYR2wXwsuzvOU38smbprUPNW7zFzv02K9+Td5pu26rbchDMyyIqeMSbKRUV61hPjUryNyxBGxGXdfLp8gdWitkKh4l3B9gq/g8FvxPcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ECvgJNgS; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2f040733086so18376201fa.1;
-        Wed, 07 Aug 2024 02:47:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723024068; x=1723628868; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=810tWogs+Tnt7fFH5BVJ7QxBIOSjaNNzpsC9bZx2HB0=;
-        b=ECvgJNgS4yJzPWsKvRzHHZMSINaoA/veK2i8FQZQlOBE/vhn6pM/NYY7y+ONW8avTF
-         YeYMcbs1uqzap5mForN6ndhTlbfrjeLRzglmt4v927aOX9iTN7fukDPL3DiCPQoayB2e
-         uFVLDwJ1X1R4k+jf1pQqiCDHTfsrrB4/pM2LRUY/1N3xPiHqWtKtota6cIvudbkX5vij
-         dqSRqrBN9duX+u/7eJ2AgimQC244toWtju3Qmqpog6+wsXEtAUid43I65Kqk3FM8CLYE
-         CUgRVG4BlzeHO5juYuuRfVAalyu5hU7QnHUiMeI1MEq9UfW4/buzl1wXdsytPzI2a+N5
-         ofiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723024068; x=1723628868;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=810tWogs+Tnt7fFH5BVJ7QxBIOSjaNNzpsC9bZx2HB0=;
-        b=lWW073zRQDW028CiQSYyx53XC6awRMooz2jGg0viguj+AbEDTo6NDOLArQS6FwdIW+
-         HVJnj/sXwhqd0EueG5IlMK+u5/3onl6ThYIUqreh/RtlyWRS9SnYPwJZl63DpLPZ/O0W
-         SOKUOmmHpVsnRblCtfiX/k2/QpgqaQHvkzce9x3aCvs2seLNfOsddBfK1qSZAQQqUR8c
-         NdiimLmvpN48q4YW39FZxkG2coGN2/jWptZW4rxPdUOQ3ygYuBeBqS14jJ2cd9JXkXrn
-         JUBJbFXeSDRxVLLi/eeCiUxNEZKWUlaspbjol/baClCVNcf5YN18Ir8YlLCAc5248Guy
-         Tg9g==
-X-Forwarded-Encrypted: i=1; AJvYcCV+cYEDrZPnOcY1LNDl++L4mb9iYvlnc34S5jds1piNa4OwG5bVueRVZnPUmBcNMwaz3Q/JJMDDJazTeSVTxFf56C7ct3aNossha4KiT48dVTIgriBDZ/Ahfem5tZfv3EMiRICghUhs
-X-Gm-Message-State: AOJu0YzUIGNfbTM/6Zu0oWEbXmCv6oY2hoxhe2p4HIZkNTcIbbVJNKJD
-	0hI0ezuf3sdck/78G8Shh/NL9aWZhNo44FabDi8F+9PvYRuBnoyW
-X-Google-Smtp-Source: AGHT+IEuslsF1bAhVsV7NeiyR1S0Ob3GtNE0i++EGf/yFxjQpqPEUW7Y90WKuLzpWV5/I6rcZXamBQ==
-X-Received: by 2002:a2e:9b06:0:b0:2ef:2e3f:35d2 with SMTP id 38308e7fff4ca-2f15aa870d0mr114129001fa.5.1723024067227;
-        Wed, 07 Aug 2024 02:47:47 -0700 (PDT)
-Received: from localhost (craw-09-b2-v4wan-169726-cust2117.vm24.cable.virginm.net. [92.238.24.70])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290598e049sm20565075e9.23.2024.08.07.02.47.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 02:47:46 -0700 (PDT)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] iio: Fix spelling mistake "avaialable" -> "available"
-Date: Wed,  7 Aug 2024 10:47:45 +0100
-Message-Id: <20240807094745.4174785-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1723035460; c=relaxed/simple;
+	bh=Rxq0DBkB+xoXm/qVxDT5AhEtVPkMEZuS6YL0SxnWQBg=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HXocguiGpmujrFxQwORNXrgNFdulVMXYOWlc3IKRf/MBegvoidS7Bpd18Xm5Bm/SzjFsuHwgZonrgqORFIKpbh8C/evYlU/2Ou5HT9zbXJOoLDdjRRMtdhj8xsQt6mblIWwGWhiTNzu2Y/HrSG/G6AntUz+KCul22gho2OcZo4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wf99q2dX9z6K7Cp;
+	Wed,  7 Aug 2024 20:54:39 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 41B9A1402C6;
+	Wed,  7 Aug 2024 20:57:33 +0800 (CST)
+Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 7 Aug
+ 2024 13:57:32 +0100
+Date: Wed, 7 Aug 2024 13:57:31 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Denis Benato <benato.denis96@gmail.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+	Jagath Jog J <jagathjog1996@gmail.com>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, "Luke D . Jones" <luke@ljones.dev>, Jonathan
+ LoBue <jlobue10@gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: bmi323: suspend and resume triggering on
+ relevant pm operations
+Message-ID: <20240807135731.0000320f@Huawei.com>
+In-Reply-To: <b7e91e68-9f5f-4dd0-aa96-e57983e4a56d@gmail.com>
+References: <20240727123034.5541-1-benato.denis96@gmail.com>
+	<20240727123034.5541-3-benato.denis96@gmail.com>
+	<20240803164428.50fdd15c@jic23-huawei>
+	<b7e91e68-9f5f-4dd0-aa96-e57983e4a56d@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-There is a spelling mistake in a dev_warn message. Fix it.
+On Sun, 4 Aug 2024 17:40:49 +0200
+Denis Benato <benato.denis96@gmail.com> wrote:
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/iio/industrialio-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On 03/08/24 17:44, Jonathan Cameron wrote:
+> > On Sat, 27 Jul 2024 14:30:34 +0200
+> > Denis Benato <benato.denis96@gmail.com> wrote:
+> >   
+> >> Prevent triggers from stop working after the device has entered sleep:
+> >> use iio_device_suspend_triggering and iio_device_resume_triggering helpers.  
+> > 
+> > Hi Denis,
+> >   
+> Hello Jonathan,
+> > I'd got it into my head this was about main suspend / resume, but
+> > it's runtime PM. I assume the s2idle uses only that level which is
+> > interesting.
+> >   
+> I have catched the problem with s2idle, but I don-t fully understand
+> it will manifest outside of said scenario, nor if it will at all and
+> only s2idle is affected.
+> 
+> > Anyhow, solution seems safe. We might be able to do something nicer
+> > in the long run as potentially we could have the trigger driver
+> > notified when all consumers have entered this state at which point it
+> > could stop generating triggers at all.
+> > Totally agree.
+> > Anyhow, that's a job for when we actually care about it.
+> > 
+> > Applied to the togreg branch of iio.git and pushed out as testing
+> > for 0-day to poke at it.
+> >   
+> I have made a mistake while cleaning up patch 1/2 for submission and lost a piece:
+> the pollfunc->irq=0 you suggested in your first mail.
+> 
+> I would be more than happy to provide a v3, but if you prefer I can also send
+> a separate patch.
+Send a v3. I'll try and remember to drop the v2 before sending a pull request
+upstream.
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 3f2bc6451325..6a6568d4a2cb 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -2002,7 +2002,7 @@ int iio_active_scan_mask_index(struct iio_dev *indio_dev)
- 	}
- 
- 	dev_warn(indio_dev->dev.parent,
--		 "active scan mask is not part of the avaialable scan masks\n");
-+		 "active scan mask is not part of the available scan masks\n");
- 	return -EINVAL;
- }
- EXPORT_SYMBOL_GPL(iio_active_scan_mask_index);
--- 
-2.39.2
+> 
+> I am sorry about that and I would like guidance on what to do in cases like this.
+
+Not a problem, we all do stuff like this from time to time!
+
+> > For now I'm not keen to see this pushed into drivers where we don't
+> > know if anyone is running into this particular situation.  We can
+> > reevaluate that if we start getting lots of reports of this.
+> >   
+> I catched the issue while developing an application for a handheld PC.
+> 
+> As the application will target these kind of devices we can apply the fix
+> to every relevant driver (bmi260 comes to mind) and have that well-tested
+> on multiple drivers.
+
+Ok. Let's see how it goes with a few drivers.
+
+Jonathan
+
+> > I'm also not going to rush this in as a fix. We can consider backporting
+> > it once it's been in mainline for a bit and no side effects have
+> > shown up.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> >   
+> Thanks,
+> 
+> Denis
+> >>
+> >> Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+> >> ---
+> >>  drivers/iio/imu/bmi323/bmi323.h      |  1 +
+> >>  drivers/iio/imu/bmi323/bmi323_core.c | 23 +++++++++++++++++++++++
+> >>  drivers/iio/imu/bmi323/bmi323_i2c.c  |  1 +
+> >>  drivers/iio/imu/bmi323/bmi323_spi.c  |  1 +
+> >>  4 files changed, 26 insertions(+)
+> >>
+> >> diff --git a/drivers/iio/imu/bmi323/bmi323.h b/drivers/iio/imu/bmi323/bmi323.h
+> >> index dff126d41658..209bccb1f335 100644
+> >> --- a/drivers/iio/imu/bmi323/bmi323.h
+> >> +++ b/drivers/iio/imu/bmi323/bmi323.h
+> >> @@ -205,5 +205,6 @@
+> >>  struct device;
+> >>  int bmi323_core_probe(struct device *dev);
+> >>  extern const struct regmap_config bmi323_regmap_config;
+> >> +extern const struct dev_pm_ops bmi323_core_pm_ops;
+> >>  
+> >>  #endif
+> >> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
+> >> index d708d1fe3e42..4b2b211a3e88 100644
+> >> --- a/drivers/iio/imu/bmi323/bmi323_core.c
+> >> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
+> >> @@ -2121,6 +2121,29 @@ int bmi323_core_probe(struct device *dev)
+> >>  }
+> >>  EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
+> >>  
+> >> +#if defined(CONFIG_PM)
+> >> +static int bmi323_core_runtime_suspend(struct device *dev)
+> >> +{
+> >> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> >> +
+> >> +	return iio_device_suspend_triggering(indio_dev);
+> >> +}
+> >> +
+> >> +static int bmi323_core_runtime_resume(struct device *dev)
+> >> +{
+> >> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> >> +
+> >> +	return iio_device_resume_triggering(indio_dev);
+> >> +}
+> >> +
+> >> +#endif
+> >> +
+> >> +const struct dev_pm_ops bmi323_core_pm_ops = {
+> >> +	SET_RUNTIME_PM_OPS(bmi323_core_runtime_suspend,
+> >> +			   bmi323_core_runtime_resume, NULL)
+> >> +};
+> >> +EXPORT_SYMBOL_NS_GPL(bmi323_core_pm_ops, IIO_BMI323);
+> >> +
+> >>  MODULE_DESCRIPTION("Bosch BMI323 IMU driver");
+> >>  MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
+> >>  MODULE_LICENSE("GPL");
+> >> diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
+> >> index 52140bf05765..057342f4f816 100644
+> >> --- a/drivers/iio/imu/bmi323/bmi323_i2c.c
+> >> +++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
+> >> @@ -128,6 +128,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_i2c_match);
+> >>  static struct i2c_driver bmi323_i2c_driver = {
+> >>  	.driver = {
+> >>  		.name = "bmi323",
+> >> +		.pm = pm_ptr(&bmi323_core_pm_ops),
+> >>  		.of_match_table = bmi323_of_i2c_match,
+> >>  		.acpi_match_table = bmi323_acpi_match,
+> >>  	},
+> >> diff --git a/drivers/iio/imu/bmi323/bmi323_spi.c b/drivers/iio/imu/bmi323/bmi323_spi.c
+> >> index 7b1e8127d0dd..487d4ee05246 100644
+> >> --- a/drivers/iio/imu/bmi323/bmi323_spi.c
+> >> +++ b/drivers/iio/imu/bmi323/bmi323_spi.c
+> >> @@ -79,6 +79,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_spi_match);
+> >>  static struct spi_driver bmi323_spi_driver = {
+> >>  	.driver = {
+> >>  		.name = "bmi323",
+> >> +		.pm = pm_ptr(&bmi323_core_pm_ops),
+> >>  		.of_match_table = bmi323_of_spi_match,
+> >>  	},
+> >>  	.probe = bmi323_spi_probe,  
+> >   
+> 
+> 
 
 

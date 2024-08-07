@@ -1,176 +1,121 @@
-Return-Path: <linux-iio+bounces-8317-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8320-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350FB94B01E
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 20:57:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB5A94B0D3
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 22:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E79DD284601
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 18:57:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC4DE1F23012
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 20:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD622143C72;
-	Wed,  7 Aug 2024 18:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADC1145B12;
+	Wed,  7 Aug 2024 20:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dvH6apEM"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Ckl2slCP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD21143891;
-	Wed,  7 Aug 2024 18:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CC0364BC
+	for <linux-iio@vger.kernel.org>; Wed,  7 Aug 2024 20:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723057001; cv=none; b=KtnnD96jG5+uOxWyHv7swKCrDLUuH1rij/bJ4RVdTmmF+wc294SO+nS3kJzNsnMSwfuhxzLDPwpsuluRM7mV+G5drnw0K77qeqH+aY4Sk6eMItL++xO8y6+UB3qRbdSlDmlJVLhW2hzN6dGoFf5o4t7ueTDoiLRcVDtVYgZXP8E=
+	t=1723060940; cv=none; b=cKdQdZ8aUwqIEZo9cPI5DBRrZo20PEDmAhDAyjJ53mdE0yMq/cEseoeLQrzezool3uOstY+uGsTwU8NyABraevA7ACZJyAvX5ohdusefN/xNIyXyEYRB/0qS79y9Inb8n/TpLePd6E2X1+X4CLml2z1tZBsRmQ22z3AMXC7JKQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723057001; c=relaxed/simple;
-	bh=+F0WyewUnXT3w09NXRtI/LrPLq7JvuykbRUqBvCNccQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qpvpVMluDU6x1gO/r+3TgwWP5oc6xE9CbejHymmNKz9hFgOyr7x3cpqReu4E17+51OO87QYltwbsfsP0zz9r7pmBeCOwZ3Az7mWnZ+7XF7BK9V8ql1fmcR3WQQQAnUGT37h65o09FDxodve3Hcn7e6e8TXBKP5zDp0W8e8Eai5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dvH6apEM; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5b3fff87e6bso134244a12.0;
-        Wed, 07 Aug 2024 11:56:39 -0700 (PDT)
+	s=arc-20240116; t=1723060940; c=relaxed/simple;
+	bh=JqI/7JY0uwHO8jeHmfDAkuQSCd4muvWmJPLKHs/4J70=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DxCGsCH70Z1R9PqPbmYkuJWc2r2wg08hdbIhD03aqs0JnZK1W8Do/QjKMCC7+Dx93DI1szaVVplWUAQ/j5wwEPnMIf7CnuvGWdw61Kpo8LbVFdje3yj9Bk37AlrARk/zbgvb0m2rmYCr+k+3eJfHsepZSD3dnm2HUCFbTgJVt+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Ckl2slCP; arc=none smtp.client-ip=209.85.210.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-70944d76a04so135636a34.0
+        for <linux-iio@vger.kernel.org>; Wed, 07 Aug 2024 13:02:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723056998; x=1723661798; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NBRg56Ji8N26DNOeCY4BDLeRmt9MaxXXPicaugfdq7A=;
-        b=dvH6apEMR2C7ZofT6GqdmxI9gzNpI7aWm+BEtQA5+f0gQV+0lm9Mii73RzvLP6KicQ
-         ybNS1cbIb8WQVr1XcXq6Ec028RvqXjAYoZZtOnvHsi13mLsBP+zVthxVY/QqO94PoKWZ
-         CjALbiOGSH8164DhIzXytQ9thWdC1KJIY8ySNqiic3DiGpyhz6T/04bXNc37vIKSIGzH
-         CgopRuV2AHUFAA8xlp0Npe4EUYRclU7/IQwcp42OYWBISowcLFrvjGaucPnDP11xRtfF
-         25eWHi2xLmTMNbmndCS712T19cWFJ7JNsVS6snQ4ygm2da1N+rja6KVCLe7hfKS8mAug
-         b/Lw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1723060936; x=1723665736; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LsITnJxqyk3GLU8VoWLUSQ1dx7O5PrUBJFkjcQc8Yi0=;
+        b=Ckl2slCPnKSgr8UNq8Ph9sqxOeN6LcIvmi7Tp9jhlNe4dANMmudJk0IaChD1LwdvQ7
+         CsEjf+RfubYyGNybetFxV/Lm/q4fTBHowZqcqySCKOWAF9r+wb2Ltlx9eAWrlMJ3FOUe
+         MgHEYqT0pZ7AwbxDTOrHhaR1XoNjjiYuYp06sLHVmgZhJ57cuV7Zfcg1c2rlEHWC2jJH
+         npGrNJ/zHP4u3H4UoeC54TKjISYDqN28+jzFZhllOaJP258MOBl985yhwCyWqU1QugSA
+         oww7/QMDKw5/OKVJhjKVPzijvhHQxTqKCE0j3JxG+RMO0hyFPfKuph0GW9jkBADUYQYE
+         hOmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723056998; x=1723661798;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NBRg56Ji8N26DNOeCY4BDLeRmt9MaxXXPicaugfdq7A=;
-        b=eNVakvlGAPHP0MvOGsGiQVgCN19D91NmjMk2FVcJL52jPUCQOsY51QdLtU9ixEANki
-         zDfVncc6uhJVLNeVk7yoveXfwxoB72g6OxB8oqiMK+G7B6w05OAWnWnLxLB1Zu7vxwf3
-         /zavSAU/0oppNyo/xk/re7B2HFE5EG5BvXYUAou3iws3hmWHR1+hfjTcPl9YFMcAoi0i
-         p3jNwtQAt2AEJE0l38zpn715Z8NMEjT0jASRligEexxFdxwEVFWV0pxPQ2YBLu7fF3iB
-         Qdf24T2b06lEBoWmLNwuLxhr+g51288Xe5jBP0sMjyMD0lAcD53Hqd7ZWqv3y5hkv8AX
-         R3gg==
-X-Forwarded-Encrypted: i=1; AJvYcCWoCw3Qzi2tRTyvgR5e3vTqLHCjPZ+XK/h/P+TcrrM2FDMzrkwKhyULNLZKyhBoe1UNYX0Jl/UHkfK1tvT3vvbJOgfGLV4yMzzq9pqxLNATWOyfy+coLMgBEtd5AFvTa6DMaJWeJ88W
-X-Gm-Message-State: AOJu0YzH7HmZ0PnECtr31eI0tPl38t5PV3jjm64DsiAV7w+EX9Zsplmu
-	DnIPgb5OCl1LWtHS04oXmuIodpbqqW0jUqnjOuSiP94gZbAwmEYQ
-X-Google-Smtp-Source: AGHT+IFJwH9jY0f24gTaNavYSe9oAVD+14UOMj/NbGzr/8u5IBuA0yozlZuC4OJNQJfkfpUkF/WkcQ==
-X-Received: by 2002:aa7:df97:0:b0:5a2:ff64:1218 with SMTP id 4fb4d7f45d1cf-5b7f0dd33bdmr13490495a12.0.1723056998020;
-        Wed, 07 Aug 2024 11:56:38 -0700 (PDT)
-Received: from localhost.localdomain ([151.49.208.23])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ba51da9c41sm5482270a12.36.2024.08.07.11.56.37
+        d=1e100.net; s=20230601; t=1723060936; x=1723665736;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LsITnJxqyk3GLU8VoWLUSQ1dx7O5PrUBJFkjcQc8Yi0=;
+        b=ryXkwlJNTkSu/KLVtZX8h0gpnyuaQN1CaN0T+qTHHoIFRG80IZpmI32U1IegZArvk9
+         cbdW/lur1usEOmrvEYLzZ4e8WRvJ1BUYUuB6KxPkXjkK+vz1notAb4/lpvxD7AGfjZVW
+         0FsqosnHBiyfODu+kO+nCS3N4gb2JPLWRq+O0r4ioNi3g22VgIQiGUkfiKKm2hyfDrsv
+         oEt12n1jy5J7Ie3Um/O6NbJ7HYxnwi39ml0W1Fmk5w7w0rLNXQcYYOvOl1y/ZFoGz8L0
+         6onELXg1rqdMY+7HM7oxN7aF/++1SFPGRJUo3RahFQkNf3NAsUi0DEQnRGTEvLVSmdTx
+         JvLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBy4jJE1K3gRjr5RN2Xm4Yt1qIzL+ZUTDkx6ppV6q6frxNT6Kxzodk2cHdVf/xl8c5vjzQgYdDv+o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiH2OvrasQPzv3xEtDKjIjstBJq5ivXqKkqgbMPURtszF6p9Ai
+	WYaROz7UZvoOjgq4lIrIa543BoznnpjMIRiWERIXAU+SREv8dASPaiJA8sExzbiIseDLUbdqRVj
+	j
+X-Google-Smtp-Source: AGHT+IHXba0L9xz2feaAjHZF5HL6FfrLqc1XVJbv+ptCNbxlgacOca0GRhf/jsOysJCJOOgMtHOHpQ==
+X-Received: by 2002:a05:6830:2a86:b0:703:6f95:98e9 with SMTP id 46e09a7af769-70b4641c8f2mr1430507a34.10.1723060935925;
+        Wed, 07 Aug 2024 13:02:15 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70a31eaf7b6sm4951003a34.24.2024.08.07.13.02.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 11:56:37 -0700 (PDT)
-From: Denis Benato <benato.denis96@gmail.com>
+        Wed, 07 Aug 2024 13:02:15 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Jagath Jog J <jagathjog1996@gmail.com>,
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Corbet <corbet@lwn.net>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Denis Benato <benato.denis96@gmail.com>,
-	"Luke D . Jones" <luke@ljones.dev>,
-	Jonathan LoBue <jlobue10@gmail.com>
-Subject: [PATCH v3 2/2] iio: bmi323: suspend and resume triggering on relevant pm operations
-Date: Wed,  7 Aug 2024 20:56:19 +0200
-Message-ID: <20240807185619.7261-3-benato.denis96@gmail.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807185619.7261-1-benato.denis96@gmail.com>
-References: <20240807185619.7261-1-benato.denis96@gmail.com>
+	linux-doc@vger.kernel.org
+Subject: [PATCH 0/2] iio: adc: ad4695: implement triggered buffer
+Date: Wed,  7 Aug 2024 15:02:09 -0500
+Message-ID: <20240807-iio-adc-ad4695-buffered-read-v1-0-bdafc39b2283@baylibre.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.14.0
 Content-Transfer-Encoding: 8bit
 
-Prevent triggers from stop working after the device has entered sleep:
-use iio_device_suspend_triggering and iio_device_resume_triggering helpers.
+This is a fairly simple series that adds support for triggered buffers
+to the ad4695 driver.
 
-Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+Not directly related to this patch, but as a side discussion about
+future possibilities with this chip while we are here...
+
+The advanced sequencer on this chip can repeat the same channel multiple
+times which, when combined with the autocycle feature, can be used to
+create different effective sampling rates for individual channels.
+
+For example if we set up the sequence [IN1, IN2, IN1, IN3] and the time
+between each individual sample in the sequence is the same, then IN1 has
+an effective sampling rate of 2x the other channels.
+
+Have there ever been discussions before about implementing something
+like this in the IIO subsystem? I didn't see anything that looked like
+this already implemented in the kernel.
+
 ---
- drivers/iio/imu/bmi323/bmi323.h      |  1 +
- drivers/iio/imu/bmi323/bmi323_core.c | 23 +++++++++++++++++++++++
- drivers/iio/imu/bmi323/bmi323_i2c.c  |  1 +
- drivers/iio/imu/bmi323/bmi323_spi.c  |  1 +
- 4 files changed, 26 insertions(+)
+David Lechner (2):
+      iio: adc: ad4695: implement triggered buffer
+      doc: iio: ad4695: document buffered read
 
-diff --git a/drivers/iio/imu/bmi323/bmi323.h b/drivers/iio/imu/bmi323/bmi323.h
-index dff126d41658..209bccb1f335 100644
---- a/drivers/iio/imu/bmi323/bmi323.h
-+++ b/drivers/iio/imu/bmi323/bmi323.h
-@@ -205,5 +205,6 @@
- struct device;
- int bmi323_core_probe(struct device *dev);
- extern const struct regmap_config bmi323_regmap_config;
-+extern const struct dev_pm_ops bmi323_core_pm_ops;
- 
- #endif
-diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
-index d708d1fe3e42..4b2b211a3e88 100644
---- a/drivers/iio/imu/bmi323/bmi323_core.c
-+++ b/drivers/iio/imu/bmi323/bmi323_core.c
-@@ -2121,6 +2121,29 @@ int bmi323_core_probe(struct device *dev)
- }
- EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
- 
-+#if defined(CONFIG_PM)
-+static int bmi323_core_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+
-+	return iio_device_suspend_triggering(indio_dev);
-+}
-+
-+static int bmi323_core_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+
-+	return iio_device_resume_triggering(indio_dev);
-+}
-+
-+#endif
-+
-+const struct dev_pm_ops bmi323_core_pm_ops = {
-+	SET_RUNTIME_PM_OPS(bmi323_core_runtime_suspend,
-+			   bmi323_core_runtime_resume, NULL)
-+};
-+EXPORT_SYMBOL_NS_GPL(bmi323_core_pm_ops, IIO_BMI323);
-+
- MODULE_DESCRIPTION("Bosch BMI323 IMU driver");
- MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/imu/bmi323/bmi323_i2c.c b/drivers/iio/imu/bmi323/bmi323_i2c.c
-index 3298e027c97e..0ba5d69d8329 100644
---- a/drivers/iio/imu/bmi323/bmi323_i2c.c
-+++ b/drivers/iio/imu/bmi323/bmi323_i2c.c
-@@ -128,6 +128,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_i2c_match);
- static struct i2c_driver bmi323_i2c_driver = {
- 	.driver = {
- 		.name = "bmi323",
-+		.pm = pm_ptr(&bmi323_core_pm_ops),
- 		.of_match_table = bmi323_of_i2c_match,
- 		.acpi_match_table = bmi323_acpi_match,
- 	},
-diff --git a/drivers/iio/imu/bmi323/bmi323_spi.c b/drivers/iio/imu/bmi323/bmi323_spi.c
-index 571e1cd7ce72..9de3ade78d71 100644
---- a/drivers/iio/imu/bmi323/bmi323_spi.c
-+++ b/drivers/iio/imu/bmi323/bmi323_spi.c
-@@ -79,6 +79,7 @@ MODULE_DEVICE_TABLE(of, bmi323_of_spi_match);
- static struct spi_driver bmi323_spi_driver = {
- 	.driver = {
- 		.name = "bmi323",
-+		.pm = pm_ptr(&bmi323_core_pm_ops),
- 		.of_match_table = bmi323_of_spi_match,
- 	},
- 	.probe = bmi323_spi_probe,
--- 
-2.46.0
-
+ Documentation/iio/ad4695.rst |  12 ++-
+ drivers/iio/adc/ad4695.c     | 233 ++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 241 insertions(+), 4 deletions(-)
+---
+base-commit: 7cad163c39cb642ed587d3eeb37a5637ee02740f
+change-id: 20240807-iio-adc-ad4695-buffered-read-f49eb511e300
 

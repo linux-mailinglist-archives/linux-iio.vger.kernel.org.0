@@ -1,177 +1,173 @@
-Return-Path: <linux-iio+bounces-8308-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8309-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC4C94AADC
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 16:58:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE56A94AC82
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 17:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7520C1F29049
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 14:58:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 997571F22508
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Aug 2024 15:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E63D8405D;
-	Wed,  7 Aug 2024 14:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1CF84A46;
+	Wed,  7 Aug 2024 15:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VinEj13i"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="WVUZ1oEw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BA581AD7;
-	Wed,  7 Aug 2024 14:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2D233CD2;
+	Wed,  7 Aug 2024 15:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042690; cv=none; b=eeVtl4vza0ZFDVZpDenvzxaPl6DYd9o//Ow2wx+Ybiqz0u16wENoFY6slE9UNg25VfJnWXfqCedfJCi3EiItE5ZNoW/cjqES7UeIWjlQH0rR4iisjS/eNUEwiFfH+OdvJPuHo3m7LYaQk/C+re+rGFH0VditKEh0HNaBjmogO1U=
+	t=1723043756; cv=none; b=NdB2wS7pHeYR4KWrTQFy/Vbt63xnxNiMe8UgvclG9BsBPBPGgnDVkL4ga3TT7JrtTqhBIdlwv4/Ac46bnucI4tuvgsTcPjCbb/4a9RMN8FpS+aHsbrDR8syzCRTzvczYhaj/qVUtqU9jYGi6Bzkorop9BVT58H3zPz/p2wkueBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042690; c=relaxed/simple;
-	bh=684IISxg8vaXAJXLeWrPuba5w804vEdG4sa39zu06b0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KoycnNfQr/i7Wmu8PwD2Y8sYhhyyEau5KwYDk5ZpGizTabtCE1IO0Xsy2tSKM/+ym46p0blpXEzJsQaPIkGkh5uHooEeE0JnYoJ676dLqIV69y2D/L+VXIgfb+wmVAK7sXT9uJfahIin0kvBjbebm+Se/7NeRNeJ1khL6qY05XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VinEj13i; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42819654737so13268565e9.1;
-        Wed, 07 Aug 2024 07:58:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723042687; x=1723647487; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HNpPNkP50fJTrVWUrfvyS64Vg7K67/EiLu5HJxO6FNU=;
-        b=VinEj13iKbnpUOYuJENHhWaO5S1Xvm7HBzh8NdF38JTsGMJA/RLKyyUZQ8DL42Wzjn
-         se1m6pJRr05iEQlPgzv/RKQPGcs3kE8GGZNLDoEQdeqkx0OqEAnaG0GMk8hxRWZIumuz
-         jfHHb7CPNcCS7niUgOYFE9zm+kb+TN8Nz9ePEVfA2/2qUq8BdIK/0Vr8/joOO1MK/1z+
-         Z4qdDdxReNjrwUO5VteGScKLPvSZQ4jBDzrjKz3fYmsV8YvLJJ1VKipg6XgX6jCWdP3v
-         kfsYyNIiQEcEpPBOhhaipCOoLW1UF7ialkhBmJ2NoCg9Cy9wrKlwPECX0SnawligZI1h
-         VAYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723042687; x=1723647487;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HNpPNkP50fJTrVWUrfvyS64Vg7K67/EiLu5HJxO6FNU=;
-        b=pSImZolnv7q2rPjCIOxRyg+zBKcj+5FuZCwnqe0fvShPJZbwr0/BKVC5FFlHKVbgGm
-         3g5TpF8MG+Tw8g+ddNgZaEXmiNFW/JOMgOOeaTT3q5dZDrTqS6XOrK1+/GpBsqHhSBGT
-         YnSqtvd2tNXX48T+QbWTVP8kx+iUHK4txPbLenLQfWWU87ee74d+DBBBYfCXhm5jKIIl
-         2M7bKk3YIiJOpv8kRZSRZji888xM2YzRGUCS3iwzum+de86jn0uFwgT+Vw3s2zb0QtGJ
-         RiTZXRJ5a6c0RtDMo26L+cgFtStWVVIqAi/+FrSch2Xk4Iq0Wc+8TvIXKJc7qqe2HiBg
-         fsJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUz6f6T9XTzYmwApAlUXjWJ+iEEGkQujb11LoE2+od+4oJozgWtJF5VX+BPwJe0c1DjmK63RFqr/OBydZ4Rwh/OyCF214Mze8dkgctoRjbXw9gjnFoj69OHG2ybHtlxZTVNhhJQOU3oaVIUlpXUM7jHCNVWetgf9/TwmKhgz4Gepm4ikg==
-X-Gm-Message-State: AOJu0YwLOMqss6+LxTw6Q97B6DVgpOQj9SjSBtPnNUXxBWw4ndk28mIM
-	7rECkkPdbaDkzJ6FRf7rydzcgBHyMHG/TYC4ydRfi+nr5vUTXLdb
-X-Google-Smtp-Source: AGHT+IFoLKMRR4oqyU27FQklDGMTnP7tyGvM3y7Fp1AgDO9bMqSdSlFhEHOXQIykI/6uf1IXvUaXMA==
-X-Received: by 2002:a05:600c:1c8a:b0:424:ad14:6b79 with SMTP id 5b1f17b1804b1-428e6af7f46mr139110875e9.8.1723042687311;
-        Wed, 07 Aug 2024 07:58:07 -0700 (PDT)
-Received: from HYB-hhAwRlzzMZb.ad.analog.com ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42905971993sm33273055e9.16.2024.08.07.07.58.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 07:58:07 -0700 (PDT)
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
-X-Google-Original-From: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Date: Wed, 07 Aug 2024 17:58:05 +0300
-Subject: [PATCH 2/2] iio: adc: ad7173: add support for ad4113
+	s=arc-20240116; t=1723043756; c=relaxed/simple;
+	bh=fGBCywsutW3NjgrC9Ve6Qzx0bwXdOQ99qyoNgGNCcTI=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=PYdv89qTPQZC0+vj0IAJ8A1BB5o/FekoKhGK628esuzzmB954v+gxklRBarQQaSRdB+WLxx23WBMhBSNIAo0bksg+l00fh0XBpRi4dXgbrBo0Qx2HBw58PfBThGfoGUas+bA/Q90jxZFD8P2Vx8bnpAQDO0N3y1qqBjk2zrrNLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=WVUZ1oEw; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+Received: from localhost (docker-mailserver-web-1.docker-mailserver_default [172.22.0.5])
+	by mail.mainlining.org (Postfix) with ESMTPSA id 5A57CE450D;
+	Wed,  7 Aug 2024 15:15:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
+	s=psm; t=1723043746;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dK78BrKy6mLK/z1CVSmRJ+MbobVrp0HlEUG5n8TM4L4=;
+	b=WVUZ1oEwijeOty0DYuoRaSliKdYkd12+mmrEwx0GkRWgDPdrIqcDri69unLrul5a9SauP4
+	FOXH++okSgfma1ufH5ztSLh4iMFEqHR2n19e+sgCds4h4RbAAJBK2ptRTP79yyJhTF5rRC
+	qRB71Roy2W7psJBzOhbAGpXSERxAUSkzVrjxIHXU573H5ANmwWIieyhwhBs6DJgEvJkAYY
+	v9r/ct7LvsqP5zfek5KlNBZ6mQ9UT74EGoKR0kn2bKHdocXibQx2XxE9Frbi7cyrOPwpQE
+	lFaMGTZJM2ARFPQLMKIaWaJUECq9nrVVckihnw2nwR0vmPUSW4xw3vkqRwAEHQ==
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Date: Wed, 07 Aug 2024 17:15:46 +0200
+From: barnabas.czeman@mainlining.org
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux@mainlining.org
+Subject: Re: [PATCH v2 1/3] iio: magnetometer: ak8975: Fix reading for ak099xx
+ sensors
+In-Reply-To: <20240806171925.7c512c63@jic23-huawei>
+References: <20240806-ak09918-v2-0-c300da66c198@mainlining.org>
+ <20240806-ak09918-v2-1-c300da66c198@mainlining.org>
+ <20240806171925.7c512c63@jic23-huawei>
+Message-ID: <96c2bcfbebc9e6d97d97f32aec9249db@mainlining.org>
+X-Sender: barnabas.czeman@mainlining.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240807-ad4113-v1-2-2d338f702c7b@analog.com>
-References: <20240807-ad4113-v1-0-2d338f702c7b@analog.com>
-In-Reply-To: <20240807-ad4113-v1-0-2d338f702c7b@analog.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: mitrutz_ceclan@gmail.com, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dumitru Ceclan <dumitru.ceclan@analog.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723042684; l=2795;
- i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
- bh=684IISxg8vaXAJXLeWrPuba5w804vEdG4sa39zu06b0=;
- b=zovgOhTELuu+1gvA3WETOHtCX0OjRgWhxPh8Q6k1mTVMe09Bm5Ub3qAJApNrkyqgaq3zDxHdS
- 8HSWhhp6P3PAkn1JnRCaYks1gPHEOREesSOJ3FXMPnH0qbFeLdtWVQz
-X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
- pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
 
-This commit adds support for the AD4113 ADC.
-The AD4113 is a low power, low noise, 16-bit, Σ-Δ analog-to-digital
-converter (ADC) that integrates an analog front end (AFE) for four
-fully differential or eight single-ended inputs.
-
-Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
----
- drivers/iio/adc/ad7173.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index a854f2d30174..82b63f9705b3 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -3,7 +3,7 @@
-  * AD717x and AD411x family SPI ADC driver
-  *
-  * Supported devices:
-- *  AD4111/AD4112/AD4114/AD4115/AD4116
-+ *  AD4111/AD4112/AD4113/AD4114/AD4115/AD4116
-  *  AD7172-2/AD7172-4/AD7173-8/AD7175-2
-  *  AD7175-8/AD7176-2/AD7177-2
-  *
-@@ -84,6 +84,7 @@
- #define AD4111_ID			AD7173_ID
- #define AD4112_ID			AD7173_ID
- #define AD4114_ID			AD7173_ID
-+#define AD4113_ID			0x31D0
- #define AD4116_ID			0x34d0
- #define AD4115_ID			0x38d0
- #define AD7175_8_ID			0x3cd0
-@@ -294,6 +295,23 @@ static const struct ad7173_device_info ad4112_device_info = {
- 	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
- };
- 
-+static const struct ad7173_device_info ad4113_device_info = {
-+	.name = "ad4113",
-+	.id = AD4113_ID,
-+	.num_voltage_in_div = 8,
-+	.num_channels = 16,
-+	.num_configs = 8,
-+	.num_voltage_in = 8,
-+	.num_gpios = 2,
-+	.higher_gpio_bits = true,
-+	.has_vincom_input = true,
-+	.has_input_buf = true,
-+	.has_int_ref = true,
-+	.clock = 2 * HZ_PER_MHZ,
-+	.sinc5_data_rates = ad7173_sinc5_data_rates,
-+	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
-+};
-+
- static const struct ad7173_device_info ad4114_device_info = {
- 	.name = "ad4114",
- 	.id = AD4114_ID,
-@@ -1437,6 +1455,7 @@ static int ad7173_probe(struct spi_device *spi)
- static const struct of_device_id ad7173_of_match[] = {
- 	{ .compatible = "adi,ad4111",	.data = &ad4111_device_info },
- 	{ .compatible = "adi,ad4112",	.data = &ad4112_device_info },
-+	{ .compatible = "adi,ad4113",	.data = &ad4113_device_info },
- 	{ .compatible = "adi,ad4114",	.data = &ad4114_device_info },
- 	{ .compatible = "adi,ad4115",	.data = &ad4115_device_info },
- 	{ .compatible = "adi,ad4116",	.data = &ad4116_device_info },
-@@ -1454,6 +1473,7 @@ MODULE_DEVICE_TABLE(of, ad7173_of_match);
- static const struct spi_device_id ad7173_id_table[] = {
- 	{ "ad4111",   (kernel_ulong_t)&ad4111_device_info },
- 	{ "ad4112",   (kernel_ulong_t)&ad4112_device_info },
-+	{ "ad4113",   (kernel_ulong_t)&ad4113_device_info },
- 	{ "ad4114",   (kernel_ulong_t)&ad4114_device_info },
- 	{ "ad4115",   (kernel_ulong_t)&ad4115_device_info },
- 	{ "ad4116",   (kernel_ulong_t)&ad4116_device_info },
-
--- 
-2.43.0
-
+On 2024-08-06 18:19, Jonathan Cameron wrote:
+> On Tue, 06 Aug 2024 08:10:18 +0200
+> Barnabás Czémán <barnabas.czeman@mainlining.org> wrote:
+> 
+> Hi Barnabás,
+> 
+> Welcome to IIO.
+> 
+>> ST2 register read should be placed after read measurment data,
+>> because it will get correct values after it.
+> 
+> What is the user visible result of this? Do we detect errors when none
+> are there?  Do we have a datasheet reference for the status being
+> update on the read command, not after the trigger?
+>> 
+> Needs a Fixes tag to let us know how far to backport the fix.
+> 
+> A few comments inline.
+> 
+>> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+>> ---
+>>  drivers/iio/magnetometer/ak8975.c | 31 
+>> +++++++++++++++----------------
+>>  1 file changed, 15 insertions(+), 16 deletions(-)
+>> 
+>> diff --git a/drivers/iio/magnetometer/ak8975.c 
+>> b/drivers/iio/magnetometer/ak8975.c
+>> index dd466c5fa621..925d76062b3e 100644
+>> --- a/drivers/iio/magnetometer/ak8975.c
+>> +++ b/drivers/iio/magnetometer/ak8975.c
+>> @@ -692,22 +692,7 @@ static int ak8975_start_read_axis(struct 
+>> ak8975_data *data,
+>>  	if (ret < 0)
+>>  		return ret;
+>> 
+>> -	/* This will be executed only for non-interrupt based waiting case 
+>> */
+>> -	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
+>> -		ret = i2c_smbus_read_byte_data(client,
+>> -					       data->def->ctrl_regs[ST2]);
+>> -		if (ret < 0) {
+>> -			dev_err(&client->dev, "Error in reading ST2\n");
+>> -			return ret;
+>> -		}
+>> -		if (ret & (data->def->ctrl_masks[ST2_DERR] |
+>> -			   data->def->ctrl_masks[ST2_HOFL])) {
+>> -			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
+>> -			return -EINVAL;
+>> -		}
+>> -	}
+>> -
+> This completely removes the check from the _fill_buffer() path
+> 
+>> -	return 0;
+>> +	return !(ret & data->def->ctrl_masks[ST1_DRDY]);
+> returning a positive value here is unusual enough you should add a 
+> comment for
+> the function + use that return value.
+> 
+>>  }
+>> 
+>>  /* Retrieve raw flux value for one of the x, y, or z axis.  */
+>> @@ -731,6 +716,20 @@ static int ak8975_read_axis(struct iio_dev 
+>> *indio_dev, int index, int *val)
+>>  	ret = i2c_smbus_read_i2c_block_data_or_emulated(
+>>  			client, def->data_regs[index],
+>>  			sizeof(rval), (u8*)&rval);
+> No longer gated on ret & data->def->ctrl_masks[ST1_DRDY] which seems 
+> unintentional.
+It is checked exactly before the measurement data read, it is the return 
+value of ak8975_start_read_axis.
+The read section should be ST1 -> measurement -> ST2, exactly the same 
+can be found in the datasheets.
+> 
+> Still need a check on ret here.
+> 
+>> +	ret = i2c_smbus_read_byte_data(client,
+>> +				       data->def->ctrl_regs[ST2]);
+>> +	if (ret < 0) {
+>> +		dev_err(&client->dev, "Error in reading ST2\n");
+>> +		goto exit;
+>> +	}
+>> +
+>> +	if (ret & (data->def->ctrl_masks[ST2_DERR] |
+>> +		   data->def->ctrl_masks[ST2_HOFL])) {
+>> +		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
+>> +		ret = -EINVAL;
+>> +		goto exit;
+>> +	}
+>> +
+>>  	if (ret < 0)
+>>  		goto exit;
+> 
+> And this one ends up redundant I think which suggests to me the
+> code is inserted a few lines early.
+> 
+>> 
+>> 
 

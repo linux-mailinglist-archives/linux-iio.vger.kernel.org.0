@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-8331-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8332-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8221E94C0A2
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Aug 2024 17:13:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07ACB94C0A5
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Aug 2024 17:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 414A4285EB3
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Aug 2024 15:13:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 386101C21DA9
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Aug 2024 15:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A2C18FC90;
-	Thu,  8 Aug 2024 15:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C632318FDD1;
+	Thu,  8 Aug 2024 15:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHMr7fUm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ScWH6O+L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D482018F2FB;
-	Thu,  8 Aug 2024 15:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8DD18FDA0;
+	Thu,  8 Aug 2024 15:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723129975; cv=none; b=t4nlwfbAgDqSfkWfxv7ZFc/ekDea+FGp0ow7qz2St1vkU7RsTBJ1A57jR1YVWFNq4Kp+jOM18i7NYzXiqa3YnUxxTdwDCqH7hseTq1XN/KvH28ZdVNiV5sTfu3kwnbR95zBvdeXssMNQvoXbfXJBUwn2ULeO5wgXDpqJ99ZT6bA=
+	t=1723129977; cv=none; b=YEQyyXz6eYCLx5N4Qczs8nevrRi2q7JCxdwO3AKzeP1vXytFuCCxBwfihbTX3zx0m3TKFyULvipLmL4UiHu0GjyVYNG049a8QGYhKZG4/HR0vPXnZVymzl+gtBackyklZAyFCr70WiScXinB146vkmNHThr3/EROGFje2H5gJh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723129975; c=relaxed/simple;
-	bh=cl0OgwWFGj09y5TwwEPvN3u/Sy1PyJsfo8HSpKT7rW0=;
+	s=arc-20240116; t=1723129977; c=relaxed/simple;
+	bh=nEcNIE1U7DZAocIwTQqOGm97es75K5AAksPENUTjEFw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=A5o9b0PeSyw3FXrJPtyeqqR6mhTpZovEWf0bwOukqTl12im0y2NhKOHfep53OXYZwOrjL2QycVKQucAPRFtwP/wN1NOWMKj6gqfytwJ23AC/qfkHar7vUl02LfMc1g0O04agpPSM6ohL/2Uo0p5q5Wc/lTxe3TlNUr+Em8Y49IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHMr7fUm; arc=none smtp.client-ip=209.85.221.46
+	 In-Reply-To:To:Cc; b=q6FY4pUueSX9XdKfq7T8wX2/BbyLIBX8dc0/mwNEv96iqB1/5vMSXY5ycdUEmmH8kmSfX3yfRyYxJqdomC46zjhKPlHc1ZRVUEAvdj4riXJ6MSd4Mxf5Xl4aq4J1PCdI3QCYfliJhI+sIGfrNZRYOE3Ady7JCMZgvekkATiy3jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ScWH6O+L; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-368712acb8dso606498f8f.2;
-        Thu, 08 Aug 2024 08:12:53 -0700 (PDT)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-368380828d6so590247f8f.1;
+        Thu, 08 Aug 2024 08:12:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723129972; x=1723734772; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1723129974; x=1723734774; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RlwKey+PJeZN0A9rh/S0vL1F8rX1MwKvwXZ2q25uwGA=;
-        b=nHMr7fUmqJUGVdH3MWOl0SW2qJLHhU4fzlpZAZw8M7W/qTwQXuSkab+EIvhG6LSi4+
-         rIPTQQEUK4V8k4xE6Y5wRaHQ8JVRn8adef/thS8K4Vj8oA9VWdmcgyRru2qF4CPKBf2E
-         O9TMNOPZ70tCkUADaAmkRZ6rFd1nZul0T1rdkolzNCrt388hlxtYXu7sOLzf/fZEv/AP
-         6c8QxYQ0DEPJVKXktVuK9ZzKCqjWZVpcmjyI7r9DqEP5o3sfzCdvuLaeaK0o/h8SQ/3S
-         ZZZxJLAwhFqDjy9zZDjhcTxKWiVgZ9A2R4kFDltmM/rWEx9nWmodcUQwScJxkhw7Mj/a
-         tVGw==
+        bh=PZh6tA0jiESoXoOtY5qAvIE49vo04MTxnTUHVFSqNH4=;
+        b=ScWH6O+LzAyDokNzeXUQxwvD5uqOsOtWu5aw29m2KN+dIofjksNVksZ0IwFUnHCTPw
+         VxQplMMHkD+waBsU+D8ncIcC0mq9jI9Q4Wgzib5TXy6wqyCpxNqjTsGT2ZimtQ5XBCBT
+         Tzq/crS0vxAn0gCkEOe4Xt8gnG7x/s3kSUFFXUOw2q/s6oXvHn3xv+ZQlRRiha/Pt2Bz
+         ywrfoT7/f+6G2JrEvHyA1lVfLb2GwXskMuEAaRc5Hr3wDFqtXQs4H3fUnFmajQBsR9n9
+         UcJbnjgnzIi761fFgm3fJDR3WR/0aeS3sJu+LYSrarCg5TCBFkmNyhxEHG0uW8G3+kkF
+         /8oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723129972; x=1723734772;
+        d=1e100.net; s=20230601; t=1723129974; x=1723734774;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RlwKey+PJeZN0A9rh/S0vL1F8rX1MwKvwXZ2q25uwGA=;
-        b=qCPZhtIxpi7n0W0s2rL/zDl206sAfMuLn3pG95gku2MOxYKaqZn44UcdjqCH0bDWu1
-         pvia3Jhelp6KCxERJPdGnOVK2tUWs9QdPejXWXXEP4n4yippr2gpHo6p4F0LujnPDW1V
-         euskBybKKYo4WUi40GX1Wi5H2XPxE504v6vyLWJ3E+/fkt/Y7BzHJrWeOJ8pxwfGkyY9
-         /B057AVrdfDcmP5Q1cXFI9IXhnkskHTWwU//xfuyNciUN70OKS6wEtCp6uEWjb57Z+Lf
-         RqSWKc2wxc23v5AFW20Rk0qrIup9teCO4o7sEqH979OA8wtUX08WsD1taTpXqSS2fZlC
-         L9Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCWMlqUFxLD2AMS8CeuzfAl102mpZCAEAeQBNSZdUnUIP9Ir/cMGjja4QNrPftGJdPJaUm+3IzaCFASKv5uVASBRR5XeDB8twDaBaqXHkdw5SHECjFfWCv3twtZ2C41mAti469dAX1TCxlUMGQ9jK9pGCIm3RrWNGa/bh7UwwwMPy9q36g==
-X-Gm-Message-State: AOJu0YwHi505VolTQ8QRHhV0BSeQMBTNmMCDaGqLEPyDIdvYaX2NGRPu
-	i1pTEW/C9giqNVLyf34lV9ESvjgu9NcPqWa2uhm6dSXwZx/q1Rs9AxgYxfZO
-X-Google-Smtp-Source: AGHT+IFzix7VIeZTIQg0zBbjhj5GUek1tgQE9LwRj9V7JHckkhnN4U9cHGMO4vhsBtlpWQ50/ywkIg==
-X-Received: by 2002:a5d:5743:0:b0:368:6d75:1bde with SMTP id ffacd0b85a97d-36d274df3eamr1785039f8f.15.1723129971713;
-        Thu, 08 Aug 2024 08:12:51 -0700 (PDT)
+        bh=PZh6tA0jiESoXoOtY5qAvIE49vo04MTxnTUHVFSqNH4=;
+        b=RUNSL9WjbSpVRekygDmqBt6XvLgl2p1wcfvC4kmPPExso27Ll471qs0vExYGLc9lS/
+         I6huE1Mmb+wZebiFiFFFogFvvzae2FYMvy5BkbcZAkEbd4JahE2NQtIP9J7ZoF2Ctoh8
+         TqFzPhMwGMD/h4+8K74Tg14lLU3E6Z1KKM/Z4KhdupVR2OIKBb88iAyYgEpvcIz3OGyG
+         OpPVU8xjDPevv0n+7gXhu1dpYxEi0cfkFze1NAdOSz7++VEaOMWXkLzMsnJfCWSR9GzV
+         2sypEuMTMzK2UH8Dtj/bU8EtofRRF2Zy1i1MyTHgM3q2pB2hgm7nvtu0jXARddGDw7zL
+         wfbg==
+X-Forwarded-Encrypted: i=1; AJvYcCVj9OBhNCM2oFzaZfmD35wk4WQfwgzmUeLqLQxymbgYmpiNC9NEA+KnwgWRc20Eso3j0WKDnfvhuUHd2bk+dWDMgzKE6NxT+JcsMJuQCnIJh3zkIezOKSg4dri/VtQHl3uTpzhM175i1KEL7Pu/1nwNUTZRG9M5Qh0f2RcgOap+vwLlig==
+X-Gm-Message-State: AOJu0Yx7gL17+P4oZFrJCX62dv4CnxP8MxeaiutWul7NHZahnT4ZXH/5
+	Kz3yBUUm9/YZNSvo7wKW80kNph47GXgH7QpFwhtL8Y2jHyC1hZzBsIKty6gD
+X-Google-Smtp-Source: AGHT+IENRUZXk9+CpUdQ4r+iBA879/lG619Wzdm/977nxAbjK/6QNybTGmdaKvHJD6uVBnsY8QbpSQ==
+X-Received: by 2002:a5d:58f2:0:b0:368:714e:5a5e with SMTP id ffacd0b85a97d-36d273d0673mr1662793f8f.2.1723129973764;
+        Thu, 08 Aug 2024 08:12:53 -0700 (PDT)
 Received: from [127.0.1.1] ([213.208.157.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36d27157145sm2179881f8f.12.2024.08.08.08.12.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36d27157145sm2179881f8f.12.2024.08.08.08.12.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 08:12:51 -0700 (PDT)
+        Thu, 08 Aug 2024 08:12:53 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 08 Aug 2024 17:12:38 +0200
-Subject: [PATCH v2 2/3] iio: adc: xilinx-ams: use device_* to iterate over
- device child nodes
+Date: Thu, 08 Aug 2024 17:12:39 +0200
+Subject: [PATCH v2 3/3] leds: as3645a: use device_* to iterate over device
+ child nodes
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240808-device_child_node_access-v2-2-fc757cc76650@gmail.com>
+Message-Id: <20240808-device_child_node_access-v2-3-fc757cc76650@gmail.com>
 References: <20240808-device_child_node_access-v2-0-fc757cc76650@gmail.com>
 In-Reply-To: <20240808-device_child_node_access-v2-0-fc757cc76650@gmail.com>
 To: Suzuki K Poulose <suzuki.poulose@arm.com>, 
@@ -96,57 +96,58 @@ Cc: coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
  linux-leds@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723129965; l=1584;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723129965; l=1681;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=cl0OgwWFGj09y5TwwEPvN3u/Sy1PyJsfo8HSpKT7rW0=;
- b=Nr9fmxg24DocQ91AeftJ57YIQtrR9pYh1YfzOyKJzkowwMkDRORul2NZFUngK6AIViNcppMLe
- 0oceNoCGid6Bb3ghyIr/zXz1d+2ydI/2tahKQ4WzdvYLIC0HsYJEnZz
+ bh=nEcNIE1U7DZAocIwTQqOGm97es75K5AAksPENUTjEFw=;
+ b=yK5A5zMeB7sJ1oAnNbYGRuh0S9Y0nLJS/9nl8xfh6aDTDvvJRaVGSdFyccjPSKkv0RBXsa9yn
+ kTVocwI/IrBBGlgGPYpMb9nlcqZKE9bVZrGFgVSRkFl3eRsPBOtEwcU
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Use `device_for_each_child_node_scoped()` in `ams_parse_firmware()`
-to explicitly state device child node access, and simplify the child
-node handling as it is not required outside the loop.
+Drop the manual access to the fwnode of the device to iterate over its
+child nodes. `device_for_each_child_node` macro provides direct access
+to the child nodes, and given that the `child` variable is only required
+within the loop, the scoped variant of the macro can be used.
 
+Use the `device_for_each_child_node_scoped` macro to iterate over the
+direct child nodes of the device.
+
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/adc/xilinx-ams.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/leds/flash/leds-as3645a.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
-index f051358d6b50..ebc583b07e0c 100644
---- a/drivers/iio/adc/xilinx-ams.c
-+++ b/drivers/iio/adc/xilinx-ams.c
-@@ -1275,7 +1275,6 @@ static int ams_parse_firmware(struct iio_dev *indio_dev)
- 	struct ams *ams = iio_priv(indio_dev);
- 	struct iio_chan_spec *ams_channels, *dev_channels;
- 	struct device *dev = indio_dev->dev.parent;
--	struct fwnode_handle *child = NULL;
- 	struct fwnode_handle *fwnode = dev_fwnode(dev);
- 	size_t ams_size;
- 	int ret, ch_cnt = 0, i, rising_off, falling_off;
-@@ -1297,16 +1296,12 @@ static int ams_parse_firmware(struct iio_dev *indio_dev)
- 		num_channels += ret;
- 	}
+diff --git a/drivers/leds/flash/leds-as3645a.c b/drivers/leds/flash/leds-as3645a.c
+index 2c6ef321b7c8..8e6abedf6e00 100644
+--- a/drivers/leds/flash/leds-as3645a.c
++++ b/drivers/leds/flash/leds-as3645a.c
+@@ -478,14 +478,12 @@ static int as3645a_detect(struct as3645a *flash)
+ 	return as3645a_write(flash, AS_BOOST_REG, AS_BOOST_CURRENT_DISABLE);
+ }
+ 
+-static int as3645a_parse_node(struct as3645a *flash,
+-			      struct fwnode_handle *fwnode)
++static int as3645a_parse_node(struct as3645a *flash, struct device *dev)
+ {
+ 	struct as3645a_config *cfg = &flash->cfg;
+-	struct fwnode_handle *child;
+ 	int rval;
  
 -	fwnode_for_each_child_node(fwnode, child) {
--		if (fwnode_device_is_available(child)) {
--			ret = ams_init_module(indio_dev, child, ams_channels + num_channels);
--			if (ret < 0) {
--				fwnode_handle_put(child);
--				return ret;
--			}
 +	device_for_each_child_node_scoped(dev, child) {
-+		ret = ams_init_module(indio_dev, child, ams_channels + num_channels);
-+		if (ret < 0)
-+			return ret;
+ 		u32 id = 0;
  
--			num_channels += ret;
--		}
-+		num_channels += ret;
- 	}
+ 		fwnode_property_read_u32(child, "reg", &id);
+@@ -686,7 +684,7 @@ static int as3645a_probe(struct i2c_client *client)
  
- 	for (i = 0; i < num_channels; i++) {
+ 	flash->client = client;
+ 
+-	rval = as3645a_parse_node(flash, dev_fwnode(&client->dev));
++	rval = as3645a_parse_node(flash, &client->dev);
+ 	if (rval < 0)
+ 		return rval;
+ 
 
 -- 
 2.43.0

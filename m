@@ -1,155 +1,300 @@
-Return-Path: <linux-iio+bounces-8332-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8333-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07ACB94C0A5
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Aug 2024 17:13:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A385D94C41C
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Aug 2024 20:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 386101C21DA9
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Aug 2024 15:13:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59FCF285CCA
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Aug 2024 18:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C632318FDD1;
-	Thu,  8 Aug 2024 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D3C1465BB;
+	Thu,  8 Aug 2024 18:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ScWH6O+L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tXocCki8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8DD18FDA0;
-	Thu,  8 Aug 2024 15:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A800455769;
+	Thu,  8 Aug 2024 18:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723129977; cv=none; b=YEQyyXz6eYCLx5N4Qczs8nevrRi2q7JCxdwO3AKzeP1vXytFuCCxBwfihbTX3zx0m3TKFyULvipLmL4UiHu0GjyVYNG049a8QGYhKZG4/HR0vPXnZVymzl+gtBackyklZAyFCr70WiScXinB146vkmNHThr3/EROGFje2H5gJh0=
+	t=1723140657; cv=none; b=Y0DddCONV4F//31d2MeifIkONL6tD/jD/noX9RaL6d/DWQn39MBs4DbAV2pysRMx/NFfaxx7752VbudOtdSTgviL0XLGRFPqtwjGHUUQXZmpb3rc78MjWzNFd38C1Rtoq4/LwQySzIUpGcWLjyS1HArOnq4H2orXivTmEdeFjFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723129977; c=relaxed/simple;
-	bh=nEcNIE1U7DZAocIwTQqOGm97es75K5AAksPENUTjEFw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=q6FY4pUueSX9XdKfq7T8wX2/BbyLIBX8dc0/mwNEv96iqB1/5vMSXY5ycdUEmmH8kmSfX3yfRyYxJqdomC46zjhKPlHc1ZRVUEAvdj4riXJ6MSd4Mxf5Xl4aq4J1PCdI3QCYfliJhI+sIGfrNZRYOE3Ady7JCMZgvekkATiy3jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ScWH6O+L; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-368380828d6so590247f8f.1;
-        Thu, 08 Aug 2024 08:12:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723129974; x=1723734774; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PZh6tA0jiESoXoOtY5qAvIE49vo04MTxnTUHVFSqNH4=;
-        b=ScWH6O+LzAyDokNzeXUQxwvD5uqOsOtWu5aw29m2KN+dIofjksNVksZ0IwFUnHCTPw
-         VxQplMMHkD+waBsU+D8ncIcC0mq9jI9Q4Wgzib5TXy6wqyCpxNqjTsGT2ZimtQ5XBCBT
-         Tzq/crS0vxAn0gCkEOe4Xt8gnG7x/s3kSUFFXUOw2q/s6oXvHn3xv+ZQlRRiha/Pt2Bz
-         ywrfoT7/f+6G2JrEvHyA1lVfLb2GwXskMuEAaRc5Hr3wDFqtXQs4H3fUnFmajQBsR9n9
-         UcJbnjgnzIi761fFgm3fJDR3WR/0aeS3sJu+LYSrarCg5TCBFkmNyhxEHG0uW8G3+kkF
-         /8oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723129974; x=1723734774;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PZh6tA0jiESoXoOtY5qAvIE49vo04MTxnTUHVFSqNH4=;
-        b=RUNSL9WjbSpVRekygDmqBt6XvLgl2p1wcfvC4kmPPExso27Ll471qs0vExYGLc9lS/
-         I6huE1Mmb+wZebiFiFFFogFvvzae2FYMvy5BkbcZAkEbd4JahE2NQtIP9J7ZoF2Ctoh8
-         TqFzPhMwGMD/h4+8K74Tg14lLU3E6Z1KKM/Z4KhdupVR2OIKBb88iAyYgEpvcIz3OGyG
-         OpPVU8xjDPevv0n+7gXhu1dpYxEi0cfkFze1NAdOSz7++VEaOMWXkLzMsnJfCWSR9GzV
-         2sypEuMTMzK2UH8Dtj/bU8EtofRRF2Zy1i1MyTHgM3q2pB2hgm7nvtu0jXARddGDw7zL
-         wfbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVj9OBhNCM2oFzaZfmD35wk4WQfwgzmUeLqLQxymbgYmpiNC9NEA+KnwgWRc20Eso3j0WKDnfvhuUHd2bk+dWDMgzKE6NxT+JcsMJuQCnIJh3zkIezOKSg4dri/VtQHl3uTpzhM175i1KEL7Pu/1nwNUTZRG9M5Qh0f2RcgOap+vwLlig==
-X-Gm-Message-State: AOJu0Yx7gL17+P4oZFrJCX62dv4CnxP8MxeaiutWul7NHZahnT4ZXH/5
-	Kz3yBUUm9/YZNSvo7wKW80kNph47GXgH7QpFwhtL8Y2jHyC1hZzBsIKty6gD
-X-Google-Smtp-Source: AGHT+IENRUZXk9+CpUdQ4r+iBA879/lG619Wzdm/977nxAbjK/6QNybTGmdaKvHJD6uVBnsY8QbpSQ==
-X-Received: by 2002:a5d:58f2:0:b0:368:714e:5a5e with SMTP id ffacd0b85a97d-36d273d0673mr1662793f8f.2.1723129973764;
-        Thu, 08 Aug 2024 08:12:53 -0700 (PDT)
-Received: from [127.0.1.1] ([213.208.157.67])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36d27157145sm2179881f8f.12.2024.08.08.08.12.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 08:12:53 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 08 Aug 2024 17:12:39 +0200
-Subject: [PATCH v2 3/3] leds: as3645a: use device_* to iterate over device
- child nodes
+	s=arc-20240116; t=1723140657; c=relaxed/simple;
+	bh=IzN+0IllBbe8cqENOEL8lICQYXZcmk8qn7cN8akcdRU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GbRCPMXhJ89qJ5qurFiTy0Ul8swx50G3jJ5KDrSjyHYSgQyKMwMNqs2P7x82LnHTPIXLzHwao8NBfyMK++ZhPeWaFKxDkPBGl7sasb++joXZObFZD/zK/vZkQsaJDmP2peLZRodDbLAsgvCZBR5Ua45E7YY7KiyjYbkzMUFdB5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tXocCki8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C28C4AF0E;
+	Thu,  8 Aug 2024 18:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723140657;
+	bh=IzN+0IllBbe8cqENOEL8lICQYXZcmk8qn7cN8akcdRU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tXocCki8oHoLLruHpGgEKljB/jBxRTPpzxTsiKp0ccvszSqsUDrHKpQKLwxm/26C8
+	 VsB//QmFJPlZFIHUrdDsS/hpZ2GmQjICpMfsXn92jRcosRLQZ3ey9IVVmSKNW8c0NK
+	 fCkggrY3AZVnr/c7Tm7aQ+9cbZsBWtPfw+jwHJoMr8iYxlPVNdZ/+6jjT6SgMV1iI6
+	 VWT4ud/EladOQl6HLsLcoMJu+m/bJYIh1uwGAmurJN5r9aQvNWZY1vu+kMyqq+cYVE
+	 NLJ4E/QvuB70pcLrLPEC9C8Ca83PPbtZmFX0vjiCKL9+DCgbr6uPVS5BZg4WmB6gUK
+	 9WukUjoDUx2OQ==
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e026a2238d8so1155586276.0;
+        Thu, 08 Aug 2024 11:10:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV/lTDC50R2IIVI4H4h/DiHkbNBKJP1xkP/mIN8+SAlbH+pj/Wbo3O2oWXF9hPNtwkmaUnYHHxENYFJWnWEQvK7zJ0G8HxKvNrECWxKhxiWdVJYDsB/zuAlOWYRhKv/Pu4BoBM1x1LvpP4/HscIyjrkH7AhpsB+q39XGXXQJdg5nXwY/ThjxgVgM3KUa+yam8r80Ez3/cDZi4gwCi8AwA==
+X-Gm-Message-State: AOJu0YycuJ23YWBjHdXqguMLjCHKC2uJzszUHLQGUlhUZWXVhaxkDn63
+	BxzEYoeYpkA8NPUr++4pO0QnQCnWx0BBXjd8l4XoldDdwNI05DsPINef7D6hpqv4dFcyKFxkBME
+	htlZnrjw5jDR3FbiL+bvjZyGvLQ==
+X-Google-Smtp-Source: AGHT+IG6f1NrEBsWGrKI3cTAq+ObiGLjaOX692b54NH03/BssS5qOzyO2HKGBpDdEZhJIc/qfVg2dAYc9OkraoG11DU=
+X-Received: by 2002:a05:6902:e0b:b0:e0b:c16a:d0b1 with SMTP id
+ 3f1490d57ef6-e0e9dc8793emr3047061276.45.1723140656382; Thu, 08 Aug 2024
+ 11:10:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240808-device_child_node_access-v2-3-fc757cc76650@gmail.com>
-References: <20240808-device_child_node_access-v2-0-fc757cc76650@gmail.com>
-In-Reply-To: <20240808-device_child_node_access-v2-0-fc757cc76650@gmail.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, 
- Mike Leach <mike.leach@linaro.org>, James Clark <james.clark@linaro.org>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, 
- Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, 
- Michal Simek <michal.simek@amd.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, Pavel Machek <pavel@ucw.cz>, 
- Lee Jones <lee@kernel.org>
-Cc: coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- linux-leds@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723129965; l=1681;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=nEcNIE1U7DZAocIwTQqOGm97es75K5AAksPENUTjEFw=;
- b=yK5A5zMeB7sJ1oAnNbYGRuh0S9Y0nLJS/9nl8xfh6aDTDvvJRaVGSdFyccjPSKkv0RBXsa9yn
- kTVocwI/IrBBGlgGPYpMb9nlcqZKE9bVZrGFgVSRkFl3eRsPBOtEwcU
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+References: <20240711-iio-adc-ad4695-v4-0-c31621113b57@baylibre.com> <20240711-iio-adc-ad4695-v4-1-c31621113b57@baylibre.com>
+In-Reply-To: <20240711-iio-adc-ad4695-v4-1-c31621113b57@baylibre.com>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 8 Aug 2024 12:10:41 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKaddw8FnPfdnhKhHUb8AcTxFadc_eZmxjX0QxFR80=mw@mail.gmail.com>
+Message-ID: <CAL_JsqKaddw8FnPfdnhKhHUb8AcTxFadc_eZmxjX0QxFR80=mw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] dt-bindings: iio: adc: add AD4695 and similar ADCs
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Conor Dooley <conor.dooley@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Drop the manual access to the fwnode of the device to iterate over its
-child nodes. `device_for_each_child_node` macro provides direct access
-to the child nodes, and given that the `child` variable is only required
-within the loop, the scoped variant of the macro can be used.
+On Thu, Jul 11, 2024 at 1:16=E2=80=AFPM David Lechner <dlechner@baylibre.co=
+m> wrote:
+>
+> Add device tree bindings for AD4695 and similar ADCs.
+>
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>
+> Note, this may trigger a DT build warning "common-mode-channel: missing
+> type definition" if the builder doesn't include the recently added
+> common-mode-channel property [1]. This should be safe to ignore (passes
+> make dt_binding_check locally).
+>
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/=
+?h=3Dtesting&id=3Dd86deaec1c5b0fb60c3619e8d2ae7a1d722fd2ad
+>
+> v4 changes:
+> * Picked up Conor's reviewed-by tag.
+>
+> v3 changes:
+> * Change interrupts to be per pin instead of per signal.
+> * Drop diff-channels and single-channel properties.
+> * Odd numbered pins added to common-mode-channel property enum.
+> * REFGND and COM values changes to avoid confusion with pin numbers.
+> * Add inX-supply properties for odd numbed input pins.
+>
+> v2 changes:
+> * Drop *-wlcsp compatible strings
+> * Don't use fallback compatible strings
+> * Reword supply descriptions
+> * Use standard channel properties instead of adi,pin-pairing
+> * Fix unnecessary | character
+> * Fix missing blank line
+> * Add header file with common mode channel macros
+> ---
+>  .../devicetree/bindings/iio/adc/adi,ad4695.yaml    | 256 +++++++++++++++=
+++++++
+>  MAINTAINERS                                        |  10 +
+>  include/dt-bindings/iio/adi,ad4695.h               |   9 +
+>  3 files changed, 275 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
+> new file mode 100644
+> index 000000000000..a2e824e26691
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
+> @@ -0,0 +1,256 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4695.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices Easy Drive Multiplexed SAR Analog to Digital Conve=
+rters
+> +
+> +maintainers:
+> +  - Michael Hennerich <Michael.Hennerich@analog.com>
+> +  - Nuno S=C3=A1 <nuno.sa@analog.com>
+> +
+> +description: |
+> +  A family of similar multi-channel analog to digital converters with SP=
+I bus.
+> +
+> +  * https://www.analog.com/en/products/ad4695.html
+> +  * https://www.analog.com/en/products/ad4696.html
+> +  * https://www.analog.com/en/products/ad4697.html
+> +  * https://www.analog.com/en/products/ad4698.html
+> +
+> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad4695
+> +      - adi,ad4696
+> +      - adi,ad4697
+> +      - adi,ad4698
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 80000000
+> +
+> +  spi-cpol: true
+> +  spi-cpha: true
+> +
+> +  spi-rx-bus-width:
+> +    minimum: 1
+> +    maximum: 4
+> +
+> +  avdd-supply:
+> +    description: Analog power supply.
+> +
+> +  vio-supply:
+> +    description: I/O pin power supply.
+> +
+> +  ldo-in-supply:
+> +    description: Internal LDO Input. Mutually exclusive with vdd-supply.
+> +
+> +  vdd-supply:
+> +    description: Core power supply. Mutually exclusive with ldo-in-suppl=
+y.
+> +
+> +  ref-supply:
+> +    description:
+> +      External reference voltage. Mutually exclusive with refin-supply.
+> +
+> +  refin-supply:
+> +    description:
+> +      Internal reference buffer input. Mutually exclusive with ref-suppl=
+y.
+> +
+> +  com-supply:
+> +    description: Common voltage supply for pseudo-differential analog in=
+puts.
+> +
+> +  adi,no-ref-current-limit:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      When this flag is present, the REF Overvoltage Reduced Current pro=
+tection
+> +      is disabled.
+> +
+> +  adi,no-ref-high-z:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      Enable this flag if the ref-supply requires Reference Input High-Z=
+ Mode
+> +      to be disabled for proper operation.
+> +
+> +  cnv-gpios:
+> +    description: The Convert Input (CNV). If omitted, CNV is tied to SPI=
+ CS.
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description: The Reset Input (RESET). Should be configured GPIO_ACTI=
+VE_LOW.
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    items:
+> +      - description: Signal coming from the BSY_ALT_GP0 pin (ALERT or BU=
+SY).
+> +      - description: Signal coming from the GP2 pin (ALERT).
+> +      - description: Signal coming from the GP3 pin (BUSY).
+> +
+> +  interrupt-names:
+> +    minItems: 1
+> +    items:
+> +      - const: gp0
+> +      - const: gp2
+> +      - const: gp3
+> +
+> +  gpio-controller: true
+> +
+> +  "#gpio-cells":
+> +    const: 2
+> +    description: |
+> +      The first cell is the GPn number: 0 to 3.
+> +      The second cell takes standard GPIO flags.
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +patternProperties:
+> +  "^in(?:[13579]|1[135])-supply$":
+> +    description:
+> +      Optional voltage supply for odd numbered channels when they are us=
+ed as
+> +      the negative input for a pseudo-differential channel.
+> +
+> +  "^channel@[0-9a-f]$":
+> +    type: object
+> +    $ref: adc.yaml
+> +    unevaluatedProperties: false
+> +    description:
+> +      Describes each individual channel. In addition the properties defi=
+ned
+> +      below, bipolar from adc.yaml is also supported.
+> +
+> +    properties:
+> +      reg:
+> +        maximum: 15
+> +
+> +      common-mode-channel:
+> +        description:
+> +          Describes the common mode channel for single channels. 0xFF is=
+ REFGND
+> +          and OxFE is COM. Macros are available for these values in
+> +          dt-bindings/iio/adi,ad4695.h. Values 1 to 15 correspond to INx=
+ inputs.
+> +          Only odd numbered INx inputs can be used as common mode channe=
+ls.
+> +        items:
 
-Use the `device_for_each_child_node_scoped` macro to iterate over the
-direct child nodes of the device.
+"items" is for arrays, but common-mode-channel is a uint32. Drop
+"items". Either Jonathan can fixup or you'll need to send a fix.
 
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/leds/flash/leds-as3645a.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+It's now warning in linux-next (you need dtschema main branch):
+/builds/robherring/linux-dt/Documentation/devicetree/bindings/iio/adc/adi,a=
+d4695.example.dtb:
+adc@0: channel@1:common-mode-channel: 254 is not of type 'array'
+        from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad4695.y=
+aml#
+/builds/robherring/linux-dt/Documentation/devicetree/bindings/iio/adc/adi,a=
+d4695.example.dtb:
+adc@0: channel@2:common-mode-channel: 3 is not of type 'array'
+        from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad4695.y=
+aml#
 
-diff --git a/drivers/leds/flash/leds-as3645a.c b/drivers/leds/flash/leds-as3645a.c
-index 2c6ef321b7c8..8e6abedf6e00 100644
---- a/drivers/leds/flash/leds-as3645a.c
-+++ b/drivers/leds/flash/leds-as3645a.c
-@@ -478,14 +478,12 @@ static int as3645a_detect(struct as3645a *flash)
- 	return as3645a_write(flash, AS_BOOST_REG, AS_BOOST_CURRENT_DISABLE);
- }
- 
--static int as3645a_parse_node(struct as3645a *flash,
--			      struct fwnode_handle *fwnode)
-+static int as3645a_parse_node(struct as3645a *flash, struct device *dev)
- {
- 	struct as3645a_config *cfg = &flash->cfg;
--	struct fwnode_handle *child;
- 	int rval;
- 
--	fwnode_for_each_child_node(fwnode, child) {
-+	device_for_each_child_node_scoped(dev, child) {
- 		u32 id = 0;
- 
- 		fwnode_property_read_u32(child, "reg", &id);
-@@ -686,7 +684,7 @@ static int as3645a_probe(struct i2c_client *client)
- 
- 	flash->client = client;
- 
--	rval = as3645a_parse_node(flash, dev_fwnode(&client->dev));
-+	rval = as3645a_parse_node(flash, &client->dev);
- 	if (rval < 0)
- 		return rval;
- 
+> +          enum: [1, 3, 5, 7, 9, 11, 13, 15, 0xFE, 0xFF]
+> +        default: 0xFF
 
--- 
-2.43.0
-
+Rob
 

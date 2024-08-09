@@ -1,59 +1,60 @@
-Return-Path: <linux-iio+bounces-8365-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8366-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1330894D209
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 16:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9625594D20E
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 16:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8E552845C3
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 14:19:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5735628454F
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 14:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DA0195FEC;
-	Fri,  9 Aug 2024 14:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1B419645D;
+	Fri,  9 Aug 2024 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANKKWbci"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyCv1HaB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D541E49B;
-	Fri,  9 Aug 2024 14:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A781E49B;
+	Fri,  9 Aug 2024 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723213180; cv=none; b=ea4NOnSiWcyp09ZvFXaut6O8aetwQbdxvHzXgACJbh1PeGvQlddJ+fhYbz2Pu/Q+nIfbaKyxJhvwqVg1DqaJErgzUZo45Fa59NAJxxWSU4ysDa9Jukkk2U7EX2c23pHYTsBaooDvHOKOFlmwz/SW6xf6xfDRwBj3SEutkVri/qg=
+	t=1723213273; cv=none; b=s5JtEMib65QKApTQvyOnM2OdWe+p2ZjC6NG6Be8K+qhXWadCILJukvEhflymSijaRhGnZt7oBEOjTv+Ca8yiNe2+S2Xl1FQDYUz7mu/6k/DVhaNlTYXVvfgD+GP0iGlsUG+wfVKRSG8ytXGshwtCw/Tn304i3za1VNADqR+Mpyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723213180; c=relaxed/simple;
-	bh=Q1GREfp3xB2sDVSRO/f0mhNu4LfbXqzzd//VQfZmxck=;
+	s=arc-20240116; t=1723213273; c=relaxed/simple;
+	bh=D3KOQ1lz6fObG3Up+Pkf3Q2wDvBRrliNyfSpEXtz9Pc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Os/m4L+pGCMNl2wDHbnzjafV9OwYQODb4bJylFL8UQekdMkeyMXdKAPGjuGiv/Two4WhrmIxbDkwuRbE+dPd9UnJChhtrKQmY9+GtqZn5a0rS6MUXVW6tKszi7ULc0jBvhwpR9KER+0n5mMMlLppZ3k1DazwbNNCAuKrIU+ZBOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANKKWbci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECC0C32782;
-	Fri,  9 Aug 2024 14:19:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=G0O6Mi9zPN59H71xgKLoM9Pu3mLwU9fDPs45lDm3ZsvpVrJKICbmqhCsoLhAG0ur0wVy0DmHODvqlE75uf8TZAmROniVRnbFK2RH6NCVKcBHVzkgMKlhDENUVz/3kUrySnzQmALywga9vUbO3T0wuuOi4vDp/2XL7ySkjwwSQaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyCv1HaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A113EC4AF0D;
+	Fri,  9 Aug 2024 14:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723213179;
-	bh=Q1GREfp3xB2sDVSRO/f0mhNu4LfbXqzzd//VQfZmxck=;
+	s=k20201202; t=1723213272;
+	bh=D3KOQ1lz6fObG3Up+Pkf3Q2wDvBRrliNyfSpEXtz9Pc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ANKKWbciiJnJH37Y811R4u5kjsRVnZ49Y6NTAODTalZO1r40oQ0ZWy+VhFp9ZP/i+
-	 jKAyJqIXJCIAxLlWQMOQ2cQ3Uhx/UIezzgPzSTw5pl2x7s06zlxTCEcyiBuy2RVhEd
-	 nsRWCH9WoOXhdOJMNk9ztx6jR55A9DzT0mcXduvVKIXgCXV7JVBRI5LIbZcrTOu+M1
-	 /p2KD+i2lLBJGP/9DHsZmMrOez6qr0vhy9J+idaMiRC2emjQzUmQ5hs1OqDEO8V9QG
-	 NJeflUJHjQbxYbxHEeURVGHHpZ67NG4x+PY3IRy36q5Attr/Bz9+sRBH2ugDgZYkkV
-	 dK/7W0oQHa9GA==
-Date: Fri, 9 Aug 2024 15:19:34 +0100
+	b=fyCv1HaBGEqenaSqmEzCmpzaRQboOvUnt9A88P2wZ2vhFmuMqwNhhisHMEsyGIH2v
+	 AlE6dKTSyLsQTY/Hb3itNqD83CaIpV1aTnhfEzLv1aBBy+7Q2tcu5C39X6ViemXtXR
+	 h+XsIdcQVzL7WY938VDvr4dzMPZOPVFsTJUkzJtn6+sU4Oyc+hGwrsUDJ22fi/WmcO
+	 FhkAGnQorHB6cyt5bPDXt1Xxbnwia6DEqPGoGCZ5UVZcSiss+qCIyZUzERpf/Mqvmz
+	 iOTf2uH96QFyPr8ptysSrzJopl2R/g5GvKvxMvPnysGeWCwx8CzvJN0McvSMWcftST
+	 A0l2lmveUb/Lw==
+Date: Fri, 9 Aug 2024 15:21:08 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Jianping.Shen@de.bosch.com
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, dima.fedrau@gmail.com,
-	marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Christian.Lorenz3@de.bosch.com, Ulrike.Frauendorf@de.bosch.com,
-	Kai.Dolde@de.bosch.com
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imu: smi240: devicetree binding
-Message-ID: <20240809-enlarging-harpist-49d323f0ddac@spud>
-References: <20240809111635.106588-1-Jianping.Shen@de.bosch.com>
- <20240809111635.106588-2-Jianping.Shen@de.bosch.com>
+To: dumitru.ceclan@analog.com
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, mitrutzceclan@gmail.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: adc: ad7173: add support for ad4113
+Message-ID: <20240809-glowing-discard-87263f656a7e@spud>
+References: <20240809-ad4113-v2-0-2a70c101a1f4@analog.com>
+ <20240809-ad4113-v2-1-2a70c101a1f4@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -61,138 +62,89 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="s+bgNCWnHGshQukl"
+	protocol="application/pgp-signature"; boundary="h5xwHwgJrpSmMpcr"
 Content-Disposition: inline
-In-Reply-To: <20240809111635.106588-2-Jianping.Shen@de.bosch.com>
+In-Reply-To: <20240809-ad4113-v2-1-2a70c101a1f4@analog.com>
 
 
---s+bgNCWnHGshQukl
-Content-Type: text/plain; charset=iso-8859-1
+--h5xwHwgJrpSmMpcr
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 09, 2024 at 01:16:34PM +0200, Jianping.Shen@de.bosch.com wrote:
-> From: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
+On Fri, Aug 09, 2024 at 01:33:24PM +0300, Dumitru Ceclan via B4 Relay wrote:
+> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
 >=20
-> dt-bindings: iio: imu: smi240: dt-binding improvements
-
-The commit message here doesn't make much sese, you're adding a new
-file. Something like the description in the binding below would be a
-better fit than what you have.
-
-> Signed-off-by: Shen Jianping (ME-SE/EAD2) <Jianping.Shen@de.bosch.com>
-                               ^^^^^^^^^^^^
-If this is not part of your name, or a client of Bosch that you want to
-attribute authorship to, remove it.
-
+> This commit adds bindings support for AD4113.
+>=20
+> The AD4113 is a low power, low noise, 16-bit, =CE=A3-=CE=94 analog-to-dig=
+ital
+> converter (ADC) that integrates an analog front end (AFE) for four
+> fully differential or eight single-ended inputs.
+>=20
+> Added ad4113 to the compatible list and the "avdd2-supply: false"
+> restriction.
+>=20
+> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
 > ---
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
 >=20
-> Notes:
->     v1 -> v2
->     - Add more detail in description
->     - Add maintainer
->     - Add vdd and vddio power supply
->     - Use generic node name
->     - Order the properties according to DTS coding style
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> index 17c5d39cc2c1..ad15cf9bc2ff 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> @@ -28,6 +28,7 @@ description: |
+>    Datasheets for supported chips:
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD4111.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD4112.pdf
+> +    <AD4113: not released yet>
+
+Am I meant to ack it with this placeholder? When will the document be
+released?
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD4114.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD4115.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/=
+AD4116.pdf
+> @@ -44,6 +45,7 @@ properties:
+>      enum:
+>        - adi,ad4111
+>        - adi,ad4112
+> +      - adi,ad4113
+>        - adi,ad4114
+>        - adi,ad4115
+>        - adi,ad4116
+> @@ -331,6 +333,7 @@ allOf:
+>              enum:
+>                - adi,ad4111
+>                - adi,ad4112
+> +              - adi,ad4113
+>                - adi,ad4114
+>                - adi,ad4115
+>                - adi,ad4116
 >=20
->  .../bindings/iio/imu/bosch,smi240.yaml        | 51 +++++++++++++++++++
->  1 file changed, 51 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,smi24=
-0.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml =
-b/Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml
-> new file mode 100644
-> index 00000000000..0529e67de26
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml
-> @@ -0,0 +1,51 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/imu/bosch,smi240.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Bosch smi240 imu
-> +
-> +maintainers:
-> +  - Jianping Shen <Jianping.Shen@de.bosch.com>
-> +
-> +description:
-> +  The smi240 is a combined three axis angular rate and three=20
-> +  axis acceleration sensor module with a measurement range of=20
-> +  +/-300=B0/s and up to 16g.
-
-> smi240 does not support interrupt.
-
-You can, drop this, don't think it's worth mentioning in the
-description.
-
-> +  https://www.bosch-semiconductors.com/mems-sensors/highly-automated-dri=
-ving/smi240/
-> +
-> +properties:
-> +  compatible:
-> +    const: bosch,smi240
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: provide VDD power to the sensor.
-> +
-> +  vddio-supply:
-> +    description: provide VDD IO power to the sensor.
-
-I think the descriptions for these are not really worth having and can
-be replaced with "vddio-supply: true" etc.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-
-However, the supplies likely are required to function and should be
-added to the required section.
-
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        imu@0 {
-> +            compatible =3D "bosch,smi240";           =20
-
-You have trailing whitespace after this line.
-
-Cheers,
-Conor.
-
-> +            reg =3D <0>;
-> +            spi-max-frequency =3D <10000000>;
-> +        };
-> +    };
 > --=20
-> 2.34.1
+> 2.43.0
+>=20
 >=20
 
---s+bgNCWnHGshQukl
+--h5xwHwgJrpSmMpcr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZrYldgAKCRB4tDGHoIJi
-0uNcAP9l6rZF9WJwxEuVPR/cb1t9nJDyLveMmQ5G/NFOvi6EbQD9FLvD0TAN2Z32
-FsXXZHoARqvg1rNg5wVDBhbzt0cjNAM=
-=Gcf2
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZrYl1AAKCRB4tDGHoIJi
+0uasAP98ZL0MS6Ck9rDG7L+3myxCmOGrrEofGAhhyVGiUxt6pgEAnezu+HrD2ee4
+LOFCngiz8LH+w6EpJ3QKu6yWZHT9qgI=
+=iBLz
 -----END PGP SIGNATURE-----
 
---s+bgNCWnHGshQukl--
+--h5xwHwgJrpSmMpcr--
 

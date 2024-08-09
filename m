@@ -1,244 +1,120 @@
-Return-Path: <linux-iio+bounces-8367-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8369-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF15394D214
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 16:24:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E4994D250
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 16:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2C541C21411
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 14:24:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0AA41F23937
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 14:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05236196C6C;
-	Fri,  9 Aug 2024 14:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1650196455;
+	Fri,  9 Aug 2024 14:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I4wv1fZw"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="F37FGskT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from msa.smtpout.orange.fr (msa-217.smtpout.orange.fr [193.252.23.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CF418E749;
-	Fri,  9 Aug 2024 14:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3100156676;
+	Fri,  9 Aug 2024 14:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723213444; cv=none; b=P8XRm+7NIJ15IlYbmMOdz2Ht3b7gJuTRm77Mo9AIcB512SawpgTVS2zRa07Qsuik0YtFTs7Vr66/OVSjQKAjujA/O0mHip42nnxR40OhCz8IgTOXtsGtFXNzANC9wnbc+tYVUhZZKoPH08fNcOc624E9X8mkbxSG31tpZJdwo+Q=
+	t=1723214399; cv=none; b=Y3buqakBwuik6qfLaq+BYDUSXFYP6olssuPxZSWSxei3XMgLSAXmHnxksxSfbAK1BlUnQu++pT6svV8epAJiH0Y1ZxEgtGiSYAWJZL0jhhY0su9OryDvNjKe8OXeG2mUwVNc1m9iXWDmtleWHfb28E95IJv0CG8SHaab1Qspzu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723213444; c=relaxed/simple;
-	bh=5gUwq91ATttiyIx/uKVwOYe7G/RxJzzFTf3pPEeo+sE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HImmSnsTT5/EhyrB+rDr7V19qDgOSeRKLhNoHmUA07fawUeBqsQrTxxI+OgZzRhWEeJAiP/sKouK105NE7pzfL+gk9DFtQ/T/BNt/cwfWrKaWfXiKUolF9Rh5udI+4NASmCxRP39+EmE8tokCHdBZdEh63C+qEpp9hSGpZ+y0Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4wv1fZw; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42817f1eb1fso14378135e9.1;
-        Fri, 09 Aug 2024 07:24:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723213441; x=1723818241; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4/gs9u47DP8cQrqdlouSOUqjeqH+R2TIC2bViLmRcTc=;
-        b=I4wv1fZwJuiRrnzb/AspLY1ojcC8q62X/dTSb3QwSchNoOvliqdQDin0AL1oxMMbWD
-         qWXAHoU04NWJgv9ESyormDf8RTRgQQH+Z1V5ig+3dGrCTsxiaAZxPa3mticY+1VZEcIQ
-         rgAgtGM5sCYaKeOkjehQKGIr+PWm9xGi5hmuNKMSRIsq8Ju2Xk+l2adhbP9ZQNo3Vi+L
-         tUXw5i0kkex5dNKw9YVfA2HrZxmAJg9cbcmtISYBRUSF95jIuE6Wf3s/VywA3U7Ib6kk
-         Ye636KuLka2XKNyy3Cu9OTzls67xIRvTJXVGUimbM+Dbx/rM7v5Ohjpz2mZMqkaEixYQ
-         zwVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723213441; x=1723818241;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4/gs9u47DP8cQrqdlouSOUqjeqH+R2TIC2bViLmRcTc=;
-        b=iOiviW03AmRqNcfKgVDD0XMwmW5FNsgwvD0m2jr8pvFP9Y2TM8EGKZlhkbYzFYjloI
-         SvrMnHzAvGhZ0V7YLRQ8MJyxtcMgFC0A1O8qC3pmNYQDU76cVCp0+E2NC5V5ox4WSzj5
-         Ko17s3QWYp22+b1swV0PpWNe0A8igupvmTrN5nmT+o4KeLmHBz4CKiNUhtQwvs0mpmbO
-         RXekIcBl47cPLBLUsKCSuoIcpBL9K1V+Z5rjHG1OxWGhZK51pwFOfxG1i+n5VF3BdwfJ
-         V5v//kYd9gmIQuLltmoH1mW1RFy+kvyN4LNWSSDGgFfI8zfDEz5Fvd6Ia7zdF/pVMsg5
-         aiVg==
-X-Forwarded-Encrypted: i=1; AJvYcCVROGMj6jMzmqFrGKQs5j8QH3Owtb7G6livYE3TRavcxsDWVnbWP5mVd3S0nC6hio/VN5fhTEt+PLK31syZchOMUVoE3ZD4SudJpbwoRXnGSsVaqLrGa5tyNfQyMKI21PbTDeOXpfRBscP0+k1N7PY19K5TZcUlU+aHx9yyjbyTbqOQ
-X-Gm-Message-State: AOJu0Ywms7+Dnh/A2VAXN6b8Jf6cc8JnzITgUeZNlMVPFag4XlNrngeG
-	r4uGjZBsHV0KdKXANCrC7SdI67bTteA74EnKO5e/8RJcgUIPX+sX
-X-Google-Smtp-Source: AGHT+IGOJX0c6Nlhlkbs5OFc67iI7fWE3SO6nvfRWjJNZXO4pxljwRKUP2i+UFyp/XOW1IeZiEvK1A==
-X-Received: by 2002:a5d:6c6e:0:b0:368:3b21:6643 with SMTP id ffacd0b85a97d-36d616e8ef2mr1569518f8f.48.1723213441045;
-        Fri, 09 Aug 2024 07:24:01 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:359b:e801:d44:32b3:6924:10d1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429059713adsm130964315e9.11.2024.08.09.07.24.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Aug 2024 07:24:00 -0700 (PDT)
-Message-ID: <8bb01a8946aaa5855b5ac15d79c0292a668eee59.camel@gmail.com>
-Subject: Re: [PATCH 1/2] iio: adc: ad4695: implement triggered buffer
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
- <jic23@kernel.org>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?ISO-8859-1?Q?S=E1?=
-	 <nuno.sa@analog.com>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Date: Fri, 09 Aug 2024 16:24:00 +0200
-In-Reply-To: <20240807-iio-adc-ad4695-buffered-read-v1-1-bdafc39b2283@baylibre.com>
-References: 
-	<20240807-iio-adc-ad4695-buffered-read-v1-0-bdafc39b2283@baylibre.com>
-	 <20240807-iio-adc-ad4695-buffered-read-v1-1-bdafc39b2283@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+	s=arc-20240116; t=1723214399; c=relaxed/simple;
+	bh=8eJnSf+WzgK/g/GHQkGpnjWagYrg//HOUOW4nYKbG3I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hbiCIFQIWvH/BEXnY1NNvE/Sypdnr5xoNNhwaouaZz+go4KaR+Tgaml/BAcHHKPo9Afma8FO5qvW2TwC/JLuXX2QsbCtPceWAKVLZs6m0i0KlM/opfd0qDScPUiFQtcdZerfu82VpBHyLw9O4HoUMdjcTc2w4HLm6zi0JpegmLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=F37FGskT; arc=none smtp.client-ip=193.252.23.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id cQdfsPE1NEQ85cQdfsE7xu; Fri, 09 Aug 2024 16:30:44 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1723213844;
+	bh=QquEDRsc4XE1jvfUtvrYehdl3AqPbLD0343ayILx//A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=F37FGskTklVOb3g1pk481ccM+eUk76018/FVrzTMBiPTw5NV7jYxJV7AR/ckwe+35
+	 ExW4zk/CGW7IOzXdaOoQqkwGEg7mSu8FAVAz41VLdoVdBkygic9OTY4ESD98aaPf6J
+	 yJSUO6fkcLXR04v08Khu9MmvocJwvI0VAeWrogpPzXG/zzUmIdnotf8dq03zepMQpE
+	 vcgHrA1kxF8Id4L+gOCQHHwG9pZa6wrClOfP9HQlsawekraVYUeZxRWcsCfS7lqTpF
+	 neQGaIS9RyPwtpGou7r99/6bAy0LRHwugMD/viTdqMrkNYf/y4X/wzXIBr9EL9WHmB
+	 X6eI63n5p8RJA==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Fri, 09 Aug 2024 16:30:44 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <37357b8a-1995-473d-a6fb-168fc38e0641@wanadoo.fr>
+Date: Fri, 9 Aug 2024 16:30:42 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7173: add support for ad4113
+To: devnull+dumitru.ceclan.analog.com@kernel.org
+Cc: Michael.Hennerich@analog.com, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, dumitru.ceclan@analog.com, jic23@kernel.org,
+ krzk+dt@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mitrutzceclan@gmail.com, robh@kernel.org
+References: <20240809-ad4113-v2-0-2a70c101a1f4@analog.com>
+ <20240809-ad4113-v2-2-2a70c101a1f4@analog.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20240809-ad4113-v2-2-2a70c101a1f4@analog.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2024-08-07 at 15:02 -0500, David Lechner wrote:
-> This implements buffered reads for the ad4695 driver using the typical
-> triggered buffer implementation, including adding a soft timestamp
-> channel.
->=20
-> The chip has 4 different modes for doing conversions. The driver is
-> using the advanced sequencer mode since that is the only mode that
-> allows individual configuration of all aspects each channel (e.g.
-> bipolar config currently and oversampling to be added in the future).
->=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Le 09/08/2024 à 12:33, Dumitru Ceclan via B4 Relay a écrit :
+> From: Dumitru Ceclan <dumitru.ceclan-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> 
+> This commit adds support for the AD4113 ADC.
+> The AD4113 is a low power, low noise, 16-bit, Σ-Δ analog-to-digital
+> converter (ADC) that integrates an analog front end (AFE) for four
+> fully differential or eight single-ended inputs.
+> 
+> Signed-off-by: Dumitru Ceclan <dumitru.ceclan-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 > ---
+>   drivers/iio/adc/ad7173.c | 36 +++++++++++++++++++++++++++++++++++-
+>   1 file changed, 35 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+> index a854f2d30174..3ac09d326472 100644
+> --- a/drivers/iio/adc/ad7173.c
+> +++ b/drivers/iio/adc/ad7173.c
+> @@ -3,7 +3,7 @@
+>    * AD717x and AD411x family SPI ADC driver
+>    *
+>    * Supported devices:
+> - *  AD4111/AD4112/AD4114/AD4115/AD4116
+> + *  AD4111/AD4112/AD4113/AD4114/AD4115/AD4116
+>    *  AD7172-2/AD7172-4/AD7173-8/AD7175-2
+>    *  AD7175-8/AD7176-2/AD7177-2
+>    *
+> @@ -84,6 +84,7 @@
+>   #define AD4111_ID			AD7173_ID
+>   #define AD4112_ID			AD7173_ID
+>   #define AD4114_ID			AD7173_ID
+> +#define AD4113_ID			0x31D0
 
-Hi David,
+Nitpick: others are in lowercase --> 0x31d0
 
-Just two nit comments...
+>   #define AD4116_ID			0x34d0
+>   #define AD4115_ID			0x38d0
+>   #define AD7175_8_ID			0x3cd0
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Other than that, is there any reason to have this "random" order for 
+these defines?
 
-> =C2=A0drivers/iio/adc/ad4695.c | 233 ++++++++++++++++++++++++++++++++++++=
-++++++++++-
-> =C2=A01 file changed, 230 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
-> index 007ecb951bc3..a3bd5be36134 100644
-> --- a/drivers/iio/adc/ad4695.c
-> +++ b/drivers/iio/adc/ad4695.c
+CJ
 
-...
 
->=20
-> =C2=A0
-> +static int ad4695_buffer_preenable(struct iio_dev *indio_dev)
-> +{
-> +	struct ad4695_state *st =3D iio_priv(indio_dev);
-> +	struct spi_transfer *xfer;
-> +	u8 temp_chan_bit =3D st->chip_info->num_voltage_inputs;
-> +	bool temp_chan_en =3D false;
-> +	u32 reg, mask, val, bit, num_xfer, num_slots;
-> +	int ret;
-> +
-> +	/*
-> +	 * We are using the advanced sequencer since it is the only way to read
-> +	 * multiple channels that allows individual configuration of each
-> +	 * voltage input channel. Slot 0 in the advanced sequencer is used to
-> +	 * account for the gap between trigger polls - we don't read data from
-> +	 * this slot. Each enabled voltage channel is assigned a slot starting
-> +	 * with slot 1.
-> +	 */
-> +	num_slots =3D 1;
-> +
-> +	memset(st->buf_read_xfer, 0, sizeof(st->buf_read_xfer));
-> +
-> +	/* First xfer is only to trigger conversion of slot 1, so no rx. */
-> +	xfer =3D &st->buf_read_xfer[0];
-> +	xfer->cs_change =3D 1;
-> +	xfer->delay.value =3D AD4695_T_CNVL_NS;
-> +	xfer->delay.unit =3D SPI_DELAY_UNIT_NSECS;
-> +	xfer->cs_change_delay.value =3D AD4695_T_CONVERT_NS;
-> +	xfer->cs_change_delay.unit =3D SPI_DELAY_UNIT_NSECS;
-> +	num_xfer =3D 1;
-> +
-> +	iio_for_each_active_channel(indio_dev, bit) {
-> +		xfer =3D &st->buf_read_xfer[num_xfer];
-> +		xfer->bits_per_word =3D 16;
-> +		xfer->rx_buf =3D &st->buf[(num_xfer - 1) * 2];
-> +		xfer->len =3D 2;
-> +		xfer->cs_change =3D 1;
-> +		xfer->cs_change_delay.value =3D AD4695_T_CONVERT_NS;
-> +		xfer->cs_change_delay.unit =3D SPI_DELAY_UNIT_NSECS;
-> +
-> +		if (bit =3D=3D temp_chan_bit) {
-> +			temp_chan_en =3D true;
-> +		} else {
-> +			reg =3D AD4695_REG_AS_SLOT(num_slots);
-> +			val =3D FIELD_PREP(AD4695_REG_AS_SLOT_INX, bit);
-> +
-> +			ret =3D regmap_write(st->regmap, reg, val);
-> +			if (ret)
-> +				return ret;
-> +
-> +			num_slots++;
-> +		}
-> +
-> +		num_xfer++;
-> +	}
-> +
-> +	/*
-> +	 * Don't keep CS asserted after last xfer. Also triggers conversion of
-> +	 * slot 0.
-> +	 */
-> +	xfer->cs_change =3D 0;
-> +
-> +	/**
-> +	 * The advanced sequencer requires that at least 2 slots are enabled.
-> +	 * Since slot 0 is always used for other purposes, we need only 1
-> +	 * enabled voltage channel to meet this requirement. This error will
-> +	 * only happen if only the temperature channel is enabled.
-> +	 */
-> +	if (num_slots < 2) {
-> +		dev_err_ratelimited(&indio_dev->dev,
-> +			"Buffered read requires at least 1 voltage channel
-> enabled\n");
 
-This one is intriguing... Why the ratelimited variant? Normally you'd use t=
-hat in IRQ
-routines where the log could be flooded.
-> +		return -EINVAL;
-> +	}
-> +
-> +	/*
-> +	 * Temperature channel isn't included in the sequence, but rather
-> +	 * controlled by setting a bit in the TEMP_CTRL register.
-> +	 */
-> +
-> +	reg =3D AD4695_REG_TEMP_CTRL;
-> +	mask =3D AD4695_REG_TEMP_CTRL_TEMP_EN;
-> +	val =3D FIELD_PREP(mask, temp_chan_en ? 1 : 0);
-> +
-> +	ret =3D regmap_update_bits(st->regmap, reg, mask, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	spi_message_init_with_transfers(&st->buf_read_msg, st->buf_read_xfer,
-> +					num_xfer);
-> +
-> +	ret =3D spi_optimize_message(st->spi, &st->buf_read_msg);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* This triggers conversion of slot 0. */
-> +	ret =3D ad4695_enter_advanced_sequencer_mode(st, num_slots);
-> +	if (ret) {
-> +		spi_unoptimize_message(&st->buf_read_msg);
-> +		return ret;
-> +	}
-
-Could save one line with (unless ad4695_enter_advanced_sequencer_mode() doe=
-s not
-return 0 on success)
-
-ret =3D ad4695_enter_advanced_sequencer_mode(st, num_slots);
-if (ret)
-	spi_unoptimize_message(&st->buf_read_msg);
-
-return ret;
-
-- Nuno S=C3=A1
 
 

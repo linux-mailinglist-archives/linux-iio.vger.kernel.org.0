@@ -1,136 +1,137 @@
-Return-Path: <linux-iio+bounces-8373-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8374-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C5F94D378
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 17:29:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF9394D38C
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 17:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21B8284A92
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 15:29:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35245B22993
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 15:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327F0198856;
-	Fri,  9 Aug 2024 15:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C821946B4;
+	Fri,  9 Aug 2024 15:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jO535wSV"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="gGw7MgYP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from msa.smtpout.orange.fr (msa-216.smtpout.orange.fr [193.252.23.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DF215B992;
-	Fri,  9 Aug 2024 15:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02787194C62;
+	Fri,  9 Aug 2024 15:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723217339; cv=none; b=T/Hh2fSUqD3aQV+2a+f006XMHB+iCDIPT/7QpypFNFjjxr/ABQWc2CEmkG3CJzEweFaNe425ztV8FpzQJ+JU0WWNd4tDp582ukUszWuHNCa8TItsD4PRKSDWNtZ2E9/1EcFRMhJ+YIKSneEEub4u/exCWWIJe7e56X9YtPOs6JQ=
+	t=1723217723; cv=none; b=KqUSbH+/YFGutnxZow9UGf6EhvtlYGfZY67vl0F8sw6q06/+846VU9G/j1o7nCwHTWVWclL8QPRl0kMwGwEIVuTxsThl70dnKhaMGC4HEvSUIYqXVhoY2e8jMn97PevR6nKl0H5Al4eE9xRsgfA+bZL7mWw6yiCecYwvZN8lfVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723217339; c=relaxed/simple;
-	bh=KsX+Kf82qQK+XJnO+x6d8UQK9IGdMWChaFfgA5l5EsU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ToTMgWAeaDBYLx4knJcDpRnngYKTlwtrBHc1kPB8MsTwlY4JSMY94xIhXOT3+NH65u+l24CgvQJmWH0zW0vVUk9fxzfxQPcuJhVK+8CfKOBBmJ4iSFa0BYIdRQRs2Fow6Hc4sr4yqXnETLMCoeYnwZiusbN1kSxPzb4Qpc60+Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jO535wSV; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723217338; x=1754753338;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KsX+Kf82qQK+XJnO+x6d8UQK9IGdMWChaFfgA5l5EsU=;
-  b=jO535wSVJd9gnFSs3IMeL2Ce1dvcO4XguZ0QlqXsc40Su68XlllaMpk1
-   4UESAEuJS8wOxpNs4oq4XKXqDC3VATTDNnTnj7XTCH442aj1kqfYwH209
-   atLE0459D5dhPI27F812y6K4ro/k59csTIOZChK8GtfU4HpGKsGP0d82j
-   sYGpWz9Wz6moyWD4YPjki6gej0MykLKil6WOlF2Rr/ToY/h4ujgH8eYHE
-   MLNs4IaZ9dgcn880Q6aHjZ3Wd7ohntz+YvAlJtuy60rhxbuBQppvL6GmC
-   +ew1t8QrXuGJ1mvbfKO+jE48UfPTkQ4V6vgqbDdgtCuCy8wfwF6LJ0efp
-   Q==;
-X-CSE-ConnectionGUID: IynqNRkgQRO/djfO7gyBtA==
-X-CSE-MsgGUID: ZfBTFZ/OTECdnUlE0yiVPg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11159"; a="25163216"
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; 
-   d="scan'208";a="25163216"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 08:28:56 -0700
-X-CSE-ConnectionGUID: 2e0XJ5hSQPWNM0euqwq0yg==
-X-CSE-MsgGUID: ClDyMm98RXSdFm/l2U6R+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; 
-   d="scan'208";a="58313165"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 08:28:54 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1scRXv-0000000DSL9-2SUd;
-	Fri, 09 Aug 2024 18:28:51 +0300
-Date: Fri, 9 Aug 2024 18:28:51 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: pd.pstoykov@gmail.com
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] iio: pressure: Add driver for Sensirion SDP500
-Message-ID: <ZrY1s5fYdC3hMxjj@smile.fi.intel.com>
-References: <20240702-mainline_sdp500-v3-0-0902047b3eee@gmail.com>
- <20240702-mainline_sdp500-v3-2-0902047b3eee@gmail.com>
+	s=arc-20240116; t=1723217723; c=relaxed/simple;
+	bh=alMx3FaLXvrCcOpHNI1Kce8yS54FHkxPds+xnj7xf1E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OVRNX3h2nCLNdjMckJU1q/e5KPjSZq199uvZMMq7KkQKPS+i5Qle9ZY8u7cISzCtMBki57GNfLF0K8Hz8WcOo4hT/aIkPTWxsb20ce2dhJ/d/6HGmaXgqoSvuTTqV5JHavBok/1zoZaMgW+1vkj+x/wZeEbbiiZv6o9Lld2dzK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=gGw7MgYP; arc=none smtp.client-ip=193.252.23.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id cRczsUVfkOGeacRd0szeSZ; Fri, 09 Aug 2024 17:34:06 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1723217646;
+	bh=dL3EWOnxHrCX3LwQQ8rHJjJ1VknbUrGetrFnEmJangs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=gGw7MgYPDqd8W1f+UOz84kw8NFAwI8nM2/Q1JbFdERkyVhhjb0+RYusfwvuXqYLvF
+	 rxnJld+WgECx3XAKuFfDMGEG/FDpR456opo4tzMP3oPo7a+kA7eYsyT0JggSb1H53R
+	 QMIIE5RcFHR3CkNAMTeTfhqSTqtnhj4SPb6TMRnO5L/bdwKHqhv5H3S47HRLEm3qie
+	 Y/IsPM8+qYP3uTRWk+iZe6dF8a9ktVeHNosluzHLUb+RE5ngzJ9Z4qYDlXw89ezevi
+	 1Pt6NWuXHgwSCZU/tEIO+ZJq1hcL6JhOam4OtyOywisRVhued72JYsXye/kxmFdqmB
+	 hpf0rIBS8y1Tw==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Fri, 09 Aug 2024 17:34:06 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <8a048baa-d9a7-4285-9242-7a32a594f226@wanadoo.fr>
+Date: Fri, 9 Aug 2024 17:34:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240702-mainline_sdp500-v3-2-0902047b3eee@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7173: add support for ad4113
+To: mitrutzceclan@gmail.com
+Cc: Michael.Hennerich@analog.com, christophe.jaillet@wanadoo.fr,
+ conor+dt@kernel.org, devicetree@vger.kernel.org,
+ devnull+dumitru.ceclan.analog.com@kernel.org, dumitru.ceclan@analog.com,
+ jic23@kernel.org, krzk+dt@kernel.org, lars@metafoo.de,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, robh@kernel.org
+References: <20240809-ad4113-v2-0-2a70c101a1f4@analog.com>
+ <20240809-ad4113-v2-2-2a70c101a1f4@analog.com>
+ <37357b8a-1995-473d-a6fb-168fc38e0641@wanadoo.fr>
+ <93d79fbd-8d1c-4a80-bf65-d4e597247573@gmail.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <93d79fbd-8d1c-4a80-bf65-d4e597247573@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 02, 2024 at 04:59:09PM +0200, Petar Stoykov via B4 Relay wrote:
-> From: Petar Stoykov <pd.pstoykov@gmail.com>
+Le 09/08/2024 à 16:40, Ceclan, Dumitru a écrit :
+> On 09/08/2024 17:30, Christophe JAILLET wrote:
+>> Le 09/08/2024 à 12:33, Dumitru Ceclan via B4 Relay a écrit :
+>>> From: Dumitru Ceclan <dumitru.ceclan-OyLXuOCK7orQT0dZR+AlfA-XMD5yJDbdMReXY1tMh2IBg@public.gmane.org>
+>>>
+>>> This commit adds support for the AD4113 ADC.
+>>> The AD4113 is a low power, low noise, 16-bit, Σ-Δ analog-to-digital
+>>> converter (ADC) that integrates an analog front end (AFE) for four
+>>> fully differential or eight single-ended inputs.
+>>>
+>>> Signed-off-by: Dumitru Ceclan <dumitru.ceclan-OyLXuOCK7orQT0dZR+AlfA-XMD5yJDbdMReXY1tMh2IBg@public.gmane.org>
+>>> ---
+>>>    drivers/iio/adc/ad7173.c | 36 +++++++++++++++++++++++++++++++++++-
+>>>    1 file changed, 35 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+>>> index a854f2d30174..3ac09d326472 100644
+>>> --- a/drivers/iio/adc/ad7173.c
+>>> +++ b/drivers/iio/adc/ad7173.c
+>>> @@ -3,7 +3,7 @@
+>>>     * AD717x and AD411x family SPI ADC driver
+>>>     *
+>>>     * Supported devices:
+>>> - *  AD4111/AD4112/AD4114/AD4115/AD4116
+>>> + *  AD4111/AD4112/AD4113/AD4114/AD4115/AD4116
+>>>     *  AD7172-2/AD7172-4/AD7173-8/AD7175-2
+>>>     *  AD7175-8/AD7176-2/AD7177-2
+>>>     *
+>>> @@ -84,6 +84,7 @@
+>>>    #define AD4111_ID            AD7173_ID
+>>>    #define AD4112_ID            AD7173_ID
+>>>    #define AD4114_ID            AD7173_ID
+>>> +#define AD4113_ID            0x31D0
+>>
+>> Nitpick: others are in lowercase --> 0x31d0
+>>
+>>>    #define AD4116_ID            0x34d0
+>>>    #define AD4115_ID            0x38d0
+>>>    #define AD7175_8_ID            0x3cd0
+>>
+>> Other than that, is there any reason to have this "random" order for these defines?
+>>
+>> CJ
+>>
 > 
-> Sensirion SDP500 is a digital differential pressure sensor. The sensor is
-> accessed over I2C.
+> It's not random, it was requested to order these defines by the ID value:
+> https://lore.kernel.org/all/CAHp75VcjcgnLkQWim1AVnyeRGFwwKpaWSCvrmqdv41Lx87hMKw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org/
+> 
 
-...
+Ok,
 
-+ array_size.h
-+ bits.h
-+ dev_printk.h
-+ errno.h
+I thought about it, but it is not sorted either. (a few lines above the 
+place you added the new #define):
 
-> +#include <linux/i2c.h>
-> +#include <linux/crc8.h>
-> +#include <linux/iio/iio.h>
+#define AD7175_ID			0x0cd0
+#define AD7176_ID			0x0c90
 
-+ mod_devicetable.h
-+ module.h
+Maybe, it should be part of another patch to keep the logic by ID value?
 
-> +#include <linux/regulator/consumer.h>
-
-+ types.h
-
-Keep them ordered, also you may split iio/ group out
-
-> +#include <asm/unaligned.h>
-
-linux/*
-...blank line...
-asm/*
-...blank line...
-iio/*
-
-...
-
-> +struct sdp500_data {
-> +	struct device *dev;
-> +};
-
-Why is this structure needed at all? You may put dev pointer directly, no?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+CJ
 

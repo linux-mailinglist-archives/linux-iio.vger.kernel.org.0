@@ -1,255 +1,247 @@
-Return-Path: <linux-iio+bounces-8376-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8377-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19EB894D41B
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 18:01:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F74594D52B
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 19:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9172285404
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 16:01:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53F851C2086A
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 17:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF011990A1;
-	Fri,  9 Aug 2024 16:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD14338FA3;
+	Fri,  9 Aug 2024 17:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="k/8DvqZE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dza6BCoS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB22C1922DB
-	for <linux-iio@vger.kernel.org>; Fri,  9 Aug 2024 16:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A8517C7C;
+	Fri,  9 Aug 2024 17:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723219296; cv=none; b=GRrdT12npUHNXTVZbddCGbIbA6EhVf9tO/SALk/1nRalzQDvganoA5cC3mwBlVMuGzAGtTcbkfyMwEJDj+AlQ46NGhWGyOfES4mWEwGCDRJprsLd4VyrnZKrpHgWDTaKuj60G/x0JC11oPE7gyTndBnzqK2YNdRgM+jcbxed+Kc=
+	t=1723223088; cv=none; b=F8ienx9We0WvD8siaRD3YJtS3hrRRUSHFrOQ7Wn+BqpzniTcN7mQoNo2GANwtbLywphSyF5KyVFA12xKzluT2SHWkhyFkfJADxbBlZvlkSIKwTQlA1y5fDyyKZ80Ca5JFa/OtNW7rYxO3oVrBCa5rM9uxvUV/+0FMZGvcEs44rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723219296; c=relaxed/simple;
-	bh=paKDUZfAMnT9p4c9PEEcxRCBnyjhCPshVDMBespFmZk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CGtQRxdCOYPPOfvQcc/avA+lO4FFH47IYZXK1yw8RKVhn4vlzLonPofaCs0zjJIa/sSG/T/AiWwjb8eeKNF3Ru1oUJOJRNdXew69lX+VZrREAHQYbksaHaSfjubfw3OsgTfn6H8zEnKU73mp90LrKSPmbHOc7MC35q24gubOglA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=k/8DvqZE; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5d5c7f23f22so1197337eaf.0
-        for <linux-iio@vger.kernel.org>; Fri, 09 Aug 2024 09:01:33 -0700 (PDT)
+	s=arc-20240116; t=1723223088; c=relaxed/simple;
+	bh=hrnmeErojdiA+I0k4NgvkckjQHkW1luP3yBhEUDmQ/4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=LdouMNy6F6zkb73ZUTUxUnG0Avxcl+0VBvLwJizzZbEAGm9HwEjlJ5m7PIsEsckn5D4MLwm5rizy5k2JdYxhUS00WsYA4ab7uqeTMz3Ww31OBcl/3rr3FB3+PZMqPt/NVquXAHt6wMr+UptBu+cEIuTI5vnFDNB968f5ZXrUN4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dza6BCoS; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2eeb1ba0481so30067041fa.2;
+        Fri, 09 Aug 2024 10:04:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1723219293; x=1723824093; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kRHkMeyOghMMPrSX3/7w5ue7vx+CNaxKKfqAReZDd9I=;
-        b=k/8DvqZEUE4Vu2v0ZVPZktsaZjJXwhhUVmZNSku/0egFDL8gbXfaliaXweyRlpuBil
-         4O3oNMH32fVpeWn82d4QiUkfO0UqchFpaEFXRGj5YeLDP8066hM5cxAtGVZPNYyySruV
-         zdTg8wHAb/fgJJanmKqPJwXSb01DuFFE2kCNIcKk0uOGGvKiiKHhm9n4Z476XLC8tvWs
-         avirw6VZ69KR4HktTex8IS3J46kCfdDzUvQdraN/q8KgKZz5W574sCDEt6Z3rqRFQj6G
-         hSSwNQYd5gVL/hSayBfvJy5OaO2gWDEm63bMQkljy/GeMTjheMXkUGYMZGesjw7oTSuF
-         cfpw==
+        d=gmail.com; s=20230601; t=1723223084; x=1723827884; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CA8BUMo2DWii/pf5hxjTIaLLXUnl8JdFP7LfFEv3HGw=;
+        b=dza6BCoSTWXfA61ulTG9Sw+NiwjF5qfwx3Q+g/IaAyESfrNCFx24A3pKNbgRQ2t/cz
+         ye5b9AVlnpqGXqfjRSQKA0njMSVLoyJMrZAmwaozPKnLf62OUewYtEyYu01Q+Twpisii
+         ZfnIIr3YNAdffWUsHonBurr40ALoDjCjcdzAvqqniW6TRJIdULBiDuK4cP/IsxSaAiVh
+         wxnRep9yZVvlHGPKxBfNIMx9CvVET/k3BRCqb6MslXhr+oHy+2DrAudctj7AuHL25Hty
+         Xvao+9DkW5n077ukV/mHJesNYNbvCbUreorpVlPzmWORKEUcgIpWqNJn28/Jew6jHcQ5
+         +0aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723219293; x=1723824093;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kRHkMeyOghMMPrSX3/7w5ue7vx+CNaxKKfqAReZDd9I=;
-        b=tRXsya1NeIM6v+CzD3WO2XtUDyeKn9VztS6mTmGi38tY46/a5l/rzmDNZhCytvWjgy
-         YON65RwrKIohyr2jfxDn9eBRZ4Oa9CvsoOC40FK2nDlQEqbIeIRO09JpVlLlTLFPyXuV
-         lAsLKjIP5MyTzmwJ9im5Qyu6qCNo/KS42s7ykqpDnTGg72GpyBXDZXYCR61ZVbyt+EuR
-         zGpUWAwwEfU7+ii7BW/nwco/bhWSe7TrTtdfz3IM5Htcoeu5fIq6yZjPxLcpGcGimkpD
-         1anX3P/T/6OhnK7h6TdL1IZ0MLERB5LavKvMgrnzCHMh2SlUfmt+G7NPEgdipXSLpFTu
-         B2ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCX8nhhWow+TO29ugb9Ye/34Ao+ZDPT9vsJI2yBXRqMq4V/A4pumNgAxUc0tLU5qz/IfKG6pXXQIQ5ap815PzqZ3TtKYXpMqw76s
-X-Gm-Message-State: AOJu0YwU4jQd8NGsy9MpLc7mpruxBfYkWLJv4s1NtuO1HyxpehVQ0tgQ
-	mpunIVIYN8ULMernEBCuGoG0ywDcDhBbn9quM1fqUGNtJTa/bf8lqCw6jBxNsyU=
-X-Google-Smtp-Source: AGHT+IH9cyUlesTG85P8+AooQGiR7emhvTR2YwnxoSVddeAKsx77skaLFRBiuQBnXteKmSR5RIAFsg==
-X-Received: by 2002:a05:6820:821:b0:5c6:61b9:20ba with SMTP id 006d021491bc7-5d867c8185amr2330284eaf.1.1723219292772;
-        Fri, 09 Aug 2024 09:01:32 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5d757178a0dsm4280141eaf.7.2024.08.09.09.01.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Aug 2024 09:01:32 -0700 (PDT)
-Message-ID: <4c62baf4-fcb0-474f-87cf-9689aa41966a@baylibre.com>
-Date: Fri, 9 Aug 2024 11:01:31 -0500
+        d=1e100.net; s=20230601; t=1723223084; x=1723827884;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CA8BUMo2DWii/pf5hxjTIaLLXUnl8JdFP7LfFEv3HGw=;
+        b=cJ1YR+/hMLT6g5nEeKic6TwWGx+LUCLmkGETOHxzkyVaVzBSaymCFqwnL1fiwopj2U
+         yLzZeHnkk8dKmWhworOro6shCnMBqGU3S1FA7cGM2/YpOHI8pWyOg2DDSz2flwsK4xLG
+         VWdrmbbpgkEqE0+NFZ0mSrfQrHw1CFQ+cNETSicrdyRFQSbJDRkL78IDbb9WaSXImpHf
+         gPT3hVyZUUDYHq/TxaWN921jYpxMWVWxMS+LVaK1oZ012BcdShMw57+QjLL0H9aJEEO/
+         d6wgTFxjlKF3jL8C5BUry1a6DPSGHnxLzLimuHWsw4odWVqsad0U3BOszKY/0u62UjBZ
+         uhyg==
+X-Forwarded-Encrypted: i=1; AJvYcCWI15/KWXQLrbCrXgeQhmgkvt1pSsamJovhdhHa43EtTpT1waBmHucsoC03eWzJMO389QaNdaa6dUNpBOPD1XXvlZForWm8JFtAcEElTV/n8F4fe4aMnoai7Y3WDCSRIp1sWSUIgcHOyO4mZ2EkfgotO1WMqzhI3zbf7dmer5CDwIY11YbzFDs9
+X-Gm-Message-State: AOJu0YwRWM8wf+sGRBbCU99J8vpHWdB871MSwWcoYK+sHhWOK16u/X/d
+	lJOTCVj3yqCA2dPKzk5cRMbaoS1qY/YR8kwxRxo1KTCZcNurwOTB
+X-Google-Smtp-Source: AGHT+IEogaHQ+6erGmkf2603lsnpyfvBNsTgKIdI7sJBTj58O9/d5ZootY8/r4dSB4VYNpignB5Ccw==
+X-Received: by 2002:a2e:851:0:b0:2ee:7a71:6e3b with SMTP id 38308e7fff4ca-2f1a6c777bdmr14272561fa.27.1723223083892;
+        Fri, 09 Aug 2024 10:04:43 -0700 (PDT)
+Received: from localhost (host-87-20-57-122.retail.telecomitalia.it. [87.20.57.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c7a1b3dsm85626915e9.40.2024.08.09.10.04.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Aug 2024 10:04:43 -0700 (PDT)
+Date: Fri, 09 Aug 2024 19:04:42 +0200
+From: Matteo Martelli <matteomartelli3@gmail.com>
+To: Matteo Martelli <matteomartelli3@gmail.com>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: dan.carpenter@linaro.org, 
+ jic23@kernel.org, 
+ kernel-janitors@vger.kernel.org, 
+ lars@metafoo.de, 
+ linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Message-ID: <66b64c2a27042_51cac37047@njaxe.notmuch>
+In-Reply-To: <66b63af81a153_27fed37066@njaxe.notmuch>
+References: <1fa4ab12-0939-477d-bc92-306fd32e4fd9@stanley.mountain>
+ <36b1a47a-7af2-4baf-8188-72f6eed78529@wanadoo.fr>
+ <66b5c5df76766_133d37031@njaxe.notmuch>
+ <93f18533-da95-4f29-b6d9-8b8337a4cc90@wanadoo.fr>
+ <66b63af81a153_27fed37066@njaxe.notmuch>
+Subject: Re: [PATCH] iio: adc: pac1921: add missing error return in probe()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iio: adc: ad4695: implement triggered buffer
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20240807-iio-adc-ad4695-buffered-read-v1-0-bdafc39b2283@baylibre.com>
- <20240807-iio-adc-ad4695-buffered-read-v1-1-bdafc39b2283@baylibre.com>
- <8bb01a8946aaa5855b5ac15d79c0292a668eee59.camel@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <8bb01a8946aaa5855b5ac15d79c0292a668eee59.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 8/9/24 9:24 AM, Nuno Sá wrote:
-> On Wed, 2024-08-07 at 15:02 -0500, David Lechner wrote:
->> This implements buffered reads for the ad4695 driver using the typical
->> triggered buffer implementation, including adding a soft timestamp
->> channel.
->>
->> The chip has 4 different modes for doing conversions. The driver is
->> using the advanced sequencer mode since that is the only mode that
->> allows individual configuration of all aspects each channel (e.g.
->> bipolar config currently and oversampling to be added in the future).
->>
->> Signed-off-by: David Lechner <dlechner@baylibre.com>
->> ---
-> 
-> Hi David,
-> 
-> Just two nit comments...
-> 
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> 
->>  drivers/iio/adc/ad4695.c | 233 ++++++++++++++++++++++++++++++++++++++++++++++-
->>  1 file changed, 230 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
->> index 007ecb951bc3..a3bd5be36134 100644
->> --- a/drivers/iio/adc/ad4695.c
->> +++ b/drivers/iio/adc/ad4695.c
-> 
+Matteo Martelli wrote:
+> Christophe JAILLET wrote:
+> > Le 09/08/2024 =C3=A0 09:31, Matteo Martelli a =C3=A9crit=C2=A0:
+> > > Christophe JAILLET wrote:
+> > >> Le 08/08/2024 =C3=A0 21:28, Dan Carpenter a =C3=A9crit=C2=A0:
+> > >>> This error path was intended to return, and not just print an err=
+or.  The
+> > >>> current code will lead to an error pointer dereference.
+> > >>>
+> > >>> Fixes: 371f778b83cd ("iio: adc: add support for pac1921")
+> > >>> Signed-off-by: Dan Carpenter <dan.carpenter-QSEj5FYQhm4dnm+yROfE0=
+A@public.gmane.org>
+> > >>> ---
+> > >>>    drivers/iio/adc/pac1921.c | 4 ++--
+> > >>>    1 file changed, 2 insertions(+), 2 deletions(-)
+> > >>>
+> > >>> diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.=
+c
+> > >>> index d04c6685d780..8200a47bdf21 100644
+> > >>> --- a/drivers/iio/adc/pac1921.c
+> > >>> +++ b/drivers/iio/adc/pac1921.c
+> > >>> @@ -1168,8 +1168,8 @@ static int pac1921_probe(struct i2c_client =
+*client)
+> > >>>    =
+
+> > >>>    	priv->regmap =3D devm_regmap_init_i2c(client, &pac1921_regmap=
+_config);
+> > >>>    	if (IS_ERR(priv->regmap))
+> > >>> -		dev_err_probe(dev, (int)PTR_ERR(priv->regmap),
+> > >>> -			      "Cannot initialize register map\n");
+> > >>> +		return dev_err_probe(dev, (int)PTR_ERR(priv->regmap),
+> > >>
+> > >> The (int) is unusual.
+> > >>
+> > > The (int) explicit cast is to address Wconversion warnings since de=
+v_err_probe
+> > > takes an int as argument.
+> > =
+
+> > Ok, but:
+> > =
+
+> > 1) With the cast removed, on my x86_64:
+> > 	$ make CFLAGS=3D"-Wconversion" drivers/iio/adc/pac1921.o
+> > =
+
+> > doesn't generate any error.
+> > =
+
+> I can't reproduce the warning in that way either, but maybe CFLAGS gets=
+
+> overridden in that case because with the following method I can see the=
+
+> warning:
+> =
+
+> $ print "CFLAGS_pac1921.o :=3D -Wconversion" >> drivers/iio/adc/Makefil=
+e
+> $ print "CONFIG_IIO=3Dy\nCONFIG_PAC1921=3Dy" >> arch/x86/configs/x86_64=
+_defconfig
+> $ sed -i 's/CONFIG_WERROR=3Dy/CONFIG_WERROR=3Dn/g' arch/x86/configs/x86=
+_64_defconfig
+> $ make x86_64_defconfig
+> $ make -j7
+> =
+
+> drivers/iio/adc/pac1921.c: In function =E2=80=98pac1921_probe=E2=80=99:=
+
+> drivers/iio/adc/pac1921.c:1171:36: warning: conversion from =E2=80=98lo=
+ng int=E2=80=99 to =E2=80=98int=E2=80=99 may change value [-Wconversion]
+>  1171 |                 dev_err_probe(dev, PTR_ERR(priv->regmap),
+>       |                                    ^~~~~~~~~~~~~~~~~~~~~
+> =
+
+> Built with gcc version: gcc version 14.1.1 20240522 (GCC)
+> =
+
+> Same thing building for aarch64 with gcc version 12.2.0 (Debian 12.2.0-=
+14)
+> =
+
+> > 2)
+> > 	$ it grep dev_err_probe.*\)PTR_ERR | wc -l
+> > 	2
+> > =
+
+> > 	$ it grep dev_err_probe.*PTR_ERR | wc -l
+> > 	1948
+> > So, should the cast be needed, maybe another fix could make sense?
+> >
+> It could be assigned to the ret value if that would be preferred:
+> 	if (IS_ERR(priv->regmap)) {
+> 		ret =3D (int)PTR_ERR(priv->regmap);
+> 		return dev_err_probe(dev, ret, "Cannot initialize register map\n");
+> 	}
+>
+> Otherwise a more generic approach could be to let PTR_ERR directly cast=
+ to
+> (int). I would say that if it is always called after an IS_ERR() it sho=
+uld be
+> safe to cast to (int) since the latter should guarantee the pointer val=
+ue is
+> inside int size boundaries. The similar PTR_ERR_OR_ZERO also casts (imp=
+licitly)
+> to int but it also checks for IS_ERR before the cast.
+> Maybe another solution could be introducing a new macro that does the c=
+ast but
+> before it checks the ptr with IS_ERR(), I came up with the following ev=
+en
+> though it doesn't look very idiomatic:
+> =
+
+> #define WITH_PTR_ERR(ret, ptr) if (IS_ERR(ptr) && (ret =3D (int)PTR_ERR=
+(ptr)))
 > ...
-> 
->>
->>  
->> +static int ad4695_buffer_preenable(struct iio_dev *indio_dev)
->> +{
->> +	struct ad4695_state *st = iio_priv(indio_dev);
->> +	struct spi_transfer *xfer;
->> +	u8 temp_chan_bit = st->chip_info->num_voltage_inputs;
->> +	bool temp_chan_en = false;
->> +	u32 reg, mask, val, bit, num_xfer, num_slots;
->> +	int ret;
->> +
->> +	/*
->> +	 * We are using the advanced sequencer since it is the only way to read
->> +	 * multiple channels that allows individual configuration of each
->> +	 * voltage input channel. Slot 0 in the advanced sequencer is used to
->> +	 * account for the gap between trigger polls - we don't read data from
->> +	 * this slot. Each enabled voltage channel is assigned a slot starting
->> +	 * with slot 1.
->> +	 */
->> +	num_slots = 1;
->> +
->> +	memset(st->buf_read_xfer, 0, sizeof(st->buf_read_xfer));
->> +
->> +	/* First xfer is only to trigger conversion of slot 1, so no rx. */
->> +	xfer = &st->buf_read_xfer[0];
->> +	xfer->cs_change = 1;
->> +	xfer->delay.value = AD4695_T_CNVL_NS;
->> +	xfer->delay.unit = SPI_DELAY_UNIT_NSECS;
->> +	xfer->cs_change_delay.value = AD4695_T_CONVERT_NS;
->> +	xfer->cs_change_delay.unit = SPI_DELAY_UNIT_NSECS;
->> +	num_xfer = 1;
->> +
->> +	iio_for_each_active_channel(indio_dev, bit) {
->> +		xfer = &st->buf_read_xfer[num_xfer];
->> +		xfer->bits_per_word = 16;
->> +		xfer->rx_buf = &st->buf[(num_xfer - 1) * 2];
->> +		xfer->len = 2;
->> +		xfer->cs_change = 1;
->> +		xfer->cs_change_delay.value = AD4695_T_CONVERT_NS;
->> +		xfer->cs_change_delay.unit = SPI_DELAY_UNIT_NSECS;
->> +
->> +		if (bit == temp_chan_bit) {
->> +			temp_chan_en = true;
->> +		} else {
->> +			reg = AD4695_REG_AS_SLOT(num_slots);
->> +			val = FIELD_PREP(AD4695_REG_AS_SLOT_INX, bit);
->> +
->> +			ret = regmap_write(st->regmap, reg, val);
->> +			if (ret)
->> +				return ret;
->> +
->> +			num_slots++;
->> +		}
->> +
->> +		num_xfer++;
->> +	}
->> +
->> +	/*
->> +	 * Don't keep CS asserted after last xfer. Also triggers conversion of
->> +	 * slot 0.
->> +	 */
->> +	xfer->cs_change = 0;
->> +
->> +	/**
->> +	 * The advanced sequencer requires that at least 2 slots are enabled.
->> +	 * Since slot 0 is always used for other purposes, we need only 1
->> +	 * enabled voltage channel to meet this requirement. This error will
->> +	 * only happen if only the temperature channel is enabled.
->> +	 */
->> +	if (num_slots < 2) {
->> +		dev_err_ratelimited(&indio_dev->dev,
->> +			"Buffered read requires at least 1 voltage channel
->> enabled\n");
-> 
-> This one is intriguing... Why the ratelimited variant? Normally you'd use that in IRQ
-> routines where the log could be flooded.
+> static int pac1921_probe(struct i2c_client *client)
+> {
+>         ...
+> 	WITH_PTR_ERR(ret, priv->regmap) {
+> 		return dev_err_probe(dev, ret, "Cannot initialize register map\n");
+> 	}
+> }
+> =
 
-IIO Oscilloscope does a lot of retries of buffered reads very quickly,
-so was getting a minor flood (10-20 repeats). I'm not sure that
-ratelimited actually helped in this case though.
+> Maybe there is already some similar use case?
+> =
 
-I suppose we could just drop this and expect people to read the docs
-if they get an EINVAL when attempting to enable the buffer. Or just
-make it dev_err() since it isn't 100s of repeats.
+> Anyway, if in general it is preferred to avoid the explicit cast despit=
+e the
+> Wconversion warning I would be fine with it.
+>
 
->> +		return -EINVAL;
->> +	}
->> +
->> +	/*
->> +	 * Temperature channel isn't included in the sequence, but rather
->> +	 * controlled by setting a bit in the TEMP_CTRL register.
->> +	 */
->> +
->> +	reg = AD4695_REG_TEMP_CTRL;
->> +	mask = AD4695_REG_TEMP_CTRL_TEMP_EN;
->> +	val = FIELD_PREP(mask, temp_chan_en ? 1 : 0);
->> +
->> +	ret = regmap_update_bits(st->regmap, reg, mask, val);
->> +	if (ret)
->> +		return ret;
->> +
->> +	spi_message_init_with_transfers(&st->buf_read_msg, st->buf_read_xfer,
->> +					num_xfer);
->> +
->> +	ret = spi_optimize_message(st->spi, &st->buf_read_msg);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/* This triggers conversion of slot 0. */
->> +	ret = ad4695_enter_advanced_sequencer_mode(st, num_slots);
->> +	if (ret) {
->> +		spi_unoptimize_message(&st->buf_read_msg);
->> +		return ret;
->> +	}
-> 
-> Could save one line with (unless ad4695_enter_advanced_sequencer_mode() does not
-> return 0 on success)
+Adding another simple alternative I didn't think of before:
+        ...
+	ret =3D PTR_ERR_OR_ZERO(priv->regmap);
+	if (ret)
+		return dev_err_probe(dev, ret, "Cannot initialize register map\n");
 
-sure
+The warning would still be produced due to the implicit cast inside
+PTR_ERR_OR_ZERO but it could be fixed for all users with an explicit cast=
+ if
+there will be interest in future to do so.
 
-> 
-> ret = ad4695_enter_advanced_sequencer_mode(st, num_slots);
-> if (ret)
-> 	spi_unoptimize_message(&st->buf_read_msg);
-> 
-> return ret;
-> 
-> - Nuno Sá
-> 
+Also used a bit around:
+grep -R -A 3 'ret =3D PTR_ERR_OR_ZERO' . | grep -e '_err.*(' | wc -l
+69
 
+Thanks,
+Matteo Martelli=
 

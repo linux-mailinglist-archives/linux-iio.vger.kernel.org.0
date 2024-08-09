@@ -1,103 +1,127 @@
-Return-Path: <linux-iio+bounces-8338-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8339-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B3E94CA59
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 08:19:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC78794CB14
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 09:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 868381F2156A
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 06:19:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CC592831FE
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 07:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE1616CD2F;
-	Fri,  9 Aug 2024 06:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EDB172BB9;
+	Fri,  9 Aug 2024 07:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="eksbxkDY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aAFU0zOa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from msa.smtpout.orange.fr (msa-208.smtpout.orange.fr [193.252.23.208])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5343D6D;
-	Fri,  9 Aug 2024 06:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED1117BA2;
+	Fri,  9 Aug 2024 07:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723184343; cv=none; b=gzeRNZIi4d35ZrrexcPzZqFZHafHostYFuUQeQJPCGf2RMZ1c/8YcafFcHvas5ZGHxEH2XzCgp/+Rd9IeO8s3HKu+90a3jGg29KdLlvEE39Y+WIqCDCdu1ksLwxUIrRhxEnZLzMvAWFlwlti2TB88M0zRnrbVYgbDIHZNWiTRt0=
+	t=1723187969; cv=none; b=ku8m9k3ybuDRRMSUjGMYqYnwU7/Epa4ipvFtJLdMX2At5L6pnRzuoy+/OWDhRKl7I+UB1TdUwzHYulVAA0l8qrumwqMFRa/Eggg0VqAMQ5GV6a4wLSNh0AVttqr7Y82bnZvePvq0CQJy4+wvb5g0C7OVAOjvsIU5zZarVJkCMpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723184343; c=relaxed/simple;
-	bh=wFoYMwyfsFTzjE325TCHZbNnkEXgbRJO28L/36Ev5zk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AG9Qa9111SmslX1xg2Ai9dqePiq0WPHj2utHRFN6/eIrSPGNh/G4qhySyrTsY5BeKxMC4bPP7MEC4yYeMsYmogFWvi2jWu9HxUKf/dSRkqOQ92BJRCM2mPjBUEAbN2yvf4HPSbjFUXiAb68tKLeR7nIkmnaOd7pIGuV7dadOPM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=eksbxkDY; arc=none smtp.client-ip=193.252.23.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id cIxbs8sMKj4pfcIxbs3hT3; Fri, 09 Aug 2024 08:18:51 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1723184331;
-	bh=tHOdZOhWw2F2fHwgKKW/WSEMYXdMyQeIMRR0zyj8gbY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=eksbxkDY+7P8EMndA30bJMiQtUobex1UZXYR3XXqfBVkYDjvNxYauvMzygGsNH47c
-	 l9Rlm3L/o7lnEdMndy6uJQug/yD1MTyAHwpiPHT+j9vi5lz67EkARx7DMoIilE7rF7
-	 MfHtmNZy6SISmPAS+aXADseTs/wuwpLSzzTh4HAAH74C8VYjRuLDGC6eF9JDyPcCbH
-	 B4ho6yysjPIcALEvKbfDi7XBEygamhgjoCj5WDNdW77ujbNLkykQ8W1kfj+6CrySAq
-	 ysvas7Q5FG98rXp79UMrG+tHU76U1r8bm6YBOaEUZYnlznEYTGRXhmQIUml9mAITEe
-	 XNxLriSbm2rsw==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Fri, 09 Aug 2024 08:18:51 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <36b1a47a-7af2-4baf-8188-72f6eed78529@wanadoo.fr>
-Date: Fri, 9 Aug 2024 08:18:47 +0200
+	s=arc-20240116; t=1723187969; c=relaxed/simple;
+	bh=oqyCFkrC2GFxWJXkElWgKcvd7lEdRkKXUB/pBL7diuM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=RVUci2eRJ+wvnit5BkmxH3jHdox3tc61ZPk3fjQ7YXuAAptWfwoTZyEA1aQIfqOPReg6jq64xG0C5Kw66rnLjTpbbYmKK8axQbFkhiBi7o1V/uapxO/bGG3OJpTTSo2c77cw6pYLi9NeTk3/eYuIJBPueJu5Fc704UT8K0Rmf7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aAFU0zOa; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-428e3129851so12440075e9.3;
+        Fri, 09 Aug 2024 00:19:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723187967; x=1723792767; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wP6ushgnIPrkP08Qb9zI4t4A3mRRpyVIC0onCpnbQLk=;
+        b=aAFU0zOacL3RSlUJHseNTuOa6AY038IxJC7bGa+07+/j5l3wiB4/u072z1iZ5JYbFf
+         VEzIN32aJjtVHsKgZp9WKgDZ0nzu9yMZPW6WgbEbNW2foG+LMbjulstWpxp7Y7oUWLeK
+         gBftFkLHjhT0pZDTzIbdRXguxdGlDHn3OoPB4jSPUZF7Q+TgFVkSu9H2rRe6vIOomzew
+         EFBjkPbA1L7NSITG4CV4SNWFzMpl83ZrPbKEuEEoGFAF6CY6EibuZatmz1c81+H+wago
+         WN+d4DNWOM+LsYNxzqVmOOTlCf7MCXCJOnFvOjzlJaDq8gWp6sj4udwhFno4MIjR8aNW
+         hi2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723187967; x=1723792767;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wP6ushgnIPrkP08Qb9zI4t4A3mRRpyVIC0onCpnbQLk=;
+        b=D51mR/hQVjr4+WLQoowKRCAKrgshDZWySWhTgel4QkQ8gfcMJT2qaNRd0jzicNbiIG
+         +r38vVcM7y/LOA1fl3ryF67WAVRnvXScwCW/ZYWUBdyrKSUTmYBFbRhF8YVeS0T2VWpR
+         QR0GEoMXjm7WmCK/SCsyBl3xbFXLJd/LY0GvclLPEN+T++aOiTmQ1VQHrGDbbu1e14eE
+         ItIpW7Q9dmJigUY9LTh+V6F9vGufLmoJIGIkxGl0ZIBn6eJOyEg+u+oia5yaW2CIPSa0
+         JxcxnGBzbJEn8iPOvDmtrNRI4g7r8Z4ja04kcQn3zdHoGPew505Qrolad4Qm1iLyjYd/
+         T0cA==
+X-Forwarded-Encrypted: i=1; AJvYcCVi1eL1p5ZZaDyMnAhDWrsmUVkaguQ9BNvxe4ezGWzWMrjtABWoFpXBZdrc5Zcu482TP2RcCHHrcLMH7X/qb/qqI8OhF1kC+Z93sAgaI8jrsiNXttirqzpXq6Bu0tm2jcBUmelWvXS8djZf5Pu7F7JBttTOgqEk8mcFI4BxRMpeKfgMQlJDHkEC
+X-Gm-Message-State: AOJu0YxMAmhHp44/HjQrSszqoNq/b+exj6anYp0CYQZwYLFFsNUS5hw4
+	xFSUabwjNMwpUCcNOyiZWrjMPn9Qcd2jQIuSJ23IThq+wO6b6QVx
+X-Google-Smtp-Source: AGHT+IErd1gqYViL5s39KvxwkEFHjbBo4qIm58Rtgsbxc4Kdbu2fl7hLx1QSmXAibbhYE1Ri1gcxEQ==
+X-Received: by 2002:a05:600c:204a:b0:427:ff7a:79e with SMTP id 5b1f17b1804b1-429c3a1c4fcmr3536935e9.16.1723187966012;
+        Fri, 09 Aug 2024 00:19:26 -0700 (PDT)
+Received: from localhost (host-87-20-57-122.retail.telecomitalia.it. [87.20.57.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c74a698sm63055845e9.21.2024.08.09.00.19.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Aug 2024 00:19:25 -0700 (PDT)
+Date: Fri, 09 Aug 2024 09:19:24 +0200
+From: Matteo Martelli <matteomartelli3@gmail.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>, 
+ Matteo Martelli <matteomartelli3@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ kernel-janitors@vger.kernel.org
+Message-ID: <66b5c2fc7a0ae_133d370b6@njaxe.notmuch>
+In-Reply-To: <1fa4ab12-0939-477d-bc92-306fd32e4fd9@stanley.mountain>
+References: <1fa4ab12-0939-477d-bc92-306fd32e4fd9@stanley.mountain>
+Subject: Re: [PATCH] iio: adc: pac1921: add missing error return in probe()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: pac1921: add missing error return in probe()
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: jic23@kernel.org, kernel-janitors@vger.kernel.org, lars@metafoo.de,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- matteomartelli3@gmail.com
-References: <1fa4ab12-0939-477d-bc92-306fd32e4fd9@stanley.mountain>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <1fa4ab12-0939-477d-bc92-306fd32e4fd9@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Le 08/08/2024 à 21:28, Dan Carpenter a écrit :
+Dan Carpenter wrote:
 > This error path was intended to return, and not just print an error.  The
 > current code will lead to an error pointer dereference.
 > 
 > Fixes: 371f778b83cd ("iio: adc: add support for pac1921")
-> Signed-off-by: Dan Carpenter <dan.carpenter-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 > ---
->   drivers/iio/adc/pac1921.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/pac1921.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
 > index d04c6685d780..8200a47bdf21 100644
 > --- a/drivers/iio/adc/pac1921.c
 > +++ b/drivers/iio/adc/pac1921.c
 > @@ -1168,8 +1168,8 @@ static int pac1921_probe(struct i2c_client *client)
->   
->   	priv->regmap = devm_regmap_init_i2c(client, &pac1921_regmap_config);
->   	if (IS_ERR(priv->regmap))
+>  
+>  	priv->regmap = devm_regmap_init_i2c(client, &pac1921_regmap_config);
+>  	if (IS_ERR(priv->regmap))
 > -		dev_err_probe(dev, (int)PTR_ERR(priv->regmap),
 > -			      "Cannot initialize register map\n");
 > +		return dev_err_probe(dev, (int)PTR_ERR(priv->regmap),
-
-The (int) is unusual.
-
-CJ
-
 > +				     "Cannot initialize register map\n");
->   
->   	devm_mutex_init(dev, &priv->lock);
->   
+>  
+>  	devm_mutex_init(dev, &priv->lock);
+>  
+> -- 
+> 2.43.0
+> 
 
+The intent was indeed to return the error. Thanks for catching it.
+Acked-by: Matteo Martelli <matteomartelli3@gmail.com>
+
+Thanks,
+Matteo Martelli
 

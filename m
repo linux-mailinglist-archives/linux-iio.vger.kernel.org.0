@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-8344-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8345-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2B494CD26
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 11:18:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0670094CD28
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 11:18:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D4A71C20FA8
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD85E2811E2
 	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 09:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC6618C93C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACCE1917D2;
 	Fri,  9 Aug 2024 09:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKyFZhZx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4sZQ4pw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C076F19148A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0724190667
 	for <linux-iio@vger.kernel.org>; Fri,  9 Aug 2024 09:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723195074; cv=none; b=Ahjsj/Novgx1oITCzvwcKK4Kc4t342XxmlTL1uYPw0QUCKGjKGn0XyWiri3PHZPZ2c1Sv1vlQnx1GzJ86cbPwgt+HRB8bBEUjHoSXS0ScOGE1JPSzV5LQaZRGc+TULKoatlad1jnWfFCpO/n0cx0YMXM+vc9SpWCo0aKv4RSo2Y=
+	t=1723195074; cv=none; b=Q5aMwhZ342NxDNCNt3/CPsMyqtX+fw6AvoTBb2CLfFhdoYxShQeWQDkJWxxw7pVzGYiDciaDdKdnJBiTfLoijG5ofSBWElQoYZUojGDv75CHpsZxKaceGCpeH3JXjZmkdiqF+qOVjCTibjoTqkDo1EkPNJMfE3JweRc5qBOf8Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1723195074; c=relaxed/simple;
-	bh=Mn7RjGGWuvjkQHt2ztipxFe9+BNo9MPHRP/CXFbiDRc=;
+	bh=k9XeVU+Qz+5SqWg/rg+fJVsVyn38I2pXzjxtsY7aaBQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lZ4jQjJfct91s028j066lj/pqi/OFfSJvOV6OFwe30oPeeCboYsvihSXjP0Ssabwc0FlJ5bef/ZA+YI3bqJmkqZAyUw7GePlW4WSK1W56dsht7A8nW2qyJV/aK0fWElGXtyEFDMOg1/mEgHOCgCezLmP54FsRTh4jXe1M8geqmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LKyFZhZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 658CCC4AF0D;
+	 In-Reply-To:To:Cc; b=cNDYGtOp/EtshPypWYsQlhwJ6MKuB+GqyEBuHpoA1dOC23gj7aW/xFsUoZDAHjC9XE68cT01HRCI2mcVocCn/hByJo07nQbKMxGtQFoU4bpdZdfxNalAwKt1gXRj500Pt97xuKUG5OdqUKphXMyfxBWLxWNHdW8J9FoFQBgPjDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4sZQ4pw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6A06CC4AF09;
 	Fri,  9 Aug 2024 09:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1723195074;
-	bh=Mn7RjGGWuvjkQHt2ztipxFe9+BNo9MPHRP/CXFbiDRc=;
+	bh=k9XeVU+Qz+5SqWg/rg+fJVsVyn38I2pXzjxtsY7aaBQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=LKyFZhZxuXxfPlPNbJBlSlcZoVgimkNaoiVfH34fXhyZMsHwTg5CcJQ5KXGXA1S6F
-	 fAvbhlS3eaSO6iOSF4xfaju+kTwKV0ETvIJfgZ30aTtzfaEtvlCfkI79JmkQgqY9cD
-	 xPvr8cggcX5fsw8yK1Q3m4GiBq/KrlhHQdCI+9PD0wIlJtXH++boTVe07I3YL8mBUx
-	 GXw8xJzG8IhNOSq349/KdvKiH4GF4EMV+5xgjdWA7qI9UgUzujcU2nqXGK3YLuhCmU
-	 Ynds82TBJB8n7oOoQjBdfXvYx1KXqBif4U8ZPK5C43HsX3qoDZMVGk98Rby66oJP+Z
-	 YVrdj7dSt5k1g==
+	b=D4sZQ4pwnflYX4tzUGB5o9aEtdV3SnTJcsGNQpxCSAeD7FIKblRcZFHbW0RB9LxPZ
+	 4lP2m26frpQwS8+LW8SKSa8OpjE/AEjHn1G0TO1k4UxFem5ldw5El+Gco3V2se4OgF
+	 ANheDZLM2vWmNeAstVfM8Abohtae1daP0JQ0Ch69fIDjzzPwTy9Im7gD1DE4R8VOlT
+	 gZjhfWeY09K6tbyxkNUc2bSmqUAl/rphtFe7ahi5mfuBUxIEmexNoUiAhRBiyYZ5tY
+	 yyYuYsQem27JXL8NGWogH/f9wMjlF+do4QKOiyIQeI3G7qdeFXgvh0KfmeNuahA/jG
+	 fVTIBOk/kv4Mg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FE09C52D7F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A48FC3DA4A;
 	Fri,  9 Aug 2024 09:17:54 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 09 Aug 2024 11:17:06 +0200
-Subject: [PATCH 1/4] iio: imu: adis16475: drop ifdef around CONFIG_DEBUG_FS
+Date: Fri, 09 Aug 2024 11:17:07 +0200
+Subject: [PATCH 2/4] iio: imu: adis16480: drop ifdef around CONFIG_DEBUG_FS
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240809-dev-adis-debugfs-improv-v1-1-d3adb6996518@analog.com>
+Message-Id: <20240809-dev-adis-debugfs-improv-v1-2-d3adb6996518@analog.com>
 References: <20240809-dev-adis-debugfs-improv-v1-0-d3adb6996518@analog.com>
 In-Reply-To: <20240809-dev-adis-debugfs-improv-v1-0-d3adb6996518@analog.com>
 To: linux-iio@vger.kernel.org
@@ -64,11 +64,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Jonathan Cameron <jic23@kernel.org>, 
  Dragos Bogdan <dragos.bogdan@analog.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723195072; l=1666;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723195072; l=2149;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=a5jhUJNFvPeDN03HbwrRCzHfwF3/Z8tIkW6EAXbSqz8=;
- b=Xf2EZl8ZhihDhXkPLoO9pg0SjU/BW6E5MMPYQqoMU4FMYH4udPeTVUwKPv49DtCjA7308aac2
- othDecAsrIqCBPPhcPVH9yEEjBUNfzM/9PyruT06sELDL1zpXwDzT0e
+ bh=INFkT1lRAs5IyvgBIQdTgiDQKkEI3o5fQR1S25bTHBw=;
+ b=6828GMXZGnzXAeFZtJBinSMrhhGokbIYSPO3VCzNOvrTsjgZWX/o1N3YM4xhXNtryjdeBSeYM
+ nN/j0EloDTlAy718KiYB4IyUjuC1t1SdXHE9AwMK7g6RxOEvZGIHVpV
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -78,49 +78,67 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-Use IS_ENABLED(CONFIG_DEBUG_FS) to return early in case debugfs is not
-present. Since this is known at compile time, it allows the compiler to
-drop any unused code. Therefore no need to wrap the code with #ifdef.
+Use IS_ENABLED(CONFIG_DEBUG_FS) to return in case debugfs is not present.
+Since this is known at compile time, it allows the compiler to drop any
+unused code. Therefore no need to wrap the code with #ifdef.
+
+While at it make adis16480_debugfs_init() void as the return code is
+ignored.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/imu/adis16475.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/iio/imu/adis16480.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-index c094ae4ffcb2..88efe728b61b 100644
---- a/drivers/iio/imu/adis16475.c
-+++ b/drivers/iio/imu/adis16475.c
-@@ -164,7 +164,6 @@ module_param(low_rate_allow, bool, 0444);
+diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
+index 4e31503d512e..294181f2fcb3 100644
+--- a/drivers/iio/imu/adis16480.c
++++ b/drivers/iio/imu/adis16480.c
+@@ -193,8 +193,6 @@ module_param(low_rate_allow, bool, 0444);
  MODULE_PARM_DESC(low_rate_allow,
- 		 "Allow IMU rates below the minimum advisable when external clk is used in SCALED mode (default: N)");
+ 		 "Allow IMU rates below the minimum advisable when external clk is used in PPS mode (default: N)");
  
 -#ifdef CONFIG_DEBUG_FS
- static ssize_t adis16475_show_firmware_revision(struct file *file,
- 						char __user *userbuf,
- 						size_t count, loff_t *ppos)
-@@ -279,6 +278,9 @@ static void adis16475_debugfs_init(struct iio_dev *indio_dev)
- 	struct adis16475 *st = iio_priv(indio_dev);
+-
+ static ssize_t adis16480_show_firmware_revision(struct file *file,
+ 		char __user *userbuf, size_t count, loff_t *ppos)
+ {
+@@ -304,11 +302,14 @@ static int adis16480_show_flash_count(void *arg, u64 *val)
+ DEFINE_DEBUGFS_ATTRIBUTE(adis16480_flash_count_fops,
+ 	adis16480_show_flash_count, NULL, "%lld\n");
+ 
+-static int adis16480_debugfs_init(struct iio_dev *indio_dev)
++static void adis16480_debugfs_init(struct iio_dev *indio_dev)
+ {
+ 	struct adis16480 *adis16480 = iio_priv(indio_dev);
  	struct dentry *d = iio_get_debugfs_dentry(indio_dev);
  
 +	if (!IS_ENABLED(CONFIG_DEBUG_FS))
 +		return;
 +
- 	debugfs_create_file_unsafe("serial_number", 0400,
- 				   d, st, &adis16475_serial_number_fops);
- 	debugfs_create_file_unsafe("product_id", 0400,
-@@ -290,11 +292,6 @@ static void adis16475_debugfs_init(struct iio_dev *indio_dev)
- 	debugfs_create_file("firmware_date", 0400, d,
- 			    st, &adis16475_firmware_date_fops);
+ 	debugfs_create_file_unsafe("firmware_revision", 0400,
+ 		d, adis16480, &adis16480_firmware_revision_fops);
+ 	debugfs_create_file_unsafe("firmware_date", 0400,
+@@ -319,19 +320,8 @@ static int adis16480_debugfs_init(struct iio_dev *indio_dev)
+ 		d, adis16480, &adis16480_product_id_fops);
+ 	debugfs_create_file_unsafe("flash_count", 0400,
+ 		d, adis16480, &adis16480_flash_count_fops);
+-
+-	return 0;
  }
--#else
--static void adis16475_debugfs_init(struct iio_dev *indio_dev)
--{
--}
--#endif
  
- static int adis16475_get_freq(struct adis16475 *st, u32 *freq)
+-#else
+-
+-static int adis16480_debugfs_init(struct iio_dev *indio_dev)
+-{
+-	return 0;
+-}
+-
+-#endif
+-
+ static int adis16480_set_freq(struct iio_dev *indio_dev, int val, int val2)
  {
+ 	struct adis16480 *st = iio_priv(indio_dev);
 
 -- 
 2.45.2

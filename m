@@ -1,74 +1,53 @@
-Return-Path: <linux-iio+bounces-8383-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8387-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5ED94D677
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 20:42:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACA8F94D814
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 22:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CEE11F227CD
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 18:42:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BA82832F6
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Aug 2024 20:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB58629E4;
-	Fri,  9 Aug 2024 18:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4749D16B397;
+	Fri,  9 Aug 2024 20:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z26bnmt5"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="LG599ayR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F39D15FD15
-	for <linux-iio@vger.kernel.org>; Fri,  9 Aug 2024 18:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5601815ECD2;
+	Fri,  9 Aug 2024 20:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723228882; cv=none; b=aEZ895KC0XEeKdjq8sqCosVq2B1ImdYY5p/DgDe7+sMRc3SaoAGhF18y4632DrTeSkCqGAIkeBo7QFxEKqhI4OKkXyI3lqLV9fkFNmhyJvSCkkBs4qOiYTe2Rqmr01w3bh83lJuXfbriFJt6X3CnTxUZTlRFbHE2taRVfPSvI9w=
+	t=1723235186; cv=none; b=dnafMTizXUHyjfXV7hV3QeGm+jRZvIj1jH2lHIH5FqvyavYW/Q5Wub97eNT48BVBOyENXXFTulk7XXo+CwkH06cw5ig58GFpnIsezJqGdn60G3XSZV6dd0Dso3unLHStDuXlblcxKoQuwAUXJatDKFa7wjZBfof2NoI/jEKSOgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723228882; c=relaxed/simple;
-	bh=GKmFo3bmFk2IVwRE7ksCrTnyul2s0DsTqMziI0uIR6M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kij4dWqNXe0XhvVElaPseRLQMANKqZVYoVyKAyjLDAbYHkZu9BX51YUNmgVvoVcE0xyGJ37pFodZiMXvB/+T+LwNsrc7+EOODQW9wk3pLeFTJy4u6EIkGNsuY64m/mihAAsXd3Ij81cnOKJDoghhoMyC5IvE3mn7Cs+zWQF/qlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z26bnmt5; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-44fe28eb1bfso13059031cf.0
-        for <linux-iio@vger.kernel.org>; Fri, 09 Aug 2024 11:41:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1723228879; x=1723833679; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/5uzNUVmRh9vWTdDmOIKmWFbEDxFk4bBzY+xGs2C1kM=;
-        b=z26bnmt57rTDtXR28mANK0oVIKhQB2gMLDLaJsY6iB42x6f2AwDNLua2i3haVObLIP
-         wydabmCS+EAqr12mtHqwbEYZIZxPGqTn5NVTMYUWR+Rx9YXAu09TfwEF+27sbU5mVcdK
-         gPsXXlzYysJ8mUdTwdJaNiTUw4bCSU3719rAUjqpmuVpBvOydG+kfPEHD28Ms84FXi3x
-         vK6TEW6bWObfrc4x6UCigj+eGeKUhprwPCrbvMN31lrNKCa+uxddwokfx/DRggllKMUO
-         vYF1VLWTu69Zgw66QCAsebPA/vTHvLNiBlEwHOKZDDjKQWBV/Vo+a88OPilQ/nkqMq+0
-         330Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723228879; x=1723833679;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/5uzNUVmRh9vWTdDmOIKmWFbEDxFk4bBzY+xGs2C1kM=;
-        b=iFd0QpSXUk3J+ph0wqnPp8gkuLeLBxz3zh77S/XxNAtlQCuD5l5KxK1BPVU1gn0/sK
-         UvCZs62tUWK6c/W6eFRmn19htfu2Hzljo8yGO3gWM2SL1k/qROZ58JbNOp/3sIZFNMy4
-         yFkjtBRWrGssvHdKAuBcmYC8mQ/USVnZeJTTM3TDCQxykVfTmZQOBNYKRkWIwPIX4rrd
-         3ZkdjnvPsJ+MrUyN4FIzdGg5Hw7azBOTpp5oAuLZnUQDJ47R3PMwuDAI+6nn+LfiYSp7
-         BcvRI6jL+SJJipz+OghpM3huAZDGbpMOzUQtihu5C9SiH1hHfUPuEZsl4ZQ1P3Jtn3J0
-         vnLw==
-X-Gm-Message-State: AOJu0Yx+cI6a0sOZgee8aS8WZRZY/2sQ8SSxulOomi0cv8tUMpnrBKC6
-	EDA+oVmQGSHUSwHCGOIaxUnHOi0zxyyBMRCdg48BuyM5XTSLgSxp4ABY4cxKZy4=
-X-Google-Smtp-Source: AGHT+IEH6rBg8rXSvuwRkWBK6lSt3cf/9vZ3CI2KSvFnC2fju7qVpHmtGUnb5onX/VEKhf3izdyAMA==
-X-Received: by 2002:a05:622a:258e:b0:451:9f75:4667 with SMTP id d75a77b69052e-453125a7e84mr28836101cf.28.1723228879272;
-        Fri, 09 Aug 2024 11:41:19 -0700 (PDT)
-Received: from [127.0.1.1] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4531c1d723asm370381cf.44.2024.08.09.11.41.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Aug 2024 11:41:19 -0700 (PDT)
-From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Fri, 09 Aug 2024 14:41:10 -0400
-Subject: [PATCH v2 3/3] docs: iio: new docs for ad7625 driver
+	s=arc-20240116; t=1723235186; c=relaxed/simple;
+	bh=pJOj3I+1WYRt4u/xk9Puogg+uhLXAydx/fsPRWIpHIs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Lm0Pi/+9Oi87HUUno/wm47fFndkW6yhE2rT89XBZVY4xGvaWsep5ip5XEjBtUxtSV2HgXQSn1rVx1AoiUyT0bX8n1ZTyfzqmg1McqqdfFBX+4vc4BWenRJyw18yVH60/rKVgp4s9bdP/CFJurU0hVdJIY7Og8Sa4NUf14nUq5XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=LG599ayR; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+Received: from [192.168.1.130] (BC2494A8.dsl.pool.telekom.hu [188.36.148.168])
+	by mail.mainlining.org (Postfix) with ESMTPSA id 2514FE450D;
+	Fri,  9 Aug 2024 20:26:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
+	s=psm; t=1723235174;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3UpBynITifOtGQ+JTyMz1lNTDAi+fw+DIc0dQaABNH0=;
+	b=LG599ayRAVk+9hbZF/ZYdcNoI3fDd43ICq76jYgx7XteURLzUokl5zqwQkBUcODDMeg+l4
+	SV2UfhvJQ8yKXLcPHzm7aJYuAk1SYTOtBIkmz6mhXPyBn5VSTXS2wmMVqNksBW3ocUK3IM
+	0jK1gO6z509zN8cAr9cqqhnETB2jw3ZNgfBL2OzZD29XL4S+QcvWC8XF/QZzP+k2u/3BNE
+	6avt3sbS5saqUeQ8BVbh2GNf4e3C3XCDx4DmAHIk1JWDVNodd4FPQiKShJn5PRvS/isbgb
+	QxlFsXrWSS+dK4Sov14ZwbfwU7e2CyYoygTpqn3nIg25x0fq4DLFJIJxgY1mvw==
+From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>
+Subject: [PATCH v3 0/4] Add support for AK09918
+Date: Fri, 09 Aug 2024 22:25:38 +0200
+Message-Id: <20240809-ak09918-v3-0-6b036db4d5ec@mainlining.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,142 +55,84 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240809-ad7625_r1-v2-3-f85e7ac83150@baylibre.com>
-References: <20240809-ad7625_r1-v2-0-f85e7ac83150@baylibre.com>
-In-Reply-To: <20240809-ad7625_r1-v2-0-f85e7ac83150@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAEJ7tmYC/2WMwQ7CIBAFf6XhLGaBSqkn/8N4QNi2G5UaMETT9
+ N+lvWjS47y8mYkljISJHauJRcyUaAwF1K5ibrChR06+MJMgazBw4PYGbSsMr612HXatcEqy8n5
+ G7Oi9ls6XwgOl1xg/aziLZd02suDAGzCqQbz6xpvTw1K4U6DQ78fYsyWU5b+sf7IsslMA3mrtR
+ LuV53n+AprfsEPgAAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- David Lechner <dlechner@baylibre.com>, 
- Uwe Kleine-Konig <u.kleine-koenig@baylibre.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- Trevor Gamblin <tgamblin@baylibre.com>
+ Conor Dooley <conor+dt@kernel.org>, 
+ Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux@mainlining.org, 
+ =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>, 
+ Danila Tikhonov <danila@jiaxyga.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723235174; l=1997;
+ i=barnabas.czeman@mainlining.org; s=20240730; h=from:subject:message-id;
+ bh=pJOj3I+1WYRt4u/xk9Puogg+uhLXAydx/fsPRWIpHIs=;
+ b=sWT1Nxhak7TPGFUxcri9Iiy1f9//zEmFuuvgE+bySYGFdiAJAH7d9Cqp4/nxfqxli5ZxRUGAy
+ HJwVyQwAi8YBNHBTFRaXG6beRf09dnqAfs3KBnDr26x+lMnYCAXDiqI
+X-Developer-Key: i=barnabas.czeman@mainlining.org; a=ed25519;
+ pk=TWUSIGgwW/Sn4xnX25nw+lszj1AT/A3bzkahn7EhOFc=
 
-Add documentation for the AD7625/AD7626/AD7960/AD7961 ADCs.
+Add support for AK09918 which is register and scaling compatible with
+AK09912.
 
-Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+It was tested in Xiaomi Redmi 5 Plus (vince).
+
+magnetometer@c {
+  compatible = "asahi-kasei,ak09918", "asahi-kasei,ak09912";
+  reg = <0x0c>;
+  vdd-supply = <&pm8953_l6>;
+  mount-matrix = "1", "0", "0",
+                 "0", "1", "0",
+                 "0", "0", "1";
+};
+
+Add a fix for data reading according to datasheet [1] (9.4.3.2.) 
+ST2 register have to be read out after read measurment data as third step
+because ST2 will realasing the lock on the measurment data. Without it
+the next reading will fail.
+
+[1] https://www.akm.com/content/dam/documents/products/electronic-compass/ak09918c/ak09918c-en-datasheet.pdf
+
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
 ---
- Documentation/iio/ad7625.rst | 91 ++++++++++++++++++++++++++++++++++++++++++++
- MAINTAINERS                  |  1 +
- 2 files changed, 92 insertions(+)
+Changes in v3:
+- Relax failure on unknown device id
+for support more register compatible variants.
+- Change to fallback compatible.
+- Make ST2 to be always read after measuremnt read.
+- Reword fix commit with more explanation.
+- Link to v2: https://lore.kernel.org/r/20240806-ak09918-v2-0-c300da66c198@mainlining.org
 
-diff --git a/Documentation/iio/ad7625.rst b/Documentation/iio/ad7625.rst
-new file mode 100644
-index 000000000000..61761e3b75c3
---- /dev/null
-+++ b/Documentation/iio/ad7625.rst
-@@ -0,0 +1,91 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+====================
-+AD7625 driver
-+====================
-+
-+ADC driver for Analog Devices Inc. AD7625, AD7626, AD7960, and AD7961
-+devices. The module name is ``ad7625``.
-+
-+Supported devices
-+=================
-+
-+The following chips are supported by this driver:
-+
-+* `AD7625 <https://www.analog.com/AD7625>`_
-+* `AD7626 <https://www.analog.com/AD7626>`_
-+* `AD7960 <https://www.analog.com/AD7960>`_
-+* `AD7961 <https://www.analog.com/AD7961>`_
-+
-+The driver requires use of the Pulsar LVDS HDL project:
-+
-+* `Pulsar LVDS HDL <http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html>`_
-+
-+To trigger conversions and enable subsequent data transfer, the devices
-+require coupled PWM signals with a phase offset.
-+
-+Supported features
-+==================
-+
-+Conversion control modes
-+------------------------
-+
-+The driver currently supports one of two possible LVDS conversion control methods.
-+
-+Echoed-Clock interface mode
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+.. code-block::
-+
-+                                                +----------------+
-+                     +xxxxxxxxxxxxxxxxxxxxxxxxxx| CNV            |
-+                     X                          |                |
-+                     v                          |    HOST        |
-+          +----------------------------+        |                |
-+          |      CNV+/CNV-   DCO+/DCO- |xxxxxxx>| CLK_IN         |
-+          |                            |        |                |
-+          |                            |        |                |
-+          |       AD7625         D+/D- |xxxxxxx>| DATA_IN        |
-+          |                            |        |                |
-+          |                            |        |                |
-+          |                  CLK+/CLK- |<xxxxxxx| CLK & CLK_GATE |
-+          +----------------------------+        |                |
-+                                                +----------------+
-+
-+Reference voltage
-+-----------------
-+
-+Three possible reference voltage sources are supported:
-+
-+- Internal reference (only available on AD7625 and AD7626)
-+- External reference and internal buffer
-+- External reference
-+
-+The source is determined by the device tree. If ``ref-supply`` is present, then
-+the external reference is used. If ``refin-supply`` is present, then the internal
-+buffer is used. If neither is present, then the internal reference is used.
-+
-+Unimplemented features
-+----------------------
-+
-+- Self-clocked mode
-+
-+
-+Device attributes
-+=================
-+
-+The AD762x is a fully-differential ADC and has the following attributes:
-+
-++---------------------------------------+--------------------------------------------------------------+
-+| Attribute                             | Description                                                  |
-++=======================================+==============================================================+
-+| ``scale``                             | Scale factor to convert raw value from buffered reads to mV. |
-++---------------------------------------+--------------------------------------------------------------+
-+
-+
-+Device buffers
-+==============
-+
-+This driver supports IIO triggered buffers.
-+
-+See :doc:`iio_devbuf` for more information.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a90972e1c5c5..97c9b03e1cf0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1268,6 +1268,7 @@ S:	Supported
- W:	https://ez.analog.com/linux-software-drivers
- W:	http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
-+F:	Documentation/iio/ad7625.rst
- F:	drivers/iio/adc/ad7625.c
- 
- ANALOG DEVICES INC AD7768-1 DRIVER
+Changes in v2:
+- Remove unnecessary ak09918 compatbile.
+- Link to v1: https://lore.kernel.org/r/20240805-ak09918-v1-0-70837eebd7d8@mainlining.org
 
+---
+Barnabás Czémán (2):
+      iio: magnetometer: ak8975: Relax failure on unknown id
+      iio: magnetometer: ak8975: Fix reading for ak099xx sensors
+
+Danila Tikhonov (2):
+      dt-bindings: iio: imu: magnetometer: Add ak09118
+      iio: magnetometer: ak8975: Add AK09118 support
+
+ .../iio/magnetometer/asahi-kasei,ak8975.yaml       |  3 +
+ drivers/iio/magnetometer/Kconfig                   |  2 +-
+ drivers/iio/magnetometer/ak8975.c                  | 73 ++++++++++++++++------
+ 3 files changed, 57 insertions(+), 21 deletions(-)
+---
+base-commit: 61c01d2e181adfba02fe09764f9fca1de2be0dbe
+change-id: 20240805-ak09918-4a6cfef91c32
+
+Best regards,
 -- 
-2.39.2
+Barnabás Czémán <barnabas.czeman@mainlining.org>
 
 

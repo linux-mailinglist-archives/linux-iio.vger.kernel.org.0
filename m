@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-8396-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8397-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC2394DC3F
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 12:20:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0772C94DC41
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 12:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94C8B2827A6
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 10:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33A041C21081
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 10:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1275154420;
-	Sat, 10 Aug 2024 10:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8F3156F5F;
+	Sat, 10 Aug 2024 10:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RAs+QjlF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1gQvThu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3393EA69;
-	Sat, 10 Aug 2024 10:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B672F2A;
+	Sat, 10 Aug 2024 10:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723285210; cv=none; b=FmLegjGBdOrvk4pRCq6wv3jHl0Kba/h8cYnnvBkA4hiJyYi+F5G3G2dAbJopDubAZl/YuJcuTL7GKUeZ/cN7ZS0XjznQhqwzDe9LAThKB3NqeC5dxKykvW7BcKJYcWsFiO+0YdDRMRfAZ0EWycf3ybLrmhUVye/EiKNuGgIUhh0=
+	t=1723285372; cv=none; b=T8B8SO8rUR2C/a/o/FYys4vfc48Vwcpn93HhUb1Lxkhffj4DJzteqOvk2oQBLTNbygjf6jiDhzhh30NQ80tJMMCz7ywhZW9pEKoZmOdr64oQiqAm8X0razv6PUyppctb//MajNkpLgn/aRhb3hDJZoXIOgpU9hR8Po39R2pB94s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723285210; c=relaxed/simple;
-	bh=mjqO8EBvokap4+aLVp66lu/jMfuucpNERrNXmYuk1N0=;
+	s=arc-20240116; t=1723285372; c=relaxed/simple;
+	bh=T4Gu1nHXg8cLOaE2llbx0vvdyZ1eMEW29Hu/IJv7EG8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S5S8DNV3+wULfbXA1qzNl3MeQnRcpaDUdAv6I7cmTJRXcTbLbBoNjWZA7YLoFXdNq2rUG3Iw/SLt4HplkvkvHZEZdZjyzTQ2BZlmD7YXdrf8enSmgZ379+lTdN3346GJih6KLgCXZHPLoWFGSGMsCES1o+0AFRWB8KsZhlfPhXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RAs+QjlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12D8C32781;
-	Sat, 10 Aug 2024 10:20:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rwISWvh51DaaNlWQ16YYOUwo3VAWF0KU9rd7UlxUDAKdCqP911jHSFfWTbTGBPlYYnt3LrNIVunZ6uq5bs/r/uLs5ZdHB6NKVqUcvhT8Kd2EBlryzqeBTCO/FDuHp0/XXKQU8s6QcGGddTHg1hPXCwtJ80nCsJfe5KumO7fLBbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1gQvThu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7108AC32781;
+	Sat, 10 Aug 2024 10:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723285210;
-	bh=mjqO8EBvokap4+aLVp66lu/jMfuucpNERrNXmYuk1N0=;
+	s=k20201202; t=1723285372;
+	bh=T4Gu1nHXg8cLOaE2llbx0vvdyZ1eMEW29Hu/IJv7EG8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RAs+QjlFUHneJvAQtdR3Er7XUE6VfSEdRszBU7smEzDav/9EhhrYE78jFU//rPeMF
-	 vA+05opKm9aeFSuq0JmkJeyfGSdKYN4jqymrq9zPGqIcYpLoqveDuYCavkj7UB+Q8n
-	 dfx8rsMVRU7XVhs9EIbsNJox/hrhtMO83bbrgmh8Wdwf+UGrRnwSK6Xv+YX31SMBj/
-	 AxeLBqr4HL5vTFxT4lqvneubwtF0EDc91mKy16d2KEBmS/LdqQT6jtaZJSA4Wlh+e1
-	 qg2iaaNzfub7u1eCzo1wl9TlV/MtYScigrrFEurp1GSeLSR7nLcLWZ/Oz8LFUUtrU1
-	 hXkDKRHcP6WmA==
-Date: Sat, 10 Aug 2024 11:20:03 +0100
+	b=R1gQvThusJ5NX8S9PRuYHx3U4CWPBxPKUbEQP0gHJkvZAngcNdngr4kVS+CbeEZIG
+	 EIqCC2TUDXY/LNVpd6MgiaeG0+tQSE4hdVRbXRlrGQFlZkzkN8ihiEMdM/4XISktWW
+	 B4Jiye/HnObK88uF+uRpMS7O+F5ihsCGH/WQeBYuLRP5szAOFnb7xpI4C/EB10HHnt
+	 XIKhljMG9oz71vOPbpoqERS+GLWG7dZ6sMPv99+WoTS2uZ2Zl8OV9Kjv9yIDvk5MGX
+	 dQxyvdUyJcPoDiy1Ep8yMCn+QPb44e3AUI7G13ZlbREh1NmJZfIHy3GvurW+yCmJn+
+	 pY1poS5AhW1PA==
+Date: Sat, 10 Aug 2024 11:22:45 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Denis Benato <benato.denis96@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Jagath Jog J
- <jagathjog1996@gmail.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, "Luke D . Jones" <luke@ljones.dev>, Jonathan
- LoBue <jlobue10@gmail.com>
-Subject: Re: [PATCH v3 0/2] iio: fix bug with triggers not resuming after
- sleep
-Message-ID: <20240810112003.3e0b77a5@jic23-huawei>
-In-Reply-To: <20240807185619.7261-1-benato.denis96@gmail.com>
-References: <20240807185619.7261-1-benato.denis96@gmail.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Kim Seer Paller <kimseer.paller@analog.com>, Michael Hennerich
+ <michael.hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Conor
+ Dooley <conor.dooley@microchip.com>, Nuno Sa <nuno.sa@analog.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ltc2664: Fix off by one in
+ ltc2664_channel_config()
+Message-ID: <20240810112245.29823516@jic23-huawei>
+In-Reply-To: <5727ab54-6280-466e-b107-1b6006e5ab29@stanley.mountain>
+References: <5727ab54-6280-466e-b107-1b6006e5ab29@stanley.mountain>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,49 +64,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed,  7 Aug 2024 20:56:17 +0200
-Denis Benato <benato.denis96@gmail.com> wrote:
+On Fri, 9 Aug 2024 15:28:30 +0300
+Dan Carpenter <dan.carpenter@linaro.org> wrote:
 
-> When a device enters an idle state (for example ASUS RC71L with s2idle)
-> and an iio driver has a trigger attached such as iio-trig-hrtimer,
-> after resuming the device the trigger is not triggering data acquisition.
+> This comparison should be >= ARRAY_SIZE() instead of >.  The "mspan"
+> variable is later used as an array index into ltc2664_mspan_lut[] so
+> this is an off by one bug.
 > 
-> This patch series solves the problem reliably and is well tested after
-> many cycles and many reboots.
-> 
-> Closes: https://lore.kernel.org/all/31d7f7aa-e834-4fd0-a66a-e0ff528425dc@gmail.com/
-> 
-> Changelog:
-> - V2: patch 2:
->         + Simplify code
->         + Remove unneeded code protections around SET_RUNTIME_PM_OPS()
->         + pm_ptr() to let the compiler drop bmi323_core_pm_ops if !CONFIG_PM
-> 
-> - V3: patch 1:
-> 	+ Add pf->irq=0 that was accidentally left out
-Dropped v2 and picked up v3.
-
+> Fixes: 4cc2fc445d2e ("iio: dac: ltc2664: Add driver for LTC2664 and LTC2672")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Applied.
 Thanks,
 
-Jonathan
-
+> ---
+>  drivers/iio/dac/ltc2664.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Previous patches obsoleted:
-> https://lore.kernel.org/all/20240727123034.5541-1-benato.denis96@gmail.com/
-> https://lore.kernel.org/all/20240725002641.191509-3-benato.denis96@gmail.com/
-> 
-> Denis Benato (2):
->   iio: trigger: allow devices to suspend/resume theirs associated
->     trigger
->   iio: bmi323: suspend and resume triggering on relevant pm operations
-> 
->  drivers/iio/imu/bmi323/bmi323.h      |  1 +
->  drivers/iio/imu/bmi323/bmi323_core.c | 23 +++++++++++++++++++++++
->  drivers/iio/imu/bmi323/bmi323_i2c.c  |  1 +
->  drivers/iio/imu/bmi323/bmi323_spi.c  |  1 +
->  drivers/iio/industrialio-trigger.c   | 27 +++++++++++++++++++++++++++
->  include/linux/iio/iio.h              | 17 +++++++++++++++++
->  6 files changed, 70 insertions(+)
-> 
+> diff --git a/drivers/iio/dac/ltc2664.c b/drivers/iio/dac/ltc2664.c
+> index 666ecdeb5f96..5be5345ac5c8 100644
+> --- a/drivers/iio/dac/ltc2664.c
+> +++ b/drivers/iio/dac/ltc2664.c
+> @@ -526,7 +526,7 @@ static int ltc2664_channel_config(struct ltc2664_state *st)
+>  			return dev_err_probe(dev, -EINVAL,
+>  			       "adi,manual-span-operation-config not supported\n");
+>  
+> -		if (mspan > ARRAY_SIZE(ltc2664_mspan_lut))
+> +		if (mspan >= ARRAY_SIZE(ltc2664_mspan_lut))
+>  			return dev_err_probe(dev, -EINVAL,
+>  			       "adi,manual-span-operation-config not in range\n");
+>  	}
 
 

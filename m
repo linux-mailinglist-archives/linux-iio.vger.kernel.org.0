@@ -1,62 +1,59 @@
-Return-Path: <linux-iio+bounces-8399-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8400-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D707994DC48
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 12:27:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A78994DC52
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 12:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03EF91C20EFE
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 10:27:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89807B21AE9
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 10:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FCC157A61;
-	Sat, 10 Aug 2024 10:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF102157A48;
+	Sat, 10 Aug 2024 10:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q9gPX5W/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JR2rs4p7"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394F62F2A;
-	Sat, 10 Aug 2024 10:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F16155A32;
+	Sat, 10 Aug 2024 10:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723285641; cv=none; b=Z3N+WW7aLD5/Uwmss59cKjYYuTSXb/EzHF7r7bG7A/h1NjnidRlV/8/ERESb2kMQwluNPQb9egT6qsPs2tH2JWuo1O3UBNdXaTKdogtf2fcBS7Lo/p326zX7qEKE1YrA22eqCwdJt4ZVbRveTIKde41DQEii5yDASTKnQ5PYBUQ=
+	t=1723286126; cv=none; b=ccqMEcNX1z7uHn2hb/RgplbQOofHtGrvUgRx0goienMryDt2SZph9QI+wYOobisWdgizLrlH2X1TKae/jyxa4Z2IREKp7mRaUSLwv384598kBLH5yibcncgHHKTcU2y3RfPJsrzeLjhQhMv79JX9LI4Mmqk+d/p+zzgnD3lT8oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723285641; c=relaxed/simple;
-	bh=4p1ePSehn6ap5Nr4r9eTXpSRW2G1jRSVhIhPjiiBpUU=;
+	s=arc-20240116; t=1723286126; c=relaxed/simple;
+	bh=ZnGSufR7s2y1R0aQ0nDt624omjlslN8ADPJg5cctc50=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tLlGva+Mwe0bBujy9JXvJB/DJ8k7uFu8WOXv/XSV57h6FFY1nlzJ4GoTS0ogol72Svg6HOukx6Q2e7H1ErBVn/raPFGmWP9GKpns+rcW4g57rJcLmy+UWwXPb110SvMsKGN4ZhsNKNgxuOZ1+ENyzwOvt5GrrHEwqUbyq2UaznM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q9gPX5W/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6CEC32781;
-	Sat, 10 Aug 2024 10:27:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sn81EktwxIbwCXUxVBS3IOkvbKVetIxxKpi052CyJ6YQohLLGOsGXZHXrxKVlhn/NV84sovo5pLvRry38oHuJy+bSXADzfMzM3caFTKm47wVAXDanqvOcuM7BfwboPkl0VVnDcrDyTa1zmx9U3e6XelbWY0w42gXo6ZxlgTYOMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JR2rs4p7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53041C32781;
+	Sat, 10 Aug 2024 10:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723285640;
-	bh=4p1ePSehn6ap5Nr4r9eTXpSRW2G1jRSVhIhPjiiBpUU=;
+	s=k20201202; t=1723286125;
+	bh=ZnGSufR7s2y1R0aQ0nDt624omjlslN8ADPJg5cctc50=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=q9gPX5W/BtB6fZkWzxeQtX8m1z+0ElHnXjrxBxiM6TrKEICi7ukNQdR1mzsWCT/sl
-	 KVmwR7ciiDrkI6McW4pHIQWy6+pEXijIJIEiKFx9NQweps0j+ZpU84GxVgvZiTa9Pt
-	 iSO4HWaz8/ni8o3cibIONX1m4HgSFknC6yYavH8+hH+at8QMr2YBLxe2PpUtwy7ktA
-	 F+zPF5gQA/cWHTf35a4kcyTj5iTI1yZ4W3ZqJ1rd/d3lbzbSanLtvZAnNnVB5f7SxQ
-	 0axncJFjBcUIDkIYJLlxx6by1H8ZI/r2713qWSx6mD9AJBQcXZL0c3FVuV03UrLvsr
-	 E1wGUuGKl+jaw==
-Date: Sat, 10 Aug 2024 11:27:12 +0100
+	b=JR2rs4p7/9Vyb3rJnUhMyiKeHKLx9G2zdgJyJYXGFMFeRhZ87TeO2+zqHP2EnCG+U
+	 PA3wGZtNkZ5n2HjS2TsTkq2/Gxsr59W/WmUamkaEEVBUIhEL+gp/zDQqHk1Bj1wdtW
+	 eKkHEnoSCbWScBkWLwKDLxql1cPRokrMJyUeAxHlOINMwjjG/FzglJ2YSJAh9fns6E
+	 Ymu7uZacU5Jp0D0UxjfITnDdtotrgJ9BNfsOMEQeptQYDhtfHJD9a/0nAqiPVE+aTP
+	 hrVU74nej3PjWbHyychcNtLg7/A8nEsS/UPN9tj8LQzPUpojSlWKCGgfQ4ovGnlChV
+	 Vmw7SBsMQplCw==
+Date: Sat, 10 Aug 2024 11:35:18 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Albrieux <jonathan.albrieux@gmail.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux@mainlining.org
-Subject: Re: [PATCH v2 1/3] iio: magnetometer: ak8975: Fix reading for
- ak099xx sensors
-Message-ID: <20240810112712.191d6576@jic23-huawei>
-In-Reply-To: <45915CD6-A9BB-4071-ABCC-8DE76F7066C3@mainlining.org>
-References: <20240806-ak09918-v2-0-c300da66c198@mainlining.org>
-	<20240806-ak09918-v2-1-c300da66c198@mainlining.org>
-	<20240806171925.7c512c63@jic23-huawei>
-	<45915CD6-A9BB-4071-ABCC-8DE76F7066C3@mainlining.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Matteo Martelli <matteomartelli3@gmail.com>, Christophe JAILLET
+ <christophe.jaillet@wanadoo.fr>, kernel-janitors@vger.kernel.org,
+ lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: pac1921: add missing error return in probe()
+Message-ID: <20240810113518.2cbceb66@jic23-huawei>
+In-Reply-To: <9a98aab5-bb68-4206-9ecf-32fbf6c9c7ef@stanley.mountain>
+References: <1fa4ab12-0939-477d-bc92-306fd32e4fd9@stanley.mountain>
+	<36b1a47a-7af2-4baf-8188-72f6eed78529@wanadoo.fr>
+	<66b5c5df76766_133d37031@njaxe.notmuch>
+	<9a98aab5-bb68-4206-9ecf-32fbf6c9c7ef@stanley.mountain>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,46 +64,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 06 Aug 2024 19:54:56 +0200
-Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas.czeman@mainlining.org> wrote:
+On Fri, 9 Aug 2024 18:18:13 +0300
+Dan Carpenter <dan.carpenter@linaro.org> wrote:
 
-> On August 6, 2024 6:19:25 PM GMT+02:00, Jonathan Cameron <jic23@kernel.or=
-g> wrote:
-> >On Tue, 06 Aug 2024 08:10:18 +0200
-> >Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas.czeman@mainlining.org> wrote:
-> >
-> >Hi Barnab=C3=A1s,
-> >
-> >Welcome to IIO.
-> > =20
-> >> ST2 register read should be placed after read measurment data,
-> >> because it will get correct values after it. =20
-> >
-> >What is the user visible result of this? Do we detect errors when none
-> >are there?  Do we have a datasheet reference for the status being
-> >update on the read command, not after the trigger? =20
+> On Fri, Aug 09, 2024 at 09:31:43AM +0200, Matteo Martelli wrote:
+> > Christophe JAILLET wrote: =20
+> > > Le 08/08/2024 =C3=A0 21:28, Dan Carpenter a =C3=A9crit=C2=A0: =20
+> > > > This error path was intended to return, and not just print an error=
+.  The
+> > > > current code will lead to an error pointer dereference.
+> > > >=20
+> > > > Fixes: 371f778b83cd ("iio: adc: add support for pac1921")
+> > > > Signed-off-by: Dan Carpenter <dan.carpenter-QSEj5FYQhm4dnm+yROfE0A@=
+public.gmane.org>
+> > > > ---
+> > > >   drivers/iio/adc/pac1921.c | 4 ++--
+> > > >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > > >=20
+> > > > diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
+> > > > index d04c6685d780..8200a47bdf21 100644
+> > > > --- a/drivers/iio/adc/pac1921.c
+> > > > +++ b/drivers/iio/adc/pac1921.c
+> > > > @@ -1168,8 +1168,8 @@ static int pac1921_probe(struct i2c_client *c=
+lient)
+> > > >  =20
+> > > >   	priv->regmap =3D devm_regmap_init_i2c(client, &pac1921_regmap_co=
+nfig);
+> > > >   	if (IS_ERR(priv->regmap))
+> > > > -		dev_err_probe(dev, (int)PTR_ERR(priv->regmap),
+> > > > -			      "Cannot initialize register map\n");
+> > > > +		return dev_err_probe(dev, (int)PTR_ERR(priv->regmap), =20
+> > >=20
+> > > The (int) is unusual.
+> > > =20
+> > The (int) explicit cast is to address Wconversion warnings since dev_er=
+r_probe
+> > takes an int as argument. =20
 >=20
-> Second read will fail. In the datasheet ST2 comes after measurment data r=
-ead. Here is some explanation from datasheet.
->=20
-> "When ST2 register is read, AK09918 judges that data reading is finished.=
- Stored measurement data is
-> protected during data reading and data is not updated. By reading ST2 reg=
-ister, this protection is
-> released. It is required to read ST2 register after data reading."
->=20
-Thanks. Please add more of that detail to the patch description for v3.
+> I don't want to remove the int because it's unrelated, but Christophe is =
+right
+> that the int is unusual.  We really would want to discourage that.
 
-> So if ST2 is read before measurment it will stuck at protected mode.
-> >> =20
-> >Needs a Fixes tag to let us know how far to backport the fix. =20
-> I think it is broken since 09912 was added but i cannot verify i have onl=
-y devices with 09918.
-> >
-I wasn't meaning devices, but rather what patch broke the kernel code.
-It might be the original driver introduction.
+Applied, but I'd ideally like a follow up patch removing the int and the
+couple of similar instances from this driver.  Anyone want to spin one?
 
-If we can add a Fixes tag that makes it much easier for stable + distributi=
-ons
-to work out whether to pick the fix up or not.
+Thanks,
+
+Jonathan
+
+>=20
+> regards,
+> dan carpenter
+>=20
+
 

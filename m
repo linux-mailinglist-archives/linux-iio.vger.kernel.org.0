@@ -1,59 +1,56 @@
-Return-Path: <linux-iio+bounces-8397-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8398-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0772C94DC41
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 12:22:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A5B94DC44
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 12:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33A041C21081
-	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 10:22:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAA86282784
+	for <lists+linux-iio@lfdr.de>; Sat, 10 Aug 2024 10:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8F3156F5F;
-	Sat, 10 Aug 2024 10:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEEC15747D;
+	Sat, 10 Aug 2024 10:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1gQvThu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAcFWNhc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B672F2A;
-	Sat, 10 Aug 2024 10:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A8314659F;
+	Sat, 10 Aug 2024 10:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723285372; cv=none; b=T8B8SO8rUR2C/a/o/FYys4vfc48Vwcpn93HhUb1Lxkhffj4DJzteqOvk2oQBLTNbygjf6jiDhzhh30NQ80tJMMCz7ywhZW9pEKoZmOdr64oQiqAm8X0razv6PUyppctb//MajNkpLgn/aRhb3hDJZoXIOgpU9hR8Po39R2pB94s=
+	t=1723285440; cv=none; b=bqrgLNS1CqP3kD+MFG0JtpcaINI9mp6YT2LGiw4toY8/ldebDYKawhQQCV2vwt7+XyT7ywz52m/bSPxb3iIjWvviQOOGcMLcaoR99x0xyZ1uzWBl3RSW3hEv7Jfikz7AQaqNAz8dnPBb1Qu/QDfPB+rFbvMva8GcoliS/tHAkl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723285372; c=relaxed/simple;
-	bh=T4Gu1nHXg8cLOaE2llbx0vvdyZ1eMEW29Hu/IJv7EG8=;
+	s=arc-20240116; t=1723285440; c=relaxed/simple;
+	bh=qSupJuTLLZG8dgIkdJ6OXIxbntFMHCvge0X4lvT7rsE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rwISWvh51DaaNlWQ16YYOUwo3VAWF0KU9rd7UlxUDAKdCqP911jHSFfWTbTGBPlYYnt3LrNIVunZ6uq5bs/r/uLs5ZdHB6NKVqUcvhT8Kd2EBlryzqeBTCO/FDuHp0/XXKQU8s6QcGGddTHg1hPXCwtJ80nCsJfe5KumO7fLBbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1gQvThu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7108AC32781;
-	Sat, 10 Aug 2024 10:22:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=doEMvlcSX4z2fwgM2iFK1FnCwXuMVJrP+AVQYDWVPNO7IIwxsyebdft8K+iFvdifFkas78g+Am8vtv4r8dXkcbE3Ovh5SVF5uZ8Hd8LLw/bigeIIQLdj/i71ZzY8U87o+iRTLNuQ1risZ6fT0gvjSJ/dhrsLEmPn8bRhc+hM+8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAcFWNhc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA7CC32781;
+	Sat, 10 Aug 2024 10:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723285372;
-	bh=T4Gu1nHXg8cLOaE2llbx0vvdyZ1eMEW29Hu/IJv7EG8=;
+	s=k20201202; t=1723285440;
+	bh=qSupJuTLLZG8dgIkdJ6OXIxbntFMHCvge0X4lvT7rsE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R1gQvThusJ5NX8S9PRuYHx3U4CWPBxPKUbEQP0gHJkvZAngcNdngr4kVS+CbeEZIG
-	 EIqCC2TUDXY/LNVpd6MgiaeG0+tQSE4hdVRbXRlrGQFlZkzkN8ihiEMdM/4XISktWW
-	 B4Jiye/HnObK88uF+uRpMS7O+F5ihsCGH/WQeBYuLRP5szAOFnb7xpI4C/EB10HHnt
-	 XIKhljMG9oz71vOPbpoqERS+GLWG7dZ6sMPv99+WoTS2uZ2Zl8OV9Kjv9yIDvk5MGX
-	 dQxyvdUyJcPoDiy1Ep8yMCn+QPb44e3AUI7G13ZlbREh1NmJZfIHy3GvurW+yCmJn+
-	 pY1poS5AhW1PA==
-Date: Sat, 10 Aug 2024 11:22:45 +0100
+	b=GAcFWNhcKH/J7bESxsG/LBAiUaJlz+pmoCMf+YKs5K/IEKEOX0RIUwKwXQ0qOAIg+
+	 r+/3sYcZr2xCyn/ynjJbVdmywg8NgcFBm7VicnIJxqcCM4nnqsgT2akcIr9tS9vZbL
+	 pyBEaZSAvvgG10BxF0VyCgiffsIwFCEnF3RN2+yAj2iRrrZ6lMnxhExy/JFrv+QaYL
+	 i5KYt5VbKDW6vAwC7oSGMub25RUuB+kn5jepVaWD7oQpboqy6RZ0M7zyXCeUIxHLa6
+	 FO9P0Pi7bW17XjKkQST/mnjze3GvrvqFki/DlxKqTWrK9WEsFERzjj3mGNd8WTWQtw
+	 ENZroe43y6j3A==
+Date: Sat, 10 Aug 2024 11:23:54 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Kim Seer Paller <kimseer.paller@analog.com>, Michael Hennerich
- <michael.hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Conor
- Dooley <conor.dooley@microchip.com>, Nuno Sa <nuno.sa@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: ltc2664: Fix off by one in
- ltc2664_channel_config()
-Message-ID: <20240810112245.29823516@jic23-huawei>
-In-Reply-To: <5727ab54-6280-466e-b107-1b6006e5ab29@stanley.mountain>
-References: <5727ab54-6280-466e-b107-1b6006e5ab29@stanley.mountain>
+To: Colin Ian King <colin.i.king@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] iio: Fix spelling mistake "avaialable" ->
+ "available"
+Message-ID: <20240810112354.0985ba35@jic23-huawei>
+In-Reply-To: <20240807094745.4174785-1-colin.i.king@gmail.com>
+References: <20240807094745.4174785-1-colin.i.king@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,34 +61,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 9 Aug 2024 15:28:30 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Wed,  7 Aug 2024 10:47:45 +0100
+Colin Ian King <colin.i.king@gmail.com> wrote:
 
-> This comparison should be >= ARRAY_SIZE() instead of >.  The "mspan"
-> variable is later used as an array index into ltc2664_mspan_lut[] so
-> this is an off by one bug.
+> There is a spelling mistake in a dev_warn message. Fix it.
 > 
-> Fixes: 4cc2fc445d2e ("iio: dac: ltc2664: Add driver for LTC2664 and LTC2672")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 Applied.
+
 Thanks,
 
+J
 > ---
->  drivers/iio/dac/ltc2664.c | 2 +-
+>  drivers/iio/industrialio-core.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/dac/ltc2664.c b/drivers/iio/dac/ltc2664.c
-> index 666ecdeb5f96..5be5345ac5c8 100644
-> --- a/drivers/iio/dac/ltc2664.c
-> +++ b/drivers/iio/dac/ltc2664.c
-> @@ -526,7 +526,7 @@ static int ltc2664_channel_config(struct ltc2664_state *st)
->  			return dev_err_probe(dev, -EINVAL,
->  			       "adi,manual-span-operation-config not supported\n");
->  
-> -		if (mspan > ARRAY_SIZE(ltc2664_mspan_lut))
-> +		if (mspan >= ARRAY_SIZE(ltc2664_mspan_lut))
->  			return dev_err_probe(dev, -EINVAL,
->  			       "adi,manual-span-operation-config not in range\n");
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index 3f2bc6451325..6a6568d4a2cb 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -2002,7 +2002,7 @@ int iio_active_scan_mask_index(struct iio_dev *indio_dev)
 >  	}
+>  
+>  	dev_warn(indio_dev->dev.parent,
+> -		 "active scan mask is not part of the avaialable scan masks\n");
+> +		 "active scan mask is not part of the available scan masks\n");
+>  	return -EINVAL;
+>  }
+>  EXPORT_SYMBOL_GPL(iio_active_scan_mask_index);
 
 

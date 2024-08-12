@@ -1,123 +1,140 @@
-Return-Path: <linux-iio+bounces-8424-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8425-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A248D94F124
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 17:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D7094F153
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 17:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8501F22895
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 15:01:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8DC31F22C28
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 15:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C94818628F;
-	Mon, 12 Aug 2024 15:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6E717F4FE;
+	Mon, 12 Aug 2024 15:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eImntX/0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAIzYEwF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDD41DA26;
-	Mon, 12 Aug 2024 15:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CBA29CA;
+	Mon, 12 Aug 2024 15:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723474874; cv=none; b=YD2Dru6v5XC1SjySs68vTeV8OqNfYgC25T4tZfvSxqoydWOZz/jJcl2Mg791j5axgrnYDEK82om2EiDI2kW+Ip5veBjCdYVozZCQh1dO9xjcpPamW6JYKo1E0hDaa9YQn2uMPOnEdVrgDXylaoX/hTCK2/JsNx6DJlaIS+ghU+M=
+	t=1723475374; cv=none; b=Wj6QmZGfCSkYDN1TSffD1dtS0NyaMW+NqwkqNvZxqH0485ovlxc9JgM2yFxU/tWKbi0K7/RneyPL0XUMRj6kfY9Uzi14RVZkTzgZQun2CWIylh1BnfA8geURhnpv3/0AyG8XFz39M+eNFhcf87e5i570lTT0VDY2+30nPKlJK98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723474874; c=relaxed/simple;
-	bh=VyonfWlsq1MTm3DXqgxcfIvMNB6opcaxx6uq4IMKHsg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tDsw45P+2jXZ7t1xxNn/lFmk/ZFOw10FC0caWzTr50LFje/94Q9rSz6rB51lhKQGwMZmooQCCmbDjx5fqi2xlFli2/tjOgZhbakEEsku2LfpOZNJ0C4LR0niLrXX672LwNvPt0PJRD4ypkRYgjD+JD+L23ygmQvijAWIRobr4As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eImntX/0; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8E5E8FF807;
-	Mon, 12 Aug 2024 15:01:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1723474869;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qcnVQb/yrvDYJxCY7i392OtDZOwd6IXmcourEZmhOEM=;
-	b=eImntX/09QmFtD+KwtwW/PiFL8FBHh8x6fardUgTSBSQGvgkcg0mvGZwiWIZ7w/PQcZb1g
-	Kvr+ighKlHbB1U2hXlYFC8aTluW8ysYaUIkSprsQvq0/wHQccQh+yxHuTTBj0TnVk6YouR
-	DV1HcDXkm5SHm5Bj6+wGIXajsYOODy2NY1tM1/ZaOknCQYciTuP5Xzuz/s8L7RFn0KtTL/
-	PknVlgJ6TlyNAySg2HUSu4lfucNRkB6uu7CJCPTeTkeH2McnLmDlfISi1jw09O6xZya0Ua
-	vMzEY8bvYHzkR0SA1cFR3snY1zkepdzuKdd+qPiE1Or7MvwwU/GphKMupT/8xA==
-From: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-Date: Mon, 12 Aug 2024 17:00:57 +0200
-Subject: [PATCH v4 3/3] riscv: dts: sophgo: Add SARADC description for
- Sophgo CV18XX
+	s=arc-20240116; t=1723475374; c=relaxed/simple;
+	bh=deWuRDJPCT5foWSV44HA7CYL8GYl7vdMf1Zpapv5XKo=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=rbGlj56bEHeKm+2PNyoqvxuDxrvUEk1OuCO5mHAVx6uPumvVOg+3Hlhnre7BYQzXreuds0dhe3ShOws9ZmTkbhd8gxY2PRqNsglP9x6oLHO0b1GHy/umrlP4uTXyoRZSo/B62ceCDGNwuc17zo7hr81MKHnnSh3ZYzwaqjkxUvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAIzYEwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED03C32782;
+	Mon, 12 Aug 2024 15:09:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723475374;
+	bh=deWuRDJPCT5foWSV44HA7CYL8GYl7vdMf1Zpapv5XKo=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=AAIzYEwFnviJyUy/yD9Tw3CxmOF45cdw3/aF/vhW8GEyHCcIZBPuhVpzhJXB2Vsta
+	 9XbecjNGYw8q5pyqkdiR3ucGZ0wUSLmQLR69dC+IMBMIaJHxFWOFaSvQRCKISrrtNQ
+	 xiIlnoL2pBFsWohKL16xDtEf7nB8i+Qkac53bhyaER4+qi9z3bfP1iJuJ4KbTRRdDx
+	 o7M8/+jU1G1NxD4lZ/34RxQenx3jaw3jyLlkfk5KZshHzXL8eefGnXzUuhjsGCfO0A
+	 J41i+sV0lntGANeqwnlMfv6xWzFy68z0av4EJq8pqDIaWGwI6T/PWBh0Ew2Kov3uV4
+	 TnKaogwXhIdqQ==
+Date: Mon, 12 Aug 2024 09:09:32 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240812-sg2002-adc-v4-3-599bdb67592f@bootlin.com>
-References: <20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com>
-In-Reply-To: <20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, 
- Inochi Amaoto <inochiama@outlook.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
- Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-X-Mailer: b4 0.14.1
-X-GND-Sasl: thomas.bonnefille@bootlin.com
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Detlev Casanova <detlev.casanova@collabora.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, 
+ Alexey Charkov <alchark@gmail.com>, linux-iio@vger.kernel.org, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ linux-serial@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, linux-i2c@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Jonas Karlman <jonas@kwiboo.se>, 
+ Dragan Simic <dsimic@manjaro.org>, Jagan Teki <jagan@edgeble.ai>, 
+ Yifeng Zhao <yifeng.zhao@rock-chips.com>, Tim Lunn <tim@feathertop.org>, 
+ Elaine Zhang <zhangqing@rock-chips.com>, Andi Shyti <andi.shyti@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Heiko Stuebner <heiko@sntech.de>, Jonathan Cameron <jic23@kernel.org>, 
+ Muhammed Efe Cetin <efectn@protonmail.com>, devicetree@vger.kernel.org, 
+ Finley Xiao <finley.xiao@rock-chips.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Shresth Prasad <shresthprasad7@gmail.com>, linux-kernel@vger.kernel.org, 
+ Ondrej Jirman <megi@xff.cz>, Liang Chen <cl@rock-chips.com>, 
+ Weizhao Ouyang <weizhao.ouyang@arm.com>, Jiri Slaby <jirislaby@kernel.org>, 
+ Jimmy Hon <honyuenkwun@gmail.com>, linux-arm-kernel@lists.infradead.org, 
+ kernel@collabora.com, linux-rockchip@lists.infradead.org, 
+ Chris Morgan <macromorgan@hotmail.com>, Andy Yan <andyshrk@163.com>, 
+ Lee Jones <lee@kernel.org>
+In-Reply-To: <20240802214612.434179-10-detlev.casanova@collabora.com>
+References: <20240802214612.434179-1-detlev.casanova@collabora.com>
+ <20240802214612.434179-10-detlev.casanova@collabora.com>
+Message-Id: <172347513683.603014.1210944906291860196.robh@kernel.org>
+Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
 
-Adds SARADC nodes for the common Successive Approximation Analog to
-Digital Converter used in Sophgo CV18xx series SoC.
-This patch adds two nodes for the two controllers the board, one in
-the Active domain and the other in the No-Die domain.
 
-Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
----
- arch/riscv/boot/dts/sophgo/cv18xx.dtsi | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+On Fri, 02 Aug 2024 17:45:36 -0400, Detlev Casanova wrote:
+> This device tree contains all devices necessary for booting from network
+> or SD Card.
+> 
+> It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
+> SDHCI (everything necessary to boot Linux on this system on chip) as
+> well as Ethernet, I2C, SPI and OTP.
+> 
+> Also add the necessary DT bindings for the SoC.
+> 
+> Signed-off-by: Liang Chen <cl@rock-chips.com>
+> Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
+> Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+> Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+> [rebase, squash and reword commit message]
+> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+> ---
+>  .../boot/dts/rockchip/rk3576-pinctrl.dtsi     | 5775 +++++++++++++++++
+>  arch/arm64/boot/dts/rockchip/rk3576.dtsi      | 1635 +++++
+>  2 files changed, 7410 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
+>  create mode 100644 arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> 
 
-diff --git a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-index 891932ae470f..71a2618852fa 100644
---- a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-+++ b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-@@ -133,6 +133,26 @@ portd: gpio-controller@0 {
- 			};
- 		};
- 
-+		saradc: adc@30f0000 {
-+			compatible = "sophgo,cv1800b-saradc";
-+			reg = <0x030f0000 0x1000>;
-+			clocks = <&clk CLK_SARADC>;
-+			interrupts = <100 IRQ_TYPE_LEVEL_HIGH>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+
-+			channel@0 {
-+				reg = <0>;
-+			};
-+			channel@1 {
-+				reg = <1>;
-+			};
-+			channel@2 {
-+				reg = <2>;
-+			};
-+		};
-+
- 		i2c0: i2c@4000000 {
- 			compatible = "snps,designware-i2c";
- 			reg = <0x04000000 0x10000>;
 
--- 
-2.46.0
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y rockchip/rk3576-armsom-sige5.dtb' for 20240802214612.434179-10-detlev.casanova@collabora.com:
+
+In file included from arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dts:14:
+arch/arm64/boot/dts/rockchip/rk3576.dtsi:6:10: fatal error: dt-bindings/clock/rockchip,rk3576-cru.h: No such file or directory
+    6 | #include <dt-bindings/clock/rockchip,rk3576-cru.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make[3]: *** [scripts/Makefile.lib:434: arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dtb] Error 1
+make[2]: *** [scripts/Makefile.build:485: arch/arm64/boot/dts/rockchip] Error 2
+make[2]: Target 'arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dtb' not remade because of errors.
+make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1389: rockchip/rk3576-armsom-sige5.dtb] Error 2
+make: *** [Makefile:224: __sub-make] Error 2
+make: Target 'rockchip/rk3576-armsom-sige5.dtb' not remade because of errors.
+
+
+
+
 
 

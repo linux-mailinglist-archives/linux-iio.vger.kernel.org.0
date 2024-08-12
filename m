@@ -1,114 +1,141 @@
-Return-Path: <linux-iio+bounces-8411-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8413-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBCA94E6F6
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 08:43:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF0C94E84B
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 10:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9485D1C21CD3
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 06:43:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 122B91F2494D
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 08:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4900A15442F;
-	Mon, 12 Aug 2024 06:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF1D167DB7;
+	Mon, 12 Aug 2024 08:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lTPqjGl/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vD+NAi09"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FD11509A0
-	for <linux-iio@vger.kernel.org>; Mon, 12 Aug 2024 06:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE84165F03;
+	Mon, 12 Aug 2024 08:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723444993; cv=none; b=INKVAMqQIgmquOvmKJanZdKQJAOg+4HjrsgHefUuzmo6oXqH1noQHYObE6Q7Jax8zHRUlX/2qI8oR0FO0/iN9K8PwmV7Gdl5IiGlmzx3IPbyBFxnLiXPZvbpFSK+mPbpOPC1iULcd+vnOHlcm/bTblT+TIZoH3mXOZglxMy75CQ=
+	t=1723450397; cv=none; b=NGE3qsdBaLc2s+8Mh5YlrT7/WhH3Yf2IJ/QE/cm7QJumlLGhAt0eCUGZNAVPv4jfwHsgroVVwzLSnvDyDxy4GTMNLGSn6mSqrosr+/rcBuW4QYmX4GXxB0Y+6HRaHhwOJ/OcTa2BXTmPkt+OUJYKaoDganSR3uY/eeaYkbYuKKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723444993; c=relaxed/simple;
-	bh=Ajb6lg4vAB0c9I6RQA7b777Zw8d7gs5j3f5fTYHkSrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=H2h5yMbDsS4nT4ZyWO+OceyzkOSxE2rIUmby3bkcXl03aP67Szh3ncquT5cWsEgVdjIbuM0niCzE9LbKTCA0Qc2FcZ5I4H+YEeatJEKL1aPKOiTlwFAltCrFDUEqfY3uCT7Bbt36aulPrKwL5yxs70E2wn67MU4kREVkaeDeP7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lTPqjGl/; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5bb477e3a6dso3800691a12.0
-        for <linux-iio@vger.kernel.org>; Sun, 11 Aug 2024 23:43:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723444990; x=1724049790; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1N4wK86NjIrRtEeCb9nnImTO29M6AM8fXsAaSjX4L8M=;
-        b=lTPqjGl/k+avwftKHDfKHxpksJEVPGBy3YfnmPoAOoK0W1oIK986CADOiGX9349kSc
-         MvsRiY9UZz0b3M4MFqb5u/osa9C5GJho2onlC35gc8Ppr+bUNreyY4qgJZ6wPghtMbPY
-         m6VrdHn9prUg5udZmqoW7/4Wx0SAA4jgUmtNnA+488Kkjct9+x6aRkr6sJbKw8ZWpfvZ
-         lZyl3JlLOhuL+AbwtSuECkpp6H1qDQHlcvzzDZgPmMUD3Tn6TsrLS+teuTI36hbef+1v
-         Dx7T4rp+IpfE9M7m5hBmYTjD6ryhzPr9oYGhpge7gvidneSCp9RzmfaanKyXQk9aTJXC
-         v45A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723444990; x=1724049790;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1N4wK86NjIrRtEeCb9nnImTO29M6AM8fXsAaSjX4L8M=;
-        b=ZYhHzzEnlisEB6ko4hEmpSBr03hxbYbbnEdeyOm3e7MyaKJ9sfkDZ3LMXoFPXG+WlL
-         GJMCiHoY/GgAhLIA7kcjXiD91dVnPJAB2m5WJV+MEp1/rLPexArnMCDxLJW+DP8qWSUh
-         x7I7I8RhhtRktX4NDFJuK4XP0wYztSILeen0joZ8rBvH1R8KQbVMlxbOXHpg8MXKJn0K
-         YkMCSAbUYDshR9fDwtEmAKDSlyjZyFe0q0TzfvHrTtEIQxfEgl2MByjBFSKJRo7dLHBw
-         Dsw4FQp1lPBAXObE82goiBxSZ9QRny62AujfHiO0baxsYMTAWJxpodyn438hiwGjlV1A
-         bN5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXNPImLEU3tQzeH/SkciZRVp9T4xS6I6ql2Ral6foFb4OdlOCoCjhpq6v4rTM4zEbgRVVLxvOBzIn4Q9E2lkPFUyFziNkf6S5VZ
-X-Gm-Message-State: AOJu0YzHYAzHumbceZVUYEzId1a2qouX9DY6gqadYP0gtnee+cbNp+Ow
-	Fgcp8VcK3d9OTw1ZCieTepWI7TKc6GY58Z01x01cDPzveQUIYQxPgG7FkbGQDi4=
-X-Google-Smtp-Source: AGHT+IFUwjEdJZ99b2PzVNgvGD4YZjVQ/89Mt4+D8vDZSCukf8v7q9Ul6n+RpRh7M3G9Um5gXeRLag==
-X-Received: by 2002:a05:6402:5413:b0:5a1:b9c0:7758 with SMTP id 4fb4d7f45d1cf-5bd0a64afe9mr5516868a12.33.1723444989466;
-        Sun, 11 Aug 2024 23:43:09 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bd191a20bcsm1869121a12.34.2024.08.11.23.43.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Aug 2024 23:43:09 -0700 (PDT)
-Date: Mon, 12 Aug 2024 09:43:05 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Yasin Lee <yasin.lee.x@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] iio: proximity: hx9023s: Fix error code in
- hx9023s_property_get()
-Message-ID: <49b5a9bc-e5ca-43a7-a665-313eb06fbe27@stanley.mountain>
+	s=arc-20240116; t=1723450397; c=relaxed/simple;
+	bh=l2cMsMW6WjSVkxY7LiRh1xYBXXYUhNx5oNMkZpw0QAc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LxHFV+uSG1A/ZPEDpvmmpST9+RvzOkpqnIYRxIuysYTs3apN5fGXdWb0MwJFhgj1FkRWQiWk7pjObglVVhQjMd01ACfuT56l74bqs+RWcRJxLjgrdSxJNqr1LSJZAIlA3+ZVcYNbDyYzLhq6hcCdGR523EqAaDKTInWZurw+BJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vD+NAi09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 79B6AC32782;
+	Mon, 12 Aug 2024 08:13:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723450396;
+	bh=l2cMsMW6WjSVkxY7LiRh1xYBXXYUhNx5oNMkZpw0QAc=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=vD+NAi095Gv177RzLA7qhHmLkQKUhEND5IZ8mch/fwpbjCxdRM+yU38jIoUbnhyTl
+	 H3dQ0n9ezfm3de4n73UwDVDjHt37jQKURP3UfPl0H89TaPb64OBJSLLJJaCb8ddR0s
+	 lbsrpXmWQaEjhOMD5RdwPZEmqP3PfoP5Tu05xrCL3H3USPQvw6HfHl0R4mqH9UExoU
+	 JVFq5etSZnoLuLnA3UOsOhc40VEn9EE/JVMj4lL5yjvNe5MLGYRXQjmy67kr6oBV2B
+	 2UnIJuWazxqjgzrEQ54LH39kDr84uSxmDzQfD/IFVKTnlPD92x7g2003b8KS5oP/X7
+	 fn26jkigf25lQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 642E0C52D7C;
+	Mon, 12 Aug 2024 08:13:16 +0000 (UTC)
+From: Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org>
+Subject: [PATCH v3 0/3] Add support for AD4113
+Date: Mon, 12 Aug 2024 11:13:13 +0300
+Message-Id: <20240812-ad4113-v3-0-046e785dd253@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABnEuWYC/1WMwQ7CIBAFf8VwFrMsVFpP/ofxsKXQkmgxYIim6
+ b9LazR6nJc3M7Fko7eJHTYTizb75MNYQG43zAw09pb7rjBDQAUaK06dEkLylmgvnWsaVBUr51u
+ 0zj/W0OlcePDpHuJz7WaxrO9EDfqTyIIDx07K2mlAo9sjjXQJ/c6EK1saGX+95uvh4pEGI0CQc
+ OrPm+f5BVsPcCvVAAAA
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: mitrutzceclan@gmail.com, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dumitru Ceclan <dumitru.ceclan@analog.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, Nuno Sa <nuno.sa@analog.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723450395; l=1967;
+ i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
+ bh=l2cMsMW6WjSVkxY7LiRh1xYBXXYUhNx5oNMkZpw0QAc=;
+ b=Qqh+HVkYK5/X4HNJyiP/mC68JLfIhLLtXLvFwceSn08y87V6PWDUqBFIVj3GQcWCdZoZkfmsh
+ FlvUvCKSp/4Bf75fAjsV1tM5M0wH6AX1juyG6DVyPDGgNUJLipkgo93
+X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
+ pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
+X-Endpoint-Received: by B4 Relay for dumitru.ceclan@analog.com/20240313
+ with auth_id=140
+X-Original-From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reply-To: dumitru.ceclan@analog.com
 
-If we're returning because "reg >= HX9023S_CH_NUM" then set the error code
-to -ENIVAL instead of success.
+This patch series adds support for the AD4113 ADC within the existing
+AD7173 driver.
 
-Fixes: 60df548277b7 ("iio: proximity: Add driver support for TYHX's HX9023S capacitive proximity sensor")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+The AD4113 is a low power, low noise, 16-bit, Σ-Δ analog-to-digital
+converter (ADC) that integrates an analog front end (AFE) for four
+fully differential or eight single-ended inputs.
+
+The part is not released yet and the documentation is not public.
+Register map is identical to AD4114 besides the lower width data
+register and the GPIO register.
+
+Particularities of this model:
+- 16 bit data register
+- no temperature sensor
+- no current inputs
+- input buffers
+- internal reference
+- external reference REF-/REF+
+- no second external reference REF2-/REF2+
+- no AVDD2 supply
+- 2 GPIO pins with config bits starting at a higher position in register
+- 8 VINx inputs with voltage divider
+- 16 channel registers and 8 setup registers
+
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
 ---
- drivers/iio/proximity/hx9023s.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Changes in v3:
+- lowercase chip ID
+- add patch to correctly order chip IDs defines
+- picked up RB and ACK tags
+- Link to v2: https://lore.kernel.org/r/20240809-ad4113-v2-0-2a70c101a1f4@analog.com
 
-diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-index fe14a62a1342..8b9f84400e00 100644
---- a/drivers/iio/proximity/hx9023s.c
-+++ b/drivers/iio/proximity/hx9023s.c
-@@ -598,7 +598,8 @@ static int hx9023s_property_get(struct hx9023s_data *data)
- 	device_for_each_child_node_scoped(dev, child) {
- 		ret = fwnode_property_read_u32(child, "reg", &reg);
- 		if (ret || reg >= HX9023S_CH_NUM)
--			return dev_err_probe(dev, ret, "Failed to read reg\n");
-+			return dev_err_probe(dev, ret < 0 ? ret : -EINVAL,
-+					     "Failed to read reg\n");
- 		__set_bit(reg, &data->chan_in_use);
- 
- 		ret = fwnode_property_read_u32(child, "single-channel", &temp);
+Changes in v2:
+- correctly set realbits and storagebits to 16 in iio_chan_spec
+- describe bindings restrictions in commit message due to lack of
+  sufficient diff context
+- describe model differences better in cover letter
+- Link to v1: https://lore.kernel.org/r/20240807-ad4113-v1-0-2d338f702c7b@analog.com
+
+---
+Dumitru Ceclan (3):
+      dt-bindings: adc: ad7173: add support for ad4113
+      iio: adc: ad7173: order chipID by value
+      iio: adc: ad7173: add support for ad4113
+
+ .../devicetree/bindings/iio/adc/adi,ad7173.yaml    |  3 ++
+ drivers/iio/adc/ad7173.c                           | 38 ++++++++++++++++++++--
+ 2 files changed, 39 insertions(+), 2 deletions(-)
+---
+base-commit: 1c61e13d7dc9003662bd7fd6064dfea67e64b014
+change-id: 20240725-ad4113-baa63ff99245
+
+Best regards,
 -- 
-2.43.0
+Dumitru Ceclan <dumitru.ceclan@analog.com>
+
 
 

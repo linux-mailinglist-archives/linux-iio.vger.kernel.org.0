@@ -1,140 +1,219 @@
-Return-Path: <linux-iio+bounces-8425-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8426-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D7094F153
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 17:09:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8E094F223
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 17:53:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8DC31F22C28
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 15:09:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 163762836BA
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Aug 2024 15:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6E717F4FE;
-	Mon, 12 Aug 2024 15:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4960D185E7A;
+	Mon, 12 Aug 2024 15:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAIzYEwF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNvjyIvY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CBA29CA;
-	Mon, 12 Aug 2024 15:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10F74D112;
+	Mon, 12 Aug 2024 15:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723475374; cv=none; b=Wj6QmZGfCSkYDN1TSffD1dtS0NyaMW+NqwkqNvZxqH0485ovlxc9JgM2yFxU/tWKbi0K7/RneyPL0XUMRj6kfY9Uzi14RVZkTzgZQun2CWIylh1BnfA8geURhnpv3/0AyG8XFz39M+eNFhcf87e5i570lTT0VDY2+30nPKlJK98=
+	t=1723477995; cv=none; b=HOywH5Sg6qjvwjVg5WZT537ExyrLfUDZVwlG59vkWb3cPMwV65f3C7CiqQV8A6V2gd3YT6wEEpEO8YMySuBciJzgWmpqQk8XufVP1AaGcgFQjMH/w6LgYv5mmexqPkgqhfWmMMa4Cf+z91nXbotBdK2gC3Ndr6a4//uEQrMAgh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723475374; c=relaxed/simple;
-	bh=deWuRDJPCT5foWSV44HA7CYL8GYl7vdMf1Zpapv5XKo=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=rbGlj56bEHeKm+2PNyoqvxuDxrvUEk1OuCO5mHAVx6uPumvVOg+3Hlhnre7BYQzXreuds0dhe3ShOws9ZmTkbhd8gxY2PRqNsglP9x6oLHO0b1GHy/umrlP4uTXyoRZSo/B62ceCDGNwuc17zo7hr81MKHnnSh3ZYzwaqjkxUvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAIzYEwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED03C32782;
-	Mon, 12 Aug 2024 15:09:33 +0000 (UTC)
+	s=arc-20240116; t=1723477995; c=relaxed/simple;
+	bh=HlRdvFKn4iFjzvom5J0DF55x13AYDpUEmQpaLh1Gggw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PlJh3FGj/cWTbqMCzx0dHPu92+og9sPBhFTG5KUmAz5XeEU6BXOUnQXfuEsV1JK1ZP5gI9GTmqsoX6sz3SRHFFCLAHSudthwlhmiXWE65cV5POSaEDRS2fj8kXnK+OhuNn/NEZTkrb+7PeSUvwrG1+LRUKBdlmj48+A+zAGbZQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNvjyIvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433E9C32782;
+	Mon, 12 Aug 2024 15:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723475374;
-	bh=deWuRDJPCT5foWSV44HA7CYL8GYl7vdMf1Zpapv5XKo=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=AAIzYEwFnviJyUy/yD9Tw3CxmOF45cdw3/aF/vhW8GEyHCcIZBPuhVpzhJXB2Vsta
-	 9XbecjNGYw8q5pyqkdiR3ucGZ0wUSLmQLR69dC+IMBMIaJHxFWOFaSvQRCKISrrtNQ
-	 xiIlnoL2pBFsWohKL16xDtEf7nB8i+Qkac53bhyaER4+qi9z3bfP1iJuJ4KbTRRdDx
-	 o7M8/+jU1G1NxD4lZ/34RxQenx3jaw3jyLlkfk5KZshHzXL8eefGnXzUuhjsGCfO0A
-	 J41i+sV0lntGANeqwnlMfv6xWzFy68z0av4EJq8pqDIaWGwI6T/PWBh0Ew2Kov3uV4
-	 TnKaogwXhIdqQ==
-Date: Mon, 12 Aug 2024 09:09:32 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1723477994;
+	bh=HlRdvFKn4iFjzvom5J0DF55x13AYDpUEmQpaLh1Gggw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HNvjyIvYcUWCRotT7GQXgqUlrr5FSbUa41bF+C4Q8O9FFRsQi7TpfwO2qfPILOHLI
+	 MF+lE2hpeNWcwGvlQSDyLXmIQgwb+YpXMz3VNQLUeGM71j8iMBfuYVcqFGZ+i3Y5wB
+	 Va17H2VYVmfqjGUXSSc3oH4h7MJVVFEC6rm1ygQaF82Iwrre9WyHkpF42zFPXvkF2t
+	 1Eehgat9ol63Z0l6MIrYBwGYslWQzKLWmZIK2TcfQIbJktRs56XmmZgaSa4JYrPb09
+	 pw774D/pCJUrirfRHRn6YHv4Lm6g9p9J51Y5UpqLV9jXTrGhyDYiLT0JLszaRzrIi2
+	 vNiqYIrH2WBTQ==
+Date: Mon, 12 Aug 2024 16:53:09 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Inochi Amaoto <inochiama@outlook.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	=?iso-8859-1?Q?Miqu=E8l?= Raynal <miquel.raynal@bootlin.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v4 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml:
+ Add Sophgo CV18XX SARADC binding
+Message-ID: <20240812-unwary-mongrel-9f6758bf624c@spud>
+References: <20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com>
+ <20240812-sg2002-adc-v4-1-599bdb67592f@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Detlev Casanova <detlev.casanova@collabora.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, 
- Alexey Charkov <alchark@gmail.com>, linux-iio@vger.kernel.org, 
- Sebastian Reichel <sebastian.reichel@collabora.com>, 
- linux-serial@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, linux-i2c@vger.kernel.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Jonas Karlman <jonas@kwiboo.se>, 
- Dragan Simic <dsimic@manjaro.org>, Jagan Teki <jagan@edgeble.ai>, 
- Yifeng Zhao <yifeng.zhao@rock-chips.com>, Tim Lunn <tim@feathertop.org>, 
- Elaine Zhang <zhangqing@rock-chips.com>, Andi Shyti <andi.shyti@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Heiko Stuebner <heiko@sntech.de>, Jonathan Cameron <jic23@kernel.org>, 
- Muhammed Efe Cetin <efectn@protonmail.com>, devicetree@vger.kernel.org, 
- Finley Xiao <finley.xiao@rock-chips.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Shresth Prasad <shresthprasad7@gmail.com>, linux-kernel@vger.kernel.org, 
- Ondrej Jirman <megi@xff.cz>, Liang Chen <cl@rock-chips.com>, 
- Weizhao Ouyang <weizhao.ouyang@arm.com>, Jiri Slaby <jirislaby@kernel.org>, 
- Jimmy Hon <honyuenkwun@gmail.com>, linux-arm-kernel@lists.infradead.org, 
- kernel@collabora.com, linux-rockchip@lists.infradead.org, 
- Chris Morgan <macromorgan@hotmail.com>, Andy Yan <andyshrk@163.com>, 
- Lee Jones <lee@kernel.org>
-In-Reply-To: <20240802214612.434179-10-detlev.casanova@collabora.com>
-References: <20240802214612.434179-1-detlev.casanova@collabora.com>
- <20240802214612.434179-10-detlev.casanova@collabora.com>
-Message-Id: <172347513683.603014.1210944906291860196.robh@kernel.org>
-Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="IXMbfodZVYjINFLf"
+Content-Disposition: inline
+In-Reply-To: <20240812-sg2002-adc-v4-1-599bdb67592f@bootlin.com>
 
 
-On Fri, 02 Aug 2024 17:45:36 -0400, Detlev Casanova wrote:
-> This device tree contains all devices necessary for booting from network
-> or SD Card.
-> 
-> It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
-> SDHCI (everything necessary to boot Linux on this system on chip) as
-> well as Ethernet, I2C, SPI and OTP.
-> 
-> Also add the necessary DT bindings for the SoC.
-> 
-> Signed-off-by: Liang Chen <cl@rock-chips.com>
-> Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
-> Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
-> Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
-> [rebase, squash and reword commit message]
-> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+--IXMbfodZVYjINFLf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Aug 12, 2024 at 05:00:55PM +0200, Thomas Bonnefille wrote:
+> The Sophgo SARADC is a Successive Approximation ADC that can be found in
+> the Sophgo SoC.
+>=20
+> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 > ---
->  .../boot/dts/rockchip/rk3576-pinctrl.dtsi     | 5775 +++++++++++++++++
->  arch/arm64/boot/dts/rockchip/rk3576.dtsi      | 1635 +++++
->  2 files changed, 7410 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
->  create mode 100644 arch/arm64/boot/dts/rockchip/rk3576.dtsi
-> 
+>  .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     | 85 ++++++++++++++++=
+++++++
+>  1 file changed, 85 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-sara=
+dc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.ya=
+ml
+> new file mode 100644
+> index 000000000000..846590808e5f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+> @@ -0,0 +1,85 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/sophgo,cv18xx-saradc.yaml#
 
+Filename matching the compatible please.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title:
+> +  Sophgo CV18XX SoC series 3 channels Successive Approximation Analog to
+> +  Digital Converters
+> +
+> +maintainers:
+> +  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+> +
+> +description:
+> +  Datasheet at https://github.com/sophgo/sophgo-doc/releases
+> +
+> +properties:
+> +  compatible:
+> +    const: sophgo,cv1800b-saradc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +patternProperties:
+> +  "^channel@[0-3]+$":
+> +    $ref: adc.yaml
+> +
+> +    description: |
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+This | is not required.
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+> +      Represents the channels of the ADC.
+> +
+> +    properties:
+> +      reg:
+> +        description: |
+> +          The channel number. It can have up to 3 channels numbered from=
+ 0 to 2.
+> +        items:
+> +          - minimum: 0
+> +            maximum: 2
 
-  pip3 install dtschema --upgrade
+Is this sufficient to limit the number of channels to 3? Aren't you relying
+on the unique unit addresses warning in dtc to limit it, rather than
+actually limiting with min/maxItems?
 
+Otherwise, looks fine to me.
 
-New warnings running 'make CHECK_DTBS=y rockchip/rk3576-armsom-sige5.dtb' for 20240802214612.434179-10-detlev.casanova@collabora.com:
+Cheers,
+Conor.
 
-In file included from arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dts:14:
-arch/arm64/boot/dts/rockchip/rk3576.dtsi:6:10: fatal error: dt-bindings/clock/rockchip,rk3576-cru.h: No such file or directory
-    6 | #include <dt-bindings/clock/rockchip,rk3576-cru.h>
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.lib:434: arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:485: arch/arm64/boot/dts/rockchip] Error 2
-make[2]: Target 'arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1389: rockchip/rk3576-armsom-sige5.dtb] Error 2
-make: *** [Makefile:224: __sub-make] Error 2
-make: Target 'rockchip/rk3576-armsom-sige5.dtb' not remade because of errors.
+> +
+> +    required:
+> +      - reg
+> +
+> +    additionalProperties: false
+> +
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/sophgo,cv1800.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    adc@30f0000 {
+> +        compatible =3D "sophgo,cv1800b-saradc";
+> +        reg =3D <0x030f0000 0x1000>;
+> +        clocks =3D <&clk CLK_SARADC>;
+> +        interrupts =3D <100 IRQ_TYPE_LEVEL_HIGH>;
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        channel@0 {
+> +            reg =3D <0>;
+> +        };
+> +        channel@1 {
+> +            reg =3D <1>;
+> +        };
+> +        channel@2 {
+> +            reg =3D <2>;
+> +        };
+> +    };
+>=20
+> --=20
+> 2.46.0
+>=20
 
+--IXMbfodZVYjINFLf
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZrov5QAKCRB4tDGHoIJi
+0oaoAQDMe6NoYEYFRjr7uYTIB7DeEAi2qvZXnWVWHzFxwkkH8QEAw36aA0k+SIZe
+JdTW3mWW5ZLezGEIrXTpuMaHzqoqWwQ=
+=K9Up
+-----END PGP SIGNATURE-----
 
-
+--IXMbfodZVYjINFLf--
 

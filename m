@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-8437-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8438-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127EC950180
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2024 11:46:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379D4950191
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2024 11:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 899071F236FE
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2024 09:46:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A867B27E50
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2024 09:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C99B17CA12;
-	Tue, 13 Aug 2024 09:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDD0183CA6;
+	Tue, 13 Aug 2024 09:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DUgzbxCa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jC6zNycO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21245210E7;
-	Tue, 13 Aug 2024 09:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6524516DEAA;
+	Tue, 13 Aug 2024 09:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723542400; cv=none; b=D2p7+ARUY621J6mALpasAQ+euMoV+ZQABwKhAeq8+FgeGqGfbS9prsggooMbnJ3TtBqGGe+mC4CKmuD5raoIp9Z58gPJKlDs9dvCxXMUXa8p3XSH25C3WOp70Aff1AeufLY7TRU9fENeoJKJ/iFQ0iSMrhcl7gNa5ZBC2/iNGgo=
+	t=1723542667; cv=none; b=DtsjWVi21/dfy2VVb94ccoMQfa6KVNyhobUWsGhSSPrAyehNwxlEo6b0N+Cts9wBAaH6Khs9dX7whz5YvJ9GI/CXjbBMuSut2kDajZfetph9crvWCDeYFP71C6AyLRSfKLhuTfxgKGQlvn18WDBwWQ+9eAADDObs2BrSOqQ59cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723542400; c=relaxed/simple;
-	bh=ymT2I/4SMiXIMej+1eahwXe1+S+4WvRsTFHYt6PhdBw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=E9PYN1etTvH6/G6eqh7HTGh/q1+BebjPlWdbYfEKb0QaePW33539FznkBIUQAlXkpjr+zBuUKvjskj1iShROeH3MHl3E6wkW2CVBfksg8KpmvUd70gz8lfF/smqu0nMfiSsNSr4bbQCYo9Pdjq/wdB3HRq0oBf52dQNZ+kyyJFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DUgzbxCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BAFC4AF09;
-	Tue, 13 Aug 2024 09:46:34 +0000 (UTC)
+	s=arc-20240116; t=1723542667; c=relaxed/simple;
+	bh=u4GVLmL56p9bLDLAYbw4kFxsRLgytFR0Ld25rKYzcX0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WblEMPR5nnPgzyG5wToAbQ2JW7dzRC0pHEZsQtPEhc7O9M6seeBaYKq1xtqqmWJv3yLRs7yu3V4xN8t80qsz5O+E1U/iuzzlbuysygbJmE6huNMDhnLUcVtDtd/UzyevxZNqnYPA55vYZBm8GaVXy3yXD0wj9jiaGgS6xz2OPDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jC6zNycO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA01EC4AF0B;
+	Tue, 13 Aug 2024 09:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723542399;
-	bh=ymT2I/4SMiXIMej+1eahwXe1+S+4WvRsTFHYt6PhdBw=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=DUgzbxCawhn90Us54mf07Kp2BVFRryYEFFpQk5WaFAaQ3on9Q6ze54BnZqNwLIT1U
-	 Ulpikv8Ezg1ps+7rjMImZ0GDRdsQIEIWgf4cW77Ghk1SJ89QW5ENBumrmr5mrXaMyY
-	 jAQA5XLiyqvGBfMZ4Vl9w/zRC9ewuyQAImj/mw+r6en32QTE+j9VuNk7WCTlXAWJIa
-	 XZyXn9o4Iw1pD+oVDUM9d1CXtAwEPuFWYsCAEazScW+wdXB/xr0IiGiAE+wmEXlJ9l
-	 OYpayNnwA9cC/22naDb0clXeLuax9Eib990R+lCiTR3PICpakxUlw/ZUmlHG1Woquc
-	 zrPFGqIkYmtaQ==
-Message-ID: <bb33aeb0-7134-45ec-8536-47c524ec9e4b@kernel.org>
-Date: Tue, 13 Aug 2024 11:46:32 +0200
+	s=k20201202; t=1723542667;
+	bh=u4GVLmL56p9bLDLAYbw4kFxsRLgytFR0Ld25rKYzcX0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jC6zNycOPiCv0OiyxJKR4pVZlBuaCiBBFyCJorRk0XPAGIKgWEEvIbzMiluOruoPv
+	 pMxZL05D8S+uAVmLh6Q9Csa89MK1DU2pXFPi1gBd9TnM5LP7u9v8rReNdVMXxpf0RH
+	 xUYWaUw6NMYNPmfi1gUtvkFomhv6SoaEzIrZ2QdRt5T6LbED5AmERbqfWS/otjd1gz
+	 hZ0V2cN56UDJCrJR0r5v80tJFiUuHJ0Swnw+GA5QuKTz09PJDy9sQFGAEust6PKtQP
+	 i6MIx3x/HQTA9lfGIeiZ4Odsk0bXdAdZ8t40o+gXRL/Tnrt6UCfAnCGUj2RhWOs1iA
+	 Hh4aNuP6OFuFg==
+Message-ID: <f868dee1-0007-44a1-9fbf-d6a0fdcf4837@kernel.org>
+Date: Tue, 13 Aug 2024 11:50:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,23 +50,21 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: imu: smi240: imu driver
-To: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>,
- "jic23@kernel.org" <jic23@kernel.org>, "lars@metafoo.de" <lars@metafoo.de>,
- "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
- <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "dima.fedrau@gmail.com" <dima.fedrau@gmail.com>,
- "marcelo.schmitt1@gmail.com" <marcelo.schmitt1@gmail.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Lorenz Christian (ME-SE/EAD2)" <Christian.Lorenz3@de.bosch.com>,
- "Frauendorf Ulrike (ME/PJ-SW3)" <Ulrike.Frauendorf@de.bosch.com>,
- "Dolde Kai (ME-SE/PAE-A3)" <Kai.Dolde@de.bosch.com>
-References: <20240809111635.106588-1-Jianping.Shen@de.bosch.com>
- <20240809111635.106588-3-Jianping.Shen@de.bosch.com>
- <561b467a-58aa-471c-8ea6-cd6ef927c287@kernel.org>
- <AM8PR10MB47217665274B9848EB21FA65CD862@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+Subject: Re: [PATCH v4 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml:
+ Add Sophgo CV18XX SARADC binding
+To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>,
+ Inochi Amaoto <inochiama@outlook.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com>
+ <20240812-sg2002-adc-v4-1-599bdb67592f@bootlin.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -112,115 +110,120 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <AM8PR10MB47217665274B9848EB21FA65CD862@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+In-Reply-To: <20240812-sg2002-adc-v4-1-599bdb67592f@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 13/08/2024 11:41, Shen Jianping (ME-SE/EAD2) wrote:
-> Hi
+On 12/08/2024 17:00, Thomas Bonnefille wrote:
+> The Sophgo SARADC is a Successive Approximation ADC that can be found in
+> the Sophgo SoC.
 > 
-> On 09/08/2024 13:16, Jianping.Shen@de.bosch.com wrote:
->> From: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
->>
->> iio: imu: smi240: driver improvements
-> 
-> ?????
-> Did not get your point, what is wrong here? how it shall be?
-
-See submitting patches. This does not match your commit at all. I do not
-see any driver improvements done here. If so, please list all your
-improvements against existing kernel driver.
+> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 
 
-> 
->> Signed-off-by: Shen Jianping (ME-SE/EAD2) <Jianping.Shen@de.bosch.com>
->> ---
->>
-> 
-> 
-> ...
-> 
->> +	ret = regmap_read(data->regmap, SMI240_CHIP_ID_REG, &response);
->> +	if (ret)
->> +		return dev_err_probe(dev, ret, "Read chip id failed\n");
->> +
->> +	if (response != SMI240_CHIP_ID)
->> +		dev_info(dev, "Unknown chip id: 0x%04x\n", response);
->> +
->> +	ret = smi240_init(data);
->> +	if (ret)
->> +		return dev_err_probe(dev, ret,
->> +				     "Device initialization failed\n");
->> +
->> +	indio_dev->channels = smi240_channels;
->> +	indio_dev->num_channels = ARRAY_SIZE(smi240_channels);
->> +	indio_dev->name = "smi240";
->> +	indio_dev->modes = INDIO_DIRECT_MODE;
->> +	indio_dev->info = &smi240_info;
->> +
->> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
->> +					      iio_pollfunc_store_time,
->> +					      smi240_trigger_handler, NULL);
->> +	if (ret)
->> +		return dev_err_probe(dev, ret,
->> +				     "Setup triggered buffer failed\n");
->> +
->> +	ret = devm_iio_device_register(dev, indio_dev);
->> +	if (ret)
->> +		return dev_err_probe(dev, ret, "Register IIO device failed\n");
->> +
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(smi240_core_probe);
->> +
->> +MODULE_AUTHOR("Markus Lochmann <markus.lochmann@de.bosch.com>"); 
->> +MODULE_AUTHOR("Stefan Gutmann <stefan.gutmann@de.bosch.com>"); 
->> +MODULE_DESCRIPTION("Bosch SMI240 driver"); MODULE_LICENSE("Dual 
->> +BSD/GPL");
-> 
-> Hm? How many modules do you have here? What are their names?
-> 
-> We have one module, named  "Bosch SMI240 driver". Any problem here?
+<form letter>
+This is a friendly reminder during the review process.
 
-Yes, you put MODULE_* to how many files? Two? Three? Why is it needed
-everywhere?
+It seems my or other reviewer's previous comments were not fully
+addressed. Maybe the feedback got lost between the quotes, maybe you
+just forgot to apply it. Please go back to the previous discussion and
+either implement all requested changes or keep discussing them.
 
-> 
-> 
-> 
->> +
->> +static const struct spi_device_id smi240_spi_id[] = { { "smi240", 0 
->> +}, {} };
-> 
-> Don't wrap it.
-> 
-> We don't , git send-mail did it automatically for us. 
-> 
-> 
->> +MODULE_DEVICE_TABLE(spi, smi240_spi_id);
->> +
->> +static const struct of_device_id smi240_of_match[] = {
->> +	{ .compatible = "bosch,smi240" },
->> +	{},
->> +};
->> +MODULE_DEVICE_TABLE(of, smi240_of_match);
->> +
->> +static struct spi_driver smi240_spi_driver = {
->> +	.probe = smi240_spi_probe,
->> +	.id_table = smi240_spi_id,
->> +	.driver = {
->> +		.of_match_table = of_match_ptr(smi240_of_match),
-> 
-> Why did it appear? You introduce now warnings.
-> 
-> Did not get your point, why we introduce now warnings here ?
+Thank you.
+</form letter>
 
-Fix your quoting. It's impossible to figure out what is here my quote
-and what is yours.
+.. and more ignored comments further.
 
-Why? Test your code properly... Drop the of_match_ptr.
+> ---
+>  .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     | 85 ++++++++++++++++++++++
+>  1 file changed, 85 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+> new file mode 100644
+> index 000000000000..846590808e5f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+> @@ -0,0 +1,85 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/sophgo,cv18xx-saradc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title:
+> +  Sophgo CV18XX SoC series 3 channels Successive Approximation Analog to
+> +  Digital Converters
+> +
+> +maintainers:
+> +  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+> +
+> +description:
+> +  Datasheet at https://github.com/sophgo/sophgo-doc/releases
+> +
+> +properties:
+> +  compatible:
+> +    const: sophgo,cv1800b-saradc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +patternProperties:
+> +  "^channel@[0-3]+$":
+> +    $ref: adc.yaml
+> +
+> +    description: |
+> +      Represents the channels of the ADC.
+> +
+> +    properties:
+> +      reg:
+> +        description: |
+> +          The channel number. It can have up to 3 channels numbered from 0 to 2.
+> +        items:
+> +          - minimum: 0
+> +            maximum: 2
+> +
+> +    required:
+> +      - reg
+> +
+> +    additionalProperties: false
+> +
+> +
 
+Just one blank line.
 
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +
+> +unevaluatedProperties: false
+
+No, how did this appear here? This must be additionalProperties.
+
+I already commented on this.
+
+<form letter>
+This is a friendly reminder during the review process.
+
+It seems my or other reviewer's previous comments were not fully
+addressed. Maybe the feedback got lost between the quotes, maybe you
+just forgot to apply it. Please go back to the previous discussion and
+either implement all requested changes or keep discussing them.
+
+Thank you.
+</form letter>
 
 Best regards,
 Krzysztof

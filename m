@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-8449-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8450-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C280C950995
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2024 17:57:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4869509A3
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2024 17:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0070B1C21E0E
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2024 15:57:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 064B9B2607A
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Aug 2024 15:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4651A08B1;
-	Tue, 13 Aug 2024 15:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702B01A0AE1;
+	Tue, 13 Aug 2024 15:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MtwF/Z4i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fTdULFAs"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443742AF0D;
-	Tue, 13 Aug 2024 15:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215F01A08B8;
+	Tue, 13 Aug 2024 15:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723564658; cv=none; b=alEb6hIjSqfSKkW629AZTCEwODpUr4O3x+RIuogl/AzlloP7PNBbXGiKChnzsBNGzPF6SFI8Xp+EQO2QaQlz2EkkeGU7lZsil9Alo70z4ZSlwu2Spl+w2t/+QxCf3Y/pegShkbXy1zBUbTmaq+kbLdDLY9PNuKgKLoZHWQ1jxug=
+	t=1723564750; cv=none; b=b/zGj4cal9YGPJu8N0j50TmjJ/TO3suWaBKpOIaeK/l2psRs0ipTQONFyjfli7h+nS5aButU0jHwh2s88tW5CfgkuFgKogRZwrZNC+bkKQ9zTSFrGLolqA7N1d0BlLNcgRKpfd/+jIfM4HyCA0lc1GjhtVN2lIOdoTWpNb4lkuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723564658; c=relaxed/simple;
-	bh=z3i387JAO9gcZOh6PxBYRgTtfMQNGrcehBlbd38lPbc=;
+	s=arc-20240116; t=1723564750; c=relaxed/simple;
+	bh=LkMm6dF7ExphNxxRq0QmoYg7CBmD+Q94nhUd54iaQ3M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=gjfRVvZrqTjJM+HDlGbgdvkao42zvLFrxVxRDO31w0TL45mL8L3qPneXrGAkEHMwzyV5aK4tMcyRlcQdqHYyVtIdK+qVr4KUS0741EaSrE2+TyTBDVLtk2oJ02P8LeRB1+aHdDkWhCdwwHyFtIo4dLjiojgQ6j4sRv6xs2hKmBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MtwF/Z4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59640C4AF09;
-	Tue, 13 Aug 2024 15:57:33 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=kwLd+8DLlbJQ2ITJ19oQ9SKvzTJij+UDSahmrWvaRL4wy2PI98ucWmlykFzx24mDP/PA2lsspg8oPW57lb1B4L9dn8R4qtYKyYb2MHAeBLuVpJwuATE+9HeJOprJOFewVqn/xKvtb6oo5yVXewdPKDDHF2H41ijDguzsnB42uVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fTdULFAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689B0C4AF0B;
+	Tue, 13 Aug 2024 15:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723564657;
-	bh=z3i387JAO9gcZOh6PxBYRgTtfMQNGrcehBlbd38lPbc=;
+	s=k20201202; t=1723564749;
+	bh=LkMm6dF7ExphNxxRq0QmoYg7CBmD+Q94nhUd54iaQ3M=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=MtwF/Z4iHI0Yfl8aqv6a1g2hzDd7v2D6v5F69lB1bGI1QVX1Big89it1oxQk3T8Li
-	 Eqz0HTxaPthrnMcqGw+DDt97Vu1a0m1u5M0qTHsltPFpK6CdxTX/Ptoc+pAbt8MJL4
-	 zxTmRUu6uuSoe2LBL9BNSd4ArOkrqBdth79VgVl2NAS0r+LxfSjPJE8XxUozd18wpP
-	 X08sE8sTTu3s5Ed4tMyH9RjJrPkXVzz1mkxyprAn9uIHQtjTbW1tYmma1xPcTC75Xz
-	 DOQNqvgLBCUzxkf1M9qj8krM8xG9IecRFRs7f6n5YkzqY1miXLAeUy8zFo/Zbw5RPT
-	 lvJQalt8urYxg==
-Message-ID: <703979cd-c189-41c0-a61c-eb7e90e225e6@kernel.org>
-Date: Tue, 13 Aug 2024 17:57:30 +0200
+	b=fTdULFAs5fezNLXLvda50spfrYVo4jvaGsKHjxRtvtRU8dChe1kFgkD2AvxLCgRS+
+	 ZNkTc8gvO/gTZmKLYVMOLy0UNy9fB3BQ5yv/Qu/pv5M0ThAE5HLWgT9ULImlremJqq
+	 AiYYcrkFnu3mYLQSSZM/nmyxOvhdU64N/GuNGdxAmiU9RWXrol+wcw+wa77B+nz3VS
+	 iaIiqWBlBec1eQjcduau/xZAJEtGhqF5lii+siYu3c3RstW9rEzdqVvwS+ndXl/XEi
+	 XS7djwJDqbXuQOPWVYmYxs4G+D6aH32JbM6qxswmyzGc/5afs9UIIYc8lEg5WiH48m
+	 FINO9QU1r+/ng==
+Message-ID: <7181442b-574e-4fab-94c0-e3282ac2d16d@kernel.org>
+Date: Tue, 13 Aug 2024 17:59:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -51,14 +51,22 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/2] iio: imu: smi240: imu driver
-To: Jianping.Shen@de.bosch.com, jic23@kernel.org, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- dima.fedrau@gmail.com, marcelo.schmitt1@gmail.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Christian.Lorenz3@de.bosch.com,
- Ulrike.Frauendorf@de.bosch.com, Kai.Dolde@de.bosch.com
+To: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>,
+ "jic23@kernel.org" <jic23@kernel.org>, "lars@metafoo.de" <lars@metafoo.de>,
+ "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "dima.fedrau@gmail.com" <dima.fedrau@gmail.com>,
+ "marcelo.schmitt1@gmail.com" <marcelo.schmitt1@gmail.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Lorenz Christian (ME-SE/EAD2)" <Christian.Lorenz3@de.bosch.com>,
+ "Frauendorf Ulrike (ME/PJ-SW3)" <Ulrike.Frauendorf@de.bosch.com>,
+ "Dolde Kai (ME-SE/PAE-A3)" <Kai.Dolde@de.bosch.com>
 References: <20240809111635.106588-1-Jianping.Shen@de.bosch.com>
  <20240809111635.106588-3-Jianping.Shen@de.bosch.com>
+ <561b467a-58aa-471c-8ea6-cd6ef927c287@kernel.org>
+ <AM8PR10MB47217665274B9848EB21FA65CD862@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,28 +112,26 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240809111635.106588-3-Jianping.Shen@de.bosch.com>
+In-Reply-To: <AM8PR10MB47217665274B9848EB21FA65CD862@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/08/2024 13:16, Jianping.Shen@de.bosch.com wrote:
-> +
-> +MODULE_AUTHOR("Markus Lochmann <markus.lochmann@de.bosch.com>");
-> +MODULE_AUTHOR("Stefan Gutmann <stefan.gutmann@de.bosch.com>");
-> +MODULE_DESCRIPTION("Bosch SMI240 driver");
-> +MODULE_LICENSE("Dual BSD/GPL");
+On 13/08/2024 11:41, Shen Jianping (ME-SE/EAD2) wrote:
+>> +EXPORT_SYMBOL_GPL(smi240_core_probe);
+>> +
+>> +MODULE_AUTHOR("Markus Lochmann <markus.lochmann@de.bosch.com>"); 
+>> +MODULE_AUTHOR("Stefan Gutmann <stefan.gutmann@de.bosch.com>"); 
+>> +MODULE_DESCRIPTION("Bosch SMI240 driver"); MODULE_LICENSE("Dual 
+>> +BSD/GPL");
+> 
+> Hm? How many modules do you have here? What are their names?
+> 
+> We have one module, named  "Bosch SMI240 driver". Any problem here?
 
-Let's be clear here: if you bothered to look at your module, you would
-see that it is duplicated. I judged by code review and questioned it.
-This should lead you to double and triple check. But instead of
-double-checking, you engage in long discussion with reviewer. Sorry,
-that's wasting my time. Your job is to check it, if you got comments on
-this, not mine.
+That's not the name of the module. That's description. What is the
+module filename (filename=name!)?
 
-Please carefully read upstreaming guides/presentations and which
-mistakes to avoid. Hint: wasting reviewer's time.
-
-NAK.
+Fix your quoting, because you misrepresent people's comments.
 
 Best regards,
 Krzysztof

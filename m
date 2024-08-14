@@ -1,55 +1,58 @@
-Return-Path: <linux-iio+bounces-8477-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8478-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FDC952261
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 20:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA3595227E
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 21:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DC071F223AD
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 18:58:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B1161F23EDE
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 19:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92991BD50A;
-	Wed, 14 Aug 2024 18:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208EA1BE259;
+	Wed, 14 Aug 2024 19:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqvPkbXu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RD8TtqP3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0183BBCB
-	for <linux-iio@vger.kernel.org>; Wed, 14 Aug 2024 18:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A6CB679;
+	Wed, 14 Aug 2024 19:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723661931; cv=none; b=uBawnA6RQT+IOKm1TiR1/3LmqrOMmd9YGJZjqp8MwVqVJA8WxAuUfp6RZJD89BdcjUR2lC1bedhRZ7I63WHm7Px0n+pTqbCkw/A+JL+3WVpz9lYkZO3aSUjLj+lcd358PJ+gtBpQpH7DDFMbV4+964MQ/dq8KiibneOvvSrIdIU=
+	t=1723662637; cv=none; b=c13Kq1pHuvylkxutK3zyaDJYFc8iPBBK+RMwn9Tz0GaM2IqPU+AJfbKWZc+nd+3mEeuFHzJej981LTeZUMS3OoTKYSa0N3ihx01zlxmNaFLJlKUdaAocXFWj7ybuY+K4YLMRUckJIn0foNGmKteOTjqoghIFg+HpRs7TeVpzAX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723661931; c=relaxed/simple;
-	bh=tZ9YlNP5AjLZ5Aw0sOVDui8QTKFfd/kxVNQijb0b1T0=;
+	s=arc-20240116; t=1723662637; c=relaxed/simple;
+	bh=HZm5ZViVujSwBTW2l5YWdESNtXHh++If2Xp/kAv1ws8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=owH8D2Dy0VS4h8mx45NSQlYutfA64V3G+3zZ9zafTAK548ENso/X5bVCUcPMEG+RDidnMS4q8NMWfpp1fvqGPtfx2hsmOZrE50jVVbejTGx1q/P4TOIS8D214pJid3MKgzfDvi8jFfmbsX/6JGtlbmsOMAX57Rj+6pjxrTqP2hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqvPkbXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4CAC116B1;
-	Wed, 14 Aug 2024 18:58:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oxh7XPSzr0P2tgEn4v+7IfPOqmMddRqXQVProK2w1OhFfxvXA84n33vVLe6gm1vCRCJe8WIJTgD/xtnB3x+FzEo4OzY3XqPyQtO9xw/dzzzBt+q15r8QBzX4c6yXid/MaEAyZNGtPU1ccTHP/vNAi8IAu5LAm1M79KpeNG8qTv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RD8TtqP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA9FC116B1;
+	Wed, 14 Aug 2024 19:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723661931;
-	bh=tZ9YlNP5AjLZ5Aw0sOVDui8QTKFfd/kxVNQijb0b1T0=;
+	s=k20201202; t=1723662637;
+	bh=HZm5ZViVujSwBTW2l5YWdESNtXHh++If2Xp/kAv1ws8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kqvPkbXuJZ9q484Y0KA72YYdpAGfJOYp63QWUmQ6fcUD0SRdUYLvYZUlominlnDSq
-	 LaYY1z6d8quZR2TsF2pJRhWC0PNeXrNOkx3k3Tz2YUy1FCgeyHnb4Th4cUakNeXtha
-	 hG94vth5AQJFNuhXQJ/VchfaKgwzskdtpDfriLaB2ZpjcpdmS88hHbxO/1pWgrLPAu
-	 1pMwnh2PB3iBLMdfUSVGkovoF0EQg2WLRtQAN7o2RMCOt6rzwLCbsLcRE12e8p6Vht
-	 QQ5dBcpI9y7oV3Xuo/SUfiLR3+ZsiwZfoaXkXus9EpMog7MSjuQqc13r8E+3lmS2Ja
-	 0zFmv767r6PVQ==
-Date: Wed, 14 Aug 2024 19:58:44 +0100
+	b=RD8TtqP39IUmkowESt4YC3Ty3+egkb27VM+yMqzHlMiJoq8W3X7QdX07ttomDmrQx
+	 l2uAVlLH72KYirL8Ox3nWbZE/KaxddXkQ7kJDD/1wUorRHw0AR7q9FKQ8J/6Yrj+9h
+	 xZaJ3vIuaf59Z8ADNQNEHi7oIONppTl+bExF5n4325gIwKBxa4VEod1cvWlJrH9vYP
+	 7FKmxKbis6iMO9QadJjPK6lp00YjmdQmlfMReDwyyw9NbGP4C96JOGBbL2yCbqE7Gt
+	 rUve/UFUh1aHheFuxQAsPfmyAtSjoQ6xiRKKG0sB9ywCYEuixOvQV2I7KURDB5LfYZ
+	 cyDrGmrvH0o/Q==
+Date: Wed, 14 Aug 2024 20:10:29 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org
-Subject: Re: [bug report] iio: light: noa1305: Make integration time
- configurable
-Message-ID: <20240814195844.71f6ba35@jic23-huawei>
-In-Reply-To: <fb9734ff-5029-4855-971a-3dc734881b4e@stanley.mountain>
-References: <fb9734ff-5029-4855-971a-3dc734881b4e@stanley.mountain>
+To: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-kernel@vger.kernel.org, Bao Cheng Su <baocheng.su@siemens.com>, Chao
+ Zeng <chao.zeng@siemens.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/3] dt-bindings: iio: Add everlight pm16d17 binding
+Message-ID: <20240814200946.59bd8435@jic23-huawei>
+In-Reply-To: <f6476e06cd8d1cf3aff6563530612c536cd45716.1723527641.git.jan.kiszka@siemens.com>
+References: <cover.1723527641.git.jan.kiszka@siemens.com>
+	<f6476e06cd8d1cf3aff6563530612c536cd45716.1723527641.git.jan.kiszka@siemens.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,55 +61,168 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 8 Aug 2024 10:12:12 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Tue, 13 Aug 2024 07:40:41 +0200
+Jan Kiszka <jan.kiszka@siemens.com> wrote:
 
-> Hello Marek Vasut,
-> 
-> Commit 025f23cfebad ("iio: light: noa1305: Make integration time
-> configurable") from Jul 15, 2024 (linux-next), leads to the following
-> Smatch static checker warning:
-> 
-> 	drivers/iio/light/noa1305.c:201 noa1305_write_raw()
-> 	error: buffer overflow 'noa1305_int_time_available' 16 <= 31
-> 
-> drivers/iio/light/noa1305.c
->     183 static int noa1305_write_raw(struct iio_dev *indio_dev,
->     184                              struct iio_chan_spec const *chan,
->     185                              int val, int val2, long mask)
->     186 {
->     187         struct noa1305_priv *priv = iio_priv(indio_dev);
->     188         int i;
->     189 
->     190         if (chan->type != IIO_LIGHT)
->     191                 return -EINVAL;
->     192 
->     193         if (mask != IIO_CHAN_INFO_INT_TIME)
->     194                 return -EINVAL;
->     195 
->     196         if (val)        /* >= 1s integration time not supported */
->     197                 return -EINVAL;
->     198 
->     199         /* Look up integration time register settings and write it if found. */
->     200         for (i = 0; i < ARRAY_SIZE(noa1305_int_time_available); i++)
->                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Good find. Should be ARRAY_SIZE() / 2 I think.
+> From: Chao Zeng <chao.zeng@siemens.com>
+>=20
+> Add the binding document for the everlight pm16d17 sensor.
+>=20
+> Signed-off-by: Chao Zeng <chao.zeng@siemens.com>
+> Co-developed-by: Baocheng Su <baocheng.su@siemens.com>
+> Signed-off-by: Baocheng Su <baocheng.su@siemens.com>
+hi Jan,
 
-Marek, spin a patch?  If not I'll get to it soonish.
-> 
-> --> 201                 if (noa1305_int_time_available[2 * i + 1] == val2)  
->                                                        ^^^^^^^^^
-> Buffer overflow
-> 
->     202                         return regmap_write(priv->regmap, NOA1305_REG_INTEGRATION_TIME, i);
->     203 
->     204         return -EINVAL;
->     205 }
-> 
-> regards,
-> dan carpenter
-> 
+=46rom a first read at least, almost everything in here
+is stuff we should be controlling from the driver, not
+providing as fixed values from firmware.
+
+Specific comments inline.
+
+Jonathan
+
+> ---
+>  .../iio/proximity/everlight,pm16d17.yaml      | 95 +++++++++++++++++++
+>  1 file changed, 95 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/everl=
+ight,pm16d17.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/everlight,pm=
+16d17.yaml b/Documentation/devicetree/bindings/iio/proximity/everlight,pm16=
+d17.yaml
+> new file mode 100644
+> index 000000000000..fadc3075181a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/proximity/everlight,pm16d17.y=
+aml
+> @@ -0,0 +1,95 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/proximity/everlight,pm16d17.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Everlight PM-16D17 Ambient Light & Proximity Sensor
+> +
+> +maintainers:
+> +  - Chao Zeng <chao.zeng@siemens.com>
+> +
+> +description: |
+> +  This sensor uses standard I2C interface. Interrupt function is not cov=
+ered.
+> +  Datasheet: https://en.everlight.com/sensor/category-proximity_sensor/d=
+igital_proximity_sensor/
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - everlight,pm16d17
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  ps-gain:
+> +    description: Receiver gain of proximity sensor
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [1, 2, 4, 8]
+> +    default: 1
+
+This should I think be a userspace control.
+Given it's not related to proximity as such, probably=20
+in_proximity0_hardwaregain
+
+> +
+> +  ps-itime:
+> +    description: Conversion time for proximity sensor [ms]
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum:
+> +      - "0.4"
+> +      - "0.8"
+> +      - "1.6"
+> +      - "3.2"
+> +      - "6.3"
+> +      - "12.6"
+> +      - "25.2"
+> +    default: "0.4"
+Definitely a userspace control.  Is this actually integration time
+which we'd expect to affect the hardwaregain or is it just
+1/ frequency of sampling (with fixed integration time).
+Looking at datasheet it's coupled to resolution which may
+make this oversampling related. Hard to tell.
+
+> +
+> +  ps-wtime:
+> +    description: Waiting time for proximity sensor [ms]
+I guess the above was the integration time and this sets
+the sampling_frequency.  In that case definitely a userspace
+thing, doesn't belong in DT.
+
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum:
+> +      - "12.5"
+> +      - "25"
+> +      - "50"
+> +      - "100"
+> +      - "200"
+> +      - "400"
+> +      - "800"
+> +      - "1600"
+> +    default: "12.5"
+> +
+> +  ps-ir-led-pulse-count:
+> +    description: IR LED drive pulse count
+
+This needs more information.  Why would this be changed?
+Seems from datasheet that this is effectively a different
+form of gain. Why would we choose one rather than the other?
+Or are they both ways of increasing the overall sensitivity?
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 1
+> +    maximum: 256
+> +    default: 1
+> +
+> +  ps-offset-cancel:
+> +    description: |
+> +      When PS offset cancel function is enabled, the result of subtracti=
+ng any
+> +      value specified by the PS offset cancel register from the internal=
+ PS
+> +      output data is written to the PS output data register.
+That sounds like a calibbias userspace control, but more info needed.
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    default: 0
+> +    maximum: 65535
+> +
+As Conor mentioned, need to describe the hardware as fully as possible so i=
+nterrupts
+and power supplies (even if they are always on for your particular board)
+
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        lightsensor: pm16d17@44 {
+> +            compatible =3D "everlight,pm16d17";
+> +            reg =3D <0x44>;
+> +
+> +            ps-gain =3D <1>;
+> +            ps-itime =3D "0.4";
+> +            ps-wtime =3D "12.5";
+> +            ps-ir-led-pulse-count =3D <1>;
+> +            ps-offset-cancel =3D <280>;
+> +        };
+> +    };
 
 

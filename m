@@ -1,112 +1,184 @@
-Return-Path: <linux-iio+bounces-8472-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8473-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52D1951F6F
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 18:07:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AA79520CF
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 19:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7B271C20EDD
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 16:07:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C2722840DE
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 17:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384D51B86C1;
-	Wed, 14 Aug 2024 16:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0181C1BBBC5;
+	Wed, 14 Aug 2024 17:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJwyiW2f"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PM1LQgUu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEB11E53A;
-	Wed, 14 Aug 2024 16:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB8A1B9B48
+	for <linux-iio@vger.kernel.org>; Wed, 14 Aug 2024 17:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723651615; cv=none; b=T3vjNCDES62mF+5OBKugrWlFILhTIWcELKJYpmn7dTeK7D8kZx2AjSICdUrrWd6/b5waZp/A5XvIF414TPzrWGDikJeN2R/kXFWLnIWB1jGJX8+IeRDuY3N2tQn4J168iyxDoAgH+5W5KyqMjNR1AUQM+b0bu1zzaf6EXUdF/Xo=
+	t=1723655666; cv=none; b=HgC2pvS5Sxr6RtpjGj7/w0MW32FKoMelNKOLXGJhD1cr5PpGMPBbsAOp72T/UTf4VrXP4nahQlMebLdvwQeydaheO/+dSPSTXt2h6+khn5VliI23m97F7fQ7Gf8BsGuGJtHOLmJaBzXlWTMmqNPuAeL0LTDZ1ccI0IwmEbB/4Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723651615; c=relaxed/simple;
-	bh=ZLTngYn1Z/w0Gi1BAHMxJnppaowKvDzr41t/hl18FBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K2LY8+UJTPxuloLdP7h+g1TNy9JdVjpQgRf8vxIPhaYFmkb2iGq2ymcK3TARhwaIP8qPAdyx6qgJD73ZmWYChYnfkGrbvfvI94cTTvksnCcFPhMZT7yyGCbDnsT6udpL3OhDQzZa98fDUC3V5fjO8B8xQ6tVJx5EYBMQe8XwakA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJwyiW2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69674C116B1;
-	Wed, 14 Aug 2024 16:06:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723651614;
-	bh=ZLTngYn1Z/w0Gi1BAHMxJnppaowKvDzr41t/hl18FBI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EJwyiW2fEb6yJqIMEUVk0U/2ZW9bpV3GyVFFoK6HcvR82Ao0Eu3xY7hsalODcfBaJ
-	 asN0q/bcY4liJ3PNQUx7P056qD3/a7EVOMSKR4vc0LWuBMINWEweo8drTMbLkvZYdv
-	 +o4It89/QM96H+PCCscUM9zjYjWr5JihtFZTQ1OooFqioztpuaOBqIvd03E8j/4tj4
-	 OEvCxnNABjMkR7jkzEBBhP0UDW45+dhEhRDX311Pz0nvtR0g9zYVpeITRqbERZ0Zog
-	 UUkFEDFE1oO64prmLpfFkeHGms+6Sx9xdPqdXYDqLnaQYO00nKXUh1fwvViTjitm0g
-	 SGPMn2s+RodYA==
-Date: Wed, 14 Aug 2024 17:06:49 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Conor Dooley <conor.dooley@microchip.com>
-Cc: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	David Jander <david@protonic.nl>,
-	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH RFC v3 0/9] spi: axi-spi-engine: add offload support
-Message-ID: <20240814-riveting-prenatal-1b6892877da5@spud>
-References: <20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
- <20240723-cabbie-opossum-6e551fe246f2@wendy>
+	s=arc-20240116; t=1723655666; c=relaxed/simple;
+	bh=blA3SSlWobp+ymfR6wJSN8N7F9m9dTpcI5LCBJp96tQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u5XmZMlhXZ7MIzxg3Ynx9PmQxGClyK12oo4mZ76hmNfJFhjjDqu8N4ghvJKpksA0H1/Pwua9zWWz0doDV+5IOejerupEwULqxBpQH4hnHV62rdsBL0OH7cEffeui7cPZUL6Af3la6vPO/XeEPjBQI0eiR14DPiqt+mrWCh43TiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PM1LQgUu; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2f189a2a841so1117281fa.3
+        for <linux-iio@vger.kernel.org>; Wed, 14 Aug 2024 10:14:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1723655661; x=1724260461; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XVbOQ51p6R1MiYPVnFg0RL8dPh9TQ81XjE0YMdoGDEk=;
+        b=PM1LQgUurYCwLYDINIJnOisowOyEve/EBHBn7deNsHBIA35oSiZwnlHyTFzJ7Aucyp
+         VVdDIKhkmN35r29ISm6IsZufZO29F2eoOwks6UgKrlglkfhhp52i2BIHD0xR4MOked66
+         JbA0VU5AmHKqzZ+eq4ixZcpBJqKF8UN9aEk9bpZf4Ya0Rmzswx4cw+jZcxRFjpizwc0x
+         5HTe+VhG9wq4+NA+ctFYrvFRhaKOy2xDKuo1Mg3TxPvffGF9/xiX9suHvaMRj20YcK+E
+         P27Tgm0l1RUamhlgigXry9lrkWsohHxBfZNxV6WkRxp9W3rkbLjxg5UN1V9GHiXrqcw1
+         w3Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723655661; x=1724260461;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XVbOQ51p6R1MiYPVnFg0RL8dPh9TQ81XjE0YMdoGDEk=;
+        b=NIW47w2NptFbJlpcVJoZIsR8CmV3qCPPpG77go9m5AQfsoarxqTAu3kHA89iZx5ln8
+         DWU0Z22hEqSxH9ABPFvKmXX2NbK+Kw4i96KSAWgHvhdbqTGMcB2TaIesabjqj2r3M/C7
+         0VyEYc4yD5XdGxJBFPDqKQiqLsG1fRLA4l7r36ASdZOf/sc+1EOIQoyegtHLwyNj8J4P
+         ZK8sAfpbAZzRmDOmMrz3R4qp6V4+iX1RXKRUcsQJ8gsr+VoAmvu7TQ8YueXwTA1qojSW
+         Vv/iGKJefPJQBIdXHdOeFkzQS7H4IPayKiYcAde41mOBG8RRjivRgT3skXnsVv9chdEK
+         cJWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVtd/4WHfeDfIZl/B/NFXUd/ldnGcF+ene712Sy3Dj5Y/DbIYkRvs6QsvYc1j3iKnyWDibgtW8tasSVqSQxAGd4dmn4OiXq3Qiz
+X-Gm-Message-State: AOJu0YwIZKEmnA9O/3gZZKwBCSK6krwOD0+1srG1XoIU6JDl1zQyPkZS
+	k9NgWEVxEgD4soqYiJ5Ong3hdqIhwBr8dR9EUU4ZFKezudPFsiFdMyTdR5T72+EvIGGEOpFoHO8
+	M3W+5Z+KSrmZqglJaZuTeit8w44bNSHINtTHvpQ==
+X-Google-Smtp-Source: AGHT+IEL1JxJHsQVWFrwUNuPiVOcA6sWDEaFvbmneam38L+A5QIC+EqMK3s5NkkHC1kDhbTcuPkHxAMp4ntfuYQBQ4s=
+X-Received: by 2002:a05:651c:19ac:b0:2f0:25dc:1894 with SMTP id
+ 38308e7fff4ca-2f3aa1d9de7mr24706231fa.2.1723655661371; Wed, 14 Aug 2024
+ 10:14:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="PKGRGE32xX0ZFe8k"
-Content-Disposition: inline
-In-Reply-To: <20240723-cabbie-opossum-6e551fe246f2@wendy>
-
-
---PKGRGE32xX0ZFe8k
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
+ <20240722-dlech-mainline-spi-engine-offload-2-v3-5-7420e45df69b@baylibre.com>
+ <20240726123836.GA998909-robh@kernel.org> <9f57e41f-3534-4188-ae78-d323aa45e2a1@baylibre.com>
+ <20240814-breeding-revolving-ba26c46164de@spud>
+In-Reply-To: <20240814-breeding-revolving-ba26c46164de@spud>
+From: David Lechner <dlechner@baylibre.com>
+Date: Wed, 14 Aug 2024 12:14:10 -0500
+Message-ID: <CAMknhBHxq3MKXATBXg6tZkkkUmiAtph=+8mV4KgcLne+J8kGzw@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 5/9] spi: dt-bindings: axi-spi-engine: document spi-offloads
+To: Conor Dooley <conor@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	David Jander <david@protonic.nl>, Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 23, 2024 at 09:58:30AM +0100, Conor Dooley wrote:
-> On Mon, Jul 22, 2024 at 04:57:07PM -0500, David Lechner wrote:
-> > There is a recap at the end of this cover letter for those not familiar
-> > with the previous discussions. For those that are, we'll get right to
-> > the changes since the last version.
-> >=20
-> > In RFC v2, most of the discussion was around the DT bindings, so that
-> > is what has mostly changed since then. I think we mostly settled on
-> > what properties are needed and where they should go. There are probably
-> > still some details to work out (see PATCH 5/9 for more discussion) but
-> > I think we have the big-picture stuff figured out.
->=20
-> Thanks for the updates. I'm on holiday until rc2, so it'll not be until
-> then that I can really take a look at this. Figured I'd let you know
-> rather than just ignore you...
+On Wed, Aug 14, 2024 at 10:58=E2=80=AFAM Conor Dooley <conor@kernel.org> wr=
+ote:
+>
+> On Fri, Jul 26, 2024 at 02:17:00PM -0500, David Lechner wrote:
+> > On 7/26/24 7:38 AM, Rob Herring wrote:
+> > > On Mon, Jul 22, 2024 at 04:57:12PM -0500, David Lechner wrote:
+> > >> The AXI SPI Engine has support for hardware offloading capabilities.
+> > >> There can be up to 32 offload instances per SPI controller, so the
+> > >> bindings limit the value accordingly.
+> > >>
+> > >> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> > >> ---
+> > >>
+> > >> RFC: I have a few questions about this one...
+> > >>
+> > >> 1.  The trigger-source properties are borrowed from the leds binding=
+s.
+> > >>     Do we want to promote this to a generic binding that can be used=
+ by
+> > >>     any type of device?
+> > >
+> > > I would make it specific to spi-offload.
+> >
+> > OK
+> >
+> > Meanwhile, we are working on some other ADCs (without SPI offload) and
+> > finding that they are using basically the same sorts of triggers. And
+> > on the driver side of things in this series, I'm getting feedback that
+> > we should have some sort of generic trigger device rather than using,
+> > e.g. a clk directly. If we need this same sort of trigger abstraction
+> > for both SPI offloads and IIO device, it does seems like we might want
+> > to consider something like a new trigger subsystem.
+>
+> A "device" in the sense that "pwm-clk" is a device I suppose. >
 
-Finally got around to actually looking at the binding patches, but since
-Rob got there before me I didn't have all that much to say. Thanks for
-looking into the graph idea, and I think I agree that it is worth
-excluding that until you're actually going to use the crc checker etc.
+In simple cases, yes it could be like "pwm-clk" where a PWM/clock/gpio
+is used directly as the trigger. We also have a case where there is a
+PWM output combined with a clock output using an AND gate, so more of
+a "real" device. And finally, there is actual dedicated hardware, like
+this [1] time division duplexing (TDD) controller that, in addition to
+it's primary purpose for RF applications, can be used as a general
+purpose trigger source - mostly useful for creating burst of a finite
+number of pulses.
 
---PKGRGE32xX0ZFe8k
-Content-Type: application/pgp-signature; name="signature.asc"
+[1]: http://analogdevicesinc.github.io/hdl/library/axi_tdd/index.html
 
------BEGIN PGP SIGNATURE-----
+> Are any of
+> these other things WIP on the lists (that I may have missed while I was
+> away) or are they still something you're working on internally.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZrzWGQAKCRB4tDGHoIJi
-0rb1AQCyQWlmrcF9aDLgp/rABhBhWgKV3D1Mum4bbi6LMRejOQEAowNlXyZCJxs4
-JteWQsOMct51J5TErk+fRtSNQlOe2wg=
-=SUd6
------END PGP SIGNATURE-----
+My ideas on actual trigger devices and bindings are still mostly on
+paper, but we do have a couple of ADCs on the mailing lists right now
+where I think it would make more sense to have a flexible "trigger"
+but we have been making due with what is currently available.
 
---PKGRGE32xX0ZFe8k--
+ad7525
+
+In this case, we need two coordinated triggers for the CNV and CLK
+signals, one that generates a single pulse and one that generates a
+burst of 16 or 18 pulses, both repeating periodically. Right now, the
+proposed DT bindings only allow specifying a PWM to provide the CNV
+signal and a second PWM combined with a clock and an AND gate (same
+one mentioned above) to provide the CLK signal because that is the
+reference hardware design. But technically if one wanted to use, for
+example, the aforementioned TDD controller to create these signals for
+CNV and CLK instead, it should work just the same.
+
+[ad7525]: https://lore.kernel.org/linux-iio/20240809-ad7625_r1-v2-0-f85e7ac=
+83150@baylibre.com/
+
+ad4030
+
+This also needs a CNV trigger, but it works slightly differently than
+ad7525. For now, the proposed DT bindings just have a cnv-gpios to
+describe what is connected to the CNV pin. But for certain
+applications, a GPIO is not the best choice. For example, to use the
+oversampling feature of the chip, we have to provide a burst of some
+power of 2 pulses, up to 16k pulses, with specific timing to trigger
+2**N conversions before reading one sample. This can be done by
+bit-banging the GPIO but could be done much better/faster by something
+like the TDD controller that is specifically designed to create a
+burst of a finite number of pulses.
+
+[ad4030]: https://lore.kernel.org/linux-iio/20240627-eblanc-ad4630_v1-v1-0-=
+fdc0610c23b0@baylibre.com/
+
+Having a generic DT binding for these ADC input pins that can be
+connected to a wide variety of outputs seems more future proof than
+having to modify the bindings each time someone wants to support a new
+type of output provider.
 

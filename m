@@ -1,327 +1,198 @@
-Return-Path: <linux-iio+bounces-8481-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8482-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6644D952491
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 23:13:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060AA9525D7
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2024 00:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15C55287FE5
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 21:13:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E2A01F2220F
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 22:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A661C8241;
-	Wed, 14 Aug 2024 21:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E15814AD0C;
+	Wed, 14 Aug 2024 22:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLqbMs3A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1mxqjgF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E420210FB;
-	Wed, 14 Aug 2024 21:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70DE14A609
+	for <linux-iio@vger.kernel.org>; Wed, 14 Aug 2024 22:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723669986; cv=none; b=R1E9tykLlvCo2DvCdYnD5enDbdL1u/oa9IwviVDKU9cSXFZuIs+sFaK1hBq3azMPUhFLqvvMuYCOLUFmr4Ktp7ml8+L4ckWJsh5frB8gFlDAlUwT7fCJVqml+KGbiok/tTe4lz7IG+3WESqwF3l6N9ZNGJgVsHZvoxo+z9uHatQ=
+	t=1723674956; cv=none; b=ESf9Hm0oJZN/U1IuGk/N5kObLmDccmKLRG1mQjOol3i8TurAyNXz2TsaW4zipuWNvjZ2nkTEdX+zfJyazcb3Px3VhaRwpoKBOUHzXC+Kg+j0fKoKHOnNLQHz2ILv7XfiE6Daw0TO2NuXLWmrwLgINdI7BNjfqJ188FclyteNopI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723669986; c=relaxed/simple;
-	bh=OWLB4A3W+IkHeRUaO3oHs3PXbpk5OuPFsN4t33tni2A=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m2pJveClGpKa5YamlkMz6gyt0jOfxv5TJDLCMzGiiuOYtanVn6V2Mk9YJMY22DqtfRlE0bPVpX3dbRYccOTDNfNblRok2UHrLX+uQH53VLOLHeZeL+igtKd4DZbfmQA+OlwN28hjGbsQ5jN5IuxT6A9UzePhhmeCbLdfeV07+2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLqbMs3A; arc=none smtp.client-ip=209.85.167.176
+	s=arc-20240116; t=1723674956; c=relaxed/simple;
+	bh=lcE+mG8oioX/deiJU5iSTHkmg+nPcerAfcmQeWQY3Bg=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=OYvgQTQn7/7xH6iXCrQdHeTku1p6bquaU5lBTFpUZ5SeaVGPpCy9GomCGYqx9b9Xysw6f6n8wvMLcrr8yw/RsyV43EAW9PZ3asY7kEEY+dkbla+Ph7RXqdc7lrZP/yIi6/o1jBEkQJdZKOGI3m/Z0uxjqh6xF4vBLDiJMlYucLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1mxqjgF; arc=none smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3db130a872fso160568b6e.2;
-        Wed, 14 Aug 2024 14:13:04 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-690ad83d4d7so4250737b3.3
+        for <linux-iio@vger.kernel.org>; Wed, 14 Aug 2024 15:35:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723669984; x=1724274784; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=E0PsU1V81otLoWVv/G1qLYZtjV9Tg/8agLNzDh9hSwo=;
-        b=BLqbMs3ACGaIs30c0YKnkrTxV/GNz6drVNdjCxMaTTBdAfwhrgnqV5htqwcIAGooqI
-         zMh09DgZ4SpPmdcx6awNYbAJPSFDfhxgtkJtY6qfFF8MorDSnrsDFBluXQudJ8xpZhei
-         tChR0PgmdyEtv5EeafM8RsqrmTgnq3Op69LVKhEsMwbn52nB28mwQ3Ml1SVzc/rp7bJY
-         frkn9nYk3vgmARwq6NRWMplZJ4VV/lDdoNE/5njs04ZsLTLAhJ7SULTWPKRvizpwvZbt
-         6qTaGNYOPN7+s0K0akeyjG0inDUh8dWmHGyTxX5/o7TVaBFi1n1dUEcPZr0pVQDtYMpn
-         EHpA==
+        d=gmail.com; s=20230601; t=1723674953; x=1724279753; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CP9zmZvkEzLf5p4C1wZ5Sz29Lvl3YrjSAdmC+rZSPDU=;
+        b=i1mxqjgF6DnlUK6BCnQt4s0kcabJRUNGP870pa8YFzTA9RRY1A2fWknN7JWU7BSG0o
+         yiGRSPr39gFklcoS4mAE/uwjDRCIpxvcicordD84w8PZLMcdb1d2b9eaSgOjud5ak5wX
+         O0X5BhG+xMX+SAZnaG6wsE/ctqSHgWXPJLZpNBkhvewfXnuyEAeObD+Rs/07GoeqC9J1
+         w9GA51tSAuOxqSA6Icik/gtvur50reoLYFDxySzZy5B+LQ2icmIg/saSS9YIi457Syu2
+         Oyr8WIfmrfmQNKXDpiMJvc3jADYm2VifsIM0ZtUJrDr/hfpob5I/Pe1goODFHu0DLrU/
+         DHUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723669984; x=1724274784;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E0PsU1V81otLoWVv/G1qLYZtjV9Tg/8agLNzDh9hSwo=;
-        b=gsZhXtJK0zfLDEq8PvzVnUzNC+yIMd1gFlwNZTAMPpdSZ4zmf+/m3v4qcUj3d23cpk
-         3iSwsjAQdjs8WkwmdWtMxMnRFM92uf7mfodMhxZFLym5zc8ST7dbMisdog8YB+v9Ck2x
-         CJLG7iNsBgbAIW1+LihLr6b6oj/AEA0Z3JiCHEj9gDwKLwIFIpig6eR1eWGrqg6OG0K8
-         AqFFYeJzb/hBdc+gC6BuKNCjPLfkwpOjEQcd3+mbhfmqegaKEmcT0ZJndCa/kLnkO6Mu
-         nhZn6a39wTovbiMgkByA53TTKKdOMpjMzStd6sVLiZcnKzmvfqoEhm1m/8RlQfZ7Y+iK
-         dJ3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWRSvUlsZJtDZg4OWVm3Gx7vHvqgZTfkAtOKWDulXyTYtYi2rDgGMPwYvHgdczhXw+lVnEIaqg+Hk0ybSsL8RQeKg3bi187A9y+a+VGP/8X9mY1X9oEcYinNneaIJwaPWYqLWHokBT7tFfZBDnGIeTAyKge7tmBjtnADblqKevV
-X-Gm-Message-State: AOJu0Yy570hiynBrUpy61VnDgEgbVycsJ4cMWpYh91kTmxRREECva6ak
-	eN/T+6N5yeblmp5wXeo2bn8g6G15jpT3tLuSwByTFuRGzRXiVK7z
-X-Google-Smtp-Source: AGHT+IHPFbvzVVdUw502MWTJGOKLHnC1j3KggFd0N+p5LyKQWM3LNqxF2J0bV4X2lPo9bjtcCBrWNw==
-X-Received: by 2002:a05:6808:1789:b0:3d9:4163:654f with SMTP id 5614622812f47-3dd2997b5camr4570717b6e.32.1723669984114;
-        Wed, 14 Aug 2024 14:13:04 -0700 (PDT)
-Received: from neuromancer. ([2600:1700:fb0:1bcf::54])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dd060b4e13sm2221748b6e.45.2024.08.14.14.13.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 14:13:03 -0700 (PDT)
-Message-ID: <66bd1ddf.ca0a0220.13e5d4.8871@mx.google.com>
-X-Google-Original-Message-ID: <Zr0d3U5ATHATlSaU@neuromancer.>
-Date: Wed, 14 Aug 2024 16:13:01 -0500
-From: Chris Morgan <macroalpha82@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-sunxi@lists.linux.dev, linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org, quentin.schulz@free-electrons.com,
-	mripard@kernel.org, tgamblin@baylibre.com,
-	aidanmacdonald.0x0@gmail.com, u.kleine-koenig@pengutronix.de,
-	lee@kernel.org, samuel@sholland.org, jernej.skrabec@gmail.com,
-	sre@kernel.org, wens@csie.org, conor+dt@kernel.org,
-	krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Philippe Simons <simons.philippe@gmail.com>
-Subject: Re: [PATCH V2 14/15] power: supply: axp20x_battery: add support for
- AXP717
-References: <20240802192026.446344-1-macroalpha82@gmail.com>
- <20240802192026.446344-15-macroalpha82@gmail.com>
- <20240803121044.20481897@jic23-huawei>
+        d=1e100.net; s=20230601; t=1723674953; x=1724279753;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CP9zmZvkEzLf5p4C1wZ5Sz29Lvl3YrjSAdmC+rZSPDU=;
+        b=rEV2NO6ikaFyV0qWnHuH1zgCk4iVZy6Nlg6sfCB294Jvu9oJUg67qTgEBpyeShZIVK
+         ooguRy8svmoHnoiqjm/c/uO1pWorLB3IoQ/0iRjDsF7d8gLWEuXaN+RnMM5B3rrutaOe
+         VqyFi38jB0+wv2zndqRf+rAb0ctKPWnOKJW04uI1lcpQJnGEnktACoe4cfVlyb28xTe+
+         cKv4GJlaMdU4/xqgtui1XN2IAE1zyq4S6iaQItWvQHRnSLk/xaiyp0e7LRKF8xPzvxCe
+         UHsdjDRKUETbIQn2/dLB+NKr6ED88HW6jLxM9iiD3LvH/jaiIg7pFbA//Ym+IX64gBBc
+         LODg==
+X-Gm-Message-State: AOJu0YwqUM2tsCyoTGyuJ2Mx53ddNKt4ducG1hNKzxwEqE9vAgYxSL6O
+	ieELTpBSnbPhT0Zqm6qLdBtEKFEaX/IIxYY9Zu+0rLXAy4gila/nfmz1J1MtgZeZUli7yPxEJAI
+	v+FRGRlb0W0UwSSFfrdX+UizeKqz/7QU3
+X-Google-Smtp-Source: AGHT+IFoIxYDk92Ui3hh3LG4lafj1I84hxukPoQNg/5tl+KhhuRFhsIgCldY0773ZjsOTdfndTvTYF1mMc8/V1vLQRY=
+X-Received: by 2002:a05:690c:6909:b0:6ad:7244:cf01 with SMTP id
+ 00721157ae682-6ad7244d03dmr35692967b3.45.1723674953452; Wed, 14 Aug 2024
+ 15:35:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240803121044.20481897@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Thu, 15 Aug 2024 00:35:17 +0200
+Message-ID: <CAFXKEHYGHPjS1uh=+++SdYPg45H5VLnH6R6Y1Yb26kr9kOFsdQ@mail.gmail.com>
+Subject: iio: accel: adxl345 - Questions on Implementation
+To: linux-iio@vger.kernel.org
+Cc: jic23@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Aug 03, 2024 at 12:10:44PM +0100, Jonathan Cameron wrote:
-> On Fri,  2 Aug 2024 14:20:25 -0500
-> Chris Morgan <macroalpha82@gmail.com> wrote:
-> 
-> > From: Chris Morgan <macromorgan@hotmail.com>
-> > 
-> > Add support for the AXP717 PMIC battery charger. The AXP717 differs
-> > greatly from existing AXP battery chargers in that it cannot measure
-> > the discharge current. The datasheet does not document the current
-> > value's offset or scale, so the POWER_SUPPLY_PROP_CURRENT_NOW is left
-> > unscaled.
-> > 
-> > Tested-by: Philippe Simons <simons.philippe@gmail.com>
-> > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> Hi.
-> 
-> A few drive by comments,
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/power/supply/axp20x_battery.c | 444 ++++++++++++++++++++++++++
-> >  1 file changed, 444 insertions(+)
-> > 
-> > diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
-> > index c903c588b361..53af4ad0549d 100644
-> > --- a/drivers/power/supply/axp20x_battery.c
-> > +++ b/drivers/power/supply/axp20x_battery.c
-> > @@ -32,9 +32,19 @@
-> >  #include <linux/mfd/axp20x.h>
-> >  
-> >  #define AXP20X_PWR_STATUS_BAT_CHARGING	BIT(2)
-> > +#define AXP717_PWR_STATUS_MASK		GENMASK(6, 5)
-> > +#define AXP717_PWR_STATUS_BAT_STANDBY	(0 << 5)
-> > +#define AXP717_PWR_STATUS_BAT_CHRG	(1 << 5)
-> > +#define AXP717_PWR_STATUS_BAT_DISCHRG	(2 << 5)
-> 
-> Fine to match local style in this patch, but just thought I'd
-> comment that this driver would probably be more readable with
-> use of FIELD_PREP and changing convention to not shift the defined
-> values for contents of each field.
-> 
-> To change to that it would either need to be before this patch,
-> or done as a follow up.
+Dear IIO Community!
 
-I'll take your other comments and apply them, but if it's okay with
-you I'll opt to not use FIELD_PREP/FIELD_GET for the moment, so the
-style remains the same. I will make sure to use those macros for
-other drivers I'm working on though as they seem handy.
+TL;DR: I have some general questions on implementing IIO. In
+particular I'm playing with an accel driver. Feel free to answer.
 
-> 
-> 
-> >  struct axp20x_batt_ps;
-> >  
-> > @@ -143,6 +176,41 @@ static int axp22x_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
-> >  	return 0;
-> >  }
-> >  
-> > +static int axp717_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
-> > +					  int *val)
-> > +{
-> > +	int ret, reg;
-> > +
-> > +	ret = regmap_read(axp20x_batt->regmap, AXP717_CV_CHG_SET, &reg);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	switch (reg & AXP717_CHRG_CV_VOLT_MASK) {
-> > +	case AXP717_CHRG_CV_4_0V:
-> > +		*val = 4000000;
-> > +		break;
-> > +	case AXP717_CHRG_CV_4_1V:
-> > +		*val = 4100000;
-> > +		break;
-> > +	case AXP717_CHRG_CV_4_2V:
-> > +		*val = 4200000;
-> > +		break;
-> > +	case AXP717_CHRG_CV_4_35V:
-> > +		*val = 4350000;
-> > +		break;
-> > +	case AXP717_CHRG_CV_4_4V:
-> > +		*val = 4400000;
-> > +		break;
-> > +	case AXP717_CHRG_CV_5_0V:
-> > +		*val = 5000000;
-> > +		break;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	return 0;
-> Could just return instead of breaking an save reader having to look to see
-> if anything else happens after the switch finishes.
 
-Acknowledged.
+Some months ago I was lucky to contribute to the adxl345 accelerometer
+driver. The driver has already an (older) implementation in in the
+kernel's input system with more feature support, but most parameters
+hardcoded. In the meanwhile I continued and managed to implement
+somehow the ADXL345 FIFO usage, single tap, double tap,
+activity/inactivity, freefall, standby and low power modes, etc.
+Basically most (almost all?) features available in the input driver,
+but using the iio the features would be even configurable in sysfs.
+Some points are still missing, though, such as adxl346 orientation
+feature and for sure this is just my POC implementation which by far
+would not match kernel quality at the current state.
+I managed implementing / catching those events, with a kind of
+my-understanding-of-IIO-implementation. I was not really able to find
+much documentation. Most often I ended up reading through other
+drivers and trying to understand how things were implemented there. My
+frist approach then was to setup individual "_en" handles for every
+feature in sysfs, and ignore most of the event/channel handling
+(smile). When this worked I actually understood, that there is
+"buffer". Then I got to understand a bit more of "events" and so on
+already providing things. I was in the second or third implementation.
+I tried to interpret the results coming on /dev/iio:device0 using od
+and xxd. This did not work for gesture events like tap events. By
+chance I found there is already a tool for that: iio_event_monitor.
+But this stayed simply mute when I wanted to see my FIFO data coming
+in which worked before. Ugh..
 
-> 
-> > +}
-> > +
-> >  static int axp813_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
-> >  					  int *val)
-> >  {
-> > @@ -188,6 +256,22 @@ static int axp20x_get_constant_charge_current(struct axp20x_batt_ps *axp,
-> >  	return 0;
-> >  }
-> >  
-> > +static int axp717_get_constant_charge_current(struct axp20x_batt_ps *axp,
-> > +					      int *val)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret = regmap_read(axp->regmap, AXP717_ICC_CHG_SET, val);
-> Trivial but I'd use a separate local variable for the register value.  
+I don't want to break up a long discussion, but some feedback on the
+following questions of mine would be really, really highly
+appreciate!!
 
-Will do.
+1.) First of all, would there be a general interest to integrate
+additional code into the iio/adxl345 driver? If ok, I would love to
+prepare patch series on a per feature basis up for discussion to learn
+and to get it matching your high quality standards.
 
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	*val &= AXP717_ICC_CHARGER_LIM_MASK;
-> 
-> FIELD_GET() would be much more readable here as we'd not need to go
-> check if LIM_MASK included bit 0 and it could be used directly inline
-> with the below as
-> 
+2.) I assume the key motivation of the IIO events/channel approach is
+to abstract sensor specific functionality to a general IIO/accel
+functionality provided by sysfs in Linux. Do I understand this
+correctly? So, no matter of the implementation, if a feature is
+provided, SW can use that w/o knowing the underlying hardware and
+datasheet in specific.
 
-Nack, if that's okay (as mentioned above). If it's not let me know and
-I'll go back and redo this driver.
+3.) If the above is true, where can I find the documentation of the
+sysfs handles (other than testing/ABI, the iio header files,
+interpretation of types and enums,...)? Which handles are possible is
+all around? How can I use it? And so on? Is there a way to list
+supported features for an iio device?
 
-> 	*val = FIELD_GET(AXP717_IC_CHARGER_LIM_MASK, val) * axp->data->ccc_scale;
-> 
-> > +
-> > +	*val = *val * axp->data->ccc_scale;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int axp20x_battery_get_prop(struct power_supply *psy,
-> >  				   enum power_supply_property psp,
-> >  				   union power_supply_propval *val)
-> > @@ -340,6 +424,175 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
-> >  	return 0;
-> >  }
-> >  
-> > +static int axp717_battery_get_prop(struct power_supply *psy,
-> > +				   enum power_supply_property psp,
-> > +				   union power_supply_propval *val)
-> > +{
-> > +	struct axp20x_batt_ps *axp20x_batt = power_supply_get_drvdata(psy);
-> > +	int ret = 0, reg;
-> > +
-> > +	switch (psp) {
-> > +	case POWER_SUPPLY_PROP_PRESENT:
-> > +	case POWER_SUPPLY_PROP_ONLINE:
-> > +		ret = regmap_read(axp20x_batt->regmap, AXP717_ON_INDICATE,
-> > +				  &reg);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		val->intval = !!(reg & AXP717_PWR_OP_BATT_PRESENT);
-> 
-> FIELD_GET() here would be cleaner.
-> 
-> > +		break;
-> > +
-> >;
-> > +	}
-> > +
-> > +	return 0;
-> 
-> As nothing to do down here, I think early returns would make things more redabel.
-> 
+4.) My approach was to read through codes and do some creative
+interpretation of namings. I have nothing against reading sources, but
+in some cases this can be quite confusing. Even from a user's
+perspective, e.g. the fifo watermark. Currently I know "watermark" for
+a FIFO can be configured (if "buffer0" has been armed before with some
+length), where hwfifo_watermark can never be configured. Currently I
+understand: hwfifo_watermark is read-only. It reads back what is
+configured in the HW and prints what the hwfifo eventually holds as
+watermark. Is this a halfway correct interpretation of the
+FIFO/watermark mechanism?
+On the other hand, with my FIFO enabled and configured, e.g. to
+watermark of 30 entries (then it triggers an interrupt, which I catch
+and I yield the data). I can see hex data arriving at
+/dev/iio:device0, which is nice. But checking with 'iio_event_monitor
+/dev/iio:device0' I see nothing. Do I understand this wrong? They
+should come as raw, of course I also could see the values e.g. in
+/sys/bus/iio/..../in_accel_x_raw  - but I guess this is rather for
+debugging. Where /dev/iio:device0 should bring up the bulk of scanned
+values (here x,y,z and in case several FIFO entries of them). Or,
+could someone please explain?
 
-Will do.
+5.) In particular I have questions on the implementation ways, let's
+take "single tap" as another example - Which is the better approach?
+  A) do regmap_write() directly from write_event_value() using mutex
+protection everywhere (I hope my assumption about usage of mutexes is
+correctly here) - i.e. no matter if the sensor is currently running or
+not, there can b e configuration, or
+  B) init a variable in the driver data "singletap_en", and only write
+all regs at postenable() w/o mutex then, i.e. when I do
+buffer0/enable? - i.e. configuration only when the sensor is not
+running
+If I take the approach B, I fear I'm implementing the behavior
+differently to other accelerometers. In other words, I feel it would
+be better to implement uniform accelerometer behavior, or to document
+it somewhere. Here I'm unsure, if this is ok or not? Another argument
+for B) was that I guess many of the sensors must be put into
+off/standby for configuration and turned on again. This comes
+implicitely when connecting it to buffer0/enable.
 
-> > +}
-> > +
-> >  static int axp20x_battery_set_prop(struct power_supply *psy,
-> >  				   enum power_supply_property psp,
-> >  				   const union power_supply_propval *val)
-> > @@ -492,6 +805,42 @@ static int axp20x_battery_set_prop(struct power_supply *psy,
-> >  	}
-> >  }
-> >  
-> > +static int axp717_battery_set_prop(struct power_supply *psy,
-> > +				   enum power_supply_property psp,
-> > +				   const union power_supply_propval *val)
-> > +{
-> > +	struct axp20x_batt_ps *axp20x_batt = power_supply_get_drvdata(psy);
-> > +
-> > +	switch (psp) {
-> > +	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
-> > +		return axp717_set_voltage_min_design(axp20x_batt, val->intval);
-> > +
-> > +	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
-> > +		return axp20x_batt->data->set_max_voltage(axp20x_batt, val->intval);
-> > +
-> > +	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
-> > +		return axp717_set_constant_charge_current(axp20x_batt,
-> > +							  val->intval);
-> > +	case POWER_SUPPLY_PROP_STATUS:
-> > +		switch (val->intval) {
-> > +		case POWER_SUPPLY_STATUS_CHARGING:
-> > +			return regmap_update_bits(axp20x_batt->regmap,
-> > +						  AXP717_MODULE_EN_CONTROL_2,
-> > +						  AXP717_CHRG_ENABLE,
-> > +						  AXP717_CHRG_ENABLE);
-> > +
-> > +		case POWER_SUPPLY_STATUS_DISCHARGING:
-> > +		case POWER_SUPPLY_STATUS_NOT_CHARGING:
-> > +			return regmap_update_bits(axp20x_batt->regmap,
-> > +						  AXP717_MODULE_EN_CONTROL_2,
-> > +						  AXP717_CHRG_ENABLE, 0);
-> > +		}
-> > +		fallthrough;
-> Why bother? Just return -EINVAL here.
-> 
+7.) So far I managed to implement the following
+ - Configuration of TAP_THRESHOLD register via IIO_EV_INFO_VALUE in
+write_event_value()
+ - Configuration of DURation register via IIO_EV_INFO_RESET_TIMEOUT in
+write_event_value()
+ - Configuration of a single tap enable field via a handle in
+write_event_config()
+In the postenable() I configure the interrupt by the state of the
+enable field. Then I configure a buffer (256 to buffer0/length; 1 to
+buffer0/in_accel_x_en), evntually echo 1 into buffer0/enable. I'm
+watching using the iio_event_monitor on the /dev/iio:device0. I can
+see gesture events. Is this a valid approach? For double tap the
+datasheet additionally describes a "window" parameter to be
+configured. But events does not seem to offer something like that.
+Even the above approach e.g. "IIO_EV_INFO_RESET_TIMEOUT" and the
+resulting handle in sysfs sounds quite different than "duration", and
+is IMHO here also not very intuitive (duration IMHO would be easier to
+understand, but ok). So what to do with a "window"? I might discuss
+that also later when I present the code, perhaps would be easier to
+follow.
 
-Will do.
+Thank you so much if you read +/- up until here. I was told it is ok
+to send my questions to IIO mailing list. So, I hope it was ok, and
+the questions are not too obvious.
 
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-
-Thank you for your review,
-Chris
+Best regards,
+Lothar
 

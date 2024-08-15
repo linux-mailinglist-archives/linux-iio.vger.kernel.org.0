@@ -1,198 +1,296 @@
-Return-Path: <linux-iio+bounces-8482-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8483-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060AA9525D7
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2024 00:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F264B95290E
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2024 07:52:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E2A01F2220F
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Aug 2024 22:36:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44BB61F2342C
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2024 05:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E15814AD0C;
-	Wed, 14 Aug 2024 22:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7C8176AB7;
+	Thu, 15 Aug 2024 05:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1mxqjgF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l+W9R8F9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70DE14A609
-	for <linux-iio@vger.kernel.org>; Wed, 14 Aug 2024 22:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC0814373B;
+	Thu, 15 Aug 2024 05:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723674956; cv=none; b=ESf9Hm0oJZN/U1IuGk/N5kObLmDccmKLRG1mQjOol3i8TurAyNXz2TsaW4zipuWNvjZ2nkTEdX+zfJyazcb3Px3VhaRwpoKBOUHzXC+Kg+j0fKoKHOnNLQHz2ILv7XfiE6Daw0TO2NuXLWmrwLgINdI7BNjfqJ188FclyteNopI=
+	t=1723701125; cv=none; b=MPMEJOSasge3sXZtUSlRJFTJqfYDoe44xSLH5qZC9ix0OyHOEq18gKPjU8OLOkLFLQSWLGJS4L7X0bga9kH/4xb0FRNIwQqMv9uj1ZX7VPIPcywnbn2tO8M4evljvAaBbnp4fJXytzcPSluyZXhSjvYAy0TRmu7+k3SYmG1WUKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723674956; c=relaxed/simple;
-	bh=lcE+mG8oioX/deiJU5iSTHkmg+nPcerAfcmQeWQY3Bg=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=OYvgQTQn7/7xH6iXCrQdHeTku1p6bquaU5lBTFpUZ5SeaVGPpCy9GomCGYqx9b9Xysw6f6n8wvMLcrr8yw/RsyV43EAW9PZ3asY7kEEY+dkbla+Ph7RXqdc7lrZP/yIi6/o1jBEkQJdZKOGI3m/Z0uxjqh6xF4vBLDiJMlYucLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1mxqjgF; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-690ad83d4d7so4250737b3.3
-        for <linux-iio@vger.kernel.org>; Wed, 14 Aug 2024 15:35:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723674953; x=1724279753; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CP9zmZvkEzLf5p4C1wZ5Sz29Lvl3YrjSAdmC+rZSPDU=;
-        b=i1mxqjgF6DnlUK6BCnQt4s0kcabJRUNGP870pa8YFzTA9RRY1A2fWknN7JWU7BSG0o
-         yiGRSPr39gFklcoS4mAE/uwjDRCIpxvcicordD84w8PZLMcdb1d2b9eaSgOjud5ak5wX
-         O0X5BhG+xMX+SAZnaG6wsE/ctqSHgWXPJLZpNBkhvewfXnuyEAeObD+Rs/07GoeqC9J1
-         w9GA51tSAuOxqSA6Icik/gtvur50reoLYFDxySzZy5B+LQ2icmIg/saSS9YIi457Syu2
-         Oyr8WIfmrfmQNKXDpiMJvc3jADYm2VifsIM0ZtUJrDr/hfpob5I/Pe1goODFHu0DLrU/
-         DHUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723674953; x=1724279753;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CP9zmZvkEzLf5p4C1wZ5Sz29Lvl3YrjSAdmC+rZSPDU=;
-        b=rEV2NO6ikaFyV0qWnHuH1zgCk4iVZy6Nlg6sfCB294Jvu9oJUg67qTgEBpyeShZIVK
-         ooguRy8svmoHnoiqjm/c/uO1pWorLB3IoQ/0iRjDsF7d8gLWEuXaN+RnMM5B3rrutaOe
-         VqyFi38jB0+wv2zndqRf+rAb0ctKPWnOKJW04uI1lcpQJnGEnktACoe4cfVlyb28xTe+
-         cKv4GJlaMdU4/xqgtui1XN2IAE1zyq4S6iaQItWvQHRnSLk/xaiyp0e7LRKF8xPzvxCe
-         UHsdjDRKUETbIQn2/dLB+NKr6ED88HW6jLxM9iiD3LvH/jaiIg7pFbA//Ym+IX64gBBc
-         LODg==
-X-Gm-Message-State: AOJu0YwqUM2tsCyoTGyuJ2Mx53ddNKt4ducG1hNKzxwEqE9vAgYxSL6O
-	ieELTpBSnbPhT0Zqm6qLdBtEKFEaX/IIxYY9Zu+0rLXAy4gila/nfmz1J1MtgZeZUli7yPxEJAI
-	v+FRGRlb0W0UwSSFfrdX+UizeKqz/7QU3
-X-Google-Smtp-Source: AGHT+IFoIxYDk92Ui3hh3LG4lafj1I84hxukPoQNg/5tl+KhhuRFhsIgCldY0773ZjsOTdfndTvTYF1mMc8/V1vLQRY=
-X-Received: by 2002:a05:690c:6909:b0:6ad:7244:cf01 with SMTP id
- 00721157ae682-6ad7244d03dmr35692967b3.45.1723674953452; Wed, 14 Aug 2024
- 15:35:53 -0700 (PDT)
+	s=arc-20240116; t=1723701125; c=relaxed/simple;
+	bh=MQR+GReeIVWHV3GGNyHTT7zvvVhdqZnBBoe0MuH7tOc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IXgmPWCtwf5RYUk11zZkPqHaKybkv/E9yoZeq8ytl2T/AY705qQ6i0xfVrlPGnTlT4Vo+5lb9zN3oWxXQyd9IveBpBdeW+BZViykZ0AvKE1I9ZzUtZ8EDHXgp49LHlTAWGPjF14/QXmDmeikECD/5dbo265uNUmYHUkhP4kfLQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l+W9R8F9; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723701123; x=1755237123;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MQR+GReeIVWHV3GGNyHTT7zvvVhdqZnBBoe0MuH7tOc=;
+  b=l+W9R8F9vvhIZM+J9S2swREXG8vW/OouICswbpme8TSER28SlMXdMbX5
+   WShJwaPlo4FN9NbC0i9ZuZCjVlG2aukecXpCySAv4/QsnDnTJCmeQKlY+
+   d41iEGnSFBXGnRfI+dW5Dife5rMXJoklMRKRtjWN+dVW+H9a5yTMhG2gC
+   eM9W/LY59nRZkmCV3U7Ca2u5JKDwP0PB97c4m5a7j/CXj6NsMREowinuw
+   Ip7McylqVu3idlrP3KrkLNjvWVJ3YAaL7pi6D/9TltBHggmCg4zw82nIi
+   M2aO/gsT8dT33VqVNRRXuVT503QnLPjU2k6akf+8ygs8iYGpgd07i2Oin
+   g==;
+X-CSE-ConnectionGUID: qYqix1WGTHSX0arcX1/wVw==
+X-CSE-MsgGUID: osgOJq5TQiWPNXl3ijgqIQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="47349330"
+X-IronPort-AV: E=Sophos;i="6.10,148,1719903600"; 
+   d="scan'208";a="47349330"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 22:52:02 -0700
+X-CSE-ConnectionGUID: W0sE2WX4S1mmpY6va6H1lw==
+X-CSE-MsgGUID: n9Xn6A/pTHqs5l++08/Xyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,148,1719903600"; 
+   d="scan'208";a="96773518"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 14 Aug 2024 22:51:58 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1seTOt-0003Ez-2r;
+	Thu, 15 Aug 2024 05:51:55 +0000
+Date: Thu, 15 Aug 2024 13:51:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jan Kiszka <jan.kiszka@siemens.com>,
+	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Bao Cheng Su <baocheng.su@siemens.com>,
+	Chao Zeng <chao.zeng@siemens.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCH 3/3] iio: proximity: Add support for everlight pmd16d17
+ sensor
+Message-ID: <202408151352.u8v6HOIQ-lkp@intel.com>
+References: <abb0c1c0724be733138276f638e43e98784bd191.1723527641.git.jan.kiszka@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Thu, 15 Aug 2024 00:35:17 +0200
-Message-ID: <CAFXKEHYGHPjS1uh=+++SdYPg45H5VLnH6R6Y1Yb26kr9kOFsdQ@mail.gmail.com>
-Subject: iio: accel: adxl345 - Questions on Implementation
-To: linux-iio@vger.kernel.org
-Cc: jic23@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abb0c1c0724be733138276f638e43e98784bd191.1723527641.git.jan.kiszka@siemens.com>
 
-Dear IIO Community!
+Hi Jan,
 
-TL;DR: I have some general questions on implementing IIO. In
-particular I'm playing with an accel driver. Feel free to answer.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on robh/for-next linus/master v6.11-rc3 next-20240814]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Jan-Kiszka/dt-bindings-vendor-prefixes-Add-EVERLIGHT/20240814-234801
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/abb0c1c0724be733138276f638e43e98784bd191.1723527641.git.jan.kiszka%40siemens.com
+patch subject: [PATCH 3/3] iio: proximity: Add support for everlight pmd16d17 sensor
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20240815/202408151352.u8v6HOIQ-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240815/202408151352.u8v6HOIQ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408151352.u8v6HOIQ-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/iio/proximity/pm16d17.c:142:2: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+     142 |         default:
+         |         ^
+   drivers/iio/proximity/pm16d17.c:142:2: note: insert 'break;' to avoid fall-through
+     142 |         default:
+         |         ^
+         |         break; 
+>> drivers/iio/proximity/pm16d17.c:187:3: warning: variable 'op_mode_setting_val' is uninitialized when used here [-Wuninitialized]
+     187 |                 op_mode_setting_val |= (ilog2(pgain) << 6) & PS_GAIN_MASK;
+         |                 ^~~~~~~~~~~~~~~~~~~
+   drivers/iio/proximity/pm16d17.c:159:29: note: initialize the variable 'op_mode_setting_val' to silence this warning
+     159 |         uint8_t op_mode_setting_val;
+         |                                    ^
+         |                                     = '\0'
+   2 warnings generated.
 
 
-Some months ago I was lucky to contribute to the adxl345 accelerometer
-driver. The driver has already an (older) implementation in in the
-kernel's input system with more feature support, but most parameters
-hardcoded. In the meanwhile I continued and managed to implement
-somehow the ADXL345 FIFO usage, single tap, double tap,
-activity/inactivity, freefall, standby and low power modes, etc.
-Basically most (almost all?) features available in the input driver,
-but using the iio the features would be even configurable in sysfs.
-Some points are still missing, though, such as adxl346 orientation
-feature and for sure this is just my POC implementation which by far
-would not match kernel quality at the current state.
-I managed implementing / catching those events, with a kind of
-my-understanding-of-IIO-implementation. I was not really able to find
-much documentation. Most often I ended up reading through other
-drivers and trying to understand how things were implemented there. My
-frist approach then was to setup individual "_en" handles for every
-feature in sysfs, and ignore most of the event/channel handling
-(smile). When this worked I actually understood, that there is
-"buffer". Then I got to understand a bit more of "events" and so on
-already providing things. I was in the second or third implementation.
-I tried to interpret the results coming on /dev/iio:device0 using od
-and xxd. This did not work for gesture events like tap events. By
-chance I found there is already a tool for that: iio_event_monitor.
-But this stayed simply mute when I wanted to see my FIFO data coming
-in which worked before. Ugh..
+vim +142 drivers/iio/proximity/pm16d17.c
 
-I don't want to break up a long discussion, but some feedback on the
-following questions of mine would be really, really highly
-appreciate!!
+   109	
+   110	static int pm16d17_read_raw(struct iio_dev *indio_dev,
+   111				    struct iio_chan_spec const *chan,
+   112				    int *val, int *val2, long mask)
+   113	{
+   114		struct pm16d17_data *data = iio_priv(indio_dev);
+   115		unsigned int ps_data_l;
+   116		unsigned int ps_data_h;
+   117		uint16_t ps_data;
+   118		int ret = -EINVAL;
+   119	
+   120		switch (mask) {
+   121		case IIO_CHAN_INFO_RAW:
+   122			switch (chan->type) {
+   123			case IIO_PROXIMITY:
+   124				ret = pm16d17_read_reg(data, PM16D17_PS_DATA_L, &ps_data_l);
+   125				if (ret < 0)
+   126					return ret;
+   127	
+   128				ret = pm16d17_read_reg(data, PM16D17_PS_DATA_H, &ps_data_h);
+   129				if (ret < 0)
+   130					return ret;
+   131	
+   132				ps_data = (ps_data_h << 8) | ps_data_l;
+   133	
+   134				dev_dbg(&data->client->dev, "PS data: %x\n", ps_data);
+   135	
+   136				*val = ps_data;
+   137				ret = IIO_VAL_INT;
+   138				break;
+   139			default:
+   140				break;
+   141			}
+ > 142		default:
+   143			break;
+   144		}
+   145	
+   146		return ret;
+   147	}
+   148	
+   149	static const struct iio_info pm16d17_info = {
+   150		.read_raw = pm16d17_read_raw,
+   151	};
+   152	
+   153	static int pm16d17_chip_init(struct pm16d17_data *data)
+   154	{
+   155		struct i2c_client *client = data->client;
+   156		struct device_node *np = client->dev.of_node;
+   157		const char *conv_time = NULL;
+   158		const char *wait_time = NULL;
+   159		uint8_t op_mode_setting_val;
+   160		uint32_t ps_offset_cancel;
+   161		uint8_t offset_lsb;
+   162		uint8_t offset_msb;
+   163		uint32_t pulse_count;
+   164		uint32_t pgain;
+   165		unsigned int val;
+   166		int ret;
+   167	
+   168		ret = pm16d17_read_reg(data, PM16D17_DEV_ID, &val);
+   169	
+   170		if (ret < 0 || (val != DEVICE_ID)) {
+   171			dev_err(&client->dev, "Invalid chip id 0x%04x\n", val);
+   172			return -ENODEV;
+   173		}
+   174	
+   175		dev_dbg(&client->dev, "Detected PM16D17 with chip id: 0x%04x\n", val);
+   176	
+   177		ret = pm16d17_write_reg(data, PM16D17_OP_MODE, ENABLE_PS_FUNCTION);
+   178		if (ret < 0)
+   179			return ret;
+   180	
+   181		of_property_read_u32(np, "ps-gain", &pgain);
+   182		switch (pgain) {
+   183		case 1:
+   184		case 2:
+   185		case 4:
+   186		case 8:
+ > 187			op_mode_setting_val |= (ilog2(pgain) << 6) & PS_GAIN_MASK;
+   188			break;
+   189		default:
+   190			break;
+   191		}
+   192	
+   193		of_property_read_string(np, "ps-itime", &conv_time);
+   194		if (strcmp(conv_time, "0.4") == 0)
+   195			op_mode_setting_val |= PITIME_0_POINT_4_MS & PS_ITIME_MASK;
+   196		else if (strcmp(conv_time, "0.8") == 0)
+   197			op_mode_setting_val |= PITIME_0_POINT_8_MS & PS_ITIME_MASK;
+   198		else if (strcmp(conv_time, "1.6") == 0)
+   199			op_mode_setting_val |= PITIME_1_POINT_6_MS & PS_ITIME_MASK;
+   200		else if (strcmp(conv_time, "3.2") == 0)
+   201			op_mode_setting_val |= PITIME_3_POINT_2_MS & PS_ITIME_MASK;
+   202		else if (strcmp(conv_time, "6.3") == 0)
+   203			op_mode_setting_val |= PITIME_6_POINT_3_MS & PS_ITIME_MASK;
+   204		else if (strcmp(conv_time, "12.6") == 0)
+   205			op_mode_setting_val |= PITIME_12_POINT_6_MS & PS_ITIME_MASK;
+   206		else if (strcmp(conv_time, "25.2") == 0)
+   207			op_mode_setting_val |= PITIME_25_POINT_2_MS & PS_ITIME_MASK;
+   208		else {
+   209			dev_info(&client->dev, "Using default ps itime value\n");
+   210			op_mode_setting_val |= PITIME_0_POINT_4_MS & PS_ITIME_MASK;
+   211		}
+   212	
+   213		of_property_read_string(np, "ps-wtime", &wait_time);
+   214		if (strcmp(wait_time, "12.5") == 0)
+   215			op_mode_setting_val |= PWTIME_12_POINT_5_MS & PS_WTIME_MASK;
+   216		else if (strcmp(wait_time, "25") == 0)
+   217			op_mode_setting_val |= PWTIME_25_MS & PS_WTIME_MASK;
+   218		else if (strcmp(wait_time, "50") == 0)
+   219			op_mode_setting_val |= PWTIME_50_MS & PS_WTIME_MASK;
+   220		else if (strcmp(wait_time, "100") == 0)
+   221			op_mode_setting_val |= PWTIME_100_MS & PS_WTIME_MASK;
+   222		else if (strcmp(wait_time, "200") == 0)
+   223			op_mode_setting_val |= PWTIME_200_MS & PS_WTIME_MASK;
+   224		else if (strcmp(wait_time, "400") == 0)
+   225			op_mode_setting_val |= PWTIME_400_MS & PS_WTIME_MASK;
+   226		else if (strcmp(wait_time, "800") == 0)
+   227			op_mode_setting_val |= PWTIME_800_MS & PS_WTIME_MASK;
+   228		else if (strcmp(wait_time, "1600") == 0)
+   229			op_mode_setting_val |= PWTIME_1600_MS & PS_WTIME_MASK;
+   230		else {
+   231			dev_info(&client->dev, "Using default ps wtime value\n");
+   232			op_mode_setting_val |= PWTIME_12_POINT_5_MS & PS_WTIME_MASK;
+   233		}
+   234	
+   235		ret = pm16d17_write_reg(data, PM16D17_PS_SETTING, op_mode_setting_val);
+   236		if (ret < 0)
+   237			return ret;
+   238	
+   239		of_property_read_u32(np, "ps-ir-led-pulse-count", &pulse_count);
+   240		if (pulse_count > 256)
+   241			pulse_count = 256;
+   242		ret = pm16d17_write_reg(data, PM16D17_VCSEL_DRIVE_PULSE, pulse_count - 1);
+   243		if (ret < 0)
+   244			return ret;
+   245	
+   246		of_property_read_u32(np, "ps-offset-cancel", &ps_offset_cancel);
+   247		if (ps_offset_cancel != 0) {
+   248			ret = pm16d17_write_reg(data, PM16D17_PS_SETTING2, OFFSET_CANCEL_ENABLE);
+   249			if (ret < 0)
+   250				return ret;
+   251	
+   252			offset_lsb = ps_offset_cancel & PS_OFFSET_CANCEL_LSB_MASK;
+   253			offset_msb = (ps_offset_cancel & PS_OFFSET_CANCEL_MSB_MASK) >> 8;
+   254	
+   255			ret = pm16d17_write_reg(data, PM16D17_PS_OFFSET_CANCEL_L, offset_lsb);
+   256			if (ret < 0)
+   257				return ret;
+   258	
+   259			ret = pm16d17_write_reg(data, PM16D17_PS_OFFSET_CANCEL_H, offset_msb);
+   260			if (ret < 0)
+   261				return ret;
+   262		}
+   263	
+   264		return 0;
+   265	}
+   266	
 
-1.) First of all, would there be a general interest to integrate
-additional code into the iio/adxl345 driver? If ok, I would love to
-prepare patch series on a per feature basis up for discussion to learn
-and to get it matching your high quality standards.
-
-2.) I assume the key motivation of the IIO events/channel approach is
-to abstract sensor specific functionality to a general IIO/accel
-functionality provided by sysfs in Linux. Do I understand this
-correctly? So, no matter of the implementation, if a feature is
-provided, SW can use that w/o knowing the underlying hardware and
-datasheet in specific.
-
-3.) If the above is true, where can I find the documentation of the
-sysfs handles (other than testing/ABI, the iio header files,
-interpretation of types and enums,...)? Which handles are possible is
-all around? How can I use it? And so on? Is there a way to list
-supported features for an iio device?
-
-4.) My approach was to read through codes and do some creative
-interpretation of namings. I have nothing against reading sources, but
-in some cases this can be quite confusing. Even from a user's
-perspective, e.g. the fifo watermark. Currently I know "watermark" for
-a FIFO can be configured (if "buffer0" has been armed before with some
-length), where hwfifo_watermark can never be configured. Currently I
-understand: hwfifo_watermark is read-only. It reads back what is
-configured in the HW and prints what the hwfifo eventually holds as
-watermark. Is this a halfway correct interpretation of the
-FIFO/watermark mechanism?
-On the other hand, with my FIFO enabled and configured, e.g. to
-watermark of 30 entries (then it triggers an interrupt, which I catch
-and I yield the data). I can see hex data arriving at
-/dev/iio:device0, which is nice. But checking with 'iio_event_monitor
-/dev/iio:device0' I see nothing. Do I understand this wrong? They
-should come as raw, of course I also could see the values e.g. in
-/sys/bus/iio/..../in_accel_x_raw  - but I guess this is rather for
-debugging. Where /dev/iio:device0 should bring up the bulk of scanned
-values (here x,y,z and in case several FIFO entries of them). Or,
-could someone please explain?
-
-5.) In particular I have questions on the implementation ways, let's
-take "single tap" as another example - Which is the better approach?
-  A) do regmap_write() directly from write_event_value() using mutex
-protection everywhere (I hope my assumption about usage of mutexes is
-correctly here) - i.e. no matter if the sensor is currently running or
-not, there can b e configuration, or
-  B) init a variable in the driver data "singletap_en", and only write
-all regs at postenable() w/o mutex then, i.e. when I do
-buffer0/enable? - i.e. configuration only when the sensor is not
-running
-If I take the approach B, I fear I'm implementing the behavior
-differently to other accelerometers. In other words, I feel it would
-be better to implement uniform accelerometer behavior, or to document
-it somewhere. Here I'm unsure, if this is ok or not? Another argument
-for B) was that I guess many of the sensors must be put into
-off/standby for configuration and turned on again. This comes
-implicitely when connecting it to buffer0/enable.
-
-7.) So far I managed to implement the following
- - Configuration of TAP_THRESHOLD register via IIO_EV_INFO_VALUE in
-write_event_value()
- - Configuration of DURation register via IIO_EV_INFO_RESET_TIMEOUT in
-write_event_value()
- - Configuration of a single tap enable field via a handle in
-write_event_config()
-In the postenable() I configure the interrupt by the state of the
-enable field. Then I configure a buffer (256 to buffer0/length; 1 to
-buffer0/in_accel_x_en), evntually echo 1 into buffer0/enable. I'm
-watching using the iio_event_monitor on the /dev/iio:device0. I can
-see gesture events. Is this a valid approach? For double tap the
-datasheet additionally describes a "window" parameter to be
-configured. But events does not seem to offer something like that.
-Even the above approach e.g. "IIO_EV_INFO_RESET_TIMEOUT" and the
-resulting handle in sysfs sounds quite different than "duration", and
-is IMHO here also not very intuitive (duration IMHO would be easier to
-understand, but ok). So what to do with a "window"? I might discuss
-that also later when I present the code, perhaps would be easier to
-follow.
-
-Thank you so much if you read +/- up until here. I was told it is ok
-to send my questions to IIO mailing list. So, I hope it was ok, and
-the questions are not too obvious.
-
-Best regards,
-Lothar
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

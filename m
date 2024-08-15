@@ -1,247 +1,209 @@
-Return-Path: <linux-iio+bounces-8497-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8498-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7EF953587
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2024 16:38:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988EB953722
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2024 17:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E47F3B24AFF
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2024 14:38:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC1741C24390
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Aug 2024 15:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B574E1A01DE;
-	Thu, 15 Aug 2024 14:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACEC1AD411;
+	Thu, 15 Aug 2024 15:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIH/NSNC"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="ALyQxPng"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2081.outbound.protection.outlook.com [40.107.105.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C7A1684AC;
-	Thu, 15 Aug 2024 14:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732721; cv=none; b=IgBw+2Y7LBdf6ujqKi1DU2SYkBrdGrigUlKyECL/THZPkUZGAyLeh8Twuf9aVBIdr/+azphJIVPz/eI76R/+TLCKybxAZmfEuggeCIL6jQLbXMn8eDDdy15osu5dzDZY+PGPqfheKuWEhvmY00uTeEMKGq0stAgoOzv5n17qpNg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732721; c=relaxed/simple;
-	bh=k3UTEcJQzJQY4LxNoDzAK/SiM1woRUGDUADRkRRyGHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aoRJ90ivqOmlhZW4VzOwGHSRDEi/njprB2nb/tAi/bxzdpTiYg48ufLJRfH1u4z8Xbr9ZN4Bx7ZysHsVtyazYWj5gykJoGdWp+RI74mWSjNjajN8rOJJS2JWPZ3uAhbmtxLfAw4lPOuVAOIVZFHgqpUNqys7uMGmgTY4o+qH0N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIH/NSNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F960C4AF0D;
-	Thu, 15 Aug 2024 14:38:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723732721;
-	bh=k3UTEcJQzJQY4LxNoDzAK/SiM1woRUGDUADRkRRyGHw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LIH/NSNCo2aNiYQvTHxh4IwPIcLBke3cjGULP+pg/k/Nmbrlw/pkIRmKP9tj5wJNz
-	 f2X95GMDFVkINfY5j4HwKqIcYuFCwLDcd5I+ZAGbJ0+qvS3q30LL2baigXkshbXt/9
-	 JszKli5b8ZtkgBcv9nCVS2FioFD2mjSV0fY2nCX6RayS8Jtp6BeYaVElTJI2yvCCav
-	 gBG21UwR+q6NEL8+SA3Lw3UKyRIwGZX73R4XI+gdi37aaEUtHe1gLvdNS5AL2qAm+H
-	 qmURzIfKGO66lsxcGk8wjZOdvzphuvb7RVuNMbhE0FMdD7rL3/R+R8ixeQww/cKiHg
-	 GrpaVRvyxy5sg==
-Date: Thu, 15 Aug 2024 15:38:35 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Guillaume Stols <gstols@baylibre.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-pwm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	20240705211452.1157967-2-u.kleine-koenig@baylibre.com,
-	20240712171821.1470833-2-u.kleine-koenig@baylibre.com,
-	cover.1721040875.git.u.kleine-koenig@baylibre.com,
-	aardelean@baylibre.com
-Subject: Re: [PATCH 2/8] dt-bindings: iio: adc: ad7606: Add iio backend
- bindings
-Message-ID: <20240815-chatter-monotone-c1a00c246d1f@spud>
-References: <20240815-ad7606_add_iio_backend_support-v1-0-cea3e11b1aa4@baylibre.com>
- <20240815-ad7606_add_iio_backend_support-v1-2-cea3e11b1aa4@baylibre.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4739176AA3;
+	Thu, 15 Aug 2024 15:26:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.81
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723735586; cv=fail; b=TVaW9KinsuOdGVbSBPENRghxZO7Qa91kGrUKPYk6n6wrrcqK8xuXL8sxRZ7Wth7evBbd9NR1FZtVdIor/hQvWpvkL2HUU5f3r20LVOiRZ6IaKNOK7XL6vcW5sEPfNK8Hjr+WSKOt49hdeUC7PMN2aKAR99akq9/WI4yJkoYLIow=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723735586; c=relaxed/simple;
+	bh=t4ojcTLuWaJ7+UTHJROPz/3J0KRxrwl3+JFAQmEOvNI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ibZb0NE7KQ89OswrP0O5RRShORCQoc6ll9VRJolgzb1ocvx9yUMeol3MpM2oF21D9Wj/MaG5h7saIDmoDCF6M1DOsdLQKX0JiAEaxCOsf0v6oVMU6mvB3MNgx1QpFu4RqLxv9ekYXtcg+kNSH9B7RdzYVxWfUsTVoMknAXpk6xo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=ALyQxPng; arc=fail smtp.client-ip=40.107.105.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F6+ma8GcEnxXRpTNr1PsLI8HkhZ04yIEy9KU2R2DGzRUf1VqLN0ot+3wpgLR3McNVi14XRlflw5qNFcvyMsHlggo7i2Z9IGcXE2eTaUdOuQQuTI8sgWgMzDPZ0YVPOQZB7/Qua10wwzbL4Iwcf7XdnFpeR+QDveoxlcRyTN1fAEnto7qky6rCYnjMWggjD/407U5sUzQRuiqQaraV1fM49GFNoSTjb3ZBXuo0d5+IFgD+35e01DYe9H1+Iv0uYgW0uRkV1QJE59IaiyOe3ektsoO3L87u85nn2MRDkFQpfm0hhRZJBcXsWtTUCW1dXoRf9bm84IbTAuvaTSdZRjb4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=15FDFEWIr6J0gKYLUnwoHpR3dNzuFV4LwBW528+Yy/Q=;
+ b=JbUzJBiH3a4miLNxXPTenwNvdwV+V977MF0WgaCUGF1kizryXH8rIa8cWrKvB3SWNQS78iEuWpiccGQJGOrdex6GtWAqYM7cY0DBxdJ0xh0NEGletg8Iwm4BU9oJxJlf9z+dHM51zojup4SvEL73GnK17vNbXqI4Fl/fCi+zYjW39cAMZexLJq8+rtbsyJKum6fjOED4rOwANY7Q8/NvLIMWVIgcDYwG8uqiYoSqeeaH9A4KyaSrzFTI0bYIRALhLwDc3rbyetlBThhq4DwCnbeSeJ9+q2vK3MyI55n0avRzY7nUQQY1SHUY0n903K2AuToe0mtIandUDI+LtT34vQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=15FDFEWIr6J0gKYLUnwoHpR3dNzuFV4LwBW528+Yy/Q=;
+ b=ALyQxPngpxIxrLpkNxreM1XQAlqG/MmDxxK/KM7Ry0HN9T7E3cddftt6q859kzhZ8xxrXbv3n4Y3iZvs8JbwxhKQoY3fTijQCJ4iSKXE1DvSf3WAuxxcl3+PxEAMNtWdWV0b4IUaCSNdnoGND9EOSLfhEBnOGEhfWkReJXT8CG66+eW9wrcY19Hq6daZ/XYm6ZlHcqQO4AzcToTZf+H9YXbUc4SIS82VfN005OtYNw1E1OH8ZC7IYI7BCLQso9YrpbQY3MOUF68gQemwljoFEQ6jJOouEXCzKqNriYueCjT2katqTy4KW323wmJsnrRKI5CEdLspel/DD8pN6Grsaw==
+Received: from DU2PR04CA0027.eurprd04.prod.outlook.com (2603:10a6:10:3b::32)
+ by AS1PR10MB5627.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:47a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.18; Thu, 15 Aug
+ 2024 15:26:19 +0000
+Received: from DB5PEPF00014B9C.eurprd02.prod.outlook.com
+ (2603:10a6:10:3b:cafe::74) by DU2PR04CA0027.outlook.office365.com
+ (2603:10a6:10:3b::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.23 via Frontend
+ Transport; Thu, 15 Aug 2024 15:26:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DB5PEPF00014B9C.mail.protection.outlook.com (10.167.8.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7849.8 via Frontend Transport; Thu, 15 Aug 2024 15:26:19 +0000
+Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 15 Aug
+ 2024 17:26:05 +0200
+Received: from LR-C-0008DVM.rt.de.bosch.com (10.139.217.196) by
+ SI-EXCAS2000.de.bosch.com (10.139.217.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 15 Aug 2024 17:26:05 +0200
+From: <Jianping.Shen@de.bosch.com>
+To: <jic23@kernel.org>, <lars@metafoo.de>, <robh@kernel.org>,
+	<krzk+dt@kernel.org>, <conor+dt@kernel.org>, <dima.fedrau@gmail.com>,
+	<marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<Jianping.Shen@de.bosch.com>, <Christian.Lorenz3@de.bosch.com>,
+	<Ulrike.Frauendorf@de.bosch.com>, <Kai.Dolde@de.bosch.com>
+Subject: [PATCH v3 0/2] iio: imu: smi240: cover-letter
+Date: Thu, 15 Aug 2024 17:25:43 +0200
+Message-ID: <20240815152545.7705-1-Jianping.Shen@de.bosch.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6HKhWcDgbvoBp7P3"
-Content-Disposition: inline
-In-Reply-To: <20240815-ad7606_add_iio_backend_support-v1-2-cea3e11b1aa4@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB5PEPF00014B9C:EE_|AS1PR10MB5627:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca52d7f1-27aa-4c2d-7752-08dcbd3e9c9d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RU1wTnFIV05DVHdnOEo1RStDWGkxYzRGS2RtUHNBTTRKRTlLYzNsb2p1VmJl?=
+ =?utf-8?B?N2k5YzRCYXdjTm1KQmFPTUVtMjk4Q0NBQkpQQ202V3VWelV3eGdUa0E2T0h3?=
+ =?utf-8?B?c0R4VStTYWxVNFhzM0tRQVhpUVQxNEx4S0hodytGaDh4blYzc3F5c1p2TXlw?=
+ =?utf-8?B?dTBOMk5oTmR1Uk8xV2JDUk9YZGZDeUtBZk9pVENaQVFhMUxQV3NOTmZPcEVD?=
+ =?utf-8?B?YVllcEV2b01HcGNyZVhTWVZyQng3MjlFTldFZVJlSk5YeXVRa3Q3QUw4R2lY?=
+ =?utf-8?B?Nk9Ma29oS1h5Z0ZRbGI5ZDAyeXZXdWhNQ1I0djlFcEtucklzWFZUQmhDd3Bj?=
+ =?utf-8?B?SXhjUXk2OEtLOS9rM3RRVUo2SXZWQXJhZnRFUC9ENWhPUXFBSG9mNWU0d25P?=
+ =?utf-8?B?R0NtYURqd3dyYm9tR1pSbVdSWXVNZ3NxZE96M3Q3NG9FVEhPUTVCcER4TURF?=
+ =?utf-8?B?STBJdkh2SnFsQVVQR0VGVThvUFMrTXBlL3F0d201ZTNWbzJtYVA3UDBTaGw1?=
+ =?utf-8?B?K3dXYnBtWTllSmRRbTF6VjBqZGdoenF2eHZTUEhYUWdxL0JkOVEvS3hEWGFy?=
+ =?utf-8?B?MTR2VjlmMUlJc0xPRzRKRm1IZnFNTnZKNUtFazlGVXRyY0ZXTWtzek9qZ0JK?=
+ =?utf-8?B?cWx6NUZ4bjZXM3pwRXVuZWMxWkR3b2tiZjcydjh0OTJ3azNSMmRMN0FlYTAv?=
+ =?utf-8?B?d3dsT2hpQ0swNGdwY1pueE41c2EzRkNKekVyeXZBOE4rcitkbDdsNlVZYit5?=
+ =?utf-8?B?Wkh6OTgvbDRPZHd6bWFFZTJLVS84eWh3OVZ2cndVdkxRUkZubXpSMFpNaHpv?=
+ =?utf-8?B?cU1xWUtYeUgrcnAraHBLTjB1NXBWd3BtaUJZcU1KUjk2QWVJWXN1Y2xBbFI1?=
+ =?utf-8?B?QnlXeGV2azgyeDlUcUdEWEVab09Sd2RuYVprd3ZBWUtiTnFlVG1oc2VVUFlR?=
+ =?utf-8?B?RkFPVVNGTlNLUDFOZmhpMzhpMHkwUWZ5QzY5UjRIR0NldnZqN3plZC9WeSth?=
+ =?utf-8?B?VURqU2JrMUc5UVNuVCtNa2ZvQmUybGpBQzVkTExXNjBzS2Q5eTdIbFNOQWVJ?=
+ =?utf-8?B?TGIxNEJzTzQ1NGNnRHc0d2hURzZyb0k2UkpDMEltUGYycFU1anp4ZlZLSEdp?=
+ =?utf-8?B?K3grVGdnWEl6aWRCeG9rRzBTTGNaVmZsWllvY1lVMVc2VEdwb1RaSjBxUDdM?=
+ =?utf-8?B?QytVQjJhRDN1MVNhVEErT05rNUFqMGR5RnhrRU1YUURJS1N5WllVNmRlNjZL?=
+ =?utf-8?B?VU9hRWY4OHdySTAzYURRUk1kNlBXcUV1a2dxcWdVdjNpOFNscE5iMlQ0b0dQ?=
+ =?utf-8?B?dTVNMStGbDhRc01sWlFFLy9BbGxoZWtnMzVUaVpOaWdKOXROMnJQZGJBRTJq?=
+ =?utf-8?B?UTE3MmpNdkRYQnRUdHdaRnZoVllPSjBwOWRwS3hyeUhJb0tQREt0T1Z6Ri91?=
+ =?utf-8?B?TlZMOTVoUFZrNkVTT3JyV3l3MElpWmh2Q3lBcTZCQklHbEVvZUNET0ZGQ0R2?=
+ =?utf-8?B?dkZycUhjbXZVN0h3a2VCSzV3MWRPWVg1aytpcVdFRjI1VUNjb096TmFqYTVi?=
+ =?utf-8?B?N3cxemNWNnNjVmtTK0VhdGEySkpSODZlcDdJL1ZMZTNxSmZzTGNSTW41TENG?=
+ =?utf-8?B?QWVwbzQxZXlRdTJnbnpVdUMrVS9jbXpUUDY2OE5sTkFaZlc4NlVtek9vRTQ1?=
+ =?utf-8?B?RXF2TytYWUR4Vkg0TWhtMnlrc0l2L3UrNVhxSEwzRXFGVDZHNElUNFRoWHcv?=
+ =?utf-8?B?aExCWHJEbjFhK2Q3STBXQ0Z5Z1FUUHpyRVFGbVNNdHRta2daS2c1QTdaV2lB?=
+ =?utf-8?B?ajU5K1c1aURoS1A3Z0FJSmZiTWFEVW43MGRybVp4NEgvRmwrb0ZrcDU5SWZa?=
+ =?utf-8?B?eEZIWmtUdUtBY3VqUkpmLzgyWmxsZ0gyUXAvZjZHdXhFYXFJMUpxelk1OXVn?=
+ =?utf-8?B?MHJzZEpBajUraHNlU1V2bUhiTzlrb3poRW1OL3RGbmlBaVd0bGFCQVY2VUc0?=
+ =?utf-8?B?OFRVTG5BQm5nPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2024 15:26:19.1861
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca52d7f1-27aa-4c2d-7752-08dcbd3e9c9d
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB5PEPF00014B9C.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR10MB5627
 
+From: Shen Jianping <Jianping.Shen@de.bosch.com>
 
---6HKhWcDgbvoBp7P3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patchset adds the iio driver and the dt-binding for bosch imu smi240.
+The smi240 is a combined three axis angular rate and three axis acceleration
+sensor module with a measurement range of +/-300°/s and up to 16g.
+smi240 does not support interrupt.
 
-On Thu, Aug 15, 2024 at 12:11:56PM +0000, Guillaume Stols wrote:
-> Add the required properties for iio-backend support, as well as an
-> example and the conditions to mutually exclude interruption and
-> conversion trigger with iio-backend.
-> The iio-backend's function is to controls the communication, and thus the
-> interruption pin won't be available anymore.
-> As a consequence, the conversion pin must be controlled externally since
-> we will miss information about when every single conversion cycle (i.e
-> conversion + data transfert) ends, hence a PWM is introduced to trigger
-> the conversions.
->=20
-> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 75 ++++++++++++++++=
-+++++-
->  1 file changed, 72 insertions(+), 3 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> index c0008d36320f..4b324f7e3207 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> @@ -114,13 +114,28 @@ properties:
->        assumed that the pins are hardwired to VDD.
->      type: boolean
-> =20
-> +  pwms:
-> +    description:
-> +      In case the conversion is triggered by a PWM instead of a GPIO plu=
-gged to
-> +      the CONVST pin, the PWM must be referenced.
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  pwm-names:
-> +    minItems: 1
-> +    maxItems: 2
+dt-bindings: 
+v1 -> v2
+    - Add more detail in description
+    - Add maintainer
+    - Add vdd and vddio power supply
+    - Use generic node name
+    - Order the properties according to DTS coding style
+ v2 -> v3   
+    - improve description
+    - improve supply definition
+    - make supply definition as required
+    - add supply definition in example
 
-You need to describe what the pwms are.
+imu driver:
+v1 -> v2
+    - Use regmap for register access
+    - Redefine channel for each singel axis
+    - Provide triggered buffer
+    - Fix findings in Kconfig
+    - Remove unimportant functions
+v2 -> v3
+    - Use enum für capture mode
+    - Using spi default init value instead manual init 
+    - remove duplicated module declaration
+    - Fix code to avoid warning
 
-> +  io-backends:
-> +    description:
-> +      A reference to the iio-backend, which is responsible handling the =
-BUSY
-> +      pin's falling edge and communication.
-> +      An example of backend can be found at
-> +      http://analogdevicesinc.github.io/hdl/library/axi_ad7606x/index.ht=
-ml
-> +
->  required:
->    - compatible
-> -  - reg
->    - avcc-supply
->    - vdrive-supply
-> -  - interrupts
-> -  - adi,conversion-start-gpios
-> =20
->  # This checks if reg is a chipselect so the device is on an SPI
->  # bus, the if-clause will fail if reg is a tuple such as for a
-> @@ -137,6 +152,35 @@ then:
->          - spi-cpol
-> =20
->  allOf:
-> +  # Communication is handled either by the backend or an interrupt.
+Shen Jianping (2):
+  dt-bindings: iio: imu: smi240: devicetree binding
+  iio: imu: smi240: imu driver
 
-This comment seems misplaced, but also superfluous?
+ .../bindings/iio/imu/bosch,smi240.yaml        |  52 +++
+ drivers/iio/imu/Kconfig                       |   1 +
+ drivers/iio/imu/Makefile                      |   1 +
+ drivers/iio/imu/smi240/Kconfig                |  12 +
+ drivers/iio/imu/smi240/Makefile               |   7 +
+ drivers/iio/imu/smi240/smi240.h               |  32 ++
+ drivers/iio/imu/smi240/smi240_core.c          | 386 ++++++++++++++++++
+ drivers/iio/imu/smi240/smi240_spi.c           | 164 ++++++++
+ 8 files changed, 655 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml
+ create mode 100644 drivers/iio/imu/smi240/Kconfig
+ create mode 100644 drivers/iio/imu/smi240/Makefile
+ create mode 100644 drivers/iio/imu/smi240/smi240.h
+ create mode 100644 drivers/iio/imu/smi240/smi240_core.c
+ create mode 100644 drivers/iio/imu/smi240/smi240_spi.c
 
-> +  - if:
-> +      properties:
-> +        pwms: false
-> +    then:
-> +      required:
-> +        - adi,conversion-start-gpios
-> +
-> +  - if:
-> +      properties:
-> +        adi,conversion-start-gpios: false
-> +    then:
-> +      required:
-> +        - pwms
-> +
-> +  - if:
-> +      properties:
-> +        interrupts: false
-> +    then:
-> +      required:
-> +        - io-backends
-> +
-> +  - if:
-> +      properties:
-> +        io-backends: false
-> +    then:
-> +      required:
-> +        - interrupts
-> +
->    - if:
->        properties:
->          compatible:
-> @@ -178,12 +222,37 @@ allOf:
->          adi,sw-mode: false
->      else:
->        properties:
-> +        pwms:
-> +          maxItems: 1
-> +        pwm-names:
-> +          maxItems: 1
->          adi,conversion-start-gpios:
->            maxItems: 1
-> =20
->  unevaluatedProperties: false
-> =20
->  examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    / {
-> +        adi_adc {
-> +                compatible =3D "adi,ad7606b";
+-- 
+2.34.1
 
-Just two space indent for examples please.
-
-Cheers,
-Conor.
-
-> +
-> +                pwms =3D <&axi_pwm_gen 0 0>;
-> +
-> +                avcc-supply =3D <&adc_vref>;
-> +                vdrive-supply =3D <&vdd_supply>;
-> +
-> +                reset-gpios =3D <&gpio0 91 GPIO_ACTIVE_HIGH>;
-> +                standby-gpios =3D <&gpio0 90 GPIO_ACTIVE_LOW>;
-> +                adi,range-gpios =3D <&gpio0 89 GPIO_ACTIVE_HIGH>;
-> +                adi,oversampling-ratio-gpios =3D <&gpio0 88 GPIO_ACTIVE_=
-HIGH
-> +                                                &gpio0 87 GPIO_ACTIVE_HI=
-GH
-> +                                                &gpio0 86 GPIO_ACTIVE_HI=
-GH>;
-> +                io-backends =3D <&iio_backend>;
-> +        };
-> +    };
-> +
->    - |
->      #include <dt-bindings/gpio/gpio.h>
->      #include <dt-bindings/interrupt-controller/irq.h>
->=20
-> --=20
-> 2.34.1
->=20
-
---6HKhWcDgbvoBp7P3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZr4S6gAKCRB4tDGHoIJi
-0ulbAP9hVpWaS+YqUymxF/KYZehF0e4fGiVa8VvqdBGTq4r69AD+MauYvu8v8/CJ
-i/lNXDbt57S3gsQSkOzHbY8DnCzcQgk=
-=tsYn
------END PGP SIGNATURE-----
-
---6HKhWcDgbvoBp7P3--
 

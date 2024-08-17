@@ -1,197 +1,216 @@
-Return-Path: <linux-iio+bounces-8515-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8516-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33849554B9
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 03:56:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D438955531
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 05:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0029E1C21B82
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 01:56:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 420181C21986
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 03:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BFB53BE;
-	Sat, 17 Aug 2024 01:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E03F74416;
+	Sat, 17 Aug 2024 03:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h7z2quYw"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="kwQaMqBI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EC63211;
-	Sat, 17 Aug 2024 01:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF64E6FD3;
+	Sat, 17 Aug 2024 03:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723859789; cv=none; b=O79lrS3nqz0nFdYQ1phhB2QhEXcqyi1503Ak3olHWaTijZJJk0R3wjbB9uzV2wp9LznoxHD5hI2f+/YvsYRdsEyO2PLR0qdmO8uIk8Pk4mvEb77+R0JmfsYPNoRiXNKBrLIK4SOm9xpmdhuxTFsoyDTHDL8Nirx7TAX1Qh5V3H8=
+	t=1723864296; cv=none; b=mqkZqr82oOiU3BTvI4PioJeDPlPD+b9MoQtmaBex4r8NIyQeTqJrWSAYwQppykAu6o76rHE9N4InHVj+ATVoug8p8IAAVhXN32jxnFpPv0OX3tCAkawsc+hrYTSFVRrmtrs46l7SCCSLz9rSkVIrQbT9eDc0WPKVEis2gO3INoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723859789; c=relaxed/simple;
-	bh=xF4ou8X8ntZ++7VKf4djCVEPiMuqx1unD6WioySVMdc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hoq7Zfkq7iC8B73NGotQemx/cdjckpIgwDMQSCiIf8P5oYaaIYmE6JKfcTSZW8mxhk4nzPmpiGKnMTSiPD2UJm4hkIjap9LjLLmGK+G2DNjafA3gGYcTxvexduBe2ezeav2gndv4rDdY9BkOFoXOguNN4uYlQPZC/5s4AnorzDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h7z2quYw; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723859787; x=1755395787;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xF4ou8X8ntZ++7VKf4djCVEPiMuqx1unD6WioySVMdc=;
-  b=h7z2quYw5LwQecrRa2pYQ4exfJ0P1CEqAGwX5Pr0Uo8gtcRt64ZKBL/f
-   f8dzNlK1tlRWYTPUvUw/zfawv3mbPhJgI7qV0RHaZkU5O/zoJ9k52r6Gk
-   P5behUrTZhEQVat6EAr3pWnTjc8yJlZw7wrqYCAsTcdwtCUbqP4tUZzrj
-   CskBcl313jz/CpsU1BGZU2py5S9gj/f0om6yz1PISYQYLSIlPBaxcnTFm
-   zyYu+PTmSj+3ccZgDP/obPx75LN5dm+MFtT1P8T2yT3HCIg3pKd4MEH5p
-   2/el0fjs5udeUyWj/Edr6mmovqL2/hHTH/c0A0AF2obc7g9WTB602U4Bm
-   w==;
-X-CSE-ConnectionGUID: eopToTX3TJact0vu3TYVZw==
-X-CSE-MsgGUID: m4elG0I0QGWH1psW2XmEOA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11166"; a="39681435"
-X-IronPort-AV: E=Sophos;i="6.10,153,1719903600"; 
-   d="scan'208";a="39681435"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2024 18:56:26 -0700
-X-CSE-ConnectionGUID: sElGVJL6R/apUCQ+fDw9Mw==
-X-CSE-MsgGUID: JmNtofhoR/yAIWW2Qdppgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,153,1719903600"; 
-   d="scan'208";a="59473633"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 16 Aug 2024 18:56:23 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sf8g1-00076c-1C;
-	Sat, 17 Aug 2024 01:56:21 +0000
-Date: Sat, 17 Aug 2024 09:56:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jianping.Shen@de.bosch.com, jic23@kernel.org, lars@metafoo.de,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	dima.fedrau@gmail.com, marcelo.schmitt1@gmail.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Christian.Lorenz3@de.bosch.com,
-	Ulrike.Frauendorf@de.bosch.com, Kai.Dolde@de.bosch.com
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v3 2/2] iio: imu: smi240: imu driver
-Message-ID: <202408170910.aR1gYef3-lkp@intel.com>
-References: <20240815152545.7705-3-Jianping.Shen@de.bosch.com>
+	s=arc-20240116; t=1723864296; c=relaxed/simple;
+	bh=l38IdzJYOwLZtyjjLa9m/LqkWwtiawxtuHaK2D68IlM=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=KbveEyw27+Qi9cSnJg6+s7S0fbyn6IaZ0ntuNmJPF7CXmrWcezJtE3Usz5cB1jpoGcFsw+2Ezw3gLfChJKEBMbATokZ7rROnhu/4yaqw2EgyuQhinWUteaVJWozLfIwahYfY9rFol13MV7kBPhtgQq51fx40wJpomlpQMt2GTWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=kwQaMqBI; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240815152545.7705-3-Jianping.Shen@de.bosch.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1723864292;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=odkph5w0PVDl1mITUK856/Sf3iEO6l5n47FubRaBVgs=;
+	b=kwQaMqBIuqeUpD8pGTY+4isN7YnsejsZrk80UnjrwBa4yfM0eix0SWYi9q9jZgXWZmY4Zd
+	wWZveORCVtTZekiRupv8yVTqL3d32BHXbsAyI/kMzkgR4JWpE/siLGcT2Mt5yqsN0leVmG
+	w4mYe0H/1XBeYls5sovwqJwxOLtOqU3xSFOPPtN8I7DCyBSXHXvlmACLVimTLvPy7P7yko
+	fwb20S8gKajjtq5/fRdaQA6kUC65LUMdjAGnkQ5/OgtsrgM60u94INCthhybYegg+//ujN
+	BcPscnQadpyHUYJnYlvCA+2vm0ojvV+JK1jltT06cXFKL6ZZkrs3LScAMaxF/g==
+Date: Sat, 17 Aug 2024 05:11:30 +0200
+From: Dragan Simic <dsimic@manjaro.org>
+To: Detlev Casanova <detlev.casanova@collabora.com>
+Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Heiko
+ Stuebner <heiko@sntech.de>, Andi Shyti <andi.shyti@kernel.org>, Jonathan
+ Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Lee Jones
+ <lee@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri
+ Slaby <jirislaby@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Chris Morgan
+ <macromorgan@hotmail.com>, Jonas Karlman <jonas@kwiboo.se>, Tim Lunn
+ <tim@feathertop.org>, Muhammed Efe Cetin <efectn@protonmail.com>, Andy Yan
+ <andyshrk@163.com>, Jagan Teki <jagan@edgeble.ai>, Sebastian Reichel
+ <sebastian.reichel@collabora.com>, Shresth Prasad
+ <shresthprasad7@gmail.com>, Ondrej Jirman <megi@xff.cz>, Weizhao Ouyang
+ <weizhao.ouyang@arm.com>, Alexey Charkov <alchark@gmail.com>, Jimmy Hon
+ <honyuenkwun@gmail.com>, Finley Xiao <finley.xiao@rock-chips.com>, Yifeng
+ Zhao <yifeng.zhao@rock-chips.com>, Elaine Zhang <zhangqing@rock-chips.com>,
+ Liang Chen <cl@rock-chips.com>, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-serial@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
+In-Reply-To: <20240802214612.434179-10-detlev.casanova@collabora.com>
+References: <20240802214612.434179-1-detlev.casanova@collabora.com>
+ <20240802214612.434179-10-detlev.casanova@collabora.com>
+Message-ID: <e794a247b52dd2fc10b470ed7df4d463@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-Hi,
+Hello Detlev,
 
-kernel test robot noticed the following build warnings:
+Please see a few comments below.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.11-rc3 next-20240816]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On 2024-08-02 23:45, Detlev Casanova wrote:
+> This device tree contains all devices necessary for booting from 
+> network
+> or SD Card.
+> 
+> It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
+> SDHCI (everything necessary to boot Linux on this system on chip) as
+> well as Ethernet, I2C, SPI and OTP.
+> 
+> Also add the necessary DT bindings for the SoC.
+> 
+> Signed-off-by: Liang Chen <cl@rock-chips.com>
+> Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
+> Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+> Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+> [rebase, squash and reword commit message]
+> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+> ---
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jianping-Shen-de-bosch-com/dt-bindings-iio-imu-smi240-devicetree-binding/20240815-234739
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240815152545.7705-3-Jianping.Shen%40de.bosch.com
-patch subject: [PATCH v3 2/2] iio: imu: smi240: imu driver
-config: x86_64-randconfig-123-20240817 (https://download.01.org/0day-ci/archive/20240817/202408170910.aR1gYef3-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240817/202408170910.aR1gYef3-lkp@intel.com/reproduce)
+[snip]
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408170910.aR1gYef3-lkp@intel.com/
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> new file mode 100644
+> index 0000000000000..00c4d2a153ced
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> @@ -0,0 +1,1635 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (c) 2023 Rockchip Electronics Co., Ltd.
+> + */
+> +
+> +#include <dt-bindings/clock/rockchip,rk3576-cru.h>
+> +#include <dt-bindings/reset/rockchip,rk3576-cru.h>
+> +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +#include <dt-bindings/phy/phy.h>
+> +#include <dt-bindings/power/rk3576-power.h>
+> +#include <dt-bindings/pinctrl/rockchip.h>
+> +#include <dt-bindings/soc/rockchip,boot-mode.h>
+> +
+> +/ {
+> +	compatible = "rockchip,rk3576";
+> +
+> +	interrupt-parent = <&gic>;
+> +	#address-cells = <2>;
+> +	#size-cells = <2>;
+> +
+> +	aliases {
+> +		ethernet0 = &gmac0;
+> +		ethernet1 = &gmac1;
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/imu/smi240/smi240_core.c:207:9: sparse: sparse: dereference of noderef expression
->> drivers/iio/imu/smi240/smi240_core.c:207:9: sparse: sparse: dereference of noderef expression
->> drivers/iio/imu/smi240/smi240_core.c:207:9: sparse: sparse: dereference of noderef expression
---
->> drivers/iio/imu/smi240/smi240_spi.c:69:17: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be32 [usertype] request @@     got int @@
-   drivers/iio/imu/smi240/smi240_spi.c:69:17: sparse:     expected restricted __be32 [usertype] request
-   drivers/iio/imu/smi240/smi240_spi.c:69:17: sparse:     got int
->> drivers/iio/imu/smi240/smi240_spi.c:70:17: sparse: sparse: invalid assignment: |=
-   drivers/iio/imu/smi240/smi240_spi.c:70:17: sparse:    left side has type restricted __be32
-   drivers/iio/imu/smi240/smi240_spi.c:70:17: sparse:    right side has type int
-   drivers/iio/imu/smi240/smi240_spi.c:71:17: sparse: sparse: invalid assignment: |=
-   drivers/iio/imu/smi240/smi240_spi.c:71:17: sparse:    left side has type restricted __be32
-   drivers/iio/imu/smi240/smi240_spi.c:71:17: sparse:    right side has type unsigned long
->> drivers/iio/imu/smi240/smi240_spi.c:72:32: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int [usertype] data @@     got restricted __be32 [usertype] request @@
-   drivers/iio/imu/smi240/smi240_spi.c:72:32: sparse:     expected unsigned int [usertype] data
-   drivers/iio/imu/smi240/smi240_spi.c:72:32: sparse:     got restricted __be32 [usertype] request
-   drivers/iio/imu/smi240/smi240_spi.c:72:17: sparse: sparse: invalid assignment: |=
-   drivers/iio/imu/smi240/smi240_spi.c:72:17: sparse:    left side has type restricted __be32
-   drivers/iio/imu/smi240/smi240_spi.c:72:17: sparse:    right side has type unsigned char
->> drivers/iio/imu/smi240/smi240_spi.c:73:19: sparse: sparse: cast from restricted __be32
->> drivers/iio/imu/smi240/smi240_spi.c:89:18: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be32 [addressable] [usertype] response @@     got unsigned int [usertype] @@
-   drivers/iio/imu/smi240/smi240_spi.c:89:18: sparse:     expected restricted __be32 [addressable] [usertype] response
-   drivers/iio/imu/smi240/smi240_spi.c:89:18: sparse:     got unsigned int [usertype]
->> drivers/iio/imu/smi240/smi240_spi.c:91:42: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int [usertype] data @@     got restricted __be32 [addressable] [usertype] response @@
-   drivers/iio/imu/smi240/smi240_spi.c:91:42: sparse:     expected unsigned int [usertype] data
-   drivers/iio/imu/smi240/smi240_spi.c:91:42: sparse:     got restricted __be32 [addressable] [usertype] response
->> drivers/iio/imu/smi240/smi240_spi.c:94:20: sparse: sparse: cast to restricted __be32
->> drivers/iio/imu/smi240/smi240_spi.c:94:20: sparse: sparse: restricted __be32 degrades to integer
->> drivers/iio/imu/smi240/smi240_spi.c:94:20: sparse: sparse: restricted __be32 degrades to integer
->> drivers/iio/imu/smi240/smi240_spi.c:94:18: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be32 [addressable] [usertype] response @@     got unsigned long @@
-   drivers/iio/imu/smi240/smi240_spi.c:94:18: sparse:     expected restricted __be32 [addressable] [usertype] response
-   drivers/iio/imu/smi240/smi240_spi.c:94:18: sparse:     got unsigned long
-   drivers/iio/imu/smi240/smi240_spi.c:108:17: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be32 [usertype] request @@     got int @@
-   drivers/iio/imu/smi240/smi240_spi.c:108:17: sparse:     expected restricted __be32 [usertype] request
-   drivers/iio/imu/smi240/smi240_spi.c:108:17: sparse:     got int
-   drivers/iio/imu/smi240/smi240_spi.c:109:17: sparse: sparse: invalid assignment: |=
-   drivers/iio/imu/smi240/smi240_spi.c:109:17: sparse:    left side has type restricted __be32
-   drivers/iio/imu/smi240/smi240_spi.c:109:17: sparse:    right side has type int
-   drivers/iio/imu/smi240/smi240_spi.c:110:17: sparse: sparse: invalid assignment: |=
-   drivers/iio/imu/smi240/smi240_spi.c:110:17: sparse:    left side has type restricted __be32
-   drivers/iio/imu/smi240/smi240_spi.c:110:17: sparse:    right side has type unsigned long
-   drivers/iio/imu/smi240/smi240_spi.c:111:17: sparse: sparse: invalid assignment: |=
-   drivers/iio/imu/smi240/smi240_spi.c:111:17: sparse:    left side has type restricted __be32
-   drivers/iio/imu/smi240/smi240_spi.c:111:17: sparse:    right side has type unsigned long
-   drivers/iio/imu/smi240/smi240_spi.c:112:32: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int [usertype] data @@     got restricted __be32 [usertype] request @@
-   drivers/iio/imu/smi240/smi240_spi.c:112:32: sparse:     expected unsigned int [usertype] data
-   drivers/iio/imu/smi240/smi240_spi.c:112:32: sparse:     got restricted __be32 [usertype] request
-   drivers/iio/imu/smi240/smi240_spi.c:112:17: sparse: sparse: invalid assignment: |=
-   drivers/iio/imu/smi240/smi240_spi.c:112:17: sparse:    left side has type restricted __be32
-   drivers/iio/imu/smi240/smi240_spi.c:112:17: sparse:    right side has type unsigned char
-   drivers/iio/imu/smi240/smi240_spi.c:113:19: sparse: sparse: cast from restricted __be32
+Please remove ethernetX aliases from the SoC dtsi.  The consensus
+is that those aliases need to be defined at the board level instead.
 
-vim +207 drivers/iio/imu/smi240/smi240_core.c
+See the commit 5d90cb1edcf7 (arm64: dts: rockchip: Remove ethernet0
+alias from the SoC dtsi for RK3399, 2023-12-12), for example, for
+more details.
 
-   197	
-   198	static irqreturn_t smi240_trigger_handler(int irq, void *p)
-   199	{
-   200		struct iio_poll_func *pf = p;
-   201		struct iio_dev *indio_dev = pf->indio_dev;
-   202		struct smi240_data *data = iio_priv(indio_dev);
-   203		int ret, sample, chan, i = 0;
-   204	
-   205		data->capture = SMI240_CAPTURE_ON;
-   206	
- > 207		for_each_set_bit(chan, indio_dev->active_scan_mask,
-   208				 indio_dev->masklength) {
-   209			ret = regmap_read(data->regmap,
-   210					  SMI240_DATA_CAP_FIRST_REG + chan, &sample);
-   211			data->capture = SMI240_CAPTURE_OFF;
-   212			if (ret)
-   213				break;
-   214			data->buf[i++] = sample;
-   215		}
-   216	
-   217		if (ret == 0)
-   218			iio_push_to_buffers_with_timestamp(indio_dev, data->buf,
-   219							   pf->timestamp);
-   220	
-   221		iio_trigger_notify_done(indio_dev->trig);
-   222		return IRQ_HANDLED;
-   223	}
-   224	
+> +		gpio0 = &gpio0;
+> +		gpio1 = &gpio1;
+> +		gpio2 = &gpio2;
+> +		gpio3 = &gpio3;
+> +		gpio4 = &gpio4;
+> +		i2c0 = &i2c0;
+> +		i2c1 = &i2c1;
+> +		i2c2 = &i2c2;
+> +		i2c3 = &i2c3;
+> +		i2c4 = &i2c4;
+> +		i2c5 = &i2c5;
+> +		i2c6 = &i2c6;
+> +		i2c7 = &i2c7;
+> +		i2c8 = &i2c8;
+> +		i2c9 = &i2c9;
+> +		serial0 = &uart0;
+> +		serial1 = &uart1;
+> +		serial2 = &uart2;
+> +		serial3 = &uart3;
+> +		serial4 = &uart4;
+> +		serial5 = &uart5;
+> +		serial6 = &uart6;
+> +		serial7 = &uart7;
+> +		serial8 = &uart8;
+> +		serial9 = &uart9;
+> +		serial10 = &uart10;
+> +		serial11 = &uart11;
+> +		spi0 = &spi0;
+> +		spi1 = &spi1;
+> +		spi2 = &spi2;
+> +		spi3 = &spi3;
+> +		spi4 = &spi4;
+> +	};
+> +
+> +	xin32k: clock-32k {
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Please use "xin32k: clock-xin32k { ... }" instead, because that follows
+the recently established revised pattern for clock names.  We should 
+have
+come consistency in the new SoC dtsi additions.
+
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <32768>;
+> +		clock-output-names = "xin32k";
+> +	};
+> +
+> +	xin24m: clock-24m {
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <24000000>;
+> +		clock-output-names = "xin24m";
+> +	};
+
+Please use "xin24m: clock-xin24m { ... }" instead, for the same reasons
+as already described above.
+
+> +	spll: clock-702m {
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <702000000>;
+> +		clock-output-names = "spll";
+> +	};
+
+Perhaps using "spll: clock-spll { ... }" instead would also be a good
+idea, because it would improve the overall consistency.
 

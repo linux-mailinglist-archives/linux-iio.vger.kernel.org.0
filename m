@@ -1,56 +1,66 @@
-Return-Path: <linux-iio+bounces-8552-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8553-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B776C955877
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 16:58:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DF795587A
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 17:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3B171C20C15
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 14:58:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CD84282BBB
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 15:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E891E519;
-	Sat, 17 Aug 2024 14:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD537442F;
+	Sat, 17 Aug 2024 15:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bzlxxNs7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y4QJRRbT"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4179D26D;
-	Sat, 17 Aug 2024 14:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E598C13;
+	Sat, 17 Aug 2024 15:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723906720; cv=none; b=LWLIl0uMYMEEACnIW/SPP0trIzwD2NaUtMGeqS7RQYxOYMt/Fr2sB4gQoXF0DhWqxQwjjy+AQYpH9o0aNEdclBVZgomAvEI0QxYrekzTjrYTUaHEsNEDxTJbDS7o+TOPoDrcRHXYvjIqB2biQXh4xAiBotQ+3G+8/9TUgacZqs4=
+	t=1723907161; cv=none; b=IjTA4DpwPb5mXF/YNTyCB0cIdqNZjm4uJ0BwMR1QkpsM2omFoZONftIFC5G7zANsgOVG0uBkw0F13It9JsMdlqGV266KiwygMlGGxbFJdulup2Nav4dCBK1vBiMGFXgG7Y0opWBGV6NxmCy+SqK8FXS8zRjq8lSNjwlSd6wPXa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723906720; c=relaxed/simple;
-	bh=lP/gXH59tE6iYDas8OZ7e8FvTSLg9EsvnONZAQHDfws=;
+	s=arc-20240116; t=1723907161; c=relaxed/simple;
+	bh=DPfWRBNmOad3lOAZeZayk9fxKFvYsffkJGnblvIMbb0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pvJQ8Eqd6rrugrDHkiFGwdWi9NIx8eMCi4RTjdWPlivolhr2WEWSj4FGVKBe2ZVQCloQO3dJgEghTSKqeVSqNw+bgj7YxhXG4ub3QIF6LQhZZCEX3M9CyHnWUkRsH/24FusI/ZPfZRM9mNlvUqJCVGznpUY17PTrueqQfBv8kQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bzlxxNs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF033C116B1;
-	Sat, 17 Aug 2024 14:58:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q2+R9X5yL0Nb//ap9djba4mNpQByFEwB7x1IWyM3jEo2ihF5SzlS2uWF6aq1NY0Ww/a7VhSdDC9nr6r7gBFgAhIzuZwtTsR2GrKNH5UlLA40/oa5F6uCQio1VxOXXarvn1ACO8V2ezDq5zekSKuMDpU8PFoZOAe9jmJMtEKwjG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y4QJRRbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9E4C116B1;
+	Sat, 17 Aug 2024 15:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723906719;
-	bh=lP/gXH59tE6iYDas8OZ7e8FvTSLg9EsvnONZAQHDfws=;
+	s=k20201202; t=1723907160;
+	bh=DPfWRBNmOad3lOAZeZayk9fxKFvYsffkJGnblvIMbb0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bzlxxNs7+t8GbFu/RCA9O+gKDZHD8lVIKFkW+VqEqhai/p4hpdqTqIzG3nKCC8nlw
-	 WT3dhqKRbXqpHpt4jOqaSlH5t49KdMVqRkMYLjtBvXm+PG2j59Fa3eWvlHwoo/LFiR
-	 40PqnioCeNrLguYEFpKQZBLFMDtrz58iEf1D+FFdzaqwuvwgTAPQKEqsIU9zrHXT0E
-	 +paZVXE3w/m4rQGb2d6xZraSxoKr1/Yw8BF1LlHobul3MBeiBrErVVgyu1Hji+Jj00
-	 DPtwoA5RymyssF2DEedQbVb9vzrd9GEnXZyZMeXErI247fnuhh8grud35CtsStmgbI
-	 GrWafpnjo6jUA==
-Date: Sat, 17 Aug 2024 15:58:33 +0100
+	b=Y4QJRRbT2PlAnxzbLrcwjS5ln88z6VW+NnmMk65s1HMYf8hD4450xMpPNgFTta4El
+	 mmTDOPgyCzBPzmkZjRwbleIKQyJOJRFCvymgPMXZB45r/UKq/WyFk2Rx9Et6GYdWRD
+	 KUZaNvAIpFBlxATxb62dmSqTaxjKYiNvNehqTlq+W8ATiCPiap+D7CBzJ2DQfOOENr
+	 cxQ8WJv2cZcKDeRWmw/ykSqptZYGyJ6q+Agd6ebE3wkNPYaIj5zFVhlUdXE8WGDAdU
+	 H6mLgafz+vmH/8yiHcySOIBYRhRGtb9lwI9d1aDQ//i4Lpbsi/fDr11u3q1UQmUXHU
+	 3WmSAadHAfW/Q==
+Date: Sat, 17 Aug 2024 16:05:51 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Michael.Hennerich@analog.com, lars@metafoo.de, gstols@baylibre.com
-Subject: Re: [PATCH] iio: adc: ad7606: split a 'ad7606_sw_mode_setup()' from
- probe
-Message-ID: <20240817155833.4dcc3004@jic23-huawei>
-In-Reply-To: <20240817144216.16569-1-aardelean@baylibre.com>
-References: <20240817144216.16569-1-aardelean@baylibre.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Guillaume Stols <gstols@baylibre.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?=
+ =?UTF-8?B?Zw==?= <ukleinek@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-pwm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+ aardelean@baylibre.com
+Subject: Re: [PATCH 1/8] dt-bindings: iio: adc: ad7606: Make corrections on
+ spi conditions
+Message-ID: <20240817160551.35353140@jic23-huawei>
+In-Reply-To: <20240815-reword-wildland-1319629f0718@spud>
+References: <20240815-ad7606_add_iio_backend_support-v1-0-cea3e11b1aa4@baylibre.com>
+	<20240815-ad7606_add_iio_backend_support-v1-1-cea3e11b1aa4@baylibre.com>
+	<20240815-reword-wildland-1319629f0718@spud>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,94 +68,75 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 17 Aug 2024 17:42:15 +0300
-Alexandru Ardelean <aardelean@baylibre.com> wrote:
+On Thu, 15 Aug 2024 15:35:34 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-> This change moves the logic for setting up SW mode (during probe) into it=
-'s
-> own function.
->=20
-> With the addition of some newer parts, the SW-mode part can get a little
-> more complicated.
-> So it's a bit better to have a separate function for this.
-This looks fine but put it on the start of the series that makes it more
-complex.  I may pick it off that series before the bulk of the code
-but if it's sent in such a series the link tags etc will let people
-see 'why' it is a good idea.
+> On Thu, Aug 15, 2024 at 12:11:55PM +0000, Guillaume Stols wrote:
+> > The SPI conditions are not always required, because there is also a
+> > parallel interface. The way used to detect that the SPI interface is
+> > used is to check if the reg value is between 0 and 256.
+> > There is also a correction on the spi-cpha that is not required when SPI
+> > interface is selected, while spi-cpol is.  
+> 
+> This feels like it should be two patches, with the first having a Fixes:
+> tag etc, if the original binding was incorrect.
+> 
+> > 
+> > Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+> > ---
+> >  .../devicetree/bindings/iio/adc/adi,ad7606.yaml         | 17 ++++++++++++++---
+> >  1 file changed, 14 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> > index 69408cae3db9..c0008d36320f 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> > @@ -117,15 +117,26 @@ properties:
+> >  required:
+> >    - compatible
+> >    - reg
+> > -  - spi-cpha
+> >    - avcc-supply
+> >    - vdrive-supply
+> >    - interrupts
+> >    - adi,conversion-start-gpios
+> >  
+> > -allOf:
+> > -  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +# This checks if reg is a chipselect so the device is on an SPI
+> > +# bus, the if-clause will fail if reg is a tuple such as for a
+> > +# platform device.
+> > +if:
+> > +  properties:
+> > +    reg:
+> > +      minimum: 0
+> > +      maximum: 256
 
-Jonathan
+That's not particularly nice - in theory the parallel bus memory map could
+be at 0 - it's just very unlikely on a real platform.
 
->=20
-> Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
-> ---
->  drivers/iio/adc/ad7606.c | 43 ++++++++++++++++++++++++----------------
->  1 file changed, 26 insertions(+), 17 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index 68481e97e50a..192b9cd56b45 100644
-> --- a/drivers/iio/adc/ad7606.c
-> +++ b/drivers/iio/adc/ad7606.c
-> @@ -545,6 +545,29 @@ static const struct iio_trigger_ops ad7606_trigger_o=
-ps =3D {
->  	.validate_device =3D iio_trigger_validate_own_device,
->  };
-> =20
-> +static int ad7606_sw_mode_setup(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7606_state *st =3D iio_priv(indio_dev);
-> +
-> +	if (!st->bops->sw_mode_config)
-> +		return 0;
-> +
-> +	st->sw_mode_en =3D device_property_present(st->dev, "adi,sw-mode");
-> +	if (!st->sw_mode_en)
-> +		return 0;
-> +
-> +	indio_dev->info =3D &ad7606_info_os_range_and_debug;
-> +
-> +	/* Scale of 0.076293 is only available in sw mode */
-> +	st->scale_avail =3D ad7616_sw_scale_avail;
-> +	st->num_scales =3D ARRAY_SIZE(ad7616_sw_scale_avail);
-> +
-> +	/* After reset, in software mode, =C2=B110 V is set by default */
-> +	memset32(st->range, 2, ARRAY_SIZE(st->range));
-> +
-> +	return st->bops->sw_mode_config(indio_dev);
-> +}
-> +
->  int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
->  		 const char *name, unsigned int id,
->  		 const struct ad7606_bus_ops *bops)
-> @@ -617,23 +640,9 @@ int ad7606_probe(struct device *dev, int irq, void _=
-_iomem *base_address,
->  	st->write_scale =3D ad7606_write_scale_hw;
->  	st->write_os =3D ad7606_write_os_hw;
-> =20
-> -	if (st->bops->sw_mode_config)
-> -		st->sw_mode_en =3D device_property_present(st->dev,
-> -							 "adi,sw-mode");
-> -
-> -	if (st->sw_mode_en) {
-> -		/* Scale of 0.076293 is only available in sw mode */
-> -		st->scale_avail =3D ad7616_sw_scale_avail;
-> -		st->num_scales =3D ARRAY_SIZE(ad7616_sw_scale_avail);
-> -
-> -		/* After reset, in software mode, =C2=B110 V is set by default */
-> -		memset32(st->range, 2, ARRAY_SIZE(st->range));
-> -		indio_dev->info =3D &ad7606_info_os_range_and_debug;
-> -
-> -		ret =3D st->bops->sw_mode_config(indio_dev);
-> -		if (ret < 0)
-> -			return ret;
-> -	}
-> +	ret =3D ad7606_sw_mode_setup(indio_dev);
-> +	if (ret)
-> +		return ret;
-> =20
->  	st->trig =3D devm_iio_trigger_alloc(dev, "%s-dev%d",
->  					  indio_dev->name,
+I'd just do what we do with i2c/spi drivers and just not make it required at all.
+Rely on comments to say why.
+
+In ideal case we'd figure out from the parent node if it was an spi bus
+but I have no idea how that might be enforced.
+
+> > +then:
+> > +  allOf:
+> > +    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +    - required:
+> > +        - spi-cpol
+> >  
+> > +allOf:
+> >    - if:
+> >        properties:
+> >          compatible:
+> > 
+> > -- 
+> > 2.34.1
+> >   
 
 

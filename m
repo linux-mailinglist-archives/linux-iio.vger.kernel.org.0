@@ -1,56 +1,57 @@
-Return-Path: <linux-iio+bounces-8521-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8522-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8D795572A
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 12:20:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D4495572D
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 12:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B0812824FD
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 10:20:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 382BCB21533
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 10:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E19148826;
-	Sat, 17 Aug 2024 10:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDDF148826;
+	Sat, 17 Aug 2024 10:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qKMEe1NJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gO/mKHIY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DA558ABC;
-	Sat, 17 Aug 2024 10:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E276B657
+	for <linux-iio@vger.kernel.org>; Sat, 17 Aug 2024 10:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723890044; cv=none; b=TamzvsEZqQyCNE7sB4tbcQooPqthl6pdDTmewc1yvISngnZUpSd43y9cn9C3MVGnehZ7DNuQ8U5Bk+/ofFgVVALqxRsqvA0Qb3+dMwmvjlxLH//LTtLqVl9qKjJm2KfmL8NKw2/3e0+L8gQ229x0dAUM9RjtaAuRXKSEPClgM+A=
+	t=1723890196; cv=none; b=N90KQLAhShRkd4GmhGetJHWAnat/4CV+zPVbH21cfIiHxTKZ9lR9B3Zuw+D4A54YHlqAMnI2qJfEFzQ6zVW0Jatbb1H4GARyYXBOoGefuJ/3YNtDLb+NMjujqTBvzXaIsQn6kzs5jBFVsoV5GybMW72bk2WgzAPDawGv/3lXang=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723890044; c=relaxed/simple;
-	bh=gQjONiikFsXYs3z8NWw5w1fNzi3PrS2Oc2oXtECh4tA=;
+	s=arc-20240116; t=1723890196; c=relaxed/simple;
+	bh=8Rmh4fPZ8kQoxIczrpf4gCXY8LGHRKFyTNX2Sy6YFrI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gCNxdLfaRPv533q3V5cMQEIh4ARpkM50Z7pCbbw0O2WS6TzhfKfw8g9Lgh/p5g+k8xuFoBaNGGdfSIlh5U9ug2xgVZTRPLheOCA+e0liQczEo7Kn4Lox65h2MNLOWIDvhBmpbRJNdINNZ9S4PhCKxY9VE7dbmV0rovJYjSKaMJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qKMEe1NJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC3EC116B1;
-	Sat, 17 Aug 2024 10:20:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hJioxoHmcyKxWR8MM2F4SlhPY+Os5zbRgatzNDWtiX9cN7gY2oi0hNPlXi3ZRsVnrtx/mm/1uCywsEWEV0x6jWTNfVDFobvbPIC6RZbgMHWLMMQvrPwcmwb48b+/+IUJB+nqX87REI/2lJPowZ8bJ5BCmRkODxPLGa3GpguO+mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gO/mKHIY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05407C116B1;
+	Sat, 17 Aug 2024 10:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723890044;
-	bh=gQjONiikFsXYs3z8NWw5w1fNzi3PrS2Oc2oXtECh4tA=;
+	s=k20201202; t=1723890195;
+	bh=8Rmh4fPZ8kQoxIczrpf4gCXY8LGHRKFyTNX2Sy6YFrI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qKMEe1NJqLoh4VDDbcqtQoVclQPDFq6PlQWhdthBrf9hM05IxaHNcZuhl1r/e0fb7
-	 b5lGupxPy50X2UI8IAc2bT+nmTa0kR+WA8qivrLv4CiTAPX6bdzIMzQrMEO1bW5Q7m
-	 eNn+oWcqKQ4nub+/JYNHUJ/vweK6ACaVy6feiY7XiHZCUIBQH1lfK8qKz8V13Em8zi
-	 mzv0OsMb1Xp/SgxZntLOknrejIVmlW9nvGDeThWpgp3dkiFZ1E8Mx/6Pq+tc0PTjMO
-	 8Xi3tx/sqoQI2qvsaI1pRj8xyqTWWAhagd2tbwAJteWppXiNur6XWfoEDtP8Aya4E/
-	 9NsU3I5Hqtkpg==
-Date: Sat, 17 Aug 2024 11:20:37 +0100
+	b=gO/mKHIYUgpaRqydUoq6Ed1ev5LF73mtw6+7OZNgNS0oZj9woXtAlLzKP4UGktDsb
+	 cl0/dRnvcSC1O/sOKEwk/AA2X4ji+K2Y1pkdGUZVNv+bVgYgVhpxiZSj7CZb1juqYA
+	 8ssMuLqogH2aRpJCQQRqzhbEnNdZoCmWR5oOMCZh1IeknDV7QQ/UqUjMg1fH5nNdgE
+	 Kb+6iWqzzIvEzkT3rUE1fS3jIhZRYxA3nTiX6OJyj0E87NNL0Twjh+Uddkjd3RVl29
+	 CzotWnhVh3jy/6sDvM8s8pnOZBFi/Yx1Fmj5ztk470/JcNn7/2j2VoXMSzMuPxcOH5
+	 G8L5VERkAj+IA==
+Date: Sat, 17 Aug 2024 11:23:08 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: dlechner@baylibre.com, dumitru.ceclan@analog.com0,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Dumitru Ceclan
- <dumitru.ceclan@analog.com>
-Subject: Re: [PATCH] iio: adc: ad7173: fix GPIO device info
-Message-ID: <20240817112037.68cb99c2@jic23-huawei>
-In-Reply-To: <20240809134909.26829-1-dumitru.ceclan@analog.com>
-References: <20240809134909.26829-1-dumitru.ceclan@analog.com>
+To: Marek Vasut <marex@denx.de>
+Cc: linux-iio@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Uwe =?UTF-8?B?S2xlaW5l?=
+ =?UTF-8?B?LUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>, Lars-Peter
+ Clausen <lars@metafoo.de>
+Subject: Re: [PATCH] iio: light: noa1305: Fix up integration time look up
+Message-ID: <20240817112308.336811f1@jic23-huawei>
+In-Reply-To: <20240814191946.81386-1-marex@denx.de>
+References: <20240814191946.81386-1-marex@denx.de>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,56 +59,46 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri,  9 Aug 2024 16:49:08 +0300
-Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
+On Wed, 14 Aug 2024 21:19:09 +0200
+Marek Vasut <marex@denx.de> wrote:
 
-> Models AD4114/5/6 have .higher_gpio_bits = true. This is not correct as
-> the only models that have the GPIO bits to a higher position are AD4111/2.
-> 
-> Fix by removing the higher_gpio_bits = true from the AD4114/5/6 models.
-> 
-> Fixes: 13d12e3ad12d ("iio: adc: ad7173: Add support for AD411x devices")
-> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Applied and marked for stable.
-
-Thanks,
-
-Jonathan
+> The current code is always iterating over two fields in the
+> noa1305_int_time_available array. Fix iteration limit, which
+> has to be halved to avoid out of bounds access in case the
+> value that is being looked up is not in the array.
+>=20
+> Fixes: 025f23cfebad ("iio: light: noa1305: Make integration time configur=
+able")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Marek Vasut <marex@denx.de>
+Applied. Thanks,
 
 > ---
->  drivers/iio/adc/ad7173.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-> index 9544bf7142ad..b77e2beb502a 100644
-> --- a/drivers/iio/adc/ad7173.c
-> +++ b/drivers/iio/adc/ad7173.c
-> @@ -302,7 +302,6 @@ static const struct ad7173_device_info ad4114_device_info = {
->  	.num_configs = 8,
->  	.num_voltage_in = 16,
->  	.num_gpios = 4,
-> -	.higher_gpio_bits = true,
->  	.has_vincom_input = true,
->  	.has_temp = true,
->  	.has_input_buf = true,
-> @@ -320,7 +319,6 @@ static const struct ad7173_device_info ad4115_device_info = {
->  	.num_configs = 8,
->  	.num_voltage_in = 16,
->  	.num_gpios = 4,
-> -	.higher_gpio_bits = true,
->  	.has_vincom_input = true,
->  	.has_temp = true,
->  	.has_input_buf = true,
-> @@ -338,7 +336,6 @@ static const struct ad7173_device_info ad4116_device_info = {
->  	.num_configs = 8,
->  	.num_voltage_in = 16,
->  	.num_gpios = 4,
-> -	.higher_gpio_bits = true,
->  	.has_vincom_input = true,
->  	.has_temp = true,
->  	.has_input_buf = true,
+> Cc: "Uwe Kleine-K=C3=B6nig" <u.kleine-koenig@pengutronix.de>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: linux-iio@vger.kernel.org
+> ---
+>  drivers/iio/light/noa1305.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/light/noa1305.c b/drivers/iio/light/noa1305.c
+> index da83425fd9100..25f63da70297e 100644
+> --- a/drivers/iio/light/noa1305.c
+> +++ b/drivers/iio/light/noa1305.c
+> @@ -197,7 +197,7 @@ static int noa1305_write_raw(struct iio_dev *indio_de=
+v,
+>  		return -EINVAL;
+> =20
+>  	/* Look up integration time register settings and write it if found. */
+> -	for (i =3D 0; i < ARRAY_SIZE(noa1305_int_time_available); i++)
+> +	for (i =3D 0; i < ARRAY_SIZE(noa1305_int_time_available) / 2; i++)
+>  		if (noa1305_int_time_available[2 * i + 1] =3D=3D val2)
+>  			return regmap_write(priv->regmap, NOA1305_REG_INTEGRATION_TIME, i);
+> =20
 
 

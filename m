@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-8543-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8544-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7AA955858
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 16:28:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9754595585D
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 16:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4023F1F22220
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 14:28:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5EB11C20D89
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 14:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B6C154439;
-	Sat, 17 Aug 2024 14:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A9A8F7D;
+	Sat, 17 Aug 2024 14:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmWPwMBr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s9/twBY+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE94D149E16;
-	Sat, 17 Aug 2024 14:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57BC5256;
+	Sat, 17 Aug 2024 14:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723904922; cv=none; b=Cf/xXbLuHXdax5GObe5qJjwgyV7d8gkse7vZ0E1c62CLImVOcoPzCQO0ZVIcxpYuqs1SF2q8Ja1J+QVQ+j2rS6v+WNOWi77WUcYJv1ka/1Rv/YCG6lSS/Hgel5XXRwMBYcZtVl6FOiOQfTFp1BdbGmwj6SFbcMtRbL9N5YrBUdY=
+	t=1723905159; cv=none; b=IItNnotXUM/l2hCWTPi8dU4uNLWgcZiXUEtWXXnkMVlX8gkvMgK3xJVhOchHb6G+d0tSlhw6gfDGC5uTU3I60n66DkklgNFGqvoU4rhON7HhdAaMGz7x1GtODxN3/J7JVw7fGRcXz4wQx4JCPCYjSBKpBy5Gi78zYutf2D2TXfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723904922; c=relaxed/simple;
-	bh=OlXqPeL9YUa5JwTYaFO2qac9cA+T7b3XNOuYS+KGZ8Q=;
+	s=arc-20240116; t=1723905159; c=relaxed/simple;
+	bh=KeeJw6lp938OS52VfB4l8R9QZxnPCMXS1Dxz7dWCZ2E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XSdiJ9eg5/jTWU5EjQCnH69fugPolqmpWfHe4H5hd/okVsSPLy85mIk21tLgv1SLdk4TxTkxqmZSl72J+440NLbUqdWCvtsjvUCkemTJZ1YfC9qcZl859zcZGxQ0Tss3JOABZaFL8RdaUoF0atonJFFHC16UmOwWYrPAz7sjHrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmWPwMBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4865CC116B1;
-	Sat, 17 Aug 2024 14:28:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ITLjCgj+OBPq57j6JJabfSTBgQlGXlDihJa3vlghvoWZp+1yczHyO8hjVr9szonrLjA+rB3l0tEpIVOAHAZ2Ki5tFHJQJqMh+88dV7peMU3/agx8K91s2icIhlzmMx0fIV/5iHSnnGdIokXJR7luKE8dSm2p73uu8l8yB2LK9cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s9/twBY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46F2C116B1;
+	Sat, 17 Aug 2024 14:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723904922;
-	bh=OlXqPeL9YUa5JwTYaFO2qac9cA+T7b3XNOuYS+KGZ8Q=;
+	s=k20201202; t=1723905158;
+	bh=KeeJw6lp938OS52VfB4l8R9QZxnPCMXS1Dxz7dWCZ2E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HmWPwMBr0/KDuCfdGCPJsUeVKtfRoWv3aCNU/xWZED0RLFCvGjM/W7JvsLontc4pm
-	 mQU/CcTR8AAASO1wO6MQUzNOWP3o4cc7CtejCwGQ06wh0DF+LIDMH3uwVY1hveQfEY
-	 UPdrBg5VOJKFni5oPtut6exbw7xhyBCqX4/Y3xnIrSr6+x9PHEmadp3nR1XpkFRgFW
-	 e8LCKWQGTzpC82kBljC8sHjI8+mh4vdZF2Na2mHNovBHzhibJpcFL7bK/SWNT5OtiF
-	 ztBhgXJ0ex9HSntBE63Lea9a1xSTXFz6mYk8QPeufE9IoqBA944QgpzzzgzSxA3tuW
-	 vFwTHCbvBYZIA==
-Date: Sat, 17 Aug 2024 15:28:34 +0100
+	b=s9/twBY+PtXR4GO4nQ+BMuH1SqKGHMH4O/fBki/MP5Y5EGKNWYMzM7mJ6srC4i+0x
+	 1YJ0t0HdrJ+MZhwdoGUUtW2LQgeP2Afc94MqxPpVTtXC0Et0JKK3Dx604ZRMCX5IxK
+	 OKOlOmvjBrd0zlzQb9LcgN4ZWWSL+NS2d7Rux2rByeiYUAkXu4RRdHa/5GlUOuMgTB
+	 Pfc4z7ScvMVGms9ZjVLZ50ZosUGZH0iafazis57jdYtS4q/lHLBPbr5U2tOT9Sf+RM
+	 prMklzXS8F2TJt3TSo7qk7+BHjIeEa/Ok1gZygu0n7wUH/lz2MuyCn9Tlwk722cF1m
+	 cPOB1i1uo13LA==
+Date: Sat, 17 Aug 2024 15:32:31 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] iio: adc: ad4695: implement triggered buffer
-Message-ID: <20240817152834.779be1e5@jic23-huawei>
-In-Reply-To: <20240813-iio-adc-ad4695-buffered-read-v2-0-9bb19fc1924b@baylibre.com>
-References: <20240813-iio-adc-ad4695-buffered-read-v2-0-9bb19fc1924b@baylibre.com>
+To: Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: inv.git-commit@tdk.com, lars@metafoo.de, linux-iio@vger.kernel.org,
+ stable@vger.kernel.org, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH] iio: imu: inv_mpu6050: fix interrupt status read for
+ old buggy chips
+Message-ID: <20240817153231.4c410154@jic23-huawei>
+In-Reply-To: <045f7e8a-d462-4419-8e7b-c06857d2338f@gmail.com>
+References: <20240814143735.327302-1-inv.git-commit@tdk.com>
+	<045f7e8a-d462-4419-8e7b-c06857d2338f@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,19 +60,81 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 13 Aug 2024 12:26:39 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Wed, 14 Aug 2024 18:50:43 +0300
+Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 
-> This is a fairly simple series that adds support for triggered buffers
-> to the ad4695 driver.
-> 
-Applied to the togreg branch of iio.git and pushed out as testing for
-all the normal reasons...
+> 14.08.24 5:37 =D0=BF=D0=BF, inv.git-commit@tdk.com:
+> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> >
+> > Interrupt status read seems to be broken on some old MPU-6050 like
+> > chips. Fix by reverting to previous driver behavior bypassing interrupt
+> > status read. This is working because these chips are not supporting
+> > WoM and data ready is the only interrupt source.
+> >
+> > Fixes: 5537f653d9be ("iio: imu: inv_mpu6050: add new interrupt handler =
+for WoM events")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com> =
+=20
+> Tested-by: Andreas Westman Dorcsak <hedmoo@yahoo.com> # LG P880
+>=20
+> Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # LG P895
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
+
+>=20
+> > ---
+> >   drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 13 +++++++++++--
+> >   1 file changed, 11 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/ii=
+o/imu/inv_mpu6050/inv_mpu_trigger.c
+> > index 84273660ca2e..3bfeabab0ec4 100644
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > @@ -248,12 +248,20 @@ static irqreturn_t inv_mpu6050_interrupt_handle(i=
+nt irq, void *p)
+> >   	int result;
+> >
+> >   	switch (st->chip_type) {
+> > +	case INV_MPU6000:
+> >   	case INV_MPU6050:
+> > +	case INV_MPU9150:
+> > +		/*
+> > +		 * WoM is not supported and interrupt status read seems to be broken=
+ for
+> > +		 * some chips. Since data ready is the only interrupt, bypass interr=
+upt
+> > +		 * status read and always assert data ready bit.
+> > +		 */
+> > +		wom_bits =3D 0;
+> > +		int_status =3D INV_MPU6050_BIT_RAW_DATA_RDY_INT;
+> > +		goto data_ready_interrupt;
+> >   	case INV_MPU6500:
+> >   	case INV_MPU6515:
+> >   	case INV_MPU6880:
+> > -	case INV_MPU6000:
+> > -	case INV_MPU9150:
+> >   	case INV_MPU9250:
+> >   	case INV_MPU9255:
+> >   		wom_bits =3D INV_MPU6500_BIT_WOM_INT;
+> > @@ -279,6 +287,7 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int=
+ irq, void *p)
+> >   		}
+> >   	}
+> >
+> > +data_ready_interrupt:
+> >   	/* handle raw data interrupt */
+> >   	if (int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT) {
+> >   		indio_dev->pollfunc->timestamp =3D st->it_timestamp;
+> > --
+> > 2.34.1
+> > =20
+
 

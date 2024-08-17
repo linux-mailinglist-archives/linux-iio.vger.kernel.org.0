@@ -1,63 +1,60 @@
-Return-Path: <linux-iio+bounces-8519-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8520-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A635995571F
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 12:12:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C729955728
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 12:19:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D73D71C20D39
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 10:12:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C442B21692
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 10:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A841494C9;
-	Sat, 17 Aug 2024 10:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C76F148826;
+	Sat, 17 Aug 2024 10:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GxAAmHKO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K6QvYROI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FA5328B6;
-	Sat, 17 Aug 2024 10:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB0913E021;
+	Sat, 17 Aug 2024 10:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723889555; cv=none; b=FDR4npA4PwD97ZjdVU4MXiVuu9WabLcIu8JtAHT1nbVB2cnSTMRpNsiN1A8d94FaIJvOtonEByBC8oHi36N8KA+bGT8BppjuG2OSMUenNcKBeLnjTaDfTfXPhL+6VtTEjqv9lS5rR6I3JVYbaHOzoR7Hrxk0tnyJ5H1qhLi5IG4=
+	t=1723889951; cv=none; b=f/PYJn0HOtff3o/SUXuRN8ZfPi/wa3+dt/U86PZK2mIiVNJLkrZEaG64p/hB33AHqALLc8iGLofiDX23jzc9mnOASYNcXAhQyU2U6Zo0srCgzjQswzK5d+r0U/efJH41c1KyG/anSQBTmCT/+Ke5W9mt/iEHhBM15gePsBRBSIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723889555; c=relaxed/simple;
-	bh=v6b57yf3wz+dSaYGrQVKJodqx8Mz1ILLpwhO2dENmng=;
+	s=arc-20240116; t=1723889951; c=relaxed/simple;
+	bh=yq4xPAvlsqC1fAcFJqipBs6Ym77XzFEVD7SQoDh9GjM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mVjfok+87El3zLk/r18sLpKqeO3kQLnLRCkZhJA37BNXHh4+qyBd4bmdvdyHY/dl73+TyN4cVCfcfMHG45C9JL9thF65ajB7/wNBUniy2RiQyj+E4tW7wLkC1CuPuN1ifpUfOH+TdeVtF9P5p7BxfKNEggVzNoJvCeRhnvI4vEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GxAAmHKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E9CC116B1;
-	Sat, 17 Aug 2024 10:12:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J1KgxqxglVUIVqBL3qG5dGTNRPH7OIARFeReWF+f5uSpjj7ytMAt7BaNcsna9xsSnvHp0FqddYwCJfGR1XIDmTC1hqECvzA5UGc5nnzLAf5SF5ATFSlWfXLE2PjfF0vcFJGXHRrRZljEvFD5LLzdMo9Nz+0ZJKXJtZv5PF9S+D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K6QvYROI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA73C116B1;
+	Sat, 17 Aug 2024 10:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723889554;
-	bh=v6b57yf3wz+dSaYGrQVKJodqx8Mz1ILLpwhO2dENmng=;
+	s=k20201202; t=1723889950;
+	bh=yq4xPAvlsqC1fAcFJqipBs6Ym77XzFEVD7SQoDh9GjM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GxAAmHKO634jdtokS9+MJLYSQ36Fe1athlg3GrHVE/Eo4ASS6OFTmYTsyFvW9rwAR
-	 PXpqeKY5hXgz08F7O1bOZ/Jmy+rOKepr0hCi/QeSSIV/YusEClryHBSyhEa4+KYXwg
-	 512RdpRbjcvLNQbIOj1Z+xlSHPHZaX77i0XmivYhjNr7dgwMCB/ndoeBXr5BMTRW4V
-	 1gltLmKhqMJTRMcdn8UotJP3zbMDCSYEmSkE54896FyalfkTYxZnEBmlV1EQnXYQkd
-	 j/mY6fEZxXZ+cTBm/7mpF2hkqeY/vGDMTguiO+VtYvlBVln/dHyYEki/zvpWqAx3ph
-	 SFl3DJrp/uTjA==
-Date: Sat, 17 Aug 2024 11:12:26 +0100
+	b=K6QvYROIwLjuERVEW8MC+T7pJs3aZkgByN3gVidXBUr2iLLah0tyNmgZy+ktcIiN7
+	 MZR+aEAW8yZjhDbXvZ1WFEgnjmXmovPQqeiSBQ128CzVMEx4RPBJu45mu8a+u7oo7x
+	 evdrrTq6YcGmx+cZPn4H38sNHMXQDmVy7VNJOWG1M3n0Myo1sUHTu6wvtrEnZ2kgEj
+	 nXRhCyBO3CcUqqwn3YnEm1wy/zD+2gXr+hXoufyvtu0Sm7ZsN6XemnGVeTA6apnjdH
+	 N+CWgi1E3qRJD9imnT53A46l9LNExFXayiOtYcPEC3LxMdf/RER4eMMTNqP/R7bkd5
+	 A8z70PSIF2qYQ==
+Date: Sat, 17 Aug 2024 11:19:02 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>, dumitru.ceclan@analog.com,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: adc: ad7173: add support for ad4113
-Message-ID: <20240817111106.0c141c90@jic23-huawei>
-In-Reply-To: <20240809-autograph-sugar-e79e54fd7a24@spud>
-References: <20240809-ad4113-v2-0-2a70c101a1f4@analog.com>
-	<20240809-ad4113-v2-1-2a70c101a1f4@analog.com>
-	<20240809-glowing-discard-87263f656a7e@spud>
-	<67eb7f5c-3f20-4831-a0cc-e407ac3f24ad@gmail.com>
-	<20240809-autograph-sugar-e79e54fd7a24@spud>
+To: Dumitru Ceclan via B4 Relay
+ <devnull+dumitru.ceclan.analog.com@kernel.org>
+Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, mitrutzceclan@gmail.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Conor Dooley
+ <conor.dooley@microchip.com>, Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH v3 0/3] Add support for AD4113
+Message-ID: <20240817111902.2ed6b98a@jic23-huawei>
+In-Reply-To: <20240812-ad4113-v3-0-046e785dd253@analog.com>
+References: <20240812-ad4113-v3-0-046e785dd253@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,67 +65,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 9 Aug 2024 16:09:07 +0100
-Conor Dooley <conor@kernel.org> wrote:
+On Mon, 12 Aug 2024 11:13:13 +0300
+Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org> =
+wrote:
 
-> On Fri, Aug 09, 2024 at 05:32:08PM +0300, Ceclan, Dumitru wrote:
-> > On 09/08/2024 17:21, Conor Dooley wrote: =20
-> > > On Fri, Aug 09, 2024 at 01:33:24PM +0300, Dumitru Ceclan via B4 Relay=
- wrote: =20
-> > >> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> > >>
-> > >> This commit adds bindings support for AD4113.
-> > >>
-> > >> The AD4113 is a low power, low noise, 16-bit, =CE=A3-=CE=94 analog-t=
-o-digital
-> > >> converter (ADC) that integrates an analog front end (AFE) for four
-> > >> fully differential or eight single-ended inputs.
-> > >>
-> > >> Added ad4113 to the compatible list and the "avdd2-supply: false"
-> > >> restriction.
-> > >>
-> > >> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> > >> ---
-> > >>  Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml | 3 +++
-> > >>  1 file changed, 3 insertions(+)
-> > >>
-> > >> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.ya=
-ml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> > >> index 17c5d39cc2c1..ad15cf9bc2ff 100644
-> > >> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> > >> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> > >> @@ -28,6 +28,7 @@ description: |
-> > >>    Datasheets for supported chips:
-> > >>      https://www.analog.com/media/en/technical-documentation/data-sh=
-eets/AD4111.pdf
-> > >>      https://www.analog.com/media/en/technical-documentation/data-sh=
-eets/AD4112.pdf
-> > >> +    <AD4113: not released yet> =20
-> > >=20
-> > > Am I meant to ack it with this placeholder? When will the document be
-> > > released?
-> > > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > >  =20
-> > Not really sure tbh, up to you. The document will be released in the up=
-coming months.
-> >=20
-> > If it's considered best to wait until the docs are public and send anot=
-her
-> > version with the correct link.=20
-> > If not, and maintainers consider that these changes can be accepted even
-> > without viewing the datasheet, I'll send a patch when it goes public. =
-=20
+> This patch series adds support for the AD4113 ADC within the existing
+> AD7173 driver.
 >=20
-> I don't really care, it's just to Jonathan I think. I'm happy enough
-> with you adding it when it is released.
+> The AD4113 is a low power, low noise, 16-bit, =CE=A3-=CE=94 analog-to-dig=
+ital
+> converter (ADC) that integrates an analog front end (AFE) for four
+> fully differential or eight single-ended inputs.
+>=20
+> The part is not released yet and the documentation is not public.
+> Register map is identical to AD4114 besides the lower width data
+> register and the GPIO register.
+>=20
+> Particularities of this model:
+> - 16 bit data register
+> - no temperature sensor
+> - no current inputs
+> - input buffers
+> - internal reference
+> - external reference REF-/REF+
+> - no second external reference REF2-/REF2+
+> - no AVDD2 supply
+> - 2 GPIO pins with config bits starting at a higher position in register
+> - 8 VINx inputs with voltage divider
+> - 16 channel registers and 8 setup registers
+>=20
+> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Hi.
 
-Given some companies never release public docs (mine for example rarely doe=
-s)
-there is no requirement for datasheets. So this is fine, particularly if you
-come back with a link when it is available.
+Series is fine, but I don't yet have the fix=20
+[PATCH] iio: adc: ad7173: Fix incorrect compatible string
+in the upstream of my togreg branch.
 
-Thanks,
+Hence this will have to wait a little while for that to be present.
+Otherwise this will create a fiddly merge for linux-next etc.
 
 Jonathan
+
+> ---
+> Changes in v3:
+> - lowercase chip ID
+> - add patch to correctly order chip IDs defines
+> - picked up RB and ACK tags
+> - Link to v2: https://lore.kernel.org/r/20240809-ad4113-v2-0-2a70c101a1f4=
+@analog.com
+>=20
+> Changes in v2:
+> - correctly set realbits and storagebits to 16 in iio_chan_spec
+> - describe bindings restrictions in commit message due to lack of
+>   sufficient diff context
+> - describe model differences better in cover letter
+> - Link to v1: https://lore.kernel.org/r/20240807-ad4113-v1-0-2d338f702c7b=
+@analog.com
+>=20
+> ---
+> Dumitru Ceclan (3):
+>       dt-bindings: adc: ad7173: add support for ad4113
+>       iio: adc: ad7173: order chipID by value
+>       iio: adc: ad7173: add support for ad4113
+>=20
+>  .../devicetree/bindings/iio/adc/adi,ad7173.yaml    |  3 ++
+>  drivers/iio/adc/ad7173.c                           | 38 ++++++++++++++++=
+++++--
+>  2 files changed, 39 insertions(+), 2 deletions(-)
+> ---
+> base-commit: 1c61e13d7dc9003662bd7fd6064dfea67e64b014
+> change-id: 20240725-ad4113-baa63ff99245
+>=20
+> Best regards,
 
 

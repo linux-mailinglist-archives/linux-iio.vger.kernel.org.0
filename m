@@ -1,61 +1,57 @@
-Return-Path: <linux-iio+bounces-8528-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8529-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4644795576E
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 13:31:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62ED5955774
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 13:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A5B41C20E81
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 11:31:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 170BD1F21F8B
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 11:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6928B148855;
-	Sat, 17 Aug 2024 11:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B63149C7A;
+	Sat, 17 Aug 2024 11:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p8CUDtQ6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pWCeF1sJ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1839D1C32;
-	Sat, 17 Aug 2024 11:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EDD145B1D;
+	Sat, 17 Aug 2024 11:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723894270; cv=none; b=bdB44T9dOP9Z/P+JIBazV+7Ug2y32qxVYj3UyYzEDv9tu9LKBP2wQlFpMBerVC/W9ZyIAxZYV7fUFQ9YMztPTQinrEJTM8b9iJetPtHT51kr4yhK+fDkXN3tVKnr0GqAqrz1DKEYCrwFSS1MqgCWNJ4HG4pIZ3UFouQBb+dD6yU=
+	t=1723894357; cv=none; b=C46fhf4NA3Hum6ahLoVYhIT6GNZcUlg3L0nPMgvtvp8zUzY3f2mZdJn5TJxfDQ1+QHLlbAvszN5ohaB5BJ8aqXbYjw9X/aNa4ds6KCjhJXtB1SWnl+CO6sB+WXVfbkPI3h7NXmwGmfh9xuMKeoUPy93xx3RlmTEAxgGZqJdj21I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723894270; c=relaxed/simple;
-	bh=9W4Gme6cRtTBuHzg8OfLvT8gAuHsq9xsw3bjbF+Womo=;
+	s=arc-20240116; t=1723894357; c=relaxed/simple;
+	bh=Tl1nqVyNUDE1Xz8spO574JD89qKO1gVZSNkkZ4XCCzU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ayc662l+eNr198PT4SJzdosm3opmEuy2iJ24Opqjt8yDZ4zvuw9+XyzuEb0IzO1v0lWzJpfSNNIZaR2t2t7UqxZW1rQ2v7fispD/2njYicBwr6GXLek/HeyWysWO4Z/tBAqYRMm64wJkqQA66NV7K5EQPz2DrYXiiC1rpc2g4ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p8CUDtQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DFA0C116B1;
-	Sat, 17 Aug 2024 11:30:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P70xcKTZ5CEb5HeYPbWCLBx3ONsU+NTDXMPsHuvj1A+LDwxw7EGdfB4BNjqWBYIs9K32l6GLsGSXOWZQhb010UMBrS2HCu0guejaLTCCuzOPX48TbKRA+2FpaUkOhIxjvRE4cIAeKAT3qEuRolzLVoTCfGJIHpcIHlcbfPGSx4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pWCeF1sJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8314DC116B1;
+	Sat, 17 Aug 2024 11:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723894269;
-	bh=9W4Gme6cRtTBuHzg8OfLvT8gAuHsq9xsw3bjbF+Womo=;
+	s=k20201202; t=1723894356;
+	bh=Tl1nqVyNUDE1Xz8spO574JD89qKO1gVZSNkkZ4XCCzU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p8CUDtQ681W4xtaNkTIpmYJZ4CMeaZoZ6RlrZKQeeCGfBZUBcbZfTvJ9VHmj1jOiI
-	 +18A/oAONog7tEq0AV8lp8IviHxyIJc+wYG3ZhqSQ+swff6x141Sf88NRfZ+Kl40U9
-	 u708dy7LSIKxIVgnbW6c2FDbShmWc1GyPynDNAcH+8uk3oL5HzN2MiuCTGClZ24Ina
-	 M1tbx7I+ReeVSaVGvl5P7alPyRwTWeeDaq6VbgS6UQojDykMf8sfFHvi4HqqsNn06p
-	 DpX7Lv+UlPoL2gz+a/A7KvneQq4twN10xlFU1dLuSzElhGLrncXEaALyfGLxVjE1/+
-	 4eRfKNs5nwlMg==
-Date: Sat, 17 Aug 2024 12:30:34 +0100
+	b=pWCeF1sJ9HQzgKW0nFmYA0A4JWSANBWHpVf2XSqW3dX9Cksul+JI3z0FuKvqV8G+u
+	 uOru9NRC4OsUeVuR6kVX2BA8fIH9UQjHFievwecA+DIX8A0kWneg0NaPgpkt3Cxz/n
+	 2L276TzX00RK3n3IKRp6ECK7JC/2FaumsX7LaF/MEi4VkCpGEdjoOOujrjUAHvCmb4
+	 pmEK+Owi+x3SYQLYPLR8ha/2mE/AkAfSehZlR0ZgpJwZdZYF7lURqtnm2JJEe/RZQ7
+	 NAbG9n3haqkSQtrP67SpU2+83RpmNkyeY/5Bb/gPltozjxeID85mFdO3KIDgtR9hCC
+	 Skt98GIOmcmpQ==
+Date: Sat, 17 Aug 2024 12:32:10 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: wangshuaijie@awinic.com
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, kees@kernel.org, gustavoars@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
- liweilei@awinic.com, kangjiajun@awinic.com, Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH V7 1/2] dt-bindings: iio: aw96103: Add bindings for
- aw96103/aw96105 sensor
-Message-ID: <20240817123034.30cc300e@jic23-huawei>
-In-Reply-To: <20240814031808.2852418-2-wangshuaijie@awinic.com>
-References: <20240814031808.2852418-1-wangshuaijie@awinic.com>
-	<20240814031808.2852418-2-wangshuaijie@awinic.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, Bartosz Golaszewski
+ <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH] iio: dac: ad5449: drop support for platform data
+Message-ID: <20240817123210.04b3c2f8@jic23-huawei>
+In-Reply-To: <20240814092629.9862-1-brgl@bgdev.pl>
+References: <20240814092629.9862-1-brgl@bgdev.pl>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,89 +62,110 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 14 Aug 2024 03:18:07 +0000
-wangshuaijie@awinic.com wrote:
+On Wed, 14 Aug 2024 11:26:29 +0200
+Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 
-> From: shuaijie wang <wangshuaijie@awinic.com>
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> Add device tree bindings for aw96103/aw96105 proximity sensor.
+> There are no longer any users of the platform data struct. Remove
+> support for it from the driver.
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: shuaijie wang <wangshuaijie@awinic.com>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+I'm fine with this but want an ADI ack.
+
+Jonathan
+
 > ---
->  .../iio/proximity/awinic,aw96103.yaml         | 63 +++++++++++++++++++
->  1 file changed, 63 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/awinic,aw96103.yaml
+>  drivers/iio/dac/ad5449.c             | 15 ++---------
+>  include/linux/platform_data/ad5449.h | 39 ----------------------------
+>  2 files changed, 2 insertions(+), 52 deletions(-)
+>  delete mode 100644 include/linux/platform_data/ad5449.h
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/awinic,aw96103.yaml b/Documentation/devicetree/bindings/iio/proximity/awinic,aw96103.yaml
-> new file mode 100644
-> index 000000000000..54b5bc176d5c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/awinic,aw96103.yaml
-> @@ -0,0 +1,63 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/proximity/awinic,aw96103.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Awinic's AW96103 capacitive proximity sensor and similar
-> +
-> +maintainers:
-> +  - Wang Shuaijie <wangshuaijie@awinic.com>
-> +
-> +description: |
-> +  Awinic's AW96103/AW96105 proximity sensor.
-> +  The specific absorption rate (SAR) is a metric that measures
-> +  the degree of absorption of electromagnetic radiation emitted by
-> +  wireless devices, such as mobile phones and tablets, by human tissue.
-> +  In mobile phone applications, the proximity sensor is primarily
-> +  used to detect the proximity of the human body to the phone. When the
-> +  phone approaches the human body, it will actively reduce the transmit
-> +  power of the antenna to keep the SAR within a safe range. Therefore,
-> +  we also refer to the proximity sensor as a SAR sensor.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - awinic,aw96103
-> +      - awinic,aw96105
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description:
-> +      Generated by the device to announce that a close/far
-> +      proximity event has happened.
-> +    maxItems: 1
-> +
-> +  vcc-supply:
-> +    description:
-> +      Optional regulator for chip, 1.7V-3.6V.
-See comment on v6 which I sent before noticing there was a v7.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - vcc-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        proximity@12 {
-> +            compatible = "awinic,aw96103";
-> +            reg = <0x12>;
-> +            interrupt-parent = <&gpio>;
-> +            interrupts = <23 IRQ_TYPE_EDGE_FALLING>;
-> +            vcc-supply = <&pp1800_prox>;
-> +        };
-> +    };
+> diff --git a/drivers/iio/dac/ad5449.c b/drivers/iio/dac/ad5449.c
+> index 4572d6f49275..953fcfa2110b 100644
+> --- a/drivers/iio/dac/ad5449.c
+> +++ b/drivers/iio/dac/ad5449.c
+> @@ -20,8 +20,6 @@
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+>  
+> -#include <linux/platform_data/ad5449.h>
+> -
+>  #define AD5449_MAX_CHANNELS		2
+>  #define AD5449_MAX_VREFS		2
+>  
+> @@ -268,7 +266,6 @@ static const char *ad5449_vref_name(struct ad5449 *st, int n)
+>  
+>  static int ad5449_spi_probe(struct spi_device *spi)
+>  {
+> -	struct ad5449_platform_data *pdata = spi->dev.platform_data;
+>  	const struct spi_device_id *id = spi_get_device_id(spi);
+>  	struct iio_dev *indio_dev;
+>  	struct ad5449 *st;
+> @@ -306,16 +303,8 @@ static int ad5449_spi_probe(struct spi_device *spi)
+>  	mutex_init(&st->lock);
+>  
+>  	if (st->chip_info->has_ctrl) {
+> -		unsigned int ctrl = 0x00;
+> -		if (pdata) {
+> -			if (pdata->hardware_clear_to_midscale)
+> -				ctrl |= AD5449_CTRL_HCLR_TO_MIDSCALE;
+> -			ctrl |= pdata->sdo_mode << AD5449_CTRL_SDO_OFFSET;
+> -			st->has_sdo = pdata->sdo_mode != AD5449_SDO_DISABLED;
+> -		} else {
+> -			st->has_sdo = true;
+> -		}
+> -		ad5449_write(indio_dev, AD5449_CMD_CTRL, ctrl);
+> +		st->has_sdo = true;
+> +		ad5449_write(indio_dev, AD5449_CMD_CTRL, 0x0);
+>  	}
+>  
+>  	ret = iio_device_register(indio_dev);
+> diff --git a/include/linux/platform_data/ad5449.h b/include/linux/platform_data/ad5449.h
+> deleted file mode 100644
+> index d687ef5726c2..000000000000
+> --- a/include/linux/platform_data/ad5449.h
+> +++ /dev/null
+> @@ -1,39 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0-only */
+> -/*
+> - * AD5415, AD5426, AD5429, AD5432, AD5439, AD5443, AD5449 Digital to Analog
+> - * Converter driver.
+> - *
+> - * Copyright 2012 Analog Devices Inc.
+> - *  Author: Lars-Peter Clausen <lars@metafoo.de>
+> - */
+> -
+> -#ifndef __LINUX_PLATFORM_DATA_AD5449_H__
+> -#define __LINUX_PLATFORM_DATA_AD5449_H__
+> -
+> -/**
+> - * enum ad5449_sdo_mode - AD5449 SDO pin configuration
+> - * @AD5449_SDO_DRIVE_FULL: Drive the SDO pin with full strength.
+> - * @AD5449_SDO_DRIVE_WEAK: Drive the SDO pin with not full strength.
+> - * @AD5449_SDO_OPEN_DRAIN: Operate the SDO pin in open-drain mode.
+> - * @AD5449_SDO_DISABLED: Disable the SDO pin, in this mode it is not possible to
+> - *			read back from the device.
+> - */
+> -enum ad5449_sdo_mode {
+> -	AD5449_SDO_DRIVE_FULL = 0x0,
+> -	AD5449_SDO_DRIVE_WEAK = 0x1,
+> -	AD5449_SDO_OPEN_DRAIN = 0x2,
+> -	AD5449_SDO_DISABLED = 0x3,
+> -};
+> -
+> -/**
+> - * struct ad5449_platform_data - Platform data for the ad5449 DAC driver
+> - * @sdo_mode: SDO pin mode
+> - * @hardware_clear_to_midscale: Whether asserting the hardware CLR pin sets the
+> - *			outputs to midscale (true) or to zero scale(false).
+> - */
+> -struct ad5449_platform_data {
+> -	enum ad5449_sdo_mode sdo_mode;
+> -	bool hardware_clear_to_midscale;
+> -};
+> -
+> -#endif
 
 

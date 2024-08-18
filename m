@@ -1,93 +1,124 @@
-Return-Path: <linux-iio+bounces-8572-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8573-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9852C955D58
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 18:05:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE28955E22
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 19:32:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5921C1C2090F
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 16:05:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 412371F213B6
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 17:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A6813C8F4;
-	Sun, 18 Aug 2024 16:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1121553AF;
+	Sun, 18 Aug 2024 17:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0MzJRyF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="U+Bj/nrs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D1B145B0C;
-	Sun, 18 Aug 2024 16:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4C61553BB
+	for <linux-iio@vger.kernel.org>; Sun, 18 Aug 2024 17:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723997143; cv=none; b=LYz0JSpbtvIuczzpo+58HQyhk/Hjw6hvaizbqg/Y8g2EOV+0EiTVY9sXfyF72g5CXaPU0b39eqRS33IgCjvFaszBjlKp4Lxs5ivjEfX6IUu0cgiHbPgQn+AEkTfZxAgTwxq3uJ67iUz9IH+dqIWCr38RS4C2uXJ5dzYz0/yBmOI=
+	t=1724002197; cv=none; b=qLqTYjYSK78SmgA76gPgpz8KaNvemywfRKMn7/iZiGmXuqRDG5/tvILxYsRd7+paGVhpjlgWFDDWR2mXB1MO3wor5/wyoe4wIW8jr2+xUfGKAp/41RcrZjFnFn5Y4FXALbp/NJNKJvEdwd+HAaxYUnbCkvYWoo8l00MTaWoxU18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723997143; c=relaxed/simple;
-	bh=4RpES87diZd5X42Za+Zib9TolNlTl0ajnivXRuYSUcw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vd1SieYcZtdPnAiM4rmscgviPSKqipDYS1fNB6wdF3sFNnz+8VPJSL6wSliIsqqANc6nn94qk9FbwadNAh0PyPSj1Vd636kOJtWg3Gfj+PqJSUwr5QE4IGcAhYom77eJGKJ1leSwZ4/za6DEr4Eappe7LYFLzj9MuufmAVxVghs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0MzJRyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FE7C32786;
-	Sun, 18 Aug 2024 16:05:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723997143;
-	bh=4RpES87diZd5X42Za+Zib9TolNlTl0ajnivXRuYSUcw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=F0MzJRyFy3SCLO2Y5DZv6AKKc5wLiCP7mCc4XwjkVN7zWJ8Ud4hjtbazeJO+WHm5y
-	 s+dH4+kncEJYqqglDPKZKCZsChLaE2FR/UgHMQeSSt99U5gSUei85/FDBta/9NxvIy
-	 wM4vMm0pahoCEMnMmIoMqY4G6zGo+ryEUNH7XQPmSI5movTZ4GYc2M8/Xxalt/ON0u
-	 OuKesCOhKpoEOgGUz+Lp7DXeSUhuUSoNq8/Uv/XQ9tn4bj3dMvsrAssM4CrLX+T89Y
-	 d0gqmm+Gc7X1zTyEMv+3uGOUiTdXcFGraSLRZlRSEFVOrjui3sZlQagfNlJdfQlNRe
-	 OpDVr0MCynK7w==
-Date: Sun, 18 Aug 2024 17:05:35 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Abhash jha <abhashkumarjha123@gmail.com>
-Cc: linux-iio@vger.kernel.org, anshulusr@gmail.com, lars@metafoo.de,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/2] Add light channel for LTR390
-Message-ID: <20240818170535.7a1aa6b5@jic23-huawei>
-In-Reply-To: <CAG=0RqJN=M5+w4CDXggDnoyOrW5qxTejJy=UkzMQX36emFT5fw@mail.gmail.com>
-References: <20240814113135.14575-1-abhashkumarjha123@gmail.com>
-	<20240817153953.1743e020@jic23-huawei>
-	<CAG=0RqLaigoVLN2D9LEfC0_1ctJO6OzwEgpeOx8NQavB4mZxoA@mail.gmail.com>
-	<20240817174919.5583f28a@jic23-huawei>
-	<CAG=0RqJN=M5+w4CDXggDnoyOrW5qxTejJy=UkzMQX36emFT5fw@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1724002197; c=relaxed/simple;
+	bh=RQ3Lbz4xnyeSZAdJGZGVBRvmJ4qONoB82rnZnZvCrDk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bgONF6JLUUAKfNU9C5ExFJfPpCVivx0nLUMrgORnkoX2CJcQk5Vkywx6yvRMOUnLNrol9wcj4tiHLrwzefTl2Z94HtAzK7ZsWiR4Qh/XsLLvu94yB4vFwklGRABhZYuQEdjj4h7VAQiC5TB13BAHCv5PAlhiZz4fd9ZYbyDQ9V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=U+Bj/nrs; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-371b015572cso953373f8f.1
+        for <linux-iio@vger.kernel.org>; Sun, 18 Aug 2024 10:29:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1724002195; x=1724606995; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KbwvlIVMV8xryLkD19IewQWLhOQT8FXVqlEUYqJE2Z0=;
+        b=U+Bj/nrszUnTm/6XBHYONqYtWpiqcZvk6GUJduOo05arwopycosnQBE+NI9x1QUuM6
+         FwnShm+tqhUq4pRTRZZwKfeOCKD89H/F7y54JLcNQ4IZZ25jZq2M0RcwRhoLxfHaMiWR
+         DZgnp4TF4lCWIUj2b5srTG7NwMp4Xno/NbD9rjDfvmtXiD3sYy4tHcFm2XXTIqVpa8oe
+         WpXMKWfoyT5zfE9knXESrFCGSH8estDAvwv3TUF6Tgf4zFOYulEgnACgsDcO8G7RVyri
+         CzI6i3vepPydoSR/suRi76n5mmF4Kh8ISvp2WNcSHGkPGC/1HmLpVO4H/DvzGEOvqExq
+         PKMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724002195; x=1724606995;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KbwvlIVMV8xryLkD19IewQWLhOQT8FXVqlEUYqJE2Z0=;
+        b=Jlpk9PX7ei34GkLE9s4jhYRQOXqnjCh4lNDnNi/0gSmG2HkDueBr8us2mZL/+7o/dH
+         vwiAHk7OTlQgcEMLucaBT6ZY7dFYc6kOQQD+WqeK+eXW2UDrXQ0SJD/486p6/bjMCtgj
+         4u+CkixD4TnBc7uHPVIy7MAXQaaXTS5mZV3el1q5FHYRsL5d/a7F/6XNa+rB6hLCO/El
+         WTZc7J1/qzs7Y+3QeriIobzwJylmGsOsn9dXtdDWpnjIRWg7/pJRzNYmOFbQVM3yzMkA
+         ioctEOcXdq0Kmlcf2jATJU6FwIJUP9F/cUu3RpbfxklrpvUYSJI5qXZR+oVUD8cZ+64s
+         wrZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV7IN1HENBka1VFUNB2sbtf9n1peAZsczmhXyhvQpoy6HCSVN4NJeiXQM0i/xncwzrcLADwoMZySqtt7vsXSqC/GxxWPmIaR6uX
+X-Gm-Message-State: AOJu0Yw5g86F6YotNMY3IbTORY9jya9jp9gGjQ9hroYsVDFwpivt5ngd
+	hcscJP4ODTS6jt+ZcFdLFblJHfuN5pGVunbe9+n9Aq+W1Ez+sZd3x15T3Md9IXFl3r9BDRD/u6O
+	A
+X-Google-Smtp-Source: AGHT+IFp3b5dXt3VaeULNgHqcg4QFbzuh6p5X7dQPwN9gftdTacq8ZYzKU9ZBjnuXrL9t5XVlwI1Bw==
+X-Received: by 2002:a5d:5c88:0:b0:371:a92d:8673 with SMTP id ffacd0b85a97d-371a92d87a7mr3528329f8f.44.1724002194776;
+        Sun, 18 Aug 2024 10:29:54 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.215.209])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3718984c0d0sm8486522f8f.38.2024.08.18.10.29.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Aug 2024 10:29:54 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] dt-bindings: iio: st,stm32-adc: add top-level constraints
+Date: Sun, 18 Aug 2024 19:29:51 +0200
+Message-ID: <20240818172951.121983-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 17 Aug 2024 23:07:37 +0530
-Abhash jha <abhashkumarjha123@gmail.com> wrote:
+Properties with variable number of items per each device are expected to
+have widest constraints in top-level "properties:" block and further
+customized (narrowed) in "if:then:".  Add missing top-level constraints
+for clock-names.
 
-> > I think I have.  But with two versions of v7 I'm not 100% sure which one got picked
-> > up. I've pushed out now as testing, so take a look.
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=testing  
-> > >  
-> The two versions v7 patches are the same. I had sent the same thing
-> again because
-> I thought it might have gotten lost in your mail.
-> My apologies for getting you confused.
-Ah. Never bother doing that.  Just send a 'ping' to the original
-thread.  
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Most maintainers now use a lot of automation so tend not to drop messages
-any more (it used to happen occasionally). 
-
-Also convention is to wait at least 2 weeks before pinging.
-
-Jonathan
-
-> 
-> Thanks,
-> Abhash
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+index ec34c48d4878..ef9dcc365eab 100644
+--- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+@@ -54,7 +54,9 @@ properties:
+           It's not present on stm32f4.
+           It's required on stm32h7 and stm32mp1.
+ 
+-  clock-names: true
++  clock-names:
++    minItems: 1
++    maxItems: 2
+ 
+   st,max-clk-rate-hz:
+     description:
+-- 
+2.43.0
 
 

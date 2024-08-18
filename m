@@ -1,183 +1,227 @@
-Return-Path: <linux-iio+bounces-8567-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8568-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D61955B03
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 07:16:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68022955BB6
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 09:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 016861F212FE
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 05:16:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5E1228205B
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 07:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363F0946F;
-	Sun, 18 Aug 2024 05:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1C7179A8;
+	Sun, 18 Aug 2024 07:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="V8canM8Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VLqR5u51"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B190C2107
-	for <linux-iio@vger.kernel.org>; Sun, 18 Aug 2024 05:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF121758B;
+	Sun, 18 Aug 2024 07:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723958188; cv=none; b=KwefcqoIMuRO78xguJyk7WJdIO4kIippLfCXxK71bGcnt45OqTNDDMXUK8TGUDfMdEE9ElxrGjoer3rsEcoJxaaAm5BzndoOXjjcFHoc25ZIP6DVwQn5ZuKeZspn7jcDSCaieiH/sJPCOxDUok3oOGrPAfvfBZxZ9Fd37qq9rKA=
+	t=1723964700; cv=none; b=sp4ZLh/eCuX39KcNH8jRBVf9PWnTmnea7cW1iIGtg+Qdy+u1VKgpWetQGUaz+Pc48vgHoA17PMJW+Zqi1BaeC4JKDdNiVuhJOFnHZFAbLTnSXpi6o78knQGVAfrX2eHIakhUG26YGrQPxAUpQI7j2cy9WmIGVXOT7EINJJEhkn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723958188; c=relaxed/simple;
-	bh=MQtpP0UATon1FTiH9o/D+C4GGy4c9++hakrn4Mg+f2k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=edGMxvcuAACPVPqegHsVrHrMJNsi4ojRYIKOUFjP7Mcy+u/eR6zrmDHiLU1r3AuAkTGQGPEUngNw0ZMVZwzlpdICARmKV4519GRae3ST8GY1c7B59G+gW4JEV8JhpKw5gOZV0TnLq/+T16jIdkbHt4EkOBPHH2+00jnmfcqcQl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=V8canM8Y; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-84303cc53e4so62664241.3
-        for <linux-iio@vger.kernel.org>; Sat, 17 Aug 2024 22:16:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1723958183; x=1724562983; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oRP+YAVcIn7o5+i6cSAklFpWUlYjVNnuYUUj3njDkpU=;
-        b=V8canM8Y691Kvkxr5lW5zbzESUqkQ3lG6FcsYBylh7kTEr3HFN+f9wwf5KTwvZnqkE
-         9GdHh+nknd5v0/P14+mTfftiY0uvjRMwS4kn1G8KYv9Bo3yfyj3iOF1Z3tmIhDPneMHg
-         ZXt+PvcDP6kPad65XfeZIu5pyye4fwMgsPU+BqdEJ+GoP21gO0urIdALqARiJgvUMLaj
-         oWlGYdQ8VKJYWNkBAdzRZ3EbyHV+tHScnIUvg7+gLReqzqn+j4Mt6IQWYVzMmivkHVqa
-         nB0EkPCHY/0B8RUwmKD2xh9ho78MqQ9gDz2ZuRLOyL7n4gJjHC41I5U1f/SPE8nbch7m
-         WXfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723958183; x=1724562983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oRP+YAVcIn7o5+i6cSAklFpWUlYjVNnuYUUj3njDkpU=;
-        b=FbE0j8k9hesFFD+P/It2hTwuqyfuXhPLcb9wj7BbajqtN3hDEpUkH+KKAQZQNrIUeH
-         WK3bOf54P5thT2QWkpKbNFxAtUM5jva+nbzQPoXLU6HegTkXOf2N9QMIQnWimTrHab6S
-         SRUmVwbZxMjnZxdFudWCxp7i3m88NwBOQ6iKaXqDj7T8jjDKu4jBeQsVWXjFMNaKRT76
-         5eVN5N27xJc39PToEYYlIu/sd+FCowtQ1J2so1zVUQH4/pSYF6l3P3XHDJaeGCwv2KMy
-         aokG4f3ICM5qyhGHPOEElVrI+q45tEw2HFWrEJRpJJVJKOtDMJsLieZkCX/jsqy1JLn5
-         UlIw==
-X-Gm-Message-State: AOJu0YwwL9xG8fsU+gUEIo8V3nHjC0eutsoy0w/ULz2Yz93ifrgA/41R
-	mJUj7FfTxm+mpUW0AGgmtlU7Hf1baq4c8mb+3qCfzQ9MqnSaiWc1GAEcXfBSEahe9H7VwuenP5N
-	rMdrx8+jFXs2dHFZIuDW/9ELrd9v4LR/G3OQaRw==
-X-Google-Smtp-Source: AGHT+IH8Y8XYQOgbiHvy8t2APVqq/eimyLY1DupeJNcoEM/ojLj51bVIXKuE2v4blOg2yem0vGA/hURdFsQLG4rl+IU=
-X-Received: by 2002:a05:6102:f11:b0:491:1e5b:8a0a with SMTP id
- ada2fe7eead31-4977bf58f35mr3652699137.4.1723958183214; Sat, 17 Aug 2024
- 22:16:23 -0700 (PDT)
+	s=arc-20240116; t=1723964700; c=relaxed/simple;
+	bh=JkCXrBddsAmPsjNruqRw2xUrMRsszkRxypNEw90PA3Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=hR0t8vdO7owqUZHd8Nt8ZvGb5p1RoIaO6Dvj8YxsExPt5lWBExMhfHbk1YP+7P+hev1rNrkrobmyKL0v1Wgi4GDOPVpiA71FwPw8iDj/yFD/QGzz98P1tWCzS/qmMufqc87JmefgAG5OHqn0yUGjlZaKGClanWyyVISwCPg4uiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VLqR5u51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73809C32786;
+	Sun, 18 Aug 2024 07:04:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723964700;
+	bh=JkCXrBddsAmPsjNruqRw2xUrMRsszkRxypNEw90PA3Q=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=VLqR5u51glNxnE0PkzxGdLmW0M2D6rfBpBQw89l1Oz4bUq4MW6z1VjCr+Zxarmb6m
+	 g5apwXGFI9RSE8h8wqyntoaOi+YD4sD1Bh77mXm02ghk73ud9sjGFg+0/E2vMbNRTx
+	 kOzCIm2vbWHzm3x06oBPUd/pC0bazgwQDM2+Cf62Yva92ED1zQda9sPTmBj1JI6NFK
+	 XgQ1V60BAuThp6W6GRrCLqztbJI47Ds2f3L+4UzcyqyzXN9+T9IMiyOeItqnI/S3+v
+	 o6onDzQitNsX2Zk4kXYX8bxiZc8diLgPhTuN+vzzIKtA5KCzX6AvYI0wAde1J5lnwJ
+	 fuHfpwhR1cwMg==
+Message-ID: <8d24b75a-18dd-4d54-98c3-d899c5502dad@kernel.org>
+Date: Sun, 18 Aug 2024 09:04:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240817144216.16569-1-aardelean@baylibre.com> <20240817155833.4dcc3004@jic23-huawei>
-In-Reply-To: <20240817155833.4dcc3004@jic23-huawei>
-From: Alexandru Ardelean <aardelean@baylibre.com>
-Date: Sun, 18 Aug 2024 08:16:12 +0300
-Message-ID: <CA+GgBR8bUBjr2XKQVnOr1i+iPJadZAGAk8VKFTrjVH98hkfqug@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: ad7606: split a 'ad7606_sw_mode_setup()' from probe
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Michael.Hennerich@analog.com, lars@metafoo.de, gstols@baylibre.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: dac: add docs for ad8460
+To: "Tinaco, Mariel" <Mariel.Tinaco@analog.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+ Dimitri Fedrau <dima.fedrau@gmail.com>, David Lechner
+ <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+References: <20240730030509.57834-1-Mariel.Tinaco@analog.com>
+ <20240730030509.57834-2-Mariel.Tinaco@analog.com>
+ <71cbe674-b232-4327-929b-351630907540@kernel.org>
+ <SJ0PR03MB6224EB6BB835741EA94DEB7491822@SJ0PR03MB6224.namprd03.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <SJ0PR03MB6224EB6BB835741EA94DEB7491822@SJ0PR03MB6224.namprd03.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 17, 2024 at 5:58=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Sat, 17 Aug 2024 17:42:15 +0300
-> Alexandru Ardelean <aardelean@baylibre.com> wrote:
->
-> > This change moves the logic for setting up SW mode (during probe) into =
-it's
-> > own function.
-> >
-> > With the addition of some newer parts, the SW-mode part can get a littl=
-e
-> > more complicated.
-> > So it's a bit better to have a separate function for this.
-> This looks fine but put it on the start of the series that makes it more
-> complex.  I may pick it off that series before the bulk of the code
-> but if it's sent in such a series the link tags etc will let people
-> see 'why' it is a good idea.
+On 17/08/2024 13:18, Tinaco, Mariel wrote:
+>>> +  clocks:
+>>
+>> maxItems: 1
+>> and drop description (or use items: - description, but then do not
+>> repeat redundant parts)
+>>
+> 
+> Simplified the description for this item
+> 
+>   refio-1p2v-supply:
+>     description: Reference voltage to adjust full scale output span
+>     maxItems: 1
+> 
+> Should I put, "maxItems: 1" in the other vrefs as well?
 
-Sure.
-Will spin-up the series.
+No, why do you change supply? My comment was under clocks. Comments are
+always under specific part of code which is being discussed.
 
->
-> Jonathan
->
-> >
-> > Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
-> > ---
-> >  drivers/iio/adc/ad7606.c | 43 ++++++++++++++++++++++++----------------
-> >  1 file changed, 26 insertions(+), 17 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> > index 68481e97e50a..192b9cd56b45 100644
-> > --- a/drivers/iio/adc/ad7606.c
-> > +++ b/drivers/iio/adc/ad7606.c
-> > @@ -545,6 +545,29 @@ static const struct iio_trigger_ops ad7606_trigger=
-_ops =3D {
-> >       .validate_device =3D iio_trigger_validate_own_device,
-> >  };
-> >
-> > +static int ad7606_sw_mode_setup(struct iio_dev *indio_dev)
-> > +{
-> > +     struct ad7606_state *st =3D iio_priv(indio_dev);
-> > +
-> > +     if (!st->bops->sw_mode_config)
-> > +             return 0;
-> > +
-> > +     st->sw_mode_en =3D device_property_present(st->dev, "adi,sw-mode"=
-);
-> > +     if (!st->sw_mode_en)
-> > +             return 0;
-> > +
-> > +     indio_dev->info =3D &ad7606_info_os_range_and_debug;
-> > +
-> > +     /* Scale of 0.076293 is only available in sw mode */
-> > +     st->scale_avail =3D ad7616_sw_scale_avail;
-> > +     st->num_scales =3D ARRAY_SIZE(ad7616_sw_scale_avail);
-> > +
-> > +     /* After reset, in software mode, =C2=B110 V is set by default */
-> > +     memset32(st->range, 2, ARRAY_SIZE(st->range));
-> > +
-> > +     return st->bops->sw_mode_config(indio_dev);
-> > +}
-> > +
-> >  int ad7606_probe(struct device *dev, int irq, void __iomem *base_addre=
-ss,
-> >                const char *name, unsigned int id,
-> >                const struct ad7606_bus_ops *bops)
-> > @@ -617,23 +640,9 @@ int ad7606_probe(struct device *dev, int irq, void=
- __iomem *base_address,
-> >       st->write_scale =3D ad7606_write_scale_hw;
-> >       st->write_os =3D ad7606_write_os_hw;
-> >
-> > -     if (st->bops->sw_mode_config)
-> > -             st->sw_mode_en =3D device_property_present(st->dev,
-> > -                                                      "adi,sw-mode");
-> > -
-> > -     if (st->sw_mode_en) {
-> > -             /* Scale of 0.076293 is only available in sw mode */
-> > -             st->scale_avail =3D ad7616_sw_scale_avail;
-> > -             st->num_scales =3D ARRAY_SIZE(ad7616_sw_scale_avail);
-> > -
-> > -             /* After reset, in software mode, =C2=B110 V is set by de=
-fault */
-> > -             memset32(st->range, 2, ARRAY_SIZE(st->range));
-> > -             indio_dev->info =3D &ad7606_info_os_range_and_debug;
-> > -
-> > -             ret =3D st->bops->sw_mode_config(indio_dev);
-> > -             if (ret < 0)
-> > -                     return ret;
-> > -     }
-> > +     ret =3D ad7606_sw_mode_setup(indio_dev);
-> > +     if (ret)
-> > +             return ret;
-> >
-> >       st->trig =3D devm_iio_trigger_alloc(dev, "%s-dev%d",
-> >                                         indio_dev->name,
->
+> 
+>>> +    description: The clock for the DAC. This is the sync clock
+>>> +
+>>> +  adi,rset-ohms:
+>>> +    description: Specify value of external resistor connected to FS_ADJ pin
+>>> +      to establish internal HVDAC's reference current I_REF
+>>> +    default: 2000
+>>> +    minimum: 2000
+>>> +    maximum: 20000
+>>> +
+>>> +  adi,range-microvolt:
+>>> +    description: |
+>>> +      Voltage output range specified as <minimum, maximum>
+>>> +    oneOf:
+>>
+>> Not an oneOf.
+>>
+> 
+> You're right. I should have put all the possible values. I populated it with common
+> Values found in the datasheet
+> 
+>   adi,range-microvolt:
+>     description: Voltage output range specified as <minimum, maximum>
+>     oneOf:
+>       - items:
+>           - enum: [0, -10000000, -20000000, -30000000, -40000000, -55000000]
+>           - enum: [10000000, 20000000, 30000000, 40000000, 55000000]
+> 
+>>> +      - items:
+>>> +          - const: -40000000
+>>> +          - const: 40000000
+>>
+>> Why do you need this property if this cannot be anything else? Drop.
+>>
+>>> +
+>>> +  adi,range-microamp:
+>>> +    description: |
+>>
+>> Do not need '|' unless you need to preserve formatting.
+>>
+>>> +      Current output range specified as <minimum, maximum>
+>>> +    oneOf:
+>>> +      - items:
+>>> +          - const: 0
+>>> +          - const: 50000
+>>> +      - items:
+>>> +          - const: -50000
+>>> +          - const: 50000
+>>> +
+>>> +  adi,temp-max-millicelsius:
+>>> +    description: Overtemperature threshold
+>>> +    default: 50000
+>>> +    minimum: 20000
+>>> +    maximum: 150000
+>>> +
+>>> +  sdn-reset-gpios:
+>>
+>> reset-gpios or shutdown-gpios or anything from gpio-consumer-common
+>> which is not deprecated.
+>>
+> 
+> Lifted from gpio-consumer-common yaml. Mapped to corresponding pins
+> 
+>   wakeup-gpios:
+>     description: Corresponds to SDN_RESET pin. To exit shutdown
+>       or sleep mode, pulse SDN_RESET HIGH, then leave LOW.
+
+That's not a wakeup-gpio. I think my comment was imprecise. You have
+something like three reset/shutdown GPIOs, so pick from
+gpio-consumer-common the reset and shutdown. Remaining one could stay as
+in your original code.
+
+>     maxItems: 1
+> 
+>   reset-gpios:
+>     description: Manual Power On Reset (POR). Pull this GPIO pin
+>       LOW and then HIGH to reset all digital registers to default
+>     maxItems: 1
+> 
+>   shutdown-gpios:
+>     description: Corresponds to SDN_IO pin. Shutdown may be
+>       initiated by the user, by pulsing SDN_IO high. To exit shutdown,
+>       pulse SDN_IO low, then float.
+>     maxItems: 1
+> 
+
+
+Best regards,
+Krzysztof
+
 

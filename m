@@ -1,98 +1,183 @@
-Return-Path: <linux-iio+bounces-8566-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8567-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7746895592C
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 19:37:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D61955B03
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 07:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1118C1F21C26
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Aug 2024 17:37:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 016861F212FE
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 05:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6C815533F;
-	Sat, 17 Aug 2024 17:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363F0946F;
+	Sun, 18 Aug 2024 05:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WfWRMOC4"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="V8canM8Y"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2755C2E3;
-	Sat, 17 Aug 2024 17:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B190C2107
+	for <linux-iio@vger.kernel.org>; Sun, 18 Aug 2024 05:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723916273; cv=none; b=itTaTyAaa17WxUttL59TcbsKecvwhbFMzG3MW3IOCQWjDUNoG5GYBowegwmD0pd/tSAsBCmDtQFWCEvrUN5iXbo7YszP7g7NsmOQuKU+v8X8iLdD73pQfoGvMD2WN55Z+JXLsXrXCZp2Hcrjj3n1KHEzPx/8FzbXZgEKzq33tDA=
+	t=1723958188; cv=none; b=KwefcqoIMuRO78xguJyk7WJdIO4kIippLfCXxK71bGcnt45OqTNDDMXUK8TGUDfMdEE9ElxrGjoer3rsEcoJxaaAm5BzndoOXjjcFHoc25ZIP6DVwQn5ZuKeZspn7jcDSCaieiH/sJPCOxDUok3oOGrPAfvfBZxZ9Fd37qq9rKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723916273; c=relaxed/simple;
-	bh=+cEI/xItrRT5nq6RI5L8xglbEZ+sSMqu2zck20RBW/U=;
+	s=arc-20240116; t=1723958188; c=relaxed/simple;
+	bh=MQtpP0UATon1FTiH9o/D+C4GGy4c9++hakrn4Mg+f2k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QkZrmRJ4Ywd0oTixwqQ4+6q1ijBMXcLfQzaPSeKafnFthMx+FrPEUckiThZGerAgNBckqv/OhavOZ8zx1Rkf8r63efD2QWggSaE9pMphQ1VQD0m31YVo/k7U6au/P6XuUAKeFbRpaX3Z1ztxvDgZ2JKNNkubohiybu8MNiXw80s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WfWRMOC4; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53310b07267so3998253e87.3;
-        Sat, 17 Aug 2024 10:37:51 -0700 (PDT)
+	 To:Cc:Content-Type; b=edGMxvcuAACPVPqegHsVrHrMJNsi4ojRYIKOUFjP7Mcy+u/eR6zrmDHiLU1r3AuAkTGQGPEUngNw0ZMVZwzlpdICARmKV4519GRae3ST8GY1c7B59G+gW4JEV8JhpKw5gOZV0TnLq/+T16jIdkbHt4EkOBPHH2+00jnmfcqcQl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=V8canM8Y; arc=none smtp.client-ip=209.85.222.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-84303cc53e4so62664241.3
+        for <linux-iio@vger.kernel.org>; Sat, 17 Aug 2024 22:16:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723916270; x=1724521070; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0SZvSC0Uru0/uzuhZQvmWzgYlBLlTeTbI1JzeU/3YS8=;
-        b=WfWRMOC4REr1xvi6juzqysbrxK/y84VKOOwZlaGzVwlN5s2sqMS8s4f5o3bapxHnu1
-         sLK1HYWRoITiw6xWiQ16K5GAFg/LxI/kxRWIFqoVzOgiZytVx5qenX8PtBvrqeYChNVE
-         qT0EBkDKd7OJv/ceOwGXdKkAHMZ5tnCWOgrXRAXH615UgJXbN2OOtodKsAdJm8Ffy84D
-         HekupvDPL6nebaWp5d90uyuorYsXhQpaDBTbYrsictGjDRCvxoZqmRaMpVfPg9hQNCT/
-         PYlYNVh+YFKt1IN1h5fWOjzgPF7IxykMQ/bNetbM13fGEPcjfhOyjX3NHc7grxU4+Xvl
-         53xA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1723958183; x=1724562983; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oRP+YAVcIn7o5+i6cSAklFpWUlYjVNnuYUUj3njDkpU=;
+        b=V8canM8Y691Kvkxr5lW5zbzESUqkQ3lG6FcsYBylh7kTEr3HFN+f9wwf5KTwvZnqkE
+         9GdHh+nknd5v0/P14+mTfftiY0uvjRMwS4kn1G8KYv9Bo3yfyj3iOF1Z3tmIhDPneMHg
+         ZXt+PvcDP6kPad65XfeZIu5pyye4fwMgsPU+BqdEJ+GoP21gO0urIdALqARiJgvUMLaj
+         oWlGYdQ8VKJYWNkBAdzRZ3EbyHV+tHScnIUvg7+gLReqzqn+j4Mt6IQWYVzMmivkHVqa
+         nB0EkPCHY/0B8RUwmKD2xh9ho78MqQ9gDz2ZuRLOyL7n4gJjHC41I5U1f/SPE8nbch7m
+         WXfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723916270; x=1724521070;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0SZvSC0Uru0/uzuhZQvmWzgYlBLlTeTbI1JzeU/3YS8=;
-        b=do4e9Mo6ba2lFvJCf6d5apKZOZGyp2VIBO5yTkZYe1zyEXRWfIxCaiWGxxR7D8cTHL
-         Vu4VrNzRCZ181DDQYo24eIyMtB32qATzHI4pptqT6fpopo4iQ/2NwA+JIRvp644+e1gW
-         Eh18VQXiNsF5GqA9QukkgkxxO4WcDJZSgtNgF6w6ZlOSFmLQ6LMoBPkkD285pmYP0bKk
-         pTZi5gbGA4Kw5UQWhHLQoMrC3OwI/HXulM++gfJ0ZEOSxrVbx9l9bq3Mk6/JFjdjtfdj
-         YUesFB7lqOjNg12WfugF7qocaptAqGopEg36RXYSv/cDm51rTPnT52AcPPW9E8pBez/W
-         UYjA==
-X-Forwarded-Encrypted: i=1; AJvYcCWoBO40piGuYFrjWzqkQ7PqglGrmhiTMnYKuo/JoQR5w7AgMXJgUK4V/xAc3ya7FpazpiDUKMwyjZV5hGhtPTX6tc28+bmkEnnHu19u
-X-Gm-Message-State: AOJu0YyLZcu5hyOJz+bVgkk/HjJanZGVGhmzyTQ985c1QVFDDHdpnrW7
-	ahIi4AOlprQxloTRRbNTJ6Ig3QgeVQjNJC3RIMahmbyditx1YmXwwp8Bmhpwrna4xhNMgLyeYy8
-	bDigekcntQs1tsCumyAD+tJyBBZw=
-X-Google-Smtp-Source: AGHT+IFk1aynC9pVGiMcTqJmEk0gV5pciM6iNSSDMpa1ydVTYikM65Lzkvw06z/6iX8MFFspmExGzbXANomBqn1ewZI=
-X-Received: by 2002:a05:6512:b01:b0:52e:932d:88ab with SMTP id
- 2adb3069b0e04-5331c6aff01mr5250435e87.23.1723916269384; Sat, 17 Aug 2024
- 10:37:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723958183; x=1724562983;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oRP+YAVcIn7o5+i6cSAklFpWUlYjVNnuYUUj3njDkpU=;
+        b=FbE0j8k9hesFFD+P/It2hTwuqyfuXhPLcb9wj7BbajqtN3hDEpUkH+KKAQZQNrIUeH
+         WK3bOf54P5thT2QWkpKbNFxAtUM5jva+nbzQPoXLU6HegTkXOf2N9QMIQnWimTrHab6S
+         SRUmVwbZxMjnZxdFudWCxp7i3m88NwBOQ6iKaXqDj7T8jjDKu4jBeQsVWXjFMNaKRT76
+         5eVN5N27xJc39PToEYYlIu/sd+FCowtQ1J2so1zVUQH4/pSYF6l3P3XHDJaeGCwv2KMy
+         aokG4f3ICM5qyhGHPOEElVrI+q45tEw2HFWrEJRpJJVJKOtDMJsLieZkCX/jsqy1JLn5
+         UlIw==
+X-Gm-Message-State: AOJu0YwwL9xG8fsU+gUEIo8V3nHjC0eutsoy0w/ULz2Yz93ifrgA/41R
+	mJUj7FfTxm+mpUW0AGgmtlU7Hf1baq4c8mb+3qCfzQ9MqnSaiWc1GAEcXfBSEahe9H7VwuenP5N
+	rMdrx8+jFXs2dHFZIuDW/9ELrd9v4LR/G3OQaRw==
+X-Google-Smtp-Source: AGHT+IH8Y8XYQOgbiHvy8t2APVqq/eimyLY1DupeJNcoEM/ojLj51bVIXKuE2v4blOg2yem0vGA/hURdFsQLG4rl+IU=
+X-Received: by 2002:a05:6102:f11:b0:491:1e5b:8a0a with SMTP id
+ ada2fe7eead31-4977bf58f35mr3652699137.4.1723958183214; Sat, 17 Aug 2024
+ 22:16:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240814113135.14575-1-abhashkumarjha123@gmail.com>
- <20240817153953.1743e020@jic23-huawei> <CAG=0RqLaigoVLN2D9LEfC0_1ctJO6OzwEgpeOx8NQavB4mZxoA@mail.gmail.com>
- <20240817174919.5583f28a@jic23-huawei>
-In-Reply-To: <20240817174919.5583f28a@jic23-huawei>
-From: Abhash jha <abhashkumarjha123@gmail.com>
-Date: Sat, 17 Aug 2024 23:07:37 +0530
-Message-ID: <CAG=0RqJN=M5+w4CDXggDnoyOrW5qxTejJy=UkzMQX36emFT5fw@mail.gmail.com>
-Subject: Re: [PATCH v7 0/2] Add light channel for LTR390
+References: <20240817144216.16569-1-aardelean@baylibre.com> <20240817155833.4dcc3004@jic23-huawei>
+In-Reply-To: <20240817155833.4dcc3004@jic23-huawei>
+From: Alexandru Ardelean <aardelean@baylibre.com>
+Date: Sun, 18 Aug 2024 08:16:12 +0300
+Message-ID: <CA+GgBR8bUBjr2XKQVnOr1i+iPJadZAGAk8VKFTrjVH98hkfqug@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: ad7606: split a 'ad7606_sw_mode_setup()' from probe
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, anshulusr@gmail.com, lars@metafoo.de, 
-	linux-kernel@vger.kernel.org
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Michael.Hennerich@analog.com, lars@metafoo.de, gstols@baylibre.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> I think I have.  But with two versions of v7 I'm not 100% sure which one got picked
-> up. I've pushed out now as testing, so take a look.
+On Sat, Aug 17, 2024 at 5:58=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 >
-> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=testing
+> On Sat, 17 Aug 2024 17:42:15 +0300
+> Alexandru Ardelean <aardelean@baylibre.com> wrote:
+>
+> > This change moves the logic for setting up SW mode (during probe) into =
+it's
+> > own function.
 > >
-The two versions v7 patches are the same. I had sent the same thing
-again because
-I thought it might have gotten lost in your mail.
-My apologies for getting you confused.
+> > With the addition of some newer parts, the SW-mode part can get a littl=
+e
+> > more complicated.
+> > So it's a bit better to have a separate function for this.
+> This looks fine but put it on the start of the series that makes it more
+> complex.  I may pick it off that series before the bulk of the code
+> but if it's sent in such a series the link tags etc will let people
+> see 'why' it is a good idea.
 
-Thanks,
-Abhash
+Sure.
+Will spin-up the series.
+
+>
+> Jonathan
+>
+> >
+> > Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
+> > ---
+> >  drivers/iio/adc/ad7606.c | 43 ++++++++++++++++++++++++----------------
+> >  1 file changed, 26 insertions(+), 17 deletions(-)
+> >
+> > diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> > index 68481e97e50a..192b9cd56b45 100644
+> > --- a/drivers/iio/adc/ad7606.c
+> > +++ b/drivers/iio/adc/ad7606.c
+> > @@ -545,6 +545,29 @@ static const struct iio_trigger_ops ad7606_trigger=
+_ops =3D {
+> >       .validate_device =3D iio_trigger_validate_own_device,
+> >  };
+> >
+> > +static int ad7606_sw_mode_setup(struct iio_dev *indio_dev)
+> > +{
+> > +     struct ad7606_state *st =3D iio_priv(indio_dev);
+> > +
+> > +     if (!st->bops->sw_mode_config)
+> > +             return 0;
+> > +
+> > +     st->sw_mode_en =3D device_property_present(st->dev, "adi,sw-mode"=
+);
+> > +     if (!st->sw_mode_en)
+> > +             return 0;
+> > +
+> > +     indio_dev->info =3D &ad7606_info_os_range_and_debug;
+> > +
+> > +     /* Scale of 0.076293 is only available in sw mode */
+> > +     st->scale_avail =3D ad7616_sw_scale_avail;
+> > +     st->num_scales =3D ARRAY_SIZE(ad7616_sw_scale_avail);
+> > +
+> > +     /* After reset, in software mode, =C2=B110 V is set by default */
+> > +     memset32(st->range, 2, ARRAY_SIZE(st->range));
+> > +
+> > +     return st->bops->sw_mode_config(indio_dev);
+> > +}
+> > +
+> >  int ad7606_probe(struct device *dev, int irq, void __iomem *base_addre=
+ss,
+> >                const char *name, unsigned int id,
+> >                const struct ad7606_bus_ops *bops)
+> > @@ -617,23 +640,9 @@ int ad7606_probe(struct device *dev, int irq, void=
+ __iomem *base_address,
+> >       st->write_scale =3D ad7606_write_scale_hw;
+> >       st->write_os =3D ad7606_write_os_hw;
+> >
+> > -     if (st->bops->sw_mode_config)
+> > -             st->sw_mode_en =3D device_property_present(st->dev,
+> > -                                                      "adi,sw-mode");
+> > -
+> > -     if (st->sw_mode_en) {
+> > -             /* Scale of 0.076293 is only available in sw mode */
+> > -             st->scale_avail =3D ad7616_sw_scale_avail;
+> > -             st->num_scales =3D ARRAY_SIZE(ad7616_sw_scale_avail);
+> > -
+> > -             /* After reset, in software mode, =C2=B110 V is set by de=
+fault */
+> > -             memset32(st->range, 2, ARRAY_SIZE(st->range));
+> > -             indio_dev->info =3D &ad7606_info_os_range_and_debug;
+> > -
+> > -             ret =3D st->bops->sw_mode_config(indio_dev);
+> > -             if (ret < 0)
+> > -                     return ret;
+> > -     }
+> > +     ret =3D ad7606_sw_mode_setup(indio_dev);
+> > +     if (ret)
+> > +             return ret;
+> >
+> >       st->trig =3D devm_iio_trigger_alloc(dev, "%s-dev%d",
+> >                                         indio_dev->name,
+>
 

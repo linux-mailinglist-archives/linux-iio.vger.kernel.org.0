@@ -1,122 +1,127 @@
-Return-Path: <linux-iio+bounces-8569-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8570-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D503955BDC
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 09:50:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12C7955D16
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 17:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3441F21841
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 07:50:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76FC728196B
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 15:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C982168B7;
-	Sun, 18 Aug 2024 07:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9AD877113;
+	Sun, 18 Aug 2024 15:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J62pEbGg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mh3GjTmR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE3D17BA0
-	for <linux-iio@vger.kernel.org>; Sun, 18 Aug 2024 07:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AB8EADB;
+	Sun, 18 Aug 2024 15:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723967434; cv=none; b=tI7K+3h4WqS0tucg8W024xKyya8V5jjSY18Q1srVcnEfrOJ77KhfZzUqpFyIbPwSG1aRF7JmxdyZ4tdWGrM5lL6pIq1xMvBleqAXAWnhZAi2kirzkPnunl+Lf8xHK6Hm6PDJ9P42QKYi3mD6uPVSVnIbLDusAnS0JEuGGNCDpEU=
+	t=1723993792; cv=none; b=li7avLyruIJBwCB7e0M3hWOlh+9wEvp7GlmHjqRO38uQpwjpD29DZdlMAo+JVXVZd+P2ScPGafplvBz3AQknWFpQ36bIxMSP/7EJpy2SXXdGJEgJlLyl4BoD218COXoLXHEUAooUAEkMkoLO+6OAm7yxj9z/5PB+unhQeeThWHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723967434; c=relaxed/simple;
-	bh=1pOEg6WRULQgkgic42j0aMhYi28NGYo+U14lJiCz4mg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IWo5Ach1WWMxPIfWFIAf7g5CN5y3Vxaj/P8UclmijroWQ/hHNG1aaYiA4hAAsSaUgUqpsFNHTkRcGmBMqsJxAtzeDxw3Ic5SdJoRRorz0Bg0pJn91rYnW8QYLiA7KI2clmej1HIt42hAbT3z1hO93tLCy3Ejjrl3+j+IBHaLyNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J62pEbGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91767C32786;
-	Sun, 18 Aug 2024 07:50:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723967433;
-	bh=1pOEg6WRULQgkgic42j0aMhYi28NGYo+U14lJiCz4mg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J62pEbGgMx901fCST54rJlZHI5Gea+5LNGu5Hlyf5Abr7IAFvuAmR25nLiEb9hDVQ
-	 Gfy/grg10EPm31K3wsjDQqqV+lz4J0Xpmr/+9p4vd+gvvgXbqySJttv95FGPeqtG9U
-	 mHghBwI3GtF6VK44VOQ7Covgo0shYuAa1dAsjxbUMgvkeg3bOXGWiSRYnZEztD0AKR
-	 GWtbwdEzTN4iD+p4wMFpgt2G/H6SCdI5Dgsj4KE+3spaWvpJ7b7W7gcTZDNYAQyDOo
-	 XgkT6kiWY8jnDwYpFI9qDQHu3RAEOBApynJVo/X4nVDaIm+w2ZGH3cwY5JgCvyI2R+
-	 7a9MGo1X5VrZQ==
-Date: Sun, 18 Aug 2024 09:50:28 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+	s=arc-20240116; t=1723993792; c=relaxed/simple;
+	bh=430pbFzmLCcEsH8FB/IpfjMG1990TAXpyk7SHHd++Hw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bW0zbGLXQ6+oFGMPcyrnVEXljMmQrGxGzZCM0jrzkdPpBfKRK8/mx90b8aj3pt+bibLg0706z5Pzfr3pmZBy8it3HlJJIqCGeWv9RboNw0MIfYyXBg+ylycntQAG1iHcw/qhFdzw/PR+ywCmUdjyZNw0NFcu3EA1kg7HPqesBY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mh3GjTmR; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4281ca54fd3so26940615e9.2;
+        Sun, 18 Aug 2024 08:09:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723993789; x=1724598589; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W5/4BkzNMxDBQ6gWDAbt6rtimqyIgbJuwJHucZAPva8=;
+        b=Mh3GjTmRbyLx+jFCT92GrmYQKPat6ZqAk7/qC7Ss1pSYe+Z1+I9hEtc457PA+3Hwaw
+         xqXTqr+W/ZWjt3zTUTdX9z/hTb03ZnULj8J7V+jrD6u44E7MExUVf/as9UHtdvTAUkfl
+         KTI2UPfQZDHi2c+hlDqOYnEzpMMwKlErhGomy7n8zJeoq92J6JHeGOM5x+Kwa8Tx7SBF
+         AGZ2G5sEmRqglJURS3OFoxopW31NhYuyd2WFa5onpgTjTwIX69dTJMmFnzOt/nv0EvSQ
+         U9Q0LlMw9CLEkfpgVLfj9HLva30it9lljAWbqlWBNktIiYytrc7TRY+YJifuqMFKL8IF
+         WuKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723993789; x=1724598589;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W5/4BkzNMxDBQ6gWDAbt6rtimqyIgbJuwJHucZAPva8=;
+        b=ZmPY3Hx8IrHEvE+OsLsQynVl2Zk3zRQITXSK96DXSQIfpoRQl83ZQoN7WiurPSgRmL
+         AqKr0fvgVdrfojmiCUNWVHj0RnMVBqnRVz6SSxmlxJ8gRRFLiKdHuu3U5RL1t6rPNXnN
+         DOpex1op9jFQM8lz2HBWOKEusl+Wd7gA2ppgC/VTgvW3XTJ2zVb3qL5uCkf3w1FyU9n5
+         c8OJm0vEQfudP9kes5rChxAtJg77lszyduK3YVeGBrkSe2bbefgGKY2CmEqXxFg/mK/v
+         ja3rbuSQFZew0a/miDB1dcYd0Xki/UjGFLEwgM6T9qawhis6ddijFaIPihK2zJ4aqV6/
+         +LJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9LqXPjJQbVPd5kBY47T4gMFC137jJz7Yj8vr1N9X6Bs3Zjr7izOEAoSiZtG0p8OrP26UFyH+yRdfOk+Qf@vger.kernel.org, AJvYcCXrgHDddCMYg4E/U1gjxVrAcpm0nykB51FGNKsuqwt+fRRLmDm3iZ83PvissK5w54QgOA/CgkiRj8I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2v4yOjJ6HQ/ouQvaFwWtm1Hyy8ifIPISBX2kV8IsWRmUg14u4
+	4MmH43fcgu++j2U121wieneElZ8K9cprvVZ+/9Ed51bFrdkkVtit
+X-Google-Smtp-Source: AGHT+IGKqTgFJK8bszPlyxFGO6k4oIG/0kVUfIKFVf5KZARcjWG04UI5HD2JfALy7E0TSh4zwXORSA==
+X-Received: by 2002:a05:600c:1e0c:b0:426:6f17:531 with SMTP id 5b1f17b1804b1-429ed79dda1mr57176645e9.13.1723993788902;
+        Sun, 18 Aug 2024 08:09:48 -0700 (PDT)
+Received: from localhost.localdomain ([151.95.42.229])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429d877f234sm141972345e9.1.2024.08.18.08.09.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Aug 2024 08:09:48 -0700 (PDT)
+From: Denis Benato <benato.denis96@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Okba Slatnia <okbaslatnia@gmail.com>, linux-iio@vger.kernel.org
-Subject: Re: st_lsm6dsx minor issue
-Message-ID: <ZsGnxBpYxihXxtC5@lore-rh-laptop>
-References: <CANArCKRKt4-Epxw6KCmrtRZNKBKTLT78m9Rq0__3GG9BJMh6ig@mail.gmail.com>
- <20240817174630.1c24bb02@jic23-huawei>
+Cc: Jagath Jog J <jagathjog1996@gmail.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Luke D . Jones" <luke@ljones.dev>,
+	Jonathan LoBue <jlobue10@gmail.com>,
+	Denis Benato <benato.denis96@gmail.com>
+Subject: [PATCH v2 0/1] iio: bmi323: have the peripheral consume less power
+Date: Sun, 18 Aug 2024 17:09:22 +0200
+Message-ID: <20240818150923.20387-1-benato.denis96@gmail.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240817134911.6043c798@jic23-huawei>
+References: <20240817134911.6043c798@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6Yi86gNH5O7cTjyQ"
-Content-Disposition: inline
-In-Reply-To: <20240817174630.1c24bb02@jic23-huawei>
+Content-Transfer-Encoding: 8bit
 
+The bmi323 chip is part of handhelds PCs that are run on battery.
 
---6Yi86gNH5O7cTjyQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+One of said PC is well-known for its short battery life, even in s2idle:
+help mitigate that by putting the device in its lowest-consumption
+state while the peripheral is unused.
 
-> On Thu, 8 Aug 2024 15:27:33 +0200
-> Okba Slatnia <okbaslatnia@gmail.com> wrote:
->=20
-> > Hi all,
+Have runtime-pm suspend callback save used configuration registers
+and runtime-pm resume callback restore saved registers to restore
+the previous state.
 
-Hi Okba,
+Changelog:
+- V2: patch 1:
+	+ change patch commit message
+	+ drop removal callbacks and use devm_add_action_or_reset
+	+ split bmi323_init in two functions
+	+ separate regs to save and relative value
+	+ drop unhelpful consts ptr modifiers
+	+ add a comment to explain why BMI323_FIFO_CTRL_REG is
+	  being used in runtime resume
 
-> >=20
-> > I'm building a yocto firmware based on Linux kernel version 5.15.148
-> > and i'm facing a little limitation or problem preventing me from
-> > changing the value of the sampling_frequency of the accelerator:
-> > /sys/bus/iio/devices/iio:device0/sampling_frequency
-> > despite i'm following the
-> > /sys/bus/iio/devices/iio:device0/sampling_frequenc_available for the
-> > possible values.
-> > for the info , i can successfully change the sampling_frequency on
-> > another yocto firmware based on Linux kernel version 4.19 and despite
-> > keeping the same kernel flags confs i'm still facing this issue , i
-> > made sure it's not an access right issue because i can change other
-> > files in the same path with same access rights.
+Previous patches obsoleted:
+https://lore.kernel.org/all/20240811161202.19818-1-benato.denis96@gmail.com
 
-Can you please provide more details about the issue? Are you able to change
-gyro sample frequency? Is the sensor-hub enabled?
+Signed-off-by: Denis Benato <benato.denis96@gmail.com>
 
-Regards,
-Lorenzo
+Denis Benato (1):
+  iio: bmi323: peripheral in lowest power state on suspend
 
-> >=20
-> > Can you please help me and tell me if I missed anything ?
-> > Thanks in advance.
-> > Best Regards.
-> > --
-> > Okba
->=20
-> +CC Lorenzo on basis maybe he's seen this before?
->=20
-> Jonathan
->=20
-> >=20
->=20
+ drivers/iio/imu/bmi323/bmi323_core.c | 219 ++++++++++++++++++++++++++-
+ 1 file changed, 217 insertions(+), 2 deletions(-)
 
---6Yi86gNH5O7cTjyQ
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.46.0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZsGnwQAKCRA6cBh0uS2t
-rN3iAQC3d40v2jkmQpSSIUWPYQfACnW7+LDin6nNWXKu6y1vvgD/ZpE2B0qmgBcT
-wrwG32Atw80SUaA8P7TrXKLHlS1/DAE=
-=2+5M
------END PGP SIGNATURE-----
-
---6Yi86gNH5O7cTjyQ--
 

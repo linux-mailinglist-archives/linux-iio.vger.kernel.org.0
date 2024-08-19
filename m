@@ -1,248 +1,182 @@
-Return-Path: <linux-iio+bounces-8622-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8623-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7026957541
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 22:06:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C689575BC
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 22:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28EF11F21F4C
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 20:06:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8ED3B2145C
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 20:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB5A1DD392;
-	Mon, 19 Aug 2024 20:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5A315921D;
+	Mon, 19 Aug 2024 20:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b="a0e9wlXC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kxMmVr25"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CFF18E0E;
-	Mon, 19 Aug 2024 20:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724097954; cv=pass; b=dxI+/YmzoZ/JEqmCqHZAyxKZq/O51H5e733OB6wBFDklXw+wUza6AXQdl7Ib7iYVeyZerxhPFvlUVnjuWb9D1A779JeYUDzKQ/9NRS/ijrwliSQvf1v8JfBXXhUgbnn7zuAUniGc/tDe3NzVlDZeOJJQnXXT2aV4eTMCv1S6D8Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724097954; c=relaxed/simple;
-	bh=MOMyK03eJyKQOGb8+b6fAg9EwcsINxYUyot/w6sRaY0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DvaryNk+7Mu9Z1Mk6fiuVZuC0og0OcdbLUhbr4wzRgUawfcl5hg7UkCyXcoVt52vnm2gDr6PVS2ZDBDmQYLgzJCkq4LxgDJYPDQ1+hblSSZ7EKwRc+K4QJqua0nPlTKKF6to+PML8++EutVQSDrShm1ch3jrpWuBeH3Z1vt8GgA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b=a0e9wlXC; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Delivered-To: sebastian.reichel@collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1724097881; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=mbUnXMxQcnVKk11zc5ntwAcnrBBrfHYc79EHMLCWKn5hDAToFvfc1vAp5I5LFLVjWZs2zmZPiSirc7dLrhBI4q5l3AtUKYh7X+HG6aExvhm7g9A9hvCGVaF7El7Jz3FsX13HGkUqFZtihZdJcmQkOAGMks1+LHxIihLvEp6swpw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1724097881; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=iAA8ouM6M/6kyeb+SrOHPtwZsGUYRPGPpNqj8UiAUpY=; 
-	b=hjLtvJj3FSGEcuvYGirBRak9OxSZhSZlPIHBMWr0SkonXTpJDgubKmg8jrLlvb8JRD8nrfa8DHQJI0Np3p9H7NeF0KEzPhrteVhuBBt08xFIMqqXukhBw91DCXeE0ZPfvIyZO8xMcaAbHjjubPtUCwpCpwNLmUeakzt8B2B1nRc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=detlev.casanova@collabora.com;
-	dmarc=pass header.from=<detlev.casanova@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724097881;
-	s=zohomail; d=collabora.com; i=detlev.casanova@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-	bh=iAA8ouM6M/6kyeb+SrOHPtwZsGUYRPGPpNqj8UiAUpY=;
-	b=a0e9wlXCB7HKm0DAbBwhKl41bOz9h4d/rV3kzgUZKYrlZ8h7gQImGySlTwv571zT
-	8iNGG6SiTKkMvinFqdhrbHNxMVjc8OVup8C2rybL+BooMVy1wPV6zvLLl2H7GIzOoFA
-	oWALsvdVit+8vfOcXWLluYpzi0Pk50AFsez/ojE0=
-Received: by mx.zohomail.com with SMTPS id 1724097879493204.13829241998803;
-	Mon, 19 Aug 2024 13:04:39 -0700 (PDT)
-From: Detlev Casanova <detlev.casanova@collabora.com>
-To: linux-kernel@vger.kernel.org, Johan Jonker <jbx6244@yandex.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>, Chris Morgan <macromorgan@hotmail.com>,
- Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>,
- Muhammed Efe Cetin <efectn@protonmail.com>, Andy Yan <andyshrk@163.com>,
- Jagan Teki <jagan@edgeble.ai>, Dragan Simic <dsimic@manjaro.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Shresth Prasad <shresthprasad7@gmail.com>, Ondrej Jirman <megi@xff.cz>,
- Weizhao Ouyang <weizhao.ouyang@arm.com>, Alexey Charkov <alchark@gmail.com>,
- Jimmy Hon <honyuenkwun@gmail.com>, Finley Xiao <finley.xiao@rock-chips.com>,
- Yifeng Zhao <yifeng.zhao@rock-chips.com>,
- Elaine Zhang <zhangqing@rock-chips.com>, Liang Chen <cl@rock-chips.com>,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-i2c@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-serial@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
-Date: Mon, 19 Aug 2024 16:06:12 -0400
-Message-ID: <1944590.atdPhlSkOF@trenzalore>
-In-Reply-To: <c5014fe3-130b-4ace-a66e-8773a9a4f1dc@yandex.com>
-References:
- <20240802214612.434179-1-detlev.casanova@collabora.com>
- <20240802214612.434179-10-detlev.casanova@collabora.com>
- <c5014fe3-130b-4ace-a66e-8773a9a4f1dc@yandex.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFC2158216
+	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 20:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724099676; cv=none; b=YJss49tPO74WJf+Hpdk52d/6CtzTU/y5PptcPOV4AKtE2GFgzLoh9wDBqtqHDIEpFk2PerrUhnk32gdTQUKeiYhKoVvzm3kGoQlwzVfIrOTtH3/s44lMGAC3GioFktda/MpQWzEcZ0tUlVLxiBkTyoPMgc/KTOymqmU0w6FHqPk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724099676; c=relaxed/simple;
+	bh=T2D4ryfbzroCdtN1FKPCwgBlxjpG/gQQNZG7YCFPZ+Y=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pAQ0UUhHd9eLXc5UAsCtU3OWDTL7zMBpOFxwAVW/Lrz/g4FIDLl3SWvqngzPCCNP2SFbqoThctFzLEj+QmyNF77qVfe7m2UUVB0vV+w4mM5IDO+7HrfTSNUWcO850PR3FjdJE0iRqfym1AZi0tAt0pKrExDuraS4oS6SIkA2hfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kxMmVr25; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3718c176ed7so2156947f8f.2
+        for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 13:34:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724099673; x=1724704473; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=887FbnROGG7RQIs9smA2yHX5eFjVKa9F7m14PXC2zn0=;
+        b=kxMmVr25KaegU/9EmHKvKu70kqjEn6LID68lOwVxnIyF1c2ktZu9Q6R7LqS4gj41gU
+         kBUOF5PuMXhkCDsiq53qBbf9oDQFKgCRAGHXOxgXugWl17C7OZQzrnIc0bCYFM4FOD9l
+         SraPnp9I/+xz9G4t6xgRJgGrnmb7V9c/KlPMQN75aNVMgVGxw5jzpgN0n86en2mVGTJv
+         +fGLRK3iGJW54VA5/7VD/QkhNM1ylmKjmntiWwYnPJhTHOchsiZPEwSpEAjcAbvuhUPq
+         EKjxdMa5Im20KO4FDk6DobTpyqwh8nhNZtTY2akaJFuFpHs/FeWKxT/fXmhnaQdWoC8X
+         yd3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724099673; x=1724704473;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=887FbnROGG7RQIs9smA2yHX5eFjVKa9F7m14PXC2zn0=;
+        b=TuXiiB9BUISJzAfXhfGy3etE/ezzEyaB6tDSvSoTMD0Y1z/pZISQv2S+u3RXSXvyzB
+         jLthRpedMo+bjY1RHiCkMsTfcT44unFJNy0hxsnR3Kvgiwc0GioTrYMuPI5It8BTaGNU
+         siBDuNp69QGWUwj0pm9MRZntqAMUvobz5MeeoYOGu5uDZAnxBySnluZd7DhnN6iH1DPm
+         zn3ky/uyLkgAaxn8Uz7JYzxWiKicIJdDVYRAwwNvziNInC/HiDZtSingnMRPr3/E44uI
+         JdqrH3g88EvYPSYOa2PDBozWuPekj2HOsi1wp7l0I2menrdr0FIf8urfzkr/VGHBQcbh
+         lwQw==
+X-Forwarded-Encrypted: i=1; AJvYcCX/gHxkrlYlJ6pkmy3iNQSuyeDv+oj1gQlG+VgTxGbZE39QMmD8OqjRxbxPg2PXI2vbYlZ+PP2T7cU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8X/8N0Gb2kXqtcWrL9UVSBPpOQU3t0ttsFiWUUi/5B46coqW3
+	IRIcCadJamLcUo9X+sQ0epeV4PPC8FNtYI62PbvlSls2tlPsIVLh
+X-Google-Smtp-Source: AGHT+IGil+5PPs8g3/FbZcA5HaQPSt7Ln5djUWjTvnQx6RLcI6GOoAhrN4abKuc/m0LN5rXwqsLe/w==
+X-Received: by 2002:a05:6000:1b01:b0:371:8f19:bff0 with SMTP id ffacd0b85a97d-3719445235amr6327265f8f.20.1724099672365;
+        Mon, 19 Aug 2024 13:34:32 -0700 (PDT)
+Received: from vamoiridPC ([213.55.246.86])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-371898aabdesm11331284f8f.99.2024.08.19.13.34.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2024 13:34:31 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Mon, 19 Aug 2024 22:34:09 +0200
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	linux-iio@vger.kernel.org
+Subject: Re: [bug report] iio: pressure: bmp280: Add triggered buffer support
+Message-ID: <20240819203409.GA39099@vamoiridPC>
+References: <73d13cc0-afb9-4306-b498-5d821728c3ba@stanley.mountain>
+ <20240817154809.6aa725dd@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240817154809.6aa725dd@jic23-huawei>
 
-Hi Johan,
-
-On Thursday, 15 August 2024 05:30:25 EDT Johan Jonker wrote:
-> Some comments below. Whenever useful.
+On Sat, Aug 17, 2024 at 03:48:09PM +0100, Jonathan Cameron wrote:
+> On Thu, 15 Aug 2024 14:22:12 +0300
+> Dan Carpenter <dan.carpenter@linaro.org> wrote:
 > 
-> On 8/2/24 23:45, Detlev Casanova wrote:
-> > This device tree contains all devices necessary for booting from network
-> > or SD Card.
+> > Hello Vasileios Amoiridis,
 > > 
-> > It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
-> > SDHCI (everything necessary to boot Linux on this system on chip) as
-> > well as Ethernet, I2C, SPI and OTP.
+> > Commit 80cd23f43ddc ("iio: pressure: bmp280: Add triggered buffer
+> > support") from Jun 28, 2024 (linux-next), leads to the following (UNPUBLISHED)
+> > Smatch static checker warning:
 > > 
-> > Also add the necessary DT bindings for the SoC.
+> > 	drivers/iio/pressure/bmp280-core.c:2206 bmp580_trigger_handler()
+> > 	warn: not copying enough bytes for '&data->sensor_data[1]' (4 vs 3 bytes)
 > > 
-> > Signed-off-by: Liang Chen <cl@rock-chips.com>
-> > Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
-> > Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
-> > Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
-> > [rebase, squash and reword commit message]
-> > Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
-> > ---
 > 
-> [..]
+> This is a fun one. 
 > 
-> > diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-> > b/arch/arm64/boot/dts/rockchip/rk3576.dtsi new file mode 100644
-> > index 0000000000000..00c4d2a153ced
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-> [..]
+> The data is little endian whatever happens (that is advertised to userspace
+> which gets to unwind that if it wants to, or just store the data as is),
+> I think the code is functionally correct, but we shouldn't really be using
+> s32 for sensor_data (can't use __le32 either though as it's actually __le24
+> + 1 byte of padding.  As it stands the code splats a s64 over some of the s32
+> entries anyway so there is size confusion going on as well.
 > 
-> For uart0..uart11:
-> > +
-> > +	uart1: serial@27310000 {
-> > +		compatible = "rockchip,rk3576-uart", "snps,dw-apb-
-uart";
-> > +		reg = <0x0 0x27310000 0x0 0x100>;
+> Right option is probably to make it a u8 buffer that is 4 times larger
+> and fix up the code to multiple current index by 4.
+> 
+> That will get away from any pretence that this is a 32 bit cpu endian
+> value.
+> 
+> Vasileios, if you agree with that analysis then please spin a suitable
+> patch.
+> 
+> Jonathan
+> 
+> 
+
+Hi Dan, Jonathan,
+
+The code was not tested on a big-endian machine so I cannot say with huge
+confidence but not only it is shown to userspace as LE, I think I have seen
+similar practices in other drivers as well (maybe these are bugs though...).
+
+I totally understand why we should make it a u8 buf, and I feel it is going
+to be quite trivial as well. I will prepare a patch before the weekend.
+
+Cheers,
+Vasilis
+
+> > drivers/iio/pressure/bmp280-core.c
+> >     2188 static irqreturn_t bmp580_trigger_handler(int irq, void *p)
+> >     2189 {
+> >     2190         struct iio_poll_func *pf = p;
+> >     2191         struct iio_dev *indio_dev = pf->indio_dev;
+> >     2192         struct bmp280_data *data = iio_priv(indio_dev);
+> >     2193         int ret;
+> >     2194 
+> >     2195         guard(mutex)(&data->lock);
+> >     2196 
+> >     2197         /* Burst read data registers */
+> >     2198         ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB,
+> >     2199                                data->buf, BMP280_BURST_READ_BYTES);
+> >     2200         if (ret) {
+> >     2201                 dev_err(data->dev, "failed to burst read sensor data\n");
+> >     2202                 goto out;
+> >     2203         }
+> >     2204 
+> >     2205         /* Temperature calculations */
+> > --> 2206         memcpy(&data->sensor_data[1], &data->buf[0], 3);  
+> >                          ^^^^^^^^^^^^^^^^^^^^                 ^
+> > sensor_data is an s32 type.  We're copying 3 bytes to it.  This can't  be
+> > correct from an endian perspective.
 > > 
-> > +		interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
-> 
-> "interrupts" are sort just like other properties. A mix of sort styles
-> exists, so check all nodes.
-
-Ok, so it should be sorted alphabetically with the following exceptions:
-- 'compatible' and 'reg.*' on top
-- "#.*" at the end, sorted
-- "status" last.
-
-Is that right ?
-
-> > +		clocks = <&cru SCLK_UART1>, <&cru PCLK_UART1>;
-> > +		clock-names = "baudclk", "apb_pclk";
+> >     2207 
+> >     2208         /* Pressure calculations */
+> >     2209         memcpy(&data->sensor_data[0], &data->buf[3], 3);
+> >                         ^^^^^^^^^^^^^^^^^^^^^                 ^
+> > Same
 > > 
-> > +		reg-shift = <2>;
-> > +		reg-io-width = <4>;
-> 
-> Move below "reg".
-> 
-> > +		dmas = <&dmac0 8>, <&dmac0 9>;
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&uart1m0_xfer>;
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	pmu: power-management@27380000 {
-
-[...]
-
-> > +				#address-cells = <1>;
-> > +				#size-cells = <0>;
-> > +				clocks = <&cru ACLK_VOP>,
-> > +					 <&cru HCLK_VOP>,
-> > +					 <&cru HCLK_VOP_ROOT>;
-> > +				pm_qos = <&qos_vop_m0>,
-> > +					 <&qos_vop_m1ro>;
-> > +
-> > +				power-domain@RK3576_PD_USB {
-> 
-> Since when is USB part of VOP?
-> Recheck?
-
-The TRM doesn't tell me anything, but If I don't put it as a child of VOP, it 
-just hangs when the kernel tries to shut it down.
-
-[...]
-
-> > +
-> > +	pinctrl: pinctrl {
-> > +		compatible = "rockchip,rk3576-pinctrl";
-> > +		rockchip,grf = <&ioc_grf>;
-> > +		rockchip,sys-grf = <&sys_grf>;
-> > +		#address-cells = <2>;
-> > +		#size-cells = <2>;
-> > +		ranges;
-> > +
+> >     2210 
+> >     2211         iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
+> >     2212                                            iio_get_time_ns(indio_dev));
+> >     2213 
+> >     2214 out:
+> >     2215         iio_trigger_notify_done(indio_dev->trig);
+> >     2216 
+> >     2217         return IRQ_HANDLED;
+> >     2218 }
 > > 
-> > +		gpio0: gpio@27320000 {
+> > regards,
+> > dan carpenter
+> > 
 > 
-> The use of gpio nodes as subnode of pinctrl is deprecated.
-> 
-> patternProperties:
->   "gpio@[0-9a-f]+$":
->     type: object
-> 
->     $ref: /schemas/gpio/rockchip,gpio-bank.yaml#
->     deprecated: true
-> 
->     unevaluatedProperties: false
-
-I tried putting the gpio nodes out of the pinctrl node, they should work 
-because they already have a gpio-ranges field.
-But unfortunately, that seem to break the pinctrl driver which hangs at some 
-point. Maybe some adaptations are needed to support this, or am I missing 
-something ?
-
-> > +			compatible = "rockchip,gpio-bank";
-> 
-> When in use as separate node the compatible must be SoC related.
-> 
-> Question for the maintainers: Extra entry to rockchip,gpio-bank.yaml ??
-> 
-> > +			reg = <0x0 0x27320000 0x0 0x200>;
-> > +			interrupts = <GIC_SPI 153 
-IRQ_TYPE_LEVEL_HIGH>;
-> > +			clocks = <&cru PCLK_GPIO0>, <&cru 
-DBCLK_GPIO0>;
-> > +
-> > +			gpio-controller;
-> > +			#gpio-cells = <2>;
-> > +			gpio-ranges = <&pinctrl 0 0 32>;
-> > +			interrupt-controller;
-> > +			#interrupt-cells = <2>;
-> > +		};
-> > +
-> > +		gpio1: gpio@2ae10000 {
-> > +
-> > +		gpio2: gpio@2ae20000 {
-> > +
-> > +		gpio3: gpio@2ae30000 {
-> > +
-> > +		gpio4: gpio@2ae40000 {
-> > +	};
-> > +};
-> > +
-> > +#include "rk3576-pinctrl.dtsi"
-
-Regards,
-
-Detlev
-
-
-
 

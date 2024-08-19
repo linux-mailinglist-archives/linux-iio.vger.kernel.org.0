@@ -1,99 +1,132 @@
-Return-Path: <linux-iio+bounces-8580-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8581-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2771955FFD
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 00:35:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C46A9563DC
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 08:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BE371F21FEE
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Aug 2024 22:35:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50B1E1C2137A
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 06:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125D9155A3C;
-	Sun, 18 Aug 2024 22:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8717156C4B;
+	Mon, 19 Aug 2024 06:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xyf+f6CJ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="h1KwfOqn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB869610D;
-	Sun, 18 Aug 2024 22:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1E714AD23
+	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 06:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724020548; cv=none; b=QWe5eDQ32tdlp7roE8p3OSK40YZZRuwK10GrUUFntkjBk0g+q049EXUyrfhW5q2g9x8Fm1RibL5zN2RMFnBe4K7/b3+dFk/oJMchS8WmF44N7/kFwHP28EnYBxUiq+fXAvB+zpvouVvh+AhbXfoKjIUcTp/VKX36DzxLBufGPs8=
+	t=1724050056; cv=none; b=PY77crGMyvuexbaEA/0tpzfcAFWdM9OmK13hu+b0ZnbivBX7AfeKRMzHhSYHXejMqiaoAanAxRQP7uUBnvRRTmcl9OhTPyIkpDxg/ZlCO/ozyvIZZ14bt7GEG/fggo8aV4CWL7hUCTupJRSOqUkbg9KeUyQSzFyGnJ8Vm/TjzH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724020548; c=relaxed/simple;
-	bh=P3zyhjnGHxYGLn6uj4wiSZbI1XcBPqGdvNYCAJ+SEAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gr7e2h4XEevNLNd/IrA/BVik9g/eVm/zAn7+9UWjOcnSXFSXWdEULrrnBZCRCHM0nlj2z8qWv4gj1+zvCFa2dQgGNE3bN5S95BLWQpGd7SYNFovhKz1mDHh6zEwSns2mr3PqyzyMtFWmXC6RhYD4CwOvFMsM73dmgSGowgSy4ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xyf+f6CJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939B7C32786;
-	Sun, 18 Aug 2024 22:35:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724020548;
-	bh=P3zyhjnGHxYGLn6uj4wiSZbI1XcBPqGdvNYCAJ+SEAo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xyf+f6CJrnnv5sz+cDNM71HRtRfZHnFZ5CEMPP5fSV3n30NKcmg70pIIEipUXCKEx
-	 sf9XX18Ectn+VcA/eQeYtmJJorsYblE7o8mn0zNLIw+HdCbg7uv7tLtXXWsdZM008v
-	 BUGfNfJWra1Lrybc6ayJJmqIiSWacVy+n+8JxlvYXXPTiAxvCjetqDp4ui8J7AdsJ6
-	 8ELiSTtbXwG4NP2jnXkaITUvGAehP8Ehw2QzICAjJw028nNUWg20ufvG/GugjMl0d8
-	 Rr4HS/hr73XYEZsA1DLCIZZOd8oUBvOg81PMXad9orQEb+SxACwXJOMmdOqGoYJ3H6
-	 ukVBZkgYpWIjw==
-Date: Sun, 18 Aug 2024 23:35:43 +0100
-From: Conor Dooley <conor@kernel.org>
-To: =?iso-8859-1?B?QmFybmFi4XMgQ3rpbeFu?= <barnabas.czeman@mainlining.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-	Gwendal Grignou <gwendal@chromium.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux@mainlining.org, Danila Tikhonov <danila@jiaxyga.com>
-Subject: Re: [PATCH v4 3/4] dt-bindings: iio: magnetometer: Add ak09118
-Message-ID: <20240818-audience-surviving-1a7af0441aab@spud>
-References: <20240819-ak09918-v4-0-f0734d14cfb9@mainlining.org>
- <20240819-ak09918-v4-3-f0734d14cfb9@mainlining.org>
+	s=arc-20240116; t=1724050056; c=relaxed/simple;
+	bh=FK9C2SwYYoLRyyVgmTGgECPpqGJjqxx6fX72EFVx5Lw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RvQxAesB/aPInl+VnMjT04UbaEOsCLWq9q2D+xOZqvLamg9Ovtmh51gZJGko27hqc46XpCzgmk7vu4q36Xaez4dTLniSmo7XACQlZKS1juN+6CrjwIh5zfMggv1UBuI7L0sEHBbtTJ3D1z2bNspLZ0eXU4qRs+STXLWQ9XpmsEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=h1KwfOqn; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5bec50de782so600162a12.1
+        for <linux-iio@vger.kernel.org>; Sun, 18 Aug 2024 23:47:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724050050; x=1724654850; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c8FmEIsMfqMJUg94aWlpTcn8bhIcC8AFEXu79oL5sBU=;
+        b=h1KwfOqnH0nfboXBifj1vhwEPUFwGYeTr1y+iDsGXeIhnDzLGKk7iXe55CtKyQEpad
+         SIAokwwzH22gxBVxwWk9r9RtA20iIWz0KyfgbyzvFzriI+kv8dsAa8hAzxAa4616V6ck
+         b+E2CcM0cF9OZ+14Gjgtzp4kGIs4GiXJnmelWseo3XmDLc6OsTFn3aeViEs38bd9iCQg
+         NhwsIgtO/coZheLhv3iNgcAIpAjye7gnho9M1lKvZbZepaUd3Z8GvEBrZinnlr+iFMuy
+         b3F5bHZqWX9CqGCqU3VKiqrmyheNlM2IhwKIxebajem6XHUyxmAJgNxmMhkEXjLzJ7z+
+         fb8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724050050; x=1724654850;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c8FmEIsMfqMJUg94aWlpTcn8bhIcC8AFEXu79oL5sBU=;
+        b=Mrj+F8QGp8AAKYqlDSDb7zEyT6VPnljUJtuYsA9aIXRWqWtb501GuDH6KheOcpUHBF
+         EhUDaOKVZZQzJgcFsNJZMLV9vhtOHSoTjvg8QvZ3SgrsQ4KrUkW41yZ4w4pdeAq8+hCF
+         Pe9O6mGET9DHftie+1EEVwVc811BAiUdWaAVpIr4TXX+A6/OIee9Tr9zBRUnPkobDgyp
+         lgs+P7+knDfNZOUUODbQkZvPJEmHFXbgLWajT6F4biECn7nGu+QDUBfsxgAuBpbur+Y0
+         xJrMS6vHLBaBpFk+7AQ7XwJaOZahuw8Bye9pEbNsrUKSESp9w7feozV/UTDMEB/+WuAU
+         Zq+A==
+X-Gm-Message-State: AOJu0YyPHaw9qH21WBx0Jb3gKKbuufEj1ypvswdYy3fnb8Cr4mao72u2
+	dY/dC9JsUpHQyaIFMSAN0hAgRG6TcHZ21doENleOCByalxgmIRoPaJk//LIbLfJcasS87TzEelQ
+	Mgn8=
+X-Google-Smtp-Source: AGHT+IEPDEmnPnJf9kgpqg7qPkqbuRkJKq3KI4BsD74mbjFK/aSmNPDp1I1EZP5QBq0cNUFC0jmwVw==
+X-Received: by 2002:a17:907:3f09:b0:a7a:ab8a:38b with SMTP id a640c23a62f3a-a8392f128d1mr426527266b.7.1724050050036;
+        Sun, 18 Aug 2024 23:47:30 -0700 (PDT)
+Received: from neptune.lan ([188.27.128.229])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83838c6bfcsm599069966b.28.2024.08.18.23.47.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Aug 2024 23:47:29 -0700 (PDT)
+From: Alexandru Ardelean <aardelean@baylibre.com>
+To: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: jic23@kernel.org,
+	krzk+dt@kernel.org,
+	robh@kernel.org,
+	lars@metafoo.de,
+	michael.hennerich@analog.com,
+	gstols@baylibre.com,
+	Alexandru Ardelean <aardelean@baylibre.com>
+Subject: [PATCH 0/7] iio: adc: ad7606: add support for AD7606C-{16,18} parts
+Date: Mon, 19 Aug 2024 09:47:10 +0300
+Message-ID: <20240819064721.91494-1-aardelean@baylibre.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1HdgyuG3gzWeJEz3"
-Content-Disposition: inline
-In-Reply-To: <20240819-ak09918-v4-3-f0734d14cfb9@mainlining.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The AD7606C-16 and AD7606C-18 are pretty similar with the AD7606B.
+The main difference between AD7606C-16 & AD7606C-18 is the precision in
+bits (16 vs 18).
+Because of that, some scales need to be defined for the 18-bit variants, as
+they need to be computed against 2**18 (vs 2**16 for the 16 bit-variants).
+
+Because the AD7606C-16,18 also supports bipolar & differential channels,
+for SW-mode, the default range of 10 V or ±10V should be set at probe.
+On reset, the default range (in the registers) is set to value 0x3 which
+corresponds to '±10 V single-ended range', regardless of bipolar or
+differential configuration.
+
+Aside from the scale/ranges, the AD7606C-16 is similar to the AD7606B.
+
+This changeset, does a bit of rework to the existing ad7606 driver and then
+adds support for the AD7606C-16 & AD7606C-18 parts.
+
+Datasheet links:
+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-16.pdf
+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-18.pdf
 
 
---1HdgyuG3gzWeJEz3
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Alexandru Ardelean (7):
+  iio: adc: ad7606: add 'bits' parameter to channels macros
+  iio: adc: ad7606: move 'val' pointer to ad7606_scan_direct()
+  iio: adc: ad7606: split a 'ad7606_sw_mode_setup()' from probe
+  iio: adc: ad7606: wrap channel ranges & scales into struct
+  iio: adc: ad7606: rework available attributes for SW channels
+  dt-bindings: iio: adc: add adi,ad7606c-{16,18} compatible strings
+  iio: adc: ad7606: add support for AD7606C-{16,18} parts
 
-On Mon, Aug 19, 2024 at 12:29:41AM +0200, Barnab=E1s Cz=E9m=E1n wrote:
-> From: Danila Tikhonov <danila@jiaxyga.com>
->=20
-> Document asahi-kasei,ak09918 compatible as a fallback compatible,
-> ak09918 is register compatible with ak09912.
->=20
-> Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
-> Signed-off-by: Barnab=E1s Cz=E9m=E1n <barnabas.czeman@mainlining.org>
+ .../bindings/iio/adc/adi,ad7606.yaml          |  83 ++++
+ drivers/iio/adc/ad7606.c                      | 445 +++++++++++++++---
+ drivers/iio/adc/ad7606.h                      |  77 ++-
+ drivers/iio/adc/ad7606_spi.c                  | 110 ++++-
+ 4 files changed, 624 insertions(+), 91 deletions(-)
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+-- 
+2.46.0
 
---1HdgyuG3gzWeJEz3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZsJ3PwAKCRB4tDGHoIJi
-0lHlAQDE9dsASR3TqPScIngmx4qCcOJFTEXU8uQ4nOIxIwna3AD/WxXsIPFD8DVP
-ls9dgc2TDq2c+k95OfxktpOmrHzDlg0=
-=bNkD
------END PGP SIGNATURE-----
-
---1HdgyuG3gzWeJEz3--
 

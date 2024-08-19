@@ -1,193 +1,136 @@
-Return-Path: <linux-iio+bounces-8592-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8593-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D871956B87
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 15:09:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DE5956C5B
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 15:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A7EDB22581
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 13:09:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1317F1F22407
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 13:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2EA16C438;
-	Mon, 19 Aug 2024 13:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38D716C6A9;
+	Mon, 19 Aug 2024 13:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="2LEim/Y0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A94166F39;
-	Mon, 19 Aug 2024 13:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09CF16C438;
+	Mon, 19 Aug 2024 13:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724072989; cv=none; b=VN2pkGlH13EJnA9O7lbSt64wslk3q9kji8Kw5CRbQ7gx5WfcIlae5XhJgh2a3oE8ezCmZcTIg4+Wp5XMJYPGiqp659PBkiXjPuVsC2CbNeT7qdt4jmq6MAiqCPOch7Fos1st13wSMylSf0YSZ9i+c7S0baa+xWJEnZ1fw5A0kwg=
+	t=1724074950; cv=none; b=PxkMeM1KuILHSJ+k1QBv5DMhJF/RXXgXMIOFHYHMd60qjMAnH7ligbcXrrjsHRgmvqL7V3sExPFqKIVSoY1YB/IOZuReXnaHNaeg4nIEYQFxy0Bai4QzBneg+YCJcn6HTme8SHMtu+FzeOlfTVlzSiQXQthYytx2x+QHu/1AiJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724072989; c=relaxed/simple;
-	bh=DOC54jYGZaWsMtc7059yc1yPA6AXPM92NKoC5lpbKNU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RMN6pfCv+0VNU/pydgg0ZTkp8xC5D/3kuvNxeC8BNTf4dGR71xY2Kc6EiaBR449Xppg6A34jb4xLLnhRvUEE+VXrBrL01G1Ip6USKXrNMAObtu+xvDO/BBt7uKSVu6gq4dFAHFzNy+xr7jwI3ogIZ0NSSmwmIWNHSBUfYe/iyhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-429e29933aaso32496075e9.0;
-        Mon, 19 Aug 2024 06:09:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724072986; x=1724677786;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jB1MOx97YsHG48VJD/TdRi6Ad7SdIJCFhXTwmxEvExQ=;
-        b=ZE3I6bEVLTPrf/1lqsXIlQR/uE2ycm74FN3ckuOJWCmHA57pxptzHVZ1oonueSgfq4
-         Rqt95u+ZNwOoGtSj92RwxGWT0P0q3ExC23JIXATc8tOWpdJtIzqCQhvbLVVPPXe+U5uw
-         SdXyTGbE6ju/dYISOsO4UKu9s2MvQprXnxDRzbnFQHlLKlutdSh02mjcu1rIOt1J5uVo
-         tjBlKa+4JKmfy18RqRZzhKyfOEnNL7BeLZG+f7U7AKIxSNzw4DQ/Z7AfVGHK09OJYQ2t
-         LKxMJL0yxvxMvN94xr8snjrIF5fgFPeihUfNB4jTWOhD3xnWIBjPeTBApdl1xmH7c990
-         IXLw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8qpdi3V4Mok0YZ9lP4yHhCYSpfEYUyXbKSX7O7K1W3NQa5jYhxwSTbPzP3Z6Ho7LXgVDQlpoproYSjSRn6txPAjbzgE5eicyumwY5E06kjuOG3nF7fZWxijDoFa/VH+u5UHUZGGPI6A==
-X-Gm-Message-State: AOJu0YxynpSMh2BAmgrPfwOLxZ9S3SlTXCN4O1wqMwhR1Bic+ZOqqth4
-	wrYIbhSm170VwbmFWiFEEfnhUY0GFNQ+0odY/pE0pbclu2Q/MvciC5YJxA==
-X-Google-Smtp-Source: AGHT+IGCwFU1j+9a/YAjtVzVdQG8YtaPaT8qwMXTkcwI9NZ08PPlpySeqHwUvujcyRLUEjAp0hyJlQ==
-X-Received: by 2002:adf:e255:0:b0:371:9395:9c2d with SMTP id ffacd0b85a97d-371946a5ac4mr7472423f8f.55.1724072985949;
-        Mon, 19 Aug 2024 06:09:45 -0700 (PDT)
-Received: from krzk-bin ([178.197.215.209])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3718983a974sm10559731f8f.13.2024.08.19.06.09.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 06:09:45 -0700 (PDT)
-Date: Mon, 19 Aug 2024 15:09:42 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org, robh@kernel.org, 
-	lars@metafoo.de, michael.hennerich@analog.com, gstols@baylibre.com
-Subject: Re: [PATCH 6/7] dt-bindings: iio: adc: add adi,ad7606c-{16,18}
- compatible strings
-Message-ID: <zuvwoy5wtdel7qgkz6wa6valwjwajpwoqnizyoooiawghrxvc3@cuoswu32h4fl>
-References: <20240819064721.91494-1-aardelean@baylibre.com>
- <20240819064721.91494-7-aardelean@baylibre.com>
+	s=arc-20240116; t=1724074950; c=relaxed/simple;
+	bh=xdq0mAE8Ba0fmk6rNvkOjgWo+w0dnu+VNJwVS6SS2l8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=LiXwHx1UUoe1C2ehh+hhK/YnKqiZK114YyiaAL4Co/WIaVy+9gMFfNPNaKob3Jy1IRezGOUNzwd4vO14kSohOoFmVjzELJxq7rnG4EMG04sZqEoQwsiEaiQq4SuHZiWTcUyF7QweceVs+fj7Hvh64aUX5KYQJERDvI4FO5Azcmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=2LEim/Y0; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47J8N2dQ014235;
+	Mon, 19 Aug 2024 15:41:45 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	bQulpxG1VnLqgrCD3WCcMJwDbL8UJbzPwnhyTZrwwt8=; b=2LEim/Y0kyl6Pi9c
+	IqYr2SLsPKLLWnPxWH6m6RvE+DrYzvl+EjT3Pnlwg8/3zpMmSb0k3lmAKyHx49N2
+	KlWr3TofL5NDt+lm1d72dyIgoh1DGpPcltVRFstrPmX/hCDsh9eXTQhH8pyzLa2Q
+	qePnzdn74bWMpB1aUZpPRkP8DY88ExqINm+rXJYDitlto03z/fIojx/mydKysonQ
+	Ug37CYDrDYALBP4gvRch4PCI97Q8Izd0cRx15XPKFxN9a1lsCV6lB/hNUY+b1tJ2
+	ix2nWTTLCGgeyLpybXwrojMhV8J1fL65DlYQ7qT9tLyIryw5TPG1Een9ll6539WH
+	JXtf5w==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 412h9fppv2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Aug 2024 15:41:45 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 3C9D94002D;
+	Mon, 19 Aug 2024 15:41:40 +0200 (CEST)
+Received: from Webmail-eu.st.com (eqndag1node5.st.com [10.75.129.134])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6B1ED26FD11;
+	Mon, 19 Aug 2024 15:40:50 +0200 (CEST)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE5.st.com
+ (10.75.129.134) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Mon, 19 Aug
+ 2024 15:40:50 +0200
+Received: from [10.48.86.222] (10.48.86.222) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Mon, 19 Aug
+ 2024 15:40:49 +0200
+Message-ID: <9dc935e0-a980-41a0-b4bb-ae54453bd3a3@foss.st.com>
+Date: Mon, 19 Aug 2024 15:40:08 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240819064721.91494-7-aardelean@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: iio: st,stm32-adc: add top-level constraints
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Jonathan Cameron
+	<jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20240818172951.121983-1-krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20240818172951.121983-1-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-19_12,2024-08-19_01,2024-05-17_01
 
-On Mon, Aug 19, 2024 at 09:47:16AM +0300, Alexandru Ardelean wrote:
-> The driver will support the AD7606C-16 and AD7606C-18.
-> This change adds the compatible strings for these devices.
+
+On 8/18/24 19:29, Krzysztof Kozlowski wrote:
+> Properties with variable number of items per each device are expected to
+> have widest constraints in top-level "properties:" block and further
+> customized (narrowed) in "if:then:".  Add missing top-level constraints
+> for clock-names.
 > 
-> The AD7606C-16,18 channels also support these (individually configurable)
-> types of channels:
->  - bipolar single-ended
->  - unipolar single-ended
->  - bipolar differential
-> 
-> This DT adds support for 'channel@X' nodes'
-
-I don't understand this sentence, suggest to drop it.
-
-
-> 
-> Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > ---
->  .../bindings/iio/adc/adi,ad7606.yaml          | 83 +++++++++++++++++++
->  1 file changed, 83 insertions(+)
+>  Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> index 69408cae3db9..f9e177de3f8c 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> @@ -14,6 +14,8 @@ description: |
->    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7605-4.pdf
->    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606_7606-6_7606-4.pdf
->    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7606B.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-16.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-18.pdf
->    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7616.pdf
+> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+> index ec34c48d4878..ef9dcc365eab 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+> @@ -54,7 +54,9 @@ properties:
+>            It's not present on stm32f4.
+>            It's required on stm32h7 and stm32mp1.
 >  
->  properties:
-> @@ -24,6 +26,8 @@ properties:
->        - adi,ad7606-6
->        - adi,ad7606-8  # Referred to as AD7606 (without -8) in the datasheet
->        - adi,ad7606b
-> +      - adi,ad7606c-16
-> +      - adi,ad7606c-18
->        - adi,ad7616
+> -  clock-names: true
+> +  clock-names:
+> +    minItems: 1
+> +    maxItems: 2
 >  
->    reg:
-> @@ -114,6 +118,30 @@ properties:
->        assumed that the pins are hardwired to VDD.
->      type: boolean
->  
-> +patternProperties:
-> +  "^channel@([0-9a-f])$":
+>    st,max-clk-rate-hz:
+>      description:
 
-[0-7]
+Hi Krzysztof,
 
-> +    type: object
-> +    $ref: adc.yaml
-> +    unevaluatedProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        description: The channel number.
-> +        minimum: 0
-> +        maximum: 7
-> +
-> +      diff-channel:
-> +        description: Channel is bipolar differential.
+You can add my:
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-There is diff-channels property, why do we need one more?
-
-> +        type: boolean
-> +
-> +      bipolar:
-> +        description: |
-> +          Channel is bipolar single-ended. If 'diff-channel' is set, then
-> +          the value of this property will be ignored.
-
-Then provide here allOf:if:then which makes it false if diff-channel(s)
-is present. And then drop entire property, because you duplicate what's
-in adc.yaml.
-
-
-> +        type: boolean
-
-Blank line.
-
-> +    required:
-> +      - reg
-> +
->  required:
->    - compatible
->    - reg
-> @@ -170,6 +198,21 @@ allOf:
->          adi,conversion-start-gpios:
->            maxItems: 1
->  
-> +  - if:
-> +      not:
-> +        properties:
-> +          compatible:
-> +            contains:
-> +              enum:
-> +                - adi,ad7606c-16
-> +                - adi,ad7606c-18
-> +    then:
-> +      patternProperties:
-> +        "^channel@([0-9a-f])$":
-> +          properties:
-> +            diff-channels: false
-> +            bipolar: true
-
-? Drop, no clue what you want to say here. But more important, you are
-now adding channels to other variants. Split your commit between new
-device and new properties for existing devices.
-
-
-Best regards,
-Krzysztof
-
+Best Regards,
+Thanks,
+Fabrice
 

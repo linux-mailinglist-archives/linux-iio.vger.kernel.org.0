@@ -1,182 +1,131 @@
-Return-Path: <linux-iio+bounces-8623-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8624-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C689575BC
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 22:34:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DF8957691
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 23:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8ED3B2145C
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 20:34:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CD581C23088
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 21:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5A315921D;
-	Mon, 19 Aug 2024 20:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6B2175D46;
+	Mon, 19 Aug 2024 21:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kxMmVr25"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="wNRJuV+u"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFC2158216
-	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 20:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB8B1598F4;
+	Mon, 19 Aug 2024 21:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724099676; cv=none; b=YJss49tPO74WJf+Hpdk52d/6CtzTU/y5PptcPOV4AKtE2GFgzLoh9wDBqtqHDIEpFk2PerrUhnk32gdTQUKeiYhKoVvzm3kGoQlwzVfIrOTtH3/s44lMGAC3GioFktda/MpQWzEcZ0tUlVLxiBkTyoPMgc/KTOymqmU0w6FHqPk=
+	t=1724102833; cv=none; b=a66+hRrSMYzGto8IGj/YxVJ98B16mRr8RHiSYR/pFQIxLp9MnRSKpU4KgrPu3zYBUVahcabH0mb8X6emDOEBmfmkoOGcxOxNYoJEbFUmUM7LDPaBbuGffcZsnscp6E4FfpG87JlPaeJ+BrMATreJi9EeGLWQFnIebXej6Kp7hJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724099676; c=relaxed/simple;
-	bh=T2D4ryfbzroCdtN1FKPCwgBlxjpG/gQQNZG7YCFPZ+Y=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pAQ0UUhHd9eLXc5UAsCtU3OWDTL7zMBpOFxwAVW/Lrz/g4FIDLl3SWvqngzPCCNP2SFbqoThctFzLEj+QmyNF77qVfe7m2UUVB0vV+w4mM5IDO+7HrfTSNUWcO850PR3FjdJE0iRqfym1AZi0tAt0pKrExDuraS4oS6SIkA2hfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kxMmVr25; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3718c176ed7so2156947f8f.2
-        for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 13:34:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724099673; x=1724704473; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=887FbnROGG7RQIs9smA2yHX5eFjVKa9F7m14PXC2zn0=;
-        b=kxMmVr25KaegU/9EmHKvKu70kqjEn6LID68lOwVxnIyF1c2ktZu9Q6R7LqS4gj41gU
-         kBUOF5PuMXhkCDsiq53qBbf9oDQFKgCRAGHXOxgXugWl17C7OZQzrnIc0bCYFM4FOD9l
-         SraPnp9I/+xz9G4t6xgRJgGrnmb7V9c/KlPMQN75aNVMgVGxw5jzpgN0n86en2mVGTJv
-         +fGLRK3iGJW54VA5/7VD/QkhNM1ylmKjmntiWwYnPJhTHOchsiZPEwSpEAjcAbvuhUPq
-         EKjxdMa5Im20KO4FDk6DobTpyqwh8nhNZtTY2akaJFuFpHs/FeWKxT/fXmhnaQdWoC8X
-         yd3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724099673; x=1724704473;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=887FbnROGG7RQIs9smA2yHX5eFjVKa9F7m14PXC2zn0=;
-        b=TuXiiB9BUISJzAfXhfGy3etE/ezzEyaB6tDSvSoTMD0Y1z/pZISQv2S+u3RXSXvyzB
-         jLthRpedMo+bjY1RHiCkMsTfcT44unFJNy0hxsnR3Kvgiwc0GioTrYMuPI5It8BTaGNU
-         siBDuNp69QGWUwj0pm9MRZntqAMUvobz5MeeoYOGu5uDZAnxBySnluZd7DhnN6iH1DPm
-         zn3ky/uyLkgAaxn8Uz7JYzxWiKicIJdDVYRAwwNvziNInC/HiDZtSingnMRPr3/E44uI
-         JdqrH3g88EvYPSYOa2PDBozWuPekj2HOsi1wp7l0I2menrdr0FIf8urfzkr/VGHBQcbh
-         lwQw==
-X-Forwarded-Encrypted: i=1; AJvYcCX/gHxkrlYlJ6pkmy3iNQSuyeDv+oj1gQlG+VgTxGbZE39QMmD8OqjRxbxPg2PXI2vbYlZ+PP2T7cU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8X/8N0Gb2kXqtcWrL9UVSBPpOQU3t0ttsFiWUUi/5B46coqW3
-	IRIcCadJamLcUo9X+sQ0epeV4PPC8FNtYI62PbvlSls2tlPsIVLh
-X-Google-Smtp-Source: AGHT+IGil+5PPs8g3/FbZcA5HaQPSt7Ln5djUWjTvnQx6RLcI6GOoAhrN4abKuc/m0LN5rXwqsLe/w==
-X-Received: by 2002:a05:6000:1b01:b0:371:8f19:bff0 with SMTP id ffacd0b85a97d-3719445235amr6327265f8f.20.1724099672365;
-        Mon, 19 Aug 2024 13:34:32 -0700 (PDT)
-Received: from vamoiridPC ([213.55.246.86])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-371898aabdesm11331284f8f.99.2024.08.19.13.34.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 13:34:31 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Mon, 19 Aug 2024 22:34:09 +0200
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	linux-iio@vger.kernel.org
-Subject: Re: [bug report] iio: pressure: bmp280: Add triggered buffer support
-Message-ID: <20240819203409.GA39099@vamoiridPC>
-References: <73d13cc0-afb9-4306-b498-5d821728c3ba@stanley.mountain>
- <20240817154809.6aa725dd@jic23-huawei>
+	s=arc-20240116; t=1724102833; c=relaxed/simple;
+	bh=+sOmpMxl05XLDPuo4r7/zihYOtpqvtWf8lxC2z/W41A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I4/kFIYAn/QcoQdIk7PFH8ev4YFjCQsM19CZlHQbvaxSXxCJJI6DoYL024LzyU4g/A72dLgbY7GZ60JmNhHywrW8RWA+oFggpRk7CCP8IKkj9UNuHeyOPs2ryEHRfY8hGH6TY1zI2+0+4gGFm3KolKCb16qnby5fBhPIbO+QfGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=wNRJuV+u; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kT7Kuxp6fbaULbA/LwhMmUWF1CJosjyeQGtqZ9CJp+0=; b=wNRJuV+uiReaCGv60DiKRMQhAm
+	eOMs1pRGa6EHvcjoApT6Mt5LM3b5GpPAKD1+j2Tktv+nGAFu2xbK8PDX9tn25zqFUuGjAMinpkdcZ
+	CJ7+c3rDsJQPC8ZMbyvyVtnQlX7NzhAiLWUHdx1PlvLugrngoXqLffbvyJvrO5IEBY863rGZ30Uvz
+	ArvLeDZnfGgT8JEyzDAE77cHFtE+YnHPG7LtEbxE5OUcyeQl5cGttOfYdRMKOQUAUB1R7pQImU0NT
+	A1V3ZHPCQILEOpmUYokl/tQVOF2JmWyZe3ID0d8PRRxULB7x7tFRETjiKYukjEnC9kC1wfvW2EYOL
+	K37fH8RA==;
+Received: from i53875a9f.versanet.de ([83.135.90.159] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1sg9tR-0003Xv-3A; Mon, 19 Aug 2024 23:26:25 +0200
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: linux-kernel@vger.kernel.org,
+ Detlev Casanova <detlev.casanova@collabora.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Lee Jones <lee@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Chris Morgan <macromorgan@hotmail.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>,
+ Muhammed Efe Cetin <efectn@protonmail.com>, Andy Yan <andyshrk@163.com>,
+ Jagan Teki <jagan@edgeble.ai>, Dragan Simic <dsimic@manjaro.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Shresth Prasad <shresthprasad7@gmail.com>, Ondrej Jirman <megi@xff.cz>,
+ Weizhao Ouyang <weizhao.ouyang@arm.com>, Alexey Charkov <alchark@gmail.com>,
+ Jimmy Hon <honyuenkwun@gmail.com>, Finley Xiao <finley.xiao@rock-chips.com>,
+ Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+ Elaine Zhang <zhangqing@rock-chips.com>, Liang Chen <cl@rock-chips.com>,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-i2c@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-serial@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
+Date: Mon, 19 Aug 2024 23:26:44 +0200
+Message-ID: <2553026.Sgy9Pd6rRy@diego>
+In-Reply-To: <23696360.6Emhk5qWAg@trenzalore>
+References:
+ <20240802214612.434179-1-detlev.casanova@collabora.com>
+ <21547916.mFnZMskM5D@diego> <23696360.6Emhk5qWAg@trenzalore>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240817154809.6aa725dd@jic23-huawei>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-On Sat, Aug 17, 2024 at 03:48:09PM +0100, Jonathan Cameron wrote:
-> On Thu, 15 Aug 2024 14:22:12 +0300
-> Dan Carpenter <dan.carpenter@linaro.org> wrote:
-> 
-> > Hello Vasileios Amoiridis,
-> > 
-> > Commit 80cd23f43ddc ("iio: pressure: bmp280: Add triggered buffer
-> > support") from Jun 28, 2024 (linux-next), leads to the following (UNPUBLISHED)
-> > Smatch static checker warning:
-> > 
-> > 	drivers/iio/pressure/bmp280-core.c:2206 bmp580_trigger_handler()
-> > 	warn: not copying enough bytes for '&data->sensor_data[1]' (4 vs 3 bytes)
-> > 
-> 
-> This is a fun one. 
-> 
-> The data is little endian whatever happens (that is advertised to userspace
-> which gets to unwind that if it wants to, or just store the data as is),
-> I think the code is functionally correct, but we shouldn't really be using
-> s32 for sensor_data (can't use __le32 either though as it's actually __le24
-> + 1 byte of padding.  As it stands the code splats a s64 over some of the s32
-> entries anyway so there is size confusion going on as well.
-> 
-> Right option is probably to make it a u8 buffer that is 4 times larger
-> and fix up the code to multiple current index by 4.
-> 
-> That will get away from any pretence that this is a 32 bit cpu endian
-> value.
-> 
-> Vasileios, if you agree with that analysis then please spin a suitable
-> patch.
-> 
-> Jonathan
-> 
-> 
+Am Montag, 19. August 2024, 19:59:45 CEST schrieb Detlev Casanova:
+> On Wednesday, 14 August 2024 11:31:04 EDT Heiko St=FCbner wrote:
+> > Hi Detlev,
+> >=20
+> > Am Freitag, 2. August 2024, 23:45:36 CEST schrieb Detlev Casanova:
+> > > This device tree contains all devices necessary for booting from netw=
+ork
+> > > or SD Card.
+> > >=20
+> > > It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
+> > > SDHCI (everything necessary to boot Linux on this system on chip) as
+> > > well as Ethernet, I2C, SPI and OTP.
+> > >=20
+> > > Also add the necessary DT bindings for the SoC.
+> > >=20
+> > > Signed-off-by: Liang Chen <cl@rock-chips.com>
+> > > Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
+> > > Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+> > > Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+> > > [rebase, squash and reword commit message]
+> > > Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+> >=20
+> > looks like (since 2019) there is a strong suggestion for having a soc n=
+ode.
+> >=20
+> > See Krzysztof's mail in
+> >   =20
+> > https://lore.kernel.org/all/6320e4f3-e737-4787-8a72-7bd314ba883c@kernel=
+=2Eorg
+> > / that references
+> >     Documentation/devicetree/bindings/writing-bindings.rst [0]
+> >=20
+> > So I guess we should probably follow that - at least for new socs for n=
+ow.
+>=20
+> That make sense, but what is exactly covered by MMIO devices ? everything=
+=20
+> except cpus, firmware, psci and timer ?
 
-Hi Dan, Jonathan,
+if your node has a foo@mmio-address naming then it goes in there I guess
 
-The code was not tested on a big-endian machine so I cannot say with huge
-confidence but not only it is shown to userspace as LE, I think I have seen
-similar practices in other drivers as well (maybe these are bugs though...).
 
-I totally understand why we should make it a u8 buf, and I feel it is going
-to be quite trivial as well. I will prepare a patch before the weekend.
-
-Cheers,
-Vasilis
-
-> > drivers/iio/pressure/bmp280-core.c
-> >     2188 static irqreturn_t bmp580_trigger_handler(int irq, void *p)
-> >     2189 {
-> >     2190         struct iio_poll_func *pf = p;
-> >     2191         struct iio_dev *indio_dev = pf->indio_dev;
-> >     2192         struct bmp280_data *data = iio_priv(indio_dev);
-> >     2193         int ret;
-> >     2194 
-> >     2195         guard(mutex)(&data->lock);
-> >     2196 
-> >     2197         /* Burst read data registers */
-> >     2198         ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB,
-> >     2199                                data->buf, BMP280_BURST_READ_BYTES);
-> >     2200         if (ret) {
-> >     2201                 dev_err(data->dev, "failed to burst read sensor data\n");
-> >     2202                 goto out;
-> >     2203         }
-> >     2204 
-> >     2205         /* Temperature calculations */
-> > --> 2206         memcpy(&data->sensor_data[1], &data->buf[0], 3);  
-> >                          ^^^^^^^^^^^^^^^^^^^^                 ^
-> > sensor_data is an s32 type.  We're copying 3 bytes to it.  This can't  be
-> > correct from an endian perspective.
-> > 
-> >     2207 
-> >     2208         /* Pressure calculations */
-> >     2209         memcpy(&data->sensor_data[0], &data->buf[3], 3);
-> >                         ^^^^^^^^^^^^^^^^^^^^^                 ^
-> > Same
-> > 
-> >     2210 
-> >     2211         iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
-> >     2212                                            iio_get_time_ns(indio_dev));
-> >     2213 
-> >     2214 out:
-> >     2215         iio_trigger_notify_done(indio_dev->trig);
-> >     2216 
-> >     2217         return IRQ_HANDLED;
-> >     2218 }
-> > 
-> > regards,
-> > dan carpenter
-> > 
-> 
 

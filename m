@@ -1,126 +1,193 @@
-Return-Path: <linux-iio+bounces-8591-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8592-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156F0956AFF
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 14:38:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D871956B87
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 15:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A7D1C21400
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 12:38:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A7EDB22581
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 13:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C45316B74B;
-	Mon, 19 Aug 2024 12:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ppwKtcjJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2EA16C438;
+	Mon, 19 Aug 2024 13:09:49 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992BA16B397
-	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 12:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A94166F39;
+	Mon, 19 Aug 2024 13:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724071127; cv=none; b=KVCyM8eSyuQrLxb8ZpgJwP7CF5XY/hxNZ60GeUkK6wxb3vPhwaDEVuPATS9kV3YJmNYTnRa1bpwnCKX3lGeW+8WIlI5YUBqtQT/08fNRBhTctVlQRRSYaPWLaglokGvaBARHogPxEUyHHPf6UcYxfggts0PYwXcgrKMfHd3Yqag=
+	t=1724072989; cv=none; b=VN2pkGlH13EJnA9O7lbSt64wslk3q9kji8Kw5CRbQ7gx5WfcIlae5XhJgh2a3oE8ezCmZcTIg4+Wp5XMJYPGiqp659PBkiXjPuVsC2CbNeT7qdt4jmq6MAiqCPOch7Fos1st13wSMylSf0YSZ9i+c7S0baa+xWJEnZ1fw5A0kwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724071127; c=relaxed/simple;
-	bh=vMn7bOnvoOHNpw5Huz8R9HFC86Zb4QOtPXMeOq4M2EY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lql3OsaALxHmcXSy+fE5Ljx41f5KJVtMNCLgW0pT4V1I3t0hKet6hcf6uzJnsgW8amCIJdCXgzNvBQqrKqTlFLGWObLm5UzizqvK5t+T9saQME5CNNpzU1bSRzgbKkJsa0S3duqEG6f5Ar8jFRhfFswuDLZMep32nHwFUzHMvXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ppwKtcjJ; arc=none smtp.client-ip=209.85.217.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-492a76c0cfbso1291319137.0
-        for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 05:38:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724071122; x=1724675922; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vMn7bOnvoOHNpw5Huz8R9HFC86Zb4QOtPXMeOq4M2EY=;
-        b=ppwKtcjJH/4b9ZzHJQQ8DesbDC/BIx+NcvdaJ2UW42msbvvvRQWotmAz+bZER45EZC
-         yV3oMQkOa4lMPQxcUJn0GQZfTzQJ4ie/1ffxwDxM8VRAmi2gylNz9OjnXmfhuYnRG7iQ
-         Q68eL4rFbP8t1BKOz8DvZgoSOTp8lbwn6dc4z0JC3vMglXpW710mdxjXOnqnHcYyic3I
-         ExB1Q/UvlT58rcvuxF0SylCke4lOuOEw0jRcIngMQat2eeVB+RKxsoRVyQWIYLC8k7a5
-         lsqu1i90rP0bG4W90MzcJGmyOiK5+kZP9AKglKNzBi//GE6nKanN6GpV+SRvD0pQHvlf
-         jjRg==
+	s=arc-20240116; t=1724072989; c=relaxed/simple;
+	bh=DOC54jYGZaWsMtc7059yc1yPA6AXPM92NKoC5lpbKNU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RMN6pfCv+0VNU/pydgg0ZTkp8xC5D/3kuvNxeC8BNTf4dGR71xY2Kc6EiaBR449Xppg6A34jb4xLLnhRvUEE+VXrBrL01G1Ip6USKXrNMAObtu+xvDO/BBt7uKSVu6gq4dFAHFzNy+xr7jwI3ogIZ0NSSmwmIWNHSBUfYe/iyhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-429e29933aaso32496075e9.0;
+        Mon, 19 Aug 2024 06:09:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724071122; x=1724675922;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vMn7bOnvoOHNpw5Huz8R9HFC86Zb4QOtPXMeOq4M2EY=;
-        b=YuMpSrWEUhwORdDmGRA27gqOmD32D5IiudalLja9FQyXh2PQasCBNiSWNCbXTEgkCf
-         4f7p9L6ZgoWPq73YUUE05SnVLTvhd3uQXwxEKbVzGkXIbeK+B2KyAYb0dLWjQdpYlnYd
-         +S7x6/kkxMzvwSPT2o3JfYI5BfR3mVLa9/4sYfp3a1VmHYB40wmUIgEzKTTdv5M2iO+3
-         4Dw2aLIp5PnsU7EMy3LttoX65S4oR/SBaj5FvXo4WKbA8JTyaak2AtHtFBfyZikYQf/B
-         GsIYSh6CoEMlHWrguO1h1jerWYFCViRMg8baC6ksu+1dmZZFqNJ+ZciqFt5esTcV9H7S
-         0efA==
-X-Forwarded-Encrypted: i=1; AJvYcCVuymvYjtLqP0aE4kmzfZAz4gGg87dS4Zv4V0I92nnexucbpiadOMfzoAe5vRf5lbS6VFVlbeYWF2SAjcOWGPnnGAG5Xl/uzTKP
-X-Gm-Message-State: AOJu0Yz5fEMQWYOcDgQeC3WOuM5ht12Cdw/Au0nqAc5EyiSRkuvRHeqZ
-	mRG1sPQxSnpxi8e3+udO25DW1iRnvBKm4HAXlCA32cqLQaK8KcirTHdZuGbbV7U=
-X-Google-Smtp-Source: AGHT+IGp6MdnP3Khhov+7iI5h+lG3ocEnkCPS56pNZDl3tn3+e/uJwlfHRCj4p5R/7sR0EnP+2ZLwA==
-X-Received: by 2002:a05:6102:94c:b0:493:effa:e721 with SMTP id ada2fe7eead31-49779a0778dmr13557400137.27.1724071122291;
-        Mon, 19 Aug 2024 05:38:42 -0700 (PDT)
-Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4ff02f7a2sm427301885a.14.2024.08.19.05.38.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Aug 2024 05:38:41 -0700 (PDT)
-Message-ID: <2fcae752-39ac-4332-9365-f25599a991b1@baylibre.com>
-Date: Mon, 19 Aug 2024 08:38:40 -0400
+        d=1e100.net; s=20230601; t=1724072986; x=1724677786;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jB1MOx97YsHG48VJD/TdRi6Ad7SdIJCFhXTwmxEvExQ=;
+        b=ZE3I6bEVLTPrf/1lqsXIlQR/uE2ycm74FN3ckuOJWCmHA57pxptzHVZ1oonueSgfq4
+         Rqt95u+ZNwOoGtSj92RwxGWT0P0q3ExC23JIXATc8tOWpdJtIzqCQhvbLVVPPXe+U5uw
+         SdXyTGbE6ju/dYISOsO4UKu9s2MvQprXnxDRzbnFQHlLKlutdSh02mjcu1rIOt1J5uVo
+         tjBlKa+4JKmfy18RqRZzhKyfOEnNL7BeLZG+f7U7AKIxSNzw4DQ/Z7AfVGHK09OJYQ2t
+         LKxMJL0yxvxMvN94xr8snjrIF5fgFPeihUfNB4jTWOhD3xnWIBjPeTBApdl1xmH7c990
+         IXLw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8qpdi3V4Mok0YZ9lP4yHhCYSpfEYUyXbKSX7O7K1W3NQa5jYhxwSTbPzP3Z6Ho7LXgVDQlpoproYSjSRn6txPAjbzgE5eicyumwY5E06kjuOG3nF7fZWxijDoFa/VH+u5UHUZGGPI6A==
+X-Gm-Message-State: AOJu0YxynpSMh2BAmgrPfwOLxZ9S3SlTXCN4O1wqMwhR1Bic+ZOqqth4
+	wrYIbhSm170VwbmFWiFEEfnhUY0GFNQ+0odY/pE0pbclu2Q/MvciC5YJxA==
+X-Google-Smtp-Source: AGHT+IGCwFU1j+9a/YAjtVzVdQG8YtaPaT8qwMXTkcwI9NZ08PPlpySeqHwUvujcyRLUEjAp0hyJlQ==
+X-Received: by 2002:adf:e255:0:b0:371:9395:9c2d with SMTP id ffacd0b85a97d-371946a5ac4mr7472423f8f.55.1724072985949;
+        Mon, 19 Aug 2024 06:09:45 -0700 (PDT)
+Received: from krzk-bin ([178.197.215.209])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3718983a974sm10559731f8f.13.2024.08.19.06.09.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2024 06:09:45 -0700 (PDT)
+Date: Mon, 19 Aug 2024 15:09:42 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Alexandru Ardelean <aardelean@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org, robh@kernel.org, 
+	lars@metafoo.de, michael.hennerich@analog.com, gstols@baylibre.com
+Subject: Re: [PATCH 6/7] dt-bindings: iio: adc: add adi,ad7606c-{16,18}
+ compatible strings
+Message-ID: <zuvwoy5wtdel7qgkz6wa6valwjwajpwoqnizyoooiawghrxvc3@cuoswu32h4fl>
+References: <20240819064721.91494-1-aardelean@baylibre.com>
+ <20240819064721.91494-7-aardelean@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] iio: adc: ad7625: add driver
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- David Lechner <dlechner@baylibre.com>,
- Uwe Kleine-Konig <u.kleine-koenig@baylibre.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20240809-ad7625_r1-v2-0-f85e7ac83150@baylibre.com>
- <20240809-ad7625_r1-v2-2-f85e7ac83150@baylibre.com>
- <20240817124752.3a6c1b49@jic23-huawei>
-Content-Language: en-US
-From: Trevor Gamblin <tgamblin@baylibre.com>
-In-Reply-To: <20240817124752.3a6c1b49@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240819064721.91494-7-aardelean@baylibre.com>
+
+On Mon, Aug 19, 2024 at 09:47:16AM +0300, Alexandru Ardelean wrote:
+> The driver will support the AD7606C-16 and AD7606C-18.
+> This change adds the compatible strings for these devices.
+> 
+> The AD7606C-16,18 channels also support these (individually configurable)
+> types of channels:
+>  - bipolar single-ended
+>  - unipolar single-ended
+>  - bipolar differential
+> 
+> This DT adds support for 'channel@X' nodes'
+
+I don't understand this sentence, suggest to drop it.
 
 
-On 2024-08-17 7:47 a.m., Jonathan Cameron wrote:
-> On Fri, 09 Aug 2024 14:41:09 -0400
-> Trevor Gamblin <tgamblin@baylibre.com> wrote:
->
->> Add a driver for the AD762x and AD796x family of ADCs. These are
->> pin-compatible devices using an LVDS interface for data transfer,
->> capable of sampling at rates of 6 (AD7625), 10 (AD7626), and 5
->> (AD7960/AD7961) MSPS, respectively. They also feature multiple voltage
->> reference options based on the configuration of the EN1/EN0 pins, which
->> can be set in the devicetree.
->>
->> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
-> Hi Trevor
->
-> LGTM, so I'll pick up v3 once you've made that weak to the DT binding
-> and it's been reviewed (assuming no one else has feedback).
+> 
+> Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
+> ---
+>  .../bindings/iio/adc/adi,ad7606.yaml          | 83 +++++++++++++++++++
+>  1 file changed, 83 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> index 69408cae3db9..f9e177de3f8c 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> @@ -14,6 +14,8 @@ description: |
+>    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7605-4.pdf
+>    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606_7606-6_7606-4.pdf
+>    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7606B.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-16.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-18.pdf
+>    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7616.pdf
+>  
+>  properties:
+> @@ -24,6 +26,8 @@ properties:
+>        - adi,ad7606-6
+>        - adi,ad7606-8  # Referred to as AD7606 (without -8) in the datasheet
+>        - adi,ad7606b
+> +      - adi,ad7606c-16
+> +      - adi,ad7606c-18
+>        - adi,ad7616
+>  
+>    reg:
+> @@ -114,6 +118,30 @@ properties:
+>        assumed that the pins are hardwired to VDD.
+>      type: boolean
+>  
+> +patternProperties:
+> +  "^channel@([0-9a-f])$":
 
-Awesome, thanks for the review. I'll get a v3 submitted soon.
+[0-7]
 
-- Trevor
+> +    type: object
+> +    $ref: adc.yaml
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        description: The channel number.
+> +        minimum: 0
+> +        maximum: 7
+> +
+> +      diff-channel:
+> +        description: Channel is bipolar differential.
 
->
-> Thanks,
->
-> Jonathan
->
+There is diff-channels property, why do we need one more?
+
+> +        type: boolean
+> +
+> +      bipolar:
+> +        description: |
+> +          Channel is bipolar single-ended. If 'diff-channel' is set, then
+> +          the value of this property will be ignored.
+
+Then provide here allOf:if:then which makes it false if diff-channel(s)
+is present. And then drop entire property, because you duplicate what's
+in adc.yaml.
+
+
+> +        type: boolean
+
+Blank line.
+
+> +    required:
+> +      - reg
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -170,6 +198,21 @@ allOf:
+>          adi,conversion-start-gpios:
+>            maxItems: 1
+>  
+> +  - if:
+> +      not:
+> +        properties:
+> +          compatible:
+> +            contains:
+> +              enum:
+> +                - adi,ad7606c-16
+> +                - adi,ad7606c-18
+> +    then:
+> +      patternProperties:
+> +        "^channel@([0-9a-f])$":
+> +          properties:
+> +            diff-channels: false
+> +            bipolar: true
+
+? Drop, no clue what you want to say here. But more important, you are
+now adding channels to other variants. Split your commit between new
+device and new properties for existing devices.
+
+
+Best regards,
+Krzysztof
+
 

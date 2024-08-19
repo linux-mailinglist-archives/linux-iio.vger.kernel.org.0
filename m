@@ -1,147 +1,126 @@
-Return-Path: <linux-iio+bounces-8590-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8591-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D2E95689E
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 12:35:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156F0956AFF
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 14:38:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 414D42825C3
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 10:35:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A7D1C21400
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 12:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5DD161900;
-	Mon, 19 Aug 2024 10:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C45316B74B;
+	Mon, 19 Aug 2024 12:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tqpARSQh"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ppwKtcjJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B541607AB
-	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 10:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992BA16B397
+	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 12:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724063705; cv=none; b=Q1K7+aviHS13dCGN33lxXRA0jB4UivQqED0FjRmTFoyDsN9KkvWAVdlnrGNxR7YuIPeeuqoJ2aKLPxTDTzwwBVr8MfOFlLHAuAmB7bIZqdHxuugEDP2bxUK+FYHpVtENgAiv06AbTfLLHHo+Q5+w4KsQop9WXl0/MJrBZFKl/ps=
+	t=1724071127; cv=none; b=KVCyM8eSyuQrLxb8ZpgJwP7CF5XY/hxNZ60GeUkK6wxb3vPhwaDEVuPATS9kV3YJmNYTnRa1bpwnCKX3lGeW+8WIlI5YUBqtQT/08fNRBhTctVlQRRSYaPWLaglokGvaBARHogPxEUyHHPf6UcYxfggts0PYwXcgrKMfHd3Yqag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724063705; c=relaxed/simple;
-	bh=C8cmAZ6DtMCK8UKjeMB4ciqE3g/tYE4h+B83nEaCixY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eCppg9N2IOO0E+hGr2nVFxuUyh3fiWddprstesmPNshwajLYjJPy3sCH8bY20pGpMcq8gknVrpIc0XtSs1YEins4k8VsuJl96iQ9vvwwPyJ4KwyMlk80OjYzAwWrvAUyyt0P2HtezT4dXstAQdvof56FaHI2DOgOpVWzXw7VXck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tqpARSQh; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-704466b19c4so2408970a34.0
-        for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 03:35:03 -0700 (PDT)
+	s=arc-20240116; t=1724071127; c=relaxed/simple;
+	bh=vMn7bOnvoOHNpw5Huz8R9HFC86Zb4QOtPXMeOq4M2EY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lql3OsaALxHmcXSy+fE5Ljx41f5KJVtMNCLgW0pT4V1I3t0hKet6hcf6uzJnsgW8amCIJdCXgzNvBQqrKqTlFLGWObLm5UzizqvK5t+T9saQME5CNNpzU1bSRzgbKkJsa0S3duqEG6f5Ar8jFRhfFswuDLZMep32nHwFUzHMvXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ppwKtcjJ; arc=none smtp.client-ip=209.85.217.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-492a76c0cfbso1291319137.0
+        for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 05:38:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724063702; x=1724668502; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=n0G/FT2pek0BJGYjowpKrU8vTGOyidDEZSmaRCBfETA=;
-        b=tqpARSQh4FlORB4lf/levNhSIyjSdKqGJPSrsRVGhSE0jmGR6Y2WZQCjbp2pOfGr7p
-         EefKpIloCC9E8YHFOQsqFWNjPwRDff1v5BzlLNPmYfC1/DdE1hwMd3xZEtcd1+yuVexl
-         jIvf7Iug6J5FyIfGo9DG8wATqjZj7HW6xb80gEWuPgcxsa1EKa2rvGWuKbH13MD+PzXa
-         EL4lP/K6AAuScAlDTmkrBK1Ezk9+G2DDM6ZLfT7nwgWQ21SZ2yegkbICTguG1mLxJyzV
-         94wZ3uFadY8NRdkYqOvWyMw31/yNwNgGEkzUSmUjyPF9Tx3W3m6GS3RBYwfBb6ZnuDes
-         uJqQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724071122; x=1724675922; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vMn7bOnvoOHNpw5Huz8R9HFC86Zb4QOtPXMeOq4M2EY=;
+        b=ppwKtcjJH/4b9ZzHJQQ8DesbDC/BIx+NcvdaJ2UW42msbvvvRQWotmAz+bZER45EZC
+         yV3oMQkOa4lMPQxcUJn0GQZfTzQJ4ie/1ffxwDxM8VRAmi2gylNz9OjnXmfhuYnRG7iQ
+         Q68eL4rFbP8t1BKOz8DvZgoSOTp8lbwn6dc4z0JC3vMglXpW710mdxjXOnqnHcYyic3I
+         ExB1Q/UvlT58rcvuxF0SylCke4lOuOEw0jRcIngMQat2eeVB+RKxsoRVyQWIYLC8k7a5
+         lsqu1i90rP0bG4W90MzcJGmyOiK5+kZP9AKglKNzBi//GE6nKanN6GpV+SRvD0pQHvlf
+         jjRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724063702; x=1724668502;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n0G/FT2pek0BJGYjowpKrU8vTGOyidDEZSmaRCBfETA=;
-        b=HYWpIIzrUxbcAOzRmozoOGwGnMCv9EFzHaROiMIuPq9NLZo+MTDtAOTUyRS/68tXng
-         tLMTtPQ+5l6ccyrhhFY2pcw2P7mBmjTzbcmJsn9dQaD2rhCSgpxnFYH5xKE5TDdOlNHh
-         zJLvUuPTRI9aR59bcBOXfLdVMgPMKV8/eLkLgwvg/83DlAx1dY5+WWVTlE8SQmVgE9sW
-         RbHZkvIvXlsumKhtymqH+Cgnoylqy3n4+vqwzyGqVOd37NzsF46B/pkuAHqYAvKIJePb
-         +siknm4Ia5gxKdiC8s6ETbG2mpMOCZc1iBhS9eLvsaDw50ytOvsRrFdBeF3t49kOnGTJ
-         TcTw==
-X-Forwarded-Encrypted: i=1; AJvYcCXykObs7mEORDBvsM4mddZWc5zrhK8g2AL28FIzSHKiO5g0HSIYvPHgXppeOA0RIsdJUvP/jnDBtssmRhfcfzkcJ6F0xNNvFd5n
-X-Gm-Message-State: AOJu0Yyc+svYQ8k+j4xAyehsl8Aykx0NuOw+VE6vmwTKKx7jdokLR7yv
-	+a6wURPKf5KxU/t6M6jT0D+/do/kIt9mo5roStCFORoYoOh9sjr8K/nzPF4bH8ueuDD/H0pGcpe
-	d0R375S5RV2ISkPH+7MT9HKfTbgZEkYM4zstYhg==
-X-Google-Smtp-Source: AGHT+IGvfBJcsaH/i9fkAq46MlKF83AnLmTz2dPtPSQk73u0lGeY9eW9+SpkGNyUeKF1EmhsEC3NDjgKQWw+rxKqR7M=
-X-Received: by 2002:a05:6870:3320:b0:260:fbc0:96ec with SMTP id
- 586e51a60fabf-2701c55a28bmr12549846fac.38.1724063702596; Mon, 19 Aug 2024
- 03:35:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724071122; x=1724675922;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vMn7bOnvoOHNpw5Huz8R9HFC86Zb4QOtPXMeOq4M2EY=;
+        b=YuMpSrWEUhwORdDmGRA27gqOmD32D5IiudalLja9FQyXh2PQasCBNiSWNCbXTEgkCf
+         4f7p9L6ZgoWPq73YUUE05SnVLTvhd3uQXwxEKbVzGkXIbeK+B2KyAYb0dLWjQdpYlnYd
+         +S7x6/kkxMzvwSPT2o3JfYI5BfR3mVLa9/4sYfp3a1VmHYB40wmUIgEzKTTdv5M2iO+3
+         4Dw2aLIp5PnsU7EMy3LttoX65S4oR/SBaj5FvXo4WKbA8JTyaak2AtHtFBfyZikYQf/B
+         GsIYSh6CoEMlHWrguO1h1jerWYFCViRMg8baC6ksu+1dmZZFqNJ+ZciqFt5esTcV9H7S
+         0efA==
+X-Forwarded-Encrypted: i=1; AJvYcCVuymvYjtLqP0aE4kmzfZAz4gGg87dS4Zv4V0I92nnexucbpiadOMfzoAe5vRf5lbS6VFVlbeYWF2SAjcOWGPnnGAG5Xl/uzTKP
+X-Gm-Message-State: AOJu0Yz5fEMQWYOcDgQeC3WOuM5ht12Cdw/Au0nqAc5EyiSRkuvRHeqZ
+	mRG1sPQxSnpxi8e3+udO25DW1iRnvBKm4HAXlCA32cqLQaK8KcirTHdZuGbbV7U=
+X-Google-Smtp-Source: AGHT+IGp6MdnP3Khhov+7iI5h+lG3ocEnkCPS56pNZDl3tn3+e/uJwlfHRCj4p5R/7sR0EnP+2ZLwA==
+X-Received: by 2002:a05:6102:94c:b0:493:effa:e721 with SMTP id ada2fe7eead31-49779a0778dmr13557400137.27.1724071122291;
+        Mon, 19 Aug 2024 05:38:42 -0700 (PDT)
+Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4ff02f7a2sm427301885a.14.2024.08.19.05.38.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Aug 2024 05:38:41 -0700 (PDT)
+Message-ID: <2fcae752-39ac-4332-9365-f25599a991b1@baylibre.com>
+Date: Mon, 19 Aug 2024 08:38:40 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240808-device_child_node_access-v2-0-fc757cc76650@gmail.com> <20240808-device_child_node_access-v2-1-fc757cc76650@gmail.com>
-In-Reply-To: <20240808-device_child_node_access-v2-1-fc757cc76650@gmail.com>
-From: Mike Leach <mike.leach@linaro.org>
-Date: Mon, 19 Aug 2024 11:34:51 +0100
-Message-ID: <CAJ9a7VgtK1AtjhM+i41nyDnza27gigg2JioC2xBmWkPeLBS0zQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] coresight: cti: use device_* to iterate over
- device child nodes
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, James Clark <james.clark@linaro.org>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Jonathan Cameron <jic23@kernel.org>, Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, 
-	Michal Simek <michal.simek@amd.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, coresight@lists.linaro.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-
-On Thu, 8 Aug 2024 at 16:12, Javier Carrasco
-<javier.carrasco.cruz@gmail.com> wrote:
->
-> Drop the manual access to the fwnode of the device to iterate over its
-> child nodes. `device_for_each_child_node` macro provides direct access
-> to the child nodes, and given that they are only required within the
-> loop, the scoped variant of the macro can be used.
->
-> Use the `device_for_each_child_node_scoped` macro to iterate over the
-> direct child nodes of the device.
->
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
->  drivers/hwtracing/coresight/coresight-cti-platform.c | 10 +++-------
->  1 file changed, 3 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/hwtracing/coresight/coresight-cti-platform.c b/drivers/hwtracing/coresight/coresight-cti-platform.c
-> index ccef04f27f12..d0ae10bf6128 100644
-> --- a/drivers/hwtracing/coresight/coresight-cti-platform.c
-> +++ b/drivers/hwtracing/coresight/coresight-cti-platform.c
-> @@ -416,20 +416,16 @@ static int cti_plat_create_impdef_connections(struct device *dev,
->                                               struct cti_drvdata *drvdata)
->  {
->         int rc = 0;
-> -       struct fwnode_handle *fwnode = dev_fwnode(dev);
-> -       struct fwnode_handle *child = NULL;
->
-> -       if (IS_ERR_OR_NULL(fwnode))
-> +       if (IS_ERR_OR_NULL(dev_fwnode(dev)))
->                 return -EINVAL;
->
-> -       fwnode_for_each_child_node(fwnode, child) {
-> +       device_for_each_child_node_scoped(dev, child) {
->                 if (cti_plat_node_name_eq(child, CTI_DT_CONNS))
-> -                       rc = cti_plat_create_connection(dev, drvdata,
-> -                                                       child);
-> +                       rc = cti_plat_create_connection(dev, drvdata, child);
->                 if (rc != 0)
->                         break;
->         }
-> -       fwnode_handle_put(child);
->
->         return rc;
->  }
->
-> --
-> 2.43.0
->
-
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] iio: adc: ad7625: add driver
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ David Lechner <dlechner@baylibre.com>,
+ Uwe Kleine-Konig <u.kleine-koenig@baylibre.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20240809-ad7625_r1-v2-0-f85e7ac83150@baylibre.com>
+ <20240809-ad7625_r1-v2-2-f85e7ac83150@baylibre.com>
+ <20240817124752.3a6c1b49@jic23-huawei>
+Content-Language: en-US
+From: Trevor Gamblin <tgamblin@baylibre.com>
+In-Reply-To: <20240817124752.3a6c1b49@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
--- 
-Mike Leach
-Principal Engineer, ARM Ltd.
-Manchester Design Centre. UK
+On 2024-08-17 7:47 a.m., Jonathan Cameron wrote:
+> On Fri, 09 Aug 2024 14:41:09 -0400
+> Trevor Gamblin <tgamblin@baylibre.com> wrote:
+>
+>> Add a driver for the AD762x and AD796x family of ADCs. These are
+>> pin-compatible devices using an LVDS interface for data transfer,
+>> capable of sampling at rates of 6 (AD7625), 10 (AD7626), and 5
+>> (AD7960/AD7961) MSPS, respectively. They also feature multiple voltage
+>> reference options based on the configuration of the EN1/EN0 pins, which
+>> can be set in the devicetree.
+>>
+>> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> Hi Trevor
+>
+> LGTM, so I'll pick up v3 once you've made that weak to the DT binding
+> and it's been reviewed (assuming no one else has feedback).
+
+Awesome, thanks for the review. I'll get a v3 submitted soon.
+
+- Trevor
+
+>
+> Thanks,
+>
+> Jonathan
+>
 

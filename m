@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-8594-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8597-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACD2956CCE
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 16:12:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1CBB956CD6
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 16:12:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A8621F2283C
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 14:12:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 889AE28288B
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 14:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EDC16CD3F;
-	Mon, 19 Aug 2024 14:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DAC016D4E7;
+	Mon, 19 Aug 2024 14:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hcOwyAbA"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MBESRHli"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEC216CD0D
-	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 14:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE6916CD18
+	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 14:11:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724076715; cv=none; b=uAVWgG7zOVxuL5Or7ssmI56xbRjyTaJ/KSdXVpo9C6Y19FumskA1wIFiPmeetIv6B4sSalW57ap1IONgy5ANkHTngpofsJjUQDoRDJgPDurQTbMPsY0o3alOk4nEe5oZJRrRN9Fz3ovAtWxKCrcuHZzppsVpeyKFABlnD0qWkHs=
+	t=1724076717; cv=none; b=YcyDaWzJeVGJwQue4gpq2H9z4bNJs3un40RZBiDaJ/35jKx6JWRpkJdO6j7dTbVYBV1DNiK7SOGDpsNG+llc//oV85HxY0qIiNjKPQ9Lokgcx27P/ZYhZV5eIHqkthTxpmUhqfDPoxsmeOL5e99IeHh0plZqxpwHJUP+PcsdwdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724076715; c=relaxed/simple;
-	bh=C8n6al0UQHRK5+RU6bfx1TRuStxVMF1ocwSi47nH5Tg=;
+	s=arc-20240116; t=1724076717; c=relaxed/simple;
+	bh=oww0a7G82Vd75ByBb5Q7ebQCJInma1hwiT7+KxQwPY0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ESat/rDD8e/Cibst7+IzQB9SrrH7gDMZik5exIBgBp7bPh9nastlPj98xvLBFwpF+/g/uP7L0PQKMPZ3M3C/YeUFM3BntKgoGEJAL8Xn7iMTf767PI9VcLFEQ7O3ZXXeSIZmsQMD4TvtemR585CwdxB0pUOffVw8YiLCCOAOzhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hcOwyAbA; arc=none smtp.client-ip=209.85.222.177
+	 In-Reply-To:To:Cc; b=YTDI4dUqbMnCnEu4WuyB/twSK6xq+3bnJZzLOWmXZVb9epNAWSFcnSjPjcoCEhqo/NjLn9P+UXwPfKeYkDi6pjXYt2gz18EocTMnmBYroDoinx1jLNN2y9TkH2//ZnCJbyGBlIIVWvZaYBq61EGITcVeMBiAaDQaln3WguJg1DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MBESRHli; arc=none smtp.client-ip=209.85.160.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a1d066a5daso294617485a.3
-        for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 07:11:53 -0700 (PDT)
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-44fee8813c3so26479851cf.2
+        for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 07:11:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724076712; x=1724681512; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724076714; x=1724681514; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fXNNTNSx46SE+zZh2rt7jOj3EPKkFSdZlt64/WcUGsY=;
-        b=hcOwyAbAFIWRWdcp1040seH4iBroVJxPygcACWxbH25u6hPWene4ZHam9NfQdoJkdi
-         8sPiUSYjqke+sRjhK7sNdS35K9ftlkCBkDVKHiigi2/Jb3dag6muvxukI1mezLhwgmHy
-         xu0qLudfRcZdkPMcrUcHmIzV1La6m412bK4YtSYU2tBhPo3nkrL822QgOE6rl/pArWzj
-         wfxWShrWzuqDMN9A+Y+c5eLZqRxHA9RSEU09e/Sqi+f95p5up+SNbqHcc+tt7B/L/o3f
-         YCnCpx5/AHHJ374c4rRGKdUq/Fibc5nNyLTKCpYhVKUSHNFuKi9m8xUARNu653XwfhFl
-         tX6Q==
+        bh=PxuHSfxj6BDBHAYOW+Ar8FckHNsRnM9Jp6mgzbqvrXw=;
+        b=MBESRHlij4FzH4YPpUjD26tp6i5w9MtAuN25kDYmuoIZ2JUIdOyz+vow1s/Tb2UUhW
+         z+FMBR7hP7FdpRTu22QXt5L4DRBY9Z79WNr6dbTdBXAFxkNzg5Tpm802dY74zZzmp4f8
+         v0HgLzUXc+5hHAfjnczDitM2ME/4xwmDy3cwbU+08UjZNxDs38SfTFeoxtCcyzK4SL05
+         WYWC6zOjINPpgSmrVU36T2dnatS2ClTC5A3jBD/txxeWPD03XhdZ0MkCajIyofqXm26Z
+         id1KomY/Ow/1VjOFJrLUrXltvL0uKzLpdDFUZTczLoGMH+1v9WfwH1PffmRF54B/NYhF
+         o/Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724076712; x=1724681512;
+        d=1e100.net; s=20230601; t=1724076714; x=1724681514;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fXNNTNSx46SE+zZh2rt7jOj3EPKkFSdZlt64/WcUGsY=;
-        b=ZD9vq1LYzidChJ/w44nHZcLjWia03HnwbmWY3mEBWFoWWzcP9KKtYrnZH0MeFMR/cT
-         79/uVBlgU8PWDdRyB5cfVrmbWzXFjP8MnfvltEBis7BFsM4zF+3wp34NmX4ynt0BVhhG
-         /i97+szD12K0t5L1wqT3YrmTZCv8BR+Kp1R/Wtk4tMvA+UN4GRoK83woDOy5YkWEugEQ
-         Fxm6deYMFMt16UfEnx2O4Nfh3z+x05OTai0ZNfnePbe/Udg2wtngRZunWEdhzepp3o12
-         dNXDgNSrJRZEpCa2MCCu0veKdIFu4DjFRfE7IMUcgeHNmwZ6I/q11xvy4SPWoXvfexVY
-         AIzg==
-X-Gm-Message-State: AOJu0YzDZgWliQiohUEFY75/mWk3Tap+tUp2HkvYVb51Euo6jgT6oD0b
-	ZDw+mPMcgdDIJ4Ph5I/Kf2c+R8uNNlwCDsQ0BvNV8Oh/Pb/lzCqT+iT6CU/2lVE=
-X-Google-Smtp-Source: AGHT+IHeOmp7OwQlB723ECayQeKNOcr3tyjBqBm4/OF+5vstRaDlZy5H4OQfNQmO5viptck1XMp7Bg==
-X-Received: by 2002:a05:620a:44d6:b0:7a3:49dc:f084 with SMTP id af79cd13be357-7a506954c44mr1227922185a.35.1724076712103;
-        Mon, 19 Aug 2024 07:11:52 -0700 (PDT)
+        bh=PxuHSfxj6BDBHAYOW+Ar8FckHNsRnM9Jp6mgzbqvrXw=;
+        b=Ar6gud7BdlDx4WI7p/DGyn/i3sb9bOhRGRP9dNldpqMb4/Ua6jBHoOCjGOOPEGV8fm
+         0JiNZ0Mx+sDcuryyYc7hzl9TeYtfXvghm+Wg9sM3DnDnB6uHYMrPC5y02h/DpUSsD+sB
+         EnnYrHKNCNeZqayiHGJKW2NB38gzIveYLr3oLvYAZUQjLuexJTKNMk99KrStL0ygrf6l
+         8VneSApqRhDP5buuxHzBY1QvQT85wFQoy+M7cR+jv+EROBKWFlxGPxWfyFAw/mKY8rZx
+         cm46mvG52AziIWSWVWAcS6teAyeVKKHbKdH77bNBkO7bGfIcQ6K82LMYjKA/pShcdM21
+         r3/Q==
+X-Gm-Message-State: AOJu0Yx+Rz/YpfcsNJGLDJ4vLf5qozavby8ff9+8Lm2yCGJEiG6IkeH5
+	8+AJuoDwCV/p0S+Uer+Jd1Eh6uwK7dF3V3rikc4mUmJsPCopj740syorgUqmRZ8=
+X-Google-Smtp-Source: AGHT+IH9n4OiVaXy0yBPK7Zx1mE24TRbLscDCleKz/Tal31mKdVBxXldjRfnIhIizvbAhwQb5mtlIw==
+X-Received: by 2002:a05:622a:418c:b0:453:4aaa:d585 with SMTP id d75a77b69052e-453741b4af7mr131441171cf.4.1724076713423;
+        Mon, 19 Aug 2024 07:11:53 -0700 (PDT)
 Received: from [127.0.1.1] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-454c0186bf4sm17630871cf.83.2024.08.19.07.11.51
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-454c0186bf4sm17630871cf.83.2024.08.19.07.11.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 07:11:51 -0700 (PDT)
+        Mon, 19 Aug 2024 07:11:53 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 19 Aug 2024 10:11:43 -0400
-Subject: [PATCH v3 1/3] dt-bindings: iio: adc: add AD762x/AD796x ADCs
+Date: Mon, 19 Aug 2024 10:11:44 -0400
+Subject: [PATCH v3 2/3] iio: adc: ad7625: add driver
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,8 +76,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240819-ad7625_r1-v3-1-75d5217c76b5@baylibre.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240819-ad7625_r1-v3-2-75d5217c76b5@baylibre.com>
 References: <20240819-ad7625_r1-v3-0-75d5217c76b5@baylibre.com>
 In-Reply-To: <20240819-ad7625_r1-v3-0-75d5217c76b5@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -93,217 +93,765 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  Trevor Gamblin <tgamblin@baylibre.com>
 X-Mailer: b4 0.14.1
 
-Add a binding specification for the Analog Devices Inc. AD7625,
-AD7626, AD7960, and AD7961 ADCs.
+Add a driver for the AD762x and AD796x family of ADCs. These are
+pin-compatible devices using an LVDS interface for data transfer,
+capable of sampling at rates of 6 (AD7625), 10 (AD7626), and 5
+(AD7960/AD7961) MSPS, respectively. They also feature multiple voltage
+reference options based on the configuration of the EN1/EN0 pins, which
+can be set in the devicetree.
 
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- .../devicetree/bindings/iio/adc/adi,ad7625.yaml    | 176 +++++++++++++++++++++
- MAINTAINERS                                        |   9 ++
- 2 files changed, 185 insertions(+)
+ MAINTAINERS              |   1 +
+ drivers/iio/adc/Kconfig  |  15 ++
+ drivers/iio/adc/Makefile |   1 +
+ drivers/iio/adc/ad7625.c | 688 +++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 705 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
-new file mode 100644
-index 000000000000..8848562af28f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
-@@ -0,0 +1,176 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad7625.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices Fast PulSAR Analog to Digital Converters
-+
-+maintainers:
-+  - Michael Hennerich <Michael.Hennerich@analog.com>
-+  - Nuno Sá <nuno.sa@analog.com>
-+
-+description: |
-+  A family of single channel differential analog to digital converters.
-+
-+  * https://www.analog.com/en/products/ad7625.html
-+  * https://www.analog.com/en/products/ad7626.html
-+  * https://www.analog.com/en/products/ad7960.html
-+  * https://www.analog.com/en/products/ad7961.html
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad7625
-+      - adi,ad7626
-+      - adi,ad7960
-+      - adi,ad7961
-+
-+  vdd1-supply: true
-+  vdd2-supply: true
-+  vio-supply: true
-+
-+  ref-supply:
-+    description:
-+      Voltage regulator for the external reference voltage (REF).
-+
-+  refin-supply:
-+    description:
-+      Voltage regulator for the reference buffer input (REFIN).
-+
-+  clocks:
-+    description:
-+      The clock connected to the CLK pins, gated by the clk_gate PWM.
-+    maxItems: 1
-+
-+  pwms:
-+    items:
-+      - description: PWM connected to the CNV input on the ADC.
-+      - description: PWM that gates the clock connected to the ADC's CLK input.
-+
-+  pwm-names:
-+    items:
-+      - const: cnv
-+      - const: clk_gate
-+
-+  io-backends:
-+    description:
-+      The AXI ADC IP block connected to the D+/- and DCO+/- lines of the
-+      ADC. An example backend can be found at
-+      http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html.
-+    maxItems: 1
-+
-+  adi,no-dco:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Indicates the wiring of the DCO+/- lines. If true, then they are
-+      grounded and the device is in self-clocked mode. If this is not
-+      present, then the device is in echoed clock mode.
-+
-+  adi,en0-always-on:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Indicates if EN0 is hard-wired to the high state. If neither this
-+      nor en0-gpios are present, then EN0 is hard-wired low.
-+
-+  adi,en1-always-on:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Indicates if EN1 is hard-wired to the high state. If neither this
-+      nor en1-gpios are present, then EN1 is hard-wired low.
-+
-+  adi,en2-always-on:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Indicates if EN2 is hard-wired to the high state. If neither this
-+      nor en2-gpios are present, then EN2 is hard-wired low.
-+
-+  adi,en3-always-on:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Indicates if EN3 is hard-wired to the high state. If neither this
-+      nor en3-gpios are present, then EN3 is hard-wired low.
-+
-+  en0-gpios:
-+    description:
-+      Configurable EN0 pin.
-+
-+  en1-gpios:
-+    description:
-+      Configurable EN1 pin.
-+
-+  en2-gpios:
-+    description:
-+      Configurable EN2 pin.
-+
-+  en3-gpios:
-+    description:
-+      Configurable EN3 pin.
-+
-+required:
-+  - compatible
-+  - vdd1-supply
-+  - vdd2-supply
-+  - vio-supply
-+  - clocks
-+  - pwms
-+  - pwm-names
-+  - io-backends
-+
-+allOf:
-+  - if:
-+      required:
-+        - ref-supply
-+    then:
-+      properties:
-+        refin-supply: false
-+  - if:
-+      required:
-+        - refin-supply
-+    then:
-+      properties:
-+        ref-supply: false
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad7625
-+              - adi,ad7626
-+    then:
-+      properties:
-+        en2-gpios: false
-+        en3-gpios: false
-+        adi,en2-always-on: false
-+        adi,en3-always-on: false
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad7960
-+              - adi,ad7961
-+    then:
-+      # ad796x parts must have one of the two supplies
-+      oneOf:
-+        - required: [ref-supply]
-+        - required: [refin-supply]
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    adc {
-+        compatible = "adi,ad7625";
-+        vdd1-supply = <&supply_5V>;
-+        vdd2-supply = <&supply_2_5V>;
-+        vio-supply = <&supply_2_5V>;
-+        io-backends = <&axi_adc>;
-+        clocks = <&ref_clk>;
-+        pwms = <&axi_pwm_gen 0 0>, <&axi_pwm_gen 1 0>;
-+        pwm-names = "cnv", "clk_gate";
-+        en0-gpios = <&gpio0 86 GPIO_ACTIVE_HIGH>;
-+        en1-gpios = <&gpio0 87 GPIO_ACTIVE_HIGH>;
-+    };
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 42decde38320..2361f92751dd 100644
+index 2361f92751dd..a90972e1c5c5 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1260,6 +1260,15 @@ F:	Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
- F:	drivers/iio/addac/ad74413r.c
- F:	include/dt-bindings/iio/addac/adi,ad74413r.h
+@@ -1268,6 +1268,7 @@ S:	Supported
+ W:	https://ez.analog.com/linux-software-drivers
+ W:	http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html
+ F:	Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
++F:	drivers/iio/adc/ad7625.c
  
-+ANALOG DEVICES INC AD7625 DRIVER
-+M:	Michael Hennerich <Michael.Hennerich@analog.com>
-+M:	Nuno Sá <nuno.sa@analog.com>
-+R:	Trevor Gamblin <tgamblin@baylibre.com>
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+W:	http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html
-+F:	Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
-+
  ANALOG DEVICES INC AD7768-1 DRIVER
  M:	Michael Hennerich <Michael.Hennerich@analog.com>
- L:	linux-iio@vger.kernel.org
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index f60fe85a30d5..e25fb505f545 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -219,6 +219,21 @@ config AD7606_IFACE_SPI
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called ad7606_spi.
+ 
++config AD7625
++        tristate "Analog Devices AD7625/AD7626 High Speed ADC driver"
++        select IIO_BACKEND
++        help
++          Say yes here to build support for Analog Devices:
++	  * AD7625 16-Bit, 6 MSPS PulSAR Analog-to-Digital Converter
++	  * AD7626 16-Bit, 10 MSPS PulSAR Analog-to-Digital Converter
++	  * AD7960 18-Bit, 5 MSPS PulSAR Analog-to-Digital Converter
++	  * AD7961 16-Bit, 5 MSPS PulSAR Analog-to-Digital Converter
++
++          The driver requires the assistance of the AXI ADC IP core to operate.
++
++          To compile this driver as a module, choose M here: the module will be
++          called ad7625.
++
+ config AD7766
+ 	tristate "Analog Devices AD7766/AD7767 ADC driver"
+ 	depends on SPI_MASTER
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index d370e066544e..6bf429ca24ea 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -23,6 +23,7 @@ obj-$(CONFIG_AD7476) += ad7476.o
+ obj-$(CONFIG_AD7606_IFACE_PARALLEL) += ad7606_par.o
+ obj-$(CONFIG_AD7606_IFACE_SPI) += ad7606_spi.o
+ obj-$(CONFIG_AD7606) += ad7606.o
++obj-$(CONFIG_AD7625) += ad7625.o
+ obj-$(CONFIG_AD7766) += ad7766.o
+ obj-$(CONFIG_AD7768_1) += ad7768-1.o
+ obj-$(CONFIG_AD7780) += ad7780.o
+diff --git a/drivers/iio/adc/ad7625.c b/drivers/iio/adc/ad7625.c
+new file mode 100644
+index 000000000000..3ac3c56d43eb
+--- /dev/null
++++ b/drivers/iio/adc/ad7625.c
+@@ -0,0 +1,688 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
++/*
++ * Analog Devices Inc. AD7625 ADC driver
++ *
++ * Copyright 2024 Analog Devices Inc.
++ * Copyright 2024 BayLibre, SAS
++ *
++ * Note that this driver requires the AXI ADC IP block configured for
++ * LVDS to function. See Documentation/iio/ad7625.rst for more
++ * information.
++ */
++
++#include <linux/clk.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/gpio/consumer.h>
++#include <linux/iio/backend.h>
++#include <linux/iio/iio.h>
++#include <linux/kernel.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/pwm.h>
++#include <linux/regulator/consumer.h>
++#include <linux/units.h>
++
++#define AD7625_INTERNAL_REF_MV 4096
++#define AD7960_MAX_NBW_FREQ (2 * MEGA)
++
++struct ad7625_timing_spec {
++	/* Max conversion high time (t_{CNVH}). */
++	unsigned int conv_high_ns;
++	/* Max conversion to MSB delay (t_{MSB}). */
++	unsigned int conv_msb_ns;
++};
++
++struct ad7625_chip_info {
++	const char *name;
++	const unsigned int max_sample_rate_hz;
++	const struct ad7625_timing_spec *timing_spec;
++	const struct iio_chan_spec chan_spec;
++	const bool has_power_down_state;
++	const bool has_bandwidth_control;
++	const bool has_internal_vref;
++};
++
++/* AD7625_CHAN_SPEC - Define a chan spec structure for a specific chip */
++#define AD7625_CHAN_SPEC(_bits) {					\
++	.type = IIO_VOLTAGE,						\
++	.indexed = 1,							\
++	.differential = 1,						\
++	.channel = 0,							\
++	.channel2 = 1,							\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_SCALE),			\
++	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
++	.scan_index = 0,						\
++	.scan_type.sign = 's',						\
++	.scan_type.storagebits = (_bits) > 16 ? 32 : 16,		\
++	.scan_type.realbits = (_bits),					\
++}
++
++struct ad7625_state {
++	const struct ad7625_chip_info *info;
++	struct iio_backend *back;
++	/* rate of the clock gated by the "clk_gate" PWM */
++	unsigned long ref_clk_rate_hz;
++	/* PWM burst signal for transferring acquired data to the host */
++	struct pwm_device *clk_gate_pwm;
++	/*
++	 * PWM control signal for initiating data conversion. Analog
++	 * inputs are sampled beginning on this signal's rising edge.
++	 */
++	struct pwm_device *cnv_pwm;
++	/*
++	 * Waveforms containing the last-requested and rounded
++	 * properties for the clk_gate and cnv PWMs
++	 */
++	struct pwm_waveform clk_gate_wf;
++	struct pwm_waveform cnv_wf;
++	unsigned int vref_mv;
++	int sampling_freq_hz;
++	/*
++	 * Optional GPIOs for controlling device state. EN0 and EN1
++	 * determine voltage reference configuration and on/off state.
++	 * EN2 controls the device -3dB bandwidth (and by extension, max
++	 * sample rate). EN3 controls the VCM reference output. EN2 and
++	 * EN3 are only present for the AD796x devices.
++	 */
++	struct gpio_desc *en_gpios[4];
++	bool can_power_down;
++	bool can_refin;
++	bool can_ref_4v096;
++	/*
++	 * Indicate whether the bandwidth can be narrow (9MHz).
++	 * When true, device sample rate must also be < 2MSPS.
++	 */
++	bool can_narrow_bandwidth;
++	/* Indicate whether the bandwidth can be wide (28MHz). */
++	bool can_wide_bandwidth;
++	bool can_ref_5v;
++	bool can_snooze;
++	bool can_test_pattern;
++	/* Indicate whether there is a REFIN supply connected */
++	bool have_refin;
++};
++
++static const struct ad7625_timing_spec ad7625_timing_spec = {
++	.conv_high_ns = 40,
++	.conv_msb_ns = 145,
++};
++
++static const struct ad7625_timing_spec ad7626_timing_spec = {
++	.conv_high_ns = 40,
++	.conv_msb_ns = 80,
++};
++
++/*
++ * conv_msb_ns is set to 0 instead of the datasheet maximum of 200ns to
++ * avoid exceeding the minimum conversion time, i.e. it is effectively
++ * modulo 200 and offset by a full period. Values greater than or equal
++ * to the period would be rejected by the PWM API.
++ */
++static const struct ad7625_timing_spec ad7960_timing_spec = {
++	.conv_high_ns = 80,
++	.conv_msb_ns = 0,
++};
++
++static const struct ad7625_chip_info ad7625_chip_info = {
++	.name = "ad7625",
++	.max_sample_rate_hz = 6 * MEGA,
++	.timing_spec = &ad7625_timing_spec,
++	.chan_spec = AD7625_CHAN_SPEC(16),
++	.has_power_down_state = false,
++	.has_bandwidth_control = false,
++	.has_internal_vref = true,
++};
++
++static const struct ad7625_chip_info ad7626_chip_info = {
++	.name = "ad7626",
++	.max_sample_rate_hz = 10 * MEGA,
++	.timing_spec = &ad7626_timing_spec,
++	.chan_spec = AD7625_CHAN_SPEC(16),
++	.has_power_down_state = true,
++	.has_bandwidth_control = false,
++	.has_internal_vref = true,
++};
++
++static const struct ad7625_chip_info ad7960_chip_info = {
++	.name = "ad7960",
++	.max_sample_rate_hz = 5 * MEGA,
++	.timing_spec = &ad7960_timing_spec,
++	.chan_spec = AD7625_CHAN_SPEC(18),
++	.has_power_down_state = true,
++	.has_bandwidth_control = true,
++	.has_internal_vref = false,
++};
++
++static const struct ad7625_chip_info ad7961_chip_info = {
++	.name = "ad7961",
++	.max_sample_rate_hz = 5 * MEGA,
++	.timing_spec = &ad7960_timing_spec,
++	.chan_spec = AD7625_CHAN_SPEC(16),
++	.has_power_down_state = true,
++	.has_bandwidth_control = true,
++	.has_internal_vref = false,
++};
++
++enum ad7960_mode {
++	AD7960_MODE_POWER_DOWN,
++	AD7960_MODE_SNOOZE,
++	AD7960_MODE_NARROW_BANDWIDTH,
++	AD7960_MODE_WIDE_BANDWIDTH,
++	AD7960_MODE_TEST_PATTERN,
++};
++
++static int ad7625_set_sampling_freq(struct ad7625_state *st, int freq)
++{
++	u64 target;
++	struct pwm_waveform clk_gate_wf = { }, cnv_wf = { };
++	int ret;
++
++	target = DIV_ROUND_UP_ULL(NSEC_PER_SEC, freq);
++	cnv_wf.period_length_ns = clamp(target, 100, 10 * KILO);
++
++	/*
++	 * Use the maximum conversion time t_CNVH from the datasheet as
++	 * the duty_cycle for ref_clk, cnv, and clk_gate
++	 */
++	cnv_wf.duty_length_ns = st->info->timing_spec->conv_high_ns;
++
++	ret = pwm_round_waveform_might_sleep(st->cnv_pwm, &cnv_wf);
++	if (ret)
++		return ret;
++
++	/*
++	 * Set up the burst signal for transferring data. period and
++	 * offset should mirror the CNV signal
++	 */
++	clk_gate_wf.period_length_ns = cnv_wf.period_length_ns;
++
++	clk_gate_wf.duty_length_ns = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC *
++		st->info->chan_spec.scan_type.realbits,
++		st->ref_clk_rate_hz);
++
++	/* max t_MSB from datasheet */
++	clk_gate_wf.duty_offset_ns = st->info->timing_spec->conv_msb_ns;
++
++	ret = pwm_round_waveform_might_sleep(st->clk_gate_pwm, &clk_gate_wf);
++	if (ret)
++		return ret;
++
++	st->cnv_wf = cnv_wf;
++	st->clk_gate_wf = clk_gate_wf;
++
++	/* TODO: Add a rounding API for PWMs that can simplify this */
++	target = DIV_ROUND_CLOSEST_ULL(st->ref_clk_rate_hz, freq);
++	st->sampling_freq_hz = DIV_ROUND_CLOSEST_ULL(st->ref_clk_rate_hz,
++						     target);
++
++	return 0;
++}
++
++static int ad7625_read_raw(struct iio_dev *indio_dev,
++			   const struct iio_chan_spec *chan,
++			   int *val, int *val2, long info)
++{
++	struct ad7625_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*val = st->sampling_freq_hz;
++
++		return IIO_VAL_INT;
++
++	case IIO_CHAN_INFO_SCALE:
++		*val = st->vref_mv;
++		*val2 = chan->scan_type.realbits - 1;
++
++		return IIO_VAL_FRACTIONAL_LOG2;
++
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7625_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int val, int val2, long info)
++{
++	struct ad7625_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
++			return ad7625_set_sampling_freq(st, val);
++		unreachable();
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7625_parse_mode(struct device *dev, struct ad7625_state *st,
++			     int num_gpios)
++{
++	bool en_always_on[4], en_always_off[4];
++	bool en_may_be_on[4], en_may_be_off[4];
++	char en_gpio_buf[4];
++	char always_on_buf[18];
++	int i;
++
++	for (i = 0; i < num_gpios; i++) {
++		snprintf(en_gpio_buf, sizeof(en_gpio_buf), "en%d", i);
++		snprintf(always_on_buf, sizeof(always_on_buf),
++			 "adi,en%d-always-on", i);
++		/* Set the device to 0b0000 (power-down mode) by default */
++		st->en_gpios[i] = devm_gpiod_get_optional(dev, en_gpio_buf,
++							  GPIOD_OUT_LOW);
++		if (IS_ERR(st->en_gpios[i]))
++			return dev_err_probe(dev, PTR_ERR(st->en_gpios[i]),
++					     "failed to get EN%d GPIO\n", i);
++
++		en_always_on[i] = device_property_read_bool(dev, always_on_buf);
++		if (st->en_gpios[i] && en_always_on[i])
++			return dev_err_probe(dev, -EINVAL,
++				"cannot have adi,en%d-always-on and en%d-gpios\n", i, i);
++
++		en_may_be_off[i] = !en_always_on[i];
++		en_may_be_on[i] = en_always_on[i] || st->en_gpios[i];
++		en_always_off[i] = !en_always_on[i] && !st->en_gpios[i];
++	}
++
++	/*
++	 * Power down is mode 0bXX00, but not all devices have a valid
++	 * power down state.
++	 */
++	st->can_power_down = en_may_be_off[1] && en_may_be_off[0] &&
++			     st->info->has_power_down_state;
++	/*
++	 * The REFIN pin can take a 1.2V (AD762x) or 2.048V (AD796x)
++	 * external reference when the mode is 0bXX01.
++	 */
++	st->can_refin = en_may_be_off[1] && en_may_be_on[0];
++	/* 4.096V can be applied to REF when the EN mode is 0bXX10. */
++	st->can_ref_4v096 = en_may_be_on[1] && en_may_be_off[0];
++
++	/* Avoid AD796x-specific setup if the part is an AD762x */
++	if (num_gpios == 2)
++		return 0;
++
++	/* mode 0b1100 (AD796x) is invalid */
++	if (en_always_on[3] && en_always_on[2] &&
++	    en_always_off[1] && en_always_off[0])
++		return dev_err_probe(dev, -EINVAL,
++				     "EN GPIOs set to invalid mode 0b1100\n");
++	/*
++	 * 5V can be applied to the AD796x REF pin when the EN mode is
++	 * the same (0bX001 or 0bX101) as for can_refin, and REFIN is
++	 * 0V.
++	 */
++	st->can_ref_5v = st->can_refin;
++	/*
++	 * Bandwidth (AD796x) is controlled solely by EN2. If it's
++	 * specified and not hard-wired, then we can configure it to
++	 * change the bandwidth between 28MHz and 9MHz.
++	 */
++	st->can_narrow_bandwidth = en_may_be_on[2];
++	/* Wide bandwidth mode is possible if EN2 can be 0. */
++	st->can_wide_bandwidth = en_may_be_off[2];
++	/* Snooze mode (AD796x) is 0bXX11 when REFIN = 0V. */
++	st->can_snooze = en_may_be_on[1] && en_may_be_on[0];
++	/* Test pattern mode (AD796x) is 0b0100. */
++	st->can_test_pattern = en_may_be_off[3] && en_may_be_on[2] &&
++			       en_may_be_off[1] && en_may_be_off[0];
++
++	return 0;
++}
++
++/* Set EN1 and EN0 based on reference voltage source */
++static void ad7625_set_en_gpios_for_vref(struct ad7625_state *st,
++					 bool have_refin, int ref_mv)
++{
++	if (have_refin || ref_mv == 5000) {
++		gpiod_set_value_cansleep(st->en_gpios[1], 0);
++		gpiod_set_value_cansleep(st->en_gpios[0], 1);
++	} else if (ref_mv == 4096) {
++		gpiod_set_value_cansleep(st->en_gpios[1], 1);
++		gpiod_set_value_cansleep(st->en_gpios[0], 0);
++	} else {
++		/*
++		 * Unreachable by AD796x, since the driver will error if
++		 * neither REF nor REFIN is provided
++		 */
++		gpiod_set_value_cansleep(st->en_gpios[1], 1);
++		gpiod_set_value_cansleep(st->en_gpios[0], 1);
++	}
++}
++
++static int ad7960_set_mode(struct ad7625_state *st, enum ad7960_mode mode,
++			   bool have_refin, int ref_mv)
++{
++	switch (mode) {
++	case AD7960_MODE_POWER_DOWN:
++		if (!st->can_power_down)
++			return -EINVAL;
++
++		gpiod_set_value_cansleep(st->en_gpios[2], 0);
++		gpiod_set_value_cansleep(st->en_gpios[1], 0);
++		gpiod_set_value_cansleep(st->en_gpios[0], 0);
++
++		return 0;
++
++	case AD7960_MODE_SNOOZE:
++		if (!st->can_snooze)
++			return -EINVAL;
++
++		gpiod_set_value_cansleep(st->en_gpios[1], 1);
++		gpiod_set_value_cansleep(st->en_gpios[0], 1);
++
++		return 0;
++
++	case AD7960_MODE_NARROW_BANDWIDTH:
++		if (!st->can_narrow_bandwidth)
++			return -EINVAL;
++
++		gpiod_set_value_cansleep(st->en_gpios[2], 1);
++		ad7625_set_en_gpios_for_vref(st, have_refin, ref_mv);
++
++		return 0;
++
++	case AD7960_MODE_WIDE_BANDWIDTH:
++		if (!st->can_wide_bandwidth)
++			return -EINVAL;
++
++		gpiod_set_value_cansleep(st->en_gpios[2], 0);
++		ad7625_set_en_gpios_for_vref(st, have_refin, ref_mv);
++
++		return 0;
++
++	case AD7960_MODE_TEST_PATTERN:
++		if (!st->can_test_pattern)
++			return -EINVAL;
++
++		gpiod_set_value_cansleep(st->en_gpios[3], 0);
++		gpiod_set_value_cansleep(st->en_gpios[2], 1);
++		gpiod_set_value_cansleep(st->en_gpios[1], 0);
++		gpiod_set_value_cansleep(st->en_gpios[0], 0);
++
++		return 0;
++
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7625_buffer_preenable(struct iio_dev *indio_dev)
++{
++	struct ad7625_state *st = iio_priv(indio_dev);
++	int ret;
++
++	ret = pwm_set_waveform_might_sleep(st->cnv_pwm, &st->cnv_wf, false);
++	if (ret)
++		return ret;
++
++	ret = pwm_set_waveform_might_sleep(st->clk_gate_pwm,
++					   &st->clk_gate_wf, false);
++	if (ret) {
++		/* Disable cnv PWM if clk_gate setup failed */
++		pwm_disable(st->cnv_pwm);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int ad7625_buffer_postdisable(struct iio_dev *indio_dev)
++{
++	struct ad7625_state *st = iio_priv(indio_dev);
++
++	pwm_disable(st->cnv_pwm);
++	pwm_disable(st->clk_gate_pwm);
++
++	return 0;
++}
++
++static const struct iio_info ad7625_info = {
++	.read_raw = ad7625_read_raw,
++	.write_raw = ad7625_write_raw,
++};
++
++static const struct iio_buffer_setup_ops ad7625_buffer_setup_ops = {
++	.preenable = &ad7625_buffer_preenable,
++	.postdisable = &ad7625_buffer_postdisable,
++};
++
++static int devm_ad7625_pwm_get(struct device *dev, struct clk *ref_clk,
++			       struct ad7625_state *st)
++{
++	unsigned long ref_clk_rate_hz;
++
++	st->cnv_pwm = devm_pwm_get(dev, "cnv");
++	if (IS_ERR(st->cnv_pwm))
++		return dev_err_probe(dev, PTR_ERR(st->cnv_pwm),
++				     "failed to get cnv pwm\n");
++
++	/* Preemptively disable the PWM in case it was enabled at boot */
++	pwm_disable(st->cnv_pwm);
++
++	st->clk_gate_pwm = devm_pwm_get(dev, "clk_gate");
++	if (IS_ERR(st->clk_gate_pwm))
++		return dev_err_probe(dev, PTR_ERR(st->clk_gate_pwm),
++				     "failed to get clk_gate pwm\n");
++
++	/* Preemptively disable the PWM in case it was enabled at boot */
++	pwm_disable(st->clk_gate_pwm);
++
++	ref_clk = devm_clk_get_enabled(dev, NULL);
++	if (IS_ERR(ref_clk))
++		return dev_err_probe(dev, PTR_ERR(ref_clk),
++				     "failed to get ref_clk");
++
++	ref_clk_rate_hz = clk_get_rate(ref_clk);
++	if (!ref_clk_rate_hz)
++		return dev_err_probe(dev, -EINVAL,
++				     "failed to get ref_clk rate");
++
++	st->ref_clk_rate_hz = ref_clk_rate_hz;
++
++	return 0;
++}
++
++/*
++ * There are three required input voltages for each device, plus two
++ * conditionally-optional (depending on part) REF and REFIN voltages
++ * where their validity depends upon the EN pin configuration.
++ *
++ * Power-up info for the device says to bring up vio, then vdd2, then
++ * vdd1, so list them in that order in the regulator_names array.
++ *
++ * The reference voltage source is determined like so:
++ * - internal reference: neither REF or REFIN is connected (invalid for
++ *   AD796x)
++ * - internal buffer, external reference: REF not connected, REFIN
++ *   connected
++ * - external reference: REF connected, REFIN not connected
++ */
++static int devm_ad7625_regulator_setup(struct device *dev,
++				       struct ad7625_state *st)
++{
++	static const char * const regulator_names[] = { "vio", "vdd2", "vdd1" };
++	int ret, ref_mv;
++
++	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulator_names),
++					     regulator_names);
++	if (ret)
++		return ret;
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "ref");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "failed to get REF voltage\n");
++
++	ref_mv = ret == -ENODEV ? 0 : ret / 1000;
++
++	ret = devm_regulator_get_enable_optional(dev, "refin");
++	if (ret < 0 && ret != -ENODEV)
++		return dev_err_probe(dev, ret, "failed to get REFIN voltage\n");
++
++	st->have_refin = ret != -ENODEV;
++
++	if (st->have_refin && !st->can_refin)
++		return dev_err_probe(dev, -EINVAL,
++				     "REFIN provided in unsupported mode\n");
++
++	if (!st->info->has_internal_vref && !st->have_refin && !ref_mv)
++		return dev_err_probe(dev, -EINVAL,
++				     "Need either REFIN or REF");
++
++	if (st->have_refin && ref_mv)
++		return dev_err_probe(dev, -EINVAL,
++				     "cannot have both REFIN and REF supplies\n");
++
++	if (ref_mv == 4096 && !st->can_ref_4v096)
++		return dev_err_probe(dev, -EINVAL,
++				     "REF is 4.096V in unsupported mode\n");
++
++	if (ref_mv == 5000 && !st->can_ref_5v)
++		return dev_err_probe(dev, -EINVAL,
++				     "REF is 5V in unsupported mode\n");
++
++	st->vref_mv = ref_mv ?: AD7625_INTERNAL_REF_MV;
++
++	return 0;
++}
++
++static int ad7625_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct iio_dev *indio_dev;
++	struct ad7625_state *st;
++	struct clk *ref_clk;
++	int ret;
++	int default_sample_freq;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++
++	st->info = device_get_match_data(dev);
++	if (!st->info)
++		return dev_err_probe(dev, -EINVAL, "no chip info\n");
++
++	if (device_property_read_bool(dev, "adi,no-dco"))
++		return dev_err_probe(dev, -EINVAL,
++				     "self-clocked mode not supported\n");
++
++	if (st->info->has_bandwidth_control)
++		ret = ad7625_parse_mode(dev, st, 4);
++	else
++		ret = ad7625_parse_mode(dev, st, 2);
++
++	if (ret)
++		return ret;
++
++	ret = devm_ad7625_regulator_setup(dev, st);
++	if (ret)
++		return ret;
++
++	/* Set the device mode based on detected EN configuration. */
++	if (!st->info->has_bandwidth_control) {
++		ad7625_set_en_gpios_for_vref(st, st->have_refin, st->vref_mv);
++	} else {
++		/*
++		 * If neither sampling mode is available, then report an error,
++		 * since the other modes are not useful defaults.
++		 */
++		if (st->can_wide_bandwidth) {
++			ret = ad7960_set_mode(st, AD7960_MODE_WIDE_BANDWIDTH,
++					      st->have_refin, st->vref_mv);
++		} else if (st->can_narrow_bandwidth) {
++			ret = ad7960_set_mode(st, AD7960_MODE_NARROW_BANDWIDTH,
++					      st->have_refin, st->vref_mv);
++		} else {
++			return dev_err_probe(dev, -EINVAL,
++				"couldn't set device to wide or narrow bandwidth modes\n");
++		}
++
++		if (ret)
++			return dev_err_probe(dev, -EINVAL,
++					     "failed to set EN pins\n");
++	}
++
++	ret = devm_ad7625_pwm_get(dev, ref_clk, st);
++	if (ret)
++		return ret;
++
++	indio_dev->channels = &st->info->chan_spec;
++	indio_dev->num_channels = 1;
++	indio_dev->name = st->info->name;
++	indio_dev->info = &ad7625_info;
++	indio_dev->setup_ops = &ad7625_buffer_setup_ops;
++
++	st->back = devm_iio_backend_get(dev, NULL);
++	if (IS_ERR(st->back))
++		return dev_err_probe(dev, PTR_ERR(st->back),
++				     "failed to get IIO backend");
++
++	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
++	if (ret)
++		return ret;
++
++	ret = devm_iio_backend_enable(dev, st->back);
++	if (ret)
++		return ret;
++
++	/*
++	 * Set the initial sampling frequency to the maximum, unless the
++	 * AD796x device is limited to narrow bandwidth by EN2 == 1, in
++	 * which case the sampling frequency should be limited to 2MSPS
++	 */
++	if (!st->info->has_bandwidth_control) {
++		default_sample_freq = st->info->max_sample_rate_hz;
++	} else {
++		default_sample_freq = !st->can_wide_bandwidth ?
++				      AD7960_MAX_NBW_FREQ :
++				      st->info->max_sample_rate_hz;
++	}
++
++	ret = ad7625_set_sampling_freq(st, default_sample_freq);
++	if (ret)
++		dev_err_probe(dev, ret,
++			      "failed to set valid sampling frequency\n");
++
++	return devm_iio_device_register(dev, indio_dev);
++}
++
++static const struct of_device_id ad7625_of_match[] = {
++	{ .compatible = "adi,ad7625", .data = &ad7625_chip_info },
++	{ .compatible = "adi,ad7626", .data = &ad7626_chip_info },
++	{ .compatible = "adi,ad7960", .data = &ad7960_chip_info },
++	{ .compatible = "adi,ad7961", .data = &ad7961_chip_info },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ad7625_of_match);
++
++static const struct platform_device_id ad7625_device_ids[] = {
++	{ .name = "ad7625", .driver_data = (kernel_ulong_t)&ad7625_chip_info },
++	{ .name = "ad7626", .driver_data = (kernel_ulong_t)&ad7626_chip_info },
++	{ .name = "ad7960", .driver_data = (kernel_ulong_t)&ad7960_chip_info },
++	{ .name = "ad7961", .driver_data = (kernel_ulong_t)&ad7961_chip_info },
++	{ }
++};
++MODULE_DEVICE_TABLE(platform, ad7625_device_ids);
++
++static struct platform_driver ad7625_driver = {
++	.probe = ad7625_probe,
++	.driver = {
++		.name = "ad7625",
++		.of_match_table = ad7625_of_match,
++	},
++	.id_table = ad7625_device_ids,
++};
++module_platform_driver(ad7625_driver);
++
++MODULE_AUTHOR("Trevor Gamblin <tgamblin@baylibre.com>");
++MODULE_DESCRIPTION("Analog Devices AD7625 ADC");
++MODULE_LICENSE("Dual BSD/GPL");
++MODULE_IMPORT_NS(IIO_BACKEND);
 
 -- 
 2.39.2

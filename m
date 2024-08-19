@@ -1,200 +1,123 @@
-Return-Path: <linux-iio+bounces-8599-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8600-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6279D956E45
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 17:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 579EF956ECE
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 17:33:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 160E6281390
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 15:09:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14E4E282BA7
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 15:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE03E187879;
-	Mon, 19 Aug 2024 15:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339455339E;
+	Mon, 19 Aug 2024 15:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cwU7ib2z"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="csgDOIBF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2803A176231;
-	Mon, 19 Aug 2024 15:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39078487BE
+	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 15:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724080074; cv=none; b=fcMCwxNeUs4asWf+uGGyHQTptiTJjjS4sT4iqIF0aRMdkMnA/Omqp4iH2jlGVJK//z3wP/x1+NaZE17+LmdRpBGSHJga6AexsM8FLqJE/VENbY5V+gjbSlPS4yZnBQEwN+pv7yRjO3usG84LyTbtNsnJHJRYU/yrYRHY6Jt5C10=
+	t=1724081626; cv=none; b=KvUgjI+zNWyCesKnfSNp1nryhOFbtSWfAPz/L9Uof08/iE6az+a08Y3zxR7WTZjuVhWILI+ZIi0PW0XflIlq2vWjJ2cF7FYRZH4RAunH70uas6o9EZjeqIxfS2bu6Qv8ZQrzO2bnjBcBA91yxPHH+nqUq6d/lVjpeseyO9xHpeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724080074; c=relaxed/simple;
-	bh=PsSb9lq5VWjaEqxKE/Tf9owkyuT4Q/NptnHcgWMV01M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=twOQG3ByfqBU5AEZZexYV15+/KAqwFHGATPu+XLwhA3YjCtttr1+6OGW2XIJKnlTSDJ/bb+wUrePos9pbXaqug6DNgpEZltdaYwCQWJ2EWiVTYWs7JReuFQqgJ+AWQdPsFxmCd/Jr+5b/jWHwSA2hXXtNIFDNel4BYcs+K1oWzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cwU7ib2z; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724080071; x=1755616071;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=PsSb9lq5VWjaEqxKE/Tf9owkyuT4Q/NptnHcgWMV01M=;
-  b=cwU7ib2zd5/pNkZTehwTRUcyKy2nTqYI7HBwlhiSeZnZj6s70aBG5J60
-   X3x7bWVHsq+T718bG9+UDCk5+tpAfAGkXlYHbKfMCFcP0cHi9dTVtpHX7
-   lQVzh63/0bcAbr09MkbULXrhPLv70Z2bQrVZ3bzWx/HoAxuRs4VPq+yk4
-   5NOnsj1kNI4eCkOD4BuPh9i3TlZCJnlCVi2sJM6nJZ758VpR9vnh7gBwl
-   wSV+i+5joC37OiBH/NsnYbA0GjCnuBMMUW1J1et3ULoUfh8FH9+OeR19c
-   obLvKh9HBaeIADBzi+U41E+aLDRvzDC/DwNF33YxkfOz63pnMuxnzN6sc
-   w==;
-X-CSE-ConnectionGUID: f2/RYm43TUaw9TySej4oqw==
-X-CSE-MsgGUID: Y5cbajTjT3a1v+dcjOTvqw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="22476578"
-X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; 
-   d="scan'208";a="22476578"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 08:07:50 -0700
-X-CSE-ConnectionGUID: hCz563YERMGML/DfO+9aZw==
-X-CSE-MsgGUID: uh77pYOQSRm/ZFVkuvCdRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; 
-   d="scan'208";a="83606348"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 19 Aug 2024 08:07:48 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sg3yz-00096Q-1w;
-	Mon, 19 Aug 2024 15:07:45 +0000
-Date: Mon, 19 Aug 2024 23:07:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexandru Ardelean <aardelean@baylibre.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, jic23@kernel.org,
-	krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
-	michael.hennerich@analog.com, gstols@baylibre.com,
-	Alexandru Ardelean <aardelean@baylibre.com>
-Subject: Re: [PATCH 7/7] iio: adc: ad7606: add support for AD7606C-{16,18}
- parts
-Message-ID: <202408192209.IrTzVL49-lkp@intel.com>
-References: <20240819064721.91494-8-aardelean@baylibre.com>
+	s=arc-20240116; t=1724081626; c=relaxed/simple;
+	bh=Li4HtcxN71jzGrexxm+zQo8nWsEHwBcOm0yeIgTPTN0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QNtx321ceqAxXaUTAhKUlfiTQMmwJj4/H6V3L7a6yxrl6mTCHPHX0lb5LDlO7AxyYuQHSaC8dCPd6DyIfS+lL1bCpvaw3AlXFsE88AndYdDBbFSGVtgIF82fuUV4WtRk6j/D7a//BEvn99yTZGuGRPZBWDSuOLkqchfTC3daw3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=csgDOIBF; arc=none smtp.client-ip=209.85.167.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3db51b8ec15so2627580b6e.1
+        for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 08:33:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724081623; x=1724686423; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NU3U23GKCuYq/Ylsob2wz7pN+1xAA1HJWk8KaCIZfQ4=;
+        b=csgDOIBFEeB+IoqLO2ZTws42GFAOyQq7qSbzMCY0BuOh51JiGmU1DdnlEI/SBAoGhh
+         FOKulx8PLyNtAwRNl/Q1u9jCpeQUmifw3YE/P0HGVF59OtLBX4vAQnkCdBrnYqc6Yhi8
+         OO9yW+sHT3bg4AaQV1/6FEgHEa0e+Qjx2O+ShALScj6zB3dnaGg/IFe/BrurjgbMUoA/
+         xL2HS4YzsC10GAm836mGwikjnznrZ9CvHMb2LBQ/a5pfu+aID8ET3L5pYOebvC1E0xhJ
+         ACWiDnldrylYFQXd7LYzfFrPlcjb6/S5IXulTUy4RNgczO9ZkgiwN8Y3lsAUVuj5HpHx
+         BqMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724081623; x=1724686423;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NU3U23GKCuYq/Ylsob2wz7pN+1xAA1HJWk8KaCIZfQ4=;
+        b=dtCBoxYHpbwmzUSDEekbGt7QjKm3TJNdnmQgZuD/QbI2fnIZ357Rxr9++Qe7y0TuRC
+         2v8FSkQcVyc2IDTcg9Dj73voGZk8vy5qQqET4uGoyQru7W/4CTeZVz0MCzum1PZzzNUV
+         2MERwM2VLy2ToPzLmEZfyYO56FSz+8o5N8sEyXjVfS3+SUhB8TmXH7ukTkUxgF+KKUBZ
+         +o+Zk2jFW+3698yRNj7RRlpRz7eg5SKGuMIxO3GX/CLBSVuoGPgyAwoBGKP57N1OBYDX
+         gruKTOAs7dCIyyV9H4Tb7Lt3imfKE7Hk5tLtjJ1KERRHtbXiGhKQ+r2MhFBv+7iklyXq
+         aIJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWi1/CIVAIhwFs2grF8Cu2IFlCM979vf4+jE2qToBcoirz2CXAbe1Qf/GIhPBuejFX86DTYihQAwCCUO/f4vxpiYxcOTqIdRrSC
+X-Gm-Message-State: AOJu0YzUqjtOYpnr0BqMnQzIKfxS8zqeuoIlz9oIyNEl/1p8vgtjoXQp
+	zYjsi7O/iQdDJq3/IoL1IXL8kcJt145tWZAcISYhLcoiiQ0w//j8NLRBxrhcRG0=
+X-Google-Smtp-Source: AGHT+IFc2h/Q3kwclZpxHSSQoE/44UCvWbMzjNvb+iPkNIj9ksMQ4Q9fbRgkwskrfJdUapAJPCqYdA==
+X-Received: by 2002:a05:6808:330a:b0:3d9:db77:f4d3 with SMTP id 5614622812f47-3ddb4d16b89mr4129b6e.2.1724081623291;
+        Mon, 19 Aug 2024 08:33:43 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dd33d400b4sm2326958b6e.11.2024.08.19.08.33.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Aug 2024 08:33:42 -0700 (PDT)
+Message-ID: <3c4edf41-fd3b-4258-9b9e-a81b25568403@baylibre.com>
+Date: Mon, 19 Aug 2024 10:33:41 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/7] iio: adc: ad7606: add support for AD7606C-{16,18}
+ parts
+To: Alexandru Ardelean <aardelean@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc: jic23@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
+ michael.hennerich@analog.com, gstols@baylibre.com
+References: <20240819064721.91494-1-aardelean@baylibre.com>
+ <20240819064721.91494-8-aardelean@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
 In-Reply-To: <20240819064721.91494-8-aardelean@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Alexandru,
+On 8/19/24 1:47 AM, Alexandru Ardelean wrote:
+> The AD7606C-16 and AD7606C-18 are pretty similar with the AD7606B.
+> The main difference between AD7606C-16 & AD7606C-18 is the precision in
+> bits (16 vs 18).
+> Because of that, some scales need to be defined for the 18-bit variants, as
+> they need to be computed against 2**18 (vs 2**16 for the 16 bit-variants).
+> 
+> Because the AD7606C-16,18 also supports bipolar & differential channels,
+> for SW-mode, the default range of 10 V or ±10V should be set at probe.
+> On reset, the default range (in the registers) is set to value 0x3 which
+> corresponds to '±10 V single-ended range', regardless of bipolar or
+> differential configuration.
+> 
+> Aside from the scale/ranges, the AD7606C-16 is similar to the AD7606B.
+> 
+> And the AD7606C-18 variant offers 18-bit precision. The unfortunate effect
+> of this 18-bit sample size, is that there is no simple/neat way to get the
+> samples into a 32-bit array without having to do a home-brewed bit-buffer.
+> The ADC must read all samples (from all 8 channels) in order to get the
+> N-th sample (this could be reworked to do up-to-N-th sample for scan-direct).
+> There doesn't seem to be any quick-trick to be usable to pad the samples
+> up to at least 24 bits.
+> Even the optional status-header is 8-bits, which would mean 26-bits of data
+> per sample.
+> That means that when using a simple SPI controller (which can usually read
+> 8 bit multiples) a simple bit-buffer trick is required.
+> 
+Maybe it would be better to just use .bits_per_word = 18 for the 18-bit
+ADC and not worry about "simple" SPI controller support for that one?
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on jic23-iio/togreg]
-[cannot apply to linus/master v6.11-rc4 next-20240819]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexandru-Ardelean/iio-adc-ad7606-add-bits-parameter-to-channels-macros/20240819-145028
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240819064721.91494-8-aardelean%40baylibre.com
-patch subject: [PATCH 7/7] iio: adc: ad7606: add support for AD7606C-{16,18} parts
-config: i386-buildonly-randconfig-001-20240819 (https://download.01.org/0day-ci/archive/20240819/202408192209.IrTzVL49-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240819/202408192209.IrTzVL49-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408192209.IrTzVL49-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/adc/ad7606.c:796:6: warning: variable 'ret' set but not used [-Wunused-but-set-variable]
-     796 |         int ret, ch;
-         |             ^
-   1 warning generated.
-
-
-vim +/ret +796 drivers/iio/adc/ad7606.c
-
-94168a5789874a Alexandru Ardelean 2024-08-19  790  
-94168a5789874a Alexandru Ardelean 2024-08-19  791  static int ad7606_sw_mode_setup(struct iio_dev *indio_dev, unsigned int id)
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  792  {
-36b63bb57295f7 Alexandru Ardelean 2024-08-19  793  	unsigned int num_channels = indio_dev->num_channels - 1;
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  794  	struct ad7606_state *st = iio_priv(indio_dev);
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  795  	unsigned int *scale_avail_show, num_scales_avail_show;
-09d11fa081ef17 Alexandru Ardelean 2024-08-19 @796  	int ret, ch;
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  797  
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  798  	if (!st->bops->sw_mode_config)
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  799  		return 0;
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  800  
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  801  	st->sw_mode_en = device_property_present(st->dev, "adi,sw-mode");
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  802  	if (!st->sw_mode_en)
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  803  		return 0;
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  804  
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  805  	indio_dev->info = &ad7606_info_sw_mode;
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  806  
-94168a5789874a Alexandru Ardelean 2024-08-19  807  	switch (id) {
-94168a5789874a Alexandru Ardelean 2024-08-19  808  	case ID_AD7606C_18:
-94168a5789874a Alexandru Ardelean 2024-08-19  809  		num_scales_avail_show = num_channels;
-94168a5789874a Alexandru Ardelean 2024-08-19  810  		ret = ad7606c_sw_mode_setup_channels(indio_dev,
-94168a5789874a Alexandru Ardelean 2024-08-19  811  						     ad7606c_18_chan_setup);
-94168a5789874a Alexandru Ardelean 2024-08-19  812  		break;
-94168a5789874a Alexandru Ardelean 2024-08-19  813  	case ID_AD7606C_16:
-94168a5789874a Alexandru Ardelean 2024-08-19  814  		num_scales_avail_show = num_channels;
-94168a5789874a Alexandru Ardelean 2024-08-19  815  		ret = ad7606c_sw_mode_setup_channels(indio_dev,
-94168a5789874a Alexandru Ardelean 2024-08-19  816  						     ad7606c_16_chan_setup);
-94168a5789874a Alexandru Ardelean 2024-08-19  817  		break;
-94168a5789874a Alexandru Ardelean 2024-08-19  818  	default:
-94168a5789874a Alexandru Ardelean 2024-08-19  819  		num_scales_avail_show = 1;
-94168a5789874a Alexandru Ardelean 2024-08-19  820  
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  821  		/* Scale of 0.076293 is only available in sw mode */
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  822  		/* After reset, in software mode, �10 V is set by default */
-36b63bb57295f7 Alexandru Ardelean 2024-08-19  823  		for (ch = 0; ch < num_channels; ch++) {
-36b63bb57295f7 Alexandru Ardelean 2024-08-19  824  			struct ad7606_chan_scale *cs = &st->chan_scales[ch];
-36b63bb57295f7 Alexandru Ardelean 2024-08-19  825  
-36b63bb57295f7 Alexandru Ardelean 2024-08-19  826  			cs->scale_avail = ad7616_sw_scale_avail;
-36b63bb57295f7 Alexandru Ardelean 2024-08-19  827  			cs->num_scales = ARRAY_SIZE(ad7616_sw_scale_avail);
-36b63bb57295f7 Alexandru Ardelean 2024-08-19  828  			cs->range = 2;
-36b63bb57295f7 Alexandru Ardelean 2024-08-19  829  		}
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  830  
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  831  		ret = st->bops->sw_mode_config(indio_dev);
-94168a5789874a Alexandru Ardelean 2024-08-19  832  		break;
-94168a5789874a Alexandru Ardelean 2024-08-19  833  	}
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  834  
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  835  	for (ch = 0; ch < num_channels; ch++) {
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  836  		struct ad7606_chan_scale *cs;
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  837  		int i;
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  838  
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  839  		/* AD7606C supports different scales per channel */
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  840  		cs = &st->chan_scales[ch];
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  841  
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  842  		if (num_scales_avail_show == 1 && ch > 0) {
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  843  			cs->scale_avail_show = scale_avail_show;
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  844  			continue;
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  845  		}
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  846  
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  847  		scale_avail_show = devm_kcalloc(st->dev, cs->num_scales * 2,
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  848  						sizeof(*scale_avail_show),
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  849  						GFP_KERNEL);
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  850  		if (!scale_avail_show)
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  851  			return -ENOMEM;
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  852  
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  853  		/* Generate a scale_avail list for showing to userspace */
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  854  		for (i = 0; i < cs->num_scales; i++) {
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  855  			scale_avail_show[i * 2] = 0;
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  856  			scale_avail_show[i * 2 + 1] = cs->scale_avail[i];
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  857  		}
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  858  
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  859  		cs->scale_avail_show = scale_avail_show;
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  860  	}
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  861  
-09d11fa081ef17 Alexandru Ardelean 2024-08-19  862  	return 0;
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  863  }
-b5d2c422286d62 Alexandru Ardelean 2024-08-19  864  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

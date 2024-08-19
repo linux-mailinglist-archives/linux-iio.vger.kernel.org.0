@@ -1,123 +1,140 @@
-Return-Path: <linux-iio+bounces-8618-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8619-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7D3957223
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 19:28:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 819B5957291
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 19:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 638FBB2CD1C
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 17:13:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39CCB282AD6
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 17:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020BD187854;
-	Mon, 19 Aug 2024 17:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763F0188CC1;
+	Mon, 19 Aug 2024 17:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGHhgwcM"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b="MM8rOpdc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8C8185E6E;
-	Mon, 19 Aug 2024 17:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724087607; cv=none; b=sEDTtmL1Rv7KFrZ+pk4ngpoObIWVpGyV7a5CEcE8JLldsUhTow7AZHcZh4n0WrHvA/5FrMIjPqKiZnXR1doJW6mnK3zCFxCSlCVGlqHQeo0PETJ5+RykKtek8dD1Ip06M5uOpy/Kqnk1dW8x6XmHXQdvJTqp+EKwVeFbi63jUWo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724087607; c=relaxed/simple;
-	bh=rdULt6pgnvPdbgLF9J0oo7ynjstIM78aVEn7qoTMvlU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rJMEFmK7TfQ6gW0ZcikPY8eVbdzzlf+o3puaOqq1fRul2XweBdtOYAqMAacxnLsgdDjGCKL3fs5wyUWmt3LumdoENGgD2IRrSrS+Hyts+UhOo3RO9QXPOc2RKDwohWo1DvC6a9z0R5ikKw9PUf1MAZnqUyvdnpR/YFoLiKbZh0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGHhgwcM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EE3C4AF0E;
-	Mon, 19 Aug 2024 17:13:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724087607;
-	bh=rdULt6pgnvPdbgLF9J0oo7ynjstIM78aVEn7qoTMvlU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RGHhgwcM5zdbEbDwWVOPRrGY+xiK7S9IECv7bn41EQee+3AciVq4D4+usNFP7lZU8
-	 d+dQ9UkCqNzKGLOLquIMhQeveDC7s9ZD0j7TThhbVP7IZcB376EJBTBitm02Qfz3iB
-	 hJc+ahNk7ZDm8svys76EeRB2fHeF+bY0KjwxLHrx2XikIIOFKofmFLTrG49CIx8L6G
-	 NLsVYskRSsgArVMOWiFILC7f/69wrk7Z54VibC6Fy7CUUQXecgXBBzYmOGVYysQo6Z
-	 xqAA1oG5/jfnOxLb1V3JctQ39GWo9CaEvZ4mwxvBurm9HX8KFXS65NrtlsBlas7I4f
-	 qhvVYjg1Tyf4A==
-Date: Mon, 19 Aug 2024 18:13:22 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: st,stm32-adc: add top-level constraints
-Message-ID: <20240819-outflank-variety-3fcb7ca0338a@spud>
-References: <20240818172951.121983-1-krzysztof.kozlowski@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8E7D531;
+	Mon, 19 Aug 2024 17:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724090376; cv=pass; b=XaHsoJYriE1sjcmSYUnjrN6f2q0dpuMlOFdXsLnVcYqaPDCRnrdHasDgo5S402w+f9uPx2584ZPqgHGBQybSXL2VGoiv6Qm06haks/8Adix/GRyseNJjSSadkUI4XLlDtqkBaq5Cw79XXJ5zX7eQW1rIFTvNhRwAXboO1bH8+ko=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724090376; c=relaxed/simple;
+	bh=o6P0nZ14SojOcYFxiCK7txSvI4RmGN+OJHmCKCGY1S8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pw79p/KElsgZ/zJcb7AyDvakGU7Vqx3dVl9sQMJfep2/3YbJkXb8xDNI6Z6QhTB7xxJYAJ4mwLrfq1hqr3cX3PohjNOTcTcV2miwg58LqL3jYZAsryPGLzV4EcGpvXJ0Ghjx0LD4amuOSVzDTTMn7nSuSu8QLzdBqvQGp6An1Yw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b=MM8rOpdc; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Delivered-To: sebastian.reichel@collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1724090294; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=J6r5s7/Z8JeFN/26tvSLxRD9tuH13mCXG//biHkwArz4lxH9bEabeMCfhvwX1Jz6HI+dw6snHomGANxT1hNZ4gmBIBpe1s52pgQDfjLJDsrus4+aGyRLSHZwiI1OK2/btb4jej9p9puqNR4b+OuBMRSzaUI9Cizfk+2ugLtMiTM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724090294; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=pNG01ooGieLYITjXohGoGYVq/b4PMFucDskno7kh9Yo=; 
+	b=Booe36Q8WD2x0h5CZNUq1hzMG6xAMF+j7zKV9UZBzEgUZVpK2heJBENHFKJBiZ5VchEQOO9xOMfac2H4zjNZ29O+Ta1PtcMbgpD9GzE0e8GO3yc06cHXQorKxx8AcbAjkuNOop7F20t0Y3nLwoNJomZM+it9Ecc2Y4ZP1JOhqJ0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=detlev.casanova@collabora.com;
+	dmarc=pass header.from=<detlev.casanova@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724090294;
+	s=zohomail; d=collabora.com; i=detlev.casanova@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+	bh=pNG01ooGieLYITjXohGoGYVq/b4PMFucDskno7kh9Yo=;
+	b=MM8rOpdcrt7xe+eScEzW5zHxUcQjxiueHE/FDnRu8/Pe0U3Af0w1LI2u+gCz+/G/
+	975sA/Tg6i+P+y1npppA4SDz/yTTZtVhb8uieAVLaVB2m/QZkDJVs3FboGR/vh1tRmR
+	2i9Gfc92wHxxstL1Gg65syWLiCQzCrdWZmGFAAi8=
+Received: by mx.zohomail.com with SMTPS id 17240902923861007.2839847459757;
+	Mon, 19 Aug 2024 10:58:12 -0700 (PDT)
+From: Detlev Casanova <detlev.casanova@collabora.com>
+To: linux-kernel@vger.kernel.org,
+ Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Lee Jones <lee@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Chris Morgan <macromorgan@hotmail.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>,
+ Muhammed Efe Cetin <efectn@protonmail.com>, Andy Yan <andyshrk@163.com>,
+ Jagan Teki <jagan@edgeble.ai>, Dragan Simic <dsimic@manjaro.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Shresth Prasad <shresthprasad7@gmail.com>, Ondrej Jirman <megi@xff.cz>,
+ Weizhao Ouyang <weizhao.ouyang@arm.com>, Alexey Charkov <alchark@gmail.com>,
+ Jimmy Hon <honyuenkwun@gmail.com>, Finley Xiao <finley.xiao@rock-chips.com>,
+ Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+ Elaine Zhang <zhangqing@rock-chips.com>, Liang Chen <cl@rock-chips.com>,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-i2c@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-serial@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
+Date: Mon, 19 Aug 2024 13:59:45 -0400
+Message-ID: <23696360.6Emhk5qWAg@trenzalore>
+In-Reply-To: <21547916.mFnZMskM5D@diego>
+References:
+ <20240802214612.434179-1-detlev.casanova@collabora.com>
+ <20240802214612.434179-10-detlev.casanova@collabora.com>
+ <21547916.mFnZMskM5D@diego>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Y0beHK2OB/Ya0e9O"
-Content-Disposition: inline
-In-Reply-To: <20240818172951.121983-1-krzysztof.kozlowski@linaro.org>
-
-
---Y0beHK2OB/Ya0e9O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-ZohoMailClient: External
 
-On Sun, Aug 18, 2024 at 07:29:51PM +0200, Krzysztof Kozlowski wrote:
-> Properties with variable number of items per each device are expected to
-> have widest constraints in top-level "properties:" block and further
-> customized (narrowed) in "if:then:".  Add missing top-level constraints
-> for clock-names.
+On Wednesday, 14 August 2024 11:31:04 EDT Heiko St=C3=BCbner wrote:
+> Hi Detlev,
 >=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
-
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
->  Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Am Freitag, 2. August 2024, 23:45:36 CEST schrieb Detlev Casanova:
+> > This device tree contains all devices necessary for booting from network
+> > or SD Card.
+> >=20
+> > It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
+> > SDHCI (everything necessary to boot Linux on this system on chip) as
+> > well as Ethernet, I2C, SPI and OTP.
+> >=20
+> > Also add the necessary DT bindings for the SoC.
+> >=20
+> > Signed-off-by: Liang Chen <cl@rock-chips.com>
+> > Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
+> > Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+> > Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+> > [rebase, squash and reword commit message]
+> > Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml =
-b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-> index ec34c48d4878..ef9dcc365eab 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
-> @@ -54,7 +54,9 @@ properties:
->            It's not present on stm32f4.
->            It's required on stm32h7 and stm32mp1.
-> =20
-> -  clock-names: true
-> +  clock-names:
-> +    minItems: 1
-> +    maxItems: 2
-> =20
->    st,max-clk-rate-hz:
->      description:
-> --=20
-> 2.43.0
+> looks like (since 2019) there is a strong suggestion for having a soc nod=
+e.
 >=20
+> See Krzysztof's mail in
+>   =20
+> https://lore.kernel.org/all/6320e4f3-e737-4787-8a72-7bd314ba883c@kernel.o=
+rg
+> / that references
+>     Documentation/devicetree/bindings/writing-bindings.rst [0]
+>=20
+> So I guess we should probably follow that - at least for new socs for now.
 
---Y0beHK2OB/Ya0e9O
-Content-Type: application/pgp-signature; name="signature.asc"
+That make sense, but what is exactly covered by MMIO devices ? everything=20
+except cpus, firmware, psci and timer ?
 
------BEGIN PGP SIGNATURE-----
+> Heiko
+>=20
+> [0]
+> https://elixir.bootlin.com/linux/v6.11-rc1/source/Documentation/devicetre=
+e/
+> bindings/writing-bindings.rst#L90
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZsN9MgAKCRB4tDGHoIJi
-0lWSAP4r3VaV8vxUGxyk/Gd68syU0Qbdc0hMEQWz/zPKArLpjgEAkmLmOnGOUeXx
-T1faMHwgTOz4iMURjAUYjB9JJX301wI=
-=/tpI
------END PGP SIGNATURE-----
 
---Y0beHK2OB/Ya0e9O--
+
+
 

@@ -1,144 +1,248 @@
-Return-Path: <linux-iio+bounces-8621-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8622-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51E29574F8
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 21:51:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7026957541
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 22:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D85031C23E9F
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 19:51:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28EF11F21F4C
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 20:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE35F1DF66D;
-	Mon, 19 Aug 2024 19:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB5A1DD392;
+	Mon, 19 Aug 2024 20:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="E18kVlsu"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b="a0e9wlXC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C04E1DD38D
-	for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 19:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724097046; cv=none; b=HLuDuy2KKO/9dPXs04ADtwvENC1MVm39ljepHty7PEESoAKLCDdMvCOSRJBjFYKivOgrNYMlEJaeawYb+hfsFZ7td52YLNrY8VfboAJbYUmqMWGKzJn/vH9kYBcSz2BiEDq1WMOD4uVTXM1QFTGZG/+BGIUgXnBPJA8KTvTbyOQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724097046; c=relaxed/simple;
-	bh=jO29POK3z1BLcm8HkuO4Cegavmvack2+hlF/5WU8GyA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VRqI5kLOXbAAu+7q/ByQedl/jtz2NF2I484TOPoJTe+LY6LUfAmPd68w4Bj5I9H30a/rF6GO8lzuv3DaFaNS/cwKll4E1VM11kTPVvOKS/yT3sBdY+nI6N4hlE3LhnN1f5+I7UvgRy2uhOzzT0V/+nlxJ1zqUp/gt1bO2EGKif8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=E18kVlsu; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3db1eb76702so3438340b6e.0
-        for <linux-iio@vger.kernel.org>; Mon, 19 Aug 2024 12:50:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724097043; x=1724701843; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CqNKkZ9AVI01Zp+n7dR1XvaLaD7tPIHVV7B+MTLeBAk=;
-        b=E18kVlsu68n83V4oKQO8Bnzmr3KPy/JftPTi0ffB1y9kSsPVVGuZxBRAk6pn76ksfl
-         D7cll/PwJYj+IU+mZJWk66N5yZzJUTM35nF1UjPXzD93KykJjcImAcLUc0IvELiGiDpZ
-         6L0JhdPc0MdBeOUR3i2Pk5dH/wz2zUigJtJVmGn2TigOweSx3771bbd6Eji5GFwF+lPC
-         WcFYbnpDn9IpFHh3S9Yl7C5EwmOczSnLiDkF88ntQylH7t+PllLRTL4t/Q+PG0MLjx8f
-         K7Pl+c60afKryQy8Pr2mP6cYElhqYcimrHUraVTyCtpRxKGuIx2zdyvyzI+W+TgIaVy6
-         8AMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724097043; x=1724701843;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CqNKkZ9AVI01Zp+n7dR1XvaLaD7tPIHVV7B+MTLeBAk=;
-        b=ng6SYzoC6vhQwvEIo1hU8SpwsKKTBXhvdUBPFfBsHBrZE1uf8PMZsvVCaOWBuRa77m
-         6oZK4a/gfsfB8y4tudCDOmnzyrGCOvM0wAkJ6JHxzFA29d4zWv5uvk6iMo6RKsDyEKog
-         q+YMCb4BTGlu+n0mDeP5Qpp3LZnF6pJl6b96ZzeHDsBtGAc3j795XjAYIZAYlF0D+ly7
-         tjJTWjMPsJVFiGO2IXun5emilxg7BlDjOfOxzYPJnxZtMn6JXQE31pf0wK2A/pM857v1
-         XEEEd1CiE/mUs9kMVpBDQFWha9kykooOWDPe9uVym63yq8VMZFE/69xKCR0uNL7iu7ao
-         dsqA==
-X-Gm-Message-State: AOJu0Yx2A5E5UsrGP0BTDln6LAdDyRH45ptlzqJBByGQqCkRYA8rNEwe
-	bw2Ihh5UYBI3w7b+Wy8//ecoK2cVIKMnOaKkSK5SxnhFO5KQ8II1MPw6ZiwGld0=
-X-Google-Smtp-Source: AGHT+IH3NZLD6naQAd620byBrGpPpV42gGrLR816WbcxoFuLqgsRjryfMf5ic8YQKRyhO2VYJrpXow==
-X-Received: by 2002:a05:6870:7f0c:b0:269:2708:aff6 with SMTP id 586e51a60fabf-2701c37eb7emr14217799fac.16.1724097043320;
-        Mon, 19 Aug 2024 12:50:43 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2702589f29bsm2487392fac.19.2024.08.19.12.50.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Aug 2024 12:50:42 -0700 (PDT)
-Message-ID: <386eec54-025a-460e-8ad0-d1ae87ab7c85@baylibre.com>
-Date: Mon, 19 Aug 2024 14:50:42 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CFF18E0E;
+	Mon, 19 Aug 2024 20:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724097954; cv=pass; b=dxI+/YmzoZ/JEqmCqHZAyxKZq/O51H5e733OB6wBFDklXw+wUza6AXQdl7Ib7iYVeyZerxhPFvlUVnjuWb9D1A779JeYUDzKQ/9NRS/ijrwliSQvf1v8JfBXXhUgbnn7zuAUniGc/tDe3NzVlDZeOJJQnXXT2aV4eTMCv1S6D8Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724097954; c=relaxed/simple;
+	bh=MOMyK03eJyKQOGb8+b6fAg9EwcsINxYUyot/w6sRaY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DvaryNk+7Mu9Z1Mk6fiuVZuC0og0OcdbLUhbr4wzRgUawfcl5hg7UkCyXcoVt52vnm2gDr6PVS2ZDBDmQYLgzJCkq4LxgDJYPDQ1+hblSSZ7EKwRc+K4QJqua0nPlTKKF6to+PML8++EutVQSDrShm1ch3jrpWuBeH3Z1vt8GgA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b=a0e9wlXC; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Delivered-To: sebastian.reichel@collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1724097881; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=mbUnXMxQcnVKk11zc5ntwAcnrBBrfHYc79EHMLCWKn5hDAToFvfc1vAp5I5LFLVjWZs2zmZPiSirc7dLrhBI4q5l3AtUKYh7X+HG6aExvhm7g9A9hvCGVaF7El7Jz3FsX13HGkUqFZtihZdJcmQkOAGMks1+LHxIihLvEp6swpw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724097881; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=iAA8ouM6M/6kyeb+SrOHPtwZsGUYRPGPpNqj8UiAUpY=; 
+	b=hjLtvJj3FSGEcuvYGirBRak9OxSZhSZlPIHBMWr0SkonXTpJDgubKmg8jrLlvb8JRD8nrfa8DHQJI0Np3p9H7NeF0KEzPhrteVhuBBt08xFIMqqXukhBw91DCXeE0ZPfvIyZO8xMcaAbHjjubPtUCwpCpwNLmUeakzt8B2B1nRc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=detlev.casanova@collabora.com;
+	dmarc=pass header.from=<detlev.casanova@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724097881;
+	s=zohomail; d=collabora.com; i=detlev.casanova@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+	bh=iAA8ouM6M/6kyeb+SrOHPtwZsGUYRPGPpNqj8UiAUpY=;
+	b=a0e9wlXCB7HKm0DAbBwhKl41bOz9h4d/rV3kzgUZKYrlZ8h7gQImGySlTwv571zT
+	8iNGG6SiTKkMvinFqdhrbHNxMVjc8OVup8C2rybL+BooMVy1wPV6zvLLl2H7GIzOoFA
+	oWALsvdVit+8vfOcXWLluYpzi0Pk50AFsez/ojE0=
+Received: by mx.zohomail.com with SMTPS id 1724097879493204.13829241998803;
+	Mon, 19 Aug 2024 13:04:39 -0700 (PDT)
+From: Detlev Casanova <detlev.casanova@collabora.com>
+To: linux-kernel@vger.kernel.org, Johan Jonker <jbx6244@yandex.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Chris Morgan <macromorgan@hotmail.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>,
+ Muhammed Efe Cetin <efectn@protonmail.com>, Andy Yan <andyshrk@163.com>,
+ Jagan Teki <jagan@edgeble.ai>, Dragan Simic <dsimic@manjaro.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Shresth Prasad <shresthprasad7@gmail.com>, Ondrej Jirman <megi@xff.cz>,
+ Weizhao Ouyang <weizhao.ouyang@arm.com>, Alexey Charkov <alchark@gmail.com>,
+ Jimmy Hon <honyuenkwun@gmail.com>, Finley Xiao <finley.xiao@rock-chips.com>,
+ Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+ Elaine Zhang <zhangqing@rock-chips.com>, Liang Chen <cl@rock-chips.com>,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-i2c@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-serial@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
+Date: Mon, 19 Aug 2024 16:06:12 -0400
+Message-ID: <1944590.atdPhlSkOF@trenzalore>
+In-Reply-To: <c5014fe3-130b-4ace-a66e-8773a9a4f1dc@yandex.com>
+References:
+ <20240802214612.434179-1-detlev.casanova@collabora.com>
+ <20240802214612.434179-10-detlev.casanova@collabora.com>
+ <c5014fe3-130b-4ace-a66e-8773a9a4f1dc@yandex.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] iio: ABI: audit calibscal and calibbias attributes
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-References: <20240815-iio-abi-calib-audit-v1-0-536b2fea8620@baylibre.com>
- <20240817155203.4525f9f3@jic23-huawei>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20240817155203.4525f9f3@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-ZohoMailClient: External
 
-On 8/17/24 9:52 AM, Jonathan Cameron wrote:
-> On Thu, 15 Aug 2024 12:22:09 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
+Hi Johan,
+
+On Thursday, 15 August 2024 05:30:25 EDT Johan Jonker wrote:
+> Some comments below. Whenever useful.
 > 
->> While preparing to add some new variants of the calib{scale,bias} and
->> calib{scale,bias}_available attributes, we noticed that quite a few
->> of the existing attributes were not documented.
-> Thanks for tidying these up.
+> On 8/2/24 23:45, Detlev Casanova wrote:
+> > This device tree contains all devices necessary for booting from network
+> > or SD Card.
+> > 
+> > It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
+> > SDHCI (everything necessary to boot Linux on this system on chip) as
+> > well as Ethernet, I2C, SPI and OTP.
+> > 
+> > Also add the necessary DT bindings for the SoC.
+> > 
+> > Signed-off-by: Liang Chen <cl@rock-chips.com>
+> > Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
+> > Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+> > Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+> > [rebase, squash and reword commit message]
+> > Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+> > ---
 > 
-> There are some scripts about (I think Mauro Carvalho Chehab wrote them) that
-> scan sysfs on a particular machine and report missing docs, but we've
-> never put in place anything that looks at the code to figure them out.
-
-Thanks for the tip. Currently, 
-
-	./scripts/get_abi.pl undefined --search-string=iio
-
-doesn't catch anything because we have documented the directory
-
-	What: /sys/bus/iio/devices/iio:deviceX
-
-which gets translated to the regex
-
-	/sys/.*/iio\:device.*
-
-which matches everything under the iio:device directory.
-
-Maybe `[XYZ]` should get converted to `[^/]*` instead of `.*`?
-
+> [..]
 > 
-> Gut feeling, too fiddly to maintain such a script for constructed attributes
-> my maybe could be done for const ones with the standard macros
-> (so pretty much nothing in IIO :)
+> > diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> > b/arch/arm64/boot/dts/rockchip/rk3576.dtsi new file mode 100644
+> > index 0000000000000..00c4d2a153ced
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+> [..]
 > 
-> Applied,
+> For uart0..uart11:
+> > +
+> > +	uart1: serial@27310000 {
+> > +		compatible = "rockchip,rk3576-uart", "snps,dw-apb-
+uart";
+> > +		reg = <0x0 0x27310000 0x0 0x100>;
+> > 
+> > +		interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
 > 
-> Jonathan
+> "interrupts" are sort just like other properties. A mix of sort styles
+> exists, so check all nodes.
+
+Ok, so it should be sorted alphabetically with the following exceptions:
+- 'compatible' and 'reg.*' on top
+- "#.*" at the end, sorted
+- "status" last.
+
+Is that right ?
+
+> > +		clocks = <&cru SCLK_UART1>, <&cru PCLK_UART1>;
+> > +		clock-names = "baudclk", "apb_pclk";
+> > 
+> > +		reg-shift = <2>;
+> > +		reg-io-width = <4>;
 > 
+> Move below "reg".
 > 
->>
->> ---
->> David Lechner (4):
->>       iio: ABI: document calibscale_available attributes
->>       iio: ABI: sort calibscale attributes
->>       iio: ABI: add missing calibscale attributes
->>       iio: ABI: add missing calibbias attributes
->>
->>  Documentation/ABI/testing/sysfs-bus-iio | 64 ++++++++++++++++++++++++++-------
->>  1 file changed, 51 insertions(+), 13 deletions(-)
->> ---
->> base-commit: d505a9dc8de83df2a8ce8c9e780f7b29887f34af
->> change-id: 20240815-iio-abi-calib-audit-fcc21b1c6892
+> > +		dmas = <&dmac0 8>, <&dmac0 9>;
+> > +		pinctrl-names = "default";
+> > +		pinctrl-0 = <&uart1m0_xfer>;
+> > +		status = "disabled";
+> > +	};
+> > +
+> > +	pmu: power-management@27380000 {
+
+[...]
+
+> > +				#address-cells = <1>;
+> > +				#size-cells = <0>;
+> > +				clocks = <&cru ACLK_VOP>,
+> > +					 <&cru HCLK_VOP>,
+> > +					 <&cru HCLK_VOP_ROOT>;
+> > +				pm_qos = <&qos_vop_m0>,
+> > +					 <&qos_vop_m1ro>;
+> > +
+> > +				power-domain@RK3576_PD_USB {
 > 
+> Since when is USB part of VOP?
+> Recheck?
+
+The TRM doesn't tell me anything, but If I don't put it as a child of VOP, it 
+just hangs when the kernel tries to shut it down.
+
+[...]
+
+> > +
+> > +	pinctrl: pinctrl {
+> > +		compatible = "rockchip,rk3576-pinctrl";
+> > +		rockchip,grf = <&ioc_grf>;
+> > +		rockchip,sys-grf = <&sys_grf>;
+> > +		#address-cells = <2>;
+> > +		#size-cells = <2>;
+> > +		ranges;
+> > +
+> > 
+> > +		gpio0: gpio@27320000 {
+> 
+> The use of gpio nodes as subnode of pinctrl is deprecated.
+> 
+> patternProperties:
+>   "gpio@[0-9a-f]+$":
+>     type: object
+> 
+>     $ref: /schemas/gpio/rockchip,gpio-bank.yaml#
+>     deprecated: true
+> 
+>     unevaluatedProperties: false
+
+I tried putting the gpio nodes out of the pinctrl node, they should work 
+because they already have a gpio-ranges field.
+But unfortunately, that seem to break the pinctrl driver which hangs at some 
+point. Maybe some adaptations are needed to support this, or am I missing 
+something ?
+
+> > +			compatible = "rockchip,gpio-bank";
+> 
+> When in use as separate node the compatible must be SoC related.
+> 
+> Question for the maintainers: Extra entry to rockchip,gpio-bank.yaml ??
+> 
+> > +			reg = <0x0 0x27320000 0x0 0x200>;
+> > +			interrupts = <GIC_SPI 153 
+IRQ_TYPE_LEVEL_HIGH>;
+> > +			clocks = <&cru PCLK_GPIO0>, <&cru 
+DBCLK_GPIO0>;
+> > +
+> > +			gpio-controller;
+> > +			#gpio-cells = <2>;
+> > +			gpio-ranges = <&pinctrl 0 0 32>;
+> > +			interrupt-controller;
+> > +			#interrupt-cells = <2>;
+> > +		};
+> > +
+> > +		gpio1: gpio@2ae10000 {
+> > +
+> > +		gpio2: gpio@2ae20000 {
+> > +
+> > +		gpio3: gpio@2ae30000 {
+> > +
+> > +		gpio4: gpio@2ae40000 {
+> > +	};
+> > +};
+> > +
+> > +#include "rk3576-pinctrl.dtsi"
+
+Regards,
+
+Detlev
+
+
 
 

@@ -1,134 +1,202 @@
-Return-Path: <linux-iio+bounces-8636-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8637-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022C6958BCC
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 17:59:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 244B3958C1E
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 18:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9916B1F2398C
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 15:59:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41BA51C20E90
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 16:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEFE1B8E8A;
-	Tue, 20 Aug 2024 15:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B141AB52A;
+	Tue, 20 Aug 2024 16:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z3GAUfFB"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Izyxd3Jl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0417196C67
-	for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 15:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3D8194145;
+	Tue, 20 Aug 2024 16:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724169538; cv=none; b=Rv2d3YDOHefCKUUnpEezD18dfLpVaFsXRVOcNMxi73lpawzVealW/EdLvD19JO37jAAAzOxoaWzA7izY79Y8k3aV4ID9BTf5VuOoxeTWKZWeW6FUH39lyAyDV2msDiFfVSNp6N1CzwXi4fehSynoXpTcgnU48kqtgYGNb6EmpoI=
+	t=1724170880; cv=none; b=d5kIId9HnCf2B0fKadUJdSQUEhhUvGCC0NtsVE+b7EyEhs95HdsFhtX0CKYFE1fg8wAlAzbRuUSsIQs0sxKGp+o+vxqdNnPxCBmzYd9/HXAd5QCCPce7HiB2mVujFzdRzkOglCzI6lvofwtCLeHZ1n+EO1SOerfKuKawSYB8B6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724169538; c=relaxed/simple;
-	bh=plzPScmSdjLox3OYdz9t2P7i8g4UtSg4NyCpXW7I1m4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tsgZFZM/BCR9UAmA5zEKWK0uOrvId2zuuFi5K8kVg4Ctz+O0/Xnu7s2VPt6Re0B082xEMX618f6J7soFIpKg91qnkl6lhC+ipCsAjRnGD1h3jBVXaWqb2Xu6/hxLy+ye8u9+4/PnaUcP6zVebKg9Q9Ah/ojcUzooBDnq5fbZ/e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z3GAUfFB; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3db18842a4dso3401303b6e.0
-        for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 08:58:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724169536; x=1724774336; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rfB87M+ajklff9IR1StKsGavCV4e8E2kBLAYS9A+WSE=;
-        b=z3GAUfFBJb9Fr9y5ct6dqH57lQtBem4fP09z9PPB3juPZdXZ3vKuVq1cyArYpChE7s
-         ReuskLcI3i0+xiEqEjiPIS1Ko2dAzc3WQiF+ez993HRqzOWaWrSt1n4C/SGX/tQUSiWQ
-         VaRiIfewuTLRnWMPz+PGz/BBQ1qZisFx+rR6KtDBkyieUxYHH3lhC7xDmzJIhgwBROAa
-         jhxf5R8hmmYm828bakmtbL6OEiuT51mPyUXiF9j9qd7VAbyeLIxmkZrF0WrNzPJWDHNF
-         thM2DBmBwn6F7PPtAJvuHbAydhEzJ+n14yIbyLCj2sjqEyrXr3JovDl7w1p0Le8g4mGw
-         K4zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724169536; x=1724774336;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rfB87M+ajklff9IR1StKsGavCV4e8E2kBLAYS9A+WSE=;
-        b=a5PrSFOx+4CJ9FUbHR9gyQb/96bwWssUB4HvFqZp6Pe0HTpwdUkM8zbdMJuM9KRfq2
-         uK85JzyL1Z/FOZFr4RGC0cAZTs/fpjD7DRkk4FsDkIWllU1ykK7kuhi+F6TpZkKBx7Ta
-         8s+Z0yooOsMHPhz0OxIV0trzDc7fbizEDMx7qte/rc3CRyFpK6rdEt6artpwYJDZ31Vh
-         l6+9TZ2X9JtqpUb2hfC5z83kesM1I+e2mk/nYS5GnPTLyvpFuPJqB7eneFR6p16Cyllg
-         WT5HiZvAelo1IrY9BaYtVOHljJygnPKD/nD5ArN8WOwEgNLiyYCQyJZO3WEZnvgS7ZR1
-         qtPA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgF4ixTpG3ulMWK7f3eQ7NBxC9WAinFeeUWE8+KK5Fp+yQ3gun9MLafy/jES0tv4eTxgH5GOP4ETjM4KgQVnMBiRbaJd7pv8i7
-X-Gm-Message-State: AOJu0YzVjtqADFqFg/NA3/lSBvMvnG9TTrnAb4Y4Behkp1cGpQYpMkR4
-	VGylZBVNHz6UkKoe7/8CFy9SRV8vebLlWJEDmARR1yacwT0yhKni6QIzVmwgD9Q=
-X-Google-Smtp-Source: AGHT+IEeoSdOkv8tmbc7KwjQ9tuFv/ugArVpvf2FmLeUfmeuA5fXqNWShnl4Dr6Ie3etUsR24flJvw==
-X-Received: by 2002:a05:6808:15a3:b0:3d9:dbe9:7cee with SMTP id 5614622812f47-3ddb9cbf10emr1211638b6e.14.1724169535714;
-        Tue, 20 Aug 2024 08:58:55 -0700 (PDT)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dd33d5a3efsm2872718b6e.17.2024.08.20.08.58.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 08:58:55 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 20 Aug 2024 10:58:38 -0500
-Subject: [PATCH 4/4] iio: ABI: document ad4695 new attributes
+	s=arc-20240116; t=1724170880; c=relaxed/simple;
+	bh=xNL5RGtLNIhabs4Hd3NAa0FXp9Ud+N33ySeuzPmNO/Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LokMgbVrqiRtz2o7jPa+DCtDmRAHYUfyehUzqFRgF87MKeBAIK0fCaCDZqWN+12tdBgMfGa2eWdHY6CHzADx8MEBKZfiw4dSx/jWhrJ0jwtbCn9skFwrKG3/oQisTHsLejQR8LXXd7zcgdeqNfuSTjepmNLX1YIUs3xoc/aid+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Izyxd3Jl; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B0F0FC0009;
+	Tue, 20 Aug 2024 16:21:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1724170869;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uKCyGXB2y2Cdc43x8y99O9EX9a/Mff/KPXgIgmFwkX4=;
+	b=Izyxd3JlQY3bI7qjYRGGRzXKzEjqIXWUTA8SwOGLeXBsWJ9bflw1XafR+AC3k8ODhhiI1O
+	ZagoBAbsc0ixWaEUayWT4rJJrL0oHuggwExnbhpVXF5mVtampLNhrjhGX2SZTj59cz+GUa
+	I87ta0Cp5NVMQrmcKglNF2zoyzlwITAyYkrDMlO4V6CD/d0nMFbKGtLklNrgYwZqxud+gJ
+	zJTHLC2mVHl7iV4sKUHjsSSAGbrpSfcvDeKxK1FVkCJa6HcseWP5cRvbzM+Du+JqiGCjQg
+	aBm/VIg+Fu89whSIm4a3whCGPxh4nszuZamznzowxyQefb+pDGOEtvBDjkGZrw==
+Message-ID: <89aabfbe-79bf-4da7-be44-b6cbd92b72a9@bootlin.com>
+Date: Tue, 20 Aug 2024 18:21:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml:
+ Add Sophgo CV18XX SARADC binding
+To: Conor Dooley <conor@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>,
+ Inochi Amaoto <inochiama@outlook.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com>
+ <20240812-sg2002-adc-v4-1-599bdb67592f@bootlin.com>
+ <20240812-unwary-mongrel-9f6758bf624c@spud>
+Content-Language: en-US
+From: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+In-Reply-To: <20240812-unwary-mongrel-9f6758bf624c@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240820-ad4695-gain-offset-v1-4-c8f6e3b47551@baylibre.com>
-References: <20240820-ad4695-gain-offset-v1-0-c8f6e3b47551@baylibre.com>
-In-Reply-To: <20240820-ad4695-gain-offset-v1-0-c8f6e3b47551@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.1
+X-GND-Sasl: thomas.bonnefille@bootlin.com
 
-The ad4695 driver now supports calibration using the
-in_voltageY_calib{scale,bias}[_available] attributes.
+Hello Conor,
 
-Only one of these was documented before. This adds rest.
+On 8/12/24 5:53 PM, Conor Dooley wrote:
+> On Mon, Aug 12, 2024 at 05:00:55PM +0200, Thomas Bonnefille wrote:
+>> The Sophgo SARADC is a Successive Approximation ADC that can be found in
+>> the Sophgo SoC.
+>>
+>> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+>> ---
+>>   .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     | 85 ++++++++++++++++++++++
+>>   1 file changed, 85 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+>> new file mode 100644
+>> index 000000000000..846590808e5f
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+>> @@ -0,0 +1,85 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/adc/sophgo,cv18xx-saradc.yaml#
+> 
+> Filename matching the compatible please.
+> 
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title:
+>> +  Sophgo CV18XX SoC series 3 channels Successive Approximation Analog to
+>> +  Digital Converters
+>> +
+>> +maintainers:
+>> +  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+>> +
+>> +description:
+>> +  Datasheet at https://github.com/sophgo/sophgo-doc/releases
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: sophgo,cv1800b-saradc
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  clocks:
+>> +    maxItems: 1
+>> +
+>> +  '#address-cells':
+>> +    const: 1
+>> +
+>> +  '#size-cells':
+>> +    const: 0
+>> +
+>> +patternProperties:
+>> +  "^channel@[0-3]+$":
+>> +    $ref: adc.yaml
+>> +
+>> +    description: |
+> 
+> This | is not required.
+> 
+>> +      Represents the channels of the ADC.
+>> +
+>> +    properties:
+>> +      reg:
+>> +        description: |
+>> +          The channel number. It can have up to 3 channels numbered from 0 to 2.
+>> +        items:
+>> +          - minimum: 0
+>> +            maximum: 2
+> 
+> Is this sufficient to limit the number of channels to 3? Aren't you relying
+> on the unique unit addresses warning in dtc to limit it, rather than
+> actually limiting with min/maxItems?
+> 
+It seems like I can't use min/maxItems on this property. I think that it 
+is using size-cells + address-cells to deduce that the number of items 
+should be equal to 1.
+Looking at the dtschema repository it seems to be the case in reg.yaml 
+with address-cells/size-cells = 2/2, 1/1 and 2/1.
+If I try to use maxItems here :
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- Documentation/ABI/testing/sysfs-bus-iio | 3 +++
- 1 file changed, 3 insertions(+)
+     properties:
+       reg:
+         maxItems: 1
+         items:
+           - minimum: 0
+             maximum: 2
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 345d58535dc9..89943c2d54e8 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -541,6 +541,7 @@ What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_calibbias
- What:		/sys/bus/iio/devices/iio:deviceX/in_proximity0_calibbias
- What:		/sys/bus/iio/devices/iio:deviceX/in_resistance_calibbias
- What:		/sys/bus/iio/devices/iio:deviceX/in_temp_calibbias
-+What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibbias
- What:		/sys/bus/iio/devices/iio:deviceX/out_currentY_calibbias
- What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_calibbias
- KernelVersion:	2.6.35
-@@ -556,6 +557,7 @@ What:		/sys/bus/iio/devices/iio:deviceX/in_accel_calibbias_available
- What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_calibbias_available
- What:		/sys/bus/iio/devices/iio:deviceX/in_temp_calibbias_available
- What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_calibbias_available
-+What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibbias_available
- What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_calibbias_available
- KernelVersion:  5.8
- Contact:        linux-iio@vger.kernel.org
-@@ -603,6 +605,7 @@ Description:
- What:		/sys/bus/iio/devices/iio:deviceX/in_illuminanceY_calibscale_available
- What:		/sys/bus/iio/devices/iio:deviceX/in_intensityY_calibscale_available
- What:		/sys/bus/iio/devices/iio:deviceX/in_proximityY_calibscale_available
-+What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_calibscale_available
- KernelVersion:	4.8
- Contact:	linux-iio@vger.kernel.org
- Description:
+I get this strange error message from `make dt_binding_check`:
 
--- 
-2.43.0
+DTEX 
+Documentation/devicetree/bindings/iio/adc/sophgo,cv1800b-saradc.example.dts
+/home/thomas/linux/Documentation/devicetree/bindings/iio/adc/sophgo,cv1800b-saradc.yaml: 
+patternProperties:^channel@[0-2]+$:properties:reg: {'maxItems': 1, 
+'items': [{'minimum': 0, 'maximum': 2}]} should not be valid under 
+{'required': ['maxItems']}
+	hint: "maxItems" is not needed with an "items" list
+	from schema $id: http://devicetree.org/meta-schemas/items.yaml#
+/home/thomas/linux/Documentation/devicetree/bindings/iio/adc/sophgo,cv1800b-saradc.yaml: 
+patternProperties:^channel@[0-2]+$:properties:reg: 'anyOf' conditional 
+failed, one must be fixed:
+	'items' is not one of ['maxItems', 'description', 'deprecated']
+		hint: Only "maxItems" is required for a single entry if there are no 
+constraints defined for the values.
+	'maxItems' is not one of ['description', 'deprecated', 'const', 'enum', 
+'minimum', 'maximum', 'multipleOf', 'default', '$ref', 'oneOf']
+	'items' is not one of ['description', 'deprecated', 'const', 'enum', 
+'minimum', 'maximum', 'multipleOf', 'default', '$ref', 'oneOf']
+	1 is less than the minimum of 2
+		hint: Arrays must be described with a combination of 
+minItems/maxItems/items
+	hint: cell array properties must define how many entries and what the 
+entries are when there is more than one entry.
+	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
 
+Isn't it okay to just use minimum and maximum and rely on 
+address-cells/size-cells for the number of items allowed ?
 

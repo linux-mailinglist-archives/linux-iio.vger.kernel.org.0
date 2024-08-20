@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-8635-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8634-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BE8958BCE
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 17:59:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E49958BC7
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 17:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3705B22D5E
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 15:59:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 977CF1F24399
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 15:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AFC1B86F8;
-	Tue, 20 Aug 2024 15:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5BE1A7048;
+	Tue, 20 Aug 2024 15:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gDBZaDyx"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BMMLy95M"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AA6194ADB
-	for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 15:58:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAFD195B37
+	for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 15:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724169538; cv=none; b=d8em1aVivoRE+XhN+JZ44+3nWLLndqRASOSybsC/LUureWfp2VteMEgx4SbTcqIzZnhJ2p93xLwvhdgSvbMFNIOweQNfQdFFkPMh7KA1/yrY/5KmezraaJjF2wFLSt+umVg58jM1JotkgeD9IlcS+UdpK2EGbHl+l/6G3GmHBOg=
+	t=1724169537; cv=none; b=gtJmZHcx6sTXfdDz9bFx6trkQBxJWKAufsBmWae2Uvd3URMB2qPlzvUA5Ob0EbJ8z6PI9+YPDqDEykywwWxxdoxcpwL8Ygnwt1xdY+DbvNXT6CeFEiaxEBaiNH5LP9D7SXofLYTP5JHZKiNzxOvP5EQ9UKTjDpHBo15zb+dQmDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724169538; c=relaxed/simple;
-	bh=oaJmi/ZJxtUimFsdNU5rkHVdgv/yFGZx1cME/QQcQl0=;
+	s=arc-20240116; t=1724169537; c=relaxed/simple;
+	bh=WGhbcSyIIr/fQOdxh9+s+geW6Hei0Wbkpns6twCPCAg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pbdwTQlJfnhwg37+ySCQWK8HVtq2qSdpkqSRu/z8x/IbOQpeP2A7WrMchq4mVtMt96khdWn372h0VXk21MScki1mWqt00APFq/FX3jM6IZw21aENJvpc8cd37U5fz0+1i4A9IIYUEc5i0V4QCjGseG/Wqov+kKHRap2Xy4rc8z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gDBZaDyx; arc=none smtp.client-ip=209.85.167.181
+	 In-Reply-To:To:Cc; b=cLcZRmA3TaDPOFTGUII7MpEJR1AcYLrhuJwnOzFMeI4XGeeRi68hJKyH3ZDZFyOZ63HtfcOxhH0aDzNfe+aafUvxZduwaYrx/WNVQCVOv7tqxtAZny62gphxyE/VfNRjs8d1pta7h9gYlovXAqTlKz9gZ5eHzgs78onkbcGS8jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BMMLy95M; arc=none smtp.client-ip=209.85.167.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3db1d0fca58so3403578b6e.3
-        for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 08:58:54 -0700 (PDT)
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3db1bc36bc2so2773102b6e.0
+        for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 08:58:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724169534; x=1724774334; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724169535; x=1724774335; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HECI8r7T3u0JJ5Sp0TIQJdhUl6oQitYnZhldhbcQNd4=;
-        b=gDBZaDyx/B8rLKbArX27DDnjyZuPyQlWPxhjVduEZO8pVGLu8xEtkHiF1t6M/USsfA
-         I41M3NoJewibYYsop7nCwS84z56g8DTlwrv04grKTibOorqXIZ/LqRIOJ/rSz3tg/QI2
-         MfVHTcDn2++E5xHOtv172unTGk2eqgWA1UY1rDGTMQUtwN0OjmUnyd69GGlsvXCO9oZ0
-         KpTySUBaxlyLq7YtN0k88Sz+i3jxTyF4mgylvG08w/o3RKeFudvHehXXn1SVNap/ywqt
-         3Yu0HZzB4VkW80M8zdoAtowl6abRiTTttnLcawI1flzrh76lBuC/3Xi3WSHg6GOnJGMB
-         Khig==
+        bh=qDlT04LNCgm2mSm4ARTKoN0QbMcB1grVRpO0j/iJMDE=;
+        b=BMMLy95M5bEYGtMOHV/WAFw1QuJ9n5cWA0VJs+WPP8WHwRnumLzZdoyFUWr9+CVAsg
+         cDNrEb+z1I0PwQcUFrfRaWCJva7ZcbIwZFgEcfBG2bSwQ9M+TGnFVvNSX9thJ9XnNXAt
+         vErUtaRBRgmbbnNZziJRwt/WTys9x6csmy569bnN0y68H4fJGAzZh9e7qDIrooztkI9e
+         x/dIQ5ferjxZJN7CRdOenygj8MTvTOfHacHTPODQAEk+T4Z5EmM45IgZRD1JX9QEglUv
+         Baa3BP1iyjgK9S76AE1SsIejYcUCwcZ2A/hsd1kIP6yMbJiJjaq/pIS6n6ZjWb6ISNK+
+         AZNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724169534; x=1724774334;
+        d=1e100.net; s=20230601; t=1724169535; x=1724774335;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HECI8r7T3u0JJ5Sp0TIQJdhUl6oQitYnZhldhbcQNd4=;
-        b=jUDn9mYd6y3Fw+Xoz8imjTvJ62q9duxxqcjr+h5zwYFeuf78sppdAy6BVHwPa05ol5
-         KC0lfiC2TmY+F9yx7/IYxKfDrMS7mBaxIGRFjI3FO+NMnCfwHWivkQcDSauAxfaNA/Gm
-         ELG2wb6Vj3l78LPzjH4HzDRL8Tn8yiGezdKsVXCda6QB2zIHbgECFznU6JULdIviv7C1
-         YZj69XpXRRUrLFyOH7dRf2MdWyMZXvsxM4lMzt26QnXuD8uuGxGAbmDQZHoN9B0xA9KU
-         tzLlwvkrb0I2RyTJxO9s9bbnxd/0C1mzeTIWtYb2WFZ6nTPt1gU2OKVHX+WCE0UjHJkH
-         7l4A==
-X-Forwarded-Encrypted: i=1; AJvYcCXgo02dTsqA1m3xQ9r8x4AFmCXEWMEbf/mEqBXF9ALYlRs2RfKwtNAqGzB09Q7v6A1nhTsXiz8QdZ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzhot/ei87MMQkeLWj31TOcZEmBAhQjKYwQTpiEFUKPl4GPQcFZ
-	BuPEc1dET9VsAX1gtfWJISfJh4J8y7GRuFUlscusMOd882u2upRwCzHFgi/L4/Q=
-X-Google-Smtp-Source: AGHT+IHIkAhI9bCg/czmhOwJ00jGYFHqeuQAh3GUl0mP8FSSaKUHPiSl0FgDu1UYYUa+B/YzS+e4WQ==
-X-Received: by 2002:a05:6808:238f:b0:3dc:1b05:73fd with SMTP id 5614622812f47-3dd3acf921dmr18073312b6e.10.1724169534171;
+        bh=qDlT04LNCgm2mSm4ARTKoN0QbMcB1grVRpO0j/iJMDE=;
+        b=obK/dNEq0DqhQscen/N8YG5J7oqNzKah5eJboPfeglTGF/AqXwtp/v0HoorVCMjCV3
+         AK+h23G9N4CgmTUE2Y3a6VWBEQlqLABeFx1xKm60P2z/vvNrQqW1s3O1PX/Dn8NaXasN
+         Pq3mY91J+e1iF7F5CxqTNCfz7/9hEIM8oUhy02T1E2Vig0Re0rRR1jcOoRQIyXAQAOUj
+         WTLEI0UvxHyWVnISOicTuMCvj2+E6e8X0Ruah5fazS8lmVmkngr4YMSi45DgyqVtzBS5
+         mTFKyjj4512eQJyNNvAie9SavDgvAvXChDRdEbSRpQFiuv3SXU0XCl9MAJwG0WUUiiNi
+         bBHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW61/HMZPEIUnys2Ym7Go/xEctzb0dzeVFX9rvy6JQWOfid6WMz+tBiWu3p7gLhV91gIgx+qTzNr+c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx78kWoW8mG/wbYVQEJ0HDF1a591OM6y2i7H5yV0MrkjJz4+5ZY
+	n1gaecYC7o82PV6w4QHaTxlRaF58KCG/Pcv0H/nagRd2hNS3zeWIigDH5P1BhyE=
+X-Google-Smtp-Source: AGHT+IHkutffJWZQ/q5tRdDMPF0l50eePnYWl7D4EWVgBKv1fTppJhXqO9viedy+cV6Oir8LahGePQ==
+X-Received: by 2002:a05:6808:302a:b0:3db:32c6:a7cb with SMTP id 5614622812f47-3ddb9cbf40dmr1472297b6e.9.1724169534926;
         Tue, 20 Aug 2024 08:58:54 -0700 (PDT)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dd33d5a3efsm2872718b6e.17.2024.08.20.08.58.53
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dd33d5a3efsm2872718b6e.17.2024.08.20.08.58.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 08:58:53 -0700 (PDT)
+        Tue, 20 Aug 2024 08:58:54 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 20 Aug 2024 10:58:36 -0500
-Subject: [PATCH 2/4] iio: adc: ad4695: implement calibration support
+Date: Tue, 20 Aug 2024 10:58:37 -0500
+Subject: [PATCH 3/4] doc: iio: ad4695: update for calibration support
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240820-ad4695-gain-offset-v1-2-c8f6e3b47551@baylibre.com>
+Message-Id: <20240820-ad4695-gain-offset-v1-3-c8f6e3b47551@baylibre.com>
 References: <20240820-ad4695-gain-offset-v1-0-c8f6e3b47551@baylibre.com>
 In-Reply-To: <20240820-ad4695-gain-offset-v1-0-c8f6e3b47551@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
@@ -89,212 +89,37 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.1
 
-The AD4695 has a calibration feature that allows the user to compensate
-for variations in the analog front end. This implements this feature in
-the driver using the standard `calibgain` and `calibbias` attributes.
+Calibration support has been added to the ad4695 driver, so update the
+documentation to reflect this.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/adc/ad4695.c | 159 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 157 insertions(+), 2 deletions(-)
+ Documentation/iio/ad4695.rst | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
-index 63d816ad2d1f..181c4146188c 100644
---- a/drivers/iio/adc/ad4695.c
-+++ b/drivers/iio/adc/ad4695.c
-@@ -23,6 +23,7 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/triggered_buffer.h>
- #include <linux/iio/trigger_consumer.h>
-+#include <linux/minmax.h>
- #include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
-@@ -225,7 +226,11 @@ static const struct iio_chan_spec ad4695_channel_template = {
- 	.indexed = 1,
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 			      BIT(IIO_CHAN_INFO_SCALE) |
--			      BIT(IIO_CHAN_INFO_OFFSET),
-+			      BIT(IIO_CHAN_INFO_OFFSET) |
-+			      BIT(IIO_CHAN_INFO_CALIBSCALE) |
-+			      BIT(IIO_CHAN_INFO_CALIBBIAS),
-+	.info_mask_separate_available = BIT(IIO_CHAN_INFO_CALIBSCALE) |
-+					BIT(IIO_CHAN_INFO_CALIBBIAS),
- 	.scan_type = {
- 		.sign = 'u',
- 		.realbits = 16,
-@@ -619,7 +624,8 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
- 	struct ad4695_state *st = iio_priv(indio_dev);
- 	struct ad4695_channel_config *cfg = &st->channels_cfg[chan->scan_index];
- 	u8 realbits = chan->scan_type.realbits;
--	int ret;
-+	unsigned int reg_val;
-+	int ret, tmp;
+diff --git a/Documentation/iio/ad4695.rst b/Documentation/iio/ad4695.rst
+index 7612596bb6e9..33ed29b7c98a 100644
+--- a/Documentation/iio/ad4695.rst
++++ b/Documentation/iio/ad4695.rst
+@@ -143,13 +143,18 @@ present, then the external reference voltage is used and the internal buffer is
+ disabled. If ``refin-supply`` is present, then the internal buffered reference
+ voltage is used.
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
-@@ -670,6 +676,153 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_CALIBSCALE:
-+		switch (chan->type) {
-+		case IIO_VOLTAGE:
-+			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+				ret = regmap_read(st->regmap16,
-+					AD4695_REG_GAIN_IN(chan->scan_index),
-+					&reg_val);
-+				if (ret)
-+					return ret;
++Gain/offset calibration
++-----------------------
 +
-+				*val = reg_val;
-+				*val2 = 15;
++System calibration is supported using the channel gain and offset registers via
++the ``calibscale`` and ``calibbias`` attributes respectively.
 +
-+				return IIO_VAL_FRACTIONAL_LOG2;
-+			}
-+			unreachable();
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		switch (chan->type) {
-+		case IIO_VOLTAGE:
-+			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+				ret = regmap_read(st->regmap16,
-+					AD4695_REG_OFFSET_IN(chan->scan_index),
-+					&reg_val);
-+				if (ret)
-+					return ret;
-+
-+				tmp = sign_extend32(reg_val, 15);
-+
-+				*val = tmp / 4;
-+				*val2 = abs(tmp) % 4 * MICRO / 4;
-+
-+				if (tmp < 0 && *val2) {
-+					*val *= -1;
-+					*val2 *= -1;
-+				}
-+
-+				return IIO_VAL_INT_PLUS_MICRO;
-+			}
-+			unreachable();
-+		default:
-+			return -EINVAL;
-+		}
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad4695_write_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val, int val2, long mask)
-+{
-+	struct ad4695_state *st = iio_priv(indio_dev);
-+	unsigned int reg_val;
-+	int ret;
-+
-+	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+		switch (mask) {
-+		case IIO_CHAN_INFO_CALIBSCALE:
-+			switch (chan->type) {
-+			case IIO_VOLTAGE:
-+				if (val < 0 || val2 < 0)
-+					reg_val = 0;
-+				else if (val > 1)
-+					reg_val = U16_MAX;
-+				else
-+					reg_val = (val * (1 << 16) +
-+						   mul_u64_u32_div(val2, 1 << 16,
-+								   MICRO)) / 2;
-+
-+				return regmap_write(st->regmap16,
-+					AD4695_REG_GAIN_IN(chan->scan_index),
-+					reg_val);
-+			default:
-+				return -EINVAL;
-+			}
-+		case IIO_CHAN_INFO_CALIBBIAS:
-+			switch (chan->type) {
-+			case IIO_VOLTAGE:
-+				if (val2 >= 0 && val > S16_MAX / 4)
-+					reg_val = S16_MAX;
-+				else if ((val2 < 0 ? -val : val) < S16_MIN / 4)
-+					reg_val = S16_MIN;
-+				else if (val2 < 0)
-+					reg_val = clamp_t(int,
-+						-(val * 4 + -val2 * 4 / MICRO),
-+						S16_MIN, S16_MAX);
-+				else if (val < 0)
-+					reg_val = clamp_t(int,
-+						val * 4 - val2 * 4 / MICRO,
-+						S16_MIN, S16_MAX);
-+				else
-+					reg_val = clamp_t(int,
-+						val * 4 + val2 * 4 / MICRO,
-+						S16_MIN, S16_MAX);
-+
-+				return regmap_write(st->regmap16,
-+					AD4695_REG_OFFSET_IN(chan->scan_index),
-+					reg_val);
-+			default:
-+				return -EINVAL;
-+			}
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+	unreachable();
-+}
-+
-+static int ad4695_read_avail(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     const int **vals, int *type, int *length,
-+			     long mask)
-+{
-+	static const int ad4695_calibscale_available[6] = {
-+		/* Range of 0 (inclusive) to 2 (exclusive) */
-+		0, 15, 1, 15, U16_MAX, 15
-+	};
-+	static const int ad4695_calibbias_available[6] = {
-+		/*
-+		 * Datasheet says FSR/8 which translates to signed/4. The step
-+		 * depends on oversampling ratio which is always 1 for now.
-+		 */
-+		S16_MIN / 4, 0, 0, MICRO / 4, S16_MAX / 4, S16_MAX % 4 * MICRO / 4
-+	};
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_CALIBSCALE:
-+		switch (chan->type) {
-+		case IIO_VOLTAGE:
-+			*vals = ad4695_calibscale_available;
-+			*type = IIO_VAL_FRACTIONAL_LOG2;
-+			return IIO_AVAIL_RANGE;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		switch (chan->type) {
-+		case IIO_VOLTAGE:
-+			*vals = ad4695_calibbias_available;
-+			*type = IIO_VAL_INT_PLUS_MICRO;
-+			return IIO_AVAIL_RANGE;
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -705,6 +858,8 @@ static int ad4695_debugfs_reg_access(struct iio_dev *indio_dev,
+ Unimplemented features
+ ----------------------
  
- static const struct iio_info ad4695_info = {
- 	.read_raw = &ad4695_read_raw,
-+	.write_raw = &ad4695_write_raw,
-+	.read_avail = &ad4695_read_avail,
- 	.debugfs_reg_access = &ad4695_debugfs_reg_access,
- };
+ - Additional wiring modes
+ - Threshold events
+ - Oversampling
+-- Gain/offset calibration
+ - GPIO support
+ - CRC support
  
 
 -- 

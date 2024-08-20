@@ -1,72 +1,74 @@
-Return-Path: <linux-iio+bounces-8631-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8632-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB57958AEF
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 17:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C93E958BC0
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 17:59:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16BBB1F21D62
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 15:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 174E81F23BF0
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 15:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0327B1922E1;
-	Tue, 20 Aug 2024 15:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4774196D9E;
+	Tue, 20 Aug 2024 15:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FWw3EhR0"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Sw2q7hvH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8BA43AB2
-	for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 15:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75F719148F
+	for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 15:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724167125; cv=none; b=s7/6l2c5fkGvvezh0b6izknlbgb6nwEMBaFaRw054tBZ5AhIUSQAvVrNKQuq+Edoirb5sBPvZpl4o7wYiLlsTrFEYaLOApHX6N8LEEy2KhAqTyAsLGQbyO9rbatdFe9iTcpXK5dNGR6Fi0fQLVf/B4RLj2YqJDDTNFeW18FMqkM=
+	t=1724169536; cv=none; b=amj4zXoy3WIeRHeU1315K6hgw6Uo7BWex3Tl12CtZ4Oz+j/gy3ka0tNnEHJMwZ5gptrk78VS01zg415gqlahXgUpqwQyuZuky+9lLcEHHJAlJcrsBV7TkcOu5mhzNyblftorhjgRAexK+r4Nmf7aYCnUUyNbto5AKhbQSdRiKuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724167125; c=relaxed/simple;
-	bh=L9acGCAPfUAhZqVmLTPxxGB6397void34tVzkENBXM8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gupD/CWZmnz8A0ZY00G7qFKZdpT5iT7+XcQl679RvriADdFARN6YVrfMvpJGOTkqG/qEv8dPUEd5c4oijM5DQ368uDS2sU7IygYcNTt0ByG/4fVRAErQq3goH6BSvGFQwnbJ1PdCVMzJM0LGIOJOg0lqe2HsoYGgo9EY2h1J0PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FWw3EhR0; arc=none smtp.client-ip=209.85.210.53
+	s=arc-20240116; t=1724169536; c=relaxed/simple;
+	bh=k16WyKVJwiJ5IusJSEluOUOkV/j+98xYcZI1RkDLfV4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IoLif0TDO3H70VvTDIDyh3P2ZbP6ClQ5TgEjpFus9DNqPVmToaR33pYeq7t/mUh/i3kwXSHEPLP4ytuC5F/63w1ETDpI30AW2MXcYCBIufWtYnNRy+Mi/foSjVAlcIPXACOhXY7SMj3jW6SeslQy1vQUOmH8B3U6MH2ifEfbCp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Sw2q7hvH; arc=none smtp.client-ip=209.85.167.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-70930f8eabbso2034666a34.1
-        for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 08:18:43 -0700 (PDT)
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3db51133978so3585198b6e.3
+        for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 08:58:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724167122; x=1724771922; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5EbeUTVrdAwG3ffY5P1A4CIKG8gQCJjFS83H7iQ41yg=;
-        b=FWw3EhR0bjhxNa3dZzx04Bu237DeY28wajRY/cKL1GJBpJ+mEppkSVYlOdsbIl0iVT
-         OoXECI4DRI1B7F/NmYYlcaLYO+Dx1VC+QEJBVxxh1XI7EwrDkoqPRaSe0cHyiMVFjiX0
-         dHV031bG/6NmhHaUPnYKe5FZOy/dEAIFhubyijM+I3UPfyjvQdw3Z2cGr96m6wDjAzso
-         uy5ADJbAsKg5fGWmPre9fwTrXRHnmWPl8CigwWGESZ0Nh7Tjcpzj4lU64loWn/EZD+mQ
-         Q8/W8UHF7bx81rX/nRd19BbAzPJagufAkcwk8Tj7pUMQpH470+RmzJYJuXQrU2vDp1Wi
-         MEnw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724169532; x=1724774332; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JpTWI80ZGd5lrqQihvu/+C4wGR2VCt7kMvgeMmpPkP0=;
+        b=Sw2q7hvH9D/MBCHW65fePw0BNGCSN7zInhkoMsFOL4ZssYvm59c4VjmXtUTBeiDmdJ
+         4XjqDHMtWYKI6s2Ba0RtkMjQORraqKeznusGuugLSPrNnM7h6jN5oL4CNFGjIuefCIoL
+         t/nPJL4yTGcguSHtQA2Ny6lZC4agAh3oXGQWFkXLzUgPQfADqjUnwb7AOVRueFROyRya
+         qAwYiAuPLvjrkQEYonVNMHond1VcFzIQkWCLZM4rICLqFZznxJAdyASptCg5RH69RanZ
+         1+jTjn2Lp2FfwFGfRjyeUZV/Y81a2c2ZzJiK7SS8XUmEnVYlrF/yaMqYbqwGrMzG+Zrf
+         dwGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724167122; x=1724771922;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1724169533; x=1724774333;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5EbeUTVrdAwG3ffY5P1A4CIKG8gQCJjFS83H7iQ41yg=;
-        b=k2n5X7PHqBwLdWpVuziDS7RzFFLKewp3bsZiX7ukz5qOJb/+SZfJU5AVF2H3x4aSLC
-         loXrSRJ9M3diiL2aVeIcnEq7RboCJDrNZrPkDRJ1b0+gVDhFveyD2MezsitiPW6Zyb4x
-         842l2mIVqmMipEwTpVRPGsGkRRPVwmaYvCHnyk9MCy73RbnO9oGYFi36rErzgDn/DX2C
-         AJ+NthiI9HUp0BnKGgn+rHo83IdlgEiItFTgZegeQYu+Cs5aHFWSiJSq6gvHaWRROH9u
-         0HS6zW5AnMFajYIY23jUIILnw8ozwReyUEdMZ2hoyLPDeujL2vACXA7Z4qf7RJXVBtpN
-         yHgQ==
-X-Gm-Message-State: AOJu0Yz3QoGpMrLsb4kwz+bt1rWCrbEf8KiqxjgxTSX4Zwa0BcP099Fu
-	PL7IS2TNvDho7tCFrF/RdMKtF8ubRnvqXzvfnUE4wXGX8dsh17b6YBDKCSoU3dA=
-X-Google-Smtp-Source: AGHT+IEsKw2w0npL9vAIavU+xOz72lv/4yYm7bIFXNJNBiMeGLYo2E5L9eQql41jREtPnllvu+qejg==
-X-Received: by 2002:a05:6830:65c4:b0:709:3b70:3bb6 with SMTP id 46e09a7af769-70cac8b1bb4mr21411837a34.28.1724167122483;
-        Tue, 20 Aug 2024 08:18:42 -0700 (PDT)
+        bh=JpTWI80ZGd5lrqQihvu/+C4wGR2VCt7kMvgeMmpPkP0=;
+        b=GNAtjwFeT2Q89Tb0zWlnhOYXgVT1z/EaxW3orpba1v3r472keqNWJo/NEZObPX+lFT
+         j2wX/XN1O+PzqnNQbPHGm13ouQqyr3Iw95Xxady9MWIdrQCfZwJBfYTK3J1uO3KGHUWZ
+         BkAqXmpUJPWAs9TS7D0y2dgel6HHFrIoFvTNtZs8m3ysKrB84NznmfmEfzyHGE9abHcV
+         V0HPfsSRWWSHvNJ7ms/pk4dCjWvbp1Zw5RxPu5cbnFdmXFUmkpSjOnzSeZkDPN9EdzoH
+         hQFrEYxTtNuDsNkg3+is0NF7udWwPXgY3krpzfWxD4ANrbiAyiVaVq1afI66qfgq+Be+
+         J7eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCF728tq9qSFot12ZxUqMJB3UOA1UwZkrA+Ps1jVYxWwuFwLhPW4zgIik+xT2+wxp3Y+G0rafWvJBWjgfwPfG3pmcLlM67Udn6
+X-Gm-Message-State: AOJu0Yzi3SVfiE7/qYPbghfEvTNUzCudqLsGJRUJPoT/R2ceEc+i2qC4
+	DD4UW4VCRkbqRyMhzlZg0PmZG1QkNjtjNaN14qcmCtoiOgbsJNta1be+CtjO1nA=
+X-Google-Smtp-Source: AGHT+IGJsEYFx5sQyuqiOtJyxeaXS+OgVFwhoIs/bPKMW46eufdetxsOk8Z6wMREcfjRrwgM+rBpBg==
+X-Received: by 2002:a05:6808:3008:b0:3da:ab89:a805 with SMTP id 5614622812f47-3dd3acff15dmr19713535b6e.16.1724169532583;
+        Tue, 20 Aug 2024 08:58:52 -0700 (PDT)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70ca64945d0sm2744941a34.18.2024.08.20.08.18.41
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dd33d5a3efsm2872718b6e.17.2024.08.20.08.58.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 08:18:42 -0700 (PDT)
+        Tue, 20 Aug 2024 08:58:52 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 20 Aug 2024 10:18:24 -0500
-Subject: [PATCH] iio: ABI: remove duplicate in_resistance_calibbias
+Subject: [PATCH 0/4] iio: adc: ad4695: implement calibration support
+Date: Tue, 20 Aug 2024 10:58:34 -0500
+Message-Id: <20240820-ad4695-gain-offset-v1-0-c8f6e3b47551@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,59 +77,43 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240820-iio-abi-remove-dup-in_resistance_calibbias-v1-1-e64e58cabb14@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAL+zxGYC/x3NQQrCMBBG4auUWTsQg4vWq4iUyXSqP2hSMrYIp
- Xc3uPw27+3kVmFO126nahscJTecTx3pU/LDGFMzxRAvoY+BgcKSwNXeZTOe1oWRx2oO/0hWG1V
- eSAniPKuEMIgOsVdqwaXajO9/drsfxw/3kfx/fAAAAA==
-To: Jonathan Cameron <jic23@kernel.org>, Andreas Klinger <ak@it-klinger.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Stephen Rothwell <sfr@canb.auug.org.au>, 
+X-B4-Tracking: v=1; b=H4sIACq9xGYC/x3MQQqAIBBA0avErBswsayuEi2kGW02FhoRSHdPW
+ r7F/wUyJ+EMc1Mg8S1ZjljRtQ1su4uBUagatNJGjd2Ejsww9RicRDy8z3zhZs1I1hF5baGGZ2I
+ vzz9d1vf9AELzk0lkAAAA
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.1
 
-In commit 0f718e10da81 ("iio: ABI: add missing calibbias attributes"),
-the in_resistance_calibbias attribute was added to the main IIO ABI
-documentation. This attribute is was already documented in
-sysfs-bus-iio-chemical-sgp40. This resulted in a duplicate entry that is
-causing documentation build warnings.
+This series adds calibration support to the ad4695 driver.
 
-This removes the attribute from the sgp40 documentation in favor of the
-main IIO ABI documentation since this attribute fits the established
-pattern of standard IIO attributes.
+This has the same "odd" gain and offset registers that are being used
+for calibration as discussed recently in the ad4030 series [1]. So if
+the ranges in the *_available attributes seem a bit big for calibration,
+that is why. The official datasheet explanation for this feature is,
+"The AD4695/AD4696 include offset and gain error correction
+functionality to correct for first-order nonidealities in a full
+[analog front end] signal chain."
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/linux-next/20240820134739.50c771cb@canb.auug.org.au/
-Signed-off-by: David Lechner <dlechner@baylibre.com>
+[1]: https://lore.kernel.org/linux-iio/20240814193814.78fe45cc@jic23-huawei/
+
 ---
- Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40 | 14 --------------
- 1 file changed, 14 deletions(-)
+David Lechner (4):
+      iio: adc: ad4695: add 2nd regmap for 16-bit registers
+      iio: adc: ad4695: implement calibration support
+      doc: iio: ad4695: update for calibration support
+      iio: ABI: document ad4695 new attributes
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40 b/Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40
-index 469a7c00fad4..a95547e874f1 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40
-@@ -15,17 +15,3 @@ Description:
- 		Set the relative humidity. This value is sent to the sensor for
- 		humidity compensation.
- 		Default value: 50000 (50 % relative humidity)
--
--What:		/sys/bus/iio/devices/iio:deviceX/in_resistance_calibbias
--Date:		August 2021
--KernelVersion:	5.15
--Contact:	Andreas Klinger <ak@it-klinger.de>
--Description:
--		Set the bias value for the resistance which is used for
--		calculation of in_concentration_input as follows:
--
--		x = (in_resistance_raw - in_resistance_calibbias) * 0.65
--
--		in_concentration_input = 500 / (1 + e^x)
--
--		Default value: 30000
-
+ Documentation/ABI/testing/sysfs-bus-iio |   3 +
+ Documentation/iio/ad4695.rst            |   7 +-
+ drivers/iio/adc/ad4695.c                | 242 +++++++++++++++++++++++++++++---
+ 3 files changed, 234 insertions(+), 18 deletions(-)
 ---
 base-commit: 0f718e10da81446df0909c9939dff2b77e3b4e95
-change-id: 20240820-iio-abi-remove-dup-in_resistance_calibbias-fca009ac928c
+change-id: 20240819-ad4695-gain-offset-c748d7addf27
 
 Best regards,
 -- 

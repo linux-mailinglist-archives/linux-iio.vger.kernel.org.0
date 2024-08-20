@@ -1,131 +1,150 @@
-Return-Path: <linux-iio+bounces-8624-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8625-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58DF8957691
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 23:28:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0B2957C62
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 06:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CD581C23088
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Aug 2024 21:28:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8296E284EEC
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 04:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6B2175D46;
-	Mon, 19 Aug 2024 21:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD6153368;
+	Tue, 20 Aug 2024 04:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="wNRJuV+u"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iBrG3K7A"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB8B1598F4;
-	Mon, 19 Aug 2024 21:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351C02F5E;
+	Tue, 20 Aug 2024 04:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724102833; cv=none; b=a66+hRrSMYzGto8IGj/YxVJ98B16mRr8RHiSYR/pFQIxLp9MnRSKpU4KgrPu3zYBUVahcabH0mb8X6emDOEBmfmkoOGcxOxNYoJEbFUmUM7LDPaBbuGffcZsnscp6E4FfpG87JlPaeJ+BrMATreJi9EeGLWQFnIebXej6Kp7hJ4=
+	t=1724127985; cv=none; b=S39Hg/+GGjl1lE4H3tjBezQ+x6d3CxXp+YMcIACj/Qg7FbLodNsf19zityygV1WREfU6WxNHT3A9lL1DpGEuldknfGaj/ZsHPjd5J7S76n+31Du0o31TMZEY7Q5w8U/Uxy57iuge8ZDMnaEcYIq/34iVIdj/RL1YcEzQJegARnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724102833; c=relaxed/simple;
-	bh=+sOmpMxl05XLDPuo4r7/zihYOtpqvtWf8lxC2z/W41A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I4/kFIYAn/QcoQdIk7PFH8ev4YFjCQsM19CZlHQbvaxSXxCJJI6DoYL024LzyU4g/A72dLgbY7GZ60JmNhHywrW8RWA+oFggpRk7CCP8IKkj9UNuHeyOPs2ryEHRfY8hGH6TY1zI2+0+4gGFm3KolKCb16qnby5fBhPIbO+QfGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=wNRJuV+u; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kT7Kuxp6fbaULbA/LwhMmUWF1CJosjyeQGtqZ9CJp+0=; b=wNRJuV+uiReaCGv60DiKRMQhAm
-	eOMs1pRGa6EHvcjoApT6Mt5LM3b5GpPAKD1+j2Tktv+nGAFu2xbK8PDX9tn25zqFUuGjAMinpkdcZ
-	CJ7+c3rDsJQPC8ZMbyvyVtnQlX7NzhAiLWUHdx1PlvLugrngoXqLffbvyJvrO5IEBY863rGZ30Uvz
-	ArvLeDZnfGgT8JEyzDAE77cHFtE+YnHPG7LtEbxE5OUcyeQl5cGttOfYdRMKOQUAUB1R7pQImU0NT
-	A1V3ZHPCQILEOpmUYokl/tQVOF2JmWyZe3ID0d8PRRxULB7x7tFRETjiKYukjEnC9kC1wfvW2EYOL
-	K37fH8RA==;
-Received: from i53875a9f.versanet.de ([83.135.90.159] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sg9tR-0003Xv-3A; Mon, 19 Aug 2024 23:26:25 +0200
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To: linux-kernel@vger.kernel.org,
- Detlev Casanova <detlev.casanova@collabora.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Lee Jones <lee@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>, Chris Morgan <macromorgan@hotmail.com>,
- Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>,
- Muhammed Efe Cetin <efectn@protonmail.com>, Andy Yan <andyshrk@163.com>,
- Jagan Teki <jagan@edgeble.ai>, Dragan Simic <dsimic@manjaro.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Shresth Prasad <shresthprasad7@gmail.com>, Ondrej Jirman <megi@xff.cz>,
- Weizhao Ouyang <weizhao.ouyang@arm.com>, Alexey Charkov <alchark@gmail.com>,
- Jimmy Hon <honyuenkwun@gmail.com>, Finley Xiao <finley.xiao@rock-chips.com>,
- Yifeng Zhao <yifeng.zhao@rock-chips.com>,
- Elaine Zhang <zhangqing@rock-chips.com>, Liang Chen <cl@rock-chips.com>,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-i2c@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-serial@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
-Date: Mon, 19 Aug 2024 23:26:44 +0200
-Message-ID: <2553026.Sgy9Pd6rRy@diego>
-In-Reply-To: <23696360.6Emhk5qWAg@trenzalore>
-References:
- <20240802214612.434179-1-detlev.casanova@collabora.com>
- <21547916.mFnZMskM5D@diego> <23696360.6Emhk5qWAg@trenzalore>
+	s=arc-20240116; t=1724127985; c=relaxed/simple;
+	bh=EPhEMjY7bJqv3OgXaq6MdbBJoS9xZMpbdW6dSGjRQqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SxQ4ti0gkbGNlBYArUZ87jH2locsFnSkVyunEw+8zIQJdiwxrAzSTMa3XfhLjf71jXLoBWo7sge/28Ouhz9KVIrVtFlNyRzC6WtQ5/RKg/jutXjvXuHdeM3POKaFOiZTe4Wz+TIZQ4roJnJkDOYtDLIsuzLyP5ZQ75tkzt5+1cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iBrG3K7A; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724127982; x=1755663982;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EPhEMjY7bJqv3OgXaq6MdbBJoS9xZMpbdW6dSGjRQqs=;
+  b=iBrG3K7A5D1E/CklMiQ12vUS7a5QE8cGpQ8TxvNnXfZrwt9uwZSVhvw3
+   OEWDv50s1idnyfRXGr8yGc7Fu9gQCyznYsEH2YZn18YjNkFn17C8RRaae
+   oWu8IUl8/sC0F+lHS5NCEbzSaIFR+81Agug/MPUobtmKEdsM5fc3Uajdz
+   MXE/OvMW5RzIx72DrCcr30lV2CUbKhKthaKcd0iPzzZ6Dl2QbE/GRyaLh
+   1gCfRCFNWcmrP46jJoFjLf/nSLpF7vci76mbFmYuTVbbGYq8Kfc4aeM5F
+   gsnzwX8NpKTA59D/PF8Q3ADMkNK3NtnxuwVVzN+ZhqOXH0bt+BDYDhQkg
+   g==;
+X-CSE-ConnectionGUID: OKITTNVIQXKCvtCu1q9+PA==
+X-CSE-MsgGUID: ZZBWsr05QAaBfy9R7dhq1w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="22543924"
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
+   d="scan'208";a="22543924"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 21:26:21 -0700
+X-CSE-ConnectionGUID: 5fcy/7axQQSIx4VehcG9EA==
+X-CSE-MsgGUID: fXqC33NVTqWsQaFZeFxYKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
+   d="scan'208";a="60284429"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 19 Aug 2024 21:26:15 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sgGRh-0009iQ-1k;
+	Tue, 20 Aug 2024 04:26:13 +0000
+Date: Tue, 20 Aug 2024 12:25:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chris Morgan <macroalpha82@gmail.com>, linux-sunxi@lists.linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	quentin.schulz@free-electrons.com, mripard@kernel.org,
+	tgamblin@baylibre.com, aidanmacdonald.0x0@gmail.com,
+	u.kleine-koenig@pengutronix.de, lee@kernel.org, samuel@sholland.org,
+	jernej.skrabec@gmail.com, sre@kernel.org, wens@csie.org,
+	conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org,
+	lars@metafoo.de, jic23@kernel.org, jonathan.cameron@huawei.com,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Philippe Simons <simons.philippe@gmail.com>
+Subject: Re: [PATCH V3 14/15] power: supply: axp20x_battery: add support for
+ AXP717
+Message-ID: <202408201228.Hee4eSYl-lkp@intel.com>
+References: <20240819164619.556309-15-macroalpha82@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240819164619.556309-15-macroalpha82@gmail.com>
 
-Am Montag, 19. August 2024, 19:59:45 CEST schrieb Detlev Casanova:
-> On Wednesday, 14 August 2024 11:31:04 EDT Heiko St=FCbner wrote:
-> > Hi Detlev,
-> >=20
-> > Am Freitag, 2. August 2024, 23:45:36 CEST schrieb Detlev Casanova:
-> > > This device tree contains all devices necessary for booting from netw=
-ork
-> > > or SD Card.
-> > >=20
-> > > It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
-> > > SDHCI (everything necessary to boot Linux on this system on chip) as
-> > > well as Ethernet, I2C, SPI and OTP.
-> > >=20
-> > > Also add the necessary DT bindings for the SoC.
-> > >=20
-> > > Signed-off-by: Liang Chen <cl@rock-chips.com>
-> > > Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
-> > > Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
-> > > Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
-> > > [rebase, squash and reword commit message]
-> > > Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
-> >=20
-> > looks like (since 2019) there is a strong suggestion for having a soc n=
-ode.
-> >=20
-> > See Krzysztof's mail in
-> >   =20
-> > https://lore.kernel.org/all/6320e4f3-e737-4787-8a72-7bd314ba883c@kernel=
-=2Eorg
-> > / that references
-> >     Documentation/devicetree/bindings/writing-bindings.rst [0]
-> >=20
-> > So I guess we should probably follow that - at least for new socs for n=
-ow.
->=20
-> That make sense, but what is exactly covered by MMIO devices ? everything=
-=20
-> except cpus, firmware, psci and timer ?
+Hi Chris,
 
-if your node has a foo@mmio-address naming then it goes in there I guess
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on sre-power-supply/for-next]
+[also build test ERROR on jic23-iio/togreg lee-mfd/for-mfd-next linus/master v6.11-rc4 next-20240819]
+[cannot apply to lee-mfd/for-mfd-fixes]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Chris-Morgan/iio-adc-axp20x_adc-Add-adc_en1-and-adc_en1-to-axp_data/20240820-005144
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-power-supply.git for-next
+patch link:    https://lore.kernel.org/r/20240819164619.556309-15-macroalpha82%40gmail.com
+patch subject: [PATCH V3 14/15] power: supply: axp20x_battery: add support for AXP717
+config: i386-buildonly-randconfig-005-20240820 (https://download.01.org/0day-ci/archive/20240820/202408201228.Hee4eSYl-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240820/202408201228.Hee4eSYl-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408201228.Hee4eSYl-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/power/supply/axp20x_battery.c:266:9: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     266 |         *val = FIELD_GET(AXP717_ICC_CHARGER_LIM_MASK, *val) *
+         |                ^
+   drivers/power/supply/axp20x_battery.c:439:17: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     439 |                 val->intval = FIELD_GET(AXP717_PWR_OP_BATT_PRESENT, reg);
+         |                               ^
+   2 errors generated.
 
 
+vim +/FIELD_GET +266 drivers/power/supply/axp20x_battery.c
+
+   256	
+   257	static int axp717_get_constant_charge_current(struct axp20x_batt_ps *axp,
+   258						      int *val)
+   259	{
+   260		int ret;
+   261	
+   262		ret = regmap_read(axp->regmap, AXP717_ICC_CHG_SET, val);
+   263		if (ret)
+   264			return ret;
+   265	
+ > 266		*val = FIELD_GET(AXP717_ICC_CHARGER_LIM_MASK, *val) *
+   267			axp->data->ccc_scale;
+   268	
+   269		return 0;
+   270	}
+   271	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

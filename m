@@ -1,126 +1,277 @@
-Return-Path: <linux-iio+bounces-8629-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8630-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C7B958012
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 09:42:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEEF958827
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 15:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61C0A1F2521A
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 07:42:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C68E1C215A9
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 13:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B6E1891D4;
-	Tue, 20 Aug 2024 07:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6021917CB;
+	Tue, 20 Aug 2024 13:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex.com header.i=@yandex.com header.b="bhu5URS2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DBE18E362;
-	Tue, 20 Aug 2024 07:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B88E19067A;
+	Tue, 20 Aug 2024 13:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724139734; cv=none; b=cLlwPT3bF8KtQ9l3LdI1eIE4sLxXYv0GId/rgw0DOmyNlP0sQiAZ7sOH6lAj43OBhLI0Dn2IlUiVUlYm2iHFbMlVxQP4OC/SSSzaeWwgj/NTYjkWheqf5Uqanh8ckgx73iVbIVwTj2JH2m3RTae2Byhh1G1Qo8NE1xap2q8byNc=
+	t=1724161440; cv=none; b=ANYTGfpkMLBti1L83xeoxXPJyHZgy20H/fX4ztEZdJtjO/keUYlD7ezs+djCoChWaa9yEY/nL8SvJH4PMsHG+2UWc+8e1kN9UxrHYFaD4hUKCDTWt3/snx6+1BxA+wPgg2KLgXU7AS7HiIpHzh9uf62nr5nB9rJtKyNJZoEdyTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724139734; c=relaxed/simple;
-	bh=MHqGozFEXa24M1GfNfz8WTKdM2zckoFwL8X6SG2QIm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R/Qk3f5YGJPGJMQ0aV7FdHDojblmnna8rqwboExLbWNGqlMixX6WY9BmTfc/f7/MrXXxS1IKfmToJ2Otj4QveGb2bDSzZebdQnb2nb+9fvCdU63v9izzKUsovWjxcRhKhJwmlsFE6rURNYiQnOXA52ewYSuLKKiTy+pZBMaR4P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37182eee02dso2713914f8f.1;
-        Tue, 20 Aug 2024 00:42:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724139731; x=1724744531;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=husHkeFncIg0j+W2GmpnfdIgBa/YY060+/4QysQxy1Y=;
-        b=W7/EkVKDakqc6RmaLwpE/Zn5xILA1ZB6Vr6HKkUCa6GqqJpQp7STetzdpWw+pRoVSx
-         MNIdL6SRtOdSq49kOgLCEcB/1gY7LQHvd17k8DWu1x+iWpAF7vDUAyr/9P07wgwKdBjE
-         +tC/d6cUfi7cth0Ezg+jlCMeiJ7/BCIDWREv1g+vCTllWwRfsLBSbAYS4TvgGI2njuOV
-         g/iZivCbkD7Y+irmhVVVwbe6WSIvzbnvJaKC5BgOV4hmmjedR9WV2dOjh84wI1+hRvbu
-         w69RrKbzDDy7q8WhWVzxKw3YbogVnCkgskF+hPaw9dDEy3ri+kxiUd6rG+ESEXxvDO76
-         p/9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUZYwhBBHpR3PXUNqPIn/xj8coTgPNNVCRCdgd4Gdjfwc/C2omuukMsTUodskpqnSkanasRzKedodPhY+DZliva9ig/CtSCTwEsURGHnMZreyeopnSL9teBhIy7jGV6+roPSLkQWUnUR7Q9lBFk4DoYuNoyoVY6hlosqP4jyf0z
-X-Gm-Message-State: AOJu0YyTmFR5rAJf1vghr0hpjvyg2++64Ybh3nrtYhF2GqdU0OXtDABP
-	YrvM4py24cIXVh799zLEtkQBZSnOTdzm2ZORHlpHZ+v8s9cG1z4Z
-X-Google-Smtp-Source: AGHT+IGD+gm4jvp43Ve4Xgj8RVDK1rAs3wa2ikJ2/8Whk9Gfl50sJMvQGIiLkZdVhsRmZzwD3iub7w==
-X-Received: by 2002:adf:e585:0:b0:36b:5d86:d889 with SMTP id ffacd0b85a97d-371c4a9c310mr1111996f8f.6.1724139730617;
-        Tue, 20 Aug 2024 00:42:10 -0700 (PDT)
-Received: from krzk-bin ([178.197.215.209])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3718985a6ddsm12421688f8f.58.2024.08.20.00.42.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 00:42:09 -0700 (PDT)
-Date: Tue, 20 Aug 2024 09:42:06 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Chris Morgan <macroalpha82@gmail.com>
-Cc: linux-sunxi@lists.linux.dev, linux-pm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
-	quentin.schulz@free-electrons.com, mripard@kernel.org, tgamblin@baylibre.com, 
-	aidanmacdonald.0x0@gmail.com, u.kleine-koenig@pengutronix.de, lee@kernel.org, 
-	samuel@sholland.org, jernej.skrabec@gmail.com, sre@kernel.org, wens@csie.org, 
-	conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de, 
-	jic23@kernel.org, jonathan.cameron@huawei.com, 
-	Chris Morgan <macromorgan@hotmail.com>
-Subject: Re: [PATCH V3 05/15] dt-bindings: power: supply: axp20x: Add
- input-current-limit-microamp
-Message-ID: <ro43ccn3w2qsvcnjej7appuasuqphtf54vkyrsex6ypr4dlwhh@vi2jg4nemkvl>
-References: <20240819164619.556309-1-macroalpha82@gmail.com>
- <20240819164619.556309-6-macroalpha82@gmail.com>
+	s=arc-20240116; t=1724161440; c=relaxed/simple;
+	bh=qTsnJN49+aS05L1oPB0ek5eAdQnTO8MqCs+X6kYnMq0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LUa/GSXq36hb/z6eb03xhGSytxAk6OQ3JJmnkn3IsIeXvdP9o8BHqUd++Ra1/Lp+7vtozlOejXwO0mG6mzFcwM63Wp17jR7xPCcD4sdvrHXsd2IGD4UAR52KwUl9T+qaS5i3TeCtIFiRm9wXFGQAZVT3zt1VKyQFR4X6UxNzebw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.com; spf=pass smtp.mailfrom=yandex.com; dkim=pass (1024-bit key) header.d=yandex.com header.i=@yandex.com header.b=bhu5URS2; arc=none smtp.client-ip=178.154.239.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.com
+Received: from mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net [IPv6:2a02:6b8:c2b:1d5:0:640:773e:0])
+	by forward501a.mail.yandex.net (Yandex) with ESMTPS id C0386613DD;
+	Tue, 20 Aug 2024 16:35:05 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wYNd7uDTquQ0-i9SdytvD;
+	Tue, 20 Aug 2024 16:35:04 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.com; s=mail;
+	t=1724160904; bh=Yc+SkPJPd/j9LC0nYHlrZb5VAOmJ1MFJRkiKmb/ch6A=;
+	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+	b=bhu5URS2bSD/fVC8Dzn+eKEyID2HpY0mlyRqNtDTSUdfHvfOHvpoG8f/DIwhJOPxu
+	 eOMB7ZhqdzATeB1LPxOZQSQkmYA8bGSktt/+FWQxImxAPvg/JVNww43A4AKyEx+azv
+	 l024ikWXXXUw7S/kMhF9tVYCOBmo0Gs0gSpiSQ8A=
+Authentication-Results: mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.com
+Message-ID: <1d7ffd09-99b9-43d8-a2f5-6e5455b4e5a1@yandex.com>
+Date: Tue, 20 Aug 2024 15:34:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240819164619.556309-6-macroalpha82@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
+To: Detlev Casanova <detlev.casanova@collabora.com>,
+ linux-kernel@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Daniel Lezcano
+ <daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Chris Morgan <macromorgan@hotmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Tim Lunn <tim@feathertop.org>, Muhammed Efe Cetin <efectn@protonmail.com>,
+ Andy Yan <andyshrk@163.com>, Jagan Teki <jagan@edgeble.ai>,
+ Dragan Simic <dsimic@manjaro.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Shresth Prasad <shresthprasad7@gmail.com>, Ondrej Jirman <megi@xff.cz>,
+ Weizhao Ouyang <weizhao.ouyang@arm.com>, Alexey Charkov <alchark@gmail.com>,
+ Jimmy Hon <honyuenkwun@gmail.com>, Finley Xiao <finley.xiao@rock-chips.com>,
+ Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+ Elaine Zhang <zhangqing@rock-chips.com>, Liang Chen <cl@rock-chips.com>,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-i2c@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-serial@vger.kernel.org, kernel@collabora.com
+References: <20240802214612.434179-1-detlev.casanova@collabora.com>
+ <20240802214612.434179-10-detlev.casanova@collabora.com>
+ <c5014fe3-130b-4ace-a66e-8773a9a4f1dc@yandex.com>
+ <1944590.atdPhlSkOF@trenzalore>
+Content-Language: en-US
+From: Johan Jonker <jbx6244@yandex.com>
+In-Reply-To: <1944590.atdPhlSkOF@trenzalore>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 19, 2024 at 11:46:09AM -0500, Chris Morgan wrote:
-> From: Chris Morgan <macromorgan@hotmail.com>
+
+
+On 8/19/24 22:06, Detlev Casanova wrote:
+> Hi Johan,
 > 
-> Allow specifying a hard limit of the maximum input current. Some PMICs
-> such as the AXP717 can pull up to 3.25A, so allow a value to be
-> specified that clamps this in the event the hardware is not designed
-> for it.
+> On Thursday, 15 August 2024 05:30:25 EDT Johan Jonker wrote:
+>> Some comments below. Whenever useful.
+>>
+>> On 8/2/24 23:45, Detlev Casanova wrote:
+>>> This device tree contains all devices necessary for booting from network
+>>> or SD Card.
+>>>
+>>> It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
+>>> SDHCI (everything necessary to boot Linux on this system on chip) as
+>>> well as Ethernet, I2C, SPI and OTP.
+>>>
+>>> Also add the necessary DT bindings for the SoC.
+>>>
+>>> Signed-off-by: Liang Chen <cl@rock-chips.com>
+>>> Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
+>>> Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+>>> Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+>>> [rebase, squash and reword commit message]
+>>> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+>>> ---
+>>
+>> [..]
+>>
+>>> diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+>>> b/arch/arm64/boot/dts/rockchip/rk3576.dtsi new file mode 100644
+>>> index 0000000000000..00c4d2a153ced
+>>> --- /dev/null
+>>> +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
+>> [..]
+>>
+>> For uart0..uart11:
+>>> +
+>>> +	uart1: serial@27310000 {
+>>> +		compatible = "rockchip,rk3576-uart", "snps,dw-apb-
+> uart";
+>>> +		reg = <0x0 0x27310000 0x0 0x100>;
+>>>
+>>> +		interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
+>>
+>> "interrupts" are sort just like other properties. A mix of sort styles
+>> exists, so check all nodes.
 > 
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> ---
->  .../x-powers,axp20x-usb-power-supply.yaml     | 69 ++++++++++++++++++-
->  1 file changed, 66 insertions(+), 3 deletions(-)
+> Ok, so it should be sorted alphabetically with the following exceptions:
+> - 'compatible' and 'reg.*' on top
+> - "#.*" at the end, sorted
+> - "status" last.
 > 
-> diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-> index 34b7959d6772..9cc300e78f60 100644
-> --- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-> +++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-> @@ -15,9 +15,6 @@ maintainers:
->    - Chen-Yu Tsai <wens@csie.org>
->    - Sebastian Reichel <sre@kernel.org>
->  
-> -allOf:
-> -  - $ref: power-supply.yaml#
-> -
->  properties:
->    compatible:
->      oneOf:
-> @@ -31,8 +28,74 @@ properties:
->            - const: x-powers,axp803-usb-power-supply
->            - const: x-powers,axp813-usb-power-supply
->  
-> +  input-current-limit-microamp:
-> +    description:
-> +      Optional value to clamp the maximum input current limit to for
-> +      the device. If omitted, the programmed value from the EFUSE will
-> +      be used.
+> Is that right ?
 
-minimum: 100000
-maximum: 4000000
-(or whatever the values are)
+The dts-coding-style.rst does not say much about things with "#",
+so below a property they refer to or at the end looks nicer.
+No strict rule, but do it in a consistent style in file. 
 
-Best regards,
-Krzysztof
+Original comment by robh for things with "reg":
+"It makes more sense to keep reg-io-width together with reg."
+https://lore.kernel.org/all/20240131135955.GA966672-robh@kernel.org/
 
+> 
+>>> +		clocks = <&cru SCLK_UART1>, <&cru PCLK_UART1>;
+>>> +		clock-names = "baudclk", "apb_pclk";
+>>>
+>>> +		reg-shift = <2>;
+>>> +		reg-io-width = <4>;
+>>
+>> Move below "reg".
+>>
+>>> +		dmas = <&dmac0 8>, <&dmac0 9>;
+>>> +		pinctrl-names = "default";
+>>> +		pinctrl-0 = <&uart1m0_xfer>;
+>>> +		status = "disabled";
+>>> +	};
+>>> +
+>>> +	pmu: power-management@27380000 {
+> 
+> [...]
+> 
+>>> +				#address-cells = <1>;
+>>> +				#size-cells = <0>;
+>>> +				clocks = <&cru ACLK_VOP>,
+>>> +					 <&cru HCLK_VOP>,
+>>> +					 <&cru HCLK_VOP_ROOT>;
+>>> +				pm_qos = <&qos_vop_m0>,
+>>> +					 <&qos_vop_m1ro>;
+>>> +
+>>> +				power-domain@RK3576_PD_USB {
+>>
+>> Since when is USB part of VOP?
+>> Recheck?
+> 
+> The TRM doesn't tell me anything, but If I don't put it as a child of VOP, it 
+> just hangs when the kernel tries to shut it down.
+
+Could the people from Rockchip disclose the USB PD location?
+
+> 
+> [...]
+> 
+>>> +
+>>> +	pinctrl: pinctrl {
+>>> +		compatible = "rockchip,rk3576-pinctrl";
+>>> +		rockchip,grf = <&ioc_grf>;
+>>> +		rockchip,sys-grf = <&sys_grf>;
+>>> +		#address-cells = <2>;
+>>> +		#size-cells = <2>;
+>>> +		ranges;
+>>> +
+>>>
+>>> +		gpio0: gpio@27320000 {
+>>
+>> The use of gpio nodes as subnode of pinctrl is deprecated.
+>>
+>> patternProperties:
+>>   "gpio@[0-9a-f]+$":
+>>     type: object
+>>
+>>     $ref: /schemas/gpio/rockchip,gpio-bank.yaml#
+>>     deprecated: true
+>>
+>>     unevaluatedProperties: false
+> 
+
+> I tried putting the gpio nodes out of the pinctrl node, they should work 
+> because they already have a gpio-ranges field.
+> But unfortunately, that seem to break the pinctrl driver which hangs at some 
+> point. Maybe some adaptations are needed to support this, or am I missing 
+> something ?
+
+The aliases that we added to the DT files are a work around to prevent damage when we moved to generic gpio node names.
+There just happened to be some code for it in the driver...
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/gpio/gpio-rockchip.c#n719
+
+Comment by robh:
+"GPIO shouldn't really have an alias either IMO."
+https://lore.kernel.org/linux-arm-kernel/20230118153236.GA33699-robh@kernel.org/
+
+Mainline Rockchip gpio driver is not so to the standard.
+The file gpio-rockchip.c currently does nothing with "gpio-ranges" vs. bank and node relation.
+My simple patch was acked, but never applied. There's no public maintainer response of what to improve.
+Guess, probably something more complicated idiot prove "gpio-ranges" parsing/bank linking is needed?
+https://lore.kernel.org/linux-arm-kernel/890be9a0-8e82-a8f4-bc15-d5d1597343c2@gmail.com/
+
+I leave this subject up to the experts to find out what is needed to improve.
+Don't ask me.
+
+Johan
+> 
+>>> +			compatible = "rockchip,gpio-bank";
+>>
+>> When in use as separate node the compatible must be SoC related.
+>>
+>> Question for the maintainers: Extra entry to rockchip,gpio-bank.yaml ??
+>>
+>>> +			reg = <0x0 0x27320000 0x0 0x200>;
+>>> +			interrupts = <GIC_SPI 153 
+> IRQ_TYPE_LEVEL_HIGH>;
+>>> +			clocks = <&cru PCLK_GPIO0>, <&cru 
+> DBCLK_GPIO0>;
+>>> +
+>>> +			gpio-controller;
+>>> +			#gpio-cells = <2>;
+>>> +			gpio-ranges = <&pinctrl 0 0 32>;
+>>> +			interrupt-controller;
+>>> +			#interrupt-cells = <2>;
+>>> +		};
+>>> +
+>>> +		gpio1: gpio@2ae10000 {
+>>> +
+>>> +		gpio2: gpio@2ae20000 {
+>>> +
+>>> +		gpio3: gpio@2ae30000 {
+>>> +
+>>> +		gpio4: gpio@2ae40000 {
+>>> +	};
+>>> +};
+>>> +
+>>> +#include "rk3576-pinctrl.dtsi"
+> 
+> Regards,
+> 
+> Detlev
+> 
+> 
+> 
 

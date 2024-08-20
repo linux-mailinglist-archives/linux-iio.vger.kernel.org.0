@@ -1,277 +1,136 @@
-Return-Path: <linux-iio+bounces-8630-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8631-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEEF958827
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 15:44:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB57958AEF
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 17:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C68E1C215A9
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 13:44:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16BBB1F21D62
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Aug 2024 15:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6021917CB;
-	Tue, 20 Aug 2024 13:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0327B1922E1;
+	Tue, 20 Aug 2024 15:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.com header.i=@yandex.com header.b="bhu5URS2"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FWw3EhR0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B88E19067A;
-	Tue, 20 Aug 2024 13:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8BA43AB2
+	for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 15:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724161440; cv=none; b=ANYTGfpkMLBti1L83xeoxXPJyHZgy20H/fX4ztEZdJtjO/keUYlD7ezs+djCoChWaa9yEY/nL8SvJH4PMsHG+2UWc+8e1kN9UxrHYFaD4hUKCDTWt3/snx6+1BxA+wPgg2KLgXU7AS7HiIpHzh9uf62nr5nB9rJtKyNJZoEdyTs=
+	t=1724167125; cv=none; b=s7/6l2c5fkGvvezh0b6izknlbgb6nwEMBaFaRw054tBZ5AhIUSQAvVrNKQuq+Edoirb5sBPvZpl4o7wYiLlsTrFEYaLOApHX6N8LEEy2KhAqTyAsLGQbyO9rbatdFe9iTcpXK5dNGR6Fi0fQLVf/B4RLj2YqJDDTNFeW18FMqkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724161440; c=relaxed/simple;
-	bh=qTsnJN49+aS05L1oPB0ek5eAdQnTO8MqCs+X6kYnMq0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LUa/GSXq36hb/z6eb03xhGSytxAk6OQ3JJmnkn3IsIeXvdP9o8BHqUd++Ra1/Lp+7vtozlOejXwO0mG6mzFcwM63Wp17jR7xPCcD4sdvrHXsd2IGD4UAR52KwUl9T+qaS5i3TeCtIFiRm9wXFGQAZVT3zt1VKyQFR4X6UxNzebw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.com; spf=pass smtp.mailfrom=yandex.com; dkim=pass (1024-bit key) header.d=yandex.com header.i=@yandex.com header.b=bhu5URS2; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.com
-Received: from mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net [IPv6:2a02:6b8:c2b:1d5:0:640:773e:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id C0386613DD;
-	Tue, 20 Aug 2024 16:35:05 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wYNd7uDTquQ0-i9SdytvD;
-	Tue, 20 Aug 2024 16:35:04 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.com; s=mail;
-	t=1724160904; bh=Yc+SkPJPd/j9LC0nYHlrZb5VAOmJ1MFJRkiKmb/ch6A=;
-	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
-	b=bhu5URS2bSD/fVC8Dzn+eKEyID2HpY0mlyRqNtDTSUdfHvfOHvpoG8f/DIwhJOPxu
-	 eOMB7ZhqdzATeB1LPxOZQSQkmYA8bGSktt/+FWQxImxAPvg/JVNww43A4AKyEx+azv
-	 l024ikWXXXUw7S/kMhF9tVYCOBmo0Gs0gSpiSQ8A=
-Authentication-Results: mail-nwsmtp-smtp-production-main-18.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.com
-Message-ID: <1d7ffd09-99b9-43d8-a2f5-6e5455b4e5a1@yandex.com>
-Date: Tue, 20 Aug 2024 15:34:58 +0200
+	s=arc-20240116; t=1724167125; c=relaxed/simple;
+	bh=L9acGCAPfUAhZqVmLTPxxGB6397void34tVzkENBXM8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gupD/CWZmnz8A0ZY00G7qFKZdpT5iT7+XcQl679RvriADdFARN6YVrfMvpJGOTkqG/qEv8dPUEd5c4oijM5DQ368uDS2sU7IygYcNTt0ByG/4fVRAErQq3goH6BSvGFQwnbJ1PdCVMzJM0LGIOJOg0lqe2HsoYGgo9EY2h1J0PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FWw3EhR0; arc=none smtp.client-ip=209.85.210.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-70930f8eabbso2034666a34.1
+        for <linux-iio@vger.kernel.org>; Tue, 20 Aug 2024 08:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724167122; x=1724771922; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5EbeUTVrdAwG3ffY5P1A4CIKG8gQCJjFS83H7iQ41yg=;
+        b=FWw3EhR0bjhxNa3dZzx04Bu237DeY28wajRY/cKL1GJBpJ+mEppkSVYlOdsbIl0iVT
+         OoXECI4DRI1B7F/NmYYlcaLYO+Dx1VC+QEJBVxxh1XI7EwrDkoqPRaSe0cHyiMVFjiX0
+         dHV031bG/6NmhHaUPnYKe5FZOy/dEAIFhubyijM+I3UPfyjvQdw3Z2cGr96m6wDjAzso
+         uy5ADJbAsKg5fGWmPre9fwTrXRHnmWPl8CigwWGESZ0Nh7Tjcpzj4lU64loWn/EZD+mQ
+         Q8/W8UHF7bx81rX/nRd19BbAzPJagufAkcwk8Tj7pUMQpH470+RmzJYJuXQrU2vDp1Wi
+         MEnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724167122; x=1724771922;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5EbeUTVrdAwG3ffY5P1A4CIKG8gQCJjFS83H7iQ41yg=;
+        b=k2n5X7PHqBwLdWpVuziDS7RzFFLKewp3bsZiX7ukz5qOJb/+SZfJU5AVF2H3x4aSLC
+         loXrSRJ9M3diiL2aVeIcnEq7RboCJDrNZrPkDRJ1b0+gVDhFveyD2MezsitiPW6Zyb4x
+         842l2mIVqmMipEwTpVRPGsGkRRPVwmaYvCHnyk9MCy73RbnO9oGYFi36rErzgDn/DX2C
+         AJ+NthiI9HUp0BnKGgn+rHo83IdlgEiItFTgZegeQYu+Cs5aHFWSiJSq6gvHaWRROH9u
+         0HS6zW5AnMFajYIY23jUIILnw8ozwReyUEdMZ2hoyLPDeujL2vACXA7Z4qf7RJXVBtpN
+         yHgQ==
+X-Gm-Message-State: AOJu0Yz3QoGpMrLsb4kwz+bt1rWCrbEf8KiqxjgxTSX4Zwa0BcP099Fu
+	PL7IS2TNvDho7tCFrF/RdMKtF8ubRnvqXzvfnUE4wXGX8dsh17b6YBDKCSoU3dA=
+X-Google-Smtp-Source: AGHT+IEsKw2w0npL9vAIavU+xOz72lv/4yYm7bIFXNJNBiMeGLYo2E5L9eQql41jREtPnllvu+qejg==
+X-Received: by 2002:a05:6830:65c4:b0:709:3b70:3bb6 with SMTP id 46e09a7af769-70cac8b1bb4mr21411837a34.28.1724167122483;
+        Tue, 20 Aug 2024 08:18:42 -0700 (PDT)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70ca64945d0sm2744941a34.18.2024.08.20.08.18.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Aug 2024 08:18:42 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Tue, 20 Aug 2024 10:18:24 -0500
+Subject: [PATCH] iio: ABI: remove duplicate in_resistance_calibbias
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/10] arm64: dts: rockchip: Add rk3576 SoC base DT
-To: Detlev Casanova <detlev.casanova@collabora.com>,
- linux-kernel@vger.kernel.org
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Daniel Lezcano
- <daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@linutronix.de>,
- Chris Morgan <macromorgan@hotmail.com>, Jonas Karlman <jonas@kwiboo.se>,
- Tim Lunn <tim@feathertop.org>, Muhammed Efe Cetin <efectn@protonmail.com>,
- Andy Yan <andyshrk@163.com>, Jagan Teki <jagan@edgeble.ai>,
- Dragan Simic <dsimic@manjaro.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Shresth Prasad <shresthprasad7@gmail.com>, Ondrej Jirman <megi@xff.cz>,
- Weizhao Ouyang <weizhao.ouyang@arm.com>, Alexey Charkov <alchark@gmail.com>,
- Jimmy Hon <honyuenkwun@gmail.com>, Finley Xiao <finley.xiao@rock-chips.com>,
- Yifeng Zhao <yifeng.zhao@rock-chips.com>,
- Elaine Zhang <zhangqing@rock-chips.com>, Liang Chen <cl@rock-chips.com>,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-i2c@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-serial@vger.kernel.org, kernel@collabora.com
-References: <20240802214612.434179-1-detlev.casanova@collabora.com>
- <20240802214612.434179-10-detlev.casanova@collabora.com>
- <c5014fe3-130b-4ace-a66e-8773a9a4f1dc@yandex.com>
- <1944590.atdPhlSkOF@trenzalore>
-Content-Language: en-US
-From: Johan Jonker <jbx6244@yandex.com>
-In-Reply-To: <1944590.atdPhlSkOF@trenzalore>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240820-iio-abi-remove-dup-in_resistance_calibbias-v1-1-e64e58cabb14@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAL+zxGYC/x3NQQrCMBBG4auUWTsQg4vWq4iUyXSqP2hSMrYIp
+ Xc3uPw27+3kVmFO126nahscJTecTx3pU/LDGFMzxRAvoY+BgcKSwNXeZTOe1oWRx2oO/0hWG1V
+ eSAniPKuEMIgOsVdqwaXajO9/drsfxw/3kfx/fAAAAA==
+To: Jonathan Cameron <jic23@kernel.org>, Andreas Klinger <ak@it-klinger.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Stephen Rothwell <sfr@canb.auug.org.au>, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.1
 
+In commit 0f718e10da81 ("iio: ABI: add missing calibbias attributes"),
+the in_resistance_calibbias attribute was added to the main IIO ABI
+documentation. This attribute is was already documented in
+sysfs-bus-iio-chemical-sgp40. This resulted in a duplicate entry that is
+causing documentation build warnings.
 
+This removes the attribute from the sgp40 documentation in favor of the
+main IIO ABI documentation since this attribute fits the established
+pattern of standard IIO attributes.
 
-On 8/19/24 22:06, Detlev Casanova wrote:
-> Hi Johan,
-> 
-> On Thursday, 15 August 2024 05:30:25 EDT Johan Jonker wrote:
->> Some comments below. Whenever useful.
->>
->> On 8/2/24 23:45, Detlev Casanova wrote:
->>> This device tree contains all devices necessary for booting from network
->>> or SD Card.
->>>
->>> It supports CPU, CRU, PM domains, dma, interrupts, timers, UART and
->>> SDHCI (everything necessary to boot Linux on this system on chip) as
->>> well as Ethernet, I2C, SPI and OTP.
->>>
->>> Also add the necessary DT bindings for the SoC.
->>>
->>> Signed-off-by: Liang Chen <cl@rock-chips.com>
->>> Signed-off-by: Finley Xiao <finley.xiao@rock-chips.com>
->>> Signed-off-by: Yifeng Zhao <yifeng.zhao@rock-chips.com>
->>> Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
->>> [rebase, squash and reword commit message]
->>> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
->>> ---
->>
->> [..]
->>
->>> diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
->>> b/arch/arm64/boot/dts/rockchip/rk3576.dtsi new file mode 100644
->>> index 0000000000000..00c4d2a153ced
->>> --- /dev/null
->>> +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
->> [..]
->>
->> For uart0..uart11:
->>> +
->>> +	uart1: serial@27310000 {
->>> +		compatible = "rockchip,rk3576-uart", "snps,dw-apb-
-> uart";
->>> +		reg = <0x0 0x27310000 0x0 0x100>;
->>>
->>> +		interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
->>
->> "interrupts" are sort just like other properties. A mix of sort styles
->> exists, so check all nodes.
-> 
-> Ok, so it should be sorted alphabetically with the following exceptions:
-> - 'compatible' and 'reg.*' on top
-> - "#.*" at the end, sorted
-> - "status" last.
-> 
-> Is that right ?
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/linux-next/20240820134739.50c771cb@canb.auug.org.au/
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40 | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-The dts-coding-style.rst does not say much about things with "#",
-so below a property they refer to or at the end looks nicer.
-No strict rule, but do it in a consistent style in file. 
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40 b/Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40
+index 469a7c00fad4..a95547e874f1 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40
++++ b/Documentation/ABI/testing/sysfs-bus-iio-chemical-sgp40
+@@ -15,17 +15,3 @@ Description:
+ 		Set the relative humidity. This value is sent to the sensor for
+ 		humidity compensation.
+ 		Default value: 50000 (50 % relative humidity)
+-
+-What:		/sys/bus/iio/devices/iio:deviceX/in_resistance_calibbias
+-Date:		August 2021
+-KernelVersion:	5.15
+-Contact:	Andreas Klinger <ak@it-klinger.de>
+-Description:
+-		Set the bias value for the resistance which is used for
+-		calculation of in_concentration_input as follows:
+-
+-		x = (in_resistance_raw - in_resistance_calibbias) * 0.65
+-
+-		in_concentration_input = 500 / (1 + e^x)
+-
+-		Default value: 30000
 
-Original comment by robh for things with "reg":
-"It makes more sense to keep reg-io-width together with reg."
-https://lore.kernel.org/all/20240131135955.GA966672-robh@kernel.org/
+---
+base-commit: 0f718e10da81446df0909c9939dff2b77e3b4e95
+change-id: 20240820-iio-abi-remove-dup-in_resistance_calibbias-fca009ac928c
 
-> 
->>> +		clocks = <&cru SCLK_UART1>, <&cru PCLK_UART1>;
->>> +		clock-names = "baudclk", "apb_pclk";
->>>
->>> +		reg-shift = <2>;
->>> +		reg-io-width = <4>;
->>
->> Move below "reg".
->>
->>> +		dmas = <&dmac0 8>, <&dmac0 9>;
->>> +		pinctrl-names = "default";
->>> +		pinctrl-0 = <&uart1m0_xfer>;
->>> +		status = "disabled";
->>> +	};
->>> +
->>> +	pmu: power-management@27380000 {
-> 
-> [...]
-> 
->>> +				#address-cells = <1>;
->>> +				#size-cells = <0>;
->>> +				clocks = <&cru ACLK_VOP>,
->>> +					 <&cru HCLK_VOP>,
->>> +					 <&cru HCLK_VOP_ROOT>;
->>> +				pm_qos = <&qos_vop_m0>,
->>> +					 <&qos_vop_m1ro>;
->>> +
->>> +				power-domain@RK3576_PD_USB {
->>
->> Since when is USB part of VOP?
->> Recheck?
-> 
-> The TRM doesn't tell me anything, but If I don't put it as a child of VOP, it 
-> just hangs when the kernel tries to shut it down.
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
-Could the people from Rockchip disclose the USB PD location?
-
-> 
-> [...]
-> 
->>> +
->>> +	pinctrl: pinctrl {
->>> +		compatible = "rockchip,rk3576-pinctrl";
->>> +		rockchip,grf = <&ioc_grf>;
->>> +		rockchip,sys-grf = <&sys_grf>;
->>> +		#address-cells = <2>;
->>> +		#size-cells = <2>;
->>> +		ranges;
->>> +
->>>
->>> +		gpio0: gpio@27320000 {
->>
->> The use of gpio nodes as subnode of pinctrl is deprecated.
->>
->> patternProperties:
->>   "gpio@[0-9a-f]+$":
->>     type: object
->>
->>     $ref: /schemas/gpio/rockchip,gpio-bank.yaml#
->>     deprecated: true
->>
->>     unevaluatedProperties: false
-> 
-
-> I tried putting the gpio nodes out of the pinctrl node, they should work 
-> because they already have a gpio-ranges field.
-> But unfortunately, that seem to break the pinctrl driver which hangs at some 
-> point. Maybe some adaptations are needed to support this, or am I missing 
-> something ?
-
-The aliases that we added to the DT files are a work around to prevent damage when we moved to generic gpio node names.
-There just happened to be some code for it in the driver...
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/gpio/gpio-rockchip.c#n719
-
-Comment by robh:
-"GPIO shouldn't really have an alias either IMO."
-https://lore.kernel.org/linux-arm-kernel/20230118153236.GA33699-robh@kernel.org/
-
-Mainline Rockchip gpio driver is not so to the standard.
-The file gpio-rockchip.c currently does nothing with "gpio-ranges" vs. bank and node relation.
-My simple patch was acked, but never applied. There's no public maintainer response of what to improve.
-Guess, probably something more complicated idiot prove "gpio-ranges" parsing/bank linking is needed?
-https://lore.kernel.org/linux-arm-kernel/890be9a0-8e82-a8f4-bc15-d5d1597343c2@gmail.com/
-
-I leave this subject up to the experts to find out what is needed to improve.
-Don't ask me.
-
-Johan
-> 
->>> +			compatible = "rockchip,gpio-bank";
->>
->> When in use as separate node the compatible must be SoC related.
->>
->> Question for the maintainers: Extra entry to rockchip,gpio-bank.yaml ??
->>
->>> +			reg = <0x0 0x27320000 0x0 0x200>;
->>> +			interrupts = <GIC_SPI 153 
-> IRQ_TYPE_LEVEL_HIGH>;
->>> +			clocks = <&cru PCLK_GPIO0>, <&cru 
-> DBCLK_GPIO0>;
->>> +
->>> +			gpio-controller;
->>> +			#gpio-cells = <2>;
->>> +			gpio-ranges = <&pinctrl 0 0 32>;
->>> +			interrupt-controller;
->>> +			#interrupt-cells = <2>;
->>> +		};
->>> +
->>> +		gpio1: gpio@2ae10000 {
->>> +
->>> +		gpio2: gpio@2ae20000 {
->>> +
->>> +		gpio3: gpio@2ae30000 {
->>> +
->>> +		gpio4: gpio@2ae40000 {
->>> +	};
->>> +};
->>> +
->>> +#include "rk3576-pinctrl.dtsi"
-> 
-> Regards,
-> 
-> Detlev
-> 
-> 
-> 
 

@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-8660-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8661-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BEB95A689
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:24:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C0195A6B0
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D8B1B24CE3
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:24:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B0C8B22975
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CFE175D42;
-	Wed, 21 Aug 2024 21:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3044F17994F;
+	Wed, 21 Aug 2024 21:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bu4xnQib"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RhYEc+1Y"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746B715B116;
-	Wed, 21 Aug 2024 21:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C6B178CEA;
+	Wed, 21 Aug 2024 21:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724275463; cv=none; b=DxY8vkt5KPDf8gLhlvlzBkI0Fre+SCUlBHok5UwBVaNnfLTzm2/dlK/T6C+1Qp/4KN+08AW7417WEYK+wzZpw4JcCbOpzS81qkAV4m4O21oiClhAbZb6USo2e/cTcxBsIHiowifhcmU42pOip6Q3e4OiTvWzlLR1wqlJE1nyD2U=
+	t=1724275958; cv=none; b=Yef0HnoQ0hfUoz+pe2X4Hacn+osXWKnKwfGs7zL1ZbbPLseX+FbEB7L03EXlc/0keh7DMpLLGHDBKQ2+xEd9kNvsDZA27cTma22Hqk/s/7m2oL9QhSWRIwnAuBYqOAXYJLcutgRrUYRmD+/4b+7ZUFV0wbfQUwwc9DGGUUMAgaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724275463; c=relaxed/simple;
-	bh=U+eAa+8CVBmDvqe7l0B4VXGd7cMBJCocehRhD16kk8o=;
+	s=arc-20240116; t=1724275958; c=relaxed/simple;
+	bh=eQsXqUqvv/AS9vwZ0wx6LmssWGxBpB0S6sLmMTGijeQ=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rMRDzmNtysVkhjZCjr2KJOvqZspdwF/uMfB/3hduVMjTEs5nyG5SuSWJObn8QPONeUe6vhldlACTkSIAkGEcbqro16w5JFSuas5d6PQ9yZc7prxQk37ChtXErG39K4d3RdO7UB+CN3XsDYl/YdVqx1/+a4RMlTBvuzdN+UQW0yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bu4xnQib; arc=none smtp.client-ip=209.85.128.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=W2AADcGHV/n2xAP1q3OT4U8H9xOPie4lIhyeJ5iwMjzlBwWTV6kA7I9KvHymtoOUt4L4oEmwKEWOw1F5ubIUCrlwOIIXLGlvnxRkp1Gn9k+7/56A7/4uy9vVjbXX1bSUE/uCQenA9g0b+ojiPZZft1LJ6eAmMR756R6AuYxc38o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RhYEc+1Y; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-429da8b5feaso997625e9.2;
-        Wed, 21 Aug 2024 14:24:21 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5bef295a45bso193731a12.0;
+        Wed, 21 Aug 2024 14:32:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724275460; x=1724880260; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724275955; x=1724880755; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=X46DGmrnd/zTDd1iaWkAHCBxYZlDcmDEG4Mch03itX4=;
-        b=bu4xnQibmpZDjuKtq5D4uK7CAzDj3i+bI32tcQy661kfBywFTuphbQiLNcql6rsXJ9
-         EFDepiRLRqOYo6315vVXeeZ0NSP/r01Ff1Id71D/xYcJ98K+iwsDkG8pI8AHP4PfiKVb
-         Qd6fuAgszHHjXxhwcKJzNrrqpQBSirohSORnb+eMzh8+XLeVFS/LBnmqUJzIygs6d+o4
-         tmOtP3NZh+9gbSsM31T84WnhtznqtS7R0G902Ng/hZ66oK66IPRx9SBD4jNwLFgpM1D2
-         gMkrfwmnJFGprIEzhm7+foMtQtU5l7DsILcSsuj2jGUX9cQ/9GZkpREmoTpnAdxzzNw3
-         lU9Q==
+        bh=XF8MsCEZsep1OInRuAdGSnWQxPI5SfGO64Kx5cKxYFA=;
+        b=RhYEc+1YSzAYAX9LOG5BfPxsqZfOCNWKGTaGxTSF5bs4HtOsoY5Q+Q6kTiXFPGoEjr
+         aQ2O1ZGZ5uDXboObdSm+8fk9iS382DRbPpFEDwBWVVT2TK6wcdFluRAwvq1+WMXWzBCF
+         eo+PnpBuOdsJTXGG4aA8DrnXRoH1uAzJEXgOtsSJ6HPQWmB8AVYKCqa5xB4c5zC1XvoX
+         PoykdJ6teyoCemxuAJqCeDBxCmQQFLWVR2wdJMIP8lXMKjEK1QJxhNLtaCAYiWg77pea
+         hjCZJWn0qp0d7R+JdB7pKTwGh0TMzZTlWPcgGtswFr81C/MJQvcnbDZaNcV/loh4y34f
+         M/Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724275460; x=1724880260;
+        d=1e100.net; s=20230601; t=1724275955; x=1724880755;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=X46DGmrnd/zTDd1iaWkAHCBxYZlDcmDEG4Mch03itX4=;
-        b=O+zpPQcxYnyJMwKbEUjoXVeYyO3KDBcf8JIaaGLzGE5itCejkfRpvjIib1Nspb4/jG
-         IUAm/GtbIqidYGUhANgNBpptE/f998bAfmOJzCbXRwWYoKfycoImBi1kflPlxV9QvC0Y
-         wAhFucE0ULlnenSUcwlhbMnzFvbDQ50i3ZtVH86bqR0uM+CXXGd2UtCuTTHWDazsDSTv
-         QWvWOl0YqEpgc0EV3DkIJTGTrrY1K9PPNgBLBeMXJGkyXlMLDV6M/vaSJVGTm6cV31xe
-         ZGT/OGvuTAqLvwDGS5DQbX8K4t1KcieKeT8usU4NbvYKdOdeN4bhbcCnXUm1GRId7IoR
-         KeXA==
-X-Forwarded-Encrypted: i=1; AJvYcCVrS+Y3VJJr7dUf0vofEGFf8l1XQL+kGmlf+sbKldIC2B9m/D+xQyLTsRTxuz+1Sszkl467Ro63opv4dmKU@vger.kernel.org, AJvYcCWlREoY81czWUGJygBcS6AYZ5rzTgL+/HaD4TpuMXl1LZyflhc7hHR5Mx/VCoINTc0jJzTXt1rKDfSp@vger.kernel.org, AJvYcCXOJt2+Pa7InrnRJTDfIo41pPMOKEvkYZllhrPflKHcEb9hnmBUHTfdUBDGHAfdQoS94BiPLqquAPQo@vger.kernel.org
-X-Gm-Message-State: AOJu0YzK0F3Il+W+CiV1hHL0kZl0X7mdR2/O0bqJYtufnJy+wbCoTI4p
-	pO4hxsPE4eAq9RJ+sTch0jtMKK27nORZEb/0Jht61kisYIo0bBVT
-X-Google-Smtp-Source: AGHT+IGRNpxYanZmZIRg+3BerEwzugOhGzxhBCkjB1yveRLvTc2w/r8G/DccrMH8ynKpV57Aridqkg==
-X-Received: by 2002:a05:600c:4506:b0:426:63f1:9a1b with SMTP id 5b1f17b1804b1-42abd255d5emr28877505e9.33.1724275459164;
-        Wed, 21 Aug 2024 14:24:19 -0700 (PDT)
+        bh=XF8MsCEZsep1OInRuAdGSnWQxPI5SfGO64Kx5cKxYFA=;
+        b=LraKs/y3f434bWygcnn1qp4g4/LjlpStKQzIJL665aGrVgnH8SBsT+EgCwU61tvzsV
+         7Y7EHC1tjf4WKK+FSGK70IXXieiukAffqUyLJNtrIbpa/BZ+OPz9wLhqzE94NvkpNhTO
+         890tufWzJr7PSuLW7PBh+t6lysnckCA227lKmiBR3YnfiWkgFyCJZitinmICFmx8k0LR
+         3irVaZOylapBaKhXGglPeLBSqvEbpwCIWiY2Mz6m8nbBdWn0Is9+gfwOO8lNbICn9mLX
+         uiDYg3+9K5VS+bn/XvbxP81QcwAUzRcoP4I3N4gd0fbRsdc5MtkulpMOjlxMLICxH0I9
+         sScg==
+X-Forwarded-Encrypted: i=1; AJvYcCUA8fTwxoR+QUDFkbd81QDfVoleKX2cZi6C+UGHhpgR4F1rMM7iJfjh9GOCVG8W70oEc0FcpENfr5YBOoOD@vger.kernel.org, AJvYcCXa78Si866Q49qj49cYDcavscu+ezE2E0MGiqlMw3zJQp4ok6Tt2o9h61WNmve/tZ6UGUDrloGp5lyj@vger.kernel.org, AJvYcCXsXihabhnPrcYP0yX1W92XIXr+UmghTAji3/kgw5Sz7iIhKXJLOrFnM9vdmLov287iF9CLuSTIS631@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPwwevxzzGMs4t9EuIP9Wh4oTVRgb3bvF2UjOlIFRaATnIgozY
+	O/6XWw7RzXU9K01ccWjdYchWTR1CMg0gStxUF5Ck4h4D0b55zm9J
+X-Google-Smtp-Source: AGHT+IFQi1OMPl9AjNGyhXxGrFQpzHMY35H1Mc8XeSczOSR1KfuK4UqqEBc4AZoEi5V0sbGP4F4/gw==
+X-Received: by 2002:a05:6402:518d:b0:5bb:9ae0:4a49 with SMTP id 4fb4d7f45d1cf-5bf1f275c15mr3248024a12.30.1724275953935;
+        Wed, 21 Aug 2024 14:32:33 -0700 (PDT)
 Received: from vamoiridPC ([2a04:ee41:82:7577:1594:887e:30dd:c59e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ac514e1dbsm2327945e9.3.2024.08.21.14.24.17
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c04a4c9064sm56295a12.73.2024.08.21.14.32.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 14:24:18 -0700 (PDT)
+        Wed, 21 Aug 2024 14:32:32 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Wed, 21 Aug 2024 23:24:16 +0200
+Date: Wed, 21 Aug 2024 23:32:30 +0200
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
 	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -77,12 +77,12 @@ Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
 	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
 	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] iio: pressure: bmp280: Use bulk read for humidity
- calibration data
-Message-ID: <20240821212416.GA473841@vamoiridPC>
+Subject: Re: [PATCH v2 2/7] iio: pressure: bmp280: Add support for bmp280
+ soft reset
+Message-ID: <20240821213230.GB473841@vamoiridPC>
 References: <20240725231039.614536-1-vassilisamir@gmail.com>
- <20240725231039.614536-2-vassilisamir@gmail.com>
- <20240728164621.16615ce6@jic23-huawei>
+ <20240725231039.614536-3-vassilisamir@gmail.com>
+ <20240728164901.1f325aa2@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,173 +91,106 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240728164621.16615ce6@jic23-huawei>
+In-Reply-To: <20240728164901.1f325aa2@jic23-huawei>
 
-On Sun, Jul 28, 2024 at 04:46:21PM +0100, Jonathan Cameron wrote:
-> On Fri, 26 Jul 2024 01:10:33 +0200
+On Sun, Jul 28, 2024 at 04:49:01PM +0100, Jonathan Cameron wrote:
+> On Fri, 26 Jul 2024 01:10:34 +0200
 > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 > 
-> > Convert individual reads to a bulk read for the humidity calibration data.
+> > The BM(P/E)28x devices have an option for soft reset which is also
+> > recommended by the Bosch Sensortech BME2 Sensor API to be used before the
+> > initial configuration of the device.
 > > 
+> > Link: https://github.com/boschsensortec/BME280_SensorAPI/blob/bme280_v3.5.1/bme280.c#L429
 > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> Trivial passing comment seeing as you are going do be doing a v3 anyway.
 > 
-> One comment inline.  Short version is move that complicated field start enum
-> next to the code so we don't need to say so much for it to make sense.
+> Jonathan
 > 
 > > ---
-> >  drivers/iio/pressure/bmp280-core.c | 62 ++++++++++--------------------
-> >  drivers/iio/pressure/bmp280.h      |  6 +++
-> >  2 files changed, 27 insertions(+), 41 deletions(-)
+> >  drivers/iio/pressure/bmp280-core.c | 28 ++++++++++++++++++++++++++++
+> >  drivers/iio/pressure/bmp280.h      |  3 +++
+> >  2 files changed, 31 insertions(+)
 > > 
 > > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> > index 3deaa57bb3f5..d5e5eb22667a 100644
+> > index d5e5eb22667a..acbc33aacc09 100644
 > > --- a/drivers/iio/pressure/bmp280-core.c
 > > +++ b/drivers/iio/pressure/bmp280-core.c
-> > @@ -118,6 +118,12 @@ enum bmp580_odr {
-> >   */
-> >  enum { T1, T2, T3, P1, P2, P3, P4, P5, P6, P7, P8, P9 };
+> > @@ -963,6 +963,32 @@ static const unsigned long bme280_avail_scan_masks[] = {
+> >  	0
+> >  };
 > >  
-> > +/*
-> > + * These enums are used for indexing into the array of humidity parameters
-> > + * for BME280.
+> > +static int bmp280_preinit(struct bmp280_data *data)
+> > +{
+> > +	unsigned int reg;
+> > +	int ret;
+> > +
+> > +	ret = regmap_write(data->regmap, BMP280_REG_RESET, BMP280_RST_SOFT_CMD);
+> > +	if (ret) {
+> > +		dev_err(data->dev, "Failed to reset device.\n");
+> > +		return ret;
+> Is this only ever called from probe?
 > 
-> I was thinking of a comment that also mentioned the overlap. Perhaps something like
-> ...
-> 
-> 
-> Index of the byte containing the start of each humidity parameter. Some
-> parameters stretch across multiple bytes including into the start of the byte
-> where another humidity parameter begins. Unaligned be/le accesses are used
-> to allow fields to be extracted with FIELD_GET(). 
-> 
-> Or, just refer to the field layout being complex and to see
-> bme280_read_calib function.
-> 
-> Actually come to think of it, just move this enum down there so it
-> is local to the code and the usage is more obvious / comment less important.
+> If so, return dev_err_probe() which will save a few lines of code.
 > 
 
 Hi Jonathan,
 
-Thanks for the feedback once again. Sorry for the late reply, I was taking
-some time off for vacation :)
-
-Indeed your comment makes sense, I can do that.
+Indeed, this is being called only from probe so I could change that as you
+proposed!
 
 Cheers,
 Vasilis
-> > + */
-> > +enum { H2 = 0, H3 = 2, H4 = 3, H5 = 4, H6 = 6 };
+
+> > +	}
 > > +
-> >  enum {
-> >  	/* Temperature calib indexes */
-> >  	BMP380_T1 = 0,
-> > @@ -344,6 +350,7 @@ static int bme280_read_calib(struct bmp280_data *data)
+> > +	usleep_range(data->start_up_time, data->start_up_time + 500);
+> > +
+> > +	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
+> > +	if (ret) {
+> > +		dev_err(data->dev, "Failed to read status register.\n");
+> > +		return ret;
+> > +	}
+> > +	if (reg & BMP280_REG_STATUS_IM_UPDATE) {
+> > +		dev_err(data->dev, "Failed to copy NVM contents.\n");
+> > +		return ret;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static int bmp280_chip_config(struct bmp280_data *data)
 > >  {
-> >  	struct bmp280_calib *calib = &data->calib.bmp280;
-> >  	struct device *dev = data->dev;
-> > +	s16 h4_upper, h4_lower;
-> >  	unsigned int tmp;
-> >  	int ret;
+> >  	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
+> > @@ -1079,6 +1105,7 @@ const struct bmp280_chip_info bmp280_chip_info = {
+> >  	.read_temp = bmp280_read_temp,
+> >  	.read_press = bmp280_read_press,
+> >  	.read_calib = bmp280_read_calib,
+> > +	.preinit = bmp280_preinit,
 > >  
-> > @@ -352,14 +359,6 @@ static int bme280_read_calib(struct bmp280_data *data)
-> >  	if (ret)
-> >  		return ret;
+> >  	.trigger_handler = bmp280_trigger_handler,
+> >  };
+> > @@ -1196,6 +1223,7 @@ const struct bmp280_chip_info bme280_chip_info = {
+> >  	.read_press = bmp280_read_press,
+> >  	.read_humid = bme280_read_humid,
+> >  	.read_calib = bme280_read_calib,
+> > +	.preinit = bmp280_preinit,
 > >  
-> > -	/*
-> > -	 * Read humidity calibration values.
-> > -	 * Due to some odd register addressing we cannot just
-> > -	 * do a big bulk read. Instead, we have to read each Hx
-> > -	 * value separately and sometimes do some bit shifting...
-> > -	 * Humidity data is only available on BME280.
-> > -	 */
-> > -
-> >  	ret = regmap_read(data->regmap, BME280_REG_COMP_H1, &tmp);
-> >  	if (ret) {
-> >  		dev_err(dev, "failed to read H1 comp value\n");
-> > @@ -368,43 +367,24 @@ static int bme280_read_calib(struct bmp280_data *data)
-> >  	calib->H1 = tmp;
-> >  
-> >  	ret = regmap_bulk_read(data->regmap, BME280_REG_COMP_H2,
-> > -			       &data->le16, sizeof(data->le16));
-> > -	if (ret) {
-> > -		dev_err(dev, "failed to read H2 comp value\n");
-> > -		return ret;
-> > -	}
-> > -	calib->H2 = sign_extend32(le16_to_cpu(data->le16), 15);
-> > -
-> > -	ret = regmap_read(data->regmap, BME280_REG_COMP_H3, &tmp);
-> > -	if (ret) {
-> > -		dev_err(dev, "failed to read H3 comp value\n");
-> > -		return ret;
-> > -	}
-> > -	calib->H3 = tmp;
-> > -
-> > -	ret = regmap_bulk_read(data->regmap, BME280_REG_COMP_H4,
-> > -			       &data->be16, sizeof(data->be16));
-> > +			       data->bme280_humid_cal_buf,
-> > +			       sizeof(data->bme280_humid_cal_buf));
-> >  	if (ret) {
-> > -		dev_err(dev, "failed to read H4 comp value\n");
-> > +		dev_err(dev, "failed to read humidity calibration values\n");
-> >  		return ret;
-> >  	}
-> > -	calib->H4 = sign_extend32(((be16_to_cpu(data->be16) >> 4) & 0xff0) |
-> > -				  (be16_to_cpu(data->be16) & 0xf), 11);
-> >  
-> > -	ret = regmap_bulk_read(data->regmap, BME280_REG_COMP_H5,
-> > -			       &data->le16, sizeof(data->le16));
-> > -	if (ret) {
-> > -		dev_err(dev, "failed to read H5 comp value\n");
-> > -		return ret;
-> > -	}
-> > -	calib->H5 = sign_extend32(FIELD_GET(BME280_COMP_H5_MASK, le16_to_cpu(data->le16)), 11);
-> > -
-> > -	ret = regmap_read(data->regmap, BME280_REG_COMP_H6, &tmp);
-> > -	if (ret) {
-> > -		dev_err(dev, "failed to read H6 comp value\n");
-> > -		return ret;
-> > -	}
-> > -	calib->H6 = sign_extend32(tmp, 7);
-> > +	calib->H2 = get_unaligned_le16(&data->bme280_humid_cal_buf[H2]);
-> > +	calib->H3 = data->bme280_humid_cal_buf[H3];
-> > +	h4_upper = FIELD_GET(BME280_COMP_H4_GET_MASK_UP,
-> > +			get_unaligned_be16(&data->bme280_humid_cal_buf[H4]));
-> > +	h4_upper = FIELD_PREP(BME280_COMP_H4_PREP_MASK_UP, h4_upper);
-> > +	h4_lower = FIELD_GET(BME280_COMP_H4_MASK_LOW,
-> > +			get_unaligned_be16(&data->bme280_humid_cal_buf[H4]));
-> > +	calib->H4 = sign_extend32(h4_upper | h4_lower, 11);
-> > +	calib->H5 = sign_extend32(FIELD_GET(BME280_COMP_H5_MASK,
-> > +			get_unaligned_le16(&data->bme280_humid_cal_buf[H5])), 11);
-> > +	calib->H6 = data->bme280_humid_cal_buf[H6];
-> >  
-> >  	return 0;
-> >  }
+> >  	.trigger_handler = bme280_trigger_handler,
+> >  };
 > > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-> > index ccacc67c1473..9bea0b84d2f4 100644
+> > index 9bea0b84d2f4..a9f220c1f77a 100644
 > > --- a/drivers/iio/pressure/bmp280.h
 > > +++ b/drivers/iio/pressure/bmp280.h
-> > @@ -257,8 +257,13 @@
-> >  #define BME280_REG_COMP_H5		0xE5
-> >  #define BME280_REG_COMP_H6		0xE7
+> > @@ -205,6 +205,9 @@
+> >  #define BMP280_REG_CONFIG		0xF5
+> >  #define BMP280_REG_CTRL_MEAS		0xF4
+> >  #define BMP280_REG_STATUS		0xF3
+> > +#define BMP280_REG_STATUS_IM_UPDATE	BIT(0)
+> > +#define BMP280_REG_RESET		0xE0
+> > +#define BMP280_RST_SOFT_CMD		0xB6
 > >  
-> > +#define BME280_COMP_H4_GET_MASK_UP	GENMASK(15, 8)
-> > +#define BME280_COMP_H4_PREP_MASK_UP	GENMASK(11, 4)
-> > +#define BME280_COMP_H4_MASK_LOW		GENMASK(3, 0)
-> >  #define BME280_COMP_H5_MASK		GENMASK(15, 4)
-> >  
-> > +#define BME280_CONTIGUOUS_CALIB_REGS	7
-> > +
-> >  #define BME280_OSRS_HUMIDITY_MASK	GENMASK(2, 0)
-> >  #define BME280_OSRS_HUMIDITY_SKIP	0
-> >  #define BME280_OSRS_HUMIDITY_1X		1
-> > @@ -423,6 +428,7 @@ struct bmp280_data {
-> >  		/* Calibration data buffers */
-> >  		__le16 bmp280_cal_buf[BMP280_CONTIGUOUS_CALIB_REGS / 2];
-> >  		__be16 bmp180_cal_buf[BMP180_REG_CALIB_COUNT / 2];
-> > +		u8 bme280_humid_cal_buf[BME280_CONTIGUOUS_CALIB_REGS];
-> >  		u8 bmp380_cal_buf[BMP380_CALIB_REG_COUNT];
-> >  		/* Miscellaneous, endianness-aware data buffers */
-> >  		__le16 le16;
+> >  #define BMP280_REG_COMP_TEMP_START	0x88
+> >  #define BMP280_COMP_TEMP_REG_COUNT	6
 > 
 

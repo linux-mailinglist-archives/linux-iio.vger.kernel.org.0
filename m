@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-8661-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8662-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C0195A6B0
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:33:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AF995A70D
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:52:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B0C8B22975
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:33:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 611C2285456
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3044F17994F;
-	Wed, 21 Aug 2024 21:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EE117A931;
+	Wed, 21 Aug 2024 21:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RhYEc+1Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ACdG9lpm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C6B178CEA;
-	Wed, 21 Aug 2024 21:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4FC7405A;
+	Wed, 21 Aug 2024 21:51:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724275958; cv=none; b=Yef0HnoQ0hfUoz+pe2X4Hacn+osXWKnKwfGs7zL1ZbbPLseX+FbEB7L03EXlc/0keh7DMpLLGHDBKQ2+xEd9kNvsDZA27cTma22Hqk/s/7m2oL9QhSWRIwnAuBYqOAXYJLcutgRrUYRmD+/4b+7ZUFV0wbfQUwwc9DGGUUMAgaY=
+	t=1724277117; cv=none; b=XaXZVy0EyxB16ADCtbwqSEv7guuxH4Lpr9dl5WUXM4DZOJr3H/YClB38hWKLeOy+w040qOG9zr2EJWAGCVN6cp6lKM2A6Arzf3BgugSWWwySYM0pv6oS6p6f9PfSnevRHi1wlgrPTeAxsLZVG1IFJlGM4ayOiyuVSQcWh4x0zg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724275958; c=relaxed/simple;
-	bh=eQsXqUqvv/AS9vwZ0wx6LmssWGxBpB0S6sLmMTGijeQ=;
+	s=arc-20240116; t=1724277117; c=relaxed/simple;
+	bh=Kt6JI5NWSv6ZkyWAqw9jTVzFCxQpU5lwLImQB0lx8b8=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W2AADcGHV/n2xAP1q3OT4U8H9xOPie4lIhyeJ5iwMjzlBwWTV6kA7I9KvHymtoOUt4L4oEmwKEWOw1F5ubIUCrlwOIIXLGlvnxRkp1Gn9k+7/56A7/4uy9vVjbXX1bSUE/uCQenA9g0b+ojiPZZft1LJ6eAmMR756R6AuYxc38o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RhYEc+1Y; arc=none smtp.client-ip=209.85.208.48
+	 Content-Type:Content-Disposition:In-Reply-To; b=EbC9kY+G6QgrF9hOUOWXbaiGWRJiGgiZvdddHFrcIsW7lXWTUHCKulRhOxYynwzbtWDayQ2/sotEBmLixwRov6I5ngX83AJvZjF5ktA8sYCE8fYfshHZ7SLJ1qweyN3u9HnuIlq+Audn2pZbTdJQ78zVZR1I7taKoP2GfTEjuoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ACdG9lpm; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5bef295a45bso193731a12.0;
-        Wed, 21 Aug 2024 14:32:36 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a8666734767so17806366b.1;
+        Wed, 21 Aug 2024 14:51:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724275955; x=1724880755; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724277114; x=1724881914; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XF8MsCEZsep1OInRuAdGSnWQxPI5SfGO64Kx5cKxYFA=;
-        b=RhYEc+1YSzAYAX9LOG5BfPxsqZfOCNWKGTaGxTSF5bs4HtOsoY5Q+Q6kTiXFPGoEjr
-         aQ2O1ZGZ5uDXboObdSm+8fk9iS382DRbPpFEDwBWVVT2TK6wcdFluRAwvq1+WMXWzBCF
-         eo+PnpBuOdsJTXGG4aA8DrnXRoH1uAzJEXgOtsSJ6HPQWmB8AVYKCqa5xB4c5zC1XvoX
-         PoykdJ6teyoCemxuAJqCeDBxCmQQFLWVR2wdJMIP8lXMKjEK1QJxhNLtaCAYiWg77pea
-         hjCZJWn0qp0d7R+JdB7pKTwGh0TMzZTlWPcgGtswFr81C/MJQvcnbDZaNcV/loh4y34f
-         M/Cg==
+        bh=mshofXHEuKk3AfsjHmTdYTQY1OTdO7/xqWQ3iRWqk6I=;
+        b=ACdG9lpmJL1VkXRzq9o4g5V1BxJxHKhP6/ildyrSnwkIWPYEXokO0NdUepp4G9rIEt
+         6h/TXNGxmNIUESLzyBe43DCAIDNCoeUx6cFf34O4Sym5ARkkCvISh9+TaiODVjBCWHRx
+         CPIDzfO62OYjaUerwqCM3ZQF/FuUn3QXTyE3i7AwweidDM6xbgVZvHUirNR2GbWUIF48
+         DC/uBoR/R88w+LjRHhWNP9VtWnJQqzScGNzv99ptBzITpLwwGumRaNsGU0SbddLvPOQj
+         1lPBLHT10qA6Dy2/HzrB5H87DESRx/Jyml0PA2BxiISffJiHFNLqtQyTpl/nHQKEI1tZ
+         azdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724275955; x=1724880755;
+        d=1e100.net; s=20230601; t=1724277114; x=1724881914;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XF8MsCEZsep1OInRuAdGSnWQxPI5SfGO64Kx5cKxYFA=;
-        b=LraKs/y3f434bWygcnn1qp4g4/LjlpStKQzIJL665aGrVgnH8SBsT+EgCwU61tvzsV
-         7Y7EHC1tjf4WKK+FSGK70IXXieiukAffqUyLJNtrIbpa/BZ+OPz9wLhqzE94NvkpNhTO
-         890tufWzJr7PSuLW7PBh+t6lysnckCA227lKmiBR3YnfiWkgFyCJZitinmICFmx8k0LR
-         3irVaZOylapBaKhXGglPeLBSqvEbpwCIWiY2Mz6m8nbBdWn0Is9+gfwOO8lNbICn9mLX
-         uiDYg3+9K5VS+bn/XvbxP81QcwAUzRcoP4I3N4gd0fbRsdc5MtkulpMOjlxMLICxH0I9
-         sScg==
-X-Forwarded-Encrypted: i=1; AJvYcCUA8fTwxoR+QUDFkbd81QDfVoleKX2cZi6C+UGHhpgR4F1rMM7iJfjh9GOCVG8W70oEc0FcpENfr5YBOoOD@vger.kernel.org, AJvYcCXa78Si866Q49qj49cYDcavscu+ezE2E0MGiqlMw3zJQp4ok6Tt2o9h61WNmve/tZ6UGUDrloGp5lyj@vger.kernel.org, AJvYcCXsXihabhnPrcYP0yX1W92XIXr+UmghTAji3/kgw5Sz7iIhKXJLOrFnM9vdmLov287iF9CLuSTIS631@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPwwevxzzGMs4t9EuIP9Wh4oTVRgb3bvF2UjOlIFRaATnIgozY
-	O/6XWw7RzXU9K01ccWjdYchWTR1CMg0gStxUF5Ck4h4D0b55zm9J
-X-Google-Smtp-Source: AGHT+IFQi1OMPl9AjNGyhXxGrFQpzHMY35H1Mc8XeSczOSR1KfuK4UqqEBc4AZoEi5V0sbGP4F4/gw==
-X-Received: by 2002:a05:6402:518d:b0:5bb:9ae0:4a49 with SMTP id 4fb4d7f45d1cf-5bf1f275c15mr3248024a12.30.1724275953935;
-        Wed, 21 Aug 2024 14:32:33 -0700 (PDT)
+        bh=mshofXHEuKk3AfsjHmTdYTQY1OTdO7/xqWQ3iRWqk6I=;
+        b=qwZCqnbXseh5HHNIycZswa7qz+OqtjgCV7B74e2uj1JJay8bNAineKJlJV+gXBjoob
+         XNUddhk5l/6KotM7GS2BYSejEguN59RUB95OIHd1Ddxwa8sDsHI8YJvg5XeplsUjKa3w
+         oopQXLNOPuJ9I7dJsP6pVArnZrPm5odgSiyZxvKMlPN5bqU15ZzZAqRiWyegOV8k3ccG
+         Qf8p883rjYEYsKz6pxuRWB8M8dZCznihr3ztn6bVzTgTBJFGRvw4bNPkjEVhmuMEH6PK
+         tCK7j7l0CPS9BlP82SxBHjqa4jDuL6G6KgFNxyq8xHzkQgRgNxZDFtceuU0FmOMlNAa2
+         um1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUaQZkvJnNLuWq/NBOgWWmlxOdTwxYz7gkMI965TfrdxkvEbBA2mwdilIoHwhlK+SRmJKij3nMfq4dN@vger.kernel.org, AJvYcCVf6sLk7e/iF18nbzFw3YVrdCXkrXt9tCoL9GDjP7y3LcDX+3GiHTW45CstWBuUEDsuZaJoV/wvA2t2@vger.kernel.org, AJvYcCWygx8Pc+SIPDUuCuOZ0rhJNue3I1xRqNpacwM4ibeHlAEj/p4nIyHEQRmvrmmLSPk7WW/poI7rK0szLFYn@vger.kernel.org
+X-Gm-Message-State: AOJu0YwK5Pfe7HXd622fphMP+z70mNBYfWCiXpQdPl/Ke0slLA1qEE/S
+	jUFJ4ndUOx251RVjtGwZLZ4ynbt2lXNxof4uYh4Vjtq10jiDYImr
+X-Google-Smtp-Source: AGHT+IHizZ5FHVMP1eNGW0+XQx8jDz5+OtFB9DZr3dfKFvQ2X2R5CGRJv3oN+hMFH3GrQTY2FiNuBg==
+X-Received: by 2002:a17:907:2ce3:b0:a80:aefa:14d3 with SMTP id a640c23a62f3a-a866f8b679emr282840966b.63.1724277113186;
+        Wed, 21 Aug 2024 14:51:53 -0700 (PDT)
 Received: from vamoiridPC ([2a04:ee41:82:7577:1594:887e:30dd:c59e])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c04a4c9064sm56295a12.73.2024.08.21.14.32.31
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f48a5d0sm14982466b.159.2024.08.21.14.51.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 14:32:32 -0700 (PDT)
+        Wed, 21 Aug 2024 14:51:52 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Wed, 21 Aug 2024 23:32:30 +0200
+Date: Wed, 21 Aug 2024 23:51:50 +0200
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
 	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -77,12 +77,12 @@ Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
 	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
 	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/7] iio: pressure: bmp280: Add support for bmp280
- soft reset
-Message-ID: <20240821213230.GB473841@vamoiridPC>
+Subject: Re: [PATCH v2 4/7] iio: pressure: bmp280: Use sleep and forced mode
+ for oneshot captures
+Message-ID: <20240821215150.GA478039@vamoiridPC>
 References: <20240725231039.614536-1-vassilisamir@gmail.com>
- <20240725231039.614536-3-vassilisamir@gmail.com>
- <20240728164901.1f325aa2@jic23-huawei>
+ <20240725231039.614536-5-vassilisamir@gmail.com>
+ <20240728165724.75153d08@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,106 +91,130 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240728164901.1f325aa2@jic23-huawei>
+In-Reply-To: <20240728165724.75153d08@jic23-huawei>
 
-On Sun, Jul 28, 2024 at 04:49:01PM +0100, Jonathan Cameron wrote:
-> On Fri, 26 Jul 2024 01:10:34 +0200
+On Sun, Jul 28, 2024 at 04:57:24PM +0100, Jonathan Cameron wrote:
+> On Fri, 26 Jul 2024 01:10:36 +0200
 > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 > 
-> > The BM(P/E)28x devices have an option for soft reset which is also
-> > recommended by the Bosch Sensortech BME2 Sensor API to be used before the
-> > initial configuration of the device.
+> > This commit adds forced mode support in sensors BMP28x, BME28x, BMP3xx
+> > and BMP58x. Sensors BMP18x and BMP085 are old and do not support this
+> > feature so their operation is not affected at all.
 > > 
-> > Link: https://github.com/boschsensortec/BME280_SensorAPI/blob/bme280_v3.5.1/bme280.c#L429
+> > Essentially, up to now, the rest of the sensors were used in normal mode
+> > all the time. This means that they are continuously doing measurements
+> > even though these measurements are not used. Even though the sensor does
+> > provide PM support, to cover all the possible use cases, the sensor needs
+> > to go into sleep mode and wake up whenever necessary.
+> > 
+> > This commit, adds sleep and forced mode support. Essentially, the sensor
+> > sleeps all the time except for when a measurement is requested. When there
+> > is a request for a measurement, the sensor is put into forced mode, starts
+> > the measurement and after it is done we read the output and we put it again
+> > in sleep mode.
+> > 
+> > For really fast and more deterministic measurements, the triggered buffer
+> > interface can be used, since the sensor is still used in normal mode for
+> > that use case.
+> > 
+> > This commit does not add though support for DEEP STANDBY, Low Power NORMAL
+> > and CONTINUOUS modes, supported only by the BMP58x version.
+> > 
 > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> Trivial passing comment seeing as you are going do be doing a v3 anyway.
+> One question inline about the corner case of buffered capture in progress
+> when the machine is suspended.  We'd like the device to carry on feeding
+> us data on resume. Does that happen?
 > 
 > Jonathan
-> 
-> > ---
-> >  drivers/iio/pressure/bmp280-core.c | 28 ++++++++++++++++++++++++++++
-> >  drivers/iio/pressure/bmp280.h      |  3 +++
-> >  2 files changed, 31 insertions(+)
-> > 
-> > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> > index d5e5eb22667a..acbc33aacc09 100644
-> > --- a/drivers/iio/pressure/bmp280-core.c
-> > +++ b/drivers/iio/pressure/bmp280-core.c
-> > @@ -963,6 +963,32 @@ static const unsigned long bme280_avail_scan_masks[] = {
-> >  	0
-> >  };
-> >  
-> > +static int bmp280_preinit(struct bmp280_data *data)
-> > +{
-> > +	unsigned int reg;
-> > +	int ret;
-> > +
-> > +	ret = regmap_write(data->regmap, BMP280_REG_RESET, BMP280_RST_SOFT_CMD);
-> > +	if (ret) {
-> > +		dev_err(data->dev, "Failed to reset device.\n");
-> > +		return ret;
-> Is this only ever called from probe?
-> 
-> If so, return dev_err_probe() which will save a few lines of code.
 > 
 
 Hi Jonathan,
 
-Indeed, this is being called only from probe so I could change that as you
-proposed!
+This is actually a corner case that I couldn't think of. I will have to think
+it a bit more and come back on that.
 
-Cheers,
-Vasilis
+> 
+> >  	.trigger_handler = bmp380_trigger_handler,
+> > @@ -2085,6 +2239,64 @@ static int bmp580_preinit(struct bmp280_data *data)
+> >  	return PTR_ERR_OR_ZERO(devm_nvmem_register(config.dev, &config));
+> >  }
+> >  
+> > +static const u8 bmp580_operation_mode[] = { BMP580_MODE_SLEEP,
+> > +					    BMP580_MODE_FORCED,
+> > +					    BMP580_MODE_NORMAL };
+> > +
+> 
+> 
+> > +
+> > +static int bmp580_wait_conv(struct bmp280_data *data)
+> > +{
+> > +	/*
+> > +	 * Taken from datasheet, Section 2 "Specification, Table 3 "Electrical
+> > +	 * characteristics
+> > +	 */
+> > +	const int time_conv_press[] = { 0, 1050, 1785, 3045, 5670, 10920, 21420,
+> > +					42420, 84420};
+> > +	const int time_conv_temp[] = { 0, 1050, 1105, 1575, 2205, 3465, 6090,
+> > +				       11340, 21840};
+> space before }
+> 
+> Also stick a static in front of them or Colin will ;)
+> Aim being to makes sure they aren't pointlessly allocated on the stack
+> if the compiler doesn't do something clever with them.
+> 
 
-> > +	}
+Ack.
+
+> > +	int meas_time;
 > > +
-> > +	usleep_range(data->start_up_time, data->start_up_time + 500);
+> > +	meas_time = 4000 + time_conv_temp[data->oversampling_temp] +
+> > +			   time_conv_press[data->oversampling_press];
 > > +
-> > +	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
-> > +	if (ret) {
-> > +		dev_err(data->dev, "Failed to read status register.\n");
-> > +		return ret;
-> > +	}
-> > +	if (reg & BMP280_REG_STATUS_IM_UPDATE) {
-> > +		dev_err(data->dev, "Failed to copy NVM contents.\n");
-> > +		return ret;
-> > +	}
+> > +	usleep_range(meas_time, meas_time * 12 / 10);
 > > +
 > > +	return 0;
 > > +}
+> >
+> >  
+> > +/* Keep compatibility with future generations of the sensor */
+> > +static int bmp180_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
+> > +{
+> > +	return 0;
+> > +}
 > > +
-> >  static int bmp280_chip_config(struct bmp280_data *data)
-> >  {
-> >  	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
-> > @@ -1079,6 +1105,7 @@ const struct bmp280_chip_info bmp280_chip_info = {
-> >  	.read_temp = bmp280_read_temp,
-> >  	.read_press = bmp280_read_press,
-> >  	.read_calib = bmp280_read_calib,
-> > +	.preinit = bmp280_preinit,
-> >  
-> >  	.trigger_handler = bmp280_trigger_handler,
-> >  };
-> > @@ -1196,6 +1223,7 @@ const struct bmp280_chip_info bme280_chip_info = {
-> >  	.read_press = bmp280_read_press,
-> >  	.read_humid = bme280_read_humid,
-> >  	.read_calib = bme280_read_calib,
-> > +	.preinit = bmp280_preinit,
-> >  
-> >  	.trigger_handler = bme280_trigger_handler,
-> >  };
-> > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-> > index 9bea0b84d2f4..a9f220c1f77a 100644
-> > --- a/drivers/iio/pressure/bmp280.h
-> > +++ b/drivers/iio/pressure/bmp280.h
-> > @@ -205,6 +205,9 @@
-> >  #define BMP280_REG_CONFIG		0xF5
-> >  #define BMP280_REG_CTRL_MEAS		0xF4
-> >  #define BMP280_REG_STATUS		0xF3
-> > +#define BMP280_REG_STATUS_IM_UPDATE	BIT(0)
-> > +#define BMP280_REG_RESET		0xE0
-> > +#define BMP280_RST_SOFT_CMD		0xB6
-> >  
-> >  #define BMP280_REG_COMP_TEMP_START	0x88
-> >  #define BMP280_COMP_TEMP_REG_COUNT	6
+> > +/* Keep compatibility with future generations of the sensor */
+> > +static int bmp180_wait_conv(struct bmp280_data *data)
+> > +{
+> > +	return 0;
+> > +}
+> > +
+> > +/* Keep compatibility with future generations of the sensor */
 > 
+> What does this comment mean?  I'm in favour of course, but don't understand
+> why it is here and above the stub calls.
+> 
+> 
+
+This is for the bm(p/e)(2/3/5)80 devices which actually use those functions.
+Maybe instead of "future" I should have put "newer".
+
+> > @@ -2825,6 +3048,9 @@ static int bmp280_runtime_suspend(struct device *dev)
+> >  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> >  	struct bmp280_data *data = iio_priv(indio_dev);
+> >  
+> > +	data->chip_info->set_mode(data, BMP280_SLEEP);
+> 
+> What happens if the device is in buffered mode and you suspend?
+> I'd expect to see the power mode stashed somewhere and restored in resume.
+> 
+
+As said before, I will investigate it and come back with more info.
+
+Cheers,
+Vasilis
+> > +
+> > +	usleep_range(2500, 3000);
+> >  	return regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
+> >  }
+> >  
 

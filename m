@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-8667-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8668-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1000995A740
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:57:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6C495A743
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34FEC1C22B20
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:57:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33BA0B21713
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D59917C215;
-	Wed, 21 Aug 2024 21:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4528717C234;
+	Wed, 21 Aug 2024 21:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G8aD3Mqd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cBPsgmeF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E4717BB16;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACC817BB24;
 	Wed, 21 Aug 2024 21:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724277454; cv=none; b=mczs0wR1kRG7eyTTlWtQ9UOjhPROh6tCy9BPbC0WQ7FpKQypISTl5obe/nBofa877q5KiGTEU44mf1WU7xlENhAf/SlSXoy8Yp3akV5u111xMzPWj/jYQ+sIuTVnjDm2bgvrd+YXLSnvnjcssECilydaHOU48ffXP2IJHkrLfDU=
+	t=1724277455; cv=none; b=ktu3a/bXhlKhu/x6aD1IJc4GoeWddHsWvJFok2FWRtD3KLcq3kmxjoeZhxAbEFwwjeEmib5NSMKuJYmnEQN7m8tVNdC5RjxxtMjcNb6mrIBnWWaJt78/Wnr3+LFYEhaEmpT7UCIwGtILB5RVGP/yzBkHrPxp7sQdRnu9vFAZmZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724277454; c=relaxed/simple;
-	bh=7oiVFaUcI0C5oMqqUaovkqLRY8Weg4Zg7WG/UFywWlQ=;
+	s=arc-20240116; t=1724277455; c=relaxed/simple;
+	bh=PXcsBzwFl2GwJIvfGM2Lg71OZ1PddeIewm5S+RRkQ44=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W3x7Sy1fFweNp+YYKSft/UdHZhTnR0/M5KzHTm4npOMmIGOll06I4GDL+TSvfX+sESfqaNgi7hESbzgH27r9z/4A+lyU4eYKLlRx6SAwxHQwCm8oR71LRHLgQs5l1YCfKdsn2MsMH3zYy3RLuQjK7i+ZnUke5ZI1XiUcZG/4ryc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G8aD3Mqd; arc=none smtp.client-ip=209.85.167.179
+	 MIME-Version; b=aZf5u95iza5Cni7P5/JLix5GIsB4dw5tBqk/AO+ph5inmwyyVH4mFPAUyqq/l4INRxV/Z2Rda2MdsolVe3KJ1GV9K3Z1Bdro2xCqQmFumWMsu30HTnwhO6hiii2xtzLpTe5HbeW3CfJpkwqztJZYTiXACxyUtTfsvArSyulLGCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cBPsgmeF; arc=none smtp.client-ip=209.85.167.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3db157cb959so90953b6e.0;
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3db157d3bb9so79385b6e.2;
         Wed, 21 Aug 2024 14:57:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724277451; x=1724882251; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724277452; x=1724882252; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w6uKad2/4G0gY3Nm8pi2ZP0lDyan1DAsdC6ygDIyfJY=;
-        b=G8aD3MqdpOhhpwEnqw5g4ukMXdVjCJvg7HWsPJnkQOymInhw9DZjcvWfKTv8J8nMMt
-         8GTKLLDgmrxQabLC50WLtM0izBm5rakWJdJTtd+QIQgmiwKkYo20ro1JaRvkJilYHFmi
-         cYvg9w3QhI4PotEu+SC/H2IdxryclpiZTHLVEpuG3PBckedGgLUAFjinwzNdbY565alR
-         5B8g2wsQkHgygSRr+Uxl0x0G4aC/h/g7QGJBxAJvj6OTj5+IDajAZNcDfxyedIWc1CJH
-         rupb8EPTZGGZ19dvtLBU5/ffTbnGxxN6LWOxUh0bKRkNGA2tyEwJuqnFpnWLR43Sa/Yx
-         JspA==
+        bh=I0UhxZ2XxQFgvUjgiU5dDgFB2D6T8k8pYUXnFuEDKNs=;
+        b=cBPsgmeFpxJEQJ/KbVuNjMgNRdw4qmhPueEQJ6UpLiPAzSxvCj5q+sRfcZOx38zW2I
+         z+Nk/WW+YVstafnQvvQx+1/h220wA8mI4zuDssH1BVdAlMErtvTAcPgMZD8iv3BLbyPe
+         CdS99P/sL3tZDJ+KEP9TOZTC5nghpXqNz1kuPmcffKhWMd/QfcgywGJB8umYyYHNi48r
+         Uuu5Zx/WTFjw+UZjgHpXRtEWSYHOosq+9i6QA8UNzHppUmnLfJNu1lNbwCzHk6OEZ/Zx
+         jMd1NDQYMLPiYemCIBC6b5frCjgVrjxfJ5xFQKpu77TV80zVzJpvyXUeMN1Wl+FDzs9H
+         1y8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724277451; x=1724882251;
+        d=1e100.net; s=20230601; t=1724277452; x=1724882252;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=w6uKad2/4G0gY3Nm8pi2ZP0lDyan1DAsdC6ygDIyfJY=;
-        b=QD7WEHmG+GZMs59eQKZrWII1LkraF2jGzyl8aQx2VxzT+2uWw9JatyDgs2Ny0TrZ2H
-         MXEmna9coIWUgl5TORoJJ0JMD753IeIYoxJaD8Oaf0I/naqTCjeQFmr3UBhaIZRHERpH
-         hmgIR1Ow0rC+MxeZyWN5m2P+6xOMl7ayA58xODXrwdkRCszqxNf9fW7vd2LS5csa2dSp
-         1uqvvubYopwt25pBBnVI/qyWyzw//1N8LofciVKg6R6rjqph3PPeV7Ho2erpzVo+OW98
-         nLUDmogpqo5K3sJY34ZAO/x9I4z+O/Y7JnHI/nk41+D2rydn5kVgli/4Qtwxxeln645T
-         gVvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlIM4sPQkf9BEgWv87UF+Wo/3TRjGW1tQp5Z4S+jb5F7HJVyIRXIis+M242qooY5e4laG+6vKhzvz4@vger.kernel.org, AJvYcCWwbAUwLqWqeCNpNzmoTLcQVh/wg0/0KyZFAlqvO5BPM5qAPy1ppauwnIVTlT6SE6EwpDGyCPZ30Klg@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9/qRaRPn0td2jrYTX+OXuhdVFvyzko5x+L2WuDMd+LzAhx1Yl
-	56gsAp3uqoeqaCU50eTYv6E/Pbpbjvo9GKl18KLbbgnUc3CUc0dB
-X-Google-Smtp-Source: AGHT+IEFFJbziMrJiWeCFL1hwf2ttRLRClqnubICMWhVvCR17fO+nze7N86057SdvUBo7gsUsXy5LA==
-X-Received: by 2002:a05:6808:1910:b0:3d9:2b5a:4ac6 with SMTP id 5614622812f47-3de194eb972mr5016464b6e.6.1724277451289;
-        Wed, 21 Aug 2024 14:57:31 -0700 (PDT)
+        bh=I0UhxZ2XxQFgvUjgiU5dDgFB2D6T8k8pYUXnFuEDKNs=;
+        b=VvEF39rOhTrchfntTxaofzi4RzuWHdD4BdH6CKimLeAdUZHsK01a//h91T/t5s+4W9
+         BTN2CL4ATXZ3MsvzYrzMfjqOufs6UGVyH4pS4KNTZdRrFIMrnQxzi76KeE9jDCfFU//H
+         YjFQ6miEaMBiF+Gq2PpGLYTX1W0MbazPKwb3+MlgiZ7G9GMJHsWOFSb+oUgzbiicboUL
+         TRvBtBluFxehsHL6WxQa3RgmOzx1BD3gibqlHOhSwlvf21daPsoF8/RvFtKz7fRUH2br
+         GySW6rVxGIZyInggBFkEhA5KHjdzPZQhl+C+iKmyxptsdifaAAnTr/3SIul8CFV7tpYQ
+         EYog==
+X-Forwarded-Encrypted: i=1; AJvYcCU1ZHtI0zN7/WxQWzQSDlZHETbiQsVJVA0HT8q0ZC+I5hQy7Llkl2hCXQaB+hcH1jCPtiSf/YM8VVJ+@vger.kernel.org, AJvYcCVE90Rr4vuyRZk11hKLzbP0HxfafLbBfL5ETSu5iiRaj0vO14EYcO5W7M4Gh/JircKUz3WWnwNwBhLW@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwMNVl0SLiTcpCbKAWXpnIBbSOdc0v0C8vXdVkH4MXqTKAcX+t
+	wZ+NeFHHs7Otzd5Xbcl+HdxQXMYBkERrf/YFWkeaAhlJsvKiznrZ
+X-Google-Smtp-Source: AGHT+IG0XI2TE/eI97M843RE/qlc7osFS8BEftni9pYq41Isvj2l2mBUFv5vVdUHIaSBnu9JP0w/Sw==
+X-Received: by 2002:a05:6808:1142:b0:3db:1661:4d64 with SMTP id 5614622812f47-3de194f34a2mr4379695b6e.13.1724277452201;
+        Wed, 21 Aug 2024 14:57:32 -0700 (PDT)
 Received: from localhost.localdomain ([2600:1700:fb0:1bcf:81a9:2325:e0f7:7376])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3de225555b6sm47070b6e.17.2024.08.21.14.57.30
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3de225555b6sm47070b6e.17.2024.08.21.14.57.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 14:57:30 -0700 (PDT)
+        Wed, 21 Aug 2024 14:57:31 -0700 (PDT)
 From: Chris Morgan <macroalpha82@gmail.com>
 To: linux-sunxi@lists.linux.dev
 Cc: linux-pm@vger.kernel.org,
@@ -90,9 +90,9 @@ Cc: linux-pm@vger.kernel.org,
 	jic23@kernel.org,
 	jonathan.cameron@huawei.com,
 	Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH V4 03/15] power: supply: axp20x_battery: Make iio and battery config per device
-Date: Wed, 21 Aug 2024 16:54:44 -0500
-Message-Id: <20240821215456.962564-4-macroalpha82@gmail.com>
+Subject: [PATCH V4 04/15] power: supply: axp20x_usb_power: Make VBUS and IIO config per device
+Date: Wed, 21 Aug 2024 16:54:45 -0500
+Message-Id: <20240821215456.962564-5-macroalpha82@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240821215456.962564-1-macroalpha82@gmail.com>
 References: <20240821215456.962564-1-macroalpha82@gmail.com>
@@ -106,236 +106,184 @@ Content-Transfer-Encoding: 8bit
 
 From: Chris Morgan <macromorgan@hotmail.com>
 
-Move the configuration of battery specific information and available
-iio channels from the probe function to a device specific routine,
-allowing us to use this driver for devices with slightly different
-configurations (such as the AXP717).
+Make reading of the vbus value and configuring of the iio channels
+device specific, to allow additional devices (such as the AXP717) to
+be supported by this driver.
 
 Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 ---
- drivers/power/supply/axp20x_battery.c | 137 +++++++++++++++++---------
- 1 file changed, 88 insertions(+), 49 deletions(-)
+ drivers/power/supply/axp20x_usb_power.c | 87 +++++++++++++++----------
+ 1 file changed, 54 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
-index 7520b599eb3d..c903c588b361 100644
---- a/drivers/power/supply/axp20x_battery.c
-+++ b/drivers/power/supply/axp20x_battery.c
-@@ -58,11 +58,19 @@
- struct axp20x_batt_ps;
+diff --git a/drivers/power/supply/axp20x_usb_power.c b/drivers/power/supply/axp20x_usb_power.c
+index dae7e5cfc54e..cd9e92f2ce71 100644
+--- a/drivers/power/supply/axp20x_usb_power.c
++++ b/drivers/power/supply/axp20x_usb_power.c
+@@ -45,6 +45,8 @@
+  */
+ #define DEBOUNCE_TIME			msecs_to_jiffies(50)
  
++struct axp20x_usb_power;
++
  struct axp_data {
--	int	ccc_scale;
--	int	ccc_offset;
--	bool	has_fg_valid;
-+	int		ccc_scale;
-+	int		ccc_offset;
-+	unsigned int	ccc_reg;
-+	unsigned int	ccc_mask;
-+	bool		has_fg_valid;
-+	const struct	power_supply_desc *bat_ps_desc;
- 	int	(*get_max_voltage)(struct axp20x_batt_ps *batt, int *val);
- 	int	(*set_max_voltage)(struct axp20x_batt_ps *batt, int val);
-+	int	(*cfg_iio_chan)(struct platform_device *pdev,
-+				struct axp20x_batt_ps *axp_batt);
-+	void	(*set_bat_info)(struct platform_device *pdev,
-+				struct axp20x_batt_ps *axp_batt,
-+				struct power_supply_battery_info *info);
+ 	const struct power_supply_desc	*power_desc;
+ 	const char * const		*irq_names;
+@@ -58,6 +60,10 @@ struct axp_data {
+ 	struct reg_field		usb_bc_det_fld;
+ 	struct reg_field		vbus_disable_bit;
+ 	bool				vbus_needs_polling: 1;
++	void (*axp20x_read_vbus)(struct work_struct *work);
++	int (*axp20x_cfg_iio_chan)(struct platform_device *pdev,
++				   struct axp20x_usb_power *power);
++	int (*axp20x_cfg_adc_reg)(struct axp20x_usb_power *power);
  };
  
- struct axp20x_batt_ps {
-@@ -508,7 +516,7 @@ static int axp20x_battery_prop_writeable(struct power_supply *psy,
- 	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX;
+ struct axp20x_usb_power {
+@@ -385,6 +391,36 @@ static int axp20x_usb_power_prop_writeable(struct power_supply *psy,
+ 	       psp == POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT;
  }
  
--static const struct power_supply_desc axp20x_batt_ps_desc = {
-+static const struct power_supply_desc axp209_batt_ps_desc = {
- 	.name = "axp20x-battery",
- 	.type = POWER_SUPPLY_TYPE_BATTERY,
- 	.properties = axp20x_battery_props,
-@@ -518,27 +526,94 @@ static const struct power_supply_desc axp20x_batt_ps_desc = {
- 	.set_property = axp20x_battery_set_prop,
- };
- 
-+static int axp209_bat_cfg_iio_channels(struct platform_device *pdev,
-+				       struct axp20x_batt_ps *axp_batt)
++static int axp20x_configure_iio_channels(struct platform_device *pdev,
++					 struct axp20x_usb_power *power)
 +{
-+	axp_batt->batt_v = devm_iio_channel_get(&pdev->dev, "batt_v");
-+	if (IS_ERR(axp_batt->batt_v)) {
-+		if (PTR_ERR(axp_batt->batt_v) == -ENODEV)
++	power->vbus_v = devm_iio_channel_get(&pdev->dev, "vbus_v");
++	if (IS_ERR(power->vbus_v)) {
++		if (PTR_ERR(power->vbus_v) == -ENODEV)
 +			return -EPROBE_DEFER;
-+		return PTR_ERR(axp_batt->batt_v);
++		return PTR_ERR(power->vbus_v);
 +	}
 +
-+	axp_batt->batt_chrg_i = devm_iio_channel_get(&pdev->dev,
-+							"batt_chrg_i");
-+	if (IS_ERR(axp_batt->batt_chrg_i)) {
-+		if (PTR_ERR(axp_batt->batt_chrg_i) == -ENODEV)
++	power->vbus_i = devm_iio_channel_get(&pdev->dev, "vbus_i");
++	if (IS_ERR(power->vbus_i)) {
++		if (PTR_ERR(power->vbus_i) == -ENODEV)
 +			return -EPROBE_DEFER;
-+		return PTR_ERR(axp_batt->batt_chrg_i);
-+	}
-+
-+	axp_batt->batt_dischrg_i = devm_iio_channel_get(&pdev->dev,
-+							   "batt_dischrg_i");
-+	if (IS_ERR(axp_batt->batt_dischrg_i)) {
-+		if (PTR_ERR(axp_batt->batt_dischrg_i) == -ENODEV)
-+			return -EPROBE_DEFER;
-+		return PTR_ERR(axp_batt->batt_dischrg_i);
++		return PTR_ERR(power->vbus_i);
 +	}
 +
 +	return 0;
 +}
 +
-+static void axp209_set_battery_info(struct platform_device *pdev,
-+				    struct axp20x_batt_ps *axp_batt,
-+				    struct power_supply_battery_info *info)
++static int axp20x_configure_adc_registers(struct axp20x_usb_power *power)
 +{
-+	int vmin = info->voltage_min_design_uv;
-+	int ccc = info->constant_charge_current_max_ua;
-+
-+	if (vmin > 0 && axp20x_set_voltage_min_design(axp_batt, vmin))
-+		dev_err(&pdev->dev,
-+			"couldn't set voltage_min_design\n");
-+
-+	/* Set max to unverified value to be able to set CCC */
-+	axp_batt->max_ccc = ccc;
-+
-+	if (ccc <= 0 || axp20x_set_constant_charge_current(axp_batt, ccc)) {
-+		dev_err(&pdev->dev,
-+			"couldn't set ccc from DT: fallback to min value\n");
-+		ccc = 300000;
-+		axp_batt->max_ccc = ccc;
-+		axp20x_set_constant_charge_current(axp_batt, ccc);
-+	}
++	/* Enable vbus voltage and current measurement */
++	return regmap_update_bits(power->regmap, AXP20X_ADC_EN1,
++				  AXP20X_ADC_EN1_VBUS_CURR |
++				  AXP20X_ADC_EN1_VBUS_VOLT,
++				  AXP20X_ADC_EN1_VBUS_CURR |
++				  AXP20X_ADC_EN1_VBUS_VOLT);
 +}
 +
- static const struct axp_data axp209_data = {
- 	.ccc_scale = 100000,
- 	.ccc_offset = 300000,
-+	.ccc_reg = AXP20X_CHRG_CTRL1,
-+	.ccc_mask = AXP20X_CHRG_CTRL1_TGT_CURR,
-+	.bat_ps_desc = &axp209_batt_ps_desc,
- 	.get_max_voltage = axp20x_battery_get_max_voltage,
- 	.set_max_voltage = axp20x_battery_set_max_voltage,
-+	.cfg_iio_chan = axp209_bat_cfg_iio_channels,
-+	.set_bat_info = axp209_set_battery_info,
+ static enum power_supply_property axp20x_usb_power_properties[] = {
+ 	POWER_SUPPLY_PROP_HEALTH,
+ 	POWER_SUPPLY_PROP_PRESENT,
+@@ -505,6 +541,9 @@ static const struct axp_data axp192_data = {
+ 	.curr_lim_fld   = REG_FIELD(AXP20X_VBUS_IPSOUT_MGMT, 0, 1),
+ 	.vbus_valid_bit = REG_FIELD(AXP192_USB_OTG_STATUS, 2, 2),
+ 	.vbus_mon_bit   = REG_FIELD(AXP20X_VBUS_MON, 3, 3),
++	.axp20x_read_vbus = &axp20x_usb_power_poll_vbus,
++	.axp20x_cfg_iio_chan = axp20x_configure_iio_channels,
++	.axp20x_cfg_adc_reg = axp20x_configure_adc_registers,
+ };
+ 
+ static const struct axp_data axp202_data = {
+@@ -516,6 +555,9 @@ static const struct axp_data axp202_data = {
+ 	.curr_lim_fld   = REG_FIELD(AXP20X_VBUS_IPSOUT_MGMT, 0, 1),
+ 	.vbus_valid_bit = REG_FIELD(AXP20X_USB_OTG_STATUS, 2, 2),
+ 	.vbus_mon_bit   = REG_FIELD(AXP20X_VBUS_MON, 3, 3),
++	.axp20x_read_vbus = &axp20x_usb_power_poll_vbus,
++	.axp20x_cfg_iio_chan = axp20x_configure_iio_channels,
++	.axp20x_cfg_adc_reg = axp20x_configure_adc_registers,
  };
  
  static const struct axp_data axp221_data = {
- 	.ccc_scale = 150000,
- 	.ccc_offset = 300000,
-+	.ccc_reg = AXP20X_CHRG_CTRL1,
-+	.ccc_mask = AXP20X_CHRG_CTRL1_TGT_CURR,
- 	.has_fg_valid = true,
-+	.bat_ps_desc = &axp209_batt_ps_desc,
- 	.get_max_voltage = axp22x_battery_get_max_voltage,
- 	.set_max_voltage = axp22x_battery_set_max_voltage,
-+	.cfg_iio_chan = axp209_bat_cfg_iio_channels,
-+	.set_bat_info = axp209_set_battery_info,
+@@ -526,6 +568,9 @@ static const struct axp_data axp221_data = {
+ 	.curr_lim_table_size = ARRAY_SIZE(axp221_usb_curr_lim_table),
+ 	.curr_lim_fld   = REG_FIELD(AXP20X_VBUS_IPSOUT_MGMT, 0, 1),
+ 	.vbus_needs_polling = true,
++	.axp20x_read_vbus = &axp20x_usb_power_poll_vbus,
++	.axp20x_cfg_iio_chan = axp20x_configure_iio_channels,
++	.axp20x_cfg_adc_reg = axp20x_configure_adc_registers,
+ };
+ 
+ static const struct axp_data axp223_data = {
+@@ -536,6 +581,9 @@ static const struct axp_data axp223_data = {
+ 	.curr_lim_table_size = ARRAY_SIZE(axp20x_usb_curr_lim_table),
+ 	.curr_lim_fld   = REG_FIELD(AXP20X_VBUS_IPSOUT_MGMT, 0, 1),
+ 	.vbus_needs_polling = true,
++	.axp20x_read_vbus = &axp20x_usb_power_poll_vbus,
++	.axp20x_cfg_iio_chan = axp20x_configure_iio_channels,
++	.axp20x_cfg_adc_reg = axp20x_configure_adc_registers,
  };
  
  static const struct axp_data axp813_data = {
- 	.ccc_scale = 200000,
- 	.ccc_offset = 200000,
-+	.ccc_reg = AXP20X_CHRG_CTRL1,
-+	.ccc_mask = AXP20X_CHRG_CTRL1_TGT_CURR,
- 	.has_fg_valid = true,
-+	.bat_ps_desc = &axp209_batt_ps_desc,
- 	.get_max_voltage = axp813_battery_get_max_voltage,
- 	.set_max_voltage = axp20x_battery_set_max_voltage,
-+	.cfg_iio_chan = axp209_bat_cfg_iio_channels,
-+	.set_bat_info = axp209_set_battery_info,
+@@ -549,6 +597,9 @@ static const struct axp_data axp813_data = {
+ 	.usb_bc_det_fld = REG_FIELD(AXP288_BC_DET_STAT, 5, 7),
+ 	.vbus_disable_bit = REG_FIELD(AXP20X_VBUS_IPSOUT_MGMT, 7, 7),
+ 	.vbus_needs_polling = true,
++	.axp20x_read_vbus = &axp20x_usb_power_poll_vbus,
++	.axp20x_cfg_iio_chan = axp20x_configure_iio_channels,
++	.axp20x_cfg_adc_reg = axp20x_configure_adc_registers,
  };
  
- static const struct of_device_id axp20x_battery_ps_id[] = {
-@@ -561,6 +636,7 @@ static int axp20x_power_probe(struct platform_device *pdev)
- 	struct power_supply_config psy_cfg = {};
- 	struct power_supply_battery_info *info;
- 	struct device *dev = &pdev->dev;
-+	int ret;
+ #ifdef CONFIG_PM_SLEEP
+@@ -590,36 +641,6 @@ static int axp20x_usb_power_resume(struct device *dev)
+ static SIMPLE_DEV_PM_OPS(axp20x_usb_power_pm_ops, axp20x_usb_power_suspend,
+ 						  axp20x_usb_power_resume);
  
- 	if (!of_device_is_available(pdev->dev.of_node))
- 		return -ENODEV;
-@@ -572,29 +648,6 @@ static int axp20x_power_probe(struct platform_device *pdev)
- 
- 	axp20x_batt->dev = &pdev->dev;
- 
--	axp20x_batt->batt_v = devm_iio_channel_get(&pdev->dev, "batt_v");
--	if (IS_ERR(axp20x_batt->batt_v)) {
--		if (PTR_ERR(axp20x_batt->batt_v) == -ENODEV)
+-static int configure_iio_channels(struct platform_device *pdev,
+-				  struct axp20x_usb_power *power)
+-{
+-	power->vbus_v = devm_iio_channel_get(&pdev->dev, "vbus_v");
+-	if (IS_ERR(power->vbus_v)) {
+-		if (PTR_ERR(power->vbus_v) == -ENODEV)
 -			return -EPROBE_DEFER;
--		return PTR_ERR(axp20x_batt->batt_v);
+-		return PTR_ERR(power->vbus_v);
 -	}
 -
--	axp20x_batt->batt_chrg_i = devm_iio_channel_get(&pdev->dev,
--							"batt_chrg_i");
--	if (IS_ERR(axp20x_batt->batt_chrg_i)) {
--		if (PTR_ERR(axp20x_batt->batt_chrg_i) == -ENODEV)
+-	power->vbus_i = devm_iio_channel_get(&pdev->dev, "vbus_i");
+-	if (IS_ERR(power->vbus_i)) {
+-		if (PTR_ERR(power->vbus_i) == -ENODEV)
 -			return -EPROBE_DEFER;
--		return PTR_ERR(axp20x_batt->batt_chrg_i);
+-		return PTR_ERR(power->vbus_i);
 -	}
 -
--	axp20x_batt->batt_dischrg_i = devm_iio_channel_get(&pdev->dev,
--							   "batt_dischrg_i");
--	if (IS_ERR(axp20x_batt->batt_dischrg_i)) {
--		if (PTR_ERR(axp20x_batt->batt_dischrg_i) == -ENODEV)
--			return -EPROBE_DEFER;
--		return PTR_ERR(axp20x_batt->batt_dischrg_i);
--	}
+-	return 0;
+-}
 -
- 	axp20x_batt->regmap = dev_get_regmap(pdev->dev.parent, NULL);
- 	platform_set_drvdata(pdev, axp20x_batt);
- 
-@@ -603,8 +656,12 @@ static int axp20x_power_probe(struct platform_device *pdev)
- 
- 	axp20x_batt->data = (struct axp_data *)of_device_get_match_data(dev);
- 
-+	ret = axp20x_batt->data->cfg_iio_chan(pdev, axp20x_batt);
-+	if (ret)
-+		return ret;
-+
- 	axp20x_batt->batt = devm_power_supply_register(&pdev->dev,
--						       &axp20x_batt_ps_desc,
-+						       axp20x_batt->data->bat_ps_desc,
- 						       &psy_cfg);
- 	if (IS_ERR(axp20x_batt->batt)) {
- 		dev_err(&pdev->dev, "failed to register power supply: %ld\n",
-@@ -613,33 +670,15 @@ static int axp20x_power_probe(struct platform_device *pdev)
- 	}
- 
- 	if (!power_supply_get_battery_info(axp20x_batt->batt, &info)) {
--		int vmin = info->voltage_min_design_uv;
--		int ccc = info->constant_charge_current_max_ua;
+-static int configure_adc_registers(struct axp20x_usb_power *power)
+-{
+-	/* Enable vbus voltage and current measurement */
+-	return regmap_update_bits(power->regmap, AXP20X_ADC_EN1,
+-				  AXP20X_ADC_EN1_VBUS_CURR |
+-				  AXP20X_ADC_EN1_VBUS_VOLT,
+-				  AXP20X_ADC_EN1_VBUS_CURR |
+-				  AXP20X_ADC_EN1_VBUS_VOLT);
+-}
 -
--		if (vmin > 0 && axp20x_set_voltage_min_design(axp20x_batt,
--							      vmin))
--			dev_err(&pdev->dev,
--				"couldn't set voltage_min_design\n");
--
--		/* Set max to unverified value to be able to set CCC */
--		axp20x_batt->max_ccc = ccc;
--
--		if (ccc <= 0 || axp20x_set_constant_charge_current(axp20x_batt,
--								   ccc)) {
--			dev_err(&pdev->dev,
--				"couldn't set constant charge current from DT: fallback to minimum value\n");
--			ccc = 300000;
--			axp20x_batt->max_ccc = ccc;
--			axp20x_set_constant_charge_current(axp20x_batt, ccc);
--		}
-+		axp20x_batt->data->set_bat_info(pdev, axp20x_batt, info);
-+		power_supply_put_battery_info(axp20x_batt->batt, info);
- 	}
+ static int axp20x_regmap_field_alloc_optional(struct device *dev,
+ 					      struct regmap *regmap,
+ 					      struct reg_field fdesc,
+@@ -707,7 +728,7 @@ static int axp20x_usb_power_probe(struct platform_device *pdev)
+ 		return ret;
  
- 	/*
- 	 * Update max CCC to a valid value if battery info is present or set it
- 	 * to current register value by default.
- 	 */
--	axp20x_get_constant_charge_current(axp20x_batt,
--					   &axp20x_batt->max_ccc);
-+	axp20x_get_constant_charge_current(axp20x_batt, &axp20x_batt->max_ccc);
+ 	ret = devm_delayed_work_autocancel(&pdev->dev, &power->vbus_detect,
+-					   axp20x_usb_power_poll_vbus);
++					   axp_data->axp20x_read_vbus);
+ 	if (ret)
+ 		return ret;
  
- 	return 0;
- }
+@@ -718,9 +739,9 @@ static int axp20x_usb_power_probe(struct platform_device *pdev)
+ 			return ret;
+ 
+ 		if (IS_ENABLED(CONFIG_AXP20X_ADC))
+-			ret = configure_iio_channels(pdev, power);
++			ret = axp_data->axp20x_cfg_iio_chan(pdev, power);
+ 		else
+-			ret = configure_adc_registers(power);
++			ret = axp_data->axp20x_cfg_adc_reg(power);
+ 
+ 		if (ret)
+ 			return ret;
 -- 
 2.34.1
 

@@ -1,220 +1,170 @@
-Return-Path: <linux-iio+bounces-8662-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8664-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9AF995A70D
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 659AA95A737
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 611C2285456
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C5F42836AB
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EE117A931;
-	Wed, 21 Aug 2024 21:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28CB17B4EB;
+	Wed, 21 Aug 2024 21:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ACdG9lpm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLSzE0ke"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4FC7405A;
-	Wed, 21 Aug 2024 21:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036B217BB08;
+	Wed, 21 Aug 2024 21:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724277117; cv=none; b=XaXZVy0EyxB16ADCtbwqSEv7guuxH4Lpr9dl5WUXM4DZOJr3H/YClB38hWKLeOy+w040qOG9zr2EJWAGCVN6cp6lKM2A6Arzf3BgugSWWwySYM0pv6oS6p6f9PfSnevRHi1wlgrPTeAxsLZVG1IFJlGM4ayOiyuVSQcWh4x0zg8=
+	t=1724277451; cv=none; b=e3gLy63jGkeV5xQhbviXVfJb44LMLsDXvDTq8kOWgHakgEjdmZKnxEifTOYUv8E+cNZna+YcPCqvsnBq8ymTnsMqc8dLzFfRylUf1s2XKXpS2jBVeTl0qvQ3ZJwCd0T0uCqtTqfS6D7v6sEK7G+GSpeLOTW4a0CuQDyxB0SvYu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724277117; c=relaxed/simple;
-	bh=Kt6JI5NWSv6ZkyWAqw9jTVzFCxQpU5lwLImQB0lx8b8=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EbC9kY+G6QgrF9hOUOWXbaiGWRJiGgiZvdddHFrcIsW7lXWTUHCKulRhOxYynwzbtWDayQ2/sotEBmLixwRov6I5ngX83AJvZjF5ktA8sYCE8fYfshHZ7SLJ1qweyN3u9HnuIlq+Audn2pZbTdJQ78zVZR1I7taKoP2GfTEjuoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ACdG9lpm; arc=none smtp.client-ip=209.85.218.47
+	s=arc-20240116; t=1724277451; c=relaxed/simple;
+	bh=DF+6ztCHnueO2fFvYCDJnNILxxWQTXSnam8WP7wX6DA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XdKue9NCj8O4Mo1sHtnCPBoC21t3KXVk24SHH9spGIKnUdZKhDs6BA51ZRPosSJ9+LbSSx7UrDYCR95PRIebXlNqKTdDLqJoAe4UtGvuIQW9HM3ioYfRRp9rXE7WJ4HOFvpHS3p47gk28QLOLRUi3EGEGOLNBv99A3pX84+9aI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FLSzE0ke; arc=none smtp.client-ip=209.85.167.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a8666734767so17806366b.1;
-        Wed, 21 Aug 2024 14:51:55 -0700 (PDT)
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3dc16d00ba6so92443b6e.0;
+        Wed, 21 Aug 2024 14:57:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724277114; x=1724881914; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mshofXHEuKk3AfsjHmTdYTQY1OTdO7/xqWQ3iRWqk6I=;
-        b=ACdG9lpmJL1VkXRzq9o4g5V1BxJxHKhP6/ildyrSnwkIWPYEXokO0NdUepp4G9rIEt
-         6h/TXNGxmNIUESLzyBe43DCAIDNCoeUx6cFf34O4Sym5ARkkCvISh9+TaiODVjBCWHRx
-         CPIDzfO62OYjaUerwqCM3ZQF/FuUn3QXTyE3i7AwweidDM6xbgVZvHUirNR2GbWUIF48
-         DC/uBoR/R88w+LjRHhWNP9VtWnJQqzScGNzv99ptBzITpLwwGumRaNsGU0SbddLvPOQj
-         1lPBLHT10qA6Dy2/HzrB5H87DESRx/Jyml0PA2BxiISffJiHFNLqtQyTpl/nHQKEI1tZ
-         azdA==
+        d=gmail.com; s=20230601; t=1724277449; x=1724882249; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ipbjvqWXvqQumm5VIkPHpXVLhtH/jP49GHIISjFlUrc=;
+        b=FLSzE0keaCfNrRdeZ9pfiAC3YJxJ5zrwMWajxBh03rD1mQwZySNxT4lVYFIkEllaY8
+         oQV2X+VFXovIE3ph6b13WKTLFCDtXt35I0uoM+4JFTIZ5p7DhJ8kdaQVg6ANR8+8eRZO
+         IETUzzUO4iS1GBMJNVB2xwuYbXFh6fsIrl7vBcIh4zFTGLFr8qtAvkfNCSqv15g+ad4V
+         FYveOVjBYlsVmYRu3tAL9hiECn/X4z4JryEXIkTh0vwoZfmUOALpNi39DCYLCAa3Ck7p
+         6WPna1qX/Y1+Bfn+DsMp/lb1S1NbXbIW27IhpCJ6C3Niy7GrPUuVMHtc0oAQoceAsTNP
+         1IEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724277114; x=1724881914;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mshofXHEuKk3AfsjHmTdYTQY1OTdO7/xqWQ3iRWqk6I=;
-        b=qwZCqnbXseh5HHNIycZswa7qz+OqtjgCV7B74e2uj1JJay8bNAineKJlJV+gXBjoob
-         XNUddhk5l/6KotM7GS2BYSejEguN59RUB95OIHd1Ddxwa8sDsHI8YJvg5XeplsUjKa3w
-         oopQXLNOPuJ9I7dJsP6pVArnZrPm5odgSiyZxvKMlPN5bqU15ZzZAqRiWyegOV8k3ccG
-         Qf8p883rjYEYsKz6pxuRWB8M8dZCznihr3ztn6bVzTgTBJFGRvw4bNPkjEVhmuMEH6PK
-         tCK7j7l0CPS9BlP82SxBHjqa4jDuL6G6KgFNxyq8xHzkQgRgNxZDFtceuU0FmOMlNAa2
-         um1g==
-X-Forwarded-Encrypted: i=1; AJvYcCUaQZkvJnNLuWq/NBOgWWmlxOdTwxYz7gkMI965TfrdxkvEbBA2mwdilIoHwhlK+SRmJKij3nMfq4dN@vger.kernel.org, AJvYcCVf6sLk7e/iF18nbzFw3YVrdCXkrXt9tCoL9GDjP7y3LcDX+3GiHTW45CstWBuUEDsuZaJoV/wvA2t2@vger.kernel.org, AJvYcCWygx8Pc+SIPDUuCuOZ0rhJNue3I1xRqNpacwM4ibeHlAEj/p4nIyHEQRmvrmmLSPk7WW/poI7rK0szLFYn@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK5Pfe7HXd622fphMP+z70mNBYfWCiXpQdPl/Ke0slLA1qEE/S
-	jUFJ4ndUOx251RVjtGwZLZ4ynbt2lXNxof4uYh4Vjtq10jiDYImr
-X-Google-Smtp-Source: AGHT+IHizZ5FHVMP1eNGW0+XQx8jDz5+OtFB9DZr3dfKFvQ2X2R5CGRJv3oN+hMFH3GrQTY2FiNuBg==
-X-Received: by 2002:a17:907:2ce3:b0:a80:aefa:14d3 with SMTP id a640c23a62f3a-a866f8b679emr282840966b.63.1724277113186;
-        Wed, 21 Aug 2024 14:51:53 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:1594:887e:30dd:c59e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f48a5d0sm14982466b.159.2024.08.21.14.51.52
+        d=1e100.net; s=20230601; t=1724277449; x=1724882249;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ipbjvqWXvqQumm5VIkPHpXVLhtH/jP49GHIISjFlUrc=;
+        b=izSxcXxa8bMKjiXf+Z/GSg8IwWc+tN8KPcjNW+NZNB9mq5m2ibwvB/KjwropqSVZat
+         pJltEGP/hgKLXQ7MVRoiKtHtE8XSNEycfa31NTwxY/0wLvhmZ3n/rhNnd1Dh0q84esNU
+         otQnuk3fi/hwoRi0jdzNPOpB3Qod7DMmldk89C51JLfxopZe4SXpP5hy8x8cZV8F5u9v
+         99qonl2A7G0uYrCCpnIicsdj+IQiZ6Tm2YtgvFriOcSlF6i00YP8wWbEUe7bKzHkyKqP
+         v+DW23KrE1X3GW2sflPSk7aqn+BDESJihZvweTi7Hoyr6hGJ54akpeLi0qzpa1gtujcB
+         NFOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVbMz1gw7wzlvwbXwQy+zOcoyMyOdhJlOZdPp68zQN6W+BOKDl4cE813vto7urnqIw4Ojiw8ZC4bWLx@vger.kernel.org, AJvYcCVpQFMMeMPVxagDlCmKM8vHUHEPXDqi0svLowlAHakPA8rIyN4ZmiZc08cuAjEu2R4XW0N247YFTIHj@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfK5tY/sDYcoTyartbfQC50/5vhleS3AFGDjPROVg7dgEVsqwT
+	49nIAw5XfRfwSix6Wy68yAK9LUDI33M1nNCzm+CZ0bmUD2dYE/ICchUoyQ==
+X-Google-Smtp-Source: AGHT+IGxf0cuHBjy0JYk5Bv3rXMuAB9YU9MSytP3soFOCKx+/dalE+sypyFQjmXlf1pjlVYXtYy/lw==
+X-Received: by 2002:a05:6808:f15:b0:3d9:ad9d:622f with SMTP id 5614622812f47-3de1951632bmr4259723b6e.27.1724277448797;
+        Wed, 21 Aug 2024 14:57:28 -0700 (PDT)
+Received: from localhost.localdomain ([2600:1700:fb0:1bcf:81a9:2325:e0f7:7376])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3de225555b6sm47070b6e.17.2024.08.21.14.57.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 14:51:52 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Wed, 21 Aug 2024 23:51:50 +0200
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
-	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
-	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
-	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/7] iio: pressure: bmp280: Use sleep and forced mode
- for oneshot captures
-Message-ID: <20240821215150.GA478039@vamoiridPC>
-References: <20240725231039.614536-1-vassilisamir@gmail.com>
- <20240725231039.614536-5-vassilisamir@gmail.com>
- <20240728165724.75153d08@jic23-huawei>
+        Wed, 21 Aug 2024 14:57:28 -0700 (PDT)
+From: Chris Morgan <macroalpha82@gmail.com>
+To: linux-sunxi@lists.linux.dev
+Cc: linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	quentin.schulz@free-electrons.com,
+	mripard@kernel.org,
+	tgamblin@baylibre.com,
+	aidanmacdonald.0x0@gmail.com,
+	u.kleine-koenig@pengutronix.de,
+	lee@kernel.org,
+	samuel@sholland.org,
+	jernej.skrabec@gmail.com,
+	sre@kernel.org,
+	wens@csie.org,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org,
+	robh@kernel.org,
+	lars@metafoo.de,
+	jic23@kernel.org,
+	jonathan.cameron@huawei.com,
+	Chris Morgan <macromorgan@hotmail.com>
+Subject: [PATCH V4 00/15] Add Battery and USB Supply for AXP717
+Date: Wed, 21 Aug 2024 16:54:41 -0500
+Message-Id: <20240821215456.962564-1-macroalpha82@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240728165724.75153d08@jic23-huawei>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 28, 2024 at 04:57:24PM +0100, Jonathan Cameron wrote:
-> On Fri, 26 Jul 2024 01:10:36 +0200
-> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> 
-> > This commit adds forced mode support in sensors BMP28x, BME28x, BMP3xx
-> > and BMP58x. Sensors BMP18x and BMP085 are old and do not support this
-> > feature so their operation is not affected at all.
-> > 
-> > Essentially, up to now, the rest of the sensors were used in normal mode
-> > all the time. This means that they are continuously doing measurements
-> > even though these measurements are not used. Even though the sensor does
-> > provide PM support, to cover all the possible use cases, the sensor needs
-> > to go into sleep mode and wake up whenever necessary.
-> > 
-> > This commit, adds sleep and forced mode support. Essentially, the sensor
-> > sleeps all the time except for when a measurement is requested. When there
-> > is a request for a measurement, the sensor is put into forced mode, starts
-> > the measurement and after it is done we read the output and we put it again
-> > in sleep mode.
-> > 
-> > For really fast and more deterministic measurements, the triggered buffer
-> > interface can be used, since the sensor is still used in normal mode for
-> > that use case.
-> > 
-> > This commit does not add though support for DEEP STANDBY, Low Power NORMAL
-> > and CONTINUOUS modes, supported only by the BMP58x version.
-> > 
-> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> One question inline about the corner case of buffered capture in progress
-> when the machine is suspended.  We'd like the device to carry on feeding
-> us data on resume. Does that happen?
-> 
-> Jonathan
-> 
+From: Chris Morgan <macromorgan@hotmail.com>
 
-Hi Jonathan,
+Add support for monitoring the USB charger and battery charger on the
+AXP717 PMIC. This required some driver refactoring of the axp20x USB
+and battery charger as the AXP717 is somewhat different but can still
+benefit from some common elements.
 
-This is actually a corner case that I couldn't think of. I will have to think
-it a bit more and come back on that.
+Note that as of now the charging current now value may be incorrect as
+the scale and offsets were not documented in the datasheet. I suspect
+the scale is 1 and the offset is somewhere around 450mA though.
 
-> 
-> >  	.trigger_handler = bmp380_trigger_handler,
-> > @@ -2085,6 +2239,64 @@ static int bmp580_preinit(struct bmp280_data *data)
-> >  	return PTR_ERR_OR_ZERO(devm_nvmem_register(config.dev, &config));
-> >  }
-> >  
-> > +static const u8 bmp580_operation_mode[] = { BMP580_MODE_SLEEP,
-> > +					    BMP580_MODE_FORCED,
-> > +					    BMP580_MODE_NORMAL };
-> > +
-> 
-> 
-> > +
-> > +static int bmp580_wait_conv(struct bmp280_data *data)
-> > +{
-> > +	/*
-> > +	 * Taken from datasheet, Section 2 "Specification, Table 3 "Electrical
-> > +	 * characteristics
-> > +	 */
-> > +	const int time_conv_press[] = { 0, 1050, 1785, 3045, 5670, 10920, 21420,
-> > +					42420, 84420};
-> > +	const int time_conv_temp[] = { 0, 1050, 1105, 1575, 2205, 3465, 6090,
-> > +				       11340, 21840};
-> space before }
-> 
-> Also stick a static in front of them or Colin will ;)
-> Aim being to makes sure they aren't pointlessly allocated on the stack
-> if the compiler doesn't do something clever with them.
-> 
+Changes from V3:
+ - Remove accidental AXP717_BOOST regulator in header file, as it is
+   not part of this patch series.
+ - Add an absolute min/max constraint for input-current-limit-microamp
+   in device tree documentation.
+ - Correct an issue found by kernel test robot <lkp@intel.com> by
+   explicitly adding linux/bitfield.h include. Details here:
+   https://lore.kernel.org/oe-kbuild-all/202408201228.Hee4eSYl-lkp@intel.com/
 
-Ack.
+Changes from V2:
+ - Added constraints for input-current-limit-microamp constraints for
+   x-powers,axp20x-usb-power-supply.yaml.
+ - Used FIELD_GET() and removed unnecessary -EINVAL per comments from
+   Jonathan Cameron.
 
-> > +	int meas_time;
-> > +
-> > +	meas_time = 4000 + time_conv_temp[data->oversampling_temp] +
-> > +			   time_conv_press[data->oversampling_press];
-> > +
-> > +	usleep_range(meas_time, meas_time * 12 / 10);
-> > +
-> > +	return 0;
-> > +}
-> >
-> >  
-> > +/* Keep compatibility with future generations of the sensor */
-> > +static int bmp180_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
-> > +{
-> > +	return 0;
-> > +}
-> > +
-> > +/* Keep compatibility with future generations of the sensor */
-> > +static int bmp180_wait_conv(struct bmp280_data *data)
-> > +{
-> > +	return 0;
-> > +}
-> > +
-> > +/* Keep compatibility with future generations of the sensor */
-> 
-> What does this comment mean?  I'm in favour of course, but don't understand
-> why it is here and above the stub calls.
-> 
-> 
+Changes from V1:
+ - Refactored against mainline to remove BOOST pre-requisite.
+ - Corrected commit subjects for DT bindings.
+ - Split refactoring and AXP717 support into different patches.
+ - Added IRQ for VBUS over voltage. There appears to be a bug
+   with the VBUS fault IRQ because it is assigned IRQ num 0.
+ - Corrected battery driver to report POWER_SUPPLY_PROP_VOLTAGE_MIN
+   and POWER_SUPPLY_PROP_VOLTAGE_MAX instead of *_DESIGN.
 
-This is for the bm(p/e)(2/3/5)80 devices which actually use those functions.
-Maybe instead of "future" I should have put "newer".
 
-> > @@ -2825,6 +3048,9 @@ static int bmp280_runtime_suspend(struct device *dev)
-> >  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> >  	struct bmp280_data *data = iio_priv(indio_dev);
-> >  
-> > +	data->chip_info->set_mode(data, BMP280_SLEEP);
-> 
-> What happens if the device is in buffered mode and you suspend?
-> I'd expect to see the power mode stashed somewhere and restored in resume.
-> 
+Chris Morgan (15):
+  iio: adc: axp20x_adc: Add adc_en1 and adc_en2 to axp_data
+  power: supply: axp20x_battery: Remove design from min and max voltage
+  power: supply: axp20x_battery: Make iio and battery config per device
+  power: supply: axp20x_usb_power: Make VBUS and IIO config per device
+  dt-bindings: power: supply: axp20x: Add input-current-limit-microamp
+  power: supply: axp20x_usb_power: add input-current-limit-microamp
+  dt-bindings: power: supply: axp20x-battery: Add monitored-battery
+  dt-bindings: iio: adc: Add AXP717 compatible
+  dt-bindings: power: supply: axp20x: Add AXP717 compatible
+  dt-bindings: power: supply: axp20x: Add AXP717 compatible
+  mfd: axp20x: Add ADC, BAT, and USB cells for AXP717
+  iio: adc: axp20x_adc: add support for AXP717 ADC
+  power: supply: axp20x_usb_power: Add support for AXP717
+  power: supply: axp20x_battery: add support for AXP717
+  arm64: dts: allwinner: h700: Add charger for Anbernic RG35XX
 
-As said before, I will investigate it and come back with more info.
+ .../bindings/iio/adc/x-powers,axp209-adc.yaml |  12 +
+ .../x-powers,axp20x-battery-power-supply.yaml |   7 +
+ .../x-powers,axp20x-usb-power-supply.yaml     |  72 ++-
+ .../sun50i-h700-anbernic-rg35xx-2024.dts      |  21 +
+ drivers/iio/adc/axp20x_adc.c                  | 182 +++++-
+ drivers/mfd/axp20x.c                          |  25 +-
+ drivers/power/supply/axp20x_battery.c         | 591 ++++++++++++++++--
+ drivers/power/supply/axp20x_usb_power.c       | 353 ++++++++++-
+ include/linux/mfd/axp20x.h                    |  26 +
+ 9 files changed, 1188 insertions(+), 101 deletions(-)
 
-Cheers,
-Vasilis
-> > +
-> > +	usleep_range(2500, 3000);
-> >  	return regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
-> >  }
-> >  
+-- 
+2.34.1
+
 

@@ -1,56 +1,58 @@
-Return-Path: <linux-iio+bounces-8658-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8659-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924CB95A5E5
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 22:30:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C3A95A5EF
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 22:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E480B244C1
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 20:30:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D8421C2100D
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 20:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CBA172BD0;
-	Wed, 21 Aug 2024 20:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F01216F8F5;
+	Wed, 21 Aug 2024 20:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5jaUs2I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPDwwUZZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20A3171658;
-	Wed, 21 Aug 2024 20:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF311D1300;
+	Wed, 21 Aug 2024 20:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724272132; cv=none; b=mmx27DWuSupm1dJVNHfPixbwnczB/73bLnfxY8Ue7VRbpJmA49eHaSbLJD0lKurvclfBszHJE25QUgomvvr4yn1PXmVf2PzrG9voLmviTw/93dGfdbRQ1xq12uKJTdTwXVtSnza4NETAysoI81VRVzAa+SvQWQtLeKWB5Rg4kws=
+	t=1724272400; cv=none; b=JTGgMKSRE7jzrP0zI5Oj2Id+MLhgm2T8mpcOv8eVk5H0loQ+3D6S+6BfULk3co+RXdLDkrQ21kTFOnes7wjXtOZCuPqhEQhP7KMpJX/Esi6rOrNq3AbwQ/fhsSOx2OcZhq84j0Lovex5ZL0pWmNB3BhzLqqsDM3fIqx/AdzFIx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724272132; c=relaxed/simple;
-	bh=pAJ3vsnTquZn4zyqJdU4qiDeSYiNUoJM1TTdLseJYvk=;
+	s=arc-20240116; t=1724272400; c=relaxed/simple;
+	bh=6FgnecSR8VhM53DQzNcFPbHy9j3pLUxYx6mq7I3vquw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MYiqHJn3byAMXp57GfZW9Ur/9mk5kBapi9E+Uvbeuggbpuv89LQ0+1+HXltrW1sBht/lY7iWOrh+pMAldeuPri7LUetHzP9DF07npxTRf+jY2ZkmYTWFSN77QAjinNCIGGMYVGZMCtaH7WHRz5RgW/GFhcIU3HtjNkBIYYEoCcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5jaUs2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FCAC32781;
-	Wed, 21 Aug 2024 20:28:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qaVwuF3FDc7TocdKrKDPGwMGSWzvBpAPIVKz7ZLcKFYELgs2wL5gc1aM4AH12vkqZucBNa7D9vtWATzF2LD1WVtcYvX/oao6EA8HqGzMbzqOs8RN39fnEd8wPWWd95F3CKDwOCRP8gRjDrg9lhQfoO3lKfeqaJIWCA7SGU1YrRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPDwwUZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E2EC32781;
+	Wed, 21 Aug 2024 20:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724272132;
-	bh=pAJ3vsnTquZn4zyqJdU4qiDeSYiNUoJM1TTdLseJYvk=;
+	s=k20201202; t=1724272399;
+	bh=6FgnecSR8VhM53DQzNcFPbHy9j3pLUxYx6mq7I3vquw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p5jaUs2IWd3Oh5igPiseu1z1Ihx9JjoZa7C+J1c5fnRMqvaTpNMXi6+DBRnhP5cZe
-	 rsWT447JdLLORvnq2c86T2vVae8NikS9nRxXWhRpUBijKE3tkwobVbUEEszaxo3jN+
-	 m7ziQakZy64wyIdIfIcJiaM/qLxOLp63+n+waC45abC/4PL4vZ4kBn2HvzZB303Wwp
-	 qbKgJa2P2nvXIOtFagN6zxlmI9s5tKRD4O9EgY6v7BbUX7YrqrePCFdk8tDRA5PUtP
-	 SleSB4Za2bJJotcn/38Q8mCuF5xaF4QA0scOpOIfIv02CV70H0064Qlbe8P/j5z8E/
-	 c4q77ia4sAhgA==
-Date: Wed, 21 Aug 2024 21:28:46 +0100
+	b=uPDwwUZZVvAMR6p4goIKY15q+KQ1a9f+5km3vKJUsF+q46LBE1uJ9LXAT3/TqoKKp
+	 38bBkx9InsecHrFGQ+64RF2f0YEOeweJ1dFiwhwyoKvXqPuY3NxAIhYioVYpCLkJ1q
+	 Jpvy47xuNGI8VO4N22WttrKmQIEOZ2rlFK4Wl4UR48o5lhhpbojEFYgkrx1gVkwkDC
+	 kfUT4WutAH7kphlsKDKw+1BcpfCi8dbj07cbF3Q8rvIOIPLCbB7XQqtqayRNzerf/R
+	 15WrMPWzmo/0+Izw4ZJbKugXhvxLC4nGLOCrbL+RMLwwFqaky/1IAPh9Fhe2lj/uTw
+	 98xWjhaum9wpw==
+Date: Wed, 21 Aug 2024 21:33:12 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andreas Klinger <ak@it-klinger.de>
-Cc: David Lechner <dlechner@baylibre.com>, Stephen Rothwell
- <sfr@canb.auug.org.au>, Lars-Peter Clausen <lars@metafoo.de>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: sgp40: retain documentation in driver
-Message-ID: <20240821212827.1d5e85ad@jic23-huawei>
-In-Reply-To: <ZsWdFOIkDtEB9WGO@mail.your-server.de>
-References: <ZsWdFOIkDtEB9WGO@mail.your-server.de>
+To: Yang Ruibin <11162571@vivo.com>
+Cc: Nuno Sa <nuno.sa@analog.com>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ opensource.kernel@vivo.com
+Subject: Re: [PATCH v1] drivers:iio:Fix the NULL vs IS_ERR() bug for
+ debugfs_create_dir()
+Message-ID: <20240821213312.7ec499c6@jic23-huawei>
+In-Reply-To: <20240821083911.3411-1-11162571@vivo.com>
+References: <20240821083911.3411-1-11162571@vivo.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,47 +63,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 21 Aug 2024 09:53:56 +0200
-Andreas Klinger <ak@it-klinger.de> wrote:
+On Wed, 21 Aug 2024 04:39:08 -0400
+Yang Ruibin <11162571@vivo.com> wrote:
 
-> Retain documentation on how the voc index is actually calculated in
-> driver code as it'll be removed in Documentation.
+> The debugfs_create_dir() function returns error pointers.
+> It never returns NULL. So use IS_ERR() to check it.
 > 
-> This is a follow up on patch "[PATCH] iio: ABI: remove duplicate
-> in_resistance_calibbias" from David.
-Applied both patches.  Thanks to you both for sorting this.
+Applied.  Thanks,
 
 Jonathan
 
-> 
-> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> Signed-off-by: Yang Ruibin <11162571@vivo.com>
 > ---
->  drivers/iio/chemical/sgp40.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+>  drivers/iio/industrialio-backend.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/chemical/sgp40.c b/drivers/iio/chemical/sgp40.c
-> index 7f0de14a1956..07d8ab830211 100644
-> --- a/drivers/iio/chemical/sgp40.c
-> +++ b/drivers/iio/chemical/sgp40.c
-> @@ -14,11 +14,16 @@
->   * 1) read raw logarithmic resistance value from sensor
->   *    --> useful to pass it to the algorithm of the sensor vendor for
->   *    measuring deteriorations and improvements of air quality.
-> + *    It can be read from the attribute in_resistance_raw.
->   *
-> - * 2) calculate an estimated absolute voc index (0 - 500 index points) for
-> - *    measuring the air quality.
-> + * 2) calculate an estimated absolute voc index (in_concentration_input)
-> + *    with 0 - 500 index points) for measuring the air quality.
->   *    For this purpose the value of the resistance for which the voc index
-> - *    will be 250 can be set up using calibbias.
-> + *    will be 250 can be set up using in_resistance_calibbias (default 30000).
-> + *
-> + *    The voc index is calculated as:
-> + *      x = (in_resistance_raw - in_resistance_calibbias) * 0.65
-> + *      in_concentration_input = 500 / (1 + e^x)
->   *
->   * Compensation values of relative humidity and temperature can be set up
->   * by writing to the out values of temp and humidityrelative.
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+> index a52a6b61c8b5..20b3b5212da7 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -219,7 +219,7 @@ void iio_backend_debugfs_add(struct iio_backend *back,
+>  	snprintf(name, sizeof(name), "backend%d", back->idx);
+>  
+>  	back_d = debugfs_create_dir(name, d);
+> -	if (!back_d)
+> +	if (IS_ERR(back_d))
+>  		return;
+>  
+>  	if (back->ops->debugfs_reg_access)
 
 

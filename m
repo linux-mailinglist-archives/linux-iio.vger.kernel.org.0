@@ -1,61 +1,56 @@
-Return-Path: <linux-iio+bounces-8657-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8658-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5CE95A5CB
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 22:26:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 924CB95A5E5
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 22:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 610F21C219FD
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 20:26:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E480B244C1
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 20:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0DB16FF5F;
-	Wed, 21 Aug 2024 20:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CBA172BD0;
+	Wed, 21 Aug 2024 20:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gmvOeEnw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5jaUs2I"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54E728DCB;
-	Wed, 21 Aug 2024 20:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20A3171658;
+	Wed, 21 Aug 2024 20:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724271976; cv=none; b=Hq+M8kNivQjbnux3uYfXwcE4WMjvNio4OZ2C9dhtOMLvxjI/HaQ4trvBNSagPfRfix3yBpjgqDZrJ5cu2nEnNfxEN4EAz194VPRtAB3d3BQ7duv3jh/goZdwnlxL260yWTE2fQ7ddE4K8YGVbHzO0buFbKr3Dx+vsl2x9TBbsS4=
+	t=1724272132; cv=none; b=mmx27DWuSupm1dJVNHfPixbwnczB/73bLnfxY8Ue7VRbpJmA49eHaSbLJD0lKurvclfBszHJE25QUgomvvr4yn1PXmVf2PzrG9voLmviTw/93dGfdbRQ1xq12uKJTdTwXVtSnza4NETAysoI81VRVzAa+SvQWQtLeKWB5Rg4kws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724271976; c=relaxed/simple;
-	bh=KZFoIuBUAwRsEE9EPLeC3SQ7BG3/6K63CDdgv2nlwKw=;
+	s=arc-20240116; t=1724272132; c=relaxed/simple;
+	bh=pAJ3vsnTquZn4zyqJdU4qiDeSYiNUoJM1TTdLseJYvk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OYZz6hNei3iyO126Zf6lmKAiMWg9R59QIiKt68g2yezzLu7HS9gASQnFwPKkMF/ckrgGsWTSh7Mnfz01xodf68bWPUZ1V8YvsZLiF8+YsIf2AVGT52wgDka2Pt6C698J4Sw4aSDYaxXhbhBjBT8ReBySB22KMGkFvHeeob+E+uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gmvOeEnw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929CFC32781;
-	Wed, 21 Aug 2024 20:26:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MYiqHJn3byAMXp57GfZW9Ur/9mk5kBapi9E+Uvbeuggbpuv89LQ0+1+HXltrW1sBht/lY7iWOrh+pMAldeuPri7LUetHzP9DF07npxTRf+jY2ZkmYTWFSN77QAjinNCIGGMYVGZMCtaH7WHRz5RgW/GFhcIU3HtjNkBIYYEoCcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5jaUs2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FCAC32781;
+	Wed, 21 Aug 2024 20:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724271975;
-	bh=KZFoIuBUAwRsEE9EPLeC3SQ7BG3/6K63CDdgv2nlwKw=;
+	s=k20201202; t=1724272132;
+	bh=pAJ3vsnTquZn4zyqJdU4qiDeSYiNUoJM1TTdLseJYvk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gmvOeEnwljbsiucDHUL3T8XfEaD4nQRYqXD0IGMR8ZluLJ//VEfCh8yYji8neYl+f
-	 sNWa3hYpgjMbw/32lHAYUNm3WYrQYvoHgE2BNRquloZ2UXrQq/lnmAc7NBvNYqxsn7
-	 o7LlXRzC2GrMulmX8mpk1TA0qQiMRmyyhD2W8v/eKP5EhUMdzYQo8fvMrQQTi5ld5R
-	 Zz5GggXs9CzlNlkfUONfzRO7kFjh5ia8p2tQtPZYVczhQ6Wf+9c1ltWe77Pg5X5TqN
-	 EGcVPrnrxsBM7YlxiJtIMPCod12GdjqTWnXe7yDkllrQ5vCOlDOL0ZTFk+2+2PXtWw
-	 K+10uYCUzdFeg==
-Date: Wed, 21 Aug 2024 21:26:06 +0100
+	b=p5jaUs2IWd3Oh5igPiseu1z1Ihx9JjoZa7C+J1c5fnRMqvaTpNMXi6+DBRnhP5cZe
+	 rsWT447JdLLORvnq2c86T2vVae8NikS9nRxXWhRpUBijKE3tkwobVbUEEszaxo3jN+
+	 m7ziQakZy64wyIdIfIcJiaM/qLxOLp63+n+waC45abC/4PL4vZ4kBn2HvzZB303Wwp
+	 qbKgJa2P2nvXIOtFagN6zxlmI9s5tKRD4O9EgY6v7BbUX7YrqrePCFdk8tDRA5PUtP
+	 SleSB4Za2bJJotcn/38Q8mCuF5xaF4QA0scOpOIfIv02CV70H0064Qlbe8P/j5z8E/
+	 c4q77ia4sAhgA==
+Date: Wed, 21 Aug 2024 21:28:46 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
- michael.hennerich@analog.com, gstols@baylibre.com
-Subject: Re: [PATCH 6/7] dt-bindings: iio: adc: add adi,ad7606c-{16,18}
- compatible strings
-Message-ID: <20240821212606.6981eae1@jic23-huawei>
-In-Reply-To: <CA+GgBR_V8r0Vz1PeKxwD6ovwHXxGM6=Z6XVd03ehokT5C3zjnQ@mail.gmail.com>
-References: <20240819064721.91494-1-aardelean@baylibre.com>
-	<20240819064721.91494-7-aardelean@baylibre.com>
-	<zuvwoy5wtdel7qgkz6wa6valwjwajpwoqnizyoooiawghrxvc3@cuoswu32h4fl>
-	<CA+GgBR_V8r0Vz1PeKxwD6ovwHXxGM6=Z6XVd03ehokT5C3zjnQ@mail.gmail.com>
+To: Andreas Klinger <ak@it-klinger.de>
+Cc: David Lechner <dlechner@baylibre.com>, Stephen Rothwell
+ <sfr@canb.auug.org.au>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: sgp40: retain documentation in driver
+Message-ID: <20240821212827.1d5e85ad@jic23-huawei>
+In-Reply-To: <ZsWdFOIkDtEB9WGO@mail.your-server.de>
+References: <ZsWdFOIkDtEB9WGO@mail.your-server.de>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,65 +61,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Wed, 21 Aug 2024 09:53:56 +0200
+Andreas Klinger <ak@it-klinger.de> wrote:
 
-> > > +    type: object
-> > > +    $ref: adc.yaml
-> > > +    unevaluatedProperties: false
-> > > +
-> > > +    properties:
-> > > +      reg:
-> > > +        description: The channel number.
-> > > +        minimum: 0
-> > > +        maximum: 7
-> > > +
-> > > +      diff-channel:
-> > > +        description: Channel is bipolar differential.  
-> >
-> > There is diff-channels property, why do we need one more?  
+> Retain documentation on how the voc index is actually calculated in
+> driver code as it'll be removed in Documentation.
 > 
-> Yeah, I wanted to use that.
-> Maybe I will try another spin at that.
-> The thing with "diff-channels" is that it requires 2 ints.
-> So,  diff-channels = <0 0>.
-> To use it here, a rule would need to be put in place where  "reg ==
-> diff-channels[0] && reg == diff-channels[1]".
-> That also works from my side.
-> Part of the reason for this patchset, was to also get some feedback
-> (if this is the correct direction).
+> This is a follow up on patch "[PATCH] iio: ABI: remove duplicate
+> in_resistance_calibbias" from David.
+Applied both patches.  Thanks to you both for sorting this.
+
+Jonathan
+
 > 
-So I 'think' this is a datasheet matching thing.
-In many cases, even for strictly differential devices, the pin
-naming allows for a clear A - B channel description. Here
-in the non differential modes, the negative pins are effectively
-not used (from a really quick look at the datasheet)
-
-So we 'could' introduce magic channels (give them high numbers) for
-the negative ends. I think we may want to do that for the
-userspace ABI (0-0 on the few times it has come up has been a
-calibration / self check mode not what you have here - it
-wires the actual inputs together).  Alternative is just present
-them as a simple voltage and don't worry about the differential aspect
-as it's not hugely different to bipolar (where the zero level is
-effectively the negative input of a differential ADC.
-
-For the binding I'm fine with the binding using A, A as you suggest
-with an update to adc.yaml to cover this corner.
-
-We never (I think) have bindings for the self check case where the input
-is wired to both sides. It's just a mode that is applied to
-any inputs that are wired. 
-
-> >  
-> > > +        type: boolean
-> > > +
-> > > +      bipolar:
-> > > +        description: |
-> > > +          Channel is bipolar single-ended. If 'diff-channel' is set, then
-> > > +          the value of this property will be ignored.  
-> >
-> > Then provide here allOf:if:then which makes it false if diff-channel(s)
-> > is present. And then drop entire property, because you duplicate what's
-> > in adc.yaml.  
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> ---
+>  drivers/iio/chemical/sgp40.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 > 
-> Ack.
+> diff --git a/drivers/iio/chemical/sgp40.c b/drivers/iio/chemical/sgp40.c
+> index 7f0de14a1956..07d8ab830211 100644
+> --- a/drivers/iio/chemical/sgp40.c
+> +++ b/drivers/iio/chemical/sgp40.c
+> @@ -14,11 +14,16 @@
+>   * 1) read raw logarithmic resistance value from sensor
+>   *    --> useful to pass it to the algorithm of the sensor vendor for
+>   *    measuring deteriorations and improvements of air quality.
+> + *    It can be read from the attribute in_resistance_raw.
+>   *
+> - * 2) calculate an estimated absolute voc index (0 - 500 index points) for
+> - *    measuring the air quality.
+> + * 2) calculate an estimated absolute voc index (in_concentration_input)
+> + *    with 0 - 500 index points) for measuring the air quality.
+>   *    For this purpose the value of the resistance for which the voc index
+> - *    will be 250 can be set up using calibbias.
+> + *    will be 250 can be set up using in_resistance_calibbias (default 30000).
+> + *
+> + *    The voc index is calculated as:
+> + *      x = (in_resistance_raw - in_resistance_calibbias) * 0.65
+> + *      in_concentration_input = 500 / (1 + e^x)
+>   *
+>   * Compensation values of relative humidity and temperature can be set up
+>   * by writing to the out values of temp and humidityrelative.
+
 

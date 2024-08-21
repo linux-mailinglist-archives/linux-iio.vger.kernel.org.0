@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-8669-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8670-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F266195A749
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56A395A748
 	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F331B21585
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:57:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E92441C22AD4
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEE317BB24;
-	Wed, 21 Aug 2024 21:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B1917C7CB;
+	Wed, 21 Aug 2024 21:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M8kyQcwc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SKlq8RbB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD74A17BB3A;
-	Wed, 21 Aug 2024 21:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E87A17C21E;
+	Wed, 21 Aug 2024 21:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724277455; cv=none; b=KnhmKjcRpSTAd75XqGZfuPjBfkOCtmiAKQP/JfdiyIpzrTukPO+x4pvjb0lhwjvtfBHu6vg3IRwCQVytFjyyA8SFNZW+yLix34kRIzgiKPAEk73xhCsvrEYGguQIQA1JQsc5wV0VOwEx61/bHnTD7s+S/Xx172b15GePOSfRYOY=
+	t=1724277456; cv=none; b=TIUV9Sf28XzpHKApuRpdyV5ymBmMgO7PvpvN6prl/Pm5PaSTtO+VVRr7QaR5l2xKri5TCzSTFtMo2lVBjLFz/XftoiwL9wfO6jDwQh0Xn7hDs4TVKwEAUBPw3eOCyeUDRWkn51MBj2l2QIvRuGonZ3wnR0Mvsrv5eVZ4WjWiBjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724277455; c=relaxed/simple;
-	bh=xtbe2GE0kxv3PLdvqMIaX8WjPceiFQkO5WY5kWSV1ig=;
+	s=arc-20240116; t=1724277456; c=relaxed/simple;
+	bh=5a+ymo3BBR1upvcXnfIAo+PqatW4K0NQ636IZHuJqs0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P8bCf0ymK5aCuaDCV0U2btjR8CHzsFjWGwlWVCgS67nLy5syxkMoa1d5xHSIkEs0sX3OZlcpfEqO7EaywP+8OsHx+P9FEYdqFpKAyntV2yCJ83/T3rx6kLKINTCn0AMGJVR/KQiGmX25LEjyf3ubyj0gwCpe/zzx8XSUzRyOsaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M8kyQcwc; arc=none smtp.client-ip=209.85.167.179
+	 MIME-Version; b=eT0YJKsGXwQsoOBciEuqjOIglyaxq1qAxFKY8bkEDjBslGSA1UYNJ5KGiZpO3YtAUxWfT2l04b6MZMscFI+9TQ483xNFwB2cSoDUYaH7ucil0tuFqSDxnyl2OQ7TcxLUb17Gb2x3X80M2MsggKezCEYiV30fwv7qbC74SActnSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SKlq8RbB; arc=none smtp.client-ip=209.85.167.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3db1956643bso83009b6e.3;
-        Wed, 21 Aug 2024 14:57:33 -0700 (PDT)
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3db23a60850so87459b6e.0;
+        Wed, 21 Aug 2024 14:57:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1724277453; x=1724882253; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QGxHVYptl/mfZ5O11htImf9Dey/T9TeFYQkFJXrtkIg=;
-        b=M8kyQcwcCCZ2+KIqRh/50s+2t/56i/G8MqBmaP1UCqfYm+61LevSObK9Nf15Wuk1bR
-         VtT6r329mAdjpJoRN486a1MDllRKxpic+cgX2DDPV/5O1nHVgX38OgfS0G523j9cgJ0f
-         y48crEsMff5MidCN8v7OEWOVmXZcmxk/g/vCyyqXubrODNsquSFa3pHavVan8h9aZqIO
-         gPKkHt/KNOM/oGYqQnyy4Q62GCDVxUvJ50yiFzTZHXg7uY3Z0Xg07YyJ8WtcHOCkeRyB
-         ahezgWxeI8Q1wgxYlRzNLib09qIfoNV3XbF8dIpeXPYE1LhBi0FLR5Uyzug8s30ZH3Dz
-         D2+A==
+        bh=VW8pLbjHmp58tJfvrusMBZ0t6nfvqNtc57mmOOIaTIw=;
+        b=SKlq8RbBrD7yzLVgU3c8DbWlGa7oU5lL885ol+sQIHzIXsnwEppHhDPiymr0umT4Y1
+         S+u5HiZtvaGxsn+I/V50klf5ZXNygqPUHTYfZL53o/dx/rzxEgZqC4ihMHNFS3rKnKsV
+         7T1J2nHkKKsrcdwyQowUScV8EoQkW2y1JTSRL31mJTVPIf2GjiQP1A+lJYtct/pyAFQB
+         zOICAB7SqtpU2G2HEifNZRDRZlJ3ulc5hOjGmMlW/LzkBVyf1uA5IkuCz5zpxZoCpXRG
+         9wdIq/fuKYqeyJCEGCNpM7oz8AvKae+QpDHtcFEB0ydxPP3Iq8MSLUVe9JW0by4zH0LM
+         3Jcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1724277453; x=1724882253;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QGxHVYptl/mfZ5O11htImf9Dey/T9TeFYQkFJXrtkIg=;
-        b=VETOuRzp+aYGQfquLeEOzI6PSgOn8t6HXXA/qsHtdikTEo6P2M3lrIXP74rJr/uf8C
-         iFdVzOTYWS1I+lzfhAY1vdjyehAYoTmRhuEGiWxIHK49a6m8sr4ENIlxMWam5LdxLLNM
-         PYPbBxDdqn+3RSZZiaUoGRFe8D3o3jb+OPiGBTtoa69KtH4c0I9aPMoi5NkCVbGMuDhk
-         EyDn4pp3wwklhactvtcWo/6TkXIzWHVOtzwkFK/gCWcwyAgOqIn3yQt4izC9ksZ6Z9YT
-         EcoBwuErPEDLgRW2g/Hv9lmjNrh/Iiec0yjdMSl9e2tId0X54YALQ6NVqfqtipj7y7sH
-         Yg7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUoLJvce/OZjZyKcOIzJ6ESm8+DI3TykZdzfVvPcy4RyxTr4SoqINvevMEqO8uD2PbnCuWsL+sn+XKH@vger.kernel.org, AJvYcCWP181fx20AHjv/Id/aAlsRS93wxCZf+9qxtDE2JJ4K1c+kW1SVct8nLK2homTze6Vjob1R9R0kMpYd@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkCfbAz5TJEIHO1dQZr1v+O8kheBIwZSK6nqOy5K9iEe4F2UWd
-	jKHsP80YsOz1d8IQEdPD+vAq95jOIGvqBwjkrk0SG5y1+t2G6eiS
-X-Google-Smtp-Source: AGHT+IEEVh05GQZqcfbn4IDKx4nQgV7t9q/7T+7lh7gib4DsRCbvqlfs8kaWytyaNhMT/Lx2z5jZKg==
-X-Received: by 2002:a05:6808:2f08:b0:3de:220c:ace2 with SMTP id 5614622812f47-3de220cae0amr601913b6e.14.1724277452915;
-        Wed, 21 Aug 2024 14:57:32 -0700 (PDT)
+        bh=VW8pLbjHmp58tJfvrusMBZ0t6nfvqNtc57mmOOIaTIw=;
+        b=I83ixxybafM4OE+/4qJcfuWuzi+GwPiBNg0KoZFNIzGd1KKJhIPWyaPHSEfjyFofdE
+         DRLCUVkuj/tyof8DsMloVKaIM5M8kGc6A4Ft+ZMR4gRQYp7N5jFQd2e+jNcnQrWCsWb3
+         ZNeWvx9gkOECSAgTvx/KdYMhRDBVRX1DyPWt51b6Lg3f614WsN2+gzjfT3JFo9Ekmxnv
+         FnraHAPTuDsFV77qjjPiWvK7NNfNb6EqDZ6sCDcl+MoaKQNe1KnzRNZ3s+yEpbdf4mGg
+         B6jsE8GwNIHK5ResP8w237CiIREvheC+fYmkUhRAZQI/3J6cL1KEPMSXzofpklxzMVWs
+         DF9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUsuGlU43sILryzGe02QnSWeYLxnq5tXVXeFmtBUWfO5GFevOFDGnszbDb0DC4XLMFSvWsQKKPIjmLs@vger.kernel.org, AJvYcCVFWRA8o8M1ySuTUQlP72CGejrHCHiHxuw5LnE8458ZNBRwj0KJ1txj95NxninFCB/dmna00Vxn16/Q@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8qNSAX3Jjih7LyBZ6NxcTKt1o7s5Ek8eVDLJ0tjMR6JjYEB/X
+	4RIrdxNv6RQ8+W/DhTbuOckVcHlQ9d3RTIxlW9Br/PQL7e8smaLh
+X-Google-Smtp-Source: AGHT+IHGclXhRe7MiZ2gdXv83D4GWjeaFVDAh8ffxoiueuIZjAXOFvrAwN7o6rMnhdMLZv0E2Dx/ug==
+X-Received: by 2002:a05:6808:2f07:b0:3db:198d:97cc with SMTP id 5614622812f47-3de19d20c0emr4500013b6e.33.1724277453646;
+        Wed, 21 Aug 2024 14:57:33 -0700 (PDT)
 Received: from localhost.localdomain ([2600:1700:fb0:1bcf:81a9:2325:e0f7:7376])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3de225555b6sm47070b6e.17.2024.08.21.14.57.32
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3de225555b6sm47070b6e.17.2024.08.21.14.57.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 14:57:32 -0700 (PDT)
+        Wed, 21 Aug 2024 14:57:33 -0700 (PDT)
 From: Chris Morgan <macroalpha82@gmail.com>
 To: linux-sunxi@lists.linux.dev
 Cc: linux-pm@vger.kernel.org,
@@ -90,9 +90,9 @@ Cc: linux-pm@vger.kernel.org,
 	jic23@kernel.org,
 	jonathan.cameron@huawei.com,
 	Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH V4 05/15] dt-bindings: power: supply: axp20x: Add input-current-limit-microamp
-Date: Wed, 21 Aug 2024 16:54:46 -0500
-Message-Id: <20240821215456.962564-6-macroalpha82@gmail.com>
+Subject: [PATCH V4 06/15] power: supply: axp20x_usb_power: add input-current-limit-microamp
+Date: Wed, 21 Aug 2024 16:54:47 -0500
+Message-Id: <20240821215456.962564-7-macroalpha82@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240821215456.962564-1-macroalpha82@gmail.com>
 References: <20240821215456.962564-1-macroalpha82@gmail.com>
@@ -106,94 +106,69 @@ Content-Transfer-Encoding: 8bit
 
 From: Chris Morgan <macromorgan@hotmail.com>
 
-Allow specifying a hard limit of the maximum input current. Some PMICs
-such as the AXP717 can pull up to 3.25A, so allow a value to be
-specified that clamps this in the event the hardware is not designed
-for it.
+Allow users to specify a maximum input current for the device. Some
+devices allow up to 3.25A of input current (such as the AXP717), which
+may be too much for some implementations.
 
 Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 ---
- .../x-powers,axp20x-usb-power-supply.yaml     | 58 ++++++++++++++++++-
- 1 file changed, 55 insertions(+), 3 deletions(-)
+ drivers/power/supply/axp20x_usb_power.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-index 34b7959d6772..ab24ebf2852f 100644
---- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-+++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-@@ -15,9 +15,6 @@ maintainers:
-   - Chen-Yu Tsai <wens@csie.org>
-   - Sebastian Reichel <sre@kernel.org>
+diff --git a/drivers/power/supply/axp20x_usb_power.c b/drivers/power/supply/axp20x_usb_power.c
+index cd9e92f2ce71..69fbb5861934 100644
+--- a/drivers/power/supply/axp20x_usb_power.c
++++ b/drivers/power/supply/axp20x_usb_power.c
+@@ -80,6 +80,7 @@ struct axp20x_usb_power {
+ 	struct iio_channel *vbus_v;
+ 	struct iio_channel *vbus_i;
+ 	struct delayed_work vbus_detect;
++	int max_input_cur;
+ 	unsigned int old_status;
+ 	unsigned int online;
+ 	unsigned int num_irqs;
+@@ -323,6 +324,13 @@ static int axp20x_usb_power_set_input_current_limit(struct axp20x_usb_power *pow
+ 	if (intval == -1)
+ 		return -EINVAL;
  
--allOf:
--  - $ref: power-supply.yaml#
--
- properties:
-   compatible:
-     oneOf:
-@@ -31,8 +28,63 @@ properties:
-           - const: x-powers,axp803-usb-power-supply
-           - const: x-powers,axp813-usb-power-supply
++	if (power->max_input_cur && (intval > power->max_input_cur)) {
++		dev_warn(power->dev,
++			 "reqested current %d clamped to max current %d\n",
++			 intval, power->max_input_cur);
++		intval = power->max_input_cur;
++	}
++
+ 	/*
+ 	 * BC1.2 detection can cause a race condition if we try to set a current
+ 	 * limit while it's in progress. When it finishes it will overwrite the
+@@ -661,6 +669,18 @@ static int axp20x_regmap_field_alloc_optional(struct device *dev,
+ 	return 0;
+ }
  
-+  input-current-limit-microamp:
-+    description:
-+      Optional value to clamp the maximum input current limit to for
-+      the device. If omitted, the programmed value from the EFUSE will
-+      be used.
-+    minimum: 100000
-+    maximum: 4000000
++/* Optionally allow users to specify a maximum charging current. */
++static void axp20x_usb_power_parse_dt(struct device *dev,
++				      struct axp20x_usb_power *power)
++{
++	int ret;
++
++	ret = device_property_read_u32(dev, "input-current-limit-microamp",
++				       &power->max_input_cur);
++	if (ret)
++		dev_dbg(dev, "%s() no input-current-limit specified\n", __func__);
++}
++
+ static int axp20x_usb_power_probe(struct platform_device *pdev)
+ {
+ 	struct axp20x_dev *axp20x = dev_get_drvdata(pdev->dev.parent);
+@@ -697,6 +717,8 @@ static int axp20x_usb_power_probe(struct platform_device *pdev)
+ 	if (IS_ERR(power->curr_lim_fld))
+ 		return PTR_ERR(power->curr_lim_fld);
  
- required:
-   - compatible
- 
-+allOf:
-+  - $ref: power-supply.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - x-powers,axp192-usb-power-supply
-+    then:
-+      properties:
-+        input-current-limit-microamp:
-+          enum: [100000, 500000]
++	axp20x_usb_power_parse_dt(&pdev->dev, power);
 +
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - x-powers,axp202-usb-power-supply
-+              - x-powers,axp223-usb-power-supply
-+    then:
-+      properties:
-+        input-current-limit-microamp:
-+          enum: [100000, 500000, 900000]
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - x-powers,axp221-usb-power-supply
-+    then:
-+      properties:
-+        input-current-limit-microamp:
-+          enum: [500000, 900000]
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - x-powers,axp813-usb-power-supply
-+    then:
-+      properties:
-+        input-current-limit-microamp:
-+          enum: [100000, 500000, 900000, 1500000, 2000000, 2500000,
-+                 3000000, 3500000, 4000000]
-+
- additionalProperties: false
+ 	ret = axp20x_regmap_field_alloc_optional(&pdev->dev, power->regmap,
+ 						 axp_data->vbus_valid_bit,
+ 						 &power->vbus_valid_bit);
 -- 
 2.34.1
 

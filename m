@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-8674-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8673-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB0B95A754
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:58:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BDE895A752
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 23:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A21791C22AC0
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:58:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 088F9281AB6
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 21:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1C117D8A9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D86117D366;
 	Wed, 21 Aug 2024 21:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lWiG8lrv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CQu1qjKv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F027C17B4EB;
-	Wed, 21 Aug 2024 21:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA7617B501;
+	Wed, 21 Aug 2024 21:57:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724277459; cv=none; b=GzEb3VJx6gAmMoeEtcELT1gApy/fSCKIwGuTrTn58NvNFvdYGkvMoWJXW6cVqhmgMht05Uk4V3IcYNowGwbwpc3Nrp/JzM+tiWymOo94qgZMYuo7XYahZsESgKtJASi1Teg2crRRn55SE6H5Yua+pDyFQ2N9ZprLSfOoZftFOys=
+	t=1724277459; cv=none; b=mdbW+ldRu8nJVVGwFnMgB8zTnEgXvhaRnxChJOl4KuCA+NijnuBmsI80rcQ7b/dDOmshmN4dmWPotIw2vjGGD5UUTzSNweJi+aRNpY3hvV8n2NDWwB02OK/xOGneiQ98crN8NU6asH5MMCtCAHBLJRqSlBixtY7CZZwOx+o9Yqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1724277459; c=relaxed/simple;
-	bh=QoQjXg4zrkckps6OZl4xkgiuPOdfwY4t1fFBBZP8Uz0=;
+	bh=2N5vSF/orr/5lpFq7UMO/MLBrEUsCTaeamXg7ihD/v8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=i33+l5iTZSOZQlM8mG2hwlDm6+9LS1HbmoD+3znzO6XQSuoqG6bW8VjqSVS5dep18pLtoEQYudZOxcZaQkFe4HXcO7opPnNGgVGKwajO2X56BJMXgLhC5zx8boFZOClpebcm+5AC0nCfVX2gBxfms44i6jc+s8IqLBwd8VCptNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lWiG8lrv; arc=none smtp.client-ip=209.85.167.182
+	 MIME-Version; b=A8+7q1fWtAnwq5+pFIpsjk1f7OKrsZlDfG5zTxAFHvohlm5tJk6n5Yt6pGdzo+9zFiMZ+24zH8Iqip/evyuaoR7vHbwIV+Jw9dQO0kuUut0hgW6R9FnHNC2MoEYMV3BQPHHwplCMSfIzyqAwV8skr0gcjMNgPZY5Ya9589lSysA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CQu1qjKv; arc=none smtp.client-ip=209.85.167.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3db145c8010so85818b6e.3;
-        Wed, 21 Aug 2024 14:57:36 -0700 (PDT)
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3db145c8010so85825b6e.3;
+        Wed, 21 Aug 2024 14:57:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724277456; x=1724882256; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724277457; x=1724882257; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ys+sG5b9a6uhbl5zndW9/e6kK/Fuw6SOZtG6PQfHk44=;
-        b=lWiG8lrvyj5LMjhtk9hw1ATSKccgYDxTBtzEIkOsH1N9IolrNE/DVNVo7GcHLO1xRB
-         Qv9SucVAJ5F9AJWb/DJtLY3qsZRXF76bFWlzs6BrGW//9vXFWhIIg+7iMqz1NFyGdV0Y
-         fiA/tbLB8xMeBTDaTITYnUssxBTMbCKLhSvR3sj88AZMITgzVzv0GI748g4Jqkvl1cwo
-         m8nwxrcr9b0Keislh2qwuV+0RXAXSqEbX/gGobtTF1B7Djo2+f8UARSunmqvtxezLl2N
-         hi74WrmoKPJqCanz7Bo2jzp9+Cf4ucVGCseiEzknau10yDS3xNqBI1E7Of/4yCq5BkZq
-         1lew==
+        bh=iBLcUKDVkwPFiYRJqjb28cNXraCEW6YLxwgaARvC0lA=;
+        b=CQu1qjKvqlNrdVsY1kG3YYc4ieYrRN5IprUzGoPw2SaH655HjyRYRqK1WP+3YEPNqI
+         iAUViDM6VmhUCV0vHjXadPlAi61+DUhfFtegSWaFxlKLDzhR/xRV8MXjNJbgWWpqqnLw
+         qgE698o3a3sBJlSmKLL+ivh6DZpf8lEFHGYQnzGreS1PVgIgrkNX2MV9wL+lwGNE8eor
+         +69hE2N9ax4nYdhNGHKuKNY1t1Y++6iF90o0MLwzUDltTQZ7WTrRMJgD6wPEuU4QOmbC
+         stR3yAt4x0QzxpvW6YN2cWgBxDmAo4neYoE0Uhj374DgIjWFbnGENqAQ0w7BAtnEZPMw
+         KAag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724277456; x=1724882256;
+        d=1e100.net; s=20230601; t=1724277457; x=1724882257;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ys+sG5b9a6uhbl5zndW9/e6kK/Fuw6SOZtG6PQfHk44=;
-        b=uNEvIWrniGRdUOIOs88vIcBDE+ReeivV+oT/K1w4ykOF3hB6D4N28uimWSEe/YKRDm
-         dimmJeLomLJFQsjCAKNA6Avo2//7l6WL9CCTfArrDMmbHSXJD4Hw/WvjkXcCdacJbQjO
-         kckEHKThJ46QfXTKl7OqLnRKHEPBia1+qfXGglZro1RUk3T2ukQoa8HjfFWEi9O+DtsC
-         8wYNnR8wOyGNhv7lJWntVbIiH/dVvXaoQOfZXMeU1WmYwxocDY1rN1pu6SpcRXvT7cjP
-         yw5NB7pJxULfR8Gp9oJn7QVdwyvUEmddyET6oyO8yIWBo0XQA/+1UtTYpXUY/9iUetaQ
-         0FRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWjDXFa1rs/T8B7P+6wFnhqum+Zemz1ofPgca78+kmCqpVtpXTpEAFE59GD3D+wNoMrOdWmfqFwQkLJ@vger.kernel.org, AJvYcCXQXdNN+HxAB9zeMsa+eaNtKtUEXtdsSzdp6H7nRtKws1/CYfdCtqmN+b87LP2ARrcQh2FDXLPOw7QG@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywsqxvoge38GQpYLKVhaS5szj3RUYFIgC5v73C+O3ptmWtYyK44
-	gPDKolSzfLlgpdnaJNKx65SXq+cVSh7CJ012zSoPyW4/DeWTaBF9
-X-Google-Smtp-Source: AGHT+IGSNGiLpSDGYbeQsr9hfzMxprNvYc1rfBeR6FKiK1Zn8vEKIFHLbFvwtoPro63cqF4NO+LkPA==
-X-Received: by 2002:a05:6808:1211:b0:3d9:de82:f07b with SMTP id 5614622812f47-3de1951b88emr5131812b6e.28.1724277456012;
+        bh=iBLcUKDVkwPFiYRJqjb28cNXraCEW6YLxwgaARvC0lA=;
+        b=jSeUyGfaQxtLSnlq2RwM9RwwRSEHOci/RkEZ9u8OOCTIjyf6iT2O9HSCFO1rNfuPjA
+         50biDlfD+lmcjPDa2zZKQ+hSsXRpL9whqhNl1Gw1xoddtzmXCLWGOrWi+babdm5P9Hk8
+         gkyOdveAdvMiMV/7mwfh6wRvYU20FBEenqads1pYAiqNADLbhEyNEaqQTGQfe6X86TFK
+         7Tt1Vj43eMvc/oW9deFWIaOFP/bAD6VXbjrEuk+WrrRtsILZ9FUzzxWjd9hEhUTw26Sm
+         bY6kwdDKxpShLhAu3981jRVrpx4WK43BRgbF2ET1MMnuoXhtm1177ZxuZmX17rbcgDZc
+         AVag==
+X-Forwarded-Encrypted: i=1; AJvYcCVkXufu6xxe8zkso2ucqjJp/0m78xMpZoGGmmeYH5CqnACsHlJWgND3aHps3R1xn0PZu9pA0bhYjSmO@vger.kernel.org, AJvYcCXo3rg2eepWYscB9fqvVrQybTlZnwT5NVUqIad11CcRCFqEPcdcRi9Ey3DBbRm4qnDpIRMbL40TjcRw@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJ3qh8zpsSp9xcL3iasN2/zrZYg7ahNL9BFbjwEyPCbAXtIUmH
+	dlSNEjsnMrKzNCsZGo8SQkTqu8bWWymD3UuWDKjRDjBX/EhXCe8W
+X-Google-Smtp-Source: AGHT+IFBH/Id49Is4rvox6d7qJv1gU0KdeZpKbRB9tXQkrhso5+9Wd6ArhEi7XMb6kv3+haBhqqwxQ==
+X-Received: by 2002:a05:6808:654b:b0:3da:ab89:a808 with SMTP id 5614622812f47-3de19510ef5mr3509342b6e.20.1724277456885;
         Wed, 21 Aug 2024 14:57:36 -0700 (PDT)
 Received: from localhost.localdomain ([2600:1700:fb0:1bcf:81a9:2325:e0f7:7376])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3de225555b6sm47070b6e.17.2024.08.21.14.57.35
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3de225555b6sm47070b6e.17.2024.08.21.14.57.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 14:57:35 -0700 (PDT)
+        Wed, 21 Aug 2024 14:57:36 -0700 (PDT)
 From: Chris Morgan <macroalpha82@gmail.com>
 To: linux-sunxi@lists.linux.dev
 Cc: linux-pm@vger.kernel.org,
@@ -91,9 +91,9 @@ Cc: linux-pm@vger.kernel.org,
 	jonathan.cameron@huawei.com,
 	Chris Morgan <macromorgan@hotmail.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH V4 09/15] dt-bindings: power: supply: axp20x: Add AXP717 compatible
-Date: Wed, 21 Aug 2024 16:54:50 -0500
-Message-Id: <20240821215456.962564-10-macroalpha82@gmail.com>
+Subject: [PATCH V4 10/15] dt-bindings: power: supply: axp20x: Add AXP717 compatible
+Date: Wed, 21 Aug 2024 16:54:51 -0500
+Message-Id: <20240821215456.962564-11-macroalpha82@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240821215456.962564-1-macroalpha82@gmail.com>
 References: <20240821215456.962564-1-macroalpha82@gmail.com>
@@ -107,49 +107,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Chris Morgan <macromorgan@hotmail.com>
 
-Add support for the AXP717. It has BC 1.2 detection like the AXP813
-and uses ADC channels like all other AXP devices, but otherwise is
-very different requiring new registers for most functions.
+Add binding information for AXP717.
 
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 ---
- .../supply/x-powers,axp20x-usb-power-supply.yaml   | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ .../power/supply/x-powers,axp20x-battery-power-supply.yaml       | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-index ab24ebf2852f..2ec036405ae4 100644
---- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-+++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
+diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
+index f196bf70b248..5ccd375eb294 100644
+--- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
++++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
 @@ -23,6 +23,7 @@ properties:
-           - x-powers,axp202-usb-power-supply
-           - x-powers,axp221-usb-power-supply
-           - x-powers,axp223-usb-power-supply
-+          - x-powers,axp717-usb-power-supply
-           - x-powers,axp813-usb-power-supply
+       - const: x-powers,axp202-battery-power-supply
+       - const: x-powers,axp209-battery-power-supply
+       - const: x-powers,axp221-battery-power-supply
++      - const: x-powers,axp717-battery-power-supply
        - items:
-           - const: x-powers,axp803-usb-power-supply
-@@ -75,6 +76,19 @@ allOf:
-         input-current-limit-microamp:
-           enum: [500000, 900000]
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - x-powers,axp717-usb-power-supply
-+    then:
-+      properties:
-+        input-current-limit-microamp:
-+          description: Maximum input current in increments of 50000 uA.
-+          minimum: 100000
-+          maximum: 3250000
-+
-   - if:
-       properties:
-         compatible:
+           - const: x-powers,axp803-battery-power-supply
+           - const: x-powers,axp813-battery-power-supply
 -- 
 2.34.1
 

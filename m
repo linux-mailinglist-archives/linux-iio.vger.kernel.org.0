@@ -1,178 +1,129 @@
-Return-Path: <linux-iio+bounces-8648-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8649-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D592959641
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 10:03:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62AA959777
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 12:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DD62B225FF
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 08:03:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 060C6B20B10
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Aug 2024 10:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70811199FBF;
-	Wed, 21 Aug 2024 07:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ptK8mW9U"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D67192D98;
+	Wed, 21 Aug 2024 08:32:00 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D5C1B81BF;
-	Wed, 21 Aug 2024 07:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D5A1CF2BA;
+	Wed, 21 Aug 2024 08:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724226119; cv=none; b=qA/JYTJGEBrNsbblh8jwG5dKWmM6FhLPmhLCm7SSwD/IVWADbfp8xEgua46c24/mde44C3IvKf7oxioNFT/Diftl4r3TFvytEDPQHyrYTlASHEo4Xty0pzZW8SlrSCUozFpoE3IrkI7m4wZyt6vP5ZiXnmtvy8YvTWTJJNxKl+I=
+	t=1724229120; cv=none; b=lTaKZYd93g/myqwOJ+nV+0YDBNPlwEkPehGbZ91750bJaRQLVqeSoh13WDi2f24R4HrUmhYQnGl00ccGHT1p33/lO8hdrtQh4tVE52TcIZOhmE/t7/D+ywu/YRiuvBMWCmZ1GwuZx8rnrd4iE7oZzYZ2QKaSiIKefEYD8eMahGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724226119; c=relaxed/simple;
-	bh=aBgDAZ4ze0w4LhExDuXGPmQBmtP78IvFLVDICKsRhxk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mqPobWF3lY7gmB66airMdGdoGt0WNKrQ1cI7MNrRhnPgwDLhTHyFfh7qNkf7Y9kbD5mrzDTvzk0SpoXXrRmHC1KF+x1gOmDAHospQMNxTqrUcN3qhOPbN7euWeuTWYrhPFBUtEeROXmfHmDI2j8Hi/gX4gGWQ5l8/Tsh9BQQT70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ptK8mW9U; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6544F1BF203;
-	Wed, 21 Aug 2024 07:41:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1724226114;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cNVE1Euex1vHgd16nkcpKWq4uCJnI5txc/wed22g5ng=;
-	b=ptK8mW9UZGOaggQGmNwz0GVW3ar1qMYjrhdzLxxeT0cZmtOUj+Yfann9zwjzSeYDpICP4a
-	wkqW6yljlgDLZcm+YmfuYK8oFEa/uWDIdgPkrqJw1CBCbdJN5h/y+FWiy7YM1wBv+6/5kJ
-	qPtCIUCjzaZI760eRAQHhH5qJqcR6DHTcWSuMvAvWd3rYETUkR3izusP5EHYmW9HyZkNAM
-	MT3AoU9azucVdMJA9a7ZqtFl0WTW2ruP0EiftemmT7B3syAOpDpaCTsDkaWPejC0Y+fVQc
-	u35aozbT8wXo8FJqb8E1oPgteuMyxcjIM+TD702CPRB9aivYSHNMPr1MZZO3eQ==
-Date: Wed, 21 Aug 2024 09:41:50 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Thomas Bonnefille <thomas.bonnefille@bootlin.com>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto
- <inochiama@outlook.com>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v4 1/3] dt-bindings: iio: adc:
- sophgo,cv18xx-saradc.yaml: Add Sophgo CV18XX SARADC binding
-Message-ID: <20240821094150.5787905b@xps-13>
-In-Reply-To: <20240820-borough-latch-17d785301aef@spud>
-References: <20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com>
-	<20240812-sg2002-adc-v4-1-599bdb67592f@bootlin.com>
-	<20240812-unwary-mongrel-9f6758bf624c@spud>
-	<89aabfbe-79bf-4da7-be44-b6cbd92b72a9@bootlin.com>
-	<20240820-borough-latch-17d785301aef@spud>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1724229120; c=relaxed/simple;
+	bh=xrgOSU3+b3RWFVrBSCyrFAwO5C988wPDl/GjFT50as0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=OGHBNZx04IjvfrpwEUDlzT9LZE94ZgfxPA10qn1jIFce721mMC/DycW6vZ22Hon9APeBLvJVEyoHgrCknwjsH7Ls9XbpejNLzhI2zY0HZLF1kxLVq2n1OxwZ9Hsn6RaHUq60rr7iOoYiXSuVdeuToJLf07cuofUcHAsn1qGiZs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; arc=none smtp.client-ip=78.46.3.230
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <ak@it-klinger.de>)
+	id 1sggAH-000Hka-2y;
+	Wed, 21 Aug 2024 09:53:58 +0200
+Received: from [31.220.116.25] (helo=mail.your-server.de)
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ak@it-klinger.de>)
+	id 1sggAH-0006xC-1A;
+	Wed, 21 Aug 2024 09:53:57 +0200
+Date: Wed, 21 Aug 2024 09:53:56 +0200
+From: Andreas Klinger <ak@it-klinger.de>
+To: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Andreas Klinger <ak@it-klinger.de>
+Subject: [PATCH] iio: sgp40: retain documentation in driver
+Message-ID: <ZsWdFOIkDtEB9WGO@mail.your-server.de>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hprJgWQtHRwzXpst"
+Content-Disposition: inline
+X-Authenticated-Sender: ak@it-klinger.de
+X-Virus-Scanned: Clear (ClamAV 1.0.5/27373/Tue Aug 20 10:46:09 2024)
+
+
+--hprJgWQtHRwzXpst
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hello,
+Retain documentation on how the voc index is actually calculated in
+driver code as it'll be removed in Documentation.
 
-> > > > +      Represents the channels of the ADC.
-> > > > +
-> > > > +    properties:
-> > > > +      reg:
-> > > > +        description: |
-> > > > +          The channel number. It can have up to 3 channels numbere=
-d from 0 to 2.
-> > > > +        items:
-> > > > +          - minimum: 0
-> > > > +            maximum: 2 =20
-> > >=20
-> > > Is this sufficient to limit the number of channels to 3? Aren't you r=
-elying
-> > > on the unique unit addresses warning in dtc to limit it, rather than
-> > > actually limiting with min/maxItems?
-> > >  =20
-> > It seems like I can't use min/maxItems on this property. I think that i=
-t is
-> > using size-cells + address-cells to deduce that the number of items sho=
-uld
-> > be equal to 1. =20
+This is a follow up on patch "[PATCH] iio: ABI: remove duplicate
+in_resistance_calibbias" from David.
 
-Looking at dt-schema, I couldn't personally understand from where did
-the error messages reported by Thomas came from. There are clear
-constraints over minItems/maxItems regarding the use of {#address-cells,
-#sizez-cells} being {1, 1}, {2, 2} and {2, 1} (in reg.yaml), but nothing
-explicit regarding the other situations, namely {1, 0} in this case
-which enforces maxItems to 1 is not clearly stated in any of the core
-yaml files. Any idea where to look at? Although, I'm convinced there is
-something defined because renaming the property from 'reg' to 'foo'
-silences these warnings.
+Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+---
+ drivers/iio/chemical/sgp40.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-> I think I was mistaken in talking about mix/max items here. I had the
-> right idea, but mentioned an incorrect solution - sorry about that. I
-> wasn't talking about the number of elements in the reg property, what I
-> meant was limiting the number of channel nodes in the first place -
-> something which min/maxItems cannot do. As examples of the problem I was
-> thinking of, see the below two examples:
->=20
->     adc@30f0000 {
->         compatible =3D "sophgo,cv1800b-saradc";
->         reg =3D <0x030f0000 0x1000>;
->         clocks =3D <&clk CLK_SARADC>;
->         interrupts =3D <100 IRQ_TYPE_LEVEL_HIGH>;
->         #address-cells =3D <1>;
->         #size-cells =3D <0>;
->=20
->         channel@0 {
->             reg =3D <0>;
->         };
->         channel@2 {
->             reg =3D <2>;
->         };
->         channel@22 {
->             reg =3D <2>;
->         };
->     };
->=20
->     adc@30f0000 {
->         compatible =3D "sophgo,cv1800b-saradc";
->         reg =3D <0x030f0000 0x1000>;
->         clocks =3D <&clk CLK_SARADC>;
->         interrupts =3D <100 IRQ_TYPE_LEVEL_HIGH>;
->         #address-cells =3D <1>;
->         #size-cells =3D <0>;
->=20
->         channel@0 {
->             reg =3D <0>;
->         };
->         channel@2 {
->             reg =3D <2>;
->         };
->         channel@22 {
->             reg =3D <2>;
->         };
->     };
->=20
-> The solution is simple, remove the + from the regex. Sorry for sending
-> you on the wrong track Thomas.
+diff --git a/drivers/iio/chemical/sgp40.c b/drivers/iio/chemical/sgp40.c
+index 7f0de14a1956..07d8ab830211 100644
+--- a/drivers/iio/chemical/sgp40.c
++++ b/drivers/iio/chemical/sgp40.c
+@@ -14,11 +14,16 @@
+  * 1) read raw logarithmic resistance value from sensor
+  *    --> useful to pass it to the algorithm of the sensor vendor for
+  *    measuring deteriorations and improvements of air quality.
++ *    It can be read from the attribute in_resistance_raw.
+  *
+- * 2) calculate an estimated absolute voc index (0 - 500 index points) for
+- *    measuring the air quality.
++ * 2) calculate an estimated absolute voc index (in_concentration_input)
++ *    with 0 - 500 index points) for measuring the air quality.
+  *    For this purpose the value of the resistance for which the voc index
+- *    will be 250 can be set up using calibbias.
++ *    will be 250 can be set up using in_resistance_calibbias (default 300=
+00).
++ *
++ *    The voc index is calculated as:
++ *      x =3D (in_resistance_raw - in_resistance_calibbias) * 0.65
++ *      in_concentration_input =3D 500 / (1 + e^x)
+  *
+  * Compensation values of relative humidity and temperature can be set up
+  * by writing to the out values of temp and humidityrelative.
+--=20
+2.39.2
 
-Ah! Thanks Conor for the details, now it makes full sense :-) BTW Thomas
-the regex is
+--hprJgWQtHRwzXpst
+Content-Type: application/pgp-signature; name="signature.asc"
 
-	^channel@[0-3]+$
+-----BEGIN PGP SIGNATURE-----
 
-and I guess it should instead be
+iQGzBAABCgAdFiEE7/NrAFtB/Pj7rTUyyHDM+xwPAVEFAmbFnRMACgkQyHDM+xwP
+AVH80Av/WNbUTPVXno0Kwd6mTLScGeGUd96+GTDSopmKULPNPfV0j+QqGMTgP5Ql
+mqEVNL68KVNYpqmiYDXnRURPjF9zbXYA4n6hTdeozXE9I+qNxr5vFaa9gIJZytFQ
+QWGEzySjr1Ffj2F0mBaNrZZQ4gXLZMex4DLstvhtWPR7z3O/tp7IrVX5/NMqzhAX
+q7jYmNYsVvDRNUUHlu+bNMTPfmYL7Af1wOs/rmf5AR0OHP/4gQ+DmW5GXEd7s647
+7gfBPraso0V3SYLV6NGRkYmQQRjoQbP1g9CLTzLBc3lpKDYEKif+mBofUkfXI/+y
+xa48bX8hHcLTzzeqatJhoLBeZhu1u81kQC5U9jq+RZlWis1+DV2StLyeXR3kYRoN
+BfZRuq4sBjVNC7U7FVO/0VIGvLgYifBRdqHa5PSTwWYEL9ucwMjANekSpj6pfXKV
+QfEAZEPgJx2mOISldfojxP28r66xTBnlubkS2G8PXSorg482MjYnSwHfLkeC1A0W
++UQTeEQp
+=DNXR
+-----END PGP SIGNATURE-----
 
-	^channel@[0-2]$
-                    ^
-
-in order to fully match the real indexing constraints you're enforcing
-with minimum/maximum.
-
-Thanks,
-Miqu=C3=A8l
+--hprJgWQtHRwzXpst--
 

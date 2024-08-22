@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-8697-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8698-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBCD95BF10
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 21:43:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8700195BF12
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 21:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C69285026
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 19:43:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38DFA284F9A
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 19:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF591D04AA;
-	Thu, 22 Aug 2024 19:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6161D04A4;
+	Thu, 22 Aug 2024 19:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DnCAU3Kf"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ugkuuewD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAB21474D3
-	for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2024 19:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8888913B586
+	for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2024 19:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724355804; cv=none; b=NkbErlJzkeZUKWZo7rU7E70hcm++z/QNL2yw1CzVKHqKIVxH1YqdsvDsaCUI1XZkwtns4Ei9bxU7gJbD73o/wGatVFMC1wQ8axwIy+qEmhBx41wfTefXFoyXKpNkSx9cfzgypKJGTml3BonFJVtHHT11XCyeiqGTbjsj9iygWhU=
+	t=1724355824; cv=none; b=sXjJzra06ZdGX7ve4f/Lquis5sS7Tv0nK8wmHEtk4bH9nq7t9UYOLU/hGIZHKmBRsfYMAUNQ44n9T0Iy/KfPujz8URXeFien0HR2mGDxyaWt/HzO5K7XllY/J4BuBFvSz0I0QlD8ZNXjOgJ5NoXdRTpWx4sjgnoxg+8VjfcFv5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724355804; c=relaxed/simple;
-	bh=QT7aJlEY8Rv4tVUsadFB7WX2kBMAnPwke95aKAAGiGE=;
+	s=arc-20240116; t=1724355824; c=relaxed/simple;
+	bh=RP4y+/7MM9jSz5HZCZkGA8wnBwm/mXV7qSW3J20gAiU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=btp6/Lrs9q56kiSy+/IU3izB+26nxWEVJgwBIwhWa1gddlqtPZbm/DUbvCNb1ecOiWRIgtqsfKfI4Nd+F77dTF4LsYs97n10aWChoxsND5HpjpeYqu/uIK4QVwhS4A1MGOil15e/H8AcTlAwxtLk6M61LWm+VXyZ+s9KsLSRG6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DnCAU3Kf; arc=none smtp.client-ip=209.85.210.44
+	 In-Reply-To:Content-Type; b=piXXSvR6OCPnCl5whWgW3UtWFRQillcvKS+8eAU8asvNYMnEQ3M6oDp8+J8xy14ujaaaNWVWzIRgs5U+ELz1OKPsx4YF+vAuZF6k4yzfDNnighyQhPFwCfh7Kx9uIZ4jgODor48uNCoeZyjVH8xoYGoqfHzaCxtaxLEghcVXBW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ugkuuewD; arc=none smtp.client-ip=209.85.160.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7093997dffdso641618a34.2
-        for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2024 12:43:21 -0700 (PDT)
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-270596dbf59so853330fac.3
+        for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2024 12:43:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724355800; x=1724960600; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724355821; x=1724960621; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=u0IEyTvUOt9NE+jKWzvSdPx4thYKWyDYS1DC+M4ZgJQ=;
-        b=DnCAU3KfSschA2J3hPcLgJ8fCBIZX3mYvGXQ6/e0WqHv2E9fk5xD2soDjR1iOoAuZb
-         gjigXmCZCldsByu6iRbUlQYpubWW74+tCj+dsk6yoE2aj839ECsgxyEiWpmPTb9tt4Sv
-         P2QIkVE+UuaO1FdPeeo+UgQ7/Nuz7L9hCyD+Pqtq5j/jPRP7PIxew2H/19LQmFE85U5v
-         TqHpQJIOKx7KOhE4cII4FtahTmyKXBQTBgBHm6KRYu+oxH4yWtayPJEIJUYmKaOBJdJE
-         Zh5F/N+MOQCG4D+ypM8zRtcQh+ZYqJyV4Sq3cytjW+NVAW3wHk+piqixWYNIJomjaBoI
-         SUHA==
+        bh=zrphh2W/kycmfZ/8VneCtdGx+CrSEXJ4tVn5Mz1GwDo=;
+        b=ugkuuewDBWHFuKLobPJ5q8tDJYA+DDHH3sjpjho/bF1Z1KPnpYa7feaPYu/oBxupQ+
+         rKyA493K7AH2nWcg1xh2HvXfwNlgHaVJAQrhqT7JUruWKlsS9LLKSCiGlYwSY5m6NsIF
+         WYVeG1lwoJZQWKuSvKn4A2ML1/pmGACE7lUe5M7DTKf2+cgX5yx78cp3kHSaqUkqFwf2
+         lzzLl3n3jvse/uuFThRqFCGIzP1GqoneGPNaooaYqo5fa3FW1g/JkECDhgV29qsqIF0T
+         nYTj0jP79sqCszhLk6aA0arGXUfxQyqGD/jgS3Vzr2wFeAr+kkhLokG8htkX8EfSbOeD
+         hAjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724355800; x=1724960600;
+        d=1e100.net; s=20230601; t=1724355821; x=1724960621;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u0IEyTvUOt9NE+jKWzvSdPx4thYKWyDYS1DC+M4ZgJQ=;
-        b=lpstg3OOsTqdDxbV35oRJNkFnEf3SJIcZYDGbZ94akboSx1rGMRI5hGZDJzgjRsjy4
-         5IdNUmI7Y46Xl17bSDa8FrLKT4NeEeGOeairXiZDLYpvDglDhI42rvUUph/ZVgwvi9EQ
-         jN3oYwa1DvBNxyoqJBORJJdriGquTR73hj/nzSALz5meUhH7XrSExK5dKYSMVIl84XFn
-         PYammwlA1FUhmc9JG/HBLiJScONfMKJgnphuc9tIx006eZew/uiGaNrJ5clcnr1qgkiR
-         hXlRxmDiRzi0Xnku6Xk87sU08OPgY3o95bMQtb1dQwNcr/Oh4vHfbLBa6e0wj8Fu60wP
-         NHwg==
-X-Gm-Message-State: AOJu0Yzurt1qp9X/od+iQ5lvoNKoOfMvV9TFQLnNQ8a0Z1y+9IXhZYaf
-	TtQLFUvcms6nf/e+614Xo7It70GtOIWPvt+fcIqBWuQkNWhL22ZcUDUGrtP4v4o=
-X-Google-Smtp-Source: AGHT+IHbSe5f9F2QWD6j7jhfMbrWsYlapf/V7JFmavdB7hkWybVFOzvMOkLk0BzckqinXTYLfqqhlw==
-X-Received: by 2002:a05:6808:4492:b0:3d6:2fe3:35ff with SMTP id 5614622812f47-3de19ca9aa4mr6998902b6e.14.1724355800403;
-        Thu, 22 Aug 2024 12:43:20 -0700 (PDT)
+        bh=zrphh2W/kycmfZ/8VneCtdGx+CrSEXJ4tVn5Mz1GwDo=;
+        b=npntCrEnetjoVdrsu26rWepHb0XGtPJCZ0vwlwmb9c0MVS5VWnkjF1McboTct4dkuf
+         2Q57Eh2YY/9qINLkwU2g3oGzYDYl3/Ywa2KoztixBhGql/4CO06VM+h3jmvOY51FXoH8
+         qlZD9NKrFb7P+rNUXZse0fXKgTz+0s1YvokHNUTtny/x03UTpm9RXLa5r+kzuuxm20xp
+         Csv3piDYSMmGV8h7nr7Upzrgk0NgAAfEt58FVjQRaRlkuY200dggDzEP3f4e4Thsj0yB
+         h7egD5QoCladmpwFPLK9S4tJ3mWR/bf7GJzcUWUS3mvkpEJs28EriJey2vh1/XgFlGPd
+         FUPg==
+X-Gm-Message-State: AOJu0YzCVf11x/Uj9VvpSrtp0BG0IjgYwpMl/w8R/DVjLoeGL0BO8pYu
+	/cP0tAFMLpA5cgTWhjpjxGjFCQL4ay5Yan18/VYcX5ZH5rJH84djmhCgZoZqN6k=
+X-Google-Smtp-Source: AGHT+IGe2irDfM2bs6E4ggVjVcIPPoXUbqTchSMChCsaSe9hLazbwWqlCJ5t9m9HeiEyM6ANkykcRQ==
+X-Received: by 2002:a05:6870:1614:b0:25c:b3c9:ecda with SMTP id 586e51a60fabf-2738be3ae43mr7375252fac.38.1724355821576;
+        Thu, 22 Aug 2024 12:43:41 -0700 (PDT)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3de225d71b8sm401581b6e.51.2024.08.22.12.43.19
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-273cebc59a3sm510786fac.55.2024.08.22.12.43.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Aug 2024 12:43:19 -0700 (PDT)
-Message-ID: <48ad0f2b-e937-43f0-a620-164eeb45723e@baylibre.com>
-Date: Thu, 22 Aug 2024 14:43:19 -0500
+        Thu, 22 Aug 2024 12:43:41 -0700 (PDT)
+Message-ID: <98c34122-6077-4d2c-835c-12e479d90730@baylibre.com>
+Date: Thu, 22 Aug 2024 14:43:40 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,8 +75,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] iio: adc: ad4030: add support for ad4630-24 and
- ad4630-16
+Subject: Re: [PATCH 6/6] docs: iio: ad4030: add documentation
 To: Esteban Blanc <eblanc@baylibre.com>, Lars-Peter Clausen
  <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
  Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -86,382 +85,189 @@ To: Esteban Blanc <eblanc@baylibre.com>, Lars-Peter Clausen
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
 References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
- <20240822-eblanc-ad4630_v1-v1-4-5c68f3327fdd@baylibre.com>
+ <20240822-eblanc-ad4630_v1-v1-6-5c68f3327fdd@baylibre.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20240822-eblanc-ad4630_v1-v1-4-5c68f3327fdd@baylibre.com>
+In-Reply-To: <20240822-eblanc-ad4630_v1-v1-6-5c68f3327fdd@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/22/24 7:45 AM, Esteban Blanc wrote:
-> AD4630-24 and AD4630-16 are 2 channels ADCs. Both channels are
-> interleaved bit per bit on SDO line.
+> This adds a new page to document how to use the ad4030 ADC driver
 > 
 > Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
 > ---
->  drivers/iio/adc/ad4030.c | 197 +++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 173 insertions(+), 24 deletions(-)
+>  Documentation/iio/ad4030.rst | 129 +++++++++++++++++++++++++++++++++++++++++++
+>  Documentation/iio/index.rst  |   1 +
+>  MAINTAINERS                  |   1 +
+>  3 files changed, 131 insertions(+)
 > 
-> diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-> index e1e1dbf0565c..dbba5287b630 100644
-> --- a/drivers/iio/adc/ad4030.c
-> +++ b/drivers/iio/adc/ad4030.c
-> @@ -32,6 +32,8 @@
->  #define AD4030_REG_PRODUCT_ID_H				0x05
->  #define AD4030_REG_CHIP_GRADE				0x06
->  #define     AD4030_REG_CHIP_GRADE_AD4030_24_GRADE	0x10
-> +#define     AD4030_REG_CHIP_GRADE_AD4630_16_GRADE	0x03
-> +#define     AD4030_REG_CHIP_GRADE_AD4630_24_GRADE	0x00
->  #define     AD4030_REG_CHIP_GRADE_MASK_CHIP_GRADE	GENMASK(7, 3)
->  #define AD4030_REG_SCRATCH_PAD			0x0A
->  #define AD4030_REG_SPI_REVISION			0x0B
-> @@ -159,10 +161,14 @@ struct ad4030_state {
->  	struct {
->  		union {
->  			u8 raw[AD4030_MAXIMUM_RX_BUFFER_SIZE];
-> -			struct {
-> -				s32 val;
-> -				u32 common;
-> -			} __packed buffered[AD4030_MAX_HARDWARE_CHANNEL_NB];
-> +			union {
-> +				s32 diff[AD4030_MAX_HARDWARE_CHANNEL_NB];
-> +				struct {
-> +					s32 diff;
-> +					u32 common;
-> +				} __packed
-> +				buffered_common[AD4030_MAX_HARDWARE_CHANNEL_NB];
-> +			};
->  		};
->  	} rx_data __aligned(IIO_DMA_MINALIGN);
->  };
-> @@ -171,7 +177,7 @@ struct ad4030_state {
->  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
->  	.type = IIO_VOLTAGE,						\
->  	.indexed = 1,							\
-> -	.channel = _idx * 2 + 2,					\
-> +	.channel = _idx * 3 + 2,					\
+> diff --git a/Documentation/iio/ad4030.rst b/Documentation/iio/ad4030.rst
+> new file mode 100644
+> index 000000000000..56e0ba58b127
+> --- /dev/null
+> +++ b/Documentation/iio/ad4030.rst
+> @@ -0,0 +1,129 @@
+> +.. SPDX-License-Identifier: GPL-2.0-only
+> +
+> +=============
+> +AD4030 driver
+> +=============
+> +
+> +ADC driver for Analog Devices Inc. AD4030 and similar devices. The module name
+> +is ``ad4030``.
+> +
+> +
+> +Supported devices
+> +=================
+> +
+> +The following chips are supported by this driver:
+> +
+> +* `AD4030-24 <https://www.analog.com/AD4030-24>`_
+> +* `AD4630-16 <https://www.analog.com/AD4630-16>`_
+> +* `AD4630-24 <https://www.analog.com/AD4630-24>`_
+> +* `AD4632-16 <https://www.analog.com/AD4632-16>`_
+> +* `AD4632-24 <https://www.analog.com/AD4632-24>`_
+> +
+> +IIO channels
+> +============
+> +
+> +Each "device" channel as described in the datasheet is split in 2 IIO channels,
+> +in the following order:
+> +
+> +- One channel for the differential data
+> +- One channel for the common byte.
+> +
+> +Supported features
+> +==================
+> +
+> +SPI wiring modes
+> +----------------
+> +
+> +The driver currently supports the following SPI wiring configurations:
+> +
+> +One lane mode
+> +^^^^^^^^^^^^^
+> +
+> +In this mode, each channel has its own SDO line to send the conversion results.
+> +At the moment this mode can only be used on AD4030 which has one channel so only
+> +one SDO line is used.
+> +
+> +.. code-block::
+> +
+> +    +-------------+         +-------------+
+> +    |     ADC     |         |     HOST    |
+> +    |             |         |             |
+> +    |         CNV |<--------| CNV         |
+> +    |          CS |<--------| CS          |
+> +    |         SDI |<--------| SDO         |
+> +    |        SDO0 |-------->| SDI         |
+> +    |        SCLK |<--------| SCLK        |
+> +    +-------------+         +-------------+
+> +
+> +Interleaved mode
+> +^^^^^^^^^^^^^^^^
+> +
+> +In this mode, both channels conversion results are bit interleaved one SDO line.
+> +As such the wiring is the same as `One lane mode`.
+> +
+> +SPI Clock mode
+> +--------------
+> +
+> +Only the SPI clocking mode is supported.
+> +
+> +Output modes
+> +------------
+> +
+> +There is more exposed IIO channels than channels as describe in the devices
+> +datasheet. This is due to the `Differential data + 8-bit common-mode` encoding
+> +2 types of information in one conversion result. As such a "device" channel
+> +provides 2 IIO channels, one for the differential data and one for the common
+> +byte.
+> +
+> +Differential data
+> +^^^^^^^^^^^^^^^^^
+> +
+> +This mode is selected when:
+> +
+> +- Only differential channels are selected
+> +- Oversampling attribute is set to 1
+> +
+> +Differential data + common-mode
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +This mode is selected when:
+> +
+> +- Differential and common-mode channels are selected
+> +- Oversampling attribute is set to 1
+> +
+> +For the 24-bits chips, this mode is also available with 16-bits differential
+> +data but is not selectable yet.
+> +
+> +Averaged differential data
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +This mode is selected when:
+> +
+> +- Only differential channels are selected
+> +- Oversampling attribute is greater than 1
+> +
 
-I'm guessing * 3 should have actually been in the first patch?
-Seems odd to change it now.
+Worth mentioning calibration (gain/offset) feature?
 
->  	.scan_index = _idx * 2 + 1,					\
->  	.extend_name = "Channel" #_idx " common byte part",		\
->  	.scan_type = {							\
-> @@ -194,8 +200,8 @@ struct ad4030_state {
->  		BIT(IIO_CHAN_INFO_CALIBSCALE),				\
->  	.type = IIO_VOLTAGE,						\
->  	.indexed = 1,							\
-> -	.channel = _idx * 2,						\
-> -	.channel2 = _idx * 2 + 1,					\
-> +	.channel = _idx * 3,						\
-> +	.channel2 = _idx * 3 + 1,					\
->  	.scan_index = _idx * 2,						\
->  	.extend_name = "Channel" #_idx " differential part",		\
->  	.differential = true,						\
-> @@ -412,7 +418,7 @@ static int ad4030_set_avg_frame_len(struct iio_dev *dev, unsigned int avg_len)
->  static bool ad4030_is_common_byte_asked(struct ad4030_state *st,
->  					unsigned int mask)
->  {
-> -	/* Common byte channel is after the "real" differential sample channel */
-> +	/* Common byte channels are after each differential channel */
->  	return mask & AD4030_COMMON_BYTE_CHANNELS_FILTER;
->  }
->  
-> @@ -420,18 +426,69 @@ static int ad4030_set_mode(struct iio_dev *indio_dev, unsigned long mask)
->  {
->  	struct ad4030_state *st = iio_priv(indio_dev);
->  
-> -	if (st->avg_len)
-> +	if (st->avg_len) {
->  		st->mode = AD4030_OUT_DATA_MD_30_AVERAGED_DIFF;
-> -	else if (ad4030_is_common_byte_asked(st, mask))
-> -		st->mode = AD4030_OUT_DATA_MD_24_DIFF_8_COM;
-> -	else
-> +	} else if (ad4030_is_common_byte_asked(st, mask)) {
-> +		switch (st->chip->precision_bits) {
-> +		case 16:
-> +			st->mode = AD4030_OUT_DATA_MD_16_DIFF_8_COM;
-> +			break;
+> +Reference voltage
+> +-----------------
 > +
-> +		case 24:
-> +			st->mode = AD4030_OUT_DATA_MD_24_DIFF_8_COM;
-> +			break;
+> +The chip supports an external reference voltage via the ``REF`` input or an
+> +internal buffered reference voltage via the ``REFIN`` input. The driver looks
+> +at the device tree to determine which is being used. If ``ref-supply`` is
+> +present, then the external reference voltage is used and the internal buffer is
+> +disabled. If ``refin-supply`` is present, then the internal buffered reference
+> +voltage is used.
 > +
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	} else {
->  		st->mode = AD4030_OUT_DATA_MD_24_DIFF;
+> +Reset
+> +-----
+> +
+> +Both hardware and software reset are supported. The driver looks first at the
+> +device tree to see if the `reset-gpio` is populated. If not present, the driver
+> +will fallback to a software reset by wiring to the device's registers.
+> +
+> +Unimplemented features
+> +----------------------
+> +
+> +- ``BUSY`` indication
+> +- Additional wiring modes
+> +- Additional clock modes
+> +- Differential data 16-bits + common-mode for 24-bits chips
 
-nit: maybe better to rename this one to AD4030_OUT_DATA_MD_DIFF
-or AD4030_OUT_DATA_MD_DIFF_ONLY since it can be 16 or 24 bits
-depending on the chip?
+- overrange event
+- test patterns
 
-> +	}
->  
->  	return regmap_update_bits(st->regmap, AD4030_REG_MODES,
->  				AD4030_REG_MODES_MASK_OUT_DATA_MODE,
->  				st->mode);
->  }
->  
-> +/*
-> + * @brief Descramble 2 32bits numbers out of a 64bits. The bits are interleaved:
-> + * 1 bit for first number, 1 bit for the second, and so on...
-> + */
-> +static void ad4030_extract_interleaved(u8 *src, u32 *ch0, u32 *ch1)
-> +{
-> +	u8 h0, h1, l0, l1;
-> +	u32 out0, out1;
-> +	u8 *out0_raw = (u8 *)&out0;
-> +	u8 *out1_raw = (u8 *)&out1;
 > +
-> +	for (int i = 0; i < 4; i++) {
-> +		h0 = src[i * 2];
-> +		l1 = src[i * 2 + 1];
-> +		h1 = h0 << 1;
-> +		l0 = l1 >> 1;
-> +
-> +		h0 &= 0xAA;
-> +		l0 &= 0x55;
-> +		h1 &= 0xAA;
-> +		l1 &= 0x55;
-> +
-> +		h0 = (h0 | h0 << 001) & 0xCC;
-> +		h1 = (h1 | h1 << 001) & 0xCC;
-> +		l0 = (l0 | l0 >> 001) & 0x33;
-> +		l1 = (l1 | l1 >> 001) & 0x33;
-> +		h0 = (h0 | h0 << 002) & 0xF0;
-> +		h1 = (h1 | h1 << 002) & 0xF0;
-> +		l0 = (l0 | l0 >> 002) & 0x0F;
-> +		l1 = (l1 | l1 >> 002) & 0x0F;
-> +
-> +		out0_raw[i] = h0 | l0;
-> +		out1_raw[i] = h1 | l1;
-> +	}
-> +
-> +	*ch0 = out0;
-> +	*ch1 = out1;
-> +}
-> +
->  static int ad4030_conversion(struct ad4030_state *st,
->  			     const struct iio_chan_spec *chan)
->  {
-> @@ -460,12 +517,21 @@ static int ad4030_conversion(struct ad4030_state *st,
->  	if (ret)
->  		return ret;
+> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+> index dfcf9618568a..61faf3a60da6 100644
+> --- a/Documentation/iio/index.rst
+> +++ b/Documentation/iio/index.rst
+> @@ -19,6 +19,7 @@ Industrial I/O Kernel Drivers
+>     :maxdepth: 1
 >  
-> -	if (st->mode != AD4030_OUT_DATA_MD_24_DIFF_8_COM)
-> +	if (st->chip->num_channels == 2)
-> +		ad4030_extract_interleaved(st->rx_data.raw,
-> +					   &st->rx_data.diff[0],
-> +					   &st->rx_data.diff[1]);
-> +
-> +	if (st->mode != AD4030_OUT_DATA_MD_16_DIFF_8_COM &&
-> +	    st->mode != AD4030_OUT_DATA_MD_24_DIFF_8_COM)
->  		return 0;
+>     ad4000
+> +   ad4030
+>     ad4695
+>     ad7380
+>     ad7944
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6a5a0e7b7a51..4a076a48648a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -420,6 +420,7 @@ R:	Esteban Blanc <eblanc@baylibre.com>
+>  S:	Supported
+>  W:	https://ez.analog.com/linux-software-drivers
+>  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+> +F:	Documentation/iio/ad4030.c
+>  F:	drivers/iio/adc/ad4030.c
 >  
->  	byte_index = BITS_TO_BYTES(chan->scan_type.realbits);
-> -	for (i = 0; i < st->chip->num_channels; i++)
-> -		st->rx_data.buffered[i].common = ((u8 *)&st->rx_data.buffered[i].val)[byte_index];
-> +	/* Doing it backward to avoid overlap when reordering */
-> +	for (i = st->chip->num_channels - 1; i > 0; i--) {
-> +		st->rx_data.buffered_common[i].diff = st->rx_data.diff[i];
-> +		st->rx_data.buffered_common[i].common = ((u8 *)&st->rx_data.diff[i])[byte_index];
-> +	}
->  
->  	return 0;
->  }
-> @@ -489,9 +555,9 @@ static int ad4030_single_conversion(struct iio_dev *indio_dev,
->  		goto out_error;
->  
->  	if (chan->channel % 2)
-> -		*val = st->rx_data.buffered[chan->channel / 2].common;
-> +		*val = st->rx_data.buffered_common[chan->channel / 2].common;
->  	else
-> -		*val = st->rx_data.buffered[chan->channel / 2].val;
-> +		*val = st->rx_data.diff[chan->channel / 2];
-
-Doesn't this need to change since `* 2` was changed to `* 3` for the channel
-value?
-
-Better would be to make use of chan->address to store the actual number we need
-and use that directly instead of reverse engineering the relation of chan->channel
-to input pin number.
-
->  
->  out_error:
->  	ad4030_enter_config_mode(st);
-> @@ -582,14 +648,17 @@ static int ad4030_read_raw(struct iio_dev *indio_dev,
->  			return IIO_VAL_FRACTIONAL_LOG2;
->  
->  		case IIO_CHAN_INFO_CALIBSCALE:
-> -			ret = ad4030_get_chan_gain(indio_dev, chan->channel,
-> -						   val, val2);
-> +			ret = ad4030_get_chan_gain(indio_dev,
-> +						   chan->scan_index / 2,
-> +						   val,
-> +						   val2);
->  			if (ret)
->  				return ret;
->  			return IIO_VAL_INT_PLUS_MICRO;
->  
->  		case IIO_CHAN_INFO_CALIBBIAS:
-> -			ret = ad4030_get_chan_offset(indio_dev, chan->channel,
-> +			ret = ad4030_get_chan_offset(indio_dev,
-> +						     chan->scan_index / 2,
-
-Similar to above, we could use chan->address here instead of having to
-know the relationship between scan_index and input pin.
-
->  						     val);
->  			if (ret)
->  				return ret;
-> @@ -614,11 +683,14 @@ static int ad4030_write_raw(struct iio_dev *indio_dev,
->  	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
->  		switch (info) {
->  		case IIO_CHAN_INFO_CALIBSCALE:
-> -			return ad4030_set_chan_gain(indio_dev, chan->channel,
-> -						    val, val2);
-> +			return ad4030_set_chan_gain(indio_dev,
-> +						    chan->scan_index / 2,
-> +						    val,
-> +						    val2);
->  
->  		case IIO_CHAN_INFO_CALIBBIAS:
-> -			return ad4030_set_chan_offset(indio_dev, chan->channel,
-> +			return ad4030_set_chan_offset(indio_dev,
-> +						      chan->scan_index / 2,
->  						      val);
->  
->  		case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> @@ -801,10 +873,24 @@ static int ad4030_detect_chip_info(const struct ad4030_state *st)
->  
->  static int ad4030_config(struct ad4030_state *st)
->  {
-> +	int ret;
-> +	u8 reg_modes;
-> +
->  	st->offset_avail[0] = (int)BIT(st->chip->precision_bits - 1) * -1;
->  	st->offset_avail[1] = 1;
->  	st->offset_avail[2] = BIT(st->chip->precision_bits - 1) - 1;
->  
-> +	if (st->chip->num_channels > 1)
-> +		reg_modes = FIELD_PREP(AD4030_REG_MODES_MASK_LANE_MODE,
-> +				       AD4030_LANE_MD_INTERLEAVED);
-> +	else
-> +		reg_modes = FIELD_PREP(AD4030_REG_MODES_MASK_LANE_MODE,
-> +				       AD4030_LANE_MD_1_PER_CH);
-> +
-> +	ret = regmap_write(st->regmap, AD4030_REG_MODES, reg_modes);
-> +	if (ret)
-> +		return ret;
-> +
->  	if (st->vio_uv < AD4030_VIO_THRESHOLD_UV)
->  		return regmap_write(st->regmap, AD4030_REG_IO,
->  				AD4030_REG_IO_MASK_IO2X);
-> @@ -891,8 +977,16 @@ static const unsigned long ad4030_channel_masks[] = {
->  	0,
->  };
->  
-> +static const unsigned long ad4630_channel_masks[] = {
-> +	/* Differential only */
-> +	BIT(0) | BIT(2),
-
-nit: for order consistency with GENMASK
-
-	BIT(2) | BIT(0),
-
-> +	/* Differential with common byte */
-> +	GENMASK(3, 0),
-> +	0,
-> +};
-> +
->  static const struct iio_scan_type ad4030_24_scan_types[] = {
-> -	[AD4030_SCAN_TYPE_NORMAL] = {
-> +	[AD4030_OUT_DATA_MD_24_DIFF] = {
-
-Accidental replacement?
-
->  		.sign = 's',
->  		.storagebits = 32,
->  		.realbits = 24,
-> @@ -908,6 +1002,23 @@ static const struct iio_scan_type ad4030_24_scan_types[] = {
->  	},
->  };
->  
-> +static const struct iio_scan_type ad4030_16_scan_types[] = {
-> +	[AD4030_SCAN_TYPE_NORMAL] = {
-> +		.sign = 's',
-> +		.storagebits = 32,
-> +		.realbits = 16,
-> +		.shift = 16,
-> +		.endianness = IIO_BE,
-> +	},
-> +	[AD4030_SCAN_TYPE_AVG] = {
-> +		.sign = 's',
-> +		.storagebits = 32,
-> +		.realbits = 30,
-> +		.shift = 2,
-> +		.endianness = IIO_BE,
-> +	}
-> +};
-> +
->  static const struct ad4030_chip_info ad4030_24_chip_info = {
->  	.name = "ad4030-24",
->  	.available_masks = ad4030_channel_masks,
-> @@ -923,14 +1034,52 @@ static const struct ad4030_chip_info ad4030_24_chip_info = {
->  	.tcyc = AD4030_TCYC_ADJUSTED_NS,
->  };
->  
-> +static const struct ad4030_chip_info ad4630_16_chip_info = {
-> +	.name = "ad4630-16",
-> +	.available_masks = ad4630_channel_masks,
-> +	.available_masks_len = ARRAY_SIZE(ad4630_channel_masks),
-> +	.channels = {
-> +		AD4030_CHAN_IN(0, ad4030_16_scan_types),
-> +		AD4030_CHAN_CMO(0),
-> +		AD4030_CHAN_IN(1, ad4030_16_scan_types),
-> +		AD4030_CHAN_CMO(1),
-> +		IIO_CHAN_SOFT_TIMESTAMP(4),
-> +	},
-> +	.grade = AD4030_REG_CHIP_GRADE_AD4630_16_GRADE,
-> +	.precision_bits = 16,
-> +	.num_channels = 2,
-> +	.tcyc = AD4030_TCYC_ADJUSTED_NS,
-> +};
-> +
-> +static const struct ad4030_chip_info ad4630_24_chip_info = {
-> +	.name = "ad4630-24",
-> +	.available_masks = ad4630_channel_masks,
-> +	.available_masks_len = ARRAY_SIZE(ad4630_channel_masks),
-> +	.channels = {
-> +		AD4030_CHAN_IN(0, ad4030_24_scan_types),
-> +		AD4030_CHAN_CMO(0),
-> +		AD4030_CHAN_IN(1, ad4030_24_scan_types),
-> +		AD4030_CHAN_CMO(1),
-> +		IIO_CHAN_SOFT_TIMESTAMP(4),
-> +	},
-> +	.grade = AD4030_REG_CHIP_GRADE_AD4630_24_GRADE,
-> +	.precision_bits = 24,
-> +	.num_channels = 2,
-> +	.tcyc = AD4030_TCYC_ADJUSTED_NS,
-> +};
-> +
->  static const struct spi_device_id ad4030_id_table[] = {
->  	{ "ad4030-24", (kernel_ulong_t)&ad4030_24_chip_info },
-> +	{ "ad4630-16", (kernel_ulong_t)&ad4630_16_chip_info },
-> +	{ "ad4630-24", (kernel_ulong_t)&ad4630_24_chip_info },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(spi, ad4030_id_table);
->  
->  static const struct of_device_id ad4030_of_match[] = {
->  	{ .compatible = "adi,ad4030-24", .data = &ad4030_24_chip_info },
-> +	{ .compatible = "adi,ad4630-16", .data = &ad4630_16_chip_info },
-> +	{ .compatible = "adi,ad4630-24", .data = &ad4630_24_chip_info },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(of, ad4030_of_match);
+>  AD5110 ANALOG DEVICES DIGITAL POTENTIOMETERS DRIVER
 > 
 
 

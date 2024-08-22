@@ -1,97 +1,141 @@
-Return-Path: <linux-iio+bounces-8681-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8682-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61B395AE69
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 09:04:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8A095B0EF
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 10:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 825D5284961
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 07:04:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFD4C1F26A60
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 08:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78241494BA;
-	Thu, 22 Aug 2024 07:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A081216EBE6;
+	Thu, 22 Aug 2024 08:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="i7uUTlCD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4DF1CAA6;
-	Thu, 22 Aug 2024 07:04:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCB81CF8B;
+	Thu, 22 Aug 2024 08:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724310275; cv=none; b=IWAVt7V9kwOtG8JG2A3rQbEIHqZSfOguwTb9C7dLI9DlGKpxRwY8brfVQG9+61+3p26tH5kNd1Il2eBIfAPBR1q7/a+XBpR2HEkJfOupLOE7BdMeR05AqGp8lM2ckD3Yh2hzGQPC1QgqiT8DNCmFYIEAXZ3uTllS1EyiUq4ZebE=
+	t=1724316776; cv=none; b=d3BKsXTkz4W2UPxpl9g8ZxnHwOCGj+YHPRXbggnItKe7aI7egEm/bEMe7kv4tFGlSti0YR+vCJO8XoeJxbnm8AiM9GRUI8hFVKPSjR3d47+hyTE0kHqg4tf098UVnSfpt9KZNMTgyyTyRmzGpkYEUF5a6X3shYU01ZCv01SQsSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724310275; c=relaxed/simple;
-	bh=mM0y7Z0DIHWTTmDx6Rm/W7DoApVhDQcDSS/iGPnPrK4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l9YjWemYPW6meQ51fQTPPWTCFAghryeqU5KWGxBXfVagKDMfrpQZMspk7zvq1340AnXY8HINy/0lMRFb4qPndSsEvORkomBI9mnlTR3Cy6ta/TDQ3paF0Db//dkBYJXRL/c5+IFzmUWlVFZeRQos2tUuwsNNCW3ENjFbiTN8h6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3719896b7c8so171037f8f.3;
-        Thu, 22 Aug 2024 00:04:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724310272; x=1724915072;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PEZWRktZ6NYhFEZsZ7jkGwIJJMbDxgc/00AXg7Us/Ds=;
-        b=BcAmURPoJlWSZJS80rCHY/S4NlKKIEFqKI4DyN63j4qfKSDm2x/YRs4CGP/ICvKUfm
-         tuX3DYIZEPsQX4/PbCMmxadyI97VRka14nvw3TsiLp399zUlejzvjxq/uWiNRmwnODXh
-         +OOJmAbWVlPVToWy2UmIBi+k4WfNFKuo9EaHK4YlZ3pc4xn2x4Cpc3+RshN/9tM567XP
-         yzHwy4+f/Xn1DVz883EAciTGAmctatbPvdyjnfWFkHCGiVr6D/ky40rZ6NKKxhqdJP9o
-         5PfrUs1vMFqu8U9Wy/w5GU+n+KZMel82yyRNL5WmaiuKeZn+m8Hdd8S92kv8ub/U15dg
-         quRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUgaqUcQsOlt9LFaGtTxsQXeR6Wi7h8mc/1+TY00gr25P30L7GSdGjRicPLN7+WQO4Mu5pcEUARcDbt@vger.kernel.org, AJvYcCV5b/ikqzApPpAal+//XIpgQf4ea6NDbHx9TmM7oeZBd50oegMExCR2JkAgceY0SYkuXCQkS6IB6RDt@vger.kernel.org, AJvYcCWUgsVhjgtfpl44FlWDdaMpwttu9GNYjBg0PaQOPuId+AWsKJFDoTnzeyQtY0SNdD8S5FfCqRW1BC4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG0KleP5WKABmzU4KKLXj0r1nfkhlJaFUtJVr/3HP5T2JTq3/d
-	dLZd3XSTjVhzNy4mE+PZA3+ddSMyWKwScwdp4rRr7sr66hfi8L9b
-X-Google-Smtp-Source: AGHT+IHdlIILj+2ij6/76YdG9myYvO9zjSjkTKzXWmbVpdNNQ1myj4K8HPubntkMJkrcm5OdS5CtmA==
-X-Received: by 2002:a5d:5e11:0:b0:373:549:bfe with SMTP id ffacd0b85a97d-37305490da6mr858381f8f.50.1724310272274;
-        Thu, 22 Aug 2024 00:04:32 -0700 (PDT)
-Received: from krzk-bin ([178.197.222.82])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-42ac517a4c9sm13673865e9.35.2024.08.22.00.04.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2024 00:04:31 -0700 (PDT)
-Date: Thu, 22 Aug 2024 09:04:28 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Chris Morgan <macroalpha82@gmail.com>
-Cc: linux-sunxi@lists.linux.dev, linux-pm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
-	quentin.schulz@free-electrons.com, mripard@kernel.org, tgamblin@baylibre.com, 
-	aidanmacdonald.0x0@gmail.com, u.kleine-koenig@pengutronix.de, lee@kernel.org, 
-	samuel@sholland.org, jernej.skrabec@gmail.com, sre@kernel.org, wens@csie.org, 
-	conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de, 
-	jic23@kernel.org, jonathan.cameron@huawei.com, 
-	Chris Morgan <macromorgan@hotmail.com>
-Subject: Re: [PATCH V4 05/15] dt-bindings: power: supply: axp20x: Add
- input-current-limit-microamp
-Message-ID: <okthxpzzdduxwkgjzxi6njpkf2w7fjswi5gqhheji4owvmkkg5@4rmyye7i3np7>
-References: <20240821215456.962564-1-macroalpha82@gmail.com>
- <20240821215456.962564-6-macroalpha82@gmail.com>
+	s=arc-20240116; t=1724316776; c=relaxed/simple;
+	bh=/fECh7ipAai6eCx1RusnLoT6gkdwRDlMT8OybqpP7jo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dJjJRaJhPCpJ5qRz14VUmeeKBkXqcPj8BQPeGfbV7wSZT0XXky+OwYX3Ra0/KwSGZiA9CIAhgbJLhuv3aIcqmFCE+CNi54aOi9VfN2rhpN09Al6plKBPAUbGZxqvgI57k3gHkyjt31fZMmXv3JwCVQz81MYQ8CbGTeQ2thuDL1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=i7uUTlCD; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2E82640014;
+	Thu, 22 Aug 2024 08:52:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1724316771;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7UIGzrVaAQPnYlVfpyNoYN2nYYqPJiVh7oMdysgcqNU=;
+	b=i7uUTlCDY8YsUUZ29X9DOU5fWK/bhszXgWeO6WruYIikgph+s9xbgkwZovwoqXkPZrcUjV
+	gWHBRw8LP7eeMPVL3rAbAmaevFhCJ8fWboLzIrVM03CwV5hp5ohhIM7qJuuIuuyUS/XBQi
+	an6YctOHY6YyEkox7+7u84nnsV/i+UZ9HovjLh/CG+f5xjMdL844pm0qbaNHKhArzz2bom
+	Nn7nY0Ihc3xVwUDV3OYmQKdkwHvEH3j/3d7OUBQblE/bAJO1g6+XrX4ZHadiFZV3QVfulH
+	xKnrDsbGSCAZm8OYq/TSibGYG+akOpMxizy62KrOg66O1+m2H/oKuFE6+CJopg==
+Date: Thu, 22 Aug 2024 10:52:49 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Thomas Bonnefille <thomas.bonnefille@bootlin.com>, Jonathan Cameron
+ <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto
+ <inochiama@outlook.com>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v4 1/3] dt-bindings: iio: adc:
+ sophgo,cv18xx-saradc.yaml: Add Sophgo CV18XX SARADC binding
+Message-ID: <20240822105249.0fd64d67@xps-13>
+In-Reply-To: <20240821-unholy-statutory-7aa884ebf857@spud>
+References: <20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com>
+	<20240812-sg2002-adc-v4-1-599bdb67592f@bootlin.com>
+	<20240812-unwary-mongrel-9f6758bf624c@spud>
+	<89aabfbe-79bf-4da7-be44-b6cbd92b72a9@bootlin.com>
+	<20240820-borough-latch-17d785301aef@spud>
+	<20240821094150.5787905b@xps-13>
+	<20240821-unholy-statutory-7aa884ebf857@spud>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240821215456.962564-6-macroalpha82@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Wed, Aug 21, 2024 at 04:54:46PM -0500, Chris Morgan wrote:
-> From: Chris Morgan <macromorgan@hotmail.com>
-> 
-> Allow specifying a hard limit of the maximum input current. Some PMICs
-> such as the AXP717 can pull up to 3.25A, so allow a value to be
-> specified that clamps this in the event the hardware is not designed
-> for it.
-> 
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Hi Conor,
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+conor@kernel.org wrote on Wed, 21 Aug 2024 16:29:42 +0100:
 
-Best regards,
-Krzysztof
+> On Wed, Aug 21, 2024 at 09:41:50AM +0200, Miquel Raynal wrote:
+> > > > > > +      Represents the channels of the ADC.
+> > > > > > +
+> > > > > > +    properties:
+> > > > > > +      reg:
+> > > > > > +        description: |
+> > > > > > +          The channel number. It can have up to 3 channels num=
+bered from 0 to 2.
+> > > > > > +        items:
+> > > > > > +          - minimum: 0
+> > > > > > +            maximum: 2   =20
+> > > > >=20
+> > > > > Is this sufficient to limit the number of channels to 3? Aren't y=
+ou relying
+> > > > > on the unique unit addresses warning in dtc to limit it, rather t=
+han
+> > > > > actually limiting with min/maxItems?
+> > > > >    =20
+> > > > It seems like I can't use min/maxItems on this property. I think th=
+at it is
+> > > > using size-cells + address-cells to deduce that the number of items=
+ should
+> > > > be equal to 1.   =20
+> >=20
+> > Looking at dt-schema, I couldn't personally understand from where did
+> > the error messages reported by Thomas came from. There are clear =20
+>=20
+> I think the complaints are on a more meta level than that. He provided
+> an items list
+>      properties:
+>        reg:
+>          maxItems: 1
+>          items:
+>            - minimum: 0
+>              maximum: 2
+> but this list only has one entry as there's one -. The first complaint
+> from dt_binding_check is that having maxItems is not needed with an
+> items list, because the items list contains the maximum number of
+> elements.
+>=20
+> The second one comes from cell.yaml:
+> https://github.com/devicetree-org/dt-schema/blob/main/dtschema/meta-schem=
+as/cell.yaml
+>=20
+> It either allows a single item, with maxItems: 1 or multiple items, in
+> which case maxitems must be greater than 1. That's where the "anyOf
+> conditonal failed" and "1 is less than the minimum of 2" stuff comes
+> from.
+>=20
+> I hope that helps?
 
+Ah yeah, makes sense. Thanks a lot for your feedback!
+
+Miqu=C3=A8l
 

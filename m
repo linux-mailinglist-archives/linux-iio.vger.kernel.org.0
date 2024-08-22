@@ -1,831 +1,1111 @@
-Return-Path: <linux-iio+bounces-8694-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8695-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508C995BE6E
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 20:44:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2B795BF03
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 21:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7F5D1F25E48
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 18:44:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24B131F21F64
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Aug 2024 19:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FAB1D0490;
-	Thu, 22 Aug 2024 18:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601CD1D0498;
+	Thu, 22 Aug 2024 19:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vMBFgXhj"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hsNgr95A"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB541CE71D
-	for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2024 18:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B0E1474D3
+	for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2024 19:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724352258; cv=none; b=Ni8Wm/jjnmxl56rcWB8FIg+NGB2NbVBgK+eaXxrtIIBnvfHu1+ki0OnhU+08t7E6lQnZaXZ+lZEKPSN2+wf5C405xyA4B8TxLLTkzxaR/ZM98S0m/NGHSjIl2rGwic7x2d8Y/0o2jfTCrrO6XDk9e7GjefEEK9AGekTKv5SGt1g=
+	t=1724355602; cv=none; b=tEmh8UN7+CS6+1VGR7lCvaMbPmL4Gsqx/Tga0A0Lunc97Ti90WNyqsXibVLJfNfBeELn6saQAoPKTpAQ4QdYsbaN1vzW3QCCWUek08YgUV55M0QpoTPjJzm8QwLjFl4UuxUzQdcRqN2snEfJ9U7lJWi7YGsZIKjFfteU1unUt+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724352258; c=relaxed/simple;
-	bh=krHIdFn5bFi+6qrCIC3HRdBVV90gFP9UG4OejGx+M0M=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=gkoWQha6dF5eieRaeDWINdCEVGk2T8GiOUPAzApl7tEtuzvkI7/dcsQVw8uhmdUejXep0TVF4Pn/LOr5fCM4awe9lX9dZjLhkRYY2RxC20PR8xzkl+8AeGl9cgb5/maTTqDSM9TqvIS59U4sQlcS1wGYJfqF2mx8/LCta74VoHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vMBFgXhj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E45C32782;
-	Thu, 22 Aug 2024 18:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724352258;
-	bh=krHIdFn5bFi+6qrCIC3HRdBVV90gFP9UG4OejGx+M0M=;
-	h=Date:From:To:Subject:From;
-	b=vMBFgXhjkriCsn/WiNOwy8WIk5mZVElzT3WIVkZNY/P4KrzUDxyQKFY6dosoaSg31
-	 GiMDDY1TWjeoWhk8kiNusZtmcC1sHGq1WosyigZKFTvLeXgkWMIhazOElDuxt812my
-	 +v/ZikuI5srqh8KxI8DUhreIevGd1TcEwFYkxX3r3hwSbqMHAPlm6uoIfdxyMZa7Mb
-	 JKyUaPe7fR/ALEvjhD4PXIm5WowQmW1oVED3YHFl0GhYkgOFUgL/uEDKNE0Exhvblt
-	 UtHiVdK+9dLbCQWhoqpFYdIiECYBRJYVnO+LhhG1r5fvw2cNGMqtWj/Dh7+4RUThqe
-	 Zz3M7tfAX6JWA==
-Date: Thu, 22 Aug 2024 19:44:12 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] IIO: 1st set of New device support features and cleanup for
- 6.12
-Message-ID: <20240822194412.2b0f179e@jic23-huawei>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1724355602; c=relaxed/simple;
+	bh=oqwtlcrGi1tb2mxP1Ngvoenostrr0CL7pB9E+02Ahyk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=azQUkRCRolENwRmiT7MA28Gb4S7mCHju+lmR92uK7kF98Isav+F6526rI85lLNwVQtAlQvbFVd0QMGG8jqNg7QTVw7SpxJJQ2gwEkdqcczbFCKySpHLjm9K+KOh34vUPut7oKY8wD18TAkM8Xeb9q36qb/iL8x+nBFn1m60/5PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hsNgr95A; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5d5de0e47b9so789239eaf.0
+        for <linux-iio@vger.kernel.org>; Thu, 22 Aug 2024 12:39:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724355597; x=1724960397; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YS/a2XN/koxIPWF1pI8RLRI3ZpyHqhmNdBFZY8wVB4A=;
+        b=hsNgr95Amf2/HCE9hM5YWzQY5zjBTwkKGHvZv32AZ+go0J7nlJgYRnDpy6sCEEWtjU
+         u0lTrE7uREzbxC/zUljZ+lohE7mzvA2G9QyGngzT1A7ibCJgpe2vHWf99r/OYlojb0Lo
+         g7Mt7EqiJV5lWeXKpk078c2T0GQPucCdjr3/TqTCzPijplcapENIGjmp45xkLvkCzVDe
+         Tn/kE4tMclwfxpl+YruHhY9xX2+wGp7iXp/LTa30VQjBFOT7fL5ToRFLcRLHjc6or60M
+         9ibJ1Q37qIY+gXXIwza5Ij7hh2iJ6hazuzJyDNlUhREt284dZXhR0s5oHMwihJ6h7KRT
+         1RQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724355597; x=1724960397;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YS/a2XN/koxIPWF1pI8RLRI3ZpyHqhmNdBFZY8wVB4A=;
+        b=RaPri6DqqOzOrRfOnmI07Ntm/Xtd6WSQgJdeUUpvws5pgKPq874Izmhz/pLH2lYsjJ
+         6+Rn3lIKkUiDshJWxpm5TX08TvaTQDe++4Ulr/fhHFd90Qz1i4KYDlHA0qIjiX9f2mwt
+         Vuy+Er9O0qXYcp8S9b2OPU1GLUEGpJlhXMwFyAehofBkprVa3K+bAvCn51kbXIV+sXGB
+         5cHG/AUWrz1U5MO1nE6GgB+1qMT0j9JWx7DuoZQat2IpAVQtWBvFj5RO40BRNd8FEcUq
+         1+upz3C/g5gFDWjQ2ELptM0luhy0ioaPiuoqgNdXFntDixGitKb5CEemWzTvivGGfHa2
+         fuhQ==
+X-Gm-Message-State: AOJu0Yyvt9tDMTJrzvfDXroYBgA9BoTiMIfjChvXW188E9a+efCGH9Ih
+	AxTn0R3p7nv6OE1cDYC5MKIvNVTOv3k+keMrGKGUUheHw+9rdCCYA4mq+8/pxfg=
+X-Google-Smtp-Source: AGHT+IEYCX4ZxjNhUv4i/FGCoWEOx56g3TGGQuX9eqvofrKWjGgT28Rhv06u7XPfAfdDxTGoMhraPg==
+X-Received: by 2002:a05:6820:220a:b0:5d8:f3f:b1f7 with SMTP id 006d021491bc7-5dca0648d97mr7688979eaf.6.1724355596960;
+        Thu, 22 Aug 2024 12:39:56 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5dcb5e6864esm400076eaf.38.2024.08.22.12.39.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Aug 2024 12:39:56 -0700 (PDT)
+Message-ID: <28fa2ba9-9b02-43ac-b070-85a173a5db60@baylibre.com>
+Date: Thu, 22 Aug 2024 14:39:55 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] iio: adc: ad4030: add driver for ad4030-24
+To: Esteban Blanc <eblanc@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+ Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
+ <20240822-eblanc-ad4630_v1-v1-2-5c68f3327fdd@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20240822-eblanc-ad4630_v1-v1-2-5c68f3327fdd@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f017b:
+On 8/22/24 7:45 AM, Esteban Blanc wrote:
+> This adds a new driver for the Analog Devices INC. AD4030-24 ADC.
+> 
+> The driver implements basic support for the AD4030-24 1 channel
+> differential ADC with hardware gain and offset control.
+> 
+> Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
+> ---
+>  MAINTAINERS              |   1 +
+>  drivers/iio/adc/Kconfig  |  13 +
+>  drivers/iio/adc/Makefile |   1 +
+>  drivers/iio/adc/ad4030.c | 854 +++++++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 869 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f17c42bea19c..6a5a0e7b7a51 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -420,6 +420,7 @@ R:	Esteban Blanc <eblanc@baylibre.com>
+>  S:	Supported
+>  W:	https://ez.analog.com/linux-software-drivers
+>  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+> +F:	drivers/iio/adc/ad4030.c
+>  
+>  AD5110 ANALOG DEVICES DIGITAL POTENTIOMETERS DRIVER
+>  M:	Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 88e8ce2e78b3..f4bd05780f6f 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -33,6 +33,19 @@ config AD4000
+>  	  To compile this driver as a module, choose M here: the module will be
+>  	  called ad4000.
+>  
+> +config AD4030
+> +	tristate "Analog Device AD4630 ADC Driver"
+> +	depends on SPI
+> +	depends on GPIOLIB
+> +	select REGMAP_SPI
 
-  Linux 6.11-rc1 (2024-07-28 14:19:55 -0700)
+It looks like we are just using REGMAP, not REGMAP_SPI.
 
-are available in the Git repository at:
+> +	select IIO_BUFFER
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-6.12a
+And also select IIO_TRIGGERED_BUFFER?
 
-for you to fetch changes up to c4b43d8336e52dce6d124e428aa3b71703e62647:
+> +	help
+> +	  Say yes here to build support for Analog Devices AD4030 and AD4630 high speed
+> +	  SPI analog to digital converters (ADC).
+> +
+> +	  To compile this driver as a module, choose M here: the module will be
+> +	  called ad4030.
+> +
+>  config AD4130
+>  	tristate "Analog Device AD4130 ADC Driver"
+>  	depends on SPI
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index 8b80664c6d6b..0e4f833abf0b 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -7,6 +7,7 @@
+>  obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
+>  obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
+>  obj-$(CONFIG_AD4000) += ad4000.o
+> +obj-$(CONFIG_AD4030) += ad4030.o
+>  obj-$(CONFIG_AD4130) += ad4130.o
+>  obj-$(CONFIG_AD4695) += ad4695.o
+>  obj-$(CONFIG_AD7091R) += ad7091r-base.o
+> diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
+> new file mode 100644
+> index 000000000000..a981dce988e5
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad4030.c
+> @@ -0,0 +1,854 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Analog Devices AD4030 and AD4630 ADC family driver.
+> + *
+> + * Copyright 2024 Analog Devices, Inc.
+> + * Copyright 2024 BayLibre, SAS
+> + *
+> + * based on code from:
+> + *	Analog Devices, Inc.
+> + *	  Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> + *	  Nuno Sa <nuno.sa@analog.com>
+> + *	  Marcelo Schmitt <marcelo.schmitt@analog.com>
+> + *	  Liviu Adace <liviu.adace@analog.com>
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/units.h>
 
-  drivers:iio:Fix the NULL vs IS_ERR() bug for debugfs_create_dir() (2024-08-21 21:32:52 +0100)
+alphabetical order?
 
-----------------------------------------------------------------
-IIO: 1st set of new device support, features and cleanup for 6.12
+> +#include <linux/clk.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/regmap.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +
+> +#define AD4030_REG_INTERFACE_CONFIG_A			0x00
+> +#define     AD4030_REG_INTERFACE_CONFIG_A_SW_RESET	(BIT(0) | BIT(7))
+> +#define AD4030_REG_INTERFACE_CONFIG_B			0x01
+> +#define AD4030_REG_DEVICE_CONFIG			0x02
+> +#define AD4030_REG_CHIP_TYPE				0x03
+> +#define AD4030_REG_PRODUCT_ID_L				0x04
+> +#define AD4030_REG_PRODUCT_ID_H				0x05
+> +#define AD4030_REG_CHIP_GRADE				0x06
+> +#define     AD4030_REG_CHIP_GRADE_AD4030_24_GRADE	0x10
+> +#define     AD4030_REG_CHIP_GRADE_MASK_CHIP_GRADE	GENMASK(7, 3)
+> +#define AD4030_REG_SCRATCH_PAD			0x0A
+> +#define AD4030_REG_SPI_REVISION			0x0B
+> +#define AD4030_REG_VENDOR_L			0x0C
+> +#define AD4030_REG_VENDOR_H			0x0D
+> +#define AD4030_REG_STREAM_MODE			0x0E
+> +#define AD4030_REG_INTERFACE_CONFIG_C		0x10
+> +#define AD4030_REG_INTERFACE_STATUS_A		0x11
+> +#define AD4030_REG_EXIT_CFG_MODE		0x14
+> +#define     AD4030_REG_EXIT_CFG_MODE_EXIT_MSK	BIT(0)
+> +#define AD4030_REG_AVG				0x15
+> +#define     AD4030_REG_AVG_MASK_AVG_SYNC	BIT(7)
+> +#define     AD4030_REG_AVG_MASK_AVG_VAL		GENMASK(4, 0)
+> +#define AD4030_REG_OFFSET_X0_0			0x16
+> +#define AD4030_REG_OFFSET_X0_1			0x17
+> +#define AD4030_REG_OFFSET_X0_2			0x18
+> +#define AD4030_REG_OFFSET_X1_0			0x19
+> +#define AD4030_REG_OFFSET_X1_1			0x1A
+> +#define AD4030_REG_OFFSET_X1_2			0x1B
+> +#define     AD4030_REG_OFFSET_BYTES_NB		3
+> +#define     AD4030_REG_OFFSET_CHAN(ch)		(AD4030_REG_OFFSET_X0_2 +	\
+> +						(AD4030_REG_OFFSET_BYTES_NB *	\
+> +						(ch)))
+> +#define AD4030_REG_GAIN_X0_LSB			0x1C
+> +#define AD4030_REG_GAIN_X0_MSB			0x1D
+> +#define AD4030_REG_GAIN_X1_LSB			0x1E
+> +#define AD4030_REG_GAIN_X1_MSB			0x1F
+> +#define     AD4030_REG_GAIN_MAX_GAIN		1999970
+> +#define     AD4030_REG_GAIN_BYTES_NB		2
+> +#define     AD4030_REG_GAIN_CHAN(ch)		(AD4030_REG_GAIN_X0_MSB +	\
+> +						(AD4030_REG_GAIN_BYTES_NB *	\
+> +						(ch)))
+> +#define AD4030_REG_MODES			0x20
+> +#define     AD4030_REG_MODES_MASK_OUT_DATA_MODE	GENMASK(2, 0)
+> +#define     AD4030_REG_MODES_MASK_LANE_MODE	GENMASK(7, 6)
+> +#define AD4030_REG_OSCILATOR			0x21
+> +#define AD4030_REG_IO				0x22
+> +#define     AD4030_REG_IO_MASK_IO2X		BIT(1)
+> +#define AD4030_REG_PAT0				0x23
+> +#define AD4030_REG_PAT1				0x24
+> +#define AD4030_REG_PAT2				0x25
+> +#define AD4030_REG_PAT3				0x26
+> +#define AD4030_REG_DIG_DIAG			0x34
+> +#define AD4030_REG_DIG_ERR			0x35
+> +
+> +/* Sequence starting with "1 0 1" to enable reg access */
+> +#define AD4030_REG_ACCESS			0xa0
 
-Includes a merge of spi-mos-config branch from spi.git that brings
-support needed for the AD4000 driver.
+nite: for case-consistency: 0xA0
 
-Lots of new device support this time including 9 new drivers and substantial
-changes to add new support to several more.
+> +
+> +#define AD4030_MAX_IIO_SAMPLE_SIZE_BUFFERED	BITS_TO_BYTES(64)
+> +#define AD4030_MAX_HARDWARE_CHANNEL_NB		2
+> +#define AD4030_MAX_IIO_CHANNEL_NB		5
+> +#define AD4030_COMMON_BYTE_CHANNELS_FILTER	0xA
+> +/*
+> + * This accounts for for 1 sample per channel plus one u64 for the timestamp,
+> + * aligned on a u64 boundary
 
-New device support
-------------------
+Technically, soft timestamp is s64.
 
-Given we have a lot of new support, I've subcategorized them:
+> + */
+> +#define AD4030_MAXIMUM_RX_BUFFER_SIZE			\
+> +	ALIGN(AD4030_MAX_IIO_SAMPLE_SIZE_BUFFERED *	\
+> +	      AD4030_MAX_HARDWARE_CHANNEL_NB,		\
+> +	      sizeof(u64)) + sizeof(u64)
+> +
+> +#define AD4030_VREF_MIN_UV		(4096 * MILLI)
+> +#define AD4030_VREF_MAX_UV		(5000 * MILLI)
+> +#define AD4030_VIO_THRESHOLD_UV		(1400 * MILLI)
+> +
+> +#define AD4030_SPI_MAX_XFER_LEN		8
+> +#define AD4030_SPI_MAX_REG_XFER_SPEED	(80 * MEGA)
+> +#define AD4030_TCNVH_NS			10
+> +#define AD4030_TCNVL_NS			20
+> +#define AD4030_TCYC_NS			500
+> +#define AD4030_TCYC_ADJUSTED_NS		(AD4030_TCYC_NS - AD4030_TCNVL_NS)
+> +#define AD4030_TRESET_PW_NS		50
+> +#define AD4030_TRESET_COM_DELAY_MS	750
+> +
+> +enum ad4030_out_mode {
+> +	AD4030_OUT_DATA_MD_16_DIFF = 0x00,
+> +	AD4030_OUT_DATA_MD_24_DIFF = 0x00,
+> +	AD4030_OUT_DATA_MD_16_DIFF_8_COM = 0x01,
+> +	AD4030_OUT_DATA_MD_24_DIFF_8_COM = 0x02,
+> +	AD4030_OUT_DATA_MD_30_AVERAGED_DIFF = 0x03,
+> +	AD4030_OUT_DATA_MD_32_PATTERN = 0x04
+> +};
+> +
+> +struct ad4030_chip_info {
+> +	const char *name;
+> +	const unsigned long *available_masks;
+> +	unsigned int available_masks_len;
+> +	const struct iio_chan_spec channels[AD4030_MAX_IIO_CHANNEL_NB];> +	u8 grade;
+> +	u8 precision_bits;
+> +	/* Number of hardware channels */
+> +	int num_channels;
+> +	unsigned int tcyc;
 
-Substantial changes, or new driver
-**********************************
+Always nice to have the units in the variable name: tcyc_ns
 
-adi,ad4000
-- New driver for this high speed ADC.
-adi,ad4695
-- New driver supporting AD4690, AD4696, AD4697 and AD4698 ADCs.
-- Follow up series added triggered buffer support.
-adi,ad7380
-- Add support for single ended parts, AD7386, ADC7387, AD7388 and -4 variants.
-  (driver previously only support differential parts).
-  These variants have an additional front end MUX so only half the channels
-  can be sampled efficiently.
-adi,ad9467
-- Refactor and extend driver to support ad9643, ad9449 and ad9652 high speed
-  ADCs.
-adi,adxl380
-- New driver for this low power accelerometer.
-adi,ltc2664
-- New driver supporting LTC2664 and LTC2672 DACs.
-microchip,pac1921
-- New driver for this power/current monitor chip.
-rohm,bh1745
-- New driver for this RGBC colour sensor.
-rohm,bu27034anuc
-- The original bu27034 was canceled before mass production, so the
-  driver is modified to support the BU27034ANUC which had some significant
-  differences.  DT compatible changed to avoid chance of old driver ever
-  binding to real hardware.
-sciosense,ens210
-- New driver for ens210, ens210a, ens211, ens212, ens213a, and ens215
-  temperature and humidity sensors (all register compatible up to some
-  conversion time differences)
-sensiron,sdp500
-- New driver for this differential pressure sensor.
-tyhx,hx9023s
-- New driver to support this capacitive proximity sensor.
+> +};
+> +
+> +struct ad4030_state {
+> +	struct spi_device *spi;
+> +	struct regmap *regmap;
+> +	const struct ad4030_chip_info *chip;
+> +	struct gpio_desc *cnv_gpio;
+> +	int vref_uv;
+> +	int vio_uv;
+> +	int offset_avail[3];
+> +	u32 conversion_speed_hz;
+> +	enum ad4030_out_mode mode;
+> +
+> +	/*
+> +	 * DMA (thus cache coherency maintenance) requires the transfer buffers
+> +	 * to live in their own cache lines.
+> +	 */
+> +	u8 tx_data[AD4030_SPI_MAX_XFER_LEN] __aligned(IIO_DMA_MINALIGN);
+> +	struct {
+> +		union {
+> +			u8 raw[AD4030_MAXIMUM_RX_BUFFER_SIZE];
+> +			struct {
+> +				s32 val;
+> +				u32 common;
+> +			} __packed buffered[AD4030_MAX_HARDWARE_CHANNEL_NB];
 
-Minor changes to support new devices
-************************************
+__packed isn't going to make a difference here since everything is 32-bit.
 
-adi,adf4377
-- Add support for the single output adf4378.
-kionix,kxcjk-1013
-- Add support for KX022-1020 accelerometer (binding and ID table only)
-liteon,ltrf216a
-- Add support for ltr-308.  A few minor differences in features set
-rockchip,saradc
-- Add ID for rk3576-saradc
-sensortek,stk3310
-- Add ID for stk3013 proximity sensor which (despite documentation) has
-  an ambient light sensor and is compatible with existing parts.
+> +		};
+> +	} rx_data __aligned(IIO_DMA_MINALIGN);
+> +};
+> +
+> +#define AD4030_CHAN_CMO(_idx)  {					\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
 
-Documentation updates
----------------------
+Datasheet says LSB for the 8-bit common mode output value is Vref/256
+so we also need IIO_CHAN_INFO_SCALE here.
 
-Generalize ABI docs for shunt resistor attribute
-Improve calibscale and calibbias related documentation.  A couple of follow
-up patches to resolve duplicate documentation that resulted.
+> +	.type = IIO_VOLTAGE,						\
+> +	.indexed = 1,							\
+> +	.channel = _idx * 2 + 2,					\
+> +	.scan_index = _idx * 2 + 1,					\
+> +	.extend_name = "Channel" #_idx " common byte part",		\
 
-New core features
------------------
+Labels are usually one word and reflect the datasheet name.
 
-backend
-- Add option for debugfs - useful for test pattern control
-- Use this for both adi-axi-adc and adi-axi-dac
-trigger suspend
-- Add functions to allow triggers to be suspended. This avoids problems
-  when a device enters suspend to idle with a sysfs trigger. Use it for now
-  in the bmi323 only.
+Suggest `"common-mode" #_idx` or `"CM" #_idx` for this one.
 
-New driver features
--------------------
+> +	.scan_type = {							\
+> +		.sign = 'u',						\
+> +		.storagebits = 32,					\
 
-adi,ad7192
-- Add option to be a clock provider (+ additional clock config options)
-adi,ad7380
-- Add documentation for this fairly new driver.
-adi,ad9461
-- Provide control of test modes and backend validation blocks used
-  to identify problems (via debugfs)
-adi,ad9739
-- Add backend debugfs and docs for what is provided via adi-axi-dac
-avago,apds9960
-- Add proximity and gesture calibration offset control
-bosch,bmp280
-- Triggered buffer support including adding raw+scale output for sysfs.
-liteon,ltr390
-- Add configuration of integration time and scale.
-stm,dfsdm
-- Convert this SD modulator driver to backend framework and add support
-  for channel scaling + modern channel bindings.
+Using SPI offload is going to require different channel info structs
+anyway since we will need a samping frequency attribute and there won't
+be a soft timestamp.
 
-Treewide cleanup
-----------------
+So I think it would be OK to make storagebits 8 here. And we can make it
+whatever it needs to be in the new struct when we actually add SPI
+offload support.
 
-iio_dev->masklength: Making it private.
-- Provide access function to read the core compute channel mask length
-  and a macro to iterate over elements in the active_scan_mask.
-- Enables marking masklength __private preventing drivers from
-  writing it without triggering a build warning whilst minimizing overhead
-  in what are typically hot paths.
-- Convert all drivers and finally mark it private.
-  Merge conflicts resolved in drivers applied after this point.
-Constify regmap_bus
-- These are never modified, so mark them const.
+> +		.realbits = 8,						\
+> +		.endianness = IIO_BE,					\
+> +	},								\
+> +}
+> +
+> +#define AD4030_CHAN_IN(_idx, _storage, _real, _shift) {			\
+> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SCALE),		\
 
-Core cleanup
-------------
+As mentioned above scale should be info_mask_separate.
 
-backend
-- A few late breaking bits of feedback (unused variable, error messages)
-dma-buffer
-- Namespace exports.
-core
-- Drop unused assignment.
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_CALIBSCALE) |		\
+> +		BIT(IIO_CHAN_INFO_CALIBBIAS) |				\
+> +		BIT(IIO_CHAN_INFO_RAW),					\
+> +	.info_mask_separate_available = BIT(IIO_CHAN_INFO_CALIBBIAS) |	\
+> +		BIT(IIO_CHAN_INFO_CALIBSCALE),				\
+> +	.type = IIO_VOLTAGE,						\
+> +	.indexed = 1,							\
+> +	.channel = _idx * 2,						\
+> +	.channel2 = _idx * 2 + 1,					\
+> +	.scan_index = _idx * 2,						\
+> +	.extend_name = "Channel" #_idx " differential part",		\
 
-Driver cleanup
---------------
+As above, suggest `"IN" #_idx` for this.
 
-adi,ad4695
-- Fixing binding to reflect that common-mode-channel is a scalar.
-adi,ad7280a
-- Use __free(kfree) to simplify freeing of receive buffer.
-adi,ad7606
-- Various dt-binding cleanup and improvements.
-- Fix oversampling related gpio handling.
-- Make polarity of standby gpio match documentation.
-- use guard() to simplify lock handling.
-adi,ad7768
-- Use device_for_each_child_node_scoped() instead of fwnode equivalent.
-adi,ad7124
-- Reduce SPI transfers by avoiding separate writes to different fields
-  in the same register.
-- Start the ADC in idle mode.
-adi,adis
-- Drop ifdefs in favor of IS_ENABLED.
-adi,admv8818
-- Fix wrong ABI docs.
-asahi-kasei,ak8975
-- Drop a prefix free compatible accidentally added recently.
-aspeed,adc
-- Use of_property_present() instead of of_find_property() to see if the
-  property is there or not.
-atmel,at91,
-- Use __free(kfree) to simplify freeing of channel related array.
-bosch,bma400
-- Use __free(kfree) to simplify freeing a locally allocated string.
-bosch,bmc150
-- Add missing mount-matrix binding docs.
-bosch,bme680
-- Fix read/write to ensure multiple necessary sequential reads without
-  device configuration change.
-- Drop unnecessary type casts and use more appropriate data types.
-- Drop some left over ACPI code as ACPI support was removed due to invalid
-  IDs (and no known users).
-- Sort headers consistently.
-- Avoid unnecessary duplicate read and redundant read of gas config.
-- Use bulk reads to get calibration data.
-- Reorder allocation of IIO device to be prior to device init.
-- Add remaining read/write buffers to the union used already for all others.
-- Tidy up error checks for consistency of style, including dev_err_probe()
-- Bring the device startup procedure inline with the vendor code.
-- Reorder code so mode forcing is more obvious occurring where needed.
-- Tidy up data locality in reading functions so no magic data is stored
-  in state structures just to get it across function calls.
-- Make a local lookup table static to avoid placing it on the stack.
-bosch,bmp280
-- Fix BME280 regmap to not include registers it doesn't have.
-- Wait a little longer after config to allow for maximum possible necessary
-  wait.
-- Reorganize headers.
-- Make conversion_time_max array static to avoid placing it on the stack.
-maxim,max1363
-- Use __free(kfree) to simplify freeing transmission buffer.
-microchip,mcp3964
-- Use devm_regulator_get_enable_read_voltage()
-microchip,mcp3911
-- Use devm_regulator_get_enable_read_voltage()
-microchip,mcp4728
-- Use devm_regulator_get_enable_read_voltage()
-microchip,mcp4922
-- Use devm_regulator_get_enable_read_voltage() and devm_* to allow
-  dropping of explicit remove() callback.
-onnn,noa1305
-- Various tidy up.
-- Provide available scale values.
-- Make integration time configurable.
-- Fix up integration time look up (/2 error)
-ti,dac7311
-- Check if spi_setup() succeeded.
-ti,tsc2046
-- Use __free(kfree) to simplify freeing rx and tx buffers.
-- Use devm_regulator_get_enable_read_voltage()
+> +	.differential = true,						\
+> +	.scan_type = {							\
+> +		.sign = 's',						\
+> +		.storagebits = _storage,				\
+> +		.realbits = _real,					\
+> +		.shift = _shift,					\
+> +		.endianness = IIO_BE,					\
+> +	},								\
+> +}
+> +
+> +static int ad4030_spi_read(void *context, const void *reg, size_t reg_size,
+> +			   void *val, size_t val_size)
+> +{
+> +	struct ad4030_state *st = context;
+> +
+> +	struct spi_transfer xfer = {
+> +		.tx_buf = st->tx_data,
+> +		.rx_buf = st->rx_data.raw,
+> +		.len = reg_size + val_size,
+> +	};
+> +	int ret;
+> +
+> +	memcpy(st->tx_data, reg, reg_size);
+> +
+> +	/*
+> +	 * This should use spi_write_the_read but when doing so, CS never get
+> +	 * deasserted.
+> +	 */
+> +	ret = spi_sync_transfer(st->spi, &xfer, 1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	memcpy(val, &st->rx_data.raw[reg_size], val_size);
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad4030_spi_write(void *context, const void *data, size_t count)
+> +{
+> +	const struct ad4030_state *st = context;
+> +
+> +	return spi_write(st->spi, data, count);
+> +}
+> +
+> +static const struct regmap_bus ad4030_regmap_bus = {
+> +	.read = ad4030_spi_read,
+> +	.write = ad4030_spi_write,
+> +	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
+> +};
+> +
+> +static const struct regmap_range ad4030_regmap_rd_range[] = {
+> +	regmap_reg_range(AD4030_REG_INTERFACE_CONFIG_A, AD4030_REG_CHIP_GRADE),
+> +	regmap_reg_range(AD4030_REG_SCRATCH_PAD, AD4030_REG_STREAM_MODE),
+> +	regmap_reg_range(AD4030_REG_INTERFACE_CONFIG_C, AD4030_REG_INTERFACE_STATUS_A),
+> +	regmap_reg_range(AD4030_REG_EXIT_CFG_MODE, AD4030_REG_PAT3),
+> +	regmap_reg_range(AD4030_REG_DIG_DIAG, AD4030_REG_DIG_ERR),
+> +};
+> +
+> +static const struct regmap_range ad4030_regmap_wr_range[] = {
+> +	regmap_reg_range(AD4030_REG_CHIP_TYPE, AD4030_REG_CHIP_GRADE),
+> +	regmap_reg_range(AD4030_REG_SPI_REVISION, AD4030_REG_VENDOR_H),
+> +};
+> +
+> +static const struct regmap_access_table ad4030_regmap_rd_table = {
+> +	.yes_ranges = ad4030_regmap_rd_range,
+> +	.n_yes_ranges = ARRAY_SIZE(ad4030_regmap_rd_range),
+> +};
+> +
+> +static const struct regmap_access_table ad4030_regmap_wr_table = {
+> +	.no_ranges = ad4030_regmap_wr_range,
+> +	.n_no_ranges = ARRAY_SIZE(ad4030_regmap_wr_range),
+> +};
+> +
+> +static const struct regmap_config ad4030_regmap_config = {
+> +	.reg_bits = 16,
+> +	.val_bits = 8,
+> +	.read_flag_mask = 0x80,
+> +	.rd_table = &ad4030_regmap_rd_table,
+> +	.wr_table = &ad4030_regmap_wr_table,
+> +	.max_register = AD4030_REG_DIG_ERR,
+> +};
+> +
+> +static int ad4030_enter_config_mode(struct ad4030_state *st)
+> +{
+> +	st->rx_data.raw[0] = AD4030_REG_ACCESS;
+> +
+> +	return spi_write(st->spi, st->rx_data.raw, 1);
+> +}
+> +
+> +static int ad4030_exit_config_mode(struct ad4030_state *st)
+> +{
+> +	return regmap_write(st->regmap, AD4030_REG_EXIT_CFG_MODE,
+> +		     AD4030_REG_EXIT_CFG_MODE_EXIT_MSK);
+> +}
+> +
+> +static int ad4030_get_chan_gain(struct iio_dev *indio_dev, int ch, int *val,
+> +				int *val2)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +	u16 gain;
+> +	int ret;
+> +
+> +	ret = regmap_bulk_read(st->regmap, AD4030_REG_GAIN_CHAN(ch),
+> +			       st->rx_data.raw, AD4030_REG_GAIN_BYTES_NB);
+> +	if (ret)
+> +		return ret;
+> +
+> +	gain = be16_to_cpu(*(u16 *)st->rx_data.raw);
+> +
+> +	/* From datasheet: multiplied output = input × gain word/0x8000 */
+> +	*val = gain / 0x8000;
+> +	*val2 = mul_u64_u32_div(gain % 0x8000, MICRO, 0x8000);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * @brief Returns the offset where 1 LSB = (VREF/2^precision_bits - 1)/gain
+> + */
+> +static int ad4030_get_chan_offset(struct iio_dev *indio_dev, int ch, int *val)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = regmap_bulk_read(st->regmap, AD4030_REG_OFFSET_CHAN(ch),
+> +			       st->rx_data.raw, AD4030_REG_OFFSET_BYTES_NB);
+> +	if (ret)
+> +		return ret;
+> +
+> +	switch (st->chip->precision_bits) {
+> +	case 16:
+> +		*val = sign_extend32(get_unaligned_be16(st->rx_data.raw), 15);
+> +		break;
+> +
+> +	case 24:
+> +		*val = sign_extend32(get_unaligned_be24(st->rx_data.raw), 23);
+> +		break;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4030_set_chan_gain(struct iio_dev *indio_dev, int ch, int gain_int,
+> +				int gain_frac)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +	__be16 *val = (__be16 *)st->rx_data.raw;
+> +	u64 gain;
 
-Various minor fixes not called out explicitly.
+Should check for negative values here (have to check both gain_int and gain_val
+due to the way IIO_VAL_INT_PLUS_MICRO works). Otherwise negative numbers will
+be turned positive in the unsigned multiply below.
 
-----------------------------------------------------------------
-Abhash Jha (4):
-      iio: light: ltr390: Add configurable gain and resolution
-      iio: light: apds9960: Add proximity and gesture offset calibration
-      iio: light: ltr390: Add ALS channel and support for gain and resolution
-      iio: light: ltr390: Calculate 'counts_per_uvi' dynamically
+	if (gain_int < 0 || gain_frac < 0)
+		return -EINVAL;
 
-Alisa-Dariana Roman (4):
-      dt-bindings: iio: adc: ad7192: Update clock config
-      iio: adc: ad7192: Update clock config
-      dt-bindings: iio: adc: ad7192: Add clock provider
-      iio: adc: ad7192: Add clock provider
+> +
+> +	gain = mul_u32_u32(gain_int, MICRO) + gain_frac;
+> +
+> +	if (gain > AD4030_REG_GAIN_MAX_GAIN)
+> +		return -EINVAL;
+> +
+> +	*val = cpu_to_be16(DIV_ROUND_CLOSEST_ULL(gain * 0x8000, MICRO));
+> +
+> +	return regmap_bulk_write(st->regmap, AD4030_REG_GAIN_CHAN(ch), val,
+> +			  AD4030_REG_GAIN_BYTES_NB);
+> +}
+> +
+> +static int ad4030_set_chan_offset(struct iio_dev *indio_dev, int ch, int offset)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +
+> +	if (offset < st->offset_avail[0] || offset > st->offset_avail[2])
+> +		return -EINVAL;
+> +
+> +	switch (st->chip->precision_bits) {
+> +	case 16:
+> +		put_unaligned_be16(offset, st->rx_data.raw);
+> +		break;
+> +
+> +	case 24:
+> +		put_unaligned_be24(offset, st->rx_data.raw);
+> +		break;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return regmap_bulk_write(st->regmap, AD4030_REG_OFFSET_CHAN(ch),
+> +			  st->rx_data.raw, AD4030_REG_OFFSET_BYTES_NB);
+> +}
+> +
+> +static bool ad4030_is_common_byte_asked(struct ad4030_state *st,
+> +					unsigned int mask)
+> +{
+> +	/* Common byte channel is after the "real" differential sample channel */
+> +	return mask & AD4030_COMMON_BYTE_CHANNELS_FILTER;
+> +}
+> +
+> +static int ad4030_set_mode(struct iio_dev *indio_dev, unsigned long mask)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +
+> +	if (ad4030_is_common_byte_asked(st, mask))
+> +		st->mode = AD4030_OUT_DATA_MD_24_DIFF_8_COM;
+> +	else
+> +		st->mode = AD4030_OUT_DATA_MD_24_DIFF;
+> +
+> +	return regmap_update_bits(st->regmap, AD4030_REG_MODES,
+> +				AD4030_REG_MODES_MASK_OUT_DATA_MODE,
+> +				st->mode);
+> +}
+> +
+> +static int ad4030_conversion(struct ad4030_state *st,
+> +			     const struct iio_chan_spec *chan)
+> +{
+> +	unsigned int bytes_to_read;
+> +	unsigned char byte_index;
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	/* Number of bytes for one differential channel */
+> +	bytes_to_read = BITS_TO_BYTES(chan->scan_type.realbits);
+> +	/* Add one byte if we are using a differential + common byte mode */
+> +	bytes_to_read += (st->mode == AD4030_OUT_DATA_MD_24_DIFF_8_COM ||
+> +			st->mode == AD4030_OUT_DATA_MD_16_DIFF_8_COM) ? 1 : 0;
+> +	/* Mulitiply by the number of hardware channels */
+> +	bytes_to_read *= st->chip->num_channels;
+> +
+> +	gpiod_set_value_cansleep(st->cnv_gpio, 1);
+> +	ndelay(AD4030_TCNVH_NS);
+> +	gpiod_set_value_cansleep(st->cnv_gpio, 0);
+> +	ndelay(st->chip->tcyc);
+> +
+> +	ret = spi_read(st->spi, st->rx_data.raw, bytes_to_read);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (st->mode != AD4030_OUT_DATA_MD_24_DIFF_8_COM)
+> +		return 0;
+> +
+> +	byte_index = BITS_TO_BYTES(chan->scan_type.realbits);
+> +	for (i = 0; i < st->chip->num_channels; i++)
+> +		st->rx_data.buffered[i].common = ((u8 *)&st->rx_data.buffered[i].val)[byte_index];
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4030_single_conversion(struct iio_dev *indio_dev,
+> +				    const struct iio_chan_spec *chan, int *val)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = ad4030_set_mode(indio_dev, BIT(chan->channel));
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad4030_exit_config_mode(st);
+> +	if (ret)
+> +		goto out_exit_config_mode_error;
 
-Andreas Klinger (1):
-      iio: sgp40: retain documentation in driver
+Looks like we could just return ret here.
 
-Antoniu Miclaus (6):
-      ABI: testing: fix admv8818 attr description
-      dt-bindings: iio: accel: add ADXL380
-      iio: accel: add ADXL380 driver
-      docs: iio: add documentation for adxl380 driver
-      dt-bindings: iio: adf4377: add adf4378 support
-      iio: frequency: adf4377: add adf4378 support
+> +
+> +	ret = ad4030_conversion(st, chan);
+> +	if (ret)
+> +		goto out_error;
+> +
+> +	if (chan->channel % 2)
+> +		*val = st->rx_data.buffered[chan->channel / 2].common;
+> +	else
+> +		*val = st->rx_data.buffered[chan->channel / 2].val;
+> +
+> +out_error:
+> +	ad4030_enter_config_mode(st);
+> +
+> +out_exit_config_mode_error:
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	return IIO_VAL_INT;
 
-Chen Ni (1):
-      iio: dac: ti-dac7311: Add check for spi_setup
+This can be moved before out_error:, then we can just have
+return ret here and leave out the if.
 
-Colin Ian King (2):
-      iio: pressure: bmp280-core: Make read-only const array conversion_time_max static
-      iio: Fix spelling mistake "avaialable" -> "available"
+> +}
+> +
+> +static irqreturn_t ad4030_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = ad4030_conversion(st, indio_dev->channels);
+> +	if (ret)
+> +		goto out;
+> +
+> +	iio_push_to_buffers_with_timestamp(indio_dev, st->rx_data.raw,
+> +					   pf->timestamp);
+> +
+> +out:
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static const int *ad4030_get_offset_avail(struct ad4030_state *st)
+> +{
+> +	return st->offset_avail;
+> +}
+> +
+> +static const int ad4030_gain_avail[3][2] = {
+> +	{ 0, 0 },
+> +	{ 0, 30 },
+> +	{ 1, 999969 },
+> +};
 
-Dan Carpenter (3):
-      iio: dac: ltc2664: Fix off by one in ltc2664_channel_config()
-      iio: adc: pac1921: add missing error return in probe()
-      iio: proximity: hx9023s: Fix error code in hx9023s_property_get()
+Could use IIO_VAL_FRACTIONAL_LOG2 or IIO_VAL_INT_PLUS_NANO here
+to get more precise values. Actual range is: [0 1/2^15 U16_MAX/2^15]
 
-David Lechner (19):
-      dt-bindings: iio: adc: add AD4695 and similar ADCs
-      iio: adc: ad4695: Add driver for AD4695 and similar ADCs
-      Documentation: iio: Document ad4695 driver
-      iio: dac: mcp4728: rename err to ret in probe function
-      iio: dac: mcp4728: use devm_regulator_get_enable_read_voltage()
-      iio: dac: mcp4922: use devm_regulator_get_enable_read_voltage()
-      iio: dac: mcp4922: drop remove() callback
-      iio: adc: mcp3911: use devm_regulator_get_enable_read_voltage()
-      iio: backend: spelling: continuous -> continuous
-      iio: adc: mcp3564: use devm_regulator_get_enable_read_voltage()
-      iio: adc: ti-tsc2046: use devm_regulator_get_enable_read_voltage()
-      dt-bindings: iio: ad4695: fix common-mode-channel
-      iio: adc: ad4695: implement triggered buffer
-      doc: iio: ad4695: document buffered read
-      iio: ABI: document calibscale_available attributes
-      iio: ABI: sort calibscale attributes
-      iio: ABI: add missing calibscale attributes
-      iio: ABI: add missing calibbias attributes
-      iio: ABI: remove duplicate in_resistance_calibbias
+To 9 decimal places: [0.000000000 0.000030517 1.999969482]
 
-Denis Benato (2):
-      iio: trigger: allow devices to suspend/resume theirs associated trigger
-      iio: bmi323: suspend and resume triggering on relevant pm operations
+> +
+> +static int ad4030_read_avail(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *channel,
+> +			     const int **vals, int *type,
+> +			     int *length, long mask)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		*vals = ad4030_get_offset_avail(st);
+> +		*type = IIO_VAL_INT;
+> +		return IIO_AVAIL_RANGE;
+> +
+> +	case IIO_CHAN_INFO_CALIBSCALE:
+> +		*vals = (void *)ad4030_gain_avail;
+> +		*type = IIO_VAL_INT_PLUS_MICRO;
+> +		return IIO_AVAIL_RANGE;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad4030_read_raw(struct iio_dev *indio_dev,
+> +			   struct iio_chan_spec const *chan, int *val,
+> +			   int *val2, long info)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +		switch (info) {
+> +		case IIO_CHAN_INFO_RAW:
+> +			return ad4030_single_conversion(indio_dev, chan, val);
+> +
+> +		case IIO_CHAN_INFO_SCALE:
+> +			*val = (st->vref_uv * 2) / MILLI;
+> +			*val2 = st->chip->precision_bits;
+> +			return IIO_VAL_FRACTIONAL_LOG2;
+> +
+> +		case IIO_CHAN_INFO_CALIBSCALE:
+> +			ret = ad4030_get_chan_gain(indio_dev, chan->channel,
+> +						   val, val2);
+> +			if (ret)
+> +				return ret;
+> +			return IIO_VAL_INT_PLUS_MICRO;
+> +
+> +		case IIO_CHAN_INFO_CALIBBIAS:
+> +			ret = ad4030_get_chan_offset(indio_dev, chan->channel,
+> +						     val);
+> +			if (ret)
+> +				return ret;
+> +			return IIO_VAL_INT;
+> +
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	}
+> +
+> +	unreachable();
+> +}
+> +
+> +static int ad4030_write_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan, int val,
+> +			    int val2, long info)
+> +{
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +		switch (info) {
+> +		case IIO_CHAN_INFO_CALIBSCALE:
+> +			return ad4030_set_chan_gain(indio_dev, chan->channel,
+> +						    val, val2);
+> +
+> +		case IIO_CHAN_INFO_CALIBBIAS:
+> +			return ad4030_set_chan_offset(indio_dev, chan->channel,
+> +						      val);
 
-Detlev Casanova (1):
-      dt-bindings: iio: adc: Add rockchip,rk3576-saradc string
+Need to add .write_raw_get_fmt to struct iio_info below to set
+IIO_CHAN_INFO_CALIBBIAS to IIO_VAL_INT. Othwerwise, the defualt
+IIO_VAL_INT_PLUS_MICRO is used and val2 would have considered
+for handling negative values.
 
-Dumitru Ceclan (2):
-      iio: adc: ad7124: reduce the number of SPI transfers
-      iio: adc: ad7124: set initial ADC mode to idle
+> +
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	}
+> +
+> +	unreachable();
+> +}
+> +
+> +static int ad4030_reg_access(struct iio_dev *indio_dev, unsigned int reg,
+> +			     unsigned int writeval, unsigned int *readval)
+> +{
+> +	const struct ad4030_state *st = iio_priv(indio_dev);
+> +
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +		if (readval)
+> +			return regmap_read(st->regmap, reg, readval);
+> +
+> +		return regmap_write(st->regmap, reg, writeval);
+> +	}
+> +
+> +	unreachable();
+> +}
+> +
+> +static const struct iio_info ad4030_iio_info = {
+> +	.read_avail = ad4030_read_avail,
+> +	.read_raw = ad4030_read_raw,
+> +	.write_raw = ad4030_write_raw,
+> +	.debugfs_reg_access = ad4030_reg_access,
+> +};
+> +
+> +static int ad4030_buffer_preenable(struct iio_dev *indio_dev)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = ad4030_set_mode(indio_dev, *indio_dev->active_scan_mask);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad4030_exit_config_mode(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Restore SPI max speed for conversion */
+> +	st->spi->max_speed_hz = st->conversion_speed_hz;
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4030_buffer_postdisable(struct iio_dev *indio_dev)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +
+> +	/* Make sure the SPI clock is within range to read register */
+> +	st->spi->max_speed_hz = min(st->spi->max_speed_hz,
+> +				    AD4030_SPI_MAX_REG_XFER_SPEED);
+> +
+> +	return ad4030_enter_config_mode(st);
+> +}
+> +
+> +static const struct iio_buffer_setup_ops ad4030_buffer_setup_ops = {
+> +	.preenable = ad4030_buffer_preenable,
+> +	.postdisable = ad4030_buffer_postdisable,
+> +};
+> +
+> +static int ad4030_regulators_get(struct ad4030_state *st)
+> +{
+> +	struct device *dev = &st->spi->dev;
+> +	static const char * const ids[] = { "vdd-5v", "vdd-1v8" };
+> +	int ret;
+> +
+> +	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(ids), ids);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to enable regulators\n");
+> +
+> +	st->vio_uv = devm_regulator_get_enable_read_voltage(dev, "vio");
+> +	if (st->vio_uv < 0)
+> +		return dev_err_probe(dev, st->vio_uv,
+> +				     "Failed to enable and read vio voltage\n");
+> +
+> +	st->vref_uv = devm_regulator_get_enable_read_voltage(dev, "ref");
+> +	if (st->vref_uv < 0) {
+> +		if (st->vref_uv != -ENODEV)
+> +			return dev_err_probe(dev, st->vref_uv,
+> +					     "Failed to read vref voltage\n");
+> +
+> +		/* if not using optional REF, the internal REFIN must be used */
+> +		st->vref_uv = devm_regulator_get_enable_read_voltage(dev, "refin");
+> +		if (st->vref_uv < 0)
+> +			return dev_err_probe(dev, st->vref_uv,
+> +					     "Failed to read vrefin voltage\n");
+> +	}
+> +
+> +	if (st->vref_uv < AD4030_VREF_MIN_UV || st->vref_uv > AD4030_VREF_MAX_UV)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "vref(%d) must be in the range [%lu %lu]\n",
+> +				     st->vref_uv, AD4030_VREF_MIN_UV,
+> +				     AD4030_VREF_MAX_UV);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4030_reset(struct ad4030_state *st)
+> +{
+> +	struct device *dev = &st->spi->dev;
+> +	struct gpio_desc *reset;
+> +	int ret;
+> +
+> +	/* Use GPIO if available ... */
+> +	reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+> +	if (IS_ERR(reset))
+> +		return dev_err_probe(dev, PTR_ERR(reset),
+> +				"Failed to get reset GPIO\n");
+> +
+> +	if (reset) {
+> +		ndelay(50);
+> +		gpiod_set_value_cansleep(reset, 0);
+> +	} else {
+> +		/* ... falback to software reset otherwise */
+> +		ret = ad4030_enter_config_mode(st);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = regmap_write(st->regmap, AD4030_REG_INTERFACE_CONFIG_A,
+> +				   AD4030_REG_INTERFACE_CONFIG_A_SW_RESET);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	/* Wait for reset to complete before communicating to it */
+> +	fsleep(AD4030_TRESET_COM_DELAY_MS);
 
-Guillaume Stols (8):
-      dt-bindings: iio: adc: adi,ad7606: normalize textwidth
-      dt-bindings: iio: adc: adi,ad7606: improve descriptions
-      dt-bindings: iio: adc: adi,ad7606: add supply properties
-      dt-bindings: iio: adc: adi,ad7606: fix example
-      dt-bindings: iio: adc: adi,ad7606: add conditions
-      iio: adc: ad7606: fix oversampling gpio array
-      iio: adc: ad7606: fix standby gpio state to match the documentation
-      iio: adc: ad7606: switch mutexes to guard
+Should be renamed to AD4030_TRESET_COM_DELAY_US since it is microseconds.
 
-Javier Carrasco (11):
-      iio: accel: adxl367: Constify struct regmap_bus
-      iio: accel: bma400: Constify struct regmap_bus
-      iio: accel: bmi088: Constify struct regmap_bus
-      iio: adc: ad7091r8: Constify struct regmap_bus
-      iio: chemical: bme680: Constify struct regmap_bus
-      iio: dac: ltc2688: Constify struct regmap_bus
-      iio: imu: bmi323: Constify struct regmap_bus
-      iio: imu: bno055: Constify struct regmap_bus
-      iio: light: gp2ap002: Constify struct regmap_bus
-      iio: pressure: bmp280: Constify struct regmap_bus
-      iio: adc: ad7768-1: use device_* to iterate over device child nodes
+> +
+> +	/* After reset, conversion mode is enabled. Switch to reg access */
+> +	return ad4030_enter_config_mode(st);
+> +}
+> +
+> +static int ad4030_detect_chip_info(const struct ad4030_state *st)
+> +{
+> +	unsigned int grade;
+> +	int ret;
+> +
+> +	ret = regmap_read(st->regmap, AD4030_REG_CHIP_GRADE, &grade);
+> +	if (ret)
+> +		return ret;
+> +
+> +	grade = FIELD_GET(AD4030_REG_CHIP_GRADE_MASK_CHIP_GRADE, grade);
+> +	if (grade != st->chip->grade)
+> +		return dev_err_probe(&st->spi->dev, -EINVAL,
+> +					"Unknown grade(0x%x) for %s\n", grade,
+> +					st->chip->name);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4030_config(struct ad4030_state *st)
+> +{
+> +	st->offset_avail[0] = (int)BIT(st->chip->precision_bits - 1) * -1;
+> +	st->offset_avail[1] = 1;
+> +	st->offset_avail[2] = BIT(st->chip->precision_bits - 1) - 1;
+> +
+> +	if (st->vio_uv < AD4030_VIO_THRESHOLD_UV)
+> +		return regmap_write(st->regmap, AD4030_REG_IO,
+> +				AD4030_REG_IO_MASK_IO2X);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4030_probe(struct spi_device *spi)
+> +{
+> +	struct device *dev = &spi->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct ad4030_state *st;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +	st->spi = spi;
+> +
+> +	/* Make sure the SPI clock is within range to read register */
+> +	st->conversion_speed_hz = min(spi->max_speed_hz,
+> +				      AD4030_SPI_MAX_REG_XFER_SPEED);
+> +
+> +	st->regmap = devm_regmap_init(dev, &ad4030_regmap_bus, st,
+> +				      &ad4030_regmap_config);
+> +	if (IS_ERR(st->regmap))
+> +		dev_err_probe(dev, PTR_ERR(st->regmap),
+> +			      "Failed to initialize regmap\n");
+> +
+> +	st->chip = spi_get_device_match_data(spi);
+> +	if (!st->chip)
+> +		return -EINVAL;
+> +
+> +	ret = ad4030_regulators_get(st);
+> +	if (ret)
+> +		return ret;
 
-Jonathan Cameron (1):
-      Merge tag 'spi-mosi-config' into togreg
+Datasheet says:
 
-Joshua Felmeden (2):
-      dt-bindings: iio: humidity: add ENS210 sensor family
-      iio: humidity: Add support for ENS210
+	Perform a reset no sooner than 3 ms after the power
+	supplies are valid and stable
 
-Julien Stephan (8):
-      docs: iio: new docs for ad7380 driver
-      dt-bindings: iio: adc: ad7380: add single-ended compatible parts
-      iio: core: add function to retrieve active_scan_mask index
-      iio: adc: ad7380: add missing trailing commas
-      iio: adc: ad7380: prepare driver for single-ended parts support
-      iio: adc: ad7380: add support for single-ended parts
-      iio: adc: ad7380: enable sequencer for single-ended parts
-      docs: iio: ad7380: add support for single-ended parts
+So might be a good idea to have mdelay(3) here.
 
-Kaustabh Chakraborty (3):
-      iio: light: stk3310: relax chipid check warning
-      iio: light: stk3310: add support for stk3013
-      dt-bindings: iio: light: stk33xx: add compatible for stk3013
+> +
+> +	ret = ad4030_reset(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad4030_detect_chip_info(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad4030_config(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->cnv_gpio = devm_gpiod_get(dev, "cnv", GPIOD_OUT_LOW);
+> +	if (IS_ERR(st->cnv_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(st->cnv_gpio),
+> +				     "Failed to get cnv gpio\n");
+> +
+> +	/*
+> +	 * One hardware channel is split in two software channels when using
+> +	 * common byte mode. Add one more channel for the timestamp.
+> +	 */
+> +	indio_dev->num_channels = 2 * st->chip->num_channels + 1;
 
-Kim Seer Paller (6):
-      iio: ABI: Generalize ABI documentation for DAC
-      iio: ABI: add DAC 42kohm_to_gnd powerdown mode
-      dt-bindings: iio: dac: Generalize DAC common properties
-      dt-bindings: iio: dac: Add adi,ltc2664.yaml
-      dt-bindings: iio: dac: Add adi,ltc2672.yaml
-      iio: dac: ltc2664: Add driver for LTC2664 and LTC2672
+Might make more sense to rename chip->num_channels to num_voltage_inputs
+or something like that to avoid confusion.
 
-Krzysztof Kozlowski (8):
-      iio: accel: bma400: simplify with cleanup.h
-      iio: adc: ad7280a: simplify with cleanup.h
-      iio: adc: at91: simplify with cleanup.h
-      iio: adc: max1363: simplify with cleanup.h
-      iio: adc: ti-tsc2046: simplify with cleanup.h
-      iio: magnetometer: ak8975: drop incorrect AK09116 compatible
-      dt-bindings: iio: asahi-kasei,ak8975: drop incorrect AK09116 compatible
-      dt-bindings: iio: st,stm32-adc: add top-level constraints
+> +	indio_dev->name = st->chip->name;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->info = &ad4030_iio_info;
+> +	indio_dev->channels = st->chip->channels;
+> +	indio_dev->available_scan_masks = st->chip->available_masks;
+> +	indio_dev->masklength = st->chip->available_masks_len;
 
-Marcelo Schmitt (7):
-      spi: Enable controllers to extend the SPI protocol with MOSI idle configuration
-      spi: bitbang: Implement support for MOSI idle state configuration
-      spi: spi-gpio: Add support for MOSI idle state configuration
-      spi: spi-axi-spi-engine: Add support for MOSI idle configuration
-      dt-bindings: iio: adc: Add AD4000
-      iio: adc: Add support for AD4000
-      Documentation: Add AD4000 documentation
+indio_dev->masklengh is marked as [INTERN] so should not be set by drivers.
 
-Marek Vasut (8):
-      dt-bindings: iio: light: ltrf216a: Document LTR-308 support
-      iio: light: ltrf216a: Add LTR-308 support
-      iio: light: noa1305: Simplify noa1305_read_raw()
-      iio: light: noa1305: Assign val in noa1305_measure()
-      iio: light: noa1305: Use static table lookup of scale values
-      iio: light: noa1305: Report available scale values
-      iio: light: noa1305: Make integration time configurable
-      iio: light: noa1305: Fix up integration time look up
+> +
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> +					      iio_pollfunc_store_time,
+> +					      ad4030_trigger_handler,
+> +					      &ad4030_buffer_setup_ops);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to setup triggered buffer\n");
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
+> +
+> +static const unsigned long ad4030_channel_masks[] = {
+> +	/* Differential only */
+> +	BIT(0),
+> +	/* Differential with common byte */
 
-Matteo Martelli (4):
-      iio: ABI: generalize shunt_resistor attribute
-      dt-bindings: iio: adc: add binding for pac1921
-      iio: adc: add support for pac1921
-      iio: remove unneeded assignment in __iio_format_value
+Suggest: /* Differential and common-mode voltage */
 
-Matti Vaittinen (6):
-      dt-bindings: iio: BU27034 => BU27034ANUC
-      bu27034: ROHM BU27034NUC to BU27034ANUC
-      bu27034: ROHM BU27034NUC to BU27034ANUC drop data2
-      bu27034: ROHM BU27034ANUC correct gains and times
-      bu27034: ROHM BU27034ANUC correct lux calculation
-      iio: bu27034: Add a read only HARDWAREGAIN
+> +	GENMASK(1, 0),
+> +	0,
+> +};
+> +
+> +static const struct ad4030_chip_info ad4030_24_chip_info = {
+> +	.name = "ad4030-24",
+> +	.available_masks = ad4030_channel_masks,
+> +	.available_masks_len = ARRAY_SIZE(ad4030_channel_masks),
+> +	.channels = {
+> +		AD4030_CHAN_IN(0, 32, 24, 8),
+> +		AD4030_CHAN_CMO(0),
+> +		IIO_CHAN_SOFT_TIMESTAMP(2),
+> +	},
+> +	.grade = AD4030_REG_CHIP_GRADE_AD4030_24_GRADE,
+> +	.precision_bits = 24,
+> +	.num_channels = 1,
+> +	.tcyc = AD4030_TCYC_ADJUSTED_NS,
+> +};
+> +
+> +static const struct spi_device_id ad4030_id_table[] = {
+> +	{ "ad4030-24", (kernel_ulong_t)&ad4030_24_chip_info },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(spi, ad4030_id_table);
+> +
+> +static const struct of_device_id ad4030_of_match[] = {
+> +	{ .compatible = "adi,ad4030-24", .data = &ad4030_24_chip_info },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, ad4030_of_match);
+> +
+> +static struct spi_driver ad4030_driver = {
+> +	.driver = {
+> +		.name = "ad4030",
+> +		.of_match_table = ad4030_of_match,
+> +	},
+> +	.probe = ad4030_probe,
+> +	.id_table = ad4030_id_table,
+> +};
+> +module_spi_driver(ad4030_driver);
+> +
+> +MODULE_AUTHOR("Esteban Blanc <eblanc@baylibre.com>");
+> +MODULE_DESCRIPTION("Analog Devices AD4630 ADC family driver");
+> +MODULE_LICENSE("GPL");
+> 
 
-Mudit Sharma (2):
-      dt-bindings: iio: light: ROHM BH1745
-      iio: light: ROHM BH1745 colour sensor
-
-Nuno Sa (89):
-      iio: core: add accessors 'masklength'
-      iio: core: make use of iio_get_masklength()
-      iio: buffer: make use of iio_get_masklength()
-      iio: accel: adxl367: make use of iio_get_masklength()
-      iio: accel: adxl372: make use of iio_get_masklength()
-      iio: accel: bma180: make use of iio_for_each_active_channel()
-      iio: accel: bmc150-accel-core: make use of iio_for_each_active_channel()
-      iio: accel: cros_ec_accel_legacy: make use of iio_get_masklength()
-      iio: accel: fxls8962af-core: make use of iio_for_each_active_channel()
-      iio: accel: msa311: make use of iio_for_each_active_channel()
-      iio: accel: sca3300: make use of iio_for_each_active_channel()
-      iio: accel: stk8312: make use of iio_for_each_active_channel()
-      iio: accel: stk8ba50: make use of iio_for_each_active_channel()
-      iio: adc: ad7266: make use of iio_get_masklength()
-      iio: adc: ad7298: make use of iio_get_masklength()
-      iio: adc: ad799x: make use of iio_get_masklength()
-      iio: adc: ad_sigma_delta: use new '.masklength' accessors
-      iio: adc: at91_adc: make use of iio_for_each_active_channel()
-      iio: imu: adis16475: make use of iio_for_each_active_channel()
-      iio: imu: adis16480: make use of iio_for_each_active_channel()
-      iio: adc: ad9467: support multiple channels calibration
-      iio: adc: ad9467: add new chip_info variables
-      iio: adc: ad9467: don't allow reading vref if not available
-      dt-bindings: adc: ad9467: support new parts
-      iio: adc: ad9467: support new parts
-      iio: backend: remove unused parameter
-      iio: backend: print message in case op is not implemented
-      iio: adc: cc10001_adc: make use of iio_for_each_active_channel()
-      iio: adc: dln2-adc: use new '.masklength' accessors
-      iio: adc: hx711: make use of iio_for_each_active_channel()
-      iio: dummy: iio_simple_dummy_buffer: use iio_for_each_active_channel()
-      iio: health: afe4403: make use of iio_for_each_active_channel()
-      iio: health: max30102: make use of iio_get_masklength()
-      iio: health: afe4404: make use of iio_for_each_active_channel()
-      iio: humidity: am2315: make use of iio_for_each_active_channel()
-      iio: imu: bmi160_core: make use of iio_for_each_active_channel()
-      iio: imu: bno055: make use of iio_get_masklength()
-      iio: imu: kmx61: make use of iio_for_each_active_channel()
-      iio: light: adjd_s311: make use of iio_for_each_active_channel()
-      iio: light: gp2ap020a00f: make use of iio_for_each_active_channel()
-      iio: light: isl29125: make use of iio_for_each_active_channel()
-      iio: light: si1145: use new '.masklength' accessors
-      iio: light: tcs3414: make use of iio_for_each_active_channel()
-      iio: light: tcs3472: make use of iio_for_each_active_channel()
-      iio: magnetometer: rm3100-core: make use of iio_get_masklength()
-      iio: pressure: dlhl60d: make use of iio_for_each_active_channel()
-      iio: proximity: hx9023s: make use of iio_for_each_active_channel()
-      iio: proximity: sx9500: make use of iio_for_each_active_channel()
-      iio: proximity: sx_common: make use of iio_for_each_active_channel()
-      iio: accel: adxl380: make use of iio_get_masklength()
-      iio: adc: max1118: make use of iio_for_each_active_channel()
-      iio: adc: max1118: make use of iio_for_each_active_channel()
-      iio: adc: mcp3911: make use of iio_for_each_active_channel()
-      iio: adc: mt6360-adc: make use of iio_for_each_active_channel()
-      iio: adc: rockchip_saradc: make use of iio_for_each_active_channel()
-      iio: adc: rtq6056: make use of iio_for_each_active_channel()
-      iio: adc: stm32-adc: make use of iio_get_masklength()
-      iio: adc: stm32-dfsdm-adc: make use of iio_get_masklength()
-      iio: adc: ti-adc0832: make use of iio_for_each_active_channel()
-      iio: adc: ti-adc084s021: make use of iio_for_each_active_channel()
-      iio: adc: ti-ads1015: make use of iio_get_masklength()
-      iio: adc: ti-ads1119: make use of iio_get_masklength()
-      iio: adc: ti-ads1298: make use of iio_for_each_active_channel()
-      iio: adc: ti-adc12138: make use of iio_for_each_active_channel()
-      iio: adc: ti-ads124s08: make use of iio_for_each_active_channel()
-      iio: adc: ti-ads131e08: make use of iio_for_each_active_channel()
-      iio: adc: ti-ads8688: make use of iio_for_each_active_channel()
-      iio: adc: vf610_adc: make use of iio_get_masklength()
-      iio: adc: xilinx-xadc-core: use new '.masklength' accessors
-      iio: common: cros_ec_sensors_core: use new '.masklength' accessors
-      staging: iio: impedance-analyzer: ad5933: make use of iio_get_masklength()
-      iio: core: annotate masklength as __private
-      iio: buffer-dma: Move exports into IIO_DMA_BUFFER namespace
-      iio: backend: introduce struct iio_backend_info
-      iio: backend: add debugFs interface
-      iio: backend: add a modified prbs23 support
-      iio: adc: adi-axi-adc: support modified prbs23
-      iio: adc: adi-axi-adc: split axi_adc_chan_status()
-      iio: adc: adi-axi-adc: implement backend debugfs interface
-      iio: adc: ad9467: add backend test mode helpers
-      iio: adc: ad9467: add digital interface test to debugfs
-      iio: dac: adi-axi-dac: support debugfs direct_reg_access
-      iio: dac: ad9739a: add backend debugfs interface
-      MAINTAINERS: add entry for ad9467
-      ABI: debugfs-iio-ad9467: document the debugfs interface
-      iio: imu: adis16475: drop ifdef around CONFIG_DEBUG_FS
-      iio: imu: adis16480: drop ifdef around CONFIG_DEBUG_FS
-      iio: imu: adis16400: drop ifdef around CONFIG_DEBUG_FS
-      iio: imu: adis16460: drop ifdef around CONFIG_DEBUG_FS
-
-Olivier Moysan (9):
-      iio: add read scale and offset services to iio backend framework
-      iio: add enable and disable services to iio backend framework
-      iio: add child nodes support in iio backend framework
-      dt-bindings: iio: dfsdm: move to backend framework
-      dt-bindings: iio: add backend support to sd modulator
-      dt-bindings: iio: add vref support to sd modulator
-      iio: adc: stm32-dfsdm: adopt generic channels bindings
-      iio: add iio backend support to sd modulator
-      iio: adc: stm32-dfsdm: add scaling support to dfsdm
-
-Petar Stoykov (3):
-      dt-bindings: iio: pressure: Add Sensirion SDP500
-      iio: pressure: Add driver for Sensirion SDP500
-      MAINTAINERS: Add Sensirion SDP500
-
-Rayyan Ansari (3):
-      dt-bindings: iio: kionix,kxcjk1013: Document KX022-1020
-      iio: accel: kxcjk-1013: Add support for KX022-1020
-      dt-bindings: iio: magnetometer: bmc150: Document mount-matrix
-
-Rob Herring (Arm) (1):
-      iio: adc: aspeed: Use of_property_present()
-
-Thorsten Blum (1):
-      iio: common: scmi_iio: Remove unnecessary u64 type cast
-
-Vasileios Amoiridis (22):
-      iio: chemical: bme680: Fix read/write ops to device by adding mutexes
-      iio: chemical: bme680: Fix typo in define
-      iio: chemical: bme680: Drop unnecessary casts and correct adc data types
-      iio: chemical: bme680: Remove remaining ACPI-only stuff
-      iio: chemical: bme680: Sort headers alphabetically
-      iio: chemical: bme680: Remove duplicate register read
-      iio: chemical: bme680: Use bulk reads for calibration data
-      iio: chemical: bme680: Allocate IIO device before chip initialization
-      iio: chemical: bme680: Add read buffers in read/write buffer union
-      iio: chemical: bme680: Make error checks consistent
-      iio: chemical: bme680: Modify startup procedure
-      iio: chemical: bme680: Move probe errors to dev_err_probe()
-      iio: chemical: bme680: Remove redundant gas configuration
-      iio: chemical: bme680: Move forced mode setup in ->read_raw()
-      iio: chemical: bme680: Refactorize reading functions
-      iio: pressure: bmp280: Generalize read_*() functions
-      iio: pressure: bmp280: Add SCALE, RAW values in channels and refactorize them
-      iio: pressure: bmp280: Add triggered buffer support
-      iio: pressure: bmp280: Fix regmap for BMP280 device
-      iio: pressure: bmp280: Fix waiting time for BMP3xx configuration
-      iio: pressure: bmp280: Sort headers alphabetically
-      chemical: bme680: Convert to static the const lookup table
-
-Yang Ruibin (1):
-      drivers:iio:Fix the NULL vs IS_ERR() bug for debugfs_create_dir()
-
-Yasin Lee (3):
-      dt-bindings: vendor-prefixes: add tyhx
-      dt-bindings: iio: proximity: Add TYHX HX9023S
-      iio: proximity: Add driver support for TYHX's HX9023S capacitive proximity sensor
-
- Documentation/ABI/testing/debugfs-iio-ad9467       |   39 +
- Documentation/ABI/testing/debugfs-iio-backend      |   20 +
- Documentation/ABI/testing/sysfs-bus-iio            |   73 +-
- .../ABI/testing/sysfs-bus-iio-adc-max9611          |   17 -
- .../ABI/testing/sysfs-bus-iio-chemical-sgp40       |   14 -
- Documentation/ABI/testing/sysfs-bus-iio-dac        |   61 +
- .../ABI/testing/sysfs-bus-iio-dac-ltc2688          |   31 -
- .../ABI/testing/sysfs-bus-iio-filter-admv8818      |    2 +-
- Documentation/ABI/testing/sysfs-bus-iio-ina2xx-adc |    9 -
- .../devicetree/bindings/iio/accel/adi,adxl380.yaml |   92 +
- .../bindings/iio/accel/kionix,kxcjk1013.yaml       |    1 +
- .../devicetree/bindings/iio/adc/adi,ad4000.yaml    |  197 ++
- .../devicetree/bindings/iio/adc/adi,ad4695.yaml    |  254 +++
- .../devicetree/bindings/iio/adc/adi,ad7192.yaml    |   33 +-
- .../devicetree/bindings/iio/adc/adi,ad7380.yaml    |   13 +
- .../devicetree/bindings/iio/adc/adi,ad7606.yaml    |  123 +-
- .../devicetree/bindings/iio/adc/adi,ad9467.yaml    |    3 +
- .../bindings/iio/adc/microchip,pac1921.yaml        |   71 +
- .../bindings/iio/adc/rockchip-saradc.yaml          |    3 +
- .../bindings/iio/adc/sigma-delta-modulator.yaml    |   25 +-
- .../devicetree/bindings/iio/adc/st,stm32-adc.yaml  |    4 +-
- .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml       |  122 +-
- .../devicetree/bindings/iio/dac/adi,ltc2664.yaml   |  181 ++
- .../devicetree/bindings/iio/dac/adi,ltc2672.yaml   |  160 ++
- Documentation/devicetree/bindings/iio/dac/dac.yaml |   50 +
- .../bindings/iio/frequency/adi,adf4377.yaml        |   10 +
- .../bindings/iio/humidity/sciosense,ens210.yaml    |   55 +
- .../bindings/iio/light/liteon,ltrf216a.yaml        |    4 +-
- .../devicetree/bindings/iio/light/rohm,bh1745.yaml |   53 +
- .../{rohm,bu27034.yaml => rohm,bu27034anuc.yaml}   |   11 +-
- .../devicetree/bindings/iio/light/stk33xx.yaml     |   13 +-
- .../iio/magnetometer/asahi-kasei,ak8975.yaml       |    1 -
- .../iio/magnetometer/bosch,bmc150_magn.yaml        |    3 +
- .../bindings/iio/pressure/sensirion,sdp500.yaml    |   46 +
- .../bindings/iio/proximity/tyhx,hx9023s.yaml       |   93 +
- .../devicetree/bindings/vendor-prefixes.yaml       |    2 +
- Documentation/iio/ad4000.rst                       |  131 ++
- Documentation/iio/ad4695.rst                       |  162 ++
- Documentation/iio/ad7380.rst                       |  130 ++
- Documentation/iio/adxl380.rst                      |  233 +++
- Documentation/iio/index.rst                        |    4 +
- Documentation/spi/spi-summary.rst                  |   83 +
- MAINTAINERS                                        |   73 +
- drivers/iio/accel/Kconfig                          |   27 +
- drivers/iio/accel/Makefile                         |    3 +
- drivers/iio/accel/adxl367.c                        |    2 +-
- drivers/iio/accel/adxl367_spi.c                    |    2 +-
- drivers/iio/accel/adxl372.c                        |    2 +-
- drivers/iio/accel/adxl380.c                        | 1905 ++++++++++++++++++++
- drivers/iio/accel/adxl380.h                        |   26 +
- drivers/iio/accel/adxl380_i2c.c                    |   64 +
- drivers/iio/accel/adxl380_spi.c                    |   66 +
- drivers/iio/accel/bma180.c                         |    3 +-
- drivers/iio/accel/bma400_core.c                    |   11 +-
- drivers/iio/accel/bma400_spi.c                     |    2 +-
- drivers/iio/accel/bmc150-accel-core.c              |    3 +-
- drivers/iio/accel/bmi088-accel-spi.c               |    2 +-
- drivers/iio/accel/cros_ec_accel_legacy.c           |    2 +-
- drivers/iio/accel/fxls8962af-core.c                |    3 +-
- drivers/iio/accel/kxcjk-1013.c                     |    8 +-
- drivers/iio/accel/msa311.c                         |    3 +-
- drivers/iio/accel/sca3300.c                        |    3 +-
- drivers/iio/accel/stk8312.c                        |    3 +-
- drivers/iio/accel/stk8ba50.c                       |    3 +-
- drivers/iio/adc/Kconfig                            |   38 +
- drivers/iio/adc/Makefile                           |    3 +
- drivers/iio/adc/ad4000.c                           |  722 ++++++++
- drivers/iio/adc/ad4695.c                           |  978 ++++++++++
- drivers/iio/adc/ad7091r8.c                         |    2 +-
- drivers/iio/adc/ad7124.c                           |   34 +-
- drivers/iio/adc/ad7192.c                           |  183 +-
- drivers/iio/adc/ad7266.c                           |    3 +-
- drivers/iio/adc/ad7280a.c                          |   10 +-
- drivers/iio/adc/ad7298.c                           |    3 +-
- drivers/iio/adc/ad7380.c                           |  525 +++++-
- drivers/iio/adc/ad7606.c                           |   47 +-
- drivers/iio/adc/ad7606_spi.c                       |    5 +-
- drivers/iio/adc/ad7768-1.c                         |    5 +-
- drivers/iio/adc/ad799x.c                           |    3 +-
- drivers/iio/adc/ad9467.c                           |  487 ++++-
- drivers/iio/adc/ad_sigma_delta.c                   |    6 +-
- drivers/iio/adc/adi-axi-adc.c                      |   71 +-
- drivers/iio/adc/aspeed_adc.c                       |    3 +-
- drivers/iio/adc/at91_adc.c                         |   17 +-
- drivers/iio/adc/cc10001_adc.c                      |    4 +-
- drivers/iio/adc/dln2-adc.c                         |    8 +-
- drivers/iio/adc/hx711.c                            |    5 +-
- drivers/iio/adc/ina2xx-adc.c                       |    3 +-
- drivers/iio/adc/max1118.c                          |    3 +-
- drivers/iio/adc/max1363.c                          |   34 +-
- drivers/iio/adc/mcp3564.c                          |   54 +-
- drivers/iio/adc/mcp3911.c                          |   61 +-
- drivers/iio/adc/mt6360-adc.c                       |    2 +-
- drivers/iio/adc/pac1921.c                          | 1261 +++++++++++++
- drivers/iio/adc/rockchip_saradc.c                  |    2 +-
- drivers/iio/adc/rtq6056.c                          |    2 +-
- drivers/iio/adc/sd_adc_modulator.c                 |   97 +-
- drivers/iio/adc/stm32-adc.c                        |    4 +-
- drivers/iio/adc/stm32-dfsdm-adc.c                  |  295 ++-
- drivers/iio/adc/ti-adc0832.c                       |    3 +-
- drivers/iio/adc/ti-adc084s021.c                    |    3 +-
- drivers/iio/adc/ti-adc12138.c                      |    3 +-
- drivers/iio/adc/ti-ads1015.c                       |    2 +-
- drivers/iio/adc/ti-ads1119.c                       |    4 +-
- drivers/iio/adc/ti-ads124s08.c                     |    3 +-
- drivers/iio/adc/ti-ads1298.c                       |    3 +-
- drivers/iio/adc/ti-ads131e08.c                     |    2 +-
- drivers/iio/adc/ti-ads8688.c                       |    4 +-
- drivers/iio/adc/ti-tsc2046.c                       |   83 +-
- drivers/iio/adc/vf610_adc.c                        |    2 +-
- drivers/iio/adc/xilinx-xadc-core.c                 |    5 +-
- drivers/iio/buffer/industrialio-buffer-cb.c        |    2 +-
- drivers/iio/buffer/industrialio-buffer-dma.c       |   36 +-
- drivers/iio/buffer/industrialio-buffer-dmaengine.c |    1 +
- drivers/iio/buffer/industrialio-hw-consumer.c      |    4 +-
- drivers/iio/chemical/bme680.h                      |   41 +-
- drivers/iio/chemical/bme680_core.c                 |  633 +++----
- drivers/iio/chemical/bme680_spi.c                  |    2 +-
- drivers/iio/chemical/sgp40.c                       |   11 +-
- .../common/cros_ec_sensors/cros_ec_sensors_core.c  |    8 +-
- drivers/iio/common/scmi_sensors/scmi_iio.c         |    2 +-
- drivers/iio/dac/Kconfig                            |   11 +
- drivers/iio/dac/Makefile                           |    1 +
- drivers/iio/dac/ad9739a.c                          |   13 +-
- drivers/iio/dac/adi-axi-dac.c                      |   21 +-
- drivers/iio/dac/ltc2664.c                          |  735 ++++++++
- drivers/iio/dac/ltc2688.c                          |    2 +-
- drivers/iio/dac/mcp4728.c                          |   45 +-
- drivers/iio/dac/mcp4922.c                          |   47 +-
- drivers/iio/dac/ti-dac7311.c                       |    4 +-
- drivers/iio/dummy/iio_simple_dummy_buffer.c        |    2 +-
- drivers/iio/frequency/adf4377.c                    |   35 +-
- drivers/iio/health/afe4403.c                       |    3 +-
- drivers/iio/health/afe4404.c                       |    3 +-
- drivers/iio/health/max30102.c                      |    2 +-
- drivers/iio/humidity/Kconfig                       |   11 +
- drivers/iio/humidity/Makefile                      |    1 +
- drivers/iio/humidity/am2315.c                      |    3 +-
- drivers/iio/humidity/ens210.c                      |  339 ++++
- drivers/iio/imu/adis16400.c                        |   18 +-
- drivers/iio/imu/adis16460.c                        |   18 +-
- drivers/iio/imu/adis16475.c                        |   12 +-
- drivers/iio/imu/adis16480.c                        |   20 +-
- drivers/iio/imu/bmi160/bmi160_core.c               |    3 +-
- drivers/iio/imu/bmi323/bmi323.h                    |    1 +
- drivers/iio/imu/bmi323/bmi323_core.c               |   23 +
- drivers/iio/imu/bmi323/bmi323_i2c.c                |    3 +-
- drivers/iio/imu/bmi323/bmi323_spi.c                |    3 +-
- drivers/iio/imu/bno055/bno055.c                    |    2 +-
- drivers/iio/imu/bno055/bno055_ser_core.c           |    2 +-
- drivers/iio/imu/kmx61.c                            |    3 +-
- drivers/iio/industrialio-backend.c                 |  264 ++-
- drivers/iio/industrialio-buffer.c                  |   52 +-
- drivers/iio/industrialio-core.c                    |   46 +-
- drivers/iio/industrialio-trigger.c                 |   27 +
- drivers/iio/light/Kconfig                          |   13 +
- drivers/iio/light/Makefile                         |    1 +
- drivers/iio/light/adjd_s311.c                      |    3 +-
- drivers/iio/light/apds9960.c                       |   55 +-
- drivers/iio/light/bh1745.c                         |  906 ++++++++++
- drivers/iio/light/gp2ap002.c                       |    2 +-
- drivers/iio/light/gp2ap020a00f.c                   |    9 +-
- drivers/iio/light/isl29125.c                       |    3 +-
- drivers/iio/light/ltr390.c                         |  241 ++-
- drivers/iio/light/ltrf216a.c                       |   53 +-
- drivers/iio/light/noa1305.c                        |  169 +-
- drivers/iio/light/rohm-bu27034.c                   |  337 +---
- drivers/iio/light/si1145.c                         |    7 +-
- drivers/iio/light/stk3310.c                        |    7 +-
- drivers/iio/light/tcs3414.c                        |    3 +-
- drivers/iio/light/tcs3472.c                        |    3 +-
- drivers/iio/magnetometer/ak8975.c                  |    1 -
- drivers/iio/magnetometer/rm3100-core.c             |    2 +-
- drivers/iio/pressure/Kconfig                       |   11 +
- drivers/iio/pressure/Makefile                      |    1 +
- drivers/iio/pressure/bmp280-core.c                 |  654 ++++++-
- drivers/iio/pressure/bmp280-i2c.c                  |    2 +-
- drivers/iio/pressure/bmp280-regmap.c               |   45 +-
- drivers/iio/pressure/bmp280-spi.c                  |   18 +-
- drivers/iio/pressure/bmp280.h                      |   37 +-
- drivers/iio/pressure/dlhl60d.c                     |    3 +-
- drivers/iio/pressure/sdp500.c                      |  156 ++
- drivers/iio/proximity/Kconfig                      |   14 +
- drivers/iio/proximity/Makefile                     |    1 +
- drivers/iio/proximity/hx9023s.c                    | 1144 ++++++++++++
- drivers/iio/proximity/sx9500.c                     |    3 +-
- drivers/iio/proximity/sx_common.c                  |    6 +-
- drivers/spi/spi-axi-spi-engine.c                   |   15 +-
- drivers/spi/spi-bitbang.c                          |   24 +
- drivers/spi/spi-gpio.c                             |   12 +-
- drivers/spi/spi.c                                  |    6 +
- drivers/staging/iio/impedance-analyzer/ad5933.c    |    5 +-
- include/dt-bindings/iio/adi,ad4695.h               |    9 +
- include/linux/iio/backend.h                        |   62 +-
- include/linux/iio/iio.h                            |   39 +-
- include/linux/spi/spi_bitbang.h                    |    1 +
- include/uapi/linux/spi/spi.h                       |    5 +-
- 197 files changed, 14743 insertions(+), 1805 deletions(-)
- create mode 100644 Documentation/ABI/testing/debugfs-iio-ad9467
- create mode 100644 Documentation/ABI/testing/debugfs-iio-backend
- delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-max9611
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac
- create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1921.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/dac/dac.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/humidity/sciosense,ens210.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
- rename Documentation/devicetree/bindings/iio/light/{rohm,bu27034.yaml => rohm,bu27034anuc.yaml} (66%)
- create mode 100644 Documentation/devicetree/bindings/iio/pressure/sensirion,sdp500.yaml
- create mode 100644 Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
- create mode 100644 Documentation/iio/ad4000.rst
- create mode 100644 Documentation/iio/ad4695.rst
- create mode 100644 Documentation/iio/ad7380.rst
- create mode 100644 Documentation/iio/adxl380.rst
- create mode 100644 drivers/iio/accel/adxl380.c
- create mode 100644 drivers/iio/accel/adxl380.h
- create mode 100644 drivers/iio/accel/adxl380_i2c.c
- create mode 100644 drivers/iio/accel/adxl380_spi.c
- create mode 100644 drivers/iio/adc/ad4000.c
- create mode 100644 drivers/iio/adc/ad4695.c
- create mode 100644 drivers/iio/adc/pac1921.c
- create mode 100644 drivers/iio/dac/ltc2664.c
- create mode 100644 drivers/iio/humidity/ens210.c
- create mode 100644 drivers/iio/light/bh1745.c
- create mode 100644 drivers/iio/pressure/sdp500.c
- create mode 100644 drivers/iio/proximity/hx9023s.c
- create mode 100644 include/dt-bindings/iio/adi,ad4695.h
 

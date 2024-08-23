@@ -1,132 +1,184 @@
-Return-Path: <linux-iio+bounces-8730-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8731-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B027A95D577
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 20:48:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159C495D581
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 20:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E31921C2209B
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 18:48:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B58201F23A71
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 18:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A12C139D0A;
-	Fri, 23 Aug 2024 18:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E5C192586;
+	Fri, 23 Aug 2024 18:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F7QfnfJD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGLGGcdN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF9F8F6B;
-	Fri, 23 Aug 2024 18:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABA0191F9C;
+	Fri, 23 Aug 2024 18:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724438881; cv=none; b=hTW5jn3w2lnaxP4BHkXh2klqzTVlOuyUZS1t9MGFXHfVfGxkvUCErSn+u7wpAyi5scjN3609aVFTepa26foL6yzOZU2gmwdHbgJFa8PGrgnqza98iBCuEwaBugGe/w6lVS/PUCRpaoIaCndoIv00C4NJgqcnrk7QGCc5e2XQgD0=
+	t=1724438943; cv=none; b=u+Ja05d1N+hRB3fF7ARehEvNXdOFFTELnEYYONToAXTgRc4ZukzeHmKypBgAd1q6SCO5n7KaKFxKHRq57h5xFx7rfquz58hp9PQtkGustPd8M9YF9FoF+5/E0Q8rVxWuaaeNJDy+AlPEZa6tgue9bj9oqpA8Xyn188HZdo4uP2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724438881; c=relaxed/simple;
-	bh=Y5H1f02bfP18o0eJ+LoR6Sc1Cx4Rlj1kHHn4/9asXyI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bbcyV3vufYGBmEUqHvku1QwZ4G5DptLWXyy7zdVhhMC0kkIi42etVJYT9qNnt/KpGJApE6XMBuZsAiRQ+lIffhfAfhXJQusdHIsv0E//xgm6WpQSOiRH8KQol46dtkCv5aJf+xDLQUjrYHXnLZ+dVSRyosyUAt0V9G8fO+CgOAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F7QfnfJD; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724438879; x=1755974879;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Y5H1f02bfP18o0eJ+LoR6Sc1Cx4Rlj1kHHn4/9asXyI=;
-  b=F7QfnfJDZIY5oRYcK7/BSAONKdHfX/bKojlxgVUs35YwXOhYFzZfPmDd
-   VgXizsjSky7T+B2NBxP73ltdShXSyC4ynVSEuOdxV+50SPmJVXZv/Lgpj
-   P3qN2FSfmor4m/sM7FzC7Xi7W/G/U95DHdlMZLRlTtEt9jua2GRWa1J09
-   0mndjECwp2ZktXm49ZvpXtymLO79a7lOzm1P+sEv89c9YtEScUr2r6ucI
-   4cR6tHIMaQ9zvRfG9VmkBYPX80mIhuTnJjnWR6CWuj76vo2mU0KiRJzg7
-   OvDF+mFfn+OAaG1g08cALzLiXW8P2BbiM/Z+NKF2SzSkT2lEgjT8hpLpf
-   Q==;
-X-CSE-ConnectionGUID: PAoB8B+mQ2GI+05QZQQNmA==
-X-CSE-MsgGUID: Kii+wUytTnuskxKyyy/WvA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="13175511"
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="13175511"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 11:47:59 -0700
-X-CSE-ConnectionGUID: bKHjxvGKRHCYYKn26MzvHw==
-X-CSE-MsgGUID: Q2kZeuerQiS1odKhdrtKlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="62180236"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 11:47:55 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1shZJj-00000000zPw-1AM6;
-	Fri, 23 Aug 2024 21:47:23 +0300
-Date: Fri, 23 Aug 2024 21:47:22 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, ang.iglesiasg@gmail.com,
-	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
-	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
-	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/7] iio: pressure: bmp280: Use bulk read for humidity
- calibration data
-Message-ID: <ZsjZOkglW1lGDNr8@smile.fi.intel.com>
-References: <20240823181714.64545-1-vassilisamir@gmail.com>
- <20240823181714.64545-2-vassilisamir@gmail.com>
+	s=arc-20240116; t=1724438943; c=relaxed/simple;
+	bh=cWy2nEWs2KrRrBfFk6UIt2HinYabtHMMjbnzuXOfPTE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=leyuaK2xjhS9n9t7BM7uqM68fJnem2PCF5/OL9ao0YfHDrSpxy6AwuuG2bwKfzidOTeNC8/Jk8HeBqSroMPwHkaGua4VSGkDQ9nnEgV2YgSTnpm89EfNvRh1tMGGMJlM/L45EyAoyUFh8fKCH4rfciIXL9dhJbjstZw2F+jw9LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGLGGcdN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6232BC32786;
+	Fri, 23 Aug 2024 18:48:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724438942;
+	bh=cWy2nEWs2KrRrBfFk6UIt2HinYabtHMMjbnzuXOfPTE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YGLGGcdNOYByD/L4LqRodK1g8dRV4Omux2+3/oOEqULY3Kj9vpeNXx+Gnp9l3KJGd
+	 7jxeSblyJiTM/lKFyA+TfQJcRk0nxViWPJa4b7HsUNUA2w29lohsyqSis4BvAqwGnX
+	 0PembGsW/I6+bSVzttrD9tN2Jt5H8okFx+XSO5rPR8FOcMP4V+EiGF8+7XxVFm2zzT
+	 5YUMfvXx9gtKg3rBo2n3UhQRqs/mtUNgAxC4xxkU7/fEZx7ACiINV6LZ2nljHRIWY4
+	 NIBKflCPwxAH/RTA0mbuYeRCkjjGS3OcNgKNX3tDioR8Ydjdl8hcbs3xyZxzaFHggb
+	 qdj6U0P1LT2hQ==
+Date: Fri, 23 Aug 2024 19:48:52 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Trevor Gamblin <tgamblin@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, David
+ Lechner <dlechner@baylibre.com>, Uwe Kleine-Konig
+ <u.kleine-koenig@baylibre.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] iio: adc: ad7625: add driver
+Message-ID: <20240823194852.4d855eb3@jic23-huawei>
+In-Reply-To: <20240819-ad7625_r1-v3-2-75d5217c76b5@baylibre.com>
+References: <20240819-ad7625_r1-v3-0-75d5217c76b5@baylibre.com>
+	<20240819-ad7625_r1-v3-2-75d5217c76b5@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240823181714.64545-2-vassilisamir@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 23, 2024 at 08:17:08PM +0200, Vasileios Amoiridis wrote:
-> Convert individual reads to a bulk read for the humidity calibration data.
+On Mon, 19 Aug 2024 10:11:44 -0400
+Trevor Gamblin <tgamblin@baylibre.com> wrote:
+
+> Add a driver for the AD762x and AD796x family of ADCs. These are
+> pin-compatible devices using an LVDS interface for data transfer,
+> capable of sampling at rates of 6 (AD7625), 10 (AD7626), and 5
+> (AD7960/AD7961) MSPS, respectively. They also feature multiple voltage
+> reference options based on the configuration of the EN1/EN0 pins, which
+> can be set in the devicetree.
+> 
+> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+Hi Trevor
+A few really minor things in here.  Given we are waiting on the 
+PWM set anyway, I haven't just tidied them up whilst applying.
+> ---
+>  MAINTAINERS              |   1 +
+>  drivers/iio/adc/Kconfig  |  15 ++
+>  drivers/iio/adc/Makefile |   1 +
+>  drivers/iio/adc/ad7625.c | 688 +++++++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 705 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2361f92751dd..a90972e1c5c5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1268,6 +1268,7 @@ S:	Supported
+>  W:	https://ez.analog.com/linux-software-drivers
+>  W:	http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html
+>  F:	Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
+> +F:	drivers/iio/adc/ad7625.c
+>  
+>  ANALOG DEVICES INC AD7768-1 DRIVER
+>  M:	Michael Hennerich <Michael.Hennerich@analog.com>
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index f60fe85a30d5..e25fb505f545 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -219,6 +219,21 @@ config AD7606_IFACE_SPI
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called ad7606_spi.
+>  
+> +config AD7625
+> +        tristate "Analog Devices AD7625/AD7626 High Speed ADC driver"
+> +        select IIO_BACKEND
+> +        help
+> +          Say yes here to build support for Analog Devices:
+> +	  * AD7625 16-Bit, 6 MSPS PulSAR Analog-to-Digital Converter
+Looks like some tabs mixed in with otherwise spaces.
+Should be tabs + spaces as per entry above.
+> +	  * AD7626 16-Bit, 10 MSPS PulSAR Analog-to-Digital Converter
+> +	  * AD7960 18-Bit, 5 MSPS PulSAR Analog-to-Digital Converter
+> +	  * AD7961 16-Bit, 5 MSPS PulSAR Analog-to-Digital Converter
+> +
+> +          The driver requires the assistance of the AXI ADC IP core to operate.
+> +
+> +          To compile this driver as a module, choose M here: the module will be
+> +          called ad7625.
+> +
+>  config AD7766
+>  	tristate "Analog Devices AD7766/AD7767 ADC driver"
+>  	depends on SPI_MASTER
+
+> diff --git a/drivers/iio/adc/ad7625.c b/drivers/iio/adc/ad7625.c
+> new file mode 100644
+> index 000000000000..3ac3c56d43eb
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad7625.c
+> @@ -0,0 +1,688 @@
+
+> +
+> +struct ad7625_chip_info {
+> +	const char *name;
+> +	const unsigned int max_sample_rate_hz;
+> +	const struct ad7625_timing_spec *timing_spec;
+> +	const struct iio_chan_spec chan_spec;
+> +	const bool has_power_down_state;
+> +	const bool has_bandwidth_control;
+> +	const bool has_internal_vref;
+Not sure I'd bother marking these bools const. Unlikely the compiler
+can do anything with that info it can't do without it. I guess it does no
+real harm thowever.
+> +};
+
+
+> +static int ad7625_probe(struct platform_device *pdev)
+> +{
 
 ...
 
-> +	calib->H2 = get_unaligned_le16(&data->bme280_humid_cal_buf[H2]);
-> +	calib->H3 = data->bme280_humid_cal_buf[H3];
+> +	/*
+> +	 * Set the initial sampling frequency to the maximum, unless the
+> +	 * AD796x device is limited to narrow bandwidth by EN2 == 1, in
+> +	 * which case the sampling frequency should be limited to 2MSPS
+> +	 */
+> +	if (!st->info->has_bandwidth_control) {
+> +		default_sample_freq = st->info->max_sample_rate_hz;
+> +	} else {
+> +		default_sample_freq = !st->can_wide_bandwidth ?
 
-> +	h4_upper = FIELD_GET(BME280_COMP_H4_GET_MASK_UP,
-> +			get_unaligned_be16(&data->bme280_humid_cal_buf[H4]));
-> +	h4_upper = FIELD_PREP(BME280_COMP_H4_PREP_MASK_UP, h4_upper);
+Flip the logic.
+		default_sample_freq = st->can_wide_bandwidth ?
+				      st->info->max_sample_rate_hz :
+				      AD7960_MAX_NBW_FREQ;
 
-This is a bit confusing. I would add a tmp variable and have this as
+seems simpler or set a default and override it.
+	default_sample_freq = st->info_max_sample_rate_hz;
+	if (st->info->has_bandwidth_control &&
+	    !st->can_wide_bandwidth)
+		default_sampling_freq = AD7960_MAX_NBW_FREQ;
+		
 
-	tmp = FIELD_GET(BME280_COMP_H4_GET_MASK_UP,
-			get_unaligned_be16(&data->bme280_humid_cal_buf[H4]));
-	h4_upper = FIELD_PREP(BME280_COMP_H4_PREP_MASK_UP, tmp);
-
-Also note indentation issues.
-
-> +	h4_lower = FIELD_GET(BME280_COMP_H4_MASK_LOW,
-> +			get_unaligned_be16(&data->bme280_humid_cal_buf[H4]));
-> +	calib->H4 = sign_extend32(h4_upper | h4_lower, 11);
-> +	calib->H5 = sign_extend32(FIELD_GET(BME280_COMP_H5_MASK,
-> +			get_unaligned_le16(&data->bme280_humid_cal_buf[H5])), 11);
-> +	calib->H6 = data->bme280_humid_cal_buf[H6];
-
-...
-
->  		/* Calibration data buffers */
->  		__le16 bmp280_cal_buf[BMP280_CONTIGUOUS_CALIB_REGS / 2];
->  		__be16 bmp180_cal_buf[BMP180_REG_CALIB_COUNT / 2];
-
-Side note: I would see rather sizeof(__Xe16) than 2:s in the above definitions.
-
-> +		u8 bme280_humid_cal_buf[BME280_CONTIGUOUS_CALIB_REGS];
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> +				      AD7960_MAX_NBW_FREQ :
+> +				      st->info->max_sample_rate_hz;
+> +	}
 

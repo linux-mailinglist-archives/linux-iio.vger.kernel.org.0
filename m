@@ -1,248 +1,289 @@
-Return-Path: <linux-iio+bounces-8737-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8738-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8CF95D601
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 21:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D0895D609
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 21:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FE341F22D98
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 19:19:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C3261F23E71
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 19:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C091922FD;
-	Fri, 23 Aug 2024 19:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B461922F0;
+	Fri, 23 Aug 2024 19:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rwv38XcE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QwVj9nkw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5C018592E;
-	Fri, 23 Aug 2024 19:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8774D8F6B;
+	Fri, 23 Aug 2024 19:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724440762; cv=none; b=qhr7qU5GQEKDTjckgMUJhgZ/vAXFmc6apvkL+ccUoZgFWBOGUgo+PpdtaLEOiFF0hwQAtVc+9UL37YIHE7GiSwBNS70Bs1x6o6caeOsqv18gOYonMgKnaL27xK6xNj4FhdPo8wWreZcxOsUycR/uIs+ek8CzBjRGR0hGsRgG4ro=
+	t=1724441117; cv=none; b=Xjd5uVljwrR7hMV2yGA7llSfMxtEfZAN1coOlZwcvxU+iP2o+sYHNnxNzU8xM5yaP83qsG8tHn8gf2T6ZiuyItp+NpEx3VwvTd4jdpO4k/HmjTUmqDlnVcj94g50vcytWFFJAnkfte0qAjAaB07Os8AKzFVzB4VMnCZcOEeiXDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724440762; c=relaxed/simple;
-	bh=RbGqazl7YKAeTpEJJ80ong+xPNKwnei0GOQGoLCf5TQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IHDqrWLzBzA1Zp1znTIqYyzch/oifXCKbYBAXWwHYz/rfg3l/hbucEGTkG+iusvGQv7IRD1pkIsi27R6vwxiCpxfQu30bADxAY4lGjTROTz5NshC17DT+PZRJCAhXkqn99j+mqpESO5BDHdUX149YA/Jg9KSfEO2GVt3NTU5JjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rwv38XcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C7DC32786;
-	Fri, 23 Aug 2024 19:19:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724440761;
-	bh=RbGqazl7YKAeTpEJJ80ong+xPNKwnei0GOQGoLCf5TQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Rwv38XcEbVeSkRTN8TuW94mP+kgGA6MUqWxTQnfxdTfqotynofwEw5/nqKesQY+gB
-	 1wRD4JGTX7HhdcFUbLo0VOH4piINa1Sd10k0SlYLiSns/XuoZjYtrvYO8r3udJ0GeW
-	 5hcM9alwbbAUl1rEElrWbzzA/K6v6XACsYlVcOZV8UtfgD35CtRlc+vjV1tUPxFC/S
-	 es+0qPJKEgXzk7yQzWCCxM0V0pv+cqUqFx/3BFh9Ninrpt2DLPvbLo9lQAOglIPAJC
-	 gZ6DrLDB1Sm0z5ue3PdDMy+CnkFCl7JyDu4RL7inSF0Xz+s3kDe2A6DYSNsdXremxA
-	 55Phphkt9sxyA==
-Date: Fri, 23 Aug 2024 20:19:13 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, krzk+dt@kernel.org, robh@kernel.org,
- lars@metafoo.de, michael.hennerich@analog.com, gstols@baylibre.com
-Subject: Re: [PATCH 7/7] iio: adc: ad7606: add support for AD7606C-{16,18}
- parts
-Message-ID: <20240823201913.5bded18f@jic23-huawei>
-In-Reply-To: <20240819064721.91494-8-aardelean@baylibre.com>
-References: <20240819064721.91494-1-aardelean@baylibre.com>
-	<20240819064721.91494-8-aardelean@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1724441117; c=relaxed/simple;
+	bh=DFlFWR7lXMyjsZyyLCuvccHNpt67WGrdixy/Ulp6tTA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O3yPFzRI5aStpTZulRVIo3EVaGl5uDAHLq9K3yWBbMvmFvsRAzD4B047mpWT5MCMIxGvDV9JjwB+vDUt3gf7206sUyw+AdI/Ehw+23R3bzGPGtU+vbumXUL+0HmqtuANKI4XNVyP7mtLF0IlPfIZ1K7aO5LkQ4oQYOVsHxLpaGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QwVj9nkw; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724441116; x=1755977116;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DFlFWR7lXMyjsZyyLCuvccHNpt67WGrdixy/Ulp6tTA=;
+  b=QwVj9nkwzvTCPI0pj6fbnAstJAobG740cmkAtXTNnp1rvJwPoxFa0ZhH
+   gTsB1byGtuuiKU9rN9u9igSDCfYqd03WqQaz8kQDjP1gvSbOuAZiuQYEF
+   wtjzRhQgf2jak5+98cVupwfW2Kv/3Jh1WSUq04BSHyhwrllRi1ZAGBzSR
+   UNjpNSnT3qBI7Ja+i8QEuYO30tY2xwv3/B963BMP9irpxHw6/ZqkjwnT5
+   fCTYI81F0Ddab/E3bBV33tTSUDHSGNDLMeWsa96QVeIKJxXlv6IiwJwYu
+   8oYpxVyyO7o5jWIao3BYpsnqGwUHS4y8nDIg/mv/s4ozC/Q/ak5SsxtVE
+   w==;
+X-CSE-ConnectionGUID: MtKvJTP0RjCBNl1DVvulfQ==
+X-CSE-MsgGUID: nroJss6hSPO5glxeYYU1vw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="25821208"
+X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
+   d="scan'208";a="25821208"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 12:25:10 -0700
+X-CSE-ConnectionGUID: uPUZA1ArRSi0UnqKNpqUJA==
+X-CSE-MsgGUID: sX/8HsmNTFq89skPVLyMbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
+   d="scan'208";a="66699466"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 12:25:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1shZu9-000000010IY-2PdN;
+	Fri, 23 Aug 2024 22:25:01 +0300
+Date: Fri, 23 Aug 2024 22:25:01 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, ang.iglesiasg@gmail.com,
+	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
+	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
+	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 4/7] iio: pressure: bmp280: Use sleep and forced mode
+ for oneshot captures
+Message-ID: <ZsjiDaZjcA-oopWB@smile.fi.intel.com>
+References: <20240823181714.64545-1-vassilisamir@gmail.com>
+ <20240823181714.64545-5-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240823181714.64545-5-vassilisamir@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, 19 Aug 2024 09:47:17 +0300
-Alexandru Ardelean <aardelean@baylibre.com> wrote:
+On Fri, Aug 23, 2024 at 08:17:11PM +0200, Vasileios Amoiridis wrote:
+> This commit adds forced mode support in sensors BMP28x, BME28x, BMP3xx
+> and BMP58x. Sensors BMP18x and BMP085 are old and do not support this
+> feature so their operation is not affected at all.
+> 
+> Essentially, up to now, the rest of the sensors were used in normal mode
+> all the time. This means that they are continuously doing measurements
+> even though these measurements are not used. Even though the sensor does
+> provide PM support, to cover all the possible use cases, the sensor needs
+> to go into sleep mode and wake up whenever necessary.
+> 
+> This commit, adds sleep and forced mode support. Essentially, the sensor
+> sleeps all the time except for when a measurement is requested. When there
+> is a request for a measurement, the sensor is put into forced mode, starts
+> the measurement and after it is done we read the output and we put it again
+> in sleep mode.
+> 
+> For really fast and more deterministic measurements, the triggered buffer
+> interface can be used, since the sensor is still used in normal mode for
+> that use case.
+> 
+> This commit does not add though support for DEEP STANDBY, Low Power NORMAL
+> and CONTINUOUS modes, supported only by the BMP58x version.
 
-> The AD7606C-16 and AD7606C-18 are pretty similar with the AD7606B.
-> The main difference between AD7606C-16 & AD7606C-18 is the precision in
-> bits (16 vs 18).
-> Because of that, some scales need to be defined for the 18-bit variants, =
-as
-> they need to be computed against 2**18 (vs 2**16 for the 16 bit-variants).
->=20
-> Because the AD7606C-16,18 also supports bipolar & differential channels,
-> for SW-mode, the default range of 10 V or =C2=B110V should be set at prob=
-e.
-> On reset, the default range (in the registers) is set to value 0x3 which
-> corresponds to '=C2=B110 V single-ended range', regardless of bipolar or
-> differential configuration.
->=20
-> Aside from the scale/ranges, the AD7606C-16 is similar to the AD7606B.
->=20
-> And the AD7606C-18 variant offers 18-bit precision. The unfortunate effect
-> of this 18-bit sample size, is that there is no simple/neat way to get the
-> samples into a 32-bit array without having to do a home-brewed bit-buffer.
-> The ADC must read all samples (from all 8 channels) in order to get the
-> N-th sample (this could be reworked to do up-to-N-th sample for scan-dire=
-ct).
-> There doesn't seem to be any quick-trick to be usable to pad the samples
-> up to at least 24 bits.
-> Even the optional status-header is 8-bits, which would mean 26-bits of da=
-ta
-> per sample.
-> That means that when using a simple SPI controller (which can usually read
-> 8 bit multiples) a simple bit-buffer trick is required.
->=20
-> Datasheet links:
->   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7=
-606c-16.pdf
->   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7=
-606c-18.pdf
->=20
-> Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
+...
 
-A few minor things. If we can just start with 18 bit word spi controllers o=
-nly
-maybe that's worth doing to make things simpler.
+> +static const u8 bmp280_operation_mode[] = { BMP280_MODE_SLEEP,
+> +					    BMP280_MODE_FORCED,
+> +					    BMP280_MODE_NORMAL };
 
-> +static int ad7606c_sw_mode_setup_channels(struct iio_dev *indio_dev,
-> +					  ad7606c_chan_setup_cb_t chan_setup_cb)
+Better style is
+
+static const u8 bmp280_operation_mode[] = {
+	BMP280_MODE_SLEEP, BMP280_MODE_FORCED, BMP280_MODE_NORMAL,
+};
+
+Also note comma at the end.
+
+...
+
+> +static int bmp280_wait_conv(struct bmp280_data *data)
 > +{
-> +	unsigned int num_channels =3D indio_dev->num_channels - 1;
-> +	struct ad7606_state *st =3D iio_priv(indio_dev);
-> +	bool chan_configured[AD760X_MAX_CHANNELS];
-=3D {};
-and drop the memset.
-
-> +	struct device *dev =3D st->dev;
-> +	int ret;
-> +	u32 ch;
+> +	unsigned int reg;
+> +	int ret, meas_time;
 > +
-> +	/* We need to hook this first */
-> +	ret =3D st->bops->sw_mode_config(indio_dev);
-> +	if (ret)
+> +	meas_time = BMP280_MEAS_OFFSET;
+> +
+> +	/* Check if we are using a BME280 device */
+> +	if (data->oversampling_humid)
+> +		meas_time += (1 << data->oversampling_humid) * BMP280_MEAS_DUR +
+
+		BIT(data->oversampling_humid)
+
+> +			       BMP280_PRESS_HUMID_MEAS_OFFSET;
+
+> +	/* Pressure measurement time */
+> +	meas_time += (1 << data->oversampling_press) * BMP280_MEAS_DUR +
+
+Ditto.
+
+> +		      BMP280_PRESS_HUMID_MEAS_OFFSET;
+
+> +	/* Temperature measurement time */
+> +	meas_time += (1 << data->oversampling_temp) * BMP280_MEAS_DUR;
+
+Ditto.
+
+> +	usleep_range(meas_time, meas_time * 12 / 10);
+
+fsleep() ?
+
+> +	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
+> +	if (ret) {
+> +		dev_err(data->dev, "failed to read status register\n");
 > +		return ret;
-> +
-> +	indio_dev->info =3D &ad7606c_info_sw_mode;
-> +
-> +	memset(chan_configured, 0, sizeof(chan_configured));
-> +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		bool bipolar, differential;
-> +
-> +		ret =3D fwnode_property_read_u32(child, "reg", &ch);
-> +		if (ret)
-> +			continue;
-> +
-> +		if (ch >=3D num_channels) {
-> +			dev_warn(st->dev,
-> +				 "Invalid channel number (ignoring): %d\n", ch);
-> +			continue;
-> +		}
-> +
-> +		bipolar =3D fwnode_property_present(child, "bipolar");
-> +		differential =3D fwnode_property_present(child, "diff-channel");
-> +
-> +		chan_setup_cb(st, ch, bipolar, differential);
-> +		chan_configured[ch] =3D true;
 > +	}
-> +
-> +	/* Apply default configuration to unconfigured (via DT) channels */
-> +	for (ch =3D 0; ch < num_channels; ch++) {
-> +		struct ad7606_chan_scale *cs;
-> +		unsigned int *scale_avail_show;
-> +		int i;
-> +
-> +		if (!chan_configured[ch])
-> +			chan_setup_cb(st, ch, false, false);
-> +
-> +		/* AD7606C supports different scales per channel */
-> +		cs =3D &st->chan_scales[ch];
-> +
-> +		scale_avail_show =3D devm_kcalloc(st->dev, cs->num_scales * 2,
-> +						sizeof(*scale_avail_show),
-> +						GFP_KERNEL);
-
-Maybe just make it big enough for worst case and stick it in st always?
-How big can it get?
-
-
-
-> +		if (!scale_avail_show)
-> +			return -ENOMEM;
-> +
-> +		/* Generate a scale_avail list for showing to userspace */
-> +		for (i =3D 0; i < cs->num_scales; i++) {
-> +			scale_avail_show[i * 2] =3D 0;
-> +			scale_avail_show[i * 2 + 1] =3D cs->scale_avail[i];
-> +		}
-> +
-> +		cs->scale_avail_show =3D scale_avail_show;
+> +	if (reg & BMP280_REG_STATUS_MEAS_BIT) {
+> +		dev_err(data->dev, "Measurement cycle didn't complete\n");
+> +		return -EBUSY;
 > +	}
 > +
 > +	return 0;
 > +}
->
 
-> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
-> index dd0075c97c24..73a7b0007bf8 100644
-> --- a/drivers/iio/adc/ad7606_spi.c
-> +++ b/drivers/iio/adc/ad7606_spi.c
-> @@ -45,6 +45,8 @@
+...
 
-> =20
-> +static int ad7606_spi_read_block18to32(struct device *dev,
-> +				       int count, void *buf)
+> +static const u8 bmp380_operation_mode[] = { BMP380_MODE_SLEEP,
+> +					    BMP380_MODE_FORCED,
+> +					    BMP380_MODE_NORMAL };
+
+As per above.
+
+...
+
+> +static int bmp380_wait_conv(struct bmp280_data *data)
 > +{
-> +	struct spi_device *spi =3D to_spi_device(dev);
-> +	u32 i, bit_buffer, buf_size, bit_buf_size;
-> +	u32 *data =3D buf;
-> +	u8 *bdata =3D buf;
-> +	int j, ret;
+
+As per above comments against bmp280_wait_conv().
+
+> +	ret = regmap_read(data->regmap, BMP380_REG_STATUS, &reg);
+> +	if (ret) {
+> +		dev_err(data->dev, "failed to read status register\n");
+> +		return ret;
+> +	}
+
 > +
-> +	/**
-Not kernel doc.  /*
-> +	 * With the 18 bit ADC variants (here) is that we can't assume that all
-> +	 * SPI controllers will pad 18-bit sequences into 32-bit arrays,
-> +	 * so we need to do a bit of buffer magic here.
-> +	 * Alternatively, we can have a variant of this function that works
-> +	 * for SPI controllers that can pad 18-bit samples into 32-bit arrays.
+
+Choose one style (with or without blank line), as in the above you have no
+blank line in the similar situation.
+
+> +	if (!(reg & BMP380_STATUS_DRDY_PRESS_MASK) ||
+> +	    !(reg & BMP380_STATUS_DRDY_TEMP_MASK)) {
+> +		dev_err(data->dev, "Measurement cycle didn't complete.\n");
+> +		return -EBUSY;
+> +	}
+> +
+> +	return 0;
+> +}
+
+...
+
+> +		usleep_range(data->start_up_time, data->start_up_time + 500);
+
+fsleep() ? Comment?
+
+...
+
+> +static const u8 bmp580_operation_mode[] = { BMP580_MODE_SLEEP,
+> +					    BMP580_MODE_FORCED,
+> +					    BMP580_MODE_NORMAL };
+
+As per above.
+
+...
+
+> +	switch (mode) {
+> +	case BMP280_SLEEP:
+> +		break;
+> +	case BMP280_FORCED:
+> +		ret = regmap_set_bits(data->regmap, BMP580_REG_DSP_CONFIG,
+> +				      BMP580_DSP_IIR_FORCED_FLUSH);
+> +		if (ret) {
+> +			dev_err(data->dev,
+> +				"Could not flush IIR filter constants.\n");
+> +			return ret;
+> +		}
+> +		break;
+> +	case BMP280_NORMAL:
+> +		break;
+
+Can be unified with _SLEEP case.
+
+> +	default:
+> +		return -EINVAL;
+> +	}
+
+...
+
+> +static int bmp580_wait_conv(struct bmp280_data *data)
+> +{
+> +	/*
+> +	 * Taken from datasheet, Section 2 "Specification, Table 3 "Electrical
+> +	 * characteristics
+
+Missing period.
+
 > +	 */
+> +	static const int time_conv_press[] = { 0, 1050, 1785, 3045, 5670, 10920, 21420,
+> +					42420, 84420};
+> +	static const int time_conv_temp[] = { 0, 1050, 1105, 1575, 2205, 3465, 6090,
+> +				       11340, 21840};
+
+Please, start values on the next line after {. Also make }; to be on a separate line.
+
+> +	int meas_time;
 > +
-> +	/* Write 'count' bytes to the right, to not overwrite samples */
-> +	bdata +=3D count;
-> +
-> +	/* Read 24 bits only, as we'll only get samples of 18 bits each */
-> +	buf_size =3D count * 3;
-> +	ret =3D spi_read(spi, bdata, buf_size);
-> +	if (ret < 0) {
-> +		dev_err(&spi->dev, "SPI read error\n");
-> +		return ret;
-> +	}
-> +
-> +	bit_buffer =3D 0;
-> +	bit_buf_size =3D 0;
-> +	for (j =3D 0, i =3D 0; i < buf_size; i++) {
-> +		u32 sample;
-> +
-> +		bit_buffer =3D (bit_buffer << 8) | bdata[i];
-> +		bit_buf_size +=3D 8;
-> +
-> +		if (bit_buf_size < 18)
-> +			continue;
-> +
-> +		bit_buf_size -=3D 18;
-> +		sample =3D (bit_buffer >> bit_buf_size) & AD7606C_18_SAMPLE_MASK;
-> +		data[j++] =3D sign_extend32(sample, 17);
-> +
-> +		if (j =3D=3D count)
-> +			break;
-> +	}
-> +
+> +	meas_time = 4000 + time_conv_temp[data->oversampling_temp] +
+> +			   time_conv_press[data->oversampling_press];
+
+4 * USEC_PER_MSEC ?
+
+> +	usleep_range(meas_time, meas_time * 12 / 10);
+
+Comment? fsleep() ?
+
 > +	return 0;
 > +}
+
+...
+
+> +	usleep_range(2500, 3000);
+
+fsleep() ?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

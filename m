@@ -1,131 +1,248 @@
-Return-Path: <linux-iio+bounces-8736-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8737-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A6395D5F3
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 21:15:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8CF95D601
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 21:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44C0B1F23B7E
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 19:15:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FE341F22D98
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 19:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFDA18EFE0;
-	Fri, 23 Aug 2024 19:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C091922FD;
+	Fri, 23 Aug 2024 19:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WLEgD+zV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rwv38XcE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953AD8488;
-	Fri, 23 Aug 2024 19:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5C018592E;
+	Fri, 23 Aug 2024 19:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724440538; cv=none; b=WHE+y6FGvaZl9E/40eeCwqzMAGtSyxe66c4p4PGCVzvW5p56LwbxvpdGX0SHI/8gNkl8lHYrzXjR5GE0rPp1vc0o30WkfU2cq/G5zjgn1L/VefP15Cv6O7nGHDKUFbqsYgaU/NpsigoXCIWu2KKCDJg7cjti+9QiY3nbRzZXJ2k=
+	t=1724440762; cv=none; b=qhr7qU5GQEKDTjckgMUJhgZ/vAXFmc6apvkL+ccUoZgFWBOGUgo+PpdtaLEOiFF0hwQAtVc+9UL37YIHE7GiSwBNS70Bs1x6o6caeOsqv18gOYonMgKnaL27xK6xNj4FhdPo8wWreZcxOsUycR/uIs+ek8CzBjRGR0hGsRgG4ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724440538; c=relaxed/simple;
-	bh=PXkZuUaq2x+pGgvspK0w5ccETV5xXYujuHjG+kAk6Oc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RrWrBzCwDXDNuTGeG2xpAD3Mh75iO8G9QAMkAFml2yCrsSYrScwad0QPZn4flUX4D6kjTNsvTKOvQzNUpjRRY4UnvxNF8ZZQ6uuxVHpcAtDIWMbRMJJVD/r+tcvr33kh9s+7/eYxmRuP68ZfVleXhpbXLb79IYzz7Kt9KtKRI2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WLEgD+zV; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724440537; x=1755976537;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PXkZuUaq2x+pGgvspK0w5ccETV5xXYujuHjG+kAk6Oc=;
-  b=WLEgD+zVIJy/jioafasXc81gmUo+Rup96en3HB+b8zdK2L41pkCY+7Va
-   V0491xNHuB/Q00qpb5RonWygbHMJvkBjJcyqU/WSzZQ1R9+BQPW3kLZIt
-   k78VRwAS1FtI/MDariVVHTxdFHNFzopUVsD1z0gHx4T3R5w2PI/FEp2M2
-   CJo/WrWvnKcgd2AxAR6wng2C25ss6TKctTCWWVQ+tHJjEzD4yByzE+4ia
-   qzUUPFvXmyx4EWYM0akihAchvZVyNjdc82s4ds92rVd9TQAogC0OVxkdv
-   aZ+0fMvXrEH88TEvIvwQX30WhjMpDCB4GpcRfI3hwKjAhO9vdZrq6+I9r
-   A==;
-X-CSE-ConnectionGUID: gL8E4xQPRheicRFR6Z6qaw==
-X-CSE-MsgGUID: dYAJu/CEQGOOkQXsF1Ql9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="33549611"
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="33549611"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 12:15:36 -0700
-X-CSE-ConnectionGUID: zz7piIwJSTaL4/cV1w36gA==
-X-CSE-MsgGUID: a1UQ8ZlKQROjWxapnjrwMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="92682297"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 12:15:32 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1shZkv-0000000109A-1vqG;
-	Fri, 23 Aug 2024 22:15:29 +0300
-Date: Fri, 23 Aug 2024 22:15:29 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, ang.iglesiasg@gmail.com,
-	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
-	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
-	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/7] iio: pressure: bmp280: Remove config error check
- for IIR filter updates
-Message-ID: <Zsjf0bVLZyPqBxru@smile.fi.intel.com>
-References: <20240823181714.64545-1-vassilisamir@gmail.com>
- <20240823181714.64545-4-vassilisamir@gmail.com>
+	s=arc-20240116; t=1724440762; c=relaxed/simple;
+	bh=RbGqazl7YKAeTpEJJ80ong+xPNKwnei0GOQGoLCf5TQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IHDqrWLzBzA1Zp1znTIqYyzch/oifXCKbYBAXWwHYz/rfg3l/hbucEGTkG+iusvGQv7IRD1pkIsi27R6vwxiCpxfQu30bADxAY4lGjTROTz5NshC17DT+PZRJCAhXkqn99j+mqpESO5BDHdUX149YA/Jg9KSfEO2GVt3NTU5JjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rwv38XcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C7DC32786;
+	Fri, 23 Aug 2024 19:19:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724440761;
+	bh=RbGqazl7YKAeTpEJJ80ong+xPNKwnei0GOQGoLCf5TQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Rwv38XcEbVeSkRTN8TuW94mP+kgGA6MUqWxTQnfxdTfqotynofwEw5/nqKesQY+gB
+	 1wRD4JGTX7HhdcFUbLo0VOH4piINa1Sd10k0SlYLiSns/XuoZjYtrvYO8r3udJ0GeW
+	 5hcM9alwbbAUl1rEElrWbzzA/K6v6XACsYlVcOZV8UtfgD35CtRlc+vjV1tUPxFC/S
+	 es+0qPJKEgXzk7yQzWCCxM0V0pv+cqUqFx/3BFh9Ninrpt2DLPvbLo9lQAOglIPAJC
+	 gZ6DrLDB1Sm0z5ue3PdDMy+CnkFCl7JyDu4RL7inSF0Xz+s3kDe2A6DYSNsdXremxA
+	 55Phphkt9sxyA==
+Date: Fri, 23 Aug 2024 20:19:13 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Alexandru Ardelean <aardelean@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, krzk+dt@kernel.org, robh@kernel.org,
+ lars@metafoo.de, michael.hennerich@analog.com, gstols@baylibre.com
+Subject: Re: [PATCH 7/7] iio: adc: ad7606: add support for AD7606C-{16,18}
+ parts
+Message-ID: <20240823201913.5bded18f@jic23-huawei>
+In-Reply-To: <20240819064721.91494-8-aardelean@baylibre.com>
+References: <20240819064721.91494-1-aardelean@baylibre.com>
+	<20240819064721.91494-8-aardelean@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240823181714.64545-4-vassilisamir@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 23, 2024 at 08:17:10PM +0200, Vasileios Amoiridis wrote:
-> When there is a change in the configuration of the BMP3xx device, several
-> steps take place. These steps include:
-> 
-> 1) Update the OSR settings and check if there was an update
-> 2) Update the ODR settings and check if there was an update
-> 3) Update the IIR settings and check if there was an update
-> 4) Check if there was an update with the following procedure:
-> 	a) Set sensor to SLEEP mode and after to NORMAL mode to trigger
-> 	   a new measurement.
-> 	b) Wait the maximum amount possible depending on the OSR settings
-> 	c) Check the configuration error register if there was an error
-> 	   during the configuration of the sensor.
-> 
-> This check is necessary, because there could be a case where the OSR is
-> too high for the requested ODR so either the ODR needs to be slower or the
-> OSR needs to be less. This is something that is checked internally by the
-> sensor when it runs in NORMAL mode.
-> 
-> In the BMP58x devices the previous steps are done internally by the sensor.
-> 
-> The IIR filter settings do not depend on the OSR or ODR settings, and there
-> is no need to run a check in case they change.
+On Mon, 19 Aug 2024 09:47:17 +0300
+Alexandru Ardelean <aardelean@baylibre.com> wrote:
 
-...
+> The AD7606C-16 and AD7606C-18 are pretty similar with the AD7606B.
+> The main difference between AD7606C-16 & AD7606C-18 is the precision in
+> bits (16 vs 18).
+> Because of that, some scales need to be defined for the 18-bit variants, =
+as
+> they need to be computed against 2**18 (vs 2**16 for the 16 bit-variants).
+>=20
+> Because the AD7606C-16,18 also supports bipolar & differential channels,
+> for SW-mode, the default range of 10 V or =C2=B110V should be set at prob=
+e.
+> On reset, the default range (in the registers) is set to value 0x3 which
+> corresponds to '=C2=B110 V single-ended range', regardless of bipolar or
+> differential configuration.
+>=20
+> Aside from the scale/ranges, the AD7606C-16 is similar to the AD7606B.
+>=20
+> And the AD7606C-18 variant offers 18-bit precision. The unfortunate effect
+> of this 18-bit sample size, is that there is no simple/neat way to get the
+> samples into a 32-bit array without having to do a home-brewed bit-buffer.
+> The ADC must read all samples (from all 8 channels) in order to get the
+> N-th sample (this could be reworked to do up-to-N-th sample for scan-dire=
+ct).
+> There doesn't seem to be any quick-trick to be usable to pad the samples
+> up to at least 24 bits.
+> Even the optional status-header is 8-bits, which would mean 26-bits of da=
+ta
+> per sample.
+> That means that when using a simple SPI controller (which can usually read
+> 8 bit multiples) a simple bit-buffer trick is required.
+>=20
+> Datasheet links:
+>   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7=
+606c-16.pdf
+>   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7=
+606c-18.pdf
+>=20
+> Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
 
-> +	ret = regmap_update_bits(data->regmap, BMP580_REG_DSP_IIR,
-> +				 BMP580_DSP_IIR_PRESS_MASK |
-> +				 BMP580_DSP_IIR_TEMP_MASK, reg_val);
+A few minor things. If we can just start with 18 bit word spi controllers o=
+nly
+maybe that's worth doing to make things simpler.
 
-Better to split on logical bounds
+> +static int ad7606c_sw_mode_setup_channels(struct iio_dev *indio_dev,
+> +					  ad7606c_chan_setup_cb_t chan_setup_cb)
+> +{
+> +	unsigned int num_channels =3D indio_dev->num_channels - 1;
+> +	struct ad7606_state *st =3D iio_priv(indio_dev);
+> +	bool chan_configured[AD760X_MAX_CHANNELS];
+=3D {};
+and drop the memset.
 
-	ret = regmap_update_bits(data->regmap, BMP580_REG_DSP_IIR,
-				 BMP580_DSP_IIR_PRESS_MASK | BMP580_DSP_IIR_TEMP_MASK,
-				 reg_val);
+> +	struct device *dev =3D st->dev;
+> +	int ret;
+> +	u32 ch;
+> +
+> +	/* We need to hook this first */
+> +	ret =3D st->bops->sw_mode_config(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->info =3D &ad7606c_info_sw_mode;
+> +
+> +	memset(chan_configured, 0, sizeof(chan_configured));
+> +
+> +	device_for_each_child_node_scoped(dev, child) {
+> +		bool bipolar, differential;
+> +
+> +		ret =3D fwnode_property_read_u32(child, "reg", &ch);
+> +		if (ret)
+> +			continue;
+> +
+> +		if (ch >=3D num_channels) {
+> +			dev_warn(st->dev,
+> +				 "Invalid channel number (ignoring): %d\n", ch);
+> +			continue;
+> +		}
+> +
+> +		bipolar =3D fwnode_property_present(child, "bipolar");
+> +		differential =3D fwnode_property_present(child, "diff-channel");
+> +
+> +		chan_setup_cb(st, ch, bipolar, differential);
+> +		chan_configured[ch] =3D true;
+> +	}
+> +
+> +	/* Apply default configuration to unconfigured (via DT) channels */
+> +	for (ch =3D 0; ch < num_channels; ch++) {
+> +		struct ad7606_chan_scale *cs;
+> +		unsigned int *scale_avail_show;
+> +		int i;
+> +
+> +		if (!chan_configured[ch])
+> +			chan_setup_cb(st, ch, false, false);
+> +
+> +		/* AD7606C supports different scales per channel */
+> +		cs =3D &st->chan_scales[ch];
+> +
+> +		scale_avail_show =3D devm_kcalloc(st->dev, cs->num_scales * 2,
+> +						sizeof(*scale_avail_show),
+> +						GFP_KERNEL);
 
--- 
-With Best Regards,
-Andy Shevchenko
+Maybe just make it big enough for worst case and stick it in st always?
+How big can it get?
 
+
+
+> +		if (!scale_avail_show)
+> +			return -ENOMEM;
+> +
+> +		/* Generate a scale_avail list for showing to userspace */
+> +		for (i =3D 0; i < cs->num_scales; i++) {
+> +			scale_avail_show[i * 2] =3D 0;
+> +			scale_avail_show[i * 2 + 1] =3D cs->scale_avail[i];
+> +		}
+> +
+> +		cs->scale_avail_show =3D scale_avail_show;
+> +	}
+> +
+> +	return 0;
+> +}
+>
+
+> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+> index dd0075c97c24..73a7b0007bf8 100644
+> --- a/drivers/iio/adc/ad7606_spi.c
+> +++ b/drivers/iio/adc/ad7606_spi.c
+> @@ -45,6 +45,8 @@
+
+> =20
+> +static int ad7606_spi_read_block18to32(struct device *dev,
+> +				       int count, void *buf)
+> +{
+> +	struct spi_device *spi =3D to_spi_device(dev);
+> +	u32 i, bit_buffer, buf_size, bit_buf_size;
+> +	u32 *data =3D buf;
+> +	u8 *bdata =3D buf;
+> +	int j, ret;
+> +
+> +	/**
+Not kernel doc.  /*
+> +	 * With the 18 bit ADC variants (here) is that we can't assume that all
+> +	 * SPI controllers will pad 18-bit sequences into 32-bit arrays,
+> +	 * so we need to do a bit of buffer magic here.
+> +	 * Alternatively, we can have a variant of this function that works
+> +	 * for SPI controllers that can pad 18-bit samples into 32-bit arrays.
+> +	 */
+> +
+> +	/* Write 'count' bytes to the right, to not overwrite samples */
+> +	bdata +=3D count;
+> +
+> +	/* Read 24 bits only, as we'll only get samples of 18 bits each */
+> +	buf_size =3D count * 3;
+> +	ret =3D spi_read(spi, bdata, buf_size);
+> +	if (ret < 0) {
+> +		dev_err(&spi->dev, "SPI read error\n");
+> +		return ret;
+> +	}
+> +
+> +	bit_buffer =3D 0;
+> +	bit_buf_size =3D 0;
+> +	for (j =3D 0, i =3D 0; i < buf_size; i++) {
+> +		u32 sample;
+> +
+> +		bit_buffer =3D (bit_buffer << 8) | bdata[i];
+> +		bit_buf_size +=3D 8;
+> +
+> +		if (bit_buf_size < 18)
+> +			continue;
+> +
+> +		bit_buf_size -=3D 18;
+> +		sample =3D (bit_buffer >> bit_buf_size) & AD7606C_18_SAMPLE_MASK;
+> +		data[j++] =3D sign_extend32(sample, 17);
+> +
+> +		if (j =3D=3D count)
+> +			break;
+> +	}
+> +
+> +	return 0;
+> +}
 
 

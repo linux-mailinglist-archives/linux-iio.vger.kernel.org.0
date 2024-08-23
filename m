@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-8735-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8736-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B893695D5ED
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 21:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A6395D5F3
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 21:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61E251F224E4
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 19:14:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44C0B1F23B7E
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 19:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454301922E4;
-	Fri, 23 Aug 2024 19:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFDA18EFE0;
+	Fri, 23 Aug 2024 19:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MF+Of4PT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WLEgD+zV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7156F193072;
-	Fri, 23 Aug 2024 19:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953AD8488;
+	Fri, 23 Aug 2024 19:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724440446; cv=none; b=uPMogyW0BMQr+rqRiewUG/PI98hrXjQ3qB5KU81vziormHvOU1EeB9aBq4LKz3Nl93hKWDCEt3LWztk88c2xEjWjNNLowwGhVrqV3oXBNoJjL3Z+XPG7v9I2hkviUnzSrpVML4aK0Hq4eQEpUfDOni4eJEuNhubL8IkPlaiAunw=
+	t=1724440538; cv=none; b=WHE+y6FGvaZl9E/40eeCwqzMAGtSyxe66c4p4PGCVzvW5p56LwbxvpdGX0SHI/8gNkl8lHYrzXjR5GE0rPp1vc0o30WkfU2cq/G5zjgn1L/VefP15Cv6O7nGHDKUFbqsYgaU/NpsigoXCIWu2KKCDJg7cjti+9QiY3nbRzZXJ2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724440446; c=relaxed/simple;
-	bh=yHeI6cJVsQpHy3FEAWL2NUyHUh+xPNNDxdHPfT1Jcdk=;
+	s=arc-20240116; t=1724440538; c=relaxed/simple;
+	bh=PXkZuUaq2x+pGgvspK0w5ccETV5xXYujuHjG+kAk6Oc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VQFKQR6l64DntDH2F2FEoB817qS+tBLl8BAfODBZ+Vd9NHw5jxLQ87dIwKGGwrFiKeudby8t+eb1iIVk9/eC13nVJqdqdD8AEFwSQsl+2Csn/WfahEI6SP3BxhBrUzYNLkAFi51j9+CYsqk4j+nPizjwL1nT2QoiewFD6n2DFCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MF+Of4PT; arc=none smtp.client-ip=192.198.163.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=RrWrBzCwDXDNuTGeG2xpAD3Mh75iO8G9QAMkAFml2yCrsSYrScwad0QPZn4flUX4D6kjTNsvTKOvQzNUpjRRY4UnvxNF8ZZQ6uuxVHpcAtDIWMbRMJJVD/r+tcvr33kh9s+7/eYxmRuP68ZfVleXhpbXLb79IYzz7Kt9KtKRI2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WLEgD+zV; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724440444; x=1755976444;
+  t=1724440537; x=1755976537;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=yHeI6cJVsQpHy3FEAWL2NUyHUh+xPNNDxdHPfT1Jcdk=;
-  b=MF+Of4PTDUs48XU9ndjIY8RnXIXmlx4RZ9bOVSaP/xxIjGpdJ9YbnRGP
-   PBVD5nvj4RKibfk9eBsWpLKPqzB39umqpvZbOap6bIhDn6g0uaPL+UQRa
-   KcmrSQyWLXwdSJmPgey33uRhxCGHPn4ym4nms00ZzbQHYqJmJ7TCnlOcJ
-   106rzZG22xdatjVj8B/REsYdvkGtOQtKkXDeAOZsF7saHSXxs3lXNbbBn
-   MIspEyQZfr8W6bZCDRshd1RmSpEM1cur6VO/uyymlaHQoLJ2nsye9qZS+
-   pPaNT/wm5rXpa6pwbtqbzAM++1e3wJtTKv4QYoVd4lCX3I5ih+uy0p6qQ
-   Q==;
-X-CSE-ConnectionGUID: CLxOy75dTPizGa+xipbBrQ==
-X-CSE-MsgGUID: JdMpgkjNSGSwJ+uTVcIylQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="33549407"
+  bh=PXkZuUaq2x+pGgvspK0w5ccETV5xXYujuHjG+kAk6Oc=;
+  b=WLEgD+zVIJy/jioafasXc81gmUo+Rup96en3HB+b8zdK2L41pkCY+7Va
+   V0491xNHuB/Q00qpb5RonWygbHMJvkBjJcyqU/WSzZQ1R9+BQPW3kLZIt
+   k78VRwAS1FtI/MDariVVHTxdFHNFzopUVsD1z0gHx4T3R5w2PI/FEp2M2
+   CJo/WrWvnKcgd2AxAR6wng2C25ss6TKctTCWWVQ+tHJjEzD4yByzE+4ia
+   qzUUPFvXmyx4EWYM0akihAchvZVyNjdc82s4ds92rVd9TQAogC0OVxkdv
+   aZ+0fMvXrEH88TEvIvwQX30WhjMpDCB4GpcRfI3hwKjAhO9vdZrq6+I9r
+   A==;
+X-CSE-ConnectionGUID: gL8E4xQPRheicRFR6Z6qaw==
+X-CSE-MsgGUID: dYAJu/CEQGOOkQXsF1Ql9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="33549611"
 X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="33549407"
+   d="scan'208";a="33549611"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 12:14:04 -0700
-X-CSE-ConnectionGUID: QTX1HO55QSeg9Z0VGC4E/g==
-X-CSE-MsgGUID: vQnduMpbQze5nqMSU6ZePQ==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 12:15:36 -0700
+X-CSE-ConnectionGUID: zz7piIwJSTaL4/cV1w36gA==
+X-CSE-MsgGUID: a1UQ8ZlKQROjWxapnjrwMg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="92681951"
+   d="scan'208";a="92682297"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 12:14:00 -0700
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 12:15:32 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1shZjR-0000000107a-1ta6;
-	Fri, 23 Aug 2024 22:13:57 +0300
-Date: Fri, 23 Aug 2024 22:13:57 +0300
+	id 1shZkv-0000000109A-1vqG;
+	Fri, 23 Aug 2024 22:15:29 +0300
+Date: Fri, 23 Aug 2024 22:15:29 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
@@ -71,11 +71,11 @@ Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
 	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
 	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/7] iio: pressure: bmp280: Add support for bmp280
- soft reset
-Message-ID: <ZsjfdRWRl4fMJP0Y@smile.fi.intel.com>
+Subject: Re: [PATCH v3 3/7] iio: pressure: bmp280: Remove config error check
+ for IIR filter updates
+Message-ID: <Zsjf0bVLZyPqBxru@smile.fi.intel.com>
 References: <20240823181714.64545-1-vassilisamir@gmail.com>
- <20240823181714.64545-3-vassilisamir@gmail.com>
+ <20240823181714.64545-4-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,42 +84,44 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240823181714.64545-3-vassilisamir@gmail.com>
+In-Reply-To: <20240823181714.64545-4-vassilisamir@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Aug 23, 2024 at 08:17:09PM +0200, Vasileios Amoiridis wrote:
-> The BM(P/E)28x devices have an option for soft reset which is also
-> recommended by the Bosch Sensortech BME2 Sensor API to be used before the
-> initial configuration of the device.
+On Fri, Aug 23, 2024 at 08:17:10PM +0200, Vasileios Amoiridis wrote:
+> When there is a change in the configuration of the BMP3xx device, several
+> steps take place. These steps include:
+> 
+> 1) Update the OSR settings and check if there was an update
+> 2) Update the ODR settings and check if there was an update
+> 3) Update the IIR settings and check if there was an update
+> 4) Check if there was an update with the following procedure:
+> 	a) Set sensor to SLEEP mode and after to NORMAL mode to trigger
+> 	   a new measurement.
+> 	b) Wait the maximum amount possible depending on the OSR settings
+> 	c) Check the configuration error register if there was an error
+> 	   during the configuration of the sensor.
+> 
+> This check is necessary, because there could be a case where the OSR is
+> too high for the requested ODR so either the ODR needs to be slower or the
+> OSR needs to be less. This is something that is checked internally by the
+> sensor when it runs in NORMAL mode.
+> 
+> In the BMP58x devices the previous steps are done internally by the sensor.
+> 
+> The IIR filter settings do not depend on the OSR or ODR settings, and there
+> is no need to run a check in case they change.
 
 ...
 
-> +static int bmp280_preinit(struct bmp280_data *data)
-> +{
-> +	unsigned int reg;
-> +	int ret;
-> +
-> +	ret = regmap_write(data->regmap, BMP280_REG_RESET, BMP280_RST_SOFT_CMD);
-> +	if (ret)
-> +		return dev_err_probe(data->dev, ret,
-> +				     "Failed to reset device.\n");
+> +	ret = regmap_update_bits(data->regmap, BMP580_REG_DSP_IIR,
+> +				 BMP580_DSP_IIR_PRESS_MASK |
+> +				 BMP580_DSP_IIR_TEMP_MASK, reg_val);
 
-> +	usleep_range(data->start_up_time, data->start_up_time + 500);
+Better to split on logical bounds
 
-Seems long enough to warrant the comment. Also, why not fsleep()?
-
-> +	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
-> +	if (ret)
-> +		return dev_err_probe(data->dev, ret,
-> +				     "Failed to read status register.\n");
-> +
-> +	if (reg & BMP280_REG_STATUS_IM_UPDATE)
-> +		return dev_err_probe(data->dev, ret,
-> +				     "Failed to copy NVM contents.\n");
-> +
-> +	return 0;
-> +}
-
+	ret = regmap_update_bits(data->regmap, BMP580_REG_DSP_IIR,
+				 BMP580_DSP_IIR_PRESS_MASK | BMP580_DSP_IIR_TEMP_MASK,
+				 reg_val);
 
 -- 
 With Best Regards,

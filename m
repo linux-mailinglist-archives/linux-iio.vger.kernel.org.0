@@ -1,159 +1,125 @@
-Return-Path: <linux-iio+bounces-8713-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8714-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D350195D21A
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 17:54:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5051395D26E
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 18:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 579F91F21764
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 15:54:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82B0E1C219AB
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 16:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A544189535;
-	Fri, 23 Aug 2024 15:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B7A189BB0;
+	Fri, 23 Aug 2024 16:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rGt1E5cn"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b="Qj8k0qIq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC76F1885AF
-	for <linux-iio@vger.kernel.org>; Fri, 23 Aug 2024 15:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724428486; cv=none; b=gbwjdN6XU1H8BIV0uml1kEXxthWUspayhBcMD5U6FWDW/uAmuyGs5wzJvGqFMVbZcTkR4eGbz4Unir1IdCPTlrZHPtirUd2Iydit/tJe5f6rvPqdkmgEsugJzRYa8pFLouX2cBvaxrBr0iQ1dZt9nCiNBZWBCM400+qLQqrjU3w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724428486; c=relaxed/simple;
-	bh=HtH6qdjMIdNtGGtymO0i5WzD6uli6CQK2z4uzaNG4FU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t1Xt+nF/TQ/sPzGcxsdJN5uZkFf0JOlVFaNbikQuDVC3a2x92mvkdwtpZKIoZbPHSMDmxRf1w2hqvpvAkgrtYHG0+dxOEqzEw0BheXTJB90ysyEaQACwOx0uJLHPkVfcREljPXzyJNKrirz0eAtiv5c19IP9Od6WHmEhE9wCO4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rGt1E5cn; arc=none smtp.client-ip=209.85.217.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-498d7ab8fefso814375137.1
-        for <linux-iio@vger.kernel.org>; Fri, 23 Aug 2024 08:54:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724428483; x=1725033283; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HtH6qdjMIdNtGGtymO0i5WzD6uli6CQK2z4uzaNG4FU=;
-        b=rGt1E5cn2AxIdVu6Tsk37EKwsewAAstndYElxOF86jIeDZtfyzwfWTNE+vWgHXIzaD
-         xnvYxFW13cYqqihZC86i7UtkxWwARXNcmdo+AI3r/XXrZnOPhcMiTh/ZHJWOwGA8k3c/
-         kcHIQ2cB51pE3gtBH0FLYtqHLSKLcMXp6o0blRxgdJ9GhgwzdkzexUenMAHBleFcPUmG
-         t6EdMzzV46M5CZdX3bvauNDhAN3dnj6/zIITNkyzuNhcXJeAo+Zbi/WvZdU04DyzHpy5
-         n0FJwrho670O2swnnUtcCH2VDMkE1iIzN6snalb4XQweFir3TlB1SSnr4EbykgKDJDFy
-         SNgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724428483; x=1725033283;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HtH6qdjMIdNtGGtymO0i5WzD6uli6CQK2z4uzaNG4FU=;
-        b=px6Za9neHvIbw5uR/JncKgprOTdR4dt/jdhSJDBKHfQlzozZB0L1kN/eSvk1U8AeoZ
-         BSqKWadZzqHRtkOgEQzFpkGjfEtjXIZFimRPuECI+4Ld5o6WlsgceA8zGFg21ENl+96s
-         GDj6lCBpJQi5CJwzM892ujS6iGCjfHga8J+viXKOpPxqHFJb94fWjQFHDcSoWhIx7zwP
-         o5BtgBioU0LV85Prcb7EOvZlgENiL0t0zqA1n+jzFZWWoGFv7bbu9pj4g9/v4B+YQBnV
-         bduP+/3B8P6aqH3z5iH3/UfEyB7wpy5UHnkVFhihgMXy/2RE6yJsku+aeYDpM/4rzB5F
-         fj5Q==
-X-Gm-Message-State: AOJu0Yxg5bzsuk2xbsuCk6kceSZpMQpQiQiuAelXPMKPYmyjw1vQ0ZAo
-	BqxBepX/eJZ2HVzEsv2MzrEtyUdtuXfIyt7+I4jBSr2k0aoWiNalVAxPIkLpJSLTWtUe4uNNEtT
-	1RyYL0QWKfYbBTIvv3onoaiQgMfF/vk92GTa2KQ==
-X-Google-Smtp-Source: AGHT+IG1JZThU0IKB0v806PR64JcpLViiPaNVXo5A6m1YTr+RoSCgI0tMbvBD/tvM/LTvUHRsK0DDSy3l7BR399yJcQ=
-X-Received: by 2002:a05:6102:3907:b0:493:ce48:a2ed with SMTP id
- ada2fe7eead31-498f4c4190amr2791122137.29.1724428482611; Fri, 23 Aug 2024
- 08:54:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D5818593A;
+	Fri, 23 Aug 2024 16:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724429217; cv=pass; b=b/1aLozzKfzaoF/j/7pKTfxFQJ+HIZX4HABPN/U8CcNuzuWY0Dx4Y2Mi/QtdbHXg+SFjfLpci5bBUnqjzTtKvC11fm2fECQXpMUpUDFJxPzSG9tChyOwRdvo7xMRIjJbkOmX1/uUlk5EL1SMk0x29Ax95TtjVkehMQ/O+ktAa7k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724429217; c=relaxed/simple;
+	bh=tBB3izCPMfNbf0TqYcL+j5sUi5mpYAci9rH5LDp8q24=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iBKeDnfL0aeb23kZQj19opSgUoTtJm17yz3BrMn5EQG5wkSbBjEmgwFxU6jgdnUkQcWS9hZJy5sldKeyg4kcF2Fl17+YJLWXuyGdXNsE7pBN0YPZWU2+gwUMlnMgNFK4/MaWIaPD9xzlOFgmN5tWoV4qI+SikLzD7huIWQvtz+4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=detlev.casanova@collabora.com header.b=Qj8k0qIq; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Delivered-To: kernel@collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1724429133; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MjRK1FoJsuHsyIVh4RKCCc54M6gWCjzayDtGsNTo97lxPTlzEHOzuPiovQrrjUJmaJ5s90+XuamKSaXVKuWxZOVAH3Bh2dfB0YO4s8YRjLu8ROWo/SjA7TonfQN/Nxp1DL+/sOlJlYLuPLtZN6+b0yztkrjX95/53JgMg+gFheM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724429133; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=wDoypvfwN342dAKyLY44n6dnwxz7IYCMVu0LjSVZLls=; 
+	b=OkalxmebjQXK/KNBLiMUpyfDZY3yUF9lxpQHzS6JQq9nyIuQYPz4dFPFV1Mzz0HywvcQffmaRmLuZrYdktRgoBTNbajEvjSvM3UrBAkfFiCvscC+NH6RBWSuvHd1pTFv5OkD9rV2dyTAk2JQGc/KjmvS9E//46qYImoKkcQKgcY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=detlev.casanova@collabora.com;
+	dmarc=pass header.from=<detlev.casanova@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724429133;
+	s=zohomail; d=collabora.com; i=detlev.casanova@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+	bh=wDoypvfwN342dAKyLY44n6dnwxz7IYCMVu0LjSVZLls=;
+	b=Qj8k0qIq4exUkeUJptd26SKuPlitb5ZgBqC7E3rk4WordXlOwH+24duUcyGUL9O2
+	hLBr5QB77BbIfluvvtyxmmART4/PB3WKPu7qNXu6jHnrxIWlG1XOTc9OHwqoWm7H8JP
+	Z+4ldmd5ncaGMTv2H6RjCcptwCTfFGlpoRk6G05s=
+Received: by mx.zohomail.com with SMTPS id 1724429132247991.7209561127088;
+	Fri, 23 Aug 2024 09:05:32 -0700 (PDT)
+From: Detlev Casanova <detlev.casanova@collabora.com>
+To: linux-kernel@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Wim Van Sebroeck <wim@linux-watchdog.org>,
+ Guenter Roeck <linux@roeck-us.net>, Chris Morgan <macromorgan@hotmail.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>,
+ Chukun Pan <amadeus@jmu.edu.cn>, Andy Yan <andyshrk@163.com>,
+ Muhammed Efe Cetin <efectn@protonmail.com>, Jagan Teki <jagan@edgeble.ai>,
+ Dragan Simic <dsimic@manjaro.org>, Ondrej Jirman <megi@xff.cz>,
+ Michael Riesch <michael.riesch@wolfvision.net>,
+ Jimmy Hon <honyuenkwun@gmail.com>, Alexey Charkov <alchark@gmail.com>,
+ Elon Zhang <zhangzj@rock-chips.com>, Elaine Zhang <zhangqing@rock-chips.com>,
+ Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+ Finley Xiao <finley.xiao@rock-chips.com>, Liang Chen <cl@rock-chips.com>,
+ Jisheng Zhang <jszhang@kernel.org>, Jamie Iles <jamie@jamieiles.com>,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, dri-devel@lists.freedesktop.org,
+ linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
+ kernel@collabora.com
+Subject: [PATCH v2 10/12] dt-bindings: spi: Add rockchip,rk3576-spi compatible
+Date: Fri, 23 Aug 2024 12:07:10 -0400
+Message-ID: <1995660.usQuhbGJ8B@trenzalore>
+In-Reply-To: <20240823150057.56141-1-detlev.casanova@collabora.com>
+References: <20240823150057.56141-1-detlev.casanova@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819064721.91494-1-aardelean@baylibre.com>
- <20240819064721.91494-8-aardelean@baylibre.com> <3c4edf41-fd3b-4258-9b9e-a81b25568403@baylibre.com>
-In-Reply-To: <3c4edf41-fd3b-4258-9b9e-a81b25568403@baylibre.com>
-From: Alexandru Ardelean <aardelean@baylibre.com>
-Date: Fri, 23 Aug 2024 18:54:31 +0300
-Message-ID: <CA+GgBR9H66u0mB-cQt_6tT2kh9TCW0Bm_BiHEUyVGvmGHBGEJg@mail.gmail.com>
-Subject: Re: [PATCH 7/7] iio: adc: ad7606: add support for AD7606C-{16,18} parts
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org, 
-	robh@kernel.org, lars@metafoo.de, michael.hennerich@analog.com, 
-	gstols@baylibre.com, Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-ZohoMailClient: External
 
-On Mon, Aug 19, 2024 at 6:33=E2=80=AFPM David Lechner <dlechner@baylibre.co=
-m> wrote:
->
-> On 8/19/24 1:47 AM, Alexandru Ardelean wrote:
-> > The AD7606C-16 and AD7606C-18 are pretty similar with the AD7606B.
-> > The main difference between AD7606C-16 & AD7606C-18 is the precision in
-> > bits (16 vs 18).
-> > Because of that, some scales need to be defined for the 18-bit variants=
-, as
-> > they need to be computed against 2**18 (vs 2**16 for the 16 bit-variant=
-s).
-> >
-> > Because the AD7606C-16,18 also supports bipolar & differential channels=
-,
-> > for SW-mode, the default range of 10 V or =C2=B110V should be set at pr=
-obe.
-> > On reset, the default range (in the registers) is set to value 0x3 whic=
-h
-> > corresponds to '=C2=B110 V single-ended range', regardless of bipolar o=
-r
-> > differential configuration.
-> >
-> > Aside from the scale/ranges, the AD7606C-16 is similar to the AD7606B.
-> >
-> > And the AD7606C-18 variant offers 18-bit precision. The unfortunate eff=
-ect
-> > of this 18-bit sample size, is that there is no simple/neat way to get =
-the
-> > samples into a 32-bit array without having to do a home-brewed bit-buff=
-er.
-> > The ADC must read all samples (from all 8 channels) in order to get the
-> > N-th sample (this could be reworked to do up-to-N-th sample for scan-di=
-rect).
-> > There doesn't seem to be any quick-trick to be usable to pad the sample=
-s
-> > up to at least 24 bits.
-> > Even the optional status-header is 8-bits, which would mean 26-bits of =
-data
-> > per sample.
-> > That means that when using a simple SPI controller (which can usually r=
-ead
-> > 8 bit multiples) a simple bit-buffer trick is required.
-> >
-> Maybe it would be better to just use .bits_per_word =3D 18 for the 18-bit
-> ADC and not worry about "simple" SPI controller support for that one?
->
+It is compatible with the rockchip,rk3066-spi SPI core.
 
-+cc Mark Brown for some input on the SPI stuff
+Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+---
+ Documentation/devicetree/bindings/spi/spi-rockchip.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-I'm generally fine with choosing to not support SPI controllers that
-can't do padding to 16/32 bit arrays
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.yaml b/
+Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+index e4941e9212d13..46d9d6ee09234 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+@@ -35,6 +35,7 @@ properties:
+               - rockchip,rk3368-spi
+               - rockchip,rk3399-spi
+               - rockchip,rk3568-spi
++              - rockchip,rk3576-spi
+               - rockchip,rk3588-spi
+               - rockchip,rv1126-spi
+           - const: rockchip,rk3066-spi
+-- 
+2.46.0
 
-But, at the same time: would it be an interesting topic to implement
-(in the SPI framework) some SW implementation for padding a series of
-18-bit samples to 32-bit arrays?
-(Similarly, this could work for 10-15 bit samples into 16 bit arrays).
 
-Apologies if this is already implemented and I missed it.
 
-But if there isn't such a functionality (padding done in SW inside the
-SPI framework), then I could probably spin-up a proposal.
-I think that the functionality could be spun-up in a separate
-patch-set/discussion; and this patchset would just go with
-"bits_per_word =3D 18".
-
-It could be done as a new field in the "struct spi_transfer", or
-something else like "spi_pad_rx_to_nbits(struct spi_device *)"
-Or other suggestions welcome
-
-Thanks
-Alex
 

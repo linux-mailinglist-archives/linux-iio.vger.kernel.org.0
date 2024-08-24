@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-8756-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8757-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B206795DD78
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 13:16:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293B095DD7C
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 13:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5892E1F221C3
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 11:16:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 524D51C211AD
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 11:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A79156972;
-	Sat, 24 Aug 2024 11:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EC7156C74;
+	Sat, 24 Aug 2024 11:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMUz6guj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QOR89TlK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B79154434;
-	Sat, 24 Aug 2024 11:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C171E154434;
+	Sat, 24 Aug 2024 11:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724498181; cv=none; b=inlgZTQIfkfGmyZq0OlGGj38OVHxUyQV8PjXoylZpKz0kNbBayBThD6gBW8r1DGcBa5DToRSVj4EBfLc6qyQjMa26Xf1MXsfZBcj4UwP+LLpwFCajeyW3YaFI7seFVV/DEBy2cTxwU8Ron/INpfgu+x/NDYXrpCz3H9eOLJdLkU=
+	t=1724498293; cv=none; b=paqjy+BxeQBk0X+0sMoUeh31sjHWaLhS1CQH+QLfdNlHQz1HTdXfQ70Sk+/gwLRSESYKbfGlueWF8xeNrRbctMa51t9HiyuhjWN2PCe0I46AyMkXHSkofzaS0yVPWFZONNryEO3mahqVtvSbGw9wN7PoCCU7YSgsjHi6j6mHBhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724498181; c=relaxed/simple;
-	bh=KBFRXPbXkTrq/8WmUZwd7zt1D7cBp9yVg6JBXqujTok=;
+	s=arc-20240116; t=1724498293; c=relaxed/simple;
+	bh=73akXDIT6x+t8HVba2/WfACcRmVzxu9G1QEECH+1q54=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lVuUFArq4qwjOm4KwjdTYZUDzbE0SAyPNZAkrV6YixAJYJojN9GnsnsA22rWUUM/nc1A5dkxgDWK3ZoHN3SWj75+pBcvhH/9ftd0zQizuLrw+Xi+Dtkflg2nzlPsJqk5HrzKnSoUxt8gI6hB1edmZFkvUgt/wPHtOGL2mrKAz8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMUz6guj; arc=none smtp.client-ip=209.85.208.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=pcDov3xDLrCdVRuf//mOZK4in11x0WS5XQ9cMEqSexrgSF+qCQnt72spPJ7H/whQhPPjgHHyPX0LIu7DsZoc36dI8n1JYiQ1Cd/zIcaHWefSFPY0+UcnJ+Kpk1OhHDvQ1Zy4Rwbc/fuuQCO9BKrorjHm4jFzO03z37s0KA4y8aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QOR89TlK; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2f502086419so6388421fa.3;
-        Sat, 24 Aug 2024 04:16:19 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a83562f9be9so282546766b.0;
+        Sat, 24 Aug 2024 04:18:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724498178; x=1725102978; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724498290; x=1725103090; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hanjFtXRBi0/vMyxLJH9A6nYVJ4pu8HrLca9l4EsSws=;
-        b=GMUz6gujIPOLek8mUv9BE/Xa3z09XZ4mjuqLoT6uSLZXqJwauJE7gOvb8XPK83/X6o
-         LuVIHogIgBrYwzY/1Jt6KyQp1XE4/USJSQ3P+Ac/cA4AENxWXUqvZRFSeT5hTOC1YOix
-         hMcsv4cg+/UhmEDHH8JftwSceipvMqtSKBvYj6y2AX2fRmt3LfcnxcUDGCDSNYn5paAv
-         c/pLzZAsQFvdL7Q7pLF7Cs3MAmpLhwxg8H+tiABWT3NbIGJeTS1AE5/M8uynyHElR+Xe
-         jQ7pJWFdHW6Uef7eZTaDWR7vbmt2Q5Hz3trc0KUpgtb/sZbW8jEi4bYDxVybra93g817
-         sPUQ==
+        bh=/A6F6r+xpUjirIExuOh0Ulxu8srp4hJUZW216K+I750=;
+        b=QOR89TlK35GlMjbpG32Wuhm6pL0+lnjgJQH/VJc8wVI6hvJIRfahaBDroAwA6gCCfd
+         c2QORE+PqiEwGokCP8u1lw5zHn4AGu+QMNW3n8+2UTQXnMY9STQfNXH7lQ0E3NrNwFYI
+         Un7rZ3Vj6/Tbacm0nEROJXaSlqNPXDkO4gcrYeXxDM5QUyR6vVsx7FdzZUWFYXy76E0E
+         kBn0DmPZcfqH7yR0dzeki5vblvNTNfYemswaflrJHs1X+kK45d6x7vYnAUo6IRLTnRlj
+         6uVJB9Cro32Ge7fYhzPETcntF2fQQIBxf2+PT2D7Th0jFeLdybUWvJ4xbHu1pHuNom6s
+         nFwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724498178; x=1725102978;
+        d=1e100.net; s=20230601; t=1724498290; x=1725103090;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hanjFtXRBi0/vMyxLJH9A6nYVJ4pu8HrLca9l4EsSws=;
-        b=CfBjHfAUCbmUGQndRdonFi3C83fNNnAWdbfY2z6R2DgmYLwizh0U8i4Dv2iH6AyHHv
-         zxeqtiPVqV3VRgbViAL1NTvQgKzws/pDkvpUw4m1CqCJAaI06cQ53DuKRSUnGsjnVGQh
-         cBufc4a+d/FjLilPE4zfVdQOhQLei8x6r43bXvL2whmI9cXRDXWojytguyDcUmIFZsdG
-         b45Uv9GeH/jYJ459bOroM6fNoPtDd6tfp4moDYJAYuFk9ZJ49rciu9iLgtGz7MM7YYxg
-         1BbyT7r9VZIjKzbXpoULghE0C/Q3N+Sk8rV+G0mhCreutnEX6mg3kc4Tz2a2Dik760AF
-         w+yA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbAJjTtzrKPMKP+dVdqcP1ZoFv9hSz5k1T47U2SnQSKJ4Ek7DZ2B7meK/lMEhVm6G4LpjpwIfbFLj/@vger.kernel.org, AJvYcCVxzQWq40Ch5uLS3JFKl+wv412CBWa29/g2/bZoxDRx8Old03QpWFnktWG7scHXeNQX+iYHyoJ+DGHuN+cX@vger.kernel.org, AJvYcCWZ0gWNyzkvR45OurA5fVjfhMZzJ0D0a8lNgB47csvOPQoSfT8nSOeYmw4zgy3sQDMMc4Zv8zjMwTjO@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeoKNH/KiTuO+DzLruZHj8+iJ8n/kXHLHru9gM9c8Wt7+Jou+2
-	Df40GqkzrglcxxLNaGW4HO0AR0Y6YhvxNJyfgBUFC1LANGLZKuuP
-X-Google-Smtp-Source: AGHT+IFoXAAGPMG+N503qXTOp+wsSujdNArfEt8LV4hYhoRA3Kz9DHrub1buc39YCbO/ya86KPM6dw==
-X-Received: by 2002:a2e:6e17:0:b0:2ef:2525:be90 with SMTP id 38308e7fff4ca-2f4f493f375mr33743151fa.31.1724498177238;
-        Sat, 24 Aug 2024 04:16:17 -0700 (PDT)
+        bh=/A6F6r+xpUjirIExuOh0Ulxu8srp4hJUZW216K+I750=;
+        b=d3d7rXZc78TDSvloUTnrOjYMoZFrQoRDGgMsbfn+BmUFnI2Cn+EM1zDd6k2o/q+h2N
+         hHLd8ajuXvjI55H660drBOr6kzo2DC2JRtkPNr9249qH0eUgtEznEFpsapxHMKn2O4rv
+         dABjUFKT47faUkxxXPrmBg98tlI74ik09HD04H6Ek7qc6HdnNPl5GVaP6uFK1q+LJInb
+         rSKVrRltXqTaOBjytC2uCLo0xffTNU368qnUH9onbwBRpEvnisDqv4QIPa5lMrRPMpQF
+         jMHBKn6QffWLDhmflrH8YbBWiSv62+7sxALaDaVYTA/+NRkg4uUByXHA5R1VfSsdkcKq
+         vvbg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJd1iNoYdGFmg/7+uedFcUnnFGa3ZqWjIsWtvDDilYpFuEjDWuFUZAs7nKlZwu8eqR+8cXmz3Q3FyTC6A5@vger.kernel.org, AJvYcCWlY1XL1nBW/YgfdXycMky1fPz0jmuOGt8xx30q1/kLOUj/bLfyVSeblp3auzhictm8y7doRmUTmOXg@vger.kernel.org, AJvYcCX5H/bQ7ReOdEhDHgkbZ5M0Ecxlb+2L/U6L2xweVfsDGMvPSWIMyv40k4O1+q6EukIuCw/kKRZZVG46@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeszEBEflT++q2NlBQG3ePIdG4+EefHs4tPyRm99MkMrrSOLAN
+	KzJCWD7KtV10ZzNoXdwIm2ALgNYoXOmnMI1TauGCNILQzIT0Dx22
+X-Google-Smtp-Source: AGHT+IGzB2eHKwoUui/j53rDbfKAjdc8hNAQs+DFcvnxm80hKS/EoGaluVwNhqbI/KoHGSyiqnmMEQ==
+X-Received: by 2002:a17:907:728f:b0:a71:ddb8:9394 with SMTP id a640c23a62f3a-a86a52c6177mr311743966b.40.1724498289368;
+        Sat, 24 Aug 2024 04:18:09 -0700 (PDT)
 Received: from vamoiridPC ([2a04:ee41:82:7577:9aa7:6f8c:e4ad:5d20])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c044ddbbabsm3141735a12.3.2024.08.24.04.16.16
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f47c579sm387041166b.153.2024.08.24.04.18.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Aug 2024 04:16:16 -0700 (PDT)
+        Sat, 24 Aug 2024 04:18:08 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Sat, 24 Aug 2024 13:16:14 +0200
+Date: Sat, 24 Aug 2024 13:18:06 +0200
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
 	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
@@ -77,12 +77,12 @@ Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
 	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
 	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/7] iio: pressure: bmp280: Add support for bmp280
- soft reset
-Message-ID: <20240824111614.GB9644@vamoiridPC>
+Subject: Re: [PATCH v3 3/7] iio: pressure: bmp280: Remove config error check
+ for IIR filter updates
+Message-ID: <20240824111806.GC9644@vamoiridPC>
 References: <20240823181714.64545-1-vassilisamir@gmail.com>
- <20240823181714.64545-3-vassilisamir@gmail.com>
- <ZsjfdRWRl4fMJP0Y@smile.fi.intel.com>
+ <20240823181714.64545-4-vassilisamir@gmail.com>
+ <Zsjf0bVLZyPqBxru@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,60 +91,56 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZsjfdRWRl4fMJP0Y@smile.fi.intel.com>
+In-Reply-To: <Zsjf0bVLZyPqBxru@smile.fi.intel.com>
 
-On Fri, Aug 23, 2024 at 10:13:57PM +0300, Andy Shevchenko wrote:
-> On Fri, Aug 23, 2024 at 08:17:09PM +0200, Vasileios Amoiridis wrote:
-> > The BM(P/E)28x devices have an option for soft reset which is also
-> > recommended by the Bosch Sensortech BME2 Sensor API to be used before the
-> > initial configuration of the device.
+On Fri, Aug 23, 2024 at 10:15:29PM +0300, Andy Shevchenko wrote:
+> On Fri, Aug 23, 2024 at 08:17:10PM +0200, Vasileios Amoiridis wrote:
+> > When there is a change in the configuration of the BMP3xx device, several
+> > steps take place. These steps include:
+> > 
+> > 1) Update the OSR settings and check if there was an update
+> > 2) Update the ODR settings and check if there was an update
+> > 3) Update the IIR settings and check if there was an update
+> > 4) Check if there was an update with the following procedure:
+> > 	a) Set sensor to SLEEP mode and after to NORMAL mode to trigger
+> > 	   a new measurement.
+> > 	b) Wait the maximum amount possible depending on the OSR settings
+> > 	c) Check the configuration error register if there was an error
+> > 	   during the configuration of the sensor.
+> > 
+> > This check is necessary, because there could be a case where the OSR is
+> > too high for the requested ODR so either the ODR needs to be slower or the
+> > OSR needs to be less. This is something that is checked internally by the
+> > sensor when it runs in NORMAL mode.
+> > 
+> > In the BMP58x devices the previous steps are done internally by the sensor.
+> > 
+> > The IIR filter settings do not depend on the OSR or ODR settings, and there
+> > is no need to run a check in case they change.
 > 
 > ...
 > 
-> > +static int bmp280_preinit(struct bmp280_data *data)
-> > +{
-> > +	unsigned int reg;
-> > +	int ret;
-> > +
-> > +	ret = regmap_write(data->regmap, BMP280_REG_RESET, BMP280_RST_SOFT_CMD);
-> > +	if (ret)
-> > +		return dev_err_probe(data->dev, ret,
-> > +				     "Failed to reset device.\n");
+> > +	ret = regmap_update_bits(data->regmap, BMP580_REG_DSP_IIR,
+> > +				 BMP580_DSP_IIR_PRESS_MASK |
+> > +				 BMP580_DSP_IIR_TEMP_MASK, reg_val);
 > 
-> > +	usleep_range(data->start_up_time, data->start_up_time + 500);
+> Better to split on logical bounds
 > 
-> Seems long enough to warrant the comment. Also, why not fsleep()?
-
-Hi Andy,
-
-The datasheet of the sensor, and the published API from Bosch [1] 
-require the startup_time for this procedure, it's not something that
-came up from my mind. That's why I didn't add any comment.
-
-I was not aware of fsleep(), I think that it could be fine to use it.
-
-Cheers,
-Vasilis
-
-[1]: https://github.com/boschsensortec/BME280_SensorAPI/blob/master/bme280.c#L677
-
-> 
-> > +	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
-> > +	if (ret)
-> > +		return dev_err_probe(data->dev, ret,
-> > +				     "Failed to read status register.\n");
-> > +
-> > +	if (reg & BMP280_REG_STATUS_IM_UPDATE)
-> > +		return dev_err_probe(data->dev, ret,
-> > +				     "Failed to copy NVM contents.\n");
-> > +
-> > +	return 0;
-> > +}
-> 
+> 	ret = regmap_update_bits(data->regmap, BMP580_REG_DSP_IIR,
+> 				 BMP580_DSP_IIR_PRESS_MASK | BMP580_DSP_IIR_TEMP_MASK,
+> 				 reg_val);
 > 
 > -- 
 > With Best Regards,
 > Andy Shevchenko
 > 
 > 
+
+
+This goes beyond the 80 char limit. I know that there is the relaxed
+limit of 100 chars but I didn't feel it was more readable like this.
+I could definitely use it though, thanks!
+
+Cheers,
+Vasilis
 

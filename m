@@ -1,102 +1,95 @@
-Return-Path: <linux-iio+bounces-8748-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8749-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7308895DCBC
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 09:53:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BF595DD38
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 11:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30971283FC4
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 07:53:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADAFB1F2168C
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 09:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6BA154C00;
-	Sat, 24 Aug 2024 07:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AEBB1547C0;
+	Sat, 24 Aug 2024 09:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GC9kHJnz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMO0V3zv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7038514D6E9;
-	Sat, 24 Aug 2024 07:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F8025745;
+	Sat, 24 Aug 2024 09:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724486018; cv=none; b=nGE2wKm21xh/GaPgUgS6MdEdz/DKkp0W57aLUAXn3mHklMLqlLOXdTzvVfivTIgIex3jWuh5Zb8UpJGUiFymXwfC3+CcCiqfZBzgl3x5FeBggD1YmApGM0mrB+Haif+2fZLq3bm9Io7BpT2Vj5YjD1DI8HtCpDdbAnGh3veWFuE=
+	t=1724492815; cv=none; b=YAGDBkPR+47rcEWVknxPLo22FtsRyYehC0Hwkzus5FyXYdcUcw+juPddCdfIhOLaEEvmTXYWGIwzMmB+BjchOeN4qtAQpRWo96wSG8I+MdCMWKRRdm4hoyq7UUTiyrnZwdK4n+lcgF24dU0SJdZ/n5B6btNPheHpZm5LFHgu5jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724486018; c=relaxed/simple;
-	bh=yRF+b26qzZbAF/lj54mqxmxSAmsnvppo3aM396oz6Qs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xi0XFTjtjG6AFBWUvttgYCoL4UMr5ZozqgcMOwbcJGJ6GGyOGtfymWodabBpUUTuTyFHY9FyXVzJOhjgf6B6SPfhI3EgQO+jZSDufVadCaCKeRbDltC6+obnES5DhGEDM+j65wY7OeBuSC6cMO2nkqIOZ+nF+7gGlAkvDg1mkco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GC9kHJnz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40974C32781;
-	Sat, 24 Aug 2024 07:53:18 +0000 (UTC)
+	s=arc-20240116; t=1724492815; c=relaxed/simple;
+	bh=uS6UOPtJz12j0Ad9FW9Rj2atWNnzbA+O22puULeYpFA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ysu5p/mqAG3XWF8oonqR73kt0u5Yac0WN/4Yh6Ne5m21VqgtUwper8bkxvkaPGQvgC42m2cjiALIDd5r8tDUDu1AxdgVNbBaCuGx6z/E6bMsXDYHV6ou5wpsJwZxZpbfM/eAbJ6fr7KRe0XtPqcdOGiHg5w+XFowj0aO7O+OnR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMO0V3zv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CC2C32781;
+	Sat, 24 Aug 2024 09:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724486018;
-	bh=yRF+b26qzZbAF/lj54mqxmxSAmsnvppo3aM396oz6Qs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GC9kHJnz+ylQDLPiCSV9p1V2P5SYmpcIHXMeumKkTQpWR3I4djBw5t6awd8n+lh43
-	 BQsxl4+R/IDmczuyWAn5JLsKKK+TxOHyRg359W4wkQFsCV49emeVklAqQBDgfTyUjB
-	 /TpsruLYtzV/F0YzMiqKiqkrvciC/tdruR/ISte5xtus0gncKbOPoIh0zUsXnvJwwk
-	 yFUa3sBs5H0PZmsMLcN6/IFMrnfYWbL45EIurmvwJZ0iXssWNXototDoBG70bZX38e
-	 22Q8zhFWt6s71D5uBzZ34ujfrusS9hXLtwif6chlSGgRQJf/z/oejJqoOrTwvoFQse
-	 aVO5Iuslho1Lg==
-Date: Sat, 24 Aug 2024 09:53:16 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Detlev Casanova <detlev.casanova@collabora.com>
-Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Wim Van Sebroeck <wim@linux-watchdog.org>, 
-	Guenter Roeck <linux@roeck-us.net>, Chris Morgan <macromorgan@hotmail.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>, Chukun Pan <amadeus@jmu.edu.cn>, 
-	Andy Yan <andyshrk@163.com>, Muhammed Efe Cetin <efectn@protonmail.com>, 
-	Jagan Teki <jagan@edgeble.ai>, Dragan Simic <dsimic@manjaro.org>, Ondrej Jirman <megi@xff.cz>, 
-	Michael Riesch <michael.riesch@wolfvision.net>, Jimmy Hon <honyuenkwun@gmail.com>, 
-	Alexey Charkov <alchark@gmail.com>, Elon Zhang <zhangzj@rock-chips.com>, 
-	Elaine Zhang <zhangqing@rock-chips.com>, Yifeng Zhao <yifeng.zhao@rock-chips.com>, 
-	Finley Xiao <finley.xiao@rock-chips.com>, Liang Chen <cl@rock-chips.com>, 
-	Jisheng Zhang <jszhang@kernel.org>, Jamie Iles <jamie@jamieiles.com>, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	dri-devel@lists.freedesktop.org, linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH v2 10/12] dt-bindings: spi: Add rockchip,rk3576-spi
- compatible
-Message-ID: <r474bbm3nnqwvgb6dumes5opxzw2sb7ck4ehqdhig7ejdabnxw@vgmafb7dayry>
-References: <20240823150057.56141-1-detlev.casanova@collabora.com>
- <1995660.usQuhbGJ8B@trenzalore>
+	s=k20201202; t=1724492815;
+	bh=uS6UOPtJz12j0Ad9FW9Rj2atWNnzbA+O22puULeYpFA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HMO0V3zvHP1bNVd4vGMUgzwjUyuXa9JxpB+vVyyvTgGvYHjspGHvsNt3ZlhTGctJ9
+	 RCNb6t+b/K6PZtr/MaTZF5n4F1YUB9GSPhOfsVCkNq/OHcGzlWR1uzuKBpAZQh33/0
+	 YkkHdzgvxX7T+J/5EtzSc1CIgGQRZTfo2Dzdk037az5qMzRGPRj2nTn595/EcUPhxm
+	 tQFisCr5WUCN+G+1ZdOtNViBZFouu2pa8ilwZC33EHj7IDXTUHD/w9imBe5PNDRerO
+	 k4F+GnT5fdUiRDFgFBovDBEbma7XH+9ipqrM5ZFM41uWChLqwIKTzftIGwyi5KEPEi
+	 5/7dtPNOGLsjg==
+Date: Sat, 24 Aug 2024 10:46:46 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
+ linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Benson
+ Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>
+Subject: Re: [PATCH v1 1/1] iio: proximity: cros_ec_mkbp_proximity: Switch
+ to including mod_devicetable.h for struct of_device_id definition
+Message-ID: <20240824104646.6445cebb@jic23-huawei>
+In-Reply-To: <20240823220718.743596-1-andy.shevchenko@gmail.com>
+References: <20240823220718.743596-1-andy.shevchenko@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1995660.usQuhbGJ8B@trenzalore>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 23, 2024 at 12:07:10PM -0400, Detlev Casanova wrote:
-> It is compatible with the rockchip,rk3066-spi SPI core.
+On Sat, 24 Aug 2024 01:07:18 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Same comments...
-
-subject: spi: dt-bindings:
-
-Please use subject prefixes matching the subsystem. You can get them for
-example with  on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+> of.h was only included for this definition, so include the correct header
+> instead.
+> 
+> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Applied.
+> ---
+>  drivers/iio/proximity/cros_ec_mkbp_proximity.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/proximity/cros_ec_mkbp_proximity.c b/drivers/iio/proximity/cros_ec_mkbp_proximity.c
+> index 4df506bb8b38..cff57d851762 100644
+> --- a/drivers/iio/proximity/cros_ec_mkbp_proximity.c
+> +++ b/drivers/iio/proximity/cros_ec_mkbp_proximity.c
+> @@ -6,10 +6,10 @@
+>   */
+>  
+>  #include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/notifier.h>
+> -#include <linux/of.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/slab.h>
+>  #include <linux/types.h>
 
 

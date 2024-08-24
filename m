@@ -1,327 +1,151 @@
-Return-Path: <linux-iio+bounces-8767-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8768-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4763F95DE45
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 16:11:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA8595DF11
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 18:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C99D21F22338
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 14:11:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6C9F282B35
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 16:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CC61714B7;
-	Sat, 24 Aug 2024 14:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE0617BEB1;
+	Sat, 24 Aug 2024 16:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BAZQZaXA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B6YJn7IN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6280B1EA80;
-	Sat, 24 Aug 2024 14:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EB22BAE5;
+	Sat, 24 Aug 2024 16:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724508700; cv=none; b=F+Cf0IdN+ypueBqnenHr7PsBcOZrCpQVicc+e7XRNWLrMqyuc+UVIJnV7RLFX1weETCFVss4PXtBLjdG+IoeJVCtXpbnQFDdMD1m4OTA6qgkXItPEZEZsCOcYQd0mdnxlr8TSYEiSV1bR5aSJucBTSUzzE8dFRZ0QY68I6t6f68=
+	t=1724517874; cv=none; b=WSAhbJtGOKYhqrwecD+DrmLNG9oN+Hu33UYWJDJ1qKq42KMz8srlN4ZTOHayHNyrnvpVyGhIvYE2ePYQAbwv0v/KXdxkDEThMu1CF5HX0hOzEMe644/XcFWTO8n7eRWW8XUyw6UzWvG9uOQjyrQnNeszyXOnrGpymlFgrncronI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724508700; c=relaxed/simple;
-	bh=Wf0Mn9chndIo2h8mdCV35hARRU7Q9WQAHn6/o9fwofU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AHjzST3eiHlHt1xjxFKDq9Q/Ux8428hOLZLCuGqzPe6rH7PhJR+pNmBs+42EQQQ3YZDzYuiOrD75xQ4wsboGpVNkb877JNPUpaRDpTa0YcSiBaZXHukHzhu4FcFFkhirSZXqH8sXSReyH4vebMgM+YQJGnbuMAhY1uu6ZumJ5dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BAZQZaXA; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1724517874; c=relaxed/simple;
+	bh=/9gX2XCk9FTMVcv7iiH7Odb5+BLxHlWeobR8KB9NnJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FTeB2Yk+g787Js6qsy4TTMFMHvZpija5gO3fjOThHMGrsOtVTQ0rGydt8cj1xVyxo0O8KnQXBcbr5iRwguSpeidcujne4OnmO062gS0riqCbmJnYnpUqIUB+QGibFINMjYbF+aE3PYe+gi/7EbjZFG9/zYubHXmYZp0RSFxmlTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B6YJn7IN; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37189d8e637so1585041f8f.3;
-        Sat, 24 Aug 2024 07:11:38 -0700 (PDT)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-202146e93f6so30626765ad.3;
+        Sat, 24 Aug 2024 09:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724508697; x=1725113497; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+AhmHve+mnr3q92I9fHvwx5bpFy/8zq8+Ha3er/FumU=;
-        b=BAZQZaXAIuWSw7h0ziY/Olrdl1ApJNe6tL73BXlAev7YSy6BZagSb0ZwqnJYDSNiDl
-         pzjVWja8CsQR9FbWneEF3Q0zGZPHScd2niu6LS1DiS9LYqophQEO71zw6sJZ/rA8teZF
-         Np5xpbSxOWg5KglDRjtotOl0bQk5QKrW9D+z7GDkAcl+B6TBAAtOgNNXqUENdQbGzDrH
-         99SOPMTMF4gmvQMrXKgeXaS5FQ4vBj0t3LMA/wAWjmw/ob6Fh9f5SCaHbSQopaS32xL2
-         REB3nrSFongit0j/5KjwQJczHgL5UuzQ5z+q8W+O3UZcsopNTfkaDHrISSpDD1rxbWkY
-         Jlug==
+        d=gmail.com; s=20230601; t=1724517872; x=1725122672; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rMJqxsXbKdshmWc6Vt4OVDWOFw/ne4JO6chf1aTJxRg=;
+        b=B6YJn7IN4UviFCnyISi5iPjuoFMKZ+XnRFFMeH/D/Lf3eNkM3tU7T3d2G5K0UeIzcf
+         CXf/2Dqdo2c9CHqImVcuasFdu0j6t4porda5YZEFn/zDZfmuvWaCKYu8SJzlUAmRnxpQ
+         Bp3anFm1ACysSXyy+SbJgqQFwteX/O47NUhol7cEHvH3K+6MgEIMV7D5Nj62jjr1BgBh
+         YcZ0lHWqIo6SWQyGy4uXUD4xFQyTwxp+HAukC1LFWSSth8hAry2eO9Tkj7Mj6UIqzURs
+         zZ13KXoUTuZzjvseifOZZKdGjV1y30BIWiKcJ0wQHE+qBgDTwtEMFEGjMPF2rH1nO7HT
+         4Afg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724508697; x=1725113497;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1724517872; x=1725122672;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+AhmHve+mnr3q92I9fHvwx5bpFy/8zq8+Ha3er/FumU=;
-        b=VINP+t4WyAp6oDKVg8gxkgH1oEl+373Jn4v4mubXnQc5knxZRMaU//E1g0XCIqUFgF
-         A/sMRmDS7T8HTj1ScjTQzFIpMZ7wgSsu9cltrKRvuW+RlH3SKDYB8D9lKG9dz8V3ivxh
-         j991bEGMMl+4i341CP6VKVSTOLovJMZTS3DRTmB75tMEs54dKY6BP4V4HcQGOy/5kZlM
-         Xo7xI6RhCxZ2uA33i1xd0+nlvzGm4ocRG2ni6GWDVv6/qSs2QYDoi3tmiwgIXKuNfJAe
-         LguD+mrhTQBJRHfpxgu3Py4S1APBtFtBYquItAfd7J6X02qNS0K66JEQD2+AnySQA7dv
-         OMPg==
-X-Forwarded-Encrypted: i=1; AJvYcCUoLDcNPvI3xWJS/YAVZXM2W40jdks/U0zETkj9Hweznw3i3SlZbmA/2ljXx/MkECrNeID5UV9qK9A=@vger.kernel.org, AJvYcCXy9RLHHnUzPluMKbvyzRKLXHVmK/fHvq/E2quJeqVw97cvOrRemrbZRasDMUZ2f9oWrNBvjIm06CuAhc6G@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxrQ3tb8gbAAq4cclDD9A37BNuF4vRZxIUaZ+mmzvLj9PYSLI5
-	GJC0R2C7Mc7JNLouJPv6Ohlp2ZDaW7JvwVXToUUwcGPTsr4O2Uac
-X-Google-Smtp-Source: AGHT+IFEI8dsCCysbCF3beeuMMxlT4spZg9cRd+pbWoBsaWN5yUUSzpmDVljplcTMIN5/bwA95Rt2Q==
-X-Received: by 2002:adf:f451:0:b0:371:8748:cb19 with SMTP id ffacd0b85a97d-373118ee926mr3367079f8f.56.1724508696497;
-        Sat, 24 Aug 2024 07:11:36 -0700 (PDT)
-Received: from localhost.localdomain ([151.95.114.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3730821ab05sm6591427f8f.98.2024.08.24.07.11.35
+        bh=rMJqxsXbKdshmWc6Vt4OVDWOFw/ne4JO6chf1aTJxRg=;
+        b=G74BI+VIE+wIeEAE07hb3GRa+mRg6oMRSHcPZ1k8yFVt+KQK4R9lIkDva6Cx/cyxX0
+         v3FwtwE1zzEAm44vsYIhnCOrj0JzCMPajG9Ae2FvXgZykfceGcq6MZ09KnZUCjIgiYgF
+         1z60Hg0toYoipxHU/tRPQK2HGm5aw6eMxdM4osJM0O0Hdx1lX473PSmrGMuKi0x9VEIw
+         WbqDxQifFtGL8XRrgTb1zkfikbpjP/TxExig/bsZBysBU2AwsE6c53Ozb10Rjmh+4Llr
+         foOG0EXefG7HjK+8iWscXWg77KlE1yx5vaio9PNPFt9oqq2QetV8ETFUbsM/MPIGFJ12
+         jZUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUiraKJSLhtWa0HT9HbY59HIhdEN4ZOtltkM9PQT6lm9Yt0rqa5FjxespA7nLxHlriAOvhbATlL3T/u@vger.kernel.org, AJvYcCUmhP1RsolNeiSLQzvHnKJrSolKX70nIPTB2I9RuzUbPlXYLHJ6P+5xvskpTYU0aRWl0ji59zIY5kSM@vger.kernel.org, AJvYcCVJQBnivTBV3ZD9grOo24bSxF+N9PAwpM76y4addetLp0cXs4Vm1zdZBFAzf/KCwInpT/ZT2T5ewwVLVfub@vger.kernel.org, AJvYcCViu72jdGZPuojBX6rFQqwBSV2FWHHosTQUeseFNpOleaSHQAj/w2tOoe80cmxgp409FYhKJ5Ej0Nc8@vger.kernel.org, AJvYcCWGcP9jJRfxydDzh8Aj8/zI78eil+sOAyKazNfpe4BT/sLjoBrb7WAIOiga5Eb2zyIBg1tZjq/6x8k9@vger.kernel.org, AJvYcCXBcbgME9M+HE2wup/xF7HVG53cOqE2bhw+XWKzLfP29mqJ5Eje27Arl+N45QLQO7fAxbccKKRQpK99@vger.kernel.org, AJvYcCXzwTjFb5sszF0td5EDIHKKM2l9LO+Me/HVEqMiRk/gV1v/cfoGZIjUBbUuAFK1ycvoRS4Txm7WXH4I9wy9dyc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsJHuFCHP1TRRoPdBgMMmwDhM5ov95yYuD85eM+6meae8Dhjqq
+	Q+79wKL8nuCgi67dJeROvYRQ7EzFiFU2tcdd35K3UqtAu8w2cRxE
+X-Google-Smtp-Source: AGHT+IHcYVQoDXdmHH2kSyn3hjnKQGyb2SXXwv2a+G7g13SX+ywaROxz6n48bYMEHtMXrfqxmEat4A==
+X-Received: by 2002:a17:902:e750:b0:202:401f:ec6c with SMTP id d9443c01a7336-2039e4f1d23mr66486985ad.48.1724517872012;
+        Sat, 24 Aug 2024 09:44:32 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20385bdc5e0sm44114565ad.271.2024.08.24.09.44.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Aug 2024 07:11:36 -0700 (PDT)
-From: Denis Benato <benato.denis96@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jagath Jog J <jagathjog1996@gmail.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Luke D . Jones" <luke@ljones.dev>,
-	Jonathan LoBue <jlobue10@gmail.com>,
-	Denis Benato <benato.denis96@gmail.com>
-Subject: [PATCH v3 1/1] iio: bmi323: peripheral in lowest power state on suspend
-Date: Sat, 24 Aug 2024 16:11:22 +0200
-Message-ID: <20240824141122.334620-2-benato.denis96@gmail.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240824141122.334620-1-benato.denis96@gmail.com>
-References: <20240823192921.7df291f8@jic23-huawei>
- <20240824141122.334620-1-benato.denis96@gmail.com>
+        Sat, 24 Aug 2024 09:44:31 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Sat, 24 Aug 2024 09:44:29 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Detlev Casanova <detlev.casanova@collabora.com>
+Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>,
+	Chukun Pan <amadeus@jmu.edu.cn>, Andy Yan <andyshrk@163.com>,
+	Muhammed Efe Cetin <efectn@protonmail.com>,
+	Jagan Teki <jagan@edgeble.ai>, Dragan Simic <dsimic@manjaro.org>,
+	Ondrej Jirman <megi@xff.cz>,
+	Michael Riesch <michael.riesch@wolfvision.net>,
+	Jimmy Hon <honyuenkwun@gmail.com>,
+	Alexey Charkov <alchark@gmail.com>,
+	Elon Zhang <zhangzj@rock-chips.com>,
+	Elaine Zhang <zhangqing@rock-chips.com>,
+	Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+	Finley Xiao <finley.xiao@rock-chips.com>,
+	Liang Chen <cl@rock-chips.com>, Jisheng Zhang <jszhang@kernel.org>,
+	Jamie Iles <jamie@jamieiles.com>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, dri-devel@lists.freedesktop.org,
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
+	kernel@collabora.com
+Subject: Re: [PATCH v2 09/12] dt-bindings: watchdog: Add rockchip,rk3576-wdt
+ compatible
+Message-ID: <612a447c-8a74-48c1-8470-280dddca8d19@roeck-us.net>
+References: <20240823150057.56141-1-detlev.casanova@collabora.com>
+ <20240823150057.56141-10-detlev.casanova@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240823150057.56141-10-detlev.casanova@collabora.com>
 
-The bmi323 is mounted on some devices that are powered
-by an internal battery: help in reducing system overall power drain
-while the system is in s2idle or the imu driver is not loaded
-by resetting it in its lowest power draining state.
+On Fri, Aug 23, 2024 at 10:52:36AM -0400, Detlev Casanova wrote:
+> It is compatible with the other rockchip SoCs.
+> 
+> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
 
-Signed-off-by: Denis Benato <benato.denis96@gmail.com>
----
- drivers/iio/imu/bmi323/bmi323_core.c | 155 ++++++++++++++++++++++++++-
- 1 file changed, 153 insertions(+), 2 deletions(-)
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
-index 4b2b211a3e88..57be22c97cb9 100644
---- a/drivers/iio/imu/bmi323/bmi323_core.c
-+++ b/drivers/iio/imu/bmi323/bmi323_core.c
-@@ -118,6 +118,38 @@ static const struct bmi323_hw bmi323_hw[2] = {
- 	},
- };
- 
-+static const unsigned int bmi323_reg_savestate[] = {
-+	BMI323_INT_MAP1_REG,
-+	BMI323_INT_MAP2_REG,
-+	BMI323_IO_INT_CTR_REG,
-+	BMI323_IO_INT_CONF_REG,
-+	BMI323_ACC_CONF_REG,
-+	BMI323_GYRO_CONF_REG,
-+	BMI323_FEAT_IO0_REG,
-+	BMI323_FIFO_WTRMRK_REG,
-+	BMI323_FIFO_CONF_REG
-+};
-+
-+static const unsigned int bmi323_ext_reg_savestate[] = {
-+	BMI323_GEN_SET1_REG,
-+	BMI323_TAP1_REG,
-+	BMI323_TAP2_REG,
-+	BMI323_TAP3_REG,
-+	BMI323_FEAT_IO0_S_TAP_MSK,
-+	BMI323_STEP_SC1_REG,
-+	BMI323_ANYMO1_REG,
-+	BMI323_NOMO1_REG,
-+	BMI323_ANYMO1_REG + BMI323_MO2_OFFSET,
-+	BMI323_NOMO1_REG + BMI323_MO2_OFFSET,
-+	BMI323_ANYMO1_REG + BMI323_MO3_OFFSET,
-+	BMI323_NOMO1_REG + BMI323_MO3_OFFSET
-+};
-+
-+struct bmi323_regs_runtime_pm {
-+	unsigned int reg_settings[ARRAY_SIZE(bmi323_reg_savestate)];
-+	unsigned int ext_reg_settings[ARRAY_SIZE(bmi323_ext_reg_savestate)];
-+};
-+
- struct bmi323_data {
- 	struct device *dev;
- 	struct regmap *regmap;
-@@ -130,6 +162,7 @@ struct bmi323_data {
- 	u32 odrns[BMI323_SENSORS_CNT];
- 	u32 odrhz[BMI323_SENSORS_CNT];
- 	unsigned int feature_events;
-+	struct bmi323_regs_runtime_pm runtime_pm_status;
- 
- 	/*
- 	 * Lock to protect the members of device's private data from concurrent
-@@ -1972,6 +2005,11 @@ static void bmi323_disable(void *data_ptr)
- 
- 	bmi323_set_mode(data, BMI323_ACCEL, ACC_GYRO_MODE_DISABLE);
- 	bmi323_set_mode(data, BMI323_GYRO, ACC_GYRO_MODE_DISABLE);
-+
-+	/*
-+	 * Place the peripheral in its lowest power consuming state.
-+	 */
-+	regmap_write(data->regmap, BMI323_CMD_REG, BMI323_RST_VAL);
- }
- 
- static int bmi323_set_bw(struct bmi323_data *data,
-@@ -2030,6 +2068,13 @@ static int bmi323_init(struct bmi323_data *data)
- 		return dev_err_probe(data->dev, -EINVAL,
- 				     "Sensor power error = 0x%x\n", val);
- 
-+	return 0;
-+}
-+
-+static int bmi323_init_reset(struct bmi323_data *data)
-+{
-+	int ret;
-+
- 	/*
- 	 * Set the Bandwidth coefficient which defines the 3 dB cutoff
- 	 * frequency in relation to the ODR.
-@@ -2078,12 +2123,18 @@ int bmi323_core_probe(struct device *dev)
- 	data = iio_priv(indio_dev);
- 	data->dev = dev;
- 	data->regmap = regmap;
-+	data->irq_pin = BMI323_IRQ_DISABLED;
-+	data->state = BMI323_IDLE;
- 	mutex_init(&data->mutex);
- 
- 	ret = bmi323_init(data);
- 	if (ret)
- 		return -EINVAL;
- 
-+	ret = bmi323_init_reset(data);
-+	if (ret)
-+		return -EINVAL;
-+
- 	if (!iio_read_acpi_mount_matrix(dev, &data->orientation, "ROTM")) {
- 		ret = iio_read_mount_matrix(dev, &data->orientation);
- 		if (ret)
-@@ -2117,7 +2168,7 @@ int bmi323_core_probe(struct device *dev)
- 		return dev_err_probe(data->dev, ret,
- 				     "Unable to register iio device\n");
- 
--	return 0;
-+	return bmi323_fifo_disable(data);
- }
- EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
- 
-@@ -2125,13 +2176,113 @@ EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
- static int bmi323_core_runtime_suspend(struct device *dev)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi323_data *data = iio_priv(indio_dev);
-+	struct bmi323_regs_runtime_pm *savestate = &data->runtime_pm_status;
-+	int ret;
-+
-+	guard(mutex)(&data->mutex);
-+
-+	ret = iio_device_suspend_triggering(indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	/* Save registers meant to be restored by resume pm callback. */
-+	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_reg_savestate); i++) {
-+		ret = regmap_read(data->regmap, bmi323_reg_savestate[i],
-+			   &savestate->reg_settings[i]);
-+		if (ret) {
-+			dev_err(data->dev, "Error reading bmi323 reg 0x%x: %d\n",
-+				  bmi323_reg_savestate[i], ret);
-+			return ret;
-+		}
-+	}
-+
-+	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_ext_reg_savestate); i++) {
-+		ret = bmi323_read_ext_reg(data, bmi323_reg_savestate[i],
-+			   &savestate->reg_settings[i]);
-+		if (ret) {
-+			dev_err(data->dev, "Error reading bmi323 external reg 0x%x: %d\n",
-+				  bmi323_reg_savestate[i], ret);
-+			return ret;
-+		}
-+	}
-+
-+	/* Perform soft reset to place the device in its lowest power state. */
-+	ret = regmap_write(data->regmap, BMI323_CMD_REG, BMI323_RST_VAL);
-+	if (ret)
-+		return ret;
- 
--	return iio_device_suspend_triggering(indio_dev);
-+	return 0;
- }
- 
- static int bmi323_core_runtime_resume(struct device *dev)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bmi323_data *data = iio_priv(indio_dev);
-+	struct bmi323_regs_runtime_pm *savestate = &data->runtime_pm_status;
-+	unsigned int val;
-+	int ret;
-+
-+	guard(mutex)(&data->mutex);
-+
-+	/*
-+	 * Perform the device power-on and initial setup once again
-+	 * after being reset in the lower power state by runtime-pm.
-+	 */
-+	ret = bmi323_init(data);
-+	if (!ret)
-+		return ret;
-+
-+	/* Register must be cleared before changing an active config */
-+	ret = regmap_write(data->regmap, BMI323_FEAT_IO0_REG, 0);
-+	if (ret) {
-+		dev_err(data->dev, "Error stopping feature engine\n");
-+		return ret;
-+	}
-+
-+	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_ext_reg_savestate); i++) {
-+		ret = bmi323_write_ext_reg(data, bmi323_reg_savestate[i],
-+			  savestate->reg_settings[i]);
-+		if (ret) {
-+			dev_err(data->dev, "Error writing bmi323 external reg 0x%x: %d\n",
-+				  bmi323_reg_savestate[i], ret);
-+			return ret;
-+		}
-+	}
-+
-+	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_reg_savestate); i++) {
-+		ret = regmap_write(data->regmap, bmi323_reg_savestate[i],
-+			  savestate->reg_settings[i]);
-+		if (ret) {
-+			dev_err(data->dev, "Error writing bmi323 reg 0x%x: %d\n",
-+				  bmi323_reg_savestate[i], ret);
-+			return ret;
-+		}
-+	}
-+
-+	/*
-+	 * Clear old FIFO samples that might be generated before suspend
-+	 * or generated from a peripheral state not equal to the saved one.
-+	 */
-+	if (data->state == BMI323_BUFFER_FIFO) {
-+		ret = regmap_write(data->regmap, BMI323_FIFO_CTRL_REG,
-+			   BMI323_FIFO_FLUSH_MSK);
-+		if (ret) {
-+			dev_err(data->dev, "Error flushing FIFO buffer: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	ret = regmap_read(data->regmap, BMI323_ERR_REG, &val);
-+	if (ret) {
-+		dev_err(data->dev, "Error reading bmi323 error register: %d\n", ret);
-+		return ret;
-+	}
-+
-+	if (val) {
-+		dev_err(data->dev, "Sensor power error in PM = 0x%x\n", val);
-+		return -EINVAL;
-+	}
- 
- 	return iio_device_resume_triggering(indio_dev);
- }
--- 
-2.46.0
-
+> ---
+>  Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml b/Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml
+> index c7aab0418a320..b5a3dc3770706 100644
+> --- a/Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml
+> +++ b/Documentation/devicetree/bindings/watchdog/snps,dw-wdt.yaml
+> @@ -29,6 +29,7 @@ properties:
+>                - rockchip,rk3368-wdt
+>                - rockchip,rk3399-wdt
+>                - rockchip,rk3568-wdt
+> +              - rockchip,rk3576-wdt
+>                - rockchip,rk3588-wdt
+>                - rockchip,rv1108-wdt
+>            - const: snps,dw-wdt
+> -- 
+> 2.46.0
+> 
 

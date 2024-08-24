@@ -1,97 +1,89 @@
-Return-Path: <linux-iio+bounces-8760-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8761-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1EF95DD92
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 13:31:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A757C95DD95
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 13:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4745A28360F
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 11:31:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44C191F221EF
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 11:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3710158DC0;
-	Sat, 24 Aug 2024 11:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091B315F3FB;
+	Sat, 24 Aug 2024 11:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHb8og6o"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JWFQYn8j"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF1014B95F;
-	Sat, 24 Aug 2024 11:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31395154BFF;
+	Sat, 24 Aug 2024 11:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724499094; cv=none; b=kFpgAoPWBiziwz5kLp/er/LUpzMKgQFDYxzmW8GkkSFiPzGPp8UaTNNLl10KBNKHtROqG4rrEKP0enZ3bL+mH+4553ra7n+0b0h5388pQWEpQrO1nmTrKM0U+Kb3q0BcPxXbgGUExwC3zFOA1SsQ2eX0PMwNSxbnXOtdVkCFqic=
+	t=1724499317; cv=none; b=s4FYlQlPYDaIdG4CjPM4Y2ViBIn/aM6atgtpVTBvjASPJ4gfItDAi5tzXUkGdxtV/m7XZ3ucR6itpAENtOqdHFkEmpcXwteT7h729J2TeALKsBd4seWF9IXRvkOKgZdWuJZE9ovciObcNUPnAhBBFPi3vZI6jo2Y3iayHSLaV2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724499094; c=relaxed/simple;
-	bh=ThHD8zDv0vojce1ofH6jtqbW/0GjZORcewvnfM0b/vs=;
+	s=arc-20240116; t=1724499317; c=relaxed/simple;
+	bh=t/tL6ehLjV4OWhky2j+jkzqdbt2qnhGbcM6j/gEegpw=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G33dVvyD8EWZczFo2mx5bb5OkqmdUU9mqRIZca2c4+b92Dkb1Gyknccei97cIii0wzZ88RdSNvRVwKvRyOd8IP5ZrWiufiuO56FgnvstpXstX+nVCmjwoyLsL02grlWVNsHmHeAZkrimIPQhDge4j6QlKr07uJzCmelhWXCk7sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PHb8og6o; arc=none smtp.client-ip=209.85.221.45
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wc1NHWOlYEpZb/SOqKQx/3AbeVMdvL63VUGxgC/wydLL6zK8pARuIijCnkz72z0yyeiVDRUiwbNFLE5UeLcBmXpqdKgvgU5TgWqNXNkzmyo9oM/A+N0+/KVyiIM8zDCAFnZJhY9T77czzUXVM0e87bMTj1xtpioBVoUmeFaFSTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JWFQYn8j; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3719753d365so1448985f8f.2;
-        Sat, 24 Aug 2024 04:31:32 -0700 (PDT)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-371b098e699so2005034f8f.2;
+        Sat, 24 Aug 2024 04:35:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724499091; x=1725103891; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724499314; x=1725104114; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=m54M1zlmUQXtcPtkOe8IWbYbJxf0X6iLjt94I4vXh1g=;
-        b=PHb8og6ofBSBIgHfmJvALnCGoAsT2rf+kS7ARP5nAA+rMRGhsy1XRv6cKGxzDvHQCN
-         ZS/+564hu9haUEfD0cB1aMN0iuUZbvrzIZDyrJSNQ7IEdb7B+a9l3/f2Lg3tGsqtLUeZ
-         oPcAkJ2UuG+6roY0sWhlcDpoW2haVPm9p7PauSBnzqkJmd1gAj5R+WTl7XzM1uLyc7N5
-         CuchRKp3wF2uEA8cBJEJnuTfw1O3y297hBXn+HUHQ6IW0jelGnHawQs+chLOqHi19XU2
-         AY/w0x9PDG9eQBVK4xHoYRf63K6v7ry+Vt+620/m7SPeJ1V9ohxIRELzKUEgaGrHYeFa
-         CSsA==
+        bh=gXOM2KHFDkv7tZuZv571SO8T4HJDxtBCPL9tMZDTfeY=;
+        b=JWFQYn8jAZM3yHfZi6G+yB/MqBPZmeZUcPk9ZCO2SiY6spG4PGYmrsgKhAtMp4XkMs
+         qrsPLeojL+vzxSoTUNQ3nZpz3MpvPnTSjlRZchr8jr/HrddhO5xlMp14uwFb25c57dCO
+         lnyGtXbmrya0PXYac2Hx2H3tZFcOaFfEiSiMKPJD+PXm/7Drb+1WL+6elhO2rRFeAuVl
+         JhZBQw/hrMNVitUglxi4RjeA3fvCceudQKGlqXzxsZlcX0rnGEtwq4A+xJ1P1PNL/B/M
+         CLYMYn4Ub09WdyJI3trtLEUvhyPnkm/j7eFHVqrqQdlE3eUCGRFH0VicxT8bk4U4fnCu
+         A9MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724499091; x=1725103891;
+        d=1e100.net; s=20230601; t=1724499314; x=1725104114;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=m54M1zlmUQXtcPtkOe8IWbYbJxf0X6iLjt94I4vXh1g=;
-        b=HLAOWT4jzJzNXeLMtgUf4XYmq9KPq86HLgySRNfm+wepUTWX/ykHG4iB2YxBWynVIq
-         aNZFkZyei7sKxg9c4G23a++M2LRIrIAIIs9k3hbcaMP2dDwkYbK3xu8q1gvJkaaJtVT4
-         xc/MAOi5JWzwOQAzmfCsbqyyyeAQtLHo5ANhIzyTfZ9znMWo5sIFbTBZ/ag4qaq8S4hw
-         Uzz5LacxXgFdFA+zxtqEnk5+WYrFGmQVlbvMYXkARp9qBuEWmlXJG693jzgKejHcWDY3
-         pBIFHRR+oVK3yyghUwMgykiu8L3TIylnQ6y74Xkpoy7Udx6Bo6fo+QYuEinqASV4jqnV
-         xdng==
-X-Forwarded-Encrypted: i=1; AJvYcCUT/EoqGR1X7o6dWsKf1rSFDSaqCEipflvIf1i2nJW0p1R4PWAe6jQXOGY1drf6JzoAbQni01VFrx55@vger.kernel.org, AJvYcCVa/3JOw50S4dejxAYDi+/rOePPokSxMO0jnA00bGfhkaug9gkDcxOBe4S8CXod5ANtNuqhNH2PDq+6rFfd@vger.kernel.org, AJvYcCVoItuisvGQ9eA/7j1oIT3vP9mRfjP5f+NWm5lB5p+rSmg4AIDWAYI9qBRtcNqkEzINN5PbP1wgiffm@vger.kernel.org
-X-Gm-Message-State: AOJu0YwW0pk1G8B125TILWXux/r6m5r8GCY9U32mrKCgj5N9oNWtn5fg
-	ID0WVAv5Qus3FHebpa/Y80s0c4AkVI6iWf7djG+E0nSsUOOWqO8K
-X-Google-Smtp-Source: AGHT+IGBZ+Uo4kEK+IfLwxlpX6zxCFWLchVLNEzHizWRlJuWsXPsV3+HbQZaAIq0CoRUkYRLW+tssg==
-X-Received: by 2002:adf:efc7:0:b0:367:8e53:7fd7 with SMTP id ffacd0b85a97d-373118b9961mr3819008f8f.28.1724499090783;
-        Sat, 24 Aug 2024 04:31:30 -0700 (PDT)
+        bh=gXOM2KHFDkv7tZuZv571SO8T4HJDxtBCPL9tMZDTfeY=;
+        b=BpLDkopaezMELIlrvYMcI02fE/IGE5jL1IHUc66iv9kvcMHL3GzU5qzqFqiSJhGWyj
+         5j/pbL1wKDMGK+T8d/OAU7hp0AYQh0OsHuWKoun7mXn7+ImwsXvsueD0FP5VM/VnpVhR
+         3fxA/HqnxsrlrPuXDu9xv2nICssqv+6YtKqLV02g0ksjk2HAH5o8VG41byCB1pL0etTQ
+         yAe9xalkLQJHhQVau2Z4a4UzQtY5N9Yi68bJaiIziB4c9eJKp96oHnO+DvK8JQZu7pEM
+         e15DK9o5Ljcxw5nI68t0eIl1eFjW2E4AFYsBmBUrPFWybOcoDLB4n+P81S6qLXVy18Xt
+         sQGA==
+X-Forwarded-Encrypted: i=1; AJvYcCURYCz+rrE5C+HJWgrAREdg1XnebVXmYJy+J4K6cF4MT4YWDA4rtva5AgabjsjkVHxZAqT5CuRSOHPr@vger.kernel.org, AJvYcCUrS8tW6HWX9XiI1GHM40q/dfSYkDGCFMp/5qBhGp6T1ulKZqFhELuHxP6UGzaWsIpuCjblv//WzyH7R5gl@vger.kernel.org, AJvYcCVIigcGf5IgzC7xFikKAkxkO+lZn+ZSBoH7Rn1Mhf1NL+X0t+tUuDQdL6AaaVrt0/0uiHhaDv2m2OSj@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpKYHd4TUeRKfjFqEFW75xPFb4ROWjHMuZtlIVYdoZfsQMe286
+	Yn8fA9vknsKTOPMOqpc30rOgtz0Npc5Ygenrb/T/bE/58B+SJvBN
+X-Google-Smtp-Source: AGHT+IG9K8hxz6buL8YPyj7RwlUEs5tHu9FteE311/SNhdU0HADUGvJ27BcVUSR7Ma9mfgZeDPvLEg==
+X-Received: by 2002:a05:6000:82:b0:368:e634:1520 with SMTP id ffacd0b85a97d-373118e3d6fmr3815569f8f.59.1724499313814;
+        Sat, 24 Aug 2024 04:35:13 -0700 (PDT)
 Received: from vamoiridPC ([2a04:ee41:82:7577:9aa7:6f8c:e4ad:5d20])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abef8175fsm126124965e9.25.2024.08.24.04.31.29
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3730817a4bfsm6362353f8f.62.2024.08.24.04.35.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Aug 2024 04:31:30 -0700 (PDT)
+        Sat, 24 Aug 2024 04:35:13 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Sat, 24 Aug 2024 13:31:28 +0200
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>,
-	"jic23@kernel.org" <jic23@kernel.org>,
-	"lars@metafoo.de" <lars@metafoo.de>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
-	"ang.iglesiasg@gmail.com" <ang.iglesiasg@gmail.com>,
-	"linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-	"javier.carrasco.cruz@gmail.com" <javier.carrasco.cruz@gmail.com>,
-	"semen.protsenko@linaro.org" <semen.protsenko@linaro.org>,
-	"579lpy@gmail.com" <579lpy@gmail.com>,
-	"ak@it-klinger.de" <ak@it-klinger.de>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date: Sat, 24 Aug 2024 13:35:11 +0200
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
+	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
+	ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
+	biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
+	semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3 5/7] dt-bindings: iio: pressure: bmp085: Add
  interrupts for BMP3xx and BMP5xx devices
-Message-ID: <20240824113128.GE9644@vamoiridPC>
+Message-ID: <20240824113511.GF9644@vamoiridPC>
 References: <20240823181714.64545-1-vassilisamir@gmail.com>
  <20240823181714.64545-6-vassilisamir@gmail.com>
- <TY3PR01MB1134611B456FEFAE4E4791CBB86882@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+ <7eqtnkkgnyskkmecv7dtiyzd6invdl7xa56cih6fbuuu2jrprx@s4jpi4ls6dxn>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -100,19 +92,10 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <TY3PR01MB1134611B456FEFAE4E4791CBB86882@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+In-Reply-To: <7eqtnkkgnyskkmecv7dtiyzd6invdl7xa56cih6fbuuu2jrprx@s4jpi4ls6dxn>
 
-On Fri, Aug 23, 2024 at 06:51:55PM +0000, Biju Das wrote:
-> Hi Vasileios Amoiridis,
-> 
-> Thanks for the patch.
-> 
-> > -----Original Message-----
-> > From: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > Sent: Friday, August 23, 2024 7:17 PM
-> > Subject: [PATCH v3 5/7] dt-bindings: iio: pressure: bmp085: Add interrupts for BMP3xx and BMP5xx
-> > devices
-> > 
+On Sat, Aug 24, 2024 at 09:45:43AM +0200, Krzysztof Kozlowski wrote:
+> On Fri, Aug 23, 2024 at 08:17:12PM +0200, Vasileios Amoiridis wrote:
 > > Add interrupt options for BMP3xx and BMP5xx devices as well.
 > > 
 > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
@@ -120,47 +103,44 @@ On Fri, Aug 23, 2024 at 06:51:55PM +0000, Biju Das wrote:
 > >  Documentation/devicetree/bindings/iio/pressure/bmp085.yaml | 7 ++++++-
 > >  1 file changed, 6 insertions(+), 1 deletion(-)
 > > 
-> > diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> > b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+> > diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
 > > index 6fda887ee9d4..eb1e1ab3dd18 100644
 > > --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
 > > +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
 > > @@ -48,9 +48,14 @@ properties:
-> > 
+> >  
 > >    interrupts:
 > >      description:
 > > -      interrupt mapping for IRQ (BMP085 only)
 > > +      interrupt mapping for IRQ. Supported in BMP085, BMP3xx, BMP5xx
 > 
-> Since you have updated the description. It is better to enforce the same in
-> conditional schema?? So that dt binding check throws error if interrupt
-> used in bmp{180,280 and bme280}.
-> 
-> Cheers,
-> Biju
+> Supported by driver or device?
+> If the latter, this should be constrained per device variant in
+> allOf:if:then:.
 > 
 
-Hi Biju,
+Hi Krzysztof,
 
-Thanks for the feedback! It is true that it would be good to throw an
-error in case the IRQ is used in a not supported sensor. If you could
-point me to an example of another sensor implementing it, it would be
-even more helpful, but I am sure I will find something :)
+Supported by some devices controlled by the same (just 1) driver.
+Thanks for the hint, I will take a look how other drivers do it :)
+
+> 
+> >      maxItems: 1
+> >  
+> > +  drive-open-drain:
+> 
+> Missing type, unless some other core schema defined it? But then I
+> actually wonder if we need it.  Maybe this should be interrupt flag?
+> Just like GPIO has such.
+
+I took it from the bindings/iio/imu/bosch,bmi323.yaml example which is
+the same. You think something needs to change?
 
 Cheers,
 Vasilis
 
-> >      maxItems: 1
-> > 
-> > +  drive-open-drain:
-> > +    description:
-> > +      set if the interrupt pin should be configured as open drain.
-> > +      If not set, defaults to push-pull configuration.
-> > +
-> >  required:
-> >    - compatible
-> >    - vddd-supply
-> > --
-> > 2.25.1
+> 
+> Best regards,
+> Krzysztof
 > 
 

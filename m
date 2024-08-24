@@ -1,90 +1,87 @@
-Return-Path: <linux-iio+bounces-8742-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8743-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9F995D972
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 01:01:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A6A95DC43
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 08:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8E0C1F23C48
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Aug 2024 23:01:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 284F71C21848
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Aug 2024 06:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C22C1C9452;
-	Fri, 23 Aug 2024 23:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E4715380B;
+	Sat, 24 Aug 2024 06:31:47 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D595695
-	for <linux-iio@vger.kernel.org>; Fri, 23 Aug 2024 23:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902093A8E4;
+	Sat, 24 Aug 2024 06:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724454074; cv=none; b=CuLf/48bIwlhEuUeFBrzg1Z4/di/StbThxKO/6gXH0bwZWMjNa2MBoUXfLTNA0hmDpiRUC3RzwOkYu8jHaBE86S0KYt4fVp7dKXFDlA7z6t3uJoOo3vOdn/FLel7G8BQ3fU4U2BxOyDoNCxoQGI8CSqA8kWCXvokcjWDSflWg8E=
+	t=1724481107; cv=none; b=FO/8UTtBlOFfvUPbcXX3W8pY/TdZ1F4eXyerq4FQfaNey+lvn9jUkGy7T+VQfvfVCfx04srmOStU1MoMWKuRF4QDhHzi5lBAcfHvwtEj+XZ4U7BFZ0DwcZLdTzWp0rNrg+SjdfdMY0hbF/6+0UE2i+ZkWkwDVQqEcrcJQLOD2IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724454074; c=relaxed/simple;
-	bh=yJaFCLUseZJ+UMqQU3DIqu/jfdw1TQ24lhPHFYbZllc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dwWGM/FBzxjJ3E9KDKa7uTABCxDFSPIz7r+cL17ie9CYxaRliBmHj280nlVyne2PaGAlREt+QuEbzCY5Zh36yNMdad+7RbEG1uAAFF1V18eEWrusB5heBRWEttATvmJ4lFt1FDb6OOwJXC5Zp1KCDWAy2CXzof9fGQMzN0zfb6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-25-87.elisa-laajakaista.fi [88.113.25.87])
-	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
-	id 9661658c-61a3-11ef-8e42-005056bd6ce9;
-	Sat, 24 Aug 2024 02:01:10 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 1/1] iio: accel: bmc150: Improve bmc150_apply_bosc0200_acpi_orientation()
-Date: Sat, 24 Aug 2024 02:01:07 +0300
-Message-ID: <20240823230107.745900-1-andy.shevchenko@gmail.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1724481107; c=relaxed/simple;
+	bh=2EdA9dYifcGgOE8+tCMyipwrc6qwM59V02r/mYYtTB8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tFjbI54gXFDexyO+4/9nTyyx5hdjZ0NvoJKBtoK00QL561r8wgmiAegAVB9+xqvXtQ719NJuePmQ6xJ1BiwgAbM9nH6Wj5tRP4VHwPzspGx/26SmAAg9vsdM4zPWrw5fgHH3Elj96HZ5wFzLQbX1eY4d0pq416YFKr5BRxr1qSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79BEC32781;
+	Sat, 24 Aug 2024 06:31:31 +0000 (UTC)
+Date: Sat, 24 Aug 2024 08:31:28 +0200
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Detlev Casanova <detlev.casanova@collabora.com>
+Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+	Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Mark Brown <broonie@kernel.org>, Wim Van Sebroeck <wim@linux-watchdog.org>, 
+	Guenter Roeck <linux@roeck-us.net>, Chris Morgan <macromorgan@hotmail.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Tim Lunn <tim@feathertop.org>, Chukun Pan <amadeus@jmu.edu.cn>, 
+	Andy Yan <andyshrk@163.com>, Muhammed Efe Cetin <efectn@protonmail.com>, 
+	Jagan Teki <jagan@edgeble.ai>, Dragan Simic <dsimic@manjaro.org>, Ondrej Jirman <megi@xff.cz>, 
+	Michael Riesch <michael.riesch@wolfvision.net>, Jimmy Hon <honyuenkwun@gmail.com>, 
+	Alexey Charkov <alchark@gmail.com>, Elon Zhang <zhangzj@rock-chips.com>, 
+	Elaine Zhang <zhangqing@rock-chips.com>, Yifeng Zhao <yifeng.zhao@rock-chips.com>, 
+	Finley Xiao <finley.xiao@rock-chips.com>, Liang Chen <cl@rock-chips.com>, 
+	Jisheng Zhang <jszhang@kernel.org>, Jamie Iles <jamie@jamieiles.com>, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	dri-devel@lists.freedesktop.org, linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH v2 04/12] dt-bindings: iio: adc: Add
+ rockchip,rk3576-saradc string
+Message-ID: <wegeyglbv5xufuvpmf2ye2bu6w5ob753h4hfimxw3ozt2vnfoh@fgvdblizg5hc>
+References: <20240823150057.56141-1-detlev.casanova@collabora.com>
+ <20240823150057.56141-5-detlev.casanova@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240823150057.56141-5-detlev.casanova@collabora.com>
 
-By using ACPI_HANDLE() the handler argument can be retrieved directly.
-Replace ACPI_COMPANION() + dereference with ACPI_HANDLE().
+On Fri, Aug 23, 2024 at 10:52:31AM -0400, Detlev Casanova wrote:
+> Add rockchip,rk3576-saradc compatible string.
+> The saradc on RK3576 is compatible with the one on RK3588, so they are
+> used together in an arm of the oneOf.
+> 
+> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Acked-by: Heiko Stuebner <heiko@sntech.de>
+> ---
 
-Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
- drivers/iio/accel/bmc150-accel-core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Why do you keep sending the same patch which was already applied?
 
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index 14ce03c70ab5..0f32c1e92b4d 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -387,7 +387,7 @@ static bool bmc150_apply_bosc0200_acpi_orientation(struct device *dev,
- 						   struct iio_mount_matrix *orientation)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
--	struct acpi_device *adev = ACPI_COMPANION(dev);
-+	acpi_handle handle = ACPI_HANDLE(dev);
- 	char *name, *alt_name, *label;
- 
- 	if (strcmp(dev_name(dev), "i2c-BOSC0200:base") == 0) {
-@@ -398,9 +398,9 @@ static bool bmc150_apply_bosc0200_acpi_orientation(struct device *dev,
- 		label = "accel-display";
- 	}
- 
--	if (acpi_has_method(adev->handle, "ROTM")) {
-+	if (acpi_has_method(handle, "ROTM")) {
- 		name = "ROTM";
--	} else if (acpi_has_method(adev->handle, alt_name)) {
-+	} else if (acpi_has_method(handle, alt_name)) {
- 		name = alt_name;
- 		indio_dev->label = label;
- 	} else {
--- 
-2.46.0
+Best regards,
+Krzysztof
 
 

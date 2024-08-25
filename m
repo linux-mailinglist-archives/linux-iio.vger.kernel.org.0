@@ -1,164 +1,165 @@
-Return-Path: <linux-iio+bounces-8770-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8771-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3838F95E23C
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Aug 2024 08:40:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1D295E247
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Aug 2024 08:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1D801F21C72
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Aug 2024 06:40:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78A43282709
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Aug 2024 06:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3457364BC;
-	Sun, 25 Aug 2024 06:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B95842AA0;
+	Sun, 25 Aug 2024 06:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eDNCm3T7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJuoVwSq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CAC33CD2;
-	Sun, 25 Aug 2024 06:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3158F48CCC;
+	Sun, 25 Aug 2024 06:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724567995; cv=none; b=FqSBTr2thBxdsFkBdJQO0+cPurhZPlQxIdxlZI2y6H9aObfsL9JrGpXtAj0lSOQWq5IXL/pC/tmUPhfML3gWATeP48cLmh75GKkX+1Bpu+zDfi0xLq9e8wVOQmMmzGzLqZ2AyweTLeIMl0ml0U34DjqBpka9xAd7aPiRfz3JC+4=
+	t=1724569062; cv=none; b=PulFUg0ilOErXh+oPAr+62xsZDCk/GGRIl4E/pYc5rOaJaZSNaNAizWx8sdrLDR74S2SbrHoWUPlSq81Paazzwt+oTJiBHl748Ma9mpJXH1bkvBFm4wkpmcmsbm/IXJVWn0vzbN/nyAFQoZhJ0TTNcdGA9nd9Vg6/30WD5Zh0rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724567995; c=relaxed/simple;
-	bh=JQIJZ9W4hwReB2dGt8776miSVWSoK17ppqWOzgA2yws=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jfMP2Q7pJ0rwDk7IQI6raczIHS3eZEH7wpKTqO+HXJQQ/DlWCBUcMF9qIUm5DHheNBjdf4rP8FSuzt+ufKFJinG551j7PiKa5YXU/fPflefSHjdcrBLGl+HnX4Cn27GGccBtvg0imQVwK7KTZRFPJBl8jj/cvse2Cb5PONeGJ5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eDNCm3T7; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-714261089c1so2324218b3a.0;
-        Sat, 24 Aug 2024 23:39:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724567993; x=1725172793; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WLbaFB5rmDIezgtKS2Zs1TcyM+iMrDpMS8ff4zJFYRk=;
-        b=eDNCm3T7BQLa0WzEg2iq7my8mNkQolIMSEjClib6ZXjDB33BzewNN0Gjh64918OmUG
-         nbgI2k15bTaTub+nNyTDqhgT7vNpQsMVL7kroV27KNMpLUrlO6GvYHk4GnxZCFQP5N1X
-         X6cEWxU67hyfKJDA47JxA07il2fzYJU+9aSH1acRzex7bVtn3Qbfm+jFCIxiFaR16fjl
-         Qu2SO2Zie5Dgf9eOya0tTqhd9CORnh6/DDaXcd7MfHaSKdOtmomjzyha+1d7hXfJAGU+
-         z79W7EilXJUYLETuDzldOyN5pO+XFUJBAvU2/wrmbwEit65iEt9BsldUqa/8dRvC9Smg
-         B1Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724567993; x=1725172793;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WLbaFB5rmDIezgtKS2Zs1TcyM+iMrDpMS8ff4zJFYRk=;
-        b=dWBQ+FjPSpOFeBX7+wRaAUB5Rwk/5GILEePrXdlo7RjK83wPKWV1Z/hgfAx/dGeTQo
-         Zmz08rwdVrur1nlW1jhnNBwruAm7oDAlyFvnxLBdfwI9zOoVTcQQiLCls5+/28qvEZEG
-         EGMZOBv41CnQXjndN30TxzQ5A7WzRLmtRpST8zlbxZcoZqwAQlxn4bNe6CsRtTBU8Jlk
-         gRzvBwkQxcI5mt4clZXuY38+4ZmoXbWmAdWUSrzynhj+IF2RF5pzK5SdaAQcFh/pTmix
-         eBX0LMkCCf7CU8DhOCgpkq1I2ptdtHEOMJa4aiUq1joGDr4e1YipBCcqWNqVSBKy5oH8
-         2L0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVu7KA6uV2jdwsWck5p9m/lgma+SB8fQlxVxiyCRHW/MAlAq66n5mATe5EmgwHiZw0MkxTi9ZmA25w=@vger.kernel.org, AJvYcCWQgGMIno3pyus3SGnCfteZT6YBK3voMArFbruzXLmnY3WV2MIqQiATF6q+CnX1nBI7r9gbRhCj3+VHo+G7@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmcUBatvEApDpEzu2BjX/aitlk7iYjOk5CiEeFQlV4OdwnvFIC
-	MCF8lqPbUfpQh+88U6yY2MLRiH+eVrBGhPC0+RVf9JIKSh6M9xXl
-X-Google-Smtp-Source: AGHT+IF/IJVnB0GoKyyqi4OGi6DC+tc34yfbW7zqGtd1D7dYOWgDoJOtmmBwSBEkQeHsfE61KH23Kg==
-X-Received: by 2002:a05:6a00:8d46:b0:70e:cf99:adc7 with SMTP id d2e1a72fcca58-7143170e1d0mr17022170b3a.3.1724567993112;
-        Sat, 24 Aug 2024 23:39:53 -0700 (PDT)
-Received: from ubuntu.localdomain ([103.155.100.1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71434330425sm5278542b3a.190.2024.08.24.23.39.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Aug 2024 23:39:52 -0700 (PDT)
-From: Jason Liu <jasonliu10041728@gmail.com>
-To: jmaneyrol@invensense.com
-Cc: jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jason Liu <jasonliu10041728@gmail.com>
-Subject: [PATCH] iio/inv_icm42600: add inv_icm42600 id_table
-Date: Sun, 25 Aug 2024 14:39:38 +0800
-Message-Id: <20240825063938.56319-1-jasonliu10041728@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1724569062; c=relaxed/simple;
+	bh=LErsbjVHh/2RC4TzJkjoffgzZjjXdGkyTQ4ZdiQHAxw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ShKLBdA/mMu+fVikqiYuPTBJeGRSzaNBjFaFUAsC7PO0arKVpCCkAP9izPbME995HwQz6KkLcQSqUq1hc9ckJPBF2vafWzMHSytX+6+/2iKrrVw+QmTSMqfape+5AVBoWgryCgg+dudV+s6KIMSACapszaD188f6sCwJgTelrNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJuoVwSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE36C32782;
+	Sun, 25 Aug 2024 06:57:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724569061;
+	bh=LErsbjVHh/2RC4TzJkjoffgzZjjXdGkyTQ4ZdiQHAxw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FJuoVwSqKbrqpI8dt6tLIJiHK7NNGyg8gRNrbjtBSwShPZa9L3eJOQEwTbvhx6exE
+	 dtst60Du/LPcxeYe500yRtdyAkBSugm0pGLsMnPAKpJLMeslyYOCrYYmqvGT6QPscI
+	 j0EWLxvD+LSa1tANm3ALS90kTuqNArom3qDcmRDSutiQTFBQxKk8V6w2n3ClLXm8mK
+	 XQLWf8FXstcB0+STb9Uc69RPvYJocXtALhJNtgl6pv/KDrLncJtt2tVOyYIB7vdHSt
+	 Qxp8oGL6n55+4sgktwVyCQy+kkP4GTDZxMNQhXDd27ppZDB1nuC3McUHWn18TgXe8Q
+	 Ifa3PDIS6+RmQ==
+Message-ID: <1400d007-861d-432a-8fd6-a948556b5dcd@kernel.org>
+Date: Sun, 25 Aug 2024 08:57:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/7] dt-bindings: iio: pressure: bmp085: Add interrupts
+ for BMP3xx and BMP5xx devices
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
+ ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
+ biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
+ semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240823181714.64545-1-vassilisamir@gmail.com>
+ <20240823181714.64545-6-vassilisamir@gmail.com>
+ <7eqtnkkgnyskkmecv7dtiyzd6invdl7xa56cih6fbuuu2jrprx@s4jpi4ls6dxn>
+ <20240824113511.GF9644@vamoiridPC>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240824113511.GF9644@vamoiridPC>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add the id_table of inv_icm42600, so the device can probe correctly.
+On 24/08/2024 13:35, Vasileios Amoiridis wrote:
+> On Sat, Aug 24, 2024 at 09:45:43AM +0200, Krzysztof Kozlowski wrote:
+>> On Fri, Aug 23, 2024 at 08:17:12PM +0200, Vasileios Amoiridis wrote:
+>>> Add interrupt options for BMP3xx and BMP5xx devices as well.
+>>>
+>>> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+>>> ---
+>>>  Documentation/devicetree/bindings/iio/pressure/bmp085.yaml | 7 ++++++-
+>>>  1 file changed, 6 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+>>> index 6fda887ee9d4..eb1e1ab3dd18 100644
+>>> --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+>>> +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+>>> @@ -48,9 +48,14 @@ properties:
+>>>  
+>>>    interrupts:
+>>>      description:
+>>> -      interrupt mapping for IRQ (BMP085 only)
+>>> +      interrupt mapping for IRQ. Supported in BMP085, BMP3xx, BMP5xx
+>>
+>> Supported by driver or device?
+>> If the latter, this should be constrained per device variant in
+>> allOf:if:then:.
+>>
+> 
+> Hi Krzysztof,
+> 
+> Supported by some devices controlled by the same (just 1) driver.
+> Thanks for the hint, I will take a look how other drivers do it :)
+> 
+>>
+>>>      maxItems: 1
+>>>  
+>>> +  drive-open-drain:
+>>
+>> Missing type, unless some other core schema defined it? But then I
+>> actually wonder if we need it.  Maybe this should be interrupt flag?
+>> Just like GPIO has such.
+> 
+> I took it from the bindings/iio/imu/bosch,bmi323.yaml example which is
+> the same. You think something needs to change?
+> 
 
-Signed-off-by: Jason Liu <jasonliu10041728@gmail.com>
----
- drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 15 +++++++++++++++
- drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c | 15 +++++++++++++++
- 2 files changed, 30 insertions(+)
+You need type: boolean.
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-index ebb31b385881..8cc550b8cfc3 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-@@ -71,6 +71,20 @@ static int inv_icm42600_probe(struct i2c_client *client)
- 				       inv_icm42600_i2c_bus_setup);
- }
- 
-+/*
-+ * device id table is used to identify what device can be
-+ * supported by this driver
-+ */
-+static const struct i2c_device_id inv_icm42600_id[] = {
-+	{"icm42600", INV_CHIP_ICM42600},
-+	{"icm42602", INV_CHIP_ICM42602},
-+	{"icm42605", INV_CHIP_ICM42605},
-+	{"icm42622", INV_CHIP_ICM42622},
-+	{"icm42631", INV_CHIP_ICM42631},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, inv_icm42600_id);
-+
- static const struct of_device_id inv_icm42600_of_matches[] = {
- 	{
- 		.compatible = "invensense,icm42600",
-@@ -104,6 +118,7 @@ static struct i2c_driver inv_icm42600_driver = {
- 		.of_match_table = inv_icm42600_of_matches,
- 		.pm = pm_ptr(&inv_icm42600_pm_ops),
- 	},
-+	.id_table = inv_icm42600_id,
- 	.probe = inv_icm42600_probe,
- };
- module_i2c_driver(inv_icm42600_driver);
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-index eae5ff7a3cc1..5fe078ddc8a1 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-@@ -67,6 +67,20 @@ static int inv_icm42600_probe(struct spi_device *spi)
- 				       inv_icm42600_spi_bus_setup);
- }
- 
-+/*
-+ * device id table is used to identify what device can be
-+ * supported by this driver
-+ */
-+static const struct spi_device_id inv_icm42600_id[] = {
-+	{"icm42600", INV_CHIP_ICM42600},
-+	{"icm42602", INV_CHIP_ICM42602},
-+	{"icm42605", INV_CHIP_ICM42605},
-+	{"icm42622", INV_CHIP_ICM42622},
-+	{"icm42631", INV_CHIP_ICM42631},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, inv_icm42600_id);
-+
- static const struct of_device_id inv_icm42600_of_matches[] = {
- 	{
- 		.compatible = "invensense,icm42600",
-@@ -100,6 +114,7 @@ static struct spi_driver inv_icm42600_driver = {
- 		.of_match_table = inv_icm42600_of_matches,
- 		.pm = pm_ptr(&inv_icm42600_pm_ops),
- 	},
-+	.id_table = inv_icm42600_id,
- 	.probe = inv_icm42600_probe,
- };
- module_spi_driver(inv_icm42600_driver);
--- 
-2.25.1
+Best regards,
+Krzysztof
 
 

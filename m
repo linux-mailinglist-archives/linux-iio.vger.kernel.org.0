@@ -1,150 +1,192 @@
-Return-Path: <linux-iio+bounces-8788-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8789-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4643195EE53
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 12:17:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3245195EE63
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 12:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07D3128165E
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 10:17:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09781F2279D
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 10:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECDB146A69;
-	Mon, 26 Aug 2024 10:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74F8146D6D;
+	Mon, 26 Aug 2024 10:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f60MTcl1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hP0vZXH9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC271474A9;
-	Mon, 26 Aug 2024 10:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837E313B59E;
+	Mon, 26 Aug 2024 10:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724667450; cv=none; b=FNqt90zVNdL0gHFp7+c+i+onrQwVHvIZzvLxJl1S/HJdIcrvqUtnPvYkUq813y/ifdQkANOWb9/oSg0DndXSg6dmJ5v5/UMAxTrS0mQwldOT7Pw/UGEoSqIPiazmyH1JO6vsJ6bgxkifknvr5UPLwX0axDzgSK8Y5KSNjpakYJM=
+	t=1724667662; cv=none; b=KM05TizIN6mBOZwybaNpi5AH1jbpRaFOFdjxDEtHPNlTbm2Mj0gn8jqf04xixH3HJYFtD3vrZwVgnf7b82taX7NV8bkIXm7mHC7u9xSAkrhowH0K/POCrJKbQ/dy4YIHtTMhKpKJo5DNmR7uvd7k7m3XfZ2GcG51iLFo20JiKNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724667450; c=relaxed/simple;
-	bh=Buc3IMpckq5tgjNZ8RKfWQywqJu7JnsCJu9Ai+khWjc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ducN/yrK01aMNNFFXm/w2EwSuO2CYHOGqRFaXHNz9+yxpR7pgnIIkkDkxk/+dY27yopTV/8VMtc9mhEqK3VtKrVdDxuLkxIpFrDeQ5W0uWantnUTyOB80J2kcyq+ooR+ExGvlZhsoBUYC5ccC4zAM7dLb8iiyn8KH5FxtATlkfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f60MTcl1; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724667449; x=1756203449;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Buc3IMpckq5tgjNZ8RKfWQywqJu7JnsCJu9Ai+khWjc=;
-  b=f60MTcl1yXGsED0jXVTqbhnJULr0XTRdEDz+bZFLrm1IAqB9A0QSBi5Q
-   gRHljMybIx/6iCHMFgpaVpSLvv13WlCZ39qj/3PRASQ/hZHuARlLxa2HD
-   wx9O3Su+b0NOit0ls/c+zIDvLnuCPybET3/NC1UP17+l7yIXL4F+HlstL
-   Vb6BoJtDk6GetQUBl23ymN7bau2AeOnloB60g/8CPhsTQM8GEucFshNw1
-   5PVJcqgkYPYXjKapRjIoE5foi6Ve2gBGprH8fLy/rRGOVctkabgC8aTmE
-   f5APhqsCAtjYZGkxNOJnRha2B65q5CXdiiaTshkSY6asqpJ2lssCQsVgz
-   Q==;
-X-CSE-ConnectionGUID: Pryq4gc6SxykBBxaZA/3Dg==
-X-CSE-MsgGUID: yAKtid9sTj6Jh5g3zQ8gEw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="26845090"
-X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
-   d="scan'208";a="26845090"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 03:17:28 -0700
-X-CSE-ConnectionGUID: 4pq+h476TJ6u1jGLBUQSsA==
-X-CSE-MsgGUID: 96S86u3UTby1eCb+iOrZ4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
-   d="scan'208";a="62983918"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 03:17:24 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1siWmn-00000001pSA-3TZe;
-	Mon, 26 Aug 2024 13:17:21 +0300
-Date: Mon, 26 Aug 2024 13:17:21 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, ang.iglesiasg@gmail.com,
-	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
-	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
-	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/7] iio: pressure: bmp280: Use sleep and forced mode
- for oneshot captures
-Message-ID: <ZsxWMSv5e5ZWOlai@smile.fi.intel.com>
-References: <20240823181714.64545-1-vassilisamir@gmail.com>
- <20240823181714.64545-5-vassilisamir@gmail.com>
- <ZsjiDaZjcA-oopWB@smile.fi.intel.com>
- <20240824112924.GD9644@vamoiridPC>
+	s=arc-20240116; t=1724667662; c=relaxed/simple;
+	bh=9ZyvvWc+MtqHVJhq+sPB68b5/mA0ga0XIBp4cTKBisQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CizQ0VWnaInfk9JwmsPX4tMsIxPAf866+zpdZuztrS4qOuRTDMl7w78d4cPaE80EIEc8UV/1L3gi+4iMXJBPNyzYvH9GNAWkCkg5uhiNSeOkLCPX+9ykvd4pALUrWeOiH41YW6z3U5+Tbj41twL5pylOYnJ8klkYzW8m9LosRaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hP0vZXH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34708C58123;
+	Mon, 26 Aug 2024 10:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724667662;
+	bh=9ZyvvWc+MtqHVJhq+sPB68b5/mA0ga0XIBp4cTKBisQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hP0vZXH9UFfbDCma1plRy+wY0DsWxH7x6g4HIrDQlE9sK8m1aouszxowMczf9PyNJ
+	 rU0ds4e2ZM0cZsF9c9+vEz+frIsd2AnCx0UkDKVxgNjSE3qH2obPhSvcsrRJlYy+66
+	 HGFMGV3SS6uuuBh5hwQInE6oa7k8+9XuBBZmLR6oZB0ByRe4Jvf3e4/0j/pzNoCV5M
+	 Em8h2v3k6uMP3ZFKb1RxBooKAwvbqLAvOBJUvn0kIEj9JSdYGxuTDS3TT8wag6UHEg
+	 8hQNDbgVlijq4AaUPWNEM4GeJ5NvjoQuy8rxMxN5yroj6C7elkUZPPr8Q+IcewGRyf
+	 SLI7rOl2ceEhw==
+Date: Mon, 26 Aug 2024 11:20:48 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+Cc: Jason Liu <jasonliu10041728@gmail.com>, "lars@metafoo.de"
+ <lars@metafoo.de>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] iio/inv_icm42600: add inv_icm42600 id_table
+Message-ID: <20240826111858.7824a811@jic23-huawei>
+In-Reply-To: <FR3P281MB1757A595F22A1F9AE50B76B1CE8B2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References: <20240825063938.56319-1-jasonliu10041728@gmail.com>
+	<FR3P281MB1757A595F22A1F9AE50B76B1CE8B2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240824112924.GD9644@vamoiridPC>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 24, 2024 at 01:29:24PM +0200, Vasileios Amoiridis wrote:
-> On Fri, Aug 23, 2024 at 10:25:01PM +0300, Andy Shevchenko wrote:
-> > On Fri, Aug 23, 2024 at 08:17:11PM +0200, Vasileios Amoiridis wrote:
+On Mon, 26 Aug 2024 08:22:11 +0000
+Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
 
-...
+> Hello,
+>=20
+> I was believing that id tables weren't required anymore when using of tab=
+les.
+>=20
+> Jonathan,
+> can you help on this subject?
+>=20
+> If we have to add id tables, then we need to add all supported chips (mis=
+sing here icm42686 and icm42688).
 
-> > > +	meas_time = 4000 + time_conv_temp[data->oversampling_temp] +
-> > > +			   time_conv_press[data->oversampling_press];
-> > 
-> > 4 * USEC_PER_MSEC ?
-> 
-> Since the previous values in the arrays are all in thousands, why should
-> I make this different?
+There were some oddities around autoloading for some busses a while
+back but I can't find the reference.
 
-When I read the code (and mind that we write code for humans), I don't
-have a clue about the order of the values in use. Also it's hard to get from
-the line the meaning of both sides of the formula. Using named definitions
-helps a lot in understanding this line without reading and analysing code in
-full.
++CC Mark + Wolfram for input.
+Do we currently need i2c_device_id and spi_device_id tables for
+autoprobing on DT only platforms?
 
-...
+A few minor comments inline.
 
-> > > +	usleep_range(meas_time, meas_time * 12 / 10);
-> > 
-> > Comment? fsleep() ?
-> 
-> The usleep here is for waiting for the sensor to make the conversion,
-> as the function name points out as well? Should I put it as a comment?
-> 
-> In general, is it considered good practice to add comments above all
-> sleep functions?
 
-Yes, it's even a requirement (not sure if it's documented anywhere) to comment
-over long enough delays.
 
-> I don't think it's a bad idea, I just didn't notice
-> it somewhere.
-> 
-> > > +	return 0;
-> > > +}
 
-...
+>=20
+> Thanks,
+> JB
+>=20
+> ________________________________________
+> From:=C2=A0Jason Liu <jasonliu10041728@gmail.com>
+> Sent:=C2=A0Sunday, August 25, 2024 08:39
+> To:=C2=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> Cc:=C2=A0jic23@kernel.org <jic23@kernel.org>; lars@metafoo.de <lars@metaf=
+oo.de>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; linux-kernel=
+@vger.kernel.org <linux-kernel@vger.kernel.org>; Jason Liu <jasonliu1004172=
+8@gmail.com>
+> Subject:=C2=A0[PATCH] iio/inv_icm42600: add inv_icm42600 id_table
+> =C2=A0
+> This Message Is From an Untrusted Sender
+> You have not previously corresponded with this sender.
+> =C2=A0
+> Add the id_table of inv_icm42600, so the device can probe correctly.
+>=20
+> Signed-off-by: Jason Liu <jasonliu10041728@gmail.com>
+> ---
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 15 +++++++++++++++
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c | 15 +++++++++++++++
+>  2 files changed, 30 insertions(+)
+>=20
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/ii=
+o/imu/inv_icm42600/inv_icm42600_i2c.c
+> index ebb31b385881..8cc550b8cfc3 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
+> @@ -71,6 +71,20 @@ static int inv_icm42600_probe(struct i2c_client *clien=
+t)
+>  				       inv_icm42600_i2c_bus_setup);
+>  }
+> =20
+> +/*
+> + * device id table is used to identify what device can be
+> + * supported by this driver
+> + */
+> +static const struct i2c_device_id inv_icm42600_id[] =3D {
+> +	{"icm42600", INV_CHIP_ICM42600},
+Spaces after { and before }
+> +	{"icm42602", INV_CHIP_ICM42602},
+> +	{"icm42605", INV_CHIP_ICM42605},
+> +	{"icm42622", INV_CHIP_ICM42622},
+> +	{"icm42631", INV_CHIP_ICM42631},
+> +	{}
+{ }
 
-> > > +	usleep_range(2500, 3000);
-> > 
-> > fsleep() ?
-> > 
-> 
-> ACK.
+I'm trying to standardize this in IIO.
 
-Also a comment, since it's milliseconds range which might be considered long
-enough.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> +};
+> +MODULE_DEVICE_TABLE(i2c, inv_icm42600_id);
+> +
+>  static const struct of_device_id inv_icm42600_of_matches[] =3D {
+>  	{
+>  		.compatible =3D "invensense,icm42600",
+> @@ -104,6 +118,7 @@ static struct i2c_driver inv_icm42600_driver =3D {
+>  		.of_match_table =3D inv_icm42600_of_matches,
+>  		.pm =3D pm_ptr(&inv_icm42600_pm_ops),
+>  	},
+> +	.id_table =3D inv_icm42600_id,
+>  	.probe =3D inv_icm42600_probe,
+>  };
+>  module_i2c_driver(inv_icm42600_driver);
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/ii=
+o/imu/inv_icm42600/inv_icm42600_spi.c
+> index eae5ff7a3cc1..5fe078ddc8a1 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+> @@ -67,6 +67,20 @@ static int inv_icm42600_probe(struct spi_device *spi)
+>  				       inv_icm42600_spi_bus_setup);
+>  }
+> =20
+> +/*
+> + * device id table is used to identify what device can be
+> + * supported by this driver
+> + */
+> +static const struct spi_device_id inv_icm42600_id[] =3D {
+> +	{"icm42600", INV_CHIP_ICM42600},
+> +	{"icm42602", INV_CHIP_ICM42602},
+> +	{"icm42605", INV_CHIP_ICM42605},
+> +	{"icm42622", INV_CHIP_ICM42622},
+> +	{"icm42631", INV_CHIP_ICM42631},
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(spi, inv_icm42600_id);
+> +
+>  static const struct of_device_id inv_icm42600_of_matches[] =3D {
+>  	{
+>  		.compatible =3D "invensense,icm42600",
+> @@ -100,6 +114,7 @@ static struct spi_driver inv_icm42600_driver =3D {
+>  		.of_match_table =3D inv_icm42600_of_matches,
+>  		.pm =3D pm_ptr(&inv_icm42600_pm_ops),
+>  	},
+> +	.id_table =3D inv_icm42600_id,
+>  	.probe =3D inv_icm42600_probe,
+>  };
+>  module_spi_driver(inv_icm42600_driver);
 
 

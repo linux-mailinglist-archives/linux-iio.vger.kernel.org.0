@@ -1,239 +1,296 @@
-Return-Path: <linux-iio+bounces-8778-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8779-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C673695EC1E
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 10:37:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D6695ED1B
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 11:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 574931F211F5
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 08:37:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 125701F22125
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 09:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7207A139CFC;
-	Mon, 26 Aug 2024 08:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59099145FE8;
+	Mon, 26 Aug 2024 09:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TJ+YLYUK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hz0c6MO8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B4673478;
-	Mon, 26 Aug 2024 08:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDC6145B1F;
+	Mon, 26 Aug 2024 09:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724661412; cv=none; b=EJJigs8dIo1KXDqcnWxmdQmbTg9WL7vSU9/NpNIpCbv+J+3Qt2jvBS0Ky4voKH0ZaZGBjk6/vg5A1VY1d+nzuMerdBIu7bwTEGPGlg1HzTyOolCEvB9rE9+vQLe/5rqAeYiMzY4MAxvggQ3u7k2pOlRxVdyR34RzvqGZLAyoljA=
+	t=1724664483; cv=none; b=oapkwj/RHLm9Am3HbogJsLE+DcdYnznsCQK7S+ER8PdfhhMrJRlHKNkZrNfCYcHRdc9LLHaOGK4YWADLOAsPYQY/xSAeNwDmwzlrU19IZahXlxSw/ZJ3e0RBElNlPDSiQZhJOTb0Vgu38P1QXXEQy+PCfQBTDpVNgBL4u2gvjAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724661412; c=relaxed/simple;
-	bh=RvoSXYx5aZ9xUlAAZQxs9imiRyF//RNpaHWpP9bgIMw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z8sZJJcKDgPid/vYzKncThKU2akPFDPo8PgMkOwZLMZLxgwVbB4Lixt2exol7kCUmSEFderCEGQHbXY4PoB8te1Kp1AU1u+TPgyl22Yb+glYRpHfnyd/LD/VvmMLfVimFSNycQwbe6WR0b/hb8aIsknREB6tINxjUY5Xhe5W9ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TJ+YLYUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E112FC568DE;
-	Mon, 26 Aug 2024 08:36:45 +0000 (UTC)
+	s=arc-20240116; t=1724664483; c=relaxed/simple;
+	bh=tOUgInOKtpfGsDq0XN/aCDzC3Gyz0VVDNbURfDQgMks=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n1CN4kTG8tRqaD0Bqd6HXIMmRSG+rXzI0gVtALoff2TYMKFUfxYdI6tunDcy7IqEtzHdYIXiWCd2uucNI14jtPahyMP3Ys5jamfe39M2wQQcHA4JTen1G1CD0m0jwWHIhSf38txG7Iw5oMrRHLalPUq2fBHJ+KB6Z5pxtc3aNSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hz0c6MO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E55C5E892;
+	Mon, 26 Aug 2024 09:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724661411;
-	bh=RvoSXYx5aZ9xUlAAZQxs9imiRyF//RNpaHWpP9bgIMw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TJ+YLYUK1VF5e5R6djrUVifNEoPIdmNGRKzIxWWQLsCx62/FOJYAt4CbKyTV31l1G
-	 Sswj5HMVez0VUYUbq5RCJNYhCEqgv+GeTWdlRLy2Y8CmqbRMwhVv4G/h/QLk3OjyE7
-	 DYAaPyyQqAg9Kc915NOFvkCG2qDoLxQwim5TXf8tkCkwJfh2LWT8z5Bt8WoAw+0v9I
-	 cJyvrNALHZaIHtWHHApspnQ8HXezWCq9aCYUbDKWFA4fYecz7AzyLIwqgxITsaF++i
-	 zJrZoQGoWO2cODipqE4W9pUjZnkANzDCwoyjjDETHv0VxrZKz9veTfWXTPBzP+jTr1
-	 4lU3LLxcryTog==
-Message-ID: <cae86533-9eaa-4253-91ae-14c65b378c3c@kernel.org>
-Date: Mon, 26 Aug 2024 10:36:42 +0200
+	s=k20201202; t=1724664482;
+	bh=tOUgInOKtpfGsDq0XN/aCDzC3Gyz0VVDNbURfDQgMks=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hz0c6MO81u6Gs7ouPBR98N06TePtBFRnmnoW46fodLjllpo/FgETUWmWD4S6UXYM1
+	 WsqxsMg892SRYrpZmsRwqklTtkIOzIvgfbuXCUDFij4lwLdiPw5Nmgx1TcFFm2lgJg
+	 RkR/ZBZJOX6QBYA8ntWVbBnyeUA+KshZWtfRcIC20JwvGe9kY1XXvVDZSaN/vCkhRb
+	 fhqASgyL+a/SxhvebD/3caGZU7ZyKWNZfpZXMhae99JiyDgV4MdY8yZcMitPccdMUc
+	 QAIxbNK5uahpxNSC/viCxJ5O6LjFzU5Mce/p19dy4KyoU2dHPtJlosbnqXPsOSoTqU
+	 7gkOWKdfsz4Yg==
+Date: Mon, 26 Aug 2024 10:27:48 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Esteban Blanc <eblanc@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno Sa
+ <nuno.sa@analog.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH 4/6] iio: adc: ad4030: add support for ad4630-24 and
+ ad4630-16
+Message-ID: <20240826102748.4be0b642@jic23-huawei>
+In-Reply-To: <20240822-eblanc-ad4630_v1-v1-4-5c68f3327fdd@baylibre.com>
+References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
+	<20240822-eblanc-ad4630_v1-v1-4-5c68f3327fdd@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] dt-bindings: iio: adc: add ADI ad4030, ad4630 and
- ad4632
-To: Esteban Blanc <eblanc@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
- Jonathan Corbet <corbet@lwn.net>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
- linux-doc@vger.kernel.org
-References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
- <20240822-eblanc-ad4630_v1-v1-1-5c68f3327fdd@baylibre.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240822-eblanc-ad4630_v1-v1-1-5c68f3327fdd@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 22/08/2024 14:45, Esteban Blanc wrote:
-> This adds a binding specification for the Analog Devices Inc. AD4030,
-> AD4630 and AD4632 families of ADCs.
-> 
-> - ad4030-24 is a 1 channel SAR ADC with 24 bits of precision and a
->   sampling rate of 2M samples per second
-> - ad4630-16 is a 2 channels SAR ADC with 16 bits of precision and a
->   sampling rate of 2M samples per second
-> - ad4630-24 is a 2 channels SAR ADC with 24 bits of precision and a
->   sampling rate of 2M samples per second
-> - ad4632-16 is a 2 channels SAR ADC with 16 bits of precision and a
->   sampling rate of 500K samples per second
-> - ad4632-24 is a 2 channels SAR ADC with 24 bits of precision and a
->   sampling rate of 500K samples per second
+On Thu, 22 Aug 2024 14:45:20 +0200
+Esteban Blanc <eblanc@baylibre.com> wrote:
+
+> AD4630-24 and AD4630-16 are 2 channels ADCs. Both channels are
+> interleaved bit per bit on SDO line.
 > 
 > Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
+Ah. I should have looked on in the patch set.  This obviously answers
+question about plans to support more parts.
+
+It feels like you made various improvements to naming etc
+in this patch and then forgot to push them back to the earlier
+patches.
+
+Jonathan
+
 > ---
->  .../devicetree/bindings/iio/adc/adi,ad4030.yaml    | 113 +++++++++++++++++++++
->  MAINTAINERS                                        |   8 ++
->  2 files changed, 121 insertions(+)
+>  drivers/iio/adc/ad4030.c | 197 +++++++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 173 insertions(+), 24 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
-> new file mode 100644
-> index 000000000000..7957c0c0ac7a
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
-> @@ -0,0 +1,113 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2024 Analog Devices Inc.
-> +# Copyright 2024 BayLibre, SAS.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4030.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD4030 and AD4630 ADC family device driver
+> diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
+> index e1e1dbf0565c..dbba5287b630 100644
+> --- a/drivers/iio/adc/ad4030.c
+> +++ b/drivers/iio/adc/ad4030.c
+> @@ -32,6 +32,8 @@
+>  #define AD4030_REG_PRODUCT_ID_H				0x05
+>  #define AD4030_REG_CHIP_GRADE				0x06
+>  #define     AD4030_REG_CHIP_GRADE_AD4030_24_GRADE	0x10
+> +#define     AD4030_REG_CHIP_GRADE_AD4630_16_GRADE	0x03
+> +#define     AD4030_REG_CHIP_GRADE_AD4630_24_GRADE	0x00
+>  #define     AD4030_REG_CHIP_GRADE_MASK_CHIP_GRADE	GENMASK(7, 3)
+>  #define AD4030_REG_SCRATCH_PAD			0x0A
+>  #define AD4030_REG_SPI_REVISION			0x0B
+> @@ -159,10 +161,14 @@ struct ad4030_state {
+>  	struct {
+>  		union {
+>  			u8 raw[AD4030_MAXIMUM_RX_BUFFER_SIZE];
+> -			struct {
+> -				s32 val;
+> -				u32 common;
+> -			} __packed buffered[AD4030_MAX_HARDWARE_CHANNEL_NB];
+> +			union {
+> +				s32 diff[AD4030_MAX_HARDWARE_CHANNEL_NB];
+> +				struct {
+> +					s32 diff;
+> +					u32 common;
+> +				} __packed
+Unless you are going to do something complex later, a union of unions is
+just a union so can flatten this I think.  Also no need for __packed
+for array of single size as those are always packed.
 
-"device driver"? Bindings are for hardware. Explain the hardware, not
-driver.
+> +				buffered_common[AD4030_MAX_HARDWARE_CHANNEL_NB];
 
-> +
-> +maintainers:
-> +  - Nuno Sa <nuno.sa@analog.com>
-> +  - Michael Hennerich <michael.hennerich@analog.com>
-> +
-> +description: |
-> +  Analog Devices AD4030 single channel and AD4630 dual channel precision SAR ADC
-> +  family
+This style is confusing to read.  If you did need the __packed then it would be
+worth pushing to previous line, but you don't.
+In general feels like some of these renames should have been in the earlier
+patch.
 
-Does not look like wrapped according to Linux coding style. Read the
-coding style (not checkpatch).
+> +			};
+>  		};
+>  	} rx_data __aligned(IIO_DMA_MINALIGN);
+>  };
+> @@ -171,7 +177,7 @@ struct ad4030_state {
+>  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
+>  	.type = IIO_VOLTAGE,						\
+>  	.indexed = 1,							\
+> -	.channel = _idx * 2 + 2,					\
+> +	.channel = _idx * 3 + 2,					\
+Odd change. Wrong patch? 
+>  	.scan_index = _idx * 2 + 1,					\
+>  	.extend_name = "Channel" #_idx " common byte part",		\
+>  	.scan_type = {							\
+> @@ -194,8 +200,8 @@ struct ad4030_state {
+>  		BIT(IIO_CHAN_INFO_CALIBSCALE),				\
+>  	.type = IIO_VOLTAGE,						\
+>  	.indexed = 1,							\
+> -	.channel = _idx * 2,						\
+> -	.channel2 = _idx * 2 + 1,					\
+> +	.channel = _idx * 3,						\
+> +	.channel2 = _idx * 3 + 1,					\
+>  	.scan_index = _idx * 2,						\
+>  	.extend_name = "Channel" #_idx " differential part",		\
+>  	.differential = true,						\
+> @@ -412,7 +418,7 @@ static int ad4030_set_avg_frame_len(struct iio_dev *dev, unsigned int avg_len)
+>  static bool ad4030_is_common_byte_asked(struct ad4030_state *st,
+>  					unsigned int mask)
+>  {
+> -	/* Common byte channel is after the "real" differential sample channel */
+> +	/* Common byte channels are after each differential channel */
 
-> +
-> +  * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4030-24-4032-24.pdf
-> +  * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-24_ad4632-24.pdf
-> +  * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-16-4632-16.pdf
-> +
-> +properties:
-> +
+Just use that comment in earlier patch to avoid noise.
+Each can incorporate 1 even if it's a bit odd to read.
 
-Drop blank line
+>  	return mask & AD4030_COMMON_BYTE_CHANNELS_FILTER;
+>  }
+>  
 
-> +  compatible:
-> +    enum:
-> +      - adi,ad4030-24
-> +      - adi,ad4630-16
-> +      - adi,ad4630-24
-> +      - adi,ad4632-16
-> +      - adi,ad4632-24
+> +/*
+> + * @brief Descramble 2 32bits numbers out of a 64bits. The bits are interleaved:
+> + * 1 bit for first number, 1 bit for the second, and so on...
+> + */
+> +static void ad4030_extract_interleaved(u8 *src, u32 *ch0, u32 *ch1)
+> +{
+> +	u8 h0, h1, l0, l1;
+> +	u32 out0, out1;
+> +	u8 *out0_raw = (u8 *)&out0;
+> +	u8 *out1_raw = (u8 *)&out1;
 > +
-> +  reg:
-> +    maxItems: 1
+> +	for (int i = 0; i < 4; i++) {
+> +		h0 = src[i * 2];
+> +		l1 = src[i * 2 + 1];
+> +		h1 = h0 << 1;
+> +		l0 = l1 >> 1;
 > +
-> +  spi-max-frequency:
-> +    maximum: 100000000
+> +		h0 &= 0xAA;
+> +		l0 &= 0x55;
+> +		h1 &= 0xAA;
+> +		l1 &= 0x55;
 > +
-> +  spi-rx-bus-width:
-> +    enum: [1, 2, 4]
+> +		h0 = (h0 | h0 << 001) & 0xCC;
+> +		h1 = (h1 | h1 << 001) & 0xCC;
+> +		l0 = (l0 | l0 >> 001) & 0x33;
+> +		l1 = (l1 | l1 >> 001) & 0x33;
+> +		h0 = (h0 | h0 << 002) & 0xF0;
+> +		h1 = (h1 | h1 << 002) & 0xF0;
+> +		l0 = (l0 | l0 >> 002) & 0x0F;
+> +		l1 = (l1 | l1 >> 002) & 0x0F;
 > +
-> +  vdd-5v-supply: true
-> +  vdd-1v8-supply: true
-> +  vio-supply: true
+> +		out0_raw[i] = h0 | l0;
+> +		out1_raw[i] = h1 | l1;
+> +	}
 > +
-> +  ref-supply:
-> +    description:
-> +      Optional External unbuffered reference. Used when refin-supply is not
-> +      connected.
+> +	*ch0 = out0;
+> +	*ch1 = out1;
+> +}
 > +
-> +  refin-supply:
-> +    description:
-> +      Internal buffered Reference. Used when ref-supply is not connected.
+>  static int ad4030_conversion(struct ad4030_state *st,
+>  			     const struct iio_chan_spec *chan)
+>  {
+> @@ -460,12 +517,21 @@ static int ad4030_conversion(struct ad4030_state *st,
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (st->mode != AD4030_OUT_DATA_MD_24_DIFF_8_COM)
+> +	if (st->chip->num_channels == 2)
+> +		ad4030_extract_interleaved(st->rx_data.raw,
+> +					   &st->rx_data.diff[0],
+> +					   &st->rx_data.diff[1]);
 > +
-> +  cnv-gpio:
+> +	if (st->mode != AD4030_OUT_DATA_MD_16_DIFF_8_COM &&
+> +	    st->mode != AD4030_OUT_DATA_MD_24_DIFF_8_COM)
+>  		return 0;
+>  
+>  	byte_index = BITS_TO_BYTES(chan->scan_type.realbits);
+> -	for (i = 0; i < st->chip->num_channels; i++)
+> -		st->rx_data.buffered[i].common = ((u8 *)&st->rx_data.buffered[i].val)[byte_index];
+> +	/* Doing it backward to avoid overlap when reordering */
+> +	for (i = st->chip->num_channels - 1; i > 0; i--) {
+> +		st->rx_data.buffered_common[i].diff = st->rx_data.diff[i];
+> +		st->rx_data.buffered_common[i].common = ((u8 *)&st->rx_data.diff[i])[byte_index];
+> +	}
 
-Nope, there is no "gpio" property. It IS ALWAYS gpios. Look at other
-examples.
+I wonder if doing it in place is actually worthwhile.  Maybe unpack into a second
+array? That is still fairly small and may make code easier to read.
 
 
-> +    description:
-> +      The Convert Input (CNV). It initiates the sampling conversions.
-> +    maxItems: 1
+>  
+>  	return 0;
+>  }
+
+...
+
+>  
+> +static const unsigned long ad4630_channel_masks[] = {
+> +	/* Differential only */
+> +	BIT(0) | BIT(2),
+> +	/* Differential with common byte */
+> +	GENMASK(3, 0),
+The packing of data isn't going to be good. How bad to shuffle
+to put the two small channels next to each other?
+Seems like it means you will want to combine your deinterleave
+and channel specific handling above, which is a bit fiddly but
+not much worse than current code.
+
+
+It only matters if you have timestamps though as otherwise
+the 8 byte alignment will force 6 bytes of packing in one
+place vs the 3 this gives in two places.
+I guess maybe not worth doing unless you plan to combine
+this with an offload engine in which case the timestamps will
+probably be disabled and the 12 byte scan length will be preferable
+to 16 bytes.
+
+> +	0,
+> +};
 > +
-> +  reset-gpio:
+>  static const struct iio_scan_type ad4030_24_scan_types[] = {
+> -	[AD4030_SCAN_TYPE_NORMAL] = {
+> +	[AD4030_OUT_DATA_MD_24_DIFF] = {
+Name it this way in the first place.
 
-Same problem.
-
-> +    description:
-> +      Reset Input (Active Low). Used for asynchronous device reset.
-> +    maxItems: 1
+>  		.sign = 's',
+>  		.storagebits = 32,
+>  		.realbits = 24,
+> @@ -908,6 +1002,23 @@ static const struct iio_scan_type ad4030_24_scan_types[] = {
+>  	},
+>  };
+>  
+> +static const struct iio_scan_type ad4030_16_scan_types[] = {
+> +	[AD4030_SCAN_TYPE_NORMAL] = {
+> +		.sign = 's',
+> +		.storagebits = 32,
+> +		.realbits = 16,
+> +		.shift = 16,
+> +		.endianness = IIO_BE,
+> +	},
+> +	[AD4030_SCAN_TYPE_AVG] = {
+> +		.sign = 's',
+> +		.storagebits = 32,
+> +		.realbits = 30,
+> +		.shift = 2,
+> +		.endianness = IIO_BE,
+> +	}
+> +};
 > +
-> +  interrupts:
-> +    description:
-> +      The BUSY pin is used to signal that the conversions results are available
-> +      to be transferred when in SPI Clocking Mode. This nodes should be connected
-> +      to an interrupt that is triggered when the BUSY line goes low.
-> +    maxItems: 1
-> +
-
-
-> 
-
-Best regards,
-Krzysztof
 
 

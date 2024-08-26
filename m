@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-8789-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8790-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3245195EE63
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 12:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B20495EE6B
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 12:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09781F2279D
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 10:21:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 258671F22C71
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 10:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74F8146D6D;
-	Mon, 26 Aug 2024 10:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F8E149C64;
+	Mon, 26 Aug 2024 10:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hP0vZXH9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWVQI8OX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837E313B59E;
-	Mon, 26 Aug 2024 10:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA781482F5;
+	Mon, 26 Aug 2024 10:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724667662; cv=none; b=KM05TizIN6mBOZwybaNpi5AH1jbpRaFOFdjxDEtHPNlTbm2Mj0gn8jqf04xixH3HJYFtD3vrZwVgnf7b82taX7NV8bkIXm7mHC7u9xSAkrhowH0K/POCrJKbQ/dy4YIHtTMhKpKJo5DNmR7uvd7k7m3XfZ2GcG51iLFo20JiKNs=
+	t=1724667828; cv=none; b=NZmdBHkeHlj/fm/aAbaDZQllvc/76rWfcU7lS3hWUY2hBHallFKvUwTPKq7vTgNgCG+bvH61c4o/u4Rc1cRRAKyvCYqpB+OhvfhQCnFTdaJ2uScciWoS13cmhbstsKOqEvuv/4c9Qveca3jrPOy6HLEJcUQxSVG+ko4SFSVYwJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724667662; c=relaxed/simple;
-	bh=9ZyvvWc+MtqHVJhq+sPB68b5/mA0ga0XIBp4cTKBisQ=;
+	s=arc-20240116; t=1724667828; c=relaxed/simple;
+	bh=OILafryTW4ruNfaPEeEMXBE9q03CMHc6dUIyo/58e5c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CizQ0VWnaInfk9JwmsPX4tMsIxPAf866+zpdZuztrS4qOuRTDMl7w78d4cPaE80EIEc8UV/1L3gi+4iMXJBPNyzYvH9GNAWkCkg5uhiNSeOkLCPX+9ykvd4pALUrWeOiH41YW6z3U5+Tbj41twL5pylOYnJ8klkYzW8m9LosRaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hP0vZXH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34708C58123;
-	Mon, 26 Aug 2024 10:20:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tbuSDh4cdmXn0zpbm70WyaCQBObMCdMr1daYoDaBcf54An+mbsS8hIFjZEaI6DjAt5Sq4pPpXQyPaBDIotPAirsI+bvVF2FKFsMO1lzwKoAOCVe3j83aEeDbsGZNImMkY2wl4pEGc5OWC+6ZuwIFktcE0d/ex8msfaYNC1+nXnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWVQI8OX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BE4C58302;
+	Mon, 26 Aug 2024 10:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724667662;
-	bh=9ZyvvWc+MtqHVJhq+sPB68b5/mA0ga0XIBp4cTKBisQ=;
+	s=k20201202; t=1724667827;
+	bh=OILafryTW4ruNfaPEeEMXBE9q03CMHc6dUIyo/58e5c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hP0vZXH9UFfbDCma1plRy+wY0DsWxH7x6g4HIrDQlE9sK8m1aouszxowMczf9PyNJ
-	 rU0ds4e2ZM0cZsF9c9+vEz+frIsd2AnCx0UkDKVxgNjSE3qH2obPhSvcsrRJlYy+66
-	 HGFMGV3SS6uuuBh5hwQInE6oa7k8+9XuBBZmLR6oZB0ByRe4Jvf3e4/0j/pzNoCV5M
-	 Em8h2v3k6uMP3ZFKb1RxBooKAwvbqLAvOBJUvn0kIEj9JSdYGxuTDS3TT8wag6UHEg
-	 8hQNDbgVlijq4AaUPWNEM4GeJ5NvjoQuy8rxMxN5yroj6C7elkUZPPr8Q+IcewGRyf
-	 SLI7rOl2ceEhw==
-Date: Mon, 26 Aug 2024 11:20:48 +0100
+	b=KWVQI8OXsXXRSM/nD+yL+m4JJhdNFp8Pl6rMQOCeE8pNH/oSz6eFXvG6XFRb6vw/8
+	 GpjW1MSaHElji9kM2SK37FG2KHD0BsKuORZR1Iv7n+hMfiJPZ99Qw/fQLJwTU8MFrD
+	 uvbUW+NoV3aozZFKb/6lzJEb5MC7WjFiOTzq9CEQmULtd+yQHyxkyp3SnSVL9zmnRZ
+	 ibulZd/Ot9+UhqxG1a5McIAvdhyMnmcvVwoZY4iDmZC8sYyGtLH4t1f5xHIhwnEb2p
+	 B07mSQudP5ZJYUaTXBhG4P0/pvPzmzUsoXYiwtGTUUNLWdDCRfVcTd1hsvwgxjthZ9
+	 zZLFU6eHQtREA==
+Date: Mon, 26 Aug 2024 11:23:36 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc: Jason Liu <jasonliu10041728@gmail.com>, "lars@metafoo.de"
- <lars@metafoo.de>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] iio/inv_icm42600: add inv_icm42600 id_table
-Message-ID: <20240826111858.7824a811@jic23-huawei>
-In-Reply-To: <FR3P281MB1757A595F22A1F9AE50B76B1CE8B2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20240825063938.56319-1-jasonliu10041728@gmail.com>
-	<FR3P281MB1757A595F22A1F9AE50B76B1CE8B2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+To: Denis Benato <benato.denis96@gmail.com>
+Cc: Jagath Jog J <jagathjog1996@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Luke D . Jones" <luke@ljones.dev>, Jonathan LoBue <jlobue10@gmail.com>
+Subject: Re: [PATCH v3 1/1] iio: bmi323: peripheral in lowest power state on
+ suspend
+Message-ID: <20240826112336.5d9dcb93@jic23-huawei>
+In-Reply-To: <20240824141122.334620-2-benato.denis96@gmail.com>
+References: <20240823192921.7df291f8@jic23-huawei>
+	<20240824141122.334620-1-benato.denis96@gmail.com>
+	<20240824141122.334620-2-benato.denis96@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,133 +61,243 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 26 Aug 2024 08:22:11 +0000
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+On Sat, 24 Aug 2024 16:11:22 +0200
+Denis Benato <benato.denis96@gmail.com> wrote:
 
-> Hello,
->=20
-> I was believing that id tables weren't required anymore when using of tab=
-les.
->=20
-> Jonathan,
-> can you help on this subject?
->=20
-> If we have to add id tables, then we need to add all supported chips (mis=
-sing here icm42686 and icm42688).
+> The bmi323 is mounted on some devices that are powered
+> by an internal battery: help in reducing system overall power drain
+> while the system is in s2idle or the imu driver is not loaded
+> by resetting it in its lowest power draining state.
+> 
+> Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+Applied with some whitespace tweaks.
 
-There were some oddities around autoloading for some busses a while
-back but I can't find the reference.
-
-+CC Mark + Wolfram for input.
-Do we currently need i2c_device_id and spi_device_id tables for
-autoprobing on DT only platforms?
-
-A few minor comments inline.
-
-
-
-
->=20
-> Thanks,
-> JB
->=20
-> ________________________________________
-> From:=C2=A0Jason Liu <jasonliu10041728@gmail.com>
-> Sent:=C2=A0Sunday, August 25, 2024 08:39
-> To:=C2=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-> Cc:=C2=A0jic23@kernel.org <jic23@kernel.org>; lars@metafoo.de <lars@metaf=
-oo.de>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; linux-kernel=
-@vger.kernel.org <linux-kernel@vger.kernel.org>; Jason Liu <jasonliu1004172=
-8@gmail.com>
-> Subject:=C2=A0[PATCH] iio/inv_icm42600: add inv_icm42600 id_table
-> =C2=A0
-> This Message Is From an Untrusted Sender
-> You have not previously corresponded with this sender.
-> =C2=A0
-> Add the id_table of inv_icm42600, so the device can probe correctly.
->=20
-> Signed-off-by: Jason Liu <jasonliu10041728@gmail.com>
 > ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 15 +++++++++++++++
->  drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c | 15 +++++++++++++++
->  2 files changed, 30 insertions(+)
->=20
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/ii=
-o/imu/inv_icm42600/inv_icm42600_i2c.c
-> index ebb31b385881..8cc550b8cfc3 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> @@ -71,6 +71,20 @@ static int inv_icm42600_probe(struct i2c_client *clien=
-t)
->  				       inv_icm42600_i2c_bus_setup);
->  }
-> =20
-> +/*
-> + * device id table is used to identify what device can be
-> + * supported by this driver
-> + */
-> +static const struct i2c_device_id inv_icm42600_id[] =3D {
-> +	{"icm42600", INV_CHIP_ICM42600},
-Spaces after { and before }
-> +	{"icm42602", INV_CHIP_ICM42602},
-> +	{"icm42605", INV_CHIP_ICM42605},
-> +	{"icm42622", INV_CHIP_ICM42622},
-> +	{"icm42631", INV_CHIP_ICM42631},
-> +	{}
-{ }
-
-I'm trying to standardize this in IIO.
-
-> +};
-> +MODULE_DEVICE_TABLE(i2c, inv_icm42600_id);
-> +
->  static const struct of_device_id inv_icm42600_of_matches[] =3D {
->  	{
->  		.compatible =3D "invensense,icm42600",
-> @@ -104,6 +118,7 @@ static struct i2c_driver inv_icm42600_driver =3D {
->  		.of_match_table =3D inv_icm42600_of_matches,
->  		.pm =3D pm_ptr(&inv_icm42600_pm_ops),
+>  drivers/iio/imu/bmi323/bmi323_core.c | 155 ++++++++++++++++++++++++++-
+>  1 file changed, 153 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
+> index 4b2b211a3e88..57be22c97cb9 100644
+> --- a/drivers/iio/imu/bmi323/bmi323_core.c
+> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
+> @@ -118,6 +118,38 @@ static const struct bmi323_hw bmi323_hw[2] = {
 >  	},
-> +	.id_table =3D inv_icm42600_id,
->  	.probe =3D inv_icm42600_probe,
 >  };
->  module_i2c_driver(inv_icm42600_driver);
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/ii=
-o/imu/inv_icm42600/inv_icm42600_spi.c
-> index eae5ff7a3cc1..5fe078ddc8a1 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-> @@ -67,6 +67,20 @@ static int inv_icm42600_probe(struct spi_device *spi)
->  				       inv_icm42600_spi_bus_setup);
->  }
-> =20
-> +/*
-> + * device id table is used to identify what device can be
-> + * supported by this driver
-> + */
-> +static const struct spi_device_id inv_icm42600_id[] =3D {
-> +	{"icm42600", INV_CHIP_ICM42600},
-> +	{"icm42602", INV_CHIP_ICM42602},
-> +	{"icm42605", INV_CHIP_ICM42605},
-> +	{"icm42622", INV_CHIP_ICM42622},
-> +	{"icm42631", INV_CHIP_ICM42631},
-> +	{}
+>  
+> +static const unsigned int bmi323_reg_savestate[] = {
+> +	BMI323_INT_MAP1_REG,
+> +	BMI323_INT_MAP2_REG,
+> +	BMI323_IO_INT_CTR_REG,
+> +	BMI323_IO_INT_CONF_REG,
+> +	BMI323_ACC_CONF_REG,
+> +	BMI323_GYRO_CONF_REG,
+> +	BMI323_FEAT_IO0_REG,
+> +	BMI323_FIFO_WTRMRK_REG,
+> +	BMI323_FIFO_CONF_REG
 > +};
-> +MODULE_DEVICE_TABLE(spi, inv_icm42600_id);
 > +
->  static const struct of_device_id inv_icm42600_of_matches[] =3D {
->  	{
->  		.compatible =3D "invensense,icm42600",
-> @@ -100,6 +114,7 @@ static struct spi_driver inv_icm42600_driver =3D {
->  		.of_match_table =3D inv_icm42600_of_matches,
->  		.pm =3D pm_ptr(&inv_icm42600_pm_ops),
->  	},
-> +	.id_table =3D inv_icm42600_id,
->  	.probe =3D inv_icm42600_probe,
->  };
->  module_spi_driver(inv_icm42600_driver);
+> +static const unsigned int bmi323_ext_reg_savestate[] = {
+> +	BMI323_GEN_SET1_REG,
+> +	BMI323_TAP1_REG,
+> +	BMI323_TAP2_REG,
+> +	BMI323_TAP3_REG,
+> +	BMI323_FEAT_IO0_S_TAP_MSK,
+> +	BMI323_STEP_SC1_REG,
+> +	BMI323_ANYMO1_REG,
+> +	BMI323_NOMO1_REG,
+> +	BMI323_ANYMO1_REG + BMI323_MO2_OFFSET,
+> +	BMI323_NOMO1_REG + BMI323_MO2_OFFSET,
+> +	BMI323_ANYMO1_REG + BMI323_MO3_OFFSET,
+> +	BMI323_NOMO1_REG + BMI323_MO3_OFFSET
+> +};
+> +
+> +struct bmi323_regs_runtime_pm {
+> +	unsigned int reg_settings[ARRAY_SIZE(bmi323_reg_savestate)];
+> +	unsigned int ext_reg_settings[ARRAY_SIZE(bmi323_ext_reg_savestate)];
+> +};
+> +
+>  struct bmi323_data {
+>  	struct device *dev;
+>  	struct regmap *regmap;
+> @@ -130,6 +162,7 @@ struct bmi323_data {
+>  	u32 odrns[BMI323_SENSORS_CNT];
+>  	u32 odrhz[BMI323_SENSORS_CNT];
+>  	unsigned int feature_events;
+> +	struct bmi323_regs_runtime_pm runtime_pm_status;
+>  
+>  	/*
+>  	 * Lock to protect the members of device's private data from concurrent
+> @@ -1972,6 +2005,11 @@ static void bmi323_disable(void *data_ptr)
+>  
+>  	bmi323_set_mode(data, BMI323_ACCEL, ACC_GYRO_MODE_DISABLE);
+>  	bmi323_set_mode(data, BMI323_GYRO, ACC_GYRO_MODE_DISABLE);
+> +
+> +	/*
+> +	 * Place the peripheral in its lowest power consuming state.
+> +	 */
+> +	regmap_write(data->regmap, BMI323_CMD_REG, BMI323_RST_VAL);
+>  }
+>  
+>  static int bmi323_set_bw(struct bmi323_data *data,
+> @@ -2030,6 +2068,13 @@ static int bmi323_init(struct bmi323_data *data)
+>  		return dev_err_probe(data->dev, -EINVAL,
+>  				     "Sensor power error = 0x%x\n", val);
+>  
+> +	return 0;
+> +}
+> +
+> +static int bmi323_init_reset(struct bmi323_data *data)
+> +{
+> +	int ret;
+> +
+>  	/*
+>  	 * Set the Bandwidth coefficient which defines the 3 dB cutoff
+>  	 * frequency in relation to the ODR.
+> @@ -2078,12 +2123,18 @@ int bmi323_core_probe(struct device *dev)
+>  	data = iio_priv(indio_dev);
+>  	data->dev = dev;
+>  	data->regmap = regmap;
+> +	data->irq_pin = BMI323_IRQ_DISABLED;
+> +	data->state = BMI323_IDLE;
+>  	mutex_init(&data->mutex);
+>  
+>  	ret = bmi323_init(data);
+>  	if (ret)
+>  		return -EINVAL;
+>  
+> +	ret = bmi323_init_reset(data);
+> +	if (ret)
+> +		return -EINVAL;
+> +
+>  	if (!iio_read_acpi_mount_matrix(dev, &data->orientation, "ROTM")) {
+>  		ret = iio_read_mount_matrix(dev, &data->orientation);
+>  		if (ret)
+> @@ -2117,7 +2168,7 @@ int bmi323_core_probe(struct device *dev)
+>  		return dev_err_probe(data->dev, ret,
+>  				     "Unable to register iio device\n");
+>  
+> -	return 0;
+> +	return bmi323_fifo_disable(data);
+>  }
+>  EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
+>  
+> @@ -2125,13 +2176,113 @@ EXPORT_SYMBOL_NS_GPL(bmi323_core_probe, IIO_BMI323);
+>  static int bmi323_core_runtime_suspend(struct device *dev)
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +	struct bmi323_data *data = iio_priv(indio_dev);
+> +	struct bmi323_regs_runtime_pm *savestate = &data->runtime_pm_status;
+> +	int ret;
+> +
+> +	guard(mutex)(&data->mutex);
+> +
+> +	ret = iio_device_suspend_triggering(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Save registers meant to be restored by resume pm callback. */
+> +	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_reg_savestate); i++) {
+> +		ret = regmap_read(data->regmap, bmi323_reg_savestate[i],
+> +			   &savestate->reg_settings[i]);
+> +		if (ret) {
+> +			dev_err(data->dev, "Error reading bmi323 reg 0x%x: %d\n",
+> +				  bmi323_reg_savestate[i], ret);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_ext_reg_savestate); i++) {
+> +		ret = bmi323_read_ext_reg(data, bmi323_reg_savestate[i],
+> +			   &savestate->reg_settings[i]);
+> +		if (ret) {
+> +			dev_err(data->dev, "Error reading bmi323 external reg 0x%x: %d\n",
+> +				  bmi323_reg_savestate[i], ret);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	/* Perform soft reset to place the device in its lowest power state. */
+> +	ret = regmap_write(data->regmap, BMI323_CMD_REG, BMI323_RST_VAL);
+> +	if (ret)
+> +		return ret;
+>  
+> -	return iio_device_suspend_triggering(indio_dev);
+> +	return 0;
+>  }
+>  
+>  static int bmi323_core_runtime_resume(struct device *dev)
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +	struct bmi323_data *data = iio_priv(indio_dev);
+> +	struct bmi323_regs_runtime_pm *savestate = &data->runtime_pm_status;
+> +	unsigned int val;
+> +	int ret;
+> +
+> +	guard(mutex)(&data->mutex);
+> +
+> +	/*
+> +	 * Perform the device power-on and initial setup once again
+> +	 * after being reset in the lower power state by runtime-pm.
+> +	 */
+> +	ret = bmi323_init(data);
+> +	if (!ret)
+> +		return ret;
+> +
+> +	/* Register must be cleared before changing an active config */
+> +	ret = regmap_write(data->regmap, BMI323_FEAT_IO0_REG, 0);
+> +	if (ret) {
+> +		dev_err(data->dev, "Error stopping feature engine\n");
+> +		return ret;
+> +	}
+> +
+> +	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_ext_reg_savestate); i++) {
+> +		ret = bmi323_write_ext_reg(data, bmi323_reg_savestate[i],
+> +			  savestate->reg_settings[i]);
+> +		if (ret) {
+> +			dev_err(data->dev, "Error writing bmi323 external reg 0x%x: %d\n",
+> +				  bmi323_reg_savestate[i], ret);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_reg_savestate); i++) {
+> +		ret = regmap_write(data->regmap, bmi323_reg_savestate[i],
+> +			  savestate->reg_settings[i]);
+> +		if (ret) {
+> +			dev_err(data->dev, "Error writing bmi323 reg 0x%x: %d\n",
+> +				  bmi323_reg_savestate[i], ret);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	/*
+> +	 * Clear old FIFO samples that might be generated before suspend
+> +	 * or generated from a peripheral state not equal to the saved one.
+> +	 */
+> +	if (data->state == BMI323_BUFFER_FIFO) {
+> +		ret = regmap_write(data->regmap, BMI323_FIFO_CTRL_REG,
+> +			   BMI323_FIFO_FLUSH_MSK);
+> +		if (ret) {
+> +			dev_err(data->dev, "Error flushing FIFO buffer: %d\n", ret);
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	ret = regmap_read(data->regmap, BMI323_ERR_REG, &val);
+> +	if (ret) {
+> +		dev_err(data->dev, "Error reading bmi323 error register: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	if (val) {
+> +		dev_err(data->dev, "Sensor power error in PM = 0x%x\n", val);
+> +		return -EINVAL;
+> +	}
+>  
+>  	return iio_device_resume_triggering(indio_dev);
+>  }
 
 

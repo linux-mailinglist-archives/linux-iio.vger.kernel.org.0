@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-8798-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8799-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D692795EF26
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 12:57:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB6895EF36
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 12:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9387C289D77
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 10:57:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DF601C22600
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 10:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29601547C5;
-	Mon, 26 Aug 2024 10:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1BB14D28A;
+	Mon, 26 Aug 2024 10:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y8oqnuog"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DboTE/v/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D214153BF7;
-	Mon, 26 Aug 2024 10:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19447321D;
+	Mon, 26 Aug 2024 10:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724669776; cv=none; b=txvqu9S+fL+ltOtHbLFQmj0CZBm+GkDQQ7Wqq3/vkRpSUagHlByzcNFGEuEXwyWWOsjYGMW242J6vxuZMnrnUaXbsH6sA6e2FQPsPCHUaSUmIATvlchqh0Gasi6dvAfC8ipfna0pSq2ExgIxKBW43T4wqQNE+yxcwSTbg1LSOcI=
+	t=1724669891; cv=none; b=bWbDm4nio+H+GkJ+FHJxw+ZFkrx4flawtNwOLjZh8p5lfPdEU2uUph4CNncZwvdeZAfDhLj4Ne8R+SLxdXNelDN+y34WdK/K3N+ROocLFa0QTdlK9xbfURV4oc0eS8/r+77pnRc5qoZh/SEsdGZTwNOFDr+suctpvVLezn//V6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724669776; c=relaxed/simple;
-	bh=ClPeBht/T7EmYVNmoSEnlwqB3+kAovTzL7N5mb9DiDU=;
+	s=arc-20240116; t=1724669891; c=relaxed/simple;
+	bh=hcaKc0Ezkqyp7WoNsBchrZvC12LrMBAs0TyShg0N7+g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g/1frAU8u7F9StumUFbA91nXMxQ3Qy5XB2Ae5Ohixmh3aasZxx5lpJmiUW6toYaUNHlNOuBBwQu7yGZDeQYi3eOa8MWStOQqoOz7PjDnDWTgTSYjktecmriykJ408IdZzBGGjeQNaV46tDU1h61ykjBUPXviWlgbbgq1SSJUvSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y8oqnuog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BDDC4FF6F;
-	Mon, 26 Aug 2024 10:56:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gv6YLgT5bqBcHrGE5155usrOGAndFxj56mhqRPPyc9TeC51wNY6dvzsC7W1xnuZrFuVQLkcU2/M4prOY272hSg4d83jjbkbPo9i4Sx9iKgAawGAv57OetgH+4QQsHPPHFCpRoVCaQ8fGUks2plTM2KCK9E71q9koo7spnYc9vzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DboTE/v/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EFFC58131;
+	Mon, 26 Aug 2024 10:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724669776;
-	bh=ClPeBht/T7EmYVNmoSEnlwqB3+kAovTzL7N5mb9DiDU=;
+	s=k20201202; t=1724669889;
+	bh=hcaKc0Ezkqyp7WoNsBchrZvC12LrMBAs0TyShg0N7+g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Y8oqnuogSYGfFGVE7kY0uP+UjQ5+Ju7Ir/46b7MWBR0HcD4YcGBci2wjAe3vBdhVi
-	 uH6LxnMMu4oW4jeqYwnHCqfN0WWJikvbCTuQTq81oFnylopCXhAnOdZeUrRyY1mbjv
-	 a/5JNeBuZR/f47u0YoO/kVy8S48QxUMMzMy46zcCdFWL0Lsxo0u4Twp4W01De30IHI
-	 PlZVlmY/GJO/RsvHOulwfo5mB7pD1LTJGYx80xMs7N1L4OKcH2SBuxDizL6855jTtT
-	 XLrh6GRAd00wAmPUXZVYiywexnPjq/w7J2WMI6UTLo+EFw5/r8Zo2hxjFvCVqNp5D1
-	 B3L2zZPOHrRgQ==
-Date: Mon, 26 Aug 2024 11:56:05 +0100
+	b=DboTE/v/Nk3IY08xhzY82zVzS8bcN5kjdDejAygo4TiIEbxK0MnNxaSNjSPBNEKkD
+	 KvLpnchoflTtEGkYrXANdZU1szTXJym3xGmzpynA3oKx5JPpOaVcc/fF4DPGg+IK8q
+	 AfZ0l47AC/nO38QYvtpqjlk0bk48p2yA5Ejt22KToHXF0+oOBb9BsXd5rdMjPE0X7I
+	 8s4l3JXuUcWxpKQRm+oxPtjh1+jlIL2nJPD6s9z8zVNnE0lTzn/c4OGoCCFjbxoeuE
+	 Z1jCPdwxcTuxTDGii3IblPbDqI/rNLvW39c69BgJqo8taw358b9z+QGKczVxa/e1Nq
+	 u2V+PbneDoGmA==
+Date: Mon, 26 Aug 2024 11:57:56 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH] iio: dac: ad5449: drop support for platform data
-Message-ID: <20240826115605.40a53c35@jic23-huawei>
-In-Reply-To: <20240817123210.04b3c2f8@jic23-huawei>
-References: <20240814092629.9862-1-brgl@bgdev.pl>
-	<20240817123210.04b3c2f8@jic23-huawei>
+To: kernel test robot <lkp@intel.com>
+Cc: David Lechner <dlechner@baylibre.com>, llvm@lists.linux.dev,
+ oe-kbuild-all@lists.linux.dev, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 2/4] iio: adc: ad4695: implement calibration support
+Message-ID: <20240826115756.01cd41d3@jic23-huawei>
+In-Reply-To: <202408211207.fmYTjQDK-lkp@intel.com>
+References: <20240820-ad4695-gain-offset-v1-2-c8f6e3b47551@baylibre.com>
+	<202408211207.fmYTjQDK-lkp@intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,124 +64,102 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 17 Aug 2024 12:32:10 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, 21 Aug 2024 12:21:09 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-> On Wed, 14 Aug 2024 11:26:29 +0200
-> Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> Hi David,
 > 
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > 
-> > There are no longer any users of the platform data struct. Remove
-> > support for it from the driver.
-> > 
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>  
+> kernel test robot noticed the following build warnings:
 > 
-> I'm fine with this but want an ADI ack.
-Well no one screamed no, which probably means anyone seeing the patch
-title was fine with the concept and didn't open the thread :)
-(or given time of year, they are all on holiday!)
+> [auto build test WARNING on 0f718e10da81446df0909c9939dff2b77e3b4e95]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/iio-adc-ad4695-add-2nd-regmap-for-16-bit-registers/20240821-000102
+> base:   0f718e10da81446df0909c9939dff2b77e3b4e95
+> patch link:    https://lore.kernel.org/r/20240820-ad4695-gain-offset-v1-2-c8f6e3b47551%40baylibre.com
+> patch subject: [PATCH 2/4] iio: adc: ad4695: implement calibration support
+> config: i386-buildonly-randconfig-002-20240821 (https://download.01.org/0day-ci/archive/20240821/202408211207.fmYTjQDK-lkp@intel.com/config)
+> compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240821/202408211207.fmYTjQDK-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202408211207.fmYTjQDK-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+> >> drivers/iio/adc/ad4695.c:735:6: warning: unused variable 'ret' [-Wunused-variable]  
+>      735 |         int ret;
+>          |             ^~~
+>    1 warning generated.
+I dropped this whilst applying.
 
-Anyhow, applied.  If it turns out it's still needed I might revert
-on request.
-
-Jonathan
-
 > 
-> Jonathan
 > 
-> > ---
-> >  drivers/iio/dac/ad5449.c             | 15 ++---------
-> >  include/linux/platform_data/ad5449.h | 39 ----------------------------
-> >  2 files changed, 2 insertions(+), 52 deletions(-)
-> >  delete mode 100644 include/linux/platform_data/ad5449.h
-> > 
-> > diff --git a/drivers/iio/dac/ad5449.c b/drivers/iio/dac/ad5449.c
-> > index 4572d6f49275..953fcfa2110b 100644
-> > --- a/drivers/iio/dac/ad5449.c
-> > +++ b/drivers/iio/dac/ad5449.c
-> > @@ -20,8 +20,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  
-> > -#include <linux/platform_data/ad5449.h>
-> > -
-> >  #define AD5449_MAX_CHANNELS		2
-> >  #define AD5449_MAX_VREFS		2
-> >  
-> > @@ -268,7 +266,6 @@ static const char *ad5449_vref_name(struct ad5449 *st, int n)
-> >  
-> >  static int ad5449_spi_probe(struct spi_device *spi)
-> >  {
-> > -	struct ad5449_platform_data *pdata = spi->dev.platform_data;
-> >  	const struct spi_device_id *id = spi_get_device_id(spi);
-> >  	struct iio_dev *indio_dev;
-> >  	struct ad5449 *st;
-> > @@ -306,16 +303,8 @@ static int ad5449_spi_probe(struct spi_device *spi)
-> >  	mutex_init(&st->lock);
-> >  
-> >  	if (st->chip_info->has_ctrl) {
-> > -		unsigned int ctrl = 0x00;
-> > -		if (pdata) {
-> > -			if (pdata->hardware_clear_to_midscale)
-> > -				ctrl |= AD5449_CTRL_HCLR_TO_MIDSCALE;
-> > -			ctrl |= pdata->sdo_mode << AD5449_CTRL_SDO_OFFSET;
-> > -			st->has_sdo = pdata->sdo_mode != AD5449_SDO_DISABLED;
-> > -		} else {
-> > -			st->has_sdo = true;
-> > -		}
-> > -		ad5449_write(indio_dev, AD5449_CMD_CTRL, ctrl);
-> > +		st->has_sdo = true;
-> > +		ad5449_write(indio_dev, AD5449_CMD_CTRL, 0x0);
-> >  	}
-> >  
-> >  	ret = iio_device_register(indio_dev);
-> > diff --git a/include/linux/platform_data/ad5449.h b/include/linux/platform_data/ad5449.h
-> > deleted file mode 100644
-> > index d687ef5726c2..000000000000
-> > --- a/include/linux/platform_data/ad5449.h
-> > +++ /dev/null
-> > @@ -1,39 +0,0 @@
-> > -/* SPDX-License-Identifier: GPL-2.0-only */
-> > -/*
-> > - * AD5415, AD5426, AD5429, AD5432, AD5439, AD5443, AD5449 Digital to Analog
-> > - * Converter driver.
-> > - *
-> > - * Copyright 2012 Analog Devices Inc.
-> > - *  Author: Lars-Peter Clausen <lars@metafoo.de>
-> > - */
-> > -
-> > -#ifndef __LINUX_PLATFORM_DATA_AD5449_H__
-> > -#define __LINUX_PLATFORM_DATA_AD5449_H__
-> > -
-> > -/**
-> > - * enum ad5449_sdo_mode - AD5449 SDO pin configuration
-> > - * @AD5449_SDO_DRIVE_FULL: Drive the SDO pin with full strength.
-> > - * @AD5449_SDO_DRIVE_WEAK: Drive the SDO pin with not full strength.
-> > - * @AD5449_SDO_OPEN_DRAIN: Operate the SDO pin in open-drain mode.
-> > - * @AD5449_SDO_DISABLED: Disable the SDO pin, in this mode it is not possible to
-> > - *			read back from the device.
-> > - */
-> > -enum ad5449_sdo_mode {
-> > -	AD5449_SDO_DRIVE_FULL = 0x0,
-> > -	AD5449_SDO_DRIVE_WEAK = 0x1,
-> > -	AD5449_SDO_OPEN_DRAIN = 0x2,
-> > -	AD5449_SDO_DISABLED = 0x3,
-> > -};
-> > -
-> > -/**
-> > - * struct ad5449_platform_data - Platform data for the ad5449 DAC driver
-> > - * @sdo_mode: SDO pin mode
-> > - * @hardware_clear_to_midscale: Whether asserting the hardware CLR pin sets the
-> > - *			outputs to midscale (true) or to zero scale(false).
-> > - */
-> > -struct ad5449_platform_data {
-> > -	enum ad5449_sdo_mode sdo_mode;
-> > -	bool hardware_clear_to_midscale;
-> > -};
-> > -
-> > -#endif  
+> vim +/ret +735 drivers/iio/adc/ad4695.c
 > 
+>    728	
+>    729	static int ad4695_write_raw(struct iio_dev *indio_dev,
+>    730				    struct iio_chan_spec const *chan,
+>    731				    int val, int val2, long mask)
+>    732	{
+>    733		struct ad4695_state *st = iio_priv(indio_dev);
+>    734		unsigned int reg_val;
+>  > 735		int ret;  
+>    736	
+>    737		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+>    738			switch (mask) {
+>    739			case IIO_CHAN_INFO_CALIBSCALE:
+>    740				switch (chan->type) {
+>    741				case IIO_VOLTAGE:
+>    742					if (val < 0 || val2 < 0)
+>    743						reg_val = 0;
+>    744					else if (val > 1)
+>    745						reg_val = U16_MAX;
+>    746					else
+>    747						reg_val = (val * (1 << 16) +
+>    748							   mul_u64_u32_div(val2, 1 << 16,
+>    749									   MICRO)) / 2;
+>    750	
+>    751					return regmap_write(st->regmap16,
+>    752						AD4695_REG_GAIN_IN(chan->scan_index),
+>    753						reg_val);
+>    754				default:
+>    755					return -EINVAL;
+>    756				}
+>    757			case IIO_CHAN_INFO_CALIBBIAS:
+>    758				switch (chan->type) {
+>    759				case IIO_VOLTAGE:
+>    760					if (val2 >= 0 && val > S16_MAX / 4)
+>    761						reg_val = S16_MAX;
+>    762					else if ((val2 < 0 ? -val : val) < S16_MIN / 4)
+>    763						reg_val = S16_MIN;
+>    764					else if (val2 < 0)
+>    765						reg_val = clamp_t(int,
+>    766							-(val * 4 + -val2 * 4 / MICRO),
+>    767							S16_MIN, S16_MAX);
+>    768					else if (val < 0)
+>    769						reg_val = clamp_t(int,
+>    770							val * 4 - val2 * 4 / MICRO,
+>    771							S16_MIN, S16_MAX);
+>    772					else
+>    773						reg_val = clamp_t(int,
+>    774							val * 4 + val2 * 4 / MICRO,
+>    775							S16_MIN, S16_MAX);
+>    776	
+>    777					return regmap_write(st->regmap16,
+>    778						AD4695_REG_OFFSET_IN(chan->scan_index),
+>    779						reg_val);
+>    780				default:
+>    781					return -EINVAL;
+>    782				}
+>    783			default:
+>    784				return -EINVAL;
+>    785			}
+>    786		}
+>    787		unreachable();
+>    788	}
+>    789	
 > 
 
 

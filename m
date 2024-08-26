@@ -1,136 +1,162 @@
-Return-Path: <linux-iio+bounces-8814-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8815-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F3B95FA28
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 21:57:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6AB95FB25
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 23:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51BF1284A9C
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 19:57:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 281941F2379D
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 21:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADFB19995D;
-	Mon, 26 Aug 2024 19:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3912813B58F;
+	Mon, 26 Aug 2024 21:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b="yMt3jDjC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/If90jS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C5B199244
-	for <linux-iio@vger.kernel.org>; Mon, 26 Aug 2024 19:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE0628DC1;
+	Mon, 26 Aug 2024 21:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724702212; cv=none; b=nnZ5ccXZOObSSPTS1lLUQ8l390E7H5QTx/Lk2qe5UXLbJq8EUHZcrrap1pxz53x6MPB9eABiRRcq+aKle12LrFNJKszi2RxgevqZH+6rBczTGn54TkudeMhs6aBzxoujPvG3/JDrgr1KIhvzIB3ARWiyhyia/XRR12xu2RGPxJY=
+	t=1724706019; cv=none; b=HleiojYlSA48exKcf8ULJirHsAkbCn6blZbkf6duCPW0GIqAp0w/XOYYidn1/um0OZHlHZJgRpQ5i1YBZJLkcpe9tQlqnCSUU1ff4yo97/9OQEppTqUkxuLb3Te1WbfM1r65uk09vlw4ayrr9eES1vwuPGRsY+pwIKo9l6Z/F3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724702212; c=relaxed/simple;
-	bh=f44u1tmOhjyUpYSb/IUGjf0UFDthWX1iuarJYnkxt8E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=omrd3C55HAeDmAgJEDMwGUvz6MdJdq8R7hchoafLyg6l4nqfrOba/yKPiy4mu/gUf5FZ/1nkiN0Tdsm62IMgo2qjm2+IEc7adkBQd7STuvFnBw9RMhAZftgB9nBzBpV2KGRjja3CuEmu3DGp+maWtCBFDNttmZt/2gzNKsL32nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow.org; spf=pass smtp.mailfrom=cknow.org; dkim=pass (2048-bit key) header.d=cknow.org header.i=@cknow.org header.b=yMt3jDjC; arc=none smtp.client-ip=91.218.175.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow.org
+	s=arc-20240116; t=1724706019; c=relaxed/simple;
+	bh=ae6nXL4zmv4vTDHXa1H5uLnPJYnLtqT7NVV6lyTLXrQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pGq9vfS7qJS+OZYmXFDmohRMSY5Ja8BR+51lmaZe30O9Fq8gwP8pZZayKTepwKaXwhOtARfk/tjEGJFt+WOMXfgBlK6fSzQYVL8si+sk0TVaNEsgKBSh7UNZAknoZqcnEQmq6JsLUIU5TWJRTQJxu508euw+PGWaHDW7ea+oC6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/If90jS; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42816ca782dso41562595e9.2;
+        Mon, 26 Aug 2024 14:00:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724706016; x=1725310816; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q+K/X6YqDrxWE8WA9haO3ONaWPfQCU7jkPm8tQUrtw4=;
+        b=O/If90jS3EzhYeiKYNF/vY93ZAPuFjwm6YFSxtqA48lr0Sv5DWPPdodHcGWxxM1tI3
+         9pANE2aLjSdkR/SIvGrsNnMyYjpHk5fQvgyMywSZV/7dhbL40UseJIMPkeeAPd49txhE
+         9XmFG6MrqxhnQz+tW16ybJen1o8u1QBqPYxyQDZy3iu/9uXMO3dAlUedImkH6b+tWmPN
+         VstMtZQ06gf1Ekw+WOxLyCwMA3epOf6saHlLDEyc049giTfGk6ADIFADUHQp/C2BAhqS
+         xcPy2WI7+dp6HYjxTOYY7i0VU75SJfADwiRyjcyXxZSapQMjfzmxDiB7VM1ZiA4MGBBD
+         bnZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724706016; x=1725310816;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q+K/X6YqDrxWE8WA9haO3ONaWPfQCU7jkPm8tQUrtw4=;
+        b=uVt0SQW5VuW07VFz/dr5ebjvl8zUcM/C7eqzq4Y/NO72xkp72aAnRGnpRVUnUOtCRN
+         Tb95ej6C+mn3D2hkxe1aSwudihSTnmzT4uLsSA31uKPewJQ2GAFokQV6Xa0vpdQ8GRGe
+         tuTjMmxMY1h4eZoI6dXLf4SzoLeaVIUcG/AJlzrAW97p3iXw37GCa7C6HoQ7JoCDFv3T
+         FtFRZgGxC2ts5UwOphG4MEmHPHaGtCNLjkSFrD9l0IERyONEKKMrL7xNBhw1XtdG6Ext
+         a2FG4MRptIEQxkIvJJxTlPRl7ETiq+ByVJfuUxChATrphjd+ruQSTNPTReWbY7HBcF0F
+         5JeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVXVH1Vwp0YL98TPOyZJkq1vQjgw1n9esHZU1ZR3Ua0hJnr7QfQYMpcj9E2UgPBG2N21yilXNFTRrN0UJNj@vger.kernel.org, AJvYcCWuotr1oC22pQw3nQQzpQrqMC3EdMkdHItNdjI8M3VrsuoKinz7f2/JRGtjdtx7Sr+N1pSavq+A0/Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwESmLWt9rg+dym6GOGK25oZCGPH0thhF09wyoDOdOX1QOIx7bh
+	IUjOHgnCpRDpqA8MmNehkv686R0qlTYUU0ApX8l56Wi3gn574ra/Ohcfuvcu
+X-Google-Smtp-Source: AGHT+IHvo4aNhV61UXRKNmGdlU/GneWr8ZeoPl4Pe6b7lg2FN9IOF450ZcfDSy6E3fdjSXfvaFiYiQ==
+X-Received: by 2002:a5d:40c5:0:b0:368:4bc0:9210 with SMTP id ffacd0b85a97d-373118566d8mr6369089f8f.25.1724706015194;
+        Mon, 26 Aug 2024 14:00:15 -0700 (PDT)
+Received: from [192.168.1.127] ([151.95.157.179])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abefd9cd1sm203379685e9.38.2024.08.26.14.00.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Aug 2024 14:00:14 -0700 (PDT)
+Message-ID: <1a8adbc3-e8b3-4133-a2dd-449d584d8e8d@gmail.com>
+Date: Mon, 26 Aug 2024 23:00:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow.org; s=key1;
-	t=1724702208;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lSNB16YmTmGtSszFku9OEpzxCSlM3sSnGKMEEle5Jqc=;
-	b=yMt3jDjCx/B0z6xC082cVw0HQY4Me/FagDvE50oGlZZXCMF5Jq6LNhf+2Qxm6GxDSPpGhy
-	osQCkmyACysyLu+u650VEqjzcGGEzFWl7uD9cGiG2uKMLG+neaKZVbHPdqs4NgFfV9kN36
-	F6RecMyRzzHf5tUuKzWLlXy6Zq2aaUrO4Nqz767HIHttvZPw1xfRvEvz1/LRgm5SKRKgW5
-	e98Q7S61cpPqJ69fgCnm4wfemUXqHoZmqLDjo7EW4Gn5fu5LKSLz7FsFpc5L1IqLMoKSNw
-	zVNkFcO6HzXLN8irNUWL94mMo90EcrTYmktZgOLYwgwJL0BRUy5LS22/0nNbVQ==
-Content-Type: multipart/signed;
- boundary=128cfb0fa1f91e2aae272ffecd950e1f386b558b6f3d91eca48fb6bdbb70;
- micalg=pgp-sha256; protocol="application/pgp-signature"
-Date: Mon, 26 Aug 2024 21:56:34 +0200
-Message-Id: <D3Q3WI8AHRJ1.3B8E985JAVVC2@cknow.org>
-Cc: <airlied@gmail.com>, <alchark@gmail.com>, <andi.shyti@kernel.org>,
- <andyshrk@163.com>, <broonie@kernel.org>, <cl@rock-chips.com>,
- <conor+dt@kernel.org>, <daniel@ffwll.ch>, <devicetree@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <dsimic@manjaro.org>,
- <efectn@protonmail.com>, <finley.xiao@rock-chips.com>,
- <gregkh@linuxfoundation.org>, <heiko@sntech.de>, <honyuenkwun@gmail.com>,
- <jagan@edgeble.ai>, <jamie@jamieiles.com>, <jic23@kernel.org>,
- <jirislaby@kernel.org>, <jonas@kwiboo.se>, <jszhang@kernel.org>,
- <kernel@collabora.com>, <krzk+dt@kernel.org>, <lars@metafoo.de>,
- <lee@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
- <linux-rockchip@lists.infradead.org>, <linux-serial@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, <linux-watchdog@vger.kernel.org>,
- <linux@roeck-us.net>, <maarten.lankhorst@linux.intel.com>,
- <macromorgan@hotmail.com>, <megi@xff.cz>, <michael.riesch@wolfvision.net>,
- <mripard@kernel.org>, <robh@kernel.org>, <tim@feathertop.org>,
- <tzimmermann@suse.de>, <ulf.hansson@linaro.org>, <wim@linux-watchdog.org>
-Subject: Re: [PATCH v2 11/12] arm64: dts: rockchip: Add rk3576 SoC base DT
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Diederik de Haas" <didi.debian@cknow.org>
-To: "Detlev Casanova" <detlev.casanova@collabora.com>, "Chukun Pan"
- <amadeus@jmu.edu.cn>
-References: <23624422.6Emhk5qWAg@trenzalore>
- <20240825140824.200453-1-amadeus@jmu.edu.cn>
- <22403959.EfDdHjke4D@bootstrap>
-In-Reply-To: <22403959.EfDdHjke4D@bootstrap>
-X-Migadu-Flow: FLOW_OUT
-
---128cfb0fa1f91e2aae272ffecd950e1f386b558b6f3d91eca48fb6bdbb70
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/1] iio: bmi323: have the peripheral consume less
+ power
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jagath Jog J <jagathjog1996@gmail.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "Luke D . Jones" <luke@ljones.dev>,
+ Jonathan LoBue <jlobue10@gmail.com>
+References: <20240823192921.7df291f8@jic23-huawei>
+ <20240824141122.334620-1-benato.denis96@gmail.com>
+ <20240826114129.71f417c5@jic23-huawei>
+Content-Language: en-US, it-IT, en-US-large
+From: Denis Benato <benato.denis96@gmail.com>
+In-Reply-To: <20240826114129.71f417c5@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon Aug 26, 2024 at 8:28 PM CEST, Detlev Casanova wrote:
-> On Sunday, 25 August 2024 10:08:24 EDT Chukun Pan wrote:
-> > > --- /dev/null
-> > > +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-> > > ...
-> > > +		opp-1416000000 {
-> > > +			opp-hz =3D /bits/ 64 <1416000000>;
-> > > +			opp-microvolt =3D <725000 725000 950000>;
-> > > +			opp-microvolt-L1 =3D <712500 712500 950000>;
-> > > +			opp-microvolt-L2 =3D <700000 700000 950000>;
-> > > +			opp-microvolt-L3 =3D <700000 700000 950000>;
-> > > +			opp-microvolt-L4 =3D <700000 700000 950000>;
-> > > +			opp-microvolt-L5 =3D <700000 700000 950000>;
-> > > +			clock-latency-ns =3D <40000>;
-> > > +		};
-> > > ...
-> >=20
-> > I'm curious if these frequencies work properly. On the bsp kernel,
-> > 'opp-microvolt-L<name>' is used by the PVTM driver, I don't know
-> > if it works on the upstream kernel.
->
-> Which seems to correspond to the set opp-hz value. As mentionned by Alexe=
-y,=20
-> the opp-microvolt-L.* values are not used by the driver.
->
-> I also have not tested any cpufreq settings/driver on this board yet. I c=
-an=20
-> remove the opp-microvolt-L.* for now.
+On 26/08/24 12:41, Jonathan Cameron wrote:
+> On Sat, 24 Aug 2024 16:11:21 +0200
+> Denis Benato <benato.denis96@gmail.com> wrote:
+> 
+>> The bmi323 chip is part of handhelds PCs that are run on battery.
+>>
+>> One of said PC is well-known for its short battery life, even in s2idle:
+>> help mitigate that by putting the device in its lowest-consumption
+>> state while the peripheral is unused.
+>>
+>> Have runtime-pm suspend callback save used configuration registers
+>> and runtime-pm resume callback restore saved registers to restore
+>> the previous state.
+>>
+> For future reference, don't send new versions of a patch series
+> in reply to previous version. It's a good way to ensure your
+> code does not get reviewed as busy maintainers and reviewers
+> tend to start with latest threads and this style means
+> your patch ends up way off the top of the screen!
+> 
+> I don't know if other subsystems specifically ask for this style
+> of reply, but the ones that I interact with all specifically ask
+> people to not do what you have here.
+> 
+> Jonathan
+> 
+Hello Jonathan,
 
-If you run this command on the upstream kernel:
-``grep -r "opp-microvolt" arch/arm64/boot/dts/rockchip/``
+Thanks for the heads up! I didn't know and now I do.
 
-you'll see it doesn't use the opp-microvolt-LN variants anywhere,
-so this is indeed a downstream/BSP only thing.
+Thanks for your time, patience and guidance.
 
---128cfb0fa1f91e2aae272ffecd950e1f386b558b6f3d91eca48fb6bdbb70
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+Denis
 
------BEGIN PGP SIGNATURE-----
+>> Changelog:
+>> - V2: patch 1:
+>> 	+ change patch commit message
+>> 	+ drop removal callbacks and use devm_add_action_or_reset
+>> 	+ split bmi323_init in two functions
+>> 	+ separate regs to save and relative value
+>> 	+ drop unhelpful consts ptr modifiers
+>> 	+ add a comment to explain why BMI323_FIFO_CTRL_REG is
+>> 	  being used in runtime resume
+>> - V3: patch 1:
+>>   + drop a struct array and replace with an array of
+>>     unsigned int: u8 was too small and it would have resulted
+>>     in overflow of register addresses
+>>   + use single-line comments where possible
+>>   + drop useless comments
+>>   + remove intermediate variables
+>>   + remove blank lines
+>>
+>> Previous patches obsoleted:
+>> https://lore.kernel.org/all/20240811161202.19818-1-benato.denis96@gmail.com
+>> https://lore.kernel.org/all/20240818150923.20387-1-benato.denis96@gmail.com
+>>
+>> Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+>>
+>> Denis Benato (1):
+>>   iio: bmi323: peripheral in lowest power state on suspend
+>>
+>>  drivers/iio/imu/bmi323/bmi323_core.c | 155 ++++++++++++++++++++++++++-
+>>  1 file changed, 153 insertions(+), 2 deletions(-)
+>>
+> 
 
-iHUEABYIAB0WIQT1sUPBYsyGmi4usy/XblvOeH7bbgUCZszd+QAKCRDXblvOeH7b
-bsPMAP9CORw/HV6VNrTduOL78GjAIEpWxM/M9+0BOgYkBHnzpQEAjK8fuZpW3HrN
-ri8LuinsuvlO+D0OMT9SEJJAE8prZQE=
-=pQv4
------END PGP SIGNATURE-----
-
---128cfb0fa1f91e2aae272ffecd950e1f386b558b6f3d91eca48fb6bdbb70--
 

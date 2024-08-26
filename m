@@ -1,268 +1,217 @@
-Return-Path: <linux-iio+bounces-8804-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8805-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBE695F2C2
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 15:20:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F9C95F387
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 16:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65F6F1C21D4D
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 13:20:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 509401F220EC
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 14:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A36187868;
-	Mon, 26 Aug 2024 13:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169BA18BB9D;
+	Mon, 26 Aug 2024 14:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gXrKgXJK"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="fiVoq31y"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2074.outbound.protection.outlook.com [40.107.22.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFF36F31E;
-	Mon, 26 Aug 2024 13:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724678412; cv=none; b=N45YzDI0PVx2jnX7P2gBbyodCViORpbzjbf6LJgCtV0duUKVc1KrMxsTMERrJgB+WkeKdPvUGPKU9Dbd7O6cA44DLafEYM3Z7elxxbu2xl75TQ/gyvyjyu/VQSgC6q7HZsr96qhBh05c5orhV972Hr/gq0E6w5kw6cHt9tiQNhI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724678412; c=relaxed/simple;
-	bh=E/nqc4BLdLsFKqzhu3d2msnxyG42N32dKLB28MAm2Ck=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=faoWh3LcXAyL/MjsQ2v0YC6eNTzwAxYpjmduszF3PyQqQ5UzBGPxSD7I1sQiUZ5F7AhKN1n4ysEj557sJxSn4CvwfkjKVOB5mRGGCn9seVnvjKJxxzZ2MZRx+eHBhGChpFvh0y9LSEsRep4+WyJ3LSgHbt81mJ6F1CHLO6k2NyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gXrKgXJK; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724678410; x=1756214410;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=E/nqc4BLdLsFKqzhu3d2msnxyG42N32dKLB28MAm2Ck=;
-  b=gXrKgXJKn2+hXYH/FbQqW/e4KLW+b9IE7qY4tUwfPAk6DjEWLkemJfsl
-   qlW/Rez83RLLz7YgkI5X0bQdplVIgE6QT3yIZNB5dhSwkA2C22PJWswto
-   kp5x5xYi4TnfHdFxHCHmHLoYV1ir/pv3tiyiIQIzPpMVQE7isLcX49k3C
-   gSUTQWFNinfMTcRz0t+i38gD8rj7FIXzYjyzw5RiO1Z9SNpPCPn9ci6iB
-   NfcE32hcs2YK9JacM9I9nSq/XdyChSNBsrMTdzqTE9RR9BxQk/NBdaOXh
-   AFSjFFJ5CW1skYKnHbBPuBl2+g39LKLgnBqMDDlCZFsYB7ZHQeJrEH7qs
-   A==;
-X-CSE-ConnectionGUID: 6RF1c5i9Tym+NhFGOle5uw==
-X-CSE-MsgGUID: 2ehrpcDzRmydzvYVkrq7wg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23266499"
-X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
-   d="scan'208";a="23266499"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 06:20:09 -0700
-X-CSE-ConnectionGUID: Di3szpdjS/yXVeNlb//s2A==
-X-CSE-MsgGUID: vsJrk7u9TFSCMSkXYA39Hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
-   d="scan'208";a="93233608"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 26 Aug 2024 06:20:05 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1siZdb-000H78-0b;
-	Mon, 26 Aug 2024 13:20:03 +0000
-Date: Mon, 26 Aug 2024 21:19:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: wangshuaijie@awinic.com, jic23@kernel.org, lars@metafoo.de,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	kees@kernel.org, gustavoars@kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	wangshuaijie@awinic.com, liweilei@awinic.com, kangjiajun@awinic.com
-Subject: Re: [PATCH V8 2/2] iio: proximity: aw96103: Add support for
- aw96103/aw96105 proximity sensor
-Message-ID: <202408262043.ZgqewPIH-lkp@intel.com>
-References: <20240823094947.3511730-3-wangshuaijie@awinic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DE9189503;
+	Mon, 26 Aug 2024 14:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724681188; cv=fail; b=qZUPCl5SgLqztE+Y55WBxnWQSlX/PBYWMdp+EVKzQqSRj7ew5/eY5iUXrM1ihYYbN/uZF/92G3sLosaWt5GWX+SAAuCSTuqvBMDR770jCFpjpf/4xu6Ha0RExlwQf67ZAco28Z2oeVPLWm1Q3x4GN2R5JwRqLngYYikdjCHThXk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724681188; c=relaxed/simple;
+	bh=lbF7/aAv8pigl7HT2mN7ltFyH6DvpORxnVDrb8jHTmQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dADDhVo9fwiLZdc4hYa422k4GEAQS03hMo031/UOxEHLkyBmnAtcNm09AmH7RQBIZ/jjhp7PxTf6dLMeR/ah/WO9MLAEGZJ71pWq3BslQcCLlsc9RIp/dTZKulT0woICJ3gKbY3Cm2aruTV253b6hORIw/1D9NTBiNZBJ+l8JVI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=fiVoq31y; arc=fail smtp.client-ip=40.107.22.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RZqcfbrof/uB6yP+9ohdttzNt7gZPbjJN93rJN28d0IjMxKSOCIBukJfqaswlo33elmm5HxalVi7N9M8HSRrZn4Zr4HS2fyttTQeFGRhOdvX+EVUsp1dnmScFsuP07KTVVAd1MA43y1ik1Vk//+6lVCy/NPyT7VCABXDFX4sl8aRIL3JdRsl42Uib/8l974tXJLgxgcsHZBoHZ71YcInvUh6Hc0ncCT1ELSfvJJ4k8WotXC7R4smCcRHm3rrP2hMO7uSb6ExkkqMQQ2P9ia9sfL9kBmFbSpbdBiTMSrquWNvK1+wQd823ov9EhMycTuxuPGelB6vnJCYrwK+Hrhb7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fGcKb4AzdQGzK+jNs/jRiBVKZ0nA5fKuLSCtGL9Wgc0=;
+ b=avs/aaGFy5uw2ZhP/es5IydpMSFSU1Jh54r398pp7brGBFlONmNsRwT1VN6CFRr5oRC3mSfEEpcaiaxaCoz5GWVM5Hgf+dc4IsrUgSb9byS1xKtSDTJq5A12a5hX0+A8KPmxQomOdvMhxjBUFbQthsfaaQJRrNOgqR3SklWY1q0kbD+krQGE6dM7r88TGkPvGMve6iy8al5kqTj+zt51zbRYMu5IvDCW3rooZt9d5yn+tZOaSshz3VnvaroEhD4OLphuqlrNQYiF5Fo7sPeDubLIHZAOtbjvOD0OED1zN1QpjQowUNGrWdPcLWDu/SJDpZqjf3gr7vFp0Z9d0DGvmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fGcKb4AzdQGzK+jNs/jRiBVKZ0nA5fKuLSCtGL9Wgc0=;
+ b=fiVoq31yS8YaEEjwpVx+Wj50lfleLiXh0xDF8Q2cRKHpzMfCU5YMzPm+DTotwQCArNWT1xuW9vICkYJG2wxfgFwMqrzZHlbgVurFlYAENc5CddEmSrHWsCcrnrCxMPxaLz1VGuKlPm3y29PuoF8WqOdobjZ0WO0M73Bb2lCfoTAOCRpg4kJTIdIYNvSqwCRCVRygh7AByHeRWt3W4qzwLD9Lj3xdFrNnzqHf5HJq817vW6Jz8Ir+o//nNV0sEd1sahsw5W1Ay9BizwmmDop3pKgF7YhIhVOzRycZlECqG1P2UdgT6OBpqrnx7Gd7e5ECBWiXyj2ccfyFu3xC0xq3Yw==
+Received: from AS4P195CA0029.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:5d6::19)
+ by PAVPR10MB7090.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:318::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21; Mon, 26 Aug
+ 2024 14:06:22 +0000
+Received: from AM1PEPF000252E0.eurprd07.prod.outlook.com
+ (2603:10a6:20b:5d6:cafe::cb) by AS4P195CA0029.outlook.office365.com
+ (2603:10a6:20b:5d6::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.25 via Frontend
+ Transport; Mon, 26 Aug 2024 14:06:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ AM1PEPF000252E0.mail.protection.outlook.com (10.167.16.58) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7918.13 via Frontend Transport; Mon, 26 Aug 2024 14:06:22 +0000
+Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 26 Aug
+ 2024 16:06:06 +0200
+Received: from LR-C-0008DVM.rt.de.bosch.com (10.139.217.196) by
+ SI-EXCAS2001.de.bosch.com (10.139.217.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 26 Aug 2024 16:06:06 +0200
+From: <Jianping.Shen@de.bosch.com>
+To: <jic23@kernel.org>, <lars@metafoo.de>, <robh@kernel.org>,
+	<krzk+dt@kernel.org>, <conor+dt@kernel.org>, <dima.fedrau@gmail.com>,
+	<marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<Jianping.Shen@de.bosch.com>, <Christian.Lorenz3@de.bosch.com>,
+	<Ulrike.Frauendorf@de.bosch.com>, <Kai.Dolde@de.bosch.com>
+Subject: [PATCH v4 0/2] iio: imu: smi240: add bosch smi240 driver
+Date: Mon, 26 Aug 2024 16:05:43 +0200
+Message-ID: <20240826140545.4085-1-Jianping.Shen@de.bosch.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240823094947.3511730-3-wangshuaijie@awinic.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM1PEPF000252E0:EE_|PAVPR10MB7090:EE_
+X-MS-Office365-Filtering-Correlation-Id: ea8584a7-5c7f-4210-7926-08dcc5d843d7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|7416014|36860700013|82310400026|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N0JES1RvZWR4a1pDKzkyN1N1MHJDUDdxVkFzTVA2c0FldGMxdlFNYmhyQktu?=
+ =?utf-8?B?Q0Ryc3J4dkwycWR5TktkbVdBUkZac2hwd3VwT0FCejV2WmkzNCtVTWxkd3hq?=
+ =?utf-8?B?Z2pMWEhIZUdmWVpPSm1DeGJST2hBS01pTnpNRUI4MlY3RTU2b3hadG5TbFFm?=
+ =?utf-8?B?QmFEaCtQTWlzV1ZVdnQydWFvVk13aDBURG1CbkF1Z3V0ZGhrZkVhYjVldjNt?=
+ =?utf-8?B?bVdEZXNTQ3pEa3FrenBVWlNpc00rMnA0M1poTytoTmZoL2pEamlneUZRRkRM?=
+ =?utf-8?B?ekJJU2RqNzVJT1NrWTdTTThOdEVxK3JhMUlCRmI0UmdXdENvT0VOS0xtVlhS?=
+ =?utf-8?B?aW9VSGsvV2kya2k1RmZwNW11Nm9WS0hpaHcxS1lvMWZzMkpBR09TYktyOW9U?=
+ =?utf-8?B?alNWNGR3VDdDc0kyU1BDVW9DN2pzVXpVNlNIYzZUT3NqR2lObkpETENmU1pr?=
+ =?utf-8?B?RDZmTjhETE8vT2pqUldnLzlHOVBrVXZ6QWVBK004QmdMK1JwRTYzTG44QWho?=
+ =?utf-8?B?NStNVUJJbUxYZHVjbDhQTjlxYzAwQ1poWUwydm9lTjhUNXE4NnRQQmRyMTJ4?=
+ =?utf-8?B?TmRjVXhTTzNEckQxaEN3OHJ1MkJ0QWVsZnYyK3l0V3J5RDRhYVlmWEtBUkpw?=
+ =?utf-8?B?RVBZYzR3S0p2bXlidzVBL29PdmJFZmNOUHBaN1NkZ1BvVzVmSS83SUtZSVgz?=
+ =?utf-8?B?ay9BZUlMOHJwZmNNWGZULzVhWm13dnpGSUdicUVZRVpwSnAvZ3pta0Z4L2Rk?=
+ =?utf-8?B?WU5lYWxYbVBYM3NyVkE5VWZGMGVtSTVtSUdaTGI0cVRmTitjbjhjZkRrYUcx?=
+ =?utf-8?B?V3kvSkF4K2NISTJFQmJtUXVSazFoa3MzR3lJeUFNR0o3MndEYWxrRkhOM0J6?=
+ =?utf-8?B?b0hGV1pnS1E5RTRuOTZ6bk9HS2c1YTlCQmkzbk5hbnZtdzZ6VE1nTE82cENB?=
+ =?utf-8?B?VHZTcjl2cXlEb3k2bXRSbTRjQlBXNm12VDVCZnZ0dmoyNjVyTURCUGhPMElZ?=
+ =?utf-8?B?akliNGxtOCtpYkZVNzZBdFFjeSsva2wvTys2TldYL1RXMzlabSt4VlV0WGQ2?=
+ =?utf-8?B?NVZ2T1o5N0N1WXhpaVdyT2NaR2JhZHVZWXNkbE5kN0pWai9XOHV3VTVUQ1VM?=
+ =?utf-8?B?ZzlHc2N0VGNBVDB5dnM0YXZmUy8xSXJrWktlU3pqRFdtb29yS0xGMlZxNlZz?=
+ =?utf-8?B?TlVwbUtydkRwc0JTZis5aXNIMi9WdlZBc0cwTGNkWmdBK0dtU0h6T0FNeDZQ?=
+ =?utf-8?B?VGd5UXFLVS9QWnNIUWMwL2ppa2x6dzVoNWpENDVyQkhmY1ZSdm51REhWUDRB?=
+ =?utf-8?B?VFZjVkk5MlF2ZUJwa2FYMTlBeUgrR0tjcHJsNFVaMytVM1dGUVV1V2ZJd3N3?=
+ =?utf-8?B?M1lIYTlRVzYzS2NiWlI0eVpVeUNVUFc0YzRYRm12c3QrYXZtRWpsRzh4WURl?=
+ =?utf-8?B?NmRYdnY0OGdIOC9oWng2eGY3ZHY5VnFHMjE3b3g5c2VkYmtwcmJLRDJVQllh?=
+ =?utf-8?B?aHlKZXI5MEo4TGFLc3B3TFphUEJIRHZpWmthVmVDWjBGK0hIY2g1anlRNTBS?=
+ =?utf-8?B?eTlySHF1M2tyRm1BT2tqbWxSU1dYV1FrRVhFQ1BEY21zblV6SmtMWU1uSXBm?=
+ =?utf-8?B?SmJNMkN6TFdoZloxQWIrOTlHRHNhakJ3dWdoSHNjbFZUWEdTU0czbVZsRE9x?=
+ =?utf-8?B?TXNEMG0raWdNYk5UN3YrT0VWQUlHcHR2ZGVvUGxYazduem5PbG1kT0xPMCsw?=
+ =?utf-8?B?UUVTZVpTWnAreWNnbTN6bVlMcFRmMG51YUU1dGRPOFlXbHhIS3h5RmhDTGdi?=
+ =?utf-8?B?eEI3ZkhhZ21Gc3g1WEtjRno1L1JqenBYeEhjbmFtS2lHQ2U2UkZRZlovRlFo?=
+ =?utf-8?B?OFo4K1l0dzdIRHhHcFhhTGovYTQrTUtlaU9pSm05UGRwUHBjQUI3MEFsZnVt?=
+ =?utf-8?Q?8oVxHTNgj9m4NkZvFs+tHE9oKm3/A4u0?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(36860700013)(82310400026)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2024 14:06:22.0789
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea8584a7-5c7f-4210-7926-08dcc5d843d7
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM1PEPF000252E0.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR10MB7090
 
-Hi,
+From: Shen Jianping <Jianping.Shen@de.bosch.com>
 
-kernel test robot noticed the following build errors:
+This patchset adds the iio driver for bosch imu smi240. The smi240
+is a combined three axis angular rate and three axis acceleration
+sensor module with a measurement range of +/-300°/s and up to 16g.
+Smi240 does not support interrupt. This driver provides raw data
+access for each axis through sysfs, and tiggered buffer for
+continuous sampling. A synchronous acc and gyro sampling can be
+triggered by setting the capture bit in spi read command.
 
-[auto build test ERROR on b78b25f69a1dfa79798f684ad34707b1da10a48f]
+dt-bindings: 
+v1 -> v2
+    - Add more detail in description
+    - Add maintainer
+    - Add vdd and vddio power supply
+    - Use generic node name
+    - Order the properties according to DTS coding style
+ v2 -> v3   
+    - improve description
+    - improve supply definition
+    - make supply definition as required
+    - add supply definition in example
+v3 -> v4
+    - no changes
 
-url:    https://github.com/intel-lab-lkp/linux/commits/wangshuaijie-awinic-com/dt-bindings-iio-aw96103-Add-bindings-for-aw96103-aw96105-sensor/20240826-130421
-base:   b78b25f69a1dfa79798f684ad34707b1da10a48f
-patch link:    https://lore.kernel.org/r/20240823094947.3511730-3-wangshuaijie%40awinic.com
-patch subject: [PATCH V8 2/2] iio: proximity: aw96103: Add support for aw96103/aw96105 proximity sensor
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20240826/202408262043.ZgqewPIH-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 08e5a1de8227512d4774a534b91cb2353cef6284)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240826/202408262043.ZgqewPIH-lkp@intel.com/reproduce)
+imu driver:
+v1 -> v2
+    - Use regmap for register access
+    - Redefine channel for each singel axis
+    - Provide triggered buffer
+    - Fix findings in Kconfig
+    - Remove unimportant functions
+v2 -> v3
+    - Use enum für capture mode
+    - Using spi default init value instead manual init 
+    - remove duplicated module declaration
+    - Fix code to avoid warning
+v3 -> v4
+    - Use DMA safe buffer
+    - Use channel info instead of custom ABI
+    - Fix other findings
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408262043.ZgqewPIH-lkp@intel.com/
+Shen Jianping (2):
+  dt-bindings: iio: imu: smi240: devicetree binding
+  iio: imu: smi240: imu driver
 
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/iio/proximity/aw96103.c:13:
-   In file included from include/linux/i2c.h:13:
-   In file included from include/linux/acpi.h:14:
-   In file included from include/linux/device.h:32:
-   In file included from include/linux/device/driver.h:21:
-   In file included from include/linux/module.h:19:
-   In file included from include/linux/elf.h:6:
-   In file included from arch/s390/include/asm/elf.h:181:
-   In file included from arch/s390/include/asm/mmu_context.h:11:
-   In file included from arch/s390/include/asm/pgalloc.h:18:
-   In file included from include/linux/mm.h:2228:
-   include/linux/vmstat.h:503:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     503 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     504 |                            item];
-         |                            ~~~~
-   include/linux/vmstat.h:510:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     510 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     511 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:517:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     517 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:523:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     523 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     524 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   In file included from drivers/iio/proximity/aw96103.c:18:
-   In file included from include/linux/regmap.h:20:
-   In file included from include/linux/iopoll.h:14:
-   In file included from include/linux/io.h:14:
-   In file included from arch/s390/include/asm/io.h:93:
-   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     548 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/big_endian.h:37:59: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) __swab16((__force __u16)(__le16)(x))
-         |                                                           ^
-   include/uapi/linux/swab.h:102:54: note: expanded from macro '__swab16'
-     102 | #define __swab16(x) (__u16)__builtin_bswap16((__u16)(x))
-         |                                                      ^
-   In file included from drivers/iio/proximity/aw96103.c:18:
-   In file included from include/linux/regmap.h:20:
-   In file included from include/linux/iopoll.h:14:
-   In file included from include/linux/io.h:14:
-   In file included from arch/s390/include/asm/io.h:93:
-   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/big_endian.h:35:59: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
-         |                                                           ^
-   include/uapi/linux/swab.h:115:54: note: expanded from macro '__swab32'
-     115 | #define __swab32(x) (__u32)__builtin_bswap32((__u32)(x))
-         |                                                      ^
-   In file included from drivers/iio/proximity/aw96103.c:18:
-   In file included from include/linux/regmap.h:20:
-   In file included from include/linux/iopoll.h:14:
-   In file included from include/linux/io.h:14:
-   In file included from arch/s390/include/asm/io.h:93:
-   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     585 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     693 |         readsb(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     701 |         readsw(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     709 |         readsl(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     718 |         writesb(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
-   include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     727 |         writesw(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
-   include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     736 |         writesl(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
->> drivers/iio/proximity/aw96103.c:806:21: error: assigning to 'struct aw_chip_info *' from 'const void *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
-     806 |         aw96103->chip_info = i2c_get_match_data(i2c);
-         |                            ^ ~~~~~~~~~~~~~~~~~~~~~~~
-   16 warnings and 1 error generated.
-
-
-vim +806 drivers/iio/proximity/aw96103.c
-
-   793	
-   794	static int aw96103_i2c_probe(struct i2c_client *i2c)
-   795	{
-   796		struct iio_dev *aw_iio_dev;
-   797		struct aw96103 *aw96103;
-   798		int ret;
-   799	
-   800		aw_iio_dev = devm_iio_device_alloc(&i2c->dev, sizeof(*aw96103));
-   801		if (!aw_iio_dev)
-   802			return -ENOMEM;
-   803	
-   804		aw96103 = iio_priv(aw_iio_dev);
-   805		aw96103->dev = &i2c->dev;
- > 806		aw96103->chip_info = i2c_get_match_data(i2c);
-   807		aw96103->max_channels = aw96103->chip_info->num_channels;
-   808	
-   809		aw96103->regmap = devm_regmap_init_i2c(i2c, &aw96103_regmap_confg);
-   810		if (IS_ERR(aw96103->regmap))
-   811			return PTR_ERR(aw96103->regmap);
-   812	
-   813		ret = devm_regulator_get_enable(aw96103->dev, "vcc");
-   814		if (ret < 0)
-   815			return ret;
-   816	
-   817		ret = aw96103_read_chipid(aw96103);
-   818		if (ret)
-   819			return ret;
-   820	
-   821		ret = aw96103_sw_reset(aw96103);
-   822		if (ret)
-   823			return ret;
-   824	
-   825		ret = aw96103_wait_chip_init(aw96103);
-   826		if (ret)
-   827			return ret;
-   828	
-   829		ret = request_firmware_nowait(THIS_MODULE, true, "aw96103_0.bin",
-   830					      aw96103->dev, GFP_KERNEL, aw96103,
-   831					      aw96103_cfg_update);
-   832		if (ret)
-   833			return ret;
-   834	
-   835		ret = aw96103_interrupt_init(aw_iio_dev, i2c);
-   836		if (ret)
-   837			return ret;
-   838		aw_iio_dev->modes = INDIO_DIRECT_MODE;
-   839		aw_iio_dev->num_channels = aw96103->chip_info->num_channels;
-   840		aw_iio_dev->channels = aw96103->chip_info->channels;
-   841		aw_iio_dev->info = &iio_info;
-   842		aw_iio_dev->name = aw96103->chip_info->name;
-   843		aw_iio_dev->dev.parent = aw96103->dev;
-   844	
-   845		return devm_iio_device_register(aw96103->dev, aw_iio_dev);
-   846	}
-   847	
+ .../bindings/iio/imu/bosch,smi240.yaml        |  52 +++
+ drivers/iio/imu/Kconfig                       |   1 +
+ drivers/iio/imu/Makefile                      |   1 +
+ drivers/iio/imu/smi240/Kconfig                |  12 +
+ drivers/iio/imu/smi240/Makefile               |   7 +
+ drivers/iio/imu/smi240/smi240.h               |  35 ++
+ drivers/iio/imu/smi240/smi240_core.c          | 385 ++++++++++++++++++
+ drivers/iio/imu/smi240/smi240_spi.c           | 172 ++++++++
+ 8 files changed, 665 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml
+ create mode 100644 drivers/iio/imu/smi240/Kconfig
+ create mode 100644 drivers/iio/imu/smi240/Makefile
+ create mode 100644 drivers/iio/imu/smi240/smi240.h
+ create mode 100644 drivers/iio/imu/smi240/smi240_core.c
+ create mode 100644 drivers/iio/imu/smi240/smi240_spi.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 

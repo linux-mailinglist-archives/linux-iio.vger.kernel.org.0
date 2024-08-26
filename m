@@ -1,64 +1,56 @@
-Return-Path: <linux-iio+bounces-8783-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8784-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E6995EDFA
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 12:02:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E3A95EE29
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 12:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AB3E286181
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 10:02:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 795C51C215D5
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Aug 2024 10:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCF214659C;
-	Mon, 26 Aug 2024 10:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887B314659D;
+	Mon, 26 Aug 2024 10:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdT9otjG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="drIEDpPU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71DB146A71;
-	Mon, 26 Aug 2024 10:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48728146585
+	for <linux-iio@vger.kernel.org>; Mon, 26 Aug 2024 10:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724666523; cv=none; b=RDtj56+qDEppagD2N2TUMXhkNTmJts3B0hGlefkqNVnhA+jT+nASiJngX/p0fusty2Tci/VdLtnw5tGQd024df/HiLftxrbnm7MpLRCR+bvTdxRY9BQgQiZNWBvFi6KMPTkGbR68mnp8DoxHzejXpPEeodK7vzBjEZnQCoY6kBA=
+	t=1724667103; cv=none; b=AyFek0k0eB4ap8LS/4aKx8/7+4EjvXUnTldopnKUtJu+XyrDgGMFXmVUbEHQrDxfk5VSQrK2ljAufvB2iGU6GiL7ox6KyaclEK9Omj7ZZV18CsoUc+gtYzXZRTT6+8Ei3MQW4kLK0HzFxyN4fKbMl9BiqNzSGsBQIHSkAWzkD4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724666523; c=relaxed/simple;
-	bh=2bOnO0n6dYgvuE21Uq9+WsJrkGncEn9LYJnCBKux97I=;
+	s=arc-20240116; t=1724667103; c=relaxed/simple;
+	bh=1WpKyMnTEn9amhLUmxiaBY+BaCSZ/5B5nnqQaAMqEHw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MHNWPdHKWK7c3hdJpIi3Vrk/JgmogpcFddq1c1xIN/9pbCiZqramLyNViHhLGfPm8MV7Cz2ygEUJ7Hpnmn9kYO/41GX3mPxe4tbY1DBDmj8aaBuBOe4BcVU1IaoQhV+jlpzY4pC0w5zRxowwvzpjAkdS01vyDvzXujv6+1GqR18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdT9otjG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF6FC51407;
-	Mon, 26 Aug 2024 10:01:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ThxLrAlSq0uvZzYwkW3vhMpvm6kzhC4cB4m8j0C/j+WC811bo1KyJYCDZjocrKq1PcUiiURW5KAz4+m/K6MwrEjeBF9ruQHI9rbRTpozUm8crzjMUvvxFOvs8YRcBxm6hb8r4IK6MsuN5aZ6MHxPIc2LgnMBlsVqPMNzD/spWSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=drIEDpPU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2000C51400;
+	Mon, 26 Aug 2024 10:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724666522;
-	bh=2bOnO0n6dYgvuE21Uq9+WsJrkGncEn9LYJnCBKux97I=;
+	s=k20201202; t=1724667102;
+	bh=1WpKyMnTEn9amhLUmxiaBY+BaCSZ/5B5nnqQaAMqEHw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tdT9otjGdc1TQpp3yvN/W3dTwLtDRB4/DpulPZluyP15DvpWhe6zN1FuqVMor/jVN
-	 bweCHmtPX6yuC0TU18QqYuId/eELMYKeykF3dP3awC/ov6mlWt+Sqf5JIzylDN5NUD
-	 Ls5vIQKFHk7JaJK/HKG2s6wfbEdVnazXdIJDPXku5vR2lBVoB+ECO+zWJUTnkMPDWh
-	 vFKnJjfS1rUQmopyTFnUX6i+hjvMQHpxi20bV1+ZK3o93c4YppmFAIKKaHp7VVvWxX
-	 Vh/hNNgHT/dvL494n/PBWxsJkU19VxXOR8CJeO3wP899ab4ZjqYtOEfXwSad1PpNMK
-	 Gfg4/xjdvHmPw==
-Date: Mon, 26 Aug 2024 11:01:50 +0100
+	b=drIEDpPUH/ucPbFIneKqybhwk+BgQ5+NQE+e9VAhk4u/E3chp2FynBnk6yfM/TfVt
+	 M4KEI4kGaM4cvtt7szLPLMzwDtDGOhYjl9y5oSWGXmnEfTX9poBbQufYtSVK6PHvW0
+	 6pfT8jO6QyskbDAF1pd3+44eVbWGwXCOY3TTt/6s/JGuw3i0P7+UXxaJSjMVw/YY9c
+	 2hCEMA6L7rrN2cStNrT3yaCLkq+75wD2Or9OU/AxlZZIYwsYmwSzw6HN2AZf57GtmN
+	 AB0dCgUZt6bp2iRRJ63ouq/RbwzcdFHowW4QqL9SrD+0yUX2qcGJVddbuHpeW3CxmE
+	 8XTWb/Y1AD+sg==
+Date: Mon, 26 Aug 2024 11:11:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
- biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
- semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 6/7] iio: pressure: bmp280: Add data ready trigger
- support
-Message-ID: <20240826110150.5f2e5c72@jic23-huawei>
-In-Reply-To: <20240824120222.GG9644@vamoiridPC>
-References: <20240823181714.64545-1-vassilisamir@gmail.com>
-	<20240823181714.64545-7-vassilisamir@gmail.com>
-	<ZsjrxLlhmx-TzwXF@smile.fi.intel.com>
-	<20240824120222.GG9644@vamoiridPC>
+To: bugzilla-daemon@kernel.org
+Cc: linux-iio@vger.kernel.org
+Subject: Re: [Bug 219192] New: drivers/iio/imu/adis16400.o: warning:
+ objtool: adis16400_write_raw() falls through to next function
+ adis16400_show_flash_count()
+Message-ID: <20240826111119.2820afe6@jic23-huawei>
+In-Reply-To: <bug-219192-217253@https.bugzilla.kernel.org/>
+References: <bug-219192-217253@https.bugzilla.kernel.org/>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,70 +61,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 24 Aug 2024 14:02:22 +0200
-Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+On Sun, 25 Aug 2024 09:35:37 +0000
+bugzilla-daemon@kernel.org wrote:
 
-> On Fri, Aug 23, 2024 at 11:06:28PM +0300, Andy Shevchenko wrote:
-> > On Fri, Aug 23, 2024 at 08:17:13PM +0200, Vasileios Amoiridis wrote:  
-> > > The BMP3xx and BMP5xx sensors have an interrupt pin which can be used as
-> > > a trigger for when there are data ready in the sensor for pick up.
-> > > 
-> > > This use case is used along with NORMAL_MODE in the sensor, which allows
-> > > the sensor to do consecutive measurements depending on the ODR rate value.
-> > > 
-> > > The trigger pin can be configured to be open-drain or push-pull and either
-> > > rising or falling edge.
-> > > 
-> > > No support is added yet for interrupts for FIFO, WATERMARK and out of range
-> > > values.  
-> > 
-> > ...
-> >   
-> > > +static int __bmp280_trigger_probe(struct iio_dev *indio_dev,
-> > > +				  const struct iio_trigger_ops *trigger_ops,
-> > > +				  int (*int_config)(struct bmp280_data *data),  
-> >   
-> > > +				  irqreturn_t (*irq_thread_handler)(int irq, void *p))  
-> > 
-> > irq_handler_t
-> >   
+> https://bugzilla.kernel.org/show_bug.cgi?id=219192
 > 
-> But the function returns an irqreturn_t type, no?
-irq_handler_t is a typdef for the full function signature.
-It will still return irqreturn_t 
+>             Bug ID: 219192
+>            Summary: drivers/iio/imu/adis16400.o: warning: objtool:
+>                     adis16400_write_raw() falls through to next function
+>                     adis16400_show_flash_count()
+>            Product: Drivers
+>            Version: 2.5
+>           Hardware: All
+>                 OS: Linux
+>             Status: NEW
+>           Severity: normal
+>           Priority: P3
+>          Component: IIO
+>           Assignee: drivers_iio@kernel-bugs.kernel.org
+>           Reporter: ionut_n2001@yahoo.com
+>         Regression: No
 > 
-> > ...
-> >   
-> > > +	fwnode = dev_fwnode(data->dev);
-> > > +	if (!fwnode)
-> > > +		return -ENODEV;  
-> > 
-> > Why do you need this? The below will fail anyway.  
+> drivers/iio/imu/adis16400.o: warning: objtool: adis16400_write_raw() falls
+> through to next function adis16400_show_flash_count()
 > 
-> Because If I don't make this check then fwnode might be garbage and I will
-> pass garbage to the fwnode_irq_get() function. Or do I miss something?
-It checks for NULL which is all it can actually be and returns a suitable
-error code if it is.
+> Kernel: 6.11.0-rc5 vanilla
+> GCC compiler: gcc (Debian 14.1.0-5) 14.1.0
+
+I think this is a false positive.  None of the cases of the switch statement
+fail to return and there are unreachable() markings that this
+check seems to not be able to see which were added to try and
+point out to the compiler that it was failing to identify they
+were not possible to get to.
+
+We could add some returns the unreachable paths to work around
+this warning I suppose.
+
+Maybe we are doing something wrong otherwise?  I'd like more
+eyes on this incase I'm just missing something obvious.
+
+Jonathan
+
 
 > 
-> >   
-> > > +	irq = fwnode_irq_get(fwnode, 0);
-> > > +	if (!irq)  
-> > 
-> > Are you sure this is correct check?
-> >   
-> Well, I think yes, because the function return either the Linux IRQ number
-> on success or a negative errno on failure.
-> 
-> https://elixir.bootlin.com/linux/v6.10.6/source/drivers/base/property.c#L987
 
-Indeed, so if (irq < 0)
-		return dev_err_probe(data->dev, irq, ...)
-
-	carry on as valid irq.
-your error check if returning only if irq == 0 which never
-happens (due to catch for that in the code you link).
-Negative values are true, so !-EINVAL == false
-for example.
-> 
 

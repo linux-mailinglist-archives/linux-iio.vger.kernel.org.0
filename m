@@ -1,311 +1,169 @@
-Return-Path: <linux-iio+bounces-8826-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8827-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3F4960C9F
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2024 15:54:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF26960FC7
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2024 17:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A265D1C231DB
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2024 13:54:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9526284B4B
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2024 15:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6859B1C2DD6;
-	Tue, 27 Aug 2024 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BCC712B93;
+	Tue, 27 Aug 2024 15:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CpjVyVLy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KX9H5cus"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5601D19ADBE
-	for <linux-iio@vger.kernel.org>; Tue, 27 Aug 2024 13:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E5F1C6890;
+	Tue, 27 Aug 2024 15:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724766844; cv=none; b=njN3bmbWj+tR6fOgE7C7JEF4qH5rAWcLWj2B8pSEOjEEr5XAIisBTijXwBLjiyp6zCmdfBtG1hbEzXJDrIQib6N72tibnStRqquPtTkUjpfvrd9OwWl5b/FEvYWKvCiJBSY7YR0B5HYkq5i+yxSEU63dIRzuJZunxUK6Xm2I2fw=
+	t=1724770908; cv=none; b=uf38dW9/y5Ib5D9rArEpWRLuZVbSftrtq49xHwlPbHDjTDvILU7YxmI9WGcUhrI1nKlIFZKVOh93LXIFHrQdRZsbeTjWTLAdlovR8ojcpMeaxPrxd8G+H/TkM2YYVd2WE4bhWiTdrtLYbQfIXU4fsRD8g4ZTyFavqRJKDOKsVUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724766844; c=relaxed/simple;
-	bh=44SZCDbcmzG09AQZ50x/Dy0zdigrMGUoG2ovPXzcraY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OwLTWLh2hGYIxpniH6DYw7IsetO4FQBWnNJFvKSC+V0jmXEdkyWe95P7k+sUlYKLTsN7icpgeBF4mOcK/KEQRoKocUAFiHfIPme6z61IH2/9jCwovCbvvQgFVymg7f5GicUCP7jKMqYCqwz37bd9rxK86b2lDnBUErXtbFKaMcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CpjVyVLy; arc=none smtp.client-ip=209.85.221.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-4fd0a012aadso1694457e0c.3
-        for <linux-iio@vger.kernel.org>; Tue, 27 Aug 2024 06:54:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724766841; x=1725371641; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LKxMqQG/y28P0kTx7Xe5S5QMMuqHP6qRbSeqqy9q1io=;
-        b=CpjVyVLy5c/V9kneWzvGwtHgUsw8nK6uGRWNfs/gjunmnxJqN+ariYsTRTH0bzT09p
-         y6yOe3icMii+wpKRlQh0Ogk8BamOwXXAIY/DmSqvFZAetMufv5CpMyK7KfdQ6yp7MEn2
-         9gSeZcQAYRmWzmLah4jLn6+ZLl+ZZMWzwqJloEOywEPFX1cuSX0CcI5IcKwECHMYtK/z
-         cIHssH2NWfu9liPRij15fpYzEHjguohQ/2Dxv8O0mM68iuT4mGy1smXQzq2d+Nf3dEf4
-         sfSo1Df+SIROCcTm/Hbb/FKYRWs3afzj6ZOxqI+pyS75PI/scm/xsQa7j9GLs7tuVV4/
-         tN7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724766841; x=1725371641;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LKxMqQG/y28P0kTx7Xe5S5QMMuqHP6qRbSeqqy9q1io=;
-        b=aDhHZqdtLo0P+/tT4kx969pqV2fn9LoEk0pZCHvBvXAqWwt9aS6RDQ0oEfTiN1nnGK
-         r2egDHtABmZyranDsUA9Kis2jsdwaTS5efh/HOXmgPacA5WNzIEsPgxqjCcFaeQRK8UQ
-         okIhx5Rc/roNyVHGyFoUPfZj73QLqXIsxwFskA6BzXZohPmhjbb40KA5eY1zqwhS8lTQ
-         8FVDZXxTeoz+q+vlVTGHISTSBqhGKjIh4GFRhk2ls+SpIUj/MpvAVIYWoSAvPaBnGSeM
-         AluZn82E5tgjhelxaH9Pu4xZItbPPQeasS1SjUxsArWD9hGamkr+3baUtVjzoUGhUikS
-         f7Fw==
-X-Gm-Message-State: AOJu0Yx1bLntdyZAogbMWTGtGc1oSQlNnzWSg84HkEtpga8AovygZMts
-	4G2sevpqoPEkvSKcwB3Boq4tdnW4d5zXUik9rSzpV6wpFjYXVmbOIXJtIfIAHwWtNVvCPscRPq+
-	wGQj0sao3j/N9GZOSGp2ZygND+BK4OX59Qvu2Pg==
-X-Google-Smtp-Source: AGHT+IFJBKlcd3fVo5oPev8XGIfBhFCYIhK7+76gcZGfvbdrMN/1PzVakFvXI+Y+D4GZ1/51eWthgnEpHo6/gYqnOLc=
-X-Received: by 2002:a05:6122:1689:b0:4f2:a973:8ae with SMTP id
- 71dfb90a1353d-4fd1a52c651mr15262226e0c.5.1724766841131; Tue, 27 Aug 2024
- 06:54:01 -0700 (PDT)
+	s=arc-20240116; t=1724770908; c=relaxed/simple;
+	bh=04kzWfhg4OiC07BgSws7MX2zfVTZd9v2ch1ZbqtW5ps=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PSFfXoHhPX99kq5Ahn8hh8MK0iooyR4Es4XXYfZLOl7c9RecOljI38MD4fTTzN/Opcs5ekNZ+P2j469k6RtML9rSqB+liBpuoPCDV7YuCcK0xxXOyT5vPeXcrzeTUJxRJ0X9J+8WQN0EkI64bYk39+N6kkwXAlPtJDF/+geDTUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KX9H5cus; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724770906; x=1756306906;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=04kzWfhg4OiC07BgSws7MX2zfVTZd9v2ch1ZbqtW5ps=;
+  b=KX9H5cusryTRHwSHUaC8KS2Zm+6gJT97XM6Kv10F4UCiHiUUFd0Vvy6/
+   RLoIWb7Loq540CCKRqffLg//0zgNT6hls4Trkfu+ctOtQiQ3RFLv6tdXu
+   qin4YKZfeNeBLjJsq0aRLwnU7A8C/oMbH7ruVVOJCaoAo3hD+AhgSbK9W
+   LCPSe/hfm+tj63vLvRfrBFqOZn0xZG0PRrxUL+Edwfb1bokfDqiIWCv8/
+   v+HlZZK+D96BuneR2Gj0WbeYOe0gg/a5jkexPhh2T4WpdIqsAHakPp3D4
+   OsXpKOdHvadxZFZeseLPtMb4MeHZe+3d+PCmERXlcTYZEdWEL86TBGTRy
+   w==;
+X-CSE-ConnectionGUID: 9EWADjsJQfmYKoq8js5mjA==
+X-CSE-MsgGUID: dlbllQ1eT6ymxz4VBA34eQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="23429064"
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; 
+   d="scan'208";a="23429064"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2024 08:01:36 -0700
+X-CSE-ConnectionGUID: k6CJQLvEQUqqBOszqa8vMw==
+X-CSE-MsgGUID: Vgoj9oVMSDqI06rGum72KA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; 
+   d="scan'208";a="86087616"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 27 Aug 2024 08:01:34 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sixhL-000J6S-2L;
+	Tue, 27 Aug 2024 15:01:31 +0000
+Date: Tue, 27 Aug 2024 23:01:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 2/2] iio: imu: st_lsm6dsx: Remove useless dev_fwnode()
+ calls
+Message-ID: <202408272259.MsdckhWn-lkp@intel.com>
+References: <20240826212344.866928-3-andy.shevchenko@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819064721.91494-1-aardelean@baylibre.com>
- <20240819064721.91494-2-aardelean@baylibre.com> <20240823195251.032c0c22@jic23-huawei>
-In-Reply-To: <20240823195251.032c0c22@jic23-huawei>
-From: Alexandru Ardelean <aardelean@baylibre.com>
-Date: Tue, 27 Aug 2024 16:53:50 +0300
-Message-ID: <CA+GgBR_uH2GMY_KVfiQOhs32anZo+3-NK2piYcQv+HiBOsSxLQ@mail.gmail.com>
-Subject: Re: [PATCH 1/7] iio: adc: ad7606: add 'bits' parameter to channels macros
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, krzk+dt@kernel.org, robh@kernel.org, 
-	lars@metafoo.de, michael.hennerich@analog.com, gstols@baylibre.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240826212344.866928-3-andy.shevchenko@gmail.com>
 
-On Fri, Aug 23, 2024 at 9:53=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Mon, 19 Aug 2024 09:47:11 +0300
-> Alexandru Ardelean <aardelean@baylibre.com> wrote:
->
-> > There are some newer additions to the AD7606 family, which support 18 b=
-it
-> > precision.
->
-> Hi Alexandru,
->
-> > Up until now, all chips were 16 bit.
-> >
-> > This change adds a 'bits' parameter to the AD760X_CHANNEL macro and ren=
-ames
-> > 'ad7606_channels' -> 'ad7606_channels_16bit' for the current devices.
-> >
-> > The AD7606_CHANNEL_PER_CHAN_SCALE() macro is also introduced, as it wil=
-l
-> > also require that the number of bits be correctly adjusted (for 18 bit
-> > parts).
-> Where is that introduced?  There is a _SW_ variant of one macro that isn'=
-t
-> mentioned...
+Hi Andy,
 
-Right.
-My famous forgetting to update commits after updating code a few times.
-Will update.
+kernel test robot noticed the following build warnings:
 
->
-> J
-> >
-> > Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
-> > ---
-> >  drivers/iio/adc/ad7606.c     | 58 ++++++++++++++++++------------------
-> >  drivers/iio/adc/ad7606.h     | 18 ++++++-----
-> >  drivers/iio/adc/ad7606_spi.c | 16 +++++-----
-> >  3 files changed, 47 insertions(+), 45 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> > index 539e4a8621fe..dba1f28782e4 100644
-> > --- a/drivers/iio/adc/ad7606.c
-> > +++ b/drivers/iio/adc/ad7606.c
-> > @@ -333,16 +333,16 @@ static const struct iio_chan_spec ad7605_channels=
-[] =3D {
-> >       AD7605_CHANNEL(3),
-> >  };
-> >
-> > -static const struct iio_chan_spec ad7606_channels[] =3D {
-> > +static const struct iio_chan_spec ad7606_channels_16bit[] =3D {
-> >       IIO_CHAN_SOFT_TIMESTAMP(8),
-> > -     AD7606_CHANNEL(0),
-> > -     AD7606_CHANNEL(1),
-> > -     AD7606_CHANNEL(2),
-> > -     AD7606_CHANNEL(3),
-> > -     AD7606_CHANNEL(4),
-> > -     AD7606_CHANNEL(5),
-> > -     AD7606_CHANNEL(6),
-> > -     AD7606_CHANNEL(7),
-> > +     AD7606_CHANNEL(0, 16),
-> > +     AD7606_CHANNEL(1, 16),
-> > +     AD7606_CHANNEL(2, 16),
-> > +     AD7606_CHANNEL(3, 16),
-> > +     AD7606_CHANNEL(4, 16),
-> > +     AD7606_CHANNEL(5, 16),
-> > +     AD7606_CHANNEL(6, 16),
-> > +     AD7606_CHANNEL(7, 16),
-> >  };
-> >
-> >  /*
-> > @@ -357,22 +357,22 @@ static const struct iio_chan_spec ad7606_channels=
-[] =3D {
-> >   */
-> >  static const struct iio_chan_spec ad7616_channels[] =3D {
-> >       IIO_CHAN_SOFT_TIMESTAMP(16),
-> > -     AD7606_CHANNEL(0),
-> > -     AD7606_CHANNEL(1),
-> > -     AD7606_CHANNEL(2),
-> > -     AD7606_CHANNEL(3),
-> > -     AD7606_CHANNEL(4),
-> > -     AD7606_CHANNEL(5),
-> > -     AD7606_CHANNEL(6),
-> > -     AD7606_CHANNEL(7),
-> > -     AD7606_CHANNEL(8),
-> > -     AD7606_CHANNEL(9),
-> > -     AD7606_CHANNEL(10),
-> > -     AD7606_CHANNEL(11),
-> > -     AD7606_CHANNEL(12),
-> > -     AD7606_CHANNEL(13),
-> > -     AD7606_CHANNEL(14),
-> > -     AD7606_CHANNEL(15),
-> > +     AD7606_CHANNEL(0, 16),
-> > +     AD7606_CHANNEL(1, 16),
-> > +     AD7606_CHANNEL(2, 16),
-> > +     AD7606_CHANNEL(3, 16),
-> > +     AD7606_CHANNEL(4, 16),
-> > +     AD7606_CHANNEL(5, 16),
-> > +     AD7606_CHANNEL(6, 16),
-> > +     AD7606_CHANNEL(7, 16),
-> > +     AD7606_CHANNEL(8, 16),
-> > +     AD7606_CHANNEL(9, 16),
-> > +     AD7606_CHANNEL(10, 16),
-> > +     AD7606_CHANNEL(11, 16),
-> > +     AD7606_CHANNEL(12, 16),
-> > +     AD7606_CHANNEL(13, 16),
-> > +     AD7606_CHANNEL(14, 16),
-> > +     AD7606_CHANNEL(15, 16),
-> >  };
-> >
-> >  static const struct ad7606_chip_info ad7606_chip_info_tbl[] =3D {
-> > @@ -382,25 +382,25 @@ static const struct ad7606_chip_info ad7606_chip_=
-info_tbl[] =3D {
-> >               .num_channels =3D 5,
-> >       },
-> >       [ID_AD7606_8] =3D {
-> > -             .channels =3D ad7606_channels,
-> > +             .channels =3D ad7606_channels_16bit,
-> >               .num_channels =3D 9,
-> >               .oversampling_avail =3D ad7606_oversampling_avail,
-> >               .oversampling_num =3D ARRAY_SIZE(ad7606_oversampling_avai=
-l),
-> >       },
-> >       [ID_AD7606_6] =3D {
-> > -             .channels =3D ad7606_channels,
-> > +             .channels =3D ad7606_channels_16bit,
-> >               .num_channels =3D 7,
-> >               .oversampling_avail =3D ad7606_oversampling_avail,
-> >               .oversampling_num =3D ARRAY_SIZE(ad7606_oversampling_avai=
-l),
-> >       },
-> >       [ID_AD7606_4] =3D {
-> > -             .channels =3D ad7606_channels,
-> > +             .channels =3D ad7606_channels_16bit,
-> >               .num_channels =3D 5,
-> >               .oversampling_avail =3D ad7606_oversampling_avail,
-> >               .oversampling_num =3D ARRAY_SIZE(ad7606_oversampling_avai=
-l),
-> >       },
-> >       [ID_AD7606B] =3D {
-> > -             .channels =3D ad7606_channels,
-> > +             .channels =3D ad7606_channels_16bit,
-> >               .num_channels =3D 9,
-> >               .oversampling_avail =3D ad7606_oversampling_avail,
-> >               .oversampling_num =3D ARRAY_SIZE(ad7606_oversampling_avai=
-l),
-> > diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-> > index 0c6a88cc4695..771121350f98 100644
-> > --- a/drivers/iio/adc/ad7606.h
-> > +++ b/drivers/iio/adc/ad7606.h
-> > @@ -8,7 +8,7 @@
-> >  #ifndef IIO_ADC_AD7606_H_
-> >  #define IIO_ADC_AD7606_H_
-> >
-> > -#define AD760X_CHANNEL(num, mask_sep, mask_type, mask_all) { \
-> > +#define AD760X_CHANNEL(num, mask_sep, mask_type, mask_all, bits) {   \
-> >               .type =3D IIO_VOLTAGE,                            \
-> >               .indexed =3D 1,                                   \
-> >               .channel =3D num,                                 \
-> > @@ -19,24 +19,26 @@
-> >               .scan_index =3D num,                              \
-> >               .scan_type =3D {                                  \
-> >                       .sign =3D 's',                            \
-> > -                     .realbits =3D 16,                         \
-> > -                     .storagebits =3D 16,                      \
-> > +                     .realbits =3D (bits),                     \
-> > +                     .storagebits =3D (bits),                  \
-> >                       .endianness =3D IIO_CPU,                  \
-> >               },                                              \
-> >  }
-> >
-> >  #define AD7605_CHANNEL(num)                          \
-> >       AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW),     \
-> > -             BIT(IIO_CHAN_INFO_SCALE), 0)
-> > +             BIT(IIO_CHAN_INFO_SCALE), 0, 16)
-> >
-> > -#define AD7606_CHANNEL(num)                          \
-> > +#define AD7606_CHANNEL(num, bits)                    \
-> >       AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW),     \
-> >               BIT(IIO_CHAN_INFO_SCALE),               \
-> > -             BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO))
-> > +             BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), bits)
-> >
-> > -#define AD7616_CHANNEL(num)  \
-> > +#define AD7606_SW_CHANNEL(num, bits) \
-> >       AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SC=
-ALE),\
-> > -             0, BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO))
-> > +             0, BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), bits)
-> > +
-> > +#define AD7616_CHANNEL(num)  AD7606_SW_CHANNEL(num, 16)
-> >
-> >  /**
-> >   * struct ad7606_chip_info - chip specific information
-> > diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.=
-c
-> > index 287a0591533b..dd0075c97c24 100644
-> > --- a/drivers/iio/adc/ad7606_spi.c
-> > +++ b/drivers/iio/adc/ad7606_spi.c
-> > @@ -67,14 +67,14 @@ static const struct iio_chan_spec ad7616_sw_channel=
-s[] =3D {
-> >
-> >  static const struct iio_chan_spec ad7606b_sw_channels[] =3D {
-> >       IIO_CHAN_SOFT_TIMESTAMP(8),
-> > -     AD7616_CHANNEL(0),
-> > -     AD7616_CHANNEL(1),
-> > -     AD7616_CHANNEL(2),
-> > -     AD7616_CHANNEL(3),
-> > -     AD7616_CHANNEL(4),
-> > -     AD7616_CHANNEL(5),
-> > -     AD7616_CHANNEL(6),
-> > -     AD7616_CHANNEL(7),
-> > +     AD7606_SW_CHANNEL(0, 16),
-> > +     AD7606_SW_CHANNEL(1, 16),
-> > +     AD7606_SW_CHANNEL(2, 16),
-> > +     AD7606_SW_CHANNEL(3, 16),
-> > +     AD7606_SW_CHANNEL(4, 16),
-> > +     AD7606_SW_CHANNEL(5, 16),
-> > +     AD7606_SW_CHANNEL(6, 16),
-> > +     AD7606_SW_CHANNEL(7, 16),
-> >  };
-> >
-> >  static const unsigned int ad7606B_oversampling_avail[9] =3D {
->
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.11-rc5 next-20240827]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/iio-imu-st_lsm6dsx-Use-iio_read_acpi_mount_matrix-helper/20240827-052617
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20240826212344.866928-3-andy.shevchenko%40gmail.com
+patch subject: [PATCH v1 2/2] iio: imu: st_lsm6dsx: Remove useless dev_fwnode() calls
+config: arc-randconfig-001-20240827 (https://download.01.org/0day-ci/archive/20240827/202408272259.MsdckhWn-lkp@intel.com/config)
+compiler: arc-elf-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240827/202408272259.MsdckhWn-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408272259.MsdckhWn-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c: In function 'st_lsm6dsx_get_drdy_reg':
+>> drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:2137:62: warning: passing argument 3 of 'device_property_read_u32' makes pointer from integer without a cast [-Wint-conversion]
+    2137 |         if (device_property_read_u32(dev, "st,drdy-int-pin", drdy_pin) < 0) {
+         |                                                              ^~~~~~~~
+         |                                                              |
+         |                                                              int
+   In file included from include/linux/acpi.h:16,
+                    from drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:76:
+   include/linux/property.h:229:71: note: expected 'u32 *' {aka 'unsigned int *'} but argument is of type 'int'
+     229 |                                            const char *propname, u32 *val)
+         |                                                                  ~~~~~^~~
+   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:2137:13: warning: 'drdy_pin' is used uninitialized [-Wuninitialized]
+    2137 |         if (device_property_read_u32(dev, "st,drdy-int-pin", drdy_pin) < 0) {
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:2135:22: note: 'drdy_pin' was declared here
+    2135 |         int err = 0, drdy_pin;
+         |                      ^~~~~~~~
+
+
+vim +/device_property_read_u32 +2137 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+
+  2129	
+  2130	static int
+  2131	st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw,
+  2132				const struct st_lsm6dsx_reg **drdy_reg)
+  2133	{
+  2134		struct device *dev = hw->dev;
+  2135		int err = 0, drdy_pin;
+  2136	
+> 2137		if (device_property_read_u32(dev, "st,drdy-int-pin", drdy_pin) < 0) {
+  2138			struct st_sensors_platform_data *pdata;
+  2139	
+  2140			pdata = (struct st_sensors_platform_data *)dev->platform_data;
+  2141			drdy_pin = pdata ? pdata->drdy_int_pin : 1;
+  2142		}
+  2143	
+  2144		switch (drdy_pin) {
+  2145		case 1:
+  2146			hw->irq_routing = &hw->settings->irq_config.irq1_func;
+  2147			*drdy_reg = &hw->settings->irq_config.irq1;
+  2148			break;
+  2149		case 2:
+  2150			hw->irq_routing = &hw->settings->irq_config.irq2_func;
+  2151			*drdy_reg = &hw->settings->irq_config.irq2;
+  2152			break;
+  2153		default:
+  2154			dev_err(hw->dev, "unsupported data ready pin\n");
+  2155			err = -EINVAL;
+  2156			break;
+  2157		}
+  2158	
+  2159		return err;
+  2160	}
+  2161	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

@@ -1,151 +1,400 @@
-Return-Path: <linux-iio+bounces-8832-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8833-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FDA961413
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2024 18:30:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 197D996148D
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2024 18:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 328622824BE
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2024 16:30:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ABFA1F25946
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Aug 2024 16:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326991CCEEE;
-	Tue, 27 Aug 2024 16:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276561D04A8;
+	Tue, 27 Aug 2024 16:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="XQVsRIU2"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MsYCwPEO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6953A1C3F1D;
-	Tue, 27 Aug 2024 16:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724776229; cv=pass; b=BF1AJ/FphGvw/VIP7F0Fq5LHU30AnoOKucB8AcfxfP5hiNmJQUJN/EC6k5mRDAXOONDdrzKnssnCCwGatalD+ZolsxnS8NxwCVffAg9KLhjUWG9AtSngv1ZI2e+XPHHH/fGmpkEt7swNDABl6kdx9wPG/7JNxWP5Og2btu3DiRs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724776229; c=relaxed/simple;
-	bh=/kzx1RinYKgOz2UtzB5CMAvZLHO7c3+nz/XEbSShg2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P5lW/Qr+rSOoca3SicQW9X44PuQwyo51VIZJnB9ISGLJg9DscOZhSKaacj3u6m9M0aCIXhY4eyKuzreCK3nnXig1TcpC0m8fmZIhoddznE+6r0o2DDo8iYB0bndw+h9OeN7yuicUSCbMT6IuPZs/7MgFuicR37tS8g9l6BwM4Ps=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=XQVsRIU2; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1724776187; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=dV4yUuRMtkdlYes9lilFVNqwvEbmoZXh7AQpd/lmRuUyjWd8oo9apnBqjTSFAyMrUWU+fgkCoFX20QihOIER3MuCn19wrdnQIdbAR8ocBpVBB4h2U1BICd1rDO4gIJgEUFrgEVkR3LyPHq2ISoKG0l7pmFJ5GtpjCuik4BmjjYQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1724776187; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yIZ4tokYIs1ihPKr07xclM5JUdjc2mCvibla5fSMoXc=; 
-	b=gCdaq9fP/CZclQ5+WAVBOkAf3gS5ADwAvE1BkfygmsgiBeolk5AQieQ4mT2WlcGNO3PG/VRlDmSD6YlBmDkCLvYMV6sMb0Hl3csz71unFMifaCWK31ilC2J5epAiF8I/Yir35NeZxdBhyrP7N6+l6Es6p+Yvgz+/PRcn4RGrqpg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724776187;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=yIZ4tokYIs1ihPKr07xclM5JUdjc2mCvibla5fSMoXc=;
-	b=XQVsRIU2208eGNpDbDh5z/5tfN0pYZhYpuzg0qdFyAXuVEph/ODawx3xP+MDZ464
-	U9DXYVkywRqb9Jr0JIHTWucJ0S5R7mxJrwFL/VQU5+X9Po3ki0b4NitodbBqRFRt3mp
-	fcsgMRES7zn6dgUjME8ZqxrdDzaVpzk/zAjNv12I=
-Received: by mx.zohomail.com with SMTPS id 1724776186585449.4642360121936;
-	Tue, 27 Aug 2024 09:29:46 -0700 (PDT)
-Received: by mercury (Postfix, from userid 1000)
-	id 16A8610604BD; Tue, 27 Aug 2024 18:29:41 +0200 (CEST)
-Date: Tue, 27 Aug 2024 18:29:40 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, linux-sunxi@lists.linux.dev, 
-	Chris Morgan <macroalpha82@gmail.com>, linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-iio@vger.kernel.org, quentin.schulz@free-electrons.com, 
-	mripard@kernel.org, tgamblin@baylibre.com, aidanmacdonald.0x0@gmail.com, 
-	u.kleine-koenig@pengutronix.de, samuel@sholland.org, jernej.skrabec@gmail.com, wens@csie.org, 
-	conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de, 
-	jonathan.cameron@huawei.com, Chris Morgan <macromorgan@hotmail.com>
-Subject: Re: (subset) [PATCH V4 11/15] mfd: axp20x: Add ADC, BAT, and USB
- cells for AXP717
-Message-ID: <fv4ukscke4hoyso4vprtrx2pzqy5lkwkuhnd5wywfxe4burlr4@2dgxbhqpol7t>
-References: <20240821215456.962564-1-macroalpha82@gmail.com>
- <20240821215456.962564-12-macroalpha82@gmail.com>
- <172433485381.1334876.7027428905035727559.b4-ty@kernel.org>
- <20240826120342.503bef41@jic23-huawei>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B76481745
+	for <linux-iio@vger.kernel.org>; Tue, 27 Aug 2024 16:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724777156; cv=none; b=LTEWNfXwsqVHrrZeKhr6ftQWlnYii/oSJREuptdQlm6BQmRoiBlIfTd0IbCK9ruWCjBZpaLojC2dtriu84JTAw2C+L/tprQR6VxuQSHdfirnSF1lxOziX7qFWODHu+tGcRvKDq3nCz9BhvoXl2HNkfBHf67P/2MrU0j2yG6mXE0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724777156; c=relaxed/simple;
+	bh=LrwKhfn+7M4t7yDZyvvpWwUDN3fahJJbPlQxyZWlD00=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=RA0RFk/RAk1sQhWVIHdggREPImp3asqA3xPNmzI6ukkPxo2b0kW2Ai0QcXTvtGl3v4NU/lV/nqEluojDpwghb1KddbUudEGRbjfFismT9H+Ni44eUnYDLkbQGxsZL97hSQJgkt+AQb1bwJgr2aAgZsGAMoi0jqXWXTScrh2NzzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MsYCwPEO; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3730749ee7aso3392225f8f.2
+        for <linux-iio@vger.kernel.org>; Tue, 27 Aug 2024 09:45:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724777151; x=1725381951; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YD3PTpc3UAvdPxux1yFdbSoCtlfgWLDrWRyZ4DLf+dw=;
+        b=MsYCwPEOtsLkPx9OGmAjGywqsBODvS9p857rxZM+mQmAe4JM3HuifPMcEOi1DlU9wh
+         k8RgPcLxJGdSzhLuJi/GZxgPFFNm6cxYymN2hdPAjRZpxpy6ycuaVhqOsshkAjaczjhD
+         Q1FLqVja6XgNWJoTWqOjXAWG2Ehlrvi9W/RRZ+gy4oVrYkY71bet7P9L+W0WkFF7JE7G
+         ONzMcvSZGEKdP8rNzgQ+O7RUGjpsw4FM6fZ7ipZ+OK/CqKBuBMUjqYhZSH6ABvVOuRKm
+         0+avVqW2W7xYnIeikGk88ViRAHKEy+zWiqKb+cKBH+PR6EI97X1kXq+Rfloyv7+A81By
+         fFRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724777151; x=1725381951;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YD3PTpc3UAvdPxux1yFdbSoCtlfgWLDrWRyZ4DLf+dw=;
+        b=sNi5jC+vxNMAOp9ggYmnylCKbjbJUzomdpEgIJKCQ5UWY4+G6Rb6RH0nCLgh66E4ix
+         LHf2+aJc9U1/L+cs+tcJohSN4HFhQHFSlF73nohmt0SGTArmBNcminBY58TOT7wz7TIP
+         NWLOdGKfTQXJ8dgExpfmIM4vdEsmFvQomDsHj9GQE7ghm7NeD4clw0r9mLgN7i/XGQjg
+         wO+M2zYMFUkm8/mbkX4/gDHEJ4am6OTGIj1vGizSmcsI+/h3pepnDh7IkxmaBESC1zHd
+         FCr8hnppiV36oqo14aJsN3Ibae8afSV6fc5kxrYhu00jyk5vKKKCxT71l4DOlZUie8U+
+         LzHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVdJNiuawNpGExXHE2dPhgYX2BGYreuZf6V/DOsuX9pTgQI982OIGRDvYzZ99dKGsEUWEbVtU6ddjU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4Y8q1YCnIBaZUDtr+ykG8Lngj9MHyZLt7lhBEK4PWyjUg4TtV
+	F+8JJGJ6h/YA1U8WFm6tsPRHOmih6QeU9s5SIk6ev2BIwuT5tN+H498Yyiqy25c=
+X-Google-Smtp-Source: AGHT+IGqz2SN6D0Ze4LPRg9FQpAhZitgBfRbYDRYHsjseyBgTvjReqACfP+CfbEaD2nw3iyEpzq/vw==
+X-Received: by 2002:a5d:6589:0:b0:368:6598:131e with SMTP id ffacd0b85a97d-3748c825bbamr2416206f8f.38.1724777151363;
+        Tue, 27 Aug 2024 09:45:51 -0700 (PDT)
+Received: from localhost ([2a01:e0a:448:76e0:49a3:a2f2:ac60:c67f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37308110014sm13532607f8f.19.2024.08.27.09.45.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Aug 2024 09:45:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="72vwrvvbohscblme"
-Content-Disposition: inline
-In-Reply-To: <20240826120342.503bef41@jic23-huawei>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-1.3.1/224.285.20
-X-ZohoMailClient: External
-
-
---72vwrvvbohscblme
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 27 Aug 2024 18:45:49 +0200
+Message-Id: <D3QUGZYL7INK.R3U3WQR0OCUS@baylibre.com>
+Cc: "Lars-Peter Clausen" <lars@metafoo.de>, "Michael Hennerich"
+ <Michael.Hennerich@analog.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Nuno Sa" <nuno.sa@analog.com>, "Jonathan Corbet" <corbet@lwn.net>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "David Lechner" <dlechner@baylibre.com>,
+ <linux-doc@vger.kernel.org>
+Subject: Re: [PATCH 2/6] iio: adc: ad4030: add driver for ad4030-24
+From: "Esteban Blanc" <eblanc@baylibre.com>
+To: "Jonathan Cameron" <jic23@kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
+ <20240822-eblanc-ad4630_v1-v1-2-5c68f3327fdd@baylibre.com>
+ <20240824122111.425fa689@jic23-huawei>
+In-Reply-To: <20240824122111.425fa689@jic23-huawei>
 
-Hi,
-
-On Mon, Aug 26, 2024 at 12:03:42PM GMT, Jonathan Cameron wrote:
-> On Thu, 22 Aug 2024 14:54:13 +0100
-> Lee Jones <lee@kernel.org> wrote:
->=20
-> > On Wed, 21 Aug 2024 16:54:52 -0500, Chris Morgan wrote:
-> > > Add support for the AXP717 PMIC to utilize the ADC (for reading
-> > > voltage, current, and temperature information from the PMIC) as well
-> > > as the USB charger and battery.
-> > >=20
-> > >  =20
+On Sat Aug 24, 2024 at 1:21 PM CEST, Jonathan Cameron wrote:
+> On Thu, 22 Aug 2024 14:45:18 +0200
+> Esteban Blanc <eblanc@baylibre.com> wrote:
+>
+> > This adds a new driver for the Analog Devices INC. AD4030-24 ADC.
 > >=20
-> > Applied, thanks!
+> > The driver implements basic support for the AD4030-24 1 channel
+> > differential ADC with hardware gain and offset control.
 > >=20
-> > [11/15] mfd: axp20x: Add ADC, BAT, and USB cells for AXP717
-> >         commit: e1043ad46060c181ffb8f981ccb25d9f698b2f09
-> >=20
-> Hi Lee, patch 12 is dependent on this because of the header
-> additions.
->=20
-> If you don't mind can you pick up 1, 8 and 12
-> (all the IIO ones)?  Otherwise they'll have to wait for next
-> cycle. Guessing too late to ask for an IB?
->=20
-> I haven't checked but the later power supply ones may have
-> the same block.
+> > Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
+> Hi Esteban
+>
+> Some additional comments.  David did a good review already so
+> I've tried not to duplicate too much of that.
+>
+> The big one in here is don't use extended_name.
+> It's effectively deprecated for new drivers plus
+> it would have required you add a lot of ABI docs as every
+> sysfs file would have a strange name.
+>
+> > diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
+> > new file mode 100644
+> > index 000000000000..a981dce988e5
+> > --- /dev/null
+> > +++ b/drivers/iio/adc/ad4030.c
+>
+> > +struct ad4030_state {
+> > +	struct spi_device *spi;
+> > +	struct regmap *regmap;
+> > +	const struct ad4030_chip_info *chip;
+> > +	struct gpio_desc *cnv_gpio;
+> > +	int vref_uv;
+> > +	int vio_uv;
+> > +	int offset_avail[3];
+> > +	u32 conversion_speed_hz;
+> > +	enum ad4030_out_mode mode;
+> > +
+> > +	/*
+> > +	 * DMA (thus cache coherency maintenance) requires the transfer buffe=
+rs
+> > +	 * to live in their own cache lines.
+> > +	 */
+> > +	u8 tx_data[AD4030_SPI_MAX_XFER_LEN] __aligned(IIO_DMA_MINALIGN);
+> > +	struct {
+> > +		union {
+> > +			u8 raw[AD4030_MAXIMUM_RX_BUFFER_SIZE];
+> > +			struct {
+> > +				s32 val;
+> > +				u32 common;
+> > +			} __packed buffered[AD4030_MAX_HARDWARE_CHANNEL_NB];
+>
+> David pointed out this doesn't need to be packed.
+> Given you have a union here, add __beXX as needed to avoid casts below.
 
-Yes, patches 13 + 14 are also blocked by the MFD patch adding
-register defines. I merged the other power-supply patches before
-noticing this, so patches 13 + 14 need to wait a cycle without
-an immutable branch.
+They also pointed out that I should reduce the size for the common field.
+I was planing to use an u32 bitfield here, 8 bits for common and 24 bits fo=
+r
+padding. As far as I understood, the C standard is quite flexible on the
+size used for bitfield, so I should probably keep the __packed, right?
 
-Greetings,
+> > +};
+> > +
+> > +#define AD4030_CHAN_CMO(_idx)  {					\
+> > +	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),			\
+> > +	.type =3D IIO_VOLTAGE,						\
+> > +	.indexed =3D 1,							\
+> > +	.channel =3D _idx * 2 + 2,					\
+> > +	.scan_index =3D _idx * 2 + 1,					\
+> > +	.extend_name =3D "Channel" #_idx " common byte part",		\
+>
+> We more or less never use extend name any more because it makes writing
+> userspace code much harder.  Use the label callback to assign a label ins=
+tead.
+>
+> If we were still using this, it would need to be a lot simpler than that
+> and no spaces etc as it ends up int he sysfs file names.
 
--- Sebastian
+> > +	.scan_type =3D {							\
+> > +		.sign =3D 'u',						\
+> > +		.storagebits =3D 32,					\
+> > +		.realbits =3D 8,						\
+> > +		.endianness =3D IIO_BE,					\
+> > +	},								\
+> > +}
+> > +
+> > +#define AD4030_CHAN_IN(_idx, _storage, _real, _shift) {			\
+> > +	.info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SCALE),		\
+> > +	.info_mask_separate =3D BIT(IIO_CHAN_INFO_CALIBSCALE) |		\
+> > +		BIT(IIO_CHAN_INFO_CALIBBIAS) |				\
+> > +		BIT(IIO_CHAN_INFO_RAW),					\
+> > +	.info_mask_separate_available =3D BIT(IIO_CHAN_INFO_CALIBBIAS) |	\
+> > +		BIT(IIO_CHAN_INFO_CALIBSCALE),				\
+> > +	.type =3D IIO_VOLTAGE,						\
+> > +	.indexed =3D 1,							\
+> > +	.channel =3D _idx * 2,						\
+> > +	.channel2 =3D _idx * 2 + 1,					\
+> > +	.scan_index =3D _idx * 2,						\
+> > +	.extend_name =3D "Channel" #_idx " differential part",		\
+>
+> As above, no to this for same reason.
+> This will generate a crazy ABI so I'm a bit surprised that didn't show
+> up in your testing.  Would have needed a lot of docs even if we did
+> still do things this way.
 
---72vwrvvbohscblme
-Content-Type: application/pgp-signature; name="signature.asc"
+I'm using ADI IIO oscilloscope to check the signals so I didn't get
+impacted by the sysfs change. Anyway I will use labels.
 
------BEGIN PGP SIGNATURE-----
+> > +	.differential =3D true,						\
+> > +	.scan_type =3D {							\
+> > +		.sign =3D 's',						\
+> > +		.storagebits =3D _storage,				\
+> > +		.realbits =3D _real,					\
+> > +		.shift =3D _shift,					\
+> > +		.endianness =3D IIO_BE,					\
+> > +	},								\
+> > +}
+> > +
+> > +static int ad4030_spi_read(void *context, const void *reg, size_t reg_=
+size,
+> > +			   void *val, size_t val_size)
+> > +{
+> > +	struct ad4030_state *st =3D context;
+> > +
+> > +	struct spi_transfer xfer =3D {
+> > +		.tx_buf =3D st->tx_data,
+> > +		.rx_buf =3D st->rx_data.raw,
+> > +		.len =3D reg_size + val_size,
+> > +	};
+> > +	int ret;
+> > +
+> > +	memcpy(st->tx_data, reg, reg_size);
+> > +
+> > +	/*
+> > +	 * This should use spi_write_the_read but when doing so, CS never get
+> > +	 * deasserted.
+>
+> I'm confused.  As a single transfer it won't be deasserted in the transfe=
+r
+> whereas spi_write_then_read() will. So is this comment backwards or
+> is it referring to something else?
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmbN/vQACgkQ2O7X88g7
-+pr/qA//Z47zpsYNHymEJyhzZ0+KvDR6LxviBoQRMkhNZNmbjQVA1OEZOXbMm6Np
-AP3B6ifwXDdRGV0dv4wUSYbL95QnZ3BW2tWBrblZOSPzy6fs2p3yKvGamIlxaWUf
-0VQSsV+j5sZjeF2NCv6NiP+y4mpMI02VOphcXjX3b9Qb/9E6JXlEK8rS6ONHxjsh
-+czXqGougXwybTW2pDeIHmmjA9YPjd/NL1FJ9wTDxbcNLieuuU06yh29YRVQhAVi
-fqRL262HNQv6zBJzSqusggdpMY01u2Dm2i5ySUXNG0KOXEkC5In5t+o9SjC5Ft6f
-poQC8NRXUR/h4nIOo8v9jFBEE3zxO2cR2fgn2EGv9TH9QeBGQ3343vqCu+nsDR0P
-KGexs6RFiDxTJEigSlQ/oPEoV7MCims5vAR/SyEzCLerDN+pHDmc3Bi3zKjcmq3B
-g3PqyPhD8uh4rB0Jr9rYyWg4G/7DfvIwKFwqAzqvx4L76v1C5dtqgziYkjTCc9r7
-2hZWU7L6oGxgEgkRdtQy26a6JB8NBNvIR5Xn12zirVsaIk5kLl2SLftTXJPp4md3
-uRFWJOnLjnZnhDt0F+Me7TXOdNzfftWjK2BZ71EYCs8rDUmrNHMZRe92D0d5OduS
-JpgeBYL91p04T3HPOiQX4FQ75/jLmWL15fvgnJKgIZV2x7OYgDo=
-=uRJ7
------END PGP SIGNATURE-----
+So, with a single transfer (what is done now), the transfer is working
+as expected: CS goes low, the data is transferred, CS goes high again.
+With spi_write_then_read(), CS goes low, data is transferred but CS never
+goes high again. After some time I get a timeout error in the kernel logs.
 
---72vwrvvbohscblme--
+> > +static int ad4030_conversion(struct ad4030_state *st,
+> > +			     const struct iio_chan_spec *chan)
+> > +{
+> > +	unsigned int bytes_to_read;
+> > +	unsigned char byte_index;
+> > +	unsigned int i;
+> > +	int ret;
+> > +
+> > +	/* Number of bytes for one differential channel */
+> > +	bytes_to_read =3D BITS_TO_BYTES(chan->scan_type.realbits);
+> > +	/* Add one byte if we are using a differential + common byte mode */
+> > +	bytes_to_read +=3D (st->mode =3D=3D AD4030_OUT_DATA_MD_24_DIFF_8_COM =
+||
+> > +			st->mode =3D=3D AD4030_OUT_DATA_MD_16_DIFF_8_COM) ? 1 : 0;
+> > +	/* Mulitiply by the number of hardware channels */
+> > +	bytes_to_read *=3D st->chip->num_channels;
+> > +
+> > +	gpiod_set_value_cansleep(st->cnv_gpio, 1);
+> > +	ndelay(AD4030_TCNVH_NS);
+> > +	gpiod_set_value_cansleep(st->cnv_gpio, 0);
+> > +	ndelay(st->chip->tcyc);
+> > +
+> > +	ret =3D spi_read(st->spi, st->rx_data.raw, bytes_to_read);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (st->mode !=3D AD4030_OUT_DATA_MD_24_DIFF_8_COM)
+> > +		return 0;
+> > +
+> > +	byte_index =3D BITS_TO_BYTES(chan->scan_type.realbits);
+> > +	for (i =3D 0; i < st->chip->num_channels; i++)
+> > +		st->rx_data.buffered[i].common =3D ((u8 *)&st->rx_data.buffered[i].v=
+al)[byte_index];
+> break line after =3D.
+>
+> When it doesn't significantly hurt readability we still try to keep to 80
+> chars for IIO drivers.  People have big screens but a lot of kernel devs
+> love to have lots of windows across them - or have bad eyesight due to
+> years of code review!
+
+I keep forgeting that checkpatch now defaults at 100 chars...
+
+> > +static int ad4030_read_raw(struct iio_dev *indio_dev,
+> > +			   struct iio_chan_spec const *chan, int *val,
+> > +			   int *val2, long info)
+> > +{
+> > +	struct ad4030_state *st =3D iio_priv(indio_dev);
+> > +	int ret;
+> > +
+> > +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> > +		switch (info) {
+> > +		case IIO_CHAN_INFO_RAW:
+> > +			return ad4030_single_conversion(indio_dev, chan, val);
+> > +
+> > +		case IIO_CHAN_INFO_SCALE:
+> > +			*val =3D (st->vref_uv * 2) / MILLI;
+> > +			*val2 =3D st->chip->precision_bits;
+> > +			return IIO_VAL_FRACTIONAL_LOG2;
+>
+> No reason you can't read this whilst buffered capture in progress.
+> Maybe it's not worth the effort of special casing though.
+>
+> It is the one thing people do read whilst doing buffered capture
+> though because they didn't cache it before starting the buffer
+> and it's needed for data interpretation unlike all the other controls.
+>
+> Maybe just do a
+> 	if (info =3D=3D IIO_CHAN_INFO_SCALE) {
+> 	}
+> block at top of function?
+
+Good catch. I will check for IIO_CHAN_INFO_SCALE before the whole block
+
+> > +static int ad4030_reset(struct ad4030_state *st)
+> > +{
+> > +	struct device *dev =3D &st->spi->dev;
+> > +	struct gpio_desc *reset;
+> > +	int ret;
+> > +
+> > +	/* Use GPIO if available ... */
+> > +	reset =3D devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+> > +	if (IS_ERR(reset))
+> > +		return dev_err_probe(dev, PTR_ERR(reset),
+> > +				"Failed to get reset GPIO\n");
+> > +
+> > +	if (reset) {
+> > +		ndelay(50);
+> > +		gpiod_set_value_cansleep(reset, 0);
+> > +	} else {
+> > +		/* ... falback to software reset otherwise */
+> > +		ret =3D ad4030_enter_config_mode(st);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		ret =3D regmap_write(st->regmap, AD4030_REG_INTERFACE_CONFIG_A,
+> > +				   AD4030_REG_INTERFACE_CONFIG_A_SW_RESET);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+> > +
+> > +	/* Wait for reset to complete before communicating to it */
+>
+> I'd rather see a reference for the value than a generic comment
+> like this.  Also pull the actual value down here. Not particularly
+> useful to have a define for what is a real time unless you are going
+>  to have some combined docs for a bunch of timings (i.e a datasheet
+> table reference)
+
+I will put the real value in fsleep call directly. When you say "I'd
+rather see a reference for the value", you ment a reference to the place
+the value is defined in the datasheet, right?
+
+> > +static int ad4030_detect_chip_info(const struct ad4030_state *st)
+> > +{
+> > +	unsigned int grade;
+> > +	int ret;
+> > +
+> > +	ret =3D regmap_read(st->regmap, AD4030_REG_CHIP_GRADE, &grade);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	grade =3D FIELD_GET(AD4030_REG_CHIP_GRADE_MASK_CHIP_GRADE, grade);
+> > +	if (grade !=3D st->chip->grade)
+> > +		return dev_err_probe(&st->spi->dev, -EINVAL,
+> > +					"Unknown grade(0x%x) for %s\n", grade,
+> > +					st->chip->name);
+>
+> Is this similar to a missmatch on a whoami value?
+
+Yes. It also saved me multiple hours of debuging when the eval board
+was not connected porperly and the SPI link was just not working.
+
+> I.e. should we print a message and carry on in the interests of providing
+> some degree of support for newer devices on older kernel?
+> (fallback compatibles in DT)
+
+Ok, let's go with a warning then.
+
+> > +static const struct spi_device_id ad4030_id_table[] =3D {
+> > +	{ "ad4030-24", (kernel_ulong_t)&ad4030_24_chip_info },
+> > +	{}
+>
+> I'm going to assume you have a bunch of other parts you plan to
+> support soon. Otherwise we normally don't add the chip specific
+> support until it is needed.  It tends to complicate initial driver
+> review a little and experience says that sometimes no other devices
+> are ever added.
+
+I'm sending the other devices in the same series (patch 4 and 5).
+For the sake of reducing noise in the later patches, I've put it in
+the initial driver. If you feel like I should wait and do it in the
+following patch (patch 4), I can do that.
+
+Thanks for your time,
+
+--=20
+Esteban Blanc
+BayLibre
 

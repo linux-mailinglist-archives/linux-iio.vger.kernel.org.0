@@ -1,154 +1,189 @@
-Return-Path: <linux-iio+bounces-8835-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8836-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3590961DC8
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Aug 2024 06:53:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0E99621BF
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Aug 2024 09:49:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50286B22151
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Aug 2024 04:53:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 295C2286FC7
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Aug 2024 07:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54D61494AC;
-	Wed, 28 Aug 2024 04:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B6C15B561;
+	Wed, 28 Aug 2024 07:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IbWDjIsx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gv5gcnZX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEE177117;
-	Wed, 28 Aug 2024 04:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD0615B0EC;
+	Wed, 28 Aug 2024 07:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724820822; cv=none; b=ZApHVM5cgfbFggdmvq9/ebg17wafY96EuoSYqwHvAQhMZhTDGlp5Qt09qSHXKoGAlCcqoc2vYDHVlZIsTsHyDWbj3sL7vMFM8X7SZdHxq3/7OZfnPJvRo6yy7djAv9DE412J9XvJAEu5Rd4pJ6Z20580h3QPsjA8VeqYJcP1DVk=
+	t=1724831352; cv=none; b=q5cdcN+V90t1YdtwsgNifsFyJ511g+EjdAR9SnnvrzrXEmVsi92rFMgzRJqOLajXXGlf+e9nClyvcTRAkJyH8DwxMcOkoPBO44Sz8/iuDHyjw8MOCDpHStkZYYClPDsp/p5CM8u7GmwC1/IEivVoHg5AbdjBXD5kXdDYPErZ/Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724820822; c=relaxed/simple;
-	bh=V1yZOu2GId5b6bnaYM6dmXuqDYTml9tYA+NecUp0Zag=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hmvBBy4nbthomxIxe3HcjMlNmUJky3EnE2JF/P0V5fXSX6jj2onppRkV6ZdZjxBIvZv0adi/D+fA85+Mcqr/pOLEp83vfldRkOqnTz8VOdHjQ5C8oNOrhUQm2EvbxRXmheJ8dRxa2Uq3lf203CvH/Up9UL6bAzydQ3o/TDZkPG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IbWDjIsx; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724820821; x=1756356821;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=V1yZOu2GId5b6bnaYM6dmXuqDYTml9tYA+NecUp0Zag=;
-  b=IbWDjIsxUYeIr/954+4Wc2mDyamqyp/oNCyJhB/+4SIca7tXjCjZ3Las
-   LAOUlnAWQglGZ4tBrGbl09M9clXZq8hq/YkGr475YdCay/TYX5bmoMyas
-   RyIJJhlq6cHnvbyoi6EpS2ZChFba4NFwV0VFtQ0/DVc1oekwLB1+47Yi6
-   BIrKaN0r9oYs2bXHodtfeAzOCxNIoQ1hzYr8IKHCfSvnVFfpISfDvJfFB
-   vP9BWp432kEN/Swgu/IRvMDf9YUG/h6STn6fGBUPpIAjbxcJycPtd+QYP
-   VS3MF3KO0VykkerGxzAZASl/mZsLvIRBS/7FtljX2DO8TGlfG2wer8FWL
-   w==;
-X-CSE-ConnectionGUID: iCSv7/nySzeRJx9p1DRflw==
-X-CSE-MsgGUID: f02qN3y2Sl6vjjJPyVqqQw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="34737015"
-X-IronPort-AV: E=Sophos;i="6.10,181,1719903600"; 
-   d="scan'208";a="34737015"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2024 21:53:40 -0700
-X-CSE-ConnectionGUID: cQZeiJr2Qa2wN9m847ImQg==
-X-CSE-MsgGUID: Dt1q/+H2RlG43n9QpIA1cA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,181,1719903600"; 
-   d="scan'208";a="93809470"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 27 Aug 2024 21:53:38 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sjAgZ-000KUq-3B;
-	Wed, 28 Aug 2024 04:53:35 +0000
-Date: Wed, 28 Aug 2024 12:52:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 2/2] iio: imu: st_lsm6dsx: Remove useless dev_fwnode()
- calls
-Message-ID: <202408281240.oT6C3uTj-lkp@intel.com>
-References: <20240826212344.866928-3-andy.shevchenko@gmail.com>
+	s=arc-20240116; t=1724831352; c=relaxed/simple;
+	bh=j98JU6msUA9RiXyy+HLEVipZYjwEgjFBaDFTabRQW0M=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EQRTihrLJ6Rr4ITWlN2xDXncRr/tlT7xUWG4a9TIrVf1qmih87lAnUv22HS+2rKcBhnZUScxoj0ed6LHVBtwfsJYa8EkobHI7Zl/mQQkV9hNQcvpn7ozsy6F8Rle7S4zzle0ZCPvUwPmmzEHpzvU7pDBXkXkCzeF5bXhvyfcbTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gv5gcnZX; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a86a37208b2so591285866b.0;
+        Wed, 28 Aug 2024 00:49:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724831349; x=1725436149; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=kyk+TyrQH1DKA5w0zkkLevHO981a94JN35a6IcZF/5Y=;
+        b=Gv5gcnZXjebwpKyLNR73Fu4D3BjOHbmnEHBmfj1wSGsC6OtWV2sDKsXAIeDrA0X0H6
+         o3B/lA9h8ARWp3kNM/5JlfhyiUzJEbCEvlUWB0AE+2Ca3RPA9JGiJfNT+6SpxOx4KpN8
+         XA+8Nvl/QAv+rlUTjgoQjBIUEO6pjJtIl+vfnnmx4GxoKsFnbaXt5R457lW/IG3n2zDZ
+         ecunnSuk6rZx8siIHL/Bx9xdluFAR9uQTSYG0H6uLYDl/qu5d8vh+U1VKf/ViX8uZc0S
+         F+Xw/rbD/3Q9dlUoLy0QS1PD7TlsreB0RzeBUAo5cSiU4FFLTIPhTzBSIGikTPLokK9H
+         mvkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724831349; x=1725436149;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kyk+TyrQH1DKA5w0zkkLevHO981a94JN35a6IcZF/5Y=;
+        b=M+60aOOevqLMVQ+SOTrLcLdKl0hKlKsMem9N8j+y7j+NzGFbESkjmU6XKsYH3MSPrm
+         fGNKZjlBle/r00veM423fySOHN70mx8/aZh/9hIskA4PruuuZrblEo9D2rU75Hzx84EJ
+         s/+Xl8f2xQ1E2is8WjdvGLkzh+j9zGejQgBhEdksq+qUMbVwh22/Dd2Ypr/+j7iZFwLp
+         tnRvZfGfrcJjCNudXZ/gvhoFZelsUAe9DL3h/uoP/5qLpVaVMUIR+UL8sujG5jpCDz85
+         9AeiQQq14tKTMGhcYw2DegT0N0nSXRc4bhpS99B3ZnctALPFlTEnQP+l3SSpn/9BFlDj
+         y5aQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0ojtBugpkXew7IO/xVD/XVg2RZtFDLF7UoLcID9VHwweTWAKkY2ZKjr96jz6B/aD/Rd5wjfKOzbDW@vger.kernel.org, AJvYcCUOQTBk3XHxe74xhOxDWD4RkDg9EdWQkr0ERaVXH5CZh9O9fIiLpZeiUG8GWKVGrABv0WyaiegB3VJGrcXD@vger.kernel.org, AJvYcCX8PAtS6p75Acp3jW2cGPMQ62xHZXZfTgRku8XrClpHijNC7x2Jw9u6hvYWXCqtRu8NGhZ3pN1kYVXq@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsbhQR7tQsUPKqBCR67ClU0MXjaPM7DlbF91dZFqJbcy3j/Yl0
+	jQKQdNgBQSohuwfH9rklJk3CS4ep1iRz3i1VtUsGpDCuSGXU11/o
+X-Google-Smtp-Source: AGHT+IEOsF+zuGVCsYi/lsU6w2stf2bHD6c2D71wpigWLrjiJac4VZ5CtpTo7Ha3dlzRP271Kro77g==
+X-Received: by 2002:a17:907:f199:b0:a7d:3de1:4abd with SMTP id a640c23a62f3a-a86a52de6a1mr1105344766b.39.1724831348139;
+        Wed, 28 Aug 2024 00:49:08 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:4c6b:aa66:d4d1:a1d2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a86e549cd80sm206576266b.71.2024.08.28.00.49.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Aug 2024 00:49:07 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Wed, 28 Aug 2024 09:49:05 +0200
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: vassilisamir@gmail.com, 579lpy@gmail.com, ak@it-klinger.de,
+	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
+	biju.das.jz@bp.renesas.com, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, javier.carrasco.cruz@gmail.com,
+	jic23@kernel.org, krzk+dt@kernel.org, lars@metafoo.de,
+	linus.walleij@linaro.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, robh@kernel.org,
+	semen.protsenko@linaro.org
+Subject: Re: [PATCH v3 2/7] iio: pressure: bmp280: Add support for bmp280
+ soft reset
+Message-ID: <20240828074905.GA4934@vamoiridPC>
+References: <20240823181714.64545-1-vassilisamir@gmail.com>
+ <20240823181714.64545-3-vassilisamir@gmail.com>
+ <b898ad42-1559-4f43-8994-d9692e54f930@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240826212344.866928-3-andy.shevchenko@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b898ad42-1559-4f43-8994-d9692e54f930@wanadoo.fr>
 
-Hi Andy,
+On Sun, Aug 25, 2024 at 09:04:16AM +0200, Christophe JAILLET wrote:
+> Le 23/08/2024 à 20:17, Vasileios Amoiridis a écrit :
+> > The BM(P/E)28x devices have an option for soft reset which is also
+> > recommended by the Bosch Sensortech BME2 Sensor API to be used before the
+> > initial configuration of the device.
+> > 
+> > Link: https://github.com/boschsensortec/BME280_SensorAPI/blob/bme280_v3.5.1/bme280.c#L429
+> > Signed-off-by: Vasileios Amoiridis <vassilisamir-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > ---
+> >   drivers/iio/pressure/bmp280-core.c | 26 ++++++++++++++++++++++++++
+> >   drivers/iio/pressure/bmp280.h      |  3 +++
+> >   2 files changed, 29 insertions(+)
+> > 
+> > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> > index c23515048081..e01c9369bd67 100644
+> > --- a/drivers/iio/pressure/bmp280-core.c
+> > +++ b/drivers/iio/pressure/bmp280-core.c
+> > @@ -965,6 +965,30 @@ static const unsigned long bme280_avail_scan_masks[] = {
+> >   	0
+> >   };
+> > +static int bmp280_preinit(struct bmp280_data *data)
+> > +{
+> > +	unsigned int reg;
+> > +	int ret;
+> > +
+> > +	ret = regmap_write(data->regmap, BMP280_REG_RESET, BMP280_RST_SOFT_CMD);
+> > +	if (ret)
+> > +		return dev_err_probe(data->dev, ret,
+> > +				     "Failed to reset device.\n");
+> > +
+> > +	usleep_range(data->start_up_time, data->start_up_time + 500);
+> > +
+> > +	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
+> > +	if (ret)
+> > +		return dev_err_probe(data->dev, ret,
+> > +				     "Failed to read status register.\n");
+> > +
+> > +	if (reg & BMP280_REG_STATUS_IM_UPDATE)
+> > +		return dev_err_probe(data->dev, ret,
+> > +				     "Failed to copy NVM contents.\n");
+> 
+> ret is 0 at this point.
+> Should a -E<something> be used instead?
+> 
+> CJ
+> 
 
-kernel test robot noticed the following build warnings:
+Hi Cristophe,
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.11-rc5 next-20240827]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Yes, actually this could be an I/O error since we were not able to
+copy the values back from the NVM device to the sensor.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/iio-imu-st_lsm6dsx-Use-iio_read_acpi_mount_matrix-helper/20240827-052617
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240826212344.866928-3-andy.shevchenko%40gmail.com
-patch subject: [PATCH v1 2/2] iio: imu: st_lsm6dsx: Remove useless dev_fwnode() calls
-config: x86_64-randconfig-122-20240828 (https://download.01.org/0day-ci/archive/20240828/202408281240.oT6C3uTj-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240828/202408281240.oT6C3uTj-lkp@intel.com/reproduce)
+Cheers,
+Vasilis
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408281240.oT6C3uTj-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:2137:62: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected unsigned int [usertype] *val @@     got int drdy_pin @@
-   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:2137:62: sparse:     expected unsigned int [usertype] *val
-   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:2137:62: sparse:     got int drdy_pin
->> drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:2137:62: sparse: sparse: non size-preserving integer to pointer cast
-
-vim +2137 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-
-  2129	
-  2130	static int
-  2131	st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw,
-  2132				const struct st_lsm6dsx_reg **drdy_reg)
-  2133	{
-  2134		struct device *dev = hw->dev;
-  2135		int err = 0, drdy_pin;
-  2136	
-> 2137		if (device_property_read_u32(dev, "st,drdy-int-pin", drdy_pin) < 0) {
-  2138			struct st_sensors_platform_data *pdata;
-  2139	
-  2140			pdata = (struct st_sensors_platform_data *)dev->platform_data;
-  2141			drdy_pin = pdata ? pdata->drdy_int_pin : 1;
-  2142		}
-  2143	
-  2144		switch (drdy_pin) {
-  2145		case 1:
-  2146			hw->irq_routing = &hw->settings->irq_config.irq1_func;
-  2147			*drdy_reg = &hw->settings->irq_config.irq1;
-  2148			break;
-  2149		case 2:
-  2150			hw->irq_routing = &hw->settings->irq_config.irq2_func;
-  2151			*drdy_reg = &hw->settings->irq_config.irq2;
-  2152			break;
-  2153		default:
-  2154			dev_err(hw->dev, "unsupported data ready pin\n");
-  2155			err = -EINVAL;
-  2156			break;
-  2157		}
-  2158	
-  2159		return err;
-  2160	}
-  2161	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >   static int bmp280_chip_config(struct bmp280_data *data)
+> >   {
+> >   	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
+> > @@ -1082,6 +1106,7 @@ const struct bmp280_chip_info bmp280_chip_info = {
+> >   	.read_temp = bmp280_read_temp,
+> >   	.read_press = bmp280_read_press,
+> >   	.read_calib = bmp280_read_calib,
+> > +	.preinit = bmp280_preinit,
+> >   	.trigger_handler = bmp280_trigger_handler,
+> >   };
+> > @@ -1202,6 +1227,7 @@ const struct bmp280_chip_info bme280_chip_info = {
+> >   	.read_press = bmp280_read_press,
+> >   	.read_humid = bme280_read_humid,
+> >   	.read_calib = bme280_read_calib,
+> > +	.preinit = bmp280_preinit,
+> >   	.trigger_handler = bme280_trigger_handler,
+> >   };
+> > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+> > index 4e675401d61b..73516878d020 100644
+> > --- a/drivers/iio/pressure/bmp280.h
+> > +++ b/drivers/iio/pressure/bmp280.h
+> > @@ -205,6 +205,9 @@
+> >   #define BMP280_REG_CONFIG		0xF5
+> >   #define BMP280_REG_CTRL_MEAS		0xF4
+> >   #define BMP280_REG_STATUS		0xF3
+> > +#define BMP280_REG_STATUS_IM_UPDATE	BIT(0)
+> > +#define BMP280_REG_RESET		0xE0
+> > +#define BMP280_RST_SOFT_CMD		0xB6
+> >   #define BMP280_REG_COMP_TEMP_START	0x88
+> >   #define BMP280_COMP_TEMP_REG_COUNT	6
+> 
 

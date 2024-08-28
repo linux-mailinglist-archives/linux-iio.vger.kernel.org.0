@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-8839-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8838-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DD996237C
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Aug 2024 11:34:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9043396236D
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Aug 2024 11:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48B7E1C2324A
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Aug 2024 09:34:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D07E2849A8
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Aug 2024 09:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C860316132F;
-	Wed, 28 Aug 2024 09:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F1D161321;
+	Wed, 28 Aug 2024 09:31:48 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from cmccmta1.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9416158DDC;
-	Wed, 28 Aug 2024 09:33:55 +0000 (UTC)
+Received: from cmccmta2.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BFCA48;
+	Wed, 28 Aug 2024 09:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724837641; cv=none; b=o37pi4p2vW3mh9DVRksREst9l8tzi+Nj3MQUp4ClrBSXXnwRaKS2WDzDkN9ZLtjqbE1ZPrFfM0ZACWFgIniyAp4HvUQpbYbv0ibeRy/Ofx29oPmMBX64OSpqe0Mo4tt2YMs/P5oyRLU6WRzuzIZTP+0UraQiJzZEq5qbfvQSiN8=
+	t=1724837508; cv=none; b=ZsitDzbRbQJc0E5Ea/FtJRfQndFAtExu8wGjkz2yQgNO2tjgmkw5YS2Lrn1vBlVdpqaA89Yk4smac7C091LL0Y+hsO+Ly9iOOsQ3vjt9IKmuZLvjXPNUlAg+WhZwYqCbk56jb+WvIh6g8z5LDQi5EEIEm7rMsbsfA7C8HLiV2eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724837641; c=relaxed/simple;
+	s=arc-20240116; t=1724837508; c=relaxed/simple;
 	bh=aaHump5Ez603AvINyLLmEIe2gGnCkcovisCUNr6gNsk=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=VVpzO/b6/5A4TlviY/An3q2Z/AR4R6zwAyrfBCMZY0R/8SpNBXJnf4zGpkdHYEwlQk0HGmmMcnyHEilt1HsMk3isrsATQoObYmAv+J76qHd7xxIf56d27oJjH/5h+/JCKWk9suimnE6m6ksgnkNsvASezYr5O711wP/4Tv22n7Y=
+	h=From:To:Cc:Subject:Date:Message-Id; b=E20chEf9T3l9Lq8Ukz4GetKGAxEaRDD3+uVuIkI6gU8JBWPPSxHabh3azyLHwGe7h1ITHHCTQe7hHzjQmwMqWSFyG6NqlDU4FQME6kcGb4FrPEj1fHQ02dhsMFqMfG/qe633rrQNR1bRlBjJhYrVetsaaMrRYjllkuzOLLKv9bQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee166ceee47a4d-7c34c;
-	Wed, 28 Aug 2024 17:30:48 +0800 (CST)
-X-RM-TRANSID:2ee166ceee47a4d-7c34c
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee566ceee7852b-ac52e;
+	Wed, 28 Aug 2024 17:31:39 +0800 (CST)
+X-RM-TRANSID:2ee566ceee7852b-ac52e
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from ubuntu.localdomain (unknown[223.108.79.99])
-	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee666ceee47464-5f1f3;
-	Wed, 28 Aug 2024 17:30:48 +0800 (CST)
-X-RM-TRANSID:2ee666ceee47464-5f1f3
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee366ceee79ce4-5d4dc;
+	Wed, 28 Aug 2024 17:31:39 +0800 (CST)
+X-RM-TRANSID:2ee366ceee79ce4-5d4dc
 From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 To: jic23@kernel.org
 Cc: lars@metafoo.de,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>
+	zhujun2@cmss.chinamobile.com
 Subject: [PATCH] tools/iio: Add memory allocation failure check for trigger_name
-Date: Wed, 28 Aug 2024 02:30:47 -0700
-Message-Id: <20240828093047.2993-1-zhujun2@cmss.chinamobile.com>
+Date: Wed, 28 Aug 2024 02:31:29 -0700
+Message-Id: <20240828093129.3040-1-zhujun2@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org

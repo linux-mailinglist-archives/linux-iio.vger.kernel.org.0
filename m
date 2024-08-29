@@ -1,52 +1,54 @@
-Return-Path: <linux-iio+bounces-8864-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8865-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E4596447B
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 14:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB3396447D
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 14:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42CDC1F263F8
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 12:32:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F9A61F26322
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 12:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8F819885D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF821A38F0;
 	Thu, 29 Aug 2024 12:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TTagIQIT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SrO1Qxtj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99C218C35B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EB81922F6;
 	Thu, 29 Aug 2024 12:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724934729; cv=none; b=FxvY1wQ+X10ocFveTeGmxNxHG/2Xm5wWCGC3/30pejCk7g/IPFyYYcZECucYPEqHHekNs5g53uAgvFOPjlHnOTDysmnEnFjAu0J0w8ht3sfXmiIiWQ+vgZEHSDpXcUlXv/gSxrM3TjyGSgioveAiIPI1lIH5CLdZJ5V/5xyCFI0=
+	t=1724934729; cv=none; b=HdAyxsGdXDpjH+DclQ5+5KibgbbLBetAXU9pnHOlxI2vrDtqsIcfCabmwgGx97g0UkY50Ss/V+DYXxLiYLgCsSVjOzMQrgOokZdOc4PPWRXxWRZLOUHVOUud433/tPLBFlNc3HdGB1L92jOli16Qs1qlUvle9uzbN16VUxQww5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1724934729; c=relaxed/simple;
-	bh=AxUYagKzS0M34P1LwO3B0M/v+bfZjDJYTAgL979ou/0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=geYXkMONRXC2N+nhECP1Jip4TxFnBCzlQ7/mqcnYdjaEFk1389qVSjR+oVOLRxg+2AkWRfQCR3VClf46nT7NzujwtR7siSIHNSrHDhTnTJYa8uWU2kzHUIYAVPKcn1drdXKcXasHHLpv+hs2L6gv/UMil7mFFGlsJ4bGFBCgV70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TTagIQIT; arc=none smtp.client-ip=217.70.183.197
+	bh=ot7vWnfTHIwWSPkq6vfo7jJGSBoumbQ0PKw6f1XG92c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=jIZ1vEZ4GU9r+gkKDor71fsAbVZbdQbkhYOSc6h8e0ENWJ5u6OP+co4eSy4g6yJsbACIQoUEXZkBYLO50h4nmiVWFyi2juTBmEmH8JrJDrWGXmsE9yG2HHiRSvOaqlsdze3IvPGG5cyRIGnYwByopvb10hio2gzUjRtP48qPlXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SrO1Qxtj; arc=none smtp.client-ip=217.70.183.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E622B1C0004;
-	Thu, 29 Aug 2024 12:32:01 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 067A11C000B;
+	Thu, 29 Aug 2024 12:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1724934723;
+	t=1724934724;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OxfsV/iIio6m392vSk+A+q8P71V8n5mUkMrGc4zlCY8=;
-	b=TTagIQITvw23bb+4HNuxTi1+1mMWcZN+sDyZErMKmaeb3GwP502QISJSOpHYbf++++WmAP
-	MKeaUAqrFWxvI3yS4gzRai6p8GX+jBSz3YM3u1xPeOesrhkuPRUgsG7n6LQLzvbBIurBXi
-	UdKn6rVR6HY/PXTvJxPJZ6ZqtDyR8Zyswpd38YYLFHchmfW9AEGmJTLm0crgKyIsuO7Gjr
-	smNpWwS7S45UpECdPBtqUkTBUCULP0tBtq4oDel2kT9bKVHz7x9buP4xj10Az2gV9M1DP4
-	dhH7ptUPiGJsPJd0t14Hvhm2ln/TkY52YIYxQ9j4obgv0VKLzkAfS35NLfqi2g==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+ZFMETiTqp68bZQf/Uc678bUmyXC3+gumwmJpkb2eIU=;
+	b=SrO1QxtjtfBWoeT+ncaKYKkh8QcRaLPYH50TYcLxfrqwBDbn4qX0LE6AM+bDcwR2Nln5sT
+	naVx7vsPDjBCLwjIbPgIAAbMuxCGWU7e5xmsYG+H1zgFMNA6SJAnmRexAONAIJ2fG20z0H
+	JKsGtk58Vm21cvw9LLxj+17umVVSmWez3ThiRIzhROOIUlLXjGKY4gwbA+SrVSgsNbHSp0
+	CY8ZBV12MjpbPETuNrC/6Ya3Yp4v2NrED24DSAyke3N1Uv8X9cpydYy42Xs81dr9P7ZEiQ
+	2753iAOk4bjqdLnplRAtzBsDdfABVj8fKv1CDWI9MIDTQqkIsQDUsttFBeoVVQ==
 From: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-Subject: [PATCH v5 0/3] Add SARADC support on Sophgo CV18XX series
-Date: Thu, 29 Aug 2024 14:31:49 +0200
-Message-Id: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
+Date: Thu, 29 Aug 2024 14:31:50 +0200
+Subject: [PATCH v5 1/3] dt-bindings: iio: adc: sophgo,cv1800b-saradc: Add
+ Sophgo CV1800B SARADC
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,10 +57,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADVq0GYC/2XOTQrCMBCG4atI1kYmk39X3kNcJGmqAW2kKUWR3
- t1UF7a4/Aael3mREvsUC9lvXqSPYyopd3XI7YaEi+vOkaamboKAAiRqWs4IgNQ1gVoU3igMDW+
- RVHDvY5sen9jxVPcllSH3z097ZPP1m9HVLzIjo0BdUCqCVk5LdfA5D9fU7UK+kTk04hLLFcaKD
- RdoAoKzHv8xX2DOVphXLF0Q4CQzAdw/Fj9s2PptMWNrfeOVlhbbNZ6m6Q3ugGDpXQEAAA==
+Message-Id: <20240829-sg2002-adc-v5-1-aacb381e869b@bootlin.com>
+References: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
+In-Reply-To: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -74,79 +75,105 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.1
 X-GND-Sasl: thomas.bonnefille@bootlin.com
 
-This patchset adds initial ADC support for Sophgo CV18XX series SoC. This driver can
-work with or without interrupt.
-
-Link: https://github.com/sophgo/sophgo-doc/releases/download/sg2002-trm-v1.0/sg2002_trm_en.pdf
+The Sophgo CV1800B SARADC is a Successive Approximation ADC that can be
+found in the Sophgo CV1800B SoC.
 
 Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 ---
-Changes in v5:
-- Add the ability to read the sample frequency
-- Edit commit message to remove No-Die reference and add precision on
-  the ADC series
-- Rename binding and driver file to match compatible
-- Reformat the channel property in the binding
-- Clean driver code
-- Link to v4: https://lore.kernel.org/r/20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com
+ .../bindings/iio/adc/sophgo,cv1800b-saradc.yaml    | 83 ++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
-Changes in v4:
-- Lowercase register hexadecimal value in dts
-- Reorder properties in dts
-- Use only a const in the compatible property of the device tree bindings
-- Specify the series of SoC in the driver to avoid confusing with other
-  Sophgo SoCs
-- Add channel description in the bindings
-- Use FIELD_PREP in the default configuration
-- Index channels from 0
-- Return PTR_ERR instead of IS_ERR
-- Link to v3: https://lore.kernel.org/r/20240731-sg2002-adc-v3-0-5ac40a518c0a@bootlin.com
+diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv1800b-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv1800b-saradc.yaml
+new file mode 100644
+index 000000000000..f652b98615f7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv1800b-saradc.yaml
+@@ -0,0 +1,83 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/sophgo,cv1800b-saradc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title:
++  Sophgo CV1800B SoC 3 channels Successive Approximation Analog to
++  Digital Converters
++
++maintainers:
++  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
++
++description:
++  Datasheet at https://github.com/sophgo/sophgo-doc/releases
++
++properties:
++  compatible:
++    const: sophgo,cv1800b-saradc
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++patternProperties:
++  "^channel@[0-2]$":
++    $ref: adc.yaml
++
++    properties:
++      reg:
++        items:
++          - minimum: 0
++            maximum: 2
++
++    required:
++      - reg
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - '#address-cells'
++  - '#size-cells'
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/sophgo,cv1800.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    adc@30f0000 {
++        compatible = "sophgo,cv1800b-saradc";
++        reg = <0x030f0000 0x1000>;
++        clocks = <&clk CLK_SARADC>;
++        interrupts = <100 IRQ_TYPE_LEVEL_HIGH>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        channel@0 {
++            reg = <0>;
++        };
++
++        channel@1 {
++            reg = <1>;
++        };
++
++        channel@2 {
++            reg = <2>;
++        };
++    };
 
-Changes in v3:
-- Subdivide default cycle configuration into multiple elementary
-  configurations
-- Fix formatting in the driver
-- Use devm_mutex_init
-- Use devm_clk_get_enabled now because the clock is no more optional
-- Remove handling of Saradc in No-Die Domain as RTC isn't implemented yet
-- Use cv1800-saradc as default compatible instead of a wildcard
-- Remove platform_set_drvdata as it wasn't used
-- Link to v2: https://lore.kernel.org/r/20240705-sg2002-adc-v2-0-83428c20a9b2@bootlin.com
-
-Changes in v2:
-- Drop modifications in MAINTAINERS file
-- Rename the ADC from "sophgo-adc" to "sophgo-cv18xx-adc" to avoid
-  conflict with ADCs available in future Sophgo SoCs.
-- Reorder nodes in DT to match DTS coding style
-- Switch from including <linux/of.h> to <linux/mod_devicetable.h>
-- Use scoped_guard instead of mutex_lock/unlock
-- Check IRQ Status in the handler
-- Change IIO device name
-- Use devm_clk_get_optional_enabled instead of a clock variable
-- Init completion before the IRQ request
-- Removed unnecessary iio_info structure in the private data of the
-  driver
-- Use SoC specific compatible in the bindings and device trees
-- Link to v1: https://lore.kernel.org/r/20240702-sg2002-adc-v1-0-ac66e076a756@bootlin.com
-
----
-Thomas Bonnefille (3):
-      dt-bindings: iio: adc: sophgo,cv1800b-saradc: Add Sophgo CV1800B SARADC
-      iio: adc: sophgo-saradc: Add driver for Sophgo CV1800B SARADC
-      riscv: dts: sophgo: Add SARADC description for Sophgo CV1800B
-
- .../bindings/iio/adc/sophgo,cv1800b-saradc.yaml    |  83 ++++++++
- arch/riscv/boot/dts/sophgo/cv18xx.dtsi             |  22 +++
- drivers/iio/adc/Kconfig                            |  10 +
- drivers/iio/adc/Makefile                           |   1 +
- drivers/iio/adc/sophgo-cv1800b-adc.c               | 218 +++++++++++++++++++++
- 5 files changed, 334 insertions(+)
----
-base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
-change-id: 20240527-sg2002-adc-924b862cd3f2
-
-Best regards,
 -- 
-Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+2.46.0
 
 

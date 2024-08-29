@@ -1,76 +1,75 @@
-Return-Path: <linux-iio+bounces-8874-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8875-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D2A9644A4
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 14:35:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF04E9644A6
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 14:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A8381F262AC
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 12:35:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40FF9B238CC
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 12:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D365B1B0126;
-	Thu, 29 Aug 2024 12:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404B31B012A;
+	Thu, 29 Aug 2024 12:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IbaBlbFb"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="P+YE62tV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBEB1AE86D
-	for <linux-iio@vger.kernel.org>; Thu, 29 Aug 2024 12:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C3F1AED4C
+	for <linux-iio@vger.kernel.org>; Thu, 29 Aug 2024 12:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724934809; cv=none; b=hPyf4+9uMeB26gZrD2c4kAtI5pwmgPLXj7PasNKemsCaszT2tdYBuvntkWQg0pbAhY5oI87ixxWhQI5eQmLHR6SQNGqdrqKngppji/i7ocG5uYdBP8YsiEXNRzf3K/6wY45cxiYhWxRRnpaqMWe6MTWiJEyOqZgE3XStQ+aPw+0=
+	t=1724934810; cv=none; b=jGLPSJHliEUenjVZYdTGhKL+I6p3bCNbXCaECMBX0/Do5ScMLFl5JPNI5LSM2hbi7rdD7hchj0Ge9vG31ns2dJyhER7jL0KlyBX7NaahgylZr2wyEuZE8zrrUrNyWEj4SEsJAPhik4Xg6AAqI+r6CYqjUBHVGnLdkVdjG4MsqB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724934809; c=relaxed/simple;
-	bh=yVObNTbKruHg2Tdvo+Ftyt0hECcIrR0Syn95YxsZ/jE=;
+	s=arc-20240116; t=1724934810; c=relaxed/simple;
+	bh=w8nUYGJBv9bfyc6zTQO/J4ppZxo97XPP+m2Jiyw3Bnc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e5D9vIsovNIOES62QFwS7ASLcaUmHRnWGm9txYgAw36Q4fR2ueMMh6nAqLJE6ZUYx2SqheXWVFqjY7scGH1/dazB7G/hYtm+cuE87ZXwBjFbcPe8OKa6XDioEb5y8615CbZ/JhUF1yILsOYKbp03iUivCJce0noMh5HZk1FEqm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IbaBlbFb; arc=none smtp.client-ip=209.85.221.41
+	 In-Reply-To:To:Cc; b=cqb0/xu0VWxmpUcJbw7AWIoKU9TrrFIsLqaTA7UxSsYRmoDhKrdu+tyqAkdJDLanwscrZpJjxomru47xNv6BCdgHFe33u19fVh+HLWNz4ncwT9lIF8+dMgxyIjherIOVxD3F7ZrAR+ji8RP2jIcGn9gAmGkxW9KyhXCOmTfAnsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=P+YE62tV; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37182eee02dso364250f8f.1
-        for <linux-iio@vger.kernel.org>; Thu, 29 Aug 2024 05:33:25 -0700 (PDT)
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-371c5187198so390501f8f.3
+        for <linux-iio@vger.kernel.org>; Thu, 29 Aug 2024 05:33:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724934804; x=1725539604; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1724934805; x=1725539605; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jqMPr8/Zk/eVIdO2ewPoiAiUs8EC2UTKzcb7DAIT2DU=;
-        b=IbaBlbFb9cpQTanfu1KQ8JAw5izKwbuCf+KX1wx4pacB5MEvWQCs5f+75sBGWt53JP
-         ugbuHwvyphW+rcs/R9O9G9bEhNVGm7Txd2yocHHzc52+HiNasJQBUV4Ua0RFsaZ2aPbA
-         mNfHu9zXIg04G5OPwjgfAAriy+OXDRA2qyEFhD1GsB3FFaH0OXr0CLXCnIdzzTEBWWQ/
-         WS0J4rD8zyvL74KF9mnRZtmLMFMCA4+tt9xaL1s/FKYfAXSXOJPcWNV3HDqMOj0Jdqof
-         R7qpBRdq6DNYcxYu9lG1W6TEPbIY6rpP3UqXgm5tu1G2Kwx9gzLg4oTTD/S9iLnZD00b
-         ZK1g==
+        bh=xOI0/LkEfO3vRmpVZA8C5jtFpDcwMZaIECMkAHo2fGg=;
+        b=P+YE62tV3TqLL+hVjgbnooc3u5HE19kUIej3h4GzTM6O2CI4ucDCfIDgphbCMbG0Zs
+         STxLv+fsY75yitiBxaB4MfX2Rwl9M0TLTJiQe4kEhZf6RJIqiRXt5+yQmoK5l56cJpCX
+         8S4aklBoEKY75xS1kmKC2hY5N0o3XbTREMwvTFGXswptLhvI4Ex1b+VLrpbSzZNh4220
+         INsrn9ku21G2EeBFRGdTT4CJi/GaN83PXR7aHhLKZCXAKVYg/6H7GGarA2bqbQZPlDr9
+         RVo4PSAg1NAY8D400ZTup4qNSgDBMSW4yzeUuKM7ZgEAuoB+AjwL1BUI4i9Mi2wNicQ9
+         UtrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724934804; x=1725539604;
+        d=1e100.net; s=20230601; t=1724934805; x=1725539605;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jqMPr8/Zk/eVIdO2ewPoiAiUs8EC2UTKzcb7DAIT2DU=;
-        b=MbWnd0TjGW9NUPXrBsWQ7NbFNZP3uYq7MugubVirSiG0pW1gmWUft5SeIc4c0niVVR
-         svDspzR5IL/0r5fxm1ozuSu7Kc7LTy8uK0y1iF5jtvH4drrUxZKN4AODzuWPC7mRKCwx
-         ohaXwBbk7lLRiMcCHiNNLSKTID6ILElT5p3wV6IWr/I/gVnqGBTHTJ6lcejm8rqqU3ap
-         uEMatWsT43z12rqzfoGxwcHTQAWEJxI9RkIygUiQT6jCCoOWxS5B+sPHfgGcLnywL+Zv
-         S0Iyzdl1yDCTnH2HeI/KV1WH5a0N3o9ypLs53C+DiSjOiDROiI91MJeZhJ0xBMHe4HqG
-         mFDg==
-X-Gm-Message-State: AOJu0Yxkd00AhoUQlSMuEurobCUNTNddOzzoDy6J6xhTB0f6d/b1xIDm
-	edZhrInHaDMeLKIrKubhXEuJXHlUGihzN7z4Gl78BhY4NnY0TX25UoivOwcH++k=
-X-Google-Smtp-Source: AGHT+IHsJt18NS8Q3S8/IX/ogmMk/0mYaWp6QmL7O+w4LQXo+CbHA2m4nS2SH5AeKNdqdAgvoRDMcQ==
-X-Received: by 2002:a5d:59a9:0:b0:35f:314a:229c with SMTP id ffacd0b85a97d-374a0232925mr1272703f8f.28.1724934803920;
-        Thu, 29 Aug 2024 05:33:23 -0700 (PDT)
+        bh=xOI0/LkEfO3vRmpVZA8C5jtFpDcwMZaIECMkAHo2fGg=;
+        b=wKq5m2ZJmIGN5KtsPmibtCz7wBzLa1QZUismka2ywt1ab3QjxJMDlXFvS2i3C09WVs
+         NigaKgQlOi+pm6M18Ym9tbOib8AfB13lxnOz4g/r5Yfl/2Jn/lDB5yeCQax/op3mmhnE
+         NNb3EjNi3+/xTcqEIxFsHd7jV3biDxg2R397mjaFCxkbshar8gRiSVgeP2EVicUahI6U
+         xV8BUjucdXG2weZ8QBdQHI//DFmJaLR7QuMj0NEtPVcb7SLY5FWPIQZfIH1tgLLJQdPn
+         xepqIve9NHf+JdRbHXRGqt/xxRndrIW906uwYdsIfTXExs2v/IZWdg75sgcYjFOkKFth
+         R+iw==
+X-Gm-Message-State: AOJu0Yx0wJz0LiRKKc0+HKG5dcNBNkPmeRLEOqA2nCB9Db22gXNDGz6e
+	+/HAyrcYb7/d9hC3IAHCnSGfhsvxWnsJEy6Ru0HVy8HbYWrIZq8mM4ESxhA6iv8=
+X-Google-Smtp-Source: AGHT+IFdUw2IETmAulQYBiAIFcMarSHktWwFm/Cm9Eo5FKwCWrkpnRWQ5JZF4ue2V6ckuXT+5VD6XA==
+X-Received: by 2002:a05:6000:1f0e:b0:371:8a91:9e72 with SMTP id ffacd0b85a97d-3749b54cfd1mr1806377f8f.30.1724934805262;
+        Thu, 29 Aug 2024 05:33:25 -0700 (PDT)
 Received: from [127.0.1.1] (host-95-233-232-76.retail.telecomitalia.it. [95.233.232.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3749ee9978bsm1315042f8f.49.2024.08.29.05.33.22
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3749ee9978bsm1315042f8f.49.2024.08.29.05.33.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2024 05:33:23 -0700 (PDT)
+        Thu, 29 Aug 2024 05:33:24 -0700 (PDT)
 From: Angelo Dureghello <adureghello@baylibre.com>
 X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Thu, 29 Aug 2024 14:32:04 +0200
-Subject: [PATCH RFC 6/8] iio: dac: ad3552r: extract common code (no changes
- in behavior intended)
+Date: Thu, 29 Aug 2024 14:32:05 +0200
+Subject: [PATCH RFC 7/8] iio: dac: ad3552r: add axi platform driver
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240829-wip-bl-ad3552r-axi-v0-v1-6-b6da6015327a@baylibre.com>
+Message-Id: <20240829-wip-bl-ad3552r-axi-v0-v1-7-b6da6015327a@baylibre.com>
 References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
 In-Reply-To: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -96,750 +95,627 @@ X-Mailer: b4 0.14.1
 
 From: Angelo Dureghello <adureghello@baylibre.com>
 
-Extracting common code, to share common code to be used later
-by the AXI driver version (ad3552r-axi.c).
+Add support for ad3552r AXI DAC IP version.
 
 Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 ---
- drivers/iio/dac/Makefile         |   2 +-
- drivers/iio/dac/ad3552r-common.c | 163 +++++++++++++++++++++++
- drivers/iio/dac/ad3552r.c        | 276 ++++-----------------------------------
- drivers/iio/dac/ad3552r.h        | 199 ++++++++++++++++++++++++++++
- 4 files changed, 389 insertions(+), 251 deletions(-)
+ drivers/iio/dac/Kconfig       |  11 +
+ drivers/iio/dac/Makefile      |   1 +
+ drivers/iio/dac/ad3552r-axi.c | 572 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 584 insertions(+)
 
+diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+index 1cfd7e2a622f..030af7702a3c 100644
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -16,6 +16,17 @@ config AD3552R
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called ad3552r.
+ 
++config AD3552R_AXI
++	tristate "Analog Devices AD3552R DAC driver, AXI version"
++	select IIO_BACKEND
++	help
++	  Say yes here to build support for Analog Devices AD3552R
++	  Digital to Analog Converter, connected through the Xilinx
++	  fpga AXI interface.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called ad3552r-axi.
++
+ config AD5064
+ 	tristate "Analog Devices AD5064 and similar multi-channel DAC driver"
+ 	depends on (SPI_MASTER && I2C!=m) || I2C
 diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-index 2cf148f16306..56a125f56284 100644
+index 56a125f56284..cc2af3aa3f52 100644
 --- a/drivers/iio/dac/Makefile
 +++ b/drivers/iio/dac/Makefile
-@@ -4,7 +4,7 @@
- #
+@@ -5,6 +5,7 @@
  
  # When adding new entries keep the list in alphabetical order
--obj-$(CONFIG_AD3552R) += ad3552r.o
-+obj-$(CONFIG_AD3552R) += ad3552r.o ad3552r-common.o
+ obj-$(CONFIG_AD3552R) += ad3552r.o ad3552r-common.o
++obj-$(CONFIG_AD3552R_AXI) += ad3552r-axi.o ad3552r-common.o
  obj-$(CONFIG_AD5360) += ad5360.o
  obj-$(CONFIG_AD5380) += ad5380.o
  obj-$(CONFIG_AD5421) += ad5421.o
-diff --git a/drivers/iio/dac/ad3552r-common.c b/drivers/iio/dac/ad3552r-common.c
+diff --git a/drivers/iio/dac/ad3552r-axi.c b/drivers/iio/dac/ad3552r-axi.c
 new file mode 100644
-index 000000000000..c8ccfbe2e95e
+index 000000000000..98e5da08c973
 --- /dev/null
-+++ b/drivers/iio/dac/ad3552r-common.c
-@@ -0,0 +1,163 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+//
-+// Copyright (c) 2010-2024 Analog Devices Inc.
-+// Copyright (c) 2024 Baylibre, SAS
++++ b/drivers/iio/dac/ad3552r-axi.c
+@@ -0,0 +1,572 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Analog Devices AD3552R
++ * Digital to Analog converter driver, AXI DAC backend version
++ *
++ * Copyright 2024 Analog Devices Inc.
++ */
 +
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/property.h>
-+#include <linux/regulator/consumer.h>
++#include <linux/bitfield.h>
++#include <linux/delay.h>
++#include <linux/gpio/consumer.h>
++#include <linux/iio/buffer.h>
++#include <linux/iio/backend.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
++#include <linux/units.h>
 +
 +#include "ad3552r.h"
 +
-+static const s32 ad3552r_ch_ranges[][2] = {
-+	[AD3552R_CH_OUTPUT_RANGE_0__2P5V]	= {0, 2500},
-+	[AD3552R_CH_OUTPUT_RANGE_0__5V]		= {0, 5000},
-+	[AD3552R_CH_OUTPUT_RANGE_0__10V]	= {0, 10000},
-+	[AD3552R_CH_OUTPUT_RANGE_NEG_5__5V]	= {-5000, 5000},
-+	[AD3552R_CH_OUTPUT_RANGE_NEG_10__10V]	= {-10000, 10000}
++enum ad3552r_synchronous_mode_status {
++	AD3552R_NO_SYNC,
++	AD3552R_EXT_SYNC_ARM,
 +};
 +
-+static const s32 ad3542r_ch_ranges[][2] = {
-+	[AD3542R_CH_OUTPUT_RANGE_0__2P5V]	= {0, 2500},
-+	[AD3542R_CH_OUTPUT_RANGE_0__3V]		= {0, 3000},
-+	[AD3542R_CH_OUTPUT_RANGE_0__5V]		= {0, 5000},
-+	[AD3542R_CH_OUTPUT_RANGE_0__10V]	= {0, 10000},
-+	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= {-2500, 7500},
-+	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= {-5000, 5000}
++struct ad3552r_axi_state {
++	struct gpio_desc *reset_gpio;
++	struct device *dev;
++	struct iio_backend *back;
++	unsigned long active_scan_mask;
++	enum ad3552r_id chip_id;
++	bool single_channel;
++	bool synced_transfer;
 +};
 +
-+void ad3552r_calc_custom_gain(u8 p, u8 n, s16 goffs, u16 *reg)
++static int axi3552r_qspi_update_reg_bits(struct iio_backend *back,
++					 u32 reg, u32 mask, u32 val,
++					 size_t xfer_size)
 +{
-+	*reg = FIELD_PREP(AD3552R_MASK_CH_RANGE_OVERRIDE, 1);
-+	*reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_P, p);
-+	*reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_N, n);
-+	*reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_BIT_8, abs((s32)goffs) >> 8);
-+	*reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_POLARITY, (s32)goffs < 0);
++	u32 rval;
++	int err;
++
++	err = iio_backend_bus_reg_read(back, reg, &rval, xfer_size);
++	if (err)
++		return err;
++
++	rval &= ~mask;
++	rval |= val;
++
++	return iio_backend_bus_reg_write(back, reg, &rval, xfer_size);
 +}
 +
-+int ad3552r_get_ref_voltage(struct device *dev, u32 *val)
++static int ad3552r_axi_read_raw(struct iio_dev *indio_dev,
++				struct iio_chan_spec const *chan,
++				int *val, int *val2, long mask)
 +{
-+	int voltage, delta = 100000;
++	struct ad3552r_axi_state *st = iio_priv(indio_dev);
++	int err, ch = chan->channel;
 +
-+	voltage = devm_regulator_get_enable_read_voltage(dev, "vref");
-+	if (voltage < 0 && voltage != -ENODEV)
-+		return dev_err_probe(dev, voltage,
-+				     "Error getting vref voltage\n");
++	switch (mask) {
++	case IIO_CHAN_INFO_SAMP_FREQ: {
++		int clk_rate;
 +
-+	if (voltage == -ENODEV) {
-+		if (device_property_read_bool(dev, "adi,vref-out-en"))
-+			*val = AD3552R_INTERNAL_VREF_PIN_2P5V;
++		err = iio_backend_read_raw(st->back, chan, &clk_rate, 0,
++					   IIO_CHAN_INFO_FREQUENCY);
++		if (err != IIO_VAL_INT)
++			return err;
++
++		/*
++		 * Data stream SDR/DDR (clk_in/8 or clk_in/4 update rate).
++		 * Samplerate has sense in DDR only.
++		 */
++		if (st->single_channel)
++			clk_rate = DIV_ROUND_CLOSEST(clk_rate, 4);
 +		else
-+			*val = AD3552R_INTERNAL_VREF_PIN_FLOATING;
-+	} else {
-+		if (voltage > 2500000 + delta || voltage < 2500000 - delta) {
-+			dev_warn(dev, "vref-supply must be 2.5V");
-+			return -EINVAL;
-+		}
-+		*val = AD3552R_EXTERNAL_VREF_PIN_INPUT;
++			clk_rate = DIV_ROUND_CLOSEST(clk_rate, 8);
++
++		*val = clk_rate;
++
++		return IIO_VAL_INT;
 +	}
++	case IIO_CHAN_INFO_RAW:
++		err = iio_backend_bus_reg_read(st->back,
++					       AD3552R_REG_ADDR_CH_DAC_16B(ch),
++					       val, 2);
++		if (err)
++			return err;
++
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad3552r_axi_write_raw(struct iio_dev *indio_dev,
++				 struct iio_chan_spec const *chan,
++				 int val, int val2, long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++			struct ad3552r_axi_state *st = iio_priv(indio_dev);
++			int ch = chan->channel;
++
++			return iio_backend_bus_reg_write(st->back,
++				    AD3552R_REG_ADDR_CH_DAC_16B(ch), &val, 2);
++		}
++		unreachable();
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad3552r_axi_update_scan_mode(struct iio_dev *indio_dev,
++					const unsigned long *active_scan_mask)
++{
++	struct ad3552r_axi_state *st = iio_priv(indio_dev);
++
++	st->active_scan_mask = *active_scan_mask;
 +
 +	return 0;
 +}
 +
-+int ad3552r_get_drive_strength(struct device *dev, u32 *val)
++static int ad3552r_axi_buffer_postenable(struct iio_dev *indio_dev)
 +{
-+	int err;
++	struct ad3552r_axi_state *st = iio_priv(indio_dev);
++	struct iio_backend_data_fmt fmt = {
++		.type = IIO_BACKEND_DATA_UNSIGNED
++	};
++	int loop_len, val, err;
 +
-+	err = device_property_read_u32(dev, "adi,sdo-drive-strength", val);
-+	if (!err && *val > 3) {
-+		dev_err(dev,
-+			"adi,sdo-drive-strength must be less than 4\n");
++	/* Inform DAC chip to switch into DDR mode */
++	err = axi3552r_qspi_update_reg_bits(st->back,
++					    AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
++					    AD3552R_MASK_SPI_CONFIG_DDR,
++					    AD3552R_MASK_SPI_CONFIG_DDR, 1);
++	if (err)
++		return err;
++
++	/* Inform DAC IP to go for DDR mode from now on */
++	err = iio_backend_ddr_enable(st->back);
++	if (err)
++		goto exit_err;
++
++	switch (st->active_scan_mask) {
++	case AD3552R_CH0_ACTIVE:
++		st->single_channel = true;
++		loop_len = AD3552R_STREAM_2BYTE_LOOP;
++		val = AD3552R_REG_ADDR_CH_DAC_16B(0);
++		break;
++	case AD3552R_CH1_ACTIVE:
++		st->single_channel = true;
++		loop_len = AD3552R_STREAM_2BYTE_LOOP;
++		val = AD3552R_REG_ADDR_CH_DAC_16B(1);
++		break;
++	case AD3552R_CH0_CH1_ACTIVE:
++		st->single_channel = false;
++		loop_len = AD3552R_STREAM_4BYTE_LOOP;
++		val = AD3552R_REG_ADDR_CH_DAC_16B(1);
++		break;
++	default:
 +		return -EINVAL;
 +	}
++
++	err = iio_backend_bus_reg_write(st->back, AD3552R_REG_ADDR_STREAM_MODE,
++					&loop_len, 1);
++	if (err)
++		goto exit_err;
++
++	iio_backend_data_transfer_addr(st->back, val);
++	if (err)
++		goto exit_err;
++	/*
++	 * The EXT_SYNC is mandatory in the CN0585 project where 2 instances
++	 * of the IP are in the design and they need to generate the signals
++	 * synchronized.
++	 *
++	 * Note: in first IP implementations CONFIG EXT_SYNC (RO) can be 0,
++	 * but EXT_SYMC is anabled anyway.
++	 */
++
++	if (st->synced_transfer == AD3552R_EXT_SYNC_ARM)
++		err = iio_backend_ext_sync_enable(st->back);
++	else
++		err = iio_backend_ext_sync_disable(st->back);
++	if (err)
++		goto exit_err_sync;
++
++	err = iio_backend_data_format_set(st->back, 0, &fmt);
++	if (err)
++		goto exit_err;
++
++	err =  iio_backend_buffer_enable(st->back);
++	if (!err)
++		return 0;
++
++exit_err_sync:
++	iio_backend_ext_sync_disable(st->back);
++
++exit_err:
++	axi3552r_qspi_update_reg_bits(st->back,
++				      AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
++				      AD3552R_MASK_SPI_CONFIG_DDR,
++				      0, 1);
++
++	iio_backend_ddr_disable(st->back);
 +
 +	return err;
 +}
 +
-+int ad3552r_get_custom_gain(struct device *dev, struct fwnode_handle *child,
-+			    u8 *gs_p, u8 *gs_n, u16 *rfb, s16 *goffs)
++static int ad3552r_axi_buffer_predisable(struct iio_dev *indio_dev)
++{
++	struct ad3552r_axi_state *st = iio_priv(indio_dev);
++	int err;
++
++	err = iio_backend_buffer_disable(st->back);
++	if (err)
++		return err;
++
++	/* Inform DAC to set in DDR mode */
++	err = axi3552r_qspi_update_reg_bits(st->back,
++					    AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
++					    AD3552R_MASK_SPI_CONFIG_DDR,
++					    0, 1);
++	if (err)
++		return err;
++
++	return iio_backend_ddr_disable(st->back);
++}
++
++static int ad3552r_axi_set_output_range(struct ad3552r_axi_state *st,
++					unsigned int mode)
++{
++	int range_ch_0 = FIELD_PREP(AD3552R_MASK_CH0_RANGE, mode);
++	int range_ch_1 = FIELD_PREP(AD3552R_MASK_CH1_RANGE, mode);
++
++	return axi3552r_qspi_update_reg_bits(st->back,
++				AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
++				AD3552R_MASK_CH_OUTPUT_RANGE,
++				range_ch_0 | range_ch_1, 1);
++}
++
++static int ad3552r_axi_reset(struct ad3552r_axi_state *st)
 +{
 +	int err;
-+	u32 val;
-+	struct fwnode_handle *gain_child __free(fwnode_handle)
-+		= fwnode_get_named_child_node(child,
-+				      "custom-output-range-config");
 +
-+	if (!gain_child)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "custom-output-range-config mandatory\n");
++	/* AXI reset performed by backend enable() */
 +
-+	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-p", &val);
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "adi,gain-scaling-p mandatory\n");
-+	*gs_p = val;
++	st->reset_gpio = devm_gpiod_get_optional(st->dev,
++						 "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(st->reset_gpio))
++		return PTR_ERR(st->reset_gpio);
 +
-+	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-n", &val);
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "adi,gain-scaling-n property mandatory\n");
-+	*gs_n = val;
-+
-+	err = fwnode_property_read_u32(gain_child, "adi,rfb-ohms", &val);
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "adi,rfb-ohms mandatoryn");
-+	*rfb = val;
-+
-+	err = fwnode_property_read_u32(gain_child, "adi,gain-offset", &val);
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "adi,gain-offset mandatory\n");
-+	*goffs = val;
++	if (st->reset_gpio) {
++		gpiod_set_value_cansleep(st->reset_gpio, 1);
++		fsleep(10);
++		gpiod_set_value_cansleep(st->reset_gpio, 0);
++	} else {
++		err = axi3552r_qspi_update_reg_bits(st->back,
++					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
++					AD3552R_MASK_SOFTWARE_RESET,
++					AD3552R_MASK_SOFTWARE_RESET, 1);
++		if (err)
++			return err;
++	}
++	msleep(100);
 +
 +	return 0;
 +}
 +
-+static int ad3552r_find_range(u16 id, s32 *vals)
++static int ad3552r_axi_setup(struct ad3552r_axi_state *st)
 +{
-+	int i, len;
-+	const s32 (*ranges)[2];
++	struct fwnode_handle *child __free(fwnode_handle) = NULL;
++	u8 gs_p, gs_n;
++	s16 goffs;
++	u16 id, rfb, reg = 0, offset = 0;
++	u32 val, range;
++	int err;
 +
-+	if (id == AD3542R_ID) {
-+		len = ARRAY_SIZE(ad3542r_ch_ranges);
-+		ranges = ad3542r_ch_ranges;
-+	} else {
-+		len = ARRAY_SIZE(ad3552r_ch_ranges);
-+		ranges = ad3552r_ch_ranges;
++	err = ad3552r_axi_reset(st);
++	if (err)
++		return err;
++
++	err = iio_backend_ddr_disable(st->back);
++	if (err)
++		return err;
++
++	val = AD3552R_SCRATCH_PAD_TEST_VAL1;
++	err = iio_backend_bus_reg_write(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
++					&val, 1);
++	if (err)
++		return err;
++
++	err = iio_backend_bus_reg_read(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
++				       &val, 1);
++	if (err)
++		return err;
++
++	if (val != AD3552R_SCRATCH_PAD_TEST_VAL1) {
++		dev_err(st->dev,
++			"SCRATCH_PAD_TEST mismatch. Expected 0x%x, Read 0x%x\n",
++			AD3552R_SCRATCH_PAD_TEST_VAL1, val);
++		return -EIO;
 +	}
 +
-+	for (i = 0; i < len; i++)
-+		if (vals[0] == ranges[i][0] * 1000 &&
-+		    vals[1] == ranges[i][1] * 1000)
-+			return i;
++	val = AD3552R_SCRATCH_PAD_TEST_VAL2;
++	err = iio_backend_bus_reg_write(st->back,
++					AD3552R_REG_ADDR_SCRATCH_PAD,
++					&val, 1);
++	if (err)
++		return err;
 +
-+	return -EINVAL;
-+}
++	err = iio_backend_bus_reg_read(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
++				       &val, 1);
++	if (err)
++		return err;
 +
-+int ad3552r_get_output_range(struct device *dev, enum ad3552r_id chip_id,
-+			     struct fwnode_handle *child, u32 *val)
-+{
-+	int ret;
-+	s32 vals[2];
++	if (val != AD3552R_SCRATCH_PAD_TEST_VAL2) {
++		dev_err(st->dev,
++			"SCRATCH_PAD_TEST mismatch. Expected 0x%x, Read 0x%x\n",
++			AD3552R_SCRATCH_PAD_TEST_VAL2, val);
++		return -EIO;
++	}
 +
-+	if (!fwnode_property_present(child, "adi,output-range-microvolt"))
-+		return -ENOENT;
++	err = iio_backend_bus_reg_read(st->back, AD3552R_REG_ADDR_PRODUCT_ID_L,
++				       &val, 1);
++	if (err)
++		return err;
 +
-+	ret = fwnode_property_read_u32_array(child,
-+					     "adi,output-range-microvolt",
-+					     vals, 2);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				"invalid adi,output-range-microvolt\n");
++	id = val;
++	mdelay(100);
 +
-+	ret = ad3552r_find_range(chip_id, vals);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret,
-+			"invalid adi,output-range-microvolt value\n");
++	err = iio_backend_bus_reg_read(st->back, AD3552R_REG_ADDR_PRODUCT_ID_H,
++				       &val, 1);
++	if (err)
++		return err;
 +
-+	*val = ret;
++	id |= val << 8;
++	if (id != AD3552R_ID) {
++		dev_err(st->dev, "Chip ID mismatch. Expected 0x%x, Read 0x%x\n",
++			AD3552R_ID, id);
++		return -ENODEV;
++	}
++
++	st->chip_id = id;
++
++	val = AD3552R_REF_INIT;
++	err = iio_backend_bus_reg_write(st->back,
++					AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
++					&val, 1);
++	if (err)
++		return err;
++
++	val = AD3552R_TRANSFER_INIT;
++	err = iio_backend_bus_reg_write(st->back,
++					AD3552R_REG_ADDR_TRANSFER_REGISTER,
++					&val, 1);
++	if (err)
++		return err;
++
++	err = iio_backend_data_source_set(st->back, 0, IIO_BACKEND_EXTERNAL);
++	if (err)
++		return err;
++
++	err = iio_backend_data_source_set(st->back, 1, IIO_BACKEND_EXTERNAL);
++	if (err)
++		return err;
++
++	err = ad3552r_get_ref_voltage(st->dev, &val);
++	if (err)
++		return err;
++
++	err = axi3552r_qspi_update_reg_bits(st->back,
++				AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
++				AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
++				val, 1);
++	if (err)
++		return err;
++
++	err = ad3552r_get_drive_strength(st->dev, &val);
++	if (!err) {
++		err = axi3552r_qspi_update_reg_bits(st->back,
++					AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
++					AD3552R_MASK_SDO_DRIVE_STRENGTH,
++					val, 1);
++		if (err)
++			return err;
++	}
++
++	child = device_get_named_child_node(st->dev, "channel");
++	if (!child)
++		return -EINVAL;
++
++	err = ad3552r_get_output_range(st->dev, st->chip_id, child, &range);
++	if (!err)
++		return ad3552r_axi_set_output_range(st, range);
++
++	if (err != -ENOENT)
++		return err;
++
++	/* Try to get custom range */
++	err = ad3552r_get_custom_gain(st->dev, child,
++					&gs_p, &gs_n, &rfb, &goffs);
++	if (err)
++		return err;
++
++	ad3552r_calc_custom_gain(gs_p, gs_n, goffs, &reg);
++
++	offset = abs((s32)goffs);
++
++	err = iio_backend_bus_reg_write(st->back,
++					AD3552R_REG_ADDR_CH_OFFSET(0),
++					&offset, 1);
++	if (err)
++		return dev_err_probe(st->dev, err,
++					"Error writing register\n");
++
++	err = iio_backend_bus_reg_write(st->back,
++					AD3552R_REG_ADDR_CH_OFFSET(1),
++					&offset, 1);
++	if (err)
++		return dev_err_probe(st->dev, err,
++					"Error writing register\n");
++
++	err = iio_backend_bus_reg_write(st->back,
++					AD3552R_REG_ADDR_CH_GAIN(0),
++					&reg, 1);
++	if (err)
++		return dev_err_probe(st->dev, err,
++					"Error writing register\n");
++
++	err = iio_backend_bus_reg_write(st->back,
++					AD3552R_REG_ADDR_CH_GAIN(1),
++					&reg, 1);
++	if (err)
++		return dev_err_probe(st->dev, err,
++					"Error writing register\n");
 +
 +	return 0;
 +}
-diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
-index d867de7c90d1..c149be9c8c7d 100644
---- a/drivers/iio/dac/ad3552r.c
-+++ b/drivers/iio/dac/ad3552r.c
-@@ -11,153 +11,9 @@
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
--#include <linux/regulator/consumer.h>
- #include <linux/spi/spi.h>
- 
--/* Register addresses */
--/* Primary address space */
--#define AD3552R_REG_ADDR_INTERFACE_CONFIG_A		0x00
--#define   AD3552R_MASK_SOFTWARE_RESET			(BIT(7) | BIT(0))
--#define   AD3552R_MASK_ADDR_ASCENSION			BIT(5)
--#define   AD3552R_MASK_SDO_ACTIVE			BIT(4)
--#define AD3552R_REG_ADDR_INTERFACE_CONFIG_B		0x01
--#define   AD3552R_MASK_SINGLE_INST			BIT(7)
--#define   AD3552R_MASK_SHORT_INSTRUCTION		BIT(3)
--#define AD3552R_REG_ADDR_DEVICE_CONFIG			0x02
--#define   AD3552R_MASK_DEVICE_STATUS(n)			BIT(4 + (n))
--#define   AD3552R_MASK_CUSTOM_MODES			GENMASK(3, 2)
--#define   AD3552R_MASK_OPERATING_MODES			GENMASK(1, 0)
--#define AD3552R_REG_ADDR_CHIP_TYPE			0x03
--#define   AD3552R_MASK_CLASS				GENMASK(7, 0)
--#define AD3552R_REG_ADDR_PRODUCT_ID_L			0x04
--#define AD3552R_REG_ADDR_PRODUCT_ID_H			0x05
--#define AD3552R_REG_ADDR_CHIP_GRADE			0x06
--#define   AD3552R_MASK_GRADE				GENMASK(7, 4)
--#define   AD3552R_MASK_DEVICE_REVISION			GENMASK(3, 0)
--#define AD3552R_REG_ADDR_SCRATCH_PAD			0x0A
--#define AD3552R_REG_ADDR_SPI_REVISION			0x0B
--#define AD3552R_REG_ADDR_VENDOR_L			0x0C
--#define AD3552R_REG_ADDR_VENDOR_H			0x0D
--#define AD3552R_REG_ADDR_STREAM_MODE			0x0E
--#define   AD3552R_MASK_LENGTH				GENMASK(7, 0)
--#define AD3552R_REG_ADDR_TRANSFER_REGISTER		0x0F
--#define   AD3552R_MASK_MULTI_IO_MODE			GENMASK(7, 6)
--#define   AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE		BIT(2)
--#define AD3552R_REG_ADDR_INTERFACE_CONFIG_C		0x10
--#define   AD3552R_MASK_CRC_ENABLE			(GENMASK(7, 6) |\
--							 GENMASK(1, 0))
--#define   AD3552R_MASK_STRICT_REGISTER_ACCESS		BIT(5)
--#define AD3552R_REG_ADDR_INTERFACE_STATUS_A		0x11
--#define   AD3552R_MASK_INTERFACE_NOT_READY		BIT(7)
--#define   AD3552R_MASK_CLOCK_COUNTING_ERROR		BIT(5)
--#define   AD3552R_MASK_INVALID_OR_NO_CRC		BIT(3)
--#define   AD3552R_MASK_WRITE_TO_READ_ONLY_REGISTER	BIT(2)
--#define   AD3552R_MASK_PARTIAL_REGISTER_ACCESS		BIT(1)
--#define   AD3552R_MASK_REGISTER_ADDRESS_INVALID		BIT(0)
--#define AD3552R_REG_ADDR_INTERFACE_CONFIG_D		0x14
--#define   AD3552R_MASK_ALERT_ENABLE_PULLUP		BIT(6)
--#define   AD3552R_MASK_MEM_CRC_EN			BIT(4)
--#define   AD3552R_MASK_SDO_DRIVE_STRENGTH		GENMASK(3, 2)
--#define   AD3552R_MASK_DUAL_SPI_SYNCHROUNOUS_EN		BIT(1)
--#define   AD3552R_MASK_SPI_CONFIG_DDR			BIT(0)
--#define AD3552R_REG_ADDR_SH_REFERENCE_CONFIG		0x15
--#define   AD3552R_MASK_IDUMP_FAST_MODE			BIT(6)
--#define   AD3552R_MASK_SAMPLE_HOLD_DIFFERENTIAL_USER_EN	BIT(5)
--#define   AD3552R_MASK_SAMPLE_HOLD_USER_TRIM		GENMASK(4, 3)
--#define   AD3552R_MASK_SAMPLE_HOLD_USER_ENABLE		BIT(2)
--#define   AD3552R_MASK_REFERENCE_VOLTAGE_SEL		GENMASK(1, 0)
--#define AD3552R_REG_ADDR_ERR_ALARM_MASK			0x16
--#define   AD3552R_MASK_REF_RANGE_ALARM			BIT(6)
--#define   AD3552R_MASK_CLOCK_COUNT_ERR_ALARM		BIT(5)
--#define   AD3552R_MASK_MEM_CRC_ERR_ALARM		BIT(4)
--#define   AD3552R_MASK_SPI_CRC_ERR_ALARM		BIT(3)
--#define   AD3552R_MASK_WRITE_TO_READ_ONLY_ALARM		BIT(2)
--#define   AD3552R_MASK_PARTIAL_REGISTER_ACCESS_ALARM	BIT(1)
--#define   AD3552R_MASK_REGISTER_ADDRESS_INVALID_ALARM	BIT(0)
--#define AD3552R_REG_ADDR_ERR_STATUS			0x17
--#define   AD3552R_MASK_REF_RANGE_ERR_STATUS			BIT(6)
--#define   AD3552R_MASK_DUAL_SPI_STREAM_EXCEEDS_DAC_ERR_STATUS	BIT(5)
--#define   AD3552R_MASK_MEM_CRC_ERR_STATUS			BIT(4)
--#define   AD3552R_MASK_RESET_STATUS				BIT(0)
--#define AD3552R_REG_ADDR_POWERDOWN_CONFIG		0x18
--#define   AD3552R_MASK_CH_DAC_POWERDOWN(ch)		BIT(4 + (ch))
--#define   AD3552R_MASK_CH_AMPLIFIER_POWERDOWN(ch)	BIT(ch)
--#define AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE		0x19
--#define   AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch)		((ch) ? GENMASK(7, 4) :\
--							 GENMASK(3, 0))
--#define AD3552R_REG_ADDR_CH_OFFSET(ch)			(0x1B + (ch) * 2)
--#define   AD3552R_MASK_CH_OFFSET_BITS_0_7		GENMASK(7, 0)
--#define AD3552R_REG_ADDR_CH_GAIN(ch)			(0x1C + (ch) * 2)
--#define   AD3552R_MASK_CH_RANGE_OVERRIDE		BIT(7)
--#define   AD3552R_MASK_CH_GAIN_SCALING_N		GENMASK(6, 5)
--#define   AD3552R_MASK_CH_GAIN_SCALING_P		GENMASK(4, 3)
--#define   AD3552R_MASK_CH_OFFSET_POLARITY		BIT(2)
--#define   AD3552R_MASK_CH_OFFSET_BIT_8			BIT(0)
--/*
-- * Secondary region
-- * For multibyte registers specify the highest address because the access is
-- * done in descending order
-- */
--#define AD3552R_SECONDARY_REGION_START			0x28
--#define AD3552R_REG_ADDR_HW_LDAC_16B			0x28
--#define AD3552R_REG_ADDR_CH_DAC_16B(ch)			(0x2C - (1 - ch) * 2)
--#define AD3552R_REG_ADDR_DAC_PAGE_MASK_16B		0x2E
--#define AD3552R_REG_ADDR_CH_SELECT_16B			0x2F
--#define AD3552R_REG_ADDR_INPUT_PAGE_MASK_16B		0x31
--#define AD3552R_REG_ADDR_SW_LDAC_16B			0x32
--#define AD3552R_REG_ADDR_CH_INPUT_16B(ch)		(0x36 - (1 - ch) * 2)
--/* 3 bytes registers */
--#define AD3552R_REG_START_24B				0x37
--#define AD3552R_REG_ADDR_HW_LDAC_24B			0x37
--#define AD3552R_REG_ADDR_CH_DAC_24B(ch)			(0x3D - (1 - ch) * 3)
--#define AD3552R_REG_ADDR_DAC_PAGE_MASK_24B		0x40
--#define AD3552R_REG_ADDR_CH_SELECT_24B			0x41
--#define AD3552R_REG_ADDR_INPUT_PAGE_MASK_24B		0x44
--#define AD3552R_REG_ADDR_SW_LDAC_24B			0x45
--#define AD3552R_REG_ADDR_CH_INPUT_24B(ch)		(0x4B - (1 - ch) * 3)
--
--/* Useful defines */
--#define AD3552R_MAX_CH					2
--#define AD3552R_MASK_CH(ch)				BIT(ch)
--#define AD3552R_MASK_ALL_CH				GENMASK(1, 0)
--#define AD3552R_MAX_REG_SIZE				3
--#define AD3552R_READ_BIT				BIT(7)
--#define AD3552R_ADDR_MASK				GENMASK(6, 0)
--#define AD3552R_MASK_DAC_12B				0xFFF0
--#define AD3552R_DEFAULT_CONFIG_B_VALUE			0x8
--#define AD3552R_SCRATCH_PAD_TEST_VAL1			0x34
--#define AD3552R_SCRATCH_PAD_TEST_VAL2			0xB2
--#define AD3552R_GAIN_SCALE				1000
--#define AD3552R_LDAC_PULSE_US				100
--
--enum ad3552r_ch_vref_select {
--	/* Internal source with Vref I/O floating */
--	AD3552R_INTERNAL_VREF_PIN_FLOATING,
--	/* Internal source with Vref I/O at 2.5V */
--	AD3552R_INTERNAL_VREF_PIN_2P5V,
--	/* External source with Vref I/O as input */
--	AD3552R_EXTERNAL_VREF_PIN_INPUT
--};
--
--enum ad3552r_id {
--	AD3541R_ID = 0x400b,
--	AD3542R_ID = 0x4009,
--	AD3551R_ID = 0x400a,
--	AD3552R_ID = 0x4008,
--};
--
--enum ad3552r_ch_output_range {
--	/* Range from 0 V to 2.5 V. Requires Rfb1x connection */
--	AD3552R_CH_OUTPUT_RANGE_0__2P5V,
--	/* Range from 0 V to 5 V. Requires Rfb1x connection  */
--	AD3552R_CH_OUTPUT_RANGE_0__5V,
--	/* Range from 0 V to 10 V. Requires Rfb2x connection  */
--	AD3552R_CH_OUTPUT_RANGE_0__10V,
--	/* Range from -5 V to 5 V. Requires Rfb2x connection  */
--	AD3552R_CH_OUTPUT_RANGE_NEG_5__5V,
--	/* Range from -10 V to 10 V. Requires Rfb4x connection  */
--	AD3552R_CH_OUTPUT_RANGE_NEG_10__10V,
--};
-+#include "ad3552r.h"
- 
- static const s32 ad3552r_ch_ranges[][2] = {
- 	[AD3552R_CH_OUTPUT_RANGE_0__2P5V]	= {0, 2500},
-@@ -167,21 +23,6 @@ static const s32 ad3552r_ch_ranges[][2] = {
- 	[AD3552R_CH_OUTPUT_RANGE_NEG_10__10V]	= {-10000, 10000}
- };
- 
--enum ad3542r_ch_output_range {
--	/* Range from 0 V to 2.5 V. Requires Rfb1x connection */
--	AD3542R_CH_OUTPUT_RANGE_0__2P5V,
--	/* Range from 0 V to 3 V. Requires Rfb1x connection  */
--	AD3542R_CH_OUTPUT_RANGE_0__3V,
--	/* Range from 0 V to 5 V. Requires Rfb1x connection  */
--	AD3542R_CH_OUTPUT_RANGE_0__5V,
--	/* Range from 0 V to 10 V. Requires Rfb2x connection  */
--	AD3542R_CH_OUTPUT_RANGE_0__10V,
--	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
--	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
--	/* Range from -5 V to 5 V. Requires Rfb2x connection  */
--	AD3542R_CH_OUTPUT_RANGE_NEG_5__5V,
--};
--
- static const s32 ad3542r_ch_ranges[][2] = {
- 	[AD3542R_CH_OUTPUT_RANGE_0__2P5V]	= {0, 2500},
- 	[AD3542R_CH_OUTPUT_RANGE_0__3V]		= {0, 3000},
-@@ -733,72 +574,32 @@ static void ad3552r_calc_gain_and_offset(struct ad3552r_desc *dac, s32 ch)
- 	dac->ch_data[ch].offset_dec = div_s64(tmp, span);
- }
- 
--static int ad3552r_find_range(const struct ad3552r_model_data *model_data,
--			      s32 *vals)
--{
--	int i;
--
--	for (i = 0; i < model_data->num_ranges; i++)
--		if (vals[0] == model_data->ranges_table[i][0] * 1000 &&
--		    vals[1] == model_data->ranges_table[i][1] * 1000)
--			return i;
--
--	return -EINVAL;
--}
--
- static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
- 					 struct fwnode_handle *child,
- 					 u32 ch)
- {
- 	struct device *dev = &dac->spi->dev;
--	u32 val;
- 	int err;
- 	u8 addr;
--	u16 reg = 0, offset;
--
--	struct fwnode_handle *gain_child __free(fwnode_handle)
--		= fwnode_get_named_child_node(child,
--					      "custom-output-range-config");
--	if (!gain_child)
--		return dev_err_probe(dev, -EINVAL,
--				     "mandatory custom-output-range-config property missing\n");
--
--	dac->ch_data[ch].range_override = 1;
--	reg |= FIELD_PREP(AD3552R_MASK_CH_RANGE_OVERRIDE, 1);
--
--	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-p", &val);
--	if (err)
--		return dev_err_probe(dev, err,
--				     "mandatory adi,gain-scaling-p property missing\n");
--	reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_P, val);
--	dac->ch_data[ch].p = val;
-+	u16 reg = 0;
- 
--	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-n", &val);
-+	err = ad3552r_get_custom_gain(dev, child,
-+				      &dac->ch_data[ch].p,
-+				      &dac->ch_data[ch].n,
-+				      &dac->ch_data[ch].rfb,
-+				      &dac->ch_data[ch].gain_offset);
- 	if (err)
--		return dev_err_probe(dev, err,
--				     "mandatory adi,gain-scaling-n property missing\n");
--	reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_N, val);
--	dac->ch_data[ch].n = val;
--
--	err = fwnode_property_read_u32(gain_child, "adi,rfb-ohms", &val);
--	if (err)
--		return dev_err_probe(dev, err,
--				     "mandatory adi,rfb-ohms property missing\n");
--	dac->ch_data[ch].rfb = val;
-+		return err;
- 
--	err = fwnode_property_read_u32(gain_child, "adi,gain-offset", &val);
--	if (err)
--		return dev_err_probe(dev, err,
--				     "mandatory adi,gain-offset property missing\n");
--	dac->ch_data[ch].gain_offset = val;
-+	dac->ch_data[ch].range_override = 1;
- 
--	offset = abs((s32)val);
--	reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_BIT_8, (offset >> 8));
-+	ad3552r_calc_custom_gain(dac->ch_data[ch].p, dac->ch_data[ch].n,
-+				 dac->ch_data[ch].gain_offset, &reg);
- 
--	reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_POLARITY, (s32)val < 0);
- 	addr = AD3552R_REG_ADDR_CH_GAIN(ch);
- 	err = ad3552r_write_reg(dac, addr,
--				offset & AD3552R_MASK_CH_OFFSET_BITS_0_7);
-+				abs((s32)dac->ch_data[ch].gain_offset) &
-+				AD3552R_MASK_CH_OFFSET_BITS_0_7);
- 	if (err)
- 		return dev_err_probe(dev, err, "Error writing register\n");
- 
-@@ -812,30 +613,17 @@ static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
- static int ad3552r_configure_device(struct ad3552r_desc *dac)
- {
- 	struct device *dev = &dac->spi->dev;
--	int err, cnt = 0, voltage, delta = 100000;
--	u32 vals[2], val, ch;
-+	int err, cnt = 0;
-+	u32 val, ch;
- 
- 	dac->gpio_ldac = devm_gpiod_get_optional(dev, "ldac", GPIOD_OUT_HIGH);
- 	if (IS_ERR(dac->gpio_ldac))
- 		return dev_err_probe(dev, PTR_ERR(dac->gpio_ldac),
- 				     "Error getting gpio ldac");
- 
--	voltage = devm_regulator_get_enable_read_voltage(dev, "vref");
--	if (voltage < 0 && voltage != -ENODEV)
--		return dev_err_probe(dev, voltage, "Error getting vref voltage\n");
--
--	if (voltage == -ENODEV) {
--		if (device_property_read_bool(dev, "adi,vref-out-en"))
--			val = AD3552R_INTERNAL_VREF_PIN_2P5V;
--		else
--			val = AD3552R_INTERNAL_VREF_PIN_FLOATING;
--	} else {
--		if (voltage > 2500000 + delta || voltage < 2500000 - delta) {
--			dev_warn(dev, "vref-supply must be 2.5V");
--			return -EINVAL;
--		}
--		val = AD3552R_EXTERNAL_VREF_PIN_INPUT;
--	}
-+	err = ad3552r_get_ref_voltage(dev, &val);
-+	if (err)
-+		return err;
- 
- 	err = ad3552r_update_reg_field(dac,
- 				       AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
-@@ -844,13 +632,10 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
- 	if (err)
- 		return err;
- 
--	err = device_property_read_u32(dev, "adi,sdo-drive-strength", &val);
-+	err = ad3552r_get_drive_strength(dev, &val);
-+	if (err)
-+		return err;
- 	if (!err) {
--		if (val > 3) {
--			dev_err(dev, "adi,sdo-drive-strength must be less than 4\n");
--			return -EINVAL;
--		}
--
- 		err = ad3552r_update_reg_field(dac,
- 					       AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
- 					       AD3552R_MASK_SDO_DRIVE_STRENGTH,
-@@ -875,21 +660,12 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
- 					     "reg must be less than %d\n",
- 					     dac->model_data->num_hw_channels);
- 
--		if (fwnode_property_present(child, "adi,output-range-microvolt")) {
--			err = fwnode_property_read_u32_array(child,
--							     "adi,output-range-microvolt",
--							     vals,
--							     2);
--			if (err)
--				return dev_err_probe(dev, err,
--					"adi,output-range-microvolt property could not be parsed\n");
--
--			err = ad3552r_find_range(dac->model_data, vals);
--			if (err < 0)
--				return dev_err_probe(dev, err,
--						     "Invalid adi,output-range-microvolt value\n");
-+		err = ad3552r_get_output_range(dev, dac->model_data->chip_id,
-+					       child, &val);
-+		if (err && err != -ENOENT)
-+			return err;
- 
--			val = err;
-+		if (!err) {
- 			if (ch == 0)
- 				val = FIELD_PREP(AD3552R_MASK_CH_OUTPUT_RANGE_SEL(0), val);
- 			else
-diff --git a/drivers/iio/dac/ad3552r.h b/drivers/iio/dac/ad3552r.h
-new file mode 100644
-index 000000000000..cada1f12f000
---- /dev/null
-+++ b/drivers/iio/dac/ad3552r.h
-@@ -0,0 +1,199 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * AD3552R Digital <-> Analog converters common header
-+ *
-+ * Copyright 2024 Analog Devices Inc.
-+ * Author: Angelo Dureghello <adureghello@baylibre.com>
-+ */
 +
-+#ifndef __DRIVERS_IIO_DAC_AD3552R_H__
-+#define __DRIVERS_IIO_DAC_AD3552R_H__
-+
-+/* Register addresses */
-+/* Primary address space */
-+#define AD3552R_REG_ADDR_INTERFACE_CONFIG_A		0x00
-+#define   AD3552R_MASK_SOFTWARE_RESET			(BIT(7) | BIT(0))
-+#define   AD3552R_MASK_ADDR_ASCENSION			BIT(5)
-+#define   AD3552R_MASK_SDO_ACTIVE			BIT(4)
-+#define AD3552R_REG_ADDR_INTERFACE_CONFIG_B		0x01
-+#define   AD3552R_MASK_SINGLE_INST			BIT(7)
-+#define   AD3552R_MASK_SHORT_INSTRUCTION		BIT(3)
-+#define AD3552R_REG_ADDR_DEVICE_CONFIG			0x02
-+#define   AD3552R_MASK_DEVICE_STATUS(n)			BIT(4 + (n))
-+#define   AD3552R_MASK_CUSTOM_MODES			GENMASK(3, 2)
-+#define   AD3552R_MASK_OPERATING_MODES			GENMASK(1, 0)
-+#define AD3552R_REG_ADDR_CHIP_TYPE			0x03
-+#define   AD3552R_MASK_CLASS				GENMASK(7, 0)
-+#define AD3552R_REG_ADDR_PRODUCT_ID_L			0x04
-+#define AD3552R_REG_ADDR_PRODUCT_ID_H			0x05
-+#define AD3552R_REG_ADDR_CHIP_GRADE			0x06
-+#define   AD3552R_MASK_GRADE				GENMASK(7, 4)
-+#define   AD3552R_MASK_DEVICE_REVISION			GENMASK(3, 0)
-+#define AD3552R_REG_ADDR_SCRATCH_PAD			0x0A
-+#define AD3552R_REG_ADDR_SPI_REVISION			0x0B
-+#define AD3552R_REG_ADDR_VENDOR_L			0x0C
-+#define AD3552R_REG_ADDR_VENDOR_H			0x0D
-+#define AD3552R_REG_ADDR_STREAM_MODE			0x0E
-+#define   AD3552R_MASK_LENGTH				GENMASK(7, 0)
-+#define AD3552R_REG_ADDR_TRANSFER_REGISTER		0x0F
-+#define   AD3552R_MASK_MULTI_IO_MODE			GENMASK(7, 6)
-+#define   AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE		BIT(2)
-+#define   AD3552R_MASK_DUAL_SPI				BIT(6)
-+#define   AD3552R_MASK_QUAD_SPI				BIT(7)
-+#define AD3552R_REG_ADDR_INTERFACE_CONFIG_C		0x10
-+#define   AD3552R_MASK_CRC_ENABLE			(GENMASK(7, 6) |\
-+							 GENMASK(1, 0))
-+#define   AD3552R_MASK_STRICT_REGISTER_ACCESS		BIT(5)
-+#define AD3552R_REG_ADDR_INTERFACE_STATUS_A		0x11
-+#define   AD3552R_MASK_INTERFACE_NOT_READY		BIT(7)
-+#define   AD3552R_MASK_CLOCK_COUNTING_ERROR		BIT(5)
-+#define   AD3552R_MASK_INVALID_OR_NO_CRC		BIT(3)
-+#define   AD3552R_MASK_WRITE_TO_READ_ONLY_REGISTER	BIT(2)
-+#define   AD3552R_MASK_PARTIAL_REGISTER_ACCESS		BIT(1)
-+#define   AD3552R_MASK_REGISTER_ADDRESS_INVALID		BIT(0)
-+#define AD3552R_REG_ADDR_INTERFACE_CONFIG_D		0x14
-+#define   AD3552R_MASK_ALERT_ENABLE_PULLUP		BIT(6)
-+#define   AD3552R_MASK_MEM_CRC_EN			BIT(4)
-+#define   AD3552R_MASK_SDO_DRIVE_STRENGTH		GENMASK(3, 2)
-+#define   AD3552R_MASK_DUAL_SPI_SYNCHROUNOUS_EN		BIT(1)
-+#define   AD3552R_MASK_SPI_CONFIG_DDR			BIT(0)
-+#define AD3552R_REG_ADDR_SH_REFERENCE_CONFIG		0x15
-+#define   AD3552R_MASK_IDUMP_FAST_MODE			BIT(6)
-+#define   AD3552R_MASK_SAMPLE_HOLD_DIFF_USER_EN		BIT(5)
-+#define   AD3552R_MASK_SAMPLE_HOLD_USER_TRIM		GENMASK(4, 3)
-+#define   AD3552R_MASK_SAMPLE_HOLD_USER_ENABLE		BIT(2)
-+#define   AD3552R_MASK_REFERENCE_VOLTAGE_SEL		GENMASK(1, 0)
-+#define AD3552R_REG_ADDR_ERR_ALARM_MASK			0x16
-+#define   AD3552R_MASK_REF_RANGE_ALARM			BIT(6)
-+#define   AD3552R_MASK_CLOCK_COUNT_ERR_ALARM		BIT(5)
-+#define   AD3552R_MASK_MEM_CRC_ERR_ALARM		BIT(4)
-+#define   AD3552R_MASK_SPI_CRC_ERR_ALARM		BIT(3)
-+#define   AD3552R_MASK_WRITE_TO_READ_ONLY_ALARM		BIT(2)
-+#define   AD3552R_MASK_PARTIAL_REGISTER_ACCESS_ALARM	BIT(1)
-+#define   AD3552R_MASK_REGISTER_ADDRESS_INVALID_ALARM	BIT(0)
-+#define AD3552R_REG_ADDR_ERR_STATUS			0x17
-+#define   AD3552R_MASK_REF_RANGE_ERR_STATUS		BIT(6)
-+#define   AD3552R_MASK_STREAM_EXCEEDS_DAC_ERR_STATUS	BIT(5)
-+#define   AD3552R_MASK_MEM_CRC_ERR_STATUS		BIT(4)
-+#define   AD3552R_MASK_RESET_STATUS			BIT(0)
-+#define AD3552R_REG_ADDR_POWERDOWN_CONFIG		0x18
-+#define   AD3552R_MASK_CH_DAC_POWERDOWN(ch)		BIT(4 + (ch))
-+#define   AD3552R_MASK_CH_AMPLIFIER_POWERDOWN(ch)	BIT(ch)
-+#define AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE		0x19
-+#define   AD3552R_MASK_CH0_RANGE			GENMASK(2, 0)
-+#define   AD3552R_MASK_CH1_RANGE			GENMASK(6, 4)
-+#define   AD3552R_MASK_CH_OUTPUT_RANGE			GENMASK(7, 0)
-+#define   AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch)		((ch) ? \
-+							 GENMASK(7, 4) : \
-+							 GENMASK(3, 0))
-+#define AD3552R_REG_ADDR_CH_OFFSET(ch)			(0x1B + (ch) * 2)
-+#define   AD3552R_MASK_CH_OFFSET_BITS_0_7		 GENMASK(7, 0)
-+#define AD3552R_REG_ADDR_CH_GAIN(ch)			(0x1C + (ch) * 2)
-+#define   AD3552R_MASK_CH_RANGE_OVERRIDE		BIT(7)
-+#define   AD3552R_MASK_CH_GAIN_SCALING_N		GENMASK(6, 5)
-+#define   AD3552R_MASK_CH_GAIN_SCALING_P		GENMASK(4, 3)
-+#define   AD3552R_MASK_CH_OFFSET_POLARITY		BIT(2)
-+#define   AD3552R_MASK_CH_OFFSET_BIT_8			BIT(0)
-+/*
-+ * Secondary region
-+ * For multibyte registers specify the highest address because the access is
-+ * done in descending order
-+ */
-+#define AD3552R_SECONDARY_REGION_START			0x28
-+#define AD3552R_REG_ADDR_HW_LDAC_16B			0x28
-+#define AD3552R_REG_ADDR_CH_DAC_16B(ch)			(0x2C - (1 - (ch)) * 2)
-+#define AD3552R_REG_ADDR_DAC_PAGE_MASK_16B		0x2E
-+#define AD3552R_REG_ADDR_CH_SELECT_16B			0x2F
-+#define AD3552R_REG_ADDR_INPUT_PAGE_MASK_16B		0x31
-+#define AD3552R_REG_ADDR_SW_LDAC_16B			0x32
-+#define AD3552R_REG_ADDR_CH_INPUT_16B(ch)		(0x36 - (1 - (ch)) * 2)
-+/* 3 bytes registers */
-+#define AD3552R_REG_START_24B				0x37
-+#define AD3552R_REG_ADDR_HW_LDAC_24B			0x37
-+#define AD3552R_REG_ADDR_CH_DAC_24B(ch)			(0x3D - (1 - (ch)) * 3)
-+#define AD3552R_REG_ADDR_DAC_PAGE_MASK_24B		0x40
-+#define AD3552R_REG_ADDR_CH_SELECT_24B			0x41
-+#define AD3552R_REG_ADDR_INPUT_PAGE_MASK_24B		0x44
-+#define AD3552R_REG_ADDR_SW_LDAC_24B			0x45
-+#define AD3552R_REG_ADDR_CH_INPUT_24B(ch)		(0x4B - (1 - (ch)) * 3)
-+
-+/* Useful defines */
-+#define AD3552R_MAX_CH					2
-+#define AD3552R_MASK_CH(ch)				BIT(ch)
-+#define AD3552R_MASK_ALL_CH				GENMASK(1, 0)
-+#define AD3552R_MAX_REG_SIZE				3
-+#define AD3552R_READ_BIT				BIT(7)
-+#define AD3552R_ADDR_MASK				GENMASK(6, 0)
-+#define AD3552R_MASK_DAC_12B				GENMASK(15, 4)
-+#define AD3552R_DEFAULT_CONFIG_B_VALUE			0x8
-+#define AD3552R_SCRATCH_PAD_TEST_VAL1			0x34
-+#define AD3552R_SCRATCH_PAD_TEST_VAL2			0xB2
-+#define AD3552R_GAIN_SCALE				1000
-+#define AD3552R_LDAC_PULSE_US				100
-+
-+#define AD3552R_AXI_REG_MAX				0x35
-+#define AD3552R_REF_INIT				0x00
-+#define AD3552R_STREAM_2BYTE_LOOP			0x02
-+#define AD3552R_STREAM_4BYTE_LOOP			0x04
-+
-+#define AD3552R_CH0_ACTIVE				BIT(0)
-+#define AD3552R_CH1_ACTIVE				BIT(1)
-+#define AD3552R_CH0_CH1_ACTIVE				(AD3552R_CH0_ACTIVE | \
-+							 AD3552R_CH1_ACTIVE)
-+
-+#define AD3552R_TRANSFER_INIT		(AD3552R_MASK_QUAD_SPI | \
-+					 AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE)
-+
-+enum ad3552r_id {
-+	AD3541R_ID = 0x400b,
-+	AD3542R_ID = 0x4009,
-+	AD3551R_ID = 0x400a,
-+	AD3552R_ID = 0x4008,
++static const struct iio_buffer_setup_ops ad3552r_axi_buffer_setup_ops = {
++	.postenable = ad3552r_axi_buffer_postenable,
++	.predisable = ad3552r_axi_buffer_predisable,
 +};
 +
-+enum ad3552r_ch_vref_select {
-+	/* Internal source with Vref I/O floating */
-+	AD3552R_INTERNAL_VREF_PIN_FLOATING,
-+	/* Internal source with Vref I/O at 2.5V */
-+	AD3552R_INTERNAL_VREF_PIN_2P5V,
-+	/* External source with Vref I/O as input */
-+	AD3552R_EXTERNAL_VREF_PIN_INPUT
++static int ad3552r_set_synchronous_mode_status(struct iio_dev *indio_dev,
++					       const struct iio_chan_spec *chan,
++					       unsigned int status)
++{
++	struct ad3552r_axi_state *st = iio_priv(indio_dev);
++
++	st->synced_transfer = status;
++
++	return 0;
++}
++
++static int ad3552r_get_synchronous_mode_status(struct iio_dev *indio_dev,
++				    const struct iio_chan_spec *chan)
++{
++	struct ad3552r_axi_state *st = iio_priv(indio_dev);
++
++	return st->synced_transfer;
++}
++
++static const char *const synchronous_mode_status[] = {
++	[AD3552R_NO_SYNC] = "no_sync",
++	[AD3552R_EXT_SYNC_ARM] = "ext_sync_arm",
 +};
 +
-+enum ad3542r_ch_output_range {
-+	/* Range from 0 V to 2.5 V. Requires Rfb1x connection */
-+	AD3542R_CH_OUTPUT_RANGE_0__2P5V,
-+	/* Range from 0 V to 3 V. Requires Rfb1x connection  */
-+	AD3542R_CH_OUTPUT_RANGE_0__3V,
-+	/* Range from 0 V to 5 V. Requires Rfb1x connection  */
-+	AD3542R_CH_OUTPUT_RANGE_0__5V,
-+	/* Range from 0 V to 10 V. Requires Rfb2x connection  */
-+	AD3542R_CH_OUTPUT_RANGE_0__10V,
-+	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection  */
-+	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
-+	/* Range from -5 V to 5 V. Requires Rfb2x connection  */
-+	AD3542R_CH_OUTPUT_RANGE_NEG_5__5V,
++static const struct iio_enum ad3552r_synchronous_mode_enum = {
++	.items = synchronous_mode_status,
++	.num_items = ARRAY_SIZE(synchronous_mode_status),
++	.get = ad3552r_get_synchronous_mode_status,
++	.set = ad3552r_set_synchronous_mode_status,
 +};
 +
-+enum ad3552r_ch_output_range {
-+	/* Range from 0 V to 2.5 V. Requires Rfb1x connection */
-+	AD3552R_CH_OUTPUT_RANGE_0__2P5V,
-+	/* Range from 0 V to 5 V. Requires Rfb1x connection  */
-+	AD3552R_CH_OUTPUT_RANGE_0__5V,
-+	/* Range from 0 V to 10 V. Requires Rfb2x connection  */
-+	AD3552R_CH_OUTPUT_RANGE_0__10V,
-+	/* Range from -5 V to 5 V. Requires Rfb2x connection  */
-+	AD3552R_CH_OUTPUT_RANGE_NEG_5__5V,
-+	/* Range from -10 V to 10 V. Requires Rfb4x connection  */
-+	AD3552R_CH_OUTPUT_RANGE_NEG_10__10V,
++static const struct iio_chan_spec_ext_info ad3552r_axi_ext_info[] = {
++	IIO_ENUM("synchronous_mode", IIO_SHARED_BY_TYPE,
++		 &ad3552r_synchronous_mode_enum),
++	IIO_ENUM_AVAILABLE("synchronous_mode", IIO_SHARED_BY_TYPE,
++			   &ad3552r_synchronous_mode_enum),
++	{},
 +};
 +
-+int ad3552r_get_output_range(struct device *dev, enum ad3552r_id id,
-+			     struct fwnode_handle *child, u32 *val);
-+int ad3552r_get_custom_gain(struct device *dev, struct fwnode_handle *child,
-+			    u8 *gs_p, u8 *gs_n, u16 *rfb, s16 *goffs);
-+void ad3552r_calc_custom_gain(u8 p, u8 n, s16 goffs, u16 *reg);
-+int ad3552r_get_ref_voltage(struct device *dev, u32 *val);
-+int ad3552r_get_drive_strength(struct device *dev, u32 *val);
++#define AD3552R_CHANNEL(ch) { \
++	.type = IIO_VOLTAGE, \
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
++	.info_mask_shared_by_all = (((ch) == 0) ? \
++		BIT(IIO_CHAN_INFO_SAMP_FREQ) : 0), \
++	.output = 1, \
++	.indexed = 1, \
++	.channel = (ch), \
++	.scan_index = (ch), \
++	.scan_type = { \
++		.sign = 'u', \
++		.realbits = 16, \
++		.storagebits = 16, \
++		.shift = 0, \
++		.endianness = IIO_BE, \
++	}, \
++	.ext_info = ad3552r_axi_ext_info, \
++}
 +
-+#endif /* __DRIVERS_IIO_DAC_AD3552R_H__ */
++static struct iio_chan_spec ad3552r_axi_channels[] = {
++	AD3552R_CHANNEL(0),
++	AD3552R_CHANNEL(1),
++};
++
++static const struct iio_info ad3552r_axi_info = {
++	.read_raw = &ad3552r_axi_read_raw,
++	.write_raw = &ad3552r_axi_write_raw,
++	.update_scan_mode = ad3552r_axi_update_scan_mode,
++};
++
++static int ad3552r_axi_probe(struct platform_device *pdev)
++{
++	struct ad3552r_axi_state *st;
++	struct iio_dev *indio_dev;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++	st->dev = &pdev->dev;
++
++	st->back = devm_iio_backend_get(&pdev->dev, NULL);
++	if (IS_ERR(st->back))
++		return PTR_ERR(st->back);
++
++	ret = devm_iio_backend_enable(&pdev->dev, st->back);
++	if (ret)
++		return ret;
++
++	indio_dev->name = "ad3552r";
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->setup_ops = &ad3552r_axi_buffer_setup_ops;
++	indio_dev->channels = ad3552r_axi_channels;
++	indio_dev->num_channels = ARRAY_SIZE(ad3552r_axi_channels);
++	indio_dev->info = &ad3552r_axi_info;
++
++	ret = devm_iio_backend_request_buffer(&pdev->dev, st->back, indio_dev);
++	if (ret)
++		return ret;
++
++	ret = ad3552r_axi_setup(st);
++	if (ret)
++		return ret;
++
++	return devm_iio_device_register(&pdev->dev, indio_dev);
++}
++
++static const struct of_device_id ad3552r_axi_of_id[] = {
++	{ .compatible = "adi,ad3552r" },
++	{}
++};
++MODULE_DEVICE_TABLE(of, ad3552r_axi_of_id);
++
++static struct platform_driver axi_ad3552r_driver = {
++	.driver = {
++		.name = "ad3552r-axi",
++		.of_match_table = ad3552r_axi_of_id,
++	},
++	.probe = ad3552r_axi_probe,
++};
++module_platform_driver(axi_ad3552r_driver);
++
++MODULE_AUTHOR("Dragos Bogdan <dragos.bogdan@analog.com>");
++MODULE_AUTHOR("Angelo Dureghello <adueghello@baylibre.com>");
++MODULE_DESCRIPTION("AD3552R Driver - AXI IP version");
++MODULE_LICENSE("GPL");
 
 -- 
 2.45.0.rc1

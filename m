@@ -1,142 +1,117 @@
-Return-Path: <linux-iio+bounces-8857-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8858-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AA0964386
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 13:52:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B5D9643E6
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 14:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B9E4283A6C
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 11:52:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BEDC1F232D1
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 12:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858FA192B6F;
-	Thu, 29 Aug 2024 11:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135AD14B96F;
+	Thu, 29 Aug 2024 12:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="BSFNf44C"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TL4bR+VA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A539918C03D;
-	Thu, 29 Aug 2024 11:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8317191484;
+	Thu, 29 Aug 2024 12:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724932331; cv=none; b=YsYh4YHTX1TQjXld/yZ0qebXiZ9Vrya395uzoOmw5TMbyUJPTZW5IB1xthbeso0+4pSViKpVirM6w95nHnIIc/Df9yZjrZUgUyZ+tku0rB51Dyx7is5HOm+tx+2qVlCCL5HkES/rBCSmGlE5W3VTwjQThIYP2+1aSk8y4Pue0N4=
+	t=1724933199; cv=none; b=GXkQWzemwPgTWPn/r0PLG2UxNzJ+eUqbei6HQYeEoxS1GuHavhQGOHLFn1BwMEcfENlt3gHRLgIkDXwaru8nCZTolO4w+A1bA65cXrHxrkp7xfEbcTrofJ9Wb9z7TDpCTGzsnc4iVjovNitapwP8xHALb0WozkzcR6fhPGrdcuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724932331; c=relaxed/simple;
-	bh=tLZ8vmFpkVpu4IvhBOz9UunW+WpkV/nZjcZ3qim3VmY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CfUBYGWmUw/7is5Bw4/+edeiZ5/LllmyRZpjT4zLEBv5AloaXJlzwfkjI5URPKCzIrmSVLmuCljM78icTxzpU3Ny+adI7nTH2l6tsKgczfSKkZIgF/oHdB3qfQSmLC9CLlFUvkNSnXy9fpRCE+GLndi5OTRyw9KBgfi1njQHwBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=BSFNf44C; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tLZ8vmFpkVpu4IvhBOz9UunW+WpkV/nZjcZ3qim3VmY=; b=BSFNf44C7QcZSYJ3IeF8hDavGL
-	JZ2YxBEDZGmxXUbx3qel7FKJU1TY9i8zVYc76pwv0N7eQ9qa7NP52WVNYJwgUkQStsCdWI4HLn7ba
-	DIwnks4ACBQA7N093a3FzyGXHK+XAaGvKjROcPDnV9uNEYCHdJT/iuBidO48dBWxChgcGFJMG2C9b
-	eyObsZF5sdPuLdHcnbCrDbCQ/rZP1nsmxyOt87KlJWycQAEjBfaklEReRjJTglG3/bfjAoKzUE0CT
-	MVE7W3kPCOLwqYLTMu45+pbGExipmw9U93rcXS7Djc/lWaBtmTwJhU6P3BkMAdK5qMhoWG0fhGfhe
-	y7YmOsDQ==;
-Received: from i5e861916.versanet.de ([94.134.25.22] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sjdgT-0003bn-Pb; Thu, 29 Aug 2024 13:51:25 +0200
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To: Detlev Casanova <detlev.casanova@collabora.com>,
- Guenter Roeck <linux@roeck-us.net>
-Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>,
- Wim Van Sebroeck <wim@linux-watchdog.org>,
- Chris Morgan <macromorgan@hotmail.com>, Jonas Karlman <jonas@kwiboo.se>,
- Tim Lunn <tim@feathertop.org>, Chukun Pan <amadeus@jmu.edu.cn>,
- Andy Yan <andyshrk@163.com>, Muhammed Efe Cetin <efectn@protonmail.com>,
- Jagan Teki <jagan@edgeble.ai>, Dragan Simic <dsimic@manjaro.org>,
- Ondrej Jirman <megi@xff.cz>, Michael Riesch <michael.riesch@wolfvision.net>,
- Jimmy Hon <honyuenkwun@gmail.com>, Alexey Charkov <alchark@gmail.com>,
- Elon Zhang <zhangzj@rock-chips.com>, Elaine Zhang <zhangqing@rock-chips.com>,
- Yifeng Zhao <yifeng.zhao@rock-chips.com>,
- Finley Xiao <finley.xiao@rock-chips.com>, Liang Chen <cl@rock-chips.com>,
- Jisheng Zhang <jszhang@kernel.org>, Jamie Iles <jamie@jamieiles.com>,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, dri-devel@lists.freedesktop.org,
- linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
- kernel@collabora.com
-Subject:
- Re: [PATCH v2 09/12] dt-bindings: watchdog: Add rockchip,rk3576-wdt
- compatible
-Date: Thu, 29 Aug 2024 13:52:37 +0200
-Message-ID: <61607306.matp6XCIr4@diego>
-In-Reply-To: <5254cf14-65d1-4ffa-a1fb-265a51dda37d@roeck-us.net>
-References:
- <20240823150057.56141-1-detlev.casanova@collabora.com>
- <3262963.l52yBJDM9G@diego>
- <5254cf14-65d1-4ffa-a1fb-265a51dda37d@roeck-us.net>
+	s=arc-20240116; t=1724933199; c=relaxed/simple;
+	bh=+E0TYoC9A8uXLguv/Jkw/zwcuXpNrTVLwhTVwVZOVSM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QanxNghVeQWBurqjn29Yc1eTBaH6P41/w435QgFd0UsD05jfMEUU0gN5iJ44JzTO0pV1ZIbW3Wiph1o3fXsYDYF/pQZ9BNmAnDt6or7g/HqtcR8WVEagQzDa3cW03XMgC3hdVPW5AjWgnVDngH7HSrwn4QUWG/a+7D4iHPtq/lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TL4bR+VA; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724933199; x=1756469199;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+E0TYoC9A8uXLguv/Jkw/zwcuXpNrTVLwhTVwVZOVSM=;
+  b=TL4bR+VAzQfrlXWRK5srZ7kZWuQTJmakXhNBqxjpNxsTkFxxjgu5y7Er
+   sb0Yis4o2DPiSl0NBWpYoEWK0kMuvlITHOgaqrTUxf0u1jh+moq7Ro18g
+   BSHylHRG2uCUsUYywrMEB6zmG0XQJq2gBJoRPLxEOqktYbnrdTKHmYalg
+   haknx6dEKhrmXK8g5M9UHdJSE17eOfXOqO4Himxs8m+ghkch0zjjs7e2O
+   Nc82tpCTiVAwQz0rjNSsugZ6XV001IZBqgKwKe+ScMuDSs17X+BlVtR+T
+   +T3qS1MMAJtyaOt7h4ONSGY7LWGdndA9SwMWCyoU5P0c2aMzYFHY7pxrG
+   Q==;
+X-CSE-ConnectionGUID: C7gF54MCTk6Y9ORacrU5Vg==
+X-CSE-MsgGUID: xkQOdkvoQPKXf3VmgawSvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="34894553"
+X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; 
+   d="scan'208";a="34894553"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 05:06:37 -0700
+X-CSE-ConnectionGUID: k+W/toi/TWe2IfsTonTjMg==
+X-CSE-MsgGUID: lvERwannT0OBKxNI/IUyAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; 
+   d="scan'208";a="63890665"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 05:06:31 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1sjduo-00000002zFD-1bmO;
+	Thu, 29 Aug 2024 15:06:14 +0300
+Date: Thu, 29 Aug 2024 15:06:14 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, ang.iglesiasg@gmail.com,
+	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
+	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
+	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	christophe.jaillet@wanadoo.fr
+Subject: Re: [PATCH v4 1/7] iio: pressure: bmp280: Use bulk read for humidity
+ calibration data
+Message-ID: <ZtBkNu0luJyT1emw@smile.fi.intel.com>
+References: <20240828205128.92145-1-vassilisamir@gmail.com>
+ <20240828205128.92145-2-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240828205128.92145-2-vassilisamir@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Guenter,
+On Wed, Aug 28, 2024 at 10:51:21PM +0200, Vasileios Amoiridis wrote:
+> Convert individual reads to a bulk read for the humidity calibration data.
 
-Am Dienstag, 27. August 2024, 21:38:35 CEST schrieb Guenter Roeck:
-> On 8/27/24 00:20, Heiko St=FCbner wrote:
-> > Am Samstag, 24. August 2024, 18:44:29 CEST schrieb Guenter Roeck:
-> >> On Fri, Aug 23, 2024 at 10:52:36AM -0400, Detlev Casanova wrote:
-> >>> It is compatible with the other rockchip SoCs.
-> >>>
-> >>> Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
-> >>
-> >> Acked-by: Guenter Roeck <linux@roeck-us.net>
-> >=20
-> > For my understanding, does this Ack mean you expect the patch to go in
-> > with the other patches?
-> >=20
-> Yes
->=20
-> > Because in theory this patch could also be picked and go through the
-> > watchdog tree, similar to how the saradc binding went into the
-> > iio tree already.
-> >=20
->=20
-> I thought it was all supposed to be pushed together.
+...
 
-I think at this point the rk3576 has still quite a number of separate
-pieces. A series for clocks, one for mmc and I think there are more.
+> +	calib->H2 = get_unaligned_le16(&data->bme280_humid_cal_buf[H2]);
+> +	calib->H3 = data->bme280_humid_cal_buf[H3];
+> +	tmp_1 = get_unaligned_be16(&data->bme280_humid_cal_buf[H4]);
+> +	tmp_2 = FIELD_GET(BME280_COMP_H4_GET_MASK_UP, tmp_1);
+> +	h4_upper = FIELD_PREP(BME280_COMP_H4_PREP_MASK_UP, tmp_2);
+> +	h4_lower = FIELD_GET(BME280_COMP_H4_MASK_LOW,
 
-So for stuff that is obvious, like the saradc compatible Jonathan already,
-picked or this watchdog compatible, a strategy of "someone picks the
-individual" patch also is helpful, because it reduces the number of pieces
-on the "chess board" ;-) .
+> +			get_unaligned_be16(&data->bme280_humid_cal_buf[H4]));
 
+Either I don't understand the side effects, or this is the same as tmp_1. No?
 
-So I guess both ways (wdt binding getting applied, or me just applying it
-with the rest) are doable and we'll just follow what you feel comfortable
-with doing.
+> +	calib->H4 = sign_extend32(h4_upper | h4_lower, 11);
+> +	calib->H5 = sign_extend32(FIELD_GET(BME280_COMP_H5_MASK,
+> +			get_unaligned_le16(&data->bme280_humid_cal_buf[H5])), 11);
+> +	calib->H6 = data->bme280_humid_cal_buf[H6];
 
-Heiko
-
-
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
 

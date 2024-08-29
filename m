@@ -1,122 +1,107 @@
-Return-Path: <linux-iio+bounces-8878-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8879-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C4596452D
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 14:49:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9359646ED
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 15:40:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7E371F24504
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 12:49:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6536D1F2223C
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Aug 2024 13:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3F11B3741;
-	Thu, 29 Aug 2024 12:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3B21A707F;
+	Thu, 29 Aug 2024 13:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bOKVHs2k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OpUvT1IT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C971B3734;
-	Thu, 29 Aug 2024 12:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7831019408D;
+	Thu, 29 Aug 2024 13:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724935330; cv=none; b=gu8McjCuC2Y72Xcck38yx+IBdW5RkBm1HzinpzYbNljtnEWsoFlmBiRcM2KEnzpyDnskWeGO/Fn6jLB3X9EoBao0wlDj913sCRBcvQBRhX45Ha0gjTr5ea9Jgn50kUNu0tDAEZvCu3ewXVvYpiVawiZueB6GsDn9a4GdtwN2Qcg=
+	t=1724938801; cv=none; b=NjozfiMl8G6VoKCUKrnRMh4krHcPsPWLzAHkMusFzAWc0Ih7LZzvfeWeDxTUmNA7pPbdpMbd+PykPC8Sr7IZWCCODpS1s9jarpDs0lifpqBrIDezsz933JkQvmRZ7gptkWGrNCVhYEjJXmXeX7mc9y8zJOz6rtsc7DfGHS13Ek4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724935330; c=relaxed/simple;
-	bh=uFyDqbSSUEToSH8ps83mcK5RmVehkx0W0ax8lXFIm8I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GsJDsA8pTe/sK4ZDCWUcu/HirX4lN8SWAUtUH1WWfRnM3X4Ls8YdDomTZKv/PJ7YdNNVtsQnkJDyJPtDUlXqUhzhsefgNJZM4VcBhYB6v5ye7m2tbKF8b0sm4c4WdF0/EIjAzMD1Vcq46LV2/OelJQQRrRFPOFl8nG1BNfucTwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bOKVHs2k; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724935329; x=1756471329;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uFyDqbSSUEToSH8ps83mcK5RmVehkx0W0ax8lXFIm8I=;
-  b=bOKVHs2kJT8DPX3+tKR3SjkrzxHoj1SRozuYGbtkSjjIp3fXx2ahFKKc
-   MWPoDMHr+OP75QucN5vzrdGQiJkbLSwJQdhU/nNShfWgbHyQNAtUZKtLK
-   SqLRUidyiuYsHLwtbzejjqPSu70dGtCowRbnUpUP06FMW+/YITKKYRE9j
-   VJrzYo//4JwBWFxDwSB8eCrX9Y59tTPvZC7C2wmA5xRzcgO6KhlP1BhDB
-   Tv7WWiR5h/BydmGfSrpo1jIvZqfCfXDuLx5XR4rGBEUROE9iZ32E0ZHPl
-   clupUP7qREXNAtX0DHd2UeHpph+1KZrF8UTlE3tIaRLRA+0X65/R8vm9M
-   w==;
-X-CSE-ConnectionGUID: I3u1ZsRFQKOAkbZoNHZsfA==
-X-CSE-MsgGUID: ty/uRIfUQp+kwRG9GKstUg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="23097986"
-X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; 
-   d="scan'208";a="23097986"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 05:42:08 -0700
-X-CSE-ConnectionGUID: 190mgRs/Q22/X28t55szjg==
-X-CSE-MsgGUID: WjAa+EHxQmaqnq/o5eUgQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; 
-   d="scan'208";a="94363347"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 05:42:05 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1sjeTR-00000002zo8-3Clb;
-	Thu, 29 Aug 2024 15:42:01 +0300
-Date: Thu, 29 Aug 2024 15:42:01 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, ang.iglesiasg@gmail.com,
-	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
-	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
-	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	christophe.jaillet@wanadoo.fr
-Subject: Re: [PATCH v4 7/7] iio: pressure: bmp280: Move bmp085 interrupt to
- new configuration
-Message-ID: <ZtBsmSGWLhNe8_Zw@smile.fi.intel.com>
-References: <20240828205128.92145-1-vassilisamir@gmail.com>
- <20240828205128.92145-8-vassilisamir@gmail.com>
+	s=arc-20240116; t=1724938801; c=relaxed/simple;
+	bh=T8uq5UDm0y39JoS8gj7vYpV20ScMyzrUL55wcPe8U0A=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=BPsOPVgNKD46NZEz/U4NiFEjaUu8riZzWWkkhQqrECzsXjTIaqcDIhEgZSmKKzZQAPndQNJQSReE2NHvIgPD3+cczxzgIyghRFcrGSH7uYvdLS9gR9ptoAF5PAWJcT5AOoCvIDDrXUjPavuHRhh9I4EyS0cbBmGfrPvl+B8uJJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OpUvT1IT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40B9C4CEC1;
+	Thu, 29 Aug 2024 13:40:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724938801;
+	bh=T8uq5UDm0y39JoS8gj7vYpV20ScMyzrUL55wcPe8U0A=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=OpUvT1IT8u82MSNgks9scGD8Eo+HbsJrIlHP5QLs6GEgVc3kfN7p3isndrBUfQoyM
+	 2kG0qv1HNU6rxkzbgSf8WV2ivxtsLvAUy7hkRCLprCA6R8XYsJSHTm6WJJhhOnJs0J
+	 qoVWhjdyVTeTgu3Yk2ULi15KhxvgoJ63hXDz/UtZ48ptoLXJpplQ7LEjONdgkx8Txx
+	 w8vMXROxtlWJSuytsSZ05bn9kcRgicNf0K9a9xSc007Gw0tJCxy5mT7ceKMoXqWqO3
+	 fzBmaKsKTLYv0jM/sm1i5H4SPgcK2ksp+n+F7hvYCkUyBjpCaxAzUT0yxCL9WUgjEL
+	 w1XV+jdIjfrSg==
+Date: Thu, 29 Aug 2024 08:39:59 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240828205128.92145-8-vassilisamir@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, dlechner@baylibre.com, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org
+In-Reply-To: <20240829-wip-bl-ad3552r-axi-v0-v1-4-b6da6015327a@baylibre.com>
+References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
+ <20240829-wip-bl-ad3552r-axi-v0-v1-4-b6da6015327a@baylibre.com>
+Message-Id: <172493879919.232012.15230520873780726405.robh@kernel.org>
+Subject: Re: [PATCH RFC 4/8] dt-bindings: iio: dac: add adi axi-dac bus
+ property
 
-On Wed, Aug 28, 2024 at 10:51:27PM +0200, Vasileios Amoiridis wrote:
-> This commit intends to add the old BMP085 sensor to the new IRQ interface
-> of the driver for consistence. No functional changes intended.
+
+On Thu, 29 Aug 2024 14:32:02 +0200, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> The BMP085 sensor is equivalent with the BMP180 with the only difference of
-> BMP085 having an extra interrupt pin to inform about an End of Conversion.
+> Add bus property.
+> 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
+>  Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
 
-...
+My bot found errors running 'make dt_binding_check' on your patch:
 
-> +static int bmp085_trigger_probe(struct iio_dev *indio_dev)
->  {
-> +	struct bmp280_data *data = iio_priv(indio_dev);
-> +	struct device *dev = data->dev;
->  	unsigned long irq_trig;
-> -	int ret;
-> +	int ret, irq;
-> +
-> +	irq = fwnode_irq_get(dev_fwnode(data->dev), 0);
+yamllint warnings/errors:
 
-You have dev, use it!
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml: properties:bus-type: 'enum' should not be valid under {'enum': ['const', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'minimum', 'maximum', 'multipleOf', 'pattern']}
+	hint: Scalar and array keywords cannot be mixed
+	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
 
-> +	if (irq < 0)
-> +		return dev_err_probe(data->dev, irq, "No interrupt found.\n");
+doc reference errors (make refcheckdocs):
 
-Ditto!
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240829-wip-bl-ad3552r-axi-v0-v1-4-b6da6015327a@baylibre.com
 
--- 
-With Best Regards,
-Andy Shevchenko
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
 
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

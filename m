@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-8906-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8907-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DFD967111
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 13:11:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95980967136
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 13:15:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91614284123
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 11:11:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D901C21A99
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 11:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEE217C7CC;
-	Sat, 31 Aug 2024 11:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0F017D340;
+	Sat, 31 Aug 2024 11:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCS1ylG/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgRa8u81"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02CE16CD1D;
-	Sat, 31 Aug 2024 11:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D4D17DFEB;
+	Sat, 31 Aug 2024 11:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725102658; cv=none; b=Uj1usTjisAe6CLntBlKAs4zV5DHvfWBbMntH/sVTrReWgcSP0c4YN6z+SvuBddCvw8tYPGEnkR1O5586UQwJQ3F57Yo1fD9rXpsafrBDu7Go+X7ayIKrNuAm+tGVl0S/Z1P+6x7rdlj9rwRf5smn0Lp/vRAqh70MlerDRfwY4wo=
+	t=1725102867; cv=none; b=FOp9TsvLx5TfpxGYoKfs21X2u0oQOeIxlHT4rJrGfMCBvAJt90MfhPbKNHPU/26e6HmaNZNCGvMSkcU+bTnMA/64qAzL65uqHW9BDaOXR8VHbEjG9AKtjcr73qpVcZSGxy2KGgpiiic2SuXRrfZg3SRfNIM6bTUgJxAwsoTVeX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725102658; c=relaxed/simple;
-	bh=o+aySaL7w/0qvTUTmTKr4PdL//PX2C9y7fl4H4AiQnk=;
+	s=arc-20240116; t=1725102867; c=relaxed/simple;
+	bh=JoeQ1+9FykwPktoL15ThTao/9Vu+3+00UVGBonSwU0A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l+jGF1T8bCMzd8mTzjRupsBFTTQDtPuuhNXYvCErMg+zVbs9JnEeH9nzyTpetdRSd89Jl3MaqEnwfLjHkIh+xQZ3b4CVz6ySm3xb+H/mXXzOgVSeFKxYauCQyTyZoko4gaL5dZqDFhwO044b2tBZ+cwl85Unyz189k/N3Tn+NW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCS1ylG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184D2C4CEC0;
-	Sat, 31 Aug 2024 11:10:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=db6ZV6+aC1jO/fPnDihBOldihxUehoJspyDqZMA5INPw26ffN/QVRlRkLau8oCwdgKJUWHQOUnzzMrnp3MKKu9ZbCZn811DO6eK88DwPowfsOrpkCMZ9OwN2xnwMk5WDWovm+qTyAs3dtputSpoB4ZPDb/fXqqQYqJTy/m0B6GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgRa8u81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2E8C4CEC0;
+	Sat, 31 Aug 2024 11:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725102658;
-	bh=o+aySaL7w/0qvTUTmTKr4PdL//PX2C9y7fl4H4AiQnk=;
+	s=k20201202; t=1725102866;
+	bh=JoeQ1+9FykwPktoL15ThTao/9Vu+3+00UVGBonSwU0A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SCS1ylG/9h9cbIEWYjsDw7CkXk/d0CGO6MvG5TU8RtZbjpABTgjHmM78tjxN0PwVq
-	 D9b9RV+IWQ4oanQXrXsCZ3mZJTk0W0DefGsnf4bwEDkik6fHCaaKOFxqFCjVv/HbLN
-	 pqmBIpxx6YCJowVQONdODz4aBFTZdlXqtkamtaqjfP3ZU5NygwEsNwFqFDywlpe1+S
-	 nX0bmPm5+5xiy07p8E+f8XAv4pxfrfESSPsuVgsmKxauKUPTyyh7R0zLHRiUjFw3qV
-	 qOZqsKqRacnJu83H+e5dp1zKbILwLViFcLkV0Ebgr8s+m1DQN8Rqi1TBjxdTCIAGLm
-	 pnOhGY6TJR3Qg==
-Date: Sat, 31 Aug 2024 12:10:49 +0100
+	b=PgRa8u81fp8I5BesmFFAMHoypMHilmrdMf9Iy5m16yRQ5eYOhlRIJrS/QzzfabJjD
+	 z7V+taqA+3T0WLSH5OeGxM9HgmAV5ZfzlpH3gYKK4KeXO3PccYtG7H9LC67vhK+D2k
+	 9PXfWXMF9DPSlGB7jh5Uq39NdeBxUvluSQngLrf+IZsuucRUtBuRLspNFhj7Wuw6nu
+	 BT77xAEngPGRXXktE3Hc6L1q3ebrVJmCw/6YsvRi+/EnCjlPv/aLFn4GvEixoaKFtk
+	 Kyu46zCyrZ4hbYuhPQY7wJck/9Rp9A4fycU+A2A00nPBGjQbrikLT4hYw8EQhH3m/6
+	 oG623bSI1gUyg==
+Date: Sat, 31 Aug 2024 12:14:15 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
@@ -53,12 +53,10 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
  <miquel.raynal@bootlin.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v5 2/3] iio: adc: sophgo-saradc: Add driver for Sophgo
- CV1800B SARADC
-Message-ID: <20240831121049.517c95f7@jic23-huawei>
-In-Reply-To: <20240829-sg2002-adc-v5-2-aacb381e869b@bootlin.com>
+Subject: Re: [PATCH v5 0/3] Add SARADC support on Sophgo CV18XX series
+Message-ID: <20240831121415.4888cf11@jic23-huawei>
+In-Reply-To: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
 References: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
-	<20240829-sg2002-adc-v5-2-aacb381e869b@bootlin.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,118 +67,91 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Minor stuff inline.
+On Thu, 29 Aug 2024 14:31:49 +0200
+Thomas Bonnefille <thomas.bonnefille@bootlin.com> wrote:
 
-I'll fix up whilst applying.
+> This patchset adds initial ADC support for Sophgo CV18XX series SoC. This driver can
+> work with or without interrupt.
+> 
+> Link: https://github.com/sophgo/sophgo-doc/releases/download/sg2002-trm-v1.0/sg2002_trm_en.pdf
+> 
+> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+Applied patches 1 and 2 to the togreg branch of iio.git. Currently that's
+just pushed out as testing because I want to rebase shortly to get some
+usptream fixes needed for other series.
+
+Thanks,
 
 Jonathan
 
-> diff --git a/drivers/iio/adc/sophgo-cv1800b-adc.c b/drivers/iio/adc/sophgo-cv1800b-adc.c
-> new file mode 100644
-> index 000000000000..f4cdec966694
-> --- /dev/null
-> +++ b/drivers/iio/adc/sophgo-cv1800b-adc.c
-> @@ -0,0 +1,218 @@
 
-> +static int cv1800b_adc_read_raw(struct iio_dev *indio_dev,
-> +				struct iio_chan_spec const *chan,
-> +				int *val, int *val2, long mask)
-> +{
-> +	struct cv1800b_adc *saradc = iio_priv(indio_dev);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:{
-> +		u32 sample;
-> +
-> +		scoped_guard(mutex, &saradc->lock) {
-> +			int ret;
-> +
-> +			cv1800b_adc_start_measurement(saradc, chan->scan_index);
-> +			ret = cv1800b_adc_wait(saradc);
-> +			if (ret < 0)
-> +				return ret;
-> +
-> +			sample = readl(saradc->regs + CV1800B_ADC_CH_RESULT_REG(chan->scan_index));
-> +		}
-> +		if (!(sample & CV1800B_ADC_CH_VALID))
-> +			return -ENODATA;
-> +
-> +		*val = sample & CV1800B_ADC_CH_RESULT;
-> +		return IIO_VAL_INT;
-> +		}
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 3300;
-> +		*val2 = 12;
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
 
-This needs  {} as per the build bot.
-If nothing major comes up, I'll tweak whilst applying.
 
-> +		u32 status_reg = readl(saradc->regs + CV1800B_ADC_CYC_SET_REG);
-> +		int clk_div = (1 + FIELD_GET(CV1800B_MASK_CLKDIV, status_reg));
-> +		int freq = clk_get_rate(saradc->clk) / clk_div;
-> +		int nb_startup_cycle = 1 + FIELD_GET(CV1800B_MASK_STARTUP_CYCLE, status_reg);
-> +		int nb_sample_cycle = 1 + FIELD_GET(CV1800B_MASK_SAMPLE_WINDOW, status_reg);
-> +		int nb_compare_cycle = 1 + FIELD_GET(CV1800B_MASK_COMPARE_CYCLE, status_reg);
-> +
-> +		*val = freq / (nb_startup_cycle + nb_sample_cycle + nb_compare_cycle);
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-
-> +static int cv1800b_adc_probe(struct platform_device *pdev)
-> +{
-> +	struct cv1800b_adc *saradc;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*saradc));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	saradc = iio_priv(indio_dev);
-> +	indio_dev->name = "sophgo-cv1800b-adc";
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &cv1800b_adc_info;
-> +	indio_dev->num_channels = ARRAY_SIZE(sophgo_channels);
-> +	indio_dev->channels = sophgo_channels;
-> +
-> +	saradc->clk = devm_clk_get_enabled(&pdev->dev, NULL);
-> +	if (IS_ERR(saradc->clk))
-> +		return PTR_ERR(saradc->clk);
-> +
-> +	saradc->regs = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(saradc->regs))
-> +		return PTR_ERR(saradc->regs);
-> +
-> +	saradc->irq = platform_get_irq_optional(pdev, 0);
-> +	if (saradc->irq >= 0) {
-> +		init_completion(&saradc->completion);
-> +		ret = devm_request_irq(&pdev->dev, saradc->irq,
-> +				       cv1800b_adc_interrupt_handler, 0,
-> +				       dev_name(&pdev->dev), saradc);
-> +		if (ret)
-> +			return ret;
-> +
-> +		writel(1, saradc->regs + CV1800B_ADC_INTR_EN_REG);
-> +	}
-> +
-> +	ret = devm_mutex_init(&pdev->dev, &saradc->lock);
-> +	if (ret)
-> +		return ret;
-
-Blank line here slightly helps readability as two unrelated blocks of code.
-
-> +	writel(FIELD_PREP(CV1800B_MASK_STARTUP_CYCLE, 15) |
-> +	       FIELD_PREP(CV1800B_MASK_SAMPLE_WINDOW, 15) |
-> +	       FIELD_PREP(CV1800B_MASK_CLKDIV, 1) |
-> +	       FIELD_PREP(CV1800B_MASK_COMPARE_CYCLE, 15),
-> +	       saradc->regs + CV1800B_ADC_CYC_SET_REG);
-> +
-> +	return devm_iio_device_register(&pdev->dev, indio_dev);
-> +}
+> ---
+> Changes in v5:
+> - Add the ability to read the sample frequency
+> - Edit commit message to remove No-Die reference and add precision on
+>   the ADC series
+> - Rename binding and driver file to match compatible
+> - Reformat the channel property in the binding
+> - Clean driver code
+> - Link to v4: https://lore.kernel.org/r/20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com
+> 
+> Changes in v4:
+> - Lowercase register hexadecimal value in dts
+> - Reorder properties in dts
+> - Use only a const in the compatible property of the device tree bindings
+> - Specify the series of SoC in the driver to avoid confusing with other
+>   Sophgo SoCs
+> - Add channel description in the bindings
+> - Use FIELD_PREP in the default configuration
+> - Index channels from 0
+> - Return PTR_ERR instead of IS_ERR
+> - Link to v3: https://lore.kernel.org/r/20240731-sg2002-adc-v3-0-5ac40a518c0a@bootlin.com
+> 
+> Changes in v3:
+> - Subdivide default cycle configuration into multiple elementary
+>   configurations
+> - Fix formatting in the driver
+> - Use devm_mutex_init
+> - Use devm_clk_get_enabled now because the clock is no more optional
+> - Remove handling of Saradc in No-Die Domain as RTC isn't implemented yet
+> - Use cv1800-saradc as default compatible instead of a wildcard
+> - Remove platform_set_drvdata as it wasn't used
+> - Link to v2: https://lore.kernel.org/r/20240705-sg2002-adc-v2-0-83428c20a9b2@bootlin.com
+> 
+> Changes in v2:
+> - Drop modifications in MAINTAINERS file
+> - Rename the ADC from "sophgo-adc" to "sophgo-cv18xx-adc" to avoid
+>   conflict with ADCs available in future Sophgo SoCs.
+> - Reorder nodes in DT to match DTS coding style
+> - Switch from including <linux/of.h> to <linux/mod_devicetable.h>
+> - Use scoped_guard instead of mutex_lock/unlock
+> - Check IRQ Status in the handler
+> - Change IIO device name
+> - Use devm_clk_get_optional_enabled instead of a clock variable
+> - Init completion before the IRQ request
+> - Removed unnecessary iio_info structure in the private data of the
+>   driver
+> - Use SoC specific compatible in the bindings and device trees
+> - Link to v1: https://lore.kernel.org/r/20240702-sg2002-adc-v1-0-ac66e076a756@bootlin.com
+> 
+> ---
+> Thomas Bonnefille (3):
+>       dt-bindings: iio: adc: sophgo,cv1800b-saradc: Add Sophgo CV1800B SARADC
+>       iio: adc: sophgo-saradc: Add driver for Sophgo CV1800B SARADC
+>       riscv: dts: sophgo: Add SARADC description for Sophgo CV1800B
+> 
+>  .../bindings/iio/adc/sophgo,cv1800b-saradc.yaml    |  83 ++++++++
+>  arch/riscv/boot/dts/sophgo/cv18xx.dtsi             |  22 +++
+>  drivers/iio/adc/Kconfig                            |  10 +
+>  drivers/iio/adc/Makefile                           |   1 +
+>  drivers/iio/adc/sophgo-cv1800b-adc.c               | 218 +++++++++++++++++++++
+>  5 files changed, 334 insertions(+)
+> ---
+> base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
+> change-id: 20240527-sg2002-adc-924b862cd3f2
+> 
+> Best regards,
 
 

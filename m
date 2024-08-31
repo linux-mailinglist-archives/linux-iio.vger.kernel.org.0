@@ -1,56 +1,54 @@
-Return-Path: <linux-iio+bounces-8903-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8904-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984E39670F6
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 12:53:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 945A09670FC
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 12:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C84F1F22A0D
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 10:53:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA8BEB220A3
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 10:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B104517B421;
-	Sat, 31 Aug 2024 10:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0680717C222;
+	Sat, 31 Aug 2024 10:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXkbYfGK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qd7TsE6V"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCA414B949;
-	Sat, 31 Aug 2024 10:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8EA17B421;
+	Sat, 31 Aug 2024 10:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725101628; cv=none; b=jHvCfvvfKWsMaRrwcrKdViAflyweBsIo5FRSkTJJNbsvBf42+vhvzQJwNLsVpSf1Hn0PR+qUgGWVll05AA6GeMXoGodfU3DIuOvdjs/bHplzovtCtvOjgof7QBOBcqd0ITxmxDTJf+2sA3pqzX8UvIlhuzWeKlLye6hke7IJmlA=
+	t=1725101976; cv=none; b=SRFqDU1aA5nE3WvL4ZpbFjWAaLThDiPWASZD1VOc1GUjYtzjhPqTctTxGhrCqgUlLUbq5/dAQcMw+rYVleWbRL9oRcV7bsKcbH+NdFf6dLw748vQjRWXIVFQsg2vDjrr+G0V9XcV+FYDZTJZJlW42JJenGTygbWv7qa72zv+qq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725101628; c=relaxed/simple;
-	bh=+Jvu/UdgzmcAXW+0d7ObytUme5eaUOhG6WbqyYns+TE=;
+	s=arc-20240116; t=1725101976; c=relaxed/simple;
+	bh=Jrz3gXm1XjGENmJEvxxnLwbaG2jUawmf6vv3QYFSFfo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kAo/WtV9iJ1QDTNUlWwoquS9t8jup5uKpyXjPO/d3E21sP5HBB2C5mTXQpnc0V86lET/mLdD5NvUCtyG9f3UjVtWcstX3P8NSO3022YLAOt+KTCqJDH0t6cmbzJlpR36Hqi3UnJLv95M4e97FL93kbdVPo3MVC4Hd3wG6AJ07nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXkbYfGK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A14C4CEC0;
-	Sat, 31 Aug 2024 10:53:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JKLTtf+TmKqUcjfFwTv2qENaGVSs8ZVRa5stoZxWIMNz6C5/XTdPzvkM7Mcj1D+2t8xg6MRYMzK9p0CkdKPzjM/yzEVRUgWrcgABn1C2+LYsIR984rnzha+YtB+vpPPRYBV6m7cR4Sk81qtlWLM26sgTznBYRex4F1RNQZ6VU3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qd7TsE6V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46F7C4CEC0;
+	Sat, 31 Aug 2024 10:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725101628;
-	bh=+Jvu/UdgzmcAXW+0d7ObytUme5eaUOhG6WbqyYns+TE=;
+	s=k20201202; t=1725101976;
+	bh=Jrz3gXm1XjGENmJEvxxnLwbaG2jUawmf6vv3QYFSFfo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eXkbYfGKdbCxtfUesvuIJ1yNzzYSJZgjVrw6UTIpMdxcelfOwZGF1/9DZQ0EhXD3H
-	 BPI7mByi+XW+aJNBrA+TBCwL9TDfdPsStNsYpp06iL2ffIg5rGNB/5wbkvcKDL6riZ
-	 CpkN11bhBCmXNRsyDJE87GWfusNJ7oyVfKvVSaJNQnwFjeOwvY06125Ow69kqjh9+G
-	 4Atb9tOVYO6gtHEL3IkKNlaPsZ2scl9b52GzWl3gIZiuy4s16f9WYQYLqDQof2lL+V
-	 cN83XvxZJ2gpQ0vpGZ4jt6UMYfQG3vIV9oImuoOULQ5QjMC8IOa88d8AQORG4ynpTQ
-	 MtVFaCjFgq01Q==
-Date: Sat, 31 Aug 2024 11:53:43 +0100
+	b=qd7TsE6Vi/jjQGUmBMiq4X+eTv/P2JGRlwmDkR0sEgPrVoBdNM7p9bhrlDlK8tEbf
+	 fVA0h9XHPUHqdt36sPz15dyrjlguTwzLhRPoTRuHcL0WdC9+kzj4yIcJcAniCiBCbL
+	 TCgEM+7mF042oiJy3z+/hu9vg6KnijvZGWKNKtqb6+EcakFd2eA/GVE9o+DKBo2H6X
+	 5OvUpypZUyqfk0a0G7CGzicpF45l2MCsxn2ZnpMMBDbWKTu6/QA8U9BT4FRaknXeUi
+	 YZrr3/k5dLPqZ9phU3c3E/QPjBVF5gZN4Vl3u6cjBDBtzUkgV52aoVAI7NYJyimv2f
+	 i9pBVqMABSF1A==
+Date: Sat, 31 Aug 2024 11:59:31 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 0/2] iio: imu: st_lsm6dsx: Clean up ACPI/fwnode code
- paths
-Message-ID: <20240831115343.775c6167@jic23-huawei>
-In-Reply-To: <20240826212344.866928-1-andy.shevchenko@gmail.com>
-References: <20240826212344.866928-1-andy.shevchenko@gmail.com>
+To: zhangjiao2 <zhangjiao2@cmss.chinamobile.com>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tools: iio: rm .*.cmd when make clean
+Message-ID: <20240831115931.596e35fb@jic23-huawei>
+In-Reply-To: <20240829053309.10563-1-zhangjiao2@cmss.chinamobile.com>
+References: <20240829053309.10563-1-zhangjiao2@cmss.chinamobile.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,26 +59,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 27 Aug 2024 00:22:38 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Thu, 29 Aug 2024 13:33:09 +0800
+zhangjiao2 <zhangjiao2@cmss.chinamobile.com> wrote:
 
-> Here is a couple of cleanups that should not affect any functionality.
+> From: zhangjiao <zhangjiao2@cmss.chinamobile.com>
 > 
-> Andy Shevchenko (2):
->   iio: imu: st_lsm6dsx: Use iio_read_acpi_mount_matrix() helper
->   iio: imu: st_lsm6dsx: Remove useless dev_fwnode() calls
+> rm .*.cmd when make clean
+Where do those come from? 
+
 > 
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 93 ++------------------
->  1 file changed, 7 insertions(+), 86 deletions(-)
+> Signed-off-by: zhangjiao <zhangjiao2@cmss.chinamobile.com>
+> ---
+>  tools/iio/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/tools/iio/Makefile b/tools/iio/Makefile
+> index fa720f062229..3bcce0b7d10f 100644
+> --- a/tools/iio/Makefile
+> +++ b/tools/iio/Makefile
+> @@ -58,7 +58,7 @@ $(OUTPUT)iio_generic_buffer: $(IIO_GENERIC_BUFFER_IN)
+>  clean:
+>  	rm -f $(ALL_PROGRAMS)
+>  	rm -rf $(OUTPUT)include/linux/iio
+> -	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
+> +	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.cmd' -delete
+>  
+>  install: $(ALL_PROGRAMS)
+>  	install -d -m 755 $(DESTDIR)$(bindir);		\
 
-Applied the obvious fix for the bot error messages &drdy_pin
-and applied to the togreg branch of iio.git (pushed out as testing)
-
-Still time for other reviews however as I'll be rebasing that tree
-anyway if Greg takes the pull request I sent last week.
-There are some series waiting for fixes to loop back around, hence
-this dance.
-
-Jonathan
 

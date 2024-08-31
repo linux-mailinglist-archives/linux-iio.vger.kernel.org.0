@@ -1,289 +1,176 @@
-Return-Path: <linux-iio+bounces-8900-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8901-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87338966A4C
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Aug 2024 22:17:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F800966E48
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 02:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABE691C21BAB
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Aug 2024 20:17:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9584289FE5
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 00:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E581BF32E;
-	Fri, 30 Aug 2024 20:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82D8339A1;
+	Sat, 31 Aug 2024 00:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a3XTdsU8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MWTSE9Br"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00AB1BF31D;
-	Fri, 30 Aug 2024 20:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E8B1C6B5;
+	Sat, 31 Aug 2024 00:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725049043; cv=none; b=o37vPXu6QTNVLrQUYuHwzeHUygQKhPvDqDdJycrTwv7Tm+fzqWgd4tXH5WrFxxBBFrzdXZUr9a+Pgc2Rcq8AgpmXnAud3Hgred05K5u2qR6Vx3uXkYo1uXSum6SWk+WkZ53+srF+lYfYXaRLbzkyceSMqA149zW44dBKq6BHdFU=
+	t=1725065149; cv=none; b=SX3TArwHzrCJGDuGUNvMWlAoVlvTSMVNrGSTJ7vG6ed8xbQbuh1zD1JszZpqRELrhubVXdTET9UDFN2Bc8oIscv31uKXlR4mQY7WVw/NIccFRYECeBLviHPKM58JBvCOSn+UP1Q/2m3kHN3h/L1zwF22D+nBFpUo6/eeeIzgwl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725049043; c=relaxed/simple;
-	bh=kuGb3WJ3qlPjwbQZqwSoMTeTEWH8fLqpvs4rAg86zuc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMXacisPWCsciu98c3nGNK5NpjKXRB3UtLAkxKArQ5HJE5Spq8+MAGey7ELRchqXShN/bckC+lwg0qiSay2M1Gy7r+Q4DZpTkm8wvO/EvyH33FD5X8Q0KbRXCSODlfmirP0m1OhAjksboA+m/ti/A3Tis7SR2UH7FZSnH8zwY6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a3XTdsU8; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-714287e4083so2028582b3a.2;
-        Fri, 30 Aug 2024 13:17:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725049041; x=1725653841; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mi+Say77cH1ylZ4XneSFtnKiT60ynjvcD6h/n+L53uA=;
-        b=a3XTdsU8KX4Dj/5dzJiZO5YAw5BIT0U6TnmJfFoP0kploYGfRpMQcRV2lkLlJQBqdC
-         YlSIEtCv13l6sVf40yvSJeiFWDRZN/kguuQ/wpQa0ufVxeYxbW5xAVDB3gc/5TMd5GOu
-         LGZGYTVhcxjGSKKOC8orpBbK2sRLa924/WB8WeAv2uKZ1NLW5NTq3JTAhsHruEpi0yeA
-         YGqr06wJ8ibD90VaSHmAiPoYDdF52OEIIW8nk1buPg2eDKhMxMr/ezmrr1ox61CI2QZ9
-         LAsRwvNnuVSDbl0vmYtzwpLjlLonTA39i8D3wsCGNak352x08UDddhBK53mOmyPRolkR
-         EeVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725049041; x=1725653841;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mi+Say77cH1ylZ4XneSFtnKiT60ynjvcD6h/n+L53uA=;
-        b=jCYeoMsSTyBrJoRg87l/FNZ/G14vaFdrDVM2RvdwMVijF3jdyaq31l3D0kFRAR0FBz
-         HO7RQ5YQjhX2D5bsqe8cBH6HIpu4bN8NZfHgIoxUr7L9m9Igoz0+hnSHX5yYrtS9HowU
-         mYxBCpndVs8y54BPZb8ovQeO63jL8TtuCe4mwv42pR4XHYg2nLe6c0d+1FFwJGKIKOvj
-         3ZMcrEn+iXQCXNDoVyhp0ligdLjLoFZg6EMLFqL/6QbdBOO9gyc8a8OTpKrDVi7Jf/xT
-         WXiokn1k5n3/JlulP+c+kfEyEGUrCsxwmC/LC+oGDqJWotzU/JBxsHHs4X621oLNYTpR
-         37Rg==
-X-Forwarded-Encrypted: i=1; AJvYcCUCVhLAjqbOUBs1O8JXkvOA5abC9+djjh2SLPtVv5c0zcJbHpY6AhuM7ARDh6evGL9mDGFN3zvzVxW/MSM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTcImFXk3NOI4riHUInzXJXTrT0FffyR8eOveYI/Unh8KLdQhA
-	H+s1cfuRtS4oFTXVa/MIStrMyLIqKu7EBYmQNeSO0Vf6hzXyyWJvynIWkO/h
-X-Google-Smtp-Source: AGHT+IH77ZkU6rLkTqxj259tg7vHn96jqdsZUiM0N5nxtf3ldYpsu6QUlittVbx6fPS/DmNHvWjkHQ==
-X-Received: by 2002:a05:6a00:2388:b0:70d:2693:d215 with SMTP id d2e1a72fcca58-7173b60ca4emr1196059b3a.16.1725049040592;
-        Fri, 30 Aug 2024 13:17:20 -0700 (PDT)
-Received: from abhash-IdeaPad-L340-15IRH-Gaming.. ([2401:4900:608e:fa44:845a:20a9:791f:c32b])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-715e56e5c23sm3257476b3a.172.2024.08.30.13.17.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Aug 2024 13:17:20 -0700 (PDT)
-From: Abhash Jha <abhashkumarjha123@gmail.com>
-To: linux-iio@vger.kernel.org
-Cc: songqiang1304521@gmail.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-kernel@vger.kernel.org,
-	Abhash Jha <abhashkumarjha123@gmail.com>
-Subject: [PATCH 2/2] iio: proximity: vl53l0x-i2c: Added continuous mode support
-Date: Sat, 31 Aug 2024 01:46:26 +0530
-Message-ID: <20240830201627.298264-3-abhashkumarjha123@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240830201627.298264-1-abhashkumarjha123@gmail.com>
-References: <20240830201627.298264-1-abhashkumarjha123@gmail.com>
+	s=arc-20240116; t=1725065149; c=relaxed/simple;
+	bh=m2q0EIE3WOnElSaZtNtUDPmT9aG++HAOSqsq5F8ycZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n/qH6Q98w7AIxEhX9KT1B+/LYnYpNRjuIrmMmSIbhaEn1UkLZQLduP2iXE9yryA4z7f8Y8aXzqcvK8OD3GhEAnpwhdvM7P6DlEkAM6h7WZ2gHfgV/HtGgpkKLoNtBfGhWR6l7OvoumPzTtvlcFSPcD6KG6W5NVIpJ506wi1+hM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MWTSE9Br; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725065148; x=1756601148;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=m2q0EIE3WOnElSaZtNtUDPmT9aG++HAOSqsq5F8ycZo=;
+  b=MWTSE9BrC/5wP9addTlwbMw1dEATUI7rCIfIYUbugJkwl1SJt4kS6XAt
+   kKaHQO9aF4jNREzLw1nG6+D1xWn5Nr3YhPmZ/LwcWMwovgRImF3eWuUZE
+   A8o5JEK36S42uFjj3xZ7uyA0foB08EZR/YfH3e7Pt1h6WhGfbx3q1GroC
+   1ZD6L+e6BP/XlMdLChPE8m2351zVwUz5GCqUFkrW5AI/dWtpllpV15Lei
+   2xpIKWyfiofZGied+59zT1hGcBohExjkl1HchBOXEIUoRWV7uqYtFzssz
+   89SgVcJKeWb1ci9U7Pp0IqTIkafNUrWFR+WRh0/Lf9k4dFIgz8jFQyiqp
+   A==;
+X-CSE-ConnectionGUID: /F8T9exoRvyR/XD7KIZIOw==
+X-CSE-MsgGUID: lOJJfuMDSjWrvDP13Vkx3Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11180"; a="23892878"
+X-IronPort-AV: E=Sophos;i="6.10,190,1719903600"; 
+   d="scan'208";a="23892878"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 17:45:47 -0700
+X-CSE-ConnectionGUID: u/GJuGqQQlK5hrQMr3hglw==
+X-CSE-MsgGUID: k697wz3HTuSYiLlEI6//FQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,190,1719903600"; 
+   d="scan'208";a="68458817"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 30 Aug 2024 17:45:43 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1skCFJ-0002Fc-06;
+	Sat, 31 Aug 2024 00:45:41 +0000
+Date: Sat, 31 Aug 2024 08:45:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Inochi Amaoto <inochiama@outlook.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	=?iso-8859-1?Q?Miqu=E8l?= Raynal <miquel.raynal@bootlin.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+Subject: Re: [PATCH v5 2/3] iio: adc: sophgo-saradc: Add driver for Sophgo
+ CV1800B SARADC
+Message-ID: <202408310817.GT3TMpnv-lkp@intel.com>
+References: <20240829-sg2002-adc-v5-2-aacb381e869b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240829-sg2002-adc-v5-2-aacb381e869b@bootlin.com>
 
-The continuous mode of the sensor is enabled in the buffer_postenable.
-Replaced the original irq handler with a threaded irq handler to perform
-i2c reads during continuous mode.
-The continuous mode is disabled by disabling the buffer.
+Hi Thomas,
 
-Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
----
- drivers/iio/proximity/vl53l0x-i2c.c | 125 ++++++++++++++++++++++------
- 1 file changed, 101 insertions(+), 24 deletions(-)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-index 2b3dd18be..b0c947586 100644
---- a/drivers/iio/proximity/vl53l0x-i2c.c
-+++ b/drivers/iio/proximity/vl53l0x-i2c.c
-@@ -22,6 +22,10 @@
- #include <linux/module.h>
- 
- #include <linux/iio/iio.h>
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
- 
- #define VL_REG_SYSRANGE_START				0x00
- 
-@@ -49,14 +53,58 @@ struct vl53l0x_data {
- 	struct completion completion;
- 	struct regulator *vdd_supply;
- 	struct gpio_desc *reset_gpio;
-+
-+	struct {
-+		u16 chan;
-+		s64 timestamp __aligned(8);
-+	} scan;
- };
- 
--static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
-+static void vl53l0x_clear_irq(struct vl53l0x_data *data)
-+{
-+	struct device *dev = &data->client->dev;
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(data->client,
-+					VL_REG_SYSTEM_INTERRUPT_CLEAR, 1);
-+	if (ret < 0)
-+		dev_err(dev, "failed to clear error irq: %d\n", ret);
-+
-+	ret = i2c_smbus_write_byte_data(data->client,
-+					VL_REG_SYSTEM_INTERRUPT_CLEAR, 0);
-+	if (ret < 0)
-+		dev_err(dev, "failed to clear range irq: %d\n", ret);
-+
-+	ret = i2c_smbus_read_byte_data(data->client, VL_REG_RESULT_INT_STATUS);
-+	if (ret < 0 || ret & 0x07)
-+		dev_err(dev, "failed to clear irq: %d\n", ret);
-+}
-+
-+static irqreturn_t vl53l0x_threaded_irq(int irq, void *priv)
- {
- 	struct iio_dev *indio_dev = priv;
- 	struct vl53l0x_data *data = iio_priv(indio_dev);
-+	u8 buffer[12];
-+	int ret;
- 
--	complete(&data->completion);
-+	if (iio_buffer_enabled(indio_dev)) {
-+		ret = i2c_smbus_read_i2c_block_data(data->client,
-+						VL_REG_RESULT_RANGE_STATUS,
-+						sizeof(buffer), buffer);
-+		if (ret < 0)
-+			return ret;
-+		else if (ret != 12)
-+			return -EREMOTEIO;
-+
-+		data->scan.chan = (buffer[10] << 8) + buffer[11];
-+		iio_push_to_buffers_with_timestamp(indio_dev,
-+						&data->scan,
-+						iio_get_time_ns(indio_dev));
-+
-+		iio_trigger_notify_done(indio_dev->trig);
-+		vl53l0x_clear_irq(data);
-+	} else
-+		complete(&data->completion);
- 
- 	return IRQ_HANDLED;
- }
-@@ -71,8 +119,9 @@ static int vl53l0x_configure_irq(struct i2c_client *client,
- 	if (!irq_flags)
- 		irq_flags = IRQF_TRIGGER_FALLING;
- 
--	ret = devm_request_irq(&client->dev, client->irq, vl53l0x_handle_irq,
--			irq_flags, indio_dev->name, indio_dev);
-+	ret = devm_request_threaded_irq(&client->dev, client->irq,
-+			NULL, vl53l0x_threaded_irq,
-+			irq_flags | IRQF_ONESHOT, indio_dev->name, indio_dev);
- 	if (ret) {
- 		dev_err(&client->dev, "devm_request_irq error: %d\n", ret);
- 		return ret;
-@@ -87,26 +136,6 @@ static int vl53l0x_configure_irq(struct i2c_client *client,
- 	return ret;
- }
- 
--static void vl53l0x_clear_irq(struct vl53l0x_data *data)
--{
--	struct device *dev = &data->client->dev;
--	int ret;
--
--	ret = i2c_smbus_write_byte_data(data->client,
--					VL_REG_SYSTEM_INTERRUPT_CLEAR, 1);
--	if (ret < 0)
--		dev_err(dev, "failed to clear error irq: %d\n", ret);
--
--	ret = i2c_smbus_write_byte_data(data->client,
--					VL_REG_SYSTEM_INTERRUPT_CLEAR, 0);
--	if (ret < 0)
--		dev_err(dev, "failed to clear range irq: %d\n", ret);
--
--	ret = i2c_smbus_read_byte_data(data->client, VL_REG_RESULT_INT_STATUS);
--	if (ret < 0 || ret & 0x07)
--		dev_err(dev, "failed to clear irq: %d\n", ret);
--}
--
- static int vl53l0x_read_proximity(struct vl53l0x_data *data,
- 				  const struct iio_chan_spec *chan,
- 				  int *val)
-@@ -163,7 +192,14 @@ static const struct iio_chan_spec vl53l0x_channels[] = {
- 		.type = IIO_DISTANCE,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 				      BIT(IIO_CHAN_INFO_SCALE),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 12,
-+			.storagebits = 16,
-+		},
- 	},
-+	IIO_CHAN_SOFT_TIMESTAMP(32),
- };
- 
- static int vl53l0x_read_raw(struct iio_dev *indio_dev,
-@@ -221,6 +257,40 @@ static int vl53l0x_power_on(struct vl53l0x_data *data)
- 	return 0;
- }
- 
-+static int vl53l0x_buffer_postenable(struct iio_dev *indio_dev)
-+{
-+	struct vl53l0x_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(data->client, VL_REG_SYSRANGE_START, 0x02);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int vl53l0x_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct vl53l0x_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(data->client, VL_REG_SYSRANGE_START, 0x01);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Let the ongoing reading finish */
-+	reinit_completion(&data->completion);
-+	wait_for_completion_timeout(&data->completion, HZ/10);
-+	vl53l0x_clear_irq(data);
-+
-+	return 0;
-+}
-+
-+static const struct iio_buffer_setup_ops iio_triggered_buffer_setup_ops = {
-+	.postenable = &vl53l0x_buffer_postenable,
-+	.postdisable = &vl53l0x_buffer_postdisable,
-+};
-+
- static int vl53l0x_probe(struct i2c_client *client)
- {
- 	struct vl53l0x_data *data;
-@@ -279,6 +349,13 @@ static int vl53l0x_probe(struct i2c_client *client)
- 		ret = vl53l0x_configure_irq(client, indio_dev);
- 		if (ret)
- 			return ret;
-+
-+		ret = devm_iio_triggered_buffer_setup(&client->dev,
-+					indio_dev,
-+					&iio_pollfunc_store_time,
-+					NULL, &iio_triggered_buffer_setup_ops);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	return devm_iio_device_register(&client->dev, indio_dev);
+[auto build test WARNING on 5be63fc19fcaa4c236b307420483578a56986a37]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Bonnefille/dt-bindings-iio-adc-sophgo-cv1800b-saradc-Add-Sophgo-CV1800B-SARADC/20240829-203431
+base:   5be63fc19fcaa4c236b307420483578a56986a37
+patch link:    https://lore.kernel.org/r/20240829-sg2002-adc-v5-2-aacb381e869b%40bootlin.com
+patch subject: [PATCH v5 2/3] iio: adc: sophgo-saradc: Add driver for Sophgo CV1800B SARADC
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20240831/202408310817.GT3TMpnv-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240831/202408310817.GT3TMpnv-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408310817.GT3TMpnv-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/iio/adc/sophgo-cv1800b-adc.c:120:3: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]
+     120 |                 u32 status_reg = readl(saradc->regs + CV1800B_ADC_CYC_SET_REG);
+         |                 ^
+   1 warning generated.
+
+
+vim +120 drivers/iio/adc/sophgo-cv1800b-adc.c
+
+    88	
+    89	static int cv1800b_adc_read_raw(struct iio_dev *indio_dev,
+    90					struct iio_chan_spec const *chan,
+    91					int *val, int *val2, long mask)
+    92	{
+    93		struct cv1800b_adc *saradc = iio_priv(indio_dev);
+    94	
+    95		switch (mask) {
+    96		case IIO_CHAN_INFO_RAW:{
+    97			u32 sample;
+    98	
+    99			scoped_guard(mutex, &saradc->lock) {
+   100				int ret;
+   101	
+   102				cv1800b_adc_start_measurement(saradc, chan->scan_index);
+   103				ret = cv1800b_adc_wait(saradc);
+   104				if (ret < 0)
+   105					return ret;
+   106	
+   107				sample = readl(saradc->regs + CV1800B_ADC_CH_RESULT_REG(chan->scan_index));
+   108			}
+   109			if (!(sample & CV1800B_ADC_CH_VALID))
+   110				return -ENODATA;
+   111	
+   112			*val = sample & CV1800B_ADC_CH_RESULT;
+   113			return IIO_VAL_INT;
+   114			}
+   115		case IIO_CHAN_INFO_SCALE:
+   116			*val = 3300;
+   117			*val2 = 12;
+   118			return IIO_VAL_FRACTIONAL_LOG2;
+   119		case IIO_CHAN_INFO_SAMP_FREQ:
+ > 120			u32 status_reg = readl(saradc->regs + CV1800B_ADC_CYC_SET_REG);
+   121			int clk_div = (1 + FIELD_GET(CV1800B_MASK_CLKDIV, status_reg));
+   122			int freq = clk_get_rate(saradc->clk) / clk_div;
+   123			int nb_startup_cycle = 1 + FIELD_GET(CV1800B_MASK_STARTUP_CYCLE, status_reg);
+   124			int nb_sample_cycle = 1 + FIELD_GET(CV1800B_MASK_SAMPLE_WINDOW, status_reg);
+   125			int nb_compare_cycle = 1 + FIELD_GET(CV1800B_MASK_COMPARE_CYCLE, status_reg);
+   126	
+   127			*val = freq / (nb_startup_cycle + nb_sample_cycle + nb_compare_cycle);
+   128			return IIO_VAL_INT;
+   129		default:
+   130			return -EINVAL;
+   131		}
+   132	}
+   133	
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

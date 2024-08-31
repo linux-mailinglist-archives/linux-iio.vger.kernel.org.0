@@ -1,103 +1,81 @@
-Return-Path: <linux-iio+bounces-8911-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8912-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B4596715C
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 13:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 217AF967165
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 13:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E9CF1C212A9
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 11:41:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E6341C213E8
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 11:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECA217DFF8;
-	Sat, 31 Aug 2024 11:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0800517DFE9;
+	Sat, 31 Aug 2024 11:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A/H5u7Bv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSJNLCZg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50D36A8CF;
-	Sat, 31 Aug 2024 11:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20E24C99;
+	Sat, 31 Aug 2024 11:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725104478; cv=none; b=Pv9rZ61zgBhaI4To/2KW+IXvuJToREdAqDdTbE8JOklUmJq+jzDYYc65w9TBtGcdqMYk9paR7iQFfRdJuwdXSkIXLB48cOg9YS5hRD/g8QY5CpJOUMLIKboJ3ZLYBCts6Daet1+h+LYXcyABPANw8wOrAEmc1vNj9PMPZx1ZuaQ=
+	t=1725104937; cv=none; b=AerZ2g0X5Re/ysGf9wAp7Q53OCgqe1ln2hG+WYLEyBpm6kGFo/dlE9J8eXNAJP7Ri45+MQwmgNjYaoJlHtCl3JEetCamhID9Y9h3EncmAY74KqHYZwcF7Wk/MkfFuFDvYj3fU444+JA2I+TyTjYMjQGgn5hPyKbFzXwl+xJmFJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725104478; c=relaxed/simple;
-	bh=dzfg5AAPQBP7IxGhqH2LJ3n1Dw2NUaBeXGeXvnIpsVA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NCWYqwJ/VMcj80JsYF56DeFvo9kQHIipRGBuiddkkQ1I2zi/eMMNpa5SU4zRY/JOdfLgCiquotn8PpXjHhiiNBlzwYNtmBaNw+qWyG0IV+8bE+D4xFcckbqthMNC54kUb8soemM3PXic4mpb0JrD6/OnbU4tLpp/keYrfEG6/dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A/H5u7Bv; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5bec4e00978so2726123a12.0;
-        Sat, 31 Aug 2024 04:41:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725104475; x=1725709275; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dzfg5AAPQBP7IxGhqH2LJ3n1Dw2NUaBeXGeXvnIpsVA=;
-        b=A/H5u7BvNlhcL9Etw75OzNdY8nYEjDHkvzstsQ3YfWkHK0x/uNH2eqM0KSemyZp7Cw
-         Az73wkliG4BwayzdLY1vc3uXYzzjhnq4Vc7EBiFpD8URyo0zSAE78+p7yIy8WBA8WmHj
-         2/I5av316XuvYCRUOr7iWY09CuHL1Y0ZuZrZCJ/uzcfb9LEsNZYltP4jzS8Fr2SzNO48
-         70lhNNeE34qJQT13wWVPWYRgRfhmxfuYEoCazwha7LuHVh5COQdl7PY2px0b/UVZbV+f
-         MAWbz4gea5Mpl5ONrtZE15hYR3q2eSwp3vrcMn7Pz8XSTVkuvHc+nDB/WhimxxYa0HJZ
-         A/Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725104475; x=1725709275;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dzfg5AAPQBP7IxGhqH2LJ3n1Dw2NUaBeXGeXvnIpsVA=;
-        b=EZG0AWojcbvmV+fSSiixcplcFMn2GmUa+CLXVJsKK3GEUNb9p46oPUjaVnXFPTmUtw
-         f1/7gTK66sD8GFu5v+qEHsDnzm5n4lho4jqsOqAwTBWkzN737DuHRHpeJcOoP132vkG/
-         X1bguGLZLoljGShT2u3GQEgKGyN6byDAA86zRL9hLdePRVQ2xsqUVWe4i0Gst55lwWhf
-         sgXDU9D99uEiPR70SJHyGA/nIn7BxQmZ+sZqw/nibwmdyJ0gyj37Yey64MAr5mNj6Z2d
-         Gh8zhg/5GF9+7vwvd3G9GcCDTQwbOIOZHtqBMnURCtM2xBGChisWO8wFxWROvzxlxD/O
-         jwyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUWNQ7NoiTDszDMYhg3vZxLrRrazmEev5VenckpuiP+94NiOLlXCGIJX+mmVS9tidH/arRwvXMsZX0=@vger.kernel.org, AJvYcCVrMpKBsXyKcckmHiEFlHQb4Pk8Q4bxjKqJylJW/ujBd9ifzB0SkIlq3NZ23M4cKh8HUVMLPtMTqHj9xngp@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPSoS3tROlJwOhjvant2Akr+7jU8fyBlufjt8xkN5Q/0hOfY3q
-	mioX584ysHqxR7zIpnChPEKKmgHcqzSj7U8pPn+m5kX/B43Zq3QiiqEmFLe1Pg2dJrH8n2jdH2/
-	H3jqxTbUHCwicksXZ2ZzemQ6e5DQ=
-X-Google-Smtp-Source: AGHT+IFyquyaYAKRcJU4KGIAwFgdI7SC3dKZUTalVzMf8x3+nH6tfUdud/w9VNB4qkeRJVPINcOulPJzYR0cflsoO8k=
-X-Received: by 2002:a17:907:7da3:b0:a7a:b385:37c5 with SMTP id
- a640c23a62f3a-a897f811cc2mr712228366b.17.1725104474690; Sat, 31 Aug 2024
- 04:41:14 -0700 (PDT)
+	s=arc-20240116; t=1725104937; c=relaxed/simple;
+	bh=WO9DTaJ6BhMqSYHc9IQ0RIHmqxjJrk5UH99GMcAiwdI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kPk/dVuC9rVqqs0qHM4zN9cGoYx+VRkOyJVKqzpTOaMbIZJUb+ankkt3eNyB8EE4w8ebs0bhmBht2tm5Zh5eR2VhZWGoklGujz3xP4LWdt5XhireIcuaQY1joKlSk+t8SFQsnf6RSbm7LAlhfNUlt83H6etfMT6vw5KVD8t8diQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSJNLCZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85DAC4CEC0;
+	Sat, 31 Aug 2024 11:48:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725104937;
+	bh=WO9DTaJ6BhMqSYHc9IQ0RIHmqxjJrk5UH99GMcAiwdI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZSJNLCZgwalLUDRo9V7I/TlqfCZsWvEYK9xMySojEfb1EuTDCU3df8sMYHvDzhBKR
+	 JfKfBAWDg2tYszNMSzBIRxuPuGVr6O9nCySRLMA7V/wVMUJg04svb4faJZYJfrRNzo
+	 vKzmvD16C1ijjXiWFkxevODkCvTIqMU6sM6o+Ebr5DOWoW+zDGOAmklKyt3GdsBwrz
+	 TMJhiWORYFjX+JqHL6JcrI6GfZzBWZUhMjSbrllHpEwHJFZrgeD4tcbh/AZ57xt15t
+	 ksKBcImdknnxIEAu/vO/p1TpKcJ3xyfwxSMl4K6xE3r135NR8KawIHaCglvwssKw5V
+	 pKP15KDfvSDEg==
+Date: Sat, 31 Aug 2024 12:48:47 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dlechner@baylibre.com
+Subject: Re: [PATCH RFC 5/8] iio: dac: ad3552r: changes to use FIELD_PREP
+Message-ID: <20240831124847.5c679e55@jic23-huawei>
+In-Reply-To: <20240829-wip-bl-ad3552r-axi-v0-v1-5-b6da6015327a@baylibre.com>
+References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
+	<20240829-wip-bl-ad3552r-axi-v0-v1-5-b6da6015327a@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240826212344.866928-1-andy.shevchenko@gmail.com> <20240831115343.775c6167@jic23-huawei>
-In-Reply-To: <20240831115343.775c6167@jic23-huawei>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 31 Aug 2024 14:40:38 +0300
-Message-ID: <CAHp75VcZBAkpr==gwXohhHLZfTGpwQdtyOH_A3xkz12qV4Nvrw@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] iio: imu: st_lsm6dsx: Clean up ACPI/fwnode code paths
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 31, 2024 at 1:53=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
-> On Tue, 27 Aug 2024 00:22:38 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
-> > Here is a couple of cleanups that should not affect any functionality.
+On Thu, 29 Aug 2024 14:32:03 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-...
+> From: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> Changes to use FIELD_PREP, so that driver-specific ad3552r_field_prep
+> is removed. Variables (arrays) that was used to call ad3552r_field_prep
+> are removerd too.
+removed
 
-> Applied the obvious fix for the bot error messages &drdy_pin
-> and applied to the togreg branch of iio.git (pushed out as testing)
+LGTM
 
-Thank you and sorry for the inconvenience.
-
---=20
-With Best Regards,
-Andy Shevchenko
 

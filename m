@@ -1,62 +1,64 @@
-Return-Path: <linux-iio+bounces-8914-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8915-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A39967177
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 14:15:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B09967180
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 14:18:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1ABD1F2184B
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 12:15:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44C2F1C21583
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 12:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B38B17E005;
-	Sat, 31 Aug 2024 12:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359E317E01C;
+	Sat, 31 Aug 2024 12:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DQ6qhqly"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJ2JezcI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88FC193;
-	Sat, 31 Aug 2024 12:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF84193;
+	Sat, 31 Aug 2024 12:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725106521; cv=none; b=ubnuHnwNVTChc63bng55+TjiHf+HvVMJ5vZnpZ54DPXfKrqxCRQ1SRGv7098zyLkgZPSET3p7TropnO8ISbr45yAT0y+HxYCFCBDwE03bN6CN7f4ZpsnhoemNtryu/U6mnFvdCOHINmCLYByUCFhuV+jy8dVjCzH042d2zCtae4=
+	t=1725106714; cv=none; b=kzgbjZImdh4X0crAkzufd3dhNeAyiXcZQ2eJ1flHUppe0QjE55mikB2R7POpspNEZphcf7J34jSHhQcs0Y3AB4/vC6sYCikW3HJkwVuP6wAoLN4GJm/GceKF4/aGpqoinPpgeQGoJBPvvC7jfQFkYz/Zg3GburvYGfx4/3/KBWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725106521; c=relaxed/simple;
-	bh=3m8j/b+dEWGBlzW4DZaiz+BCrW2VrLzgKQcu92RYzGU=;
+	s=arc-20240116; t=1725106714; c=relaxed/simple;
+	bh=/DcwqGi/TTJgseU69eQAMnE6ASnIXDVzUih6oz1NpNI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IVn2+3NjBZVDODEG+2qM4eRSIh/cc/L73o5tU7gTDxOTi2iBnfEtvMWoJLWu6uubpF480/JP1mHmyLvZEhqjmjYT6QF0hbwjTbepjiHV2iVkCQ7pd3ugSW0g/qwnOhbJVqkBM+UXfYcVpBoHb1D6bM0Hecdc/bgdkpxmEOkoC7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DQ6qhqly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8844FC4CEC0;
-	Sat, 31 Aug 2024 12:15:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HSsnDfPiwIvo+eFR5iZSDsU1/oINV3yTPxxAfvL0BuW01Q5KMkfXa0IvQmzJl60iFQ4kL8P0pMC1hh3cdkumiuA4gMi7pC2PNoNg/f6b3E6+VT79EC20pH8J31UI5c65XYjpNVn6ylyzr8d+iho9j8Upn6ssdg2GxzsAlbs2ebQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJ2JezcI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567CEC4CEC0;
+	Sat, 31 Aug 2024 12:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725106520;
-	bh=3m8j/b+dEWGBlzW4DZaiz+BCrW2VrLzgKQcu92RYzGU=;
+	s=k20201202; t=1725106713;
+	bh=/DcwqGi/TTJgseU69eQAMnE6ASnIXDVzUih6oz1NpNI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DQ6qhqlypC6vwLQrGxtvhO39plVvS4gFy/i3m4S6BlLcIyi1SL6chyYtIepmRUUF1
-	 xJibguU7an4GY+BlR+CK7aMSm80GSGZRuaNuPlzy/XYxB8aZSPGfFu2qxdyBTl/IiK
-	 tb8V8pc/65F/TSuflMIKu4OZ8nyKST1/48FPJVqOzJyJK4BQt6GV1rJ6Ptm4exX0rS
-	 hmPcTZ7SswUBctCZ0wbERgPjtLdSxuNIyt3LqEA8X06Prmgg90/W8a00aCOJhQ4cYm
-	 qPjzC7LrZSbMm6T2oZZ/tz1FpzF8uhgWKNos8fNUO8WbKL+DI7ZkEGLRM7rr/AI+X7
-	 DyUmEAxJuQDEw==
-Date: Sat, 31 Aug 2024 13:15:12 +0100
+	b=RJ2JezcIpXcSe1NeonYL0r100OFvOuWNOT0MzKkQRdZzXDLAyYJ1JJbL+AndAvIRr
+	 3DlUus60hSuaxcD927eSDfNQb6AkRNKC2AjJRL18BHbJFuCcOzTnrTZZZ8U6yVn1rH
+	 CS86ErYAaIzj+qOuWqmmLrVoQZqNNd8VCfvoWIEfBYt0+e3sqekz25D+KsGL7q6QhW
+	 GKEolpj6QE+8i4Ypgw7zHal+9jbV4qdoj+xpyUgBCLdOjD6ge1BaW7JcqGWG4lDfgy
+	 Z70M6CTMzhLYpkkobsxeaQjB/Xp/QDCAgTogGGLf+7YiN5qcFPwYe0RTkVDoM7nklM
+	 BwU0BnUV+d5ng==
+Date: Sat, 31 Aug 2024 13:18:24 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
- <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- dlechner@baylibre.com
-Subject: Re: [PATCH RFC 8/8] iio: ABI: add DAC sysfs synchronous_mode
- parameter
-Message-ID: <20240831131512.7c5746e0@jic23-huawei>
-In-Reply-To: <20240829-wip-bl-ad3552r-axi-v0-v1-8-b6da6015327a@baylibre.com>
-References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
-	<20240829-wip-bl-ad3552r-axi-v0-v1-8-b6da6015327a@baylibre.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Conor Dooley <conor@kernel.org>, "Sperling, Tobias"
+ <Tobias.Sperling@softing.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-hwmon@vger.kernel.org"
+ <linux-hwmon@vger.kernel.org>, "devicetree@vger.kernel.org"
+ <devicetree@vger.kernel.org>, "linux-doc@vger.kernel.org"
+ <linux-doc@vger.kernel.org>, "jdelvare@suse.com" <jdelvare@suse.com>,
+ "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "corbet@lwn.net" <corbet@lwn.net>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: hwmon: Introduce ADS71x8
+Message-ID: <20240831131824.03141d4a@jic23-huawei>
+In-Reply-To: <766b9892-ef54-4f0a-96dd-19e8a1b3279c@roeck-us.net>
+References: <BE1P281MB24208CB90AF549578AA5C384EF972@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
+	<20240830-chaos-unrivaled-04c5c4c6add9@spud>
+	<766b9892-ef54-4f0a-96dd-19e8a1b3279c@roeck-us.net>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,45 +69,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 29 Aug 2024 14:32:06 +0200
-Angelo Dureghello <adureghello@baylibre.com> wrote:
+On Fri, 30 Aug 2024 07:30:16 -0700
+Guenter Roeck <linux@roeck-us.net> wrote:
 
-> From: Angelo Dureghello <adureghello@baylibre.com>
+> On 8/30/24 06:14, Conor Dooley wrote:
+> > Hey Tobias, Guenter, Jonathan,
+> > 
+> > On Fri, Aug 30, 2024 at 11:49:53AM +0000, Sperling, Tobias wrote:  
+> >>  From b2e04ce5500faf274654be5284be9db4f3abefce Mon Sep 17 00:00:00 2001
+> >> From: Tobias Sperling <tobias.sperling@softing.com>
+> >> Date: Fri, 23 Aug 2024 12:08:33 +0200
+> >> Subject: [PATCH 1/2] dt-bindings: hwmon: Introduce ADS71x8
+> >>
+> >> Add documentation for the driver of ADS7128 and ADS7138 12-bit, 8-channel
+> >> analog-to-digital converters. These ADCs have a wide operating range and
+> >> a wide feature set. Communication is based on an I2C interface.
+> >> The driver provides the functionality of manually reading single channels
+> >> or sequentially reading all channels automatically.
+> >>
+> >> Signed-off-by: Tobias Sperling <tobias.sperling@softing.com>
+> >> ---
+> >>   .../devicetree/bindings/hwmon/ti,ads71x8.yaml |  85 +++++++++++  
+> > 
+> > If this is a "generic" adc, why is it going into hwmon?
+> > I would have expected this to be in iio/adc, and use more typical adc
+> > bindings, even if the driver is in hwmon.
+> > 
+> > Guenter/Jonathan wdyt?
+> >   
 > 
-> Some DACs as ad3552r need a synchronous mode setting, adding
-> this parameter for ad3552r and for future use on other DACs,
-> if needed.
-> 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio-dac | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac b/Documentation/ABI/testing/sysfs-bus-iio-dac
-> index 810eaac5533c..a3012baf90b3 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio-dac
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac
-> @@ -59,3 +59,10 @@ Description:
->  		multiple predefined symbols. Each symbol corresponds to a different
->  		output, denoted as out_voltageY_rawN, where N is the integer value
->  		of the symbol. Writing an integer value N will select out_voltageY_rawN.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_voltage_synchronous_mode
-> +KernelVersion:	6.13
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		This attribute allows a specific synchronization mode, mainly
-> +		intended for DACs where multiple synchronization methods are available.
+> Same thought here. While the chip supports limits, making it suitable for
+> hardware monitoring, its primary use seems to be as ADC, not as hardware
+> monitoring device. The hardware monitoring API isn't well suited for the
+> fast sample rate supported by this chip.
 
-If we accept this it needs an _available as well + a list of the possible modes.
-That list must be exhaustive across all devices so we constrain these appropriately.
+Agreed, looks like a typical IIO ADC.
 
-However, right now this seems more like picking a trigger, or potentially the PWM
-feeds into the spi offload code than anything else, so I'm not sure we want to
-introduce new ABI for it.
+If the particular board needs it for hardware monitoring we have
+the bridge that should work for that (iio-hwmon).
 
 Jonathan
 
+> 
+> Guenter
 > 
 
 

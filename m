@@ -1,169 +1,103 @@
-Return-Path: <linux-iio+bounces-8910-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8911-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D0E96715A
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 13:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B4596715C
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 13:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B95181C2143E
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 11:38:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E9CF1C212A9
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 11:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA94C17DFFD;
-	Sat, 31 Aug 2024 11:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECA217DFF8;
+	Sat, 31 Aug 2024 11:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFYeiGEV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A/H5u7Bv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A152B6A8CF;
-	Sat, 31 Aug 2024 11:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50D36A8CF;
+	Sat, 31 Aug 2024 11:41:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725104326; cv=none; b=CBVltLUk3cW4zeR4+tJDzmVDyTUTBXFEl9ncTgFmXJo+a6lozz/Xek6ib51aaZjNTFCHYZsncuLrgWPbMxnyytwFPnw32VScDzGpcWEVSfTETcbfkV2jyrzjy3swXlEU1xtotJ1w+3k0Q0+z2T9HyJ2Yo7keTvOQokV1+QrDA+w=
+	t=1725104478; cv=none; b=Pv9rZ61zgBhaI4To/2KW+IXvuJToREdAqDdTbE8JOklUmJq+jzDYYc65w9TBtGcdqMYk9paR7iQFfRdJuwdXSkIXLB48cOg9YS5hRD/g8QY5CpJOUMLIKboJ3ZLYBCts6Daet1+h+LYXcyABPANw8wOrAEmc1vNj9PMPZx1ZuaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725104326; c=relaxed/simple;
-	bh=26XxgTbdOhTuCSD4I9b4ByqUILFzK3wcbjqL8EuM6gE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JzRx0i2fGdxFILH+n9nox9rrdyLQs6YleAWuV+tZ7BnaMh9uE0LbFRPkC8/b/+nCfzrg491I1czhQR3ARhsj+HzH05MCtSbO65yNfU/qWonF/3jUbdzrVmlocqBY48eQ+WObS1qt/mfqo9eU6r9+xiERHzu8IgRiGvS79dXnZKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFYeiGEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD656C4CEC0;
-	Sat, 31 Aug 2024 11:38:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725104326;
-	bh=26XxgTbdOhTuCSD4I9b4ByqUILFzK3wcbjqL8EuM6gE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RFYeiGEVSAqhiaBzzTBp/EqS4UZZC+5ZDB0Fb7o9UR1b9mLVzw0adrWVQkE5j+WcN
-	 7Rn/k/p6WYZWv3NuoZr5AItEKO+zeBPm0fbLZOZuTftz0osl0HUCnbPbLZYa8EQ9Az
-	 zbdHhFqJhLfpyjHMO3XrVAzyE42wmCMQHvL7rl8AKX944pAOLN3OaqdhdpynWSQtbE
-	 QyKyLQsWiAswVKacrGmcABvt2Vf408qg7/wgFGS7SgMLhUDGC2c/xxA31HkirRA8Cp
-	 6Peepq2PwJVzv/ZxEitP3KTNDXev2yC0faMq+u2Xk3b11dwK7Si+esgOPSlMc8egaf
-	 eDiDba09LaSUQ==
-Date: Sat, 31 Aug 2024 12:38:37 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
- <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- dlechner@baylibre.com
-Subject: Re: [RFC PATCH 0/8] iio: dac: introducing ad3552r-axi
-Message-ID: <20240831123837.26a1070a@jic23-huawei>
-In-Reply-To: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
-References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1725104478; c=relaxed/simple;
+	bh=dzfg5AAPQBP7IxGhqH2LJ3n1Dw2NUaBeXGeXvnIpsVA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NCWYqwJ/VMcj80JsYF56DeFvo9kQHIipRGBuiddkkQ1I2zi/eMMNpa5SU4zRY/JOdfLgCiquotn8PpXjHhiiNBlzwYNtmBaNw+qWyG0IV+8bE+D4xFcckbqthMNC54kUb8soemM3PXic4mpb0JrD6/OnbU4tLpp/keYrfEG6/dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A/H5u7Bv; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5bec4e00978so2726123a12.0;
+        Sat, 31 Aug 2024 04:41:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725104475; x=1725709275; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dzfg5AAPQBP7IxGhqH2LJ3n1Dw2NUaBeXGeXvnIpsVA=;
+        b=A/H5u7BvNlhcL9Etw75OzNdY8nYEjDHkvzstsQ3YfWkHK0x/uNH2eqM0KSemyZp7Cw
+         Az73wkliG4BwayzdLY1vc3uXYzzjhnq4Vc7EBiFpD8URyo0zSAE78+p7yIy8WBA8WmHj
+         2/I5av316XuvYCRUOr7iWY09CuHL1Y0ZuZrZCJ/uzcfb9LEsNZYltP4jzS8Fr2SzNO48
+         70lhNNeE34qJQT13wWVPWYRgRfhmxfuYEoCazwha7LuHVh5COQdl7PY2px0b/UVZbV+f
+         MAWbz4gea5Mpl5ONrtZE15hYR3q2eSwp3vrcMn7Pz8XSTVkuvHc+nDB/WhimxxYa0HJZ
+         A/Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725104475; x=1725709275;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dzfg5AAPQBP7IxGhqH2LJ3n1Dw2NUaBeXGeXvnIpsVA=;
+        b=EZG0AWojcbvmV+fSSiixcplcFMn2GmUa+CLXVJsKK3GEUNb9p46oPUjaVnXFPTmUtw
+         f1/7gTK66sD8GFu5v+qEHsDnzm5n4lho4jqsOqAwTBWkzN737DuHRHpeJcOoP132vkG/
+         X1bguGLZLoljGShT2u3GQEgKGyN6byDAA86zRL9hLdePRVQ2xsqUVWe4i0Gst55lwWhf
+         sgXDU9D99uEiPR70SJHyGA/nIn7BxQmZ+sZqw/nibwmdyJ0gyj37Yey64MAr5mNj6Z2d
+         Gh8zhg/5GF9+7vwvd3G9GcCDTQwbOIOZHtqBMnURCtM2xBGChisWO8wFxWROvzxlxD/O
+         jwyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWNQ7NoiTDszDMYhg3vZxLrRrazmEev5VenckpuiP+94NiOLlXCGIJX+mmVS9tidH/arRwvXMsZX0=@vger.kernel.org, AJvYcCVrMpKBsXyKcckmHiEFlHQb4Pk8Q4bxjKqJylJW/ujBd9ifzB0SkIlq3NZ23M4cKh8HUVMLPtMTqHj9xngp@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPSoS3tROlJwOhjvant2Akr+7jU8fyBlufjt8xkN5Q/0hOfY3q
+	mioX584ysHqxR7zIpnChPEKKmgHcqzSj7U8pPn+m5kX/B43Zq3QiiqEmFLe1Pg2dJrH8n2jdH2/
+	H3jqxTbUHCwicksXZ2ZzemQ6e5DQ=
+X-Google-Smtp-Source: AGHT+IFyquyaYAKRcJU4KGIAwFgdI7SC3dKZUTalVzMf8x3+nH6tfUdud/w9VNB4qkeRJVPINcOulPJzYR0cflsoO8k=
+X-Received: by 2002:a17:907:7da3:b0:a7a:b385:37c5 with SMTP id
+ a640c23a62f3a-a897f811cc2mr712228366b.17.1725104474690; Sat, 31 Aug 2024
+ 04:41:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20240826212344.866928-1-andy.shevchenko@gmail.com> <20240831115343.775c6167@jic23-huawei>
+In-Reply-To: <20240831115343.775c6167@jic23-huawei>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 31 Aug 2024 14:40:38 +0300
+Message-ID: <CAHp75VcZBAkpr==gwXohhHLZfTGpwQdtyOH_A3xkz12qV4Nvrw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] iio: imu: st_lsm6dsx: Clean up ACPI/fwnode code paths
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 29 Aug 2024 14:31:58 +0200
-Angelo Dureghello <adureghello@baylibre.com> wrote:
+On Sat, Aug 31, 2024 at 1:53=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+> On Tue, 27 Aug 2024 00:22:38 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+>
+> > Here is a couple of cleanups that should not affect any functionality.
 
-> Hi, asking for comments for this patchset, that is mostly=20
-> ready, at least feature-complete and functionally tested.
->=20
-> I am introducing ad3552r-axi variant, controlled from a fpga-based
-> AXI IP, as a platform driver, using the DAC backend. The patchset is
-> actually based on linux-iio, since some needed DAC backend features
-> was already there on that repo only, still to be merged in mainline.
->=20
-> Comments i would like to ask are:
->=20
-> - i added some devicetree bindings inside current ad3552r yaml,
->   device is the same, so i wouldn't create a different yaml file.=20
+...
 
-Agreed. If same device, it's usually better to keep it in one file.
+> Applied the obvious fix for the bot error messages &drdy_pin
+> and applied to the togreg branch of iio.git (pushed out as testing)
 
->=20
-> - if it's ok adding the bus-type property in the DAC backend:
->   actually, this platform driver uses a 4 lanes parallel bus, plus
->   a clock line, similar to a qspi. This to read an write registers
->   and as well to send samples at double data rate. Other DAC may=20
->   need "parallel" or "lvds" in the future.
+Thank you and sorry for the inconvenience.
 
-If it is for register read + write as well, sounds to me like you need
-to treat this as a new bus type, possibly then combined with a
-backend, or something similar to spi offload?
-
-What bus does this currently sit on in your DT bindings?
-(add an example)
-
->=20
-> - adding the bus-type property vs. a boolean property vs. adding=20
->   a new compatible string.
->=20
-> - how external synchronization should be handled. Actually, i added
->   2 backend calls to enable or disable this external trigger.
-
-That seems more or less fine.  Is there any control over the external
-trigger?  This feels a bit like some of the complex stm32 hardware
-triggers in that a 'hidden' trigger is being enabled.
-If it is controllable or selectable (between say a PWM or an external
-pin) then you may need to be careful how to expose that control.
-
->=20
-> - is a read-only sampling-frequency useful ?
-Yes. If it is easy to provide, it can be useful to userspace to
-allow it to figure out how much data to expect.
-
-Jonathan
-
->=20
-> Thanks a lot for your feedbacks.
->=20
-> To: Lars-Peter Clausen <lars@metafoo.de>
-> To: Michael Hennerich <Michael.Hennerich@analog.com>
-> To: Nuno S=C3=A1 <nuno.sa@analog.com>
-> To: Jonathan Cameron <jic23@kernel.org>
-> To: Rob Herring <robh@kernel.org>
-> To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> To: Conor Dooley <conor+dt@kernel.org>
-> To: Olivier Moysan <olivier.moysan@foss.st.com>
-> Cc: linux-iio@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: dlechner@baylibre.com
->=20
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
-> Angelo Dureghello (8):
->       dt-bindings: iio: dac: ad3552r: add io-backend property
->       iio: backend: extend features
->       iio: backend adi-axi-dac: backend features
->       dt-bindings: iio: dac: add adi axi-dac bus property
->       iio: dac: ad3552r: changes to use FIELD_PREP
->       iio: dac: ad3552r: extract common code (no changes in behavior inte=
-nded)
->       iio: dac: ad3552r: add axi platform driver
->       iio: ABI: add DAC sysfs synchronous_mode parameter
->=20
->  Documentation/ABI/testing/sysfs-bus-iio-dac        |   7 +
->  .../devicetree/bindings/iio/dac/adi,ad3552r.yaml   |  39 +-
->  .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   |   9 +
->  drivers/iio/dac/Kconfig                            |  11 +
->  drivers/iio/dac/Makefile                           |   3 +-
->  drivers/iio/dac/ad3552r-axi.c                      | 572 +++++++++++++++=
-++++++
->  drivers/iio/dac/ad3552r-common.c                   | 163 ++++++
->  drivers/iio/dac/ad3552r.c                          | 394 +++-----------
->  drivers/iio/dac/ad3552r.h                          | 199 +++++++
->  drivers/iio/dac/adi-axi-dac.c                      | 250 ++++++++-
->  drivers/iio/industrialio-backend.c                 | 151 ++++++
->  include/linux/iio/backend.h                        |  24 +
->  12 files changed, 1494 insertions(+), 328 deletions(-)
-> ---
-> base-commit: 7ccb2c2db44572deadb795c4637273cdabbe8b66
-> change-id: 20240829-wip-bl-ad3552r-axi-v0-b1e379c986d3
->=20
-> Best regards,
-
+--=20
+With Best Regards,
+Andy Shevchenko
 

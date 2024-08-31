@@ -1,62 +1,61 @@
-Return-Path: <linux-iio+bounces-8907-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8908-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95980967136
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 13:15:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF3096713B
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 13:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D901C21A99
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 11:15:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA2031F229B3
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 11:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0F017D340;
-	Sat, 31 Aug 2024 11:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5054017CA04;
+	Sat, 31 Aug 2024 11:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgRa8u81"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="We9eHYXq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D4D17DFEB;
-	Sat, 31 Aug 2024 11:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02034175D3F;
+	Sat, 31 Aug 2024 11:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725102867; cv=none; b=FOp9TsvLx5TfpxGYoKfs21X2u0oQOeIxlHT4rJrGfMCBvAJt90MfhPbKNHPU/26e6HmaNZNCGvMSkcU+bTnMA/64qAzL65uqHW9BDaOXR8VHbEjG9AKtjcr73qpVcZSGxy2KGgpiiic2SuXRrfZg3SRfNIM6bTUgJxAwsoTVeX4=
+	t=1725103402; cv=none; b=EE9jSrAYSAge9BXJksKkXDsxD2WlOJUKWSBE9srhy0UHjKabTdqSe58fkCbW82T/HYnLxsjBblEszGk1U7Ysky0uAaI73/NoNAWVVYYnEFIT4C5VRZKM0RxrksjEiVC//IaQS5F0anV1J76aQGvfY4BPNOU9SzOiNAmd4yZIi+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725102867; c=relaxed/simple;
-	bh=JoeQ1+9FykwPktoL15ThTao/9Vu+3+00UVGBonSwU0A=;
+	s=arc-20240116; t=1725103402; c=relaxed/simple;
+	bh=c+VcWDZLGhgR9mvpYh5YRRBY5NsxRHNbM2e3zC1iiow=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=db6ZV6+aC1jO/fPnDihBOldihxUehoJspyDqZMA5INPw26ffN/QVRlRkLau8oCwdgKJUWHQOUnzzMrnp3MKKu9ZbCZn811DO6eK88DwPowfsOrpkCMZ9OwN2xnwMk5WDWovm+qTyAs3dtputSpoB4ZPDb/fXqqQYqJTy/m0B6GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgRa8u81; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2E8C4CEC0;
-	Sat, 31 Aug 2024 11:14:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gz2/F0e43lKJx/JUr8rPnHWfjDqTejKiNN/DeWnmU1gFwds+Q++oNLHRdEz5e42I+nLiUnqqrHXY1ybdV3APloDoFz3B3QdWzcK6v3kfVXRg4rUEKmMOCFrkKjE8MdBEG/vI5mnCxJ/v4FEPbZpYSuaWGDW5yLwEm8wjgcrqIps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=We9eHYXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1846EC4CEC0;
+	Sat, 31 Aug 2024 11:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725102866;
-	bh=JoeQ1+9FykwPktoL15ThTao/9Vu+3+00UVGBonSwU0A=;
+	s=k20201202; t=1725103401;
+	bh=c+VcWDZLGhgR9mvpYh5YRRBY5NsxRHNbM2e3zC1iiow=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PgRa8u81fp8I5BesmFFAMHoypMHilmrdMf9Iy5m16yRQ5eYOhlRIJrS/QzzfabJjD
-	 z7V+taqA+3T0WLSH5OeGxM9HgmAV5ZfzlpH3gYKK4KeXO3PccYtG7H9LC67vhK+D2k
-	 9PXfWXMF9DPSlGB7jh5Uq39NdeBxUvluSQngLrf+IZsuucRUtBuRLspNFhj7Wuw6nu
-	 BT77xAEngPGRXXktE3Hc6L1q3ebrVJmCw/6YsvRi+/EnCjlPv/aLFn4GvEixoaKFtk
-	 Kyu46zCyrZ4hbYuhPQY7wJck/9Rp9A4fycU+A2A00nPBGjQbrikLT4hYw8EQhH3m/6
-	 oG623bSI1gUyg==
-Date: Sat, 31 Aug 2024 12:14:15 +0100
+	b=We9eHYXqnb83KBmrsEeIc7i6cz1eNws8zKJNKN8f1Z3pcN5Ow4Zek/Z/FPObkAltz
+	 Ne6fCl1V8UvLZz+0Ws+d0XwIlrNHW0z25/Stdptki6jMCRaAWZKf4Bj1/6a67QGIbp
+	 wVTVBdjtSXXIvQWf4izPRQmmcNdXmd4KbWOm5ztnpudEOPNDBRX2dd+AsAFBfFNlZY
+	 TUVhuPFuk8UrlIPMOYbeJmNw+j1PnDc8P0GVQT33cDFszsQ89blZ+60+ZDhYnRb9ab
+	 DYc5tMRYu8AhhZ9htCtkFCOSnM61oFJLeB/lJAriDUoT6CKMaHsjhLtZHKxk7sbPRg
+	 gTwLis+d2QJUA==
+Date: Sat, 31 Aug 2024 12:23:13 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto
- <inochiama@outlook.com>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, =?UTF-8?B?TWlxdcOobA==?= Raynal
- <miquel.raynal@bootlin.com>, linux-iio@vger.kernel.org,
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v5 0/3] Add SARADC support on Sophgo CV18XX series
-Message-ID: <20240831121415.4888cf11@jic23-huawei>
-In-Reply-To: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
-References: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
+ dlechner@baylibre.com
+Subject: Re: [PATCH RFC 2/8] iio: backend: extend features
+Message-ID: <20240831122313.4d993260@jic23-huawei>
+In-Reply-To: <20240829-wip-bl-ad3552r-axi-v0-v1-2-b6da6015327a@baylibre.com>
+References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
+	<20240829-wip-bl-ad3552r-axi-v0-v1-2-b6da6015327a@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,91 +66,138 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 29 Aug 2024 14:31:49 +0200
-Thomas Bonnefille <thomas.bonnefille@bootlin.com> wrote:
+On Thu, 29 Aug 2024 14:32:00 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> This patchset adds initial ADC support for Sophgo CV18XX series SoC. This driver can
-> work with or without interrupt.
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Link: https://github.com/sophgo/sophgo-doc/releases/download/sg2002-trm-v1.0/sg2002_trm_en.pdf
+> Extend backend features with new calls needed later on this
+> patchset from axi version of ad3552r.
 > 
-> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-Applied patches 1 and 2 to the togreg branch of iio.git. Currently that's
-just pushed out as testing because I want to rebase shortly to get some
-usptream fixes needed for other series.
-
-Thanks,
-
-Jonathan
-
-
-
-
+> A bus type property has been added to the devicetree to
+> inform the backend about the type of bus (interface) in use
+> bu the IP.
+> 
+> The follwoing calls are added:
+> 
+> iio_backend_ext_sync_enable
+> 	enable synchronize channels on external trigger
+> iio_backend_ext_sync_disable
+> 	disable synchronize channels on external trigger
+> iio_backend_ddr_enable
+> 	enable ddr bus transfer
+> iio_backend_ddr_disable
+> 	disable ddr bus transfer
+> iio_backend_set_bus_mode
+> 	select the type of bus, so that specific read / write
+> 	operations are performed accordingly
+> iio_backend_buffer_enable
+> 	enable buffer
+> iio_backend_buffer_disable
+> 	disable buffer
+> iio_backend_data_transfer_addr
+> 	define the target register address where the DAC sample
+> 	will be written.
+> iio_backend_bus_reg_read
+> 	generic bus read, bus-type dependent
+> iio_backend_bus_read_write
+> 	generic bus write, bus-type dependent
+> 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 > ---
-> Changes in v5:
-> - Add the ability to read the sample frequency
-> - Edit commit message to remove No-Die reference and add precision on
->   the ADC series
-> - Rename binding and driver file to match compatible
-> - Reformat the channel property in the binding
-> - Clean driver code
-> - Link to v4: https://lore.kernel.org/r/20240812-sg2002-adc-v4-0-599bdb67592f@bootlin.com
+>  drivers/iio/industrialio-backend.c | 151 +++++++++++++++++++++++++++++++++++++
+>  include/linux/iio/backend.h        |  24 ++++++
+>  2 files changed, 175 insertions(+)
 > 
-> Changes in v4:
-> - Lowercase register hexadecimal value in dts
-> - Reorder properties in dts
-> - Use only a const in the compatible property of the device tree bindings
-> - Specify the series of SoC in the driver to avoid confusing with other
->   Sophgo SoCs
-> - Add channel description in the bindings
-> - Use FIELD_PREP in the default configuration
-> - Index channels from 0
-> - Return PTR_ERR instead of IS_ERR
-> - Link to v3: https://lore.kernel.org/r/20240731-sg2002-adc-v3-0-5ac40a518c0a@bootlin.com
-> 
-> Changes in v3:
-> - Subdivide default cycle configuration into multiple elementary
->   configurations
-> - Fix formatting in the driver
-> - Use devm_mutex_init
-> - Use devm_clk_get_enabled now because the clock is no more optional
-> - Remove handling of Saradc in No-Die Domain as RTC isn't implemented yet
-> - Use cv1800-saradc as default compatible instead of a wildcard
-> - Remove platform_set_drvdata as it wasn't used
-> - Link to v2: https://lore.kernel.org/r/20240705-sg2002-adc-v2-0-83428c20a9b2@bootlin.com
-> 
-> Changes in v2:
-> - Drop modifications in MAINTAINERS file
-> - Rename the ADC from "sophgo-adc" to "sophgo-cv18xx-adc" to avoid
->   conflict with ADCs available in future Sophgo SoCs.
-> - Reorder nodes in DT to match DTS coding style
-> - Switch from including <linux/of.h> to <linux/mod_devicetable.h>
-> - Use scoped_guard instead of mutex_lock/unlock
-> - Check IRQ Status in the handler
-> - Change IIO device name
-> - Use devm_clk_get_optional_enabled instead of a clock variable
-> - Init completion before the IRQ request
-> - Removed unnecessary iio_info structure in the private data of the
->   driver
-> - Use SoC specific compatible in the bindings and device trees
-> - Link to v1: https://lore.kernel.org/r/20240702-sg2002-adc-v1-0-ac66e076a756@bootlin.com
-> 
-> ---
-> Thomas Bonnefille (3):
->       dt-bindings: iio: adc: sophgo,cv1800b-saradc: Add Sophgo CV1800B SARADC
->       iio: adc: sophgo-saradc: Add driver for Sophgo CV1800B SARADC
->       riscv: dts: sophgo: Add SARADC description for Sophgo CV1800B
-> 
->  .../bindings/iio/adc/sophgo,cv1800b-saradc.yaml    |  83 ++++++++
->  arch/riscv/boot/dts/sophgo/cv18xx.dtsi             |  22 +++
->  drivers/iio/adc/Kconfig                            |  10 +
->  drivers/iio/adc/Makefile                           |   1 +
->  drivers/iio/adc/sophgo-cv1800b-adc.c               | 218 +++++++++++++++++++++
->  5 files changed, 334 insertions(+)
-> ---
-> base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
-> change-id: 20240527-sg2002-adc-924b862cd3f2
-> 
-> Best regards,
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+> index a52a6b61c8b5..1f60c8626be7 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -718,6 +718,157 @@ static int __devm_iio_backend_get(struct device *dev, struct iio_backend *back)
+>  	return 0;
+>  }
+
+
+> +
+> +/**
+> + * iio_backend_buffer_enable - Enable data buffering
+
+Data buffering is a very vague term.  Perhaps some more detail on what
+this means?
+
+> + * @back: Backend device
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_buffer_enable(struct iio_backend *back)
+> +{
+> +	return iio_backend_op_call(back, buffer_enable);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_buffer_enable, IIO_BACKEND);
+> +
+> +/**
+> + * iio_backend_set_buffer_disable - Disable data buffering
+> + * @back: Backend device
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_buffer_disable(struct iio_backend *back)
+> +{
+> +	return iio_backend_op_call(back, buffer_disable);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_buffer_disable, IIO_BACKEND);
+> +
+> +/**
+> + * iio_backend_buffer_transfer_addr - Set data address.
+> + * @back: Backend device
+> + * @chan_address: Channel register address
+Run scripts/kernel-doc on this and fix the errors (parameter name is 
+wrong).  W=1 builds might also point the simpler ones out.
+> + *
+> + * Some devices may need to inform the backend about an address/location
+> + * where to read or write the data.
+I'd drop the 'location' part unless this gets used later because you
+are referring register address above.
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_data_transfer_addr(struct iio_backend *back, u32 address)
+> +{
+> +	return iio_backend_op_call(back, data_transfer_addr, address);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_data_transfer_addr, IIO_BACKEND);
+> +
+> +/**
+> + * iio_backend_bus_reg_read - Read from the interface bus
+> + * @back: Backend device
+> + * @reg: Register valule
+> + * @val: Pointer to register value
+> + * @size: Size, in bytes
+> + *
+> + * A backend may operate on a specific interface with a related bus.
+> + * Read from the interface bus.
+
+So this is effectively routing control plane data through the offloaded
+bus?  That sounds a lot more like a conventional bus than IIO backend.
+Perhaps it should be presented as that with the IIO device attached
+to that bus? I don't fully understand what is wired up here.
+
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_bus_reg_read(struct iio_backend *back,
+> +			     u32 reg, void *val, size_t size)
+> +{
+> +	if (!size)
+> +		return -EINVAL;
+> +
+> +	return iio_backend_op_call(back, bus_reg_read, reg, val, size);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_bus_reg_read, IIO_BACKEND);
+> +
 
 

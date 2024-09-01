@@ -1,98 +1,126 @@
-Return-Path: <linux-iio+bounces-8946-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8947-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2838967BB7
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 20:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D457967C38
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 22:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 344F4281C35
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 18:17:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 231052814E3
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 20:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E99183CA1;
-	Sun,  1 Sep 2024 18:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C9013AA20;
+	Sun,  1 Sep 2024 20:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="eE1lP7bm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G9S/kbkr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9222433CE;
-	Sun,  1 Sep 2024 18:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F014CE05;
+	Sun,  1 Sep 2024 20:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725214633; cv=none; b=TL21qoBEdLH6/MaoLkucX9Am/JNiCz2XUHimRybE8H3H/QpTjjUL3mO/w/b+6PJmvdW9vM8Vln/V9eX7ICMsBFGKhMKeW3xnXJlF4Z5jEeyNMG1Vgjc6oNwEi6HX/efPXcyvIiUW8wzZTJEbX32GJd4h2awMwP019htpsGMOYwc=
+	t=1725224054; cv=none; b=rptK1Mk9ydDolvIUyfqfeBoOFYdZ1xxsUs5eKtpTfdPRnVYup8qPc5uWcQavV2Stcruwk2DJ2eiFTwSuJUDDSjZdQiMXowLnjvumdv90zCWtLTmBohYPeVvmHhRCIS0YUIA5A6zg32cWTIBoQchogfQZk/+rcUuEIBmJCb21o8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725214633; c=relaxed/simple;
-	bh=JlvO8lYcXIn5q4W39SnrcPTvSyxJR+Ym3ZZqAzEHI0I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pVBe0UjdLzjhJ5Wy/ldCxt9vBBWWWaA/QY9mVNtI3Ibb9wJJVpdY0y+sdlQqXa15YuYbXzT/SwFXDJFJ6eRCXZxCX4QJKE1iCeMsUljH1Edk19d6JCwPJJoE2YKUjSMIqOCHQ/epB0eaJmi/jZYnC75DS9HPmBIbKS7vUocE+4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=eE1lP7bm; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1725214615; x=1725819415; i=markus.elfring@web.de;
-	bh=JlvO8lYcXIn5q4W39SnrcPTvSyxJR+Ym3ZZqAzEHI0I=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=eE1lP7bmN5UsfOmE0Ad+bYvZxZ4EemRFNkgbMloyp3gF4Cbfc46qDL9YiFsOL94b
-	 rX4nla+OHBcIl5wE0+8pHtZyw0ars8s+8saH1MbWwkfe4xMG5QRExjuW//9jO+MFu
-	 sfGckEf8t1fjAY4ZGv93b8fd+liWlz7LPvC4IMsT0lFfDv45pSZLzEGo3w1p2aHdO
-	 XoqLWbnXhTxAmP754Uv4704SEVZZ3714MCBJdshbIEmsEzVn7cKETj/sP0oeizQXo
-	 emzsgthUoNC0EKr1lyQ5f/7AEZI0KrWNhDhlf5ozyQXwKn4jgdyME0vcHpW43G5Sk
-	 CM30wqJVOof5XNndyw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.84.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MP384-1sPzxL01kq-00KZCb; Sun, 01
- Sep 2024 20:16:55 +0200
-Message-ID: <7b827ee0-9116-4e8c-96e1-1fa5f7267f33@web.de>
-Date: Sun, 1 Sep 2024 20:16:54 +0200
+	s=arc-20240116; t=1725224054; c=relaxed/simple;
+	bh=2/dpL0DywYScHQt477sF2ba9yNukMi6rG+osg5PZIno=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GnDt5A3TTjYAvI2Alx4dSW9abNZFGwn25/MwnmV0G6VXgGzIrkdMOw58NHSv1d47EyU14pK+4hRnlrOisMQuhVq0Ze7w45jQwuDx3ivOivva2wcfiP/zJghd7qVA5UxBONX1YKqZcUCjjkk/tvsYQkzF6VpE6ttVt+5uO1GzIsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G9S/kbkr; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4567d78ad2fso21628711cf.2;
+        Sun, 01 Sep 2024 13:54:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725224052; x=1725828852; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9mRHAsBGF17GqwCZZSUSOWSrbOHvrWg33W2YfY73OdI=;
+        b=G9S/kbkrWvghry8Gz+ZO1pu12lreR6ns1U+iWUfJRNzShOV1+8k/9zmUGjxVNHuM0b
+         JG4KtZmK7OPmeC6GFv3rRnabvn0w62VTOf3+ysIMZB23qFp9zv44j35fH+v0yZOvdGI6
+         8sbfgRIS+PyojGKRnLTLQ7icFT6lxDfjsPPhJknuvdAdGe170nRWpve1W6Un+w+4bWbn
+         EzlXvUrKLMcI1DuZQyeDh08gkQLtYBw9XFFuVyD/fiekiBmUTe/2YjpvmCkjp4VufIqL
+         STFcdmV3lANC/FtGgsbvOelKfnoORslIjpeACxi1hYYAiRB3p08QZr+b9dA0T3fzmUBi
+         WhwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725224052; x=1725828852;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9mRHAsBGF17GqwCZZSUSOWSrbOHvrWg33W2YfY73OdI=;
+        b=BsMo5hUteuUkvNssOc+/dgGRrjtPgJO20JEZFIx3hmQiCEgfwX809FvFZFaYin/ebm
+         pCpkKKsram8u6uUhCH5hJEOFYO2pOEAJdp/NExJK0yzZwG692F5i2MUQqb5LfS2QxERX
+         adWsP2Fo0JfjJ589MojeiukxytFcWVXlXhQ+RSRWlXzWmv8xoNXB/0rg4tuW3/mEqfFi
+         L6MCOcij6I/f2EcockZuVJxLGh7WL2bpvERc3GbV21uuyonxEiIXak9HsuL/x1VqZZ79
+         WSqoqx5clWvNlKVIG3ROGc1pSetcN2XwEeGcFBjlS8POP39Er3JKyQ3H8XYDbnkoS1Fn
+         dt2A==
+X-Forwarded-Encrypted: i=1; AJvYcCV22JIyT5+vxTUQZIzj3xapiiYwyXfr5gDqEsJVkr82vJDgwON8oInfn6l5PW6z8QEO1+xxo5sVWPUH@vger.kernel.org, AJvYcCWpl1ONw9hQmWG8yEXyrhw/5+rOwJIwI5ZcnxEr+XTREGcJ3+7dRnVpfiDw6PzgZNNUIThCKLIB2lZnxEdE@vger.kernel.org, AJvYcCX4UkIjCKCdbhRgYLaVl3ak6AzgVGir8Q/YUObOOKzzDQPfl3N5e/I3rK18LYTzyIcWRNUz791et2aW@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOk8TWjpujS/URlX7W5G3jBraCembSvqfjmTprWd/mGb4w0yCq
+	ve7J59Hk2gbnrUJR+Lxs4ULGr/ZQX7PlZa6FMUxpQ6h13bWu3+wHRQ7ri18j
+X-Google-Smtp-Source: AGHT+IHABzcVDHDqym8tMVEbonoHPiDgFs9wuSC+slplVVB9yJu0NzGbiF6EWZzwW8zQ3N8h9DuRxg==
+X-Received: by 2002:a05:622a:1dc9:b0:456:8170:bfa5 with SMTP id d75a77b69052e-4574e7e95c2mr72177231cf.1.1725224051839;
+        Sun, 01 Sep 2024 13:54:11 -0700 (PDT)
+Received: from localhost.localdomain (ool-1826d901.dyn.optonline.net. [24.38.217.1])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45682c9a148sm34148231cf.32.2024.09.01.13.54.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Sep 2024 13:54:11 -0700 (PDT)
+From: Alex Lanzano <lanzano.alex@gmail.com>
+To: Alex Lanzano <lanzano.alex@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jagath Jog J <jagathjog1996@gmail.com>,
+	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] Add I2C driver for Bosch BMI270 IMU
+Date: Sun,  1 Sep 2024 16:53:22 -0400
+Message-ID: <20240901205354.3201261-1-lanzano.alex@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: iio: imu: inv_mpu6050: Remove duplicate code between labels
-To: Gyeyoung Baek <gye976@gmail.com>, linux-iio@vger.kernel.org,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: LKML <linux-kernel@vger.kernel.org>
-References: <20240901091214.15199-1-gye976@gmail.com>
- <533802b3-3034-4b7c-b903-72608917e2f0@web.de>
- <CAKbEznv-TmCr2FAodrM2SKK5A5pbV9p5-OvXPdmuk_4xXmh=Rw@mail.gmail.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <CAKbEznv-TmCr2FAodrM2SKK5A5pbV9p5-OvXPdmuk_4xXmh=Rw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:CR5+TcXozIdoUiOk9FKxRT5nByzFR2Ijwq09PrLtHazWMVdrO+W
- VldNfC5RVP/PCZE7WVKahtEf0YUTKSZreMvdYPF+57h11WLJd7sm0SMHKBFp3CtVovmfYHB
- o0iGx1wvlE4dG4av3uoii/qxzM3CVYGa4fFIutousyHi5McZV6wh9VsbttXTBGztXNTK6yw
- 8/AbyPQRdTVDJja8NJ/GA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:rP7RDYk1/mY=;B+bCIeagcvmncISAUZu+SNOrlG/
- 4J/i/XewD1CRaNRX/yoQnRzoY8byEBSMhQHvm5IOvi5aZHVCPDbSXiNVY3WOvLaXW8AqdGWp/
- 7Vr/JcShZCwyxqOm9Kb8n68YLBy9PdxW6kTjDGZxnk5dFJ+yGtZVCt8+Q48HGmqU8CFTDye5f
- nQS5BXAdWPjqJdDtD07cyzvBZy6UjLhOKOPbB8KDhWgkcdrQGL7THer83nYx8eXPOaTZCMZW3
- qhdr1kfpcfyTbmxV94o9gLh22Q/VasXaYS3wFRsMtYYuA9tCNzenZRgxRGV6jmHtXY0l7tDb2
- 3ZeUtapgkknocPXNFpOfHPXvuFDifTSfg0iVkl4o/YSkC/CBL/71DcBXyexd9MHqxgTLcGr6q
- BuPgzDj2BDiv8zgwsUDYFsLTbFhJltknFvhwLxcSyvI3m9bFPVFjg30AkmX8qyCDHQUN9fUFI
- LjzgzJGU3gLNdJVDRZ2PARMv26tGa7yD9c4hBWRgSy0/E7LnTvYAh2z1HCgNwTCQG55MVxg9b
- 0u065aS4Uhh2gv7TnAZjiQLeqact/fucMLz2mE7X6cLedbng7oyzOCuVZsHtEa5QnE0CzfxNt
- e0hUIiUxDvG2XFTVYgz573Z2sCOxMb8c1GZuM/ceyrDfx7Vu7rB1bUcDODFXbPlqubhHemjCm
- lk2NzzS3Qe6/pRYsSHBswfp89YAG1xFvYT5L6hew2lv5CPBOxuQSQ+RhpAjX9xHY9yBt4oN8m
- ui6JNO89UWaeueZ0+wSfnEwnmwOHD/MoJzGPeVMr5Mye1Ar5nlqpGtgn3uw1VpPxR/U46VeJh
- evOpwFab6JdN4qGxgRlrc4Tw==
+Content-Transfer-Encoding: 8bit
 
-> Hello, I apologize for the insufficient explanation.
+Add basic I2C support for the Bosch BMI270 IMU.
 
-How will the commit message be improved further?
+References:
+https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi270/
 
-Regards,
-Markus
+Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
+---
+
+Alex Lanzano (2):
+  dt-bindings: iio: imu: add bmi270 bindings
+  iio: imu: Add i2c driver for bmi270 imu
+
+ .../bindings/iio/imu/bosch,bmi270.yaml        |  80 +++++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/imu/Kconfig                       |   1 +
+ drivers/iio/imu/Makefile                      |   1 +
+ drivers/iio/imu/bmi270/Kconfig                |  22 ++
+ drivers/iio/imu/bmi270/Makefile               |   6 +
+ drivers/iio/imu/bmi270/bmi270.h               |  18 +
+ drivers/iio/imu/bmi270/bmi270_core.c          | 322 ++++++++++++++++++
+ drivers/iio/imu/bmi270/bmi270_i2c.c           |  56 +++
+ 9 files changed, 513 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
+ create mode 100644 drivers/iio/imu/bmi270/Kconfig
+ create mode 100644 drivers/iio/imu/bmi270/Makefile
+ create mode 100644 drivers/iio/imu/bmi270/bmi270.h
+ create mode 100644 drivers/iio/imu/bmi270/bmi270_core.c
+ create mode 100644 drivers/iio/imu/bmi270/bmi270_i2c.c
+
+-- 
+2.46.0
+
 

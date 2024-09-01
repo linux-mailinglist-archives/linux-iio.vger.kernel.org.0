@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-8936-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8937-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838389676F9
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 16:00:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4889676FB
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 16:00:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B24511C2116D
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 14:00:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DEF8B212E1
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 14:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E9617F394;
-	Sun,  1 Sep 2024 14:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0930417F394;
+	Sun,  1 Sep 2024 14:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etA70p3T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cNDNZNoe"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DBC17E00F
-	for <linux-iio@vger.kernel.org>; Sun,  1 Sep 2024 14:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDDE17E00F
+	for <linux-iio@vger.kernel.org>; Sun,  1 Sep 2024 14:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725199246; cv=none; b=bsk15R896hlv3GHgETZRBmzT4izGHzXz7jomarV17nmGwt78/jU058tdN/ze1ETk/RLgpEfnfCVlK1CaQF9NYzUqAWYwxLVEd+8XK0kKTfzH5hgvLE/rl0XlyfnIv7byrNnEAidgzyClMagEhaNvgMry1ELuMoNPf2WaTljhGi0=
+	t=1725199249; cv=none; b=B74l18cRpChPYfVxGYn5VX30LgPak6hEoTRnFgdPBmsZtPh3jQ0lD6yTzBPjBl5IbrG7chagstHTzHGXB1yx5yhiN9Ikd84hUbaMb1AeLhxxJxr9FQEK6eUZO1iAfxLo5s6200s/DVhkFWsJfZJdafRvNteeV+AYIYCpfKoWPeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725199246; c=relaxed/simple;
-	bh=grREwPn4HqEqjVVjEZ1YBZSER1V+zCXNmNiJUfppIO8=;
+	s=arc-20240116; t=1725199249; c=relaxed/simple;
+	bh=eFKsplyC1bwfBfyxeBZZKcwmpB8mu+rVHwH4EC5UZrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bpiTulNyBArpo2YoHeFqJYohGsaMgyB04wkQxW+QB6u2ETLOEf4OCg1k98HvIx8RpOYfXWQGCBRsvROrfF3alLQ/+zJC9DHmFAB0TnTxq6LOhJ9SbgDs6THzauUuF4x65CbzImK1o9nXrdovRKfuMS4ZKQE6qZRA5vfJq1uCPRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etA70p3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFE2C4CEC7;
-	Sun,  1 Sep 2024 14:00:41 +0000 (UTC)
+	 MIME-Version; b=hux64HMt3/U/Oku+RCKtz8Iw+LazinL9xTzWv5TidDcpTUI6Up9X0Y2TEo5kOZXQy7VrgTAOExGRzFaF+3VBVZBpm2PkL5kNXrV6vuUUxczcF4Ad95kfLBKQwK+2zKjpdbW0KVaJADvPOSEtRzYuvJSDj/08k+xJLG1q9vgPaKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cNDNZNoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A178C4CEC3;
+	Sun,  1 Sep 2024 14:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725199245;
-	bh=grREwPn4HqEqjVVjEZ1YBZSER1V+zCXNmNiJUfppIO8=;
+	s=k20201202; t=1725199249;
+	bh=eFKsplyC1bwfBfyxeBZZKcwmpB8mu+rVHwH4EC5UZrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etA70p3T8XBhyg2oP28rmw/SX2ytwiqXpCVrEiBK7ahLspd239wp/YT25D+BOWkIM
-	 6dH5dsQ8Txk/VzSz5v5ZALt4MwIXWTwN8gZ9unYtuRRAlze93aIsAqvI736SC2eT2i
-	 e7wLt9DgUnDC9cMB6cZPKivzINSuaO/NW6bIdccPUkEKjPxq4ekUlEBJJPqud3sScP
-	 WmctZ6ETelvyCduT2CAoAcA+Qj4QfcTRJiTg9U2j2sCoRgzQEng+9HRN5w3LjIRLoL
-	 8glzJvZC/H7Yn3m0SEKyBcwYtPG4k0Tf4089HNbowv3Vy3S+T+zd7kbsN6QgzNsEpW
-	 Gfi4KHdYpcG/w==
+	b=cNDNZNoeRCzUfIQJBdTRY0RQjhtqA+iZ/5xHR2k14kjlQrkZw5ly2tL+otOlyZ9WN
+	 BJjq2Tf0ioi67gwRypZHB1Rss1tsoFEmTwK0+3YQ5MsHsH75zl74w24Ys2jE7I1UeV
+	 BtAepr0F8hbxDI/ukF9wTKIFE15Lb7J8NsItqRmZ6ET5qib7isTTFWoIlws41wJBpW
+	 0EMX6sFFeq4fwpSI3MM831V1Wxmh2NJXEVUTCFh+rjaFeaLMiupu2GGeWzlB9T2YOM
+	 DlbgG4HHPbCWm3w/OwSaVe4/g8IzgzzqHCKO1i2BMaHqfi0U1qmhRE/i9XBWJwVoUR
+	 +tTR2lVecUV9w==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -56,9 +56,9 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Vasileios Amoiridis <vassilisamir@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 10/15] iio: imu: inv_icm42600: use irq_get_trigger_type()
-Date: Sun,  1 Sep 2024 14:59:45 +0100
-Message-ID: <20240901135950.797396-11-jic23@kernel.org>
+Subject: [PATCH 11/15] iio: imu: inv_mpu6050: use irq_get_trigger_type()
+Date: Sun,  1 Sep 2024 14:59:46 +0100
+Message-ID: <20240901135950.797396-12-jic23@kernel.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240901135950.797396-1-jic23@kernel.org>
 References: <20240901135950.797396-1-jic23@kernel.org>
@@ -77,37 +77,36 @@ type in two steps.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index c3924cc6190e..93b5d7a3339c 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -673,7 +673,6 @@ int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
- {
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index 14d95f34e981..fdb48c5e5686 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -1859,7 +1859,6 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+ 	struct inv_mpu6050_platform_data *pdata;
  	struct device *dev = regmap_get_device(regmap);
- 	struct inv_icm42600_state *st;
--	struct irq_data *irq_desc;
+ 	int result;
+-	struct irq_data *desc;
  	int irq_type;
- 	bool open_drain;
- 	int ret;
-@@ -683,14 +682,7 @@ int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
- 		return -ENODEV;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+@@ -1893,13 +1892,7 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
  	}
  
--	/* get irq properties, set trigger falling by default */
--	irq_desc = irq_get_irq_data(irq);
--	if (!irq_desc) {
--		dev_err(dev, "could not find IRQ %d\n", irq);
--		return -EINVAL;
--	}
+ 	if (irq > 0) {
+-		desc = irq_get_irq_data(irq);
+-		if (!desc) {
+-			dev_err(dev, "Could not find IRQ %d\n", irq);
+-			return -EINVAL;
+-		}
 -
--	irq_type = irqd_get_trigger_type(irq_desc);
-+	irq_type = irq_get_trigger_type(irq);
- 	if (!irq_type)
- 		irq_type = IRQF_TRIGGER_FALLING;
- 
+-		irq_type = irqd_get_trigger_type(desc);
++		irq_type = irq_get_trigger_type(irq);
+ 		if (!irq_type)
+ 			irq_type = IRQF_TRIGGER_RISING;
+ 	} else {
 -- 
 2.46.0
 

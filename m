@@ -1,150 +1,119 @@
-Return-Path: <linux-iio+bounces-8925-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8926-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06CD99676C8
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 15:41:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF369676EF
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 16:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85CFCB21395
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 13:41:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58C282812B4
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 14:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28EA17E016;
-	Sun,  1 Sep 2024 13:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28CB17E8F7;
+	Sun,  1 Sep 2024 14:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kmMrml3+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ApjTiadZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D24961FEB;
-	Sun,  1 Sep 2024 13:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B282617E473
+	for <linux-iio@vger.kernel.org>; Sun,  1 Sep 2024 14:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725198065; cv=none; b=BHm5ZAPRl3nBaCWkugbcCUhJlsNvfbedFQGlkx6S2m3AQEDMgWapgR3S+YV/+8ktQ0AVWzhgZ7JKyyvPPJvwd3lweVar2RcC4tbuSbJ+A2c9uOvhPuGRwVF48j7xviCXWQNSLUc7cvKJ7+4Mj8Qr4x7l90u4e3+U2S2TUbjT/SM=
+	t=1725199203; cv=none; b=jJDDmItC9uQfkrWAlpQ1X/G8S8dB3wDTVrE/NutYrisi1zJE61tBjt9+8a2eBM5Eev8cl8Kma6yXbf2y767rf2qpARLNG/nTv+6W+emwD9XgXO+wEJj4QKdr2F9bjCVM/gk907xpSzkDIZbsN7kloi3eTozYNP2ZC3qG53ilZOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725198065; c=relaxed/simple;
-	bh=tXHeqiUqOFXGvWoUKfIJGlj5u9CZSs2HMjaf837ADSg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TW8yzAIUnzsm2GJYZfAbt8rHKJfVVvZDJvad1FhRGN89DvJPJCh5gJQuTJIsV99P9WjyX7nrkvGwInVTWRn116WSvl0rAkRJHkCoNgJAo8kvuACR304pJy8W4QsVOZsaDQGgBVRLwBnAz04icpcSQJgnywScue5a6g+f13Zrzqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kmMrml3+; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-6bce380eb96so1818273a12.0;
-        Sun, 01 Sep 2024 06:41:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725198064; x=1725802864; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PaFudmlePtimQjBZfYVX3i7AwPN92rG+FAZRbK6Jtws=;
-        b=kmMrml3+yUn0jkRz3BEQpJV0IMydcnRIkSlidHh+QmjexdsY+Gm0/W3DsIlu72TTME
-         2okzYauvclLlFDSaHYu1c5+1Yuft/7NOyh2fvskuSzxsW26XuhW2S6ly2bpjif5DfaHi
-         aAFFC2VijoSF8y4FxSNKccxQ/4U/qecnuu456AmYHCCyR6cU56xRPzbhDRwFWjtN6IYf
-         1omndwRVFsSdbiyD2kQiSvYIt0hFAaeVDWos4BXbZO7coymnpFlaE/RX316IeRukBMBA
-         aXhe0gAlnFYzbd8X++FYC3ytkOv7Y5pbLytR54WwrjrWJIz+tN+dsBtnFo/nsFbFIXdH
-         9Jjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725198064; x=1725802864;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PaFudmlePtimQjBZfYVX3i7AwPN92rG+FAZRbK6Jtws=;
-        b=HJPKAXjpP34Gfxqny5y/nfk8tXb+LOFvepVr9iIu5aCfCDjsX+YifKE+pTKa0wJNPP
-         5+pi1ekOX8f5K8AL9v43QO4pUYzQypNFSSsMA/OfBZYhCK1RUhwFKzB4IrHjrsNBzqtX
-         p5SOsAdkI49WmRK2rOkWZQjYKhgtWvRGFHzOPADxhr1Iy7nFdmW4sw2T75DBg90iyoDv
-         2mm0VVNu88n1cvtBTgCyelAsNnn2srqrQU6uQsDnmOccFel330h1Qy57JvucfvvTIPin
-         0weOFYVtkUroUEMI3QAm9ZfiTnSJJ9o0tKg4ATeJg9jD/lNIskZdVuAllJvSAnI7Nrmt
-         kG3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXqTL6OQ9lxjHk/Kn2p5yL76cN8hgXlp9w06ZtDXqhACMOXFTrRRFHc2nkvFpl9K8HewOvOqpu/I6TQJ5s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKSW9MnuAlAQ+jycmzYBymkgAPXVOEj6nivccJdVG97s/0ua/h
-	ORZWdrfxg2w6B32BNniqxsu8Npw6z2QTzoio6ig9FpAKIbzEjGbfHZUr5j1B61QAEin3HAVLBXq
-	bhFzEuyUgqrVkWtQ1U0/gfPFL1TjQNczquf2W0ZRK
-X-Google-Smtp-Source: AGHT+IEhwqeHy8ydo42E9/pecMoieQ+oFgkRtai7v5K1e2qk5CwAvQuJoaXrj08Fve0jiDwA71kVHNqDBJLtkDZuQEA=
-X-Received: by 2002:a05:6a21:394a:b0:1cc:e4d0:84e9 with SMTP id
- adf61e73a8af0-1cece50235dmr4676852637.17.1725198063550; Sun, 01 Sep 2024
- 06:41:03 -0700 (PDT)
+	s=arc-20240116; t=1725199203; c=relaxed/simple;
+	bh=R4tKWM3G5k9uICsscMIQEPSWUzirNUeoQfJsmgLlx0k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j/ao9L/Q+OF5KMwdpFNgtTijkR4AphpvoEwdcezVkboKvEjwYGEr8aL3poJ9JKcGouh6kjABSUIe7nx0eC7tHsbEqignHe5RxN7tj8V1N7/jfncY4gcYttTD3pN5s1P/fAR7hF/IZEyi9l2EnZXeuKFzAwSeGA4KXOknF02dWME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ApjTiadZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06180C4CEC3;
+	Sun,  1 Sep 2024 13:59:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725199203;
+	bh=R4tKWM3G5k9uICsscMIQEPSWUzirNUeoQfJsmgLlx0k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ApjTiadZ5IV/IbhAqx9WyOucpcq/z1qxPr9eNWzJU4DWVEO20XLdwq/WPRuZQoRKg
+	 EDKssc+6XOWm3IiLXKM55OnxzMYSqJo4arqETeLKHLa4zM75Ynapv6H0le/jblKY8x
+	 hLWLd8V16B/sTp5rAhY8xhqHqKjyXENIiepMAAeOsSJRQze4X+CeOT+8IKZCeDy84j
+	 /q/zo96NJHIGRBac/0eA80OV/g9j9P2MlEahDGJfn9kNIetInVryi6PP7jH3RllswH
+	 TXRLragPb53tu1xTBenYuiwJsCJ4u7GdU6dXYgzoHTF2deAsTqbWaAYLtZajrlKbY/
+	 +Yvud/Wnetqug==
+From: Jonathan Cameron <jic23@kernel.org>
+To: linux-iio@vger.kernel.org
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Marek Vasut <marex@denx.de>,
+	Denis Ciocca <denis.ciocca@st.com>,
+	Rui Miguel Silva <rui.silva@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Danila Tikhonov <danila@jiaxyga.com>,
+	Jagath Jog J <jagathjog1996@gmail.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 00/15] IIO: use irq_get_trigger_type() instead of opencoding.
+Date: Sun,  1 Sep 2024 14:59:35 +0100
+Message-ID: <20240901135950.797396-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240901091214.15199-1-gye976@gmail.com> <533802b3-3034-4b7c-b903-72608917e2f0@web.de>
-In-Reply-To: <533802b3-3034-4b7c-b903-72608917e2f0@web.de>
-From: gyeyoung <gye976@gmail.com>
-Date: Sun, 1 Sep 2024 22:40:52 +0900
-Message-ID: <CAKbEznvriPOTZHFyNVoNkAce5q2vy+itN5yJ20kCQw3Akn_PEQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: Remove duplicate code between labels
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hello, I apologize for the insufficient explanation.
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
----
-Before the change:
+Andy pointed out in a review that there is an irq_get_trigger_type()
+helper that first gets the irq data then extracts the type from it.
+This saves on opencoding those two steps when the irq data isn't used
+for anything else.
 
-"end_session:
-    mutex_unlock(&st->lock);
-    iio_trigger_notify_done(indio_dev->trig);
-    return IRQ_HANDLED;
+Update all the sites this pattern occurs in IIO to use the helper.
+In a few cases there will be a slightly different error message is
+somehow there is a valid irq number passed to this call and it doesn't
+have the data associated with it.
 
-flush_fifo:
-    /* Flush HW and SW FIFOs. */
-    inv_reset_fifo(indio_dev);
-    mutex_unlock(&st->lock);
-    iio_trigger_notify_done(indio_dev->trig);
-    return IRQ_HANDLED;
-"
----
-After the change:
+Jonathan Cameron (15):
+  iio: accel: adxl380: use irq_get_trigger_type()
+  iio: accel: fxls8962af: use irq_get_trigger_type()
+  iio: adc: ti-ads1015: use irq_get_trigger_type()
+  iio: common: st: use irq_get_trigger_type()
+  iio: gyro: fxas21002c: use irq_get_trigger_type()
+  iio: gyro: mpu3050: use irq_get_trigger_type()
+  iio: humidity: hts221: use irq_get_trigger_type()
+  iio: imu: bmi160: use irq_get_trigger_type()
+  iio: imu: bmi323: use irq_get_trigger_type()
+  iio: imu: inv_icm42600: use irq_get_trigger_type()
+  iio: imu: inv_mpu6050: use irq_get_trigger_type()
+  iio: imu: st_lsm6dsx: use irq_get_trigger_type()
+  iio: light: st_uvis25: use irq_get_trigger_type()
+  iio: magn: ak8974: use irq_get_trigger_type()
+  iio: pressure: bmp280: use irq_get_trigger_type()
 
-"flush_fifo:
-/* Flush HW and SW FIFOs. */
-inv_reset_fifo(indio_dev);
+ drivers/iio/accel/adxl380.c                        |  7 +------
+ drivers/iio/accel/fxls8962af-core.c                |  2 +-
+ drivers/iio/adc/ti-ads1015.c                       |  2 +-
+ drivers/iio/common/st_sensors/st_sensors_trigger.c |  2 +-
+ drivers/iio/gyro/fxas21002c_core.c                 |  2 +-
+ drivers/iio/gyro/mpu3050-core.c                    |  2 +-
+ drivers/iio/humidity/hts221_buffer.c               |  2 +-
+ drivers/iio/imu/bmi160/bmi160_core.c               | 11 +----------
+ drivers/iio/imu/bmi323/bmi323_core.c               |  8 +-------
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   | 10 +---------
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c         |  9 +--------
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c       |  2 +-
+ drivers/iio/light/st_uvis25_core.c                 |  2 +-
+ drivers/iio/magnetometer/ak8974.c                  |  2 +-
+ drivers/iio/pressure/bmp280-core.c                 |  2 +-
+ 15 files changed, 15 insertions(+), 50 deletions(-)
 
-end_session:
-mutex_unlock(&st->lock);
-iio_trigger_notify_done(indio_dev->trig);
+-- 
+2.46.0
 
-return IRQ_HANDLED;"
----
-
-Here, 'flush_fifo' and 'end_session' are not the same. However, the
-work of 'flush_fifo' is a superset of 'end_session'.
-
-
-On Sun, Sep 1, 2024 at 9:08=E2=80=AFPM Markus Elfring <Markus.Elfring@web.d=
-e> wrote:
->
-> > 'flush_fifo' label performs same task as 'endsession' label
->
->                                             end_session?
->
-> The number of actions differ between involved jump targets.
->
->
-> > immediately after calling 'env_reset_fifo' function.
-> > so i remove that duplication.
->
-> * You would like to specify a corresponding goto chain at the moment,
->   don't you?
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/process/coding-style.rst?h=3Dv6.11-rc5#n526
->
-> * How do you think about to increase the application of scope-based resou=
-rce management?
-
-firstly I understood that you might be referring to RAII. but I think
-this issue is not related to RAII.
-thanks for response.
-
->
->
-> Regards,
-> Markus
 

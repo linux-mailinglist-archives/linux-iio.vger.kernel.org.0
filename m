@@ -1,129 +1,120 @@
-Return-Path: <linux-iio+bounces-8921-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8922-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69CC89672B8
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 18:42:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5B39675AE
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 11:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93AF01C20F5B
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Aug 2024 16:42:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7182228286C
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Sep 2024 09:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9456450285;
-	Sat, 31 Aug 2024 16:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE80149C68;
+	Sun,  1 Sep 2024 09:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bUVW+Mq5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOLDx4Gl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1121F95E;
-	Sat, 31 Aug 2024 16:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E2C1494C8;
+	Sun,  1 Sep 2024 09:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725122563; cv=none; b=jCakv9PTXsk4jo9NoaygFIVbLn8kvRE+VG7PHRy3M+XLqw6s+NaoEBQmFk9uwBCmuw+tflMcWS9dHV47C7U1zP1VBz9zxR5AJJuZiEfWklAFRGyMos7CBlbdTdKk3M8AwSC1yoY+1wA6lIrFRArhPHq7cFEibWL2IEpSJLqS+J8=
+	t=1725181942; cv=none; b=fxyt8VXOI1mk46wiwPY+QYG5JOBgDsw80O0g9vpC4Qko7FXR7nYXoQDWpBdH9QKYnvmnrR5H+EiGNNt4aEaQOqCLRb5d9AJiH7PtrCal5Y54PyaoXTvWBESAsWw1f5oHLYlHVcQQVzEy+V0YvFOZgA/3GnW86MUwTsqUorxBuC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725122563; c=relaxed/simple;
-	bh=5nxftlw36WRCH7hhubmyp9Fr8vyJ3JvaNgYOtKPsxbU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KzFuYeUD7S5ZTQPVawGk+fW1hLzI3haBJKXGYwMP3clWQ+6ZKZ6CtaTOnSCAT9IoEofc+2hoMRGwJKZE5NlSZv/UoXm/94nNu3Si9w9caSYySGuLtsaWFra+oOB7HWJPuSPh3jTg05G56jhoV0y9sOdHKdZl+P2PpUBhMMSYJ48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bUVW+Mq5; arc=none smtp.client-ip=209.85.208.179
+	s=arc-20240116; t=1725181942; c=relaxed/simple;
+	bh=Vb61e5yxnIMUSRQME9TeUFTKhUGt8rdek04lYMhBN2I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=laf3z4jO3TXsa7P+7l9C0Q0LztJHkLSPWK9EpF3OGRqL4SG6HZlT7nDghcv7tdU2yLl7LBYQXnAaUl92Mt8xvwe8B2PTOgUJ3ARPy+C9zd6cMPiS1KcKhKxtiSgSMhdpgZXmfvJQWWaFmbe5/+7qqLOEmNmNaB0VyTDs1gyTqHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOLDx4Gl; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2f3edb2d908so29482421fa.2;
-        Sat, 31 Aug 2024 09:42:41 -0700 (PDT)
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2d89dbb60bdso593301a91.1;
+        Sun, 01 Sep 2024 02:12:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725122560; x=1725727360; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KilWTuBK/UXyi+ZAcZMAHfDF1J3qSDvycaldNcwXGN4=;
-        b=bUVW+Mq5naX3Hc1UCV6ek7QUt2QhVwtYxZ9oE3qNkf5GtVARwPoirmdjSL4U641vX+
-         VGU5/QTuN6agX/vM9JLaWl1rSIfWZ25Fs8OUA0PFuEPqpjIK2XGGuCSce/3BH6cEQu05
-         HitT1O31zd4dJdMGzboNB5BddLIFyHGXgdqhj4+CgDltxP8feiYyKucY9gQWYseQ34g7
-         jW44Hh58ppJQXU5s/ipNfd6n4GeTJQqh4dp586vW8J0+gl8dO+zz5vekB8BmRCZUhHu1
-         I2u17Ii/ItvTLyZCFyaqVAM9TbOvYx4yK/ejVbjTsYhEp48LnVkhFndK9KI4jiKCltrc
-         EYGg==
+        d=gmail.com; s=20230601; t=1725181940; x=1725786740; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3RIvmqckB/XmS4jFCvRpV3k1k+SyUHd+kU2bgetmV8M=;
+        b=SOLDx4GlUTnlypD7Iz8OnnVD+C+hxD4y7OqQ/kyEJ2LRkpLIlBU238vXz6OKBoJcgw
+         jW4t0mQCq6TTZpXaIhJJdrg8Gi1q8ETZpeUegdDsQQbHR43Vw88vJxvgctzyClfCxHcl
+         kK/4ekr6ZmuatJe5DyZciB6NIW4+C2zu/oUen9jhI48E1WzryCUbR5Bj8UYlRAMWuvsx
+         7wCplEd8jlMJRN5nWLcMoPVfVmg//XRMmpaRebYwlGj9i7r6igbmPo4H3wNV+98c8tXC
+         U9ff67OgGrki3RzsToy3JkjsuP3Um0kjBae0Th8iS2kK5Kzv6RA89ItMMBSSYY+8xYjZ
+         6ISw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725122560; x=1725727360;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1725181940; x=1725786740;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KilWTuBK/UXyi+ZAcZMAHfDF1J3qSDvycaldNcwXGN4=;
-        b=HA+JBud/7SIsMOjDrqyVut75l7V7+Y+7Zr21nuenAChOzHOgAF0E5XbIVHIxAP85q9
-         0CEQmohBjMSqJssZJzm1FqAJ4ja/sW9AHVQIY3fqOgMvzBQ6Hot49eFOFPJjXstozEqC
-         7v2hH9PAxTfqk9W4614tm47AShGNvYBTHm7wOhvvx98634UolZ3H7OF3KXywOGhI/lam
-         OEjnXs+cI2Fa7yj/wxGrmygNjUYY5wg2jyH0zZB8KUws8xpzKl8zTy4xqLE0SFEu7EhS
-         rix5a7JLXyR+tBYXaJ75JUxuVZTUOnCqUc/rhfBI0r5GxTZ95uL3ojJvTW9cnkyOitqM
-         PqTw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKV+YjQnr3i4Q6DXT7MPyhxi5hMzPUwR+czHB8/5KzNvGypxi9oeaZeQGqYKcdWmcnKTRJC8xUDaHy/O0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7L+IqQprYbRei2cvPPd1BNTqD+Do27WynHJEPcZHK74rwEgMz
-	P5Fl98XrkZfr+60cWsB7sMskRdlEjJlHxXwTunr7KIVmyH6703GWoLpV2Jlh2QOcdEO0jRv+PT9
-	pOuXc6gq2F60tUjIG8xquawVMsrs=
-X-Google-Smtp-Source: AGHT+IHShTqQnKMAWO5x4NZXqH988FKcL2DjXaOs9oI2feKR97EJ5QSw6Aq6be0ymvo9od9i6EnPnr1AN7ORfCwIAa0=
-X-Received: by 2002:ac2:4c48:0:b0:52c:daa7:8975 with SMTP id
- 2adb3069b0e04-53546b05e2bmr4323725e87.18.1725122559348; Sat, 31 Aug 2024
- 09:42:39 -0700 (PDT)
+        bh=3RIvmqckB/XmS4jFCvRpV3k1k+SyUHd+kU2bgetmV8M=;
+        b=hEPoWSPvy6dFF62pYv9paSn/hm3Xu3olRRFMVRpQVsWc94oKN1uMMHdYwMSE1MCzzb
+         L0qXj03m4XpjyIK88Guhz4RmuZU+HXd2mEXAFpwmW3k/mxDjvBYizYlraOSTOtHRh68Y
+         rbOpc5dyMrelvl50rwX6R8+B3X7QTGBsc7iE9qMml1wV4aOPDAY49i8fgxuCXerN7LKx
+         yUK04DRLGVL/rWzood6KHmzivS9ScrqWu4RpMQWSzr+qslF09i+VcME27KX/8fXCNwtT
+         Q+2pW6fc7P/L2QdhAy5Rus3TXcF+dfUGeYE2wdF1qk02f5KALJ1aC0Wk7D9OM1H+SeW6
+         BtOw==
+X-Forwarded-Encrypted: i=1; AJvYcCVUoVit7a5NSGqk275VZpXGwBNcPBIeRxgG99EnU52yj5XuuJac2f7z2iWRlwib7z6/ilvfqueVZuIAWGg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNxf6DwLmgSSVTiKtGug5a7oUzh0T0XnyEzG1Fk6FYf2GX62E6
+	A1q+oq/3aYgSUjlkozxg9ebWjbZrVWyx+PnVuH2wVsEkfMjRtKeU6ya6qA==
+X-Google-Smtp-Source: AGHT+IFyPw8FaR/QxQkc06MqfZ0lPGIAXmc1HESOZjrhWGxlcUaFOXRSBYhlJpXA6YFMwCvff3ACdw==
+X-Received: by 2002:a17:90b:4c0b:b0:2c7:8a94:215d with SMTP id 98e67ed59e1d1-2d8561a13e6mr11460017a91.12.1725181940311;
+        Sun, 01 Sep 2024 02:12:20 -0700 (PDT)
+Received: from gye-ThinkPad-T590.. ([39.120.225.141])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d8d8b90e9asm59086a91.38.2024.09.01.02.12.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Sep 2024 02:12:20 -0700 (PDT)
+From: Gyeyoung Baek <gye976@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Gyeyoung Baek <gye976@gmail.com>
+Subject: [PATCH] iio: imu: inv_mpu6050: Remove duplicate code between labels
+Date: Sun,  1 Sep 2024 18:12:14 +0900
+Message-Id: <20240901091214.15199-1-gye976@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240830201627.298264-1-abhashkumarjha123@gmail.com>
- <20240830201627.298264-3-abhashkumarjha123@gmail.com> <20240831134219.3d394c1a@jic23-huawei>
-In-Reply-To: <20240831134219.3d394c1a@jic23-huawei>
-From: Abhash jha <abhashkumarjha123@gmail.com>
-Date: Sat, 31 Aug 2024 22:12:27 +0530
-Message-ID: <CAG=0RqLfjPF2_ebuabo0_ddvRxZkTLmKUAXQZWYHRaKxDaOkew@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: proximity: vl53l0x-i2c: Added continuous mode support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, songqiang1304521@gmail.com, lars@metafoo.de, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-> Also, consider if other triggers could be used as if not you need to
-> both document why and add the validation callbacks to stop other triggers
-> being assigned (once you've added one that can be!)
->
-> Feel free to ask if you have more questions, but your first reference
-> should be other drivers (and I hope we don't have any that do it this way).
->
-I used this driver as a reference
-https://github.com/torvalds/linux/blob/master/drivers/iio/adc/vf610_adc.c#L556
+'flush_fifo' label performs same task as 'endsession' label
+immediately after calling 'env_reset_fifo' function.
+so i remove that duplication.
 
->
-> ouch, not a write 1 to clear register?  I can't find docs, but this is really
-> nasty bit of interface design if you have to toggle the bit.
->
-Actually ST has not provided a register map or any application note
-for the sensor.
-So there's no way to cross reference. Hence I kept the original code.
-But I will try to write 1 to clear register with my sensor.
+Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-> > +             ret = devm_iio_triggered_buffer_setup(&client->dev,
-> > +                                     indio_dev,
-> > +                                     &iio_pollfunc_store_time,
->
-> This is odd.  You don't seem to have a function to be called to actually store
-> the data.  Note you also need to consider if other triggers might be used.
->
-> I'm not sure what reason we have to do that here though as this is a very
-> conventional one interrupt per 'scan' of data device.
->
-> So you should be registering a trigger, and a buffer then letting the
-> trigger drive the buffer.
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index 45c37525c2f1..40107b4457d4 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -192,15 +192,12 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 		iio_push_to_buffers_with_timestamp(indio_dev, st->data, timestamp);
+ 	}
+ 
+-end_session:
+-	mutex_unlock(&st->lock);
+-	iio_trigger_notify_done(indio_dev->trig);
+-
+-	return IRQ_HANDLED;
+ 
+ flush_fifo:
+ 	/* Flush HW and SW FIFOs. */
+ 	inv_reset_fifo(indio_dev);
++
++end_session:
+ 	mutex_unlock(&st->lock);
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+-- 
+2.34.1
 
-Why do I need to register a trigger? Would it be fine to let the irq
-fill the buffer
-with data as  it continuously reads it in the poll function?
-
-So according to my understanding,
-I need to move all the data reading and pushing to the poll function
-and not do it in the irq handler.
-Then register that poll function here during iio_triggered_buffer_setup.
-Is there something that I am missing?
-
-Regards,
-Abhash
 

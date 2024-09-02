@@ -1,113 +1,118 @@
-Return-Path: <linux-iio+bounces-8975-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-8977-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810E59684EC
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 12:39:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31ED6968556
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 12:54:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BBFE1F20F67
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 10:39:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BB471C22D05
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 10:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5790617DFE7;
-	Mon,  2 Sep 2024 10:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/5MR4i1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50BD144D21;
+	Mon,  2 Sep 2024 10:54:37 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74C7140E34;
-	Mon,  2 Sep 2024 10:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EBB7347B;
+	Mon,  2 Sep 2024 10:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725273468; cv=none; b=G+JhoJDKngnT4Va9WB7C1FgvU25VcivXUPRfmkXbobPTjW7N5x8tztgBRgG5XJtB2W42GfwgAWzC1rm/q9HOU986QJv7CXrILjyGjMBHyVwwm25a49RG3YpL2EdeaN1BXCJT9tzwAfU9yLwDPmwJvbybkB2kptkvWH4ZXk5yGyU=
+	t=1725274477; cv=none; b=JO7lrfPBqp6Xak3FvQRQ9r6JZG6EuUWbLJbNZ8BFODeOTfrNp+ctAqF/q/fjpJcuOQJ2peWe2B7wCa9VzJ5db6gEb137YXQv6Go6iE/XsPDI0e0jL7RzBiaWQVvslGkuQUq468sp4nOMOgUF6TRtuJN/Q+9qC8hejlaN4DAgiUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725273468; c=relaxed/simple;
-	bh=jdSFR5dflXd8fpMvTatzxbqGeUD6Yxz2PW0iNP7uLJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=raBx4/CMuHvINLyUvltWYSHfcSfr8GjE96JzdmGF9F/a1DZdZmF7eoNCyezBlHMdMpeyvSOcgynef2UrhvDFv8N90QeiEVxNgf+NbUf3/Io9nNlUCCIA5S662gnRbTYar4/LThsjeWypRNuRvbPVxBlkTiS0uE8LUSiBK1pmMpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/5MR4i1; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2022fea51fdso5726015ad.0;
-        Mon, 02 Sep 2024 03:37:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725273466; x=1725878266; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=O7oJJiFlPi+ClYfQCyULP5hYtvTzBStroZU4MDfmcAg=;
-        b=J/5MR4i19BQ/QEQO7CAPeWKG4bfsuoCW98J9Hu8S7b9nulG64gLAsvyP4LB8Lm4iJP
-         SpV7XU7a23eA5OuvZUAAtMTvSm3+4/EvCB1McbVEWys77boxChOciVt+nyMr9wrgD4us
-         wqqYGnecrce5oznlFn2h9QQ6aEnXlmkP1tWRkiHyb8wp3pDYy6diQU3prIHrO2ahAlGm
-         bvlBq7ycnTGchFZ+q3m3KJua4udf3gtBEjfflUf8QncHzZq+2AJ+lWChzXp8dEUpKNY3
-         PQrEe0AijRmInC1F/Cs7+4Dbg4uVQZ7nnH6SHcbX/Xj8F/qUEB2S1H+ZiBXjsF03MU1x
-         /qxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725273466; x=1725878266;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O7oJJiFlPi+ClYfQCyULP5hYtvTzBStroZU4MDfmcAg=;
-        b=KA0KyZPR+EymErzHOOgteLs4rl6kGCEuUFcqmhPFhVH27iyLley88qtQIF3s1SkqaA
-         uBPXin5z50sZci5UYYerPPEdUfvtKITyffZD1t7+RaIf9DnMYwHoR4vGzD6152dDy92D
-         JpA48NYp5Xqp2fDbMw4lSNyajiQkHohei0WlrcSKwSkHs9xmA5MSwtN6cbSqqpqp4rCt
-         Z+Cy1TBHOIuemmWoosZPhw9Tevoz0jAsmB6c4406Zn/b294ZViJRomWaXfSlZOm6s4cM
-         4BTr+cRGuyrIDsYZKg6wJWKptuPrntrxQkM6d3epL3xer7icvilP3KsSf4+GNZ1Vm1AR
-         Y/kw==
-X-Forwarded-Encrypted: i=1; AJvYcCW9+1FMHwvtBbzvWAEDeB8ouNTvFt4UR7lMKFyqVkCD46l1Y3mKpSZzKmNe/05/NXMHNetSBnAm0vg=@vger.kernel.org, AJvYcCWFYk/xdiqoTmV2DffoydDEe0k3Rnb0lQvglSmZY4uElb2gdWW21TLmcqEUDubNpXGlzJj4RbBY9OH+025u@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmUn/0ZEiGL0qA6lb4ap8H9Xq6+0SxoFGstF8DYipPZTdA27iQ
-	xtIxsg+63R7jcjeTW+i1Hy2fcrHp60cHOEAHNkJBY1dBbwYN6KWL
-X-Google-Smtp-Source: AGHT+IGYG/z8TxdFhaZvJxTHdQsZnxZiJONpi6LBj0BZWqrUMIhXRqUmJJOXUO7hM7cTZNeblLqMkg==
-X-Received: by 2002:a17:903:228b:b0:201:e4c9:5e95 with SMTP id d9443c01a7336-20527683fabmr58460505ad.5.1725273465627;
-        Mon, 02 Sep 2024 03:37:45 -0700 (PDT)
-Received: from TKPD.tail60dea.ts.net ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-205152cd653sm63707545ad.74.2024.09.02.03.37.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 03:37:45 -0700 (PDT)
-From: Yasin Lee <yasin.lee.x@gmail.com>
-To: yasin.lee.x@gmail.com
-Cc: jic23@kernel.org,
-	lars@metafoo.de,
-	dan.carpenter@linaro.org,
-	nuno.sa@analog.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: proximity: hx9023s: Use 'CLOCK_BOOTTIME' as the default clock source
-Date: Mon,  2 Sep 2024 18:32:10 +0800
-Message-ID: <20240902103210.31369-1-yasin.lee.x@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1725274477; c=relaxed/simple;
+	bh=tnYb5HqOcmBoAL2+APpeZ+yo1FiiK4oKRHGyNDOuco0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uZ6biapg2hPB1XNq4RB9TBH40p8479V7CiEVX5gekc46wGkLGFemC4KPg5CGnGuRbiuiqvSGiJUxmKhJvIbfsprY/Aktt3V2elkp0+yxel1IrvEWmBhQbAZYKtU+qSXRb7Kcnd7QtOCmIks56UUCROUz7uQ7N+xEbkEutVSI3e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wy4pD1ZVyz6LD9w;
+	Mon,  2 Sep 2024 18:32:52 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 70192140B35;
+	Mon,  2 Sep 2024 18:36:15 +0800 (CST)
+Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 2 Sep
+ 2024 11:36:15 +0100
+Date: Mon, 2 Sep 2024 11:36:13 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+CC: Markus Elfring <Markus.Elfring@web.de>, Gyeyoung Baek <gye976@gmail.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, Jonathan Cameron
+	<jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, LKML
+	<linux-kernel@vger.kernel.org>
+Subject: Re: iio: imu: inv_mpu6050: Remove duplicate code between labels
+Message-ID: <20240902113613.0000183e@Huawei.com>
+In-Reply-To: <FR3P281MB175727DBF709CA59B1064C68CE922@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References: <20240901091214.15199-1-gye976@gmail.com>
+	<533802b3-3034-4b7c-b903-72608917e2f0@web.de>
+	<CAKbEznv-TmCr2FAodrM2SKK5A5pbV9p5-OvXPdmuk_4xXmh=Rw@mail.gmail.com>
+	<7b827ee0-9116-4e8c-96e1-1fa5f7267f33@web.de>
+	<CAKbEznu=+Bkw4kmoo7qG9h2wM=2XV54j_SYzHMAH1uWhtUPCvg@mail.gmail.com>
+	<3c60e167-7815-49c8-89f1-fe1139879d6b@web.de>
+	<FR3P281MB175727DBF709CA59B1064C68CE922@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="Windows-1252"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Override the default (CLOCK_REALTIME) clock source to 'CLOCK_BOOTTIME'.
+On Mon, 2 Sep 2024 09:54:14 +0000
+Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
 
-Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
----
- drivers/iio/proximity/hx9023s.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> Hello,
+> 
+> beware this patch is buggy. It will break the IRQ handler function of inv_mpu6050 driver.
+> 
+> The normal code path is going through end_session label without goto, and expect the function return before executing inv_reset_fifo. Without it, the reset FIFO function will be called for every interrupt and is breaking normal functioning of the driver.
 
-diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-index 8b9f84400e00..5363357a9a46 100644
---- a/drivers/iio/proximity/hx9023s.c
-+++ b/drivers/iio/proximity/hx9023s.c
-@@ -1074,6 +1074,10 @@ static int hx9023s_probe(struct i2c_client *client)
- 					     "iio trigger register failed\n");
- 	}
- 
-+	ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "clock boottime set failed\n");
-+
- 	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
- 					      iio_pollfunc_store_time,
- 					      hx9023s_trigger_handler,
--- 
-2.43.0
+Doh.  Indeed.  I missed that entirely by focusing on the error paths, not the good one.
+
+
+> 
+> Best regards,
+> JB
+> 
+> ________________________________________
+> From: Markus Elfring <Markus.Elfring@web.de>
+> Sent: Monday, September 2, 2024 08:00
+> To: Gyeyoung Baek <gye976@gmail.com>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen <lars@metafoo.de>
+> Cc: LKML <linux-kernel@vger.kernel.org>
+> Subject: Re: iio: imu: inv_mpu6050: Remove duplicate code between labels
+>  
+> This Message Is From an Untrusted Sender
+> You have not previously corresponded with this sender.
+>  
+> >>> Hello, I apologize for the insufficient explanation.  
+> >>
+> >> How will the commit message be improved further?  
+> …
+> > Since the code is short,  
+> 
+> This implementation detail can be nice.
+> 
+> 
+> > I think it's fine for now.  
+> 
+> Please reconsider such a view once more.
+> Are imperative wordings also more desirable for a better change description?
+> https://urldefense.com/v3/__https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.11-rc6*n45__;Iw!!FtrhtPsWDhZ6tw!Hb9yipjKJXmB-DO9gWKADZfQZHI84WEFUc6Ns1iGhpAfvAAyjrnLQRJZLU2Ha0nI8Fs-HBqHFlFbq0Kl-O1CJwYLe776xbRywQ$[git[.]kernel[.]org]
+> 
+> Regards,
+> Markus
+> 
+> 
 
 

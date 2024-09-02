@@ -1,111 +1,124 @@
-Return-Path: <linux-iio+bounces-9006-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9007-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB609688FC
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 15:36:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8566968913
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 15:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F9631C22B60
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 13:36:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74E2D2830CC
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 13:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004C4205E34;
-	Mon,  2 Sep 2024 13:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A6A19C56F;
+	Mon,  2 Sep 2024 13:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="tf7WYQKP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pglp0dhu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7755115E81;
-	Mon,  2 Sep 2024 13:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FC018028
+	for <linux-iio@vger.kernel.org>; Mon,  2 Sep 2024 13:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725284160; cv=none; b=ZKugL2Vz4I2NJpiSnOuDYmVEURNc0t49ziS61doQMPxDgj9Ho/aVb7/YA0fpegyAZjyEK9L805BXt6n5um1aGyEZ2x4xqjo/A/laDjiBHLvXylw8a84K6Xzb6nmvmHTkjQhE0ugTQ76g8F9wtT7SgRox1p7jUDppfMWVZdadey0=
+	t=1725284536; cv=none; b=rwk6/o+ARNzK1JkA2ewE+WSeBvhA/70miINFUr7GhAG3MAcyCKq9TIBuWd7Z5n6YlCkTffk47g2cVttOGFcinKXYM03/xZOJ+DZNBWJ8EmbHis4GsaZUT9+6hFddg+KgznVD2AjskDC2+TmoJsSaZWr+18Zn3akrrbFonoK3atE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725284160; c=relaxed/simple;
-	bh=myzTpat61MIsab19VWlZcwXNo9zrXsSd/F+mKI/VJr8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=CAAWszbih/howFEajM+nSGT7AWXj+yYy2YAmD+E8twNQAIPgo2PdsHDmGwwUa0qdlFfoOvA7M9bd7kkri4u8EQ7drR7pSL/PblhXZWW+lcM4jVwRJaQmspYTHZncQwfPaQbJ4fqeo7ZepSSIlq1tJ804xZzRO+HylQshXXYz9mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=tf7WYQKP; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1725284138; x=1725888938; i=markus.elfring@web.de;
-	bh=myzTpat61MIsab19VWlZcwXNo9zrXsSd/F+mKI/VJr8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=tf7WYQKP5cBFpQiEODZWraejC7TeIW6OSJN5D+FdbD5LlwTyR8I+FLCazYXj+4O/
-	 7KdQkQ35IG3u6jKjcRmWJygqH2HMVRkUTZcDt2w/55cAda852zbz+ZJCiqeeamgJ8
-	 TZKWdnszQBNoiZ42eVuSqo5H6vw+eRcl2g/Yb0BkFGL5MPTb4zw6NNfVn4/+kctjq
-	 DY4AqWWgy56/x6JZjX4WYhMiHWo4xare1ONI4VPopItboLWoSRD8waycyfE/YDadv
-	 cC/R4Dquzvca+++r0S2E8fyh/x4AEcpXtx/fl7uRAV0sIyoRKw7i7ofVghWLZ5n90
-	 B7AG18u3VYdZqh/tUA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.84.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MIc3T-1so5Dr1l6D-000DGt; Mon, 02
- Sep 2024 15:35:38 +0200
-Message-ID: <25f3cbe5-1491-4f50-9971-d251c407879f@web.de>
-Date: Mon, 2 Sep 2024 15:35:37 +0200
+	s=arc-20240116; t=1725284536; c=relaxed/simple;
+	bh=hRSEpuhAgj4ezTfArsrqwd1rHC48ecAdz9O/nGlIWSE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BqeXXl0Y9yyGYXENwdoLrVNziHUfYKzQr5aMUBXozpTj0VBVe5rq5JwMWxHnyi/6HWW2gn1OnDBVZOOv18j4V0dKOyE9l2NIPsMWWp0q0v3VYoG8649IwchlkAwe2tSuwJ1Q2qqETkhe22geUaOexMB9Dvv5QP5ovOijAp6nSKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pglp0dhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D545C4CEC2;
+	Mon,  2 Sep 2024 13:42:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725284535;
+	bh=hRSEpuhAgj4ezTfArsrqwd1rHC48ecAdz9O/nGlIWSE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pglp0dhuxcJy1979ZgS5WiQT05cITgC7rFX3Ouir+2t3PR2u9fHLaTm3FxDSkEO1C
+	 3vpfKPFWVfHzXpqyE78aGNIxdzwFT15E78LNd+J2GGwHKQuePwD5eYDINybAlAhntK
+	 sLHFphbYmo6q+lBYhdKdJR6jpm4UuF7K+qW197dPdzjh4q8wR0uWfn9z5XmXri/wI5
+	 sveULwXXrwQQWhiPtqgoMdDMgW7Eh+C8mWQ5Iz307lBX3tEzlyO7y4SBB97bXBMbGi
+	 OmBL1OV/ycoY3dU2vp/1R3I/OLV+7ZiH7Se298VUpKM7qYOJBKN3G/bfWxIqo+upWQ
+	 51n9DOhusjOKg==
+Date: Mon, 2 Sep 2024 15:42:13 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Sean Nyekjaer <sean@geanix.com>, Marek Vasut <marex@denx.de>,
+	Denis Ciocca <denis.ciocca@st.com>,
+	Rui Miguel Silva <rui.silva@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Danila Tikhonov <danila@jiaxyga.com>,
+	Jagath Jog J <jagathjog1996@gmail.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 07/15] iio: humidity: hts221: use irq_get_trigger_type()
+Message-ID: <ZtXAtcj7PXWEJv7C@lore-desk>
+References: <20240901135950.797396-1-jic23@kernel.org>
+ <20240901135950.797396-8-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>, Gyeyoung Baek <gye976@gmail.com>,
- Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-References: <20240901151150.77074133@jic23-huawei>
-Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: Remove duplicate code between
- labels
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240901151150.77074133@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="F5WBqPhbbgbDusqw"
+Content-Disposition: inline
+In-Reply-To: <20240901135950.797396-8-jic23@kernel.org>
+
+
+--F5WBqPhbbgbDusqw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:bLXerX3l5Sa69vDgtB/IqwzOZys6aG3vGqGt/czKkiB+kmGq9dn
- Ec3suAbe/VcVO+RsXa9VuDG9MJpVevrghYQEPhZJ57sgPKUcJTTSMvwEVMVLiWaoQCjCq9u
- hwp1bWzAHvVr097thnaisPu3XcFE4KNUOAHtZoGRTboc4xk3z01TmV8mBfNjmhRLHzqac32
- bX7nxjeoBG+R2lEHMW4nQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:1U8H7BjXlq4=;NuUnIAGeMCtzNs6sRKU1X9nc7jb
- SgU14kl4gLX/0aVhjvM3K5cWGkGM8R+Tm6ZvyWBDXt4VQxvlGtPkS3c/hcvjDIEdzOT0g/ifJ
- Xeg8jPOhHwiSLXTdmQaetO3YrNeAPU/SqbYm08F5p1Hnpiu0a9Hq/jXcWl3Y+KAOKDyf0R4Qe
- +Ef4vhejU6QHCg45gs/iDJruiKjmIwWs8+o+yXCSWmfgzFM+XSRLYHQiUQ3lm1EGIiFL0Z2Zs
- 864HGlQyoDj7Ov9IbmO81mMXsRpAHn4tT94EQ7u8+ttfS/TX8Qi36/S0d1ulQG6Gl3Z4t7WoX
- 4UxTi+iD5lVHlXzu3v2nv3R4QWxXvHpLx0zC57/dgL+V1LfBSp8Q4ep0xtPyfRaV4cIahhSzu
- h9JvNMcOHQ+QLSR+vJdVW+ogxGFdKtZGEf4TRw9NAbcFZvBNtd6G84dY0ZGx4BXYYDHYH1Ic/
- r6XlGVHsEmjQg06gUMQ/PZEM59Kl0Ur6hpprRA1kjOTLZsEB5mBmLuqNGrI5vCiDFVr3jYQVA
- sLVl2gzl0L0urV4DnVb9CRaiPbK52BB5Y4sGnHbzj26Gbv7KU0CKBE2aiRuYaplfpqooVvOOl
- EpjgMVbsL0D3NyT6f/fpPa59BFc8UcZL40i3A44COmmdT5mpvO3Zk5zmsKNykAcyQbdvf0U7T
- TVVeUh+qbPZGyRyxnHnrTp2CplpuC8t5OfRQQFuylsD3vZhIJMWcliY+AEYB59q1d7mXWX3Gu
- Yp8f1lmdm/QoaQ5Uj/1Mer3UvS4oZaqX572zujBFoUE9ZBem8A6t0jvYlJVPl0s1XSQrwieWe
- ZAEmwKlD1viIcHDz0PKRJTkA==
 
-> > 'flush_fifo' label performs same task as 'endsession' label
-> > immediately after calling 'env_reset_fifo' function.
-> > So i remove that duplication.
-=E2=80=A6
-> Ok. This doesn't greatly affect readability and the code
-> ends up a bit shorter.
+On Sep 01, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> Use irq_get_trigger_type() to replace getting the irq data then the
+> type in two steps.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/iio/humidity/hts221_buffer.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/humidity/hts221_buffer.c b/drivers/iio/humidity/=
+hts221_buffer.c
+> index 11ef38994a95..0272065cc44a 100644
+> --- a/drivers/iio/humidity/hts221_buffer.c
+> +++ b/drivers/iio/humidity/hts221_buffer.c
+> @@ -81,7 +81,7 @@ int hts221_allocate_trigger(struct iio_dev *iio_dev)
+>  	unsigned long irq_type;
+>  	int err;
+> =20
+> -	irq_type =3D irqd_get_trigger_type(irq_get_irq_data(hw->irq));
+> +	irq_type =3D irq_get_trigger_type(hw->irq);
+> =20
+>  	switch (irq_type) {
+>  	case IRQF_TRIGGER_HIGH:
+> --=20
+> 2.46.0
+>=20
+>=20
 
-How can you find such a change description acceptable?
+Reviewed-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
+--F5WBqPhbbgbDusqw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> Applied
+-----BEGIN PGP SIGNATURE-----
 
-Please reconsider this positive feedback once more.
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZtXAtAAKCRA6cBh0uS2t
+rGD/AQCofVt7trGap6oYt56NXGWUZPZ56N0bMaKVMhxd7AfBVgD/SbX7rdLT/vYJ
+s9fpKDTHxZlfYAFGDb4PtkqkUcCWGQM=
+=fXVq
+-----END PGP SIGNATURE-----
 
-It temporarily looked too promising to apply a goto chain.
-But the original control flow needs other development considerations
-if you would like to reduce the explicit repetition of common actions.
-
-Regards,
-Markus
+--F5WBqPhbbgbDusqw--
 

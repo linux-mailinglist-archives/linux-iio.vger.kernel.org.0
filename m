@@ -1,38 +1,38 @@
-Return-Path: <linux-iio+bounces-9042-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9044-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4A4968FA3
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 00:31:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01602968FA6
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 00:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F45B1F24621
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 22:31:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3432C1C2373F
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 22:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390EC189BB9;
-	Mon,  2 Sep 2024 22:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6A618B486;
+	Mon,  2 Sep 2024 22:29:16 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
+Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A155318953E
-	for <linux-iio@vger.kernel.org>; Mon,  2 Sep 2024 22:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E8018BB88
+	for <linux-iio@vger.kernel.org>; Mon,  2 Sep 2024 22:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725316153; cv=none; b=rtaff2Wg9+lbzvrD9XJVg2QXTV8c4NvC9FxpZTlijM4W2WgDnTLNvLvD6ssXQxbQucRCDpt2kZ/VOoDfCP/9UzLKtie3SZk/eS6pvN9ZTIudEpiVVKYU1/C9ATind8w8+E+mpFm7j5craO4xMpZUfiBGYnVxc/BWJTuJ/OWpd8Y=
+	t=1725316156; cv=none; b=bMR/71CZQDEU7ZyJ7cOXjLM5Cie1aemPNAwqjYSwA/RFDXTfUkPaSXPbYaHPyr2uH9wSbplk7p57RkjQUOuyY6al8mcukUC/WMevCShdaEzRoHoWSDO2+J5s3vZK0wz6aKGvBgNicvmoefPoimWdFsv1xCorMi/hs29LZwn87mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725316153; c=relaxed/simple;
-	bh=TJVJWUgFroHz4D1KAqxrh0hBNP9FzfldUPa3LBUsFjI=;
+	s=arc-20240116; t=1725316156; c=relaxed/simple;
+	bh=JbN8T71a/PZKhOL1QNhERt7e8cyfCWMB8Ep8u0D95s4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrcUqSNE2tiB4ksfMy4whjBbU1L0hEsj996AcMY+KqrxsyVMhCtXXgNc5Hj1UqS24pgh1lt3KKdORRRYCNX9MyNhRFYlr0QGo63V+8s8jRTyGZW6o9X00V6hVzujeIbWlAwFrMrXh5i+ZDw4EdAODMe6nKEsZnMShlRzE1Z2Jes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
+	 MIME-Version; b=mETR9DZQ0faCUY9j+VxtBVwz+1A1L/DbvQJccKcnQz+oTn0f0LMTfg1l8rFKE7NHd4xZeBVF1WXhn2Q7+a6xuxhosYUvEg8Bb92HhKWr/yGxnDPzwPIZJRFu7dXEL3Llq+3g8YiD67w9ftxaEX+5KbKVusFQWLxkzu4O/4mhdd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.82
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
 Received: from localhost (88-113-25-87.elisa-laajakaista.fi [88.113.25.87])
-	by fgw22.mail.saunalahti.fi (Halon) with ESMTP
-	id af57ce29-697a-11ef-8ecb-005056bdf889;
-	Tue, 03 Sep 2024 01:28:32 +0300 (EEST)
+	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+	id aff40cbd-697a-11ef-8e8a-005056bd6ce9;
+	Tue, 03 Sep 2024 01:28:33 +0300 (EEST)
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	David Lechner <dlechner@baylibre.com>,
@@ -51,9 +51,9 @@ Cc: Jiri Kosina <jikos@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v1 05/22] iio: adc: ad7793: Get platform data via dev_get_platdata()
-Date: Tue,  3 Sep 2024 01:16:50 +0300
-Message-ID: <20240902222824.1145571-6-andy.shevchenko@gmail.com>
+Subject: [PATCH v1 06/22] iio: adc: ltc2497: Get platform data via dev_get_platdata()
+Date: Tue,  3 Sep 2024 01:16:51 +0300
+Message-ID: <20240902222824.1145571-7-andy.shevchenko@gmail.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240902222824.1145571-1-andy.shevchenko@gmail.com>
 References: <20240902222824.1145571-1-andy.shevchenko@gmail.com>
@@ -69,24 +69,47 @@ From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 Access to platform data via dev_get_platdata() getter to make code cleaner.
 
+While at it, drop duplicate NULL check that iio_map_array_register()
+already has.
+
 Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- drivers/iio/adc/ad7793.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ltc2497-core.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
-index abebd519cafa..b86e89370e0d 100644
---- a/drivers/iio/adc/ad7793.c
-+++ b/drivers/iio/adc/ad7793.c
-@@ -770,7 +770,7 @@ static const struct ad7793_chip_info ad7793_chip_info_tbl[] = {
- 
- static int ad7793_probe(struct spi_device *spi)
+diff --git a/drivers/iio/adc/ltc2497-core.c b/drivers/iio/adc/ltc2497-core.c
+index 996f6cbbed3c..ad8ddf80310e 100644
+--- a/drivers/iio/adc/ltc2497-core.c
++++ b/drivers/iio/adc/ltc2497-core.c
+@@ -168,6 +168,7 @@ static const struct iio_info ltc2497core_info = {
+ int ltc2497core_probe(struct device *dev, struct iio_dev *indio_dev)
  {
--	const struct ad7793_platform_data *pdata = spi->dev.platform_data;
-+	const struct ad7793_platform_data *pdata = dev_get_platdata(&spi->dev);
- 	struct ad7793_state *st;
- 	struct iio_dev *indio_dev;
- 	int ret, vref_mv = 0;
+ 	struct ltc2497core_driverdata *ddata = iio_priv(indio_dev);
++	struct iio_map *plat_data = dev_get_platdata(dev);
+ 	int ret;
+ 
+ 	/*
+@@ -200,16 +201,10 @@ int ltc2497core_probe(struct device *dev, struct iio_dev *indio_dev)
+ 		return ret;
+ 	}
+ 
+-	if (dev->platform_data) {
+-		struct iio_map *plat_data;
+-
+-		plat_data = (struct iio_map *)dev->platform_data;
+-
+-		ret = iio_map_array_register(indio_dev, plat_data);
+-		if (ret) {
+-			dev_err(&indio_dev->dev, "iio map err: %d\n", ret);
+-			goto err_regulator_disable;
+-		}
++	ret = iio_map_array_register(indio_dev, plat_data);
++	if (ret) {
++		dev_err(&indio_dev->dev, "iio map err: %d\n", ret);
++		goto err_regulator_disable;
+ 	}
+ 
+ 	ddata->addr_prev = LTC2497_CONFIG_DEFAULT;
 -- 
 2.46.0
 

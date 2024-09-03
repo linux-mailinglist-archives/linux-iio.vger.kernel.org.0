@@ -1,106 +1,152 @@
-Return-Path: <linux-iio+bounces-9051-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9053-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C27968FC5
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 00:34:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B40869690F6
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 03:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 582B2B24A59
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Sep 2024 22:33:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E78D11C228BD
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 01:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE7919007E;
-	Mon,  2 Sep 2024 22:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422201C68B0;
+	Tue,  3 Sep 2024 01:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i9QWmJ2x"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DE4188A1F
-	for <linux-iio@vger.kernel.org>; Mon,  2 Sep 2024 22:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED433308A;
+	Tue,  3 Sep 2024 01:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725316206; cv=none; b=Qc57DDaWOYM8BDeBc2dxS7mGg1BJQqBf/+BKRDBoI15ArohAhKlfurlxUfGPQhJq9MeWVOxjZmTZ0cgsMvQpdknOYJRUdIt6r8KvN51I+itCjyH0H48L00p1P5vy9H4OymGS2UVxtm5C6S3W57w1YSdgUKNAlXb+szzxXBTfIyY=
+	t=1725327215; cv=none; b=rzTzBaEXmkd/iKNHZKeTRFTI+1qP5pwrO3oSFx8v6UOo9J8MafgOwFai+cPHsldubWVVHNGleXepwyQow0ve3+m9F0aPcIs2vDPrgFb3kMW9ZTX5brOEkb0REPFLxLa2tekCQQMasB4tA7EbBfCTrFJiyuWfl47QpFtgrVsFnBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725316206; c=relaxed/simple;
-	bh=Axn5OvqB+CcBxhl3sti9L7ZitYsHqJrWtIcCua+j95g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ee/IGAF9Hy+ep8qjucYNobpSe22jihZ+CML7nci4BvaOvSvBc44UyceaAGrNBLkhoTS6kzB+99dDtEOt+ET8cTWs1qvRU2ZuEOyYgAroEkPy8nmemkjGPMP8/dDV5X7UxSY7JraT7qZ0d3HoOnUuntfCaQ72Fy5hTKCFQQYn8L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-25-87.elisa-laajakaista.fi [88.113.25.87])
-	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
-	id b7e48c59-697a-11ef-8e8a-005056bd6ce9;
-	Tue, 03 Sep 2024 01:28:46 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	linux-input@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jiri Kosina <jikos@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v1 22/22] iio: pressure: hid-sensor-press: Get platform data via dev_get_platdata()
-Date: Tue,  3 Sep 2024 01:17:07 +0300
-Message-ID: <20240902222824.1145571-23-andy.shevchenko@gmail.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240902222824.1145571-1-andy.shevchenko@gmail.com>
-References: <20240902222824.1145571-1-andy.shevchenko@gmail.com>
+	s=arc-20240116; t=1725327215; c=relaxed/simple;
+	bh=1yxLTU43j5tMCXj+3ugF/3/zN2UgMs9UprUUFdov/tY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u/4MyGGjZVYHJ5/a0ifoPdwf5EslGFuExk4OWxM67JXM16BgOtUei02m3KGzQKiLcZZBDvCuBmSfJ99XbVbF+MlBCL3/33GvJlRm+mM8cZxxeeNcKeG45+RncbdlaHL+JS9C9brVBwT+i5US82zygNJbC4tDFmPgvUWl61AzagA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i9QWmJ2x; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725327213; x=1756863213;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1yxLTU43j5tMCXj+3ugF/3/zN2UgMs9UprUUFdov/tY=;
+  b=i9QWmJ2xgQssYZ+tQr/mEgiO+Emlo/lnOlk7PPaRaSOqJcsgfRFl1sua
+   6BsdScQZoQOwPL/Az4YjBYB2eBH/dj4uLaVCwYpqtQDwT3WUwcKdar5/Y
+   d9kfjc4ry/iJC03M+Qb0QGqK3v96+RPb7obYbluxPEPd9rcVTZtOvvTc1
+   mrIs8Kcm3OpVUCp4g30IMVoXEx47Nu32cPtRiVNlAHq2fEBPIqhWCKRpz
+   8VRp/4OTjJ3uIRv57nEtduzNONfD7ID393KhqttWRCJ70QJXKQzAK4S+R
+   nOyVLhCQ5g8/aiUsGRLHcY7wp5FvtDrvQQw4laF4dlugryq4O1RUvPAyk
+   w==;
+X-CSE-ConnectionGUID: icDyUbepTkmF2tEQiuxv6Q==
+X-CSE-MsgGUID: FItExvk4QUqB/T2NdlYxgg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="46425530"
+X-IronPort-AV: E=Sophos;i="6.10,197,1719903600"; 
+   d="scan'208";a="46425530"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2024 18:33:33 -0700
+X-CSE-ConnectionGUID: 2+sVUTuQRDmsfpU0jLv+Iw==
+X-CSE-MsgGUID: nILQxEBNT9Sxz770qNoPjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,197,1719903600"; 
+   d="scan'208";a="64742979"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 02 Sep 2024 18:33:30 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1slIQC-00064Y-19;
+	Tue, 03 Sep 2024 01:33:28 +0000
+Date: Tue, 3 Sep 2024 09:32:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Abhash Jha <abhashkumarjha123@gmail.com>, linux-iio@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	songqiang1304521@gmail.com, jic23@kernel.org, lars@metafoo.de,
+	linux-kernel@vger.kernel.org,
+	Abhash Jha <abhashkumarjha123@gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: proximity: vl53l0x-i2c: Added continuous
+ mode support
+Message-ID: <202409030909.1CQBnx22-lkp@intel.com>
+References: <20240902122557.129013-3-abhashkumarjha123@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240902122557.129013-3-abhashkumarjha123@gmail.com>
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Hi Abhash,
 
-Access to platform data via dev_get_platdata() getter to make code cleaner.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
- drivers/iio/pressure/hid-sensor-press.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.11-rc6 next-20240902]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/iio/pressure/hid-sensor-press.c b/drivers/iio/pressure/hid-sensor-press.c
-index 956045e2db29..b7e9a085f0cc 100644
---- a/drivers/iio/pressure/hid-sensor-press.c
-+++ b/drivers/iio/pressure/hid-sensor-press.c
-@@ -241,11 +241,11 @@ static int press_parse_report(struct platform_device *pdev,
- /* Function to initialize the processing for usage id */
- static int hid_press_probe(struct platform_device *pdev)
- {
-+	struct hid_sensor_hub_device *hsdev = dev_get_platdata(&pdev->dev);
- 	int ret = 0;
- 	static const char *name = "press";
- 	struct iio_dev *indio_dev;
- 	struct press_state *press_state;
--	struct hid_sensor_hub_device *hsdev = pdev->dev.platform_data;
- 
- 	indio_dev = devm_iio_device_alloc(&pdev->dev,
- 				sizeof(struct press_state));
-@@ -325,7 +325,7 @@ static int hid_press_probe(struct platform_device *pdev)
- /* Function to deinitialize the processing for usage id */
- static void hid_press_remove(struct platform_device *pdev)
- {
--	struct hid_sensor_hub_device *hsdev = pdev->dev.platform_data;
-+	struct hid_sensor_hub_device *hsdev = dev_get_platdata(&pdev->dev);
- 	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
- 	struct press_state *press_state = iio_priv(indio_dev);
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/Abhash-Jha/iio-proximity-vl53l0x-i2c-Added-sensor-ID-check/20240902-204936
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20240902122557.129013-3-abhashkumarjha123%40gmail.com
+patch subject: [PATCH v2 2/2] iio: proximity: vl53l0x-i2c: Added continuous mode support
+config: i386-buildonly-randconfig-005-20240903 (https://download.01.org/0day-ci/archive/20240903/202409030909.1CQBnx22-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240903/202409030909.1CQBnx22-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409030909.1CQBnx22-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/proximity/vl53l0x-i2c.c:104:20: error: call to undeclared function 'get_unaligned_be16'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     104 |         data->scan.chan = get_unaligned_be16(&buffer[10]);
+         |                           ^
+   1 error generated.
+
+
+vim +/get_unaligned_be16 +104 drivers/iio/proximity/vl53l0x-i2c.c
+
+    87	
+    88	static irqreturn_t vl53l0x_trigger_handler(int irq, void *priv)
+    89	{
+    90		struct iio_poll_func *pf = priv;
+    91		struct iio_dev *indio_dev = pf->indio_dev;
+    92		struct vl53l0x_data *data = iio_priv(indio_dev);
+    93		u8 buffer[12];
+    94		int ret;
+    95	
+    96		ret = i2c_smbus_read_i2c_block_data(data->client,
+    97						VL_REG_RESULT_RANGE_STATUS,
+    98						sizeof(buffer), buffer);
+    99		if (ret < 0)
+   100			return ret;
+   101		else if (ret != 12)
+   102			return -EREMOTEIO;
+   103	
+ > 104		data->scan.chan = get_unaligned_be16(&buffer[10]);
+   105		iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+   106						iio_get_time_ns(indio_dev));
+   107	
+   108		iio_trigger_notify_done(indio_dev->trig);
+   109		ret = vl53l0x_clear_irq(data);
+   110		if (ret < 0)
+   111			return ret;
+   112	
+   113		return IRQ_HANDLED;
+   114	}
+   115	
+
 -- 
-2.46.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

@@ -1,183 +1,216 @@
-Return-Path: <linux-iio+bounces-9063-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9064-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B0F9694E5
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 09:13:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8115E969512
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 09:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AEBF1C22F66
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 07:13:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 387C828527F
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 07:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1F01D6C78;
-	Tue,  3 Sep 2024 07:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A943E1D6C61;
+	Tue,  3 Sep 2024 07:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cVNhGfIe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VhbI5/Jy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8204A1D67A8;
-	Tue,  3 Sep 2024 07:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B631D6C46;
+	Tue,  3 Sep 2024 07:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725347461; cv=none; b=q4rfBHsQ+jEObJaccG198/r6rvVOUQ2KzyJJihvkKCzb5J9EQbGxqkHMPUo7ELxE0BkkUFYZ7xEWtapKNgNtqRzNJwkx3LGvld0g1eX5/kqfqfTe+leMWPF9JuQifn2pNq4eGOCRXx1xhRDl02fzDJE3qkCwB8vqUe6k80XQQiQ=
+	t=1725347884; cv=none; b=LW9yuFhSJpsjj8zKzvSaO8+NIBG3C+nPyWC0jnxubf+iaFDbfZ6bC1jRcP4Tf3PGerM5Q14OGkv0k3Skg2vj0BetNIoykxr4ShWNfki2RRD4JbZaIhoeO2BOR6W2IqtPN1ovw37+Atb8BwTE9nwhzbxvwZBcUPPcZt7aooNUYZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725347461; c=relaxed/simple;
-	bh=yp7QPjDqSp8ibLntSHK2Vl+iJPwEo+sNDOYISBqzaJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i3c1Lk6hmXmPBlE7wHqHZs+FCqzSMCiy2XcRmtEpcf9166b93quJuX3hRzKCO7qMGksLKcV7LdHdhbqvVDh8lX3PxmGLhC4jDQmn1DjfE37oXOKMCBIyolTsuikKElsJFFe4yy/JThKUkaDen2rgpVrQXD6REMA16xGITErvjx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cVNhGfIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BD8C4CEC5;
-	Tue,  3 Sep 2024 07:11:00 +0000 (UTC)
+	s=arc-20240116; t=1725347884; c=relaxed/simple;
+	bh=HVeAkL5CWXAqfefRARoQz/L8jPq0kRqOZGCOf0JhsUw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z1dVeQtcJ89RVbIXPxO8byLigc4KQJadDYtCHsqqjgBqcwrmAi7Ou1nFFVaEtAmB18TK+HxdS/i3Sp9KYuObfZ+tz7zQTm5yuQiBT5jVuZxIcXUWnMjKHSlZDIotMekb9db9HLco62gdYCISFa09CtTRvNbaw1Iey5ukqENSd8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VhbI5/Jy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C40C4CEC5;
+	Tue,  3 Sep 2024 07:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725347461;
-	bh=yp7QPjDqSp8ibLntSHK2Vl+iJPwEo+sNDOYISBqzaJ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cVNhGfIeG2Dd7I+YNwCLMkte9sxNLGwap9hB/6Q8hmYGMNyBPOmcTmw/tKAmJpx+Q
-	 qh81qimgaSINA+M3jj+luTzjeJOuD4+xuMayjgcCVZF/Wq3kitGKdeaHQe0KB4L1RS
-	 Z7tg25hJQPoLHSa1+aPJbqwhGd/8N9oOzMMs0i6+aMPgJxNVvrP5tkegCUOYeY9zoR
-	 qsrmmcwb9fxe90GfWn8l51lJn7n3b+FKOYL6W+7v+/nDGRvaYQlMd5tW9kbo7CCoaE
-	 Gof2RUmhaAUI0SxQb19TiH2NVH3L3jhjTQyTxMV8o7N/gVwNcg5iDcoLtoPRgMDVg8
-	 5he0KCoEQC7fQ==
-Date: Tue, 3 Sep 2024 09:10:57 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 14/22] iio: imu: st_lsm6dsx: Get platform data via
- dev_get_platdata()
-Message-ID: <Zta2gaV_8qintFts@lore-rh-laptop>
-References: <20240902222824.1145571-1-andy.shevchenko@gmail.com>
- <20240902222824.1145571-15-andy.shevchenko@gmail.com>
+	s=k20201202; t=1725347883;
+	bh=HVeAkL5CWXAqfefRARoQz/L8jPq0kRqOZGCOf0JhsUw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VhbI5/Jy2nRZ6EQLWpC7i5bKPl8N16vUcAu+c/A79MwFFt49GTAmkDoMerhNrYWiL
+	 hOMvKqFYey+NdmMLgUoC2TfqLKo7PFrOvAUHStOiJ8Js44HN/woAsVFksV89Ur2gPf
+	 DA6kQcVMWPL2J3ikhREOakDilI9Mu1do3OynDDj0pC52VYx99AntORYAf4vtPPvPhA
+	 wVtiseVcigXS39MyQQjWzTQku7LoN74cs1dnlqj77toc+F733S9QarJujNNMUjByoF
+	 scgwmKHWlNvVucyr1k9T5pHFSQT82GJ7lQJZL3EQEsALX3n6FwjO4AngrjxTwROVla
+	 DZf7c8d1iM1ww==
+Message-ID: <05d3bdc1-22f7-4c4d-995d-84eceae3c3eb@kernel.org>
+Date: Tue, 3 Sep 2024 09:17:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="b3D8ckyOT+sNuJnX"
-Content-Disposition: inline
-In-Reply-To: <20240902222824.1145571-15-andy.shevchenko@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 7/8] dt-bindings: iio: adc: add adi,ad7606c-{16,18}
+ compatible strings
+To: Alexandru Ardelean <aardelean@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org,
+ robh@kernel.org, lars@metafoo.de, michael.hennerich@analog.com,
+ gstols@baylibre.com
+References: <20240902103638.686039-1-aardelean@baylibre.com>
+ <20240902103638.686039-8-aardelean@baylibre.com>
+ <rdk2f6c457k462g5v6s5vumdmhejefyfareio5f6bogslg4wg5@ket4vfwwbyi7>
+ <CA+GgBR-aQw+JHky5XwRDQj=6y1pHD=OvBeGW1ocd=ZR6ieBJrw@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <CA+GgBR-aQw+JHky5XwRDQj=6y1pHD=OvBeGW1ocd=ZR6ieBJrw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On 02/09/2024 20:38, Alexandru Ardelean wrote:
+> On Mon, Sep 2, 2024 at 2:55 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>
+>> On Mon, Sep 02, 2024 at 01:36:30PM +0300, Alexandru Ardelean wrote:
+>>>    reg:
+>>> @@ -114,6 +118,25 @@ properties:
+>>>        assumed that the pins are hardwired to VDD.
+>>>      type: boolean
+>>>
+>>> +patternProperties:
+>>> +  "^channel@([0-7])$":
+>>> +    type: object
+>>> +    $ref: adc.yaml
+>>> +    unevaluatedProperties: false
+>>> +
+>>> +    properties:
+>>> +      reg:
+>>> +        description: The channel number.
+>>> +        minimum: 0
+>>> +        maximum: 7
+>>> +
+>>> +      diff-channels: true
+>>
+>> Shouldn't this be specific?
+> 
+> Umm.
+> Specific how?
+> Like if:then check for certain compatible strings?
+
+Ah, no, list is already constrained to two items. Then just drop it.
+What's the point of listing it here?
 
 
---b3D8ckyOT+sNuJnX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 
+>>
+>>> +
+>>> +      bipolar: true
 
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->=20
-> Access to platform data via dev_get_platdata() getter to make code cleane=
-r.
->=20
-> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 15 +++++----------
->  1 file changed, 5 insertions(+), 10 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index ed0267929725..3958b5e1a3f6 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -2132,14 +2132,11 @@ st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw,
->  			const struct st_lsm6dsx_reg **drdy_reg)
->  {
->  	struct device *dev =3D hw->dev;
-> +	const struct st_sensors_platform_data *pdata =3D dev_get_platdata(dev);
+Same, drop.
 
-nit: I guess you can move pdata pointer in the 'if' block, since it is just
-used there.
+>>> +
+>>> +    required:
+>>> +      - reg
+>>> +
+>>>  required:
+>>>    - compatible
+>>>    - reg
+>>> @@ -202,4 +225,44 @@ examples:
+>>>              standby-gpios = <&gpio 24 GPIO_ACTIVE_LOW>;
+>>>          };
+>>>      };
+>>> +  - |
+>>> +    #include <dt-bindings/gpio/gpio.h>
+>>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>>> +    spi {
+>>> +        #address-cells = <1>;
+>>> +        #size-cells = <0>;
+>>> +
+>>> +        adc@0 {
+>>> +            compatible = "adi,ad7606c-18";
+>>> +            reg = <0>;
+>>> +            spi-max-frequency = <1000000>;
+>>> +            spi-cpol;
+>>> +            spi-cpha;
+>>> +
+>>> +            avcc-supply = <&adc_vref>;
+>>> +            vdrive-supply = <&vdd_supply>;
+>>> +
+>>> +            interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+>>> +            interrupt-parent = <&gpio>;
+>>> +
+>>> +            adi,conversion-start-gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;
+>>> +
+>>> +            adi,conversion-start-gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;
+>>> +            reset-gpios = <&gpio 27 GPIO_ACTIVE_HIGH>;
+>>> +            adi,first-data-gpios = <&gpio 22 GPIO_ACTIVE_HIGH>;
+>>> +            standby-gpios = <&gpio 24 GPIO_ACTIVE_LOW>;
+>>> +
+>>> +            adi,sw-mode;
+>>> +
+>>> +            channel@1 {
+>>> +                reg = <1>;
+>>> +                diff-channel;
+>>
+>> Where is this property defined (which schema)?
+>>
+>> Did you test it?
+> 
+> Tested on my board.
 
-Regards,
-Lorenzo
+How can you test a binding on a board?
 
->  	int err =3D 0, drdy_pin;
-> =20
-> -	if (device_property_read_u32(dev, "st,drdy-int-pin", &drdy_pin) < 0) {
-> -		struct st_sensors_platform_data *pdata;
-> -
-> -		pdata =3D (struct st_sensors_platform_data *)dev->platform_data;
-> +	if (device_property_read_u32(dev, "st,drdy-int-pin", &drdy_pin) < 0)
->  		drdy_pin =3D pdata ? pdata->drdy_int_pin : 1;
-> -	}
-> =20
->  	switch (drdy_pin) {
->  	case 1:
-> @@ -2162,14 +2159,13 @@ st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw,
->  static int st_lsm6dsx_init_shub(struct st_lsm6dsx_hw *hw)
->  {
->  	const struct st_lsm6dsx_shub_settings *hub_settings;
-> -	struct st_sensors_platform_data *pdata;
->  	struct device *dev =3D hw->dev;
-> +	const struct st_sensors_platform_data *pdata =3D dev_get_platdata(dev);
->  	unsigned int data;
->  	int err =3D 0;
-> =20
->  	hub_settings =3D &hw->settings->shub_settings;
-> =20
-> -	pdata =3D (struct st_sensors_platform_data *)dev->platform_data;
->  	if (device_property_read_bool(dev, "st,pullups") ||
->  	    (pdata && pdata->pullups)) {
->  		if (hub_settings->pullup_en.sec_page) {
-> @@ -2524,9 +2520,9 @@ static irqreturn_t st_lsm6dsx_sw_trigger_handler_th=
-read(int irq,
-> =20
->  static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_hw *hw)
->  {
-> -	struct st_sensors_platform_data *pdata;
->  	const struct st_lsm6dsx_reg *reg;
->  	struct device *dev =3D hw->dev;
-> +	const struct st_sensors_platform_data *pdata =3D dev_get_platdata(dev);
->  	unsigned long irq_type;
->  	bool irq_active_low;
->  	int err;
-> @@ -2554,7 +2550,6 @@ static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_h=
-w *hw)
->  	if (err < 0)
->  		return err;
-> =20
-> -	pdata =3D (struct st_sensors_platform_data *)dev->platform_data;
->  	if (device_property_read_bool(dev, "drive-open-drain") ||
->  	    (pdata && pdata->open_drain)) {
->  		reg =3D &hw->settings->irq_config.od;
-> @@ -2639,7 +2634,7 @@ static int st_lsm6dsx_init_regulators(struct device=
- *dev)
->  int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
->  		     struct regmap *regmap)
->  {
-> -	struct st_sensors_platform_data *pdata =3D dev->platform_data;
-> +	const struct st_sensors_platform_data *pdata =3D dev_get_platdata(dev);
->  	const struct st_lsm6dsx_shub_settings *hub_settings;
->  	struct st_lsm6dsx_hw *hw;
->  	const char *name =3D NULL;
-> --=20
-> 2.46.0
->=20
+> But forgot to update the DT schema docs.
+> Though, if you're referring to testing it somehow via some make
+> command, I'm a little behind on how all this works now.
+> I'll go re-check the "make dtbs_check" and similar commands.
 
---b3D8ckyOT+sNuJnX
-Content-Type: application/pgp-signature; name="signature.asc"
+Please read carefully writing-schema and writing-bindings.
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZta2fwAKCRA6cBh0uS2t
-rLPyAQCvquLs7JDnDvHnO/jvP81iVTbPM3O1eg0j63jsywclQwD7BBi5FVTic6H6
-L0gvyU9T0IGcdw1vF12cst9yKOtEwAI=
-=bFZX
------END PGP SIGNATURE-----
+Best regards,
+Krzysztof
 
---b3D8ckyOT+sNuJnX--
 

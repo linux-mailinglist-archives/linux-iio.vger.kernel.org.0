@@ -1,75 +1,74 @@
-Return-Path: <linux-iio+bounces-9065-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9066-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CFD9696D7
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 10:19:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A74969735
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 10:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D621283500
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 08:19:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 998281F25036
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 08:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01CE20FAB1;
-	Tue,  3 Sep 2024 08:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BBB2101B3;
+	Tue,  3 Sep 2024 08:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Xfo2D7uw"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nmXbsryS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C877F200133
-	for <linux-iio@vger.kernel.org>; Tue,  3 Sep 2024 08:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBBD1D417C
+	for <linux-iio@vger.kernel.org>; Tue,  3 Sep 2024 08:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725351530; cv=none; b=U1oDRl5W27aIxBcOEH7R0IW1t5sOWpk/G60el6ktnU4FDwEJYcBprFQDN33QbV2VWecDT0T2qviKoFJe8tRmr9bVrkPIqxZfkRHnB9JajJ+oyIheuLIbVFo9i/4sNKcC3QNuQN+gFdqg7rOui6u2pHMEwJmrFSV9ohbXM8lFbE4=
+	t=1725352537; cv=none; b=ii0CdN4p/JcOxGptlYNjF9bSZgYMRZz+UrPbljuPYH/yYVkqpu+yPXKzEZDkT52eV0m0cC75sI/GwGm19mvPOwClM7OigkJmiYLyPlF7x0KlC6hELNeNdUkrIRvkBNXJdlEUCpXnNDhvqw1U0qnvmwygnMBFRUGZv5LUzhfptyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725351530; c=relaxed/simple;
-	bh=OkWCxwzIGJRHZ17496M6MZKBIn/PO3d9NEbjjLrGJI8=;
+	s=arc-20240116; t=1725352537; c=relaxed/simple;
+	bh=vDruR9yYHZ4E/pMK6RHtOT6QZ6Qy06aISwTWoxzFQYY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HGM/xTqOBpoxiJazRzXitzoiaBxDWmWi3pihVvOaKdA3ja0jc9vfPBh0gVfbb4NfVFJ3E8Y9NY+X57Ip+pkOd2dhG3ubnI+aT+MdL98lf/X+Z/rCGInyilfF7c2iaAqZErI7ux13OgfUwXrLyfqbNhCtf98u2u5PTAvdlUx33RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Xfo2D7uw; arc=none smtp.client-ip=209.85.221.54
+	 In-Reply-To:Content-Type; b=ZF69ntDrr2CsDp12ZkXg0nlvLDiW9Bs4iOoe0O7goqtKPCHQI+kPSrckcrkZV+NjetBuJdB4VyDy2JZ3xUC9iyAR4yDQcg0bZTCKOqMEJRvsG6hKJH98GAd7KH2zaYKsIYE2mhuIG8PXAE7VrL29ONkIH0yeBACsaZs8O3DIGZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nmXbsryS; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-371ba7e46easo3378779f8f.0
-        for <linux-iio@vger.kernel.org>; Tue, 03 Sep 2024 01:18:46 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42c7b5b2d01so29246165e9.3
+        for <linux-iio@vger.kernel.org>; Tue, 03 Sep 2024 01:35:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725351525; x=1725956325; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725352532; x=1725957332; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=rJFmOqpgT/yiN0OE5Ri1vW3ZQd/CDj4sEGVnSDpyRy0=;
-        b=Xfo2D7uwU2MZCr0flPN3sgpyopRCGKnPJjlbA7Rc4MYZ6zRQH9pOD21EHT6ygrHq8u
-         3EwRlpAk5+FcB8CZHPw5khU+07MhUT5CECOvUBeNS5f2QB3ix+1ugB1lq9mcEBvqhFsY
-         tFE1FvqJ3sP6tWRxv/RHdyXo8Vnoh9sttbOkJ81BV9jQozTWf967g6VDOa7mL778UIU2
-         58PRH/BHAeu0xgEWMbLygYMw7shcc2QOZ0BR/NBXtJLlv8WRmA8EbtkLL6sCAqSNCxdS
-         I6Ruubge7WjnTgaJjFFBbKPNuBJjN7+j+XZWCr1m+TcChnNszAcXYxQQBhsQG/P0RS8m
-         H2ng==
+        bh=md6s8G8C9mdJXYr2CoaZc2M8clQ85CZMXUIryBk1rl8=;
+        b=nmXbsrySQfIpT/F6/LfscXNzAFNJAWxeRXIKOcOCfPO1Dp9c2JFScJ6w5raEn1XmMK
+         DMST13gTbYJ5Okuzz6dnGCz1RAWpgiEihU/qjhalBPHVq6Cd4xGt5lBjnS4JUkeD667Y
+         Q1wh+tbRR4dbTsqBMTnUuaTGhA0q5ga54bKQzV3QlXy/8BkE3Jf0e81pf27yOfLIbvJ0
+         9UdyofmU7jvU+ea+TFhgsmd/CEY7dHOkZBOkYt6w+inoPBIUgnHF3Ev4sI/miG+pueYz
+         SyYPI1pffGAr+9VRKB+rs/wZBS9OllrkLf3QeXZShX0xgcaHnEznwramknqkVop0CDAg
+         /K8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725351525; x=1725956325;
+        d=1e100.net; s=20230601; t=1725352532; x=1725957332;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rJFmOqpgT/yiN0OE5Ri1vW3ZQd/CDj4sEGVnSDpyRy0=;
-        b=gtln71r3PAWU0B+bDSvo0PDlrN6ZsXH/jwoNV3Cmt0e8gvogtIY4vCWXq9410Z5lO+
-         5laqWRCa8Nxc8L9QHOFN0uLfz763OnWJklSopamc6ZLxgnsZ2BcwaINQtJW6dlZrHqlb
-         fsvSpdizZNtb2VOUa5u3W4a0dUl/BUkN3i3NWb+M2dRbpnJ3KLbrmVjuAaYQOzFE+hSP
-         fpDq6lQacNHNdIve9K4E/4nGQ9t5KbUric58x2U6sYOPKvPu82m7thTsnh+Q+tPsKYfA
-         wNOAgSQCZkPbj9rhqAGWIcHIQXIK8fQESxVgu3TnDbF/Nua1xoo64pVVl7tQ3YgRlvUE
-         c+kg==
-X-Forwarded-Encrypted: i=1; AJvYcCXN8CZjb2azlVVYNrclYkMVXh+1BVWX6w7Pb/UJ+bBM6KzO1iDcXZsllBxn/pT/rOJZaczrwGCBoaA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFmYVSSWF7sFrZuM0RnI0unUCmIrXWCdDG0fatnm4LNd8DMmAN
-	ZncXo/Vh0PfL8hJZk9ufwQH/ciAe5xuwo8Co/wL8Y3IpTXFX3swsHf77GVzg+bAWhDyiIAzsWyQ
-	i
-X-Google-Smtp-Source: AGHT+IEFdJRtBDTYMr1I8gMiNbVs9yjZDfuwUwHmxUiLM/+WnnQYSWWklbBHYn8eYxSyoTGWCbOh9w==
-X-Received: by 2002:a05:6000:118e:b0:371:87d1:4248 with SMTP id ffacd0b85a97d-374bceb5565mr7140308f8f.29.1725351524692;
-        Tue, 03 Sep 2024 01:18:44 -0700 (PDT)
+        bh=md6s8G8C9mdJXYr2CoaZc2M8clQ85CZMXUIryBk1rl8=;
+        b=IyoywU0BioHFMRTP5ifyH4DDU6nGF+LbftfC4waqIPGJwA9rCVuhQqn+/X/x4HR5np
+         i0ViLyeG2a2tuA008gSXLIv/ZhAuQVTjgk4sf5KM4QFGEdBBNLcdshEQNiW9qfQAQaUP
+         EiG/KonODdLBj9mDFYXeQjLqmiWlH2+Bawlg3OOLXAS+XECox/+qXJXdO9tqA4LRMG5j
+         up8lA+MvBxfbv7IG8qskCCiOWZEfzvEuj28GbQEa/x9V4AjQ9uHV6yxUvBduPV5SzhU1
+         Uv+29quW0p0Fnw0dU3Dn/EFfJ3MkcazDp2GfGPfeCPZqR5C//WtpOvDwJNL81LLpo5jV
+         5esw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9AbJg5DI/8M1oiE1Dhpd1TzjKA2Nox3SGd7uwtETUmLKr7fAQ6PVWQRegcjuz5mF9GgKDV6TBipM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVV06CZn3PWjeCRMuljOmDWv75z+sY39ISoVilc/C3QL6gbrz5
+	3im4bH4Lx0IruPtB8nXxUF+xk1HK9LGCPid67nfQ7rWQ8sIMJ1rp7ZrB8NQGrIo=
+X-Google-Smtp-Source: AGHT+IGqTkPeHnw0K6DNl2GwTI/tllz6wlOzjd2DGrrc1enepzliOhoZCW1Tx35v63kPs58Q4Pffbg==
+X-Received: by 2002:a05:600c:5102:b0:426:690d:d5b7 with SMTP id 5b1f17b1804b1-42bb01ee5b3mr147075495e9.25.1725352532154;
+        Tue, 03 Sep 2024 01:35:32 -0700 (PDT)
 Received: from [192.168.0.2] (host-95-233-232-76.retail.telecomitalia.it. [95.233.232.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-374c71140bbsm6319796f8f.110.2024.09.03.01.18.43
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6e273eesm162754585e9.32.2024.09.03.01.35.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Sep 2024 01:18:43 -0700 (PDT)
-Message-ID: <421d7967-e9e4-4207-a9de-db309ea482b0@baylibre.com>
-Date: Tue, 3 Sep 2024 10:17:35 +0200
+        Tue, 03 Sep 2024 01:35:31 -0700 (PDT)
+Message-ID: <74e0b200-d4c0-4aa3-9ee6-f49ac3f1467d@baylibre.com>
+Date: Tue, 3 Sep 2024 10:34:22 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,7 +76,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 7/8] iio: dac: ad3552r: add axi platform driver
+Subject: Re: [RFC PATCH 0/8] iio: dac: introducing ad3552r-axi
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -88,549 +87,190 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  dlechner@baylibre.com
 References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
- <20240829-wip-bl-ad3552r-axi-v0-v1-7-b6da6015327a@baylibre.com>
- <20240831131322.494119f3@jic23-huawei>
+ <20240831123837.26a1070a@jic23-huawei>
 Content-Language: en-US
 From: Angelo Dureghello <adureghello@baylibre.com>
-In-Reply-To: <20240831131322.494119f3@jic23-huawei>
+In-Reply-To: <20240831123837.26a1070a@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
+Hi Jonathan and all,
 
-On 31/08/24 2:13 PM, Jonathan Cameron wrote:
-> On Thu, 29 Aug 2024 14:32:05 +0200
+
+On 31/08/24 1:38 PM, Jonathan Cameron wrote:
+> On Thu, 29 Aug 2024 14:31:58 +0200
 > Angelo Dureghello <adureghello@baylibre.com> wrote:
 >
->> From: Angelo Dureghello <adureghello@baylibre.com>
+>> Hi, asking for comments for this patchset, that is mostly
+>> ready, at least feature-complete and functionally tested.
 >>
->> Add support for ad3552r AXI DAC IP version.
+>> I am introducing ad3552r-axi variant, controlled from a fpga-based
+>> AXI IP, as a platform driver, using the DAC backend. The patchset is
+>> actually based on linux-iio, since some needed DAC backend features
+>> was already there on that repo only, still to be merged in mainline.
 >>
->> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> Hi Angelo
+>> Comments i would like to ask are:
+>>
+>> - i added some devicetree bindings inside current ad3552r yaml,
+>>    device is the same, so i wouldn't create a different yaml file.
+> Agreed. If same device, it's usually better to keep it in one file.
 >
-> To me this feels like the interface is much closer to SPI + SPI offload
-> than to a conventional IIO backend on the basis it carries the configuration
-> path as well.
+>> - if it's ok adding the bus-type property in the DAC backend:
+>>    actually, this platform driver uses a 4 lanes parallel bus, plus
+>>    a clock line, similar to a qspi. This to read an write registers
+>>    and as well to send samples at double data rate. Other DAC may
+>>    need "parallel" or "lvds" in the future.
+> If it is for register read + write as well, sounds to me like you need
+> to treat this as a new bus type, possibly then combined with a
+> backend, or something similar to spi offload?
 >
-> Can we see if it can be fitted into that model?  You will need to define
-> a new bus type etc for it but should be fairly simple given constrained
-> setup (at least today!)
+> What bus does this currently sit on in your DT bindings?
+> (add an example)
+
+
+&amba {
+
+     ref_clk: clk@44B00000 {
+         compatible = "adi,axi-clkgen-2.00.a";
+         reg = <0x44B00000 0x10000>;
+         #clock-cells = <0>;
+         clocks = <&clkc 15>, <&clkc 15>;
+         clock-names = "s_axi_aclk", "clkin1";
+         clock-output-names = "ref_clk";
+     };
+
+     dac_tx_dma: dma-controller@0x44a30000 {
+         compatible = "adi,axi-dmac-1.00.a";
+         reg = <0x44a30000 0x10000>;
+         #dma-cells = <1>;
+         interrupt-parent = <&intc>;
+         interrupts = <0 57 IRQ_TYPE_LEVEL_HIGH>;
+         clocks = <&clkc 15>;
+
+         adi,channels {
+             #size-cells = <0>;
+             #address-cells = <1>;
+
+             dma-channel@0 {
+                 reg = <0>;
+                 adi,source-bus-width = <32>;
+                 adi,source-bus-type = <0>;
+                 adi,destination-bus-width = <32>;
+                 adi,destination-bus-type = <1>;
+             };
+         };
+     };
+
+     backend: controller@44a70000 {
+         compatible = "adi,axi-dac-9.1.b";
+         reg = <0x44a70000 0x1000>;
+         dmas = <&dac_tx_dma 0>;
+         dma-names = "tx";
+         #io-backend-cells = <0>;
+         clocks = <&ref_clk>;
+         bus-type = <1>;  /* IIO QSPI */
+     };
+
+     axi-ad3552r {
+         compatible = "adi,ad3552r";
+         reset-gpios = <&gpio0 92 GPIO_ACTIVE_LOW>;
+         io-backends = <&backend>;
+         #address-cells = <1>;
+         #size-cells = <0>;
+         channel@0 {
+             reg = <0>;
+             adi,output-range-microvolt = <(-10000000) (10000000)>;
+         };
+     };
+};
+
 >
-> That will resolve a bunch of questions around the binding as well.
+>> - adding the bus-type property vs. a boolean property vs. adding
+>>    a new compatible string.
+>>
+>> - how external synchronization should be handled. Actually, i added
+>>    2 backend calls to enable or disable this external trigger.
+> That seems more or less fine.  Is there any control over the external
+> trigger?  This feels a bit like some of the complex stm32 hardware
+> triggers in that a 'hidden' trigger is being enabled.
+> If it is controllable or selectable (between say a PWM or an external
+> pin) then you may need to be careful how to expose that control.
+>
+Actually this synchronization is needed since ADI is going to use this
+IP also in a a dual layout, so the 2 IPs needs to have an external
+synchronization by a signal. But as default synch is not enabled.
+Yes, it looks like a trigger. I can check if i can do this in a different
+way.
 
-thanks for all the feedbacks.
 
-I see, spi offload may have more sense but as of now looks like moving to
-AXI SPI engine instead of AXI DAC would require quite a lot of work from the
-ADI HDL guys and also then, for me some work reworking all this stuff.
- From an initial discussion with Nuno and David, we was oriented to use the
-iio backend for the current HDL, so at least for this chip at this stage 
-would
-be good, if possible, to stay this way.
-
-
+>> - is a read-only sampling-frequency useful ?
+> Yes. If it is easy to provide, it can be useful to userspace to
+> allow it to figure out how much data to expect.
+>
 > Jonathan
->
->> diff --git a/drivers/iio/dac/ad3552r-axi.c b/drivers/iio/dac/ad3552r-axi.c
->> new file mode 100644
->> index 000000000000..98e5da08c973
->> --- /dev/null
->> +++ b/drivers/iio/dac/ad3552r-axi.c
->> @@ -0,0 +1,572 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Analog Devices AD3552R
->> + * Digital to Analog converter driver, AXI DAC backend version
->> + *
->> + * Copyright 2024 Analog Devices Inc.
->> + */
->> +
->> +#include <linux/bitfield.h>
->> +#include <linux/delay.h>
->> +#include <linux/gpio/consumer.h>
->> +#include <linux/iio/buffer.h>
->> +#include <linux/iio/backend.h>
->> +#include <linux/of.h>
-> Why?  Probably want mod_devicetable.h
 
+So this is the last RFC mail i am handling,
+trying to wrap up the open points:
 
-with mod_devicetable.h in place of of.h i get
+- about DAC backend or spi offload, if possible i would not change approach
+at this stage, i worked on the provided HDL.
+- about reg_read/write, let me know if the void * can stay
+- about external synch, i am trying to see if i can do this by a trigger.
 
-drivers/iio/dac/ad3552r-axi.c:272:9: error: cleanup argument not a function
-   struct fwnode_handle *child __free(fwnode_handle) = NULL;
-          ^~~~~~~~~~~~~
-
-
->> +#include <linux/platform_device.h>
->> +#include <linux/units.h>
->
->> +static int ad3552r_axi_update_scan_mode(struct iio_dev *indio_dev,
->> +					const unsigned long *active_scan_mask)
->> +{
->> +	struct ad3552r_axi_state *st = iio_priv(indio_dev);
->> +
->> +	st->active_scan_mask = *active_scan_mask;
-> We probably want another accessor for this, but for now that variable
-> can still be read from iio_dev->active_scan_mask so no need
-> for the copy here (and hence no need for this callback).
-thanks a lot, removed the accessor, not needed
->> +
->> +	return 0;
->> +}
->> +
->> +static int ad3552r_axi_buffer_postenable(struct iio_dev *indio_dev)
->> +{
->> +	struct ad3552r_axi_state *st = iio_priv(indio_dev);
->> +	struct iio_backend_data_fmt fmt = {
->> +		.type = IIO_BACKEND_DATA_UNSIGNED
->> +	};
->> +	int loop_len, val, err;
->> +
->> +	/* Inform DAC chip to switch into DDR mode */
->> +	err = axi3552r_qspi_update_reg_bits(st->back,
->> +					    AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
->> +					    AD3552R_MASK_SPI_CONFIG_DDR,
->> +					    AD3552R_MASK_SPI_CONFIG_DDR, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	/* Inform DAC IP to go for DDR mode from now on */
->> +	err = iio_backend_ddr_enable(st->back);
->> +	if (err)
->> +		goto exit_err;
->> +
->> +	switch (st->active_scan_mask) {
->> +	case AD3552R_CH0_ACTIVE:
->> +		st->single_channel = true;
->> +		loop_len = AD3552R_STREAM_2BYTE_LOOP;
->> +		val = AD3552R_REG_ADDR_CH_DAC_16B(0);
->> +		break;
->> +	case AD3552R_CH1_ACTIVE:
->> +		st->single_channel = true;
->> +		loop_len = AD3552R_STREAM_2BYTE_LOOP;
->> +		val = AD3552R_REG_ADDR_CH_DAC_16B(1);
->> +		break;
->> +	case AD3552R_CH0_CH1_ACTIVE:
->> +		st->single_channel = false;
->> +		loop_len = AD3552R_STREAM_4BYTE_LOOP;
->> +		val = AD3552R_REG_ADDR_CH_DAC_16B(1);
->> +		break;
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +
->> +	err = iio_backend_bus_reg_write(st->back, AD3552R_REG_ADDR_STREAM_MODE,
->> +					&loop_len, 1);
->> +	if (err)
->> +		goto exit_err;
->> +
->> +	iio_backend_data_transfer_addr(st->back, val);
-> err = ?
-thanks, fixed.
->> +	if (err)
->> +		goto exit_err;
->> +	/*
->> +	 * The EXT_SYNC is mandatory in the CN0585 project where 2 instances
->> +	 * of the IP are in the design and they need to generate the signals
->> +	 * synchronized.
->> +	 *
->> +	 * Note: in first IP implementations CONFIG EXT_SYNC (RO) can be 0,
->> +	 * but EXT_SYMC is anabled anyway.
->> +	 */
->> +
->> +	if (st->synced_transfer == AD3552R_EXT_SYNC_ARM)
->> +		err = iio_backend_ext_sync_enable(st->back);
->> +	else
->> +		err = iio_backend_ext_sync_disable(st->back);
->> +	if (err)
->> +		goto exit_err_sync;
->> +
->> +	err = iio_backend_data_format_set(st->back, 0, &fmt);
->> +	if (err)
->> +		goto exit_err;
->> +
->> +	err =  iio_backend_buffer_enable(st->back);
->> +	if (!err)
->> +		return 0;
-> Keep the good path inline as that's more idiomatic and what a reviewers
-> eyes expect to see.
->
-> 	if (err)
-> 		goto exit_err_sync;
->
-> 	return 0;
-ok, fixed
->> +
->> +exit_err_sync:
->> +	iio_backend_ext_sync_disable(st->back);
->> +
->> +exit_err:
->> +	axi3552r_qspi_update_reg_bits(st->back,
->> +				      AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
->> +				      AD3552R_MASK_SPI_CONFIG_DDR,
->> +				      0, 1);
->> +
->> +	iio_backend_ddr_disable(st->back);
->> +
->> +	return err;
->> +}
->> +
->> +static int ad3552r_axi_buffer_predisable(struct iio_dev *indio_dev)
->> +{
->> +	struct ad3552r_axi_state *st = iio_priv(indio_dev);
->> +	int err;
->> +
->> +	err = iio_backend_buffer_disable(st->back);
->> +	if (err)
->> +		return err;
->> +
->> +	/* Inform DAC to set in DDR mode */
-> You set the DAC to ddr mode whilst disabling it? That seems backwards.
-Thanks, wrong comment, i am setting back to SDR here, comment fixed.
->> +	err = axi3552r_qspi_update_reg_bits(st->back,
->> +					    AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
->> +					    AD3552R_MASK_SPI_CONFIG_DDR,
->> +					    0, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	return iio_backend_ddr_disable(st->back);
->> +}
->> +
->> +
->> +static int ad3552r_axi_reset(struct ad3552r_axi_state *st)
->> +{
->> +	int err;
->> +
->> +	/* AXI reset performed by backend enable() */
-> This comment is confusing given it's in a function called
-> axi_reset and you don't do the backend enable() here.
-> So how is this resetting the AXI bus (or is that name
-> referring to the fpga IP?)
-
-Ok, i removed the comment.
-
-Actually, the IP reset is performed by the backend "enable"
-while this function resets the target chip.
-
->
->> +
->> +	st->reset_gpio = devm_gpiod_get_optional(st->dev,
->> +						 "reset", GPIOD_OUT_LOW);
->> +	if (IS_ERR(st->reset_gpio))
->> +		return PTR_ERR(st->reset_gpio);
->> +
->> +	if (st->reset_gpio) {
->> +		gpiod_set_value_cansleep(st->reset_gpio, 1);
->> +		fsleep(10);
->> +		gpiod_set_value_cansleep(st->reset_gpio, 0);
->> +	} else {
->> +		err = axi3552r_qspi_update_reg_bits(st->back,
->> +					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
->> +					AD3552R_MASK_SOFTWARE_RESET,
->> +					AD3552R_MASK_SOFTWARE_RESET, 1);
->> +		if (err)
->> +			return err;
->> +	}
->> +	msleep(100);
->> +
->> +	return 0;
->> +}
->> +
->> +static int ad3552r_axi_setup(struct ad3552r_axi_state *st)
->> +{
->> +	struct fwnode_handle *child __free(fwnode_handle) = NULL;
->> +	u8 gs_p, gs_n;
->> +	s16 goffs;
->> +	u16 id, rfb, reg = 0, offset = 0;
-> Generally don't mix assignment and non assignment stuff on online.
-> Fine to have them all not assigned or all assigned, but a mix
-> tends to lead to people missing one in the middle that is
-> different.
->
-> 	u16 id, rfb,
-> 	u16 reg = 0, offset = 0;
-Ok, done.
->
->> +	u32 val, range;
->> +	int err;
->> +
->> +	err = ad3552r_axi_reset(st);
->> +	if (err)
->> +		return err;
->> +
->> +	err = iio_backend_ddr_disable(st->back);
->> +	if (err)
->> +		return err;
->> +
->> +	val = AD3552R_SCRATCH_PAD_TEST_VAL1;
->> +	err = iio_backend_bus_reg_write(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
->> +					&val, 1);
-> as per earlier review, I'd pass an unsigned int instead of a void *
-> Then you can avoid the dance with a local variable.
-void * was chosen thinking to future busses, please let me know if
-it can stay this way.
->> +	if (err)
->> +		return err;
->> +
->> +	err = iio_backend_bus_reg_read(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
->> +				       &val, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	if (val != AD3552R_SCRATCH_PAD_TEST_VAL1) {
->> +		dev_err(st->dev,
->> +			"SCRATCH_PAD_TEST mismatch. Expected 0x%x, Read 0x%x\n",
->> +			AD3552R_SCRATCH_PAD_TEST_VAL1, val);
->> +		return -EIO;
->> +	}
->> +
->> +	val = AD3552R_SCRATCH_PAD_TEST_VAL2;
->> +	err = iio_backend_bus_reg_write(st->back,
->> +					AD3552R_REG_ADDR_SCRATCH_PAD,
->> +					&val, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	err = iio_backend_bus_reg_read(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
->> +				       &val, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	if (val != AD3552R_SCRATCH_PAD_TEST_VAL2) {
->> +		dev_err(st->dev,
->> +			"SCRATCH_PAD_TEST mismatch. Expected 0x%x, Read 0x%x\n",
->> +			AD3552R_SCRATCH_PAD_TEST_VAL2, val);
->> +		return -EIO;
->> +	}
->> +
->> +	err = iio_backend_bus_reg_read(st->back, AD3552R_REG_ADDR_PRODUCT_ID_L,
->> +				       &val, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	id = val;
->> +	mdelay(100);
-> Document this delay as it's odd to need a gap whilst reading ID registers.
-I ported that delay from a previous testing driver, but i verified
-it is not needed, so i removed it.
->> +
->> +	err = iio_backend_bus_reg_read(st->back, AD3552R_REG_ADDR_PRODUCT_ID_H,
->> +				       &val, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	id |= val << 8;
->> +	if (id != AD3552R_ID) {
->> +		dev_err(st->dev, "Chip ID mismatch. Expected 0x%x, Read 0x%x\n",
->> +			AD3552R_ID, id);
-> Print an message only on this. We want to enable fallback dt compatibles for
-> future devices on old kernels, so we can't require a match on a WHOAMI type register.
-> We can put a message in the log though to give us a hint if that fallback
-> compatible is wrong.
->
-ok, done.
->> +		return -ENODEV;
->> +	}
->> +
->> +	st->chip_id = id;
-> This is usually a bad sign.  It is much more extensible for a driver to at
-> this point 'pick' between a set of per device type structures that encode
-> all the difference between device variants.  So good to do that from
-> the start.  Lots of old drivers do it this way, but we've learnt over the years
-> that it becomes steadily more messy over time as a driver supports more and
-> more devices.
->
-> I guess the existing driver is doing it this way though so maybe that's
-> a refactor for another day.
-
-Thanks, ok, i reworked the same way as ad3552r.c (spi) since i'll have 
-to add
-other variants soon.
-
-
->
->> +
->> +	val = AD3552R_REF_INIT;
->> +	err = iio_backend_bus_reg_write(st->back,
->> +					AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
->> +					&val, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	val = AD3552R_TRANSFER_INIT;
->> +	err = iio_backend_bus_reg_write(st->back,
->> +					AD3552R_REG_ADDR_TRANSFER_REGISTER,
->> +					&val, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	err = iio_backend_data_source_set(st->back, 0, IIO_BACKEND_EXTERNAL);
->> +	if (err)
->> +		return err;
->> +
->> +	err = iio_backend_data_source_set(st->back, 1, IIO_BACKEND_EXTERNAL);
->> +	if (err)
->> +		return err;
->> +
->> +	err = ad3552r_get_ref_voltage(st->dev, &val);
->> +	if (err)
->> +		return err;
->> +
->> +	err = axi3552r_qspi_update_reg_bits(st->back,
->> +				AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
->> +				AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
->> +				val, 1);
->> +	if (err)
->> +		return err;
->> +
->> +	err = ad3552r_get_drive_strength(st->dev, &val);
->> +	if (!err) {
->> +		err = axi3552r_qspi_update_reg_bits(st->back,
->> +					AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
->> +					AD3552R_MASK_SDO_DRIVE_STRENGTH,
->> +					val, 1);
->> +		if (err)
->> +			return err;
->> +	}
->> +
->> +	child = device_get_named_child_node(st->dev, "channel");
->> +	if (!child)
->> +		return -EINVAL;
->> +
->> +	err = ad3552r_get_output_range(st->dev, st->chip_id, child, &range);
->> +	if (!err)
->> +		return ad3552r_axi_set_output_range(st, range);
->> +
->> +	if (err != -ENOENT)
->> +		return err;
->> +
->> +	/* Try to get custom range */
->> +	err = ad3552r_get_custom_gain(st->dev, child,
->> +					&gs_p, &gs_n, &rfb, &goffs);
->> +	if (err)
->> +		return err;
->> +
->> +	ad3552r_calc_custom_gain(gs_p, gs_n, goffs, &reg);
->> +
->> +	offset = abs((s32)goffs);
->> +
->> +	err = iio_backend_bus_reg_write(st->back,
->> +					AD3552R_REG_ADDR_CH_OFFSET(0),
->> +					&offset, 1);
->> +	if (err)
->> +		return dev_err_probe(st->dev, err,
->> +					"Error writing register\n");
->> +
->> +	err = iio_backend_bus_reg_write(st->back,
->> +					AD3552R_REG_ADDR_CH_OFFSET(1),
->> +					&offset, 1);
->> +	if (err)
->> +		return dev_err_probe(st->dev, err,
->> +					"Error writing register\n");
->> +
->> +	err = iio_backend_bus_reg_write(st->back,
->> +					AD3552R_REG_ADDR_CH_GAIN(0),
->> +					&reg, 1);
->> +	if (err)
->> +		return dev_err_probe(st->dev, err,
->> +					"Error writing register\n");
->> +
->> +	err = iio_backend_bus_reg_write(st->back,
->> +					AD3552R_REG_ADDR_CH_GAIN(1),
->> +					&reg, 1);
->> +	if (err)
->> +		return dev_err_probe(st->dev, err,
->> +					"Error writing register\n");
->> +
->> +	return 0;
->> +}
->> +
->> +static const struct iio_buffer_setup_ops ad3552r_axi_buffer_setup_ops = {
->> +	.postenable = ad3552r_axi_buffer_postenable,
->> +	.predisable = ad3552r_axi_buffer_predisable,
->> +};
->> +
->> +static const char *const synchronous_mode_status[] = {
->> +	[AD3552R_NO_SYNC] = "no_sync",
->> +	[AD3552R_EXT_SYNC_ARM] = "ext_sync_arm",
-> I'll comment on this in the ABI docs patch.
->
->> +};
->> +
->> +static const struct iio_enum ad3552r_synchronous_mode_enum = {
->> +	.items = synchronous_mode_status,
->> +	.num_items = ARRAY_SIZE(synchronous_mode_status),
->> +	.get = ad3552r_get_synchronous_mode_status,
->> +	.set = ad3552r_set_synchronous_mode_status,
->> +};
->> +
->> +static const struct iio_chan_spec_ext_info ad3552r_axi_ext_info[] = {
->> +	IIO_ENUM("synchronous_mode", IIO_SHARED_BY_TYPE,
->> +		 &ad3552r_synchronous_mode_enum),
->> +	IIO_ENUM_AVAILABLE("synchronous_mode", IIO_SHARED_BY_TYPE,
->> +			   &ad3552r_synchronous_mode_enum),
->> +	{},
-> 	{ }
->
-> I'm not blanket fixing this case yet (unlikely the ID ones) but
-> generally it's nice to not have a comma after a 'null' terminator
-> entry as adding anything after it would be a bug.
-ok, done
->
->
->> +};
->> +
->> +#define AD3552R_CHANNEL(ch) { \
->> +	.type = IIO_VOLTAGE, \
->> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
->> +	.info_mask_shared_by_all = (((ch) == 0) ? \
->> +		BIT(IIO_CHAN_INFO_SAMP_FREQ) : 0), \
-> If it's shared by all it should be set for all.
-> The core code will only create one attr as a result.
->
-> Technically it's not a 'bug' to not do this but the semantics
-> are wrong if you set something that is for all channels on only
-> one of them, so if there are other drivers doing this that I've
-> missed we should clean that up.
-
-Ok, i set it for all so.
-
-
->
->
->> +	.output = 1, \
->> +	.indexed = 1, \
->> +	.channel = (ch), \
->> +	.scan_index = (ch), \
->> +	.scan_type = { \
->> +		.sign = 'u', \
->> +		.realbits = 16, \
->> +		.storagebits = 16, \
->> +		.shift = 0, \
-> Zero shift is the 'obvious' default, so need to specify it in this
-> case.
-ok, fixed
->
->> +		.endianness = IIO_BE, \
->> +	}, \
->> +	.ext_info = ad3552r_axi_ext_info, \
->> +}
->> +
->> +static const struct of_device_id ad3552r_axi_of_id[] = {
->> +	{ .compatible = "adi,ad3552r" },
->> +	{}
-> Trivial, but I'm trying to standardize formats of these in IIO on
-> 	{ }
-ok, done
->> +};
-
+Just as a note, Nuno and David was involved helping me on this,
+so will add them as co-developers.
 
 Thanks a lot,
 
-regards,
+Regards,
 Angelo
+
+
+>> Thanks a lot for your feedbacks.
+>>
+>> To: Lars-Peter Clausen <lars@metafoo.de>
+>> To: Michael Hennerich <Michael.Hennerich@analog.com>
+>> To: Nuno Sá <nuno.sa@analog.com>
+>> To: Jonathan Cameron <jic23@kernel.org>
+>> To: Rob Herring <robh@kernel.org>
+>> To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+>> To: Conor Dooley <conor+dt@kernel.org>
+>> To: Olivier Moysan <olivier.moysan@foss.st.com>
+>> Cc: linux-iio@vger.kernel.org
+>> Cc: devicetree@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: dlechner@baylibre.com
+>>
+>> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+>> ---
+>> Angelo Dureghello (8):
+>>        dt-bindings: iio: dac: ad3552r: add io-backend property
+>>        iio: backend: extend features
+>>        iio: backend adi-axi-dac: backend features
+>>        dt-bindings: iio: dac: add adi axi-dac bus property
+>>        iio: dac: ad3552r: changes to use FIELD_PREP
+>>        iio: dac: ad3552r: extract common code (no changes in behavior intended)
+>>        iio: dac: ad3552r: add axi platform driver
+>>        iio: ABI: add DAC sysfs synchronous_mode parameter
+>>
+>>   Documentation/ABI/testing/sysfs-bus-iio-dac        |   7 +
+>>   .../devicetree/bindings/iio/dac/adi,ad3552r.yaml   |  39 +-
+>>   .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   |   9 +
+>>   drivers/iio/dac/Kconfig                            |  11 +
+>>   drivers/iio/dac/Makefile                           |   3 +-
+>>   drivers/iio/dac/ad3552r-axi.c                      | 572 +++++++++++++++++++++
+>>   drivers/iio/dac/ad3552r-common.c                   | 163 ++++++
+>>   drivers/iio/dac/ad3552r.c                          | 394 +++-----------
+>>   drivers/iio/dac/ad3552r.h                          | 199 +++++++
+>>   drivers/iio/dac/adi-axi-dac.c                      | 250 ++++++++-
+>>   drivers/iio/industrialio-backend.c                 | 151 ++++++
+>>   include/linux/iio/backend.h                        |  24 +
+>>   12 files changed, 1494 insertions(+), 328 deletions(-)
+>> ---
+>> base-commit: 7ccb2c2db44572deadb795c4637273cdabbe8b66
+>> change-id: 20240829-wip-bl-ad3552r-axi-v0-b1e379c986d3
+>>
+>> Best regards,
 
 -- 
   ,,,      Angelo Dureghello

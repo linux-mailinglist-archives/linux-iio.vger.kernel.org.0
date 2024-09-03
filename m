@@ -1,77 +1,76 @@
-Return-Path: <linux-iio+bounces-9053-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9054-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40869690F6
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 03:33:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184D3969184
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 04:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E78D11C228BD
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 01:33:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55C89B22149
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 02:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422201C68B0;
-	Tue,  3 Sep 2024 01:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDA719E998;
+	Tue,  3 Sep 2024 02:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i9QWmJ2x"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ebbAvYM5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED433308A;
-	Tue,  3 Sep 2024 01:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE83A1E49F;
+	Tue,  3 Sep 2024 02:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725327215; cv=none; b=rzTzBaEXmkd/iKNHZKeTRFTI+1qP5pwrO3oSFx8v6UOo9J8MafgOwFai+cPHsldubWVVHNGleXepwyQow0ve3+m9F0aPcIs2vDPrgFb3kMW9ZTX5brOEkb0REPFLxLa2tekCQQMasB4tA7EbBfCTrFJiyuWfl47QpFtgrVsFnBo=
+	t=1725331538; cv=none; b=cA7QVjYwnRgbjXKuydbI1BGOLbTO0tmli61MweU0/5ZI73qk6s23w0UyYoWInWKr0JGoCVTm/1YULPQQICB43MTN/rVx0b3hV1t8bq31RsMW8zO5ofLOmOGTDo79lhrCdf9ACrMeyFCRBlZxs0NPRX4ONkjCxGNV7DxRa5/OQo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725327215; c=relaxed/simple;
-	bh=1yxLTU43j5tMCXj+3ugF/3/zN2UgMs9UprUUFdov/tY=;
+	s=arc-20240116; t=1725331538; c=relaxed/simple;
+	bh=MHHIYSVZTOItznYe8g3drAAVnhEfb5jPrC++Nbo5D3U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u/4MyGGjZVYHJ5/a0ifoPdwf5EslGFuExk4OWxM67JXM16BgOtUei02m3KGzQKiLcZZBDvCuBmSfJ99XbVbF+MlBCL3/33GvJlRm+mM8cZxxeeNcKeG45+RncbdlaHL+JS9C9brVBwT+i5US82zygNJbC4tDFmPgvUWl61AzagA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i9QWmJ2x; arc=none smtp.client-ip=198.175.65.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=YdpieClMCE3vy8QWS8MCmNhxjs7LU3nApIx4XWTJfRYojCSFekm0PTyZhc7+A7lN1xdyPjWIFmAui0/t25IQeCJ6BWQq3YPjm0u+HJohsmmgYgM6VaySkDQ/ZcWqsFlvEOQrbwtGK+JnBM3OUE/V5X9+xEt3A6wjDXqgxgMjj9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ebbAvYM5; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725327213; x=1756863213;
+  t=1725331535; x=1756867535;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=1yxLTU43j5tMCXj+3ugF/3/zN2UgMs9UprUUFdov/tY=;
-  b=i9QWmJ2xgQssYZ+tQr/mEgiO+Emlo/lnOlk7PPaRaSOqJcsgfRFl1sua
-   6BsdScQZoQOwPL/Az4YjBYB2eBH/dj4uLaVCwYpqtQDwT3WUwcKdar5/Y
-   d9kfjc4ry/iJC03M+Qb0QGqK3v96+RPb7obYbluxPEPd9rcVTZtOvvTc1
-   mrIs8Kcm3OpVUCp4g30IMVoXEx47Nu32cPtRiVNlAHq2fEBPIqhWCKRpz
-   8VRp/4OTjJ3uIRv57nEtduzNONfD7ID393KhqttWRCJ70QJXKQzAK4S+R
-   nOyVLhCQ5g8/aiUsGRLHcY7wp5FvtDrvQQw4laF4dlugryq4O1RUvPAyk
-   w==;
-X-CSE-ConnectionGUID: icDyUbepTkmF2tEQiuxv6Q==
-X-CSE-MsgGUID: FItExvk4QUqB/T2NdlYxgg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="46425530"
+  bh=MHHIYSVZTOItznYe8g3drAAVnhEfb5jPrC++Nbo5D3U=;
+  b=ebbAvYM5mWM+/fFIGZk7luecNhpUSoGIKlTLUiRfByNAVZoUfmAwCdnK
+   kDcAjRZOD7t385riOZojLbhAfHwBb0r/e+5jV0IUnzTeIJsaC51ijX64g
+   Q66kFnE5mR7P3WBl5hhoJl+MHskXkB0MEpHrqio/Gj9Aycu8ReD/PAvl8
+   LgQ1cIE6RoQ5EjWusbdnGEDezNxsCmw2hk8cu7p1RJTW+S+3BAbpje1Un
+   Wlaod15hrWcJMGGxXnMPJL2/oKU5jD0bc9ztX1IIPaQkIQUHmbKm1RsmI
+   1zVOhXLPgrMwpIO64KH+F+qLKquew9mrStQpL+3/qxBRzVfP2ZzlTym/7
+   Q==;
+X-CSE-ConnectionGUID: fKY/OHtVSuGUZm6MQfErRA==
+X-CSE-MsgGUID: KWi7z1IlSguBDYnPCfoB0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="34516784"
 X-IronPort-AV: E=Sophos;i="6.10,197,1719903600"; 
-   d="scan'208";a="46425530"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2024 18:33:33 -0700
-X-CSE-ConnectionGUID: 2+sVUTuQRDmsfpU0jLv+Iw==
-X-CSE-MsgGUID: nILQxEBNT9Sxz770qNoPjQ==
+   d="scan'208";a="34516784"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2024 19:45:35 -0700
+X-CSE-ConnectionGUID: RyZusmreQp2Pu0RVgKK0dA==
+X-CSE-MsgGUID: QHIJ3XojQUa5z3c9QV+Cug==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,197,1719903600"; 
-   d="scan'208";a="64742979"
+   d="scan'208";a="68892648"
 Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 02 Sep 2024 18:33:30 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 02 Sep 2024 19:45:33 -0700
 Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1slIQC-00064Y-19;
-	Tue, 03 Sep 2024 01:33:28 +0000
-Date: Tue, 3 Sep 2024 09:32:55 +0800
+	id 1slJXv-00067a-0V;
+	Tue, 03 Sep 2024 02:45:31 +0000
+Date: Tue, 3 Sep 2024 10:44:31 +0800
 From: kernel test robot <lkp@intel.com>
 To: Abhash Jha <abhashkumarjha123@gmail.com>, linux-iio@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	songqiang1304521@gmail.com, jic23@kernel.org, lars@metafoo.de,
-	linux-kernel@vger.kernel.org,
+Cc: oe-kbuild-all@lists.linux.dev, songqiang1304521@gmail.com,
+	jic23@kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org,
 	Abhash Jha <abhashkumarjha123@gmail.com>
 Subject: Re: [PATCH v2 2/2] iio: proximity: vl53l0x-i2c: Added continuous
  mode support
-Message-ID: <202409030909.1CQBnx22-lkp@intel.com>
+Message-ID: <202409030911.PnMVrgOb-lkp@intel.com>
 References: <20240902122557.129013-3-abhashkumarjha123@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -97,21 +96,22 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Abhash-Jha/iio-proximity-
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
 patch link:    https://lore.kernel.org/r/20240902122557.129013-3-abhashkumarjha123%40gmail.com
 patch subject: [PATCH v2 2/2] iio: proximity: vl53l0x-i2c: Added continuous mode support
-config: i386-buildonly-randconfig-005-20240903 (https://download.01.org/0day-ci/archive/20240903/202409030909.1CQBnx22-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240903/202409030909.1CQBnx22-lkp@intel.com/reproduce)
+config: i386-buildonly-randconfig-001-20240903 (https://download.01.org/0day-ci/archive/20240903/202409030911.PnMVrgOb-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240903/202409030911.PnMVrgOb-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409030909.1CQBnx22-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409030911.PnMVrgOb-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> drivers/iio/proximity/vl53l0x-i2c.c:104:20: error: call to undeclared function 'get_unaligned_be16'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   drivers/iio/proximity/vl53l0x-i2c.c: In function 'vl53l0x_trigger_handler':
+>> drivers/iio/proximity/vl53l0x-i2c.c:104:27: error: implicit declaration of function 'get_unaligned_be16' [-Werror=implicit-function-declaration]
      104 |         data->scan.chan = get_unaligned_be16(&buffer[10]);
-         |                           ^
-   1 error generated.
+         |                           ^~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
 
 vim +/get_unaligned_be16 +104 drivers/iio/proximity/vl53l0x-i2c.c

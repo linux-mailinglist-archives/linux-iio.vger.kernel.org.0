@@ -1,116 +1,100 @@
-Return-Path: <linux-iio+bounces-9097-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9098-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50C896A7B6
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 21:47:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD64796A7FD
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 22:04:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 739CF280AAD
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 19:47:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC351C23F61
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 20:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D06B1DC739;
-	Tue,  3 Sep 2024 19:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vHdZ9whQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A1017CA1F;
+	Tue,  3 Sep 2024 20:04:05 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023151DC720;
-	Tue,  3 Sep 2024 19:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD164174C;
+	Tue,  3 Sep 2024 20:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725392867; cv=none; b=B2zYb8GdbUyv8M/9RPX1cz1/n4bTBBSwG4tz18lve3Vq4960tj6PDPF5JrVq0/kq0YVx7Aaml7sXJ6txUwRB69r8LkAtD2asVWor4fhcP+D2drlVlxiBcETX0J0lbYKWmT4OOFb0bJevXmJ4tnD0paHPsMJaV65ICPGom+wSJIo=
+	t=1725393845; cv=none; b=ZAkTSiFCrvIphl8+agtf/Ff+bfYfHsFulqX4xI7DPbtTIU3t11P39+bRpXA/C3V9sU0FfIVuCkFWF5CXCs8MiRrNXPjZS2TANFz2Jzvm+Fq6p5ba9tHgHWBmy2m6m/954pqPtQ1jz5aIQprjdOgZx0y2OjLJXOQjKaVAfsQOqIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725392867; c=relaxed/simple;
-	bh=U4A3pCwQ8/EbM4aeqrIb3zzmf5B948+U++dXeaD+0fw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m0/qca92SaegFFCbOz5Hw2LNkqsDtClLN0ahUEusq9z1q9oYDD19At+yfXAz0k9tuVXHQ6mjB6am8dnYF0XxcnrukxQUmy/UgHrfWSxwq9te1VTyLuFuThKUV0XPl8mkNMgKAPzhAkdOHTFxFBHDD3TitiaGuvZr9B3Qngh1XNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vHdZ9whQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E49C4CEC4;
-	Tue,  3 Sep 2024 19:47:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725392866;
-	bh=U4A3pCwQ8/EbM4aeqrIb3zzmf5B948+U++dXeaD+0fw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vHdZ9whQz0I8ZtZX+b5pM9uapfWQ3scd83hcOx1cfd3dtzT88FYDiQ156i7hspdVn
-	 j7oT28rCz/kUAJGswxxcP3/Ggff6k9cksqEUxEEDprkLyrINe4rpWE1rLI+YmE2ULZ
-	 zTlnh9h67IBwtfo4wo4D+3behY4F8S8oQF4OSI1wjmCVL7wZIyf4RRJ6qqXh/6FKWn
-	 y8rLOIYk1FwvQ8aglJoHyhkHprTG7LvEocRordvMwFtKEIy5gDh+2mv1NYcW4Uvq4l
-	 GDoRiYfAzCt6UUOjlD8Ld3qgQol0uylZFlumh4CSJDl+MIw6EFzreHFRbL5/r9O+jp
-	 fi0m74R6vPLeg==
-Date: Tue, 3 Sep 2024 20:47:37 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, David Lechner
- <dlechner@baylibre.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Michael Hennerich
- <michael.hennerich@analog.com>, Antoniu Miclaus
- <antoniu.miclaus@analog.com>, Jinjie Ruan <ruanjinjie@huawei.com>, Lorenzo
- Bianconi <lorenzo@kernel.org>, Srinivas Pandruvada
- <srinivas.pandruvada@linux.intel.com>, Basavaraj Natikar
- <Basavaraj.Natikar@amd.com>, linux-input@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jiri Kosina
- <jikos@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+	s=arc-20240116; t=1725393845; c=relaxed/simple;
+	bh=hhTUq0BJXUc/2KjuFKcG/BK7I8B7IsKcWEkw8TTiyh4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YvxpmDoHI8DVoZjMfGOSHyZcA03zqA8XiE91TkP/7a73beUg+wNW2PaIHH18Un6/63VrYYz29zgVFxiyU4JgrBDh2iWYIvuy7S03lkNrnWUg3zHiqdqzgB/fu6RE2bAR9w13Cp8nY7PuoWKP5zWu8oKSCs9rcykDD1n9/DpmQ7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+X-CSE-ConnectionGUID: +iAWB0HPRfCephGGNU06og==
+X-CSE-MsgGUID: Ram82HB+Rb6wgraZJe6PEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="27775698"
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="27775698"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 13:04:03 -0700
+X-CSE-ConnectionGUID: MLYEPSgySjCZ9ixW3rekiQ==
+X-CSE-MsgGUID: NrjMsH8nSdGPv+RTUFICxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="65745599"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 13:04:01 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andy.shevchenko@gmail.com>)
+	id 1slZjs-00000004pnm-3vh0;
+	Tue, 03 Sep 2024 23:02:56 +0300
+Date: Tue, 3 Sep 2024 23:02:56 +0300
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
 Subject: Re: [PATCH v1 10/22] iio: dac: max517: Get platform data via
  dev_get_platdata()
-Message-ID: <20240903204737.710e49dd@jic23-huawei>
-In-Reply-To: <20240902222824.1145571-11-andy.shevchenko@gmail.com>
+Message-ID: <ZtdrcHQokaHdfXp5@smile.fi.intel.com>
 References: <20240902222824.1145571-1-andy.shevchenko@gmail.com>
-	<20240902222824.1145571-11-andy.shevchenko@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+ <20240902222824.1145571-11-andy.shevchenko@gmail.com>
+ <20240903204737.710e49dd@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240903204737.710e49dd@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue,  3 Sep 2024 01:16:55 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, Sep 03, 2024 at 08:47:37PM +0100, Jonathan Cameron wrote:
+> On Tue,  3 Sep 2024 01:16:55 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+...
+
+> >  	 * Reference voltage on MAX518 and default is 5V, else take vref_mv
+> > -	 * from platform_data
+> > +	 * from platform_data.
 > 
-> Access to platform data via dev_get_platdata() getter to make code cleaner.
-> 
-> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
->  drivers/iio/dac/max517.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/dac/max517.c b/drivers/iio/dac/max517.c
-> index 685980184d3c..96781ae04f9d 100644
-> --- a/drivers/iio/dac/max517.c
-> +++ b/drivers/iio/dac/max517.c
-> @@ -143,10 +143,10 @@ static const struct iio_chan_spec max517_channels[] = {
->  
->  static int max517_probe(struct i2c_client *client)
->  {
-> +	const struct max517_platform_data *platform_data = dev_get_platdata(&client->dev);
->  	const struct i2c_device_id *id = i2c_client_get_device_id(client);
->  	struct max517_data *data;
->  	struct iio_dev *indio_dev;
-> -	struct max517_platform_data *platform_data = client->dev.platform_data;
->  	int chan;
->  
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> @@ -176,7 +176,7 @@ static int max517_probe(struct i2c_client *client)
->  
->  	/*
->  	 * Reference voltage on MAX518 and default is 5V, else take vref_mv
-> -	 * from platform_data
-> +	 * from platform_data.
+> I guess this is accidental?
 
-I guess this is accidental?  
+It can be dropped.
 
-J
+-- 
+With Best Regards,
+Andy Shevchenko
 
->  	 */
->  	for (chan = 0; chan < indio_dev->num_channels; chan++) {
->  		if (id->driver_data == ID_MAX518 || !platform_data)
 
 

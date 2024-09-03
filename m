@@ -1,66 +1,65 @@
-Return-Path: <linux-iio+bounces-9096-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9097-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C027396A78B
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 21:40:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50C896A7B6
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 21:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34153B21979
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 19:40:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 739CF280AAD
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 19:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2063F1922E0;
-	Tue,  3 Sep 2024 19:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D06B1DC739;
+	Tue,  3 Sep 2024 19:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rism4ooS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vHdZ9whQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08291D7E2B;
-	Tue,  3 Sep 2024 19:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023151DC720;
+	Tue,  3 Sep 2024 19:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725392439; cv=none; b=RSUtq7z8tJo415z9KGu2g5UugySF3csEWEZ0SeaCb/ICPBXfeh001/ueJL6F7yIukdCP2yv5kPX8IUj0eEAUegXwgV13X60696JbIXXlhZcCYTRzfpoiFaWKxeWvnhEbF12bc6+tKJlmjaOE61tSoMGg2Ys5jkHOS350rcawKT0=
+	t=1725392867; cv=none; b=B2zYb8GdbUyv8M/9RPX1cz1/n4bTBBSwG4tz18lve3Vq4960tj6PDPF5JrVq0/kq0YVx7Aaml7sXJ6txUwRB69r8LkAtD2asVWor4fhcP+D2drlVlxiBcETX0J0lbYKWmT4OOFb0bJevXmJ4tnD0paHPsMJaV65ICPGom+wSJIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725392439; c=relaxed/simple;
-	bh=7YUsp2sSGpccyYlbWGKOUrCSuBjr2Eoe65NIdAll4zI=;
+	s=arc-20240116; t=1725392867; c=relaxed/simple;
+	bh=U4A3pCwQ8/EbM4aeqrIb3zzmf5B948+U++dXeaD+0fw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AsqFHEc1orbDkrt6LGEzVMrodIhEtuiM6E7J6pIt3nBtfksh0GkEYuBEG7djFdNXI9zBwl35ZX5Rr0WhGH0jSJIzoi97OE9kPnuqHTJcyYys+ZFJP0bS3RpVYIeDcRDX6tO/r7cFAqpjmaz/YRfSqiu7k4NATaS85L1OS0FuK3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rism4ooS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94156C4CEC4;
-	Tue,  3 Sep 2024 19:40:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m0/qca92SaegFFCbOz5Hw2LNkqsDtClLN0ahUEusq9z1q9oYDD19At+yfXAz0k9tuVXHQ6mjB6am8dnYF0XxcnrukxQUmy/UgHrfWSxwq9te1VTyLuFuThKUV0XPl8mkNMgKAPzhAkdOHTFxFBHDD3TitiaGuvZr9B3Qngh1XNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vHdZ9whQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E49C4CEC4;
+	Tue,  3 Sep 2024 19:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725392438;
-	bh=7YUsp2sSGpccyYlbWGKOUrCSuBjr2Eoe65NIdAll4zI=;
+	s=k20201202; t=1725392866;
+	bh=U4A3pCwQ8/EbM4aeqrIb3zzmf5B948+U++dXeaD+0fw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Rism4ooSvjr+D1jsqZWle8stW18mdRgw01hSx4fFZasqrUyAwDemdxO+BDOFNUlP5
-	 TeGj/8olIPLl0+HEXNPNUgRytntQzwSEU2Rgihsj1Ho33Ow15tMDtEMBpRRcydHqY9
-	 QmxzMVxGH97Meka8R2B0Qxttl/BeJKhtVjYbuIBcw77wWdK3riw4uXYx7zjY9STdYi
-	 3i6Yx1L9Er38/y7sLIyDRTGo2vATknrM20MbpGzLiJyqOBfDlqhOF9x/5n/XPrWPvn
-	 55UfsmdvWhcKhYkGczkebwB2lm6/+KMDuqH/KNdrS4b+F/j6ulfE5HJL8yFpUTCaQf
-	 i26sfULaptvhQ==
-Date: Tue, 3 Sep 2024 20:40:27 +0100
+	b=vHdZ9whQz0I8ZtZX+b5pM9uapfWQ3scd83hcOx1cfd3dtzT88FYDiQ156i7hspdVn
+	 j7oT28rCz/kUAJGswxxcP3/Ggff6k9cksqEUxEEDprkLyrINe4rpWE1rLI+YmE2ULZ
+	 zTlnh9h67IBwtfo4wo4D+3behY4F8S8oQF4OSI1wjmCVL7wZIyf4RRJ6qqXh/6FKWn
+	 y8rLOIYk1FwvQ8aglJoHyhkHprTG7LvEocRordvMwFtKEIy5gDh+2mv1NYcW4Uvq4l
+	 GDoRiYfAzCt6UUOjlD8Ld3qgQol0uylZFlumh4CSJDl+MIw6EFzreHFRbL5/r9O+jp
+	 fi0m74R6vPLeg==
+Date: Tue, 3 Sep 2024 20:47:37 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: "Sperling, Tobias" <Tobias.Sperling@Softing.com>
-Cc: Guenter Roeck <linux@roeck-us.net>, Conor Dooley <conor@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "jdelvare@suse.com" <jdelvare@suse.com>, "robh@kernel.org"
- <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>, "corbet@lwn.net"
- <corbet@lwn.net>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: hwmon: Introduce ADS71x8
-Message-ID: <20240903204027.72ae7e4d@jic23-huawei>
-In-Reply-To: <BE1P281MB2420EBD112C4F7A96598AE05EF922@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
-References: <BE1P281MB24208CB90AF549578AA5C384EF972@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
-	<20240830-chaos-unrivaled-04c5c4c6add9@spud>
-	<766b9892-ef54-4f0a-96dd-19e8a1b3279c@roeck-us.net>
-	<20240831131824.03141d4a@jic23-huawei>
-	<BE1P281MB2420EBD112C4F7A96598AE05EF922@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, David Lechner
+ <dlechner@baylibre.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Michael Hennerich
+ <michael.hennerich@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Jinjie Ruan <ruanjinjie@huawei.com>, Lorenzo
+ Bianconi <lorenzo@kernel.org>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, Basavaraj Natikar
+ <Basavaraj.Natikar@amd.com>, linux-input@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jiri Kosina
+ <jikos@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 10/22] iio: dac: max517: Get platform data via
+ dev_get_platdata()
+Message-ID: <20240903204737.710e49dd@jic23-huawei>
+In-Reply-To: <20240902222824.1145571-11-andy.shevchenko@gmail.com>
+References: <20240902222824.1145571-1-andy.shevchenko@gmail.com>
+	<20240902222824.1145571-11-andy.shevchenko@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,66 +70,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 2 Sep 2024 13:04:55 +0000
-"Sperling, Tobias" <Tobias.Sperling@Softing.com> wrote:
+On Tue,  3 Sep 2024 01:16:55 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> > On Fri, 30 Aug 2024 07:30:16 -0700
-> > Guenter Roeck <linux@roeck-us.net> wrote:
-> >   
-> > > On 8/30/24 06:14, Conor Dooley wrote:  
-> > > > Hey Tobias, Guenter, Jonathan,
-> > > >
-> > > > On Fri, Aug 30, 2024 at 11:49:53AM +0000, Sperling, Tobias wrote:  
-> > > >>  From b2e04ce5500faf274654be5284be9db4f3abefce Mon Sep 17 00:00:00  
-> > 2001  
-> > > >> From: Tobias Sperling <tobias.sperling@softing.com>
-> > > >> Date: Fri, 23 Aug 2024 12:08:33 +0200
-> > > >> Subject: [PATCH 1/2] dt-bindings: hwmon: Introduce ADS71x8
-> > > >>
-> > > >> Add documentation for the driver of ADS7128 and ADS7138 12-bit, 8-channel
-> > > >> analog-to-digital converters. These ADCs have a wide operating range and
-> > > >> a wide feature set. Communication is based on an I2C interface.
-> > > >> The driver provides the functionality of manually reading single channels
-> > > >> or sequentially reading all channels automatically.
-> > > >>
-> > > >> Signed-off-by: Tobias Sperling <tobias.sperling@softing.com>
-> > > >> ---
-> > > >>   .../devicetree/bindings/hwmon/ti,ads71x8.yaml |  85 +++++++++++  
-> > > >
-> > > > If this is a "generic" adc, why is it going into hwmon?
-> > > > I would have expected this to be in iio/adc, and use more typical adc
-> > > > bindings, even if the driver is in hwmon.
-> > > >
-> > > > Guenter/Jonathan wdyt?
-> > > >  
-> > >
-> > > Same thought here. While the chip supports limits, making it suitable for
-> > > hardware monitoring, its primary use seems to be as ADC, not as hardware
-> > > monitoring device. The hardware monitoring API isn't well suited for the
-> > > fast sample rate supported by this chip.  
-> > 
-> > Agreed, looks like a typical IIO ADC.
-> > 
-> > If the particular board needs it for hardware monitoring we have
-> > the bridge that should work for that (iio-hwmon).  
+> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > 
-> Just some addition. In theory the chip also provides the possibility to use some
-> channels as GPIO making it not only work as ADC.
-> But yes, driver mainly implements reading of the ADC. Will try to make it an
-> IIO ADC device then.
-That's fairly common.  If you want to support it then provide the gpio_chip
-etc and +CC the relevant maintainers and mailing lists.
+> Access to platform data via dev_get_platdata() getter to make code cleaner.
+> 
+> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> ---
+>  drivers/iio/dac/max517.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/dac/max517.c b/drivers/iio/dac/max517.c
+> index 685980184d3c..96781ae04f9d 100644
+> --- a/drivers/iio/dac/max517.c
+> +++ b/drivers/iio/dac/max517.c
+> @@ -143,10 +143,10 @@ static const struct iio_chan_spec max517_channels[] = {
+>  
+>  static int max517_probe(struct i2c_client *client)
+>  {
+> +	const struct max517_platform_data *platform_data = dev_get_platdata(&client->dev);
+>  	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+>  	struct max517_data *data;
+>  	struct iio_dev *indio_dev;
+> -	struct max517_platform_data *platform_data = client->dev.platform_data;
+>  	int chan;
+>  
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> @@ -176,7 +176,7 @@ static int max517_probe(struct i2c_client *client)
+>  
+>  	/*
+>  	 * Reference voltage on MAX518 and default is 5V, else take vref_mv
+> -	 * from platform_data
+> +	 * from platform_data.
 
-Jonathan
+I guess this is accidental?  
 
-> 
-> > Jonathan
-> >   
-> > >
-> > > Guenter
-> > >  
-> 
-> Regards
-> Tobias
+J
+
+>  	 */
+>  	for (chan = 0; chan < indio_dev->num_channels; chan++) {
+>  		if (id->driver_data == ID_MAX518 || !platform_data)
 
 

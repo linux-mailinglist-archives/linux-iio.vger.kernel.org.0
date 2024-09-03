@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-9056-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9057-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30FC969263
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 05:57:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEB0969265
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 05:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6ADF1C21406
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 03:57:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2DC81F2349D
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 03:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF1B419F132;
-	Tue,  3 Sep 2024 03:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5BF1CDFDA;
+	Tue,  3 Sep 2024 03:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A92RHExL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IQO4CQWK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17998383;
-	Tue,  3 Sep 2024 03:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73861CDFAE;
+	Tue,  3 Sep 2024 03:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725335843; cv=none; b=uOsjQaGi2504ji3LOh5+96q8Hj1gikZZol7NWYY7+mChqztSn6N8E3cpPIp7Hnpny791wTyRzogIm1JCn7eC1oTTORAXZ1NknkznIOLYvTz9taJOI2ymbHxEUEt678zDzsZaYE8R2NKFg3tcezsSnQI0oQ1FC5y4kNVgxW2FrQU=
+	t=1725335846; cv=none; b=jjHeVDW3imWD3xOfnfdR7vvOHDlkxz5Sv14W3t6sumyI/RIDfTkBdFa69EYl0++zpn8F6pYN2Q7F3toF0qRiUjA+BPr45CGoQSEOW95266QEBTAqq2G7GA6tXoJt2QbjPHR4SvljOuFuc7aG3+KfhC25xpi6ww/ZmpFyIFM6pWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725335843; c=relaxed/simple;
-	bh=6om9AST2rsmZsprvhdjhpv4RG5zd0DiwHv96r3fWcmk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=omPsATl6zAXIIrXIBISReIs+82qvV0u9mcWwGIn3GQ6YROlaNiAZMWwoyPxL62T31RdBJUCZfRKWmbdSNpDfLd9Lam1PalzKdEZGLEgqWKM8paubaJofakKtvOM38OAbBQyZf1Ae4nUMMoy8ASSIetRH6U9x2u960EIkT3bHN8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A92RHExL; arc=none smtp.client-ip=209.85.167.179
+	s=arc-20240116; t=1725335846; c=relaxed/simple;
+	bh=Fr8OpO3pInva+n0odfLO1pe4AXIoe7xZoCq6yMF63Yo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aL9GYdcWv2N8Rx514ORLQ4sQIwsZpSvNFscNhNSL2wk5Oox/2impYFtBXpRwRQG3mEHPZGko7oRRlI+7OOicTv5Wc0nCd8NussItICrdbsaJauYxAiqG8fLrhQGpkwlacJQjtNwQTP73p2DP2XE1chT4G/J0zXmKt12sRzhM/yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IQO4CQWK; arc=none smtp.client-ip=209.85.160.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3df0a54623dso2592828b6e.0;
-        Mon, 02 Sep 2024 20:57:21 -0700 (PDT)
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-277fdd7d468so627424fac.1;
+        Mon, 02 Sep 2024 20:57:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725335840; x=1725940640; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZMqTxfGWsFsPuQuj6hkm4TSHO/NChkL4tIS9tJnRwLU=;
-        b=A92RHExLAq5PSg2xOl4HoEFTwW92FyfBA0+w1PLcNz0Kh5dXmyTe2DQ+D2nCMEic97
-         W7/A1Fqmc2dW+BNXwyPt2djCrRjM9JxQJMPBKoskBfsxbzCwPejju0cjQu1H7J6dG7Lp
-         DKQjdn+OrWOwST5INKfHckTnXNN9bPGdQkoswup10M74mAUSVESqWJtwcoNu8E4i/dxg
-         L/7CJnszBNhK61MORb0duza+/6s+eoRqQHwWMYP2CfdQhOIUmiY5aGBT3tIFWPusB0mD
-         Haxk+oy/AlEggZGssPIb1hEsVH5//ZbA7ozBXA85boFNdkozy1cqI3eLKMdrzdxR9FZW
-         PmNw==
+        d=gmail.com; s=20230601; t=1725335843; x=1725940643; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yamzlvp+sBiLht08ddSodYih1n4CTjg4h+6yXqEB3Fs=;
+        b=IQO4CQWK0WGd6m5Jkt5dpH1EaLgLjJtqJahJyP6UMEZQQZKjyU7hylwY4DHHf39v3Z
+         +gJKstk6tmgjWAsiZrUgmvOG4tf2zgxqZ1QFW8V8D0hpSIGZ6O8RBlcA1kO8FzFJqIlL
+         hStucAg0E8lIrWKTU+smURR9QlTN3dVVSa3R2jyOxXfroBI/crd6xgyYrRrmLXuo3oSa
+         9ggGvjQJg4g76H/6zRCdNf8mY5E+UAwZE5oAGZ8ayxX0knmfppB5vgTIH4LzGQ23Upr5
+         7IYPUKZMSiXl2RfC3M1IzdaKJdU0vVpyO89+hZ/vNoyLn/cdxU/d/JLpfTolp8mZ8f6x
+         QGVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725335840; x=1725940640;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZMqTxfGWsFsPuQuj6hkm4TSHO/NChkL4tIS9tJnRwLU=;
-        b=lHFeTywiNkdPtmWrJTCNEGjmUfPT8lQXvDpUY1Cl8sO4ejo/1a6CNnPi2IhJbww+Cu
-         QQBrerTUuFg0IuZOVgRyoA6NIUQsS4+ksNanFrnKU9HmEenkFFz8C2dUwrSUO2UWjZV4
-         Rq8GuvbDobn5B6kdKBwspkYiasqohHNwALdb1awijIrBSwbzTaZCtVPsFsvSPxqUR/KL
-         U/z8xu6nA6wdoxxGTa9HRSTSiUnIOSrO13stRrY6uOmbx880fv25vha+UyaXlm4+1/Ts
-         4kFIL/re2cn3LuCWKcx9e0NhRfxE08Y+ktlyeOPqTdS+LGrpyBIvgOfl91cF3B3W/4Jv
-         Qhvg==
-X-Forwarded-Encrypted: i=1; AJvYcCXIm2NRqN+YMBmcBHeCaGIK4XPnq/M/nNukEEQLzojmsqJATVTty8Nq3tsGIzTCA7GGp+jMfDdeuyzgHG0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6oo8Gf1B+fTS/47nBgaAaDPAaBNY/N8YIwTiVvTKbn+fR/GWj
-	6t0BarnRY4rzRMNPQHbjrJS1chr2SYB6nFe7ffsjjQNUIxOS77yeqW92HYgL
-X-Google-Smtp-Source: AGHT+IGMGmkPnvzDi/RcsLIx8HxARXXibx603MI5vTz2eh49yiXYiYi/6CPj/TbDOhhnjVybQqSzBA==
-X-Received: by 2002:a05:6808:3a18:b0:3d9:27fc:158f with SMTP id 5614622812f47-3df1c9b85d7mr14239128b6e.29.1725335840140;
-        Mon, 02 Sep 2024 20:57:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725335843; x=1725940643;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yamzlvp+sBiLht08ddSodYih1n4CTjg4h+6yXqEB3Fs=;
+        b=RQLFV7/JE9IUimf7Scholv8lqjEPondBiOtzXnE16zQUJsTSfBB2VBuTmaJCsIqbbX
+         KacdD+u0CrTsUPH1OzYjPW4VWRrV1Id1uWM6ZHN6xB+G3E4PzA2ksxM4DX1nIWSLKVBj
+         U+oeVzyIYoWZC1rXjzkHYOmbjLh//JumlPWRLWltFqV/JZX/xrrJSVORS52Ujyq+dttl
+         /F03Wh56dt16LEBUIn76d397uyBnQ823b/5TzkktOacPd7BY0xnuxZQSgLUha8LUOO73
+         NSgn6X7YH0aNmvODVMZJF3FRHFPAkXGJoAH8gSL/lsk8iXiAPEjpV8mAGcqzxD6u8LqM
+         bycg==
+X-Forwarded-Encrypted: i=1; AJvYcCWlKCHpzjsyrgsWofeF5XSlB7C5UZrR37n9F+ybWyddqdeaPrJBF4wHWykMG6oMdFYnYuur6Y5P11/mhfw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc6kK1S8SmWdlrEBioTXHMXp2yvObz65se6XG+ifEV9jlk/DuN
+	n6OoTtuv/MRfbs2lkN3Hy65lNkfQVheWpU9HveOOzu08G6ssAhRuR+9xhCqd
+X-Google-Smtp-Source: AGHT+IHaniAv1rZbRFPapk8xmn5NFqwCfeMA5p5z0eNQ0bPhmR1/G5+vkvFznCJAv2HCHYoz0RSh1Q==
+X-Received: by 2002:a05:6870:bac3:b0:277:ecd2:7b7 with SMTP id 586e51a60fabf-277fffc1867mr4005934fac.7.1725335843339;
+        Mon, 02 Sep 2024 20:57:23 -0700 (PDT)
 Received: from abhash-IdeaPad-L340-15IRH-Gaming.. ([136.233.9.100])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-7d22e785333sm8329421a12.56.2024.09.02.20.57.16
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-7d22e785333sm8329421a12.56.2024.09.02.20.57.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 20:57:19 -0700 (PDT)
+        Mon, 02 Sep 2024 20:57:22 -0700 (PDT)
 From: Abhash Jha <abhashkumarjha123@gmail.com>
 To: linux-iio@vger.kernel.org
 Cc: songqiang1304521@gmail.com,
@@ -72,10 +74,12 @@ Cc: songqiang1304521@gmail.com,
 	lars@metafoo.de,
 	linux-kernel@vger.kernel.org,
 	Abhash Jha <abhashkumarjha123@gmail.com>
-Subject: [PATCH v3 0/2] Continuous mode support for VL53l0x
-Date: Tue,  3 Sep 2024 09:26:34 +0530
-Message-ID: <20240903035636.9559-1-abhashkumarjha123@gmail.com>
+Subject: [PATCH v3 1/2] iio: proximity: vl53l0x-i2c: Added sensor ID check
+Date: Tue,  3 Sep 2024 09:26:35 +0530
+Message-ID: <20240903035636.9559-2-abhashkumarjha123@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240903035636.9559-1-abhashkumarjha123@gmail.com>
+References: <20240903035636.9559-1-abhashkumarjha123@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,41 +88,61 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+The commit adds a check for the sensor's model ID. We read the model
+identification register (0xC0) and expect a value of 0xEE.
 
-The first patch adds support for checking the sensor ID by reading
-MODEL_IDENTIFICATION register and seeing if it returns the value 0xEE
+Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+---
+ drivers/iio/proximity/vl53l0x-i2c.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-The second patch adds support for continuous mode in the sensor by using
-buffers. We enable the sensor's continuous mode in the buffer_postenable
-function.
-Replaced the irq handler with a threaded irq handler in order to perform
-I2C reads for the data. The continuous mode can be disabled by disabling
-the buffer.
-Added a trigger to the device for the continuous mode. Also validating that
-the device uses the internal trigger provided by us.
-
-Changes in v3:
-- Added "asm/unaligned.h" include to fix `-Wimplicit-function-declaration`.
-- The above error was pointed during testing by kernel-test-robot
-- Link to v2: https://lore.kernel.org/linux-iio/20240902122557.129013-1-abhashkumarjha123@gmail.com/T/#t
-
-Changes in v2:
-- Added a trigger for the device
-- Added a poll function for the triggered buffer setup
-- Performed the data reading and pushing to buffers in the poll function
-- Minor code refactoring
-
-- Link to v1: https://lore.kernel.org/linux-iio/20240830201627.298264-1-abhashkumarjha123@gmail.com/T/#t
-
-
-Abhash Jha (2):
-  iio: proximity: vl53l0x-i2c: Added sensor ID check
-  iio: proximity: vl53l0x-i2c: Added continuous mode support
-
- drivers/iio/proximity/vl53l0x-i2c.c | 177 +++++++++++++++++++++++-----
- 1 file changed, 150 insertions(+), 27 deletions(-)
-
+diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
+index 8d4f3f849..31d6aeb95 100644
+--- a/drivers/iio/proximity/vl53l0x-i2c.c
++++ b/drivers/iio/proximity/vl53l0x-i2c.c
+@@ -39,8 +39,11 @@
+ 
+ #define VL_REG_RESULT_INT_STATUS			0x13
+ #define VL_REG_RESULT_RANGE_STATUS			0x14
++#define VL_REG_IDENTIFICATION_MODEL_ID			0xC0
+ #define VL_REG_RESULT_RANGE_STATUS_COMPLETE		BIT(0)
+ 
++#define VL53L0X_MODEL_ID_VAL				0xEE
++
+ struct vl53l0x_data {
+ 	struct i2c_client *client;
+ 	struct completion completion;
+@@ -223,6 +226,7 @@ static int vl53l0x_probe(struct i2c_client *client)
+ 	struct vl53l0x_data *data;
+ 	struct iio_dev *indio_dev;
+ 	int error;
++	int ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+ 	if (!indio_dev)
+@@ -237,6 +241,13 @@ static int vl53l0x_probe(struct i2c_client *client)
+ 				     I2C_FUNC_SMBUS_BYTE_DATA))
+ 		return -EOPNOTSUPP;
+ 
++	ret = i2c_smbus_read_byte_data(data->client, VL_REG_IDENTIFICATION_MODEL_ID);
++	if (ret < 0)
++		return -EINVAL;
++
++	if (ret != VL53L0X_MODEL_ID_VAL)
++		dev_info(&client->dev, "Received invalid model id: 0x%x", ret);
++
+ 	data->vdd_supply = devm_regulator_get(&client->dev, "vdd");
+ 	if (IS_ERR(data->vdd_supply))
+ 		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
+@@ -265,8 +276,6 @@ static int vl53l0x_probe(struct i2c_client *client)
+ 
+ 	/* usage of interrupt is optional */
+ 	if (client->irq) {
+-		int ret;
+-
+ 		init_completion(&data->completion);
+ 
+ 		ret = vl53l0x_configure_irq(client, indio_dev);
 -- 
 2.43.0
 

@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-9057-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9058-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EEB0969265
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 05:57:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE04969267
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 05:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2DC81F2349D
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 03:57:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFDFE1C226B8
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 03:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5BF1CDFDA;
-	Tue,  3 Sep 2024 03:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808261CE6E9;
+	Tue,  3 Sep 2024 03:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IQO4CQWK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AHXnK5hx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73861CDFAE;
-	Tue,  3 Sep 2024 03:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98F11CE70F;
+	Tue,  3 Sep 2024 03:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725335846; cv=none; b=jjHeVDW3imWD3xOfnfdR7vvOHDlkxz5Sv14W3t6sumyI/RIDfTkBdFa69EYl0++zpn8F6pYN2Q7F3toF0qRiUjA+BPr45CGoQSEOW95266QEBTAqq2G7GA6tXoJt2QbjPHR4SvljOuFuc7aG3+KfhC25xpi6ww/ZmpFyIFM6pWE=
+	t=1725335850; cv=none; b=R8WQQDrdOBRhVTEcb+qFDElPOeqjhk3s/JssknOvJoPbrJEEwppgrL8nSIvtZSYyxV/LJwZ1xtCLNatdOx5WChMBSCXL4nWu7vISGI1MsCrDvoqTnLtxZXYV1/cyDx/Zwm1f0iVh+qA02m/apxYoO84pE5oFgdhFl71pkzqArOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725335846; c=relaxed/simple;
-	bh=Fr8OpO3pInva+n0odfLO1pe4AXIoe7xZoCq6yMF63Yo=;
+	s=arc-20240116; t=1725335850; c=relaxed/simple;
+	bh=uyBa81K6sc4nmM89s6vQpxHNyCzh3NCrxdEiUuDNI8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aL9GYdcWv2N8Rx514ORLQ4sQIwsZpSvNFscNhNSL2wk5Oox/2impYFtBXpRwRQG3mEHPZGko7oRRlI+7OOicTv5Wc0nCd8NussItICrdbsaJauYxAiqG8fLrhQGpkwlacJQjtNwQTP73p2DP2XE1chT4G/J0zXmKt12sRzhM/yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IQO4CQWK; arc=none smtp.client-ip=209.85.160.44
+	 MIME-Version; b=b8zp3Gk/ZmUGXNAif5XJEih7KmaZm/LmiK/MhkmpunQO9Pglk1fJiaZ7ZpFYQlT7YGUS5pT6dD8Ug/1Wq/IDnymh5eBZm+9ibOyOiSgmyzObLLsh3FJNWVXPvRSLPAMfb/DLJDX0o92jZXgWqaZn0Uyqyf9SGYMHdlQaHaq7iWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AHXnK5hx; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-277fdd7d468so627424fac.1;
-        Mon, 02 Sep 2024 20:57:24 -0700 (PDT)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-71430e7eaf8so3837739b3a.1;
+        Mon, 02 Sep 2024 20:57:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725335843; x=1725940643; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725335847; x=1725940647; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yamzlvp+sBiLht08ddSodYih1n4CTjg4h+6yXqEB3Fs=;
-        b=IQO4CQWK0WGd6m5Jkt5dpH1EaLgLjJtqJahJyP6UMEZQQZKjyU7hylwY4DHHf39v3Z
-         +gJKstk6tmgjWAsiZrUgmvOG4tf2zgxqZ1QFW8V8D0hpSIGZ6O8RBlcA1kO8FzFJqIlL
-         hStucAg0E8lIrWKTU+smURR9QlTN3dVVSa3R2jyOxXfroBI/crd6xgyYrRrmLXuo3oSa
-         9ggGvjQJg4g76H/6zRCdNf8mY5E+UAwZE5oAGZ8ayxX0knmfppB5vgTIH4LzGQ23Upr5
-         7IYPUKZMSiXl2RfC3M1IzdaKJdU0vVpyO89+hZ/vNoyLn/cdxU/d/JLpfTolp8mZ8f6x
-         QGVg==
+        bh=nTJOQ7ea7VhKmukuHF2qbo8SZKAFBfgbAfGBVI2fsCA=;
+        b=AHXnK5hxit+ceKUfZ1nyBrflAGYf6IlQDjqtA1udWYecSwZTLpLf34mE25jqjb/asd
+         mxn9BSKT62qicr57azSpt35tAN2qpuLwFFURXi1qBcyXMCpnZkA04T4tJzTXCPNOAtRH
+         GnHiE47HD3fsJtflhD5MCimBZ4jPrEz1RRZLApW+47VDBGqjYHndkn18wVKIZyaG881M
+         kl2Vo8FwIgDMwmqEx6YcmZR+SzTWp869fEqTCqHkplhRf5YyeCSfowntSTZ1NeOn0T/I
+         54aAuBqlWuqGFW9HH1dMrFn0KkmCvwTELNbxANc9Y05iSuw/n3qePolWXwDExHvUXMRW
+         btXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725335843; x=1725940643;
+        d=1e100.net; s=20230601; t=1725335847; x=1725940647;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yamzlvp+sBiLht08ddSodYih1n4CTjg4h+6yXqEB3Fs=;
-        b=RQLFV7/JE9IUimf7Scholv8lqjEPondBiOtzXnE16zQUJsTSfBB2VBuTmaJCsIqbbX
-         KacdD+u0CrTsUPH1OzYjPW4VWRrV1Id1uWM6ZHN6xB+G3E4PzA2ksxM4DX1nIWSLKVBj
-         U+oeVzyIYoWZC1rXjzkHYOmbjLh//JumlPWRLWltFqV/JZX/xrrJSVORS52Ujyq+dttl
-         /F03Wh56dt16LEBUIn76d397uyBnQ823b/5TzkktOacPd7BY0xnuxZQSgLUha8LUOO73
-         NSgn6X7YH0aNmvODVMZJF3FRHFPAkXGJoAH8gSL/lsk8iXiAPEjpV8mAGcqzxD6u8LqM
-         bycg==
-X-Forwarded-Encrypted: i=1; AJvYcCWlKCHpzjsyrgsWofeF5XSlB7C5UZrR37n9F+ybWyddqdeaPrJBF4wHWykMG6oMdFYnYuur6Y5P11/mhfw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc6kK1S8SmWdlrEBioTXHMXp2yvObz65se6XG+ifEV9jlk/DuN
-	n6OoTtuv/MRfbs2lkN3Hy65lNkfQVheWpU9HveOOzu08G6ssAhRuR+9xhCqd
-X-Google-Smtp-Source: AGHT+IHaniAv1rZbRFPapk8xmn5NFqwCfeMA5p5z0eNQ0bPhmR1/G5+vkvFznCJAv2HCHYoz0RSh1Q==
-X-Received: by 2002:a05:6870:bac3:b0:277:ecd2:7b7 with SMTP id 586e51a60fabf-277fffc1867mr4005934fac.7.1725335843339;
-        Mon, 02 Sep 2024 20:57:23 -0700 (PDT)
+        bh=nTJOQ7ea7VhKmukuHF2qbo8SZKAFBfgbAfGBVI2fsCA=;
+        b=mqgB3v2xnPYkLqrELXB2BIQ17r9HL8PD5KBWJYnq2hGMaVT60Fudn7zmTd+2vLtgdK
+         r8ljbbpdEf1DYnhKpkfGbhf45h43DXwbjmSMyKL/mDaIvEgpiYgijuSm0VzRw/NMV0/M
+         02YRtsehByI0ODkf//To0RcYs8BvEHhFENNv+J42AnsvJr0y3d3lEzoNVMjMa8HDtldj
+         99goFiCFZTg4Yf2gvZhK7h4A/MbYKVVLntP1yB17/7X39Fdxj502wg/J3wb3/dN+fQaI
+         0m8Z/gZMZwr6/AfJOfz+QXQ7+3qaJdBARVBGms3Guvej0d3ZcXvB8KT78cZhRrm+Z7EK
+         jwBw==
+X-Forwarded-Encrypted: i=1; AJvYcCX891sqkFsbQi3H7CeYaUOCZo9Dm4KZofCCa5dFllIRypTDnLo3xbhyPCilcSEh3zVyuPhbg3bgNjzjCXM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTYLrT/WUwyBOp/1NfbOJzIOU4s+tm7LSQY9XX+xcOVKjXduMm
+	50YbvCe61wOw1kDQr/DULQ2AugnKTUDU1GnzMbKW/pUKif1KFSXRuvVhZXo+
+X-Google-Smtp-Source: AGHT+IEfcwiYrIcXox586ZH+yc5de/ZG/AeWrqFu7rq6+hj4CQLbWqMpV7KI6RlvUPqAW1pkYvn79g==
+X-Received: by 2002:a05:6a00:3916:b0:714:3a4b:f78f with SMTP id d2e1a72fcca58-71745884fd6mr8235501b3a.20.1725335846839;
+        Mon, 02 Sep 2024 20:57:26 -0700 (PDT)
 Received: from abhash-IdeaPad-L340-15IRH-Gaming.. ([136.233.9.100])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-7d22e785333sm8329421a12.56.2024.09.02.20.57.20
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-7d22e785333sm8329421a12.56.2024.09.02.20.57.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 20:57:22 -0700 (PDT)
+        Mon, 02 Sep 2024 20:57:26 -0700 (PDT)
 From: Abhash Jha <abhashkumarjha123@gmail.com>
 To: linux-iio@vger.kernel.org
 Cc: songqiang1304521@gmail.com,
@@ -74,9 +74,9 @@ Cc: songqiang1304521@gmail.com,
 	lars@metafoo.de,
 	linux-kernel@vger.kernel.org,
 	Abhash Jha <abhashkumarjha123@gmail.com>
-Subject: [PATCH v3 1/2] iio: proximity: vl53l0x-i2c: Added sensor ID check
-Date: Tue,  3 Sep 2024 09:26:35 +0530
-Message-ID: <20240903035636.9559-2-abhashkumarjha123@gmail.com>
+Subject: [PATCH v3 2/2] iio: proximity: vl53l0x-i2c: Added continuous mode support
+Date: Tue,  3 Sep 2024 09:26:36 +0530
+Message-ID: <20240903035636.9559-3-abhashkumarjha123@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903035636.9559-1-abhashkumarjha123@gmail.com>
 References: <20240903035636.9559-1-abhashkumarjha123@gmail.com>
@@ -88,61 +88,251 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The commit adds a check for the sensor's model ID. We read the model
-identification register (0xC0) and expect a value of 0xEE.
+The continuous mode of the sensor is enabled in the buffer_postenable.
+Replaced the original irq handler with a threaded irq handler to perform
+i2c reads during continuous mode.
+The continuous mode is disabled by disabling the buffer.
+Added a trigger for this device to be used for continuous mode.
 
 Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
 ---
- drivers/iio/proximity/vl53l0x-i2c.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/iio/proximity/vl53l0x-i2c.c | 164 +++++++++++++++++++++++-----
+ 1 file changed, 139 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-index 8d4f3f849..31d6aeb95 100644
+index 31d6aeb95..f91a9495a 100644
 --- a/drivers/iio/proximity/vl53l0x-i2c.c
 +++ b/drivers/iio/proximity/vl53l0x-i2c.c
-@@ -39,8 +39,11 @@
+@@ -22,6 +22,12 @@
+ #include <linux/module.h>
  
- #define VL_REG_RESULT_INT_STATUS			0x13
- #define VL_REG_RESULT_RANGE_STATUS			0x14
-+#define VL_REG_IDENTIFICATION_MODEL_ID			0xC0
- #define VL_REG_RESULT_RANGE_STATUS_COMPLETE		BIT(0)
- 
-+#define VL53L0X_MODEL_ID_VAL				0xEE
+ #include <linux/iio/iio.h>
++#include <linux/iio/buffer.h>
++#include <linux/iio/trigger.h>
++#include <linux/iio/trigger_consumer.h>
++#include <linux/iio/triggered_buffer.h>
 +
- struct vl53l0x_data {
- 	struct i2c_client *client;
++#include <asm/unaligned.h>
+ 
+ #define VL_REG_SYSRANGE_START				0x00
+ 
+@@ -49,14 +55,75 @@ struct vl53l0x_data {
  	struct completion completion;
-@@ -223,6 +226,7 @@ static int vl53l0x_probe(struct i2c_client *client)
- 	struct vl53l0x_data *data;
- 	struct iio_dev *indio_dev;
- 	int error;
+ 	struct regulator *vdd_supply;
+ 	struct gpio_desc *reset_gpio;
++	struct iio_trigger *trig;
++
++	struct {
++		u16 chan;
++		s64 timestamp __aligned(8);
++	} scan;
+ };
+ 
+-static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
++static int vl53l0x_clear_irq(struct vl53l0x_data *data)
++{
++	struct device *dev = &data->client->dev;
 +	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (!indio_dev)
-@@ -237,6 +241,13 @@ static int vl53l0x_probe(struct i2c_client *client)
- 				     I2C_FUNC_SMBUS_BYTE_DATA))
- 		return -EOPNOTSUPP;
- 
-+	ret = i2c_smbus_read_byte_data(data->client, VL_REG_IDENTIFICATION_MODEL_ID);
++
++	ret = i2c_smbus_write_byte_data(data->client,
++					VL_REG_SYSTEM_INTERRUPT_CLEAR, 1);
 +	if (ret < 0)
++		dev_err(dev, "failed to clear error irq: %d\n", ret);
++
++	ret = i2c_smbus_write_byte_data(data->client,
++					VL_REG_SYSTEM_INTERRUPT_CLEAR, 0);
++	if (ret < 0)
++		dev_err(dev, "failed to clear range irq: %d\n", ret);
++
++	ret = i2c_smbus_read_byte_data(data->client, VL_REG_RESULT_INT_STATUS);
++	if (ret < 0 || ret & 0x07) {
++		dev_err(dev, "failed to clear irq: %d\n", ret);
 +		return -EINVAL;
++	}
 +
-+	if (ret != VL53L0X_MODEL_ID_VAL)
-+		dev_info(&client->dev, "Received invalid model id: 0x%x", ret);
++	return 0;
++}
 +
- 	data->vdd_supply = devm_regulator_get(&client->dev, "vdd");
- 	if (IS_ERR(data->vdd_supply))
- 		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
-@@ -265,8 +276,6 @@ static int vl53l0x_probe(struct i2c_client *client)
++static irqreturn_t vl53l0x_trigger_handler(int irq, void *priv)
++{
++	struct iio_poll_func *pf = priv;
++	struct iio_dev *indio_dev = pf->indio_dev;
++	struct vl53l0x_data *data = iio_priv(indio_dev);
++	u8 buffer[12];
++	int ret;
++
++	ret = i2c_smbus_read_i2c_block_data(data->client,
++					VL_REG_RESULT_RANGE_STATUS,
++					sizeof(buffer), buffer);
++	if (ret < 0)
++		return ret;
++	else if (ret != 12)
++		return -EREMOTEIO;
++
++	data->scan.chan = get_unaligned_be16(&buffer[10]);
++	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
++					iio_get_time_ns(indio_dev));
++
++	iio_trigger_notify_done(indio_dev->trig);
++	ret = vl53l0x_clear_irq(data);
++	if (ret < 0)
++		return ret;
++
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t vl53l0x_threaded_irq(int irq, void *priv)
+ {
+ 	struct iio_dev *indio_dev = priv;
+ 	struct vl53l0x_data *data = iio_priv(indio_dev);
  
- 	/* usage of interrupt is optional */
- 	if (client->irq) {
--		int ret;
+-	complete(&data->completion);
++	if (iio_buffer_enabled(indio_dev))
++		iio_trigger_poll_nested(indio_dev->trig);
++	else
++		complete(&data->completion);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -71,8 +138,9 @@ static int vl53l0x_configure_irq(struct i2c_client *client,
+ 	if (!irq_flags)
+ 		irq_flags = IRQF_TRIGGER_FALLING;
+ 
+-	ret = devm_request_irq(&client->dev, client->irq, vl53l0x_handle_irq,
+-			irq_flags, indio_dev->name, indio_dev);
++	ret = devm_request_threaded_irq(&client->dev, client->irq,
++			NULL, vl53l0x_threaded_irq,
++			irq_flags | IRQF_ONESHOT, indio_dev->name, indio_dev);
+ 	if (ret) {
+ 		dev_err(&client->dev, "devm_request_irq error: %d\n", ret);
+ 		return ret;
+@@ -87,26 +155,6 @@ static int vl53l0x_configure_irq(struct i2c_client *client,
+ 	return ret;
+ }
+ 
+-static void vl53l0x_clear_irq(struct vl53l0x_data *data)
+-{
+-	struct device *dev = &data->client->dev;
+-	int ret;
 -
+-	ret = i2c_smbus_write_byte_data(data->client,
+-					VL_REG_SYSTEM_INTERRUPT_CLEAR, 1);
+-	if (ret < 0)
+-		dev_err(dev, "failed to clear error irq: %d\n", ret);
+-
+-	ret = i2c_smbus_write_byte_data(data->client,
+-					VL_REG_SYSTEM_INTERRUPT_CLEAR, 0);
+-	if (ret < 0)
+-		dev_err(dev, "failed to clear range irq: %d\n", ret);
+-
+-	ret = i2c_smbus_read_byte_data(data->client, VL_REG_RESULT_INT_STATUS);
+-	if (ret < 0 || ret & 0x07)
+-		dev_err(dev, "failed to clear irq: %d\n", ret);
+-}
+-
+ static int vl53l0x_read_proximity(struct vl53l0x_data *data,
+ 				  const struct iio_chan_spec *chan,
+ 				  int *val)
+@@ -128,7 +176,9 @@ static int vl53l0x_read_proximity(struct vl53l0x_data *data,
+ 		if (time_left == 0)
+ 			return -ETIMEDOUT;
+ 
+-		vl53l0x_clear_irq(data);
++		ret = vl53l0x_clear_irq(data);
++		if (ret < 0)
++			return ret;
+ 	} else {
+ 		do {
+ 			ret = i2c_smbus_read_byte_data(client,
+@@ -163,7 +213,14 @@ static const struct iio_chan_spec vl53l0x_channels[] = {
+ 		.type = IIO_DISTANCE,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE),
++		.scan_index = 0,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 12,
++			.storagebits = 16,
++		},
+ 	},
++	IIO_CHAN_SOFT_TIMESTAMP(32),
+ };
+ 
+ static int vl53l0x_read_raw(struct iio_dev *indio_dev,
+@@ -221,6 +278,41 @@ static int vl53l0x_power_on(struct vl53l0x_data *data)
+ 	return 0;
+ }
+ 
++static int vl53l0x_buffer_postenable(struct iio_dev *indio_dev)
++{
++	struct vl53l0x_data *data = iio_priv(indio_dev);
++
++	return i2c_smbus_write_byte_data(data->client, VL_REG_SYSRANGE_START, 0x02);
++}
++
++static int vl53l0x_buffer_postdisable(struct iio_dev *indio_dev)
++{
++	struct vl53l0x_data *data = iio_priv(indio_dev);
++	int ret;
++
++	ret = i2c_smbus_write_byte_data(data->client, VL_REG_SYSRANGE_START, 0x01);
++	if (ret < 0)
++		return ret;
++
++	/* Let the ongoing reading finish */
++	reinit_completion(&data->completion);
++	wait_for_completion_timeout(&data->completion, HZ/10);
++	vl53l0x_clear_irq(data);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static const struct iio_buffer_setup_ops iio_triggered_buffer_setup_ops = {
++	.postenable = &vl53l0x_buffer_postenable,
++	.postdisable = &vl53l0x_buffer_postdisable,
++};
++
++static const struct iio_trigger_ops vl53l0x_trigger_ops = {
++	.validate_device = iio_trigger_validate_own_device,
++};
++
+ static int vl53l0x_probe(struct i2c_client *client)
+ {
+ 	struct vl53l0x_data *data;
+@@ -278,9 +370,31 @@ static int vl53l0x_probe(struct i2c_client *client)
+ 	if (client->irq) {
  		init_completion(&data->completion);
  
++		data->trig = devm_iio_trigger_alloc(&client->dev, "%s-dev%d",
++						indio_dev->name,
++						iio_device_id(indio_dev));
++		if (!data->trig)
++			return -ENOMEM;
++
++		data->trig->ops = &vl53l0x_trigger_ops;
++		iio_trigger_set_drvdata(data->trig, indio_dev);
++		ret = devm_iio_trigger_register(&client->dev, data->trig);
++		if (ret)
++			return ret;
++
++		indio_dev->trig = iio_trigger_get(data->trig);
++
  		ret = vl53l0x_configure_irq(client, indio_dev);
+ 		if (ret)
+ 			return ret;
++
++		ret = devm_iio_triggered_buffer_setup(&client->dev,
++					indio_dev,
++					NULL,
++					&vl53l0x_trigger_handler,
++					&iio_triggered_buffer_setup_ops);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	return devm_iio_device_register(&client->dev, indio_dev);
 -- 
 2.43.0
 

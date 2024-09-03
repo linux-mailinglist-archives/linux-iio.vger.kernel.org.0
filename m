@@ -1,119 +1,87 @@
-Return-Path: <linux-iio+bounces-9101-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9103-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6E396AA24
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 23:30:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6896796AABA
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 23:58:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18E7F284D3E
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 21:30:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F87D1F24BB5
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Sep 2024 21:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FF11C9DC9;
-	Tue,  3 Sep 2024 21:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h3bTyG1q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD2F1D589E;
+	Tue,  3 Sep 2024 21:58:01 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42339197A67;
-	Tue,  3 Sep 2024 21:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CD51D223A;
+	Tue,  3 Sep 2024 21:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725398977; cv=none; b=Cm7jghVgrzO3YScidOewR57Lc0wH5jBJdS2QU/fb19gQeVmy4i9a9Nkln9o3DQXTJbETRDtGVg2rgvDMs6Bepn2jBJT/SV7dVQBtVmEsROUp0ZSTp9jfZelmcfXNDuHoEnByQgllaMBhfQT6nJ5g7sH3+NvEWNP4Vxy91ChgSp8=
+	t=1725400681; cv=none; b=JhS6uWp0/HDU/cZBbbCfCHldZWKz+0Vnar58WMyKA+Ne6WjkooQuzlI1tR1JNRGD036cgTLUHai04KWGXBLh2vqPf3pIegzRU1qF78vjPRMCZiy9SXuJ1fdu0Lfq9UlHjGpaCuNDKLfWbbPGnWhyIdPoIuTOPvBpArZjfQaERKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725398977; c=relaxed/simple;
-	bh=ajPdL3zT44Mb1wkT/fu2AjjJ6krZ4DWIeQlZ9MsHEkQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VaGtXmB8nXdEFPr3Mz1dEbXot+Tke7j1ov+ck1UXJ6m6ZrGXi0BsFudIN/OtzdEluqZ/NsFzatccd2d2FyMK/8y008QrxHI/SuItmFFdyqsfrUPCaqeqRxXYux2UaM6wKtOLYAaVfZ78eXB3vgCWHW0JKtD2mjptGYgnyv0U5do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h3bTyG1q; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725398977; x=1756934977;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ajPdL3zT44Mb1wkT/fu2AjjJ6krZ4DWIeQlZ9MsHEkQ=;
-  b=h3bTyG1qPHEFn5ztzwOyvJiZbrwxyWjkPywEqnniH/k6Y4UuxfGTHxh/
-   LxoCEVgD37ceNlAxTKV7FcXEA0iArcgZ9LkG0sWr0CTl5ctwBn/N9yzo9
-   rh73cIWLe187VveWAr+NgMspqMB55EK0rF6bHSLQsigrEWy6oMOmmPU4z
-   4ZIxqtqGTWENmiHDNz0MU52LsbKSf8V9WtPtoEgvXn1y8Gdea+Eu/HRWW
-   8PXhWofJhdxqzW8tOtziTDlMBpiJZA9oEAY8rXcZMf9AXg3RYVq7auu96
-   jZUk34+taMGmcpSrWnhgo5cgzOirGO2cUNDj1bXc+mh/RMatlJEK5nUeJ
-   w==;
-X-CSE-ConnectionGUID: 7LeeOghHTSy/YXOdAJGQug==
-X-CSE-MsgGUID: VW05yyJCRXiHsqzy+NjwCQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="46554428"
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
-   d="scan'208";a="46554428"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 14:29:37 -0700
-X-CSE-ConnectionGUID: zq/GWJZSTFyIkkvkDuUv8g==
-X-CSE-MsgGUID: 1VM+E7nQSp6WCVpvKV6FWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
-   d="scan'208";a="95781600"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 03 Sep 2024 14:29:35 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 5D6B9AF3; Wed, 04 Sep 2024 00:29:33 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 3/3] iio: proximity: sx_common: Drop unused acpi.h
-Date: Wed,  4 Sep 2024 00:28:22 +0300
-Message-ID: <20240903212922.3731221-4-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
-In-Reply-To: <20240903212922.3731221-1-andriy.shevchenko@linux.intel.com>
-References: <20240903212922.3731221-1-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1725400681; c=relaxed/simple;
+	bh=bfkASTT+Az0WHoeeWuQspysfBtzPVt+pivV/Wg/6HLk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=B6cwA6V3rDlEj+EcxpNojgtiYdWyBrzyJxhugjN156A3NYW3LCrgz5YejIccuq1pLunyFgMs4TFBn112fENH8QkpiZO6eFuDTrNUa4kT1RqU8Y5toEneqLDadCgfnCA/HQTta8EYE+gHNkap45x7tZP8mAHmRB5/qgmnnfXq1AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD69C4CEC9;
+	Tue,  3 Sep 2024 21:58:00 +0000 (UTC)
+Received: by mercury (Postfix, from userid 1000)
+	id 473811060534; Tue, 03 Sep 2024 23:57:58 +0200 (CEST)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: linux-sunxi@lists.linux.dev, Chris Morgan <macroalpha82@gmail.com>
+Cc: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
+ quentin.schulz@free-electrons.com, mripard@kernel.org, 
+ tgamblin@baylibre.com, aidanmacdonald.0x0@gmail.com, 
+ u.kleine-koenig@pengutronix.de, lee@kernel.org, samuel@sholland.org, 
+ jernej.skrabec@gmail.com, sre@kernel.org, wens@csie.org, 
+ conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de, 
+ jic23@kernel.org, jonathan.cameron@huawei.com, 
+ Chris Morgan <macromorgan@hotmail.com>
+In-Reply-To: <20240821215456.962564-1-macroalpha82@gmail.com>
+References: <20240821215456.962564-1-macroalpha82@gmail.com>
+Subject: Re: (subset) [PATCH V4 00/15] Add Battery and USB Supply for
+ AXP717
+Message-Id: <172540067828.972525.2485048078454932049.b4-ty@collabora.com>
+Date: Tue, 03 Sep 2024 23:57:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.1
 
-There are drivers that do not need acpi.h, drop unused inclusion.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/proximity/sx9360.c    | 1 -
- drivers/iio/proximity/sx_common.h | 1 -
- 2 files changed, 2 deletions(-)
+On Wed, 21 Aug 2024 16:54:41 -0500, Chris Morgan wrote:
+> From: Chris Morgan <macromorgan@hotmail.com>
+> 
+> Add support for monitoring the USB charger and battery charger on the
+> AXP717 PMIC. This required some driver refactoring of the axp20x USB
+> and battery charger as the AXP717 is somewhat different but can still
+> benefit from some common elements.
+> 
+> [...]
 
-diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
-index 2b90bf45a201..07551e0decbd 100644
---- a/drivers/iio/proximity/sx9360.c
-+++ b/drivers/iio/proximity/sx9360.c
-@@ -7,7 +7,6 @@
-  * https://edit.wpgdadawant.com/uploads/news_file/program/2019/30184/tech_files/program_30184_suggest_other_file.pdf
-  */
- 
--#include <linux/acpi.h>
- #include <linux/bits.h>
- #include <linux/bitfield.h>
- #include <linux/delay.h>
-diff --git a/drivers/iio/proximity/sx_common.h b/drivers/iio/proximity/sx_common.h
-index 175505eaae7b..da53268201a9 100644
---- a/drivers/iio/proximity/sx_common.h
-+++ b/drivers/iio/proximity/sx_common.h
-@@ -8,7 +8,6 @@
- #ifndef IIO_SX_COMMON_H
- #define IIO_SX_COMMON_H
- 
--#include <linux/acpi.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/types.h>
- #include <linux/regulator/consumer.h>
+Applied, thanks!
+
+[09/15] dt-bindings: power: supply: axp20x: Add AXP717 compatible
+        commit: e44c5691822962dc6f50793029bef5e71f5b0a62
+[10/15] dt-bindings: power: supply: axp20x: Add AXP717 compatible
+        commit: e44c5691822962dc6f50793029bef5e71f5b0a62
+[13/15] power: supply: axp20x_usb_power: Add support for AXP717
+        commit: 75098176d17fab88c06120b453b4b0d1641e2a41
+[14/15] power: supply: axp20x_battery: add support for AXP717
+        commit: 6625767049c2e0960ba9835392a6ef9143170be6
+
+Best regards,
 -- 
-2.43.0.rc1.1336.g36b5255a03ac
+Sebastian Reichel <sebastian.reichel@collabora.com>
 
 

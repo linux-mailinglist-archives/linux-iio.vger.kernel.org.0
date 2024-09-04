@@ -1,183 +1,152 @@
-Return-Path: <linux-iio+bounces-9148-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9149-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187CC96C473
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 18:54:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB74D96C55D
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 19:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38AE285CDF
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 16:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDC4F1C251CC
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 17:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A51A1E0B8A;
-	Wed,  4 Sep 2024 16:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704581E1A20;
+	Wed,  4 Sep 2024 17:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dNG31Ixi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qm1uEBSn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA1A1E0082
-	for <linux-iio@vger.kernel.org>; Wed,  4 Sep 2024 16:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D50114BF85;
+	Wed,  4 Sep 2024 17:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725468875; cv=none; b=MW5T2Y5cKeJi7Mb5d4GzNZwp3N8LEzoqlIK/7PI7ohOeLFNUELKQuYKIDvpqQi/NwFXt13f06JZZVAwySN73x2A7LNlQKj69wtMQXGKtpfH0McL2NlQAGoREhaC+3P+YuEQHiPIURZhNX2W+uKbyGFs7FlTou7gJMKhWRTdXgds=
+	t=1725470621; cv=none; b=EypjB2jc20VNgrnu4xdEpeu+bTa0hSr0bUjQ8o/qo/X9Mj0BF7kluLq2Qkljjd0vUINDYogpaFi7IIk/fblJ1gY4L25hMYuzlh+3KpTxYNlSp9M7ko042HG450cv2LkB5BG5EJvjfPDBXF2hpnFDGVyk75zDhEEwkX/oQwB6CfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725468875; c=relaxed/simple;
-	bh=rLcxKqQzYFtF8wcHynmigu7WlrFQ0QJuxcjWxrbMvuo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cu7VVV+gsesF9uSvUOwCqT6UdE9sOYXptcki+gfMIrjEf4KEehXj2bKDpTtscRDwm9aM8yKmsHHIsSjHdCRbSXjWXT0iWezYpb9Guu/LNDC9hUoJqsrf8WsNlMP+qlpNzG0TaDj9+FPlOaFbNbOprXP7Q2y6BTJqK82tl2iNmz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dNG31Ixi; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5dd43ab0458so3978699eaf.0
-        for <linux-iio@vger.kernel.org>; Wed, 04 Sep 2024 09:54:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725468872; x=1726073672; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XGsTtJyHEymxr9zhFpJmgtflhZLOfdi2Xf6Xd7Osyyg=;
-        b=dNG31IxiqXd/f7Eg2C2ORXPWzC3Vz7JxaDM6b561m9LkGl1lWtKslSwzPQGsEKZz68
-         6e/eSB84e1XVH+XhPN/aJE7j9hakV6uiiEP2hGJNwJd4rt4SRIT9gUjyZLyOq/3SrxXd
-         lQ/2zNxk9OFkc1dPZ3zN113PZB0J7JLXEebTtZkptBuHF24Qi3Vyz6rJIG7WawHz0kmx
-         6MYnXdv5cpB65RzIRcju3xVU2qJBwqAnuM4eOV3KZTJtb3W3/pkS4pwddz6VmV9P57DC
-         HDVghU2OVjW1tL8s3GjJXF8eSYyUcsPHXRPkkEW2p1l8IGfx/DOX20y1osWgwJAErtRr
-         heBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725468872; x=1726073672;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XGsTtJyHEymxr9zhFpJmgtflhZLOfdi2Xf6Xd7Osyyg=;
-        b=JkNm40zxpZzAOi9JK/4mjRBdW/7vLb8DsPOwbrSxvFPOX+zTq74Jr1sbPXug4YAS8l
-         43MkizeeVIBxmMej8tGlIgeY1WDXb26MOMb9D18HcO8NK09UgsvQA8xXWZzWizXGGiJV
-         UBORgJ6kxmpfNRkSFwIFm1lfsEql+o3QXghHLuJTYUnay02dZ/sf95wK6leNTYMEaFiu
-         uph+xmmUq05/sJXlxto+0fAq2xVY6pK7ifn8tPOAEgNZaK/MEHdxQophID6TceS3rWel
-         qT+LVCsv+Is9tUOpeSgMVR+XKMMhGaTV/iKnDaoCQjgaK+r4rObbXity7Zrq9UlC9b7g
-         Z84g==
-X-Forwarded-Encrypted: i=1; AJvYcCXiXXMYy73Mfu/87X0fWXU/6679uUzps3U5hq0wmwDO7t7YQmwUZpnfRd3qdXn0y4t0xrJezCpje6w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCpFWvr9PDjc3wsPVN9r5WaqCtAbfSWuN326KyouRerYDu0jnl
-	+57zem+TyNvVuXRMwR3o9oRrWqcgJ6WXKOwI2Fup3r1Se6EKcI4jZ03myl4nSKw=
-X-Google-Smtp-Source: AGHT+IF3j8/aXNxe1Iy7hQRDGywiVQBtcHVg3EIE/yrDkqsU7P4AR5T3yNPfD5Pur4i6IPkep+owfg==
-X-Received: by 2002:a4a:ee8a:0:b0:5da:a462:6a30 with SMTP id 006d021491bc7-5dfacddefacmr17589860eaf.1.1725468872380;
-        Wed, 04 Sep 2024 09:54:32 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5dfa04bd7basm2439218eaf.24.2024.09.04.09.54.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Sep 2024 09:54:31 -0700 (PDT)
-Message-ID: <b7cae260-19ca-485d-b9c5-4b9209ee4886@baylibre.com>
-Date: Wed, 4 Sep 2024 11:54:30 -0500
+	s=arc-20240116; t=1725470621; c=relaxed/simple;
+	bh=ILuonY5731KqpUyvDIpzSQYrE7kjsGqjXWSqJ8pp3+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ny6wffCHkq1r+GHQZYEHO+/1PzAtaOIV2WphGDQagc6SF33Z9awZlGZTqBar5Ib9jyPq9K/bEop7e0vOIrArDTyDIk59gWLBIQL9CRS3tCDFPa8cyc896qwnenlIwbYC8mB6evS9TMCo4G+8/drTJxmQ+eDC7ZwwYQYN8bPLGGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qm1uEBSn; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725470619; x=1757006619;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ILuonY5731KqpUyvDIpzSQYrE7kjsGqjXWSqJ8pp3+g=;
+  b=Qm1uEBSnDPHOWDVx7+0a+rxKFadR68t+2Phbm1MYarl57FOcSJEF8Wb2
+   aZZup1tbqjaLQIhwufBRBovcNvPGgi90j3Wm/cP+Hni9fce2pRckRyaYP
+   zphgDGOv4Snqect2mPlBbzBc0vNN5QD+EgcUmbZNqkUx0NI0jhkzbAUMQ
+   gFZRggtbOH5eKnaMJ1uR7r4o5av9aKrDvGRTdy1aVYxjOhZrjsoaSEC8f
+   WKaSs1Bd19MhhJ+sdhAX2qh42N63C1rZoFmQxxVBDw8SxB9ptLaa5FnOF
+   x2Ys642sI39VbM4HNCcCpAI00OBtI1cIrLUH8OADzN5hq4Kk7zAHx5eq1
+   g==;
+X-CSE-ConnectionGUID: OFN2U3hHS2qJMNbxH+E/nQ==
+X-CSE-MsgGUID: 0SOOPFy3RdCtwb4C4n+htA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="24340538"
+X-IronPort-AV: E=Sophos;i="6.10,202,1719903600"; 
+   d="scan'208";a="24340538"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 10:23:38 -0700
+X-CSE-ConnectionGUID: 19/cCM0JQEuNh6FlCbvv3w==
+X-CSE-MsgGUID: 7/kbMBt0T8CdPYilquRsZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,202,1719903600"; 
+   d="scan'208";a="65177629"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 04 Sep 2024 10:23:34 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sltj8-0008OJ-1z;
+	Wed, 04 Sep 2024 17:23:30 +0000
+Date: Thu, 5 Sep 2024 01:23:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mariel Tinaco <Mariel.Tinaco@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Dimitri Fedrau <dima.fedrau@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v3 2/2] iio: dac: support the ad8460 Waveform DAC
+Message-ID: <202409050100.CGStaazP-lkp@intel.com>
+References: <20240904023040.23352-3-Mariel.Tinaco@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] dt-bindings: iio: adc: ad7606: Add iio backend
- bindings
-To: Jonathan Cameron <jic23@kernel.org>, Guillaume Stols <gstols@baylibre.com>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org, aardelean@baylibre.com
-References: <20240815-ad7606_add_iio_backend_support-v1-0-cea3e11b1aa4@baylibre.com>
- <20240815-ad7606_add_iio_backend_support-v1-2-cea3e11b1aa4@baylibre.com>
- <20240817160900.01224c80@jic23-huawei>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20240817160900.01224c80@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240904023040.23352-3-Mariel.Tinaco@analog.com>
 
-On 8/17/24 10:09 AM, Jonathan Cameron wrote:
-> On Thu, 15 Aug 2024 12:11:56 +0000
-> Guillaume Stols <gstols@baylibre.com> wrote:
-> 
->> Add the required properties for iio-backend support, as well as an
->> example and the conditions to mutually exclude interruption and
->> conversion trigger with iio-backend.
->> The iio-backend's function is to controls the communication, and thus the
->> interruption pin won't be available anymore.
->> As a consequence, the conversion pin must be controlled externally since
->> we will miss information about when every single conversion cycle (i.e
->> conversion + data transfert) ends, hence a PWM is introduced to trigger
-> 
-> transfer
-> 
->> the conversions.
->>
->> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
->> ---
->>  .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 75 +++++++++++++++++++++-
->>  1 file changed, 72 insertions(+), 3 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
->> index c0008d36320f..4b324f7e3207 100644
->> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
->> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
->> @@ -114,13 +114,28 @@ properties:
->>        assumed that the pins are hardwired to VDD.
->>      type: boolean
->>  
->> +  pwms:
->> +    description:
->> +      In case the conversion is triggered by a PWM instead of a GPIO plugged to
->> +      the CONVST pin, the PWM must be referenced.
->> +    minItems: 1
->> +    maxItems: 2
->> +
->> +  pwm-names:
->> +    minItems: 1
->> +    maxItems: 2
->> +
->> +  io-backends:
->> +    description:
->> +      A reference to the iio-backend, which is responsible handling the BUSY
->> +      pin's falling edge and communication.
->> +      An example of backend can be found at
->> +      http://analogdevicesinc.github.io/hdl/library/axi_ad7606x/index.html
->> +
->>  required:
->>    - compatible
->> -  - reg
-> 
-> I think we still want a reg, but only to differentiate multiple instances
-> perhaps.
+Hi Mariel,
 
-In light of the recent discussions on the similar AXI DAC
-support for AD3552R [1], should we consider some of the same
-things here?
+kernel test robot noticed the following build errors:
 
-Essentially, the AXI ADC IP block in this series is acting as
-a parallel bus provider for the AD7606 chip. This is used both
-for configuring registers on the chip and "offloading" for high
-speed data capture.
+[auto build test ERROR on c4b43d8336e52dce6d124e428aa3b71703e62647]
 
-So this would mean...
+url:    https://github.com/intel-lab-lkp/linux/commits/Mariel-Tinaco/dt-bindings-iio-dac-add-docs-for-ad8460/20240904-103413
+base:   c4b43d8336e52dce6d124e428aa3b71703e62647
+patch link:    https://lore.kernel.org/r/20240904023040.23352-3-Mariel.Tinaco%40analog.com
+patch subject: [PATCH v3 2/2] iio: dac: support the ad8460 Waveform DAC
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20240905/202409050100.CGStaazP-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240905/202409050100.CGStaazP-lkp@intel.com/reproduce)
 
-1. We should add a new compatible string to iio/adc/adi,axi-adc.yaml
-   for the specialized version of the AXI ADC IP that is used with
-   AD7606 and similar ADCs.
-2. In the .dts, the AXI ADC node should be the parent of the ADC node
-   since the AXI ADC IP is providing the parallel bus to the ADC.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409050100.CGStaazP-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/dac/ad8460.c:165:9: error: call to undeclared function 'get_unaligned_le16'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     165 |         *val = get_unaligned_le16(state->spi_tx_buf);
+         |                ^
+>> drivers/iio/dac/ad8460.c:172:2: error: call to undeclared function 'put_unaligned_le16'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     172 |         put_unaligned_le16(FIELD_PREP(AD8460_DATA_BYTE_FULL_MSK, val),
+         |         ^
+   2 errors generated.
 
 
-[1]: https://lore.kernel.org/linux-iio/20240903203935.358a1423@jic23-huawei/
+vim +/get_unaligned_le16 +165 drivers/iio/dac/ad8460.c
 
-> 
->>    - avcc-supply
->>    - vdrive-supply
-> 
-> 
-> 
+   155	
+   156	static int ad8460_get_hvdac_word(struct ad8460_state *state, int index, int *val)
+   157	{
+   158		int ret;
+   159	
+   160		ret = regmap_bulk_read(state->regmap, AD8460_HVDAC_DATA_WORD_LOW(index),
+   161				       &state->spi_tx_buf, AD8460_DATA_BYTE_WORD_LENGTH);
+   162		if (ret)
+   163			return ret;
+   164	
+ > 165		*val = get_unaligned_le16(state->spi_tx_buf);
+   166	
+   167		return ret;
+   168	}
+   169	
+   170	static int ad8460_set_hvdac_word(struct ad8460_state *state, int index, int val)
+   171	{
+ > 172		put_unaligned_le16(FIELD_PREP(AD8460_DATA_BYTE_FULL_MSK, val),
+   173					     &state->spi_tx_buf);
+   174	
+   175		return regmap_bulk_write(state->regmap, AD8460_HVDAC_DATA_WORD_LOW(index),
+   176					 state->spi_tx_buf, AD8460_DATA_BYTE_WORD_LENGTH);
+   177	}
+   178	
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

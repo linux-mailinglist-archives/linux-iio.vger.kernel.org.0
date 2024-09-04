@@ -1,97 +1,169 @@
-Return-Path: <linux-iio+bounces-9125-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9126-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3106996B2FB
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 09:36:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85EFC96B3BB
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 09:59:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFD55281510
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 07:36:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB38C1C210AF
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 07:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7861314659C;
-	Wed,  4 Sep 2024 07:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B323E155324;
+	Wed,  4 Sep 2024 07:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ON+6qAeX"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OWJVwDHn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE17813B295;
-	Wed,  4 Sep 2024 07:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBB3146A7A
+	for <linux-iio@vger.kernel.org>; Wed,  4 Sep 2024 07:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725435395; cv=none; b=HQQc6pnZKRX1rUWpJ5Q7gZlzOPaeV4Sg0bNACshC+AbHYRjmaWoWAtqYxg9Fa2L8sVZQVPv4EKWJDRqOwhjNQU5ZgQUtFR/6VF2jbUtcSasNQ3+P55zKeqqRubJwdnV2PRcrgQLlFLLBOlcE4slEE+AR1FwYbkfjxZve7nL2QgI=
+	t=1725436742; cv=none; b=tVCcc4qPgiAxvHSQ2E/6BGV6jyKT5y9VMWbXu6rM5d0AFZW7FEkXj3hJFk+hLwWjcfVNBEF5DXDzOncII5hgHOcOCAlW5+kChktuJps+yPTHZVCnABVSqB9hupefxLlaQljmi78mKUTkHshLaqcNRKoNGtjvmc+xuxG9QO3XqdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725435395; c=relaxed/simple;
-	bh=CUEv1UkwlTwYYJfodkqCax4W99XlmzRGrc5LXZ5TUdI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rpmbvHHRSjpexQDkVxeapTkpbG1tHrsAQnwdd8jnDJ9lcPHaL+DyNcceMQq71Y10J7++TjGdDw0rh/voPkv70HWADjULE+UFsa+EJBvtxqUA7Wi9PCnwKVqqxar8lt0s7idSUo9HhIhDtEJ8Xlfni9K9FL7gqmTT1Q9rbM3aeG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ON+6qAeX; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53346132365so7649525e87.1;
-        Wed, 04 Sep 2024 00:36:33 -0700 (PDT)
+	s=arc-20240116; t=1725436742; c=relaxed/simple;
+	bh=c2jAvJRISFmKTJLAivo6CZeVFTI+zZ70Yr/35SjCgB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cXcUjryiVhCsvtTqLs/mIQYPJweIBrkoGdmJRnPrutH8/Nr7MQps8xxuXlJP9vOdPG87K2G3p2J8ui89OKxOaW/qbjei8l3G/hDc8zfObxqXe6d3pF7yo9KaZsTxUMx9XRyXuocBBWzMhx08WHPEilLCLsPpZY2cWUwG3e/EWtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OWJVwDHn; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a86e5e9ff05so723304166b.1
+        for <linux-iio@vger.kernel.org>; Wed, 04 Sep 2024 00:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725435392; x=1726040192; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CUEv1UkwlTwYYJfodkqCax4W99XlmzRGrc5LXZ5TUdI=;
-        b=ON+6qAeXAXDiMhLZbkURUGu0N1uXwBQaJF/qE/DR0fygfcXXDn4xO8tzgwfXXvo+JM
-         IpPaMxQTee+MeN/lnVCRLq2fyeXvgLB7U8NFPe3RF7AWYyItbSPn0mZgoFlHjcqqw5Ts
-         7h2xMWVqwvCOtA40YB7tuN0KgkXYB3hLfe9oKG2zj0IxUJT8D5Ljp3PqK8JlGYV2iu3t
-         aSd9GWra4vHmknZtwJMs/FM8lgy6Snu1fxZ6ok5BA11rexD13ubVfibdogmoE5cVe2hV
-         cKhMVxAwjXN7WaGK7S+J0DuhgMQlQ0ecd86B0X7s968Dn0Qd0aIbwSraX3kusJUROUFP
-         jW2g==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725436738; x=1726041538; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o38ll/1shPkcH2c9qDR658TMHisQqMl2xPlWoUMdupM=;
+        b=OWJVwDHnMvMCmaRJW7HdKr2jeHfY8//F0rB92qh1tL5zV2KubY62VlnZh43eMojbC1
+         e/ibN1Ky5R35wpXUkrpNi5z38Is8EIm3QkUbLFknEWTf0DZMYgoZKaqpw6sHpNNnVRiZ
+         ewhuwAXtlOEXZJ8hHjvxkB3YyuBPEtJe+DrhYKlJmmYzSC8A9LTu++Aw7tFOorLvSQXP
+         TqKcPddE2278eDMlkRkuUKO1RZlgEmTfw/dfrpWStHKZ+SdxMjd8P/y45pf8EhGOYi1i
+         ltCWJHrwRU8UVnC2VTxFYHkwFsX0zxUGyxH6oyRjCy0eMpGEUQxDPjFtugNMxzraACoA
+         GX+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725435392; x=1726040192;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CUEv1UkwlTwYYJfodkqCax4W99XlmzRGrc5LXZ5TUdI=;
-        b=q95aOtOJ/izj31UHLU8/BVPIeWRAWD8attMOYJfCvQ95sx0u9Z8u0z/yg6+NSjbO3+
-         H+nHQoZIc1fZtl/qIbjOTaWcJYQjC5n8O1YU+byMR+1yD7ObLZsmbXTqH5W3Zwijv0KN
-         mk4fEaDFGEm5PtzE9Rm72ZqtOKgqGERq7IHXk2fr4osgyqvK6ZIGLwPVzm1K1CqBJzMH
-         /ZhcfCW1xWovf0+/nmCBNIuwSJjmjoQ52Ot/zElfZPjD6AlYNW/cVyReFyyxVLnZzpfM
-         FezdxYWCV6ntYVVzlkqthUh+QrL/SoxvwnZ9R9B9GPSLd6x6ZdJRR/s8mZ00RBQOj5VS
-         0vkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNFG9W3ChcoCS6EMaib39JN4DdvFM2nvyuJe3Gnlc7fc+AZJHcMYEvSeSMK2o/w1htwL9S6ddIMDrf0RuU@vger.kernel.org, AJvYcCXlmlJq6jfrc3akPjN4OGPDr7M/27J1ONMgsltFDjDMVHbX+h/FX4VWKaSxC7rQSg0hCjt9plJW2/I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOrwm+U/fo/D5mvNlprDCUfGpH2wfotk+Qc6zdtxrtjWFod4Sm
-	wzuJa87tytyLaORnWgFHjTb7DGMclvHdLuiCnpb52lx1YUPDlP6pWsyF2GtlLqdidSKxGNMimcs
-	pdPHbyfYkt26zUDA8MoTwolTL0Hk=
-X-Google-Smtp-Source: AGHT+IGtpildsLq6ZKlKmViCvFkk2PD3suiPL6bTQKehN/78sfI84GD7Jukka47fH3OEkNuIMK7k1FjxZCAoVquiEPM=
-X-Received: by 2002:a05:6512:ea7:b0:530:c323:46a8 with SMTP id
- 2adb3069b0e04-53546b0b7cbmr9835751e87.23.1725435391338; Wed, 04 Sep 2024
- 00:36:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725436738; x=1726041538;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o38ll/1shPkcH2c9qDR658TMHisQqMl2xPlWoUMdupM=;
+        b=KoThAXFuP7hB9BDNY6lHV5MDpXQrldzkH++4s3GT5SCiXpVuzSObyEmveFx2JgcDg8
+         Agtzh6E+uHfWZWw6rr9njzH9m2hNYMf+/K4Mz2Mfc6A2FXpRwEgenE4uWLD4b+ywxJho
+         r68kUYkqtLa2QNyQmUYqZbqPS7U/Mcmlu4rXw8KDF8iiyqr6gdIwi5DaJrqYWh00qzme
+         C+gUMnuVE/lmwyUg9/t74ztzd9Mb0YdvgRelX5jWA9MU5AQlE/T+2g1bsRfbB45l8EYY
+         hQ7bkxKSTkUEOEzYhmQ+AiRXVQXmsVoC5pkwnjH/zR4SepsSFmBdK0k4y2HzwGnqs7ra
+         J4CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVvR7JjoKrNzeE3T9D2tDMv5V2oaRm6wwerEPpXohYDffDKcLkqZKhGh4v+7mWBkb35wsPI4Tp3D4w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTvkIElKsWld51wKRc7B6JSN9O0QpAVmRV6DdECobVdEl0AMkD
+	ObqXyIXYZmUeNDXNgIQX0n35sBiyvDqGHVqmsnOFCi7Ak9nd1nKm0puvrHvf2KE=
+X-Google-Smtp-Source: AGHT+IHbXWBNh7i4cmQrik4TDTg1G8pCMakv2oa+Dk+9s51s/80FIoXVDzhEC95r4WGClTNuCsuPdA==
+X-Received: by 2002:a17:907:97d1:b0:a86:bb5f:ebbd with SMTP id a640c23a62f3a-a8a32fe029cmr183723666b.63.1725436737475;
+        Wed, 04 Sep 2024 00:58:57 -0700 (PDT)
+Received: from localhost (p5dc68f76.dip0.t-ipconnect.de. [93.198.143.118])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a89892232c7sm768623066b.222.2024.09.04.00.58.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Sep 2024 00:58:56 -0700 (PDT)
+Date: Wed, 4 Sep 2024 09:58:55 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Trevor Gamblin <tgamblin@baylibre.com>
+Cc: kernel test robot <lkp@intel.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	David Lechner <dlechner@baylibre.com>, oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] iio: adc: ad7625: add driver
+Message-ID: <mgsig2v65adwgfhofxk3snfbtibgjfeiqqj4iw5r2aquak22ve@3ssolag3ousl>
+References: <20240819-ad7625_r1-v3-2-75d5217c76b5@baylibre.com>
+ <202408201520.lFtco3eF-lkp@intel.com>
+ <7658aca4-a408-480c-98b6-4637bb86b5ad@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904014253.2435-1-zhangjiao2@cmss.chinamobile.com>
-In-Reply-To: <20240904014253.2435-1-zhangjiao2@cmss.chinamobile.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 4 Sep 2024 10:35:54 +0300
-Message-ID: <CAHp75Vfx5q5GaEGRB0zZv2_Gxc8FMoD1tqmmd43ZVJomZTqmhA@mail.gmail.com>
-Subject: Re: [PATCH v2] tools/counter: Close fd when exit
-To: zhangjiao2 <zhangjiao2@cmss.chinamobile.com>
-Cc: wbg@kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3yytpvatfhmknuuz"
+Content-Disposition: inline
+In-Reply-To: <7658aca4-a408-480c-98b6-4637bb86b5ad@baylibre.com>
+
+
+--3yytpvatfhmknuuz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 4, 2024 at 4:42=E2=80=AFAM zhangjiao2
-<zhangjiao2@cmss.chinamobile.com> wrote:
+Hi Trevor,
 
-> Since fd is not used in the messaging it's better to
-> close it before printing anything.
+On Tue, Aug 20, 2024 at 05:07:27PM -0400, Trevor Gamblin wrote:
+> On 2024-08-20 3:19 a.m., kernel test robot wrote:
+> > Hi Trevor,
+> >=20
+> > kernel test robot noticed the following build errors:
+> >=20
+> > [auto build test ERROR on ac6a258892793f0a255fe7084ec2b612131c67fc]
+> >=20
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Trevor-Gamblin/d=
+t-bindings-iio-adc-add-AD762x-AD796x-ADCs/20240819-221425
+> > base:   ac6a258892793f0a255fe7084ec2b612131c67fc
+> > patch link:    https://lore.kernel.org/r/20240819-ad7625_r1-v3-2-75d521=
+7c76b5%40baylibre.com
+> > patch subject: [PATCH v3 2/3] iio: adc: ad7625: add driver
+> > config: alpha-randconfig-r132-20240820 (https://download.01.org/0day-ci=
+/archive/20240820/202408201520.lFtco3eF-lkp@intel.com/config)
+> > compiler: alpha-linux-gcc (GCC) 13.3.0
+> > reproduce: (https://download.01.org/0day-ci/archive/20240820/2024082015=
+20.lFtco3eF-lkp@intel.com/reproduce)
+> Seems to be a problem with missing static inline definitions in pwm.h if
+> CONFIG_PWM isn't set. I've replied to the relevant series on the PWM mail=
+ing
+> list and will add "select PWM" to Kconfig for this driver.
 
-It was my comment which you addressed. Thanks for that.
-But it does not explain what the problem is.
+I'm not a big fan of the dummy static inlines. It seems to be a somewhat
+subjective thing, but I think that usually if a driver makes use of PWM
+functions it doesn't work at all if CONFIG_PWM=3Dn. Does your driver work
+with CONFIG_PWM=3Dn? If not, even if the dummy inline was there, I'd
+recommend at least a
 
---=20
-With Best Regards,
-Andy Shevchenko
+	depends on PWM || COMPILE_TEST
+
+=2E (This is also the implicit recommendation to use "depends" and not
+"select". Currently all drivers needing PWM use "depends" and mixing
+yields strange effects in menuconfig.)
+
+Currently there is only a single driver that uses "depends on PWM ||
+COMPILE_TEST" (i.e. SENSORS_PWM_FAN). I already considered changing that
+to plain "depends on PWM" and get rid of the dummy defines. While I
+didn't tackle that one yet, I'd like to not introduce dummys for the new
+waveform functions. So I suggest you either stick to
+
+	depends on PWM
+
+or try to convince me that these dummys are a good idea (and then
+probably use "... || COMPILE_TEST").
+
+Best regards
+Uwe
+
+--3yytpvatfhmknuuz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmbYEzwACgkQj4D7WH0S
+/k5SvQf+NO8vcbtNzPEQ93q8b0bUlyJ0RMbzu+c2gvXGTNCZfFrxMknBXCxauxnk
+NsFS69G2JzB3Q/LG/Lny6rguZd9gkvYDBVKSjid2wdf4Kekr/2cKXSbAkPaFVQHu
+QQndCDqL6XKMpug1f5f3ehcxFnL7LVw5ZMSWMqO19bzpYGa6zgEH1JJVTmpVPDa5
+ZoOJoTb3njfPDLqGjBgdaZVaI0dAgwkP7Nf8DUbzXKqdZEl7d50T8c2LoJOEpZ1I
+NP/Jl0xMi8oWc3KtVuLvslL87nmXyRsW8bGdDFOlg+i7tYO3bJlBO4zoJ+2Nm0tx
+pSJaiqTBJkyu0HmnLg2VtkcQBqwZzA==
+=Ps67
+-----END PGP SIGNATURE-----
+
+--3yytpvatfhmknuuz--
 

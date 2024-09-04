@@ -1,153 +1,183 @@
-Return-Path: <linux-iio+bounces-9147-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9148-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793EE96C2F5
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 17:52:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 187CC96C473
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 18:54:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFFC9B24356
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 15:52:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38AE285CDF
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 16:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934341E00A9;
-	Wed,  4 Sep 2024 15:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A51A1E0B8A;
+	Wed,  4 Sep 2024 16:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SH3uwh+O"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dNG31Ixi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9098E1DFE35;
-	Wed,  4 Sep 2024 15:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA1A1E0082
+	for <linux-iio@vger.kernel.org>; Wed,  4 Sep 2024 16:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725465031; cv=none; b=K6+RD/1zbuWKB/0NGWIjUUftQK2ptFUdc4SVBywoIgKNGqVW780Kpec3NPX7pLBE0h39fMHjDdirKRcPKIDAzDj80qkHjQjKp83YLgVdW/xwvgWqCWDkHcaj+qfMsrscyXNdmN4fHqgR//s2IQeFIs1h29ArN+ymMdBK3r4/hGY=
+	t=1725468875; cv=none; b=MW5T2Y5cKeJi7Mb5d4GzNZwp3N8LEzoqlIK/7PI7ohOeLFNUELKQuYKIDvpqQi/NwFXt13f06JZZVAwySN73x2A7LNlQKj69wtMQXGKtpfH0McL2NlQAGoREhaC+3P+YuEQHiPIURZhNX2W+uKbyGFs7FlTou7gJMKhWRTdXgds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725465031; c=relaxed/simple;
-	bh=qwDHvWtGidi6YhwcnUq01LvlP4dVDYDAJ3vzEEDQ/qc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LW3JhXMAqakPGpVY/gKd7a1i5pMIrAOCdKM5pVDZoPMdLqkd3ZgIME7HdlsKjh638hpKLdJH4Oy2bkW2TicvVMKipHs6wajBR9gCs43bPJDlZ3faF5xrJs5LmKZDPPUlKUIa/7QSz0XMppXiDuMbzxXIoPs1YHF4IfavHGHje7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SH3uwh+O; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725465029; x=1757001029;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qwDHvWtGidi6YhwcnUq01LvlP4dVDYDAJ3vzEEDQ/qc=;
-  b=SH3uwh+O+wWaFS+/JTw1EzNDBOgwUxFRs/f2SDXb48skGpG7QjMfzHyy
-   MWNRMGG/15f1AxWj6ud2ge4pUM9TGGvsDovg44VNvcHhgD4g3y5yO/iHz
-   n9VRpl0Jv4MQebs8xv5GXThhxHN1tFQsJjeFwFJJM4lCp/ICosct2YeYn
-   M/zvE0mW4atdeujeRbrzbKQdbyOMcxAp952RDiZ1hLRxUhcJ+mdXgw8Sw
-   40/AZRoKZK9dJU6uOnMdd8I3D/uBQrMOpTzdZxmbKWyy0kHcMaVX01Byl
-   X035tWw0bJ6ZVzQlvEKEMtPskUyLTdZrvVTMpK3kL0epFYmlb1jtw+z0M
-   Q==;
-X-CSE-ConnectionGUID: NueMBSjCQmGrn7o3N0Q2RQ==
-X-CSE-MsgGUID: ajvxk2i7SOqT/93SSaMiCg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="41610189"
-X-IronPort-AV: E=Sophos;i="6.10,202,1719903600"; 
-   d="scan'208";a="41610189"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 08:50:29 -0700
-X-CSE-ConnectionGUID: XtYPKgLFTxaZ66jBnCFSLg==
-X-CSE-MsgGUID: Bbz/TEkNRPidB7QjsTXrVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,202,1719903600"; 
-   d="scan'208";a="69475698"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 04 Sep 2024 08:50:25 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1slsH1-0008HL-0j;
-	Wed, 04 Sep 2024 15:50:23 +0000
-Date: Wed, 4 Sep 2024 23:50:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mariel Tinaco <Mariel.Tinaco@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Dimitri Fedrau <dima.fedrau@gmail.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v3 2/2] iio: dac: support the ad8460 Waveform DAC
-Message-ID: <202409042318.7nwvZc3c-lkp@intel.com>
-References: <20240904023040.23352-3-Mariel.Tinaco@analog.com>
+	s=arc-20240116; t=1725468875; c=relaxed/simple;
+	bh=rLcxKqQzYFtF8wcHynmigu7WlrFQ0QJuxcjWxrbMvuo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cu7VVV+gsesF9uSvUOwCqT6UdE9sOYXptcki+gfMIrjEf4KEehXj2bKDpTtscRDwm9aM8yKmsHHIsSjHdCRbSXjWXT0iWezYpb9Guu/LNDC9hUoJqsrf8WsNlMP+qlpNzG0TaDj9+FPlOaFbNbOprXP7Q2y6BTJqK82tl2iNmz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dNG31Ixi; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5dd43ab0458so3978699eaf.0
+        for <linux-iio@vger.kernel.org>; Wed, 04 Sep 2024 09:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725468872; x=1726073672; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XGsTtJyHEymxr9zhFpJmgtflhZLOfdi2Xf6Xd7Osyyg=;
+        b=dNG31IxiqXd/f7Eg2C2ORXPWzC3Vz7JxaDM6b561m9LkGl1lWtKslSwzPQGsEKZz68
+         6e/eSB84e1XVH+XhPN/aJE7j9hakV6uiiEP2hGJNwJd4rt4SRIT9gUjyZLyOq/3SrxXd
+         lQ/2zNxk9OFkc1dPZ3zN113PZB0J7JLXEebTtZkptBuHF24Qi3Vyz6rJIG7WawHz0kmx
+         6MYnXdv5cpB65RzIRcju3xVU2qJBwqAnuM4eOV3KZTJtb3W3/pkS4pwddz6VmV9P57DC
+         HDVghU2OVjW1tL8s3GjJXF8eSYyUcsPHXRPkkEW2p1l8IGfx/DOX20y1osWgwJAErtRr
+         heBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725468872; x=1726073672;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XGsTtJyHEymxr9zhFpJmgtflhZLOfdi2Xf6Xd7Osyyg=;
+        b=JkNm40zxpZzAOi9JK/4mjRBdW/7vLb8DsPOwbrSxvFPOX+zTq74Jr1sbPXug4YAS8l
+         43MkizeeVIBxmMej8tGlIgeY1WDXb26MOMb9D18HcO8NK09UgsvQA8xXWZzWizXGGiJV
+         UBORgJ6kxmpfNRkSFwIFm1lfsEql+o3QXghHLuJTYUnay02dZ/sf95wK6leNTYMEaFiu
+         uph+xmmUq05/sJXlxto+0fAq2xVY6pK7ifn8tPOAEgNZaK/MEHdxQophID6TceS3rWel
+         qT+LVCsv+Is9tUOpeSgMVR+XKMMhGaTV/iKnDaoCQjgaK+r4rObbXity7Zrq9UlC9b7g
+         Z84g==
+X-Forwarded-Encrypted: i=1; AJvYcCXiXXMYy73Mfu/87X0fWXU/6679uUzps3U5hq0wmwDO7t7YQmwUZpnfRd3qdXn0y4t0xrJezCpje6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCpFWvr9PDjc3wsPVN9r5WaqCtAbfSWuN326KyouRerYDu0jnl
+	+57zem+TyNvVuXRMwR3o9oRrWqcgJ6WXKOwI2Fup3r1Se6EKcI4jZ03myl4nSKw=
+X-Google-Smtp-Source: AGHT+IF3j8/aXNxe1Iy7hQRDGywiVQBtcHVg3EIE/yrDkqsU7P4AR5T3yNPfD5Pur4i6IPkep+owfg==
+X-Received: by 2002:a4a:ee8a:0:b0:5da:a462:6a30 with SMTP id 006d021491bc7-5dfacddefacmr17589860eaf.1.1725468872380;
+        Wed, 04 Sep 2024 09:54:32 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5dfa04bd7basm2439218eaf.24.2024.09.04.09.54.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Sep 2024 09:54:31 -0700 (PDT)
+Message-ID: <b7cae260-19ca-485d-b9c5-4b9209ee4886@baylibre.com>
+Date: Wed, 4 Sep 2024 11:54:30 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240904023040.23352-3-Mariel.Tinaco@analog.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/8] dt-bindings: iio: adc: ad7606: Add iio backend
+ bindings
+To: Jonathan Cameron <jic23@kernel.org>, Guillaume Stols <gstols@baylibre.com>
+Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org, aardelean@baylibre.com
+References: <20240815-ad7606_add_iio_backend_support-v1-0-cea3e11b1aa4@baylibre.com>
+ <20240815-ad7606_add_iio_backend_support-v1-2-cea3e11b1aa4@baylibre.com>
+ <20240817160900.01224c80@jic23-huawei>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20240817160900.01224c80@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Mariel,
+On 8/17/24 10:09 AM, Jonathan Cameron wrote:
+> On Thu, 15 Aug 2024 12:11:56 +0000
+> Guillaume Stols <gstols@baylibre.com> wrote:
+> 
+>> Add the required properties for iio-backend support, as well as an
+>> example and the conditions to mutually exclude interruption and
+>> conversion trigger with iio-backend.
+>> The iio-backend's function is to controls the communication, and thus the
+>> interruption pin won't be available anymore.
+>> As a consequence, the conversion pin must be controlled externally since
+>> we will miss information about when every single conversion cycle (i.e
+>> conversion + data transfert) ends, hence a PWM is introduced to trigger
+> 
+> transfer
+> 
+>> the conversions.
+>>
+>> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+>> ---
+>>  .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 75 +++++++++++++++++++++-
+>>  1 file changed, 72 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+>> index c0008d36320f..4b324f7e3207 100644
+>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+>> @@ -114,13 +114,28 @@ properties:
+>>        assumed that the pins are hardwired to VDD.
+>>      type: boolean
+>>  
+>> +  pwms:
+>> +    description:
+>> +      In case the conversion is triggered by a PWM instead of a GPIO plugged to
+>> +      the CONVST pin, the PWM must be referenced.
+>> +    minItems: 1
+>> +    maxItems: 2
+>> +
+>> +  pwm-names:
+>> +    minItems: 1
+>> +    maxItems: 2
+>> +
+>> +  io-backends:
+>> +    description:
+>> +      A reference to the iio-backend, which is responsible handling the BUSY
+>> +      pin's falling edge and communication.
+>> +      An example of backend can be found at
+>> +      http://analogdevicesinc.github.io/hdl/library/axi_ad7606x/index.html
+>> +
+>>  required:
+>>    - compatible
+>> -  - reg
+> 
+> I think we still want a reg, but only to differentiate multiple instances
+> perhaps.
 
-kernel test robot noticed the following build errors:
+In light of the recent discussions on the similar AXI DAC
+support for AD3552R [1], should we consider some of the same
+things here?
 
-[auto build test ERROR on c4b43d8336e52dce6d124e428aa3b71703e62647]
+Essentially, the AXI ADC IP block in this series is acting as
+a parallel bus provider for the AD7606 chip. This is used both
+for configuring registers on the chip and "offloading" for high
+speed data capture.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mariel-Tinaco/dt-bindings-iio-dac-add-docs-for-ad8460/20240904-103413
-base:   c4b43d8336e52dce6d124e428aa3b71703e62647
-patch link:    https://lore.kernel.org/r/20240904023040.23352-3-Mariel.Tinaco%40analog.com
-patch subject: [PATCH v3 2/2] iio: dac: support the ad8460 Waveform DAC
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20240904/202409042318.7nwvZc3c-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240904/202409042318.7nwvZc3c-lkp@intel.com/reproduce)
+So this would mean...
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409042318.7nwvZc3c-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/iio/dac/ad8460.c: In function 'ad8460_get_hvdac_word':
->> drivers/iio/dac/ad8460.c:165:16: error: implicit declaration of function 'get_unaligned_le16' [-Wimplicit-function-declaration]
-     165 |         *val = get_unaligned_le16(state->spi_tx_buf);
-         |                ^~~~~~~~~~~~~~~~~~
-   drivers/iio/dac/ad8460.c: In function 'ad8460_set_hvdac_word':
->> drivers/iio/dac/ad8460.c:172:9: error: implicit declaration of function 'put_unaligned_le16' [-Wimplicit-function-declaration]
-     172 |         put_unaligned_le16(FIELD_PREP(AD8460_DATA_BYTE_FULL_MSK, val),
-         |         ^~~~~~~~~~~~~~~~~~
+1. We should add a new compatible string to iio/adc/adi,axi-adc.yaml
+   for the specialized version of the AXI ADC IP that is used with
+   AD7606 and similar ADCs.
+2. In the .dts, the AXI ADC node should be the parent of the ADC node
+   since the AXI ADC IP is providing the parallel bus to the ADC.
 
 
-vim +/get_unaligned_le16 +165 drivers/iio/dac/ad8460.c
+[1]: https://lore.kernel.org/linux-iio/20240903203935.358a1423@jic23-huawei/
 
-   155	
-   156	static int ad8460_get_hvdac_word(struct ad8460_state *state, int index, int *val)
-   157	{
-   158		int ret;
-   159	
-   160		ret = regmap_bulk_read(state->regmap, AD8460_HVDAC_DATA_WORD_LOW(index),
-   161				       &state->spi_tx_buf, AD8460_DATA_BYTE_WORD_LENGTH);
-   162		if (ret)
-   163			return ret;
-   164	
- > 165		*val = get_unaligned_le16(state->spi_tx_buf);
-   166	
-   167		return ret;
-   168	}
-   169	
-   170	static int ad8460_set_hvdac_word(struct ad8460_state *state, int index, int val)
-   171	{
- > 172		put_unaligned_le16(FIELD_PREP(AD8460_DATA_BYTE_FULL_MSK, val),
-   173					     &state->spi_tx_buf);
-   174	
-   175		return regmap_bulk_write(state->regmap, AD8460_HVDAC_DATA_WORD_LOW(index),
-   176					 state->spi_tx_buf, AD8460_DATA_BYTE_WORD_LENGTH);
-   177	}
-   178	
+> 
+>>    - avcc-supply
+>>    - vdrive-supply
+> 
+> 
+> 
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

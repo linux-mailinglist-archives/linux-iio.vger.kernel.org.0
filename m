@@ -1,51 +1,85 @@
-Return-Path: <linux-iio+bounces-9108-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9109-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764AA96AD59
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 02:31:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D9FD96ADE6
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 03:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F1072861E9
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 00:31:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0D881F25727
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 01:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A92F2581;
-	Wed,  4 Sep 2024 00:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FADE6FB0;
+	Wed,  4 Sep 2024 01:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SmFEEmAn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E53BE6F
-	for <linux-iio@vger.kernel.org>; Wed,  4 Sep 2024 00:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D43239B;
+	Wed,  4 Sep 2024 01:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725409851; cv=none; b=GqorGbyzkxBxbyAjL0Bm+kKts4WMyPNLmYWzhHG1HJ5hhNSlodGglWLC3ekbdWu9y+TQE6m0mS/RM/WL4xAEdU3yV4/aRB1vJLlzGVJ26/uMmFNEmdETE6Ew/+S4UPklicQioh73SQiSyn9Tw8f1azsfNLzcaNshBVlt0bXEv0U=
+	t=1725413438; cv=none; b=eufStTsK9N0KCo/1X81G8EvplaNnx8/m661UR0RX93M/12Y6da4IUCHYRmsV5wzGA6wAqso275yg+WJrDI9l5XUjIyD7DOeoAP4/s6qeC9w+ZR6xxcC9QTpPp1PRsuijvJLrHMBVYkPaqWiRsD8w6f0sl08p8VfIMHZiiCng+5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725409851; c=relaxed/simple;
-	bh=q1OPzRiBqf2s83WMT3Cm/d2xWVGIk+c7EBJrtdVY8qA=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eFgujIlu8kQSSZf67yUumGFnP+rBT5zlRthhHWM1mQPTpm386kgjloneu9lvH5xvxU1rUq+AKTLabtAz860StNR4FDfoBPQO2bEdiCxLqhCAuSqYSvWZzxQ8wbd/mhh/5r2S38hBcutDaGqGNsmrylmFIMDtX/Rg68vx7+8P70o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-25-87.elisa-laajakaista.fi [88.113.25.87])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id e6097ca3-6a54-11ef-abaf-005056bdd08f;
-	Wed, 04 Sep 2024 03:30:34 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 4 Sep 2024 03:30:34 +0300
-To: wangshuaijie@awinic.com
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, kees@kernel.org, gustavoars@kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-	liweilei@awinic.com, kangjiajun@awinic.com
-Subject: Re: [PATCH V9 2/2] iio: proximity: aw96103: Add support for
- aw96103/aw96105 proximity sensor
-Message-ID: <ZteqKroYjYKETqn7@surfacebook.localdomain>
-References: <20240827080229.1431784-1-wangshuaijie@awinic.com>
- <20240827080229.1431784-3-wangshuaijie@awinic.com>
+	s=arc-20240116; t=1725413438; c=relaxed/simple;
+	bh=gRinerk3YO57PrYqsyeulhZUbYiZ/3O/3y600X6jKms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QAU097oTHrV8qAKgvdqMMVYH7A0orUWVXECqkigeeUEFIrfVg43s4Xj4/6LfJWl2whGtBy/b7UCDUDTs/dbzwcTubQyZZXU07fOtp+wwzRE1X/NvTHvoDEE9xEeE9Wm8nnlX3Rl9VFUkLF5fpIHV/OjaYMlspzGfaF6mDzDpBA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SmFEEmAn; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7a7fd79ff71so369426485a.2;
+        Tue, 03 Sep 2024 18:30:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725413435; x=1726018235; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nUDWBfDPwOA/VgaP4aogYQGiN+MlQh7A7or/qZYGH0k=;
+        b=SmFEEmAnGW4wmawo43BC7n/Yj4VBRfGq6d3vypmeHi6OSpOUa7ncRW9Z78k7N5lk0R
+         JpbtMko+At4ldLOzmpcHlb9QVBY+Xm0poaZt6pGUO8S09IUEYj42hX3cvKBK78B4JoGw
+         R2jBjeBCf//hIKpGX0+nb4YUleXrUzUaozhUvXfvZBuz17g2X6doUgWMwSTmRbqVH3LV
+         JwYehhDZwE1BzEzboJZh9lo1bSKUQbwnJgGG4R1pDuMS8RygOr+7sCVYKmaSgaUD1p5L
+         bE7dKcodQuiKkotVn5l+FH7pYCjHdGcc9Zwrkb7siODYzIhpBxRddPk5235SBs0ngONw
+         d3JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725413435; x=1726018235;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nUDWBfDPwOA/VgaP4aogYQGiN+MlQh7A7or/qZYGH0k=;
+        b=XZjmKU2oZuDw52pVgmxFgU2yiZLuZ5oP3ShdMOEiyTEN1t3R/IaQ1MS9flwkI11DmQ
+         Q/AKbkoDahbd7wsithhtJvJ0sGthhk3V3hj/o75tOowJPLFJlr2ZzwlY3EDb6SUhEeYk
+         TMUvu5B854hp2Nk488OVI2V8pwPnlQdqCHDwXp8wEcuZBG3xIeGnQJSBVJViO9bJwMVa
+         YsBhGWIKjrAuFnVYOduQHlN5osuxGErm6HuLRNpgF2/2UkRGIfT7XSpd++I8dEArE05M
+         c6Y7bQrN5NyTeOKhIP6NqVilhdbOjm5BjQCOKyuQcqAYPVarOykEnfteJ6khzvFkW2bS
+         onUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUbbvmBfWlLhlXQe45JwjRMYLDVSIrYK0QonMzikGgyWvZSsAuHCycFeTdk4Sn3lJYj8W9gl6VPMwnoJLK@vger.kernel.org, AJvYcCWWqF2bl1TraKlcSeP/ou/M35XEWUNyyWqEvQyRLy235rUZSnl+hCxuctwaheqceLFgvmRyvr+kW+LT@vger.kernel.org, AJvYcCX7uH1IoOj7y1iesFgfGb4JEhF5PsEtoCzZr2FoF3kbFwjeGOCPcfD/avJ5jd1rOVjdO56GskLs7Geq@vger.kernel.org
+X-Gm-Message-State: AOJu0YxH+LXSgJFRCDv+QdeUPy4eUZ+aDMVBotwFPEaqBpSaAZWlXHdd
+	BI5tbPv8ptCDCJORiA4tX0m+7BGHgPwFygNjXlZVfeLxHwFyzYDX
+X-Google-Smtp-Source: AGHT+IH9eq13+WSQDbX8eIF1F279+H2bD9PJ+pUzCKnKPL5LtgAS4xiaGL2SxveUWNwR4CQsb6WrBA==
+X-Received: by 2002:a05:6214:5c4a:b0:6c3:6e6f:7953 with SMTP id 6a1803df08f44-6c36e6f7c6amr67456106d6.19.1725413435098;
+        Tue, 03 Sep 2024 18:30:35 -0700 (PDT)
+Received: from VM-Arch (ool-1826d901.dyn.optonline.net. [24.38.217.1])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c340ca6529sm59335416d6.110.2024.09.03.18.30.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Sep 2024 18:30:34 -0700 (PDT)
+Date: Tue, 3 Sep 2024 21:30:32 -0400
+From: Alex Lanzano <lanzano.alex@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jagath Jog J <jagathjog1996@gmail.com>, Ramona Gradinariu <ramona.bolboaca13@gmail.com>, 
+	Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: add bmi270 bindings
+Message-ID: <rs6yoe6j3jkjpgvqkr57gtwp44iyggjdh5dahctcparmuiv7ar@j5gbjsktnrkr>
+References: <20240901205354.3201261-1-lanzano.alex@gmail.com>
+ <20240901205354.3201261-2-lanzano.alex@gmail.com>
+ <y43rxkvcg5fnvef2pezzg5ckotqvfs2io6ohungfdpd7abcfm5@z62ruivg6p35>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -54,332 +88,116 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240827080229.1431784-3-wangshuaijie@awinic.com>
+In-Reply-To: <y43rxkvcg5fnvef2pezzg5ckotqvfs2io6ohungfdpd7abcfm5@z62ruivg6p35>
 
-Tue, Aug 27, 2024 at 08:02:29AM +0000, wangshuaijie@awinic.com kirjoitti:
-> From: shuaijie wang <wangshuaijie@awinic.com>
+On Mon, Sep 02, 2024 at 09:21:33AM GMT, Krzysztof Kozlowski wrote:
+> On Sun, Sep 01, 2024 at 04:53:23PM -0400, Alex Lanzano wrote:
+> > Add device tree bindings for the bmi270 IMU
+> > 
+> > Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
+> > ---
+> >  .../bindings/iio/imu/bosch,bmi270.yaml        | 80 +++++++++++++++++++
+> >  1 file changed, 80 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
+> > new file mode 100644
+> > index 000000000000..44534ef36378
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
+> > @@ -0,0 +1,80 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/imu/bosch,bmi270.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Bosch BMI270 6-Axis IMU
+> > +
+> > +maintainers:
+> > +  - Alex Lanzano <lanzano.alex@gmail.com>
+> > +
+> > +description: |
+> > +  BMI270 is a 6-axis inertial measurement unit that can measure acceleration and
+> > +  angular velocity. The sensor also supports configurable interrupt events such
+> > +  as motion, step counter, and wrist motion gestures. The sensor can communicate
+> > +  I2C or SPI.
+> > +  https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi270/
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: bosch,bmi270
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  vdd-supply: true
+> > +  vddio-supply: true
+> > +
+> > +  interrupts:
+> > +    minItems: 1
+> > +    maxItems: 2
+> > +
+> > +  interrupt-names:
+> > +    minItems: 1
+> > +    maxItems: 2
+> > +    items:
+> > +      enum:
+> > +        - INT1
+> > +        - INT2
+> > +
+> > +  drive-open-drain:
+> > +    description:
+> > +      set if the specified interrupt pin should be configured as
+> > +      open drain. If not set, defaults to push-pull.
+> > +
+> > +  mount-matrix:
+> > +    description:
+> > +      an optional 3x3 mounting rotation matrix.
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
 > 
-> AW96103 is a low power consumption capacitive touch and proximity controller.
-> Each channel can be independently config as sensor input, shield output.
+> Device can operate without power provided?
 > 
-> Channel Information:
->   aw96103: 3-channel
->   aw96105: 5-channel
 
-Instead of review the below is the diff that I think makes sense to apply
-(in any convenient form, e.g., squash to the existing commit, splitting
- and making followups)
+Will fix!
 
-diff --git a/drivers/iio/proximity/aw96103.c b/drivers/iio/proximity/aw96103.c
-index 89f7e1bde928..eabbb6b08e67 100644
---- a/drivers/iio/proximity/aw96103.c
-+++ b/drivers/iio/proximity/aw96103.c
-@@ -6,19 +6,24 @@
-  *
-  * Copyright (c) 2024 awinic Technology CO., LTD
-  */
-+#include <linux/array_size.h>
- #include <linux/bits.h>
- #include <linux/bitfield.h>
-+#include <linux/cleanup.h>
- #include <linux/delay.h>
- #include <linux/firmware.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
--#include <linux/iio/events.h>
--#include <linux/iio/iio.h>
- #include <linux/regulator/consumer.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
-+#include <linux/types.h>
-+
- #include <asm/unaligned.h>
- 
-+#include <linux/iio/events.h>
-+#include <linux/iio/iio.h>
-+
- #define AW_DATA_PROCESS_FACTOR			1024
- #define AW96103_CHIP_ID				0xa961
- #define AW96103_BIN_VALID_DATA_OFFSET		64
-@@ -94,8 +99,8 @@ enum aw96103_sensor_type {
- };
- 
- struct aw_channels_info {
--	bool used;
- 	unsigned int old_irq_status;
-+	bool used;
- };
- 
- struct aw_chip_info {
-@@ -254,8 +259,8 @@ static int aw96103_get_diff_raw(struct aw96103 *aw96103, unsigned int chan,
- 			  AW96103_REG_DIFF_CH0 + chan * 4, &data);
- 	if (ret)
- 		return ret;
--	*buf = (int)(data / AW_DATA_PROCESS_FACTOR);
- 
-+	*buf = data / AW_DATA_PROCESS_FACTOR;
- 	return 0;
- }
- 
-@@ -302,8 +307,8 @@ static int aw96103_read_out_debounce(struct aw96103 *aw96103,
- 			  AW96103_REG_PROXCTRL_CH(chan->channel), &reg_val);
- 	if (ret)
- 		return ret;
--	*val = FIELD_GET(AW96103_OUTDEB_MASK, reg_val);
- 
-+	*val = FIELD_GET(AW96103_OUTDEB_MASK, reg_val);
- 	return IIO_VAL_INT;
- }
- 
-@@ -317,8 +322,8 @@ static int aw96103_read_in_debounce(struct aw96103 *aw96103,
- 			  AW96103_REG_PROXCTRL_CH(chan->channel), &reg_val);
- 	if (ret)
- 		return ret;
--	*val = FIELD_GET(AW96103_INDEB_MASK, reg_val);
- 
-+	*val = FIELD_GET(AW96103_INDEB_MASK, reg_val);
- 	return IIO_VAL_INT;
- }
- 
-@@ -332,8 +337,8 @@ static int aw96103_read_hysteresis(struct aw96103 *aw96103,
- 			  AW96103_REG_PROXCTRL_CH(chan->channel), &reg_val);
- 	if (ret)
- 		return ret;
--	*val = FIELD_GET(AW96103_THHYST_MASK, reg_val);
- 
-+	*val = FIELD_GET(AW96103_THHYST_MASK, reg_val);
- 	return IIO_VAL_INT;
- }
- 
-@@ -454,11 +459,10 @@ static int aw96103_channel_scan_start(struct aw96103 *aw96103)
- 			    aw96103->hostirqen);
- }
- 
--static int aw96103_reg_version_comp(struct aw96103 *aw96103,
--				    struct aw_bin *aw_bin)
-+static int aw96103_reg_version_comp(struct aw96103 *aw96103, struct aw_bin *aw_bin)
- {
- 	u32 blfilt1_data, fw_ver;
--	unsigned char i;
-+	unsigned int i;
- 	int ret;
- 
- 	ret = regmap_read(aw96103->regmap, AW96103_REG_FWVER2, &fw_ver);
-@@ -474,16 +478,17 @@ static int aw96103_reg_version_comp(struct aw96103 *aw96103,
- 
- 	for (i = 0; i < aw96103->max_channels; i++) {
- 		ret = regmap_read(aw96103->regmap,
--			AW96103_REG_BLFILT_CH0 + (AW96103_BLFILT_CH_STEP * i),
-+			AW96103_REG_BLFILT_CH0 + AW96103_BLFILT_CH_STEP * i,
- 			&blfilt1_data);
- 		if (ret)
- 			return ret;
-+
- 		if (FIELD_GET(AW96103_BLERRTRIG_MASK, blfilt1_data) != 1)
- 			return 0;
- 
- 		return regmap_update_bits(aw96103->regmap,
--			AW96103_REG_BLRSTRNG_CH0 + (AW96103_BLFILT_CH_STEP * i),
--			AW96103_BLRSTRNG_MASK, 1 << i);
-+			AW96103_REG_BLRSTRNG_CH0 + AW96103_BLFILT_CH_STEP * i,
-+			AW96103_BLRSTRNG_MASK, BIT(i));
- 	}
- 
- 	return 0;
-@@ -493,25 +498,22 @@ static int aw96103_bin_valid_loaded(struct aw96103 *aw96103,
- 				    struct aw_bin *aw_bin_data_s)
- {
- 	unsigned int start_addr = aw_bin_data_s->valid_data_addr;
--	u32 i, reg_data;
-+	unsigned int i;
-+	u32 reg_data;
- 	u16 reg_addr;
- 	int ret;
- 
--	for (i = 0; i < aw_bin_data_s->valid_data_len;
--	     i += 6, start_addr += 6) {
-+	for (i = 0; i < aw_bin_data_s->valid_data_len; i += 6, start_addr += 6) {
- 		reg_addr = get_unaligned_le16(aw_bin_data_s->data + start_addr);
--		reg_data = get_unaligned_le32(aw_bin_data_s->data +
--					      start_addr + 2);
--		if ((reg_addr == AW96103_REG_EEDA0) ||
--		    (reg_addr == AW96103_REG_EEDA1))
-+		reg_data = get_unaligned_le32(aw_bin_data_s->data + start_addr + 2);
-+		if ((reg_addr == AW96103_REG_EEDA0) || (reg_addr == AW96103_REG_EEDA1))
- 			continue;
- 		if (reg_addr == AW96103_REG_IRQEN) {
- 			aw96103->hostirqen = reg_data;
- 			continue;
- 		}
- 		if (reg_addr == AW96103_REG_SCANCTRL0)
--			aw96103->chan_en = FIELD_GET(AW96103_CHAN_EN_MASK,
--						     reg_data);
-+			aw96103->chan_en = FIELD_GET(AW96103_CHAN_EN_MASK, reg_data);
- 
- 		ret = regmap_write(aw96103->regmap, reg_addr, reg_data);
- 		if (ret < 0)
-@@ -527,19 +529,21 @@ static int aw96103_bin_valid_loaded(struct aw96103 *aw96103,
- 
- static int aw96103_para_loaded(struct aw96103 *aw96103)
- {
--	int i, ret;
-+	unsigned int i;
-+	int ret;
- 
- 	for (i = 0; i < ARRAY_SIZE(aw96103_reg_default); i += 2) {
--		ret = regmap_write(aw96103->regmap,
--				   (u16)aw96103_reg_default[i],
--				   (u32)aw96103_reg_default[i + 1]);
-+		u16 offset = aw96103_reg_default[i];
-+		u32 value = aw96103_reg_default[i + 1];
-+
-+		ret = regmap_write(aw96103->regmap, offset, value);
- 		if (ret)
- 			return ret;
--		if (aw96103_reg_default[i] == AW96103_REG_IRQEN)
--			aw96103->hostirqen = aw96103_reg_default[i + 1];
--		else if (aw96103_reg_default[i] == AW96103_REG_SCANCTRL0)
--			aw96103->chan_en = FIELD_GET(AW96103_CHAN_EN_MASK,
--					   aw96103_reg_default[i + 1]);
-+
-+		if (offset == AW96103_REG_IRQEN)
-+			aw96103->hostirqen = value;
-+		else if (offset == AW96103_REG_SCANCTRL0)
-+			aw96103->chan_en = FIELD_GET(AW96103_CHAN_EN_MASK, value);
- 	}
- 
- 	return aw96103_channel_scan_start(aw96103);
-@@ -567,7 +571,8 @@ static int aw96103_cfg_all_loaded(const struct firmware *cont,
- static void aw96103_cfg_update(const struct firmware *fw, void *data)
- {
- 	struct aw96103 *aw96103 = data;
--	int ret, i;
-+	unsigned int i;
-+	int ret;
- 
- 	if (!fw || !fw->data) {
- 		dev_err(aw96103->dev, "No firmware.\n");
-@@ -588,12 +593,9 @@ static void aw96103_cfg_update(const struct firmware *fw, void *data)
- 		}
- 	}
- 
--	for (i = 0; i < aw96103->max_channels; i++) {
--		if ((aw96103->chan_en >> i) & 0x01)
--			aw96103->channels_arr[i].used = true;
--		else
-+	for (i = 0; i < aw96103->max_channels; i++)
-+		aw96103->channels_arr[i].used = aw96103->chan_en & BIT(i);
- 			aw96103->channels_arr[i].used = false;
--	}
- }
- 
- static int aw96103_sw_reset(struct aw96103 *aw96103)
-@@ -603,7 +605,7 @@ static int aw96103_sw_reset(struct aw96103 *aw96103)
- 	ret = regmap_write(aw96103->regmap, AW96103_REG_RESET, 0);
- 	/*
- 	 * After reset, the initialization process starts to perform and
--	 * it will last for a bout 20ms.
-+	 * it will last for about 20ms.
- 	 */
- 	msleep(20);
- 
-@@ -611,7 +613,7 @@ static int aw96103_sw_reset(struct aw96103 *aw96103)
- }
- 
- enum aw96103_irq_trigger_position {
--	FAR = 0,
-+	FAR         = 0x00,
- 	TRIGGER_TH0 = 0x01,
- 	TRIGGER_TH1 = 0x03,
- 	TRIGGER_TH2 = 0x07,
-@@ -623,7 +625,8 @@ static irqreturn_t aw96103_irq(int irq, void *data)
- 	unsigned int irq_status, curr_status_val, curr_status;
- 	struct iio_dev *indio_dev = data;
- 	struct aw96103 *aw96103 = iio_priv(indio_dev);
--	int ret, i;
-+	unsigned int i;
-+	int ret;
- 
- 	ret = regmap_read(aw96103->regmap, AW96103_REG_IRQSRC, &irq_status);
- 	if (ret)
-@@ -641,10 +644,12 @@ static irqreturn_t aw96103_irq(int irq, void *data)
- 		if (!aw96103->channels_arr[i].used)
- 			continue;
- 
--		curr_status = (((curr_status_val >> (24 + i)) & 0x1)) |
--			      (((curr_status_val >> (16 + i)) & 0x1) << 1) |
--			      (((curr_status_val >> (8 + i)) & 0x1) << 2) |
--			      (((curr_status_val >> i) & 0x1) << 3);
-+		curr_status = curr_status_val >> i;
-+		curr_status = ((curr_status >> 24 + 0) & BIT(0)) |
-+			      ((curr_status >> 16 + 1) & BIT(0)) |
-+			      ((curr_status >>  8 + 2) & BIT(0)) |
-+			      ((curr_status >>  0 + 3) & BIT(0));
-+
- 		if (aw96103->channels_arr[i].old_irq_status == curr_status)
- 			continue;
- 
-@@ -675,8 +680,7 @@ static irqreturn_t aw96103_irq(int irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
--static int aw96103_interrupt_init(struct iio_dev *indio_dev,
--				  struct i2c_client *i2c)
-+static int aw96103_interrupt_init(struct iio_dev *indio_dev, struct i2c_client *i2c)
- {
- 	struct aw96103 *aw96103 = iio_priv(indio_dev);
- 	unsigned int irq_status;
-@@ -685,9 +689,11 @@ static int aw96103_interrupt_init(struct iio_dev *indio_dev,
- 	ret = regmap_write(aw96103->regmap, AW96103_REG_IRQEN, 0);
- 	if (ret)
- 		return ret;
-+
- 	ret = regmap_read(aw96103->regmap, AW96103_REG_IRQSRC, &irq_status);
- 	if (ret)
- 		return ret;
-+
- 	ret = devm_request_threaded_irq(aw96103->dev, i2c->irq, NULL,
- 					aw96103_irq, IRQF_ONESHOT,
- 					"aw96103_irq", indio_dev);
-@@ -700,26 +706,17 @@ static int aw96103_interrupt_init(struct iio_dev *indio_dev,
- 
- static int aw96103_wait_chip_init(struct aw96103 *aw96103)
- {
--	unsigned int cnt = 20;
- 	u32 reg_data;
- 	int ret;
- 
--	while (cnt--) {
--		/*
--		 * The device should generate an initialization completion
--		 * interrupt within 20ms.
--		 */
--		ret = regmap_read(aw96103->regmap, AW96103_REG_IRQSRC,
--				  &reg_data);
--		if (ret)
--			return ret;
--
--		if (FIELD_GET(AW96103_INITOVERIRQ_MASK, reg_data))
--			return 0;
--		fsleep(1000);
--	}
--
--	return -ETIMEDOUT;
-+	/*
-+	 * The device should generate an initialization completion
-+	 * interrupt within 20ms.
-+	 */
-+	return regmap_read_poll_timeout(aw96103->regmap, AW96103_REG_IRQSRC,
-+				       reg_data,
-+				       FIELD_GET(AW96103_INITOVERIRQ_MASK, reg_data),
-+				       1000, 20000);
- }
- 
- static int aw96103_read_chipid(struct aw96103 *aw96103)
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    i2c {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        imu@68 {
+> > +            compatible = "bosch,bmi270";
+> > +            reg = <0x68>;
+> > +        };
+> > +    };
+> 
+> Keep just one, complete example. You miss here several properties.
+> 
+> > +  - |
+> > +    spi {
+> 
+> Not much differences in this example, but if you want to keep it, then
+> make it complete and fix the node name,
+> 
+> Node names should be generic. See also an explanation and list of
+> examples (not exhaustive) in DT specification:
+> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+> 
+> Best regards,
+> Krzysztof
+> 
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+I'll make more complete examples in v2. Thank you for the review! Much
+appreciated.
 

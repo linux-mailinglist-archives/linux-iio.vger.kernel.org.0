@@ -1,181 +1,305 @@
-Return-Path: <linux-iio+bounces-9129-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9130-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1F196B7DF
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 12:08:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10A596B858
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 12:24:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3718FB260A1
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 10:08:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D8FE1F2124A
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 10:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71F21CF5E3;
-	Wed,  4 Sep 2024 10:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C8C433C8;
+	Wed,  4 Sep 2024 10:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AiBCvM1F"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cVikh/wF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36D6192586
-	for <linux-iio@vger.kernel.org>; Wed,  4 Sep 2024 10:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2041CCB24;
+	Wed,  4 Sep 2024 10:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725444490; cv=none; b=GOlxWlP3CJiww9C+6pdN0O9w/Yq5e3DRa13Cn/v42Z1Xa68Xq6FpW8U76I2RClCPysMMaelItRm5pF5CZmN8MAwOopicmMXG2EHnqD5uaOMo1zzQAaG070AhsV4XPj5TjwquIOlUcpePmP4oGNmOiJMTw+bzs9DIfkvv/hwwaUc=
+	t=1725445474; cv=none; b=tF+6+YmR587fCnG2QmQfryT67Q6++eH4hjs0QIvjpkkbQCIv5JvBw031+QTVj7h0lUkO7wNFX1k5ZW5pgChWJtXyk6FtNtzvhLCZwtjNz4IVmzbgEx4P/11GxlOtav07wc9sczL7UQjosncjkvelJtIg2s10zLJ8Y5+VIna8bqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725444490; c=relaxed/simple;
-	bh=zio+a0ruwSHwDzq4IpOiQijKnnS41D2V7N1DIsEFam0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZKZMLyRDtuFEO+iMzjNXaPce87Ym22PJi8yzphNk43LQqJPB6WfXTY6feRN/wlpdstUsa3X8BiIHAcj+Vewzu3JIZ8jMH7Na5d2dsaAaYqqMRDZ0xqdiCz+HuzGKkEPJbIfkNs8WEQTSbiWg4mz0xuO293x/tmoFF7SwG7j4eks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AiBCvM1F; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a869f6ce2b9so688980866b.2
-        for <linux-iio@vger.kernel.org>; Wed, 04 Sep 2024 03:08:07 -0700 (PDT)
+	s=arc-20240116; t=1725445474; c=relaxed/simple;
+	bh=li8HLQcwSeWcNyRlWXgmcYWpWqPZrZy6nbCJhPgHdf0=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a+fqyFVeIE+nF3TrfCIRs07MFDUZSkmmOF9CAllt1TykVs4YJY8VygeXUorb11mXimjTlVl3YNdufgIbJqclGSvaQHTAef99cddt7A4LfiU1giIrnprNWPqlvfP0DjDLAo2CDEQZRh3D7qzB3U8+AqIO0xpI7JHUbIc8RUSs++4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cVikh/wF; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a7a9cf7d3f3so70979766b.1;
+        Wed, 04 Sep 2024 03:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725444486; x=1726049286; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725445471; x=1726050271; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dR1M+3gWwkz1AwnSNcxXU0EUhSSon/LIBkGrYtHf2ps=;
-        b=AiBCvM1FRYac3EnoC2V8yMOQxd39CpBMTM2EEe9Ol8wpLtSyRfdt+ewsahrA8H3Vji
-         jgZTunExehkTFcQrJWtqO5lYT46ZsWfP1rSn1eAE7D3jtx13wDayI5vGmggTmV13Fvq/
-         zajnAFZFueXuEMYzMEGXECdmpzT2HLDKe9XrzGhG361TmbPMrCGxbJsVT9MBACMlW7yW
-         9HVpSfEKOsma28RLz506Tl9GzFEP9KmTRy91VQlRJWw27GijXUvJ3px0nf/rhpaOtQO3
-         V+f4ovlCqoE/8PgBEy3LTEc58OGCDwBnT2rzGlZgZ083tf9NrcHvpgdm0LCPS3z7wQPO
-         uDQg==
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IDwjld+tJyBVRF5yIpDjYObSDHlEtz3Wt1iJNPK9p/E=;
+        b=cVikh/wFRY61HBu2fDE5dPp4AzT/MAV/9OBbku9kS20L8jNPYg2e3bWmXfp791JGSn
+         +g0LeVKWI5joGNx5I/y96oSnosgDH2k7TB2PGUgCl5NMBstgdhEb8znGMqzyjhl/KIty
+         /OFqodNn8ysyJcoGQT1/12Jc4eFZDDa5P0g/hQIV4Dwvccd4DBVjLfVGGY8GffAvgCxF
+         57RDiEqB9DGSUcCefrn4CqOYjXGmQkxk4S/U4U+v0RAAmhG7Oon2tWpbDB1NMcvlY64N
+         O0UyhYnYSctvd1R1LfRNdkbXy7whte5+fiuZ3hWdX1c0Cjjr2wTQPNw8/4UeHsutNF2J
+         dwiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725444486; x=1726049286;
+        d=1e100.net; s=20230601; t=1725445471; x=1726050271;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dR1M+3gWwkz1AwnSNcxXU0EUhSSon/LIBkGrYtHf2ps=;
-        b=PDJaXC2DF7b5CGvJtCSrQlgSsAuHAQKhzR1M790VttYNHEhxNuQ63hM8z+zrd8pr7G
-         D6byM1RfL8dKqiqjbE0BzcBeyofVLbapI7RaGa4hR3iLLDERiwiKJ8YB3fLeuYmvTQGL
-         /KHhdwYGe72ulOKgAVz2PClcE6TO3s1cMmdUkUY5UyEoSWga+eyX1W4c4zJcOmLGPHdt
-         nwsYEGozSQd2ItgPDr6zpUCIPuqO0ftvngUS7oQTwSuZDtkGh1Xt8PDYGCoOKKmVWeQx
-         obH12p0KEcl1KE4UCLdF1hwdmo2wSDY9HgBbUVTmzQtx0iITZpUqLjs9mcLXzqzYjbkj
-         NJLg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/qgw+0vpp1aJFVc9EzroPgGJZGmKnPA1BDx6ZZ4rbORkv9Mu+B1Ur21raWVHaSS19FBWUcJ+mMVg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6/R8+iEtB3rldx54LssjjGfA+A1AK0hJCUpdrgvU2XoGbgYFK
-	2szMDR7DP44RQclXgz6khzOEYElZd6MxNkMFOvN49NzIRazrozLGgNVpb6krWgs=
-X-Google-Smtp-Source: AGHT+IHmj/JiGbJvtc5bJERYQCNjeeiYu04Tlb0ms5vEl1yROFVony/cBFRozI3jj6zAJF6Ufv17ow==
-X-Received: by 2002:a17:906:c155:b0:a86:a909:4f67 with SMTP id a640c23a62f3a-a8a32f9f1edmr272904266b.52.1725444485983;
-        Wed, 04 Sep 2024 03:08:05 -0700 (PDT)
-Received: from localhost (p5dc68f76.dip0.t-ipconnect.de. [93.198.143.118])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a89890229b5sm795006166b.51.2024.09.04.03.08.05
+        bh=IDwjld+tJyBVRF5yIpDjYObSDHlEtz3Wt1iJNPK9p/E=;
+        b=tOs1Lipey4mEdKvApcs8v/K08SI3xUprm0xN3GqZ8n4NEOg/SyTCzFOTh5RmWiVugE
+         SVnWSWjaLNgelQ1WFQQLYyKUxNg1iStvlIXG6iQQIIpSblssxha37dtuuDFSlR4aCMYa
+         P2Uys8lC09uVUEb0WNk4nwUJFUPV8zT+pBjsfDQNCQ7CLALpvmt/kt2ETKsvTts1cTk2
+         NrvBAwX99O6IYTvZQjy5pVBvAVfcSLwCsicnxtXEqzkVbq6KtOfqs1u6RcgSNCJ70/H7
+         BJuJLBbaadtLy4o2/JU9dfTn0iqajqtHXZ7RJgwFc2fB5JOSf3ySyUSAs98c6tLYGH+s
+         vvig==
+X-Forwarded-Encrypted: i=1; AJvYcCWpzVnoN++ckyWMkTXm5edwTJMLSBvOoKdUFsUxO3c/8xw38vwLwwo4KgvnhLz8fVggMgU31a+8E5JVYk7W@vger.kernel.org, AJvYcCXHR+9q/zFPBUOZqGvUyVBttrRw3SQroVk0Qb2hTY9q0Vv1Z5efTEoBeT8pNyQgntyM+VE6b1IjG4/G@vger.kernel.org, AJvYcCXr+L4OYpNiYdIUk9qM+ZJ1VWfRzsNqcYTa3hOdpJKuIl/jW02kmwwVSRU6G7WhZcpSqu/9pUz8wckx@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpjZ1M4JBsUJAPueRazym5kvVE4AjI1TB0g24oYHItmvYtm+F+
+	SEIotkVNtE+C5HaFryMUCm0glwHKMsd4p94uXBJ7VV7/se/ea0tl
+X-Google-Smtp-Source: AGHT+IFUe46m5dyAIpzpY2jR7NwpAcFdvdfcd2lBnhcaeBPGeE2JQdPmmK/1zDM7vkZ/CuYkMWehdg==
+X-Received: by 2002:a17:907:940f:b0:a7a:b385:37c5 with SMTP id a640c23a62f3a-a8a3f185c6emr156149666b.17.1725445470048;
+        Wed, 04 Sep 2024 03:24:30 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:2f85:317:e13:c18])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a89891a3dbdsm789019666b.131.2024.09.04.03.24.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Sep 2024 03:08:05 -0700 (PDT)
-Date: Wed, 4 Sep 2024 12:08:03 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Guillaume Stols <gstols@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>, linux-pwm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, aardelean@baylibre.com
-Subject: Re: [PATCH 4/8] pwm: Export pwm_get_state_hw
-Message-ID: <g2x7a4jmlbziciyctf5qgmcpztobvduds6psoaelnludermkjv@6nlxvbws7eo4>
-References: <20240815-ad7606_add_iio_backend_support-v1-0-cea3e11b1aa4@baylibre.com>
- <20240815-ad7606_add_iio_backend_support-v1-4-cea3e11b1aa4@baylibre.com>
+        Wed, 04 Sep 2024 03:24:29 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Wed, 4 Sep 2024 12:24:27 +0200
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
+	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, ang.iglesiasg@gmail.com,
+	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
+	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
+	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	christophe.jaillet@wanadoo.fr
+Subject: Re: [PATCH v5 4/7] iio: pressure: bmp280: Use sleep and forced mode
+ for oneshot captures
+Message-ID: <20240904102427.GA44250@vamoiridPC>
+References: <20240902184222.24874-1-vassilisamir@gmail.com>
+ <20240902184222.24874-5-vassilisamir@gmail.com>
+ <ZtccnvhmcxyRQVuf@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2ufhpggxbgc5feny"
-Content-Disposition: inline
-In-Reply-To: <20240815-ad7606_add_iio_backend_support-v1-4-cea3e11b1aa4@baylibre.com>
-
-
---2ufhpggxbgc5feny
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ZtccnvhmcxyRQVuf@smile.fi.intel.com>
 
-On Thu, Aug 15, 2024 at 12:11:58PM +0000, Guillaume Stols wrote:
-> This function can be used in some other drivers, for instance when we
-> want to retrieve the real frequency vs the one that was asked.
+On Tue, Sep 03, 2024 at 05:26:38PM +0300, Andy Shevchenko wrote:
+> On Mon, Sep 02, 2024 at 08:42:19PM +0200, Vasileios Amoiridis wrote:
+> > Add forced mode support in sensors BMP28x, BME28x, BMP3xx and BMP58x.
+> > Sensors BMP18x and BMP085 are old and do not support this feature so
+> > their operation is not affected at all.
+> > 
+> > Essentially, up to now, the rest of the sensors were used in normal mode
+> > all the time. This means that they are continuously doing measurements
+> > even though these measurements are not used. Even though the sensor does
+> > provide PM support, to cover all the possible use cases, the sensor needs
+> > to go into sleep mode and wake up whenever necessary.
+> > 
+> > The idea is that the sensor is by default in sleep mode, wakes up in
+> > forced mode when a oneshot capture is requested, or in normal mode
+> > when the buffer is enabled. The difference lays in the fact that in
+> > forced mode, the sensor does only one conversion and goes back to sleep
+> > while in normal mode, the sensor does continuous measurements with the
+> > frequency that was set in the ODR registers.
+> > 
+> > The bmpX_chip_config() functions which are responsible for applying
+> > the requested configuration to the sensor, are modified accordingly
+> > in order to set the sensor by default in sleep mode.
+> > 
+> > DEEP STANDBY, Low Power NORMAL and CONTINUOUS modes, supported only by
+> > the BMP58x version, are not added.
 
-I'd write:
+Hi Andy,
 
-	For some drivers (here: the upcoming ad7606 adc driver) it's important
-	to know the actually configured PWM state. This is in general different
-	from the state returned by pwm_get_state() (i.e. the last applied state)
-	because most hardware doesn't have nano second granularity. So make
-	pwm_get_state_hw() a public function.
+Thanks for finding again the time to review this!
 
-> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-> index 21fca27bb8a3..82e05ed88310 100644
-> --- a/drivers/pwm/core.c
-> +++ b/drivers/pwm/core.c
-> @@ -651,7 +651,7 @@ int pwm_apply_atomic(struct pwm_device *pwm, const st=
-ruct pwm_state *state)
->  }
->  EXPORT_SYMBOL_GPL(pwm_apply_atomic);
-> =20
-> -static int pwm_get_state_hw(struct pwm_device *pwm, struct pwm_state *st=
-ate)
-> +int pwm_get_state_hw(struct pwm_device *pwm, struct pwm_state *state)
->  {
->  	struct pwm_chip *chip =3D pwm->chip;
->  	const struct pwm_ops *ops =3D chip->ops;
-> @@ -685,6 +685,7 @@ static int pwm_get_state_hw(struct pwm_device *pwm, s=
-truct pwm_state *state)
-> =20
->  	return ret;
->  }
-> +EXPORT_SYMBOL_GPL(pwm_get_state_hw);
+> 
+> ...
+> 
+> > +static int bmp280_wait_conv(struct bmp280_data *data)
+> > +{
+> > +	unsigned int reg, meas_time_us;
+> > +	int ret;
+> > +
+> > +	/* Check if we are using a BME280 device */
+> > +	if (data->oversampling_humid)
+> > +		meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
+> > +				(BIT(data->oversampling_humid) * BMP280_MEAS_DUR);
+> 
+> The outer parentheses are not needed.
+> 
 
-Now that this is a public function, a kernel doc for it would be nice.
+True, will fix that.
 
->  /**
->   * pwm_adjust_config() - adjust the current PWM config to the PWM argume=
-nts
-> diff --git a/include/linux/pwm.h b/include/linux/pwm.h
-> index fd100c27f109..d48ea3051e28 100644
-> --- a/include/linux/pwm.h
-> +++ b/include/linux/pwm.h
-> @@ -369,6 +369,7 @@ int pwm_apply_might_sleep(struct pwm_device *pwm, con=
-st struct pwm_state *state)
->  int pwm_apply_atomic(struct pwm_device *pwm, const struct pwm_state *sta=
-te);
->  int pwm_adjust_config(struct pwm_device *pwm);
-> =20
-> +int pwm_get_state_hw(struct pwm_device *pwm, struct pwm_state *state);
+> > +	/* Pressure measurement time */
+> > +	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
+> > +			(BIT(data->oversampling_press) * BMP280_MEAS_DUR);
+> 
+> Ditto.
 
-Nitpick: pwm_get_state_hw() is defined in core.c before
-pwm_adjust_config(). Please keep this order in the header.
+ACK.
 
->  /**
->   * pwm_config() - change a PWM device configuration
->   * @pwm: PWM device
+> 
+> > +	/* Temperature measurement time */
+> > +	meas_time_us += BIT(data->oversampling_temp) * BMP280_MEAS_DUR;
+> > +
+> > +	/* Waiting time according to the BM(P/E)2 Sensor API */
+> > +	fsleep(meas_time_us);
+> > +
+> > +	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
+> > +	if (ret) {
+> > +		dev_err(data->dev, "failed to read status register.\n");
+> > +		return ret;
+> > +	}
+> > +
+> > +	if (reg & BMP280_REG_STATUS_MEAS_BIT) {
+> > +		dev_err(data->dev, "Measurement cycle didn't complete.\n");
+> > +		return -EBUSY;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> 
+> ...
+> 
+> > +static int bmp380_wait_conv(struct bmp280_data *data)
+> > +{
+> > +	unsigned int reg;
+> > +	int ret, meas_time_us;
+> > +
+> > +	/* Offset measurement time */
+> > +	meas_time_us = BMP380_MEAS_OFFSET;
+> > +
+> > +	/* Pressure measurement time */
+> > +	meas_time_us += BMP380_PRESS_MEAS_OFFSET +
+> > +		     (BIT(data->oversampling_press) * BMP380_MEAS_DUR);
+> 
+> Ditto.
+> 
 
-Your patch was PGP signed, but I failed to find your key in the kernel
-key repo and on https://keys.openpgp.org. To make your signature
-actually useful, you might want to fix that.
+ACK.
 
-Best regards
-Uwe
+> > +	/* Temperature measurement time */
+> > +	meas_time_us += BMP380_TEMP_MEAS_OFFSET +
+> > +		     (BIT(data->oversampling_temp) * BMP380_MEAS_DUR);
+> 
+> Ditto.
+> 
 
---2ufhpggxbgc5feny
-Content-Type: application/pgp-signature; name="signature.asc"
+ACK.
 
------BEGIN PGP SIGNATURE-----
+> > +	/* Measurement time defined in Datasheet Section 3.9.2 */
+> > +	fsleep(meas_time_us);
+> > +
+> > +	ret = regmap_read(data->regmap, BMP380_REG_STATUS, &reg);
+> > +	if (ret) {
+> > +		dev_err(data->dev, "failed to read status register.\n");
+> > +		return ret;
+> > +	}
+> 
+> > +	if (!(reg & BMP380_STATUS_DRDY_PRESS_MASK) ||
+> > +	    !(reg & BMP380_STATUS_DRDY_TEMP_MASK)) {
+> > +		dev_err(data->dev, "Measurement cycle didn't complete.\n");
+> > +		return -EBUSY;
+> > +	}
+> 
+> Alternatively
+> 
+> 	if (!((reg & BMP380_STATUS_DRDY_PRESS_MASK) &&
+> 	    !(reg & BMP380_STATUS_DRDY_TEMP_MASK)) {
+> 		dev_err(data->dev, "Measurement cycle didn't complete.\n");
+> 		return -EBUSY;
+> 	}
+> 
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmbYMYEACgkQj4D7WH0S
-/k4+lAf/ah+hVdNth3Gbh1+IZ9TszwkpZoa2BArFKNaI6fg4kzBnP4jdK/9YoYxK
-8aV7YXMFTNLZ7B8kdZ1pQ3/gYFvHwPWiGGvMsysEnRj0TKOTw7iTSruScJq9qmMC
-WCcJf3TiVd5Jp8JRi9EDaTN5K6pz4a4nF1+8Zf0sPNhubcClQ62RrfUOwgqiYi+O
-/zsKhoQIFDrc9qX0BUwU5gK3FxgIXqNXt437y1O5X0PWAeZhnQXpyW4GbXnofQFt
-wPqjzS3DUigiDXkUWKImXXGXM5f9SERlGvWjVlqomK29NWzzXugauCfyDxVQUa+Q
-pny5/ar13n7yoHt/42iTfwc99oY0/w==
-=e96/
------END PGP SIGNATURE-----
+Why would I use && instead of || ? I just need one of the 2 to be true
+(one of the 2 measurements is not complete) and I can trigger the error
+action.
 
---2ufhpggxbgc5feny--
+> > +	return 0;
+> > +}
+> 
+> ...
+> 
+> > +static int bmp580_wait_conv(struct bmp280_data *data)
+> > +{
+> > +	/*
+> > +	 * Taken from datasheet, Section 2 "Specification, Table 3 "Electrical
+> > +	 * characteristics.
+> > +	 */
+> > +	static const int time_conv_press[] = {
+> > +		0, 1050, 1785, 3045, 5670, 10920, 21420, 42420,
+> > +		84420,
+> > +	};
+> > +	static const int time_conv_temp[] = {
+> > +		0, 1050, 1105, 1575, 2205, 3465, 6090, 11340,
+> > +		21840,
+> > +	};
+> > +	int meas_time_us;
+> 
+> > +	meas_time_us = 4 * USEC_PER_MSEC + time_conv_temp[data->oversampling_temp]
+> > +			 + time_conv_press[data->oversampling_press];
+> 
+> 	meas_time_us = 4 * USEC_PER_MSEC + time_conv_temp[data->oversampling_temp] +
+> 		       time_conv_press[data->oversampling_press];
+> 
+> OR
+> 
+> 	meas_time_us = 4 * USEC_PER_MSEC +
+> 		       time_conv_temp[data->oversampling_temp] +
+> 		       time_conv_press[data->oversampling_press];
+> 
+> 
+
+ACK.
+
+> > +	/* Measurement time mentioned in Chapter 2, Table 4 of the datasheet. */
+> 
+> Since there is a constant in use (4ms) it would be nice to explain it
+> separately, the rest kinda obvious from the variable names.
+> So it allows roughly understand the timeout value without even looking into
+> the datasheet.
+> 
+
+True, I can do that.
+
+> > +	fsleep(meas_time_us);
+> > +
+> > +	return 0;
+> > +}
+> 
+> ...
+> 
+> > +	fsleep(data->start_up_time + 500);
+> 
+> Ditto.
+> 
+> Something like
+> 
+> 	/* 500us margin for ... */
+> 
+> (but write the real meaning of it).
+> 
+
+ACK.
+
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
+
+Best regards,
+Vasilis
 

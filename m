@@ -1,73 +1,75 @@
-Return-Path: <linux-iio+bounces-9152-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9153-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429BC96C73B
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 21:14:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFE796C73E
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 21:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 673F81C25159
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 19:14:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20DE91F25E92
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Sep 2024 19:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046C71E4939;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A921E5004;
 	Wed,  4 Sep 2024 19:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ryUyajmQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Bqhk8ah+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AD61E491A
-	for <linux-iio@vger.kernel.org>; Wed,  4 Sep 2024 19:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D531E4925
+	for <linux-iio@vger.kernel.org>; Wed,  4 Sep 2024 19:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725477265; cv=none; b=PjtKgfOKThj/RRKykoM61VznABEWcPV7UMznVTzaPcImgBpvN6IQEt5jhpKzljYjoKUKVplMoOtM8048W3O6VpPAhIFYIPWfq8h1KfprMDmOehjEy7Iu4KJ3UT7TxSY5vM6oyMHOZJXblzdPFuk1jAKTIOEv4OaOkgHQM/6kouM=
+	t=1725477266; cv=none; b=pfzb9ki5bHCX6bU8ifXPmX1QlNh8QLCM+EzF3tO7Y0/OY4hBMTj90AVh53QkQ6jqUefTooOmZZgZdzwnWOZgyK5hGYY6LCsHNctF5ac5+XTdsZK9CqRjQSwwHYXz1XKvW9NqqpJbLSPTgcLyLjLDnWjzNVoBLt4X7HET8f2sVao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725477265; c=relaxed/simple;
-	bh=Vtten7PC1xqHnHPuVTSUmBPwlkryC6zBmnXV+zy4KR4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Y8ZdIh+u10npTweSg0IxljQIHfuh27nxHPX2sdiTCDWhH8zeagdHxVQTHc4DLnVR8Z54RjIESKJ8v27N9/BXHa88Rbv7Iba0wskgjs3sjfAW3OkvxO04pbG1pLgFjMIqfdy2nua7iuCUIllwzgAqJUloCnLwo0Jvm4CmX70FS5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ryUyajmQ; arc=none smtp.client-ip=209.85.160.49
+	s=arc-20240116; t=1725477266; c=relaxed/simple;
+	bh=FPoIpjhdgY+gUPHyTDCz+KM4L9PU9IeDvwYYNQV78S4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=RJBjoijibJq8XOAonupsZkZNkd1cJBoW0/pN3WQJZ6lojIdrb7OrkGnBSOdnzsbSTtCxTVH4378/I7mdkt8GePrIfvNQYSQYOUyVvCAL7p/rANV4wTceQjfAdtbwzUYyyPcgG4sv+PVDr8sse3ovoX8A7aafD1h4DlDOsrrE4pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Bqhk8ah+; arc=none smtp.client-ip=209.85.160.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-277c28fac92so429fac.3
-        for <linux-iio@vger.kernel.org>; Wed, 04 Sep 2024 12:14:22 -0700 (PDT)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-278279a3a39so12314fac.0
+        for <linux-iio@vger.kernel.org>; Wed, 04 Sep 2024 12:14:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725477262; x=1726082062; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=icxQYjZ5lhVTHRZxV1n+KW9S/3qh7ut35wj8uDEJc2Y=;
-        b=ryUyajmQc7l7hy5gXHPISS2rwADV9Be29M6OIoQWgDQT4nRJRIpCcMzfpUvtZtvNRQ
-         vGbLWV+4Ov4G89ThR3bguw0Lqx4T+NvlpMNFILIkcMf/ERGsV+bACPTbMxytgqu0kxxi
-         yBKTxGG+YS34Jk0dTvp1k2vhOT7Gj8sTDuTL7dlx2rqdGwZdnNhz1G2gr4KUJRdqYyRw
-         Yn7Q9gCGcejQusTw2BnemXPe6pEQFazjMl/0zsOt1nEbFtmg0tOnmTbpRJLXhahxQB1m
-         yYO573CAvL/GylY/cc+luRApdFLfWQ3b3BBtvjXjJPJAF2d5i3y05aWGh4BvW1N19/8q
-         qQxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725477262; x=1726082062;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725477263; x=1726082063; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=icxQYjZ5lhVTHRZxV1n+KW9S/3qh7ut35wj8uDEJc2Y=;
-        b=FOw+gLI7U+HrWw6dMWc1kI8lBo90CxldzO4I171/Ugr6nv+w8w8ZAGmilqXst6V/u4
-         6d06rfoC4mnd2FDyt8VWG5L5ckBbN0NVg378u5WyDzWFRxoGKHWM7UbWx5eFrr3h/SKA
-         E/GHPjnege4EElk7JuvROXcZhOeXMDQVkQdJNCV8GPagmyqibx484Vbof6yP/xJsQmwN
-         riz5aoO5Liza3eaCL/nUSo81s2GznTfmVNd8OMnzTi2zadu/QxelQ81sUU8jrYYvUo0f
-         Uuia0hyV3R+2yYagxQtK2K0YiIIJUlVPH0W564KPacm+ix0rLrdDSFTxRYZRqfpBwcu9
-         IRnw==
-X-Gm-Message-State: AOJu0YysWnd21BZ1QXxGvmc/dsP/hkiD+AkZIJ9yD4NJZyDMfXkZTQ37
-	hR4zJPVR7B79E4Rj++Z06PlrKidSoC2IN7ooBXUBi3guCQPYWlD/rafZEtx8HVk=
-X-Google-Smtp-Source: AGHT+IESzRKYSh7VbzJurKo07781IgfN0d2D3CHqQv4yUKjlusFL4WO3+KU5g7ujtYaN/T6E8/7FeQ==
-X-Received: by 2002:a05:6870:910a:b0:278:8fe:6293 with SMTP id 586e51a60fabf-27810b246c2mr9305971fac.1.1725477261565;
-        Wed, 04 Sep 2024 12:14:21 -0700 (PDT)
+        bh=+RrcLp4DnQKM4STPH/FJP94hc63N43mi7DT/0zmkB6Q=;
+        b=Bqhk8ah+EqjB6qvf2hk2oMoshylQZsHRQlZNZyfwFjzSBFOB2AyL4igBFsue3IodLO
+         DghdJua+Ys1zoMvjtN4ukMtVr2uZ3NfPONUtxv8AdDrlwE2MhWukzWuKOPGqEfJEQ/Ub
+         p11/FIytvtiymAKpr/NOHr2j97cxbP3KaZTRc1z+wA2vh3jHx8agyS0KfhpmTY72Xp4S
+         PDUQURKx2NypS8FtNDYqQ84pEWc1FsCJhYkDoCcPmGqAwHMkfrgTi45R8VLCddIcvLLP
+         8MdDbQRGV8f5vmm4yNCs7nUe3QFl2mdhW82YOU5agejeXfDHBgog+zJJCd94Uf6jt06U
+         9Ulg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725477263; x=1726082063;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+RrcLp4DnQKM4STPH/FJP94hc63N43mi7DT/0zmkB6Q=;
+        b=w8HkYrUlh3Sm3QJGY71WORMwLPcOV9RM4dk0UavMthv3q//nLABKrhpvOce74ZA9TJ
+         11FVYxnVWtPKpVKs6Y4Ej9Q5xhWxH2ol5//0BF2Agz3JEpUj2mqz/GIntf7pcuSadqX0
+         gf78Ad483DSppqH2FEauWAom8QAsXQ4IETRcPfdA+XcKJ+sSN/HkyJ+/HHWXLxxdUeIZ
+         f7Vnh8JDAEkiZ9WDI0C4+ugBIqeJMtnIH+alOS6BWDbwX4h/7mRQ7DUroLg1FGaaiIlP
+         mmnV395Yd9D3wIHnGR6YCWBHyOQtsBhvOG5lg3Tni979wLIwU6/UpYfUa1UArkfOu4aU
+         3Ksw==
+X-Gm-Message-State: AOJu0YzfCQKI4hk3FcM/6Xmad6jffR0A08sRLvSDb60pfQkrnIXPL6RI
+	DKPcmLhlaUlbHjiPTDR3fO7cXq/StZXuLqhg7OzX6vFGeuUIQQNOuO6EK/vQfyctoVSObZzFeIy
+	EQ+c=
+X-Google-Smtp-Source: AGHT+IHNvbnp8OBpaHE5h/CcLm1PdMYVDnqNgp9aW2NGdJA//igcLLiWUWDV6jBA8hLPNGA09XdgjQ==
+X-Received: by 2002:a05:6870:7020:b0:260:e611:c09 with SMTP id 586e51a60fabf-2781a9e8c5emr6340056fac.47.1725477263057;
+        Wed, 04 Sep 2024 12:14:23 -0700 (PDT)
 Received: from [127.0.1.1] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a98f026caesm8861085a.135.2024.09.04.12.14.20
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a98f026caesm8861085a.135.2024.09.04.12.14.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Sep 2024 12:14:21 -0700 (PDT)
+        Wed, 04 Sep 2024 12:14:22 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Subject: [PATCH v4 0/3] iio: adc: add new ad7625 driver
-Date: Wed, 04 Sep 2024 15:14:17 -0400
-Message-Id: <20240904-ad7625_r1-v4-0-78bc7dfb2b35@baylibre.com>
+Date: Wed, 04 Sep 2024 15:14:18 -0400
+Subject: [PATCH v4 1/3] dt-bindings: iio: adc: add AD762x/AD796x ADCs
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,11 +77,10 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAImx2GYC/23M3wqCMBTH8VeJXWfsTI+bXfUeEbE/xxyUxhaSi
- O/eFCKLLn+H8/mOLFLwFNl+M7JAvY++a9MothtmG91eKPMubSa4KLjMeaadLAWeA2QldyBJC1W
- hYun/Hqj2z6V1PKXd+PjowrCke5iv7wqsKj1kKQpUU41aaFMdjB6u3gTa2e7G5lAvPljxao1Fw
- rVCktqqHJD/wfkKwxfOE5boUIC0sjT4g6dpegHD+Oj7HwEAAA==
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240904-ad7625_r1-v4-1-78bc7dfb2b35@baylibre.com>
+References: <20240904-ad7625_r1-v4-0-78bc7dfb2b35@baylibre.com>
+In-Reply-To: <20240904-ad7625_r1-v4-0-78bc7dfb2b35@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
  Michael Hennerich <Michael.Hennerich@analog.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
@@ -93,107 +94,219 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  Trevor Gamblin <tgamblin@baylibre.com>
 X-Mailer: b4 0.14.1
 
-This series adds a new driver for the Analog Devices Inc. AD7625,
-AD7626, AD7960, and AD7961. These chips are part of a family of
-LVDS-based SAR ADCs. The initial driver implementation does not support
-the devices' self-clocked mode, although that can be added later.
-
-The devices make use of two offset PWM signals, one to trigger
-conversions and the other as a burst signal for transferring data to the
-host. These rely on the new PWM waveform functionality being
-reviewed in [1] and also available at [2].
-
-This work is being done by BayLibre and on behalf of Analog Devices
-Inc., hence the maintainers are @analog.com.
-
-Special thanks to David Lechner for his guidance and reviews.
-
-[1]: https://lore.kernel.org/linux-pwm/cover.1722261050.git.u.kleine-koenig@baylibre.com
-[2]: https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git/log/?h=pwm/chardev
+Add a binding specification for the Analog Devices Inc. AD7625,
+AD7626, AD7960, and AD7961 ADCs.
 
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
-Changes in v4:
-- Link to v3: https://lore.kernel.org/r/20240819-ad7625_r1-v3-0-75d5217c76b5@baylibre.com
-- Rebase on top of latest pwm/chardev branch at:
-  https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git/log/?h=pwm/chardev
+ .../devicetree/bindings/iio/adc/adi,ad7625.yaml    | 176 +++++++++++++++++++++
+ MAINTAINERS                                        |   9 ++
+ 2 files changed, 185 insertions(+)
 
-  [PATCH 1/3]
-  - No change
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
+new file mode 100644
+index 000000000000..8848562af28f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
+@@ -0,0 +1,176 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7625.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices Fast PulSAR Analog to Digital Converters
++
++maintainers:
++  - Michael Hennerich <Michael.Hennerich@analog.com>
++  - Nuno Sá <nuno.sa@analog.com>
++
++description: |
++  A family of single channel differential analog to digital converters.
++
++  * https://www.analog.com/en/products/ad7625.html
++  * https://www.analog.com/en/products/ad7626.html
++  * https://www.analog.com/en/products/ad7960.html
++  * https://www.analog.com/en/products/ad7961.html
++
++properties:
++  compatible:
++    enum:
++      - adi,ad7625
++      - adi,ad7626
++      - adi,ad7960
++      - adi,ad7961
++
++  vdd1-supply: true
++  vdd2-supply: true
++  vio-supply: true
++
++  ref-supply:
++    description:
++      Voltage regulator for the external reference voltage (REF).
++
++  refin-supply:
++    description:
++      Voltage regulator for the reference buffer input (REFIN).
++
++  clocks:
++    description:
++      The clock connected to the CLK pins, gated by the clk_gate PWM.
++    maxItems: 1
++
++  pwms:
++    items:
++      - description: PWM connected to the CNV input on the ADC.
++      - description: PWM that gates the clock connected to the ADC's CLK input.
++
++  pwm-names:
++    items:
++      - const: cnv
++      - const: clk_gate
++
++  io-backends:
++    description:
++      The AXI ADC IP block connected to the D+/- and DCO+/- lines of the
++      ADC. An example backend can be found at
++      http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html.
++    maxItems: 1
++
++  adi,no-dco:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Indicates the wiring of the DCO+/- lines. If true, then they are
++      grounded and the device is in self-clocked mode. If this is not
++      present, then the device is in echoed clock mode.
++
++  adi,en0-always-on:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Indicates if EN0 is hard-wired to the high state. If neither this
++      nor en0-gpios are present, then EN0 is hard-wired low.
++
++  adi,en1-always-on:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Indicates if EN1 is hard-wired to the high state. If neither this
++      nor en1-gpios are present, then EN1 is hard-wired low.
++
++  adi,en2-always-on:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Indicates if EN2 is hard-wired to the high state. If neither this
++      nor en2-gpios are present, then EN2 is hard-wired low.
++
++  adi,en3-always-on:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      Indicates if EN3 is hard-wired to the high state. If neither this
++      nor en3-gpios are present, then EN3 is hard-wired low.
++
++  en0-gpios:
++    description:
++      Configurable EN0 pin.
++
++  en1-gpios:
++    description:
++      Configurable EN1 pin.
++
++  en2-gpios:
++    description:
++      Configurable EN2 pin.
++
++  en3-gpios:
++    description:
++      Configurable EN3 pin.
++
++required:
++  - compatible
++  - vdd1-supply
++  - vdd2-supply
++  - vio-supply
++  - clocks
++  - pwms
++  - pwm-names
++  - io-backends
++
++allOf:
++  - if:
++      required:
++        - ref-supply
++    then:
++      properties:
++        refin-supply: false
++  - if:
++      required:
++        - refin-supply
++    then:
++      properties:
++        ref-supply: false
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - adi,ad7625
++              - adi,ad7626
++    then:
++      properties:
++        en2-gpios: false
++        en3-gpios: false
++        adi,en2-always-on: false
++        adi,en3-always-on: false
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - adi,ad7960
++              - adi,ad7961
++    then:
++      # ad796x parts must have one of the two supplies
++      oneOf:
++        - required: [ref-supply]
++        - required: [refin-supply]
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    adc {
++        compatible = "adi,ad7625";
++        vdd1-supply = <&supply_5V>;
++        vdd2-supply = <&supply_2_5V>;
++        vio-supply = <&supply_2_5V>;
++        io-backends = <&axi_adc>;
++        clocks = <&ref_clk>;
++        pwms = <&axi_pwm_gen 0 0>, <&axi_pwm_gen 1 0>;
++        pwm-names = "cnv", "clk_gate";
++        en0-gpios = <&gpio0 86 GPIO_ACTIVE_HIGH>;
++        en1-gpios = <&gpio0 87 GPIO_ACTIVE_HIGH>;
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index fa2c8d902122..77557e85220e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1271,6 +1271,15 @@ F:	Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
+ F:	drivers/iio/addac/ad74413r.c
+ F:	include/dt-bindings/iio/addac/adi,ad74413r.h
+ 
++ANALOG DEVICES INC AD7625 DRIVER
++M:	Michael Hennerich <Michael.Hennerich@analog.com>
++M:	Nuno Sá <nuno.sa@analog.com>
++R:	Trevor Gamblin <tgamblin@baylibre.com>
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++W:	http://analogdevicesinc.github.io/hdl/projects/pulsar_lvds/index.html
++F:	Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml
++
+ ANALOG DEVICES INC AD7768-1 DRIVER
+ M:	Michael Hennerich <Michael.Hennerich@analog.com>
+ L:	linux-iio@vger.kernel.org
 
-  [PATCH 2/3]
-  - Add 'depends on PWM' under 'CONFIG AD7625' in
-    drivers/iio/adc/Kconfig, based on v3 discussions
-  - Cleanup whitespace usage in Kconfig, bandwidth logic to match
-    Jonathan's suggestions
-
-  [PATCH 3/3]
-  - No change
-
-Changes in v3:
-- Link to v2: https://lore.kernel.org/r/20240809-ad7625_r1-v2-0-f85e7ac83150@baylibre.com
-  
-  [PATCH 1/3]
-  - Add gpio bindings header, en0-gpios and en1-gpios to binding example
-  - Remove unnecessary comments
-
-  [PATCH 2/3]
-  - No change
-
-  [PATCH 3/3]
-  - No change
-
-Changes in v2:
-- Link to v1 (marked as RFC): https://lore.kernel.org/r/20240731-ad7625_r1-v1-0-a1efef5a2ab9@baylibre.com
-- Include link to required PWM patch series in cover letter (missing before)
-- Include new link to the pwm/chardev branch of Uwe's kernel tree
-  
-  [PATCH 1/3]
-  - Rework dt bindings to be compliant using make dt_binding_check
-  - Add "adi,no-dco" flag to address indication of how DCO lines are
-    configured
-  - Fix binding patch message
-  - Remove chip packaging info from binding description
-  - Move comments around to be clearer
-
-  [PATCH 2/3]
-  - Remove ad7625_pwm_disable(), call pwm_disable() directly
-  - Add ad7625_buffer_preenable() and ad7625_buffer_postdisable()
-    functions
-  - Add devm_ad7625_regulator_setup() function, move all regulator logic
-    to it, consolidate the comment blocks related to it above
-  - Add have_refin flag in ad7625_state struct
-  - Add pwm_waveform structs to ad7625_state struct for storing
-    requested waveform characteristics
-  - Refactor ad7625_set_sampling_freq() to set the pwm_waveform struct
-    values in ad7625_state, limiting PWM enable/disable to
-    preenable/postdisable functions
-  - Remove redundant dev_err_probe() after devm_ad7625_pwm_get()
-  - Use device_property_read_bool() instead of device_property_present()
-  - General alignment and line wrapping fixes
-
-  [PATCH 3/3]
-  - No change
-
----
-Trevor Gamblin (3):
-      dt-bindings: iio: adc: add AD762x/AD796x ADCs
-      iio: adc: ad7625: add driver
-      docs: iio: new docs for ad7625 driver
-
- .../devicetree/bindings/iio/adc/adi,ad7625.yaml    | 176 ++++++
- Documentation/iio/ad7625.rst                       |  91 +++
- MAINTAINERS                                        |  11 +
- drivers/iio/adc/Kconfig                            |  16 +
- drivers/iio/adc/Makefile                           |   1 +
- drivers/iio/adc/ad7625.c                           | 684 +++++++++++++++++++++
- 6 files changed, 979 insertions(+)
----
-base-commit: 1ebd3850421749eb44bd040b249bd4db88d35b33
-change-id: 20240730-ad7625_r1-60d17ea28958
-
-Best regards,
 -- 
-Trevor Gamblin <tgamblin@baylibre.com>
+2.39.2
 
 

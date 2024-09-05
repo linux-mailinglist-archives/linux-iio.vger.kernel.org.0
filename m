@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-9220-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9221-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D849696E507
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 23:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E97396E52E
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 23:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 583D5B20D97
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 21:25:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8311B21529
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 21:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC401AB6D9;
-	Thu,  5 Sep 2024 21:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981E91B1D42;
+	Thu,  5 Sep 2024 21:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2zveC6n1"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="q4FC1mOQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC67E56E
-	for <linux-iio@vger.kernel.org>; Thu,  5 Sep 2024 21:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AE71AF4CC
+	for <linux-iio@vger.kernel.org>; Thu,  5 Sep 2024 21:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725571543; cv=none; b=aVcZmayLdyLEQPQpjLNfsjNZrinVow8tmULfgRoZv0RMpnor4X8p7FCaUqRynzycKKH5I8mrgpN+KTv95urp//Isvk1ZCiX2lW+17+/HU3aghWCT4jHA16YD6EaB7cTPs/8H7hJ/HBBFBldwW3F44EFso3dWIJek8CJWsJ3kGrc=
+	t=1725572242; cv=none; b=n12vU1Q4NQP71eJkRqsusq0psq87pn8b8HFenX2U1LVkSHpsqxRLvyqmh7C0Wi2Hn/7QSR0BTZjn8Egl7dzGWvWVQEKNzsP73jisgQlQdeKePca8gwUIhCkXmoE8zStZGs4yXskjVnKoWsZIrJcCMUVOQn9vSawEokUvKdEKdbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725571543; c=relaxed/simple;
-	bh=HSVdh6DlK/bUQYWwhJ/DOlVdKX73tkTLOVCP3lGqjOw=;
+	s=arc-20240116; t=1725572242; c=relaxed/simple;
+	bh=NMWWXmsihlaJ178vdeBvuf0Ff+czhea7zCeLpdR6T5s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LgrBTSaLuE7Jim8Dy1gJwzWea2Ub0vgr1cX1pSMcBTqqwVl9zBepAyAnxqAFyarDOLwDC76TCHoWL9BkBrlBJPsEX8/Jq6WysPvIGiLsrXnHFDKSvFCDy22JFpRqnVVsXhrwxoeyfm13zkmBISOXxqWIBP5JCH+U9QGaYr3rl7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2zveC6n1; arc=none smtp.client-ip=209.85.167.179
+	 In-Reply-To:Content-Type; b=CEnfB5PW4zeUWtZt8IAPOJN7N1LuHh/hE6rzWeIgSL6ILD1RFdlB+q86uVaz72vvoQZmbzCm2G5Taxu12MWiCj0euT6WtkXUdQmL6kmINB8WJBSqANz9we0X5aWzo73jiEIakUIMIcUNBevUM9OePznA6WW8oAW4qAuTramkwhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=q4FC1mOQ; arc=none smtp.client-ip=209.85.161.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3df0c80286dso805957b6e.3
-        for <linux-iio@vger.kernel.org>; Thu, 05 Sep 2024 14:25:41 -0700 (PDT)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5e19b08db12so654485eaf.0
+        for <linux-iio@vger.kernel.org>; Thu, 05 Sep 2024 14:37:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725571540; x=1726176340; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725572238; x=1726177038; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Fu2LBq0wr4uCbYcpOIyALHAwFgwtVHbOrzj2MNQAIS8=;
-        b=2zveC6n1qxVQJfTD0IhUJl/vozcEBRcM8NzyyhwH43dAdeU2BzKnFfEW58h12ABgij
-         TCcjRBM24hSiXFKpTMzzq71Mf9Fah/jdFbtx14/72Pp4KAuN/DCZLERnJ71ZCGVzzgTU
-         SSR33BpV8vg0uAYDqUQUDGp3N29zp4Ujk6G9Gmrlv7jpxewitFA7ij+5Xj/prdNFj7nS
-         jybUArGsegRehyZtrlmKsBXLcHAxSOcnQWi1El1L4+5SIcF5XkC+uyB71twaGqj65BFs
-         d+OvsdmX7LZ/jW3zHu7Qx+2JgCfper9zAuA/+w6nWU+Gd2uCfRItvYqy6XmHhnanXyhc
-         xzNA==
+        bh=W8k/87J8v0WGnn9qmtJ2GBGp1+IkG/52AlAFv4ysC44=;
+        b=q4FC1mOQHDuZ/XPF1sG15v4r7hbyOvhHdAPCCXbGY5uf8rh3aJMiKvXCzkFULf71X9
+         LvC805LgHbL9lN62rWI/YBfD0fiLEheFE91B39b1Y1YPpoyF0UKRtoA44c0mqAvdml/A
+         VEE/9UlI507qduKIQgUdb+yFg/rDY2J21VpT9ejeytAyA1KRQgv+dvy9OXAaIJ4MTO92
+         WBaa2Of7sE5zcoBo/jQ25CRMmhFucwruSrtKlzTS3ATVgYQWq394wzDDF6SBFaO+rdAw
+         2MLGDDu1hOaVlVJHLRJ2R8aJEoM34CuWVsNjcZG7dJcW51OvFp7ihG9elzgba0TUmA9R
+         j7yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725571540; x=1726176340;
+        d=1e100.net; s=20230601; t=1725572238; x=1726177038;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fu2LBq0wr4uCbYcpOIyALHAwFgwtVHbOrzj2MNQAIS8=;
-        b=jF2W2fYpU01RG+2YGFZSLv4xhJZuzgVdFoGXujMwWFkrxfKt4G/V4NxMmYKKxuVD63
-         jCUoRg2EdQIpEd3+eKLxb8DcNxq/LOsfqWfZz+iSJlO+aPYUCY4+OnF245vwJIIASlA3
-         UqFNh6NWL5otO1grqqDLabXl8Pn+303H9o3yujDT159ALyUm9jMBq/UP7FYI30oCxuHo
-         9RzPWRvLchpnEA7XAOtUGo9JCiEFwGkT8K/6A8pXjMDTC5YdSCwSI34IM/X/bG4OAi3L
-         x5MyH2E2MickkAecbeVQ36R8mtoYsjjA5CaXcWaQDbnUFp2awISJbLO6+6RLm+JZhV5+
-         hHXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXYigt9qRad6q834JC0wHQmaEHTO7hAf4M4/UbvDRHfO40ymsjfprVDh8BVWKXt2sNfPq5D6Hdjma8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQoDxODcr38qpSGEjcBB7veMEHTxLAFDGYieQbABJ9dMPGDCcc
-	jZX7JljSKNBxp+69kkwGitTcuo5uOHvoLMdio04HscqH8LSnrqsqblC1tlWf5O0=
-X-Google-Smtp-Source: AGHT+IHdv/EbugAmJ7r5iwyOeKbvpTXIU+mFHAGXNUh55QcJGCrv3aFVWa6nJ0A/HsvDo91d7GHtsg==
-X-Received: by 2002:a05:6808:2110:b0:3d9:4163:654f with SMTP id 5614622812f47-3e029f27515mr810531b6e.32.1725571540508;
-        Thu, 05 Sep 2024 14:25:40 -0700 (PDT)
+        bh=W8k/87J8v0WGnn9qmtJ2GBGp1+IkG/52AlAFv4ysC44=;
+        b=DHOrolLKsatQj1ZXviIBJL/NzODRlEFJ4ZSgpdmjf/NbuuPNZaYbINUE9/uU2kzZsE
+         8bmD8jNkknS9l+kdOWtidQqQLKA+zdb6JDaCIaBJlwmH87JkuU49n+J4rFwy13vwXX1Q
+         /bBxnHo7jZNhac0WyebIXHOVWmad0gC1hzKOQ3ianYiHmb5g+dsHcuxBGb5BAgHiiSQ9
+         k5re5hNBRUOm1u34UzaksDkGEmP5Q7gQc723pNN1B1OoORSPYUDdHh5ZATrN42zZ7e55
+         m51+Etd/Ft/LDYM+ckQnXGm9f7g8DVcXLSSiVgM6Z9zTdT7HN1TxjXtgLh1YAlinYM0r
+         UrHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ80d0ZgfcQQfiZbPkq+188qW6Lz3OGx3efFeIVEGN5UX9d3RCJk9N2UQrawi9QQpkomvRB/TvGL0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5QPu+ERm6QhmvzDBYo7QhW7V53f599FyGh5uvPEjNF3hS7TwN
+	Vz2PB51QOnPKh0pJukh7cvCxTkGZK+eM0Af1pmGNSK6xndvRAC8eL9pnTSgREo8=
+X-Google-Smtp-Source: AGHT+IHEOGUSIV5ef9VhIUEO8auXLaciRzGvHeroPVcEmS82VwePJKXqWreEFXLHBVoxw4JLLRDsgw==
+X-Received: by 2002:a05:6820:4b0e:b0:5ba:ec8b:44b5 with SMTP id 006d021491bc7-5e1a9cf458cmr551998eaf.3.1725572238205;
+        Thu, 05 Sep 2024 14:37:18 -0700 (PDT)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3df11865deesm3363718b6e.46.2024.09.05.14.25.39
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5dfa047b631sm2764435eaf.10.2024.09.05.14.37.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Sep 2024 14:25:40 -0700 (PDT)
-Message-ID: <7ba70132-e661-4f4f-a0e3-0ed1efc1aecb@baylibre.com>
-Date: Thu, 5 Sep 2024 16:25:39 -0500
+        Thu, 05 Sep 2024 14:37:17 -0700 (PDT)
+Message-ID: <a7fd7490-53c9-4a25-a659-6f52ff509fe8@baylibre.com>
+Date: Thu, 5 Sep 2024 16:37:17 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,67 +76,34 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/8] iio: adc: ad7606: add 'bits' parameter to channels
- macros
+Subject: Re: [PATCH v4 2/8] iio: adc: ad7606: move 'val' pointer to
+ ad7606_scan_direct()
 To: Alexandru Ardelean <aardelean@baylibre.com>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 Cc: jic23@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
  michael.hennerich@analog.com, gstols@baylibre.com
 References: <20240905082404.119022-1-aardelean@baylibre.com>
- <20240905082404.119022-2-aardelean@baylibre.com>
+ <20240905082404.119022-3-aardelean@baylibre.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20240905082404.119022-2-aardelean@baylibre.com>
+In-Reply-To: <20240905082404.119022-3-aardelean@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 9/5/24 3:23 AM, Alexandru Ardelean wrote:
-> There are some newer additions to the AD7606 family, which support 18 bit
-> precision.
-> Up until now, all chips were 16 bit.
+> The ad7606_scan_direct() function returns 'int', which is fine for 16-bit
+> samples.
+> But when going to 18-bit samples, these need to be implemented as 32-bit
+> (or int) type.
 > 
-> This change adds a 'bits' parameter to the AD760X_CHANNEL macro and renames
-> 'ad7606_channels' -> 'ad7606_channels_16bit' for the current devices.
-> 
-> The AD7606_SW_CHANNEL() macro is also introduced, as a short-hand for IIO
-> channels in SW mode.
+> In that case when getting samples (which can be negative), we'd get random
+> error codes.
+> So, the easiest thing is to just move the 'val' pointer to
+> 'ad7606_scan_direct()'. This doesn't qualify as a fix, it's just a
+> preparation for 18-bit ADCs (of the AD7606 family).
 > 
 > Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
 > ---
 
-...
-
-> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-> index 0c6a88cc4695..771121350f98 100644
-> --- a/drivers/iio/adc/ad7606.h
-> +++ b/drivers/iio/adc/ad7606.h
-> @@ -8,7 +8,7 @@
->  #ifndef IIO_ADC_AD7606_H_
->  #define IIO_ADC_AD7606_H_
->  
-> -#define AD760X_CHANNEL(num, mask_sep, mask_type, mask_all) {	\
-> +#define AD760X_CHANNEL(num, mask_sep, mask_type, mask_all, bits) {	\
->  		.type = IIO_VOLTAGE,				\
->  		.indexed = 1,					\
->  		.channel = num,					\
-> @@ -19,24 +19,26 @@
->  		.scan_index = num,				\
->  		.scan_type = {					\
->  			.sign = 's',				\
-> -			.realbits = 16,				\
-> -			.storagebits = 16,			\
-> +			.realbits = (bits),			\
-> +			.storagebits = (bits),			\
-
-Technically OK in this patch since bits is still always 16 but we
-can avoid changing the same line again later to:
-
-	(bits) > 16 ? 32 : 16
-
-if we just do that in this patch.
-
-
->  			.endianness = IIO_CPU,			\
->  		},						\
->  }
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 

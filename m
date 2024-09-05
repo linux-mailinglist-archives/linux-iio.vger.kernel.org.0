@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-9194-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9195-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3A696D7C3
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 14:00:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4651D96D80B
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 14:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E681284B64
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 12:00:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDCD1289B96
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 12:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC6B19ABBF;
-	Thu,  5 Sep 2024 12:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C2519ABBF;
+	Thu,  5 Sep 2024 12:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EvoKYh86"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mhiKDw6e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8271019AA68
-	for <linux-iio@vger.kernel.org>; Thu,  5 Sep 2024 12:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E7319925D
+	for <linux-iio@vger.kernel.org>; Thu,  5 Sep 2024 12:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725537608; cv=none; b=Nu9lTzGWHt60n7jnYZNCawk0zvDUnOyW2imLd44E7LIx8XHWm0Ae0Br/kodUQ09IeJHbMxyK/SrCMXprnnACKtki/hzhrdGp7kBiJJa5WsmqsBAFwDu3re3BoPV+O867334Dt4NhPOygNTSWGEV/h4+4aO2zFqnJyEJBa3nuuIc=
+	t=1725538385; cv=none; b=CgofTMAfU7Vu8wbmCF7YGWPQyz4frMHrbTwYu0uB8+4kvyCUvuOCzSvQC8zBliPgKFxwtS1V/PprK+2n00OzVc2x7DAocTeRvu/lmBQOBgVzidFyz0B2JJ7Y2qDqPuCodc1gX2bQyTcdXdibu0e3K429WDSS9cXPLQbWAgGBtCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725537608; c=relaxed/simple;
-	bh=Wcvq3+NDX0tzWvkuBOwRlEtcsUqZSW77XlwzSUee9gE=;
+	s=arc-20240116; t=1725538385; c=relaxed/simple;
+	bh=+jDG3JYDe/++FF/fh8h9sLbqIlRkatmczwokOPhdfro=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RknCVeUUiSyRMe+GB/+qhHZh/8ppoK5CUljS7/vWbjRHP80Xs7l7W0AKjPrJs6J0kd5tNWwTzdNE5wFDqAQIFMuf5GzxAiPeKomrbq+4LO+QUgkIwioalwgtGdLw40LFncV+/tr4NMEAoSksN75hW0EKNZNQsWFHhlzKwiO06cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EvoKYh86; arc=none smtp.client-ip=209.85.128.50
+	 In-Reply-To:Content-Type; b=RTYChHbaRglaRkA2xXj58TIMczrUk0kFsNJQ50VvViEA9J2F4j+H8tAjkM0S56h5SrqBYFXPsJRNVd0mKyF8NHwGFh09KatHF9O1YnNlJCc7sobyk23rcsuiBA5uI7Hy1GVQqG36bktZzDVrX2DWAUpln0FKiC5sbPkchO+mCtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mhiKDw6e; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-428e0d184b4so5309575e9.2
-        for <linux-iio@vger.kernel.org>; Thu, 05 Sep 2024 05:00:05 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42c7b5b2d01so7068985e9.3
+        for <linux-iio@vger.kernel.org>; Thu, 05 Sep 2024 05:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725537604; x=1726142404; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725538381; x=1726143181; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6W2T1ARXfE5FffV0ad0w8s9KYGn6D9vMF54U4dkdbSY=;
-        b=EvoKYh86j8udYmFQEAEwOBCuS9SF9xikijcWo0FPRJ7skSwFJlMW94XC7aIVCkgLDs
-         Et1NzFmhWxqiN2qCSG8NoR3pSrjWtr+rWIWS/4UAcbwk5HU6fsGpH+woMTm58lEqbSfx
-         YAPNXootkOj+poKfIYTjgG7oFVcMy7o+aakhlk1NKXULvMsa8pbFHOV0UulxZdJlWSBp
-         nTOuoJAf6763ghQnhELJZoatvDpzkJAxHk0FQBE2GaZGKduDPuFXQiGwbJB2QweU2mLE
-         BiE33c7kMP119ZJtUH4JXu25edYGGMBH8v5y5Q39jfJJ5ykouWI8pPrm/Bvh8Aoz9c26
-         /l+g==
+        bh=m6It2HdDUC4BbNQGIGTSDyaqe3HUtc/IZnrLdGUtApY=;
+        b=mhiKDw6eM7LsHfUYp4jkMgu95khQDk2TJD8n9DBzadvYrlJHMa/VDTLWB0pxC4R7PD
+         IIJOA73P4t0dadO7JhghqR4AL9UX6bGCmVc6pDlHTp1usHa7Fb6nd4fVoj9cGlyl3+gk
+         ra91RHIFzCksVAuKlffDJ/j3CzS+egEb5NWynMbVIg1fjpoaU7gb1mDEEQf52f/HteW6
+         EaKpDcKufNkIHd6CHWEJrWqi0fM0qbEuowHjKIiLAfmbmdk0TvPljFsd+nUZKzjhWXqA
+         Jld0SCUSYm87p1wWEqqS7zLKCnX4n+qdOJ4/5pJCSsaqs0YxrfJcJjtA9tVcQzlhKpD+
+         VlWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725537604; x=1726142404;
+        d=1e100.net; s=20230601; t=1725538381; x=1726143181;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6W2T1ARXfE5FffV0ad0w8s9KYGn6D9vMF54U4dkdbSY=;
-        b=w1LiZrnL/Hb4Nkwr/vf9fY2sNRnoUbGZtF3wpdl8e1o7dBaWYKrQR/xsGHmvzI/Fnu
-         KNyOZM0QS5l2r3xfNQFrauuKSLSt5VaHD3eCjRYUFePAx6CW2Tc0K6ybLPaq12zC+XBt
-         UANrj8ByO4AbF7W3aRORWA7Vvj/THEasyVjMfaOTzhMuILyRPjvIeCikz3RH/GOF6Oct
-         BTS7C5Cchp9ypi3wuuKb60Rr4pXqJr+/RtKZtApdZB9Az/B0VLTP6hqIyzk8a4xlTAnw
-         UmTQ9Ea30NSwWjHLOvijnXX7DqkteB7kyy9hvEybYCpWR4dbTTJKO1ZJfNoid23F2tD8
-         D46A==
-X-Forwarded-Encrypted: i=1; AJvYcCXw/3C8MyrNus6Q/VBsjPl+vqaEEE2JlBzdD98s7Sh08JhvvqK3RTYarKka71X8BW0wvVE6TUz4KBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySUP5dGgyF20xZax/PFTZgwOsqloAGE8mLfEP+kLNx/rKDxFca
-	u1HaGhzpl8vGCHWn/MTPW8bLS8wZIaKbDgVp9+/WuMU4RXDmj65MLpI0/JmhLMQ=
-X-Google-Smtp-Source: AGHT+IGElgx3ZOHnT66SiGqxEHCvxnNfKxkGSoOKCVobJTUKmV7cex2HySNCQ7NnbKHxNDc687V4Xw==
-X-Received: by 2002:a05:600c:3b9b:b0:426:62c6:4341 with SMTP id 5b1f17b1804b1-42c7b5b4bdfmr120906835e9.20.1725537603729;
-        Thu, 05 Sep 2024 05:00:03 -0700 (PDT)
+        bh=m6It2HdDUC4BbNQGIGTSDyaqe3HUtc/IZnrLdGUtApY=;
+        b=rEQ2bpTsdycoXa5ipxeXZJ6o0VbLIbRLnNpt5bMdxYeQ4S8k+0ob262bIvoUZ0/tfB
+         zgWXMztpCXFtU6AW+Vh0vSy3+CvHUTdH9Yc/yzvAPI2WbEinV/bhwzGmof3SoruyMQJD
+         ZAHs5lUVfvBm0jzn79yvN0QK0ZsHyEcO667UctLZRT7ez6eWg6Sy8d/V9DqK9vp6OlZn
+         dCdw+eqjoAckU6GFhj7LMWNfiGUKvrpyxSf5P8l+c/bRagN2ZIyABfwMUGhBGXnKLQWX
+         b8jNOrDLrT9k5PWh5dTKsqJsFaOYE8eummVkYi8vUxFCPX5iqDV8Aa6CWQhKJL4jIlBz
+         s2QA==
+X-Forwarded-Encrypted: i=1; AJvYcCXkOp9v+XE8xZH//Kqy47oMfCBVifbfoVlldponwzIPIyuqS97iNXery71JdLKO+3ke7bnxx3q3IhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6UEAGTLL3sJRZHZYOC6LUu/3IZEp1t36FYdVPxoY3YW0++HF0
+	2dFi9/FD6I/dMYDAP8lpWneogGMmBiRNS5kXdfgtQnQDRxcJiQcOd4oSwC18/jQ=
+X-Google-Smtp-Source: AGHT+IFtTOwg01ZV8wigd8IpvAdo9Pm90FUvvktd9bNtF2isYdPsdJqza1tsCWD6aeOTo0Q/OaYBOw==
+X-Received: by 2002:a05:600c:198a:b0:426:5f09:cf53 with SMTP id 5b1f17b1804b1-42c9a365e3fmr22108905e9.15.1725538380309;
+        Thu, 05 Sep 2024 05:13:00 -0700 (PDT)
 Received: from [192.168.0.2] (host-95-233-232-76.retail.telecomitalia.it. [95.233.232.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3749eea60e2sm19131009f8f.62.2024.09.05.05.00.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6df84b9sm231345205e9.24.2024.09.05.05.12.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Sep 2024 05:00:03 -0700 (PDT)
-Message-ID: <5ca7f8a8-7ef7-4dbd-8ed4-791976bba3ef@baylibre.com>
-Date: Thu, 5 Sep 2024 13:58:51 +0200
+        Thu, 05 Sep 2024 05:12:59 -0700 (PDT)
+Message-ID: <ad1a8507-49df-49c6-a285-8adb407ad7a1@baylibre.com>
+Date: Thu, 5 Sep 2024 14:11:49 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -100,6 +100,8 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 Hi,
+
+sorry forgot to reply about the regmap,
 
 On 05/09/24 12:49 PM, Nuno Sá wrote:
 > On Tue, 2024-09-03 at 20:16 +0100, Jonathan Cameron wrote:
@@ -184,7 +186,20 @@ On 05/09/24 12:49 PM, Nuno Sá wrote:
 > The current API is likely more generic but tbh (and David and Angelo are aware
 > of it) my preferred approach it to use the regmap_bus stuff. I just don't feel
 > that strong about it :)
->
+
+regmap idea seems really nice and a better style.
+
+Honestly, if possible, would not go for it right now.
+The main reason is that i am on this work from months and it would 
+require a quite
+big rework (also rearranging more common code, retest, etc) while i am 
+trying to
+finalize a first driver.
+
+If you agree, this could come in a second "cleanup" patchset, but at 
+least i can
+provide an initial support for ad3552r.
+
 >>> Actually, a reg bus write involves several AXI regmap operations.
 >>>>   
 >>>>> +{
@@ -317,21 +332,10 @@ On 05/09/24 12:49 PM, Nuno Sá wrote:
 > I would not be surprised if things are just like Jonathan said and this is just
 > flexible as spi (being that extra instruction field a protocol defined for flash
 > memory - where one typically sees this interface)
-
-Ok, so QSPI is the hardware, and the protocol on it may vary for the target
-chip/application.
-
-Looks like DDR makes the 33MUPS rate reachable, and not all the controllers
-have DDR mode. Also some controllers are supposed to work with a QSPI flash
-(so with instructions), and likely this reason driven the need to use a 
-custom IP.
-
-
-Regards,
-Angelo
-
-
+>
 > - Nuno Sá
+regards,
+Angelo
 
 -- 
   ,,,      Angelo Dureghello

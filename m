@@ -1,239 +1,166 @@
-Return-Path: <linux-iio+bounces-9196-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9197-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C0B496DBE1
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 16:33:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E090F96DDC1
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 17:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E7D6B26C0B
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 14:33:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 491DBB21F12
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 15:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED8716426;
-	Thu,  5 Sep 2024 14:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC3F16F908;
+	Thu,  5 Sep 2024 15:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WayLhooo"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bOQ3Zv9C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5E1125D6;
-	Thu,  5 Sep 2024 14:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A1B3BBEA
+	for <linux-iio@vger.kernel.org>; Thu,  5 Sep 2024 15:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725546781; cv=none; b=llZyMnoFr8WGuKHuhg3igXQp+qiyb8laVgQc1R0En5NO1sITT0ksA/ClRwpY2KSvlli8ULbGTPOJbGTy8Wqd5/uiZBIoVUKeg4uxyvuzOxZuHPlizjjbfe8OWwFFVzP+Fmf/VDN2ZdHCXmyew3aiq2BNjgNyUPcFymtoEo7+mvk=
+	t=1725549533; cv=none; b=BR1PxoXpgeyb3OWsX4w7qzcUsLvSbS46IwxjHW62bUoAPcqJsWgE1YlSWKR4Zeh4nfuE2frm3nyjd4guUUy+V+n8Pgp2onl0s27FLoT37D6qkVIOlg5VgASUkgjrkX740aiFSmHcxfAs4s9Nxx4+LO1fEhG2wXZr5muaMu6dIbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725546781; c=relaxed/simple;
-	bh=0A+s3H37++IvYKk6gW340TzQZEWiS7VSk7wtNsZLzTI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sVYqYR5SfoQCFhkbYVD6FOfIYImKzuCGc0hUvb8PCbPJWkFFHASnnZa6heAtGKvK5fPi6mpzSWXEvjVr54S2KNtnXTUud03lqg3yY3oDGlqNMgjhXWPJEevGSnkPe9LkYsrlvy77gaMBUzMARQ1z1uTGYIyVwqNxiSZ5wdapqQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WayLhooo; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2053525bd90so8582115ad.0;
-        Thu, 05 Sep 2024 07:32:59 -0700 (PDT)
+	s=arc-20240116; t=1725549533; c=relaxed/simple;
+	bh=Gb6599VhX8ruz8G0A+CkltNV++3x6ZCj8UiYhUmIkv8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sI1ak526oVtuE9xE1ike1xVoqCYyO6w4pG+yy1YPcw9KVY8oT+UzPXjXnRvKZJPIwakHUdGNGnsUfg10m/WwJn+u31hE1GL1Hsr1CrkXbQPmgJ7ubfvh0vr5rVU4FFgTZWylLtFt48WVDKVMoxy5AtD90Gi3Wv+s8KRkgKUvrG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bOQ3Zv9C; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42bb885f97eso11765265e9.0
+        for <linux-iio@vger.kernel.org>; Thu, 05 Sep 2024 08:18:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725546779; x=1726151579; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zqUIS3IYAntrsQ78J8BadQpaqj7oa2eN12jU71ttnpg=;
-        b=WayLhooo7tJMOJdDZZ6OdGEodDRD67c2QMNOpFnV4wf3YZXAZlnCewSvsMGE9PoQNH
-         v7lykp/KiqxEx3eL6Jvi47YVxCxNuTmn9ZNxWAjSgWPT2P7JaQ0dchF5W9qvVGeH1a/e
-         /63FrjMjkfIyBQEBsmY1NCCz1ZI5tuezDmZdtKVM+mrmWIexg+NgNwMRv95uBA/qHGNt
-         q6Db2qLFfIFdFmF9AGNT4as/USN4dUPSuL+f8BF5NustQc8N7GUTNbjcnQ5LzHpjxRFo
-         5QQLuLz81SBwleK/gSX2YlYLYWCuyDsXv5WwokIcrI7fQIr3niy8gPJU9lYp4ekYMjHV
-         rmpg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725549529; x=1726154329; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GKnN3Sj3NjmHkRK3J9xJkwDDKF4HeXSlEMl5CXXrYFI=;
+        b=bOQ3Zv9CJfrsOhoY/vcfV9fnhH9+M2ApbnTfux6JB0GMwm9nUNdeurq99RK2OpEYOg
+         PFKfKHLYHMh6Pwp1/fen3B8J+WYm2DQ4gA9P1LdRz0okOZ7qZW/G2PP+auZHkY01Hwc7
+         5rNROyuiW/vBA5iSLDH4U+nmGMsMY8P/FmmDe6tfmo1pPipRXWItfU1/MYEyik6yCgEs
+         S8Vl4O7FWf9CpqbXq+CsrvzOKRqqjezDonoB2H7JU90d80JaxtXpwTaSko2+bwmXsKCY
+         +2sWvIK+XYsGipobQBuNBgJq2Eqa1fMZyymsRPNjCNKHdJnC/nU73+gh/24ht+yKVErW
+         iEQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725546779; x=1726151579;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zqUIS3IYAntrsQ78J8BadQpaqj7oa2eN12jU71ttnpg=;
-        b=OkvyShyhdVGcO7OXyIpDvVzogwM58ZAr4R9aDBhD344yiZv+Yl8aH7VrYPE1sw3z0p
-         rOAzsudme4ulv6PnnZEmoaFI6ae5SYaLqTl+rGcUzdJYC/IXoCqmiYm64uhi1HjUkWdg
-         5A0EiRIBvo3S5SfCKcHByCbGl4VAHTYYnn5VLXYo0j1pzl8HolFX+6XlNvxJjiMG4+gu
-         JkkTrm3DYENhDWXiqRxdXtZ8S9lznRHoFZhPNFpbpUBosrxdIfedhWlZFFhxiesaF/Ju
-         2dYb/aPR87Ir5+x2hx2VkcldJ10nvONs7B8JQE/f5eAICuqzyCPoPxWdmsbqMFVnlTa0
-         UoFg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFD56AsMqZxcAUKQLU42KlpOBFsaeB8LAeXPoA96p4VdTK6a0ru0LZdvyXWbe2kX4CqvD6lAaK7dQ=@vger.kernel.org, AJvYcCUjJo404fxO9Hu1K5CVm4TDw1FoJNUjnTWqSmCQw6vAj9kizdjqG7u/qOTRPL42CzK9Gm+rbpC8DmQvFE37@vger.kernel.org
-X-Gm-Message-State: AOJu0Yysbql/aADRzaShQlhmFDf6Lr+kWlYI7blNvHwOvwPW0+pff1DZ
-	Ot5Lu8sNE5W8k/PKQLQT2cj68TzGsg6aSu8kjxqPSYHWmsYUzxdgvXaeov5BIIBEDSmWk/7nvWv
-	F1a0Sr/3ZXp8/w0LhbAy2q5x6NlyZp6/zZVU=
-X-Google-Smtp-Source: AGHT+IFgJIUJF1UnvHA6Rd1TsE0hTkxSP5upI5IAA12tyZ1jbH1JI48pXvOQiFqCcm+31nh2W/r63s6RnNUEIA9brbc=
-X-Received: by 2002:a17:903:32cd:b0:205:6f40:221c with SMTP id
- d9443c01a7336-2056f402712mr145010625ad.35.1725546778827; Thu, 05 Sep 2024
- 07:32:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725549529; x=1726154329;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GKnN3Sj3NjmHkRK3J9xJkwDDKF4HeXSlEMl5CXXrYFI=;
+        b=r4ejiS0fT7kBmPB05baZ7wLy5JmNfOQrajKEysNJkLn2GGRj6HfvZnm7tJj4y1DlXX
+         HJgjbgCenY9AW6nFiR5gYGX8gh5hGZSQ4ZCikrIQ3tSH2hhzZk6DqUndJ8xcf1stsxdJ
+         GYeCK962MWZeuQVUTSC935fBaC/Wzu6MuvU5pnCwJi4OZ4EbyFZZCWczf1NUZpMKAIht
+         3VoyO3qLpkdHQYzrIlxmR5GH2Z+PWTysFazladnK9DxEd8K/6SWeVMXQtnhIzKNsOiFo
+         +go4Y4Pn8+FGQORpMseptzSGoyqziQYY9FZ2tdSS+gll0CFH5GqoaTKHmcGvrbpYCOCZ
+         ZlRQ==
+X-Gm-Message-State: AOJu0YzMcs38IWcD6c7poeszm4kTOxd5Yk03Y84wciMGpUzjXPCtl2du
+	8dzYVHwa5U0GXbzM1Q+ZvWmmbaBV7oM0O4hnnGGk0BxmdkdcJEgJIOWsReU0ZMQ=
+X-Google-Smtp-Source: AGHT+IHCfME4IdTiaaC734sa5tnw22fLpOVYiMQVbF4yWqonOoJbPx9SwXiUMy3xcGaJGpYXc8WPuw==
+X-Received: by 2002:a5d:55ca:0:b0:371:8685:84c with SMTP id ffacd0b85a97d-3779a70775amr3826216f8f.15.1725549529296;
+        Thu, 05 Sep 2024 08:18:49 -0700 (PDT)
+Received: from [127.0.1.1] (host-95-233-232-76.retail.telecomitalia.it. [95.233.232.76])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-374c1de81b2sm14031076f8f.30.2024.09.05.08.18.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Sep 2024 08:18:48 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH v2 0/9] iio: add support for the ad3552r AXI DAC IP
+Date: Thu, 05 Sep 2024 17:17:30 +0200
+Message-Id: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240903163302.105268-1-gye976@gmail.com> <FR3P281MB1757A2ECAB94077B8E250314CE9D2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-In-Reply-To: <FR3P281MB1757A2ECAB94077B8E250314CE9D2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-From: gyeyoung <gye976@gmail.com>
-Date: Thu, 5 Sep 2024 23:32:47 +0900
-Message-ID: <CAKbEznuKUDf4vUa3r52WWxWg9qmB5cYayGehqHe==RuF-1F+3Q@mail.gmail.com>
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: Move setting 'wom_bits' to probe function
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc: "jic23@kernel.org" <jic23@kernel.org>, 
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAIrL2WYC/x3NwQrCMBBF0V8ps/bBJBpBf0VcpHZSH0haklILp
+ f9ucHk29+5SrdCq3Ltdiq2snHKDP3Xyesc8Gjg0i1d/0ZsGfDmj/yAO5xB8QdyIVUFOWKwuzCO
+ cpeCuvVNLKq0zF0vc/o/H8zh+ZCTeL3MAAAA=
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
+ Angelo Dureghello <adureghello@baylibre.com>
+X-Mailer: b4 0.14.1
 
-Thank you for your response. I understand what you mean.
+The serie comes from the previously discussed RFC, that i
+converted to a normal patch from this v2.
 
-But I think it's better to have 'wom_bits' in 'inv_mpu6050_state',
-because the 'wom_bits' variable is only a variable for bit operation
-with the 'INT_STATUS' register, not an actual register in register
-manual.
-Isn't it?
+Purpose is to add ad3552r AXI DAC (fpga-based) support.
 
-Thanks.
+The fpga DAC IP has been created to reach the maximum speed
+(33MUPS) supported from the ad3552r. To obtain the maximum
+transfer rate, the custom module has been implemented using
+the QSPI lines in DDR mode, using a dma buffer.
 
-On Thu, Sep 5, 2024 at 6:30=E2=80=AFPM Jean-Baptiste Maneyrol
-<Jean-Baptiste.Maneyrol@tdk.com> wrote:
->
-> Hello,
->
-> nice improvement, thanks.
->
-> But beware there is a fix pending in fixes-togreg branch and missing in t=
-esting branch that is changing this part of code.
-> To avoid a painful merge, it should be better to wait for the fix to be i=
-ntegrated inside testing.
->
-> Is that correct Jonathan?
->
-> And I would prefer the wom_bits being inside the inv_mpu6050_reg_map stru=
-cture.
->
-> Thanks,
-> JB
->
-> ________________________________________
-> From: Gyeyoung Baek <gye976@gmail.com>
-> Sent: Tuesday, September 3, 2024 18:33
-> To: jic23@kernel.org <jic23@kernel.org>
-> Cc: linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; linux-kernel@v=
-ger.kernel.org <linux-kernel@vger.kernel.org>; Gyeyoung Baek <gye976@gmail.=
-com>
-> Subject: [PATCH] iio: imu: inv_mpu6050: Move setting 'wom_bits' to probe =
-function
->
-> This Message Is From an Untrusted Sender
-> You have not previously corresponded with this sender.
->
-> 'wom_bits' variable is defined by chip type,
-> and chip type is statically defined by device tree.
-> so 'wom_bits' need to be set once during probe function.
->
-> but before code set it every time using 'switch statement' during
-> threaded irq handler, so i move that to probe function.
->
-> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
-> ---
->  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 16 +++++++++++++++
->  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  1 +
->  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 20 ++-----------------
->  3 files changed, 19 insertions(+), 18 deletions(-)
->
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu=
-/inv_mpu6050/inv_mpu_core.c
-> index 14d95f34e981..322ae664adc0 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-> @@ -2076,6 +2076,22 @@ int inv_mpu_core_probe(struct regmap *regmap, int =
-irq, const char *name,
->                 return result;
->         }
->
-> +       switch (chip_type) {
-> +       case INV_MPU6050:
-> +       case INV_MPU6500:
-> +       case INV_MPU6515:
-> +       case INV_MPU6880:
-> +       case INV_MPU6000:
-> +       case INV_MPU9150:
-> +       case INV_MPU9250:
-> +       case INV_MPU9255:
-> +               st->wom_bits =3D INV_MPU6500_BIT_WOM_INT;
-> +               break;
-> +       default:
-> +               st->wom_bits =3D INV_ICM20608_BIT_WOM_INT;
-> +               break;
-> +       }
-> +
->         return 0;
->
->  error_power_off:
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/=
-inv_mpu6050/inv_mpu_iio.h
-> index e1c0c5146876..a91b9c2b26e4 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-> @@ -212,6 +212,7 @@ struct inv_mpu6050_state {
->         bool level_shifter;
->         u8 *data;
->         s64 it_timestamp;
-> +       unsigned int wom_bits;
->  };
->
->  /*register and associated bit definition*/
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/=
-imu/inv_mpu6050/inv_mpu_trigger.c
-> index 84273660ca2e..b19556df1801 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-> @@ -243,26 +243,10 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int=
- irq, void *p)
->  {
->         struct iio_dev *indio_dev =3D p;
->         struct inv_mpu6050_state *st =3D iio_priv(indio_dev);
-> -       unsigned int int_status, wom_bits;
-> +       unsigned int int_status;
->         u64 ev_code;
->         int result;
->
-> -       switch (st->chip_type) {
-> -       case INV_MPU6050:
-> -       case INV_MPU6500:
-> -       case INV_MPU6515:
-> -       case INV_MPU6880:
-> -       case INV_MPU6000:
-> -       case INV_MPU9150:
-> -       case INV_MPU9250:
-> -       case INV_MPU9255:
-> -               wom_bits =3D INV_MPU6500_BIT_WOM_INT;
-> -               break;
-> -       default:
-> -               wom_bits =3D INV_ICM20608_BIT_WOM_INT;
-> -               break;
-> -       }
-> -
->         scoped_guard(mutex, &st->lock) {
->                 /* ack interrupt and check status */
->                 result =3D regmap_read(st->map, st->reg->int_status, &int=
-_status);
-> @@ -272,7 +256,7 @@ static irqreturn_t inv_mpu6050_interrupt_handle(int i=
-rq, void *p)
->                 }
->
->                 /* handle WoM event */
-> -               if (st->chip_config.wom_en && (int_status & wom_bits)) {
-> +               if (st->chip_config.wom_en && (int_status & st->wom_bits)=
-) {
->                         ev_code =3D IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_=
-MOD_X_OR_Y_OR_Z,
->                                                      IIO_EV_TYPE_ROC, IIO=
-_EV_DIR_RISING);
->                         iio_push_event(indio_dev, ev_code, st->it_timesta=
-mp);
-> --
-> 2.34.1
->
->
+The design is actually using the DAC backend since the register
+map is the same of the generic DAC IP, except for some customized
+bitfields. For this reason, a new "compatible" has been added
+in adi-axi-dac.c.
+
+Also, backend has been extended with all the needed functions
+needed for this use case, keeping the names gneric.
+
+Note: the following patch is actually for linux-iio/testing
+---
+Changes in v2: 
+- use unsigned int on bus_reg_read/write
+- add a compatible in axi-dac backend for the ad3552r DAC IP
+- minor code alignment fixes
+- fix a return value not checked
+- change devicetree structure setting ad3552r-axi as a backend
+  subnode
+- add synchronous_mode_available in the ABI doc
+
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Co-developed-by: David Lechner <dlechner@baylibre.com>
+Co-developed-by: Nuno Sá <nuno.sa@analog.com>
+
+---
+Angelo Dureghello (9):
+      dt-bindings: iio: dac: ad3552r: add io-backend property
+      iio: backend: extend features
+      iio: backend adi-axi-dac: extend features
+      iio: backend adi-axi-dac: add registering of child fdt node
+      dt-bindings: iio: dac: add ad3552r axi-dac compatible
+      iio: dac: ad3552r: changes to use FIELD_PREP
+      iio: dac: ad3552r: extract common code (no changes in behavior intended)
+      iio: dac: ad3552r: add axi platform driver
+      iio: ABI: add DAC sysfs synchronous_mode parameter
+
+ Documentation/ABI/testing/sysfs-bus-iio-dac        |  16 +
+ .../devicetree/bindings/iio/dac/adi,ad3552r.yaml   |  42 +-
+ .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   |   1 +
+ drivers/iio/dac/Kconfig                            |  11 +
+ drivers/iio/dac/Makefile                           |   3 +-
+ drivers/iio/dac/ad3552r-axi.c                      | 567 +++++++++++++++++++++
+ drivers/iio/dac/ad3552r-common.c                   | 163 ++++++
+ drivers/iio/dac/ad3552r.c                          | 394 +++-----------
+ drivers/iio/dac/ad3552r.h                          | 199 ++++++++
+ drivers/iio/dac/adi-axi-dac.c                      | 282 +++++++++-
+ drivers/iio/industrialio-backend.c                 | 157 ++++++
+ include/linux/iio/backend.h                        |  33 ++
+ 12 files changed, 1532 insertions(+), 336 deletions(-)
+---
+base-commit: 8b6f7caca90addc22eb4ae958639048001096003
+change-id: 20240905-wip-bl-ad3552r-axi-v0-iio-testing-1ef516b10ef0
+
+Best regards,
+-- 
+
+  o/ QW5nZWxvIER1cmVnaGVsbG8=
+   www.kernel-space.org
+    e: angelo at kernel-space.org
+      c: +39 388 8550663
+       
+
 

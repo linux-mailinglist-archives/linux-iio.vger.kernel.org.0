@@ -1,93 +1,92 @@
-Return-Path: <linux-iio+bounces-9176-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9177-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DCB96D24D
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 10:37:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589E196D2DA
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 11:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AFD81C227FB
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 08:37:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85DA6B2331F
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 09:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05C019882B;
-	Thu,  5 Sep 2024 08:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C04C195FFA;
+	Thu,  5 Sep 2024 09:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EADYfIRh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J9rPMZFd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1611197A9A;
-	Thu,  5 Sep 2024 08:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869CB3F9D5;
+	Thu,  5 Sep 2024 09:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725525397; cv=none; b=uiq9kG6KOP64Qi0bLP620OCOO7T80NxwYd4IQD8kfwIUuwC9MNw0ayTx2WvwUCMCe/OWKJ6IhCVXuJuF8Dux5/uyMT7sYGTnzOUl5A+FWCgRXLRD0+sR+pjiXmmMAFWoHLUEhIhCMoH3eGyqaFc+SC5ioE2ZRhibUIFNJbSG77c=
+	t=1725527520; cv=none; b=RDmqAz9NoWcmfO62WwOpw71FU8hRDwJvguwBEKNGaqtOFuOeAu74jyi64yYwCPgrN7vRQxx3yb2/VGp/nop50EN/06vKLLPLVk566F3qoqhfxFttPuKsBq6qi1wAOQ6K5PZ/vabMGq/D/7xsYWa5yDD3EhIpzecpIL720ooDCFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725525397; c=relaxed/simple;
-	bh=WzEuX3vQGbI31XP/Pgmc0D/42g4+WkEP4I/ZhLzs5jc=;
+	s=arc-20240116; t=1725527520; c=relaxed/simple;
+	bh=WY9n2Jkas1whXstDJTsHRvRN9HWiIU2jbM2A08sLy74=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CYDsOo/lCLV9RSC/gYtFSfdW40JFSJtzxRZCprmUTd1MaL+7YSr8MjpD8Oor1DvIPqDLGFwugCUO/n3acyN736W6wzc6wM9n8nH0sD7hvRr8UcKOAF3hdkKFk0WUcKKY8tmkA0rFMzADvAbCpWb9pk2o/oKehbomvLufKf+07oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EADYfIRh; arc=none smtp.client-ip=209.85.218.52
+	 Content-Type:MIME-Version; b=aGGwGq6UWjNhp5NXgiULWiE55ENwfRj+Nk31WtMu5uuao6mfIgUQFIKwGOIuXtpmcrNUul9Q7PUYvF5xqN+HcDPEA7nP7eAAB/0GBrerlDkCc7jacNuIGb9LPgZaBr1yQVl37YjEpJ8jZNQtprm92eGW5KS3D8gLFaOuR3pKi6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J9rPMZFd; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a8a789c4fc5so30588066b.0;
-        Thu, 05 Sep 2024 01:36:35 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a8696e9bd24so78377366b.0;
+        Thu, 05 Sep 2024 02:11:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725525394; x=1726130194; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725527517; x=1726132317; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=GNo548ch3fMsBiEBoYqhfsQlquYX57OIfPYq4yu+mu8=;
-        b=EADYfIRhQlZX9HkySUjBbOY1yIMnRs3Z9SqZdqns/7XkEHpxOWLpHbtCw5PNLS+QZ3
-         6YBbiEcDWIWBKCOSUx5dSTgGG7XqyEw+7OCYJmJ1WTPUjh35AxwM2FIhBHg0rnvppMdv
-         8FIoJK6j+dtcQ7rWgNHp7f+EDyfSbiAymp/g8cYhM68HFN9DnZyvyK5iR+WImHzABIw5
-         dITi86AxYEvVHe7yVUgHzOkhb6Qc5ncCKk6uYx+LCi7LL8loo8Y2ybQGFo7qm6XIrETe
-         Ke9uxDiNDGYB1sT6RMJvdDwRvGY3BNAbf192I20/OrTubffZc56GxiwHNR8uEXGm40r3
-         W4SA==
+        bh=WY9n2Jkas1whXstDJTsHRvRN9HWiIU2jbM2A08sLy74=;
+        b=J9rPMZFdcUThTV1G1PL3UtRg2gbi+LKa+EseGxRz9q/1jQCzxuI+tFP2ZjIWHNsero
+         TKmfeUWwW8/kTgGdAoB4XwbPTd40BFAbHumDbFWMCE7DwVx1K/GEbdlFMpvFQw/KapwW
+         VjBscmhQIiolkRiIfUYcNOvXBP9fZD4ohOhb59ZYJmvtenoU/877Gulzl4WQHkMvHTJk
+         vH6waawBCWyxQkyrFnjfk03v0Aft2SKT7b4rAbcde53V4fKCD77uKFVwWpLsmtsDM1h5
+         aqCqTuzq2hgyf2jSEw6jH00XJm/cKHUOWTC14Suhkj4jM4Bycka7qZ4UaFC9JmkoIoKq
+         tAJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725525394; x=1726130194;
+        d=1e100.net; s=20230601; t=1725527517; x=1726132317;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=GNo548ch3fMsBiEBoYqhfsQlquYX57OIfPYq4yu+mu8=;
-        b=twZa+WUSMZT0a/v2r1RsrsuMy13/rhZUWvo0s/7DTtqOqvcc6XRoOSYdo+SQwkqlVh
-         lfDyKmly1HVW/RizqG5FjXTQVB6TMfZOkl+/P2zI4xOGeeqRXy65qk87cqFRksXSgiKs
-         d3NvdUc8hCzpmkQKXwwFQxNmGpQ6bvYRYH/6m1Fj7FT+ZDkZe90yioT8BqExRaCzPfWu
-         2Jgv3svBwi2iFbTg8U2ozzZ5yVOX2U7PD3vFpNm961xdEzu8J57ViBDuxQuD6yEsdVwr
-         tyPDG0qjO1txDQYHVXHfZLhAtlhrVXaZod8puJlFn2jx0S3+Y0KkZidrwxD9H4pHusTK
-         SXmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUv3E6NtFzSSrlKHL+h2nNVKK7aulGUZwwDFdUfw+d+L8hfQade7x/+yyaFQuv800tKrWceCwYkDzUn@vger.kernel.org, AJvYcCVICjBwWVBEyo3dQJZ0zDq3eC/xkauh3EXKXsc2NmK5UpV2vRcdqpqt7tISrMZxoL1EaIjMno48F7vN@vger.kernel.org, AJvYcCVZTFOEBQMkBZjdwGiCbpf5+n/ZxUYcgtXJHrGq2zcuijtpLtTDbaQjb67XjOB6MxXrKsjyFQg1KGiYXjvo@vger.kernel.org, AJvYcCWAe5FTwKX8Us2awovxMkZDqb6KkFOoc3lfNeXRsCULrCP5BQtXOhD5/tQc30Po4e9VdITemCZN1LR40Nk=@vger.kernel.org, AJvYcCXWt0FIRM85eVpsKBmC5+AA5E9k0zECHno/PLGVbZk+0KYC/rJLKywC4TFd1J0dHferJpdeyicpJz76@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/jU2l32jGNt+s8u4EwsO0Am4zOWvbhHKJSKoYFiF558GBS74+
-	KeMAkFcg8Y13fHScL0CnNbaWcXdddBZ36ZyhlC5JyrFH+m0vSCyY
-X-Google-Smtp-Source: AGHT+IFAvvhp6ZrEk0A1ZDYx0Rvx0OzTdGJexYufV0kM4m96zzGLmjP2MaR+GPEWZml7L+0MNY/cEg==
-X-Received: by 2002:a17:907:7205:b0:a72:7ede:4d12 with SMTP id a640c23a62f3a-a8a42fb12acmr485286166b.5.1725525393205;
-        Thu, 05 Sep 2024 01:36:33 -0700 (PDT)
+        bh=WY9n2Jkas1whXstDJTsHRvRN9HWiIU2jbM2A08sLy74=;
+        b=Nma40ZYXs/nC4dC485ZQ6tkZpG35T1wrpH1OqRwkJKVw2WDS/RjyaUhE51zNBL0m3K
+         DH3TbXFXaBd1cgSxpl9YMq8D9aObVht0VeuTe47mdpXcDlSoLEqk+oXSKzyc9UW1PB53
+         oTjlWbn6o0OiEbxK5N4zN62ZQ+SSPtJnad1q5Z9nrPtBbeacoLRl8ndjlBMepVVPmKa7
+         bMBb1f3fZAGbrDpgXMq9yYgHJSUjWA0e/NgFXia7taoK7nrm7cicaK7F6WeCkzfPzKg5
+         gERKN10ct0LWmeyJupAAa9OkHCVMzyHv3A8wyfHcWk7+Ab/eD8eSyK3CrgfMvJPKfKdi
+         aNjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAmOlFOFeY0j2m9iJJJzpwuhGOKFi9vV41RdASPtq6DopdBhg2XEXzmJc164yZsM/lejp5DsB6J16m@vger.kernel.org, AJvYcCVWtxgQndfQbaXiZOBhfGBOwsq/b9Vmw7LsnLPOOdcaG2p36uUquhHOkndIoClBASazPX9wdUHwF3GS@vger.kernel.org, AJvYcCXdA25LdjyzfY5DESHoYTVgE4xbViD6thLtrgzsoVXRpBjaETgdS5ANvmPVOC9tXtLpFcftcbDxJtBnYHeU@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGuHxdKld1gaWhlvB9a2UhyeAaQ3Fu/T3zygwtLEQ/I8w5wnsG
+	1g79j2v0sePtK/XxPQq7VzHlfZE/rPqhej8eMKUHV6sRuq8FaybQ
+X-Google-Smtp-Source: AGHT+IEwreZv7xWtYxewqz8fwZuXeLBsN2ROlKnym3hdlInja4DPL2UQEEGQwvAfo9XZeYQ1duzF7A==
+X-Received: by 2002:a17:907:97c3:b0:a7a:b1a8:6a2e with SMTP id a640c23a62f3a-a897f860feemr1886462666b.28.1725527516643;
+        Thu, 05 Sep 2024 02:11:56 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a6236d164sm101437866b.111.2024.09.05.01.36.32
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a7b42d7d5sm12323066b.29.2024.09.05.02.11.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Sep 2024 01:36:32 -0700 (PDT)
-Message-ID: <5dedf51d8ec19b7b3bd0c6cb136048344f1c1007.camel@gmail.com>
-Subject: Re: [PATCH 8/8] iio:adc:ad7606: Add iio-backend support
+        Thu, 05 Sep 2024 02:11:56 -0700 (PDT)
+Message-ID: <4bb5722003936371a661938d7238db195d2c0ad3.camel@gmail.com>
+Subject: Re: [RFC PATCH 0/8] iio: dac: introducing ad3552r-axi
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Guillaume Stols <gstols@baylibre.com>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
-	20240705211452.1157967-2-u.kleine-koenig@baylibre.com, 
-	20240712171821.1470833-2-u.kleine-koenig@baylibre.com, 
-	cover.1721040875.git.u.kleine-koenig@baylibre.com, aardelean@baylibre.com
-Date: Thu, 05 Sep 2024 10:40:39 +0200
-In-Reply-To: <20240815-ad7606_add_iio_backend_support-v1-8-cea3e11b1aa4@baylibre.com>
-References: 
-	<20240815-ad7606_add_iio_backend_support-v1-0-cea3e11b1aa4@baylibre.com>
-	 <20240815-ad7606_add_iio_backend_support-v1-8-cea3e11b1aa4@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>
+Cc: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
+	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
+	 <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown
+	 <broonie@kernel.org>
+Date: Thu, 05 Sep 2024 11:16:03 +0200
+In-Reply-To: <20240903203935.358a1423@jic23-huawei>
+References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
+	 <20240831123837.26a1070a@jic23-huawei>
+	 <74e0b200-d4c0-4aa3-9ee6-f49ac3f1467d@baylibre.com>
+	 <4a62ea7b-a8af-49e0-9718-30d927a69038@baylibre.com>
+	 <20240903203935.358a1423@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 
@@ -98,430 +97,254 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2024-08-15 at 12:12 +0000, Guillaume Stols wrote:
-> - Basic support for iio backend.
-> - Supports IIO_CHAN_INFO_SAMP_FREQ R/W.
-> - Only hardware mode is available, and that IIO_CHAN_INFO_RAW is not
-> =C2=A0 supported if iio-backend mode is selected.
+On Tue, 2024-09-03 at 20:39 +0100, Jonathan Cameron wrote:
+> On Tue, 3 Sep 2024 11:17:24 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
 >=20
-> A small correction was added to the driver's file name in the Kconfig
-> file's description.
+> > On 9/3/24 3:34 AM, Angelo Dureghello wrote:
+> > > Hi Jonathan and all,
+> > >=20
+> > >=20
+> > > On 31/08/24 1:38 PM, Jonathan Cameron wrote:=C2=A0=20
+> > > > On Thu, 29 Aug 2024 14:31:58 +0200
+> > > > Angelo Dureghello <adureghello@baylibre.com> wrote:
+> > > > =C2=A0
+> > > > > Hi, asking for comments for this patchset, that is mostly
+> > > > > ready, at least feature-complete and functionally tested.
+> > > > >=20
+> > > > > I am introducing ad3552r-axi variant, controlled from a fpga-base=
+d
+> > > > > AXI IP, as a platform driver, using the DAC backend. The patchset=
+ is
+> > > > > actually based on linux-iio, since some needed DAC backend featur=
+es
+> > > > > was already there on that repo only, still to be merged in mainli=
+ne.
+> > > > >=20
+> > > > > Comments i would like to ask are:
+> > > > >=20
+> > > > > - i added some devicetree bindings inside current ad3552r yaml,
+> > > > > =C2=A0=C2=A0 device is the same, so i wouldn't create a different=
+ yaml file.=C2=A0=20
+> > > > Agreed. If same device, it's usually better to keep it in one file.
+> > > > =C2=A0
+> > > > > - if it's ok adding the bus-type property in the DAC backend:
+> > > > > =C2=A0=C2=A0 actually, this platform driver uses a 4 lanes parall=
+el bus, plus
+> > > > > =C2=A0=C2=A0 a clock line, similar to a qspi. This to read an wri=
+te registers
+> > > > > =C2=A0=C2=A0 and as well to send samples at double data rate. Oth=
+er DAC may
+> > > > > =C2=A0=C2=A0 need "parallel" or "lvds" in the future.=C2=A0=20
+> > > > If it is for register read + write as well, sounds to me like you n=
+eed
+> > > > to treat this as a new bus type, possibly then combined with a
+> > > > backend, or something similar to spi offload?
+> > > >=20
+> > > > What bus does this currently sit on in your DT bindings?
+> > > > (add an example)=C2=A0=20
+> > >=20
+> > >=20
+> > > &amba {
+> > >=20
+> > > =C2=A0=C2=A0 =C2=A0ref_clk: clk@44B00000 {
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,axi-clkgen-=
+2.00.a";
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44B00000 0x10000>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #clock-cells =3D <0>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&clkc 15>, <&clkc 1=
+5>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clock-names =3D "s_axi_aclk", "=
+clkin1";
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clock-output-names =3D "ref_clk=
+";
+> > > =C2=A0=C2=A0 =C2=A0};
+> > >=20
+> > > =C2=A0=C2=A0 =C2=A0dac_tx_dma: dma-controller@0x44a30000 {
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,axi-dmac-1.=
+00.a";
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44a30000 0x10000>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #dma-cells =3D <1>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 interrupt-parent =3D <&intc>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 interrupts =3D <0 57 IRQ_TYPE_L=
+EVEL_HIGH>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&clkc 15>;
+> > >=20
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 adi,channels {
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 #size-cells =
+=3D <0>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 #address-cel=
+ls =3D <1>;
+> > >=20
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 dma-channel@=
+0 {
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=
+=C2=A0 reg =3D <0>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=
+=C2=A0 adi,source-bus-width =3D <32>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=
+=C2=A0 adi,source-bus-type =3D <0>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=
+=C2=A0 adi,destination-bus-width =3D <32>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=
+=C2=A0 adi,destination-bus-type =3D <1>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 };
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 };
+> > > =C2=A0=C2=A0 =C2=A0};
+> > >=20
+> > > =C2=A0=C2=A0 =C2=A0backend: controller@44a70000 {
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,axi-dac-9.1=
+.b";
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44a70000 0x1000>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 dmas =3D <&dac_tx_dma 0>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 dma-names =3D "tx";
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #io-backend-cells =3D <0>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&ref_clk>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 bus-type =3D <1>;=C2=A0 /* IIO =
+QSPI */
+> > > =C2=A0=C2=A0 =C2=A0};
+> > >=20
+> > > =C2=A0=C2=A0 =C2=A0axi-ad3552r {
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,ad3552r";
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 reset-gpios =3D <&gpio0 92 GPIO=
+_ACTIVE_LOW>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 io-backends =3D <&backend>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #address-cells =3D <1>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #size-cells =3D <0>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 channel@0 {
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 reg =3D <0>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 adi,output-r=
+ange-microvolt =3D <(-10000000) (10000000)>;
+> > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 };
+> > > =C2=A0=C2=A0 =C2=A0};=C2=A0=20
+> >=20
+> > Shouldn't the axi-ad3552r node be one level higher since it isn't
+> > a memory-mapped device, but rather an external chip?
+> Definitely not where it currently is..
+> >=20
+> > But based on the other feedback we got in this series and some
+> > #devicetree IRC chat here is an alternate binding suggestion we
+> > could consider.
+> >=20
+> > First, even though the FPGA IP block for use with AD3225R uses
+> > the same register map as the AXI DAC IP block, some of the
+> > registers behave differently, so it makes sense to have a
+> > different compatible string rather than using the bus-type
+> > property to tell the difference between the two IP blocks.
+> > There are likely more differences than just the bus type.
 >=20
-> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-> ---
-
-Hi Guillaume,
-
-Some initial feedback from me...
-
-> =C2=A0drivers/iio/adc/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=
- 3 +-
-> =C2=A0drivers/iio/adc/ad7606.c=C2=A0=C2=A0=C2=A0=C2=A0 | 103 ++++++++++++=
-+++++++++++++++++++++++-------
-> -
-> =C2=A0drivers/iio/adc/ad7606.h=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 16 +++++++
-> =C2=A0drivers/iio/adc/ad7606_par.c |=C2=A0 98 +++++++++++++++++++++++++++=
-++++++++++++-
-> =C2=A04 files changed, 200 insertions(+), 20 deletions(-)
+> I'd be amazed if they managed to keep things that similar
+> given totally different buses.
 >=20
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 88e8ce2e78b3..01248b6df868 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -227,9 +227,10 @@ config AD7606_IFACE_PARALLEL
-> =C2=A0	help
-> =C2=A0	=C2=A0 Say yes here to build parallel interface support for Analog
-> Devices:
-> =C2=A0	=C2=A0 ad7605-4, ad7606, ad7606-6, ad7606-4 analog to digital conv=
-erters
-> (ADC).
-> +	=C2=A0 It also support iio_backended devices for AD7606B.
-> =C2=A0
-> =C2=A0	=C2=A0 To compile this driver as a module, choose M here: the
-> -	=C2=A0 module will be called ad7606_parallel.
-> +	=C2=A0 module will be called ad7606_par.
-> =C2=A0
-> =C2=A0config AD7606_IFACE_SPI
-> =C2=A0	tristate "Analog Devices AD7606 ADC driver with spi interface
-> support"
-> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index 99d5ca5c2348..a753d5caa9f8 100644
-> --- a/drivers/iio/adc/ad7606.c
-> +++ b/drivers/iio/adc/ad7606.c
-> @@ -21,6 +21,7 @@
-> =C2=A0#include <linux/util_macros.h>
-> =C2=A0#include <linux/units.h>
-> =C2=A0
-> +#include <linux/iio/backend.h>
-> =C2=A0#include <linux/iio/iio.h>
-> =C2=A0#include <linux/iio/buffer.h>
-> =C2=A0#include <linux/iio/sysfs.h>
-> @@ -148,7 +149,15 @@ static int ad7606_set_sampling_freq(struct ad7606_st=
-ate
-> *st, unsigned long freq)
-> =C2=A0
-> =C2=A0static int ad7606_read_samples(struct ad7606_state *st)
-> =C2=A0{
-> -	unsigned int num =3D st->chip_info->num_channels - 1;
-> +	unsigned int num =3D st->chip_info->num_channels;
-> +
-> +	/*
-> +	 * Timestamp channel does not contain sample, and no timestamp
-> channel if
-> +	 * backend is used.
-> +	 */
-> +	if (!st->back)
-> +		num--;
-> +
-> =C2=A0	u16 *data =3D st->data;
-> =C2=A0	int ret;
-> =C2=A0
-> @@ -220,11 +229,15 @@ static int ad7606_scan_direct(struct iio_dev *indio=
-_dev,
-> unsigned int ch)
-> =C2=A0		if (!ret)
-> =C2=A0			return ret;
-> =C2=A0	}
-> -	ret =3D wait_for_completion_timeout(&st->completion,
-> -					=C2=A0 msecs_to_jiffies(1000));
-> -	if (!ret) {
-> -		ret =3D -ETIMEDOUT;
-> -		goto error_ret;
-> +
-> +	/* backend manages interruptions by itself.*/
 
-missing space before closing the comment (also not sure the comments adds m=
-uch)
-
-> +	if (!st->back) {
-> +		ret =3D wait_for_completion_timeout(&st->completion,
-> +						=C2=A0 msecs_to_jiffies(1000));
-> +		if (!ret) {
-> +			ret =3D -ETIMEDOUT;
-> +			goto error_ret;
-> +		}
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	ret =3D ad7606_read_samples(st);
-> @@ -271,6 +284,12 @@ static int ad7606_read_raw(struct iio_dev *indio_dev=
-,
-> =C2=A0	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> =C2=A0		*val =3D st->oversampling;
-> =C2=A0		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		pwm_get_state_hw(st->cnvst_pwm, &cnvst_pwm_state);
-> +		/* If the PWM is swinging, return the real frequency,
-> otherwise 0 */
-> +		*val =3D ad7606_pwm_is_swinging(st) ?
-> +			DIV_ROUND_CLOSEST_ULL(NSEC_PER_SEC,
-> cnvst_pwm_state.period) : 0;
-> +		return IIO_VAL_INT;
-> =C2=A0	}
-> =C2=A0	return -EINVAL;
-> =C2=A0}
-> @@ -360,6 +379,8 @@ static int ad7606_write_raw(struct iio_dev *indio_dev=
-,
-> =C2=A0			return ret;
-> =C2=A0
-> =C2=A0		return 0;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		return ad7606_set_sampling_freq(st, val);
-> =C2=A0	default:
-> =C2=A0		return -EINVAL;
-> =C2=A0	}
-> @@ -482,7 +503,6 @@ static int ad7606_buffer_postenable(struct iio_dev
-> *indio_dev)
-> =C2=A0	struct ad7606_state *st =3D iio_priv(indio_dev);
-> =C2=A0
-> =C2=A0	gpiod_set_value(st->gpio_convst, 1);
-> -	ad7606_pwm_set_swing(st);
-> =C2=A0
-> =C2=A0	return 0;
-> =C2=A0}
-> @@ -492,19 +512,53 @@ static int ad7606_buffer_predisable(struct iio_dev
-> *indio_dev)
-> =C2=A0	struct ad7606_state *st =3D iio_priv(indio_dev);
-> =C2=A0
-> =C2=A0	gpiod_set_value(st->gpio_convst, 0);
-> -	ad7606_pwm_set_low(st);
-> =C2=A0
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
-> +static int ad7606_pwm_buffer_postenable(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7606_state *st =3D iio_priv(indio_dev);
-> +
-> +	return ad7606_pwm_set_swing(st);
-> +}
-> +
-> +static int ad7606_pwm_buffer_predisable(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7606_state *st =3D iio_priv(indio_dev);
-> +
-> +	return ad7606_pwm_set_low(st);
-> +}
-
-Maybe I'm missing something but are we removing the gpiod calls?
-> +
-> +static int ad7606_update_scan_mode(struct iio_dev *indio_dev,
-> +				=C2=A0=C2=A0 const unsigned long *scan_mask)
-> +{
-> +	struct ad7606_state *st =3D iio_priv(indio_dev);
-> +
-> +	/* The update scan mode is only for iio backend compatible drivers.
-> +	 * If the specific update_scan_mode is not defined in the bus ops,
-> +	 * just do nothing and return 0.
-> +	 */
-> +	if (st->bops->update_scan_mode)
-> +		return st->bops->update_scan_mode(indio_dev, scan_mask);
-> +	else
-> +		return 0;
-
-Redundant else
-
-> +}
-> +
-> =C2=A0static const struct iio_buffer_setup_ops ad7606_buffer_ops =3D {
-> =C2=A0	.postenable =3D &ad7606_buffer_postenable,
-> =C2=A0	.predisable =3D &ad7606_buffer_predisable,
-> =C2=A0};
-> =C2=A0
-> +static const struct iio_buffer_setup_ops ad7606_pwm_buffer_ops =3D {
-> +	.postenable =3D &ad7606_pwm_buffer_postenable,
-> +	.predisable =3D &ad7606_pwm_buffer_predisable,
-> +};
-> +
-> =C2=A0static const struct iio_info ad7606_info_no_os_or_range =3D {
-> =C2=A0	.read_raw =3D &ad7606_read_raw,
-> =C2=A0	.validate_trigger =3D &ad7606_validate_trigger,
-> +	.update_scan_mode =3D &ad7606_update_scan_mode,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct iio_info ad7606_info_os_and_range =3D {
-> @@ -512,6 +566,7 @@ static const struct iio_info ad7606_info_os_and_range=
- =3D {
-> =C2=A0	.write_raw =3D &ad7606_write_raw,
-> =C2=A0	.attrs =3D &ad7606_attribute_group_os_and_range,
-> =C2=A0	.validate_trigger =3D &ad7606_validate_trigger,
-> +	.update_scan_mode =3D &ad7606_update_scan_mode,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct iio_info ad7606_info_os_range_and_debug =3D {
-> @@ -520,6 +575,7 @@ static const struct iio_info
-> ad7606_info_os_range_and_debug =3D {
-> =C2=A0	.debugfs_reg_access =3D &ad7606_reg_access,
-> =C2=A0	.attrs =3D &ad7606_attribute_group_os_and_range,
-> =C2=A0	.validate_trigger =3D &ad7606_validate_trigger,
-> +	.update_scan_mode =3D &ad7606_update_scan_mode,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct iio_info ad7606_info_os =3D {
-> @@ -527,6 +583,7 @@ static const struct iio_info ad7606_info_os =3D {
-> =C2=A0	.write_raw =3D &ad7606_write_raw,
-> =C2=A0	.attrs =3D &ad7606_attribute_group_os,
-> =C2=A0	.validate_trigger =3D &ad7606_validate_trigger,
-> +	.update_scan_mode =3D &ad7606_update_scan_mode,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct iio_info ad7606_info_range =3D {
-> @@ -534,6 +591,7 @@ static const struct iio_info ad7606_info_range =3D {
-> =C2=A0	.write_raw =3D &ad7606_write_raw,
-> =C2=A0	.attrs =3D &ad7606_attribute_group_range,
-> =C2=A0	.validate_trigger =3D &ad7606_validate_trigger,
-> +	.update_scan_mode =3D &ad7606_update_scan_mode,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct iio_trigger_ops ad7606_trigger_ops =3D {
-> @@ -602,8 +660,6 @@ int ad7606_probe(struct device *dev, int irq, void __=
-iomem
-> *base_address,
-> =C2=A0	indio_dev->channels =3D st->chip_info->channels;
-> =C2=A0	indio_dev->num_channels =3D st->chip_info->num_channels;
-> =C2=A0
-> -	init_completion(&st->completion);
-> -
-> =C2=A0	ret =3D ad7606_reset(st);
-> =C2=A0	if (ret)
-> =C2=A0		dev_warn(st->dev, "failed to RESET: no RESET GPIO
-> specified\n");
-> @@ -635,7 +691,7 @@ int ad7606_probe(struct device *dev, int irq, void __=
-iomem
-> *base_address,
-> =C2=A0			return ret;
-> =C2=A0	}
-> =C2=A0
-> -	/* If convst pin is not defined, setup PWM*/
-> +	/* If convst pin is not defined, setup PWM */
-> =C2=A0	if (!st->gpio_convst) {
-> =C2=A0		st->cnvst_pwm =3D devm_pwm_get(dev, NULL);
-> =C2=A0		if (IS_ERR(st->cnvst_pwm))
-> @@ -671,14 +727,25 @@ int ad7606_probe(struct device *dev, int irq, void
-> __iomem *base_address,
-> =C2=A0		if (ret)
-> =C2=A0			return ret;
-> =C2=A0	}
-> -	ret =3D devm_request_threaded_irq(dev, irq,
-> -					NULL,
-> -					&ad7606_interrupt,
-> -					IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-> -					chip_info->name, indio_dev);
-> -	if (ret)
-> -		return ret;
-> =C2=A0
-> +	if (st->bops->iio_backend_config) {
-> +		st->bops->iio_backend_config(dev, indio_dev);
-> +		indio_dev->setup_ops =3D &ad7606_pwm_buffer_ops;
-
-Ignoring error code
-
-> +	} else {
-> +		/* Reserve the PWM use only for backend (force gpio_convst
-> definition)*/
-> +		if (!st->gpio_convst)
-> +			return dev_err_probe(dev, -EINVAL,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Convst pin must be defined when
-> not in backend mode");
-> +
-> +		init_completion(&st->completion);
-> +		ret =3D devm_request_threaded_irq(dev, irq,
-> +						NULL,
-> +						&ad7606_interrupt,
-> +						IRQF_TRIGGER_FALLING |
-> IRQF_ONESHOT,
-> +						chip_info->name, indio_dev);
-> +		if (ret)
-> +			return ret;
-> +	}
-
-Are we still calling devm_iio_triggered_buffer_setup() in case we have a ba=
-ckend
-device?
-
-> =C2=A0	return devm_iio_device_register(dev, indio_dev);
-> =C2=A0}
-
-...
-
->=20
-> +#ifdef CONFIG_IIO_BACKEND
-
-Not a fan of this #ifef... It's not that much code so I would just select
-IIO_BACKEND for this driver. In fact, I don't think we can separately enabl=
-e
-IIO_BACKEND in the menuconfig menu?
-
-> +static const struct iio_chan_spec ad7606b_bi_channels[] =3D {
-> +	AD7606_BI_CHANNEL(0),
-> +	AD7606_BI_CHANNEL(1),
-> +	AD7606_BI_CHANNEL(2),
-> +	AD7606_BI_CHANNEL(3),
-> +	AD7606_BI_CHANNEL(4),
-> +	AD7606_BI_CHANNEL(5),
-> +	AD7606_BI_CHANNEL(6),
-> +	AD7606_BI_CHANNEL(7),
-> +};
-> +
-> +static int ad7606_bi_update_scan_mode(struct iio_dev *indio_dev, const
-> unsigned long *scan_mask)
-> +{
-> +	struct ad7606_state *st =3D iio_priv(indio_dev);
-> +	unsigned int c, ret;
-> +
-> +	for (c =3D 0; c < indio_dev->num_channels; c++) {
-> +		if (test_bit(c, scan_mask))
-> +			ret =3D iio_backend_chan_enable(st->back, c);
-> +		else
-> +			ret =3D iio_backend_chan_disable(st->back, c);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad7606_bi_setup_iio_backend(struct device *dev, struct iio_de=
-v
-> *indio_dev)
-> +{
-> +		struct ad7606_state *st =3D iio_priv(indio_dev);
-> +		unsigned int ret, c;
-> +
-> +		st->back =3D devm_iio_backend_get(dev, NULL);
-> +		if (IS_ERR(st->back))
-> +			return PTR_ERR(st->back);
-> +
-> +		/* If the device is iio_backend powered the PWM is mandatory
-> */
-> +		if (!st->cnvst_pwm)
-> +			return -EINVAL;
-> +
-> +		ret =3D devm_iio_backend_request_buffer(dev, st->back,
-> indio_dev);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret =3D devm_iio_backend_enable(dev, st->back);
-> +		if (ret)
-> +			return ret;
-> +
-> +		struct iio_backend_data_fmt data =3D {
-> +			.sign_extend =3D true,
-> +			.enable =3D true,
-> +		};
-
-I would follow typical kernel coding style and have this declared at the
-beginning of the function.
-
-> +		for (c =3D 0; c < indio_dev->num_channels; c++) {
-> +			ret =3D iio_backend_data_format_set(st->back, c,
-> &data);
-> +			if (ret)
-> +				return ret;
-> +		}
-> +
-> +		indio_dev->channels =3D ad7606b_bi_channels;
-> +		indio_dev->num_channels =3D 8;
-> +
-> +		return 0;
-> +}
-> +
-> +static const struct ad7606_bus_ops ad7606_bi_bops =3D {
-> +	.iio_backend_config =3D ad7606_bi_setup_iio_backend,
-> +	.update_scan_mode =3D ad7606_bi_update_scan_mode,
-> +};
-> +#endif
-> +
-> =C2=A0static int ad7606_par16_read_block(struct device *dev,
-> =C2=A0				=C2=A0=C2=A0 int count, void *buf)
-> =C2=A0{
-> @@ -52,7 +130,20 @@ static int ad7606_par_probe(struct platform_device *p=
-dev)
-> =C2=A0	void __iomem *addr;
-> =C2=A0	resource_size_t remap_size;
-> =C2=A0	int irq;
-> -
-> +#ifdef CONFIG_IIO_BACKEND
-> +	struct iio_backend *back;
-> +
-> +	/*For now, only the AD7606B is backend compatible.*/
-> +	if (chip_info->has_backend) {
-> +		back =3D devm_iio_backend_get(&pdev->dev, NULL);
-> +		if (IS_ERR(back))
-> +			return PTR_ERR(back);
-> +
-> +		return ad7606_probe(&pdev->dev, 0, NULL,
-> +				=C2=A0=C2=A0=C2=A0 chip_info,
-> +				=C2=A0=C2=A0=C2=A0 &ad7606_bi_bops);
-> +	}
-> +#endif
-
-Not sure I follow the above? You also get the backend in
-ad7606_bi_setup_iio_backend()? So it seems to be that the has_backend flag =
+Yeah, I was trying to avoid new compatibles as much as I can because things=
+ can
+get pretty confusing (with lots of new compatibles and quirks) pretty quick=
+ly.
+Typically yes, most designs have slight differences between them (with new
+features and so on) but so far I was trying (thinking) to have those as a
+generic new backend op (plus a matching binding property if needed). For th=
 is
-not really needed?
+particular case, I'm fairly sure we could get away with the bus controller
+property and having different implementations depending on the bus being
+implemented. For the other bits that might differ between designs (eg: DDR
+support) is up to frontends to call it or not (depending on they having tha=
+t
+feature or not). Naturally we need that the IPs having DDR support to not h=
+ave
+the same thing supported in different registers but we do control that sinc=
+e
+these are FPGA cores.
+
+All the above said, I'm fine with new compatibles but we need to draw a lin=
+e
+when we add new ones. If the reasoning is the IP has some new bits or new
+registers, then things can get very confusing (even more if we think about
+fallback compatibles) as most of the new designs have some quirks (even if
+minimal). So I would say to add new compatibles when things get different e=
+nough
+that a sane/generic API is not doable.
+
+> >=20
+> > Second, technically, the AXI DAC IP block can't be used as
+> > a generic SPI controller, so it wouldn't make sense to put
+> > it in drivers/spi.
+>=20
+> I wonder if there is any precedence of restricted controllers
+> for SPI?=C2=A0 (For i2c we have the smbus ones as a vaguely similar
+> example). +CC Mark.
+>=20
+> > =C2=A0But, from wiring point of view, it could
+> > still make sense to use SPI DT bindings since we have SPI
+> > wiring. At the same time, the AXI DAC IP block is also
+> > providing extra functionality in addition to the SPI bus
+> > so it makes sense to keep the io-backend bindings for those
+> > extra bits.
+> >=20
+> > =C2=A0=C2=A0=C2=A0 backend: spi@44a70000 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,axi-dac-=
+ad3225r";
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44a70000 0x1000>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dmas =3D <&dac_tx_dma 0>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma-names =3D "tx";
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #io-backend-cells =3D <0>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&ref_clk>;
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #address-cells =3D <1>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #size-cells =3D <0>;
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dac@0 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 comp=
+atible =3D "adi,ad3552r";
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =
+=3D <0>;
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*=
+=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * Not sure how right this is - attempting to say that
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * the QSPI select pin is hardwired high, so the 4 SPI I/O
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * pins on the DAC are always functioning as SDIO0/1/2/3
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * as opposed to the usual 2 SDI/SDO pins and 2 unused.
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 */
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spi-=
+3-wire;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spi-=
+tx-bus-width =3D <4>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spi-=
+rx-bus-width =3D <4>;
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rese=
+t-gpios =3D <&gpio0 92 GPIO_ACTIVE_LOW>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 io-b=
+ackends =3D <&backend>;
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #add=
+ress-cells =3D <1>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #siz=
+e-cells =3D <0>;
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 chan=
+nel@0 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 reg =3D <0>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 adi,output-range-microvolt =3D <(-10000000) (10000000=
+)>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> > =C2=A0=C2=A0=C2=A0 };
+>=20
+> That's definitely an improvement.=C2=A0 It's a little strange to have
+> a reference back to the parent but I'm fine with that.
+>=20
+
+Agreed...
 
 - Nuno S=C3=A1
-
 
 

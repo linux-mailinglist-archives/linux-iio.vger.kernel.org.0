@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-9172-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9173-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068F496D204
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 10:25:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DBCC96D206
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 10:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B2661C25001
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 08:25:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A272B256B0
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 08:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED621198838;
-	Thu,  5 Sep 2024 08:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629B2198A1B;
+	Thu,  5 Sep 2024 08:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="i6RoRD6E"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FgC2of+e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6DA197A67
-	for <linux-iio@vger.kernel.org>; Thu,  5 Sep 2024 08:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4C9198822
+	for <linux-iio@vger.kernel.org>; Thu,  5 Sep 2024 08:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725524663; cv=none; b=nKaI1HjZizPirb4t+zlKIzvRjA/sLDwYXwnRcs3ENPGZjM3SZ6TUlPoMfJSQEWMs3k1BwAGq3ADdREv29uagGnIT0nweKaf+BFlD7vcHygYGnMzIc2/anGXL4V1fV7/DLjfa5T6DWVBOpC9YSEKj+poPGkIXaRHSpFu4rlW/rYY=
+	t=1725524665; cv=none; b=UVNlmr7yo2t1WjsqJo0KxhR9lJaY2KoiaqZIZ4wbMlC2r3sAD+Ip5UhFA5Dz01HkZvqJot16sdVTrfpUI09swNdrlPokXJeo2y6q2YuBR3VW7+beKtt5bSM+tTNatvdHxFHbwtuDIh4T3crbVso7sRF1axGYiu0Y4B4I5k6nGWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725524663; c=relaxed/simple;
-	bh=/ovmFlVD/7j+ipJY0VPXyzdNP1zhe/wqKiyGk4ajqgM=;
+	s=arc-20240116; t=1725524665; c=relaxed/simple;
+	bh=8FC73oa/MEVkefisa/HgJYpYyiCAGwvKNzN6qaTlHSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRUCz1XJaGAiI++F8hAvtUWWc1VSmnKUN++ZcMsM9QC1aPgQhNotj1a4CMKRYO2snzcXcIj5baiFkxiOdciIk+Wvgrq6Mdyy49Et6AYP1UnOa1fEoOn93Cerbw0XCMd6OfZHgvU1UFKz6be9uTs00EEyGAd02CJhVw7THtafQis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=i6RoRD6E; arc=none smtp.client-ip=209.85.218.46
+	 MIME-Version; b=q4h6JwVgVGhJmlKCJTQYz573o23UCKcCYT2aYmCV2LicXk3YnGXYZFuOuP5w7IfMVlq+ggTyn19cB8bVwS1rqkfMD8B0VDXD4x2vqRTSmlHI1dhNf56HJx1VBcv7/udT8PSV7cwO1HsGz08qJ0c2r1EDcgsn7ZJWqf+q66Gnxpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FgC2of+e; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a86e9db75b9so74391066b.1
-        for <linux-iio@vger.kernel.org>; Thu, 05 Sep 2024 01:24:21 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a8684c31c60so78379866b.3
+        for <linux-iio@vger.kernel.org>; Thu, 05 Sep 2024 01:24:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725524660; x=1726129460; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725524661; x=1726129461; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g46xgvcRuzluvD9uFfVgOC6tB6SvIHIhrOwQLDjP3Ko=;
-        b=i6RoRD6EATH5Lxqi4OewSSRiaGl6NNGWHB6hGKsBJ6jcAUqcRFDTCL3IJPJ9Ckv4LV
-         dEk6OJx/odAMKCi7gUEYz1nssTvKre15RqTsrlhq5L3CN7pkkGeHDa2j+xltYfoyOyMw
-         Z4x7WmMK69KJoT6u0wNi7QDTilMIx8I97RQGcWe2XqqhU1wiCkZgYGRn7aZwcze/An2c
-         uJZT0QPW+xVhCGPMkIj8G4hBSuJQWQFhXRlOgiB7ma2qXqZORPDwzLMASKhk969YXeQW
-         VXkCvLIBVvUs2TNMSE90UP1Zw54v4aSkIBHqJUGq3CHnajYOtgM5xeIfggmks2vfrUp9
-         /UyA==
+        bh=6E91591mSBml3TNwKKH/V0e8w+Xe8oeQd2rUoP5TY7c=;
+        b=FgC2of+eXcyHWqeJ6B14BGgkFf4hdFQrGXVPtQEIObKR8/j8ahjBvQS3J5Uff1V9Yp
+         uu+hJZ34Gfs2O6EP9dB1ajL8xEU1TJ8eVDHeoH9r9qo8TDa1y6dR2D0hD31WamkywiMD
+         Y07VWlSEBf9S8asLORbcLcrZw/SybL9cPP05T6JkNzRqdqJbjsoBe0Uc0lRzPyAXdSom
+         MMNWXJQ0+gWahap+m0hgTHH+8KjJe9eH5GyH+9MOXq01ICcTCAduHPDhspawBE0I3KLv
+         T8dBcaoXqVw8gHrLAkm+syUepu5fVicePccYccgC52lPl/20sR9lb2uWGSxnheMZh9Je
+         eEAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725524660; x=1726129460;
+        d=1e100.net; s=20230601; t=1725524661; x=1726129461;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=g46xgvcRuzluvD9uFfVgOC6tB6SvIHIhrOwQLDjP3Ko=;
-        b=NMfE0DABNhKO19XfwRBjRnWL7AduEDa9BnJ2m0IsFeqQ9uwHaNY20yRSw89dqnHSix
-         RXBso2GskpK/bRWWLBA3ri1YbCDXYSLxJbHT7aZ3MFYcQQLlly2/fxuc1Oll+11owIAH
-         06js04GHC8Rm8eM+PPbRXVgQm+V4crVae+Nup3Pg1Wo5xRt0NT34waAAJj34IeES1tNJ
-         aaDWdtt3ILmzLo9ImOd1eow+1hMplvGozaTHlzZV8CCrpmyEL766NAy70iw014p5AFxS
-         3vIin7QUAaEz5msuM5+uQ2dgMZMOj7Vv1T6aqlr9epzUNR9v9DVOfnzc+vszIB9H5aeB
-         /EdA==
-X-Gm-Message-State: AOJu0Yyqzs/Jmn8Jl/t8d9OQwjlmpYHTiv+FVmYaE96BMZBDyxafeDnW
-	EeBpoglysFz9W+TGGNBoSluhGqmUcYeXRNPqCSZLsYqWkcSnPnKq3YSFxP5QJ6IUEEJuToxWEYn
-	MYr0=
-X-Google-Smtp-Source: AGHT+IEPcapgT5c8vyHV3LQwJ4MKYkMzKLUd0c6or4eTsc0LfeUFrkNG8rK61o5FzDWPYLQrgG6jYQ==
-X-Received: by 2002:a17:907:7206:b0:a86:a5a0:7613 with SMTP id a640c23a62f3a-a8a1d4c2db0mr918986766b.55.1725524659644;
-        Thu, 05 Sep 2024 01:24:19 -0700 (PDT)
+        bh=6E91591mSBml3TNwKKH/V0e8w+Xe8oeQd2rUoP5TY7c=;
+        b=poEEnW944IMgjFN1ivxlw00HaXaUYNYY9nJ6vbBhpnlxBBKmxVHSUYPguiDjB33dVM
+         nUQRnkbYEBRcV/eFNvA2mXNW1zCFTM2C5OBPpGMJJRYS/6gvPGZnix+EQE/smGH1aYf4
+         /XIi8ZyZgu8l1vwcQn+Qks0VjQ097x9HrysKRSyjY9TDXBNdzqSknQRT8v+nspNa/8rm
+         vVO3dUOej+PXkyCkwA8WhT0OAGAApj5nchIHnjd3KUpthkJ9W+/r43IeLsMHMFYuRGoD
+         lt51n0P5SJckJu9/hVn3ww+OAQC40BCi/jkM3k85/BJSM9G+sH8yKdsdPr0dAfXsLNfj
+         8mzA==
+X-Gm-Message-State: AOJu0YxYbyF5VDivroba6eMuNKXIZVUew82valHrPfDAfwJ/mZsi0pgd
+	v3d4J1NQm7gAKD0SeH55q5UDBR3cO0EbYHgczrsN29XVrogUT6bKz4sxb8WuxhFBgzH3tIccPdo
+	Mwco=
+X-Google-Smtp-Source: AGHT+IEue6KQB0cxF3glXoNKRtA7TVZTKr6ANWpW3YsE7FVumztajZG9HSuommv6910riT26/HM/MQ==
+X-Received: by 2002:a17:907:9725:b0:a88:b90a:ff30 with SMTP id a640c23a62f3a-a897fa74dbcmr1786881366b.50.1725524661282;
+        Thu, 05 Sep 2024 01:24:21 -0700 (PDT)
 Received: from localhost.localdomain ([188.27.130.242])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a623a6c80sm102300366b.174.2024.09.05.01.24.17
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a623a6c80sm102300366b.174.2024.09.05.01.24.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Sep 2024 01:24:18 -0700 (PDT)
+        Thu, 05 Sep 2024 01:24:20 -0700 (PDT)
 From: Alexandru Ardelean <aardelean@baylibre.com>
 To: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -77,11 +77,10 @@ Cc: jic23@kernel.org,
 	lars@metafoo.de,
 	michael.hennerich@analog.com,
 	gstols@baylibre.com,
-	Alexandru Ardelean <aardelean@baylibre.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v4 6/8] dt-bindings: iio: adc: document diff-channels corner case for some ADCs
-Date: Thu,  5 Sep 2024 11:24:00 +0300
-Message-ID: <20240905082404.119022-7-aardelean@baylibre.com>
+	Alexandru Ardelean <aardelean@baylibre.com>
+Subject: [PATCH v4 7/8] dt-bindings: iio: adc: add docs for AD7606C-{16,18} parts
+Date: Thu,  5 Sep 2024 11:24:01 +0300
+Message-ID: <20240905082404.119022-8-aardelean@baylibre.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240905082404.119022-1-aardelean@baylibre.com>
 References: <20240905082404.119022-1-aardelean@baylibre.com>
@@ -93,35 +92,171 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some ADCs have channels with negative and positive inputs, which can be
-used to measure differential voltage levels. These inputs/pins are
-dedicated (to the given channel) and cannot be muxed as with other ADCs.
+The driver will support the AD7606C-16 and AD7606C-18.
+This change adds the compatible strings for these devices.
 
-For those types of setups, the 'diff-channels' property can be specified to
-be used with the channel number (or reg property) for both negative and
-positive inputs/pins.
+The AD7606C-16,18 channels also support these (individually configurable)
+types of channels:
+ - bipolar single-ended
+ - unipolar single-ended
+ - bipolar differential
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
 ---
- Documentation/devicetree/bindings/iio/adc/adc.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../bindings/iio/adc/adi,ad7606.yaml          | 109 ++++++++++++++++++
+ 1 file changed, 109 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adc.yaml b/Documentation/devicetree/bindings/iio/adc/adc.yaml
-index 8e7835cf36fd..b9bc02b5b07a 100644
---- a/Documentation/devicetree/bindings/iio/adc/adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adc.yaml
-@@ -37,6 +37,10 @@ properties:
-       to both the positive and negative inputs of a differential ADC.
-       The first value specifies the positive input pin, the second
-       specifies the negative input pin.
-+      There are also some ADCs, where the differential channel has dedicated
-+      positive and negative inputs which can be used to measure differential
-+      voltage levels. For those setups, this property can be configured with
-+      the 'reg' property for both inputs (i.e. diff-channels = <reg reg>).
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+index 69408cae3db9..57537ab0ec82 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+@@ -14,6 +14,8 @@ description: |
+   https://www.analog.com/media/en/technical-documentation/data-sheets/AD7605-4.pdf
+   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606_7606-6_7606-4.pdf
+   https://www.analog.com/media/en/technical-documentation/data-sheets/AD7606B.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-16.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-18.pdf
+   https://www.analog.com/media/en/technical-documentation/data-sheets/AD7616.pdf
  
-   single-channel:
-     $ref: /schemas/types.yaml#/definitions/uint32
+ properties:
+@@ -24,11 +26,19 @@ properties:
+       - adi,ad7606-6
+       - adi,ad7606-8  # Referred to as AD7606 (without -8) in the datasheet
+       - adi,ad7606b
++      - adi,ad7606c-16
++      - adi,ad7606c-18
+       - adi,ad7616
+ 
+   reg:
+     maxItems: 1
+ 
++  "#address-cells":
++    const: 1
++
++  "#size-cells":
++    const: 0
++
+   spi-cpha: true
+ 
+   spi-cpol: true
+@@ -114,6 +124,46 @@ properties:
+       assumed that the pins are hardwired to VDD.
+     type: boolean
+ 
++patternProperties:
++  "^channel@[1-8]$":
++    type: object
++    $ref: adc.yaml
++    unevaluatedProperties: false
++
++    properties:
++      reg:
++        description:
++          The channel number, as specified in the datasheet (from 1 to 8).
++        minimum: 1
++        maximum: 8
++
++      diff-channels:
++        description:
++          Each channel can be configured as a differential bipolar channel.
++          The ADC uses the same positive and negative inputs for this.
++          This property must be specified as 'reg' (or the channel number) for
++          both positive and negative inputs (i.e. diff-channels = <reg reg>).
++        items:
++          minimum: 1
++          maximum: 8
++
++      bipolar:
++        description:
++          Each channel can be configured as a unipolar or bipolar single-ended.
++          When this property is not specified, it's unipolar, so the ADC will
++          have only the positive input wired.
++          For this ADC the 'diff-channels' & 'bipolar' properties are mutually
++          exclusive.
++
++    required:
++      - reg
++
++    oneOf:
++      - required:
++          - diff-channels
++      - required:
++          - bipolar
++
+ required:
+   - compatible
+   - reg
+@@ -170,6 +220,17 @@ allOf:
+         adi,conversion-start-gpios:
+           maxItems: 1
+ 
++  - if:
++      not:
++        properties:
++          compatible:
++            enum:
++              - adi,ad7606c-16
++              - adi,ad7606c-18
++    then:
++      patternProperties:
++        "^channel@[1-8]$": false
++
+ unevaluatedProperties: false
+ 
+ examples:
+@@ -202,4 +263,52 @@ examples:
+             standby-gpios = <&gpio 24 GPIO_ACTIVE_LOW>;
+         };
+     };
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "adi,ad7606c-18";
++            reg = <0>;
++
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            spi-max-frequency = <1000000>;
++            spi-cpol;
++            spi-cpha;
++
++            avcc-supply = <&adc_vref>;
++            vdrive-supply = <&vdd_supply>;
++
++            interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
++            interrupt-parent = <&gpio>;
++
++            adi,conversion-start-gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;
++            reset-gpios = <&gpio 27 GPIO_ACTIVE_HIGH>;
++            adi,first-data-gpios = <&gpio 22 GPIO_ACTIVE_HIGH>;
++            standby-gpios = <&gpio 24 GPIO_ACTIVE_LOW>;
++
++            adi,sw-mode;
++
++            channel@1 {
++                reg = <1>;
++                diff-channels = <1 1>;
++            };
++
++            channel@3 {
++                reg = <3>;
++                bipolar;
++            };
++
++            channel@8 {
++                reg = <8>;
++                diff-channels = <8 8>;
++            };
++
++        };
++    };
+ ...
 -- 
 2.46.0
 

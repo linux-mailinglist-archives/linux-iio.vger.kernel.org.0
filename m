@@ -1,263 +1,193 @@
-Return-Path: <linux-iio+bounces-9181-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9183-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F4596D3F3
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 11:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC5396D5EF
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 12:26:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4FA01C20A69
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 09:47:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E08F91C2537A
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 10:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B061991B0;
-	Thu,  5 Sep 2024 09:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8CAD199EA3;
+	Thu,  5 Sep 2024 10:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lK0bb7+M"
+	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="P7GUgRhZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013025.outbound.protection.outlook.com [52.101.67.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7627194AC7;
-	Thu,  5 Sep 2024 09:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529603; cv=none; b=j3hVVTvQR9k7GJ1hc2wzqNEY+mzb/URTl+SgfqaI8tksh+IiCxBn6dwiHeVRbUVB/baMDAS85E60caw1cfPSHAsfnXDdY90pzTpBV4nY67rJ1QhNP8H7TGA9dI62SLcrIF1rS7mUt47CxMfnK2SdaDL7jzpFIUebs8dVnDbxyao=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529603; c=relaxed/simple;
-	bh=hfyLaFfMkYpNRtL4fR5wRcnbCnNmAquAnd9wooE+JoY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QA6km7BvSm3+shaLs39Ug4fig5eQTS4ZnMUDdUPoz+FGGv1atFmhLwyU9Vt0yP9eZTXCXlKo9YZrqeJ6a6BS1//2HZE2pCSeCgEvPIrqCTCVZTuBuu8W+mGKg596ijQ0lThUtMzxfTwk6Z53rGc25lH6gDkHBAGYmn9qrBYMD3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lK0bb7+M; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-533de5a88f8so411052e87.3;
-        Thu, 05 Sep 2024 02:46:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725529600; x=1726134400; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hfyLaFfMkYpNRtL4fR5wRcnbCnNmAquAnd9wooE+JoY=;
-        b=lK0bb7+MkXqw+yoSznoZF5ONQGHdIvLO7gUKa48JDDLwqVV0DK9zErn3sxf3IvSRQB
-         X3MRtQ1Xuih1AAotKvu5nwKryGwrrCOvf/S34OQh29Ra7sUOJiAVwHxVeKXMCGTuggTI
-         C4VlTWJ0jdDJoKbZ/GG9+xzogAKf8XvvJsmcfe/8m7PLfsNb7urIcBVZ4YBp90G1semf
-         kE8ww1wPEoy5V4FinB9OpRhKZ/8R2QTIdKP0ItKWPej8SN3N1oscUUuvAwPVsT2iC/xM
-         7FJ1bwAebLeejgV6/AW3seLmMhcw+m/G5r3VIdVpJW+I4wLUFfmFYDcGPdJ2TVYoEcyj
-         g4/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725529600; x=1726134400;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hfyLaFfMkYpNRtL4fR5wRcnbCnNmAquAnd9wooE+JoY=;
-        b=b67m8CTqYH890D+p5+oBBiUGzxq1TTCCylH13DacGGmStdQkaxbKzOYKo1cuoxTo0A
-         qcxJrpZ1/z8SbekCVOsmxjTijjxSaIpnFvvc9XTxLE5KhJ+7DrkgR/3I3D/Zr8lbf3AL
-         h6DRGtZaAvMWvdVDvNJf103/7rDhXJvVaKMyXrlyOn1Ir9dFLuui9J+gWUYuC+q70UUF
-         zYyG2Jq+/rl/sWyBgVcg9NN0Q9+LMse2HIPftGB/dN98gVussmQlD7ZxzI737Ut2523T
-         D8PHGrU+Sg9/S5CpC7sYin083u2JK+i9SChGWcvl9BvmAcjAyjSRnFWabqKNxQwdfx9j
-         RGXg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzUn0iB9tOv/c4qAKkl0oa2nmzu+ClhH55fWOxIDCJtHJOdfeq9a4J8Jh5QGXW5yN1qF7KdyZPKdy/@vger.kernel.org, AJvYcCXe6TFWPnWX3HNjVKB3pD0HJXdAoysGmNX5NFQvmySLsvpwjyvhXFFxSwtD9NZ87c0MdBI7xgG2LiYzPXD7@vger.kernel.org, AJvYcCXyrhY1ijd8nbRe/yK3c9b8CEWL+NUVU3S7nbx0kPpfcC02f4+9sTw4SDwsCBBMFs1hOYCwNo3bPlY7@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy29fuLilkIOr4b3iEBfpoi2H+L9U47qXKrAk/uhVrAFVWrZEm
-	kJt3MvdR3oAPQ264gPFhV2ziEIyQUpAuQ126sFATvCFXLm0Ws1WZ
-X-Google-Smtp-Source: AGHT+IFo1Up3OyHVy39h81UAR8Z2KOYVfLj1evigl5cnWjFtkgT8ubvK5n+0l8M/bVE8AJc4AjVq0Q==
-X-Received: by 2002:ac2:568f:0:b0:536:14a1:d645 with SMTP id 2adb3069b0e04-53614a1d756mr1333730e87.44.1725529598877;
-        Thu, 05 Sep 2024 02:46:38 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8a6236d290sm111882666b.116.2024.09.05.02.46.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Sep 2024 02:46:38 -0700 (PDT)
-Message-ID: <642d61b23c58d9b846e42badb2f2d97691c92144.camel@gmail.com>
-Subject: Re: [PATCH RFC 4/8] dt-bindings: iio: dac: add adi axi-dac bus
- property
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Conor Dooley <conor@kernel.org>, Angelo Dureghello
-	 <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>,  Jonathan Cameron <jic23@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- linux-iio@vger.kernel.org,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, dlechner@baylibre.com
-Date: Thu, 05 Sep 2024 11:50:45 +0200
-In-Reply-To: <20240830-quilt-appointee-4a7947e84988@spud>
-References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
-	 <20240829-wip-bl-ad3552r-axi-v0-v1-4-b6da6015327a@baylibre.com>
-	 <20240829-stopwatch-morality-a933abb4d688@spud>
-	 <d4eddc24-9192-4a4a-ac67-4cfbd429a6a9@baylibre.com>
-	 <20240830-quilt-appointee-4a7947e84988@spud>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D9C196446;
+	Thu,  5 Sep 2024 10:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725531732; cv=fail; b=meGIib124VZHks8HoZOC3Q8c8uXOpTjVqXp3dFpo0H4bWJUY5jSAPu+Hm7znFfi3LwauQltYHtMvzdOhWdPQgNmV/uhB40onnOGNVsx9SOXdE/ZVzRZFhJPQx6wB+uRMnPR7cmPU5K8ZFW/LhIs7WHiQe0dJWejjuSjeWdsoYzs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725531732; c=relaxed/simple;
+	bh=e8bAGsPEtbX/2sH6fK0tNnQ7saNbqAcFJjOQWDkvMRE=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=a9t4xW56pTDKTZaAVYJN2ArybQqnXZoKdcLdIg6p8+cn2w4h31nIItxDt/iHehalJHr6n3VSt3KXAFYKcy+QKmoJduiwArqTBUbhJ1c/JB+jNR1oOeg/HD2+uQYQSgvjz9UoSZnw7cJuEB4jqsOkCvaz5tNA+q4Wu4w4UJtn1P8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=P7GUgRhZ; arc=fail smtp.client-ip=52.101.67.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f5j50RCU2N4LXVhcSafwigD776bo3U13da10q5voG72DJnIgzpgqbHe0zBDcMjgqtiCqf3xrBnA95rA3VCLHiMIrhbXgJECD4So6UJSWpM8LGkTZlrwLIgOgcn1No5HBzOslvyXQRLSbe6KnoRGNd4O8gXEY8itB2lqtkYFvGOFmGmUenPbsoQXn0hYhyF23Iq8GC1WZxx7hHk6LAtS+Y4Ob4MYjgt6DwZfcvqv61rGUehKkJhOtapaon1GRjNkaQ6F6Ew8MkixoQv2Qn6vqMNb67ZuzarJXLWgwX+nSOO/869x+bKqeWPB9wTpqJs/MjNmAfsMPcjVpSQaQFIyU7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mbkL1a26yzpYje3aWdEy0vvOBuLiKI+l/UCjrbzCihk=;
+ b=LbHL5fPmt4SCUcUalJLyq2Jzq6KXwG6YtVVPWKqI1L1ojSuN28uuGHGp8aj+GJDv1SWrpNcnOjdEv520tTKu2/9TKr3KBYRL82byWX4dqHA7ma0RzE8yDudCcEIUvIqfbieARzrk5vlbfnVCm10NcJm5FtrO6NxAidBJUFUJAdrVPrl+WVpZ/UeGmP5rdIwVrLErKEKX+w8qj6CzHqkwzmnGwOW/MAZ0qro4vhdxnD8JUEQZzGUFVZ73217cb/U7UfrbWtPZ38ZNfL4QVGEeJVfJBBvu2cxEmcpR9W7aRTsx3If7psUrUJ0W/2qSSACO4r+a1oO7MwceB1U+pH7LJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 195.60.68.100) smtp.rcpttodomain=kernel.org smtp.mailfrom=axis.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mbkL1a26yzpYje3aWdEy0vvOBuLiKI+l/UCjrbzCihk=;
+ b=P7GUgRhZDL0nNgPq6KMp4Gspv+Sv9Xscj4Wv5nkxrx+Rl84F+Nh4bsv+mv/pngaO7LQT8Xm5vOJJBRIeEWu5Xw0QTb7HvJHYx9bOnZes7KFO00ar4p8d3KF2hgkpBvWkVp6EcI7LGF21lRtnPWTziwl1abHxRLVixXocgGAehCU=
+Received: from DU2PR04CA0048.eurprd04.prod.outlook.com (2603:10a6:10:234::23)
+ by AM9PR02MB7106.eurprd02.prod.outlook.com (2603:10a6:20b:269::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.28; Thu, 5 Sep
+ 2024 10:22:05 +0000
+Received: from DU2PEPF0001E9C3.eurprd03.prod.outlook.com
+ (2603:10a6:10:234:cafe::c5) by DU2PR04CA0048.outlook.office365.com
+ (2603:10a6:10:234::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27 via Frontend
+ Transport; Thu, 5 Sep 2024 10:22:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
+ smtp.mailfrom=axis.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=axis.com;
+Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
+ 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
+ client-ip=195.60.68.100; helo=mail.axis.com; pr=C
+Received: from mail.axis.com (195.60.68.100) by
+ DU2PEPF0001E9C3.mail.protection.outlook.com (10.167.8.72) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7918.13 via Frontend Transport; Thu, 5 Sep 2024 10:22:05 +0000
+Received: from SE-MAIL21W.axis.com (10.20.40.16) by se-mail02w.axis.com
+ (10.20.40.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 5 Sep
+ 2024 12:22:00 +0200
+Received: from se-mail01w.axis.com (10.20.40.7) by SE-MAIL21W.axis.com
+ (10.20.40.16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 5 Sep
+ 2024 12:22:00 +0200
+Received: from se-intmail01x.se.axis.com (10.0.5.60) by se-mail01w.axis.com
+ (10.20.40.7) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Thu, 5 Sep 2024 12:22:00 +0200
+Received: from pc55303-2334.se.axis.com (pc55303-2334.se.axis.com [10.94.180.8])
+	by se-intmail01x.se.axis.com (Postfix) with ESMTP id 578B1126;
+	Thu,  5 Sep 2024 12:22:00 +0200 (CEST)
+Received: by pc55303-2334.se.axis.com (Postfix, from userid 18269)
+	id 5465E22FBCF7; Thu,  5 Sep 2024 12:22:00 +0200 (CEST)
+From: Emil Gedenryd <emil.gedenryd@axis.com>
+Subject: [PATCH 0/3] iio: light: opt3001: add support for TI's opt3002
+ light sensor
+Date: Thu, 5 Sep 2024 12:20:44 +0200
+Message-ID: <20240905-add_opt3002-v1-0-a5ae21b924fb@axis.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPyF2WYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDCyML3cSUlPj8ghJjAwMjXRMDU1OjZMNEozRzcyWgjoKi1LTMCrBp0bG
+ 1tQBHAzRTXQAAAA==
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Andreas Dannenberg <dannenberg@ti.com>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, Emil Gedenryd <emil.gedenryd@axis.com>,
+	<kernel@axis.com>
+X-Mailer: b4 0.14.1
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PEPF0001E9C3:EE_|AM9PR02MB7106:EE_
+X-MS-Office365-Filtering-Correlation-Id: 60e544dc-d3e8-4ca8-e6d0-08dccd94974f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Y1QyNXpiN2pTMkxHTWhBdjF3cUZDR2FuajJYbDN4bit1VXF4Qkpwa0QxMzhj?=
+ =?utf-8?B?S09MZy9HcU5QbGFRRzQvWDMybTRIRy9Pcis4c3FGUnJnekg1RE1zd3FPYlZr?=
+ =?utf-8?B?MWtwMVJxZ2czUzdFU1lPaStrNEVxSWltWWlOT242K05laHlrL1NyUDh3ZFpP?=
+ =?utf-8?B?azNMUk1PWVcrZzdEcEl6aFdoVnFZMEFSVzlRU1VLTHZHdkhkb1h1TVNacWZH?=
+ =?utf-8?B?bDM3aUd2aDhaQ09penArT1EyYVE2KzNaaGx4dFVOOEo1WkhicktGYXFvUVIz?=
+ =?utf-8?B?OGcyeGJocjE5OWRrL0c2c0ZrNzY4Rll5c1I2dkNwMjJacXpSVDcybmlBcjRY?=
+ =?utf-8?B?MUxiNzN1ZDVXbnc0bStyaW5yQjFQaXRlWk0wbHZseHdzaDZMeDdSQmNXUEdB?=
+ =?utf-8?B?RHFMVjNVSHBLU1MvaEF4dEhSVTZPdmF4cmlOWkhIbFFmcG5CRUpER25oODN3?=
+ =?utf-8?B?dW8wS2NzN2RZTnJnSmt4bHBCZnllYU1rYlFDbURPdEk0bFJQZDdCSkRYMzBp?=
+ =?utf-8?B?LzczRWlSa2RaajNMbUVubEtWUGRzN2JkSTNMa3haelNhWVUxT0tLdEd3SUtL?=
+ =?utf-8?B?SHpMaytKNUE4ckZYRzdCcm5oZ2hhNTlaSmdNS1dkWmN0TDdGTTAvMTQySkFJ?=
+ =?utf-8?B?YWR4WnRPOXlRd3FMNlFjbEFCMTNjVmt1SytBTGZ0RU9sNkdybzdqMERobWdS?=
+ =?utf-8?B?Rlg4SCtkL3dDNXJJaW1xV1dpMGxDaEhTRWIyNjV4QU9LUmRZYktRamxOam0v?=
+ =?utf-8?B?WnFlMjF5T0FZNks0QUdyejkzZy8zQWQzS0tqRXVJYzZFWmlXMXJHMHFwWUht?=
+ =?utf-8?B?bU5GZi80WVJ0YlA5Y0tTTmlEWWxFcnFvVUZxSmhOekFncEtRcUE3Vld4SXNG?=
+ =?utf-8?B?REtlNjJyNXQyN3I2b0dkZ2VnTmhhN0E4Rzg4MFBRUjcvSDJMdDIzNnVyZFl5?=
+ =?utf-8?B?dlNZNWIxOWZ0NjJNeEY5bDhLSGhmYzA3RmtVVEdTZkhROGVKbkozcU1OS2hS?=
+ =?utf-8?B?eC9MNXNJK2tzL3RjUHJMQ2tDdktUVjRkd091dGcxbnpKcmcwc2lqTkxwdWZt?=
+ =?utf-8?B?SStINkdDb25aQjkxMUwvY0xlMFNRMktIb3RuekdheENia2F4ZHloWEl2WFox?=
+ =?utf-8?B?SVlmOGdXR1N3REp0Zjdaa2tVaDM4WDVpNTIweGwvN2VoRC95Wk5HQnpVeXlj?=
+ =?utf-8?B?ZEN4MUNwZVZESHR4ajJPWVdVaGM4ZUlZOWg5dnREYWpyR05DMlduVCtCNUVJ?=
+ =?utf-8?B?QVQ1K0kxcE1wSWZTMktNVi9WanlJRFNLbGZ6cmErc2dwQm54Z0I0RStOWUMy?=
+ =?utf-8?B?MXpXR2RHUVczWG5VWDBoV3Q0WjRXbjhBem5JbjJoQkRIeVI2ZktxckhKMHpQ?=
+ =?utf-8?B?clFqbG1ScmJrUW44UEljWFRtaG9VL0V6MU1lKzB1aWxxWkIxUXg1SXU1WnZW?=
+ =?utf-8?B?R2NXNnQ2WEJTb3VpWjRxY0lBK0k4U1g3bldRbGFvdmFEZmkySkxlVmZkVklG?=
+ =?utf-8?B?L3dpSkVhcTdXQXlsT3Z4dXd2eFBSZ2NTdE5SMWdsTUpGV2g3amwxdndKUXJu?=
+ =?utf-8?B?ei9SY2NPa1JpQUROUzJXWTBYT0ZNcnMyRG1zc2xRMVhNd051MVlxZ3FNd0p6?=
+ =?utf-8?B?T3ZpelhGMyt3Z0hqQnB2OTJud2RoVG1pVXkwa0xNM1NpemZEQkZNdEUwaUtK?=
+ =?utf-8?B?VTN0Yjd2dFFMalRhU0l3dSt5ak5hRnBidzBlODB5dXpSRndIR1ZnNGorOXNE?=
+ =?utf-8?B?VHYzL2xIZ1NRSVhsamZCbVcrK25Sc05QYWE2MnJzQjF1WFpxck9GRi94azR3?=
+ =?utf-8?B?bUJFUXl0MXJKUDNBU3FWQnpvRUZnSWJZWGJFMHhJMjJuQkRab1l2OXZTNnRI?=
+ =?utf-8?B?a0l3WUxZT1JzajBIWWptcjA1R3YrTEo3UHdvdVdaZzd6UVRkMDY4SHRsTlhi?=
+ =?utf-8?Q?W7RGPJnx07x+clSXQAJun8NcEqkY3X69?=
+X-Forefront-Antispam-Report:
+	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: axis.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2024 10:22:05.6592
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60e544dc-d3e8-4ca8-e6d0-08dccd94974f
+X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF0001E9C3.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR02MB7106
 
-On Fri, 2024-08-30 at 16:33 +0100, Conor Dooley wrote:
-> On Fri, Aug 30, 2024 at 10:19:49AM +0200, Angelo Dureghello wrote:
-> > Hi Conor,
-> >=20
-> > On 29/08/24 5:46 PM, Conor Dooley wrote:
-> > > On Thu, Aug 29, 2024 at 02:32:02PM +0200, Angelo Dureghello wrote:
-> > > > From: Angelo Dureghello <adureghello@baylibre.com>
-> > > >=20
-> > > > Add bus property.
-> > > RFC it may be, but you do need to explain what this bus-type actually
-> > > describes for commenting on the suitability of the method to be
-> > > meaningful.
-> >=20
-> > thanks for the feedbacks,
-> >=20
-> > a "bus" is intended as a generic interface connected to the target,
-> > may be used from a custom IP (fpga) to communicate with the target
-> > device (by read/write(reg and value)) using a special custom interface.
-> >=20
-> > The bus could also be physically the same of some well-known existing
-> > interfaces (as parallel, lvds or other uncommon interfaces), but using
-> > an uncommon/custom protocol over it.
-> >=20
-> > In concrete, actually bus-type is added to the backend since the
-> > ad3552r DAC chip can be connected (for maximum speed) by a 5 lanes DDR
-> > parallel bus (interface that i named QSPI, but it's not exactly a QSPI
-> > as a protocol), so it's a device-specific interface.
-> >=20
-> > With additions in this patchset, other frontends, of course not only
-> > DACs, will be able to add specific busses and read/wrtie to the bus
-> > as needed.
-> >=20
-> > > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > > > ---
-> > > > =C2=A0 Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml |=
- 9
-> > > > +++++++++
-> > > > =C2=A0 1 file changed, 9 insertions(+)
-> > > >=20
-> > > > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.=
-yaml
-> > > > b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
-> > > > index a55e9bfc66d7..a7ce72e1cd81 100644
-> > > > --- a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
-> > > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
-> > > > @@ -38,6 +38,15 @@ properties:
-> > > > =C2=A0=C2=A0=C2=A0 clocks:
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > > You mentioned about new compatible strings, does the one currently
-> > > listed in this binding support both bus types?
->=20
-> You didn't answer this, and there's insufficient explanation of the
-> "hardware" in this RFC, but I found this which is supposedly the
-> backend:
-> https://github.com/analogdevicesinc/hdl/tree/main/library/axi_ad3552r
-> adi,axi-dac.yaml has a single compatible, and that compatible has
-> nothing to do with "axi_ad3552r" as it is "adi,axi-dac-9.1.b". I would
-> expect either justification for reuse of the compatible, or a brand new
-> compatible for this backend, even if the driver can mostly be reused.
->=20
+TI's opt3002 light-to-digital sensor provides the functionality
+of an optical power meter within a single device. It shares a lot of
+similarities with their opt3001 model but has a wide spectral bandwidth,
+ranging from 300 nm to 1000 nm.
 
-Hi Conor,
+This patch set adds support for the TI opt3002 by extending the opt3001
+driver. In addition, a missing full-scale range value for the opt3001 is
+added, resulting in higher precision when setting event trigger values.
 
-So most of these designs have some changes (even if minimal) in the registe=
-r map
-and the idea (mine actually) with this backend stuff was to keep the backen=
-d
-driver (axi-dac/adc) with the generic compatible since all the (different)
-functionality is basically defined by the frontend they connect too and tha=
-t
-functionality is modeled by IIO backend ops. For some more
-significant/fundamental differences in the IP like this bus controller kind=
- of
-thing, we would add have proper FW properties. The main idea was kind of us=
-ing
-the frontend + generic backend combo so no need for new compatibles for eve=
-ry
-new design.
+See http://www.ti.com/product/OPT3002 for more information.
 
-It's still early days (at least upstream) for these IP cores and the backen=
-d
-code so if you say that we should have new compatibles for every new design=
- that
-has some differences in the register map (even if minimal), I'm of course f=
-ine
-with it. I've done it like this because I was (am) kind of afraid for thing=
-s to
-get complicated fairly quickly both in the bindings and driver (well maybe =
-not
-in the driver). OTOH, it can simplify things a lot as it's way easier to
-identify different implementations of the IP directly in the driver so we h=
-ave
-way more flexibility.
+Signed-off-by: Emil Gedenryd <emil.gedenryd@axis.com>
+---
+Emil Gedenryd (3):
+      iio: light: opt3001: add missing full-scale range value
+      iio: light: opt3001: add support for TI's opt3002 light sensor
+      dt-bindings: iio: light: opt3001: add compatible for opt3002
 
-> Could you please link to whatever ADI wiki has detailed information on
-> how this stuff works so that I can look at it to better understand the
-> axes of configuration here?
->=20
-> > >=20
-> > > Making the bus type decision based on compatible only really makes se=
-nse
-> > > if they're different versions of the IP, but not if they're different
-> > > configuration options for a given version.
-> > >=20
-> > > > +=C2=A0 bus-type:
-> >=20
-> > DAC IP on fpga actually respects same structure and register set, excep=
-t
-> > for a named "custom" register that may use specific bitfields depending
-> > on the application of the IP.
->=20
-> To paraphrase:
-> "The register map is the same, except for the bit that is different".
-> If ADI is shipping several different configurations of this IP for
-> different DACs, I'd be expecting different compatibles for each backend
-> to be honest.
+ .../devicetree/bindings/iio/light/ti,opt3001.yaml  |   1 +
+ drivers/iio/light/Kconfig                          |   2 +-
+ drivers/iio/light/opt3001.c                        | 203 +++++++++++++++++----
+ 3 files changed, 172 insertions(+), 34 deletions(-)
+---
+base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
+change-id: 20240828-add_opt3002-40552c1a2f77
 
-Yes, pretty much we have a generic core with most of the designs being base=
-d on
-it but with some slight differences. At least for the new ones, almost all =
-of
-them have slight deviations from the generic/base core.
-
-> If each DAC specific backend was to have a unique compatible, would the
-> type of bus used be determinable from it? Doesn't have to work for all
-> devices from now until the heath death of the universe, but at least for
-> the devices that you're currently aware of?
->=20
-
-My original idea was to have a bus controller boolean for this core at leas=
-t for
-now that we only have one bus type (so we could assume qspi in the driver).=
- If
-the time comes we need to add support for something else, then we would nee=
-d
-another property to identify the type.
-
-> > > If, as you mentioned, there are multiple bus types, a non-flag proper=
-ty
-> > > does make sense. However, I am really not keen on these "forced" nume=
-rical
-> > > properties at all, I'd much rather see strings used here.
->=20
-> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > > > +=C2=A0=C2=A0=C2=A0 description: |
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Configure bus type:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - 0: none
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - 1: qspi
->=20
-> Also, re-reading the cover letter, it says "this platform driver uses a 4
-> lanes parallel bus, plus a clock line, similar to a qspi."
-> I don't think we should call this "qspi" if it is not actually qspi,
-> that's just confusing.
->=20
-
-Just by looking at the datasheet it feels like typical qspi to be honest. A=
-nd,
-fwiw, even if not really qspi, this is how the datasheet names the interfac=
-e.
-
-- Nuno S=C3=A1
-> >=20
+Best regards,
+-- 
+Emil Gedenryd <emil.gedenryd@axis.com>
 
 

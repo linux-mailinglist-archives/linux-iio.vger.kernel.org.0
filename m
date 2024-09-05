@@ -1,111 +1,101 @@
-Return-Path: <linux-iio+bounces-9192-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9193-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2776B96D6CB
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 13:12:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBCE96D737
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 13:33:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2D6C281D62
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 11:12:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FC5A1F23FDB
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 11:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3B5199238;
-	Thu,  5 Sep 2024 11:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65453199E89;
+	Thu,  5 Sep 2024 11:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rx4FtIHZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cn4rPZlm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F76194A61;
-	Thu,  5 Sep 2024 11:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17966199938;
+	Thu,  5 Sep 2024 11:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725534719; cv=none; b=fPWbaPcrd8J/FycsaJpDyg+CjL4JWv07zz+B6adrMcIlaCzsevYHKHzeLLokXzR61DJs0+Lsr29WDd90UhdQ0irKL+n4K6JWJ/wKuL9JIifZdTnljvRgKabGP2FDhGqb5cVHzosC7YWDfNj+UdPOsgkz6YASf7kDTvgWm71F2zg=
+	t=1725535997; cv=none; b=ZoIMjakvLtnOldYeC1uBaG4KUgp+wwsEni3PsCd1X8ESsMIacby0VrhArI0TQlcOFxAxDO9r81SBF7/DcFRzvm82cwfHDQ/+nyTMsKDzvXBwKDRlHOSLD/+JK+AXHaWddwwrRDa1xwHYffx+mwR1BTkAjmjdEFiKs5y7uxX2Hok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725534719; c=relaxed/simple;
-	bh=IcY+P+y/j/IEo8kvhtDOZN3wwwCRu9Vys1CDWZHyjpU=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=XX0O35ALYCQOKMgpUqR+vesw06OgKzlfXGRlmuR+iwcznq2PaqiR4RB3D9dKhm8FFs4zp8Pz64f89raC47jzyku9OY4d8WZ1MF/FndZxMjEPyQfreTIMiYD3yvopD2bMryiqUz4W4W4DDTIwEtjY7q5VZXz6BGU/3xmX+zhCS4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rx4FtIHZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722E5C4CEC3;
-	Thu,  5 Sep 2024 11:11:58 +0000 (UTC)
+	s=arc-20240116; t=1725535997; c=relaxed/simple;
+	bh=VWk0KKM+pEC2Fxd/uZoZaHJwBnxhNaByHYWWjXspupw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e+PZ5eul//gCaIfKjWRzaSk4PvEL49YSCXVa5V2D8Pf8h2EV6wVH8dSKZD4WXIkXmwiPacQaYuQI6v0eqgXSNBxwI/RdIL6SrYPu62aMYmRQUi3LyaPQQ090U7eDVqhn8/Mnbz1QoV9AHg6U5RCLPm+XXuvpipg5OrCymStmxzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cn4rPZlm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9D5C4CEC3;
+	Thu,  5 Sep 2024 11:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725534718;
-	bh=IcY+P+y/j/IEo8kvhtDOZN3wwwCRu9Vys1CDWZHyjpU=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=rx4FtIHZicQKBHi8Hm/kS6CHF8bbUNcL9MvT70avHxczrIMJb0myRsT7J4EddEaBo
-	 lwfrG6LPK2FxvqPIX9KDgYdikmr4V4g4JPJt7/ie/x2v6mm+ztf1y5zZ9frJ3WaNM2
-	 EbJQ8jzV/8GP3yDhoGH0feTTiq8UveX7eK/nKMFwfMTGRrbTfjXA20hBAAXOmsPgrs
-	 qVd9JdLw1Sb4n8wZqF0p3dc8QbXJZMeSeA2dAL4WCUiSTjSF1Zzsonjiu/SgBT6UU8
-	 1keQgUyczgZKu4kTo+Y2mwVLsEkQ+eDAnQtTxfqPO3vweSvjkc/u0KwG+T1qJx5OtU
-	 3ICz93ge8d+4Q==
-Date: Thu, 05 Sep 2024 06:11:57 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1725535996;
+	bh=VWk0KKM+pEC2Fxd/uZoZaHJwBnxhNaByHYWWjXspupw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cn4rPZlmwgMcVVU+MrRIC0Yjz3jTout7qWJji7d3q+7Y7YqTAyEcMW/f3hDXdtPSJ
+	 RTETa4ysBQk9weJrSdjM5qSQfU/UX35eT9DKaz6M79YTVXtTy+aAVWejiZckaiLw03
+	 K5tqZONOWD9SX2Bl+C3M2Jf1i11KxGyFiY1LITuE97vzWZfVCaoQRhGnqlVsEpxYrM
+	 TBGqJ0fTuBxxkSdo68FbuIH1DqOMQAYzxYoGTRWsUnIZX5KFkFdl7r2dC8schnl7el
+	 7c3pivYAM+o4q6/SUIKg9pYAz3XDmgOolIvFegh9O1ZGXGm5+EYz9294l9Up8AwswX
+	 erdM46Mn8OGNQ==
+Date: Thu, 5 Sep 2024 12:33:08 +0100
+From: Mark Brown <broonie@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH RFC v3 0/9] spi: axi-spi-engine: add offload support
+Message-ID: <52894eda-f484-43b2-b9db-04bd14fe6e18@sirena.org.uk>
+References: <20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Emil Gedenryd <emil.gedenryd@axis.com>
-Cc: linux-iio@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, kernel@axis.com, 
- Andreas Dannenberg <dannenberg@ti.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>
-In-Reply-To: <20240905-add_opt3002-v1-3-a5ae21b924fb@axis.com>
-References: <20240905-add_opt3002-v1-0-a5ae21b924fb@axis.com>
- <20240905-add_opt3002-v1-3-a5ae21b924fb@axis.com>
-Message-Id: <172553471735.1030504.6260506598710907447.robh@kernel.org>
-Subject: Re: [PATCH 3/3] dt-bindings: iio: light: opt3001: add compatible
- for opt3002
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="SQPEeGKFbXTry+H6"
+Content-Disposition: inline
+In-Reply-To: <20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com>
+X-Cookie: The horror... the horror!
 
 
-On Thu, 05 Sep 2024 12:20:47 +0200, Emil Gedenryd wrote:
-> OPT3002 is a Light-to-Digital Sensor by TI with support for wide-range
-> spectrum light.
-> Add the compatible string of opt3002 to the existing list.
-> 
-> Signed-off-by: Emil Gedenryd <emil.gedenryd@axis.com>
-> ---
->  Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
+--SQPEeGKFbXTry+H6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-My bot found errors running 'make dt_binding_check' on your patch:
+On Mon, Jul 22, 2024 at 04:57:07PM -0500, David Lechner wrote:
+> There is a recap at the end of this cover letter for those not familiar
+> with the previous discussions. For those that are, we'll get right to
+> the changes since the last version.
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml:19:5: [error] duplication of key "const" in mapping (key-duplicates)
+I didn't reply on this mainly because I don't have anything super
+substantial to say that wasn't already covered.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml: ignoring, error parsing file
-./Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml:19:5: found duplicate key "const" with value "ti,opt3002" (original value: "ti,opt3001")
-make[2]: *** Deleting file 'Documentation/devicetree/bindings/iio/light/ti,opt3001.example.dts'
-Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml:19:5: found duplicate key "const" with value "ti,opt3002" (original value: "ti,opt3001")
-make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/iio/light/ti,opt3001.example.dts] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1432: dt_binding_check] Error 2
-make: *** [Makefile:224: __sub-make] Error 2
+--SQPEeGKFbXTry+H6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-doc reference errors (make refcheckdocs):
+-----BEGIN PGP SIGNATURE-----
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240905-add_opt3002-v1-3-a5ae21b924fb@axis.com
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbZlvMACgkQJNaLcl1U
+h9B4rAf/ZoKEQN8Ha9T7PIsTC+93EBkvUTESMJz+87Yt8sXAwKjxCQyi8uUB8CNZ
+nXIsSzqp4bZS3nhAuQovxgJwoZ7/TA0RdlzT2aE5WxJL4diRUaQpPvJpwmGKRnHB
+qqC+w+b7QBpnp8LaQnxAc2Sqyp08GQavoGgPpL4CggM+wh7v2LihCCZEg1+Fv4R0
+hGhMF3ZKNp8v1yvIungM8leb/ooqY8fhKQoVjf4HVXngZLl4qQI7Jk+b66MeSWrV
+yOGB5unNKl9zGFr+Pma0F5NlEhC7/H6PwKts2skY3+heBw4WNnkrZgY++0m8uJvk
+Dx5B0OmMI2x8J5WiAcULkVIW+TOQWA==
+=JKTd
+-----END PGP SIGNATURE-----
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+--SQPEeGKFbXTry+H6--
 

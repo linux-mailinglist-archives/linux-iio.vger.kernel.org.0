@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-9187-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9188-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE4596D637
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 12:37:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 436AB96D63C
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 12:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 129BCB21364
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 10:37:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB88A1F223D6
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 10:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDDC198E96;
-	Thu,  5 Sep 2024 10:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACF6198A32;
+	Thu,  5 Sep 2024 10:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMl5jDaa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mv1h+Cq+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BF21EBFEC;
-	Thu,  5 Sep 2024 10:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69A4198845;
+	Thu,  5 Sep 2024 10:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725532662; cv=none; b=nhjbaRvc/Jsw4ZYqscygp8Sg1jUqMNotxFYOw0SgKnmXvYbE0wBTGI14S1MH1IHx5vY6lHhihc0jiUM5ChO7P/yeXvnsKf1K+0INCCEJTSQrn6XSe2cin0RDHgXsAGxKc7WXqKnHqDqYh+kcCuAMnckO2vxSlTphgU2gkQalTwQ=
+	t=1725532690; cv=none; b=WZxrFa/iZXwMsG7YSytSo+GwAWN7RrTtTfVxShs39o7c1mKCCQYICTFjItQ8Pxp2YZaqxJ138qdXnhVCORBWAEwXeTRmlVK4Sc4lV6Df6TUAPUEV9C73BpT+/jqawrAhWgZFHPNv/ALLWSlR9NAud4xLg1H0CFxxQ1XyZx/F7ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725532662; c=relaxed/simple;
-	bh=cO2jkjsWjht1ipiWgNnsXnnaFAXs+KDdEIduPW2dVcQ=;
+	s=arc-20240116; t=1725532690; c=relaxed/simple;
+	bh=FPwf8jDmQ5oOYS4TqA4a84I8mxocOkSTJ9W+g6z15KU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eJ3edeP39YXN5Ag35HzF10yvhV0K1W1JV1AS+PFqB1pQxuuIh9gi/DkN5UgZqo+Ox2WnEKNC3wbZ/V/E89o/fLX9hIhBsq5kmuyabRoJrNLCRkPdjUlRdylakSUDK9QRS8SIzlSf8rAHjAdZHmCIpjW9JTgXKy8UWDAD0vWcrjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMl5jDaa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DF3C4CEC6;
-	Thu,  5 Sep 2024 10:37:37 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=eeZ0yfTl+EoapsU1zbJZDqkwL2PmlL1qzPIrE/uD8eAw92BIPyIOMw7JHdXaxfKz1nj+Vc9c/DkxBdQRC1qo6L5TPH7mIcJ+N2gVsklOk1FpLFzZXwMPPHB/AKp/r4Fm2g5IQlbT4H5Fkwp0+OHbUsh4p6y/aqEygsYEU/2B7LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mv1h+Cq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6939C4CEC3;
+	Thu,  5 Sep 2024 10:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725532661;
-	bh=cO2jkjsWjht1ipiWgNnsXnnaFAXs+KDdEIduPW2dVcQ=;
+	s=k20201202; t=1725532690;
+	bh=FPwf8jDmQ5oOYS4TqA4a84I8mxocOkSTJ9W+g6z15KU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jMl5jDaaFNHoc6jyK1TBmOFJ8j3P3Cz7GdCwhvge5+ZcCPLFJKTquZ91dGS83fDLT
-	 wmcvxPj6r9puCobyc2YF4/RxgmJWaCyP4py5SN4c7FRuJOd6SsZNFP+ye36iCTGvuv
-	 1Z1i/bdf5BknuxIsUKXb/RKUTsOKJC9g8470f3WXEexWa2+qNgncSO1tl6cEdjN73b
-	 Z+D8gbVfFfV20wWNUh230bEfdUa353sg0cey5NpL5DF4IFf+1kUu19b5YZZcbMQQlj
-	 IaBpq/oDZ1tjQAsKWqGcX/dj2IrFMDFb1JN/b8300E1Uv+BnHoNbxNyBY82ht4gqdm
-	 26/PV+js7RhQQ==
-Message-ID: <cf9d3887-f76e-48d8-a1a5-de6c6e6db96b@kernel.org>
-Date: Thu, 5 Sep 2024 12:37:34 +0200
+	b=mv1h+Cq+S1QlpzrkyULx3n7klSZpAp3hBWFkGXwdT+VsERqKGlrw6898dFuZehmAk
+	 B9ZP9q5HtjcLKpMfeGWUJ9QQim39Pf/tIqPYOmh50k3sylG7rRRXxT6V8fAwoLWnWX
+	 QySgD15muTvTeKuz2yCylTE4dOwJPbnWUqxbIYi+loMC/EluURb3bcrzT/a7SNziue
+	 WZcNjrM0W5prU/330eXUWNwykwaUErs86LtadBj/wvz6JYWU2l45BcHLSE7HdxOoxL
+	 JYkBCGfwZNBAAjhOq+JD46+iw9KTp4Y2J/lux9q2qwmZPfas0PtedWYxPq7stGbTqC
+	 LqaRLOsa68hGw==
+Message-ID: <e912ca02-f06d-43da-92f4-f5611e08fb66@kernel.org>
+Date: Thu, 5 Sep 2024 12:38:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] iio: light: opt3001: add support for TI's opt3002
- light sensor
+Subject: Re: [PATCH 3/3] dt-bindings: iio: light: opt3001: add compatible for
+ opt3002
 To: Emil Gedenryd <emil.gedenryd@axis.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -59,9 +59,9 @@ To: Emil Gedenryd <emil.gedenryd@axis.com>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, kernel@axis.com
 References: <20240905-add_opt3002-v1-0-a5ae21b924fb@axis.com>
- <20240905-add_opt3002-v1-2-a5ae21b924fb@axis.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <20240905-add_opt3002-v1-3-a5ae21b924fb@axis.com>
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -105,64 +105,37 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240905-add_opt3002-v1-2-a5ae21b924fb@axis.com>
+In-Reply-To: <20240905-add_opt3002-v1-3-a5ae21b924fb@axis.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 05/09/2024 12:20, Emil Gedenryd wrote:
-> TI's opt3002 light sensor shares most properties with the opt3001
-> model, with the exception of supporting a wider spectrum range.
+> OPT3002 is a Light-to-Digital Sensor by TI with support for wide-range
+> spectrum light.
+> Add the compatible string of opt3002 to the existing list.
 > 
-> Add support for TI's opt3002 by extending the TI opt3001 driver.
+> Signed-off-by: Emil Gedenryd <emil.gedenryd@axis.com>
+> ---
+>  Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> See https://www.ti.com/product/OPT3002 for more information.
-> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml b/Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml
+> index 441e9343fc97..7a48a06968ca 100644
+> --- a/Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/ti,opt3001.yaml
+> @@ -16,6 +16,7 @@ description: |
+>  properties:
+>    compatible:
+>      const: ti,opt3001
+> +    const: ti,opt3002
 
-...
+Never tested and obviously broken.
 
->  
->  	mutex_init(&opt->lock);
->  	init_waitqueue_head(&opt->result_ready_queue);
-> @@ -769,10 +892,18 @@ static int opt3001_probe(struct i2c_client *client)
->  		return ret;
->  
->  	iio->name = client->name;
-> -	iio->channels = opt3001_channels;
-> -	iio->num_channels = ARRAY_SIZE(opt3001_channels);
->  	iio->modes = INDIO_DIRECT_MODE;
->  	iio->info = &opt3001_info;
-> +	switch (opt->chip_info->model) {
-> +	case OPT3001:
-> +		iio->channels = opt3001_channels;
-> +		iio->num_channels = ARRAY_SIZE(opt3001_channels);
-> +		break;
-> +	case OPT3002:
-> +		iio->channels = opt3002_channels;
-> +		iio->num_channels = ARRAY_SIZE(opt3002_channels);
-> +		break;
-> +	}
->  
->  	ret = devm_iio_device_register(dev, iio);
->  	if (ret) {
-> @@ -826,13 +957,15 @@ static void opt3001_remove(struct i2c_client *client)
->  }
->  
->  static const struct i2c_device_id opt3001_id[] = {
-> -	{ "opt3001" },
-> +	{ "opt3001", 0 },
-> +	{ "opt3002", 1 },
+It does not look like you tested the bindings, at least after quick
+look. Please run `make dt_binding_check` (see
+Documentation/devicetree/bindings/writing-schema.rst for instructions).
+Maybe you need to update your dtschema and yamllint.
 
-Use the same match data for all ID tables. Otherwise you run into
-problems for different match methods.
-
->  	{ } /* Terminating Entry */
->  };
->  MODULE_DEVICE_TABLE(i2c, opt3001_id);
->  
->  static const struct of_device_id opt3001_of_match[] = {
-> -	{ .compatible = "ti,opt3001" },
-> +	{ .compatible = "ti,opt3001", .data = &opt3001_chip_info },
-> +	{ .compatible = "ti,opt3002", .data = &opt3002_chip_info },
 Best regards,
 Krzysztof
 

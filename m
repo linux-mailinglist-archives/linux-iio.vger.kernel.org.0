@@ -1,48 +1,73 @@
-Return-Path: <linux-iio+bounces-9243-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9244-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84A996F40D
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 14:13:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D1596F571
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 15:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BEA28732C
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 12:13:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25251F2500D
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 13:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A061CC171;
-	Fri,  6 Sep 2024 12:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7708D1CEAD0;
+	Fri,  6 Sep 2024 13:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCAFJP+o"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="qdVl+k5W"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C0115530C;
-	Fri,  6 Sep 2024 12:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBDC149DFA
+	for <linux-iio@vger.kernel.org>; Fri,  6 Sep 2024 13:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725624792; cv=none; b=lm1X9DPGYdTJKVnEI/fuCoVh/RcWNGn62XQbdiQIUnQeSeOBfu/A7raEfcn/RTKrRp625VwwetrBHRt5evbWkkRGJrpEPeAwv+suumlYiDEdDVpN18PMLsko6zmshX3/eZ25J1+WKcGQNwEo61Mqu1AwRTdJNyYisiz6cDq2tKg=
+	t=1725629607; cv=none; b=snx6zuRI0zOx+E9ZQ72Mg2KwQoFu1dWAHN4VB2A/rQ1nZYO53VyVYsjt1+Xp0nSsLXExqOtRsWqeKxyxnpowFLrFqlWKMB4CD7WrwZTjO+Vl0jF71cNrACHyoYJ0aNCXjc6OSXwydqvyt//QexzbNHYSqbUsGRo3n4VvxGjlxDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725624792; c=relaxed/simple;
-	bh=O4IbQuILTK1wgitJEe6nd9DP8Z9lwZP+g95dPwuV4ZQ=;
+	s=arc-20240116; t=1725629607; c=relaxed/simple;
+	bh=eJO0Wf/yWgnqoyhzRb3WOWUvELNt5GGNX829R/Im9tw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a5GbfDRV7l8ZoEmqC7NFdwm3Wb8llMVGeobYdT+Py3W4h6VDntwomO/9O/0VSTQ6ZOve0s22qAkFLUfz4LrsQLsolYdlrPe1LGGRRiTQQ5003mN3/7sNgSrR1j7o1Y5LygHQg9DDQLsHyx3xsvbt0tw5r4FHFZnquFGZ+hBcsu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCAFJP+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D359C4CEC4;
-	Fri,  6 Sep 2024 12:13:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725624792;
-	bh=O4IbQuILTK1wgitJEe6nd9DP8Z9lwZP+g95dPwuV4ZQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lCAFJP+o/aE/K4L43qu+EBP6kCnL0ycLmBdBpAakvJrt4Q5+ohOggJ5kLF4Z+0QKt
-	 WFhATz70OyfvLMQC/fxORVtklFnrMguCgM4HYFVtWZeSrZ/XI11Lqy6ZVveuR5pcIj
-	 0sgLlG4uTCzqnmdFFPqRjVfK+qsVEAHuVe6IHd/eSUsfkCwxFkEEfT3ybuvmzDZJdw
-	 mILSRsm/wzV9XkZ/96Vk/r5IFl0VcrXFeq9Kdn/3YZMCmTgG9joRvV3FSnobqKmqNH
-	 tQh+x9VQj8HQniZpyHoKLjX+CKO2mMpKh3/Um82nf9l2TnyOLolM/ZbKnIRQkMjh5B
-	 jnPJYUvvA+MEQ==
-Message-ID: <47c56239-51a0-4ff2-9db2-0e0184cfb086@kernel.org>
-Date: Fri, 6 Sep 2024 14:13:04 +0200
+	 In-Reply-To:Content-Type; b=cBqx4NGjvSBw/aXSHFYRiohC4HMQ+W4EAbio1BG7VDZ/c/illsdCUVfZifQzsoXoYhvlMGyYWQ1jlVnmegvRAv4p+Cb19IBwUGIWTtw9Hv1tv9lEy4LkXg0mvqsEIDixKN9XPvzkcV/6u5SFmLfwXYKswlW7VGIPCxOtPYR55AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=qdVl+k5W; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3e0059dc06bso1297103b6e.0
+        for <linux-iio@vger.kernel.org>; Fri, 06 Sep 2024 06:33:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725629603; x=1726234403; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NsEgGZlpuH9wh0lupJqRkJ9X0JwfAqQ3O1SdcnbcGz4=;
+        b=qdVl+k5WxB6qh0PrasoDnYD0C5C65j3z6x/AN34ryDv2/dfwQuSawXYowoeoXM0ZcE
+         AD9QZ5g1I5fCFwApK9KECGYKowfC/mXYRM7SqjwYfzh2Y58dF2fK+ePERVBOITxblivm
+         E+4C/bdirOBV1pr/edQLr26GzTRFIZBcCppexRmDYdF7q4ttLy4KW7j+KgJYZCFC78m6
+         6AKT7DvHiZ+g4DU4Z8XWgGLoyFSaYdl5yr3JE6tSeiw9zaHamvx9iBhr4s3uwA0WXjxM
+         9e74qgaV8gSk+KrjxVao0d9wJxYUOlgix5NoxZ9aRndIKucWGfJqNvorSmTJ/yq6hjfF
+         qnOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725629603; x=1726234403;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NsEgGZlpuH9wh0lupJqRkJ9X0JwfAqQ3O1SdcnbcGz4=;
+        b=HFLEIyfFNpXgtiqsZ6ayfScGSNym6Sf0nHzbvz1pqWF+K1RMlU5+a3IRcCjGp+SzqS
+         wRBmzdfalF75WUiARQRVpzr0Pj9VcxzQVt69EoCXdT4PByZUbDs7p8rAntXuIko96vUM
+         n4iw6X5duVkJk6eaN+Zc+Ipu9RZngEYhxSBicVbkrtvnsf9eCNiv7/jqhkBDcw7Gsq1I
+         EN9g2LlFIVpjUHLKiq6nl+A022My0zUg69JwWo6ToDLLeMJ8PjS4YUtQ3T7Kl5n6epNz
+         4ekr4WWz4uK6mskFJ/v964IPHaVfwm6K+mumhZmLPoekJRx2wQdCnGRNePOvBCraHvkR
+         WC3A==
+X-Gm-Message-State: AOJu0Yz02Don6jH0+ewKUwzcM+QSfUmyIpyvmKvmYgKr4VSUcScn+H+T
+	Ziu59ZNOsZnQWXvH24o4NUFfAemSMoOKFqsexCRlAMAGZ3LE62GSONstgBBf2ps=
+X-Google-Smtp-Source: AGHT+IGYUB83Z9nHWlTPrQM9wcE8xiaAiLCAyx0JD2GWznWKm4BOK3fAJlbiEp6O7QTWgUkQXfmnGw==
+X-Received: by 2002:a05:6808:22a0:b0:3db:334c:9768 with SMTP id 5614622812f47-3e029ce74c9mr3327075b6e.1.1725629602961;
+        Fri, 06 Sep 2024 06:33:22 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3df11865a3dsm3722385b6e.45.2024.09.06.06.33.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Sep 2024 06:33:22 -0700 (PDT)
+Message-ID: <52eb0187-056b-413a-a64a-6fd001c27132@baylibre.com>
+Date: Fri, 6 Sep 2024 08:33:21 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,182 +75,82 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/9] dt-bindings: iio: dac: add ad3552r axi-dac
- compatible
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
-References: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylibre.com>
- <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-5-87d669674c00@baylibre.com>
- <boahpvyzzmocnnpae2u6meub34yvqr2q3v5pzf2egp2fretlwk@ibas62hdypwo>
- <fd3f4874-b410-4e98-acba-d0fac041a40e@baylibre.com>
- <1928d0ce-cad9-4737-880e-3759c47fddbc@kernel.org>
- <058937fa93d484f3e81807d08a39bd8dfd3358e8.camel@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v4 8/8] iio: adc: ad7606: add support for AD7606C-{16,18}
+ parts
+To: Alexandru Ardelean <aardelean@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org,
+ robh@kernel.org, lars@metafoo.de, michael.hennerich@analog.com,
+ gstols@baylibre.com
+References: <20240905082404.119022-1-aardelean@baylibre.com>
+ <20240905082404.119022-9-aardelean@baylibre.com>
+ <2bf78e47-909a-45c0-bebb-6a8d38cdef7c@baylibre.com>
+ <CA+GgBR9=unTe5WVq0G2zowbL9FnLfCwoAuZp=7VD=xZOt9Gn5w@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <058937fa93d484f3e81807d08a39bd8dfd3358e8.camel@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <CA+GgBR9=unTe5WVq0G2zowbL9FnLfCwoAuZp=7VD=xZOt9Gn5w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 06/09/2024 13:53, Nuno Sá wrote:
-> On Fri, 2024-09-06 at 11:37 +0200, Krzysztof Kozlowski wrote:
->> On 06/09/2024 11:11, Angelo Dureghello wrote:
->>> Hi Krzysztof,
->>>
->>> On 06/09/24 9:22 AM, Krzysztof Kozlowski wrote:
->>>> On Thu, Sep 05, 2024 at 05:17:35PM +0200, Angelo Dureghello wrote:
->>>>> From: Angelo Dureghello <adureghello@baylibre.com>
->>>>>
->>>>> Add a new compatible for the ad3552r variant of the generic DAC IP.
->>>>>
->>>>> The ad3552r DAC IP variant is very similar to the generic DAC IP,
->>>>> register map is the same, but some register fields are specific to
->>>>> this IP, and also, a DDR QSPI bus has been included in the IP.
->>>>>
->>>>> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
->>>>> ---
->>>>>   Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml | 1 +
->>>>>   1 file changed, 1 insertion(+)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
->>>>> b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
->>>>> index a55e9bfc66d7..c0cccb7a99a4 100644
->>>>> --- a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
->>>>> +++ b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
->>>>> @@ -24,6 +24,7 @@ properties:
->>>>>     compatible:
->>>>>       enum:
->>>>>         - adi,axi-dac-9.1.b
->>>>> +      - adi,axi-dac-ad3552r
->>>> I am sorry, but what is the product here? It looks like either wrong
->>>> order or even completely redundant. What is ad3552r?
->>>>
->>>> And why versions are mixed with real products but without any
->>>> compatibility. What does the version express in such case?
->>>
->>> dac-ad3552r IP (fpga) is a variant of the dac IP, very similar,
->>> about the version, it still reads as 9.1.b
->>>
->>> so i can eventually change it to:
->>>
->>> adi,axi-dac-ad3552-9.1.b
->>>
->>> Should be more correct.
+On 9/6/24 12:34 AM, Alexandru Ardelean wrote:
+> On Fri, Sep 6, 2024 at 2:30 AM David Lechner <dlechner@baylibre.com> wrote:
 >>
->> No. First ad3552r is the product, so axi-dac is redundant. Second why
->> adding versions if you have product names? Versioning was allowed
->> because apparently that's how these are called, but now it turns out it
->> is not version but names.
+>> On 9/5/24 3:24 AM, Alexandru Ardelean wrote:
+
+
+>>> -static int ad7606_read_samples(struct ad7606_state *st)
+>>> +static int ad7606_read_samples(struct ad7606_state *st, bool sign_extend_samples)
+>>>  {
+>>> +     unsigned int storagebits = st->chip_info->channels[1].scan_type.storagebits;
 >>
+>> Why [1]? Sure, they are all the same, but [0] would seem less arbitrary.
 > 
-> Let me try to explain on how this whole thing works...
-> 
-> We have a generic FPGA IP called axi-dac (same story is true for the other axi-adc
-> IP) which adds some basic and generic capabilities like DDS (Direct digital
-> synthesis) and the generic one is the compatible existing now. This IP is a so called
-> IIO backend because it then connects to a real converter (in this case DACs)
-> extending it's capabilities and also serving as an interface between another block
-> (typical DMA as this is used for really high speed stuff) and the device. Now,
-> depending on the actual device, we may need to add/modify some features of the IP and
-> this is what's happening for the ad3552r DAC (it's still build on top of the 
+> [0] is the timestamp channel.
 
-What is "ad3552"? DAC right? Then as I said axi-dac is redundant. We do
-not call ti,tmp451 a ti,sensor-tmp451, right?
-
-If ad3552 is something else, then the order of naming is not correct.
-Product name is always the first.
+Oh, that's weird. First channel but last scan index!?
 
 
-> generic axi-adc). And in this design the IP is also acting as a qspi controller for
-> actually controlling the configuration of the device while, typically, IIO backends
-> are meant to only care about the dataplane. With all of this, there are discussions
-> still happening on the RFC (Angelo was too fast with this version) between using
-> different properties or new compatibles for changes so significant like this on the
-> generic IP. See the thread where Conor is also involved.
-
-1. Then what does it mean for "adi,axi-dac-9.1.b"?
-
-2. Is there any real customer product which uses this compatible alone?
-
-If you need to come up with customized compatibles, it means versioned
-one is not enough.
-
-If this is 9.1.b but not usable as 9.1.b ("for changes so significant
-like this on"), then I claim 9.1.b compatible is useless.
-
-> 
->> Third, versions are useless if you do not use them as fallbacks.
 >>
+>>> +     if (ret)
+>>> +             return ret;
+>>> +
+>>> +     if (storagebits == 16 || !sign_extend_samples)
+>>> +             return 0;
+>>> +
+>>> +     /* For 18 bit samples, we need to sign-extend samples to 32 bits */
+>>> +     for (i = 0; i < num; i++)
+>>> +             data32[i] = sign_extend32(data32[i], 17);> +
+>>> +     return 0;
+>>>  }
+>>>
+>>>  static irqreturn_t ad7606_trigger_handler(int irq, void *p)
+>>> @@ -124,11 +176,11 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
+>>>
+>>>       guard(mutex)(&st->lock);
+>>>
+>>> -     ret = ad7606_read_samples(st);
+>>> +     ret = ad7606_read_samples(st, true);
+>>
+>> Shouldn't the sign_extend parameter depend on if the data is unipolar or bipolar?
 > 
-> In this particular case we can't use the generic IP as a fallback since without the
-> bus controller feature the device can't really work. But it can happen we increase
-> the version on the generic core and use the existing version as fallback 
+> [c1]
+> Sign-extension is only needed for 18-bit samples.
+> 16-bit samples are already properly sign(ed), but to 16-bits.
 > 
->> Something this is really broken and I don't know if the binding or this
->> patch.
+> It's a slight performance improvement, that may look quirky here.
+> The idea here, is that for ad7606_scan_direct() we only need to
+> sign-extend 1 sample of the 8 samples we get.
+> And we need to sign-extend it to 32 bits regardless of it being 16-bit
+> or 18-bit.
 > 
-> Having said the above, I'm really not sure if what we have is the best approach but
-> these are also early days (upstream) for this so we should still be able to change
-> things if we need too. I'm fairly sure there's still no one relying on this so we
-> should be able to change things in a breaking way (if we need to be that extreme).
+> In ad7606_trigger_handler(), the 16-bit samples were pushed as-is.
+> Which means that we need to sign-extend the samples at least for
+> 18-bits (as it is a new part)
+> The question now becomes if we should sign-extend to 32-bits, 16-bit
+> samples in ad7606_trigger_handler(), as that may break some ABI.
+> 
 
-DT maintainers consistently (before someone here calls me inconsistent)
-propose not to use versioned compatibles if they map one-to-one to
-products or if they cannot be used alone. Several generic IP blocks like
-Synopsys or Cadence, match the latter - the customization from customer
-is needed, thus snps/cdns IP-block compatible is not usable.
-
-Best regards,
-Krzysztof
-
+Sign extension should not be needed at all for buffered reads (that is
+what scan_type is for). So sign extension should only be needed for
+the direct read when returning a raw value via sysfs (raw read).
 

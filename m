@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-9224-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9225-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5C396E655
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 01:31:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F3696E6F7
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 02:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8931FB244C4
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Sep 2024 23:31:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5915284C5F
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 00:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2121B86E6;
-	Thu,  5 Sep 2024 23:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D1917991;
+	Fri,  6 Sep 2024 00:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wBGqo4TI"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cFVvEoNM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7A11AD27F
-	for <linux-iio@vger.kernel.org>; Thu,  5 Sep 2024 23:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90792171AA
+	for <linux-iio@vger.kernel.org>; Fri,  6 Sep 2024 00:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725579046; cv=none; b=d0hfm6rKWlHESHNvnKNuHnHpipt5g8Hmogd8ClGIlOEkqA60fIwJgTnlZ7EMsjsGLQf+uVT2HhJCRQZ5DNhz5dd1tO20Brpr73LShxtBhF209swedrjPU6vdNTenYgsuYRlpHGfEdIlfQLSeW/C59DX0gTcdEErGBRqLyktkMwI=
+	t=1725583816; cv=none; b=SgSGy38oVpetgAVk2+sUkCRil9X0uvV7MwSyuwbPylRKYMAqk45YNbY0i6NYaqhpDe+eKHQCWCLi4Ip73C/votylYQiqcUGNNF1MqaVPjZ/CFZR3PhJO0lhsw+9yha+j64rqFFVvszFkGPAOFXbzemXONTuv5UvdOkT01VkW4f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725579046; c=relaxed/simple;
-	bh=MGNy32swnESW3BTbKYR1zBRyMKqhcnuJn3DfgG4JJJ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IZWxx3t3kgZ8rs2qJFktQ/EgOwitflfqNRih/WXseHzyFqF8H7IVv+p+SUJ7TJ1AxTJz9uzKMVR6V3+i8ndSIDGyowH1TB42bLcoyHPHMaAok5K6a7ll7FyVYmYE1RHCYK52enVoB7af0OwZOHCa3SuwieThU1Me2HzdnSs4BTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wBGqo4TI; arc=none smtp.client-ip=209.85.210.45
+	s=arc-20240116; t=1725583816; c=relaxed/simple;
+	bh=o9SHApsTqM2W+Dxkl47OLZ+nR7LTSa7W5lRlGAeV6RQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=kyy853jIofQju6pYWdAwjAZr/YxmDAzVnvk7TooVWQikMwTc+rV1m3BW3xSdzljGdHXyh8vNdzIs50PH66GNysqjRcHMhrEwwegPJkEKz/MaKLpRAZ/Z+Sxkv55deleym1pIcXy7yMYFz7j0g2bGcbcLevcS+wWKjHDNdlEPw1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cFVvEoNM; arc=none smtp.client-ip=209.85.160.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-709339c91f9so943684a34.0
-        for <linux-iio@vger.kernel.org>; Thu, 05 Sep 2024 16:30:43 -0700 (PDT)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-277e6be2ef6so837162fac.0
+        for <linux-iio@vger.kernel.org>; Thu, 05 Sep 2024 17:50:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725579043; x=1726183843; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725583810; x=1726188610; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XBvv3qPT4MjxlFShCp2q0cYF1Mz/iUlLiK0mVDzsjHo=;
-        b=wBGqo4TIzEtIk7ST+4MZa2U7OXNg2wrm3krNvX+aC9ThitYX1rdHOPe1frRzuydh4D
-         kwY1hALIcFwPhra+/Ytiiw1/qgOoSqBMdHVKHpxYzqZid4aDZBNC58rEyeGFWnd3BCSq
-         FG6LNT/pzNNHeH7x8PIW7ryVAWpDez78Bt9d4xB726x/LrvDE9gBb6uD9FRwqIPOmow7
-         HKb7LJo5FbcHnuRuoEWEU+dQeAFwU7X3Q0IOdZkV/RtseKgJ3zIdMkZcasES/GzsvebN
-         K6SzuccZHRsu9tFrskES5T/Tuo7DNhaa0yMPr/lyIreiYQ78DcBV/lQPYzvwhU9CGgPG
-         JNnw==
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XaqRNtigIUGT75o1LisoSh18TcIpLTywiuY2ntQIH90=;
+        b=cFVvEoNMbJArPkPCCL/OPXE/15dBvIumQDNg+fTY7MIrdyVYXSt6CMdMBRWuk+Ut+h
+         ylQaatohVPIg36UFrQDUmrUqSaGlzZfPt6D20D5mBaTgYoIpCX6WAHsRH0A6wj5mJ9xs
+         poeffmk+TQnO9/wCQL4BKu9fd8u2rXTxGlUICLDKC+/V5Ke07CSwFsrUVTSNWVsqv8mo
+         5p6YqXyhhl9x54XucMlMJ2q3tl0Hpvfv5s9yRzl9RKIGdTaWz5rMPr5z/WbfF0wyrzsu
+         ponewX+roawqqBiipP1dXhplP6b6NGqJ8QVoXyJo6ATDRydwPrImlRBcPHV9LbHacTLF
+         1Vog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725579043; x=1726183843;
+        d=1e100.net; s=20230601; t=1725583810; x=1726188610;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XBvv3qPT4MjxlFShCp2q0cYF1Mz/iUlLiK0mVDzsjHo=;
-        b=IcbXktN++txRHIlQVeAY6k7zaoPoi5rm19n9A4hfhXfgkencur7ppTDcw69vib8ZN2
-         Ko8yOOqJ+mwN3zc4Ma+NHREUwOvgnvWUPZ2qJfjcLi2HUOHWOv8xS9e0Il47ih51Nuqo
-         8E8+8Nf9TmXF3n4ZQNba9jti6g6xa7caGf0wMezroonKeK0ZHBRehIN6rmjFJEu5eEJX
-         1gx+sI3qUbI3MaMVRJMixtcWnPbI50KhS0OO/YdpOZXOyWlK/kQ/COFiAD4Oqv9oi5iz
-         JeQ/QjsE2QYgb5xd+eUWKv/dDKYx8k8XFgPLtwOa2sR7I3NrQ8nN4M+lqZzd4XdiD9C6
-         iOlg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUT/IAlRlw0QcmUrFTJ5HJ44aPwkYziSDy9o+qC78iSLsK+WZHZXRXoP24gt8vfdPFkYIQFRsUdXU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJz3HdSAJARDAybG7IJahTuLTi5rO7JvC+WsvfFEtY0U3txazt
-	oawLrGUSwiyPWCq+/IriyoYtyFUSOiNwWNUMEvb/DaaClhnQ46pxa/DfN443pBY=
-X-Google-Smtp-Source: AGHT+IFMdf9HqvBf177U9t4MUt/b3mp0D+OaHMb+7eB/tQ00jaHPpjqpmyjpoRMfw7WeRM1lHPb4Sg==
-X-Received: by 2002:a05:6830:6e18:b0:709:32c3:68ef with SMTP id 46e09a7af769-710cc26eb63mr839158a34.30.1725579042557;
-        Thu, 05 Sep 2024 16:30:42 -0700 (PDT)
+        bh=XaqRNtigIUGT75o1LisoSh18TcIpLTywiuY2ntQIH90=;
+        b=fk9H4GFp1kxPtbyz8BZMz+FTygQJXnRlDdPAJxdL2EC6LnLRdVcrNV6F7A2ODNFB6Q
+         ifp01XqVjpbL/vCe438MfzAgnUULpwJcQTCMjyWpm5LRxalmV5rQDj8O5cWl7B6kuSeN
+         th16tLFVMTKs4TkVVF2YJx8Bio+mJp+02AtHMuCFN3T2jeWMPR5h4qbmrbxEfNzID7he
+         kVpvWe0Ez1sujAPGC2bOYHKqAen0jntP9iqC0wNoFDAcKpP7b31eU3VooqT5p90hS3iC
+         XGZBIThSU2cqt9m5fSxnqqdg8BVVBQOpq25ceYzpoSf1yUEdxlueGlpTCz1g6P87xD61
+         D0dg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFkF6hAvpU4n114qyjrhk+VPGZ3EyDfnjlYtGI+QsfGZ0ARYk8l95u1+li2mn6MNgaVbCieiKZ9vw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCQ/kBHF2OrhRpGAwjm+RRGYkozF7soyfwUaCQRYbeIIfCG9Vh
+	LgUMiV/rZ+KzzLP0Rnx5bgeqJBl21Dv0XHW5dbp0bxghm+85vpb+43xpN/HJv0Y=
+X-Google-Smtp-Source: AGHT+IFu03w5wcVkyGKutk4+2qu0x9vEOAkYMIbE6iMZcxiyYh+URgxrwOHfI/Zct60TYNJpKnnZSQ==
+X-Received: by 2002:a05:6870:d1c1:b0:277:c69b:4099 with SMTP id 586e51a60fabf-27b82e879ffmr1312466fac.23.1725583810406;
+        Thu, 05 Sep 2024 17:50:10 -0700 (PDT)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70f671c1fe1sm3407647a34.69.2024.09.05.16.30.41
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-277fb91bff9sm2439130fac.35.2024.09.05.17.50.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Sep 2024 16:30:42 -0700 (PDT)
-Message-ID: <2bf78e47-909a-45c0-bebb-6a8d38cdef7c@baylibre.com>
-Date: Thu, 5 Sep 2024 18:30:41 -0500
+        Thu, 05 Sep 2024 17:50:09 -0700 (PDT)
+Message-ID: <e9cbcd85-062c-47ad-861c-229cb2fd6c2c@baylibre.com>
+Date: Thu, 5 Sep 2024 19:50:09 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,645 +76,1099 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 8/8] iio: adc: ad7606: add support for AD7606C-{16,18}
- parts
-To: Alexandru Ardelean <aardelean@baylibre.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc: jic23@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
- michael.hennerich@analog.com, gstols@baylibre.com
-References: <20240905082404.119022-1-aardelean@baylibre.com>
- <20240905082404.119022-9-aardelean@baylibre.com>
+Subject: Re: [PATCH v3 2/2] iio: dac: support the ad8460 Waveform DAC
+To: Mariel Tinaco <Mariel.Tinaco@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+ Dimitri Fedrau <dima.fedrau@gmail.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <noname.nuno@gmail.com>
+References: <20240904023040.23352-1-Mariel.Tinaco@analog.com>
+ <20240904023040.23352-3-Mariel.Tinaco@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20240905082404.119022-9-aardelean@baylibre.com>
+In-Reply-To: <20240904023040.23352-3-Mariel.Tinaco@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 9/5/24 3:24 AM, Alexandru Ardelean wrote:
-> The AD7606C-16 and AD7606C-18 are pretty similar with the AD7606B.
-> The main difference between AD7606C-16 & AD7606C-18 is the precision in
-> bits (16 vs 18).
-> Because of that, some scales need to be defined for the 18-bit variants, as
-> they need to be computed against 2**18 (vs 2**16 for the 16 bit-variants).
+On 9/3/24 9:30 PM, Mariel Tinaco wrote:
+> The AD8460 is a “bits in, power out” high voltage, high-power,
+> high-speed driver optimized for large output current (up to ±1 A)
+> and high slew rate (up to ±1800 V/μs) at high voltage (up to ±40 V)
+> into capacitive loads.
 > 
-> Because the AD7606C-16,18 also supports bipolar & differential channels,
-> for SW-mode, the default range of 10 V or ±10V should be set at probe.
-> On reset, the default range (in the registers) is set to value 0x3 which
-> corresponds to '±10 V single-ended range', regardless of bipolar or
-> differential configuration.
+> A digital engine implements user-configurable features: modes for
+> digital input, programmable supply current, and fault monitoring
+> and programmable protection settings for output current,
+> output voltage, and junction temperature. The AD8460 operates on
+> high voltage dual supplies up to ±55 V and a single low voltage
+> supply of 5 V.
 > 
-> Aside from the scale/ranges, the AD7606C-16 is similar to the AD7606B.
-> 
-> The AD7606C-18 variant offers 18-bit precision. Because of this, the
-> requirement to use this chip is that the SPI controller supports padding
-> of 18-bit sequences to 32-bit arrays.
-> 
-> Datasheet links:
->   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-16.pdf
->   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-18.pdf
-> 
-> Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
+> Signed-off-by: Mariel Tinaco <Mariel.Tinaco@analog.com>
 > ---
->  drivers/iio/adc/ad7606.c     | 266 +++++++++++++++++++++++++++++++----
->  drivers/iio/adc/ad7606.h     |  17 ++-
->  drivers/iio/adc/ad7606_spi.c |  55 ++++++++
->  3 files changed, 309 insertions(+), 29 deletions(-)
+>  MAINTAINERS              |   1 +
+>  drivers/iio/dac/Kconfig  |  13 +
+>  drivers/iio/dac/Makefile |   1 +
+>  drivers/iio/dac/ad8460.c | 932 +++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 947 insertions(+)
+>  create mode 100644 drivers/iio/dac/ad8460.c
 > 
-> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index 4c3fbb28f790..999c4411859e 100644
-> --- a/drivers/iio/adc/ad7606.c
-> +++ b/drivers/iio/adc/ad7606.c
-> @@ -28,14 +28,44 @@
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e0509c9f5545..30746a3f0bbd 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1326,6 +1326,7 @@ L:	linux-iio@vger.kernel.org
+>  S:	Supported
+>  W:	https://ez.analog.com/linux-software-drivers
+>  F:	Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> +F:	drivers/iio/dac/ad8460.c
 >  
->  #include "ad7606.h"
+>  ANALOG DEVICES INC AD9739a DRIVER
+>  M:	Nuno Sa <nuno.sa@analog.com>
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index 1cfd7e2a622f..fa091995d002 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -301,6 +301,19 @@ config AD7303
+>  	  To compile this driver as module choose M here: the module will be called
+>  	  ad7303.
 >  
-> +typedef void (*ad7606c_chan_setup_cb_t)(struct ad7606_state *st, int ch,
-> +					bool bipolar, bool differential);
+> +config AD8460
+> +	tristate "Analog Devices AD8460 DAC driver"
+> +	depends on SPI
+> +	select REGMAP_SPI
+> +	select IIO_BUFFER
+> +	select IIO_BUFFER_DMAENGINE
+> +	help
+> +	  Say yes here to build support for Analog Devices AD8460 Digital to
+> +	  Analog Converters (DAC).
 > +
->  /*
->   * Scales are computed as 5000/32768 and 10000/32768 respectively,
->   * so that when applied to the raw values they provide mV values
->   */
-> -static const unsigned int ad7606_scale_avail[2] = {
-> +static const unsigned int ad7606_16bit_hw_scale_avail[2] = {
->  	152588, 305176
->  };
->  
-> +static const unsigned int ad7606_18bit_hw_scale_avail[2] = {
-> +	38147, 76294
-> +};
+> +	  To compile this driver as a module choose M here: the module will be called
+> +	  ad8460.
 > +
-> +static const unsigned int ad7606c_16_scale_single_ended_unipolar_avail[3] = {
-> +	76294, 152588, 190735,
-> +};
+>  config AD8801
+>  	tristate "Analog Devices AD8801/AD8803 DAC driver"
+>  	depends on SPI_MASTER
+> diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
+> index 2cf148f16306..621d553bd6e3 100644
+> --- a/drivers/iio/dac/Makefile
+> +++ b/drivers/iio/dac/Makefile
+> @@ -28,6 +28,7 @@ obj-$(CONFIG_AD5686_SPI) += ad5686-spi.o
+>  obj-$(CONFIG_AD5696_I2C) += ad5696-i2c.o
+>  obj-$(CONFIG_AD7293) += ad7293.o
+>  obj-$(CONFIG_AD7303) += ad7303.o
+> +obj-$(CONFIG_AD8460) += ad8460.o
+>  obj-$(CONFIG_AD8801) += ad8801.o
+>  obj-$(CONFIG_AD9739A) += ad9739a.o
+>  obj-$(CONFIG_ADI_AXI_DAC) += adi-axi-dac.o
+> diff --git a/drivers/iio/dac/ad8460.c b/drivers/iio/dac/ad8460.c
+> new file mode 100644
+> index 000000000000..6428bfaf0bd7
+> --- /dev/null
+> +++ b/drivers/iio/dac/ad8460.c
+> @@ -0,0 +1,932 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * AD8460 Waveform generator DAC Driver
+> + *
+> + * Copyright (C) 2024 Analog Devices, Inc.
+> + */
 > +
-> +static const unsigned int ad7606c_16_scale_single_ended_bipolar_avail[5] = {
-> +	76294, 152588, 190735, 305176, 381470
-> +};
+> +#include <linux/bitfield.h>
+> +#include <linux/cleanup.h>
+> +#include <linux/clk.h>
+> +#include <linux/debugfs.h>
+> +#include <linux/delay.h>
+> +#include <linux/dmaengine.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/buffer-dma.h>
+> +#include <linux/iio/buffer-dmaengine.h>
+> +#include <linux/iio/consumer.h>
+> +#include <linux/iio/events.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/spi/spi.h>
 > +
-> +static const unsigned int ad7606c_16_scale_differential_bipolar_avail[4] = {
-> +	152588, 305176, 381470, 610352
-> +};
-> +
-> +static const unsigned int ad7606c_18_scale_single_ended_unipolar_avail[3] = {
-> +	19073, 38147, 47684
-> +};
-> +
-> +static const unsigned int ad7606c_18_scale_single_ended_bipolar_avail[5] = {
-> +	19073, 38147, 47684, 76294, 95367
-> +};
-> +
-> +static const unsigned int ad7606c_18_scale_differential_bipolar_avail[4] = {
-> +	38147, 76294, 95367, 152588
-> +};
->  
->  static const unsigned int ad7616_sw_scale_avail[3] = {
->  	76293, 152588, 305176
-> @@ -82,11 +112,19 @@ static int ad7606_reg_access(struct iio_dev *indio_dev,
->  	}
->  }
->  
-> -static int ad7606_read_samples(struct ad7606_state *st)
-> +static int ad7606_read_samples(struct ad7606_state *st, bool sign_extend_samples)
->  {
-> +	unsigned int storagebits = st->chip_info->channels[1].scan_type.storagebits;
+> +#define AD8460_CTRL_REG(x)                      (x)
+> +#define AD8460_HVDAC_DATA_WORD_LOW(x)           (0x60 + (2 * (x)))
+> +#define AD8460_HVDAC_DATA_WORD_HIGH(x)          (0x61 + (2 * (x)))
 
-Why [1]? Sure, they are all the same, but [0] would seem less arbitrary.
+I don't see AD8460_HVDAC_DATA_WORD_HIGH() used anywhere, so we
+could remove that and rename AD8460_HVDAC_DATA_WORD_LOW() to
+AD8460_HVDAC_DATA_WORD().
 
->  	unsigned int num = st->chip_info->num_channels - 1;
-> -	u16 *data = st->data;
-> -	int ret;
-> +	u32 *data32 = st->data.d32;
-> +	u16 *data16 = st->data.d16;
-> +	void *data;
-> +	int i, ret;
 > +
-> +	if (storagebits > 16)
-> +		data = data32;
-> +	else
-> +		data = data16;
->  
->  	/*
->  	 * The frstdata signal is set to high while and after reading the sample
-> @@ -108,11 +146,25 @@ static int ad7606_read_samples(struct ad7606_state *st)
->  			return -EIO;
->  		}
->  
-> -		data++;
-> +		if (storagebits > 16)
-> +			data32++;
-> +		else
-> +			data16++;
->  		num--;
->  	}
->  
-> -	return st->bops->read_block(st->dev, num, data);
-> +	ret = st->bops->read_block(st->dev, num, data);
+> +#define AD8460_HV_RESET_MSK                     BIT(7)
+> +#define AD8460_HV_SLEEP_MSK                     BIT(4)
+> +#define AD8460_WAVE_GEN_MODE_MSK                BIT(0)
+> +
+> +#define AD8460_HVDAC_SLEEP_MSK                  BIT(3)
+> +
+> +#define AD8460_FAULT_ARM_MSK			BIT(7)
+> +#define AD8460_FAULT_LIMIT_MSK			GENMASK(6, 0)
+> +
+> +#define AD8460_APG_MODE_ENABLE_MSK              BIT(5)
+> +#define AD8460_PATTERN_DEPTH_MSK                GENMASK(3, 0)
+> +
+> +#define AD8460_QUIESCENT_CURRENT_MSK		GENMASK(7, 0)
+> +
+> +#define AD8460_SHUTDOWN_FLAG_MSK                BIT(7)
+> +
+> +#define AD8460_DATA_BYTE_LOW_MSK                GENMASK(7, 0)
+> +#define AD8460_DATA_BYTE_HIGH_MSK               GENMASK(5, 0)
+> +#define AD8460_DATA_BYTE_FULL_MSK		GENMASK(13, 0)
+> +
+> +#define AD8460_DEFAULT_FAULT_PROTECT		0x00
+> +#define AD8460_DATA_BYTE_WORD_LENGTH		2
+> +#define AD8460_NUM_DATA_WORDS			16
+> +#define AD8460_NOMINAL_VOLTAGE_SPAN		80
+> +#define	AD8460_MIN_EXT_RESISTOR_OHMS		2000
+> +#define	AD8460_MAX_EXT_RESISTOR_OHMS		20000
+> +#define AD8460_MIN_VREFIO_UV			120000
+> +#define AD8460_MAX_VREFIO_UV			1200000
+> +#define AD8460_ABS_MAX_OVERVOLTAGE_UV		55000000
+> +#define AD8460_ABS_MAX_OVERCURRENT_UA		1000000
+> +#define AD8460_MAX_OVERTEMPERATURE_MC		150000
+> +#define AD8460_MIN_OVERTEMPERATURE_MC		20000
+> +#define AD8460_CURRENT_LIMIT_CONV(x)		((x) / 15625)
+> +#define AD8460_VOLTAGE_LIMIT_CONV(x)		((x) / 1953000)
+> +#define AD8460_TEMP_LIMIT_CONV(x)		(((x) + 266640) / 6510)
 
-Since data++ was removed, this looks broken now as well as the
-other read_block() not visible in the diff.
+It looks like there are issues with mixed tabs and spaces in
+the macros above that should be cleaned up.
 
-Maybe better to drop data32 and data16, keep the change of data
-to void*, and change data++ to data += BITS_TO_BYTES(storagebits)?
+> +
+> +enum ad8460_fault_type {
+> +	AD8460_OVERCURRENT_SRC,
+> +	AD8460_OVERCURRENT_SNK,
+> +	AD8460_OVERVOLTAGE_POS,
+> +	AD8460_OVERVOLTAGE_NEG,
+> +	AD8460_OVERTEMPERATURE,
+> +};
+> +
+> +struct ad8460_state {
+> +	struct spi_device *spi;
+> +	struct regmap *regmap;
+> +	struct iio_channel *tmp_adc_channel;
+> +	struct clk *sync_clk;
+> +	/* lock to protect against multiple access to the device and shared data */
+> +	struct mutex lock;
+> +	int refio_1p2v_mv;
+> +	u32 ext_resistor_ohms;
+> +	/*
+> +	 * DMA (thus cache coherency maintenance) requires the
+> +	 * transfer buffers to live in their own cache lines.
+> +	 */
+> +	u8 spi_tx_buf[2] __aligned(IIO_DMA_MINALIGN);
 
-Although, all of this might be moot since it looks like this
-needs to be rebased on [1].
+If we make this `__le16 spi_tx_buf` instead of `u8 spi_tx_buf[2]`,
+then we don't need the unaligned access functions.
 
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=fixes-togreg&id=90826e08468ba7fb35d8b39645b22d9e80004afe
+> +};
+> +
+> +static int ad8460_hv_reset(struct ad8460_state *state)
+> +{
+> +	int ret;
+> +
+> +	ret = regmap_update_bits(state->regmap,	AD8460_CTRL_REG(0x00),
+> +				 AD8460_HV_RESET_MSK,
+> +				 FIELD_PREP(AD8460_HV_RESET_MSK, 1));
+
+Can be simplified with regmap_set_bits().
 
 > +	if (ret)
 > +		return ret;
 > +
-> +	if (storagebits == 16 || !sign_extend_samples)
+> +	fsleep(20);
+> +
+> +	return regmap_update_bits(state->regmap, AD8460_CTRL_REG(0x00),
+> +				  AD8460_HV_RESET_MSK,
+> +				  FIELD_PREP(AD8460_HV_RESET_MSK, 0));
+
+and regmap_clear_bits().
+
+> +}
+> +
+> +static int ad8460_reset(const struct ad8460_state *state)
+> +{
+> +	struct device *dev = &state->spi->dev;
+> +	struct gpio_desc *reset;
+> +
+> +	reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+> +	if (IS_ERR(reset))
+> +		return dev_err_probe(dev, PTR_ERR(reset),
+> +				     "Failed to get reset gpio");
+> +	if (reset) {
+> +		/* minimum duration of 10ns */
+> +		ndelay(10);
+> +		gpiod_set_value_cansleep(reset, 1);
 > +		return 0;
-> +
-> +	/* For 18 bit samples, we need to sign-extend samples to 32 bits */
-> +	for (i = 0; i < num; i++)
-> +		data32[i] = sign_extend32(data32[i], 17);> +
-> +	return 0;
->  }
->  
->  static irqreturn_t ad7606_trigger_handler(int irq, void *p)
-> @@ -124,11 +176,11 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
->  
->  	guard(mutex)(&st->lock);
->  
-> -	ret = ad7606_read_samples(st);
-> +	ret = ad7606_read_samples(st, true);
-
-Shouldn't the sign_extend parameter depend on if the data is unipolar or bipolar?
-
->  	if (ret)
->  		goto error_ret;
->  
-> -	iio_push_to_buffers_with_timestamp(indio_dev, st->data,
-> +	iio_push_to_buffers_with_timestamp(indio_dev, st->data.d16,
->  					   iio_get_time_ns(indio_dev));
->  error_ret:
->  	iio_trigger_notify_done(indio_dev->trig);
-> @@ -142,6 +194,7 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch,
->  			      int *val)
->  {
->  	struct ad7606_state *st = iio_priv(indio_dev);
-> +	unsigned int storagebits = st->chip_info->channels[1].scan_type.storagebits;
->  	int ret;
->  
->  	gpiod_set_value(st->gpio_convst, 1);
-> @@ -152,9 +205,13 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch,
->  		goto error_ret;
->  	}
->  
-> -	ret = ad7606_read_samples(st);
-> -	if (ret == 0)
-> -		*val = sign_extend32(st->data[ch], 15);
-> +	ret = ad7606_read_samples(st, false);
-
-Why not let ad7606_read_samples() do the sign extending since
-it can do that now?
-
-> +	if (ret == 0) {
-> +		if (storagebits > 16)
-> +			*val = sign_extend32(st->data.d32[ch], 17);
-> +		else
-> +			*val = sign_extend32(st->data.d16[ch], 15);
 > +	}
->  
->  error_ret:
->  	gpiod_set_value(st->gpio_convst, 0);
-> @@ -267,7 +324,7 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
->  			ch = chan->address;
->  		cs = &st->chan_scales[ch];
->  		i = find_closest(val2, cs->scale_avail, cs->num_scales);
-> -		ret = st->write_scale(indio_dev, ch, i);
-> +		ret = st->write_scale(indio_dev, ch, i + cs->reg_offset);
->  		if (ret < 0)
->  			return ret;
->  		cs->range = i;
-> @@ -350,6 +407,18 @@ static const struct iio_chan_spec ad7606_channels_16bit[] = {
->  	AD7606_CHANNEL(7, 16),
->  };
->  
-> +static const struct iio_chan_spec ad7606_channels_18bit[] = {
-> +	IIO_CHAN_SOFT_TIMESTAMP(8),
-> +	AD7606_CHANNEL(0, 18),
-> +	AD7606_CHANNEL(1, 18),
-> +	AD7606_CHANNEL(2, 18),
-> +	AD7606_CHANNEL(3, 18),
-> +	AD7606_CHANNEL(4, 18),
-> +	AD7606_CHANNEL(5, 18),
-> +	AD7606_CHANNEL(6, 18),
-> +	AD7606_CHANNEL(7, 18),
-> +};
 > +
->  /*
->   * The current assumption that this driver makes for AD7616, is that it's
->   * working in Hardware Mode with Serial, Burst and Sequencer modes activated.
-> @@ -410,6 +479,18 @@ static const struct ad7606_chip_info ad7606_chip_info_tbl[] = {
->  		.oversampling_avail = ad7606_oversampling_avail,
->  		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
->  	},
-> +	[ID_AD7606C_16] = {
-> +		.channels = ad7606_channels_16bit,
-> +		.num_channels = 9,
-
-Could be nice to have a cleanup patch before this to convert others to
-use ARRAY_SIZE(), then use ARRAY_SIZE(ad7606_channels_16bit) here
-instead of 9.
-
-> +		.oversampling_avail = ad7606_oversampling_avail,
-> +		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
-> +	},
-> +	[ID_AD7606C_18] = {
-> +		.channels = ad7606_channels_18bit,
-> +		.num_channels = 9,
-> +		.oversampling_avail = ad7606_oversampling_avail,
-> +		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
-> +	},
->  	[ID_AD7616] = {
->  		.channels = ad7616_channels,
->  		.num_channels = 17,
-> @@ -581,7 +662,122 @@ static const struct iio_trigger_ops ad7606_trigger_ops = {
->  	.validate_device = iio_trigger_validate_own_device,
->  };
->  
-> -static int ad7606_sw_mode_setup(struct iio_dev *indio_dev)
-> +static void ad7606c_18_chan_setup(struct ad7606_state *st, int ch,
-> +				  bool bipolar, bool differential)
-> +{
-> +	struct ad7606_chan_scale *cs = &st->chan_scales[ch];
-> +
-> +	if (differential) {
-> +		cs->scale_avail =
-> +			ad7606c_18_scale_differential_bipolar_avail;
-> +		cs->num_scales =
-> +			ARRAY_SIZE(ad7606c_18_scale_differential_bipolar_avail);
-> +		/* Bipolar differential ranges start at 8 (b1000) */
-> +		cs->reg_offset = 8;
-> +		cs->range = 1;
-> +	} else if (bipolar) {
-> +		cs->scale_avail =
-> +			ad7606c_18_scale_single_ended_bipolar_avail;
-> +		cs->num_scales =
-> +			ARRAY_SIZE(ad7606c_18_scale_single_ended_bipolar_avail);
-
-I guess cs->reg_offset is 0 for this one?
-
-> +		cs->range = 3;
-> +	} else {
-> +		cs->scale_avail =
-> +			ad7606c_18_scale_single_ended_unipolar_avail;
-> +		cs->num_scales =
-> +			ARRAY_SIZE(ad7606c_18_scale_single_ended_unipolar_avail);
-> +		/* Unipolar single-ended ranges start at 5 (b0101) */
-> +		cs->reg_offset = 5;
-> +		cs->range = 1;
-> +	}
+> +	/* bring all registers to their default state */
+> +	return regmap_write(state->regmap, AD8460_CTRL_REG(0x03), 1);
 > +}
 > +
-> +static void ad7606c_16_chan_setup(struct ad7606_state *st, int ch,
-> +				  bool bipolar, bool differential)
+> +static int ad8460_enable_apg_mode(struct ad8460_state *state, int val)
 > +{
-> +	struct ad7606_chan_scale *cs = &st->chan_scales[ch];
-> +
-> +	if (differential) {
-> +		cs->scale_avail =
-> +			ad7606c_16_scale_differential_bipolar_avail;
-> +		cs->num_scales =
-> +			ARRAY_SIZE(ad7606c_16_scale_differential_bipolar_avail);
-> +		/* Bipolar differential ranges start at 8 (b1000) */
-> +		cs->reg_offset = 8;
-> +		cs->range = 1;
-> +	} else if (bipolar) {
-> +		cs->scale_avail =
-> +			ad7606c_16_scale_single_ended_bipolar_avail;
-> +		cs->num_scales =
-> +			ARRAY_SIZE(ad7606c_16_scale_single_ended_bipolar_avail);
-> +		cs->range = 3;
-> +	} else {
-> +		cs->scale_avail =
-> +			ad7606c_16_scale_single_ended_unipolar_avail;
-> +		cs->num_scales =
-> +			ARRAY_SIZE(ad7606c_16_scale_single_ended_unipolar_avail);
-> +		/* Unipolar single-ended ranges start at 5 (b0101) */
-> +		cs->reg_offset = 5;
-> +		cs->range = 1;
-> +	}
-> +}
-> +
-> +static int ad7606c_sw_mode_setup_channels(struct iio_dev *indio_dev,
-> +					  ad7606c_chan_setup_cb_t chan_setup_cb)
-> +{
-> +	unsigned int num_channels = indio_dev->num_channels - 1;
-> +	struct ad7606_state *st = iio_priv(indio_dev);
-> +	bool chan_configured[AD760X_MAX_CHANNELS] = {};
-> +	struct device *dev = st->dev;
 > +	int ret;
-> +	u32 ch;
 > +
-> +	/* We need to hook this first */
-
-Comment would be more useful if it said why.
-
-> +	ret = st->bops->sw_mode_config(indio_dev);
+> +	ret = regmap_update_bits(state->regmap, AD8460_CTRL_REG(0x02),
+> +				 AD8460_APG_MODE_ENABLE_MSK,
+> +				 FIELD_PREP(AD8460_APG_MODE_ENABLE_MSK, val));
 > +	if (ret)
 > +		return ret;
 > +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		bool bipolar, differential;
-> +		u32 pins[2];
+> +	return regmap_update_bits(state->regmap, AD8460_CTRL_REG(0x00),
+> +				  AD8460_WAVE_GEN_MODE_MSK,
+> +				  FIELD_PREP(AD8460_WAVE_GEN_MODE_MSK, val));
+> +}
 > +
-> +		ret = fwnode_property_read_u32(child, "reg", &ch);
+> +static int ad8460_read_shutdown_flag(struct ad8460_state *state, u64 *flag)
+> +{
+> +	int ret, val;
+> +
+> +	ret = regmap_read(state->regmap, AD8460_CTRL_REG(0x0E), &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*flag = FIELD_GET(AD8460_SHUTDOWN_FLAG_MSK, val);
+> +	return 0;
+> +}
+> +
+> +static int ad8460_get_hvdac_word(struct ad8460_state *state, int index, int *val)
+> +{
+> +	int ret;
+> +
+> +	ret = regmap_bulk_read(state->regmap, AD8460_HVDAC_DATA_WORD_LOW(index),
+> +			       &state->spi_tx_buf, AD8460_DATA_BYTE_WORD_LENGTH);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val = get_unaligned_le16(state->spi_tx_buf);
+
+With spi_tx_buf changed to __le16, this can use le16_to_cpu()
+instead of get_unaligned_le16().
+
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad8460_set_hvdac_word(struct ad8460_state *state, int index, int val)
+> +{
+> +	put_unaligned_le16(FIELD_PREP(AD8460_DATA_BYTE_FULL_MSK, val),
+> +				     &state->spi_tx_buf);
+> +
+> +	return regmap_bulk_write(state->regmap, AD8460_HVDAC_DATA_WORD_LOW(index),
+> +				 state->spi_tx_buf, AD8460_DATA_BYTE_WORD_LENGTH);
+> +}
+> +
+> +static ssize_t ad8460_dac_input_read(struct iio_dev *indio_dev, uintptr_t private,
+> +				     const struct iio_chan_spec *chan, char *buf)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	unsigned int reg;
+> +	int ret;
+> +
+> +	ret = ad8460_get_hvdac_word(state, private, &reg);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "%d\n", reg);
+
+%u instead of %d since reg is unsigned
+
+> +}
+> +
+> +static ssize_t ad8460_dac_input_write(struct iio_dev *indio_dev, uintptr_t private,
+> +				      const struct iio_chan_spec *chan,
+> +				      const char *buf, size_t len)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	unsigned int reg;
+> +	int ret;
+> +
+> +	ret = kstrtou32(buf, 10, &reg);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(mutex)(&state->lock);
+> +
+> +	return ad8460_set_hvdac_word(state, private, reg);
+> +}
+> +
+> +static ssize_t ad8460_read_symbol(struct iio_dev *indio_dev, uintptr_t private,
+> +				  const struct iio_chan_spec *chan, char *buf)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	unsigned int reg;
+> +	int ret;
+> +
+> +	ret = regmap_read(state->regmap, AD8460_CTRL_REG(0x02), &reg);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "%ld\n", FIELD_GET(AD8460_PATTERN_DEPTH_MSK, reg));
+> +}
+
+I guess FIELD_GET() makes it long? but probalby should be %lu.
+
+> +
+> +static ssize_t ad8460_write_symbol(struct iio_dev *indio_dev, uintptr_t private,
+> +				   const struct iio_chan_spec *chan,
+> +				   const char *buf, size_t len)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	uint16_t sym;
+> +	int ret;
+> +
+> +	ret = kstrtou16(buf, 10, &sym);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(mutex)(&state->lock);
+> +
+> +	return regmap_update_bits(state->regmap,
+> +				  AD8460_CTRL_REG(0x02),
+> +				  AD8460_PATTERN_DEPTH_MSK,
+> +				  FIELD_PREP(AD8460_PATTERN_DEPTH_MSK, sym));
+> +}
+> +
+> +static ssize_t ad8460_read_toggle_en(struct iio_dev *indio_dev, uintptr_t private,
+> +				     const struct iio_chan_spec *chan, char *buf)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	unsigned int reg;
+> +	int ret;
+> +
+> +	ret = regmap_read(state->regmap, AD8460_CTRL_REG(0x02), &reg);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "%ld\n", FIELD_GET(AD8460_APG_MODE_ENABLE_MSK, reg));
+> +}
+> +
+> +static ssize_t ad8460_write_toggle_en(struct iio_dev *indio_dev, uintptr_t private,
+> +				      const struct iio_chan_spec *chan,
+> +				      const char *buf, size_t len)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	bool toggle_en;
+> +	int ret;
+> +
+> +	ret = kstrtobool(buf, &toggle_en);
+> +	if (ret)
+> +		return ret;
+> +
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
+> +		return ad8460_enable_apg_mode(state, toggle_en);
+> +	unreachable();
+
+Hmm... do we need to make an unscoped version of iio_device_claim_direct_scoped()?
+
+> +}
+> +
+> +static ssize_t ad8460_read_powerdown(struct iio_dev *indio_dev, uintptr_t private,
+> +				     const struct iio_chan_spec *chan, char *buf)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	unsigned int reg;
+> +	int ret;
+> +
+> +	ret = regmap_read(state->regmap, AD8460_CTRL_REG(0x01), &reg);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "%ld\n", FIELD_GET(AD8460_HVDAC_SLEEP_MSK, reg));
+> +}
+> +
+> +static ssize_t ad8460_write_powerdown(struct iio_dev *indio_dev, uintptr_t private,
+> +				      const struct iio_chan_spec *chan,
+> +				      const char *buf, size_t len)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	bool pwr_down;
+> +	u64 sdn_flag;
+> +	int ret;
+> +
+> +	ret = kstrtobool(buf, &pwr_down);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(mutex)(&state->lock);
+> +
+> +	ret = regmap_update_bits(state->regmap, AD8460_CTRL_REG(0x01),
+> +				 AD8460_HVDAC_SLEEP_MSK,
+> +				 FIELD_PREP(AD8460_HVDAC_SLEEP_MSK, pwr_down));
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!pwr_down) {
+> +		ret = ad8460_read_shutdown_flag(state, &sdn_flag);
 > +		if (ret)
-> +			continue;
+> +			return ret;
 > +
-> +		/* channel number (here) is from 1 to num_channels */
-> +		if (ch == 0 || ch > num_channels) {
-> +			dev_warn(st->dev,
-> +				 "Invalid channel number (ignoring): %d\n", ch);
-> +			continue;
+> +		if (sdn_flag) {
+> +			ret = ad8460_hv_reset(state);
+> +			if (ret)
+> +				return ret;
 > +		}
-> +
-> +		bipolar = fwnode_property_present(child, "bipolar");
-
-IIRC, fwnode_property_read_bool() is preferred for bool/flag properties.
-
-> +
-> +		ret = fwnode_property_read_u32_array(child, "diff-channels",
-> +						     pins, ARRAY_SIZE(pins));
-> +		/* Channel is differential, if pins are the same as 'reg' */
-> +		if (ret == 0 && pins[0] == ch && pins[1] == ch)
-> +			differential = true;
-> +		else
-> +			differential = false;
-
-Would probably better to error on bad pin numbers rather than default to
-not differential.
-
-> +
-> +		ch--;
-> +
-> +		chan_setup_cb(st, ch, bipolar, differential);
-> +		chan_configured[ch] = true;
 > +	}
 > +
-> +	/* Apply default configuration to unconfigured (via DT) channels */
-> +	for (ch = 0; ch < num_channels; ch++) {
-> +		if (!chan_configured[ch])
-> +			chan_setup_cb(st, ch, false, false);
-> +	}
+> +	ret = regmap_update_bits(state->regmap, AD8460_CTRL_REG(0x00),
+> +				 AD8460_HV_SLEEP_MSK,
+> +				 FIELD_PREP(AD8460_HV_SLEEP_MSK, !pwr_down));
+> +	if (ret)
+> +		return ret;
+
+Some comments explaining the logic in this function would be helpful.
+Without reading the datasheet, it looks like this puts it in powerdown
+mode and takes it right back out before returning.
+
 > +
+> +	return len;
+> +}
+> +
+> +static const char * const ad8460_powerdown_modes[] = {
+> +	"three_state",
+> +};
+> +
+> +static int ad8460_get_powerdown_mode(struct iio_dev *indio_dev,
+> +				     const struct iio_chan_spec *chan)
+> +{
 > +	return 0;
 > +}
 > +
-> +static int ad7606_sw_mode_setup(struct iio_dev *indio_dev, unsigned int id)
->  {
->  	unsigned int num_channels = indio_dev->num_channels - 1;
->  	struct ad7606_state *st = iio_priv(indio_dev);
-> @@ -596,17 +792,30 @@ static int ad7606_sw_mode_setup(struct iio_dev *indio_dev)
->  
->  	indio_dev->info = &ad7606_info_sw_mode;
->  
-> -	/* Scale of 0.076293 is only available in sw mode */
-> -	/* After reset, in software mode, ±10 V is set by default */
-> -	for (ch = 0; ch < num_channels; ch++) {
-> -		struct ad7606_chan_scale *cs = &st->chan_scales[ch];
-> +	switch (id) {
-> +	case ID_AD7606C_18:
-> +		ret = ad7606c_sw_mode_setup_channels(indio_dev,
-> +						     ad7606c_18_chan_setup);
-> +		break;
-> +	case ID_AD7606C_16:
-> +		ret = ad7606c_sw_mode_setup_channels(indio_dev,
-> +						     ad7606c_16_chan_setup);
-> +		break;
-> +	default:
-> +		/* Scale of 0.076293 is only available in sw mode */
-> +		/* After reset, in software mode, ±10 V is set by default */
-> +		for (ch = 0; ch < num_channels; ch++) {
-> +			struct ad7606_chan_scale *cs = &st->chan_scales[ch];
-> +
-> +			cs->scale_avail = ad7616_sw_scale_avail;
-> +			cs->num_scales = ARRAY_SIZE(ad7616_sw_scale_avail);
-> +			cs->range = 2;
-> +		}
->  
-> -		cs->scale_avail = ad7616_sw_scale_avail;
-> -		cs->num_scales = ARRAY_SIZE(ad7616_sw_scale_avail);
-> -		cs->range = 2;
-> +		ret = st->bops->sw_mode_config(indio_dev);
-> +		break;
->  	}
->  
-> -	ret = st->bops->sw_mode_config(indio_dev);
->  	if (ret)
->  		return ret;
->  
-> @@ -655,9 +864,16 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
->  	st->oversampling = 1;
->  
->  	cs = &st->chan_scales[0];
-> -	cs->range = 0;
-> -	cs->scale_avail = ad7606_scale_avail;
-> -	cs->num_scales = ARRAY_SIZE(ad7606_scale_avail);
-> +	switch (id) {
-> +	case ID_AD7606C_18:
-> +		cs->scale_avail = ad7606_18bit_hw_scale_avail;
-> +		cs->num_scales = ARRAY_SIZE(ad7606_18bit_hw_scale_avail);
-> +		break;
-> +	default:
-> +		cs->scale_avail = ad7606_16bit_hw_scale_avail;
-> +		cs->num_scales = ARRAY_SIZE(ad7606_16bit_hw_scale_avail);
-> +		break;
-> +	}
->  
->  	ret = devm_regulator_get_enable(dev, "avcc");
->  	if (ret)
-> @@ -706,7 +922,7 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
->  	st->write_scale = ad7606_write_scale_hw;
->  	st->write_os = ad7606_write_os_hw;
->  
-> -	ret = ad7606_sw_mode_setup(indio_dev);
-> +	ret = ad7606_sw_mode_setup(indio_dev, id);
->  	if (ret)
->  		return ret;
->  
-> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-> index 2113ad460c0f..6b0897aa2dc7 100644
-> --- a/drivers/iio/adc/ad7606.h
-> +++ b/drivers/iio/adc/ad7606.h
-> @@ -22,7 +22,7 @@
->  		.scan_type = {					\
->  			.sign = 's',				\
->  			.realbits = (bits),			\
-> -			.storagebits = (bits),			\
-> +			.storagebits = (bits) > 16 ? 32 : 16,	\
->  			.endianness = IIO_CPU,			\
->  		},						\
->  }
-> @@ -45,7 +45,7 @@
->  		.scan_type = {					\
->  			.sign = 's',				\
->  			.realbits = (bits),			\
-> -			.storagebits = (bits),			\
-> +			.storagebits = (bits) > 16 ? 32 : 16,	\
->  			.endianness = IIO_CPU,			\
->  		},						\
->  }
-> @@ -88,6 +88,8 @@ struct ad7606_chip_info {
->   *			such that it can be read via the 'read_avail' hook
->   * @num_scales		number of elements stored in the scale_avail array
->   * @range		voltage range selection, selects which scale to apply
-> + * @reg_offset		offset for the register value, to be applied when
-> + *			writing the value of 'range' to the register value
->   */
->  struct ad7606_chan_scale {
->  #define AD760X_MAX_SCALE_SHOW		(AD760X_MAX_CHANNELS * 2)
-> @@ -95,6 +97,7 @@ struct ad7606_chan_scale {
->  	int				scale_avail_show[AD760X_MAX_SCALE_SHOW];
->  	unsigned int			num_scales;
->  	unsigned int			range;
-> +	unsigned int			reg_offset;
->  };
->  
->  /**
-> @@ -151,9 +154,13 @@ struct ad7606_state {
->  	/*
->  	 * DMA (thus cache coherency maintenance) may require the
->  	 * transfer buffers to live in their own cache lines.
-> -	 * 16 * 16-bit samples + 64-bit timestamp
-> +	 * 16 * 16-bit samples + 64-bit timestamp - for AD7616
-> +	 * 8 * 32-bit samples + 64-bit timestamp - for AD7616C-18 (and similar)
->  	 */
-> -	unsigned short			data[20] __aligned(IIO_DMA_MINALIGN);
-> +	union {
-> +		unsigned short d16[20];
-> +		unsigned int d32[10];
-> +	} data __aligned(IIO_DMA_MINALIGN);
->  	__be16				d16[2];
->  };
->  
-> @@ -192,6 +199,8 @@ enum ad7606_supported_device_ids {
->  	ID_AD7606_6,
->  	ID_AD7606_4,
->  	ID_AD7606B,
-> +	ID_AD7606C_16,
-> +	ID_AD7606C_18,
->  	ID_AD7616,
->  };
->  
-> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
-> index e00f58a6a0e9..b8d630ad156d 100644
-> --- a/drivers/iio/adc/ad7606_spi.c
-> +++ b/drivers/iio/adc/ad7606_spi.c
-> @@ -77,6 +77,18 @@ static const struct iio_chan_spec ad7606b_sw_channels[] = {
->  	AD7606_SW_CHANNEL(7, 16),
->  };
->  
-> +static const struct iio_chan_spec ad7606c_18_sw_channels[] = {
-> +	IIO_CHAN_SOFT_TIMESTAMP(8),
-> +	AD7606_SW_CHANNEL(0, 18),
-> +	AD7606_SW_CHANNEL(1, 18),
-> +	AD7606_SW_CHANNEL(2, 18),
-> +	AD7606_SW_CHANNEL(3, 18),
-> +	AD7606_SW_CHANNEL(4, 18),
-> +	AD7606_SW_CHANNEL(5, 18),
-> +	AD7606_SW_CHANNEL(6, 18),
-> +	AD7606_SW_CHANNEL(7, 18),
-> +};
-> +
->  static const unsigned int ad7606B_oversampling_avail[9] = {
->  	1, 2, 4, 8, 16, 32, 64, 128, 256
->  };
-> @@ -120,6 +132,19 @@ static int ad7606_spi_read_block(struct device *dev,
->  	return 0;
->  }
->  
-> +static int ad7606_spi_read_block18to32(struct device *dev,
-> +				       int count, void *buf)
+> +static int ad8460_set_powerdown_mode(struct iio_dev *indio_dev,
+> +				     const struct iio_chan_spec *chan,
+> +				     unsigned int type)
 > +{
-> +	struct spi_device *spi = to_spi_device(dev);
-> +	struct spi_transfer xfer = {
-> +		.bits_per_word = 18,
-> +		.len = count,
-
-Isn't count the number of words? .len needs to be the number
-of bytes, so 4 * count.
-
-> +		.rx_buf = buf,
-> +	};
-> +
-> +	return spi_sync_transfer(spi, &xfer, 1);
+> +	return 0;
 > +}
 > +
->  static int ad7606_spi_reg_read(struct ad7606_state *st, unsigned int addr)
->  {
->  	struct spi_device *spi = to_spi_device(st->dev);
-> @@ -283,6 +308,19 @@ static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
->  	return 0;
->  }
->  
-> +static int ad7606c_18_sw_mode_config(struct iio_dev *indio_dev)
+> +static int ad8460_set_sample(struct ad8460_state *state, int val)
 > +{
 > +	int ret;
 > +
-> +	ret = ad7606B_sw_mode_config(indio_dev);
+> +	ret = ad8460_enable_apg_mode(state, 1);
 > +	if (ret)
 > +		return ret;
 > +
-> +	indio_dev->channels = ad7606c_18_sw_channels;
+> +	guard(mutex)(&state->lock);
+> +	ret = ad8460_set_hvdac_word(state, 0, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_update_bits(state->regmap,
+> +				  AD8460_CTRL_REG(0x02),
+> +				  AD8460_PATTERN_DEPTH_MSK,
+> +				  FIELD_PREP(AD8460_PATTERN_DEPTH_MSK, 0));
+> +}
+> +
+> +static int ad8460_set_fault_threshold(struct ad8460_state *state,
+> +				      enum ad8460_fault_type fault,
+> +				      unsigned int threshold)
+> +{
+> +	return regmap_update_bits(state->regmap, AD8460_CTRL_REG(0x08 + fault),
+> +				  AD8460_FAULT_LIMIT_MSK,
+> +				  FIELD_PREP(AD8460_FAULT_LIMIT_MSK, threshold));
+> +}
+> +
+> +static int ad8460_get_fault_threshold(struct ad8460_state *state,
+> +				      enum ad8460_fault_type fault,
+> +				      unsigned int *threshold)
+> +{
+> +	unsigned int val;
+> +	int ret;
+> +
+> +	ret = regmap_read(state->regmap, AD8460_CTRL_REG(0x08 + fault), &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*threshold = FIELD_GET(AD8460_FAULT_LIMIT_MSK, val);
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad8460_set_fault_threshold_en(struct ad8460_state *state,
+> +					 enum ad8460_fault_type fault, bool en)
+> +{
+> +	return regmap_update_bits(state->regmap, AD8460_CTRL_REG(0x08 + fault),
+> +				  AD8460_FAULT_ARM_MSK,
+> +				  FIELD_PREP(AD8460_FAULT_ARM_MSK, en));
+> +}
+> +
+> +static int ad8460_get_fault_threshold_en(struct ad8460_state *state,
+> +					 enum ad8460_fault_type fault, bool *en)
+> +{
+> +	unsigned int val;
+> +	int ret;
+> +
+> +	ret = regmap_read(state->regmap, AD8460_CTRL_REG(0x08 + fault), &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*en = FIELD_GET(AD8460_FAULT_ARM_MSK, val);
 > +
 > +	return 0;
 > +}
 > +
->  static const struct ad7606_bus_ops ad7606_spi_bops = {
->  	.read_block = ad7606_spi_read_block,
->  };
-> @@ -305,6 +343,15 @@ static const struct ad7606_bus_ops ad7606B_spi_bops = {
->  	.sw_mode_config = ad7606B_sw_mode_config,
->  };
->  
-> +static const struct ad7606_bus_ops ad7606c_18_spi_bops = {
-> +	.read_block = ad7606_spi_read_block18to32,
-> +	.reg_read = ad7606_spi_reg_read,
-> +	.reg_write = ad7606_spi_reg_write,
-> +	.write_mask = ad7606_spi_write_mask,
-> +	.rd_wr_cmd = ad7606B_spi_rd_wr_cmd,
-> +	.sw_mode_config = ad7606c_18_sw_mode_config,
+> +static int ad8460_write_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan, int val, int val2,
+> +			    long mask)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
+> +				return ad8460_set_sample(state, val);
+> +			unreachable();
+> +		case IIO_CURRENT:
+> +			return regmap_write(state->regmap, AD8460_CTRL_REG(0x04),
+> +					    FIELD_PREP(AD8460_QUIESCENT_CURRENT_MSK, val));
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad8460_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+> +			   int *val, int *val2, long mask)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	int data, ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			scoped_guard(mutex, &state->lock) {
+> +				ret = ad8460_get_hvdac_word(state, 0, &data);
+> +				if (ret)
+> +					return ret;
+> +			}
+> +			*val = data;
+> +			return IIO_VAL_INT;
+> +		case IIO_CURRENT:
+> +			ret = regmap_read(state->regmap, AD8460_CTRL_REG(0x04),
+> +					  &data);
+> +			if (ret)
+> +				return ret;
+> +			*val = data;
+> +			return IIO_VAL_INT;
+> +		case IIO_TEMP:
+> +			ret = iio_read_channel_raw(state->tmp_adc_channel, &data);
+> +			if (ret)
+> +				return ret;
+> +			*val = data;
+> +			return IIO_VAL_INT;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		*val = clk_get_rate(state->sync_clk);
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		/*
+> +		 * vCONV = vNOMINAL_SPAN * (DAC_CODE / 2**14) - 40V
+> +		 * vMAX  = vNOMINAL_SPAN * (2**14 / 2**14) - 40V
+> +		 * vMIN  = vNOMINAL_SPAN * (0 / 2**14) - 40V
+> +		 * vADJ  = vCONV * (2000 / rSET) * (vREF / 1.2)
+> +		 * vSPAN = vADJ_MAX - vADJ_MIN
+> +		 * See datasheet page 49, section FULL-SCALE REDUCTION
+> +		 */
+> +		*val = AD8460_NOMINAL_VOLTAGE_SPAN * 2000 * state->refio_1p2v_mv;
+> +		*val2 = state->ext_resistor_ohms * 1200;
+> +		return IIO_VAL_FRACTIONAL;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad8460_select_fault_type(int chan_type, enum iio_event_direction dir)
+> +{
+> +	switch (chan_type) {
+> +	case IIO_VOLTAGE:
+> +		switch (dir) {
+> +		case IIO_EV_DIR_RISING:
+> +			return AD8460_OVERVOLTAGE_POS;
+> +		case IIO_EV_DIR_FALLING:
+> +			return AD8460_OVERVOLTAGE_NEG;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CURRENT:
+> +		switch (dir) {
+> +		case IIO_EV_DIR_RISING:
+> +			return AD8460_OVERCURRENT_SRC;
+> +		case IIO_EV_DIR_FALLING:
+> +			return AD8460_OVERCURRENT_SNK;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_TEMP:
+> +		switch (dir) {
+> +		case IIO_EV_DIR_RISING:
+> +			return AD8460_OVERTEMPERATURE;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad8460_write_event_value(struct iio_dev *indio_dev,
+> +				    const struct iio_chan_spec *chan,
+> +				    enum iio_event_type type,
+> +				    enum iio_event_direction dir,
+> +				    enum iio_event_info info, int val, int val2)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	unsigned int fault;
+> +
+> +	if (type != IIO_EV_TYPE_THRESH)
+> +		return -EINVAL;
+> +
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
+> +
+> +	fault = ad8460_select_fault_type(chan->type, dir);
+> +	if (fault < 0)
+> +		return fault;
+> +
+> +	return ad8460_set_fault_threshold(state, fault, val);
+> +}
+> +
+> +static int ad8460_read_event_value(struct iio_dev *indio_dev,
+> +				   const struct iio_chan_spec *chan,
+> +				   enum iio_event_type type,
+> +				   enum iio_event_direction dir,
+> +				   enum iio_event_info info, int *val, int *val2)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	unsigned int fault;
+> +
+> +	if (type != IIO_EV_TYPE_THRESH)
+> +		return -EINVAL;
+> +
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
+> +
+> +	fault = ad8460_select_fault_type(chan->type, dir);
+> +	if (fault < 0)
+> +		return fault;
+> +
+> +	return ad8460_get_fault_threshold(state, fault, val);
+> +}
+> +
+> +static int ad8460_write_event_config(struct iio_dev *indio_dev,
+> +				     const struct iio_chan_spec *chan,
+> +				     enum iio_event_type type,
+> +				     enum iio_event_direction dir, int val)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	unsigned int fault;
+> +
+> +	if (type != IIO_EV_TYPE_THRESH)
+> +		return -EINVAL;
+> +
+> +	fault = ad8460_select_fault_type(chan->type, dir);
+> +	if (fault < 0)
+> +		return fault;
+> +
+> +	return ad8460_set_fault_threshold_en(state, fault, val);
+> +}
+> +
+> +static int ad8460_read_event_config(struct iio_dev *indio_dev,
+> +				    const struct iio_chan_spec *chan,
+> +				    enum iio_event_type type,
+> +				    enum iio_event_direction dir)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +	unsigned int fault;
+> +	bool en;
+> +	int ret;
+> +
+> +	if (type != IIO_EV_TYPE_THRESH)
+> +		return -EINVAL;
+> +
+> +	fault = ad8460_select_fault_type(chan->type, dir);
+> +	if (fault < 0)
+> +		return fault;
+> +
+> +	ret = ad8460_get_fault_threshold_en(state, fault, &en);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return en;
+> +}
+> +
+> +static int ad8460_reg_access(struct iio_dev *indio_dev, unsigned int reg,
+> +			     unsigned int writeval, unsigned int *readval)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +
+> +	if (readval)
+> +		return regmap_read(state->regmap, reg, readval);
+> +
+> +	return regmap_write(state->regmap, reg, writeval);
+> +}
+> +
+> +static int ad8460_buffer_preenable(struct iio_dev *indio_dev)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +
+> +	return ad8460_enable_apg_mode(state, 0);
+> +}
+> +
+> +static int ad8460_buffer_postdisable(struct iio_dev *indio_dev)
+> +{
+> +	struct ad8460_state *state = iio_priv(indio_dev);
+> +
+> +	return ad8460_enable_apg_mode(state, 1);
+> +}
+> +
+> +static const struct iio_buffer_setup_ops ad8460_buffer_setup_ops = {
+> +	.preenable = &ad8460_buffer_preenable,
+> +	.postdisable = &ad8460_buffer_postdisable,
 > +};
 > +
->  static int ad7606_spi_probe(struct spi_device *spi)
->  {
->  	const struct spi_device_id *id = spi_get_device_id(spi);
-> @@ -315,8 +362,12 @@ static int ad7606_spi_probe(struct spi_device *spi)
->  		bops = &ad7616_spi_bops;
->  		break;
->  	case ID_AD7606B:
-> +	case ID_AD7606C_16:
->  		bops = &ad7606B_spi_bops;
->  		break;
-> +	case ID_AD7606C_18:
-> +		bops = &ad7606c_18_spi_bops;
-> +		break;
->  	default:
->  		bops = &ad7606_spi_bops;
->  		break;
-> @@ -333,6 +384,8 @@ static const struct spi_device_id ad7606_id_table[] = {
->  	{ "ad7606-6", ID_AD7606_6 },
->  	{ "ad7606-8", ID_AD7606_8 },
->  	{ "ad7606b",  ID_AD7606B },
-> +	{ "ad7606c-16",  ID_AD7606C_16 },
-> +	{ "ad7606c-18",  ID_AD7606C_18 },
->  	{ "ad7616",   ID_AD7616 },
->  	{ }
->  };
-> @@ -344,6 +397,8 @@ static const struct of_device_id ad7606_of_match[] = {
->  	{ .compatible = "adi,ad7606-6" },
->  	{ .compatible = "adi,ad7606-8" },
->  	{ .compatible = "adi,ad7606b" },
-> +	{ .compatible = "adi,ad7606c-16" },
-> +	{ .compatible = "adi,ad7606c-18" },
->  	{ .compatible = "adi,ad7616" },
->  	{ }
->  };
+> +static const struct iio_info ad8460_info = {
+> +	.read_raw = &ad8460_read_raw,
+> +	.write_raw = &ad8460_write_raw,
+> +	.write_event_value = &ad8460_write_event_value,
+> +	.read_event_value = &ad8460_read_event_value,
+> +	.write_event_config = &ad8460_write_event_config,
+> +	.read_event_config = &ad8460_read_event_config,
+> +	.debugfs_reg_access = &ad8460_reg_access,
+> +};
+> +
+> +static const struct iio_enum ad8460_powerdown_mode_enum = {
+> +	.items = ad8460_powerdown_modes,
+> +	.num_items = ARRAY_SIZE(ad8460_powerdown_modes),
+> +	.get = ad8460_get_powerdown_mode,
+> +	.set = ad8460_set_powerdown_mode,
+> +};
+> +
+> +#define AD8460_CHAN_EXT_INFO(_name, _what, _shared, _read, _write) {	\
+
+Looks like _shared is always IIO_SEPARATE, so we could omit that parameter.
+
+> +	.name = _name,							\
+> +	.read = (_read),						\
+> +	.write = (_write),						\
+> +	.private = (_what),						\
+> +	.shared = (_shared),						\
+> +}
+> +
+> +static struct iio_chan_spec_ext_info ad8460_ext_info[] = {
+> +	AD8460_CHAN_EXT_INFO("raw0", 0, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw1", 1, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw2", 2, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw3", 3, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw4", 4, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw5", 5, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw6", 6, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw7", 7, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw8", 8, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw9", 9, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw10", 10, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw11", 11, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw12", 12, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw13", 13, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw14", 14, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("raw15", 15, IIO_SEPARATE, ad8460_dac_input_read,
+> +			     ad8460_dac_input_write),
+> +	AD8460_CHAN_EXT_INFO("toggle_en", 0, IIO_SEPARATE, ad8460_read_toggle_en,
+> +			     ad8460_write_toggle_en),
+> +	AD8460_CHAN_EXT_INFO("symbol", 0, IIO_SEPARATE, ad8460_read_symbol,
+> +			     ad8460_write_symbol),
+> +	AD8460_CHAN_EXT_INFO("powerdown", 0, IIO_SEPARATE, ad8460_read_powerdown,
+> +			     ad8460_write_powerdown),
+> +	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ad8460_powerdown_mode_enum),
+> +	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE,
+> +			   &ad8460_powerdown_mode_enum),
+> +	{}
+> +};
+> +
+> +static const struct iio_event_spec ad8460_events[] = {
+> +	{
+> +		.type = IIO_EV_TYPE_THRESH,
+> +		.dir = IIO_EV_DIR_RISING,
+> +		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
+> +				 BIT(IIO_EV_INFO_ENABLE),
+> +	},
+> +	{
+> +		.type = IIO_EV_TYPE_THRESH,
+> +		.dir = IIO_EV_DIR_FALLING,
+> +		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
+> +				 BIT(IIO_EV_INFO_ENABLE),
+> +	},
+> +};
+> +
+> +#define AD8460_VOLTAGE_CHAN {					\
+> +	.type = IIO_VOLTAGE,					\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_SAMP_FREQ) |	\
+> +			      BIT(IIO_CHAN_INFO_RAW) |		\
+> +			      BIT(IIO_CHAN_INFO_SCALE),		\
+> +	.output = 1,						\
+> +	.indexed = 1,						\
+> +	.channel = 0,						\
+> +	.scan_index = 0,					\
+> +	.scan_type = {						\
+> +		.sign = 'u',					\
+> +		.realbits = 14,					\
+> +		.storagebits = 16,				\
+> +		.endianness = IIO_LE,				\
+
+Data is going over DMA, so should this be IIO_CPU?
+
+> +	},                                                      \
+> +	.ext_info = ad8460_ext_info,                            \
+> +	.event_spec = ad8460_events,				\
+> +	.num_event_specs = ARRAY_SIZE(ad8460_events),		\
+> +}
+> +
+> +#define AD8460_CURRENT_CHAN {					\
+> +	.type = IIO_CURRENT,					\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+> +	.output = 0,						\
+
+Since this is writeable, I assume this is an output? (so = 1, not 0)
+
+> +	.indexed = 1,						\
+> +	.channel = 0,						\
+> +	.scan_index = -1,					\
+> +	.event_spec = ad8460_events,				\
+> +	.num_event_specs = ARRAY_SIZE(ad8460_events),		\
+> +}
+> +
+> +#define AD8460_TEMP_CHAN {					\
+> +	.type = IIO_TEMP,					\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+> +	.output = 1,						\
+> +	.indexed = 1,						\
+> +	.channel = 0,						\
+> +	.scan_index = -1,					\
+> +	.event_spec = ad8460_events,				\
+> +	.num_event_specs = 1,					\
+> +}
+> +
+> +static const struct iio_chan_spec ad8460_channels[] = {
+> +	AD8460_VOLTAGE_CHAN,
+> +	AD8460_CURRENT_CHAN,
+> +};
+> +
+> +static const struct iio_chan_spec ad8460_channels_with_tmp_adc[] = {
+> +	AD8460_VOLTAGE_CHAN,
+> +	AD8460_CURRENT_CHAN,
+> +	AD8460_TEMP_CHAN,
+> +};
+> +
+> +static const struct regmap_config ad8460_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.max_register = 0x7F,
+> +};
+> +
+> +static int ad8460_probe(struct spi_device *spi)
+> +{
+> +	struct ad8460_state *state;
+> +	struct iio_dev *indio_dev;
+> +	struct device *dev;
+> +	u32 tmp[2], temp;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	state = iio_priv(indio_dev);
+> +	mutex_init(&state->lock);
+> +
+> +	indio_dev->name = "ad8460";
+> +	indio_dev->info = &ad8460_info;
+> +
+> +	state->spi = spi;
+> +	dev = &spi->dev;
+> +
+> +	state->regmap = devm_regmap_init_spi(spi, &ad8460_regmap_config);
+> +	if (IS_ERR(state->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(state->regmap),
+> +				     "Failed to initialize regmap");
+> +
+> +	state->sync_clk = devm_clk_get_enabled(dev, NULL);
+> +	if (IS_ERR(state->sync_clk))
+> +		return dev_err_probe(dev, PTR_ERR(state->sync_clk),
+> +				     "Failed to get sync clk\n");
+> +
+> +	state->tmp_adc_channel = devm_iio_channel_get(dev, "ad8460-tmp");
+
+Should we check for specific errors here? For example what if we get
+-EPROBE_DEFER? Also, it doesn't like we could ever get NULL, so IS_ERR()
+should be sufficient.
+
+> +	if (IS_ERR_OR_NULL(state->tmp_adc_channel)) {
+> +		indio_dev->channels = ad8460_channels;
+> +		indio_dev->num_channels = ARRAY_SIZE(ad8460_channels);
+> +	} else {
+> +		indio_dev->channels = ad8460_channels_with_tmp_adc;
+> +		indio_dev->num_channels = ARRAY_SIZE(ad8460_channels_with_tmp_adc);
+> +	}
+> +
+> +	ret = devm_regulator_get_enable_read_voltage(dev, "refio_1p2v");
+> +	if (ret == -ENODEV)
+> +		state->refio_1p2v_mv = 1200;
+> +	else if (ret >= 0)
+> +		state->refio_1p2v_mv = ret / 1000;
+> +	else
+> +		return dev_err_probe(dev, ret, "Failed to get reference voltage\n");
+
+The pattern we have been using in other drivers is:
+
+	ret = devm_regulator_get_enable_read_voltage(dev, "refio_1p2v");
+	if (ret < 0 && ret != -ENODEV)
+		return dev_err_probe(dev, ret, "Failed to get reference voltage\n");
+
+	state->refio_1p2v_mv = ret == -ENODEV ? 1200 : ret / 1000;
+
+It saves a bit of reading.
+
+> +
+> +	if (!in_range(state->refio_1p2v_mv, AD8460_MIN_VREFIO_UV,
+> +		      AD8460_MAX_VREFIO_UV))
+
+It looks like millivolts is being compared to microvolts here.
+
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "Invalid ref voltage range(%u mV) [%u mV, %u mV]\n",
+> +				     state->refio_1p2v_mv,
+> +				     AD8460_MIN_VREFIO_UV / 1000,
+> +				     AD8460_MAX_VREFIO_UV / 1000);
+> +
+> +	ret = device_property_read_u32(dev, "adi,external-resistor-ohms",
+> +				       &state->ext_resistor_ohms);
+> +	if (ret)
+> +		state->ext_resistor_ohms = 2000;
+> +	else if (!in_range(state->ext_resistor_ohms, AD8460_MIN_EXT_RESISTOR_OHMS,
+> +			   AD8460_MAX_EXT_RESISTOR_OHMS))
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "Invalid resistor set range(%u) [%u, %u]\n",
+> +				     state->ext_resistor_ohms,
+> +				     AD8460_MIN_EXT_RESISTOR_OHMS,
+> +				     AD8460_MAX_EXT_RESISTOR_OHMS);
+> +
+> +	/* Arm the device by default */
+
+Comment doesn't match the code.
+
+> +	ret = device_property_read_u32_array(dev, "adi,range-microamp",
+> +					     tmp, ARRAY_SIZE(tmp));
+> +	if (!ret) {
+> +		if (in_range(tmp[1], 0, AD8460_ABS_MAX_OVERCURRENT_UA))
+> +			regmap_write(state->regmap, AD8460_CTRL_REG(0x08),
+> +				     FIELD_PREP(AD8460_FAULT_ARM_MSK, 1) |
+> +				     AD8460_CURRENT_LIMIT_CONV(tmp[1]));
+> +
+> +		if (in_range(tmp[0], -AD8460_ABS_MAX_OVERCURRENT_UA, 0))
+> +			regmap_write(state->regmap, AD8460_CTRL_REG(0x09),
+> +				     FIELD_PREP(AD8460_FAULT_ARM_MSK, 1) |
+> +				     AD8460_CURRENT_LIMIT_CONV(abs(tmp[0])));
+> +	}
+> +
+> +	ret = device_property_read_u32_array(dev, "adi,range-microvolt",
+> +					     tmp, ARRAY_SIZE(tmp));
+> +	if (!ret) {
+> +		if (in_range(tmp[1], 0, AD8460_ABS_MAX_OVERVOLTAGE_UV))
+> +			regmap_write(state->regmap, AD8460_CTRL_REG(0x0A),
+> +				     FIELD_PREP(AD8460_FAULT_ARM_MSK, 1) |
+> +				     AD8460_VOLTAGE_LIMIT_CONV(tmp[1]));
+> +
+> +		if (in_range(tmp[0], -AD8460_ABS_MAX_OVERVOLTAGE_UV, 0))
+> +			regmap_write(state->regmap, AD8460_CTRL_REG(0x0B),
+> +				     FIELD_PREP(AD8460_FAULT_ARM_MSK, 1) |
+> +				     AD8460_VOLTAGE_LIMIT_CONV(abs(tmp[0])));
+> +	}
+> +
+> +	ret = device_property_read_u32(dev, "adi,max-millicelsius", &temp);
+> +	if (!ret) {
+> +		if (in_range(temp, AD8460_MIN_OVERTEMPERATURE_MC,
+> +			     AD8460_MAX_OVERTEMPERATURE_MC))
+> +			regmap_write(state->regmap, AD8460_CTRL_REG(0x0C),
+> +				     FIELD_PREP(AD8460_FAULT_ARM_MSK, 1) |
+> +				     AD8460_TEMP_LIMIT_CONV(abs(temp)));
+> +	}
+> +
+> +	ret = ad8460_reset(state);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Enables DAC by default */
+> +	ret = regmap_update_bits(state->regmap, AD8460_CTRL_REG(0x01),
+> +				 AD8460_HVDAC_SLEEP_MSK,
+> +				 FIELD_PREP(AD8460_HVDAC_SLEEP_MSK, 0));
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->setup_ops = &ad8460_buffer_setup_ops;
+> +
+> +	ret = devm_iio_dmaengine_buffer_setup_ext(dev, indio_dev, "tx",
+> +						  IIO_BUFFER_DIRECTION_OUT);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "Failed to get DMA buffer\n");
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
+> +
+> +static const struct of_device_id ad8460_of_match[] = {
+> +	{ .compatible = "adi, ad8460" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, ad8460_of_match);
+> +
+> +static struct spi_driver ad8460_driver = {
+> +	.driver = {
+> +		.name = "ad8460",
+> +		.of_match_table = ad8460_of_match,
+> +	},
+> +	.probe = ad8460_probe,
+> +};
+> +module_spi_driver(ad8460_driver);
+> +
+> +MODULE_AUTHOR("Mariel Tinaco <mariel.tinaco@analog.com");
+> +MODULE_DESCRIPTION("AD8460 DAC driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_IMPORT_NS(IIO_DMAENGINE_BUFFER);
 
 

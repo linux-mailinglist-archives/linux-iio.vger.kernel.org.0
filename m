@@ -1,74 +1,48 @@
-Return-Path: <linux-iio+bounces-9250-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9251-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F7B96F97D
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 18:42:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8335196F981
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 18:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8856028367D
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 16:42:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A591F22255
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Sep 2024 16:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A951D417A;
-	Fri,  6 Sep 2024 16:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B44A1D4167;
+	Fri,  6 Sep 2024 16:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="U0sDv+Bl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dRlCGNss"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AE41D0496
-	for <linux-iio@vger.kernel.org>; Fri,  6 Sep 2024 16:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1192A1D4145;
+	Fri,  6 Sep 2024 16:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725640938; cv=none; b=pJA/0uNaxB52SWAoFZp/vto+IsB68VF2+pXmR7J/RQhuEnmHNxF0jMhVHGI0IaOIXjR1MHBI3+vL76NMK7CSl1cc+qDfzfhgVknuW5qvqDPyrgm/UT2lVQ5x0Tlme6hDz86aGwkLW5ZNEOHhA8OEb7o8hKkDeLyNclcmjBhrA80=
+	t=1725640991; cv=none; b=r8Kf8OVu6yBXPebUsFf5mQi37NogwsprstxwNTeb3/sGPFMbwjbtIZJHnIsY2uv0zIMTv/0BhSZ3jm31yDJajRZwQY6POBmWjvxdf8hW746f2Kyjg3TWLXwuRuaR0NHhJ1jm3odipedi9ITQl1IBK4RwJWmt3C5S78Src+Fk6i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725640938; c=relaxed/simple;
-	bh=SLERIPPuqlPcRz7SpVydvsOfSapGckEZ8PoOBgaOu18=;
+	s=arc-20240116; t=1725640991; c=relaxed/simple;
+	bh=+2DeN+MyH/TfQZn0o3mVMo6P9rQy8HSh4KTpNhlZYFk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lRvGOKc8nK4IofzE+DaYHYukbdNzVy2kZdqOlZryJDvcw5bLElJjnQzHsRJjfroTqHRupKt0rzRoCgECyhGvryw9MK3hCV3DRrkV0r9sQMVLphEkS6v9b6klQEhDWGNQRDlhRYVpLo6sA56uuopR2AyoGTZR+TJbJNWDOSKiJHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=U0sDv+Bl; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5d5c7f23f22so1328044eaf.0
-        for <linux-iio@vger.kernel.org>; Fri, 06 Sep 2024 09:42:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725640934; x=1726245734; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bpqcN7trnRgHngcOVURxYt9dm6dnWJM7OBEcFnkkzUg=;
-        b=U0sDv+BlAnmhtuAp+vT8vvICopJfscGpKOWW7zFOXKnr5z6RFl8+YkQa0qisW1eMbK
-         +iOgkWVqXu+A716DF48a/0U7H3/Bd+cgk7wxlVEBwFgmHFoUtXN6jT5zRFqebo0VlI7g
-         fEuCnm9da+2jLflFEczgLHAMmy84DXPmY8ZCqu4ooHv2dRTGUX03q4llO6zDNU8eLvu0
-         GuW5V83ykaWb97IP71lfLJ393az1KQm1v52/dMELE1EehvFesGUdo9T5c/4O601xGIYD
-         MsLZQ3cOH//ED3f5OcL1FKq6GH9+WTndLgb+/SWrInxpPhyUjLefrXA4ETg3IwiwZu0C
-         EUkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725640934; x=1726245734;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bpqcN7trnRgHngcOVURxYt9dm6dnWJM7OBEcFnkkzUg=;
-        b=qw8xkUH+zrEh/Ws1EzAGJrQP5LrqdV2FfbcOv08YIg4kGWkfpWQQ0NqDfN+7ESEZA0
-         Pi6R4bvOj/eCqBX/8UBcEoiZhp5MgURhFTxwjWZAD8gPaO1Qf7J01G8D17BAgr2hfvap
-         qUCFCcm71eFu1HwAw9JlTefdpdDw5pwdW+MNxLAp5MH+ZhMMPXSFKiArb+Lz9hWfQQlQ
-         EDXEcvTxtvaBFVMzayAx7xD1V+AX6hEFqCHE+/DFt76vcluprFS20GVPOM4BP/Hd40f+
-         ye5K24peVLIidON+9U+yPkjN0DMUd+r0vCdAtEWf85thcZcWJygqT7z3hjrgmJxc4uti
-         etCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWcWEZfEIt5nlJXnysbrm4dfoHFOTer8RqVYAnLU/VyZ2Fqfv8P8h0E5WPCPr8GOaB3u2EZyg0s99s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzW+zmE3mLNGRZidzYudbEqjK3HuhEOVllUDAJ59oKOVRXMvVxu
-	Eb4b4YTboS1uMVL3SCB3GnxUc5cOpQ8FdA/NTKPqHtH7SZmUyGzIy019sr0Dcjk=
-X-Google-Smtp-Source: AGHT+IEcQu0eoB+tXXu3duqiyzHk5VT5eBohbhuzsk6G7mLNTEYwF881Gs0Oi59FI3WM+BGOFwVsZQ==
-X-Received: by 2002:a05:6820:1b86:b0:5ce:d2e3:b18 with SMTP id 006d021491bc7-5e1a9d96318mr2981666eaf.8.1725640934310;
-        Fri, 06 Sep 2024 09:42:14 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5e1b7671f79sm51291eaf.31.2024.09.06.09.42.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Sep 2024 09:42:13 -0700 (PDT)
-Message-ID: <9894666e-30bf-42c0-88a0-18ce2a9300a2@baylibre.com>
-Date: Fri, 6 Sep 2024 11:42:13 -0500
+	 In-Reply-To:Content-Type; b=RxP3XLU3RkxG51m8I6yuFszjxP6Hs/oYr+9lnj31XHmhpoGLzmwv/4pbXQtso8zwZrHqjmh+pdMPwEConu4EE/O1SMOU4IxsRSuzkO06q+kcWBjakQvW4lYywlJoPM+NJrGIPG64Jz83n/DMvF+5sDPBZH2882IUu42h1Ni2mnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dRlCGNss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A021AC4CEC4;
+	Fri,  6 Sep 2024 16:43:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725640990;
+	bh=+2DeN+MyH/TfQZn0o3mVMo6P9rQy8HSh4KTpNhlZYFk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dRlCGNssMfVnAD36Uu7/nDosW6FiwvKDAS8gv9dU6PIxKTsGc1etMZIRi7GWFEI1x
+	 FGGAfHtDenHS8YRm+xoXqzTqPGaiSV21N6pxLw3AgiTh+NcGZT90BBnil3XqHJ+ZSL
+	 bUuXW0QjvORGcohXn2EAN0dgI71F4S/gNsIXeUC4fiywyHA/hR0m8YKy7N1Vr2vR4q
+	 ETzNFgoGdgFS0Jo+YBUB2OBZc6vHWKep1cxG89ZrcqTMtfT06CwJZLGSQLnym4bovF
+	 4pkMOInXPWYS3Q8X2sMiCooc4J9mnAFN6zMWUh2PNoWjm9f/OMRfQLtJjlUpM7EH5/
+	 vu4VmHoPinQwQ==
+Message-ID: <8079f10b-8a20-467e-bdb4-504f201bd0f8@kernel.org>
+Date: Fri, 6 Sep 2024 18:43:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,8 +52,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 5/9] dt-bindings: iio: dac: add ad3552r axi-dac
  compatible
-To: Krzysztof Kozlowski <krzk@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <noname.nuno@gmail.com>, Angelo Dureghello <adureghello@baylibre.com>
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Angelo Dureghello <adureghello@baylibre.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
  =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
@@ -87,7 +61,7 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
 References: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylibre.com>
  <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-5-87d669674c00@baylibre.com>
  <boahpvyzzmocnnpae2u6meub34yvqr2q3v5pzf2egp2fretlwk@ibas62hdypwo>
@@ -96,106 +70,184 @@ References: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylib
  <058937fa93d484f3e81807d08a39bd8dfd3358e8.camel@gmail.com>
  <47c56239-51a0-4ff2-9db2-0e0184cfb086@kernel.org>
  <a0d213442b4de0b06991be2be1d7b2bb091f2b52.camel@gmail.com>
- <de4718f5-a36f-4e5c-b5e1-f1c6e2484420@baylibre.com>
- <bb25003f-3a30-4d73-9b40-447d2d513fb3@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <bb25003f-3a30-4d73-9b40-447d2d513fb3@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <a0d213442b4de0b06991be2be1d7b2bb091f2b52.camel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 9/6/24 11:36 AM, Krzysztof Kozlowski wrote:
-> On 06/09/2024 16:04, David Lechner wrote:
->> On 9/6/24 8:52 AM, Nuno Sá wrote:
->>> On Fri, 2024-09-06 at 14:13 +0200, Krzysztof Kozlowski wrote:
->>>> On 06/09/2024 13:53, Nuno Sá wrote:
->>>>> On Fri, 2024-09-06 at 11:37 +0200, Krzysztof Kozlowski wrote:
->>>>>> On 06/09/2024 11:11, Angelo Dureghello wrote:
->>>>>>> Hi Krzysztof,
->>>>>>>
->>>>>>> On 06/09/24 9:22 AM, Krzysztof Kozlowski wrote:
->>>>>>>> On Thu, Sep 05, 2024 at 05:17:35PM +0200, Angelo Dureghello wrote:
->>>>>>>>> From: Angelo Dureghello <adureghello@baylibre.com>
->>>>>>>>>
->>>>>>>>> Add a new compatible for the ad3552r variant of the generic DAC IP.
->>>>>>>>>
->>>>>>>>> The ad3552r DAC IP variant is very similar to the generic DAC IP,
->>>>>>>>> register map is the same, but some register fields are specific to
->>>>>>>>> this IP, and also, a DDR QSPI bus has been included in the IP.
->>>>>>>>>
->>>>>>>>> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
->>>>>>>>> ---
->>>>>>>>>   Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml | 1 +
->>>>>>>>>   1 file changed, 1 insertion(+)
->>>>>>>>>
->>>>>>>>> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
->>>>>>>>> b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
->>>>>>>>> index a55e9bfc66d7..c0cccb7a99a4 100644
->>>>>>>>> --- a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
->>>>>>>>> +++ b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
->>>>>>>>> @@ -24,6 +24,7 @@ properties:
->>>>>>>>>     compatible:
->>>>>>>>>       enum:
->>>>>>>>>         - adi,axi-dac-9.1.b
->>>>>>>>> +      - adi,axi-dac-ad3552r
->>>>>>>> I am sorry, but what is the product here? It looks like either wrong
->>>>>>>> order or even completely redundant. What is ad3552r?
->>>>>>>>
->>>>>>>> And why versions are mixed with real products but without any
->>>>>>>> compatibility. What does the version express in such case?
->>>>>>>
->>>>>>> dac-ad3552r IP (fpga) is a variant of the dac IP, very similar,
->>>>>>> about the version, it still reads as 9.1.b
->>>>>>>
->>>>>>> so i can eventually change it to:
->>>>>>>
->>>>>>> adi,axi-dac-ad3552-9.1.b
->>>>>>>
->>>>>>> Should be more correct.
->>>>>>
->>>>>> No. First ad3552r is the product, so axi-dac is redundant. Second why
->>>>>> adding versions if you have product names? Versioning was allowed
->>>>>> because apparently that's how these are called, but now it turns out it
->>>>>> is not version but names.
->>>>>>
->>>>>
->>>>> Let me try to explain on how this whole thing works...
->>>>>
->>>>> We have a generic FPGA IP called axi-dac (same story is true for the other axi-
->>>>> adc
->>>>> IP) which adds some basic and generic capabilities like DDS (Direct digital
->>>>> synthesis) and the generic one is the compatible existing now. This IP is a so
->>>>> called
->>>>> IIO backend because it then connects to a real converter (in this case DACs)
->>>>> extending it's capabilities and also serving as an interface between another
->>>>> block
->>>>> (typical DMA as this is used for really high speed stuff) and the device. Now,
->>>>> depending on the actual device, we may need to add/modify some features of the IP
->>>>> and
->>>>> this is what's happening for the ad3552r DAC (it's still build on top of the 
->>>>
->>>> What is "ad3552"? DAC right? Then as I said axi-dac is redundant. We do
->>>> not call ti,tmp451 a ti,sensor-tmp451, right?
->>>>
+On 06/09/2024 15:52, Nuno Sá wrote:
 >>>
->>> Yes, I agree the DAC part is redundant. But I think the axi prefix (or suffix) is
->>> meaningful to differentiate it from the bindings for the device itself.
->>>
->> The binding is for this [1] IP core. The documentation calls the core
->> "AXI AD3552R", so I agree that "adi,axi-ad2552r" is the most sensible
->> compatible name.
+>>> We have a generic FPGA IP called axi-dac (same story is true for the other axi-
+>>> adc
+>>> IP) which adds some basic and generic capabilities like DDS (Direct digital
+>>> synthesis) and the generic one is the compatible existing now. This IP is a so
+>>> called
+>>> IIO backend because it then connects to a real converter (in this case DACs)
+>>> extending it's capabilities and also serving as an interface between another
+>>> block
+>>> (typical DMA as this is used for really high speed stuff) and the device. Now,
+>>> depending on the actual device, we may need to add/modify some features of the IP
+>>> and
+>>> this is what's happening for the ad3552r DAC (it's still build on top of the 
 >>
->> http://analogdevicesinc.github.io/hdl/library/axi_ad3552r/index.html
+>> What is "ad3552"? DAC right? Then as I said axi-dac is redundant. We do
+>> not call ti,tmp451 a ti,sensor-tmp451, right?
+>>
 > 
-> I don't see any AXI here:
-> https://www.analog.com/en/products/ad3552r.html
-> Neither here:
-> https://www.analog.com/media/en/technical-documentation/data-sheets/ad3552r.pdf
+> Yes, I agree the DAC part is redundant. But I think the axi prefix (or suffix) is
+> meaningful to differentiate it from the bindings for the device itself.
+
+I don't understand: what are the bindings for the device itself? What is
+this patch/binding if not device itself?
+
 > 
-> Are these different?
+>> If ad3552 is something else, then the order of naming is not correct.
+>> Product name is always the first.
+>>
+>>
+>>> generic axi-adc). And in this design the IP is also acting as a qspi controller
+>>> for
+>>> actually controlling the configuration of the device while, typically, IIO
+>>> backends
+>>> are meant to only care about the dataplane. With all of this, there are
+>>> discussions
+>>> still happening on the RFC (Angelo was too fast with this version) between using
+>>> different properties or new compatibles for changes so significant like this on
+>>> the
+>>> generic IP. See the thread where Conor is also involved.
+>>
+>> 1. Then what does it mean for "adi,axi-dac-9.1.b"?
+>>
+> 
+> IIUC, it means that the generic IP cannot really be used with the ad3552r DAC given
+> the qspi specific bits.
 
+ok
 
-Yes, they are different. AD2553R is the DAC chip itself. But "AXI AD2553R" is an
-FPGA IP block designed specifically for use with that chip.
+> 
+>> 2. Is there any real customer product which uses this compatible alone?
+>>
+> 
+> Yes, we do have devices that can work with the generic IP.
+
+Where are they? There is nothing in the upstream, so maybe that's just
+misconfigured downstream DTS?
+
+Or maybe these are just some sort of IP core designs which cannot be
+used in real case alone/directly.
+
+> 
+>> If you need to come up with customized compatibles, it means versioned
+>> one is not enough.
+>>
+> 
+> Note this was something that was suggested to Angelo. There's also the option to just
+> use typical FW properties like the original RFC to describe the HW changes in the IP.
+> But Conor made some good points on using different compatibles when changes go this
+> far as being also a bus controller...
+> 
+>> If this is 9.1.b but not usable as 9.1.b ("for changes so significant
+>> like this on"), then I claim 9.1.b compatible is useless.
+>>
+> 
+> The 9.1.b versioning refers to the generic IP version and the custom design for
+> interfacing with the ad3552r DAC is also based on that version of the generic IP. It
+> already happened (for non upstream versions of the IP) for the HW folks to increase
+> the versioning (major) of the generic IP with some breaking change and then new
+> designs will be based on the newer version. On the driver we use the major number to
+> detect mismatches between driver expectations and what we really have in HW.
+> 
+>>>
+>>>> Third, versions are useless if you do not use them as fallbacks.
+>>>>
+>>>
+>>> In this particular case we can't use the generic IP as a fallback since without
+>>> the
+>>> bus controller feature the device can't really work. But it can happen we
+>>> increase
+>>> the version on the generic core and use the existing version as fallback 
+>>>
+>>>> Something this is really broken and I don't know if the binding or this
+>>>> patch.
+>>>
+>>> Having said the above, I'm really not sure if what we have is the best approach
+>>> but
+>>> these are also early days (upstream) for this so we should still be able to
+>>> change
+>>> things if we need too. I'm fairly sure there's still no one relying on this so we
+>>> should be able to change things in a breaking way (if we need to be that
+>>> extreme).
+>>
+>> DT maintainers consistently (before someone here calls me inconsistent)
+>> propose not to use versioned compatibles if they map one-to-one to
+>> products or if they cannot be used alone. Several generic IP blocks like
+>> Synopsys or Cadence, match the latter - the customization from customer
+>> is needed, thus snps/cdns IP-block compatible is not usable.
+>>
+> 
+> Given what you're saying above (and IIUC) one thing I can see we doing would be to
+> forget about the version and assume the generic compatible cannot be used alone (so
+> adi,axi-dac). I mean, it always has to connect to real device. So we could use the
+> device name in the compatible and code the expected version for that project (instead
+> of being part of the compatible name). I guess it's similar on what's happening on
+> the macb driver? But in that case we do have a cdns,macb compatible that can be used
+> alone I think.
+> 
+> Only problem I could see with this is that if we have a project adi,axi-foo based on
+> version 9.1.b and then HW folks move on and introduce 10.0.a and re-do axi-foo on top
+> of the new core version. Would it then be ok to come up with a compatible like axi-
+> foo-v2 or axi-foo-10-0-a?
+> 
+> Not sure if any of the above makes much sense...
+
+None of above make sense because they are again versioned or generic.
+Use final product names, assuming they are such.
+
+Best regards,
+Krzysztof
 
 

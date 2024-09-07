@@ -1,65 +1,67 @@
-Return-Path: <linux-iio+bounces-9276-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9277-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BBA970290
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 16:00:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1F2970296
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 16:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA2F51C2189E
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 14:00:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67D871C2168D
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 14:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5E915C14E;
-	Sat,  7 Sep 2024 14:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA21115CD77;
+	Sat,  7 Sep 2024 14:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="gDtvx9jA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBtxcAdD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from msa.smtpout.orange.fr (smtp-66.smtpout.orange.fr [80.12.242.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FDD15575B;
-	Sat,  7 Sep 2024 14:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724284502F;
+	Sat,  7 Sep 2024 14:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725717629; cv=none; b=Ffv++o9yRwxX6m+cflnsry5NzbdZXH81XWiYUOOdRx+IGD3nE5KzJVwRPeup6Y0ibCinheVlHbXOgki3MnZHTIlpnsgLZZ7+55mW9d/ffBXCvAl76dZOySWpaq8WhCJII6StAvTj7AsZqhFmJPaMBt0TxKfpA1yzUiiIeeRGBKc=
+	t=1725717779; cv=none; b=DaE1pUXnXLYNpu3q3JI2iCWcur6DW1ap7Z6XiogGLa4MNgMXlT+E92okRC/qg2nZsZCNQhr4V+UpRLmPjkiMG+CCMr1NKgpkHL2uN2yw5Wt72btVB4R0xrJNDhz8r5Oni7BF31t6fkVtJZ+PtC6j3/GB+nlwijv7w4OH8xon5dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725717629; c=relaxed/simple;
-	bh=s27k5mEy8VSUEgorKgZR16XXq3J5gswprF0OHfkaZts=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Yo4ve4TU8KXHydAzJdCyrjYbs5ZeisL8GPw1A5aui69UVNB4EHIW98+7StSHa32gvvd1Wph71AltwOkTTIxo87Zn+mmowaixjEFQoASjvtDqrlQy/jOPpWxinTgY9lt7vnMwZ9i+gIWC84OnWglpi3lokwqQ7MS5wcug2rFyrYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=gDtvx9jA; arc=none smtp.client-ip=80.12.242.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from fedora.home ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id mvqKs8Zr7lt0qmvqKsJ2Fc; Sat, 07 Sep 2024 15:51:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1725717073;
-	bh=hNavVn77VF0lTtMSxrk81smDP2O/T7hN077eeKQGcV8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=gDtvx9jApf+CYTLvtwgutidBZrrFxmNH+eiWJAOmz3Ju2pfIvkZsbwwx/sz0wulkp
-	 5iLLdckTEVxw+eqp4IGLQIIU5HMUsylQohKsn5Jwc4ZKjJB7YzLaIpIbGzPKStO2xq
-	 ANzskTB36HG3wGNilPejxmCnT2cxLOu79ux+5wrguzDow9t15nQ52VjgZDM9qk/RtH
-	 JzNQZjLA6t2zKz+vek0UKPP1lLEXWqYL0HXoopWKwUCr9mgTNQhBuTsbWJe3Doz1Yt
-	 F2Y/mWDX0VG+JtKmfC4sVAklADEoI95hr9FfkbT5V90gNfeTL3JZ66vrjnnxD++5RL
-	 VqCkmVsvc5+fQ==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 07 Sep 2024 15:51:13 +0200
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] =?UTF-8?q?iio:=20addac:=20ad74xxx:=20Constify=20struct=20?= =?UTF-8?q?iio=5Fchan=5Fspec=E2=80=8B?=
-Date: Sat,  7 Sep 2024 15:51:07 +0200
-Message-ID: <da291278e78b983ea2e657a25769f7d82ea2a6d0.1725717045.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1725717779; c=relaxed/simple;
+	bh=1nkW8OT/lgbFBao8ndgv4iUdKsjyBiMWPvtLtYaCeYo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a9hEKCMzFcTo4miPiOZedyUzv3swHW+Dta/5FZd3t3Raw/HTmBnSxNUzYmhLaKb0yboSkthpk3mJGy0bESHKngGwGbXXrCZBh59qHTWKKlRZQjXRXbPkuyROWlwDZuTIOiCWk/QA4UbCxAtUflRj4A4nVsLgnw482PYfSKENI6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBtxcAdD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD08C4CEC2;
+	Sat,  7 Sep 2024 14:02:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725717779;
+	bh=1nkW8OT/lgbFBao8ndgv4iUdKsjyBiMWPvtLtYaCeYo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bBtxcAdD4M561FgZyuAkl/r0qVJGmKpu9EfXCWi0YOMy7R57v1IWUuGkOEoaZJgke
+	 O9JmDpF0g5Vjs3q3xj6NnqPeJlZpKWRUPAXjq7n82hB7j4CbLuA5Nf7/dTRuRfB3Ms
+	 XN2BYm69VfeOh0so7vA1Md0892cGlla4zuUAwH4rgnMublrpefi+2iUZAsnhNVj67v
+	 Zc2hylznUYG4bivUo5jinEYxG2Qo8oWhDiAJBoD8pWdqKjsmstJSNFA78GMc4rQ3Un
+	 AvnWqlEYo+toAn7vsNqcqaWWvhiSqvlWDaBc+nEcZMNm2mgCNtW8rZLUAVV4byMJhG
+	 ofca3AtfDCNyQ==
+Date: Sat, 7 Sep 2024 15:02:50 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dlechner@baylibre.com
+Subject: Re: [PATCH RFC 2/8] iio: backend: extend features
+Message-ID: <20240907150250.40ba72f5@jic23-huawei>
+In-Reply-To: <f2568dd151efc2da76659fea4300fa7b3610d1e1.camel@gmail.com>
+References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
+	<20240829-wip-bl-ad3552r-axi-v0-v1-2-b6da6015327a@baylibre.com>
+	<20240831122313.4d993260@jic23-huawei>
+	<0fbe1321-cc67-4ade-8cbb-cbbaa40d2ca1@baylibre.com>
+	<20240903201157.5352ec04@jic23-huawei>
+	<4826097d-b575-4895-9335-f587bbf3bc89@baylibre.com>
+	<f2568dd151efc2da76659fea4300fa7b3610d1e1.camel@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,170 +69,213 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-'struct iio_chan_spec' are not modified in these drivers.
+On Thu, 05 Sep 2024 12:28:51 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-Constifying this structure moves some data to a read-only section, so
-increase overall security.
+> On Wed, 2024-09-04 at 14:01 +0200, Angelo Dureghello wrote:
+> > Hi Jonathan,
+> >=20
+> > On 03/09/24 9:11 PM, Jonathan Cameron wrote: =20
+> > > On Mon, 2 Sep 2024 16:03:22 +0200
+> > > Angelo Dureghello <adureghello@baylibre.com> wrote:
+> > >  =20
+> > > > Hi Jonathan,
+> > > >=20
+> > > > thanks for the feedbacks,
+> > > >=20
+> > > > On 31/08/24 1:23 PM, Jonathan Cameron wrote: =20
+> > > > > On Thu, 29 Aug 2024 14:32:00 +0200
+> > > > > Angelo Dureghello <adureghello@baylibre.com> wrote:
+> > > > > =C2=A0  =20
+> > > > > > From: Angelo Dureghello <adureghello@baylibre.com>
+> > > > > >=20
+> > > > > > Extend backend features with new calls needed later on this
+> > > > > > patchset from axi version of ad3552r.
+> > > > > >=20
+> > > > > > A bus type property has been added to the devicetree to
+> > > > > > inform the backend about the type of bus (interface) in use
+> > > > > > bu the IP.
+> > > > > >=20
+> > > > > > The follwoing calls are added:
+> > > > > >=20
+> > > > > > iio_backend_ext_sync_enable
+> > > > > > 	enable synchronize channels on external trigger
+> > > > > > iio_backend_ext_sync_disable
+> > > > > > 	disable synchronize channels on external trigger
+> > > > > > iio_backend_ddr_enable
+> > > > > > 	enable ddr bus transfer
+> > > > > > iio_backend_ddr_disable
+> > > > > > 	disable ddr bus transfer
+> > > > > > iio_backend_set_bus_mode
+> > > > > > 	select the type of bus, so that specific read / write
+> > > > > > 	operations are performed accordingly
+> > > > > > iio_backend_buffer_enable
+> > > > > > 	enable buffer
+> > > > > > iio_backend_buffer_disable
+> > > > > > 	disable buffer
+> > > > > > iio_backend_data_transfer_addr
+> > > > > > 	define the target register address where the DAC sample
+> > > > > > 	will be written.
+> > > > > > iio_backend_bus_reg_read
+> > > > > > 	generic bus read, bus-type dependent
+> > > > > > iio_backend_bus_read_write
+> > > > > > 	generic bus write, bus-type dependent
+> > > > > >=20
+> > > > > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > > > > > ---
+> > > > > > =C2=A0=C2=A0 drivers/iio/industrialio-backend.c | 151
+> > > > > > +++++++++++++++++++++++++++++++++++++
+> > > > > > =C2=A0=C2=A0 include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 24 ++++++
+> > > > > > =C2=A0=C2=A0 2 files changed, 175 insertions(+)
+> > > > > >=20
+> > > > > > diff --git a/drivers/iio/industrialio-backend.c
+> > > > > > b/drivers/iio/industrialio-backend.c
+> > > > > > index a52a6b61c8b5..1f60c8626be7 100644
+> > > > > > --- a/drivers/iio/industrialio-backend.c
+> > > > > > +++ b/drivers/iio/industrialio-backend.c
+> > > > > > @@ -718,6 +718,157 @@ static int __devm_iio_backend_get(struct =
+device
+> > > > > > *dev, struct iio_backend *back)
+> > > > > > =C2=A0=C2=A0=C2=A0	return 0;
+> > > > > > =C2=A0=C2=A0 } =20
+> > > > > =C2=A0  =20
+> > > > > > +
+> > > > > > +/**
+> > > > > > + * iio_backend_buffer_enable - Enable data buffering =20
+> > > > > Data buffering is a very vague term.=C2=A0 Perhaps some more deta=
+il on what
+> > > > > this means? =20
+> > > > for this DAC IP, it is the dma buffer where i write the samples,
+> > > > for other non-dac frontends may be something different, so i kept it
+> > > > generic. Not sure what a proper name may be, maybe
+> > > >=20
+> > > > "Enable optional data buffer" ? =20
+> > > How do you 'enable' a buffer?=C2=A0 Enable writing into it maybe? =20
+> >=20
+> > for the current case, this is done using the custom register
+> > of the AXI IP, enabling a "stream".
+> >=20
+> > return regmap_set_bits(st->regmap, AXI_DAC_REG_CUSTOM_CTRL,
+> > =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AXI_DAC_STREAM_ENABLE);
+> >=20
+> > Functionally, looks like dma data is processed (sent over qspi)
+> > when the stream is enabled.
+> >=20
+> > Maybe a name as "stream_enable" would me more appropriate ?
+> > "Stream" seems less generic btw.
+> >  =20
 
-On a x86_64, with allmodconfig:
-Before:
-======
-   text	   data	    bss	    dec	    hex	filename
-  35749	   5879	    384	  42012	   a41c	drivers/iio/addac/ad74115.o
-  32242	   3297	    384	  35923	   8c53	drivers/iio/addac/ad74413r.o
+Ok. Maybe "enable buffer filling" or something like that?
 
-After:
-=====
-   text	   data	    bss	    dec	    hex	filename
-  39109	   2519	    384	  42012	   a41c	drivers/iio/addac/ad74115.o
-  33842	   1697	    384	  35923	   8c53	drivers/iio/addac/ad74413r.o
+>=20
+> Yes, stream enable is very specific for this usecase. This is basically
+> connected to typical IIO buffering. So maybe we could either:
+>=20
+> 1) Embed struct iio_buffer_setup_ops in the backend ops struct;
+> 2) Or just define directly the ones we need now in backend ops.
+Structurally whatever makes sense - I was just quibbling over the
+documentation ;)
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only
----
- drivers/iio/addac/ad74115.c  | 18 +++++++++---------
- drivers/iio/addac/ad74413r.c | 21 +++++++++++----------
- 2 files changed, 20 insertions(+), 19 deletions(-)
+> =20
+> > > >  =20
+> > > > > > + * @back: Backend device
+> > > > > > + *
+> > > > > > + * RETURNS:
+> > > > > > + * 0 on success, negative error number on failure.
+> > > > > > + */
+> > > > > > +int iio_backend_buffer_enable(struct iio_backend *back)
+> > > > > > +{
+> > > > > > +	return iio_backend_op_call(back, buffer_enable);
+> > > > > > +}
+> > > > > > +EXPORT_SYMBOL_NS_GPL(iio_backend_buffer_enable, IIO_BACKEND);
+> > > > > > +
+> > > > > > +/**
+> > > > > > +/**
+> > > > > > + * iio_backend_bus_reg_read - Read from the interface bus
+> > > > > > + * @back: Backend device
+> > > > > > + * @reg: Register valule
+> > > > > > + * @val: Pointer to register value
+> > > > > > + * @size: Size, in bytes
+> > > > > > + *
+> > > > > > + * A backend may operate on a specific interface with a relate=
+d bus.
+> > > > > > + * Read from the interface bus. =20
+> > > > > So this is effectively routing control plane data through the off=
+loaded
+> > > > > bus?=C2=A0 That sounds a lot more like a conventional bus than II=
+O backend.
+> > > > > Perhaps it should be presented as that with the IIO device attach=
+ed
+> > > > > to that bus? I don't fully understand what is wired up here.
+> > > > > =C2=A0  =20
+> > > > Mainly, an IP may include a bus as 16bit parallel, or LVDS, or simi=
+lar
+> > > > to QSPI as in my case (ad3552r). =20
+> > > ok.
+> > >=20
+> > > If this is a bus used for both control and dataplane, then we should =
+really
+> > > be presenting it as a bus (+ offload) similar to do for spi + offload.
+> > >  =20
+>=20
+> Yes, indeed. In this case we also use the axi-dac core for controlling the
+> frontend device (accessing it's register) which is fairly weird. But not =
+sure
+> how we can do it differently. For the spi_engine that is really a spi con=
+troller
+> with the extra offloading capability. For this one, it's now "acting" as =
+a spi
+> controller but in the future it may also "act" as a parallel controller (=
+the
+> axi-adc already is in works for that with the ad7606 series).
+>=20
+> I was also very skeptical when I first saw these new functions but I'm not
+> really sure how to do it differently. I mean, it also does not make much =
+sense
+> to have an additional bus driver as the register maps are the same. Not s=
+ure if
+> turning it in a MFD device, helps...
 
-diff --git a/drivers/iio/addac/ad74115.c b/drivers/iio/addac/ad74115.c
-index 12dc43d487b4..bdbdd67536ff 100644
---- a/drivers/iio/addac/ad74115.c
-+++ b/drivers/iio/addac/ad74115.c
-@@ -191,7 +191,7 @@ enum ad74115_gpio_mode {
- };
- 
- struct ad74115_channels {
--	struct iio_chan_spec		*channels;
-+	const struct iio_chan_spec	*channels;
- 	unsigned int			num_channels;
- };
- 
-@@ -1295,46 +1295,46 @@ static const struct iio_info ad74115_info = {
- 	_AD74115_ADC_CHANNEL(_type, index, BIT(IIO_CHAN_INFO_SCALE)	\
- 					   | BIT(IIO_CHAN_INFO_OFFSET))
- 
--static struct iio_chan_spec ad74115_voltage_input_channels[] = {
-+static const struct iio_chan_spec ad74115_voltage_input_channels[] = {
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
- };
- 
--static struct iio_chan_spec ad74115_voltage_output_channels[] = {
-+static const struct iio_chan_spec ad74115_voltage_output_channels[] = {
- 	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_MAIN),
- 	AD74115_ADC_CHANNEL(IIO_CURRENT, AD74115_ADC_CH_CONV1),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
- };
- 
--static struct iio_chan_spec ad74115_current_input_channels[] = {
-+static const struct iio_chan_spec ad74115_current_input_channels[] = {
- 	AD74115_ADC_CHANNEL(IIO_CURRENT, AD74115_ADC_CH_CONV1),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
- };
- 
--static struct iio_chan_spec ad74115_current_output_channels[] = {
-+static const struct iio_chan_spec ad74115_current_output_channels[] = {
- 	AD74115_DAC_CHANNEL(IIO_CURRENT, AD74115_DAC_CH_MAIN),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
- };
- 
--static struct iio_chan_spec ad74115_2_wire_resistance_input_channels[] = {
-+static const struct iio_chan_spec ad74115_2_wire_resistance_input_channels[] = {
- 	_AD74115_ADC_CHANNEL(IIO_RESISTANCE, AD74115_ADC_CH_CONV1,
- 			     BIT(IIO_CHAN_INFO_PROCESSED)),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
- };
- 
--static struct iio_chan_spec ad74115_3_4_wire_resistance_input_channels[] = {
-+static const struct iio_chan_spec ad74115_3_4_wire_resistance_input_channels[] = {
- 	AD74115_ADC_CHANNEL(IIO_RESISTANCE, AD74115_ADC_CH_CONV1),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
- };
- 
--static struct iio_chan_spec ad74115_digital_input_logic_channels[] = {
-+static const struct iio_chan_spec ad74115_digital_input_logic_channels[] = {
- 	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_COMPARATOR),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
- };
- 
--static struct iio_chan_spec ad74115_digital_input_loop_channels[] = {
-+static const struct iio_chan_spec ad74115_digital_input_loop_channels[] = {
- 	AD74115_DAC_CHANNEL(IIO_CURRENT, AD74115_DAC_CH_MAIN),
- 	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_COMPARATOR),
- 	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
-diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index 2410d72da49b..1e2f6d9804e3 100644
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -45,8 +45,8 @@ struct ad74413r_channel_config {
- };
- 
- struct ad74413r_channels {
--	struct iio_chan_spec	*channels;
--	unsigned int		num_channels;
-+	const struct iio_chan_spec	*channels;
-+	unsigned int			num_channels;
- };
- 
- struct ad74413r_state {
-@@ -1138,34 +1138,34 @@ static const struct iio_info ad74413r_info = {
- 	AD74413R_ADC_CHANNEL(IIO_CURRENT,  BIT(IIO_CHAN_INFO_SCALE)	\
- 			     | BIT(IIO_CHAN_INFO_OFFSET))
- 
--static struct iio_chan_spec ad74413r_voltage_output_channels[] = {
-+static const struct iio_chan_spec ad74413r_voltage_output_channels[] = {
- 	AD74413R_DAC_CHANNEL(IIO_VOLTAGE, BIT(IIO_CHAN_INFO_SCALE)),
- 	AD74413R_ADC_CURRENT_CHANNEL,
- };
- 
--static struct iio_chan_spec ad74413r_current_output_channels[] = {
-+static const struct iio_chan_spec ad74413r_current_output_channels[] = {
- 	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
- 	AD74413R_ADC_VOLTAGE_CHANNEL,
- };
- 
--static struct iio_chan_spec ad74413r_voltage_input_channels[] = {
-+static const struct iio_chan_spec ad74413r_voltage_input_channels[] = {
- 	AD74413R_ADC_VOLTAGE_CHANNEL,
- };
- 
--static struct iio_chan_spec ad74413r_current_input_channels[] = {
-+static const struct iio_chan_spec ad74413r_current_input_channels[] = {
- 	AD74413R_ADC_CURRENT_CHANNEL,
- };
- 
--static struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
-+static const struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
- 	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
- 	AD74413R_ADC_CURRENT_CHANNEL,
- };
- 
--static struct iio_chan_spec ad74413r_resistance_input_channels[] = {
-+static const struct iio_chan_spec ad74413r_resistance_input_channels[] = {
- 	AD74413R_ADC_CHANNEL(IIO_RESISTANCE, BIT(IIO_CHAN_INFO_PROCESSED)),
- };
- 
--static struct iio_chan_spec ad74413r_digital_input_channels[] = {
-+static const struct iio_chan_spec ad74413r_digital_input_channels[] = {
- 	AD74413R_ADC_VOLTAGE_CHANNEL,
- };
- 
-@@ -1270,7 +1270,8 @@ static int ad74413r_setup_channels(struct iio_dev *indio_dev)
- {
- 	struct ad74413r_state *st = iio_priv(indio_dev);
- 	struct ad74413r_channel_config *config;
--	struct iio_chan_spec *channels, *chans;
-+	const struct iio_chan_spec *chans;
-+	struct iio_chan_spec *channels;
- 	unsigned int i, num_chans, chan_i;
- 	int ret;
- 
--- 
-2.46.0
+Hmm. A given adi-axi-adc interface is going to be one of (or something else)
+1) SPI(ish) controller + offloads like this one.
+2) Parallel bus - data only
+3) Parallel bus with control.
+
+Maybe we argue these are tightly coupled enough that we don't care but it
+feels like a direction that might bite us in the long run, particularly
+if we end up dt bindings that are hard to work with if we change
+how this fits together - imagine an SPI engine with a mode that does work
+for this + an SPI offload engine that works with that.
+Then the binding here will be hard to deal with.
+
+
+>=20
+> FWIW, I still don't fully understand why can't we have this supported by =
+the
+> spi_engine core. My guess is that we need features from the axi-dac (for =
+the
+> dataplane) so we are incorporating the controlplane on it instead of going
+> spi_engine + axi-dac.
+>=20
+> Also want to leave a quick note about LVDS (that was mentioned). That int=
+erface
+> is typically only used for data so I'm not seeing any special handling li=
+ke this
+> for that interface.
+Makes sense.  I'm a bit surprised that the parallel bus being used for cont=
+rol
+is on the list given that is also a bit messy to do (need some signalling t=
+hat
+direction is changing or a lot of wires).
+
+Jonathan
+
+>=20
+> - Nuno S=C3=A1
+> > >  =20
 
 

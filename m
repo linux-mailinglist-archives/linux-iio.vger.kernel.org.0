@@ -1,63 +1,57 @@
-Return-Path: <linux-iio+bounces-9282-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9283-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806DC9702BF
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 16:35:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC73B9702D0
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 16:50:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B3FF283C96
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 14:35:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 763441F225E0
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 14:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A4E15C133;
-	Sat,  7 Sep 2024 14:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DE615DBDD;
+	Sat,  7 Sep 2024 14:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OApkqQ7W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUo05fSQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FBDDF53
-	for <linux-iio@vger.kernel.org>; Sat,  7 Sep 2024 14:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98B828FC;
+	Sat,  7 Sep 2024 14:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725719739; cv=none; b=UJSh71IbdUR/SgtitCsu/7Chx5GekVeYnkL4LwvsR49S7rVu8ENibZXSK63mhKLWOnizyjSr8u6UNBdyrOZm7cKyml2a12BqLAEtsM28e02KM7bQVV/f9tYUhtpqIzpnS0abY5sx1qvdNHIeRJAx6RNdFjFHLMXEZeDtSDAA+Ak=
+	t=1725720621; cv=none; b=pKUZY+DradkwdWseKse4oOpnKpEvub11Q8ceo4cARjgyg5f+ezqamXkJJDI91Sg4olMKDudc4MxBAepb8ZhTZfhVbCdGJMKOfexsEVqzR8wTAjWsN48lBPwXhzwjS+0EVtQHElLG7WAZoTCETpbVxA6Fs55EVPF7bBJem6uRV+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725719739; c=relaxed/simple;
-	bh=PKO9WvyKNFHUdowuPc+tlIVPPAMO4oL/RNNLCbPS9TA=;
+	s=arc-20240116; t=1725720621; c=relaxed/simple;
+	bh=D9LKBED8nFxxp/zFuU3ZPegohgW7em+VxTBYnkLTcr4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fa/UL6G2+yAmty1ye4Y8bRreApV8mjmvU4d1cjYM/FRntNK/e4foliu15MZmPvnUAIgIC4OdRXtsftVFix/R6iZ15etlH4D/G2WGIJi33MiBi6FYr9ATHsbyvD4AS7QMQUFwJ8UqiIsA0olKigJ7XePhEsfo2Oj2Lc2TFppvdao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OApkqQ7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF126C4CEC2;
-	Sat,  7 Sep 2024 14:35:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c7wFgAmNRduL+RXljrkNtj5wXrvihdRibuuFd08yp4nhlXDCpmSitKThQkrdMJx7YGt4wMeJrKPD6+shWzrgrsjJTwuZd1nGO16JBf26+rSyPJ19oUjTuZrnUjFYLZZclFavk/XtQAPKxKubEbZhC+4L3W2F4RAf88a+OOAKTvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUo05fSQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FBAC4CEC2;
+	Sat,  7 Sep 2024 14:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725719739;
-	bh=PKO9WvyKNFHUdowuPc+tlIVPPAMO4oL/RNNLCbPS9TA=;
+	s=k20201202; t=1725720621;
+	bh=D9LKBED8nFxxp/zFuU3ZPegohgW7em+VxTBYnkLTcr4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OApkqQ7WtMISWt9Az8VfE5ZP7yg1MSkfnyM1e0VZWs7xdRjK8jAw9VYVwGqECLH4t
-	 /HiLExiov+DMxGmhRBS5nifMfg4O5aI6F8cnsCvdUkl9/qyz9aFuRJAFxH0PNKo100
-	 /xO7hfmbLMKisu/ogmYPTDlMZSuHeCGuvSO8ml2HwXBxouyDflVdHM3HJp7gL8yjRa
-	 EZS4qccei2dQieAZz31sSKzXgBjUnH1drgqNCDH4pJ0gRij2YmycTZnQG6aq+te7xa
-	 fUr9Jwoe5r/JdA/Hd4RS8IqQ/jch0RdmMVjFo3WDIcHG5kgWx5UdDLZW0WEvIuMk/s
-	 /6jTfAoZgbFfg==
-Date: Sat, 7 Sep 2024 15:35:32 +0100
+	b=GUo05fSQ9Oke/loC0abAk0esBzGTmaVcpZ95KyydbPFLDHx4nDmfWtAIcWEpp2wAH
+	 6L7sC4Tvq5Ig0pbrTrvCQumuyDdYL55NnxIc3hngpm9qTZKx+hMaBd7cAL0zqO8C1f
+	 VZiZXOftrFurUJF+LyBO89zBZwHS1glY1fAMMOecJieDjkT27JAgBUS1YyKaAGjTM/
+	 ovr0AiJiCMwSSkwnCgFm6SQw0pdleu0rI1Y4lPDo+KwJgqDulPqYa5jU4J6x1x8TQh
+	 FOU6cdfzEpx/VbEavdfVzBIhCgtoP/l3dvfnW7AYs7XumLw1jZW23xuj2ESI2QMpDa
+	 PSMVoJji1UNUw==
+Date: Sat, 7 Sep 2024 15:50:12 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-iio@vger.kernel.org, Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Sean Nyekjaer <sean@geanix.com>, Marek Vasut <marex@denx.de>, Denis Ciocca
- <denis.ciocca@st.com>, Rui Miguel Silva <rui.silva@linaro.org>, Linus
- Walleij <linus.walleij@linaro.org>, Danila Tikhonov <danila@jiaxyga.com>,
- Jagath Jog J <jagathjog1996@gmail.com>, Jean-Baptiste Maneyrol
- <jean-baptiste.maneyrol@tdk.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Vasileios Amoiridis <vassilisamir@gmail.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 00/15] IIO: use irq_get_trigger_type() instead of
- opencoding.
-Message-ID: <20240907153532.396d10eb@jic23-huawei>
-In-Reply-To: <ZtWmP76X95AWb4Xd@smile.fi.intel.com>
-References: <20240901135950.797396-1-jic23@kernel.org>
-	<ZtWmP76X95AWb4Xd@smile.fi.intel.com>
+To: Alexandru Ardelean <aardelean@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, krzk+dt@kernel.org, robh@kernel.org,
+ lars@metafoo.de, michael.hennerich@analog.com, gstols@baylibre.com
+Subject: Re: [PATCH v5 0/9] iio: adc: ad7606: add support for
+ AD7606C-{16,18} parts
+Message-ID: <20240907155012.53766e2a@jic23-huawei>
+In-Reply-To: <20240907065043.771364-1-aardelean@baylibre.com>
+References: <20240907065043.771364-1-aardelean@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,32 +62,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 2 Sep 2024 14:49:19 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Sat,  7 Sep 2024 09:50:33 +0300
+Alexandru Ardelean <aardelean@baylibre.com> wrote:
 
-> On Sun, Sep 01, 2024 at 02:59:35PM +0100, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Andy pointed out in a review that there is an irq_get_trigger_type()
-> > helper that first gets the irq data then extracts the type from it.
-> > This saves on opencoding those two steps when the irq data isn't used
-> > for anything else.
-> > 
-> > Update all the sites this pattern occurs in IIO to use the helper.
-> > In a few cases there will be a slightly different error message is
-> > somehow there is a valid irq number passed to this call and it doesn't
-> > have the data associated with it.  
-> 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> There are some nit-picks, up to you how to proceed with them (only one seems
-> better to address is where the reversed xmas tree ordering is broken).
-> 
-I made the changes suggested.  Applied to the togreg branch of iio.git.
+4 versions in a week is a bit too fast.
+I'm very good at ignoring emails but even for me that took a few clicks ;)
 
-I think these will probably wait for next cycle now given timing.
+Unless it's 'final' tweaks on code that has had lots of review keep the
+cadence down 2 or less postings in a week.  On the plus side I thought
+I had even more to review than actually true this weekend based on numbers
+of emails in the relevant folder :)
 
 Jonathan
-
-
 

@@ -1,172 +1,352 @@
-Return-Path: <linux-iio+bounces-9278-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9279-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB8297029B
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 16:10:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 649AF9702A1
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 16:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F698B2302B
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 14:09:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F77B28458F
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 14:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF9E15D5C1;
-	Sat,  7 Sep 2024 14:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064E915D5C3;
+	Sat,  7 Sep 2024 14:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bwUSC4cp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tggMVg0y"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BE515CD41
-	for <linux-iio@vger.kernel.org>; Sat,  7 Sep 2024 14:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE04615C149;
+	Sat,  7 Sep 2024 14:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725718191; cv=none; b=bGQi1ns4FDEVXibSdLiHi8O3NLN8jJNB4LUTeAdywnuhddICWSHsO5MfRf44SZw6V/dZcWPlY6N52gZFAGInocCv+GZpzUJvlkaTCh/edLJBLEq/b/W1cLJ+JU7OkGyywIiUwomwW6obkyqOSxpMAQFiQsHbomP7+tuDPHIz8Gs=
+	t=1725718345; cv=none; b=PCfVzty6rGdyzEXgRih3Sf9U3ikKjB4TmrW0rBp/tyOT3CMus8wFYro6SWOpIz7ZvPFcs4jjdnc17fNS5l+l6978SJk/z7/U3w3ekC9Rmdb0l1X45mohkwPmUlZD9XViFZqaVV98sXuZlXqHiaKS5p9yLV+bFLSJFQVgsZLZ1ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725718191; c=relaxed/simple;
-	bh=8RLIiF/EhNAkAd0B29n+wQKoPDxcgUv8bAEt4QMnu3o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kgAlFkGVsKLgh1kRXjym26SmVmJkU1I3F8qAaGwOpPxSQkwynfRzzhq3XcgZRGTZvsbfmgDe+LqgEnqdBZnTyAd0tuGlKgIfrf9yCw4JBnIZuQeJ94XhIixnVc/eDe36EUeTbIiPFLbPd3NEt5XGzfNcod/abp8cWeb4Pv8Qb4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bwUSC4cp; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7091558067eso1361120a34.3
-        for <linux-iio@vger.kernel.org>; Sat, 07 Sep 2024 07:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725718188; x=1726322988; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5/QZJfBzCm4hUVLhVcDEOaWd70aOcgYhbhWmlTEpq24=;
-        b=bwUSC4cpwahP+d3QdqKDRufkwuAepUkwiIGkAurg9yotmKWeiDuWkcrHCAhTcxGdwb
-         9cu9ID37AgCNjGsUR3k+LWjZZsT06KcjyKie1H76WtvH9VkCiL69omXBNLua4+VBu+VR
-         kFy8HOjpcgpF8nmzWdkAgLq1Ig3YEo58mNeVGionRwTc7AkctZnuM7mAxrr2FjRCjgMC
-         Y0dRNYh0wIfHIpe2URZxjy6u8HD2ATaGUqfihzCl3+iSaUJ0mBHoA707cxboAmd3tEY2
-         rLZZkR2rA0XMiENxrZZoQ+GllYrJjUMLaaBoJECz04PCsDz7GipK51tqneNvNzwEXzKM
-         0+wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725718188; x=1726322988;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5/QZJfBzCm4hUVLhVcDEOaWd70aOcgYhbhWmlTEpq24=;
-        b=U6VGkDAOHh1GLqm1HLMTxKH8VzTf3gVm/xhwU3bZc7Q36F0NyhwN8bljbWzP+VvrVB
-         fbOhXmYoGm/BvrcU0HkKMZBBHlHKZ5rt2XzUnUE1iIaz2+ICV7v15D0tsAnZUxRkRYNE
-         r3b3obfXZqmifmQPKTEjnjIroBoHZ5bFLiAFeLCoq4aNk9B/LzbiZclHPLWhWsyZC3U4
-         w24XuHTZ7Z6iOQ3tqxgRMRPkRPMkP2PFHfuw1GqgkEx7yiCqOwJwS8TwzSUESfQI8Czg
-         o6z8PXhSW71kkz1z+LJIECM3+Y8EFuwfw5bzQ6rxaL1evOFkbHMkV1PIlDOwIX7L0L0h
-         WjQA==
-X-Gm-Message-State: AOJu0YxKQ5nfks3PwY4iGD0G1ssXU9WwfHZ/JisJAzF49m5HunA22Z3r
-	awbsh113iyA7GKpQyan6k6lI3oTiMrp+Ja+Yr42VQgmt8/XQRLHu739Q6/UTw1k=
-X-Google-Smtp-Source: AGHT+IFa0weaOhpprxoRDMhLm3AUJZ57Prw0T3MVjqqdX9fJcBkI3nZJhm4xxSKCkeuVvC/uSGqV/Q==
-X-Received: by 2002:a05:6830:f88:b0:70f:593a:5a3 with SMTP id 46e09a7af769-710d6e298efmr2660793a34.15.1725718187951;
-        Sat, 07 Sep 2024 07:09:47 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-710d9de87afsm325238a34.80.2024.09.07.07.09.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Sep 2024 07:09:47 -0700 (PDT)
-Message-ID: <a5472be7-26c6-486b-834c-2a5f6bfaf982@baylibre.com>
-Date: Sat, 7 Sep 2024 09:09:46 -0500
+	s=arc-20240116; t=1725718345; c=relaxed/simple;
+	bh=yCmFsqiyDxCFANDBHRAgeG9l8Ixj8AVG+HUqIL7RNS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mby8erMJ6/UXPJn1VHlFKn7d5F4I44j7K3/lKbGSi2NTdZY5ZIf60nVnmoArldlFCacDv095Ph6EGAuAUEdtYN0onDB7mlpZTnSi7mcM/AdULMuKeWHiXSeM6ZfWpa2AYrQHWLU7pCpRwJMPqNHRC5EILnx+qC4SzpS3AtmjtAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tggMVg0y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C1EC4CEC2;
+	Sat,  7 Sep 2024 14:12:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725718345;
+	bh=yCmFsqiyDxCFANDBHRAgeG9l8Ixj8AVG+HUqIL7RNS4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tggMVg0yXCp9G9d5MdeE8/y2CP8wvtVZ0dubePvUP00SbiQZah0l08R9g+e5PXSq+
+	 NaJ4C0Lqh3eQyUDsfDdGPldOxskv2ets9fT0ozxX9InhZUChlCM9xNXxL9LCYQcIoM
+	 GzR3BeCXrMb85LwvRSPv9EGOAF5VGSPN8LkCEuQr6eLfh8Xjmom/qcmm8IvlRhZ48D
+	 JndcpVekd+X9iIZHPcn9UHqT0ND2fFrsWkxMs0mLZMEMR2QSkbp/r2SXXyLZgH7Fe9
+	 k2yzdX4zVQ7G66qIaKK+eiYMI4zf2iq2CVFghf+Ojtvsl2KlIt5Zjc7w7CdMkh8ubk
+	 +KYsrvPtTddFA==
+Date: Sat, 7 Sep 2024 15:12:15 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Angelo Dureghello
+ <adureghello@baylibre.com>, Lars-Peter Clausen  <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= 
+ <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski 
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Olivier Moysan 
+ <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown 
+ <broonie@kernel.org>
+Subject: Re: [RFC PATCH 0/8] iio: dac: introducing ad3552r-axi
+Message-ID: <20240907151215.6f4c829c@jic23-huawei>
+In-Reply-To: <4bb5722003936371a661938d7238db195d2c0ad3.camel@gmail.com>
+References: <20240829-wip-bl-ad3552r-axi-v0-v1-0-b6da6015327a@baylibre.com>
+	<20240831123837.26a1070a@jic23-huawei>
+	<74e0b200-d4c0-4aa3-9ee6-f49ac3f1467d@baylibre.com>
+	<4a62ea7b-a8af-49e0-9718-30d927a69038@baylibre.com>
+	<20240903203935.358a1423@jic23-huawei>
+	<4bb5722003936371a661938d7238db195d2c0ad3.camel@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 7/8] dt-bindings: iio: adc: add docs for
- AD7606C-{16,18} parts
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org,
- robh@kernel.org, lars@metafoo.de, michael.hennerich@analog.com,
- gstols@baylibre.com
-References: <20240905082404.119022-1-aardelean@baylibre.com>
- <20240905082404.119022-8-aardelean@baylibre.com>
- <4f522d0c-7ed8-4dd4-83ae-f400d6958c6f@baylibre.com>
- <CA+GgBR-H8W_YS3gPrrvxAWoQybjEb-p36pqxEatFbEAnuz2DvQ@mail.gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CA+GgBR-H8W_YS3gPrrvxAWoQybjEb-p36pqxEatFbEAnuz2DvQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-On 9/6/24 11:59 PM, Alexandru Ardelean wrote:
-> On Fri, Sep 6, 2024 at 12:54 AM David Lechner <dlechner@baylibre.com> wrote:
->>
->> On 9/5/24 3:24 AM, Alexandru Ardelean wrote:
+On Thu, 05 Sep 2024 11:16:03 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-...
+> On Tue, 2024-09-03 at 20:39 +0100, Jonathan Cameron wrote:
+> > On Tue, 3 Sep 2024 11:17:24 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >  =20
+> > > On 9/3/24 3:34 AM, Angelo Dureghello wrote: =20
+> > > > Hi Jonathan and all,
+> > > >=20
+> > > >=20
+> > > > On 31/08/24 1:38 PM, Jonathan Cameron wrote:=C2=A0  =20
+> > > > > On Thu, 29 Aug 2024 14:31:58 +0200
+> > > > > Angelo Dureghello <adureghello@baylibre.com> wrote:
+> > > > > =C2=A0 =20
+> > > > > > Hi, asking for comments for this patchset, that is mostly
+> > > > > > ready, at least feature-complete and functionally tested.
+> > > > > >=20
+> > > > > > I am introducing ad3552r-axi variant, controlled from a fpga-ba=
+sed
+> > > > > > AXI IP, as a platform driver, using the DAC backend. The patchs=
+et is
+> > > > > > actually based on linux-iio, since some needed DAC backend feat=
+ures
+> > > > > > was already there on that repo only, still to be merged in main=
+line.
+> > > > > >=20
+> > > > > > Comments i would like to ask are:
+> > > > > >=20
+> > > > > > - i added some devicetree bindings inside current ad3552r yaml,
+> > > > > > =C2=A0=C2=A0 device is the same, so i wouldn't create a differe=
+nt yaml file.=C2=A0  =20
+> > > > > Agreed. If same device, it's usually better to keep it in one fil=
+e.
+> > > > > =C2=A0 =20
+> > > > > > - if it's ok adding the bus-type property in the DAC backend:
+> > > > > > =C2=A0=C2=A0 actually, this platform driver uses a 4 lanes para=
+llel bus, plus
+> > > > > > =C2=A0=C2=A0 a clock line, similar to a qspi. This to read an w=
+rite registers
+> > > > > > =C2=A0=C2=A0 and as well to send samples at double data rate. O=
+ther DAC may
+> > > > > > =C2=A0=C2=A0 need "parallel" or "lvds" in the future.=C2=A0  =20
+> > > > > If it is for register read + write as well, sounds to me like you=
+ need
+> > > > > to treat this as a new bus type, possibly then combined with a
+> > > > > backend, or something similar to spi offload?
+> > > > >=20
+> > > > > What bus does this currently sit on in your DT bindings?
+> > > > > (add an example)=C2=A0  =20
+> > > >=20
+> > > >=20
+> > > > &amba {
+> > > >=20
+> > > > =C2=A0=C2=A0 =C2=A0ref_clk: clk@44B00000 {
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,axi-clkge=
+n-2.00.a";
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44B00000 0x10000>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #clock-cells =3D <0>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&clkc 15>, <&clkc=
+ 15>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clock-names =3D "s_axi_aclk",=
+ "clkin1";
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clock-output-names =3D "ref_c=
+lk";
+> > > > =C2=A0=C2=A0 =C2=A0};
+> > > >=20
+> > > > =C2=A0=C2=A0 =C2=A0dac_tx_dma: dma-controller@0x44a30000 {
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,axi-dmac-=
+1.00.a";
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44a30000 0x10000>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #dma-cells =3D <1>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 interrupt-parent =3D <&intc>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 interrupts =3D <0 57 IRQ_TYPE=
+_LEVEL_HIGH>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&clkc 15>;
+> > > >=20
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 adi,channels {
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 #size-cell=
+s =3D <0>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 #address-c=
+ells =3D <1>;
+> > > >=20
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 dma-channe=
+l@0 {
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=
+=A0=C2=A0 reg =3D <0>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=
+=A0=C2=A0 adi,source-bus-width =3D <32>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=
+=A0=C2=A0 adi,source-bus-type =3D <0>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=
+=A0=C2=A0 adi,destination-bus-width =3D <32>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=
+=A0=C2=A0 adi,destination-bus-type =3D <1>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 };
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 };
+> > > > =C2=A0=C2=A0 =C2=A0};
+> > > >=20
+> > > > =C2=A0=C2=A0 =C2=A0backend: controller@44a70000 {
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,axi-dac-9=
+.1.b";
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44a70000 0x1000>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 dmas =3D <&dac_tx_dma 0>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 dma-names =3D "tx";
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #io-backend-cells =3D <0>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&ref_clk>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 bus-type =3D <1>;=C2=A0 /* II=
+O QSPI */
+> > > > =C2=A0=C2=A0 =C2=A0};
+> > > >=20
+> > > > =C2=A0=C2=A0 =C2=A0axi-ad3552r {
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,ad3552r";
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 reset-gpios =3D <&gpio0 92 GP=
+IO_ACTIVE_LOW>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 io-backends =3D <&backend>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #address-cells =3D <1>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 #size-cells =3D <0>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 channel@0 {
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 reg =3D <0=
+>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 adi,output=
+-range-microvolt =3D <(-10000000) (10000000)>;
+> > > > =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 };
+> > > > =C2=A0=C2=A0 =C2=A0};=C2=A0  =20
+> > >=20
+> > > Shouldn't the axi-ad3552r node be one level higher since it isn't
+> > > a memory-mapped device, but rather an external chip? =20
+> > Definitely not where it currently is.. =20
+> > >=20
+> > > But based on the other feedback we got in this series and some
+> > > #devicetree IRC chat here is an alternate binding suggestion we
+> > > could consider.
+> > >=20
+> > > First, even though the FPGA IP block for use with AD3225R uses
+> > > the same register map as the AXI DAC IP block, some of the
+> > > registers behave differently, so it makes sense to have a
+> > > different compatible string rather than using the bus-type
+> > > property to tell the difference between the two IP blocks.
+> > > There are likely more differences than just the bus type. =20
+> >=20
+> > I'd be amazed if they managed to keep things that similar
+> > given totally different buses.
+> >  =20
+>=20
+> Yeah, I was trying to avoid new compatibles as much as I can because thin=
+gs can
+> get pretty confusing (with lots of new compatibles and quirks) pretty qui=
+ckly.
+> Typically yes, most designs have slight differences between them (with new
+> features and so on) but so far I was trying (thinking) to have those as a
+> generic new backend op (plus a matching binding property if needed). For =
+this
+> particular case, I'm fairly sure we could get away with the bus controller
+> property and having different implementations depending on the bus being
+> implemented. For the other bits that might differ between designs (eg: DDR
+> support) is up to frontends to call it or not (depending on they having t=
+hat
+> feature or not).=20
 
->>> +patternProperties:
->>> +  "^channel@[1-8]$":
->>> +    type: object
->>> +    $ref: adc.yaml
->>> +    unevaluatedProperties: false
->>> +
->>> +    properties:
->>> +      reg:
->>> +        description:
->>> +          The channel number, as specified in the datasheet (from 1 to 8).
->>> +        minimum: 1
->>> +        maximum: 8
->>> +
->>> +      diff-channels:
->>> +        description:
->>> +          Each channel can be configured as a differential bipolar channel.
->>> +          The ADC uses the same positive and negative inputs for this.
->>> +          This property must be specified as 'reg' (or the channel number) for
->>> +          both positive and negative inputs (i.e. diff-channels = <reg reg>).
->>> +        items:
->>> +          minimum: 1
->>> +          maximum: 8
->>> +
->>> +      bipolar:
->>> +        description:
->>> +          Each channel can be configured as a unipolar or bipolar single-ended.
->>> +          When this property is not specified, it's unipolar, so the ADC will
->>> +          have only the positive input wired.
->>> +          For this ADC the 'diff-channels' & 'bipolar' properties are mutually
->>> +          exclusive.
->>> +
->>> +    required:
->>> +      - reg
->>> +
->>> +    oneOf:
->>> +      - required:
->>> +          - diff-channels
->>> +      - required:
->>> +          - bipolar
->>
->> The datasheet (ad7606c-18.pdf) lists the following combinations:
->>
->> * Bipolar single-ended
->> * Unipolar single-ended
->> * Bipolar differential
->>
->> The logic in the oneOf: doesn't match this.
->>
->> This I think this would be sufficient:
->>
->> - if:
->>     required: [diff-channels]
->>   then:
->>     required: [bipolar]
-> 
-> So here, I am a bit vague.
-> This makes 'bipolar' mandatory if 'diff-channels' is mandatory, right?
-> But then 'bipolar' (on its own) becomes optional?
-> The way I understood the oneOf case is that:
-> 1. if it's 'diff-channels' then it's specified 'bipolar differential'.
+That breaks down if the backend you happen to be using (maybe a new
+one hasn't been written yet) is missing the DDR feature but the front end
+device can run with or without it.
+Unless the hardware makes this discoverable you'll have the backend driver
+writing some enable bit that does nothing.
 
-diff-channels does not imply bipolar in DT, so we need both properties
-set to specify "bipolar differential".
+Maybe it's a case of using fallback compatibles - so define more specific
+ones but with a fallback to one that doesn't provide the fancy features
+and only covers thins all IPs support.
 
-> 2. if it's 'bipolar' then it's specified as 'bipolar single-ended'
-> 3. otherwise it's unipolar
-> 4. oneOf enforces that at least 'diff-channels' or 'bipolar' is
-> specified if there is a channel node
-> 
-> 
+> Naturally we need that the IPs having DDR support to not have
+> the same thing supported in different registers but we do control that si=
+nce
+> these are FPGA cores.
+>=20
+> All the above said, I'm fine with new compatibles but we need to draw a l=
+ine
+> when we add new ones. If the reasoning is the IP has some new bits or new
+> registers, then things can get very confusing (even more if we think about
+> fallback compatibles) as most of the new designs have some quirks (even if
+> minimal). So I would say to add new compatibles when things get different=
+ enough
+> that a sane/generic API is not doable.
+
+If you can influence the IP designers, the usual solution to this is
+discoverability of features. So standard register that all IP carries that
+has flags for each feature that has ever been implemented.
+
+If not, best option is each IP gets a compatible but we assume fallbacks
+are fine until they aren't.
+
+Jonathan
+
+>=20
+> > >=20
+> > > Second, technically, the AXI DAC IP block can't be used as
+> > > a generic SPI controller, so it wouldn't make sense to put
+> > > it in drivers/spi. =20
+> >=20
+> > I wonder if there is any precedence of restricted controllers
+> > for SPI?=C2=A0 (For i2c we have the smbus ones as a vaguely similar
+> > example). +CC Mark.
+> >  =20
+> > > =C2=A0But, from wiring point of view, it could
+> > > still make sense to use SPI DT bindings since we have SPI
+> > > wiring. At the same time, the AXI DAC IP block is also
+> > > providing extra functionality in addition to the SPI bus
+> > > so it makes sense to keep the io-backend bindings for those
+> > > extra bits.
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0 backend: spi@44a70000 {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,axi-da=
+c-ad3225r";
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44a70000 0x1000=
+>;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dmas =3D <&dac_tx_dma 0>;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma-names =3D "tx";
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #io-backend-cells =3D <0>;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&ref_clk>;
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #address-cells =3D <1>;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #size-cells =3D <0>;
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dac@0 {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 co=
+mpatible =3D "adi,ad3552r";
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
+g =3D <0>;
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*=
+=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * Not sure how right this is - attempting to say that
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * the QSPI select pin is hardwired high, so the 4 SPI I/O
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * pins on the DAC are always functioning as SDIO0/1/2/3
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 * as opposed to the usual 2 SDI/SDO pins and 2 unused.
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 */
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sp=
+i-3-wire;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sp=
+i-tx-bus-width =3D <4>;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sp=
+i-rx-bus-width =3D <4>;
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
+set-gpios =3D <&gpio0 92 GPIO_ACTIVE_LOW>;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 io=
+-backends =3D <&backend>;
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #a=
+ddress-cells =3D <1>;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #s=
+ize-cells =3D <0>;
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ch=
+annel@0 {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 reg =3D <0>;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 adi,output-range-microvolt =3D <(-10000000) (10000000=
+)>;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> > > =C2=A0=C2=A0=C2=A0 }; =20
+> >=20
+> > That's definitely an improvement.=C2=A0 It's a little strange to have
+> > a reference back to the parent but I'm fine with that.
+> >  =20
+>=20
+> Agreed...
+>=20
+> - Nuno S=C3=A1
+>=20
+
 

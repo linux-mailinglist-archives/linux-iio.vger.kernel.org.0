@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-9287-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9288-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2264D9702E5
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 17:20:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB719702E8
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 17:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 360CF1C217F4
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 15:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CC772841FD
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 15:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00D415C13B;
-	Sat,  7 Sep 2024 15:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB7315D5AB;
+	Sat,  7 Sep 2024 15:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCpRlgkA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+oVUUX5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67668134B1;
-	Sat,  7 Sep 2024 15:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A50134B1;
+	Sat,  7 Sep 2024 15:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725722440; cv=none; b=gsctSJuSOrC6U0XJ0e0ftn6Zj5E23T53zMAgcibI3WJfYAMDs88JoCP76GvdU8PPQBk1ALliKd6Leze9WQym+nitHPIjpBB9vRMG63AiXqSRGtxUtXOitdvZUEk7gSmhLMACJkneK8rCOG6rwyuS1k8vK7pvEIm9LmdpYiwZI+k=
+	t=1725722554; cv=none; b=sKMt1Zwk4Nf5M+goPFpnIqvIJr/u4loLgMXb5NL4DsDZPcyMdxwCthrRz2kjEBUOnDhN9f7Dn/f2MChIAIEhM03AxPtrrZCRnEMnQzGbh0XzzYp59ydK+Yj7vO1XWPWjyAGqQ85N/oeVgrTKrmgg+MOigbvjdLc+RQuqCmEI5KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725722440; c=relaxed/simple;
-	bh=9nQXR/rPe1X+biEun+Z0YdaucIHSi8blyuiK/ARCKmQ=;
+	s=arc-20240116; t=1725722554; c=relaxed/simple;
+	bh=/xoS0KLcsD6th5CKrXDqMl+P3JjyyA0HfpOnHXW8ETo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IZPijx6Yr1zuj+Z3ozN+lYGDZZ1kJ+cIEF/u0SGWzC2eT/o2J46MJSuLlkRFnakWIqQq3FKS7az99iihTaMmep7R65kXPTLNYB/rDIrYLBDozsN23lbVzdXkFDUgITvXuMPq5GlpdTI0w+rARlm4lR9cs6ZMbKAzbv/LCXjU8AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCpRlgkA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E13C4CEC2;
-	Sat,  7 Sep 2024 15:20:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JgyhGH1SoBIJLxNUb2FYXkSgQG6S6IGP6XbKth6TjHpks6LvhgXdJ7ghLTxuF9qn9iek/dcmu9/j7w/EUkQjCukpoVqGavfdEMRIy3tGZSxNR7KnwQnPruZdKg419MuXZYYo6MUzSsXpYDutMrQdbrm/Tb4i2juV6+WXu8cfAHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+oVUUX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E117C4CEC2;
+	Sat,  7 Sep 2024 15:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725722439;
-	bh=9nQXR/rPe1X+biEun+Z0YdaucIHSi8blyuiK/ARCKmQ=;
+	s=k20201202; t=1725722554;
+	bh=/xoS0KLcsD6th5CKrXDqMl+P3JjyyA0HfpOnHXW8ETo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FCpRlgkAZDYp/cU3p/XNjiuFfTT4IdTtUpBr8cwKZ9nKWrOVkmtQllXdfci3vuaAy
-	 X6eWFdQk+DYtDEppbaymCurpclub+m7prpD5ZGT0PK2pJrb6l2HLo+h0zOAp/gZA2N
-	 kULIM2lz0ygfaOfGgj5jqJbbI9WZcJBNkecP8w/05Lg9L92zvZY5XMcPDmSjr1Xbcu
-	 b9NAxYDvXKT7lpZYiKFZuZSw/xKtbGCF6wsYPWk7n1zzZ/oZXGHxW1oYO6tWnbrGJb
-	 E+Oc+z/mmgftRDdw4es1dFPcEADclomiWKLUNbSe3ehXk7UAFbkwxs2jd8moHWpXec
-	 pNSYYwisU1KYA==
-Date: Sat, 7 Sep 2024 16:20:32 +0100
+	b=W+oVUUX59EP0zFLzTloBipHC5+yUQSx0zWgxulpGGtv3vKFeW7o/jNFFHf5JDw6or
+	 5iy06SZv6iS+/VPQGIXJICZHXChB7e95BQSXEXZgZUhss85mc3hjHvg+2ktVa9cjBz
+	 O4lQGGoXN2FE2k4653o0vWxS6NHuRxwTiF5Wq5xvVBK/F2bBR8k2UAeTTCXZyYW5SB
+	 g2OuJaKdM8udMRA8vNPlziXzyy3THetx0E3BsrzP2G4Y9x9sneFT2N4ZB+Jfeq+VWI
+	 gyWJsfPFtN2L35aQTe4LyFAVpleAkQXrCVe5G43v0H2d11wWzu9pRmzbV+vR+qNfy5
+	 +dvTR4GyohuEg==
+Date: Sat, 7 Sep 2024 16:22:27 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, krzk+dt@kernel.org, robh@kernel.org,
- lars@metafoo.de, michael.hennerich@analog.com, gstols@baylibre.com
-Subject: Re: [PATCH v5 9/9] iio: adc: ad7606: add support for
- AD7606C-{16,18} parts
-Message-ID: <20240907162032.3cca0a17@jic23-huawei>
-In-Reply-To: <20240907065043.771364-10-aardelean@baylibre.com>
-References: <20240907065043.771364-1-aardelean@baylibre.com>
-	<20240907065043.771364-10-aardelean@baylibre.com>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: addac: ad74xxx: Constify struct iio_chan_spec
+Message-ID: <20240907162227.16fc102e@jic23-huawei>
+In-Reply-To: <da291278e78b983ea2e657a25769f7d82ea2a6d0.1725717045.git.christophe.jaillet@wanadoo.fr>
+References: <da291278e78b983ea2e657a25769f7d82ea2a6d0.1725717045.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,226 +59,177 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat,  7 Sep 2024 09:50:42 +0300
-Alexandru Ardelean <aardelean@baylibre.com> wrote:
+On Sat,  7 Sep 2024 15:51:07 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> The AD7606C-16 and AD7606C-18 are pretty similar with the AD7606B.
-> The main difference between AD7606C-16 & AD7606C-18 is the precision in
-> bits (16 vs 18).
-> Because of that, some scales need to be defined for the 18-bit variants, =
-as
-> they need to be computed against 2**18 (vs 2**16 for the 16 bit-variants).
->=20
-> Because the AD7606C-16,18 also supports bipolar & differential channels,
-> for SW-mode, the default range of 10 V or =C2=B110V should be set at prob=
-e.
-> On reset, the default range (in the registers) is set to value 0x3 which
-> corresponds to '=C2=B110 V single-ended range', regardless of bipolar or
-> differential configuration.
->=20
-> Aside from the scale/ranges, the AD7606C-16 is similar to the AD7606B.
->=20
-> The AD7606C-18 variant offers 18-bit precision. Because of this, the
-> requirement to use this chip is that the SPI controller supports padding
-> of 18-bit sequences to 32-bit arrays.
->=20
-> Datasheet links:
->   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7=
-606c-16.pdf
->   https://www.analog.com/media/en/technical-documentation/data-sheets/ad7=
-606c-18.pdf
->=20
+> 'struct iio_chan_spec' are not modified in these drivers.
+> 
+> Constifying this structure moves some data to a read-only section, so
+> increase overall security.
+> 
+> On a x86_64, with allmodconfig:
+> Before:
+> ======
+>    text	   data	    bss	    dec	    hex	filename
+>   35749	   5879	    384	  42012	   a41c	drivers/iio/addac/ad74115.o
+>   32242	   3297	    384	  35923	   8c53	drivers/iio/addac/ad74413r.o
+> 
+> After:
+> =====
+>    text	   data	    bss	    dec	    hex	filename
+>   39109	   2519	    384	  42012	   a41c	drivers/iio/addac/ad74115.o
+>   33842	   1697	    384	  35923	   8c53	drivers/iio/addac/ad74413r.o
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Looks obviously correct.  Hopefully looks are not being deceiving.
 
-Keep automation happy and make these official tags.
-
-Datasheet: https://www.analog.com/media/en/technical-documentation/data-she=
-ets/ad7606c-16.pdf
-Datasheet: https://www.analog.com/media/en/technical-documentation/data-she=
-ets/ad7606c-18.pdf
-> Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
-
-A few other things inline.
-
+Applied.  Note this is probably next cycle material now given timing.
 Jonathan
 
 > ---
->  drivers/iio/adc/ad7606.c     | 237 ++++++++++++++++++++++++++++++++---
->  drivers/iio/adc/ad7606.h     |  13 +-
->  drivers/iio/adc/ad7606_spi.c |  55 ++++++++
->  3 files changed, 284 insertions(+), 21 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index 364f16fb96bf..67bac6c97fff 100644
-> --- a/drivers/iio/adc/ad7606.c
-> +++ b/drivers/iio/adc/ad7606.c
-
-> +static int ad7606c_sw_mode_setup_channels(struct iio_dev *indio_dev,
-> +					  ad7606c_chan_setup_cb_t chan_setup_cb)
-> +{
-> +	unsigned int num_channels =3D indio_dev->num_channels - 1;
-> +	struct ad7606_state *st =3D iio_priv(indio_dev);
-> +	bool chan_configured[AD760X_MAX_CHANNELS] =3D {};
-Maybe use a bitmap as then...
-> +	struct device *dev =3D st->dev;
-> +	int ret;
-> +	u32 ch;
-> +
-> +	/* We call this first, so that the proper SW scales get assigned */
-> +	ret =3D st->bops->sw_mode_config(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		bool bipolar, differential;
-> +		u32 pins[2];
-> +
-> +		ret =3D fwnode_property_read_u32(child, "reg", &ch);
-> +		if (ret)
-> +			continue;
-> +
-> +		/* channel number (here) is from 1 to num_channels */
-> +		if (ch =3D=3D 0 || ch > num_channels) {
-> +			dev_warn(st->dev,
-> +				 "Invalid channel number (ignoring): %d\n", ch);
-> +			continue;
-> +		}
-> +
-> +		bipolar =3D fwnode_property_read_bool(child, "bipolar");
-> +
-> +		ret =3D fwnode_property_read_u32_array(child, "diff-channels",
-> +						     pins, ARRAY_SIZE(pins));
-> +		/* Channel is differential, if pins are the same as 'reg' */
-> +		if (ret =3D=3D 0 && (pins[0] !=3D ch || pins[1] !=3D ch)) {
-> +			dev_err(st->dev,
-> +				"Differential pins must be the same as 'reg'");
-> +			return -EINVAL;
-> +		}
-> +
-> +		differential =3D (ret =3D=3D 0);
-> +
-> +		ch--;
-> +
-> +		chan_setup_cb(st, ch, bipolar, differential);
-> +		chan_configured[ch] =3D true;
-> +	}
-> +
-> +	/* Apply default configuration to unconfigured (via DT) channels */
-> +	for (ch =3D 0; ch < num_channels; ch++) {
-this can be for_each_clear_bit()
-
-> +		if (!chan_configured[ch])
-> +			chan_setup_cb(st, ch, false, false);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad7606_sw_mode_setup(struct iio_dev *indio_dev, unsigned int =
-id)
->  {
->  	unsigned int num_channels =3D indio_dev->num_channels - 1;
->  	struct ad7606_state *st =3D iio_priv(indio_dev);
-> @@ -572,17 +751,30 @@ static int ad7606_sw_mode_setup(struct iio_dev *ind=
-io_dev)
-> =20
->  	indio_dev->info =3D &ad7606_info_sw_mode;
-> =20
-> -	/* Scale of 0.076293 is only available in sw mode */
-> -	/* After reset, in software mode, =C2=B110 V is set by default */
-> -	for (ch =3D 0; ch < num_channels; ch++) {
-> -		struct ad7606_chan_scale *cs =3D &st->chan_scales[ch];
-> +	switch (id) {
-> +	case ID_AD7606C_18:
-> +		ret =3D ad7606c_sw_mode_setup_channels(indio_dev,
-> +						     ad7606c_18_chan_setup);
-
-As below, a callback in chip info that can be called directly=20
-would be preferable here.
-
-> +		break;
-> +	case ID_AD7606C_16:
-> +		ret =3D ad7606c_sw_mode_setup_channels(indio_dev,
-> +						     ad7606c_16_chan_setup);
-> +		break;
-> +	default:
-> +		/* Scale of 0.076293 is only available in sw mode */
-> +		/* After reset, in software mode, =C2=B110 V is set by default */
-> +		for (ch =3D 0; ch < num_channels; ch++) {
-> +			struct ad7606_chan_scale *cs =3D &st->chan_scales[ch];
-> +
-> +			cs->scale_avail =3D ad7616_sw_scale_avail;
-> +			cs->num_scales =3D ARRAY_SIZE(ad7616_sw_scale_avail);
-> +			cs->range =3D 2;
-> +		}
-> =20
-> -		cs->scale_avail =3D ad7616_sw_scale_avail;
-> -		cs->num_scales =3D ARRAY_SIZE(ad7616_sw_scale_avail);
-> -		cs->range =3D 2;
-> +		ret =3D st->bops->sw_mode_config(indio_dev);
-> +		break;
->  	}
-> =20
-> -	ret =3D st->bops->sw_mode_config(indio_dev);
->  	if (ret)
->  		return ret;
-> =20
-> @@ -631,9 +823,16 @@ int ad7606_probe(struct device *dev, int irq, void _=
-_iomem *base_address,
->  	st->oversampling =3D 1;
-> =20
->  	cs =3D &st->chan_scales[0];
-> -	cs->range =3D 0;
-> -	cs->scale_avail =3D ad7606_scale_avail;
-> -	cs->num_scales =3D ARRAY_SIZE(ad7606_scale_avail);
-> +	switch (id) {
-> +	case ID_AD7606C_18:
-> +		cs->scale_avail =3D ad7606_18bit_hw_scale_avail;
-
-Can we push this into the chip_info structure?
-Ideally we'd get away form any ID based code selection but if there is
-some already in the driver that can be for another day.
-Let's not make it worse though.
-
-> +		cs->num_scales =3D ARRAY_SIZE(ad7606_18bit_hw_scale_avail);
-> +		break;
-> +	default:
-> +		cs->scale_avail =3D ad7606_16bit_hw_scale_avail;
-> +		cs->num_scales =3D ARRAY_SIZE(ad7606_16bit_hw_scale_avail);
-> +		break;
-> +	}
-
-> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-> index fa175cff256c..c2cb536ecef1 100644
-> --- a/drivers/iio/adc/ad7606.h
-> +++ b/drivers/iio/adc/ad7606.h
-
-
->  /**
-> @@ -151,9 +154,13 @@ struct ad7606_state {
->  	/*
->  	 * DMA (thus cache coherency maintenance) may require the
->  	 * transfer buffers to live in their own cache lines.
-> -	 * 16 * 16-bit samples + 64-bit timestamp
-> +	 * 16 * 16-bit samples + 64-bit timestamp - for AD7616
-> +	 * 8 * 32-bit samples + 64-bit timestamp - for AD7616C-18 (and similar)
->  	 */
-> -	unsigned short			data[20] __aligned(IIO_DMA_MINALIGN);
-> +	union {
-> +		unsigned short d16[20];
-> +		unsigned int d32[10];
-
-Can we use fixed sizes for these?
-u16 and u32 for instance?
-
-> +	} data __aligned(IIO_DMA_MINALIGN);
->  	__be16				d16[2];
-That's odd.  You have a d16 inside the union and another one right next to =
-it.
-Maybe rename the new one?  The other is a bounce buffer used in the spi
-paths I think.
-
+> Compile tested only
+> ---
+>  drivers/iio/addac/ad74115.c  | 18 +++++++++---------
+>  drivers/iio/addac/ad74413r.c | 21 +++++++++++----------
+>  2 files changed, 20 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/iio/addac/ad74115.c b/drivers/iio/addac/ad74115.c
+> index 12dc43d487b4..bdbdd67536ff 100644
+> --- a/drivers/iio/addac/ad74115.c
+> +++ b/drivers/iio/addac/ad74115.c
+> @@ -191,7 +191,7 @@ enum ad74115_gpio_mode {
 >  };
+>  
+>  struct ad74115_channels {
+> -	struct iio_chan_spec		*channels;
+> +	const struct iio_chan_spec	*channels;
+>  	unsigned int			num_channels;
+>  };
+>  
+> @@ -1295,46 +1295,46 @@ static const struct iio_info ad74115_info = {
+>  	_AD74115_ADC_CHANNEL(_type, index, BIT(IIO_CHAN_INFO_SCALE)	\
+>  					   | BIT(IIO_CHAN_INFO_OFFSET))
+>  
+> -static struct iio_chan_spec ad74115_voltage_input_channels[] = {
+> +static const struct iio_chan_spec ad74115_voltage_input_channels[] = {
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_voltage_output_channels[] = {
+> +static const struct iio_chan_spec ad74115_voltage_output_channels[] = {
+>  	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_MAIN),
+>  	AD74115_ADC_CHANNEL(IIO_CURRENT, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_current_input_channels[] = {
+> +static const struct iio_chan_spec ad74115_current_input_channels[] = {
+>  	AD74115_ADC_CHANNEL(IIO_CURRENT, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_current_output_channels[] = {
+> +static const struct iio_chan_spec ad74115_current_output_channels[] = {
+>  	AD74115_DAC_CHANNEL(IIO_CURRENT, AD74115_DAC_CH_MAIN),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_2_wire_resistance_input_channels[] = {
+> +static const struct iio_chan_spec ad74115_2_wire_resistance_input_channels[] = {
+>  	_AD74115_ADC_CHANNEL(IIO_RESISTANCE, AD74115_ADC_CH_CONV1,
+>  			     BIT(IIO_CHAN_INFO_PROCESSED)),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_3_4_wire_resistance_input_channels[] = {
+> +static const struct iio_chan_spec ad74115_3_4_wire_resistance_input_channels[] = {
+>  	AD74115_ADC_CHANNEL(IIO_RESISTANCE, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_digital_input_logic_channels[] = {
+> +static const struct iio_chan_spec ad74115_digital_input_logic_channels[] = {
+>  	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_COMPARATOR),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV2),
+>  };
+>  
+> -static struct iio_chan_spec ad74115_digital_input_loop_channels[] = {
+> +static const struct iio_chan_spec ad74115_digital_input_loop_channels[] = {
+>  	AD74115_DAC_CHANNEL(IIO_CURRENT, AD74115_DAC_CH_MAIN),
+>  	AD74115_DAC_CHANNEL(IIO_VOLTAGE, AD74115_DAC_CH_COMPARATOR),
+>  	AD74115_ADC_CHANNEL(IIO_VOLTAGE, AD74115_ADC_CH_CONV1),
+> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+> index 2410d72da49b..1e2f6d9804e3 100644
+> --- a/drivers/iio/addac/ad74413r.c
+> +++ b/drivers/iio/addac/ad74413r.c
+> @@ -45,8 +45,8 @@ struct ad74413r_channel_config {
+>  };
+>  
+>  struct ad74413r_channels {
+> -	struct iio_chan_spec	*channels;
+> -	unsigned int		num_channels;
+> +	const struct iio_chan_spec	*channels;
+> +	unsigned int			num_channels;
+>  };
+>  
+>  struct ad74413r_state {
+> @@ -1138,34 +1138,34 @@ static const struct iio_info ad74413r_info = {
+>  	AD74413R_ADC_CHANNEL(IIO_CURRENT,  BIT(IIO_CHAN_INFO_SCALE)	\
+>  			     | BIT(IIO_CHAN_INFO_OFFSET))
+>  
+> -static struct iio_chan_spec ad74413r_voltage_output_channels[] = {
+> +static const struct iio_chan_spec ad74413r_voltage_output_channels[] = {
+>  	AD74413R_DAC_CHANNEL(IIO_VOLTAGE, BIT(IIO_CHAN_INFO_SCALE)),
+>  	AD74413R_ADC_CURRENT_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_current_output_channels[] = {
+> +static const struct iio_chan_spec ad74413r_current_output_channels[] = {
+>  	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
+>  	AD74413R_ADC_VOLTAGE_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_voltage_input_channels[] = {
+> +static const struct iio_chan_spec ad74413r_voltage_input_channels[] = {
+>  	AD74413R_ADC_VOLTAGE_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_current_input_channels[] = {
+> +static const struct iio_chan_spec ad74413r_current_input_channels[] = {
+>  	AD74413R_ADC_CURRENT_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
+> +static const struct iio_chan_spec ad74413r_current_input_loop_channels[] = {
+>  	AD74413R_DAC_CHANNEL(IIO_CURRENT, BIT(IIO_CHAN_INFO_SCALE)),
+>  	AD74413R_ADC_CURRENT_CHANNEL,
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_resistance_input_channels[] = {
+> +static const struct iio_chan_spec ad74413r_resistance_input_channels[] = {
+>  	AD74413R_ADC_CHANNEL(IIO_RESISTANCE, BIT(IIO_CHAN_INFO_PROCESSED)),
+>  };
+>  
+> -static struct iio_chan_spec ad74413r_digital_input_channels[] = {
+> +static const struct iio_chan_spec ad74413r_digital_input_channels[] = {
+>  	AD74413R_ADC_VOLTAGE_CHANNEL,
+>  };
+>  
+> @@ -1270,7 +1270,8 @@ static int ad74413r_setup_channels(struct iio_dev *indio_dev)
+>  {
+>  	struct ad74413r_state *st = iio_priv(indio_dev);
+>  	struct ad74413r_channel_config *config;
+> -	struct iio_chan_spec *channels, *chans;
+> +	const struct iio_chan_spec *chans;
+> +	struct iio_chan_spec *channels;
+>  	unsigned int i, num_chans, chan_i;
+>  	int ret;
+>  
+
 

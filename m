@@ -1,130 +1,311 @@
-Return-Path: <linux-iio+bounces-9304-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9305-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C91970353
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 19:19:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDAE3970357
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 19:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 475D7B220D7
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 17:19:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 070011C213FD
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 17:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5B5165EE1;
-	Sat,  7 Sep 2024 17:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A20C1649BF;
+	Sat,  7 Sep 2024 17:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UM6OgsaI"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="D7yZzign"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from msa.smtpout.orange.fr (out-68.smtpout.orange.fr [193.252.22.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F051F15ECD7;
-	Sat,  7 Sep 2024 17:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495E728F0;
+	Sat,  7 Sep 2024 17:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725729544; cv=none; b=cO663FTowQGa+xHzoi60oxIB/+JsRFTK7RLLgTcHlY5NdEmwqE19lJOxLxNztHOO6b2Avd4d42Ne/lIa1VgQvej8+MfIvr5W6E8FyWOBuhbIurQ+Eb+A3GRDZdJKA9bScCPiP9ztcHTwcdKwTlQ0HGd+upUm9kG9h0O1olwxOEI=
+	t=1725729915; cv=none; b=mOCjXTCCCsVTm86dfZN/Fs3W1xJVo/snl+LxV4fhUz887Y7pQBTTL61q1i4CT8qo8n+EDzxH3iqjpCOjoGv4vZJCG6vTg83G8Sbbpe1uVJv0FyMZJBHV8dN9P47oTPRPNFLjewy4YKyMBBOXQceGwgTEEZbvf8OiM4SuD7jjNsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725729544; c=relaxed/simple;
-	bh=bvFB2XXvjdM+ZXXqgnzKkdPk8ExVd44b9X43rt827Iw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZELPfI37h1Mcq28X1lp/zTyHblUfcbA12f8kB4u8TLl9mJlX9v6BSSgvoJjqiYZVhUbNfzTAjzGbhnbqYm9vTkgOf8MSM0LyfElF0ISE9SToUP92mhi1NdSIxgaBYijKHLMz78a1lKWSDaNm+vHRoa+xTCwQqnEHY+f2Ez3Vsgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UM6OgsaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEFCC4CEC2;
-	Sat,  7 Sep 2024 17:19:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725729543;
-	bh=bvFB2XXvjdM+ZXXqgnzKkdPk8ExVd44b9X43rt827Iw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UM6OgsaIFHTvvRjUTzslkDN4QdJ1NDpRD02DSXg8+6OF6YAJMO/vq96i/D3i4sVlF
-	 6wRE+3hHc9b1cHvJZgpgzG+E9UoYTbd3umd/zX52E3o+CoXwDXdtEwEDAiPjlerAB9
-	 G4yoVBA7n5t8IGpVyjZ+bpHgii9I9o3Nq9J2X13SmDn7tAenr5uDwbX9ztg9jQtANm
-	 CvD0F6C+uhQoqkEqS2ttfMLN7AWyXEJz3rq5qY3tW2s9uFRcTunuWKbWC2udQaCeLp
-	 CExbY/es/HjPpC1/91a8opoY2BiNTYOTOqz1NnpPRpNurLEapf9jjPYsRsQlQNcfcT
-	 XHlo84hs79jHg==
-Date: Sat, 7 Sep 2024 18:18:53 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: imu: inv_mpu6050: Use
- upper_16_bits()/lower_16_bits() helpers
-Message-ID: <20240907181853.78367ac4@jic23-huawei>
-In-Reply-To: <FR3P281MB1757F1ABDB6FC9F2F02C21B4CE9D2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20240904184543.1219866-1-andy.shevchenko@gmail.com>
-	<FR3P281MB1757F1ABDB6FC9F2F02C21B4CE9D2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1725729915; c=relaxed/simple;
+	bh=0ja2nQa3Lq8OUl2FLruMGGQCulJ4oYz6DBtMk80ur7c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oyOPpea11tERPORpNGoYIosIQ3JdRX2p1Oy6d6UhcZzGHZgGnODGT9wo/VaRELaMop56TE2BJIl3SoLn8ws2XMm4JcY7yS6z5e2QjclcMp/7uraGP8oAsiY6Md/ymc6Q3XmDmFiqxPh/LW2Zw3kmx55p9fEEsUvsRjB7fHmwQOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=D7yZzign; arc=none smtp.client-ip=193.252.22.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id mzBIscbar0aTdmzBJsLH0L; Sat, 07 Sep 2024 19:25:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1725729910;
+	bh=HyvRImjoEj3AzyL98EjbHwe80miJso2YtX4UW8KcR7k=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=D7yZzign6bl3Ey/uxVMjlK1XwZgwlI/K+Sx5cP2PdRFJIjXlJCNcMkC4OoJX/fGP0
+	 FxTBNejqOwxSrG8EfT4VhnxVEDEvaD822wHPCAX01kki7m6evzSz8/e0QiLbmuAV1i
+	 QP5EOLwVPZF0TZ9hDrb6ZmTaa2CV/YznxGo2w82cXmScU3tr4II+C0+PC2hwLrzFSv
+	 gHp/30YWZQbEe4+HTSzqU0FhRp7itnEJyo6PBGoImFHAJLGv7d8d+PosYbuouLaq9C
+	 yj6BZXn7ZOY3X2W86r4BBLD8Q5NedAyKh4BCuFXrUXSqnoYyAljyxoxceZ4jf0ac9t
+	 ctsp3dUiy5lPw==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 07 Sep 2024 19:25:10 +0200
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Support Opensource <support.opensource@diasemi.com>,
+	Saravanan Sekar <sravanhome@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-iio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev
+Subject: [PATCH 1/2] iio: adc: Constify struct iio_map
+Date: Sat,  7 Sep 2024 19:24:46 +0200
+Message-ID: <5729dc3cc3892ecf0d8ea28c5f7307b34e27493e.1725729801.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, 5 Sep 2024 09:16:22 +0000
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+'struct iio_map' are not modified in these drivers.
 
-> Hello,
->=20
-> looks good for me, nice reading improvement indeed.
->=20
-> Acked-by:=C2=A0Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Applied.
+Constifying this structure moves some data to a read-only section, so
+increase overall security.
 
->=20
-> Thanks for the patch,
-> JB
->=20
-> ________________________________________
-> From:=C2=A0Andy Shevchenko <andy.shevchenko@gmail.com>
-> Sent:=C2=A0Wednesday, September 4, 2024 20:45
-> To:=C2=A0Andy Shevchenko <andy.shevchenko@gmail.com>; linux-iio@vger.kern=
-el.org <linux-iio@vger.kernel.org>; linux-kernel@vger.kernel.org <linux-ker=
-nel@vger.kernel.org>
-> Cc:=C2=A0Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen <lars@me=
-tafoo.de>
-> Subject:=C2=A0[PATCH v1 1/1] iio: imu: inv_mpu6050: Use upper_16_bits()/l=
-ower_16_bits() helpers
-> =C2=A0
-> This Message Is From an External Sender
-> This message came from outside your organization.
-> =C2=A0
-> Use upper_16_bits()/lower_16_bits() helpers instead of open-coding them.
-> This is easier to scan quickly compared to bitwise manipulation, and
-> it is pleasingly symmetric.
->=20
-> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
->  drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c b/drivers/iio/imu=
-/inv_mpu6050/inv_mpu_acpi.c
-> index f7bce428d9eb..b15d8c94cc11 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c
-> @@ -10,6 +10,8 @@
->  #include <linux/i2c.h>
->  #include <linux/dmi.h>
->  #include <linux/acpi.h>
-> +#include <linux/wordpart.h>
-> +
->  #include "inv_mpu_iio.h"
-> =20
->  enum inv_mpu_product_name {
-> @@ -118,8 +120,8 @@ static int inv_mpu_process_acpi_config(struct i2c_cli=
-ent *client,
->  		return ret;
-> =20
->  	acpi_dev_free_resource_list(&resources);
-> -	*primary_addr =3D i2c_addr & 0x0000ffff;
-> -	*secondary_addr =3D (i2c_addr & 0xffff0000) >> 16;
-> +	*primary_addr =3D lower_16_bits(i2c_addr);
-> +	*secondary_addr =3D upper_16_bits(i2c_addr);
-> =20
->  	return 0;
->  }
+In order to do it, the prototype of iio_map_array_register() and
+devm_iio_map_array_register(), and a few structures that hold a
+"struct iio_map *" need to be adjusted.
+
+On a x86_64, with allmodconfig, as an example:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+  21086	    760	      0	  21846	   5556	drivers/iio/adc/axp20x_adc.o
+
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+  21470	    360	      0	  21830	   5546	drivers/iio/adc/axp20x_adc.o
+  33842	   1697	    384	  35923	   8c53	drivers/iio/addac/ad74413r.o
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+--
+Compile tested only
+---
+ drivers/iio/adc/axp20x_adc.c      | 6 +++---
+ drivers/iio/adc/axp288_adc.c      | 2 +-
+ drivers/iio/adc/da9150-gpadc.c    | 2 +-
+ drivers/iio/adc/intel_mrfld_adc.c | 2 +-
+ drivers/iio/adc/lp8788_adc.c      | 6 +++---
+ drivers/iio/adc/mp2629_adc.c      | 2 +-
+ drivers/iio/adc/rn5t618-adc.c     | 2 +-
+ drivers/iio/adc/sun4i-gpadc-iio.c | 2 +-
+ drivers/iio/inkern.c              | 7 ++++---
+ include/linux/iio/driver.h        | 5 +++--
+ 10 files changed, 19 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
+index b487e577befb..cac3bacf2589 100644
+--- a/drivers/iio/adc/axp20x_adc.c
++++ b/drivers/iio/adc/axp20x_adc.c
+@@ -131,7 +131,7 @@ enum axp813_adc_channel_v {
+ 	AXP813_BATT_V,
+ };
+ 
+-static struct iio_map axp20x_maps[] = {
++static const struct iio_map axp20x_maps[] = {
+ 	{
+ 		.consumer_dev_name = "axp20x-usb-power-supply",
+ 		.consumer_channel = "vbus_v",
+@@ -163,7 +163,7 @@ static struct iio_map axp20x_maps[] = {
+ 	}, { /* sentinel */ }
+ };
+ 
+-static struct iio_map axp22x_maps[] = {
++static const struct iio_map axp22x_maps[] = {
+ 	{
+ 		.consumer_dev_name = "axp20x-battery-power-supply",
+ 		.consumer_channel = "batt_v",
+@@ -893,7 +893,7 @@ struct axp_data {
+ 	unsigned long			adc_en2_mask;
+ 	int				(*adc_rate)(struct axp20x_adc_iio *info,
+ 						    int rate);
+-	struct iio_map			*maps;
++	const struct iio_map		*maps;
+ };
+ 
+ static const struct axp_data axp192_data = {
+diff --git a/drivers/iio/adc/axp288_adc.c b/drivers/iio/adc/axp288_adc.c
+index f135cf2362df..a9f84253d4b1 100644
+--- a/drivers/iio/adc/axp288_adc.c
++++ b/drivers/iio/adc/axp288_adc.c
+@@ -103,7 +103,7 @@ static const struct iio_chan_spec axp288_adc_channels[] = {
+ };
+ 
+ /* for consumer drivers */
+-static struct iio_map axp288_adc_default_maps[] = {
++static const struct iio_map axp288_adc_default_maps[] = {
+ 	IIO_MAP("TS_PIN", "axp288-batt", "axp288-batt-temp"),
+ 	IIO_MAP("PMIC_TEMP", "axp288-pmic", "axp288-pmic-temp"),
+ 	IIO_MAP("GPADC", "axp288-gpadc", "axp288-system-temp"),
+diff --git a/drivers/iio/adc/da9150-gpadc.c b/drivers/iio/adc/da9150-gpadc.c
+index 8f0d3fb63b67..82628746ba8e 100644
+--- a/drivers/iio/adc/da9150-gpadc.c
++++ b/drivers/iio/adc/da9150-gpadc.c
+@@ -291,7 +291,7 @@ static const struct iio_chan_spec da9150_gpadc_channels[] = {
+ };
+ 
+ /* Default maps used by da9150-charger */
+-static struct iio_map da9150_gpadc_default_maps[] = {
++static const struct iio_map da9150_gpadc_default_maps[] = {
+ 	{
+ 		.consumer_dev_name = "da9150-charger",
+ 		.consumer_channel = "CHAN_IBUS",
+diff --git a/drivers/iio/adc/intel_mrfld_adc.c b/drivers/iio/adc/intel_mrfld_adc.c
+index 0590a126f321..30c8c09e3716 100644
+--- a/drivers/iio/adc/intel_mrfld_adc.c
++++ b/drivers/iio/adc/intel_mrfld_adc.c
+@@ -164,7 +164,7 @@ static const struct iio_chan_spec mrfld_adc_channels[] = {
+ 	BCOVE_ADC_CHANNEL(IIO_TEMP,       8, "CH8", 0xC6),
+ };
+ 
+-static struct iio_map iio_maps[] = {
++static const struct iio_map iio_maps[] = {
+ 	IIO_MAP("CH0", "bcove-battery", "VBATRSLT"),
+ 	IIO_MAP("CH1", "bcove-battery", "BATTID"),
+ 	IIO_MAP("CH2", "bcove-battery", "IBATRSLT"),
+diff --git a/drivers/iio/adc/lp8788_adc.c b/drivers/iio/adc/lp8788_adc.c
+index 6d9b354bc705..0d49be0061a2 100644
+--- a/drivers/iio/adc/lp8788_adc.c
++++ b/drivers/iio/adc/lp8788_adc.c
+@@ -26,7 +26,7 @@
+ 
+ struct lp8788_adc {
+ 	struct lp8788 *lp;
+-	struct iio_map *map;
++	const struct iio_map *map;
+ 	struct mutex lock;
+ };
+ 
+@@ -149,7 +149,7 @@ static const struct iio_chan_spec lp8788_adc_channels[] = {
+ };
+ 
+ /* default maps used by iio consumer (lp8788-charger driver) */
+-static struct iio_map lp8788_default_iio_maps[] = {
++static const struct iio_map lp8788_default_iio_maps[] = {
+ 	{
+ 		.consumer_dev_name = "lp8788-charger",
+ 		.consumer_channel = "lp8788_vbatt_5p0",
+@@ -168,7 +168,7 @@ static int lp8788_iio_map_register(struct device *dev,
+ 				struct lp8788_platform_data *pdata,
+ 				struct lp8788_adc *adc)
+ {
+-	struct iio_map *map;
++	const struct iio_map *map;
+ 	int ret;
+ 
+ 	map = (!pdata || !pdata->adc_pdata) ?
+diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
+index 5f672765d4a2..f114817601f2 100644
+--- a/drivers/iio/adc/mp2629_adc.c
++++ b/drivers/iio/adc/mp2629_adc.c
+@@ -52,7 +52,7 @@ static struct iio_chan_spec mp2629_channels[] = {
+ 	MP2629_ADC_CHAN(INPUT_CURRENT, IIO_CURRENT)
+ };
+ 
+-static struct iio_map mp2629_adc_maps[] = {
++static const struct iio_map mp2629_adc_maps[] = {
+ 	MP2629_MAP(BATT_VOLT, "batt-volt"),
+ 	MP2629_MAP(SYSTEM_VOLT, "system-volt"),
+ 	MP2629_MAP(INPUT_VOLT, "input-volt"),
+diff --git a/drivers/iio/adc/rn5t618-adc.c b/drivers/iio/adc/rn5t618-adc.c
+index ce5f3011fe00..b33536157adc 100644
+--- a/drivers/iio/adc/rn5t618-adc.c
++++ b/drivers/iio/adc/rn5t618-adc.c
+@@ -185,7 +185,7 @@ static const struct iio_chan_spec rn5t618_adc_iio_channels[] = {
+ 	RN5T618_ADC_CHANNEL(AIN0, IIO_VOLTAGE, "AIN0")
+ };
+ 
+-static struct iio_map rn5t618_maps[] = {
++static const struct iio_map rn5t618_maps[] = {
+ 	IIO_MAP("VADP", "rn5t618-power", "vadp"),
+ 	IIO_MAP("VUSB", "rn5t618-power", "vusb"),
+ 	{ /* sentinel */ }
+diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
+index 100ecced5fc1..5d459f050634 100644
+--- a/drivers/iio/adc/sun4i-gpadc-iio.c
++++ b/drivers/iio/adc/sun4i-gpadc-iio.c
+@@ -114,7 +114,7 @@ struct sun4i_gpadc_iio {
+ 	.datasheet_name = _name,				\
+ }
+ 
+-static struct iio_map sun4i_gpadc_hwmon_maps[] = {
++static const struct iio_map sun4i_gpadc_hwmon_maps[] = {
+ 	{
+ 		.adc_channel_label = "temp_adc",
+ 		.consumer_dev_name = "iio_hwmon.0",
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index 151099be2863..7f325b3ed08f 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -20,7 +20,7 @@
+ 
+ struct iio_map_internal {
+ 	struct iio_dev *indio_dev;
+-	struct iio_map *map;
++	const struct iio_map *map;
+ 	struct list_head l;
+ };
+ 
+@@ -42,7 +42,7 @@ static int iio_map_array_unregister_locked(struct iio_dev *indio_dev)
+ 	return ret;
+ }
+ 
+-int iio_map_array_register(struct iio_dev *indio_dev, struct iio_map *maps)
++int iio_map_array_register(struct iio_dev *indio_dev, const struct iio_map *maps)
+ {
+ 	struct iio_map_internal *mapi;
+ 	int i = 0;
+@@ -86,7 +86,8 @@ static void iio_map_array_unregister_cb(void *indio_dev)
+ 	iio_map_array_unregister(indio_dev);
+ }
+ 
+-int devm_iio_map_array_register(struct device *dev, struct iio_dev *indio_dev, struct iio_map *maps)
++int devm_iio_map_array_register(struct device *dev, struct iio_dev *indio_dev,
++				const struct iio_map *maps)
+ {
+ 	int ret;
+ 
+diff --git a/include/linux/iio/driver.h b/include/linux/iio/driver.h
+index 7a157ed218f6..7f8b55551ed0 100644
+--- a/include/linux/iio/driver.h
++++ b/include/linux/iio/driver.h
+@@ -18,7 +18,7 @@ struct iio_map;
+  * @map:	array of mappings specifying association of channel with client
+  */
+ int iio_map_array_register(struct iio_dev *indio_dev,
+-			   struct iio_map *map);
++			   const struct iio_map *map);
+ 
+ /**
+  * iio_map_array_unregister() - tell the core to remove consumer mappings for
+@@ -38,6 +38,7 @@ int iio_map_array_unregister(struct iio_dev *indio_dev);
+  * handle de-registration of the IIO map object when the device's refcount goes to
+  * zero.
+  */
+-int devm_iio_map_array_register(struct device *dev, struct iio_dev *indio_dev, struct iio_map *maps);
++int devm_iio_map_array_register(struct device *dev, struct iio_dev *indio_dev,
++				const struct iio_map *maps);
+ 
+ #endif
+-- 
+2.46.0
 
 

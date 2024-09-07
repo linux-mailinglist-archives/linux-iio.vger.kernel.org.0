@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-9260-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9261-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA53D970060
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 08:51:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214EE970063
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 08:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56DF91F2374B
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 06:51:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4782F1C2220F
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 06:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E52414884C;
-	Sat,  7 Sep 2024 06:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2481494B2;
+	Sat,  7 Sep 2024 06:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MArLBWK3"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zcCG0mIu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3910013D53A
-	for <linux-iio@vger.kernel.org>; Sat,  7 Sep 2024 06:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7538146D65
+	for <linux-iio@vger.kernel.org>; Sat,  7 Sep 2024 06:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725691853; cv=none; b=Bx90wyDIHYeekCqtwjxzaBrB7axUJ+Y5o3pnYDbwr/gXG7eBpvpEBkS99AhOkjvV8nMqS2T3cPVdEskVHfLqdvVi3jpSZrx1VBvzugAtbq8R4ieHGKNnqzE44moZv0/XV6bTJhYvueWM5vMB2gpJ6zbptrRQJN49nTSBlRtu/ok=
+	t=1725691855; cv=none; b=VnmgngR/L1/dIRw6/sBH2jV0CozVCo8/UlZIwfkqNgRCI58AMqFI0g3psb7v+dHkRMLOrKLmvssRZHlj4KFwAmvt3M5fnKCXNApF33HPXJOo5iUBFIKI63GYEeHD+5D4GZRLKVNEjvTJfN1FLYPntGC0O2w2TwzYDWuaPplJVO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725691853; c=relaxed/simple;
-	bh=leWSQje+ukEc8agXDt91UFlYTYx+/7CTkDdZc0d+tPU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OpawDaX9WNpE/l/80/iAEOkKx4GECXz9kV3a1uVLsgxFnOBZOhZ7J+Pf06EEgg/iT0hQmN6e6t7FBOlhRgUTvk6N7oJ/9rpKmDeQwTaol1qffdFwlCczvvsAT9KabsHEJOQzgwq51ifN0gXDJQ6emcWXy1k2gZpHcKX2L639++w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MArLBWK3; arc=none smtp.client-ip=209.85.167.49
+	s=arc-20240116; t=1725691855; c=relaxed/simple;
+	bh=RurNE9Ha90Rn5+C8di0PSCRyHdhsAmm8wmhIHv8jvRc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GyfwCLWXKTT/WmncoP0sThX4NGY3KExsOZXmDn1ejMQ/NGYr/soQln886DCUPSoK7veXpUy0fHUF6heuTqSqXdSjEJcw5bu8Lor8/uKoxDSm0IjOLdUzk+vLAV3gee7sDOjxe/18aJsDe4oAIbx4kL2MHm8+Rue5llB/+UYfmEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zcCG0mIu; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53660856a21so114905e87.2
-        for <linux-iio@vger.kernel.org>; Fri, 06 Sep 2024 23:50:50 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a8a7929fd64so307601666b.0
+        for <linux-iio@vger.kernel.org>; Fri, 06 Sep 2024 23:50:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725691849; x=1726296649; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+JqF7PWi3iax7JPq5MD9TNOmdUBUg/2y2TKvAmNZk64=;
-        b=MArLBWK31xi+jHODwAmflN4qWltATI6c6Efn93n0U7+2AfQWB8fuTYXx1EBexF8dYD
-         ECdLh5YfPKYHW/lW1lM5Gs5uJ6g6Z0ri2Thu0lqjlgG6LCmVZbi//P8Q54f+NuJioVlp
-         PiSQICvF3zaGJyfCP64uYqekmlySc/KXZwsHEkNn4caEWb1fVU2zJ3HuLkv9jkJhrahI
-         1ED2hg9+Nug/wk/4J/6gjSz/J92oJAeCr6cmTYd9G9h8nO3AJ+I15XlqMlcQNClSDP+h
-         LD61u57UPlvA/xoxkR4d/mQ4WVIlMWLJTWy2hLSSro5mHZOgflb+W3+zudwo4OVe3aeW
-         adzg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725691851; x=1726296651; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h3JtexnWjnXvUsidh7QMdp79QHg5ea8WTGp7w/eiApA=;
+        b=zcCG0mIuUklDloXWj53/YjPgBgY3fDQrETP7o2IR6Qhg1HwQJ8zKpiESLyvy9swsr4
+         J7B/oEYMcIqtyN5kx97uvS2BtvUHJ7lynUZvo5yp7tKMToH50umn7rqTwhdzsDdNLvkq
+         ajCYhhyEDNpbPVzG8pH9I/17ie/gRXdG58HiXVY2Y7q9k8eMSh3Bl5wORKNwbNZN3AO8
+         io1UsPGgDj4UjBmhvkLe+/QpLK8ahg596PwL1TrUPDMfegHMGGe3Qt2LDP4ka5GzgoP9
+         fVXLeM25vKaGGMHLAy5fR98r7K+yZYD/iifofiTcsyoflANAw0PNCFhpLU1hRardhMiw
+         4iEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725691849; x=1726296649;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+JqF7PWi3iax7JPq5MD9TNOmdUBUg/2y2TKvAmNZk64=;
-        b=J6dHenQLP/s8lHyUtjbFcd61FpaHLowCjw2Wxd9OGFAFLTT5TGRFdK0Msbd7FA2qpF
-         Zu4psIWXGnlQ5Q8sh9l1It9aP12Yg0tC66a3Y02ooFw4CtVcHPlyjh1h8PohpoAEdWh0
-         EwQWcBk4P5oPAWhztYKtqqi77ULEejPz6XuANkGqT0sApDlOIhrMruXHyeO2+qDGnfCX
-         T1kGi3f2263BIXn4ORSF+9cp0p4GvAjjMiIH7Zl/tcKVSmZPwrJGbJPiIz3m5MC9/Csc
-         PMDXsF3wJpmzN8DL+LFsHSdkncua3zcUtImDe1FBZNPORK/2aOlYzjXQT2shg52t/NX6
-         rgqg==
-X-Gm-Message-State: AOJu0YzX/ms2Sy0JL0gXznvh4wgFsjGjhgH9JQNOEYGXfhQ4Gth22alz
-	Tc3INzMoXL8jyQs/YQqGiFnBFotftE8bOwYoEwpW+LamHvETBjomyB+pNCKIDuoeXNEAatTBQKa
-	bJrs=
-X-Google-Smtp-Source: AGHT+IGaZymJr/vP+UZobOPpVdjUAMoict+okKsDPTRXN5mqf7+99tIgikuVmr+VFtqEKMj2jmBtdQ==
-X-Received: by 2002:a05:6512:1191:b0:536:5515:e9bc with SMTP id 2adb3069b0e04-536587fc7a7mr2720792e87.46.1725691847823;
-        Fri, 06 Sep 2024 23:50:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725691851; x=1726296651;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h3JtexnWjnXvUsidh7QMdp79QHg5ea8WTGp7w/eiApA=;
+        b=Ukq0kYLKvLVBo241UWHL+F+BhTTbsVMrLw1hgf5Y2el4w0BMNAeyu1RKNvApxQRycO
+         mQ3VvW+F8onOkOt07qJZsQD/Bcvkyfxaq0459SyXkE6bmrIfW7UOAZLTzeNNBO6ueUh9
+         p6D6X0XMVrA4CqtLfHBLUWNYkVPE4vr2yybGoi8EEosfJD2+TDwEMxF1Y+SVjahjIqCE
+         NkiteS1o/bKvZukchr5i6wpQeGQ5sFCHe9HMQkCWW+fEeBrFto3NJv1ZGiNfoNszUtk9
+         3n4+HB0UxQoOc5zQOemZVTCxUtGWQXO5otZ58zfEM6uQ6K7dQ5qv5ZdFHvIyFH0x0Aks
+         sIKA==
+X-Gm-Message-State: AOJu0YzVBV0/tc0v9pn26Pmqa+YXZp9cFIROvYUIKXr//xdSq+TcIx+V
+	mtUzRfTr3ljLSP9OpecsCI44ZBXAknn7msmk4dsvMLetatMh2ida/WhZsO53LcdMgIcQPDmMPe8
+	xs1o=
+X-Google-Smtp-Source: AGHT+IGvkxQf/n2NX2cE2z+X+S7ZUQH6/Izb8AcLwNQDLeE+Z0alDWqW1olFQP1RmToFlXgRSvK83g==
+X-Received: by 2002:a17:907:3d9f:b0:a86:b789:164b with SMTP id a640c23a62f3a-a8a88870eb7mr344487166b.58.1725691849956;
+        Fri, 06 Sep 2024 23:50:49 -0700 (PDT)
 Received: from localhost.localdomain ([188.27.130.242])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25835a76sm36539266b.39.2024.09.06.23.50.46
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25835a76sm36539266b.39.2024.09.06.23.50.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Sep 2024 23:50:47 -0700 (PDT)
+        Fri, 06 Sep 2024 23:50:49 -0700 (PDT)
 From: Alexandru Ardelean <aardelean@baylibre.com>
 To: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -75,154 +77,194 @@ Cc: jic23@kernel.org,
 	lars@metafoo.de,
 	michael.hennerich@analog.com,
 	gstols@baylibre.com,
-	Alexandru Ardelean <aardelean@baylibre.com>
-Subject: [PATCH v5 0/9] iio: adc: ad7606: add support for AD7606C-{16,18} parts
-Date: Sat,  7 Sep 2024 09:50:33 +0300
-Message-ID: <20240907065043.771364-1-aardelean@baylibre.com>
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v5 1/9] iio: adc: ad7606: remove frstdata check for serial mode
+Date: Sat,  7 Sep 2024 09:50:34 +0300
+Message-ID: <20240907065043.771364-2-aardelean@baylibre.com>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240907065043.771364-1-aardelean@baylibre.com>
+References: <20240907065043.771364-1-aardelean@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The AD7606C-16 and AD7606C-18 are pretty similar with the AD7606B.
-The main difference between AD7606C-16 & AD7606C-18 is the precision in
-bits (16 vs 18).
-Because of that, some scales need to be defined for the 18-bit variants, as
-they need to be computed against 2**18 (vs 2**16 for the 16 bit-variants).
+From: Guillaume Stols <gstols@baylibre.com>
 
-Because the AD7606C-16,18 also supports bipolar & differential channels,
-for SW-mode, the default range of 10 V or ±10V should be set at probe.
-On reset, the default range (in the registers) is set to value 0x3 which
-corresponds to '±10 V single-ended range', regardless of bipolar or
-differential configuration.
+The current implementation attempts to recover from an eventual glitch
+in the clock by checking frstdata state after reading the first
+channel's sample: If frstdata is low, it will reset the chip and
+return -EIO.
 
-Aside from the scale/ranges, the AD7606C-16 is similar to the AD7606B.
+This will only work in parallel mode, where frstdata pin is set low
+after the 2nd sample read starts.
 
-This changeset, does a bit of rework to the existing ad7606 driver and then
-adds support for the AD7606C-16 & AD7606C-18 parts.
+For the serial mode, according to the datasheet, "The FRSTDATA output
+returns to a logic low following the 16th SCLK falling edge.", thus
+after the Xth pulse, X being the number of bits in a sample, the check
+will always be true, and the driver will not work at all in serial
+mode if frstdata(optional) is defined in the devicetree as it will
+reset the chip, and return -EIO every time read_sample is called.
 
-Datasheet links:
-  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-16.pdf
-  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-18.pdf
+Hence, this check must be removed for serial mode.
 
-Changelog v4 -> v5:
-  - v4: https://lore.kernel.org/linux-iio/20240905082404.119022-1-aardelean@baylibre.com/
-  - Not all topics from v4 have been fully resolved; but I created a v5 in
-    case it helps to spot other (new) topics
-  - Added patch 'iio: adc: ad7606: remove frstdata check for serial mode'
-    - This is from the 'fixes-togreg' branch
-    - It should be ignored
-    - Should help with a bit of context for this series
-  - For patch 'iio: adc: ad7606: add 'bits' parameter to channels macros'
-    - Added '.storagebits = (bits) > 16 ? 32 : 16'
-    - Reduces the final patch a bit
-      - i.e. 'iio: adc: ad7606: add support for AD7606C-{16,18} parts'
-  - For patch 'iio: adc: ad7606: move 'val' pointer to ad7606_scan_direct() '
-    - Added 'Reviewed-by: David Lechner <dlechner@baylibre.com>'
-  - For patch 'iio: adc: ad7606: rework available attributes for SW channels'
-    - Added '.storagebits = (bits) > 16 ? 32 : 16'
-    - Reduces the final patch a bit
-      - i.e. 'iio: adc: ad7606: add support for AD7606C-{16,18} parts'
-  - For patch 'dt-bindings: iio: adc: add docs for AD7606C-{16,18} parts'
-    - Added '"^channel@[1-8]$": false' if not 'adi,sw-mode'
-    - Added 'Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>'
-    - Given the change, I would need confirmation that the Krzysztof's
-      Reviewed-by tag is still valid
-    - There is still an open topic about using
-      'oneOf:required:{diff-channels,bipolar}' vs 
-      'if:required: [diff-channels]then:required: [bipolar]'
-      - I'm leaning towards 'oneOf:required:{diff-channels,bipolar}'
-      - Let's see what a discussio will yield
-  - For patch 'iio: adc: ad7606: add support for AD7606C-{16,18} parts'
-    - In 'ad7606_spi_read_block18to32()' fixed 
-       '.len = count * sizeof(uint32_t)' in 'struct spi_transfer xfer'
-    - In 'ad7606_read_samples()' changed 'u16 *data = st->data;' to
-      'void *data = st->data.d16;' ; both would compile though ;
-      converting 'data' to 'void *' may show that it's not just 16 bits
-    - In ad7606c_18_chan_setup() & ad7606c_16_chan_setup()
-      - Added explicit 'cs->reg_offset = 0;'
-    - In 'ad7606c_sw_mode_setup_channels()' :
-      - If pins are specified incorrectly, an error is triggered (vs
-        ignoring it before)
-      - Updated comment about why 'st->bops->sw_mode_config()' is called
-        first
+Fixes: b9618c0cacd7 ("staging: IIO: ADC: New driver for AD7606/AD7606-6/AD7606-4")
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240702-cleanup-ad7606-v3-1-18d5ea18770e@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/adc/ad7606.c     | 28 ++-------------------
+ drivers/iio/adc/ad7606.h     |  2 ++
+ drivers/iio/adc/ad7606_par.c | 48 +++++++++++++++++++++++++++++++++---
+ 3 files changed, 49 insertions(+), 29 deletions(-)
 
-Changelog v3 -> v4:
-  - v3: https://lore.kernel.org/linux-iio/20240904072718.1143440-1-aardelean@baylibre.com/
-  - For patch 'dt-bindings: iio: adc: document diff-channels corner case
-    for some ADCs'
-    - Added 'Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>'
-  - Renamed patch 'dt-bindings: iio: adc: add adi,ad7606c-{16,18} compatible strings'
-    to 'dt-bindings: iio: adc: add docs for AD7606C-{16,18} parts'
-    - Updated based on notes from Krzysztof Kozlowski (from v3)
-      - Dropped ()
-      - Re-ordered the patternProperties:oneOf:required specification
-      - Unified match-pattern to '^channel@[1-8]$'
-
-Changelog v2 -> v3:
-  - v2: https://lore.kernel.org/linux-iio/20240902103638.686039-1-aardelean@baylibre.com/
-  - Applied checkpatch.pl changes
-  - Managed to setup and run 'make dt_binding_check DT_SCHEMA_FILES=adi,ad7606.yaml'
-    - Found the winning combination for this setup
-    - David Lechner also helped
-  - For patch 'iio: adc: ad7606: rework available attributes for SW channels'
-    - Removed an extra space that checkpatch found
-  - For patch 'dt-bindings: iio: adc: document diff-channels corner case
-    for some ADCs'
-    - Removed 'the the' stutter (that I did in writing)
-  - For patch 'dt-bindings: iio: adc: add adi,ad7606c-{16,18} compatible strings'
-    - Updated binding with some description for 'diff-channels' & 'bipolar'
-      properties
-    - Channel definitions are counted from 1 to 8 to match datasheet
-    - Added more bindings rules for 'diff-channels' & 'bipolar' for AD7606C
-      - Adapted some ideas from adi,ad7192.yaml
-  - For patch 'iio: adc: ad7606: add support for AD7606C-{16,18} parts'
-    - Updated 'diff-channels' property with channel numbers (from 1 to 8)
-      handling
-
-Changelog v1 -> v2:
-  - v1: https://lore.kernel.org/linux-iio/20240819064721.91494-1-aardelean@baylibre.com/
-  - Fixed description in 'iio: adc: ad7606: add 'bits' parameter to channels macros'
-  - Added patch 'dt-bindings: iio: adc: document diff-channels corner case
-    for some ADCs'
-    - diff-channels = <reg reg> can be used to define differential channels
-      with dedicated positive + negative pins
-  - Re-worked patch 'dt-bindings: iio: adc: add adi,ad7606c-{16,18} compatible strings'
-    - Using standard 'diff-channels' & 'bipolar' properties from adc.yaml
-  - Re-worked patch 'iio: adc: ad7606: add support for AD7606C-{16,18} parts'
-    - Reading 18-bit samples now relies on SPI controllers being able to
-      pad 18-bits to 32-bits.
-    - Implemented 'diff-channels = <reg reg>' setting
-    - Removed some bad/left-over channel configuration code which I forgot
-      during development and rebasing.
-
-Alexandru Ardelean (8):
-  iio: adc: ad7606: add 'bits' parameter to channels macros
-  iio: adc: ad7606: move 'val' pointer to ad7606_scan_direct()
-  iio: adc: ad7606: split a 'ad7606_sw_mode_setup()' from probe
-  iio: adc: ad7606: wrap channel ranges & scales into struct
-  iio: adc: ad7606: rework available attributes for SW channels
-  dt-bindings: iio: adc: document diff-channels corner case for some
-    ADCs
-  dt-bindings: iio: adc: add docs for AD7606C-{16,18} parts
-  iio: adc: ad7606: add support for AD7606C-{16,18} parts
-
-Guillaume Stols (1):
-  iio: adc: ad7606: remove frstdata check for serial mode
-
- .../devicetree/bindings/iio/adc/adc.yaml      |   4 +
- .../bindings/iio/adc/adi,ad7606.yaml          | 117 +++++
- drivers/iio/adc/ad7606.c                      | 432 ++++++++++++++----
- drivers/iio/adc/ad7606.h                      |  80 +++-
- drivers/iio/adc/ad7606_par.c                  |  48 +-
- drivers/iio/adc/ad7606_spi.c                  |  71 ++-
- 6 files changed, 633 insertions(+), 119 deletions(-)
-
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index 539e4a8621fe..9b457472d49c 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -49,7 +49,7 @@ static const unsigned int ad7616_oversampling_avail[8] = {
+ 	1, 2, 4, 8, 16, 32, 64, 128,
+ };
+ 
+-static int ad7606_reset(struct ad7606_state *st)
++int ad7606_reset(struct ad7606_state *st)
+ {
+ 	if (st->gpio_reset) {
+ 		gpiod_set_value(st->gpio_reset, 1);
+@@ -60,6 +60,7 @@ static int ad7606_reset(struct ad7606_state *st)
+ 
+ 	return -ENODEV;
+ }
++EXPORT_SYMBOL_NS_GPL(ad7606_reset, IIO_AD7606);
+ 
+ static int ad7606_reg_access(struct iio_dev *indio_dev,
+ 			     unsigned int reg,
+@@ -86,31 +87,6 @@ static int ad7606_read_samples(struct ad7606_state *st)
+ {
+ 	unsigned int num = st->chip_info->num_channels - 1;
+ 	u16 *data = st->data;
+-	int ret;
+-
+-	/*
+-	 * The frstdata signal is set to high while and after reading the sample
+-	 * of the first channel and low for all other channels. This can be used
+-	 * to check that the incoming data is correctly aligned. During normal
+-	 * operation the data should never become unaligned, but some glitch or
+-	 * electrostatic discharge might cause an extra read or clock cycle.
+-	 * Monitoring the frstdata signal allows to recover from such failure
+-	 * situations.
+-	 */
+-
+-	if (st->gpio_frstdata) {
+-		ret = st->bops->read_block(st->dev, 1, data);
+-		if (ret)
+-			return ret;
+-
+-		if (!gpiod_get_value(st->gpio_frstdata)) {
+-			ad7606_reset(st);
+-			return -EIO;
+-		}
+-
+-		data++;
+-		num--;
+-	}
+ 
+ 	return st->bops->read_block(st->dev, num, data);
+ }
+diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+index 0c6a88cc4695..6649e84d25de 100644
+--- a/drivers/iio/adc/ad7606.h
++++ b/drivers/iio/adc/ad7606.h
+@@ -151,6 +151,8 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 		 const char *name, unsigned int id,
+ 		 const struct ad7606_bus_ops *bops);
+ 
++int ad7606_reset(struct ad7606_state *st);
++
+ enum ad7606_supported_device_ids {
+ 	ID_AD7605_4,
+ 	ID_AD7606_8,
+diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
+index b5975bbfcbe0..02d8c309304e 100644
+--- a/drivers/iio/adc/ad7606_par.c
++++ b/drivers/iio/adc/ad7606_par.c
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/platform_device.h>
+ #include <linux/types.h>
+ #include <linux/err.h>
+@@ -21,8 +22,29 @@ static int ad7606_par16_read_block(struct device *dev,
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+ 
+-	insw((unsigned long)st->base_address, buf, count);
+ 
++	/*
++	 * On the parallel interface, the frstdata signal is set to high while
++	 * and after reading the sample of the first channel and low for all
++	 * other channels.  This can be used to check that the incoming data is
++	 * correctly aligned.  During normal operation the data should never
++	 * become unaligned, but some glitch or electrostatic discharge might
++	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
++	 * allows to recover from such failure situations.
++	 */
++	int num = count;
++	u16 *_buf = buf;
++
++	if (st->gpio_frstdata) {
++		insw((unsigned long)st->base_address, _buf, 1);
++		if (!gpiod_get_value(st->gpio_frstdata)) {
++			ad7606_reset(st);
++			return -EIO;
++		}
++		_buf++;
++		num--;
++	}
++	insw((unsigned long)st->base_address, _buf, num);
+ 	return 0;
+ }
+ 
+@@ -35,8 +57,28 @@ static int ad7606_par8_read_block(struct device *dev,
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+-
+-	insb((unsigned long)st->base_address, buf, count * 2);
++	/*
++	 * On the parallel interface, the frstdata signal is set to high while
++	 * and after reading the sample of the first channel and low for all
++	 * other channels.  This can be used to check that the incoming data is
++	 * correctly aligned.  During normal operation the data should never
++	 * become unaligned, but some glitch or electrostatic discharge might
++	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
++	 * allows to recover from such failure situations.
++	 */
++	int num = count;
++	u16 *_buf = buf;
++
++	if (st->gpio_frstdata) {
++		insb((unsigned long)st->base_address, _buf, 2);
++		if (!gpiod_get_value(st->gpio_frstdata)) {
++			ad7606_reset(st);
++			return -EIO;
++		}
++		_buf++;
++		num--;
++	}
++	insb((unsigned long)st->base_address, _buf, num * 2);
+ 
+ 	return 0;
+ }
 -- 
 2.46.0
 

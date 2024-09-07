@@ -1,63 +1,57 @@
-Return-Path: <linux-iio+bounces-9298-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9299-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7670297032D
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 18:35:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3563E970330
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 18:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2696B22D78
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 16:35:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2806282AF1
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 16:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE8F15FD1B;
-	Sat,  7 Sep 2024 16:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A08E15FCE7;
+	Sat,  7 Sep 2024 16:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="riaywG1b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKiuVA79"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C6E15AAC8;
-	Sat,  7 Sep 2024 16:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BB81B85DC;
+	Sat,  7 Sep 2024 16:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725726949; cv=none; b=ICqLqTdG01LZCIWqcg4mvI/4Jucl0tjErLlC7Lq+cqMFdRCsT6C+bbOuzcTV+Qes1F21lx7nRGvJNj/v+D45EPQEi2QWk9xXFC9bhXFkhkmKBay6ehp6Rb/021T3oLd4qGH67O4OFPTWNtMXm2HQVVxIaqFdiHWJwtMDOt+s95Q=
+	t=1725727234; cv=none; b=ND6nXY78S7YM4IMxenkfnirBMa7AV1jiKivZwAg/PEczLMrWweUn0j30xFaert1SBDmOEI/CKTZQSSbXm+vmk88GVG/VjivvZYaVJvb0WGe8jR918k67LrGr1RwQYVQ7Tj6dcQrHI8zCP5QV5aba7PqeO6ViksNvULELjz7i62o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725726949; c=relaxed/simple;
-	bh=Spba6BOIbr3am2h7wYdkLKDmMFJAWbNGAYjxoiVZMrQ=;
+	s=arc-20240116; t=1725727234; c=relaxed/simple;
+	bh=hTd2Jrdk4vfPdEIOB7bAzp4qujyHJie0PQKTucUpqNk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N/pshDWGKbVcF6cTLodOEGpQrv3MQ8RBGFhRo5LRFaVLSKnT2ZvaBxdqSf5z8+y+NXXMH+NWg12uFYGmz6scEhl+6xia60KH0ZDyXBuKJAlB25oFckOrc/N1UpeAHjHtCrY3TpgUd7FoKy+vB5Yh17ZVZxrnPO63oeY0S30kzoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=riaywG1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859A3C4CEC6;
-	Sat,  7 Sep 2024 16:35:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d/bdjrDuQJdADaCFwlkL7GKJt8qvlRWOYyNTBjWYmlYmXJ9PY3/vA5AkvdsWYmGD3xy+GulitUcRCI4kyCzbe6pCWwQrOXXsVI6CF0HBB151F35swk+Gl9abqixTcX6LBqgYVPXrQPyqt8Jd+YD300rnp7koKIibgCbSmbUlWsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKiuVA79; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BA8C4CEC2;
+	Sat,  7 Sep 2024 16:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725726948;
-	bh=Spba6BOIbr3am2h7wYdkLKDmMFJAWbNGAYjxoiVZMrQ=;
+	s=k20201202; t=1725727233;
+	bh=hTd2Jrdk4vfPdEIOB7bAzp4qujyHJie0PQKTucUpqNk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=riaywG1bTtLhnb8iizjxukYuoyRnClq19Aq0zTVS6pM+k/UsQrIOhsEM/rA0f2lRZ
-	 +Snem5bHJxXcfy5YkdBS/jcs5an9sP/bpiGKS3+nXlLyplBmecFRse9bfzI/KwUi9t
-	 LDVPnCmAwYg12+z/gcg3zvoNSNaVbIxGlHxtBnH6J6LxM5Q2bdj2FWcmyWQ0qi+2XW
-	 WxEjxAmyjT0PEyC4qE3PTnrU/PcxrTZRU9l+OYjrLlcXjZG5W7VXzYwBeQUppAtpVX
-	 nzy3H4sO7cxztMOETWiy1w/Wi+CUe1ygfVaQlrcF+qKfXX7pWIWgAUFlBU0aKVgyLA
-	 mx0wzcFPOywcA==
-Date: Sat, 7 Sep 2024 17:35:37 +0100
+	b=UKiuVA79Ui3kx6VNzzYi41/ZZ4Y55+8vGtfzAMC4pl125Bv1rbfADeZeLFDkhvgkZ
+	 hlsw64wv0ik5QeG1apozIMrUaTDjdUYLcleYTC2IE/FUAhC7bn718ce02ZuNC8XNAw
+	 lgeyrofviW4t81FkXNQjRtw0728wIt+bOrA0MhIwo3PhvKaPNcakFrJm/mb3MIJ9aq
+	 cVy95rshMoGxxrYINDQShNvlxeemaZ6M0YqVu4KwU/f7KAYqMzn4AgIxhd/xhtO8yJ
+	 Wb6DSsoyIK6UaiUBKvPHMvbdW6XO42fXRo5qO4aQYD4Up+Vo4hXX0OWXAktBOgGmQE
+	 43Rp4N48ECupA==
+Date: Sat, 7 Sep 2024 17:40:28 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
- biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
- semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, christophe.jaillet@wanadoo.fr
-Subject: Re: [PATCH v5 0/7] pressure: bmp280: Minor cleanup and interrupt
- support
-Message-ID: <20240907173537.632e8484@jic23-huawei>
-In-Reply-To: <20240904102955.GD44250@vamoiridPC>
-References: <20240902184222.24874-1-vassilisamir@gmail.com>
-	<ZtcfCVcV_1hCVp7N@smile.fi.intel.com>
-	<20240904102955.GD44250@vamoiridPC>
+To: Abhash Jha <abhashkumarjha123@gmail.com>
+Cc: linux-iio@vger.kernel.org, songqiang1304521@gmail.com, lars@metafoo.de,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] iio: proximity: vl53l0x-i2c: Added sensor ID
+ check
+Message-ID: <20240907174028.75840886@jic23-huawei>
+In-Reply-To: <20240903035636.9559-2-abhashkumarjha123@gmail.com>
+References: <20240903035636.9559-1-abhashkumarjha123@gmail.com>
+	<20240903035636.9559-2-abhashkumarjha123@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,36 +62,71 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 4 Sep 2024 12:29:55 +0200
-Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+On Tue,  3 Sep 2024 09:26:35 +0530
+Abhash Jha <abhashkumarjha123@gmail.com> wrote:
 
-> On Tue, Sep 03, 2024 at 05:36:57PM +0300, Andy Shevchenko wrote:
-> > On Mon, Sep 02, 2024 at 08:42:15PM +0200, Vasileios Amoiridis wrote:  
-> > > Depends on this: https://lore.kernel.org/linux-iio/20240823172017.9028-1-vassilisamir@gmail.com  
-> > 
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > 
-> > for the patches 1,2, and 3.
-> > 
-> > -- 
-> > With Best Regards,
-> > Andy Shevchenko
-> > 
-> >   
+> The commit adds a check for the sensor's model ID. We read the model
+> identification register (0xC0) and expect a value of 0xEE.
 > 
-> Thank you very much for the reviews Andy.
+> Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+Hi Abhash,
 
-Too many patches floating around at the moment (not yours!) so I'm going
-to reduce that number where I can just to make it easier to keep track
-of what needs more focus.
+Small comment on the message below
 
-So picked up patches 1-3 on the togreg branch of iio.git and pushed
-out as testing. Note these are probably 6.13 material now.
-
-Jonathan
-
+> ---
+>  drivers/iio/proximity/vl53l0x-i2c.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
 > 
-> Cheers,
-> Vasilis
+> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
+> index 8d4f3f849..31d6aeb95 100644
+> --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> @@ -39,8 +39,11 @@
+>  
+>  #define VL_REG_RESULT_INT_STATUS			0x13
+>  #define VL_REG_RESULT_RANGE_STATUS			0x14
+> +#define VL_REG_IDENTIFICATION_MODEL_ID			0xC0
+>  #define VL_REG_RESULT_RANGE_STATUS_COMPLETE		BIT(0)
+>  
+> +#define VL53L0X_MODEL_ID_VAL				0xEE
+> +
+>  struct vl53l0x_data {
+>  	struct i2c_client *client;
+>  	struct completion completion;
+> @@ -223,6 +226,7 @@ static int vl53l0x_probe(struct i2c_client *client)
+>  	struct vl53l0x_data *data;
+>  	struct iio_dev *indio_dev;
+>  	int error;
+> +	int ret;
+>  
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>  	if (!indio_dev)
+> @@ -237,6 +241,13 @@ static int vl53l0x_probe(struct i2c_client *client)
+>  				     I2C_FUNC_SMBUS_BYTE_DATA))
+>  		return -EOPNOTSUPP;
+>  
+> +	ret = i2c_smbus_read_byte_data(data->client, VL_REG_IDENTIFICATION_MODEL_ID);
+> +	if (ret < 0)
+> +		return -EINVAL;
+> +
+> +	if (ret != VL53L0X_MODEL_ID_VAL)
+> +		dev_info(&client->dev, "Received invalid model id: 0x%x", ret);
+Unknown model id:
+
+It's probably valid, we just don't know what it means!
+
+> +
+>  	data->vdd_supply = devm_regulator_get(&client->dev, "vdd");
+>  	if (IS_ERR(data->vdd_supply))
+>  		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
+> @@ -265,8 +276,6 @@ static int vl53l0x_probe(struct i2c_client *client)
+>  
+>  	/* usage of interrupt is optional */
+>  	if (client->irq) {
+> -		int ret;
+> -
+>  		init_completion(&data->completion);
+>  
+>  		ret = vl53l0x_configure_irq(client, indio_dev);
 
 

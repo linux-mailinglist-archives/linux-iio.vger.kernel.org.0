@@ -1,207 +1,118 @@
-Return-Path: <linux-iio+bounces-9337-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9338-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA52E9708C0
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 18:28:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1789708E5
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 19:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FF81C20C79
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 16:28:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 832121F21604
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 17:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDD5173331;
-	Sun,  8 Sep 2024 16:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD86B175D57;
+	Sun,  8 Sep 2024 17:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="KBnW/to0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TsOVsPQt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from msa.smtpout.orange.fr (out-71.smtpout.orange.fr [193.252.22.71])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7241C01;
-	Sun,  8 Sep 2024 16:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD733FF1;
+	Sun,  8 Sep 2024 17:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725812926; cv=none; b=EUskBPrXaO5n/INg3/KCdhNmh5ZMytFsmXt9GUKIRrPgLWcjHHOrLUQAaWar7YtmTEgQqQU/EJAaoWUO5k88txqFAM7/3Het04GffJ9+Tu6DqNoqI3b4c/JHbeHvXrwKdmqlEvkVTQ0qa9hKJvzw+e7T36PNwqZFZXhmHnk7EpU=
+	t=1725816134; cv=none; b=kuDR0JkvjeLMNJjmmbUvVpM356kf4IlJ6Yrcef+BLaDI1oLi7nUEmP/eR0IZKv+5BxdQj1tsfVhMwZN9B3gTxthxLCp9loCS0UHhuOUQ0ntfaP9NXi1KUjceSO738pmGTUXBXSxRzsDi/gQbvHncrFpNo0uISw6c3tOB2oGO1ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725812926; c=relaxed/simple;
-	bh=6Y6mvowD6Vd0W1f+ZwiRSAOPTuzFt7oLBAvovDmWF58=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ck6JHISEM4ia26af4Kqup/2v26OtaD0rZWXgbiqfmvEsMsXMMUX+/OKA/4m4Js+uk45f1+zIZyM8VMJIwuHV/Yt2BYNOHUoG5CfdWZdMuk2mDssvCora4Eu2JqEJ4sDYn2DDnmld7afVhSIO5UOi2PTCC6OQDOiyNFzDDP7hZS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=KBnW/to0; arc=none smtp.client-ip=193.252.22.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id nKm9sJeJ841DAnKm9s64K1; Sun, 08 Sep 2024 18:28:34 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1725812915;
-	bh=JJwcLtiI4stIT0Ic279e4kM9IdcT2WJSDxx8qm63mKE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=KBnW/to0xvMW/KBv9QojsZ1A+kyUoI6H4vCEHmJ5YL2DhbMfoe1sb4ZeQLNWQddJ1
-	 VEaaST7AuUrlKMDUquuR7ZNd+3Y0Tk0HhfxI0lJ14vDe5BcWcPZvvwN+W3iY4y4VOy
-	 IjTs76JAc5UwLNglgcv7+eU1KWD5D96ZudOVcgMfq1jR9tryyW12ESGgq7m1lHWhOM
-	 JqNVdV4f/mgiJzqbUN+FqN6UbqbKTlwlnzjAxAA27azlf038Ukyi1krlvrNvTjXuS7
-	 pLVa06XL/6UX7TMgMaeaBq3ViLCjWxWFslnTzI8UntYGurQHuQEFqGoO5j2hXbZr8V
-	 MVBFUSbYyWXFg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Sun, 08 Sep 2024 18:28:35 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <a6be8c40-5aa7-455c-8a15-55bda451ea51@wanadoo.fr>
-Date: Sun, 8 Sep 2024 18:28:33 +0200
+	s=arc-20240116; t=1725816134; c=relaxed/simple;
+	bh=P5i1+89CNVgiI6rLqPepCwbboW9ljWdOnFqApU+po90=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IvtaxM71W07g3JXR8Zsxd6u8NVo61bJht17XoawXn6rYr0zSHydvpvjnrbJi9MepL2mPPETG+Hbp3KiPXnBnQBB4Fj6VY1eVtapbLFjX4YF7XG2KDQMXd4gmf2kQzA8Cam9r0zMohKJH576PIaWtQEbvU3akhD9XG5mmOMmoick=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TsOVsPQt; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a8d56155f51so17351266b.2;
+        Sun, 08 Sep 2024 10:22:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725816131; x=1726420931; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aaRFLIiqgByI8Tt+Uc7hvPM/vlHUKYNZpdYUZBKAbGo=;
+        b=TsOVsPQtA2hxKc2tHpx/E+/NzeAm7C6hd9Rydx6QwYYpf/5rdsNzQofUP7cT+XxGcr
+         dXVWLzUbk3QQ5ntIa3kRYRqCeLsMSvS2wSDGmhtBqqVpFFbBJIj72nqpe5zw3r5UFT5k
+         JZ+HlygSZlOJl/rsnLK5gHoJ5h0kCvav3vZBnBuI6o6bEpdoYHKkcHekPLK18aYfgXV+
+         q4HLJ7+Y4ZxjX3imI8jYeA6VAwldQYWHSPuhz4wmrY3aJ7E33tWlShjaKuEeZzIN2Ev1
+         jEHYX0JQo5N99vnW1xL5PzoZgr6zVivNBn61iiQW+e1b/j04RzzHunVm73YVRJripM3x
+         /Ztg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725816131; x=1726420931;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aaRFLIiqgByI8Tt+Uc7hvPM/vlHUKYNZpdYUZBKAbGo=;
+        b=X9+J8Klxjz5lc3R4VLc/7835Fg4NK1BiWvG2NEYy1VCf8IySdKWPdBtr7GhmTDNmh5
+         gtYYBik7x7ZA0lsIjIM6oQB95SC8C8ACyS/Vse6RMMiIjIfOS3bSzmSWXpx8dgUcwm/U
+         nQuSHNUs19SEz3+R6ilIwHv8aN4o4xas4nEaMi2MCbi3jj1L9mRCXSgL9C7xR84mlRRo
+         vb2MshLN3C+Z19786QRcUJitR/mM1R6XeShz/5Bm1OAHa9ZvobqX8QdAqA3lh186Pcc5
+         i/2sbM/d5YXyReIK50/ikep7+yubMTTBMp1v3eRexvNQf2S1ISJyNzCq+hOReo/lfUWC
+         2p5A==
+X-Forwarded-Encrypted: i=1; AJvYcCU45apwbSweA0xp5HCUq9hJqQcCkC/7EuerJGIL9pSuK+AxAI8tmNNOvNG7Lm9x83F1kWKyo84zbOYs@vger.kernel.org, AJvYcCUha8vwsylxDkxbu99Cs25hOD3ezSJmUaaAAjlr+MdrdBPu+3byMSZlvWrRmDIm6I+pqXk/XitxUFdt@vger.kernel.org, AJvYcCXdODciqgr0xHZxEI/qAtSZ2Oy0wWlh8h3nr/vIKed1ExonXFrOSOCbb2tQWRY8ZbCFZXCmoppY3V3J22oS@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZvPeSI4KK5gqPeR5uD3AkibtZYIMYQBIcTgcvdYppgC1XcHGl
+	SIOHvQG83NDnAjNGETvgO0u0YpvcnaiLMvqD/okLbCC7WjBLR/2y
+X-Google-Smtp-Source: AGHT+IEl6fcC1V4FK0m5YthXlzTLQG/FpPWB6CDdvX+BxJrWPi6Yi4PxTym9Iyz6YVQRn7zmNG8lJQ==
+X-Received: by 2002:a17:907:e2d8:b0:a8b:6ee7:ba22 with SMTP id a640c23a62f3a-a8b70ee9498mr491177366b.39.1725816130288;
+        Sun, 08 Sep 2024 10:22:10 -0700 (PDT)
+Received: from localhost.localdomain ([78.210.149.157])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25c61258sm228048066b.116.2024.09.08.10.22.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Sep 2024 10:22:09 -0700 (PDT)
+From: Antoni Pokusinski <apokusinski01@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org
+Cc: pmeerw@pmeerw.net,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Antoni Pokusinski <apokusinski01@gmail.com>
+Subject: [PATCH v2 0/2] iio: temperature: tmp006: support for drdy irq
+Date: Sun,  8 Sep 2024 19:21:51 +0200
+Message-Id: <20240908172153.177406-1-apokusinski01@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/9] iio: dac: ad3552r: add axi platform driver
-To: adureghello@baylibre.com
-Cc: Michael.Hennerich@analog.com, conor+dt@kernel.org,
- devicetree@vger.kernel.org, dlechner@baylibre.com, jic23@kernel.org,
- krzk+dt@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, nuno.sa@analog.com,
- olivier.moysan@foss.st.com, robh@kernel.org
-References: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylibre.com>
- <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-8-87d669674c00@baylibre.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-8-87d669674c00@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Le 05/09/2024 à 17:17, Angelo Dureghello a écrit :
-> From: Angelo Dureghello <adureghello-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-> 
-> Add support for ad3552r-axi, where ad3552r has to be controlled
-> by the custom (fpga-based) ad3552r AXI DAC IP.
+This patch series adds support for the data ready interrupt of tmp006
+sensor. The interrupt line is pulled down once there is a measurement
+available to be read. Hence, triggered buffers are used in order to
+support continuous data capture for the sensor.
 
-...
+Changes since v1:
+  * dt-binding: improve the commit message
+  * tmp006_read_raw: use iio_device_claim_direct_scoped()
+  * tmp006_channels[] : add trailing commas
+  * tmp006_trigger_handler: use s32 to check return value of read_word_data()
+  * tmp006_set_trigger_state: fix data alignment
+  * tmp006_probe: check return value of devm_iio_triggered_buffer_setup()
+  * tmp006_probe: remove IRQF_TRIGGER_FALLING from irqflags argument of
+    devm_request_threaded_irq()
+  * tmp006_probe: set avaliable_scan_masks to tmp006_scan_masks[]
 
-> +static int ad3552r_axi_buffer_postenable(struct iio_dev *indio_dev)
-> +{
-> +	struct ad3552r_axi_state *st = iio_priv(indio_dev);
-> +	struct iio_backend_data_fmt fmt = {
-> +		.type = IIO_BACKEND_DATA_UNSIGNED
-> +	};
-> +	int loop_len, val, err;
-> +
-> +	/* Inform DAC chip to switch into DDR mode */
-> +	err = axi3552r_qspi_update_reg_bits(st->back,
-> +					    AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> +					    AD3552R_MASK_SPI_CONFIG_DDR,
-> +					    AD3552R_MASK_SPI_CONFIG_DDR, 1);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Inform DAC IP to go for DDR mode from now on */
-> +	err = iio_backend_ddr_enable(st->back);
-> +	if (err)
-> +		goto exit_err;
+Antoni Pokusinski (2):
+  iio: temperature: tmp006: add triggered buffer support
+  dt-bindings: iio: temperature: tmp006: document interrupt
 
-I don't know if it can be an issue, but iio_backend_ddr_disable() is 
-called if iio_backend_ddr_enable() fails.
+ .../bindings/iio/temperature/ti,tmp006.yaml   |   6 +
+ drivers/iio/temperature/Kconfig               |   2 +
+ drivers/iio/temperature/tmp006.c              | 134 ++++++++++++++++--
+ 3 files changed, 129 insertions(+), 13 deletions(-)
 
-> +
-> +	switch (*indio_dev->active_scan_mask) {
-> +	case AD3552R_CH0_ACTIVE:
-> +		st->single_channel = true;
-> +		loop_len = AD3552R_STREAM_2BYTE_LOOP;
-> +		val = AD3552R_REG_ADDR_CH_DAC_16B(0);
-> +		break;
-> +	case AD3552R_CH1_ACTIVE:
-> +		st->single_channel = true;
-> +		loop_len = AD3552R_STREAM_2BYTE_LOOP;
-> +		val = AD3552R_REG_ADDR_CH_DAC_16B(1);
-> +		break;
-> +	case AD3552R_CH0_CH1_ACTIVE:
-> +		st->single_channel = false;
-> +		loop_len = AD3552R_STREAM_4BYTE_LOOP;
-> +		val = AD3552R_REG_ADDR_CH_DAC_16B(1);
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	err = iio_backend_bus_reg_write(st->back, AD3552R_REG_ADDR_STREAM_MODE,
-> +					loop_len, 1);
-> +	if (err)
-> +		goto exit_err;
-> +
-> +	err = iio_backend_data_transfer_addr(st->back, val);
-> +	if (err)
-> +		goto exit_err;
-> +
-> +	/*
-> +	 * The EXT_SYNC is mandatory in the CN0585 project where 2 instances
-> +	 * of the IP are in the design and they need to generate the signals
-> +	 * synchronized.
-> +	 *
-> +	 * Note: in first IP implementations CONFIG EXT_SYNC (RO) can be 0,
-> +	 * but EXT_SYMC (ext synch ability) is enabled anyway.
-> +	 */
-> +	if (st->synced_transfer == AD3552R_EXT_SYNC_ARM)
-> +		err = iio_backend_ext_sync_enable(st->back);
-> +	else
-> +		err = iio_backend_ext_sync_disable(st->back);
-> +	if (err)
-> +		goto exit_err_sync;
-> +
-> +	err = iio_backend_data_format_set(st->back, 0, &fmt);
-> +	if (err)
-> +		goto exit_err_sync;
-> +
-> +	err = iio_backend_buffer_enable(st->back);
-> +	if (err)
-> +		goto exit_err_sync;
-> +
-> +	return 0;
-> +
-> +exit_err_sync:
-> +	iio_backend_ext_sync_disable(st->back);
-> +
-> +exit_err:
-> +	axi3552r_qspi_update_reg_bits(st->back,
-> +				      AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> +				      AD3552R_MASK_SPI_CONFIG_DDR,
-> +				      0, 1);
-> +
-> +	iio_backend_ddr_disable(st->back);
-> +
-> +	return err;
-> +}
+-- 
+2.25.1
 
-...
-
-
-> +#define AD3552R_CHANNEL(ch) { \
-> +	.type = IIO_VOLTAGE, \
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-> +	.output = 1, \
-> +	.indexed = 1, \
-> +	.channel = (ch), \
-> +	.scan_index = (ch), \
-> +	.scan_type = { \
-> +		.sign = 'u', \
-> +		.realbits = 16, \
-> +		.storagebits = 16, \
-> +		.endianness = IIO_BE, \
-> +	}, \
-> +	.ext_info = ad3552r_axi_ext_info, \
-> +}
-> +
-> +static struct iio_chan_spec ad3552r_axi_channels[] = {
-
-I think (but I've not checked :)) that it could be const.
-
-CJ
-
-> +	AD3552R_CHANNEL(0),
-> +	AD3552R_CHANNEL(1),
-> +};
-
-...
 

@@ -1,126 +1,299 @@
-Return-Path: <linux-iio+bounces-9313-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9314-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95BC97046F
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 00:51:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0689706A2
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 12:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65293B22031
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Sep 2024 22:51:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD25F1F2194D
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 10:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E18816A38B;
-	Sat,  7 Sep 2024 22:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F0014EC50;
+	Sun,  8 Sep 2024 10:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lB1ZAY35"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L9zDNhaR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00304160884;
-	Sat,  7 Sep 2024 22:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4811DDC9
+	for <linux-iio@vger.kernel.org>; Sun,  8 Sep 2024 10:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725749495; cv=none; b=o+bgVJMNoJ0m8Dl+P84NDX1H1Uu1C93GpUz1n7iSS5BzAm7OE58SAUzIa0Qkpk8TMQgnMP8RhwVD8idMasGiBgsj/3O/9UTTGH9Ge2UYhty+ucyvQ2PF7AZviF05MyozotRIamIT7P0+Z2MgTlq/cUDuE7B8CKFR9bJSVoh1S2M=
+	t=1725791955; cv=none; b=nhPoi/NHer/C1blApVKnGxVdc4V351eSx+B7Jm3v8h/ZOGVzoxovDaSJMaD+wcm/k0dS9/0Dr1S6MeNXpVu43m/vc8LfI6InsX3cAjQzN44shjhz8K7vhV9hCWhhtQWAD/jb8KAEGRwK2hkWMuxm+Q26L150gy/S8LpTcUbtTuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725749495; c=relaxed/simple;
-	bh=do842DqulJJ6dI6EnJSEYjNX4gsqnwlO4RWeiRD9jww=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BjxDF8H0P2+Qtbg2+NYKe98mnDjArP+Cg6cXaSWv3ir1o3hXNrn8vyD7m7Sti0yq10EiiND1X3HAijIuLnX7Qjn0S0cSvUMMMAINgntjs9+iGlu3oMjcG6vVC4VEGjDtC6niIAeRQ+twHRC4H5jpJrlGlrNt40CEcP0EWGL3/i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lB1ZAY35; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725749494; x=1757285494;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=do842DqulJJ6dI6EnJSEYjNX4gsqnwlO4RWeiRD9jww=;
-  b=lB1ZAY357wCgvfFYXTX2nXGUBxpF1A+hovHCkA5gd9IgmCnfrg0xY72K
-   /fc/+6t9uSXOXg/vbJ++FH5v5qRZoNGl5By0VBoTNovIiGucpdOFIk8QL
-   J8thWKXDe1vtHb68omy1B5wIy37BYQ5fq0zWDdWTYOH43AKEIDeHNm1Yi
-   Eumn4pYR81HPkaNCaHcl1nEWRJKNTVZqyDl7pXzCLlybu7WCN0lJK7V4c
-   BsH0p6maNKP0g7+CqWJRghriZ/dnHcN7TEpn4qcbbucO9D2tYg2eKsZ6x
-   eCE5nJTpBcY+h+kbhffMFKhkqUCu/FwMdmOoY0+PnbavVB1Ka0UJibOwD
-   Q==;
-X-CSE-ConnectionGUID: /0t4ybZDRTiRApYG284ePQ==
-X-CSE-MsgGUID: ExXxmZSJTOKK8ah6YOudpQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11188"; a="35829793"
-X-IronPort-AV: E=Sophos;i="6.10,211,1719903600"; 
-   d="scan'208";a="35829793"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2024 15:51:33 -0700
-X-CSE-ConnectionGUID: 8u21cVZpQTWszDXC4sHFxw==
-X-CSE-MsgGUID: kD/vSvzLTFyG7uaJTE2dgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,211,1719903600"; 
-   d="scan'208";a="89562848"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 07 Sep 2024 15:51:29 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sn4H9-000D4b-20;
-	Sat, 07 Sep 2024 22:51:27 +0000
-Date: Sun, 8 Sep 2024 06:50:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Trevor Gamblin <tgamblin@baylibre.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	David Lechner <dlechner@baylibre.com>,
-	Uwe Kleine-Konig <u.kleine-koenig@baylibre.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	Trevor Gamblin <tgamblin@baylibre.com>
-Subject: Re: [PATCH v4 2/3] iio: adc: ad7625: add driver
-Message-ID: <202409080658.vblJ5uZm-lkp@intel.com>
-References: <20240904-ad7625_r1-v4-2-78bc7dfb2b35@baylibre.com>
+	s=arc-20240116; t=1725791955; c=relaxed/simple;
+	bh=ux7rfyw4Yc7DzA31r1T+fXAYaOwvlBinNVGyrjuh9UI=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=N9N4v5BHcG6LKbT7X4Ugou5Mw1WthHJzWMindmgCVkg4oOeQxToQPsT8YbmgoHui5UJ5GkO0HICmlbJ93BIw9ZCcOyCnVu1+gWgB5j9/ZTMQ+5qjyur5kHsXWojKHtwMzatNsOc0S0M7C+5HxEnJJ+UBJwhD4DwrEKXao5rhRjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L9zDNhaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6F8C4CEC3;
+	Sun,  8 Sep 2024 10:39:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725791955;
+	bh=ux7rfyw4Yc7DzA31r1T+fXAYaOwvlBinNVGyrjuh9UI=;
+	h=Date:From:To:Subject:From;
+	b=L9zDNhaR3C3xSNw/bAsWFMxSjRIFnHdit2bKmqbol6QHH4Tha+JLsHNet/gyBjbJv
+	 bc2iNil5uwVTxwlUKqX6Zqu0yTr64l4B54qUgMyjleL9bjERjXdueYHhjbqFlL84uo
+	 U4tEqv7/1Yol+fJhkfkp6fJtKXBzxiSNIhwu56DkvmEq4HeXAjLKauBEdXVkyYEkBm
+	 P+ASglr5aGoN3IhpycP+mtHSvjXvDo5KdH0WO44DO+zJ70tUPOf/D9qQe74aV8w4ft
+	 FcMA+UhoGX9cvIeFR44iETU24X74RaH6g2+H3TLOFIb7+O9oH4vfZAgsQZfORZy3+7
+	 QibNNjr9pN6Kg==
+Date: Sun, 8 Sep 2024 11:39:09 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] IIO: 2nd set of new device support, features and cleanup for
+ 6.12.
+Message-ID: <20240908113909.24938c59@jic23-huawei>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240904-ad7625_r1-v4-2-78bc7dfb2b35@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Trevor,
+The following changes since commit aead27d77f3e703f6056e12fb19f48a426df2fd7:
 
-kernel test robot noticed the following build errors:
+  Merge tag 'fpga-for-6.12-rc1' of ssh://gitolite.kernel.org/pub/scm/linux/=
+kernel/git/fpga/linux-fpga into char-misc-next (2024-09-03 12:08:18 +0200)
 
-[auto build test ERROR on 1ebd3850421749eb44bd040b249bd4db88d35b33]
+are available in the Git repository at:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Trevor-Gamblin/dt-bindings-iio-adc-add-AD762x-AD796x-ADCs/20240905-031609
-base:   1ebd3850421749eb44bd040b249bd4db88d35b33
-patch link:    https://lore.kernel.org/r/20240904-ad7625_r1-v4-2-78bc7dfb2b35%40baylibre.com
-patch subject: [PATCH v4 2/3] iio: adc: ad7625: add driver
-config: arm-randconfig-002-20240908 (https://download.01.org/0day-ci/archive/20240908/202409080658.vblJ5uZm-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 05f5a91d00b02f4369f46d076411c700755ae041)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240908/202409080658.vblJ5uZm-lkp@intel.com/reproduce)
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fo=
+r-6.12b
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409080658.vblJ5uZm-lkp@intel.com/
+for you to fetch changes up to 5ba0cb92584ba5e107c97001e09013c1da0772a8:
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+  iio: adc: axp20x_adc: add support for AXP717 ADC (2024-09-07 14:28:37 +01=
+00)
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/locking/test-ww_mutex.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/devfreq/governor_performance.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/devfreq/governor_userspace.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/fsi/fsi-core.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/fsi/fsi-master-aspeed.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/fsi/fsi-master-gpio.o
->> ERROR: modpost: "pwm_round_waveform_might_sleep" [drivers/iio/adc/ad7625.ko] undefined!
+----------------------------------------------------------------
+IIO: 2nd set of new device support features and cleanup for 6.12
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Late pull request as I was planing to include another series that
+is waiting for a fix to end up in char-misc-next.  That can wait
+for next cycle.
+
+Includes one immutable branch merge from MFD to get a necessary header
+change.
+
+Usual mix of a few new drivers, additional device support for existing
+drivers, new features and a bunch of cleanup across tree.
+
+New device support
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+asahi-kasei,ak8975
+- A few minor fixes as precursors to support for the AK09118 magnetometer
+  that is very similar to the already supported AK09112
+awinic,aw96103
+- New driver for this capacitive proximity sensor.
+x-powers,axp202
+- Add support for the axp717 (including merge of MFD immutable branch).
+sophgo,saradc
+- New driver for this SOC ADC.
+
+Features
+=3D=3D=3D=3D=3D=3D=3D=3D
+
+adi,ad4695
+- Add calibration support.
+bosch,bmi323
+- Ensure device is in lowest power state on suspend.
+
+Cleanup and minor fixes
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+treewide
+- Start to standardize formatting of id tables (ADC drivers done so far).
+adi,ad5449
+- Drop platform data support as long unused in upstream kernel.
+bosch,bmc150
+- Use fwnode_irq_get_by_name() in place of of_ variant.
+- Use ACPI_HANDLE() to get the handle directly rather than via
+  ACPI_COMPANION()
+google,cros_ec_mkbp_proximity
+- Include mod_devicetable.h instead of broader of.h
+mirochip,mcp320x
+- Drop vendorless compatible entries as not needed for backwards
+  compatibility and should not be used in new boards.
+st,lsm6dsx
+- Use iio_read_acpi_mount_matrix() helper instead of open coding the
+  same.
+- Drop some unnecessary dev_fwnode() calls to check if a fwnode is
+  available.  All the calls made handle this anyway.
+xilinx,ams
+- Use device_for_each_child_node_scoped() to avoid manual release of
+  fwnode handle.
+
+tools,generic-buffer
+- Handle failure to allocate trigger name.
+- Cleanup .*.cmd files if present.
+
+----------------------------------------------------------------
+Andy Shevchenko (5):
+      iio: proximity: cros_ec_mkbp_proximity: Switch to including mod_devic=
+etable.h for struct of_device_id definition
+      iio: accel: bmc150: use fwnode_irq_get_byname()
+      iio: accel: bmc150: Improve bmc150_apply_bosc0200_acpi_orientation()
+      iio: imu: st_lsm6dsx: Use iio_read_acpi_mount_matrix() helper
+      iio: imu: st_lsm6dsx: Remove useless dev_fwnode() calls
+
+Barnab=C3=A1s Cz=C3=A9m=C3=A1n (2):
+      iio: magnetometer: ak8975: Relax failure on unknown id
+      iio: magnetometer: ak8975: Fix reading for ak099xx sensors
+
+Bartosz Golaszewski (1):
+      iio: dac: ad5449: drop support for platform data
+
+Chris Morgan (4):
+      mfd: axp20x: Add ADC, BAT, and USB cells for AXP717
+      iio: adc: axp20x_adc: Add adc_en1 and adc_en2 to axp_data
+      dt-bindings: iio: adc: Add AXP717 compatible
+      iio: adc: axp20x_adc: add support for AXP717 ADC
+
+Danila Tikhonov (2):
+      dt-bindings: iio: magnetometer: Add ak09118
+      iio: magnetometer: ak8975: Add AK09118 support
+
+David Lechner (4):
+      iio: adc: ad4695: add 2nd regmap for 16-bit registers
+      iio: adc: ad4695: implement calibration support
+      doc: iio: ad4695: update for calibration support
+      iio: ABI: document ad4695 new attributes
+
+Denis Benato (1):
+      iio: bmi323: peripheral in lowest power state on suspend
+
+Javier Carrasco (1):
+      iio: adc: xilinx-ams: use device_* to iterate over device child nodes
+
+Jonathan Cameron (2):
+      iio: adc: standardize on formatting for id match tables
+      Merge remote-tracking branch 'mfd/ib-mfd-for-iio-power-6.12' into tog=
+reg
+
+Rob Herring (Arm) (1):
+      iio: adc: mcp320x: Drop vendorless compatible strings
+
+Thomas Bonnefille (2):
+      dt-bindings: iio: adc: sophgo,cv1800b-saradc: Add Sophgo CV1800B SARA=
+DC
+      iio: adc: sophgo-saradc: Add driver for Sophgo CV1800B SARADC
+
+Zhu Jun (1):
+      tools/iio: Add memory allocation failure check for trigger_name
+
+shuaijie wang (2):
+      dt-bindings: iio: aw96103: Add bindings for aw96103/aw96105 sensor
+      iio: proximity: aw96103: Add support for aw96103/aw96105 proximity se=
+nsor
+
+zhangjiao (1):
+      tools: iio: rm .*.cmd when make clean
+
+ Documentation/ABI/testing/sysfs-bus-iio            |   3 +
+ .../bindings/iio/adc/sophgo,cv1800b-saradc.yaml    |  83 ++
+ .../bindings/iio/adc/x-powers,axp209-adc.yaml      |  12 +
+ .../iio/magnetometer/asahi-kasei,ak8975.yaml       |   4 +
+ .../bindings/iio/proximity/awinic,aw96103.yaml     |  61 ++
+ Documentation/iio/ad4695.rst                       |   7 +-
+ drivers/iio/accel/bmc150-accel-core.c              |  10 +-
+ drivers/iio/adc/Kconfig                            |  10 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/ad4695.c                           | 241 +++++-
+ drivers/iio/adc/ad7091r5.c                         |   6 +-
+ drivers/iio/adc/ad7124.c                           |   4 +-
+ drivers/iio/adc/ad7192.c                           |   6 +-
+ drivers/iio/adc/ad7266.c                           |   4 +-
+ drivers/iio/adc/ad7280a.c                          |   4 +-
+ drivers/iio/adc/ad7291.c                           |   4 +-
+ drivers/iio/adc/ad7292.c                           |   4 +-
+ drivers/iio/adc/ad7298.c                           |   4 +-
+ drivers/iio/adc/ad7476.c                           |  58 +-
+ drivers/iio/adc/ad7606_par.c                       |   2 +-
+ drivers/iio/adc/ad7606_spi.c                       |   4 +-
+ drivers/iio/adc/ad7766.c                           |  14 +-
+ drivers/iio/adc/ad7768-1.c                         |   2 +-
+ drivers/iio/adc/ad7780.c                           |  10 +-
+ drivers/iio/adc/ad7793.c                           |  20 +-
+ drivers/iio/adc/ad7887.c                           |   4 +-
+ drivers/iio/adc/ad7923.c                           |  18 +-
+ drivers/iio/adc/ad9467.c                           |   4 +-
+ drivers/iio/adc/aspeed_adc.c                       |   2 +-
+ drivers/iio/adc/at91_adc.c                         |   2 +-
+ drivers/iio/adc/axp20x_adc.c                       | 182 ++++-
+ drivers/iio/adc/axp288_adc.c                       |   2 +-
+ drivers/iio/adc/bcm_iproc_adc.c                    |   2 +-
+ drivers/iio/adc/berlin2-adc.c                      |   2 +-
+ drivers/iio/adc/ep93xx_adc.c                       |   2 +-
+ drivers/iio/adc/exynos_adc.c                       |   2 +-
+ drivers/iio/adc/hi8435.c                           |   2 +-
+ drivers/iio/adc/hx711.c                            |   2 +-
+ drivers/iio/adc/ina2xx-adc.c                       |  14 +-
+ drivers/iio/adc/ingenic-adc.c                      |   2 +-
+ drivers/iio/adc/lpc32xx_adc.c                      |   2 +-
+ drivers/iio/adc/ltc2496.c                          |   2 +-
+ drivers/iio/adc/ltc2497.c                          |   2 +-
+ drivers/iio/adc/max1027.c                          |  16 +-
+ drivers/iio/adc/max11100.c                         |   4 +-
+ drivers/iio/adc/max1118.c                          |   4 +-
+ drivers/iio/adc/max1241.c                          |   4 +-
+ drivers/iio/adc/max34408.c                         |   4 +-
+ drivers/iio/adc/max9611.c                          |   6 +-
+ drivers/iio/adc/mcp320x.c                          |  10 -
+ drivers/iio/adc/mp2629_adc.c                       |   4 +-
+ drivers/iio/adc/mt6360-adc.c                       |   2 +-
+ drivers/iio/adc/nau7802.c                          |   2 +-
+ drivers/iio/adc/pac1921.c                          |   4 +-
+ drivers/iio/adc/pac1934.c                          |   6 +-
+ drivers/iio/adc/qcom-pm8xxx-xoadc.c                |   2 +-
+ drivers/iio/adc/qcom-spmi-rradc.c                  |   2 +-
+ drivers/iio/adc/rockchip_saradc.c                  |   2 +-
+ drivers/iio/adc/rtq6056.c                          |   2 +-
+ drivers/iio/adc/sophgo-cv1800b-adc.c               | 227 ++++++
+ drivers/iio/adc/stm32-adc.c                        |   2 +-
+ drivers/iio/adc/stm32-dfsdm-adc.c                  |   2 +-
+ drivers/iio/adc/stm32-dfsdm-core.c                 |   2 +-
+ drivers/iio/adc/stmpe-adc.c                        |   2 +-
+ drivers/iio/adc/ti-adc0832.c                       |   4 +-
+ drivers/iio/adc/ti-adc084s021.c                    |   4 +-
+ drivers/iio/adc/ti-adc12138.c                      |   4 +-
+ drivers/iio/adc/ti-adc161s626.c                    |   8 +-
+ drivers/iio/adc/ti-ads1015.c                       |   4 +-
+ drivers/iio/adc/ti-ads124s08.c                     |   2 +-
+ drivers/iio/adc/ti-ads131e08.c                     |   4 +-
+ drivers/iio/adc/ti-ads7924.c                       |   4 +-
+ drivers/iio/adc/ti-ads7950.c                       |   2 +-
+ drivers/iio/adc/ti-ads8344.c                       |   2 +-
+ drivers/iio/adc/ti-ads8688.c                       |   6 +-
+ drivers/iio/adc/ti-lmp92064.c                      |   2 +-
+ drivers/iio/adc/ti-tlc4541.c                       |   8 +-
+ drivers/iio/adc/xilinx-ams.c                       |  15 +-
+ drivers/iio/dac/ad5449.c                           |  15 +-
+ drivers/iio/imu/bmi323/bmi323_core.c               | 161 +++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c       |  93 +--
+ drivers/iio/magnetometer/Kconfig                   |   2 +-
+ drivers/iio/magnetometer/ak8975.c                  |  79 +-
+ drivers/iio/proximity/Kconfig                      |  11 +
+ drivers/iio/proximity/Makefile                     |   1 +
+ drivers/iio/proximity/aw96103.c                    | 846 +++++++++++++++++=
+++++
+ drivers/iio/proximity/cros_ec_mkbp_proximity.c     |   2 +-
+ drivers/mfd/axp20x.c                               |  25 +-
+ include/linux/mfd/axp20x.h                         |  26 +
+ include/linux/platform_data/ad5449.h               |  39 -
+ tools/iio/Makefile                                 |   2 +-
+ tools/iio/iio_generic_buffer.c                     |   4 +
+ 92 files changed, 2128 insertions(+), 382 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/sophgo,cv1800=
+b-saradc.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/awinic,=
+aw96103.yaml
+ create mode 100644 drivers/iio/adc/sophgo-cv1800b-adc.c
+ create mode 100644 drivers/iio/proximity/aw96103.c
+ delete mode 100644 include/linux/platform_data/ad5449.h
 

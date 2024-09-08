@@ -1,60 +1,62 @@
-Return-Path: <linux-iio+bounces-9317-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9318-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E559706B0
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 12:47:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF329706C3
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 12:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E6671F21B57
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 10:47:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 456F9B20C76
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 10:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDB9152169;
-	Sun,  8 Sep 2024 10:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E121509BF;
+	Sun,  8 Sep 2024 10:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDby999W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hJHdM2zq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6190A4B5AE;
-	Sun,  8 Sep 2024 10:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33A24B5AE;
+	Sun,  8 Sep 2024 10:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725792441; cv=none; b=d0106UbOh6oS2AU5kq69sGSB7nhYikZV9MjfCzz7aNQeJo6aDVYxoi+vJuPgIxwP3Y/a8gjf9yfbuEfyKHYWw0+EwpR4ZYicNtpACg+S/4u6AV9JrhhhpVcDYpLnMARRADatNkud0XaMFBVEuVSPD3mWrPHAbakZOM0PHcw81ho=
+	t=1725792684; cv=none; b=F6ZGQKdZfOOZelCBzXLVMr32w41+L+YQ4/cqRuAH37xE8Y+vCO6tsn6RI3e/5pTJGYYoh7WBuhgpADQG/j4P5AcSz1tSxdthRk8yggBESjLe8X54qEbHTSefHpU2FxdXK3S2maIajSYslKK3DpmfhCKJAnEkWQFzFw8PvzStBO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725792441; c=relaxed/simple;
-	bh=UKNmYp6GPFaN/LKpeO1ZuRalCt0DLguHHWLvmmydY5Y=;
+	s=arc-20240116; t=1725792684; c=relaxed/simple;
+	bh=OFfjpZOaBCRy6/aLBKamak0P24a0SfLNSwakEI54tBs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rp2fHr68xLuTiMiFALTJqAUzoj3MRlMOV6qQJBVr90HdDl9biafh3tngPjXbyGtmE2kk9VlcUQK4K82mB6LJ5SDLQXvfLm9SnJp4u70GNWkjp7Vt5DutcwPtO26mhvg8VWQoXDfIWhgXycaw0sqsZdZOpYXFx/TZxnnCHWo6Ry4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDby999W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C1BC4CEC3;
-	Sun,  8 Sep 2024 10:47:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HB0rULxC7tuNoFV/e+fOF0WYwAaqzrJYwxoJ1l0N53z6e5r2tliRJF0c0dbfi9onG4HJE7JyxylHUfinYOpWGc0AhdqZpIqiII7M/Sa2A3IJu0emax203vkFIoW9W/cwvoCu28CnOC/KKDICK3wqSxzms8FyU97RcJi0TAheexE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hJHdM2zq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24619C4CEC3;
+	Sun,  8 Sep 2024 10:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725792441;
-	bh=UKNmYp6GPFaN/LKpeO1ZuRalCt0DLguHHWLvmmydY5Y=;
+	s=k20201202; t=1725792683;
+	bh=OFfjpZOaBCRy6/aLBKamak0P24a0SfLNSwakEI54tBs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UDby999WmRjj9VgHsiLSKJvWxq/zIShiWoSxwtMglivzGTh2B04xUCsaI1VE4AVXe
-	 zswq3CnWbR7FaLE8h5wc9xZIyd4EUblniJ4QQcvJXwABN/Y6+iUtNBA7HtKNU+XqIM
-	 D/i7qJCD5y5IKDi1R1VpCq4h9mOHinIG/xGeEA86XkQEnt7iqiTknu3llKXGdHYGe9
-	 PMUAWN1i4UpE3eHWB1pRdXiDJWDq6bN/MKojGGfeadRl2xJdhU8j2Uw1FhqHiEExzs
-	 giYQxv6oCaGBQIBMfr61H4/1urc4SPpa/Bop/NYpbPuar7gmdAmkcmssbK9tkDoi2N
-	 PmaV978Ofseag==
-Date: Sun, 8 Sep 2024 11:47:11 +0100
+	b=hJHdM2zqFH63fWYXIquUTb0f4V3VRm+skZXPUnIKkzm6QvX1HkEOjJbLgsaRXo7vz
+	 nw9eWghWA4IDMqV7S+ct6ThyPlyDebCc7Ytg7Q+xbCZ3uLHjfL46+CpEACPfoKbaCK
+	 ZEUMWRCeETqvX7Qs9P0+A27RLUfDKD5YgnYJM5pDWD1s2MVmdF0QfwmP5RJ+iMuAUL
+	 AysPrFc4byah4h1GX0GswsF5b7FqbvVYKAjm1gsonVuMk4KJ+qnlbmtyM3IFNPtT+f
+	 mPtPTVv6MRbMPU9mbvaF4eWPgZwLVFjHTVpSLUgabiVCzCV7dmq0nY8KruGdsE0roE
+	 S52DTkTq/YCZw==
+Date: Sun, 8 Sep 2024 11:51:15 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, krzk+dt@kernel.org, robh@kernel.org,
- lars@metafoo.de, michael.hennerich@analog.com, gstols@baylibre.com
-Subject: Re: [PATCH v5 6/9] iio: adc: ad7606: rework available attributes
- for SW channels
-Message-ID: <20240908114711.0f350072@jic23-huawei>
-In-Reply-To: <CA+GgBR99R=PEyTR_KZO6M_YiRepa5ZFhXcRRq=AtD65rn5MCZg@mail.gmail.com>
-References: <20240907065043.771364-1-aardelean@baylibre.com>
-	<20240907065043.771364-7-aardelean@baylibre.com>
-	<20240907160356.3de047b0@jic23-huawei>
-	<CA+GgBR99R=PEyTR_KZO6M_YiRepa5ZFhXcRRq=AtD65rn5MCZg@mail.gmail.com>
+To: jason liu <jasonliu10041728@gmail.com>
+Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
+ "lars@metafoo.de" <lars@metafoo.de>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: =?UTF-8?B?5Zue5aSNOg==?= [PATCH] iio/inv_icm42600: add
+ inv_icm42600 id_table
+Message-ID: <20240908115115.1bf1155d@jic23-huawei>
+In-Reply-To: <SI6PR01MB63197238674C8895885420D8F59E2@SI6PR01MB6319.apcprd01.prod.exchangelabs.com>
+References: <FR3P281MB175720831E0817C23AD0B1BACE922@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+	<20240902113101.3135-1-jasonliu10041728@gmail.com>
+	<CAJci1vC9pvdqEpA8sk+uB5jJGn_DKUruXFfY6tbG9mO07YxgHQ@mail.gmail.com>
+	<FR3P281MB1757BEA60FF72A44847F1646CE9D2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+	<SI6PR01MB63197238674C8895885420D8F59E2@SI6PR01MB6319.apcprd01.prod.exchangelabs.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,93 +67,155 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 7 Sep 2024 21:10:10 +0300
-Alexandru Ardelean <aardelean@baylibre.com> wrote:
+On Fri, 6 Sep 2024 05:02:59 +0000
+jason liu <jasonliu10041728@gmail.com> wrote:
 
-> On Sat, Sep 7, 2024 at 6:04=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
-> >
-> > On Sat,  7 Sep 2024 09:50:39 +0300
-> > Alexandru Ardelean <aardelean@baylibre.com> wrote:
-> > =20
-> > > For SW mode, the oversampling and scales attributes are always presen=
-t.
-> > > So, they can be implemented via a 'read_avail' hook in iio_info.
-> > >
-> > > For HW mode, it's a bit tricky, as these attributes get assigned base=
-d on
-> > > GPIO definitions.
-> > >
-> > > So, for SW mode, we define a separate AD7606_SW_CHANNEL() macro, and =
-use
-> > > that for the SW channels.
-> > > And 'ad7606_info_os_range_and_debug' can be renamed to
-> > > 'ad7606_info_sw_mode' as it is only used for SW mode.
-> > >
-> > > For the 'read_avail' hook, we'll need to allocate the SW scales, so t=
-hat
-> > > they are just returned userspace without any extra processing.
-> > > The allocation will happen when then ad7606_state struct is allocated.
-> > > The oversampling available parameters don't need any extra processing=
-; they
-> > > can just be passed back to userspace (as they are).
-> > >
-> > > Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com> =20
-> >
-> > One question inline.
-> > =20
-> > >
-> > >  int ad7606_probe(struct device *dev, int irq, void __iomem *base_add=
-ress,
-> > > diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-> > > index 635407c2acc0..fa175cff256c 100644
-> > > --- a/drivers/iio/adc/ad7606.h
-> > > +++ b/drivers/iio/adc/ad7606.h =20
-> > =20
-> > >  #define AD7616_CHANNEL(num)  AD7606_SW_CHANNEL(num, 16)
-> > >
-> > >  /**
-> > > @@ -65,11 +84,15 @@ struct ad7606_chip_info {
-> > >  /**
-> > >   * struct ad7606_chan_scale - channel scale configuration
-> > >   * @scale_avail              pointer to the array which stores the a=
-vailable scales
-> > > + * @scale_avail_show a duplicate of 'scale_avail' which is readily f=
-ormatted
-> > > + *                   such that it can be read via the 'read_avail' h=
-ook
-> > >   * @num_scales               number of elements stored in the scale_=
-avail array
-> > >   * @range            voltage range selection, selects which scale to=
- apply
-> > >   */
-> > >  struct ad7606_chan_scale {
-> > > +#define AD760X_MAX_SCALE_SHOW                (AD760X_MAX_CHANNELS * =
-2) =20
-> >
-> > Why is the number of scales dependent on the number of channels? =20
+> Hello,
 >=20
-> Well, that was just a lazy implementation.
-> I doubt there would be 16 scales (channel range values) for any newer par=
-t.
-> A value for a channel-range is 4-bits (for 0 to 15).
+> I'm glad this patch could help. And I would like to know, how will the pa=
+tch to be handled moving forward?
 >=20
-> In IIO the current highest scale-count is 5; I guess I can update this
-> to a macro, and use that.
-Indeed defining this as 16 would make more sense than basing it on random
-unconnected thing!
+It is queued up on the IIO tree.  Given timing it's queued for 6.13.
+Note that for now that is only pushed out as testing because I will
+be rebasing the IIO togreg branch on 6.12-rc1.
+One that is done it will appear in linux-next.
+
+It should go upstream and appear in char-misc/char-misc-next
+in about 6 weeks.  After that Greg KH will send a pull request during
+the 6.13 merge window in about 12 weeks time and it will then hopefully
+get merged into Linus' tree before 6.13-rc1=20
+
+I haven't treated this as a fix because it was never there, but
+it may make sense to request a backport to stable after it is upstream.
+
+Thanks,
 
 Jonathan
 
+> Thanks.
 >=20
+> ________________________________
+> From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> Sent: Thursday, September 5, 2024 5:25 PM
+> To: jason liu <jasonliu10041728@gmail.com>
+> Cc: jic23@kernel.org <jic23@kernel.org>; lars@metafoo.de <lars@metafoo.de=
+>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; linux-kernel@vger=
+.kernel.org <linux-kernel@vger.kernel.org>
+> Subject: Re: [PATCH] iio/inv_icm42600: add inv_icm42600 id_table
 >=20
-> > =20
-> > >       const unsigned int              *scale_avail;
-> > > +     int                             scale_avail_show[AD760X_MAX_SCA=
-LE_SHOW];
-> > >       unsigned int                    num_scales;
-> > >       unsigned int                    range;
-> > >  }; =20
-> > =20
+> Hello,
+>=20
+> looks good for me now, thanks for the patch.
+>=20
+> Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+>=20
+> Thanks,
+> JB
+>=20
+> ________________________________________
+> From: jason liu <jasonliu10041728@gmail.com>
+> Sent: Wednesday, September 4, 2024 11:00
+> To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> Cc: jic23@kernel.org <jic23@kernel.org>; lars@metafoo.de <lars@metafoo.de=
+>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; linux-kernel@vger=
+.kernel.org <linux-kernel@vger.kernel.org>
+> Subject: Re: [PATCH] iio/inv_icm42600: add inv_icm42600 id_table
+>=20
+> This Message Is From an Untrusted Sender
+> You have not previously corresponded with this sender.
+>=20
+> Hello, does patch v3 meet the requirements?
+>=20
+> BR.
+>=20
+> Jason Liu <jasonliu10041728@gmail.com> =E4=BA=8E2024=E5=B9=B49=E6=9C=882=
+=E6=97=A5=E5=91=A8=E4=B8=80 19:31=E5=86=99=E9=81=93=EF=BC=9A
+> Add the id_table of inv_icm42600, so the device can probe correctly.
+>=20
+> Signed-off-by: Jason Liu <jasonliu10041728@gmail.com>
+> ---
+> V1->V2: fix up the formatting as requested
+> ---
+> V2->V3: add icm42686 (INV_ICM_42686) and icm42688 (INV_ICM_42688)
+> ---
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 17 +++++++++++++++++
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c | 17 +++++++++++++++++
+>  2 files changed, 34 insertions(+)
+>=20
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/ii=
+o/imu/inv_icm42600/inv_icm42600_i2c.c
+> index ebb31b385881..9e65fef04c39 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
+> @@ -71,6 +71,22 @@ static int inv_icm42600_probe(struct i2c_client *clien=
+t)
+>                                        inv_icm42600_i2c_bus_setup);
+>  }
+>=20
+> +/*
+> + * device id table is used to identify what device can be
+> + * supported by this driver
+> + */
+> +static const struct i2c_device_id inv_icm42600_id[] =3D {
+> +       { "icm42600", INV_CHIP_ICM42600 },
+> +       { "icm42602", INV_CHIP_ICM42602 },
+> +       { "icm42605", INV_CHIP_ICM42605 },
+> +       { "icm42686", INV_CHIP_ICM42686 },
+> +       { "icm42622", INV_CHIP_ICM42622 },
+> +       { "icm42688", INV_CHIP_ICM42688 },
+> +       { "icm42631", INV_CHIP_ICM42631 },
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(i2c, inv_icm42600_id);
+> +
+>  static const struct of_device_id inv_icm42600_of_matches[] =3D {
+>         {
+>                 .compatible =3D "invensense,icm42600",
+> @@ -104,6 +120,7 @@ static struct i2c_driver inv_icm42600_driver =3D {
+>                 .of_match_table =3D inv_icm42600_of_matches,
+>                 .pm =3D pm_ptr(&inv_icm42600_pm_ops),
+>         },
+> +       .id_table =3D inv_icm42600_id,
+>         .probe =3D inv_icm42600_probe,
+>  };
+>  module_i2c_driver(inv_icm42600_driver);
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/ii=
+o/imu/inv_icm42600/inv_icm42600_spi.c
+> index eae5ff7a3cc1..75441b2be174 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+> @@ -67,6 +67,22 @@ static int inv_icm42600_probe(struct spi_device *spi)
+>                                        inv_icm42600_spi_bus_setup);
+>  }
+>=20
+> +/*
+> + * device id table is used to identify what device can be
+> + * supported by this driver
+> + */
+> +static const struct spi_device_id inv_icm42600_id[] =3D {
+> +       { "icm42600", INV_CHIP_ICM42600 },
+> +       { "icm42602", INV_CHIP_ICM42602 },
+> +       { "icm42605", INV_CHIP_ICM42605 },
+> +       { "icm42686", INV_CHIP_ICM42686 },
+> +       { "icm42622", INV_CHIP_ICM42622 },
+> +       { "icm42688", INV_CHIP_ICM42688 },
+> +       { "icm42631", INV_CHIP_ICM42631 },
+> +       {}
+> +};
+> +MODULE_DEVICE_TABLE(spi, inv_icm42600_id);
+> +
+>  static const struct of_device_id inv_icm42600_of_matches[] =3D {
+>         {
+>                 .compatible =3D "invensense,icm42600",
+> @@ -100,6 +116,7 @@ static struct spi_driver inv_icm42600_driver =3D {
+>                 .of_match_table =3D inv_icm42600_of_matches,
+>                 .pm =3D pm_ptr(&inv_icm42600_pm_ops),
+>         },
+> +       .id_table =3D inv_icm42600_id,
+>         .probe =3D inv_icm42600_probe,
+>  };
+>  module_spi_driver(inv_icm42600_driver);
+> --
+> 2.25.1
 
 

@@ -1,63 +1,62 @@
-Return-Path: <linux-iio+bounces-9324-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9325-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5700B970762
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 14:26:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64131970766
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 14:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DF3A28231A
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 12:26:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 285A7281E0B
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 12:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EF4161306;
-	Sun,  8 Sep 2024 12:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B03161328;
+	Sun,  8 Sep 2024 12:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="niQ6mWLG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LSvhceZV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169361509AB;
-	Sun,  8 Sep 2024 12:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C056420B20;
+	Sun,  8 Sep 2024 12:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725798409; cv=none; b=B2Ns5CigvRN4Qf12lQvUCJg9i3oIsxDAxzAKkqwRx5m5hX+m8jXF+iLR3TfXMEuCRoJau3I4wjnik7O8El6c9SDNdRGIvFvP2hiSxfEU5gGeos42C7NxGNO9YDO29j+ypTnTdaVo6eyIaSaNafIchIsE/RGcweMlJT65qq/5qD0=
+	t=1725798575; cv=none; b=SxLG5hxcnHnlcHvTCy6xWUommK8tgWEM+3GuhIDfEDVbWAjc6qCNXZf3rDneSjzc44KsmJY+i4YkPRZzzWoa5kpVz9BSUMMbBrbmvNAgNzhc9wqZWqjC+gtqhsV7Fg804D7PGfyJj8oxr0Gw6AUNXN5L1Dft93tg4UQKLQEd+ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725798409; c=relaxed/simple;
-	bh=VAcsrFstzUOeCIGcnQ5KBqekKS17CdwXMYlisjyPJQ4=;
+	s=arc-20240116; t=1725798575; c=relaxed/simple;
+	bh=LeSUaK5+Z0HiapwcQsbC1SlqrKMbt+ozqonDsvF2Mv4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QdhFtIeAB9RDAbqLgPjEgOKT+WRNY7ntjgsNdHLrnOziK0MZ3K+iEzN2HQuDlkTzA0srxAPwMIy+cLfDjXdPfElh62Bh/5eY/B16qjZb+1NysMFZal0igYv59kxsWPKZpz7NkBMAXhl8XNirnkPpShu+S5bNciRpoZQ4oJ9pogg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=niQ6mWLG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9939C4CEC3;
-	Sun,  8 Sep 2024 12:26:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YNXIjdRAqvryglgp52rJVUmJgorqqz4l60h4RAgh/ObgcmjH+e3uaR/qE9H7uSmIvbT5Z7rKhPtu7xKvn3XqtSVxml0IQpZR0ufzdNBp4FStILSCr4RwP/foXy6ZS5jpwGGNcMUF1tU2NhmcFG4adthNC1SiETcKPN1VJa4Z6Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LSvhceZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55BAC4CEC3;
+	Sun,  8 Sep 2024 12:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725798408;
-	bh=VAcsrFstzUOeCIGcnQ5KBqekKS17CdwXMYlisjyPJQ4=;
+	s=k20201202; t=1725798575;
+	bh=LeSUaK5+Z0HiapwcQsbC1SlqrKMbt+ozqonDsvF2Mv4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=niQ6mWLGzsHB8u7kUzL1M9m5aUfJ4bChFO8ZO3nnPftaa3Ak+oYKbDDalzX8P0qUJ
-	 WGgTFycxhZu1+S51n3Wy2spFPyl/CVxSy4WQVn6p8tnGhqWfUDXl47YAUM6DQxMFRe
-	 IvavxhXlkCiXOJ36VUnQYPWyDljohSe00MOsPctmbKBfAz3S1qTr8WidrLT4KS9AIq
-	 62ORDHh+/YIuDXiPLh4VSo56CtuAwcSP512abmU4fxPceaVx1eYRX2D+8udsrfmuKl
-	 fVatOOVhPbzufo6RL8qBz7A9dvpcCeIZ/hkPkbIU30aXyaJWYQ/iE/fpdCIXXZypj1
-	 CAkFiSa5J5f9Q==
-Date: Sun, 8 Sep 2024 13:26:38 +0100
+	b=LSvhceZVZh+1TBVlGWhrfGv/G2cU+dJLyPs1gVC7ut659HwxFWgNuZLDiHsMukG23
+	 AGUzfgYA7GvrT0/UyBGfj3t+xLg/x7s2m/67+txOB7S+Bg55z2z5HCJ4k+KLHbQv6F
+	 iqKaMXtYOEY1YpbJ2Wi5cjsyNncvY5/JjHs9zbrr7uRgm11VfiCHYJKguruFBZOsd6
+	 Gt0WpTKqCG7UY2LFJ6KMylpHlXW8ph668Vm0DK+ApuC1AOT8PtR0aXTGkGhEmffK3N
+	 jRxE6Q6s/jKWCE80SXXrN/VRksDGb+pAaaN8DnZTl2abHFt21xODif0STd3Bm7V95k
+	 CuldoOAhSJbLg==
+Date: Sun, 8 Sep 2024 13:29:25 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 9/9] iio: ABI: add DAC sysfs synchronous_mode
- parameter
-Message-ID: <20240908132638.6322be29@jic23-huawei>
-In-Reply-To: <b70612bd-e61f-4286-9337-bca48768fbdd@baylibre.com>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, David Lechner
+ <dlechner@baylibre.com>
+Subject: Re: [PATCH v2 1/9] dt-bindings: iio: dac: ad3552r: add io-backend
+ property
+Message-ID: <20240908132925.331c5175@jic23-huawei>
+In-Reply-To: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-1-87d669674c00@baylibre.com>
 References: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylibre.com>
-	<20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-9-87d669674c00@baylibre.com>
-	<b70612bd-e61f-4286-9337-bca48768fbdd@baylibre.com>
+	<20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-1-87d669674c00@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,57 +67,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 5 Sep 2024 14:14:37 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 05 Sep 2024 17:17:31 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> On 9/5/24 10:17 AM, Angelo Dureghello wrote:
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> > 
-> > Some DACs as ad3552r need a synchronous mode setting, adding
-> > this parameter for ad3552r and for future use on other DACs,
-> > if needed.
-> > 
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---
-> >  Documentation/ABI/testing/sysfs-bus-iio-dac | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac b/Documentation/ABI/testing/sysfs-bus-iio-dac
-> > index 810eaac5533c..2f4960c79385 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-iio-dac
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac
-> > @@ -59,3 +59,19 @@ Description:
-> >  		multiple predefined symbols. Each symbol corresponds to a different
-> >  		output, denoted as out_voltageY_rawN, where N is the integer value
-> >  		of the symbol. Writing an integer value N will select out_voltageY_rawN.
-> > +
-> > +What:		/sys/bus/iio/devices/iio:deviceX/out_voltage_synchronous_mode
-> > +KernelVersion:	6.13
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		Arm or disarm a wait-for-synchronization flag. Arming this flag
-> > +		means the DAC will wait for a synchronizatiopn signal on a
-> > +		specific internal or external wired connection. I.e., there are
-> > +		cases where multiple DACs IP are built in the same chip or fpga
-> > +		design, and they need to start the data stream synchronized.
-> > +
-> > +What:		/sys/bus/iio/devices/iio:deviceX/out_voltage_synchronous_mode_available
-> > +KernelVersion:	6.13
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		List of available values for synchronous_mode.
-> >   
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Since this depends on how things are wired, it seems like this should be
-> something specified in the devicetree, not through sysfs attributes.
+> There is a version AXI DAC IP block (for FPGAs) that provides
+> a physical bus for AD3552R and similar chips. This can be used
+> instead of a typical SPI controller to be able to use the chip
+> in ways that typical SPI controllers are not capable of.
 > 
-Agreed. Smells like a wiring thing given the description.  Is there a case
-where it works either way and it is usecase dependent which choice makes
-sense?   Superficially it seems likely if a board has this wired, there
-is little disadvantage in using it always.
+> The binding is modified so that either the device is a SPI
+> peripheral or it uses an io-backend.
+> 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 
-Jonathan
+>  
+>  required:
+>    - compatible
+> -  - reg
+> -  - spi-max-frequency
+Sort of feels like both reg and spi-max-frequency
+are valid things to specify. 
 
+Maybe we have an excellent IP and dodgy wiring so want
+to clamp the frequency (long term - don't need to support
+in the driver today).
+
+Maybe we have an axi_dac IP that supports multiple
+front end devices?  So maybe just keep reg?
+>  
+>  additionalProperties: false
+>  
+> @@ -238,4 +254,26 @@ examples:
+>              };
+>          };
+>      };
+> +
+> +  - |
+> +    backend: axi_dac@44a70000 {
+> +        compatible = "adi,axi-dac-ad3552r";
+> +        reg = <0x44a70000 0x1000>;
+> +        dmas = <&dac_tx_dma 0>;
+> +        dma-names = "tx";
+> +        #io-backend-cells = <0>;
+> +        clocks = <&ref_clk>;
+> +        dac {
+> +            compatible = "adi,ad3552r";
+> +            reset-gpios = <&gpio0 92 1>;
+> +            io-backends = <&backend>;
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +            channel@0 {
+> +                reg = <0>;
+> +                adi,output-range-microvolt = <(-10000000) (10000000)>;
+> +            };
+> +        };
+> +    };
+> +
+>  ...
 > 
 
 

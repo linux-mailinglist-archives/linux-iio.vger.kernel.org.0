@@ -1,136 +1,156 @@
-Return-Path: <linux-iio+bounces-9334-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9335-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A24970877
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 17:49:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB7C97087F
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 17:55:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FC18281FFF
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 15:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0E7A1C210F2
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 15:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39341741C6;
-	Sun,  8 Sep 2024 15:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C83A1741C6;
+	Sun,  8 Sep 2024 15:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RM4S4/AP"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="EpI2qaIY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8861FEACD;
-	Sun,  8 Sep 2024 15:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B147E1C01;
+	Sun,  8 Sep 2024 15:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725810589; cv=none; b=jvaEtjfiPD0T3zcHgTUXc9T18oVaxOiOUTMfap23piJtyAaM/NMLiwRPz6isN0kvNUHCzv0EFqzFoEPpbQrKpfFbJi4kayl/ua1Arx3OAARjT5WeYj1ns16NOTSLJPL1wM6V3tj6RWX4UP2YFDAPv/eSLE6Z0uz2f1r7Jsx/SLQ=
+	t=1725810914; cv=none; b=gFXvE4UYWy1q5ZnQNxzEQzUy5W1bZzji9nBbwJYbRl+RoSBeCjmlJQB4vOLAAYJ3ulG4FfVDx+OLaKEIq+qqVlzmcuhhCNwcx4KBowZHhOE1v0TG1aM+71BOSFr5hcD02Xt1nZLnV1ZWVrIkhfsDRTRzkEN6BlS7iUg2PaanfeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725810589; c=relaxed/simple;
-	bh=uF5GTxQGmCiuSohan05MCMU7ExDA98etESDDUUWTaAA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VUcFhTf2wM3RBcVTokKD4N0b1Rm9nJ1gVPAEE00YlK63i7hI+zvD1rX7zFH/9eiZ/pcsQehcd4u9iAd8gFrT9hIB8c9ZpqvEo+YWJl0R7kLXv6X21xSaXFuNaJmw4+Voagti1PZVY11JWRlaVikH3tUvetLilZQ7ARkz4SS2Uks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RM4S4/AP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150D3C4CEC3;
-	Sun,  8 Sep 2024 15:49:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725810589;
-	bh=uF5GTxQGmCiuSohan05MCMU7ExDA98etESDDUUWTaAA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RM4S4/APJ0V/QTwLTpEvGUO0iNQUw3suzFDiLESMpA0r0Ki95CrdZDxFM6JolR8DX
-	 eg9v3T5LOGWndKF1EBC/6zNbngnupzS434DEevOlruKOiKFMZOVS6c+LEA6Erd8tU+
-	 vROqKc1XPuWEf0+bUPBIipjbcKtY957I4xpmW+2cRjEkj/xiEzJRDwv+h8KWa6SavY
-	 CmxQ3Ud4CF3s0JmZAbhcSPu664ZQ96kRoCZinaXDHBbyGNHZJ9SCZ69Hz2PqWpcbbZ
-	 R3TaOHWBinCBfRIAIruaCdBL/WC/jGv8fR+Xy73ym+2G//Gaw/WkOCN3fZxKrclt+j
-	 cyY6Mp8zlQA1w==
-Date: Sun, 8 Sep 2024 16:49:40 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 8/9] iio: dac: ad3552r: add axi platform driver
-Message-ID: <20240908164940.7c4ffb8a@jic23-huawei>
-In-Reply-To: <b289a789-0440-4c1f-9f75-6d7e8e04189d@baylibre.com>
-References: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylibre.com>
-	<20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-8-87d669674c00@baylibre.com>
-	<b289a789-0440-4c1f-9f75-6d7e8e04189d@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1725810914; c=relaxed/simple;
+	bh=v+PbIhluUYHPkTXQbLEp7rKf+phmDR3lOvJzKK41r7Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hEKdsbCEqAxjYIwtF4VvUeJs549swPQ7j2nKmEootfGNHJ6/qXnR+TWc0reAshbxgGzyQyYCVfAXweD6Cc1FRBAiKOtmvMTH6FkgRk5e/A3aFnXXFpz+m8Xm1tRs7KyyltYkISnIkhDvyvTnlDyz8faYYCq+6dE4lPWkxKLdb38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=EpI2qaIY; arc=none smtp.client-ip=80.12.242.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id nKEfsh3BJyrIRnKEfscxAl; Sun, 08 Sep 2024 17:53:58 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1725810838;
+	bh=kngBzB+Sdz8MioJqXgWkYppAfEiKl25T3IlQnUXg61Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=EpI2qaIYiU76k5+uUEt3ZJ0OFwUwoq4Lgkk/fO/xcEi3mt5n9VhnQupHm1way9XwN
+	 TTSLn8+pSGMSJIHuNyyMvNt3n5sYKtNWBy8WmWkrrxCar/1KOFvlJQkf9Vm6btW4F2
+	 knjTMMHh9mndFuu3YF9yRvXYflekZAMsB0utFCljwY5ycV+MmISKpfN7M2h51lk7ys
+	 D0mLi0hCymsmF/nGnvuKNDydqWdBT+leEjTB6XtwL5VfS75uHI+1WUIHGH/zW7Dht4
+	 Z/Xv5y3+hrkSr/bQmlXe7g3XXLFDk5FGe1V+LlF32XVaPy/hgWAEnOXkkbTdigoZQ6
+	 ZQttCPEVbEK5w==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Sun, 08 Sep 2024 17:53:58 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <88021dc4-d131-49f0-9afd-fd11b1a34bc2@wanadoo.fr>
+Date: Sun, 8 Sep 2024 17:53:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 7/9] iio: dac: ad3552r: extract common code (no changes
+ in behavior intended)
+To: adureghello@baylibre.com
+Cc: Michael.Hennerich@analog.com, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, dlechner@baylibre.com, jic23@kernel.org,
+ krzk+dt@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nuno.sa@analog.com,
+ olivier.moysan@foss.st.com, robh@kernel.org
+References: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylibre.com>
+ <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-7-87d669674c00@baylibre.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-7-87d669674c00@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 5 Sep 2024 15:40:11 -0500
-David Lechner <dlechner@baylibre.com> wrote:
-
-> On 9/5/24 10:17 AM, Angelo Dureghello wrote:
+Le 05/09/2024 à 17:17, Angelo Dureghello a écrit :
+> From: Angelo Dureghello <adureghello-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 > 
-> ...
-One reply to a comment David made.
-
-Jonathan
-
-> 
-> > +		 */
-> > +		if (st->single_channel)
-> > +			clk_rate = DIV_ROUND_CLOSEST(clk_rate, 4);
-> > +		else
-> > +			clk_rate = DIV_ROUND_CLOSEST(clk_rate, 8);
-> > +  
-> 
-> Having the sample rate depend on how many channels are enabled in
-> the buffer seems a bit odd. Sampling frequency is not strictly
-> defined in IIO, so I think it would be fine to always return the
-> same value no matter how many channels are enabled.
-> 
-> We will just need to document that the sampling frequency is the
-> rate per sample, not per channel. So if two channels are enabled,
-> the effective sampling rate per channel is 1/2 of the sampling
-> rate reported by the sysfs attribute. 
-
-There is an oddity around this that we've never cleared up fully.
-
-In my head at least if there is a single sampling_frequency it
-applies to 'scans', not individual channel reads (so would change
-with the number of channels enabled).  If there
-is a per channel attribute we do have documentation:
-
-What:		/sys/bus/iio/devices/iio:deviceX/in_voltageX_sampling_frequency
-What:		/sys/bus/iio/devices/iio:deviceX/in_powerY_sampling_frequency
-What:		/sys/bus/iio/devices/iio:deviceX/in_currentZ_sampling_frequency
-KernelVersion:	5.20
-Contact:	linux-iio@vger.kernel.org
-Description:
-		Some devices have separate controls of sampling frequency for
-		individual channels. If multiple channels are enabled in a scan,
-		then the sampling_frequency of the scan may be computed from the
-		per channel sampling frequencies.
-
-For many devices the sampling frequency isn't down to each sample taking
-N microsecs and them running back to back, it is instead a function of
-a periodic sampling start for samples that take the same time whatever
-the sampling frequency.  Also for simultaneous sampling ADCs it is never
-channel dependent.
-
-So I think if you want to avoid the confusion, make your device fall into
-the description above and provide a per channel attribute rather
-than shared_by_all.
-
-Or keep it as things stand and have it halve when you double the channels.
-
-
-> 
-> > +		*val = clk_rate;
-> > +
-> > +		return IIO_VAL_INT;
-> > +	}
+> Extracting common code, to share common code to be used later
+> by the AXI driver version (ad3552r-axi.c).
 
 ...
+
+> +#include "ad3552r.h"
+> +
+> +static const s32 ad3552r_ch_ranges[][2] = {
+> +	[AD3552R_CH_OUTPUT_RANGE_0__2P5V]	= {0, 2500},
+
+Maybe add some spaces around { }?
+
+> +	[AD3552R_CH_OUTPUT_RANGE_0__5V]		= {0, 5000},
+> +	[AD3552R_CH_OUTPUT_RANGE_0__10V]	= {0, 10000},
+> +	[AD3552R_CH_OUTPUT_RANGE_NEG_5__5V]	= {-5000, 5000},
+> +	[AD3552R_CH_OUTPUT_RANGE_NEG_10__10V]	= {-10000, 10000}
+> +};
+> +
+> +static const s32 ad3542r_ch_ranges[][2] = {
+> +	[AD3542R_CH_OUTPUT_RANGE_0__2P5V]	= {0, 2500},
+> +	[AD3542R_CH_OUTPUT_RANGE_0__3V]		= {0, 3000},
+> +	[AD3542R_CH_OUTPUT_RANGE_0__5V]		= {0, 5000},
+> +	[AD3542R_CH_OUTPUT_RANGE_0__10V]	= {0, 10000},
+> +	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	= {-2500, 7500},
+> +	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	= {-5000, 5000}
+> +};
+
+...
+
+> +int ad3552r_get_custom_gain(struct device *dev, struct fwnode_handle *child,
+> +			    u8 *gs_p, u8 *gs_n, u16 *rfb, s16 *goffs)
+> +{
+> +	int err;
+> +	u32 val;
+> +	struct fwnode_handle *gain_child __free(fwnode_handle)
+> +		= fwnode_get_named_child_node(child,
+> +				      "custom-output-range-config");
+> +
+> +	if (!gain_child)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "custom-output-range-config mandatory\n");
+> +
+> +	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-p", &val);
+> +	if (err)
+> +		return dev_err_probe(dev, err,
+> +				     "adi,gain-scaling-p mandatory\n");
+> +	*gs_p = val;
+> +
+> +	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-n", &val);
+> +	if (err)
+> +		return dev_err_probe(dev, err,
+> +				     "adi,gain-scaling-n property mandatory\n");
+> +	*gs_n = val;
+> +
+> +	err = fwnode_property_read_u32(gain_child, "adi,rfb-ohms", &val);
+> +	if (err)
+> +		return dev_err_probe(dev, err,
+> +				     "adi,rfb-ohms mandatoryn");
+
+Missing \ in the ending \n.
+
+CJ
+
+> +	*rfb = val;
+> +
+> +	err = fwnode_property_read_u32(gain_child, "adi,gain-offset", &val);
+> +	if (err)
+> +		return dev_err_probe(dev, err,
+> +				     "adi,gain-offset mandatory\n");
+> +	*goffs = val;
+> +
+> +	return 0;
+> +}
+
+...
+
+
 

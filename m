@@ -1,151 +1,138 @@
-Return-Path: <linux-iio+bounces-9410-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9411-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E8A97225F
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 21:09:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F275972261
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 21:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 927D81C23819
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 19:09:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 165B71F24847
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 19:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96527189BA6;
-	Mon,  9 Sep 2024 19:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9600854278;
+	Mon,  9 Sep 2024 19:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="St/rbz1d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aMTzYn5e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2281C189B8B;
-	Mon,  9 Sep 2024 19:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B254B17588
+	for <linux-iio@vger.kernel.org>; Mon,  9 Sep 2024 19:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725908986; cv=none; b=EbQdLSxUBOJa4V8mMB65PTInSlxbH6ex4G/ze4qVeeT7i8ebpE/4DX0KJslqd4aNl+BHkdyZeKDu5A222tSM1lG8x4uxtsS7oWStHWCIAXmJce/uzFEDDc+N+XGEoNifnd5euhWX2Ilxy/p21Y01JEXYfwBYOgkW4vm5Vr60gZA=
+	t=1725909044; cv=none; b=rCRaMBjExgTIpN6yh7rzNCMdxh78eJbL8wnrihPMOq7QMfKL6gjXx8e3qMWOiELmNBby0H8CpAQOSnSZRClZ7A07uOyBXqbQ4c2YSn9Cvc8/3324Bv9cRwGav8SOik+pyUEZWY4yzOWfTTY2GwyFl7GktiH4OiYa7xjzV7xarwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725908986; c=relaxed/simple;
-	bh=TJeb+yY4BdHG3QeXUNQK4acpsl4QjdOwr+xpbgmQfc4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=igriuCdZ9g6yXGqtUENfpcoI63NQ+/9QEvLgUU+xp0wdBZkJcwn5kqXlh4Q8lClVCjphmszA5SitYWEc+oIPzRlgySVbF8BJYqDUhXmbK8/vDJlY+3B0vXdycGC0HcdtLMxGrrUjsC2TPE3O5c22CoFjjGLv1GUe6a7x4/Y8Xog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=St/rbz1d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C143C4CEC8;
-	Mon,  9 Sep 2024 19:09:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725908985;
-	bh=TJeb+yY4BdHG3QeXUNQK4acpsl4QjdOwr+xpbgmQfc4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=St/rbz1dRVQee8fIhU4CLN01vxCEjoiIVbIiKmU9+wA6YF7XPugn1cLbFBrX1J0kv
-	 bOjyuoCPiAQWGohF0rG3tvz0JQh1rlHLbagpPXy+ZqUhfVVBMv5n4411Su5ojUA+f2
-	 JJhtC697LxvJj1Jw6kSczAowrlXG8IU68WkIALz8n49GeHiiFa9eKPdZHyic6zH5A8
-	 oxMWgDVaLqsGRCndUxJ84B3y/OSVbrR65LijBpYqG2L854zQjZbyrYqE8HyVRpCsla
-	 57n87Vu879PpOi2I5qDP0aLNHR62nJg3b+1QzcSWZovZUsUmK71Erf2iuq6Yq3X+Rb
-	 KQLFu+nt8fiKQ==
-Date: Mon, 9 Sep 2024 20:09:36 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: "Tinaco, Mariel" <Mariel.Tinaco@analog.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- "Hennerich, Michael" <Michael.Hennerich@analog.com>, Conor Dooley
- <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
- Dimitri Fedrau <dima.fedrau@gmail.com>, Nuno =?UTF-8?B?U8Oh?=
- <noname.nuno@gmail.com>
-Subject: Re: [PATCH v3 2/2] iio: dac: support the ad8460 Waveform DAC
-Message-ID: <20240909200936.68c23866@jic23-huawei>
-In-Reply-To: <b1584871-9a9d-4042-98c3-00581bdb5499@baylibre.com>
-References: <20240904023040.23352-1-Mariel.Tinaco@analog.com>
-	<20240904023040.23352-3-Mariel.Tinaco@analog.com>
-	<e9cbcd85-062c-47ad-861c-229cb2fd6c2c@baylibre.com>
-	<PH0PR03MB6218D70A20E93C46C186441E91992@PH0PR03MB6218.namprd03.prod.outlook.com>
-	<b1584871-9a9d-4042-98c3-00581bdb5499@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1725909044; c=relaxed/simple;
+	bh=oR9cwDqmVpiW55PzkayUy0i6c1cKTg9o+4ITLiEGDoQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m0KHQlY/1E4KY5rQCwYAYBE1fEgBvYsDUDtjA7WNzcdKJS3I9jgrV3NgXekh99J1Jj3yL5bcoTHTCbJ9RQj0yCaKG31axZvIMhoeh+UXCj362i4sbLMAvNDf7fyLpKeym7+JxnfsPGrYdbjGyc2raTxxHqln4mQt06QlryxjA4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aMTzYn5e; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5365d3f9d34so3085758e87.3
+        for <linux-iio@vger.kernel.org>; Mon, 09 Sep 2024 12:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725909041; x=1726513841; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PLAaA+GP0TBFIHxcYRpcjwhyfzRqgjOI+EgC7yPQbeg=;
+        b=aMTzYn5eGctU+MujL6SzayjLQVfMTPyg/m9vJ8Qr5D2h/wugUB644eh5LSTRRwjXs2
+         oyZvCe0eKQePxrofsU3WGEI9YYZLwXI1qSlkwfO5qFwi//qG9NadCidpEyHseX7j/2A4
+         L7K4vjgw1YQPTpJ8mFI7PRIWoePK766xm28Bg/YfH8LD75h1t4SJrE/ASFVkp2J//Z5+
+         5pCblUoLankok65oBHY1ega56FJz9hSoNSSOYielJJbovk9xYMmYqtWRuh9n9hP3kn1v
+         0g1qYI+SOIhd0/eliPFvGaeXvcluAqZ+K/DwEw2loMzxil73YCHtEgFLcatb6Mz3mbdN
+         BTmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725909041; x=1726513841;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PLAaA+GP0TBFIHxcYRpcjwhyfzRqgjOI+EgC7yPQbeg=;
+        b=gbclJsfPqubkX6HHxjvTNuAxJkWfkzdCA1nNSqm2/5fZT0bcCvm826fGQUUa5CTfxC
+         sPGC9rJPa7ozH6hA/yoUeE0/ZtEKlSO+OyrACS+LxS1DMZY8NbQGIpqehP4kwIjD6WNq
+         STWTizN28D9VAfLox7C8ggiYXpwUc8SefLonATOodA/lnVidAcrFeST0zxbZqaQvWvhR
+         ux+ioxKIK4P10NkKDFIY1kdZisLO9K+JLmp/mU7wlFe57tXYTi+7OzQ782lbjbUUuiNS
+         IaEmYRcxPTPfhYQr2KirsHGyfMum6lC5Py8DaBj6stfD5ODhGOUHUNKUTUCV14SrMBeS
+         52AA==
+X-Gm-Message-State: AOJu0YxGVJL3IKg2IB47/GEzNTx4n116qb5mZFyIrAG1aenWjjwsgj4s
+	YrOxVOjiSwJsONd5R1iH77DRcNxFyB4+U204HPjvR4XrOOEll83mx04vbi0m
+X-Google-Smtp-Source: AGHT+IF41hgBa0SxOWn1cUbeQ5vTlr2BJxXvbK0+wa15NzG/X9ZZ2BMzYZ3n1zFCSCFbcTTt/f5RAA==
+X-Received: by 2002:a05:6512:4018:b0:52c:df8c:72cc with SMTP id 2adb3069b0e04-536587f9a5amr8810728e87.43.1725909040414;
+        Mon, 09 Sep 2024 12:10:40 -0700 (PDT)
+Received: from [192.168.1.127] ([151.95.58.24])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25d40cebsm374629966b.200.2024.09.09.12.10.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Sep 2024 12:10:40 -0700 (PDT)
+Message-ID: <76068b7e-af53-4422-ad97-cf3070182ec4@gmail.com>
+Date: Mon, 9 Sep 2024 21:10:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: bmi323: Fix array reference in
+ bmi323_core_runtime_suspend()
+To: Nathan Chancellor <nathan@kernel.org>,
+ Jagath Jog J <jagathjog1996@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev
+References: <20240909-iio-bmi323-fix-array-ref-v1-1-51c220f22229@kernel.org>
+Content-Language: en-US, it-IT, en-US-large
+From: Denis Benato <benato.denis96@gmail.com>
+In-Reply-To: <20240909-iio-bmi323-fix-array-ref-v1-1-51c220f22229@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 9 Sep 2024 09:51:35 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On 09/09/24 18:38, Nathan Chancellor wrote:
+> Clang warns (or errors with CONFIG_WERROR):
+> 
+>   drivers/iio/imu/bmi323/bmi323_core.c:133:27: error: variable 'bmi323_ext_reg_savestate' is not needed and will not be emitted [-Werror,-Wunneeded-internal-declaration]
+>     133 | static const unsigned int bmi323_ext_reg_savestate[] = {
+>         |                           ^~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> bmi323_ext_reg_savestate is only used within sizeof() through
+> ARRAY_SIZE(), so it is not unused, but it will not be emitted in the
+> final binary because sizeof() is evaluated only at compile time.
+> bmi323_ext_reg_savestate should have been used in the second parameter
+> in the call to bmi323_read_ext_reg() in the second for loop in
+> bmi323_core_runtime_suspend().
+> 
+> Fixes: 16531118ba63 ("iio: bmi323: peripheral in lowest power state on suspend")
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  drivers/iio/imu/bmi323/bmi323_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
+> index 671401ce80dcf947b7b64ea3af112d2a42ca5501..64dbce23ce17bcdd11c0d4c454dbeb9de17ef56c 100644
+> --- a/drivers/iio/imu/bmi323/bmi323_core.c
+> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
+> @@ -2199,7 +2199,7 @@ static int bmi323_core_runtime_suspend(struct device *dev)
+>  	}
+>  
+>  	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_ext_reg_savestate); i++) {
+> -		ret = bmi323_read_ext_reg(data, bmi323_reg_savestate[i],
+> +		ret = bmi323_read_ext_reg(data, bmi323_ext_reg_savestate[i],
+>  					  &savestate->reg_settings[i]);
+>  		if (ret) {
+>  			dev_err(data->dev,
+> 
+> ---
+> base-commit: 5ba0cb92584ba5e107c97001e09013c1da0772a8
+> change-id: 20240909-iio-bmi323-fix-array-ref-a0672a8213f0
+> 
+> Best regards,
+Hello Nathan,
 
-> On 9/9/24 4:47 AM, Tinaco, Mariel wrote:
-> > 
-> >   
-> 
-> ...
-> 
-> >>> +	*val = get_unaligned_le16(state->spi_tx_buf);  
-> >>
-> >> With spi_tx_buf changed to __le16, this can use le16_to_cpu() instead of
-> >> get_unaligned_le16().
-> >>  
-> > 
-> > I suppose we use the cpu_to_le16 for the set_hvdac_word function?
-> > 
-> > static int ad8460_set_hvdac_word(struct ad8460_state *state, int index, int val)
-> > {
-> > 	state->spi_tx_buf = cpu_to_le16(FIELD_PREP(AD8460_DATA_BYTE_FULL_MSK, val));
-> > 
-> > 	return regmap_bulk_write(state->regmap, AD8460_HVDAC_DATA_WORD(index),
-> > 				 &state->spi_tx_buf, AD8460_DATA_BYTE_WORD_LENGTH);
-> > }
-> >   
-> 
-> Yes, that looks correct.
-> 
-> 
-> >>> +static ssize_t ad8460_write_toggle_en(struct iio_dev *indio_dev, uintptr_t  
-> >> private,  
-> >>> +				      const struct iio_chan_spec *chan,
-> >>> +				      const char *buf, size_t len) {
-> >>> +	struct ad8460_state *state = iio_priv(indio_dev);
-> >>> +	bool toggle_en;
-> >>> +	int ret;
-> >>> +
-> >>> +	ret = kstrtobool(buf, &toggle_en);
-> >>> +	if (ret)
-> >>> +		return ret;
-> >>> +
-> >>> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
-> >>> +		return ad8460_enable_apg_mode(state, toggle_en);
-> >>> +	unreachable();
-> >>> +}  
-> >>
-> >> Hmm... do we need to make an unscoped version of
-> >> iio_device_claim_direct_scoped()?
-> >>  
-> > 
-> > So iio_device_claim_direct_scoped is used here because the buffer enable/disable
-> > accesses this enable_apg_mode function. Is it also a standard practice to put the
-> > kstrobool() util inside the scope?
-> >   
-> 
-> Since this is at the end of a function with nothing after it, it
-> would be nice if we could avoid the indent and unreachable();
-> 
-> The idea would be to write the last 3 lines like this instead:
-> 
-> 	guard_cond(iio_device_claim_direct, return -EBUSY, indio_dev);
-> 
-> But I didn't see a `guard_cond()` analog of `guard()` in
-> linux/cleanup.h. So this is probably fine for now and adding
-> `guard_cond()` (if it is actually a good idea in the first
-> place) can be a job for another time.
+Thank you kindly for spotting and fixing it.
 
-That's a fun topic if you check the archives. Linus really
-didn't like the proposal
-https://lore.kernel.org/all/170905253339.2268463.9376907713092612237.stgit@dwillia2-xfh.jf.intel.com/
+Regrettably while integrating suggestions I received I also changed the patch semantic and due to my hardware not having the irq pin connected to the cpu this went unnoticed.
 
-Mind you I don't think he much likes scoped_cond_guard() either!
-
-
-Jonathan
-
-
+Best regards,
+Denis Benato
 

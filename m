@@ -1,82 +1,89 @@
-Return-Path: <linux-iio+bounces-9349-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9354-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD8C9709FC
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 23:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561F4970CB9
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 06:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A8911F21782
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Sep 2024 21:11:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF0C71F22634
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 04:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F5A183CD5;
-	Sun,  8 Sep 2024 21:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386B21741FD;
+	Mon,  9 Sep 2024 04:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="2uWcj+fS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="noIk1YfC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D58417BB1E;
-	Sun,  8 Sep 2024 21:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5774C74;
+	Mon,  9 Sep 2024 04:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725829800; cv=none; b=XlxuKMxDpSKBKxMqvvwz5aCp+amS9uaV650dgKFS4qrIAPpfgHgfjReRZnBk40Vr4LNk/FqdzsHYgN2SlT5TYGXdN3ezewK9zM18I3r3rZzgjt8mjIDmAriDIZAj/FLvrj76AG9DKExqUrnclERPWFVFieTh/NXRft1GCsrdXVI=
+	t=1725856384; cv=none; b=G9PYxEiqgeryCGX5fOOtYfmoeikW1vgziHbxFeqCLpO0gC7ZdFjjy2FV2vM0JE3rrnoFXbuAlvfYD+OJWv7CZdw+UK9SxvF2j8tWdmanZcBccxjfTqkxHpmeDxBoEXDTudzdu17mX+B6RkMA70cd77yZ+00YotOPBcPwd/TU5i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725829800; c=relaxed/simple;
-	bh=equbU9VBMIwdvGkqWk+AjPVcTc+O1BMZPBWXnDB1Dyo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHqimKcnp5GjJpo4+eQgRSda1VoQcokfamvR2y7D/YtHACidx0Rvc4KOsjR23YaG1LNSfGZBXZQD+qN81Xqu9xhFbRygXPGMXq9pUvtwdA7yWZJogoa7II1mrhNNrdyJGjJLNUPB/b9rVFi9/j0jyutnRNiIjkDqZ8rY680mjCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=2uWcj+fS; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=q1jpFbe8UJlfuFdvluwPG8fKnNdFZmBXVzuyZQAcBU0=; b=2uWcj+fSeC3gcEwnxueXgjo0si
-	Z3hkjgc4JZ0ZdQi6FYCFmDU1+Nv/5yQK7ScViFakuhTZu+D2GzRMq0vg0xBtkw3tc/II49bUcg3df
-	6f09+FSg4iDFa9dRssvhusUL3rsmNNEi/AUUj6EE0B9jsJtBUU2HfgUvff1l17LxvlnxQf2E1G8WN
-	ZuJy3/T1KNISHP21A27l86XKZNYErHsyPPNsSYBILehyY34QrpWVKw+spe1kyq5K0HnUHLF8muwAQ
-	ovVnCMHuVElR3a8PJzSN+Gaz/xlZ/K72xbZz8dx/L78piG/xDHe52h6YHTKEqwZKTD+fsqIAMRsSD
-	rQcD5sNA==;
-Received: from i5e8616cc.versanet.de ([94.134.22.204] helo=phil.lan)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1snPA7-0003s9-U9; Sun, 08 Sep 2024 23:09:35 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: lee@kernel.org,
-	jikos@kernel.org,
-	jic23@kernel.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	jdelvare@suse.com,
-	linux@roeck-us.net,
-	srinivas.pandruvada@linux.intel.com,
-	bentiss@kernel.org,
-	dmitry.torokhov@gmail.com,
-	pavel@ucw.cz,
-	ukleinek@debian.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-input@vger.kernel.org,
+	s=arc-20240116; t=1725856384; c=relaxed/simple;
+	bh=EVZPIUSsZjGZMeUpN7YnAFV0A0x6X3t6d3gx9BOiXBI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KVQzmVSEo/NtRmkWuAyT/4OADZA4e4rVcvF/z8KFy3CouWFzKQYOn36I/KgxPIoYeTM1XEObDLOIMTDFjTs5SJveXzyg0hM6RkDfc1hWXy01iUg/f1QcxwZHR6Y9xHelRma4ZDD2b2uCXNXUwjckICiTacxwx1TCj/qEa/fMUNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=noIk1YfC; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7a99d23e036so164818585a.1;
+        Sun, 08 Sep 2024 21:33:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725856381; x=1726461181; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8QdOMMhx1gpxvBS/wfDoSKFubKp0egWivBQSYQQOJaA=;
+        b=noIk1YfCQwsDgnDcPp3X5141fmjEeNqRC7IVoYKAfS+rlXzrYuuLzy0QuEaapJe/rK
+         IUPrDx3krhf4eSsZ7s0MkNy91FvvK7jWBrIs3LByvecxupi0N20t2Fh4ri9MsfHvnjkH
+         jpZOAyqS1oEYGEt4bi4LCIDAVDeTbHrv9swyv3FUxQomWj5hawr0ybgqfdMaHrTGZOlI
+         L8wGEUGgdf23U1KezWUClPzH6Wr5sLxY5YuNy8xgldtltZZsAmhZRUY27RedJP3XkxoS
+         2xwxLd15BMe0U0otGNiEYVSNqhUCJ309/jSaQuhisYi5tvN8A3spxncrBzGzrK53B5rr
+         ahVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725856381; x=1726461181;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8QdOMMhx1gpxvBS/wfDoSKFubKp0egWivBQSYQQOJaA=;
+        b=huFiq0bUq6Jg0JMu+Hz82SVcSOODmYehmF+OsOQPsu/ZD+MUqTxJiqkKP8kP2zS+Si
+         ueLVrN7SoyVeGRqpTXWl+7HH6ElcVCnC+wRLk2D3BhjDuAB7gFxDz9VliRqtO9Gf70j9
+         d+D3WAApV4KTy2jxyz17PWtdLmDZBVK00VncuUlcF1ZE0G0CsHR9DX4rPMiOIEYXB9mX
+         tyHUPn5uudXK86+inHj4xLMx34Jea569fbsexCOZdsvJlsXFmlIp8TK7FSFfs8WlX1o4
+         gzWGwLbbouT/mO8jtKVK9WLD+hEdqjr0MLFSjvFSgEP/KbYsWbnlLNR+zODVLpA84LYK
+         HxIA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/U3TEZcbQVFOREnRRgVjVO8LODaJhch6kzS0i8vs2E9rG7+zLVqe8Evk2GLDQMSujosBJ/GW4gQjAoqGe@vger.kernel.org, AJvYcCWYR+gowHg7Zj/5UX5f+nGGn5AupSvPthns7Zb9jRBY00Mh3IaslK0EuseZocmj09HAqAMjY+8ELSQo@vger.kernel.org, AJvYcCXbceBLS63k0gnhWHX9cj3KEktl96INBD7JDeyM81LoH0ua0RucFHbasMmR1XWD7G3FZpeJV++QVKZT@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiysXm3R9gTFtkNXjJ6ntwhvxOONF8iWxSjGEzGfOWsJWj8Sm3
+	b6tjivgbp2S4YQrXIUjw6Dc6siFjICG4z9JUehkV8oeBi3PzsLi0
+X-Google-Smtp-Source: AGHT+IEh1QEywJsPJHkyFDksMeTinTFmR0iWFLZH3H5xDpwkYQocnQsExUxTRmOubpBbdi4NOakRNg==
+X-Received: by 2002:a05:620a:4543:b0:79f:197d:fe6e with SMTP id af79cd13be357-7a99735e832mr1260685385a.45.1725856380836;
+        Sun, 08 Sep 2024 21:33:00 -0700 (PDT)
+Received: from localhost.localdomain (ool-1826d901.dyn.optonline.net. [24.38.217.1])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a9a794559bsm180791685a.6.2024.09.08.21.32.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Sep 2024 21:32:59 -0700 (PDT)
+From: Alex Lanzano <lanzano.alex@gmail.com>
+To: Alex Lanzano <lanzano.alex@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jagath Jog J <jagathjog1996@gmail.com>
+Cc: skhan@linuxfoundation.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	linux-iio@vger.kernel.org,
-	linux-leds@vger.kernel.org,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH v8 9/9] arm64: dts: rockchip: set hdd led labels on qnap-ts433
-Date: Sun,  8 Sep 2024 23:08:03 +0200
-Message-ID: <20240908210803.3339919-10-heiko@sntech.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240908210803.3339919-1-heiko@sntech.de>
-References: <20240908210803.3339919-1-heiko@sntech.de>
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] Add I2C driver for Bosch BMI270 IMU
+Date: Mon,  9 Sep 2024 00:32:22 -0400
+Message-ID: <20240909043254.611589-1-lanzano.alex@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,52 +92,47 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The automatically generated names for the LEDs from color and function
-do not match nicely for the 4 hdds, so set them manually per the label
-property to also match the LEDs generated from the MCU.
+Add basic I2C support for the Bosch BMI270 IMU.
 
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+References:
+https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi270/
+
+Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+Changes in v3:
+- Remove code pertaining to buffer / triggered buffer
+- Move register definitions from struct to defines
+- Add bit mask defines for registers and replace hardcoded values
+- Create macros for accel and gryo channels
+- Code style cleanup
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts b/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-index 4bc5f5691d45..7bd32d230ad2 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-qnap-ts433.dts
-@@ -50,6 +50,7 @@ led-0 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD5 GPIO_ACTIVE_LOW>;
-+			label = "hdd1:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd1_led_pin>;
-@@ -59,6 +60,7 @@ led-1 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD6 GPIO_ACTIVE_LOW>;
-+			label = "hdd2:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd2_led_pin>;
-@@ -68,6 +70,7 @@ led-2 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio1 RK_PD7 GPIO_ACTIVE_LOW>;
-+			label = "hdd3:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd3_led_pin>;
-@@ -77,6 +80,7 @@ led-3 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			function = LED_FUNCTION_DISK;
- 			gpios = <&gpio2 RK_PA0 GPIO_ACTIVE_LOW>;
-+			label = "hdd4:green:disk";
- 			linux,default-trigger = "disk-activity";
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&hdd4_led_pin>;
+Changes in v2:
+- Remove spi example in binding documentation
+- Add more properties to i2c example in binding documentation
+---
+
+Alex Lanzano (2):
+  dt-bindings: iio: imu: add bmi270 bindings
+  iio: imu: Add i2c driver for bmi270 imu
+
+ .../bindings/iio/imu/bosch,bmi270.yaml        |  77 ++++++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/imu/Kconfig                       |   1 +
+ drivers/iio/imu/Makefile                      |   1 +
+ drivers/iio/imu/bmi270/Kconfig                |  21 ++
+ drivers/iio/imu/bmi270/Makefile               |   6 +
+ drivers/iio/imu/bmi270/bmi270.h               |  62 +++++
+ drivers/iio/imu/bmi270/bmi270_core.c          | 251 ++++++++++++++++++
+ drivers/iio/imu/bmi270/bmi270_i2c.c           |  48 ++++
+ 9 files changed, 474 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
+ create mode 100644 drivers/iio/imu/bmi270/Kconfig
+ create mode 100644 drivers/iio/imu/bmi270/Makefile
+ create mode 100644 drivers/iio/imu/bmi270/bmi270.h
+ create mode 100644 drivers/iio/imu/bmi270/bmi270_core.c
+ create mode 100644 drivers/iio/imu/bmi270/bmi270_i2c.c
+
 -- 
-2.43.0
+2.46.0
 
 

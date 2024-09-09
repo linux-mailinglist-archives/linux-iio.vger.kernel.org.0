@@ -1,584 +1,371 @@
-Return-Path: <linux-iio+bounces-9356-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9357-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0379B970CBE
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 06:33:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92EA1970DD2
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 08:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82C9B1F22698
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 04:33:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDC90B2130C
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 06:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C341ACDE1;
-	Mon,  9 Sep 2024 04:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE5C18DF75;
+	Mon,  9 Sep 2024 06:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e7ffJ+Go"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="t4wVXqeL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9FF1662E9;
-	Mon,  9 Sep 2024 04:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725856416; cv=none; b=K6KCdkMjc6zA7CnKSVWJ1ukrW0ckr+tx2tf1f2oOyVC3rxKDPkiAR7MPHOZI4BOLTJmaTxQGLyGOTzcgj5eCXGc1AdjrYsK1fa/ES5/TFHdXcRcSQllxQzHipL+aQ7c+4bEyv4UFdkOjkqxOrTXCCsrkNtIYHtg04aBOxDKeXKs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725856416; c=relaxed/simple;
-	bh=Itm99mEbsbAiDsQ/eF3isid7F4AVJBRXT1nqKZg3qbM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUIFOesfq/fF5oqQrN6rySZy/IOAAB7T0M8sS7tHHee6o8rN5tgMngVRTpRGLHl54VI7ZX4UABL2MhzgXOSEpNhy70w7sy9fLNXkmp3igpjwQSMryrb/Qn0rD+KgjqhRfLNH/Z1ZkLf9/mRsobE1ltld3mUcYxyPf1tt4a9CKB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e7ffJ+Go; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7a99c99acf7so256716685a.1;
-        Sun, 08 Sep 2024 21:33:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725856413; x=1726461213; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cNTWUwfA/k3YrIoE6v3oi+OEiKWMd/2cobrQnPcutvY=;
-        b=e7ffJ+GoqqMYerfOHuwcQbmGtmH5x07j/rib0TrQ+ZL4DdZyrU/EDZRxoCKpbvuQJD
-         dJ2/KApLL4N0UYhJlqwEuI0Bo6e+qd7UjFUSuUZIztSDnpyhQR2W4xwKujeWLZTADide
-         JkRYihVM82FpQuLwau1bMbr8Ex97LY2b8DL2gPDl4+9w/IFLq/2ZizTxX7slcr+wT2tK
-         6eNiFML1YWhI1EkDIfosYjPWmVlYtbd4JtwLj9K8X1Bi+8/RiIYJU7dJe5wzKW7Vdb1P
-         Fw9fFaODgUoUW3NIDib383PeXPhbsLwVRfc0yWk/XFGLnKEmapQmo8xx640cZ5mehCvs
-         +X0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725856413; x=1726461213;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cNTWUwfA/k3YrIoE6v3oi+OEiKWMd/2cobrQnPcutvY=;
-        b=KbTjeZ6ag3gmI9Ju05+ZjIA831DJsOKyHi2HT6vgjSdqFTWwszGlc1Ytt1GefTqmEV
-         CoerJXcUmQ/lOi6gnuFqdHmdvoeomhBcY2k7Px7Z5woZPSEfKdMe/i6y0TAmm7FdgPOo
-         NsaJXlj4qD7zIKqZvKfEP3EPrSUm+SshFNt2O9ONRPcQ0r6ri8fP2rmtRP0bIQZM+/da
-         vMrH4a0R/7w00QjVTw1Myz2zuOROWjuMR4N1We/h8W2CX+QKL7JuX1WLQ2HaZcAKCX2X
-         CHo0mpOQvzcxr7A9rrYn3bpa4U1gFEW+HT0kDw52tXI3aodCsHs1Qp7C61dUZLuOhmBE
-         /NHA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXbc0xOBPFt635XPS799NTRiatIgnAkV2l0zKC0BTOg75zHmzxIHan2oZCt91fTDPWBzumln0lOtwB@vger.kernel.org, AJvYcCUZx9YeMykSyWL1VZroVWIvKAixF1n+1SiXV2iV2VhLB/VuuzO/6/exSgl3bQnns0cLb/j13MCx4ULQmqt1@vger.kernel.org, AJvYcCUlIJST4TjVnUwjFr8UHCiULR4setIqgxpLVV1ocWzB0Jgf0UkciRY/8iPARQufhBQwi7Al+iI2nNvU@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUtpnFsZA6kAtTrQPIdtFPIC5/QUgCfDX6SXqtof9jBURVdK+r
-	M4B0lxz/0WjDWSqr+hLykWuoo+KNevwLL3bfDKQdT5wM9wQHPb3cJux/OrDD
-X-Google-Smtp-Source: AGHT+IFJGRQX6PRJoLejI0Qd0YOruJmvqeC7p6SGhny/+oVCf9459TPZ1zsDZd5cI9SCC5B+fT7VPw==
-X-Received: by 2002:a05:620a:1a09:b0:7a9:bcd1:5279 with SMTP id af79cd13be357-7a9bcd15378mr14757885a.18.1725856412706;
-        Sun, 08 Sep 2024 21:33:32 -0700 (PDT)
-Received: from localhost.localdomain (ool-1826d901.dyn.optonline.net. [24.38.217.1])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a9a794559bsm180791685a.6.2024.09.08.21.33.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Sep 2024 21:33:31 -0700 (PDT)
-From: Alex Lanzano <lanzano.alex@gmail.com>
-To: Alex Lanzano <lanzano.alex@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jagath Jog J <jagathjog1996@gmail.com>,
-	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>
-Cc: skhan@linuxfoundation.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] iio: imu: Add i2c driver for bmi270 imu
-Date: Mon,  9 Sep 2024 00:32:24 -0400
-Message-ID: <20240909043254.611589-3-lanzano.alex@gmail.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240909043254.611589-1-lanzano.alex@gmail.com>
-References: <20240909043254.611589-1-lanzano.alex@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E787C171E5A;
+	Mon,  9 Sep 2024 06:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.139.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725862964; cv=fail; b=mBU87m8jObOJXPuU16kqMC+vyWGo9Nl3NzFtV4YGLWnEL4Nx2xlhZMRsexa7GCALrIGkkHcq/C+cBJFJhnZkmGTSPrmmrZXlCM8U6MkJyWQKIYpav1po3IlXAQOM37UVPibMrHCem95Blu6Nbls0V+dw7XAf4NkAADdm9geSF7Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725862964; c=relaxed/simple;
+	bh=x5dVqDAQ7eWdLYe2xq62KUBUd8q/E3w4U1UhV6wFxaI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=si9g59G02MjoIDmB9bcOc63gH1DOPxGl5OR6sxyfs8mJXU7yOlDhYYModhzOp8B9JcafsiVmvMMRTqa+J7Nb1Hu0Biin+6xKVMQek59MGvyFD/fQ8SMa2F0TDpxCTH0KNqedCUgWOxyREZVptrsPvtPoB3M9dg0uKUS221rOSBA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=t4wVXqeL; arc=fail smtp.client-ip=148.163.139.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375854.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4890EjE4026494;
+	Mon, 9 Sep 2024 02:22:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=5Op20
+	Hp3zzUcDJXZVF6f5gxHdzgVy9uUxrOhj4uXvdU=; b=t4wVXqeLhfCndeFxYp6SZ
+	aN7COEfwWaR7jIF2YiHkjTl5PqvCPV3ujxBjZ6bZ/gB92pfG6DLhnieExsYzVBSm
+	2NkzrahbDsqagcuZ/KIUf4x8xj83tQAcfANH08NB9pBB+dwoGeVADKMv+WKRG9XL
+	mbpkyvwrmHZ7KG2reRiwrG9nXDlVI6l8LED4rXrcZwYHkvShAyGp6XYlT3li1BlL
+	gNdgAT+rqlZp2/fKEk69CzcH7ED+FP6rnO1y2S47k323RX3mSMCiKps1b/fZ2BzN
+	p5FZx4ccCWshvX5u+v88rRVTVffYF3LWbEB2iUm/oxaqDhQjqtjNJv/P5HnOzsgI
+	A==
+Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazlp17012033.outbound.protection.outlook.com [40.93.1.33])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 41h8ve2bmx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Sep 2024 02:22:14 -0400 (EDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VXAqp/I1FzznMwDiPzv91Q2+SYS3RpUDyQIXmrw9woP6eie/V7WOzzWR7UuXg+CDOe63/+VrAF5Fxbrwi8Dcd/nBLyS+axMfJBulZejh74X5Vj0AgdtVCePJKk7Jh5rYL+iqrYanVyq95zw/82FhHmbrMuEGwc2si3hmoLx2Go7Xi9HwNhQHs1QfepO1RX9ZmioEInyT8dmT2dod96zfKVb4eh5VBFDYRGudksD0Nzc+Ej9oJD8hScxAFNOZMrRMimR06oQnV2/0DPffv+Qp1w4Ca5ZPhJ7R1H43MG/kD2orplNTkVxrpT4u06iK1Q7OYfql/W1Z4FN/fP9E1mPdzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5Op20Hp3zzUcDJXZVF6f5gxHdzgVy9uUxrOhj4uXvdU=;
+ b=x4F4EFALXa8thwC5AXE1wSpKxfXPs9G4VG9HpquYnEKl0efAwVYdvWp8K/Z8bzcAG89V/dn6E0qF+oQnrMBIsuBU77/lipLY1ZWcMHB+7YaEh2HZQ6o+lQbXnXBf5Fca+/gRJ6/fyUT67m9Lke2tJU6XRpdyrwYIXf5TV8jh80P1CP4+rCO8OPYPdZQgjIN0dhpDT31IXdBvIbFJ48GrQ0TbqvMV5IULlZ4uYCsWV3rXwnQgx2yRrRSKDEL6R1PpV/ClKHrye1cg/hhidhKTAn5D7zy5ztMmG621l3jL7FZNJ8TNNeg6ZP8o/C0urT3Og3TgdE8PZu34MrhpP0kfzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+Received: from SJ0PR03MB6224.namprd03.prod.outlook.com (2603:10b6:a03:303::18)
+ by SJ2PR03MB7427.namprd03.prod.outlook.com (2603:10b6:a03:558::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Mon, 9 Sep
+ 2024 06:22:11 +0000
+Received: from SJ0PR03MB6224.namprd03.prod.outlook.com
+ ([fe80::1405:536e:190d:75e]) by SJ0PR03MB6224.namprd03.prod.outlook.com
+ ([fe80::1405:536e:190d:75e%4]) with mapi id 15.20.7897.021; Mon, 9 Sep 2024
+ 06:22:11 +0000
+From: "Tinaco, Mariel" <Mariel.Tinaco@analog.com>
+To: Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>
+CC: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Marcelo Schmitt
+	<marcelo.schmitt1@gmail.com>,
+        Dimitri Fedrau <dima.fedrau@gmail.com>,
+        David
+ Lechner <dlechner@baylibre.com>,
+        =?iso-8859-1?Q?Nuno_S=E1?=
+	<noname.nuno@gmail.com>
+Subject: RE: [PATCH v3 1/2] dt-bindings: iio: dac: add docs for ad8460
+Thread-Topic: [PATCH v3 1/2] dt-bindings: iio: dac: add docs for ad8460
+Thread-Index: AQHa/pKf5skOfyLui0S8EMamJYFx1LJMkhyAgAJw9VA=
+Date: Mon, 9 Sep 2024 06:22:11 +0000
+Message-ID:
+ <SJ0PR03MB6224860552845EF2B3339DF591992@SJ0PR03MB6224.namprd03.prod.outlook.com>
+References: <20240904023040.23352-1-Mariel.Tinaco@analog.com>
+	<20240904023040.23352-2-Mariel.Tinaco@analog.com>
+	<pp3r4ygrialun2x6vtghp27ianggjzs3g3436b6mi6mttfy57a@q7kcwolkkn27>
+ <20240907180149.67fdc636@jic23-huawei>
+In-Reply-To: <20240907180149.67fdc636@jic23-huawei>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-dg-ref:
+ =?iso-8859-1?Q?PG1ldGE+PGF0IGFpPSIwIiBubT0iYm9keS50eHQiIHA9ImM6XHVzZXJzXG?=
+ =?iso-8859-1?Q?10aW5hY29cYXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04?=
+ =?iso-8859-1?Q?NWVlLTZiODRiYTI5ZTM1Ylxtc2dzXG1zZy1kNjJiNGIzZC02ZTczLTExZW?=
+ =?iso-8859-1?Q?YtOGMzMi03NDA0ZjE1MjNjZThcYW1lLXRlc3RcZDYyYjRiM2YtNmU3My0x?=
+ =?iso-8859-1?Q?MWVmLThjMzItNzQwNGYxNTIzY2U4Ym9keS50eHQiIHN6PSI5MzMyIiB0PS?=
+ =?iso-8859-1?Q?IxMzM3MDMzNjUyODExNzgxNTQiIGg9IlEyWFVGQmxvSVZQTW10bFhyRVBx?=
+ =?iso-8859-1?Q?cWpXLzI2QT0iIGlkPSIiIGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVT?=
+ =?iso-8859-1?Q?FSU1JVRk5DZ1VBQURnREFBQXE0dHVZZ0FMYkFWM2tGbmNzYkVzQVhlUVdk?=
+ =?iso-8859-1?Q?eXhzU3dBREFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQV?=
+ =?iso-8859-1?Q?NnSUFBTzRBQUFBQUFBQUFBQUFBQUFFQUFRQUJBQUFBM0xoU2ZnQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBSjRBQUFCaEFHUUFhUUJmQUhNQVpRQmpBSFVBY2dCbEFGOE?=
+ =?iso-8859-1?Q?FjQUJ5QUc4QWFnQmxBR01BZEFCekFGOEFaZ0JoQUd3QWN3QmxBRjhBWmdC?=
+ =?iso-8859-1?Q?dkFITUFhUUIwQUdrQWRnQmxBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQUFBQUFBQUFBZ0FBQU?=
+ =?iso-8859-1?Q?FBQW5nQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFi?=
+ =?iso-8859-1?Q?d0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURFQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FBQUFBQUNlQUFB?=
+ =?iso-8859-1?Q?QVlRQmtBR2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dCdkFHb0FaUU?=
+ =?iso-8859-1?Q?JqQUhRQWN3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFPNEFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?NBQUFBQUFBQUFBSUFBQUFBQUFBQUFnQUFBQUFBQUFBemdBQUFBTUFBQUJP?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBR0VBWkFCcEFGOEFj?=
+x-dg-rorf: true
+x-dg-refone:
+ d0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCbUFHRUFiQUJ6QUdVQVh3Qm1BRzhBY3dCcEFIUUFhUUIyQUdVQUFBQThBQUFBQUFBQUFHRUFaQUJwQUY4QWN3QmxBR01BZFFCeUFHVUFYd0J3QUhJQWJ3QnFBR1VBWXdCMEFITUFYd0IwQUdrQVpRQnlBREVBQUFBOEFBQUFBQUFBQUdFQVpBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0IwQUhNQVh3QjBBR2tBWlFCeUFESUFBQUE9Ii8+PC9tZXRhPg==
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR03MB6224:EE_|SJ2PR03MB7427:EE_
+x-ms-office365-filtering-correlation-id: 9bd0152a-5a91-4efd-49d6-08dcd097bd3f
+x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|7416014|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?Bc/MLxOLZY3fAA5yGwFcxOs6hdfNDJ4pb+aqXTzB3nF1yINqInNQDqFiSI?=
+ =?iso-8859-1?Q?Rx4RJDfgKBbu2icPrJgzYm1nuK1wkM2xKiMWyq8i9Aw2cd/ZK/M9XA15w4?=
+ =?iso-8859-1?Q?ve7ZJUYh5WFRJ3ahBuBldmEyHdRHYUuNZEfIJ9ufspVfJTH6vJjcpVP7AM?=
+ =?iso-8859-1?Q?U8voj/3Rhl9AZmKXaJM2k0YRKY5E3FUjgxOEWWBCXeu56ka4jz36cGObzp?=
+ =?iso-8859-1?Q?463AGHMnzU9y9xu3hIGC8sRmXnDzPygw3bUzmRdCtI7oZUAq2sCsj8p+Bx?=
+ =?iso-8859-1?Q?fjN7w4E9YNtEDJJPXNXFNJvDsu9hnGIAhl6Y+ATJOgu/AMf6PgMCR5gUuL?=
+ =?iso-8859-1?Q?OaYzVcHBYSDLkpsBDs62BAwklZtd3+P1UXbmB6EGTsefRK5cfS8cjKCCo5?=
+ =?iso-8859-1?Q?WXjckWMGKS6p+tNoJSQXAnr7sVdQ8rmD/IsVGS92vtrQ+w1vj946AxNc1q?=
+ =?iso-8859-1?Q?TXNSulJIkeT4J7mPRV4ZDucz6q80+na/a1p+t76Cz59g+Va8RPo58aLHcM?=
+ =?iso-8859-1?Q?7t49ExF2JB2Spi4F0J9lYneP2mkZWXyoiOUG569dIg2J0dXvOlUkYdk7Ze?=
+ =?iso-8859-1?Q?/xZJVA+/VvhXOIAl0TAADBd4klrHyJZTZKOM2rtjOaWy8kyP3SP24+SdoT?=
+ =?iso-8859-1?Q?DOUNTaHXmoHEInV8L5nzofV48kv6g5KWf8AYULSNnKLVe9NOnfJ0eI7O+2?=
+ =?iso-8859-1?Q?/zyKc+Ggqqu5FQ7f2+qFUkdH95u7vHRURup+4n6VXzCzCq3ZQOlQ/lCirF?=
+ =?iso-8859-1?Q?0mq+dHQEDYtl0gYe1SWiRqSx9GK30v1m0qAbWd2plc1AnfMgPWJg9a+CxC?=
+ =?iso-8859-1?Q?LjkyDrUWf6sb4cxFKKPwqkNnUXQo714hrKC0QYkN/wlkEGhYXRC5kOVUiK?=
+ =?iso-8859-1?Q?7lSadDWSX5DlhK82jDKmEzgcYQlF3Ahi64YGnMBhX3JfYgy1uE8DgT5fav?=
+ =?iso-8859-1?Q?hCQcN8pWdHeFSYaVO8oVu/Q/LMoZ0fm+pLsQey9Q/RLl4XbiE/RJTlhUF5?=
+ =?iso-8859-1?Q?rtO9ZdG0i8zPkscwXZQ7usYNN4+zIJWW+dTEt4hps6Hq6xRdy8WP3Pzmin?=
+ =?iso-8859-1?Q?w5hflWVPRdPmJhLaB+nMXI34mef4QOqPebTxlw3UBmgEamhDj/FYFXJ/Di?=
+ =?iso-8859-1?Q?n3Gbc6Fl/iQYxviNmShdv7EK87f4j2wNGZNJ+y8cQTiqcNAw6tzq0lYUT4?=
+ =?iso-8859-1?Q?78UzQe84OSiaYPsyDIvgYMP/lXsHOVNe7C7uKnizyauVOW8BlkqAlgDlAE?=
+ =?iso-8859-1?Q?naeigkkrA+neijxh6ERSpgT2m5T3a9EogPMTCow0LtLdYCF1DFeTjQSttB?=
+ =?iso-8859-1?Q?QrS7395XJPbSNdsYOKRRr/kvYx8rx26kNjl/u7KNK9mW8ceoELvBHRAaVP?=
+ =?iso-8859-1?Q?p1eDxw6mIofMpoHFgo5pF2lAf1I3WZEQ=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6224.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?O0Wx8PWDoX+pv3E14kfP1+FrGMadGDrkWUGo8UZ5NN8wSfOy3z9GHrjUyj?=
+ =?iso-8859-1?Q?Eb2xp1X36YSIWN9/V42Zawge7WKVJX1MckAKr+cUn74hHAz56uje+FnYYB?=
+ =?iso-8859-1?Q?M4YS4jVCgH/JgNy60pmq345EPP4lLNr4Zyo7qRjlrYgAsqBo5jAUqaQG9c?=
+ =?iso-8859-1?Q?YVhkwyMpoOFoxE2RW2hDzHzZKNSJFzK9n4nTDfcZVrHxqK3s0Q8ikgS+4L?=
+ =?iso-8859-1?Q?2rTYUPPYSMzHsH93Amzkt8ggIsQ37DAH9tFdS4wUV0WGGE59sr9kumxZJ5?=
+ =?iso-8859-1?Q?A0FAIRbioze+3tFjNxqPc3cYeGj92vELyXGiczpzAhffjQXdQz0XNvNSbZ?=
+ =?iso-8859-1?Q?pmEUbwPYgu5zzT0lGtM51nindZDN5YoOZS/RU/6t7L+IyGHetqyTu+/5JZ?=
+ =?iso-8859-1?Q?DHL0rwO9mCQW4fbCVzU7xDPl/YF8N4RAZL89DjY3B9uQAqRsCB2gvKa479?=
+ =?iso-8859-1?Q?0P1sDFhsIYUid6sMczswGylyPIV0Rr3EmaFQ9WhGg3FGS9x24P7PsG4KAC?=
+ =?iso-8859-1?Q?GYPSxCsbfdpAqLKXjbRIKD9pub5optg85DQ6OZy+5f49B97XUBkfZmrtl1?=
+ =?iso-8859-1?Q?+l5I0ueE1v6QqhDNvzqbYyREEpH2FIg+abDm//W8dgw775YjG+ls3jmbUY?=
+ =?iso-8859-1?Q?90MjBq1fiyM68QzJLCH4f4zxx8zkCxYTdtFQ1TO4KSPqq3JmKFhyEGt/37?=
+ =?iso-8859-1?Q?nqiWKMM/h2irAZQPkUAUkvZJGQTIr4hwo219x7FeZN39NgwSM5P4FPtUC7?=
+ =?iso-8859-1?Q?HMj609Et95Fi9a5lkqfmcKZ290BnBje/dUGz7m185Uekra3+1S/I4nUj48?=
+ =?iso-8859-1?Q?D7nTCB/14D6wxafxIC0IQl40YBy0Ft1h6lD+ELz3CVbf8W/yhLy2gWqXJR?=
+ =?iso-8859-1?Q?601lP/cqQVWkdreACmYi514Yhi1Y0n3GNd/izPxCZ2vy1nLvt3jGZOnPg0?=
+ =?iso-8859-1?Q?IVDjWHmhxhhW5mzXgrfxzwUpovdHO5Gyduey03T3QeX8vAeT4si7MbnQQr?=
+ =?iso-8859-1?Q?jvnMdveaXUvtoyWWH8eNltlfhPZPgEuEXjsdP9zG4Tktk3jOLKLnresbwk?=
+ =?iso-8859-1?Q?bCu9j14QEb5dzmeLHNyyp1gYbHiRSYBW0XGBgGy7g0Tz70xF3asV8WUMqK?=
+ =?iso-8859-1?Q?39wYRcACMSdo58lMnTiI8srm4CnfF+38u8UsXohSO0j+Etx8AQkeYEKWyG?=
+ =?iso-8859-1?Q?cgaPbSibuvKbmnvvflh/IuKIwanNd+0CC4G1V4Ox7yrPFDTXX4SGFpGAog?=
+ =?iso-8859-1?Q?0np0FEK7rG9R9uhKalekPJ426oJTSEj2XohSOFQ3BvcAz0m0EoIeufgwEZ?=
+ =?iso-8859-1?Q?2sf5utJGhLv5turFcVUPvkvprzA0LzqZPsjx+JKX1SmG0JhGd3vaccKoLi?=
+ =?iso-8859-1?Q?WT4yCJ7qblFuk0sPVy9loNI8m4QwZDICt+diRFKgJe4tUXVw5z7k28YgiA?=
+ =?iso-8859-1?Q?38gvN6V7r4AO2y8hvuVGFgCIZ13Kw6y65RDvqcFvXQ3SvxzyiXHy7uHQpg?=
+ =?iso-8859-1?Q?bcCDS55xZx5rFF74AV5JcmWDBrD/iLAwvA88u9ywUcQWxxmX1x9GKRBRxq?=
+ =?iso-8859-1?Q?jhLqmvRR+KnWcRmKtxtHd4ppHhOnK5gpIb/74eqJw3bDeQHklfzLlw3RLR?=
+ =?iso-8859-1?Q?1/zKzhvh7QinlxjiANPjwoGiqsJpz7h6P3?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6224.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bd0152a-5a91-4efd-49d6-08dcd097bd3f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Sep 2024 06:22:11.3319
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /a+5ICcWyTzDHZiPTRmOMBzdsD3LbjYRJvn1a4Lq8ZcAjP/99lNXEwFhds3mmAsgEgVyrF4dY2TevBfGZeksMDOm1ZmrwodjrCLJMzIJm5Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR03MB7427
+X-Proofpoint-GUID: 14BxnhhXf4qfKRtx6Uwi584tTzAuRa4e
+X-Proofpoint-ORIG-GUID: 14BxnhhXf4qfKRtx6Uwi584tTzAuRa4e
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 mlxscore=0
+ phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409090049
 
-Add initial i2c support for the Bosch BMI270 6-axis IMU.
-Provides raw read access to acceleration and angle velocity measurements
-via iio channels. Device configuration requires firmware provided by
-Bosch and is requested and load from userspace.
 
-Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
----
- MAINTAINERS                          |   7 +
- drivers/iio/imu/Kconfig              |   1 +
- drivers/iio/imu/Makefile             |   1 +
- drivers/iio/imu/bmi270/Kconfig       |  21 +++
- drivers/iio/imu/bmi270/Makefile      |   6 +
- drivers/iio/imu/bmi270/bmi270.h      |  62 +++++++
- drivers/iio/imu/bmi270/bmi270_core.c | 251 +++++++++++++++++++++++++++
- drivers/iio/imu/bmi270/bmi270_i2c.c  |  48 +++++
- 8 files changed, 397 insertions(+)
- create mode 100644 drivers/iio/imu/bmi270/Kconfig
- create mode 100644 drivers/iio/imu/bmi270/Makefile
- create mode 100644 drivers/iio/imu/bmi270/bmi270.h
- create mode 100644 drivers/iio/imu/bmi270/bmi270_core.c
- create mode 100644 drivers/iio/imu/bmi270/bmi270_i2c.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a2184637a5d9..6612d27525b5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3928,6 +3928,13 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/accel/bosch,bma400.yaml
- F:	drivers/iio/accel/bma400*
- 
-+BOSCH SENSORTEC BMI270 IMU IIO DRIVER
-+M:	Alex Lanzano <lanzano.alex@gmail.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
-+F:	drivers/iio/imu/bmi270/
-+
- BOSCH SENSORTEC BMI323 IMU IIO DRIVER
- M:	Jagath Jog J <jagathjog1996@gmail.com>
- L:	linux-iio@vger.kernel.org
-diff --git a/drivers/iio/imu/Kconfig b/drivers/iio/imu/Kconfig
-index 782fb80e44c2..489dd898830b 100644
---- a/drivers/iio/imu/Kconfig
-+++ b/drivers/iio/imu/Kconfig
-@@ -53,6 +53,7 @@ config ADIS16480
- 	  ADIS16485, ADIS16488 inertial sensors.
- 
- source "drivers/iio/imu/bmi160/Kconfig"
-+source "drivers/iio/imu/bmi270/Kconfig"
- source "drivers/iio/imu/bmi323/Kconfig"
- source "drivers/iio/imu/bno055/Kconfig"
- 
-diff --git a/drivers/iio/imu/Makefile b/drivers/iio/imu/Makefile
-index 7e2d7d5c3b7b..79f83ea6f644 100644
---- a/drivers/iio/imu/Makefile
-+++ b/drivers/iio/imu/Makefile
-@@ -15,6 +15,7 @@ adis_lib-$(CONFIG_IIO_ADIS_LIB_BUFFER) += adis_buffer.o
- obj-$(CONFIG_IIO_ADIS_LIB) += adis_lib.o
- 
- obj-y += bmi160/
-+obj-y += bmi270/
- obj-y += bmi323/
- obj-y += bno055/
- 
-diff --git a/drivers/iio/imu/bmi270/Kconfig b/drivers/iio/imu/bmi270/Kconfig
-new file mode 100644
-index 000000000000..3f7b4ac30f00
---- /dev/null
-+++ b/drivers/iio/imu/bmi270/Kconfig
-@@ -0,0 +1,21 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# BMI270 IMU driver
-+#
-+
-+config BMI270
-+	tristate
-+	select IIO_BUFFER
-+
-+config BMI270_I2C
-+	tristate "Bosch BMI270 I2C driver"
-+	depends on I2C
-+	select BMI270
-+	select REGMAP_I2C
-+	help
-+	  Enable support for the Bosch BMI270 6-Axis IMU connected to I2C
-+	  interface.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called bmi270_i2c.
-+
-diff --git a/drivers/iio/imu/bmi270/Makefile b/drivers/iio/imu/bmi270/Makefile
-new file mode 100644
-index 000000000000..ab4acaaee6d2
---- /dev/null
-+++ b/drivers/iio/imu/bmi270/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Makefile for Bosch BMI270 IMU
-+#
-+obj-$(CONFIG_BMI270) += bmi270_core.o
-+obj-$(CONFIG_BMI270_I2C) += bmi270_i2c.o
-diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
-new file mode 100644
-index 000000000000..4af4098d8e82
---- /dev/null
-+++ b/drivers/iio/imu/bmi270/bmi270.h
-@@ -0,0 +1,62 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-+
-+#ifndef BMI270_H_
-+#define BMI270_H_
-+
-+#include <linux/iio/iio.h>
-+
-+#define BMI270_CHIP_ID_REG				0x00
-+#define BMI270_CHIP_ID_VAL				0x24
-+#define BMI270_CHIP_ID_MSK				GENMASK(7, 0)
-+
-+#define BMI270_ACCEL_X_REG				0x0c
-+#define BMI270_ANG_VEL_X_REG				0x12
-+
-+#define BMI270_INTERNAL_STATUS_REG			0x21
-+#define BMI270_INTERNAL_STATUS_MSG_MSK			GENMASK(3, 0)
-+#define BMI270_INTERNAL_STATUS_MSG_INIT_OK		0x01
-+
-+#define BMI270_INTERNAL_STATUS_AXES_REMAP_ERR_MSK	BIT(5)
-+#define BMI270_INTERNAL_STATUS_ODR_50HZ_ERR_MSK		BIT(6)
-+
-+#define BMI270_ACC_CONF_REG				0x40
-+#define BMI270_ACC_CONF_ODR_MSK				GENMASK(3, 0)
-+#define BMI270_ACC_CONF_ODR_100HZ			0x08
-+#define BMI270_ACC_CONF_BWP_MSK				GENMASK(6, 4)
-+#define BMI270_ACC_CONF_BWP_NORMAL_MODE			0x02
-+#define BMI270_ACC_CONF_FILTER_PERF_MSK			BIT(7)
-+
-+#define BMI270_GYR_CONF_REG				0x42
-+#define BMI270_GYR_CONF_ODR_MSK				GENMASK(3, 0)
-+#define BMI270_GYR_CONF_ODR_200HZ			0x09
-+#define BMI270_GYR_CONF_BWP_MSK				GENMASK(5, 4)
-+#define BMI270_GYR_CONF_BWP_NORMAL_MODE			0x02
-+#define BMI270_GYR_CONF_NOISE_PERF_MSK			BIT(6)
-+#define BMI270_GYR_CONF_FILTER_PERF_MSK			BIT(7)
-+
-+#define BMI270_INIT_CTRL_REG				0x59
-+#define BMI270_INIT_CTRL_LOAD_DONE_MSK			BIT(0)
-+
-+#define BMI270_INIT_DATA_REG				0x5e
-+
-+#define BMI270_PWR_CONF_REG				0x7c
-+#define BMI270_PWR_CONF_ADV_PWR_SAVE_MSK		BIT(0)
-+#define BMI270_PWR_CONF_FIFO_WKUP_MSK			BIT(1)
-+#define BMI270_PWR_CONF_FUP_EN_MSK			BIT(2)
-+
-+#define BMI270_PWR_CTRL_REG				0x7d
-+#define BMI270_PWR_CTRL_AUX_EN_MSK			BIT(0)
-+#define BMI270_PWR_CTRL_GYR_EN_MSK			BIT(1)
-+#define BMI270_PWR_CTRL_ACCEL_EN_MSK			BIT(2)
-+#define BMI270_PWR_CTRL_TEMP_EN_MSK			BIT(3)
-+
-+struct bmi270_data {
-+	struct device *dev;
-+	struct regmap *regmap;
-+};
-+
-+extern const struct regmap_config bmi270_regmap_config;
-+
-+int bmi270_core_probe(struct device *dev, struct regmap *regmap);
-+
-+#endif  /* BMI270_H_ */
-diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-new file mode 100644
-index 000000000000..f0f83eb51dd2
---- /dev/null
-+++ b/drivers/iio/imu/bmi270/bmi270_core.c
-@@ -0,0 +1,251 @@
-+// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+
-+#include <linux/firmware.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/iio.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+
-+#include "bmi270.h"
-+
-+#define BMI270_INIT_DATA_FILE "bmi270-init-data.fw"
-+
-+enum bmi270_scan {
-+	BMI270_SCAN_ACCEL_X,
-+	BMI270_SCAN_ACCEL_Y,
-+	BMI270_SCAN_ACCEL_Z,
-+	BMI270_SCAN_GYRO_X,
-+	BMI270_SCAN_GYRO_Y,
-+	BMI270_SCAN_GYRO_Z,
-+};
-+
-+const struct regmap_config bmi270_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+};
-+EXPORT_SYMBOL_NS_GPL(bmi270_regmap_config, IIO_BMI270);
-+
-+static int bmi270_get_data(struct bmi270_data *bmi270_device,
-+			   int chan_type, int axis, int *val)
-+{
-+	__le16 sample;
-+	int reg;
-+	int ret;
-+
-+	switch (chan_type) {
-+	case IIO_ACCEL:
-+		reg = BMI270_ACCEL_X_REG + (axis - IIO_MOD_X) * sizeof(sample);
-+		break;
-+	case IIO_ANGL_VEL:
-+		reg = BMI270_ANG_VEL_X_REG + (axis - IIO_MOD_X) * sizeof(sample);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	ret = regmap_bulk_read(bmi270_device->regmap, reg, &sample, sizeof(sample));
-+	if (ret)
-+		return ret;
-+
-+	*val = sign_extend32(le16_to_cpu(sample), 15);
-+
-+	return 0;
-+}
-+
-+static int bmi270_read_raw(struct iio_dev *indio_dev,
-+			   struct iio_chan_spec const *chan,
-+			   int *val, int *val2, long mask)
-+{
-+	int ret;
-+	struct bmi270_data *bmi270_device = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = bmi270_get_data(bmi270_device, chan->type, chan->channel2, val);
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info bmi270_info = {
-+	.read_raw = bmi270_read_raw,
-+};
-+
-+#define BMI270_ACCEL_CHANNEL(_axis) {				\
-+	.type = IIO_ACCEL,					\
-+	.modified = 1,						\
-+	.channel2 = IIO_MOD_##_axis,				\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
-+	BIT(IIO_CHAN_INFO_FREQUENCY),				\
-+}
-+
-+#define BMI270_ANG_VEL_CHANNEL(_axis) {				\
-+	.type = IIO_ANGL_VEL,					\
-+	.modified = 1,						\
-+	.channel2 = IIO_MOD_##_axis,				\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
-+	BIT(IIO_CHAN_INFO_FREQUENCY),				\
-+}
-+
-+static const struct iio_chan_spec bmi270_channels[] = {
-+	BMI270_ACCEL_CHANNEL(X),
-+	BMI270_ACCEL_CHANNEL(Y),
-+	BMI270_ACCEL_CHANNEL(Z),
-+	BMI270_ANG_VEL_CHANNEL(X),
-+	BMI270_ANG_VEL_CHANNEL(Y),
-+	BMI270_ANG_VEL_CHANNEL(Z)
-+};
-+
-+static int bmi270_validate_chip_id(struct bmi270_data *bmi270_device)
-+{
-+	int chip_id;
-+	int ret;
-+	struct device *dev = bmi270_device->dev;
-+	struct regmap *regmap = bmi270_device->regmap;
-+
-+	ret = regmap_read(regmap, BMI270_CHIP_ID_REG, &chip_id);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to read chip id");
-+
-+	if (chip_id != BMI270_CHIP_ID_VAL)
-+		return dev_err_probe(dev, -ENODEV, "Invalid chip id 0x%x", chip_id);
-+
-+	return 0;
-+}
-+
-+static int bmi270_write_calibration_data(struct bmi270_data *bmi270_device)
-+{
-+	int ret;
-+	int status = 0;
-+	const struct firmware *init_data;
-+	struct device *dev = bmi270_device->dev;
-+	struct regmap *regmap = bmi270_device->regmap;
-+
-+	ret = regmap_clear_bits(regmap, BMI270_PWR_CONF_REG, BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to write power configuration");
-+
-+	usleep_range(450, 1000);
-+
-+	ret = regmap_clear_bits(regmap, BMI270_INIT_CTRL_REG, BMI270_INIT_CTRL_LOAD_DONE_MSK);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to prepare device to load init data");
-+
-+	ret = request_firmware(&init_data, BMI270_INIT_DATA_FILE, dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to load init data file");
-+
-+	ret = regmap_bulk_write(regmap, BMI270_INIT_DATA_REG,
-+				init_data->data, init_data->size);
-+	release_firmware(init_data);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to write init data");
-+
-+	ret = regmap_set_bits(regmap, BMI270_INIT_CTRL_REG, BMI270_INIT_CTRL_LOAD_DONE_MSK);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to stop device initialization");
-+
-+	usleep_range(20000, 55000);
-+
-+	ret = regmap_read(regmap, BMI270_INTERNAL_STATUS_REG, &status);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to read internal status");
-+
-+	if (status != BMI270_INTERNAL_STATUS_MSG_INIT_OK)
-+		return dev_err_probe(dev, -ENODEV, "Device failed to initialize");
-+
-+	return 0;
-+}
-+
-+static int bmi270_configure_imu(struct bmi270_data *bmi270_device)
-+{
-+	int ret;
-+	struct device *dev = bmi270_device->dev;
-+	struct regmap *regmap = bmi270_device->regmap;
-+
-+	ret = regmap_set_bits(regmap, BMI270_PWR_CTRL_REG,
-+			      BMI270_PWR_CTRL_AUX_EN_MSK |
-+			      BMI270_PWR_CTRL_GYR_EN_MSK |
-+			      BMI270_PWR_CTRL_ACCEL_EN_MSK);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to enable accelerometer and gyroscope");
-+
-+	ret = regmap_set_bits(regmap, BMI270_ACC_CONF_REG,
-+			      FIELD_PREP(BMI270_ACC_CONF_ODR_MSK,
-+					 BMI270_ACC_CONF_ODR_100HZ) |
-+			      FIELD_PREP(BMI270_ACC_CONF_BWP_MSK,
-+					 BMI270_ACC_CONF_BWP_NORMAL_MODE) |
-+			      BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to configure accelerometer");
-+
-+	ret = regmap_set_bits(regmap, BMI270_GYR_CONF_REG,
-+			      FIELD_PREP(BMI270_GYR_CONF_ODR_MSK,
-+					 BMI270_GYR_CONF_ODR_200HZ) |
-+			      FIELD_PREP(BMI270_GYR_CONF_BWP_MSK,
-+					 BMI270_GYR_CONF_BWP_NORMAL_MODE) |
-+			      BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to configure gyroscope");
-+
-+	/* Enable FIFO_WKUP, Disable ADV_PWR_SAVE and FUP_EN */
-+	ret = regmap_write(regmap, BMI270_PWR_CONF_REG,
-+			   BMI270_PWR_CONF_FIFO_WKUP_MSK);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to set power configuration");
-+
-+	return 0;
-+}
-+
-+static int bmi270_chip_init(struct bmi270_data *bmi270_device)
-+{
-+	int ret;
-+
-+	ret = bmi270_validate_chip_id(bmi270_device);
-+	if (ret)
-+		return ret;
-+
-+	ret = bmi270_write_calibration_data(bmi270_device);
-+	if (ret)
-+		return ret;
-+
-+	return bmi270_configure_imu(bmi270_device);
-+}
-+
-+int bmi270_core_probe(struct device *dev, struct regmap *regmap)
-+{
-+	int ret;
-+	struct bmi270_data *bmi270_device;
-+	struct iio_dev *indio_dev;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(struct bmi270_data *));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	bmi270_device = iio_priv(indio_dev);
-+	bmi270_device->dev = dev;
-+	bmi270_device->regmap = regmap;
-+
-+	ret = bmi270_chip_init(bmi270_device);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->channels = bmi270_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(bmi270_channels);
-+	indio_dev->name = "bmi270";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &bmi270_info;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+EXPORT_SYMBOL_NS_GPL(bmi270_core_probe, IIO_BMI270);
-+
-+MODULE_AUTHOR("Alex Lanzano");
-+MODULE_DESCRIPTION("BMI270 driver");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
-new file mode 100644
-index 000000000000..f70dee2d8a64
---- /dev/null
-+++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
-@@ -0,0 +1,48 @@
-+// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+
-+#include <linux/module.h>
-+#include <linux/i2c.h>
-+#include <linux/iio/iio.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/regmap.h>
-+
-+#include "bmi270.h"
-+
-+static int bmi270_i2c_probe(struct i2c_client *client)
-+{
-+	struct regmap *regmap;
-+	struct device *dev = &client->dev;
-+
-+	regmap = devm_regmap_init_i2c(client, &bmi270_regmap_config);
-+	if (IS_ERR(regmap))
-+		return dev_err_probe(dev, PTR_ERR(regmap),
-+				     "Failed to init i2c regmap");
-+
-+	return bmi270_core_probe(dev, regmap);
-+}
-+
-+static const struct i2c_device_id bmi270_i2c_id[] = {
-+	{ "bmi270", 0 },
-+	{ }
-+};
-+
-+static const struct of_device_id bmi270_of_match[] = {
-+	{ .compatible = "bosch,bmi270" },
-+	{ }
-+};
-+
-+static struct i2c_driver bmi270_i2c_driver = {
-+	.driver = {
-+		.name = "bmi270_i2c",
-+		.of_match_table = bmi270_of_match,
-+	},
-+	.probe = bmi270_i2c_probe,
-+	.id_table = bmi270_i2c_id,
-+};
-+module_i2c_driver(bmi270_i2c_driver);
-+
-+MODULE_AUTHOR("Alex Lanzano");
-+MODULE_DESCRIPTION("BMI270 driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IIO_BMI270);
--- 
-2.46.0
+> -----Original Message-----
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Sunday, September 8, 2024 1:02 AM
+> To: Krzysztof Kozlowski <krzk@kernel.org>
+> Cc: Tinaco, Mariel <Mariel.Tinaco@analog.com>; linux-iio@vger.kernel.org;
+> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; Lars-Peter Clau=
+sen
+> <lars@metafoo.de>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
+> <krzk+dt@kernel.org>; Hennerich, Michael <Michael.Hennerich@analog.com>;
+> Conor Dooley <conor+dt@kernel.org>; Marcelo Schmitt
+> <marcelo.schmitt1@gmail.com>; Dimitri Fedrau <dima.fedrau@gmail.com>;
+> David Lechner <dlechner@baylibre.com>; Nuno S=E1
+> <noname.nuno@gmail.com>
+> Subject: Re: [PATCH v3 1/2] dt-bindings: iio: dac: add docs for ad8460
+>=20
+> [External]
+>=20
+> On Wed, 4 Sep 2024 08:20:53 +0200
+> Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>=20
+> > On Wed, Sep 04, 2024 at 10:30:39AM +0800, Mariel Tinaco wrote:
+> > > This adds the bindings documentation for the 14-bit
+> >
+> > Please do not use "This commit/patch/change", but imperative mood. See
+> > longer explanation here:
+> > https://urldefense.com/v3/__https://elixir.bootlin.com/linux/v5.17.1/s
+> > ource/Documentation/process/submitting-
+> patches.rst*L95__;Iw!!A3Ni8CS0y
+> > 2Y!7lj0hq-U2ClkGNYfHqjR3-k-
+> ea6TFUFsgEYQokkU95K6TXPHIPU33VxQcl_iH_etJ4k
+> > pbPEV39dP1oAd$
+> >
+> > > High Voltage, High Current, Waveform Generator Digital-to-Analog
+> > > converter.
+> > >
+> > > Signed-off-by: Mariel Tinaco <Mariel.Tinaco@analog.com>
+> > > ---
+> > >  .../bindings/iio/dac/adi,ad8460.yaml          | 154 ++++++++++++++++=
+++
+> > >  MAINTAINERS                                   |   7 +
+> > >  2 files changed, 161 insertions(+)
+> > >  create mode 100644
+> > > Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> >
+> > > +  adi,range-microvolt:
+> > > +    description: Voltage output range specified as <minimum, maximum=
+>
+> > > +    oneOf:
+> >
+> > This oneOf does not make sense. There is only one condition. Drop.
+> >
+> > > +      - items:
+> > > +          - enum: [0, -10000000, -20000000, -30000000, -40000000, -
+> 55000000]
+> > > +          - enum: [10000000, 20000000, 30000000, 40000000,
+> > > + 55000000]
+> >
+> > What's the default? It's not a required property.
+> >
+> > > +
+> > > +  adi,range-microamp:
+> > > +    description: Current output range specified as <minimum, maximum=
+>
+> > > +    oneOf:
+> > > +      - items:
+> > > +          - enum: [-50000, -100000, -300000, -500000, -1000000]
+> >
+> > I don't understand why 0 is not listed here.
+>=20
+> I'm not sure why it is a list at all. Seems like the hardware allows a co=
+ntinuous
+> value so this should just specify max and min.
+>=20
+
+That's right, the values can be flexible but only at a certain range.=20
+The first element of the array should only be in the negative range, while
+The second element of the array should only be in the positive range.
+
+Is there a way to do this with the max and min attribute?
+
+Items:
+	Item 1
+		min: -10000
+		max: 0
+	item 2
+		min: 0
+		max: 10000=20
+
+> >
+> > > +          - enum: [50000, 100000, 300000, 500000, 1000000]
+> > > +      - items:
+> > > +          - const: 0
+> > > +          - enum: [50000, 100000, 300000, 500000, 1000000]
+> > > +
+> >
+> > What's the default? It's not a required property.
+> >
+> > > +  adi,max-millicelsius:
+> > > +    description: Overtemperature threshold
+> > > +    default: 50000
+> > > +    minimum: 20000
+> > > +    maximum: 150000
+> > > +
+> > > +  shutdown-reset-gpios:
+> > > +    description: Corresponds to SDN_RESET pin. To exit shutdown
+> > > +      or sleep mode, pulse SDN_RESET HIGH, then leave LOW.
+> > > +    maxItems: 1
+> > > +
+> > > +  reset-gpios:
+> > > +    description: Manual Power On Reset (POR). Pull this GPIO pin
+> > > +      LOW and then HIGH to reset all digital registers to default
+> > > +    maxItems: 1
+> > > +
+> > > +  shutdown-gpios:
+> > > +    description: Corresponds to SDN_IO pin. Shutdown may be
+> > > +      initiated by the user, by pulsing SDN_IO high. To exit shutdow=
+n,
+> > > +      pulse SDN_IO low, then float.
+> > > +    maxItems: 1
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - clocks
+> >
+> > Some supplies are for sure required. Devices rarely can operate
+> > without power provided.
+> >
+> > > +
+> > > +allOf:
+> > > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > > +
+> > > +additionalProperties: false
+> >
+> > unevaluatedProperties instead.
+> >
+> > Best regards,
+> > Krzysztof
+> >
 
 

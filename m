@@ -1,254 +1,170 @@
-Return-Path: <linux-iio+bounces-9364-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9365-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A146C970FFC
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 09:40:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3104F97100A
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 09:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59A37281C81
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 07:40:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5AE01F22C38
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 07:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971151AF4EB;
-	Mon,  9 Sep 2024 07:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F271AD5C1;
+	Mon,  9 Sep 2024 07:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H4xd6i5z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHpKd5Y/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC08741C79;
-	Mon,  9 Sep 2024 07:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C2022081;
+	Mon,  9 Sep 2024 07:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725867591; cv=none; b=UVi+CQpjEGu0WBLCmtusRTS3gm+/efIl3xHjBQ5nNp2fMwsWLN2zR+GWhJ2W7QjEZumCnJumbrBCJhDe3vdvZhkqmiKtVcKxzN5hWGc+u7Oz18RVkKNpNgf/RRJ95at9NTuvkqB6/l4M6wi0VnWPjvELtYzEhyI38L5nqMljc08=
+	t=1725867926; cv=none; b=eGHtyz+VHJSGGJ0Ch6O3vw4hEH720vYBKQVN1t95ih2hl/CNu4dQ3fC22J0yPaIaQ29/ggEnc24/qi3E3U9N6hUjF5VRgKbtiTTBliqaslfBtCsF9fzqReiqYmXlhOIsdQUNA+wCwrxjIqWXDToKLX3bY8AKMjniBD6nlAvog1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725867591; c=relaxed/simple;
-	bh=uBF92Uif2+BcgZhAVMP/V4x2lhT9O9Sc+nfPq9hKJng=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=AlZmTQ/J9oWuBDkOB6x/eQZhHtyvs2Bbis6HASwMbPV8myq7ZbJJBKR6CMtww2P1t8oEVRA7iL+qN3NjigOOVP/0Q4oCfTxgZf3UyD6nHOp3AifoK1tevQzTMR0M+X8U+LxqwlC4kCZlw4Az6+E5iTsgSOj7oi/S0zaAb/ol7bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H4xd6i5z; arc=none smtp.client-ip=209.85.166.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-82cdb749598so46985039f.1;
-        Mon, 09 Sep 2024 00:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725867589; x=1726472389; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:msip_labels:content-language
-         :accept-language:in-reply-to:references:message-id:date:thread-index
-         :thread-topic:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uBF92Uif2+BcgZhAVMP/V4x2lhT9O9Sc+nfPq9hKJng=;
-        b=H4xd6i5z+FByg1r4TtBaOv1RbtVkUUb+f/no6hIAvxsS03SjZEyw6zzhiUWoXtLVJq
-         CbKqmG5pvgpjs5NhP3Czo54wYxiAz/J5G5tJH7LutHpFjJ78KycijGfSnvGGRaluM70t
-         Na1xpfJfr5NIxub89u/nZJOlKDsGUsDOoEDrBJMPNJhXykgZetb7vJz2mJCCxkOf3HOc
-         G8Q+WoQIdXx5jJjrhmMFhILAz4JQXORa3jIpcWNHcI0T55zsaYZniqeVsPs1/j2A2elV
-         H7zO2YMZl0Ld3Ll0gV/nv9+IJbrN/hoVZ2ykyCf9GBVWXBM/bwqTrWy9Mk5FLy0dD9Vq
-         vixA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725867589; x=1726472389;
-        h=mime-version:content-transfer-encoding:msip_labels:content-language
-         :accept-language:in-reply-to:references:message-id:date:thread-index
-         :thread-topic:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uBF92Uif2+BcgZhAVMP/V4x2lhT9O9Sc+nfPq9hKJng=;
-        b=jgjprxFEdohVVzLlys+f5eVPUwhLbEpn1ixv+YXqZ3+2Ko3kDTKMn1672lfUV/xoN+
-         +Wp8dWV+XsKTucSTqgESMHj2Jcs/mf832e2lC/0q0FjHhLn5Itfb0HNMZQNH9sjRdfRl
-         Hr/NqlSUAqqFZA6J5etYgxNSkBE7RynxYdKpWDjJzMtYV9e6MqlP8DHAwQRIDk9Zdau9
-         Eg6sbZnf1j0mDPKd8canTV/oB1V1UGQEqvkPKUYuDqjTucWo4E/7Mm/fZWZJl8wBrt1E
-         ieXpExre8v45OyF/a3V7SVmsOu1HNbuaTYn3JO68SBTS7zGMyuzvHcdmforLyYCEHIjG
-         UxdA==
-X-Forwarded-Encrypted: i=1; AJvYcCWk2C/9qFP7bb0nlIIs+Dlj2WY2VTbMh/TwZ+bKje0BsomD8yEDarVnujS1rdFP3x2/VAsyRFKFNTxrbwLX@vger.kernel.org, AJvYcCWvQSmOsb96VNDum7z0CzpYK6REnB7npLZxSJHiQ52hSCVthvcaW7Np8LAmiI+Xugg/adBEqXzEUSo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxO0uSL3I5bbMLZHRFQyTtEm4FK1+7SjO2Tz3RSvj5bgtV6TTZ
-	SHv1hiXLWvZofAV7BqJI314ZEHSMzI0z/s8Ir3pQmh4qMXXSE/UA
-X-Google-Smtp-Source: AGHT+IE4z4EnDm9KbqTWzKXAgC015h2l3jebJQlobS90oFrlJHpfrREVS94HHpCRg20NHrqncHlQ0Q==
-X-Received: by 2002:a05:6602:2b01:b0:82a:4e38:b47c with SMTP id ca18e2360f4ac-82a9617385fmr1390500739f.1.1725867588569;
-        Mon, 09 Sep 2024 00:39:48 -0700 (PDT)
-Received: from SI6PR01MB6319.apcprd01.prod.exchangelabs.com ([2603:1046:c01:2821::5])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d094561be3sm1008573173.65.2024.09.09.00.39.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Sep 2024 00:39:48 -0700 (PDT)
-From: jason liu <jasonliu10041728@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-CC: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>, "lars@metafoo.de"
-	<lars@metafoo.de>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject:
-	=?gb2312?B?u9i4tDogu9i4tDogu9i4tDogW1BBVENIXSBpaW8vaW52X2ljbTQyNjAwOiBh?=
- =?gb2312?B?ZGQgaW52X2ljbTQyNjAwIGlkX3RhYmxl?=
-Thread-Topic:
-	=?gb2312?B?u9i4tDogu9i4tDogW1BBVENIXSBpaW8vaW52X2ljbTQyNjAwOiBhZGQgaW52?=
- =?gb2312?B?X2ljbTQyNjAwIGlkX3RhYmxl?=
-Thread-Index:
-	ATMwLjIwFDm9LbMkFZaeBSo+6E5u8rI5M8nJgAAiAACACRXAgIAAnB8AgADWk4CAAHDr24AAGpOAgAL6loCAAZkXhJ1W2dgvgAOGa4CAAUkQ5YAAEnQAgAAAnHs=
-X-MS-Exchange-MessageSentRepresentingType: 1
-Date: Mon, 9 Sep 2024 07:39:43 +0000
-Message-ID:
-	<SI6PR01MB6319F158AAF2FA79CEAB3760F5992@SI6PR01MB6319.apcprd01.prod.exchangelabs.com>
-References:
-	<FR3P281MB175720831E0817C23AD0B1BACE922@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<20240902113101.3135-1-jasonliu10041728@gmail.com>
-	<CAJci1vC9pvdqEpA8sk+uB5jJGn_DKUruXFfY6tbG9mO07YxgHQ@mail.gmail.com>
-	<FR3P281MB1757BEA60FF72A44847F1646CE9D2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<SI6PR01MB63197238674C8895885420D8F59E2@SI6PR01MB6319.apcprd01.prod.exchangelabs.com>
-	<20240908115115.1bf1155d@jic23-huawei>
-	<SI6PR01MB63194A7F2D2FD7701DD0465BF5992@SI6PR01MB6319.apcprd01.prod.exchangelabs.com>
- <20240909083504.605e9ca7@jic23-huawei>
-In-Reply-To: <20240909083504.605e9ca7@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-Exchange-Organization-SCL: -1
-X-MS-TNEF-Correlator:
-X-MS-Exchange-Organization-RecordReviewCfmType: 0
-msip_labels:
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1725867926; c=relaxed/simple;
+	bh=98wllfeOjQQOsjMIWtvuLiG8VAzd5cCOmswCZsBuOWM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jJ/tdp31J+Loj3ksI/XlDucSAclzPtFvjbjeSLxE4Xvt5XcRwo0NEKHCKzmFKc4vPHkN6A5h00lWCwARCGN0NzL3IpVF7NBkBIngAF1+iQmGFzxVlHAAH3u852jQAkv8hp/d7s9GODeqLXJC8q/h1YO4RbgDSZGb+YKpD392+K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHpKd5Y/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9CBC4CEC5;
+	Mon,  9 Sep 2024 07:45:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725867924;
+	bh=98wllfeOjQQOsjMIWtvuLiG8VAzd5cCOmswCZsBuOWM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XHpKd5Y/V3O48F+S3tN2AaqN4z/c5/Y1W/1t/tW/BS5Lr1mNGI/uYlXn0w/LgLm79
+	 mdaqWqJVkkzzjmoFakgzDNW0/C+FvYsBzb/TNWnYG+wqS4DJdSSzXDqTMlHTqeHWb1
+	 F2Hp5SPc0QI8L/60zM7+CGsr6xT3bunjxehvPN8Y7+arrOY9aTbBPYmIMD5rNGeGuV
+	 /GhSRN2zvjosfV9sah8j2+NBquJRPLKhSSztnfNQtHy1EI8brLmu8F9Oq9UQK6KY/c
+	 ET+wuXhvMJigZVDL5OceZqCJc6nnCC0n7C2UF5zTECspN/GGfa9YjKq77omD7IbbZp
+	 7MyZKyqTVM+QA==
+Date: Mon, 9 Sep 2024 08:44:44 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Dumitru Ceclan via B4 Relay
+ <devnull+dumitru.ceclan.analog.com@kernel.org>
+Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, mitrutzceclan@gmail.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Conor Dooley
+ <conor.dooley@microchip.com>, Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH v3 0/3] Add support for AD4113
+Message-ID: <20240909084444.5b515bb1@jic23-huawei>
+In-Reply-To: <20240908114143.414a9367@jic23-huawei>
+References: <20240812-ad4113-v3-0-046e785dd253@analog.com>
+	<20240817111902.2ed6b98a@jic23-huawei>
+	<20240908114143.414a9367@jic23-huawei>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-PiBUaGUgYXV0b3Byb2JpbmcgbmV2ZXIgd29ya2VkLCBoZW5jZSB0aGlzIGlzIGFuIGltcHJvdmVt
-ZW50IG5vdCBhIHJlZ3Jlc3Npb24uDQo+IEFzIHN1Y2ggSSd2ZSBub3QgcnVzaGVkIGl0IGluIGFz
-IGEgZml4LCBidXQgaW5zdGVhZCBpdCBjYW4gdGFrZSBhIHNsb3dlcg0KPiBwYXRoIHVwc3RyZWFt
-Lg0KQWxyaWdodCwgSSB1bmRlcnN0YW5kLiBUaGFuayB5b3UgZm9yIHlvdXIgZXhwbGFuYXRpb24u
-DQoNCkkgd2lsbCBkZWZpbml0ZWx5IGRvIGJldHRlciB0aGUgbmV4dCB0aW1lIEkgc3VibWl0IGEg
-cGF0Y2guIFRoYW5rIHlvdSBmb3IgeW91ciBjb3JyZWN0aW9uLg0KDQpUaGFua3MsDQpKYXNvbg0K
-DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQpGcm9tOiBKb25hdGhh
-biBDYW1lcm9uIDxqaWMyM0BrZXJuZWwub3JnPg0KU2VudDogTW9uZGF5LCBTZXB0ZW1iZXIgOSwg
-MjAyNCAzOjM1IFBNDQpUbzogamFzb24gbGl1DQpDYzogSmVhbi1CYXB0aXN0ZSBNYW5leXJvbDsg
-bGFyc0BtZXRhZm9vLmRlOyBsaW51eC1paW9Admdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxA
-dmdlci5rZXJuZWwub3JnDQpTdWJqZWN0OiBSZTogu9i4tDogu9i4tDogW1BBVENIXSBpaW8vaW52
-X2ljbTQyNjAwOiBhZGQgaW52X2ljbTQyNjAwIGlkX3RhYmxlDQoNCk9uIE1vbiwgOSBTZXAgMjAy
-NCAwNjo0Mzo0NyArMDAwMA0KamFzb24gbGl1IDxqYXNvbmxpdTEwMDQxNzI4QGdtYWlsLmNvbT4g
-d3JvdGU6DQoNCj4gSGkgSm9uYXRoYW4sDQo+DQo+ID4gSGkgSmFzb24sDQo+DQo+ID4gSSd2ZSBw
-aWNrZWQgdGhpcyB1cCwgYnV0IHRoZSBwYXRjaCBzdWJtaXNzaW9uIGhhcyBhIG51bWJlciBvZiBp
-c3N1ZXMNCj4gPiB5b3Ugc2hvdWxkIGJlIHN1cmUgdG8gZml4IGluIGZ1dHVyZSBwYXRjaGVzLg0K
-PiA+DQo+IEkgYW0gc29ycnkgZm9yIHRoZSBpc3N1ZXMsIGFuZCBJIHdpbGwga2VlcCB5b3VyIHN1
-Z2dlc3Rpb25zIGluIG1pbmQuDQo+IFNvLCBkbyBJIHN0aWxsIG5lZWQgdG8gc3VibWl0IGEgbmV3
-IHBhdGNoIHRvIGZpeCB0aGVzZSBpc3N1ZXM/DQpObyBuZWVkLC4NCj4gTXkgdW5kZXJzdGFuZGlu
-ZyBpcyB0aGF0IHNpbmNlIHlvdSd2ZSBwaWNrZWQgaXQgdXAsIHRoZXJlJ3Mgbm8gbmVlZCBmb3Ig
-bWUgdG8gcmVzdWJtaXQuDQo+IElzIGl0IHJpZ2h0Pw0KDQpZZXMgdGhhdCdzIHJpZ2h0Lg0KDQo+
-DQo+ID4gSSBoYXZlbid0IHRyZWF0ZWQgdGhpcyBhcyBhIGZpeCBiZWNhdXNlIGl0IHdhcyBuZXZl
-ciB0aGVyZSwgYnV0DQo+ID4gaXQgbWF5IG1ha2Ugc2Vuc2UgdG8gcmVxdWVzdCBhIGJhY2twb3J0
-IHRvIHN0YWJsZSBhZnRlciBpdCBpcyB1cHN0cmVhbS4NCj4gPg0KPiBTb3JyeSwgSSBkaWRuoa90
-IHF1aXRlIHVuZGVyc3RhbmQgd2hhdCB5b3UgbWVhbnQuDQo+IFdoeSBkaWQgeW91IHNheSAnaXQg
-d2FzIG5ldmVyIHRoZXJlJz8gRG8geW91IG1lYW4gdGhhdCB0aGlzIGlzc3VlIGRvZXNuJ3QgZXhp
-c3Q/DQoNClRoZSBhdXRvcHJvYmluZyBuZXZlciB3b3JrZWQsIGhlbmNlIHRoaXMgaXMgYW4gaW1w
-cm92ZW1lbnQgbm90IGEgcmVncmVzc2lvbi4NCkFzIHN1Y2ggSSd2ZSBub3QgcnVzaGVkIGl0IGlu
-IGFzIGEgZml4LCBidXQgaW5zdGVhZCBpdCBjYW4gdGFrZSBhIHNsb3dlcg0KcGF0aCB1cHN0cmVh
-bS4NCg0KSm9uYXRoYW4NCg0KPg0KPiBUaGFua3MsDQo+DQo+IEphc29uDQo+DQo+IF9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCj4gRnJvbTogSm9uYXRoYW4gQ2FtZXJv
-biA8amljMjNAa2VybmVsLm9yZz4NCj4gU2VudDogU3VuZGF5LCBTZXB0ZW1iZXIgOCwgMjAyNCA2
-OjUxIFBNDQo+IFRvOiBqYXNvbiBsaXUNCj4gQ2M6IEplYW4tQmFwdGlzdGUgTWFuZXlyb2w7IGxh
-cnNAbWV0YWZvby5kZTsgbGludXgtaWlvQHZnZXIua2VybmVsLm9yZzsgbGludXgta2VybmVsQHZn
-ZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogu9i4tDogW1BBVENIXSBpaW8vaW52X2ljbTQy
-NjAwOiBhZGQgaW52X2ljbTQyNjAwIGlkX3RhYmxlDQo+DQo+IE9uIEZyaSwgNiBTZXAgMjAyNCAw
-NTowMjo1OSArMDAwMA0KPiBqYXNvbiBsaXUgPGphc29ubGl1MTAwNDE3MjhAZ21haWwuY29tPiB3
-cm90ZToNCj4NCj4gPiBIZWxsbywNCj4gPg0KPiA+IEknbSBnbGFkIHRoaXMgcGF0Y2ggY291bGQg
-aGVscC4gQW5kIEkgd291bGQgbGlrZSB0byBrbm93LCBob3cgd2lsbCB0aGUgcGF0Y2ggdG8gYmUg
-aGFuZGxlZCBtb3ZpbmcgZm9yd2FyZD8NCj4gPg0KPiBJdCBpcyBxdWV1ZWQgdXAgb24gdGhlIElJ
-TyB0cmVlLiAgR2l2ZW4gdGltaW5nIGl0J3MgcXVldWVkIGZvciA2LjEzLg0KPiBOb3RlIHRoYXQg
-Zm9yIG5vdyB0aGF0IGlzIG9ubHkgcHVzaGVkIG91dCBhcyB0ZXN0aW5nIGJlY2F1c2UgSSB3aWxs
-DQo+IGJlIHJlYmFzaW5nIHRoZSBJSU8gdG9ncmVnIGJyYW5jaCBvbiA2LjEyLXJjMS4NCj4gT25l
-IHRoYXQgaXMgZG9uZSBpdCB3aWxsIGFwcGVhciBpbiBsaW51eC1uZXh0Lg0KPg0KPiBJdCBzaG91
-bGQgZ28gdXBzdHJlYW0gYW5kIGFwcGVhciBpbiBjaGFyLW1pc2MvY2hhci1taXNjLW5leHQNCj4g
-aW4gYWJvdXQgNiB3ZWVrcy4gIEFmdGVyIHRoYXQgR3JlZyBLSCB3aWxsIHNlbmQgYSBwdWxsIHJl
-cXVlc3QgZHVyaW5nDQo+IHRoZSA2LjEzIG1lcmdlIHdpbmRvdyBpbiBhYm91dCAxMiB3ZWVrcyB0
-aW1lIGFuZCBpdCB3aWxsIHRoZW4gaG9wZWZ1bGx5DQo+IGdldCBtZXJnZWQgaW50byBMaW51cycg
-dHJlZSBiZWZvcmUgNi4xMy1yYzENCj4NCj4gSSBoYXZlbid0IHRyZWF0ZWQgdGhpcyBhcyBhIGZp
-eCBiZWNhdXNlIGl0IHdhcyBuZXZlciB0aGVyZSwgYnV0DQo+IGl0IG1heSBtYWtlIHNlbnNlIHRv
-IHJlcXVlc3QgYSBiYWNrcG9ydCB0byBzdGFibGUgYWZ0ZXIgaXQgaXMgdXBzdHJlYW0uDQo+DQo+
-IFRoYW5rcywNCj4NCj4gSm9uYXRoYW4NCj4NCj4gPiBUaGFua3MuDQo+ID4NCj4gPiBfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXw0KPiA+IEZyb206IEplYW4tQmFwdGlzdGUgTWFuZXly
-b2wgPEplYW4tQmFwdGlzdGUuTWFuZXlyb2xAdGRrLmNvbT4NCj4gPiBTZW50OiBUaHVyc2RheSwg
-U2VwdGVtYmVyIDUsIDIwMjQgNToyNSBQTQ0KPiA+IFRvOiBqYXNvbiBsaXUgPGphc29ubGl1MTAw
-NDE3MjhAZ21haWwuY29tPg0KPiA+IENjOiBqaWMyM0BrZXJuZWwub3JnIDxqaWMyM0BrZXJuZWwu
-b3JnPjsgbGFyc0BtZXRhZm9vLmRlIDxsYXJzQG1ldGFmb28uZGU+OyBsaW51eC1paW9Admdlci5r
-ZXJuZWwub3JnIDxsaW51eC1paW9Admdlci5rZXJuZWwub3JnPjsgbGludXgta2VybmVsQHZnZXIu
-a2VybmVsLm9yZyA8bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZz4NCj4gPiBTdWJqZWN0OiBS
-ZTogW1BBVENIXSBpaW8vaW52X2ljbTQyNjAwOiBhZGQgaW52X2ljbTQyNjAwIGlkX3RhYmxlDQo+
-ID4NCj4gPiBIZWxsbywNCj4gPg0KPiA+IGxvb2tzIGdvb2QgZm9yIG1lIG5vdywgdGhhbmtzIGZv
-ciB0aGUgcGF0Y2guDQo+ID4NCj4gPiBBY2tlZC1ieTogSmVhbi1CYXB0aXN0ZSBNYW5leXJvbCA8
-amVhbi1iYXB0aXN0ZS5tYW5leXJvbEB0ZGsuY29tPg0KPiA+DQo+ID4gVGhhbmtzLA0KPiA+IEpC
-DQo+ID4NCj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQo+ID4g
-RnJvbTogamFzb24gbGl1IDxqYXNvbmxpdTEwMDQxNzI4QGdtYWlsLmNvbT4NCj4gPiBTZW50OiBX
-ZWRuZXNkYXksIFNlcHRlbWJlciA0LCAyMDI0IDExOjAwDQo+ID4gVG86IEplYW4tQmFwdGlzdGUg
-TWFuZXlyb2wgPEplYW4tQmFwdGlzdGUuTWFuZXlyb2xAdGRrLmNvbT4NCj4gPiBDYzogamljMjNA
-a2VybmVsLm9yZyA8amljMjNAa2VybmVsLm9yZz47IGxhcnNAbWV0YWZvby5kZSA8bGFyc0BtZXRh
-Zm9vLmRlPjsgbGludXgtaWlvQHZnZXIua2VybmVsLm9yZyA8bGludXgtaWlvQHZnZXIua2VybmVs
-Lm9yZz47IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcgPGxpbnV4LWtlcm5lbEB2Z2VyLmtl
-cm5lbC5vcmc+DQo+ID4gU3ViamVjdDogUmU6IFtQQVRDSF0gaWlvL2ludl9pY200MjYwMDogYWRk
-IGludl9pY200MjYwMCBpZF90YWJsZQ0KPiA+DQo+ID4gVGhpcyBNZXNzYWdlIElzIEZyb20gYW4g
-VW50cnVzdGVkIFNlbmRlcg0KPiA+IFlvdSBoYXZlIG5vdCBwcmV2aW91c2x5IGNvcnJlc3BvbmRl
-ZCB3aXRoIHRoaXMgc2VuZGVyLg0KPiA+DQo+ID4gSGVsbG8sIGRvZXMgcGF0Y2ggdjMgbWVldCB0
-aGUgcmVxdWlyZW1lbnRzPw0KPiA+DQo+ID4gQlIuDQo+ID4NCj4gPiBKYXNvbiBMaXUgPGphc29u
-bGl1MTAwNDE3MjhAZ21haWwuY29tPiDT2jIwMjTE6jnUwjLI1dbc0rsgMTk6MzHQtLXAo7oNCj4g
-PiBBZGQgdGhlIGlkX3RhYmxlIG9mIGludl9pY200MjYwMCwgc28gdGhlIGRldmljZSBjYW4gcHJv
-YmUgY29ycmVjdGx5Lg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSmFzb24gTGl1IDxqYXNvbmxp
-dTEwMDQxNzI4QGdtYWlsLmNvbT4NCj4gPiAtLS0NCj4gPiBWMS0+VjI6IGZpeCB1cCB0aGUgZm9y
-bWF0dGluZyBhcyByZXF1ZXN0ZWQNCj4gPiAtLS0NCj4gPiBWMi0+VjM6IGFkZCBpY200MjY4NiAo
-SU5WX0lDTV80MjY4NikgYW5kIGljbTQyNjg4IChJTlZfSUNNXzQyNjg4KQ0KPiA+IC0tLQ0KPiA+
-ICBkcml2ZXJzL2lpby9pbXUvaW52X2ljbTQyNjAwL2ludl9pY200MjYwMF9pMmMuYyB8IDE3ICsr
-KysrKysrKysrKysrKysrDQo+ID4gIGRyaXZlcnMvaWlvL2ltdS9pbnZfaWNtNDI2MDAvaW52X2lj
-bTQyNjAwX3NwaS5jIHwgMTcgKysrKysrKysrKysrKysrKysNCj4gPiAgMiBmaWxlcyBjaGFuZ2Vk
-LCAzNCBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vaW11
-L2ludl9pY200MjYwMC9pbnZfaWNtNDI2MDBfaTJjLmMgYi9kcml2ZXJzL2lpby9pbXUvaW52X2lj
-bTQyNjAwL2ludl9pY200MjYwMF9pMmMuYw0KPiA+IGluZGV4IGViYjMxYjM4NTg4MS4uOWU2NWZl
-ZjA0YzM5IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvaWlvL2ltdS9pbnZfaWNtNDI2MDAvaW52
-X2ljbTQyNjAwX2kyYy5jDQo+ID4gKysrIGIvZHJpdmVycy9paW8vaW11L2ludl9pY200MjYwMC9p
-bnZfaWNtNDI2MDBfaTJjLmMNCj4gPiBAQCAtNzEsNiArNzEsMjIgQEAgc3RhdGljIGludCBpbnZf
-aWNtNDI2MDBfcHJvYmUoc3RydWN0IGkyY19jbGllbnQgKmNsaWVudCkNCj4gPiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpbnZfaWNtNDI2MDBfaTJjX2J1c19zZXR1cCk7
-DQo+ID4gIH0NCj4gPg0KPiA+ICsvKg0KPiA+ICsgKiBkZXZpY2UgaWQgdGFibGUgaXMgdXNlZCB0
-byBpZGVudGlmeSB3aGF0IGRldmljZSBjYW4gYmUNCj4gPiArICogc3VwcG9ydGVkIGJ5IHRoaXMg
-ZHJpdmVyDQo+ID4gKyAqLw0KPiA+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGkyY19kZXZpY2VfaWQg
-aW52X2ljbTQyNjAwX2lkW10gPSB7DQo+ID4gKyAgICAgICB7ICJpY200MjYwMCIsIElOVl9DSElQ
-X0lDTTQyNjAwIH0sDQo+ID4gKyAgICAgICB7ICJpY200MjYwMiIsIElOVl9DSElQX0lDTTQyNjAy
-IH0sDQo+ID4gKyAgICAgICB7ICJpY200MjYwNSIsIElOVl9DSElQX0lDTTQyNjA1IH0sDQo+ID4g
-KyAgICAgICB7ICJpY200MjY4NiIsIElOVl9DSElQX0lDTTQyNjg2IH0sDQo+ID4gKyAgICAgICB7
-ICJpY200MjYyMiIsIElOVl9DSElQX0lDTTQyNjIyIH0sDQo+ID4gKyAgICAgICB7ICJpY200MjY4
-OCIsIElOVl9DSElQX0lDTTQyNjg4IH0sDQo+ID4gKyAgICAgICB7ICJpY200MjYzMSIsIElOVl9D
-SElQX0lDTTQyNjMxIH0sDQo+ID4gKyAgICAgICB7fQ0KPiA+ICt9Ow0KPiA+ICtNT0RVTEVfREVW
-SUNFX1RBQkxFKGkyYywgaW52X2ljbTQyNjAwX2lkKTsNCj4gPiArDQo+ID4gIHN0YXRpYyBjb25z
-dCBzdHJ1Y3Qgb2ZfZGV2aWNlX2lkIGludl9pY200MjYwMF9vZl9tYXRjaGVzW10gPSB7DQo+ID4g
-ICAgICAgICB7DQo+ID4gICAgICAgICAgICAgICAgIC5jb21wYXRpYmxlID0gImludmVuc2Vuc2Us
-aWNtNDI2MDAiLA0KPiA+IEBAIC0xMDQsNiArMTIwLDcgQEAgc3RhdGljIHN0cnVjdCBpMmNfZHJp
-dmVyIGludl9pY200MjYwMF9kcml2ZXIgPSB7DQo+ID4gICAgICAgICAgICAgICAgIC5vZl9tYXRj
-aF90YWJsZSA9IGludl9pY200MjYwMF9vZl9tYXRjaGVzLA0KPiA+ICAgICAgICAgICAgICAgICAu
-cG0gPSBwbV9wdHIoJmludl9pY200MjYwMF9wbV9vcHMpLA0KPiA+ICAgICAgICAgfSwNCj4gPiAr
-ICAgICAgIC5pZF90YWJsZSA9IGludl9pY200MjYwMF9pZCwNCj4gPiAgICAgICAgIC5wcm9iZSA9
-IGludl9pY200MjYwMF9wcm9iZSwNCj4gPiAgfTsNCj4gPiAgbW9kdWxlX2kyY19kcml2ZXIoaW52
-X2ljbTQyNjAwX2RyaXZlcik7DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2ltdS9pbnZf
-aWNtNDI2MDAvaW52X2ljbTQyNjAwX3NwaS5jIGIvZHJpdmVycy9paW8vaW11L2ludl9pY200MjYw
-MC9pbnZfaWNtNDI2MDBfc3BpLmMNCj4gPiBpbmRleCBlYWU1ZmY3YTNjYzEuLjc1NDQxYjJiZTE3
-NCAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL2lpby9pbXUvaW52X2ljbTQyNjAwL2ludl9pY200
-MjYwMF9zcGkuYw0KPiA+ICsrKyBiL2RyaXZlcnMvaWlvL2ltdS9pbnZfaWNtNDI2MDAvaW52X2lj
-bTQyNjAwX3NwaS5jDQo+ID4gQEAgLTY3LDYgKzY3LDIyIEBAIHN0YXRpYyBpbnQgaW52X2ljbTQy
-NjAwX3Byb2JlKHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpDQo+ID4gICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgaW52X2ljbTQyNjAwX3NwaV9idXNfc2V0dXApOw0KPiA+ICB9
-DQo+ID4NCj4gPiArLyoNCj4gPiArICogZGV2aWNlIGlkIHRhYmxlIGlzIHVzZWQgdG8gaWRlbnRp
-Znkgd2hhdCBkZXZpY2UgY2FuIGJlDQo+ID4gKyAqIHN1cHBvcnRlZCBieSB0aGlzIGRyaXZlcg0K
-PiA+ICsgKi8NCj4gPiArc3RhdGljIGNvbnN0IHN0cnVjdCBzcGlfZGV2aWNlX2lkIGludl9pY200
-MjYwMF9pZFtdID0gew0KPiA+ICsgICAgICAgeyAiaWNtNDI2MDAiLCBJTlZfQ0hJUF9JQ000MjYw
-MCB9LA0KPiA+ICsgICAgICAgeyAiaWNtNDI2MDIiLCBJTlZfQ0hJUF9JQ000MjYwMiB9LA0KPiA+
-ICsgICAgICAgeyAiaWNtNDI2MDUiLCBJTlZfQ0hJUF9JQ000MjYwNSB9LA0KPiA+ICsgICAgICAg
-eyAiaWNtNDI2ODYiLCBJTlZfQ0hJUF9JQ000MjY4NiB9LA0KPiA+ICsgICAgICAgeyAiaWNtNDI2
-MjIiLCBJTlZfQ0hJUF9JQ000MjYyMiB9LA0KPiA+ICsgICAgICAgeyAiaWNtNDI2ODgiLCBJTlZf
-Q0hJUF9JQ000MjY4OCB9LA0KPiA+ICsgICAgICAgeyAiaWNtNDI2MzEiLCBJTlZfQ0hJUF9JQ000
-MjYzMSB9LA0KPiA+ICsgICAgICAge30NCj4gPiArfTsNCj4gPiArTU9EVUxFX0RFVklDRV9UQUJM
-RShzcGksIGludl9pY200MjYwMF9pZCk7DQo+ID4gKw0KPiA+ICBzdGF0aWMgY29uc3Qgc3RydWN0
-IG9mX2RldmljZV9pZCBpbnZfaWNtNDI2MDBfb2ZfbWF0Y2hlc1tdID0gew0KPiA+ICAgICAgICAg
-ew0KPiA+ICAgICAgICAgICAgICAgICAuY29tcGF0aWJsZSA9ICJpbnZlbnNlbnNlLGljbTQyNjAw
-IiwNCj4gPiBAQCAtMTAwLDYgKzExNiw3IEBAIHN0YXRpYyBzdHJ1Y3Qgc3BpX2RyaXZlciBpbnZf
-aWNtNDI2MDBfZHJpdmVyID0gew0KPiA+ICAgICAgICAgICAgICAgICAub2ZfbWF0Y2hfdGFibGUg
-PSBpbnZfaWNtNDI2MDBfb2ZfbWF0Y2hlcywNCj4gPiAgICAgICAgICAgICAgICAgLnBtID0gcG1f
-cHRyKCZpbnZfaWNtNDI2MDBfcG1fb3BzKSwNCj4gPiAgICAgICAgIH0sDQo+ID4gKyAgICAgICAu
-aWRfdGFibGUgPSBpbnZfaWNtNDI2MDBfaWQsDQo+ID4gICAgICAgICAucHJvYmUgPSBpbnZfaWNt
-NDI2MDBfcHJvYmUsDQo+ID4gIH07DQo+ID4gIG1vZHVsZV9zcGlfZHJpdmVyKGludl9pY200MjYw
-MF9kcml2ZXIpOw0KPiA+IC0tDQo+ID4gMi4yNS4xDQo+DQoNCg==
+On Sun, 8 Sep 2024 11:41:43 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> On Sat, 17 Aug 2024 11:19:02 +0100
+> Jonathan Cameron <jic23@kernel.org> wrote:
+>=20
+> > On Mon, 12 Aug 2024 11:13:13 +0300
+> > Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.o=
+rg> wrote:
+> >  =20
+> > > This patch series adds support for the AD4113 ADC within the existing
+> > > AD7173 driver.
+> > >=20
+> > > The AD4113 is a low power, low noise, 16-bit, =CE=A3-=CE=94 analog-to=
+-digital
+> > > converter (ADC) that integrates an analog front end (AFE) for four
+> > > fully differential or eight single-ended inputs.
+> > >=20
+> > > The part is not released yet and the documentation is not public.
+> > > Register map is identical to AD4114 besides the lower width data
+> > > register and the GPIO register.
+> > >=20
+> > > Particularities of this model:
+> > > - 16 bit data register
+> > > - no temperature sensor
+> > > - no current inputs
+> > > - input buffers
+> > > - internal reference
+> > > - external reference REF-/REF+
+> > > - no second external reference REF2-/REF2+
+> > > - no AVDD2 supply
+> > > - 2 GPIO pins with config bits starting at a higher position in regis=
+ter
+> > > - 8 VINx inputs with voltage divider
+> > > - 16 channel registers and 8 setup registers
+> > >=20
+> > > Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>   =20
+> > Hi.
+> >=20
+> > Series is fine, but I don't yet have the fix=20
+> > [PATCH] iio: adc: ad7173: Fix incorrect compatible string
+> > in the upstream of my togreg branch.
+> >=20
+> > Hence this will have to wait a little while for that to be present.
+> > Otherwise this will create a fiddly merge for linux-next etc. =20
+>=20
+> Tree juggling didn't go entirely according to plan so unfortunately
+> this has slipped back to next cycle unless there is a delay in the
+> 6.12 merge window opening.
+>=20
+> Sorry about that, and I'll make sure to queued it up nice and early
+> after rc1.
+Applied now.  Given Linus wasn't super clear on whether he plans to
+do an rc8 I might still send a speculative pull request in case
+there is a delay.  If so I'll do that in a few days after this
+as first sat in my testing branch for 0-day to look then togreg
+branch hence Linux-next for a day or two after that.
+
+Jonathan
+
+>=20
+> >=20
+> > Jonathan
+> >  =20
+> > > ---
+> > > Changes in v3:
+> > > - lowercase chip ID
+> > > - add patch to correctly order chip IDs defines
+> > > - picked up RB and ACK tags
+> > > - Link to v2: https://lore.kernel.org/r/20240809-ad4113-v2-0-2a70c101=
+a1f4@analog.com
+> > >=20
+> > > Changes in v2:
+> > > - correctly set realbits and storagebits to 16 in iio_chan_spec
+> > > - describe bindings restrictions in commit message due to lack of
+> > >   sufficient diff context
+> > > - describe model differences better in cover letter
+> > > - Link to v1: https://lore.kernel.org/r/20240807-ad4113-v1-0-2d338f70=
+2c7b@analog.com
+> > >=20
+> > > ---
+> > > Dumitru Ceclan (3):
+> > >       dt-bindings: adc: ad7173: add support for ad4113
+> > >       iio: adc: ad7173: order chipID by value
+> > >       iio: adc: ad7173: add support for ad4113
+> > >=20
+> > >  .../devicetree/bindings/iio/adc/adi,ad7173.yaml    |  3 ++
+> > >  drivers/iio/adc/ad7173.c                           | 38 ++++++++++++=
+++++++++--
+> > >  2 files changed, 39 insertions(+), 2 deletions(-)
+> > > ---
+> > > base-commit: 1c61e13d7dc9003662bd7fd6064dfea67e64b014
+> > > change-id: 20240725-ad4113-baa63ff99245
+> > >=20
+> > > Best regards,   =20
+> >=20
+> >  =20
+>=20
+>=20
+
 

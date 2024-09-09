@@ -1,116 +1,169 @@
-Return-Path: <linux-iio+bounces-9402-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9403-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044D7971F66
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 18:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09ED4971FD8
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 19:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EE63B2307D
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 16:38:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F3BFB226A1
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 17:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96ABC166F07;
-	Mon,  9 Sep 2024 16:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8BA16EBEC;
+	Mon,  9 Sep 2024 17:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jdg6Iz0D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TdjcOUBh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB461487E2;
-	Mon,  9 Sep 2024 16:38:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F8116DED5;
+	Mon,  9 Sep 2024 17:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725899891; cv=none; b=Dtxytx3iQOa3+/3Q6AxSwiDC6NxDA+3rykrd8yspQuiGlRj32x+5StxdoXTcB1I274YLX06XaSOzt+i4qhM5yiQFvy1K4d5GZaV3QsJ1/jh4UIqlYWJGdRzBzZy5ptCTchJRoxqlikQ4YItFJ5Rq8ACqoZXpnosnETqovonEotI=
+	t=1725901422; cv=none; b=BN6ZnKo00uRIUil0gH9F2mrK053rsGQD+ogkesURQlt+IxeNNIXglNygrEbzmpFWJgE4p+AHfB3qwA9nMo0DM8PbtCPPIu64MJQsLDmduAu+4Aebl9KRB73ku8AffJXl95PnP1NLDpsenlRj9hNctQ92n0zYrvEGOeSlnrASLro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725899891; c=relaxed/simple;
-	bh=+w2uc10nohr4sGZItrTrIsH/kjRiwUW6Vy1YZKvOlPE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BzD3VkWBELDOgglPQUxB7sJRriNgNwV9wEKgaknmW9ME6XFrcWKrbSKxvwePu4KVz1mzoZQCaT5LmHIXfJJEREqLIos0LfEEk2A+GBlFkwNEcAtFGC6MO8afcnlu47UUOUKTO8GjsXMtpOQucD1SdGMecF9loEBhrhc8M2c+x9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jdg6Iz0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E3EC4CEC5;
-	Mon,  9 Sep 2024 16:38:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725899889;
-	bh=+w2uc10nohr4sGZItrTrIsH/kjRiwUW6Vy1YZKvOlPE=;
-	h=From:Date:Subject:To:Cc:From;
-	b=jdg6Iz0DKMG7z8XkS2YNOT+yVE8HOcGEjDFu8Ff8hA9FR5PtXFBrv5oXh2Z1qOvnf
-	 Th3p4Ag0xGQVUybkNkfA6a2Zz6U8+Co94WOCBbgG1BcLU52VE7Fbm73M4ZS710KEo1
-	 z8Tsfxt6qIgMtUPn8i5TWRf2y1Thirr1FKPag08C+A3iWebTAaz2umFfk/iSAUWzQ8
-	 RSxGJpxERi+0mwaCJSMqmoQLuV9TRy+bO173pMn+xWu+EWb4bKqrEzk7vfX+y2e1zS
-	 5wueJ4bR9EgOI7abwb9XjJSunw24PNTTzVHo4ZMO7yFuXfKFJ0sk1wCdk/qEQLq+mr
-	 dOAr63pPssCWQ==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Mon, 09 Sep 2024 09:38:04 -0700
-Subject: [PATCH] iio: bmi323: Fix array reference in
- bmi323_core_runtime_suspend()
+	s=arc-20240116; t=1725901422; c=relaxed/simple;
+	bh=z2f2zMXr032Lrm+l7qqrSHc0CLC2s9dIbQt/a78PVfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j/85VksMEm+JXK92o004NHS3/vCnrKoHBUdc2y09IHrPBsVAmqyMtl62EkhdiPqlRaWaNLJAhPMzQh2eR6eNbriICqju4Ll2jR+7+34OkAKD0PEkPx2UmYhAB84cC4a8Kz7jm3lMtwhLUupLZTPyzY0pIrNxGngjK/npD9YzrBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TdjcOUBh; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725901421; x=1757437421;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=z2f2zMXr032Lrm+l7qqrSHc0CLC2s9dIbQt/a78PVfI=;
+  b=TdjcOUBhb9TDJ3nAsDKwYUw0rwxvw/3+z3JyrFhGUlomBF0J54u4MXFp
+   F2sBiR0x1TX/QY7hY4RzhxI87JNHH8lQ/msMmq5L5XFJLeJ/2GeAkSe/5
+   ZxcwvQeRWC5YGqdpIx8f7eINZzImxELtxUgM8rew/PKqk6bdl194LWRwL
+   d5Hux7NenSTBe3nK1SAgVzeSnBa3V7f6EjUvZnV8PUrYhipItqoY/dAmf
+   ECUnGouCuu2eE7Eab2XlNQX9TyhqqHynlesqZf4U/nRFkXomlU1G6eXoj
+   SuZ4Qh5xCOa0B7iy9QBPtKcUflGFFcwk9z4wUtbMqtKmaND4mefwjx3ZF
+   w==;
+X-CSE-ConnectionGUID: y76JqmwATBWw2biECmZ24A==
+X-CSE-MsgGUID: s5YhtjDdRU2Y/M6QeyjiOw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="24722634"
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
+   d="scan'208";a="24722634"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 10:03:40 -0700
+X-CSE-ConnectionGUID: Grq5JGftRl2YhAd2ZBNVBQ==
+X-CSE-MsgGUID: EbBA92hXS/mAaNEtpWDONg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; 
+   d="scan'208";a="66790757"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 09 Sep 2024 10:03:36 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1snhnZ-000F0S-2f;
+	Mon, 09 Sep 2024 17:03:33 +0000
+Date: Tue, 10 Sep 2024 01:03:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alex Lanzano <lanzano.alex@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jagath Jog J <jagathjog1996@gmail.com>,
+	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>
+Cc: oe-kbuild-all@lists.linux.dev, skhan@linuxfoundation.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] iio: imu: Add i2c driver for bmi270 imu
+Message-ID: <202409100026.17N3K11W-lkp@intel.com>
+References: <20240909043254.611589-3-lanzano.alex@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240909-iio-bmi323-fix-array-ref-v1-1-51c220f22229@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAGsk32YC/x2MwQrCQAwFf6XkbCDNim39FfEQNdu+g61koVRK/
- 93F4wzM7FQ84IWuzU7hKwqWuUJ7aug52Tw641WZVPQsgwwMLPx4I2nijI0twr4cntnk0qn12qY
- sVPNPldj+69v9OH6h0Q+aagAAAA==
-X-Change-ID: 20240909-iio-bmi323-fix-array-ref-a0672a8213f0
-To: Jagath Jog J <jagathjog1996@gmail.com>, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
- Denis Benato <benato.denis96@gmail.com>
-Cc: linux-iio@vger.kernel.org, llvm@lists.linux.dev, 
- patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1784; i=nathan@kernel.org;
- h=from:subject:message-id; bh=+w2uc10nohr4sGZItrTrIsH/kjRiwUW6Vy1YZKvOlPE=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDGn3VQqLlDLOf3nzzGV2dWo8v6PR7Exnp2t1x7PuyPoWp
- W73fJnVUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACYSdJyR4XA85w/JGEFmr8J9
- //jec60/P+f3RZbpUQsnb3ptfIDrzFNGhk3PZpx0jJ5e0dfYUO59Nf37NqvXE49MScx4H9EfdcX
- CigUA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240909043254.611589-3-lanzano.alex@gmail.com>
 
-Clang warns (or errors with CONFIG_WERROR):
+Hi Alex,
 
-  drivers/iio/imu/bmi323/bmi323_core.c:133:27: error: variable 'bmi323_ext_reg_savestate' is not needed and will not be emitted [-Werror,-Wunneeded-internal-declaration]
-    133 | static const unsigned int bmi323_ext_reg_savestate[] = {
-        |                           ^~~~~~~~~~~~~~~~~~~~~~~~
+kernel test robot noticed the following build errors:
 
-bmi323_ext_reg_savestate is only used within sizeof() through
-ARRAY_SIZE(), so it is not unused, but it will not be emitted in the
-final binary because sizeof() is evaluated only at compile time.
-bmi323_ext_reg_savestate should have been used in the second parameter
-in the call to bmi323_read_ext_reg() in the second for loop in
-bmi323_core_runtime_suspend().
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on robh/for-next linus/master v6.11-rc7 next-20240909]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Fixes: 16531118ba63 ("iio: bmi323: peripheral in lowest power state on suspend")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- drivers/iio/imu/bmi323/bmi323_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Alex-Lanzano/dt-bindings-iio-imu-add-bmi270-bindings/20240909-123509
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20240909043254.611589-3-lanzano.alex%40gmail.com
+patch subject: [PATCH v3 2/2] iio: imu: Add i2c driver for bmi270 imu
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20240910/202409100026.17N3K11W-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240910/202409100026.17N3K11W-lkp@intel.com/reproduce)
 
-diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
-index 671401ce80dcf947b7b64ea3af112d2a42ca5501..64dbce23ce17bcdd11c0d4c454dbeb9de17ef56c 100644
---- a/drivers/iio/imu/bmi323/bmi323_core.c
-+++ b/drivers/iio/imu/bmi323/bmi323_core.c
-@@ -2199,7 +2199,7 @@ static int bmi323_core_runtime_suspend(struct device *dev)
- 	}
- 
- 	for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_ext_reg_savestate); i++) {
--		ret = bmi323_read_ext_reg(data, bmi323_reg_savestate[i],
-+		ret = bmi323_read_ext_reg(data, bmi323_ext_reg_savestate[i],
- 					  &savestate->reg_settings[i]);
- 		if (ret) {
- 			dev_err(data->dev,
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409100026.17N3K11W-lkp@intel.com/
 
----
-base-commit: 5ba0cb92584ba5e107c97001e09013c1da0772a8
-change-id: 20240909-iio-bmi323-fix-array-ref-a0672a8213f0
+All errors (new ones prefixed by >>):
 
-Best regards,
+   drivers/iio/imu/bmi270/bmi270_core.c: In function 'bmi270_configure_imu':
+>> drivers/iio/imu/bmi270/bmi270_core.c:180:31: error: implicit declaration of function 'FIELD_PREP' [-Wimplicit-function-declaration]
+     180 |                               FIELD_PREP(BMI270_ACC_CONF_ODR_MSK,
+         |                               ^~~~~~~~~~
+
+
+vim +/FIELD_PREP +180 drivers/iio/imu/bmi270/bmi270_core.c
+
+   165	
+   166	static int bmi270_configure_imu(struct bmi270_data *bmi270_device)
+   167	{
+   168		int ret;
+   169		struct device *dev = bmi270_device->dev;
+   170		struct regmap *regmap = bmi270_device->regmap;
+   171	
+   172		ret = regmap_set_bits(regmap, BMI270_PWR_CTRL_REG,
+   173				      BMI270_PWR_CTRL_AUX_EN_MSK |
+   174				      BMI270_PWR_CTRL_GYR_EN_MSK |
+   175				      BMI270_PWR_CTRL_ACCEL_EN_MSK);
+   176		if (ret)
+   177			return dev_err_probe(dev, ret, "Failed to enable accelerometer and gyroscope");
+   178	
+   179		ret = regmap_set_bits(regmap, BMI270_ACC_CONF_REG,
+ > 180				      FIELD_PREP(BMI270_ACC_CONF_ODR_MSK,
+   181						 BMI270_ACC_CONF_ODR_100HZ) |
+   182				      FIELD_PREP(BMI270_ACC_CONF_BWP_MSK,
+   183						 BMI270_ACC_CONF_BWP_NORMAL_MODE) |
+   184				      BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
+   185		if (ret)
+   186			return dev_err_probe(dev, ret, "Failed to configure accelerometer");
+   187	
+   188		ret = regmap_set_bits(regmap, BMI270_GYR_CONF_REG,
+   189				      FIELD_PREP(BMI270_GYR_CONF_ODR_MSK,
+   190						 BMI270_GYR_CONF_ODR_200HZ) |
+   191				      FIELD_PREP(BMI270_GYR_CONF_BWP_MSK,
+   192						 BMI270_GYR_CONF_BWP_NORMAL_MODE) |
+   193				      BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
+   194		if (ret)
+   195			return dev_err_probe(dev, ret, "Failed to configure gyroscope");
+   196	
+   197		/* Enable FIFO_WKUP, Disable ADV_PWR_SAVE and FUP_EN */
+   198		ret = regmap_write(regmap, BMI270_PWR_CONF_REG,
+   199				   BMI270_PWR_CONF_FIFO_WKUP_MSK);
+   200		if (ret)
+   201			return dev_err_probe(dev, ret, "Failed to set power configuration");
+   202	
+   203		return 0;
+   204	}
+   205	
+
 -- 
-Nathan Chancellor <nathan@kernel.org>
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

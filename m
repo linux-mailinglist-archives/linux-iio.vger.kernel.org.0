@@ -1,244 +1,176 @@
-Return-Path: <linux-iio+bounces-9381-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9382-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93C0971574
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 12:38:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC968971863
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 13:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 367321F23D1D
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 10:38:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EBE8B2419F
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 11:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BD41B5830;
-	Mon,  9 Sep 2024 10:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27431B652C;
+	Mon,  9 Sep 2024 11:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CRhbe3u+"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Ifp3dMRP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3191B4C4A;
-	Mon,  9 Sep 2024 10:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CE91B5820
+	for <linux-iio@vger.kernel.org>; Mon,  9 Sep 2024 11:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725878254; cv=none; b=h9PQ2dWZ6fdVWPCuTFR8fOiqYhUxGemv/1Thl+PcvtAEqiuHSuwMThcqMZS1TClMFi8pw5110oZQvukYbS+UnyyBTVgT0zJEmIKaX6wF+HSKmOzod465oMDyLjIdXCruXKurh0MMaGi+yMdk6uPDCdfAPLWcz29Eb92Kv/BWpb4=
+	t=1725882042; cv=none; b=Ut3LdqDhcn7/P3uLaY5lI9PeUgQI2h8YK+NmvOSXjyq7ygTaPiCrYAX2fk9sXnQV19XpqCU90XNo3RWSgaf42pHkMsJFCqBTrmK0Bx1ims+B+YZ1OvsIVpRCBa6u+LzYCGI7Rq/IUSROc/+pNgOIVJewJYFcWva53vdcuQLEIpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725878254; c=relaxed/simple;
-	bh=dpIzHbvRu28bi9o3PmHvgdJ8jCcqO43pFnJDruwQtpM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PuAEZ2zfaDgBRnkZp6jpKsxAtY3eOwUC874Iy20arj/tGtucxC2y4L9NNNuZIGcKcZuFr/d08lAY01JBpxbvBFtDfAt03a2EPyLp5nvGWX/mIz2GoiuptRN1nsikPotPgBSDJGvukNnAB9yolz0P9gIq2eUpXq8cRbjWiFXz/cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CRhbe3u+; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-718e9c8bd83so823974b3a.1;
-        Mon, 09 Sep 2024 03:37:32 -0700 (PDT)
+	s=arc-20240116; t=1725882042; c=relaxed/simple;
+	bh=JCU+nnRZjKTNsBC8fDV8e02825viMZYG3NulEUspsps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RgpelMdTldsmwaH8iiEgZAL6cHlrM0Xjv0osW8qUcZECAvsWIohkkb41N4CwYHwey+EX1GtMlsuFLxPpnqrMKW7mJfIC1IsbyIvhUjmaBwZBqSc0UXCbS1sJK3eIsBjqI0ol2BLd50WRMg3zmOSMqcAC1CivjPYCSPRPLLeuNgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Ifp3dMRP; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42cb806623eso8360195e9.2
+        for <linux-iio@vger.kernel.org>; Mon, 09 Sep 2024 04:40:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725878252; x=1726483052; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dA77S68U5yH+ARFT6rAvuB0lv7jhji9buh4OnSYCZQ0=;
-        b=CRhbe3u+1cCmqhjB/QhBz+inSro0CLeT/NRfZBF8vCgiCJpNoJR/UpHZ9uy3tVb1qa
-         R+iq4QxcRXkFrvzJtWXrjLkYcCRXjsf79wnXzbrPHWsS+irPoTDAfZ9nxvOZduC+jb8g
-         TkF0Nf2EjJ8D0mC60aytXge3iRVPTcPC/8TuuyA/KeCyj2fTS1j7nFOw6NZf/2p9zon9
-         S0sLdfeyCpFukghDtGBQYbio1Gj9+jRcH2kWuQWLS1go5eRjw22VOkSOoxw26KHLmK5B
-         4VDuqvJmPji0O/Vfc97xsMlx8TbOzdmtVTUF9LpFpvVYUvbPhOEXiR5loPOqaLWTAf1i
-         GFeA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725882039; x=1726486839; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fzmFygfKhygxF80gxgB21JZBoqtr7j1fadibKADgIG8=;
+        b=Ifp3dMRPVDG5nXLkhpT8d/mAwtjwgbFB01InZ6kYMbXoxriBTMDdqBud2CM7zOes8v
+         H/8Rn9vYKNN92WH2P5oO/9ndA0jilMRB+otQ1yD855eLS/4iKPvEo2oMp+fGHkBKUDJn
+         dPxnskIVe/5u/sOASVqPOXu30ywG7roOJGFUKDDnrCXH0NcDGEiANorl6bH29uR+SppB
+         4bP7n4nwSCv885Q+0ePhjVgjLZmPJ6mOZuuBr9t2Q3/fWVN5VwdVDESpqItvvic9WZQS
+         fGUaW+/uVT3HW21Xztf2YOfw67eill4TtZG/mzVyJAVpWrl5MZmkK6pSRSL6sI48yXTV
+         TN0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725878252; x=1726483052;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dA77S68U5yH+ARFT6rAvuB0lv7jhji9buh4OnSYCZQ0=;
-        b=gkRIUp6lekjFN85WXxO4WA3nXIryqTjlPnDAV6tq36tFRxh+fJlHsuJ1v2j99epRTu
-         VXXFNkFvaPBTJAmGHcCcooMRBrIR9gUzaarjKXzgw9ZFqrWQ5seXMXiI7dU4tOM7UfVI
-         UtLu3xdcUrVYJQc8fNrIQnMZ5+kSo68RPPQrhWn92kHuX4hH30ctwqWbL1VIMbHNa+iB
-         wYWSJxBeBfZFYlgLSRMl+yl5tZ0tdhVcxxlbXsl7jGSeSIHbNYlvPFECJwGBZr89kfhG
-         sMHx1cTTBImfRp4VvvB2GKc2kSFToDa5FCwU07GjUBMtAiUHa1CpMbnam1QvQTmm0Tuy
-         Nq2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUuKAjL7oojh3SPLewkTdqDYjtTbSW047n5J9ZJ9TCSU9uaU0xaCZznTFAp5MZzR4aJA4YdcpWI6ZekelU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoQ+ggLKx6wom7YRL+yTPjCjgaR0mllH4Sl9p2IjHTzKMXRfHi
-	3eNtoPmk+B/xBmN3lyAYupgMapKjxBhxdA8qZ85UJx3nCI+BHZQprJrf/W8/ja0=
-X-Google-Smtp-Source: AGHT+IGD2UjNRug5F2H/UZOpU/gKqZ3pgXTuldQheukNRNfxEhbVqxTgsjheiGqXLJZme2Og3p5v9Q==
-X-Received: by 2002:a05:6a20:2d0e:b0:1cf:1228:c175 with SMTP id adf61e73a8af0-1cf1bfa1533mr16390196637.8.1725878251637;
-        Mon, 09 Sep 2024 03:37:31 -0700 (PDT)
-Received: from abhash-IdeaPad-L340-15IRH-Gaming.. ([136.233.9.100])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-718e5897b3fsm3258032b3a.25.2024.09.09.03.37.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Sep 2024 03:37:30 -0700 (PDT)
-From: Abhash Jha <abhashkumarjha123@gmail.com>
-To: linux-iio@vger.kernel.org
-Cc: anshulusr@gmail.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-kernel@vger.kernel.org,
-	Abhash Jha <abhashkumarjha123@gmail.com>
-Subject: [PATCH 4/4] iio: light: ltr390: Add interrupt persistance support
-Date: Mon,  9 Sep 2024 16:06:23 +0530
-Message-ID: <20240909103623.264113-5-abhashkumarjha123@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240909103623.264113-1-abhashkumarjha123@gmail.com>
-References: <20240909103623.264113-1-abhashkumarjha123@gmail.com>
+        d=1e100.net; s=20230601; t=1725882039; x=1726486839;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fzmFygfKhygxF80gxgB21JZBoqtr7j1fadibKADgIG8=;
+        b=VGMiXLQWPlzOMOv+aZnTIxeucGbt+bNkBTjK3m6VaBKnXxjBwJVoWdSuoHJbClIeCz
+         +XT4GU340+drVE1WI0oI/p9r8RWbdfPML5/t6MmWUYWI0ntsYhp58ITq9JQbMyToC9Yg
+         UXVzqMNKrvnmQ4UCemdrdeXfaL89kToPBiLRpA7t7d902W/ZvI/mHaqRECHfQ0oZK+cb
+         oUzLu9sZ4sfIN3tJDBpcZ2BqK7DsRFXP9AwGiEPDnCQ0jQhSh0y8K83R6UgFQOVeusDl
+         41qd5Li1aKtFA95IPfCnNdSXBNgSK8o15KG6x9uepFgututF2q1+EoOrQVU/cY2rhcq6
+         hK8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU/i7a4bL6HAjmoHvXUa/pxzV8nqTKxl++2v3oBz8/yyIzegx/LvaZP30LB2DRGO755nRkuhD8AbCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeC8PZ2ZUxxlL9U1EF/ReHc0C5LRV0LUzc56UQ1iKPM5q6YumE
+	4r4wK5QpVJ2E5RJCMZBB+uGzhwe5P/rx/zt1MR6uuMWHHZqHpFoslEZbOk8r9VU=
+X-Google-Smtp-Source: AGHT+IEYtSXfQvIGIvNogK+TDub9DqfGy99ZQTbCoGHa8djrUVrtbj0kF9h9rbmyGXk+ULp0B/96yg==
+X-Received: by 2002:a05:600c:3b29:b0:42c:bae0:f05b with SMTP id 5b1f17b1804b1-42cbae0f2b5mr8696895e9.1.1725882038600;
+        Mon, 09 Sep 2024 04:40:38 -0700 (PDT)
+Received: from [192.168.0.2] (host-79-54-235-146.retail.telecomitalia.it. [79.54.235.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37895665ba0sm5821843f8f.48.2024.09.09.04.40.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Sep 2024 04:40:38 -0700 (PDT)
+Message-ID: <be279b0f-8337-4d3b-87c2-f426ddb302e3@baylibre.com>
+Date: Mon, 9 Sep 2024 13:39:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/9] dt-bindings: iio: dac: ad3552r: add io-backend
+ property
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Olivier Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ David Lechner <dlechner@baylibre.com>
+References: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylibre.com>
+ <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-1-87d669674c00@baylibre.com>
+ <20240908132925.331c5175@jic23-huawei>
+Content-Language: en-US
+From: Angelo Dureghello <adureghello@baylibre.com>
+In-Reply-To: <20240908132925.331c5175@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Added support to configure the threshold interrupt persistance value by
-providing IIO_EV_INFO_PERIOD attribute. The value written to the
-attribute should be in miliseconds and should be greater than the
-sampling rate of the sensor.
 
-Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
----
- drivers/iio/light/ltr390.c | 66 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 62 insertions(+), 4 deletions(-)
+On 08/09/24 2:29 PM, Jonathan Cameron wrote:
+> On Thu, 05 Sep 2024 17:17:31 +0200
+> Angelo Dureghello <adureghello@baylibre.com> wrote:
+>
+>> From: Angelo Dureghello <adureghello@baylibre.com>
+>>
+>> There is a version AXI DAC IP block (for FPGAs) that provides
+>> a physical bus for AD3552R and similar chips. This can be used
+>> instead of a typical SPI controller to be able to use the chip
+>> in ways that typical SPI controllers are not capable of.
+>>
+>> The binding is modified so that either the device is a SPI
+>> peripheral or it uses an io-backend.
+>>
+>> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+>>   
+>>   required:
+>>     - compatible
+>> -  - reg
+>> -  - spi-max-frequency
+> Sort of feels like both reg and spi-max-frequency
+> are valid things to specify.
 
-diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
-index c707a4871..87195f001 100644
---- a/drivers/iio/light/ltr390.c
-+++ b/drivers/iio/light/ltr390.c
-@@ -38,6 +38,7 @@
- #define LTR390_ALS_DATA			0x0D
- #define LTR390_UVS_DATA			0x10
- #define LTR390_INT_CFG			0x19
-+#define LTR390_INT_PST			0x1A
- #define LTR390_THRESH_UP		0x21
- #define LTR390_THRESH_LOW		0x24
- 
-@@ -46,6 +47,8 @@
- #define LTR390_ALS_UVS_MEAS_RATE_MASK	0x07
- #define LTR390_ALS_UVS_INT_TIME_MASK	0x70
- #define LTR390_ALS_UVS_INT_TIME(x)	FIELD_PREP(LTR390_ALS_UVS_INT_TIME_MASK, (x))
-+#define LTR390_INT_PST_MASK		0xF0
-+#define LTR390_INT_PST_VAL(x)		FIELD_PREP(LTR390_INT_PST_MASK, (x))
- 
- #define LTR390_SW_RESET	      BIT(4)
- #define LTR390_UVS_MODE	      BIT(3)
-@@ -77,6 +80,11 @@ enum ltr390_mode {
- 	LTR390_SET_UVS_MODE,
- };
- 
-+enum ltr390_meas_rate {
-+	LTR390_GET_FREQ,
-+	LTR390_GET_PERIOD,
-+};
-+
- struct ltr390_data {
- 	struct regmap *regmap;
- 	struct i2c_client *client;
-@@ -154,7 +162,7 @@ static int ltr390_counts_per_uvi(struct ltr390_data *data)
- 	return DIV_ROUND_CLOSEST(23 * data->gain * data->int_time_us, 10 * orig_gain * orig_int_time);
- }
- 
--static int ltr390_get_samp_freq(struct ltr390_data *data)
-+static int ltr390_get_samp_freq_or_period(struct ltr390_data *data, enum ltr390_meas_rate option)
- {
- 	int ret, value;
- 
-@@ -163,7 +171,7 @@ static int ltr390_get_samp_freq(struct ltr390_data *data)
- 		return ret;
- 	value &= LTR390_ALS_UVS_MEAS_RATE_MASK;
- 
--	return ltr390_samp_freq_table[value][0];
-+	return ltr390_samp_freq_table[value][option];
- }
- 
- static int ltr390_read_raw(struct iio_dev *iio_device,
-@@ -223,7 +231,7 @@ static int ltr390_read_raw(struct iio_dev *iio_device,
- 		return IIO_VAL_INT;
- 
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		*val = ltr390_get_samp_freq(data);
-+		*val = ltr390_get_samp_freq_or_period(data, LTR390_GET_FREQ);
- 		return IIO_VAL_INT;
- 
- 	default:
-@@ -248,7 +256,8 @@ static const struct iio_event_spec ltr390_event_spec[] = {
- 	}, {
- 		.type = IIO_EV_TYPE_THRESH,
- 		.dir = IIO_EV_DIR_EITHER,
--		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE) |
-+				BIT(IIO_EV_INFO_PERIOD),
- 	}
- };
- 
-@@ -396,6 +405,44 @@ static int ltr390_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec cons
- 	}
- }
- 
-+static int ltr390_read_intr_prst(struct ltr390_data *data, int *val)
-+{
-+	int ret, prst, samp_period;
-+
-+	samp_period = ltr390_get_samp_freq_or_period(data, LTR390_GET_PERIOD);
-+	ret = regmap_read(data->regmap, LTR390_INT_PST, &prst);
-+	if (ret < 0)
-+		return ret;
-+	*val = prst * samp_period;
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static int ltr390_write_intr_prst(struct ltr390_data *data, int val)
-+{
-+	int ret, samp_period, new_val;
-+
-+	samp_period = ltr390_get_samp_freq_or_period(data, LTR390_GET_PERIOD);
-+
-+	/* persist period should be greater than or equal to samp period */
-+	if (val < samp_period)
-+		return -EINVAL;
-+
-+	new_val = DIV_ROUND_UP(val, samp_period);
-+	if (new_val < 0 || new_val > 0x0f)
-+		return -EINVAL;
-+
-+	guard(mutex)(&data->lock);
-+	ret = regmap_update_bits(data->regmap,
-+				LTR390_INT_PST,
-+				LTR390_INT_PST_MASK,
-+				LTR390_INT_PST_VAL(new_val));
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static int ltr390_read_threshold(const struct iio_dev *indio_dev,
- 				enum iio_event_direction dir,
- 				int *val, int *val2)
-@@ -456,6 +503,10 @@ static int ltr390_read_event_value(struct iio_dev *indio_dev,
- 	switch (info) {
- 	case IIO_EV_INFO_VALUE:
- 		return ltr390_read_threshold(indio_dev, dir, val, val2);
-+
-+	case IIO_EV_INFO_PERIOD:
-+		return ltr390_read_intr_prst(iio_priv(indio_dev), val);
-+
- 	default:
- 		return -EINVAL;
- 	}
-@@ -474,6 +525,13 @@ static int ltr390_write_event_value(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 
- 		return ltr390_write_threshold(indio_dev, dir, val, val2);
-+
-+	case IIO_EV_INFO_PERIOD:
-+		if (val2 != 0)
-+			return -EINVAL;
-+
-+		return ltr390_write_intr_prst(iio_priv(indio_dev), val);
-+
- 	default:
- 		return -EINVAL;
- 	}
+This specific backend IP generates a fixed non-configurable clock
+frequency, so i don't think the spi-max-frequency is needed.
+
+
+> Maybe we have an excellent IP and dodgy wiring so want
+> to clamp the frequency (long term - don't need to support
+> in the driver today).
+>
+> Maybe we have an axi_dac IP that supports multiple
+> front end devices?  So maybe just keep reg?
+
+yes, this is what i am wondering now too, i simplified with just one
+frontend node, are multimple frontends (and so reg property) needed ?
+
+
+>>   
+>>   additionalProperties: false
+>>   
+>> @@ -238,4 +254,26 @@ examples:
+>>               };
+>>           };
+>>       };
+>> +
+>> +  - |
+>> +    backend: axi_dac@44a70000 {
+>> +        compatible = "adi,axi-dac-ad3552r";
+>> +        reg = <0x44a70000 0x1000>;
+>> +        dmas = <&dac_tx_dma 0>;
+>> +        dma-names = "tx";
+>> +        #io-backend-cells = <0>;
+>> +        clocks = <&ref_clk>;
+>> +        dac {
+>> +            compatible = "adi,ad3552r";
+>> +            reset-gpios = <&gpio0 92 1>;
+>> +            io-backends = <&backend>;
+>> +            #address-cells = <1>;
+>> +            #size-cells = <0>;
+>> +            channel@0 {
+>> +                reg = <0>;
+>> +                adi,output-range-microvolt = <(-10000000) (10000000)>;
+>> +            };
+>> +        };
+>> +    };
+>> +
+>>   ...
+>>
+Regards,
 -- 
-2.43.0
+  ,,,      Angelo Dureghello
+:: :.     BayLibre -runtime team- Developer
+:`___:
+  `____:
 
 

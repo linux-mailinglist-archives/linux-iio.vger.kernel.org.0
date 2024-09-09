@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-9380-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9381-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2148A971572
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 12:38:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A93C0971574
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 12:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DD0C1C22299
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 10:38:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 367321F23D1D
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Sep 2024 10:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1D31B580D;
-	Mon,  9 Sep 2024 10:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BD41B5830;
+	Mon,  9 Sep 2024 10:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OD204rO8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CRhbe3u+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7210C1B580A;
-	Mon,  9 Sep 2024 10:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3191B4C4A;
+	Mon,  9 Sep 2024 10:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725878251; cv=none; b=Jf9DaN4WrcFa0HcqQFsInvygDK4QWSPrxv5m6Z2XsV90UZXuwzndH+IMi1lasmO4jF69oZID6iu9CqNne2p0s5ld91HeH7tChhwoMd2f1Hbx3WWl8CvUA2q6dRD2T5sbiCWg/O3OvA3XVDcoFIaNDqIwwWBNzZLQ2Zr0uf6MUz8=
+	t=1725878254; cv=none; b=h9PQ2dWZ6fdVWPCuTFR8fOiqYhUxGemv/1Thl+PcvtAEqiuHSuwMThcqMZS1TClMFi8pw5110oZQvukYbS+UnyyBTVgT0zJEmIKaX6wF+HSKmOzod465oMDyLjIdXCruXKurh0MMaGi+yMdk6uPDCdfAPLWcz29Eb92Kv/BWpb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725878251; c=relaxed/simple;
-	bh=VNG7rvvZia/wCUOSgxtTR2Ji8uix+Z+Sqo/HnwqlhRw=;
+	s=arc-20240116; t=1725878254; c=relaxed/simple;
+	bh=dpIzHbvRu28bi9o3PmHvgdJ8jCcqO43pFnJDruwQtpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GIgw+1UNvVH+KGEAK9GnitCNnE09Q0/0Oz2nAgmJHcACF2H3KvfmD5fL4eHgNYnzgx4tBt24fwAMSYNKuoXuE+HeoY6XNaJXogtfQOzMHAhY9H7nn5XVPOfMRxXT6bkZNgQN+t0lytNoCp1VcNc4iTiqWWiZIqL1dnlK4ZVGfOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OD204rO8; arc=none smtp.client-ip=209.85.210.179
+	 MIME-Version; b=PuAEZ2zfaDgBRnkZp6jpKsxAtY3eOwUC874Iy20arj/tGtucxC2y4L9NNNuZIGcKcZuFr/d08lAY01JBpxbvBFtDfAt03a2EPyLp5nvGWX/mIz2GoiuptRN1nsikPotPgBSDJGvukNnAB9yolz0P9gIq2eUpXq8cRbjWiFXz/cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CRhbe3u+; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-718a3b8a2dcso2265697b3a.2;
-        Mon, 09 Sep 2024 03:37:29 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-718e9c8bd83so823974b3a.1;
+        Mon, 09 Sep 2024 03:37:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725878248; x=1726483048; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725878252; x=1726483052; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cINpB1QE7f8M6u2vyABHpUJsKL9FmJXbrSnf5SAefL4=;
-        b=OD204rO86j67p/XZuXkj8GV2jR7hcNVvG8OkcTb8SDuIy+6VEaKmMAsVsXII04XZs9
-         aWhbAbDpdZ8H6IWA46libOzv5ZTDdgqARIezpL3HDDqgdq1BglQiljuRBpoIoN9vqlba
-         5BA0EP6Yks8zivolawY77ML+Pk+ow0tiTLVYOxRt2fCP1XhHhnI1DhWQ5GwtkiUmKJLZ
-         S3nmo4qor7oS1h+8RQj5BoR6eRsE20bVMos6r8zuwoVcg9Y3NyfytRQgC3i2E7El0uec
-         7GYXhazvnFB6hqGCRW0Cba9J24wujM0V/jUoz3jtGd13GS+4DzDM3+C9uYRVGLxpG989
-         Nw1A==
+        bh=dA77S68U5yH+ARFT6rAvuB0lv7jhji9buh4OnSYCZQ0=;
+        b=CRhbe3u+1cCmqhjB/QhBz+inSro0CLeT/NRfZBF8vCgiCJpNoJR/UpHZ9uy3tVb1qa
+         R+iq4QxcRXkFrvzJtWXrjLkYcCRXjsf79wnXzbrPHWsS+irPoTDAfZ9nxvOZduC+jb8g
+         TkF0Nf2EjJ8D0mC60aytXge3iRVPTcPC/8TuuyA/KeCyj2fTS1j7nFOw6NZf/2p9zon9
+         S0sLdfeyCpFukghDtGBQYbio1Gj9+jRcH2kWuQWLS1go5eRjw22VOkSOoxw26KHLmK5B
+         4VDuqvJmPji0O/Vfc97xsMlx8TbOzdmtVTUF9LpFpvVYUvbPhOEXiR5loPOqaLWTAf1i
+         GFeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725878248; x=1726483048;
+        d=1e100.net; s=20230601; t=1725878252; x=1726483052;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cINpB1QE7f8M6u2vyABHpUJsKL9FmJXbrSnf5SAefL4=;
-        b=neIRoixMJ083WJ7BPtGVsYAtMUj+NYwjW0+ryR+yyao3cr9CaJhQOpey6I8axJxTUO
-         P+jJD/eAczTjRqfz8fMEb6wkrTj1EHa7BXnE02F/1X+73zpQzBPjzWNriDiKzttzQL4F
-         TV6Z1nulElBfA5WY7/lYN2IF+Rs+92/YE/fLpnImpz2U7xUACPhSWLHTD/WhbMdj8jj0
-         h4gyTez2vXqVdL0Y/sErts5RPlpEaQZzRZKXC5jFYrvoBpbsLYaqnXg+6fYZvm4Om9HJ
-         W4VFxz83GPtJk31W1dWRrzr12HBHChntOFTztTvbG4izE/1O2o5wCktx3ckcDBYl4mcx
-         4ZCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVf/Fff8wEh5SvkPJnSPE1VUv3wlCmXlbDAvb/TFg9sOd0SfEqECQY2wAEEH1mScGND2L2JrFndHS5HM6s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyecpKg8fvADmep4TIIEhXbCWGim3J2nlCa/sBPM98EY3a1fuBB
-	o8egU3DSBZYEBLn0ODdspbYJHKq1dtUOlcfS2Eox8vJf9n6RLBHWy37joZIRTV0=
-X-Google-Smtp-Source: AGHT+IFPO4w7m2Z2BarivpeU4GdfUU+wB2NzdzppQzrTv6AH443WYXXZuWXSeRgyV96rXsewRbQTFw==
-X-Received: by 2002:a05:6a00:190d:b0:718:d94b:4b with SMTP id d2e1a72fcca58-718d94b0149mr9276003b3a.6.1725878247635;
-        Mon, 09 Sep 2024 03:37:27 -0700 (PDT)
+        bh=dA77S68U5yH+ARFT6rAvuB0lv7jhji9buh4OnSYCZQ0=;
+        b=gkRIUp6lekjFN85WXxO4WA3nXIryqTjlPnDAV6tq36tFRxh+fJlHsuJ1v2j99epRTu
+         VXXFNkFvaPBTJAmGHcCcooMRBrIR9gUzaarjKXzgw9ZFqrWQ5seXMXiI7dU4tOM7UfVI
+         UtLu3xdcUrVYJQc8fNrIQnMZ5+kSo68RPPQrhWn92kHuX4hH30ctwqWbL1VIMbHNa+iB
+         wYWSJxBeBfZFYlgLSRMl+yl5tZ0tdhVcxxlbXsl7jGSeSIHbNYlvPFECJwGBZr89kfhG
+         sMHx1cTTBImfRp4VvvB2GKc2kSFToDa5FCwU07GjUBMtAiUHa1CpMbnam1QvQTmm0Tuy
+         Nq2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUuKAjL7oojh3SPLewkTdqDYjtTbSW047n5J9ZJ9TCSU9uaU0xaCZznTFAp5MZzR4aJA4YdcpWI6ZekelU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoQ+ggLKx6wom7YRL+yTPjCjgaR0mllH4Sl9p2IjHTzKMXRfHi
+	3eNtoPmk+B/xBmN3lyAYupgMapKjxBhxdA8qZ85UJx3nCI+BHZQprJrf/W8/ja0=
+X-Google-Smtp-Source: AGHT+IGD2UjNRug5F2H/UZOpU/gKqZ3pgXTuldQheukNRNfxEhbVqxTgsjheiGqXLJZme2Og3p5v9Q==
+X-Received: by 2002:a05:6a20:2d0e:b0:1cf:1228:c175 with SMTP id adf61e73a8af0-1cf1bfa1533mr16390196637.8.1725878251637;
+        Mon, 09 Sep 2024 03:37:31 -0700 (PDT)
 Received: from abhash-IdeaPad-L340-15IRH-Gaming.. ([136.233.9.100])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-718e5897b3fsm3258032b3a.25.2024.09.09.03.37.23
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-718e5897b3fsm3258032b3a.25.2024.09.09.03.37.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Sep 2024 03:37:26 -0700 (PDT)
+        Mon, 09 Sep 2024 03:37:30 -0700 (PDT)
 From: Abhash Jha <abhashkumarjha123@gmail.com>
 To: linux-iio@vger.kernel.org
 Cc: anshulusr@gmail.com,
@@ -74,9 +74,9 @@ Cc: anshulusr@gmail.com,
 	lars@metafoo.de,
 	linux-kernel@vger.kernel.org,
 	Abhash Jha <abhashkumarjha123@gmail.com>
-Subject: [PATCH 3/4] iio: light: ltr390: Interrupts and threshold event support
-Date: Mon,  9 Sep 2024 16:06:22 +0530
-Message-ID: <20240909103623.264113-4-abhashkumarjha123@gmail.com>
+Subject: [PATCH 4/4] iio: light: ltr390: Add interrupt persistance support
+Date: Mon,  9 Sep 2024 16:06:23 +0530
+Message-ID: <20240909103623.264113-5-abhashkumarjha123@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240909103623.264113-1-abhashkumarjha123@gmail.com>
 References: <20240909103623.264113-1-abhashkumarjha123@gmail.com>
@@ -88,304 +88,156 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Added support for threshold events for both the ALS and UVI channels.
-The events are reported when the threshold interrupt is triggered. Both
-rising and falling threshold types are supported.
+Added support to configure the threshold interrupt persistance value by
+providing IIO_EV_INFO_PERIOD attribute. The value written to the
+attribute should be in miliseconds and should be greater than the
+sampling rate of the sensor.
 
 Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
 ---
- drivers/iio/light/ltr390.c | 220 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 218 insertions(+), 2 deletions(-)
+ drivers/iio/light/ltr390.c | 66 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 62 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
-index c4ff26d68..c707a4871 100644
+index c707a4871..87195f001 100644
 --- a/drivers/iio/light/ltr390.c
 +++ b/drivers/iio/light/ltr390.c
-@@ -26,6 +26,7 @@
- #include <linux/bitfield.h>
- 
- #include <linux/iio/iio.h>
-+#include <linux/iio/events.h>
- 
- #include <asm/unaligned.h>
- 
-@@ -33,9 +34,12 @@
- #define LTR390_ALS_UVS_MEAS_RATE	0x04
- #define LTR390_ALS_UVS_GAIN		0x05
- #define LTR390_PART_ID			0x06
-+#define LTR390_MAIN_STATUS		0x07
+@@ -38,6 +38,7 @@
  #define LTR390_ALS_DATA			0x0D
  #define LTR390_UVS_DATA			0x10
  #define LTR390_INT_CFG			0x19
-+#define LTR390_THRESH_UP		0x21
-+#define LTR390_THRESH_LOW		0x24
++#define LTR390_INT_PST			0x1A
+ #define LTR390_THRESH_UP		0x21
+ #define LTR390_THRESH_LOW		0x24
  
- #define LTR390_PART_NUMBER_ID		0xb
- #define LTR390_ALS_UVS_GAIN_MASK	0x07
-@@ -46,6 +50,8 @@
+@@ -46,6 +47,8 @@
+ #define LTR390_ALS_UVS_MEAS_RATE_MASK	0x07
+ #define LTR390_ALS_UVS_INT_TIME_MASK	0x70
+ #define LTR390_ALS_UVS_INT_TIME(x)	FIELD_PREP(LTR390_ALS_UVS_INT_TIME_MASK, (x))
++#define LTR390_INT_PST_MASK		0xF0
++#define LTR390_INT_PST_VAL(x)		FIELD_PREP(LTR390_INT_PST_MASK, (x))
+ 
  #define LTR390_SW_RESET	      BIT(4)
  #define LTR390_UVS_MODE	      BIT(3)
- #define LTR390_SENSOR_ENABLE  BIT(1)
-+#define LTR390_LS_INT_EN      BIT(2)
-+#define LTR390_LS_INT_SEL_UVS BIT(5)
- 
- #define LTR390_FRACTIONAL_PRECISION 100
- 
-@@ -230,6 +236,22 @@ static const int ltr390_int_time_map_us[] = { 400000, 200000, 100000, 50000, 250
- static const int ltr390_gain_map[] = { 1, 3, 6, 9, 18 };
- static const int ltr390_freq_map[] = { 40000, 20000, 10000, 5000, 2000, 1000, 500, 500 };
- 
-+static const struct iio_event_spec ltr390_event_spec[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_separate = BIT(IIO_EV_INFO_VALUE),
-+	}, {
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_separate = BIT(IIO_EV_INFO_VALUE),
-+	}, {
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_EITHER,
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+	}
-+};
-+
- static const struct iio_chan_spec ltr390_channels[] = {
- 	/* UV sensor */
- 	{
-@@ -238,7 +260,9 @@ static const struct iio_chan_spec ltr390_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
- 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SCALE)
--						| BIT(IIO_CHAN_INFO_SAMP_FREQ)
-+						| BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.event_spec = ltr390_event_spec,
-+		.num_event_specs = ARRAY_SIZE(ltr390_event_spec),
- 	},
- 	/* ALS sensor */
- 	{
-@@ -247,7 +271,9 @@ static const struct iio_chan_spec ltr390_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
- 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SCALE)
--						| BIT(IIO_CHAN_INFO_SAMP_FREQ)
-+						| BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.event_spec = ltr390_event_spec,
-+		.num_event_specs = ARRAY_SIZE(ltr390_event_spec),
- 	},
+@@ -77,6 +80,11 @@ enum ltr390_mode {
+ 	LTR390_SET_UVS_MODE,
  };
  
-@@ -370,12 +396,186 @@ static int ltr390_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec cons
++enum ltr390_meas_rate {
++	LTR390_GET_FREQ,
++	LTR390_GET_PERIOD,
++};
++
+ struct ltr390_data {
+ 	struct regmap *regmap;
+ 	struct i2c_client *client;
+@@ -154,7 +162,7 @@ static int ltr390_counts_per_uvi(struct ltr390_data *data)
+ 	return DIV_ROUND_CLOSEST(23 * data->gain * data->int_time_us, 10 * orig_gain * orig_int_time);
+ }
+ 
+-static int ltr390_get_samp_freq(struct ltr390_data *data)
++static int ltr390_get_samp_freq_or_period(struct ltr390_data *data, enum ltr390_meas_rate option)
+ {
+ 	int ret, value;
+ 
+@@ -163,7 +171,7 @@ static int ltr390_get_samp_freq(struct ltr390_data *data)
+ 		return ret;
+ 	value &= LTR390_ALS_UVS_MEAS_RATE_MASK;
+ 
+-	return ltr390_samp_freq_table[value][0];
++	return ltr390_samp_freq_table[value][option];
+ }
+ 
+ static int ltr390_read_raw(struct iio_dev *iio_device,
+@@ -223,7 +231,7 @@ static int ltr390_read_raw(struct iio_dev *iio_device,
+ 		return IIO_VAL_INT;
+ 
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		*val = ltr390_get_samp_freq(data);
++		*val = ltr390_get_samp_freq_or_period(data, LTR390_GET_FREQ);
+ 		return IIO_VAL_INT;
+ 
+ 	default:
+@@ -248,7 +256,8 @@ static const struct iio_event_spec ltr390_event_spec[] = {
+ 	}, {
+ 		.type = IIO_EV_TYPE_THRESH,
+ 		.dir = IIO_EV_DIR_EITHER,
+-		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
++		.mask_separate = BIT(IIO_EV_INFO_ENABLE) |
++				BIT(IIO_EV_INFO_PERIOD),
+ 	}
+ };
+ 
+@@ -396,6 +405,44 @@ static int ltr390_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec cons
  	}
  }
  
-+static int ltr390_read_threshold(const struct iio_dev *indio_dev,
-+				enum iio_event_direction dir,
-+				int *val, int *val2)
++static int ltr390_read_intr_prst(struct ltr390_data *data, int *val)
 +{
-+	struct ltr390_data *data = iio_priv(indio_dev);
-+	int ret;
++	int ret, prst, samp_period;
 +
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		ret = ltr390_register_read(data, LTR390_THRESH_UP);
-+		if (ret < 0)
-+			return ret;
-+		*val = ret;
-+		return IIO_VAL_INT;
++	samp_period = ltr390_get_samp_freq_or_period(data, LTR390_GET_PERIOD);
++	ret = regmap_read(data->regmap, LTR390_INT_PST, &prst);
++	if (ret < 0)
++		return ret;
++	*val = prst * samp_period;
 +
-+	case IIO_EV_DIR_FALLING:
-+		ret = ltr390_register_read(data, LTR390_THRESH_LOW);
-+		if (ret < 0)
-+			return ret;
-+		*val = ret;
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
++	return IIO_VAL_INT;
 +}
 +
-+static int ltr390_write_threshold(struct iio_dev *indio_dev,
-+				enum iio_event_direction dir,
-+				int val, int val2)
++static int ltr390_write_intr_prst(struct ltr390_data *data, int val)
 +{
-+	struct ltr390_data *data = iio_priv(indio_dev);
-+	int ret;
++	int ret, samp_period, new_val;
++
++	samp_period = ltr390_get_samp_freq_or_period(data, LTR390_GET_PERIOD);
++
++	/* persist period should be greater than or equal to samp period */
++	if (val < samp_period)
++		return -EINVAL;
++
++	new_val = DIV_ROUND_UP(val, samp_period);
++	if (new_val < 0 || new_val > 0x0f)
++		return -EINVAL;
 +
 +	guard(mutex)(&data->lock);
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		ret = regmap_bulk_write(data->regmap,
-+					LTR390_THRESH_UP,
-+					&val, 3);
++	ret = regmap_update_bits(data->regmap,
++				LTR390_INT_PST,
++				LTR390_INT_PST_MASK,
++				LTR390_INT_PST_VAL(new_val));
++	if (ret)
 +		return ret;
-+	case IIO_EV_DIR_FALLING:
-+		ret = regmap_bulk_write(data->regmap,
-+					LTR390_THRESH_LOW,
-+					&val, 3);
-+		return ret;
-+	default:
-+		return -EINVAL;
-+	}
++
++	return 0;
 +}
 +
-+static int ltr390_read_event_value(struct iio_dev *indio_dev,
-+				const struct iio_chan_spec *chan,
-+				enum iio_event_type type,
-+				enum iio_event_direction dir,
-+				enum iio_event_info info,
-+				int *val, int *val2)
-+{
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		return ltr390_read_threshold(indio_dev, dir, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+}
+ static int ltr390_read_threshold(const struct iio_dev *indio_dev,
+ 				enum iio_event_direction dir,
+ 				int *val, int *val2)
+@@ -456,6 +503,10 @@ static int ltr390_read_event_value(struct iio_dev *indio_dev,
+ 	switch (info) {
+ 	case IIO_EV_INFO_VALUE:
+ 		return ltr390_read_threshold(indio_dev, dir, val, val2);
 +
-+static int ltr390_write_event_value(struct iio_dev *indio_dev,
-+				const struct iio_chan_spec *chan,
-+				enum iio_event_type type,
-+				enum iio_event_direction dir,
-+				enum iio_event_info info,
-+				int val, int val2)
-+{
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
++	case IIO_EV_INFO_PERIOD:
++		return ltr390_read_intr_prst(iio_priv(indio_dev), val);
++
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -474,6 +525,13 @@ static int ltr390_write_event_value(struct iio_dev *indio_dev,
+ 			return -EINVAL;
+ 
+ 		return ltr390_write_threshold(indio_dev, dir, val, val2);
++
++	case IIO_EV_INFO_PERIOD:
 +		if (val2 != 0)
 +			return -EINVAL;
 +
-+		return ltr390_write_threshold(indio_dev, dir, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+}
++		return ltr390_write_intr_prst(iio_priv(indio_dev), val);
 +
-+static int ltr390_read_event_config(struct iio_dev *indio_dev,
-+				const struct iio_chan_spec *chan,
-+				enum iio_event_type type,
-+				enum iio_event_direction dir)
-+{
-+	struct ltr390_data *data = iio_priv(indio_dev);
-+	int ret, status;
-+
-+	ret = regmap_read(data->regmap, LTR390_INT_CFG, &status);
-+	if (ret < 0)
-+		return ret;
-+
-+	return status & LTR390_LS_INT_EN;
-+}
-+
-+static int ltr390_write_event_config(struct iio_dev *indio_dev,
-+				const struct iio_chan_spec *chan,
-+				enum iio_event_type type,
-+				enum iio_event_direction dir,
-+				int state)
-+{
-+	struct ltr390_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	if (state != 1  && state != 0)
-+		return -EINVAL;
-+
-+	if (state == 0)
-+		return regmap_clear_bits(data->regmap, LTR390_INT_CFG, LTR390_LS_INT_EN);
-+
-+	guard(mutex)(&data->lock);
-+	ret = regmap_set_bits(data->regmap, LTR390_INT_CFG, LTR390_LS_INT_EN);
-+	if (ret < 0)
-+		return ret;
-+
-+	switch (chan->type) {
-+	case IIO_LIGHT:
-+		ret = ltr390_set_mode(data, LTR390_SET_ALS_MODE);
-+		if (ret < 0)
-+			return ret;
-+
-+		return regmap_clear_bits(data->regmap, LTR390_INT_CFG, LTR390_LS_INT_SEL_UVS);
-+
-+	case IIO_UVINDEX:
-+		ret = ltr390_set_mode(data, LTR390_SET_UVS_MODE);
-+		if (ret < 0)
-+			return ret;
-+
-+		return regmap_set_bits(data->regmap, LTR390_INT_CFG, LTR390_LS_INT_SEL_UVS);
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static const struct iio_info ltr390_info = {
- 	.read_raw = ltr390_read_raw,
- 	.write_raw = ltr390_write_raw,
- 	.read_avail = ltr390_read_avail,
-+	.read_event_value = ltr390_read_event_value,
-+	.read_event_config = ltr390_read_event_config,
-+	.write_event_value = ltr390_write_event_value,
-+	.write_event_config = ltr390_write_event_config,
- };
- 
-+static irqreturn_t ltr390_interrupt_handler(int irq, void *private)
-+{
-+	struct iio_dev *indio_dev = private;
-+	struct ltr390_data *data = iio_priv(indio_dev);
-+	int ret, status;
-+
-+	/* Reading the status register to clear the interrupt flag, Datasheet pg: 17*/
-+	ret = regmap_read(data->regmap, LTR390_MAIN_STATUS, &status);
-+	if (ret < 0)
-+		return ret;
-+
-+	switch (data->mode) {
-+	case LTR390_SET_ALS_MODE:
-+		iio_push_event(indio_dev,
-+			IIO_UNMOD_EVENT_CODE(IIO_LIGHT, 0,
-+			IIO_EV_TYPE_THRESH,
-+			IIO_EV_DIR_EITHER),
-+			iio_get_time_ns(indio_dev));
-+		break;
-+
-+	case LTR390_SET_UVS_MODE:
-+		iio_push_event(indio_dev,
-+			IIO_UNMOD_EVENT_CODE(IIO_UVINDEX, 0,
-+			IIO_EV_TYPE_THRESH,
-+			IIO_EV_DIR_EITHER),
-+			iio_get_time_ns(indio_dev));
-+		break;
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int ltr390_probe(struct i2c_client *client)
- {
- 	struct ltr390_data *data;
-@@ -429,6 +629,22 @@ static int ltr390_probe(struct i2c_client *client)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to enable the sensor\n");
- 
-+	if (client->irq) {
-+		int irq_flags = irq_get_trigger_type(client->irq);
-+
-+		if (!irq_flags)
-+			irq_flags = IRQF_TRIGGER_FALLING;
-+
-+		ret = devm_request_threaded_irq(&client->dev, client->irq,
-+						NULL, ltr390_interrupt_handler,
-+						irq_flags | IRQF_ONESHOT,
-+						"ltr390_thresh_event", indio_dev);
-+		if (ret) {
-+			dev_err(&client->dev, "request irq (%d) failed\n", client->irq);
-+			return ret;
-+		}
-+	}
-+
- 	return devm_iio_device_register(dev, indio_dev);
- }
- 
+ 	default:
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 

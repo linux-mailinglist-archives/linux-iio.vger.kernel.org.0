@@ -1,138 +1,112 @@
-Return-Path: <linux-iio+bounces-9435-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9436-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA7C974563
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 00:09:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2019745E4
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 00:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBCC1C255A0
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Sep 2024 22:09:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DAB31C223F5
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Sep 2024 22:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555221AB530;
-	Tue, 10 Sep 2024 22:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A611ABEB3;
+	Tue, 10 Sep 2024 22:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ET9KAz/n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RbjSE0Aw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8760817A924;
-	Tue, 10 Sep 2024 22:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB00192B84;
+	Tue, 10 Sep 2024 22:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726006157; cv=none; b=MMEaAb0H/q0ny3WFDtQn8PljCjAVyMcoX3ufcpcIvCqGhhRka3Kzqtqi0h5xEf7/FV4lsGQ7T9IVKQLyfKFBgvnMRIn2V56fmuAYc8ZzxjpgFfMr5X5p0PU0z8PGjE/K1+psx7iu0sQDiish8moXIhqhiRzAhd0QbB4+T1Bq//4=
+	t=1726006979; cv=none; b=cFvG7TnJF79SL8AvZkTuZSN2wk5Po2bsGyz//+37paJjyTSmUipySuQRNxUMEfoQb8Pk+FtEJ47XBNJiyLFSed1q0KZbK1HonVDBuuUMqIiHgZTWBpdAxcVzWrfMynzTNTIqut0yKvAZsM9RjzDLonYa2zhF9IBKytzOuggriFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726006157; c=relaxed/simple;
-	bh=THfCkVjJW9VCRbiInylPfB9Z6qvnDL50FgYhdIz+MKo=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OJsbCrgrI39UjZEa0Ae9coT3WoxHI7sKvUGr/98X5D8zPwTwLkMb/mYyjc3I9l20R7JGHmoy837HC1NvmYAZ3sBzUMZatlxku4REYkLTtHGugrdQyTDFu+tWE1beHh4EvC36VxOfJ9RRKzBJBz2wcOZ5eUBP82GaFTfPYSO3Nmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ET9KAz/n; arc=none smtp.client-ip=209.85.208.50
+	s=arc-20240116; t=1726006979; c=relaxed/simple;
+	bh=nWDIUhPbDOdOvxZD/AeQRWA9CuWMQJKn0QwLGuQZYQ8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=p5NNoRJjLvNcCH+BfjxydTw7rDoNkIN607xTJyxFHihu6xa0izRNO/yLB1M18DDTL6J/kKH5bmaz55luAyYSocDi/6oA3w8cSQ9wn4WsIvjYjrOEzP1sUe1743Ton3o14FfK2+MziRwi10CJorMFS4s/NBM0UN+hyA6nE5Dc+Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RbjSE0Aw; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c24c92f699so6609671a12.2;
-        Tue, 10 Sep 2024 15:09:15 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a8d3e662791so218242166b.1;
+        Tue, 10 Sep 2024 15:22:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726006154; x=1726610954; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8m6bnlMnlzD0BX4BUZPfd8GP2Hrc2VovL7bSABmNRQ0=;
-        b=ET9KAz/nxs2b9WKUiq9ZO8+9IzRohUSw8TIh/OZaqvbPZzNOYWg9FyywZRp/3B8cIe
-         cnC9g9juSV6mjyZ3VjJmWKBoZrqKdEDUSmBOtW6wVz5zMOxdJWebK6Bhc9iJ1APpRcVU
-         BwMu2iabKI9hKTWIWsKfFBGwm5zmmutZqpL+XhBV/oI2RAsxYc4cbUxqwgv9mX1eqbAG
-         gJTF56ltWn+1rFmYtJ9hrk88+FZJdEDvAZVfn6IjoOElccvPBAojRGarA0avwZiVSXKk
-         yTHAhOUi7N0KAJl4d5S/2D5x8BFpgdhVhNsxbfmny9u5F0P51bswXfG4vNXvYlbfNVRi
-         jBIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726006154; x=1726610954;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1726006976; x=1726611776; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8m6bnlMnlzD0BX4BUZPfd8GP2Hrc2VovL7bSABmNRQ0=;
-        b=mKIJHeTB9q3Bv1WUP5UeVnS1btwqSbaDFe7jaFwH0oLVbBGJ10SOzMQMq/fWGoq7X2
-         KXsAHfbFJhjSDAmimgKqNS4ujBmimQaMnFQwPyxKKgD6xurjg7tggrlHeLSawuWjGFeK
-         HeCQH166Sq60wwGkRjTOg8ccH0suCZHKJfoa/F6GQTcNtGyu8zeExwHXEz7HcOmzJ6j+
-         h3I52ZfFowNxADdh3Xoc5UF394KciKTEfoCN60R6QGEzgSxow2dNEtXv+kIKZsgx8Emx
-         SjPDzWhMwf67SLTXBNdY0YL976HyUNcitp6aHceB+6D/rcU0mpURPinwIkQmm2T0QDSq
-         PJjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHRBspezBp4g71iLJtDRoCQMRK0j49+7KDfYX3Ux7TRneFzUibISVYsUq/C9NQV6FS8e2YWn55FzO4xxYp@vger.kernel.org, AJvYcCUhg1TDsmnahuWi50iS3CQAUnH22uX691Ke0qyKgnT1N+bfuKei5D7W3fORg6S2D5RFj1TPCLdaYiJf@vger.kernel.org, AJvYcCUs8ZZI4upuuizFvenF+w/7i+DTTLoz/fiWhqDO5iJvOe/IhoIPRRfFWYvG7TikDhAd6oGbrI9+xo0S@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzhh2O2augmeKP5ZmHwnFHztfBkuVzBTrWOEtOtoi9Yy40YOzNK
-	sFT/NMuUFZYDPlaNHFWHHtWfySxLUa5ubAs05sfYEwDfa4Nx9lQxMU12/GFNynY=
-X-Google-Smtp-Source: AGHT+IExLnZkW4n6uQ3v1XshfECw4H8j9s1Y2UUYFGwAoO73BhinW48PmUl2XGGDcGj1LWWxbUbpMw==
-X-Received: by 2002:a05:6402:5409:b0:5c3:3f6a:9767 with SMTP id 4fb4d7f45d1cf-5c3dc7904d8mr13333574a12.9.1726006152945;
-        Tue, 10 Sep 2024 15:09:12 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:5d47:19e4:3e71:414c])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c3ebd8cdf7sm4697681a12.92.2024.09.10.15.09.11
+        bh=nWDIUhPbDOdOvxZD/AeQRWA9CuWMQJKn0QwLGuQZYQ8=;
+        b=RbjSE0AwyJ1hU8M+7k5/0giuU6PU4LBdpFgqaqgu5D0jkM+n40oyxWSKtOR7rHdn5U
+         OvIlifcXOu80BdhRJjlv7k4HZMeV9G/iOZZfmETRVCe11sDDfXPHHt0F0Svw4qiZC0B2
+         YH+G1TY/FxQfOKhUp1Z9YtwGffrZj7sPdLJ91jUZFiUHa7PnBVe9n89GwBhRnC3JczZj
+         UhL6gf0KWuxU8yi6QTDJoxmtjfHpVEGa8HXP9SWLFdLT8rAqpXBpItNijOD6WeSHKtcU
+         Wx3w5w5XEczZBprZZiqrbXH6ZXNL78Elb3Tb5SkE5kGROSAhh8llSI1GthF6jNdz4wth
+         zl7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726006976; x=1726611776;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nWDIUhPbDOdOvxZD/AeQRWA9CuWMQJKn0QwLGuQZYQ8=;
+        b=WtkMDmGJVrBpXD1YBWjbkGuRfNp2dLkgf9ar7soG30G+6xSIzXVkUJB3YVKV4lS1lC
+         NTCdXZJ5QYWKwo7jSY7FMvnpudgSsT/jvbP0s2cJVzBNVu5a59QU0bGaNlxF7y+6uAj8
+         RXS63abh7tNx/LkDGq+yBxCHKlbxvISFcCwyAOVOW3Tirijt389JVCiooc145cNWmAnT
+         CBZhuzyiUhc7QCQvaLbhssR3kzCSpY2+O/nGZ06gFJY5Sz6MKHjPQjPyfTvR4+VT36rd
+         VVioERG+uATooC8NIOCDueHyrUk6bp8Njrp5Y2pfeCae5DhHh7Xx55m3YNSOKmlXXVUI
+         Iz3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVIOLQEmQuMY6aojmn/f+8t6fBHNaSwcqfIjKn4ETVeLtoA+XTjdq59/VdH8gc6aG6wQXZwrkMOc+f4@vger.kernel.org, AJvYcCVpo+9uwJb3Ef/g887aw2UKZxyfzTZpzHHCdEwavPGd6sigyRZXDG2v1S/fVNLsgGcD6J7R0DlcKCeI@vger.kernel.org, AJvYcCW6ENBtrnjoqXbzd01I5Ppvw1+nFUglC16aYfBEazn6/SrZDybR1+KzX1nMIUgBWn2+fSZt/NO13jL1z8nu@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/vsmbDdQWo2GOu0RvbBTJwcpKvjcNMx9GCddlCc+qHI0Mx8zG
+	3r1g77eDAZXVONYwYYSEge1pwztBsbL2zxyAutRR0ufRbMx0NYj5
+X-Google-Smtp-Source: AGHT+IEOkX7gJEx6aRMFapdf8fVYvdC4mXv37XJ0mGPzipQWOlhSynFEkCFSeo764XF1s14W3huYQg==
+X-Received: by 2002:a05:6402:210d:b0:5c2:5f24:98bd with SMTP id 4fb4d7f45d1cf-5c3dc78b665mr16745577a12.10.1726006976115;
+        Tue, 10 Sep 2024 15:22:56 -0700 (PDT)
+Received: from localhost.localdomain ([2a04:ee41:82:7577:5d47:19e4:3e71:414c])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c3ebd467a7sm4664568a12.28.2024.09.10.15.22.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Sep 2024 15:09:12 -0700 (PDT)
+        Tue, 10 Sep 2024 15:22:55 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Wed, 11 Sep 2024 00:09:10 +0200
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, ang.iglesiasg@gmail.com,
-	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
-	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
-	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	christophe.jaillet@wanadoo.fr
-Subject: Re: [PATCH v5 0/7] pressure: bmp280: Minor cleanup and interrupt
- support
-Message-ID: <20240910220910.GA13457@vamoiridPC>
-References: <20240902184222.24874-1-vassilisamir@gmail.com>
- <ZtcfCVcV_1hCVp7N@smile.fi.intel.com>
- <20240904102955.GD44250@vamoiridPC>
- <20240907173537.632e8484@jic23-huawei>
+To: lanzano.alex@gmail.com
+Cc: Jonathan.Cameron@huawei.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	jagathjog1996@gmail.com,
+	jic23@kernel.org,
+	krzk+dt@kernel.org,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nuno.sa@analog.com,
+	ramona.bolboaca13@gmail.com,
+	robh@kernel.org,
+	skhan@linuxfoundation.org,
+	vassilisamir@gmail.com
+Subject: Re: [PATCH v3 0/2] Add I2C driver for Bosch BMI270 IMU
+Date: Wed, 11 Sep 2024 00:22:54 +0200
+Message-Id: <20240910222254.14281-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240909043254.611589-1-lanzano.alex@gmail.com>
+References: <20240909043254.611589-1-lanzano.alex@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240907173537.632e8484@jic23-huawei>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Sep 07, 2024 at 05:35:37PM +0100, Jonathan Cameron wrote:
-> On Wed, 4 Sep 2024 12:29:55 +0200
-> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> 
-> > On Tue, Sep 03, 2024 at 05:36:57PM +0300, Andy Shevchenko wrote:
-> > > On Mon, Sep 02, 2024 at 08:42:15PM +0200, Vasileios Amoiridis wrote:  
-> > > > Depends on this: https://lore.kernel.org/linux-iio/20240823172017.9028-1-vassilisamir@gmail.com  
-> > > 
-> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > 
-> > > for the patches 1,2, and 3.
-> > > 
-> > > -- 
-> > > With Best Regards,
-> > > Andy Shevchenko
-> > > 
-> > >   
-> > 
-> > Thank you very much for the reviews Andy.
-> 
-> Too many patches floating around at the moment (not yours!) so I'm going
-> to reduce that number where I can just to make it easier to keep track
-> of what needs more focus.
-> 
-> So picked up patches 1-3 on the togreg branch of iio.git and pushed
-> out as testing. Note these are probably 6.13 material now.
-> 
-> Jonathan
-> 
-> > 
-> > Cheers,
-> > Vasilis
-> 
+Hi Alex!
 
-Hi Jonathan,
+I recently received a review for the code for the BMP280 sensors, and I think
+it applies well to you as well. Since you are using the sleeping functions in
+your code, maybe a comment on top that explains why this value or where you
+found it in the datasheet would be helpful.
 
-Thank you very much for the continuous effort!
+Specifically for the Bosch Sensors, because Bosch's datasheets have either
+hidden or no information at all, and you need to search for stuff in the
+respective C sensor API in the Bosch GitHub.
 
 Cheers,
 Vasilis

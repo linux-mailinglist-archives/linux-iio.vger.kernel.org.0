@@ -1,60 +1,72 @@
-Return-Path: <linux-iio+bounces-9447-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9448-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7ABB975AB8
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 21:13:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7C6975AD3
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 21:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E6241C21A95
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 19:13:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85C7C2838AF
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 19:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABDA1B9B47;
-	Wed, 11 Sep 2024 19:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C1F1BA863;
+	Wed, 11 Sep 2024 19:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+oqQtNu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K0nDtLUf"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D06B1B1D53;
-	Wed, 11 Sep 2024 19:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABF418C357;
+	Wed, 11 Sep 2024 19:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726081977; cv=none; b=X+4LmAvuEMs+ZDL31zf6X1R1SxuUXjMJ+HmJri+6L2ZzRLQncjA8Ll5HmTXaWvNh1/jjo9RZToDb9m6I4EkJpMM99aNb+ZlYJXPe+q8uvi/WEYDlKD5RXJ0vjZ6Tq7Ih6w/QeYeIKFipH1ysc9Jf7LspBsh1jZZQRgLHzEgliKk=
+	t=1726082937; cv=none; b=uIrwU7ZnNk6gTVGhpX31mekAWWUXkd0qZmmW7mm97+fwVJqjaymCV8/DYKZMtoZHNMjNwr6n1ZsbNrLFvLbWgWnK9HepSDVZKuIkPHuOWHA5F8vWbKot6QZCgPm4oF8ojRwjYGZt+QEk14VmFaqt+qIjW7So00Ebfl0H0iinjuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726081977; c=relaxed/simple;
-	bh=6a4hc9aWv1YiaHMYn7m1GwNtCFl+AUMEaP4xnDmR/U4=;
+	s=arc-20240116; t=1726082937; c=relaxed/simple;
+	bh=T59rRg4dwHWf7KWGVsIxvIu6KQZtNF20xzVnDzCyhtM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LX7EgLu36N6ySxPd9KU2jjyr/wlzgdaAPmp0Bo0n9IUac+3YcDqca1SvgjR+JShbYwPyTph3WikrWWT6GGgpl/gYzLgDYAuKf6aV1WuaiykilQqi9jglAldtk093S/Tk7vWCTpQ1ikrqYXce6BYlgATLpLTKjvc1g2VJHi3usE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+oqQtNu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEFCC4CEC0;
-	Wed, 11 Sep 2024 19:12:54 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=H4i4//Qn8l6Wg/oDds1Gtedcoe9sw1bSsxtYxEqmepboDRNMVC7IMQJxFvBCl/W+mQ6XlmNKOPa0BxpZfntybX1kob2ibn7lOE4R0sOvacqz7DMFQPJK6+W3+fFfvsc+vbAz03zDp8txBjTczqhjH4DOjRTVBZwTq4s/UVTwLIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K0nDtLUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2D0C4CEC0;
+	Wed, 11 Sep 2024 19:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726081977;
-	bh=6a4hc9aWv1YiaHMYn7m1GwNtCFl+AUMEaP4xnDmR/U4=;
+	s=k20201202; t=1726082937;
+	bh=T59rRg4dwHWf7KWGVsIxvIu6KQZtNF20xzVnDzCyhtM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t+oqQtNu8MHsW+4lDH5CczAZ04A/VXuFdbTm1HfARCFfFhpfWChx24WuCz3ymakAs
-	 r9B/yp7tAqTJY8hqFgFgVO/DUtpChYGoXrWNY+kkhxCr4kxKjUWosiQeN0xtyWfdwa
-	 OmvtFpyeIFLuMnzv4celKXK8mbMhNWRS8qr0DBUfybrbbrdRQHPm8NRdCl5a8tS0BJ
-	 UIQOiJk1I96ZzzdzQVrkqMRZBFgG5ZYQXxPFLs2oT/DteOMcWpO9F7103houFDP9ue
-	 A3iI0IuNTgCGI6OyYyB9wbzBZRX02osDkurQlG9gp78EUjX+/AEba+dxOCpGYmOXC6
-	 wyMm44IrZJ7hA==
-Date: Wed, 11 Sep 2024 20:12:52 +0100
+	b=K0nDtLUfXMABcLr6ks2RSEg7CCf6CImgpC68zc9IPTwacQ7o+Oqld1UbbXTXZlGKC
+	 83mDleEPxFTO6WPWwy0/14+lRXXYianiJfyu2XE8agczCxqRug/FzyTjEpTfoAkMT7
+	 7Lk6YZ4Qd0Z0PgNDyDud56CARPZYaPKdhqOEFJYx7JTqrRiepONcmiocP7ZD58fce2
+	 hN0SAW7DrvjARIsDFYoGzX6cqn4AnrqsSmIOj5Czl9Qet5hs4cb71UpJTQ7pPa0fWB
+	 EoDM7yDpZbsMYU7EUkpjPyNaPTIcNnZlWtnLJyD+/7/0dsJSfLk+X3zwWXx+5Bzcye
+	 tBBn5dcGjsR3Q==
+Date: Wed, 11 Sep 2024 20:28:52 +0100
 From: Conor Dooley <conor@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Jonathan Cameron <jic23@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Michael Auchter <michael.auchter@ni.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: dac: adi,ad56xx: Fix duplicate
- compatible strings
-Message-ID: <20240911-ruined-embellish-07ca645075b2@spud>
-References: <20240910234440.1045098-1-robh@kernel.org>
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/9] dt-bindings: iio: dac: ad3552r: add io-backend
+ property
+Message-ID: <20240911-unfixed-faceplate-cb1ffe239125@spud>
+References: <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-0-87d669674c00@baylibre.com>
+ <20240905-wip-bl-ad3552r-axi-v0-iio-testing-v2-1-87d669674c00@baylibre.com>
+ <20240908132925.331c5175@jic23-huawei>
+ <20240909-dwelled-specimen-949f44c8d04d@wendy>
+ <1dca9ce52e7c701c7fb6cbbc723e9dff5d0ace8b.camel@gmail.com>
+ <66090d3e-bf6c-43ee-9dc8-7bca449d448f@baylibre.com>
+ <f54646877c2a68d01e15db31ae21224053f87439.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,37 +74,49 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hxIJYbNzdbJjsrRN"
+	protocol="application/pgp-signature"; boundary="JeA0oE2RwfhgVEAi"
 Content-Disposition: inline
-In-Reply-To: <20240910234440.1045098-1-robh@kernel.org>
+In-Reply-To: <f54646877c2a68d01e15db31ae21224053f87439.camel@gmail.com>
 
 
---hxIJYbNzdbJjsrRN
-Content-Type: text/plain; charset=us-ascii
+--JeA0oE2RwfhgVEAi
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 10, 2024 at 06:44:39PM -0500, Rob Herring (Arm) wrote:
-> adi,ad5686.yaml and adi,ad5696.yaml duplicate all the I2C device
-> compatible strings with the exception of "adi,ad5337r". Since
-> adi,ad5686.yaml references spi-peripheral-props.yaml, drop the I2C
-> devices from it making it only SPI devices. Update the titles to make
-> the distinction clear.
+On Tue, Sep 10, 2024 at 10:16:24AM +0200, Nuno S=E1 wrote:
+> On Mon, 2024-09-09 at 12:19 -0500, David Lechner wrote:
+
+> > So I think we could make a single binding that works for the the AXI DAC
+> > backend/offload and the AXI SPI Engine offload. (I don't think it would
+> > be so easy to integrate the AXI DAC into the SPI framework on the driver
+> > side - and hopefully we won't have to, but the DT still could use the
+> > proposed SPI offload bindings.)
+> >=20
 >=20
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> Hopefully not...=20
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Yeah, I wasn't really trying to place any expectations on how the driver
+would look. My motivation in talking about offloads here was to see if
+the data direct switch would help at all in trying to ensure the
+spi-offloads stuff was being handled generically.
 
---hxIJYbNzdbJjsrRN
+That said, I do think the current implementation binding wise is
+probably capable of supporting both directions with little to no
+problems, it'd mostly be the kernel's (proposed) interpretation that'd
+not be up to it?
+
+
+--JeA0oE2RwfhgVEAi
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuHrtAAKCRB4tDGHoIJi
-0slYAP4426dhakOXo0ghGVRtf5Ey0VLk30rAY5BPl1zAHVIroAEAuVvfZmHVZz8h
-hXNgs47Ldw0d6Cd/U3w+EcuA9+0cZQI=
-=xVmK
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuHvcwAKCRB4tDGHoIJi
+0miWAPsHuPjsOWcESVczdK4JMl/e/qDVkATpitK3BEhGVmGlPQD/ae6Jf2DfgwQ9
+T+hgsDy6ENpgZKWuPPz52CyHhExI0Ao=
+=V+bY
 -----END PGP SIGNATURE-----
 
---hxIJYbNzdbJjsrRN--
+--JeA0oE2RwfhgVEAi--
 

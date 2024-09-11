@@ -1,76 +1,75 @@
-Return-Path: <linux-iio+bounces-9449-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9450-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BABD975C57
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 23:22:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 688DE975C74
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 23:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38923B22085
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 21:22:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABE4EB210F5
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Sep 2024 21:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35AF154BEA;
-	Wed, 11 Sep 2024 21:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B3B1494B3;
+	Wed, 11 Sep 2024 21:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g/aQ5Ax+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e0oMPIqg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE973D3B8;
-	Wed, 11 Sep 2024 21:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439D62EAE5;
+	Wed, 11 Sep 2024 21:31:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726089733; cv=none; b=VUByxYp4lGswKsytQd9C/C7YdBMV6AVCAVBzSEGkhtsonA7blD7Zu/DdLmTFIg91sEWljvZtR+QCJ+prQ5qn6C0nj9/sgn+dPFx5+QCEgFsHfroIZGYcQ/1dCnCHGeudfxsR0SdzN+mQZQdtaAoVc7my3GSZvXGFl4HmS7YpjPY=
+	t=1726090277; cv=none; b=vA4UwLoMTVg0dzxpPGOI5WnGM/arIJyHczrWqcz+kVIiACXLkQMAbvS2qHAeLvdy6Ufqww1D3YYur+X2wyyH4lYZrMP73clAFBHlR/8efudm3kftpcdVwkedfozRxiK9CFSlnOogpgz0QrapTo1PUA26wWp8UUW9YTey81wS+qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726089733; c=relaxed/simple;
-	bh=0PVxAMKfNzSmFdH4j/ySkuLjFEIcVx6fmFR9USlhXh4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MmrXJQ/RI5JTUXjULEL/l70MgJru6B3AX85I91oS5lK1Wqp9D8fAZt/afrSe/aOcZ1HrsqMT5HQKs884lJRwVgYb4qyL20QSW3iahu3pHkXYW7AbGqDKz0GzqWeTOHfyZu52/243bHsbNFDceBk3v67DJJC01OUMDFtRbAE/MhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g/aQ5Ax+; arc=none smtp.client-ip=198.175.65.19
+	s=arc-20240116; t=1726090277; c=relaxed/simple;
+	bh=iNWEbTYcT/nvFB163ly5IMOZWOgwxgH1UpgT47gwP+Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NxGx1ewvQg5uSJTh2jtaVjZNycOOC1ZzeDEWBfzaAX3CNYRzOrBBxIfCzj04J6LA6P7duQja/7I1lwfp2HAs4UeimcVMwl5g3SUyi1/adEyNPfO1ADyuqYiBBMyfmEmo7cAmqHuTRhOzVXJtVpRD+IEaeFWtf3fXpOAuK+oLPdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e0oMPIqg; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726089733; x=1757625733;
+  t=1726090275; x=1757626275;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=0PVxAMKfNzSmFdH4j/ySkuLjFEIcVx6fmFR9USlhXh4=;
-  b=g/aQ5Ax+KwfWr4L16uXiUJetqZIPC8arCIaddrn9iLHwcgd0qQ3Gll7z
-   pUjsBnPmM/NukbXAUhTWJHPZ0R7mESm2VDQPRtLpk931YMUdyMn/Q294P
-   2S/f/IdZNGUmpJepS1n/PK7A/NmgJMdWyF2hCpZxMAizJhXQo1wox2fKf
-   geUXb4WaGLoTmBquW8RP6T1W+SG4gbFrFooAfFigWZ09l9WwzgRScg40F
-   nTQ0tBuAAENQRaSsjpP1qay2zJYlsF2qtSlE2Dh4pM6dgZzNj1crEXD+M
-   /sXF5KkT8Qq+fNbFMHnhP9+igJy83+z25rrWI7QyZThA1eiwePVHeq0Kq
-   w==;
-X-CSE-ConnectionGUID: Aam9m5QLTRmzaYQz9tGuiQ==
-X-CSE-MsgGUID: LvEibXp+RBKWKZrj7yyQYg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="24786506"
+  bh=iNWEbTYcT/nvFB163ly5IMOZWOgwxgH1UpgT47gwP+Y=;
+  b=e0oMPIqg9WZwoUt6FtBo9TONOcqwoPPw2RbcKvhdtzLjZFnrsPbrbeBu
+   eUKeRMtntv/rMLXTYrqwppXIMaBWRvB3twDuh/88thctsuHF80wJMP6XU
+   nEjwHTHlymdVusrdEQ8PJYxnEduYVhB+oztuQznoOO3jF4XHpuzt7PMS+
+   A5iNSTbnrytq7tGLZnDyyHLvh6CogpKiM5MVMq1V29hgPoFyhKwU9MwMu
+   SHc3ZAKs1e+Vp8Vd+6MenB1jJCyzFrV7nSBeW3nXLbLXlYdA6jF1t2Qrp
+   YbjNs4CNqo6ywjPP8JZ6y67OOeIetegNGBDzjZSxuSnPpgmt+z9vz5yHi
+   A==;
+X-CSE-ConnectionGUID: kpai5d4zSryViTN7JsMNkw==
+X-CSE-MsgGUID: 0vqmRlBVREW5lrsVBu3u2g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="24851956"
 X-IronPort-AV: E=Sophos;i="6.10,221,1719903600"; 
-   d="scan'208";a="24786506"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 14:22:12 -0700
-X-CSE-ConnectionGUID: S+7X//eIQqKo7RsZTIg7oA==
-X-CSE-MsgGUID: jCXVbS0WQuC50oTv7NQNYQ==
+   d="scan'208";a="24851956"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 14:31:15 -0700
+X-CSE-ConnectionGUID: kqJ9EAOCSTmzprcJAicTsA==
+X-CSE-MsgGUID: 72WYPs8fTy2iMkIPLdWGSg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,221,1719903600"; 
-   d="scan'208";a="98329615"
+   d="scan'208";a="67327781"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa001.fm.intel.com with ESMTP; 11 Sep 2024 14:22:09 -0700
+  by orviesa010.jf.intel.com with ESMTP; 11 Sep 2024 14:31:13 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id DCE97170; Thu, 12 Sep 2024 00:22:07 +0300 (EEST)
+	id E8B43170; Thu, 12 Sep 2024 00:31:11 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH v1 1/1] iio: light: ltr501: Drop most likely fake ACPI ID
-Date: Thu, 12 Sep 2024 00:22:02 +0300
-Message-ID: <20240911212202.2892451-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] iio: imu: kmx61: Drop most likely fake ACPI ID
+Date: Thu, 12 Sep 2024 00:31:10 +0300
+Message-ID: <20240911213110.2893562-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -84,76 +83,82 @@ The commit in question does not proove that ACPI ID exists.
 Quite likely it was a cargo cult addition while doint that
 for DT-based enumeration.  Drop most likely fake ACPI ID.
 
-Googling for LTERxxxx gives no useful results in regard to DSDT.
-Moreover, there is no "LTER" official vendor ID in the registry.
+Googling for KMX61021L gives no useful results in regard to DSDT.
+Moreover, the official vendor ID in the registry for Kionix is KIOX.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/light/ltr501.c | 23 -----------------------
- 1 file changed, 23 deletions(-)
+ drivers/iio/imu/kmx61.c | 25 +++----------------------
+ 1 file changed, 3 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 8c516ede9116..0e0420573286 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -15,7 +15,6 @@
- #include <linux/err.h>
- #include <linux/delay.h>
- #include <linux/regmap.h>
--#include <linux/acpi.h>
- #include <linux/regulator/consumer.h>
+diff --git a/drivers/iio/imu/kmx61.c b/drivers/iio/imu/kmx61.c
+index c61c012e25bb..2af772775b68 100644
+--- a/drivers/iio/imu/kmx61.c
++++ b/drivers/iio/imu/kmx61.c
+@@ -7,12 +7,13 @@
+  * IIO driver for KMX61 (7-bit I2C slave address 0x0E or 0x0F).
+  */
  
+-#include <linux/module.h>
+ #include <linux/i2c.h>
+-#include <linux/acpi.h>
+ #include <linux/interrupt.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
+ #include <linux/pm.h>
+ #include <linux/pm_runtime.h>
++
  #include <linux/iio/iio.h>
-@@ -1422,17 +1421,6 @@ static int ltr501_powerdown(struct ltr501_data *data)
- 				  data->ps_contr & ~LTR501_CONTR_ACTIVE);
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/events.h>
+@@ -1217,16 +1218,6 @@ static irqreturn_t kmx61_trigger_handler(int irq, void *p)
+ 	return IRQ_HANDLED;
  }
  
--static const char *ltr501_match_acpi_device(struct device *dev, int *chip_idx)
+-static const char *kmx61_match_acpi_device(struct device *dev)
 -{
 -	const struct acpi_device_id *id;
 -
 -	id = acpi_match_device(dev->driver->acpi_match_table, dev);
 -	if (!id)
 -		return NULL;
--	*chip_idx = id->driver_data;
 -	return dev_name(dev);
 -}
 -
- static int ltr501_probe(struct i2c_client *client)
- {
- 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-@@ -1523,8 +1511,6 @@ static int ltr501_probe(struct i2c_client *client)
- 	if (id) {
+ static struct iio_dev *kmx61_indiodev_setup(struct kmx61_data *data,
+ 					    const struct iio_info *info,
+ 					    const struct iio_chan_spec *chan,
+@@ -1293,8 +1284,6 @@ static int kmx61_probe(struct i2c_client *client)
+ 
+ 	if (id)
  		name = id->name;
- 		chip_idx = id->driver_data;
--	} else  if (ACPI_HANDLE(&client->dev)) {
--		name = ltr501_match_acpi_device(&client->dev, &chip_idx);
- 	} else {
+-	else if (ACPI_HANDLE(&client->dev))
+-		name = kmx61_match_acpi_device(&client->dev);
+ 	else
  		return -ENODEV;
- 	}
-@@ -1609,14 +1595,6 @@ static int ltr501_resume(struct device *dev)
  
- static DEFINE_SIMPLE_DEV_PM_OPS(ltr501_pm_ops, ltr501_suspend, ltr501_resume);
+@@ -1496,13 +1485,6 @@ static const struct dev_pm_ops kmx61_pm_ops = {
+ 	RUNTIME_PM_OPS(kmx61_runtime_suspend, kmx61_runtime_resume, NULL)
+ };
  
--static const struct acpi_device_id ltr_acpi_match[] = {
--	{ "LTER0501", ltr501 },
--	{ "LTER0559", ltr559 },
--	{ "LTER0301", ltr301 },
--	{ },
+-static const struct acpi_device_id kmx61_acpi_match[] = {
+-	{"KMX61021", 0},
+-	{}
 -};
--MODULE_DEVICE_TABLE(acpi, ltr_acpi_match);
 -
- static const struct i2c_device_id ltr501_id[] = {
- 	{ "ltr501", ltr501 },
- 	{ "ltr559", ltr559 },
-@@ -1640,7 +1618,6 @@ static struct i2c_driver ltr501_driver = {
- 		.name   = LTR501_DRV_NAME,
- 		.of_match_table = ltr501_of_match,
- 		.pm	= pm_sleep_ptr(&ltr501_pm_ops),
--		.acpi_match_table = ltr_acpi_match,
+-MODULE_DEVICE_TABLE(acpi, kmx61_acpi_match);
+-
+ static const struct i2c_device_id kmx61_id[] = {
+ 	{ "kmx611021" },
+ 	{}
+@@ -1513,7 +1495,6 @@ MODULE_DEVICE_TABLE(i2c, kmx61_id);
+ static struct i2c_driver kmx61_driver = {
+ 	.driver = {
+ 		.name = KMX61_DRV_NAME,
+-		.acpi_match_table = kmx61_acpi_match,
+ 		.pm = pm_ptr(&kmx61_pm_ops),
  	},
- 	.probe = ltr501_probe,
- 	.remove	= ltr501_remove,
+ 	.probe		= kmx61_probe,
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 

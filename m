@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-9471-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9472-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A19977356
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Sep 2024 23:08:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BBF97735B
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Sep 2024 23:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 980D61C213DE
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Sep 2024 21:08:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8011B22F06
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Sep 2024 21:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3825D1C230C;
-	Thu, 12 Sep 2024 21:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4FD1C2335;
+	Thu, 12 Sep 2024 21:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LD1rcXxc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WVI7DMY2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5505C1C1AA9;
-	Thu, 12 Sep 2024 21:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963346F30B;
+	Thu, 12 Sep 2024 21:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726175283; cv=none; b=Aitfiml1rYnVAU3anWiuOV2p+gSkHI8bbyo8xpPjBFmb+T+R7iphB85FBcma5EM/gN61L+9xqdQ8ehtfIgQoLLURqFiD9UIANyVgcMOgv8vW1ZDTtC/adlriZNIeDEHK8MsJkQ+5Pw1R7CTXo/8HA5AdYxSVcsKgKlUUoyrWqQg=
+	t=1726175300; cv=none; b=IjguHL+6vReabgABQHLv8GHbYJWum7R/EvLggOrs6EHV7ivMS5WqxFsdjqXWC64sw7VuSAUsQvyBXlnMUM2OKNci12wjgTbfuQ/zJA+LKL0BOClQzXNXJTljtpCQZ5ewVs9JBP562VvtcBmzLg5WksUrkD6pXcxS57Cgi5lEFms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726175283; c=relaxed/simple;
-	bh=DOe095VgAmtmG/Rr+qKsLs+VDn98WoUUMfuTo90VSAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RIoI49QYXKz8neKugnUMCSxOgOd5X5ZnZ+LKilCx5ziPijHo9JSWLHG3CRD2GTyn0wb4Qor1ic/GvpJYKXWq/P/NAoElcrewdfxAsm+Ss5cj8wyjk7m96el3ROyn4DXRbvvz4l/ey7t6R4JwBAobEg9BaRnpmm6OAqQNzBZY5jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LD1rcXxc; arc=none smtp.client-ip=209.85.160.177
+	s=arc-20240116; t=1726175300; c=relaxed/simple;
+	bh=oQI72NURFp+bgiD6sXVj2qg4ZaJeJi5b3U4o5u42xEM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PYy54pLJSsqx1a3hGVh9OeAu5sICE8aCm1sgXHUz3Xoy6rQz4MQDdPBcAUG0zxxP1ZiSW3dX4dTXlM8bb4b+8nfNTqoqyTKxu5xqzXG8s14K9d4oMaoSy++V6M3/wgc6aTFJbijzPrWL1HI7Pb/b15AiF5DcTofTQx90sN1E0Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WVI7DMY2; arc=none smtp.client-ip=209.85.160.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-45826431d4bso1746261cf.0;
-        Thu, 12 Sep 2024 14:08:01 -0700 (PDT)
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4581d2b0fbaso1607401cf.1;
+        Thu, 12 Sep 2024 14:08:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726175280; x=1726780080; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/aq36KinHoVqKCX4QGWHIhVOHyI731EkwzmAhEoQDUo=;
-        b=LD1rcXxcVvUSICasOItCp2z6Khd/+VVhoOsSkpjHvu62Lq/ezd43kr6tPYxIoyEjeX
-         CYjmNbUQp0OtTJDF7yzPWuoatbCnGzoyfYMgBgcwfDg1eIOU8Ul2h07qP7KwgQmqhnTz
-         4Kc2jSq41RlRzGoFTqToSdfsv/PDv/NUWBjbQa7mKCHhCJagwiF151gb+B6uO1tPZ2Rc
-         l2gKFGgjo6MA0zaoxD/HO5aXMZ8gqobv8WPA10y5w616aRoCi4vsjJcw37fFsnZLL2vx
-         jJeQSsIoIGw4DmyGM10rWq/pKbe5J9WvYG+uDDENewNqWZ+JdIkp3IEmJYdGas+AUKC/
-         MhEQ==
+        d=gmail.com; s=20230601; t=1726175297; x=1726780097; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WI5vIgB03b+RRPC5P5FjvKVoLvcCEHnEc2wIMv+7968=;
+        b=WVI7DMY2o++C3P9KzQRcI8QMrIw/D0vvKaawszRkq89Nv88mTEr1gmGFTfyiz0mRK1
+         KE9BIUdtChQg6vp3c6d/ZbcZsOCxsEEe2ZQs/0wvGMuPUkV+oD1zh3T8xClOHppfIwlD
+         533q7l1+2Z8hVPPyyD0sHAD1ijLfPCp+IvUUEJEVKfSt0ED6qkdCXZ32P3Jbce/e6iYa
+         gxxCBU04X/KhS32E7CONYnLsNSe75Z7/dPV6fm5gZDe/ufja4QJ5qB+JK0qjP5Bh5rDz
+         lFUh2nxu0tgMBVBaE9DYrYiEhhGU4nOtr/eFeRBNEYPX1r78GaIJNSwsq3/BXedSzsFX
+         OQAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726175280; x=1726780080;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/aq36KinHoVqKCX4QGWHIhVOHyI731EkwzmAhEoQDUo=;
-        b=r38fArtsgTym2lOl27z2U1U5cdxC7I59ubSb66bKKGH7eDhP/SiarfPN/y2Y+bvua5
-         Vgq1+Jc+8cyXepUeeD/aCHc/ib6u2vZEJr1QqiHQ88nhHD2Ea0nOLUfnjU6meJzeX9e6
-         IBaoyMbnXxo9w5ak/Htin+PYRsNgfOIORyez4EFyfn6I3uAU3DW1aScyuZKzLY1jS65F
-         xlhqxhFAAObuz+dSJpP3LVJQQKb69eFK3K/gKCBVmbf2J1t79jLkk3FDYilQ1lM5Qw48
-         OQWTV9k3eFXnL7/aDjgQb2IScogeidI2k0aANmX0IPlnjAv4Jcg9vhqhbZfRuf9SsI7+
-         eRiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUS69rbRWw3KNky/vCb/hJLhIlJQrBlengol39rCZdfOHKpiluHMlE8j+1nLXjW8XzwdC06XDzFiFhb@vger.kernel.org, AJvYcCW9Xj6jXrzzglIRH3oIo3AgyjSivlNyUh2WxZIutwMpAgZJ8iA0byy0kj3k4FmyPff5iDUkppM77lcR@vger.kernel.org, AJvYcCX3l0FBOtWaUdYLElMpJ3DMqd4KfV+e3+5PuLxyUm6DFYS2xNbcNbonClt/jGC+iFN+NvQQ0sXMh6Fo7Z1R@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8kuy7jlPihheC0c4QmXMFRkndFtZ5mVssQGSjbYAZwqpPwmIQ
-	pdmsM8qzD9uBmDvyFGz6KNR9dKK4BSM2eaUHihLUH97opY4GHtVP
-X-Google-Smtp-Source: AGHT+IFZJqS29OHudrWu8tsBBiSakxrEbp4C5mHl0PcTRt3nDXqY7x4EsdbZMNKRtrMATP4mSrzk8g==
-X-Received: by 2002:ac8:5a46:0:b0:458:216f:96ef with SMTP id d75a77b69052e-4599d2bbbc2mr7607371cf.57.1726175280033;
-        Thu, 12 Sep 2024 14:08:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726175297; x=1726780097;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WI5vIgB03b+RRPC5P5FjvKVoLvcCEHnEc2wIMv+7968=;
+        b=ErH1SSA1XO+Un0whOCnx1nl/hVuNeWXFVSCN26bY9n9g7jJmRxHmmi4dXmus7tGepT
+         dUvwQP0ysafP1vUM3yPi8qvY1WfX5tPuDxQgKb6+rgHIR3e9/wbAZpkicovAk/TNr/05
+         Cnme5Ym2BjAfcPypjrHOsHc3XiXn2sRk5WzOnGds4FaaSv5ixNvMIGTsI2RaJeBAAWj9
+         rMWTk6UQlcdwUtlTEpER7/TGGM0y2IorUhlVNM/6uGYx/pSAguRFhKDmCLw+CXY1PuFD
+         ojRDDhnNKlWweTlseWSxumpTmIzkOp0WFggTtZCXEJw/dGVRZjK1bHepDCQXJwhzje1u
+         z9Dw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYwiFSZes1eUy7yy5/XUbKc2859IWoQYR9lR5IMYeX0dEVkUiJyY04RCfr7r5CQLWVsgmiPTRbzLJI@vger.kernel.org, AJvYcCVguhRjtoxIpd8YKVuxz68AR+n+g55dFbA83XJC6K7+aE+pdoRPDqJpeu3MqiYs8df936gCfdtdOxNTQrc/@vger.kernel.org, AJvYcCXmBbWeKZmvNmtn2Haxo1JQ2QxqwYw4tUWpurkEOurVcl2NXKfKmpXy20PiqVXVQ8/y1SyiyiMWfex8@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTGJeKTELUAPRt8Rgv2YTTPhcP/k6d6yr0EAHcIfyt/l8xH1dm
+	t6kRXZCX0FPgjtx6m2FlF9aYpu9vhPMhpX1V8D2bHgbrYPicJS77
+X-Google-Smtp-Source: AGHT+IH08Q4d4W8M6rAMy3bRhqMB1YQChslJN0IsPv4VjxzP8fHcNkqfGmIn0ue36ApoRXUFSn1t0A==
+X-Received: by 2002:a05:622a:1902:b0:458:5b3a:9a1f with SMTP id d75a77b69052e-4599d29f8dcmr6443621cf.43.1726175297495;
+        Thu, 12 Sep 2024 14:08:17 -0700 (PDT)
 Received: from localhost.localdomain (117.sub-174-193-5.myvzw.com. [174.193.5.117])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822e613eesm56959721cf.12.2024.09.12.14.07.58
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822e613eesm56959721cf.12.2024.09.12.14.08.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Sep 2024 14:07:59 -0700 (PDT)
+        Thu, 12 Sep 2024 14:08:17 -0700 (PDT)
 From: Alex Lanzano <lanzano.alex@gmail.com>
 To: Alex Lanzano <lanzano.alex@gmail.com>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -77,14 +79,17 @@ To: Alex Lanzano <lanzano.alex@gmail.com>,
 	Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 Cc: linux-kernel-mentees@lists.linuxfoundation.org,
 	skhan@linuxfoundation.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 0/2] Add I2C driver for Bosch BMI270 IMU
-Date: Thu, 12 Sep 2024 17:07:17 -0400
-Message-ID: <20240912210749.3080157-1-lanzano.alex@gmail.com>
+Subject: [PATCH v4 1/2] dt-bindings: iio: imu: add bmi270 bindings
+Date: Thu, 12 Sep 2024 17:07:18 -0400
+Message-ID: <20240912210749.3080157-2-lanzano.alex@gmail.com>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240912210749.3080157-1-lanzano.alex@gmail.com>
+References: <20240912210749.3080157-1-lanzano.alex@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,51 +98,98 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add basic I2C support for the Bosch BMI270 IMU.
-
-References:
-https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi270/
+Add device tree bindings for the bmi270 IMU
 
 Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
-Changes in v4:
-- Include linux/bitfield.h to bmi270_core.c
-- Add comments documenting sleep functions
-- Increase configuration delay to be inline with datasheet
-
-Changes in v3:
-- Remove code pertaining to buffer / triggered buffer
-- Move register definitions from struct to defines
-- Add bit mask defines for registers and replace hardcoded values
-- Create macros for accel and gryo channels
-- Code style cleanup
-
-Changes in v2:
-- Remove spi example in binding documentation
-- Add more properties to i2c example in binding documentation
----
-
-Alex Lanzano (2):
-  dt-bindings: iio: imu: add bmi270 bindings
-  iio: imu: Add i2c driver for bmi270 imu
-
- .../bindings/iio/imu/bosch,bmi270.yaml        |  77 ++++++
- MAINTAINERS                                   |   7 +
- drivers/iio/imu/Kconfig                       |   1 +
- drivers/iio/imu/Makefile                      |   1 +
- drivers/iio/imu/bmi270/Kconfig                |  21 ++
- drivers/iio/imu/bmi270/Makefile               |   6 +
- drivers/iio/imu/bmi270/bmi270.h               |  62 +++++
- drivers/iio/imu/bmi270/bmi270_core.c          | 258 ++++++++++++++++++
- drivers/iio/imu/bmi270/bmi270_i2c.c           |  48 ++++
- 9 files changed, 481 insertions(+)
+ .../bindings/iio/imu/bosch,bmi270.yaml        | 77 +++++++++++++++++++
+ 1 file changed, 77 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
- create mode 100644 drivers/iio/imu/bmi270/Kconfig
- create mode 100644 drivers/iio/imu/bmi270/Makefile
- create mode 100644 drivers/iio/imu/bmi270/bmi270.h
- create mode 100644 drivers/iio/imu/bmi270/bmi270_core.c
- create mode 100644 drivers/iio/imu/bmi270/bmi270_i2c.c
 
+diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
+new file mode 100644
+index 000000000000..792d1483af3c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
+@@ -0,0 +1,77 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/imu/bosch,bmi270.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Bosch BMI270 6-Axis IMU
++
++maintainers:
++  - Alex Lanzano <lanzano.alex@gmail.com>
++
++description: |
++  BMI270 is a 6-axis inertial measurement unit that can measure acceleration and
++  angular velocity. The sensor also supports configurable interrupt events such
++  as motion, step counter, and wrist motion gestures. The sensor can communicate
++  I2C or SPI.
++  https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi270/
++
++properties:
++  compatible:
++    const: bosch,bmi270
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++  vddio-supply: true
++
++  interrupts:
++    minItems: 1
++    maxItems: 2
++
++  interrupt-names:
++    minItems: 1
++    maxItems: 2
++    items:
++      enum:
++        - INT1
++        - INT2
++
++  drive-open-drain:
++    description:
++      set if the specified interrupt pins should be configured as
++      open drain. If not set, defaults to push-pull.
++
++  mount-matrix:
++    description:
++      an optional 3x3 mounting rotation matrix.
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++  - vddio-supply
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        imu@68 {
++            compatible = "bosch,bmi270";
++            reg = <0x68>;
++            vdd-supply = <&vdd>;
++            vddio-supply = <&vddio>;
++            interrupt-parent = <&gpio1>;
++            interrupts = <16 IRQ_TYPE_EDGE_RISING>;
++            interrupt-names = "INT1";
++        };
++    };
 -- 
 2.46.0
 

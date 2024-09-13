@@ -1,42 +1,43 @@
-Return-Path: <linux-iio+bounces-9491-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9492-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF9A9977CC2
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 12:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9811977CC7
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 12:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ECC01F27905
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 10:01:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58BAD1F25FCE
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 10:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287071D79A3;
-	Fri, 13 Sep 2024 10:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C081D7E5B;
+	Fri, 13 Sep 2024 10:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Ah/uUOlc"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="extuTXXq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2065.outbound.protection.outlook.com [40.107.22.65])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2087.outbound.protection.outlook.com [40.107.247.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B217042AB0;
-	Fri, 13 Sep 2024 10:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9529B1D7E35;
+	Fri, 13 Sep 2024 10:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.87
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726221691; cv=fail; b=tP0gXraFMWa3ZDdTiN1aIWspRDLhkmCcNSegA/yHv1dNuIzRS0FsFOZg4mGxIoHmBVyfRELaDdl0d/EsMTiY2cmyQSzqYDTJnCo3adc+yNgTEsEYC3aM6TF9+tv0xhwatNjide+J+zfFvLc/ubpNcdSEaZXrEWuH2vZ0OiQLTb0=
+	t=1726221695; cv=fail; b=Qx/kWS+ASvnFq9Fk56aYw8LkfxD19gmeZQE1WAyuYVJBODkGucZSxP8NBJDWf9J7LtlZ0zvEiEWhVvE8rJ81jQcGsamHdTo1p395QIQcLsFlRsg7viE0qeuYog6mGQ4+3Qx62hPzx/fqwcz5eEP5guRWn9vmkm7JtP755aFgQ68=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726221691; c=relaxed/simple;
-	bh=I0vPsARZkVwWvxxQMyDE9dg7R2y7EQ5kubEv4CW6SCU=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VlBAH6bd0QH83GKKujTdo6f5o+B/+/vkOEzTGm5WkjuS51YYQL+UISNqEWVNrlJiL9Q8DJOQaVpZKV9N51nyVYNt8dTvR/2Zvg0RZ7kFyzeMSugE1wWG//pEoMS1DUUeCsAyqBfaeUSo4Y5l7lGEtw/5xBsbqQnmWtnwODBWP7g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Ah/uUOlc; arc=fail smtp.client-ip=40.107.22.65
+	s=arc-20240116; t=1726221695; c=relaxed/simple;
+	bh=Ssd/8UAGu7KN3UPkq4A0vpHmzXq9pQBl/b8vBAU57uQ=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fFUktNGqyhdP93ST7u1EO57BUoKcvtWFSA82VzLqBGdqrEou862GzugmCyNweDHrSV0gOtMskrqdTP0fcvxg6Lf9TDOJW9lEQmYrbrRzUlLzQbpkJHWCGQ133Lcnvspg2A6/Yj00bmcCuJkhycZYrLtyfOvZ5FmoqIbHTxWOTtc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=extuTXXq; arc=fail smtp.client-ip=40.107.247.87
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T8jT++UqvR5KTtwRlPkCDoFWWEDLbENBvWzII59UWFCk9AoQpriQRLZMjy13YyiNq7Dj6Sx0ZZbkItcMVj8IKcxNZbukmIJ54pMaNG7EAbytPg16pjURc3cibnhqamLN+AiUxp/PR/lojERCsaSSsY9KtS8plH0slm76rs5zZDIpJ0Pur+krj6bH77szH/gapxjT3G39oytaqZLEqQSi8i3RLNM/s2C3YS033MiZSzPkLLh3iPu2qYAw++OntRGMicedMo89VRH+7LK3kjzAtCxNFAmlgu0T93oun4bEXhtUaOckhsAYY2KaEPSmn8hC+q2iaSXY1/IwzC47eociVw==
+ b=cb2JbsWbuJe1bUvXFsNq34u5Z/ZXk9hjQ+26SLHvpueuzBa/bugE3G6F4Nc8k0KUp5MlQBvJau8lRl/H2XFC8xu39uNSjP9oABZvhLX3UrF88wM8RKVTiWE67ro1f/y18B2I116Re07tbd5scO1KIogNpAZ7ujzfoF4QWwusc3W/7wKriKaNE3g1yxEJBAupZwTycEE0R82MoIhFyWV5qUbVByrzoW12pMIfngiZmL7350kYSazBL6zw8LsGCgIYQijbXBtNIZp3sbRmeEw5anbTUWOUO5V1YZLEiIgP7b7A2zD74tlG8cYbR9kQcl+LWwwuRk6/V3veFfz5I6jlTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WOWSWzmolBP0byNTklwp3+g1QD9wKTLG8651ukIT3z0=;
- b=S2GcvfS0ae07uxHpBZ28c/ysI5HqSeYCtldP6dxRDq6oqWtBcNFDu1LFHbF4Yy9M9IfV1g4//OQwEl4r3E3HDi6TZSOrbx9JYvhWuhseiJ5T3BTHUWxrhT30XolfvzKxeA8gHsnIohfk8b534obNu+uZ3kCoLmqV0I1Df6Kn5RTnbmz1wXG5NbHlVUOsOuNcK+uzZcvarL0uVGJId0+qaQ3VB9zTI4QiK3gLnVLd+RVQQYpyXNKV9NPll5mc4V2s/J0bxCtmlSU/t9RsTUy0UZ0bbZYcI70ubk7Q8ZtZXZGjj3tHQEHbKvjvvOGsLk9BojWzMATR71808mxrXrKwZA==
+ bh=1WEXVP/5HzeyB1dvLgThCvPsnkBRL1Wtx1l62Qj1A0c=;
+ b=fUYZ/wNArZw5sF7bJWBeEh9IwziMDE+LPY7bvlDLd1/ZvHiW4uZQ4p9YicOEZlKYCq616Twx6qe93+iGLIdPMT+r//8e+cb63bn56sZLSoGzPdFK2CTxcEJyiRMmjIOAgzjcy2sVpBQz64oILg0hb+FwzX38qt0ImAVVkE4M0N78DRABZiD5dp+vEvuo0eYvsjHs5Cs4gzy13/HHjWdK2chWuipRboSzJozFEEasJZn2baQuYiWZy0yDUV7K9AJDcBty6bwV7/MHZB7Tx0jZXc9VBY1nqdIOjNUJbjXvn0deVtBdj6bUdti+FbxHCSJDRnc+keDDMFrgeXVXkRXxqw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  139.15.153.205) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
  dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
@@ -44,18 +45,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WOWSWzmolBP0byNTklwp3+g1QD9wKTLG8651ukIT3z0=;
- b=Ah/uUOlcV2AKysrzGQCfysVWrQdseM/rE5YhkBQkXba853MY4q2PNWpNFjPLlN9hAb7fxOFNragt2pXNDpCV7l/TyUSTaDWqkThdIsepYEsOmkAmrQ4KXrVzUrU67hL14FJTCTwz3uhPD6rEqoWdNsRN2iit34cX7W/WflZCcdMeJntDXxeLNkUkanaelFLh4Bzs0ZEPFltJfMjqWk5JDYgQWMB7Nx+BooqKclaJG7FlwARDGIrnWgIRhdKMEnO0vuDKO1qABrtQmP87U3rYtBYjB8mL9Hz09W01dleQJifmdCxBudkgYy4YROtzK0kDqXMBhYLPLUKlGVGB17A5cA==
-Received: from DU7PR01CA0006.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:50f::6) by AS4PR10MB6111.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:583::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.18; Fri, 13 Sep
- 2024 10:01:22 +0000
+ bh=1WEXVP/5HzeyB1dvLgThCvPsnkBRL1Wtx1l62Qj1A0c=;
+ b=extuTXXqHeAI1VEAgpJlTKPCvIBYsxN2SwI4kcDJiI43JdMGJ5imWHeFaNJo3UN5OOuSZ761r3qlX+aFZMPCjdoB8UEODUHoOaTsnYrJ5HE80bEGBkJLgYtLmwzAwd03vD3U6gNKVOMi+80z8kxbVCCHIIURVE7EjbdSGagd7xJfjC9s3ho60ZeDYJjAUdMfvjrA7t3o6JQBKudBvg3IdN32008vFfDQt5901utEfhwcMeqGJg9tH4XW/hWQ7ckJT3kdHUrYjfipA15kMIMlrDVpeDIGGxzF4JD2OQYWs2HYiJ9urcm+eEkC1j75EGDLMpSE9HxpwGFIicB3Wz2kdw==
+Received: from DU7PR01CA0013.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:50f::8) by AM7PR10MB3272.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:105::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.17; Fri, 13 Sep
+ 2024 10:01:28 +0000
 Received: from DB1PEPF00050A00.eurprd03.prod.outlook.com
- (2603:10a6:10:50f:cafe::70) by DU7PR01CA0006.outlook.office365.com
- (2603:10a6:10:50f::6) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10a6:10:50f:cafe::31) by DU7PR01CA0013.outlook.office365.com
+ (2603:10a6:10:50f::8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.27 via Frontend
- Transport; Fri, 13 Sep 2024 10:01:22 +0000
+ Transport; Fri, 13 Sep 2024 10:01:28 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
  smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=de.bosch.com;
@@ -65,11 +66,11 @@ Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
 Received: from eop.bosch-org.com (139.15.153.205) by
  DB1PEPF00050A00.mail.protection.outlook.com (10.167.242.42) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7918.13 via Frontend Transport; Fri, 13 Sep 2024 10:01:20 +0000
+ 15.20.7918.13 via Frontend Transport; Fri, 13 Sep 2024 10:01:27 +0000
 Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
  (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 13 Sep
- 2024 12:01:04 +0200
+ 2024 12:01:11 +0200
 Received: from LR-C-0008DVM.rt.de.bosch.com (10.139.217.196) by
  FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -81,10 +82,12 @@ To: <jic23@kernel.org>, <lars@metafoo.de>, <robh@kernel.org>,
 	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<Jianping.Shen@de.bosch.com>, <Christian.Lorenz3@de.bosch.com>,
 	<Ulrike.Frauendorf@de.bosch.com>, <Kai.Dolde@de.bosch.com>
-Subject: [PATCH v7 0/2] iio: imu: smi240: add bosch smi240 driver
-Date: Fri, 13 Sep 2024 12:00:09 +0200
-Message-ID: <20240913100011.4618-1-Jianping.Shen@de.bosch.com>
+Subject: [PATCH v7 1/2] dt-bindings: iio: imu: smi240: add Bosch smi240
+Date: Fri, 13 Sep 2024 12:00:10 +0200
+Message-ID: <20240913100011.4618-2-Jianping.Shen@de.bosch.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240913100011.4618-1-Jianping.Shen@de.bosch.com>
+References: <20240913100011.4618-1-Jianping.Shen@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -95,139 +98,134 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF00050A00:EE_|AS4PR10MB6111:EE_
-X-MS-Office365-Filtering-Correlation-Id: 649b8d80-adf3-44a3-814c-08dcd3db045b
+X-MS-TrafficTypeDiagnostic: DB1PEPF00050A00:EE_|AM7PR10MB3272:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a39a836-cce0-4eff-24f5-08dcd3db08ee
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|1800799024|376014|36860700013|921020;
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|7416014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RURjd0VCR3ZGLy91SHZYV0pvVVp1bkJtalBsNTBkNDA0MnlqWUZWeHpLb1Jq?=
- =?utf-8?B?RnV3QktobmVCYTRyblVBdFJsWFVIcDdCbVdQN1NDL3pkVks0SStrQ1lqZXZa?=
- =?utf-8?B?RVJmdXJmWmYxcGI4d2x5V3dpME42ZHJYVVBLbUhiQ1ZzQ3JtVkcxeGZpTVNn?=
- =?utf-8?B?aW0wYWN4bkFnb0g5MCtRR0lYWWt0cU9NT2JRekpsUE9jeUdkMHFJY1ZacjFQ?=
- =?utf-8?B?SDZZRFV0MXpjSWpWMUxOWmZiUGp1eVlDVVY5N1dsZGt2eTYveGQvR0VVUFVJ?=
- =?utf-8?B?VmdSeXdueHdqcmhPbjRGeEhrbDlxRkkzOFRhQW1HcWlOZXl3Ulljc1Q1QWpG?=
- =?utf-8?B?eFVhZy9JV0hOdzdCczQxTmtvR2t1QktiNEJLMmpxcjJQQkljckNUVWJqcHBi?=
- =?utf-8?B?MVdSZTByUFE2NUViZGp2ZXFVTE95YW1sVlVUOU15UUJZeTdyQjhXZFpGZHB1?=
- =?utf-8?B?elFyTE14RFdPTTdJbjFoSXFUWHE2L3pPSVZiOXhuZkhiSEN0TFNmN0lIMFlP?=
- =?utf-8?B?cEZpVTBwWTVyeDN1Rlo4OXAzd3hjZG1iRnZJdlpzVG9OdHJ4RXAzVFp0L2tM?=
- =?utf-8?B?K3VaWlMyYXBkeDFxYTRkelcrWGZRUkdvcFRxSUpPM3NzdkNqVEtmSXloTmdq?=
- =?utf-8?B?OFlrOFBoUk1LZzUrYU1oWnl4MDBqWHp6OEhydnhSN2VTYTF4WlZ0aVFsWE5P?=
- =?utf-8?B?V2pNNmJTS1hTYy9vVFBBT1duVVFsbUM0ZU5tL3VBVHJQcTVVV1UzR3RTTGpI?=
- =?utf-8?B?YisvQS9HTWZiNWNRM0E3YlBxd3FmTE9aZ3ErMGIwVklveHBrL3hiS3RITnRB?=
- =?utf-8?B?YTRwTE5PMjhNek5QNTAvUEhwakpmTm9HWWNhZmpMSHB2UDlCMjJLOGpOTnA1?=
- =?utf-8?B?cU9QWFNLYk9OSkFoUUNpblFGNHZMMkxLVlpwaENaKyszWEhjK2tHUklKaHRl?=
- =?utf-8?B?THdabHBRSkViTHN5SVppcDFjSXcxcnJJeTNIZlNLMUVFR0VMTUVhS2FOUXR2?=
- =?utf-8?B?b1FXSFFtZHNzNkI5Zzk1TDZ1WTZXTEordzJJWHJmZ1ppWmg0OTk2UGdMc0V6?=
- =?utf-8?B?NkZuUzdETFZzalc2dEZvWEJyTUxWWUFkS0EvS3NPdVFwVmpqcG9KZEtiUUhK?=
- =?utf-8?B?QzNNT3dqN3o2UkFuWXlMd0doeC8xWUJXTzg3YWg4L0hYMStaQTRxVTRCanJP?=
- =?utf-8?B?NWRBVkljWjhYTmJoVDlGMldURVF5bTk1NUhiRS85M1RrTEphdG1QSkFoSUZP?=
- =?utf-8?B?TUw0ZVozcW1uK2NXejczdjM3OTRmWlR2SG45OVlIMWtCNFAxeXpNSzRVU1I1?=
- =?utf-8?B?dloySW5NUTBlZW9xNGM4M3ZQSXFrUkVtTDlPQzl5azBTcFlEOEVuWTlUK21N?=
- =?utf-8?B?Q3pTTTMrVWpPMElqTUFiZVpEQUdlZ045Ylp0TWh1SHRsVjMzbGVMd2trU1hD?=
- =?utf-8?B?OG15bk1vRFR6UVJCU0FWSXA3ZEFUMFdwWWlERG5hK1UvT04xUjNSY0dTdDZI?=
- =?utf-8?B?dlNCWW5Yc1JNd1pMcFZ3aU9iZXd4amFiNHNRN3lHeUNnQjk4Nzc0ZTNUNjZC?=
- =?utf-8?B?RDZIQVJOMUVTL3A2MW0zVDhBMStHTXp4Zmt3WmpXWEtsZkRHeTA0dUd2OWxO?=
- =?utf-8?B?dDN6b1JiWWR5TTRFSC96Zk9JRnJoTXNBTWNMTE5JTnJvRG14TDJrNEswMzZs?=
- =?utf-8?B?elRwT3JTZ3JUMzVZS3NqcWNmVS9iUXlYTnc1QXJxUXd4UUxENU1JZkIrTzA3?=
- =?utf-8?B?bFFVOHhMUERhNEIxN2gxRGZ1Ym0vZ1MzQTA5Zk54Z0pvNEpheTUwRUpjMDFj?=
- =?utf-8?B?U1JXVmFLc1FpT0lTN2dPbDV4QVNJT0VRSnp1dUQyVzE3TE4vMFJjdzRSV1lP?=
- =?utf-8?B?ZE4vNUpaSWY1T2R0R3VGaXZxK1c2K1ZudGplZ1hINWxoaGw3Q1pMZ0paSzh1?=
- =?utf-8?B?SjFORThxaVQ5VmE3eHJ3T21rZ3hhVG1JK3p2MC9FZDAwRzZEckN2VXVVNDdW?=
- =?utf-8?B?ZDlGYmkxcDRnPT0=?=
+	=?utf-8?B?UEltK2hjUFFaOVU4elBhUmE3OEs2WWJsMXVRdUFnZmVpZjNMSGducFpURlNi?=
+ =?utf-8?B?Z1l4TFBnVEZjQWhMNm9ERFNQc2pnbllxM2NlV0U3UlhZdFpCQWluUU1XZnRN?=
+ =?utf-8?B?Vis3dWpaVmcrSzM5emVwSExXdUtXNEYxWmluNmgvVXJwNWdtWGlyV1ZnRFNl?=
+ =?utf-8?B?Y2taTlZ0L3NtZ3BRTm1hdWNSRzFFeGpPT1c2OHQwYWxHekV3K0JlQzA0T1BP?=
+ =?utf-8?B?anpwVzZhK2paM0VRdjZDSFZ1bW9YSUk2SThpMXh4M2tXcGM1VldQbzRlS0dh?=
+ =?utf-8?B?WXBOenk2MVp1Wk9qcDRsUUYzSGloaThiN2xyVmxaSnNtbFphRkNycFdXa09S?=
+ =?utf-8?B?aEIxdlZkTndScjlobm53bGpGRjF6dWNET0JhTmNHdFlIQlM0UkNLYnErT3g0?=
+ =?utf-8?B?eVgxTnpuWkFFQ28vcmlydnNHdnBSRWlvSTVMalVMSlBPVW5hLzlBVEtuamlz?=
+ =?utf-8?B?K1djVjdTVVBYNWtwVFh0NXNqb0JsQ2xWbzRmOGUrQ3hCU1Z1U1BEZnVSSjI1?=
+ =?utf-8?B?UGtINUsxckJnUDBWUGpRWjJwYTg2TjJ0TmoyZWtjNDNqUnZpb2NQWmY0RTZX?=
+ =?utf-8?B?OGduNFE5RmlyeDJFNXZOUzJjSFFibjhka2o2WXpxbFkyenY1SDVBMlY2NjBh?=
+ =?utf-8?B?bnBWYmNuUkx5eEROWGhhb1BqZTF6QStGUkR6OWRSb0Q0b2V1U25aVEZGS3Vp?=
+ =?utf-8?B?TUlRQ241NmZCZzB3V1BKeGhub3R5UUlNMFRJZmJLS0JFNlgxZkZvdkhHYVFr?=
+ =?utf-8?B?Q3hqUmdCd3o2Q0UrQzREM2N6bjFBTWs3SlRHWmc0K2dQYUoxcXdkSmdZams5?=
+ =?utf-8?B?cDRDVUt6NDlSRnFVN044VEZneWN5SWladVNjUjlzeUc5UzVyT3FLK1Ixc3Zm?=
+ =?utf-8?B?dVQ3ckEvdTBRdXRNdTZnekdld0hIbmwyWU5adGg0MEZvaERSYncxalhJanZ4?=
+ =?utf-8?B?UThvVHJMQWx5UkIyY0d5b2QwZ3JkU0gyYkFGTVczY2R1SjVYbUFsK3YvZ0dM?=
+ =?utf-8?B?T0JJSXNmTkVlL2pqOE5RcWw5UXE3MzI2ZXFQYnkyTXROVGsyWnVsNkoyMnlR?=
+ =?utf-8?B?SXIzM0YrdVJVZWs3YXRhVVgvNkNSaFhicHdmTDB6TnF5bk1Qbk5HZU4vRVRL?=
+ =?utf-8?B?aDdJZXB6bXU0Zk5JZm9GaXovNkpKbDlVM1ZGSVRUdlg3VWhVUE1CVkMrSXNl?=
+ =?utf-8?B?Ui9pZDlueEFnMllvSWJacE1ndnBKTGUxeDJPeW5WdGhpZkYvcXN0d0xQNDVP?=
+ =?utf-8?B?V052L0p5Q3lZR1NlYnM2RWJNUmZNbXU3OWhBaEdFdDdVNVM1eGc3QjY4NzVU?=
+ =?utf-8?B?cVZSUlFScFV3b2ZXZkQ0dlNsMVpxYmlyb2NLeTQrTkdhcUhaMk9JM0V4RFY2?=
+ =?utf-8?B?NEFzUWh6K1NrNm5WSXZORTRJeUU3MVRuMENLcUV2R1dmcHRwWEh3QWRXNlVL?=
+ =?utf-8?B?eUJ5N2tSVmQxVGFvVmt4aHZBSU1WMXhpRVFuZW83OU9icXVNV1VESU12SmpR?=
+ =?utf-8?B?dUdXUFZLVUF5b3Q2OFNBUVVQK0xScHdSSmxqZnRrL1owWkVTR2hEbkU1SDNu?=
+ =?utf-8?B?SUFxS05qc0xqY2xvMG5Mb2xpUzUyTkszRGpOZlFxQ0QyaC9NK1pObWxKUkM4?=
+ =?utf-8?B?d2JXTy9RclJUV0NSbSswc3BqcndxcGdKelNoZkU0ZkE5VkdFTzJKbG13clZm?=
+ =?utf-8?B?eTdzZzBOSlN6VWZyaXJIczdGTDU0VlVjRmdFRUIxWEtDODRnYmVTQnVjZGps?=
+ =?utf-8?B?Z3p1cTcrMDVCU2ZDZTVZNTRhUlJEWmZkMlNVRzNjVTVtSnF2QXZiMFJhcmE0?=
+ =?utf-8?B?bWNULzVGendXb0lDOHZKNy9vS2NlRGVTejV3cG40SkgyRVBpVzlHZ3pkUDln?=
+ =?utf-8?B?TGloMW9QaFhvRnNINTE4WWpsWXZsRnFIc3hjSmtsbHBjQWc9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(1800799024)(376014)(36860700013)(921020);DIR:OUT;SFP:1101;
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(7416014)(921020);DIR:OUT;SFP:1101;
 X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2024 10:01:20.0578
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2024 10:01:27.9953
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 649b8d80-adf3-44a3-814c-08dcd3db045b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a39a836-cce0-4eff-24f5-08dcd3db08ee
 X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	DB1PEPF00050A00.eurprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB6111
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3272
 
 From: Shen Jianping <Jianping.Shen@de.bosch.com>
 
-Add the iio driver for bosch imu smi240. The smi240 is a combined
-three axis angular rate and three axis acceleration sensor module
-with a measurement range of +/-300°/s and up to 16g. This driver
-provides raw data access for each axis through sysfs, and tiggered
-buffer for continuous sampling. A synchronous acc and gyro sampling
-can be triggered by setting the capture bit in spi read command.
+add devicetree binding for Bosch imu smi240.
+The smi240 is a combined three axis angular rate and
+three axis acceleration sensor module.
 
-dt-bindings: 
-v1 -> v2
-    - Add more detail in description
-    - Add maintainer
-    - Add vdd and vddio power supply
-    - Use generic node name
-    - Order the properties according to DTS coding style
+* The smi240 requires VDD and VDDIO
+* Provides only spi interface.
 
-v2 -> v3
-    - Improve description
-    - Improve supply definition
-    - Make supply definition as required
-    - Add supply definition in example
-
-v3 -> v4
-    - No changes
-
-v4 -> v5
-    - No changes
-
-v5 -> v6
-    - Fix checkpatch findings
-
-v6 -> v7
-    - No changes
-
-imu driver:
-v1 -> v2
-    - Use regmap for register access
-    - Redefine channel for each singel axis
-    - Provide triggered buffer
-    - Fix findings in Kconfig
-    - Remove unimportant functions
-
-v2 -> v3
-    - Use enum für capture mode
-    - Using spi default init value instead manual init 
-    - remove duplicated module declaration
-    - Fix code to avoid warning
-
-v3 -> v4
-    - Use DMA safe buffer
-    - Use channel info instead of custom ABI
-    - Fix other findings
-
-v4 -> v5
-    - Merge the implementation in one simple file
-    - Add channel info for acc/gyro data channel
-    - Fix other findings
-
-v5 -> v6
-    - Fix checkpatch findings
-    - Fix review findings
-
-v6 -> v7
-    - Fix offset and scale
-
-Shen Jianping (2):
-  dt-bindings: iio: imu: smi240: add Bosch smi240
-  iio: imu: smi240: add driver
-
- .../bindings/iio/imu/bosch,smi240.yaml        |  51 ++
- drivers/iio/imu/Kconfig                       |  14 +
- drivers/iio/imu/Makefile                      |   2 +
- drivers/iio/imu/smi240.c                      | 611 ++++++++++++++++++
- 4 files changed, 678 insertions(+)
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Shen Jianping <Jianping.Shen@de.bosch.com>
+---
+ .../bindings/iio/imu/bosch,smi240.yaml        | 51 +++++++++++++++++++
+ 1 file changed, 51 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml
- create mode 100644 drivers/iio/imu/smi240.c
 
+diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml
+new file mode 100644
+index 00000000000..58f1411728f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml
+@@ -0,0 +1,51 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/imu/bosch,smi240.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Bosch smi240 imu
++
++maintainers:
++  - Jianping Shen <Jianping.Shen@de.bosch.com>
++
++description:
++  Inertial Measurement Unit with Accelerometer and Gyroscope
++  with a measurement range of +/-300°/s and up to 16g.
++  https://www.bosch-semiconductors.com/mems-sensors/highly-automated-driving/smi240/
++
++properties:
++  compatible:
++    const: bosch,smi240
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++  vddio-supply: true
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++  - vddio-supply
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        imu@0 {
++            compatible = "bosch,smi240";
++            reg = <0>;
++            vdd-supply = <&vdd>;
++            vddio-supply = <&vddio>;
++            spi-max-frequency = <10000000>;
++        };
++    };
 -- 
 2.34.1
 

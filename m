@@ -1,510 +1,234 @@
-Return-Path: <linux-iio+bounces-9489-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9491-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94318977CAF
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 11:58:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9A9977CC2
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 12:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53A262863E7
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 09:58:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ECC01F27905
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 10:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385C51D86C2;
-	Fri, 13 Sep 2024 09:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287071D79A3;
+	Fri, 13 Sep 2024 10:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="hVefQoOu"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Ah/uUOlc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011071.outbound.protection.outlook.com [52.101.65.71])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2065.outbound.protection.outlook.com [40.107.22.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFC31D7E53;
-	Fri, 13 Sep 2024 09:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B217042AB0;
+	Fri, 13 Sep 2024 10:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726221456; cv=fail; b=PVfOYl/+VLqqB0ZC/4QKqH6UF8FnPUfimeX24+syUtaEIykDA0mNj2g5DzABNq55CMgoHy6x13n9CPES/HSnG5Q8dVE6vTUKoGVFq0LkoqJcUEOf2E4ennkTs+yqiPSiOVTjCFkmsjJSgP+1oaZb9yzCBfRwNzjeWgV6t9P0ybI=
+	t=1726221691; cv=fail; b=tP0gXraFMWa3ZDdTiN1aIWspRDLhkmCcNSegA/yHv1dNuIzRS0FsFOZg4mGxIoHmBVyfRELaDdl0d/EsMTiY2cmyQSzqYDTJnCo3adc+yNgTEsEYC3aM6TF9+tv0xhwatNjide+J+zfFvLc/ubpNcdSEaZXrEWuH2vZ0OiQLTb0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726221456; c=relaxed/simple;
-	bh=VISKJJYia7Aa4vdw2dFeTCgzjq2obdYcTwso2QuUm4Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=VjJUZKzWZAyfKCBJCOr360VOXK9QBp1lnd8U82WSSCda+H16Lnqtj7r11GvR3k/9XJrmSFuhgzoKc9sELGb9AxW+JP+bVT/4LtJR5fsMhCCDvS+A9OMefuxVpKU+QnZDKWmvTAA8s7JegvitJvxG3D+MYb1bpcEM6JoZ/iXmZjs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=hVefQoOu; arc=fail smtp.client-ip=52.101.65.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
+	s=arc-20240116; t=1726221691; c=relaxed/simple;
+	bh=I0vPsARZkVwWvxxQMyDE9dg7R2y7EQ5kubEv4CW6SCU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VlBAH6bd0QH83GKKujTdo6f5o+B/+/vkOEzTGm5WkjuS51YYQL+UISNqEWVNrlJiL9Q8DJOQaVpZKV9N51nyVYNt8dTvR/2Zvg0RZ7kFyzeMSugE1wWG//pEoMS1DUUeCsAyqBfaeUSo4Y5l7lGEtw/5xBsbqQnmWtnwODBWP7g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Ah/uUOlc; arc=fail smtp.client-ip=40.107.22.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DOfgnmxUwT4Up9RhRpZYcsxZeRNqgQU1404Ma9t66Y1tz6Dsn0FHmKRuuUss/BSGy6EeRwJbkvU3RUw9SEEkegwg61tMy76FyYwurUOtG2+kugp6GWfwFI/Eqy5mgQcJ/Fu2LVbNhMYYfkUrjkKlj9JY+gbsToadS09OBdoeSXNrA7ZH2tcnXmBR9IA2oxVW0oGWmiSbkel/Z/zkp4ypf6tl2UQCV6wCXRRa502p0ei4WxrY+Siw+XJYJpVcJaEhESWKKy+ORNiFSCc9YL8VLjrDxhuUpmTFuewqLJmuGHGCBepwmV32pwV6hlBm1Oi/dvqJ98eDcYBMy1TvAnR7mg==
+ b=T8jT++UqvR5KTtwRlPkCDoFWWEDLbENBvWzII59UWFCk9AoQpriQRLZMjy13YyiNq7Dj6Sx0ZZbkItcMVj8IKcxNZbukmIJ54pMaNG7EAbytPg16pjURc3cibnhqamLN+AiUxp/PR/lojERCsaSSsY9KtS8plH0slm76rs5zZDIpJ0Pur+krj6bH77szH/gapxjT3G39oytaqZLEqQSi8i3RLNM/s2C3YS033MiZSzPkLLh3iPu2qYAw++OntRGMicedMo89VRH+7LK3kjzAtCxNFAmlgu0T93oun4bEXhtUaOckhsAYY2KaEPSmn8hC+q2iaSXY1/IwzC47eociVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tuau6s/hloR8fSpT7lZe6PdV9ovjOkQoNcrp/tpud6I=;
- b=t7ZFOwzB3qG+3FsfLwmlgUBohIbOUWGBnkJarmBOS3DIEgxMIUCr6k8DlRAzuA4gIIQcSVkeOvVvgA+aLy0U80DycXYlE7W1q+BqqIwt5XdVowhXvEIhZtVlp4Ukq6XmEoB6OZqsTxhohU3JeZf9thmVdycXDxrcO3k6ACNaxM1JJ3b0y4da5wgBTLtcn5g8gT/RLgO7drOablLqidrdJ8AZ4UlrsjTHwEATj5yi7RGnfezhimdRXwl1o2ngnPahEZpqXicHt0aIq0669racdscvSnJyMF3fT6OQTKPG3s39bARfCLIdB8b/4YwMxCUPqrlkiOAFLH4AoLGe/fvkvw==
+ bh=WOWSWzmolBP0byNTklwp3+g1QD9wKTLG8651ukIT3z0=;
+ b=S2GcvfS0ae07uxHpBZ28c/ysI5HqSeYCtldP6dxRDq6oqWtBcNFDu1LFHbF4Yy9M9IfV1g4//OQwEl4r3E3HDi6TZSOrbx9JYvhWuhseiJ5T3BTHUWxrhT30XolfvzKxeA8gHsnIohfk8b534obNu+uZ3kCoLmqV0I1Df6Kn5RTnbmz1wXG5NbHlVUOsOuNcK+uzZcvarL0uVGJId0+qaQ3VB9zTI4QiK3gLnVLd+RVQQYpyXNKV9NPll5mc4V2s/J0bxCtmlSU/t9RsTUy0UZ0bbZYcI70ubk7Q8ZtZXZGjj3tHQEHbKvjvvOGsLk9BojWzMATR71808mxrXrKwZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 195.60.68.100) smtp.rcpttodomain=kernel.org smtp.mailfrom=axis.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
+ 139.15.153.205) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
  dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tuau6s/hloR8fSpT7lZe6PdV9ovjOkQoNcrp/tpud6I=;
- b=hVefQoOuPhzhd7YQKc3T7Iodhp26M6SG6kLcAx4bms7VY2kX6k4pKL4E7UU/YdygVKjhox0J6fKnpvhBIvPcya3kzo/++omyOTUMcnjUVtzQutikE5XdbUDdFMfW4s4IT1kdn71aJQvSU+pweAAulm/PSl4lwosjp4ioVV1OqYo=
-Received: from DBBPR09CA0013.eurprd09.prod.outlook.com (2603:10a6:10:c0::25)
- by GV2PR02MB8458.eurprd02.prod.outlook.com (2603:10a6:150:a8::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.19; Fri, 13 Sep
- 2024 09:57:24 +0000
-Received: from DU2PEPF00028CFE.eurprd03.prod.outlook.com
- (2603:10a6:10:c0:cafe::c7) by DBBPR09CA0013.outlook.office365.com
- (2603:10a6:10:c0::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.25 via Frontend
- Transport; Fri, 13 Sep 2024 09:57:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=axis.com;
-Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
- 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com; pr=C
-Received: from mail.axis.com (195.60.68.100) by
- DU2PEPF00028CFE.mail.protection.outlook.com (10.167.242.182) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7918.13 via Frontend Transport; Fri, 13 Sep 2024 09:57:24 +0000
-Received: from se-mail01w.axis.com (10.20.40.7) by se-mail02w.axis.com
- (10.20.40.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 13 Sep
- 2024 11:57:22 +0200
-Received: from se-intmail01x.se.axis.com (10.0.5.60) by se-mail01w.axis.com
- (10.20.40.7) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Fri, 13 Sep 2024 11:57:22 +0200
-Received: from pc55303-2334.se.axis.com (pc55303-2334.se.axis.com [10.94.180.8])
-	by se-intmail01x.se.axis.com (Postfix) with ESMTP id 02839343;
-	Fri, 13 Sep 2024 11:57:22 +0200 (CEST)
-Received: by pc55303-2334.se.axis.com (Postfix, from userid 18269)
-	id F3EE122F8D75; Fri, 13 Sep 2024 11:57:21 +0200 (CEST)
-From: Emil Gedenryd <emil.gedenryd@axis.com>
-Date: Fri, 13 Sep 2024 11:57:04 +0200
-Subject: [PATCH v2 3/3] iio: light: opt3001: add support for TI's opt3002
- light sensor
+ bh=WOWSWzmolBP0byNTklwp3+g1QD9wKTLG8651ukIT3z0=;
+ b=Ah/uUOlcV2AKysrzGQCfysVWrQdseM/rE5YhkBQkXba853MY4q2PNWpNFjPLlN9hAb7fxOFNragt2pXNDpCV7l/TyUSTaDWqkThdIsepYEsOmkAmrQ4KXrVzUrU67hL14FJTCTwz3uhPD6rEqoWdNsRN2iit34cX7W/WflZCcdMeJntDXxeLNkUkanaelFLh4Bzs0ZEPFltJfMjqWk5JDYgQWMB7Nx+BooqKclaJG7FlwARDGIrnWgIRhdKMEnO0vuDKO1qABrtQmP87U3rYtBYjB8mL9Hz09W01dleQJifmdCxBudkgYy4YROtzK0kDqXMBhYLPLUKlGVGB17A5cA==
+Received: from DU7PR01CA0006.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:50f::6) by AS4PR10MB6111.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:583::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.18; Fri, 13 Sep
+ 2024 10:01:22 +0000
+Received: from DB1PEPF00050A00.eurprd03.prod.outlook.com
+ (2603:10a6:10:50f:cafe::70) by DU7PR01CA0006.outlook.office365.com
+ (2603:10a6:10:50f::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.27 via Frontend
+ Transport; Fri, 13 Sep 2024 10:01:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DB1PEPF00050A00.mail.protection.outlook.com (10.167.242.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7918.13 via Frontend Transport; Fri, 13 Sep 2024 10:01:20 +0000
+Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 13 Sep
+ 2024 12:01:04 +0200
+Received: from LR-C-0008DVM.rt.de.bosch.com (10.139.217.196) by
+ FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 13 Sep 2024 12:01:04 +0200
+From: <Jianping.Shen@de.bosch.com>
+To: <jic23@kernel.org>, <lars@metafoo.de>, <robh@kernel.org>,
+	<krzk+dt@kernel.org>, <conor+dt@kernel.org>, <dima.fedrau@gmail.com>,
+	<marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<Jianping.Shen@de.bosch.com>, <Christian.Lorenz3@de.bosch.com>,
+	<Ulrike.Frauendorf@de.bosch.com>, <Kai.Dolde@de.bosch.com>
+Subject: [PATCH v7 0/2] iio: imu: smi240: add bosch smi240 driver
+Date: Fri, 13 Sep 2024 12:00:09 +0200
+Message-ID: <20240913100011.4618-1-Jianping.Shen@de.bosch.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240913-add_opt3002-v2-3-69e04f840360@axis.com>
-References: <20240913-add_opt3002-v2-0-69e04f840360@axis.com>
-In-Reply-To: <20240913-add_opt3002-v2-0-69e04f840360@axis.com>
-To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Andreas Dannenberg <dannenberg@ti.com>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, Emil Gedenryd <emil.gedenryd@axis.com>,
-	<kernel@axis.com>
-X-Mailer: b4 0.14.1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PEPF00028CFE:EE_|GV2PR02MB8458:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a8f0129-89e2-4451-06fa-08dcd3da77aa
+X-MS-TrafficTypeDiagnostic: DB1PEPF00050A00:EE_|AS4PR10MB6111:EE_
+X-MS-Office365-Filtering-Correlation-Id: 649b8d80-adf3-44a3-814c-08dcd3db045b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026;
+	BCL:0;ARA:13230040|82310400026|7416014|1800799024|376014|36860700013|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NjRLN25HVFVkZjdWdEdXeFU3V296NGM4VDNYZktjRUozZWp3V0JJUmN1aW1t?=
- =?utf-8?B?bHNQQWFsazV1RE1tM2IvQXVJT2xTWjNDWmExZGVjTFZJU0ZEN0c0SS9CRmhO?=
- =?utf-8?B?ejdncXlVMzhzUnhicWxXZnFYTmo3RUhYcDhia2NNbmRiNnJtb3RIR3pzSGFQ?=
- =?utf-8?B?NHo5dS9Sczc5U1lmZlRmQnJZZjUwMVQ4WXRCMUdqOXNEcmhkV0UwbEVTRkhF?=
- =?utf-8?B?VHI4Z21YaGxpRXhWNUQ0TWJ6c0JDOVUwZ1lyQVRzejUzWEtDK2Jsb3E4ZWNr?=
- =?utf-8?B?bVVFVXdRcUxyRzJjc2E4bXhaZGpkeDhwdjFMZE8yWHVLd1hEdUZ4L214c2l6?=
- =?utf-8?B?RTJOUEtWSEhXVVE3ZTJjcWhiRDBQSnVFakIzaDdTcEtJYXR6OENpUjNsWHVG?=
- =?utf-8?B?WnNSUGJnZkRpS2l3V3UyMlArbkhvZVArQnIxckxlMW5EL1p4dGtEWWhUZG15?=
- =?utf-8?B?cXU1Q0lhSWJmN1NuN2RYR2l1TUhENlJWRjJoTnE5U1U3VDFtR2d0MjlEdU1H?=
- =?utf-8?B?VFFDTE1ZOC9RWDRaVHU2WWE2N3c0UzN6bit0bkt1NVBkTlZHdGhhQW03aWRQ?=
- =?utf-8?B?RnJ4SUVDOUpMSlNQQmFlRVljZkx0SkI1cDZXcHhuQjhoWlpSY2kzU2duVjNn?=
- =?utf-8?B?cHB0emh4TW1VREpsUlF2QkFOMEtvclN4V0hXUWprcWx3bXgzUXpvTGhZNDd4?=
- =?utf-8?B?OEhEK0JhR2Q3LzYyeVhjdXBwY2l1M2hqdE1ZYngwN3dLRjJCUVJFVHNEYzJZ?=
- =?utf-8?B?dmY1R1pvYWZpRjlsa3oxdUFHVU9lY2pmTStuWjhzdmZVRjZ6cFpmMnRrOE05?=
- =?utf-8?B?MHhsV1k4K0owdDd0KytKTENRdm5KaEwvdlh0VVVPSDI2Si9JcnQrRHFOVXNz?=
- =?utf-8?B?T2tub0Y3b1pvUkxWRlpZd0ZLeThYT2J0enBHNGFUU09rSG5DTlZBZzV0VEZo?=
- =?utf-8?B?NDl5RWQ4SEJqanBuazRadTRTZG1zUjJrbWZCNTF5alFYcUJTV0U5a285VHpK?=
- =?utf-8?B?Y0tFZ3ZoVGttL2t1NVZzKysxSjBtaXJ1di9CM1NLWElMT01rZGlveGJaU2xh?=
- =?utf-8?B?U1NPcWkxa1I4WFg0SzhadTlOVDEwMDU1eXcyNE10L2Y4bXA4MWtaaG9CUUR5?=
- =?utf-8?B?UHN5NzBwcXpHb1M0ZnpId2hIZ2p0U05tblV1dll2Q3FHL1VhN3hMQ0gzdDl0?=
- =?utf-8?B?aW9FcWR0K3pnTmVFTHNLVG9scDR5aXk0VUhEWVpJVTlzdjdtMS8wMVZVOGZE?=
- =?utf-8?B?QmpkL05vWFBGeTZHODB0NC8zb3l0YVZsTy83R3hrRTEzT1lMTnAwRkpyT0NU?=
- =?utf-8?B?aXRtSkNUTFpyUG8wRDc5dGpLUkxDNFdpQnR5L1BKLzlYa3c1TUlEL3ljSjNY?=
- =?utf-8?B?a2VhM3BBZm1KRmNsRDdKWjlEUXF6U1pObCsrb282QTJtYnZjYmVjZmJmMFdL?=
- =?utf-8?B?c0NPR0V4TzJWY09qa3BRTzBZZTE0WHJIZ3pWZ0UzT2gvZmZ5MTZNRVVuQ0hv?=
- =?utf-8?B?Uko0Q2dleitqd3ZYMjJDMXNQUWZKTmN1UE5EMU8zKzJwbStnMlZEUHlNejE0?=
- =?utf-8?B?em1yeFVPeXNSWVJFclB3Ynphbno3ZkFFK1k5Y2IyV1BQMWJVbGlpenNNalg1?=
- =?utf-8?B?bVgyb2RqWSt1ZllhRnlLOVJzU0J4aUZzdm1qTmRwdC9JL2FxMVZJRVRDQzAy?=
- =?utf-8?B?QW5uWExuYjZ0ejVlN3pENUdkNFNKbE15cmZIQy9EMG1WRWE0RlFRek5Vd2dk?=
- =?utf-8?B?eW1ITHRSL3hjQ2dDSUl5ZTE4UHF2NUZ6WDI4NzBPcVI4VU92K2xZTjlyN3lR?=
- =?utf-8?B?RU91WnFUOGNCYkFGc2l5TWNXd09yUldFeXAwMVRiZnl2c1dwUVp2KzY5N1Zr?=
- =?utf-8?B?UTlXdjFudjRQc0VNQXRtaDhFVHhHdG1lS0FjSnNIakhod1l6NXpRdm5tQ3RV?=
- =?utf-8?Q?QIHtobGU/0pyfQe+6M3+eWMtwos4tGgP?=
+	=?utf-8?B?RURjd0VCR3ZGLy91SHZYV0pvVVp1bkJtalBsNTBkNDA0MnlqWUZWeHpLb1Jq?=
+ =?utf-8?B?RnV3QktobmVCYTRyblVBdFJsWFVIcDdCbVdQN1NDL3pkVks0SStrQ1lqZXZa?=
+ =?utf-8?B?RVJmdXJmWmYxcGI4d2x5V3dpME42ZHJYVVBLbUhiQ1ZzQ3JtVkcxeGZpTVNn?=
+ =?utf-8?B?aW0wYWN4bkFnb0g5MCtRR0lYWWt0cU9NT2JRekpsUE9jeUdkMHFJY1ZacjFQ?=
+ =?utf-8?B?SDZZRFV0MXpjSWpWMUxOWmZiUGp1eVlDVVY5N1dsZGt2eTYveGQvR0VVUFVJ?=
+ =?utf-8?B?VmdSeXdueHdqcmhPbjRGeEhrbDlxRkkzOFRhQW1HcWlOZXl3Ulljc1Q1QWpG?=
+ =?utf-8?B?eFVhZy9JV0hOdzdCczQxTmtvR2t1QktiNEJLMmpxcjJQQkljckNUVWJqcHBi?=
+ =?utf-8?B?MVdSZTByUFE2NUViZGp2ZXFVTE95YW1sVlVUOU15UUJZeTdyQjhXZFpGZHB1?=
+ =?utf-8?B?elFyTE14RFdPTTdJbjFoSXFUWHE2L3pPSVZiOXhuZkhiSEN0TFNmN0lIMFlP?=
+ =?utf-8?B?cEZpVTBwWTVyeDN1Rlo4OXAzd3hjZG1iRnZJdlpzVG9OdHJ4RXAzVFp0L2tM?=
+ =?utf-8?B?K3VaWlMyYXBkeDFxYTRkelcrWGZRUkdvcFRxSUpPM3NzdkNqVEtmSXloTmdq?=
+ =?utf-8?B?OFlrOFBoUk1LZzUrYU1oWnl4MDBqWHp6OEhydnhSN2VTYTF4WlZ0aVFsWE5P?=
+ =?utf-8?B?V2pNNmJTS1hTYy9vVFBBT1duVVFsbUM0ZU5tL3VBVHJQcTVVV1UzR3RTTGpI?=
+ =?utf-8?B?YisvQS9HTWZiNWNRM0E3YlBxd3FmTE9aZ3ErMGIwVklveHBrL3hiS3RITnRB?=
+ =?utf-8?B?YTRwTE5PMjhNek5QNTAvUEhwakpmTm9HWWNhZmpMSHB2UDlCMjJLOGpOTnA1?=
+ =?utf-8?B?cU9QWFNLYk9OSkFoUUNpblFGNHZMMkxLVlpwaENaKyszWEhjK2tHUklKaHRl?=
+ =?utf-8?B?THdabHBRSkViTHN5SVppcDFjSXcxcnJJeTNIZlNLMUVFR0VMTUVhS2FOUXR2?=
+ =?utf-8?B?b1FXSFFtZHNzNkI5Zzk1TDZ1WTZXTEordzJJWHJmZ1ppWmg0OTk2UGdMc0V6?=
+ =?utf-8?B?NkZuUzdETFZzalc2dEZvWEJyTUxWWUFkS0EvS3NPdVFwVmpqcG9KZEtiUUhK?=
+ =?utf-8?B?QzNNT3dqN3o2UkFuWXlMd0doeC8xWUJXTzg3YWg4L0hYMStaQTRxVTRCanJP?=
+ =?utf-8?B?NWRBVkljWjhYTmJoVDlGMldURVF5bTk1NUhiRS85M1RrTEphdG1QSkFoSUZP?=
+ =?utf-8?B?TUw0ZVozcW1uK2NXejczdjM3OTRmWlR2SG45OVlIMWtCNFAxeXpNSzRVU1I1?=
+ =?utf-8?B?dloySW5NUTBlZW9xNGM4M3ZQSXFrUkVtTDlPQzl5azBTcFlEOEVuWTlUK21N?=
+ =?utf-8?B?Q3pTTTMrVWpPMElqTUFiZVpEQUdlZ045Ylp0TWh1SHRsVjMzbGVMd2trU1hD?=
+ =?utf-8?B?OG15bk1vRFR6UVJCU0FWSXA3ZEFUMFdwWWlERG5hK1UvT04xUjNSY0dTdDZI?=
+ =?utf-8?B?dlNCWW5Yc1JNd1pMcFZ3aU9iZXd4amFiNHNRN3lHeUNnQjk4Nzc0ZTNUNjZC?=
+ =?utf-8?B?RDZIQVJOMUVTL3A2MW0zVDhBMStHTXp4Zmt3WmpXWEtsZkRHeTA0dUd2OWxO?=
+ =?utf-8?B?dDN6b1JiWWR5TTRFSC96Zk9JRnJoTXNBTWNMTE5JTnJvRG14TDJrNEswMzZs?=
+ =?utf-8?B?elRwT3JTZ3JUMzVZS3NqcWNmVS9iUXlYTnc1QXJxUXd4UUxENU1JZkIrTzA3?=
+ =?utf-8?B?bFFVOHhMUERhNEIxN2gxRGZ1Ym0vZ1MzQTA5Zk54Z0pvNEpheTUwRUpjMDFj?=
+ =?utf-8?B?U1JXVmFLc1FpT0lTN2dPbDV4QVNJT0VRSnp1dUQyVzE3TE4vMFJjdzRSV1lP?=
+ =?utf-8?B?ZE4vNUpaSWY1T2R0R3VGaXZxK1c2K1ZudGplZ1hINWxoaGw3Q1pMZ0paSzh1?=
+ =?utf-8?B?SjFORThxaVQ5VmE3eHJ3T21rZ3hhVG1JK3p2MC9FZDAwRzZEckN2VXVVNDdW?=
+ =?utf-8?B?ZDlGYmkxcDRnPT0=?=
 X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2024 09:57:24.2949
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(1800799024)(376014)(36860700013)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2024 10:01:20.0578
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a8f0129-89e2-4451-06fa-08dcd3da77aa
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
+X-MS-Exchange-CrossTenant-Network-Message-Id: 649b8d80-adf3-44a3-814c-08dcd3db045b
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DU2PEPF00028CFE.eurprd03.prod.outlook.com
+	DB1PEPF00050A00.eurprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR02MB8458
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB6111
 
-TI's opt3002 light sensor shares most properties with the opt3001
-model, with the exception of supporting a wider spectrum range.
+From: Shen Jianping <Jianping.Shen@de.bosch.com>
 
-Add support for TI's opt3002 by extending the TI opt3001 driver.
+Add the iio driver for bosch imu smi240. The smi240 is a combined
+three axis angular rate and three axis acceleration sensor module
+with a measurement range of +/-300°/s and up to 16g. This driver
+provides raw data access for each axis through sysfs, and tiggered
+buffer for continuous sampling. A synchronous acc and gyro sampling
+can be triggered by setting the capture bit in spi read command.
 
-Datasheet: https://www.ti.com/product/OPT3002
+dt-bindings: 
+v1 -> v2
+    - Add more detail in description
+    - Add maintainer
+    - Add vdd and vddio power supply
+    - Use generic node name
+    - Order the properties according to DTS coding style
 
-Signed-off-by: Emil Gedenryd <emil.gedenryd@axis.com>
----
- drivers/iio/light/Kconfig   |   2 +-
- drivers/iio/light/opt3001.c | 169 +++++++++++++++++++++++++++++++++++---------
- 2 files changed, 138 insertions(+), 33 deletions(-)
+v2 -> v3
+    - Improve description
+    - Improve supply definition
+    - Make supply definition as required
+    - Add supply definition in example
 
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index b68dcc1fbaca..c35bf962dae6 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -461,7 +461,7 @@ config OPT3001
- 	depends on I2C
- 	help
- 	  If you say Y or M here, you get support for Texas Instruments
--	  OPT3001 Ambient Light Sensor.
-+	  OPT3001 Ambient Light Sensor, OPT3002 Light-to-Digital Sensor.
- 
- 	  If built as a dynamically linked module, it will be called
- 	  opt3001.
-diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-index 176e54bb48c3..83c49f4517b7 100644
---- a/drivers/iio/light/opt3001.c
-+++ b/drivers/iio/light/opt3001.c
-@@ -70,6 +70,21 @@
- #define OPT3001_RESULT_READY_SHORT	150
- #define OPT3001_RESULT_READY_LONG	1000
- 
-+struct opt3001_scale {
-+	int	val;
-+	int	val2;
-+};
-+
-+struct opt300x_chip_info {
-+	const struct iio_chan_spec (*channels)[2];
-+	enum iio_chan_type chan_type;
-+	const struct opt3001_scale (*scales)[12];
-+	int factor_whole;
-+	int factor_integer;
-+	int factor_decimal;
-+	bool has_id;
-+};
-+
- struct opt3001 {
- 	struct i2c_client	*client;
- 	struct device		*dev;
-@@ -79,6 +94,7 @@ struct opt3001 {
- 	bool			result_ready;
- 	wait_queue_head_t	result_ready_queue;
- 	u16			result;
-+	const struct opt300x_chip_info *chip_info;
- 
- 	u32			int_time;
- 	u32			mode;
-@@ -92,11 +108,6 @@ struct opt3001 {
- 	bool			use_irq;
- };
- 
--struct opt3001_scale {
--	int	val;
--	int	val2;
--};
--
- static const struct opt3001_scale opt3001_scales[] = {
- 	{
- 		.val = 40,
-@@ -148,21 +159,68 @@ static const struct opt3001_scale opt3001_scales[] = {
- 	},
- };
- 
-+static const struct opt3001_scale opt3002_scales[] = {
-+	{
-+		.val = 4914,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 9828,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 19656,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 39312,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 78624,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 157248,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 314496,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 628992,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 1257984,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 2515968,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 5031936,
-+		.val2 = 0,
-+	},
-+	{
-+		.val = 10063872,
-+		.val2 = 0,
-+	},
-+};
-+
- static int opt3001_find_scale(const struct opt3001 *opt, int val,
- 		int val2, u8 *exponent)
- {
- 	int i;
--
--	for (i = 0; i < ARRAY_SIZE(opt3001_scales); i++) {
--		const struct opt3001_scale *scale = &opt3001_scales[i];
--
-+	for (i = 0; i < ARRAY_SIZE(*opt->chip_info->scales); i++) {
-+		const struct opt3001_scale *scale = &(*opt->chip_info->scales)[i];
- 		/*
--		 * Combine the integer and micro parts for comparison
--		 * purposes. Use milli lux precision to avoid 32-bit integer
--		 * overflows.
-+		 * Compare the integer and micro parts to determine value scale.
- 		 */
--		if ((val * 1000 + val2 / 1000) <=
--				(scale->val * 1000 + scale->val2 / 1000)) {
-+		if (val < scale->val ||
-+		    (val == scale->val && val2 <= scale->val2)) {
- 			*exponent = i;
- 			return 0;
- 		}
-@@ -174,11 +232,14 @@ static int opt3001_find_scale(const struct opt3001 *opt, int val,
- static void opt3001_to_iio_ret(struct opt3001 *opt, u8 exponent,
- 		u16 mantissa, int *val, int *val2)
- {
--	int lux;
-+	int ret;
-+	int whole = opt->chip_info->factor_whole;
-+	int integer = opt->chip_info->factor_integer;
-+	int decimal = opt->chip_info->factor_decimal;
- 
--	lux = 10 * (mantissa << exponent);
--	*val = lux / 1000;
--	*val2 = (lux - (*val * 1000)) * 1000;
-+	ret = whole * (mantissa << exponent);
-+	*val = ret / integer;
-+	*val2 = (ret - (*val * integer)) * decimal;
- }
- 
- static void opt3001_set_mode(struct opt3001 *opt, u16 *reg, u16 mode)
-@@ -225,7 +286,18 @@ static const struct iio_chan_spec opt3001_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(1),
- };
- 
--static int opt3001_get_lux(struct opt3001 *opt, int *val, int *val2)
-+static const struct iio_chan_spec opt3002_channels[] = {
-+	{
-+		.type = IIO_INTENSITY,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-+				BIT(IIO_CHAN_INFO_INT_TIME),
-+		.event_spec = opt3001_event_spec,
-+		.num_event_specs = ARRAY_SIZE(opt3001_event_spec),
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(1),
-+};
-+
-+static int opt3001_get_processed(struct opt3001 *opt, int *val, int *val2)
- {
- 	int ret;
- 	u16 mantissa;
-@@ -397,14 +469,14 @@ static int opt3001_read_raw(struct iio_dev *iio,
- 	if (opt->mode == OPT3001_CONFIGURATION_M_CONTINUOUS)
- 		return -EBUSY;
- 
--	if (chan->type != IIO_LIGHT)
-+	if (chan->type != opt->chip_info->chan_type)
- 		return -EINVAL;
- 
- 	mutex_lock(&opt->lock);
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_PROCESSED:
--		ret = opt3001_get_lux(opt, val, val2);
-+		ret = opt3001_get_processed(opt, val, val2);
- 		break;
- 	case IIO_CHAN_INFO_INT_TIME:
- 		ret = opt3001_get_int_time(opt, val, val2);
-@@ -428,7 +500,7 @@ static int opt3001_write_raw(struct iio_dev *iio,
- 	if (opt->mode == OPT3001_CONFIGURATION_M_CONTINUOUS)
- 		return -EBUSY;
- 
--	if (chan->type != IIO_LIGHT)
-+	if (chan->type != opt->chip_info->chan_type)
- 		return -EINVAL;
- 
- 	if (mask != IIO_CHAN_INFO_INT_TIME)
-@@ -479,6 +551,9 @@ static int opt3001_write_event_value(struct iio_dev *iio,
- {
- 	struct opt3001 *opt = iio_priv(iio);
- 	int ret;
-+	int whole;
-+	int integer;
-+	int decimal;
- 
- 	u16 mantissa;
- 	u16 value;
-@@ -497,7 +572,12 @@ static int opt3001_write_event_value(struct iio_dev *iio,
- 		goto err;
- 	}
- 
--	mantissa = (((val * 1000) + (val2 / 1000)) / 10) >> exponent;
-+	whole = opt->chip_info->factor_whole;
-+	integer = opt->chip_info->factor_integer;
-+	decimal = opt->chip_info->factor_decimal;
-+
-+	mantissa = (((val * integer) + (val2 / decimal)) / whole) >> exponent;
-+
- 	value = (exponent << 12) | mantissa;
- 
- 	switch (dir) {
-@@ -610,7 +690,7 @@ static int opt3001_read_id(struct opt3001 *opt)
- 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_DEVICE_ID);
- 	if (ret < 0) {
- 		dev_err(opt->dev, "failed to read register %02x\n",
--				OPT3001_DEVICE_ID);
-+			OPT3001_DEVICE_ID);
- 		return ret;
- 	}
- 
-@@ -692,6 +772,7 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
- 	struct opt3001 *opt = iio_priv(iio);
- 	int ret;
- 	bool wake_result_ready_queue = false;
-+	enum iio_chan_type chan_type = opt->chip_info->chan_type;
- 
- 	if (!opt->ok_to_ignore_lock)
- 		mutex_lock(&opt->lock);
-@@ -707,13 +788,13 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
- 			OPT3001_CONFIGURATION_M_CONTINUOUS) {
- 		if (ret & OPT3001_CONFIGURATION_FH)
- 			iio_push_event(iio,
--					IIO_UNMOD_EVENT_CODE(IIO_LIGHT, 0,
-+					IIO_UNMOD_EVENT_CODE(chan_type, 0,
- 							IIO_EV_TYPE_THRESH,
- 							IIO_EV_DIR_RISING),
- 					iio_get_time_ns(iio));
- 		if (ret & OPT3001_CONFIGURATION_FL)
- 			iio_push_event(iio,
--					IIO_UNMOD_EVENT_CODE(IIO_LIGHT, 0,
-+					IIO_UNMOD_EVENT_CODE(chan_type, 0,
- 							IIO_EV_TYPE_THRESH,
- 							IIO_EV_DIR_FALLING),
- 					iio_get_time_ns(iio));
-@@ -746,7 +827,7 @@ static int opt3001_probe(struct i2c_client *client)
- 	struct iio_dev *iio;
- 	struct opt3001 *opt;
- 	int irq = client->irq;
--	int ret;
-+	int ret = 0;
- 
- 	iio = devm_iio_device_alloc(dev, sizeof(*opt));
- 	if (!iio)
-@@ -755,12 +836,14 @@ static int opt3001_probe(struct i2c_client *client)
- 	opt = iio_priv(iio);
- 	opt->client = client;
- 	opt->dev = dev;
-+	opt->chip_info = device_get_match_data(&client->dev);
- 
- 	mutex_init(&opt->lock);
- 	init_waitqueue_head(&opt->result_ready_queue);
- 	i2c_set_clientdata(client, iio);
- 
--	ret = opt3001_read_id(opt);
-+	if (opt->chip_info->has_id)
-+		ret = opt3001_read_id(opt);
- 	if (ret)
- 		return ret;
- 
-@@ -769,8 +852,8 @@ static int opt3001_probe(struct i2c_client *client)
- 		return ret;
- 
- 	iio->name = client->name;
--	iio->channels = opt3001_channels;
--	iio->num_channels = ARRAY_SIZE(opt3001_channels);
-+	iio->channels = *opt->chip_info->channels;
-+	iio->num_channels = ARRAY_SIZE(*opt->chip_info->channels);
- 	iio->modes = INDIO_DIRECT_MODE;
- 	iio->info = &opt3001_info;
- 
-@@ -825,14 +908,36 @@ static void opt3001_remove(struct i2c_client *client)
- 	}
- }
- 
-+static const struct opt300x_chip_info opt3001_chip_info = {
-+	.channels = &opt3001_channels,
-+	.chan_type = IIO_LIGHT,
-+	.scales = &opt3001_scales,
-+	.factor_whole = 10,
-+	.factor_integer = 1000,
-+	.factor_decimal = 1000,
-+	.has_id = true,
-+};
-+
-+static const struct opt300x_chip_info opt3002_chip_info = {
-+	.channels = &opt3002_channels,
-+	.chan_type = IIO_INTENSITY,
-+	.scales = &opt3002_scales,
-+	.factor_whole = 12,
-+	.factor_integer = 10,
-+	.factor_decimal = 100000,
-+	.has_id = false,
-+};
-+
- static const struct i2c_device_id opt3001_id[] = {
--	{ "opt3001" },
-+	{ "opt3001", (kernel_ulong_t)&opt3001_chip_info },
-+	{ "opt3002", (kernel_ulong_t)&opt3002_chip_info },
- 	{ } /* Terminating Entry */
- };
- MODULE_DEVICE_TABLE(i2c, opt3001_id);
- 
- static const struct of_device_id opt3001_of_match[] = {
--	{ .compatible = "ti,opt3001" },
-+	{ .compatible = "ti,opt3001", .data = &opt3001_chip_info },
-+	{ .compatible = "ti,opt3002", .data = &opt3002_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, opt3001_of_match);
+v3 -> v4
+    - No changes
+
+v4 -> v5
+    - No changes
+
+v5 -> v6
+    - Fix checkpatch findings
+
+v6 -> v7
+    - No changes
+
+imu driver:
+v1 -> v2
+    - Use regmap for register access
+    - Redefine channel for each singel axis
+    - Provide triggered buffer
+    - Fix findings in Kconfig
+    - Remove unimportant functions
+
+v2 -> v3
+    - Use enum für capture mode
+    - Using spi default init value instead manual init 
+    - remove duplicated module declaration
+    - Fix code to avoid warning
+
+v3 -> v4
+    - Use DMA safe buffer
+    - Use channel info instead of custom ABI
+    - Fix other findings
+
+v4 -> v5
+    - Merge the implementation in one simple file
+    - Add channel info for acc/gyro data channel
+    - Fix other findings
+
+v5 -> v6
+    - Fix checkpatch findings
+    - Fix review findings
+
+v6 -> v7
+    - Fix offset and scale
+
+Shen Jianping (2):
+  dt-bindings: iio: imu: smi240: add Bosch smi240
+  iio: imu: smi240: add driver
+
+ .../bindings/iio/imu/bosch,smi240.yaml        |  51 ++
+ drivers/iio/imu/Kconfig                       |  14 +
+ drivers/iio/imu/Makefile                      |   2 +
+ drivers/iio/imu/smi240.c                      | 611 ++++++++++++++++++
+ 4 files changed, 678 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,smi240.yaml
+ create mode 100644 drivers/iio/imu/smi240.c
 
 -- 
-2.39.2
+2.34.1
 
 

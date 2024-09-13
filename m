@@ -1,649 +1,307 @@
-Return-Path: <linux-iio+bounces-9515-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9516-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B74A97821B
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 16:03:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5041097824A
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 16:08:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E8CD1F263DA
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 14:03:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C8261C21032
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 14:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7ACF1E6DDA;
-	Fri, 13 Sep 2024 13:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7341DB543;
+	Fri, 13 Sep 2024 14:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="v2BuMXoS"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="gpRSL2tM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B7D1E203F
-	for <linux-iio@vger.kernel.org>; Fri, 13 Sep 2024 13:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726235885; cv=none; b=urbEUdGvz/197K75N6s8u+/n8JkKrKeJTnijhx80UML9nSnqptRmvZWnBoQkrU4CDWIFLBKbAw2nKi+0TVM7ghmw20RrPur2o1Gu3i+uFp3JnmMk2JL6+VVUA1BmNFRWeFo2wbe+Vi532zmlr1sdZSSbL4bAr/HuMdxDf5Gt9XE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726235885; c=relaxed/simple;
-	bh=XgpeTnvMDEHJ2up7eslboA9Mw83GfNdKf/s9hSi6q78=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X5E4UMAUvykUxRxAD56+vynkrxxRvWkOwvbs+uidEGTsH5h49KZK28PaU5geAbJPGhDBknSoHTuFG8ovSIDBEIBohdxmKbu1c0u5s+FZyXwuGZ+7sheUcXqeD/7/oCG4FcjQofZIwbRVYLZYN41bCCyFHX0yM+CnQhixZ3SEagQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=v2BuMXoS; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42bb7298bdeso12885785e9.1
-        for <linux-iio@vger.kernel.org>; Fri, 13 Sep 2024 06:58:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726235881; x=1726840681; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I8bsqmRCEvF7Nbt+K3TdbmlNSXTYPN2a62D7XH3DokY=;
-        b=v2BuMXoSHXyKnY6LvPWyRRfr866ws9FhF1tA9baqEbe9SanQIVeSthAg3nLFlYfnQh
-         +On+inoVWh5OEVvIyjA2QoiDTZgxjGv5vcdvV3Ghc+1TzszGrVIosDI3Uc0hFOtCaUXk
-         20zC80N3aSbwG1bUcx+xO83RhhLvO9pjuKbqwlxKLovdg40TDt0+D0VkbbxYyG/rDGl1
-         und9aT0JUZWAgaceNnmAICkg/XL4IBG99VBUZitG5VHrvlkL6Wz8VbNBJtAF5CKfBVY+
-         4tw/tWwikkoyko/KsWq8OAgpx0udgecIrbGl+HCqEh/FI+qdvK28ZwoDLrLWFgTTYFl0
-         trJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726235881; x=1726840681;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I8bsqmRCEvF7Nbt+K3TdbmlNSXTYPN2a62D7XH3DokY=;
-        b=gvaGOrUfvPBqm+dACBWxCDEc2erjhbBYjNeG0ZE4b2CeHlAtUhGE8374dwg+JNZaXK
-         ZQs+JI05Wzx4lkJrDhhJonQNAUf/17iF+fLrkMrLKfxqljmz9xP0Y4XVcCq9Hm+d/5uW
-         OxCCVpFEVMVbnUNWqq4UZqXSjUylPQRLadeKr1H8m3BeYTQxvvB53U3/xWNanq12ZGSU
-         z1iwzb00lUnO5NsxJ6UihTrjKiPFPSkZUsWU713UUkUZwDwynXgKblvglRMaQ+azfBKL
-         4C97LcWs7SnzHlTJ22A3CxB9NX5zetJHI2354pieO5Ptfdx5vx+5xM8W75tNrN45MBBf
-         6D8A==
-X-Gm-Message-State: AOJu0YyOAJ1xAMfqvdu9EcDC06zTSK1h2dhZ5WmZwH4Kszs9CNIqtGdG
-	5nGf7yPhtZJ67jXeFVazwO9HlQjLDfSKwbt3UrhqSLSctXIADnQNGUKX2XAo8++0aPWOMnrWFTT
-	rXlk=
-X-Google-Smtp-Source: AGHT+IFflMFCS+xdBg642xa0xr8474DMWBegMZD96iruMYnsX1tOnCS8fBFd/nCvWVsO4HU9jrEloQ==
-X-Received: by 2002:a05:6000:c89:b0:374:c5b4:1be0 with SMTP id ffacd0b85a97d-378d62449c6mr1934680f8f.53.1726235881117;
-        Fri, 13 Sep 2024 06:58:01 -0700 (PDT)
-Received: from neptune.lan ([188.27.129.88])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378956d3941sm17104749f8f.84.2024.09.13.06.57.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 06:58:00 -0700 (PDT)
-From: Alexandru Ardelean <aardelean@baylibre.com>
-To: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: jic23@kernel.org,
-	krzk+dt@kernel.org,
-	robh@kernel.org,
-	lars@metafoo.de,
-	michael.hennerich@analog.com,
-	gstols@baylibre.com,
-	dlechner@baylibre.com,
-	Alexandru Ardelean <aardelean@baylibre.com>
-Subject: [PATCH v6 8/8] iio: adc: ad7606: add support for AD7606C-{16,18} parts
-Date: Fri, 13 Sep 2024 16:57:43 +0300
-Message-ID: <20240913135744.152669-9-aardelean@baylibre.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240913135744.152669-1-aardelean@baylibre.com>
-References: <20240913135744.152669-1-aardelean@baylibre.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314221C2DD4;
+	Fri, 13 Sep 2024 14:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.139.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726236462; cv=fail; b=KEfugoWWPplecYkI2FL73kmmzG04BGKcJKCKMXFz7kC1/2Yc+uABxGvm3q8K7DnkEQ1tonl522OOA8miZf4VoBTa/VYzt2xpMMgxrJ1Xs4oxGb5/7lkT/txvslEWu56yEjypn/jfBDiyh1rkMhXdw//P4E8qBGj6mLBQ/VAOnv8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726236462; c=relaxed/simple;
+	bh=2qwc2FzyEZd/u65zUYNpvAjOkvQzVGvEUkz0wWKXXco=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PCPuDt+qLRN7sOYYFudZ6l2L1qhYuEhZQxkMPAQZU0JIUUz3Q+/ZhVXa/biN1hfYyOCsUYI6qUB65sUhn/MJOGCOx+VQfWZqwABcLjx6c+1O/WMpBQ1QltO+o2X8lY49d+WcqyX+XzG9ymGVQ3SpYkm9yzVMeHL1Hf3O9TlVWUk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=gpRSL2tM; arc=fail smtp.client-ip=148.163.139.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375854.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DCWdTM020326;
+	Fri, 13 Sep 2024 10:07:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=2qwc2
+	FzyEZd/u65zUYNpvAjOkvQzVGvEUkz0wWKXXco=; b=gpRSL2tMnfKYp8aBMNqFf
+	4I1vxXNHfYlontibpGo09SsGWnqcWjFbRf0fuHH4RBdrRp9Hl2dw2d0OIPXD2QQY
+	1Hn1LGA4Lw7Qc1PjtPbf+ZqMtw8uW21TkSgdmQv5EbTyii1EysytQF53lmSWinAC
+	VDDc6pQVsUfcDXCOZw5pZSqmIADlMWx2Ea83jJE8gsY5bddd54lVyzVq+WLZ8lli
+	2hPC1qjnrTp0PAfWT4N/YKVdCw4eVJMGWNyeI7IwgNwhMwXtDkPAySNi/YbcHsTz
+	7th75wdLWjQD1eoSjoubtAJoIm86MnjV7Gv562Z1MfkV7L1byOBg9TLbJaRnxFNW
+	Q==
+Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazlp17010007.outbound.protection.outlook.com [40.93.11.7])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 41jkfr73pa-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Sep 2024 10:07:06 -0400 (EDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=e2FQQGpFDfylLT+duPrABS0FhEW7l/364YeG79K9InANzzfTW6kygRoIA7dpLTvg/XjKZ3idSOYgixme18pD/OOVc/oiRUc8ryDyal2ycCYzOZbzWSofhGxqgeWLIxZekyK0LWBsqX/rvD5SwdEnxyUD7fd3uvrhF1nUfOdbrXyiVt6dauijWsVIAwor29L91RWiysOcVbsTtcNu648D+86nc8l/JpCY6bqiYm1DzRPkD/U1LSVnVHSovHbXheYhc1c9RyoQPllFwYbCQ4EfxMOlE+ttfup9El/KiBDM35UrBoDj9XHzpvT+afKeyr8gV2qP+wOw44+srpdL3r4fHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2qwc2FzyEZd/u65zUYNpvAjOkvQzVGvEUkz0wWKXXco=;
+ b=Snll2DIhLj2lrZst2faB7TmqSwW0jfhXmVXNtbnw64OrcQLp1VssncyW57AE2PKDiEATpRW4v1z9H1ps0/sCqpaaI1ubxjo7MANKPwZnlGjbmZcq1U+UkVWfLMGV5aKlgzReBtYTOQe6NTuRRo9fJkLA8Cm2QTXwWUZ6FGN1DiTHcsKvlgOe/J6I2ghTcPdAFDgBJg8hKXiZvtpTGSDE/rd1Ft4pjEi6ppihz9Ao+L25RmMlbLQB6VYHUbzfJOC2K1SdUkEY6GIvsd+uC05SNNGyRw2iZzRLcoLGCDoolKV1LIhbsNEySfU/pU00fkP4EEDZ18W1dOdFBLHTwHyWuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+Received: from SN6PR03MB4320.namprd03.prod.outlook.com (2603:10b6:805:fd::16)
+ by SJ0PR03MB5487.namprd03.prod.outlook.com (2603:10b6:a03:284::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.21; Fri, 13 Sep
+ 2024 14:06:48 +0000
+Received: from SN6PR03MB4320.namprd03.prod.outlook.com
+ ([fe80::90b:c25c:720f:7b7f]) by SN6PR03MB4320.namprd03.prod.outlook.com
+ ([fe80::90b:c25c:720f:7b7f%6]) with mapi id 15.20.7962.018; Fri, 13 Sep 2024
+ 14:06:48 +0000
+From: "Nechita, Ramona" <Ramona.Nechita@analog.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
+        "Hennerich, Michael"
+	<Michael.Hennerich@analog.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof
+ Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, "Sa,
+ Nuno" <Nuno.Sa@analog.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        David Lechner
+	<dlechner@baylibre.com>,
+        "Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Dumitru Ceclan
+	<mitrutzceclan@gmail.com>,
+        Matteo Martelli <matteomartelli3@gmail.com>,
+        =?utf-8?B?Sm/Do28gUGF1bG8gR29uw6dhbHZlcw==?= <joao.goncalves@toradex.com>,
+        Alisa-Dariana Roman <alisadariana@gmail.com>,
+        Mike Looijmans
+	<mike.looijmans@topic.nl>,
+        "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>
+Subject: RE: [PATCH v5 2/3] Documentation: ABI: added filter mode doc in
+ sysfs-bus-iio
+Thread-Topic: [PATCH v5 2/3] Documentation: ABI: added filter mode doc in
+ sysfs-bus-iio
+Thread-Index: AQHbBRalVBsNDWcZbkipJdTYWUDYULJUOz2AgAGEqFA=
+Date: Fri, 13 Sep 2024 14:06:48 +0000
+Message-ID:
+ <SN6PR03MB4320EC2760F85BB6B0DDEED4F3652@SN6PR03MB4320.namprd03.prod.outlook.com>
+References: <20240912121609.13438-1-ramona.nechita@analog.com>
+ <20240912121609.13438-3-ramona.nechita@analog.com>
+ <CAHp75VdOjodDaz6J4sWOiT2HHmdXpOPcWeS5kz4e3rB_=gh3xw@mail.gmail.com>
+In-Reply-To:
+ <CAHp75VdOjodDaz6J4sWOiT2HHmdXpOPcWeS5kz4e3rB_=gh3xw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-dg-rorf: true
+x-dg-ref:
+ =?utf-8?B?UEcxbGRHRStQR0YwSUdGcFBTSXdJaUJ1YlQwaVltOWtlUzUwZUhRaUlIQTlJ?=
+ =?utf-8?B?bU02WEhWelpYSnpYSEp1WldOb2FYUmhYR0Z3Y0dSaGRHRmNjbTloYldsdVox?=
+ =?utf-8?B?d3dPV1E0TkRsaU5pMHpNbVF6TFRSaE5EQXRPRFZsWlMwMllqZzBZbUV5T1dV?=
+ =?utf-8?B?ek5XSmNiWE5uYzF4dGMyY3ROamRsTmpVeE9HWXROekZrT1MweE1XVm1MV0pp?=
+ =?utf-8?B?TkRRdE0yTmxPV1kzTkRjMVlqaGxYR0Z0WlMxMFpYTjBYRFkzWlRZMU1Ua3hM?=
+ =?utf-8?B?VGN4WkRrdE1URmxaaTFpWWpRMExUTmpaVGxtTnpRM05XSTRaV0p2WkhrdWRI?=
+ =?utf-8?B?aDBJaUJ6ZWowaU5EZzJPQ0lnZEQwaU1UTXpOekEzTVRBd01EVXlNamMyTWpZ?=
+ =?utf-8?B?MklpQm9QU0pwTXpoTmNHaFZaWFo0YTFKbU0zUldkVkk1U2xkc09YZG5kMVU5?=
+ =?utf-8?B?SWlCcFpEMGlJaUJpYkQwaU1DSWdZbTg5SWpFaUlHTnBQU0pqUVVGQlFVVlNT?=
+ =?utf-8?B?RlV4VWxOU1ZVWk9RMmRWUVVGRVowUkJRVUZ4VWtwQmNUVm5XR0pCV2paalls?=
+ =?utf-8?B?QkVlRFZHYlRGdWNIaHpPRkJJYTFkaVZVUkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlNFRkJRVUZFWVVGUlFVRlRaMGxCUVU4MFFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUlVGQlVVRkNRVUZCUVROTWFGTm1aMEZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVbzBRVUZCUW1oQlIxRkJZVkZDWmtGSVRVRmFVVUpxUVVoVlFX?=
+ =?utf-8?B?Tm5RbXhCUmpoQlkwRkNlVUZIT0VGaFowSnNRVWROUVdSQlFucEJSamhCV21k?=
+ =?utf-8?B?Q2FFRkhkMEZqZDBKc1FVWTRRVnBuUW5aQlNFMUJZVkZDTUVGSGEwRmtaMEpz?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZGUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVdkQlFVRkJRVUZ1WjBGQlFVZEZRVnBCUW5CQlJqaEJZM2RD?=
+ =?utf-8?B?YkVGSFRVRmtVVUo1UVVkVlFWaDNRbmRCU0VsQlluZENjVUZIVlVGWmQwSXdR?=
+ =?utf-8?B?VWhOUVZoM1FqQkJSMnRCV2xGQ2VVRkVSVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlVVRkJRVUZCUVVGQlFVTkJRVUZCUVVGRFpVRkJRVUZaVVVKclFV?=
+ =?utf-8?B?ZHJRVmgzUW5wQlIxVkJXWGRDTVVGSVNVRmFVVUptUVVoQlFXTm5RblpCUjI5?=
+ =?utf-8?B?QldsRkNha0ZJVVVGamQwSm1RVWhSUVdGUlFteEJTRWxCVFdkQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRa0ZCUVVGQlFVRkJRVUZKUVVGQlFVRkJUelJC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZEUVVGQlFVRkJRVUZCUVVsQlFVRkJRVUZCUVVGQlowRkJR?=
+ =?utf-8?B?VUZCUVVGQlFYcG5RVUZCUVUxQlFVRkNUMEZCUVVGQlFVRkJRVWRGUVZwQlFu?=
+ =?utf-8?Q?BBRjhB?=
+x-dg-refone:
+ Y3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0IwQUhNQVh3Qm1BR0VBYkFCekFHVUFYd0JtQUc4QWN3QnBBSFFBYVFCMkFHVUFBQUE4QUFBQUFBQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURFQUFBQThBQUFBQUFBQUFHRUFaQUJwQUY4QWN3QmxBR01BZFFCeUFHVUFYd0J3QUhJQWJ3QnFBR1VBWXdCMEFITUFYd0IwQUdrQVpRQnlBRElBQUFBPSIvPjwvbWV0YT4=
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR03MB4320:EE_|SJ0PR03MB5487:EE_
+x-ms-office365-filtering-correlation-id: 75062aaf-2e5c-4215-8b55-08dcd3fd4ef6
+x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?cHF4NU5hTUtRV2w2MDhoQXBERXFMb1c4dDVyUU9UQjF2UzFPU2k3eGMvdFI4?=
+ =?utf-8?B?UC81K0xwK0w3bDQwbEMzbjVHMi93cmw3SHg4UEQzQTVxellJcXpubkJYYXhH?=
+ =?utf-8?B?V1pEa013eEpuUDF1TnMxS0hPUTBSNGRTbUMxUU5TbUNNdlFxdlNlZUtNbVZP?=
+ =?utf-8?B?Q1l2QzdFVG1QNVlTZzI2QkJpZWZtRGhLRy9HTVJhL0hNeWhMNE4zMDArY3Zh?=
+ =?utf-8?B?Tk5YTU0zVWI0aHFDeWlSc2c4aXphSklNcVI0enI2Y0RDVUdJYVI4UlliOGNy?=
+ =?utf-8?B?RzQyQzc0c2Fnb1FSUmV6OFhKbjB1QXNOQ29TK0lmcFVDK05TUWc2aUZuMzFw?=
+ =?utf-8?B?MW9YMFgzZlAyaDJkWlJlTS9LRUNMMng1OHpXZ2M5TEprQnU5Yk9ud2pVMENh?=
+ =?utf-8?B?NFBlblUwS1M0RWx3am9naU9VeGpIbVZ4KzZhSjJSbUpodDJHTWdPcTZvcWF2?=
+ =?utf-8?B?bDlMT3NjSjVtOVlTeUw2b3MzN1d6WUpxNldXVDdTVHpxNW1QNGs1U1lNUjFy?=
+ =?utf-8?B?OHIweituWXlvUG9VRDRjbExxMmpWbkVROVZRYVZVdkdyUVhyazcwclNHZTkw?=
+ =?utf-8?B?UUVwY1JYT2dad2l1bGwzNisrUUZZZGxwWnhXL0ZrZWJPNUZJS0xlN3doVWNU?=
+ =?utf-8?B?bmtZYzE2Vng3cmRnWmYvUVF3NHZBaHdIb2pUUmxBRkRvQ1llbDZNOUxFZUZZ?=
+ =?utf-8?B?K25ZeFZPSWJUeGNhT0xaQ1IxYmxxcms0dU84NE0ydTFpOVZGczVxL1E1RHpM?=
+ =?utf-8?B?TnZCbWtrQkZlQlpieTMrcEs1SUpBUFpYSjlJcUl3TElWVG9BcEorenYyUG14?=
+ =?utf-8?B?cG5XdnRkVVdRQ0NJQWRhTHVYNm5DU0RKK0wrS1Z4ZmI0Y0NobGNvTHg0LzJP?=
+ =?utf-8?B?NHBreVFXcXdUNmk4NFpVRWpmV2ZwR3ZpZnJMaXJ2RW84WnlDZzdjM0VIcUhP?=
+ =?utf-8?B?dGlXZXlDOUYrbm1nREcza1IwVVNOQXpzR2FKcTk2MDJLTVZaVERVbyt2R1Fq?=
+ =?utf-8?B?UVA2cGpGUVd0bHhtM2RwaDFaeUlHanZsbGJJNjFRWFozYisxd1l5UVFSOVVs?=
+ =?utf-8?B?VTJ5em5QdmZFOWxuWDg5K1g4TU9TUDZGbTRnbGJ5d2U0cEdUcGdaR2hEanJJ?=
+ =?utf-8?B?Q1BLTVBvZFNMVWh4eGo1Z3d5dHhneW56Zktad05BaitzTThhS21sK1RwWWRa?=
+ =?utf-8?B?dFRwL3JyaThIZVhTWVljM2VPMm8vZjNFaUE3RVE3SDRmTGoveFoycWFxM0xW?=
+ =?utf-8?B?TUdMRldmQklNOVkrMlhSb0hSUjB3UE5xemlmYVptbjJtNENBMUFKYmhCOXE0?=
+ =?utf-8?B?VFF5Z2U4VnhhTHg3SDFUOGlMeStLYUx0ZVJydmJhaFpVZXg1M2dyQm9HVWZn?=
+ =?utf-8?B?Wk5JTy9oai9wY3JDZFRFZU8rekVxa3IybTFMY1dyRVRZcUxFNnNRcHJDOUU2?=
+ =?utf-8?B?K0QxVWtFWFk3UWJ1UStOd3ZpTnN0bWFPVmVTaXJuSGtFcEpJaU1YTCtYaFE4?=
+ =?utf-8?B?UkZ6cWl0VzA1RkNRb0ovellScHI4aElNTG9qS0JZNjBMeGNkcGdlcHA2SS9J?=
+ =?utf-8?B?YS9iMzZPbDFXeWJwekRtWWxKRC96ZXJzZEdSNlk4TzF4dFBIbHJBN1NQZzhU?=
+ =?utf-8?B?NGowdVcyS0VRUWswb010ZzdmWDhDcHJoSlNuTml5dE94KzkyV3NjcEZkdUtU?=
+ =?utf-8?B?bkR0WEdINFZmUTROQTRHY2JveTVTYnB6TEJUODV3MS8xNlZJa0pUUjQyc09l?=
+ =?utf-8?B?STRWRW02dTZ4OVJEVzd5ZXd3RU1jSGlxVjd2alpzWDA4Z2t1d0hkcEJEbjJY?=
+ =?utf-8?B?MTZQOTAyeHpWWXR6V3VrRWJMcGlFbG85ZVVGbnlkT3pxejRiZXpRUWJlSE5W?=
+ =?utf-8?B?eCtOd3NDcVVKZ0kra1V0MGZEUUpDdmJQVENtYUpDRThvTGc9PQ==?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR03MB4320.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?K0FMVHQxdWFCSHBNWnJLci93WGIwdElSeHV2QW50ME9QNWRaTFRXMXRuSnVu?=
+ =?utf-8?B?cnF6RmRFWG9WTW94aDlvOEZadTBUdC9tajA4NXRwRGZCZnJrb1c4WjZ4aVhS?=
+ =?utf-8?B?bmtsaThoaG93ZDNTVUV4WkZNejdLUDdqUGZGZ1k2YkJnTVIwaWVsRmw3ZlRO?=
+ =?utf-8?B?OGtpclNjbnMrNzhXdG9TWmpTQ3NiRFczakgzQzZOaTM5T2JEdWw4akRBeGwv?=
+ =?utf-8?B?Tmwwd0Y4VzdKQnU4WkRqQzJjcGVXSUNWdGtoWTA1K1pjb0pBRDJkZ3BNZ3Z5?=
+ =?utf-8?B?dXQ1OFVwT0VaT2JCS1FjZmF0aUo5SDNYa3I4MXdqYjM3K1lVYVBkMDg3VHM5?=
+ =?utf-8?B?bmNZbDhqTUdWSFlGVTUwaU9YTU5Wak4wYlBhamhQb0s5bXJucUhvRWloajdX?=
+ =?utf-8?B?VmkrRmxJRmxmeEltYnl3R1JhY2ZFdGZvUjArWnhXUzRHT3gzelZmQVNaU2pW?=
+ =?utf-8?B?YTFaRTZINTNoQkZ4WGJ3dDM4MFI4L3QwNHhKc2ZweUdHbzVQSTRSbTBLbEZI?=
+ =?utf-8?B?L01nVmdZMEZYTFZPdk5YMlI4UVd1TnZPWnkwOXdXSTVGVGFKQW1qdFN2T2hw?=
+ =?utf-8?B?YWdSSWkwcWt4anB5bk5ETzJVcXBHdS9FOTVSSWRqU0JmQ1RQTlZYREYrZ0FJ?=
+ =?utf-8?B?cGNCcituVHVNRUtLMGJsSTJmWHlqZTRMeWVkYmFvdVFaTG45bFlBMUF1QTNm?=
+ =?utf-8?B?aC9VZkk5Tm5nUUJQRXd6anQxaW15YkFuc0FaQzF5ci9MMWdOam9ZQVdSSnR2?=
+ =?utf-8?B?M0F5MG5aVHk5UFVERnJJbUZxd1BzWnh5dHpVYU1YZXpKK2dPanZuZmtXRkJW?=
+ =?utf-8?B?RmQvT0Zlc0E2YTh0OGx0SHNHL0ZBVy8rNm12RlFmdGFqdGVsWlQ2eHV0WStz?=
+ =?utf-8?B?NG42NWJGUzMycTBvZ3BvWDVpbjRzaFhpdU5WY2ZkYmVZbzJjREZwenpYVTla?=
+ =?utf-8?B?UmhRTGVMWnRYejNGOG5jNmRrMDJWMUErRDJpVXd1WHl4NHIzMnFkZHZUeTNj?=
+ =?utf-8?B?U3FnK0oyRk1tcXYybm5JWmppNGYyWS82L2VoSUJsVmRuUGFCc3hoMlR4SitK?=
+ =?utf-8?B?eW52cGo2Tno5TmxiMjJFYUdXRm50Rzc5elNQbWxZcXdlQTFYRGJ6WE91WWVt?=
+ =?utf-8?B?bjBtYnlhYk9NYzVybnQwQWNSdTBsenRyYk5aK3AxZEI0NGJqbjFoWm03UzJ4?=
+ =?utf-8?B?YndmNUs3L3ZIQzZBUlRiRG00dFkrTE1QM2kvbnMrdXZQV3VXc25MU2VJYnUw?=
+ =?utf-8?B?WjF3MTlTZEhQUDNnU2hSVEh0NnhIU21IODBkMDBCR3Y3ZDJaVlhnNkc5NzFx?=
+ =?utf-8?B?ZDZGbXZzZlpCODVEQmF1L2lzNWhTN2pWQ3A0TzFvMDFIZ3pNSXZVUXFmU0s4?=
+ =?utf-8?B?WjVjQlozZTJzU3kxRzJBNWpHUlI5ZW9lTG1wZnFwZWkxMy9PSkdMZVdoSFRE?=
+ =?utf-8?B?NXVXK2pjVVNmNmJTdkcrQTNvaWhnc2VJV2pDZVhBZVdmMUVrZXltazRYN3lD?=
+ =?utf-8?B?UnFjOWU1Y1YwMDdEWGYwMXBkd1hOTUlMV0JHTU9ML2YydTF6UW5OTXY5UDU5?=
+ =?utf-8?B?NU5VMkM4QWgrbjNUY0MxUHVLeGRhRGhDZWdSak9XVEZkZG1VdFAyWlY0Njdr?=
+ =?utf-8?B?bkExT295VURuSkF4R2xHRkE0T1NjTGdYTkUyVHdiY3c5TFZ1K3lBaVhrTjlt?=
+ =?utf-8?B?VW15ZnBZTG9HWUVXOGpXSnhtV01tbm9pSEZ1ajBkWHFXdjA1ZmxwV0p6eEpi?=
+ =?utf-8?B?R2pkN1FSYjZzZk9MOVVxS1psUVBBWGhrWGttQTY3cUIvaEZpTVlyY05UelNF?=
+ =?utf-8?B?MXJvaGo3bmk5bVRFY0loN2toNS9mNENScFM5WXpCVHlhTStka3Z6S1cwVnUv?=
+ =?utf-8?B?VVVjVE1kYm9KNGgzV3k1OFEyTW5oM29qeDhsUENybThZL0xLYzNYMlExb3pT?=
+ =?utf-8?B?ZjUrY2FEbUFXMXRXcjA3N0d0Si9sVnIrMEU2K3VkcEdkcDlmMkg2U0pORDZx?=
+ =?utf-8?B?eGNjTTZLUFlscUx5S05xZDRXTFIzd2VqS3EwREJuSGEvR0JiVkJjc3ZkcTMy?=
+ =?utf-8?B?N1pFZXIwZUFreFBBQkJrbi9jb2lPOVFMK09Gek1DckZkZUozQnFiN3FuQ1VD?=
+ =?utf-8?Q?Fy8RRym0wnpe5XvN9c4HGFh8O?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR03MB4320.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75062aaf-2e5c-4215-8b55-08dcd3fd4ef6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Sep 2024 14:06:48.4280
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CL2JhZqtLET7MwRvyomg0N+7GIWbVP8yl0SRmPq1u7SNyA9MyZ2XqTAR5FmtagLMDZPLe7tnMqN052LkG3YblU3+huM35OYk5j8SwRm95C8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR03MB5487
+X-Proofpoint-ORIG-GUID: ZFbXpEoWfKrqlA6sNp-ZV__MnwBDf0bH
+X-Proofpoint-GUID: ZFbXpEoWfKrqlA6sNp-ZV__MnwBDf0bH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ mlxlogscore=999 priorityscore=1501 malwarescore=0 adultscore=0
+ impostorscore=0 clxscore=1011 suspectscore=0 phishscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409130098
 
-The AD7606C-16 and AD7606C-18 are pretty similar with the AD7606B.
-The main difference between AD7606C-16 & AD7606C-18 is the precision in
-bits (16 vs 18).
-Because of that, some scales need to be defined for the 18-bit variants, as
-they need to be computed against 2**18 (vs 2**16 for the 16 bit-variants).
-
-Because the AD7606C-16,18 also supports bipolar & differential channels,
-for SW-mode, the default range of 10 V or ±10V should be set at probe.
-On reset, the default range (in the registers) is set to value 0x3 which
-corresponds to '±10 V single-ended range', regardless of bipolar or
-differential configuration.
-
-Aside from the scale/ranges, the AD7606C-16 is similar to the AD7606B.
-
-The AD7606C-18 variant offers 18-bit precision. Because of this, the
-requirement to use this chip is that the SPI controller supports padding
-of 18-bit sequences to 32-bit arrays.
-
-Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-16.pdf
-Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606c-18.pdf
-
-Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
----
- drivers/iio/adc/ad7606.c     | 253 +++++++++++++++++++++++++++++++++--
- drivers/iio/adc/ad7606.h     |  16 ++-
- drivers/iio/adc/ad7606_spi.c |  55 ++++++++
- 3 files changed, 312 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index b909ee14fd81..c29512029bfb 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -36,6 +36,33 @@ static const unsigned int ad7606_16bit_hw_scale_avail[2] = {
- 	152588, 305176
- };
- 
-+static const unsigned int ad7606_18bit_hw_scale_avail[2] = {
-+	38147, 76294
-+};
-+
-+static const unsigned int ad7606c_16bit_single_ended_unipolar_scale_avail[3] = {
-+	76294, 152588, 190735,
-+};
-+
-+static const unsigned int ad7606c_16bit_single_ended_bipolar_scale_avail[5] = {
-+	76294, 152588, 190735, 305176, 381470
-+};
-+
-+static const unsigned int ad7606c_16bit_differential_bipolar_scale_avail[4] = {
-+	152588, 305176, 381470, 610352
-+};
-+
-+static const unsigned int ad7606c_18bit_single_ended_unipolar_scale_avail[3] = {
-+	19073, 38147, 47684
-+};
-+
-+static const unsigned int ad7606c_18bit_single_ended_bipolar_scale_avail[5] = {
-+	19073, 38147, 47684, 76294, 95367
-+};
-+
-+static const unsigned int ad7606c_18bit_differential_bipolar_scale_avail[4] = {
-+	38147, 76294, 95367, 152588
-+};
- 
- static const unsigned int ad7606_16bit_sw_scale_avail[3] = {
- 	76293, 152588, 305176
-@@ -62,7 +89,8 @@ int ad7606_reset(struct ad7606_state *st)
- }
- EXPORT_SYMBOL_NS_GPL(ad7606_reset, IIO_AD7606);
- 
--static int ad7606_16bit_chan_scale_setup(struct ad7606_state *st, int ch)
-+static int ad7606_16bit_chan_scale_setup(struct ad7606_state *st,
-+					 struct iio_chan_spec *chan, int ch)
- {
- 	struct ad7606_chan_scale *cs = &st->chan_scales[ch];
- 
-@@ -83,6 +111,163 @@ static int ad7606_16bit_chan_scale_setup(struct ad7606_state *st, int ch)
- 	return 0;
- }
- 
-+static int ad7606_get_chan_config(struct ad7606_state *st, int ch,
-+				  bool *bipolar, bool *differential)
-+{
-+	unsigned int num_channels = st->chip_info->num_channels - 1;
-+	struct device *dev = st->dev;
-+	int ret;
-+
-+	*bipolar = false;
-+	*differential = false;
-+
-+	device_for_each_child_node_scoped(dev, child) {
-+		u32 pins[2];
-+		int reg;
-+
-+		ret = fwnode_property_read_u32(child, "reg", &reg);
-+		if (ret)
-+			continue;
-+
-+		/* channel number (here) is from 1 to num_channels */
-+		if (reg == 0 || reg > num_channels) {
-+			dev_warn(dev,
-+				 "Invalid channel number (ignoring): %d\n", reg);
-+			continue;
-+		}
-+
-+		if (reg != (ch + 1))
-+			continue;
-+
-+		*bipolar = fwnode_property_read_bool(child, "bipolar");
-+
-+		ret = fwnode_property_read_u32_array(child, "diff-channels",
-+						     pins, ARRAY_SIZE(pins));
-+		/* Channel is differential, if pins are the same as 'reg' */
-+		if (ret == 0 && (pins[0] != reg || pins[1] != reg)) {
-+			dev_err(dev,
-+				"Differential pins must be the same as 'reg'");
-+			return -EINVAL;
-+		}
-+
-+		*differential = (ret == 0);
-+
-+		if (*differential && !*bipolar) {
-+			dev_err(dev,
-+				"'bipolar' must be added for diff channel %d\n",
-+				reg);
-+			return -EINVAL;
-+		}
-+
-+		return 0;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ad7606c_18bit_chan_scale_setup(struct ad7606_state *st,
-+					  struct iio_chan_spec *chan, int ch)
-+{
-+	struct ad7606_chan_scale *cs;
-+	bool bipolar, differential;
-+	int ret;
-+
-+	ret = ad7606_get_chan_config(st, ch, &bipolar, &differential);
-+	if (ret)
-+		return ret;
-+
-+	cs = &st->chan_scales[ch];
-+
-+	if (differential) {
-+		cs->scale_avail = ad7606c_18bit_differential_bipolar_scale_avail;
-+		cs->num_scales =
-+			ARRAY_SIZE(ad7606c_18bit_differential_bipolar_scale_avail);
-+		/* Bipolar differential ranges start at 8 (b1000) */
-+		cs->reg_offset = 8;
-+		cs->range = 1;
-+		chan->differential = 1;
-+		chan->channel2 = chan->channel;
-+
-+		return 0;
-+	}
-+
-+	chan->differential = 0;
-+
-+	if (bipolar) {
-+		cs->scale_avail = ad7606c_18bit_single_ended_bipolar_scale_avail;
-+		cs->num_scales =
-+			ARRAY_SIZE(ad7606c_18bit_single_ended_bipolar_scale_avail);
-+		/* Bipolar single-ended ranges start at 0 (b0000) */
-+		cs->reg_offset = 0;
-+		cs->range = 3;
-+		chan->scan_type.sign = 's';
-+
-+		return 0;
-+	}
-+
-+	cs->scale_avail = ad7606c_18bit_single_ended_unipolar_scale_avail;
-+	cs->num_scales =
-+		ARRAY_SIZE(ad7606c_18bit_single_ended_unipolar_scale_avail);
-+	/* Unipolar single-ended ranges start at 5 (b0101) */
-+	cs->reg_offset = 5;
-+	cs->range = 1;
-+	chan->scan_type.sign = 'u';
-+
-+	return 0;
-+}
-+
-+static int ad7606c_16bit_chan_scale_setup(struct ad7606_state *st,
-+					  struct iio_chan_spec *chan, int ch)
-+{
-+	struct ad7606_chan_scale *cs;
-+	bool bipolar, differential;
-+	int ret;
-+
-+	ret = ad7606_get_chan_config(st, ch, &bipolar, &differential);
-+	if (ret)
-+		return ret;
-+
-+	cs = &st->chan_scales[ch];
-+
-+	if (differential) {
-+		cs->scale_avail = ad7606c_16bit_differential_bipolar_scale_avail;
-+		cs->num_scales =
-+			ARRAY_SIZE(ad7606c_16bit_differential_bipolar_scale_avail);
-+		/* Bipolar differential ranges start at 8 (b1000) */
-+		cs->reg_offset = 8;
-+		cs->range = 1;
-+		chan->differential = 1;
-+		chan->channel2 = chan->channel;
-+		chan->scan_type.sign = 's';
-+
-+		return 0;
-+	}
-+
-+	chan->differential = 0;
-+
-+	if (bipolar) {
-+		cs->scale_avail = ad7606c_16bit_single_ended_bipolar_scale_avail;
-+		cs->num_scales =
-+			ARRAY_SIZE(ad7606c_16bit_single_ended_bipolar_scale_avail);
-+		/* Bipolar single-ended ranges start at 0 (b0000) */
-+		cs->reg_offset = 0;
-+		cs->range = 3;
-+		chan->scan_type.sign = 's';
-+
-+		return 0;
-+	}
-+
-+	cs->scale_avail = ad7606c_16bit_single_ended_unipolar_scale_avail;
-+	cs->num_scales =
-+		ARRAY_SIZE(ad7606c_16bit_single_ended_unipolar_scale_avail);
-+	/* Unipolar single-ended ranges start at 5 (b0101) */
-+	cs->reg_offset = 5;
-+	cs->range = 1;
-+	chan->scan_type.sign = 'u';
-+
-+	return 0;
-+}
-+
- static int ad7606_reg_access(struct iio_dev *indio_dev,
- 			     unsigned int reg,
- 			     unsigned int writeval,
-@@ -107,9 +292,8 @@ static int ad7606_reg_access(struct iio_dev *indio_dev,
- static int ad7606_read_samples(struct ad7606_state *st)
- {
- 	unsigned int num = st->chip_info->num_channels - 1;
--	u16 *data = st->data;
- 
--	return st->bops->read_block(st->dev, num, data);
-+	return st->bops->read_block(st->dev, num, &st->data);
- }
- 
- static irqreturn_t ad7606_trigger_handler(int irq, void *p)
-@@ -125,7 +309,7 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
- 	if (ret)
- 		goto error_ret;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, st->data,
-+	iio_push_to_buffers_with_timestamp(indio_dev, &st->data,
- 					   iio_get_time_ns(indio_dev));
- error_ret:
- 	iio_trigger_notify_done(indio_dev->trig);
-@@ -139,6 +323,8 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch,
- 			      int *val)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
-+	unsigned int storagebits = st->chip_info->channels[1].scan_type.storagebits;
-+	const struct iio_chan_spec *chan;
- 	int ret;
- 
- 	gpiod_set_value(st->gpio_convst, 1);
-@@ -153,7 +339,19 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch,
- 	if (ret)
- 		goto error_ret;
- 
--	*val = sign_extend32(st->data[ch], 15);
-+	chan = &indio_dev->channels[ch + 1];
-+	if (chan->scan_type.sign == 'u') {
-+		if (storagebits > 16)
-+			*val = st->data.buf32[ch];
-+		else
-+			*val = st->data.buf16[ch];
-+		return 0;
-+	}
-+
-+	if (storagebits > 16)
-+		*val = sign_extend32(st->data.buf32[ch], 17);
-+	else
-+		*val = sign_extend32(st->data.buf16[ch], 15);
- 
- error_ret:
- 	gpiod_set_value(st->gpio_convst, 0);
-@@ -266,7 +464,7 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 			ch = chan->address;
- 		cs = &st->chan_scales[ch];
- 		i = find_closest(val2, cs->scale_avail, cs->num_scales);
--		ret = st->write_scale(indio_dev, ch, i);
-+		ret = st->write_scale(indio_dev, ch, i + cs->reg_offset);
- 		if (ret < 0)
- 			return ret;
- 		cs->range = i;
-@@ -349,6 +547,18 @@ static const struct iio_chan_spec ad7606_channels_16bit[] = {
- 	AD7606_CHANNEL(7, 16),
- };
- 
-+static const struct iio_chan_spec ad7606_channels_18bit[] = {
-+	IIO_CHAN_SOFT_TIMESTAMP(8),
-+	AD7606_CHANNEL(0, 18),
-+	AD7606_CHANNEL(1, 18),
-+	AD7606_CHANNEL(2, 18),
-+	AD7606_CHANNEL(3, 18),
-+	AD7606_CHANNEL(4, 18),
-+	AD7606_CHANNEL(5, 18),
-+	AD7606_CHANNEL(6, 18),
-+	AD7606_CHANNEL(7, 18),
-+};
-+
- /*
-  * The current assumption that this driver makes for AD7616, is that it's
-  * working in Hardware Mode with Serial, Burst and Sequencer modes activated.
-@@ -414,6 +624,20 @@ static const struct ad7606_chip_info ad7606_chip_info_tbl[] = {
- 		.oversampling_avail = ad7606_oversampling_avail,
- 		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	},
-+	[ID_AD7606C_16] = {
-+		.channels = ad7606_channels_16bit,
-+		.num_channels = 9,
-+		.scale_setup_cb = ad7606c_16bit_chan_scale_setup,
-+		.oversampling_avail = ad7606_oversampling_avail,
-+		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
-+	},
-+	[ID_AD7606C_18] = {
-+		.channels = ad7606_channels_18bit,
-+		.num_channels = 9,
-+		.scale_setup_cb = ad7606c_18bit_chan_scale_setup,
-+		.oversampling_avail = ad7606_oversampling_avail,
-+		.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
-+	},
- 	[ID_AD7616] = {
- 		.channels = ad7616_channels,
- 		.num_channels = 17,
-@@ -586,7 +810,7 @@ static const struct iio_trigger_ops ad7606_trigger_ops = {
- 	.validate_device = iio_trigger_validate_own_device,
- };
- 
--static int ad7606_sw_mode_setup(struct iio_dev *indio_dev)
-+static int ad7606_sw_mode_setup(struct iio_dev *indio_dev, unsigned int id)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 
-@@ -604,13 +828,24 @@ static int ad7606_chan_scales_setup(struct iio_dev *indio_dev)
- {
- 	unsigned int num_channels = indio_dev->num_channels - 1;
- 	struct ad7606_state *st = iio_priv(indio_dev);
-+	struct iio_chan_spec *chans;
-+	size_t size;
- 	int ch, ret;
- 
-+	/* Clone IIO channels, since some may be differential */
-+	size = indio_dev->num_channels * sizeof(*indio_dev->channels);
-+	chans = devm_kzalloc(st->dev, size, GFP_KERNEL);
-+	if (!chans)
-+		return -ENOMEM;
-+
-+	memcpy(chans, indio_dev->channels, size);
-+	indio_dev->channels = chans;
-+
- 	for (ch = 0; ch < num_channels; ch++) {
- 		struct ad7606_chan_scale *cs;
- 		int i;
- 
--		ret = st->chip_info->scale_setup_cb(st, ch);
-+		ret = st->chip_info->scale_setup_cb(st, &chans[ch + 1], ch);
- 		if (ret)
- 			return ret;
- 
-@@ -698,7 +933,7 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 	st->write_scale = ad7606_write_scale_hw;
- 	st->write_os = ad7606_write_os_hw;
- 
--	ret = ad7606_sw_mode_setup(indio_dev);
-+	ret = ad7606_sw_mode_setup(indio_dev, id);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-index 25e84efd15c3..14ee75aa225b 100644
---- a/drivers/iio/adc/ad7606.h
-+++ b/drivers/iio/adc/ad7606.h
-@@ -63,7 +63,8 @@
- 
- struct ad7606_state;
- 
--typedef int (*ad7606_scale_setup_cb_t)(struct ad7606_state *st, int ch);
-+typedef int (*ad7606_scale_setup_cb_t)(struct ad7606_state *st,
-+				       struct iio_chan_spec *chan, int ch);
- 
- /**
-  * struct ad7606_chip_info - chip specific information
-@@ -94,6 +95,8 @@ struct ad7606_chip_info {
-  *			such that it can be read via the 'read_avail' hook
-  * @num_scales		number of elements stored in the scale_avail array
-  * @range		voltage range selection, selects which scale to apply
-+ * @reg_offset		offset for the register value, to be applied when
-+ *			writing the value of 'range' to the register value
-  */
- struct ad7606_chan_scale {
- #define AD760X_MAX_SCALES		16
-@@ -102,6 +105,7 @@ struct ad7606_chan_scale {
- 	int				scale_avail_show[AD760X_MAX_SCALE_SHOW];
- 	unsigned int			num_scales;
- 	unsigned int			range;
-+	unsigned int			reg_offset;
- };
- 
- /**
-@@ -158,9 +162,13 @@ struct ad7606_state {
- 	/*
- 	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache lines.
--	 * 16 * 16-bit samples + 64-bit timestamp
-+	 * 16 * 16-bit samples + 64-bit timestamp - for AD7616
-+	 * 8 * 32-bit samples + 64-bit timestamp - for AD7616C-18 (and similar)
- 	 */
--	unsigned short			data[20] __aligned(IIO_DMA_MINALIGN);
-+	union {
-+		u16 buf16[20];
-+		u32 buf32[10];
-+	} data __aligned(IIO_DMA_MINALIGN);
- 	__be16				d16[2];
- };
- 
-@@ -201,6 +209,8 @@ enum ad7606_supported_device_ids {
- 	ID_AD7606_6,
- 	ID_AD7606_4,
- 	ID_AD7606B,
-+	ID_AD7606C_16,
-+	ID_AD7606C_18,
- 	ID_AD7616,
- };
- 
-diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
-index e00f58a6a0e9..143440e73aab 100644
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -77,6 +77,18 @@ static const struct iio_chan_spec ad7606b_sw_channels[] = {
- 	AD7606_SW_CHANNEL(7, 16),
- };
- 
-+static const struct iio_chan_spec ad7606c_18_sw_channels[] = {
-+	IIO_CHAN_SOFT_TIMESTAMP(8),
-+	AD7606_SW_CHANNEL(0, 18),
-+	AD7606_SW_CHANNEL(1, 18),
-+	AD7606_SW_CHANNEL(2, 18),
-+	AD7606_SW_CHANNEL(3, 18),
-+	AD7606_SW_CHANNEL(4, 18),
-+	AD7606_SW_CHANNEL(5, 18),
-+	AD7606_SW_CHANNEL(6, 18),
-+	AD7606_SW_CHANNEL(7, 18),
-+};
-+
- static const unsigned int ad7606B_oversampling_avail[9] = {
- 	1, 2, 4, 8, 16, 32, 64, 128, 256
- };
-@@ -120,6 +132,19 @@ static int ad7606_spi_read_block(struct device *dev,
- 	return 0;
- }
- 
-+static int ad7606_spi_read_block18to32(struct device *dev,
-+				       int count, void *buf)
-+{
-+	struct spi_device *spi = to_spi_device(dev);
-+	struct spi_transfer xfer = {
-+		.bits_per_word = 18,
-+		.len = count * sizeof(u32),
-+		.rx_buf = buf,
-+	};
-+
-+	return spi_sync_transfer(spi, &xfer, 1);
-+}
-+
- static int ad7606_spi_reg_read(struct ad7606_state *st, unsigned int addr)
- {
- 	struct spi_device *spi = to_spi_device(st->dev);
-@@ -283,6 +308,19 @@ static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
- 	return 0;
- }
- 
-+static int ad7606c_18_sw_mode_config(struct iio_dev *indio_dev)
-+{
-+	int ret;
-+
-+	ret = ad7606B_sw_mode_config(indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->channels = ad7606c_18_sw_channels;
-+
-+	return 0;
-+}
-+
- static const struct ad7606_bus_ops ad7606_spi_bops = {
- 	.read_block = ad7606_spi_read_block,
- };
-@@ -305,6 +343,15 @@ static const struct ad7606_bus_ops ad7606B_spi_bops = {
- 	.sw_mode_config = ad7606B_sw_mode_config,
- };
- 
-+static const struct ad7606_bus_ops ad7606c_18_spi_bops = {
-+	.read_block = ad7606_spi_read_block18to32,
-+	.reg_read = ad7606_spi_reg_read,
-+	.reg_write = ad7606_spi_reg_write,
-+	.write_mask = ad7606_spi_write_mask,
-+	.rd_wr_cmd = ad7606B_spi_rd_wr_cmd,
-+	.sw_mode_config = ad7606c_18_sw_mode_config,
-+};
-+
- static int ad7606_spi_probe(struct spi_device *spi)
- {
- 	const struct spi_device_id *id = spi_get_device_id(spi);
-@@ -315,8 +362,12 @@ static int ad7606_spi_probe(struct spi_device *spi)
- 		bops = &ad7616_spi_bops;
- 		break;
- 	case ID_AD7606B:
-+	case ID_AD7606C_16:
- 		bops = &ad7606B_spi_bops;
- 		break;
-+	case ID_AD7606C_18:
-+		bops = &ad7606c_18_spi_bops;
-+		break;
- 	default:
- 		bops = &ad7606_spi_bops;
- 		break;
-@@ -333,6 +384,8 @@ static const struct spi_device_id ad7606_id_table[] = {
- 	{ "ad7606-6", ID_AD7606_6 },
- 	{ "ad7606-8", ID_AD7606_8 },
- 	{ "ad7606b",  ID_AD7606B },
-+	{ "ad7606c-16",  ID_AD7606C_16 },
-+	{ "ad7606c-18",  ID_AD7606C_18 },
- 	{ "ad7616",   ID_AD7616 },
- 	{ }
- };
-@@ -344,6 +397,8 @@ static const struct of_device_id ad7606_of_match[] = {
- 	{ .compatible = "adi,ad7606-6" },
- 	{ .compatible = "adi,ad7606-8" },
- 	{ .compatible = "adi,ad7606b" },
-+	{ .compatible = "adi,ad7606c-16" },
-+	{ .compatible = "adi,ad7606c-18" },
- 	{ .compatible = "adi,ad7616" },
- 	{ }
- };
--- 
-2.46.0
-
+Pj4NCj4+IFRoZSBmaWx0ZXIgbW9kZSAvIGZpbHRlciB0eXBlIHByb3BlcnR5IGlzIHVzZWQgZm9y
+IGFkNDEzMCBhbmQgYWQ3Nzc5IA0KPj4gZHJpdmVycywgdGhlcmVmb3JlIHRoZSBBQkkgZG9jIGZp
+bGUgZm9yIGFkNDEzMCB3YXMgcmVtb3ZlZCwgbWVyZ2luZyANCj4+IGJvdGggb2YgdGhlbSBpbiB0
+aGUgc3lzZnMtYnVzLWlpby4NCj4NCj4uLi4NCj4NCj4+ICtXaGF0OiAgICAgICAgICAvc3lzL2J1
+cy9paW8vZGV2aWNlcy9paW86ZGV2aWNlWC9maWx0ZXJfdHlwZV9hdmFpbGFibGUNCj4+ICtXaGF0
+OiAgICAgICAgICAvc3lzL2J1cy9paW8vZGV2aWNlcy9paW86ZGV2aWNlWC9pbl92b2x0YWdlLXZv
+bHRhZ2VfZmlsdGVyX21vZGVfYXZhaWxhYmxlDQo+PiArS2VybmVsVmVyc2lvbjogNi4xDQo+DQo+
+SSBiZWxpZXZlIEkgaGF2ZSBhbHJlYWR5IGNvbW1lbnRlZCBvbiB0aGlzLiBUaGUgY29tbWl0IG1l
+c3NhZ2Uga2VlcHMgc2lsZW50IGFib3V0IHZlcnNpb24gY2hhbmdlcy4gV2h5Pw0KDQpJIG1lbnRp
+b25lZCBpdCBpbiB0aGUgY292ZXItbGV0dGVyLCBzaW5jZSB0aGUgYXR0cmlidXRlcyBvZiB0d28g
+ZGV2aWNlcyB3ZXJlIG1lcmdlZCwgYW5kIG9uZSBvZiB0aGVtIHdhcyBhdmFpbGFibGUgaW4gNi4x
+IGFkIHRoZSBvdGhlciBpbiA2LjIsIGl0IGZlbHQgYXBwcm9wcmlhdGUgdG8gbGVhdmUgaXQgYXMg
+Ni4xLg0KSSB3YXMgd29uZGVyaW5nIGlmIHRoaXMgaXMgb2sgb3IgaWYgaXQgc2hvdWxkIGJlIGtl
+cHQgYXMgNi4yLiBTaG91bGQgdGhpcyBiZSBtZW50aW9uZWQgaW4gdGhlIGNvbW1pdCBtZXNzYWdl
+IGFzIHdlbGw/DQoNCj4NCj4+ICtDb250YWN0OiAgICAgICBsaW51eC1paW9Admdlci5rZXJuZWwu
+b3JnDQo+PiArRGVzY3JpcHRpb246DQo+PiArICAgICAgICAgICAgICAgUmVhZGluZyByZXR1cm5z
+IGEgbGlzdCB3aXRoIHRoZSBwb3NzaWJsZSBmaWx0ZXIgbW9kZXMuIE9wdGlvbnMNCj4+ICsgICAg
+ICAgICAgICAgICBmb3IgdGhlIGF0dHJpYnV0ZToNCj4+ICsgICAgICAgICAgICAgICAgICAgICAg
+ICogInNpbmMzIiAgICAgICAtIFRoZSBkaWdpdGFsIHNpbmMzIGZpbHRlci4gTW9kZXJhdGUgMXN0
+IGNvbnZlcnNpb24gdGltZS4NCj4+ICsgICAgICAgICAgICAgICAgICAgR29vZCBub2lzZSBwZXJm
+b3JtYW5jZS4NCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICogInNpbmM0IiAgICAgICAtIFNp
+bmMgNC4gRXhjZWxsZW50IG5vaXNlIHBlcmZvcm1hbmNlLiBMb25nDQo+PiArICAgICAgICAgICAg
+ICAgICAgICAgICAxc3QgY29udmVyc2lvbiB0aW1lLg0KPj4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgKiAic2luYzUiICAgICAgIC0gVGhlIGRpZ2l0YWwgc2luYzUgZmlsdGVyLiBFeGNlbGxlbnQg
+bm9pc2UgcGVyZm9ybWFuY2UNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICogInNpbmM0K3Np
+bmMxIiAtIFNpbmM0ICsgYXZlcmFnaW5nIGJ5IDguIExvdyAxc3QgY29udmVyc2lvbg0KPj4gKyAg
+ICAgICAgICAgICAgICAgICB0aW1lLg0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgKiAic2lu
+YzMrcmVqNjAiIC0gU2luYzMgKyA2MEh6IHJlamVjdGlvbi4NCj4+ICsgICAgICAgICAgICAgICAg
+ICAgICAgICogInNpbmMzK3NpbmMxIiAtIFNpbmMzICsgYXZlcmFnaW5nIGJ5IDguIExvdyAxc3Qg
+Y29udmVyc2lvbg0KPj4gKyAgICAgICAgICAgICAgICAgICB0aW1lLg0KPj4gKyAgICAgICAgICAg
+ICAgICAgICAgICAgKiAic2luYzMrcGYxIiAgIC0gU2luYzMgKyBkZXZpY2Ugc3BlY2lmaWMgUG9z
+dCBGaWx0ZXIgMS4NCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICogInNpbmMzK3BmMiIgICAt
+IFNpbmMzICsgZGV2aWNlIHNwZWNpZmljIFBvc3QgRmlsdGVyIDIuDQo+PiArICAgICAgICAgICAg
+ICAgICAgICAgICAqICJzaW5jMytwZjMiICAgLSBTaW5jMyArIGRldmljZSBzcGVjaWZpYyBQb3N0
+IEZpbHRlciAzLg0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgKiAic2luYzMrcGY0IiAgIC0g
+U2luYzMgKyBkZXZpY2Ugc3BlY2lmaWMgUG9zdCBGaWx0ZXIgNC4NCj4NCj5BbHNvLCB0aGUgb3Jp
+Z2luYWwgZmlsZSB3YXMgbW9yZSB2ZXJib3NlIGZvciB0aGUgY29tcGxleCBjYXNlcywgbGlrZSAi
+c2luYzMrcGZYIiwgd2h5IGhhcyB0aGlzIGJlZW4gY2hhbmdlZD8NCg0KU2luY2UgdGhpcyBpcyBh
+IG1vcmUgZ2VuZXJpYyBmaWxlIEkgd2FzIGFkdmlzZWQgdG8gbGVhdmUgb3V0IHNwZWNpZmljIGRl
+dGFpbHMsIHNob3VsZCBJIGluY2x1ZGUgdGhlbSBqdXN0IGFzIHRoZXkgd2VyZSBpbiB0aGUgb3Jp
+Z2luYWwgZmlsZT8NCg0KDQotLQ0KQmVzdCBSZWdhcmRzLA0KUmFtb25hDQo=
 

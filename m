@@ -1,79 +1,89 @@
-Return-Path: <linux-iio+bounces-9525-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9526-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEB4978A82
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 23:23:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD67978C01
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 01:58:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 128D91F24615
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 21:23:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95E19287D12
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 23:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329FA154C09;
-	Fri, 13 Sep 2024 21:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B71F18893D;
+	Fri, 13 Sep 2024 23:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GJMi/kZB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g6y+IHnZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3428E14A099;
-	Fri, 13 Sep 2024 21:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A9517CA19;
+	Fri, 13 Sep 2024 23:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726262612; cv=none; b=rZST8ii+lREI7LKCtTyj/3KTkr+XI4P0uiCrBxETBIKbRJBpqtD4zGGg0fcH+oNAf5wNCIgS1mB7nS5w03UYrvz2QI4UpUcwFZrfFgL60wN3tYj0doesBuB20/7ZYXQslJI5OeGXfJIkihY6xPNHOOMYM3tCCKzZUfo+WfHjLio=
+	t=1726271927; cv=none; b=GMzAF+mKJ4sBd74pPa+q+PlmZf/dYBR8zlqtXJdmBqd7fMcYNJKAkNqsEsdEIGV0dPv8sK9eJVbBgTZamXBAYo/4tsFmlVMUKMBJb4SnTXccFiQn/nmrnnV8cedY0p4d54KMwdXahHioexLKsY1uRvIBtPcsSZVloZ28UIOHbEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726262612; c=relaxed/simple;
-	bh=kgN2i7NsfUPKHMks6Mw32UbeU2Yvq5ArmNtuqvuaYM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FoJAxf5Q5+Ho1rU6L3Y3OsmD/1rY9ftptfFk88szWZZPFu5DQTgA9EcrrPaGCI/IvaHwJYMJ8pd+yesPDcrYTwgJwusGaXrwVdfRhKAFgr0wBUI12JF9I+BgalJ93EGiKpgofgXlD7b0J8Ke4G3TX7tjwm1zSU6qFitLOwecpWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GJMi/kZB; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726262610; x=1757798610;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kgN2i7NsfUPKHMks6Mw32UbeU2Yvq5ArmNtuqvuaYM8=;
-  b=GJMi/kZB2mWYHmfDBKXYpjRa5XPJP4rzH449R9URD9g5lcy30XTdp5FG
-   b4RfWjc2tnHGNWN5D5tycfuRcaCHOSSpTvRx/uzMJBzsf1l8Gwo6T2jQi
-   Ma5ShZxtsPv23kMxIgOuU42EMiC90U3D2+5m4e/JpiLHaxPAWsRId8QVi
-   0HBB+Y2yo0Kg75qpCd4/43H+Onz/w+H1Y7g3mqJZZ6u5es6/U/ciPdx7E
-   Pz5w848IVrqyliQGK2BgUYruwvtJKtFfVGBMaXfER1w1QKlt9bg6pMrOg
-   pLc34ekhp7fp3xLOO2ywkfOnq1HSTJBz4Dryc//sdG1RAbhFtxX+lKc4N
-   g==;
-X-CSE-ConnectionGUID: t1ONs8sWQlmNrNgaz9gDRA==
-X-CSE-MsgGUID: JlPbWAgSTdWfzF1lVZSpPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="25062601"
-X-IronPort-AV: E=Sophos;i="6.10,227,1719903600"; 
-   d="scan'208";a="25062601"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 14:23:29 -0700
-X-CSE-ConnectionGUID: wcD6Tg/0SbWtW7sX5NwBfg==
-X-CSE-MsgGUID: Ehnn7tAjQTqDu8DphUsfGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,227,1719903600"; 
-   d="scan'208";a="68520817"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 13 Sep 2024 14:23:27 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1spDlE-000728-13;
-	Fri, 13 Sep 2024 21:23:24 +0000
-Date: Sat, 14 Sep 2024 05:22:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexandru Ardelean <aardelean@baylibre.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, jic23@kernel.org,
-	krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
-	michael.hennerich@analog.com, gstols@baylibre.com,
-	dlechner@baylibre.com, Alexandru Ardelean <aardelean@baylibre.com>
-Subject: Re: [PATCH v6 8/8] iio: adc: ad7606: add support for AD7606C-{16,18}
- parts
-Message-ID: <202409140543.VXctRtFP-lkp@intel.com>
-References: <20240913135744.152669-9-aardelean@baylibre.com>
+	s=arc-20240116; t=1726271927; c=relaxed/simple;
+	bh=t1kBUvvfAyBSEJqy6ISe01TikB0sm7vvU/LfFcfX58s=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y/RuNpsigwXSlFQXVCkW03j0rf4Qj1w+Fl1431KYgfcYT2TmTK7jrBTXkI1A+L1F9WVrLKUMEihmFuNBCw5g9CHUMN+gSmEBBT220E3fqTN5JuiTUhlepn8H+EIjpDMRx7fYHr7nbRemTTntoJLWV7nj0rtOIWJ6b8UNmXEzfi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g6y+IHnZ; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42cb9a0c300so24808625e9.0;
+        Fri, 13 Sep 2024 16:58:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726271924; x=1726876724; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=r+Uo9CZ+/vWr76G0BdqpOSgPTj8l9thCWDLiz+ayKMY=;
+        b=g6y+IHnZKSJwVOxbs7t2KHamAjfj7MoOaCP4bPBr7m8r85bFznq/BKjgA5d2/JkpbO
+         XTcrs8qMj7rN/eDBx6cGjF530g7hoDISjBMkRfW6jGgWSfdjx9J5kUBl/3uVDuXIZxiu
+         LwOP3UbSujicE3wgwuQdJuP+Zji5KJz0gEQl00T/wQwGXMCI5w4Vp0jS2dMHlLswuXwf
+         5NKw+XoDZC40p1rLRopO76Dj1WfG45fvsUCu8svsUw8Aa/b07eeZmGz4tln1nFbiyX08
+         Q46GDhqM2XD72wCR/JZgW2mdPSET1zvc6iYZd8T9XC2DDGCORzN4/a5UMp1MtpTeWeS1
+         +JMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726271924; x=1726876724;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r+Uo9CZ+/vWr76G0BdqpOSgPTj8l9thCWDLiz+ayKMY=;
+        b=S5UEDeL29kH33X6IWamd+q8ZqodFUYjLxP36nf8D/Uh+aa8rW4+NUSd5fHnJ+VfnkR
+         cQRdk7wP4tekHIJW8GOzQs2f1RS2VCIucYU9N4nasgSCZVzjhMeCmCKt5YQHaQbYzbM/
+         IbJ7UYMerjJyvReHRM0yA9CEAGE0haOiN1tyVoza4k7IUllOCtB+UPFumgwss8eDCQEq
+         n5gy187yCtXs4JU1rDAbA4FP27ef99NNPIRWb7bl6zKOGwsZzg3NE0ZcIzMVDxo71J8/
+         CIupZfm3DJ/qaZWOkRDq/VzAg7TaLPNSLjl2C5zJWCFN6wHcucvyo+930hRIvhurk92h
+         lMLg==
+X-Forwarded-Encrypted: i=1; AJvYcCUnxVrnsSaMN9PfNXs1L60sUEs4EO1XRA4uNwagEXGQ1NBUh5amC7MYuOsAnY3LDWOjsO822Kc1LvnD@vger.kernel.org, AJvYcCVBvxsVZXgsO20St812epK5Ikxi1IK5Iif0lfZDOlm/Dmww5Zn0EbMVH7z976KC5SNUUYYewhGhaWBq@vger.kernel.org, AJvYcCW4bmXkO+e5Wq4tyqMkymPYS5N8+u8t3rhqj1Z1EmubGNf6jJC5Y3HY8toeyQWNqTvry3IxfpQiy+3hlXbZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLoByllYpETtqTG4xs/jVEMxQHILDYi75hQ9WFSg+TUQJTSyMn
+	Ss931BEzOxf0XwuxZ1GIbCakKvVmd8hhbOnkUAcyidBsWadnK32E
+X-Google-Smtp-Source: AGHT+IHTOKPj1k9m5Ti8Vddyk9GlaX0+XkbHG41xc76RPoB6x/CX92bA3gKJiVV+RxQF4FGuXsDOkA==
+X-Received: by 2002:a05:600c:3b13:b0:42c:b961:c902 with SMTP id 5b1f17b1804b1-42cdb522ce4mr56954355e9.12.1726271923434;
+        Fri, 13 Sep 2024 16:58:43 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:6bd1:9a24:6b02:4a8f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42d9b15c1d5sm38293285e9.21.2024.09.13.16.58.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2024 16:58:43 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Sat, 14 Sep 2024 01:58:41 +0200
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
+	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, ang.iglesiasg@gmail.com,
+	linus.walleij@linaro.org, biju.das.jz@bp.renesas.com,
+	javier.carrasco.cruz@gmail.com, semen.protsenko@linaro.org,
+	579lpy@gmail.com, ak@it-klinger.de, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	christophe.jaillet@wanadoo.fr
+Subject: Re: [PATCH v6 1/4] iio: pressure: bmp280: Use sleep and forced mode
+ for oneshot captures
+Message-ID: <20240913235841.GB33362@vamoiridPC>
+References: <20240912233234.45519-1-vassilisamir@gmail.com>
+ <20240912233234.45519-2-vassilisamir@gmail.com>
+ <ZuQLOwjQUTjo1nPg@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,49 +92,73 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240913135744.152669-9-aardelean@baylibre.com>
+In-Reply-To: <ZuQLOwjQUTjo1nPg@smile.fi.intel.com>
 
-Hi Alexandru,
+On Fri, Sep 13, 2024 at 12:51:55PM +0300, Andy Shevchenko wrote:
+> On Fri, Sep 13, 2024 at 01:32:31AM +0200, Vasileios Amoiridis wrote:
+> > Add forced mode support in sensors BMP28x, BME28x, BMP3xx and BMP58x.
+> > Sensors BMP18x and BMP085 are old and do not support this feature so
+> > their operation is not affected at all.
+> > 
+> > Essentially, up to now, the rest of the sensors were used in normal mode
+> > all the time. This means that they are continuously doing measurements
+> > even though these measurements are not used. Even though the sensor does
+> > provide PM support, to cover all the possible use cases, the sensor needs
+> > to go into sleep mode and wake up whenever necessary.
+> > 
+> > The idea is that the sensor is by default in sleep mode, wakes up in
+> > forced mode when a oneshot capture is requested, or in normal mode
+> > when the buffer is enabled. The difference lays in the fact that in
+> > forced mode, the sensor does only one conversion and goes back to sleep
+> > while in normal mode, the sensor does continuous measurements with the
+> > frequency that was set in the ODR registers.
+> > 
+> > The bmpX_chip_config() functions which are responsible for applying
+> > the requested configuration to the sensor, are modified accordingly
+> > in order to set the sensor by default in sleep mode.
+> > 
+> > DEEP STANDBY, Low Power NORMAL and CONTINUOUS modes, supported only by
+> > the BMP58x version, are not added.
+> 
+> ...
+> 
+> > +	if (!((reg & BMP380_STATUS_DRDY_PRESS_MASK) &&
+> > +	    (reg & BMP380_STATUS_DRDY_TEMP_MASK))) {
+> 
+> I would add one more space to make the indentation follow the logic.
+> 
+> (no need to resend until Jonathan asks for it, otherwise I believe
+>  he can amend this whilst applying)
+> 
+> > +		dev_err(data->dev, "Measurement cycle didn't complete.\n");
+> > +		return -EBUSY;
+> > +	}
+> 
+> ...
+> 
+> > +		/*
+> > +		 * According to the BMP3 Sensor API, the sensor needs 5000us
+> 
+> Can we use 5ms...
+> 
+> > +		 * in order to go to the sleep mode.
+> > +		 */
+> > +		fsleep(5000);
+> 
+> ...and 5 * USEC_PER_MSEC here respectively?
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
 
-kernel test robot noticed the following build warnings:
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on next-20240913]
-[cannot apply to linus/master v6.11-rc7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Hi Andy,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexandru-Ardelean/iio-adc-ad7606-add-bits-parameter-to-channels-macros/20240913-220501
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240913135744.152669-9-aardelean%40baylibre.com
-patch subject: [PATCH v6 8/8] iio: adc: ad7606: add support for AD7606C-{16,18} parts
-config: i386-buildonly-randconfig-002-20240914 (https://download.01.org/0day-ci/archive/20240914/202409140543.VXctRtFP-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240914/202409140543.VXctRtFP-lkp@intel.com/reproduce)
+Thanks for the time for the review once again. I think I can manage to
+find the time to do it today.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409140543.VXctRtFP-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/adc/ad7606.c:39:27: warning: unused variable 'ad7606_18bit_hw_scale_avail' [-Wunused-const-variable]
-      39 | static const unsigned int ad7606_18bit_hw_scale_avail[2] = {
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 warning generated.
-
-
-vim +/ad7606_18bit_hw_scale_avail +39 drivers/iio/adc/ad7606.c
-
-    38	
-  > 39	static const unsigned int ad7606_18bit_hw_scale_avail[2] = {
-    40		38147, 76294
-    41	};
-    42	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Vasilis
 

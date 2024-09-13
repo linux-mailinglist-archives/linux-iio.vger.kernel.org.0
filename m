@@ -1,145 +1,102 @@
-Return-Path: <linux-iio+bounces-9519-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9520-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9D19786E8
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 19:37:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 282D6978741
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 19:54:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61829B25DE1
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 17:36:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3CF41F266CA
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 17:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A8284E14;
-	Fri, 13 Sep 2024 17:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A6385656;
+	Fri, 13 Sep 2024 17:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tonB9dQk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE001C14;
-	Fri, 13 Sep 2024 17:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F76B79B8E;
+	Fri, 13 Sep 2024 17:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726249002; cv=none; b=uBmC/e4xpLvVno0HfH2hD6BmXoPVqUkwsMTyzL3Frt2Dwf0W5E+9gnpXNMb2Bm6GWMLFhYFWLpn/7Nt4gO1a4HhvntJzMpCE3mcoE315QmpmJyukYpuy66x6e5M4y800/SCDuuXqi6O/oHLpIa2/nItsBsZeWjsovwI8jX9/7Yc=
+	t=1726250064; cv=none; b=FfoEBPSUm2YpoDQQWnp1UBXkYJjciWGm7Ut7lGDKqZYDW3iJRh/Al3pWHJG1+NG8EwuVrOK9ZTMPsctjfXs/frjkixcqdDuXYVnM2S3vS7uPWCrFa8HJbO+xNQ1jilaLK18W6KsMy7UgefcPEKrxPjnW6kVSCOawthnmwf4W6QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726249002; c=relaxed/simple;
-	bh=D11EquOkxJRaOVUkKtxsD3m2xYUCqKKmdjEKiBybbjk=;
+	s=arc-20240116; t=1726250064; c=relaxed/simple;
+	bh=jWbhiLUcKqWQFU/Im3tjU43mzSy2oUxa2unp1sbQcmM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZkHYvvWsJf1C2cvxPMzRpuuckcxpQGkQi+Y7M5zmktmU8/rgEKr4jcEMXpQqlDfuYwg5iYlXoD+Cl/eeebsBpUb8gFD/AXCmTwrNniVJoMkyhthl2b6UhOHLlhjui98X8jnekUSpz+oLxWt1l7ja2EZX42TqkL1jWh9JCwdbrGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-X-CSE-ConnectionGUID: rC3uDd1ZStKvMmGMZmghbw==
-X-CSE-MsgGUID: itPzId6UQA+J2tcbHhARUQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="25095539"
-X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
-   d="scan'208";a="25095539"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 10:36:41 -0700
-X-CSE-ConnectionGUID: 1+fOcsm8QZ6oe9+CessA4g==
-X-CSE-MsgGUID: URKtfhegR7+1jeTkfiofQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
-   d="scan'208";a="72954063"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 10:36:36 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andy.shevchenko@gmail.com>)
-	id 1spADh-00000008ND0-0smQ;
-	Fri, 13 Sep 2024 20:36:33 +0300
-Date: Fri, 13 Sep 2024 20:36:32 +0300
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-To: "Nechita, Ramona" <Ramona.Nechita@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	"Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
-	"Hennerich, Michael" <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, "Sa, Nuno" <Nuno.Sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	"Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v5 2/3] Documentation: ABI: added filter mode doc in
- sysfs-bus-iio
-Message-ID: <ZuR4IE-mwhL27ZG0@smile.fi.intel.com>
-References: <20240912121609.13438-1-ramona.nechita@analog.com>
- <20240912121609.13438-3-ramona.nechita@analog.com>
- <CAHp75VdOjodDaz6J4sWOiT2HHmdXpOPcWeS5kz4e3rB_=gh3xw@mail.gmail.com>
- <SN6PR03MB4320EC2760F85BB6B0DDEED4F3652@SN6PR03MB4320.namprd03.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=az8kRj8RHqZXlrXT53MKn1G3lpmGeh885Io2vtieN/nvyp/ABGR9SlPxUpjNg7jlc8NMo+O9gn+iDvynICjDWuKnlESnUe5bUdjaUTmeNSUbtC5lJqfHADBURT0yauFUltpDnV0/SwY7RoyjefgaugyaMDVL4iDfKI5egIYu45A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tonB9dQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B5CC4CEC0;
+	Fri, 13 Sep 2024 17:54:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726250064;
+	bh=jWbhiLUcKqWQFU/Im3tjU43mzSy2oUxa2unp1sbQcmM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tonB9dQkOKGOFVpWKBM6VU/AgQmpp1sxg0nD0Qqh+HyIhB41icueet53d7U3bqgsL
+	 A8Cw9PKUvy/akQHPWDW74KILBUZ7iq5RhrHxDCvRVxpw/lniL4AXrYvSaXBSjpRDZ4
+	 vzgp3tag/OuWjrEYjYxY3MOq0xOGE54IdO0xlFAtzaq2MZSMGEhrmzyQpZ/TWT0agS
+	 8LRJNjz0scmU+CApaAGyVe/fvvyqcRK+AW6eBcPLWGQHmKGxln8AjIrYqczWptGbb9
+	 +iCpsYHJOTLc3oO03yz3J8OfDrLyXeEQAQ4YKDwmhrPknLZcq8bFFtgvniMT9+KWnP
+	 ohVaxZK1g/y0A==
+Date: Fri, 13 Sep 2024 18:54:19 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jianping.Shen@de.bosch.com
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, dima.fedrau@gmail.com,
+	marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Christian.Lorenz3@de.bosch.com, Ulrike.Frauendorf@de.bosch.com,
+	Kai.Dolde@de.bosch.com
+Subject: Re: [PATCH v7 1/2] dt-bindings: iio: imu: smi240: add Bosch smi240
+Message-ID: <20240913-curled-cement-0434c7b56e17@spud>
+References: <20240913100011.4618-1-Jianping.Shen@de.bosch.com>
+ <20240913100011.4618-2-Jianping.Shen@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="AXiKi4ZW8chzwwN0"
+Content-Disposition: inline
+In-Reply-To: <20240913100011.4618-2-Jianping.Shen@de.bosch.com>
+
+
+--AXiKi4ZW8chzwwN0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SN6PR03MB4320EC2760F85BB6B0DDEED4F3652@SN6PR03MB4320.namprd03.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 13, 2024 at 02:06:48PM +0000, Nechita, Ramona wrote:
-> >>
-> >> The filter mode / filter type property is used for ad4130 and ad7779
-> >> drivers, therefore the ABI doc file for ad4130 was removed, merging
-> >> both of them in the sysfs-bus-iio.
+On Fri, Sep 13, 2024 at 12:00:10PM +0200, Jianping.Shen@de.bosch.com wrote:
+> From: Shen Jianping <Jianping.Shen@de.bosch.com>
+>=20
+> add devicetree binding for Bosch imu smi240.
+> The smi240 is a combined three axis angular rate and
+> three axis acceleration sensor module.
+>=20
+> * The smi240 requires VDD and VDDIO
+> * Provides only spi interface.
+>=20
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-...
+3 reviews? Doing well for yourself!
 
-> >> +What:          /sys/bus/iio/devices/iio:deviceX/filter_type_available
-> >> +What:          /sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_filter_mode_available
-> >> +KernelVersion: 6.1
-> >
-> >I believe I have already commented on this. The commit message keeps silent about version changes. Why?
-> 
-> I mentioned it in the cover-letter, since the attributes of two devices were
-> merged, and one of them was available in 6.1 ad the other in 6.2, it felt
-> appropriate to leave it as 6.1.
-> I was wondering if this is ok or if it should be kept as 6.2. Should this be
-> mentioned in the commit message as well?
+--AXiKi4ZW8chzwwN0
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please, mention in the commit message.
+-----BEGIN PGP SIGNATURE-----
 
-> >> +Contact:       linux-iio@vger.kernel.org
-> >> +Description:
-> >> +               Reading returns a list with the possible filter modes. Options
-> >> +               for the attribute:
-> >> +                       * "sinc3"       - The digital sinc3 filter. Moderate 1st conversion time.
-> >> +                   Good noise performance.
-> >> +                       * "sinc4"       - Sinc 4. Excellent noise performance. Long
-> >> +                       1st conversion time.
-> >> +                       * "sinc5"       - The digital sinc5 filter. Excellent noise performance
-> >> +                       * "sinc4+sinc1" - Sinc4 + averaging by 8. Low 1st conversion
-> >> +                   time.
-> >> +                       * "sinc3+rej60" - Sinc3 + 60Hz rejection.
-> >> +                       * "sinc3+sinc1" - Sinc3 + averaging by 8. Low 1st conversion
-> >> +                   time.
-> >> +                       * "sinc3+pf1"   - Sinc3 + device specific Post Filter 1.
-> >> +                       * "sinc3+pf2"   - Sinc3 + device specific Post Filter 2.
-> >> +                       * "sinc3+pf3"   - Sinc3 + device specific Post Filter 3.
-> >> +                       * "sinc3+pf4"   - Sinc3 + device specific Post Filter 4.
-> >
-> >Also, the original file was more verbose for the complex cases, like
-> >"sinc3+pfX", why has this been changed?
-> 
-> Since this is a more generic file I was advised to leave out specific
-> details, should I include them just as they were in the original file?
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuR8SwAKCRB4tDGHoIJi
+0rYhAP421mgiPxEooyVr0qa0SKv/HJnWIRqtrqEyUp3WPMZyQAEA9J2GdM5juRGy
+23tBvqwM6eXl29w7HIln0TsNoeryiwA=
+=wPVg
+-----END PGP SIGNATURE-----
 
-I would leave the examples for the mentioned chip in the parentheses. But it's
-up to Jonathan, I have no such device anyway, so personally I'm not affected
-:-)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--AXiKi4ZW8chzwwN0--
 

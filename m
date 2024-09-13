@@ -1,151 +1,143 @@
-Return-Path: <linux-iio+bounces-9522-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9523-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D8D9787D0
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 20:27:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FC997890D
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 21:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09A511F25FFD
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 18:27:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74EBA1C2270C
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 19:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AA712C474;
-	Fri, 13 Sep 2024 18:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2BE1494A3;
+	Fri, 13 Sep 2024 19:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eLI6O7yj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XkPfKM2l"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BF28C11;
-	Fri, 13 Sep 2024 18:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DBA148317;
+	Fri, 13 Sep 2024 19:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726252055; cv=none; b=LM/PHzMBawpCdlmdYMxN1c6iHmElMWKVL24667/Ei2paY/r6U8LJ+4nxOjRHcwZvnZ9twApPv9oqGJAhzdUgrD91toGdSF12bZai3ykVm1T5KcYjQUO0MdMF/coLM4EPAtEW3DvEc5zyJA2zLDch9rS/3IdA/v7GDvahm7iCtpg=
+	t=1726256396; cv=none; b=SoFkJrRKymsZRpDcg3+0W6Xa1o5gWXPdc/Zi96NWcyXFr3SBIPTzFSmI0i4lV404/zklr+p8wxIKgys959NhNLmQsZ8wM8btOIgaGAAwwio6/+uIuJml6ehfK7xnp8c8jw/Ppn5fBUH4pbuUWtqJR3sYtZhOJXdDPZxczQT+2yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726252055; c=relaxed/simple;
-	bh=lw0eK6fflWLo8L9Xc6oEj9NPbarXvrNywgJhseEI1to=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g94UpfFZd0G+1WmuGq9HOuLDl1pEdU/u0ELyPVuk/exTobo7DuAtXKxDOM/kmCD5dTcyAWwSr1BeJvzOOtmkpQ5yxnykuxQ1PYmH3jTIn4/tR3FdMgn63TUWKLllbC/AVbWRmoY8mD+jtA5LBrY9OYmczRizh/AIXmSivP5WYuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eLI6O7yj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4ACC4CEC7;
-	Fri, 13 Sep 2024 18:27:31 +0000 (UTC)
+	s=arc-20240116; t=1726256396; c=relaxed/simple;
+	bh=RUEVWgvk6mTpIhbMZyR3ybMcrifXc1NcuV8nvnQ7Z2Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=vCxdK4OLFKC0LK+XisbOKCIj6R5G9DJFAg0R+zDGUOP+dt3qc0nTXaJt3E2A09EwYND+DvaNI8QcI2g5tlD5eJyEAkyL614jGZpkUyPIW8KNBH1+V1IbU0F+JLu3g4/A+Z5a/htxr8ZFmgQtQt0IfrGRc18Y2IiU1CqbHCsHWTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XkPfKM2l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AF3C4CECC;
+	Fri, 13 Sep 2024 19:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726252055;
-	bh=lw0eK6fflWLo8L9Xc6oEj9NPbarXvrNywgJhseEI1to=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eLI6O7yjFdju5S0/44XPZp2MQYIvN2HPbxq0F7Y91MPyxs54GtyJnn01HhMHWIMO9
-	 IXdzSj9MppdtB2VRQif816nHhSVsSit2ZvaC6dJj1oZrlBFUFQZ7Y7pTtO+27RUXIR
-	 4FzLz2nUKVLNjOdtmyBXMXQWLfXAJqhEkUWjO3JnspWY5xKjo+Ey8AkdOzbB8u1ToW
-	 vzCc4ztMYHVCIQfJmDoTgauCs5VPcLMd5/8S0DqDXIqdkl8F/szMLQEBwaWUo8Yql2
-	 Wnwo79mdtdwoG+Y0n/Jbxi4Yz0Q9uh7ytO2dbP9Ox8W5WdxnRu8RdCXYhDNUGW1Wpn
-	 Ppqw66NUmN/yQ==
-Date: Fri, 13 Sep 2024 19:27:29 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
-	ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
-	biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
-	semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, christophe.jaillet@wanadoo.fr
-Subject: Re: [PATCH v6 2/4] dt-bindings: iio: pressure: bmp085: Add
- interrupts for BMP3xx and BMP5xx devices
-Message-ID: <20240913-overarch-preplan-c899f16a90c8@spud>
-References: <20240912233234.45519-1-vassilisamir@gmail.com>
- <20240912233234.45519-3-vassilisamir@gmail.com>
+	s=k20201202; t=1726256396;
+	bh=RUEVWgvk6mTpIhbMZyR3ybMcrifXc1NcuV8nvnQ7Z2Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XkPfKM2lxkNEq4p+g6nAtThYVWFspucb3zEcTqZK0ROXAA8mOSrVtvQLoozYScctH
+	 SBTLXvGAh0lKJ5YHPyPyocQi+ovGSmFHemw3x8I+O1ThIiSM2bR/efSkt1QUQvC+UL
+	 VHuiUdLcTt18LUH5/ZwYQWiDUAKqLPcGg4CwCY/zjHNDntiY4QSyHffri6UqkZeMkd
+	 YilGwuzVXjyDh83cj/j8sUQeB2pIkEyXnf46W6SnRw3YPEpAyMfZvIpNcJFieqMrXj
+	 iVlG5hZ6DKPDJhPAsLT4mxbDFpY5VLEjv2z/TI+I1hggUciRsR6Nr/uGfSo24Aq7Ru
+	 lNH23BRAfpEGQ==
+Date: Fri, 13 Sep 2024 20:39:50 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Matteo Martelli <matteomartelli3@gmail.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Dan Carpenter
+ <dan.carpenter@linaro.org>, kernel-janitors@vger.kernel.org,
+ lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: pac1921: add missing error return in probe()
+Message-ID: <20240913203950.06ed1603@jic23-huawei>
+In-Reply-To: <172604712407.3581.15543200034844778072@njaxe.localdomain>
+References: <1fa4ab12-0939-477d-bc92-306fd32e4fd9@stanley.mountain>
+	<36b1a47a-7af2-4baf-8188-72f6eed78529@wanadoo.fr>
+	<66b5c5df76766_133d37031@njaxe.notmuch>
+	<9a98aab5-bb68-4206-9ecf-32fbf6c9c7ef@stanley.mountain>
+	<20240810113518.2cbceb66@jic23-huawei>
+	<172604712407.3581.15543200034844778072@njaxe.localdomain>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="yklktLtRTBY9hG1i"
-Content-Disposition: inline
-In-Reply-To: <20240912233234.45519-3-vassilisamir@gmail.com>
-
-
---yklktLtRTBY9hG1i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 13, 2024 at 01:32:32AM +0200, Vasileios Amoiridis wrote:
-> Add interrupt options for BMP3xx and BMP5xx devices as well.
+On Wed, 11 Sep 2024 11:32:04 +0200
+Matteo Martelli <matteomartelli3@gmail.com> wrote:
+
+> Quoting Jonathan Cameron (2024-08-10 12:35:18)
+> > On Fri, 9 Aug 2024 18:18:13 +0300
+> > Dan Carpenter <dan.carpenter@linaro.org> wrote:
+> >  =20
+> > > On Fri, Aug 09, 2024 at 09:31:43AM +0200, Matteo Martelli wrote: =20
+> > > > Christophe JAILLET wrote:   =20
+> > > > > Le 08/08/2024 =C3=A0 21:28, Dan Carpenter a =C3=A9crit=C2=A0:   =
+=20
+> > > > > > This error path was intended to return, and not just print an e=
+rror.  The
+> > > > > > current code will lead to an error pointer dereference.
+> > > > > >=20
+> > > > > > Fixes: 371f778b83cd ("iio: adc: add support for pac1921")
+> > > > > > Signed-off-by: Dan Carpenter <dan.carpenter-QSEj5FYQhm4dnm+yROf=
+E0A@public.gmane.org>
+> > > > > > ---
+> > > > > >   drivers/iio/adc/pac1921.c | 4 ++--
+> > > > > >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > > > > >=20
+> > > > > > diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac192=
+1.c
+> > > > > > index d04c6685d780..8200a47bdf21 100644
+> > > > > > --- a/drivers/iio/adc/pac1921.c
+> > > > > > +++ b/drivers/iio/adc/pac1921.c
+> > > > > > @@ -1168,8 +1168,8 @@ static int pac1921_probe(struct i2c_clien=
+t *client)
+> > > > > >  =20
+> > > > > >         priv->regmap =3D devm_regmap_init_i2c(client, &pac1921_=
+regmap_config);
+> > > > > >         if (IS_ERR(priv->regmap))
+> > > > > > -               dev_err_probe(dev, (int)PTR_ERR(priv->regmap),
+> > > > > > -                             "Cannot initialize register map\n=
+");
+> > > > > > +               return dev_err_probe(dev, (int)PTR_ERR(priv->re=
+gmap),   =20
+> > > > >=20
+> > > > > The (int) is unusual.
+> > > > >   =20
+> > > > The (int) explicit cast is to address Wconversion warnings since de=
+v_err_probe
+> > > > takes an int as argument.   =20
+> > >=20
+> > > I don't want to remove the int because it's unrelated, but Christophe=
+ is right
+> > > that the int is unusual.  We really would want to discourage that. =20
+> >=20
+> > Applied, but I'd ideally like a follow up patch removing the int and the
+> > couple of similar instances from this driver.  Anyone want to spin one?
+> >  =20
 >=20
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> ---
->  .../bindings/iio/pressure/bmp085.yaml         | 22 ++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
+> I can spin the patch, but at this point I am wondering whether I should r=
+emove all
+> the unnecessary explicit casts that I put to address Wconversion
+> and Wsign-compare warnings. If that's the general approach to help readab=
+ility I
+> am totally fine with it.
+
+I think it is probably sensible to do so as mostly we know the value ranges
+etc so they don't matter.
+
+Jonathan
+
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b=
-/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> index 6fda887ee9d4..7c9d85be9008 100644
-> --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> @@ -48,14 +48,34 @@ properties:
-> =20
->    interrupts:
->      description:
-> -      interrupt mapping for IRQ (BMP085 only)
-> +      interrupt mapping for IRQ. Supported in BMP085, BMP3xx, BMP5xx
-
-If you respin, you can drop the description entirely, since you've added
-proper enforcement below.
-
-Otherwise,
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-Cheers,
-Conor.
-
->      maxItems: 1
-> =20
-> +  drive-open-drain:
-> +    description:
-> +      set if the interrupt pin should be configured as open drain.
-> +      If not set, defaults to push-pull configuration.
-> +    type: boolean
-> +
->  required:
->    - compatible
->    - vddd-supply
->    - vdda-supply
-> =20
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          not:
-> +            contains:
-> +              enum:
-> +                - bosch,bmp085
-> +                - bosch,bmp380
-> +                - bosch,bmp580
-> +    then:
-> +      properties:
-> +        interrupts: false
-> +
->  additionalProperties: false
-> =20
->  examples:
-> --=20
-> 2.25.1
+> > Thanks,
+> >=20
+> > Jonathan
+> >  =20
 >=20
+> Thanks,
+> Matteo Martelli
 
---yklktLtRTBY9hG1i
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuSEEQAKCRB4tDGHoIJi
-0ug0AQDv9jtxn90k9XFvocbM+CoDnehphvbc+3ADMDwVjaf1rgEA1SL5+udw2VPe
-exH1SqZqbO4XEmb+Nl+bljSO0kWQ+gg=
-=ett3
------END PGP SIGNATURE-----
-
---yklktLtRTBY9hG1i--
 

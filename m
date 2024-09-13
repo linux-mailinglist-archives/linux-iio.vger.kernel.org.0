@@ -1,179 +1,141 @@
-Return-Path: <linux-iio+bounces-9497-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9498-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51CC978095
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 14:55:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7257B9780EA
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 15:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07E9A1C21D8C
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 12:55:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D5781F222E3
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 13:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B8E1DA627;
-	Fri, 13 Sep 2024 12:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75D51DA639;
+	Fri, 13 Sep 2024 13:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="I1hMY1Ic"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YBKB0LoB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1A61DA615
-	for <linux-iio@vger.kernel.org>; Fri, 13 Sep 2024 12:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45FF1DA2FF;
+	Fri, 13 Sep 2024 13:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726232110; cv=none; b=Nx2O3herQjhada7uIg35rswIE2ryWX/45li3nMAL/nYrPSOb9oppPm92gq4e8vcGoJMWsyknz6Pt9xPPWvvCXKhBnq10burYUcNK4n1UZ8XU5d2FLRQVcdb3pR+MpA8kbHy0Ef3lIpUU/M2RnzMi6Qyvxu5oreSpDuKy+2XG2bs=
+	t=1726233558; cv=none; b=M3Wgxgnr8M6sLpiga86EL9nST98QoqSJBj0HO2XTow60xh4lX0eef0sWbuuUw9EXd5xImrRYDuYzJu1W+2vw7IOCBUVf/4lEtT44aOe8nfiIkBJl1RDfriaIrBVA4UD6jzsmZN6uY1+9FJYB7wtLG1r8E9pSnDytJkHAhf3JIoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726232110; c=relaxed/simple;
-	bh=It4b7WTIeTTkxjWZyTXy4+yUt95s6XCv7qwUASihMzA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=MpdljsoYYSo76yrtqYdLnyBD8Ddt+jmJOmm0WCwZ1Vtp6fH5l7Yn+Kmiy1FCmmLPTDh3d1zRNY8UcWbp9/ueIuUK8EG54wproPGPm1fbW2gQcsUYdwK2LE0st9QWpFEpY+09bOdrJLBOUAROrL8yww1SQTEFX+TOf/KunaeF9o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=I1hMY1Ic; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-374d29ad870so679776f8f.3
-        for <linux-iio@vger.kernel.org>; Fri, 13 Sep 2024 05:55:08 -0700 (PDT)
+	s=arc-20240116; t=1726233558; c=relaxed/simple;
+	bh=4q/8N6O8ffI72x/9iTUFiRqxpi/mE0XbxqrQO5oMoWM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HEBiWvQLSTZFPP+aCgeANLthpMLjJ9rf5evyn0ouolmK7/1GdocAYeFZqEIiZ+sPw1icOB/uc/5vuh4O+j5Ci066+UvX6h0IPxOXZ3vVMfgo/6As36wdBwEcYDUq9xSc5sXX56KX9R8XinTuMjFhsCIf64jjU0fSqNwdK4TCysI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YBKB0LoB; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5365aa568ceso1202316e87.0;
+        Fri, 13 Sep 2024 06:19:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726232107; x=1726836907; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hc8v0R6GDF5PLdJH56j48gvXNERk+5hUHxBGHTh8r8E=;
-        b=I1hMY1IcY0zGjDPZCiV38fQlP2u9o0Vq/vSTFRxVPcWo/UwvBjdUwFnixwJH3p7oWv
-         PY0faWP1afH54YEVtCBAotVA0DkahJEz3RWn6NmWcmSqllTixaiVytvNFqK9i1P5QH9U
-         GslkPeKj+o/HvV8hKng0DkFb1LgWT8QWDqCp1QCvxNJ9LCQCE2dkuc4YiTXZLMw52mQK
-         pWoVed9HfFuLhbCTNfJzN8N/Y4Fr/2B1GFLTLCPK0iginUMgwzIaTYSuIOUu4JZAWQ0G
-         rx1LjqKNxVhYOnS3dh0MXWy4l170k/jGX0mf+bnjuUPC6zPZeYQrW3xeAwG27ERJoDAj
-         38Yg==
+        d=gmail.com; s=20230601; t=1726233555; x=1726838355; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cnZBXkdG1OqmFjnngLoBqqNkjebYkNRY5cB09E7/o7A=;
+        b=YBKB0LoBg7DxZbkSoO0yLAsR44a/nCALzXKpXoEpkGsy8G10bABYlfEbl92zhs91BJ
+         0M3yJYNfb+cC9ZYWGmtu1y/4Gq+9PqmmVoWhW7+gXVvbKUjinijYEF7NveKtR6kZux6A
+         iYRF2F8c2M3jJa1NEP4uQ4ywmSnSCoAgCp++rBEtzQcd/rnU2Rz6Ho4M0A5NG0a/QA2C
+         6ilnW2Be/7wzWLvJH2Y2K6/lMPkMziweug5kUCGg1VPWNnouiOaBc9FMmt+HF7ud8EyP
+         Fg4OEwdWkndD6zmxU0U50VXPHEIbA3TlPp9OcjNGO3+kF252pPtfm79zj/WIolCr5nfI
+         0mdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726232107; x=1726836907;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Hc8v0R6GDF5PLdJH56j48gvXNERk+5hUHxBGHTh8r8E=;
-        b=QNqebpjCYbdplOGmOHiWPwvExcIipvhpg7tkmLKmfJOhcLfla4BFFL1SoX0N5ReMIt
-         GHGZ/TwAcvMxlh0HILjzBc3ru6UOdX3qwd9ihA4JP23P5AzNdetR7Yh6nFmBx48F50AQ
-         XDgioO9k1JUmd4XC+0fTeMyEXOBa0h7Ml5IV4sq2dsEPpKZCSxCvydfE4+7NfxlpNrYE
-         6VDXZ5zys9LH2kiIAh3WPlBkIANGfwptWxoqs4Dg425mJNJzHaoK248kkBFaL0lXjeJR
-         UA3eMpXcYHADY4MQPWllgQAkCEM+5e9J05o3vriVexmGEjbpw2FDzQ+79capzCmgLkLW
-         WmsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXvdrOctQx/TgodAF+Pmxu0Ykl8CmAKq/+cEEwWJBDNTt8jRi4cTN/TPNIH4kFUwZbK7H1npS5/moI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEX7yFjaxumBgRwpHA6fqZrSZF0ekQgIlx6z2b78ffA+tiES4W
-	sZwKyD+gGk1ZjXpgmuoerW37to4nPK66J10Dj4GFFIDFFWgCcaZE/qUrFjtATPw=
-X-Google-Smtp-Source: AGHT+IGuxOqBic27IcdAV/ufZJdHJH6P9HTUargjaKKwS2U8i3tVdW9oMa5vfdAciNNzAQoU2peu6w==
-X-Received: by 2002:adf:e647:0:b0:374:ae04:c7c5 with SMTP id ffacd0b85a97d-378d6241dacmr1435602f8f.36.1726232106543;
-        Fri, 13 Sep 2024 05:55:06 -0700 (PDT)
-Received: from localhost (amontpellier-556-1-151-252.w109-210.abo.wanadoo.fr. [109.210.7.252])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42d9b16bf68sm24508295e9.27.2024.09.13.05.55.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Sep 2024 05:55:06 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726233555; x=1726838355;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cnZBXkdG1OqmFjnngLoBqqNkjebYkNRY5cB09E7/o7A=;
+        b=VjDhoxNZ152VZapEejH4ly7HUIprVmaLya3ud3tOFamfQOAgDXMifG7Wj+xLEbUa1/
+         RKXaEAvkSP/qJOmaH9WKz/gWpAoeYq9/vPWx6U5Ke+5pSKb/MPpXANFVJ0bmnhIinwpk
+         iNy9PMtYvo8WgbFyLeAfFyjP+CewGRuTsBoDnQc/w/IBMBVfyUMOEKyuWnlmAjesDLGO
+         /PCuKf1LQ8S8Mz8DYk+Pd2Bn5MMOSsXukEdpZOEXLBhUbv/3HL/sZMC1wc1s3O7G/FYv
+         pAG7BLHTks1yXcS4BcWhNqoTAn8GJqHO1zborxWmh6nACTesnPm330btiWXDSbmv2cL9
+         kJag==
+X-Forwarded-Encrypted: i=1; AJvYcCUqH8bmb0JPZzsP9uoTdT3e7ZHpwsbNMF4dd1utiZ8jPmJmtY07pxyvfzquGLatJ2pM75wmwJWSU8Jh@vger.kernel.org, AJvYcCWW+XGePhTecTsGh0V4YLVWunbCGzYwgGAv2TbqR9f4XFtrnTit2L/AkQoFA3xiekowClQPWSCS@vger.kernel.org, AJvYcCXJ+tl4TfMLo8x3VMuRvcocOJ4feioHqOXv9WlTvGBzchN1wssn8x18gujBFuymSnrhIy1MhDf5m2nreZio@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTYJqYClbfdkFH+sC2m0M4Fq1fZ7lLfqyEsasZWqr5Y64mffog
+	D34gxsASKfe7s8FzjsGrDZq9YktlwmoMtkYSokOl+RZJqhqBaFy/
+X-Google-Smtp-Source: AGHT+IHLOctH/seZi9U2ROlC0Paog572OIeyF1WDBW/pyJ+Rgfnrhh7rDUxEq6zeapMoNF+4zLw9ZQ==
+X-Received: by 2002:a05:6512:3e29:b0:52e:936e:a237 with SMTP id 2adb3069b0e04-5367fec8cb1mr2509991e87.16.1726233554670;
+        Fri, 13 Sep 2024 06:19:14 -0700 (PDT)
+Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25a258a3sm865945666b.89.2024.09.13.06.19.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2024 06:19:14 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/7] iio: light: veml6030: fix issues and add support for
+ veml6035
+Date: Fri, 13 Sep 2024 15:18:55 +0200
+Message-Id: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Sep 2024 12:55:05 +0000
-Message-Id: <D4567LFFTYJQ.2YC5OODKOVPNB@baylibre.com>
-Subject: Re: [PATCH 4/6] iio: adc: ad4030: add support for ad4630-24 and
- ad4630-16
-From: "Esteban Blanc" <eblanc@baylibre.com>
-To: =?utf-8?q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>, "Jonathan Cameron"
- <jic23@kernel.org>
-Cc: "Lars-Peter Clausen" <lars@metafoo.de>, "Michael Hennerich"
- <Michael.Hennerich@analog.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Nuno Sa" <nuno.sa@analog.com>, "Jonathan Corbet" <corbet@lwn.net>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "David Lechner" <dlechner@baylibre.com>,
- <linux-doc@vger.kernel.org>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
- <20240822-eblanc-ad4630_v1-v1-4-5c68f3327fdd@baylibre.com>
- <20240826102748.4be0b642@jic23-huawei>
- <D452E2M75XCM.13OQGAPJ7JJ4A@baylibre.com>
- <0a4e7fe39cf36774b28c86f6baab5ef8c20e3d6b.camel@gmail.com>
-In-Reply-To: <0a4e7fe39cf36774b28c86f6baab5ef8c20e3d6b.camel@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL875GYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDSwNj3bLU3BwzA2NTXfNES8OkZAMLi2SzNCWg8oKi1LTMCrBR0bG1tQC
+ dd0DYWgAAAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1726233553; l=1792;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=4q/8N6O8ffI72x/9iTUFiRqxpi/mE0XbxqrQO5oMoWM=;
+ b=4KjytU33ZjXrLgrm2P1Kf/9UjwbWMq1EApvzJscdq7sGzb52I9BXebT/4H7SeFW+hMPe10/Lf
+ cfnvYuMHvxkDlXQkTNQKjJ9vpGw8/UGr4bvJEjyVMtOjYhZngvBCy/m
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-On Fri Sep 13, 2024 at 10:18 AM UTC, Nuno S=C3=A1 wrote:
-> On Fri, 2024-09-13 at 09:55 +0000, Esteban Blanc wrote:
-> > On Mon Aug 26, 2024 at 9:27 AM UTC, Jonathan Cameron wrote:
-> > > On Thu, 22 Aug 2024 14:45:20 +0200
-> > > Esteban Blanc <eblanc@baylibre.com> wrote:
-> > > > +static const unsigned long ad4630_channel_masks[] =3D {
-> > > > +	/* Differential only */
-> > > > +	BIT(0) | BIT(2),
-> > > > +	/* Differential with common byte */
-> > > > +	GENMASK(3, 0),
-> > > The packing of data isn't going to be good. How bad to shuffle
-> > > to put the two small channels next to each other?
-> > > Seems like it means you will want to combine your deinterleave
-> > > and channel specific handling above, which is a bit fiddly but
-> > > not much worse than current code.
-> >=20
-> > I can do it since that was what I had done in the RFC in the first plac=
-e.
-> > Nuno asked for in this email
-> > https://lore.kernel.org/r/0036d44542f8cf45c91c867f0ddd7b45d1904d6b.came=
-l@gmail.com/
-> > :
-> >=20
-> > > > > * You're pushing the CM channels into the end. So when we a 2 cha=
-nnel device
-> > > > > we'll have:
-> >=20
-> > > > > in_voltage0 - diff
-> > > > > in_voltage1 - diff
-> > > > > in_voltage2 - CM associated with chan0
-> > > > > in_voltage0 - CM associated with chan1
-> > > > >=20
-> > > > > I think we could make it so the CM channel comes right after the =
-channel
-> > > > > where
-> > > > > it's data belongs too. So for example, odd channels would be CM c=
-hannels (and
-> > > > > labels could also make sense).
-> >=20
-> > So that's what I did here :D
-> >=20
-> > For the software side off things here it doesn't change a lot of things
-> > since we have to manipulate the data anyway, putting the extra byte at =
-the
-> > end or in between is no extra work.
-> > For the offload engine however, it should be easier to ask for 24 bits
-> > then 8 bits for each channel as it would return two u32 per "hardware
-> > channel".
-> >=20
-> > In order to avoid having two different layouts, I was kind of sold by
-> > Nuno's idea of having the CM in between each diff channel.
-> >=20
->
-> Tbh, I was not even thinking about the layout when I proposed the arrange=
-ment. Just
-> made sense to me (from a logical point of view) to have them together as =
-they relate
-> to the same physical channel. FWIW, we're also speaking bytes in here so =
-not sure if
-> it's that important (or bad).
+This series updates the driver for the veml6030 ALS and adds support for
+the veml6035, which shares most of its functionality with the former.
 
-The best we can do (if we managed to do it HDL wise) is to reorder the
-data to get both CM byte in a single u32 after the 2 u32 of both diff
-channel. That would be 3 u32 instead of 4.
+The most relevant updates for the veml6030 are the resolution correction
+to meet the datasheet update that took place with Rev 1.7, 28-Nov-2023,
+and a fix to avoid a segmentation fault when reading the
+in_illuminance_period_available attribute.
 
-I don't have a strong opinion other than what we have with the V1 should
-be simpler to rework for the offload engine since we can manage to
-get the same layout from the offload engine. And if there is
-some performance issue we could still try to rework the HDL but I can't
-say for sure if there will be some drawback with that.
+Vishay does not host the Product Information Notification where the
+resolution correction was introduced, but it can still be found
+online[1], and the corrected value is the one listed on the latest
+version of the datasheet[2] (Rev. 1.7, 28-Nov-2023) and application
+note[3] (Rev. 17-Jan-2024).
 
-If you or Jonathan prefers the RFC version let's do that, no problem I
-already have the code for it :D
+Link: https://www.farnell.com/datasheets/4379688.pdf [1]
+Link: https://www.vishay.com/docs/84366/veml6030.pdf [2]
+Link: https://www.vishay.com/docs/84367/designingveml6030.pdf [3]
+
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Javier Carrasco (7):
+      dt-bindings: iio: light: veml6030: rename to add manufacturer
+      dt-bindings: iio: light: veml6030: add veml6035
+      iio: light: veml6030: fix IIO device retrieval from embedded device
+      iio: light: veml6030: make use of regmap_set_bits()
+      iio: light: veml6030: update sensor resolution
+      iio: light: veml6030: add set up delay after any power on sequence
+      iio: light: veml6030: add support for veml6035
+
+ .../light/{veml6030.yaml => vishay,veml6030.yaml}  |  42 ++-
+ drivers/iio/light/veml6030.c                       | 323 ++++++++++++++++++---
+ 2 files changed, 319 insertions(+), 46 deletions(-)
+---
+base-commit: 5acd9952f95fb4b7da6d09a3be39195a80845eb6
+change-id: 20240903-veml6035-7a91bc088c6f
 
 Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
---=20
-Esteban "Skallwar" Blanc
-BayLibre
 

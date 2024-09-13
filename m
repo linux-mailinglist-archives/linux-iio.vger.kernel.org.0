@@ -1,90 +1,88 @@
-Return-Path: <linux-iio+bounces-9494-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9495-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3351977D24
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 12:18:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6BE977D39
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 12:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 097311C21028
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 10:18:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 032371C2114D
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 10:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB531D79BD;
-	Fri, 13 Sep 2024 10:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71151C2459;
+	Fri, 13 Sep 2024 10:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B0oE51jG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTQjDxAd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779C51272A6;
-	Fri, 13 Sep 2024 10:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2BC1A76A5;
+	Fri, 13 Sep 2024 10:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726222691; cv=none; b=QfqyUKRR0vtbkPL+wHcjgFnT41PBzaN9kiE0joSw6dDC3k/gIAaIK7P4sFZGjYnMYDA7Jm70DacoY9jxtTnGeG1xFvxSOmJNXKhtXKArHiB4+oeakw8DL2PofmxdL/JX+wXI8fmD3i0WLqqe9xrqMQedjhZQgSImbZpCHQ0jAKY=
+	t=1726222968; cv=none; b=Qs9beEHYjz/DmH9YQ6RGvNBcspANad1j70FckRT69XSjtWRXpVm3M7aZkpedteQft2DSnDFOALxxfT2p1Xk0FmWKZyFeY7NufCmzP94X+WmZwrOVH4BR3kjMdVaUcOgSmqHuztu9TSeA3mWZiiduHZqDw/IhfiO9zEG5i+49gm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726222691; c=relaxed/simple;
-	bh=rq0cpoOgAqPg2i8ruVnsc/sSAuiTwarjDXcOaAEYfXo=;
+	s=arc-20240116; t=1726222968; c=relaxed/simple;
+	bh=d+am7IpLrw/wLFbiF7PXFW32yNnjEXo3zUw8bqjM3rs=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GCrVmeGwJnMgiGgiw8wOAqwkdl5/S0s7OYstumpFCtYJkZ9miFKLFrvCs/sKmNCV2zw+Ku5ZY4Vo3fhtqWSoIYKA5L+u+nl3WnhUQQyTWsyb4X+tO0wPKbzvlh+VBv+gKq2/qmVJ9wNvYgw74zfNafZVu2hacEuZUu5R7pF3iNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B0oE51jG; arc=none smtp.client-ip=209.85.128.45
+	 Content-Type:MIME-Version; b=BTJsy8Jj+t3dur55A/srrhETEtukHznH+6AEIN1MpNe9rS1W6StneLwbTUdtv52nazOqe8wkV+APacWf3zIUzp8g7r3Qvw03X1valqHOGBCKGBXUSVqUnMD94kyVjr8V07ozKY8RVx7U345WdVJWIoJfSzWD6vVqjpQjrUTE+VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTQjDxAd; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cae4eb026so19024805e9.0;
-        Fri, 13 Sep 2024 03:18:09 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-374d29ad870so565514f8f.3;
+        Fri, 13 Sep 2024 03:22:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726222688; x=1726827488; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1726222965; x=1726827765; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=kx5BsABkoElJE7bjexxNubeyaOGJiSqqc8lQf9xJ58Q=;
-        b=B0oE51jGBj0ZKAyD0lA/QMotEfWtsZ6b4WgvUn91D7IPWfeYl6ifYJefTbU0/StIl+
-         iXum81AFs0Obvl7zhP5Ci/IlIJ6xTaIsr2rmjgjgNgHe0XfKBvlPrORVkxWWUQm7X86H
-         tgrL7gjU6bDpbmNLlc+ku4aA/i4JiArbIU3dm+mOEE6nbsIB7n71CK8nd1Rj9HRSghp2
-         TFVy4NLQfH9e97ZVkziqEhP+h1XkboklPKpFCuyPHdafcdFSz0MzGssTeT/BAcC3wN4k
-         rzDmpiSYGjGTcLExAW2n9xurqE8G8HmqQ7V7IefIPaQghKGBvWX9GAFhfWNMtIm7WSjh
-         09oQ==
+        bh=18HJPmcqEXXyJvV8T8rWQko0aJG/egli0EmhKuMX3Mk=;
+        b=LTQjDxAdl/q2eQ2glBp2rgOw1E0urzHHEVCvFOk1y3LAVd5LDERcPqWegWWtdnl/W6
+         ugC/2Y/d47EwSizEXJy4OGw5AK007bUZzhr23p17fLT5tFtk3SLDYS2MLokoX0UsbT+o
+         ErGahtobAQst6lUKITFKEPnlo9ZjNMaedwwRbIR3uGFi1lQXvhReT0FrRASQQKSlE15K
+         5Ca2sOotekMkLvCcaZInmnPbe4Y8lVjPJpmNKm5tr2UvqJ/WI8zDt3cp4tQEGCWr6OP8
+         AIeEWdcjEAtGP3g860wcNEy1CHStHouWVzBxuW+PR/5Ban5ctHaQLmjORtzdcd9cjnMx
+         S0YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726222688; x=1726827488;
+        d=1e100.net; s=20230601; t=1726222965; x=1726827765;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kx5BsABkoElJE7bjexxNubeyaOGJiSqqc8lQf9xJ58Q=;
-        b=l28xs8uNfPcRXk/3yf0DkgxWNIgLDa4JqjrMQfLQS6XpoH15iU9hkmugVEZMJ47e+S
-         NuCiOo3lGLP5VmD+3X00XNdWOP3fTJw59/P3EiMjyx2KC9+zrM980S6CMqbX1M6zF5oi
-         xgWtbzGoc8NC8oN1MeWBR7ADRqUgVZYrXPzPIgB5JJuayGh9VIhd/kudYrCY4YeenlKS
-         +pfGi+Rdu1oBwtEn7vlZiAVxxnwPaM1JQpmyvESjASaJ1+b5dXUbVz1JFoldz6NQnuRg
-         ehuvzq67MVPGd/yVHu02ySFO/u/33ur/UF1ixf38Gf9rb1e9fzo/RJj9c5ciMkS/0JL8
-         gKuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMYH9fsGMWdSR2nbjQRFvb2y8xpb75O99u4+WVA897aJEFgvy52xVPBs/hVETyn2C/QrMQIwDCEuFe@vger.kernel.org, AJvYcCWpCLx0eSEGwM+YB+7/KqgzAp/MjeZbT6IuzYtFHzu/r8SgzgG+7sYOUEfG6n3ab+qlxfVqqEUjHmXA@vger.kernel.org, AJvYcCX+U56JJmtkchdlGxwQO6WhwFSDpGHBddVsyS0igY/kF3OGoTu77TtpFmdN7w/ZmFaGQprVDJFZxGsDGzPo@vger.kernel.org, AJvYcCXQ1xsMMYPXnEcg9QQLvtq3tpO3ideoaX2wF45BaTv5YMwYeQNFWk+Bs3DubEJxU/vclV/zPMREPQ9i@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhZbci6+aoN0spfXpzJTn2vY5B2KVPvBZXoChT4mWQ0HTIFaha
-	BknM/rwe/Wl539rv+2DHO9ApcF7Ezy2pFZbJTwAf7SdN+sVvTGPu
-X-Google-Smtp-Source: AGHT+IEErEMp5HKQGF5Xiah+gi6I3jO7IyCsIxXTBZS6IkyJs7SzH7NjDnG+zYgZu1BvEiIjkfAT/g==
-X-Received: by 2002:a05:600c:1caa:b0:42c:a574:6364 with SMTP id 5b1f17b1804b1-42cdb531b89mr45506795e9.12.1726222686967;
-        Fri, 13 Sep 2024 03:18:06 -0700 (PDT)
+        bh=18HJPmcqEXXyJvV8T8rWQko0aJG/egli0EmhKuMX3Mk=;
+        b=rQYiuYt121xzSDI9IQ1pdQyI/M1UdDcMc7WXsyYapxn0PoRmVj1xQyZcN3n8XzmlxD
+         wMaWs7Bfc0ankAM9c14acSlF2BahWwGEljweOrxFWBrUn28/x+wg0NbkQMBoRoFGxvLw
+         MZZ3nCqDSmAEwjKIslOiuWgWIBbG1cDwuJaWpjsrtas9qUJK4uGzT+6lXCu9NSdcayJE
+         htMFVYVo8J3FvaYuI1eKd78M1qL490Q2D6QEoGvEVoswCooF3uaHv3T+qvV9xh6htq30
+         honWgmSF/N1aMX58oS25Y9Pzmsuu20YUAkNJ7J2n2LElKZTVS8o4YI60bJlCeCmBPZVr
+         eFPA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9Zwuv5U2DguA4BekHPjNRsSseY1f2w3kKjVtJIIAcYiCeKcLY9L/UF3mRwp0nXQfF47fZiFJx0eKc@vger.kernel.org, AJvYcCW8F+Q8ZbcakZN2x1kPkXQzJBvznHiuIeOLfYMPEoWtm2e5Oal6+csUsPtFC4RqIVsjQJGFnarvxTz9RBc2@vger.kernel.org, AJvYcCXjGJDbDjHERXn4iUZcaQxVxUaeBQScV36nESmGk7eGXsMl6LRUiyqqjS8Og5uwNWyYfMZ+9NSQhBYk@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2IFg0GaKC+L82XmvSzuqCVFR2cClJMKNlS3FCmXKaIGwXMg42
+	b6i59NIT+6xLkV/I3CoprPX2GkrAmDNiOsjeGtdvlUUEC7Z5QCx10qit2ZthrtM=
+X-Google-Smtp-Source: AGHT+IE2oRO8gzP3HuOLAgzaQwrEZIClU2McKF3cmYlx766LK0w97Dkkp1mnfnXoUl27u/X4QXioPQ==
+X-Received: by 2002:a5d:4cc6:0:b0:368:5a8c:580b with SMTP id ffacd0b85a97d-378d61e2b19mr1428775f8f.19.1726222964101;
+        Fri, 13 Sep 2024 03:22:44 -0700 (PDT)
 Received: from ?IPv6:2001:a61:341e:1201:c434:b5b1:98a6:efed? ([2001:a61:341e:1201:c434:b5b1:98a6:efed])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42d9b05a700sm19998105e9.10.2024.09.13.03.18.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42cc01d4617sm95916615e9.0.2024.09.13.03.22.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 03:18:06 -0700 (PDT)
-Message-ID: <0a4e7fe39cf36774b28c86f6baab5ef8c20e3d6b.camel@gmail.com>
-Subject: Re: [PATCH 4/6] iio: adc: ad4030: add support for ad4630-24 and
- ad4630-16
+        Fri, 13 Sep 2024 03:22:43 -0700 (PDT)
+Message-ID: <3c2e0d65225f20c04722f017f7866a47c346782e.camel@gmail.com>
+Subject: Re: [PATCH 2/6] iio: adc: ad4030: add driver for ad4030-24
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Esteban Blanc <eblanc@baylibre.com>, Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno Sa
- <nuno.sa@analog.com>,  Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
- linux-doc@vger.kernel.org
-Date: Fri, 13 Sep 2024 12:18:05 +0200
-In-Reply-To: <D452E2M75XCM.13OQGAPJ7JJ4A@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>, Esteban Blanc
+ <eblanc@baylibre.com>,  Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>,  Jonathan Cameron
+ <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno Sa
+ <nuno.sa@analog.com>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Date: Fri, 13 Sep 2024 12:22:43 +0200
+In-Reply-To: <28fa2ba9-9b02-43ac-b070-85a173a5db60@baylibre.com>
 References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
-	 <20240822-eblanc-ad4630_v1-v1-4-5c68f3327fdd@baylibre.com>
-	 <20240826102748.4be0b642@jic23-huawei>
-	 <D452E2M75XCM.13OQGAPJ7JJ4A@baylibre.com>
+	 <20240822-eblanc-ad4630_v1-v1-2-5c68f3327fdd@baylibre.com>
+	 <28fa2ba9-9b02-43ac-b070-85a173a5db60@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
@@ -95,102 +93,125 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Fri, 2024-09-13 at 09:55 +0000, Esteban Blanc wrote:
-> On Mon Aug 26, 2024 at 9:27 AM UTC, Jonathan Cameron wrote:
-> > On Thu, 22 Aug 2024 14:45:20 +0200
-> > Esteban Blanc <eblanc@baylibre.com> wrote:
-> > > @@ -460,12 +517,21 @@ static int ad4030_conversion(struct ad4030_stat=
-e *st,
-> > > =C2=A0	if (ret)
-> > > =C2=A0		return ret;
-> > > =C2=A0
-> > > -	if (st->mode !=3D AD4030_OUT_DATA_MD_24_DIFF_8_COM)
-> > > +	if (st->chip->num_channels =3D=3D 2)
-> > > +		ad4030_extract_interleaved(st->rx_data.raw,
-> > > +					=C2=A0=C2=A0 &st->rx_data.diff[0],
-> > > +					=C2=A0=C2=A0 &st->rx_data.diff[1]);
-> > > +
-> > > +	if (st->mode !=3D AD4030_OUT_DATA_MD_16_DIFF_8_COM &&
-> > > +	=C2=A0=C2=A0=C2=A0 st->mode !=3D AD4030_OUT_DATA_MD_24_DIFF_8_COM)
-> > > =C2=A0		return 0;
-> > > =C2=A0
-> > > =C2=A0	byte_index =3D BITS_TO_BYTES(chan->scan_type.realbits);
-> > > -	for (i =3D 0; i < st->chip->num_channels; i++)
-> > > -		st->rx_data.buffered[i].common =3D ((u8 *)&st-
-> > > >rx_data.buffered[i].val)[byte_index];
-> > > +	/* Doing it backward to avoid overlap when reordering */
-> > > +	for (i =3D st->chip->num_channels - 1; i > 0; i--) {
-> > > +		st->rx_data.buffered_common[i].diff =3D st->rx_data.diff[i];
-> > > +		st->rx_data.buffered_common[i].common =3D ((u8 *)&st-
-> > > >rx_data.diff[i])[byte_index];
-> > > +	}
+Hi Esteban,
+
+Just one remark...
+
+On Thu, 2024-08-22 at 14:39 -0500, David Lechner wrote:
+> On 8/22/24 7:45 AM, Esteban Blanc wrote:
+> > This adds a new driver for the Analog Devices INC. AD4030-24 ADC.
 > >=20
-> > I wonder if doing it in place is actually worthwhile.=C2=A0 Maybe unpac=
-k into a second
-> > array? That is still fairly small and may make code easier to read.
+> > The driver implements basic support for the AD4030-24 1 channel
+> > differential ADC with hardware gain and offset control.
+> >=20
+> > Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
+> > ---
+> > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> > =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0 13 +
+> > =C2=A0drivers/iio/adc/Makefile |=C2=A0=C2=A0 1 +
+> > =C2=A0drivers/iio/adc/ad4030.c | 854 ++++++++++++++++++++++++++++++++++=
++++++++++++++
+> > =C2=A04 files changed, 869 insertions(+)
+> >=20
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index f17c42bea19c..6a5a0e7b7a51 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -420,6 +420,7 @@ R:	Esteban Blanc <eblanc@baylibre.com>
+> > =C2=A0S:	Supported
+> > =C2=A0W:	https://ez.analog.com/linux-software-drivers
+> > =C2=A0F:	Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+> > +F:	drivers/iio/adc/ad4030.c
+> > =C2=A0
+> > =C2=A0AD5110 ANALOG DEVICES DIGITAL POTENTIOMETERS DRIVER
+> > =C2=A0M:	Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > index 88e8ce2e78b3..f4bd05780f6f 100644
+> > --- a/drivers/iio/adc/Kconfig
+> > +++ b/drivers/iio/adc/Kconfig
+> > @@ -33,6 +33,19 @@ config AD4000
+> > =C2=A0	=C2=A0 To compile this driver as a module, choose M here: the mo=
+dule will be
+> > =C2=A0	=C2=A0 called ad4000.
+> > =C2=A0
+> > +config AD4030
+> > +	tristate "Analog Device AD4630 ADC Driver"
+> > +	depends on SPI
+> > +	depends on GPIOLIB
+> > +	select REGMAP_SPI
 >=20
-> Okay sure
+> It looks like we are just using REGMAP, not REGMAP_SPI.
 >=20
-> > > +static const unsigned long ad4630_channel_masks[] =3D {
-> > > +	/* Differential only */
-> > > +	BIT(0) | BIT(2),
-> > > +	/* Differential with common byte */
-> > > +	GENMASK(3, 0),
-> > The packing of data isn't going to be good. How bad to shuffle
-> > to put the two small channels next to each other?
-> > Seems like it means you will want to combine your deinterleave
-> > and channel specific handling above, which is a bit fiddly but
-> > not much worse than current code.
+> > +	select IIO_BUFFER
 >=20
-> I can do it since that was what I had done in the RFC in the first place.
-> Nuno asked for in this email
-> https://lore.kernel.org/r/0036d44542f8cf45c91c867f0ddd7b45d1904d6b.camel@=
-gmail.com/
-> :
+> And also select IIO_TRIGGERED_BUFFER?
 >=20
-> > > > * You're pushing the CM channels into the end. So when we a 2 chann=
-el device
-> > > > we'll have:
+> > +	help
+> > +	=C2=A0 Say yes here to build support for Analog Devices AD4030 and AD=
+4630
+> > high speed
+> > +	=C2=A0 SPI analog to digital converters (ADC).
+> > +
+> > +	=C2=A0 To compile this driver as a module, choose M here: the module =
+will be
+> > +	=C2=A0 called ad4030.
+> > +
+> > =C2=A0config AD4130
+> > =C2=A0	tristate "Analog Device AD4130 ADC Driver"
+> > =C2=A0	depends on SPI
+> > diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> > index 8b80664c6d6b..0e4f833abf0b 100644
+> > --- a/drivers/iio/adc/Makefile
+> > +++ b/drivers/iio/adc/Makefile
+> > @@ -7,6 +7,7 @@
+> > =C2=A0obj-$(CONFIG_AB8500_GPADC) +=3D ab8500-gpadc.o
+> > =C2=A0obj-$(CONFIG_AD_SIGMA_DELTA) +=3D ad_sigma_delta.o
+> > =C2=A0obj-$(CONFIG_AD4000) +=3D ad4000.o
+> > +obj-$(CONFIG_AD4030) +=3D ad4030.o
+> > =C2=A0obj-$(CONFIG_AD4130) +=3D ad4130.o
+> > =C2=A0obj-$(CONFIG_AD4695) +=3D ad4695.o
+> > =C2=A0obj-$(CONFIG_AD7091R) +=3D ad7091r-base.o
+> > diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
+> > new file mode 100644
+> > index 000000000000..a981dce988e5
+> > --- /dev/null
+> > +++ b/drivers/iio/adc/ad4030.c
+> > @@ -0,0 +1,854 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Analog Devices AD4030 and AD4630 ADC family driver.
+> > + *
+> > + * Copyright 2024 Analog Devices, Inc.
+> > + * Copyright 2024 BayLibre, SAS
+> > + *
+> > + * based on code from:
+> > + *	Analog Devices, Inc.
+> > + *	=C2=A0 Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> > + *	=C2=A0 Nuno Sa <nuno.sa@analog.com>
+> > + *	=C2=A0 Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > + *	=C2=A0 Liviu Adace <liviu.adace@analog.com>
+> > + */
+> > +	.type =3D IIO_VOLTAGE,						\
+> > +	.indexed =3D 1,							\
+> > +	.channel =3D _idx * 2 + 2,					\
+> > +	.scan_index =3D _idx * 2 + 1,					\
+> > +	.extend_name =3D "Channel" #_idx " common byte part",		\
 >=20
-> > > > in_voltage0 - diff
-> > > > in_voltage1 - diff
-> > > > in_voltage2 - CM associated with chan0
-> > > > in_voltage0 - CM associated with chan1
-> > > >=20
-> > > > I think we could make it so the CM channel comes right after the ch=
-annel
-> > > > where
-> > > > it's data belongs too. So for example, odd channels would be CM cha=
-nnels (and
-> > > > labels could also make sense).
+> Labels are usually one word and reflect the datasheet name.
 >=20
-> So that's what I did here :D
->=20
-> For the software side off things here it doesn't change a lot of things
-> since we have to manipulate the data anyway, putting the extra byte at th=
-e
-> end or in between is no extra work.
-> For the offload engine however, it should be easier to ask for 24 bits
-> then 8 bits for each channel as it would return two u32 per "hardware
-> channel".
->=20
-> In order to avoid having two different layouts, I was kind of sold by
-> Nuno's idea of having the CM in between each diff channel.
+> Suggest `"common-mode" #_idx` or `"CM" #_idx` for this one.
 >=20
 
-Tbh, I was not even thinking about the layout when I proposed the arrangeme=
-nt. Just
-made sense to me (from a logical point of view) to have them together as th=
-ey relate
-to the same physical channel. FWIW, we're also speaking bytes in here so no=
-t sure if
-it's that important (or bad).
-
-That said, as we should have labels anyways, I'm not being the blocker if e=
-veryone
-else prefers to have the RFC layout :)
+Also, .extend_name is not to be used anymore... In the end of the day IIO w=
+ill create
+label files anyways but from what I remember about this, extend_name is not=
+ to be
+directly used this anymore (so other think it's still fine). Instead, use t=
+he label
+callback.
 
 - Nuno S=C3=A1
-
-
+>=20
+>=20
 

@@ -1,61 +1,57 @@
-Return-Path: <linux-iio+bounces-9548-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9549-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786A89790E8
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 15:27:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3917979103
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 15:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9181C2120C
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 13:27:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B57A1F22CA7
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 13:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983B61CF7BD;
-	Sat, 14 Sep 2024 13:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2556C1CFEC3;
+	Sat, 14 Sep 2024 13:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PWCGzEoK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UB91XjC2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D23E1CF5FC;
-	Sat, 14 Sep 2024 13:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19B81CFEC0;
+	Sat, 14 Sep 2024 13:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726320462; cv=none; b=LIMdZAW72PV2Wpp5Rb8EjRccsuk1Qofy0J6J9KICAqZLUGAq25RjvW8EjS4yYAcLjkE2WDibOhKQI24OvDO7lpQADW4tgfPU8GhwRBNARMq+7rnxymJY3vMGJj96QbMXnIMB6wiVhYRV5Uyz2TkaV3QQg8AcMEASgcpZybBOIBs=
+	t=1726320894; cv=none; b=O6TV3uS5zcuux68XfKVHGIQd7Eqm8Am0Lh06XIDXlapz9x/u1bj21L9HzM3LnkNE8sFiFc5nqt1Mgn/y0gDDEKFidWejlthFYeCUxqWdXMFgKeK1o84YpM5lzkohL/hqWYr0GhUw3Z5r2jGheK3ROABUiEVe5bYdFo6BTkEq5U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726320462; c=relaxed/simple;
-	bh=CltfCIwmJ9gTdLOuKsqwCDhjQQ668Etn27WjWdq8nFc=;
+	s=arc-20240116; t=1726320894; c=relaxed/simple;
+	bh=UA+Ahx4H9tczSchnnxH6+0vhcc1dZN7jl6skWGzRNik=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bxRS4WETpphjuqRBc2la4kAkroTN6ccUxE5Yfwoly2fqS2LwebgGpTZf8acrP1KXLdzHMcyCW9p2f4QRqJncKjZwr3Jbs8a3bYZl2+c/yQ2P2qkwYDo1Nz9kWbDQ98d6Br75Ce84JJL+11z950G6VbOr9d8jwUVi0OYdwR4lVVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PWCGzEoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780BAC4CEC0;
-	Sat, 14 Sep 2024 13:27:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gTS0odC9GngywAQUMexyymJELtOSjetDnxrwv9iKzQcw9SQCW8rqAe8PD5pPEaR6rs2R+ZFig2F84RdR/B2ru4Ggj2+5B1TwUX3f16Jg1u6uhC946wLBxMJfCtZX03XGDeF3Zv9b8OZsIN8H0Xk6eHv80VEAIqM4xhgs65CHxOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UB91XjC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23625C4CEC4;
+	Sat, 14 Sep 2024 13:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726320462;
-	bh=CltfCIwmJ9gTdLOuKsqwCDhjQQ668Etn27WjWdq8nFc=;
+	s=k20201202; t=1726320894;
+	bh=UA+Ahx4H9tczSchnnxH6+0vhcc1dZN7jl6skWGzRNik=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PWCGzEoK249129i3r4OdmbnkEy5kcpSAySANxTBO/f/A21ZlvI58rgtyBahLKRPkf
-	 ydncry8qwIX9vuziAO4OFiyS7WYSgBi76ecgXDbQ6T5B8BXPERB5ojRN+U4lS0FWdP
-	 HGyOMCgDUiJzNiMzKIPSqbQQttiEjJCbYK6ShDO3pDei2nXWVZ9ZHemxzw4otkxuLw
-	 UrLdVQiVIfQ60i/hgRcSWZ7rmSZCfgYoShygo+KaiBONEFt1rHXWLRqyoC8P+7tJG0
-	 0Bldn8qAns+Ao9sFFNLozrMLuHpopOuIBbz8UL89KMu/VBYGJlild7uEv5k9U0AFcw
-	 SAlChWDs0DTpw==
-Date: Sat, 14 Sep 2024 14:27:34 +0100
+	b=UB91XjC218s25Sy2De+b4V2ibsDA9Q+Vyo6YcmImVVVbwvkpSHAZkf2PH2TTulRu8
+	 UUka/7icjjCq3Lg4lbkIedFM2IexO4umoPBuS/QGB58BQy5KSd4PEfQ+yamU1viXWM
+	 4+7sXqVjthK/xMY0me1kO+XpmwJ4S+NHWHzNMInE3Qbvs1ybFdM4DuxrjcIMoBF5uC
+	 RwR6oKrSZwOKgjeuzdE1l9Ld29LawEGk3XeGKCG9OvCebGbGjB0wnqutz4l0lS4slW
+	 idMJWXdJegu16/RaP65VUkgG36V1FIoG70h6c1fzefa1DsWw3KWbD9SaaPAifipD+w
+	 be1VEsRUtvsWQ==
+Date: Sat, 14 Sep 2024 14:34:47 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alex Lanzano <lanzano.alex@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jagath Jog J <jagathjog1996@gmail.com>, Ramona
- Gradinariu <ramona.bolboaca13@gmail.com>, Nuno Sa <nuno.sa@analog.com>,
- linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: imu: Add i2c driver for bmi270 imu
-Message-ID: <20240914142734.4bcf14bc@jic23-huawei>
-In-Reply-To: <20240912210749.3080157-3-lanzano.alex@gmail.com>
-References: <20240912210749.3080157-1-lanzano.alex@gmail.com>
-	<20240912210749.3080157-3-lanzano.alex@gmail.com>
+To: Abhash Jha <abhashkumarjha123@gmail.com>
+Cc: linux-iio@vger.kernel.org, songqiang1304521@gmail.com, lars@metafoo.de,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] iio: proximity: vl53l0x-i2c: Added continuous
+ mode support
+Message-ID: <20240914143447.1c5d5623@jic23-huawei>
+In-Reply-To: <20240909101508.263085-3-abhashkumarjha123@gmail.com>
+References: <20240909101508.263085-1-abhashkumarjha123@gmail.com>
+	<20240909101508.263085-3-abhashkumarjha123@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,536 +62,145 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 12 Sep 2024 17:07:19 -0400
-Alex Lanzano <lanzano.alex@gmail.com> wrote:
+On Mon,  9 Sep 2024 15:45:07 +0530
+Abhash Jha <abhashkumarjha123@gmail.com> wrote:
 
-> Add initial i2c support for the Bosch BMI270 6-axis IMU.
-> Provides raw read access to acceleration and angle velocity measurements
-> via iio channels. Device configuration requires firmware provided by
-> Bosch and is requested and load from userspace.
+> The continuous mode of the sensor is enabled in the buffer_postenable.
+> Replaced the original irq handler with a threaded irq handler to perform
+> i2c reads during continuous mode.
+> The continuous mode is disabled by disabling the buffer.
+> Added a trigger for this device to be used for continuous mode.
 > 
-> Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
+> Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+Hi Abhash,
 
-Hi Alex,
-
-A bunch of fairly minor stuff so I've just tweaked it whilst applying rather
-than wasting time on going around again.
-
-I also changed a few line wraps to keep lines a bit shorter.
-Where it doesn't hurt readability 80 chars is still my preference for IIO.
-
-The diff of the tweaks I made is as follows. Shout if I messed anything up!
+Applied this with a couple of minor tweaks (see below) to the
+testing branch of iio.git.  I'll be rebasing that tree on rc1 once
+available and pushing out as togreg which gets picked up by linux-next.
 
 Thanks,
 
 Jonathan
 
-diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
-index 4af4098d8e82..608b29ea58a3 100644
---- a/drivers/iio/imu/bmi270/bmi270.h
-+++ b/drivers/iio/imu/bmi270/bmi270.h
-@@ -3,53 +3,9 @@
- #ifndef BMI270_H_
- #define BMI270_H_
- 
--#include <linux/iio/iio.h>
--
--#define BMI270_CHIP_ID_REG                             0x00
--#define BMI270_CHIP_ID_VAL                             0x24
--#define BMI270_CHIP_ID_MSK                             GENMASK(7, 0)
--
--#define BMI270_ACCEL_X_REG                             0x0c
--#define BMI270_ANG_VEL_X_REG                           0x12
--
--#define BMI270_INTERNAL_STATUS_REG                     0x21
--#define BMI270_INTERNAL_STATUS_MSG_MSK                 GENMASK(3, 0)
--#define BMI270_INTERNAL_STATUS_MSG_INIT_OK             0x01
--
--#define BMI270_INTERNAL_STATUS_AXES_REMAP_ERR_MSK      BIT(5)
--#define BMI270_INTERNAL_STATUS_ODR_50HZ_ERR_MSK                BIT(6)
--
--#define BMI270_ACC_CONF_REG                            0x40
--#define BMI270_ACC_CONF_ODR_MSK                                GENMASK(3, 0)
--#define BMI270_ACC_CONF_ODR_100HZ                      0x08
--#define BMI270_ACC_CONF_BWP_MSK                                GENMASK(6, 4)
--#define BMI270_ACC_CONF_BWP_NORMAL_MODE                        0x02
--#define BMI270_ACC_CONF_FILTER_PERF_MSK                        BIT(7)
--
--#define BMI270_GYR_CONF_REG                            0x42
--#define BMI270_GYR_CONF_ODR_MSK                                GENMASK(3, 0)
--#define BMI270_GYR_CONF_ODR_200HZ                      0x09
--#define BMI270_GYR_CONF_BWP_MSK                                GENMASK(5, 4)
--#define BMI270_GYR_CONF_BWP_NORMAL_MODE                        0x02
--#define BMI270_GYR_CONF_NOISE_PERF_MSK                 BIT(6)
--#define BMI270_GYR_CONF_FILTER_PERF_MSK                        BIT(7)
--
--#define BMI270_INIT_CTRL_REG                           0x59
--#define BMI270_INIT_CTRL_LOAD_DONE_MSK                 BIT(0)
--
--#define BMI270_INIT_DATA_REG                           0x5e
--
--#define BMI270_PWR_CONF_REG                            0x7c
--#define BMI270_PWR_CONF_ADV_PWR_SAVE_MSK               BIT(0)
--#define BMI270_PWR_CONF_FIFO_WKUP_MSK                  BIT(1)
--#define BMI270_PWR_CONF_FUP_EN_MSK                     BIT(2)
--
--#define BMI270_PWR_CTRL_REG                            0x7d
--#define BMI270_PWR_CTRL_AUX_EN_MSK                     BIT(0)
--#define BMI270_PWR_CTRL_GYR_EN_MSK                     BIT(1)
--#define BMI270_PWR_CTRL_ACCEL_EN_MSK                   BIT(2)
--#define BMI270_PWR_CTRL_TEMP_EN_MSK                    BIT(3)
-+#include <linux/regmap.h>
- 
-+struct device;
- struct bmi270_data {
-        struct device *dev;
-        struct regmap *regmap;
-iff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-index 319e5601d9e7..8e45343d6472 100644
---- a/drivers/iio/imu/bmi270/bmi270_core.c
-+++ b/drivers/iio/imu/bmi270/bmi270_core.c
-@@ -1,14 +1,60 @@
- // SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- 
-+#include <linux/bitfield.h>
- #include <linux/firmware.h>
- #include <linux/i2c.h>
--#include <linux/iio/iio.h>
- #include <linux/module.h>
- #include <linux/regmap.h>
--#include <linux/bitfield.h>
-+
-+#include <linux/iio/iio.h>
- 
- #include "bmi270.h"
- 
-+#define BMI270_CHIP_ID_REG                             0x00
-+#define BMI270_CHIP_ID_VAL                             0x24
-+#define BMI270_CHIP_ID_MSK                             GENMASK(7, 0)
-+
-+#define BMI270_ACCEL_X_REG                             0x0c
-+#define BMI270_ANG_VEL_X_REG                           0x12
-+
-+#define BMI270_INTERNAL_STATUS_REG                     0x21
-+#define BMI270_INTERNAL_STATUS_MSG_MSK                 GENMASK(3, 0)
-+#define BMI270_INTERNAL_STATUS_MSG_INIT_OK             0x01
-+
-+#define BMI270_INTERNAL_STATUS_AXES_REMAP_ERR_MSK      BIT(5)
-+#define BMI270_INTERNAL_STATUS_ODR_50HZ_ERR_MSK                BIT(6)
-+
-+#define BMI270_ACC_CONF_REG                            0x40
-+#define BMI270_ACC_CONF_ODR_MSK                                GENMASK(3, 0)
-+#define BMI270_ACC_CONF_ODR_100HZ                      0x08
-+#define BMI270_ACC_CONF_BWP_MSK                                GENMASK(6, 4)
-+#define BMI270_ACC_CONF_BWP_NORMAL_MODE                        0x02
-+#define BMI270_ACC_CONF_FILTER_PERF_MSK                        BIT(7)
-+
-+#define BMI270_GYR_CONF_REG                            0x42
-+#define BMI270_GYR_CONF_ODR_MSK                                GENMASK(3, 0)
-+#define BMI270_GYR_CONF_ODR_200HZ                      0x09
-+#define BMI270_GYR_CONF_BWP_MSK                                GENMASK(5, 4)
-+#define BMI270_GYR_CONF_BWP_NORMAL_MODE                        0x02
-+#define BMI270_GYR_CONF_NOISE_PERF_MSK                 BIT(6)
-+#define BMI270_GYR_CONF_FILTER_PERF_MSK                        BIT(7)
-+
-+#define BMI270_INIT_CTRL_REG                           0x59
-+#define BMI270_INIT_CTRL_LOAD_DONE_MSK                 BIT(0)
-+
-+#define BMI270_INIT_DATA_REG                           0x5e
-+
-+#define BMI270_PWR_CONF_REG                            0x7c
-+#define BMI270_PWR_CONF_ADV_PWR_SAVE_MSK               BIT(0)
-+#define BMI270_PWR_CONF_FIFO_WKUP_MSK                  BIT(1)
-+#define BMI270_PWR_CONF_FUP_EN_MSK                     BIT(2)
-+
-+#define BMI270_PWR_CTRL_REG                            0x7d
-+#define BMI270_PWR_CTRL_AUX_EN_MSK                     BIT(0)
-+#define BMI270_PWR_CTRL_GYR_EN_MSK                     BIT(1)
-+#define BMI270_PWR_CTRL_ACCEL_EN_MSK                   BIT(2)
-+#define BMI270_PWR_CTRL_TEMP_EN_MSK                    BIT(3)
-+
- #define BMI270_INIT_DATA_FILE "bmi270-init-data.fw"
+> ---
+>  drivers/iio/proximity/vl53l0x-i2c.c | 161 +++++++++++++++++++++++-----
+>  1 file changed, 135 insertions(+), 26 deletions(-)
+> 
+> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
+> index 3f416d3db..cbf030869 100644
+> --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> @@ -22,6 +22,12 @@
+>  #include <linux/module.h>
+>  
+>  #include <linux/iio/iio.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/trigger.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +
+> +#include <asm/unaligned.h>
+>  
+>  #define VL_REG_SYSRANGE_START				0x00
+>  
+> @@ -43,20 +49,70 @@
+>  #define VL_REG_RESULT_RANGE_STATUS_COMPLETE		BIT(0)
+>  
+>  #define VL53L0X_MODEL_ID_VAL				0xEE
+> +#define VL53L0X_CONTINUOUS_MODE				0x02
+> +#define VL53L0X_SINGLE_MODE				0x01
+>  
+>  struct vl53l0x_data {
+>  	struct i2c_client *client;
+>  	struct completion completion;
+>  	struct regulator *vdd_supply;
+>  	struct gpio_desc *reset_gpio;
+> +	struct iio_trigger *trig;
+> +
+> +	struct {
+> +		u16 chan;
+> +		s64 timestamp __aligned(8);
+I tweak this whilst applying to use the new aligned_s64
+(the patch crossed with yours)
 
- enum bmi270_scan {
-@@ -35,10 +81,10 @@ static int bmi270_get_data(struct bmi270_data *bmi270_device,
- 
-        switch (chan_type) {
-        case IIO_ACCEL:
--               reg = BMI270_ACCEL_X_REG + (axis - IIO_MOD_X) * sizeof(sample);
-+               reg = BMI270_ACCEL_X_REG + (axis - IIO_MOD_X) * 2;
-                break;
-        case IIO_ANGL_VEL:
--               reg = BMI270_ANG_VEL_X_REG + (axis - IIO_MOD_X) * sizeof(sample);
-+               reg = BMI270_ANG_VEL_X_REG + (axis - IIO_MOD_X) * 2;
-                break;
-        default:
-                return -EINVAL;
-@@ -82,7 +128,7 @@ static const struct iio_info bmi270_info = {
-        .channel2 = IIO_MOD_##_axis,                            \
-        .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),           \
-        .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |  \
--       BIT(IIO_CHAN_INFO_FREQUENCY),                           \
-+               BIT(IIO_CHAN_INFO_FREQUENCY),                   \
- }
- 
- #define BMI270_ANG_VEL_CHANNEL(_axis) {                                \
-@@ -91,7 +137,7 @@ static const struct iio_info bmi270_info = {
-        .channel2 = IIO_MOD_##_axis,                            \
-        .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),           \
-        .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |  \
--       BIT(IIO_CHAN_INFO_FREQUENCY),                           \
-+               BIT(IIO_CHAN_INFO_FREQUENCY),                   \
- }
- 
- static const struct iio_chan_spec bmi270_channels[] = {
-@@ -100,7 +146,7 @@ static const struct iio_chan_spec bmi270_channels[] = {
-        BMI270_ACCEL_CHANNEL(Z),
-        BMI270_ANG_VEL_CHANNEL(X),
-        BMI270_ANG_VEL_CHANNEL(Y),
--       BMI270_ANG_VEL_CHANNEL(Z)
-+       BMI270_ANG_VEL_CHANNEL(Z),
- };
- 
- static int bmi270_validate_chip_id(struct bmi270_data *bmi270_device)
-@@ -115,7 +161,7 @@ static int bmi270_validate_chip_id(struct bmi270_data *bmi270_device)
-                return dev_err_probe(dev, ret, "Failed to read chip id");
- 
-        if (chip_id != BMI270_CHIP_ID_VAL)
--               return dev_err_probe(dev, -ENODEV, "Invalid chip id 0x%x", chip_id);
-+               dev_info(dev, "Unknown chip id 0x%x", chip_id);
- 
-        return 0;
- }
-@@ -128,18 +174,24 @@ static int bmi270_write_calibration_data(struct bmi270_data *bmi270_device)
-        struct device *dev = bmi270_device->dev;
-        struct regmap *regmap = bmi270_device->regmap;
- 
--       ret = regmap_clear_bits(regmap, BMI270_PWR_CONF_REG, BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-+       ret = regmap_clear_bits(regmap, BMI270_PWR_CONF_REG,
-+                               BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-        if (ret)
--               return dev_err_probe(dev, ret, "Failed to write power configuration");
-+               return dev_err_probe(dev, ret,
-+                                    "Failed to write power configuration");
- 
--       /* After disabling advanced power save, all registers are accessible after a 450us delay
--        * This delay is specified in table A of the datasheet.
-+       /*
-+        * After disabling advanced power save, all registers are accessible
-+        * after a 450us delay. This delay is specified in table A of the
-+        * datasheet.
-         */
-        usleep_range(450, 1000);
- 
--       ret = regmap_clear_bits(regmap, BMI270_INIT_CTRL_REG, BMI270_INIT_CTRL_LOAD_DONE_MSK);
-+       ret = regmap_clear_bits(regmap, BMI270_INIT_CTRL_REG,
-+                               BMI270_INIT_CTRL_LOAD_DONE_MSK);
-        if (ret)
--               return dev_err_probe(dev, ret, "Failed to prepare device to load init data");
-+               return dev_err_probe(dev, ret,
-+                                    "Failed to prepare device to load init data");
- 
-        ret = request_firmware(&init_data, BMI270_INIT_DATA_FILE, dev);
-        if (ret)
-@@ -151,11 +203,14 @@ static int bmi270_write_calibration_data(struct bmi270_data *bmi270_device)
-        if (ret)
-                return dev_err_probe(dev, ret, "Failed to write init data");
- 
--       ret = regmap_set_bits(regmap, BMI270_INIT_CTRL_REG, BMI270_INIT_CTRL_LOAD_DONE_MSK);
-+       ret = regmap_set_bits(regmap, BMI270_INIT_CTRL_REG,
-+                             BMI270_INIT_CTRL_LOAD_DONE_MSK);
-        if (ret)
--               return dev_err_probe(dev, ret, "Failed to stop device initialization");
-+               return dev_err_probe(dev, ret,
-+                                    "Failed to stop device initialization");
- 
--       /* Wait at least 140ms for the device to complete configuration.
-+       /*
-+        * Wait at least 140ms for the device to complete configuration.
-         * This delay is specified in table C of the datasheet.
-         */
-        usleep_range(140000, 160000);
-@@ -231,7 +286,7 @@ int bmi270_core_probe(struct device *dev, struct regmap *regmap)
-        struct bmi270_data *bmi270_device;
-        struct iio_dev *indio_dev;
- 
--       indio_dev = devm_iio_device_alloc(dev, sizeof(struct bmi270_data *));
-+       indio_dev = devm_iio_device_alloc(dev, sizeof(*bmi270_device));
-        if (!indio_dev)
-                return -ENOMEM;
+> +	} scan;
+>  };
+>  
+>
+> @@ -153,7 +192,7 @@ static int vl53l0x_read_proximity(struct vl53l0x_data *data,
+>  		return -EREMOTEIO;
+>  
+>  	/* Values should be between 30~1200 in millimeters. */
+> -	*val = (buffer[10] << 8) + buffer[11];
+> +	*val = get_unaligned_be16(&buffer[10]);
 
-> diff --git a/drivers/iio/imu/bmi270/Makefile b/drivers/iio/imu/bmi270/Makefile
-> new file mode 100644
-> index 000000000000..ab4acaaee6d2
-> --- /dev/null
-> +++ b/drivers/iio/imu/bmi270/Makefile
-> @@ -0,0 +1,6 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# Makefile for Bosch BMI270 IMU
-> +#
-> +obj-$(CONFIG_BMI270) += bmi270_core.o
-> +obj-$(CONFIG_BMI270_I2C) += bmi270_i2c.o
-> diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
-> new file mode 100644
-> index 000000000000..4af4098d8e82
-> --- /dev/null
-> +++ b/drivers/iio/imu/bmi270/bmi270.h
-> @@ -0,0 +1,62 @@
-> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> +
-> +#ifndef BMI270_H_
-> +#define BMI270_H_
-> +
-> +#include <linux/iio/iio.h>
-no obvious reason for this.  Headers should only include things
-they need.
+In theory this should have been a different patch, but meh it's tiny so
+I'll just take it in here.
 
-However you do need some forward definitions for
-struct device;
-and an include of regmap.h for the regmap_config.
-
-> +
-> +#define BMI270_CHIP_ID_REG				0x00
-> +#define BMI270_CHIP_ID_VAL				0x24
-> +#define BMI270_CHIP_ID_MSK				GENMASK(7, 0)
-> +
-> +#define BMI270_ACCEL_X_REG				0x0c
-> +#define BMI270_ANG_VEL_X_REG				0x12
-> +
-> +#define BMI270_INTERNAL_STATUS_REG			0x21
-> +#define BMI270_INTERNAL_STATUS_MSG_MSK			GENMASK(3, 0)
-> +#define BMI270_INTERNAL_STATUS_MSG_INIT_OK		0x01
-> +
-> +#define BMI270_INTERNAL_STATUS_AXES_REMAP_ERR_MSK	BIT(5)
-> +#define BMI270_INTERNAL_STATUS_ODR_50HZ_ERR_MSK		BIT(6)
-> +
-> +#define BMI270_ACC_CONF_REG				0x40
-> +#define BMI270_ACC_CONF_ODR_MSK				GENMASK(3, 0)
-> +#define BMI270_ACC_CONF_ODR_100HZ			0x08
-> +#define BMI270_ACC_CONF_BWP_MSK				GENMASK(6, 4)
-> +#define BMI270_ACC_CONF_BWP_NORMAL_MODE			0x02
-> +#define BMI270_ACC_CONF_FILTER_PERF_MSK			BIT(7)
-> +
-> +#define BMI270_GYR_CONF_REG				0x42
-> +#define BMI270_GYR_CONF_ODR_MSK				GENMASK(3, 0)
-> +#define BMI270_GYR_CONF_ODR_200HZ			0x09
-> +#define BMI270_GYR_CONF_BWP_MSK				GENMASK(5, 4)
-> +#define BMI270_GYR_CONF_BWP_NORMAL_MODE			0x02
-> +#define BMI270_GYR_CONF_NOISE_PERF_MSK			BIT(6)
-> +#define BMI270_GYR_CONF_FILTER_PERF_MSK			BIT(7)
-> +
-> +#define BMI270_INIT_CTRL_REG				0x59
-> +#define BMI270_INIT_CTRL_LOAD_DONE_MSK			BIT(0)
-> +
-> +#define BMI270_INIT_DATA_REG				0x5e
-> +
-> +#define BMI270_PWR_CONF_REG				0x7c
-> +#define BMI270_PWR_CONF_ADV_PWR_SAVE_MSK		BIT(0)
-> +#define BMI270_PWR_CONF_FIFO_WKUP_MSK			BIT(1)
-> +#define BMI270_PWR_CONF_FUP_EN_MSK			BIT(2)
-> +
-> +#define BMI270_PWR_CTRL_REG				0x7d
-> +#define BMI270_PWR_CTRL_AUX_EN_MSK			BIT(0)
-> +#define BMI270_PWR_CTRL_GYR_EN_MSK			BIT(1)
-> +#define BMI270_PWR_CTRL_ACCEL_EN_MSK			BIT(2)
-> +#define BMI270_PWR_CTRL_TEMP_EN_MSK			BIT(3)
-Currently all these defines are just used in the core c file.
-So I'd move them there for now. We can drag them back into the header
-if the spi bus driver needs them.
-
-> +
-> +struct bmi270_data {
-> +	struct device *dev;
-> +	struct regmap *regmap;
-> +};
-> +
-> +extern const struct regmap_config bmi270_regmap_config;
-> +
-> +int bmi270_core_probe(struct device *dev, struct regmap *regmap);
-> +
-> +#endif  /* BMI270_H_ */
-> diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-> new file mode 100644
-> index 000000000000..319e5601d9e7
-> --- /dev/null
-> +++ b/drivers/iio/imu/bmi270/bmi270_core.c
-> @@ -0,0 +1,258 @@
-> +// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +
-> +#include <linux/firmware.h>
-> +#include <linux/i2c.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +#include <linux/bitfield.h>
-> +
-> +#include "bmi270.h"
-> +
-> +#define BMI270_INIT_DATA_FILE "bmi270-init-data.fw"
-> +
-> +enum bmi270_scan {
-> +	BMI270_SCAN_ACCEL_X,
-> +	BMI270_SCAN_ACCEL_Y,
-> +	BMI270_SCAN_ACCEL_Z,
-> +	BMI270_SCAN_GYRO_X,
-> +	BMI270_SCAN_GYRO_Y,
-> +	BMI270_SCAN_GYRO_Z,
-> +};
-> +
-> +const struct regmap_config bmi270_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +};
-> +EXPORT_SYMBOL_NS_GPL(bmi270_regmap_config, IIO_BMI270);
-> +
-> +static int bmi270_get_data(struct bmi270_data *bmi270_device,
-> +			   int chan_type, int axis, int *val)
+>  
+>  	return 0;
+>  }
+> @@ -163,7 +202,14 @@ static const struct iio_chan_spec vl53l0x_channels[] = {
+>  		.type = IIO_DISTANCE,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>  				      BIT(IIO_CHAN_INFO_SCALE),
+> +		.scan_index = 0,
+> +		.scan_type = {
+> +			.sign = 'u',
+> +			.realbits = 12,
+> +			.storagebits = 16,
+> +		},
+>  	},
+> +	IIO_CHAN_SOFT_TIMESTAMP(1),
+>  };
+>  
+>  static int vl53l0x_read_raw(struct iio_dev *indio_dev,
+> @@ -193,8 +239,16 @@ static int vl53l0x_read_raw(struct iio_dev *indio_dev,
+>  	}
+>  }
+>  
+> +static int vl53l0x_validate_trigger(struct iio_dev *indio_dev, struct iio_trigger *trig)
 > +{
-> +	__le16 sample;
-> +	int reg;
+> +	struct vl53l0x_data *data = iio_priv(indio_dev);
+> +
+> +	return data->trig == trig ? 0 : -EINVAL;
+> +}
+> +
+>  static const struct iio_info vl53l0x_info = {
+>  	.read_raw = vl53l0x_read_raw,
+> +	.validate_trigger = vl53l0x_validate_trigger,
+>  };
+>  
+>  static void vl53l0x_power_off(void *_data)
+> @@ -221,6 +275,39 @@ static int vl53l0x_power_on(struct vl53l0x_data *data)
+>  	return 0;
+>  }
+>  
+> +static int vl53l0x_buffer_postenable(struct iio_dev *indio_dev)
+> +{
+> +	struct vl53l0x_data *data = iio_priv(indio_dev);
+> +
+> +	return i2c_smbus_write_byte_data(data->client, VL_REG_SYSRANGE_START,
+> +						VL53L0X_CONTINUOUS_MODE);
+> +}
+> +
+> +static int vl53l0x_buffer_postdisable(struct iio_dev *indio_dev)
+> +{
+> +	struct vl53l0x_data *data = iio_priv(indio_dev);
 > +	int ret;
 > +
-> +	switch (chan_type) {
-> +	case IIO_ACCEL:
-> +		reg = BMI270_ACCEL_X_REG + (axis - IIO_MOD_X) * sizeof(sample);
-> +		break;
-> +	case IIO_ANGL_VEL:
-> +		reg = BMI270_ANG_VEL_X_REG + (axis - IIO_MOD_X) * sizeof(sample);
-
-This only works because they are 1 byte registers which isn't obvious here
-So I don't think sizeof(sample) is very useful vs 2.
-
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = regmap_bulk_read(bmi270_device->regmap, reg, &sample, sizeof(sample));
-> +	if (ret)
+> +	ret = i2c_smbus_write_byte_data(data->client, VL_REG_SYSRANGE_START,
+> +						VL53L0X_SINGLE_MODE);
+> +	if (ret < 0)
 > +		return ret;
 > +
-> +	*val = sign_extend32(le16_to_cpu(sample), 15);
-> +
-> +	return 0;
-> +}
-> +
+> +	/* Let the ongoing reading finish */
+> +	reinit_completion(&data->completion);
+> +	wait_for_completion_timeout(&data->completion, HZ / 10);
+Trivial but I'll add a blank line here to separate the completion related
+bits from the clear irq as they are more or less unrelated.
 
-> +
-> +#define BMI270_ACCEL_CHANNEL(_axis) {				\
-> +	.type = IIO_ACCEL,					\
-> +	.modified = 1,						\
-> +	.channel2 = IIO_MOD_##_axis,				\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
-> +	BIT(IIO_CHAN_INFO_FREQUENCY),				\
-
-Probably good to indent this last item by one more tab to help
-with reability.
-
-> +}
-> +
-> +#define BMI270_ANG_VEL_CHANNEL(_axis) {				\
-> +	.type = IIO_ANGL_VEL,					\
-> +	.modified = 1,						\
-> +	.channel2 = IIO_MOD_##_axis,				\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
-> +	BIT(IIO_CHAN_INFO_FREQUENCY),				\
-> +}
-> +./v4_20240912_lanzano_alex_add_i2c_driver_for_bosch_bmi270_imu.mbx
-> +static const struct iio_chan_spec bmi270_channels[] = {
-> +	BMI270_ACCEL_CHANNEL(X),
-> +	BMI270_ACCEL_CHANNEL(Y),
-> +	BMI270_ACCEL_CHANNEL(Z),
-> +	BMI270_ANG_VEL_CHANNEL(X),
-> +	BMI270_ANG_VEL_CHANNEL(Y),
-> +	BMI270_ANG_VEL_CHANNEL(Z)
-Add a trailing comma as we may well have additional channels in future
-that come after this.
-
-> +};
-> +
-> +static int bmi270_validate_chip_id(struct bmi270_data *bmi270_device)
-> +{
-> +	int chip_id;
-> +	int ret;
-> +	struct device *dev = bmi270_device->dev;
-> +	struct regmap *regmap = bmi270_device->regmap;
-> +
-> +	ret = regmap_read(regmap, BMI270_CHIP_ID_REG, &chip_id);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to read chip id");
-> +
-> +	if (chip_id != BMI270_CHIP_ID_VAL)
-> +		return dev_err_probe(dev, -ENODEV, "Invalid chip id 0x%x", chip_id);
-A failure to match on a ID register should not result in a failure to probe.
-The reason for this is Device tree fallback compatibles.
-Those allow for a future device that is compatible (it may have a superset of
-features) with this part to use a dt-binding that includes the compatible
-for this one despite having a different ID register value.
-
-As such this should print an information message to say it's an unknown
-device ID but return success.
-	
-> +
-> +	return 0;
-> +}
-> +
-> +static int bmi270_write_calibration_data(struct bmi270_data *bmi270_device)
-> +{
-> +	int ret;
-> +	int status = 0;
-> +	const struct firmware *init_data;
-> +	struct device *dev = bmi270_device->dev;
-> +	struct regmap *regmap = bmi270_device->regmap;
-> +
-> +	ret = regmap_clear_bits(regmap, BMI270_PWR_CONF_REG, BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to write power configuration");
-> +
-> +	/* After disabling advanced power save, all registers are accessible after a 450us delay
-All IIO multiline comments are
-
-	/* 
-	 * After...
-
-
-> +	 * This delay is specified in table A of the datasheet.
-> +	 */
-> +	usleep_range(450, 1000);
-> +
-> +	ret = regmap_clear_bits(regmap, BMI270_INIT_CTRL_REG, BMI270_INIT_CTRL_LOAD_DONE_MSK);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to prepare device to load init data");
-> +
-> +	ret = request_firmware(&init_data, BMI270_INIT_DATA_FILE, dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to load init data file");
-> +
-> +	ret = regmap_bulk_write(regmap, BMI270_INIT_DATA_REG,
-> +				init_data->data, init_data->size);
-> +	release_firmware(init_data);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to write init data");
-> +
-> +	ret = regmap_set_bits(regmap, BMI270_INIT_CTRL_REG, BMI270_INIT_CTRL_LOAD_DONE_MSK);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to stop device initialization");
-> +
-> +	/* Wait at least 140ms for the device to complete configuration.
-> +	 * This delay is specified in table C of the datasheet.
-> +	 */
-> +	usleep_range(140000, 160000);
-> +
-> +	ret = regmap_read(regmap, BMI270_INTERNAL_STATUS_REG, &status);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to read internal status");
-> +
-> +	if (status != BMI270_INTERNAL_STATUS_MSG_INIT_OK)
-> +		return dev_err_probe(dev, -ENODEV, "Device failed to initialize");
-> +
-> +	return 0;
+> +	return vl53l0x_clear_irq(data);
 > +}
 
 

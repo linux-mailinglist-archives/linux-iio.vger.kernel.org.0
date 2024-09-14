@@ -1,170 +1,123 @@
-Return-Path: <linux-iio+bounces-9545-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9546-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17A29790AB
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 13:51:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E013A9790B8
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 14:08:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B8571F22A80
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 11:51:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B1F51C21B49
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 12:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCF41CF5C8;
-	Sat, 14 Sep 2024 11:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FF219E7FC;
+	Sat, 14 Sep 2024 12:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCMaev+i"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A+vLP9CS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9501482F3;
-	Sat, 14 Sep 2024 11:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C7D168DC;
+	Sat, 14 Sep 2024 12:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726314694; cv=none; b=IaGd50mwkxtw5eZbPDDVKQe/0v/BpU5HIl7KyZAxZvDbS2PSZEi19hvnh93KsaRRtBOnad5tihs0l5lE54Tq81CxpmjwGKzCWs8w4MsjGg05rwF+uRPkS2aoy+6csYHnxX89yIeiBcWM1XEIaHF4fn8UAvO+mB7ULHapdIuUnB0=
+	t=1726315677; cv=none; b=KYwwIWXucg9OHw+89eRHRxc0I5/heQ3Tw4wA2mNKlUzMvMO8npMEnoQZZOwp69gzsFMIfWq6Lvwy7s5++cp/ze0TnEfofeeRtP4sKSPJFGuNSHggouRzO6EHo6NTlwdSpp2hUNU8KQtGZ+d7FI314eIxmsNHhPJ1JmzMhUMsooA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726314694; c=relaxed/simple;
-	bh=D3alaH9FVz0eNtgjK7+8PY9RsxlT58gKMLTR4lhwrXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MRJYvDzEvRj1/Y1ZsZ56vLW/b8KJojSmfvRhbqASLZCQqhzFRZhwDvuSaUWLh5W5+ZwvmFHQU4X3+zmmjk6OoaOIj3rSpqfu0YtAvnkMiuo6ZafxPDKGp7ryVum5LnB0NifB/Sool1+qJmbQPBJkWW/Zy4YyAj6QNFOhG14lID4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCMaev+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DEDC4CEC0;
-	Sat, 14 Sep 2024 11:51:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726314693;
-	bh=D3alaH9FVz0eNtgjK7+8PY9RsxlT58gKMLTR4lhwrXc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SCMaev+iHtp/B5hdrJYkCRC444/iSywfihSD5qTRX7OiROVFtpWnz5SXQO2ITH2vU
-	 pZ/chHUhdmG4sFh17S9zvNgykKRxXa1Uw9tMUKOabCsoaZ92DPrnBZDaPI8V9SWTSZ
-	 LglwUcYsHsEmvWh2SijxAJAIo7g+ry9rkeox96gBPEocX9L5EzofIiBvr4X8dDYlRn
-	 QuVHJa5d/0wjmdad2NgPpm1Hyb7r238/n10aOKA3KZ+Wl6gsK8QqHhdbH6+3Sinw/C
-	 WwZfejSQ2SkF9U9/KQ8KEkk/8Jerm2qRmDxDvmEGjxYHfDRxkaAYSacvZtEYk7hxQr
-	 FmqxioiFxaHMg==
-Date: Sat, 14 Sep 2024 12:51:23 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Alex Lanzano <lanzano.alex@gmail.com>
-Cc: kernel test robot <lkp@intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Jagath Jog J <jagathjog1996@gmail.com>,
- Ramona Gradinariu <ramona.bolboaca13@gmail.com>, Nuno Sa
- <nuno.sa@analog.com>, oe-kbuild-all@lists.linux.dev,
- skhan@linuxfoundation.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: imu: Add i2c driver for bmi270 imu
-Message-ID: <20240914125123.13ec48f1@jic23-huawei>
-In-Reply-To: <f5zruqfmohoaohr2qwqug33dsar5q3fubhspbwuisxxblni6h4@paioiqyjzeg5>
-References: <20240909043254.611589-3-lanzano.alex@gmail.com>
-	<202409100026.17N3K11W-lkp@intel.com>
-	<f5zruqfmohoaohr2qwqug33dsar5q3fubhspbwuisxxblni6h4@paioiqyjzeg5>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1726315677; c=relaxed/simple;
+	bh=xj1P/lNUeuPWC65QqK1OBKQUVgjurRWAO7FpMFL0wY4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r2eollBF90m4+UfpdcirdpGiHv4Ne/aPy/WtNfgVGPwXULMeN7xBqw6xmnXqjh3/RjKt74UpOIjSxtLjPVQbIW9wxbWyC3iObXkxHG7HZsOlAQOYHDVRKWeEH6uLuG7RfxSZn9HCZjrq4AdFJhVPrJKQQTqo1TIBilQzlWkd5/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A+vLP9CS; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-378c16a4d3eso1829558f8f.1;
+        Sat, 14 Sep 2024 05:07:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726315674; x=1726920474; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bWpKGlxK4GME83ljPjG17Dzvcobt5ADnZCeF6SIfVso=;
+        b=A+vLP9CS4tghmSrNHufmT3ObsTcDuSUS6oBZjaDJdF5rk1yoVxIfaBV7DDw8t+UXu5
+         TV7sipgxRsexWB+BMSC4tScmXE7ttFGgNXiZexynBgXWKNw3nIwLkGc7IZJJw31SXSyp
+         AHpfi2/3J+hDeVBvrcoJDAljrpty2Ep1P154mluYgMKJqgub+wQTQARjKgRT/hsGT2qo
+         48iqGfjPEEs11vlow21aMD+rftJ/Wxi4axfXNrB05wqqcXYhuvE1R/mX9qY5tw/3m8Lm
+         i7Ay/MgPEsWs8OdS8QCQiLMQ2ZcH4DmD6rIFf2kaIONiV9c1rQmWOkIqhD/hQDeWaCwd
+         Z2Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726315674; x=1726920474;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bWpKGlxK4GME83ljPjG17Dzvcobt5ADnZCeF6SIfVso=;
+        b=aUIeynligCdJg02CyYXn+hzBqRQITnLRHVXYVvwgGP6B9UM2tiAVmjMLHq7SqrDuUr
+         VCxbflWjoG4ftAa2lK+r5aYG3kvC93IjSOeWoCtU9nHdNP1ZD8/im/2bYl+Fm9so4IRs
+         irHD4AQO6m6E2EBHvdzH4k+6HK1PC2nD4zVi6xh7+Aaj6I/QnaEOSrnx4OcMx+meO8Ga
+         RysjQMkIN7w274RK9ga4Y12lFr0qf1BF+xcHqcSC1p3LcnKRJaMKiiYahcGkl+dRfsUy
+         HUD1ez+qEEE3y3XczqUzI0dgaUc2I3vV4NVKEx1Mzli7BfG9cwxlbWFQKUrfbiNlDZ7f
+         KaGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVze/OfluCmUVHzfwIUgmYBVfVCJKxhV08ckCfznHcBeoVCKCB5akPwfPe+AGjgFx1898FB5xwC8+KQZsEU@vger.kernel.org, AJvYcCWLw589wUfmhF7qLd1RoY8TkwiHnFJWt5a1hWgVNlAbOEy8ilpgQLFwOZStrT14Qo+00Mt+eMUX0AQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFGaRFgaqtCTXu8qRrddGe0ajCsvUax2DTqV8pobIwZ5XjXCmr
+	wbqN1MA8MLbY9aqjSPQZ/qSX5TAJXpqATNcw3frNr45/Xkru/a6r
+X-Google-Smtp-Source: AGHT+IHrOiopLO/QQSAN+ztzI0kzQbkgyux3FU7M0LmcRufZN3Is7/Kry7o8upEpcSw6OeWKvRn6eg==
+X-Received: by 2002:a5d:6d89:0:b0:374:c847:867 with SMTP id ffacd0b85a97d-378d62360e7mr5845029f8f.47.1726315674067;
+        Sat, 14 Sep 2024 05:07:54 -0700 (PDT)
+Received: from [192.168.1.127] ([151.49.241.219])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e7800374sm1604686f8f.79.2024.09.14.05.07.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 Sep 2024 05:07:53 -0700 (PDT)
+Message-ID: <2cad9977-7133-4d53-a704-4ef80093f2db@gmail.com>
+Date: Sat, 14 Sep 2024 14:07:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: There is a potential buffer overflow issue in bmi323
+To: Qianqiang Liu <qianqiang.liu@163.com>
+Cc: jagathjog1996@gmail.com, jic23@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <66e2b969.170a0220.29a2d3.4b31SMTPIN_ADDED_BROKEN@mx.google.com>
+Content-Language: en-US, it-IT, en-US-large
+From: Denis Benato <benato.denis96@gmail.com>
+In-Reply-To: <66e2b969.170a0220.29a2d3.4b31SMTPIN_ADDED_BROKEN@mx.google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 9 Sep 2024 23:21:52 -0400
-Alex Lanzano <lanzano.alex@gmail.com> wrote:
-
-> On Tue, Sep 10, 2024 at 01:03:04AM GMT, kernel test robot wrote:
-> > Hi Alex,
-> > 
-> > kernel test robot noticed the following build errors:
-> > 
-> > [auto build test ERROR on jic23-iio/togreg]
-> > [also build test ERROR on robh/for-next linus/master v6.11-rc7 next-20240909]
-> > [If your patch is applied to the wrong git tree, kindly drop us a note.
-> > And when submitting patch, we suggest to use '--base' as documented in
-> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> > 
-> > url:    https://github.com/intel-lab-lkp/linux/commits/Alex-Lanzano/dt-bindings-iio-imu-add-bmi270-bindings/20240909-123509
-> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-> > patch link:    https://lore.kernel.org/r/20240909043254.611589-3-lanzano.alex%40gmail.com
-> > patch subject: [PATCH v3 2/2] iio: imu: Add i2c driver for bmi270 imu
-> > config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20240910/202409100026.17N3K11W-lkp@intel.com/config)
-> > compiler: m68k-linux-gcc (GCC) 14.1.0
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240910/202409100026.17N3K11W-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202409100026.17N3K11W-lkp@intel.com/
-> > 
-> > All errors (new ones prefixed by >>):
-> > 
-> >    drivers/iio/imu/bmi270/bmi270_core.c: In function 'bmi270_configure_imu':  
-> > >> drivers/iio/imu/bmi270/bmi270_core.c:180:31: error: implicit declaration of function 'FIELD_PREP' [-Wimplicit-function-declaration]  
-> >      180 |                               FIELD_PREP(BMI270_ACC_CONF_ODR_MSK,
-> >          |                               ^~~~~~~~~~
-> > 
-> > 
-> > vim +/FIELD_PREP +180 drivers/iio/imu/bmi270/bmi270_core.c
-> > 
-> >    165	
-> >    166	static int bmi270_configure_imu(struct bmi270_data *bmi270_device)
-> >    167	{
-> >    168		int ret;
-> >    169		struct device *dev = bmi270_device->dev;
-> >    170		struct regmap *regmap = bmi270_device->regmap;
-> >    171	
-> >    172		ret = regmap_set_bits(regmap, BMI270_PWR_CTRL_REG,
-> >    173				      BMI270_PWR_CTRL_AUX_EN_MSK |
-> >    174				      BMI270_PWR_CTRL_GYR_EN_MSK |
-> >    175				      BMI270_PWR_CTRL_ACCEL_EN_MSK);
-> >    176		if (ret)
-> >    177			return dev_err_probe(dev, ret, "Failed to enable accelerometer and gyroscope");
-> >    178	
-> >    179		ret = regmap_set_bits(regmap, BMI270_ACC_CONF_REG,  
-> >  > 180				      FIELD_PREP(BMI270_ACC_CONF_ODR_MSK,  
-> >    181						 BMI270_ACC_CONF_ODR_100HZ) |
-> >    182				      FIELD_PREP(BMI270_ACC_CONF_BWP_MSK,
-> >    183						 BMI270_ACC_CONF_BWP_NORMAL_MODE) |
-> >    184				      BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-> >    185		if (ret)
-> >    186			return dev_err_probe(dev, ret, "Failed to configure accelerometer");
-> >    187	
-> >    188		ret = regmap_set_bits(regmap, BMI270_GYR_CONF_REG,
-> >    189				      FIELD_PREP(BMI270_GYR_CONF_ODR_MSK,
-> >    190						 BMI270_GYR_CONF_ODR_200HZ) |
-> >    191				      FIELD_PREP(BMI270_GYR_CONF_BWP_MSK,
-> >    192						 BMI270_GYR_CONF_BWP_NORMAL_MODE) |
-> >    193				      BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-> >    194		if (ret)
-> >    195			return dev_err_probe(dev, ret, "Failed to configure gyroscope");
-> >    196	
-> >    197		/* Enable FIFO_WKUP, Disable ADV_PWR_SAVE and FUP_EN */
-> >    198		ret = regmap_write(regmap, BMI270_PWR_CONF_REG,
-> >    199				   BMI270_PWR_CONF_FIFO_WKUP_MSK);
-> >    200		if (ret)
-> >    201			return dev_err_probe(dev, ret, "Failed to set power configuration");
-> >    202	
-> >    203		return 0;
-> >    204	}
-> >    205	
-> > 
-> > -- 
-> > 0-DAY CI Kernel Test Service
-> > https://github.com/intel/lkp-tests/wiki  
+On 12/09/24 11:50, Qianqiang Liu wrote:
+> Hi,
 > 
-> I am having trouble reproducing this build error on both jic23-iio/togreg and
-> linus/master v6.11.rc7 on an aarch64 box with the same compiler version.
-> Maybe a config option is causing this?
+> I reviewed the following code in drivers/iio/imu/bmi323/bmi323_core.c:
 > 
-> However, I will add #include <linux/bitfield.h> to remedy this issue if
-> some edge case is being hit.
-Makes sense anyways roughly speaking we should aim for "include what you use"
-for headers to avoid this sort of subtle build issue.
-There are exceptions for one or two headers that are always included via
-another path, but bitfield.h isn't one of those.
-
-Jonathan
-
+> 2245         for (unsigned int i = 0; i < ARRAY_SIZE(bmi323_ext_reg_savestate); i++) { <-
+> 2246                 ret = bmi323_write_ext_reg(data, bmi323_reg_savestate[i], <-
+> 2247						savestate->reg_settings[i]);
+> 2248                 if (ret) {
+> 2249                         dev_err(data->dev,
+> 2250                                 "Error writing bmi323 external reg 0x%x: %d\n",
+> 2251                                 bmi323_reg_savestate[i], ret);
+> 2252                         return ret;
+> 2253                 }
+> 2254         }
 > 
-> Best regards,
-> Alex
+> The array size of the "bmi323_ext_reg_savestate" is twelve, and the
+> array size of "bmi323_reg_savestate" is nine.
+> 
+> Is it possible that "bmi323_reg_savestate" may have buffer overflow
+> issue?
+> 
+Hi,
 
+You are very right and that is copy/paste mistake that was not flagged as a warning by gcc.
+Thanks for letting me know!
+
+There is currently a fix already sent for review here:
+https://lore.kernel.org/all/20240909-iio-bmi323-fix-array-ref-v1-1-51c220f22229@kernel.org
+
+
+Best regards,
+Denis Benato
 

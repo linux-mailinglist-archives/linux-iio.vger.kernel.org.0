@@ -1,58 +1,55 @@
-Return-Path: <linux-iio+bounces-9563-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9564-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E25EF979161
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 16:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 941CB979177
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 16:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 612652859C6
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 14:26:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C6E1282D31
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 14:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09BE1CFEB7;
-	Sat, 14 Sep 2024 14:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E4A1CF7CC;
+	Sat, 14 Sep 2024 14:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ee+xSPDg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qw1A3pI8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAFF1DFFB;
-	Sat, 14 Sep 2024 14:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40236522F;
+	Sat, 14 Sep 2024 14:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726324004; cv=none; b=JoGLr8KV8I0MBFy16GLfZvdSmymI4jZ40PPESQYlFasOaidMZBcWNLZmC3qSdp+Aj/MWG2hEMOWgMYGX0diNwt1lANszo4+mb9h9JDUn4k1BNyR7kpSnYow5XrvUxU3zVuCzJW7JrXvEO3I5PMnvqSHrevk1RDFnDM17oGzQv2E=
+	t=1726324196; cv=none; b=bZcww36dG5py3dRkqd9crwAUhdo4CQhwXTLtUN+FsIRLTWX4cs9ksrEeIyBHUi5SVTzEz+m+xTBLLiw0LivS51rfClF34RQuhz/tiYXBry/XrADM+ut1l36901d5sKqzLgIzaq5+JOuLLsq3KEytSBTwUU3z0TecLiUU5g6aff0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726324004; c=relaxed/simple;
-	bh=IByxkRxXq0J/Gztv7I0dv6bOV6UDkslm/FPPaEUTDf8=;
+	s=arc-20240116; t=1726324196; c=relaxed/simple;
+	bh=4pu9bWu3WEmUF77Qrb/iAzIqmkm/mqPD0zPdI3Rah9M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qaxwzMGc1nXmNqlQAsIuEkFyRgRuvXm24OAc9KWLWQDgzIx/EM/ETMaI95QN6cTO3SJdQ/ZUI0i0sLhE0U3YZhFoV7Ng4bvjfGhFkpTAxLYI+qB0CrMhlnwJfpM+nkyl7dN4sm4ZviyhAQonh5C+xxoJOIXYpZRoliHot6sQlNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ee+xSPDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E82C4CEC0;
-	Sat, 14 Sep 2024 14:26:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lS9E/1thsosprBVqTz5g8lDQl4wor5t+obZUxGTG9dGwwcawkiXthbyxW6euvFbPhCaCTIEnraoG7A2MvscMKAWHg4POHzlo4lrZoOm5llAwKK5M+Ioc45YAf0A1aYNuwYk9GawUIK4kuRUYeI19MX11x0Q60DFS2pCY34okfm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qw1A3pI8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFF3C4CEC0;
+	Sat, 14 Sep 2024 14:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726324004;
-	bh=IByxkRxXq0J/Gztv7I0dv6bOV6UDkslm/FPPaEUTDf8=;
+	s=k20201202; t=1726324195;
+	bh=4pu9bWu3WEmUF77Qrb/iAzIqmkm/mqPD0zPdI3Rah9M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ee+xSPDgwQnbB7erCqan5o3T6iWvKwAzel5bm/nJrA2a/Jdrbh7FJLWcnRUVc2bSM
-	 2VrofYC2Ovy+pTfx17yEZIwWKupQHXaixBlF3H9yVX1DVeRp9XFOYF3HGq7hNWw6bZ
-	 Ws2GD61jr1eq1Gs1vUD3qoZT23xwe8EFO+1oD7zRzfcE94uQhV13HSYirPbrXLdYFN
-	 oyC9N229AIbMz2kfAqNgn22QL9HhqYMFDpPTZVHv0dhwZFSTCUU1rC3WxXR9J/agly
-	 y+61M2XiaWB6cRwz0kwluuXN6g9Eshzue+9UMFjeqKEYERIm+VFlqmYwHcbXe08Mgb
-	 lHjUzC1WxrRSw==
-Date: Sat, 14 Sep 2024 15:26:37 +0100
+	b=Qw1A3pI8JgggWpesh4BDP/lf/3nAHGDt2Bsmi7QaViUyTp8S7mWJ4k8IWF8kGLfYG
+	 73Lk0DGKLuj9LkNftuYJTrQPQyfglwSoyAR83vY1N/mKYH3klyiZfim0apYhwmPXeN
+	 ZXVMY6vs8lharzEx5Qfnqn7ycOQJSLxpDDOR+rfS/zpB9znwp/WfXk3cCiauWbJs3v
+	 w6/VFZ075noM0INRlLhMYAYxfCpCDW+m/y7nzj0TUaAgR9NAiYPsxy1RbjiRWze56z
+	 PLWaehWdSOwunNWHy19Y2/Fd25oF5FQignzynQTA81mghwSpeMVLXtBU7rKuHV+6ds
+	 i0OtGPwBq6ubg==
+Date: Sat, 14 Sep 2024 15:29:48 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Ilpo
- =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] iio: imu: kmx61: Drop most likely fake ACPI ID
-Message-ID: <20240914152637.6972642f@jic23-huawei>
-In-Reply-To: <ZuQGnqgdkJhyIiLK@smile.fi.intel.com>
-References: <20240911213110.2893562-1-andriy.shevchenko@linux.intel.com>
-	<2b847413-f8ee-436c-a635-f5a36253e953@redhat.com>
-	<ZuQGnqgdkJhyIiLK@smile.fi.intel.com>
+To: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RESEND] tools/iio: Add memory allocation failure check for
+ trigger_name
+Message-ID: <20240914152948.1f9927c2@jic23-huawei>
+In-Reply-To: <20240912032846.2914-1-zhujun2@cmss.chinamobile.com>
+References: <20240912032846.2914-1-zhujun2@cmss.chinamobile.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,34 +60,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 13 Sep 2024 12:32:14 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 11 Sep 2024 20:28:46 -0700
+Zhu Jun <zhujun2@cmss.chinamobile.com> wrote:
 
-> On Thu, Sep 12, 2024 at 03:52:34PM +0200, Hans de Goede wrote:
-> > Hi,
-> > 
-> > On 9/11/24 11:31 PM, Andy Shevchenko wrote:  
-> > > The commit in question does not proove that ACPI ID exists.
-> > > Quite likely it was a cargo cult addition while doint that
-> > > for DT-based enumeration.  Drop most likely fake ACPI ID.
-> > > 
-> > > Googling for KMX61021L gives no useful results in regard to DSDT.
-> > > Moreover, the official vendor ID in the registry for Kionix is KIOX.
-> > > 
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
-> > 
-> > Thanks, patch looks good to me:  
+> Added a check to handle memory allocation failure for `trigger_name`
+> and return `-ENOMEM`.
 > 
-> Same Q here.
-In meantime I've queued it up.  Can always drop it again
-if it turns out we do have users.
+> Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+I queued this up already but seems I forgot to say so!
+
+Sorry about that. It is on my testing branch until I can rebase on rc1
+when that becomes available.
+
+Thanks,
 
 Jonathan
 
+> ---
+>  tools/iio/iio_generic_buffer.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> >  Reviewed-by: Hans de Goede <hdegoede@redhat.com>  
-> 
-> And thank you for the reviews!
-> 
+> diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+> index 0d0a7a19d6f9..9ef5ee087eda 100644
+> --- a/tools/iio/iio_generic_buffer.c
+> +++ b/tools/iio/iio_generic_buffer.c
+> @@ -498,6 +498,10 @@ int main(int argc, char **argv)
+>  			return -ENOMEM;
+>  		}
+>  		trigger_name = malloc(IIO_MAX_NAME_LENGTH);
+> +		if (!trigger_name) {
+> +			ret = -ENOMEM;
+> +			goto error;
+> +		}
+>  		ret = read_sysfs_string("name", trig_dev_name, trigger_name);
+>  		free(trig_dev_name);
+>  		if (ret < 0) {
 
 

@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-9549-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9550-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3917979103
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 15:35:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2972979119
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 15:44:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B57A1F22CA7
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 13:35:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6253F2827BA
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 13:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2556C1CFEC3;
-	Sat, 14 Sep 2024 13:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723AE1CF7C9;
+	Sat, 14 Sep 2024 13:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UB91XjC2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sv4cOXwV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19B81CFEC0;
-	Sat, 14 Sep 2024 13:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA5C1CEEAB;
+	Sat, 14 Sep 2024 13:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726320894; cv=none; b=O6TV3uS5zcuux68XfKVHGIQd7Eqm8Am0Lh06XIDXlapz9x/u1bj21L9HzM3LnkNE8sFiFc5nqt1Mgn/y0gDDEKFidWejlthFYeCUxqWdXMFgKeK1o84YpM5lzkohL/hqWYr0GhUw3Z5r2jGheK3ROABUiEVe5bYdFo6BTkEq5U4=
+	t=1726321449; cv=none; b=RBV+esdHdLt9LTue2kPy2LKrQAP9PTMo2sFq9Dxwgje7dYsvCMorOj35O4KD02PYnHjpWEaKGb7HSV80rE6O5aHDVqN35eLiz/7rTcjCuMihCy8BqStJ9yg1IATRAz6uSIW7z0E5Zqwy+MWQDLkCzAmu+FKg2Zav8xqB10AR+60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726320894; c=relaxed/simple;
-	bh=UA+Ahx4H9tczSchnnxH6+0vhcc1dZN7jl6skWGzRNik=;
+	s=arc-20240116; t=1726321449; c=relaxed/simple;
+	bh=/lAtZJ5HykopUMiPN/wR8wLT7yz7+UzfH0VFgsHLvMw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gTS0odC9GngywAQUMexyymJELtOSjetDnxrwv9iKzQcw9SQCW8rqAe8PD5pPEaR6rs2R+ZFig2F84RdR/B2ru4Ggj2+5B1TwUX3f16Jg1u6uhC946wLBxMJfCtZX03XGDeF3Zv9b8OZsIN8H0Xk6eHv80VEAIqM4xhgs65CHxOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UB91XjC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23625C4CEC4;
-	Sat, 14 Sep 2024 13:34:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JJgvhF0SKUAoCNOfJvUW8MKOUvs1MXk5DEdks7Ms4p1snKwJMWo3W5GOz7ucO70k/l8sA/Jc5dFu2SSdEwdLydS7Iq0ff4uQiqIUp3Z2cmZyWSLQ4sMZg/kcjwCbNROD5GBDktHYM1Gv7wNg9w7/Xr1rKhoho7XkzxctDYbUHWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sv4cOXwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A37EC4CEC0;
+	Sat, 14 Sep 2024 13:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726320894;
-	bh=UA+Ahx4H9tczSchnnxH6+0vhcc1dZN7jl6skWGzRNik=;
+	s=k20201202; t=1726321448;
+	bh=/lAtZJ5HykopUMiPN/wR8wLT7yz7+UzfH0VFgsHLvMw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UB91XjC218s25Sy2De+b4V2ibsDA9Q+Vyo6YcmImVVVbwvkpSHAZkf2PH2TTulRu8
-	 UUka/7icjjCq3Lg4lbkIedFM2IexO4umoPBuS/QGB58BQy5KSd4PEfQ+yamU1viXWM
-	 4+7sXqVjthK/xMY0me1kO+XpmwJ4S+NHWHzNMInE3Qbvs1ybFdM4DuxrjcIMoBF5uC
-	 RwR6oKrSZwOKgjeuzdE1l9Ld29LawEGk3XeGKCG9OvCebGbGjB0wnqutz4l0lS4slW
-	 idMJWXdJegu16/RaP65VUkgG36V1FIoG70h6c1fzefa1DsWw3KWbD9SaaPAifipD+w
-	 be1VEsRUtvsWQ==
-Date: Sat, 14 Sep 2024 14:34:47 +0100
+	b=Sv4cOXwVAOCfixVvQqrd9WAVAKuDShiQom1Iitjs+d0BEmaaqsB0HgCp0Qa86FCL5
+	 FNcu3+15gAmZOBMm5PE1nB7ZqskmVfiKSbwDyhzpgflA43aTh7oNvg8QNXT7wo/wS4
+	 nOncnobEB4zLx93Prlhrjaat92R/SREb5F1GYpkuWFVyW4q/dAHSosNMS4lEGGV9kQ
+	 oBNYUEe86KCAXC0+/+tfSR7whC0Qm+FxRM9fMWQ87QA0jzn4gJF2ZvtJH3T/bUhIeO
+	 rHnCbbvX+t8+O/s85vgMBj/v5yC8i2GrzichCFDSoD8UWO+xFflJPoWLXEiIwTMWKi
+	 oA5Q14lb5sDkQ==
+Date: Sat, 14 Sep 2024 14:44:02 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Abhash Jha <abhashkumarjha123@gmail.com>
-Cc: linux-iio@vger.kernel.org, songqiang1304521@gmail.com, lars@metafoo.de,
+Cc: linux-iio@vger.kernel.org, anshulusr@gmail.com, lars@metafoo.de,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: proximity: vl53l0x-i2c: Added continuous
- mode support
-Message-ID: <20240914143447.1c5d5623@jic23-huawei>
-In-Reply-To: <20240909101508.263085-3-abhashkumarjha123@gmail.com>
-References: <20240909101508.263085-1-abhashkumarjha123@gmail.com>
-	<20240909101508.263085-3-abhashkumarjha123@gmail.com>
+Subject: Re: [PATCH v2 1/4] iio: light: ltr390: Added configurable sampling
+ frequency support
+Message-ID: <20240914144402.16486b79@jic23-huawei>
+In-Reply-To: <20240910045030.266946-2-abhashkumarjha123@gmail.com>
+References: <20240910045030.266946-1-abhashkumarjha123@gmail.com>
+	<20240910045030.266946-2-abhashkumarjha123@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,145 +62,174 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  9 Sep 2024 15:45:07 +0530
+On Tue, 10 Sep 2024 10:20:26 +0530
 Abhash Jha <abhashkumarjha123@gmail.com> wrote:
 
-> The continuous mode of the sensor is enabled in the buffer_postenable.
-> Replaced the original irq handler with a threaded irq handler to perform
-> i2c reads during continuous mode.
-> The continuous mode is disabled by disabling the buffer.
-> Added a trigger for this device to be used for continuous mode.
+> Provied configurable sampling frequency(Measurement rate) support.
+Spell check: Provide
+
+> Also exposed the available sampling frequency values using read_avail
+> callback.
 > 
 > Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
 Hi Abhash,
 
-Applied this with a couple of minor tweaks (see below) to the
-testing branch of iio.git.  I'll be rebasing that tree on rc1 once
-available and pushing out as togreg which gets picked up by linux-next.
-
-Thanks,
-
-Jonathan
-
+A few minor comments inline and an (optional) request to cleanup
+the mask definitions in the existing code.
 > ---
->  drivers/iio/proximity/vl53l0x-i2c.c | 161 +++++++++++++++++++++++-----
->  1 file changed, 135 insertions(+), 26 deletions(-)
+>  drivers/iio/light/ltr390.c | 68 ++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 66 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-> index 3f416d3db..cbf030869 100644
-> --- a/drivers/iio/proximity/vl53l0x-i2c.c
-> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
-> @@ -22,6 +22,12 @@
->  #include <linux/module.h>
+> diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+> index 7e58b50f3..73ef4a5a0 100644
+> --- a/drivers/iio/light/ltr390.c
+> +++ b/drivers/iio/light/ltr390.c
+> @@ -39,6 +39,7 @@
 >  
->  #include <linux/iio/iio.h>
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/trigger.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +
-> +#include <asm/unaligned.h>
->  
->  #define VL_REG_SYSRANGE_START				0x00
->  
-> @@ -43,20 +49,70 @@
->  #define VL_REG_RESULT_RANGE_STATUS_COMPLETE		BIT(0)
->  
->  #define VL53L0X_MODEL_ID_VAL				0xEE
-> +#define VL53L0X_CONTINUOUS_MODE				0x02
-> +#define VL53L0X_SINGLE_MODE				0x01
->  
->  struct vl53l0x_data {
->  	struct i2c_client *client;
->  	struct completion completion;
->  	struct regulator *vdd_supply;
->  	struct gpio_desc *reset_gpio;
-> +	struct iio_trigger *trig;
-> +
-> +	struct {
-> +		u16 chan;
-> +		s64 timestamp __aligned(8);
-I tweak this whilst applying to use the new aligned_s64
-(the patch crossed with yours)
+>  #define LTR390_PART_NUMBER_ID		0xb
+>  #define LTR390_ALS_UVS_GAIN_MASK	0x07
+> +#define LTR390_ALS_UVS_MEAS_RATE_MASK	0x07
+These masks should be converted to GENMASK().
+If you don't mind doing it a precursor patch to do so
+would be nice to have.
 
-> +	} scan;
+However whether or not you cleanup existing mask definitions,
+please use GENMASK() for this new one.
+
+>  #define LTR390_ALS_UVS_INT_TIME_MASK	0x70
+>  #define LTR390_ALS_UVS_INT_TIME(x)	FIELD_PREP(LTR390_ALS_UVS_INT_TIME_MASK, (x))
+>  
+> @@ -87,6 +88,18 @@ static const struct regmap_config ltr390_regmap_config = {
+>  	.val_bits = 8,
 >  };
 >  
->
-> @@ -153,7 +192,7 @@ static int vl53l0x_read_proximity(struct vl53l0x_data *data,
->  		return -EREMOTEIO;
->  
->  	/* Values should be between 30~1200 in millimeters. */
-> -	*val = (buffer[10] << 8) + buffer[11];
-> +	*val = get_unaligned_be16(&buffer[10]);
+> +/* Sampling frequency is in mili Hz and mili Seconds */
+> +static const int ltr390_samp_freq_table[][2] = {
+> +		[0] = {40000, 25},
+I'm trying to slowly get IIO to standardise strongly around
+		[0] = { 4000, 25 },
 
-In theory this should have been a different patch, but meh it's tiny so
-I'll just take it in here.
+etc.  So space after { and before }
+> +		[1] = {20000, 50},
+> +		[2] = {10000, 100},
+> +		[3] = {5000, 200},
+> +		[4] = {2000, 500},
+> +		[5] = {1000, 1000},
+> +		[6] = {500, 2000},
+> +		[7] = {500, 2000}
 
->  
->  	return 0;
->  }
-> @@ -163,7 +202,14 @@ static const struct iio_chan_spec vl53l0x_channels[] = {
->  		.type = IIO_DISTANCE,
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE),
-> +		.scan_index = 0,
-> +		.scan_type = {
-> +			.sign = 'u',
-> +			.realbits = 12,
-> +			.storagebits = 16,
-> +		},
->  	},
-> +	IIO_CHAN_SOFT_TIMESTAMP(1),
->  };
->  
->  static int vl53l0x_read_raw(struct iio_dev *indio_dev,
-> @@ -193,8 +239,16 @@ static int vl53l0x_read_raw(struct iio_dev *indio_dev,
->  	}
+Add a trailing comma.  Sure we probably will never get any more entries
+but it isn't a terminator entry so convention is put the comma anyway.
+
+> +};
+> +
+>  static int ltr390_register_read(struct ltr390_data *data, u8 register_address)
+>  {
+>  	struct device *dev = &data->client->dev;
+> @@ -135,6 +148,18 @@ static int ltr390_counts_per_uvi(struct ltr390_data *data)
+>  	return DIV_ROUND_CLOSEST(23 * data->gain * data->int_time_us, 10 * orig_gain * orig_int_time);
 >  }
 >  
-> +static int vl53l0x_validate_trigger(struct iio_dev *indio_dev, struct iio_trigger *trig)
+> +static int ltr390_get_samp_freq(struct ltr390_data *data)
 > +{
-> +	struct vl53l0x_data *data = iio_priv(indio_dev);
+> +	int ret, value;
 > +
-> +	return data->trig == trig ? 0 : -EINVAL;
-> +}
-> +
->  static const struct iio_info vl53l0x_info = {
->  	.read_raw = vl53l0x_read_raw,
-> +	.validate_trigger = vl53l0x_validate_trigger,
->  };
->  
->  static void vl53l0x_power_off(void *_data)
-> @@ -221,6 +275,39 @@ static int vl53l0x_power_on(struct vl53l0x_data *data)
->  	return 0;
->  }
->  
-> +static int vl53l0x_buffer_postenable(struct iio_dev *indio_dev)
-> +{
-> +	struct vl53l0x_data *data = iio_priv(indio_dev);
-> +
-> +	return i2c_smbus_write_byte_data(data->client, VL_REG_SYSRANGE_START,
-> +						VL53L0X_CONTINUOUS_MODE);
-> +}
-> +
-> +static int vl53l0x_buffer_postdisable(struct iio_dev *indio_dev)
-> +{
-> +	struct vl53l0x_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = i2c_smbus_write_byte_data(data->client, VL_REG_SYSRANGE_START,
-> +						VL53L0X_SINGLE_MODE);
+> +	ret = regmap_read(data->regmap, LTR390_ALS_UVS_MEAS_RATE, &value);
 > +	if (ret < 0)
 > +		return ret;
-> +
-> +	/* Let the ongoing reading finish */
-> +	reinit_completion(&data->completion);
-> +	wait_for_completion_timeout(&data->completion, HZ / 10);
-Trivial but I'll add a blank line here to separate the completion related
-bits from the clear irq as they are more or less unrelated.
+> +	value &= LTR390_ALS_UVS_MEAS_RATE_MASK;
 
-> +	return vl53l0x_clear_irq(data);
+FIELD_GET() preferred because then the reader doesn't have to check
+if this mask includes the LSB.  It slightly helps review and compiler
+will get rid of the shift by nothing anyway.
+
+> +
+> +	return ltr390_samp_freq_table[value][0];
 > +}
+> +
+>  static int ltr390_read_raw(struct iio_dev *iio_device,
+>  			   struct iio_chan_spec const *chan, int *val,
+>  			   int *val2, long mask)
+> @@ -191,6 +216,10 @@ static int ltr390_read_raw(struct iio_dev *iio_device,
+>  		*val = data->int_time_us;
+>  		return IIO_VAL_INT;
+>  
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		*val = ltr390_get_samp_freq(data);
+> +		return IIO_VAL_INT;
+> +
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -199,6 +228,7 @@ static int ltr390_read_raw(struct iio_dev *iio_device,
+>  /* integration time in us */
+>  static const int ltr390_int_time_map_us[] = { 400000, 200000, 100000, 50000, 25000, 12500 };
+>  static const int ltr390_gain_map[] = { 1, 3, 6, 9, 18 };
+> +static const int ltr390_freq_map[] = { 40000, 20000, 10000, 5000, 2000, 1000, 500, 500 };
+>  
+>  static const struct iio_chan_spec ltr390_channels[] = {
+>  	/* UV sensor */
+> @@ -206,16 +236,18 @@ static const struct iio_chan_spec ltr390_channels[] = {
+>  		.type = IIO_UVINDEX,
+>  		.scan_index = 0,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+> -		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
+> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
+>  		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SCALE)
+> +						| BIT(IIO_CHAN_INFO_SAMP_FREQ)
+Obviously a long line above, but | should generally be on that previous line.
+Probably best to reformat it as
+ 		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
+						     BIT(IIO_CHAN_INFO_SCALE) |
+						     BIT(IIO_CHAN_INFO_SAMP_FREQ),
+
+Note should have always had a trailing comma.  Add that whilst here.
+
+	
+>  	},
+>  	/* ALS sensor */
+>  	{
+>  		.type = IIO_LIGHT,
+>  		.scan_index = 1,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+> -		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
+> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
+>  		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) | BIT(IIO_CHAN_INFO_SCALE)
+> +						| BIT(IIO_CHAN_INFO_SAMP_FREQ)
+>  	},
+>  };
+>  
+> @@ -264,6 +296,27 @@ static int ltr390_set_int_time(struct ltr390_data *data, int val)
+>  	return -EINVAL;
+>  }
+>  
+> +static int ltr390_set_samp_freq(struct ltr390_data *data, int val)
+> +{
+> +	int ret, idx;
+> +
+> +	for (idx = 0; idx < ARRAY_SIZE(ltr390_samp_freq_table); idx++) {
+> +		if (ltr390_samp_freq_table[idx][0] != val)
+> +			continue;
+> +
+> +		guard(mutex)(&data->lock);
+> +		ret = regmap_update_bits(data->regmap,
+> +					LTR390_ALS_UVS_MEAS_RATE,
+> +					LTR390_ALS_UVS_MEAS_RATE_MASK, idx);
+
+		return regmap_update_bits()
+
+is the same thing as what you have here.
+
+
+> +		if (ret)
+> +			return ret;
+> +
+> +		return 0;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+
 
 

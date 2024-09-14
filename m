@@ -1,65 +1,56 @@
-Return-Path: <linux-iio+bounces-9543-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9544-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3A997909D
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 13:45:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716319790A7
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 13:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F4971C21A78
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 11:45:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19CAC1F229A9
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 11:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2621CEE9C;
-	Sat, 14 Sep 2024 11:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB50C1CF2AA;
+	Sat, 14 Sep 2024 11:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cuDz8h7u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CZbxP2yh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C0E4C96;
-	Sat, 14 Sep 2024 11:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A5A1482F3;
+	Sat, 14 Sep 2024 11:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726314336; cv=none; b=hekU4wPUoZUHSEkNiI/8jJTDGG+XUOVVwcFAjsETwGqeZWFeXo0eLwSAw6VaP7wnkYVUVEmwwhG8q97omQrZMxCfGEVk1ID2l1K0pXUf0hfVrCCTs9FZpfXleF1AQHvrzGW+MCDC+9qLHryaPGXhuZ8e6w1DvuQ9WxapPtzoMVc=
+	t=1726314576; cv=none; b=fwmDC4x899I4Ej2iK4cvDXVzpGVwlChnnzqs8EV5XZzDH4Oa8BnA08pwIMvLh0KrVccDx73LXjWQcyFdU2xbAF5kCvWMgtARPiNjJTA98ZvjMWzW3B68zAPdaVzJU0o1Tnreb0eT2UDmEnV9oGxA65WggWaIeYjUp9mc2FQsQA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726314336; c=relaxed/simple;
-	bh=ODXDl4HXjM1i5HqPQSsHxa5at5Q97DC+YtL5/21LNXE=;
+	s=arc-20240116; t=1726314576; c=relaxed/simple;
+	bh=fVrlqcJJqkdaMA/D4EnRn6ztxLfJah9+dpv3lnwwjfI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kbkFiqhJRvVV+1DHFVBUvkBfRSv7U2iBoX/S7hWjZIXU3S4SPxwMX/UUTKICmb2yVEXMgnjRiTRHS02r5IIPmEAMXCFZ4K4GoS4NP0RRCg1uFcWq08Z4soCWwbLD1eAqaEfeQQEnP8qQMUKUiwYEGy2oRhM+6j1Zv9zT/rk/JcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cuDz8h7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9C0C4CEC0;
-	Sat, 14 Sep 2024 11:45:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uX01gxpK10pymvcg86AjBswKK3CIKQBmNlJJNFbvuy8vnBcoqLzmmME5wn/u/zb/TPXDijg8d8TcK2BYWYmJKWbAUnb0przRawWRRHB0drK0FiqzJIFsdmLQO9GZZBNuO2jbf6PLx2qWqXoGETCjIS0QvBkHLF6LpfjJQpyopeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZbxP2yh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE910C4CEC0;
+	Sat, 14 Sep 2024 11:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726314335;
-	bh=ODXDl4HXjM1i5HqPQSsHxa5at5Q97DC+YtL5/21LNXE=;
+	s=k20201202; t=1726314575;
+	bh=fVrlqcJJqkdaMA/D4EnRn6ztxLfJah9+dpv3lnwwjfI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cuDz8h7uiPSbdz+wHcKztYSuBDJCvvvSMA0E6lIvX0jRGqAIPIUarcKcVE1kYwSbD
-	 NHYLFddYOF8bjEX8uAwAcGerTfnqewHb1TGt5dXXePPpGCsPu9hzi322r03CI7vGJO
-	 Q12oHd+M8jdvqFKkECthdMGjt5KqzkIBY+NKPxIzJZ4MmzYtMACccJXTWJevawqFNc
-	 SpEvKPlskrm6u2sMUjqPeam2zOwdk400JAYNWxkUPcUUhYuiDeODdrYDNvHaL6yldf
-	 sYTamGspXAD/NDHhvhKzHEWqyFBvAc2dNVBJJ7xKTf7iGn9uABUt0O6K+aQ5XQWB5L
-	 kxkC/yiEbIGsw==
-Date: Sat, 14 Sep 2024 12:45:27 +0100
+	b=CZbxP2yhuIhtDHIajP610BxZAK8re9DDp+iTqr0Wau9Qe4+M0+En6xZ3XKLC3q0do
+	 ZoB2sM/IaXxNXrb8w1w9w4O/sTpb6gZJNSb+iHQ5+THnfslbYzAxyJ16qmZULki2Ce
+	 kqZ9vES9ojpyJkVU0SKgGXdZY50t/jNIV9SVVTw2wWMIFmrzTUZpXs70tIIyUEnvZz
+	 A6uXXlo//P7kVlARyBqyS1K0zOT197+/xI6rL5SXRJgsbw0ujcYXaEZjq2lZVaUpAG
+	 a37PaFEHPs5d+ZfUmo1FHbOBOKsosvmd1fcI59dkE1nex/xkeJMEEn3Q437MXPRtFU
+	 4ajs3s55odUoQ==
+Date: Sat, 14 Sep 2024 12:49:27 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: "Tinaco, Mariel" <Mariel.Tinaco@analog.com>
-Cc: David Lechner <dlechner@baylibre.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- "Hennerich, Michael" <Michael.Hennerich@analog.com>, Conor Dooley
- <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
- Dimitri Fedrau <dima.fedrau@gmail.com>, Nuno =?UTF-8?B?U8Oh?=
- <noname.nuno@gmail.com>
-Subject: Re: [PATCH v3 2/2] iio: dac: support the ad8460 Waveform DAC
-Message-ID: <20240914124527.1b89a660@jic23-huawei>
-In-Reply-To: <DM8PR03MB6213FD30FCD465AA0262E4BB919A2@DM8PR03MB6213.namprd03.prod.outlook.com>
-References: <20240904023040.23352-1-Mariel.Tinaco@analog.com>
-	<20240904023040.23352-3-Mariel.Tinaco@analog.com>
-	<e9cbcd85-062c-47ad-861c-229cb2fd6c2c@baylibre.com>
-	<DM8PR03MB6213FD30FCD465AA0262E4BB919A2@DM8PR03MB6213.namprd03.prod.outlook.com>
+To: Antoni Pokusinski <apokusinski01@gmail.com>
+Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, pmeerw@pmeerw.net,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] iio: temperature: tmp006: support for drdy irq
+Message-ID: <20240914124927.55e019e0@jic23-huawei>
+In-Reply-To: <20240908172153.177406-1-apokusinski01@gmail.com>
+References: <20240908172153.177406-1-apokusinski01@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,89 +61,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Hi Mariel,
+On Sun,  8 Sep 2024 19:21:51 +0200
+Antoni Pokusinski <apokusinski01@gmail.com> wrote:
 
-You get to be the person I moan at today (though not the only person
-doing it!).
-
-Please crop to only the relevant information for continuing the 
-discussion.  It is not necessarily easy to find where you reply if you
-keep too much context.
-
-
-...
-
-> > > +static int ad8460_probe(struct spi_device *spi) {
-> > > +	struct ad8460_state *state;
-> > > +	struct iio_dev *indio_dev;
-> > > +	struct device *dev;
-> > > +	u32 tmp[2], temp;
-> > > +	int ret;
-> > > +
-> > > +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
-> > > +	if (!indio_dev)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	state = iio_priv(indio_dev);
-> > > +	mutex_init(&state->lock);
-> > > +
-> > > +	indio_dev->name = "ad8460";
-> > > +	indio_dev->info = &ad8460_info;
-> > > +
-> > > +	state->spi = spi;
-> > > +	dev = &spi->dev;
-> > > +
-> > > +	state->regmap = devm_regmap_init_spi(spi,  
-> > &ad8460_regmap_config);  
-> > > +	if (IS_ERR(state->regmap))
-> > > +		return dev_err_probe(dev, PTR_ERR(state->regmap),
-> > > +				     "Failed to initialize regmap");
-> > > +
-> > > +	state->sync_clk = devm_clk_get_enabled(dev, NULL);
-> > > +	if (IS_ERR(state->sync_clk))
-> > > +		return dev_err_probe(dev, PTR_ERR(state->sync_clk),
-> > > +				     "Failed to get sync clk\n");
-> > > +
-> > > +	state->tmp_adc_channel = devm_iio_channel_get(dev, "ad8460-  
-> > tmp");
-> > 
-> > Should we check for specific errors here? For example what if we get -
-> > EPROBE_DEFER? Also, it doesn't like we could ever get NULL, so IS_ERR()
-> > should be sufficient.
-> >   
+> This patch series adds support for the data ready interrupt of tmp006
+> sensor. The interrupt line is pulled down once there is a measurement
+> available to be read. Hence, triggered buffers are used in order to
+> support continuous data capture for the sensor.
 > 
-> It says in the docs that, the intended channel might return -EPROBE_DEFER
-> If the driver associated with that channel depends on resources that are not
-> Yet available. For this specific case, should I create a loop that waits for
-> That channel to be available before proceeding with the probe function?
+Applied to the testing branch of iio.git.
+I'll rebase that on rc1 once available and push this out as togreg
+at which point linux-next will pick it up etc.
 
-Normally I'd say fail the probe with EPROBE_DEFER but in this case
-it's awkward because this is far from a 'required' feature and whilst
-DT providing the channel would indicate that the board supports using
-it, that doesn't mean a given system has the driver for the ADC.
-
-I don't want to suggest we make this a CONFIG_XXX option but I can't
-immediately see an alternative that lets people intentionally not build
-the driver support for the ADC.
-
-> 
-> How would this be implemented?
-> 
-> Originally, this channel was intended to be optional. If any error results from
-> Obtaining it, it will not be included in the channels.
-> 
-Given IIO drivers will probe in an unknown order this will fail perhaps half the
-time.  Normally deferral deals with that, because the consumer isn't useful
-without the channel.  Here it is... 
-
-I'm open to other suggestions on this but right now it looks like only way
-to definitely handle it is a config option.
-
-Maybe for now we don't provide one and see if anyone cares?  That is
-effectively make if required to provide an ADC driver if the DT describes
-the channel we are getting. If that driver isn't loaded yet -EPROBE_DEFER and
-wait for it to show up.
+Thanks,
 
 Jonathan
+
+> Changes since v1:
+>   * dt-binding: improve the commit message
+>   * tmp006_read_raw: use iio_device_claim_direct_scoped()
+>   * tmp006_channels[] : add trailing commas
+>   * tmp006_trigger_handler: use s32 to check return value of read_word_data()
+>   * tmp006_set_trigger_state: fix data alignment
+>   * tmp006_probe: check return value of devm_iio_triggered_buffer_setup()
+>   * tmp006_probe: remove IRQF_TRIGGER_FALLING from irqflags argument of
+>     devm_request_threaded_irq()
+>   * tmp006_probe: set avaliable_scan_masks to tmp006_scan_masks[]
+> 
+> Antoni Pokusinski (2):
+>   iio: temperature: tmp006: add triggered buffer support
+>   dt-bindings: iio: temperature: tmp006: document interrupt
+> 
+>  .../bindings/iio/temperature/ti,tmp006.yaml   |   6 +
+>  drivers/iio/temperature/Kconfig               |   2 +
+>  drivers/iio/temperature/tmp006.c              | 134 ++++++++++++++++--
+>  3 files changed, 129 insertions(+), 13 deletions(-)
+> 
 
 

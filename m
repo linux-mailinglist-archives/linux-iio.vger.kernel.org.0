@@ -1,134 +1,141 @@
-Return-Path: <linux-iio+bounces-9527-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9528-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8A7978C04
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 01:59:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664DC978C1F
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 02:29:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07B071C24B30
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Sep 2024 23:59:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B2C6284D7C
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 00:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9879618893D;
-	Fri, 13 Sep 2024 23:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D564B1FB4;
+	Sat, 14 Sep 2024 00:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e+VSiZ2A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a//oSMpX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBAB26289;
-	Fri, 13 Sep 2024 23:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D5C23AD;
+	Sat, 14 Sep 2024 00:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726271995; cv=none; b=t4JKwBU7nB98fCSjhU0oEnBDfzxvTC6dAmhptpcI/a83UKrxvef2GtLpnsTx9c6ofKsGeCm2vRb3PP1/45FKECZCkWAIKOdqDD8MWM5UVTkRBxr4oogckvyfB1L8r8qxrXmzdroS3e/yN4tPWO3p48pRXmL7xx22Wkh9jp0nUL0=
+	t=1726273748; cv=none; b=Ti7AdC5qVJS8u/OjC1qy4e2JG1qyac4ScvuHsiJErBikuHbX6HM1NA+fw7KxlKJPWTZTHYcR8vhb+XINeopWJthpVD51gea+WcNEqrI9Bf456xll22i/Z3nj9gETDC2bON0rOG2KnP6PnlPI6oNxCAlTTgHxfdX3L2oLjv2kuu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726271995; c=relaxed/simple;
-	bh=PyEsfkEt9advumn6WUAh2n50qARD97tmon+xhoApBHs=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZQwifMz62kf8OkWprcSdDSH2LBxK9Ijk3IA/ibW21tyFeXRXofD+jZHuKKomDbs3YMeMPtSIgni4KqfCIe3fbsGFd1lQb6IvMG9PtVYGxsmLXr0rX21Ocf43wkuWov0HrYDkttaJVeR/lXCDHRD6/72sAjNWdoa8pwps7j02kDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e+VSiZ2A; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1726273748; c=relaxed/simple;
+	bh=tAqlyK2vfqcDZjFC56vZdZtCXGSnFLuxJO4smkEQQwk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IDvroO5Am2GB+ILAa9qUdmkv44k4rYfOEOcXMzIZmxPpp7tf8OADwDl8/yxG+LtVFzbs9yhRJDKJvsF+GUGaNuh71adctrORw2rMwRUVZfK41bWKgTGsGHbpg5YjMRCNvR3s4zel+4Va8ZSfiPb4gMTalZNU7jpDLddJgsdYYRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a//oSMpX; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42cbc38a997so16849345e9.1;
-        Fri, 13 Sep 2024 16:59:53 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a8d4093722bso356793766b.0;
+        Fri, 13 Sep 2024 17:29:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726271992; x=1726876792; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ULBT/bpFrGmtnm47miXVx8/+nItielIS0X8vYYWItlo=;
-        b=e+VSiZ2AuwTzz9QyN//j0/7aSAYHnx5oNIGcnBJlTVpInZ+U5IhpZWCtXH3Kc0KoDq
-         qnT+Hwl561d2j8Lu/GGFypprqTeNJh3As4nvWzgrlz7zQYbsM+r1YpeH6hCZrdVPXk8V
-         BeV5m29Z6i816uniuVCfiuD7B815Yi9Tb67DwJgVq1xIMvZnDIMrMyNJlnOqO/4jNQwT
-         cKphC8K5VGmwQe46T5xPjMBNAAOdWeHjfAtJawLo39zGUmf/qBWHHfvHWzM/PRhG6qhM
-         b3SuB7R8rjWQv7rQtKpaJt2b7fxukJwkDQ6lHFZbWD99YDx+4klaIMr77KmvuiJ1gX2I
-         Lozw==
+        d=gmail.com; s=20230601; t=1726273745; x=1726878545; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=R5uhsut5itNMeHypTSh6e89lNKhazYzcG5L09IqE3Co=;
+        b=a//oSMpXqt3dB9ZKSiRH4+q0EPeHFfS3lHYXpLR68/7CwdtOZqtcWx7G/Q2URv7mBO
+         y2xKbZhc6PSb96GMs91787A8reWPFy6r0QTwu5uYu7IBUmDgIB1SOH4m6AySQDduEbRE
+         qZyM1IzBqdxF653Etmr3SqcY5kf4fLI3lsk2U5XOxsYIjy/LrwkL3EXQnC0JXY/FaUeR
+         CkDu5yzCCfRNhNhucdesH5iS56UFUTml78vc2PXLZ3RcEPBn0U4yyC2NHt+WXE7rMTJQ
+         UKUhaLtBKGTdyyASVkRyVeLmhPpr6GygVYUkrz5RIS0vQFWa1Yia2sFwOjDFM1Xgkqjy
+         fcqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726271992; x=1726876792;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ULBT/bpFrGmtnm47miXVx8/+nItielIS0X8vYYWItlo=;
-        b=UryusCBdolQps7LHmZNeF0zvoBdHbDmZ09bu+FWuaP8jeARkbtPDgfYt7xpRRMzZs+
-         Btb9bbA/NXYbTtHZuLGIA63denjoxC4JEvCjPpMMO9wFN8GC1dFFKIPlJAtCDZEQ322R
-         CaDLaGdC6hZ4nnD0CQpVsOwDyBUZQuJcDxJIc/ne4gZxtIjmprKjhxaCqZWA/usv6Xa4
-         i/XfG68TTr2dcLyJ95nAPAWFX38Ik53WkKyJ/Wbv7BeIn7YXvUGaMlRtgZnF/tiJboiT
-         39KePlplPvcxzkxXi8q0jL5FZrOKnGchOARcdBkqDkL476huJ1U6gMeTGu2bi/IHKVH9
-         6nBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVLFQa6+0PjZ9nIJpFx7k2yhi4L6sbyH9fL8XE1cbfhFvmyl7OiL/AInyeHlja5E5Sqi8LKL+0ldm/N@vger.kernel.org, AJvYcCVwXzoQRf6xxed/urIi3hmh3vOSuHn+NnEPpU6wnCFBBgrxvJgk2K2JqQ97V0d/vYBFCyBojo3xAJvi@vger.kernel.org, AJvYcCXxjCIu79Ac9HN9pm33sO8J4PXDSpOe6ejDVg0anbsWJ6k0xyXJGaJQ+tzTJfpF9i3rSNrNnfMIAT13cJ88@vger.kernel.org
-X-Gm-Message-State: AOJu0YwI1+KJ4HUCZ8OLgBsK08IWssMtKWLL3JnbFGVkXFCUd4cH4/R6
-	L7p9zB8p+fQ6im1/vR7Z2M+zvxGOb3PkKqKyqG979vcyNfLqIAVf
-X-Google-Smtp-Source: AGHT+IHkmiW+QGjdz4SgT9ccPQDc1ak3XHnf/DlHxkQHuqASZNTTHd/WvArY8ccXFoWSg22/Aley7A==
-X-Received: by 2002:a05:600c:1ca7:b0:42c:baf1:4c7 with SMTP id 5b1f17b1804b1-42cbddb8169mr92218085e9.4.1726271991892;
-        Fri, 13 Sep 2024 16:59:51 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:6bd1:9a24:6b02:4a8f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42da22e6540sm4465575e9.21.2024.09.13.16.59.50
+        d=1e100.net; s=20230601; t=1726273745; x=1726878545;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R5uhsut5itNMeHypTSh6e89lNKhazYzcG5L09IqE3Co=;
+        b=gCXY/ooJsjSy7ge7C2oh2c8z3v0JBUAdfu+9rzgwJ2IEyoJeJyGCh3hpsEdgOte/pR
+         ZMwnvBlhmLIeAN8QzO12OLUTxH95wIro4hDMnCdDpdjsMDuxPlB7z7DJxcUiP/sRmk3d
+         OfCRA6v6/AXx7Ek81RWwl0C+DbMjJr0Tn/zGPEgUTY/9FR1Um8a42Npxl5JTU+1iMlNZ
+         0Yzo7erxMNUDdC9SPbKUgwq3Tk9sv1QZhC2yHcezAIn/PCo+GfgyMwxqUYBis84c123d
+         8Ei2leAN2Y8ApLjNre8W+tioW9HylUmfaowWufnsvegFrud/zgVZHttwRpwyudC0HmoY
+         SkUg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZzvjGM0LQ5xQPCwB3oMrM5y0LjhKy5tIXhpid9Vy+EeqRNxsxE0RA8J9i13B+JXsbG+9ripXiZ/pc@vger.kernel.org, AJvYcCVHH3dUTg5Y28KfgiDLZqqxV9rhxHGKIh4wh8t24mdxwCJwCNm7TKtFeNmLx91S8N6swgfTUew1cJx1@vger.kernel.org, AJvYcCWKwjd/0KjcQbeDNnQzKc8y5i7q1GYTVfsYgn2WZW+dO1BaIpKBatikh2oF+HtMtaWNWX5ahnBrVXnPqlB0@vger.kernel.org
+X-Gm-Message-State: AOJu0YywnTehQm5O0GoLHnzfKyTvAAYDjdpkgL1pyon7rLPdzqTzuF8l
+	XrqlnFh1sBJu4xMsUIsCZnAONqzkmtSNpBRuXvXFIANHVjE0px5p
+X-Google-Smtp-Source: AGHT+IH7gGoQgj4HxaeIRCdJCT7NkPQkdkZj2vWGXrHwbwM9Og/GNhGZlaN2i53X+30se5+licOWpw==
+X-Received: by 2002:a17:907:3e94:b0:a86:a866:9e26 with SMTP id a640c23a62f3a-a90293b16e3mr862751766b.3.1726273744238;
+        Fri, 13 Sep 2024 17:29:04 -0700 (PDT)
+Received: from localhost.localdomain ([2a04:ee41:82:7577:6bd1:9a24:6b02:4a8f])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90610f43f4sm15157666b.80.2024.09.13.17.29.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 16:59:51 -0700 (PDT)
+        Fri, 13 Sep 2024 17:29:03 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Sat, 14 Sep 2024 01:59:49 +0200
-To: Conor Dooley <conor@kernel.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
-	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
-	ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
-	biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
-	semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, christophe.jaillet@wanadoo.fr
-Subject: Re: [PATCH v6 2/4] dt-bindings: iio: pressure: bmp085: Add
- interrupts for BMP3xx and BMP5xx devices
-Message-ID: <20240913235949.GC33362@vamoiridPC>
-References: <20240912233234.45519-1-vassilisamir@gmail.com>
- <20240912233234.45519-3-vassilisamir@gmail.com>
- <20240913-overarch-preplan-c899f16a90c8@spud>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andriy.shevchenko@linux.intel.com
+Cc: vassilisamir@gmail.com,
+	ang.iglesiasg@gmail.com,
+	linus.walleij@linaro.org,
+	biju.das.jz@bp.renesas.com,
+	javier.carrasco.cruz@gmail.com,
+	semen.protsenko@linaro.org,
+	579lpy@gmail.com,
+	ak@it-klinger.de,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	christophe.jaillet@wanadoo.fr
+Subject: [PATCH v7 0/4] pressure: bmp280: Minor cleanup and interrupt support
+Date: Sat, 14 Sep 2024 02:28:56 +0200
+Message-Id: <20240914002900.45158-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240913-overarch-preplan-c899f16a90c8@spud>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 13, 2024 at 07:27:29PM +0100, Conor Dooley wrote:
-> On Fri, Sep 13, 2024 at 01:32:32AM +0200, Vasileios Amoiridis wrote:
-> > Add interrupt options for BMP3xx and BMP5xx devices as well.
-> > 
-> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > ---
-> >  .../bindings/iio/pressure/bmp085.yaml         | 22 ++++++++++++++++++-
-> >  1 file changed, 21 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> > index 6fda887ee9d4..7c9d85be9008 100644
-> > --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> > @@ -48,14 +48,34 @@ properties:
-> >  
-> >    interrupts:
-> >      description:
-> > -      interrupt mapping for IRQ (BMP085 only)
-> > +      interrupt mapping for IRQ. Supported in BMP085, BMP3xx, BMP5xx
-> 
-> If you respin, you can drop the description entirely, since you've added
-> proper enforcement below.
-> 
-> Otherwise,
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> 
-> Cheers,
-> Conor.
-> 
+Depends on this: https://lore.kernel.org/linux-iio/20240823172017.9028-1-vassilisamir@gmail.com
 
-Hi Conor,
+Changes in v7:
 
-Thanks for the time to review this, I will try to see if I can do it
-tonight, thanks!
+[PATCH 1/4]:
+	- Use 5ms instead of 5000us in comment
+	- Use USEC_PER_MSEC
+	- Move parenthesis to make checkpatch.pl --strict happy
 
-Cheers,
-Vasilis
+[PATCH 2/4]:
+	- Remove interrupt description since enforcement was added.
+
+Added also review tags for patches 1,3 and ack tag for patch 2.
+
+---
+v6: https://lore.kernel.org/linux-iio/20240912233234.45519-1-vassilisamir@gmail.com
+v5: https://lore.kernel.org/linux-iio/20240902184222.24874-1-vassilisamir@gmail.com
+v4: https://lore.kernel.org/linux-iio/20240828205128.92145-1-vassilisamir@gmail.com
+v3: https://lore.kernel.org/linux-iio/20240823181714.64545-1-vassilisamir@gmail.com
+v2: https://lore.kernel.org/linux-iio/20240725231039.614536-1-vassilisamir@gmail.com
+v1: https://lore.kernel.org/linux-iio/20240711211558.106327-1-vassilisamir@gmail.com
+
+Vasileios Amoiridis (4):
+  iio: pressure: bmp280: Use sleep and forced mode for oneshot captures
+  dt-bindings: iio: pressure: bmp085: Add interrupts for BMP3xx and
+    BMP5xx devices
+  iio: pressure: bmp280: Add data ready trigger support
+  iio: pressure: bmp280: Move bmp085 interrupt to new configuration
+
+ .../bindings/iio/pressure/bmp085.yaml         |  22 +-
+ drivers/iio/pressure/bmp280-core.c            | 580 ++++++++++++++++--
+ drivers/iio/pressure/bmp280-i2c.c             |   4 +-
+ drivers/iio/pressure/bmp280-spi.c             |   4 +-
+ drivers/iio/pressure/bmp280.h                 |  43 ++
+ 5 files changed, 612 insertions(+), 41 deletions(-)
+
+
+base-commit: fec496684388685647652ab4213454fbabdab099
+prerequisite-patch-id: e4f81f31f4fbb2aa872c0c74ed4511893eee0c9a
+-- 
+2.25.1
+
 

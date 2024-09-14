@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-9558-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9559-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE79197914C
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 16:15:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F2B97914F
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 16:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5CAAB213FE
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 14:15:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CD19283FF9
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 14:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60581CF7C4;
-	Sat, 14 Sep 2024 14:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A141CFEA2;
+	Sat, 14 Sep 2024 14:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K684u+ya"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkPyBMlM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7F71CF2B6;
-	Sat, 14 Sep 2024 14:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761D71CF2B0;
+	Sat, 14 Sep 2024 14:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726323339; cv=none; b=BiCrCOQZzjm5pqJPeGBc668Jl251stE0OmNiKZnFBHjggVt0R3wDgXWke2/HRWADxi+MtAmRnSuDtExHbhNj5zwE3CnAXm7X8A3R6K9Q0G83Iq9NOFJnnhMb3G44HSl/SWMvgZbdhi6wumUjXqsqawOCFflyL71dtxOVHUy4r/M=
+	t=1726323494; cv=none; b=HiiKmRFY1xSJAT+v/hDp2occShLD5df38usMsx+NEx9O3QOIcrvAM91XUPeM0ZShowRwkUwmWUd1jcoEJWrndYMNRgHBUG5LV150EqM2BoiFacpIbgwExbCtBwEvvSUqMeM4+muNKjifm93PlHRhCtDdhKOjX0SP7oRGU12X2nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726323339; c=relaxed/simple;
-	bh=TZQfglloerJOXo5tlrCo8RGE7/fkrYq1ywpoq68zLys=;
+	s=arc-20240116; t=1726323494; c=relaxed/simple;
+	bh=YzlIrKa9qROLJ8Xaw/r1jxKSFT05Dy3NWxL/FjHMwig=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PWHtoj5Ayq7/NAmz/4ZYPc6ww2XJsrSbarwGAevF4cmWKN6m/RVZtdXLXtwX3Q1UhaoW5INHuFEdUDZ85xnG5XADvUAqFc0ZFP6LoY1CK1DBAEhe4BoMWJK3gSr59uPPSgoK2vxw1ta4huiKP+ohDsMzYd+SneCjUHLtgcO1CNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K684u+ya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C6CC4CEC0;
-	Sat, 14 Sep 2024 14:15:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hEP0CdwHlNbIaKgIo6FrdZkYg34RN6g+0PVblbBQMdjwOK48maQDUoeWHqw51x4Ucy+F7ecmvfODaFnq1EkKq9gjpe6oPV3FL+/uOHvwZ7Pfe4jMbqchuQIgH+0jSkauqEYYVqQ74twj5EBvpFfOkx14PTpgZ4nt8eSMEawnA58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkPyBMlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77113C4CEC0;
+	Sat, 14 Sep 2024 14:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726323339;
-	bh=TZQfglloerJOXo5tlrCo8RGE7/fkrYq1ywpoq68zLys=;
+	s=k20201202; t=1726323494;
+	bh=YzlIrKa9qROLJ8Xaw/r1jxKSFT05Dy3NWxL/FjHMwig=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K684u+ya66JO7pskVP73Gz0C6vhw0OtXp6ohtx2RjmQoX2Bp6yEew1POn+/95nIuN
-	 8M2Xb0rcUgcv+a/HKPdStxU/nks1VCIzivHYvA5B/a2eVhUHRqRBruQQKWZ97vCzH4
-	 U+ddjy+LLoZTA69Wj7zJvybxcHs3oXs4eyMop7mhfUbYRaiHyzx3+W2rQ/PRi2lcaG
-	 qlUsE9zPJAxSQP4DpGXAwoWrO4m2/aQRQ5Vg2Qv9uA0MpMvYc7Po4ZlI7nvRS1A2p2
-	 oAQELDDb577+pR9QQWHcBD7Z/4sIx52e1d90uvcUkNJKapIQIEL+CRbkXvPO2cTmZa
-	 o5a4XLJ37mjag==
-Date: Sat, 14 Sep 2024 15:15:32 +0100
+	b=QkPyBMlMruE8ewcrPt7o7wG4IgQF2yRzoiyJrY5xhfsmkSHNwb3sFd9QTC6iPnETM
+	 sBLJne1rJM+si+vhC8o7vxUfjkw8g4rlLmSK+yDTisjdL8pozBNg27TlM27yXCd9V+
+	 cXxsvENmA6jHqJ4jT2yauxxiJ8Mbsybw206AYkFpfABED7cOTwFfCgv5umhj4dUToq
+	 0ZII9M40+uGUuoZoTY1IdLP7umV9FAJbRAUAWgSykFn6L19SzOHcAyNj3ZvBfd6ZKh
+	 w8KFBe8i7YMYWud0DRLvA5eHrQnRsMB6BUznru1udel3UuZKA8LNZckBmhLUhXQFY4
+	 Gx0cNRsm9GUPQ==
+Date: Sat, 14 Sep 2024 15:18:06 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, David Heidelberg <david@ixit.cz>,
- Dmitry Osipenko <digetx@gmail.com>, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: light: al3010: Fix an error handling path in
- al3010_probe()
-Message-ID: <20240914151532.1c9580e2@jic23-huawei>
-In-Reply-To: <ee5d10a2dd2b70f29772d5df33774d3974a80f30.1725993353.git.christophe.jaillet@wanadoo.fr>
-References: <ee5d10a2dd2b70f29772d5df33774d3974a80f30.1725993353.git.christophe.jaillet@wanadoo.fr>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Auchter
+ <michael.auchter@ni.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: dac: adi,ad56xx: Fix duplicate
+ compatible strings
+Message-ID: <20240914151806.66c58bfd@jic23-huawei>
+In-Reply-To: <20240910234440.1045098-1-robh@kernel.org>
+References: <20240910234440.1045098-1-robh@kernel.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,67 +64,118 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Sep 2024 20:36:06 +0200
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+On Tue, 10 Sep 2024 18:44:39 -0500
+"Rob Herring (Arm)" <robh@kernel.org> wrote:
 
-> If i2c_smbus_write_byte_data() fails in al3010_init(),
-> al3010_set_pwr(false) is not called.
+> adi,ad5686.yaml and adi,ad5696.yaml duplicate all the I2C device
+> compatible strings with the exception of "adi,ad5337r". Since
+> adi,ad5686.yaml references spi-peripheral-props.yaml, drop the I2C
+> devices from it making it only SPI devices. Update the titles to make
+> the distinction clear.
 > 
-> In order to avoid such a situation, move the devm_add_action_or_reset()
-> witch calls al3010_set_pwr(false) right after a successful
-> al3010_set_pwr(true).
-> 
-> Fixes: c36b5195ab70 ("iio: light: add Dyna-Image AL3010 driver")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Looks correct to me, but given the upshot of the bug is that in
-a case where an bus access fails we don't power down (which requires a bus
-access). It's unlikely to happen in practice and outcome is device
-remains powered up when it shouldn't be which isn't too bad an outcome.
-
-Hence I'll queue this up the slow way.
-Applied to the testing branch of iio.git for 0-day to play with it before
-I rebase on rc1 once available.
-
-Thanks,
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Is this an urgent thing, or can it wait for the merge window after next?
+For now I've queued it up for then in my testing branch but can yank it
+out and send it as a fix after rc1 if that is useful.
 
 Jonathan
-
+ 
 > ---
-> Compile tested only.
-> This patch is speculative, review with care
-> ---
->  drivers/iio/light/al3010.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
+>  .../bindings/iio/dac/adi,ad5686.yaml          | 53 ++++++-------------
+>  .../bindings/iio/dac/adi,ad5696.yaml          |  3 +-
+>  2 files changed, 19 insertions(+), 37 deletions(-)
 > 
-> diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
-> index 53569587ccb7..7cbb8b203300 100644
-> --- a/drivers/iio/light/al3010.c
-> +++ b/drivers/iio/light/al3010.c
-> @@ -87,7 +87,12 @@ static int al3010_init(struct al3010_data *data)
->  	int ret;
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+> index b4400c52bec3..713f535bb33a 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+> @@ -4,7 +4,7 @@
+>  $id: http://devicetree.org/schemas/iio/dac/adi,ad5686.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
 >  
->  	ret = al3010_set_pwr(data->client, true);
-> +	if (ret < 0)
-> +		return ret;
+> -title: Analog Devices AD5360 and similar DACs
+> +title: Analog Devices AD5360 and similar SPI DACs
 >  
-> +	ret = devm_add_action_or_reset(&data->client->dev,
-> +				       al3010_set_pwr_off,
-> +				       data);
->  	if (ret < 0)
->  		return ret;
+>  maintainers:
+>    - Michael Hennerich <michael.hennerich@analog.com>
+> @@ -12,41 +12,22 @@ maintainers:
 >  
-> @@ -190,12 +195,6 @@ static int al3010_probe(struct i2c_client *client)
->  		return ret;
->  	}
->  
-> -	ret = devm_add_action_or_reset(&client->dev,
-> -					al3010_set_pwr_off,
-> -					data);
-> -	if (ret < 0)
-> -		return ret;
+>  properties:
+>    compatible:
+> -    oneOf:
+> -      - description: SPI devices
+> -        enum:
+> -          - adi,ad5310r
+> -          - adi,ad5672r
+> -          - adi,ad5674r
+> -          - adi,ad5676
+> -          - adi,ad5676r
+> -          - adi,ad5679r
+> -          - adi,ad5681r
+> -          - adi,ad5682r
+> -          - adi,ad5683
+> -          - adi,ad5683r
+> -          - adi,ad5684
+> -          - adi,ad5684r
+> -          - adi,ad5685r
+> -          - adi,ad5686
+> -          - adi,ad5686r
+> -      - description: I2C devices
+> -        enum:
+> -          - adi,ad5311r
+> -          - adi,ad5337r
+> -          - adi,ad5338r
+> -          - adi,ad5671r
+> -          - adi,ad5675r
+> -          - adi,ad5691r
+> -          - adi,ad5692r
+> -          - adi,ad5693
+> -          - adi,ad5693r
+> -          - adi,ad5694
+> -          - adi,ad5694r
+> -          - adi,ad5695r
+> -          - adi,ad5696
+> -          - adi,ad5696r
 > -
->  	return devm_iio_device_register(&client->dev, indio_dev);
->  }
+> +    enum:
+> +      - adi,ad5310r
+> +      - adi,ad5672r
+> +      - adi,ad5674r
+> +      - adi,ad5676
+> +      - adi,ad5676r
+> +      - adi,ad5679r
+> +      - adi,ad5681r
+> +      - adi,ad5682r
+> +      - adi,ad5683
+> +      - adi,ad5683r
+> +      - adi,ad5684
+> +      - adi,ad5684r
+> +      - adi,ad5685r
+> +      - adi,ad5686
+> +      - adi,ad5686r
 >  
+>    reg:
+>      maxItems: 1
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5696.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5696.yaml
+> index 56b0cda0f30a..b5a88b03dc2f 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5696.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5696.yaml
+> @@ -4,7 +4,7 @@
+>  $id: http://devicetree.org/schemas/iio/dac/adi,ad5696.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+> -title: Analog Devices AD5696 and similar multi-channel DACs
+> +title: Analog Devices AD5696 and similar I2C multi-channel DACs
+>  
+>  maintainers:
+>    - Michael Auchter <michael.auchter@ni.com>
+> @@ -16,6 +16,7 @@ properties:
+>    compatible:
+>      enum:
+>        - adi,ad5311r
+> +      - adi,ad5337r
+>        - adi,ad5338r
+>        - adi,ad5671r
+>        - adi,ad5675r
 
 

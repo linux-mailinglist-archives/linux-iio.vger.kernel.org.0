@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-9528-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9529-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664DC978C1F
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 02:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF39978C21
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 02:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B2C6284D7C
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 00:29:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 192A4285784
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 00:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D564B1FB4;
-	Sat, 14 Sep 2024 00:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAB24C6E;
+	Sat, 14 Sep 2024 00:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a//oSMpX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OBRvKfAs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D5C23AD;
-	Sat, 14 Sep 2024 00:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B264923BB;
+	Sat, 14 Sep 2024 00:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726273748; cv=none; b=Ti7AdC5qVJS8u/OjC1qy4e2JG1qyac4ScvuHsiJErBikuHbX6HM1NA+fw7KxlKJPWTZTHYcR8vhb+XINeopWJthpVD51gea+WcNEqrI9Bf456xll22i/Z3nj9gETDC2bON0rOG2KnP6PnlPI6oNxCAlTTgHxfdX3L2oLjv2kuu0=
+	t=1726273749; cv=none; b=CJvCFiw8p9xpsMT9Mc26J+WynsmSp2eNXMxkuxkkbYOMCxBk+z92hgrY5RTLT3fA7GtEmvm67aI3qlTxNP87Z018G5ppmLtv6qEeo05coZ/mMAxcTC9XsScK/gGiPgCOh5J/TF/PS3YaJZS9lKI+w+BsxJsc9lFfTJBMCybm7go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726273748; c=relaxed/simple;
-	bh=tAqlyK2vfqcDZjFC56vZdZtCXGSnFLuxJO4smkEQQwk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IDvroO5Am2GB+ILAa9qUdmkv44k4rYfOEOcXMzIZmxPpp7tf8OADwDl8/yxG+LtVFzbs9yhRJDKJvsF+GUGaNuh71adctrORw2rMwRUVZfK41bWKgTGsGHbpg5YjMRCNvR3s4zel+4Va8ZSfiPb4gMTalZNU7jpDLddJgsdYYRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a//oSMpX; arc=none smtp.client-ip=209.85.218.45
+	s=arc-20240116; t=1726273749; c=relaxed/simple;
+	bh=kDipoU3lQ/uGOi+DsTAtuRK93jWZRg6WFsQvwzoki0c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=J1R1nrAKW0O1uK+0qxym6k1Q/T4CIrbP4tjiDTlM23r5r0igGKJeO4PaAI5VwyXcyJVrgijr4z7VZ2vl2xdWfKioeuNjO13nVgvO3fMjkqnpp/lmLKzkH9rCGqlb99g5zT9dB6BQGVCKWfYmztvh2z5TscTdsFfmYE4DcdsqKug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OBRvKfAs; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a8d4093722bso356793766b.0;
-        Fri, 13 Sep 2024 17:29:06 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42cb57f8b41so19692685e9.0;
+        Fri, 13 Sep 2024 17:29:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726273745; x=1726878545; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=R5uhsut5itNMeHypTSh6e89lNKhazYzcG5L09IqE3Co=;
-        b=a//oSMpXqt3dB9ZKSiRH4+q0EPeHFfS3lHYXpLR68/7CwdtOZqtcWx7G/Q2URv7mBO
-         y2xKbZhc6PSb96GMs91787A8reWPFy6r0QTwu5uYu7IBUmDgIB1SOH4m6AySQDduEbRE
-         qZyM1IzBqdxF653Etmr3SqcY5kf4fLI3lsk2U5XOxsYIjy/LrwkL3EXQnC0JXY/FaUeR
-         CkDu5yzCCfRNhNhucdesH5iS56UFUTml78vc2PXLZ3RcEPBn0U4yyC2NHt+WXE7rMTJQ
-         UKUhaLtBKGTdyyASVkRyVeLmhPpr6GygVYUkrz5RIS0vQFWa1Yia2sFwOjDFM1Xgkqjy
-         fcqg==
+        d=gmail.com; s=20230601; t=1726273746; x=1726878546; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VMDyMRoNGbenRc4QoitE5nG2Uq5o9HsYkvuTivKoCKk=;
+        b=OBRvKfAsmjpL3yryZ2+83wC1RXazVmcRORDOyMFipBT+G/S9fuOv0guXna2u3eUO7g
+         MrbOcH9lEz8gVH4jjMy6jZXcN99OC8QZbhRHf1td4PGQhvs8bCC6s+WT/fnjTJC7HT8O
+         GZRKkCEWTGz5T4YVg/C0jsLJBhn6ft/yWJPcPZtLYC9uw9MXLfwTJgw0yWz5BF+qxR9f
+         Yk7XdeOtZExkgnoZx62mIyg5WG8Dr/faU3c249t+6GZvX8iziQzmqXf6IeUDWl9acjyg
+         393AB70c7Ga+Y4caZQ4Ju2Oaeof7SxfcN33yEvrlusydkXOyzfnSeNy4HM4NesClI493
+         kblA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726273745; x=1726878545;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R5uhsut5itNMeHypTSh6e89lNKhazYzcG5L09IqE3Co=;
-        b=gCXY/ooJsjSy7ge7C2oh2c8z3v0JBUAdfu+9rzgwJ2IEyoJeJyGCh3hpsEdgOte/pR
-         ZMwnvBlhmLIeAN8QzO12OLUTxH95wIro4hDMnCdDpdjsMDuxPlB7z7DJxcUiP/sRmk3d
-         OfCRA6v6/AXx7Ek81RWwl0C+DbMjJr0Tn/zGPEgUTY/9FR1Um8a42Npxl5JTU+1iMlNZ
-         0Yzo7erxMNUDdC9SPbKUgwq3Tk9sv1QZhC2yHcezAIn/PCo+GfgyMwxqUYBis84c123d
-         8Ei2leAN2Y8ApLjNre8W+tioW9HylUmfaowWufnsvegFrud/zgVZHttwRpwyudC0HmoY
-         SkUg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZzvjGM0LQ5xQPCwB3oMrM5y0LjhKy5tIXhpid9Vy+EeqRNxsxE0RA8J9i13B+JXsbG+9ripXiZ/pc@vger.kernel.org, AJvYcCVHH3dUTg5Y28KfgiDLZqqxV9rhxHGKIh4wh8t24mdxwCJwCNm7TKtFeNmLx91S8N6swgfTUew1cJx1@vger.kernel.org, AJvYcCWKwjd/0KjcQbeDNnQzKc8y5i7q1GYTVfsYgn2WZW+dO1BaIpKBatikh2oF+HtMtaWNWX5ahnBrVXnPqlB0@vger.kernel.org
-X-Gm-Message-State: AOJu0YywnTehQm5O0GoLHnzfKyTvAAYDjdpkgL1pyon7rLPdzqTzuF8l
-	XrqlnFh1sBJu4xMsUIsCZnAONqzkmtSNpBRuXvXFIANHVjE0px5p
-X-Google-Smtp-Source: AGHT+IH7gGoQgj4HxaeIRCdJCT7NkPQkdkZj2vWGXrHwbwM9Og/GNhGZlaN2i53X+30se5+licOWpw==
-X-Received: by 2002:a17:907:3e94:b0:a86:a866:9e26 with SMTP id a640c23a62f3a-a90293b16e3mr862751766b.3.1726273744238;
-        Fri, 13 Sep 2024 17:29:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726273746; x=1726878546;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VMDyMRoNGbenRc4QoitE5nG2Uq5o9HsYkvuTivKoCKk=;
+        b=YuLcPC1iDOIxKrojlIym9F6s6phpLb78Yo1+CKa4i10exvaZsfFtRsK/X+7KX3kLTb
+         5xBsVA/QGBPBm62p5D7+Bg4qnFa+J6KU1uqFjrxz850qimMLHV98lundeRvexnKXNFla
+         2z2z3SIuYMc4epy1ogqh+DxQ51aNmU0wXx9jNMWCEtS5AwVsRx12NY/LKjqQgYc4ZJaX
+         n4TwUgXNISYvcw604pLKo7hZO9X1cr7Bppj0s1sAqoQ43eoDBiv3OG3hpWXoSnLP4Guo
+         Lg6J93pRtB4aj+iCu0YUQAsxI6CHelxweLwvYS0konY45ehfJrRBWJZnjiOfhAZ7mq55
+         3cLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6NE6K0Lz0FItMutK04d5e6tyfbrAcKy92fFl/j6ouwVM0Qxo8Pi+GJyNYFqw9VWsnRShHAlxjCKuO@vger.kernel.org, AJvYcCUrvg6uKXOUHnamfN3aC0ypN1UWUcmOCEiOLoZuwop1tA9xUT2LF5GHou4DlyeHK6wp+AzL9ClLycXx@vger.kernel.org, AJvYcCWgU0p8ZKjFtqfmjtwecw7ZAWEaqWnskt9BICfNjEepfWBfFywZp0Vn3r61vWDE6nsInT9yjAhGUMPCHftu@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzL/HNQzOd/+zt8ZxD9HjeerCCE9npOah2bxS5BS1AfQQJszdH
+	9SZQT02QSjTQn36hQ7VysA/XFgkQCpeVrdodBQDIRlgE/MIfKRXU
+X-Google-Smtp-Source: AGHT+IH+qruwMeZ6gQBBzbJd3bNM7FPsnJDzkrN+5HSbVV9r5MfnChIswlXV0UvkWX3MIZYb8AQb4A==
+X-Received: by 2002:a05:600c:4f41:b0:42c:b950:6821 with SMTP id 5b1f17b1804b1-42d90829e60mr40170965e9.19.1726273745413;
+        Fri, 13 Sep 2024 17:29:05 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:6bd1:9a24:6b02:4a8f])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90610f43f4sm15157666b.80.2024.09.13.17.29.03
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90610f43f4sm15157666b.80.2024.09.13.17.29.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 17:29:03 -0700 (PDT)
+        Fri, 13 Sep 2024 17:29:05 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -84,10 +86,12 @@ Cc: vassilisamir@gmail.com,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	christophe.jaillet@wanadoo.fr
-Subject: [PATCH v7 0/4] pressure: bmp280: Minor cleanup and interrupt support
-Date: Sat, 14 Sep 2024 02:28:56 +0200
-Message-Id: <20240914002900.45158-1-vassilisamir@gmail.com>
+Subject: [PATCH v7 1/4] iio: pressure: bmp280: Use sleep and forced mode for oneshot captures
+Date: Sat, 14 Sep 2024 02:28:57 +0200
+Message-Id: <20240914002900.45158-2-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240914002900.45158-1-vassilisamir@gmail.com>
+References: <20240914002900.45158-1-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -96,45 +100,548 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Depends on this: https://lore.kernel.org/linux-iio/20240823172017.9028-1-vassilisamir@gmail.com
+Add forced mode support in sensors BMP28x, BME28x, BMP3xx and BMP58x.
+Sensors BMP18x and BMP085 are old and do not support this feature so
+their operation is not affected at all.
 
-Changes in v7:
+Essentially, up to now, the rest of the sensors were used in normal mode
+all the time. This means that they are continuously doing measurements
+even though these measurements are not used. Even though the sensor does
+provide PM support, to cover all the possible use cases, the sensor needs
+to go into sleep mode and wake up whenever necessary.
 
-[PATCH 1/4]:
-	- Use 5ms instead of 5000us in comment
-	- Use USEC_PER_MSEC
-	- Move parenthesis to make checkpatch.pl --strict happy
+The idea is that the sensor is by default in sleep mode, wakes up in
+forced mode when a oneshot capture is requested, or in normal mode
+when the buffer is enabled. The difference lays in the fact that in
+forced mode, the sensor does only one conversion and goes back to sleep
+while in normal mode, the sensor does continuous measurements with the
+frequency that was set in the ODR registers.
 
-[PATCH 2/4]:
-	- Remove interrupt description since enforcement was added.
+The bmpX_chip_config() functions which are responsible for applying
+the requested configuration to the sensor, are modified accordingly
+in order to set the sensor by default in sleep mode.
 
-Added also review tags for patches 1,3 and ack tag for patch 2.
+DEEP STANDBY, Low Power NORMAL and CONTINUOUS modes, supported only by
+the BMP58x version, are not added.
 
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
-v6: https://lore.kernel.org/linux-iio/20240912233234.45519-1-vassilisamir@gmail.com
-v5: https://lore.kernel.org/linux-iio/20240902184222.24874-1-vassilisamir@gmail.com
-v4: https://lore.kernel.org/linux-iio/20240828205128.92145-1-vassilisamir@gmail.com
-v3: https://lore.kernel.org/linux-iio/20240823181714.64545-1-vassilisamir@gmail.com
-v2: https://lore.kernel.org/linux-iio/20240725231039.614536-1-vassilisamir@gmail.com
-v1: https://lore.kernel.org/linux-iio/20240711211558.106327-1-vassilisamir@gmail.com
+ drivers/iio/pressure/bmp280-core.c | 296 +++++++++++++++++++++++++++--
+ drivers/iio/pressure/bmp280.h      |  21 ++
+ 2 files changed, 296 insertions(+), 21 deletions(-)
 
-Vasileios Amoiridis (4):
-  iio: pressure: bmp280: Use sleep and forced mode for oneshot captures
-  dt-bindings: iio: pressure: bmp085: Add interrupts for BMP3xx and
-    BMP5xx devices
-  iio: pressure: bmp280: Add data ready trigger support
-  iio: pressure: bmp280: Move bmp085 interrupt to new configuration
-
- .../bindings/iio/pressure/bmp085.yaml         |  22 +-
- drivers/iio/pressure/bmp280-core.c            | 580 ++++++++++++++++--
- drivers/iio/pressure/bmp280-i2c.c             |   4 +-
- drivers/iio/pressure/bmp280-spi.c             |   4 +-
- drivers/iio/pressure/bmp280.h                 |  43 ++
- 5 files changed, 612 insertions(+), 41 deletions(-)
-
-
-base-commit: fec496684388685647652ab4213454fbabdab099
-prerequisite-patch-id: e4f81f31f4fbb2aa872c0c74ed4511893eee0c9a
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 6d7a9bd6e761..64fb2d720bec 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -16,6 +16,11 @@
+  * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp390-ds002.pdf
+  * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp581-ds004.pdf
+  *
++ * Sensor API:
++ * https://github.com/boschsensortec/BME280_SensorAPI
++ * https://github.com/boschsensortec/BMP3_SensorAPI
++ * https://github.com/boschsensortec/BMP5_SensorAPI
++ *
+  * Notice:
+  * The link to the bmp180 datasheet points to an outdated version missing these changes:
+  * - Changed document referral from ANP015 to BST-MPS-AN004-00 on page 26
+@@ -616,6 +621,14 @@ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_PROCESSED:
++		ret = data->chip_info->set_mode(data, BMP280_FORCED);
++		if (ret)
++			return ret;
++
++		ret = data->chip_info->wait_conv(data);
++		if (ret)
++			return ret;
++
+ 		switch (chan->type) {
+ 		case IIO_HUMIDITYRELATIVE:
+ 			ret = data->chip_info->read_humid(data, &chan_value);
+@@ -645,6 +658,14 @@ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
+ 			return -EINVAL;
+ 		}
+ 	case IIO_CHAN_INFO_RAW:
++		ret = data->chip_info->set_mode(data, BMP280_FORCED);
++		if (ret)
++			return ret;
++
++		ret = data->chip_info->wait_conv(data);
++		if (ret)
++			return ret;
++
+ 		switch (chan->type) {
+ 		case IIO_HUMIDITYRELATIVE:
+ 			ret = data->chip_info->read_humid(data, &chan_value);
+@@ -991,6 +1012,69 @@ static int bmp280_preinit(struct bmp280_data *data)
+ 	return 0;
+ }
+ 
++static const u8 bmp280_operation_mode[] = {
++	BMP280_MODE_SLEEP, BMP280_MODE_FORCED, BMP280_MODE_NORMAL,
++};
++
++static int bmp280_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
++{
++	int ret;
++
++	switch (mode) {
++	case BMP280_SLEEP:
++	case BMP280_FORCED:
++	case BMP280_NORMAL:
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	ret = regmap_write_bits(data->regmap, BMP280_REG_CTRL_MEAS,
++				BMP280_MODE_MASK, bmp280_operation_mode[mode]);
++	if (ret) {
++		dev_err(data->dev, "failed to  write ctrl_meas register.\n");
++		return ret;
++	}
++
++	data->op_mode = mode;
++
++	return 0;
++}
++
++static int bmp280_wait_conv(struct bmp280_data *data)
++{
++	unsigned int reg, meas_time_us;
++	int ret;
++
++	/* Check if we are using a BME280 device */
++	if (data->oversampling_humid)
++		meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
++				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
++
++	/* Pressure measurement time */
++	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
++			BIT(data->oversampling_press) * BMP280_MEAS_DUR;
++
++	/* Temperature measurement time */
++	meas_time_us += BIT(data->oversampling_temp) * BMP280_MEAS_DUR;
++
++	/* Waiting time according to the BM(P/E)2 Sensor API */
++	fsleep(meas_time_us);
++
++	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
++	if (ret) {
++		dev_err(data->dev, "failed to read status register.\n");
++		return ret;
++	}
++
++	if (reg & BMP280_REG_STATUS_MEAS_BIT) {
++		dev_err(data->dev, "Measurement cycle didn't complete.\n");
++		return -EBUSY;
++	}
++
++	return 0;
++}
++
+ static int bmp280_chip_config(struct bmp280_data *data)
+ {
+ 	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
+@@ -1001,7 +1085,7 @@ static int bmp280_chip_config(struct bmp280_data *data)
+ 				BMP280_OSRS_TEMP_MASK |
+ 				BMP280_OSRS_PRESS_MASK |
+ 				BMP280_MODE_MASK,
+-				osrs | BMP280_MODE_NORMAL);
++				osrs | BMP280_MODE_SLEEP);
+ 	if (ret) {
+ 		dev_err(data->dev, "failed to write ctrl_meas register\n");
+ 		return ret;
+@@ -1108,6 +1192,8 @@ const struct bmp280_chip_info bmp280_chip_info = {
+ 	.read_temp = bmp280_read_temp,
+ 	.read_press = bmp280_read_press,
+ 	.read_calib = bmp280_read_calib,
++	.set_mode = bmp280_set_mode,
++	.wait_conv = bmp280_wait_conv,
+ 	.preinit = bmp280_preinit,
+ 
+ 	.trigger_handler = bmp280_trigger_handler,
+@@ -1229,6 +1315,8 @@ const struct bmp280_chip_info bme280_chip_info = {
+ 	.read_press = bmp280_read_press,
+ 	.read_humid = bme280_read_humid,
+ 	.read_calib = bme280_read_calib,
++	.set_mode = bmp280_set_mode,
++	.wait_conv = bmp280_wait_conv,
+ 	.preinit = bmp280_preinit,
+ 
+ 	.trigger_handler = bme280_trigger_handler,
+@@ -1516,6 +1604,71 @@ static int bmp380_preinit(struct bmp280_data *data)
+ 	return bmp380_cmd(data, BMP380_CMD_SOFT_RESET);
+ }
+ 
++static const u8 bmp380_operation_mode[] = {
++	BMP380_MODE_SLEEP, BMP380_MODE_FORCED, BMP380_MODE_NORMAL,
++};
++
++static int bmp380_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
++{
++	int ret;
++
++	switch (mode) {
++	case BMP280_SLEEP:
++	case BMP280_FORCED:
++	case BMP280_NORMAL:
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
++				BMP380_MODE_MASK,
++				FIELD_PREP(BMP380_MODE_MASK,
++					   bmp380_operation_mode[mode]));
++	if (ret) {
++		dev_err(data->dev, "failed to  write power control register.\n");
++		return ret;
++	}
++
++	data->op_mode = mode;
++
++	return 0;
++}
++
++static int bmp380_wait_conv(struct bmp280_data *data)
++{
++	unsigned int reg;
++	int ret, meas_time_us;
++
++	/* Offset measurement time */
++	meas_time_us = BMP380_MEAS_OFFSET;
++
++	/* Pressure measurement time */
++	meas_time_us += BMP380_PRESS_MEAS_OFFSET +
++		     BIT(data->oversampling_press) * BMP380_MEAS_DUR;
++
++	/* Temperature measurement time */
++	meas_time_us += BMP380_TEMP_MEAS_OFFSET +
++		     BIT(data->oversampling_temp) * BMP380_MEAS_DUR;
++
++	/* Measurement time defined in Datasheet Section 3.9.2 */
++	fsleep(meas_time_us);
++
++	ret = regmap_read(data->regmap, BMP380_REG_STATUS, &reg);
++	if (ret) {
++		dev_err(data->dev, "failed to read status register.\n");
++		return ret;
++	}
++
++	if (!((reg & BMP380_STATUS_DRDY_PRESS_MASK) &&
++	      (reg & BMP380_STATUS_DRDY_TEMP_MASK))) {
++		dev_err(data->dev, "Measurement cycle didn't complete.\n");
++		return -EBUSY;
++	}
++
++	return 0;
++}
++
+ static int bmp380_chip_config(struct bmp280_data *data)
+ {
+ 	bool change = false, aux;
+@@ -1576,17 +1729,19 @@ static int bmp380_chip_config(struct bmp280_data *data)
+ 		 * Resets sensor measurement loop toggling between sleep and
+ 		 * normal operating modes.
+ 		 */
+-		ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
+-					BMP380_MODE_MASK,
+-					FIELD_PREP(BMP380_MODE_MASK, BMP380_MODE_SLEEP));
++		ret = bmp380_set_mode(data, BMP280_SLEEP);
+ 		if (ret) {
+ 			dev_err(data->dev, "failed to set sleep mode\n");
+ 			return ret;
+ 		}
+-		usleep_range(2000, 2500);
+-		ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
+-					BMP380_MODE_MASK,
+-					FIELD_PREP(BMP380_MODE_MASK, BMP380_MODE_NORMAL));
++
++		/*
++		 * According to the BMP3 Sensor API, the sensor needs 5ms
++		 * in order to go to the sleep mode.
++		 */
++		fsleep(5 * USEC_PER_MSEC);
++
++		ret = bmp380_set_mode(data, BMP280_NORMAL);
+ 		if (ret) {
+ 			dev_err(data->dev, "failed to set normal mode\n");
+ 			return ret;
+@@ -1612,7 +1767,16 @@ static int bmp380_chip_config(struct bmp280_data *data)
+ 		}
+ 	}
+ 
+-	return 0;
++	/* Dummy read to empty data registers. */
++	ret = bmp380_read_press(data, &tmp);
++	if (ret)
++		return ret;
++
++	ret = bmp380_set_mode(data, BMP280_SLEEP);
++	if (ret)
++		dev_err(data->dev, "failed to set sleep mode.\n");
++
++	return ret;
+ }
+ 
+ static irqreturn_t bmp380_trigger_handler(int irq, void *p)
+@@ -1705,6 +1869,8 @@ const struct bmp280_chip_info bmp380_chip_info = {
+ 	.read_temp = bmp380_read_temp,
+ 	.read_press = bmp380_read_press,
+ 	.read_calib = bmp380_read_calib,
++	.set_mode = bmp380_set_mode,
++	.wait_conv = bmp380_wait_conv,
+ 	.preinit = bmp380_preinit,
+ 
+ 	.trigger_handler = bmp380_trigger_handler,
+@@ -2092,6 +2258,75 @@ static int bmp580_preinit(struct bmp280_data *data)
+ 	return PTR_ERR_OR_ZERO(devm_nvmem_register(config.dev, &config));
+ }
+ 
++static const u8 bmp580_operation_mode[] = {
++	BMP580_MODE_SLEEP, BMP580_MODE_FORCED, BMP580_MODE_NORMAL,
++};
++
++static int bmp580_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
++{
++	struct device *dev = data->dev;
++	int ret;
++
++	switch (mode) {
++	case BMP280_SLEEP:
++	case BMP280_NORMAL:
++		break;
++	case BMP280_FORCED:
++		ret = regmap_set_bits(data->regmap, BMP580_REG_DSP_CONFIG,
++				      BMP580_DSP_IIR_FORCED_FLUSH);
++		if (ret) {
++			dev_err(dev, "Could not flush IIR filter constants.\n");
++			return ret;
++		}
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	ret = regmap_write_bits(data->regmap, BMP580_REG_ODR_CONFIG,
++				BMP580_MODE_MASK,
++				FIELD_PREP(BMP580_MODE_MASK,
++					   bmp580_operation_mode[mode]));
++	if (ret) {
++		dev_err(dev, "failed to  write power control register.\n");
++		return ret;
++	}
++
++	data->op_mode = mode;
++
++	return 0;
++}
++
++static int bmp580_wait_conv(struct bmp280_data *data)
++{
++	/*
++	 * Taken from datasheet, Section 2 "Specification, Table 3 "Electrical
++	 * characteristics.
++	 */
++	static const int time_conv_press[] = {
++		0, 1050, 1785, 3045, 5670, 10920, 21420, 42420,
++		84420,
++	};
++	static const int time_conv_temp[] = {
++		0, 1050, 1105, 1575, 2205, 3465, 6090, 11340,
++		21840,
++	};
++	int meas_time_us;
++
++	meas_time_us = 4 * USEC_PER_MSEC +
++		       time_conv_temp[data->oversampling_temp] +
++		       time_conv_press[data->oversampling_press];
++
++	/*
++	 * Measurement time mentioned in Chapter 2, Table 4 of the datasheet.
++	 * The extra 4ms is the required mode change to start of measurement
++	 * time.
++	 */
++	fsleep(meas_time_us);
++
++	return 0;
++}
++
+ static int bmp580_chip_config(struct bmp280_data *data)
+ {
+ 	bool change = false, aux;
+@@ -2162,17 +2397,6 @@ static int bmp580_chip_config(struct bmp280_data *data)
+ 		return ret;
+ 	}
+ 
+-	/* Restore sensor to normal operation mode */
+-	ret = regmap_write_bits(data->regmap, BMP580_REG_ODR_CONFIG,
+-				BMP580_MODE_MASK,
+-				FIELD_PREP(BMP580_MODE_MASK, BMP580_MODE_NORMAL));
+-	if (ret) {
+-		dev_err(data->dev, "failed to set normal mode\n");
+-		return ret;
+-	}
+-	/* From datasheet's table 4: electrical characteristics */
+-	usleep_range(3000, 3500);
+-
+ 	if (change) {
+ 		/*
+ 		 * Check if ODR and OSR settings are valid or we are
+@@ -2268,6 +2492,8 @@ const struct bmp280_chip_info bmp580_chip_info = {
+ 	.chip_config = bmp580_chip_config,
+ 	.read_temp = bmp580_read_temp,
+ 	.read_press = bmp580_read_press,
++	.set_mode = bmp580_set_mode,
++	.wait_conv = bmp580_wait_conv,
+ 	.preinit = bmp580_preinit,
+ 
+ 	.trigger_handler = bmp580_trigger_handler,
+@@ -2515,6 +2741,19 @@ static int bmp180_read_press(struct bmp280_data *data, u32 *comp_press)
+ 	return 0;
+ }
+ 
++/* Keep compatibility with newer generations of the sensor */
++static int bmp180_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
++{
++	return 0;
++}
++
++/* Keep compatibility with newer generations of the sensor */
++static int bmp180_wait_conv(struct bmp280_data *data)
++{
++	return 0;
++}
++
++/* Keep compatibility with newer generations of the sensor */
+ static int bmp180_chip_config(struct bmp280_data *data)
+ {
+ 	return 0;
+@@ -2585,6 +2824,8 @@ const struct bmp280_chip_info bmp180_chip_info = {
+ 	.read_temp = bmp180_read_temp,
+ 	.read_press = bmp180_read_press,
+ 	.read_calib = bmp180_read_calib,
++	.set_mode = bmp180_set_mode,
++	.wait_conv = bmp180_wait_conv,
+ 
+ 	.trigger_handler = bmp180_trigger_handler,
+ };
+@@ -2637,6 +2878,7 @@ static int bmp280_buffer_preenable(struct iio_dev *indio_dev)
+ 	struct bmp280_data *data = iio_priv(indio_dev);
+ 
+ 	pm_runtime_get_sync(data->dev);
++	data->chip_info->set_mode(data, BMP280_NORMAL);
+ 
+ 	return 0;
+ }
+@@ -2807,6 +3049,10 @@ int bmp280_common_probe(struct device *dev,
+ 			return ret;
+ 	}
+ 
++	ret = data->chip_info->set_mode(data, BMP280_SLEEP);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to set sleep mode\n");
++
+ 	/* Enable runtime PM */
+ 	pm_runtime_get_noresume(dev);
+ 	pm_runtime_set_active(dev);
+@@ -2832,6 +3078,9 @@ static int bmp280_runtime_suspend(struct device *dev)
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct bmp280_data *data = iio_priv(indio_dev);
+ 
++	data->chip_info->set_mode(data, BMP280_SLEEP);
++
++	fsleep(data->start_up_time);
+ 	return regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
+ }
+ 
+@@ -2846,7 +3095,12 @@ static int bmp280_runtime_resume(struct device *dev)
+ 		return ret;
+ 
+ 	usleep_range(data->start_up_time, data->start_up_time + 100);
+-	return data->chip_info->chip_config(data);
++
++	ret = data->chip_info->chip_config(data);
++	if (ret)
++		return ret;
++
++	return data->chip_info->set_mode(data, data->op_mode);
+ }
+ 
+ EXPORT_RUNTIME_DEV_PM_OPS(bmp280_dev_pm_ops, bmp280_runtime_suspend,
+diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+index 73516878d020..c9840b8d58b0 100644
+--- a/drivers/iio/pressure/bmp280.h
++++ b/drivers/iio/pressure/bmp280.h
+@@ -170,6 +170,11 @@
+ #define BMP380_MODE_FORCED		1
+ #define BMP380_MODE_NORMAL		3
+ 
++#define BMP380_MEAS_OFFSET		234
++#define BMP380_MEAS_DUR			2020
++#define BMP380_TEMP_MEAS_OFFSET		163
++#define BMP380_PRESS_MEAS_OFFSET	392
++
+ #define BMP380_MIN_TEMP			-4000
+ #define BMP380_MAX_TEMP			8500
+ #define BMP380_MIN_PRES			3000000
+@@ -206,6 +211,7 @@
+ #define BMP280_REG_CTRL_MEAS		0xF4
+ #define BMP280_REG_STATUS		0xF3
+ #define BMP280_REG_STATUS_IM_UPDATE	BIT(0)
++#define BMP280_REG_STATUS_MEAS_BIT	BIT(3)
+ #define BMP280_REG_RESET		0xE0
+ #define BMP280_RST_SOFT_CMD		0xB6
+ 
+@@ -246,6 +252,10 @@
+ #define BMP280_MODE_FORCED		1
+ #define BMP280_MODE_NORMAL		3
+ 
++#define BMP280_MEAS_OFFSET		1250
++#define BMP280_MEAS_DUR			2300
++#define BMP280_PRESS_HUMID_MEAS_OFFSET	575
++
+ /* BME280 specific registers */
+ #define BME280_REG_HUMIDITY_LSB		0xFE
+ #define BME280_REG_HUMIDITY_MSB		0xFD
+@@ -384,6 +394,12 @@ struct bmp380_calib {
+ 	s8  P11;
+ };
+ 
++enum bmp280_op_mode {
++	BMP280_SLEEP,
++	BMP280_FORCED,
++	BMP280_NORMAL,
++};
++
+ struct bmp280_data {
+ 	struct device *dev;
+ 	struct mutex lock;
+@@ -424,6 +440,9 @@ struct bmp280_data {
+ 		s64 ts __aligned(8);
+ 	} buffer;
+ 
++	/* Value to hold the current operation mode of the device */
++	enum bmp280_op_mode op_mode;
++
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+@@ -488,6 +507,8 @@ struct bmp280_chip_info {
+ 	int (*read_humid)(struct bmp280_data *data, u32 *adc_humidity);
+ 	int (*read_calib)(struct bmp280_data *data);
+ 	int (*preinit)(struct bmp280_data *data);
++	int (*set_mode)(struct bmp280_data *data, enum bmp280_op_mode mode);
++	int (*wait_conv)(struct bmp280_data *data);
+ 
+ 	irqreturn_t (*trigger_handler)(int irq, void *p);
+ };
 -- 
 2.25.1
 

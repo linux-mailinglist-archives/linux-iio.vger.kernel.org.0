@@ -1,129 +1,161 @@
-Return-Path: <linux-iio+bounces-9597-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9598-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D309793AB
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2024 00:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38DEB9795C6
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2024 10:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEE741F22222
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Sep 2024 22:24:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7D881F22521
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2024 08:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C4B143759;
-	Sat, 14 Sep 2024 22:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0EB19884C;
+	Sun, 15 Sep 2024 08:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ba9nx66o"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mE8kHD5/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13C780C13;
-	Sat, 14 Sep 2024 22:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D4E3D551;
+	Sun, 15 Sep 2024 08:31:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726352661; cv=none; b=bYd6YTixyqfYcSlZUjGDWIQnPj4FHDMlblAk8I+PjGW8U8KAH2n9gTs/bdbZTTHE3zC7vgdT25wIzWDWgfI6spqD+/nMMGiFCT1XT+wNsM2u5BI5uEjxfO8pGR230dSKglXKx5m6Uqk0nIVfq8kVtGT95ZvI/a1QBQUdnna9qFQ=
+	t=1726389077; cv=none; b=JkxpASaPyhLhg4wQRY7eQEHUcjpmc4kIz4n0aVc3AUNGJoap2Z6f0JwmGr/wJ5l6sybc0Pkf+uS7lL6mYS8Fy/s29F4A1YxtwByEPsnoOuU4mkfrrdR+t+dRe7pHA4HpsviuHjBltQFM99KmNQYaC9qVrREOKxOD6NLmClN+hRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726352661; c=relaxed/simple;
-	bh=HGwwPMmqMBSDYeEkYE1BCnI05Mzjva6YsHPY4Xz4v6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r26c7QWum+f4z0T5/RzGZzpVoir/f6vuP6qnrlBXrbKNnfm2BAu/zeZyRW2CY6OgmgQFcKS4L/fAwYJPDeTHbmMHu+irUWBX0rP/mtrTKbh8q3Mjscdkfl+vmheRHNdrchDYLUrkVZPTwuuW4fhXHPcN60xt7b4J6KzfH1n7pEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ba9nx66o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AA0C4CEC0;
-	Sat, 14 Sep 2024 22:24:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726352661;
-	bh=HGwwPMmqMBSDYeEkYE1BCnI05Mzjva6YsHPY4Xz4v6E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ba9nx66o/8afcKeqfrtVbHtMP+bUFvuxgHOmBnq6H/f3tPUiVg+SR2mzmmSNNO//e
-	 vNe9C63lcwQlqUcda6uYl60dXWoFJY2/MuPLepNFmaIQcqLE+KRoHB7fmjtK+t4jy0
-	 B1mNP1YrfjZve0/ECAAJTe6TbB+N9r+15zQZLvoHU7NX1T1768ju1BrydoR6r5U9lP
-	 ZK1Ikh2wufgf63hN/xlLbI4gz4u/Jdp3kR/8beWex/3CEg2PpkYgEuoaMpkLd1VbPQ
-	 j3lUt40DsSX+OCl1sF/q3dGyHGWOp/YaPol8uXxJLLn43zH/80oQagpU+9CbdzkxIR
-	 TdMD7n1ADqarg==
-Date: Sat, 14 Sep 2024 23:24:15 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
-	ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
-	biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
-	semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, christophe.jaillet@wanadoo.fr
-Subject: Re: [PATCH v6 2/4] dt-bindings: iio: pressure: bmp085: Add
- interrupts for BMP3xx and BMP5xx devices
-Message-ID: <20240914-residence-buckwheat-26f10932ed6e@spud>
-References: <20240912233234.45519-1-vassilisamir@gmail.com>
- <20240912233234.45519-3-vassilisamir@gmail.com>
- <20240913-overarch-preplan-c899f16a90c8@spud>
- <20240913235949.GC33362@vamoiridPC>
+	s=arc-20240116; t=1726389077; c=relaxed/simple;
+	bh=Ig1FkFcRZSJZYcQ6hxBNwKQh2ZnsvOEtNNR7FzfafWY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NmCLEfgx/PIdGRey1Zv07eqJ+CCR/xaDY9A0kgvZNSYdHuHthR7QfzmjeZLzMjM8SxZAn9+INvQECgJnIi3SjhqkDubV68fvq3FpwZus61JYYVu8oXsj+zORiFJUbI6xW657jrlKZSK9XC0BJfHbnaMKoEu187tOLTYgFPhyPI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mE8kHD5/; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a8ce5db8668so589179666b.1;
+        Sun, 15 Sep 2024 01:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726389074; x=1726993874; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IozNnz9tpUO80GrsvBdDl8DQ07b0U3NFAs75ot5NvHA=;
+        b=mE8kHD5/qyE46B/DGEi8Xy/+7TM8EiJTyZAfEetfQp6KzTdLb9ao8te/62gxNnlOXl
+         qd0pDcGIynKojXUsvGIquQfUjqObt29OmZPhleLY6lAtqgl8TvcFpzbY/AwhZhR1Q0Xd
+         wM1d290W4mp9cLupU3QSLCLVxRZvje50YYpYbqppzjrqS27KQwtblyxsouF3BSkOgjPw
+         IDDNbaaIqoIwowtJMHTzdmSbmp9RIPNSKIdfWdP4emP90Gkbv26I7OOzLFkKzCiTwzBb
+         6NZikxtWZ3q66Va2JW4hbq7H4Ua8bzwbdfTIs1bjqWAPwyH1goIp75pNuGFpBWl2Sy/C
+         pxCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726389074; x=1726993874;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IozNnz9tpUO80GrsvBdDl8DQ07b0U3NFAs75ot5NvHA=;
+        b=VN/OO2P0xueRsLPD6Mu5O3Cy4WYYp8rxmrcZJYCX7nettkGxSlilRs+rvFnwa6UiI2
+         AJiv0s4QUuFuCf5SlR7otJfnn8l1DvxxOIq+tmiFEjYKWV5tk51kMN9NEZYqi+df6jMC
+         mrHQiRhuOr96TjTY5c4+wazOw1PzmhlPLUWnEX6ZkcxM5oOMXgpmSbnQoKxcspwENvtP
+         1IYfe/PmX4mYuRsZPFsNZXn7wXasxs7mf6QBe1onTgUV65TDgXkN7jSJLGTPtD+Ezygy
+         Iyoa+TFzKTTy9h5x4j6197hjY3DFa91XwsVE+7KLbJx430/X0y8yaw5Pt0/6NZjgU6ag
+         5pPg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPfivvz3Nk39Q8rnmWlVILNxDifh8TtKsDiGZyhw1ATSBaSHwTi4E8Fp8+qdXUHRdG0+R57gIJ1dIt@vger.kernel.org, AJvYcCVK8j8qOV9H3fs4tVBCWssX0n99yPywDm1uG39u0ycnrZk91Q/yZJm3GUuQFywQQpR63wL35D5yAne2U+aV@vger.kernel.org, AJvYcCXAOBmRqr3Cl+MdRMs5hvhnFY/ZlWRqV9kVcfSxLzA4Y5pqJBOyoDagTxCSzQTZ8XnqRf8fiMNgTOVk@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz911QsrYEi4X0GN119e/WvBTQF8xRIM2GBZVYnRAkYVUHWvqpo
+	yMZqlnhJBp7Tzeaw/w1f1rvENUMl4YbqPokkfY46g+R0uLrDcwrupV3V+g==
+X-Google-Smtp-Source: AGHT+IELc630NWg4QW94es9Z90TBuWreYukrYfytcd2kPVGaBtQoeWpEgY5v6+Y0K/lfZHBmYwp9Tg==
+X-Received: by 2002:a17:907:9446:b0:a86:894e:cd09 with SMTP id a640c23a62f3a-a90293c4fe5mr1293596266b.9.1726389073723;
+        Sun, 15 Sep 2024 01:31:13 -0700 (PDT)
+Received: from [192.168.0.106] (178.115.72.241.wireless.dyn.drei.com. [178.115.72.241])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9061116388sm170985166b.92.2024.09.15.01.31.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 15 Sep 2024 01:31:13 -0700 (PDT)
+Message-ID: <5199bc7c-c3fe-49e8-9122-78b476c4aa90@gmail.com>
+Date: Sun, 15 Sep 2024 10:31:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Q/25bUSr4mv0LHTJ"
-Content-Disposition: inline
-In-Reply-To: <20240913235949.GC33362@vamoiridPC>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/7] iio: light: veml6030: update sensor resolution
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
+ <20240913-veml6035-v1-5-0b09c0c90418@gmail.com>
+ <20240914155716.09496630@jic23-huawei>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20240914155716.09496630@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 14/09/2024 16:57, Jonathan Cameron wrote:
+> On Fri, 13 Sep 2024 15:19:00 +0200
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> 
+>> The driver still uses the sensor resolution provided in the datasheet
+>> until Rev. 1.6, 28-Apr-2022, which was updated with Rev 1.7,
+>> 28-Nov-2023. The original ambient light resolution has been updated from
+>> 0.0036 lx/ct to 0.0042 lx/ct, which is the value that can be found in
+>> the current device datasheet.
+>>
+>> Update the default resolution for IT = 100 ms and GAIN = 1/8 from the
+>> original 4608 mlux/cnt to the current value from the "Resolution and
+>> maximum detection range" table (Application Note 84367, page 5), 5376
+>> mlux/cnt.
+>>
+>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Interesting.  So does the datasheet say this was fixing an error, or
+> is there any chance there are different versions of the chip out there?
+> 
+> Also, should we treat this as a fix?  I think we probably should given
+> we don't really want stable kernels to have wrong data being reported.
+> If so, please reply with a fixes tag.
+> 
+> Jonathan
+>
 
---Q/25bUSr4mv0LHTJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+According to the Product Information Notification (link in the cover
+letter):
 
-On Sat, Sep 14, 2024 at 01:59:49AM +0200, Vasileios Amoiridis wrote:
-> On Fri, Sep 13, 2024 at 07:27:29PM +0100, Conor Dooley wrote:
-> > On Fri, Sep 13, 2024 at 01:32:32AM +0200, Vasileios Amoiridis wrote:
-> > > Add interrupt options for BMP3xx and BMP5xx devices as well.
-> > >=20
-> > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > > ---
-> > >  .../bindings/iio/pressure/bmp085.yaml         | 22 +++++++++++++++++=
-+-
-> > >  1 file changed, 21 insertions(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.ya=
-ml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> > > index 6fda887ee9d4..7c9d85be9008 100644
-> > > --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> > > @@ -48,14 +48,34 @@ properties:
-> > > =20
-> > >    interrupts:
-> > >      description:
-> > > -      interrupt mapping for IRQ (BMP085 only)
-> > > +      interrupt mapping for IRQ. Supported in BMP085, BMP3xx, BMP5xx
-> >=20
-> > If you respin, you can drop the description entirely, since you've added
-> > proper enforcement below.
-> >=20
-> > Otherwise,
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
->=20
-> Thanks for the time to review this, I will try to see if I can do it
-> tonight, thanks!
+"Reason for Change: Adjusted resolution as this was wrongly stated in
+the current datasheet."
 
-I think I am "too late" in saying this, but I was not expecting a respin
-for this change, but only for the change to be made if you were
-respinning for another reason.
+"If resolution is defined in the particular application by the customer,
+no changes in the system should be made. In the case resolution was
+taken from the datasheet or app note, this has to be adjusted accordingly."
 
-Thanks,
-Conor.
+Which means that stable kernels are using the wrong resolution. I don't
+know what IIO usually does in such cases, because a fix could
+potentially make existing applications return "wrong data". If that is
+alright, and applications are meant to be adjusted after the kernel
+update, I have no problems to make this patch as a fix and add the
+stable tag.
 
---Q/25bUSr4mv0LHTJ
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+Javier Carrasco
 
------BEGIN PGP SIGNATURE-----
+>> ---
+>>  drivers/iio/light/veml6030.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+>> index 5d4c2e35b987..d5add040d0b3 100644
+>> --- a/drivers/iio/light/veml6030.c
+>> +++ b/drivers/iio/light/veml6030.c
+>> @@ -779,7 +779,7 @@ static int veml6030_hw_init(struct iio_dev *indio_dev)
+>>  
+>>  	/* Cache currently active measurement parameters */
+>>  	data->cur_gain = 3;
+>> -	data->cur_resolution = 4608;
+>> +	data->cur_resolution = 5376;
+>>  	data->cur_integration_time = 3;
+>>  
+>>  	return ret;
+>>
+> 
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuYNDwAKCRB4tDGHoIJi
-0hTrAP9sc8Ch9eKYZ0ia7n4ZfHFVs1PxbPH2DFfLgGZcvdCZIQEAlHlgHF/EShIU
-GwEiMnaqy5+M/tmxsC80BB75PwLPmgQ=
-=ipnj
------END PGP SIGNATURE-----
-
---Q/25bUSr4mv0LHTJ--
 

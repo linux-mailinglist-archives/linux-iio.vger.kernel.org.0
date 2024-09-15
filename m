@@ -1,161 +1,101 @@
-Return-Path: <linux-iio+bounces-9598-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9599-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38DEB9795C6
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2024 10:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F25979868
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2024 21:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7D881F22521
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2024 08:31:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DD601F21C68
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Sep 2024 19:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0EB19884C;
-	Sun, 15 Sep 2024 08:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAB51CA8D;
+	Sun, 15 Sep 2024 19:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mE8kHD5/"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="UshltKyG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D4E3D551;
-	Sun, 15 Sep 2024 08:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1816C1C3F10;
+	Sun, 15 Sep 2024 19:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726389077; cv=none; b=JkxpASaPyhLhg4wQRY7eQEHUcjpmc4kIz4n0aVc3AUNGJoap2Z6f0JwmGr/wJ5l6sybc0Pkf+uS7lL6mYS8Fy/s29F4A1YxtwByEPsnoOuU4mkfrrdR+t+dRe7pHA4HpsviuHjBltQFM99KmNQYaC9qVrREOKxOD6NLmClN+hRU=
+	t=1726427983; cv=none; b=TD411JfmMBpyHEzihiszGX0YRe/WyQXC/WsXfEwiFjfChAH1OvV0K6cOu0SNqjP2DibiaBTMQH1CnG8Tc6IYc7z/KVL+BnH/wlYqwHk/sc4QeVWehFdR/rUhDRhye13h3GWbP44u6lT0+TWX3jQ6f8+p8Qu9JZu8n2fjTG5/HKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726389077; c=relaxed/simple;
-	bh=Ig1FkFcRZSJZYcQ6hxBNwKQh2ZnsvOEtNNR7FzfafWY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NmCLEfgx/PIdGRey1Zv07eqJ+CCR/xaDY9A0kgvZNSYdHuHthR7QfzmjeZLzMjM8SxZAn9+INvQECgJnIi3SjhqkDubV68fvq3FpwZus61JYYVu8oXsj+zORiFJUbI6xW657jrlKZSK9XC0BJfHbnaMKoEu187tOLTYgFPhyPI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mE8kHD5/; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a8ce5db8668so589179666b.1;
-        Sun, 15 Sep 2024 01:31:15 -0700 (PDT)
+	s=arc-20240116; t=1726427983; c=relaxed/simple;
+	bh=708lwLH8kgUldSdBrGUqEeMSf4JMAe+w/y2GfFKCtek=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PeMWN053INBYkDvFKSG6d+ETaRa8mXld3YjPmqhzc6ABbXooS8RkIxhvuH5GoqURzPvVHz6X3N5ZTIKIfujHQDfds97SSzMb+ADVg3HkQMLSKlHPEGKA7vnvBZsINWOCaSRQ7yeJ5uXPmHgaUoNysWxO7lA/26qzSXTrbg0oAPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=UshltKyG; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-206aee40676so18459155ad.0;
+        Sun, 15 Sep 2024 12:19:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726389074; x=1726993874; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IozNnz9tpUO80GrsvBdDl8DQ07b0U3NFAs75ot5NvHA=;
-        b=mE8kHD5/qyE46B/DGEi8Xy/+7TM8EiJTyZAfEetfQp6KzTdLb9ao8te/62gxNnlOXl
-         qd0pDcGIynKojXUsvGIquQfUjqObt29OmZPhleLY6lAtqgl8TvcFpzbY/AwhZhR1Q0Xd
-         wM1d290W4mp9cLupU3QSLCLVxRZvje50YYpYbqppzjrqS27KQwtblyxsouF3BSkOgjPw
-         IDDNbaaIqoIwowtJMHTzdmSbmp9RIPNSKIdfWdP4emP90Gkbv26I7OOzLFkKzCiTwzBb
-         6NZikxtWZ3q66Va2JW4hbq7H4Ua8bzwbdfTIs1bjqWAPwyH1goIp75pNuGFpBWl2Sy/C
-         pxCw==
+        d=googlemail.com; s=20230601; t=1726427981; x=1727032781; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=708lwLH8kgUldSdBrGUqEeMSf4JMAe+w/y2GfFKCtek=;
+        b=UshltKyG/zuocX4YVwLrS8gnR2ppAUtr3X7tppkAOB4ho6ot6RNym9Dzo4Xo3unWvK
+         IHOHd0BUlWLtCChrVQkPrJjZCYGhN4qpUO42Mkbbh7aXuQZKiUEC/zYiduTnYYtEOb6n
+         BFzRJuYOZ2lui2JQebAf/hIcZqyj1SnFDLp3cZ2Jfl34v6W9UGbrBIe9cBwfA17zNOGT
+         BFu/p/tF6ISvozMtn9RLEhf5rax7e0O3O7Z40z4LHKz8Xpz1MXNruPV226Df+iHzOg96
+         iSB/s7+roalvvlxDAZowHgfCJl2NPy+4/hQLyIoFFB4EUpGXOshUQDJSToG4OKDH9UqP
+         /ziQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726389074; x=1726993874;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IozNnz9tpUO80GrsvBdDl8DQ07b0U3NFAs75ot5NvHA=;
-        b=VN/OO2P0xueRsLPD6Mu5O3Cy4WYYp8rxmrcZJYCX7nettkGxSlilRs+rvFnwa6UiI2
-         AJiv0s4QUuFuCf5SlR7otJfnn8l1DvxxOIq+tmiFEjYKWV5tk51kMN9NEZYqi+df6jMC
-         mrHQiRhuOr96TjTY5c4+wazOw1PzmhlPLUWnEX6ZkcxM5oOMXgpmSbnQoKxcspwENvtP
-         1IYfe/PmX4mYuRsZPFsNZXn7wXasxs7mf6QBe1onTgUV65TDgXkN7jSJLGTPtD+Ezygy
-         Iyoa+TFzKTTy9h5x4j6197hjY3DFa91XwsVE+7KLbJx430/X0y8yaw5Pt0/6NZjgU6ag
-         5pPg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPfivvz3Nk39Q8rnmWlVILNxDifh8TtKsDiGZyhw1ATSBaSHwTi4E8Fp8+qdXUHRdG0+R57gIJ1dIt@vger.kernel.org, AJvYcCVK8j8qOV9H3fs4tVBCWssX0n99yPywDm1uG39u0ycnrZk91Q/yZJm3GUuQFywQQpR63wL35D5yAne2U+aV@vger.kernel.org, AJvYcCXAOBmRqr3Cl+MdRMs5hvhnFY/ZlWRqV9kVcfSxLzA4Y5pqJBOyoDagTxCSzQTZ8XnqRf8fiMNgTOVk@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz911QsrYEi4X0GN119e/WvBTQF8xRIM2GBZVYnRAkYVUHWvqpo
-	yMZqlnhJBp7Tzeaw/w1f1rvENUMl4YbqPokkfY46g+R0uLrDcwrupV3V+g==
-X-Google-Smtp-Source: AGHT+IELc630NWg4QW94es9Z90TBuWreYukrYfytcd2kPVGaBtQoeWpEgY5v6+Y0K/lfZHBmYwp9Tg==
-X-Received: by 2002:a17:907:9446:b0:a86:894e:cd09 with SMTP id a640c23a62f3a-a90293c4fe5mr1293596266b.9.1726389073723;
-        Sun, 15 Sep 2024 01:31:13 -0700 (PDT)
-Received: from [192.168.0.106] (178.115.72.241.wireless.dyn.drei.com. [178.115.72.241])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9061116388sm170985166b.92.2024.09.15.01.31.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Sep 2024 01:31:13 -0700 (PDT)
-Message-ID: <5199bc7c-c3fe-49e8-9122-78b476c4aa90@gmail.com>
-Date: Sun, 15 Sep 2024 10:31:11 +0200
+        d=1e100.net; s=20230601; t=1726427981; x=1727032781;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=708lwLH8kgUldSdBrGUqEeMSf4JMAe+w/y2GfFKCtek=;
+        b=aSrkWtG8C9hG+0P2THCq+wusWdq7qLUUNMbD0JcG61Z9+NML35zIutqx9BazdsgVm3
+         NbB4ri80eP5i0x+QnGRc32l9+fBHb0BlU8A7e8xEfI+oJ8Uv4i8DOtP9Fw+uF88aheEL
+         tAbsjbkejLYjfHsz6t5LllW5wGOgd9nT1dMtTMla4MymRAyfYsthma5bZlTRHTnleQlq
+         5UN/HnwYDm4jYLnnntvaITTN2PiSLOC/hdqBsrYO3QvlNUhAP6U0YVBCx862CkWb8owd
+         0+RahV6d4lvwx/di2BAjaRKPnYF0yDAfENcD6mTB55jtBgsJTAfrhel8pDAADuy2jcl4
+         nsqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/KNlo9592Js+M+DnZpKzOUGmfqy/zdGnW+HusanRwkqFaLrNxP3Q3Gcdc0V09dGYr1uItC49q4UkL@vger.kernel.org, AJvYcCVRNVWVDxPLh8/KtSooq2oHiBh8/ZByGj0Q1hKK+JfnJOX8kAikSZpdTRyn/5EVF/Ln8kzf5aLPZT7EPEgI@vger.kernel.org, AJvYcCWzmkEzIYZJSAaAj8HvkM/mkIsEf0IXpziw6+Z0Gf79GpNyfmLnKrXB10839jrX5B9Sza8+kDnDEhG0@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNDiTsMSmZgZ1V4n572mtEQqL8EzyTgYeC8pjsXwx7+R27MBKG
+	o6HsSph12JK/Xy8P2EceDxxetmOMhNfMCJqkD6Y3+AbRevNnwi5fOb0o/HineSWCYmtvL1L34pL
+	gbjRBq3Q4SKOi93s+qUzEBL78sRHNAMi/
+X-Google-Smtp-Source: AGHT+IHvTue3VPXMSdl6CALOVywCiXPbGmAkNLVju0FBZP7eje7azk2mvkyRC+3iQA7yFj3s5hKMfwKJ5dqWQggVy6k=
+X-Received: by 2002:a17:902:d4d2:b0:205:560d:947c with SMTP id
+ d9443c01a7336-20782967acdmr109283835ad.24.1726427981429; Sun, 15 Sep 2024
+ 12:19:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] iio: light: veml6030: update sensor resolution
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
- <20240913-veml6035-v1-5-0b09c0c90418@gmail.com>
- <20240914155716.09496630@jic23-huawei>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20240914155716.09496630@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240911-topic-amlogic-arm32-upstream-bindings-fixes-amlogic-hhi-sysctrl-v1-1-b8c3180b2fba@linaro.org>
+In-Reply-To: <20240911-topic-amlogic-arm32-upstream-bindings-fixes-amlogic-hhi-sysctrl-v1-1-b8c3180b2fba@linaro.org>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date: Sun, 15 Sep 2024 21:19:30 +0200
+Message-ID: <CAFBinCDYd0X-Bs18dOwT0DN789qxMTip9SHSpo3J5eXTOZwJdQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: iio: adc: amlogic,meson-saradc: also allow
+ meson8-saradc to have amlogic,hhi-sysctrl property
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 14/09/2024 16:57, Jonathan Cameron wrote:
-> On Fri, 13 Sep 2024 15:19:00 +0200
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> 
->> The driver still uses the sensor resolution provided in the datasheet
->> until Rev. 1.6, 28-Apr-2022, which was updated with Rev 1.7,
->> 28-Nov-2023. The original ambient light resolution has been updated from
->> 0.0036 lx/ct to 0.0042 lx/ct, which is the value that can be found in
->> the current device datasheet.
->>
->> Update the default resolution for IT = 100 ms and GAIN = 1/8 from the
->> original 4608 mlux/cnt to the current value from the "Resolution and
->> maximum detection range" table (Application Note 84367, page 5), 5376
->> mlux/cnt.
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> Interesting.  So does the datasheet say this was fixing an error, or
-> is there any chance there are different versions of the chip out there?
-> 
-> Also, should we treat this as a fix?  I think we probably should given
-> we don't really want stable kernels to have wrong data being reported.
-> If so, please reply with a fixes tag.
-> 
-> Jonathan
+On Wed, Sep 11, 2024 at 5:29=E2=80=AFPM Neil Armstrong
+<neil.armstrong@linaro.org> wrote:
 >
-
-According to the Product Information Notification (link in the cover
-letter):
-
-"Reason for Change: Adjusted resolution as this was wrongly stated in
-the current datasheet."
-
-"If resolution is defined in the particular application by the customer,
-no changes in the system should be made. In the case resolution was
-taken from the datasheet or app note, this has to be adjusted accordingly."
-
-Which means that stable kernels are using the wrong resolution. I don't
-know what IIO usually does in such cases, because a fix could
-potentially make existing applications return "wrong data". If that is
-alright, and applications are meant to be adjusted after the kernel
-update, I have no problems to make this patch as a fix and add the
-stable tag.
-
-Best regards,
-Javier Carrasco
-
->> ---
->>  drivers/iio/light/veml6030.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
->> index 5d4c2e35b987..d5add040d0b3 100644
->> --- a/drivers/iio/light/veml6030.c
->> +++ b/drivers/iio/light/veml6030.c
->> @@ -779,7 +779,7 @@ static int veml6030_hw_init(struct iio_dev *indio_dev)
->>  
->>  	/* Cache currently active measurement parameters */
->>  	data->cur_gain = 3;
->> -	data->cur_resolution = 4608;
->> +	data->cur_resolution = 5376;
->>  	data->cur_integration_time = 3;
->>  
->>  	return ret;
->>
-> 
-
+> The SARADC on the Amlogic Meson8 SoC also requires the amlogic,hhi-sysctr=
+l,
+> property, document it by adding the amlogic,meson8-saradc compatible in t=
+he
+> adequate allOf:if:compatible:contains:enums along meson8b and meson8m2.
+>
+> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 

@@ -1,272 +1,306 @@
-Return-Path: <linux-iio+bounces-9600-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9601-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D28B979B00
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2024 08:13:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 257B7979B13
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2024 08:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE46E284A9D
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2024 06:13:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A2E1281C27
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2024 06:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B1E4D59F;
-	Mon, 16 Sep 2024 06:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82EB3CF73;
+	Mon, 16 Sep 2024 06:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eFmMX+2p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IJzlFqPU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEE34F899;
-	Mon, 16 Sep 2024 06:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2DD1F5F6;
+	Mon, 16 Sep 2024 06:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726467175; cv=none; b=FcVtoS5rxjT6quCfvCwWr3NiXOL+J5p3Awl6q7L+2CD4HmZmoxY3mM2DN5moe5NibgkQTifl8gNLSTxgz/bZ0Hj04pm3W9zwVys5VpGVSmcPFOteh+f5C1YE3/5IQTfHqxhpogeD2+DBR15odbFGxlgJPDT0Pfuv/s32Kk/vqzc=
+	t=1726467569; cv=none; b=iWwBE7ARRQHRIn2Ze+SZ7NL/A07xg97gLYWPxr/LgJ+7OXOa4j+tsSpfjpbEsiXgD0unbhkoBumzjKNK8Zifc0uymH8tmENntKGiPb0GVNXhz9bmAuOwTyLzcHFHmxR+mFzv48ofoMFsqiX0GEwpuzil41OB8oSg8n1PnhjVpDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726467175; c=relaxed/simple;
-	bh=kG03raZfTfZOXpPItKDnAYSmtl9F31AgE4UZXycVZhY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DCnyzSA0YI0OrJmb3upbnpFC6jgNk5Fae8B2d1rlsc4JfOgZjMC1k2utOdp1oU0js8p1UakJIE61gxbVoZcULG8V3nyf4HV1ZLGkZ6UymO14MAxnxaU96Ez9XTwrinUugxt629kUwLOxGizkQ7JMuBSiyOlhVR22QbeW0nCrzHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eFmMX+2p; arc=none smtp.client-ip=209.85.221.51
+	s=arc-20240116; t=1726467569; c=relaxed/simple;
+	bh=pP48Vv721DQSlgKYtMiIq70OYZvh5Dgy/Y36z5kxpa0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AkJNlYPBOMYV6c5QRhTn99Ix2sejnI1+wxECnPR0JGVtChq/rZe43xvZKpa68XFEbrsqKo8kAyI/HqOw57fvlxmfuwcNkg2Puk5suUG/mov7NJ9qkksHUCszvCWj8pkH8nXRpEcm0H8y5pSKugcSQ0MjqmUSw6tkwE2JYmoZS14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IJzlFqPU; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-374bfc395a5so2532284f8f.0;
-        Sun, 15 Sep 2024 23:12:28 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a8d6ac24a3bso736074366b.1;
+        Sun, 15 Sep 2024 23:19:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726467147; x=1727071947; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Lva/KyfsEf9PGoYzDrXlBeymMEZiSBwCC5dgFwt7+TA=;
-        b=eFmMX+2pvFklBDeiMqChKoMzBHrq0etbS//EtwoFCaRJEr1FnBBnO1NC0ZWp4QCZni
-         Yt1OpH1gTvawLIPwgUfjI2sIoCnBeIEtsdm2Lls2zZNB4b10HatyfMNAPzmW+Gk+UghY
-         3sJ9rHPN84JrzaPKI7eri3Cd0aqX8p6NL5Gh5NCVI7MKFXVT5VppREYJKT3KCj99eUNO
-         25WUa64GNh2J4wGU3jsnhqm5yfXboTPPzAkmD2JB8SzwU0mGwJ4GXkCWdGa9CsEtyxOz
-         zuHaxGNxPztzaDnJaUuJ/vs97kKYkoloBtBE0em0KogQ1ZO0GkPBwkICAdCNzJEnZ3yu
-         hEbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726467147; x=1727071947;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=gmail.com; s=20230601; t=1726467566; x=1727072366; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Lva/KyfsEf9PGoYzDrXlBeymMEZiSBwCC5dgFwt7+TA=;
-        b=pVDBJpJ6DVpFCml7N09NfI8ItKvmP5nP7K8omMnXdpaMszeI8dOXHNdZRY/qFkzgyb
-         87fe7vBN19QFglia2qwHNZ2i6mkn6uezf+fxwvW8x4FIqtPJ1jUh8YJ6G0mQIPXIbG1d
-         2fzD4cbSNY8HwaVpWOOPVlBntD8wMqkt71efmy0NmiAcKOiUsZhNsQJ8IDFXIg2aTxYB
-         t2gjjQrioQ7W2gbNVy6eJisCCllZSHKhTu1Ks04GWEzoPoR1vehNuZjYQBk97cjL6HgI
-         YwmbqSdV4plB43ElBE2YcEUezAKw3gkV32n7v4vA8NQuGz+B9ak5TmX1oeex/Y/1lfAW
-         KFEA==
-X-Forwarded-Encrypted: i=1; AJvYcCU9I9/SZxoCAYtou5NQFNou+Df28fvXfs+5fJyKCcu+Jegup4UYCIeDe250X4HPCtVpv57gtRbzHjxW@vger.kernel.org, AJvYcCVHQj4SEezFWCYI4Z5DS3pC+vKtkSyC9pUc4wU2SOqDdJ31MhP3qSNukHdtOznBkVrd9dox5Ub7ad4p@vger.kernel.org, AJvYcCVb2p7r+V7j+7aewav9mCYWLCZFwDR/gont0sjiHsge4TzfOssmpDZVRbh8MmPyg9DWQJprNL/mH8hK@vger.kernel.org, AJvYcCVzBV7cK8IQ1oLld6IiUZphjgPFRcNfcfKS3Vp2+iUfALDYIfuSlblOTWJ18WVDX7YCXKpkEOBlo3Qm0F0G@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkttjSPYgrIdwUfNPV5vJDUK+SJg2GNlvCzxuaPVIQN/6y0IZp
-	NjQAjPBEnYgQMEW5ysv/2AoIMxBFxSuD+aGjyfEme2BTRXNIXZ4f0myLTVyu
-X-Google-Smtp-Source: AGHT+IHOXqiCL9qQdNNHr+2CY3MEOq0BovshayP9ph5h9sL9TrB4vZwpd0uR93BBpfL59n/t2BZUJQ==
-X-Received: by 2002:adf:f651:0:b0:374:c25a:f580 with SMTP id ffacd0b85a97d-378c27a925emr7789801f8f.14.1726467145736;
-        Sun, 15 Sep 2024 23:12:25 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:341e:1201:c434:b5b1:98a6:efed])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e780e029sm6136040f8f.116.2024.09.15.23.12.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Sep 2024 23:12:25 -0700 (PDT)
-Message-ID: <2b319d9453f4fe8842e4c306d9e2071ad031c0e7.camel@gmail.com>
-Subject: Re: [PATCH 4/6] iio: adc: ad4030: add support for ad4630-24 and
- ad4630-16
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Esteban Blanc <eblanc@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>,  Michael Hennerich <Michael.Hennerich@analog.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Jonathan Corbet
- <corbet@lwn.net>,  linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
- linux-doc@vger.kernel.org
-Date: Mon, 16 Sep 2024 08:12:24 +0200
-In-Reply-To: <20240914122529.14759e63@jic23-huawei>
-References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
-	 <20240822-eblanc-ad4630_v1-v1-4-5c68f3327fdd@baylibre.com>
-	 <20240826102748.4be0b642@jic23-huawei>
-	 <D452E2M75XCM.13OQGAPJ7JJ4A@baylibre.com>
-	 <0a4e7fe39cf36774b28c86f6baab5ef8c20e3d6b.camel@gmail.com>
-	 <D4567LFFTYJQ.2YC5OODKOVPNB@baylibre.com>
-	 <84961c1f857dfc8498c41ac97235a037111ed6d5.camel@gmail.com>
-	 <20240914122529.14759e63@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+        bh=vD0nTmWMdSzwNQvkoTUB1WjrHQU7c/gU3YlpKeXgZJE=;
+        b=IJzlFqPUm+vIqv7fVdDElxr/AUpp9Ubz3lOVvD1nuPFbf8ltWgiy1AtQh0k6oCzjuK
+         rXVe/O4aSMN+/Y3e5VGkwjp4BXPdpu4dYZ20M0RdED+w+6maANAlmsz91pXC2U4aG416
+         jr3J5tS0uAdYVhiwoXvG6bRmeD2LVBiYyx42A5KID5nsgDJM+MIoVpWWvPyZaazTJFxY
+         w04nTeqpCqn8YhqR7vROgLzBLshi6QboZG4XmwsGR3TWMQAjWO+YpHIDVnJdQFl+SSAL
+         kZGlFQ45es/0rNFJK1T0LtCcL9A6DhezFaX49e5kf0B/IGjmD6/335QZEWTdp0sV9Qmk
+         Tf2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726467566; x=1727072366;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vD0nTmWMdSzwNQvkoTUB1WjrHQU7c/gU3YlpKeXgZJE=;
+        b=rbDaZfuQZsgZP8BFw7yuOn1I9+YZARRAIw1xiiwky0R9hj016W828a9NiUjw9FiAYU
+         NsPds/LNRkzl5lyNN3liEPNQkVXvJVjJXAkUFOxKBcGdK5b1W+TkBjBAytpseo7nL3Wp
+         aMyq271xy2WCzQfkLJ0W9rXCsEq0HnYmjC+/EGGJ/FoDyXlPhE2cZFytudnqDmGaeEIk
+         jbugIQtmduWK1eUKKgvKdmzs6VkpLROJVyiQfDSi11sZ56cLW8Py9zp92DbHZDMn4nUZ
+         mxgrfeLVJ0/t4LCdfBg6FhEeDCu34gL7FVzqX7C8HtdfThc24sFO+uckvIB7YroPRP4/
+         PCYA==
+X-Forwarded-Encrypted: i=1; AJvYcCVHziVTaMF0aZN6yPkcWI2X/9+HnWvyvrYpZZk/6owqhj/m1w3E/1Eio1wlu9f1Wh4qPNIknxVriknea9GS@vger.kernel.org, AJvYcCVa0y0uFnJdGHdF192q1DcMWc8HzDDJxOrD1kzLaXvKZVXHjEcw3fxCcwTqG5tTPvwDvVokpGPho5kp@vger.kernel.org, AJvYcCWt7amKnlZlLLRkV7g3UmVSuu0XN0lRJyAODuZseflm3dPoEyyo2u2dnTNXMVE41kVxQbLRr6vg1rYw@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR2h/LCA/Rk359hKmkFmI9uVsp0/wBx+vZdOO98OH0AG3/E7Wr
+	B/I+q4OoNZQgn4Zi/vES+IQ3OnAz/sB2ccoD5QcZgAWSBtt1K9hU
+X-Google-Smtp-Source: AGHT+IH5amVQOMkTRcUhvA2UFfwyNwOd/8AegF0E9EPf1h2wwCiTqx6WSQK6OCz22/U+sQamRX31Dw==
+X-Received: by 2002:a17:907:3f26:b0:a87:370:8dfc with SMTP id a640c23a62f3a-a902a47871dmr1474225966b.14.1726467565427;
+        Sun, 15 Sep 2024 23:19:25 -0700 (PDT)
+Received: from [10.134.2.234] ([83.68.141.146])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90610f43f4sm269198566b.80.2024.09.15.23.19.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 15 Sep 2024 23:19:24 -0700 (PDT)
+Message-ID: <e3414f78-417c-4983-a91d-0c58e1639de8@gmail.com>
+Date: Mon, 16 Sep 2024 08:19:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/7] iio: light: veml6030: add support for veml6035
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
+ <20240913-veml6035-v1-7-0b09c0c90418@gmail.com>
+ <20240914170347.54959319@jic23-huawei>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20240914170347.54959319@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 2024-09-14 at 12:25 +0100, Jonathan Cameron wrote:
-> On Fri, 13 Sep 2024 15:46:17 +0200
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Fri, 2024-09-13 at 12:55 +0000, Esteban Blanc wrote:
-> > > On Fri Sep 13, 2024 at 10:18 AM UTC, Nuno S=C3=A1 wrote:=C2=A0=20
-> > > > On Fri, 2024-09-13 at 09:55 +0000, Esteban Blanc wrote:=C2=A0=20
-> > > > > On Mon Aug 26, 2024 at 9:27 AM UTC, Jonathan Cameron wrote:=C2=A0=
-=20
-> > > > > > On Thu, 22 Aug 2024 14:45:20 +0200
-> > > > > > Esteban Blanc <eblanc@baylibre.com> wrote:=C2=A0=20
-> > > > > > > +static const unsigned long ad4630_channel_masks[] =3D {
-> > > > > > > +	/* Differential only */
-> > > > > > > +	BIT(0) | BIT(2),
-> > > > > > > +	/* Differential with common byte */
-> > > > > > > +	GENMASK(3, 0),=C2=A0=20
-> > > > > > The packing of data isn't going to be good. How bad to shuffle
-> > > > > > to put the two small channels next to each other?
-> > > > > > Seems like it means you will want to combine your deinterleave
-> > > > > > and channel specific handling above, which is a bit fiddly but
-> > > > > > not much worse than current code.=C2=A0=20
-> > > > >=20
-> > > > > I can do it since that was what I had done in the RFC in the firs=
-t place.
-> > > > > Nuno asked for in this email
-> > > > > https://lore.kernel.org/r/0036d44542f8cf45c91c867f0ddd7b45d1904d6=
-b.camel@gmail.com/
-> > > > > :
-> > > > > =C2=A0=20
-> > > > > > > > * You're pushing the CM channels into the end. So when we a=
- 2 channel
-> > > > > > > > device
-> > > > > > > > we'll have:=C2=A0=20
-> > > > > =C2=A0=20
-> > > > > > > > in_voltage0 - diff
-> > > > > > > > in_voltage1 - diff
-> > > > > > > > in_voltage2 - CM associated with chan0
-> > > > > > > > in_voltage0 - CM associated with chan1
-> > > > > > > >=20
-> > > > > > > > I think we could make it so the CM channel comes right afte=
-r the
-> > > > > > > > channel
-> > > > > > > > where
-> > > > > > > > it's data belongs too. So for example, odd channels would b=
-e CM
-> > > > > > > > channels
-> > > > > > > > (and
-> > > > > > > > labels could also make sense).=C2=A0=20
-> > > > >=20
-> > > > > So that's what I did here :D
-> > > > >=20
-> > > > > For the software side off things here it doesn't change a lot of =
-things
-> > > > > since we have to manipulate the data anyway, putting the extra by=
-te at the
-> > > > > end or in between is no extra work.
-> > > > > For the offload engine however, it should be easier to ask for 24=
- bits
-> > > > > then 8 bits for each channel as it would return two u32 per "hard=
-ware
-> > > > > channel".
-> > > > >=20
-> > > > > In order to avoid having two different layouts, I was kind of sol=
-d by
-> > > > > Nuno's idea of having the CM in between each diff channel.
-> > > > > =C2=A0=20
-> > > >=20
-> > > > Tbh, I was not even thinking about the layout when I proposed the
-> > > > arrangement.
-> > > > Just
-> > > > made sense to me (from a logical point of view) to have them togeth=
-er as they
-> > > > relate
-> > > > to the same physical channel. FWIW, we're also speaking bytes in he=
-re so not
-> > > > sure
-> > > > if
-> > > > it's that important (or bad).=C2=A0=20
-> > >=20
-> > > The best we can do (if we managed to do it HDL wise) is to reorder th=
-e
-> > > data to get both CM byte in a single u32 after the 2 u32 of both diff
-> > > channel. That would be 3 u32 instead of 4.
->=20
-> Entirely up to you. :)
-> > > =C2=A0=20
-> >=20
-> > We are starting to see more and more devices that do stuff like this. H=
-ave one
-> > physical channel that reflects in more than one IIO channel. For SW buf=
-fering
-> > it's
-> > not really a big deal but for HW buffering it's not ideal.=20
-> >=20
-> > I feel that at some point we should think about having a way to map a c=
-hannel
-> > scan
-> > element (being kind of a virtual scan element) into the storage_bits of=
- another
-> > one.
-> > So in this case, one sample (for one channel) would be the 32bits and t=
-hings
-> > should
-> > work the same either in SW or HW buffering.
-> >=20
-> > That said, it's probably easier said than done in practice :)
->=20
-> Yeah. That could get ugly fast + All existing userspace will fail to hand=
-le it
-> so I'm not keen. Maybe it's doable if we assume the 'virtual channels' ar=
-e all
-> meta data we don't mind loosing with existing software stacks and define
-> a non overlapping ABI to identify the metadata.=C2=A0 Still smells bad to=
- me so
-> I'll take quite a bit of convincing!
+On 14/09/2024 18:03, Jonathan Cameron wrote:
+> On Fri, 13 Sep 2024 15:19:02 +0200
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> 
+>> The veml6035 is an ALS that shares most of its functionality with the
+>> veml6030, which allows for some code recycling.
+>>
+>> Some chip-specific properties differ and dedicated functions to get and
+>> set the sensor gain as well as its initialization are required.
+>>
+>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Mostly a request to first switch to using read_avail() and the relevant
+> bit masks instead of custom attributes.  That will require converting the
+> driver to that approach first, but looks straight forward.
+> 
+>> ---
+>>  drivers/iio/light/veml6030.c | 300 +++++++++++++++++++++++++++++++++++++++----
+>>  1 file changed, 273 insertions(+), 27 deletions(-)
+>>
+>> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+>> index 2945cc1db599..105f310c4954 100644
+>> --- a/drivers/iio/light/veml6030.c
+>> +++ b/drivers/iio/light/veml6030.c
+>> @@ -1,13 +1,19 @@
+>>  // SPDX-License-Identifier: GPL-2.0+
+>>  /*
+>> - * VEML6030 Ambient Light Sensor
+>> + * VEML6030 and VMEL6035 Ambient Light Sensors
+>>   *
+>>   * Copyright (c) 2019, Rishi Gupta <gupt21@gmail.com>
+>>   *
+>> + * VEML6030:
+>>   * Datasheet: https://www.vishay.com/docs/84366/veml6030.pdf
+>>   * Appnote-84367: https://www.vishay.com/docs/84367/designingveml6030.pdf
+>> + *
+>> + * VEML6035:
+>> + * Datasheet: https://www.vishay.com/docs/84889/veml6035.pdf
+>> + * Appnote-84944: https://www.vishay.com/docs/84944/designingveml6035.pdf
+>>   */
+>>  
+>> +#include <linux/bitfield.h>
+>>  #include <linux/module.h>
+>>  #include <linux/i2c.h>
+>>  #include <linux/err.h>
+>> @@ -38,16 +44,33 @@
+>>  #define VEML6030_ALS_INT_EN   BIT(1)
+>>  #define VEML6030_ALS_SD       BIT(0)
+>>  
+>> +#define VEML6035_GAIN_M       GENMASK(12, 10)
+>> +#define VEML6035_GAIN         BIT(10)
+>> +#define VEML6035_DG           BIT(11)
+>> +#define VEML6035_SENS         BIT(12)
+>> +#define VEML6035_INT_CHAN     BIT(3)
+>> +#define VEML6035_CHAN_EN      BIT(2)
+>> +
+>> +struct veml603x_chip {
+>> +	const char *name;
+>> +	const struct iio_info *info;
+>> +	const struct iio_info *info_no_irq;
+>> +	const char * const in_illuminance_scale_avail;
+> 
+> For this, better with read_avail() provided and a pointer to an array of
+> values + a size element in here.  That way we can get rid of the
+> custom attribute handling.  Might end up as similar amount of code, but
+> will be simpler to read.
+> 
+>> +	int (*hw_init)(struct iio_dev *indio_dev);
+>> +	int (*set_als_gain)(struct iio_dev *indio_dev, int val, int val2);
+>> +	int (*get_als_gain)(struct iio_dev *indio_dev, int *val, int *val2);
+>> +};
+> 
+>>  
+>>  /* Integration time available in seconds */
+>> @@ -63,14 +87,25 @@ static IIO_CONST_ATTR(in_illuminance_integration_time_available,
+>>  
+>>  /*
+>>   * Scale is 1/gain. Value 0.125 is ALS gain x (1/8), 0.25 is
+>> - * ALS gain x (1/4), 1.0 = ALS gain x 1 and 2.0 is ALS gain x 2.
+>> + * ALS gain x (1/4), 0.5 is ALS gain x (1/2), 1.0 is ALS gain x 1,
+>> + * 2.0 is ALS gain x2, and 4.0 is ALS gain x 4.
+>>   */
+>> -static IIO_CONST_ATTR(in_illuminance_scale_available,
+>> +static IIO_CONST_ATTR_NAMED(veml6030_in_illuminance_scale_available,
+>> +			    in_illuminance_scale_available,
+>>  				"0.125 0.25 1.0 2.0");
+>> +static IIO_CONST_ATTR_NAMED(veml6035_in_illuminance_scale_available,
+>> +			    in_illuminance_scale_available,
+>> +				"0.125 0.25 0.5 1.0 2.0 4.0");
+>>  
+>>  static struct attribute *veml6030_attributes[] = {
+>>  	&iio_const_attr_in_illuminance_integration_time_available.dev_attr.attr,
+>> -	&iio_const_attr_in_illuminance_scale_available.dev_attr.attr,
+>> +	&iio_const_attr_veml6030_in_illuminance_scale_available.dev_attr.attr,
+>> +	NULL
+>> +};
+>> +
+>> +static struct attribute *veml6035_attributes[] = {
+>> +	&iio_const_attr_in_illuminance_integration_time_available.dev_attr.attr,
+>> +	&iio_const_attr_veml6035_in_illuminance_scale_available.dev_attr.attr,
+> 
+> Using get_avail() etc would let you handle these as arrays of numbers rather than
+> strings + get rid of the need for any custom attributes. This should be
+> a very simple conversion so perhaps worth doing before adding the
+> new support.  Then you will have pointers to the value arrays + sizes
+> in your chip specific structures that just get looked up directly
+> by read_avail()
+> 
+> 
 
-Naturally it would have to be done in a way that drivers not defining the "=
-special"
-scan elements would not be affected.
+Hi Jonathan, thanks for your review.
 
->=20
-> Adding something to clearly 'associate' multiple related channels would b=
-e fine
-> as that wouldn't change the data interpretation, just provide more info o=
-n top.
-> Kind of a structured _label=20
->=20
-> Maybe a _channelgroup attribute?=C2=A0=C2=A0 Would be const and all the c=
-hannels with
-> the same index would reflect that they were measured on same 'thing'.
-> Typically thing might be a pin or differential pair, but we might be meas=
-uring
-> different types of signals - e.g. current and power.
->=20
+I will update the update the driver to work that way.
 
-Sounds reasonable but I think the tricky part is always to have a sane way =
-of saying
-that multiple scan elements relate to just one storage_bits so we could say=
- something
-like (taking this as example):
+>>  	NULL
+>>  };
+> 
+> 
+>>  
+>> +/*
+>> + * Set ALS gain to 1/8, integration time to 100 ms, ALS and WHITE
+>> + * channel enabled, ALS channel interrupt, PSM enabled,
+>> + * PSM_WAIT = 0.8 s, persistence to 1 x integration time and the
+>> + * threshold interrupt disabled by default. First shutdown the sensor,
+>> + * update registers and then power on the sensor.
+>> + */
+>> +static int veml6035_hw_init(struct iio_dev *indio_dev)
+>> +{
+>> +	int ret, val;
+>> +	struct veml6030_data *data = iio_priv(indio_dev);
+>> +	struct i2c_client *client = data->client;
+>> +
+>> +	ret = veml6030_als_shut_down(data);
+>> +	if (ret) {
+>> +		dev_err(&client->dev, "can't shutdown als %d\n", ret);
+>> +		return ret;
+> 
+> If this is only ever called from probe() (I think that's true?)
+> can use return dev_err_probe() for all these error cases.
+> Main advantage here being shorter simpler code.
+> 
 
-scan0: //diff channel which describing the physical HW in terms of real siz=
-e
- .storage_bits =3D 32
- .real_bits =3D 24
- .shift =3D 8
+I know, I procrastinated a little bit and I left the dev_err() calls as
+they are. But that's easy to update, so I will add a patch for it in v2.
+>> +	}
+>> +
+>> +	ret = regmap_write(data->regmap, VEML6030_REG_ALS_CONF,
+>> +			   VEML6035_SENS | VEML6035_CHAN_EN | VEML6030_ALS_SD);
+>> +	if (ret) {
+>> +		dev_err(&client->dev, "can't setup als configs %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = regmap_update_bits(data->regmap, VEML6030_REG_ALS_PSM,
+>> +				 VEML6030_PSM | VEML6030_PSM_EN, 0x03);
+>> +	if (ret) {
+>> +		dev_err(&client->dev, "can't setup default PSM %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = regmap_write(data->regmap, VEML6030_REG_ALS_WH, 0xFFFF);
+>> +	if (ret) {
+>> +		dev_err(&client->dev, "can't setup high threshold %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = regmap_write(data->regmap, VEML6030_REG_ALS_WL, 0x0000);
+>> +	if (ret) {
+>> +		dev_err(&client->dev, "can't setup low threshold %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = veml6030_als_pwr_on(data);
+>> +	if (ret) {
+>> +		dev_err(&client->dev, "can't poweron als %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	/* Clear stale interrupt status bits if any during start */
+>> +	ret = regmap_read(data->regmap, VEML6030_REG_ALS_INT, &val);
+>> +	if (ret < 0) {
+>> +		dev_err(&client->dev,
+>> +			"can't clear als interrupt status %d\n", ret);
+>> +		return ret;
+> 
+> It's true of existing code, but I noticed it here.
+> Should we be powering down in this error path?
+> 
 
-scan1: //CM data
- //.storage - relates to scan0 so should add nothing to the sample size if =
-both
-enabled
- .real_bits =3D 8
+We could, because this is the only error path where the device is
+powered on before the power off action gets registered. On the other
+hand, could we not move the call to devm_add_action_or_reset() a few
+lines up, so the action gets registered before calling hw_init()?
 
-Likely not what you meant but one thing I took from your '_channelgroup' id=
-ea was to
-have something similar to extended_info maybe with a small top level descri=
-ption and
-then an array of channels (that would form the group/aggregated channel). O=
-nly on the
-top level description we would be allowed to define the size of the scan el=
-ement (in
-case of buffering). Still seems tricky to me :).
+Powering off the device is just writing a bit, so it would not hurt in
+the error paths where the device is already powered off. Then we would
+not need an explicit call to power off the device in this error path.
 
-Anyways, Right now, I have no time for something like this but eventually w=
-ould like
-to try something. But if someone wants to propose something sooner, please =
-:)
+>> +	}
+>> +
+>> +	/* Cache currently active measurement parameters */
+>> +	data->cur_gain = 5;
+>> +	data->cur_resolution = 1024;
+>> +	data->cur_integration_time = 3;
+>> +
+>> +	return 0;
+>> +}
+> 
 
-- Nuno S=C3=A1=20
 
+Best regards,
+Javier Carrasco
 

@@ -1,285 +1,183 @@
-Return-Path: <linux-iio+bounces-9611-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9612-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B01897A121
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2024 14:05:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AA297A2AF
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2024 15:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C49F286159
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2024 12:05:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3658B20BFC
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Sep 2024 13:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870BF158214;
-	Mon, 16 Sep 2024 12:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D681553B7;
+	Mon, 16 Sep 2024 13:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OWOnDfwE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="l4Ey8fL5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6DE157E9F;
-	Mon, 16 Sep 2024 12:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A20614E2C2
+	for <linux-iio@vger.kernel.org>; Mon, 16 Sep 2024 13:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488211; cv=none; b=FAh/zfnA20IPCS9DcyHuB0oWGu6FFxe3oisUYWUluOi79eH3cSk5th+E8cTJDIW6jk1LmkqkxIEZ/vGe/nVImLoHq1YHa5JG+bji2G3ymbmZaT/o6QAda/re6a1XsnyKxjyePyf0SOkZByTmxFKPrtsLqnKW0+v9n1CFp2zjdAE=
+	t=1726491794; cv=none; b=kLTh2VScGhVQ/XW6W8LswCAdPvlalAIk/8BHZ/fpNBSTd8S4HxGdVeiWoPAhkeidSLaqkU3D7EdiMnCMotorgTWhPpuPwlczRuV7lmLL7uCzLJJNA3/2dqsjf3nylybLsG7a6gHjvbE0+28kbBCymIVjzLHxm6GUSSv1I/Xsbq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488211; c=relaxed/simple;
-	bh=aHadeGUkjHAVTilEnzf8JCrKBU9lqGeBd1x1b5xFxC8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eRO2ztJdFWKRRX1cKed8eQ77enK9EC9nQCrWF5BBmERlgwWXVne9TegNlFsf4oZLvNkDA/7HoiMpeQ7NLtSaOY9fkpod43bLXlkPbauaHcV+yct6kLBhSEJkdINJinE+8iRPGt36n9iSzvSDPuwOhf93JK5RdFwC6Y2Xa+Vy9lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OWOnDfwE; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-374bd059b12so1931651f8f.1;
-        Mon, 16 Sep 2024 05:03:29 -0700 (PDT)
+	s=arc-20240116; t=1726491794; c=relaxed/simple;
+	bh=m35dDssCabVJuMRlGOZTc6qI+dzsKKWYeM0JmQhFPcg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=kJ0aSAdVVscnmBbSB7hovcdQtgvyCe9m2E8r0oC1/+OL7hnMIX2ntge+ofEbEGSc8jzf7cURFYmaFd0MzkqBRk+N75BoBRh4xsmm0ag2cibZ5HWH1fdkIvREYC/wnY4Gy31L7QUtrF2HFEnD9P9YIKKy4BiRXYdi9tj0jQK/O2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=l4Ey8fL5; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42cba0dc922so33997265e9.3
+        for <linux-iio@vger.kernel.org>; Mon, 16 Sep 2024 06:03:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726488208; x=1727093008; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j7rhiN0cwffHbbzhzNEaKmIKxR7usCqkEQIorTMTnxI=;
-        b=OWOnDfwE+UvJu6jWIgTra0hLZSdg9la1Tpq7rK8yjYOA95kF4aoITUekwVQ3Wdc4dn
-         X+tFB+O2QX1L+mFv5D3YSZxPzxkVDpla0MPoAPLr1nbGI2z1zAPHnzHwn3Rs5hibH+B9
-         +4becn88PfrxM4i+rVAwNL6Nz5W4dpsCan9tDQSVcCLX8AIHaA1uwEbfXebVLXjTsd6A
-         fGPsZWwp+jLxSHdtuwqO9xsAsJ+NcJYMWocIzAAR+P83n0jLNvzbmitOthoRZ1BezLhO
-         CUMqj8wykNbXd7jAawMvgiL/+4nt5r+tnByJjh/OpGYcSrzE3KP39THZoV5+3sCshd/Q
-         VkSg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726491791; x=1727096591; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fZskt6RQWwBKvf8VCH4bF9IdkeZRhcjl5ETFLty+q4k=;
+        b=l4Ey8fL5OhzB2JmN8LwLNK2VZocHDAOYBBudBRQ+9c58kRH34mOoyTbm0csm8BQ78X
+         33nGWf/MnJpsDzPHnluoiNfqwIRqeKITIXB81rdyvkl5Sv0kpGbzjFRk5f1ULTg+wrwk
+         2J/Gm2Zsw2BamcCNlazeMFFeutz+uB2ikroh5cG/HOVZMfAMYH5hdf7R0PG60d4OZ7JB
+         fDhWSoL1wy6n3e+9vRrBsJRhpwT2gafRo0ESECGE+3tVwYNlzgftx/8fqyKvK3ChpmKh
+         I8X/wftNYTWFzLoUMC7UChQMHfJ4O8SF7LwNSAYbshfPGkm9fNnBfz5kBl/qFgTlBZq2
+         ErNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726488208; x=1727093008;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j7rhiN0cwffHbbzhzNEaKmIKxR7usCqkEQIorTMTnxI=;
-        b=WV7YOKqNmOfhLKi29vAUGnwqN1eODK/g8BWTrqVy3/jShDEmabZw21RVi6M9sSCA0I
-         brdUG6l8f4NxlxlpfPWN7+SqTGt3A0dhaZ1GxzQhxLZ3fPi6fblsSmYK6dauk/QiaFV5
-         CId0LwGGsIhIiOj1WMv1YQ1R8p5FpgM0M7QEub6v0oG3wQbgte4oOrw/lsFXi+f/8JPh
-         5k1PXS542jQZNLfmMujPFDUVN5tFGPFAU+98WOBEd2Yt+v1jdTl8CJ+jetEnpdHLHA5K
-         Q6n0AHzy2nkZoGgojfa1bIKM2HqXFBwh0meseqCgsmDrmekclQd8XowNwd05Vq4afrl6
-         /LhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUFn66lLfOjqa598Zu8ToXBO/VPS5+d1KtfEO0q0xXaUTJtzPjD8Vd2aiNz+TCcEEHiawqT9WuH3/1wlU8e@vger.kernel.org, AJvYcCV0wnr1ObEOwBOcWhna1PTjCPl0a73FnvTgRCU4UZ8ceiLufoVZCsWtZUsj38E3SmJt6OptSgdHmsY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLKQZTC/c0q/+YGUtXqIk7BYuPVtW/0uBQePJBKI+SAznlhFGD
-	vz0EQQW9UarAAN54Rc1vuE0rEcxzc1Ip4CWouUPNqdXGuBKurfs2
-X-Google-Smtp-Source: AGHT+IElm0k84RKTk7MnXnflcV7uakeyrdC7fcFKyQ5BT8hUrQaeNzkZCNd4OygZK2uzW9kFMTCI4A==
-X-Received: by 2002:adf:a302:0:b0:376:274c:c8b3 with SMTP id ffacd0b85a97d-378d61d4d81mr6536181f8f.5.1726488207226;
-        Mon, 16 Sep 2024 05:03:27 -0700 (PDT)
-Received: from localhost (host-80-104-176-42.retail.telecomitalia.it. [80.104.176.42])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e73f9a17sm7066603f8f.64.2024.09.16.05.03.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Sep 2024 05:03:26 -0700 (PDT)
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Date: Mon, 16 Sep 2024 14:00:05 +0200
-Subject: [PATCH] iio: pac1921: remove unnecessary explicit casts
+        d=1e100.net; s=20230601; t=1726491791; x=1727096591;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fZskt6RQWwBKvf8VCH4bF9IdkeZRhcjl5ETFLty+q4k=;
+        b=nYbDBEDArxhWoCSNZ3mppHr/+yYSGj9fTrnXX/2RsZEvZqr5M2o8w0MsWuCEVKD9qU
+         IGog5JOUwds9XnlpGPHPYUcAW1wvlHA39XYF0Ax/dcjSWirv+lk8cihN4oqiroFjYcuU
+         DNncrO3XGVqYrlrs9ejupGpy95osV38OSMiNfm1NI7La5tvtessAEd9JDunTRsWsXDTk
+         dncf5PcfFJt+WBmtmqeuVunBa3ZuFLdg4AjFnDEOOJ38K38DKXsI/gn3mV7EN4ixjJpZ
+         +XmNDtpkaDlqbaKKhx6vqTuqmVRQHoz5dpOzJ7uQsxkCquDdDZIOSPBMfmv26WWT/9GQ
+         +b4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWSuycV9dRmW+frXHDTRYMVJDi5QnParaxCFAGigVz4O4zw4O71Va5hoHKyxdNGxD+5g1m6vzIU8Ac=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywsxp47yir4PEZr1Prf1VU8pnoHOV6667pInAKiiGLlBaYtENVL
+	PWAUGAyyL0Z0BkUGy98YHhiYf5I9BvNMBJk3+EVbYoAKghczta646Vn/6i6Sy2s=
+X-Google-Smtp-Source: AGHT+IG2nrplOfj3/5iWG04x2nhwLzDmV7EDuTH5ottx1vDxjUFR2VnB7SicdyNXc/hTI5mX9cPsJg==
+X-Received: by 2002:a05:6000:459f:b0:374:c0c5:3c05 with SMTP id ffacd0b85a97d-378c2d4d802mr7925015f8f.42.1726491790471;
+        Mon, 16 Sep 2024 06:03:10 -0700 (PDT)
+Received: from localhost (amontpellier-556-1-151-252.w109-210.abo.wanadoo.fr. [109.210.7.252])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42da22b87a9sm78564735e9.6.2024.09.16.06.03.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Sep 2024 06:03:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240916-iio-pac1921-nocast-v1-1-a0f96d321eee@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAMQd6GYC/x3MMQqAMAxA0auUzAaaomC9ijiUGDVLK62IULy7x
- fEN/1coklUKTKZClluLpthAnQE+QtwFdW0GZ11vPRGqJjwDk3eEMXEoFw7sR15F2A4eWnhm2fT
- 5p/Pyvh+GbNPXZAAAAA==
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Matteo Martelli <matteomartelli3@gmail.com>
-X-Mailer: b4 0.14.1
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Sep 2024 13:03:08 +0000
+Message-Id: <D47Q9E5EW08V.2JP0X6EFQMFBT@baylibre.com>
+Cc: "Lars-Peter Clausen" <lars@metafoo.de>, "Michael Hennerich"
+ <Michael.Hennerich@analog.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Nuno Sa" <nuno.sa@analog.com>, "Jonathan Corbet" <corbet@lwn.net>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "David Lechner" <dlechner@baylibre.com>,
+ <linux-doc@vger.kernel.org>
+Subject: Re: [PATCH 4/6] iio: adc: ad4030: add support for ad4630-24 and
+ ad4630-16
+From: "Esteban Blanc" <eblanc@baylibre.com>
+To: "Esteban Blanc" <eblanc@baylibre.com>, "Jonathan Cameron"
+ <jic23@kernel.org>
+X-Mailer: aerc 0.18.2-0-ge037c095a049
+References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
+ <20240822-eblanc-ad4630_v1-v1-4-5c68f3327fdd@baylibre.com>
+ <20240826102748.4be0b642@jic23-huawei>
+ <D452E2M75XCM.13OQGAPJ7JJ4A@baylibre.com>
+In-Reply-To: <D452E2M75XCM.13OQGAPJ7JJ4A@baylibre.com>
 
-Many explicit casts were introduced to address Wconversion and
-Wsign-compare warnings. Remove them to improve readability.
+On Fri Sep 13, 2024 at 9:55 AM UTC, Esteban Blanc wrote:
+> On Mon Aug 26, 2024 at 9:27 AM UTC, Jonathan Cameron wrote:
+> > On Thu, 22 Aug 2024 14:45:20 +0200
+> > Esteban Blanc <eblanc@baylibre.com> wrote:
+> > > @@ -460,12 +517,21 @@ static int ad4030_conversion(struct ad4030_stat=
+e *st,
+> > >  	if (ret)
+> > >  		return ret;
+> > > =20
+> > > -	if (st->mode !=3D AD4030_OUT_DATA_MD_24_DIFF_8_COM)
+> > > +	if (st->chip->num_channels =3D=3D 2)
+> > > +		ad4030_extract_interleaved(st->rx_data.raw,
+> > > +					   &st->rx_data.diff[0],
+> > > +					   &st->rx_data.diff[1]);
+> > > +
+> > > +	if (st->mode !=3D AD4030_OUT_DATA_MD_16_DIFF_8_COM &&
+> > > +	    st->mode !=3D AD4030_OUT_DATA_MD_24_DIFF_8_COM)
+> > >  		return 0;
+> > > =20
+> > >  	byte_index =3D BITS_TO_BYTES(chan->scan_type.realbits);
+> > > -	for (i =3D 0; i < st->chip->num_channels; i++)
+> > > -		st->rx_data.buffered[i].common =3D ((u8 *)&st->rx_data.buffered[i]=
+.val)[byte_index];
+> > > +	/* Doing it backward to avoid overlap when reordering */
+> > > +	for (i =3D st->chip->num_channels - 1; i > 0; i--) {
+> > > +		st->rx_data.buffered_common[i].diff =3D st->rx_data.diff[i];
+> > > +		st->rx_data.buffered_common[i].common =3D ((u8 *)&st->rx_data.diff=
+[i])[byte_index];
+> > > +	}
+> >
+> > I wonder if doing it in place is actually worthwhile.  Maybe unpack int=
+o a second
+> > array? That is still fairly small and may make code easier to read.
+>
+> Okay sure
 
-Fixes: 371f778b83cd ("iio: adc: add support for pac1921")
-Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
----
-Link: https://lore.kernel.org/linux-iio/1fa4ab12-0939-477d-bc92-306fd32e4fd9@stanley.mountain/
----
- drivers/iio/adc/pac1921.c | 43 +++++++++++++++++++++----------------------
- 1 file changed, 21 insertions(+), 22 deletions(-)
+Actually I can't consolidate the differential only mode and the common
+byte mode without having to create a bunch of if/else or having a
+memcpy. The best I can do is this, but I don't like it:
 
-diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
-index 4c2a1c07bc39..de69a1619a9e 100644
---- a/drivers/iio/adc/pac1921.c
-+++ b/drivers/iio/adc/pac1921.c
-@@ -240,8 +240,8 @@ static inline void pac1921_calc_scale(int dividend, int divisor, int *val,
- {
- 	s64 tmp;
- 
--	tmp = div_s64(dividend * (s64)NANO, divisor);
--	*val = (int)div_s64_rem(tmp, NANO, val2);
-+	tmp = div_s64(dividend * NANO, divisor);
-+	*val = div_s64_rem(tmp, NANO, val2);
- }
- 
- /*
-@@ -260,7 +260,7 @@ static void pac1921_calc_current_scales(struct pac1921_priv *priv)
- 		int max = (PAC1921_MAX_VSENSE_MV * MICRO) >> i;
- 		int vsense_lsb = DIV_ROUND_CLOSEST(max, PAC1921_RES_RESOLUTION);
- 
--		pac1921_calc_scale(vsense_lsb, (int)priv->rshunt_uohm,
-+		pac1921_calc_scale(vsense_lsb, priv->rshunt_uohm,
- 				   &priv->current_scales[i][0],
- 				   &priv->current_scales[i][1]);
- 	}
-@@ -314,7 +314,7 @@ static int pac1921_check_push_overflow(struct iio_dev *indio_dev, s64 timestamp)
- 			       timestamp);
- 	}
- 
--	priv->prev_ovf_flags = (u8)flags;
-+	priv->prev_ovf_flags = flags;
- 
- 	return 0;
- }
-@@ -329,8 +329,7 @@ static int pac1921_check_push_overflow(struct iio_dev *indio_dev, s64 timestamp)
- static int pac1921_read_res(struct pac1921_priv *priv, unsigned long reg,
- 			    u16 *val)
- {
--	int ret = regmap_bulk_read(priv->regmap, (unsigned int)reg, val,
--				   sizeof(*val));
-+	int ret = regmap_bulk_read(priv->regmap, reg, val, sizeof(*val));
- 	if (ret)
- 		return ret;
- 
-@@ -366,7 +365,7 @@ static int pac1921_read_raw(struct iio_dev *indio_dev,
- 		if (ret)
- 			return ret;
- 
--		*val = (int)res_val;
-+		*val = res_val;
- 
- 		return IIO_VAL_INT;
- 	}
-@@ -397,13 +396,13 @@ static int pac1921_read_raw(struct iio_dev *indio_dev,
- 			int *curr_scale = priv->current_scales[priv->di_gain];
- 
- 			/* Convert current_scale from INT_PLUS_NANO to INT */
--			s64 tmp = curr_scale[0] * (s64)NANO + curr_scale[1];
-+			s64 tmp = curr_scale[0] * NANO + curr_scale[1];
- 
- 			/* Multiply by max_vbus (V) / dv_gain */
--			tmp *= PAC1921_MAX_VBUS_V >> (int)priv->dv_gain;
-+			tmp *= PAC1921_MAX_VBUS_V >> priv->dv_gain;
- 
- 			/* Convert back to INT_PLUS_NANO */
--			*val = (int)div_s64_rem(tmp, NANO, val2);
-+			*val = div_s64_rem(tmp, NANO, val2);
- 
- 			return IIO_VAL_INT_PLUS_NANO;
- 		}
-@@ -426,7 +425,7 @@ static int pac1921_read_raw(struct iio_dev *indio_dev,
- 		 * 1/(integr_period_usecs/MICRO) = MICRO/integr_period_usecs
- 		 */
- 		*val = MICRO;
--		*val2 = (int)priv->integr_period_usecs;
-+		*val2 = priv->integr_period_usecs;
- 		return IIO_VAL_FRACTIONAL;
- 
- 	default:
-@@ -503,7 +502,7 @@ static int pac1921_lookup_scale(const int (*const scales_tbl)[2], size_t size,
- 	for (unsigned int i = 0; i < size; i++)
- 		if (scales_tbl[i][0] == scale_val &&
- 		    scales_tbl[i][1] == scale_val2)
--			return (int)i;
-+			return i;
- 
- 	return -EINVAL;
- }
-@@ -553,7 +552,7 @@ static int pac1921_update_gain_from_scale(struct pac1921_priv *priv,
- 		if (ret < 0)
- 			return ret;
- 
--		return pac1921_update_gain(priv, &priv->dv_gain, (u8)ret,
-+		return pac1921_update_gain(priv, &priv->dv_gain, ret,
- 					   PAC1921_GAIN_DV_GAIN_MASK);
- 	case PAC1921_CHAN_VSENSE:
- 		ret = pac1921_lookup_scale(pac1921_vsense_scales,
-@@ -562,7 +561,7 @@ static int pac1921_update_gain_from_scale(struct pac1921_priv *priv,
- 		if (ret < 0)
- 			return ret;
- 
--		return pac1921_update_gain(priv, &priv->di_gain, (u8)ret,
-+		return pac1921_update_gain(priv, &priv->di_gain, ret,
- 					   PAC1921_GAIN_DI_GAIN_MASK);
- 	case PAC1921_CHAN_CURRENT:
- 		ret = pac1921_lookup_scale(priv->current_scales,
-@@ -571,7 +570,7 @@ static int pac1921_update_gain_from_scale(struct pac1921_priv *priv,
- 		if (ret < 0)
- 			return ret;
- 
--		return pac1921_update_gain(priv, &priv->di_gain, (u8)ret,
-+		return pac1921_update_gain(priv, &priv->di_gain, ret,
- 					   PAC1921_GAIN_DI_GAIN_MASK);
- 	default:
- 		return -EINVAL;
-@@ -586,7 +585,7 @@ static int pac1921_lookup_int_num_samples(int num_samples)
- {
- 	for (unsigned int i = 0; i < ARRAY_SIZE(pac1921_int_num_samples); i++)
- 		if (pac1921_int_num_samples[i] == num_samples)
--			return (int)i;
-+			return i;
- 
- 	return -EINVAL;
- }
-@@ -607,7 +606,7 @@ static int pac1921_update_int_num_samples(struct pac1921_priv *priv,
- 	if (ret < 0)
- 		return ret;
- 
--	n_samples = (u8)ret;
-+	n_samples = ret;
- 
- 	if (priv->n_samples == n_samples)
- 		return 0;
-@@ -770,7 +769,7 @@ static ssize_t pac1921_read_shunt_resistor(struct iio_dev *indio_dev,
- 
- 	guard(mutex)(&priv->lock);
- 
--	vals[0] = (int)priv->rshunt_uohm;
-+	vals[0] = priv->rshunt_uohm;
- 	vals[1] = MICRO;
- 
- 	return iio_format_value(buf, IIO_VAL_FRACTIONAL, 1, vals);
-@@ -793,13 +792,13 @@ static ssize_t pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
- 	if (ret)
- 		return ret;
- 
--	rshunt_uohm = (u32)val * MICRO + (u32)val_fract;
-+	rshunt_uohm = val * MICRO + val_fract;
- 	if (rshunt_uohm == 0 || rshunt_uohm > INT_MAX)
- 		return -EINVAL;
- 
- 	guard(mutex)(&priv->lock);
- 
--	priv->rshunt_uohm = (u32)rshunt_uohm;
-+	priv->rshunt_uohm = rshunt_uohm;
- 
- 	pac1921_calc_current_scales(priv);
- 
-@@ -1168,7 +1167,7 @@ static int pac1921_probe(struct i2c_client *client)
- 
- 	priv->regmap = devm_regmap_init_i2c(client, &pac1921_regmap_config);
- 	if (IS_ERR(priv->regmap))
--		return dev_err_probe(dev, (int)PTR_ERR(priv->regmap),
-+		return dev_err_probe(dev, PTR_ERR(priv->regmap),
- 				     "Cannot initialize register map\n");
- 
- 	devm_mutex_init(dev, &priv->lock);
-@@ -1191,7 +1190,7 @@ static int pac1921_probe(struct i2c_client *client)
- 
- 	priv->vdd = devm_regulator_get(dev, "vdd");
- 	if (IS_ERR(priv->vdd))
--		return dev_err_probe(dev, (int)PTR_ERR(priv->vdd),
-+		return dev_err_probe(dev, PTR_ERR(priv->vdd),
- 				     "Cannot get vdd regulator\n");
- 
- 	ret = regulator_enable(priv->vdd);
+```
+static int ad4030_conversion(struct ad4030_state *st,
+			     const struct iio_chan_spec *chan)
+{
+	...
+	u32 tmp[AD4030_MAX_HARDWARE_CHANNEL_NB];
+	u32 *diff;
 
----
-base-commit: fec496684388685647652ab4213454fbabdab099
-change-id: 20240911-iio-pac1921-nocast-5c98cdeec059
+	...
 
-Best regards,
--- 
-Matteo Martelli <matteomartelli3@gmail.com>
+	if (st->mode !=3D AD4030_OUT_DATA_MD_16_DIFF_8_COM &&
+	    st->mode !=3D AD4030_OUT_DATA_MD_24_DIFF_8_COM) {
+		if (st->chip->num_voltage_inputs =3D=3D 2)
+			ad4030_extract_interleaved(st->rx_data.raw,
+						   &st->rx_data.diff[0],
+						   &st->rx_data.diff[1]);
+		return 0;
+	}
 
+	if (st->chip->num_voltage_inputs =3D=3D 2) {
+		ad4030_extract_interleaved(st->rx_data.raw,
+					   &tmp[0],
+					   &tmp[1]);
+		diff =3D tmp;
+	} else {
+		diff =3D st->rx_data.diff;
+	}
+
+	common_byte_mask =3D BITS_TO_BYTES(chan->scan_type.realbits);
+	for (i =3D 0; i < st->chip->num_voltage_inputs; i++) {
+		st->rx_data.buffered[i].val =3D diff[i];
+		st->rx_data.buffered[i].common =3D
+			((u8 *)(diff + i))[common_byte_mask];
+	}
+
+	return 0;
+```
+
+The root cause is that when we are in a differential only mode we are
+leaving before the for loop and we want the data to be in the rx_data.
+
+It fells clunky and brain consuming IMAO, I prefer a reversed loop with
+a good comment (the one we have now is not explicit enough, I will
+update it).
 

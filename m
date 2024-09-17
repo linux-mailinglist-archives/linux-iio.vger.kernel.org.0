@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-9629-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9630-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8917E97B332
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2024 18:58:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E5597B334
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2024 18:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC2941C238A9
-	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2024 16:58:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3E79285CCC
+	for <lists+linux-iio@lfdr.de>; Tue, 17 Sep 2024 16:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAEA17B4ED;
-	Tue, 17 Sep 2024 16:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32B417BEBA;
+	Tue, 17 Sep 2024 16:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dctwCK/Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KX+sEyNP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D376F2905;
-	Tue, 17 Sep 2024 16:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7321714AA;
+	Tue, 17 Sep 2024 16:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726592312; cv=none; b=GGMsrvtSy208mMlhhpwpQ6FPUeY7daPMpG0W2ywNiSDy4ObASff/2rURqWHLjN4/9J6H/Chd8jzYtkAQPY858sJOwmKE99+murRQST9sxT+7UZXdg7BDi7lAaZjeOz6+af9o08LPWNSC+iqmy7A6N13//leyKKO62iVtCc2VZLU=
+	t=1726592362; cv=none; b=VhcxG9N4CLnF6MivFRamT6pUcxotEGoQRnKCj9mTm7PwDDtmfFGNvX0d0tIhI+QQhyfRlr0z4U/mJwzAHg4BBr3lCF1iDVCX2Qsv9W6W+m7SdbCQeXUb25m0kJYSR3nzQsirx/2BJ/Grbgt1NneEY4jPxRE7ISscp12/Un1dce0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726592312; c=relaxed/simple;
-	bh=BcsjFQFV3XqlanRAIeGlpllK5q8M0s5V20z2JLXtRG0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lpmRnn4ee1fAqeRhtCq85x7yJbxIf28FQ2/Qk/xvbu9m74EWQ9VFS6Qk/IlGdupMAlDWi4XEVsRfY48Xy1B7KGW49shAb/pM3JgqCb2Hbsr2tnfw0scRQ31YGrxiwKjYqXqpgrRA4TzJIy8QQ9FHmBoCAuNicDcvnBc3dE9J9rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dctwCK/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68E6C4CEC5;
-	Tue, 17 Sep 2024 16:58:26 +0000 (UTC)
+	s=arc-20240116; t=1726592362; c=relaxed/simple;
+	bh=/98qYrWeBJyHvH8rE3nzn1cN5MCwfwv0iVEOVjYPxnk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=aMJq3C4e1u6FAM7qP/KWTDR1F2nK5lG0geIMCL3hKi+xdC5NXCMoFX3VeVIGujFx7xTH9yS+ipUFvkjou0FOufCBuk1phcA0Wz4rf25mCYl9MG4zrReaUQ8LLf20TFmbLw0caFyH6is/agaTkgzIqLJRFnVJ6vXN28cfmcofTro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KX+sEyNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85936C4CEC5;
+	Tue, 17 Sep 2024 16:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726592311;
-	bh=BcsjFQFV3XqlanRAIeGlpllK5q8M0s5V20z2JLXtRG0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dctwCK/QbGqCLF6gQiml9CK+VTMRI9J/NpFXoqItoK+3xLygMyvoWCtg6LS18v1Ji
-	 b/olDCydbzMHK0jyeAaosCFGYV+wFnKB3tl7cXXHc+KyNRMxvbBA6pQlH54o8OgW3y
-	 ZXfAFvOP2ISk9dFi/+kGU6gqh7vCYE5FxG0yhRhAH19BltycyZBsibQWNtHtg/dXBD
-	 FyZGYwJkMGUuACOctWTvWEJBKlD1Wjjtzrng5rHjQn15k0kREj2OZfIazGKyuKs/WS
-	 Lz7u0g1haETJpXNi+uWYSDmj/aFzb2vu+4K7mh3Gosy1scdMo/HkRxtaF1OtgxdXWL
-	 zYY8D0rTk2BnA==
-Message-ID: <4b2e30c8-8fdb-4084-9fdd-adff904fb325@kernel.org>
-Date: Tue, 17 Sep 2024 18:58:24 +0200
+	s=k20201202; t=1726592361;
+	bh=/98qYrWeBJyHvH8rE3nzn1cN5MCwfwv0iVEOVjYPxnk=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=KX+sEyNPf5X/ymXGQnTReg6MKKuRb9r4sZiEnTHJO20ukwMwy1H/y+56kO9tSucgj
+	 Gd0b85OzN9i15HHtks8DaL8npZ6RuO08b7Qauq/dp0ej3br1BQuENLXqb2aRZXcF9T
+	 TS/vE4cSxc7LZlRTqoHeoFxSu7M8P0/ld40ceKQ5diN9Z4dRNQ6ija3EhQ8u3Jh7aa
+	 mw3B+bfsPYQGy9M8Eisrrb15A9JJcxVNo2uIjtH5X3Rn67kEMMNMUc9YoOsFMyFHIK
+	 c/yA5JRdBgQi8yUIy24kyVKWTAJ103eZ+/Q6RUvRIs3KcQSv5XJtxOqo8HTHcwabRj
+	 /RNhX4rTjHV1w==
+Message-ID: <cf53cbb5-104b-4f60-8890-98a53c27d176@kernel.org>
+Date: Tue, 17 Sep 2024 18:59:14 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,16 +50,14 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/2] dt-bindings: iio: imu: smi240: add Bosch smi240
-To: Conor Dooley <conor@kernel.org>, Jianping.Shen@de.bosch.com
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, dima.fedrau@gmail.com, marcelo.schmitt1@gmail.com,
+Subject: Re: [PATCH v7 0/2] iio: imu: smi240: add bosch smi240 driver
+To: Jianping.Shen@de.bosch.com, jic23@kernel.org, lars@metafoo.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ dima.fedrau@gmail.com, marcelo.schmitt1@gmail.com,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, Christian.Lorenz3@de.bosch.com,
  Ulrike.Frauendorf@de.bosch.com, Kai.Dolde@de.bosch.com
 References: <20240913100011.4618-1-Jianping.Shen@de.bosch.com>
- <20240913100011.4618-2-Jianping.Shen@de.bosch.com>
- <20240913-curled-cement-0434c7b56e17@spud>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,32 +103,80 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240913-curled-cement-0434c7b56e17@spud>
+In-Reply-To: <20240913100011.4618-1-Jianping.Shen@de.bosch.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 13/09/2024 19:54, Conor Dooley wrote:
-> On Fri, Sep 13, 2024 at 12:00:10PM +0200, Jianping.Shen@de.bosch.com wrote:
->> From: Shen Jianping <Jianping.Shen@de.bosch.com>
->>
->> add devicetree binding for Bosch imu smi240.
->> The smi240 is a combined three axis angular rate and
->> three axis acceleration sensor module.
->>
->> * The smi240 requires VDD and VDDIO
->> * Provides only spi interface.
->>
->> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
->> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+On 13/09/2024 12:00, Jianping.Shen@de.bosch.com wrote:
+> From: Shen Jianping <Jianping.Shen@de.bosch.com>
 > 
-> 3 reviews? Doing well for yourself!
+> Add the iio driver for bosch imu smi240. The smi240 is a combined
+> three axis angular rate and three axis acceleration sensor module
+> with a measurement range of +/-300°/s and up to 16g. This driver
+> provides raw data access for each axis through sysfs, and tiggered
+> buffer for continuous sampling. A synchronous acc and gyro sampling
+> can be triggered by setting the capture bit in spi read command.
+> 
+> dt-bindings: 
+> v1 -> v2
+>     - Add more detail in description
+>     - Add maintainer
+>     - Add vdd and vddio power supply
+>     - Use generic node name
+>     - Order the properties according to DTS coding style
+> 
+> v2 -> v3
+>     - Improve description
+>     - Improve supply definition
+>     - Make supply definition as required
+>     - Add supply definition in example
+> 
+> v3 -> v4
+>     - No changes
+> 
+> v4 -> v5
+>     - No changes
+> 
+> v5 -> v6
+>     - Fix checkpatch findings
+> 
+> v6 -> v7
+>     - No changes
+> 
+> imu driver:
+> v1 -> v2
+>     - Use regmap for register access
+>     - Redefine channel for each singel axis
+>     - Provide triggered buffer
+>     - Fix findings in Kconfig
+>     - Remove unimportant functions
+> 
+> v2 -> v3
+>     - Use enum für capture mode
+>     - Using spi default init value instead manual init 
+>     - remove duplicated module declaration
+>     - Fix code to avoid warning
+> 
+> v3 -> v4
+>     - Use DMA safe buffer
+>     - Use channel info instead of custom ABI
+>     - Fix other findings
+> 
+> v4 -> v5
+>     - Merge the implementation in one simple file
+>     - Add channel info for acc/gyro data channel
+>     - Fix other findings
 
-There is certainly mess here, but that's correct. We both reviewed older
-version and then new version was posted ignoring our tags. So Rob gave
-review.
+?
 
-Changelog is so vague that I have no clue...
+> 
+> v5 -> v6
+>     - Fix checkpatch findings
+>     - Fix review findings
+
+? What exactly happened? Your changelog is way too vague.
+
+What happened with our reviews? Why did you get multiple of them?
 
 Best regards,
 Krzysztof

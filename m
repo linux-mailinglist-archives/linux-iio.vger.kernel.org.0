@@ -1,520 +1,279 @@
-Return-Path: <linux-iio+bounces-17339-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17344-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76FDA75A45
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 16:04:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E0EA75A92
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 17:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33CFB1648C2
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 14:04:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F05EE1886A53
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Mar 2025 15:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214B319CD07;
-	Sun, 30 Mar 2025 14:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8111C5F39;
+	Sun, 30 Mar 2025 15:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L5ZaKBip"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFEzN1Gi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC723FE4;
-	Sun, 30 Mar 2025 14:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112D146B5;
+	Sun, 30 Mar 2025 15:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743343458; cv=none; b=T/GLqJmymrmd0iv/w28KfY8SDQdeurFaUdFszjHq387Wa0SAGiRGaaWKVb3gzjStB963mPx6XX8Wu7Ag4DL3AiXDiDJ9im2+Nj1xMWm7ZmnvFl0eZ1EFOz2oR3PyxS78qYzFMnsAoer6DK7xr4tS9wGbjJ7XM4u2/oUZDqctpQY=
+	t=1743347950; cv=none; b=BQvI+ncZ7RH5emYizxK8cgf60aL8zB50B/VZOMc7Lp7+YNBMPR3FIiXBqijE8hSyN+P/YbG3+t/o8I6/ZXoS3vQ0X5NyXPBd9XpkpfNq3AQZZ8iXOAavclwdCjcW/riqkQOSqT/xF47EKUTaOo/VagB/n0aIw2vNfs4nUxjhsVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743343458; c=relaxed/simple;
-	bh=dW2fWipsc15woelUWZHZ417w3TciACM4wNgZtCQfZyk=;
+	s=arc-20240116; t=1743347950; c=relaxed/simple;
+	bh=wWJH4qthvkKah4YoqMVuhDK4KUnv3vBmdbn04K2tkuA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uzTqaicV/hu/kzlKir8JZ6k29ZQhjvahkn2JigryGPkbg/nakdMdgPEb56Uy4igLZma6muquKrD+QgaMtYs9NCvHMI2fuvhI/LmjhjwPwvQOUgE5r0F6BFYy3iwNmtNI6oPe0YbD0B26CN7AoVx03C5pwfyr/84dl3i5oLJYr4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L5ZaKBip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A05C4CEDD;
-	Sun, 30 Mar 2025 14:04:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nbd6gY5NmeblS7Coeaw8QPd+u6Z6y6Ah7E5F62ZF2n2u4c/vGNMM/rU9oRY9EuOKeUEAN2vhUbd1v2oMDMb7daVaweBt7ccpkOIbq2h/Vgq0APQS373JSuZpSSjPAukY3j5PfGEzaJiiddE9Z4amZPzySzhhcBhZtIT9N8ji4/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFEzN1Gi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD169C4CEDD;
+	Sun, 30 Mar 2025 15:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743343456;
-	bh=dW2fWipsc15woelUWZHZ417w3TciACM4wNgZtCQfZyk=;
+	s=k20201202; t=1743347949;
+	bh=wWJH4qthvkKah4YoqMVuhDK4KUnv3vBmdbn04K2tkuA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=L5ZaKBip0v6FtzGwUGqKmhmQRUbsqvFOmDgryUfAc3TTUYGxrQfZeuS6uGDKmGYoE
-	 P/viM8het/sCzjGyATREKFU7ZXdMbtp9QbVV0KeLiZeRyXtd94T0RL3TaV6qpSi+Oq
-	 XB94xJwQCRkPugbphMGzMmMm8WGreEExJgI0Zf1t1BQdTdI4S1wLoNsbgykZtWmxnj
-	 SnTUqNYXGp7xDqm5lO/62ycK4DRH4YNAFSzoVCkm3IvlDMIrHPfUsABLnmB1tGhkqs
-	 YWl9Dc40Zpk5l5leav76jkrxD6VOtoQwrwVAnNi0l+oNBg+I+UnfKF1mhHoaJ5lUrf
-	 pbOOCwDPRF1og==
-Date: Sun, 30 Mar 2025 15:04:10 +0100
+	b=tFEzN1GiLSrwOpa2ZB8BO622EMiTuDYsB1EePUfU13nl3uuEWDnhcIo+znFBIcRRo
+	 oAVVSjbIgmu5LkJcT3CTZ4vzrhNDCH2aV9jd15vzOWryZNnWOFyank4RoRZ7xw0IuU
+	 +iY4rws1AapbwFqaSkZ5E+3ipli6w8YRWUAHzgUHR+dQMIkJJvAXzjAuVWLv9T/8r+
+	 P+cupzIjtdJZK1+2fALxFRfn4lj8J7Zg+zBnf/fewgut+xSQh2Cxb6xLv7B34oWPZi
+	 HIU6PHQFaC+sO978kccFkxh4Rrkmku4IFI6h5/x3v0+wyAdI2r2XQJ2X85kWZgywIi
+	 KYJAO9N+io/sg==
+Date: Tue, 17 Sep 2024 12:19:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Gyeyoung Baek <gye976@gmail.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, lars@metafoo.de,
- gustavograzs@gmail.com, javier.carrasco.cruz@gmail.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org
-Subject: Re: [PATCH 1/3] iio: chemical: add support for winsen MHZ19B CO2
- sensor
-Message-ID: <20250330150410.23b148da@jic23-huawei>
-In-Reply-To: <20250329164905.632491-2-gye976@gmail.com>
-References: <20250329164905.632491-1-gye976@gmail.com>
-	<20250329164905.632491-2-gye976@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Esteban Blanc <eblanc@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Jonathan Corbet
+ <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH 4/6] iio: adc: ad4030: add support for ad4630-24 and
+ ad4630-16
+Message-ID: <20240917121920.75e7edba@jic23-huawei>
+In-Reply-To: <2b319d9453f4fe8842e4c306d9e2071ad031c0e7.camel@gmail.com>
+References: <20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com>
+	<20240822-eblanc-ad4630_v1-v1-4-5c68f3327fdd@baylibre.com>
+	<20240826102748.4be0b642@jic23-huawei>
+	<D452E2M75XCM.13OQGAPJ7JJ4A@baylibre.com>
+	<0a4e7fe39cf36774b28c86f6baab5ef8c20e3d6b.camel@gmail.com>
+	<D4567LFFTYJQ.2YC5OODKOVPNB@baylibre.com>
+	<84961c1f857dfc8498c41ac97235a037111ed6d5.camel@gmail.com>
+	<20240914122529.14759e63@jic23-huawei>
+	<2b319d9453f4fe8842e4c306d9e2071ad031c0e7.camel@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 30 Mar 2025 01:49:03 +0900
-Gyeyoung Baek <gye976@gmail.com> wrote:
+On Mon, 16 Sep 2024 08:12:24 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Add support for winsen MHZ19B CO2 sensor.
-Hi,
+> On Sat, 2024-09-14 at 12:25 +0100, Jonathan Cameron wrote:
+> > On Fri, 13 Sep 2024 15:46:17 +0200
+> > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> >  =20
+> > > On Fri, 2024-09-13 at 12:55 +0000, Esteban Blanc wrote: =20
+> > > > On Fri Sep 13, 2024 at 10:18 AM UTC, Nuno S=C3=A1 wrote:=C2=A0  =20
+> > > > > On Fri, 2024-09-13 at 09:55 +0000, Esteban Blanc wrote:=C2=A0  =20
+> > > > > > On Mon Aug 26, 2024 at 9:27 AM UTC, Jonathan Cameron wrote:=C2=
+=A0  =20
+> > > > > > > On Thu, 22 Aug 2024 14:45:20 +0200
+> > > > > > > Esteban Blanc <eblanc@baylibre.com> wrote:=C2=A0  =20
+> > > > > > > > +static const unsigned long ad4630_channel_masks[] =3D {
+> > > > > > > > +	/* Differential only */
+> > > > > > > > +	BIT(0) | BIT(2),
+> > > > > > > > +	/* Differential with common byte */
+> > > > > > > > +	GENMASK(3, 0),=C2=A0  =20
+> > > > > > > The packing of data isn't going to be good. How bad to shuffle
+> > > > > > > to put the two small channels next to each other?
+> > > > > > > Seems like it means you will want to combine your deinterleave
+> > > > > > > and channel specific handling above, which is a bit fiddly but
+> > > > > > > not much worse than current code.=C2=A0  =20
+> > > > > >=20
+> > > > > > I can do it since that was what I had done in the RFC in the fi=
+rst place.
+> > > > > > Nuno asked for in this email
+> > > > > > https://lore.kernel.org/r/0036d44542f8cf45c91c867f0ddd7b45d1904=
+d6b.camel@gmail.com/
+> > > > > > :
+> > > > > > =C2=A0  =20
+> > > > > > > > > * You're pushing the CM channels into the end. So when we=
+ a 2 channel
+> > > > > > > > > device
+> > > > > > > > > we'll have:=C2=A0  =20
+> > > > > > =C2=A0  =20
+> > > > > > > > > in_voltage0 - diff
+> > > > > > > > > in_voltage1 - diff
+> > > > > > > > > in_voltage2 - CM associated with chan0
+> > > > > > > > > in_voltage0 - CM associated with chan1
+> > > > > > > > >=20
+> > > > > > > > > I think we could make it so the CM channel comes right af=
+ter the
+> > > > > > > > > channel
+> > > > > > > > > where
+> > > > > > > > > it's data belongs too. So for example, odd channels would=
+ be CM
+> > > > > > > > > channels
+> > > > > > > > > (and
+> > > > > > > > > labels could also make sense).=C2=A0  =20
+> > > > > >=20
+> > > > > > So that's what I did here :D
+> > > > > >=20
+> > > > > > For the software side off things here it doesn't change a lot o=
+f things
+> > > > > > since we have to manipulate the data anyway, putting the extra =
+byte at the
+> > > > > > end or in between is no extra work.
+> > > > > > For the offload engine however, it should be easier to ask for =
+24 bits
+> > > > > > then 8 bits for each channel as it would return two u32 per "ha=
+rdware
+> > > > > > channel".
+> > > > > >=20
+> > > > > > In order to avoid having two different layouts, I was kind of s=
+old by
+> > > > > > Nuno's idea of having the CM in between each diff channel.
+> > > > > > =C2=A0  =20
+> > > > >=20
+> > > > > Tbh, I was not even thinking about the layout when I proposed the
+> > > > > arrangement.
+> > > > > Just
+> > > > > made sense to me (from a logical point of view) to have them toge=
+ther as they
+> > > > > relate
+> > > > > to the same physical channel. FWIW, we're also speaking bytes in =
+here so not
+> > > > > sure
+> > > > > if
+> > > > > it's that important (or bad).=C2=A0  =20
+> > > >=20
+> > > > The best we can do (if we managed to do it HDL wise) is to reorder =
+the
+> > > > data to get both CM byte in a single u32 after the 2 u32 of both di=
+ff
+> > > > channel. That would be 3 u32 instead of 4. =20
+> >=20
+> > Entirely up to you. :) =20
+> > > > =C2=A0  =20
+> > >=20
+> > > We are starting to see more and more devices that do stuff like this.=
+ Have one
+> > > physical channel that reflects in more than one IIO channel. For SW b=
+uffering
+> > > it's
+> > > not really a big deal but for HW buffering it's not ideal.=20
+> > >=20
+> > > I feel that at some point we should think about having a way to map a=
+ channel
+> > > scan
+> > > element (being kind of a virtual scan element) into the storage_bits =
+of another
+> > > one.
+> > > So in this case, one sample (for one channel) would be the 32bits and=
+ things
+> > > should
+> > > work the same either in SW or HW buffering.
+> > >=20
+> > > That said, it's probably easier said than done in practice :) =20
+> >=20
+> > Yeah. That could get ugly fast + All existing userspace will fail to ha=
+ndle it
+> > so I'm not keen. Maybe it's doable if we assume the 'virtual channels' =
+are all
+> > meta data we don't mind loosing with existing software stacks and define
+> > a non overlapping ABI to identify the metadata.=C2=A0 Still smells bad =
+to me so
+> > I'll take quite a bit of convincing! =20
+>=20
+> Naturally it would have to be done in a way that drivers not defining the=
+ "special"
+> scan elements would not be affected.
 
-Good to add a little more detail here.
-> 
-Ideally add a
-DataSheet tag here so we have a record in the git log on where to find
-a datasheet.
+It's worse than that - it would need be defined so userspace running
+against the devices with the special channels would have to work without
+knowing anything about them. So we couldn't do the really nasty thing
+of setting scan_index the same for both of them with same storage size and
+different shifts and real_bits.  That would be the sort of things that might
+crash userspace code.
 
-Various comments inline.
+Driver effects are less of an issue than ABI breakage - or even just
+ABI a userspace author would not expect.
 
-The big stuff is that you are adding ABI without documentation.
-Also that ABI doesn't seem that well aligned with existing calibration related
-ABI.
+>=20
+> >=20
+> > Adding something to clearly 'associate' multiple related channels would=
+ be fine
+> > as that wouldn't change the data interpretation, just provide more info=
+ on top.
+> > Kind of a structured _label=20
+> >=20
+> > Maybe a _channelgroup attribute?=C2=A0=C2=A0 Would be const and all the=
+ channels with
+> > the same index would reflect that they were measured on same 'thing'.
+> > Typically thing might be a pin or differential pair, but we might be me=
+asuring
+> > different types of signals - e.g. current and power.
+> >  =20
+>=20
+> Sounds reasonable but I think the tricky part is always to have a sane wa=
+y of saying
+> that multiple scan elements relate to just one storage_bits so we could s=
+ay something
+> like (taking this as example):
+>=20
+> scan0: //diff channel which describing the physical HW in terms of real s=
+ize
+>  .storage_bits =3D 32
+>  .real_bits =3D 24
+>  .shift =3D 8
+>=20
+> scan1: //CM data
+>  //.storage - relates to scan0 so should add nothing to the sample size i=
+f both
+> enabled
+>  .real_bits =3D 8
+>=20
+Indeed - I get the concept, but don't like it.=20
+In general it's a dead end for general purpose channels - because of that
+pile of legacy userspace.  It 'might' just about be acceptable for 'meta da=
+ta' channels
+or where we are adding significant new interface for functionality purposes=
+ (e.g.
+when we did the newer DMA buffer stuff).
 
-> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
-> ---
->  drivers/iio/chemical/Kconfig  |   6 +
->  drivers/iio/chemical/Makefile |   1 +
->  drivers/iio/chemical/mhz19b.c | 354 ++++++++++++++++++++++++++++++++++
->  3 files changed, 361 insertions(+)
->  create mode 100644 drivers/iio/chemical/mhz19b.c
-> 
+> Likely not what you meant but one thing I took from your '_channelgroup' =
+idea was to
+> have something similar to extended_info maybe with a small top level desc=
+ription and
+> then an array of channels (that would form the group/aggregated channel).=
+ Only on the
+> top level description we would be allowed to define the size of the scan =
+element (in
+> case of buffering). Still seems tricky to me :).
 
-> diff --git a/drivers/iio/chemical/mhz19b.c b/drivers/iio/chemical/mhz19b.c
-> new file mode 100644
-> index 000000000000..de900131035b
-> --- /dev/null
-> +++ b/drivers/iio/chemical/mhz19b.c
-> @@ -0,0 +1,354 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * mh-z19b co2 sensor driver
-> + *
-> + * Copyright (c) 2025 Gyeyoung Baek <gye976@gmail.com>
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/kernel.h>
-> +#include <linux/init.h>
-> +#include <linux/serdev.h>
-> +#include <linux/of.h>
-Shouldn't be needed here. I'd guess you want
-mod_devicetable.h
+Yeah.  The channel group thing was for normal naturally aligned packing, not
+data backed tighter than that.
 
-> +#include <linux/device.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/mutex.h>
-> +#include <linux/cleanup.h>
-Alphabetical order preferred for includes.  As it's an IIO driver
-you can pull that out to a separate include block at the end if you
-like. I'm fine with it in alphabetical order with the other headers
-if you prefer that.
+>=20
+> Anyways, Right now, I have no time for something like this but eventually=
+ would like
+> to try something. But if someone wants to propose something sooner, pleas=
+e :)
 
-> +
-> +struct mhz19b_state {
-> +	struct serdev_device *serdev;
-> +
-> +	/* serdev receive buffer */
-> +	char buf[9];
-> +	int buf_idx;
-> +
-> +	/* protect access to mhz19b_state */
-Be more specific. I'd imagine it's the buffer rather
-than the serdev pointer...
-> +	struct mutex lock;
-> +};
-> +
-> +/* ABC logig on/off */
+*looks doubtful*  Maybe I can be convinced.  We'll see.
 
-If the names of command defines are good then we don't need the comments.
-I'd modify them a little to make that true here and drop the comments
-unless they are adding something more
-
-> +#define MHZ19B_ABC_LOGIC_CMD		0x79
-> +/* read CO2 concentration */
-> +#define MHZ19B_READ_CO2_CMD		0x86
-> +/* calibrate Zero Point */
-> +#define MHZ19B_ZERO_POINT_CMD		0x87
-> +/* calibrate Span Point */
-> +#define MHZ19B_SPAN_POINT_CMD		0x88
-> +/* set sensor detection range */
-> +#define MHZ19B_DETECTION_RANGE_CMD	0x99
-}
-> +
-> +static int mhz19b_serdev_cmd(struct iio_dev *indio_dev, int cmd, const char *str)
-> +{
-> +	int ret = 0;
-> +	struct serdev_device *serdev;
-> +	struct mhz19b_state *mhz19b;
-> +	struct device *dev;
-> +
-> +	mhz19b = iio_priv(indio_dev);
-> +	serdev = mhz19b->serdev;
-> +	dev = &indio_dev->dev;
-These can all be combined with declarations to save a few lines of code.
-
-> +
-> +	/*
-> +	 * commands have following format:
-> +	 *
-> +	 * +------+------+-----+------+------+------+------+------+-------+
-> +	 * | 0xFF | 0x01 | cmd | arg0 | arg1 | 0x00 | 0x00 | 0x00 | cksum |
-> +	 * +------+------+-----+------+------+------+------+------+-------+
-> +	 */
-> +	uint8_t cmd_buf[MHZ19B_CMD_SIZE] = {
-> +		0xFF, 0x01, cmd,
-> +	};
-> +
-> +	switch (cmd) {
-> +	case MHZ19B_ABC_LOGIC_CMD:
-> +	{
-
-I'd move the { to the line above.
-
-
-> +		bool enable;
-> +
-> +		ret = kstrtobool(str, &enable);
-> +		if (ret)
-> +			return ret;
-> +
-> +		cmd_buf[3] = enable ? 0xA0 : 0x00;
-> +		break;
-> +	}
-> +	case MHZ19B_SPAN_POINT_CMD:
-> +	{
-> +		uint16_t ppm;
-> +
-> +		ret = kstrtou16(str, 10, &ppm);
-> +		if (ret)
-> +			return ret;
-> +
-> +		/* at least 1000ppm */
-> +		if (ppm < 1000 || ppm > 5000) {
-> +			dev_dbg(&indio_dev->dev, "span point ppm should be 1000~5000");
-> +			return -EINVAL;
-> +		}
-> +
-> +		cmd_buf[3] = ppm / 256;
-> +		cmd_buf[4] = ppm % 256;
-
-That's an elaborate way of doing
-		unaligned_put_be16()
-so use that instead as it's also clearly documenting what is going on.
-
-> +		break;
-> +	}
-> +	case MHZ19B_DETECTION_RANGE_CMD:
-> +	{
-> +		uint16_t range;
-> +
-> +		ret = kstrtou16(str, 10, &range);
-> +		if (ret)
-> +			return ret;
-> +
-> +		/* Detection Range should be 2000 or 5000 */
-> +		if (!(range == 2000 || range == 5000)) {
-> +			dev_dbg(&indio_dev->dev, "detection range should be 2000 or 5000");
-> +			return -EINVAL;
-> +		}
-> +
-> +		cmd_buf[3] = range / 256;
-> +		cmd_buf[4] = range % 256;
-Same as above.
-> +		break;
-> +	}
-> +	default:
-> +		break;
-> +	}
-> +	cmd_buf[MHZ19B_CMD_SIZE - 1] = mhz19b_get_checksum(cmd_buf);
-> +
-> +	scoped_guard(mutex, &mhz19b->lock) {
-> +		ret = serdev_device_write(serdev, cmd_buf, MHZ19B_CMD_SIZE, 0);
-> +		mhz19b->buf_idx = 0;
-> +
-> +		if (ret != MHZ19B_CMD_SIZE) {
-> +			dev_err(dev, "write err, %d bytes written", ret);
-> +			return -EINVAL;
-> +		}
-> +
-> +		switch (cmd) {
-> +		case MHZ19B_READ_CO2_CMD:
-> +			if (mhz19b->buf[MHZ19B_CMD_SIZE - 1] != mhz19b_get_checksum(mhz19b->buf)) {
-> +				dev_err(dev, "checksum err");
-> +				return -EINVAL;
-> +			}
-> +
-> +			ret = (mhz19b->buf[2] << 8) + mhz19b->buf[3];
-
-That's an unaligned_get_be16() I think. If so use that instead of opencoding.
-
-> +			break;
-> +		default:
-> +			/* no response commands. */
-Might as well return early in each of these cases.
-
-> +			ret = 0;
-> +			break;
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int mhz19b_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-Trivial but for IIO I'd prefer we try to keep under 80 chars still when it does
-not effect readability.  Here adding a wrap after indio_dev doesn't make it harder
-to read.
-
-> +	int *val, int *val2, long mask)
-Align after ( 
-
-> +{
-> +	struct mhz19b_state *mhz19b;
-> +	int ret;
-> +
-> +	mhz19b = iio_priv(indio_dev);
-	struct mhz19b_state *mhz19b = iio_priv(indio_dev);
-at the point of declaration above.
-
-> +
-> +	ret = mhz19b_serdev_cmd(indio_dev, MHZ19B_READ_CO2_CMD, NULL);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val = ret;
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static const struct iio_info mhz19b_info = {
-> +	.read_raw = mhz19b_read_raw,
-> +};
-
-> +
-> +struct iio_chan_spec_ext_info mhz19b_co2_ext_info[] = {
-> +	{
-> +		.name = "zero_point",
-
-This is custom ABI.  Before we consider that in detail we
-need documentation in
-Documentation/ABI/testing/sysfs-bus-iio-mhz19b
-It is much easier to review ABI with docs.
-All 3 are direct commands to the device, so I've no idea from
-what we have here on what they do.
-
-Superficially this one looks like a calibration control.
-There is existing ABI for that.
-
-
-> +		.write = mhz19b_zero_point_write,
-> +	},
-> +	{
-> +		.name = "span_point",
-> +		.write = mhz19b_span_point_write,
-Also looks like calibration.  See if you can come
-up with ABI that matches with what we already have for calibration
-of ADCs etc.
-> +	},
-> +	{
-> +		.name = "abc_logic",
-
-Definitely not good logic. ABC is a term they made up as far
-as i can tell.  See if you can find existing ABI for this.
-I think we have other controls for autonomous calibration cycles.
-
-> +		.write = mhz19b_abc_logic_write,
-> +	},
-> +	{}
-	{ }
-preferred for IIO code.
-
-> +};
-> +
-> +static const struct iio_chan_spec mhz19b_channels[] = {
-> +	{
-> +		.type = IIO_CONCENTRATION,
-> +		.channel2 = IIO_MOD_CO2,
-> +		.modified = 1,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-> +
-> +		.ext_info = mhz19b_co2_ext_info,
-> +	},
-> +};
-> +
-> +static int mhz19b_core_probe(struct device *dev)
-
-As below.  This function isn't sufficiently complex to justify
-a separate function.
-
-> +{
-> +	int ret;
-> +
-> +	struct serdev_device *serdev;
-> +	struct mhz19b_state *mhz19b;
-> +	struct iio_dev *indio_dev;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(struct mhz19b_state));
-
-sizeof(*mhz19b));
-
-> +	if (indio_dev == NULL)
-> +		return ret;
-> +
-> +	dev_set_drvdata(dev, indio_dev);
-> +
-> +	mhz19b = iio_priv(indio_dev);
-> +
-> +	mhz19b->buf_idx = 0;
-No need to explicitly zero as it is allocated by kzalloc.  Fine to
-keep it though if you think it adds benefit as 'documentation'.
-> +	ret = devm_mutex_init(dev, &mhz19b->lock);
-> +	if (ret)
-> +		return ret;
-> +
-> +	serdev = container_of(dev, struct serdev_device, dev);
-
-breaking out the _core_probe() makes this more complex as in the
-caller serdev is already available.
-
-> +
-> +	mhz19b->serdev = serdev;
-> +
-> +	indio_dev->name = "mh-z19b";
-> +	indio_dev->channels = mhz19b_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(mhz19b_channels);
-> +	indio_dev->info = &mhz19b_info;
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-
-return devm_iio_device_register()
-
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static size_t mhz19b_receive_buf(struct serdev_device *serdev, const u8 *data, size_t len)
-> +{
-> +	struct iio_dev *indio_dev;
-	struct iio_dev *indio_dev = dev_get_drvdata(&serdev->dev);
-	struct mhz19b_state *mhz19b = iio_priv(indio_dev);
-
-to save a few lines.
-
-
-> +	struct mhz19b_state *mhz19b;
-> +
-> +	indio_dev = dev_get_drvdata(&serdev->dev);
-> +	mhz19b = iio_priv(indio_dev);
-> +
-> +	for (int i = 0; i < len; i++)
-> +		mhz19b->buf[mhz19b->buf_idx++] = data[i];
-> +
-> +	return len;
-> +}
-> +
-> +static void mhz19b_write_wakeup(struct serdev_device *serdev)
-> +{
-> +	struct iio_dev *indio_dev;
-> +
-> +	indio_dev = dev_get_drvdata(&serdev->dev);
-> +
-> +	dev_dbg(&indio_dev->dev, "mhz19b_write_wakeup");
-
-This doesn't do anything which makes me suspicious. Would
-using serdev_device_write_wakeup() as the callback make
-sense?  I'm not that familiar with serial drivers but I can
-see that a number of other drivers do that.
-
-> +}
-> +
-> +static const struct serdev_device_ops mhz19b_ops = {
-> +	.receive_buf = mhz19b_receive_buf,
-> +	.write_wakeup = mhz19b_write_wakeup,
-> +};
-> +
-> +static int mhz19b_probe(struct serdev_device *serdev)
-> +{
-> +	int ret;
-> +
-> +	struct device *dev;
-> +
-> +	dev = &serdev->dev;
-> +	serdev_device_set_client_ops(serdev, &mhz19b_ops);
-> +
-> +	ret = devm_serdev_device_open(dev, serdev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	serdev_device_set_baudrate(serdev, 9600);
-> +	serdev_device_set_flow_control(serdev, false);
-> +	ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
-> +	if (ret < 0)
-> +		return ret;
-
-Why check return value from this call but not the previous two?
-I'm not immediately able to see a reason this is more likely to fail.
-
-> +
-> +	ret = mhz19b_core_probe(dev);
-
-Having a separate _core_probe() seems unnecessary. I'd jut have a single
-probe function and put all that code inline here.
-
-> +	if (ret)
-> +		return ret;
-> +
-
-return mhz19b_core_probe();
-
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id mhz19b_of_match[] = {
-> +	{ .compatible = "winsen,mhz19b", },
-> +	{}
-
-Trivial: I'm trying to standardize formatting of these in IIO
-and made the random choice of
-	{ }
-as the terminating entry style.
-
-> +};
-
-Similar to below, it is common practice to have no blank line
-between this array of structs and the MODULE_DEVICE_TABLE
-to reflect how tightly they are coupled.
-
-> +
-> +MODULE_DEVICE_TABLE(of, mhz19b_of_match);
-> +
-> +static struct serdev_device_driver mhz19b_driver = {
-> +	.driver = {
-> +		.name = "mhz19b",
-> +		.of_match_table = mhz19b_of_match,
-> +	},
-> +	.probe = mhz19b_probe,
-> +};
-> +
-
-Typical style for these module* lines is to couple them
-closely with the struct. That is done by having no blank line here.
-
-> +module_serdev_device_driver(mhz19b_driver);
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_AUTHOR("Gyeyoung Baek");
-> +MODULE_DESCRIPTION("MH-Z19B CO2 sensor driver using serdev interface");
+Jonathan
+>=20
+> - Nuno S=C3=A1=20
+>=20
 
 

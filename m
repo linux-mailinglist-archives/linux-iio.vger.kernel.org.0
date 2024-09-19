@@ -1,160 +1,175 @@
-Return-Path: <linux-iio+bounces-9636-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9637-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C571097C09A
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2024 21:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A0497C6E5
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Sep 2024 11:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4557F1F21AB3
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Sep 2024 19:43:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B06E1F281C4
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Sep 2024 09:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FE01CA682;
-	Wed, 18 Sep 2024 19:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D11E199937;
+	Thu, 19 Sep 2024 09:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="E9qkssJX"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="qtvIMknt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11olkn2089.outbound.protection.outlook.com [40.92.19.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCFD1607A4;
-	Wed, 18 Sep 2024 19:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.19.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726688605; cv=fail; b=coBq2p8uanFyWuLXtFo4GmO9HOQfHmIo5hQHvXO8AqpYsv65hw8sWP7HQiIgjU9nbJrwXZGgxp8bwJU+nonZY/oLc48Ji9e25AxZV5H5Pqq6arXrF4Xff1YxZCTdvsQBnub4VpWqB56Uo0KYq01Oc8DSO2GqIYNvsq/D97/UDJE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726688605; c=relaxed/simple;
-	bh=7q3uP7M4+GcRjRFYhwQPwv0bX9sa+Vb5DxcNXE0MImQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=unnbXYWZYqlUOBLAaza7CFKXujY5ZelOebZfIMplhqLuRK1UZ1dcNaO0sZWvpd7yE5kV+pwuNWhbQfgPI15be0xp57n6QdyAYrgTlfc+Pqg0rYjS2lHW/M/7REUUVtnOzeHmdoBBeKDs+GQztGjMx5Rca/eqe94fCUv6/58jxKk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=E9qkssJX; arc=fail smtp.client-ip=40.92.19.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tlSJZuHzB3M9TWR7o0V07uIlYntU1D9BHWioGb5dwovGNa4fBhSe4B57FhHDpo4Of1rp0i3Za93Sj7k3ktjm610eIMoOS4bEVXMM7vH1ZFIn0L266vJMTlTwerBYwGKheL59dsBJ15XkJeaWbhyi+AfgwFw0Z1EKjfqBtXbyw+OnWXZXequKisX7PanCGxrlsHRxZBrWI5R3OxU3zR/vClLR7q7KORJexbZ9f3MiCvULLHfabiUXAj1YcJS/wUvDqqPWRQ5hJnjL9ZXDQ7KJA5i0HDHxTIcR3LdUaL20UGysXMWXWgA/7W72BhhK1aLfogOg2d4XRfagE5xKXGMpNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q54PS6dahtf4AwCWlI975l6S5A2jftfqMFnFXmGcZIs=;
- b=yflq03Q4YsS5VfANwK4VZo7BV0o8CthXSm6E1hQAq4WTwW3maCKNWgabNDJiXgmQZdPwQv4Ka2cvUshAQY5qErlIEcjLbj2G2lvvopITsRo12Kv65N5PsA/Ep04En+DEToppEseamwR4WYAYXNnW6B6SOW2sbnsYcOuEGAK6JdDhNwSS9LrA8qkvQALql4AN2nvtw3prxN7489pnmmOZ+PVCgiJpe+4Iqii6Sn4sS+QOj53txTz2Tqy/wdp09iUpPVlxLpXIoH89Ynu6wQdpPWU3z7W43nSf8tzdo1lhcCd0kUNme87T7YMMQtdC1LpgrYZw6fuD9xLQt3s3HJVneA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q54PS6dahtf4AwCWlI975l6S5A2jftfqMFnFXmGcZIs=;
- b=E9qkssJXtD0G99C8HzeBr+dd3OyMyZwQHKtqGbwZf0UP0auswxCRpaCmDhd3t0MXlIKMHo9ouAS5tUzLs9uH+Wq0HbqC67MzKya1DDRiMVTcDpUG3+m+b10c1cYYxd31lBuZOtP+yJxDFdTpNbzxFrUeegn3Q/f0Xfy2GB19CD+u5icjY6GikgtB31F+lxGBBDrESO1TnR7f0sb0//IZyPVokO85IbtaJln1oxLLPRfDVlfGprHVk6QioiqkJvp/maRuMQE0BPILkQHNNmeMkD0h+xAW6S5xI9lNve0Zs31EbAwMJP7AH0nq/yx5I5TwGMk8VAKp7Lv9EwDIsMlEqQ==
-Received: from SJ2P223MB1026.NAMP223.PROD.OUTLOOK.COM (2603:10b6:a03:570::8)
- by SJ2P223MB1150.NAMP223.PROD.OUTLOOK.COM (2603:10b6:a03:584::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.25; Wed, 18 Sep
- 2024 19:43:22 +0000
-Received: from SJ2P223MB1026.NAMP223.PROD.OUTLOOK.COM
- ([fe80::b5cd:c37a:bd3e:e3fd]) by SJ2P223MB1026.NAMP223.PROD.OUTLOOK.COM
- ([fe80::b5cd:c37a:bd3e:e3fd%5]) with mapi id 15.20.7982.012; Wed, 18 Sep 2024
- 19:43:22 +0000
-From: Steven Davis <goldside000@outlook.com>
-To: hridesh699@gmail.com
-Cc: Michael.Hennerich@analog.com,
-	gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev
-Subject: Re: [PATCH] staging: iio: Fix alignment warning
-Date: Wed, 18 Sep 2024 15:42:56 -0400
-Message-ID:
- <SJ2P223MB102630DA926C5006D12E5132F7622@SJ2P223MB1026.NAMP223.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20240918174320.614642-1-hridesh699@gmail.com>
-References: <20240918174320.614642-1-hridesh699@gmail.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH0PR03CA0374.namprd03.prod.outlook.com
- (2603:10b6:610:119::34) To SJ2P223MB1026.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:a03:570::8)
-X-Microsoft-Original-Message-ID:
- <20240918194256.13431-1-goldside000@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E839A19922A
+	for <linux-iio@vger.kernel.org>; Thu, 19 Sep 2024 09:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726737698; cv=none; b=brh82tv7+/HKm0zbLGDA/0nDFtrLw5SUVi+3VbrojD7jcAwZciW8gC4NZj8WMfyNi6FWnpzzp3mnyCa/f0BJ4bZ/hte50sWpolQy+FnQTd4q7LMaIvVyrZpQpRUbFG0ZBqc27istDT7CSdA4rwoeWLRZNeioa59FdwLmcqC7No4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726737698; c=relaxed/simple;
+	bh=9K94bsQInkxbf+bSNW5RZty39cCxuDTVv2CdbHV6Ex4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VQUnsvmMdoyUbxnjMrGq8uadr2lysWji4lqRWe5Df24EYnj9BlVj9IKMxSP02ORwBeCrrk55pfI4H9wdn56tcrsn5b2ewwxYkUfJFu21dbR6hcGVuU9b8Q+o0ZngpTv0kpfsgQY5agpUq3KmjfZBHmf9ubuSKeIL4gC26u7At2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=qtvIMknt; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2f7657f9f62so6544421fa.3
+        for <linux-iio@vger.kernel.org>; Thu, 19 Sep 2024 02:21:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726737694; x=1727342494; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6JMj5mfXiJJfo04AgibzT9+cKa765pGWiurrBxBDlrs=;
+        b=qtvIMkntWFTIdUOYx9omD6UtlqwkvA6ZbOK0Ag2sueI1jgtB5BiWlf8PvL5WiS49QZ
+         b6CWGk8HWLZLeiy7yQ5IyMeLCrNM/G9bWRLixHHsmEHiYzPUucixq7GIAOsZSZKBTylz
+         6bVfUdyiJ4MCn5cuATQGdTe+IDvExcPK22WBYk+pk4mCg0GaQA0CVfyRwUxRW1B6e/U/
+         vuj9LJ8EEki6TfZr4y3KW2BPPNP+WwMQBx734FsJS0QqpaEmNz/IpqUWBupvQ3jN67G0
+         UIF4syFXFhy3zAGq55d4NYrPdvWx1ND2X/J2FpUXgT3eoTZxfC8O75gPNTBgnMCPHB9R
+         O0AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726737694; x=1727342494;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6JMj5mfXiJJfo04AgibzT9+cKa765pGWiurrBxBDlrs=;
+        b=U9Lz7YVry5n8xlzGG3sa1U55OwYd7u9cJDHz0WLQmPQvOtCfr/OUKx2f/WDHU8I4n4
+         m05JQnx7/MgKf3La5vVJ4B1bdb1ei9PdjoKVdWMYIn0Mc9EBif77RSFCOSzXzBQrngzP
+         u3UekickHZCOGdArWCOHtbXr9H6uYgEQfz7YRTCrUyqnfOTv5ynERtZcwM0nqT4es9Fi
+         GYYhTegvMUY1vHZHxwaOF+tHTqP/jPUtYHik/MRlY3gmEQ6bQZn8XtuBU3dlSwGf/xIU
+         xBDOCDKQAMvuOFX+Mme4DERg0Qxpmh5ewR4LLILWUEuRhBbWMF/BFCQdxyZeJ+d9p8N0
+         Tk+w==
+X-Gm-Message-State: AOJu0YyQPtjLBkGB/i3OlAWKXPsLzaHORVSEAFaMvHuOhTFu008/G7Oz
+	G2E2i/LKLkd3sVsFSblnmTejYFdmgbCMvmNFGshubfNznr1A5XrfYBmJLmUTSTk=
+X-Google-Smtp-Source: AGHT+IGM0Y3r7+gNR/DSAnIT1d21KFJtZd49LfOQKMIvTneI3LyvlzrzglH45meyrNtV1yUu2X09Yg==
+X-Received: by 2002:a05:651c:154a:b0:2f6:4aed:9973 with SMTP id 38308e7fff4ca-2f787f5833dmr154394841fa.44.1726737693720;
+        Thu, 19 Sep 2024 02:21:33 -0700 (PDT)
+Received: from [127.0.1.1] (host-80-117-99-70.retail.telecomitalia.it. [80.117.99.70])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e75468413sm16889465e9.45.2024.09.19.02.21.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Sep 2024 02:21:33 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH v3 00/10] iio: add support for the ad3552r AXI DAC IP
+Date: Thu, 19 Sep 2024 11:19:56 +0200
+Message-Id: <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-0-a17b9b3d05d9@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2P223MB1026:EE_|SJ2P223MB1150:EE_
-X-MS-Office365-Filtering-Correlation-Id: 75e3c9ab-0bab-414c-22db-08dcd81a26e8
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|7042599003|15080799006|5072599009|8060799006|461199028|19110799003|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info:
-	nNn2MXwawVGaGPeIK5sbrD1c+UBcvWR+BVwAkArv8fIY9K43oqKc6NTWP9oUhlM/+HdbgTFCJM0kjsrV8gO8e5+MH8ISjaSlgcTgCzdU9nLt91SZ0fFSqSjxOr7p/lT3dcC6SIEQ/wu3IZFbdLi1Kp21l1Al3r3aNeZ2NCz4Bu7HZLtNBQ2PmE78xRH0M7zefWqx34ihqVEmcQVvrLVCj+Ldt3QU1qNLrv2rpP8ntLlCdQxMCxvYTbHtI2+LVxLNX9UCwuJIx3EfyoW4Lu5DuipcWzxf7QHWuHg6Ks82CZurA9yEXfr7Qxu89REm93oyW+H5fCbfxQ1gXnQ3mCXT6Db4KSrGhm1dFYOVKGrflgaKcxLpH2jlr1a01/W2sFDH7vcVNr6BIQWsEL4gsOCR4NDyL8LUx7Hkpr5wRg8l8MG9jv03txc2Yr7bAzOEa4t9moafMC3hr0BrOhKPDbLBKPU3Qvii5Cfyix9FcdDgbcLyFrO9dQs7FM5iua8gnNrFagtytwbXxSisbFlpStjXbQDuMK0SMesaSjDUAEabXlFizOyzvGmMmnHYnsxVN9Uy1/A/aMk50HF336BWTWgo1H+4xIVCMC6pfP6zHilRNzdZ71zsbboEsNxRNVQ5eVnpwXzFO8E1kRLeDhReE+M430GMqX09rgNOZsH+hpr06mptOY8fwcd2+ebBMcErWkZjb61S0eTqw5vFm1zugZ+GPtt3PFd17xPbyiLarKzMaJY=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lkdkQt3dNIhx+jU3eIKAuk/1t+BAU2UO9xWphyFMcMi/fJo7I1KH/8u2qgLL?=
- =?us-ascii?Q?b+7MVbkKkIUi9QXrZg6TAshCQLdNI409mIlij47B+abCBC9N/tw87UP1a1jR?=
- =?us-ascii?Q?MfYoGIQwbxf5cMg144riPkpODTYike8jeyu/bhjj/1tsgZLjK0XAUNJP7xDs?=
- =?us-ascii?Q?izfUqmrylxchmnaXqL1L9mQn+BCFyR2ZGHRZdKbSK0bNyGMFa/8Gyh8zgic8?=
- =?us-ascii?Q?OaKQrhQYLY9xGUZz/E6vX5VjPfmQpvONrdQkB3L8DA6Q3XhcDO9HT43S8laq?=
- =?us-ascii?Q?wala5lVMWiO9ovAHKJFoNZIGxrFg4ZdWT/WxiTZUerhZdMVsoGScyRsC9hJQ?=
- =?us-ascii?Q?nZXxtxmx3Cc0x6sVbGoSHa1Qbn1jp0Vd8EtWerWxCifLAWZ9qSxgwbO+R2Oj?=
- =?us-ascii?Q?acDeEzkcEb1fJ+K40VENfd/+vdZRkpKfuN8khDR6D7VgmBhcYMQi47oe8G4m?=
- =?us-ascii?Q?FP33ibVxIUIA6840Z2oY2vWJTRlgxnngUPi6MMk5Mp3J2vMk8o9ySOH4TtXQ?=
- =?us-ascii?Q?qKDva8DCNALyXPVPSR8jew/b7JXoUSeh1ZY5WyQD/vI9DMowtTMExlkv/4sy?=
- =?us-ascii?Q?hhKqWA7B6ticnubGUNfXYKy57wF4dS0TDDO7S7QGB+ZWxoCK6pwx+l5wommW?=
- =?us-ascii?Q?UbarpirQgaKt2lTMUNaMALAtAYMOMrJjLfOEMh2cnYzeUAelDbPLnDy3o8QF?=
- =?us-ascii?Q?eUsrIAtjKp1rIiTAi2gR3lOnFbXJkSKP6jMucApqmUZ8v24qd4/GlY7jRADn?=
- =?us-ascii?Q?ClhVIge+UPYIH0BL++og950QoJbrDEJd1q2f2ED5yS/qRPIjI6TNnw/7PKp3?=
- =?us-ascii?Q?9rjWxlh0CdWP7nSx/K6nveiaUSbxjfP8YaFx50ueqWtKP+sZjayU/Dfp1CLg?=
- =?us-ascii?Q?kYhjLko5dqdFChD1vP5IM4dmSmAhJy496pxK+9k3SIEjazylSGwLn5VEsAxp?=
- =?us-ascii?Q?yEO8k6zA3KteDQVFjDOFMVMCiNtwsfsyS2lLrLsHkc8ugcrekcecbQyPZt4X?=
- =?us-ascii?Q?ea6aZWhtE3cYWNXNn8LM4y9gVpenJ3HM6D97yBBzc9A+RZwWcgBQSJ/LP6Ci?=
- =?us-ascii?Q?mHFvaQLJyeaLPKu23huY9UASfZLJ3+dtVrSKnwvTCM9f7lCV4a35gHLBlIjC?=
- =?us-ascii?Q?J1d3BJ9aMoX9l1cIIT98bHrlnQV17ewREoDcEkNWKc6aqVsRMvFHgWJwXpaA?=
- =?us-ascii?Q?r7mojLok+q7tk7PxCfhYa2enMY9d6RayxyeyenDBwQl/3RvDxYFIUnKgUNx4?=
- =?us-ascii?Q?+TbrfGHDEQEufoSTFnuT?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75e3c9ab-0bab-414c-22db-08dcd81a26e8
-X-MS-Exchange-CrossTenant-AuthSource: SJ2P223MB1026.NAMP223.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2024 19:43:21.9694
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2P223MB1150
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALzs62YC/x3NQQqDMBBG4avIrB2YJBWJVxEXqY72hxIlERXEu
+ zd0+W3euylrgmbqqpuSHshYY4GrKxo/IS7KmIrJin2JN55PbPz+cphc09jE4QIfwsDKu+YdceH
+ We9eKETXjTKWzJZ1x/R/98Dw/3fA05XMAAAA=
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, dlechner@baylibre.com, 
+ Angelo Dureghello <adureghello@baylibre.com>
+X-Mailer: b4 0.14.1
 
-On Wed, 18 Sep 2024 at 23:13:19 +0530, Hridesh MG wrote:
-> Reported by checkpatch:
->
-> CHECK: Alignment should match open parenthesis
->
-> Signed-off-by: Hridesh MG <hridesh699@gmail.com>
-  Acked-by: Steven Davis <goldside000@outlook.com>
-> ---
-> drivers/staging/iio/impedance-analyzer/ad5933.c | 6 +++---
-> 1 file changed, 3 insertions(+), 3 deletions(-)
+Purpose is to add ad3552r AXI DAC (fpga-based) support.
 
-> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> index 4ae1a7039418..d5544fc2fe98 100644
-> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> @@ -628,9 +628,9 @@ static void ad5933_work(struct work_struct *work)
-> 		int scan_count = bitmap_weight(indio_dev->active_scan_mask,
-> 					       iio_get_masklength(indio_dev));
-> 		ret = ad5933_i2c_read(st->client,
-> -				test_bit(1, indio_dev->active_scan_mask) ?
-> -				AD5933_REG_REAL_DATA : AD5933_REG_IMAG_DATA,
-> -				scan_count * 2, (u8 *)buf);
-> +				      test_bit(1, indio_dev->active_scan_mask) ?
-> +				      AD5933_REG_REAL_DATA : AD5933_REG_IMAG_DATA,
-> +				      scan_count * 2, (u8 *)buf);
-> 		if (ret)
-> 			return;
-> 
-> -- 
-> 2.46.0
+The "ad3552r" AXI IP, a variant of the generic "DAC" AXI IP,
+has been created to reach the maximum speed (33MUPS) supported
+from the ad3552r. To obtain the maximum transfer rate, the custom
+module has been implemented with a QSPI interface with DDR mode.
+
+The design is actually using the DAC backend since the register
+map is the same of the generic DAC IP, except for some customized
+bitfields. For this reason, a new "compatible" has been added
+in adi-axi-dac.c.
+
+Also, backend has been extended with all the needed functions
+for this use case, keeping the names gneric.
+
+The following patch is actually applying to linux-iio/testing.
+
+---
+Changes in v2: 
+- use unsigned int on bus_reg_read/write
+- add a compatible in axi-dac backend for the ad3552r DAC IP
+- minor code alignment fixes
+- fix a return value not checked
+- change devicetree structure setting ad3552r-axi as a backend
+  subnode
+- add synchronous_mode_available in the ABI doc
+
+Changes in v3: 
+- changing AXI backend approach using a dac ip compatible
+- fdt bindings updates accordingly
+- fdt, ad3552r device must be a subnode of the backend
+- allow probe of child devices
+- passing QSPI bus access function by platform data
+- move synchronous mode as a fdt parameter
+- reorganizing defines in proper patches
+- fix make dt_binding_check errors
+- fix ad3552r maximum SPI speed
+- fix samplerate calulcation
+- minor code style fixes
+
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+
+---
+Angelo Dureghello (10):
+      iio: backend: adi-axi-dac: fix wrong register bitfield
+      dt-bindings: iio: dac: axi-dac: add ad3552r axi variant
+      dt-bindings: iio: dac: ad3552r: fix maximum spi speed
+      dt-bindings: iio: dac: ad3552r: add io-backend support
+      iio: backend: extend features
+      iio: backend: adi-axi-dac: extend features
+      iio: dac: ad3552r: changes to use FIELD_PREP
+      iio: dac: ad3552r: extract common code (no changes in behavior intended)
+      iio: dac: ad3552r: add axi platform driver
+      iio: backend: adi-axi-dac: add registering of child fdt node
+
+ .../devicetree/bindings/iio/dac/adi,ad3552r.yaml   |  44 +-
+ .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   |  40 +-
+ drivers/iio/dac/Kconfig                            |  11 +
+ drivers/iio/dac/Makefile                           |   3 +-
+ drivers/iio/dac/ad3552r-axi.c                      | 567 +++++++++++++++++++++
+ drivers/iio/dac/ad3552r-common.c                   | 173 +++++++
+ drivers/iio/dac/ad3552r.c                          | 451 +++-------------
+ drivers/iio/dac/ad3552r.h                          | 199 ++++++++
+ drivers/iio/dac/adi-axi-dac.c                      | 328 +++++++++++-
+ drivers/iio/industrialio-backend.c                 | 111 ++++
+ include/linux/iio/backend.h                        |  23 +
+ include/linux/platform_data/ad3552r-axi.h          |  18 +
+ 12 files changed, 1572 insertions(+), 396 deletions(-)
+---
+base-commit: 4ff29e5af68e081473240420d5ba8fe1c410239f
+change-id: 20240919-wip-bl-ad3552r-axi-v0-iio-testing-79937010e1cf
+
+Best regards,
+-- 
+
+  o/ QW5nZWxvIER1cmVnaGVsbG8=
+   www.kernel-space.org
+    e: angelo at kernel-space.org
+      c: +39 388 8550663
+       
+
 

@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-9658-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9659-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2275197CB2F
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Sep 2024 16:51:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D6B97CB9A
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Sep 2024 17:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 946E91F22E53
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Sep 2024 14:51:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC83B1C2293A
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Sep 2024 15:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C8619B59D;
-	Thu, 19 Sep 2024 14:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A7019D093;
+	Thu, 19 Sep 2024 15:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="NMCi2IwC"
+	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="UpVsDlmg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC31919EECA
-	for <linux-iio@vger.kernel.org>; Thu, 19 Sep 2024 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104F91EA85
+	for <linux-iio@vger.kernel.org>; Thu, 19 Sep 2024 15:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726757512; cv=fail; b=i+TIn7IY6Pul3oWyCUFC8+is/s19Sl/CN6NzdKR+B1KrQPNvMu9nHZ6RuzsITMjaE0H9fxSVvNRQscWKJPlNqoDmgPnO+h75Ai91pBydmjZN6eBF3eDEz9cZiaykM1OPWhZWhZt3J8rRnvLQDF4GLQcgWDAjTZkk97Q4NP07HGk=
+	t=1726759652; cv=fail; b=G2biKbCc2SwovkzwT/RXxe5n08tNVZMuE0Z/EjwYtGeSzRIV0m+UXLQufHALetathAb8vMeOb75dgUxM9tEvEW9cEAj6xPm47CLaWxr5+05FHRcfrkLywXuebDEsLcgz4qDLT37666M/IB2orUgXa23i77znhnl9RdM7dWTWEOY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726757512; c=relaxed/simple;
-	bh=+0FiaeFee+RAgY8QAXL92AVcGBseHrHO8TQDNL/+ShU=;
+	s=arc-20240116; t=1726759652; c=relaxed/simple;
+	bh=+a9Z2hu5Mo1AL7p+LEPZflOHQjL2mlmv4N+7bwP4FH4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JlYUpBWMgsUSWCuZrcySJmVCfZjdjOBaxSS4D2N8eD6R0FslU8chhOUkyYg+04PB25QT4qkRmiO5TlJYic7ULuL2NSJeTBotsk/f3cYHZG4P0apSIephUY+B/xE3/b+78XvCa5OkXKE4evUNZtBMhhYkFm97nr5rAFeUJq+AOuk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=NMCi2IwC; arc=fail smtp.client-ip=205.220.166.134
+	 Content-Type:MIME-Version; b=XV3hwVK3yOL+r54zZfzWpzwkrSXgnOu6ZuVTywFhZKWDBLCI82rLsij55vg0XpRusqlyn7gQi+mHP9HVHh/TN2pWBIjh7mW6/M0FlnIi5Q85eBe0Tv+IX3nyVg1QS5++eFYSE3VLHvyhXHW2DRW6b2Lls8R0X96q7SqwGmz4EVM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=UpVsDlmg; arc=fail smtp.client-ip=205.220.166.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
 Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48J3Mr0P005832;
-	Thu, 19 Sep 2024 14:27:44 GMT
-Received: from ty3p286cu002.outbound.protection.outlook.com (mail-japaneastazlp17010005.outbound.protection.outlook.com [40.93.73.5])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 41nt89u55c-2
+	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48IMmljM015343;
+	Thu, 19 Sep 2024 14:27:48 GMT
+Received: from ty3p286cu002.outbound.protection.outlook.com (mail-japaneastazlp17010001.outbound.protection.outlook.com [40.93.73.1])
+	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 41nt89u55f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Sep 2024 14:27:43 +0000 (GMT)
+	Thu, 19 Sep 2024 14:27:47 +0000 (GMT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q/RyDu7BoTsSueLCbpoMCKRDKFjoqTIg+YI8NggU8W8BEpk2XAd16CgH+nFTtBbqR0c+8K0Bap0fYg40zkt6taa1S33FmZNKgDa9/U/QcViWE6kbfe0bkUiHf5wUTbI5mwA63AuXgQob+qxgoalqudRjgWlfqzhjyAb1BeL9kzfKRjBW7I7PsNXwW9qS14pNEIAdEId1OfJnaKanV8/ii2X1jqEA9wMbQDFUF1j/EClt0eX89ruQhExoA6ohN01t/AssTrICgTIZaEjhsPx+8BdtO5of86XpzOo4RH17L9wJ0ZZ5YV/9WAvN+HEiYoLOXbXXsKJsgcOrPro8mAEVeQ==
+ b=ZXpGbXB3lVtMMJs8vUuDV9iIypnaSP53JBGjT9DRI4VcNd9vr6KVsmdVIT7eypRJHOVIqWAOOXSMI8c4ED0yXqPxX7jsEOn4ORl8uhTtUhcRJ+WP6MJXz1noc60rwEtOmNfzkhiUt1gVj8nUnZWprHornzK0O4F2I9yH8PlcDtTGADqj7xXIo6U262Uz55mH/5PNWQw0uLvEtFJTjZaSlsMk4lsriAi8NLMc+YSpjAAd3JIwYUgZkfJrtUqHoyts23GscDli/cIy70AZcibJXd5oMQADzx8m6yV1WgCrZQDjd7lWIHCwqJA0wV1zJJigYJOwRJIBjWsaVG92YSNgvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zCCVlqCmKS20FaZW2s3SpLr9LN838VsxgGFd4RrX0Ww=;
- b=MoUPpatINo2UNvnz5+Y2WaEc0VfUVriQ6M3mcnxJcydyZfK7/oFRU6O960+CoQULK0UF8S6inKf9Soy7TrGEKcBb7zl5tpv17OHUOf2EazUGM5lpdxn9dERF2DWRXBvOvaDW5mrdeO2ZkCsR50io8suiAU5rwRfyeF8/8g/+sqpYnhPzbadcX+Eqr1176lv6ikzX4T8c6u9mVZ9DEd15DTDzXYFovsfYFk5AW6OpBjniajTP1G7bueoz3L6NdFsbqLW9fogz0SzyZErmN5wNmcxado0nAcwi5/vN365GBL8MpqyCvRT8PL7abIz5mSXdMUN8Q+wIb1Ie2C2lg9d76Q==
+ bh=wUvhriuD7Xj2+Ado0Pe71smU+9eGVd08YzI2njhokuc=;
+ b=c0+B305GWIDKE+yiQ2BPTYeTpg2ZzpGYfeXdp0LyG34DvDNmOHEk3XjN6vumbAH/PZwTxcPDl+CF9LCgoALxSZOrURh1oUtCbjRsw759zo+5syfGEEYE7X7i9hOdO+8sLolO8hPgvqh1Z+fagvcmCcsLXs83ZgqU+cZb6Xy5LE+Qk1pNXOGO8NLjdHZdHZjxvR3a9kbj0gIuIhl7lNhfK1bw3ctbX4QA1Cv4kyrkSi6BaDs3YHTI8jLoErRzzAp/4s9d9nU1Nnlykmb3yMMN9oKCz8FMIg/Qhbm9YITv7DCU0HoFVtIQvW32XQitsbfu9t4WajKoH7yK3rad7ay1kg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
  header.d=tdk.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zCCVlqCmKS20FaZW2s3SpLr9LN838VsxgGFd4RrX0Ww=;
- b=NMCi2IwC6K46sqYc9nFxv5BTiCv2rgD3IZNRl5FdSlOXOBvD72cKtYKBrdpfzHDw+7ez2+S8QrzdHeqvT2/p/1lhWm9JJ/YCmwk9cqWi1Mn0wI57bG2U6Ei/MHRNCEowmINfnPIBntHgWcyGVlUz6LwBju2d9ndkop3Q3Vny4bm9aupBZvLU9GPX3HleR7ZlS3tJqhI1jVO5zcNR8IgJG4/A4ReYOvdA66t/z2Y5JHTBectU7/Q5XHAHRADIHm+336NK3z9kC/sn55DHuGqS/E9dVuyFg9BOY+6xbXiTWrgluvi2dI+tYHLXmHcGrdkvxEE0KwMefutKitaFTyJb9w==
+ bh=wUvhriuD7Xj2+Ado0Pe71smU+9eGVd08YzI2njhokuc=;
+ b=UpVsDlmgC1oOk445LtzLwyAYo+ttZhGbPwn5Q9eBSHcbPyMdW6D2PocqXuOp0vRVCb6zhqugXWw2KSRKr0wS42n6jQ1jdjAMISwBf3/CxYWvinHxJU5lDHrzzhEMT6KW1tPgRvvNayRZF0gY7xspZdljkPANYhSTgGvIrBwxqfUStOv18K8IAa/wU9d831M5/TOsFSh6/fCF0VTpyP4TWPNK8DTgypFsXaJiwD8hxahKVTJ7ZYSB5bJhxgjIOz7uHOkyCQHQhkdruvIevGlIHGIJQ+VJAzZuHyotgj9q347LzeVIog7/DSbXnCzyrmSqAUlKFZowqAgq2SUCAfECTA==
 Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1a7::13)
  by TYRP286MB4946.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:141::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.24; Thu, 19 Sep
- 2024 14:27:41 +0000
+ 2024 14:27:45 +0000
 Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
  ([fe80::ff9:b41:1fa8:f60b]) by OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
  ([fe80::ff9:b41:1fa8:f60b%4]) with mapi id 15.20.7982.018; Thu, 19 Sep 2024
- 14:27:41 +0000
+ 14:27:45 +0000
 From: inv.git-commit@tdk.com
 To: jic23@kernel.org
 Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
         Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Add iam20680ht/hp bindings to mpu6050
-Date: Thu, 19 Sep 2024 14:27:18 +0000
-Message-Id: <20240919142719.162431-2-inv.git-commit@tdk.com>
+Subject: [PATCH 2/2] iio: imu: inv_mpu6050: add support for IAM-20680HT/HP
+Date: Thu, 19 Sep 2024 14:27:19 +0000
+Message-Id: <20240919142719.162431-3-inv.git-commit@tdk.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240919142719.162431-1-inv.git-commit@tdk.com>
 References: <20240919142719.162431-1-inv.git-commit@tdk.com>
@@ -84,80 +84,81 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: OSZP286MB1942:EE_|TYRP286MB4946:EE_
-X-MS-Office365-Filtering-Correlation-Id: 83dcc148-4453-4edc-d73a-08dcd8b73842
+X-MS-Office365-Filtering-Correlation-Id: b4e0461b-e826-448a-cf55-08dcd8b73a6b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|376014|1800799024|38350700014;
+	BCL:0;ARA:13230040|52116014|366016|376014|1800799024|3613699012|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dUhFk+bmOrYbeSBc+Uq5YnzIelf46vIKCkkEzs66kkOI7YCCOXNmqgEocRwR?=
- =?us-ascii?Q?R4ugrNEmsff2EX1O2myoZ6ApWApVCNNc+vruUNOR8C4i+MCQlFR63jE9jxuz?=
- =?us-ascii?Q?4viB/gu9ln2mYrpBu30zIMIYiyRppdUgbl0chAzXzzt++LFZ2QqTIDuoZbIm?=
- =?us-ascii?Q?pkBMbuzKbI/JyhCO7+qn5jUVeCnCp/hzY5vPni6txkxlCzKmOPGTIxzIx8K1?=
- =?us-ascii?Q?Le6pxpqqFqzoVLLGvGL6MTDFml8Zm8ij5czsSUtkm8VteUIjiYE/SYT4O4b6?=
- =?us-ascii?Q?NzxOm246LUnTTd/J4uFfD6tne/RrSIXsv3CdeHuUB6yoV6WEWh16yaPvm8PJ?=
- =?us-ascii?Q?dq2k0z+durLj8aEpB4WJYQSnm0XZZ+BNrRPEajwcYau1FN/Xi0OTkBF44As2?=
- =?us-ascii?Q?K/Y4STbG+asIfq/OTFE4ZqNL5/T7l6F+YUoPzqDVFPDbUfqHzN4kReYLNVch?=
- =?us-ascii?Q?4awKXT1Fus6Dg6r6OscFblUmVy+KIb7GWwXtlztxM2NFKcGcrugZabWQCCE1?=
- =?us-ascii?Q?Lm4IBB63Em9OXMS7dkNvdVGd7kMOFXfEGGUxmFNckuwUG8KONOld/n0G2k9D?=
- =?us-ascii?Q?ayCUGKxcGXX/dPA7FAzkzwlk89p8Fg2W+1SNzGkMJis7kET/ayuSsmOwhYLM?=
- =?us-ascii?Q?tWuGuZZWBjlAuD4lBp5auxz4MOdt0U8YoKPFcVal2gKxz5ZXWva4aAxAH83U?=
- =?us-ascii?Q?N1aYHcZhSwEcn4KaN07cqiTjJqPfTSetT9U+Gy3uKWDQDTAr1iyyVyUuH+u7?=
- =?us-ascii?Q?WlBWB/jtX8fHChkufIB/jhxPjgRAb2ywPbvVGwC6fZiS5F6l6KiEep6oMxS7?=
- =?us-ascii?Q?CkLqLHB7YVMntJZHpatt+PXQ6Z6ihYn0MG/F4OT+KwPQRQibH4OD+9cZqV+p?=
- =?us-ascii?Q?xlLzlrbyau2mv04X82m1nyIqqzVXLnjiAfkXqncgjhkSZWck9yG5aJIBE+Br?=
- =?us-ascii?Q?SMecHr50haXwG4IQd03hGbzqBnn+OHH1TXXBtsh8ISGPKM1Q1xJMDS8f5nno?=
- =?us-ascii?Q?YJmz2ebUFQVj/906otwDlYGiiYOljJa9zj5eumUXMFw74SdEXMBCc4bUvr73?=
- =?us-ascii?Q?Q+gDVok5dq17pl0yGnFXJxpGj0i5PoaSJZ80vHKqBB9Y/qvatPYiOOMWw41c?=
- =?us-ascii?Q?Y7arDTLegBSXpRYWPuzu4a4P7rsURgN9IxvuRqszOsGeyvPoJZNZrMbl0+c+?=
- =?us-ascii?Q?dF8H268I668+wHqNbEJ2N0dFIq3mzEH3ERmOZxUnuE0GzqzrwSg/mZ84DT/K?=
- =?us-ascii?Q?MLY+HZZFJIsxfy7fZ/B3l+JJg96HKziGjXurq9hUojCEf7O4lEDuY9q0gV/N?=
- =?us-ascii?Q?H1jBaS5patskLofG5PJy60ZRRH50Ge9t2Feqh7La1Bkz3V4WjvRjHABgSQpw?=
- =?us-ascii?Q?fPdjuNNLXjBAiE9o2/ll5/IekEZ71SVuq+JWBAKwPV9Cs6w5EQ=3D=3D?=
+	=?us-ascii?Q?Vt/Wq4raWf8gu0Xdq+Vd3qCeg1clYAFILa1vEuhzbGvssLAcitlpy3rtB3lz?=
+ =?us-ascii?Q?6NeV8QgnCjgL6Ge4m68/CLDZpch/210h4H+sCL6CkexH0J+IwqLRx/bZnvtS?=
+ =?us-ascii?Q?SrJ3Pe8daBUM7VMuNe4VYC0jeeMd6zrPttLR5apslhtOdizaALnT7w0OCfFV?=
+ =?us-ascii?Q?SMlreu1v5+E7PDKtRDeef1yZgq2wUZXOOatUj9OnSphq6/LKXhBOjEBN7yuK?=
+ =?us-ascii?Q?rAMcZhsrUDO0z7TQrl+ctBgngOdBQa6c8EnFVCmAWin0bOBDUBDLQr4Pz6eO?=
+ =?us-ascii?Q?2gE5FHlBBjaSaWWeLmQXofpi6qgtXpdjoSxXjNEjI0dpWOIj6G87QM7aW8jJ?=
+ =?us-ascii?Q?2+R4oFsJ368/8vopK1LI4wyH/DvOt8603ib9f4UYiiBXf0C/8GY9jA43fK2A?=
+ =?us-ascii?Q?hvJaF6zsjIeFMW6OtixQeKrd/Bu5y1mZbby8bkKaL1eIevOqhvguKu6kAolo?=
+ =?us-ascii?Q?+h75niRnd71zJjRRiFT6uRCMEI0HhQlstx8mKG7GMCx6JpnDH3xZtkNdAaw1?=
+ =?us-ascii?Q?6depqT3aEXB6WGqIS7gYR+jXGg+yGSDyLO5aF99LcF14XVs/J3CiaDDB6fd4?=
+ =?us-ascii?Q?NL+hxesQgGLBCToIR9JblbHwpB543+gczulK8wscckaWhJzjsyryVqPPEXlX?=
+ =?us-ascii?Q?NZjV9CMz6NRga5rtwzSrFWOdj8gL+tiMiFtGVvIUFVAwxXVrBsCk8IFbNTJ7?=
+ =?us-ascii?Q?G4+de8Vtz3IXK6HCXaLx7j1kgr8k/5W4EFj5+0uCxm9W+/ne9znyGUKgUKWu?=
+ =?us-ascii?Q?PoXmEsk6gjxwk4iNpfZwDdgdcN3T1SR1stZ+VxH6hiSd8FC0egE+UNPAFGv0?=
+ =?us-ascii?Q?DMgrWwMNjfAAbBS6zfA9g8rofO3iu+/L5FDzhvEqOEXE4ud2pg2L/y64Fypy?=
+ =?us-ascii?Q?35Be1q0PgWQgopTFpCpn+OmkVKnrNIPiQJK5i6Phg0l8fHdj9Mu2xOJ6xnXu?=
+ =?us-ascii?Q?ERoaVFDtQxjNfAFjSuHVCFY3nX3XSO74gRfIQn7THqaXsS05O6Bztj47WOa8?=
+ =?us-ascii?Q?IY36q3KJRV1WhXXWUzq8FCOVv09k0buQTZgBPl+5NK4DeU49J5eorKo5Sbqa?=
+ =?us-ascii?Q?+EoggSBmJvrVmCKxSCWoHFhHTYCArNpEbeQt31237Ig+ZDJg3THZJ+xN+Zq6?=
+ =?us-ascii?Q?PJoOzoHoT/hnI9z308xzxMlKIHEUWP6uInf+D+0xUraXSOvAQWC8ufqp5sD/?=
+ =?us-ascii?Q?kq0mS5C+U9zd68xwpfLmxnShWZFN9aItc8zvpGFk99G/fHYb9eMyPc/8SXn6?=
+ =?us-ascii?Q?HbWwulUoljp27mYBNWks69/5IbB2FP2zzM66taMV3oYB2abjvOv4QpyMZLon?=
+ =?us-ascii?Q?phJ+AfHPkRDaqHehPCQnaV5/ziLIwM9bkLuLCpVtFp35hjmQ3EcpsQdb44kX?=
+ =?us-ascii?Q?2uEshsVIcYmMKVjIIrinSV+uHPNBPEuQe3fXWk7bJKszOBLM2vsTfBC50TNP?=
+ =?us-ascii?Q?rQjnjE/j4jc=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(1800799024)(3613699012)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Vfj5E9CHhiEZMLjs6n9RGHfjoT747jGBTGgM2n9X6/VBueMqzWH5uSJJ79Op?=
- =?us-ascii?Q?G7sMcw6SIBfHNIT7QWSjurmTSggAyMQWV84hIz79wx2wvBh/olkSpE3528y0?=
- =?us-ascii?Q?4WYcEXFTGHN6kO2t0mtqByI97jQVw1/Dx/ooII5wuspvrC3H095spo27mJrK?=
- =?us-ascii?Q?MiWvKb0PXg7La1IrJDhbTLaDZ5VSFTOafIDyIsyOQ8n39uZcWNNbunKEuhb4?=
- =?us-ascii?Q?DRqIfrDV4Ffi6LLjYQXeMdBS+KJfZw7/cKJunvFXm90W6DxpCKrGweAX3AGF?=
- =?us-ascii?Q?eqgqWLsEM70T26HIDPoiM5VpP+1idR07jmlItLeqxSfOXxInE666QViQG0AW?=
- =?us-ascii?Q?UOldmbtJzrNb0gORMy8rKj3pXed37GQYcwj/tFUpi+uLIG3qatbUVeJgJM+n?=
- =?us-ascii?Q?euMLtBYXpLgEaF9ZmKW+aLajhM6rsG0+J/0hHNHHLkDjD8oi+NgfMi4MshPL?=
- =?us-ascii?Q?uH0XWX6+WMUQZBErtwwXBAy64HkePVDkR11xoMiTb8vyqxGHVvfaIPdd1sBw?=
- =?us-ascii?Q?F3cpxSPwEpTvMtQyebwtTZKeYbro1oWVxmwKB7egGtpnNis+b3wBg5+Gtp8g?=
- =?us-ascii?Q?7Y2FM0SWtnzfmr2gA5jRlF230K4p+nQuL165kc0Cz6yCRAw8W7iOeRCGywb+?=
- =?us-ascii?Q?wWUr+qq9E2tFML8XQYyFlk5Xf/UcHmuKtK784wogscNmJ84RJPkwiZ+Gcpw5?=
- =?us-ascii?Q?id7sMsdZN9/I7tGjrcJbRSz90M+acSoDCzXJDxvKlMvDdIjmmQbXuZ/Dbx89?=
- =?us-ascii?Q?m3ymdshB1JK9UOzsY3k3RILmtCy2nZmMI4SyjoBuaaK8DcpaSf0MFtCAAkdd?=
- =?us-ascii?Q?Uex3QUr+0k2dF6N+DeF0GzaOd8y7SLs8J2m5KMj+ZueErBb3kH2HAUTNnHUx?=
- =?us-ascii?Q?v6RGqMqGuf9L2u+TngbaMJraZ6cNJQCw72nO3y62Pfw2CJ55sycvIKok6i+s?=
- =?us-ascii?Q?jxXiGgrxPkaHntsYqHcH7XDqE0CO2nDsiOJbBd7g1pY/gLcckJia1C5fKwTQ?=
- =?us-ascii?Q?4O9jdpQsJUvd+/N6jbq+UWEUQe+AdjbfCQB55JBDoayUtSm947KUVijcBbG0?=
- =?us-ascii?Q?gq2dNslYs+NJ82iLFuM1pRn98as+jauRq56vpe0m0VZN144FUSAAUfNcGfgz?=
- =?us-ascii?Q?MUiI+YeiafViX+JHL8TcbSXV64C9qNSSgHvKev2BxVYEr5h1X5Nl7I7reLfF?=
- =?us-ascii?Q?rVorNjCZlcwpI+6Qawyp7anFYMPlb4BvylSw+1biY/1881yaNCAZ+nXVkUuw?=
- =?us-ascii?Q?KE75usW76dbfY1mXxQ6zxB2m3cnkPh6o6nwhAb9VychcBbSPvpKFqXUSmugB?=
- =?us-ascii?Q?K1dxDRBMotnzWfYYllpn/wKDNzaXx/AulfjUiBbl3RmZx2k3R9jG9Zmqc9Tw?=
- =?us-ascii?Q?bJWKuk1QEvgmyrNnapHgkMDor6OvLwgxec9IXMFKqDO0ncJnmMSpMz2p7CWr?=
- =?us-ascii?Q?4AoOvHIGMXvi76+uNpnujGXIsi3g/VTtXQM+CPQ3SINds4bTBBgPd/vqtBan?=
- =?us-ascii?Q?fFi1YgUlOmuW3vx08YEYbCfKL0F2uHFCeRWwSO1t9E3pAuQukFHUvsN8v+AG?=
- =?us-ascii?Q?RM3V5pbxjzJoTcHTHnbXNLeaq8bhiUGkEeUUjMiM?=
+	=?us-ascii?Q?EpXZxXm+DredwsWx24Eq5NWNsqRIqjvxVFLzdNMlPMD1ebM/U/qjRXgqIR74?=
+ =?us-ascii?Q?hypxZ7tObjU1XAhTU2KXisB76im0zaj/IjFYF0BdPMD58z/U49Kvk93y3Dut?=
+ =?us-ascii?Q?Mrz7mdsHiR4ONav/2efEZ/Zyo6/Ujw5/SHHu01UZQbN/8tK+XwYiSRi4BHZH?=
+ =?us-ascii?Q?c5RwJcpp5ennwj80EtzJtlrmtPlhQI3vGv9971mCjnsHNEhiLRSLpmP89Iue?=
+ =?us-ascii?Q?Dx6JaJdqxTN8lg6BPRuCZhj7CuR3a+8dRRbA1adBu6wgVuxdbrzsGe6NbrW6?=
+ =?us-ascii?Q?pX48SmiFjRrbeE/YQvwQL66uOfRhPsp8V9lpDP4XfsMvzGa9jM7nEkpslBn3?=
+ =?us-ascii?Q?xZPaLc0eK13R2VK9LVdVZJ0Enz6Ldsz3qXTo+YucURvyOGy3aRt/zfm8TiUM?=
+ =?us-ascii?Q?gyJOsJBVHLaZD2m/fDGl3DG53rq4Mgz7kl0qNHIkVeh5iuKw8Xa4fgYQG6cc?=
+ =?us-ascii?Q?aPd1T1K+oDqJruF//T/geAeN0D9XOWYpXzpymz9/XHSObObmVJRw4cLTIU6M?=
+ =?us-ascii?Q?xRS5xFuo14Yph2hH1MP+K7zoEui4xyJJJo1gc8zZP1Vn5V8Q29gUwXKYRfOO?=
+ =?us-ascii?Q?zdsMZQzLJ423H10yJIywztjPCAVOCCkvrVsf8iAQqRRbrCIwedYpTH3zNucM?=
+ =?us-ascii?Q?TkI44F8hQOM9aI0HQmile2n2y/sUFZNDRqz2e+4zdXVWPlalFBObnLkLmmtv?=
+ =?us-ascii?Q?GjUbvXL+IZJq+72jT0h4lmiEKUbiH0g8rq5hVmSDkZcu2CuA/KZIGrQzJK3l?=
+ =?us-ascii?Q?mJFzHdVuv9G84kyW5uvDg2VLwblkksPN3QNT3AWlYFVaRWJmsB3Y1603FjYz?=
+ =?us-ascii?Q?cKtTSTmxzC3I1+ceapRpBIh3LcJvstAJ+HtCZlC3+0O9GkRC7KnBL3s2zn6m?=
+ =?us-ascii?Q?O6Pycj8yzj2lXRHDCY7rGhkeSNUZAYexCyKzSZ+kCU3YjH+67jp8oPa5CSIY?=
+ =?us-ascii?Q?MeNrBIBrsL9gVNrhuV/cpEm3vS+1cPpDS12dmsdqnravt2a0UL/ez9Rxa7dv?=
+ =?us-ascii?Q?EBJ5o3biqgFCIWtdzX4vnqW4IvdyLcAsHWgr4YFy834gAOwkv/HxwJtOSaWH?=
+ =?us-ascii?Q?weLoT6/HwgY478CvEhcyvrkUSxawZFEaVIWNNF/CaPQQZPe3HePMZb9rRbux?=
+ =?us-ascii?Q?Po0WQ87gv0m/67LYoPzlUyKYqYRn5z7yUhFxdzHRmiXhmHqzFs3KDiGqNBqU?=
+ =?us-ascii?Q?x0PH1sJUKbqPm+etykqbd4jK2qu3/JrXc5iiNBcvXJAO8PnzP6Qor98J5F9K?=
+ =?us-ascii?Q?CBwMUDUZwJj/YEpuX7UeOtws+qG8nrWRrol4OnJObKOKJSUVKf0PU29sPRWt?=
+ =?us-ascii?Q?+F5AvC315qRqmz0A4v/U+VnLEKkYTCzIsS0ZJuQkOEdUx14wWRx0X7J+np0J?=
+ =?us-ascii?Q?YTGVszPirnSMucQYzqbY00v4QWYsXfZ/Xekh7qg1MA1Gzx/XCZRgl+xd7Ta4?=
+ =?us-ascii?Q?VOztQpBg581Zoyno+s4muhx9etYQN66FDnxj36iP5qpe9xk9g3GWTc8afg1J?=
+ =?us-ascii?Q?cgxQmYtarWGxGUvToErWKDq2CfL0Iibi3JRqX72A6d+q4BWy2JvZ6dbaGzhf?=
+ =?us-ascii?Q?Bs7BAaEygFnhIaMRsJQMlpYCQph1Q3YIC9CWFC5b?=
 X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 83dcc148-4453-4edc-d73a-08dcd8b73842
+X-MS-Exchange-CrossTenant-Network-Message-Id: b4e0461b-e826-448a-cf55-08dcd8b73a6b
 X-MS-Exchange-CrossTenant-AuthSource: OS3P286MB1950.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2024 14:27:41.8367
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2024 14:27:45.2090
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 7e452255-946f-4f17-800a-a0fb6835dc6c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q6vuoqGpXPJYIpmvcxTATyLWRN2q6s3jy+O052HsYM7txHU1XvhJ2mSLFSFcpiJtp1wekdTaVXtIgLHZMnUdDw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: V2wOTHJp0eGHR0GFev4p/jw+mKZ2VXwppinh5dvyhgWN/dWNsx4qOI7lk7ok8Lx02JXoWiCz3c17DQbY90FQhw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRP286MB4946
-X-Proofpoint-ORIG-GUID: j6pkrvXxlMcYghD-YAiCFx4wEi7Eg3jI
-X-Proofpoint-GUID: j6pkrvXxlMcYghD-YAiCFx4wEi7Eg3jI
+X-Proofpoint-ORIG-GUID: Hn7Y6d2uKH_MBOUKxs9tUqDap0SYZ3jB
+X-Proofpoint-GUID: Hn7Y6d2uKH_MBOUKxs9tUqDap0SYZ3jB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
@@ -169,30 +170,136 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 ph
 
 From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-IAM-20680HT & HP are 2 variants of IAM-20680 fully compatible.
-They just have better specs, temperature range and a bigger FIFO.
+IAM-20680HT & HP are 2 variants of IAM-20680 with better specs,
+wider temperature range, and a bigger FIFO (4k).
+
+Fully compatible with IAM-20680, FIFO is 512 bytes by default and
+with correct register setting we expand it to full 4k.
 
 Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 ---
- .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml      | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 20 ++++++++++++++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c  | 10 ++++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  |  4 ++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c  | 10 ++++++++++
+ 4 files changed, 44 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-index 587ff2bced2d..a8d30ef015fa 100644
---- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-+++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-@@ -36,6 +36,11 @@ properties:
-       - items:
-           - const: invensense,icm20608d
-           - const: invensense,icm20608
-+      - items:
-+          - enum:
-+              - invensense,iam20680hp
-+              - invensense,iam20680ht
-+          - const: invensense,iam20680
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index 14d95f34e981..6b0adb7f9ae3 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -286,6 +286,24 @@ static const struct inv_mpu6050_hw hw_info[] = {
+ 		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
+ 		.startup_time = {INV_MPU6500_GYRO_STARTUP_TIME, INV_MPU6500_ACCEL_STARTUP_TIME},
+ 	},
++	{
++		.whoami = INV_IAM20680HP_WHOAMI_VALUE,
++		.name = "IAM20680HP",
++		.reg = &reg_set_6500,
++		.config = &chip_config_6500,
++		.fifo_size = 4 * 1024,
++		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
++		.startup_time = {INV_MPU6500_GYRO_STARTUP_TIME, INV_MPU6500_ACCEL_STARTUP_TIME},
++	},
++	{
++		.whoami = INV_IAM20680HT_WHOAMI_VALUE,
++		.name = "IAM20680HT",
++		.reg = &reg_set_6500,
++		.config = &chip_config_6500,
++		.fifo_size = 4 * 1024,
++		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
++		.startup_time = {INV_MPU6500_GYRO_STARTUP_TIME, INV_MPU6500_ACCEL_STARTUP_TIME},
++	},
+ };
 
-   reg:
-     maxItems: 1
+ static int inv_mpu6050_pwr_mgmt_1_write(struct inv_mpu6050_state *st, bool sleep,
+@@ -510,6 +528,8 @@ static int inv_mpu6050_set_accel_lpf_regs(struct inv_mpu6050_state *st,
+ 		return 0;
+ 	case INV_ICM20689:
+ 	case INV_ICM20690:
++	case INV_IAM20680HT:
++	case INV_IAM20680HP:
+ 		/* set FIFO size to maximum value */
+ 		val |= INV_ICM20689_BITS_FIFO_SIZE_MAX;
+ 		break;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+index 0e03137fb3d4..7a5926ba6b97 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+@@ -188,6 +188,8 @@ static const struct i2c_device_id inv_mpu_id[] = {
+ 	{"icm20602", INV_ICM20602},
+ 	{"icm20690", INV_ICM20690},
+ 	{"iam20680", INV_IAM20680},
++	{"iam20680hp", INV_IAM20680HP},
++	{"iam20680ht", INV_IAM20680HT},
+ 	{}
+ };
+
+@@ -254,6 +256,14 @@ static const struct of_device_id inv_of_match[] = {
+ 		.compatible = "invensense,iam20680",
+ 		.data = (void *)INV_IAM20680
+ 	},
++	{
++		.compatible = "invensense,iam20680hp",
++		.data = (void *)INV_IAM20680HP
++	},
++	{
++		.compatible = "invensense,iam20680ht",
++		.data = (void *)INV_IAM20680HT
++	},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, inv_of_match);
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+index e1c0c5146876..a6862cf42639 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -85,6 +85,8 @@ enum inv_devices {
+ 	INV_ICM20602,
+ 	INV_ICM20690,
+ 	INV_IAM20680,
++	INV_IAM20680HP,
++	INV_IAM20680HT,
+ 	INV_NUM_PARTS
+ };
+
+@@ -424,6 +426,8 @@ struct inv_mpu6050_state {
+ #define INV_ICM20602_WHOAMI_VALUE		0x12
+ #define INV_ICM20690_WHOAMI_VALUE		0x20
+ #define INV_IAM20680_WHOAMI_VALUE		0xA9
++#define INV_IAM20680HP_WHOAMI_VALUE		0xF8
++#define INV_IAM20680HT_WHOAMI_VALUE		0xFA
+
+ /* scan element definition for generic MPU6xxx devices */
+ enum inv_mpu6050_scan {
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+index 05451ca1580b..e6a291fcda95 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+@@ -80,6 +80,8 @@ static const struct spi_device_id inv_mpu_id[] = {
+ 	{"icm20602", INV_ICM20602},
+ 	{"icm20690", INV_ICM20690},
+ 	{"iam20680", INV_IAM20680},
++	{"iam20680hp", INV_IAM20680HP},
++	{"iam20680ht", INV_IAM20680HT},
+ 	{}
+ };
+
+@@ -142,6 +144,14 @@ static const struct of_device_id inv_of_match[] = {
+ 		.compatible = "invensense,iam20680",
+ 		.data = (void *)INV_IAM20680
+ 	},
++	{
++		.compatible = "invensense,iam20680hp",
++		.data = (void *)INV_IAM20680HP
++	},
++	{
++		.compatible = "invensense,iam20680ht",
++		.data = (void *)INV_IAM20680HT
++	},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, inv_of_match);
 --
 2.34.1
 

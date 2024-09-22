@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-9703-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9704-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C428297E26F
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 18:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B09A97E271
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 18:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 916C92812EB
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 16:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C53F2281304
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 16:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357C529CF4;
-	Sun, 22 Sep 2024 16:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD772339AB;
+	Sun, 22 Sep 2024 16:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XX8qG2Ws"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QfC7q5qI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A11DC144;
-	Sun, 22 Sep 2024 16:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EB928683;
+	Sun, 22 Sep 2024 16:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727022053; cv=none; b=ZEzbh9Xlz64ZLs/zBl2xczd+qBLaVMCv83dQArpCkBbKNokxbYJaFV5y8XYjx9fCwRZTCDxi18BJpofDKuBacMOpm9zatA4cFqYJ6N5HJ5cEcfM8atxdgUg/JfryBRg2+X4OSjLMlpt2MmchBJOYPMW/+qceL22phHGZ7kT+rM8=
+	t=1727022054; cv=none; b=ERfsWCCp0AwhPcY0kD0xndPJc0+uEpX3CgyfmvuFAtYU+ySRqGgqxxarGerTyFeTrvLDql3QkgLT0GWz8DAm9Hcge4+/WsTKNtRzgopOBssKGqgyh/xCOuJSXan6xIWH60FeWek+g+KIdfK1n3Q8+mhxkO8gJ5lTQ2DzSu3Hr98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727022053; c=relaxed/simple;
-	bh=vrveqZfuTz57L2nl6+BZmp7ge4w+VOnltzso6kZxxBc=;
+	s=arc-20240116; t=1727022054; c=relaxed/simple;
+	bh=cXmEY9dZWA53S3l3c1iklwSAeE8snbgR1wHS2LgirSo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hB82/0f7sZDYmaKTQRGRTnqEQPHSi3B/yBLHIoVqtkcvvPF9VDGG2texQbQlejzOX6zNemDyGKqU9ejNSFysGHslswsZjEC4zW8i5Y8sspCQjAvwxr/WPrGmjnA0cXQGxqfZt7U2QBnCwo3znYBH4O+3P4hsmwb0ac7oVCOkRGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XX8qG2Ws; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version; b=eSJRCLC+jqorBb/bI4ORxXa41NsYdgNFbsDB1tDE47m0ds6HH9fONRvagjsiJjbvxkEzUU1pUm1PPfM4e5JfLDkrCArHDdvVLmJYMtd1a7wyjXURgDRYnShz5XUJ0tYK6JYxqB2QY//Mc/JA16n86KFg7MBQnP9NDNWIMY8Yk9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QfC7q5qI; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42cbbb1727eso31495595e9.2;
-        Sun, 22 Sep 2024 09:20:51 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42cbc22e1c4so27729235e9.2;
+        Sun, 22 Sep 2024 09:20:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727022050; x=1727626850; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727022051; x=1727626851; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sCkByDilZNiIhlYPmGDLamQmUM4ZAy2w1yl7UZcIe5M=;
-        b=XX8qG2WseDvQI1CIvCtJKmVDykR4bB7JI4LEAYObjxERZbkedib6flWcoUb1HSL5TF
-         nxnpG2HgphnSW2t9fStxtbzMRxnhmC3XhziQNA/QhAje4giABVK3+Dv30o6J8py0xhCD
-         CXNqfoBs57PoQcBBaqNU/sYLNhVkimd2QSIxZTIGGrTYPonSgxHQ9L2/e6WVDln7at/C
-         5/R+1MJO2I96sxxmRhPqeCCbaev8zCEbu7bbMUlfvYbkjgRXTnjL5tyqWW9OGVyXmQ2T
-         hlSRdQ6pdRa7nS9L0DOXIHpy+9Xu6ptH4VWWBGqI0vUhWkr7bULAQJp6KjulxajQihkU
-         nasw==
+        bh=vqB2cHmlKDTiUxg67u2DrxaLXAyKOwFS9Hm6s6rWktQ=;
+        b=QfC7q5qIVLoEp2eXELFU69KK5TEveY0eqwpwNyFNXpF2zCkvgbM3HtSelSWoofAAuK
+         1mtHASHdoT0wTe6DffsF6hbPD+RcOAGW9CH04E+1u+wQ90q7qVszeINcNvD/hKoYTO7H
+         LSsOzTTVwGD8n6cbzXXPJMUZxQoePI12kljT3NyNWUf+yHUvd7P4pHyIcPLehVktCY5o
+         o1KWOQA9t2eVc/VMcuJPnLqtBGNeOExvdhOflGo1GxE+LlSDnl5yhZgbxG78SiYEPM9x
+         RBYcuT5BU+7OsgxuCUm4GjB8FDnKxQe9wcStNa9ltzreAOjdJu4BtLfU3VZQOuMPTqaq
+         DY2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727022050; x=1727626850;
+        d=1e100.net; s=20230601; t=1727022051; x=1727626851;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sCkByDilZNiIhlYPmGDLamQmUM4ZAy2w1yl7UZcIe5M=;
-        b=tj5IL++29sm1NHJrvhY460UlVLxGvEApNKrVppCeJb//LE40pQVnboQrUShD2Ajc0e
-         Lg8vYu1eSDdIU9XLzUgBuvwD/D+CsKQmb3QOWyZpvP9pc31nrRZX2Wc7iLfV/VDL7VhA
-         SrmbshDMmTWmEMKlhD70S4aQa8sf9pwevJkKDXfZbFsTGjxVKy0qVlYFbmRTcd8O+fRY
-         1RgMlMFiv+NPr3k/ULKMJ0+vmTfsGm8OfISJqEXxMtxV8YGaO2hRTqZqi4MzLlhBb8H+
-         oOPYUX7qpBdmCFQ3hwdxl73F9Hurrh0cRFddnoCvLQQciU+ilK1KVVXQNxV2KVKQcrKR
-         GamQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVks6bR/A8hzar8D9bJ31NFnjoW+d2Zb/OUVOJIUsErdzbAtDTXWXiJbnS1Wezs+x4wjUtcCQT1r3J2X1/Q@vger.kernel.org, AJvYcCXXwGn6XBe79PkHMXo165H3YwIIvgNYlWUqG12RBFGkeA+EepsL/NoHkltdpahFufPTrnVWFkx2n1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxmea8d07imjomRjaY0gAA7tf/laZSqqL9PgI8BxrIUmjWFDHVX
-	SFjYdgzKpE7KDtporDW0N9oIp3PPE8Q6Yl06SCRq8vO2KXcvn4Vl4PE0imcS
-X-Google-Smtp-Source: AGHT+IG20xs2JfdZfgmY7E4uU0YkXXZ8V0fu96IQ+BfuVz1Df4AK9qym+lzVWGmxDtWlLrowPJM46Q==
-X-Received: by 2002:a05:600c:3b17:b0:42c:ba83:3f01 with SMTP id 5b1f17b1804b1-42e7abe8495mr72409105e9.8.1727022049476;
-        Sun, 22 Sep 2024 09:20:49 -0700 (PDT)
+        bh=vqB2cHmlKDTiUxg67u2DrxaLXAyKOwFS9Hm6s6rWktQ=;
+        b=Fp+jwBdd0GtORMjOgN0mmNTt5mVAnHgvAqWfqYl5NUqaqhB0byWvHSow7SSjlx4+C7
+         PInfpCLAFb6l7zVjqWDnJawBM6OIF4Yg0O4eHUiike25btZJZ1vh0ZLZYSy7Scqd1c57
+         vhImqrwCv8LnZagMKvK+DMbaST6FbtfTdq9zmcYPA4G+s5IzqCX/xZ/BBkv/uNIZhXp/
+         R0sc41U4yGfZQcdDggSx2MSsM/cWQ8HLbtprVIUXbMYSU/qUUYuytdTslhBghUKIv7l9
+         szEEimuvFchFUVNnedo2KxaRTQ+iFpvaspr3qFfXzGeFdp8e/PIUziuSpzZKCvBss0L0
+         yvPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVF+VgUomhMRv7jUvpJFiszCE+Ay+ScJPdQSSHHSaPDOrjk1GnK4M7Oi0oyCxiee9xxkzdNq4S+SzdLXufP@vger.kernel.org, AJvYcCW0nSHtTK84gurHSffMXc8zRXMuUY04Ol8yQG8JKidbBYB1ni8VwhQ7S+QoQ1b/Un6hwNWQsQaim4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxBCbqo5BsL1r8wcG+k5wjjepwKsQAIzjK7f8TIgwM1i3IMm3/
+	NmngKjfYIN9R4j2mXEqzMcSHZrrLVD+p9pRV7/NuxKeuHvscGF1l
+X-Google-Smtp-Source: AGHT+IHU9iElYWUCW4iIIagtb/y6yTklM6puZPDad1jDa/kBBI8YnBsVF+pmMxeTux/kd09PQlQNtQ==
+X-Received: by 2002:a05:600c:1c04:b0:428:1b0d:8657 with SMTP id 5b1f17b1804b1-42e7ad8e706mr67269765e9.22.1727022051084;
+        Sun, 22 Sep 2024 09:20:51 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:7367:3ea8:c47e:88f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e754c6dbcsm104566485e9.46.2024.09.22.09.20.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e754c6dbcsm104566485e9.46.2024.09.22.09.20.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 09:20:49 -0700 (PDT)
+        Sun, 22 Sep 2024 09:20:50 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de
@@ -75,9 +75,9 @@ Cc: andy.shevchenko@gmail.com,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: [PATCH RFC v1 1/2] iio: light: rpr0521: Use generic iio_pollfunc_store_time()
-Date: Sun, 22 Sep 2024 18:20:40 +0200
-Message-Id: <20240922162041.525896-2-vassilisamir@gmail.com>
+Subject: [PATCH RFC v1 2/2] iio: light: rpr0521: Drop unnecessary checks for timestamp value
+Date: Sun, 22 Sep 2024 18:20:41 +0200
+Message-Id: <20240922162041.525896-3-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240922162041.525896-1-vassilisamir@gmail.com>
 References: <20240922162041.525896-1-vassilisamir@gmail.com>
@@ -89,61 +89,54 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The custom rpr0521_trigger_consumer_store_time() is registered as trigger
-handler in the devm_iio_triggered_buffer_setup() function. This function
-is called from the calling of the iio_trigger_poll() used in the
-sysfs/hrt triggers and it is not used anywhere else in this driver.
+The rpr0521_trigger_consumer_handler() is registered as the trigger
+threaded handler in the devm_iio_triggered_buffer_setup() function.
+This function is being called in 2 ways:
 
-The irq handler of the driver is the rpr0521_drdy_irq_handler() which
-saves the timestamp and then wakes the irq thread. The irq thread is
-the rpr0521_drdy_irq_thread() function which checks if the irq came
-from the sensor and wakes up the trigger threaded handler through
-iio_trigger_poll_nested() or returns IRQ_NONE in case the irq didn't
-come from this sensor.
+a) when there is a registered trigger being trigger like sysfs or hrt.
+The call of the trigger handler (which is the iio_pollfunc_store_time())
+follows which saves the timestamp and then, wakes up the trigger
+threaded handler.
 
-This means that in the current driver, you can't reach the
-rpr0521_trigger_consumer_store_time() when the device's irq is
-triggered. This means that the extra check of iio_trigger_using_own()
-is redundant since it will always be false so the general
-iio_pollfunc_store_time() can be used.
+b) The irq handler is using the iio_trigger_poll_nested() which wakes
+up the trigger threaded handler.
+
+In both cases, the pf->timestamp has already been assigned a value
+so there is no need to check if it is 0, neither to 0 it after
+the push to the buffer.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/light/rpr0521.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ drivers/iio/light/rpr0521.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
 diff --git a/drivers/iio/light/rpr0521.c b/drivers/iio/light/rpr0521.c
-index 78c08e0bd077..56f5fbbf79ac 100644
+index 56f5fbbf79ac..ae6a22b91b8d 100644
 --- a/drivers/iio/light/rpr0521.c
 +++ b/drivers/iio/light/rpr0521.c
-@@ -438,18 +438,6 @@ static irqreturn_t rpr0521_drdy_irq_thread(int irq, void *private)
- 	return IRQ_NONE;
- }
+@@ -446,13 +446,8 @@ static irqreturn_t rpr0521_trigger_consumer_handler(int irq, void *p)
+ 	int err;
  
--static irqreturn_t rpr0521_trigger_consumer_store_time(int irq, void *p)
--{
--	struct iio_poll_func *pf = p;
--	struct iio_dev *indio_dev = pf->indio_dev;
--
--	/* Other trigger polls store time here. */
--	if (!iio_trigger_using_own(indio_dev))
+ 	/* Use irq timestamp when reasonable. */
+-	if (iio_trigger_using_own(indio_dev) && data->irq_timestamp) {
++	if (iio_trigger_using_own(indio_dev))
+ 		pf->timestamp = data->irq_timestamp;
+-		data->irq_timestamp = 0;
+-	}
+-	/* Other chained trigger polls get timestamp only here. */
+-	if (!pf->timestamp)
 -		pf->timestamp = iio_get_time_ns(indio_dev);
--
--	return IRQ_WAKE_THREAD;
--}
--
- static irqreturn_t rpr0521_trigger_consumer_handler(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
-@@ -1016,7 +1004,7 @@ static int rpr0521_probe(struct i2c_client *client)
- 		/* Trigger consumer setup */
- 		ret = devm_iio_triggered_buffer_setup(indio_dev->dev.parent,
- 			indio_dev,
--			rpr0521_trigger_consumer_store_time,
-+			iio_pollfunc_store_time,
- 			rpr0521_trigger_consumer_handler,
- 			&rpr0521_buffer_setup_ops);
- 		if (ret < 0) {
+ 
+ 	err = regmap_bulk_read(data->regmap, RPR0521_REG_PXS_DATA,
+ 		data->scan.channels,
+@@ -463,7 +458,6 @@ static irqreturn_t rpr0521_trigger_consumer_handler(int irq, void *p)
+ 	else
+ 		dev_err(&data->client->dev,
+ 			"Trigger consumer can't read from sensor.\n");
+-	pf->timestamp = 0;
+ 
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
 -- 
 2.25.1
 

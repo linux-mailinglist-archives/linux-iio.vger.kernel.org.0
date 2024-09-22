@@ -1,76 +1,75 @@
-Return-Path: <linux-iio+bounces-9710-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9711-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24C097E3F4
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Sep 2024 00:18:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A1997E3F6
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Sep 2024 00:18:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A5691C20FAF
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 22:18:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8553C1F2158B
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 22:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BA682863;
-	Sun, 22 Sep 2024 22:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4041F84A32;
+	Sun, 22 Sep 2024 22:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cp0h7b3C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qq+hvH05"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26957F7C3;
-	Sun, 22 Sep 2024 22:18:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460F381AD7;
+	Sun, 22 Sep 2024 22:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727043482; cv=none; b=eyLx6icBJMTwE9gAiGMMTDk9+ZOP6q0B6Xei5itRTjzOAWUPlDeZRTbgnbvaJUs+U7YfAVjIh52n3+89vWn1FPCJH2gYZyOJyEQJsx0ahQgmtu4uejMkHIeyftbZSovTv4LqMYIMeC3WSAcACuLowtaPKVei8Z44YdsEOa2p3SM=
+	t=1727043484; cv=none; b=JeSDms4dfwiaeqpXsr9Rfrucmb4ZWBHHIwKJvbp8gDHOBIng1tB+Bpfj+2hdyeaNOzuL9DvXB09z1Jt7atqtxQZ7jygFp1feBISA4ulCFIWcUhhBPDpJXmhjItpX8xC+/df8KlxfUk1lHmiAAnAj7EO8WiE6+1QySNBr37FhUA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727043482; c=relaxed/simple;
-	bh=EonYSneIWPYxbaJfXi8LlItpdf3jHc1fxjBzf1me3os=;
+	s=arc-20240116; t=1727043484; c=relaxed/simple;
+	bh=2hNnr0G0p4cAYnjHVrBaiV9Cl8oax0EHyQjepu1ne/A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JMrWtZr4TkHhLcUnGHQOqednoFtYWG/McWy2Fbp3KpOTctSLJ0VR2m2cwWY2edzMdIrQEprn5UFFo0wIdEp+JH/4zybnenwpIrppPisyCpePixbD4dZ5iDPLXI1Q7oadafuprHOtdWKTfp3KiicwnUR9Ewsp8rKLKnMV7pa7xU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cp0h7b3C; arc=none smtp.client-ip=209.85.218.44
+	 In-Reply-To:To:Cc; b=MbbeRrw305qMqGisLSdRN4PulXJgcqP1fgbyXJnFKFfOnZfX5fVD2aBhKGw20ufyt35w//okb1rRjl7/7FyOD4Y6ie5SZvM2qOd4ahSAqsgqN3UbUXlMaZbwMZY2zqsteeTFB3Q9eezJ0R7e0gBooVLdxfUN4X3mCMFaWv9k8Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qq+hvH05; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a8d0d0aea3cso511977166b.3;
-        Sun, 22 Sep 2024 15:18:00 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a8d3e662791so258403266b.1;
+        Sun, 22 Sep 2024 15:18:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727043479; x=1727648279; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727043480; x=1727648280; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0bzmiNVbte7T3ewBmj3Pyyc1MaElC3cTEPj2xZYvjpA=;
-        b=cp0h7b3CJLhawyfUrEpc8MQPr+Wj1kbYN37BCqbChZbNhY5T2Qhkr8MdmsN7HjYznA
-         zbAjzxA5RF8zwlkiXSIfQKpzDmSz2fzP0uiYAOJn3mdsm9ynPi5gTMz/OpYwGXuXuSMn
-         qXrAx3njwTBgm4/GEzBlDIXtPkm1NflFgZPHk9BnvqYCrTC6Fiv/RB38OeRbjGNFJsPj
-         A2yIjY0TG54gn6Crvyj4iYyyOSRXmthLbl8/lrcCaZhHTlnJibClDbfBrrhoVB+Lb2Ki
-         /SW/ZZCWWCeiw8itDspgzYiETPM34lR0VVXn6JTb/HgUB7ZSNOGLCkHDAabNrc5u78aS
-         xqaA==
+        bh=hat4AlBF/9tP2fYNihkVV28b7p3hj4YuYqLSFJgd68g=;
+        b=Qq+hvH05Uz+F0CmyTYu8YmrrKkP01npSJsMPUy2zL1mqYIiL3IGONK7Fx2a8MxvhaZ
+         EuV8rsbGlQ3JZ9SVvE+TeeFXN1m99csFw4dD5lhv8gIvWd7P5A5dnIKM08CE55ulmG3M
+         JrpXHNh99O8Tf222YFx5SZDX6SfPdolmjgYwuYmvM7pB8Bcs4Jm7kVt7G3CsQdxKb4VB
+         UbBPj6UEAkKUe1ldGBKe1B3meJQe8/VUUJ1SJhu/FlKXZXE23YbV+DJlu8Lresk0mXxB
+         wYZ8qv9VqzPXcQBCZap4ePLHh74LJhqoclToqXV58Vq+V3t07XX/CPg1hIj0QnrkY2FF
+         xrtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727043479; x=1727648279;
+        d=1e100.net; s=20230601; t=1727043480; x=1727648280;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0bzmiNVbte7T3ewBmj3Pyyc1MaElC3cTEPj2xZYvjpA=;
-        b=lKWNTd/5ygm8jDldhEwnAoAOR04qTYVLI6HLoZOo555HtybA+9hNthmYucQlu5nJmC
-         hPtSK9lYVtGa0uvBrPApPrdYRiBNRMUxlRDlKhht8Td5tykAbiQyFLUmG8sndiMv2cqx
-         joiMel/6kUbQynxB28G9igdT3KFc93V+aFANCwC9FdmVHqKJsEbQOQ/ayz2EIcn+YWgc
-         NuQc0q4hJV2MKQRr2HIfdH89oUh05XhMFsFL0OIavIv+vAlZXWnpBLtJmLXhdU8gAmAT
-         0wxXFw+LsisiM+P8noZEw79qR0eKE+zExSLTbPXMQ9U5lNzdxygEK2bv+OrQapy7bdtl
-         SmPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNDR6xr9kdglBNhmmhk7dHqb0FIQIIQ4ebrjvk1TrLUG7OuppZ3fAJSJ64AKRLGsMKfuvnN6pkt+uX@vger.kernel.org, AJvYcCXwBz2X4R3MX7w4WPgY8iZ3/FjHNmV6uGV5biyPCGpqVMbTfWS72YlENQcSPTMPSprd7B+5ALxA/YGSemLy@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNoMGUyEzsx0BkZUmd5WBMy7oIxYcqpw48ibVTBvK6qx+3UsvL
-	6mlrPJgOU9/X14YllmodI0Zo91R+L3VV7W3K04fcs9zHdKEUN/gT
-X-Google-Smtp-Source: AGHT+IGmYraxuWC6e8umlcTCOfPub93JrctJSQgI6I9Jogb4y5ULTgQ1LgKiIwYAi6LRk+0eB3JNoA==
-X-Received: by 2002:a17:907:f74d:b0:a8a:8c92:1c76 with SMTP id a640c23a62f3a-a90d5033f31mr890134866b.36.1727043479072;
-        Sun, 22 Sep 2024 15:17:59 -0700 (PDT)
+        bh=hat4AlBF/9tP2fYNihkVV28b7p3hj4YuYqLSFJgd68g=;
+        b=X5DFPlckWB/Go2Vnq4MO+W4dAtKhGSZ6iyJ+5nuK0SFF6GZtq1KqWZNUrBJQsFtZbR
+         bpIR5KNqyCtz6UjjCZFFFjA8Uu+ZaF8LDqj9iF6jJ7UoBpFK6sdndhZ1pXZvQ92q5v9F
+         316RYs4Jt4bb6/U91Atci0ahJPwg6IW4n4ezppl6p7qX0eEcE8JfxRyU7ZDyIvZZoR/k
+         zoYv288ntwQSTm1rsINWkpzmeT5Usi3u9Zwvgab07CXJDNW3cLSMaR9KqgX7gqHQCAFC
+         39Mh9xGhyv98W2fBuVu5M/9fyz9spgi2Brk1q4rKDaWB+r4EtCBYpEl4yMIvcpn0PfNF
+         0+Gw==
+X-Forwarded-Encrypted: i=1; AJvYcCWtkvnSCbaLPVpeaKMQBCK1m5Fo2DOKwtme//z8mfg3Dia7GkiyKcinMbJxo2J0xBmA/l1A5tOL7mYPz2sQ@vger.kernel.org, AJvYcCWvJq6LUDunOazCvrqxI0W77eKj/x3Gn5NGJww3tLvCgtYOXv+lVcoMBLgBFu7BAM/59Mp28N2Lu4cW@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgWhKS9guS8+OEPzCV9ZOaBHtrnsQSQbvjgKXNHY8Jgyz7a9s0
+	jVmcoDE9c2eqxQ0611RPRmVrIMURq/3XBtdwDSujrEJ+KoCAulm0bv8ECFR8
+X-Google-Smtp-Source: AGHT+IE6M1lF7nOppXXtQ9GtMnuBqxmCz76k/XzS/imYMv7IJy17mJM5q2ctvZ/n8lnd4b76RMsEcw==
+X-Received: by 2002:a05:6402:4313:b0:5c4:2fa2:93f0 with SMTP id 4fb4d7f45d1cf-5c46484f335mr13689005a12.1.1727043480514;
+        Sun, 22 Sep 2024 15:18:00 -0700 (PDT)
 Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90611164d0sm1126202066b.91.2024.09.22.15.17.57
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90611164d0sm1126202066b.91.2024.09.22.15.17.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 15:17:58 -0700 (PDT)
+        Sun, 22 Sep 2024 15:18:00 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 23 Sep 2024 00:17:50 +0200
-Subject: [PATCH v2 02/10] iio: light: veml6030: add set up delay after any
- power on sequence
+Date: Mon, 23 Sep 2024 00:17:51 +0200
+Subject: [PATCH v2 03/10] iio: light: veml6030: use dev_err_probe()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240923-veml6035-v2-2-58c72a0df31c@gmail.com>
+Message-Id: <20240923-veml6035-v2-3-58c72a0df31c@gmail.com>
 References: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
 In-Reply-To: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -91,60 +90,135 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727043474; l=1580;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727043474; l=4012;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=EonYSneIWPYxbaJfXi8LlItpdf3jHc1fxjBzf1me3os=;
- b=65Njqi7aMcHqjfz4NBpJYZ+rMQ6+6unyAK0suU88bbRVfPdcntv5iJVA30EgbfzXg7aSJ7WYK
- Iuv0+riFjPCDGHrZ9d9sDzZxqL8NL9bRWo04UGOXFaNaQfMap06JMtB
+ bh=2hNnr0G0p4cAYnjHVrBaiV9Cl8oax0EHyQjepu1ne/A=;
+ b=FsrlOYqOm5rMA2AoJKiRhET7cKTK88gyXRqkbH3UtOUHLpxYyLyJmaxlt6d0sTLQ4JIhpum68
+ 8nAASmT6fn+A6W7t8Ij+os4me2YT1aiykPAaj32Rr9wDyK0HKyxIa+x
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-The veml6030 requires a delay of 4 ms after activating the sensor. That
-is done correctly during the hw initialization, but it's missing after
-resuming.
-
-Move the delay to the power on function to make sure that it is always
-observerd. When at it, use fsleep() instead of usleep_range() as such a
-narrow range is not required.
+Use the more convenient dev_err_probe() to get rid of the dev_err() +
+return sequence in the probe error paths.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/light/veml6030.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/iio/light/veml6030.c | 72 ++++++++++++++++++--------------------------
+ 1 file changed, 30 insertions(+), 42 deletions(-)
 
 diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-index a3dfe56b7eec..e412a22474e0 100644
+index e412a22474e0..ccabd4c844e4 100644
 --- a/drivers/iio/light/veml6030.c
 +++ b/drivers/iio/light/veml6030.c
-@@ -144,8 +144,17 @@ static const struct attribute_group veml6030_event_attr_group = {
+@@ -740,49 +740,39 @@ static int veml6030_hw_init(struct iio_dev *indio_dev)
+ 	struct i2c_client *client = data->client;
  
- static int veml6030_als_pwr_on(struct veml6030_data *data)
- {
--	return regmap_clear_bits(data->regmap, VEML6030_REG_ALS_CONF,
-+	int ret;
-+
-+	ret =  regmap_clear_bits(data->regmap, VEML6030_REG_ALS_CONF,
- 				 VEML6030_ALS_SD);
+ 	ret = veml6030_als_shut_down(data);
+-	if (ret) {
+-		dev_err(&client->dev, "can't shutdown als %d\n", ret);
+-		return ret;
+-	}
 +	if (ret)
-+		return ret;
-+
-+	/* Wait 4 ms to let processor & oscillator start correctly */
-+	fsleep(4000);
-+
-+	return 0;
- }
++		return dev_err_probe(&client->dev, ret, "can't shutdown als\n");
  
- static int veml6030_als_shut_down(struct veml6030_data *data)
-@@ -767,9 +776,6 @@ static int veml6030_hw_init(struct iio_dev *indio_dev)
- 		return ret;
- 	}
+ 	ret = regmap_write(data->regmap, VEML6030_REG_ALS_CONF, 0x1001);
+-	if (ret) {
+-		dev_err(&client->dev, "can't setup als configs %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "can't setup als configs\n");
  
--	/* Wait 4 ms to let processor & oscillator start correctly */
--	usleep_range(4000, 4002);
--
+ 	ret = regmap_update_bits(data->regmap, VEML6030_REG_ALS_PSM,
+ 				 VEML6030_PSM | VEML6030_PSM_EN, 0x03);
+-	if (ret) {
+-		dev_err(&client->dev, "can't setup default PSM %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "can't setup default PSM\n");
+ 
+ 	ret = regmap_write(data->regmap, VEML6030_REG_ALS_WH, 0xFFFF);
+-	if (ret) {
+-		dev_err(&client->dev, "can't setup high threshold %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "can't setup high threshold\n");
+ 
+ 	ret = regmap_write(data->regmap, VEML6030_REG_ALS_WL, 0x0000);
+-	if (ret) {
+-		dev_err(&client->dev, "can't setup low threshold %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "can't setup low threshold\n");
+ 
+ 	ret = veml6030_als_pwr_on(data);
+-	if (ret) {
+-		dev_err(&client->dev, "can't poweron als %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(&client->dev, ret, "can't poweron als\n");
+ 
  	/* Clear stale interrupt status bits if any during start */
  	ret = regmap_read(data->regmap, VEML6030_REG_ALS_INT, &val);
- 	if (ret < 0) {
+-	if (ret < 0) {
+-		dev_err(&client->dev,
+-			"can't clear als interrupt status %d\n", ret);
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(&client->dev, ret,
++				     "can't clear als interrupt status\n");
+ 
+ 	/* Cache currently active measurement parameters */
+ 	data->cur_gain = 3;
+@@ -799,16 +789,14 @@ static int veml6030_probe(struct i2c_client *client)
+ 	struct iio_dev *indio_dev;
+ 	struct regmap *regmap;
+ 
+-	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+-		dev_err(&client->dev, "i2c adapter doesn't support plain i2c\n");
+-		return -EOPNOTSUPP;
+-	}
++	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
++		return dev_err_probe(&client->dev, -EOPNOTSUPP,
++				     "i2c adapter doesn't support plain i2c\n");
+ 
+ 	regmap = devm_regmap_init_i2c(client, &veml6030_regmap_config);
+-	if (IS_ERR(regmap)) {
+-		dev_err(&client->dev, "can't setup regmap\n");
+-		return PTR_ERR(regmap);
+-	}
++	if (IS_ERR(regmap))
++		return dev_err_probe(&client->dev, PTR_ERR(regmap),
++				     "can't setup regmap\n");
+ 
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+ 	if (!indio_dev)
+@@ -829,11 +817,11 @@ static int veml6030_probe(struct i2c_client *client)
+ 						NULL, veml6030_event_handler,
+ 						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+ 						"veml6030", indio_dev);
+-		if (ret < 0) {
+-			dev_err(&client->dev,
+-					"irq %d request failed\n", client->irq);
+-			return ret;
+-		}
++		if (ret < 0)
++			return dev_err_probe(&client->dev, ret,
++					     "irq %d request failed\n",
++					     client->irq);
++
+ 		indio_dev->info = &veml6030_info;
+ 	} else {
+ 		indio_dev->info = &veml6030_info_no_irq;
 
 -- 
 2.43.0

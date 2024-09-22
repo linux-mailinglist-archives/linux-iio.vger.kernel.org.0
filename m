@@ -1,152 +1,166 @@
-Return-Path: <linux-iio+bounces-9698-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9699-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFB097E106
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 13:07:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2DB97E121
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 13:27:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8D11C20AB1
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 11:07:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3208E280F9A
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 11:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FCC1547CD;
-	Sun, 22 Sep 2024 11:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E622193090;
+	Sun, 22 Sep 2024 11:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODW2a2k+"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="js2GvtWk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B28E7DA7D;
-	Sun, 22 Sep 2024 11:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217CF61FCF;
+	Sun, 22 Sep 2024 11:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727003248; cv=none; b=PGoiid2o2T0R/edHP2ZgZDYRdql/PYMAqlZHAuF0rmNxX3AAtIIRCXGF3DTBvyXMDD8VOK9/802trzn8Ny/Bn09pkXnR4fpto/3fsKrsSh7AX/dQy+jIfNJYP4gCQheU5CCwJfeHWQ17xNXY/RiW897Ky+0wK0LJp5azKlq4c1E=
+	t=1727004443; cv=none; b=JjYaDE1ZVz6+fM/tg1q/VjCk8niaHrE4TwlUUhQlXjCpCjpJGhf3B36y4l7iyx9EEt8Abetq1zUjHs4GNhgmSHFY9YFRQOgb5j+29ZZZGPS3nOy+mP2FXfnmiqQKJRv74zwQvtC8Hxmz3HhSF8dcq2TPhCEv9CFwgjsKTc1pvhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727003248; c=relaxed/simple;
-	bh=2IpVwAFd10ZO0WVUn7d5Fc/NJIuuH9awWxy1eETNJjg=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ntg9FGHimcNa2hClN7mbm3rWLO9ofEtRbwikH4Tng8LPTyBDRWxY8ZSC0uEtmTiH/QMtLhpu/sXD0P0EC7wh0pnhEHa2+UkfS1kj19HZgVNl4GJMx0y6x5WeFHdUWAZYGCojK5x7XIljMaRZ5XeZ+wSjoV6Nps1zhexn0KqP4pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODW2a2k+; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42cd74c0d16so32299425e9.1;
-        Sun, 22 Sep 2024 04:07:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727003245; x=1727608045; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vgtLeaxfiesunEgk8MZX5Vzy4j0v9445AYrKop2nKkU=;
-        b=ODW2a2k+3hcsgxDsRj9QsIhAi8wMhA61a0fF3YoLzoQeKwbFCZDwhjx3DZWvwuQ650
-         pdesg0kXTF1XwiA9+bIqt72JWT3O9gkHt7LBGfZuHIx1txUk1naBlMKR3cMBdsd7WjtY
-         NshdYScbUYe+3WhokdMoLHA8j7T21eanCW5YjsFCnXTxRSaSKUgekxFfdEo8eVwZpYp6
-         wQ3/OTWHnNT3q0sidkmA4lhfo4JGiE1Wq28w7hzvERP92O4+/CdVqbYRiqEdSfB3KHAi
-         GvZVkqXCB/N2cDEYXiO8HxW4ENz/DaWoFN60uf5ly3+ggaw2LXLNclttIAWp/VBSjxUa
-         3oiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727003245; x=1727608045;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vgtLeaxfiesunEgk8MZX5Vzy4j0v9445AYrKop2nKkU=;
-        b=ejmJdKzuqjH0Yz6fxd1ufrdUhtjNPKPRMl1hsf6Hmr5TYAkR5+qjOOLyk7TIyEwKEZ
-         L35e8te3zU6EH/u6o6Ay/zTz/60PrpWeNf60sTdH9zNIH4QKNyWysXgBO1nMXVVMzMCA
-         9foFEa6PXoJiB68b2kjr6KaC1wJjfjr+tI4hTaY/H8u5H8OBYsntNtgCyuq7yjo2dPZP
-         6oyfy0jOYBYb0BF7eC/1345fsHS9LIy+bbwhEQjti9Baqz4sjZiPIIbmt69yZgk2qPjb
-         /6xuIitoOfG0JrXoV27vPzoiGNV+wmcpI0YgklCynqlsCgDZII0JovTD8+LG9YuMD79k
-         vGMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUnVx+gthegXH8Sr3aOmp6Q1AjoH0kqqvyGTCcDUSsV89/4bS0YIft5d1UiwGE8/xJd8SIOi5sNW85x+UI3@vger.kernel.org, AJvYcCWmTXVuTIJC60STximwHpjCVOyXBQHiIs9qDwSvGW3oxTcnMRfgwBKr064bQyvRL+69uGvmJ56CXlQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwC3uXM9monedGjFK0zQHKIj8Zf4R9KEmXeWV4mdWuy9yCEcBTz
-	I579sO/nZY9V5IxYamAT2jsT4lp7j9TRHX8y2Cju0poQ4KJjG65F
-X-Google-Smtp-Source: AGHT+IF16sjvViQutJBZr7GMFw3too59eIZ3z0ozXGts5biIDj8Pp/ej4WPI0Wfqxqq7DzWoZrNdhQ==
-X-Received: by 2002:adf:fd87:0:b0:371:8dcc:7f9e with SMTP id ffacd0b85a97d-37a42252d38mr4665763f8f.2.1727003244415;
-        Sun, 22 Sep 2024 04:07:24 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:a498:414b:b435:bfeb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e71f051esm21946074f8f.12.2024.09.22.04.07.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 04:07:23 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Sun, 22 Sep 2024 13:07:21 +0200
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Lars-Peter Clausen <lars@metafoo.de>, jic23@kernel.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/2] iio: core: remove iio_validate_own_trigger()
- function
-Message-ID: <20240922110721.GA439861@vamoiridPC>
-References: <20240921181939.392517-1-vassilisamir@gmail.com>
- <cd1df0c5-d95f-4880-b374-a7544a323d93@metafoo.de>
- <20240921200759.GA400156@vamoiridPC>
- <609fdda9-fcf4-426f-84c8-411a59ed5fab@gmail.com>
+	s=arc-20240116; t=1727004443; c=relaxed/simple;
+	bh=lbdq4Hy5JBUmnlKohQdgYWxVAtSUrcF7vHjH4YcyevE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=Oh99sYNGUxvpgxCGmndWKEK53QzjTWKfnB9RPbvLs6nYc9Jx8dgA/iOj+UeRxn/mhT29f1Z7ikz7LYCpVzNVJlGTtnqxZritUx4l6+T2FewEeKiqrozl4kr9UYSbVDIm1aDzraP10SloKhISNWx/5e6pKuqoguAerHRsy/7Pu4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=js2GvtWk; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1727004375;
+	bh=lbdq4Hy5JBUmnlKohQdgYWxVAtSUrcF7vHjH4YcyevE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=js2GvtWk2XXEcaRXoxh078xcPpySevuQu+UoW2U55cfTWoCIbQgj61UaH2fR4DQxU
+	 p67CGtjPJVKOvSw/5Rf3zzkSeA927QlVbTXfHBTKGEtIyxzM/Xret7GwV4t9zZzZrt
+	 HvmilxXCTfXY5cISqubdbE9LfCl21zDwPXjNHp4w=
+X-QQ-mid: bizesmtpip2t1727004371t894wvx
+X-QQ-Originating-IP: 8oSQ5aIskk9G7W8UCzLlN96W6+ZFphldw/P2ndRhu8M=
+Received: from [IPV6:240e:36c:d18:fa00:e9bb:21 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 22 Sep 2024 19:26:09 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 1373273845902169089
+Message-ID: <739D781F53669A17+ee9db6cf-dca4-4e53-9444-ecdf0b72dfbd@uniontech.com>
+Date: Sun, 22 Sep 2024 19:26:08 +0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <609fdda9-fcf4-426f-84c8-411a59ed5fab@gmail.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: [PATCH 2/3] iio: accel: adxl355: Correct the typo 'accelaration'
+To: WangYuli <wangyuli@uniontech.com>, puranjay@kernel.org, lars@metafoo.de,
+ Michael.Hennerich@analog.com, jic23@kernel.org
+References: <7BF34BF48048052E+20240922111832.441807-1-wangyuli@uniontech.com>
+From: WangYuli <wangyuli@uniontech.com>
+Content-Language: en-US
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ puranjay12@gmail.com, Jonathan.Cameron@huawei.com
+Autocrypt: addr=wangyuli@uniontech.com; keydata=
+ xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSKP+nX39DN
+ IVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAxFiEEa1GMzYeuKPkg
+ qDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMBAAAKCRDF2h8wRvQL7g0UAQCH
+ 3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfPbwD/SrncJwwPAL4GiLPEC4XssV6FPUAY
+ 0rA68eNNI9cJLArOOARmgSyJEgorBgEEAZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7
+ VTL0dvPDofBTjFYDAQgHwngEGBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIb
+ DAAKCRDF2h8wRvQL7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkU
+ o9ERi7qS/hbUdUgtitI89efbY0TVetgDsyeQiwU=
+In-Reply-To: <7BF34BF48048052E+20240922111832.441807-1-wangyuli@uniontech.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------yiFxPIoj1JKMgKgepLxqkNUa"
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
 
-On Sun, Sep 22, 2024 at 12:44:15PM +0300, Matti Vaittinen wrote:
-> On 9/21/24 23:07, Vasileios Amoiridis wrote:
-> > On Sat, Sep 21, 2024 at 12:23:39PM -0700, Lars-Peter Clausen wrote:
-> > > On 9/21/24 11:19, Vasileios Amoiridis wrote:
-> > > > The iio_validate_own_trigger() function was added in this commit [1] but it is
-> > > > the same with the below function called iio_trigger_validate_own_device(). The
-> > > > bodies of the functions can be found in [2], [3].
-> > > > 
-> > > > [1]: https://lore.kernel.org/all/51cd3e3e74a6addf8d333f4a109fb9c5a11086ee.1683541225.git.mazziesaccount@gmail.com/
-> > > > [2]: https://elixir.bootlin.com/linux/v6.11/source/drivers/iio/industrialio-trigger.c#L732
-> > > > [3]: https://elixir.bootlin.com/linux/v6.11/source/drivers/iio/industrialio-trigger.c#L752
-> > > 
-> > > The signature of the two functions are different, the order of the
-> > > parameters is switched. So you can't just swap them out for the
-> > > `validate_trigger` callback since the signature is not compatible. But maybe
-> > > you can update the implementation of one of the functions to calling the
-> > > other function.
-> > > 
-> > 
-> > Hi Lars,
-> > 
-> > Hmm, I see what you mean. Still though, do you think that we could do some
-> > cleaning here? I can see 3 approaches:
-> > 
-> > 1) One of the 2 functions calls the other internally and nothing else has
-> > to change.
-> 
-> I would go with this. Changing the signatures to be the same would be (in
-> my, not always humble enough, opinion) wrong. The different order of
-> parameters reflects the different idea. One checks if device for trigger is
-> the right one, the other checks if the trigger for the device is the right
-> one. Thus, the order of parameters should be different.
-> 
-> Calling the same implementation internally is fine with me. Maybe Jonathan
-> will share his opinion when recovers from all the plumbing in Vienna ;)
-> 
-> Yours,
-> 	-- Matti
-> 
-> -- 
-> Matti Vaittinen
-> Linux kernel developer at ROHM Semiconductors
-> Oulu Finland
-> 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------yiFxPIoj1JKMgKgepLxqkNUa
+Content-Type: multipart/mixed; boundary="------------53e6F1H6IQlYyPpQY086Gvib";
+ protected-headers="v1"
+From: WangYuli <wangyuli@uniontech.com>
+To: WangYuli <wangyuli@uniontech.com>, puranjay@kernel.org, lars@metafoo.de,
+ Michael.Hennerich@analog.com, jic23@kernel.org
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ puranjay12@gmail.com, Jonathan.Cameron@huawei.com
+Message-ID: <ee9db6cf-dca4-4e53-9444-ecdf0b72dfbd@uniontech.com>
+Subject: [PATCH 2/3] iio: accel: adxl355: Correct the typo 'accelaration'
+References: <7BF34BF48048052E+20240922111832.441807-1-wangyuli@uniontech.com>
+In-Reply-To: <7BF34BF48048052E+20240922111832.441807-1-wangyuli@uniontech.com>
 
-Hi Matti!
+--------------53e6F1H6IQlYyPpQY086Gvib
+Content-Type: multipart/mixed; boundary="------------T7CjhhUwsAbXe1APTkXWII6D"
 
-Thanks for your comment! Well, I still think in my eyes is better to
-have one function do one thing instead of multiple. Also, I didn't
-think of this argument with the order of arguments, it makes sense.
-My experience is quite limited to how things should be in such a
-large project so I trust your opinion. I would still like to see
-what Jonathan has to say on this though, maybe he had some
-reasoning behind!!!
+--------------T7CjhhUwsAbXe1APTkXWII6D
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Have a nice day!
+IEZyb20gNTYyYTZjZTNlYmJlYWUwM2VhYmRkOGZhNWMyNjUyOTljYTU5NTYwYiBNb24gU2Vw
+IDE3IDAwOjAwOjAwIDIwMDENCkZyb206IFdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2gu
+Y29tPg0KRGF0ZTogU3VuLCAyMiBTZXAgMjAyNCAxODo0NTo1MCArMDgwMA0KU3ViamVjdDog
+W1BBVENIIDIvM10gaWlvOiBhY2NlbDogYWR4bDM1NTogQ29ycmVjdCB0aGUgdHlwbyAnYWNj
+ZWxhcmF0aW9uJw0KDQpUaGVyZSBpcyBhIHNwZWxsaW5nIG1pc3Rha2Ugb2YgJ2FjY2VsYXJh
+dGlvbicgd2hpY2ggc2hvdWxkIGJlDQonYWNjZWxlcmF0aW9uJy4NCg0KU2lnbmVkLW9mZi1i
+eTogV2FuZ1l1bGkgPHdhbmd5dWxpQHVuaW9udGVjaC5jb20+DQotLS0NCiDCoGRyaXZlcnMv
+aWlvL2FjY2VsL2FkeGwzNTVfY29yZS5jIHwgMiArLQ0KIMKgMSBmaWxlIGNoYW5nZWQsIDEg
+aW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL2lp
+by9hY2NlbC9hZHhsMzU1X2NvcmUuYyANCmIvZHJpdmVycy9paW8vYWNjZWwvYWR4bDM1NV9j
+b3JlLmMNCmluZGV4IDBjOTIyNWQxOGZiMi4uNWU2ODJiZjA3OWQ4IDEwMDY0NA0KLS0tIGEv
+ZHJpdmVycy9paW8vYWNjZWwvYWR4bDM1NV9jb3JlLmMNCisrKyBiL2RyaXZlcnMvaWlvL2Fj
+Y2VsL2FkeGwzNTVfY29yZS5jDQpAQCAtNjQzLDcgKzY0Myw3IEBAIHN0YXRpYyBpcnFyZXR1
+cm5fdCBhZHhsMzU1X3RyaWdnZXJfaGFuZGxlcihpbnQgaXJxLCANCnZvaWQgKnApDQogwqDC
+oMKgwqDCoMKgwqDCoCAqIFRoZSBhY2NlbGVyYXRpb24gZGF0YSBpcyAyNCBiaXRzIGFuZCBi
+aWcgZW5kaWFuLiBJdCBoYXMgdG8gDQpiZSBzYXZlZA0KIMKgwqDCoMKgwqDCoMKgwqAgKiBp
+biAzMiBiaXRzLCBoZW5jZSwgaXQgaXMgc2F2ZWQgaW4gdGhlIDJuZCBieXRlIG9mIHRoZSA0
+IGJ5dGUgDQpidWZmZXIuDQogwqDCoMKgwqDCoMKgwqDCoCAqIFRoZSBidWYgYXJyYXkgaXMg
+MTQgYnl0ZXMgYXMgaXQgaW5jbHVkZXMgM3g0PTEyIGJ5dGVzIGZvcg0KLcKgwqDCoMKgwqDC
+oMKgICogYWNjZWxhcmF0aW9uIGRhdGEgb2YgeCwgeSwgYW5kIHogYXhpcy4gSXQgYWxzbyBp
+bmNsdWRlcyAyIA0KYnl0ZXMgZm9yDQorwqDCoMKgwqDCoMKgwqAgKiBhY2NlbGVyYXRpb24g
+ZGF0YSBvZiB4LCB5LCBhbmQgeiBheGlzLiBJdCBhbHNvIGluY2x1ZGVzIDIgDQpieXRlcyBm
+b3INCiDCoMKgwqDCoMKgwqDCoMKgICogdGVtcGVyYXR1cmUgZGF0YS4NCiDCoMKgwqDCoMKg
+wqDCoMKgICovDQogwqDCoMKgwqDCoMKgwqAgcmV0ID0gcmVnbWFwX2J1bGtfcmVhZChkYXRh
+LT5yZWdtYXAsIEFEWEwzNTVfWERBVEEzX1JFRywNCi0tIA0KMi40My4wDQo=
+--------------T7CjhhUwsAbXe1APTkXWII6D
+Content-Type: application/pgp-keys; name="OpenPGP_0xC5DA1F3046F40BEE.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xC5DA1F3046F40BEE.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-Cheers,
-Vasilis
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSK
+P+nX39DNIVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAx
+FiEEa1GMzYeuKPkgqDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMB
+AAAKCRDF2h8wRvQL7g0UAQCH3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfP
+bwD/SrncJwwPAL4GiLPEC4XssV6FPUAY0rA68eNNI9cJLArOOARmgSyJEgorBgEE
+AZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7VTL0dvPDofBTjFYDAQgHwngE
+GBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIbDAAKCRDF2h8wRvQL
+7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkUo9ERi7qS
+/hbUdUgtitI89efbY0TVetgDsyeQiwU=3D
+=3DBlkq
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------T7CjhhUwsAbXe1APTkXWII6D--
+
+--------------53e6F1H6IQlYyPpQY086Gvib--
+
+--------------yiFxPIoj1JKMgKgepLxqkNUa
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wnsEABYIACMWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZu/+0QUDAAAAAAAKCRDF2h8wRvQL7g9y
+AQD4QNGbggCVqiHaWihrpqLlPuf1wraB5Z/YnX2gDXD6/QD/St2t70nqvWTYO4PQ5DilwNDuJnSb
+AJn0j5v5cgX+Lgw=
+=naMa
+-----END PGP SIGNATURE-----
+
+--------------yiFxPIoj1JKMgKgepLxqkNUa--
 

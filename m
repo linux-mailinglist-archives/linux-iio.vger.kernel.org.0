@@ -1,76 +1,75 @@
-Return-Path: <linux-iio+bounces-9716-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9717-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383D797E406
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Sep 2024 00:19:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAF697E407
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Sep 2024 00:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDFFC281297
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 22:19:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7183F2812B3
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 22:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B99013A87C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8714613B59E;
 	Sun, 22 Sep 2024 22:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZRh/PaZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZnWstA1e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4C684D12;
-	Sun, 22 Sep 2024 22:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9146A130ADA;
+	Sun, 22 Sep 2024 22:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727043491; cv=none; b=L1uprLUzDFEThgyWZagNURDPcgGm4CI8yn+GBJW5Kj1y/NDivVcOapfcKKDg0sApvGdPlnrPrHfourf68DejrB+WYa/OBjdj3GygZfQ8kRXuXcorn/p4U1RNa77OZYQol5yD/dhBWlcMmO46XOoI3gLMb1xcM+GxtHQvhjzMOp0=
+	t=1727043492; cv=none; b=hq3i8itZDjRcmM/cn1Tyjzi/bBOFHehk03FKUp8+pKGjgCWDk+X+dPk93kcnjR62TsWH9kC6vdqUhv2nZTMMIGLz+jb+OWjZPfQORFihd9SoKIXvktn/E+n35X1tw1G0hLB8w5Rxw4kAiIpQivul8Hab1ilFHoH9WgR3R64Uq58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727043491; c=relaxed/simple;
-	bh=LwEcg3PCOM1SofU6cDRNJICLyss4V52FTFGAQA+uy5U=;
+	s=arc-20240116; t=1727043492; c=relaxed/simple;
+	bh=v76tVZJ0W+acWKyOV/Gx+qBJtt0HMqLGPKyH78bj3Vc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=azkxkhV0j0tUcYZub61zUo/ayHGPcOs7Inbx4KsjQGJ3DQuyOw2bh6Lt/qFUQI2f/iN5xS2JQFLguTCE0hm6Bxwl94evK46tcb6x4rVOQ6RfPrQuo4cuUMmpLa/vKyUdosjevIk21l7E5HY2ZXV3XGkiSgkjRwJcngbffSzgh0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZRh/PaZ; arc=none smtp.client-ip=209.85.218.46
+	 In-Reply-To:To:Cc; b=pUeZQM08hou9E2tiQSx6MOc5+z3xgnR4a1grUruCl6pYBPOaXkLMEkrefGI6b8WIf27WGA45AEHn7VVTZV7b49cKf6gK4sZJesgIf4LJHgcdAuCB9inppkErGGpr9HaLXFn/CDBosFRIxNLmLZ2JIg4Ksnq7jU7Z0L2tAYd2vRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZnWstA1e; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a8d100e9ce0so452990466b.2;
-        Sun, 22 Sep 2024 15:18:09 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a8a7596b7dfso643079766b.0;
+        Sun, 22 Sep 2024 15:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727043488; x=1727648288; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727043489; x=1727648289; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aVD9M4uTcrIfpcx+PQ6CN0y0T3E8wYUNamVjDuflMws=;
-        b=YZRh/PaZEq2AeVVPEEVqfnmLRzvJNd9z8rZ/WvgNej4AJekj7FPsiQFbV/5FhLz4dB
-         SWO3GPn9givj1jBYTWxjuB9g33fTQVk3L5Gt06dtDcjXEOSMBWwRey973sgONizzd/NS
-         Gt3n1/sJor/AUKnBn9iSw22J07ujZKqI7Deo1ktnH4pQHdlBxdmki7LHZKOuYNlgFuWH
-         9Af1+7OMvRFy/r6UPxmtEyiM5X/SBGTHQZUqOJA5TCtI4noXU/JrFJqfKkF4FBZWKJob
-         rFfIITdOLdUk/YuUTi3gDN5NmxYd2FkJzv2w9glxvqgnMDdZBmQW89MEB7Gv7SR6J8oE
-         T5vg==
+        bh=5o8vKCa+LjmRjp9pULN5CS7y20Oqn8Tin5hh9qJ+rR0=;
+        b=ZnWstA1e6POBlhEvdnb0mPlfa/Dl8pK3BMSgVMW2R9LBChf7xKBfaAuY5mJrvx+2WF
+         f2nKnfKPgX+jqsfGzosdjdz9rCJr819zPOpeqnb08WDz2rgpS7XZOpYrFFDhTyo3pxhn
+         KoIlfbRgWpT0wu59+rqeWlgGD7NDzTTpfpfu1EYoZ61TPrk46nsODbi55EorXXnmEBUv
+         qKL7ltHKEgJ5fU6lwTVms7rH4w5+1AxMq38pxf5uvKYzSF9U85cB0YIAQ9tT4cMKFaEB
+         zlkJuLsygVJG+Jz8uw0KL//e6ByT0SNbJksP+KtXWgYPjUHsWAHpHhlxjLvcGEFXqO0V
+         2DsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727043488; x=1727648288;
+        d=1e100.net; s=20230601; t=1727043489; x=1727648289;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aVD9M4uTcrIfpcx+PQ6CN0y0T3E8wYUNamVjDuflMws=;
-        b=ID9wobHFyxhbHe+JAf8k8qhaohpqfrx0Z2FxdNszLqLIq50kr7YsVCDBp2Bk3JLPd0
-         xl0hT325FuSpNhhnj+6vOzs1ig5wI8kefdr1RlwZ46RnDi9t7L7B5UySea/C4HZUOvcs
-         rhDe19+I8mXl8/JNcr0iwOvxfHs1VgYgLIHeG8f6PlPFd3zofuPcFm7OogZPEoRFZ8Wb
-         qlqSJXwBgJwvGgsP5VMVl0U4fW7iKxSQT5fRnozfS9ru644g+JVD6s8nk6Ai4f0D70fb
-         CRr7jYezUMcF9JTPQ42lJi2TifY0kW2IsR5XdkFf13zs4EYFRiOwaMdZDqgRuOiJmwGs
-         cJJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUsjqR/TWB/la3RX760b1CYQFHNEg2Vrg+zotlNgRv88E0W3BItHM40SyOb5z3OmK3EUYJi7/WTN6CmYMKP@vger.kernel.org, AJvYcCXpof8yBuev6dd1l6THp5PhDtZfetfF9c7KCiTfJrjrA2E2O8hOINYG6aTUsOSz9U+K+BpabgsEEr4n@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfV04bnwAAFnRgQNC0N4d/7A7gK31tIL+QtNP3g/X07z8AIUdQ
-	d/06HYXZmVboWXgMNm1SK6T4KzE2unbfJ9iiPvgaJTWmjLz3n1My+JOlj2uZ
-X-Google-Smtp-Source: AGHT+IEa4PkXmrUSBa15Lh6mKNve0p2Fxv6QV71vbi7OfTytfZtZNe7g6y1ul7SFoKSH7X1yZdQeug==
-X-Received: by 2002:a17:907:9346:b0:a8f:f799:e7d0 with SMTP id a640c23a62f3a-a90d549c3d7mr995470966b.5.1727043487505;
-        Sun, 22 Sep 2024 15:18:07 -0700 (PDT)
+        bh=5o8vKCa+LjmRjp9pULN5CS7y20Oqn8Tin5hh9qJ+rR0=;
+        b=M5VRwSoWNCfY52nuKI4F5t6VAU92THJGGuhezk11GqMyyREYUaRoCU8VWGyThczYt7
+         Bb661BU0uzuiv80K6UANVDXwpS396UNlPy+5iAWLfCq1bv4BTpS73reHG5Gp5rqqH1HP
+         277Bq7LQxUKpn7a0Ddk/Va4NjmmtnUwISj4fUTQymrmKDFCig3yoSJG2nGeVnjuckq4K
+         zt21fA/eALy5kBe4yhi370GROchjUU1XkznGVANlqjC/ip5i7zcZrqHpmI2TDVXzcIW9
+         G4/B9pzKiffF/qV8m6odBpwtAf1mRHyj/RDllRbFvR4hTKj8DU3ebk+nrhaatkwtcwoU
+         fh5w==
+X-Forwarded-Encrypted: i=1; AJvYcCU3A3fcLoDbepIKBRAeaREAaWJMfobW4ekYLoX7G+6Nb5kEpZqU3ho2uL6QrHyADynV/1UE8LmAQTCe@vger.kernel.org, AJvYcCVC6YkxvjkzXIpdOoJHe2x/VSSVZYDf6Rh2qM5ojSqfK7MbGdC0IYVtLe8OSfIT8aj47u6LqmT4zHCuGJy/@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIUVSmM+UplLBlCW79krIbopxCRujtq5YbtZD09Ur67ICcoqtp
+	1+qyJ8abiCHwbo5IZQINx26rQ4pqJFTAA/TfqM59/YVEmIXIrKelxQ3lBWRa
+X-Google-Smtp-Source: AGHT+IFcmmhwvTHvAm5wG4BFxmk3nTb64f+pRzNleklgbDCFZcXnrwyH2jsF/QlN4tKzCb7OwhEH6Q==
+X-Received: by 2002:a17:906:478c:b0:a8d:4cec:fcec with SMTP id a640c23a62f3a-a90c1d6ee1fmr1625858666b.26.1727043488759;
+        Sun, 22 Sep 2024 15:18:08 -0700 (PDT)
 Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90611164d0sm1126202066b.91.2024.09.22.15.18.06
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90611164d0sm1126202066b.91.2024.09.22.15.18.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 15:18:07 -0700 (PDT)
+        Sun, 22 Sep 2024 15:18:08 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 23 Sep 2024 00:17:56 +0200
-Subject: [PATCH v2 08/10] iio: light: veml6030: power off device in probe
- error paths
+Date: Mon, 23 Sep 2024 00:17:57 +0200
+Subject: [PATCH v2 09/10] dt-bindings: iio: light: veml6030: add veml6035
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240923-veml6035-v2-8-58c72a0df31c@gmail.com>
+Message-Id: <20240923-veml6035-v2-9-58c72a0df31c@gmail.com>
 References: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
 In-Reply-To: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -89,51 +88,107 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727043474; l=1379;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727043474; l=2791;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=LwEcg3PCOM1SofU6cDRNJICLyss4V52FTFGAQA+uy5U=;
- b=I7lzY9QRMbTyURqLSoXJ31iysm4FK0q6OsQPh7bW4NKGFQTuEkC7MmYXlQO02KYDxtmNSOpJQ
- vQNvfNPihnyC2kimPijSI55q/vCOa1d7NVZfDcvSIVbM6g0JW667rqa
+ bh=v76tVZJ0W+acWKyOV/Gx+qBJtt0HMqLGPKyH78bj3Vc=;
+ b=EptbaO69DKZ720L6uO0N+AQMv9KH+kws7wK/sVF1r1vPgCQwy5J14AMB0Hv3br85drfxXW1+T
+ AMZJOkCb7Z8CyoIeNwqPz5SVpD51i+7f4SfTwJ7t7v6aNK1GTvt3pl0
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Move devm_add_action_or_reset() with a device shut down action above the
-hardware initialization function to ensure that any error path after
-powering on the device leads to a power off.
+The veml6035 is a similar ambient light sensor to the veml6030, and
+from the bindings point of view, it shares the same properties. Its
+only difference in that respect is a different I2C address.
 
-The power off action is carried out by setting the VEML6030_ALS_SD bit
-of the VEML6030_REG_ALS_CONF, which is harmless in error paths were the
-device is already off. On the other hand, making use of the registered
-action in all error paths makes them more homogeneous by avoiding
-special action depending on the current power state of the device.
+Estend the existing bindings to support the veml6035 ALS.
 
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/light/veml6030.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../bindings/iio/light/vishay,veml6030.yaml        | 40 +++++++++++++++++-----
+ 1 file changed, 31 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-index 861bdf2edd4d..19c69bfad8cb 100644
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -853,12 +853,12 @@ static int veml6030_probe(struct i2c_client *client)
- 		indio_dev->info = &veml6030_info_no_irq;
- 	}
+diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
+index 2583b61c8357..69ca10cab09a 100644
+--- a/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
++++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
+@@ -4,14 +4,14 @@
+ $id: http://devicetree.org/schemas/iio/light/vishay,veml6030.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
  
--	ret = veml6030_hw_init(indio_dev);
-+	ret = devm_add_action_or_reset(&client->dev,
-+				       veml6030_als_shut_down_action, data);
- 	if (ret < 0)
- 		return ret;
+-title: VEML6030 Ambient Light Sensor (ALS)
++title: VEML6030 and VEML6035 Ambient Light Sensors (ALS)
  
--	ret = devm_add_action_or_reset(&client->dev,
--					veml6030_als_shut_down_action, data);
-+	ret = veml6030_hw_init(indio_dev);
- 	if (ret < 0)
- 		return ret;
+ maintainers:
+   - Rishi Gupta <gupt21@gmail.com>
  
+ description: |
+-  Bindings for the ambient light sensor veml6030 from Vishay
+-  Semiconductors over an i2c interface.
++  Bindings for the ambient light sensors veml6030 and veml6035 from
++  Vishay Semiconductors over an i2c interface.
+ 
+   Irrespective of whether interrupt is used or not, application
+   can get the ALS and White channel reading from IIO raw interface.
+@@ -19,20 +19,18 @@ description: |
+   If the interrupts are used, application will receive an IIO event
+   whenever configured threshold is crossed.
+ 
+-  Specifications about the sensor can be found at:
++  Specifications about the sensors can be found at:
+     https://www.vishay.com/docs/84366/veml6030.pdf
++    https://www.vishay.com/docs/84889/veml6035.pdf
+ 
+ properties:
+   compatible:
+     enum:
+       - vishay,veml6030
++      - vishay,veml6035
+ 
+   reg:
+-    description:
+-      I2C address of the device.
+-    enum:
+-      - 0x10 # ADDR pin pulled down
+-      - 0x48 # ADDR pin pulled up
++    maxItems: 1
+ 
+   interrupts:
+     description:
+@@ -47,6 +45,30 @@ required:
+   - compatible
+   - reg
+ 
++allOf:
++  - if:
++      properties:
++        compatible:
++          enum:
++            - vishay,veml6030
++    then:
++      properties:
++        reg:
++          enum:
++            - 0x10  # ADDR pin pulled down
++            - 0x48  # ADDR pin pulled up
++
++  - if:
++      properties:
++        compatible:
++          enum:
++            - vishay,veml6035
++    then:
++      properties:
++        reg:
++          enum:
++            - 0x29
++
+ additionalProperties: false
+ 
+ examples:
 
 -- 
 2.43.0

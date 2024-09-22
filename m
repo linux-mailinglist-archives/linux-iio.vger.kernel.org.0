@@ -1,166 +1,101 @@
-Return-Path: <linux-iio+bounces-9699-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9700-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2DB97E121
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 13:27:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA41997E25D
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 18:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3208E280F9A
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 11:27:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E4D52810A7
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 16:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E622193090;
-	Sun, 22 Sep 2024 11:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6F7FC12;
+	Sun, 22 Sep 2024 16:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="js2GvtWk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HUnNI9LO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217CF61FCF;
-	Sun, 22 Sep 2024 11:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06535E56C;
+	Sun, 22 Sep 2024 16:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727004443; cv=none; b=JjYaDE1ZVz6+fM/tg1q/VjCk8niaHrE4TwlUUhQlXjCpCjpJGhf3B36y4l7iyx9EEt8Abetq1zUjHs4GNhgmSHFY9YFRQOgb5j+29ZZZGPS3nOy+mP2FXfnmiqQKJRv74zwQvtC8Hxmz3HhSF8dcq2TPhCEv9CFwgjsKTc1pvhQ=
+	t=1727020994; cv=none; b=SFSANkn40rmB5TW+TidDRb0vrDDjm4hXN6mYp+Pqyh2W1KFrzb2VLH5aT+G5IH1kHGWgaC7s1R+6brfniPZjrem2EPf83EQpsAeE/PifveZs0kEI4aiQUU7RmdotOTiXKX4795WL2NkbXmb/hoFNfDB7KoXb5ht5QmRySvsDvD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727004443; c=relaxed/simple;
-	bh=lbdq4Hy5JBUmnlKohQdgYWxVAtSUrcF7vHjH4YcyevE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=Oh99sYNGUxvpgxCGmndWKEK53QzjTWKfnB9RPbvLs6nYc9Jx8dgA/iOj+UeRxn/mhT29f1Z7ikz7LYCpVzNVJlGTtnqxZritUx4l6+T2FewEeKiqrozl4kr9UYSbVDIm1aDzraP10SloKhISNWx/5e6pKuqoguAerHRsy/7Pu4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=js2GvtWk; arc=none smtp.client-ip=54.254.200.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1727004375;
-	bh=lbdq4Hy5JBUmnlKohQdgYWxVAtSUrcF7vHjH4YcyevE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=js2GvtWk2XXEcaRXoxh078xcPpySevuQu+UoW2U55cfTWoCIbQgj61UaH2fR4DQxU
-	 p67CGtjPJVKOvSw/5Rf3zzkSeA927QlVbTXfHBTKGEtIyxzM/Xret7GwV4t9zZzZrt
-	 HvmilxXCTfXY5cISqubdbE9LfCl21zDwPXjNHp4w=
-X-QQ-mid: bizesmtpip2t1727004371t894wvx
-X-QQ-Originating-IP: 8oSQ5aIskk9G7W8UCzLlN96W6+ZFphldw/P2ndRhu8M=
-Received: from [IPV6:240e:36c:d18:fa00:e9bb:21 ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 22 Sep 2024 19:26:09 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 1373273845902169089
-Message-ID: <739D781F53669A17+ee9db6cf-dca4-4e53-9444-ecdf0b72dfbd@uniontech.com>
-Date: Sun, 22 Sep 2024 19:26:08 +0800
+	s=arc-20240116; t=1727020994; c=relaxed/simple;
+	bh=bLgmbJrlXzTC26BUBqVsPYui7JKXvnFDAfBU6H0YjMw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OkPSnrw51/UXnwcvmILuOanwZO4KL6PRpMYa3ukVfxtUicR1TswjJJeM88SNOizMudMcMeH06UywHAbry9gbrWiCtb6FZR5X5CzXx1zdOTZCKO4PNym9ovSlnznZOKSKUsXKtuiSRXOs/HMmfti/RmaIYkf3XwfN64rFVu1Hop4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HUnNI9LO; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cc8782869so33618355e9.2;
+        Sun, 22 Sep 2024 09:03:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727020991; x=1727625791; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JqI1jIpGB/9i7JhkSUUNvinxYMKn1Unc+ArdRcm+oEg=;
+        b=HUnNI9LOUgkSUggYd2/DH0toPVixIqEcwIMQBIilVqMcljtVG/lCXRQU2a469ID+qS
+         /oub5ykL+pv1nfGGJgG2K1gx+rw++/1ozEdIcLjViJITX4Bq38MnkPt31T2lCmMwcHxt
+         5VtBElt43W3+JsK/bFQ7hb5hrSv9qzJmbcR05W5TLRxU/SHt+pPbn95UCDVtXHL7SITR
+         9ht7na3Z7GomNSKMkZOyg8Qgbews+e4VquelQBP7Cb9X7RWdJhHompqDYHAsWxJVXE1V
+         N2+dK9iAqr6+fn49mB+NZrGsZv0/pcoZBDjajhlL7YPkBTHX5Obs7TeKoBjvN8/ixHRx
+         cj7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727020991; x=1727625791;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JqI1jIpGB/9i7JhkSUUNvinxYMKn1Unc+ArdRcm+oEg=;
+        b=owFd40M5wwZ2LqeihMzc5YA2Nr4gg750x8wMJoYO6cOF7CRlPEUWjNp0iPCiWG4UL8
+         XxtppnBgcQPaufY/wMLqVqb3+UfjSSlpwu96BgbTbV/2C+zcjvamOAs6VJjtgUwOFtsZ
+         aItsh5W5j5vmPo6QvP14YATsE9DMR6N21CV8e4UWB/2Uh0IBIvIQ9KxuxjFWk2YJyYDd
+         glFW/qcySJTTthV+Fq+ODYrQC0SaoKdljW5pBxP41Z5YNuJa5BvMI6IL7Mzfi9Y4Kpwz
+         e4fMVVxIIjF8+3MH8XNjUuOehbDoTNI/XO1kUJF54OIZio+hmb1c3gFurE+tNS8mWMsd
+         WDoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxPB+DaSJUYrOfWfFfgIqz6OjrnzAZsUOZgeUlvTvc4u2adHwUpGrKjtmm5rHMcPyhVrzVu4WRc7Y1tLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOxBIK3uWW1s7JSIIn0Z6wlbFgNuo2EcgK5dirJLMLfFH94rHQ
+	YK6Nw/Jv0ogU/SKw+oG9S0UjUx3jW0SIRKzmt7IiHzoE68kAz3Y0VK9altDh
+X-Google-Smtp-Source: AGHT+IEraYJtq9v4iQDXgj20rWsJqR0ecJLGs78oANH8E/ApZG4VTsM+T6HLQnohxJUTZaTuGhDIZg==
+X-Received: by 2002:a05:600c:5025:b0:42c:bd27:4be4 with SMTP id 5b1f17b1804b1-42e7abf43d0mr72045715e9.8.1727020991153;
+        Sun, 22 Sep 2024 09:03:11 -0700 (PDT)
+Received: from localhost.localdomain ([2a04:ee41:82:7577:7367:3ea8:c47e:88f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e73f62dasm22310719f8f.49.2024.09.22.09.03.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Sep 2024 09:03:10 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vasileios Amoiridis <vassilisamir@gmail.com>
+Subject: [PATCH v1 0/1] iio: Remove assignment to pf->timestamp by using elvis
+Date: Sun, 22 Sep 2024 18:03:03 +0200
+Message-Id: <20240922160304.520613-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: [PATCH 2/3] iio: accel: adxl355: Correct the typo 'accelaration'
-To: WangYuli <wangyuli@uniontech.com>, puranjay@kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, jic23@kernel.org
-References: <7BF34BF48048052E+20240922111832.441807-1-wangyuli@uniontech.com>
-From: WangYuli <wangyuli@uniontech.com>
-Content-Language: en-US
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- puranjay12@gmail.com, Jonathan.Cameron@huawei.com
-Autocrypt: addr=wangyuli@uniontech.com; keydata=
- xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSKP+nX39DN
- IVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAxFiEEa1GMzYeuKPkg
- qDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMBAAAKCRDF2h8wRvQL7g0UAQCH
- 3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfPbwD/SrncJwwPAL4GiLPEC4XssV6FPUAY
- 0rA68eNNI9cJLArOOARmgSyJEgorBgEEAZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7
- VTL0dvPDofBTjFYDAQgHwngEGBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIb
- DAAKCRDF2h8wRvQL7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkU
- o9ERi7qS/hbUdUgtitI89efbY0TVetgDsyeQiwU=
-In-Reply-To: <7BF34BF48048052E+20240922111832.441807-1-wangyuli@uniontech.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------yiFxPIoj1JKMgKgepLxqkNUa"
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+Content-Transfer-Encoding: 8bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------yiFxPIoj1JKMgKgepLxqkNUa
-Content-Type: multipart/mixed; boundary="------------53e6F1H6IQlYyPpQY086Gvib";
- protected-headers="v1"
-From: WangYuli <wangyuli@uniontech.com>
-To: WangYuli <wangyuli@uniontech.com>, puranjay@kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, jic23@kernel.org
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- puranjay12@gmail.com, Jonathan.Cameron@huawei.com
-Message-ID: <ee9db6cf-dca4-4e53-9444-ecdf0b72dfbd@uniontech.com>
-Subject: [PATCH 2/3] iio: accel: adxl355: Correct the typo 'accelaration'
-References: <7BF34BF48048052E+20240922111832.441807-1-wangyuli@uniontech.com>
-In-Reply-To: <7BF34BF48048052E+20240922111832.441807-1-wangyuli@uniontech.com>
+Instead of checking the value of the pf->timestamp and determining to assign
+to it a new one or not, use the elvis operator to save some lines and
+to simplify it.
 
---------------53e6F1H6IQlYyPpQY086Gvib
-Content-Type: multipart/mixed; boundary="------------T7CjhhUwsAbXe1APTkXWII6D"
+Vasileios Amoiridis (1):
+  iio: acpi-als: Use elvis operator to simplify if statement
 
---------------T7CjhhUwsAbXe1APTkXWII6D
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+ drivers/iio/light/acpi-als.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-IEZyb20gNTYyYTZjZTNlYmJlYWUwM2VhYmRkOGZhNWMyNjUyOTljYTU5NTYwYiBNb24gU2Vw
-IDE3IDAwOjAwOjAwIDIwMDENCkZyb206IFdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2gu
-Y29tPg0KRGF0ZTogU3VuLCAyMiBTZXAgMjAyNCAxODo0NTo1MCArMDgwMA0KU3ViamVjdDog
-W1BBVENIIDIvM10gaWlvOiBhY2NlbDogYWR4bDM1NTogQ29ycmVjdCB0aGUgdHlwbyAnYWNj
-ZWxhcmF0aW9uJw0KDQpUaGVyZSBpcyBhIHNwZWxsaW5nIG1pc3Rha2Ugb2YgJ2FjY2VsYXJh
-dGlvbicgd2hpY2ggc2hvdWxkIGJlDQonYWNjZWxlcmF0aW9uJy4NCg0KU2lnbmVkLW9mZi1i
-eTogV2FuZ1l1bGkgPHdhbmd5dWxpQHVuaW9udGVjaC5jb20+DQotLS0NCiDCoGRyaXZlcnMv
-aWlvL2FjY2VsL2FkeGwzNTVfY29yZS5jIHwgMiArLQ0KIMKgMSBmaWxlIGNoYW5nZWQsIDEg
-aW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL2lp
-by9hY2NlbC9hZHhsMzU1X2NvcmUuYyANCmIvZHJpdmVycy9paW8vYWNjZWwvYWR4bDM1NV9j
-b3JlLmMNCmluZGV4IDBjOTIyNWQxOGZiMi4uNWU2ODJiZjA3OWQ4IDEwMDY0NA0KLS0tIGEv
-ZHJpdmVycy9paW8vYWNjZWwvYWR4bDM1NV9jb3JlLmMNCisrKyBiL2RyaXZlcnMvaWlvL2Fj
-Y2VsL2FkeGwzNTVfY29yZS5jDQpAQCAtNjQzLDcgKzY0Myw3IEBAIHN0YXRpYyBpcnFyZXR1
-cm5fdCBhZHhsMzU1X3RyaWdnZXJfaGFuZGxlcihpbnQgaXJxLCANCnZvaWQgKnApDQogwqDC
-oMKgwqDCoMKgwqDCoCAqIFRoZSBhY2NlbGVyYXRpb24gZGF0YSBpcyAyNCBiaXRzIGFuZCBi
-aWcgZW5kaWFuLiBJdCBoYXMgdG8gDQpiZSBzYXZlZA0KIMKgwqDCoMKgwqDCoMKgwqAgKiBp
-biAzMiBiaXRzLCBoZW5jZSwgaXQgaXMgc2F2ZWQgaW4gdGhlIDJuZCBieXRlIG9mIHRoZSA0
-IGJ5dGUgDQpidWZmZXIuDQogwqDCoMKgwqDCoMKgwqDCoCAqIFRoZSBidWYgYXJyYXkgaXMg
-MTQgYnl0ZXMgYXMgaXQgaW5jbHVkZXMgM3g0PTEyIGJ5dGVzIGZvcg0KLcKgwqDCoMKgwqDC
-oMKgICogYWNjZWxhcmF0aW9uIGRhdGEgb2YgeCwgeSwgYW5kIHogYXhpcy4gSXQgYWxzbyBp
-bmNsdWRlcyAyIA0KYnl0ZXMgZm9yDQorwqDCoMKgwqDCoMKgwqAgKiBhY2NlbGVyYXRpb24g
-ZGF0YSBvZiB4LCB5LCBhbmQgeiBheGlzLiBJdCBhbHNvIGluY2x1ZGVzIDIgDQpieXRlcyBm
-b3INCiDCoMKgwqDCoMKgwqDCoMKgICogdGVtcGVyYXR1cmUgZGF0YS4NCiDCoMKgwqDCoMKg
-wqDCoMKgICovDQogwqDCoMKgwqDCoMKgwqAgcmV0ID0gcmVnbWFwX2J1bGtfcmVhZChkYXRh
-LT5yZWdtYXAsIEFEWEwzNTVfWERBVEEzX1JFRywNCi0tIA0KMi40My4wDQo=
---------------T7CjhhUwsAbXe1APTkXWII6D
-Content-Type: application/pgp-keys; name="OpenPGP_0xC5DA1F3046F40BEE.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xC5DA1F3046F40BEE.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+base-commit: 8bea3878a1511bceadc2fbf284b00bcc5a2ef28d
+-- 
+2.25.1
 
-xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSK
-P+nX39DNIVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAx
-FiEEa1GMzYeuKPkgqDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMB
-AAAKCRDF2h8wRvQL7g0UAQCH3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfP
-bwD/SrncJwwPAL4GiLPEC4XssV6FPUAY0rA68eNNI9cJLArOOARmgSyJEgorBgEE
-AZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7VTL0dvPDofBTjFYDAQgHwngE
-GBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIbDAAKCRDF2h8wRvQL
-7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkUo9ERi7qS
-/hbUdUgtitI89efbY0TVetgDsyeQiwU=3D
-=3DBlkq
------END PGP PUBLIC KEY BLOCK-----
-
---------------T7CjhhUwsAbXe1APTkXWII6D--
-
---------------53e6F1H6IQlYyPpQY086Gvib--
-
---------------yiFxPIoj1JKMgKgepLxqkNUa
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZu/+0QUDAAAAAAAKCRDF2h8wRvQL7g9y
-AQD4QNGbggCVqiHaWihrpqLlPuf1wraB5Z/YnX2gDXD6/QD/St2t70nqvWTYO4PQ5DilwNDuJnSb
-AJn0j5v5cgX+Lgw=
-=naMa
------END PGP SIGNATURE-----
-
---------------yiFxPIoj1JKMgKgepLxqkNUa--
 

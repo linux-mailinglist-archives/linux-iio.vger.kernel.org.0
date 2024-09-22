@@ -1,246 +1,135 @@
-Return-Path: <linux-iio+bounces-9694-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9695-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223B897DF5C
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 00:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D4A97DFE3
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 05:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D884328205B
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Sep 2024 22:19:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36CBF28160E
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Sep 2024 03:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AB11547C6;
-	Sat, 21 Sep 2024 22:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFD2192B7B;
+	Sun, 22 Sep 2024 03:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKtEWDwW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lMDbi4AF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE3A257B;
-	Sat, 21 Sep 2024 22:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A731679CF;
+	Sun, 22 Sep 2024 03:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726957150; cv=none; b=ofVB5E05CAQFnvGlewBw4hBzEFvFydPLgfWbjvOeueYanQicOevdyDayJPMzmVTkX2vEMIf90CFqGvXr6+l1nd6XEUbizuhsy3kIRhoNN90hpK0QhFlYCTBkcIYTALBvuz/ZO89OgFmfceH9ztia6g+55hIX/socQgocdg+WDSU=
+	t=1726975038; cv=none; b=kXthgznpVEXYloUaJE4ZQfvHs1iDuZtdMkaJaDl2bx4gLTXlAmOQBCWB8C+Angahsun5vfcEmHnU1qwfNb+1C67DI3drGh2BvreusXfam4Ga/BUwL3cXFpPUEoVtT8+l+dcXROX6zVdcYO8fvDDxSK//nQ7MdGddsrAG6Bqbi4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726957150; c=relaxed/simple;
-	bh=kfR14K5vrihyjIzfXPTU8e1xRsbb7EB2RB9CxAyKGns=;
+	s=arc-20240116; t=1726975038; c=relaxed/simple;
+	bh=RL7c3BfFavYrTxFcvOsybA+LjAhMOnIVkFh3+k1PszM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uGR7lScVjz2isv/QhoSWV3GNZ0dbrKs2Rg2Cic/IFKjTF2EYbQbWzCbnM53/jqhtO5nhjeFpYb2hKZiVup6nGkl0jieQxgB8hQr1GCUh2Cwf646CbN2ChwlAeOHykl2rqarelBxzJLEnKO+h/VBHIVbTT7tubgZiDNerwDHUCnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LKtEWDwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A88C4CEC2;
-	Sat, 21 Sep 2024 22:19:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726957149;
-	bh=kfR14K5vrihyjIzfXPTU8e1xRsbb7EB2RB9CxAyKGns=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LKtEWDwWofb5y/OGX5gOxNGrMyVa8YcbIRHQu6UCj/KmRABpTVAnFHfdEFHEA9Fkf
-	 lyjBml+k7UppNw7slrDXufzcHG1EPQp3u9rhVpAOgqC/6eG4atC+4WKx7SjqbjqNN6
-	 8+PGvpylJ11aa4N44u7wkfDlkAzkaFOFcP2gSg9koZ0D7hBvaR8dyI8bB7rae9G3tW
-	 ++dUzQjreatME31JfJIqy/QdGbzYOC7twHAP5o1cY60yVp7G0jdyg/KOxJqGV5BUDt
-	 gOAo6LJHyX6W9hSlju+mYoF1vbWgIWumSOdP0ANHlqeGx6VxVcDdWpaZAmk6/yepUx
-	 bw10rLBy2IblQ==
-Date: Sat, 21 Sep 2024 23:19:03 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Guillaume Stols <gstols@baylibre.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Michal Marek <mmarek@suse.com>,
-	linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	aardelean@baylibre.com, dlechner@baylibre.com,
-	jstephan@baylibre.com
-Subject: Re: [PATCH v2 03/10] dt-bindings: iio: adc: ad7606: Add iio backend
- bindings
-Message-ID: <20240921-charter-grouped-9f77e0a640a0@spud>
-References: <20240920-ad7606_add_iio_backend_support-v2-0-0e78782ae7d0@baylibre.com>
- <20240920-ad7606_add_iio_backend_support-v2-3-0e78782ae7d0@baylibre.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y6Om2YZw2+B80Ia5zjH6DJnLZzS77RwJgPJ29o81V/7+ixX+9js3FCF49gc5roqeVtSSieDTfFC1MnCEvQZkHDcjjpGIHhX3zhc/V9HQRmNcpRSdNm0k6ONxFNgLpnq50EglYx+/exWHu3YXnw/Nr4X4s47XdCILzdTYInJbqVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lMDbi4AF; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726975036; x=1758511036;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RL7c3BfFavYrTxFcvOsybA+LjAhMOnIVkFh3+k1PszM=;
+  b=lMDbi4AFe15aBd+51lf2us4pRccoVAU1WjwQTczNv3rWJQd1KLxUP0Ry
+   Td3/HbkS3ZUrfTE3jxTKCSUjDWnWcz0nLC1jCqaLXx2brg3aIoUtgMKxu
+   o1KA/RxgpVX6zeHMcJncBdVj37KaKKVeYApdHT3iFA/FE+rfm5xO+tDiA
+   fX8kxSMwlI/y2vsxLtJri9EQ6f9z1cqYSOn+JG3TJYdHrgD7HXp7wwskI
+   2VXkIcCaz0yppwWnamjOKs0IgTJztTxeCMW8AMjkkErY+vQg7u/aS31GV
+   X6MzGd5MurdtL3Qyk8Vi1bsuOuSjKB/IKaKTtNNc/k9IH+xejyFIK3cFx
+   A==;
+X-CSE-ConnectionGUID: jUi8Aa/5RMySn3Wx+jpMmw==
+X-CSE-MsgGUID: 3mbOhBUsS7uD1esqX+LXdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="36607713"
+X-IronPort-AV: E=Sophos;i="6.10,248,1719903600"; 
+   d="scan'208";a="36607713"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2024 20:17:15 -0700
+X-CSE-ConnectionGUID: buI2J/1lQNGrFoyZVHq/jA==
+X-CSE-MsgGUID: tqxEPCMrTsqDIvgIoUsH0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,248,1719903600"; 
+   d="scan'208";a="94042832"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 21 Sep 2024 20:17:13 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ssD5z-000FzQ-0B;
+	Sun, 22 Sep 2024 03:17:11 +0000
+Date: Sun, 22 Sep 2024 11:17:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
+	lars@metafoo.de, mazziesaccount@gmail.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Vasileios Amoiridis <vassilisamir@gmail.com>
+Subject: Re: [PATCH v1 1/2] iio: Drop usage of iio_validate_own_trigger()
+Message-ID: <202409221122.4BTAc5w1-lkp@intel.com>
+References: <20240921181939.392517-2-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="/E6hod+IHxfXaUGB"
-Content-Disposition: inline
-In-Reply-To: <20240920-ad7606_add_iio_backend_support-v2-3-0e78782ae7d0@baylibre.com>
-
-
---/E6hod+IHxfXaUGB
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240921181939.392517-2-vassilisamir@gmail.com>
 
-On Fri, Sep 20, 2024 at 05:33:23PM +0000, Guillaume Stols wrote:
-> Add the required properties for iio-backend support, as well as an
-> example and the conditions to mutually exclude interruption and
-> conversion trigger with iio-backend.
-> The iio-backend's function is to controls the communication, and thus the
-> interruption pin won't be available anymore.
-> As a consequence, the conversion pin must be controlled externally since
-> we will miss information about when every single conversion cycle (i.e
-> conversion + data transfer) ends, hence a PWM is introduced to trigger
-> the conversions.
->=20
-> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 76 ++++++++++++++++=
-+++++-
->  1 file changed, 74 insertions(+), 2 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> index 12995ebcddc2..74a8680904b1 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-> @@ -118,13 +118,32 @@ properties:
->        this property must be defined.
->      type: boolean
-> =20
-> +  pwms:
-> +    description:
-> +      In case the conversion is triggered by a PWM instead of a GPIO plu=
-gged to
-> +      the CONVST pin, the PWM must be referenced.
-> +    minItems: 1
-> +    maxItems: 2
+Hi Vasileios,
 
-Please use an items list to describe what each item is, rather than
-doing so in the pwm-names description below.
+kernel test robot noticed the following build errors:
 
-> +
-> +  pwm-names:
-> +    description:
-> +      The name of each PWM, the first is connected to CONVST, and the se=
-cond is
-> +      connected to CONVST2 if CONVST2 is available and not connected to =
-CONVST1.
-> +    minItems: 1
-> +    maxItems: 2
+[auto build test ERROR on 8bea3878a1511bceadc2fbf284b00bcc5a2ef28d]
 
-You need to define what the names actually are, otherwise you have no
-ABI.
+url:    https://github.com/intel-lab-lkp/linux/commits/Vasileios-Amoiridis/iio-Drop-usage-of-iio_validate_own_trigger/20240922-022124
+base:   8bea3878a1511bceadc2fbf284b00bcc5a2ef28d
+patch link:    https://lore.kernel.org/r/20240921181939.392517-2-vassilisamir%40gmail.com
+patch subject: [PATCH v1 1/2] iio: Drop usage of iio_validate_own_trigger()
+config: x86_64-buildonly-randconfig-002-20240922 (https://download.01.org/0day-ci/archive/20240922/202409221122.4BTAc5w1-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240922/202409221122.4BTAc5w1-lkp@intel.com/reproduce)
 
-Cheers,
-Conor.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409221122.4BTAc5w1-lkp@intel.com/
 
-> +
-> +  io-backends:
-> +    description:
-> +      A reference to the iio-backend, which is responsible handling the =
-BUSY
-> +      pin's falling edge and communication.
-> +      An example of backend can be found at
-> +      http://analogdevicesinc.github.io/hdl/library/axi_ad7606x/index.ht=
-ml
-> +
->  required:
->    - compatible
->    - reg
->    - avcc-supply
->    - vdrive-supply
-> -  - interrupts
-> -  - adi,conversion-start-gpios
-> =20
->  oneOf:
->    - required:
-> @@ -138,6 +157,34 @@ oneOf:
->            - spi-cpol
-> =20
->  allOf:
-> +  - if:
-> +      properties:
-> +        pwms: false
-> +    then:
-> +      required:
-> +        - adi,conversion-start-gpios
-> +
-> +  - if:
-> +      properties:
-> +        adi,conversion-start-gpios: false
-> +    then:
-> +      required:
-> +        - pwms
-> +
-> +  - if:
-> +      properties:
-> +        interrupts: false
-> +    then:
-> +      required:
-> +        - io-backends
-> +
-> +  - if:
-> +      properties:
-> +        io-backends: false
-> +    then:
-> +      required:
-> +        - interrupts
-> +
->    - if:
->        properties:
->          compatible:
-> @@ -179,12 +226,37 @@ allOf:
->          adi,sw-mode: false
->      else:
->        properties:
-> +        pwms:
-> +          maxItems: 1
-> +        pwm-names:
-> +          maxItems: 1
->          adi,conversion-start-gpios:
->            maxItems: 1
-> =20
->  unevaluatedProperties: false
-> =20
->  examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    / {
-> +        adi_adc {
-> +            compatible =3D "adi,ad7606b";
-> +            parallel-interface;
-> +            pwms =3D <&axi_pwm_gen 0 0>;
-> +
-> +            avcc-supply =3D <&adc_vref>;
-> +            vdrive-supply =3D <&vdd_supply>;
-> +
-> +            reset-gpios =3D <&gpio0 91 GPIO_ACTIVE_HIGH>;
-> +            standby-gpios =3D <&gpio0 90 GPIO_ACTIVE_LOW>;
-> +            adi,range-gpios =3D <&gpio0 89 GPIO_ACTIVE_HIGH>;
-> +            adi,oversampling-ratio-gpios =3D <&gpio0 88 GPIO_ACTIVE_HIGH
-> +                                            &gpio0 87 GPIO_ACTIVE_HIGH
-> +                                            &gpio0 86 GPIO_ACTIVE_HIGH>;
-> +            io-backends =3D <&iio_backend>;
-> +        };
-> +    };
-> +
->    - |
->      #include <dt-bindings/gpio/gpio.h>
->      #include <dt-bindings/interrupt-controller/irq.h>
->=20
-> --=20
-> 2.34.1
->=20
+All errors (new ones prefixed by >>):
 
---/E6hod+IHxfXaUGB
-Content-Type: application/pgp-signature; name="signature.asc"
+>> drivers/iio/accel/kionix-kx022a.c:876:22: error: incompatible function pointer types initializing 'int (*)(struct iio_dev *, struct iio_trigger *)' with an expression of type 'int (struct iio_trigger *, struct iio_dev *)' [-Wincompatible-function-pointer-types]
+     876 |         .validate_trigger       = iio_trigger_validate_own_device,
+         |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
+--
+>> drivers/iio/light/rohm-bu27008.c:1389:22: error: incompatible function pointer types initializing 'int (*)(struct iio_dev *, struct iio_trigger *)' with an expression of type 'int (struct iio_trigger *, struct iio_dev *)' [-Wincompatible-function-pointer-types]
+    1389 |         .validate_trigger = iio_trigger_validate_own_device,
+         |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZu9GVwAKCRB4tDGHoIJi
-0sp1AP9PpuRy60rPk9JYWnURXlbuDdPob0rbthuXpOdAIPJZewD/bmxcvaFLN3N6
-mVszPN0fIfm39hSecA50i4isHCxlTwA=
-=cklL
------END PGP SIGNATURE-----
+vim +876 drivers/iio/accel/kionix-kx022a.c
 
---/E6hod+IHxfXaUGB--
+   869	
+   870	static const struct iio_info kx022a_info = {
+   871		.read_raw = &kx022a_read_raw,
+   872		.write_raw = &kx022a_write_raw,
+   873		.write_raw_get_fmt = &kx022a_write_raw_get_fmt,
+   874		.read_avail = &kx022a_read_avail,
+   875	
+ > 876		.validate_trigger	= iio_trigger_validate_own_device,
+   877		.hwfifo_set_watermark	= kx022a_set_watermark,
+   878		.hwfifo_flush_to_buffer	= kx022a_fifo_flush,
+   879	};
+   880	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

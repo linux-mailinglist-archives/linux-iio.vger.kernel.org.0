@@ -1,193 +1,111 @@
-Return-Path: <linux-iio+bounces-9741-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9744-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189B397ED5F
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Sep 2024 16:51:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C402097ED69
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Sep 2024 16:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85D7B1F22153
-	for <lists+linux-iio@lfdr.de>; Mon, 23 Sep 2024 14:51:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD15281BC8
+	for <lists+linux-iio@lfdr.de>; Mon, 23 Sep 2024 14:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A17199E9D;
-	Mon, 23 Sep 2024 14:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9E119ABAB;
+	Mon, 23 Sep 2024 14:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="LU9eZzdq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FSqtbZOL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B79978283
-	for <linux-iio@vger.kernel.org>; Mon, 23 Sep 2024 14:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F124126BFE;
+	Mon, 23 Sep 2024 14:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727103065; cv=none; b=iIJ5u3GMJgXC9dPLRSb2XAIG59RXoVybpaSz8bMe+nmG735OXPFx/js19BEzl1IRF6CBUCHBIWRuvfeN7gq3mJC1EJZmp9jwtaw1JSoYXDhwrOgPfL+pcOEf2+wjE2t3gyPly7ZU71B4B7xcucVyf03Zz83xjVc/atSu5g8WDPM=
+	t=1727103211; cv=none; b=PDNm81OyhDvpjqwDx5APYKDCOLZwwQVTi9jZV5v7XW0GR2PX/8REH+4kVSfqKAAaizfzx7rXYbJNcTAFjTT1Dg8JQJcM/KuQxIbJC56FHQdd8N575l0E8tEs7vWntFCmyMprWCehSgjZzmNoS9tx4oVCerzLEpcZY+YHJuWuYcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727103065; c=relaxed/simple;
-	bh=BsjiBnqrAUoClTsN7+h6hJtOPsIDoWFHkgfUY8gNaSQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JQ1+u0sN/hi75270gzQzq1inEoqjtzu1SNk8CV+x1vpuj+qht0IE04+FV1qhDFrj9KuhzkTftiZqB06pt8IlWY1km7+J3tWjbeQVo2WbPTwvhvin6z84nDY6oEUb882l4ds7VLauhMbeMxaSFCqn0+0zMVygNHGE3L7/KWi0F6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=LU9eZzdq; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2f75aaaade6so45566551fa.1
-        for <linux-iio@vger.kernel.org>; Mon, 23 Sep 2024 07:51:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727103061; x=1727707861; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O4OUNFjDByLq9FRjOjUg0G9EEfy30+IfreUniUhssi4=;
-        b=LU9eZzdq8W7MCX45vErNuHSMrDIXqCUBmRx7Y/TgbuYdVBlektvf7IgtMirUwyUA49
-         Kqjtrn34SFnQILqiFyRaiNVSnc6i2sGr2AvmKRrlJroOk5SM6B50cmEK2zaHoLItnWHi
-         1B/atNWXX1ydTV7JTmyT68vfzSKwqcpg3NxO5WHsD5DqItfDJXcbQBtoBmNiq5uHH0vH
-         dx8sGw1T6aZ2X5c826/jVe8W6hUTAaJ/ywOjAe/K6WM9ikztlmZp4QCRqt+/1WRrUCNo
-         kYmgQ2VfUwTBh7ZeNVu5+mv2mjHr3Fkja1psmnwR5/5eMH7sOc39tmdFJtIW13f/v3E/
-         mvRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727103061; x=1727707861;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O4OUNFjDByLq9FRjOjUg0G9EEfy30+IfreUniUhssi4=;
-        b=XLyhdARLCvX9XOmk/yh66ZraQB63/+TRQkUNvr9lzxUvRpM2W6OqzqFOFz50HckTJb
-         MsALP12DaNibyP3WY9cmb51P+wWvsNAk21RJLQdNSzb0JUkL8QrznsRbk1Z52J+KPch0
-         P2dyt8bKSvxU+SFJLbk7eB2BIxgH11e4zYxRO00T9UuSzV0iG6LKqxr+qKPcvqq+6QME
-         pQMPLEwUVZ4rQnC73EApXI4TcTXxVOm6gXso6XXfxlgvxMiYFib6fIZeTDqafB90y3AK
-         uIsW5hOLFVR5zw0No9uOa/DBwVKYiGBPd5AykJZOFw0JmWaC6dIXBi3Ql2umVPdW1T5X
-         063g==
-X-Gm-Message-State: AOJu0YysH9F8puDavau4Iqdha0gc7vnjDpDMYxoUwHjWCy/z9UOk+tIp
-	Zo1J5mwYboMrC+bX9qiqC19wcL1xDp0XcIc/mbiqzweiamM9GCL/esWXihjXNvFcq4locfyjhZn
-	BGOj7TY4p8Jo2f+M5LAlZwRfKKdUqQH71IfMwAA==
-X-Google-Smtp-Source: AGHT+IHc9xA0AFD7Yfw//MelyGncj9IdZ6HsoEM6nE1m1oiGo77DmPCbqw5ewHz2iMAEDz2rJOzQ4D6MhH5h66Sfe9U=
-X-Received: by 2002:a05:651c:54b:b0:2f7:631a:6e0d with SMTP id
- 38308e7fff4ca-2f7cc365e12mr62173071fa.12.1727103061396; Mon, 23 Sep 2024
- 07:51:01 -0700 (PDT)
+	s=arc-20240116; t=1727103211; c=relaxed/simple;
+	bh=nKwqZC0rEOeleKnqcEnAwn2FC3PO/cMvKnG1Hs4oV0k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Rq3FEuxynKqwjHgCZ0gT/JtiWpjQ7diELI8Y3tWEtrFrUtVERJEECK7tvm7xfFPZNO5n0gqz06RW2u6p+lhNgDdPrPxRtwxzKT98lXqW0h8TswwFzr4eRcLW0H1n0Fdxlf+3eTJX2usBrURqlMXyUwC20qUJUkS6EmvhHAuaXs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FSqtbZOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B8C0EC4CEC4;
+	Mon, 23 Sep 2024 14:53:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727103210;
+	bh=nKwqZC0rEOeleKnqcEnAwn2FC3PO/cMvKnG1Hs4oV0k=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=FSqtbZOLQe7WZ6y4IYs8FUyiAm8Z2GUVTPZI4BMxHpB+3b/ED8izMku9uNHyeUwT5
+	 49hC3cFMqVVC6QCJHvCFAlrZ3eW9XWy/tXj/fFGGEL9IUwTRrqQrx9xiGCKwnZk95n
+	 Zq0pyiBgUZxTDF/f2F8fyAXN654fXrMEkhiQjXBKO1tB7YvsvrIgAP/9s8jA5SV5wd
+	 9APdYJm5ntKKLDg1l2mpDP9zfokBN7hxH1VD7WGcteIOVSKY8rlQKvHHHbepgJOO6M
+	 516tQp39L+m3n9MDr1aPSfd7ga8hoR+gqvh/3dtAXoSwdjhiAJZsQ272z5BchRY15S
+	 j3vX4Dek6LioA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1D0ECF9C6F;
+	Mon, 23 Sep 2024 14:53:30 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Subject: [PATCH v2 0/2] Add support of IAM-20680 HP & HT
+Date: Mon, 23 Sep 2024 16:53:20 +0200
+Message-Id: <20240923-inv-mpu6050-add-iam20680-ht-hp-v2-0-48290e0b9931@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240919130444.2100447-1-aardelean@baylibre.com> <20240919130444.2100447-2-aardelean@baylibre.com>
-In-Reply-To: <20240919130444.2100447-2-aardelean@baylibre.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 23 Sep 2024 16:50:49 +0200
-Message-ID: <CAMknhBFso4RXhhLSN_x1JEDCi70y-2BDVHKAzuh=bp7dt7dgxA@mail.gmail.com>
-Subject: Re: [PATCH v7 1/8] iio: adc: ad7606: add 'bits' parameter to channels macros
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org, 
-	robh@kernel.org, lars@metafoo.de, michael.hennerich@analog.com, 
-	gstols@baylibre.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOCA8WYC/x3NwQrCMAyA4VcZORsI6VasryIeMpvZHFZLq0MYe
+ /cVj9/l/3doWk0b3IYdqm7W7J07+DLAM0l+KVrsBiYeKbBDyxuu5etpIpQY0WRl8lfC9MFUcJl
+ kZAk+ODdDj5Sqi/3+g/vjOE4Vr5wRcAAAAA==
+X-Change-ID: 20240923-inv-mpu6050-add-iam20680-ht-hp-f5a42a96933b
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727103209; l=1076;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=nKwqZC0rEOeleKnqcEnAwn2FC3PO/cMvKnG1Hs4oV0k=;
+ b=+fg/gqi4YuYK/P3eSCPIUczNFoHJgDxTpEbozIsYbMS2ZVEdzJv34mt4OWjCG4ILzbcwn6yOl
+ n0r6nREKFjiC/Roz6feDjXRkBS/PTLDmWG++uhSXLC6XbDkd33uH/Uq
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 
-On Thu, Sep 19, 2024 at 3:04=E2=80=AFPM Alexandru Ardelean
-<aardelean@baylibre.com> wrote:
->
-> There are some newer additions to the AD7606 family, which support 18 bit
-> precision. Up until now, all chips were 16 bit.
->
-> This change adds a 'bits' parameter to the AD760X_CHANNEL macro and renam=
-es
-> 'ad7606_channels' -> 'ad7606_channels_16bit' for the current devices.
->
-> The AD7606_SW_CHANNEL() macro is also introduced, as a short-hand for IIO
-> channels in SW mode.
->
-> Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
-> ---
+Add support of IAM-20680 HP & HT variants. These chips have better
+hardware specs and a bigger FIFO while retaining full compatibility with
+IAM-20680.
 
-...
+Changes for v2:
+* Send patches to the correct list (devicetree was missing)
 
-> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-> index 6649e84d25de..204a343067e5 100644
-> --- a/drivers/iio/adc/ad7606.h
-> +++ b/drivers/iio/adc/ad7606.h
-> @@ -8,7 +8,7 @@
->  #ifndef IIO_ADC_AD7606_H_
->  #define IIO_ADC_AD7606_H_
->
-> -#define AD760X_CHANNEL(num, mask_sep, mask_type, mask_all) {   \
-> +#define AD760X_CHANNEL(num, mask_sep, mask_type, mask_all, bits) {     \
->                 .type =3D IIO_VOLTAGE,                            \
->                 .indexed =3D 1,                                   \
->                 .channel =3D num,                                 \
-> @@ -19,24 +19,26 @@
->                 .scan_index =3D num,                              \
->                 .scan_type =3D {                                  \
->                         .sign =3D 's',                            \
-> -                       .realbits =3D 16,                         \
-> -                       .storagebits =3D 16,                      \
-> +                       .realbits =3D (bits),                     \
-> +                       .storagebits =3D (bits) > 16 ? 32 : 16,   \
->                         .endianness =3D IIO_CPU,                  \
->                 },                                              \
->  }
->
->  #define AD7605_CHANNEL(num)                            \
->         AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW),     \
-> -               BIT(IIO_CHAN_INFO_SCALE), 0)
-> +               BIT(IIO_CHAN_INFO_SCALE), 0, 16)
->
-> -#define AD7606_CHANNEL(num)                            \
-> +#define AD7606_CHANNEL(num, bits)                      \
->         AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW),     \
->                 BIT(IIO_CHAN_INFO_SCALE),               \
-> -               BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO))
-> +               BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), bits)
->
-> -#define AD7616_CHANNEL(num)    \
-> +#define AD7606_SW_CHANNEL(num, bits)   \
->         AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SC=
-ALE),\
-> -               0, BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO))
-> +               0, BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), bits)
-> +
-> +#define AD7616_CHANNEL(num)    AD7606_SW_CHANNEL(num, 16)
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+---
+Jean-Baptiste Maneyrol (2):
+      dt-bindings: iio: imu: mpu6050: Add iam20680ht/hp bindings to mpu6050
+      iio: imu: inv_mpu6050: add support for IAM-20680HT/HP
 
-It looks like the AD7616_CHANNEL macro is no longer used, so can be
-dropped. Or alternately, don't change the lines below to use
-AD7606_SW_CHANNEL.
+ .../bindings/iio/imu/invensense,mpu6050.yaml         |  5 +++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c           | 20 ++++++++++++++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c            | 10 ++++++++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h            |  4 ++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c            | 10 ++++++++++
+ 5 files changed, 49 insertions(+)
+---
+base-commit: 1504ee03b6e48187348d20f6efc74e7d93855728
+change-id: 20240923-inv-mpu6050-add-iam20680-ht-hp-f5a42a96933b
 
-With either of those changes:
+Best regards,
+-- 
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
 
->
->  /**
->   * struct ad7606_chip_info - chip specific information
-> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
-> index 62ec12195307..e00f58a6a0e9 100644
-> --- a/drivers/iio/adc/ad7606_spi.c
-> +++ b/drivers/iio/adc/ad7606_spi.c
-> @@ -67,14 +67,14 @@ static const struct iio_chan_spec ad7616_sw_channels[=
-] =3D {
->
->  static const struct iio_chan_spec ad7606b_sw_channels[] =3D {
->         IIO_CHAN_SOFT_TIMESTAMP(8),
-> -       AD7616_CHANNEL(0),
-> -       AD7616_CHANNEL(1),
-> -       AD7616_CHANNEL(2),
-> -       AD7616_CHANNEL(3),
-> -       AD7616_CHANNEL(4),
-> -       AD7616_CHANNEL(5),
-> -       AD7616_CHANNEL(6),
-> -       AD7616_CHANNEL(7),
-> +       AD7606_SW_CHANNEL(0, 16),
-> +       AD7606_SW_CHANNEL(1, 16),
-> +       AD7606_SW_CHANNEL(2, 16),
-> +       AD7606_SW_CHANNEL(3, 16),
-> +       AD7606_SW_CHANNEL(4, 16),
-> +       AD7606_SW_CHANNEL(5, 16),
-> +       AD7606_SW_CHANNEL(6, 16),
-> +       AD7606_SW_CHANNEL(7, 16),
->  };
->
->  static const unsigned int ad7606B_oversampling_avail[9] =3D {
-> --
-> 2.46.0
->
 

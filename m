@@ -1,293 +1,249 @@
-Return-Path: <linux-iio+bounces-9751-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9752-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2A1984533
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2024 13:51:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF1F9845E4
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2024 14:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49AD31F24023
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2024 11:51:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB4B9B21E20
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2024 12:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8255419B3E4;
-	Tue, 24 Sep 2024 11:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5081B1A704B;
+	Tue, 24 Sep 2024 12:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="X8R5lBmU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cBG385Wo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2088.outbound.protection.outlook.com [40.107.117.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCA312A14C;
-	Tue, 24 Sep 2024 11:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.117.88
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727178660; cv=fail; b=ofS3me+gVrP4CGfpSs/pPzdcjNhqL2mLQf4LE+MnD8NxvXbyv7fw3hyVT5LK41Y4wzDRle1dBGokMkDa3kI8zOSyJJ70A2KAafgLSDzduGL6CeyABcC7HEi5dQHjTiggeJA1NyKZWcpDYM05xL9RrZZqCM90uQuaEvi1VeNgCTc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727178660; c=relaxed/simple;
-	bh=GMtDNDnIFL12VaSgkBSOMP8B0Kf9+bGUIdw8u3JW2LY=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Jvq4s4vEoJ5jUKJ4I1ZYAlp2QwBaInQd06H71bC+cPntytyRPmbowsi2mq3ULmkrqxZ/GLxUZo22F7dF/2RwjDwMp8TMnaOJP8x0LKLdd/C1/5QH5pIibli6xFA0aJ5cJzWhq3tiwCFcZUXkBkg3OKMZl/Y5udP0i5CddafELzE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=X8R5lBmU; arc=fail smtp.client-ip=40.107.117.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FWxjZo2zUAAhtg8gYVFPFrPm25KKYO5uJQ28XD2awYsoq9aaSgJOxrW6nwt+u2gwAvxBXVmrJwDIlLHb4AmiQ3JJbbEMMFsWrJvGibj7QR2Pys3AxBeO4XfhiMdDwSOLbxE+hG3VDyuPVqu02a3HsG3SMcJr4j2VNO4P0XdtdgLS6FONnSsywoLTaw5wVlrhU1DF5pi94GvCiCgMEszuNLcWv83H43jWWX9vQFbOWmv9Mz0c9lwW4ib1pRzED4LwZiNEZJcn9lqf2o/p1hdsEEW4YNSpZjQ9mJ9ORximZyURZwMs6e6dWiLKwLuboZLYiBCHZiFAHMl4MIMToqMYxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M6HcX+ZwQjCnDfPoRwcGkcjBOc4XTFzWA8VebOTo1Mo=;
- b=WJSqO08i9VWEDGUUYLs//bL0DbSrx5QDwVSRcjH20HA3Fu06gYJGg6aVUDht6i20oyaXg6yAD0OMKOtTjc9Pom6ESgyqY28KG1qEv8xOdXzf7kkjN6MRdOhxdrKQjNdSdOr03Y857LvqtIPj/MevlKwN4+5urdtkf9c2kWZIaoI5nsDMo0d42pXmV7yywRZj1+GE3qdJ6OAl+7yze7CXXHFlokaoJpEvQeEIL1TVY5axJOrTUwMW+JjdN1lciXgw9KJh7AmeuNOyGYRh/NBZGidRAlpA2vfXdZhheKUeNIfDOUcozkol4Ru+aUlPq8iFRGqraXj7sD4ZNPTY+zLzPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M6HcX+ZwQjCnDfPoRwcGkcjBOc4XTFzWA8VebOTo1Mo=;
- b=X8R5lBmUtF9o6q3PZJLKkpom4wAng27QF4nPm5k6Q3895UOU53NkRDMjAWwXVY5yV9HJucVa77FD9/tPZB4sPNwbXX/P7QkZuwCC2innSYi/NHvkcmjxf0Zyp2iKnSgwHt9GAee45iP4aPgkk+p99ATwaCDylrM5YPpvWq/2cjNwdI7j+84bq6Ld1LlH6hR7wE1jVPNQ+VlXQKa9RUnFCVwWFrJP2IRUBFQQVcL9mVaAwLFV9aq87sFn+dUWIYN9za0vfkhe8ErwmB9/uwfL+psFhIxY9zFdjyQCYdUpXfkNYKmDsPiHHt0FsVt88e9R8Uf0r3bFynUiFQnnKZXmbA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from KL1PR0601MB4113.apcprd06.prod.outlook.com (2603:1096:820:31::7)
- by TYSPR06MB6471.apcprd06.prod.outlook.com (2603:1096:400:480::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.24; Tue, 24 Sep
- 2024 11:50:54 +0000
-Received: from KL1PR0601MB4113.apcprd06.prod.outlook.com
- ([fe80::7e85:dad0:3f7:78a1]) by KL1PR0601MB4113.apcprd06.prod.outlook.com
- ([fe80::7e85:dad0:3f7:78a1%4]) with mapi id 15.20.7982.022; Tue, 24 Sep 2024
- 11:50:53 +0000
-From: Yan Zhen <yanzhen@vivo.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org,
-	bonbons@linux-vserver.org,
-	jic23@kernel.org,
-	srinivas.pandruvada@linux.intel.com
-Cc: lains@riseup.net,
-	hadess@hadess.net,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	opensource.kernel@vivo.com,
-	Yan Zhen <yanzhen@vivo.com>
-Subject: [PATCH v1] HID: Fix typo in the comment
-Date: Tue, 24 Sep 2024 19:50:05 +0800
-Message-Id: <20240924115005.3130997-1-yanzhen@vivo.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYWPR01CA0043.jpnprd01.prod.outlook.com
- (2603:1096:400:17f::17) To KL1PR0601MB4113.apcprd06.prod.outlook.com
- (2603:1096:820:31::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C533F9D5;
+	Tue, 24 Sep 2024 12:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727180876; cv=none; b=KOh1BJ8fSl7Glw5g6zLpNDMBSsmLSOdbksPtLmOWuvIF2+MRf3HVEB6F8K6k7TSu/H5Lot98HSbN78+qHfslP52dkN6S0DR1Nwku+QoymqEBd7y51LPmQTlJosOBbE2zGzNi+9WZ8SCQRWVj+fS4Ftf7jMQVzej+49+hbyZpKaU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727180876; c=relaxed/simple;
+	bh=ywLGceDCYf4x1vFhs+LV/hfPBu8Rv0mc+L+v9FY7oKk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Yt196lsp45cVkXe7JuCcj/VvWAY/A5ImoGNCn3rh1vCYLaTBza1KX9E7Fr76lKXTLvL1eBQExZQfRPd50HIrffAW6t5/mlpQ7c/akg/gxWtxs8NlRbCNaOkpws8hamA7ll+WI2hLpx0/XYw+0Ye6kUMcSrfSuZZYcMH8xkk1MyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cBG385Wo; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a90349aa7e5so815971166b.0;
+        Tue, 24 Sep 2024 05:27:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727180873; x=1727785673; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ywLGceDCYf4x1vFhs+LV/hfPBu8Rv0mc+L+v9FY7oKk=;
+        b=cBG385WouZeWbaaYWNqg9SQhVk+gpvVIXOS20GER9oCZEu9fGhwXAQfa5Kp/8qbOao
+         ePlga3cwem1O0kQIPHEGZD4rNW37d2KVaES5TvhohgdLNBrRjDqYiiORxSJNEIaQy1Zg
+         dFmCygJ8gzJ4TpFvr33iGpoy29z05sZn1JujWGFDYEqLArNvQha9KaMdKDFvKRPSC3qB
+         UmdpHsHQuJSJd9g6cTXpgvIb0hWkuN8/tOmKHpV5CDr+ys0vUor/vCqOdM5O/STCEcKl
+         GbeV6mLPf8sV9lL6+vJLhJhkHzueNc1lPoadJXSWC4cwtvSHaoMVigw6Z5UhnYqNGg9L
+         +4vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727180873; x=1727785673;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ywLGceDCYf4x1vFhs+LV/hfPBu8Rv0mc+L+v9FY7oKk=;
+        b=Q5fJ8FQ0Ftm6doiOwlRoY6rcAiPgC2I//xkoop+RrzGvwq7vSIkYwRyt2skZJ2mnsb
+         J56pFoTLL22xc9Obl55hZHOY2xTT7e97TCJwru4WwT8d0tzPqypy/dS3A97sbpfcIX08
+         bB2CEVtURWyQ3RN5SoYvOVp3fV320+ul5lle4xImlkwfcT+3cRPQhBXYx9TEZuEpnOcS
+         MAlacAHhZu0unXGRkv4dXTOx/PZdenYT2saKNwsMP+xaN+o97t8GupccZnyREQAY0CHL
+         AvA71kw/8iObpuUYy4QUQoXBC/MImsu8Mr3C5zZse1CM1OoEjIkVTOhL4yKFRUHouD1K
+         xeQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXRQXcyn6pxQVv1Yu2TV9IiTlMfg9mg0I+1yQPqf59Ad2g0DBwbSAO6wT8supIvjWUHOmR8QSmG48w@vger.kernel.org, AJvYcCVzDgPZTBsvl0X47URz9mqBEWMtTrB4tCNX1oSOaUHfI0sTfh+Yw6tf8uASNu3TCs1JdvLFiDAGFyPm@vger.kernel.org, AJvYcCX8CMZgEHEcMnpZBqu/xD1it15iP5cyPkNmudzIL3PpVNc4XIM8UBr4qovS8vQ0VbBBBp1kN6VXd1H7mPdk@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9pQJiHx3ZynYqlMS5BcLBca6dyWSNYtSk3MAtCQazhxbmetx+
+	ITcMoFq6QLxxE2HG4CV6iMBCz55zXrGQ3NU7qOuBRnkzqcrIs8d+
+X-Google-Smtp-Source: AGHT+IGC8mmHOtQXnCx9XFDEgguEDQcdTSD4aC6zAZs1r6ZrSKYGlkIjk8hEZUHlw5byqkTSB3wEZg==
+X-Received: by 2002:a17:907:982:b0:a86:b923:4a04 with SMTP id a640c23a62f3a-a90d5924f6emr1525492166b.50.1727180872327;
+        Tue, 24 Sep 2024 05:27:52 -0700 (PDT)
+Received: from ?IPv6:2001:a61:341e:1201:c434:b5b1:98a6:efed? ([2001:a61:341e:1201:c434:b5b1:98a6:efed])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9392f340a0sm78853366b.38.2024.09.24.05.27.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Sep 2024 05:27:51 -0700 (PDT)
+Message-ID: <0279203b6cd9f1312d9c03654c262c04ac12fbd9.camel@gmail.com>
+Subject: Re: [PATCH v3 04/10] dt-bindings: iio: dac: ad3552r: add io-backend
+ support
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>, Angelo Dureghello
+	 <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Jonathan
+ Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ dlechner@baylibre.com
+Date: Tue, 24 Sep 2024 14:27:51 +0200
+In-Reply-To: <e8af0f3f-a09c-42d7-b8ca-dd633539af73@kernel.org>
+References: 
+	<20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-0-a17b9b3d05d9@baylibre.com>
+	 <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-4-a17b9b3d05d9@baylibre.com>
+	 <gojq6ardhvt6vcs2kawdhdn2cj6qbpzp4p5mjjgwsypuatm5eo@3u6k4q7le46s>
+	 <418a8a9b-3bcf-4b8f-92a0-619a3bf26ab5@baylibre.com>
+	 <e8af0f3f-a09c-42d7-b8ca-dd633539af73@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: KL1PR0601MB4113:EE_|TYSPR06MB6471:EE_
-X-MS-Office365-Filtering-Correlation-Id: a88883c5-d201-4b26-05cf-08dcdc8f2486
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KL70a3MpL5kZcgHIUjnxckeiILjsGcFpnxf5QEgutMT/XBhLZcOJYYf9tVYE?=
- =?us-ascii?Q?p2BaIRrUiP3FMiCpu7GMwfKOsDl/ZJ4UBbysMp1MIRGWgQsl0Ka6n1qXB3/6?=
- =?us-ascii?Q?BVJ4rjhwlY4YryYm7fH1ky5fAbRs8VDlj+9DfftGmAjNSEiJcn3A1igCKRoc?=
- =?us-ascii?Q?j5SJwrJssILYw8xP81NKCBerCp9xkY8kT3OuM+BVha7uCI3ZybqmUxydMDxg?=
- =?us-ascii?Q?ky1wKD5Fh8/Ldvdt5qzPHfnWiEI9JMv6e2DP4S4SeBd0bpQSCZWLTmZ/VDwt?=
- =?us-ascii?Q?vZs8z2F+QFv5M4yTDtfG/rI7HN8oquD1RgCciQIQF9nrr5yX9a9gOKbN0keF?=
- =?us-ascii?Q?0XwuXbBHSXayIyo6QcWjsYqZOL5JdYD476c/j3hNCTNruY7gp69wthgfN5lg?=
- =?us-ascii?Q?2SylVfSr5befO+JJlc4xaRO71/RJriHxVtndgzmA/ZgJ6ZUdgQP/GFEEeH9O?=
- =?us-ascii?Q?Iycw0NKIgJ5HfmzCUTLonDZllTjpHEe7vpgvCthEzEQJ6YWOT0obo0VDq5o9?=
- =?us-ascii?Q?s/C6bRUVdrafOnACnpaEkDtmeiuLJDsOQOKDjYnYz6n+TAiv2Tp0ekzf0RD2?=
- =?us-ascii?Q?p5ms+6YAnd0RDh9ybsTeeZ80UwDsoSvsVfpkVjCJnrpC9S69sM2CV/c2S2qc?=
- =?us-ascii?Q?9EjjoASeWIv6HX8scXYgJrQqd7WVvD3ITLFkBgO7H8xbxQslBCaawZuvhwqs?=
- =?us-ascii?Q?mCggMARBNj3mHU+/LQoZ9jBJpB37YRtm2QqrAxUVNkYH0F/2C6K7SoHNOlMM?=
- =?us-ascii?Q?dAYtNMp1Y10nVX+0tuIcTskQ1FmK5daLYwgRmM71D2VY9v9HOOlZbm7PW+pL?=
- =?us-ascii?Q?qc/z3hVnTSa9qjrhvkkzPwky1jSbtKlFhHExQFPhhhZUtMG34/WkAEDeZige?=
- =?us-ascii?Q?breQu0Rywo33LWt7mMYKOY/m1b4KaLKInF0uhkDfDoaqUAgof7f58IptN/sP?=
- =?us-ascii?Q?eypxKyxDbp0YiK4xXoMuU4g9y0eozkwFXJFmcgHf04JJKSXSGAlpCsOOJQkX?=
- =?us-ascii?Q?IVqHq02PNXWU3sBybdZezGuAspGInQ6ORi5VMupfYpzuaWOiQmwUA5BSbO0t?=
- =?us-ascii?Q?6NI9eSvDMo9rBy5d7r6rl4XxhiHDGpTJwcrRX4uteN+DrL3LqZGkoF5bI55w?=
- =?us-ascii?Q?Q98zlBCllw/exQZxzFfVl3iH5MNHLowmZOgddkNRBB3nxgoNwYj4SFQeJ/yh?=
- =?us-ascii?Q?UmmLEFxyQfxGzlq5oOXpYqL8x57TYERSHt6c/mIP9YasPmF58ghQ3GDYHC3j?=
- =?us-ascii?Q?imb1pY5m2EgMJ1z/+qhjo7cvFswoCBisx+7ZH3MasFXIYwY43O3uwyjvFcS4?=
- =?us-ascii?Q?JFZsRIbJZlsQCpB1RIbF76/SvxsRM6TsWa8KsRJ4iwf6lQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR0601MB4113.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?g8dFz7Jb0aB98kN7ZHxf6LWYwOSidI3STBrRSf1HSURA0JauCdf2WDfwyfZS?=
- =?us-ascii?Q?JPBwFdE4LxcRhRHX4k1gxWtjmKXbHa2EmvdsyS84T0B6/fQUtsHCbQbIwo3a?=
- =?us-ascii?Q?AdX+OeNHWwLBs5+31HC+PbYNAcFYakjDEu8Bsd9U78iFZXlo9AxmHY0DZOPm?=
- =?us-ascii?Q?RhxmZLV4y2miciFXrYY6pgGdMfjL2HOMggD8B4gUkU4yCp1X6VZuqhKOBh9N?=
- =?us-ascii?Q?QLZpQaLB6U8QWm0uCQlyfZElXDutskAVCXc1eEUsXD4n7k+HNmNZuz0lK+q5?=
- =?us-ascii?Q?geGiNu7kwcAqqZERIeTUb252cnz8199ZGcwxzaq37NYnsP2EyZDrZ5v3xsmP?=
- =?us-ascii?Q?AFvQWb08f/mlY7hI11a0Dn4kIU7CQE3SJQ9zB0Q86p4XQesYCGNs9CIvFXWb?=
- =?us-ascii?Q?7tz9x+TOUVuJ5r+fJZBi8Oi4AoB1WFBoU+h6O6muEZMkgmWktIKp4iAiihIT?=
- =?us-ascii?Q?ARWqpCdH2lyO0gU5JVKGmqeg1TjEDUQZUBeSYGOApA/na/jIPGz8Zc5u/up6?=
- =?us-ascii?Q?J84ENRHzIvnsJUa8JIUUo/w3z7YqrnqblnJX9h44hjyYESvKIWEp/NIvE8xY?=
- =?us-ascii?Q?TVe6DdPomgLNpzoJkxhjcDkzu5aXdsWSKkSF+pnp9AtKgJxvvyUKS9LleRrQ?=
- =?us-ascii?Q?wiogxermQDOf5qjqlXHxJsZTJg7iau8XuLNIoCGIdBzk+/xk7obLeHBmibJG?=
- =?us-ascii?Q?Ea0ZNZgccd9tMKqsKrjXJ5iYmTJqfTL7p5psLgfWnEF6Lkd9H5RedYqjaqIw?=
- =?us-ascii?Q?faw/J7N4OyuEQYLEVOaCchndkKJo5X8ldN7uY3NXe7rmrwVucojhAsWP5FIG?=
- =?us-ascii?Q?fM8a/dmsTGg++rufR7itvS1PxY2bvtwls+WqHU9Kgu7wNrUaYwU9bEk2D4lv?=
- =?us-ascii?Q?HXqnUKYLRWvuXV9uHNOi8kWDbcd2qKfCJxoms1HZfRXVfgimIbe1tPolShoX?=
- =?us-ascii?Q?RpuETmYcewc/0C9RsQ6/XhCuGQN2Y6D4f7WbPgo9bWQocn+NyISahSM89Zyx?=
- =?us-ascii?Q?wdh+N0Elchhi5b3q7xRsYqBAwJZOgrUwJs/Xj8idfyDPVxG3izD9hxVF5QIP?=
- =?us-ascii?Q?GlEfdQy+kUKS5yDjaaZWQ9iM8p+RrdO1N4xykSaKE2svmIczJ10DQLY6sIih?=
- =?us-ascii?Q?94PLK6x/cMgKrzfXCM634vLfxmXqcyKLUBE3I7a0bx66YiKrutQeaCKINAtz?=
- =?us-ascii?Q?jHQimIbo+XWfr5vvy1MRbVFOh2JzXzKot7ZQie+4UQ3zFTEcOXg1NKg/K8lg?=
- =?us-ascii?Q?OjWdzGMQa4yJE1+p069YOHcYfgrhH4OlLnnFW88ZLf1GyOaIJufBzBzRLYey?=
- =?us-ascii?Q?Jgz9AQSOYKqxZdxqOfeX8Edf9p9gVhLweIph/ZiVfVaaUJNH/nDIuUFhgGsf?=
- =?us-ascii?Q?u/eS8zJyriW9G6qlCI2b381auyybBhRvfkZxvUjYucmwskoKmzT6Qn4+axmg?=
- =?us-ascii?Q?TYAG3OzcJsTt/i2eDz9MbGTz+6kJWot0Ws6qFHbZ+knGow0SoddHqbryFUT0?=
- =?us-ascii?Q?fyjHInJivqpxtsR8SjrxAykemxZ+c11IMsrLsOxAGwsQa/hdB7p1F29iyyeF?=
- =?us-ascii?Q?ybfdFqMsgWtwSef7IhOLdN5uBP299ZjLvUJuEpOt?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a88883c5-d201-4b26-05cf-08dcdc8f2486
-X-MS-Exchange-CrossTenant-AuthSource: KL1PR0601MB4113.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2024 11:50:53.4030
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dKzizgV6SHUIstiI/SffoyA1Vb2+QA5JbMEGmbljt2ZwXJ+FHpAvo+y3ciZdsK5v8xw6q7d6QmeSYOIjXVQ7+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYSPR06MB6471
 
-Correctly spelled comments make it easier for the reader to understand
-the code.
+On Tue, 2024-09-24 at 10:02 +0200, Krzysztof Kozlowski wrote:
+> On 23/09/2024 17:50, Angelo Dureghello wrote:
+> > Hi Krzysztof,
+> >=20
+> > On 22/09/24 23:02, Krzysztof Kozlowski wrote:
+> > > On Thu, Sep 19, 2024 at 11:20:00AM +0200, Angelo Dureghello wrote:
+> > > > From: Angelo Dureghello <adureghello@baylibre.com>
+> > > >=20
+> > > > There is a version AXI DAC IP block (for FPGAs) that provides
+> > > > a physical bus for AD3552R and similar chips, and acts as
+> > > > an SPI controller.
+> > > >=20
+> > > > For this case, the binding is modified to include some
+> > > > additional properties.
+> > > >=20
+> > > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > > > ---
+> > > > =C2=A0 .../devicetree/bindings/iio/dac/adi,ad3552r.yaml=C2=A0=C2=A0=
+ | 42
+> > > > ++++++++++++++++++++++
+> > > > =C2=A0 1 file changed, 42 insertions(+)
+> > > >=20
+> > > > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.=
+yaml
+> > > > b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+> > > > index 41fe00034742..aca4a41c2633 100644
+> > > > --- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+> > > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+> > > > @@ -60,6 +60,18 @@ properties:
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definitio=
+ns/uint32
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum: [0, 1, 2, 3]
+> > > > =C2=A0=20
+> > > > +=C2=A0 io-backends:
+> > > > +=C2=A0=C2=A0=C2=A0 description: The iio backend reference.
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 An example backend can be found at
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > > > https://analogdevicesinc.github.io/hdl/library/axi_ad3552r/index.ht=
+ml
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +
+> > > > +=C2=A0 adi,synchronous-mode:
+> > > > +=C2=A0=C2=A0=C2=A0 description: Enable waiting for external synchr=
+onization signal.
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Some AXI IP configuration can imple=
+ment a dual-IP layout, with
+> > > > internal
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wirings for streaming synchronizati=
+on.
+> > > > +=C2=A0=C2=A0=C2=A0 type: boolean
+> > > > +
+> > > > =C2=A0=C2=A0=C2=A0 '#address-cells':
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const: 1
+> > > > =C2=A0=20
+> > > > @@ -128,6 +140,7 @@ patternProperties:
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+- custom-output-range-config
+> > > > =C2=A0=20
+> > > > =C2=A0 allOf:
+> > > > +=C2=A0 - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > > > =C2=A0=C2=A0=C2=A0 - if:
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 properties:
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible:
+> > > > @@ -238,4 +251,33 @@ examples:
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 };
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+> > > > +
+> > > > +=C2=A0 - |
+> > > > +=C2=A0=C2=A0=C2=A0 axi_dac: spi@44a70000 {
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,axi=
+-ad3552r";
+> > > That is either redundant or entire example should go to the parent no=
+de,
+> > > if this device is fixed child of complex device (IOW, adi,ad3552r can=
+not
+> > > be used outside of adi,axi-ad3552r).
+> >=20
+> > ad3552r can still be used by a generic "classic" spi
+> > controller (SCLK/CS/MISO) but at a slower samplerate, fpga
+> > controller only (axi-ad3552r) can reach 33MUPS.
+>=20
+> OK, then this is just redundant. Drop the node. Parent example should
+> contain the children, though.
+> >=20
+> > >=20
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44a70000 0x1=
+000>;
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dmas =3D <&dac_tx_dma 0=
+>;
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma-names =3D "tx";
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #io-backend-cells =3D <=
+0>;
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&ref_clk>;
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #address-cells =3D <1>;
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #size-cells =3D <0>;
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dac@0 {
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ compatible =3D "adi,ad3552r";
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ reg =3D <0>;
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ reset-gpios =3D <&gpio0 92 0>;
+> > > Use standard defines for GPIO flags.
+> >=20
+> > fixed, thanks
+> >=20
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ io-backends =3D <&axi_dac>;
+> > > Why do you need to point to the parent? How much coupled are these
+> > > devices? Child pointing to parent is not usually expected, because
+> > > that's obvious.
+> >=20
+> >=20
+> > "io-backends" is actually the way to refer to the backend module,
+> > (used already for i.e. ad9739a),
+> > it is needed because the backend is not only acting as spi-controller,
+> > but is also providing some APIs for synchronization and bus setup suppo=
+rt.
+>=20
+>=20
+> But if backend is the parent, then this is redundant. You can take it
+> from the child-parent relationship. Is this pointing to other devices
+> (non-parent) in other ad3552r configurations?
+>=20
 
-Fix typos:
-'mninum' -> 'minimum',
-'destoyed' -> 'destroyed',
-'thridparty' -> 'thirdparty',
-'lowcase' -> 'lowercase',
-'idenitifiers' -> 'identifiers',
-'exeuction' -> 'execution',
-'fregments' -> 'fragments',
-'devides' -> 'devices'.
+The backend is a provider-consumer type of API. On the consumer side (which=
+ is the
+driver the child node will probe on), we need to call devm_iio_backend_get(=
+) to get
+the backend object (which obviously is the parent). For that, 'io-backends'=
+ is being
+used. We do have another API called __devm_iio_backend_get_from_fwnode_look=
+up() that
+could be used with the parent fwnode and should work. However that was only=
+ added to
+keep backward compatibility in the first user of the IIO backend framework =
+and it's
+not really meant to be used again. We are aware this is awkward at the very=
+ least [1]
+but hopefully still acceptable.
 
-Signed-off-by: Yan Zhen <yanzhen@vivo.com>
----
- drivers/hid/hid-asus.c                      | 2 +-
- drivers/hid/hid-logitech-hidpp.c            | 2 +-
- drivers/hid/hid-picolcd_fb.c                | 2 +-
- drivers/hid/hid-sensor-custom.c             | 2 +-
- drivers/hid/hid-steam.c                     | 2 +-
- drivers/hid/intel-ish-hid/ishtp-fw-loader.c | 2 +-
- drivers/hid/intel-ish-hid/ishtp/client.c    | 2 +-
- drivers/hid/usbhid/hid-core.c               | 2 +-
- 8 files changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index a4b47319ad8e..506c6f377e7d 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -1183,7 +1183,7 @@ static const __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 
- 	if (drvdata->quirks & QUIRK_G752_KEYBOARD &&
- 		 *rsize == 75 && rdesc[61] == 0x15 && rdesc[62] == 0x00) {
--		/* report is missing usage mninum and maximum */
-+		/* report is missing usage minimum and maximum */
- 		__u8 *new_rdesc;
- 		size_t new_size = *rsize + sizeof(asus_g752_fixed_rdesc);
- 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 0e33fa0eb8db..d6d066c89c0b 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -2522,7 +2522,7 @@ static void hidpp_ff_work_handler(struct work_struct *w)
- 			/* regular effect destroyed */
- 			data->effect_ids[wd->params[0]-1] = -1;
- 		else if (wd->effect_id >= HIDPP_FF_EFFECTID_AUTOCENTER)
--			/* autocenter spring destoyed */
-+			/* autocenter spring destroyed */
- 			data->slot_autocenter = 0;
- 		break;
- 	case HIDPP_FF_SET_GLOBAL_GAINS:
-diff --git a/drivers/hid/hid-picolcd_fb.c b/drivers/hid/hid-picolcd_fb.c
-index 83e3409d170c..f8b16a82faef 100644
---- a/drivers/hid/hid-picolcd_fb.c
-+++ b/drivers/hid/hid-picolcd_fb.c
-@@ -296,7 +296,7 @@ static void picolcd_fb_destroy(struct fb_info *info)
- 	/* make sure no work is deferred */
- 	fb_deferred_io_cleanup(info);
- 
--	/* No thridparty should ever unregister our framebuffer! */
-+	/* No thirdparty should ever unregister our framebuffer! */
- 	WARN_ON(fbdata->picolcd != NULL);
- 
- 	vfree((u8 *)info->fix.smem_start);
-diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-index 66f0675df24b..617ae240396d 100644
---- a/drivers/hid/hid-sensor-custom.c
-+++ b/drivers/hid/hid-sensor-custom.c
-@@ -946,7 +946,7 @@ hid_sensor_register_platform_device(struct platform_device *pdev,
- 
- 	memcpy(real_usage, match->luid, 4);
- 
--	/* usage id are all lowcase */
-+	/* usage id are all lowercase */
- 	for (c = real_usage; *c != '\0'; c++)
- 		*c = tolower(*c);
- 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index bf8b633114be..6439913372a8 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -253,7 +253,7 @@ enum
- 	ID_CONTROLLER_DECK_STATE = 9
- };
- 
--/* String attribute idenitifiers */
-+/* String attribute identifiers */
- enum {
- 	ATTRIB_STR_BOARD_SERIAL,
- 	ATTRIB_STR_UNIT_SERIAL,
-diff --git a/drivers/hid/intel-ish-hid/ishtp-fw-loader.c b/drivers/hid/intel-ish-hid/ishtp-fw-loader.c
-index e157863a8b25..750bfdd26ddb 100644
---- a/drivers/hid/intel-ish-hid/ishtp-fw-loader.c
-+++ b/drivers/hid/intel-ish-hid/ishtp-fw-loader.c
-@@ -793,7 +793,7 @@ static int load_fw_from_host(struct ishtp_cl_data *client_data)
- 	if (rv < 0)
- 		goto end_err_fw_release;
- 
--	/* Step 3: Start ISH main firmware exeuction */
-+	/* Step 3: Start ISH main firmware execution */
- 
- 	rv = ish_fw_start(client_data);
- 	if (rv < 0)
-diff --git a/drivers/hid/intel-ish-hid/ishtp/client.c b/drivers/hid/intel-ish-hid/ishtp/client.c
-index 8a7f2f6a4f86..e61b01e9902e 100644
---- a/drivers/hid/intel-ish-hid/ishtp/client.c
-+++ b/drivers/hid/intel-ish-hid/ishtp/client.c
-@@ -863,7 +863,7 @@ static void ipc_tx_send(void *prm)
- 			/* Send ipc fragment */
- 			ishtp_hdr.length = dev->mtu;
- 			ishtp_hdr.msg_complete = 0;
--			/* All fregments submitted to IPC queue with no callback */
-+			/* All fragments submitted to IPC queue with no callback */
- 			ishtp_write_message(dev, &ishtp_hdr, pmsg);
- 			cl->tx_offs += dev->mtu;
- 			rem = cl_msg->send_buf.size - cl->tx_offs;
-diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
-index cb687ea7325c..956b86737b07 100644
---- a/drivers/hid/usbhid/hid-core.c
-+++ b/drivers/hid/usbhid/hid-core.c
-@@ -1100,7 +1100,7 @@ static int usbhid_start(struct hid_device *hid)
- 
- 		interval = endpoint->bInterval;
- 
--		/* Some vendors give fullspeed interval on highspeed devides */
-+		/* Some vendors give fullspeed interval on highspeed devices */
- 		if (hid->quirks & HID_QUIRK_FULLSPEED_INTERVAL &&
- 		    dev->speed == USB_SPEED_HIGH) {
- 			interval = fls(endpoint->bInterval*8);
--- 
-2.34.1
-
+[1]: https://lore.kernel.org/linux-iio/20240903203935.358a1423@jic23-huawei=
+/
+- Nuno S=C3=A1
 

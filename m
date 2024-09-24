@@ -1,280 +1,203 @@
-Return-Path: <linux-iio+bounces-9754-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9755-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47EF398476E
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2024 16:14:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198BC9847AF
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2024 16:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63A761C22D79
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2024 14:14:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79C6FB2251F
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Sep 2024 14:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78BD1AAE05;
-	Tue, 24 Sep 2024 14:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1681AAE3B;
+	Tue, 24 Sep 2024 14:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XYw9WTE9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PUX+ZJpZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606C61A4F3E
-	for <linux-iio@vger.kernel.org>; Tue, 24 Sep 2024 14:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1CA1AAE38;
+	Tue, 24 Sep 2024 14:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727187256; cv=none; b=peUNiTb6D0O+g6sRmJSohoUF8cZPTEigPFOimlFMAnlf9bkmFTqpT0Dsli6CNYtYgt4fBvkKBRE70b/aw5e1DR44u33WXV4dbtz1t2cZmgnEjBUZfb3NCzeKwDj23gIHC+KifUmr8bqxC6yzCpdtPgDX+n0wWe+DbTgBAtTcpZw=
+	t=1727188219; cv=none; b=H3/0fzX/X9fACJFH+0ozkI8PE+qMUPr1daWxW0b8Z9FsfiNfHaISxFq9Rp9OC0oweQxMOmbxSf4ifUz5odZ+akUOncYJ1+ApDwTWka5DK8crMKaV11+KpDhO47LB4NtDs3B7BCwp2InQH9PHIkiCQSwMkhHS8LEh9uRm7lRWPJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727187256; c=relaxed/simple;
-	bh=V/PUUsrHTTTW+3zaxNcMjyWj64r3RcrrF4rrOXWDBT4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U9ZiAJKX2nLqnWXYKrvnktmdnyw1K5ahrEw/WYxw+dJwh5rcVX6JihbzJg/h2RBuL7XtubzSiYnYk5ooatt+yCstvjO5DMwp0qqUo2TBABm766PqFGcIxgEsVYFMoEQ8nG8TMy9rlO4XwdKu3bYIk4V1k9YBfeMq85Vk1SyzIlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XYw9WTE9; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42e5e1e6d37so55741635e9.3
-        for <linux-iio@vger.kernel.org>; Tue, 24 Sep 2024 07:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727187253; x=1727792053; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cPqPAIRC4kzpvMVpwleDzWlqXHAHV6tKF2dStYetukg=;
-        b=XYw9WTE9y/XuNELY3ED+zr6P6fOTog7B3YF44ZrTWJbxXQKzCM6psHCqIwPvofXlzc
-         ms5iShVlDWTNLEZEt6rR7VZg615i94Q9AYYblYBuMsZw7y6WaJ1Vbvz+6l1HwoNUThnB
-         ehFoEVbLus2dNtT/RwMMHaKdXPFN2Js1AukRNyHQGSbsjOy0/+kcb6Fv1ejJW3217bCC
-         ssYkkEx6T/hAkW2e552DrCjbSXWtIXLqQ34++NwvueFVX5jUIGSsDDimgOs/kZwcdxTg
-         E9tJV/cPaXA/XRxvkRh1M9hh1sKCTrmumP5vgJDKF+HPro3PoHBRvluPeYJKmR2IXRds
-         PPfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727187253; x=1727792053;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cPqPAIRC4kzpvMVpwleDzWlqXHAHV6tKF2dStYetukg=;
-        b=oyGejIWAYBb6Q0difSzSIecy8biKQ9n/gnJfRhdmCqoO/Kkw6s2A0qP9h2SFTZBonl
-         OACKol4Jlp2l6N9d8TJvwZfZ0cxvSFVJHQYWDVLsiITuuBKOUhoveYcsSECeZ5+oC9k8
-         riF1CeaSmULVtt2j/abLYzyvcUIyyMO0Zdc4bDMIrBToiqxmPftiBtNlZrnzKcxSp8Wm
-         vWJkulIoyRp+PmGFyZQY0qh61qh+tt4YalyxbNbYVEyOq6tGsMiGyFvCZisuhsfbwmsI
-         ugyOsSzUEMEMfFkMFywBhnO4an30L+RJZ83Ib1us+dSoYerKMLaj5Ika6pAakOBBGV+m
-         Umnw==
-X-Gm-Message-State: AOJu0YyqLEuMXdyVXQutuorMdUAbPXvoLloMJPWJH7NTzX3AABJQU4JT
-	gEIkK6PrRXYm6s7eTqdFZLURB8G3uA+VRFTgs+U/xuAfxGfXOovM+ExNLRF2SNE=
-X-Google-Smtp-Source: AGHT+IGSYsWrKVwIe2oOw8UgUxMbvkjKQb/gIym3agpxcBX+5tTzqrrsLc3m+aKpdOUh4SQ0yvSzuA==
-X-Received: by 2002:a5d:47a8:0:b0:374:c6ad:a7c6 with SMTP id ffacd0b85a97d-37a431583e1mr10060570f8f.20.1727187252638;
-        Tue, 24 Sep 2024 07:14:12 -0700 (PDT)
-Received: from [10.2.5.157] (amontpellier-556-1-151-252.w109-210.abo.wanadoo.fr. [109.210.7.252])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e75450ec6sm157838835e9.21.2024.09.24.07.14.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Sep 2024 07:14:11 -0700 (PDT)
-Message-ID: <45f72533-ba1b-4531-890d-63d86a1f0ca4@baylibre.com>
-Date: Tue, 24 Sep 2024 16:11:20 +0200
+	s=arc-20240116; t=1727188219; c=relaxed/simple;
+	bh=KUKFVEdImRFWsRkI52d+Rek5R71IVGKCcFrtLZpAYV0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FQVEjeZJiccTW9qdqK+js2BwADP4As0FBWauuBvCNudGQrGJmgvjuYM0JyYaDoY/TEi00tqKUeHm3kbJusLF5OZcCL/YXgPvoUQvsc8s4+s2Hscx69RJ61CO4gRuD2IsRkGIkdezSduLXi7NEUScHt4/Ii7fJDMAakeMQiFZUj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PUX+ZJpZ; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727188214; x=1758724214;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=KUKFVEdImRFWsRkI52d+Rek5R71IVGKCcFrtLZpAYV0=;
+  b=PUX+ZJpZtEMleWZyI3fB0k898SRlQ9CT99okjB1js1WND97G08WyRwPZ
+   o5yMeYbhxu1/HoHGYUjMev0kGHSTIW4dpgH2vr+aw15qjZJk3e6i0f0Xk
+   pFW9JNt9GISysllITJG4PdLjtyS5ZwG+THwLKsnyNssMXx1jYU7iV8LF5
+   VPmhzHmNUEa4DXkE+yIjvjaDiEU8HLSWBsrD13QS3URSB5nAm3HnYj5e8
+   hs7XIpEOyfo1wn8ynF65pL99VZ7aG0OwxNF43Zr8kyXl0Eetlabi08vR3
+   PrDALNLDEYpojz5beJI63wFjKEAQghquFy3097SVG8XJD0nitiv04NXDG
+   A==;
+X-CSE-ConnectionGUID: bKwehsy0Sbq9J9HB+YP0Ug==
+X-CSE-MsgGUID: kEp9RmgEQYmRue4VkUPlZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11205"; a="29076471"
+X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; 
+   d="scan'208";a="29076471"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2024 07:30:13 -0700
+X-CSE-ConnectionGUID: AQZQqoWVQRi53m9ql9UrMw==
+X-CSE-MsgGUID: YqztbcD7RBaclohObTCMdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; 
+   d="scan'208";a="94771341"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.125.111.9])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2024 07:30:12 -0700
+Message-ID: <363a9d4d002e699ca1a1cd755ad41756ba1e72ba.camel@linux.intel.com>
+Subject: Re: [PATCH v1] HID: Fix typo in the comment
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Yan Zhen <yanzhen@vivo.com>, jikos@kernel.org, bentiss@kernel.org, 
+	bonbons@linux-vserver.org, jic23@kernel.org
+Cc: lains@riseup.net, hadess@hadess.net, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-usb@vger.kernel.org, opensource.kernel@vivo.com
+Date: Tue, 24 Sep 2024 07:30:12 -0700
+In-Reply-To: <20240924115005.3130997-1-yanzhen@vivo.com>
+References: <20240924115005.3130997-1-yanzhen@vivo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/10] iio: backend: extend features
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Olivier Moysan <olivier.moysan@foss.st.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, dlechner@baylibre.com
-References: <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-0-a17b9b3d05d9@baylibre.com>
- <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-5-a17b9b3d05d9@baylibre.com>
- <60610fe3e5885033c0a1d14db6e2f576367a2e44.camel@gmail.com>
-Content-Language: en-US
-From: Angelo Dureghello <adureghello@baylibre.com>
-In-Reply-To: <60610fe3e5885033c0a1d14db6e2f576367a2e44.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-
-On 20/09/24 14:50, Nuno Sá wrote:
-> On Thu, 2024-09-19 at 11:20 +0200, Angelo Dureghello wrote:
->> From: Angelo Dureghello <adureghello@baylibre.com>
->>
->> Extend backend features with new calls needed later on this
->> patchset from axi version of ad3552r.
->>
->> The follwoing calls are added:
->>
->> iio_backend_ext_sync_enable
->> 	enable synchronize channels on external trigger
->> iio_backend_ext_sync_disable
->> 	disable synchronize channels on external trigger
->> iio_backend_ddr_enable
->> 	enable ddr bus transfer
->> iio_backend_ddr_disable
->> 	disable ddr bus transfer
->> iio_backend_set_bus_mode
->> 	select the type of bus, so that specific read / write
->> 	operations are performed accordingly
->> iio_backend_buffer_enable
->> 	enable buffer
->> iio_backend_buffer_disable
->> 	disable buffer
->> iio_backend_data_transfer_addr
->> 	define the target register address where the DAC sample
->> 	will be written.
->>
->> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
->> ---
->>   drivers/iio/industrialio-backend.c | 111 +++++++++++++++++++++++++++++++++++++
->>   include/linux/iio/backend.h        |  23 ++++++++
->>   2 files changed, 134 insertions(+)
->>
->> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-
->> backend.c
->> index 20b3b5212da7..f4802c422dbf 100644
->> --- a/drivers/iio/industrialio-backend.c
->> +++ b/drivers/iio/industrialio-backend.c
->> @@ -718,6 +718,117 @@ static int __devm_iio_backend_get(struct device *dev, struct
->> iio_backend *back)
->>   	return 0;
->>   }
->>   
->> +/**
->> + * iio_backend_ext_sync_enable - Enable external synchronization
->> + * @back: Backend device
->> + *
->> + * Enable synchronization by external signal.
->> + *
->> + * RETURNS:
->> + * 0 on success, negative error number on failure.
->> + */
->> +int iio_backend_ext_sync_enable(struct iio_backend *back)
->> +{
->> +	return iio_backend_op_call(back, ext_sync_enable);
->> +}
->> +EXPORT_SYMBOL_NS_GPL(iio_backend_ext_sync_enable, IIO_BACKEND);
->> +
->> +/**
->> + * iio_backend_ext_sync_disable - Disable external synchronization
->> + * @back: Backend device
->> + *
->> + * Disable synchronization by external signal.
->> + *
->> + * RETURNS:
->> + * 0 on success, negative error number on failure.
->> + */
->> +int iio_backend_ext_sync_disable(struct iio_backend *back)
->> +{
->> +	return iio_backend_op_call(back, ext_sync_disable);
->> +}
->> +EXPORT_SYMBOL_NS_GPL(iio_backend_ext_sync_disable, IIO_BACKEND);
->> +
->> +/**
->> + * iio_backend_ddr_enable - Enable interface DDR (Double Data Rate) mode
->> + * @back: Backend device
->> + *
->> + * Enabling DDR, data is generated by the IP at each front
->> + * (raising and falling) of the bus clock signal.
->> + *
->> + * RETURNS:
->> + * 0 on success, negative error number on failure.
->> + */
->> +int iio_backend_ddr_enable(struct iio_backend *back)
->> +{
->> +	return iio_backend_op_call(back, ddr_enable);
->> +}
->> +EXPORT_SYMBOL_NS_GPL(iio_backend_ddr_enable, IIO_BACKEND);
->> +
->> +/**
->> + * iio_backend_ddr_disable - Disable interface DDR (Double Data Rate) mode
->> + * @back: Backend device
->> + *
->> + * Disabling DDR data is generated byt the IP at rising or falling front
->> + * of the interface clock signal (SDR, Single Data Rate).
->> + *
->> + * RETURNS:
->> + * 0 on success, negative error number on failure.
->> + */
->> +int iio_backend_ddr_disable(struct iio_backend *back)
->> +{
->> +	return iio_backend_op_call(back, ddr_disable);
->> +}
->> +EXPORT_SYMBOL_NS_GPL(iio_backend_ddr_disable, IIO_BACKEND);
->> +
->> +/**
->> + * iio_backend_buffer_enable - Enable iio buffering
->> + * @back: Backend device
->> + *
->> + * Enabling the buffer, buffer data is processed and sent out from the
->> + * bus interface.
->> + *
->> + * RETURNS:
->> + * 0 on success, negative error number on failure.
->> + */
->> +int iio_backend_buffer_enable(struct iio_backend *back)
->> +{
->> +	return iio_backend_op_call(back, buffer_enable);
->> +}
->> +EXPORT_SYMBOL_NS_GPL(iio_backend_buffer_enable, IIO_BACKEND);
->> +
->> +/**
->> + * iio_backend_buffer_disable - Disable iio buffering
->> + * @back: Backend device
->> + *
->> + * Disabling the buffer, buffer data transfer on the bus interface
->> + * is stopped.
->> + *
->> + * RETURNS:
->> + * 0 on success, negative error number on failure.
->> + */
->> +int iio_backend_buffer_disable(struct iio_backend *back)
->> +{
->> +	return iio_backend_op_call(back, buffer_disable);
->> +}
->> +EXPORT_SYMBOL_NS_GPL(iio_backend_buffer_disable, IIO_BACKEND);
->> +
-> IIRC, both me and Jonathan had some comments about the above 2 calls? Aren't they
-> about buffering? I think I mentioned something about using the same buffer ops as
-> typical IIO devices use.
-
-i have now separated iio_backend_ops, keeping buffer enable/disable
-for axi-ad3352r case only,
-
-static const struct iio_backend_ops axi_dac_generic_ops = {
-     .enable = axi_dac_enable,
-     .disable = axi_dac_disable,
-     .request_buffer = axi_dac_request_buffer,
-     .free_buffer = axi_dac_free_buffer,
-     .extend_chan_spec = axi_dac_extend_chan,
-     .ext_info_set = axi_dac_ext_info_set,
-     .ext_info_get = axi_dac_ext_info_get,
-     .data_source_set = axi_dac_data_source_set,
-     .set_sample_rate = axi_dac_set_sample_rate,
-     .debugfs_reg_access = iio_backend_debugfs_ptr(axi_dac_reg_access),
-};
-
-static const struct iio_backend_ops axi_ad3552r_ops = {
-     .enable = axi_dac_enable,
-     .read_raw = axi_dac_read_raw,
-     .request_buffer = axi_dac_request_buffer,
-     .data_source_set = axi_dac_data_source_set,
-     .ext_sync_enable = axi_dac_ext_sync_enable,
-     .ext_sync_disable = axi_dac_ext_sync_disable,
-     .ddr_enable = axi_dac_ddr_enable,
-     .ddr_disable = axi_dac_ddr_disable,
-     .buffer_enable = axi_dac_buffer_enable,
-     .buffer_disable = axi_dac_buffer_disable,
-     .data_format_set = axi_dac_data_format_set,
-     .data_transfer_addr = axi_dac_data_transfer_addr,
-};
-
-
-could this be good ?
-
-
-> - Nuno Sá
-
-Regards,
-Angelo
+T24gVHVlLCAyMDI0LTA5LTI0IGF0IDE5OjUwICswODAwLCBZYW4gWmhlbiB3cm90ZToKPiBDb3Jy
+ZWN0bHkgc3BlbGxlZCBjb21tZW50cyBtYWtlIGl0IGVhc2llciBmb3IgdGhlIHJlYWRlciB0bwo+
+IHVuZGVyc3RhbmQKPiB0aGUgY29kZS4KPiAKPiBGaXggdHlwb3M6Cj4gJ21uaW51bScgLT4gJ21p
+bmltdW0nLAo+ICdkZXN0b3llZCcgLT4gJ2Rlc3Ryb3llZCcsCj4gJ3RocmlkcGFydHknIC0+ICd0
+aGlyZHBhcnR5JywKPiAnbG93Y2FzZScgLT4gJ2xvd2VyY2FzZScsCj4gJ2lkZW5pdGlmaWVycycg
+LT4gJ2lkZW50aWZpZXJzJywKPiAnZXhldWN0aW9uJyAtPiAnZXhlY3V0aW9uJywKPiAnZnJlZ21l
+bnRzJyAtPiAnZnJhZ21lbnRzJywKPiAnZGV2aWRlcycgLT4gJ2RldmljZXMnLgo+IAo+IFNpZ25l
+ZC1vZmYtYnk6IFlhbiBaaGVuIDx5YW56aGVuQHZpdm8uY29tPgoKQWNrZWQtYnk6IFNyaW5pdmFz
+IFBhbmRydXZhZGEgPHNyaW5pdmFzLnBhbmRydXZhZGFAbGludXguaW50ZWwuY29tPgoKPiAtLS0K
+PiDCoGRyaXZlcnMvaGlkL2hpZC1hc3VzLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAgfCAyICstCj4gwqBkcml2ZXJzL2hpZC9oaWQtbG9naXRlY2gtaGlkcHAuY8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAyICstCj4gwqBkcml2ZXJzL2hpZC9oaWQtcGljb2xjZF9m
+Yi5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwgMiArLQo+IMKgZHJpdmVycy9oaWQv
+aGlkLXNlbnNvci1jdXN0b20uY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8IDIgKy0KPiDCoGRy
+aXZlcnMvaGlkL2hpZC1zdGVhbS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCB8IDIgKy0KPiDCoGRyaXZlcnMvaGlkL2ludGVsLWlzaC1oaWQvaXNodHAtZnctbG9hZGVy
+LmMgfCAyICstCj4gwqBkcml2ZXJzL2hpZC9pbnRlbC1pc2gtaGlkL2lzaHRwL2NsaWVudC5jwqDC
+oMKgIHwgMiArLQo+IMKgZHJpdmVycy9oaWQvdXNiaGlkL2hpZC1jb3JlLmPCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIHwgMiArLQo+IMKgOCBmaWxlcyBjaGFuZ2VkLCA4IGluc2VydGlvbnMo
+KyksIDggZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaGlkL2hpZC1hc3Vz
+LmMgYi9kcml2ZXJzL2hpZC9oaWQtYXN1cy5jCj4gaW5kZXggYTRiNDczMTlhZDhlLi41MDZjNmYz
+NzdlN2QgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9oaWQvaGlkLWFzdXMuYwo+ICsrKyBiL2RyaXZl
+cnMvaGlkL2hpZC1hc3VzLmMKPiBAQCAtMTE4Myw3ICsxMTgzLDcgQEAgc3RhdGljIGNvbnN0IF9f
+dTggKmFzdXNfcmVwb3J0X2ZpeHVwKHN0cnVjdAo+IGhpZF9kZXZpY2UgKmhkZXYsIF9fdTggKnJk
+ZXNjLAo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGlmIChkcnZkYXRhLT5xdWlya3MgJiBRVUlSS19H
+NzUyX0tFWUJPQVJEICYmCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKnJzaXpl
+ID09IDc1ICYmIHJkZXNjWzYxXSA9PSAweDE1ICYmIHJkZXNjWzYyXSA9PQo+IDB4MDApIHsKPiAt
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogcmVwb3J0IGlzIG1pc3NpbmcgdXNhZ2Ug
+bW5pbnVtIGFuZCBtYXhpbXVtICovCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8q
+IHJlcG9ydCBpcyBtaXNzaW5nIHVzYWdlIG1pbmltdW0gYW5kIG1heGltdW0gKi8KPiDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoF9fdTggKm5ld19yZGVzYzsKPiDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoHNpemVfdCBuZXdfc2l6ZSA9ICpyc2l6ZSArCj4gc2l6ZW9mKGFz
+dXNfZzc1Ml9maXhlZF9yZGVzYyk7Cj4gwqAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9oaWQvaGlk
+LWxvZ2l0ZWNoLWhpZHBwLmMgYi9kcml2ZXJzL2hpZC9oaWQtCj4gbG9naXRlY2gtaGlkcHAuYwo+
+IGluZGV4IDBlMzNmYTBlYjhkYi4uZDZkMDY2Yzg5YzBiIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMv
+aGlkL2hpZC1sb2dpdGVjaC1oaWRwcC5jCj4gKysrIGIvZHJpdmVycy9oaWQvaGlkLWxvZ2l0ZWNo
+LWhpZHBwLmMKPiBAQCAtMjUyMiw3ICsyNTIyLDcgQEAgc3RhdGljIHZvaWQgaGlkcHBfZmZfd29y
+a19oYW5kbGVyKHN0cnVjdAo+IHdvcmtfc3RydWN0ICp3KQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIHJlZ3VsYXIgZWZmZWN0IGRlc3Ryb3llZCAq
+Lwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEt
+PmVmZmVjdF9pZHNbd2QtPnBhcmFtc1swXS0xXSA9IC0xOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgZWxzZSBpZiAod2QtPmVmZmVjdF9pZCA+PQo+IEhJRFBQX0ZGX0VGRkVDVElE
+X0FVVE9DRU5URVIpCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAvKiBhdXRvY2VudGVyIHNwcmluZyBkZXN0b3llZCAqLwo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogYXV0b2NlbnRlciBzcHJpbmcgZGVzdHJv
+eWVkICovCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+ZGF0YS0+c2xvdF9hdXRvY2VudGVyID0gMDsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGJyZWFrOwo+IMKgwqDCoMKgwqDCoMKgwqBjYXNlIEhJRFBQX0ZGX1NFVF9HTE9CQUxfR0FJ
+TlM6Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaGlkL2hpZC1waWNvbGNkX2ZiLmMgYi9kcml2ZXJz
+L2hpZC9oaWQtCj4gcGljb2xjZF9mYi5jCj4gaW5kZXggODNlMzQwOWQxNzBjLi5mOGIxNmE4MmZh
+ZWYgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9oaWQvaGlkLXBpY29sY2RfZmIuYwo+ICsrKyBiL2Ry
+aXZlcnMvaGlkL2hpZC1waWNvbGNkX2ZiLmMKPiBAQCAtMjk2LDcgKzI5Niw3IEBAIHN0YXRpYyB2
+b2lkIHBpY29sY2RfZmJfZGVzdHJveShzdHJ1Y3QgZmJfaW5mbwo+ICppbmZvKQo+IMKgwqDCoMKg
+wqDCoMKgwqAvKiBtYWtlIHN1cmUgbm8gd29yayBpcyBkZWZlcnJlZCAqLwo+IMKgwqDCoMKgwqDC
+oMKgwqBmYl9kZWZlcnJlZF9pb19jbGVhbnVwKGluZm8pOwo+IMKgCj4gLcKgwqDCoMKgwqDCoMKg
+LyogTm8gdGhyaWRwYXJ0eSBzaG91bGQgZXZlciB1bnJlZ2lzdGVyIG91ciBmcmFtZWJ1ZmZlciEg
+Ki8KPiArwqDCoMKgwqDCoMKgwqAvKiBObyB0aGlyZHBhcnR5IHNob3VsZCBldmVyIHVucmVnaXN0
+ZXIgb3VyIGZyYW1lYnVmZmVyISAqLwo+IMKgwqDCoMKgwqDCoMKgwqBXQVJOX09OKGZiZGF0YS0+
+cGljb2xjZCAhPSBOVUxMKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqB2ZnJlZSgodTggKilpbmZv
+LT5maXguc21lbV9zdGFydCk7Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaGlkL2hpZC1zZW5zb3It
+Y3VzdG9tLmMgYi9kcml2ZXJzL2hpZC9oaWQtCj4gc2Vuc29yLWN1c3RvbS5jCj4gaW5kZXggNjZm
+MDY3NWRmMjRiLi42MTdhZTI0MDM5NmQgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9oaWQvaGlkLXNl
+bnNvci1jdXN0b20uYwo+ICsrKyBiL2RyaXZlcnMvaGlkL2hpZC1zZW5zb3ItY3VzdG9tLmMKPiBA
+QCAtOTQ2LDcgKzk0Niw3IEBAIGhpZF9zZW5zb3JfcmVnaXN0ZXJfcGxhdGZvcm1fZGV2aWNlKHN0
+cnVjdAo+IHBsYXRmb3JtX2RldmljZSAqcGRldiwKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBtZW1j
+cHkocmVhbF91c2FnZSwgbWF0Y2gtPmx1aWQsIDQpOwo+IMKgCj4gLcKgwqDCoMKgwqDCoMKgLyog
+dXNhZ2UgaWQgYXJlIGFsbCBsb3djYXNlICovCj4gK8KgwqDCoMKgwqDCoMKgLyogdXNhZ2UgaWQg
+YXJlIGFsbCBsb3dlcmNhc2UgKi8KPiDCoMKgwqDCoMKgwqDCoMKgZm9yIChjID0gcmVhbF91c2Fn
+ZTsgKmMgIT0gJ1wwJzsgYysrKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgKmMg
+PSB0b2xvd2VyKCpjKTsKPiDCoAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2hpZC9oaWQtc3RlYW0u
+YyBiL2RyaXZlcnMvaGlkL2hpZC1zdGVhbS5jCj4gaW5kZXggYmY4YjYzMzExNGJlLi42NDM5OTEz
+MzcyYTggMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9oaWQvaGlkLXN0ZWFtLmMKPiArKysgYi9kcml2
+ZXJzL2hpZC9oaWQtc3RlYW0uYwo+IEBAIC0yNTMsNyArMjUzLDcgQEAgZW51bQo+IMKgwqDCoMKg
+wqDCoMKgwqBJRF9DT05UUk9MTEVSX0RFQ0tfU1RBVEUgPSA5Cj4gwqB9Owo+IMKgCj4gLS8qIFN0
+cmluZyBhdHRyaWJ1dGUgaWRlbml0aWZpZXJzICovCj4gKy8qIFN0cmluZyBhdHRyaWJ1dGUgaWRl
+bnRpZmllcnMgKi8KPiDCoGVudW0gewo+IMKgwqDCoMKgwqDCoMKgwqBBVFRSSUJfU1RSX0JPQVJE
+X1NFUklBTCwKPiDCoMKgwqDCoMKgwqDCoMKgQVRUUklCX1NUUl9VTklUX1NFUklBTCwKPiBkaWZm
+IC0tZ2l0IGEvZHJpdmVycy9oaWQvaW50ZWwtaXNoLWhpZC9pc2h0cC1mdy1sb2FkZXIuYwo+IGIv
+ZHJpdmVycy9oaWQvaW50ZWwtaXNoLWhpZC9pc2h0cC1mdy1sb2FkZXIuYwo+IGluZGV4IGUxNTc4
+NjNhOGIyNS4uNzUwYmZkZDI2ZGRiIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvaGlkL2ludGVsLWlz
+aC1oaWQvaXNodHAtZnctbG9hZGVyLmMKPiArKysgYi9kcml2ZXJzL2hpZC9pbnRlbC1pc2gtaGlk
+L2lzaHRwLWZ3LWxvYWRlci5jCj4gQEAgLTc5Myw3ICs3OTMsNyBAQCBzdGF0aWMgaW50IGxvYWRf
+ZndfZnJvbV9ob3N0KHN0cnVjdCBpc2h0cF9jbF9kYXRhCj4gKmNsaWVudF9kYXRhKQo+IMKgwqDC
+oMKgwqDCoMKgwqBpZiAocnYgPCAwKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+Z290byBlbmRfZXJyX2Z3X3JlbGVhc2U7Cj4gwqAKPiAtwqDCoMKgwqDCoMKgwqAvKiBTdGVwIDM6
+IFN0YXJ0IElTSCBtYWluIGZpcm13YXJlIGV4ZXVjdGlvbiAqLwo+ICvCoMKgwqDCoMKgwqDCoC8q
+IFN0ZXAgMzogU3RhcnQgSVNIIG1haW4gZmlybXdhcmUgZXhlY3V0aW9uICovCj4gwqAKPiDCoMKg
+wqDCoMKgwqDCoMKgcnYgPSBpc2hfZndfc3RhcnQoY2xpZW50X2RhdGEpOwo+IMKgwqDCoMKgwqDC
+oMKgwqBpZiAocnYgPCAwKQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2hpZC9pbnRlbC1pc2gtaGlk
+L2lzaHRwL2NsaWVudC5jCj4gYi9kcml2ZXJzL2hpZC9pbnRlbC1pc2gtaGlkL2lzaHRwL2NsaWVu
+dC5jCj4gaW5kZXggOGE3ZjJmNmE0Zjg2Li5lNjFiMDFlOTkwMmUgMTAwNjQ0Cj4gLS0tIGEvZHJp
+dmVycy9oaWQvaW50ZWwtaXNoLWhpZC9pc2h0cC9jbGllbnQuYwo+ICsrKyBiL2RyaXZlcnMvaGlk
+L2ludGVsLWlzaC1oaWQvaXNodHAvY2xpZW50LmMKPiBAQCAtODYzLDcgKzg2Myw3IEBAIHN0YXRp
+YyB2b2lkIGlwY190eF9zZW5kKHZvaWQgKnBybSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBTZW5kIGlwYyBmcmFnbWVudCAqLwo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlzaHRwX2hkci5sZW5ndGgg
+PSBkZXYtPm10dTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBpc2h0cF9oZHIubXNnX2NvbXBsZXRlID0gMDsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIEFsbCBmcmVnbWVudHMgc3VibWl0dGVkIHRvIElQ
+QyBxdWV1ZSB3aXRoCj4gbm8gY2FsbGJhY2sgKi8KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIEFsbCBmcmFnbWVudHMgc3VibWl0dGVkIHRvIElQQyBx
+dWV1ZSB3aXRoCj4gbm8gY2FsbGJhY2sgKi8KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBpc2h0cF93cml0ZV9tZXNzYWdlKGRldiwgJmlzaHRwX2hkciwg
+cG1zZyk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+Y2wtPnR4X29mZnMgKz0gZGV2LT5tdHU7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgcmVtID0gY2xfbXNnLT5zZW5kX2J1Zi5zaXplIC0gY2wtPnR4X29m
+ZnM7Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaGlkL3VzYmhpZC9oaWQtY29yZS5jIGIvZHJpdmVy
+cy9oaWQvdXNiaGlkL2hpZC0KPiBjb3JlLmMKPiBpbmRleCBjYjY4N2VhNzMyNWMuLjk1NmI4Njcz
+N2IwNyAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL2hpZC91c2JoaWQvaGlkLWNvcmUuYwo+ICsrKyBi
+L2RyaXZlcnMvaGlkL3VzYmhpZC9oaWQtY29yZS5jCj4gQEAgLTExMDAsNyArMTEwMCw3IEBAIHN0
+YXRpYyBpbnQgdXNiaGlkX3N0YXJ0KHN0cnVjdCBoaWRfZGV2aWNlICpoaWQpCj4gwqAKPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGludGVydmFsID0gZW5kcG9pbnQtPmJJbnRlcnZh
+bDsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBTb21lIHZlbmRvcnMg
+Z2l2ZSBmdWxsc3BlZWQgaW50ZXJ2YWwgb24gaGlnaHNwZWVkCj4gZGV2aWRlcyAqLwo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBTb21lIHZlbmRvcnMgZ2l2ZSBmdWxsc3BlZWQg
+aW50ZXJ2YWwgb24gaGlnaHNwZWVkCj4gZGV2aWNlcyAqLwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgaWYgKGhpZC0+cXVpcmtzICYgSElEX1FVSVJLX0ZVTExTUEVFRF9JTlRFUlZB
+TCAmJgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGRldi0+c3BlZWQg
+PT0gVVNCX1NQRUVEX0hJR0gpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBpbnRlcnZhbCA9IGZscyhlbmRwb2ludC0+YkludGVydmFsKjgpOwoK
 
 

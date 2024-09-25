@@ -1,95 +1,89 @@
-Return-Path: <linux-iio+bounces-9770-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9771-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5006985B9A
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2024 14:27:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB10985C07
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2024 14:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E8F4B213C5
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2024 12:27:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 879ED28836A
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2024 12:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057691BFE0C;
-	Wed, 25 Sep 2024 11:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37875185B61;
+	Wed, 25 Sep 2024 11:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YtxufLsy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MSC5fFgu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECA319AD90;
-	Wed, 25 Sep 2024 11:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D912172798;
+	Wed, 25 Sep 2024 11:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265072; cv=none; b=PfJgEqpWaqXTo2QZLn/k5Q+Z6WxDKvjpE2tLR09d6/DTeup6oU8MBazDtJFG/N3NLFsPZFDbvVZ1z57D7igcnrmyUjKqU3NazIruVg3Y/zF69PdY1qcSeRY6NH/vAmmb6fW/taQ/yH4CLcykaDQVd5TaO3sOPoPVnOyvvaIBBVc=
+	t=1727265311; cv=none; b=mTa6rKfgtboGpnI/9YzY/EX2OdBc/DlDZzXXQZogjzXG5pRUOEs/Gx3U37E7tBPod0LcfhwLVDcLd/nbhEYR11o3nu3tw5NytK+LrJL11ACrF8aG4QWXORuwtmyHUk3GY8l+fhqvBpfgSUHaL4t0C3euzZ5uvF+65MdaQRMXej0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265072; c=relaxed/simple;
-	bh=3lzyLjDpqddpSQ9QmXYZUDoBGQRXihgTdUpQnBD5i5Q=;
+	s=arc-20240116; t=1727265311; c=relaxed/simple;
+	bh=06shn2lzCpIoIbV8xE2yrdhCS68w/CZnVYECorR+OY8=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T+Ay0ZBr+S5EYStd2DeK77TX6Pb2lKEBhEptyC2HDyrC9uESkMsnytm1LHlu1CQfCUKcMZlxgdK7/nHxF3j1Z6LbB/URh3C1UEV/Zz6CChior8DXQwkhESQkjar2OSuZCoeeA0fjOistRBRGUbUTZysBTQGafoFlpJWfD2CdXpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YtxufLsy; arc=none smtp.client-ip=209.85.218.52
+	 Content-Type:MIME-Version; b=RcATW96hl1WPCHvGOlKVSz0ZyfcvG4KlD7vlZ/7/ZEJjEWCnNEzhKQ4x9g7PwfgJ21SMQG1/EX/6cP2qEITDJhWYm6xvEu9jr5LKFhwuLj77b/ricmgXU3aTJSFpANCp3AjEOU3DSrDcWrzwv7vpR6zvPteVODZry24ucshpwrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MSC5fFgu; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a8d2b24b7a8so164076266b.1;
-        Wed, 25 Sep 2024 04:51:10 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42cc8782869so63335405e9.2;
+        Wed, 25 Sep 2024 04:55:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727265069; x=1727869869; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727265307; x=1727870107; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=3lzyLjDpqddpSQ9QmXYZUDoBGQRXihgTdUpQnBD5i5Q=;
-        b=YtxufLsy5pMUs3jtSeCLPSbBBc0//5rVSlXA63DSuUR1Dl/9aSU4QtDBvXYh0xu0RC
-         4Q8Az6FqmIOEZSVJM4R8M3IDLJ3jq2cfDuUKBy+ASt+aR2zjU00tdjYAF4ut1NjCQDQt
-         7EiZvLAg30WpgHeVumPUGP4i2MJBAHQfP5UV52UDXAe2m1XUq1VxM9DGbS+P92KRfXzE
-         O45/ktrHYoR95MXEmK6JZo3z/sK6xsT8Se+9rfYfFn10tr7k5mYE/9fFwjm7HS7f4kC0
-         Yz1WTNYKBVVLvGyCHhxfmBlWHqc9ji5fbrk8YFmK774uxzGgYad1elv5aqAIX6qUXBGD
-         k8hg==
+        bh=RoU9Qx8kBrIgEwKXCGnJInXxTS3IuLOwTla9H1khxNM=;
+        b=MSC5fFgucLpHPDfHf1v5eS5qEHi32jI84WBW0FsxoTYjBQyxBCRAKnSg0V/qjIUb1G
+         Rth9HY8njyPlTQSOC2EHyjE29bSLfIi0nwIEIu/ol6pw24Om4K5+mbRY41uSFSpkb+p3
+         afv0bE8evX8rsYMSYKhYiFxQq3/M5IlHmw1J9i5a4ViJIcweLHoPzPB0/dCuAMNPnKmC
+         LXlC5sRx5X99aK+ZiqJYeDWxPRbwjNP1N6Nw5+zx2DB6q8aZRA9hI/o5zguepyTvF23m
+         +LGziTnjqZIKV3DhTsUjcYIwKveBTshMJygbcaBpDKceRC7rfhIw3OXSnzSklXhUvCzV
+         93UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727265069; x=1727869869;
+        d=1e100.net; s=20230601; t=1727265307; x=1727870107;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=3lzyLjDpqddpSQ9QmXYZUDoBGQRXihgTdUpQnBD5i5Q=;
-        b=HYb4ixAp7l1ty/Ud/8wI89xJHg/EpfXhMKDqaPH3S0mWA/M5lC7W5wkx8IAtf47nVZ
-         5lnzg6kfySNbzMZ11x1qiCzlWJixn7jNTMTpGPW8oPgrGQSjdh24TG/yfktoNdbxkv3D
-         L02auQ+CccSuflxjL9ZymxEMyf6WJzcGXfl2hbEcpaW+WCVBPiuDgAHCM5Bc6/QZPf4b
-         YnvSa+glHDYluskvUtt2qA5SHCgB25pJ8DWb4BX+PyB0hjjpODP+lhxpG4cwrsVN7yR3
-         u0puqmsti8oLvSEO73i1nCq+Edby56rkaZ3aPGit2HA/bQ24aANQDiJqE96UoEcMaBY9
-         BlWw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3XJwxidw78Tvdzn0bs8ln/szG//gmla+dyG6bYTSzFKqtk+b6qIYQ1n8usLJVNjr9xdlL5OjE3ZLX@vger.kernel.org, AJvYcCW4rTu/42xdHQUof6ZR6HRvEEtNUB/YcxsOEJNwpme8gaCbPNgbPpYHSRnXRcBmyl2Jq33CDC1YuXN+@vger.kernel.org, AJvYcCWOW+kNOcS0snspPajNHX11cxndqLay0uEHtGGwmBeM9TuR6iYwRynrBPKtzIICcKiFogYtFvsHm05rvhEv@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyp8iODsUUAGcdJ7kWjekTyCLwnkJlsionqbL0EkeHsBtm/4cBj
-	N8kl/5t77VeHjSvIN5OkT4mad9wREZlGmQHXVyPl3VR5y7f1Pj5J
-X-Google-Smtp-Source: AGHT+IFVX0MFn8puA46IHl5+tTWQlwU6nWnlYfMnf5qZs/NWKCsWc9XIQbnn6CkO1gf9ysGeSckqaQ==
-X-Received: by 2002:a17:907:7f86:b0:a8d:43c5:9a16 with SMTP id a640c23a62f3a-a93a16860c6mr216813766b.6.1727265068755;
-        Wed, 25 Sep 2024 04:51:08 -0700 (PDT)
+        bh=RoU9Qx8kBrIgEwKXCGnJInXxTS3IuLOwTla9H1khxNM=;
+        b=XVCDvPhMwVSPnZs3Gx5bZGMutXtULQRcim6Ssx6j1CJdkmr6Ju9CUkJMP0iEOkGR86
+         OL9y8S3tHVhjMZzPl0f19OfHPKTd9rOEvWbgH9dAR3dpxxuWkv/E3axJd5YHkiVEcdmS
+         fIWqKMIOtNVPgtGkOTU/DI15B7gYTK0Qjm5CfalSDQN1JmfaaeD60IDr+S8akJdMnKUP
+         zbM4iwBeMTQGKtr9PG74r2rwSIXy/3aTLIWjjlyWWRDQvNgQVNpvU0rct857cV8Mr4Ll
+         Jtxp8P/GMftV0Z6gD15cuZtpW6Ur6FHCqqqQAJAiH2CCNjoyD65Db+DG4470cRLogAT6
+         EKsw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+XETtFiGGuowrTIADaZRGRvs5jGV0ZDqEvGh6ITkmmud+9gu5RRgqy02drDsc2Uf5hInbUaq99YJr@vger.kernel.org, AJvYcCWSXQifxvl3lhlZL785z3Xb4N8+kH1lawzBZ1DgYb/alMTQRtAuWiTXOShZ0BH8k2g7Fe4jMWwUQ2V6i9RC@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmQ6h3ndtYegJJw8WZHjj84bYW7p00PZ5oAuZYSF/xxzHF6WHc
+	59mIvSyL1H1d+0t816hfFbfGn+HrcmADYWQe1JD0cKve8ga0zscv
+X-Google-Smtp-Source: AGHT+IGU1CeQOnvVvHYaXd9j6bCoGgdKXtEQD/UD7GoWhx7Uc/5VWujBOYsQ6r5W7ftlUwHMWzpEDg==
+X-Received: by 2002:a05:600c:3c85:b0:42c:df54:1908 with SMTP id 5b1f17b1804b1-42e96114ad3mr14732075e9.18.1727265306876;
+        Wed, 25 Sep 2024 04:55:06 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93930f7860sm204301366b.149.2024.09.25.04.51.08
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e96a36251sm16243335e9.37.2024.09.25.04.55.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2024 04:51:08 -0700 (PDT)
-Message-ID: <c721861809c17776c0fe89ead331b6e2e6b9d4b4.camel@gmail.com>
-Subject: Re: [PATCH v3 04/10] dt-bindings: iio: dac: ad3552r: add io-backend
- support
+        Wed, 25 Sep 2024 04:55:06 -0700 (PDT)
+Message-ID: <fa2ab3b06dfb227de2f449c52b83ff6ffe1f79c2.camel@gmail.com>
+Subject: Re: [PATCH v3 05/10] iio: backend: extend features
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>, Angelo Dureghello
-	 <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich	
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Jonathan
- Cameron	 <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Olivier Moysan	 <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- dlechner@baylibre.com
-Date: Wed, 25 Sep 2024 13:55:20 +0200
-In-Reply-To: <fa27dc74-7b1f-4ef5-81dc-cc434da4ff89@kernel.org>
+To: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen	
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ Sa	 <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, Rob Herring	
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley	
+ <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, dlechner@baylibre.com
+Date: Wed, 25 Sep 2024 13:59:18 +0200
+In-Reply-To: <45f72533-ba1b-4531-890d-63d86a1f0ca4@baylibre.com>
 References: 
 	<20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-0-a17b9b3d05d9@baylibre.com>
-	 <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-4-a17b9b3d05d9@baylibre.com>
-	 <gojq6ardhvt6vcs2kawdhdn2cj6qbpzp4p5mjjgwsypuatm5eo@3u6k4q7le46s>
-	 <418a8a9b-3bcf-4b8f-92a0-619a3bf26ab5@baylibre.com>
-	 <e8af0f3f-a09c-42d7-b8ca-dd633539af73@kernel.org>
-	 <0279203b6cd9f1312d9c03654c262c04ac12fbd9.camel@gmail.com>
-	 <fa27dc74-7b1f-4ef5-81dc-cc434da4ff89@kernel.org>
+	 <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-5-a17b9b3d05d9@baylibre.com>
+	 <60610fe3e5885033c0a1d14db6e2f576367a2e44.camel@gmail.com>
+	 <45f72533-ba1b-4531-890d-63d86a1f0ca4@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.0 
@@ -100,191 +94,214 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2024-09-25 at 09:22 +0200, Krzysztof Kozlowski wrote:
-> On 24/09/2024 14:27, Nuno S=C3=A1 wrote:
-> > On Tue, 2024-09-24 at 10:02 +0200, Krzysztof Kozlowski wrote:
-> > > On 23/09/2024 17:50, Angelo Dureghello wrote:
-> > > > Hi Krzysztof,
-> > > >=20
-> > > > On 22/09/24 23:02, Krzysztof Kozlowski wrote:
-> > > > > On Thu, Sep 19, 2024 at 11:20:00AM +0200, Angelo Dureghello wrote=
-:
-> > > > > > From: Angelo Dureghello <adureghello@baylibre.com>
-> > > > > >=20
-> > > > > > There is a version AXI DAC IP block (for FPGAs) that provides
-> > > > > > a physical bus for AD3552R and similar chips, and acts as
-> > > > > > an SPI controller.
-> > > > > >=20
-> > > > > > For this case, the binding is modified to include some
-> > > > > > additional properties.
-> > > > > >=20
-> > > > > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > > > > > ---
-> > > > > > =C2=A0 .../devicetree/bindings/iio/dac/adi,ad3552r.yaml=C2=A0=
-=C2=A0 | 42
-> > > > > > ++++++++++++++++++++++
-> > > > > > =C2=A0 1 file changed, 42 insertions(+)
-> > > > > >=20
-> > > > > > diff --git
-> > > > > > a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> > > > > > b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> > > > > > index 41fe00034742..aca4a41c2633 100644
-> > > > > > --- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yam=
-l
-> > > > > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yam=
-l
-> > > > > > @@ -60,6 +60,18 @@ properties:
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/defin=
-itions/uint32
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum: [0, 1, 2, 3]
-> > > > > > =C2=A0=20
-> > > > > > +=C2=A0 io-backends:
-> > > > > > +=C2=A0=C2=A0=C2=A0 description: The iio backend reference.
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 An example backend can be found=
- at
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> > > > > > https://analogdevicesinc.github.io/hdl/library/axi_ad3552r/inde=
-x.html
-> > > > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > > > > > +
-> > > > > > +=C2=A0 adi,synchronous-mode:
-> > > > > > +=C2=A0=C2=A0=C2=A0 description: Enable waiting for external sy=
-nchronization
-> > > > > > signal.
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Some AXI IP configuration can i=
-mplement a dual-IP layout,
-> > > > > > with
-> > > > > > internal
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wirings for streaming synchroni=
-zation.
-> > > > > > +=C2=A0=C2=A0=C2=A0 type: boolean
-> > > > > > +
-> > > > > > =C2=A0=C2=A0=C2=A0 '#address-cells':
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const: 1
-> > > > > > =C2=A0=20
-> > > > > > @@ -128,6 +140,7 @@ patternProperties:
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 - custom-output-range-config
-> > > > > > =C2=A0=20
-> > > > > > =C2=A0 allOf:
-> > > > > > +=C2=A0 - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> > > > > > =C2=A0=C2=A0=C2=A0 - if:
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 properties:
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatib=
-le:
-> > > > > > @@ -238,4 +251,33 @@ examples:
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 };
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
-> > > > > > +
-> > > > > > +=C2=A0 - |
-> > > > > > +=C2=A0=C2=A0=C2=A0 axi_dac: spi@44a70000 {
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi=
-,axi-ad3552r";
-> > > > > That is either redundant or entire example should go to the paren=
-t
-> > > > > node,
-> > > > > if this device is fixed child of complex device (IOW, adi,ad3552r
-> > > > > cannot
-> > > > > be used outside of adi,axi-ad3552r).
-> > > >=20
-> > > > ad3552r can still be used by a generic "classic" spi
-> > > > controller (SCLK/CS/MISO) but at a slower samplerate, fpga
-> > > > controller only (axi-ad3552r) can reach 33MUPS.
-> > >=20
-> > > OK, then this is just redundant. Drop the node. Parent example should
-> > > contain the children, though.
-> > > >=20
-> > > > >=20
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44a70000=
- 0x1000>;
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dmas =3D <&dac_tx_d=
-ma 0>;
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma-names =3D "tx";
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #io-backend-cells =
-=3D <0>;
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&ref_cl=
-k>;
-> > > > > > +
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #address-cells =3D =
-<1>;
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #size-cells =3D <0>=
-;
-> > > > > > +
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dac@0 {
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 compatible =3D "adi,ad3552r";
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 reg =3D <0>;
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 reset-gpios =3D <&gpio0 92 0>;
-> > > > > Use standard defines for GPIO flags.
-> > > >=20
-> > > > fixed, thanks
-> > > >=20
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 io-backends =3D <&axi_dac>;
-> > > > > Why do you need to point to the parent? How much coupled are thes=
-e
-> > > > > devices? Child pointing to parent is not usually expected, becaus=
-e
-> > > > > that's obvious.
-> > > >=20
-> > > >=20
-> > > > "io-backends" is actually the way to refer to the backend module,
-> > > > (used already for i.e. ad9739a),
-> > > > it is needed because the backend is not only acting as spi-controll=
-er,
-> > > > but is also providing some APIs for synchronization and bus setup
-> > > > support.
-> > >=20
-> > >=20
-> > > But if backend is the parent, then this is redundant. You can take it
-> > > from the child-parent relationship. Is this pointing to other devices
-> > > (non-parent) in other ad3552r configurations?
-> > >=20
-> >=20
-> > The backend is a provider-consumer type of API. On the consumer side (w=
-hich
-> > is the
-> > driver the child node will probe on), we need to call devm_iio_backend_=
-get()
-> > to get
-> > the backend object (which obviously is the parent). For that, 'io-backe=
-nds'
-> > is being
+On Tue, 2024-09-24 at 16:11 +0200, Angelo Dureghello wrote:
 >=20
-> You described the driver, so how does it matter? Driver can call
-> get_backend_from_parent(), right? Or get_backend_from_fwnode(parent)?
+> On 20/09/24 14:50, Nuno S=C3=A1 wrote:
+> > On Thu, 2024-09-19 at 11:20 +0200, Angelo Dureghello wrote:
+> > > From: Angelo Dureghello <adureghello@baylibre.com>
+> > >=20
+> > > Extend backend features with new calls needed later on this
+> > > patchset from axi version of ad3552r.
+> > >=20
+> > > The follwoing calls are added:
+> > >=20
+> > > iio_backend_ext_sync_enable
+> > > 	enable synchronize channels on external trigger
+> > > iio_backend_ext_sync_disable
+> > > 	disable synchronize channels on external trigger
+> > > iio_backend_ddr_enable
+> > > 	enable ddr bus transfer
+> > > iio_backend_ddr_disable
+> > > 	disable ddr bus transfer
+> > > iio_backend_set_bus_mode
+> > > 	select the type of bus, so that specific read / write
+> > > 	operations are performed accordingly
+> > > iio_backend_buffer_enable
+> > > 	enable buffer
+> > > iio_backend_buffer_disable
+> > > 	disable buffer
+> > > iio_backend_data_transfer_addr
+> > > 	define the target register address where the DAC sample
+> > > 	will be written.
+> > >=20
+> > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > > ---
+> > > =C2=A0=C2=A0drivers/iio/industrialio-backend.c | 111
+> > > +++++++++++++++++++++++++++++++++++++
+> > > =C2=A0=C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 |=C2=A0 23 ++++++++
+> > > =C2=A0=C2=A02 files changed, 134 insertions(+)
+> > >=20
+> > > diff --git a/drivers/iio/industrialio-backend.c
+> > > b/drivers/iio/industrialio-
+> > > backend.c
+> > > index 20b3b5212da7..f4802c422dbf 100644
+> > > --- a/drivers/iio/industrialio-backend.c
+> > > +++ b/drivers/iio/industrialio-backend.c
+> > > @@ -718,6 +718,117 @@ static int __devm_iio_backend_get(struct device
+> > > *dev, struct
+> > > iio_backend *back)
+> > > =C2=A0=C2=A0	return 0;
+> > > =C2=A0=C2=A0}
+> > > =C2=A0=20
+> > > +/**
+> > > + * iio_backend_ext_sync_enable - Enable external synchronization
+> > > + * @back: Backend device
+> > > + *
+> > > + * Enable synchronization by external signal.
+> > > + *
+> > > + * RETURNS:
+> > > + * 0 on success, negative error number on failure.
+> > > + */
+> > > +int iio_backend_ext_sync_enable(struct iio_backend *back)
+> > > +{
+> > > +	return iio_backend_op_call(back, ext_sync_enable);
+> > > +}
+> > > +EXPORT_SYMBOL_NS_GPL(iio_backend_ext_sync_enable, IIO_BACKEND);
+> > > +
+> > > +/**
+> > > + * iio_backend_ext_sync_disable - Disable external synchronization
+> > > + * @back: Backend device
+> > > + *
+> > > + * Disable synchronization by external signal.
+> > > + *
+> > > + * RETURNS:
+> > > + * 0 on success, negative error number on failure.
+> > > + */
+> > > +int iio_backend_ext_sync_disable(struct iio_backend *back)
+> > > +{
+> > > +	return iio_backend_op_call(back, ext_sync_disable);
+> > > +}
+> > > +EXPORT_SYMBOL_NS_GPL(iio_backend_ext_sync_disable, IIO_BACKEND);
+> > > +
+> > > +/**
+> > > + * iio_backend_ddr_enable - Enable interface DDR (Double Data Rate) =
+mode
+> > > + * @back: Backend device
+> > > + *
+> > > + * Enabling DDR, data is generated by the IP at each front
+> > > + * (raising and falling) of the bus clock signal.
+> > > + *
+> > > + * RETURNS:
+> > > + * 0 on success, negative error number on failure.
+> > > + */
+> > > +int iio_backend_ddr_enable(struct iio_backend *back)
+> > > +{
+> > > +	return iio_backend_op_call(back, ddr_enable);
+> > > +}
+> > > +EXPORT_SYMBOL_NS_GPL(iio_backend_ddr_enable, IIO_BACKEND);
+> > > +
+> > > +/**
+> > > + * iio_backend_ddr_disable - Disable interface DDR (Double Data Rate=
+)
+> > > mode
+> > > + * @back: Backend device
+> > > + *
+> > > + * Disabling DDR data is generated byt the IP at rising or falling f=
+ront
+> > > + * of the interface clock signal (SDR, Single Data Rate).
+> > > + *
+> > > + * RETURNS:
+> > > + * 0 on success, negative error number on failure.
+> > > + */
+> > > +int iio_backend_ddr_disable(struct iio_backend *back)
+> > > +{
+> > > +	return iio_backend_op_call(back, ddr_disable);
+> > > +}
+> > > +EXPORT_SYMBOL_NS_GPL(iio_backend_ddr_disable, IIO_BACKEND);
+> > > +
+> > > +/**
+> > > + * iio_backend_buffer_enable - Enable iio buffering
+> > > + * @back: Backend device
+> > > + *
+> > > + * Enabling the buffer, buffer data is processed and sent out from t=
+he
+> > > + * bus interface.
+> > > + *
+> > > + * RETURNS:
+> > > + * 0 on success, negative error number on failure.
+> > > + */
+> > > +int iio_backend_buffer_enable(struct iio_backend *back)
+> > > +{
+> > > +	return iio_backend_op_call(back, buffer_enable);
+> > > +}
+> > > +EXPORT_SYMBOL_NS_GPL(iio_backend_buffer_enable, IIO_BACKEND);
+> > > +
+> > > +/**
+> > > + * iio_backend_buffer_disable - Disable iio buffering
+> > > + * @back: Backend device
+> > > + *
+> > > + * Disabling the buffer, buffer data transfer on the bus interface
+> > > + * is stopped.
+> > > + *
+> > > + * RETURNS:
+> > > + * 0 on success, negative error number on failure.
+> > > + */
+> > > +int iio_backend_buffer_disable(struct iio_backend *back)
+> > > +{
+> > > +	return iio_backend_op_call(back, buffer_disable);
+> > > +}
+> > > +EXPORT_SYMBOL_NS_GPL(iio_backend_buffer_disable, IIO_BACKEND);
+> > > +
+> > IIRC, both me and Jonathan had some comments about the above 2 calls? A=
+ren't
+> > they
+> > about buffering? I think I mentioned something about using the same buf=
+fer
+> > ops as
+> > typical IIO devices use.
+>=20
+> i have now separated iio_backend_ops, keeping buffer enable/disable
+> for axi-ad3352r case only,
+>=20
+> static const struct iio_backend_ops axi_dac_generic_ops =3D {
+> =C2=A0=C2=A0=C2=A0=C2=A0 .enable =3D axi_dac_enable,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .disable =3D axi_dac_disable,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .request_buffer =3D axi_dac_request_buffer,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .free_buffer =3D axi_dac_free_buffer,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .extend_chan_spec =3D axi_dac_extend_chan,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .ext_info_set =3D axi_dac_ext_info_set,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .ext_info_get =3D axi_dac_ext_info_get,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .data_source_set =3D axi_dac_data_source_set,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .set_sample_rate =3D axi_dac_set_sample_rate,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .debugfs_reg_access =3D iio_backend_debugfs_ptr(=
+axi_dac_reg_access),
+> };
+>=20
+> static const struct iio_backend_ops axi_ad3552r_ops =3D {
+> =C2=A0=C2=A0=C2=A0=C2=A0 .enable =3D axi_dac_enable,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .read_raw =3D axi_dac_read_raw,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .request_buffer =3D axi_dac_request_buffer,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .data_source_set =3D axi_dac_data_source_set,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .ext_sync_enable =3D axi_dac_ext_sync_enable,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .ext_sync_disable =3D axi_dac_ext_sync_disable,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .ddr_enable =3D axi_dac_ddr_enable,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .ddr_disable =3D axi_dac_ddr_disable,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .buffer_enable =3D axi_dac_buffer_enable,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .buffer_disable =3D axi_dac_buffer_disable,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .data_format_set =3D axi_dac_data_format_set,
+> =C2=A0=C2=A0=C2=A0=C2=A0 .data_transfer_addr =3D axi_dac_data_transfer_ad=
+dr,
+> };
+>=20
+>=20
+> could this be good ?
+>=20
 
-Well yes, just stating what the framework (also in terms of bindings) is
-expecting. Of course that on the driver side we can paper around it the way=
- we
-want. But my main point was that we can only paper around it if we use code=
- that
-is meant not to be used.
+I think you're replying to the wrong email :). But yeah, I made a comment a=
+bout
+the above and that is something I'm also expecting.
 
-And, FWIW, I was (trying) replying to your comment
-
-"You can take it from the child-parent relationship"
-
-Again, we can only do that by introducing new code or use code that's not m=
-eant
-to be used. The way we're supposed to reference backends is by explicitly u=
-sing
-the proper FW property.
-
-Put it in another way and a completely hypothetical case. If we have a spi
-controller which happens to export some clock and one of it's peripherals e=
-nds
-up using that clock, wouldn't we still use 'clocks' to reference that clock=
-?
-
-Again, if this is too weird to be acceptable in the bindings we take it fro=
-m the
-child - parent relationship.=20
-
+Regarding the buffer_enable/disable() stuff, please go check past discussio=
+ns (I
+think on the RFC). I'm fairly sure I had (and Jonathan as well) some commen=
+ts
+about directly using IIO buffer options or replicating them in the backend_=
+ops.
+Likely the second option is the best one so we can take a reference to back=
+end
+object directly.
 
 - Nuno S=C3=A1
+
 

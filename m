@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-9776-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9777-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98728986500
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2024 18:41:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E2C986503
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2024 18:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45CDB1F25BF3
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2024 16:41:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C7A7287FD4
+	for <lists+linux-iio@lfdr.de>; Wed, 25 Sep 2024 16:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CE184D34;
-	Wed, 25 Sep 2024 16:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100FE13A86A;
+	Wed, 25 Sep 2024 16:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="knoIksF4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V+2C8YK/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B2112AAC6;
-	Wed, 25 Sep 2024 16:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716ED1369AA;
+	Wed, 25 Sep 2024 16:41:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727282457; cv=none; b=XgPwrk8tT5RBwjF/KqqIgpDo2xW+nHkSLAmwf8ZgsaPPp+mp5Po5IOgx/aE7jaPcFWEok7atZi03kDKHXjt6Eb4jjc8HNRTaH8t/LX3HJpU81lnyNc7n/J7vufcNgvw9UiFADrdihN1l+Fj3T6wKc9u8PMuGeSn8oEoWee1HoAc=
+	t=1727282461; cv=none; b=nY7RLdzf3z6IFc3wxvoVRm9y+B2j1DDYrc2wkfCwFZSZQzMhZeHOizpnczMyqrPZ/GpecLyLDUjR6gw9Ci4OtIC0CXvYD9ASupEmUcH2iKIYbp5nfpDKuYvt857mhrVls6dBgL/GH8y2t+Ac1sqyAOFHo929I+qCLIoULNibu0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727282457; c=relaxed/simple;
-	bh=iIzynT3wxdbNQUAm28xrSi7VcFi+h9bvAP8GS/IJDxs=;
+	s=arc-20240116; t=1727282461; c=relaxed/simple;
+	bh=QwT382XJp5Tzqa6WmNu93tC/AnVS0dpTOdCs0F1jxuo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CCN6QyHGuEiL4ZKHluh4y4gVj7sO/3BWS9T+AvIuokJfCuVsytVuC5tq24TxxWJwj36jymBaEawBxaia26pEiRgn10n6A7pV3Y3m/QseFieeXnKQNEGilBsc1od5fyw3Rr/8flKc8WYhlUo6qkXoy8LtbjVxvM5JuI2y8YZRZws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=knoIksF4; arc=none smtp.client-ip=209.85.214.172
+	 In-Reply-To:To:Cc; b=mrcYA23sJFjnCmpCbhaeX4TcfBPgTmGehf67q3LTN2EJq15zN4Dq9Ph9KwmDPKX9T3PRuro+OuaLgg2bbq4Oh3U0W5nvbxJY4d6Ac9wjAxxxCo/Br89JE7hxy20Y5padj6pCJ8NtK/oZiCzUQUufQ6QGSfnQcqYSNoCutk5dpCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V+2C8YK/; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20b067fcd87so762255ad.1;
-        Wed, 25 Sep 2024 09:40:56 -0700 (PDT)
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2d883286bd2so11137a91.2;
+        Wed, 25 Sep 2024 09:41:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727282455; x=1727887255; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727282460; x=1727887260; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YEjrlT0R1aMpt4WYrfhUEccYhF2O0fKOQryN5FZoASQ=;
-        b=knoIksF4XT/snxpJy+nySPV0HExDDHOkuyOF1ZgRhJ5MP2eJ92ndE9LNpD0rl6zTCT
-         g14k/cz7FuPu44Ra7MXrGOC4aPxfH/7T7c+N9g4UxQypE/TO8ULYZCMIU5hE9wG91BUS
-         PtZqVU1O5JilTWjW9VmwyYlK1SdLbkSC6dJcnwOm8k8Pjs1Soa+2pYQiHz8xhKslA2Pr
-         IvO1ajYxljdeRsCuov8y5IHDbXUtbI/jgn359Mx5/dC6Bd6OVzTw0FaVp62ALAn/hpt/
-         wVdzxQX1daWt92TLqQFvDWfayvJvhS2TKd869djBKZ4MntySTqvTsa3zZ+CnNrSGR59n
-         yR3Q==
+        bh=yDigrLr6aoyngHks4RSZ4J49MFGrODyXNvpYR5mceLA=;
+        b=V+2C8YK/Ebu2jgOC2gd9INSh1nCIkTzV/69X5sRcJPpWdsyRJkGtWc/C6HWcnulOsP
+         yiZwST0/ntu9A9e1zflhFaXmGg7k5Ygri9YmEN3M8ZKA9LQ5NNno5SutvGAuGj/cuiGn
+         HoGRK8iGiMUDtuJe+/N9iwtssjdqkAW0g9hPbqOnxAfBy7YX75EEkdK7LxAC4miI4Vfg
+         t2mLI04gBJ8Li73BXLn4Zjd1DTuJJ8qEg87RcwYxZp+3zW9n6UYiPis3BKpClSI54ZaN
+         eQbhLKWL8XDbUOUSqUhYVtcTdDtS97sZeYkpaTFTEm1w7089oyqD8nteaGs/CyLVGDbG
+         u3PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727282455; x=1727887255;
+        d=1e100.net; s=20230601; t=1727282460; x=1727887260;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YEjrlT0R1aMpt4WYrfhUEccYhF2O0fKOQryN5FZoASQ=;
-        b=Zs8hbyP36S720bDGyrmkVPxLFKaWdJ4nzVs/7NiBZCMEkqbuYCMSoLT4XjZs09RWJe
-         6JzTt9Eaj6fI/5fWui/9t8bHmHyvtJNf27KObiSWvkGRaGY5s9fKotqeTg0ubuJkQlUA
-         BV3K10iy4x4MohXBab3XRL6pQikg9I+QB1+TcEcOjcFZxbpq+QoJaxllMBSB18xJE7oK
-         5Zt25vp35TNI34EKzO3w/a2URmL0OE7qYs81T5uWNMfXvUQiO7U5hnBuqGGuo/D3T2//
-         0QnWoCk6Wyy0Z8Bz+OWDGDpztcXp3ZCiFSGA+cJipPuoGQ899o7XNPzsT3G9wv0lHkkO
-         r73w==
-X-Forwarded-Encrypted: i=1; AJvYcCUBVZG5XuSU/noOLHpdxoXWko7GWbMnP3Fuy1Cp9gqAooOVQ8RwtW0b/D6SjTZ6ay+UNLr/S7/mjysyo2mb@vger.kernel.org, AJvYcCUec8e1YF4sqsKKFUG5s0ABX6qkoedaaFIEfEDScKDe+0Y31zFyQSb1JgYYs3alZFVk+j4EMS+WB/U4@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhZrJMWxwqn+c46Fckif1CKk8EEN4CfUGyK1K72yFKJfA14Jo5
-	cWNYlKU0fGPx4xIswJYkrt7rro2HicOGHqnigfZqYNMRh1eTlTKZ
-X-Google-Smtp-Source: AGHT+IGnz29EzyfiIQqPfVAkp62r+SypefBfC4y6IVvB3D3rpFARxRQUwlHaolBdSZXjGDe4h/4qNA==
-X-Received: by 2002:a17:902:d481:b0:207:d98:52ec with SMTP id d9443c01a7336-20afc62d0f6mr20761535ad.14.1727282455473;
-        Wed, 25 Sep 2024 09:40:55 -0700 (PDT)
+        bh=yDigrLr6aoyngHks4RSZ4J49MFGrODyXNvpYR5mceLA=;
+        b=cE7FvwqEWHadCdKlw45V50PDEozZxNGt2zmD0n3w8sdRMl7gk53e74fJhtu+y+95Hw
+         52kBG7L/Ve+GcPM5pLOzCRa5f+TQ/PBdIm+mODaOm5RypFpD+D5lIcNGykDPCLCCk2hq
+         cgUzOj0nkcWDmXue9JcxygBd2luGgSjWEV7v9p2gyklRELx3Xaf+WMqOXzvhpDOGNp2e
+         ym0mqOJGsINq72/kBQsHGTV/LpngY4MQefoldjiqsjGDUwkK/2cHa8KbeDpkQNDDEHwG
+         Y+X/cafSdcdOspSYFrUrXE2fzkerNEIP8dv5eaUwM3gK4tE6LBfqaZamPMl3p34869pc
+         BtRA==
+X-Forwarded-Encrypted: i=1; AJvYcCWF/OfzRs9qQ0RYcVNbmTK8S+sZ4roDwqjqgRojzFYkrSQ6YB5zaQgGE6d29yI6JzDtXJDPNbkk+DCt4G/U@vger.kernel.org, AJvYcCXhfOZlLcC7XaoAQ84UjcCDvQeGslZiyRoVuaEO9I6Uo1WTs3XL8qgYRGe1x7QIYbAJR5NTT/Hq/HSg@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8CM36L1dfkTyhYKaU8Mu8/IcskFX0FuzKmJ/FlcZizBXEB6de
+	KgetqWSG+qCG/CXr0rHJJLDXbeRZoBixwp0ePAHkwOu9eZpl+w20
+X-Google-Smtp-Source: AGHT+IEfoZmn9R2MhbCCmjrcm6Js2E2/bRhSh0jYr3xAVIBmSG8TxrqLg2vFGrskBTvf1CxEkYlQVg==
+X-Received: by 2002:a17:90b:1281:b0:2e0:7e80:2018 with SMTP id 98e67ed59e1d1-2e09253dcdfmr160a91.0.1727282459781;
+        Wed, 25 Sep 2024 09:40:59 -0700 (PDT)
 Received: from [127.0.1.1] ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e06e2bbecasm1726346a91.46.2024.09.25.09.40.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e06e2bbecasm1726346a91.46.2024.09.25.09.40.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2024 09:40:54 -0700 (PDT)
+        Wed, 25 Sep 2024 09:40:59 -0700 (PDT)
 From: Yasin Lee <yasin.lee.x@gmail.com>
-Date: Thu, 26 Sep 2024 00:40:17 +0800
-Subject: [PATCH v2 1/2] dt-bindings: iio: tyhx,hx9023s: Add performance
- tuning configuration
+Date: Thu, 26 Sep 2024 00:40:18 +0800
+Subject: [PATCH v2 2/2] iio: proximity: hx9023s: Add performance tuning
+ function
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240926-add-performance-tuning-configuration-v2-1-fdbb654f5767@gmail.com>
+Message-Id: <20240926-add-performance-tuning-configuration-v2-2-fdbb654f5767@gmail.com>
 References: <20240926-add-performance-tuning-configuration-v2-0-fdbb654f5767@gmail.com>
 In-Reply-To: <20240926-add-performance-tuning-configuration-v2-0-fdbb654f5767@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -89,12 +89,12 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Yasin Lee <yasin.lee.x@gmail.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1728; i=yasin.lee.x@gmail.com;
- h=from:subject:message-id; bh=iIzynT3wxdbNQUAm28xrSi7VcFi+h9bvAP8GS/IJDxs=;
- b=owGbwMvMwCEYyfeRr6Zs90zG02pJDGlfbHkzBAqY33psE6w+fMetWL+MZePE6+f+qBSe/zNvw
- a3juk3BHaUsDIIcDLJiiixnXr9hzVd9uCf4t2sGzBxWJpAhDFycAjCRgmhGhs26095+NJi63ao3
- YPmuZU//qi2XTH1V6n9GIWld07t/398z/I9vjxZ0FmIpFGnNsK9sXZ/oV1dTZOB7fVZIzqJ7q7V
- 40gA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2263; i=yasin.lee.x@gmail.com;
+ h=from:subject:message-id; bh=QwT382XJp5Tzqa6WmNu93tC/AnVS0dpTOdCs0F1jxuo=;
+ b=owGbwMvMwCEYyfeRr6Zs90zG02pJDGlfbPnuivxJCd0itfB913fl6czb1r49Je/sFrr4oUXr4
+ 003951Q7ShlYRDkYJAVU2Q58/oNa77qwz3Bv10zYOawMoEMYeDiFICJGLkxMszx2ax6OOPrpLvP
+ 7FwzLjW7TQj6H6709W+lT/XXq3FRG8MZ/od+nLu6mn1hM+uvNiOTVM/IS4/slvrOdrR6dUPy+Jp
+ pM/YBAA==
 X-Developer-Key: i=yasin.lee.x@gmail.com; a=openpgp;
  fpr=CCEBEC056F25E1BC53FB4568590EF10E7C76BB99
 
@@ -103,46 +103,72 @@ performance can be improved by adjusting register settings.
 
 Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
 ---
- .../bindings/iio/proximity/tyhx,hx9023s.yaml          | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/iio/proximity/hx9023s.c | 45 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
-index 64ce8bc8bd36..0673c40472bd 100644
---- a/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
-+++ b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
-@@ -28,6 +28,18 @@ properties:
+diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
+index 8b9f84400e00..8f7995816545 100644
+--- a/drivers/iio/proximity/hx9023s.c
++++ b/drivers/iio/proximity/hx9023s.c
+@@ -582,6 +582,47 @@ static int hx9023s_ch_en(struct hx9023s_data *data, u8 ch_id, bool en)
+ 	return regmap_write(data->regmap, HX9023S_CH_NUM_CFG, data->ch_en_stat);
+ }
  
-   vdd-supply: true
- 
-+  tyhx,performance-tuning:
-+    description:
-+      Optional, When hardware design introduces significant sensor data noise,
-+      performance can be improved by adjusting register settings, including
-+      but not limited to sample integration time and average sample count.
-+      Performance tuning parameters represented as register address-value pairs.
-+      The array consists of 8-bit values, where each pair represents a register
-+      address followed by the value to be written to that register.
-+    $ref: /schemas/types.yaml#/definitions/uint8-array
-+    minItems: 2
-+    maxItems: 512
++static int hx9023s_performance_tuning(struct hx9023s_data *data)
++{
++	int ret;
++	u32 i, len;
++	u8 addr_val[512];
++	struct device *dev = regmap_get_device(data->regmap);
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
 +
-   "#address-cells":
-     const: 1
++	ret = fwnode_property_count_u8(fwnode, "tyhx,performance-tuning");
++	if (ret < 2 || ret > 512) {
++		if (ret < 0) {
++			dev_err(dev, "Failed to get length of property\n");
++			return ret;
++		}
++		dev_err(dev, "The property requires between 2 and 512 elements\n");
++		return -EINVAL;
++	}
++
++	len = ret;
++	if (len % 2 != 0) {
++		dev_err(dev, "The property must contain an even number of elements\n");
++		return -EINVAL;
++	}
++
++	ret = fwnode_property_read_u8_array(fwnode, "tyhx,performance-tuning", addr_val, len);
++	if (ret < 0) {
++		dev_err(dev, "Failed to read property\n");
++		return ret;
++	}
++
++	for (i = 0; i < len; i += 2) {
++		ret = regmap_write(data->regmap, addr_val[i], addr_val[i + 1]);
++		if (ret) {
++			dev_err(dev, "Failed to write register\n");
++			return ret;
++		}
++	}
++
++	return ret;
++}
++
+ static int hx9023s_property_get(struct hx9023s_data *data)
+ {
+ 	struct device *dev = regmap_get_device(data->regmap);
+@@ -1045,6 +1086,10 @@ static int hx9023s_probe(struct i2c_client *client)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "channel config failed\n");
  
-@@ -65,6 +77,13 @@ examples:
-         interrupt-parent = <&pio>;
-         interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
-         vdd-supply = <&pp1800_prox>;
-+        tyhx,performance-tuning = [00 00
-+        02 17
-+        0D 44
-+        0E 44
-+        0F 04
-+        1F 65
-+        21 65];
- 
-         #address-cells = <1>;
-         #size-cells = <0>;
++	ret = hx9023s_performance_tuning(data);
++	if (ret)
++		dev_warn(dev, "performance tuning not configured\n");
++
+ 	ret = regcache_sync(data->regmap);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "regcache sync failed\n");
 
 -- 
 2.43.0

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-9843-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9844-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEF098905C
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 18:21:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 945B0989064
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 18:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BB38B215EA
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:21:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49C2D1F21E75
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CBA136358;
-	Sat, 28 Sep 2024 16:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C481422D8;
+	Sat, 28 Sep 2024 16:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYUkt3na"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0GBP3f0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095CD28DBC;
-	Sat, 28 Sep 2024 16:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AE0136352;
+	Sat, 28 Sep 2024 16:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727540469; cv=none; b=Tz1wJGzKeoWDH8vKmo/CRY/hO00Egm4G4pLe/FkvK9ENSiuVuVW24e+uaEZ10hmc9xmcItEVuD8SNUxJQBswsbaV+zA87+Sg0ZGUp9WFglenjDZ1qmN2lAE7rAjWzd/ezjBiZGFp5GkkC4BvH7g884R6OUnLlQx9dlx+VmtysVo=
+	t=1727540574; cv=none; b=lclOsI57EWP1x3BMX88W0UxYncw40ROqwv9mVQqYYBgzgviqo75dKoWnu/UxmYfkzL56wvG8wjhewGQ0vr6RQwJLFjkDri/B4MUfb/AGX9r46aC0xHKFsmA2GZNAr7PDxEaiptrAaM1S5lixID1eo6pzf/rqWsmPtbfUzVkeryI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727540469; c=relaxed/simple;
-	bh=xPw92/uFCnLlTNJ6/zUt+W0GFuWqJf+auw4yd0flj3g=;
+	s=arc-20240116; t=1727540574; c=relaxed/simple;
+	bh=tYeOKHlDiKu0z5v6DidPPsubsR0OVQ0GU5gDTr8O0nQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SROpQ+DvDFPlhADR8C3BMN3/wdNKzkPCzimRgKoyUlZBM6mKHNZmBnSUoojNNxzgfYsNXr0YRZm/h0Ky7uY5G1sbJOijqG1slkQJv9XPY448ocubKRufYJ7WEkfXZcT3+A4Kk6/JvWWzLE1FYl6zczqWSSIeu3rGXbd6gVfuF5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYUkt3na; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701E0C4CEC7;
-	Sat, 28 Sep 2024 16:21:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FCVkn+xJB5WxqUKwf5HnjzHiPKxNVA0g4v/db9PJiuWn7d2fjDKONF9WvJqyv0XyEFWexFvQ+LmVcjeMP3+L/G3TX/8CtuSu5m3t9Udza25nFxxUermYQEmtUr28ZrN1ZYem+TrGvnPhBgLw16YuPOT3KHje3P4P+U0Kq76tJnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0GBP3f0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865A4C4CEC3;
+	Sat, 28 Sep 2024 16:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727540468;
-	bh=xPw92/uFCnLlTNJ6/zUt+W0GFuWqJf+auw4yd0flj3g=;
+	s=k20201202; t=1727540574;
+	bh=tYeOKHlDiKu0z5v6DidPPsubsR0OVQ0GU5gDTr8O0nQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EYUkt3nauUlue9Bk6yKcOE4LYamMZU79dyhdcK33+7HKwNvN2yDg9cc/0TWkVD2Ep
-	 gRqvPZVR+Ru5oRy61sYNnC6CMg1bEOLZ7OD2osJBwdMkFDXi7MB4IkZM0uNpL3nNJW
-	 EIkTvG1ZI3LKyk7bPMCBsmXc7I3s1l5bE+zDU9VfpQZ9oUKyqndI94VBWjffOJZLSJ
-	 2CasA6Fc9YOkVK/bD7OVu8V2HZWy32UD8BnfJjnXlBQf0oWLnaZsxaH742OjpV1iAw
-	 ChWr3iiHaGu6NRSELCmTTtCp9U0qJzKRAy5QiQk0EIcSN8YSqiro4RH77364ldIObA
-	 sqq0ZXBh2la/g==
-Date: Sat, 28 Sep 2024 17:20:59 +0100
+	b=e0GBP3f0GU+s4bnpUqOa2FJT+cItvuVWfcVilmpgUZV/iuuj6PFTdNOdwcgVXR9Ya
+	 qVgfEzsgZrvYXc3G4vokXMc9DxYHELEF+bwzYgisGf107iH4Jdr3hFy/HSsoxkCc2g
+	 S4IW6ENI6UNEVBX8mzW+QnsxWzmvHWCvYOHPJVXJDPpqbINyRboe2nxncwGmj6Dcl7
+	 1fDRVWPGZ/ZJD6yCNZG2siOk+EzS2KCMR4uwpJnAlU8TZelqmP6fGL6PemrUdawcP/
+	 6hu93QivKR/Xwe5uPtB52wHdzoQ/wSCpHkL0FvX+o13uTD30Yk3WFrDghFkQW+EtiB
+	 TqUiCjZzp/Wpw==
+Date: Sat, 28 Sep 2024 17:22:45 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
@@ -50,12 +50,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, Jonathan Cameron
  <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 07/10] iio: light: veml6030: drop processed info for
- white channel
-Message-ID: <20240928172059.3a7fa45d@jic23-huawei>
-In-Reply-To: <20240923-veml6035-v2-7-58c72a0df31c@gmail.com>
+Subject: Re: [PATCH v2 08/10] iio: light: veml6030: power off device in
+ probe error paths
+Message-ID: <20240928172245.6d69df95@jic23-huawei>
+In-Reply-To: <20240923-veml6035-v2-8-58c72a0df31c@gmail.com>
 References: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
-	<20240923-veml6035-v2-7-58c72a0df31c@gmail.com>
+	<20240923-veml6035-v2-8-58c72a0df31c@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,62 +66,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 23 Sep 2024 00:17:55 +0200
+On Mon, 23 Sep 2024 00:17:56 +0200
 Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> The resolution of the WHITE channel is not provided by the manufacturer,
-> neither in the datasheet nor in the application note (even their
-> proprietary application only processes the ALS channel, giving raw
-> values for WHITE).
+> Move devm_add_action_or_reset() with a device shut down action above the
+> hardware initialization function to ensure that any error path after
+> powering on the device leads to a power off.
 > 
-> The current implementation assumes that both resolutions are identical,
-> which is extremely unlikely, especially for photodiodes with different
-> spectral responses.
-> 
-> Drop the processed information as it is meaningless.
+> The power off action is carried out by setting the VEML6030_ALS_SD bit
+> of the VEML6030_REG_ALS_CONF, which is harmless in error paths were the
+> device is already off. On the other hand, making use of the registered
+> action in all error paths makes them more homogeneous by avoiding
+> special action depending on the current power state of the device.
 > 
 > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Just to note, this one is fine as it is fixing an ABI bug
-so is a valid reason to change the ABI.
+As per my very late reply, I'd move the devm_add_action_or_reset()
+into the hw_init function so it's closely coupled with the thing
+it is undoing rather than with a function that does lots of other
+things.
 
-In theory though we should pull it out as a fix to add to stable
-as well, but it's low risk that anyone is using the 'false'
-channel so I don't think we care about backports for this one.
-
-Thanks,
+You'll want to pass dev into the init function though so it is
+easy to see what device the devm_ call is against.
+Don't use the parent of the IIO dev as that's an implementation
+detail!
 
 Jonathan
-
 > ---
->  drivers/iio/light/veml6030.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
+>  drivers/iio/light/veml6030.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 > diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> index a3190fab3add..861bdf2edd4d 100644
+> index 861bdf2edd4d..19c69bfad8cb 100644
 > --- a/drivers/iio/light/veml6030.c
 > +++ b/drivers/iio/light/veml6030.c
-> @@ -209,8 +209,7 @@ static const struct iio_chan_spec veml6030_channels[] = {
->  		.channel = CH_WHITE,
->  		.modified = 1,
->  		.channel2 = IIO_MOD_LIGHT_BOTH,
-> -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> -				BIT(IIO_CHAN_INFO_PROCESSED),
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
->  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
->  					       BIT(IIO_CHAN_INFO_SCALE),
->  		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> @@ -549,11 +548,6 @@ static int veml6030_read_raw(struct iio_dev *indio_dev,
->  				dev_err(dev, "can't read white data %d\n", ret);
->  				return ret;
->  			}
-> -			if (mask == IIO_CHAN_INFO_PROCESSED) {
-> -				*val = (reg * data->cur_resolution) / 10000;
-> -				*val2 = (reg * data->cur_resolution) % 10000;
-> -				return IIO_VAL_INT_PLUS_MICRO;
-> -			}
->  			*val = reg;
->  			return IIO_VAL_INT;
->  		default:
+> @@ -853,12 +853,12 @@ static int veml6030_probe(struct i2c_client *client)
+>  		indio_dev->info = &veml6030_info_no_irq;
+>  	}
+>  
+> -	ret = veml6030_hw_init(indio_dev);
+> +	ret = devm_add_action_or_reset(&client->dev,
+> +				       veml6030_als_shut_down_action, data);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	ret = devm_add_action_or_reset(&client->dev,
+> -					veml6030_als_shut_down_action, data);
+> +	ret = veml6030_hw_init(indio_dev);
+>  	if (ret < 0)
+>  		return ret;
+>  
 > 
 
 

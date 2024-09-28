@@ -1,56 +1,55 @@
-Return-Path: <linux-iio+bounces-9831-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9832-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9C0989021
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 17:47:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB64F989023
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 17:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EBC3281FFE
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 15:47:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D3981F2176A
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 15:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586472261D;
-	Sat, 28 Sep 2024 15:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C772837D;
+	Sat, 28 Sep 2024 15:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ci2ur5us"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CeM37gAO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD4C125DE;
-	Sat, 28 Sep 2024 15:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE3A524B4;
+	Sat, 28 Sep 2024 15:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727538435; cv=none; b=M11nnePRsOnrnyJvn8mtNcLOwD36nME5ytoxymE0p1o9bJp8V9T4sYP/9QDtVIvH7XhZ6DGzB7Kq3lkgHCHLU7+wYm//y8NoWBnnJl2sZzJ3ZXv8oFk5RhgsF0j7SQkWRLg0Y2DYljFjFvHWJkR5IAXo9uZl9bDhkATMr0F0ng8=
+	t=1727538499; cv=none; b=g1sCax4VQIh2T0csyVsatmQupiILquuZGCno7evq64VvnGiJAn4xPyqk1HzOb4u33Xe9T7p4yJsaKNS5RQQ29xgf31/7ED4NthrVnSZnuYDG2H6TarJELZgfbEx8EEVgMYqW3TYS71udqrHR6APwl4RCOLxf+U7zmAMR5ApuVZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727538435; c=relaxed/simple;
-	bh=XnAhLzEL23hpoq7qkZP6v0YFARWHVEtHHAldltkiGms=;
+	s=arc-20240116; t=1727538499; c=relaxed/simple;
+	bh=4Bjt2j/XaJmmwJ70H5U/Bm0L+rWX1uHACIUJUN3Gv5s=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pu70VdQw/Oid6Zp6ujSw/iwPZRyUgeQ/24Ay2Q2PTUph5bqw2EKshRZbbfhQvOHjN97qePjaf6+YqbyEJmiUxUOqfrGby9OlOKzNVFpkuJPsuMF0PFkJ3SJLWE9dFiU0ACDo4RBzyyys+roXlVxmqVdxsWlddHWbwWeGMz/cgMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ci2ur5us; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9B6C4CEC3;
-	Sat, 28 Sep 2024 15:47:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KdupReUtWr6S4MTNnBYJur7wUOZAiZbegRwbZLrN8fY/vZRTQkgESRou6Mjof0+xTmXWh0aIOVILVPQqbeongDy8oCRYGINHhsWltejMyBV55K2DaZkVXWlwct8ok8ESJH0Tjp2qDA0zzQGhMvUlt3YJPK2rWvO3xT4IwxcoYdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CeM37gAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E34C4CEC3;
+	Sat, 28 Sep 2024 15:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727538434;
-	bh=XnAhLzEL23hpoq7qkZP6v0YFARWHVEtHHAldltkiGms=;
+	s=k20201202; t=1727538498;
+	bh=4Bjt2j/XaJmmwJ70H5U/Bm0L+rWX1uHACIUJUN3Gv5s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ci2ur5usqwY0/ePzeTQHsLM37V3uSrKQrSltpw4VY4YQMPjTDpNJwYw0xxj7jBX3A
-	 GDCQYojOGgEVcSnt8SsM3Yse3Bpu/Gi2YJJCZjBR0pk7YcG/aKf3rP4YFVSbX84gj8
-	 SBc2PObCauPCRrHmof3jJLBWln8N/TAxS2Ljk8Yx7C6ixwl9RlbpKcQpjj/rZ2kvY+
-	 IcVEV2XKoaMjSmHz48tDA6d1KXicL7LLgkrHFd5gROaZpFTOLnb8GE06Hn/4I9hj3F
-	 1eRpsDbXEDt14hJSKfrcFxCXASeIWdofeAQOiMh/fZR8macGyvn7AXw7xH3edMagn2
-	 wCbTGFABpjaig==
-Date: Sat, 28 Sep 2024 16:47:07 +0100
+	b=CeM37gAOE5eBRKEAEqLyOSBlH3PlTF0v8hVmMmKT9Kwqkt37KK53tXEtVQepZ3hUt
+	 exer0zieHzCjPARWfVuQUFNIn5SFqZ4CFpvad7zu6M/Xu/+vx2yWfcX5VyetzNIeAr
+	 3ScIiHVx1kaswiPTX/hLi7e5afveG7eQqqdt7tlt+Dluie9Dt1D+5Us4BEXT7b6ct5
+	 0B0YMjKALHR2qmJATageR5Hy2hwoyG0W02FJe+N9o1nnRT/VUs/Sct8q37YjA2RFBE
+	 47eqbTDeBpfZlt5k2+T7CcnjQFlAAS+Go3M1DhDyalaaEpqroesyLFZhTo8JONaNHm
+	 j/WKSfkVrCfiQ==
+Date: Sat, 28 Sep 2024 16:48:12 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Abhash Jha <abhashkumarjha123@gmail.com>
 Cc: linux-iio@vger.kernel.org, anshulusr@gmail.com, lars@metafoo.de,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] Threshold event and Sampling freq support for
- LTR390
-Message-ID: <20240928164707.091fa5f7@jic23-huawei>
-In-Reply-To: <20240914181246.504450-1-abhashkumarjha123@gmail.com>
-References: <20240914181246.504450-1-abhashkumarjha123@gmail.com>
+Subject: Re: [PATCH] iio: light: ltr390: Replaced mask values with GENMASK()
+Message-ID: <20240928164812.65e64f1c@jic23-huawei>
+In-Reply-To: <20240914182239.507953-1-abhashkumarjha123@gmail.com>
+References: <20240914182239.507953-1-abhashkumarjha123@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,60 +60,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 14 Sep 2024 23:42:42 +0530
+On Sat, 14 Sep 2024 23:52:39 +0530
 Abhash Jha <abhashkumarjha123@gmail.com> wrote:
 
-> Hello,
+> Changed the hardcoded mask values for GAIN_MASK and INT_TIME_MASK to use
+> GENMASK() instead.
 > 
-> The first patch adds support for configuring the Sampling frequency of
-> the sensor. The available values for the sampling freqeuncy are provided
-> by the `read_avail` callback and they are in miliHertz.
-> 
-> Then the second patch adds support for suspending and resuming
-> the sensor by providing the necessary callbacks. And registering
-> the ops with the driver.
-> 
-> The third patch in the series adds support for Threshold events and interrupts.
-> Exposed rising and falling threshold events for both the channels. The events
-> can be configured via the write_event_config callback. The desired rising or falling
-> threshold value can be written to from userspace.
-> 
-> The fourth patch adds support for threshold interrupt persistance.
-> It triggers when the UVS/ALS data is out of thresholds for a specific number
-> of consecutive measurements.
-> Exposed the IIO_EV_INFO_PERIOD attribute by which userspace can set the persistance
-> value in miliseconds. The persistance period should be greater than or equal
-> to the sampling period.
-
-Applied with tweaks to the testing branch of iio.git which will be rebased
-on rc1 once available.
-
+> Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+Applied.
 Thanks,
-
-Jonathan
-
-> 
-> Changes in v3:
-> - Replace hardcoded mask values with GENMASK()
-> - Minor refactoring
-> - Code formatting changes
-> 
-> Changes in v2:
-> - Added "linux/irq.h" include to fix `-Wimplicit-function-declaration`.
-> - The above error was pointed during testing by kernel-test-robot
-> 
-> Thanks,
-> Abhash
-> 
-> 
-> Abhash Jha (4):
->   iio: light: ltr390: Added configurable sampling frequency support
->   iio: light: ltr390: Suspend and Resume support
->   iio: light: ltr390: Interrupts and threshold event support
->   iio: light: ltr390: Add interrupt persistance support
-> 
->  drivers/iio/light/ltr390.c | 361 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 357 insertions(+), 4 deletions(-)
-> 
-
+J
 

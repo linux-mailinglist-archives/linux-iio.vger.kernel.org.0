@@ -1,308 +1,274 @@
-Return-Path: <linux-iio+bounces-9806-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9807-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C19988A29
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Sep 2024 20:37:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82ED8988F26
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 14:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92AF41C211C1
-	for <lists+linux-iio@lfdr.de>; Fri, 27 Sep 2024 18:37:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DDBC1F218D7
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 12:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5481C1AAB;
-	Fri, 27 Sep 2024 18:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64B0187350;
+	Sat, 28 Sep 2024 12:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ci5tm/Ht"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bojNiA6l"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA871C0DFB;
-	Fri, 27 Sep 2024 18:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEC0C139;
+	Sat, 28 Sep 2024 12:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727462260; cv=none; b=Y41brPoGr9J4Drw2+56rXZxqOkavL7LXC+oHkx449eTDOyZZ20U7guVt4bfoRqg1eetvaDUjKU0t4SXhU1ZrzbhobH4NhFaU48XLI/ghABkRZB+LLpWyd/KKE/Y0BYrB5ZPsUVG7Q8+J3SnkwadYq4bQQWJyw8LMmjyGVayIoVA=
+	t=1727526037; cv=none; b=nDlMqqjApIX77510U06Y5m0s9jKBei2l4kc/V8fOy/ZxkIYjuhBycDLFrEevNM1kCVyC6GBSQuSAh//4D3zMof0zLaQxRezpjCSnnLE7SLyAPvf4c9rsRdcmpas7QJQvgPIhtisw5eBjzPvqlJxvE0UsbvPheUJ76/StkTY+NrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727462260; c=relaxed/simple;
-	bh=b5VUBWbsAu2exHbAegrbqVrNFo16caQHIE4OT3L5mCo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QggM2DEnQnGVEV3cq6W6g5HgA1KI/CYTgDONVvXky+BDbN+nfW8x/o+bs4XMsattQuZH2f7XYKyBciiUFTSwZVXMTcW3dZfEtUqdRgTikm3sztBwJuS64D0T+xxOChoZjBM+BBw9827zUb8H/y0KKFwVbohV0OgJq9x/NybR8vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ci5tm/Ht; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4581d2b0fbaso16621751cf.1;
-        Fri, 27 Sep 2024 11:37:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727462258; x=1728067058; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I23sQH+zBH3NL+Wb16mMPrx1e0aS0RcSOdMlchmtwnM=;
-        b=Ci5tm/Htw0acKMbLme7hhN/2JeIzTeE2cFZEESeWhqSHBOym0Qlh8d98BQ5mXO3CoV
-         lWbtgTY4vhEVKdZMGUc7eAhLKxJbI4YmjjWtMjLSbkHhrFRLbnPMUFhwVVDsbn+ySmTJ
-         Q2kFVs3A70Kdc2bElLXp3KZ8laQQBxyQvkOFgleVR6DhikveUgCjvkdWMB2FcRkj6Qqi
-         msC2xw8w3JhcxqsqWILNjGppBjhjNI9FiSgiNJBZFAhRobNjoFCbU6kuuVbJYrv8rs8w
-         jr3qt5KNzIOUdG56xsOnJ9+PU9D+ITOeMdn0LUICkZ7I0QlS4/jLEihFwi0T3bP19pQ+
-         bVrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727462258; x=1728067058;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I23sQH+zBH3NL+Wb16mMPrx1e0aS0RcSOdMlchmtwnM=;
-        b=pBw87kO8jxuzrDTF5UlhsqX/Df0zf6Rx3+i17tMbh8bU6wSmDXNtnNkCRGUQ/nEwmH
-         GjkuHch+vhiHvGCmNN7v2MEtrTc0DlpATSMmg4adOo3lXzavqdysXcHn814KjHGC418C
-         5LeCm+DnMDZoxfHTNffHWVzND3EOYL/ovmXIHuHi6JV4p88B8xLbv1OkYc7UPIh7+ic2
-         9386Jipfr3DQWES5jWFkIq5uLhfQdnAn6IHGEt1hbVz7lquencfyCIFobvwhE90mg15w
-         H2zUiV0c66by3q6l3Zf4BBQ9xhx/tkRQai1Ij36RsWqEcjh607NUL9EmUkqpztHB3VNw
-         YY6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUaMeWruECsllGau5Jn0PS4SsZ8kjCXSAEYJSsl5J76EBvOkWwH1yjb0DWrvH0Wr9AKBXW5x9lo+Xs=@vger.kernel.org, AJvYcCXO5Dwrcc027LSF0szls38osD/8XUG+d3e6DAfNOJTsMArrVnqQamsGrR3jtDrJ6jdpmA/9G1/aEDLn8TWu@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw++C6GukIqvVtFE1ArZFY9NZRRNhBUfyNNeurPiLWYpwU5Jg6O
-	ee+x8wRNvjnDC3cbUjzz8QqSaZd5eVXtYhxQk5BuuPdPHhD+eCkq
-X-Google-Smtp-Source: AGHT+IHaC5Go/NVY+OVranygSvAHD0RyEeJN/p0x0gM5UwrKcLvhuJjgATpgptWz+wxXJk3J1aO49w==
-X-Received: by 2002:ac8:5812:0:b0:458:2c22:e696 with SMTP id d75a77b69052e-45c9f289eb4mr65846281cf.56.1727462257996;
-        Fri, 27 Sep 2024 11:37:37 -0700 (PDT)
-Received: from localhost.localdomain (ool-1826d901.dyn.optonline.net. [24.38.217.1])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45c9f33bcb0sm10544501cf.74.2024.09.27.11.37.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2024 11:37:37 -0700 (PDT)
-From: Alex Lanzano <lanzano.alex@gmail.com>
-To: Alex Lanzano <lanzano.alex@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-kernel-mentees@lists.linuxfoundation.org,
-	skhan@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] iio: imu: bmi270: Add spi driver for bmi270 imu
-Date: Fri, 27 Sep 2024 14:37:10 -0400
-Message-ID: <20240927183717.3613601-1-lanzano.alex@gmail.com>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1727526037; c=relaxed/simple;
+	bh=VlJucxXTuioDoY6O7y4XDszULEPjMWJaI+McDBEM6kY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=biDu1IT11ZqgIOIr9iPhhf+/tmV1Vk+6FFMTHnxhc6+lZSTJyRPxNpgL2ShVKBcre7wG1eX/nfhIV1IAzDfBJcIAKUX8BQY6ZAiZAVoYcIPesMZFUzEAJUDQrCzEcAwqKRicSuyeNpd9xfDcYVaRbRD5U7DA9/v+J+7++dnjHvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bojNiA6l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97E3C4CEC3;
+	Sat, 28 Sep 2024 12:20:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727526036;
+	bh=VlJucxXTuioDoY6O7y4XDszULEPjMWJaI+McDBEM6kY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bojNiA6ldaXTfYQI641aopuu8I3gzz3B56wd5VCZFUU7dpKOdCb0pGe2qtCooYt9W
+	 UaJK+CkzjQ/A+uAvMrpm06/mJC9uN1oVlFcAsEmwBsm6Qq1oMft0tEF9Zaj3tEdtiR
+	 /Kjp/5kBwTocZR73VJlHysszOcqLNtjNkD3y2VwRyGR46ifZI5E/XZ/ZcMRmOuZhd/
+	 GeeMoF9v4rycVIvqpVXy45rOKFOug9d7Y4d5Oj57TA+H5GSz3byB4iLjn233O5RBoW
+	 26E/nWBSPg2MpIav7n+rgnH+c8ThCHZc6viD7jeUAHdVrNrHuDALwFFSjyYeUCtpVj
+	 63PtPfCM9A++w==
+Message-ID: <28834db1-3e9e-47f4-b00e-a548589d77e9@kernel.org>
+Date: Sat, 28 Sep 2024 14:20:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/10] dt-bindings: iio: dac: ad3552r: add io-backend
+ support
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Olivier Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ dlechner@baylibre.com
+References: <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-0-a17b9b3d05d9@baylibre.com>
+ <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-4-a17b9b3d05d9@baylibre.com>
+ <gojq6ardhvt6vcs2kawdhdn2cj6qbpzp4p5mjjgwsypuatm5eo@3u6k4q7le46s>
+ <418a8a9b-3bcf-4b8f-92a0-619a3bf26ab5@baylibre.com>
+ <e8af0f3f-a09c-42d7-b8ca-dd633539af73@kernel.org>
+ <0279203b6cd9f1312d9c03654c262c04ac12fbd9.camel@gmail.com>
+ <fa27dc74-7b1f-4ef5-81dc-cc434da4ff89@kernel.org>
+ <c721861809c17776c0fe89ead331b6e2e6b9d4b4.camel@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <c721861809c17776c0fe89ead331b6e2e6b9d4b4.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Implement SPI driver for the Bosch BMI270 6-axis IMU. Provide raw read
-write access to acceleration and angle velocity measurements via the SPI
-interface on the device.
+On 25/09/2024 13:55, Nuno Sá wrote:
+> On Wed, 2024-09-25 at 09:22 +0200, Krzysztof Kozlowski wrote:
+>> On 24/09/2024 14:27, Nuno Sá wrote:
+>>> On Tue, 2024-09-24 at 10:02 +0200, Krzysztof Kozlowski wrote:
+>>>> On 23/09/2024 17:50, Angelo Dureghello wrote:
+>>>>> Hi Krzysztof,
+>>>>>
+>>>>> On 22/09/24 23:02, Krzysztof Kozlowski wrote:
+>>>>>> On Thu, Sep 19, 2024 at 11:20:00AM +0200, Angelo Dureghello wrote:
+>>>>>>> From: Angelo Dureghello <adureghello@baylibre.com>
+>>>>>>>
+>>>>>>> There is a version AXI DAC IP block (for FPGAs) that provides
+>>>>>>> a physical bus for AD3552R and similar chips, and acts as
+>>>>>>> an SPI controller.
+>>>>>>>
+>>>>>>> For this case, the binding is modified to include some
+>>>>>>> additional properties.
+>>>>>>>
+>>>>>>> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+>>>>>>> ---
+>>>>>>>   .../devicetree/bindings/iio/dac/adi,ad3552r.yaml   | 42
+>>>>>>> ++++++++++++++++++++++
+>>>>>>>   1 file changed, 42 insertions(+)
+>>>>>>>
+>>>>>>> diff --git
+>>>>>>> a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+>>>>>>> b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+>>>>>>> index 41fe00034742..aca4a41c2633 100644
+>>>>>>> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+>>>>>>> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+>>>>>>> @@ -60,6 +60,18 @@ properties:
+>>>>>>>       $ref: /schemas/types.yaml#/definitions/uint32
+>>>>>>>       enum: [0, 1, 2, 3]
+>>>>>>>   
+>>>>>>> +  io-backends:
+>>>>>>> +    description: The iio backend reference.
+>>>>>>> +      An example backend can be found at
+>>>>>>> +       
+>>>>>>> https://analogdevicesinc.github.io/hdl/library/axi_ad3552r/index.html
+>>>>>>> +    maxItems: 1
+>>>>>>> +
+>>>>>>> +  adi,synchronous-mode:
+>>>>>>> +    description: Enable waiting for external synchronization
+>>>>>>> signal.
+>>>>>>> +      Some AXI IP configuration can implement a dual-IP layout,
+>>>>>>> with
+>>>>>>> internal
+>>>>>>> +      wirings for streaming synchronization.
+>>>>>>> +    type: boolean
+>>>>>>> +
+>>>>>>>     '#address-cells':
+>>>>>>>       const: 1
+>>>>>>>   
+>>>>>>> @@ -128,6 +140,7 @@ patternProperties:
+>>>>>>>             - custom-output-range-config
+>>>>>>>   
+>>>>>>>   allOf:
+>>>>>>> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+>>>>>>>     - if:
+>>>>>>>         properties:
+>>>>>>>           compatible:
+>>>>>>> @@ -238,4 +251,33 @@ examples:
+>>>>>>>               };
+>>>>>>>           };
+>>>>>>>       };
+>>>>>>> +
+>>>>>>> +  - |
+>>>>>>> +    axi_dac: spi@44a70000 {
+>>>>>>> +        compatible = "adi,axi-ad3552r";
+>>>>>> That is either redundant or entire example should go to the parent
+>>>>>> node,
+>>>>>> if this device is fixed child of complex device (IOW, adi,ad3552r
+>>>>>> cannot
+>>>>>> be used outside of adi,axi-ad3552r).
+>>>>>
+>>>>> ad3552r can still be used by a generic "classic" spi
+>>>>> controller (SCLK/CS/MISO) but at a slower samplerate, fpga
+>>>>> controller only (axi-ad3552r) can reach 33MUPS.
+>>>>
+>>>> OK, then this is just redundant. Drop the node. Parent example should
+>>>> contain the children, though.
+>>>>>
+>>>>>>
+>>>>>>> +        reg = <0x44a70000 0x1000>;
+>>>>>>> +        dmas = <&dac_tx_dma 0>;
+>>>>>>> +        dma-names = "tx";
+>>>>>>> +        #io-backend-cells = <0>;
+>>>>>>> +        clocks = <&ref_clk>;
+>>>>>>> +
+>>>>>>> +        #address-cells = <1>;
+>>>>>>> +        #size-cells = <0>;
+>>>>>>> +
+>>>>>>> +        dac@0 {
+>>>>>>> +            compatible = "adi,ad3552r";
+>>>>>>> +            reg = <0>;
+>>>>>>> +            reset-gpios = <&gpio0 92 0>;
+>>>>>> Use standard defines for GPIO flags.
+>>>>>
+>>>>> fixed, thanks
+>>>>>
+>>>>>>> +            io-backends = <&axi_dac>;
+>>>>>> Why do you need to point to the parent? How much coupled are these
+>>>>>> devices? Child pointing to parent is not usually expected, because
+>>>>>> that's obvious.
+>>>>>
+>>>>>
+>>>>> "io-backends" is actually the way to refer to the backend module,
+>>>>> (used already for i.e. ad9739a),
+>>>>> it is needed because the backend is not only acting as spi-controller,
+>>>>> but is also providing some APIs for synchronization and bus setup
+>>>>> support.
+>>>>
+>>>>
+>>>> But if backend is the parent, then this is redundant. You can take it
+>>>> from the child-parent relationship. Is this pointing to other devices
+>>>> (non-parent) in other ad3552r configurations?
+>>>>
+>>>
+>>> The backend is a provider-consumer type of API. On the consumer side (which
+>>> is the
+>>> driver the child node will probe on), we need to call devm_iio_backend_get()
+>>> to get
+>>> the backend object (which obviously is the parent). For that, 'io-backends'
+>>> is being
+>>
+>> You described the driver, so how does it matter? Driver can call
+>> get_backend_from_parent(), right? Or get_backend_from_fwnode(parent)?
+> 
+> Well yes, just stating what the framework (also in terms of bindings) is
+> expecting. Of course that on the driver side we can paper around it the way we
+> want. But my main point was that we can only paper around it if we use code that
+> is meant not to be used.
+> 
+> And, FWIW, I was (trying) replying to your comment
+> 
+> "You can take it from the child-parent relationship"
+> 
+> Again, we can only do that by introducing new code or use code that's not meant
+> to be used. The way we're supposed to reference backends is by explicitly using
+> the proper FW property.
+> 
+> Put it in another way and a completely hypothetical case. If we have a spi
+> controller which happens to export some clock and one of it's peripherals ends
+> up using that clock, wouldn't we still use 'clocks' to reference that clock?
 
-Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
----
- drivers/iio/imu/bmi270/Kconfig       | 12 ++++
- drivers/iio/imu/bmi270/Makefile      |  1 +
- drivers/iio/imu/bmi270/bmi270.h      |  2 +
- drivers/iio/imu/bmi270/bmi270_core.c | 13 ++--
- drivers/iio/imu/bmi270/bmi270_i2c.c  |  7 ++-
- drivers/iio/imu/bmi270/bmi270_spi.c  | 89 ++++++++++++++++++++++++++++
- 6 files changed, 114 insertions(+), 10 deletions(-)
- create mode 100644 drivers/iio/imu/bmi270/bmi270_spi.c
+I asked how coupled are these devices. Never got the answer and you are
+reflecting with question. Depends. Please do not create hypothetical,
+generic scenarios and then apply them to your one particular opposite case.
 
-diff --git a/drivers/iio/imu/bmi270/Kconfig b/drivers/iio/imu/bmi270/Kconfig
-index a8db44187286..0ffd29794fda 100644
---- a/drivers/iio/imu/bmi270/Kconfig
-+++ b/drivers/iio/imu/bmi270/Kconfig
-@@ -18,3 +18,15 @@ config BMI270_I2C
- 
- 	  This driver can also be built as a module. If so, the module will be
- 	  called bmi270_i2c.
-+
-+config BMI270_SPI
-+	tristate "Bosch BMI270 SPI driver"
-+	depends on SPI
-+	select BMI270
-+	select REGMAP_SPI
-+	help
-+	  Enable support for the Bosch BMI270 6-Axis IMU connected to SPI
-+	  interface.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called bmi270_spi.
-diff --git a/drivers/iio/imu/bmi270/Makefile b/drivers/iio/imu/bmi270/Makefile
-index ab4acaaee6d2..d96c96fc3d83 100644
---- a/drivers/iio/imu/bmi270/Makefile
-+++ b/drivers/iio/imu/bmi270/Makefile
-@@ -4,3 +4,4 @@
- #
- obj-$(CONFIG_BMI270) += bmi270_core.o
- obj-$(CONFIG_BMI270_I2C) += bmi270_i2c.o
-+obj-$(CONFIG_BMI270_SPI) += bmi270_spi.o
-diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
-index 608b29ea58a3..8950e6234203 100644
---- a/drivers/iio/imu/bmi270/bmi270.h
-+++ b/drivers/iio/imu/bmi270/bmi270.h
-@@ -4,11 +4,13 @@
- #define BMI270_H_
- 
- #include <linux/regmap.h>
-+#include <linux/iio/iio.h>
- 
- struct device;
- struct bmi270_data {
- 	struct device *dev;
- 	struct regmap *regmap;
-+	__le16 sample __aligned(IIO_DMA_MINALIGN);
- };
- 
- extern const struct regmap_config bmi270_regmap_config;
-diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-index 8e45343d6472..4decdad791d9 100644
---- a/drivers/iio/imu/bmi270/bmi270_core.c
-+++ b/drivers/iio/imu/bmi270/bmi270_core.c
-@@ -66,16 +66,9 @@ enum bmi270_scan {
- 	BMI270_SCAN_GYRO_Z,
- };
- 
--const struct regmap_config bmi270_regmap_config = {
--	.reg_bits = 8,
--	.val_bits = 8,
--};
--EXPORT_SYMBOL_NS_GPL(bmi270_regmap_config, IIO_BMI270);
--
- static int bmi270_get_data(struct bmi270_data *bmi270_device,
- 			   int chan_type, int axis, int *val)
- {
--	__le16 sample;
- 	int reg;
- 	int ret;
- 
-@@ -90,11 +83,13 @@ static int bmi270_get_data(struct bmi270_data *bmi270_device,
- 		return -EINVAL;
- 	}
- 
--	ret = regmap_bulk_read(bmi270_device->regmap, reg, &sample, sizeof(sample));
-+	ret = regmap_bulk_read(bmi270_device->regmap, reg,
-+			       &bmi270_device->sample,
-+			       sizeof(bmi270_device->sample));
- 	if (ret)
- 		return ret;
- 
--	*val = sign_extend32(le16_to_cpu(sample), 15);
-+	*val = sign_extend32(le16_to_cpu(bmi270_device->sample), 15);
- 
- 	return 0;
- }
-diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
-index f70dee2d8a64..ce8279ae90cd 100644
---- a/drivers/iio/imu/bmi270/bmi270_i2c.c
-+++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
-@@ -9,12 +9,17 @@
- 
- #include "bmi270.h"
- 
-+const struct regmap_config bmi270_i2c_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+};
-+
- static int bmi270_i2c_probe(struct i2c_client *client)
- {
- 	struct regmap *regmap;
- 	struct device *dev = &client->dev;
- 
--	regmap = devm_regmap_init_i2c(client, &bmi270_regmap_config);
-+	regmap = devm_regmap_init_i2c(client, &bmi270_i2c_regmap_config);
- 	if (IS_ERR(regmap))
- 		return dev_err_probe(dev, PTR_ERR(regmap),
- 				     "Failed to init i2c regmap");
-diff --git a/drivers/iio/imu/bmi270/bmi270_spi.c b/drivers/iio/imu/bmi270/bmi270_spi.c
-new file mode 100644
-index 000000000000..906b9b852a09
---- /dev/null
-+++ b/drivers/iio/imu/bmi270/bmi270_spi.c
-@@ -0,0 +1,89 @@
-+// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+
-+#include <linux/module.h>
-+#include <linux/spi/spi.h>
-+#include <linux/iio/iio.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/regmap.h>
-+
-+#include "bmi270.h"
-+
-+/*
-+ * The following two functions are taken from the BMI323 spi driver code.
-+ * In section 6.4 of the BMI270 data it specifies that after a read
-+ * operation the first data byte from the device is a dummy byte
-+ */
-+static int bmi270_regmap_spi_read(void *context, const void *reg_buf,
-+				  size_t reg_size, void *val_buf,
-+				  size_t val_size)
-+{
-+	struct spi_device *spi = context;
-+
-+	return spi_write_then_read(spi, reg_buf, reg_size, val_buf, val_size);
-+}
-+
-+static int bmi270_regmap_spi_write(void *context, const void *data,
-+				   size_t count)
-+{
-+	struct spi_device *spi = context;
-+	u8 *data_buff = (u8 *)data;
-+
-+	/*
-+	 * Remove the extra pad byte since its only needed for the read
-+	 * operation
-+	 */
-+	data_buff[1] = data_buff[0];
-+	return spi_write(spi, data_buff + 1, count - 1);
-+}
-+
-+static const struct regmap_bus bmi270_regmap_bus = {
-+	.read = bmi270_regmap_spi_read,
-+	.write = bmi270_regmap_spi_write,
-+};
-+
-+const struct regmap_config bmi270_spi_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.pad_bits = 8,
-+	.read_flag_mask = BIT(7),
-+};
-+
-+static int bmi270_spi_probe(struct spi_device *spi)
-+{
-+	struct regmap *regmap;
-+	struct device *dev = &spi->dev;
-+
-+	regmap = devm_regmap_init(dev, &bmi270_regmap_bus, dev,
-+				  &bmi270_spi_regmap_config);
-+	if (IS_ERR(regmap))
-+		return dev_err_probe(dev, PTR_ERR(regmap),
-+				     "Failed to init i2c regmap");
-+
-+	return bmi270_core_probe(dev, regmap);
-+}
-+
-+static const struct spi_device_id bmi270_spi_id[] = {
-+	{ "bmi270" },
-+	{ }
-+};
-+
-+static const struct of_device_id bmi270_of_match[] = {
-+	{ .compatible = "bosch,bmi270" },
-+	{ }
-+};
-+
-+static struct spi_driver bmi270_spi_driver = {
-+	.driver = {
-+		.name = "bmi270",
-+		.of_match_table = bmi270_of_match,
-+	},
-+	.probe = bmi270_spi_probe,
-+	.id_table = bmi270_spi_id,
-+};
-+module_spi_driver(bmi270_spi_driver);
-+
-+MODULE_AUTHOR("Alex Lanzano");
-+MODULE_DESCRIPTION("BMI270 driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IIO_BMI270);
--- 
-2.46.2
+Best regards,
+Krzysztof
 
 

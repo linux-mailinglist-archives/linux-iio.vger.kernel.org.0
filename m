@@ -1,69 +1,62 @@
-Return-Path: <linux-iio+bounces-9815-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9816-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE52D988FAF
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:36:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3600C988FB5
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:38:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D820281F89
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 14:36:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5D14281F9F
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 14:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0D719470;
-	Sat, 28 Sep 2024 14:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5755C1B7FD;
+	Sat, 28 Sep 2024 14:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ug9Lq6qL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bv53OEPI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FD1171C2;
-	Sat, 28 Sep 2024 14:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B4118E11;
+	Sat, 28 Sep 2024 14:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727534183; cv=none; b=g8urXxzSAtabkxW17WOqAo7N/m875goD/fK2INDy4+K7i6iX1Bejdpx1R8P+VR0nie+oS8Wj5uNeaETVLx0lnuqGKVERbRWRE3ESdtBlZ1zaE4/URb15gA6t0CO+wLhgnMNXNZSNlYZDLex6JucYFCb1el3E5Ae4E4ZlLhaLDlw=
+	t=1727534323; cv=none; b=TwvOuYdv3imtI+paK357affqSpVXP9+fXgtl80/AS5z+w0hOe6CD8PZsrq3aGtxgLFXVD8CewAJ1BOvSEmDq5EMj6a0etIzyM9/HPEHWTSBsa4KYzZD45onLRXTkKSNAgTweQh0hYjURN6ldpnpteWvwZss/O2hdf020g/A7R1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727534183; c=relaxed/simple;
-	bh=nRRUMseygmxYxhEF2/iockbCVkHQbD6xwG9F33DE7zs=;
+	s=arc-20240116; t=1727534323; c=relaxed/simple;
+	bh=Mg41Czp4iLNXfN0ojsPaj+c1TJMlEK/US6inXCaque4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fttDeX4qaoFa20LmS85RpRIZrtouGWYcHNaCJ8OKCmQX9SMSANXTEBydn1WenYER0T9LMS6jGd4dKUIP5qlvoEbpgxxBx+RB6H/h0S/D1Gf3G0CRiFIOiD6pTldH1ZMAfQg9HKAUuGf0QNRWmvyO+OYjBqr1xbhl+cdXNDXLMb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ug9Lq6qL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FDEC4CEC3;
-	Sat, 28 Sep 2024 14:36:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LLwQtDtXwmFupThUbtNerKBWJICv5gEqxeeMFjFTvOGtH6BbbU3tr+LFk21OLpsCpBvM+ig7y0iQ9TMWh93y8V5FOt3/WjYEb+4b/jNWQZSgHAqbwpyhxJ+VJuu8g7cVAGn1rawhNmxCPYzflRVVWORbV+4fIW6G/7Uj0YTF3Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bv53OEPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5946C4CEC3;
+	Sat, 28 Sep 2024 14:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727534183;
-	bh=nRRUMseygmxYxhEF2/iockbCVkHQbD6xwG9F33DE7zs=;
+	s=k20201202; t=1727534322;
+	bh=Mg41Czp4iLNXfN0ojsPaj+c1TJMlEK/US6inXCaque4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ug9Lq6qLGoBOTo3GfgOQ0/ASNDqkRfywpHGHJNm/DCdtWvpdwxFUKPwHf3+tuD1nP
-	 ox5EdqvaQZ/ktBax3yv4wA0Qx+x3jck4u3TI1kcgeYRE4ucrT03yYyfiZPyeZuS4Ap
-	 VxMGFW30b/NLCeH3+3Yq3vZuARkaLssmG4H7Ob+XxFrFd670GH7/MRlKuWvfxrSJYh
-	 9i+PZDiU+GgbJHa+TJxOa9Dq1x/5gGwWeLdhy+AZm18oaHXpZI4lld3GgycMHpZirq
-	 gmR21yh3qY7drsCi0iIuNuvBdu1QmV3ZmTdJmR3W3+S1T87/j3WGmyeIIIRsdRk7st
-	 duSH7rhpYnzvw==
-Date: Sat, 28 Sep 2024 15:36:14 +0100
+	b=Bv53OEPI+5t7QuxkwNBcugww/BPfD+CzrZZSO3KUCbrJ99/e3agy5Dy0e21KgA09G
+	 SQgo/5X5FSy46I6Sa+o/7vtTHiW4FRFsvBtY9Uq85Gava1J2TH+oAYeykoYQSA7vXi
+	 936KFBOtckh+uHlJ3ROYKnkgu1IZc11SYDhyh+oOlGhlLuLBB4og+QsIo1dS6SSjtd
+	 LnekcWg4xmQ1FO2GDhI2jL79zvUoRKbuhsiLuIC8O6zQxjV5l5brxTXuNot2RjUvGk
+	 bRpQBcAlxpFK7K1nySB7OxWuFmXh0RFWcc32nVXS2R0BFj2nQCwirKRWa6kUVMyUGu
+	 YGyYLZSaTvTkw==
+Date: Sat, 28 Sep 2024 15:38:34 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
-Cc: "lars@metafoo.de" <lars@metafoo.de>, "robh@kernel.org"
- <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>, "dima.fedrau@gmail.com"
- <dima.fedrau@gmail.com>, "marcelo.schmitt1@gmail.com"
- <marcelo.schmitt1@gmail.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "Lorenz Christian (ME-SE/EAD2)"
- <Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike (ME/PJ-SW3)"
- <Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
- <Kai.Dolde@de.bosch.com>
-Subject: Re: [PATCH v7 2/2] iio: imu: smi240: add driver
-Message-ID: <20240928153614.758ea7e8@jic23-huawei>
-In-Reply-To: <AM8PR10MB4721D14E9A13F1DE04FA8B68CD612@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-References: <20240913100011.4618-1-Jianping.Shen@de.bosch.com>
-	<20240913100011.4618-3-Jianping.Shen@de.bosch.com>
-	<20240914173229.57548005@jic23-huawei>
-	<AM8PR10MB4721196E13BCDAD7ABAD8E85CD602@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-	<20240917121301.3864a3f7@jic23-huawei>
-	<AM8PR10MB4721D14E9A13F1DE04FA8B68CD612@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 5/7] iio: light: veml6030: update sensor resolution
+Message-ID: <20240928153834.3577ef30@jic23-huawei>
+In-Reply-To: <5199bc7c-c3fe-49e8-9122-78b476c4aa90@gmail.com>
+References: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
+	<20240913-veml6035-v1-5-0b09c0c90418@gmail.com>
+	<20240914155716.09496630@jic23-huawei>
+	<5199bc7c-c3fe-49e8-9122-78b476c4aa90@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -74,142 +67,86 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 17 Sep 2024 13:13:57 +0000
-"Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com> wrote:
+On Sun, 15 Sep 2024 10:31:11 +0200
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> >> >Hi Shen,
-> >> >
-> >> >I suspect I led you astray.  regmap core seems unlikely to feed us
-> >> >little endian buffers on writes (they should be CPU endian I think)
-> >> >so there should be memcpy() for that not a get_unaligned_le16()
-> >> >  
-> >> >> +
-> >> >> +static int smi240_regmap_spi_write(void *context, const void *data,
-> >> >> +				   size_t count)
-> >> >> +{
-> >> >> +	u8 reg_addr;
-> >> >> +	u16 reg_data;
-> >> >> +	u32 request;
-> >> >> +	struct spi_device *spi = context;
-> >> >> +	struct iio_dev *indio_dev = dev_get_drvdata(&spi->dev);
-> >> >> +	struct smi240_data *iio_priv_data = iio_priv(indio_dev);
-> >> >> +
-> >> >> +	if (count < 2)
-> >> >> +		return -EINVAL;
-> >> >> +
-> >> >> +	reg_addr = ((u8 *)data)[0];
-> >> >> +	reg_data = get_unaligned_le16(&((u8 *)data)[1]);  
-> >> >
-> >> >Why is the regmap core giving us an le16?
-> >> >I probably sent you wrong way with this earlier :( memcpy probably
-> >> >the correct choice here.  
+> On 14/09/2024 16:57, Jonathan Cameron wrote:
+> > On Fri, 13 Sep 2024 15:19:00 +0200
+> > Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> >   
+> >> The driver still uses the sensor resolution provided in the datasheet
+> >> until Rev. 1.6, 28-Apr-2022, which was updated with Rev 1.7,
+> >> 28-Nov-2023. The original ambient light resolution has been updated from
+> >> 0.0036 lx/ct to 0.0042 lx/ct, which is the value that can be found in
+> >> the current device datasheet.
 > >>
-> >> Yes, you are right. We shall use memcpy to keep the be CPU endian.  Just using  
-> >memcpy may be not enough.  
+> >> Update the default resolution for IT = 100 ms and GAIN = 1/8 from the
+> >> original 4608 mlux/cnt to the current value from the "Resolution and
+> >> maximum detection range" table (Application Note 84367, page 5), 5376
+> >> mlux/cnt.
 > >>
-> >> Shall we also change regmap_config.val_format_endian  from  
-> >REGMAP_ENDIAN_LITTLE to  REGMAP_ENDIAN_NATIVE ?  
-> >>
-> >> This is to make sure that regmap_write passes the reg-value to  
-> >smi240_regmap_spi_write without changing the CPU endian.  
-> >>  
-> >Hmm. I'd missed that control.  If the register data needs to be little endian then it is
-> >correct to leave that set as REGMAP_ENDIAN_LITTLE as then the regmap core will
-> >do the endian swap for you on Big endian systems.
-> >
-> >If I follow that bit of regmap correctly it will then have the data in the right order so
-> >the above still wants to just be a memcpy.
-> >
-> >As it stands, on a Big endian host, regmap will use the val_format_endian to decide
-> >to flip the bytes.  This code then flips them back again and the value written is big
-> >endian which is not what you intend!
-> >
-> >Easy way to check this will be to set it, on your little endian host, to
-> >REGMAP_BIG_ENDIAN and see what you get in the value.
-> >Then consider if you'd had get_unaligned_be16 then it would end up as little endian
-> >again.  This should mirror the current situation if this driver runs on a big endian host.
-> >
-> >Hope that confusing set of comments helps!
-> >
-> >Jonathan
+> >> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>  
+> > Interesting.  So does the datasheet say this was fixing an error, or
+> > is there any chance there are different versions of the chip out there?
+> > 
+> > Also, should we treat this as a fix?  I think we probably should given
+> > we don't really want stable kernels to have wrong data being reported.
+> > If so, please reply with a fixes tag.
+> > 
+> > Jonathan
 > >  
-> Hi  Jonathan,
 > 
-> we check the regmap behavior with the following tests
+> According to the Product Information Notification (link in the cover
+> letter):
 > 
-> 1. host : little endian   val_format_endian ==REGMAP_BIG_ENDIAN     regmap_write(data->regmap, REG_ADDR, 0x12AB)  
->     then  in smi240_regmap_spi_write(void *context, const void *data, size_t count)    we have data[0]== REG_ADDR, data[1]==0xAB , data[2]==0x12 
+> "Reason for Change: Adjusted resolution as this was wrongly stated in
+> the current datasheet."
 > 
-> 2. host : little endian   val_format_endian ==REGMAP_BIG_LITTLE     regmap_write(data->regmap, REG_ADDR, 0x12AB)  
->     then  in smi240_regmap_spi_write(void *context, const void *data, size_t count)    we have data[0]== REG_ADDR, data[1]==0x12 , data[2]==0xAB
+> "If resolution is defined in the particular application by the customer,
+> no changes in the system should be made. In the case resolution was
+> taken from the datasheet or app note, this has to be adjusted accordingly."
 > 
-> 3. host : little endian   val_format_endian ==REGMAP_BIG_NATIVE     regmap_write(data->regmap, REG_ADDR, 0x12AB)  
->     then  in smi240_regmap_spi_write(void *context, const void *data, size_t count)    we have data[0]== REG_ADDR, data[1]==0x12 , data[2]==0xAB
-> 
-> when regmap_write passes the reg-value to the underlaying spi-write function, it flips the bytes if  val_format_endian != cpu_endian
-> 
-> Since we prepare the request and the reg-value (as part of the request) with cpu_endian, we need to make sure that the cpu_endian keeps untouched until we pass the whole request to spi buffer using  "iio_priv_data->spi_buf = cpu_to_be32(request)"
-> Therefore we need to remove the change of cpu_endian during the request preparation. 
-> 
-> 1. Instead get_unaligned_le16 now we use memcpy to take the reg-value without changing the cpu_endian.
-> 2, we use REGMAP_BIG_NATIVE on val_format_endian to make sure when regmap_write passes the reg-value to the underlaying spi-write function the cpu_endian kept untouched.
-> 
-> This makes our driver be able to work properly on both little endian and big endian host. We tested the new changes on little endian host it works properly. Big endian host case is not tested yet, since today the big endian processors are almost dead.
-> 
-> The next version will looks like that.
-> 
-> static const struct regmap_config smi240_regmap_config = {
-> 	.reg_bits = 8,
-> 	.val_bits = 16,
-> 	.val_format_endian = REGMAP_ENDIAN_NATIVE,
+> Which means that stable kernels are using the wrong resolution. I don't
+> know what IIO usually does in such cases, because a fix could
+> potentially make existing applications return "wrong data". If that is
+> alright, and applications are meant to be adjusted after the kernel
+> update, I have no problems to make this patch as a fix and add the
+> stable tag.
 
-You say REGMAP_BIG_NATIVE above by which I think you mean REGMAP_ENDIAN_BIG
-(which seems correct to me) but then set REGMAP_ENDIAN_NATIVE here.
+It's unfortunate, but fixing a bug is a valid reason for ABI change
+(which this is - sort of) so existing applications will need to be
+fixed if anyone notices.
 
-Other than that this looks correct and thanks for working through
-the test cases above.
+So please send this as a fix with appropriate tags and
+that datasheet change log included in the patch description.
+
+Thanks,
+
+Jonathan
 
 > 
-> };
+> Best regards,
+> Javier Carrasco
 > 
-> static int smi240_regmap_spi_write(void *context, const void *data,size_t count)
-> {
-> 	u8 reg_addr;
-> 	u16 reg_data;
-> 	u32 request;
-> 	struct spi_device *spi = context;
-> 	struct iio_dev *indio_dev = dev_get_drvdata(&spi->dev);
-> 	struct smi240_data *iio_priv_data = iio_priv(indio_dev);
-> 	if (count < 2)
-> 		return -EINVAL;
-> 
-> 	reg_addr = ((u8 *)data)[0];
-> 	memcpy(&reg_data, &((u8 *)data)[1], 2);
-> 
-> 	request = FIELD_PREP(SMI240_BUS_ID_MASK, SMI240_BUS_ID);
-> 	request |= FIELD_PREP(SMI240_WRITE_BIT_MASK, 1);
-> 	request |= FIELD_PREP(SMI240_WRITE_ADDR_MASK, reg_addr);
-> 	request |= FIELD_PREP(SMI240_WRITE_DATA_MASK, reg_data);
-> 	request |= smi240_crc3(request, SMI240_CRC_INIT, SMI240_CRC_POLY);
-> 
-> 	iio_priv_data->spi_buf = cpu_to_be32(request);
-> 	return spi_write(spi, &iio_priv_data->spi_buf, sizeof(request));
-> }
-> 
-> Is the new version now correct ?
-> 
-> Best regards
-> 
-> Jianping Shen
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
+> >> ---
+> >>  drivers/iio/light/veml6030.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+> >> index 5d4c2e35b987..d5add040d0b3 100644
+> >> --- a/drivers/iio/light/veml6030.c
+> >> +++ b/drivers/iio/light/veml6030.c
+> >> @@ -779,7 +779,7 @@ static int veml6030_hw_init(struct iio_dev *indio_dev)
+> >>  
+> >>  	/* Cache currently active measurement parameters */
+> >>  	data->cur_gain = 3;
+> >> -	data->cur_resolution = 4608;
+> >> +	data->cur_resolution = 5376;
+> >>  	data->cur_integration_time = 3;
+> >>  
+> >>  	return ret;
+> >>  
+> >   
 > 
 
 

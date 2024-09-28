@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-9816-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9817-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3600C988FB5
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:38:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 359A8988FBD
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:41:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5D14281F9F
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 14:38:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E78CBB215A3
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 14:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5755C1B7FD;
-	Sat, 28 Sep 2024 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDA01CD29;
+	Sat, 28 Sep 2024 14:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bv53OEPI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgtbSKJS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B4118E11;
-	Sat, 28 Sep 2024 14:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A1618E11;
+	Sat, 28 Sep 2024 14:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727534323; cv=none; b=TwvOuYdv3imtI+paK357affqSpVXP9+fXgtl80/AS5z+w0hOe6CD8PZsrq3aGtxgLFXVD8CewAJ1BOvSEmDq5EMj6a0etIzyM9/HPEHWTSBsa4KYzZD45onLRXTkKSNAgTweQh0hYjURN6ldpnpteWvwZss/O2hdf020g/A7R1o=
+	t=1727534458; cv=none; b=tdJHhCTuUbFHpW935Z/pAmvvFL4grrgt+Tg2di7de1uzgdak+b/vQ2XuJLGFKYwvNC60MPIhmNXVDzEm4XHxW9GDFWd2TToXNrti9sfCz4MeRt4DV8/3bmApg24LuGRMxuWmIn2PxOfIVPVWqIqDQbeN2qKvQ1H16FNoCBIlFqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727534323; c=relaxed/simple;
-	bh=Mg41Czp4iLNXfN0ojsPaj+c1TJMlEK/US6inXCaque4=;
+	s=arc-20240116; t=1727534458; c=relaxed/simple;
+	bh=u4BcB6prh4ZdngGMroobBycpJplVZ5SyhbiDR3TeX5c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LLwQtDtXwmFupThUbtNerKBWJICv5gEqxeeMFjFTvOGtH6BbbU3tr+LFk21OLpsCpBvM+ig7y0iQ9TMWh93y8V5FOt3/WjYEb+4b/jNWQZSgHAqbwpyhxJ+VJuu8g7cVAGn1rawhNmxCPYzflRVVWORbV+4fIW6G/7Uj0YTF3Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bv53OEPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5946C4CEC3;
-	Sat, 28 Sep 2024 14:38:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eYWB4cqFs/VAdBAkSwnSB4Ya9mgCh3rGRlGnxqnOfyawzLUD02YZxHKnSKQfWejLN8R01n0BZ1wpAq4zvXClvLwVkoLA1Fndm7TJwQTKF3Y2VYBSDq72RhD1/E6x0iHi3cj2p4YgjWax9TrXshuPC1PZTukukwYFDczzvaUZ6p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgtbSKJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CC6C4CEC3;
+	Sat, 28 Sep 2024 14:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727534322;
-	bh=Mg41Czp4iLNXfN0ojsPaj+c1TJMlEK/US6inXCaque4=;
+	s=k20201202; t=1727534457;
+	bh=u4BcB6prh4ZdngGMroobBycpJplVZ5SyhbiDR3TeX5c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Bv53OEPI+5t7QuxkwNBcugww/BPfD+CzrZZSO3KUCbrJ99/e3agy5Dy0e21KgA09G
-	 SQgo/5X5FSy46I6Sa+o/7vtTHiW4FRFsvBtY9Uq85Gava1J2TH+oAYeykoYQSA7vXi
-	 936KFBOtckh+uHlJ3ROYKnkgu1IZc11SYDhyh+oOlGhlLuLBB4og+QsIo1dS6SSjtd
-	 LnekcWg4xmQ1FO2GDhI2jL79zvUoRKbuhsiLuIC8O6zQxjV5l5brxTXuNot2RjUvGk
-	 bRpQBcAlxpFK7K1nySB7OxWuFmXh0RFWcc32nVXS2R0BFj2nQCwirKRWa6kUVMyUGu
-	 YGyYLZSaTvTkw==
-Date: Sat, 28 Sep 2024 15:38:34 +0100
+	b=OgtbSKJSWB2ePaN1OwFe/VqXeWs100B8wSxFwhz6ltumORYCr6pVVzGZTAXMwdELX
+	 6mKS7w0iV+UYxM7JMEd1pc6tAJs7C2670noSYSPBn3FTUfjFpP5CXBbqPFlSn2gG8j
+	 EFMa6jj5jRo09H6bhgwmUfLbjA8cUwsscLpC+jMwLNPfa1mRyD6b+5eNvMkm82WnUN
+	 RPsUB3ZVCm4HluIWgOB3I/Qe2qyoXj8Pc5ufVeUI2aoH+k/P98kHwo2pUORJQSrW2U
+	 xvaDLcUyA1G8pJYHa29ca5JUpw0qGRtRlZc5tAMR0Y8g7IieJObYk0vVGy0jSnX+Z/
+	 Vn7IFkBplxhew==
+Date: Sat, 28 Sep 2024 15:40:49 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
@@ -50,13 +50,13 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, Jonathan Cameron
  <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 5/7] iio: light: veml6030: update sensor resolution
-Message-ID: <20240928153834.3577ef30@jic23-huawei>
-In-Reply-To: <5199bc7c-c3fe-49e8-9122-78b476c4aa90@gmail.com>
+Subject: Re: [PATCH 7/7] iio: light: veml6030: add support for veml6035
+Message-ID: <20240928154049.6641a645@jic23-huawei>
+In-Reply-To: <e3414f78-417c-4983-a91d-0c58e1639de8@gmail.com>
 References: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
-	<20240913-veml6035-v1-5-0b09c0c90418@gmail.com>
-	<20240914155716.09496630@jic23-huawei>
-	<5199bc7c-c3fe-49e8-9122-78b476c4aa90@gmail.com>
+	<20240913-veml6035-v1-7-0b09c0c90418@gmail.com>
+	<20240914170347.54959319@jic23-huawei>
+	<e3414f78-417c-4983-a91d-0c58e1639de8@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,86 +67,107 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 15 Sep 2024 10:31:11 +0200
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+...
 
-> On 14/09/2024 16:57, Jonathan Cameron wrote:
-> > On Fri, 13 Sep 2024 15:19:00 +0200
-> > Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> >>  
+> >> +/*
+> >> + * Set ALS gain to 1/8, integration time to 100 ms, ALS and WHITE
+> >> + * channel enabled, ALS channel interrupt, PSM enabled,
+> >> + * PSM_WAIT = 0.8 s, persistence to 1 x integration time and the
+> >> + * threshold interrupt disabled by default. First shutdown the sensor,
+> >> + * update registers and then power on the sensor.
+> >> + */
+> >> +static int veml6035_hw_init(struct iio_dev *indio_dev)
+> >> +{
+> >> +	int ret, val;
+> >> +	struct veml6030_data *data = iio_priv(indio_dev);
+> >> +	struct i2c_client *client = data->client;
+> >> +
+> >> +	ret = veml6030_als_shut_down(data);
+> >> +	if (ret) {
+> >> +		dev_err(&client->dev, "can't shutdown als %d\n", ret);
+> >> +		return ret;  
+> > 
+> > If this is only ever called from probe() (I think that's true?)
+> > can use return dev_err_probe() for all these error cases.
+> > Main advantage here being shorter simpler code.
 > >   
-> >> The driver still uses the sensor resolution provided in the datasheet
-> >> until Rev. 1.6, 28-Apr-2022, which was updated with Rev 1.7,
-> >> 28-Nov-2023. The original ambient light resolution has been updated from
-> >> 0.0036 lx/ct to 0.0042 lx/ct, which is the value that can be found in
-> >> the current device datasheet.
-> >>
-> >> Update the default resolution for IT = 100 ms and GAIN = 1/8 from the
-> >> original 4608 mlux/cnt to the current value from the "Resolution and
-> >> maximum detection range" table (Application Note 84367, page 5), 5376
-> >> mlux/cnt.
-> >>
-> >> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>  
-> > Interesting.  So does the datasheet say this was fixing an error, or
-> > is there any chance there are different versions of the chip out there?
+> 
+> I know, I procrastinated a little bit and I left the dev_err() calls as
+> they are. But that's easy to update, so I will add a patch for it in v2.
+> >> +	}
+> >> +
+> >> +	ret = regmap_write(data->regmap, VEML6030_REG_ALS_CONF,
+> >> +			   VEML6035_SENS | VEML6035_CHAN_EN | VEML6030_ALS_SD);
+> >> +	if (ret) {
+> >> +		dev_err(&client->dev, "can't setup als configs %d\n", ret);
+> >> +		return ret;
+> >> +	}
+> >> +
+> >> +	ret = regmap_update_bits(data->regmap, VEML6030_REG_ALS_PSM,
+> >> +				 VEML6030_PSM | VEML6030_PSM_EN, 0x03);
+> >> +	if (ret) {
+> >> +		dev_err(&client->dev, "can't setup default PSM %d\n", ret);
+> >> +		return ret;
+> >> +	}
+> >> +
+> >> +	ret = regmap_write(data->regmap, VEML6030_REG_ALS_WH, 0xFFFF);
+> >> +	if (ret) {
+> >> +		dev_err(&client->dev, "can't setup high threshold %d\n", ret);
+> >> +		return ret;
+> >> +	}
+> >> +
+> >> +	ret = regmap_write(data->regmap, VEML6030_REG_ALS_WL, 0x0000);
+> >> +	if (ret) {
+> >> +		dev_err(&client->dev, "can't setup low threshold %d\n", ret);
+> >> +		return ret;
+> >> +	}
+> >> +
+> >> +	ret = veml6030_als_pwr_on(data);
+> >> +	if (ret) {
+> >> +		dev_err(&client->dev, "can't poweron als %d\n", ret);
+> >> +		return ret;
+> >> +	}
+> >> +
+> >> +	/* Clear stale interrupt status bits if any during start */
+> >> +	ret = regmap_read(data->regmap, VEML6030_REG_ALS_INT, &val);
+> >> +	if (ret < 0) {
+> >> +		dev_err(&client->dev,
+> >> +			"can't clear als interrupt status %d\n", ret);
+> >> +		return ret;  
 > > 
-> > Also, should we treat this as a fix?  I think we probably should given
-> > we don't really want stable kernels to have wrong data being reported.
-> > If so, please reply with a fixes tag.
-> > 
-> > Jonathan
-> >  
+> > It's true of existing code, but I noticed it here.
+> > Should we be powering down in this error path?
+> >   
 > 
-> According to the Product Information Notification (link in the cover
-> letter):
-> 
-> "Reason for Change: Adjusted resolution as this was wrongly stated in
-> the current datasheet."
-> 
-> "If resolution is defined in the particular application by the customer,
-> no changes in the system should be made. In the case resolution was
-> taken from the datasheet or app note, this has to be adjusted accordingly."
-> 
-> Which means that stable kernels are using the wrong resolution. I don't
-> know what IIO usually does in such cases, because a fix could
-> potentially make existing applications return "wrong data". If that is
-> alright, and applications are meant to be adjusted after the kernel
-> update, I have no problems to make this patch as a fix and add the
-> stable tag.
+> We could, because this is the only error path where the device is
+> powered on before the power off action gets registered. On the other
+> hand, could we not move the call to devm_add_action_or_reset() a few
+> lines up, so the action gets registered before calling hw_init()?
 
-It's unfortunate, but fixing a bug is a valid reason for ABI change
-(which this is - sort of) so existing applications will need to be
-fixed if anyone notices.
-
-So please send this as a fix with appropriate tags and
-that datasheet change log included in the patch description.
-
-Thanks,
+Move it in here so that you register the powerdown alongside the power
+up. Doesn't matter that it is inside the hw_init() function so a little
+less obvious.
 
 Jonathan
-
+> 
+> Powering off the device is just writing a bit, so it would not hurt in
+> the error paths where the device is already powered off. Then we would
+> not need an explicit call to power off the device in this error path.
+> 
+> >> +	}
+> >> +
+> >> +	/* Cache currently active measurement parameters */
+> >> +	data->cur_gain = 5;
+> >> +	data->cur_resolution = 1024;
+> >> +	data->cur_integration_time = 3;
+> >> +
+> >> +	return 0;
+> >> +}  
+> >   
+> 
 > 
 > Best regards,
 > Javier Carrasco
-> 
-> >> ---
-> >>  drivers/iio/light/veml6030.c | 2 +-
-> >>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> >> index 5d4c2e35b987..d5add040d0b3 100644
-> >> --- a/drivers/iio/light/veml6030.c
-> >> +++ b/drivers/iio/light/veml6030.c
-> >> @@ -779,7 +779,7 @@ static int veml6030_hw_init(struct iio_dev *indio_dev)
-> >>  
-> >>  	/* Cache currently active measurement parameters */
-> >>  	data->cur_gain = 3;
-> >> -	data->cur_resolution = 4608;
-> >> +	data->cur_resolution = 5376;
-> >>  	data->cur_integration_time = 3;
-> >>  
-> >>  	return ret;
-> >>  
-> >   
-> 
 
 

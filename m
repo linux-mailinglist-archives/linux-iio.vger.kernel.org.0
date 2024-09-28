@@ -1,61 +1,71 @@
-Return-Path: <linux-iio+bounces-9812-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9813-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA24988F9B
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:25:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C764988FA6
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69B30B215AE
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 14:25:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CABA51F2185B
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 14:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E1818873A;
-	Sat, 28 Sep 2024 14:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E58418892D;
+	Sat, 28 Sep 2024 14:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAThjtkj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mQHjJYtF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A62F186287;
-	Sat, 28 Sep 2024 14:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF26186E59;
+	Sat, 28 Sep 2024 14:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727533525; cv=none; b=IZvOmvtV30I473X/lywtcBBQfqrcU4Snvf/qEQlkIpXBTvWwVUQkjyDZrrCwo+T6mJQD9ZUpN0jiu6BfZcaXM1vVX+MLaFpY5lIDEsjmZduVPJOreXiqvmFK71j7NHf2flen0sLQkxUByl3FK/B0CDV7RW9eqhE1T1Ngi08aQ4A=
+	t=1727533779; cv=none; b=X8Fg1NIShf79V0MxHH+LmEAzRApk8FGV7vVJwO3VQCYOmFOF7Pi+l8TqWPR7w1ZNh0LWLDAl4sHiVxY1zkPxVK0/37ArdgW+l7NPr1Jzud8DwXJLzdZ/wT4p6hbqBh8bS1vRr46zA4PgPaCEDNi04p7/obhxjTTQx/QRj98eMwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727533525; c=relaxed/simple;
-	bh=n/Y0Anj9nP0Sgfmkct6Br5yJAJkrMZ80Y0JmDNmOs14=;
+	s=arc-20240116; t=1727533779; c=relaxed/simple;
+	bh=BQe8e7lFzVfmZUr+z2sDDGSb5uLfPX8XMR5x5U2lb1k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bSl68G3iPtXffkrUEtgum9IEzL2aDMUXh32uwwNvdYwrm/jOOqrtzELYwFIhB8Mydxjvcvq4seTXPFt1W8jn7Sw+L//uTbZblGmCEt9PaQ9iMArelBn/eYWpuMg5o3FeP0CQfcC+K22DZn9sLWLpfOqKupYO9GKNZW1ZLxOdbz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAThjtkj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBAAC4CEC3;
-	Sat, 28 Sep 2024 14:25:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nn3tglf3Uvvbpr9dSMlZ9XiWbUolU9mSAxz5kHFfAC7g4Ul+KgESMbRgW14qkq9a1AriQJcxMbAXz3hmMxMJGfTcfTa4tezE8NK3+Wi9QAdMb9ukiIfGFB5CVT6ZYC0M7V6dOUZvJjrcDmWfGh1hz+EQG2pUCjL9KrxJuGbMIeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mQHjJYtF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F07C4CEC3;
+	Sat, 28 Sep 2024 14:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727533524;
-	bh=n/Y0Anj9nP0Sgfmkct6Br5yJAJkrMZ80Y0JmDNmOs14=;
+	s=k20201202; t=1727533779;
+	bh=BQe8e7lFzVfmZUr+z2sDDGSb5uLfPX8XMR5x5U2lb1k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LAThjtkjZxXFpNqc4Shx4Tkjwl/raQB20DWTxaXmJnpWJWZUeKrTGPhVJ3KVQgKt1
-	 V2eQvujJWO7QWo57DMmMyBb46A2eqgZkwZVlpVXQCBaEo9E0IdtxD9hzA4IMZUO4In
-	 Py4GYPSuH//cFM7g0ghVmIO+l6n2bbyqkbmFuwIQZeQUG+3dPoM0jDbZAZZpRZ3j89
-	 mYIEiukC4Vej2YFaUrFBxGGb07Zs7KVcej2uraSlYnJH+rd4ch1b1ob7A0XWMY93yu
-	 G4wULi10wxi1+aLxuUGOBW09waRh6MFsLmsXwQ7MfOx54q8xC3FNnG3GNaqhqUNfIx
-	 8UWWBwYUoGF2A==
-Date: Sat, 28 Sep 2024 15:25:17 +0100
+	b=mQHjJYtFlEhZLQlmUwozo1Yr23MlhMSqY4p/UtWwNWhZaXGG77Zie9XTRVRqK15rF
+	 bb069Iq4WvmGLkAtNE1/WyqOw6Lm6oJ5l+RzZ3SEcKmse8Eulns9HyiEgXnwKLW8wb
+	 Yb9SOZWr4LkHumNHH6lgF5bX+yLfb2FpZGbB9jLdT9YRXmeP/ulDFTkRlzJ8mCrnYY
+	 /IgsV75WCSz3PawyVgKik4PGPAmrlXlC2HRpEgvRux3rUugmw2Dlwprj+j5np3QlTc
+	 CeuuMPtqqu9/mxnbtl0hktIBmtp8WeaHQDgBad6dTQszVYqFp+EQsaFSzvrc1uUXXA
+	 3NMEI1O8Z2x7g==
+Date: Sat, 28 Sep 2024 15:29:28 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Kevin Hilman <khilman@baylibre.com>, Jerome Brunet
- <jbrunet@baylibre.com>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: amlogic,meson-saradc: also allow
- meson8-saradc to have amlogic,hhi-sysctrl property
-Message-ID: <20240928152517.7386f220@jic23-huawei>
-In-Reply-To: <20240911-topic-amlogic-arm32-upstream-bindings-fixes-amlogic-hhi-sysctrl-v1-1-b8c3180b2fba@linaro.org>
-References: <20240911-topic-amlogic-arm32-upstream-bindings-fixes-amlogic-hhi-sysctrl-v1-1-b8c3180b2fba@linaro.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: "Nechita, Ramona" <Ramona.Nechita@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
+ "Hennerich, Michael" <Michael.Hennerich@analog.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, "Sa, Nuno" <Nuno.Sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, "Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, Dumitru Ceclan
+ <mitrutzceclan@gmail.com>, Matteo Martelli <matteomartelli3@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>, Ivan Mikhaylov
+ <fr0st61te@gmail.com>, Mike Looijmans <mike.looijmans@topic.nl>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v5 3/3] drivers: iio: adc: add support for ad777x family
+Message-ID: <20240928152928.38ee18b1@jic23-huawei>
+In-Reply-To: <CAMknhBFyydCJeAazDYMkkH=rKU2DbJGy=Kpb0242Vn81MHn0mQ@mail.gmail.com>
+References: <20240912121609.13438-1-ramona.nechita@analog.com>
+	<20240912121609.13438-4-ramona.nechita@analog.com>
+	<20240914180648.592cd69e@jic23-huawei>
+	<SN6PR03MB4320E03B052A867DE73196CBF36C2@SN6PR03MB4320.namprd03.prod.outlook.com>
+	<CAMknhBFyydCJeAazDYMkkH=rKU2DbJGy=Kpb0242Vn81MHn0mQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,44 +73,93 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Sep 2024 17:29:53 +0200
-Neil Armstrong <neil.armstrong@linaro.org> wrote:
+On Mon, 23 Sep 2024 14:51:28 +0200
+David Lechner <dlechner@baylibre.com> wrote:
 
-> The SARADC on the Amlogic Meson8 SoC also requires the amlogic,hhi-sysctrl,
-> property, document it by adding the amlogic,meson8-saradc compatible in the
-> adequate allOf:if:compatible:contains:enums along meson8b and meson8m2.
-> 
-> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Applied to the togreg branch of iio.git.
+> On Fri, Sep 20, 2024 at 3:24=E2=80=AFPM Nechita, Ramona
+> <Ramona.Nechita@analog.com> wrote:
+> >
+> > Hello all,
+> >
+> > Just a minor question
+> > ... =20
+> > > =20
+> > >> +
+> > >> +static irqreturn_t ad7779_trigger_handler(int irq, void *p) {
+> > >> +    struct iio_poll_func *pf =3D p;
+> > >> +    struct iio_dev *indio_dev =3D pf->indio_dev;
+> > >> +    struct ad7779_state *st =3D iio_priv(indio_dev);
+> > >> +    int ret;
+> > >> +    int bit;
+> > >> +    int k =3D 0;
+> > >> +    /*
+> > >> +     * Each channel shifts out HEADER + 24 bits of data therefore 8=
+ * u32
+> > >> +     * for the data and 64 bits for the timestamp
+> > >> +     */
+> > >> +    u32 tmp[10];
+> > >> +
+> > >> +    struct spi_transfer sd_readback_tr[] =3D {
+> > >> +            {
+> > >> +                    .rx_buf =3D st->spidata_rx,
+> > >> +                    .tx_buf =3D st->spidata_tx,
+> > >> +                    .len =3D AD7779_NUM_CHANNELS * AD7779_CHAN_DATA=
+_SIZE,
+> > >> +            }
+> > >> +    };
+> > >> +
+> > >> +    if (!iio_buffer_enabled(indio_dev))
+> > >> +            goto exit_handler; =20
+> > >
+> > >If buffers aren't enabled, the push to buffers won't do anything. So t=
+his race shouldn't matter.  If it does, what happens?
+> > >I'm curious because I'd expect any races that cause trouble in this ca=
+se to be pretty universal across drivers. =20
+> >
+> > I added that condition rather because the DRDY pulse will keep on being=
+ generated even when the buffers are not active,
+> > and it would be better to exit the function sooner. I tested it and it =
+does not break to remove the condition, I just
+> > thought it made more sense like this. Should I delete it?
+> > =20
+> > >.... =20
+> >
+> > Best regards,
+> > Ramona Nechita
+> >
+> > =20
+>=20
+> Perhaps a better way to handle this would be to move
+>=20
+>     disable_irq(st->spi->irq);
+>=20
+> to the buffer predisable callback instead of doing it in the buffer
+> postdisable callback. Then we will be sure to not get any more DRDY
+> interrupts after the buffer is disabled.
+>=20
+> (And to keep things balanced, moved the corresponding irq_enable() to
+> the buffer postenable callback.)
 
-Shout and provide a fixes tag if this should be in stable.
+That makes logical sense but in reality in the vast majority of cases
+it makes no practical difference whether things are in the pre or
+post callbacks as the fundamental races with tear down are there in
+both cases but shouldn't matter as they correspond to slightly
+earlier or later disabling of the buffer.  So this is a nice to
+have for readabilty and understanding rather than a required change I think.
+
+>=20
+> Since ad7779_trigger_handler is the IIO trigger interrupt handler and
+> not the DRDY interrupt handler though, it is already not possible for
+> this interrupt handler to be called while the IIO buffer is enabled.
+> So it should be safe to remove the if
+> (!iio_buffere_enabled(indio_dev)) even without the other changes I
+> suggested.
+Exactly. =20
 
 Jonathan
 
-> ---
->  Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
-> index f748f3a60b35..b0962a4583ac 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
-> @@ -98,6 +98,7 @@ allOf:
->          compatible:
->            contains:
->              enum:
-> +              - amlogic,meson8-saradc
->                - amlogic,meson8b-saradc
->                - amlogic,meson8m2-saradc
->      then:
-> 
-> ---
-> base-commit: 47ac09b91befbb6a235ab620c32af719f8208399
-> change-id: 20240911-topic-amlogic-arm32-upstream-bindings-fixes-amlogic-hhi-sysctrl-127d3feddf3a
-> 
-> Best regards,
 
 

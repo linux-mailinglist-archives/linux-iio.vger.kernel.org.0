@@ -1,61 +1,60 @@
-Return-Path: <linux-iio+bounces-9818-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9819-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4631B988FC0
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:43:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0EA1988FC5
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B95521F2191F
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 14:43:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7AE61C20EB9
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 14:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6898B1D540;
-	Sat, 28 Sep 2024 14:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91711B947;
+	Sat, 28 Sep 2024 14:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="knAus5gC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOL4aNrC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC3F18654;
-	Sat, 28 Sep 2024 14:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824FF168C7;
+	Sat, 28 Sep 2024 14:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727534629; cv=none; b=Pe0bOdQjbSb02W1M9as8ykyeiGwH3yDrnr3dBHRVhQvcXTwnmv4FeaAU86Cktoqnjtp7RTbPIKHb4hfL2+ou39+QMh1Bx5vIzg18+okswdmL2Id5HhF0jlHcvEaFxOLOzzONA9TCLS8Noksl8DVbfUZjs8aIszy99zJl46o7wWY=
+	t=1727535327; cv=none; b=YJcybgMVw32Bc6yC4xc4U1QoCGPpQtd3AKfrT1g4xf9NWkjrHoyJyvi5pvBx/su52Vkic/5GNwM6ZDWGxCuxc9YlG0tpv/+f8cK9rhkqnVj/kbjUvhf+AEfxzmAAWbRmVcL6aGlNo8ROzF61mgH+RR30vXJsuKlzTVPco/eGYFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727534629; c=relaxed/simple;
-	bh=03ju+PM9jHEBOcs3wfN0gwiXjoyXhS4e4zgfe3m+xo4=;
+	s=arc-20240116; t=1727535327; c=relaxed/simple;
+	bh=/XBuEmGWh41GCpXYfLKTvhCysEsaxQHPOmWufH3r+zg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kOX6sqNroApx44qXxIXuXduzZMOshQJz4QSY8bAnRXlyqqIUTnI/4CNbl1TMgIigse5R0Pks2rZw+X+3FRq2We3IE7SHMVL1Qksnrt7Q+vCsaTv5qFbfEPaK068llciXVKyyn21Alinu3IaZcI+bLtNjvzHj6YfQ7gkCeYxHqtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=knAus5gC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8622AC4CEC3;
-	Sat, 28 Sep 2024 14:43:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rr7HrwtUX++mbk5AKJVNmlK3YuMzuBivZB7aN74h8bahvQ1SYXFXx1J1rSGreUUGEijM6kl20u6zRcw1DwkAEMO6vv5KUefJirBU5SiSK+VkrH4wzJAVAZQaIFMtGczqZAEbiK1D2jNnHCT/xRbicktqxVvE0P5M+Bjr69KCxoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOL4aNrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619D3C4CEC7;
+	Sat, 28 Sep 2024 14:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727534628;
-	bh=03ju+PM9jHEBOcs3wfN0gwiXjoyXhS4e4zgfe3m+xo4=;
+	s=k20201202; t=1727535327;
+	bh=/XBuEmGWh41GCpXYfLKTvhCysEsaxQHPOmWufH3r+zg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=knAus5gCCmkCgqJtJNaXTfKjmtRmkJpH1zp0PmLf0gRGrOipz0I21FBwp0uybrvQ4
-	 +i7douTPejHWFLhJ86wu9CME40/pDA4+pd4OXvmTr5bGUrfMvCH33934FbP0puTycd
-	 Ji1gVAqoa8NoN5mmtuwkM4sseVneQVmipw+/ZCQbPoY44e9LCSc54nW0FOFhZ7V8Iq
-	 ORjPFD1SJm4U3wCWaZlwh+RW5x0Q4dgVKVI/nkX6Hqm6s7WnWtAr0EpxixJhEuympi
-	 HHQS++pVWQEOJlKio7hHTl9ndS5Fz3V35ETBpwoVGWWk7JrQv145MKebNjSP+fE/d2
-	 mqbyG3GU/qEYQ==
-Date: Sat, 28 Sep 2024 15:43:39 +0100
+	b=TOL4aNrCKXQ41Ty55vgq168EKvzBTjU1GmOG3VMGjf7pMZHBFl/QOcpR6X4f0/Jlo
+	 uutHN8yOFnKs9CnwcSldLjzjqVGxDMSaR11vpeqXlE7qhaGbYAKG5SdKHjY2aTQ4xG
+	 wIQ+MhsRjvCcgUki/6dY1wzkuoh8izXJoQXV7qIIWeE/OLuoxaX+3tuVNc+33wcFta
+	 Tw4882I/eenFkdQ8YTzujHpBeCFSimQoAYvYIhC8/SGaUaIr+u/zwT5PMMflHnotwz
+	 3KFsEBluXyeFQnPpLXHNH8T/9uSJmctRhltqR5YMofOMteWavWoVlT8Nl9dO7SYJoS
+	 +mCx8IBHmETSQ==
+Date: Sat, 28 Sep 2024 15:55:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
- michael.hennerich@analog.com, gstols@baylibre.com
-Subject: Re: [PATCH v7 1/8] iio: adc: ad7606: add 'bits' parameter to
- channels macros
-Message-ID: <20240928154339.2c886ba4@jic23-huawei>
-In-Reply-To: <CA+GgBR94rNX4wLh527EmfO4pzYFU02fQOr-KfzMt6Reyb5QFgA@mail.gmail.com>
-References: <20240919130444.2100447-1-aardelean@baylibre.com>
-	<20240919130444.2100447-2-aardelean@baylibre.com>
-	<CAMknhBFso4RXhhLSN_x1JEDCi70y-2BDVHKAzuh=bp7dt7dgxA@mail.gmail.com>
-	<CA+GgBR94rNX4wLh527EmfO4pzYFU02fQOr-KfzMt6Reyb5QFgA@mail.gmail.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 0/2] iio: core: remove iio_validate_own_trigger()
+ function
+Message-ID: <20240928155519.1112f995@jic23-huawei>
+In-Reply-To: <20240922110721.GA439861@vamoiridPC>
+References: <20240921181939.392517-1-vassilisamir@gmail.com>
+	<cd1df0c5-d95f-4880-b374-a7544a323d93@metafoo.de>
+	<20240921200759.GA400156@vamoiridPC>
+	<609fdda9-fcf4-426f-84c8-411a59ed5fab@gmail.com>
+	<20240922110721.GA439861@vamoiridPC>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,152 +62,98 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 24 Sep 2024 10:11:38 +0200
-Alexandru Ardelean <aardelean@baylibre.com> wrote:
+On Sun, 22 Sep 2024 13:07:21 +0200
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> On Mon, Sep 23, 2024 at 4:51=E2=80=AFPM David Lechner <dlechner@baylibre.=
-com> wrote:
-> >
-> > On Thu, Sep 19, 2024 at 3:04=E2=80=AFPM Alexandru Ardelean
-> > <aardelean@baylibre.com> wrote: =20
-> > >
-> > > There are some newer additions to the AD7606 family, which support 18=
- bit
-> > > precision. Up until now, all chips were 16 bit.
-> > >
-> > > This change adds a 'bits' parameter to the AD760X_CHANNEL macro and r=
-enames
-> > > 'ad7606_channels' -> 'ad7606_channels_16bit' for the current devices.
-> > >
-> > > The AD7606_SW_CHANNEL() macro is also introduced, as a short-hand for=
- IIO
-> > > channels in SW mode.
-> > >
-> > > Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
-> > > --- =20
-> >
-> > ...
-> > =20
-> > > diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-> > > index 6649e84d25de..204a343067e5 100644
-> > > --- a/drivers/iio/adc/ad7606.h
-> > > +++ b/drivers/iio/adc/ad7606.h
-> > > @@ -8,7 +8,7 @@
-> > >  #ifndef IIO_ADC_AD7606_H_
-> > >  #define IIO_ADC_AD7606_H_
-> > >
-> > > -#define AD760X_CHANNEL(num, mask_sep, mask_type, mask_all) {   \
-> > > +#define AD760X_CHANNEL(num, mask_sep, mask_type, mask_all, bits) {  =
-   \
-> > >                 .type =3D IIO_VOLTAGE,                            \
-> > >                 .indexed =3D 1,                                   \
-> > >                 .channel =3D num,                                 \
-> > > @@ -19,24 +19,26 @@
-> > >                 .scan_index =3D num,                              \
-> > >                 .scan_type =3D {                                  \
-> > >                         .sign =3D 's',                            \
-> > > -                       .realbits =3D 16,                         \
-> > > -                       .storagebits =3D 16,                      \
-> > > +                       .realbits =3D (bits),                     \
-> > > +                       .storagebits =3D (bits) > 16 ? 32 : 16,   \
-> > >                         .endianness =3D IIO_CPU,                  \
-> > >                 },                                              \
-> > >  }
-> > >
-> > >  #define AD7605_CHANNEL(num)                            \
-> > >         AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW),     \
-> > > -               BIT(IIO_CHAN_INFO_SCALE), 0)
-> > > +               BIT(IIO_CHAN_INFO_SCALE), 0, 16)
-> > >
-> > > -#define AD7606_CHANNEL(num)                            \
-> > > +#define AD7606_CHANNEL(num, bits)                      \
-> > >         AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW),     \
-> > >                 BIT(IIO_CHAN_INFO_SCALE),               \
-> > > -               BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO))
-> > > +               BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), bits)
-> > >
-> > > -#define AD7616_CHANNEL(num)    \
-> > > +#define AD7606_SW_CHANNEL(num, bits)   \
-> > >         AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INF=
-O_SCALE),\
-> > > -               0, BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO))
-> > > +               0, BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), bits)
-> > > +
-> > > +#define AD7616_CHANNEL(num)    AD7606_SW_CHANNEL(num, 16) =20
-> >
-> > It looks like the AD7616_CHANNEL macro is no longer used, so can be
-> > dropped. Or alternately, don't change the lines below to use
-> > AD7606_SW_CHANNEL. =20
->=20
-> Well, the AD7616_CHANNEL() macro is still being used for the actual
-> AD7616 channels.
-> For the AD7606B software channels, the AD7616_CHANNEL() macro was
-> being re-used, which seemed like a bit of a lazy/convenient way to do
-> it.
->=20
-> The patch here, just cleans up that minor quirk, but just for AD7606B.
-> The AD7616 driver part, still uses the AD7616_CHANNEL() macro.
->=20
-> Though, interestingly, the AD7616_CHANNEL() macro is only used for SW cha=
-nnels.
-> Maybe in a subsequent patch, the AD7616_CHANNEL() macro can be removed
-> altogether.
-> I thought about doing it in this series, but decided against it, to
-> keep the series small.
-It's been a while, and David hasn't said he disagrees with this
-argument so I've picked up David's tag whilst applying this.
+> On Sun, Sep 22, 2024 at 12:44:15PM +0300, Matti Vaittinen wrote:
+> > On 9/21/24 23:07, Vasileios Amoiridis wrote:  
+> > > On Sat, Sep 21, 2024 at 12:23:39PM -0700, Lars-Peter Clausen wrote:  
+> > > > On 9/21/24 11:19, Vasileios Amoiridis wrote:  
+> > > > > The iio_validate_own_trigger() function was added in this commit [1] but it is
+> > > > > the same with the below function called iio_trigger_validate_own_device(). The
+> > > > > bodies of the functions can be found in [2], [3].
+> > > > > 
+> > > > > [1]: https://lore.kernel.org/all/51cd3e3e74a6addf8d333f4a109fb9c5a11086ee.1683541225.git.mazziesaccount@gmail.com/
+> > > > > [2]: https://elixir.bootlin.com/linux/v6.11/source/drivers/iio/industrialio-trigger.c#L732
+> > > > > [3]: https://elixir.bootlin.com/linux/v6.11/source/drivers/iio/industrialio-trigger.c#L752  
+> > > > 
+> > > > The signature of the two functions are different, the order of the
+> > > > parameters is switched. So you can't just swap them out for the
+> > > > `validate_trigger` callback since the signature is not compatible. But maybe
+> > > > you can update the implementation of one of the functions to calling the
+> > > > other function.
+> > > >   
+> > > 
+> > > Hi Lars,
+> > > 
+> > > Hmm, I see what you mean. Still though, do you think that we could do some
+> > > cleaning here? I can see 3 approaches:
+> > > 
+> > > 1) One of the 2 functions calls the other internally and nothing else has
+> > > to change.  
+> > 
+> > I would go with this. Changing the signatures to be the same would be (in
+> > my, not always humble enough, opinion) wrong. The different order of
+> > parameters reflects the different idea. One checks if device for trigger is
+> > the right one, the other checks if the trigger for the device is the right
+> > one. Thus, the order of parameters should be different.
+> > 
+> > Calling the same implementation internally is fine with me. Maybe Jonathan
+> > will share his opinion when recovers from all the plumbing in Vienna ;)
+> > 
+> > Yours,
+> > 	-- Matti
+> > 
+> > -- 
+> > Matti Vaittinen
+> > Linux kernel developer at ROHM Semiconductors
+> > Oulu Finland
+> >   
+> 
+> Hi Matti!
+> 
+> Thanks for your comment! Well, I still think in my eyes is better to
+> have one function do one thing instead of multiple. Also, I didn't
+> think of this argument with the order of arguments, it makes sense.
+> My experience is quite limited to how things should be in such a
+> large project so I trust your opinion. I would still like to see
+> what Jonathan has to say on this though, maybe he had some
+> reasoning behind!!!
+> 
+No to changing the signatures. It removes the difference
+in meaning of the callbacks even though they happen to have
+the same implementation in this very simple (and common case).
 
-So David, if you'd rather I didn't then shout!
+In the trigger first one, that is the subject.  We are asking the
+question 'is this trigger ok being used for this device'.
+In the other the device is the subject and we asking the
+question 'is this device ok to use this trigger'
 
-Series applied to the togreg branch of iio.git and pushed out as testing
-for all the normal reasons + I'm waiting for rc1 to rebase on.
+When we are checking the combination you have here, sure they
+become the same thing but there are devices where it
+matters that the trigger is not used to drive other devices
+(typically because it's a hardware line that goes nowhere
+else, so no interrupts etc) but other triggers can be used
+to drive this device (often by software triggering the scan).
+We have the opposite case as well but that's often
+a shortcut when it just happens to be really complex to get
+the trigger to reset (often requires reading all the data
+or similar) - that condition can almost always be relaxed
+but sometimes it's a lot of code for a niche case.
 
-Thanks
+So fine to change the implementation of one of these
+checks on tightly coupled device and trigger to call the other
+but don't touch the callback signatures as to that breaks the
+logical parameter ordering.
+
 Jonathan
 
->=20
-> >
-> > With either of those changes:
-> >
-> > Reviewed-by: David Lechner <dlechner@baylibre.com>
-> > =20
-> > >
-> > >  /**
-> > >   * struct ad7606_chip_info - chip specific information
-> > > diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_sp=
-i.c
-> > > index 62ec12195307..e00f58a6a0e9 100644
-> > > --- a/drivers/iio/adc/ad7606_spi.c
-> > > +++ b/drivers/iio/adc/ad7606_spi.c
-> > > @@ -67,14 +67,14 @@ static const struct iio_chan_spec ad7616_sw_chann=
-els[] =3D {
-> > >
-> > >  static const struct iio_chan_spec ad7606b_sw_channels[] =3D {
-> > >         IIO_CHAN_SOFT_TIMESTAMP(8),
-> > > -       AD7616_CHANNEL(0),
-> > > -       AD7616_CHANNEL(1),
-> > > -       AD7616_CHANNEL(2),
-> > > -       AD7616_CHANNEL(3),
-> > > -       AD7616_CHANNEL(4),
-> > > -       AD7616_CHANNEL(5),
-> > > -       AD7616_CHANNEL(6),
-> > > -       AD7616_CHANNEL(7),
-> > > +       AD7606_SW_CHANNEL(0, 16),
-> > > +       AD7606_SW_CHANNEL(1, 16),
-> > > +       AD7606_SW_CHANNEL(2, 16),
-> > > +       AD7606_SW_CHANNEL(3, 16),
-> > > +       AD7606_SW_CHANNEL(4, 16),
-> > > +       AD7606_SW_CHANNEL(5, 16),
-> > > +       AD7606_SW_CHANNEL(6, 16),
-> > > +       AD7606_SW_CHANNEL(7, 16),
-> > >  };
-> > >
-> > >  static const unsigned int ad7606B_oversampling_avail[9] =3D {
-> > > --
-> > > 2.46.0
-> > > =20
+> Have a nice day!
+> 
+> Cheers,
+> Vasilis
 
 

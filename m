@@ -1,214 +1,114 @@
-Return-Path: <linux-iio+bounces-9837-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9838-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A0B989037
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 18:05:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339BF98903C
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 18:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 929D9281FFF
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:05:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C78F21F21961
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Sep 2024 16:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D167E45C0B;
-	Sat, 28 Sep 2024 16:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E35B54673;
+	Sat, 28 Sep 2024 16:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyJGst2s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i66GFkyw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87ED229429;
-	Sat, 28 Sep 2024 16:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A882B22089;
+	Sat, 28 Sep 2024 16:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727539530; cv=none; b=BPUBq88EreWemkOB8oFHFgERJmKltoV1QvXDbpQWWQcLSzioMV9xl3KyV1STD4nMjungCSgH6L0f5253fOG4TygmXuVjDiYFr84dNbzdJK/eYvkuhPpryhXU4qKgWp0vL0Ekw07MJaPnkmHIAhE0BFpZWlErKZfWaDcz1EU0pZk=
+	t=1727539938; cv=none; b=sfloFvFfJV883U0/tllh90+6O7RcTfiTrYKeYExUQk/PgtqMm9WOsDNEs74/qVno5l3ouvVXYM2+aRdHJzPtDBkOfZGtlnQNXhkV6Kq1vsv7y0AY+LlB7Y2UWFruj02lu+33deqzTlJgL3BWtbfKaY8ZyWHaxwe+bevg+sOx9Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727539530; c=relaxed/simple;
-	bh=/kpQ5i5Ao0vJN3d7/pzZXKZZN8p8Kj+a3qxCCDNZSnk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d+3i2M07KXGvlJLeynj8vi3TE14CnWM47KKFek4JEGpWU+SgDh2xyWRXFo0xvhMO/NPlCpMJvdecKwW68fgNRvXOf7Mshf7nJuENzJf/FXgCl5u9i2hryY5ZZhpoaCD4rXojat/G9v8MZvFkkHeApM/+cyVJmjOjLrxwVJgWpJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyJGst2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F5DC4CEC3;
-	Sat, 28 Sep 2024 16:05:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727539530;
-	bh=/kpQ5i5Ao0vJN3d7/pzZXKZZN8p8Kj+a3qxCCDNZSnk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hyJGst2sThzdvSg7P1HLPcogfK12E1vG5BRfe7sko0eskeZP3PMpsnt47lNyKkbCn
-	 ZeNc+N82wvrmElt4fLezFqY0zB5XHVm34hT6xlooaV22aXgcTtI5yvQClHlSmxhzEr
-	 +9lGIYTBwCyN8uGx9fjMz5QELBZ8D6/UsfgwG+2c+fdSiR13/fjNGOnRURVOYSe63k
-	 sb6yn23gjSdIMJWzMsHCko2bMcR22Ta9W18uiVF3q6VNAubJXn25DtkdIMsNNzQ4Fz
-	 p5MRWzs+VIhifp5a8Py1uxNHtXRqO3rqQuYKLWQ1P/tLSz4TFKoRNLFqY9gCNTI9px
-	 tieRYY4FUb4MQ==
-Date: Sat, 28 Sep 2024 17:05:20 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Emil Gedenryd <emil.gedenryd@axis.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andreas Dannenberg <dannenberg@ti.com>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <kernel@axis.com>
-Subject: Re: [PATCH v3 3/3] iio: light: opt3001: add support for TI's
- opt3002 light sensor
-Message-ID: <20240928170520.02a27690@jic23-huawei>
-In-Reply-To: <20240916-add_opt3002-v3-3-984b190cd68c@axis.com>
-References: <20240916-add_opt3002-v3-0-984b190cd68c@axis.com>
-	<20240916-add_opt3002-v3-3-984b190cd68c@axis.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1727539938; c=relaxed/simple;
+	bh=TBCSobR2WSgApP5zbamJaa3KII6CFnPUU4CFuJ3T5b4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Apse2YByRSuED4kvALfGjr6qSfIwAWzlAAiuqVSsbQw9vpM8WARzZslWUZ38rvk7KKyx1uJhfOvtKSz2jNLxerD1Y+coZrYM78mqHY/klbL++54qF0rhjlMgyYB1ZbVqAP3VlRiQpjev0S8gs6Xx0inKVi7HelyYv13i5tX58PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i66GFkyw; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e0afd945d4so1843472a91.0;
+        Sat, 28 Sep 2024 09:12:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727539935; x=1728144735; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zyrcqApW95Q2aWx98qWljKFWpxGj2v/UkzKAGl15Gc8=;
+        b=i66GFkywJUlMTfP7fJx1tS4vstxmex30n/+e1DsIhSqE7SW7CVI1B11+3VgyDpzH7T
+         dwct06WuM0rMzm+D9sy8b3dqd6fsFTDKZW6mwpUtk7eQYv7oRv7c+luZaQmD0Jr1c+tP
+         EzLE6ygPYgEeq71j7FQvsnxBNwQwYLlFTlW2wGdkXk+TC+w08rxN7G5sfTln28tC4b39
+         lfcknQpsHGczt0b0nTLby9+Ncd4KP0q/zBqPTfjDGUTmdDUIZ2B+Wio2HNymk7GKpLvf
+         TkYqwYX2ER0N14A4pYG1UEC1qbDjkv9X+3vQNPE8lzwtm+AII48Q+lKIZLR8RbSK1CYx
+         q9qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727539935; x=1728144735;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zyrcqApW95Q2aWx98qWljKFWpxGj2v/UkzKAGl15Gc8=;
+        b=BtJKv8jxSZUuSiTsbdcMa2JLsDtVjsAogNB3vFwi4d1gbJk5fRQH+yj8PIDWqPzRDR
+         tZUpJLxXieZ8wzQUtZQwaNag/KoNe0HUqZD3dgZ9tqh7sFwaTApS0c/Bab9R0BbxIJJx
+         QYBeEAu2KA7+CSEawNtcn8ZHdCxo/zt3o1S+NS1Xr32ZoDqywPwFs8YIT/nVUuYWMxTm
+         Rdb//vLfC814s1XJy0Sx0zopQ25PtOHOZn14msmtq5n9RP1d5o/pYZzurTcRFcGrs5jh
+         eEts94gj6lortvOMmUWnwEu4AvPPHs+JVDjQh54NKjKc7sh2HTWf5H5MxefWDs0eROk8
+         PPDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVfIr3VL8J+P5PBpKS1zYmvr4zw5YDcd4tq/jwimTBQ4v49oFtFfmMfZ5NAbu7sW6yJkpyZUOkECkjwDkc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPmgOepM9X8h2FoaRZzl8zWmehYTXa4FpDTVh0nedfum+DSILR
+	YI80Uscy/muSrcBW3KQd/5MuIC3Te1kEAgKgAZZaS1cnxFSjl8HGNzHsOQisYlYoAA==
+X-Google-Smtp-Source: AGHT+IHTqVx49maAhen143fo0jfg0pGCcGEiZZtqePeA/hEG7RnqvaBiKcmHwsik88zG99isUcDKOQ==
+X-Received: by 2002:a17:90a:de92:b0:2e0:9fe3:346e with SMTP id 98e67ed59e1d1-2e0b89ad30emr8197450a91.2.1727539935323;
+        Sat, 28 Sep 2024 09:12:15 -0700 (PDT)
+Received: from abhash-IdeaPad-L340-15IRH-Gaming.. ([136.233.9.100])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2e1073feb9bsm216693a91.47.2024.09.28.09.12.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Sep 2024 09:12:14 -0700 (PDT)
+From: Abhash Jha <abhashkumarjha123@gmail.com>
+To: linux-iio@vger.kernel.org
+Cc: angelogioacchino.delregno@collabora.com,
+	matthias.bgg@gmail.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Abhash Jha <abhashkumarjha123@gmail.com>
+Subject: [PATCH] iio: adc: mt6360-adc: Converted to use get_unaligned_be16()
+Date: Sat, 28 Sep 2024 21:41:08 +0530
+Message-ID: <20240928161108.163647-1-abhashkumarjha123@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 16 Sep 2024 16:56:39 +0200
-Emil Gedenryd <emil.gedenryd@axis.com> wrote:
+Changed the manual shifting and adding of bytes to use
+get_unaligned_be16() api instead.
 
-> TI's opt3002 light sensor shares most properties with the opt3001
-> model, with the exception of supporting a wider spectrum range.
-> 
-> Add support for TI's opt3002 by extending the TI opt3001 driver.
-> 
-> Datasheet: https://www.ti.com/product/OPT3002
-> Signed-off-by: Emil Gedenryd <emil.gedenryd@axis.com>
-Hi Emil,
+Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+---
+ drivers/iio/adc/mt6360-adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-A few things inline,
-
-Thanks,
-
-Jonathan
-
-> diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-> index 176e54bb48c3..5e3fe42c5b59 100644
-> --- a/drivers/iio/light/opt3001.c
-> +++ b/drivers/iio/light/opt3001.c
-
-
-> @@ -479,6 +565,9 @@ static int opt3001_write_event_value(struct iio_dev *iio,
->  {
->  	struct opt3001 *opt = iio_priv(iio);
->  	int ret;
-> +	int whole;
-> +	int integer;
-> +	int decimal;
->  
->  	u16 mantissa;
->  	u16 value;
-> @@ -497,7 +586,12 @@ static int opt3001_write_event_value(struct iio_dev *iio,
->  		goto err;
->  	}
->  
-> -	mantissa = (((val * 1000) + (val2 / 1000)) / 10) >> exponent;
-> +	whole = opt->chip_info->factor_whole;
-> +	integer = opt->chip_info->factor_integer;
-> +	decimal = opt->chip_info->factor_decimal;
-> +
-> +	mantissa = (((val * integer) + (val2 / decimal)) / whole) >> exponent;
-> +
->  	value = (exponent << 12) | mantissa;
->  
->  	switch (dir) {
-> @@ -610,7 +704,7 @@ static int opt3001_read_id(struct opt3001 *opt)
->  	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_DEVICE_ID);
->  	if (ret < 0) {
->  		dev_err(opt->dev, "failed to read register %02x\n",
-> -				OPT3001_DEVICE_ID);
-> +			OPT3001_DEVICE_ID);
-
-Unrelated change so in theory should be in a separate patch but
-meh, it's trivial so leave it here if you like.
-
->  		return ret;
->  	}
-
-> @@ -755,22 +850,25 @@ static int opt3001_probe(struct i2c_client *client)
->  	opt = iio_priv(iio);
->  	opt->client = client;
->  	opt->dev = dev;
-> +	opt->chip_info = device_get_match_data(&client->dev);
-
-Use the i2c specific way to to do this.
-https://elixir.bootlin.com/linux/v6.11/source/drivers/i2c/i2c-core-base.c#L120
-i2c_get_match_data() because it will also handle falling back to matching
-via the i2c_match_id() path against the old style match tables in a few
-cases.
-
->  
->  	mutex_init(&opt->lock);
->  	init_waitqueue_head(&opt->result_ready_queue);
->  	i2c_set_clientdata(client, iio);
->  
-> -	ret = opt3001_read_id(opt);
-> -	if (ret)
-> -		return ret;
-> +	if (opt->chip_info->has_id) {
-> +		ret = opt3001_read_id(opt);
-> +		if (ret)
-> +			return ret;
-> +	}
->  
->  	ret = opt3001_configure(opt);
->  	if (ret)
->  		return ret;
->  
->  	iio->name = client->name;
-> -	iio->channels = opt3001_channels;
-> -	iio->num_channels = ARRAY_SIZE(opt3001_channels);
-> +	iio->channels = *opt->chip_info->channels;
-> +	iio->num_channels = ARRAY_SIZE(*opt->chip_info->channels);
-This won't work as it has no way to perform a sizeof
-through a pointer.
-
-Add a num_channels filed to your opt3001_chip_info structure
-as then it can be ARRAY_SIZE(&opt3001_channels) which can work.
-
->  	iio->modes = INDIO_DIRECT_MODE;
->  	iio->info = &opt3001_info;
->  
-> @@ -825,14 +923,36 @@ static void opt3001_remove(struct i2c_client *client)
->  	}
->  }
->  
-> +static const struct opt3001_chip_info opt3001_chip_information = {
-> +	.channels = &opt3001_channels,
-> +	.chan_type = IIO_LIGHT,
-> +	.scales = &opt3001_scales,
-> +	.factor_whole = 10,
-> +	.factor_integer = 1000,
-> +	.factor_decimal = 1000,
-> +	.has_id = true,
-> +};
-> +
-> +static const struct opt3001_chip_info opt3002_chip_information = {
-> +	.channels = &opt3002_channels,
-> +	.chan_type = IIO_INTENSITY,
-> +	.scales = &opt3002_scales,
-> +	.factor_whole = 12,
-> +	.factor_integer = 10,
-> +	.factor_decimal = 100000,
-> +	.has_id = false,
-> +};
-> +
->  static const struct i2c_device_id opt3001_id[] = {
-> -	{ "opt3001" },
-> +	{ "opt3001", (kernel_ulong_t)&opt3001_chip_information },
-> +	{ "opt3002", (kernel_ulong_t)&opt3002_chip_information },
->  	{ } /* Terminating Entry */
->  };
->  MODULE_DEVICE_TABLE(i2c, opt3001_id);
->  
->  static const struct of_device_id opt3001_of_match[] = {
-> -	{ .compatible = "ti,opt3001" },
-> +	{ .compatible = "ti,opt3001", .data = &opt3001_chip_information },
-> +	{ .compatible = "ti,opt3002", .data = &opt3002_chip_information },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, opt3001_of_match);
-> 
+diff --git a/drivers/iio/adc/mt6360-adc.c b/drivers/iio/adc/mt6360-adc.c
+index 3710473e5..91befe2cd 100644
+--- a/drivers/iio/adc/mt6360-adc.c
++++ b/drivers/iio/adc/mt6360-adc.c
+@@ -124,7 +124,7 @@ static int mt6360_adc_read_channel(struct mt6360_adc_data *mad, int channel, int
+ 		usleep_range(ADC_LOOP_TIME_US / 2, ADC_LOOP_TIME_US);
+ 	}
+ 
+-	*val = rpt[1] << 8 | rpt[2];
++	*val = get_unaligned_be16(&rpt[1]);
+ 	ret = IIO_VAL_INT;
+ 
+ out_adc_conv:
+-- 
+2.43.0
 
 

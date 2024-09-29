@@ -1,223 +1,124 @@
-Return-Path: <linux-iio+bounces-9893-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9894-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FF29896CB
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 20:45:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D04989711
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 21:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 150451F21CAD
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 18:45:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C53561C20AA8
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 19:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD59487BF;
-	Sun, 29 Sep 2024 18:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781815B1FB;
+	Sun, 29 Sep 2024 19:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EUDst9rb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i3aI0hXq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DC118641;
-	Sun, 29 Sep 2024 18:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEA72C1B4;
+	Sun, 29 Sep 2024 19:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727635546; cv=none; b=MSO8eIZKRH7BihtIF7TFBKsrwlnNk3DuSPQ5fkAg52jZ69j3VeFNtafx/ePWLVHn6WIOsCJnA6JAxO7KkwnHjqZU9sjm3bwIwc5fqGzCNf972U+/qgPXBNy+oX4+GKZw5Ee3jSTAJf0VOMLhARf0Jf1shtos1BDC3nmYz6S+Xow=
+	t=1727637753; cv=none; b=cAmF0xZCdK9SRqOX4TOs18Bz0Gm9AEvJyDuvj2pcVbjNG+JJ2BRFBskcJfkajfBjudlCkz2b3JXxDcwqcCNWqtijh5uQsQCJRsZX4AXvb9A25w9gtekRgLikL+cl6piqST8q2ANz2Q7J8iJBUWLpTZX06t7tG3j/GHv1xMZTluc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727635546; c=relaxed/simple;
-	bh=uYls481jlDe0DTJnA7lUtIOzYy0kIMsHafgrDtax/FA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=knnWyZ8v8uWEjvzphq21y873/qdXh/Kc+6deLf/tRMfW2nFJYm84QbG9iNeQT4wVEEt+qWr8Je/2aj2hHioAdVZqUdclKiqX5xJKbB4jmfSz35nhBjoYXQwGcCm5q2GiKUxPchUiI1V5nm79EHsV7yU12NVLQiNmJgllAZPp1BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EUDst9rb; arc=none smtp.client-ip=209.85.208.48
+	s=arc-20240116; t=1727637753; c=relaxed/simple;
+	bh=oLXxoh6aKOly9Powt/xFXlfDVV5wCoeAxlXMnKhDi6I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lGJ9qKTSTv1BTGJWjtLqy0mAtSEWbgIhaF3pJkkMSjXyyyFZm89M7LxqZTq9Lj7oxfOyRBJd5jaKCbAMJzBRmvTu/tGcfVGFewCaafFpXGYF6RJ3T85dOYqqIOpHOfOaJV1Gerkz73bUuUpSI3WB/dTWbAjBEhteICRbV1dMJI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i3aI0hXq; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5c5bca6603aso4252688a12.1;
-        Sun, 29 Sep 2024 11:45:44 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c8952f7f95so760678a12.0;
+        Sun, 29 Sep 2024 12:22:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727635543; x=1728240343; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8XQ5+9bYl+OA/OhjnjesBHAyLC1+4svUXWybex59KOE=;
-        b=EUDst9rbK3lNwVv30ju3kdHcoj0mKeXt2SVTGg6WzHvnZBjhW+7X8h74ko/TREVG6h
-         cW7PKoJfA274pBZKnVGXBDE88MhwJj8rCiEXvMXDEOnD9N2LO0xdy+GbrwubiAKYhyOV
-         VgEae6ujObJkVPkLxJAdEpwqO7RH+U60mOCd8ehArT25aUaGkwc9u45Zwm23ofm3WmNU
-         92omiCryNeU4ruIhOW09dLUzvx7hcqg00B+rVaJKURbqf8Bs7rv75UlsLV9v1cYDdLio
-         QuejJ8cP/6Jf1QFIWecMK6ubM/JuMIwhuvLWn5TNLX3rsjNLi45aiWDFyP494wjMu0mF
-         ulaQ==
+        d=gmail.com; s=20230601; t=1727637749; x=1728242549; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Pobc+AJ4aXejENeOegO+U6SgRutUJx4h2NJgcJv9KmI=;
+        b=i3aI0hXqpyd8gy7P7yBb18DMWn+OSmtEwK+yzPmsbr0a8yVG6cskE7iQ+DoY4xqoZ2
+         0bLPzdiNFn52RL044KtbXjyZ1jKi15pVbhcDC4TNqb1oC95srrusCjRyJjMValt7bOqI
+         SwDW4f+NfQWPHTiG6/SypQ/9uOISTewyChVSgnl6gvj8cMEWmbuNUl7wRbdkXsYKmEs8
+         yQIVYxR1yW2RbGADxTjmIo3bfFwQco+6NsIKxLmfiTGylVr7uJsKeKBIMd8ylFxdhmDB
+         qOqK+0QeqK3HPNlB4jVGS78VxVGP/hqz9nNJbFjJ8D+me4sZxUiYj9OAQihKXOWVxczp
+         t1Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727635543; x=1728240343;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8XQ5+9bYl+OA/OhjnjesBHAyLC1+4svUXWybex59KOE=;
-        b=qw67HMr4uSJTLV7BiP8Udd4x4GoxX+38j0LfAPTUTG7Oiz7Bvu0SsiAo4IPr1TPZlj
-         a93RZCGNsxX37aWOEeUUrwSCHCohNJ5ZdjaFQPCfIf/OBGhxY8Y0Sy3pL4aoDLHqK/uh
-         +svlafMV1yRnSEgkQg8xnMzmqDH5vpemKIU8+AO4S3rcF2o6EFcEXRKERpyWveuIQN5j
-         CBWhfi5lhG3b4SYRp4FBaTJZdhRqBoS1x92h34Y4iRA7jiSOWet4eOnHL+YGrs+NkL1P
-         uaPXziSJP1468+vAwNd/gLwjKHsLuG4aYxOdNzvWDrP5m5KdIIu+ICVRjHFmgjN5Ut+H
-         xxxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUAuYG667eo3RJSnOe53Wby6x4D8IX33wv5a/2RrbtIGvOkXCXsyXC3WwWiF1nJcPzTdHzNJoR49qGm@vger.kernel.org, AJvYcCWHsGZe7TaDcqPs1SWxWz1ABLlA7jKig+cxidhiYrGG/2ZLNa0PBXEN0XBJQo0q7xuHIUTNcTKHSU1vm/+d@vger.kernel.org, AJvYcCWJQcWet3KCqitzcPXZO0ZCRpk69xaBfmJaHZTb3j6PlMIvM2uEhOgMDHFuy9T5DfCBbOT0hqrW4Ydo@vger.kernel.org
-X-Gm-Message-State: AOJu0YxX9WR7i4Hw7cceVTeCQe7G3GL6s3+XEK/+7VAWV5iwbUhdNlPX
-	irTHkVuMVVeYg+vtRhaV3KT+r09sQTw/yrfWx7rAqG2d/fx+l5IQ
-X-Google-Smtp-Source: AGHT+IFOZFQUTLWY7kdVEDbwWE9GVkSr3ezpnMEaf9UamCwAtr86MOfeL+o7Mv47hqGghyTofWfdCw==
-X-Received: by 2002:a17:906:794d:b0:a7a:9ca6:527 with SMTP id a640c23a62f3a-a93c48f0dd1mr1198590566b.8.1727635542572;
-        Sun, 29 Sep 2024 11:45:42 -0700 (PDT)
-Received: from ?IPV6:2a02:8389:41cf:e200:e2c0:9a60:64a8:717a? (2a02-8389-41cf-e200-e2c0-9a60-64a8-717a.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:e2c0:9a60:64a8:717a])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c27c5a7dsm412361266b.62.2024.09.29.11.45.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 29 Sep 2024 11:45:42 -0700 (PDT)
-Message-ID: <b4a72e65-b8b0-41da-ac6e-372371f3943a@gmail.com>
-Date: Sun, 29 Sep 2024 20:45:40 +0200
+        d=1e100.net; s=20230601; t=1727637749; x=1728242549;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Pobc+AJ4aXejENeOegO+U6SgRutUJx4h2NJgcJv9KmI=;
+        b=lHmHQ057VCl0kvp4QYIByelq8aHmRubREVrZBzfnaxuriNNbZy4rVMjCP0tEuq85uh
+         H8PFmZv07Kh60kzjk2WXLPxVEl5MKA1D+F9k+cLOeGudvjD3nC5871NFvAm9kjLH8p4U
+         IF2QuNnCfmpjgW/pITv2JEraj6EK84NpsIM0HhP0VCJ4sVekr1aMga3a0Nm0WztkN3sH
+         OJCqsTi7Q0ApLzJjqX+H5+bSYHi4WwPOzwT5iQv3swyv0U/5KRtNQBclEL9F7FqoywpT
+         YtzsBDeAZUEjS7S5fyqdOTDUg9zRkrmtqfhVFo3Ackbklhion9fJWWtx96JDx4NZ8dcI
+         TMgA==
+X-Forwarded-Encrypted: i=1; AJvYcCVC2EeYVnaixfz5Mi1D7uA8B9DfYVuT03wfqe79HlUaRauuu8rG9Q1zJvOX/6MDQ88dXAcamFuRf2sQQbVe@vger.kernel.org, AJvYcCVN8TQ8xXvesQKz6bCJTcWFJdW6vgJR00sAgqYx131ls2NjqUPmMyh8fGCU6hou49fgdjFZ2crKoDsA@vger.kernel.org, AJvYcCWL5nO1BH3AXM0e5+aNro/QC0NUxVOvegKOm8zUI9UJzBc+2YOR0nnizzEZpa0AOL5CDdQVi9OykrR9@vger.kernel.org, AJvYcCXLQuen2hHu3dst0UifhhgkD0aG140W/GL8vwrzYxmXvqpusjjDSssZn316+biEK96Om59rbNfx3GVn@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxnzl7LOImXY/WQXJuRU9nbBJ4xjeHfq8DKJgxfeBCpq3PhCQ1w
+	CaW2syt8hh0chUXYD2iCoR2W+rzVlI/NhfLSZG7RjN5B3K9yDq/YOcU2nubcyikGi/ucxoQSY2v
+	+H+J2cGqjZ4WPHecDG5yTxX9eRbE=
+X-Google-Smtp-Source: AGHT+IGaxFv21uXx+/xZJU/kjl1OxZbW01D0pVYnfO3CdcXbQ/N3kGxbqbV7+Ze+Pe9bRVYVDyDb9xLbba+Qkot3y1k=
+X-Received: by 2002:a17:907:789:b0:a80:f6a9:c311 with SMTP id
+ a640c23a62f3a-a93c47e2257mr1167476366b.0.1727637748858; Sun, 29 Sep 2024
+ 12:22:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/10] iio: light: veml6030: use read_avail() for
- available attributes
+References: <20240923101206.3753-1-antoniu.miclaus@analog.com>
+ <20240923101206.3753-7-antoniu.miclaus@analog.com> <CAMknhBHRfj7d8Uea8vX=t+y+9dqoPABQSzsgNhBMTK-8-f6L7w@mail.gmail.com>
+ <20240928183044.0b5ea2e0@jic23-huawei>
+In-Reply-To: <20240928183044.0b5ea2e0@jic23-huawei>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sun, 29 Sep 2024 22:21:52 +0300
+Message-ID: <CAHp75VfChXnRsQVA7nQu0L8evqFZrNoCXMq_KEc6_md4EWPyvA@mail.gmail.com>
+Subject: Re: [PATCH 6/7] iio: adc: ad485x: add ad485x driver
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
- <20240923-veml6035-v2-6-58c72a0df31c@gmail.com>
- <20240928171922.0caccaf3@jic23-huawei>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20240928171922.0caccaf3@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Cc: David Lechner <dlechner@baylibre.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Nuno Sa <nuno.sa@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>, 
+	=?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>, 
+	Mike Looijmans <mike.looijmans@topic.nl>, Dumitru Ceclan <mitrutzceclan@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Alisa-Dariana Roman <alisadariana@gmail.com>, Sergiu Cuciurean <sergiu.cuciurean@analog.com>, 
+	Dragos Bogdan <dragos.bogdan@analog.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-pwm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 28/09/2024 18:19, Jonathan Cameron wrote:
-> On Mon, 23 Sep 2024 00:17:54 +0200
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> 
->> Drop custom attributes by using the standard read_avail() callback to
->> read scale and integration time. When at it, define these attributes as
->> available by all channels, as they affect the values of both the ALS and
->> the WHITE channel.
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> Hi Javier
-> 
-> Some comments inline
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->> ---
->>  drivers/iio/light/veml6030.c | 64 +++++++++++++++++++++++++++++++-------------
->>  1 file changed, 45 insertions(+), 19 deletions(-)
->>
->> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
->> index 89c98bfc5191..a3190fab3add 100644
->> --- a/drivers/iio/light/veml6030.c
->> +++ b/drivers/iio/light/veml6030.c
->> @@ -58,25 +58,24 @@ struct veml6030_data {
->>  	int cur_integration_time;
->>  };
->>  
->> -/* Integration time available in seconds */
->> -static IIO_CONST_ATTR(in_illuminance_integration_time_available,
->> -				"0.025 0.05 0.1 0.2 0.4 0.8");
->> +static const int veml6030_it_times[][2] = {
->> +	{0, 25000},
-> Really minor but I'm trying to get IIO standardized on formatting for this
-> sort of array and I'd like not to introduce more instances of it
-> done without the extra spaces as it will just give more to clean up
-> at some point.
-> 
-> 	{ 0, 25000 },
-> etc please.
->> +	{0, 50000},
->> +	{0, 100000},
->> +	{0, 200000},
->> +	{0, 400000},
->> +	{0, 800000},
->> +};
->>  
->>  /*
->>   * Scale is 1/gain. Value 0.125 is ALS gain x (1/8), 0.25 is
->>   * ALS gain x (1/4), 1.0 = ALS gain x 1 and 2.0 is ALS gain x 2.
->>   */
->> -static IIO_CONST_ATTR(in_illuminance_scale_available,
->> -				"0.125 0.25 1.0 2.0");
->> -
->> -static struct attribute *veml6030_attributes[] = {
->> -	&iio_const_attr_in_illuminance_integration_time_available.dev_attr.attr,
->> -	&iio_const_attr_in_illuminance_scale_available.dev_attr.attr,
->> -	NULL
->> -};
->> -
->> -static const struct attribute_group veml6030_attr_group = {
->> -	.attrs = veml6030_attributes,
->> +static const int veml6030_scale_vals[][2] = {
->> +	{0, 125000},
->> +	{0, 250000},
->> +	{1, 0},
->> +	{2, 0},
-> 
-> As above, add some spaces for minor readability improvement.
-> 
->>  };
->>  
->>  /*
->> @@ -197,9 +196,11 @@ static const struct iio_chan_spec veml6030_channels[] = {
->>  		.type = IIO_LIGHT,
->>  		.channel = CH_ALS,
->>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->> -				BIT(IIO_CHAN_INFO_PROCESSED) |
->> -				BIT(IIO_CHAN_INFO_INT_TIME) |
->> -				BIT(IIO_CHAN_INFO_SCALE),
->> +				BIT(IIO_CHAN_INFO_PROCESSED),
->> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
->> +					       BIT(IIO_CHAN_INFO_SCALE),
-> This bit is an ABI change and technically old code wasn't a bug, so
-> we don't really have a good enough reason to change it.  So Please
-> leave these as separate.
-> 
->> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
->> +						     BIT(IIO_CHAN_INFO_SCALE),
-> That doesn't stop us sharing the available as that always was shared
-> in the attribute naming above.
-> 
->>  		.event_spec = veml6030_event_spec,
->>  		.num_event_specs = ARRAY_SIZE(veml6030_event_spec),
->>  	},
->> @@ -210,6 +211,10 @@ static const struct iio_chan_spec veml6030_channels[] = {
->>  		.channel2 = IIO_MOD_LIGHT_BOTH,
->>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
->>  				BIT(IIO_CHAN_INFO_PROCESSED),
->> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
->> +					       BIT(IIO_CHAN_INFO_SCALE),
-> This confuses me.  Is it fixing a bug by effectively adding attributes for this
-> channel that were previously missing? If so we'll have to go with searpte
-> even though they are shared to avoid breaking the ABI for other channel.
-> 
->> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
->> +						     BIT(IIO_CHAN_INFO_SCALE),
->>  	},
->>  };
->>  
-> 
-> 
+On Sat, Sep 28, 2024 at 8:30=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 
-This confused me as well, because even though the attributes where
-defined as separate for the ALS channel, modifying their values affected
-the values from the WHITE channel.
+...
 
-The integration time and the scale affect both channels, and therefore I
-thought they should be shared attributes. But in that case, and to avoid
-breaking the ABI for the other channel, I will make them separate even
-though writing to one of them will change the value of the other as well.
+> > We have quite a few parts in the pipline right like this one that have
+> > per-sample status bits. In the past, these were generally handled with
+> > IIO events, but this doesn't really work for these high-speed backends
+> > since the data is being piped directly to DMA and we don't look at
+> > each sample in the ADC driver. So it would be worthwhile to try to
+> > find some general solution here for handling this sort of thing.
+>
+> We have previously talked about schemes to describe metadata
+> alongside channels. I guess maybe it's time to actually look at how
+> that works.  I'm not sure dynamic control of that metadata
+> is going to be easy to do though or if we even want to
+> (as opposed to always on or off for a particular device).
 
-Thanks and best regards,
-Javier Carrasco
+Time for the kernel to return JSON on a per channel basis?
 
+Just saying :-)
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

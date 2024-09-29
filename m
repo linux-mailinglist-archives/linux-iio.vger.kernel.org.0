@@ -1,56 +1,57 @@
-Return-Path: <linux-iio+bounces-9886-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9887-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56D0989661
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 19:04:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E33C989672
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 19:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F91C1F21030
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 17:04:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 323621C20FD7
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 17:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C16017E00F;
-	Sun, 29 Sep 2024 17:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1759517E010;
+	Sun, 29 Sep 2024 17:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZ1XP8LH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcYTIr+P"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2903C1C683;
-	Sun, 29 Sep 2024 17:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BA417E004;
+	Sun, 29 Sep 2024 17:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727629474; cv=none; b=dTKlHXuUJ6aHnnC7GKhXWMnXyATaRawQBkHY4FkETyCDVRLJesvtdA1m6KOZHNeyAxV2YWYmUScE4UXwrlHpKdADqbnNVEPrEoM3UYW2Td3Y4iU1MEUQNAzsLGRpfCYaM4X6FDq+73j1fEL4Phoy06ugJyNl1w5gwOOEo9iO4k0=
+	t=1727629811; cv=none; b=rwwKBzqafgNbNCPwd9yWppTfJsKndzJH6aAJ0JcDWErDU8CBYe7AqLEREEtnZ3uIRWYvT4duWVFfqc2fwIkYi8aRdHQ7BuKzI/kVRH3E96d7OrZnUts1qUFqbh6LTjAyFfoD4c05vtEPFaDy805vkUlInFGtHAbUvvsmMV1UFsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727629474; c=relaxed/simple;
-	bh=wOn2rPeUN8zWonwsBPGsPi7lOi2s5OqmICI+BwvwcZ4=;
+	s=arc-20240116; t=1727629811; c=relaxed/simple;
+	bh=vLELgkLkDGsWVr4f3ZDGKmIbHmczdwX3LvXWEjP6ja0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q4Ji65ECPyesTcudU1jg4K51iJj0zn2HGXVIX2hcHdNSYeV/NFh02FIPN92bt8Eh1bPVfbZJUf77BJxIdUttloMcI897Y6fXg20fARCd2NkF9PTKSNnhKIa1RwlYRzkJvrL/F1v350IXJajvV5L09QUoqfHU7KuNgafE2xbjW8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZ1XP8LH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B3DC4CEC5;
-	Sun, 29 Sep 2024 17:04:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pWkv2U99Wx9+JP8jqA/qu3AsOl81vW53CsTd6Ve7BulIi+rP22Bh26Lz23bU+FiPKactiz7NiMwLdwvIkHeg4NNtyK4Jzjj2ay5dGh31oXQ+aFJ72/f9ovaADtM/EIPqHUwe8oqmjJJCwV5Cfrw+2mUmaptRKROdpHxeKVRSUrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcYTIr+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E917C4CEC5;
+	Sun, 29 Sep 2024 17:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727629474;
-	bh=wOn2rPeUN8zWonwsBPGsPi7lOi2s5OqmICI+BwvwcZ4=;
+	s=k20201202; t=1727629811;
+	bh=vLELgkLkDGsWVr4f3ZDGKmIbHmczdwX3LvXWEjP6ja0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DZ1XP8LHkF6oKBkNOMl3GVeJgtBLd3p1fureO1Bg529i56VuyIin+/+pTPU7HrMYz
-	 6QhCzWA6B26+uCMK7LNe8Ha1Tbz4D/D2akIW77/muL0G5tu3BZLzclOsgzBZyhYY4r
-	 IjK5p6fFIMfC6YHdR7SQB+iwVAeHzWVbakDM+JF7gK+J6VpznHbtRiA0cghNnqUYd9
-	 swRu3jr7yVwWNlRiPxlznoXZCQ2g6GHoFTINHAINcbNBMUx5XZ9PKwt35rblbAbv+j
-	 E8i3C4lk6+M1m7BLE94+sSjx+aFROp6JQnc4s1Xl1iFfIEV9KqgJxJdx8oCQDx9prX
-	 D7/e4BDrEbHmw==
-Date: Sun, 29 Sep 2024 18:04:26 +0100
+	b=FcYTIr+PaUFb5rJuYhUyyuK3bKU/VGOJw0Y4woU5inM+D0BltAOMIj1NQvGHG39ce
+	 ffj5tFSDvSZdqeuLrt9+f6WSlDvsQEx/lwWMm8M9n8SaTTeH3v70HJjeGs61KqQXUv
+	 3cFnGm5/Pf4fVbm0m60X6nf7h781wu+WR0/KMOi8vbeU9eOdglWQyZ5GE/sfYkml2m
+	 Kz/o1Cy94LHERoHfeMDGcbLmw4OKvlJcU9Wsv9bWpQr55WrrwDTeg9y5GUIP3+jtl+
+	 Po2b/gTW0Qh9OSGkspbNk89gI9Mo1vj/jqEUmEQDj9L/iU4aciYqxg7926zjWP7AGL
+	 I5pxE6pB3Xv1A==
+Date: Sun, 29 Sep 2024 18:10:03 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: dan.carpenter@linaro.org, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: pressure: bmp280: Fix type for raw values
-Message-ID: <20240929175710.2e101abc@jic23-huawei>
-In-Reply-To: <20240929112511.100292-2-vassilisamir@gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: pressure: bmp280: Use char instead of s32
+ for data buffer
+Message-ID: <20240929181003.26abf543@jic23-huawei>
+In-Reply-To: <20240929112511.100292-3-vassilisamir@gmail.com>
 References: <20240929112511.100292-1-vassilisamir@gmail.com>
-	<20240929112511.100292-2-vassilisamir@gmail.com>
+	<20240929112511.100292-3-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,63 +62,121 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 29 Sep 2024 13:25:10 +0200
+On Sun, 29 Sep 2024 13:25:11 +0200
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> The adc values coming directly from the sensor in the BM{E,P}{2,3}xx
-> sensors are unsigned values so treat them as such.
+> As it was reported and discussed here [1], storing the sensor data in an
+> endian aware s32 buffer is not optimal. Advertising the timestamp as an
+> addition of 2 s32 variables which is also implied is again not the best
+> practice. For that reason, change the s32 sensor_data buffer to a char
+> buffer with an extra value for the timestamp (as it is common practice).
 > 
-> Fixes: 80cd23f43ddc ("iio: pressure: bmp280: Add triggered buffer support")
-Why is this a fix rather than a cleanup?  Looks to me like all the values
-are going to be small enough that they fit either way.
-So good to tidy up for consistency etc, but why a fixes tag?
-
-I 
-
+> [1]: https://lore.kernel.org/linux-iio/73d13cc0-afb9-4306-b498-5d821728c3ba@stanley.mountain/
+> 
 > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Hi Vasileois.
+
+I missed a purely semantic issue in previous versions :( 
+
+A few other places where you can achieve the same effect with less code
+and clear casting to correct types.
+
+Jonathan
+
+
 > ---
->  drivers/iio/pressure/bmp280-core.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+>  drivers/iio/pressure/bmp280-core.c | 78 ++++++++++++++++++------------
+>  drivers/iio/pressure/bmp280.h      |  5 +-
+>  2 files changed, 51 insertions(+), 32 deletions(-)
 > 
 > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 6c2606f34ec4..472a6696303b 100644
+> index 472a6696303b..2c62490a40c6 100644
 > --- a/drivers/iio/pressure/bmp280-core.c
 > +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -1023,7 +1023,8 @@ static irqreturn_t bmp280_trigger_handler(int irq, void *p)
->  	struct iio_poll_func *pf = p;
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct bmp280_data *data = iio_priv(indio_dev);
-> -	s32 adc_temp, adc_press, t_fine;
-> +	u32 adc_temp, adc_press;
-These are filled as part of a get_unaligned_be24() so the value will never
-be big enough that signed / unsigned should make any difference.
 
-> +	s32 t_fine;
->  	int ret;
->  
->  	guard(mutex)(&data->lock);
-> @@ -1137,7 +1138,8 @@ static irqreturn_t bme280_trigger_handler(int irq, void *p)
->  	struct iio_poll_func *pf = p;
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct bmp280_data *data = iio_priv(indio_dev);
-> -	s32 adc_temp, adc_press, adc_humidity, t_fine;
-> +	u32 adc_temp, adc_press, adc_humidity;
-Same with these.
-> +	s32 t_fine;
->  	int ret;
->  
->  	guard(mutex)(&data->lock);
-> @@ -1616,7 +1618,8 @@ static irqreturn_t bmp380_trigger_handler(int irq, void *p)
->  	struct iio_poll_func *pf = p;
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct bmp280_data *data = iio_priv(indio_dev);
-> -	s32 adc_temp, adc_press, t_fine;
-These are similar but le24.
 
-> +	u32 adc_temp, adc_press;
-> +	s32 t_fine;
->  	int ret;
+> @@ -2523,23 +2538,24 @@ static irqreturn_t bmp180_trigger_handler(int irq, void *p)
+>  	struct iio_poll_func *pf = p;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct bmp280_data *data = iio_priv(indio_dev);
+> -	int ret, chan_value;
+> +	int ret, comp_temp, comp_press, offset;
 >  
 >  	guard(mutex)(&data->lock);
+>  
+> -	ret = bmp180_read_temp(data, &chan_value);
+> +	ret = bmp180_read_temp(data, &comp_temp);
+>  	if (ret)
+>  		goto out;
+>  
+> -	data->sensor_data[1] = chan_value;
+>  
+> -	ret = bmp180_read_press(data, &chan_value);
+> +	ret = bmp180_read_press(data, &comp_press);
+>  	if (ret)
+>  		goto out;
+>  
+> -	data->sensor_data[0] = chan_value;
+> +	memcpy(&data->buffer.buf[offset], &comp_press, sizeof(s32));
+> +	offset += sizeof(s32);
+> +	memcpy(&data->buffer.buf[offset], &comp_temp, sizeof(s32));
+I suppose there is a consistency argument for using memcpy even for the s32
+cases but you 'could' if you like do
+	s32 *chans = (s32 *)data->buffer.buf;
+at top
+and 
+	chans[0] = comp_press;
+	chans[1] = comp_temp;
+here, which is functionally equivalent, particularly as we are forcing the
+buffer alignment to be larger than this s32.
+
+Similar for the other simple native endian s32 cases.
+
+The memcpy is needed for the le24 one.
+
+
+>  
+> -	iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
+>  					   iio_get_time_ns(indio_dev));
+>  
+>  out:
+> diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+> index a9f220c1f77a..b0c26f55c6af 100644
+> --- a/drivers/iio/pressure/bmp280.h
+> +++ b/drivers/iio/pressure/bmp280.h
+> @@ -419,7 +419,10 @@ struct bmp280_data {
+>  	 * Data to push to userspace triggered buffer. Up to 3 channels and
+>  	 * s64 timestamp, aligned.
+>  	 */
+> -	s32 sensor_data[6] __aligned(8);
+> +	struct {
+> +		u8 buf[12];
+> +		aligned_s64 ts;
+
+I'd missed that this depends on the number of channels.  It makes no functional
+difference because the core code will happily write over the end of buf, but
+from a representation point of view this might be
+
+		u8 buf[8];
+		aligned_s64 ts;
+or
+		u8 buf[12];
+		aligned_s64 ts;
+
+So given we can't actually fix on one or the other normal convention is
+to just use something that forces a large enough aligned u8 buffer like
+		u8 buf[ALIGN(sizeof(s32) * BMP280_MAX_CHANNELS, 8) + sizeof(s64)]
+			__aligned(sizeof(s64));
+
+Sorry for leading you astray on this!
+
+Jonathan
+
+
+> +	} buffer;
+>  
+>  	/*
+>  	 * DMA (thus cache coherency maintenance) may require the
 
 

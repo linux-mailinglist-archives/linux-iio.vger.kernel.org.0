@@ -1,69 +1,60 @@
-Return-Path: <linux-iio+bounces-9866-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9867-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA569894F1
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 12:59:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BCE9894F7
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 13:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83B481F21001
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 10:59:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2F71F2129F
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 11:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7B41607A4;
-	Sun, 29 Sep 2024 10:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A3015F41B;
+	Sun, 29 Sep 2024 11:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kgCMFkUI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqoONKPL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A256157488;
-	Sun, 29 Sep 2024 10:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244AD566A;
+	Sun, 29 Sep 2024 11:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727607569; cv=none; b=Gvmak30YZdD/ojF8uqdf6UCdKew5nWO45Gwnu7gELQT3VW0ND96eOkXPDs/xSZ+wM/KoBt6Hvo7bcdTGmetW9QWLY4Mx3E7y7qesTsmPUX9pwo1Z6lxyJGo4GmCgXDpUCpWIN+UVQN2s70CYUUGksgoeW6xiq2ZCNLstvhHbI70=
+	t=1727607945; cv=none; b=WBia0C5qZyQStdpx8MVSM3vtipfOH/++f7iuIPeTjRiS9PBS8Eg1Qu1UBfwo4s+zOF7+mHbsBnidGtdv0anxCQ0Bz3456wqQQvDA4Lcu9N0CaHnSMNUzm+MbJoRQS7V1RcG4gAmtht+pZgT67t8b+Ny/HqxEOUw5IMHbyMKqUVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727607569; c=relaxed/simple;
-	bh=8PxiiVHFr6alTnXpOXhsL8EY8MJiUBtIx6q20tJt3bI=;
+	s=arc-20240116; t=1727607945; c=relaxed/simple;
+	bh=lpNNnz2zMa2kX8OFRLZ4OPgb40TpGDY4V9dqbRspwJw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rx1w/BU7cuvPyMO9awe0QSmzjHqd28kulvW9ccjZU4Z+fFC7RA+n8AhjK22ILK70SGzFSNxbVGyqWuQmHtfB9FgSfWvEcOxaPzjIe5Sknf1KN4pDQWuZX7oSPtlf2DNHjE2pfeU4bGYM3iBwwxwHPTjvGAuOqPGYa/i16Jl2IFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kgCMFkUI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC78C4CEC5;
-	Sun, 29 Sep 2024 10:59:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VksUGIRLbEqJytiUVFlNWV9uKKWi62hp0ia7dyvgovXZtqMGrFZ7ckmkwjc4WtJ8OA7Kg61MPb6be/DHGcihM1x3iPUvdx8xYQqVgreAOSLS4C52h98K4lu9oU6CaO9h9rNMP2HxJJLc1EdOOHxw/62gAEuTQbdsD0lb6OUZB54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqoONKPL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D643C4CEC5;
+	Sun, 29 Sep 2024 11:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727607569;
-	bh=8PxiiVHFr6alTnXpOXhsL8EY8MJiUBtIx6q20tJt3bI=;
+	s=k20201202; t=1727607944;
+	bh=lpNNnz2zMa2kX8OFRLZ4OPgb40TpGDY4V9dqbRspwJw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kgCMFkUIqAB1yKGI3XgPNKPQbxPDm1a26rR74pzkU/Bd/XzNcAjnsj+JstLNbgZUj
-	 U8WdxCQkF5m/yDIPgSUf0Y+Dh/Hy++joZv9Ttf0QGjvA0mg8KTqelnRvxqiQdQiqAc
-	 gfV6yfIyqhbhkCnQz9dD+o072PGlx3I1btUtoiI+NsNg2WsWgfndOY2gaNf/sDSydM
-	 3Vb4fXhgvG+Z5BwDfA2vHtsd/9/f5JpauMpidKhJqgpj1FKdW1aMa0rMqOup2Rli0z
-	 zSBBS9taF5/COVd1v320xxiYe5qoDhwOHZNxvOtaTXjcatgNDWnoiV10rSKp139LNd
-	 cAqB9HVn7FsZA==
-Date: Sun, 29 Sep 2024 11:59:19 +0100
+	b=aqoONKPLIvjAPjQeVYc09GYLhmL/6XPjLyGPwXjTFZuE9onpNTxraRXpTngtO/Fh4
+	 u3LVu8sMG9g9SiVMfZ1xoA9nypAuHRJZZMdaMsx9eciRWDh5kRt0clhbkmMGbDiDkB
+	 3JDdptums7KhoxW2NGIyRZNm3lt1CeP0z2qd4Z5fK1EQNKl25SlJAud0s9d+0spr3U
+	 mw7fqaXfvyxsGDcxbCIthmHvWMUTL05p3mQtkEQa7/YpZXvoPcy/FYrx7QfTDf6EO2
+	 PBsjxHGTTqRRq5lku178K6rO3ZCp5YaPQexk5A5MChBbw1Obzdsw9noSSXLm6c1Ael
+	 2dz1oWse1Gqqw==
+Date: Sun, 29 Sep 2024 12:05:35 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Angelo Dureghello
- <adureghello@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, dlechner@baylibre.com
-Subject: Re: [PATCH v3 04/10] dt-bindings: iio: dac: ad3552r: add io-backend
- support
-Message-ID: <20240929115919.0318034c@jic23-huawei>
-In-Reply-To: <28834db1-3e9e-47f4-b00e-a548589d77e9@kernel.org>
+Subject: Re: [PATCH v3 05/10] iio: backend: extend features
+Message-ID: <20240929120535.6b41c37e@jic23-huawei>
+In-Reply-To: <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-5-a17b9b3d05d9@baylibre.com>
 References: <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-0-a17b9b3d05d9@baylibre.com>
-	<20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-4-a17b9b3d05d9@baylibre.com>
-	<gojq6ardhvt6vcs2kawdhdn2cj6qbpzp4p5mjjgwsypuatm5eo@3u6k4q7le46s>
-	<418a8a9b-3bcf-4b8f-92a0-619a3bf26ab5@baylibre.com>
-	<e8af0f3f-a09c-42d7-b8ca-dd633539af73@kernel.org>
-	<0279203b6cd9f1312d9c03654c262c04ac12fbd9.camel@gmail.com>
-	<fa27dc74-7b1f-4ef5-81dc-cc434da4ff89@kernel.org>
-	<c721861809c17776c0fe89ead331b6e2e6b9d4b4.camel@gmail.com>
-	<28834db1-3e9e-47f4-b00e-a548589d77e9@kernel.org>
+	<20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-5-a17b9b3d05d9@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,213 +62,132 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 28 Sep 2024 14:20:29 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Thu, 19 Sep 2024 11:20:01 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> On 25/09/2024 13:55, Nuno S=C3=A1 wrote:
-> > On Wed, 2024-09-25 at 09:22 +0200, Krzysztof Kozlowski wrote: =20
-> >> On 24/09/2024 14:27, Nuno S=C3=A1 wrote: =20
-> >>> On Tue, 2024-09-24 at 10:02 +0200, Krzysztof Kozlowski wrote: =20
-> >>>> On 23/09/2024 17:50, Angelo Dureghello wrote: =20
-> >>>>> Hi Krzysztof,
-> >>>>>
-> >>>>> On 22/09/24 23:02, Krzysztof Kozlowski wrote: =20
-> >>>>>> On Thu, Sep 19, 2024 at 11:20:00AM +0200, Angelo Dureghello wrote:=
- =20
-> >>>>>>> From: Angelo Dureghello <adureghello@baylibre.com>
-> >>>>>>>
-> >>>>>>> There is a version AXI DAC IP block (for FPGAs) that provides
-> >>>>>>> a physical bus for AD3552R and similar chips, and acts as
-> >>>>>>> an SPI controller.
-> >>>>>>>
-> >>>>>>> For this case, the binding is modified to include some
-> >>>>>>> additional properties.
-> >>>>>>>
-> >>>>>>> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> >>>>>>> ---
-> >>>>>>> =C2=A0 .../devicetree/bindings/iio/dac/adi,ad3552r.yaml=C2=A0=C2=
-=A0 | 42
-> >>>>>>> ++++++++++++++++++++++
-> >>>>>>> =C2=A0 1 file changed, 42 insertions(+)
-> >>>>>>>
-> >>>>>>> diff --git
-> >>>>>>> a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> >>>>>>> b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> >>>>>>> index 41fe00034742..aca4a41c2633 100644
-> >>>>>>> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> >>>>>>> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> >>>>>>> @@ -60,6 +60,18 @@ properties:
-> >>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definit=
-ions/uint32
-> >>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum: [0, 1, 2, 3]
-> >>>>>>> =C2=A0=20
-> >>>>>>> +=C2=A0 io-backends:
-> >>>>>>> +=C2=A0=C2=A0=C2=A0 description: The iio backend reference.
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 An example backend can be found at
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> >>>>>>> https://analogdevicesinc.github.io/hdl/library/axi_ad3552r/index.=
-html
-> >>>>>>> +=C2=A0=C2=A0=C2=A0 maxItems: 1
-> >>>>>>> +
-> >>>>>>> +=C2=A0 adi,synchronous-mode:
-> >>>>>>> +=C2=A0=C2=A0=C2=A0 description: Enable waiting for external sync=
-hronization
-> >>>>>>> signal.
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Some AXI IP configuration can imp=
-lement a dual-IP layout,
-> >>>>>>> with
-> >>>>>>> internal
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wirings for streaming synchroniza=
-tion.
-> >>>>>>> +=C2=A0=C2=A0=C2=A0 type: boolean
-> >>>>>>> +
-> >>>>>>> =C2=A0=C2=A0=C2=A0 '#address-cells':
-> >>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const: 1
-> >>>>>>> =C2=A0=20
-> >>>>>>> @@ -128,6 +140,7 @@ patternProperties:
-> >>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 - custom-output-range-config
-> >>>>>>> =C2=A0=20
-> >>>>>>> =C2=A0 allOf:
-> >>>>>>> +=C2=A0 - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> >>>>>>> =C2=A0=C2=A0=C2=A0 - if:
-> >>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 properties:
-> >>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible:
-> >>>>>>> @@ -238,4 +251,33 @@ examples:
-> >>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 };
-> >>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
-> >>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
-> >>>>>>> +
-> >>>>>>> +=C2=A0 - |
-> >>>>>>> +=C2=A0=C2=A0=C2=A0 axi_dac: spi@44a70000 {
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,a=
-xi-ad3552r"; =20
-> >>>>>> That is either redundant or entire example should go to the parent
-> >>>>>> node,
-> >>>>>> if this device is fixed child of complex device (IOW, adi,ad3552r
-> >>>>>> cannot
-> >>>>>> be used outside of adi,axi-ad3552r). =20
-> >>>>>
-> >>>>> ad3552r can still be used by a generic "classic" spi
-> >>>>> controller (SCLK/CS/MISO) but at a slower samplerate, fpga
-> >>>>> controller only (axi-ad3552r) can reach 33MUPS. =20
-> >>>>
-> >>>> OK, then this is just redundant. Drop the node. Parent example should
-> >>>> contain the children, though. =20
-> >>>>> =20
-> >>>>>> =20
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0x44a70000 0=
-x1000>;
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dmas =3D <&dac_tx_dma=
- 0>;
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma-names =3D "tx";
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #io-backend-cells =3D=
- <0>;
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&ref_clk>;
-> >>>>>>> +
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #address-cells =3D <1=
->;
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #size-cells =3D <0>;
-> >>>>>>> +
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dac@0 {
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 compatible =3D "adi,ad3552r";
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 reg =3D <0>;
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 reset-gpios =3D <&gpio0 92 0>; =20
-> >>>>>> Use standard defines for GPIO flags. =20
-> >>>>>
-> >>>>> fixed, thanks
-> >>>>> =20
-> >>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 io-backends =3D <&axi_dac>; =20
-> >>>>>> Why do you need to point to the parent? How much coupled are these
-> >>>>>> devices? Child pointing to parent is not usually expected, because
-> >>>>>> that's obvious. =20
-> >>>>>
-> >>>>>
-> >>>>> "io-backends" is actually the way to refer to the backend module,
-> >>>>> (used already for i.e. ad9739a),
-> >>>>> it is needed because the backend is not only acting as spi-controll=
-er,
-> >>>>> but is also providing some APIs for synchronization and bus setup
-> >>>>> support. =20
-> >>>>
-> >>>>
-> >>>> But if backend is the parent, then this is redundant. You can take it
-> >>>> from the child-parent relationship. Is this pointing to other devices
-> >>>> (non-parent) in other ad3552r configurations?
-> >>>> =20
-> >>>
-> >>> The backend is a provider-consumer type of API. On the consumer side =
-(which
-> >>> is the
-> >>> driver the child node will probe on), we need to call devm_iio_backen=
-d_get()
-> >>> to get
-> >>> the backend object (which obviously is the parent). For that, 'io-bac=
-kends'
-> >>> is being =20
-> >>
-> >> You described the driver, so how does it matter? Driver can call
-> >> get_backend_from_parent(), right? Or get_backend_from_fwnode(parent)? =
-=20
-> >=20
-> > Well yes, just stating what the framework (also in terms of bindings) is
-> > expecting. Of course that on the driver side we can paper around it the=
- way we
-> > want. But my main point was that we can only paper around it if we use =
-code that
-> > is meant not to be used.
-> >=20
-> > And, FWIW, I was (trying) replying to your comment
-> >=20
-> > "You can take it from the child-parent relationship"
-> >=20
-> > Again, we can only do that by introducing new code or use code that's n=
-ot meant
-> > to be used. The way we're supposed to reference backends is by explicit=
-ly using
-> > the proper FW property.
-> >=20
-> > Put it in another way and a completely hypothetical case. If we have a =
-spi
-> > controller which happens to export some clock and one of it's periphera=
-ls ends
-> > up using that clock, wouldn't we still use 'clocks' to reference that c=
-lock? =20
->=20
-> I asked how coupled are these devices. Never got the answer and you are
-> reflecting with question. Depends. Please do not create hypothetical,
-> generic scenarios and then apply them to your one particular opposite cas=
-e.
+> From: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> Extend backend features with new calls needed later on this
+> patchset from axi version of ad3552r.
+> 
+> The follwoing calls are added:
+> 
+> iio_backend_ext_sync_enable
+> 	enable synchronize channels on external trigger
+> iio_backend_ext_sync_disable
+> 	disable synchronize channels on external trigger
+> iio_backend_ddr_enable
+> 	enable ddr bus transfer
+> iio_backend_ddr_disable
+> 	disable ddr bus transfer
+> iio_backend_set_bus_mode
+> 	select the type of bus, so that specific read / write
+> 	operations are performed accordingly
+> iio_backend_buffer_enable
+> 	enable buffer
+> iio_backend_buffer_disable
+> 	disable buffer
+> iio_backend_data_transfer_addr
+> 	define the target register address where the DAC sample
+> 	will be written.
+> 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Hi Angelo,
+A few trivial comments inline.
 
-I'll throw a possible clarifying question in here.  Could we use this
-device with a multimaster SPI setup such that the control is on a conventio=
-nal
-SPI controller (maybe a qspi capable one), and the data plane only goes thr=
-ough
-a specific purpose backend?  If so, then they are not tightly coupled and
-the reference makes sense.  Putting it another way, the difference between
-this case and all the prior iio-backend bindings is the control and datapla=
-nes
-use the same pins.  Does that have to be the case at the host end?  If it d=
-oes,
-then the reference isn't strictly needed and this becomes a bit like
-registering a single device on an spi bus or an i2c bus depending on who
-does the registering (which is down to the parent in DT).
+> ---
+>  drivers/iio/industrialio-backend.c | 111 +++++++++++++++++++++++++++++++++++++
+>  include/linux/iio/backend.h        |  23 ++++++++
+>  2 files changed, 134 insertions(+)
+> 
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+> index 20b3b5212da7..f4802c422dbf 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -718,6 +718,117 @@ static int __devm_iio_backend_get(struct device *dev, struct iio_backend *back)
+...
 
-Jonathan
+> +/**
+> + * iio_backend_ddr_disable - Disable interface DDR (Double Data Rate) mode
+> + * @back: Backend device
+> + *
+> + * Disabling DDR data is generated byt the IP at rising or falling front
 
+Spell check your comments.
 
->=20
-> Best regards,
-> Krzysztof
->=20
+> + * of the interface clock signal (SDR, Single Data Rate).
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_ddr_disable(struct iio_backend *back)
+> +{
+> +	return iio_backend_op_call(back, ddr_disable);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_ddr_disable, IIO_BACKEND);
+				 struct fwnode_handle *fwnode)
+>  {
+> diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
+> index 37d56914d485..41619b803cd6 100644
+> --- a/include/linux/iio/backend.h
+> +++ b/include/linux/iio/backend.h
+> @@ -14,12 +14,14 @@ struct iio_dev;
+>  enum iio_backend_data_type {
+>  	IIO_BACKEND_TWOS_COMPLEMENT,
+>  	IIO_BACKEND_OFFSET_BINARY,
+> +	IIO_BACKEND_DATA_UNSIGNED,
+>  	IIO_BACKEND_DATA_TYPE_MAX
+>  };
+>  
+>  enum iio_backend_data_source {
+>  	IIO_BACKEND_INTERNAL_CONTINUOUS_WAVE,
+>  	IIO_BACKEND_EXTERNAL,
+> +	IIO_BACKEND_INTERNAL_RAMP_16BIT,
+>  	IIO_BACKEND_DATA_SOURCE_MAX
+>  };
+>  
+> @@ -89,6 +91,13 @@ enum iio_backend_sample_trigger {
+>   * @read_raw: Read a channel attribute from a backend device
+>   * @debugfs_print_chan_status: Print channel status into a buffer.
+>   * @debugfs_reg_access: Read or write register value of backend.
+> + * @ext_sync_enable: Enable external synchronization.
+> + * @ext_sync_disable: Disable external synchronization.
+> + * @ddr_enable: Enable interface DDR (Double Data Rate) mode.
+> + * @ddr_disable: Disable interface DDR (Double Data Rate) mode.
+> + * @buffer_enable: Enable data buffer.
+> + * @buffer_disable: Disable data buffer.
 
+This needs more specific text. What buffer?  I think this came
+up earlier but it needs to say something about the fact it's enabling
+or disabling the actual capture of data into the DMA buffers that
+userspace will read.
+
+> + * @data_transfer_addr: Set data address.
+>   **/
+>  struct iio_backend_ops {
+>  	int (*enable)(struct iio_backend *back);
+> @@ -129,6 +138,13 @@ struct iio_backend_ops {
+>  					 size_t len);
+>  	int (*debugfs_reg_access)(struct iio_backend *back, unsigned int reg,
+>  				  unsigned int writeval, unsigned int *readval);
+> +	int (*ext_sync_enable)(struct iio_backend *back);
+I know we've done it this way for existing items, but I wonder if we should
+squish down the ops slightly and have new enable/disable pairs as
+single functions.
+	int (*ext_sync_set_state)(struct iio_backend *back, bool enable);
+etc.  If nothing else reduces how many things need documentation ;)
+
+Nuno, what do you think? Worth squashing these pairs into single
+callbacks?
+
+> +	int (*ext_sync_disable)(struct iio_backend *back);
+> +	int (*ddr_enable)(struct iio_backend *back);
+> +	int (*ddr_disable)(struct iio_backend *back);
+> +	int (*buffer_enable)(struct iio_backend *back);
+> +	int (*buffer_disable)(struct iio_backend *back);
+> +	int (*data_transfer_addr)(struct iio_backend *back, u32 address);
+>  };
 

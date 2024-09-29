@@ -1,264 +1,136 @@
-Return-Path: <linux-iio+bounces-9895-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9896-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908C4989716
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 21:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 127F498974E
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 22:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0964E1F21588
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 19:31:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFE791F216E5
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 20:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B7A537E9;
-	Sun, 29 Sep 2024 19:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6ED811F7;
+	Sun, 29 Sep 2024 20:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QU65W0zu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JgLgWhsF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40DA41A84;
-	Sun, 29 Sep 2024 19:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E6745C18;
+	Sun, 29 Sep 2024 20:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727638280; cv=none; b=VZH0UKd9GFOPMTEtXKersQZz0PNw/D/NuYGlC/JdqbPDPoaH3otvAazXH8xNzmhXESRGPAOT2zUlKHXmY5tJvQwFElDoFB6KZSCQ/d7Dbxxj4UlSaLoVPWkI8s0QOMczkFTMUrXnuQ+We/06nYBtqhqmeduYKH+Ske/diDX8Zt8=
+	t=1727642333; cv=none; b=FbXQOGw9UnzDCUl9CcJxSxZqCKqhpN1cfM+57ZH+uZN0h65Sbf8jMmuxJKIXoOF4dPXyqHxDXZAuk2nOWrmzyruSxQpHNY7hF6Df/ClIhKcWW3tBIaLR63lY3WVnxg92lEdfVQ4ur4vbeRAQ1A7LOzXWn2mxcdJCIWV6cuRrn/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727638280; c=relaxed/simple;
-	bh=wTAFUu2HR05YCznqD3LOSXMINOzSP/J0jVLhbDAFaVc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cEJRdoTNgVr7ecnZ7+wCjr9hyl8zWyjLUbvX0n3jaKNj84ubIJ+vbB8vBayYzLj4Oz2+RsiArSoHRP+Yp7DElwZNVaezE/fLMVZhpeNdhb+aww0ZQz1fTQaINI8IcCCo8iarM6Oat5uh35gxaGfARWHss9X+DNAfwm+LhfJoRWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QU65W0zu; arc=none smtp.client-ip=209.85.222.180
+	s=arc-20240116; t=1727642333; c=relaxed/simple;
+	bh=ZT03Gl7EcIyCpIsNcxfxqkKztgiam/EU+vMyxpmHsGc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jNcTIMZmje4YzxSIqYQXvVQ+Nbu9FjQ9qUe1D8avIkpRYCAWuR3MPY1qLHTbwKMu6y46u8sPJUJSzl+64ve7HKnFZmgd2kQPWZSz4I1/ClZz1QfPnikurSAKhZrbMHa4EiriJSUhp13OILQ3FYPQM35ghqo5GH6nz1kG0+LQX3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JgLgWhsF; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7a99fd0535bso322566185a.3;
-        Sun, 29 Sep 2024 12:31:18 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a8d446adf6eso636918066b.2;
+        Sun, 29 Sep 2024 13:38:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727638278; x=1728243078; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=A1isPk0/yiaThPVpTHXqwNM5xUZ8cavb3R5rhfzcYlo=;
-        b=QU65W0zuUzNvrwTZm8BYmdDNk9cuA8LY/gI8gSn5vHZrmeT4MPWu9bDeJ3KINNf6Ua
-         m2TLHbiW3dHD+V9+S76zH7fLxN9qmyOu54wn2d1Jh4R6WK0Mnpmwytxjlr0UdJAs2BrL
-         CnQjleF33SL9CdGO1QDyNNWJD56Gxj1crxIUaZIN5hJ8L3LBsoCHd7v+p9sqEtpzfVDW
-         O375FoKbdc39+XcuzBo6YeIYdJ4yWOreusWmU4gxSxnefCkt3pRM4hzpDc4SLr1kFcFq
-         j1ADDRi7TNmiGgAWlXVn4Z1rSU/kaXLBQvRYOoPUwDsFMfucVefLoMXrT0NNjyh09K1z
-         9UZA==
+        d=gmail.com; s=20230601; t=1727642330; x=1728247130; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=putZppQgXwDvNv+RZA6pcl4OAhvfYEne4ISwcXTtxBk=;
+        b=JgLgWhsFbYIMY+/tU4ogJyn/F/peU/ay+aKmWzhaNr2YIcPaFPLFxivPxdyJMemsH/
+         13MJFDLEI3ZFxDM+ByD4kv5eV5qx07CBSWU34Ywm7j0bMxMEXwLKGoEg2U/xCnX1n14A
+         8/OEMqlVbp5yTkgjBnBoB+9YS76pgvfjIEVPtUzVqCKpdbqMjUVS8rhfmJR+dj+d55Mj
+         CuMkVWFaXFsD1ch5RSj9qmPTcOh+V6ge3f9/jEmQVe6elRcFOVE5ZhuYwu56+5SHAPoc
+         mqVl9ixzO7DnqQmbB+iGKdIrqkBaDp+GzeltONwaCw4N/qtIe7SlTc3Od30KC30hwTWB
+         ynJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727638278; x=1728243078;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A1isPk0/yiaThPVpTHXqwNM5xUZ8cavb3R5rhfzcYlo=;
-        b=jNFaTHEbQ8cMhV1wvBRMynTVXNml5ufsGzBtbReOao/uZE0wVkvuqtb3gq1vtDJFil
-         M5uT4nYB66gPzsbqKDvqNPtxs3H9orWPBTBxy9pQjVdNUFEqA/5CM1zwc2rnnh1XmeEp
-         +N6iUnjbx1B2roHAysJjsv4E4K1yeNJgIgsLupP8xUk4BBmTcCNbjyjcUeA2SXIz6oQ6
-         XVxKMw4UYInCrA1as5nvVKt4QzjfiRKNj3rPRPKInQEyPvitE2WNUNynohw9o4uDfvfS
-         vcD4CGko2jSWdJR3htcCaI7bH1bgyyAvlfTd4NveJb96D60/gHaj8tzwfoYJ/F1kE52p
-         Meqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWBdhuV0lln+SPSFCyyvkgthsn01k94RhS+RWaRD2SqUUBzNFnZt2DBseVPkJZUf4TmR/4mbEUkfSc=@vger.kernel.org, AJvYcCWSeBQGy46dVOPXgX4oe8/+jQJ70/qBlNf/ErwMWj2klnppHhnHaLnrlgv67tLaLtwvsYW4Lna4akRrfsBn@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4zbu73wQP8UAZ8+Lsqn1XkWE+YCc+NOEMoNhYERwawUUSaCuA
-	NbZZBJOvTePSb55D0CKMmMO5oUG0qNdT6Zj7+2/L6DLc0xNIhs59
-X-Google-Smtp-Source: AGHT+IGsTEnIDy283jw9lkr/mcK/PBIK3rY6wv6YWW4CeyY5xrhPWizkTM/1vAeHXQvUdyhRVi7etQ==
-X-Received: by 2002:a05:620a:1925:b0:7a9:bb80:1f56 with SMTP id af79cd13be357-7ae378476dcmr1723689785a.33.1727638277644;
-        Sun, 29 Sep 2024 12:31:17 -0700 (PDT)
-Received: from VM-Arch (ool-1826d901.dyn.optonline.net. [24.38.217.1])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae3782c533sm346399685a.97.2024.09.29.12.31.15
+        d=1e100.net; s=20230601; t=1727642330; x=1728247130;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=putZppQgXwDvNv+RZA6pcl4OAhvfYEne4ISwcXTtxBk=;
+        b=nXj/ssx2symy7A0k4d6rEJZmFoZlbOM/wK+VahupfNRdxmIvmOKCWbFRvtCtto3V49
+         gCXmB5KsCG/Q1fovRckms/0XqqkAVALysoSUGoikSfmO+PSVeDMDcLDeXBp+CpXciFIs
+         7T5KWM0SdxxO3uU4J/Zy5Y1SVxjokAtKKRw2MH10PbLKI1JaVFnxvvc/VeCJGVbVBjzd
+         6c84DRktWnWcXl4jJp/B+HI33zxgDIAcl12o5iFAd6G+W27fZY6qwUrQCK5QLs4XzDsS
+         7HX+lbt9o0s63PgeGhOx7KBPq5McoVYGG0eiBeZePIOrMcleBkct3PzvpImm54BlALAH
+         b/eA==
+X-Forwarded-Encrypted: i=1; AJvYcCVT7wGeCMxwaLOKKHX3yR47T8tHukHbZuR5oad7ueVydIMqzgNp/j7chahFZnbwq+66YY5jeKJpj/i4@vger.kernel.org, AJvYcCWxHTqB2Byg29+iSjtoepy29UaN9XIG6E1+MNdKWwwdDPDN2Uo9DMSP+WVUNzIKEh6Xqs9MCeFjrfepj6Tf@vger.kernel.org
+X-Gm-Message-State: AOJu0YykdWYUMtfNWq5nYbs6VkxZEH+deHWFLpmYPYr1ylfnXW8hPcFX
+	cPpPCB+wuLQAre1AYsBMSXUsQqcpaGgx7T6LC1F558gToJar4nRw
+X-Google-Smtp-Source: AGHT+IGyPWoz26+OpR6JitvAyLC+0JNsOOQdP9wZCb794YJDQTFsvLc4R9Nac+2AU2xHAPLf1L0XPA==
+X-Received: by 2002:a17:907:74b:b0:a86:7e7f:69ab with SMTP id a640c23a62f3a-a93c49087f3mr1048028366b.15.1727642329957;
+        Sun, 29 Sep 2024 13:38:49 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-e2c0-9a60-64a8-717a.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:e2c0:9a60:64a8:717a])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8824051c2sm3487985a12.19.2024.09.29.13.38.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2024 12:31:16 -0700 (PDT)
-Date: Sun, 29 Sep 2024 15:31:14 -0400
-From: Alex Lanzano <lanzano.alex@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: bmi270: Add spi driver for bmi270 imu
-Message-ID: <nsqdetgfr7p5klex77alaeoosgi5o5phhnri5kcn735wsn7e5o@phuellsm23nd>
-References: <20240927183717.3613601-1-lanzano.alex@gmail.com>
- <20240929155437.60115014@jic23-huawei>
+        Sun, 29 Sep 2024 13:38:48 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/7] iio: light: veml6070: update code to current IIO best
+ practices
+Date: Sun, 29 Sep 2024 22:38:45 +0200
+Message-Id: <20240929-veml6070-cleanup-v1-0-a9350341a646@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240929155437.60115014@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANW6+WYC/x3MQQqAIBBA0avErBNGicKuEi2yxhowEyUJwrsnL
+ d/i/xcSRaYEY/NCpMyJL18h2wbWY/E7Cd6qQaHqUCstMp2uxwHF6mjxdxADmh61MdKihZqFSJa
+ ffznNpXx6t0WDYgAAAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727642327; l=1300;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=ZT03Gl7EcIyCpIsNcxfxqkKztgiam/EU+vMyxpmHsGc=;
+ b=kkyqhMHF9gCWUWY6bTo9x/poJxSaUvSKr8CkgIXIZbVR/W2jApDPzhW4IY6jgpppGZn9xdJym
+ z2NmSqW4ygVDXxIsgvp/Tr2Ir10z/2O8g8ZFhZIAp2NVIGvq7kax0Nq
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Thanks for the review!
+This series updates the driver in preparation to add new features. The
+cleanup consists of:
 
-On Sun, Sep 29, 2024 at 03:54:37PM GMT, Jonathan Cameron wrote:
-> On Fri, 27 Sep 2024 14:37:10 -0400
-> Alex Lanzano <lanzano.alex@gmail.com> wrote:
-> 
-> > Implement SPI driver for the Bosch BMI270 6-axis IMU. Provide raw read
-> > write access to acceleration and angle velocity measurements via the SPI
-> > interface on the device.
-> > 
-> > Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
-> 
-> A few minor things inline but looks good in general.
-> 
-> Jonathan
-> 
-> > diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
-> > index 608b29ea58a3..8950e6234203 100644
-> > --- a/drivers/iio/imu/bmi270/bmi270.h
-> > +++ b/drivers/iio/imu/bmi270/bmi270.h
-> > @@ -4,11 +4,13 @@
-> >  #define BMI270_H_
-> >  
-> >  #include <linux/regmap.h>
-> > +#include <linux/iio/iio.h>
-> >  
-> >  struct device;
-> >  struct bmi270_data {
-> >  	struct device *dev;
-> >  	struct regmap *regmap;
-> > +	__le16 sample __aligned(IIO_DMA_MINALIGN);
-> 
-> For the read path you are bouncing anyway, so the DMA_MINALIGN is only needed
-> for anything the write direction.  Make the suggested change below and that
-> will bounce as well so that you don't need this.
-> 
+1. Device-managed registering for:
+- iio device
+- action (unregister i2c device)
+- regulator
 
-Understood! Will remove in v2 and use spi_write_then_read
+2. Code update to use a guard for the mutex handling and
+   dev_err_probe in the probe function.
 
-> >  };
-> >  
-> >  extern const struct regmap_config bmi270_regmap_config;
-> > diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-> > index 8e45343d6472..4decdad791d9 100644
-> > --- a/drivers/iio/imu/bmi270/bmi270_core.c
-> > +++ b/drivers/iio/imu/bmi270/bmi270_core.c
-> > @@ -66,16 +66,9 @@ enum bmi270_scan {
-> >  	BMI270_SCAN_GYRO_Z,
-> >  };
-> >  
-> > -const struct regmap_config bmi270_regmap_config = {
-> > -	.reg_bits = 8,
-> > -	.val_bits = 8,
-> > -};
-> > -EXPORT_SYMBOL_NS_GPL(bmi270_regmap_config, IIO_BMI270);
-> > -
-> >  static int bmi270_get_data(struct bmi270_data *bmi270_device,
-> >  			   int chan_type, int axis, int *val)
-> >  {
-> > -	__le16 sample;
-> >  	int reg;
-> >  	int ret;
-> >  
-> > @@ -90,11 +83,13 @@ static int bmi270_get_data(struct bmi270_data *bmi270_device,
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > -	ret = regmap_bulk_read(bmi270_device->regmap, reg, &sample, sizeof(sample));
-> > +	ret = regmap_bulk_read(bmi270_device->regmap, reg,
-> > +			       &bmi270_device->sample,
-> > +			       sizeof(bmi270_device->sample));
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	*val = sign_extend32(le16_to_cpu(sample), 15);
-> > +	*val = sign_extend32(le16_to_cpu(bmi270_device->sample), 15);
-> >  
-> >  	return 0;
-> >  }
-> > diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
-> > index f70dee2d8a64..ce8279ae90cd 100644
-> > --- a/drivers/iio/imu/bmi270/bmi270_i2c.c
-> > +++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
-> > @@ -9,12 +9,17 @@
-> >  
-> >  #include "bmi270.h"
-> >  
-> > +const struct regmap_config bmi270_i2c_regmap_config = {
-> static const
-> 
-> (same for spi one)
-> 
+3. Devicetree support (document the device bindings and register the
+compatible in the driver).
 
-Will fix in v2!
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Javier Carrasco (7):
+      iio: light: veml6070: add action for i2c_unregister_device
+      iio: light: veml6070: use guard to handle mutex
+      iio: light: veml6070: use device managed iio_device_register
+      iio: light: veml6070: add support for a regulator
+      dt-bindings: iio: light: vishay,veml6075: add vishay,veml6070
+      iio: light: veml6070: add devicetree support
+      iio: light: veml6070: use dev_err_probe in probe function
 
-> > +	.reg_bits = 8,
-> > +	.val_bits = 8,
-> > +};
-> > +
-> >  static int bmi270_i2c_probe(struct i2c_client *client)
-> >  {
-> >  	struct regmap *regmap;
-> >  	struct device *dev = &client->dev;
-> >  
-> > -	regmap = devm_regmap_init_i2c(client, &bmi270_regmap_config);
-> > +	regmap = devm_regmap_init_i2c(client, &bmi270_i2c_regmap_config);
-> >  	if (IS_ERR(regmap))
-> >  		return dev_err_probe(dev, PTR_ERR(regmap),
-> >  				     "Failed to init i2c regmap");
-> > diff --git a/drivers/iio/imu/bmi270/bmi270_spi.c b/drivers/iio/imu/bmi270/bmi270_spi.c
-> > new file mode 100644
-> > index 000000000000..906b9b852a09
-> > --- /dev/null
-> > +++ b/drivers/iio/imu/bmi270/bmi270_spi.c
-> > @@ -0,0 +1,89 @@
-> > +// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +
-> > +#include <linux/module.h>
-> > +#include <linux/spi/spi.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/module.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/regmap.h>
-> Alphabetical order preferred.
-> 
+ .../bindings/iio/light/vishay,veml6075.yaml        |  3 +-
+ drivers/iio/light/veml6070.c                       | 63 +++++++++++-----------
+ 2 files changed, 35 insertions(+), 31 deletions(-)
+---
+base-commit: 4057951fb272efda718dca665f6607c348d5785b
+change-id: 20240929-veml6070-cleanup-70b609bb1f0f
 
-Will fix in v2
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-> > +
-> > +#include "bmi270.h"
-> > +
-> > +/*
-> > + * The following two functions are taken from the BMI323 spi driver code.
-> > + * In section 6.4 of the BMI270 data it specifies that after a read
-> > + * operation the first data byte from the device is a dummy byte
-> > + */
-> > +static int bmi270_regmap_spi_read(void *context, const void *reg_buf,
-> > +				  size_t reg_size, void *val_buf,
-> > +				  size_t val_size)
-> > +{
-> > +	struct spi_device *spi = context;
-> 
-> I'd be tempted to rename the input parameter context to spi and then
-> parse it directly to the spi_write_then_read()
-> 
-
-Will do! I named it context since that's what the function pointer uses
-
-> > +
-> > +	return spi_write_then_read(spi, reg_buf, reg_size, val_buf, val_size);
-> > +}
-> > +
-> > +static int bmi270_regmap_spi_write(void *context, const void *data,
-> > +				   size_t count)
-> > +{
-> > +	struct spi_device *spi = context;
-> > +	u8 *data_buff = (u8 *)data;
-> > +
-> > +	/*
-> > +	 * Remove the extra pad byte since its only needed for the read
-> > +	 * operation
-> > +	 */
-> > +	data_buff[1] = data_buff[0];
-> > +	return spi_write(spi, data_buff + 1, count - 1);
-> That needs a DMA safe buffer (unlike write_then_read which always
-> bounces).  I'd avoid that complexity by using spi_write_then_read
-> here as well but set the read to 0 length and pass NULL for the buffer.
-> That function is intended to be used like this as it special cases 0
-> length for either write or read buffers.
-> 
-
-Understood! Will fix in v2.
-
-> > +}
-> 
 

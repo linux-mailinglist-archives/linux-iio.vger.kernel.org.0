@@ -1,55 +1,56 @@
-Return-Path: <linux-iio+bounces-9885-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9886-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC6398964F
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 18:51:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56D0989661
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 19:04:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 676881C2110C
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 16:51:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F91C1F21030
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 17:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDA017BB11;
-	Sun, 29 Sep 2024 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C16017E00F;
+	Sun, 29 Sep 2024 17:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5Nye+fm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZ1XP8LH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A8379FD;
-	Sun, 29 Sep 2024 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2903C1C683;
+	Sun, 29 Sep 2024 17:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727628672; cv=none; b=mQj8m7n+CVb0Ds8KN/MziAC/q/NhIwKy9+e7JWLqBsnzedAwtZTeOZQTwI65ATsQCJ8j3KT6nBR8tPAzKlJS5pnjVGvnfPtqd+/qDAz/DN1KcOimpPKAdEyxW2XYKA1fwVNhylskHDoyv7jgkpPsLoa9iBIRtfQ3RKbh3i26h00=
+	t=1727629474; cv=none; b=dTKlHXuUJ6aHnnC7GKhXWMnXyATaRawQBkHY4FkETyCDVRLJesvtdA1m6KOZHNeyAxV2YWYmUScE4UXwrlHpKdADqbnNVEPrEoM3UYW2Td3Y4iU1MEUQNAzsLGRpfCYaM4X6FDq+73j1fEL4Phoy06ugJyNl1w5gwOOEo9iO4k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727628672; c=relaxed/simple;
-	bh=sHQCx2Ka3Wx8zcULuOaKllEgdbSzhbBr20aENOKAsVA=;
+	s=arc-20240116; t=1727629474; c=relaxed/simple;
+	bh=wOn2rPeUN8zWonwsBPGsPi7lOi2s5OqmICI+BwvwcZ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FrDMUX4tzqC93jmv4G8QjY8AYCrEbZZK9PGQ++o2oGgXvI69FRgH34nSWhCDUOFol2cAHmyQx6blO3nk6MutoHEKtoeZf4T/ezwK2+mBS2eJo7tURJ91GZ6rGXqG4gv0fOOiuRQHmrQblIiFcqfy65Cnd1J8nWT3eXnJckuXcWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5Nye+fm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FEAC4CEC5;
-	Sun, 29 Sep 2024 16:51:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q4Ji65ECPyesTcudU1jg4K51iJj0zn2HGXVIX2hcHdNSYeV/NFh02FIPN92bt8Eh1bPVfbZJUf77BJxIdUttloMcI897Y6fXg20fARCd2NkF9PTKSNnhKIa1RwlYRzkJvrL/F1v350IXJajvV5L09QUoqfHU7KuNgafE2xbjW8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZ1XP8LH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B3DC4CEC5;
+	Sun, 29 Sep 2024 17:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727628672;
-	bh=sHQCx2Ka3Wx8zcULuOaKllEgdbSzhbBr20aENOKAsVA=;
+	s=k20201202; t=1727629474;
+	bh=wOn2rPeUN8zWonwsBPGsPi7lOi2s5OqmICI+BwvwcZ4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=h5Nye+fm7/xvXsinAtGgWobYIPU7JaGzAOx3nt0hEXZ5YDB+vuf63/VdIZkGZo5M3
-	 +5BMBLQGSJNyinAiDwR/TbCRE4KxXPhZukEi7DP3Vx+8khqM74uyFuFdRa52CpOepm
-	 fAM4QkE0f8PAaHvEoOxwmoelkQUgSpbDpJkRqSP29DuOboBKHMAUmUrDFlltYiEwG2
-	 7TyFkW+iVG8DGwYePxU/VybavlMCciBA47xKnuUdAp9yqNWsbIHc6O2mw0YCCmS0sb
-	 IjaMx1G1cjwEonKWD+lRM+4Ij90g6L8DamKrjr/Og//WMDIml1W2udn4GeeYh6ZL21
-	 erfgqq76IYCng==
-Date: Sun, 29 Sep 2024 17:51:05 +0100
+	b=DZ1XP8LHkF6oKBkNOMl3GVeJgtBLd3p1fureO1Bg529i56VuyIin+/+pTPU7HrMYz
+	 6QhCzWA6B26+uCMK7LNe8Ha1Tbz4D/D2akIW77/muL0G5tu3BZLzclOsgzBZyhYY4r
+	 IjK5p6fFIMfC6YHdR7SQB+iwVAeHzWVbakDM+JF7gK+J6VpznHbtRiA0cghNnqUYd9
+	 swRu3jr7yVwWNlRiPxlznoXZCQ2g6GHoFTINHAINcbNBMUx5XZ9PKwt35rblbAbv+j
+	 E8i3C4lk6+M1m7BLE94+sSjx+aFROp6JQnc4s1Xl1iFfIEV9KqgJxJdx8oCQDx9prX
+	 D7/e4BDrEbHmw==
+Date: Sun, 29 Sep 2024 18:04:26 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Abhash Jha <abhashkumarjha123@gmail.com>
-Cc: linux-iio@vger.kernel.org, Michael.Hennerich@analog.com,
- lars@metafoo.de, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: ad5770r: Convert to get_unaligned_le16
-Message-ID: <20240929175105.7d05b0dd@jic23-huawei>
-In-Reply-To: <20240928161805.165543-1-abhashkumarjha123@gmail.com>
-References: <20240928161805.165543-1-abhashkumarjha123@gmail.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: dan.carpenter@linaro.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] iio: pressure: bmp280: Fix type for raw values
+Message-ID: <20240929175710.2e101abc@jic23-huawei>
+In-Reply-To: <20240929112511.100292-2-vassilisamir@gmail.com>
+References: <20240929112511.100292-1-vassilisamir@gmail.com>
+	<20240929112511.100292-2-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,43 +61,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 28 Sep 2024 21:48:05 +0530
-Abhash Jha <abhashkumarjha123@gmail.com> wrote:
+On Sun, 29 Sep 2024 13:25:10 +0200
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Convert the manual shifting to use `get_unaligned_le16` api.
+> The adc values coming directly from the sensor in the BM{E,P}{2,3}xx
+> sensors are unsigned values so treat them as such.
 > 
-> Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
-Looks straight forward so I've applied this, but plenty of time for
-additional reviews if anyone has time to take a look.
+> Fixes: 80cd23f43ddc ("iio: pressure: bmp280: Add triggered buffer support")
+Why is this a fix rather than a cleanup?  Looks to me like all the values
+are going to be small enough that they fit either way.
+So good to tidy up for consistency etc, but why a fixes tag?
 
-Thanks,
+I 
 
-Jonathan
-
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 > ---
->  drivers/iio/dac/ad5770r.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/iio/pressure/bmp280-core.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
-> index c360ebf52..12c98f3e6 100644
-> --- a/drivers/iio/dac/ad5770r.c
-> +++ b/drivers/iio/dac/ad5770r.c
-> @@ -17,6 +17,7 @@
->  #include <linux/regmap.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/spi/spi.h>
-> +#include <asm/unaligned.h>
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index 6c2606f34ec4..472a6696303b 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -1023,7 +1023,8 @@ static irqreturn_t bmp280_trigger_handler(int irq, void *p)
+>  	struct iio_poll_func *pf = p;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct bmp280_data *data = iio_priv(indio_dev);
+> -	s32 adc_temp, adc_press, t_fine;
+> +	u32 adc_temp, adc_press;
+These are filled as part of a get_unaligned_be24() so the value will never
+be big enough that signed / unsigned should make any difference.
+
+> +	s32 t_fine;
+>  	int ret;
 >  
->  #define ADI_SPI_IF_CONFIG_A		0x00
->  #define ADI_SPI_IF_CONFIG_B		0x01
-> @@ -325,7 +326,7 @@ static int ad5770r_read_raw(struct iio_dev *indio_dev,
->  		if (ret)
->  			return 0;
+>  	guard(mutex)(&data->lock);
+> @@ -1137,7 +1138,8 @@ static irqreturn_t bme280_trigger_handler(int irq, void *p)
+>  	struct iio_poll_func *pf = p;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct bmp280_data *data = iio_priv(indio_dev);
+> -	s32 adc_temp, adc_press, adc_humidity, t_fine;
+> +	u32 adc_temp, adc_press, adc_humidity;
+Same with these.
+> +	s32 t_fine;
+>  	int ret;
 >  
-> -		buf16 = st->transf_buf[0] + (st->transf_buf[1] << 8);
-> +		buf16 = get_unaligned_le16(st->transf_buf);
->  		*val = buf16 >> 2;
->  		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_SCALE:
+>  	guard(mutex)(&data->lock);
+> @@ -1616,7 +1618,8 @@ static irqreturn_t bmp380_trigger_handler(int irq, void *p)
+>  	struct iio_poll_func *pf = p;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct bmp280_data *data = iio_priv(indio_dev);
+> -	s32 adc_temp, adc_press, t_fine;
+These are similar but le24.
+
+> +	u32 adc_temp, adc_press;
+> +	s32 t_fine;
+>  	int ret;
+>  
+>  	guard(mutex)(&data->lock);
 
 

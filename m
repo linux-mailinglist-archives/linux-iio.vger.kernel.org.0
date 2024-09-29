@@ -1,75 +1,76 @@
-Return-Path: <linux-iio+bounces-9902-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9903-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9982989760
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 22:40:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44F5989763
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 22:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76C2E1F211D4
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 20:40:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99250281944
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 20:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F2F185B6C;
-	Sun, 29 Sep 2024 20:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90430186607;
+	Sun, 29 Sep 2024 20:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JBYbdUAF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hHCRTV2b"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA4C185954;
-	Sun, 29 Sep 2024 20:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7171862B3;
+	Sun, 29 Sep 2024 20:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727642346; cv=none; b=hLchEB5CbVUv2DuPYkJy0wglwEamwu90Q3SSJrgfBxIW1Ocehok/h4Wqi8utkm75cHoVaLSv2ROOqXoTO0cdkrClw+cf2f4lD8B/XVCc3T/fjFqxS6cFFrulC4T2S3V4VwR7CZbX+P96HfK897DHoF7CVOvQwp61p/kdvxUThhE=
+	t=1727642349; cv=none; b=Vu3aPBWCe5eObY8/Oo5yNrygx5RAOz/FZg15l9Emhqq9J0OWai+66VqqvYamC/x+HF1X78eQNqzLk2tNEpTFZqVf9zctmT49NR/iSKkvlkdH4YuGZ+y6q3yTKd67j2X6YpAW/5XYpttslAurjnTOgPWmWc8ha/1IErmS8kkcuAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727642346; c=relaxed/simple;
-	bh=GxpFD4n+UOKfDv0dYLS/5z/NDDKPjNwuLx4KutIecnA=;
+	s=arc-20240116; t=1727642349; c=relaxed/simple;
+	bh=nikxwyB1KSy0wsMXbnH8xFpdMCf+mKH8/245lMmqi5s=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fAjzZkWxpcpAtmcaiR4DG6Lsd5u/AUmqqoAHjD9Yb2LuDhUWFRMNeFjtaWfjQ4rDIzdrT5e0PWJ0Wq4ZAKQJi8TO3WYNjAHKHEVdssC+Ehg0KMFmjyrHnXT+potH5JccmuxlhCbPsPFA4q+bEnJ7a6yZSS1Y2oNCmPgNFYYOUpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JBYbdUAF; arc=none smtp.client-ip=209.85.208.46
+	 In-Reply-To:To:Cc; b=lJlXcvviVEuAFQNLInh0Ufu1n6XCGb4sbSzgJJC696hpeztN7RJYO6x4Hz9MHbhbE+ex5xHItHxdb9j4uwAvPje5p7d5W30DoII4U9SOfGrhrmeZdhhbzhV/UY6zlfdoGjVmDjoGzFO8CeSF8AJ4bzKs90bbkpfNlPMjC+8OtK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hHCRTV2b; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5c88370ad7bso3090049a12.3;
-        Sun, 29 Sep 2024 13:39:04 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5c71f1396e4so4587227a12.0;
+        Sun, 29 Sep 2024 13:39:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727642343; x=1728247143; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727642346; x=1728247146; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3xGWWtQWL8H06GfqAD60uT9oc1UGLA/x5EVLWu1GowA=;
-        b=JBYbdUAFwSgolB5NAT7xClR2orSlStfY1LxoOYYeJ2gGUza81CsXlilgpVzU9src+t
-         GRyw18CtdwKmqrPRdbmLInZCrz5dbVIvEoRAMI2HbGCQLFOlYYFzjgHYCDYnUzNPPa5k
-         Ey9i9eSNLPHXel2wsz1bgambRcd40IBpUioJM5JHSskLTKrrxPo48DFd4bYqqY/Ch4L4
-         eJaS0HxfOxh07R+GDY9kcTX7TQKED+s+LRiWEPFLhTFn94v+6TFGUP+YopGuOzD97o4x
-         HRqkQFkQ9W2sFLgytTKTccm8XmeLMffsB1qfmxbzPedjFhHX+G9xMtkWepHtwrg8exQ6
-         gKxQ==
+        bh=YYZIE0YZeGeQMwblv/AqzD6BdL1SJTh4oD4ee0SlK+8=;
+        b=hHCRTV2bnln9Nb6Tfkhn8X9+4DyLYAJ+z/4sRbOF57rPNyRZMbIyb+UANP7g8m96K3
+         dwIaxQqjrRMJhhN2hKfeONBCvaH7ws8o7L/91sMA4tr5F2mNq2pD1rxgFyPC/XrMQHxf
+         qw2hVwMY59V/tBZCB5AkGMYS6JThuZ7x8nHS9VET0aWuK+HlhlmRddxZCFPcpuBtYxsp
+         BO4n4CthyFxqP1oEEPnqMuuHEjQBwsqgjeZAFAgiK56GyfU7pTzd1KHR8WIqqIA5BR4I
+         hF2p22grb0dSEhlqeQBu0++Kf98F5ch6FWf3jYX49V+Vu2wVUUfbfkaTiiqn1hagVAd2
+         yDHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727642343; x=1728247143;
+        d=1e100.net; s=20230601; t=1727642346; x=1728247146;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3xGWWtQWL8H06GfqAD60uT9oc1UGLA/x5EVLWu1GowA=;
-        b=riLVxaacsVhirHW33MPdDp4rIYEotLGnK9OIt9gIsIGPTiWqZmQ/BaEXWVBChTBqTe
-         0GyLmDFZQMxqwrnmLX8EoXyu66BmhMHfuwmUQ5wPNbiCqpEn5I2RopBQhOg5XjQDqr5C
-         TQLXOWSGJpe99C+n9ihjyQR76d/eufPDTGTLfpZY9o/3GGKKzq1DkXWXpcsquJCtY7Un
-         sVw7dE0bPd1GNuU5PYGCx18FnXvZ+e9oaZEXyvsGnCj97sduW65dVxRcBiDQ8i3lqyqP
-         9qGy+/uxeBykGWwLbsniByEiy7Emcl747QTPthMxV6qQIbXv/og/cDcY+xnLdqJx7ox8
-         9dZw==
-X-Forwarded-Encrypted: i=1; AJvYcCWN41IqFlci5YPWwqMTVyL95whCca4hXnXZU5M4qeg4AYRzbDQqb7rquiN9pYG+2EhnugcTLndyLREWYd8J@vger.kernel.org, AJvYcCXnnOJ2zm6EqFJSrKLb0RjoQCWx73q2B06CxoWscvBemgS6cY3bVjFQ4RWLRPt9f+44rmMC+rc49wUb@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqiTmCHaBnD1xm0TZgDj0KJR8AeoAM1zbRB4SwtpjRW7HKPmlZ
-	NNXC65b+TitSPBeVNEfM3b+1+QZfxr/xjaQmxrPiDYn3ew6URInh
-X-Google-Smtp-Source: AGHT+IGu3Vks+yZ+loKrkQH9ea7mdAQIlCq3hnmwIqNsSVIxKhDG6FaKhbebTZ47rQ4DzIGO89XgjA==
-X-Received: by 2002:a05:6402:1ecf:b0:5c6:cf72:fcbc with SMTP id 4fb4d7f45d1cf-5c882602745mr9201341a12.24.1727642343298;
-        Sun, 29 Sep 2024 13:39:03 -0700 (PDT)
+        bh=YYZIE0YZeGeQMwblv/AqzD6BdL1SJTh4oD4ee0SlK+8=;
+        b=p3Dcimje51WbxRjzAb+wfGmyTlQPFtJY89ZWBwVMhbxbLkFMa4IHkSSf5dPCr6dqT0
+         0uDtLUzH6ltZiY/zzEuK/ikdr4aELVqWi6LWnOArjwWoArvZt+ABgBE/Qa8bNeWvt+Tw
+         gpgbFwOlxT9PNeXTr8KZ3Wg1gR2Psma5mAPSsoEET8DW2zdcnIhGQ6gVOCClWCyNOWla
+         1xZZ0wLVy4A+DBhxEu02PLm3vML/03J1zVABLeMHKAT6JMJag8iRxkbKujjcfXJxGttq
+         Ko4G32R1T8iNUJEjbREpAqT9lCOlaRK6LiTvBu6AmVh+R7M9fMSPZ8iTtdjLT/VncwrP
+         vvtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFkzxsAkO7GN6mEwvEnzA3z9m8EUjPpP7WaHuflk+kYyhPD7YjZ2W07FvagpSyejTwuauprgL9hF31@vger.kernel.org, AJvYcCX3eqUi01CNHKx5KoF3KLro19ziM5WRYx9kCa+p2OgOgRFKm1zSna6inwqyPacXNHRXWe6PIbWy8DHv9YIZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwridxWiicH+u6WBeXs8im5yGiTzcIMOM0G3hyRZDP9SHh9ipeh
+	iPkXRrGj1W/CDR310wGmW1fU68UhtuvvfwrFZrgZGnkkecrwoPjT
+X-Google-Smtp-Source: AGHT+IHDHCjPgBpORkOeVnZX+PWdwQZyIprUCxSaxxsKI0QYedP98oHO0HOYosJ94oUVNDjt6ZZFiA==
+X-Received: by 2002:a05:6402:26cb:b0:5c8:95ce:8cc2 with SMTP id 4fb4d7f45d1cf-5c895ce8ea9mr2371572a12.16.1727642346039;
+        Sun, 29 Sep 2024 13:39:06 -0700 (PDT)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-e2c0-9a60-64a8-717a.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:e2c0:9a60:64a8:717a])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8824051c2sm3487985a12.19.2024.09.29.13.39.01
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8824051c2sm3487985a12.19.2024.09.29.13.39.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2024 13:39:02 -0700 (PDT)
+        Sun, 29 Sep 2024 13:39:04 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sun, 29 Sep 2024 22:38:51 +0200
-Subject: [PATCH 6/7] iio: light: veml6070: add devicetree support
+Date: Sun, 29 Sep 2024 22:38:52 +0200
+Subject: [PATCH 7/7] iio: light: veml6070: use dev_err_probe in probe
+ function
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,7 +79,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240929-veml6070-cleanup-v1-6-a9350341a646@gmail.com>
+Message-Id: <20240929-veml6070-cleanup-v1-7-a9350341a646@gmail.com>
 References: <20240929-veml6070-cleanup-v1-0-a9350341a646@gmail.com>
 In-Reply-To: <20240929-veml6070-cleanup-v1-0-a9350341a646@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -89,42 +90,40 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727642327; l=880;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727642327; l=1046;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=GxpFD4n+UOKfDv0dYLS/5z/NDDKPjNwuLx4KutIecnA=;
- b=783uxrwHsIhBRrVFri3zubB5JaA85shfbkiYFD7Uddc5wYMEcsEKfuIXNviDh/JH2Q2xhlHN8
- dfEmcEnXH/bCL15RJ7vimBHk9P6OB6Z4+kHSerdeClrPRcmIig2V4nm
+ bh=nikxwyB1KSy0wsMXbnH8xFpdMCf+mKH8/245lMmqi5s=;
+ b=fXk5tBeALOQQi99O7xzi5Ez+vuMPp40DcbCVWauoQW7Glg2WHGabdjBQam9g1F2BYqIRcjpqx
+ ZKYXdy3hWSDC5aHUmCeMVfLtu7Lz3bF9YOd4NRON8RLlzMwwY7+wOBZ
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Register the compatible from the dt-bindings.
+Drop the common 'dev_err() + return' combination in the probe function
+and use 'return dev_err_probe()' instead.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/light/veml6070.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iio/light/veml6070.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iio/light/veml6070.c b/drivers/iio/light/veml6070.c
-index faba04e1da98..8d02899028d8 100644
+index 8d02899028d8..6221d07aa840 100644
 --- a/drivers/iio/light/veml6070.c
 +++ b/drivers/iio/light/veml6070.c
-@@ -192,9 +192,16 @@ static const struct i2c_device_id veml6070_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, veml6070_id);
+@@ -168,10 +168,9 @@ static int veml6070_probe(struct i2c_client *client)
+ 		return ret;
  
-+static const struct of_device_id veml6070_of_match[] = {
-+	{ .compatible = "vishay,veml6070" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, veml6070_of_match);
-+
- static struct i2c_driver veml6070_driver = {
- 	.driver = {
- 		.name   = VEML6070_DRV_NAME,
-+		.of_match_table = veml6070_of_match,
- 	},
- 	.probe = veml6070_probe,
- 	.id_table = veml6070_id,
+ 	data->client2 = i2c_new_dummy_device(client->adapter, VEML6070_ADDR_DATA_LSB);
+-	if (IS_ERR(data->client2)) {
+-		dev_err(&client->dev, "i2c device for second chip address failed\n");
+-		return PTR_ERR(data->client2);
+-	}
++	if (IS_ERR(data->client2))
++		return dev_err_probe(&client->dev, PTR_ERR(data->client2),
++				     "i2c device for second chip address failed\n");
+ 
+ 	data->config = VEML6070_IT_10 | VEML6070_COMMAND_RSRVD |
+ 		VEML6070_COMMAND_SD;
 
 -- 
 2.43.0

@@ -1,75 +1,76 @@
-Return-Path: <linux-iio+bounces-9898-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9899-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B60989754
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 22:39:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DADE989758
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 22:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51A501C20B52
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 20:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFE98280E8C
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 20:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7356717DFE8;
-	Sun, 29 Sep 2024 20:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188D817F4F2;
+	Sun, 29 Sep 2024 20:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WlMcTy2A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WueAZlfI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A9817A922;
-	Sun, 29 Sep 2024 20:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422D017CA17;
+	Sun, 29 Sep 2024 20:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727642337; cv=none; b=Pv1nHPU0kn+/gxGh8AcoLkqkHXkrqRpqew0hLAA/s/Pg8CTjR/hIvKgPY8VyV8KXVMMptwmF9VdH6sSJcqZQOmURJfSAK3gI536wkUkhe5rFiWKMrv8LODzIRpA3/07MzFAiC1NEt96+Dek8SIYysM68ddYIrARp0hUpCSaYX9o=
+	t=1727642338; cv=none; b=U7fEcd6eQdIboe711rzVFj4cUdcivmsiY3NlygwxdCaEZYXfs1Sl2xD3Mz4IXedGYieTuNIhpoY0010tK4VyxpGY2uHF8Ql99GLzGwtOJOe7DP4lheFdQ+K87DAEtavW57xuKpua9CX0qmOLBMmoF3n3Oi+Tz9cfa+FH9uhXR/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727642337; c=relaxed/simple;
-	bh=jIBsAq1qDGDYHr2IDSUS9jTUCSQchvkFih2N04M1W2o=;
+	s=arc-20240116; t=1727642338; c=relaxed/simple;
+	bh=xf9Ckb52b6K2cFHLA69xB+QNNC6/b5yI9CCbBoPMqn4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pITiYqU8wtGsqt4rPAlSplaeR7kt10wBf0Y7pRv4NYh41Z5Dda6qtPhFPhnfi1lUHdX8BL5njD6XJXWqrXtTI4cEjpwVfyusG3BoBS64cvZFSYTx9EOhtq+udLZHL1Uj5UB2VPnS5fN5BVOhBL/pmbcDjzhNAIq+1qT2/tkJ+dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WlMcTy2A; arc=none smtp.client-ip=209.85.218.53
+	 In-Reply-To:To:Cc; b=SUj1+cB9a7feVSe/wU5OdLxWIIxlCzlAQ8svR7amRng2Jj1DmL+Wb4+E2oZawABIgEAzMkRXCzJfKuHQV+UD1GUQl40WNbA/Nh1bMOJrngjbPzrAnBdhR7q3kE8AR6TXfAn35dHBCL3he3Hspfxt0QPSIOknCLEmy6CfVKQj6ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WueAZlfI; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a8d43657255so589909866b.0;
-        Sun, 29 Sep 2024 13:38:55 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c88b5c375fso1867774a12.3;
+        Sun, 29 Sep 2024 13:38:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727642334; x=1728247134; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727642335; x=1728247135; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YM6JVtUjqMJf6niC9kqfqAofxw0iLOFDnfwbGtgaJq4=;
-        b=WlMcTy2AyHdyvWlN601K9S2UM/hxHeNb8fwCZuqI8TmNLtfrjrfJcqAwO8zK++SriK
-         h0oGMuXm/GRipG22HXi1Acqyl4Hha9nDmGNuH8+Zqxb7UMh/7gEwh5RqHA+HgrF8cxEp
-         AaXq/svIM40OKQTskmbNVoOq9RX3djmKoYwCYw4fY2rSSTRBxWixfm+0JNdlCq/RsNTf
-         124WAbWmqd5WdmeZoXtmiYtrGZksb51KscavSreG2UoAEDtaCyJkjCDTDy7ur/wKtCcV
-         +Be71Qm1Hvi+9VexAZf4P9eIaWPtKEt6SxWbS/zaSbDjOlMqN0Zm5cUQzxwIR1z1cmEh
-         uPAw==
+        bh=8JYGK3JMqfTPdWjEdWDCZFqtYoOKBeT8G6aSVaHOunY=;
+        b=WueAZlfICC6xHtfd+OS2ExXEanq3F3VOH/GPtDddoqqufr9Y2sT8JRBpxTnNHWtd9/
+         jX12/DeEdltIPXE0vo5LRzl5KExdtUP4YTiwY79g6OlqvboT8QZswdQbbo7hEw/XMkD0
+         8IDtFp64wtVBAdC699vQz1rIkfsr0FkBcmDPtDI9uYFSaFYUAaUKM4I3L+mXBvDZJX4Z
+         LL/HYrpwgVvHFY+YZcfWVAMgPyCPKbHGwMDwr0AGTY/MKX1YmYgUqHqv7ZLxM2IWRO7J
+         Z8s4we4oiVfjamv2zNNxrt6RXms7ST/NzJC6pciIQvcyb1uUd8vWhmH/GQMhnHekgN/w
+         AVxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727642334; x=1728247134;
+        d=1e100.net; s=20230601; t=1727642335; x=1728247135;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YM6JVtUjqMJf6niC9kqfqAofxw0iLOFDnfwbGtgaJq4=;
-        b=A7Rup9m4EEYphlk0SWpE0sxk4/AFM1q1H89zjshygiwGqk+fj2UyMY2H2gWACPOjNH
-         hzhBTY/tUW6XZ3foWhlEZxYJlfzi9SoBbRRCqmiRgYYFMuk/PuYkDArJLz7Uvfe18pAy
-         k0GGrPXtlMEAqa7KyuzlBAxZaC6dD88qneyMRuOtT4p1d/BQqbaclNJGPEWACLOjQQd5
-         ogeraMxA75+z68PU6wKqX4ZOwu8oXe1w1KvDMG/8QZIlsLdNP9xkDpIdszHXAGapDJ1g
-         v6iYWSFU8llfXwKCCY6sZ1Q55LAw0UUbwPESGTljKl501yLQBSOZoxxHLkQna4yCjKIT
-         JbRg==
-X-Forwarded-Encrypted: i=1; AJvYcCWF593vMPEy696RwusJEiMihiE8ay3dncBWHRTDJvvs2LLQzv2JB9t+rjlD7Y4kC0aWotUDkIseG9X1+ffB@vger.kernel.org, AJvYcCWdanSpuEWv8GMawr8AyM0MmgBieydq3FgbfGEGsdkBSgV+l8iLHKO6iCp5uD5VZe54pfEJU49EoDVH@vger.kernel.org
-X-Gm-Message-State: AOJu0YyT8Li98LrS2iV+38PrjFz4n/GrM95jJ08Z8ETw8TnaeUkvpsEb
-	iWOo2OOXUZ98lo1PVpe4XmBy4uWVDiJr4Y8JWrTfbhs/n2MQSoiDFh1vVzFV
-X-Google-Smtp-Source: AGHT+IGUdBzdwVetrQsZC32m66yyO4n5IFwJ7k9q8iloEFfQQwyzHCdbdnQXlGKmeXbKTrlESR3NBQ==
-X-Received: by 2002:a17:906:db05:b0:a86:812a:d2ca with SMTP id a640c23a62f3a-a93c490a0abmr1041266266b.25.1727642333791;
-        Sun, 29 Sep 2024 13:38:53 -0700 (PDT)
+        bh=8JYGK3JMqfTPdWjEdWDCZFqtYoOKBeT8G6aSVaHOunY=;
+        b=fpHBmmsVcWoKYwmCDE1dc5xXjJqBGWbk6774zB3ABY1mxqj0YMmeZvdJwT4k8kSE48
+         lfgaJJZ9DwopiRlHlIhOStzlZ7ph7LQiXdmMp1uVTlIfnKCvdsOx45eKlLT1KHFpN4PE
+         stSxZQQHczyPxGoBtzC+05DKcDccsnqkvlEhh/UMVEkJsBns5LlkzB8We+a+WeguUh2I
+         iiEFNVHSQ+XBCP4cNswjTzZKpiw3+yK0fs1JY/I4AIjkFYRGTruIcKcjGK0Wu99iyZZp
+         Owcga/v6736bkwUiwDrfcnhLy4OTBwWKRCyUkeq5P/t/KrQ65H/AB6Saqd23ISD7jhJm
+         z6Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCULbeDHqjFdOKAqK+A2G85B5nHljK5jWWukbxJbKrE2WryTOj3MVBn/FPxm94MNaI8flEwm4NHrH/LHrg7Z@vger.kernel.org, AJvYcCV2vspE2lZGgieAO2ROMOCYQkVH2V3HKLDNzr10E4wh9WLFWioPdvQmn4WGayenga/qWGMAWRoQv36t@vger.kernel.org
+X-Gm-Message-State: AOJu0YwM9WqtGwTAqHiYg8Wj0mPLWwT/w9Pt3Whfo6nh74XtxEiLZ2ap
+	DvYHYUDFw2cVc8I0moV7o+asKfWcolju7JnyN1opLgZ3zrRLVQoz
+X-Google-Smtp-Source: AGHT+IEhzqMMHaiaG0NLtL0Y2+VDkzF834cXcGjhJEamrAkNlgYdKPmVce0ZKlegu3N5ED7iW4Npmg==
+X-Received: by 2002:a05:6402:27d2:b0:5c8:9406:535b with SMTP id 4fb4d7f45d1cf-5c89406540cmr2986927a12.18.1727642335477;
+        Sun, 29 Sep 2024 13:38:55 -0700 (PDT)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-e2c0-9a60-64a8-717a.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:e2c0:9a60:64a8:717a])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8824051c2sm3487985a12.19.2024.09.29.13.38.51
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c8824051c2sm3487985a12.19.2024.09.29.13.38.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2024 13:38:52 -0700 (PDT)
+        Sun, 29 Sep 2024 13:38:55 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sun, 29 Sep 2024 22:38:47 +0200
-Subject: [PATCH 2/7] iio: light: veml6070: use guard to handle mutex
+Date: Sun, 29 Sep 2024 22:38:48 +0200
+Subject: [PATCH 3/7] iio: light: veml6070: use device managed
+ iio_device_register
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,7 +79,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240929-veml6070-cleanup-v1-2-a9350341a646@gmail.com>
+Message-Id: <20240929-veml6070-cleanup-v1-3-a9350341a646@gmail.com>
 References: <20240929-veml6070-cleanup-v1-0-a9350341a646@gmail.com>
 In-Reply-To: <20240929-veml6070-cleanup-v1-0-a9350341a646@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -89,71 +90,51 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727642327; l=1437;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727642327; l=1211;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=jIBsAq1qDGDYHr2IDSUS9jTUCSQchvkFih2N04M1W2o=;
- b=8JJmmQt/55MjwbZ5YMqbgYGx9gXI3SOo5rStmwtu7uKzIGY/CblIaHkCwjnRMKFIjiXe1L1uN
- RduH9JdIEmJD3UeypPO1R4tj3VYZjZxiQBgyqHz4wvVtDxPMNKQIUJ+
+ bh=xf9Ckb52b6K2cFHLA69xB+QNNC6/b5yI9CCbBoPMqn4=;
+ b=6nCj+b7TpNO6MD517iTpiGnn30cxhTKIpqGAIGKziZxaWtvLAcRoWuqIBe2Aun2wGW4w+r4gm
+ MlXUKqR5hD9DFyoUm2DAoduRK7djqk46x1KtVPAKgAGspA18S81bZcL
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Simplify the mutext handling by using a guard to automate the mutex
-unlocking.
+Simplify the code by using devm_iio_device_register(), which removes the
+need for a 'remove' function, as there are no more actions to take.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/light/veml6070.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/iio/light/veml6070.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
 diff --git a/drivers/iio/light/veml6070.c b/drivers/iio/light/veml6070.c
-index 3c476b6f6122..945ef58beead 100644
+index 945ef58beead..d15caebdc959 100644
 --- a/drivers/iio/light/veml6070.c
 +++ b/drivers/iio/light/veml6070.c
-@@ -42,36 +42,36 @@ static int veml6070_read(struct veml6070_data *data)
- 	int ret;
- 	u8 msb, lsb;
- 
--	mutex_lock(&data->lock);
-+	guard(mutex)(&data->lock);
- 
- 	/* disable shutdown */
- 	ret = i2c_smbus_write_byte(data->client1,
- 	    data->config & ~VEML6070_COMMAND_SD);
+@@ -179,15 +179,7 @@ static int veml6070_probe(struct i2c_client *client)
  	if (ret < 0)
--		goto out;
-+		return ret;
+ 		return ret;
  
- 	msleep(125 + 10); /* measurement takes up to 125 ms for IT 1x */
- 
- 	ret = i2c_smbus_read_byte(data->client2); /* read MSB, address 0x39 */
- 	if (ret < 0)
--		goto out;
-+		return ret;
-+
- 	msb = ret;
- 
- 	ret = i2c_smbus_read_byte(data->client1); /* read LSB, address 0x38 */
- 	if (ret < 0)
--		goto out;
-+		return ret;
-+
- 	lsb = ret;
- 
- 	/* shutdown again */
- 	ret = i2c_smbus_write_byte(data->client1, data->config);
- 	if (ret < 0)
--		goto out;
-+		return ret;
- 
- 	ret = (msb << 8) | lsb;
- 
--out:
--	mutex_unlock(&data->lock);
--	return ret;
-+	return 0;
+-	return iio_device_register(indio_dev);
+-}
+-
+-static void veml6070_remove(struct i2c_client *client)
+-{
+-	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+-	struct veml6070_data *data = iio_priv(indio_dev);
+-
+-	iio_device_unregister(indio_dev);
++	return devm_iio_device_register(&client->dev, indio_dev);
  }
  
- static const struct iio_chan_spec veml6070_channels[] = {
+ static const struct i2c_device_id veml6070_id[] = {
+@@ -201,7 +193,6 @@ static struct i2c_driver veml6070_driver = {
+ 		.name   = VEML6070_DRV_NAME,
+ 	},
+ 	.probe = veml6070_probe,
+-	.remove  = veml6070_remove,
+ 	.id_table = veml6070_id,
+ };
+ 
 
 -- 
 2.43.0

@@ -1,229 +1,223 @@
-Return-Path: <linux-iio+bounces-9892-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9893-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB589896C5
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 20:27:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FF29896CB
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 20:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB1741C213E0
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 18:27:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 150451F21CAD
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Sep 2024 18:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08E54207A;
-	Sun, 29 Sep 2024 18:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD59487BF;
+	Sun, 29 Sep 2024 18:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nNfGnr3S"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EUDst9rb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFF62263A;
-	Sun, 29 Sep 2024 18:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DC118641;
+	Sun, 29 Sep 2024 18:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727634423; cv=none; b=AHL+oQgTMHxCetcmC8vDnhlkDgTr1gCzdMQJmc7RyScXzNvFpNVIerR9xxWVtzvkk0rZw/f7Y8gglLo8OcULud7g9HfiN0NYK4BKwqPZZB6ktE60WxTgPhGcPkGqSMIzyhVQ3p5SW7aPzBVOSqZaC28EdH0HXfKrb2jp/3nd640=
+	t=1727635546; cv=none; b=MSO8eIZKRH7BihtIF7TFBKsrwlnNk3DuSPQ5fkAg52jZ69j3VeFNtafx/ePWLVHn6WIOsCJnA6JAxO7KkwnHjqZU9sjm3bwIwc5fqGzCNf972U+/qgPXBNy+oX4+GKZw5Ee3jSTAJf0VOMLhARf0Jf1shtos1BDC3nmYz6S+Xow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727634423; c=relaxed/simple;
-	bh=4HgMcXMyt1xd9y+Q34ms0nKju3WVpvwFRzIISoIbgWQ=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U3ib1SYl3PqQk4Qf/DXIHkBGuVBL/x1O2UowsGgyCZY7Fauv7t39nONfngjTIzeKnQ3JmoKeUmkKUyErTVzO+FMEvDzSCh75dwmiuc/3tJkoLfF8e6QUhNGjmyLlC0Fq3SK8raKcRHPsrZnFH7BU0jvnGOrIiy6r0Pnclj8stY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nNfGnr3S; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1727635546; c=relaxed/simple;
+	bh=uYls481jlDe0DTJnA7lUtIOzYy0kIMsHafgrDtax/FA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=knnWyZ8v8uWEjvzphq21y873/qdXh/Kc+6deLf/tRMfW2nFJYm84QbG9iNeQT4wVEEt+qWr8Je/2aj2hHioAdVZqUdclKiqX5xJKbB4jmfSz35nhBjoYXQwGcCm5q2GiKUxPchUiI1V5nm79EHsV7yU12NVLQiNmJgllAZPp1BI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EUDst9rb; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37ccc597b96so2358927f8f.3;
-        Sun, 29 Sep 2024 11:27:01 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5c5bca6603aso4252688a12.1;
+        Sun, 29 Sep 2024 11:45:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727634420; x=1728239220; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YeT6eEVeYlnUyZhHd3J725yc68DlQRaIQmtuB3sz8Ds=;
-        b=nNfGnr3SRDtDVSQ1CvfojWSlU6BK3nWySpXIBod4DvD0WH2mYJfuTLoJeMsqwmw73d
-         bjARBoWPiVV776F2TvDUGpuP4EVas7sronb3P1PNhsQQaRwNou8gu4y5vdSDKVzWQTNw
-         z6en08lyYD8UhP/9KvUHQgjAhW1U/DYT5ftIkhnmgotyLyjxomtNeqgWIBQur9rNsVlI
-         k5bhxe3BMjj8HZdAKdzpKWIe5hNTy9MIE+WW3lxlMiFFDKN5nc+K6j2HAMyLOoOdEXub
-         h9+egoe1/ulhvBPPc21xxuozBs1FcpyaCUeryHzgcbHxrjzjjZcUxKUvRyUevQPya9Zp
-         sSAQ==
+        d=gmail.com; s=20230601; t=1727635543; x=1728240343; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8XQ5+9bYl+OA/OhjnjesBHAyLC1+4svUXWybex59KOE=;
+        b=EUDst9rbK3lNwVv30ju3kdHcoj0mKeXt2SVTGg6WzHvnZBjhW+7X8h74ko/TREVG6h
+         cW7PKoJfA274pBZKnVGXBDE88MhwJj8rCiEXvMXDEOnD9N2LO0xdy+GbrwubiAKYhyOV
+         VgEae6ujObJkVPkLxJAdEpwqO7RH+U60mOCd8ehArT25aUaGkwc9u45Zwm23ofm3WmNU
+         92omiCryNeU4ruIhOW09dLUzvx7hcqg00B+rVaJKURbqf8Bs7rv75UlsLV9v1cYDdLio
+         QuejJ8cP/6Jf1QFIWecMK6ubM/JuMIwhuvLWn5TNLX3rsjNLi45aiWDFyP494wjMu0mF
+         ulaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727634420; x=1728239220;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YeT6eEVeYlnUyZhHd3J725yc68DlQRaIQmtuB3sz8Ds=;
-        b=tnqpTyTVSOfwDjio932+DdTBF4EdE6gyE/l28XV5quqOGChlfEMaGVQMpsL2+PTTbl
-         Qxpx9xQUXNN2zdpK4T5ZztwD8wYmbKcPmyVIXB46GETtoP6gfiiSaJi7JSPToZqOklLG
-         ERuFgkDcPUc9OlMFwItPCvnRzouOFEZPCBL98zOGyUhN5FfoD5zdUFIgdlVFy3lHMP3s
-         W0HgrGpjsJmnpuIeW37PIJT9Re88KSNTV2yDBQlOYS7Gh9PRs/JEBjJjrwBFhUJJYuxS
-         Y9kKynJy9IGLshpzMCN+h1m7hb837wEV3ftTZmc9i7YsPqxpGY6y+Ubp3Z4ChWZrdJQJ
-         /4+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV++WGFXWB35H3vZR5ZeNsf0a/6OEcusARzV7qd2wHBu8rQAVh8GQHHZJ9hFY1MBwBQ5L+xrSkwwdo=@vger.kernel.org, AJvYcCXgjzAa2Rf3J0BWFyMf6aVu9T1YCQFsGUFkysAj9C//SKCqzQfY7azj5pvrIaDhTUCMw3zOkuqfXULF6gQh@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx290WMwKiV97hvYZRHCma3VDb7/dyiDXidMxGLgkphRmsUE95w
-	imMGm+cC+3irM1ZvV8xjUi5R4RiJSWlFgxQFpKNK9s+iLRnNjz01
-X-Google-Smtp-Source: AGHT+IGB9cqdwAHrsFDW2jX51mn52HKuIoqz+M7Bu/Uo1NIGvFY4UV2kCCpbbaFQ1Pyj7I9rEHlXKA==
-X-Received: by 2002:adf:cd0f:0:b0:37c:c830:3b6d with SMTP id ffacd0b85a97d-37cd5b10502mr6134023f8f.52.1727634419833;
-        Sun, 29 Sep 2024 11:26:59 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:df60:d786:cd5:d3c1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd564d42esm7394474f8f.14.2024.09.29.11.26.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2024 11:26:58 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Sun, 29 Sep 2024 20:26:55 +0200
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, dan.carpenter@linaro.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: pressure: bmp280: Use char instead of s32
- for data buffer
-Message-ID: <20240929182655.GB213331@vamoiridPC>
-References: <20240929112511.100292-1-vassilisamir@gmail.com>
- <20240929112511.100292-3-vassilisamir@gmail.com>
- <20240929181003.26abf543@jic23-huawei>
+        d=1e100.net; s=20230601; t=1727635543; x=1728240343;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8XQ5+9bYl+OA/OhjnjesBHAyLC1+4svUXWybex59KOE=;
+        b=qw67HMr4uSJTLV7BiP8Udd4x4GoxX+38j0LfAPTUTG7Oiz7Bvu0SsiAo4IPr1TPZlj
+         a93RZCGNsxX37aWOEeUUrwSCHCohNJ5ZdjaFQPCfIf/OBGhxY8Y0Sy3pL4aoDLHqK/uh
+         +svlafMV1yRnSEgkQg8xnMzmqDH5vpemKIU8+AO4S3rcF2o6EFcEXRKERpyWveuIQN5j
+         CBWhfi5lhG3b4SYRp4FBaTJZdhRqBoS1x92h34Y4iRA7jiSOWet4eOnHL+YGrs+NkL1P
+         uaPXziSJP1468+vAwNd/gLwjKHsLuG4aYxOdNzvWDrP5m5KdIIu+ICVRjHFmgjN5Ut+H
+         xxxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAuYG667eo3RJSnOe53Wby6x4D8IX33wv5a/2RrbtIGvOkXCXsyXC3WwWiF1nJcPzTdHzNJoR49qGm@vger.kernel.org, AJvYcCWHsGZe7TaDcqPs1SWxWz1ABLlA7jKig+cxidhiYrGG/2ZLNa0PBXEN0XBJQo0q7xuHIUTNcTKHSU1vm/+d@vger.kernel.org, AJvYcCWJQcWet3KCqitzcPXZO0ZCRpk69xaBfmJaHZTb3j6PlMIvM2uEhOgMDHFuy9T5DfCBbOT0hqrW4Ydo@vger.kernel.org
+X-Gm-Message-State: AOJu0YxX9WR7i4Hw7cceVTeCQe7G3GL6s3+XEK/+7VAWV5iwbUhdNlPX
+	irTHkVuMVVeYg+vtRhaV3KT+r09sQTw/yrfWx7rAqG2d/fx+l5IQ
+X-Google-Smtp-Source: AGHT+IFOZFQUTLWY7kdVEDbwWE9GVkSr3ezpnMEaf9UamCwAtr86MOfeL+o7Mv47hqGghyTofWfdCw==
+X-Received: by 2002:a17:906:794d:b0:a7a:9ca6:527 with SMTP id a640c23a62f3a-a93c48f0dd1mr1198590566b.8.1727635542572;
+        Sun, 29 Sep 2024 11:45:42 -0700 (PDT)
+Received: from ?IPV6:2a02:8389:41cf:e200:e2c0:9a60:64a8:717a? (2a02-8389-41cf-e200-e2c0-9a60-64a8-717a.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:e2c0:9a60:64a8:717a])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c27c5a7dsm412361266b.62.2024.09.29.11.45.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 29 Sep 2024 11:45:42 -0700 (PDT)
+Message-ID: <b4a72e65-b8b0-41da-ac6e-372371f3943a@gmail.com>
+Date: Sun, 29 Sep 2024 20:45:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240929181003.26abf543@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/10] iio: light: veml6030: use read_avail() for
+ available attributes
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
+ <20240923-veml6035-v2-6-58c72a0df31c@gmail.com>
+ <20240928171922.0caccaf3@jic23-huawei>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20240928171922.0caccaf3@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Sep 29, 2024 at 06:10:03PM +0100, Jonathan Cameron wrote:
-> On Sun, 29 Sep 2024 13:25:11 +0200
-> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+On 28/09/2024 18:19, Jonathan Cameron wrote:
+> On Mon, 23 Sep 2024 00:17:54 +0200
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 > 
-> > As it was reported and discussed here [1], storing the sensor data in an
-> > endian aware s32 buffer is not optimal. Advertising the timestamp as an
-> > addition of 2 s32 variables which is also implied is again not the best
-> > practice. For that reason, change the s32 sensor_data buffer to a char
-> > buffer with an extra value for the timestamp (as it is common practice).
-> > 
-> > [1]: https://lore.kernel.org/linux-iio/73d13cc0-afb9-4306-b498-5d821728c3ba@stanley.mountain/
-> > 
-> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> Hi Vasileois.
+>> Drop custom attributes by using the standard read_avail() callback to
+>> read scale and integration time. When at it, define these attributes as
+>> available by all channels, as they affect the values of both the ALS and
+>> the WHITE channel.
+>>
+>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Hi Javier
 > 
-> I missed a purely semantic issue in previous versions :( 
+> Some comments inline
 > 
-> A few other places where you can achieve the same effect with less code
-> and clear casting to correct types.
+> Thanks,
 > 
 > Jonathan
 > 
+>> ---
+>>  drivers/iio/light/veml6030.c | 64 +++++++++++++++++++++++++++++++-------------
+>>  1 file changed, 45 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+>> index 89c98bfc5191..a3190fab3add 100644
+>> --- a/drivers/iio/light/veml6030.c
+>> +++ b/drivers/iio/light/veml6030.c
+>> @@ -58,25 +58,24 @@ struct veml6030_data {
+>>  	int cur_integration_time;
+>>  };
+>>  
+>> -/* Integration time available in seconds */
+>> -static IIO_CONST_ATTR(in_illuminance_integration_time_available,
+>> -				"0.025 0.05 0.1 0.2 0.4 0.8");
+>> +static const int veml6030_it_times[][2] = {
+>> +	{0, 25000},
+> Really minor but I'm trying to get IIO standardized on formatting for this
+> sort of array and I'd like not to introduce more instances of it
+> done without the extra spaces as it will just give more to clean up
+> at some point.
+> 
+> 	{ 0, 25000 },
+> etc please.
+>> +	{0, 50000},
+>> +	{0, 100000},
+>> +	{0, 200000},
+>> +	{0, 400000},
+>> +	{0, 800000},
+>> +};
+>>  
+>>  /*
+>>   * Scale is 1/gain. Value 0.125 is ALS gain x (1/8), 0.25 is
+>>   * ALS gain x (1/4), 1.0 = ALS gain x 1 and 2.0 is ALS gain x 2.
+>>   */
+>> -static IIO_CONST_ATTR(in_illuminance_scale_available,
+>> -				"0.125 0.25 1.0 2.0");
+>> -
+>> -static struct attribute *veml6030_attributes[] = {
+>> -	&iio_const_attr_in_illuminance_integration_time_available.dev_attr.attr,
+>> -	&iio_const_attr_in_illuminance_scale_available.dev_attr.attr,
+>> -	NULL
+>> -};
+>> -
+>> -static const struct attribute_group veml6030_attr_group = {
+>> -	.attrs = veml6030_attributes,
+>> +static const int veml6030_scale_vals[][2] = {
+>> +	{0, 125000},
+>> +	{0, 250000},
+>> +	{1, 0},
+>> +	{2, 0},
+> 
+> As above, add some spaces for minor readability improvement.
+> 
+>>  };
+>>  
+>>  /*
+>> @@ -197,9 +196,11 @@ static const struct iio_chan_spec veml6030_channels[] = {
+>>  		.type = IIO_LIGHT,
+>>  		.channel = CH_ALS,
+>>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> -				BIT(IIO_CHAN_INFO_PROCESSED) |
+>> -				BIT(IIO_CHAN_INFO_INT_TIME) |
+>> -				BIT(IIO_CHAN_INFO_SCALE),
+>> +				BIT(IIO_CHAN_INFO_PROCESSED),
+>> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
+>> +					       BIT(IIO_CHAN_INFO_SCALE),
+> This bit is an ABI change and technically old code wasn't a bug, so
+> we don't really have a good enough reason to change it.  So Please
+> leave these as separate.
+> 
+>> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
+>> +						     BIT(IIO_CHAN_INFO_SCALE),
+> That doesn't stop us sharing the available as that always was shared
+> in the attribute naming above.
+> 
+>>  		.event_spec = veml6030_event_spec,
+>>  		.num_event_specs = ARRAY_SIZE(veml6030_event_spec),
+>>  	},
+>> @@ -210,6 +211,10 @@ static const struct iio_chan_spec veml6030_channels[] = {
+>>  		.channel2 = IIO_MOD_LIGHT_BOTH,
+>>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>>  				BIT(IIO_CHAN_INFO_PROCESSED),
+>> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
+>> +					       BIT(IIO_CHAN_INFO_SCALE),
+> This confuses me.  Is it fixing a bug by effectively adding attributes for this
+> channel that were previously missing? If so we'll have to go with searpte
+> even though they are shared to avoid breaking the ABI for other channel.
+> 
+>> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
+>> +						     BIT(IIO_CHAN_INFO_SCALE),
+>>  	},
+>>  };
+>>  
+> 
 > 
 
-Hi Jonathan,
+This confused me as well, because even though the attributes where
+defined as separate for the ALS channel, modifying their values affected
+the values from the WHITE channel.
 
-> > ---
-> >  drivers/iio/pressure/bmp280-core.c | 78 ++++++++++++++++++------------
-> >  drivers/iio/pressure/bmp280.h      |  5 +-
-> >  2 files changed, 51 insertions(+), 32 deletions(-)
-> > 
-> > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> > index 472a6696303b..2c62490a40c6 100644
-> > --- a/drivers/iio/pressure/bmp280-core.c
-> > +++ b/drivers/iio/pressure/bmp280-core.c
-> 
-> 
-> > @@ -2523,23 +2538,24 @@ static irqreturn_t bmp180_trigger_handler(int irq, void *p)
-> >  	struct iio_poll_func *pf = p;
-> >  	struct iio_dev *indio_dev = pf->indio_dev;
-> >  	struct bmp280_data *data = iio_priv(indio_dev);
-> > -	int ret, chan_value;
-> > +	int ret, comp_temp, comp_press, offset;
-> >  
-> >  	guard(mutex)(&data->lock);
-> >  
-> > -	ret = bmp180_read_temp(data, &chan_value);
-> > +	ret = bmp180_read_temp(data, &comp_temp);
-> >  	if (ret)
-> >  		goto out;
-> >  
-> > -	data->sensor_data[1] = chan_value;
-> >  
-> > -	ret = bmp180_read_press(data, &chan_value);
-> > +	ret = bmp180_read_press(data, &comp_press);
-> >  	if (ret)
-> >  		goto out;
-> >  
-> > -	data->sensor_data[0] = chan_value;
-> > +	memcpy(&data->buffer.buf[offset], &comp_press, sizeof(s32));
-> > +	offset += sizeof(s32);
-> > +	memcpy(&data->buffer.buf[offset], &comp_temp, sizeof(s32));
-> I suppose there is a consistency argument for using memcpy even for the s32
-> cases but you 'could' if you like do
-> 	s32 *chans = (s32 *)data->buffer.buf;
-> at top
-> and 
-> 	chans[0] = comp_press;
-> 	chans[1] = comp_temp;
-> here, which is functionally equivalent, particularly as we are forcing the
-> buffer alignment to be larger than this s32.
-> 
-> Similar for the other simple native endian s32 cases.
-> 
-> The memcpy is needed for the le24 one.
-> 
-> 
+The integration time and the scale affect both channels, and therefore I
+thought they should be shared attributes. But in that case, and to avoid
+breaking the ABI for the other channel, I will make them separate even
+though writing to one of them will change the value of the other as well.
 
-I see what you mean, indeed I think your proposal will beautify it a lot!
+Thanks and best regards,
+Javier Carrasco
 
-> >  
-> > -	iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
-> > +	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
-> >  					   iio_get_time_ns(indio_dev));
-> >  
-> >  out:
-> > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-> > index a9f220c1f77a..b0c26f55c6af 100644
-> > --- a/drivers/iio/pressure/bmp280.h
-> > +++ b/drivers/iio/pressure/bmp280.h
-> > @@ -419,7 +419,10 @@ struct bmp280_data {
-> >  	 * Data to push to userspace triggered buffer. Up to 3 channels and
-> >  	 * s64 timestamp, aligned.
-> >  	 */
-> > -	s32 sensor_data[6] __aligned(8);
-> > +	struct {
-> > +		u8 buf[12];
-> > +		aligned_s64 ts;
-> 
-> I'd missed that this depends on the number of channels.  It makes no functional
-> difference because the core code will happily write over the end of buf, but
-> from a representation point of view this might be
-> 
-> 		u8 buf[8];
-> 		aligned_s64 ts;
-> or
-> 		u8 buf[12];
-> 		aligned_s64 ts;
-> 
-> So given we can't actually fix on one or the other normal convention is
-> to just use something that forces a large enough aligned u8 buffer like
-> 		u8 buf[ALIGN(sizeof(s32) * BMP280_MAX_CHANNELS, 8) + sizeof(s64)]
-> 			__aligned(sizeof(s64));
-> 
-> Sorry for leading you astray on this!
-> 
-> Jonathan
-> 
-> 
-
-I see your point. I can fix it in next version!
-
-This is a neat issue here that requires indeed extra attention since
-this type of buffers is used basically by the majority of the drivers.
-Some type of runtime check in those registers would have been very
-very helpful, but I can't see of an easy way of doing it in the core
-code..
-
-Thanks for the review :)
-
-Cheers,
-Vasilis
-
-> > +	} buffer;
-> >  
-> >  	/*
-> >  	 * DMA (thus cache coherency maintenance) may require the
-> 
 

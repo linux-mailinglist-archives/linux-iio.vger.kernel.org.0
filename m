@@ -1,212 +1,242 @@
-Return-Path: <linux-iio+bounces-9916-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9922-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D595989D1D
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Sep 2024 10:45:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9334989DB0
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Sep 2024 11:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDF74281D88
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Sep 2024 08:45:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0CE01C20859
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Sep 2024 09:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA7017E473;
-	Mon, 30 Sep 2024 08:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BA0187FF2;
+	Mon, 30 Sep 2024 09:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wf3UqaKF"
+	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="PE2HnGB3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CD817C219;
-	Mon, 30 Sep 2024 08:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727685913; cv=none; b=PHsjD4xVvFBK2maFBsSiKRIab019xv1eykqPqgvLQo7oMT3HLQSvOPKu55hhmJFTeMaZMU/yQJ3rcxljbbO/f+/163ieYSr2YEs/nalEuZJwg4IdirK13SZXfegwGL7/cIA/yimruuxB3uy6yFoKo4vFiXg3ofTJ4RS+y3euT1s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727685913; c=relaxed/simple;
-	bh=8v2BFCQwEyRP/lKr7FZGb4mMbrvidJoepvthlT6jZPY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B56bYcbsq5tuHNZ5bASVvWcJbf659m/e1e9tFln5MeCpXMhPo4Av/XqIK8GOWzxrq8m9PhryLCBUteCWkstWPam/ExyCIlGZigRQZDAZrpENpedK1NU68jx0t0TdlQ6JstInJUGkbGp+Hh7Bf8EULZiFTgw6cZQ88Y1ChTaICvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wf3UqaKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B883C4CEC7;
-	Mon, 30 Sep 2024 08:45:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727685912;
-	bh=8v2BFCQwEyRP/lKr7FZGb4mMbrvidJoepvthlT6jZPY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Wf3UqaKFKfgVWRzrytnOMrjJiTuwRwT+MSptyH/2T0lnjx8yZTbD9bmrAFzE2JMYP
-	 RnFMHg0W62U4a7iycm08jyhLtH8UT4sVPHtwypEBJfae9hQ54MfA3TN3Mpdh1LSqgQ
-	 aeLdL9kcj0vfw3vC2HgSmNLBvgTt1PTsb1SrcZ/JIe0fz5EPurXjWIe7M99rywqh24
-	 genwSGQPJAMqWfBsEvlMBhwVl3PP2w1PDStk3cNYtrGNImklx437r6KuvXyux+46UD
-	 eqY0llwFf/smJLeP/c4MYaLARm+6aIy6tq+3oa9YY/iRQufk0WaDPK2MUC6eP5aAPH
-	 zQMgDaX+FJLTQ==
-Date: Mon, 30 Sep 2024 09:45:03 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 06/10] iio: light: veml6030: use read_avail() for
- available attributes
-Message-ID: <20240930094503.459b4382@jic23-huawei>
-In-Reply-To: <b4a72e65-b8b0-41da-ac6e-372371f3943a@gmail.com>
-References: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
-	<20240923-veml6035-v2-6-58c72a0df31c@gmail.com>
-	<20240928171922.0caccaf3@jic23-huawei>
-	<b4a72e65-b8b0-41da-ac6e-372371f3943a@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C188184539;
+	Mon, 30 Sep 2024 09:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727687482; cv=fail; b=mbnofFxGZkeRc0HARcLfsc6V5wpU/Ia5JQFosO5RCe3KxlawJ2/CPGbYxTAutDYBlNMEo30Y4SpD8yzlsevvagZOPG5AK+Gdlu7hQAJn9UkHSlRWRaegvXPVdAasqM8G1szk3E9kW5SHcUe3cWBZ6/CTE/HL1t6kIrTSEOT+dUk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727687482; c=relaxed/simple;
+	bh=boEnjbuq+gXOUHO+78wO557xz9mCbn0k3aWD6Mlqphs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tspoNCgJ2BrmE8Ji5bVMlip6SjQKtX3YKny9Zwboy+38WcyedCD4nI9NEUZU5qmcxiDskJZGi2f516xETpVdH7w7lvFi+BbpKAwpXSXQCC/Ba0SdBwDluti1iAb1Gf8HyB7N4/XazPkrhsFKWdzDVguoSb3rB1eLzJp5AOTqpLA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=PE2HnGB3; arc=fail smtp.client-ip=205.220.166.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
+Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
+	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48TN0rBm012029;
+	Mon, 30 Sep 2024 08:46:10 GMT
+Received: from fr6p281cu001.outbound.protection.outlook.com (mail-germanywestcentralazlp17010001.outbound.protection.outlook.com [40.93.78.1])
+	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 41x86016mw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 08:46:10 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GTBsqb1J81j5yHvgoKmLvlu4C3wfxwp31LiCwvwXZkwKPVW52FIwqKaJeBavUjl/DGuZJT78huhgmeHNOdSWeVeUy+djRI+vUHkSrACpuTo7JIHG+ZAi9O7FK1L/9haJO8v9ouSR/7axRe7GYhQgwX7YvwklNFZaKPc6GsWdQv95/8rfhocRE0HtOPzxv9BA+yfmF4aep1LPcvb7ZHWCRvZfzqxrpoAtBXtXgUltqbr8K+hU77PqV0Deq8K0HI2a8DuJJZFIe3Qv8dF6BgZaF/xu1tI2sE18hA/2hAwqMkrPmQUvj1hgqJgwOlwNUpC+Umt/w8svgyHjvuGH6zfwjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SIdyfimIWynm9oD/RGrBNPc28JAXuxoDVf3Jkd1Oa+U=;
+ b=sUy1EdnID6W+shw0vEkIu0qHsfXFxlIjk7NpnGAtzkz41KdeioDVAJBrlDDs9S9joMyVIkvBvfAmg2QcPrHCBfX/AAN9E+KVMq5+Mqeh44QBZmq12Chijt/tcsOf+C+va5giEllzQFpQVNhVPFWD2gMG4gNxUJyOWrbUOFlAzaubVtGu0P+P3snt1brv5/7NGpQogUbKwZNnK71xmiTcN0W8B7n/mO/Aw18dLvAGG+tJG8iW640zqIzprA6xOhi1zXw8v3bX7tdWD0pnPZlvXpfA+kaUbjw+L9qRUDhNvJghETjmOGSpFElAuQAN124/3JNvD1CTXO+3rbWKYsvT2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
+ header.d=tdk.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SIdyfimIWynm9oD/RGrBNPc28JAXuxoDVf3Jkd1Oa+U=;
+ b=PE2HnGB3i6DhHfiGLYyAIJWVD7CETBQ3c8qRq21WGLFdWp7b2z6UrVzNeK2hFPPsG5D+xN1//7WNzDpHKooaTbu2nPpKXIrpFgubbJO42mJqWmg1YD4M4a6Ovq6sZ+7eP+1b54dYT5x+cYzssLAcFsxOqSrjSXrbqdkGsMHuDe7jHxalx5Mq/U0Fiw2v5defcSPUbeiaWo0hioZz3ZsGzX36BokZEIzw3DfdPh25WS1+6FSoDE0FPnK/DOEtBwyESoZoSRSlIGc/555/pFtRrVdaJF0WcSHyod/uZaWzffgFh10rHfwKzxZJDmeSZa/mD5FZlE4HI6OCmAbn7/g77w==
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
+ by FR3P281MB1504.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.26; Mon, 30 Sep
+ 2024 08:46:05 +0000
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::53a6:70d:823f:e9ac]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::53a6:70d:823f:e9ac%4]) with mapi id 15.20.8005.024; Mon, 30 Sep 2024
+ 08:46:05 +0000
+From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+To: Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>
+CC: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imu: mpu6050: Add iam20680ht/hp
+ bindings to mpu6050
+Thread-Topic: [PATCH v2 1/2] dt-bindings: iio: imu: mpu6050: Add iam20680ht/hp
+ bindings to mpu6050
+Thread-Index: AQHbDchgTmVaicLoc02Cv68VulgeHLJlgccAgAfuaACAAp2UTQ==
+Date: Mon, 30 Sep 2024 08:46:05 +0000
+Message-ID:
+ <FR3P281MB17575FC03AF60D690B67452CCE762@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References:
+ <20240923-inv-mpu6050-add-iam20680-ht-hp-v2-0-48290e0b9931@tdk.com>
+	<20240923-inv-mpu6050-add-iam20680-ht-hp-v2-1-48290e0b9931@tdk.com>
+	<685c0c28-9439-45da-8bc1-19c2c56b2053@kernel.org>
+ <20240928174550.47cec40f@jic23-huawei>
+In-Reply-To: <20240928174550.47cec40f@jic23-huawei>
+Accept-Language: en-US, fr-FR
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: FR3P281MB1757:EE_|FR3P281MB1504:EE_
+x-ms-office365-filtering-correlation-id: 893fac70-a384-4c5a-ccd8-08dce12c5269
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?8t2Ck8jJfi/f2MBdaX/wgJ3I16B9F2nEsEjyauBw9uRneG1wSND38Th3ve?=
+ =?iso-8859-1?Q?Q6TVtgnH8vYAQgr75di73Wy7x7Vqxt14j8XUld7kdNC9RLuDsFbPuxw/cv?=
+ =?iso-8859-1?Q?Pm22TUJa+6JNPpdCc5vUfDeSGJmk3mZkvG91PqSJ2m/f0R2dWA2A3AkGRS?=
+ =?iso-8859-1?Q?Sq1A/XWBl4MR5g+WnHWjMjn3LAXeMCRubl4F6P1qL/QkLZCoJHe6SfCWKU?=
+ =?iso-8859-1?Q?LQ9z8pmU7gCLYj8NZvI0KN6bnqZRd9P080zBoVULZMy9JRBUSZ0wBTM4+q?=
+ =?iso-8859-1?Q?NxQowiYBWaLvvvoY/bVPkNJc9/yH9E89+ODMkeoIJ+txuQKIjNHYJ87U6B?=
+ =?iso-8859-1?Q?llTOqKsU0cV9hPC2X6BQoZRF/q4jtD4g+U28zxLhdnDkAcLymnHJqPxjv4?=
+ =?iso-8859-1?Q?3tcletHNw1uaqwlmnLfHiX6ox41JMixCJ2v1CA93n7eNq55IUVCqROU+Bp?=
+ =?iso-8859-1?Q?8fBPV4X0hXEWvgnIwZvMy4qvtGMmEJGGIRgleh9qknW4xzg5nayv3O0ci9?=
+ =?iso-8859-1?Q?s5GdYRLoaIFCPpu0unKfJmFVbg8sHHFwx8YYUSiXK14vtF5or3Vn5bne/+?=
+ =?iso-8859-1?Q?gNF6VFVIfiPVga6OSvIElgK9LJzA1fcitquMCr16b5hkxgN0tenvaoKybV?=
+ =?iso-8859-1?Q?dkh3o7OZju2DoEU1jfN+7zQ5iFikUFr0a8om/UNDmDubEcaekAETatq01z?=
+ =?iso-8859-1?Q?rHjfJl61diw2axfA2Tw6ZtaYkNUhMOJar9jC/iqZL3NuxZnMpcaR36gvGp?=
+ =?iso-8859-1?Q?BypvNOhhnhxdXmmBk/3SZpL78X+AMEeKV/kkx/AgbD3NBIwyJ+4p1LTPgt?=
+ =?iso-8859-1?Q?Mv9OL05+H99i4VnPVbCLTXY2BfHjFsN67A4eQGdT+6YxaTT5f5sI5cV4f+?=
+ =?iso-8859-1?Q?s70+WjIVKPV6LVrBIhoBhCu7dsBO3SN1xxawhd6Lt0/mS2sbKs/Jtrp3hg?=
+ =?iso-8859-1?Q?HQQCsTfNNf+NIMTXuNwgrVHqzgAM4f9ghvI2VbYRAUpL3EfmY8cF8l0Vld?=
+ =?iso-8859-1?Q?t8WDH3YpZujdUpzyzcaLm8BIpz7jBeFRCu6yXptjILkpGkFWX/mxL8N1Xy?=
+ =?iso-8859-1?Q?8BJAhsgy61mwXlbtB4n4RiQGMdr/3mr/pmI4si7zmsKLEx0LmwIO0H334F?=
+ =?iso-8859-1?Q?DZkIN1jLfl8tR5C6xLvfXgEzUgzIuVADE9vWo1HRlkGGWQ7feErSuVwtLX?=
+ =?iso-8859-1?Q?3Sel3Wn8xw3ULIAdMX3EM6+PGCw7irQE0TVjaXsn8MQr9F7vDmTXaZaEFE?=
+ =?iso-8859-1?Q?4+QqtOu9iCGiHBk50k5tNTw9YJPyXJmnBWa8X3nIp8WfIcNppeNO7yNDQx?=
+ =?iso-8859-1?Q?WpLaaT40xEBTZ79vzIgkjHr7DuWRwc5RJQgMs5v5Ex9jW/7+QQAgGjTeoL?=
+ =?iso-8859-1?Q?VDGzqWGAxPcU819k+xljrPjP1VwufBJw=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?ute1VGv9SJ5W1uhHh5tyz3mcyn739uq/cNhIOVnVvbB1GmDgeL1aqf7cyv?=
+ =?iso-8859-1?Q?9NPFjAThTYktbff5DE9byesR8osqx6kztr3r245LyrKCswZfAB4Gb4Ag+N?=
+ =?iso-8859-1?Q?77A1zN3MbsmkEvPomb/apC4ph/bsP+TjlAy9CwtNJYAhUDgANoX3HXL1+j?=
+ =?iso-8859-1?Q?r/Oom8INOUj0A7C9h8Kq96A8o592CIoEd6AV5jlXyQ/IxkUv8ZrSeeHPpd?=
+ =?iso-8859-1?Q?FQeOtBmYLCf4fi2kezslre4RpiGyj6upvGOw0K2LvHvRFdiRsf5hirN80E?=
+ =?iso-8859-1?Q?+H7xzU42TQwYgJfYdNNWlDFroQ9ZmqbERkxq85vfc0xa4ofMu4pqVUYa53?=
+ =?iso-8859-1?Q?LpRxzmOqxcPT/Xz6lMyoFBR5ILADcBRjx43eJ3bziBS9XKiwTAvOxKCRM+?=
+ =?iso-8859-1?Q?yMy8gkOWXJ+kMzjKhndKwKG6n43pYPq6xz0XMGqO3gxxEhsa1dhFcj2xua?=
+ =?iso-8859-1?Q?Qy8sUlJFl8dr48/BU59kLX6yUjJyaNdWqkLCo7jC6vbVZTO0p1BsFaIEg9?=
+ =?iso-8859-1?Q?GqZe94BXXk5AcYY2BsHq0AjN3A7MnwAUg3sgsv3R/VUfX1Un5apRA4YwW3?=
+ =?iso-8859-1?Q?r+fdQHDWDpEssrs/rjzWLfaMMAPG6q1CqZBHjoAMNQkOhamLBmUPCmnUSK?=
+ =?iso-8859-1?Q?ixRouQHQAJ+mNZyvINHYq+/ygwYX4Rc4cE8TBigECM/twJyxtar71np4tA?=
+ =?iso-8859-1?Q?zTDN06fIhxLcwMBV3odVI+zb6JJXmaA36s3hEOEXL6rpkS/0rTAYHzZqeU?=
+ =?iso-8859-1?Q?+DopAUZINpad3mVjAqiMrSf5c+FYL+05aExmt05X6uhZ9hhI39xDCjGagP?=
+ =?iso-8859-1?Q?D/Mpr6HvbBVLaroxmlmNDKe0sfsCWrRFtOV3BwrQgrGrRm7VwkBKPgN279?=
+ =?iso-8859-1?Q?QlpCPe253UcI81b2+Egt3/QDNdBDbz37WbLg5woPgQU1ut8jT1TIttm1bM?=
+ =?iso-8859-1?Q?VcEb0oSXA4H+uhvCy1C6/E0yvk6mE2vK35YHUg1taqli+mjKHx56dwTCNm?=
+ =?iso-8859-1?Q?ibRbM/YPTrxdM3UVCRQgQuVehjVjRRXFFwkTu4PLfid2GbhxRaF7fReYQP?=
+ =?iso-8859-1?Q?kimv130iL1VT+lMyUTfIDHIIsMiArQWB+NvsWQzrslIohky0LhO4tJ0y9E?=
+ =?iso-8859-1?Q?/PUIv9lu3VlFGnX+3dOkbwU9zDgee4Os2gA/own3JXqlR8s8aJu2V6x5qS?=
+ =?iso-8859-1?Q?stiVLZhArIci3GN7WLaYLhHj/yX7T22BHZxKmsVX0iLJJX86ZnJgkKI8zz?=
+ =?iso-8859-1?Q?69KcB9ua2bmrxWV5NCZSqmH4yqzeb8aEVBXrvwIcGlXPeGOVLSeE38OfPr?=
+ =?iso-8859-1?Q?KxKQOylGkIRbigwM/k78vMfcqSzEatrRrv+vgW7pQ6VLN9+ynWSFgasYy9?=
+ =?iso-8859-1?Q?mADN1/owyU4Tt4l1uvJgbt8I6p7SVkVFJneZ2f3KjldRm6Pixe7pp+Cbit?=
+ =?iso-8859-1?Q?SSElbd7c5ApDW7NsCrmG26ObOWMyIofRMnBWCa6F5fHtSV0tAZcHBdJxC6?=
+ =?iso-8859-1?Q?huqknhRAnlJES9mA76Cg+bRKF7QGOMsyvU4FjvfJ1OcLAFwj7uZ+GGoc0h?=
+ =?iso-8859-1?Q?/KG8vLV9oPsqbUGrDQh8MpM9Ix84MRvJSAPeYYP4G8O7VPIUUPkX/h1C5A?=
+ =?iso-8859-1?Q?utnyX8apvB3BVyXuhP7Ogc/7isW9vKkPOdPgu8Q5ZGJs8RIhtxna3uAg?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: tdk.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 893fac70-a384-4c5a-ccd8-08dce12c5269
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2024 08:46:05.6948
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: niOO5wIzT1HnXPR3MX1aZcX3gT2X15sS1uJtF8SNr9t020Lu3cSq1lfn66XBQQdAs8z5U2PolCbE3ce1s6RNIYxBbj2fYD8nQYCnD1G3E68=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR3P281MB1504
+X-Proofpoint-ORIG-GUID: s-d9bxOV6d8EtWOF283f_N9avSFkiy59
+X-Proofpoint-GUID: s-d9bxOV6d8EtWOF283f_N9avSFkiy59
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 adultscore=0 mlxlogscore=999 mlxscore=0 spamscore=0
+ bulkscore=0 malwarescore=0 phishscore=0 clxscore=1011 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409300062
 
-On Sun, 29 Sep 2024 20:45:40 +0200
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-
-> On 28/09/2024 18:19, Jonathan Cameron wrote:
-> > On Mon, 23 Sep 2024 00:17:54 +0200
-> > Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> >   
-> >> Drop custom attributes by using the standard read_avail() callback to
-> >> read scale and integration time. When at it, define these attributes as
-> >> available by all channels, as they affect the values of both the ALS and
-> >> the WHITE channel.
-> >>
-> >> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>  
-> > Hi Javier
-> > 
-> > Some comments inline
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> >   
-> >> ---
-> >>  drivers/iio/light/veml6030.c | 64 +++++++++++++++++++++++++++++++-------------
-> >>  1 file changed, 45 insertions(+), 19 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> >> index 89c98bfc5191..a3190fab3add 100644
-> >> --- a/drivers/iio/light/veml6030.c
-> >> +++ b/drivers/iio/light/veml6030.c
-> >> @@ -58,25 +58,24 @@ struct veml6030_data {
-> >>  	int cur_integration_time;
-> >>  };
-> >>  
-> >> -/* Integration time available in seconds */
-> >> -static IIO_CONST_ATTR(in_illuminance_integration_time_available,
-> >> -				"0.025 0.05 0.1 0.2 0.4 0.8");
-> >> +static const int veml6030_it_times[][2] = {
-> >> +	{0, 25000},  
-> > Really minor but I'm trying to get IIO standardized on formatting for this
-> > sort of array and I'd like not to introduce more instances of it
-> > done without the extra spaces as it will just give more to clean up
-> > at some point.
-> > 
-> > 	{ 0, 25000 },
-> > etc please.  
-> >> +	{0, 50000},
-> >> +	{0, 100000},
-> >> +	{0, 200000},
-> >> +	{0, 400000},
-> >> +	{0, 800000},
-> >> +};
-> >>  
-> >>  /*
-> >>   * Scale is 1/gain. Value 0.125 is ALS gain x (1/8), 0.25 is
-> >>   * ALS gain x (1/4), 1.0 = ALS gain x 1 and 2.0 is ALS gain x 2.
-> >>   */
-> >> -static IIO_CONST_ATTR(in_illuminance_scale_available,
-> >> -				"0.125 0.25 1.0 2.0");
-> >> -
-> >> -static struct attribute *veml6030_attributes[] = {
-> >> -	&iio_const_attr_in_illuminance_integration_time_available.dev_attr.attr,
-> >> -	&iio_const_attr_in_illuminance_scale_available.dev_attr.attr,
-> >> -	NULL
-> >> -};
-> >> -
-> >> -static const struct attribute_group veml6030_attr_group = {
-> >> -	.attrs = veml6030_attributes,
-> >> +static const int veml6030_scale_vals[][2] = {
-> >> +	{0, 125000},
-> >> +	{0, 250000},
-> >> +	{1, 0},
-> >> +	{2, 0},  
-> > 
-> > As above, add some spaces for minor readability improvement.
-> >   
-> >>  };
-> >>  
-> >>  /*
-> >> @@ -197,9 +196,11 @@ static const struct iio_chan_spec veml6030_channels[] = {
-> >>  		.type = IIO_LIGHT,
-> >>  		.channel = CH_ALS,
-> >>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> >> -				BIT(IIO_CHAN_INFO_PROCESSED) |
-> >> -				BIT(IIO_CHAN_INFO_INT_TIME) |
-> >> -				BIT(IIO_CHAN_INFO_SCALE),
-> >> +				BIT(IIO_CHAN_INFO_PROCESSED),
-> >> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
-> >> +					       BIT(IIO_CHAN_INFO_SCALE),  
-> > This bit is an ABI change and technically old code wasn't a bug, so
-> > we don't really have a good enough reason to change it.  So Please
-> > leave these as separate.
-> >   
-> >> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> >> +						     BIT(IIO_CHAN_INFO_SCALE),  
-> > That doesn't stop us sharing the available as that always was shared
-> > in the attribute naming above.
-> >   
-> >>  		.event_spec = veml6030_event_spec,
-> >>  		.num_event_specs = ARRAY_SIZE(veml6030_event_spec),
-> >>  	},
-> >> @@ -210,6 +211,10 @@ static const struct iio_chan_spec veml6030_channels[] = {
-> >>  		.channel2 = IIO_MOD_LIGHT_BOTH,
-> >>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> >>  				BIT(IIO_CHAN_INFO_PROCESSED),
-> >> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
-> >> +					       BIT(IIO_CHAN_INFO_SCALE),  
-> > This confuses me.  Is it fixing a bug by effectively adding attributes for this
-> > channel that were previously missing? If so we'll have to go with searpte
-> > even though they are shared to avoid breaking the ABI for other channel.
-> >   
-> >> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-> >> +						     BIT(IIO_CHAN_INFO_SCALE),
-> >>  	},
-> >>  };
-> >>    
-> > 
-> >   
-> 
-> This confused me as well, because even though the attributes where
-> defined as separate for the ALS channel, modifying their values affected
-> the values from the WHITE channel.
-> 
-> The integration time and the scale affect both channels, and therefore I
-> thought they should be shared attributes. But in that case, and to avoid
-> breaking the ABI for the other channel, I will make them separate even
-> though writing to one of them will change the value of the other as well.
-Yes.  The ABI fortunately always allows that sort of cross effect as we
-have devices where similar controls affect some but not all channels on
-a device, or different types of channel, but still not all channels.
-Our fairly simple hierarchical sharing scheme never describes those.
-
-Here we will have to take advantage of that being allowed even though
-the driver should have had these shared in the first place :(
-
-Jonathan
-
-> 
-> Thanks and best regards,
-> Javier Carrasco
-> 
-
+Hello Jonathan=0A=
+=0A=
+for the explanation, the chip variants at reset have a FIFO restricted to 5=
+12 bytes like the original one. You have to write specific bits in a regist=
+er to unlock the FIFO to its full size.=0A=
+=0A=
+The driver is writing these bits only when you configure the variant. Other=
+wise, it will behave really like the original one.=0A=
+=0A=
+That's why I call them fully compatible.=0A=
+=0A=
+Thanks,=0A=
+JB=0A=
+=0A=
+________________________________________=0A=
+From:=A0Jonathan Cameron <jic23@kernel.org>=0A=
+Sent:=A0Saturday, September 28, 2024 18:45=0A=
+To:=A0Krzysztof Kozlowski <krzk@kernel.org>=0A=
+Cc:=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>; Lars-Peter C=
+lausen <lars@metafoo.de>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowsk=
+i <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Jean-Baptiste M=
+aneyrol <Jean-Baptiste.Maneyrol@tdk.com>; linux-iio@vger.kernel.org <linux-=
+iio@vger.kernel.org>; devicetree@vger.kernel.org <devicetree@vger.kernel.or=
+g>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>=0A=
+Subject:=A0Re: [PATCH v2 1/2] dt-bindings: iio: imu: mpu6050: Add iam20680h=
+t/hp bindings to mpu6050=0A=
+=A0=0A=
+This Message Is From an External Sender=0A=
+This message came from outside your organization.=0A=
+=A0=0A=
+On Mon, 23 Sep 2024 17:38:44 +0200=0A=
+Krzysztof Kozlowski <krzk@kernel.org> wrote:=0A=
+=0A=
+> On 23/09/2024 16:53, Jean-Baptiste Maneyrol via B4 Relay wrote:=0A=
+> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
+> > =0A=
+> > IAM-20680HT & HP are 2 variants of IAM-20680 fully compatible.=0A=
+> > They just have better specs, temperature range and a bigger FIFO.=0A=
+> > =0A=
+> > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=
+=0A=
+> > ---  =0A=
+> =0A=
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>=0A=
+Ah. I missed v2 as checked by email address.=0A=
+=0A=
+As per v1 review I've tweaked this patch description to say they are=0A=
+backwards compatible rather than fully (as the fifo size is not=0A=
+discoverable)=0A=
+=0A=
+Jonathan=0A=
+=0A=
+> =0A=
+> Best regards,=0A=
+> Krzysztof=0A=
+> =0A=
+=0A=
 

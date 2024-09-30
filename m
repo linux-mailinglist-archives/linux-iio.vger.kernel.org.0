@@ -1,142 +1,144 @@
-Return-Path: <linux-iio+bounces-9921-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9923-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8921D989D98
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Sep 2024 11:03:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F37B8989E64
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Sep 2024 11:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4180F1F225C7
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Sep 2024 09:03:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F4461F21274
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Sep 2024 09:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433621865FA;
-	Mon, 30 Sep 2024 09:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63091885A1;
+	Mon, 30 Sep 2024 09:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+KAq66z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fj4zb/r9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2E6185B76;
-	Mon, 30 Sep 2024 09:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3AD78C9D;
+	Mon, 30 Sep 2024 09:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727687021; cv=none; b=aFYrN+Jj5L1DmEauj0O6NtCfhZU86UQZnTzPknyEMi6xkTYcRMwSWuE6j1r5jBguWduZ3X8L0hMGymKFNGKvfAEJAPMdgzdjTkoskuJWrGHRwn4sPsAszgViK8Sd6Bg7XrDjaQ3P5WvlAqio3ArlOY6v6YGWmfCT6orFKRiQHvk=
+	t=1727688749; cv=none; b=X+YvLWxEc142HkF8DT5L//7ZXGC3yQ7ETCLLJIaakbNqJsedUYXC8Wv0+RfZ7vYqHsY0/TAXB6KHh/hOSpk/uTFlFuKfV4DbOwL4nDXQz6Ozcc0oAMu5qTnrxJQ31sTivKEJ+PHUoU/8YavfR8toiL9zJ/v2iJfNbwERvH3S+3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727687021; c=relaxed/simple;
-	bh=ZCHTDQA9ITJT0R1IodVB40XzGFekSP2PUOcE8t3dJKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D+xuLwUJoX/NyriyO78KqfQy6MrUBAvZG+WY4dJbmp8aFOepzAL9BYVjNvnumXN9YobGAV0Ppf2+hE7BxMRb5Nmu/KKEZ6b+zArDXdzpYI9igfnZ4sPvQPx3n+tpjCHrHCtWTKs2Wa20BBkV17lzc9WGpKZ+U0beyBNbxCvrVG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+KAq66z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E2CC4CEC7;
-	Mon, 30 Sep 2024 09:03:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727687020;
-	bh=ZCHTDQA9ITJT0R1IodVB40XzGFekSP2PUOcE8t3dJKY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S+KAq66z0yhhH/GabLL0htOAX9XID5l2bN6ifnTeSQAaqQNQ8vZ5vv90fYp9AGVMb
-	 HD2507qoNmsFP90DhBFagW0K+YfUtbhSxTfHATVfFkrjvKG4mILFKYaqXqlhhYtUuo
-	 qzgnHv3OYfdp4y1+U4j6pZ4QhIXF19v1GiXZ+qkYoOuO5P3O4t6vY0p4N/QJWCh2ev
-	 YD0lI0SlA1pLF4n9Ul1Stz0neuETPN29uojqpObMf8Rm3smnYC9W1/+cFv+GTPEw3e
-	 e7fIUF7XeEp2iGGLlh88Jnm4rURqK+NYxCPbo21T4WKU3nMvRuBnw+/JYpOZUlyHJ5
-	 jntgsIiYzLvQQ==
-Date: Mon, 30 Sep 2024 10:03:31 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imu: mpu6050: Add
- iam20680ht/hp bindings to mpu6050
-Message-ID: <20240930100331.1e7573e0@jic23-huawei>
-In-Reply-To: <FR3P281MB17575FC03AF60D690B67452CCE762@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20240923-inv-mpu6050-add-iam20680-ht-hp-v2-0-48290e0b9931@tdk.com>
-	<20240923-inv-mpu6050-add-iam20680-ht-hp-v2-1-48290e0b9931@tdk.com>
-	<685c0c28-9439-45da-8bc1-19c2c56b2053@kernel.org>
-	<20240928174550.47cec40f@jic23-huawei>
-	<FR3P281MB17575FC03AF60D690B67452CCE762@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1727688749; c=relaxed/simple;
+	bh=xuiwIaxIkbOHoM0aTEL4ISfBrGnoJf3bN4UoKM/m9nc=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=RvFwMCzRyhdnhha81Ft3TJsV5GaexjNjjJagOuuhu6flHYpBnHwuiLSEb7lln1rOz93rXyYz8fWN51/CRIaLMlbvXefJ22ytGTscgI09CJcIyHW2pNAo0ECxZABqTiEOTVRPJwoD3gXf69x6GUCN1LoUT5222EHJMJ6OEGROTAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fj4zb/r9; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42e5e1e6d37so37757175e9.3;
+        Mon, 30 Sep 2024 02:32:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727688746; x=1728293546; darn=vger.kernel.org;
+        h=user-agent:message-id:date:to:cc:from:subject:references
+         :in-reply-to:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e3gTkw7xTKBFjfPeQAsDpHjrUZGDOhEfBOfuDgEB4wY=;
+        b=fj4zb/r9vXXjVgYXTtCYN3R4ZjT9KoH7podq46KuWMcYoalfg5zX9fonv9itwvWops
+         pVkIBqes3RN8C66sqWT278+xDak5iYNUVQpzLpfOnRj4yktNRabHRvE1yYZom8xTBwfK
+         oXC3wOsmVoeLxTKa9vkznuGhiodxbN4JCqT2kYeQPxZDCR2S7uV3NWZhElTKKRT/e4Ec
+         l1goOnxEiligoprE2pRkQCv+kLf8w0rgNxuldRMUnMWmcLmrUjYFpODCNwupZGcFU/i/
+         ph4sjspNHEDBXNu1AeqAEaUcf5U/sTqWMzNW/iqQwOd8e667BRqqZj6zbxjpZ9zgXjla
+         Z9Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727688746; x=1728293546;
+        h=user-agent:message-id:date:to:cc:from:subject:references
+         :in-reply-to:content-transfer-encoding:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e3gTkw7xTKBFjfPeQAsDpHjrUZGDOhEfBOfuDgEB4wY=;
+        b=LPsoWFNmA2nd09rtnKP2mkCM8IeYQDyaOKC7A5vfWQWv20m+qkMb/4geuup17LcAgL
+         PV30nm53HGiwdlANThSWHjkRQCzAuk9KhkWpNniZFipJ79u8fT++zXDKCnLpRxO3OaY2
+         x/687IQ6sQdNoHCb26XyQBmg2jNhVkLVpvOXKG1sOBf37LIyQBuAhzzM7trUuLnhKnqd
+         Slilxs46q5tvqWZ+uWoqq4wQlW6WbvY/Jog5WO+1q/Q14AM8cOT0CmOCL0LnmbZ80jUg
+         naI98Nnh7ZDcoYucepoDiK7GyObMyjjII9wdRHm+1EurjI2mdegvr/dF90VzXxJ3qQ/v
+         bYoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4XUYocow2AURzBBFX3Y8jBTA1Ntp2DaBkYv9u+c6QJt54KypJ9vI09h8YLycJfrXDR+56fgHlyqc=@vger.kernel.org, AJvYcCVjEZmvkND43xmFccpYAXR5QeUMiFrDPJ1ZfpqRvtpisTqMujOYZ+6qX6CM7Trf2Hxf3WQQOMs7bz5mfCND@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHvTy+mMc8Os7Sf3Udy1dErT72rsTNmLzkqhAmn/0URyanq+1n
+	/a4nNU1bh3vdeYIeLQcaXM3vp6BOOXO34vrXuUnYF1fSMEhj0gnA
+X-Google-Smtp-Source: AGHT+IHvj6MxPbBC4GQ3YDX25WnDza1AQMy3zlrwhwybHipguZmMLNodxIBVpYIPClX0B8gEJMO49w==
+X-Received: by 2002:a05:600c:4ecd:b0:42c:b9c8:2bb0 with SMTP id 5b1f17b1804b1-42f5840e216mr87243025e9.4.1727688746036;
+        Mon, 30 Sep 2024 02:32:26 -0700 (PDT)
+Received: from localhost (host-79-19-52-27.retail.telecomitalia.it. [79.19.52.27])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e969ddb4csm145264235e9.6.2024.09.30.02.32.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 02:32:25 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240928162843.4eb63f29@jic23-huawei>
+References: <20240916-iio-pac1921-nocast-v1-1-a0f96d321eee@gmail.com> <20240928162843.4eb63f29@jic23-huawei>
+Subject: Re: [PATCH] iio: pac1921: remove unnecessary explicit casts
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Jonathan Cameron <jic23@kernel.org>
+Date: Mon, 30 Sep 2024 11:32:24 +0200
+Message-ID: <172768874424.228843.16360087197143367783@njaxe.localdomain>
+User-Agent: alot/0.11
 
-On Mon, 30 Sep 2024 08:46:05 +0000
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
-
-> Hello Jonathan
+Quoting Jonathan Cameron (2024-09-28 17:28:43)
+> On Mon, 16 Sep 2024 14:00:05 +0200
+> Matteo Martelli <matteomartelli3@gmail.com> wrote:
 >=20
-> for the explanation, the chip variants at reset have a FIFO restricted to=
- 512 bytes like the original one. You have to write specific bits in a regi=
-ster to unlock the FIFO to its full size.
->=20
-> The driver is writing these bits only when you configure the variant. Oth=
-erwise, it will behave really like the original one.
->=20
-> That's why I call them fully compatible.
-Even then I'd go with 'backwards compatible'.
-
-A driver that assumed the new device and tried to use that wouldn't work
-with the IAM-20680 so it is one way compatibility.
-
-The binding is fine, just the patch description may imply more than intende=
-d.
-
-Jonathan
-
->=20
-> Thanks,
-> JB
->=20
-> ________________________________________
-> From:=C2=A0Jonathan Cameron <jic23@kernel.org>
-> Sent:=C2=A0Saturday, September 28, 2024 18:45
-> To:=C2=A0Krzysztof Kozlowski <krzk@kernel.org>
-> Cc:=C2=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>; Lars-Pe=
-ter Clausen <lars@metafoo.de>; Rob Herring <robh@kernel.org>; Krzysztof Koz=
-lowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Jean-Bapti=
-ste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>; linux-iio@vger.kernel.org <l=
-inux-iio@vger.kernel.org>; devicetree@vger.kernel.org <devicetree@vger.kern=
-el.org>; linux-kernel@vger.kernel.org <linux-kernel@vger.kernel.org>
-> Subject:=C2=A0Re: [PATCH v2 1/2] dt-bindings: iio: imu: mpu6050: Add iam2=
-0680ht/hp bindings to mpu6050
-> =C2=A0
-> This Message Is From an External Sender
-> This message came from outside your organization.
-> =C2=A0
-> On Mon, 23 Sep 2024 17:38:44 +0200
-> Krzysztof Kozlowski <krzk@kernel.org> wrote:
->=20
-> > On 23/09/2024 16:53, Jean-Baptiste Maneyrol via B4 Relay wrote: =20
-> > > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> > >=20
-> > > IAM-20680HT & HP are 2 variants of IAM-20680 fully compatible.
-> > > They just have better specs, temperature range and a bigger FIFO.
-> > >=20
-> > > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> > > ---   =20
+> > Many explicit casts were introduced to address Wconversion and
+> > Wsign-compare warnings. Remove them to improve readability.
 > >=20
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> =20
-> Ah. I missed v2 as checked by email address.
+> > Fixes: 371f778b83cd ("iio: adc: add support for pac1921")
 >=20
-> As per v1 review I've tweaked this patch description to say they are
-> backwards compatible rather than fully (as the fifo size is not
-> discoverable)
+> No fixes tag on this one. Its not a bug, just a readability improvement.
+>=20
+> > Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
+> There are a few cases in here where I think the cast is about ensuring
+> we don't overflow in the maths rather than for warning suppression.
+>=20
+> We all love 32 bit architectures after all ;)
 >=20
 > Jonathan
 >=20
+> > ---
+> > Link: https://lore.kernel.org/linux-iio/1fa4ab12-0939-477d-bc92-306fd32=
+e4fd9@stanley.mountain/
+> > ---
+> >  drivers/iio/adc/pac1921.c | 43 +++++++++++++++++++++------------------=
+----
+> >  1 file changed, 21 insertions(+), 22 deletions(-)
 > >=20
-> > Best regards,
-> > Krzysztof
-> >  =20
+> > diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
+> > index 4c2a1c07bc39..de69a1619a9e 100644
+> > --- a/drivers/iio/adc/pac1921.c
+> > +++ b/drivers/iio/adc/pac1921.c
+> > @@ -240,8 +240,8 @@ static inline void pac1921_calc_scale(int dividend,=
+ int divisor, int *val,
+> >  {
+> >       s64 tmp;
+> > =20
+> > -     tmp =3D div_s64(dividend * (s64)NANO, divisor);
+> > -     *val =3D (int)div_s64_rem(tmp, NANO, val2);
+> > +     tmp =3D div_s64(dividend * NANO, divisor);
 >=20
+> For this one, NANO is an unsigned long and dividend just an int.
+> Either the s64 cast is needed because dividend * NANO might go out of
+> unsigned long range which might (I think) be 32 bit on a 32bit machine
+> or it doesn't.  If it does, then you need the cast, if not you don't
+> need to use div_s64 as it's not that large.
 
+Oops! While removing the casts I was only thinking about the sign change
+for this case, which would not be an issue being the dividend always
+positive. However you are indeed right, this would overflow in 32-bit
+architectures. Thanks for catching it, I am going to reintroduce this
+cast and the other similar one in the next patch version.
+
+...
+
+Thanks,
+Matteo Martelli
 

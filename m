@@ -1,107 +1,128 @@
-Return-Path: <linux-iio+bounces-9960-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9961-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF4598BCDB
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 14:54:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B8798BE2C
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 15:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D94C281D9D
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 12:54:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 763931F22727
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 13:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DA01C32F7;
-	Tue,  1 Oct 2024 12:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E0F1C231D;
+	Tue,  1 Oct 2024 13:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="a6eolNAq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239C81A0733;
-	Tue,  1 Oct 2024 12:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFA7194C8B
+	for <linux-iio@vger.kernel.org>; Tue,  1 Oct 2024 13:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727787255; cv=none; b=bKylHrmJBxwn7VNcAsffLPzxG09a1TdVLMzZvWail7weYJQdPKACEAek7XKDNw+lyfiN6sl9rTmIha8t1L9TaCRmRVtC/LkKyvdMWUd1iDlxE39FDzNgQ1PRY6xq+8TL/f8z4tCv+sTg650oH8fmDgIuVRUrkIf1UIWKGgNhogs=
+	t=1727790147; cv=none; b=l1lI4JQQpNsjbQakbJAVuZjDaje5YhKTIeITsm1DwbpX2azr16oDL2lutkFHDpwiOk4hn0umDYxA6OZPbibxoCbMJ6fgo4Y8PyyU3mZolyx+c8++WNiEUg/r8f08xce6JpS0G69maB5qV5WfqvL9h/1FRWhqfZdvp7GSmglcYtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727787255; c=relaxed/simple;
-	bh=ZXXbUqt1MI3dgRFUEtXUCu3+/KWfXxEGNPo9YGuAnkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IP0V7vtINaEm6ubsAFd2/NwBhDLhSN5lK/PNYh/OeRVYp6//2e6ps5kZ4UwxWdF95qkFNvNfBA2RoO6/xcb+2RuSNqf4Jz8Roh4AcXDAtG6r9G6fmfmD/x2j7k9NfMJy86onqNHOUVC5bH2GTqVyJNj8Gj0WMTQyUl58rlm9FYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: 2I/ocrZrQIK7HrCml6Ve/g==
-X-CSE-MsgGUID: rNXRqZxwTrCP2K/c2jzIsA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="27058876"
-X-IronPort-AV: E=Sophos;i="6.11,167,1725346800"; 
-   d="scan'208";a="27058876"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2024 05:54:14 -0700
-X-CSE-ConnectionGUID: 4R8C4JUETC+XwIOofpirMw==
-X-CSE-MsgGUID: f5DcL2aTTcS+80fNN6H4xA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,167,1725346800"; 
-   d="scan'208";a="73905649"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2024 05:54:08 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andy@kernel.org>)
-	id 1svcOD-0000000FCEh-1PCQ;
-	Tue, 01 Oct 2024 15:54:05 +0300
-Date: Tue, 1 Oct 2024 15:54:05 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	"Hennerich, Michael" <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, "Sa, Nuno" <Nuno.Sa@analog.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	"Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	"Cuciurean, Sergiu" <Sergiu.Cuciurean@analog.com>,
-	"Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH 6/7] iio: adc: ad485x: add ad485x driver
-Message-ID: <Zvvw7ah4wGsl2vjw@smile.fi.intel.com>
-References: <20240923101206.3753-1-antoniu.miclaus@analog.com>
- <20240923101206.3753-7-antoniu.miclaus@analog.com>
- <20240928184722.314b329b@jic23-huawei>
- <CY4PR03MB33991208029C4877760B528D9B772@CY4PR03MB3399.namprd03.prod.outlook.com>
+	s=arc-20240116; t=1727790147; c=relaxed/simple;
+	bh=Hxb93VBN2wjQjq7K7CdVUFSYbZsXI3NIAZECR/42fBI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ANBLWqRJuna2pJ8lAoFcp67chc1Kikpl+nkrilXsP+hWKLUOYtsoB7pvV0dkie4ZTEUCkGcciLKSNS2bJo5yD8zCXr02oZ/tR4yD80AKX2QtQKC5kx7i4Ar0TzGdJ9hIHyyW/rm1pzsG8AFVsDNyYOwPFeF29uSxmPltXmgd8do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=a6eolNAq; arc=none smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-709346604a7so2964816a34.1
+        for <linux-iio@vger.kernel.org>; Tue, 01 Oct 2024 06:42:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727790144; x=1728394944; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zO30q9nPhm3Q0tzD5dpPGZWjk6LKGp2tiZZl58C+1tQ=;
+        b=a6eolNAqg22EG38jDFtNyR6guZblbQak/M1hurm/mnq2Is1Wd5OUf09eAa0iBLedRn
+         RVYt/WlHBY4OARtLjEukhSWKmMmNRB3S3gpd1I9ldHqi5lojz7Jw1UOWR6jpoUeAruun
+         fdsDyErKzImR8LNgrMP6LtKhWTHuRTudxRa2FomX6C1JvpxP4BcNbClp9hkVvI/gh5n9
+         Zssw8CxjeliWmKH9u6a906n+wGEZt6PWNU4AGCFYfZ90Nch3miPPL4NOXf68BmJpdBhY
+         wrWM8GJq0eSvIbvYoPtrBbQOY91qyQ6v/Ky1ccKnw0IorxCbezerzY9xpjkFCBDH40rj
+         XhiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727790144; x=1728394944;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zO30q9nPhm3Q0tzD5dpPGZWjk6LKGp2tiZZl58C+1tQ=;
+        b=LiAgIv9L7OiBkVHAC7V8iUW7RM9WUSc3cTMffByQX/2uzCFgG/QhKmamPljgOgS55x
+         u9fDzBq8I3ozrjN8z12CsQvXDa7FvOA0N1/799epI2xk+9VhMN36CTmflz33sBUbsyDl
+         ZUFM0oIeEywnP54I3mVjYUOng5zwsUIr/t+iI1JQvr093NqBHrLLOi+PRwOr5SBQVy2U
+         u6vKdoLfLcVLCbHpqHFpdY+93a7v33r6My67k1pJnCiEXIL2s9ixH38MBtuUAz204fU7
+         Z4TKKMiyJBONf+7ARfW7ttfruC5FGn0GGJxmgnNe/zSF0pwyXAcKv5sMqafuKLD0LLZ5
+         m3hw==
+X-Forwarded-Encrypted: i=1; AJvYcCXxOqTd5oqqgdzM+eHKPQmPsogNjjtIkFijl7GZ36GlGPja7ght9jekjEMrO5NNuxBQ/lA83xzOFYI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2smDjB7XXKh98lux/jpp9v4gl3MMlf97Ek56y+A2t7h/7aU62
+	NAbye+9ifCTZnA0wdAG75xJtc4roUkBi+YuQAPkjaXqMbNATdQqjxCH65yUCb48=
+X-Google-Smtp-Source: AGHT+IHFNuEbhuCxlZk9FEMhWvFEJI416om35o/BvxuQUNU1PzqlhDNXl67kUSrg3vRnuGn7A+ok6g==
+X-Received: by 2002:a05:6830:3819:b0:713:8b3b:8289 with SMTP id 46e09a7af769-714fbe8fc85mr12996098a34.10.1727790144500;
+        Tue, 01 Oct 2024 06:42:24 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-714fb64fd10sm2889619a34.10.2024.10.01.06.42.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Oct 2024 06:42:24 -0700 (PDT)
+Message-ID: <047034ae-135b-4ce9-a407-9b2a00841324@baylibre.com>
+Date: Tue, 1 Oct 2024 08:42:23 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CY4PR03MB33991208029C4877760B528D9B772@CY4PR03MB3399.namprd03.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 8/8] iio: adc: ad7606: add support for AD7606C-{16,18}
+ parts
+To: Alexandru Ardelean <aardelean@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc: jic23@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
+ michael.hennerich@analog.com, gstols@baylibre.com
+References: <20240919130444.2100447-1-aardelean@baylibre.com>
+ <20240919130444.2100447-9-aardelean@baylibre.com>
+ <CA+GgBR_kKYOgPUHM5-LUAZboy6nab1tLvC4TFtzpqkjP+5A8wg@mail.gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <CA+GgBR_kKYOgPUHM5-LUAZboy6nab1tLvC4TFtzpqkjP+5A8wg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 01, 2024 at 11:53:18AM +0000, Miclaus, Antoniu wrote:
+On 10/1/24 3:26 AM, Alexandru Ardelean wrote:
+> On Thu, Sep 19, 2024 at 4:05 PM Alexandru Ardelean
+> <aardelean@baylibre.com> wrote:
+>>
 
-> Regarding the bulk writes/reads, the msb/mid/lsb registers need to be
-> read/write in a specific order and the addresses are not incremental,
+...
 
-We have _noinc() variants of regmap accessors.
+>> @@ -153,7 +349,19 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch,
+>>         if (ret)
+>>                 goto error_ret;
+>>
+>> -       *val = sign_extend32(st->data[ch], 15);
+>> +       chan = &indio_dev->channels[ch + 1];
+>> +       if (chan->scan_type.sign == 'u') {
+>> +               if (storagebits > 16)
+>> +                       *val = st->data.buf32[ch];
+>> +               else
+>> +                       *val = st->data.buf16[ch];
+>> +               return 0;
+> 
+> Arrggh...
+> I messed up here.
+> Guillaume found a bug here, where this should be "goto error_ret" or
+> do an "if ()  {} else {}"
+> How should we do it here?
+> 
+> Do we send a fix-patch or send a new series?
+> 
 
-> so I am not sure how the bulk functions fit. On this matter, we will need
-> unsigned int (not u8) to store the values read via regmap_read, and in this
-> case we will need extra casts and assignments to use get_unaligned.
+Since this patch is already applied, just follow up with another
+patch with a Fixes: tag.
 
--- 
-With Best Regards,
-Andy Shevchenko
 
 
 

@@ -1,76 +1,75 @@
-Return-Path: <linux-iio+bounces-9978-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9979-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630DE98C6BB
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 22:22:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F19898C6BF
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 22:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 815331C20FF5
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 20:22:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 947E9B2238A
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 20:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B2E1CEEA9;
-	Tue,  1 Oct 2024 20:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A26A1CF297;
+	Tue,  1 Oct 2024 20:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+Zfh2X3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PzeSNhrk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0A41CEE97;
-	Tue,  1 Oct 2024 20:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641111CF287;
+	Tue,  1 Oct 2024 20:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727814110; cv=none; b=RhpUGgQCABhsXMRXA89drJqgp5mRga92/0q2lL+df2oftP+UZatZCFS3dsaaZKEayVtV3isukXUzKRnPcX6xqrOYRwONa3De9JWo0tI1oQOLJZa710qFYQ3lmf0KzV29k1jzOZASeIAMfELdEerTEttMLen+qAfrfY5maRmh8Ug=
+	t=1727814114; cv=none; b=lpDtMO7peJlF18Tc859isJqa2TXWzYQYO7W61gI3fsh2gf7w3zb/FYaic73u02sGAFJwU4aImoudNckSNR+C5XcAFgqGnJGNslaPfAY31U6vAnuzn/xylLQMng1B3CYdtftAYSHAMHGiu6M4w/wruELVfn+fqRJ5mHR4Jm7MWRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727814110; c=relaxed/simple;
-	bh=q8FwDwo56C9iqr9K04+IlFVkhpkEpUaFpNVqlpnaH0A=;
+	s=arc-20240116; t=1727814114; c=relaxed/simple;
+	bh=xgxLh+rAz89buZ/oPb9iuOaqEqfTt0zyVA8NpMpdP5M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=POgvGH/4Fe/7bf8KDaYzYbTVZM6tMnDzb8hI8j51t/GyCwvPMylMFeNvHJDJaYOojxr2uiBWAzJG2rckt2MBvwTtK5bqJDkOl3CW1tE+c5twnj2QxlJYMDf5P1vZ262wosI4pTfKLCGcyx8RBYE9mE9dNs5RVl99QA/5rKl8WkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+Zfh2X3; arc=none smtp.client-ip=209.85.128.52
+	 In-Reply-To:To:Cc; b=OXh/xk3vJ/HtGU50hO485fcMR/DoAcskkMBGqbIUpxqd0ZdVAeDhgUze9hvBA4DtJscBI+pIfV9uWDdlHWSUbH0kjbjMSV9IwK2BgFLz3Db51EkDimjplc2lKzllOowUUxaeCtuEafJwNdUcf1/eJRV7TVLt785WThYl88NVmvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PzeSNhrk; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42ca4e0299eso49008105e9.2;
-        Tue, 01 Oct 2024 13:21:48 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-42cc8782869so54982995e9.2;
+        Tue, 01 Oct 2024 13:21:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727814107; x=1728418907; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727814110; x=1728418910; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3ELev4uZv7sI4OXtICgXw+pXJd/SMDS1j69x7XKzekk=;
-        b=Z+Zfh2X3XEo2RC4FUjpbIF2O37f+IR/yIsMJozeOrNXHdp3c1YbsMqEiXlUgRYc1yk
-         c+JFf28r8+ybnDaZYpPbtYSOw5Fk92X9uk37aBol4cmAdPvQ7lwVRB5ysK+PoC6rxP86
-         8Dhb+ByGJnRLgOuxSHKU66X5zIes77ASV3Vf9/UBIOdy01UYN0cUhO++cxE/kgfXLkNJ
-         Nf0q03iuXYAYPl+99u+jGQzP7EkwL69xN0AN6SF9crKFzFOOFg1ELIzaI0svsu6vb8IV
-         COgeiE1+5D0jQaQbEp5bG7LU8tpIMSaraLFKkUTGgtWoVa4cyOZH292E4E7sSWUk08ED
-         aYOg==
+        bh=BKpfX4jd/6xZA26W9u5SbrDdfUvg83IHr89HZKnf32E=;
+        b=PzeSNhrkkQ5foGLU4XgkW0GVtwk95qFPmMR08Qp5rAZxDwmdYoM4mFuPLZQd42a7MH
+         7AWIaFXJeIQnENfQiDwrtKIEoGeCLYbhIIbSDW1pFlRpUbRkzuvRMA0fg/yJx4pP4gdg
+         FD/Be8utJWr1gfC4DW/ZeJK/DHY4cax/zIEvyBjO2YFus6Kie/B3HfktNABlNEriMc3C
+         zoj2RbbBDdeNrvgPwbP/+RwJ2tSnDtrhqkp+6xZMst5pl4oAk3pLtxXhOdNIP/TCVO/S
+         6ZLZvNIeFDpfr6K2LEmmF8cOO8CqxdhA3jK9L2ZNhMoDoU4gU77zejbzfGsi9bssFoP5
+         p5NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727814107; x=1728418907;
+        d=1e100.net; s=20230601; t=1727814110; x=1728418910;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3ELev4uZv7sI4OXtICgXw+pXJd/SMDS1j69x7XKzekk=;
-        b=NEIwkpdkGV5N0mvgKz6uPoqI7HHIhDSnK4ohfV3CJHNOlT9iliB21FKkrpDsT8twvt
-         xl4JuOPlU9U+SN5HaYFaKfvUQ3Djuvfc8PQ5bRKwyeWagLYjc8RpIIfBNBZtW32kEuYE
-         GwvPZAADTM2SS9WAAVr0dwdYgmPrvTFU/paoWzU1gfjIUik6wZUga2B63L7dczlPLoAA
-         YXZO/efe+9mbnxyTldSSSXjW8BBduuydhe/KPZ3rfphu0uPI1cLfw+RXLoScBBuM4G7M
-         C58+RTnCW2aC8OJ0OEY74TPU1POjBdtLgCQTjOvvFsavOA94+y/6IwGCKt1zbZq1R5Ml
-         PZAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUPefzRIc/XdjArZQZlPVzmYLhVf+XviBVYHL2xQPjf/zDWpBw5fRbVB1gYrbqWS9v3QmaEIX0FAMRdT+V1@vger.kernel.org, AJvYcCUfQqkWgU+m5FbCazLVvQOfd98+lXqaxuHZaPwq3Hc1jXVoFmFrWMbIf9aGLoVn8y4Vx4te4OAtGu18@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSyjQ8JbZC1k19dFCD0ulDOKRbs+4ZGMjszVI+6eI480kyj2X9
-	khN/pp2tpRQhw6oRG/ycpDQIsVlZsjB6lGtTUjs3xJgMr4Bp/3RrHEBUl2rD
-X-Google-Smtp-Source: AGHT+IGNJk6cnlBlay1XsFzUdSfqL+mtSzambJy8vwOBwnzNlpo+PS9VwHIh/1vO1PXcYJhFz8iDTw==
-X-Received: by 2002:a05:600c:35d2:b0:42a:a6aa:4135 with SMTP id 5b1f17b1804b1-42f777c278dmr4507025e9.20.1727814106941;
-        Tue, 01 Oct 2024 13:21:46 -0700 (PDT)
+        bh=BKpfX4jd/6xZA26W9u5SbrDdfUvg83IHr89HZKnf32E=;
+        b=o7WQdELTEnxGrwiKqrSLTLB5MvwHtBZN11wC8ER1EWzl00psmEXjgv+x9WWH0Q64bO
+         ZFBHrH0ahbGYxP3DsSfYYq+OjznHUmrfIBYVd8/1zWRiVk+ex8EoSzd1bEymvq67SCpo
+         +B2jR8y4SJm5piWUXKZLdfpBehCGP7RRYEL03hM7UXQ2WHiqM7OMEdd1J/y31/IScZVo
+         FsvRhhFJeJd2n6lsTax0IoU1JWr1yQq99mttXUZlZ7VjaQskX8E5OFfoozg0LxBPxcVH
+         /V5suyjdtbz7HMk7fg1AJwMn+cMHXK9ww2XIWvVLs6x4O7/c9NWqNLEVbOOm5q76orRb
+         9DgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWEOklxUbDm0rmnfylnrcuggYq+rzbRPP7s0GPm9SPGSIAXmzbB9jln1/iGaJIdRh0T5X0qR/hvOkBG@vger.kernel.org, AJvYcCWcE0USEN0T+cC++fQh7d0noAUSC3/NJvUw2Vw0LxLjJkn8lsUSWNOdrY/rA/7amIVOuNZsmHVqU2q+1NFH@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPG8PTDMfiK2Zfe6IKcM5K8nx57Uteafaa7O9keIILKSYgc5B3
+	dvq+Ju94BiYIvj/KkyHF2I5IXc5ijCfxRNHUlL+zSqPlhTyclrQnNpmGkG34
+X-Google-Smtp-Source: AGHT+IH+xZ06kSpbFzz1J/U1jWJri+7DC5+I0vCOTUnE16ElPXoMisXkskG82QwmBGspp8y+V/moRQ==
+X-Received: by 2002:a05:600c:1d9c:b0:42c:bd27:4be4 with SMTP id 5b1f17b1804b1-42f7936bf09mr1435015e9.8.1727814110410;
+        Tue, 01 Oct 2024 13:21:50 -0700 (PDT)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-41f4-a392-01d5-d74d.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:41f4:a392:1d5:d74d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e96a55336sm188680935e9.47.2024.10.01.13.21.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e96a55336sm188680935e9.47.2024.10.01.13.21.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2024 13:21:45 -0700 (PDT)
+        Tue, 01 Oct 2024 13:21:49 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Tue, 01 Oct 2024 22:21:16 +0200
-Subject: [PATCH v3 3/9] dt-bindings: iio: light: veml6030: add vdd-supply
- property
+Date: Tue, 01 Oct 2024 22:21:17 +0200
+Subject: [PATCH v3 4/9] iio: light: veml6030: add support for a regulator
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241001-veml6035-v3-3-d789f6ff147c@gmail.com>
+Message-Id: <20241001-veml6035-v3-4-d789f6ff147c@gmail.com>
 References: <20241001-veml6035-v3-0-d789f6ff147c@gmail.com>
 In-Reply-To: <20241001-veml6035-v3-0-d789f6ff147c@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -89,50 +88,50 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727814089; l=1080;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727814089; l=1203;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=q8FwDwo56C9iqr9K04+IlFVkhpkEpUaFpNVqlpnaH0A=;
- b=rqHVmh5s9yN2L7KEiDDT5/+g7334tsHwmy3yBTWilHgfSUo1GkWM5wtp12cOo9kqsCEs2si4B
- waH+izMv4XOAgvlTXA8lPevkVYs9C4i3lecXjCPMwIXbFTg2CBuYQnq
+ bh=xgxLh+rAz89buZ/oPb9iuOaqEqfTt0zyVA8NpMpdP5M=;
+ b=Kb7WMcoe4jq1SIKn27ycLgVdEsX0zrNGY3hHW+vYCr1gost4wlbG+Y3UIw73/xbqZ6MxSmy3x
+ vDMP+s/LzScBaVPny1BOGsnQevKvevH4+GqeaCl54c0MrVsyaOt3NWe
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Add vdd-supply to account for the sensor's power source.
+Use the device managed function from the regulator API to get and enable
+a regulator powering the device.
 
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+Use "vdd" as the ID to account for the provided name in the datasheet.
+
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/light/veml6030.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
-index 7f4995557570..42a78cd4f812 100644
---- a/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
-+++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
-@@ -41,9 +41,12 @@ properties:
-       interrupt client node bindings.
-     maxItems: 1
+diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+index 6646fe2e74a7..72c1988e48e6 100644
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -14,6 +14,7 @@
+ #include <linux/regmap.h>
+ #include <linux/interrupt.h>
+ #include <linux/pm_runtime.h>
++#include <linux/regulator/consumer.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/events.h>
+@@ -807,6 +808,11 @@ static int veml6030_probe(struct i2c_client *client)
+ 	data->client = client;
+ 	data->regmap = regmap;
  
-+  vdd-supply: true
++	ret = devm_regulator_get_enable(&client->dev, "vdd");
++	if (ret)
++		return dev_err_probe(&client->dev, ret,
++				     "failed to enable regulator\n");
 +
- required:
-   - compatible
-   - reg
-+  - vdd-supply
- 
- additionalProperties: false
- 
-@@ -59,6 +62,7 @@ examples:
-                 compatible = "vishay,veml6030";
-                 reg = <0x10>;
-                 interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
-+                vdd-supply = <&vdd>;
-         };
-     };
- ...
+ 	indio_dev->name = "veml6030";
+ 	indio_dev->channels = veml6030_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(veml6030_channels);
 
 -- 
 2.43.0

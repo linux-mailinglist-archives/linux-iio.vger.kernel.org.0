@@ -1,206 +1,290 @@
-Return-Path: <linux-iio+bounces-9953-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9954-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D8398B692
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 10:10:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D722A98B695
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 10:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 559A3B2168F
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 08:10:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 862E4282187
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 08:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB571BE221;
-	Tue,  1 Oct 2024 08:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C371BE24F;
+	Tue,  1 Oct 2024 08:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iqhe7qvw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="emJxK/jt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CBE1BDAA8
-	for <linux-iio@vger.kernel.org>; Tue,  1 Oct 2024 08:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD6C1BDAA8;
+	Tue,  1 Oct 2024 08:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727770235; cv=none; b=ll8g6LgPBXyszKKXaDbjjWDk7SULfZFhep8IqvtS+LbYMTIfzpU4O0JCWAyXU61B6Akjql1LxuNja3iwH6Japf2cO0mK8TiEFxd37K33EqW6XbCFZwmMGVaX7Gik9ePPe25HQWvpKRCq7cLeVWIKyhTWwQ8duVU5aBuvGdai8JU=
+	t=1727770238; cv=none; b=HK1szR9lBTFeOHPRYyzVsBWU+42MaXvoOf7KiSQpOwtxri4iyQaOB4nkwBbWEltEA4SUUn8I5/F7DJ9qUev8U+3bkYFO+jwIpVQlL0+vKbzrp9eXICpOdZnmyA+Tzn52ai0ppMDLjzdERRRaF01NJq51olNlUW4KWsUj+JZWJNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727770235; c=relaxed/simple;
-	bh=xDBEBJYP/Tdw9WDuI3MHDdod4ymMNREYAh/l2E6YSV8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ONn75S7I+u/tcegzNwpNAoYSwx+7DNL+ceJtCzjrBww78FPo7u9sBMKC95Ma9zo4FDtH6v6XxxIcHy1SWqusDDtFPlNS6Yr6/n//DHPEihP+hjigeCJRdQkmAzEsDBjz4n+Jf6OvKQOcFFrN7+8Igt1Ig/d3Qf/PbsEDyiG6wX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iqhe7qvw; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42cb5b3c57eso47499755e9.2
-        for <linux-iio@vger.kernel.org>; Tue, 01 Oct 2024 01:10:32 -0700 (PDT)
+	s=arc-20240116; t=1727770238; c=relaxed/simple;
+	bh=42O3WG7idEz0kt6z2OClF0wZmbxLAUMQFZADcf0A7DQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XBHwQvfmmJJzZ5HrxERrocs3ztMLRqpNKfkCq3/mjYwpFg4VinyZKGBYXqnGl9BU/Ld24hO4aPbxJIG6vBpbA9sDLBEAOnllsVvxkINS3YzF78SfAccPoU1M5gjgZzWr4PSxsediAhCU/52THPUVRrz+dCItgPJ6alloGTp4xjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=emJxK/jt; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37cdb42b29dso2166921f8f.0;
+        Tue, 01 Oct 2024 01:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727770231; x=1728375031; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mt71aA3aNionD9vjty8trgPSbvpRPNwvwgRBKUpuCro=;
-        b=iqhe7qvwgsAYOosPsxBxNtKnzSPvRJLpAEnOTsufYh6RP+Zf47Eqdh2lIJTo4tYReK
-         fkrPWRlKu1pwS6GPAHiDrilHxefninkzuT6A0X5jXF5Yrb6/9ojRBE8D9gb1H6j2ATLg
-         O2ayBumTl6pP+YqVJzxheTL27FyT3mjY4v59mPqCtamdYRCrHDNCTsjYHlCvbAkvDVeu
-         kZn/9UdqYRRG5yOIH0z3ZpMX+cwXQYE+NFPPnootd+p/+Sxdxn7TxdA4vd9MW0uy8K7D
-         /Z5rhSunAM3LdBm+H3xF8A+8zICD3pbKKcAfPT2o5A/EoQ8f1UZ9xaoceZfI52YPyNG+
-         mlpw==
+        d=gmail.com; s=20230601; t=1727770234; x=1728375034; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gCFgGTaj2mpysw+k4DdlR3/nJ2KKF9nZPNZv+TdifjM=;
+        b=emJxK/jtQlR60or3AcaLQde0mgq4nl4FSeaRbYSChFlEY4jnF5F6YxUTjj1EAaEX5g
+         Hj8ec9Izpa5y6doxB9sqLVJjV3mjNdjdDbE7k5i/NoHeTkp6YuqlksicinWjPPz9z+n3
+         SmRaZUkctAB1yMfAYePnNcxPyncT27reWD08xnwNKTaz/0umSYHnkzAOmN6bvgPnvwBR
+         a+n6Sg5FRrSC2BzLnwO843qlLh7cCAiQxKYIY7uM2QuhaRQVxdoq/26kB43syiXQulk1
+         jfYyhdM62tgWsWf2QgBHyE/VhqZHDZYtQ6j3gF4KeoxSRA1o0pbDOE7xrWGODBTkVtjN
+         p1Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727770231; x=1728375031;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mt71aA3aNionD9vjty8trgPSbvpRPNwvwgRBKUpuCro=;
-        b=ZeWrVKTa04UBDm0SG9WBbbFs29TqywzvGJdiBlRNWzbQQsjE8Ug7l9U7S65Bv/1Yg6
-         G6Vx79ssyEm1YnZzzBmwkSV4ZcoV/SI9DFcXoQeO/jjm4hx2N4gSFP7jUbpgwjEdRUSB
-         ZW+K3MM2O596mtwmHkEA0y+eJdFqfZQJyBpjYk+3Wv6dI+TJPKPNLd7eYmPLy62nkUki
-         y5Wgi2YOqfADl9CsSH4JPxde6y3JkCsBo2PdFoyL23CsBGLstfouyEBJfyR2egiNRIz3
-         RED7KD+HCyvbH0zcy5Mj3SoKnSKTFcsTtP685RIgcYXGAMBuW74reJWX3g7wdXcfEwHh
-         JKNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCyzZhzSPO+6kYNauHTFr1NnRYY0TK2WKIEZ2Y+OZjzQpk7S5h8gBn1PnViAUkI4dHGYZl3jNjM4k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5Gl1F7FNvMHkiI4yJhcklqxT/ITWqEba4eMpJtxypBfKBswTB
-	OxYZhHimNU4TswwqOTdYZnvs1EX3KchAbns+HszgdiG4wz0XYdfLN3r1K7xfv/k=
-X-Google-Smtp-Source: AGHT+IFAT2GKz+3bbbUxTwJ5qGuV5dXG3CAZRzMSRP57EqszCzBxYwM1Phs9qCxbipijlK+Xp1Ma5w==
-X-Received: by 2002:a05:600c:458b:b0:42c:b1ee:4b04 with SMTP id 5b1f17b1804b1-42f58488161mr101014635e9.28.1727770231366;
-        Tue, 01 Oct 2024 01:10:31 -0700 (PDT)
-Received: from dfj (host-79-54-25-3.retail.telecomitalia.it. [79.54.25.3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f57e13524sm125973965e9.37.2024.10.01.01.10.28
+        d=1e100.net; s=20230601; t=1727770234; x=1728375034;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gCFgGTaj2mpysw+k4DdlR3/nJ2KKF9nZPNZv+TdifjM=;
+        b=ZZ4ERzDi0Mb9Itzng3poIIO80GANkh106KKcvd/bkn/NDZogqjD/9TIc2qLMBsD+Z2
+         8k/ZJA+G3oDI0nQJdzz5uQJ/YpxjZZobePVfOiVkXptXYN+qOlwHMhn4aMRQMQhkBDOY
+         05Wls6BJraPPcGQbzwtmEdy/iyoBSaPzUW9+b1MpB7KO/lYoXyeVCa4/LbOUfAAmLVnG
+         rF44luGd1UvbxVs3C+JKTVaVpEmDDwFT0fTJTrA2v8XVdFf9FFCqMS4COr9iWMpavD3x
+         PFTMUzOEh+PAaPvV0KDGWrnGwyvj/nebNKO13x1bObd1QziuCG7YzQppUuYcZzwOYCX3
+         hf1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUYLVq2oy0G5mT1gkTMfr4QHYmSciN3rwterLxsQAxH+7s4BgHnwQuyr1MizSXCy9mD+JdMSdNnIQ3n@vger.kernel.org, AJvYcCWM9LsbVITpddv5CcFYoaNnsc2XbE1aqRyFQku1PZGFtrNksgNm5+mN89EizfZO0lNqnNAQb16x+NyK@vger.kernel.org, AJvYcCX4YEMdtn71aRJ+rPX6S98ei3KjfdeTUL421FXDwW1RqilrApOocwp7X7KWcgCnKobrIlGVrFxxTehUfDjj@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMS5SboAj2xqfbMb1VZaZkQ+dZyPv3reFPkNRXNzHQnPUsO2QF
+	7UYt9LUmdaRqRBJ+ar6lRK3R677QGIumeL+3dinNi5HOU+w4sKoE
+X-Google-Smtp-Source: AGHT+IG8zsGXHj764hEucv2Jn32Z7x2kMFq36S9oUI53hN/t80pUkIhlERR7i1FrvE9QOrLC3TLRfw==
+X-Received: by 2002:a5d:6751:0:b0:37c:cca1:b1e3 with SMTP id ffacd0b85a97d-37cd5aec57cmr8224211f8f.41.1727770234141;
+        Tue, 01 Oct 2024 01:10:34 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef02:2700:7684:3ff1:6790:3866? (p200300f6ef02270076843ff167903866.dip0.t-ipconnect.de. [2003:f6:ef02:2700:7684:3ff1:6790:3866])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd575d459sm11131609f8f.113.2024.10.01.01.10.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2024 01:10:29 -0700 (PDT)
-Date: Tue, 1 Oct 2024 10:09:11 +0200
-From: Angelo Dureghello <adureghello@baylibre.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Olivier Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+        Tue, 01 Oct 2024 01:10:33 -0700 (PDT)
+Message-ID: <3370ba6d9a6bb8da5ca1415c354a6076de6f1d79.camel@gmail.com>
+Subject: Re: [PATCH v3 05/10] iio: backend: extend features
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>,  Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+	 <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring
+	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	 <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 04/10] dt-bindings: iio: dac: ad3552r: add io-backend
- support
-Message-ID: <bih7fzhv6ecpk2lkszsnweiduycc6ensofxpjjrfxwqz7wyplt@3mtqxpl7bsc6>
-References: <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-0-a17b9b3d05d9@baylibre.com>
- <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-4-a17b9b3d05d9@baylibre.com>
- <20240929115150.6d1c22b3@jic23-huawei>
- <oh2xoym6dwvfn5lbzx3j5ckd3gfzvl2ukohrs4ukumkv6kzwi5@ume3z224gjta>
- <20240930154958.00004507@Huawei.com>
- <ipnqs4uektoysenkr7jvf6ic2rh56n3e5fmmheay323yhavs7u@th7qmxwmkiqo>
- <453ab98b-618f-45ba-9eab-e462829d25ae@baylibre.com>
+Date: Tue, 01 Oct 2024 10:14:45 +0200
+In-Reply-To: <c9e30ebf-c661-4345-87bd-3169b57175fc@baylibre.com>
+References: 
+	<20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-0-a17b9b3d05d9@baylibre.com>
+	 <20240919-wip-bl-ad3552r-axi-v0-iio-testing-v3-5-a17b9b3d05d9@baylibre.com>
+	 <20240929120535.6b41c37e@jic23-huawei>
+	 <c9e30ebf-c661-4345-87bd-3169b57175fc@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <453ab98b-618f-45ba-9eab-e462829d25ae@baylibre.com>
 
-On 30.09.2024 14:20, David Lechner wrote:
-> On 9/30/24 10:08 AM, Angelo Dureghello wrote:
-> > On 30.09.2024 15:49, Jonathan Cameron wrote:
-> >> On Mon, 30 Sep 2024 16:15:41 +0200
-> >> Angelo Dureghello <adureghello@baylibre.com> wrote:
-> >>
-> >>> On 29.09.2024 11:51, Jonathan Cameron wrote:
-> >>>> On Thu, 19 Sep 2024 11:20:00 +0200
-> >>>> Angelo Dureghello <adureghello@baylibre.com> wrote:
-> >>>>   
-> >>>>> From: Angelo Dureghello <adureghello@baylibre.com>
-> >>>>>
-> >>>>> There is a version AXI DAC IP block (for FPGAs) that provides
-> >>>>> a physical bus for AD3552R and similar chips, and acts as
-> >>>>> an SPI controller.  
-> >>>>
-> >>>> Wrap is a bit short. Aim for < 75 chars for patch descriptions.
-> >>>>   
-> >>>>>
-> >>>>> For this case, the binding is modified to include some
-> >>>>> additional properties.
-> >>>>>
-> >>>>> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> >>>>> ---
-> >>>>>  .../devicetree/bindings/iio/dac/adi,ad3552r.yaml   | 42 ++++++++++++++++++++++
-> >>>>>  1 file changed, 42 insertions(+)
-> >>>>>
-> >>>>> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> >>>>> index 41fe00034742..aca4a41c2633 100644
-> >>>>> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> >>>>> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> >>>>> @@ -60,6 +60,18 @@ properties:
-> >>>>>      $ref: /schemas/types.yaml#/definitions/uint32
-> >>>>>      enum: [0, 1, 2, 3]
-> >>>>>  
-> >>>>> +  io-backends:
-> >>>>> +    description: The iio backend reference.  
-> >>>>
-> >>>> Give a description of what the backend does in this case.  I.e. that it is
-> >>>> a qspi DDR backend with ...
-> >>>>   
-> >>>>> +      An example backend can be found at
-> >>>>> +        https://analogdevicesinc.github.io/hdl/library/axi_ad3552r/index.html
-> >>>>> +    maxItems: 1
-> >>>>> +
-> >>>>> +  adi,synchronous-mode:
-> >>>>> +    description: Enable waiting for external synchronization signal.
-> >>>>> +      Some AXI IP configuration can implement a dual-IP layout, with internal
-> >>>>> +      wirings for streaming synchronization.  
-> >>>>
-> >>>> I've no idea what a dual-IP layout is.  Can you provide a little more info
-> >>>> here?  What are the two IPs?
-> >>>>  
-> >>> IP is a term used in fpga design as "intellectual property", that is
-> >>> intended as a functional block of logic or data used to make a 
-> >>> field-programmable gate array module.
-> >>>
-> >>> A dual layout is just 2 same fpga modules in place of one.
-> >>>  
-> >>> I can add a "fpga" regerence to be more clear.
-> >>
-> >> IP I was familiar with.  I'm more interested in what each IP is doing in this
-> >> case.  Or at least an example of what sort of split of functionality might
-> >> make use of this.
-> >>
-> > 
-> > I have an image of the project (that is under development or testing now),
-> > not sure how to attach the image here, btw, something as
-> >  
-> >           axi_ad3552r_0  ----------->---- qspi0
-> >               sync_ext_device --.
-> >        .- external_sync          |
-> >        |                         |
-> >        |-------------<-----------                        
-> >        |
-> >        |   axi_ad3552r_1 ----------->---- qspi1
-> >        `- external_sync
-> >  
-> > My understanding is that it's just a method to use a octal spi,
-> > duplicating the transfer rate. I can collect more info in case.
-> > 
-> 
-> No, it's not for octal SPI. It is for synchronizing the data
-> transfer to two different DAC chips.
-> 
-> I think we need a bit more in the DT bindings for this to fully
-> describe the wiring shown. We need to indicate that both of the
-> two AXI AD3552R IP blocks have external_sync connected, so a
-> adi,external-sync flag could be used for this. Then we also need
-> to describe that sync_ext_device is only wired up on one of the
-> IP blocks. So we would need a separate adi,sync-ext-device flag.
-> 
-> Then the driver would use this information to A) know that we
-> need to set the external sync arm bit when starting buffered
-> reads and B) know that the buffered read for the IP block
-> instance with sync_ext_device needs to be started last so that
-> the data streams for both DACs will be synchronized.
+On Mon, 2024-09-30 at 14:25 -0500, David Lechner wrote:
+> On 9/29/24 6:05 AM, Jonathan Cameron wrote:
+> > On Thu, 19 Sep 2024 11:20:01 +0200
+> > Angelo Dureghello <adureghello@baylibre.com> wrote:
+> >=20
+> > > From: Angelo Dureghello <adureghello@baylibre.com>
+> > >=20
+> > > Extend backend features with new calls needed later on this
+> > > patchset from axi version of ad3552r.
+> > >=20
+> > > The follwoing calls are added:
+> > >=20
+> > > iio_backend_ext_sync_enable
+> > > 	enable synchronize channels on external trigger
+> > > iio_backend_ext_sync_disable
+> > > 	disable synchronize channels on external trigger
+> > > iio_backend_ddr_enable
+> > > 	enable ddr bus transfer
+> > > iio_backend_ddr_disable
+> > > 	disable ddr bus transfer
+> > > iio_backend_set_bus_mode
+> > > 	select the type of bus, so that specific read / write
+> > > 	operations are performed accordingly
+> > > iio_backend_buffer_enable
+> > > 	enable buffer
+> > > iio_backend_buffer_disable
+> > > 	disable buffer
+> > > iio_backend_data_transfer_addr
+> > > 	define the target register address where the DAC sample
+> > > 	will be written.
+> > >=20
+> > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > Hi Angelo,
+> > A few trivial comments inline.
+> >=20
+> > > ---
+> > > =C2=A0drivers/iio/industrialio-backend.c | 111
+> > > +++++++++++++++++++++++++++++++++++++
+> > > =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 23 ++++++++
+> > > =C2=A02 files changed, 134 insertions(+)
+> > >=20
+> > > diff --git a/drivers/iio/industrialio-backend.c
+> > > b/drivers/iio/industrialio-backend.c
+> > > index 20b3b5212da7..f4802c422dbf 100644
+> > > --- a/drivers/iio/industrialio-backend.c
+> > > +++ b/drivers/iio/industrialio-backend.c
+> > > @@ -718,6 +718,117 @@ static int __devm_iio_backend_get(struct device
+> > > *dev, struct iio_backend *back)
+> > ...
+> >=20
+> > > +/**
+> > > + * iio_backend_ddr_disable - Disable interface DDR (Double Data Rate=
+)
+> > > mode
+> > > + * @back: Backend device
+> > > + *
+> > > + * Disabling DDR data is generated byt the IP at rising or falling f=
+ront
+> >=20
+> > Spell check your comments.
+> >=20
+> > > + * of the interface clock signal (SDR, Single Data Rate).
+> > > + *
+> > > + * RETURNS:
+> > > + * 0 on success, negative error number on failure.
+> > > + */
+> > > +int iio_backend_ddr_disable(struct iio_backend *back)
+> > > +{
+> > > +	return iio_backend_op_call(back, ddr_disable);
+> > > +}
+> > > +EXPORT_SYMBOL_NS_GPL(iio_backend_ddr_disable, IIO_BACKEND);
+> > 				 struct fwnode_handle *fwnode)
+> > > =C2=A0{
+> > > diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.=
+h
+> > > index 37d56914d485..41619b803cd6 100644
+> > > --- a/include/linux/iio/backend.h
+> > > +++ b/include/linux/iio/backend.h
+> > > @@ -14,12 +14,14 @@ struct iio_dev;
+> > > =C2=A0enum iio_backend_data_type {
+> > > =C2=A0	IIO_BACKEND_TWOS_COMPLEMENT,
+> > > =C2=A0	IIO_BACKEND_OFFSET_BINARY,
+> > > +	IIO_BACKEND_DATA_UNSIGNED,
+> > > =C2=A0	IIO_BACKEND_DATA_TYPE_MAX
+> > > =C2=A0};
+> > > =C2=A0
+> > > =C2=A0enum iio_backend_data_source {
+> > > =C2=A0	IIO_BACKEND_INTERNAL_CONTINUOUS_WAVE,
+> > > =C2=A0	IIO_BACKEND_EXTERNAL,
+> > > +	IIO_BACKEND_INTERNAL_RAMP_16BIT,
+> > > =C2=A0	IIO_BACKEND_DATA_SOURCE_MAX
+> > > =C2=A0};
+> > > =C2=A0
+> > > @@ -89,6 +91,13 @@ enum iio_backend_sample_trigger {
+> > > =C2=A0 * @read_raw: Read a channel attribute from a backend device
+> > > =C2=A0 * @debugfs_print_chan_status: Print channel status into a buff=
+er.
+> > > =C2=A0 * @debugfs_reg_access: Read or write register value of backend=
+.
+> > > + * @ext_sync_enable: Enable external synchronization.
+> > > + * @ext_sync_disable: Disable external synchronization.
+> > > + * @ddr_enable: Enable interface DDR (Double Data Rate) mode.
+> > > + * @ddr_disable: Disable interface DDR (Double Data Rate) mode.
+> > > + * @buffer_enable: Enable data buffer.
+> > > + * @buffer_disable: Disable data buffer.
+> >=20
+> > This needs more specific text. What buffer?=C2=A0 I think this came
+> > up earlier but it needs to say something about the fact it's enabling
+> > or disabling the actual capture of data into the DMA buffers that
+> > userspace will read.
+> >=20
+> > > + * @data_transfer_addr: Set data address.
+> > > =C2=A0 **/
+> > > =C2=A0struct iio_backend_ops {
+> > > =C2=A0	int (*enable)(struct iio_backend *back);
+> > > @@ -129,6 +138,13 @@ struct iio_backend_ops {
+> > > =C2=A0					 size_t len);
+> > > =C2=A0	int (*debugfs_reg_access)(struct iio_backend *back, unsigned i=
+nt
+> > > reg,
+> > > =C2=A0				=C2=A0 unsigned int writeval, unsigned int
+> > > *readval);
+> > > +	int (*ext_sync_enable)(struct iio_backend *back);
+> > I know we've done it this way for existing items, but I wonder if we sh=
+ould
+> > squish down the ops slightly and have new enable/disable pairs as
+> > single functions.
+> > 	int (*ext_sync_set_state)(struct iio_backend *back, bool enable);
+> > etc.=C2=A0 If nothing else reduces how many things need documentation ;=
+)
+> >=20
+> > Nuno, what do you think? Worth squashing these pairs into single
+> > callbacks?
+>=20
+> I'm not a fan of combining enable and disable functions into one function=
+.
+>=20
+> The implementation will pretty much always be:
+>=20
+> if (enabled) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* so stuff */
+> } else {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* do other stuff */
+> }
+>=20
+> Which just adds indent and makes code harder to read.
+>=20
 
-I thought to add this sync stuff thinking that it will be needed
-soon, btw, it is not used right now for a single IP. 
-I suggest to remove it entirely, since it is actually dead code,
-and this hopefully can fast up things.
+Hi Jonathan and David,
 
--- 
+Yeah, I have this on my todo list and to be fair with Angelo, he already ha=
+d
+something like you're suggesting. I kind of asked him to postpone that so w=
+e
+don't have mixed styles in the file for now. Then I would convert them all.=
+ My
+plan would be to squash the .ops into one and then have inline
+enable()/disable() helpers (at least for the current users in order to keep
+things easier to convert).
 
-Regards,
-  Angelo
-       
+As for David's comment, I see your point but one can always improve things =
+a bit
+
+if (enable) {
+	/* do stuff */
+	return;
+}
+
+/* do disable stuff */
+return 0
+
+I'm aware the above is always not that straight... but I do think there's a=
+lways
+ways to rearrange things a bit to make it better. Because even with the
+enable()/disable() approach, if you start to have a lot of common code, lik=
+ely
+you'll add an helper function. In some cases, one can even add the helper r=
+ight
+away with an 'enable' argument effectively doing what is being suggested in
+here. It always depends on the person implementing the ops :)
+
+Anyways, I really don't have a strong feeling about this. I had in my mind =
+to do
+something like this. It feels that Jonathan would already be ok with it. If=
+ it's
+not that awful for David, I'll eventually send the patches (unless Angelo w=
+ants
+to take care if it in this series).
+
+- Nuno S=C3=A1
+>=20
 

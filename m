@@ -1,144 +1,216 @@
-Return-Path: <linux-iio+bounces-9963-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9964-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B67998BF11
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 16:08:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADF798C341
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 18:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06A64B2405B
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 14:08:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A76901C21CD6
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 16:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81B22A1D2;
-	Tue,  1 Oct 2024 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D3A1CF5D0;
+	Tue,  1 Oct 2024 16:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="UUbYmXHv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gyadSO9P"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A96B1C688E
-	for <linux-iio@vger.kernel.org>; Tue,  1 Oct 2024 14:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888681CC886;
+	Tue,  1 Oct 2024 16:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727791711; cv=none; b=lBrh3VEBjVFzhxLdu7E0f2aCe6nyHGi2sAVXBgiowALU8Z3BJVwn4lqgLUEs1zO7kUSYzAK3qAHAdJBLPN9VYinYthdAkTwvFb68BVrayzMGtalnOaqs++zUdgjEYqXO97B7nrzGU9iPie7CoMo7W1ADb0CtP2BKGm21Gtqulec=
+	t=1727799515; cv=none; b=rSi8/9PO8iQqcuSbS0M9K3SNqYOqEyaSbc4tRhRRyR6NXlGmFtupTTpQEvSW7P4m5+z9SAtmtLLWD1lOqb4NB4Rugtz9bmBklSnHbXCrXof62HgLoYA+jSki67TkPlWXRSxPA1dhFbb52iHzVmBFppL5SOmJklrwVnn43J/t7wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727791711; c=relaxed/simple;
-	bh=LxMk/y3rVIkpdyzZf1Og5DUR9rP9qmiEF0dsQLbC1II=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZDA25J/riQtI8kyQfebkE5/16pcauuyOmGZHDG9Z5zJk4HhLQpVrnGbbYOcD5CotTyznleIPH4LhFN67EfL7Rh1zaHyRKnmlA2taPTj6CYPtm+Y6TOMTNLtopMcKOLYQQIajiSoSWQ7LFvUhcwCg4fudMt4uJK5Jbt4Dn5YePII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=UUbYmXHv; arc=none smtp.client-ip=209.85.167.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3e039666812so100988b6e.1
-        for <linux-iio@vger.kernel.org>; Tue, 01 Oct 2024 07:08:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727791708; x=1728396508; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mFO0hmNFsD4G4qShm99ZAaM1SpaTEf6DP+ldNadetMo=;
-        b=UUbYmXHvplJLbO92movkLfvEXQZJ9xBQj1bVFT7UEyUpEVGPeN1jq3Et4XSNhZJWM4
-         INDPbx0/N6uqyT6qcaEV2n6Z/fTB0Jda+Ejen0sW2eKKsQ6Cr3ejpmqlc7CxpaEBmD6z
-         m/HQ8rsRguqHiby30BtKJ58thp6+jTQNK+qDvppGvNWiXS1Ex91phtNPNEs/usywm3kj
-         +Dgg/fTptNLrJLbOpeKbPSXEG+VmPmE1X95JBf9mtj+Ejub/xAh2UvhLBcKRZKX2r07o
-         3VubmsheD4RXVNEgVAC+tgniqwvVEIggLzRAcBtscPcJJQDogmlFOAVmy7GHZ3ZhaIND
-         EAfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727791708; x=1728396508;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mFO0hmNFsD4G4qShm99ZAaM1SpaTEf6DP+ldNadetMo=;
-        b=N3a0VsIMDHB55R51KBrasq0YtXETrIL5ZAKRo7YWxaeY1VDJWIpJ23J4jFGZabshQI
-         HOOlKw51r+gGfFZnG4hsFWa7svNOY/G87K/jGEG08MU5uua1dFEc6VEyja8++7Id5QwB
-         fzQeOx8vFfCvN4nteb/Ah8HNei3kFfPmv/vyDzW9BIsMbm/M4nVNZ/M1AgOEuhP3hHld
-         DGLo4deS5bARhiNATXER8gCn4WEDv97D69j2T/YBeHoTeQrn+b/xFjLmAKrEi5EvCrId
-         7u/nEjN+gGlbsInxO0kPy08mWygft0N5fDEIep4I00w5Foix0iBVw9dt+5t4Qg1xd5wK
-         AD4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUxsVBJ+egeKWfGO5l/R6AJVJlhpLUAQfusJ9efyQspHe49Wmeb11ShGjG3futESpyMNMIlGPlJjnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPv5Ui2CbQ6gWzYGofRNQGJFQFkmzzh2kopzs3tOZqbeeeKdUR
-	CgdIw9ky+qjjsZL7T5BcvLyFk4CAOoOPufPTHtZeEaG/0Bdz/dp0uSLalpLBmIc=
-X-Google-Smtp-Source: AGHT+IElLO0MVEB7oOv84+nshnYaGtCpTDiF3nTZmiTrRq8956kEoE3s5ZNWsIo8c7z+uPLk2FidyQ==
-X-Received: by 2002:a05:6870:d624:b0:270:6ec0:c00 with SMTP id 586e51a60fabf-28710a4c7c9mr10847923fac.12.1727791708433;
-        Tue, 01 Oct 2024 07:08:28 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2870f7d8ae6sm3466490fac.19.2024.10.01.07.08.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Oct 2024 07:08:26 -0700 (PDT)
-Message-ID: <4ee001d2-67d0-45ab-ae62-ce5b8dd7553e@baylibre.com>
-Date: Tue, 1 Oct 2024 09:08:25 -0500
+	s=arc-20240116; t=1727799515; c=relaxed/simple;
+	bh=8CYtzeuLs6CCIRD2fBZvkMPfTc4SmlBullhKTpkXAIw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OWMz8ALIh0BtJPLRCw1ibsNOR2t7UeTH00AbdBAWDH5xvxVGds8p6HiT3f6N3xdFPPWZWEN/USQF4QjPCg25iaS0ezXWuT0Rv7LsFluoPfqVsvsgtmu8+ovSY2L/qM+vIyiY/NW4MkTjtkSSsw8PEyGwpwifd1O+j+c8Hf1m/qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gyadSO9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65C2C4CEC6;
+	Tue,  1 Oct 2024 16:18:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727799515;
+	bh=8CYtzeuLs6CCIRD2fBZvkMPfTc4SmlBullhKTpkXAIw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gyadSO9PSycQp+6mA1O5shA068U3KckO5T0wizaXBNFdLSvBo1eeKZfTuwe0AsGKN
+	 NPM9YOKd9LyY9CMk9/9RKnPMzlMbX3rI9jOBYvbE6UBCZfuH2daVoz78fwiGzKWHrz
+	 neHUM9dcbkOuNDc64y6zkeTcY430du4NCNoXuYE8x4iosCwj7z9oWm2+U7/QE4iSKB
+	 vLdDtv2cwRyLVZCHp5+vfvop/jrLj9WLLh9gqD3gF7iBX1X242kU1qmZC4UCo57TnH
+	 tc7claQZdOMZob8dl4Nv2+5A8zNi2AF7pAZsTQLTVcqedKQUKRD1neFqvfWy+IzZLC
+	 O6NTFQA7tUkIA==
+Date: Tue, 1 Oct 2024 17:18:30 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 2/4] dt-bindings: iio: adc: Add the GE HealthCare PMC ADC
+Message-ID: <20241001-corrode-preteen-546c98d45976@spud>
+References: <20241001074618.350785-1-herve.codina@bootlin.com>
+ <20241001074618.350785-3-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] iio: adc: ad485x: add ad485x driver
-To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
- Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, "Hennerich, Michael" <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, "Sa, Nuno" <Nuno.Sa@analog.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- "Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
- =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
- Mike Looijmans <mike.looijmans@topic.nl>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>,
- "Cuciurean, Sergiu" <Sergiu.Cuciurean@analog.com>,
- "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-References: <20240923101206.3753-1-antoniu.miclaus@analog.com>
- <20240923101206.3753-7-antoniu.miclaus@analog.com>
- <20240928184722.314b329b@jic23-huawei>
- <CY4PR03MB33991208029C4877760B528D9B772@CY4PR03MB3399.namprd03.prod.outlook.com>
- <Zvvw7ah4wGsl2vjw@smile.fi.intel.com>
- <CY4PR03MB3399D90F2A3C7AE3505B60A29B772@CY4PR03MB3399.namprd03.prod.outlook.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CY4PR03MB3399D90F2A3C7AE3505B60A29B772@CY4PR03MB3399.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="WU91GRG2OkpcK9lH"
+Content-Disposition: inline
+In-Reply-To: <20241001074618.350785-3-herve.codina@bootlin.com>
 
-On 10/1/24 8:51 AM, Miclaus, Antoniu wrote:
->>> Regarding the bulk writes/reads, the msb/mid/lsb registers need to be
->>> read/write in a specific order and the addresses are not incremental,
->>
->> We have _noinc() variants of regmap accessors.
-> [Miclaus, Antoniu] 
-> I think _noinc() functions read from the same register address so it doesn't
-> apply.
-> I am reading values from multiple register addresses that are not reg_addr,
-> reg_addr+1, reg_addr+2.
 
-I'm confused by the statement that the registers are not incremental.
+--WU91GRG2OkpcK9lH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-For example, this patch defines...
+On Tue, Oct 01, 2024 at 09:46:16AM +0200, Herve Codina wrote:
+> The GE HealthCare PMC Analog to Digital Converter (ADC) is a 16-Channel
+> (voltage and current), 16-Bit ADC with an I2C Interface.
+>=20
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
+>  .../bindings/iio/adc/gehc,pmc-adc.yaml        | 82 +++++++++++++++++++
+>  include/dt-bindings/iio/adc/gehc,pmc-adc.h    | 10 +++
+>  2 files changed, 92 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/gehc,pmc-ad=
+c.yaml
+>  create mode 100644 include/dt-bindings/iio/adc/gehc,pmc-adc.h
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/gehc,pmc-adc.yaml =
+b/Documentation/devicetree/bindings/iio/adc/gehc,pmc-adc.yaml
+> new file mode 100644
+> index 000000000000..6b2bb1309767
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/gehc,pmc-adc.yaml
+> @@ -0,0 +1,82 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/gehc,pmc-adc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: GE HealthCare PMC Analog to Digital Converter (ADC)
+> +
+> +maintainers:
+> +  - Herve Codina <herve.codina@bootlin.com>
+> +
+> +description:
+> +  The GE HealthCare PMC ADC is a 16-Channel (voltage and current), 16-Bi=
+t ADC
+> +  with an I2C Interface.
+> +
+> +properties:
+> +  compatible:
+> +    const: gehc,pmc-adc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description:
+> +      Regulator for the VDD power supply.
+> +
+> +  vdda-supply:
+> +    description:
+> +      Regulator for the VDD analog (VDDA) power supply.
+> +
+> +  vddio-supply:
+> +    description:
+> +      Regulator for the VDD IO (VDDIO) power supply.
+> +
+> +  vref-supply:
+> +    description:
+> +      Regulator for the voltage reference power supply.
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: osc
 
-+#define AD485X_REG_CHX_OFFSET_LSB(ch)	AD485X_REG_CHX_OFFSET(ch)
-+#define AD485X_REG_CHX_OFFSET_MID(ch)	(AD485X_REG_CHX_OFFSET_LSB(ch) + 0x01)
-+#define AD485X_REG_CHX_OFFSET_MSB(ch)	(AD485X_REG_CHX_OFFSET_MID(ch) + 0x01)
+Since there's no datasheet for me to look up, why is the clock optional?
 
-This looks exactly like reg_addr, reg_addr+1, reg_addr+2 to me.
+> +
+> +  "#io-channel-cells":
+> +    const: 2
+> +    description: |
+> +      The first cell is the channel type (dt-bindings/iio/adc/gehc,pmc-a=
+dc.h
+> +      defines these values):
+> +       - 0: voltage
+> +       - 1: current
+> +      The second cell is the channel number from 0 to 15.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +  - vdda-supply
+> +  - vddio-supply
+> +  - vref-supply
+> +  - '#io-channel-cells'
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        adc@14 {
+> +            compatible =3D "gehc,pmc-adc";
+> +            reg =3D <0x14>;
+> +            vdd-supply =3D <&reg_vdd>;
+> +            vdda-supply =3D <&reg_vdda>;
+> +            vddio-supply =3D <&reg_vddio>;
+> +            vref-supply =3D <&reg_vref>;
+> +            #io-channel-cells =3D <2>;
+> +        };
+> +    };
+> +...
+> diff --git a/include/dt-bindings/iio/adc/gehc,pmc-adc.h b/include/dt-bind=
+ings/iio/adc/gehc,pmc-adc.h
+> new file mode 100644
+> index 000000000000..2f291e3c76ae
+> --- /dev/null
+> +++ b/include/dt-bindings/iio/adc/gehc,pmc-adc.h
+> @@ -0,0 +1,10 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause */
+> +
+> +#ifndef _DT_BINDINGS_IIO_ADC_GEHC_PMC_ADC_H
+> +#define _DT_BINDINGS_IIO_ADC_GEHC_PMC_ADC_H
+> +
+> +/* ADC channel type */
+> +#define GEHC_PMC_ADC_VOLTAGE	0
+> +#define GEHC_PMC_ADC_CURRENT	1
+> +
+> +#endif
+> --=20
+> 2.46.1
+>=20
 
-> 
->>> so I am not sure how the bulk functions fit. On this matter, we will need
->>> unsigned int (not u8) to store the values read via regmap_read, and in this
->>> case we will need extra casts and assignments to use get_unaligned.
->>
->> --
->> With Best Regards,
->> Andy Shevchenko
->>
-> 
+--WU91GRG2OkpcK9lH
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZvwg1gAKCRB4tDGHoIJi
+0jPVAP4oToTpqpGn/77nFWojDllgTo0ty5NPLB3GfOchQgHa1QEAlZUZ3pXca1tt
+n3jvx/zH1u4Neq9UNHyU6wh4BIFnyQE=
+=3iSn
+-----END PGP SIGNATURE-----
+
+--WU91GRG2OkpcK9lH--
 

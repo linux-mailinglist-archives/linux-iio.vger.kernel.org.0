@@ -1,140 +1,134 @@
-Return-Path: <linux-iio+bounces-10008-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10009-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7983898DE0A
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 16:56:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA0D98DF4A
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 17:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E71228414A
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 14:56:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C558E1C24E8C
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 15:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2481D0B93;
-	Wed,  2 Oct 2024 14:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8BF1D097D;
+	Wed,  2 Oct 2024 15:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+Aruj1H"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="pSizprll"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDFB1EA80;
-	Wed,  2 Oct 2024 14:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCA723CE
+	for <linux-iio@vger.kernel.org>; Wed,  2 Oct 2024 15:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880836; cv=none; b=TN6c8mX1cXoCoRC6QqqHyesAduFMYRnb+c7RkooTHlLvjMYBuyxnF8oCtx8DzGIrmKxEKBvqI06QInxYRbOm4TVpRbabNS4a8oNvZDLWwgrI7atBWtF+b69/r5yZD6FHxXSsm5VBWohm/D+YDEAfXYsWM1UjvHILa7j5PsykOgQ=
+	t=1727883340; cv=none; b=eRvyfDgPVTzsrp7OXuXszX34ORVHd64fMO8PRqlGN59Cy2/jffwlRVsv9K38EkjK5dEp4fy/q2/DZ//KyyCTnISJPlsGFh5eIOjA8VY43zwhHIFvcm53eOqF2QxQetxBtDWk/JULp36zcVzPNsWekr8xEk8deLgLTeg1XyIuwX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880836; c=relaxed/simple;
-	bh=zOrO15nPsDNtmS7WaLdFBXVhXqwv2yitdNorrs4Lc00=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bSjne94ShpbDUO57mq1o6Hpm7fXatNivJqvcaQ8sS3BFwdZiFovwGLkD+MxM8tkjLe4Txmp1oTATth9UqQobem9O97yHAKrTi85W0iHA7mrZTnK0TbgV02P3Df7fDROT7o/Knb+nJZqMQztjupjd4op3ViQI+uBulF02A/HKGUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+Aruj1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC203C4CECD;
-	Wed,  2 Oct 2024 14:53:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727880836;
-	bh=zOrO15nPsDNtmS7WaLdFBXVhXqwv2yitdNorrs4Lc00=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U+Aruj1HX54XsERA6G4lHVm0y0j6uu34Gmcb3tjgTlGghtpMBjpeH5hFfKtjseNwo
-	 0DrJj8WNgIi/Vb6G8SpxH0oGL+Jt+SqGel4k4j+zOVbGlRgRjZUvvh0I1zYfBj6EOY
-	 nPgLZJE50vZVpJ52yoMDYhdhaC8oW5AxF7oZxuE+bzTn50OB4EsD8wAwLUyxG1fcAA
-	 09m/qcXz/gDOQpbJ0wDAtHySG7fENzJ1keIBA6TWgb1Yggs+1S5mYlVCjrOiyFY72S
-	 fdRYzBeUelJPZ3VpnAMxLIayywdTd+ynL55kGFchK/vjbwAChpFbDmyd0YJ7DgALpr
-	 R6frGPcWWNI0A==
-Date: Wed, 2 Oct 2024 15:53:51 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 2/4] dt-bindings: iio: adc: Add the GE HealthCare PMC ADC
-Message-ID: <20241002-doorstop-given-0987c28090ed@spud>
-References: <20241001074618.350785-1-herve.codina@bootlin.com>
- <20241001074618.350785-3-herve.codina@bootlin.com>
- <20241001-corrode-preteen-546c98d45976@spud>
- <20241001184602.7912c10d@bootlin.com>
- <20241001-gruffly-cruelness-b8aed444c36e@spud>
- <20241002090453.0849b668@bootlin.com>
+	s=arc-20240116; t=1727883340; c=relaxed/simple;
+	bh=ZmQbkjt0dwRBTiJ5F+tn6h9Y/T/iiqNOmiqwPkGxJv8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=G5XrIpun9jQCfr0wv7jekx4uWRNZm0ZcfrDbJs7b2LGOsdiGOVKzVe40HL0E5rMUWBtyNkLVrQGNgZkKOgAapipqSXd8iMPQXJbzELjIxUYK7p5WUSyOwIRJSc14hVpDBGApVui5nU5Nl6TcXIfntQa3jJTIZD3uvPfgYhDJVZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=pSizprll; arc=none smtp.client-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3e03a5ed4d7so3531246b6e.1
+        for <linux-iio@vger.kernel.org>; Wed, 02 Oct 2024 08:35:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727883336; x=1728488136; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nA+qJrMX1oUj2p/KqaGZktUgE9J6VRK2nMM2aw8DfRU=;
+        b=pSizprllnLLHi6sfXygFl2EoFkt7EVohTpL6DCqSXVguykJ2WiDLYonUyHvCstl6BO
+         JpTrhyqxvr/0Yh3SEXtpCdvpwp2VvjK6zBkvw+sXYJjAUD6SeKu6Ha11MmeL5JvYklbL
+         lLQHPTDKwrX00YPMUQZreh9FdN/xQSMlATyzZ4bYF7yzEgVsuVSTQTrQARjj0XzZ4lLE
+         N+G9aiS3nxA6argZEp8QbKXWWHnorWE/2o0AgQG/vMG1UCVVKr9iRMsyYAubt/IDi0Lz
+         psX8HUw/oJI0OEsv60aDRRLcURlXz3YffgGEL1XyXfF8SwWv+nMX2XhoJ139+SrZW7Sg
+         vciA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727883336; x=1728488136;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nA+qJrMX1oUj2p/KqaGZktUgE9J6VRK2nMM2aw8DfRU=;
+        b=EbVEvcMAsGsocIRYn0ztoDEPVM+e9u76941wg/XA2u0vr9BuQ0yQu3vABgBwNqiQS5
+         AyXqlIiE2GwK4nX5mCCMMAjh0xkMeUweayMfowq0Yf7Wrj36o0SkuwIwOem7JvBh/Du7
+         PQXsASTNeduzyZRgMaBTQZbBSU3+7iil9ccB+tu9Dq4/gLE28IlCjMTRJcpGM95/GOf8
+         opPkC2EgjnJi59EcgtTnycJbK9Y5tUaOkvQKbnJrD95lRPNmIyFPA1wB7NB1T92vijaF
+         uV0QH3CxLaaPpl8/is3g98GbXGqpSfUX/hYuE32DKbcpCmEip8QG4Rsovpe56ihK1bLj
+         Xubw==
+X-Gm-Message-State: AOJu0YwHC2/eVG79tpJoC/x9CXRaQ5igOGgvss1NXRRxEALQN3xf3ZI+
+	OtsNnxQ8sL+Mt8l/v3a9Bsig0cBiKPMXpN7iru2E3UhSe0SoB2lUa+v2pBJ3ySg=
+X-Google-Smtp-Source: AGHT+IFjiXZs6ehOgz36GeHt631t9+6wDKPW5GAj1p27x6boymlERd2LC467pGMbfcrrgp049dNAlA==
+X-Received: by 2002:a05:6808:2014:b0:3db:16a3:748a with SMTP id 5614622812f47-3e3b4169ed0mr2844926b6e.32.1727883336604;
+        Wed, 02 Oct 2024 08:35:36 -0700 (PDT)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e393597da1sm3721768b6e.25.2024.10.02.08.35.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2024 08:35:35 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Wed, 02 Oct 2024 10:34:56 -0500
+Subject: [PATCH] iio: core: make iio_device_claim_direct_mode()
+ __must_check
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2QdSbbXRzGQcgwo5"
-Content-Disposition: inline
-In-Reply-To: <20241002090453.0849b668@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241002-iio-must-check-claim-direct-v1-1-ab94ce728731@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAB9o/WYC/x3MTQqDMBAG0KvIrB1IopXoVcRFGKf1o/WHxBZBv
+ Luhy7d5JyWN0ERdcVLUHxLWJcOWBckUlpcyxmxyxtXWGMfAyvM37SyTypvlEzDziKiyszat98G
+ 2j6rxlIct6hPHf++H67oBry6AF20AAAA=
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dan Williams <dan.j.williams@intel.com>, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.1
 
+Add __must_check attribute to iio_device_claim_direct_mode().
 
---2QdSbbXRzGQcgwo5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Since we have now DEFINE_GUARD(iio_claim_direct, ...,
+iio_device_claim_direct_mode, ...), it is possible to write:
 
-On Wed, Oct 02, 2024 at 09:04:53AM +0200, Herve Codina wrote:
-> Hi Conor,
->=20
-> On Tue, 1 Oct 2024 18:03:37 +0100
-> Conor Dooley <conor@kernel.org> wrote:
->=20
-> > On Tue, Oct 01, 2024 at 06:46:02PM +0200, Herve Codina wrote:
-> > > On Tue, 1 Oct 2024 17:18:30 +0100
-> > > Conor Dooley <conor@kernel.org> wrote:
-> > >  =20
-> > > > On Tue, Oct 01, 2024 at 09:46:16AM +0200, Herve Codina wrote: =20
-> > > > > The GE HealthCare PMC Analog to Digital Converter (ADC) is a 16-C=
-hannel
-> > > > > (voltage and current), 16-Bit ADC with an I2C Interface.
-> > > > >=20
-> > > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > > > ---
-> > > > >  .../bindings/iio/adc/gehc,pmc-adc.yaml        | 82 +++++++++++++=
-++++++
-> > > > >  include/dt-bindings/iio/adc/gehc,pmc-adc.h    | 10 +++ =20
-> > > ... =20
-> > > > > +  clocks:
-> > > > > +    maxItems: 1
-> > > > > +
-> > > > > +  clock-names:
-> > > > > +    items:
-> > > > > +      - const: osc   =20
-> > > >=20
-> > > > Since there's no datasheet for me to look up, why is the clock opti=
-onal? =20
-> > >=20
-> > > The component uses an external oscillator (osc) if an external oscill=
-ator is
-> > > connected to its clock pins. Otherwise, it uses an internal reference=
- clock. =20
-> >=20
-> > Could you please add a description of the clock with this statement,
-> > given there's no datasheet or w/e linked here?
->=20
-> Sure, I will add a description in the next iteration.
->=20
-> There is no datasheet or any similar document available for this componen=
-t.
-> This is reason why I cannot add a link to this kind of dos.
+    guard(iio_claim_direct)(indio_dev);
 
-Yeah, I had taken a look last night and couldn't find one, so I figured
-that this was the case.
+This would be a bug, since the return value is not checked. Adding
+__must_check to iio_device_claim_direct_mode() makes the compiler emit
+a warning for the above code.
 
---2QdSbbXRzGQcgwo5
-Content-Type: application/pgp-signature; name="signature.asc"
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+This comes from the suggestion at the end of [1]. It seems like a
+reasonable thing to do regardless if the other series works out or not,
+so submitting it separately.
 
------BEGIN PGP SIGNATURE-----
+[1]: https://lore.kernel.org/all/66fcac2dbde60_964f229426@dwillia2-xfh.jf.intel.com.notmuch/
+---
+ include/linux/iio/iio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZv1eawAKCRB4tDGHoIJi
-0jCRAQCPb7iI1ukVK9/aZyxiYlyQZeIg5oY3W+eyU84zXDwxtwEAl+KLvPQkPwut
-+6h4c6YDavBZk/d+1+H73Ch6wdMvkgA=
-=Pt72
------END PGP SIGNATURE-----
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index 18779b631e90..2dc6470d20a4 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -659,7 +659,7 @@ void iio_device_unregister(struct iio_dev *indio_dev);
+ int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
+ 			       struct module *this_mod);
+ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
+-int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
++__must_check int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
+ void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+ 
+ /*
 
---2QdSbbXRzGQcgwo5--
+---
+base-commit: 431c39f6d3edbab14f48dbf37a58ccdc0ac3be1e
+change-id: 20241002-iio-must-check-claim-direct-e6988a195368
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
+
 

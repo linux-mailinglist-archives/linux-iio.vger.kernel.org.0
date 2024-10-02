@@ -1,123 +1,220 @@
-Return-Path: <linux-iio+bounces-9990-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9991-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C8298C873
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 00:54:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2A498C9F6
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 02:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A97F1F22602
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Oct 2024 22:54:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D905B20E74
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 00:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B161CEEB4;
-	Tue,  1 Oct 2024 22:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E78410F7;
+	Wed,  2 Oct 2024 00:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EgQeuwJT";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LPUnuC+C"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bO03AL+3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66E51CCEF5;
-	Tue,  1 Oct 2024 22:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386AF65C
+	for <linux-iio@vger.kernel.org>; Wed,  2 Oct 2024 00:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727823277; cv=none; b=Lua2n8x6EmliJXLkkP7tTJ22ZySMr2uDer1Ousxw4KUvDNLAzYOJQ7pbEfXSiJcHpNlzPmUFsd26lP/g/spk9JiDjiNn2Mfcl8nljZqwqlLhSQn+ZESQNEghL3xXjnFQQ81yp1D5tY17e/dkEI+13LqmK7gWw0ah8kixmeo7bH4=
+	t=1727827956; cv=none; b=bhhXzrQkfruzwzLGPW8ichWYOtHeGN+DPm3cTxCOa9YEyYj0oEGCu23eT5OgK33M8x0f2Aybz4dCUYPaP8408lz3N9Cllo4ruwtjnakqGxKG25oFdWy/7eIRCVrX9YSuIlJYw5TzznkVgLrM37ObNw+I2dIKPMS/ijVG9Nunqpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727823277; c=relaxed/simple;
-	bh=UpfF7AB51gMACdFfukqmKWR7ALWtGeBabwO0eiGZLiQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hkvBbHB3BHAWpJ5zjs600W/4YqSuDyL4mODoUzOBETnMLIUg2/fKnA15EgTEjTAbF71TwFJGxoBJNl9EVrRuX6g9+K67Vw/NbYjUdgx2VWAu6LhRxZc4bmy7sWRmvyDvm7TLt2VDkoqtHJccuDczfFGrUWjJgVYlU1smylnRODo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EgQeuwJT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LPUnuC+C; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 2 Oct 2024 00:54:26 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1727823272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MkWIackqZUxS3tr2YwCMU+zBvBxG5iwmTKZOZDqpBfM=;
-	b=EgQeuwJT7fdDS9dSeJ0RXdh8Wne8x3dk02CX5jWNxGYiUSE4374n84mJAdsDil1Wrjpa4h
-	xukSAcFEzct4HCt5UesGe5PsNMi0P600K6/1KQdgLeP65SKm+UjDa6JOkPKIjnN1iPO01c
-	voO7t+B5E8GUL2elt3DuiovzE7HX58c2kwewWdkZeT2TO4dgcys4GRydNYJtAPMRl4dQrz
-	Mtmc27pF5xqgBuCNPg+JWNMpqy8+WCnyn0JrcgIqaiYY4rb7FlcVUpMxVpw3VEyokpz/m8
-	uaFMQKsJPgkCdS9cdLlusIBozUTOLlxKAmmLE8vQc/hzh9P3VaR8a81GbxqPgg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1727823272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MkWIackqZUxS3tr2YwCMU+zBvBxG5iwmTKZOZDqpBfM=;
-	b=LPUnuC+Cl1qWPL1NsgH8eUXrIWTFf62Yu2HC0+q69K9aHAuShOuEEcRnMlxs0aDTsakLj0
-	Y5iQoT8GOCCUf4Cw==
-From: Nam Cao <namcao@linutronix.de>
-To: Tudor Gheorghiu <tudor.reda@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: frequency: rename macros
-Message-ID: <20241001225426.wUBOFdMi@linutronix.de>
-References: <20241001202430.15874-2-tudor.reda@gmail.com>
+	s=arc-20240116; t=1727827956; c=relaxed/simple;
+	bh=1dvAewY9SUvb0mk5qJ4rGjPDkImylQFiv3WD7bkPzv8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nzIsHYc987Szd6i3yZzwZPCc0P2gPv6QkkC20IXXtRzEdxZC/exBr0CVykolGWI8ZfB+JBwAuhsBwL3YN6GFz/ZPVvwmusopqxzu5J8N/S/8Yg4AX1vh44aKu9Gk1sQQEQPOLghcIyha+8uPkRTvQrokywP0ZjGhYuhayQTQTQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bO03AL+3; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42ca6ba750eso1842945e9.0
+        for <linux-iio@vger.kernel.org>; Tue, 01 Oct 2024 17:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727827951; x=1728432751; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vnlZlNXn2r5SdItECP2y/9nvB0cJmPdzYGUIF7uGZ04=;
+        b=bO03AL+3bDEKFXQWWSDcEOAkKy6YCO0ay/c9IommrCjY9RheiNV1saQDYRINQl6eeH
+         m3kmOL5cgwNUuhuYZm6jjsuZYxU4veO4onAbW9C7wm3AOE5aRqsqBhv9+TK3MvFQGzDx
+         8KmMrqMquOlXdMgQLloDg+UxBjJzFkzmHWSK4HoX8osw8aqF3wBoUXoobJgOISwrogct
+         lqa9TrikDCD9RqFhbgQWAp+m38Vre4wc3wtBQcDlauJgcwCjSmdrc91Websbvc4xUlxd
+         n6qbkR1UxTHpNhxsyBN1hnHkHgXO/J+xPfOFkNw/WgvAf8qJAHC5gkK4jh3Q+BnN9tCG
+         Zg0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727827951; x=1728432751;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vnlZlNXn2r5SdItECP2y/9nvB0cJmPdzYGUIF7uGZ04=;
+        b=lP+wEEY7QK+OI0A3UIPUqDQs8DjZfaGYmb5prMCrG+AJfnW/E+v40JPZ1SVxgPAGAF
+         3Sj2al0vt0UHXmWj6c9OwrwB+sKsw942NqUkkgowq2HHPtmat8SibPGRNc17uxFE29A8
+         IUA8nM5b/8r066eToEbQEnhhhBGPnwLYgMVozknG7u3cFQtM1qysnP5lqDeFH31wFK9h
+         CIWzdq8IRJS1qi9OOQ1AWa3uM1wuiIdYfERZTK3lUuYjq4sGHMyHiW+XV8Upb5beDBrg
+         X//cWkbzyeiUbHzgK9SlALg31ZyMvPobBii3HPPIiBc+ar9mmpQS7fjvtcT3CtH/YI2A
+         bbfw==
+X-Forwarded-Encrypted: i=1; AJvYcCURpxOqlXldHZTv/E+Ec/qP08Ys01WNdVunN0DkSmGRfWAzYiGJeWrQmyQzkIVR2KQhvXAzM/xhEJ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy02ilTEVWsbRZcEWLwpP5tpGI6qaUND6abXot5gdjg795dfbrL
+	X30JiAEU4LVOTRfS6sAUa0sEH/6WXPy6OYQzHLNt6wmlIz6actAESGWkl+vUxlo=
+X-Google-Smtp-Source: AGHT+IFp1BBQhueLTaa7zDs8f+Zi5EqjDi4QIQvUe7MIuBWL3xI+PhtuHQuGbzZ+x1anGNvzpcEkAw==
+X-Received: by 2002:a05:600c:1c1d:b0:42c:b98d:b993 with SMTP id 5b1f17b1804b1-42f776cf4f5mr6796725e9.2.1727827951070;
+        Tue, 01 Oct 2024 17:12:31 -0700 (PDT)
+Received: from ?IPV6:2a04:cec2:b:2aca:1b10:f81f:8179:6179? ([2a04:cec2:b:2aca:1b10:f81f:8179:6179])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f7727f72fsm11119285e9.1.2024.10.01.17.12.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Oct 2024 17:12:30 -0700 (PDT)
+Message-ID: <57c5d8b1-295a-492f-b17c-b44caf8aeb2d@baylibre.com>
+Date: Wed, 2 Oct 2024 02:12:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241001202430.15874-2-tudor.reda@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/10] iio: adc: ad7606: Add compatibility to fw_nodes
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Michal Marek <mmarek@suse.com>, linux-pwm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, aardelean@baylibre.com, dlechner@baylibre.com,
+ jstephan@baylibre.com
+References: <20240920-ad7606_add_iio_backend_support-v2-0-0e78782ae7d0@baylibre.com>
+ <20240920-ad7606_add_iio_backend_support-v2-7-0e78782ae7d0@baylibre.com>
+ <20240929134412.506998db@jic23-huawei>
+Content-Language: en-US
+From: Guillaume Stols <gstols@baylibre.com>
+In-Reply-To: <20240929134412.506998db@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 01, 2024 at 11:24:30PM +0300, Tudor Gheorghiu wrote:
-> The frequency iio drivers use custom defined macros (inside dds.h) in
-> order to define sysfs attributes more easily.
-> 
-> However, due to their naming choice and the fact that in some of them the
-> first and/or second arguments are decimal, checkpatch will throw errors
-> in the source files they are used in (ad9832.c and ad9834.c).
-> This is because it thinks the argument is _mode, therefore
-> it expects octal notation, even if the argument itself
-> does not represent file permissions. Example:
-> 
-> ERROR: Use 4 digit octal (0777) not decimal permissions
-> +static IIO_DEV_ATTR_PHASESYMBOL(0, 0200, NULL, ad9834_write, AD9834_PSEL);
 
-You probably want to elaborate what you mean by "their naming choice" (i.e.
-how does the naming choice causes this false warning?)
+On 9/29/24 14:44, Jonathan Cameron wrote:
+> On Fri, 20 Sep 2024 17:33:27 +0000
+> Guillaume Stols <gstols@baylibre.com> wrote:
+>
+>> On the parallel version, the current implementation is only compatible
+>> with id tables and won't work with fw_nodes, this commit intends to fix
+>> it.
+>>
+>> Also, chip info is moved in the .h file so to be accessible to all the
+> chip info is not moved (I was going to say no to that) but an
+> extern is used to make it available. So say that rather than moved here.
+>
+>> driver files that can set a pointer to the corresponding chip as the
+>> driver data.
+>>
+>>   
+>> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+>> index c13dda444526..18c87fe9a41a 100644
+>> --- a/drivers/iio/adc/ad7606.h
+>> +++ b/drivers/iio/adc/ad7606.h
+>> @@ -38,8 +38,19 @@
+>>   	AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),\
+>>   		0, BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO))
+>>   
+>> +enum ad7606_supported_device_ids {
+>> +	ID_AD7605_4,
+>> +	ID_AD7606_8,
+>> +	ID_AD7606_6,
+>> +	ID_AD7606_4,
+>> +	ID_AD7606B,
+>> +	ID_AD7616,
+>> +};
+>> +
+>>   /**
+>>    * struct ad7606_chip_info - chip specific information
+>> + * @name		device name
+>> + * @id			device id
+> ID in chip info normally indicates something bad in the design. In that somewhere
+> we have code that is ID dependent rather than all such code / data being
+> found directly in this structure (or callbacks found from here).
+> Can we avoid it here?
 
-I got curious and digged into checkpatch.pl. This script expects macros
-whose names match "IIO_DEV_ATTR_[A-Z_]+" to have the first integer argument
-to be octal. And this driver defines macros which "luckily" match that
-pattern.
+Hi Jonathan,
 
-There is only IIO_DEV_ATTR_SAMP_FREQ which matches the pattern, and accepts
-umode_t as its first argument.
+chip_info has to describe the chip hardwarewise, but there are different 
+bops depending on the wiring (interface used, and backend/no backend).
 
-Instead of changing code just to make checkpatch.pl happy, perhaps it's
-better to fix the checkpatch script? Maybe something like the untested
-patch below?
+The easiest way I found was to use the ID in a switch/case to 
+determinate which bops I should take (well it was only needed in the spi 
+version since it is the one supporting almost all the chips while the 
+other ones still support only one). For instance, the ad7606B will use 
+ad7606_bi_bops if it has a backend and ad7606B_spi_bops for spi version.
 
-Or since checkpatch is wrong, maybe just ignore it.
+If I can't use the ID, the only way I see is creating 3 fields in 
+chip_info (spi_ops, par_ops, backend_ops) and to initialize every 
+chip_info structure with its associated op(s) for the associated 
+interface. This would also lead to declare the different instances of 
+ad7606_bus_ops directly in ad7606.h  (I dont like it very much but see 
+no other option).
 
-Best regards,
-Nam
+Do you think it's better that way ? Or do you have any other idea ?
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 4427572b2477..2fb4549fede2 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -817,7 +817,7 @@ our @mode_permission_funcs = (
- 	["debugfs_create_(?:file|u8|u16|u32|u64|x8|x16|x32|x64|size_t|atomic_t|bool|blob|regset32|u32_array)", 2],
- 	["proc_create(?:_data|)", 2],
- 	["(?:CLASS|DEVICE|SENSOR|SENSOR_DEVICE|IIO_DEVICE)_ATTR", 2],
--	["IIO_DEV_ATTR_[A-Z_]+", 1],
-+	["IIO_DEV_ATTR_SAMP_FREQ", 1],
- 	["SENSOR_(?:DEVICE_|)ATTR_2", 2],
- 	["SENSOR_TEMPLATE(?:_2|)", 3],
- 	["__ATTR", 2],
+Regards,
+
+Guillaume
+
+>
+>>    * @channels:		channel specification
+>>    * @num_channels:	number of channels
+>>    * @oversampling_avail	pointer to the array which stores the available
+>> @@ -50,6 +61,8 @@
+> ...
+>
+>> diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
+>> index d651639c45eb..7bac39033955 100644
+>> --- a/drivers/iio/adc/ad7606_par.c
+>> +++ b/drivers/iio/adc/ad7606_par.c
+>> @@ -11,6 +11,7 @@
+>>   #include <linux/mod_devicetable.h>
+>>   #include <linux/module.h>
+>>   #include <linux/platform_device.h>
+>> +#include <linux/property.h>
+>>   #include <linux/types.h>
+>>   
+>>   #include <linux/iio/iio.h>
+>> @@ -89,12 +90,20 @@ static const struct ad7606_bus_ops ad7606_par8_bops = {
+>>   
+>>   static int ad7606_par_probe(struct platform_device *pdev)
+>>   {
+>> -	const struct platform_device_id *id = platform_get_device_id(pdev);
+>> +	const struct ad7606_chip_info *chip_info;
+>> +	const struct platform_device_id *id;
+>>   	struct resource *res;
+>>   	void __iomem *addr;
+>>   	resource_size_t remap_size;
+>>   	int irq;
+>>   
+>> +	if (dev_fwnode(&pdev->dev)) {
+>> +		chip_info = device_get_match_data(&pdev->dev);
+>> +	} else {
+>> +		id = platform_get_device_id(pdev);
+>> +		chip_info = (const struct ad7606_chip_info *)id->driver_data;
+>> +	}
+>> +
+>>   	irq = platform_get_irq(pdev, 0);
+>>   	if (irq < 0)
+>>   		return irq;
+>> @@ -106,25 +115,25 @@ static int ad7606_par_probe(struct platform_device *pdev)
+>>   	remap_size = resource_size(res);
+>>   
+>>   	return ad7606_probe(&pdev->dev, irq, addr,
+>> -			    id->name, id->driver_data,
+> Rewrap to move chip_info up a line perhaps.
+>
+>> +			    chip_info,
+>>   			    remap_size > 1 ? &ad7606_par16_bops :
+>>   			    &ad7606_par8_bops);
 

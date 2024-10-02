@@ -1,220 +1,282 @@
-Return-Path: <linux-iio+bounces-9991-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-9992-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2A498C9F6
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 02:12:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C55D98CB15
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 04:13:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D905B20E74
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 00:12:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D2A9281BA3
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 02:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E78410F7;
-	Wed,  2 Oct 2024 00:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE602F2D;
+	Wed,  2 Oct 2024 02:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bO03AL+3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jNJ4g30n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386AF65C
-	for <linux-iio@vger.kernel.org>; Wed,  2 Oct 2024 00:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727827956; cv=none; b=bhhXzrQkfruzwzLGPW8ichWYOtHeGN+DPm3cTxCOa9YEyYj0oEGCu23eT5OgK33M8x0f2Aybz4dCUYPaP8408lz3N9Cllo4ruwtjnakqGxKG25oFdWy/7eIRCVrX9YSuIlJYw5TzznkVgLrM37ObNw+I2dIKPMS/ijVG9Nunqpc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727827956; c=relaxed/simple;
-	bh=1dvAewY9SUvb0mk5qJ4rGjPDkImylQFiv3WD7bkPzv8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nzIsHYc987Szd6i3yZzwZPCc0P2gPv6QkkC20IXXtRzEdxZC/exBr0CVykolGWI8ZfB+JBwAuhsBwL3YN6GFz/ZPVvwmusopqxzu5J8N/S/8Yg4AX1vh44aKu9Gk1sQQEQPOLghcIyha+8uPkRTvQrokywP0ZjGhYuhayQTQTQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bO03AL+3; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42ca6ba750eso1842945e9.0
-        for <linux-iio@vger.kernel.org>; Tue, 01 Oct 2024 17:12:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727827951; x=1728432751; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vnlZlNXn2r5SdItECP2y/9nvB0cJmPdzYGUIF7uGZ04=;
-        b=bO03AL+3bDEKFXQWWSDcEOAkKy6YCO0ay/c9IommrCjY9RheiNV1saQDYRINQl6eeH
-         m3kmOL5cgwNUuhuYZm6jjsuZYxU4veO4onAbW9C7wm3AOE5aRqsqBhv9+TK3MvFQGzDx
-         8KmMrqMquOlXdMgQLloDg+UxBjJzFkzmHWSK4HoX8osw8aqF3wBoUXoobJgOISwrogct
-         lqa9TrikDCD9RqFhbgQWAp+m38Vre4wc3wtBQcDlauJgcwCjSmdrc91Websbvc4xUlxd
-         n6qbkR1UxTHpNhxsyBN1hnHkHgXO/J+xPfOFkNw/WgvAf8qJAHC5gkK4jh3Q+BnN9tCG
-         Zg0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727827951; x=1728432751;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vnlZlNXn2r5SdItECP2y/9nvB0cJmPdzYGUIF7uGZ04=;
-        b=lP+wEEY7QK+OI0A3UIPUqDQs8DjZfaGYmb5prMCrG+AJfnW/E+v40JPZ1SVxgPAGAF
-         3Sj2al0vt0UHXmWj6c9OwrwB+sKsw942NqUkkgowq2HHPtmat8SibPGRNc17uxFE29A8
-         IUA8nM5b/8r066eToEbQEnhhhBGPnwLYgMVozknG7u3cFQtM1qysnP5lqDeFH31wFK9h
-         CIWzdq8IRJS1qi9OOQ1AWa3uM1wuiIdYfERZTK3lUuYjq4sGHMyHiW+XV8Upb5beDBrg
-         X//cWkbzyeiUbHzgK9SlALg31ZyMvPobBii3HPPIiBc+ar9mmpQS7fjvtcT3CtH/YI2A
-         bbfw==
-X-Forwarded-Encrypted: i=1; AJvYcCURpxOqlXldHZTv/E+Ec/qP08Ys01WNdVunN0DkSmGRfWAzYiGJeWrQmyQzkIVR2KQhvXAzM/xhEJ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy02ilTEVWsbRZcEWLwpP5tpGI6qaUND6abXot5gdjg795dfbrL
-	X30JiAEU4LVOTRfS6sAUa0sEH/6WXPy6OYQzHLNt6wmlIz6actAESGWkl+vUxlo=
-X-Google-Smtp-Source: AGHT+IFp1BBQhueLTaa7zDs8f+Zi5EqjDi4QIQvUe7MIuBWL3xI+PhtuHQuGbzZ+x1anGNvzpcEkAw==
-X-Received: by 2002:a05:600c:1c1d:b0:42c:b98d:b993 with SMTP id 5b1f17b1804b1-42f776cf4f5mr6796725e9.2.1727827951070;
-        Tue, 01 Oct 2024 17:12:31 -0700 (PDT)
-Received: from ?IPV6:2a04:cec2:b:2aca:1b10:f81f:8179:6179? ([2a04:cec2:b:2aca:1b10:f81f:8179:6179])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f7727f72fsm11119285e9.1.2024.10.01.17.12.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Oct 2024 17:12:30 -0700 (PDT)
-Message-ID: <57c5d8b1-295a-492f-b17c-b44caf8aeb2d@baylibre.com>
-Date: Wed, 2 Oct 2024 02:12:28 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D19BE40;
+	Wed,  2 Oct 2024 02:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727835191; cv=fail; b=hEGW9LxCu70CRv6xKxuIl37hCOyM2i5arU7vU0QjspQ7iNN6vPlBp19mW+qIYiPlweMPcqUeiwoQcoDNs/tfiSj1hk7Jaar09b/ejROFUweaf5Zqsz6U2A5REA98ooG+etojApEp0Oqg+aEeLPrLFdQRspkycn7kggiiqCwZVDs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727835191; c=relaxed/simple;
+	bh=MRFqOUr0I6BoQ8kxjJC4VPEQNEwIDFpMHF6SuWzeX9s=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=nbNOTg/JEZ/FZ1RycKPwlc8z9aAtqqo5bOp9bjOW2udYN1xR8SO2/xX7bpDWnTa65b6HdPDrth1c+jZIezOFzrrrkA1UzU7XPDkyfJa2BCrcyT99W52iCFgSDn1F6xdJi3DWXFkLBsVil+I/gptDdEq6PPg3uyeX+WEsayvGigg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jNJ4g30n; arc=fail smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727835190; x=1759371190;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=MRFqOUr0I6BoQ8kxjJC4VPEQNEwIDFpMHF6SuWzeX9s=;
+  b=jNJ4g30n/gMGa3ZhDh47KIvWwe9CsmrVLSGkJdTbG/YP+EUyQSXEFiyk
+   ye+FoVddXlDW+EjtsuK89RQrLUm1lp5AsiOQWnx1koFNu72fM5fztU3iO
+   u3hH9cj7kpYZa/ehoplMUG4tXp5qZAMe7lICji1DSCMvUAghKk8hhl4lt
+   ZljWKfiffO2vMQH6JaeZv3tLR5iGiAAR+dYaFxIunDW2+crav9emXUX7d
+   5JoolZBI44JiTC21KYZbPGxfDfowi/w4WhOBuLpxKYFnFvTyuoNQLZnyq
+   hrssJb4qx7oybIWUUTutu5McmbfzaNNUxSvSGPIcK16+P8eYSXn1eK5p9
+   w==;
+X-CSE-ConnectionGUID: RUBq4HUzRF+J5smVGe+tgQ==
+X-CSE-MsgGUID: P15+XZ69SWaWB0DnvsHWRg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="26948459"
+X-IronPort-AV: E=Sophos;i="6.11,170,1725346800"; 
+   d="scan'208";a="26948459"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2024 19:13:09 -0700
+X-CSE-ConnectionGUID: uJcOVXOtRnyQ8Ux8TCvTkg==
+X-CSE-MsgGUID: yeqjwuCsSl2np7yBUOg9Sw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,170,1725346800"; 
+   d="scan'208";a="78730121"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 01 Oct 2024 19:13:08 -0700
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 1 Oct 2024 19:13:07 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 1 Oct 2024 19:13:07 -0700
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 1 Oct 2024 19:13:06 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 1 Oct 2024 19:13:06 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 1 Oct 2024 19:13:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xVeMHM35NIrb6mrFHrCFWG54m+Mg8UzNE7DbvmeC0YwCBXwTSNw0tlKVX6Fi8Dz77iTbMfJOG4ZdHIHCl3KvZj5mbiNW4vkddNFMsKWhDfI6C+d9g3PSD5SS2meugZCHtgYc5sI0AJ83f01cM5cBpWO7n8ns4rs+e3k4txqg8nzfcYJkHKlMUmeyeKkb0PluuQIDU7bGGdJCyq+WIKxJxF1L8t/X27fjIcPMYGPP3YLJiYKydLrVSx5+O/LuCCl7XbB6gWCD9iZk3qCzjn8C6ocNSyImHjAMoS4pN2k6lQ84DPXKv9vo7TqJRHb+ZcJrmE8PACcHgt1EfEO17dj/Bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bG0Vqdf5CeNyV0sOd5tTMWf3ZXSpu5pQBvAFv34wZxg=;
+ b=pcFI2x9qcO4e0V1v7O5brcJ+DcjDaDPCLc/WggshodEn7phEQ62hYPY+A8iPIaH9HeJKydMicIbZh3J5IIVQXqFMzVNGXkc7vXRAJxbymGHBUNZlYfWQZtqhCEB/3FITu52dVieGCUiGzf/ZMgG/NaZnrIdqkjozpygsBPJ9ufQHaaFGd0lgVzNx5hkDZbsz2rgdom0WXnudaupaQHdsILuZ5ctKcYyFSle5BhuxoStdCuIQaPqQ91F17li5/pYddPEF02SWi9UbdhUz3fkmrsjWrek3/nm0mWR/4RzO26hAies3gwmqzSdwqLMCkQvdFEKJE4zLKuUinrh2ZNGwsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SN7PR11MB6970.namprd11.prod.outlook.com (2603:10b6:806:2aa::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.28; Wed, 2 Oct
+ 2024 02:13:04 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8026.016; Wed, 2 Oct 2024
+ 02:13:04 +0000
+Date: Tue, 1 Oct 2024 19:13:01 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: David Lechner <dlechner@baylibre.com>, Peter Zijlstra
+	<peterz@infradead.org>, Dan Williams <dan.j.williams@intel.com>, "Linus
+ Torvalds" <torvalds@linux-foundation.org>, Jonathan Cameron
+	<jic23@kernel.org>
+CC: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Michael Hennerich
+	<michael.hennerich@analog.com>, <linux-kernel@vger.kernel.org>,
+	<linux-iio@vger.kernel.org>, <linux-cxl@vger.kernel.org>, David Lechner
+	<dlechner@baylibre.com>, Ira Weiny <ira.weiny@intel.com>, "Fabio M. De
+ Francesco" <fabio.maria.de.francesco@linux.intel.com>
+Subject: Re: [PATCH 0/3] cleanup: add if_not_cond_guard macro
+Message-ID: <66fcac2dbde60_964f229426@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20241001-cleanup-if_not_cond_guard-v1-0-7753810b0f7a@baylibre.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20241001-cleanup-if_not_cond_guard-v1-0-7753810b0f7a@baylibre.com>
+X-ClientProxiedBy: MW3PR06CA0019.namprd06.prod.outlook.com
+ (2603:10b6:303:2a::24) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/10] iio: adc: ad7606: Add compatibility to fw_nodes
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Michal Marek <mmarek@suse.com>, linux-pwm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-doc@vger.kernel.org, aardelean@baylibre.com, dlechner@baylibre.com,
- jstephan@baylibre.com
-References: <20240920-ad7606_add_iio_backend_support-v2-0-0e78782ae7d0@baylibre.com>
- <20240920-ad7606_add_iio_backend_support-v2-7-0e78782ae7d0@baylibre.com>
- <20240929134412.506998db@jic23-huawei>
-Content-Language: en-US
-From: Guillaume Stols <gstols@baylibre.com>
-In-Reply-To: <20240929134412.506998db@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SN7PR11MB6970:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70e42461-1776-4700-15b2-08dce287bf86
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?tEFswsE5meJ3t0JOEMYb9F7WV5JGyNOFsyWm5RKnTa4Lk1QFkk7PcDQogrDr?=
+ =?us-ascii?Q?OkN5tD7GNJfz5cK8VHgFJISllnXojn1hUxKkjBAkl66Ox0iAjajfzyx/n6an?=
+ =?us-ascii?Q?UR0+IA4Av+lgm1ZiG+QZo26JdaLB/4SgqiKadn1o8iPNbwFskyBdJ6wceioH?=
+ =?us-ascii?Q?kM3tSJsjs69Mh4LIo3Hnt4iBGnIdrhXONiwxjU7KHL6ctb0r+20wHJSUydBe?=
+ =?us-ascii?Q?SEPUENRzm/WMW8Gw9kKDsrdEe9A0qgiute08+f+yj3Poz7Ry6/U+KCvtHnLs?=
+ =?us-ascii?Q?TRXS4kmThDfeuvMFbM70TyDTUP4AXXf4J0ue5+dsyMHnwcclx604QrY0WPjx?=
+ =?us-ascii?Q?se58A1xdsDMalEI/NCQSGQBSouAc/OdSgNj7cJkUxX6tpakyzBlTcmCjpwqb?=
+ =?us-ascii?Q?WpMM+UDAv6rgwiWVq6K/3uVC0r9xm/guxW4rYy0gbqI0wQoH9DjvTTmMbcLf?=
+ =?us-ascii?Q?P+k3oMpPLcF0Y+GzMjYlY5JnIEGBe5f8ntsoJuBgw74l8AXcEmWtqLdlGArR?=
+ =?us-ascii?Q?h+7BB6TQj+f7HUCA5th9oW8P53vL7V6sUlrKz/QWu+Qq3ADTRXkuasFCGR9n?=
+ =?us-ascii?Q?ZlB+O/GRtjIVgw/Fdg3X6yy9wPO+Aes3nNSIW2h3zxXhfyvKBCgLLcPugBzL?=
+ =?us-ascii?Q?40JsgYyJXbDirbuBe1FhQOmNUzW7EHMbp2NXjmpi8lRdUK5+gTdOM1nQD+xR?=
+ =?us-ascii?Q?ghVwHZomNprDnTk6Huu4GBlpD0eWnZLWW9lWER5/2sV5r5wGGKnuQOPLjlmk?=
+ =?us-ascii?Q?8+mY1h0yRsfDpIncJopMJURbjnlMoAaFA4QJcUzs9kC4uYMuCg2htudCsDyT?=
+ =?us-ascii?Q?N7GMnlxUKzbkuZKQbPxrubI2MDOJRh7erkZmEdRXG1+IC3FI0SSal8Dj4Hfw?=
+ =?us-ascii?Q?45e326ZVbmFgV9OjLTbUAmWirjRRKZpF1N1fhV0e5j4AYHTMGkL47cN9HUa4?=
+ =?us-ascii?Q?B3GmwD+nyNigSdtk8GeyvGD+PBU7XSl95J0ckzwUf8cnNL/qVkh8l62T0odt?=
+ =?us-ascii?Q?rOgZ61YzaylTprJ+puOp3xNZk2OUJ02fbKdhcWDO22lWOyGO4K5UD8lcwYvU?=
+ =?us-ascii?Q?0JZaSfCNAIfWy3239AWpReXB4nikBZHRQvCgX2gq57sqKikJdt7s/BMXWXK0?=
+ =?us-ascii?Q?dj+AVbTO8XaChO1NoVUPVEZIpQ7zDH69ENKo7Y0/rNlKMl57anGGox1TMm1q?=
+ =?us-ascii?Q?31O2af0Fq4+CMgCKAA1aNnJ+mvL6QlrHCrWKG31dhac1KQpmgq6NB3QD0O1p?=
+ =?us-ascii?Q?7mEfEMx3IQGJ97vCgVfeUD6sQ3u0I7cgHgbv49kaAw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QLsnFKSGBGSZhYUtge1KiV9TJiao6x1YAHqadsHt5VaErqEWRNSRiXDAsU5+?=
+ =?us-ascii?Q?gxKP9ZuyhRya1fxAcbBSNxPc7aIDZ/8Z7A5qGTvO5XcWjXrI4wT2rSbqzwaH?=
+ =?us-ascii?Q?hFd30cNQnLpHR5/BsjioOOEjiaLVx6MryMai2LrnuHZ560qZxPKAg1actVrl?=
+ =?us-ascii?Q?rP9weYYxUo8rAZqR/SMBvk81793bXy0kC02Xi0Kp2NNAS05M5dzLYrOjrneQ?=
+ =?us-ascii?Q?sMga9JomsuN5m7a0djpKzGxxeKAweEOl5ho78v5uudKdQghpMyImUs421xZH?=
+ =?us-ascii?Q?rr9Dag9OeBLmXywV3vrrlQBr0LPzZ1XlJX9ZSl6irsTQczVe+UU9MfFg0G/j?=
+ =?us-ascii?Q?PbPheCVoUNnRPjzC5z/KoI+Vu3QBYWaEecw1/cUm4csb5LA6yauI6E1YC9KQ?=
+ =?us-ascii?Q?Kxbcy4fyY0khGpcktNJhGUkPr2SO6nKi5HUUNDKqhmqvucL9jDsJdcZoDQT3?=
+ =?us-ascii?Q?9raQAM+eW8cD742n0gpnXI01P90F+okVdqXB0NVeLmxUrJR9aPVdf7M32kVq?=
+ =?us-ascii?Q?WHY3mKiE93LjjAjEVAMbHBdNEiNzy+N2DFf8bJ8/BpzdlLisOMCv+B6+uaxk?=
+ =?us-ascii?Q?ccvtAhvMZwBfQxExSHMXxKG5f0ya98tRcvuoGhbTnQMNWQauyK0njT/s0Syi?=
+ =?us-ascii?Q?0X1h7aEwVTiqRtmaHFCXHy+JkDi0YY7FIhry9vZd9iCl4gRuOLJxgOiq592Q?=
+ =?us-ascii?Q?XRX5MIHW3lJpkJkfCIUgc/hPEHfNycOv+WSfQDwMiKl29pdy6ajE+0aXoxkK?=
+ =?us-ascii?Q?SWP0ZXg/JjPNjQ+um9eiqHJYgPzE59UM2XeRGUl5UTMIuewd7lLtXwBN5A9S?=
+ =?us-ascii?Q?GEwCtgJsYNzPO3qDV0WOMa98W2m4CcBAwrBgg9lr6v6v0eNxTvZcr98UxIDu?=
+ =?us-ascii?Q?0LfmB/CjRDPe3qWLJQGmjmagLgi4eGRtY98hFVLv45jsD54b/IkxWoqUZ6+X?=
+ =?us-ascii?Q?JUK0MdcraRpcoKgCya70BfWWIwuKEoLRYZR6FdoApuPQ+t7XIs3umlJOYOKJ?=
+ =?us-ascii?Q?ept4txYB7neudp+QDXFdhWpcHUQZ2TaJa3CebWU5BS8XM5CEuI497igwMl4B?=
+ =?us-ascii?Q?kRWemLc9fqJfySgV8f2MvZjOR/IfNG52qx2gHO31Nsq+LQhZRAbQOlCVOzR6?=
+ =?us-ascii?Q?NV8lDuuvrtO/WLvr7hEPIsJxV4azrJZa1G2UfcuKHBPL1RrXH6jXuPV1zluo?=
+ =?us-ascii?Q?lCYYctdCKZ6JaArAg2HAhMZg12shIgptTtkR6YqyhgFyL9XTuJSz0u7HvyXI?=
+ =?us-ascii?Q?1H4acJXp53cleEAZNB/YMopva9BtplNdD3mdqrSNgA67OOBatm+cEcg9aNL1?=
+ =?us-ascii?Q?+LchBB8DSNZ2j0q56k89X+A3VDa/zuut1BGIJ6Sd9pWv4jEmv8U4/t49UZiC?=
+ =?us-ascii?Q?BjUcDf0MvkIQn16XqFugpW93tPkuP0LV6a9TXwx0BjccZOgoAI1izPnNl2Gz?=
+ =?us-ascii?Q?SLU3onFpE5mPhCjhBCic2C+jfInjxchhvzfiYpo2oVSngInOpNkN9lmO/TEC?=
+ =?us-ascii?Q?/tlcVF8+ISAC5qHnNrD9m16vEWqmGoSmoewpCtdZ824hQgXXR3X1L08k2ODg?=
+ =?us-ascii?Q?T0CYMCOrQK6BLFR+Pn1d52e2vU9ZwIajBmVmOzzLu9vvcF9VBk5DHnRSQ2ja?=
+ =?us-ascii?Q?Mg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70e42461-1776-4700-15b2-08dce287bf86
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 02:13:04.2879
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: p+9KWTlwbzAglfH9XXu1hCpz9jrj9eeespA9lCuYGye4rureHR+gm9Or8eEViPJqetVZtiffUcPOvnKFt72rrCp2aMrQD+Ld4AQHGAwYrPY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6970
+X-OriginatorOrg: intel.com
+
+David Lechner wrote:
+> So far, I have not found scoped_cond_guard() to be nice to work with.
+> We have been using it quite a bit in the IIO subsystem via the
+> iio_device_claim_direct_scoped() macro.
+> 
+> The main thing I don't like is that scoped_cond_guard() uses a for loop
+> internally. In the IIO subsystem, we usually try to return as early as
+> possible, so often we are returning from all paths from withing this
+> hidden for loop. However, since it is a for loop, the compiler thinks
+> that it possible to exit the for loop and so we end up having to use
+> unreachable() after the end of the scope to avoid a compiler warning.
+> This is illustrated in the ad7380 patch in this series and there are 36
+> more instance of unreachable() already introduced in the IIO subsystem
+> because of this.
+> 
+> Also, scoped_cond_guard() is they only macro for conditional guards in
+> cleanup.h currently. This means that so far, patches adopting this are
+> generally converting something that wasn't scoped to be scoped. This
+> results in changing the indentation of a lot of lines of code, which is
+> just noise in the patches.
+> 
+> To avoid these issues, the natural thing to do would be to have a
+> non-scoped version of the scoped_cond_guard() macro. There was was a
+> rejected attempt to do this in [1], where one of the complaints was:
+> 
+> > > -       rc = down_read_interruptible(&cxl_region_rwsem);
+> > > -       if (rc)
+> > > -               return rc;
+> > > +       cond_guard(rwsem_read_intr, return -EINTR, &cxl_region_rwsem);
+> >
+> > Yeah, this is an example of how NOT to do things.
+> >
+> > If you can't make the syntax be something clean and sane like
+> >
+> >         if (!cond_guard(rwsem_read_intr, &cxl_region_rwsem))
+> >                 return -EINTR;
+> >
+> > then this code should simply not be converted to guards AT ALL.
+> 
+> [1]: https://lore.kernel.org/all/170905252721.2268463.6714121678946763402.stgit@dwillia2-xfh.jf.intel.com/
+> 
+> I couldn't find a way to make a cond_guard() macro that would work like
+> exactly as suggested (the problem is that you can't declare a variable
+> in the condition expression of an if statement in C). So I am proposing
+> a macro that reads basically the same as the above so it still reads
+> almost like normal C code even though it hides the if statement a bit.
+> 
+>         if_not_cond_guard(rwsem_read_intr, &cxl_region_rwsem)
+>                 return -EINTR;
+> 
+> The "not" is baked into the macro because in most cases, failing to
+> obtain the lock is the abnormal condition and generally we want to have
+> the abnormal path be the indented one.
+
+I think you could also take the "cond" out of the name because that is
+implied by the fact it's an 'if'.
+
+So, calling this "if_not_guard ()", for the series, you can add:
+
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+
+...but it's ultimately up to Peter and Linus if they find this "if ()"
+rename acceptable. If it is I would suggest the style should be treat it
+as an "if ()" statement and add this to .clang-format:
+
+diff --git a/.clang-format b/.clang-format
+index 252820d9c80a..ae3511a69896 100644
+--- a/.clang-format
++++ b/.clang-format
+@@ -63,6 +63,8 @@ DerivePointerAlignment: false
+ DisableFormat: false
+ ExperimentalAutoDetectBinPacking: false
+ FixNamespaceComments: false
++IfMacros:
++  - 'if_not_guard'
+ 
+ # Taken from:
+ #   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ tools/ \
 
 
-On 9/29/24 14:44, Jonathan Cameron wrote:
-> On Fri, 20 Sep 2024 17:33:27 +0000
-> Guillaume Stols <gstols@baylibre.com> wrote:
->
->> On the parallel version, the current implementation is only compatible
->> with id tables and won't work with fw_nodes, this commit intends to fix
->> it.
->>
->> Also, chip info is moved in the .h file so to be accessible to all the
-> chip info is not moved (I was going to say no to that) but an
-> extern is used to make it available. So say that rather than moved here.
->
->> driver files that can set a pointer to the corresponding chip as the
->> driver data.
->>
->>   
->> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
->> index c13dda444526..18c87fe9a41a 100644
->> --- a/drivers/iio/adc/ad7606.h
->> +++ b/drivers/iio/adc/ad7606.h
->> @@ -38,8 +38,19 @@
->>   	AD760X_CHANNEL(num, BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),\
->>   		0, BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO))
->>   
->> +enum ad7606_supported_device_ids {
->> +	ID_AD7605_4,
->> +	ID_AD7606_8,
->> +	ID_AD7606_6,
->> +	ID_AD7606_4,
->> +	ID_AD7606B,
->> +	ID_AD7616,
->> +};
->> +
->>   /**
->>    * struct ad7606_chip_info - chip specific information
->> + * @name		device name
->> + * @id			device id
-> ID in chip info normally indicates something bad in the design. In that somewhere
-> we have code that is ID dependent rather than all such code / data being
-> found directly in this structure (or callbacks found from here).
-> Can we avoid it here?
-
-Hi Jonathan,
-
-chip_info has to describe the chip hardwarewise, but there are different 
-bops depending on the wiring (interface used, and backend/no backend).
-
-The easiest way I found was to use the ID in a switch/case to 
-determinate which bops I should take (well it was only needed in the spi 
-version since it is the one supporting almost all the chips while the 
-other ones still support only one). For instance, the ad7606B will use 
-ad7606_bi_bops if it has a backend and ad7606B_spi_bops for spi version.
-
-If I can't use the ID, the only way I see is creating 3 fields in 
-chip_info (spi_ops, par_ops, backend_ops) and to initialize every 
-chip_info structure with its associated op(s) for the associated 
-interface. This would also lead to declare the different instances of 
-ad7606_bus_ops directly in ad7606.h  (I dont like it very much but see 
-no other option).
-
-Do you think it's better that way ? Or do you have any other idea ?
-
-Regards,
-
-Guillaume
-
->
->>    * @channels:		channel specification
->>    * @num_channels:	number of channels
->>    * @oversampling_avail	pointer to the array which stores the available
->> @@ -50,6 +61,8 @@
-> ...
->
->> diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
->> index d651639c45eb..7bac39033955 100644
->> --- a/drivers/iio/adc/ad7606_par.c
->> +++ b/drivers/iio/adc/ad7606_par.c
->> @@ -11,6 +11,7 @@
->>   #include <linux/mod_devicetable.h>
->>   #include <linux/module.h>
->>   #include <linux/platform_device.h>
->> +#include <linux/property.h>
->>   #include <linux/types.h>
->>   
->>   #include <linux/iio/iio.h>
->> @@ -89,12 +90,20 @@ static const struct ad7606_bus_ops ad7606_par8_bops = {
->>   
->>   static int ad7606_par_probe(struct platform_device *pdev)
->>   {
->> -	const struct platform_device_id *id = platform_get_device_id(pdev);
->> +	const struct ad7606_chip_info *chip_info;
->> +	const struct platform_device_id *id;
->>   	struct resource *res;
->>   	void __iomem *addr;
->>   	resource_size_t remap_size;
->>   	int irq;
->>   
->> +	if (dev_fwnode(&pdev->dev)) {
->> +		chip_info = device_get_match_data(&pdev->dev);
->> +	} else {
->> +		id = platform_get_device_id(pdev);
->> +		chip_info = (const struct ad7606_chip_info *)id->driver_data;
->> +	}
->> +
->>   	irq = platform_get_irq(pdev, 0);
->>   	if (irq < 0)
->>   		return irq;
->> @@ -106,25 +115,25 @@ static int ad7606_par_probe(struct platform_device *pdev)
->>   	remap_size = resource_size(res);
->>   
->>   	return ad7606_probe(&pdev->dev, irq, addr,
->> -			    id->name, id->driver_data,
-> Rewrap to move chip_info up a line perhaps.
->
->> +			    chip_info,
->>   			    remap_size > 1 ? &ad7606_par16_bops :
->>   			    &ad7606_par8_bops);
+Last note, while the iio conversion looks correct to me, I would feel
+more comfortable if there was a way to have the compiler catch that
+plain "guard(iio_claim_direct)" usage is broken. Perhaps declaring
+iio_device_claim_direct_mode() as __must_check achieves that effect?
 

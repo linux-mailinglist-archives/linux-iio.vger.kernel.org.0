@@ -1,136 +1,126 @@
-Return-Path: <linux-iio+bounces-10025-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10026-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB37F98ED1D
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 12:36:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6A298EE63
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 13:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AB192834F3
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 10:36:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E8991F232BE
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 11:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7D814F104;
-	Thu,  3 Oct 2024 10:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95C4155C94;
+	Thu,  3 Oct 2024 11:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IJb+oSGf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B21814E2CC;
-	Thu,  3 Oct 2024 10:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B91213D245;
+	Thu,  3 Oct 2024 11:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727951770; cv=none; b=OOnhKaS5sI+RKf1Nak3uSX+Dl56BftYf7n0MH2Xqd0dLTpi8SJLPYb6FtUVmk2d0DbTkD97H73tjLkPtPT56vlpecILETI8TO4qqOhSimLvTMYwThgms+TjzST4kzTz6A7WzFXuOr2VVGxUMkmNEe9n7AJsVxjaHpHmSkhyTW4s=
+	t=1727956009; cv=none; b=ibM5rA8H4+kKhFxLKeujK93dlC+Ofv+d806kpEh0/iJLySvTO8GjXQ9Gs+MP3eCb/gYEoMs3TnM4J5bsA513UOR1hrKvX8pmOd0qnJ6k4BOW4IfbESket2Ijgqv+6ei/aVz4LwLH3xe8dyaaauIhM3KUM4QKLm2hOdAkgR273S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727951770; c=relaxed/simple;
-	bh=KL/7NaUf80px9j5kVh+PueqYs3ianbam9jVZoCRkYVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=La2QeH/7K7ObDTBnGl2l2OSyTVB3WSidkXbqaIEV9I8nz1nU8pj4rnZLrWslVsHG1KQtqs7c08sWHGgrKJrO2lwHNOnw5U+9OtNnl/ClXuEzkIJGw5WsFV5fbQ1wxa7/W5Q4KdNZyNEBlERil3t0dW091Da0SAvnATQ+ND6Uho8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: 5twSyTV4Rm+h5S0mZStl0g==
-X-CSE-MsgGUID: OkYm9Q10Siec09eEGiqfbA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="44667931"
-X-IronPort-AV: E=Sophos;i="6.11,174,1725346800"; 
-   d="scan'208";a="44667931"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2024 03:36:09 -0700
-X-CSE-ConnectionGUID: hC5HWsCOTkWpI/QYqeynEg==
-X-CSE-MsgGUID: K5s4KqXlSD6RMuVnLR0GaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,174,1725346800"; 
-   d="scan'208";a="79155394"
-Received: from unknown (HELO smile.fi.intel.com) ([10.237.72.154])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2024 03:36:03 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andy@kernel.org>)
-	id 1swJBg-0000000G5iz-0tcX;
-	Thu, 03 Oct 2024 13:36:00 +0300
-Date: Thu, 3 Oct 2024 13:35:59 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
-Cc: David Lechner <dlechner@baylibre.com>,
+	s=arc-20240116; t=1727956009; c=relaxed/simple;
+	bh=qJjNmjKDHb6WVPkylAOGLdvisVk70N6aiJ6nCK0+88U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TCL3mpEGv8KXmM9l2/otLbD4F/YIViXozWqSm+nfyGe3mEcvlZ+mc/VbcICcwja2XREE279W14frvShJFeBNX5HL4vJUOW01F+yEPXxfvzpk64oZcH1istpztfuLk+F19JCneWXNyMHMlrPvZnkI467NLKRvHZ18Clwdnns0NH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IJb+oSGf; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPA id DED7FC0002;
+	Thu,  3 Oct 2024 11:46:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1727956004;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pARedIXKgyoxaKrVbEhoCIxqzLG71ZV23YjcFZPbA0E=;
+	b=IJb+oSGfuOsHfD2jXJCKF0ty6j4nEuYgXwiwaYajLS7Pk11sjByVDZkgbup40eZbV6XzXF
+	gcLDrNTY7TqguBABo+jcPg7ol4wedWMKm/0WlQR2hMl6D0/XINiH83UPrOH9cyeZEaHgiU
+	tM7i79tUuH5kJkgRs79hj2uUBA2Kqn91V7kAyEd3LYUH9aHBMFg68Ew1BVUHEyMVIjf7bX
+	sPVD4rjN0rNnCDv0tBd5isvIa3wXEMn09qI4kkGgnmZVD/XD4HtzjX4I0cvVqLDfioPqPB
+	jZaLQZZEmXL4M8pEokOEewYvOgiffD304ex/vF/0rPr8+14Fd3S/Y4+p7bM5tg==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	"Hennerich, Michael" <Michael.Hennerich@analog.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, "Sa, Nuno" <Nuno.Sa@analog.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	"Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	"Cuciurean, Sergiu" <Sergiu.Cuciurean@analog.com>,
-	"Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH 6/7] iio: adc: ad485x: add ad485x driver
-Message-ID: <Zv5zj0PFhxoeBUXQ@smile.fi.intel.com>
-References: <20240923101206.3753-1-antoniu.miclaus@analog.com>
- <20240923101206.3753-7-antoniu.miclaus@analog.com>
- <20240928184722.314b329b@jic23-huawei>
- <CY4PR03MB33991208029C4877760B528D9B772@CY4PR03MB3399.namprd03.prod.outlook.com>
- <Zvvw7ah4wGsl2vjw@smile.fi.intel.com>
- <CY4PR03MB3399D90F2A3C7AE3505B60A29B772@CY4PR03MB3399.namprd03.prod.outlook.com>
- <4ee001d2-67d0-45ab-ae62-ce5b8dd7553e@baylibre.com>
- <CY4PR03MB3399D9B9C5B4952E7A7F40F39B712@CY4PR03MB3399.namprd03.prod.outlook.com>
+	Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: [PATCH v2 0/4] Add support for the GE HealthCare PMC ADC
+Date: Thu,  3 Oct 2024 13:46:37 +0200
+Message-ID: <20241003114641.672086-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CY4PR03MB3399D9B9C5B4952E7A7F40F39B712@CY4PR03MB3399.namprd03.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-On Thu, Oct 03, 2024 at 10:14:57AM +0000, Miclaus, Antoniu wrote:
-> > On 10/1/24 8:51 AM, Miclaus, Antoniu wrote:
-> > >>> Regarding the bulk writes/reads, the msb/mid/lsb registers need to be
-> > >>> read/write in a specific order and the addresses are not incremental,
-> > >>
-> > >> We have _noinc() variants of regmap accessors.
-> > > [Miclaus, Antoniu]
-> > > I think _noinc() functions read from the same register address so it doesn't
-> > > apply.
-> > > I am reading values from multiple register addresses that are not reg_addr,
-> > > reg_addr+1, reg_addr+2.
-> > 
-> > I'm confused by the statement that the registers are not incremental.
-> > 
-> > For example, this patch defines...
-> > 
-> > +#define AD485X_REG_CHX_OFFSET_LSB(ch)
-> > 	AD485X_REG_CHX_OFFSET(ch)
-> > +#define AD485X_REG_CHX_OFFSET_MID(ch)
-> > 	(AD485X_REG_CHX_OFFSET_LSB(ch) + 0x01)
-> > +#define AD485X_REG_CHX_OFFSET_MSB(ch)
-> > 	(AD485X_REG_CHX_OFFSET_MID(ch) + 0x01)
-> > 
-> > This looks exactly like reg_addr, reg_addr+1, reg_addr+2 to me.
-> Yes you are right. Although I tested with hardware and it seems that the registers
-> are not properly written when using bulk operations. My guess is that holding CS low during
-> the entire transaction might be a possible issue. Any suggestions are appreciated.
+Hi,
 
-Okay, so each byte has to be written as a separate SPI transfer?
-I believe we have already examples of the drivers for such a hardware
-in the Linux kernel, but I can't throw any example form top of my head.
+The GE HealthCare PMC Analog to Digital Converter (ADC) is a 16-Channel
+voltage and current, 16-Bit ADC with an I2C Interface.
 
-> > >>> so I am not sure how the bulk functions fit. On this matter, we will need
-> > >>> unsigned int (not u8) to store the values read via regmap_read, and in this
-> > >>> case we will need extra casts and assignments to use get_unaligned.
+Compare to the previous iteration, this v2 series mainly:
+  - Add a description in the binding
+  - Fixed sign_extend32() parameter
+  - Use dev_err_probe()
+  - Remove scale and use processed channels
+
+Best regards,
+Herve Codina
+
+Changes v1 -> v2
+  v1: https://lore.kernel.org/lkml/20241001074618.350785-1-herve.codina@bootlin.com/
+
+  - Patch 1
+    Add 'Acked-by: Conor Dooley <conor.dooley@microchip.com>'
+
+  - Patch 2
+    Add a desccription for the 'osc' clock.
+
+  - Patch 3
+    Replace sign_extend32(ret, 16) by sign_extend32(ret, 15).
+    Use dev_err_probe().
+    Remove scale and use processed channels as values are read in IIO
+    expected unit (mV or mA).
+
+  - Patch 4
+    No changes
+
+Herve Codina (4):
+  dt-bindings: vendor-prefixes: Add an entry for GE HealthCare
+  dt-bindings: iio: adc: Add the GE HealthCare PMC ADC
+  iio: adc: Add support for the GE HealthCare PMC ADC
+  MAINTAINERS: add the GE HealthCare PMC ADC driver entry
+
+ .../bindings/iio/adc/gehc,pmc-adc.yaml        |  86 +++++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/gehc-pmc-adc.c                | 227 ++++++++++++++++++
+ include/dt-bindings/iio/adc/gehc,pmc-adc.h    |  10 +
+ 7 files changed, 344 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/gehc,pmc-adc.yaml
+ create mode 100644 drivers/iio/adc/gehc-pmc-adc.c
+ create mode 100644 include/dt-bindings/iio/adc/gehc,pmc-adc.h
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.46.1
 
 

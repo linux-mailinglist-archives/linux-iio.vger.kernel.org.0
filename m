@@ -1,76 +1,101 @@
-Return-Path: <linux-iio+bounces-10011-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10012-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EF298E4DA
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 23:25:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E17BF98E7A3
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 02:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 019BE1C21ADC
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Oct 2024 21:25:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DF45B25331
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 00:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FD4216A3D;
-	Wed,  2 Oct 2024 21:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C06748D;
+	Thu,  3 Oct 2024 00:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lRgDmIPY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oKI78aLz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8511D1316
-	for <linux-iio@vger.kernel.org>; Wed,  2 Oct 2024 21:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1C264A;
+	Thu,  3 Oct 2024 00:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727904297; cv=none; b=HdwNZgI8QQ7UwC8WXWYYWen0Wk+ZODhUygwJ1elPvY158lX94R19BqGCSKHurUwIWPfQiBG+XnyrfkSvqE9PudvXlrNwWyryhO2frzxF2O4IiVsbCX7+j7vg+Qeox0pa36+hfV7a0wdeFKiqs60hVJcGOhedk3HIg+/sAFKb+0A=
+	t=1727914619; cv=none; b=npU24QZT1SHf/BdiSyxiyTkWUzkAvdbzRi3yz8F9S8CfDkP6nVxHchZW9+AkJALUzzANepkxJPhr4ljadxsyLkNQlTAT7C0RZQe3qoF7xNm0fQW1Aq1Vwyixa/fsL1nLGIWEEa3U0w8o76NKSyy2g48gIeuKoxuTaiEE5jYUk/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727904297; c=relaxed/simple;
-	bh=Aw77APlnH+yDg42+s0HVX8UgxRMvSO6hfy2XOayYMts=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XbbdUwDWKcfU794Ko4eDMHlqDKC/MXlzgixrqvcN46nQozb4gv+T1wp5DcN2N9SbIQ+ZYHHQnz59bBQyS1IbldrWlx6nJw0yPyU8xY/9/tvXRv5GG47GALJE3fB2OxAMcoQeH0/v8RiwUQkazF+0ejrfc8nzg4uFuYFiFqq7vvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lRgDmIPY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 76793C4CEC5
-	for <linux-iio@vger.kernel.org>; Wed,  2 Oct 2024 21:24:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727904296;
-	bh=Aw77APlnH+yDg42+s0HVX8UgxRMvSO6hfy2XOayYMts=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=lRgDmIPYN74gZOn4ByfIRPy9thmdRox7BoWQCZrIySJPEDn0quFONKXWpffUE7CSC
-	 NwoSVSFDQ3NBgQ5++2o+yjB5UL/aWx7b1SWOYKHLy07chLa3efDN6R9xmlQDLGIed7
-	 5ZQt7I1asN4RaK+YUrmUfQ5K/jG2q5M92OM1mkDsuWOT9hBofoW8S03PNXlfZH7HGP
-	 VrHfu59RmCnNRnKF4Ns6BKPefdl/jL2f7UgnCssNzbVLq62eFoJw9afjAPV1s95Bz4
-	 VoZFwf6lww/HHASuv/aTYTSitJH+UJuNI7bG92D8SPmT6S31sy93tdjTZqzx84ikr5
-	 K2Q4zt7Oz/UBA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 6A123C53BC9; Wed,  2 Oct 2024 21:24:56 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 219192] drivers/iio/imu/adis16400.o: warning: objtool:
- adis16400_write_raw() falls through to next function
- adis16400_show_flash_count()
-Date: Wed, 02 Oct 2024 21:24:56 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: tudor.reda@gmail.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-219192-217253-hHOd4hSpUz@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-219192-217253@https.bugzilla.kernel.org/>
-References: <bug-219192-217253@https.bugzilla.kernel.org/>
+	s=arc-20240116; t=1727914619; c=relaxed/simple;
+	bh=t783UiUjich5X9sa7ujzAR59XVGTzDqvLbn/mKTpiX0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Kv5qYDtcKUg+EvnWQM1MQDjo6glTf3dBF+0dW4b1i2MzL1P5AeYOzlWnROgy4jKcBIQjHqzGrjaMhTe6vgaO4TOBSMR8jYwgeSbIdKmhxPSnJC08XDQFNPJpTMreRPIxOWRXaP+n7hskPkbX2E/R9MYjwzde+GF2l7ULZE6ShVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oKI78aLz; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727914618; x=1759450618;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=t783UiUjich5X9sa7ujzAR59XVGTzDqvLbn/mKTpiX0=;
+  b=oKI78aLzF16dDX65WzG8yegrEJ21c6mERrt2HiBlZ9xH9EjwsVrCHn0M
+   U7j9ae8204ICw7+DLPrhkXm+Wz5i6PV/34Nft+LjS/9zmTOP+XRh/stju
+   HtSBRlNmEWiZUog91EYDzs10aWHz0jO+JehYl/apKZm38ZlK/3DDQX+zG
+   L8hyDh77nyU6ZCBl0VjO0JkxFuL+GUzTLGIQN2oJkg2vNsglhMzjctTe6
+   kaOUdyMWkcESN5BMIWyBs+TSjazOZ3E73aRoUsYhVFtDR/Zb5E0sv0k/j
+   Mb7Kl7lT3D2kNBHgkNrN+LgfqctSTjk+dflgmpHF2wHcmipMkpiZAOFmF
+   Q==;
+X-CSE-ConnectionGUID: PnbsB371S06a2oHkoLZoKw==
+X-CSE-MsgGUID: gce1vaCFSNezU/I/vkJXKQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="38483210"
+X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
+   d="scan'208";a="38483210"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 17:16:57 -0700
+X-CSE-ConnectionGUID: Uj2jFyvbQ+Og+6tBwNr1TA==
+X-CSE-MsgGUID: 5JQtABJwRCq2sp64ZE4utQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
+   d="scan'208";a="74419035"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.125.109.106])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 17:16:57 -0700
+Message-ID: <edd074ed88830180527417aa45ff222cbb71c1f2.camel@linux.intel.com>
+Subject: Re: [PATCH v8 1/9] HID: hid-sensor-hub: don't use stale
+ platform-data on remove
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Heiko Stuebner <heiko@sntech.de>, lee@kernel.org, jikos@kernel.org, 
+	jic23@kernel.org
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ jdelvare@suse.com,  linux@roeck-us.net, bentiss@kernel.org,
+ dmitry.torokhov@gmail.com, pavel@ucw.cz,  ukleinek@debian.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-leds@vger.kernel.org
+Date: Wed, 02 Oct 2024 17:16:56 -0700
+In-Reply-To: <20240908210803.3339919-2-heiko@sntech.de>
+References: <20240908210803.3339919-1-heiko@sntech.de>
+	 <20240908210803.3339919-2-heiko@sntech.de>
+Autocrypt: addr=srinivas.pandruvada@linux.intel.com; prefer-encrypt=mutual;
+ keydata=mQGNBGYHNAsBDAC7tv5u9cIsSDvdgBBEDG0/a/nTaC1GXOx5MFNEDL0LWia2p8Asl7igx
+ YrB68fyfPNLSIgtCmps0EbRUkPtoN5/HTbAEZeJUTL8Xdoe6sTywf8/6/DMheEUzprE4Qyjt0HheW
+ y1JGvdOA0f1lkxCnPXeiiDY4FUqQHr3U6X4FPqfrfGlrMmGvntpKzOTutlQl8eSAprtgZ+zm0Jiwq
+ NSiSBOt2SlbkGu9bBYx7mTsrGv+x7x4Ca6/BO9o5dIvwJOcfK/cXC/yxEkr1ajbIUYZFEzQyZQXrT
+ GUGn8j3/cXQgVvMYxrh3pGCq9Q0Q6PAwQYhm97ipXa86GcTpP5B2ip9xclPtDW99sihiL8euTWRfS
+ TUsEI+1YzCyz5DU32w3WiXr3ITicaMV090tMg9phIZsjfFbnR8hY03n0kRNWWFXi/ch2MsZCCqXIB
+ oY/SruNH9Y6mnFKW8HSH762C7On8GXBYJzH6giLGeSsbvis2ZmV/r+LmswwZ6ACcOKLlvvIukAEQE
+ AAbQ5U3Jpbml2YXMgUGFuZHJ1dmFkYSA8c3Jpbml2YXMucGFuZHJ1dmFkYUBsaW51eC5pbnRlbC5j
+ b20+iQHRBBMBCAA7FiEEdki2SeUi0wlk2xcjOqtdDMJyisMFAmYHNAsCGwMFCwkIBwICIgIGFQoJC
+ AsCBBYCAwECHgcCF4AACgkQOqtdDMJyisMobAv+LLYUSKNuWhRN3wS7WocRPCi3tWeBml+qivCwyv
+ oZbmE2LcxYFnkcj6YNoS4N1CHJCr7vwefWTzoKTTDYqz3Ma0D0SbR1p/dH0nDgN34y41HpIHf0tx0
+ UxGMgOWJAInq3A7/mNkoLQQ3D5siG39X3bh9Ecg0LhMpYwP/AYsd8X1ypCWgo8SE0J/6XX/HXop2a
+ ivimve15VklMhyuu2dNWDIyF2cWz6urHV4jmxT/wUGBdq5j87vrJhLXeosueRjGJb8/xzl34iYv08
+ wOB0fP+Ox5m0t9N5yZCbcaQug3hSlgp9hittYRgIK4GwZtNO11bOzeCEMk+xFYUoa5V8JWK9/vxrx
+ NZEn58vMJ/nxoJzkb++iV7KBtsqErbs5iDwFln/TRJAQDYrtHJKLLFB9BGUDuaBOmFummR70Rbo55
+ J9fvUHc2O70qteKOt5A0zv7G8uUdIaaUHrT+VOS7o+MrbPQcSk+bl81L2R7TfWViCmKQ60sD3M90Y
+ oOfCQxricddC
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,44 +103,94 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219192
+On Sun, 2024-09-08 at 23:07 +0200, Heiko Stuebner wrote:
+> The hid-sensor-hub creates the individual device structs and
+> transfers them
+> to the created mfd platform-devices via the platform_data in the
+> mfd_cell.
+>=20
+> Before commit e651a1da442a ("HID: hid-sensor-hub: Allow parallel
+> synchronous reads")
+> the sensor-hub was managing access centrally, with one "completion"
+> in the
+> hub's data structure, which needed to be finished on removal at the
+> latest.
+>=20
+> The mentioned commit then moved this central management to each hid
+> sensor
+> device, resulting on a completion in each struct
+> hid_sensor_hub_device.
+> The remove procedure was adapted to go through all sensor devices and
+> finish any pending "completion".
+>=20
+> What this didn't take into account was, platform_device_add_data()
+> that is
+> used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
+> platform-data. So the data the platform-device gets is a copy of the
+> original data, meaning that the device worked on a different
+> completion
+> than what sensor_hub_remove() currently wants to access.
+>=20
+> To fix that, use device_for_each_child() to go through each child-
+> device
+> similar to how mfd_remove_devices() unregisters the devices later and
+> with that get the live platform_data to finalize the correct
+> completion.
+>=20
+> Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous
+> reads")
+> Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
---- Comment #6 from Tudor Gheorghiu (tudor.reda@gmail.com) ---
-I saw this bugreport and I must say I encountered a somewhat similar but
-not quite the same warning message from objtool when compiling with
-clang.
+> ---
+> =C2=A0drivers/hid/hid-sensor-hub.c | 21 ++++++++++++++-------
+> =C2=A01 file changed, 14 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/hid/hid-sensor-hub.c b/drivers/hid/hid-sensor-
+> hub.c
+> index 26e93a331a51..3cd00afa453a 100644
+> --- a/drivers/hid/hid-sensor-hub.c
+> +++ b/drivers/hid/hid-sensor-hub.c
+> @@ -730,23 +730,30 @@ static int sensor_hub_probe(struct hid_device
+> *hdev,
+> =C2=A0	return ret;
+> =C2=A0}
+> =C2=A0
+> +static int sensor_hub_finalize_pending_fn(struct device *dev, void
+> *data)
+> +{
+> +	struct hid_sensor_hub_device *hsdev =3D dev->platform_data;
+> +
+> +	if (hsdev->pending.status)
+> +		complete(&hsdev->pending.ready);
+> +
+> +	return 0;
+> +}
+> +
+> =C2=A0static void sensor_hub_remove(struct hid_device *hdev)
+> =C2=A0{
+> =C2=A0	struct sensor_hub_data *data =3D hid_get_drvdata(hdev);
+> =C2=A0	unsigned long flags;
+> -	int i;
+> =C2=A0
+> =C2=A0	hid_dbg(hdev, " hardware removed\n");
+> =C2=A0	hid_hw_close(hdev);
+> =C2=A0	hid_hw_stop(hdev);
+> +
+> =C2=A0	spin_lock_irqsave(&data->lock, flags);
+> -	for (i =3D 0; i < data->hid_sensor_client_cnt; ++i) {
+> -		struct hid_sensor_hub_device *hsdev =3D
+> -			data-
+> >hid_sensor_hub_client_devs[i].platform_data;
+> -		if (hsdev->pending.status)
+> -			complete(&hsdev->pending.ready);
+> -	}
+> +	device_for_each_child(&hdev->dev, NULL,
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sensor_hub_finalize_pending_fn);
+> =C2=A0	spin_unlock_irqrestore(&data->lock, flags);
+> +
+> =C2=A0	mfd_remove_devices(&hdev->dev);
+> =C2=A0	mutex_destroy(&data->mutex);
+> =C2=A0}
 
-This is my environment:
-Linux version 6.12.0-rc1+ (Ubuntu clang version 18.1.3 (1ubuntu1), Ubuntu L=
-LD
-18.1.3)
-
-This is the objtool warning:
-> drivers/iio/imu/adis16400.o: warning: objtool: adis16400_write_raw+0x89:
-> can't find jump dest instruction at .text+0x8be
-
-I dissasembled the binary and this is what I found at that offset:
->    0x0000000000000781 <+113>: jmp    0x8a4 <adis16400_write_raw+404>
->    0x0000000000000786 <+118>: mov    %rdi,%r12
->    0x0000000000000789 <+121>: lea    0x30(%r14),%rdi
->    0x000000000000078d <+125>: call   0x792 <adis16400_write_raw+130>
->    0x0000000000000792 <+130>: mov    %r14,%rbx
->    0x0000000000000795 <+133>: add    $0x30,%rbx
->    0x0000000000000799 <+137>: je     0x8be
-
-Looking at .text+0x8be:
-> (gdb) x/4i 0x00000000000008be+0x8be
->    0x117c <adis16300_channels+1180>:  add    %al,(%rax)
->    0x117e <adis16300_channels+1182>:  add    %al,(%rax)
->    0x1180 <adis16300_channels+1184>:  add    $0x0,%al
->    0x1182 <adis16300_channels+1186>:  add    %al,(%rax)
-
-I cannot tell if this is an actual issue, or just a false positive,
-but I decided to post my findings here nevertheless.
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
 

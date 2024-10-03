@@ -1,116 +1,158 @@
-Return-Path: <linux-iio+bounces-10043-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10044-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CD798F093
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 15:38:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E2498F0A6
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 15:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05DCD1C20FEB
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 13:38:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3D93283E6E
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 13:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81FC19CCFA;
-	Thu,  3 Oct 2024 13:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4411819CC27;
+	Thu,  3 Oct 2024 13:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oNuc8ByM"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XBl0p+c1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F1519B3F9;
-	Thu,  3 Oct 2024 13:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA71F19C57F
+	for <linux-iio@vger.kernel.org>; Thu,  3 Oct 2024 13:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727962713; cv=none; b=eWf1EHyG3qC/eTQ+iJbAiZJcnreCgskS26ZtqDIAkCJEhjmY7UBSZt9ESjDFj79CxwXTld3JV1uPQeZ5pV/rWYDdHdjgmygp9oHDWiadkqZj2YwMWCsPszZh3VwUjyd+XOBe4EaYcT/hfIxyoRUDKNg6j72oJx+Bodh7+pIhQtI=
+	t=1727962801; cv=none; b=SsaoP2e1cEFKl8RkURPFQO8CtGLFEEz3s7Q+rNAEbvM5qO/n3eqZz3xNzTaKtmGEVL7CNBryXDndgkyoiysU1TURO6oyJIudCAYM8doDPMeD6Li/SWDIne1Dy/i3Zg4VpBNoOvl1vizo9BDHwh/ttgPFsCeqSHD9OGXOAigicpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727962713; c=relaxed/simple;
-	bh=qCk7a/dUr5axlHi54k4hn+N7hqMMBrQTxORi8yOc0KU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CpuVjrgYiXes5unqO40nHaDu4ftDSB5D/qUkfW6ZoO17MF/CmRwrSxYknDo5EQsA3uMGuLIR/QHmilMgwUbZ+zzW9bnjcHPnP7SKKOmTcbr79JEzbkCXmueSkTmYEiB5brLBaXIDeM1mYahtFTV5oVxOLVmRQ8Rj6kmJ4ZMYZCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oNuc8ByM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 29940C4CED1;
-	Thu,  3 Oct 2024 13:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727962713;
-	bh=qCk7a/dUr5axlHi54k4hn+N7hqMMBrQTxORi8yOc0KU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=oNuc8ByMgmDPEnktrMDFyBPJk/giXGDhyu+Uf7hmbg91dEFOHiM2E0bRlDeAPt0xb
-	 6QDGZzB0/PvNNBhQIg7sIbsGKOejjjt+VaWjYpObQp5LeghgGC0v/9JEgy3d1YPfP8
-	 1906BvitsWQ71eC2qoesm1UhXnAJ7xmawIMqnNtN8kJcgurWSp+AcJqcCb1CQmlzbk
-	 p9WwLiyUEaqr8AZ9lZ+EZ0vIjWc21raNKx1ZGL3QEjLNvuBqsgI49x4MUyjN4Uc8yw
-	 06g06awalONVr49UodIiVtZ8J6acmAwH4FN/t8KVT4wdiU/XWhbFn9HGTka65YCK5h
-	 tYoTTu0dvqwRQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D480CF34AE;
-	Thu,  3 Oct 2024 13:38:33 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Thu, 03 Oct 2024 15:38:24 +0200
-Subject: [PATCH v2 3/3] MAINTAINERS: iio: imu: add entry for InvenSense
- MPU-6050 driver
+	s=arc-20240116; t=1727962801; c=relaxed/simple;
+	bh=ImQWi8bDG3NrV5BoM1m0/vC7/PTgqm0dE4tVrwGjJe8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MLf4BEblrkr4c9n2QL3KsVzHmjAkElB0P9nWBXA5aCxQgHOY40PbGYMHnKX8A8A9S3wykEjFzzrxtulj8gyT3VL/MUbBfWMuDoFD/HHz83/ThgqGZ8/7LMjIjMXYw8W7FHkGbhuIryq3p4HOih6eW6vuUfWIlRUK5ms2SlfF4Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XBl0p+c1; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-286f304f504so480443fac.1
+        for <linux-iio@vger.kernel.org>; Thu, 03 Oct 2024 06:39:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1727962798; x=1728567598; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=g3eGOVQW6LyZhzgIoNdSlaLLYNUqeTgHsLVhuM5ZBgE=;
+        b=XBl0p+c1V3VLrNQqgJ/hH2874gSiYUY4Kt3crlLrvW4PCwKtz6WILu+d0Nbon29DwR
+         BHpNgTwt6VQzYJ5pkd3wXtpbNw5NApfOCETJYjKMqWOOGRv5PP4Y6QRs9/iO1tzTBp/e
+         q/7GN1Yvr0SLn3DefpBusjoKsga7sodoa8qDNq0Q2tDhA1RzYA+ypS70Uo4ZmWIuU/UU
+         XR7xZEhCLe0qOC06Lw8jw9VL1We1u5YR5tTXMqEy9Lx9yXmUXGh9z5ECIRzJB1qTAW4N
+         K8jwWNrTUf1NXTJA2lhLEzf1IX2MPRtM7Db/ac+1G+obiVZ+ayCGCFgL7yYXEMS5b4nK
+         pvqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727962798; x=1728567598;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g3eGOVQW6LyZhzgIoNdSlaLLYNUqeTgHsLVhuM5ZBgE=;
+        b=JhCxVPgdnO+ZYBfGAijqjArmsmOGoGJLQdj6PydbTfxe+1y3h2VDWQNKf7Yf4iM7d9
+         Cm3kl6Z5wV9ZcMt3oFEm6GmuzmcjfkngqWby0l/E4K6P1tSp+rxd+eJC3vc3XFNxAVgZ
+         yjjeyq7hKJkyJmRjC5n5qDHQ+bXJR06lFSYoAx5PGhF/2XTRZW5jxzWB2iE+vA2rTuRk
+         ZlpUSJuGymO38DWPcmGW19aArm2YVm8h+xv2BM4r6x8uztOe6tHbo/YfH3Z4DC6/fBGI
+         9JQNwvybp77q0A4SMfMh64BssUDrfEWCbijeZwT8VZM3UQYh4rTBHijetL5lurjB057g
+         N3Zw==
+X-Gm-Message-State: AOJu0YyHkTvXU7d0ScwI2kE1/bA6DpzH70GYbLrrmoSx0okyusmPASf0
+	ttQovq4VjaqqB6N9phTX/WSu6pYJaTgZ+vuvokGgQiTdo0h9kcZzV27YHGReUE8=
+X-Google-Smtp-Source: AGHT+IGZuvs26FhH3bjDKJGfAMoutPN5LFT9w/usT9UzEvNftVGxVwVPZ4OarD2He65+ZwQwDEu6Wg==
+X-Received: by 2002:a05:6870:7182:b0:268:282b:bdec with SMTP id 586e51a60fabf-287a3e35caamr1589871fac.8.1727962797866;
+        Thu, 03 Oct 2024 06:39:57 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-287abbc6f53sm445891fac.36.2024.10.03.06.39.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Oct 2024 06:39:56 -0700 (PDT)
+Message-ID: <cdc27a53-281d-41d7-a9b5-196f2650c468@baylibre.com>
+Date: Thu, 3 Oct 2024 08:39:54 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241003-invn-maintainers-email-update-v2-3-ca5a4928eb22@tdk.com>
-References: <20241003-invn-maintainers-email-update-v2-0-ca5a4928eb22@tdk.com>
-In-Reply-To: <20241003-invn-maintainers-email-update-v2-0-ca5a4928eb22@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] iio: adc: Add support for the GE HealthCare PMC
+ ADC
+To: Herve Codina <herve.codina@bootlin.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727962711; l=954;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=w9mTW2Po/F6sYjTvjGIGExFNOUZEA5q45EE+lyY0DjA=;
- b=od162YpKu2Rq+3r0ZvuWNQ3hUOc6rbjejNcZnWJQmHhrDIlFv2UHxUKd3DQAPqZ+88jeZDrB1
- VrgMXXZbqvOAFCHEpLF5Ws8Q+24kJMSWeyfc1nj+SMIgknJmFWnGwLE
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Ian Ray <ian.ray@gehealthcare.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20241003114641.672086-1-herve.codina@bootlin.com>
+ <20241003114641.672086-4-herve.codina@bootlin.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241003114641.672086-4-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On 10/3/24 6:46 AM, Herve Codina wrote:
+> The GE HealthCare PMC Analog to Digital Converter (ADC) is a 16-Channel
+> (voltage and current), 16-Bit ADC with an I2C Interface.
+> 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
 
-Add entry for inv_mpu6050 iio driver supporting InvenSense MPU-6xxx
-and ICM-206xxx devices.
+...
 
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b6b252b991a514e225df309485c708c2af547f57..fba699e27612997ed1465ae080632dbeb0639be5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11913,6 +11913,14 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/gyroscope/invensense,mpu3050.yaml
- F:	drivers/iio/gyro/mpu3050*
- 
-+INVENSENSE MPU-6050 IMU DRIVER
-+M:	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+W:	https://invensense.tdk.com/
-+F:	Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-+F:	drivers/iio/imu/inv_mpu6050/
-+
- IOC3 ETHERNET DRIVER
- M:	Ralf Baechle <ralf@linux-mips.org>
- L:	linux-mips@vger.kernel.org
+> +
+> +static int pmc_adc_probe(struct i2c_client *client)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct pmc_adc *pmc_adc;
+> +	struct clk *clk;
+> +	s32 val;
+> +	int ret;
+> +
+> +	ret = devm_regulator_bulk_get_enable(&client->dev, ARRAY_SIZE(pmc_adc_regulator_names),
+> +					     pmc_adc_regulator_names);
+> +	if (ret)
+> +		return dev_err_probe(&client->dev, ret, "Failed to get regulators\n");
+> +
+> +	clk = devm_clk_get_optional_enabled(&client->dev, "osc");
+> +	if (IS_ERR(clk))
+> +		return dev_err_probe(&client->dev, PTR_ERR(clk), "Failed to get osc clock\n");
+> +
+> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*pmc_adc));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	pmc_adc = iio_priv(indio_dev);
+> +	pmc_adc->client = client;
+> +
+> +	val = i2c_smbus_read_byte_data(pmc_adc->client, PMC_ADC_CMD_REQUEST_PROTOCOL_VERSION);
+> +	if (val < 0)
+> +		return dev_err_probe(&client->dev, val, "Failed to get protocol version\n");
+> +
+> +	if (val != 0x01)
+> +		return dev_err_probe(&client->dev, -EINVAL,
+> +				     "Unsupported protocol version 0x%02x\n", val);
+> +
+> +	indio_dev->name = "pmc_adc";
+> +	indio_dev->info = &pmc_adc_info;
+> +	indio_dev->channels = pmc_adc_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(pmc_adc_channels);
 
--- 
-2.46.2
+I don't think the core code actually checks this, but for
+correctness we should add:
 
+	indio_dev->modes = INDIO_DIRECT_MODE;
+
+> +
+> +	return devm_iio_device_register(&client->dev, indio_dev);
+> +}
+> +
+
+With that...
+
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

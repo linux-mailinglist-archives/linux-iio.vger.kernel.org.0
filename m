@@ -1,132 +1,177 @@
-Return-Path: <linux-iio+bounces-10060-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10061-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B42998F48D
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 18:52:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7247A98F4A0
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 18:54:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A0641C20DD5
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 16:52:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEDFCB23DD8
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 16:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6231AD3E5;
-	Thu,  3 Oct 2024 16:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BF11A76BB;
+	Thu,  3 Oct 2024 16:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FxjLOwxE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q502WiS3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416321ABEDF;
-	Thu,  3 Oct 2024 16:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CC21A76AC;
+	Thu,  3 Oct 2024 16:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727974201; cv=none; b=TbXGMg9B+HtnkGZ18T38CQZkOPmpg6gaOn1mO55RjKDRViBx4sU6tfs6H6gsIgg782Ol62wxCr/AzPWSM9/UBv5MQz95NR5g1pb6Ftm2whaSmJbM+/xC1Ul1TNgM2/Z+LPZVvHW5vfojERaPP4pwydc3/STQUrNrU4XLx2iRWbI=
+	t=1727974473; cv=none; b=dYNjidQBVK+ocZgOxiIL853SGoMI+o++iTrb1maEeHjDeBxUoI++GXUWJPPxj742fK044TKFTQLbx1N6mhgPqczRkR/CdVyJh22RI/Sb8xGEKG1DL5ywyXGdWaiQQRAxsa9g9XIy747MU7KojCF8wAjnZXgSusY5LNkx6k8TQRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727974201; c=relaxed/simple;
-	bh=Uh91tTL/mMMJSpE+mNqFNymkeRxM5fYzexOGyP4lCJA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=r7R+yCE9UX1AL2flVmZ2PJy4iXEg1OAdygd12tR65RbtqyaCEcaGbcTXpSlMV5Gpc/O4Sd/VRabYTA03L6lqxA37MO8AF8xwQvxmi4jIuu3mDOGDV+9gyzft9kdibKJlJG8U/R9WpYsrq3G/+JvCtASjkvFn6WeXw8xy8VtlaYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FxjLOwxE; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42cae102702so9904595e9.0;
-        Thu, 03 Oct 2024 09:49:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727974197; x=1728578997; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PjnhERr66k11ipGDbg0FidSma7lpRl30hnVWArjqldc=;
-        b=FxjLOwxEsYTFqvPwKpguEThAta4DJEVtaMJ/PCAuK5oDh3oL1spJJhIwg490s3t5zc
-         uIf9rr686mZNVg+4TklDhgG5KHI6BJcgeWPkskhZoQtqgSuM7m2I5FHlIBkSPxKHDdJC
-         /EokMW/oFPBEW1zo1ZDYJVhdyC5tgozLUKS3I/WD3CMNQzB3vJHLng3CyuGybw3Dhmxf
-         iIhD1dP3q3//THxqlU6bcWaiIqH93/DD/jYQBQcpfX4ebNpr5hV/Rge5F1fH2lHzdtXz
-         4pXqcPy0pNs4c9apW3rNTP07IWss0rnOpj0yPcQFDmpjrqDlSN7tYkQuoYGH/AYHk5P4
-         MQYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727974197; x=1728578997;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PjnhERr66k11ipGDbg0FidSma7lpRl30hnVWArjqldc=;
-        b=qKQ+6P/63BxTwWNgWQNICTtmTveUxfgPFHKxXM2TcWFsOfdgmjQcGeA06yN+NQmcFf
-         xvuycsQnCIwTi5EC+YKjQwxY+ol1Syz50XzIkczW4rwQvjwu3ylVll08LbD3YMukj73w
-         AjEfHuBQlitPaJnrS9CI567GJhkjymBL+9bHPGzFPad6qNJuKHDqOhrAijlSCWVlrrfl
-         MOgZj2vfutK7Pafa9ezGfKZOwmchV6L7UPPLbB74EfgfKJlsh4WIG5ibzH4HPDqhudhY
-         aB/beOZA2hJleIM1s0fDweMDzdOonmhowlshlG/T5XTfT0/MBJykaSYwCM8qmp5AJg92
-         3SFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUAZbwwQDGNBWLuuTSLd4CsHqHy17E6kD56jobXxOs+IDy8JEQc5Bgqx1zm8uvma4CmCHLdj8ZHv1jL+CJR@vger.kernel.org, AJvYcCXFopsznV7LwVocSIU3Vzv7pAqD14onWRTF/X6l/yPZwdyz2zyCmMml2DDCfhe10uA64cibtdIojhs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4OWhCKmi7fkGWTYywEwSbjGoiwn+hW9AWwFBMENio6O4ZjUll
-	9n5hvHAE8p8GyWp41Yxw3F0r3FojjVs9IbJDt2JjJ2CRFrjYkzdhISfrziCN
-X-Google-Smtp-Source: AGHT+IFF7HIQj3jQEZ/yr4OHl2W5P12TdGeEHUavz1284RR+ngbaMCxpz4xpOmNLAkuKhpc54/TpxA==
-X-Received: by 2002:a05:600c:1c98:b0:426:5ef5:bcb1 with SMTP id 5b1f17b1804b1-42f777b5d7dmr47369045e9.6.1727974196982;
-        Thu, 03 Oct 2024 09:49:56 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-3ec5-11f2-e453-20e3.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:3ec5:11f2:e453:20e3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f802a0134sm19783385e9.31.2024.10.03.09.49.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2024 09:49:56 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 03 Oct 2024 18:49:40 +0200
-Subject: [PATCH 8/8] iio: dac: stm32-dac-core: add missing select
- REGMAP_MMIO in Kconfig
+	s=arc-20240116; t=1727974473; c=relaxed/simple;
+	bh=b5VV70l1l2x0FaY12MMCxHA6OEzS+FX+3RPBMB19LDA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QM6CRxNXDBL0Qzk3chHMRo5OwjNqEvGCOMj7as1kThdj2ejsE97LcUfqN9tErhvow/PRmArZGkL7e4/EUVuhJAtuj7+ml9FMLXKQZqYMo1mJY65heWt4iC2u2kc+ZAJ2WRHV1frGeiNcy3Wk0rRpAkTWl6rO9eHC6uVUlzn2cTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q502WiS3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9D1C4CEC5;
+	Thu,  3 Oct 2024 16:54:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727974473;
+	bh=b5VV70l1l2x0FaY12MMCxHA6OEzS+FX+3RPBMB19LDA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=q502WiS3C/JlyOfEm5eTDeMsuGh2JhZ6yYkGomOxe/zMSHmIK4AUIM5IU72lSCLui
+	 ATQWXz8/ANihtCBnn3HWXKjAd0qblCOs8c6TCMJGrSwPR7f+1FM/0wD31PmQlsn/FB
+	 dmSYE+mhxWKiEGjEbiFvPNp3ahY70dfhO99UBykVSLKZHGZCsUDm/rb1Mbck7xsq0O
+	 dgqFm+VQYNMwruapWrBAzT+BS1J14zaRsbnKVw3FaQG5VfMAuUVyOB4NECz7OxQe9g
+	 vAgZs66ypW/eRS4pUS+B9q+sZvpyjYz/ehIKZGvSmeUh8KP1WuvDNahbOk/vNPcZJZ
+	 Zs/OWWl5Lk6bg==
+Message-ID: <79a451ca-5152-4098-882b-c6279b9ba096@kernel.org>
+Date: Thu, 3 Oct 2024 18:54:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: light: Document TI OPT4060 RGBW
+ sensor
+To: Per-Daniel Olsson <perdaniel.olsson@axis.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, rickard.andersson@axis.com, kernel@axis.com
+References: <20241003164932.1162049-1-perdaniel.olsson@axis.com>
+ <20241003164932.1162049-2-perdaniel.olsson@axis.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20241003164932.1162049-2-perdaniel.olsson@axis.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241003-ad2s1210-select-v1-8-4019453f8c33@gmail.com>
-References: <20241003-ad2s1210-select-v1-0-4019453f8c33@gmail.com>
-In-Reply-To: <20241003-ad2s1210-select-v1-0-4019453f8c33@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, David Lechner <dlechner@baylibre.com>, 
- Antoniu Miclaus <antoniu.miclaus@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Cristian Pop <cristian.pop@analog.com>, 
- Mircea Caprioru <mircea.caprioru@analog.com>, 
- Alexandru Tachici <alexandru.tachici@analog.com>, 
- Marcus Folkesson <marcus.folkesson@gmail.com>, 
- Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727974182; l=694;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=Uh91tTL/mMMJSpE+mNqFNymkeRxM5fYzexOGyP4lCJA=;
- b=XJFEQuvWs0SuOgP3aoxyqHKVKo8NoRSCk64a7H65oTY/BHoLZhos3iPR6yLnBwIYkBwxvVT2e
- ogB//0fTwBRCPjCEL/R5Za0G6dyVwJkl8BvSQdoqAq4QyOArf2ZPY/A
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-This driver makes use of regmap_mmio, but does not select the required
-module.
-Add the missing 'select REGMAP_MMIO'.
+On 03/10/2024 18:49, Per-Daniel Olsson wrote:
+> Add devicetree bindings for the OPT4060 RGBW color sensor.
+> 
+> Signed-off-by: Per-Daniel Olsson <perdaniel.olsson@axis.com>
 
-Fixes: 4d4b30526eb8 ("iio: dac: add support for stm32 DAC")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/iio/dac/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Thank you for your patch. There is something to discuss/improve.
 
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index f13daf0fd9f7..a5d083804b1c 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -485,6 +485,7 @@ config STM32_DAC
- 
- config STM32_DAC_CORE
- 	tristate
-+	select REGMAP_MMIO
- 
- config TI_DAC082S085
- 	tristate "Texas Instruments 8/10/12-bit 2/4-channel DAC driver"
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: Regulator that provides power to the sensor.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: ti,opt4060
 
--- 
-2.43.0
+This allOf does not make sense.
+
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          maxItems: 1
+
+You repeat the case.
+
+> +    else:
+> +      properties:
+> +        interrupts: false
+
+This cannot happen.
+
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        opt4060@44 {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
+> +            compatible = "ti,opt4060";
+> +            reg = <0x44>;
+Best regards,
+Krzysztof
 
 

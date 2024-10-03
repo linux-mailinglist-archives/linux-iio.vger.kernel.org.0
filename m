@@ -1,313 +1,359 @@
-Return-Path: <linux-iio+bounces-10014-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10015-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B8398E968
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 07:35:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F87B98EA4A
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 09:22:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFA6B286D45
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 05:35:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41A142852B1
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Oct 2024 07:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE677770F5;
-	Thu,  3 Oct 2024 05:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8850284A3F;
+	Thu,  3 Oct 2024 07:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HA71iMKU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CFeUwRAk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00627316E;
-	Thu,  3 Oct 2024 05:35:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FC52556E;
+	Thu,  3 Oct 2024 07:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727933722; cv=none; b=C7OpzPYpYnov5dOuCXRvtRX+yQ9mHnRWi/iakUnWdrltEWVyZnW+GvNeB9vT3BUBgxsAT9F2ni3Ms1XbAJ5IsFcSFAFp2qBwDqRxYvtXntnAa/fK1hux878YQFQQGPVJcbKam+NHyZ2IOObX9gNRr1IEX3oCXjOHKjFm7Mtwqsw=
+	t=1727940164; cv=none; b=ryOpckrfA7giOPxO9/v9D0npWlSLldLKfnbi3JrZq2gywXkCvQZkKKwS3wVj1i4lNRMv4hAM563adlZ4qufxhtiLVqgT+OgWRKHP16NputiwwEhKeWIjsVvUqrwlcH25oY6jp7up0r+ZwCWUWH6NZpxyxO/N4ivINmJ8RiS1AT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727933722; c=relaxed/simple;
-	bh=XIbbkuqPYNfSqVfvKaGb+aFGY7GpI6S0tMl2JMRdoEI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AOObxdyTzItu7QqDk6Z1evfNTIT2ZArZRvZ56djk2lBN5IGLKneprwEIvs6vyINP+0yaHKJNCa4z79JXdw+gSNNs7XTie0wXSX9aoQOvYf5RM+53rCBkYyl6G5yTZRkghhGE2ooiKERq2mOQpFJ3gL8lH96E7IcfO9T24dkeTRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HA71iMKU; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727933721; x=1759469721;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=XIbbkuqPYNfSqVfvKaGb+aFGY7GpI6S0tMl2JMRdoEI=;
-  b=HA71iMKUzvzdrOFwiGs2OqU+h4Yk+DzyZyQ1R0XU2AD6Xxwc/COkVvPX
-   UDpFJG9KR80rk23F4yr5zTid83JcSGCfy7mW4EuPpNsjNRKu4EkpUKgXY
-   VqRodwioRh6Myhug/OwdViI3pweMmowSP/dF1geHXjVHdnXAV5Z6fKJlg
-   sFeLPJ5Xunz/7BaJ31yIybJpuxDHGD6dwyKxzjPJ25bJOe8FIqXs/a2jO
-   oXzcPBHHdxsdx7u1zuvirkhkRJ8DWbTqGM8UZ2TlEDQNARI8xTm/j84ry
-   qJh78LNAHlXgJLp3oHOi+pqEBNm/KNEKaxjSn/urIusq3tHjkAX2zj8nN
-   A==;
-X-CSE-ConnectionGUID: AlrJzG47Qha0MYRfFrSPOg==
-X-CSE-MsgGUID: 7dJwYbs2RkC/OWU4pZx70w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="37676200"
-X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
-   d="scan'208";a="37676200"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 22:35:21 -0700
-X-CSE-ConnectionGUID: SFlOz1suSTyecNsQtAuHiw==
-X-CSE-MsgGUID: Rz2ur3RTTlepYSnsok8afg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
-   d="scan'208";a="73910176"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 02 Oct 2024 22:35:17 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1swEUc-00005W-2f;
-	Thu, 03 Oct 2024 05:35:14 +0000
-Date: Thu, 3 Oct 2024 13:35:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Lechner <dlechner@baylibre.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	LKML <linux-kernel@vger.kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	linux-iio@vger.kernel.org, linux-cxl@vger.kernel.org,
-	David Lechner <dlechner@baylibre.com>
-Subject: Re: [PATCH 2/3] iio: adc: ad7380: use if_not_cond_guard for claim
- direct
-Message-ID: <202410031253.vjAMDYuX-lkp@intel.com>
-References: <20241001-cleanup-if_not_cond_guard-v1-2-7753810b0f7a@baylibre.com>
+	s=arc-20240116; t=1727940164; c=relaxed/simple;
+	bh=0VVSdYk70Q5GOXJ9GEpTlCddalAYUidAGBvetOYVulw=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=Wnj21+OLJnPQS/qrO1EZwsNOAejw1md6FCrD0chaxvy2pF1gwxwgIZA7uTe7I4fffLCwFwuF3WdXin5VOj06xdIOlya7P05RnrOCZigo2ZyEo9JBWUmI9BXzLyX68SHt9emRAfGdwG830ci6xBgAY+q6qj/77qMXAtzFUrgSYY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CFeUwRAk; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5369f1c7cb8so528099e87.1;
+        Thu, 03 Oct 2024 00:22:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727940161; x=1728544961; darn=vger.kernel.org;
+        h=user-agent:message-id:date:to:cc:from:subject:references
+         :in-reply-to:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BVUkel3Ns6UHWc92CVK1uux7XPvQZ7C+Ev01ZhpTljY=;
+        b=CFeUwRAkMB7oRcWXkr+rH9fPonOBwoHLFrItpPXOMBm0wCQSps4Y2SxIGHrBbnBR1E
+         Y1SOoFCuvrCeVNbwoaUaSNa3f2om6dR/O1jmGXb13UGA2d5UTcEbd2okCxZIwbVj+jUT
+         45mEgHq9iZq6V9FwmTRdVP8uzDAAAaeMEET/+0+DkLHrGg8q/KKCjiWPAQlFMcfLFH7q
+         ydHg6phT0x2HAQn8WlVs64s7jg4uduF8QIswvm17roFWmhC1evgc6u8xncA8ZWc642A8
+         UI09nPSi5PnfjFiBhEDHsjA///VEHsikhyP0pp+2Twdn0zX4ofVzn23waTKOpHGs0PPG
+         YI1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727940161; x=1728544961;
+        h=user-agent:message-id:date:to:cc:from:subject:references
+         :in-reply-to:content-transfer-encoding:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BVUkel3Ns6UHWc92CVK1uux7XPvQZ7C+Ev01ZhpTljY=;
+        b=sHZx+60ZCzW6XHHl0+X8O+OouVmgIctCTcHQeb7uA527t0bWwuAsp80IQagaAeSLJo
+         AdKW49v3sRTP6/Gt3hIXdjBbKB2xuUU9ORnCkaMFilryFsJMmag6EbFWPHytO9pKIJIW
+         BdTHllV3IKWrNE2L5R1LwTT2bC4xbz/NqNr2VNEvjfKFDzTvsbSZYtda8K0PWS0/mg6M
+         b/rpL8NI/ausk7Fs59wBJ2CZK7zNQOXLUqj1dwL7oT2JO346TJQZyMezzq0qysVuFVXv
+         RmZt/VTRXaOlPH8Y3pyPTfjF78NNhiKiiz3mCBdLVr9HNvrXyYn/zvtQuaPVEvcyY6BK
+         Lhow==
+X-Forwarded-Encrypted: i=1; AJvYcCUxkieQeX1ijR9cTUKY8eSVZC7VuLrdXJHayGDHo1OUrGgWlvR8qaTdCzgWGwp1hDX9ceuNP1Ylrv9NhajI@vger.kernel.org, AJvYcCW8r2eStfjWvTvEOnC3L9gl4MY/wbDHT2YV7QJ8ljEfDAG9F9fgPHQIKislgyBHk7KqN0um1IRGOyU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6sWUYmKOnJxEcMoHRZgcIRT3KgUTrNnzkh6Fu6nY/DNuR0MTh
+	3cSip58coausTzDRStzjJUPCXoGFFlPu1Xm/CXvBc3u3W4QPaxhq
+X-Google-Smtp-Source: AGHT+IEXS5rZm5UPQRRVdwtEg7pIvInVfwxz06dgrT9SUtxcIU0OVlGIvvyamnBxnlaDMTlJoDQmlw==
+X-Received: by 2002:a05:6512:e9e:b0:539:955b:43d0 with SMTP id 2adb3069b0e04-539a0793c7amr3380653e87.47.1727940160187;
+        Thu, 03 Oct 2024 00:22:40 -0700 (PDT)
+Received: from localhost (host-79-19-52-27.retail.telecomitalia.it. [79.19.52.27])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f79d8d3bcsm37346215e9.5.2024.10.03.00.22.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Oct 2024 00:22:39 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241001-cleanup-if_not_cond_guard-v1-2-7753810b0f7a@baylibre.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241002125445.7570-1-victor.duicu@microchip.com>
+References: <20241002125445.7570-1-victor.duicu@microchip.com>
+Subject: Re: [PATCH v2] iio: adc: pac1921: add ACPI support to pac1921
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Cc: marius.cristea@microchip.com, victor.duicu@microchip.com, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+To: jic23@kernel.org, lars@metafoo.de, victor.duicu@microchip.com
+Date: Thu, 03 Oct 2024 09:22:38 +0200
+Message-ID: <172794015844.2520.11909797050797595912@njaxe.localdomain>
+User-Agent: alot/0.11
 
-Hi David,
+Quoting victor.duicu@microchip.com (2024-10-02 14:54:45)
+> From: Victor Duicu <victor.duicu@microchip.com>
+>=20
+> This patch implements ACPI support to Microchip pac1921.
+> The driver can read shunt resistor value and device label
+> from ACPI table.
+>=20
+> Differences related to previous versions:
+> v2:
+> - remove name variable from priv. Driver reads label attribute with
+>   sysfs.
+> - define pac1921_shunt_is_valid function.
+> - move default assignments in pac1921_probe to original position.
+> - roll back coding style changes.
+> - add documentation for DSM(the linked document was used as reference).
+> - remove acpi_match_device in pac1921_match_acpi_device.
+> - remove unnecessary null assignment and comment.
+> - change name of function pac1921_match_of_device to
+>   pac1921_parse_of_fw.
+>=20
+> v1:
+> - initial version for review.
 
-kernel test robot noticed the following build errors:
+Thanks Victor for having addressed our previous points. I still have a few
+comments, see below.
 
-[auto build test ERROR on 431c39f6d3edbab14f48dbf37a58ccdc0ac3be1e]
+>=20
+> Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
+> ---
+>  drivers/iio/adc/pac1921.c | 112 ++++++++++++++++++++++++++++++++++----
+>  1 file changed, 101 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
+> index 4c2a1c07bc39..95ade1c4d5e8 100644
+> --- a/drivers/iio/adc/pac1921.c
+> +++ b/drivers/iio/adc/pac1921.c
+> @@ -67,6 +67,10 @@ enum pac1921_mxsl {
+>  #define PAC1921_DEFAULT_DI_GAIN                0 /* 2^(value): 1x gain (=
+HW default) */
+>  #define PAC1921_DEFAULT_NUM_SAMPLES    0 /* 2^(value): 1 sample (HW defa=
+ult) */
+> =20
+> +#define PAC1921_ACPI_GET_UOHMS_VALS             0
+> +#define PAC1921_ACPI_GET_NAME                  1
+> +#define PAC1921_DSM_UUID                        "f7bb9932-86ee-4516-a236=
+-7a7a742e55cb"
+> +
+>  /*
+>   * Pre-computed scale factors for BUS voltage
+>   * format: IIO_VAL_INT_PLUS_NANO
+> @@ -204,6 +208,14 @@ struct pac1921_priv {
+>         } scan;
+>  };
+> =20
+> +static bool pac1921_shunt_is_valid(u32 shunt_val)
+> +{
+> +       if (shunt_val =3D=3D 0 || shunt_val > INT_MAX)
+> +               return false;
+> +       else
+> +               return true;
+> +}
+> +
 
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/cleanup-add-conditional-guard-helper/20241002-063209
-base:   431c39f6d3edbab14f48dbf37a58ccdc0ac3be1e
-patch link:    https://lore.kernel.org/r/20241001-cleanup-if_not_cond_guard-v1-2-7753810b0f7a%40baylibre.com
-patch subject: [PATCH 2/3] iio: adc: ad7380: use if_not_cond_guard for claim direct
-config: arm64-randconfig-001-20241003 (https://download.01.org/0day-ci/archive/20241003/202410031253.vjAMDYuX-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241003/202410031253.vjAMDYuX-lkp@intel.com/reproduce)
+I think this can be inline. Also, it looks a more common pattern to just re=
+turn
+the condition expression result.
+To see some examples: grep -A 5 -R "inline .*bool .*" .
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410031253.vjAMDYuX-lkp@intel.com/
+Moreover, since both the values coming from ACPI and sysfs can exceed 32-bit
+boundaries, maybe it would be better to get a u64 argument here. Otherwise a
+value like 5KOhm (5_000_000_000) would wrap around in the cast (~7Ohm) but =
+still
+considered as valid.
 
-All errors (new ones prefixed by >>):
+>  /*
+>   * Check if first integration after configuration update has completed.
+>   *
+> @@ -794,7 +806,7 @@ static ssize_t pac1921_write_shunt_resistor(struct ii=
+o_dev *indio_dev,
+>                 return ret;
+> =20
+>         rshunt_uohm =3D (u32)val * MICRO + (u32)val_fract;
+> -       if (rshunt_uohm =3D=3D 0 || rshunt_uohm > INT_MAX)
+> +       if (!pac1921_shunt_is_valid((u32)rshunt_uohm))
 
->> drivers/iio/adc/ad7380.c:823:3: error: expected expression
-     823 |                 if_not_cond_guard(iio_claim_direct_try, indio_dev)
-         |                 ^
-   include/linux/cleanup.h:316:2: note: expanded from macro 'if_not_cond_guard'
-     316 |         __if_not_cond_guard(_name, __UNIQUE_ID(guard), args)
-         |         ^
-   include/linux/cleanup.h:312:2: note: expanded from macro '__if_not_cond_guard'
-     312 |         CLASS(_name, _id)(args);                        \
-         |         ^
-   include/linux/cleanup.h:258:2: note: expanded from macro 'CLASS'
-     258 |         class_##_name##_t var __cleanup(class_##_name##_destructor) =   \
-         |         ^
-   <scratch space>:81:1: note: expanded from here
-      81 | class_iio_claim_direct_try_t
-         | ^
-   drivers/iio/adc/ad7380.c:823:3: error: use of undeclared identifier '__UNIQUE_ID_guard799'
-   include/linux/cleanup.h:316:29: note: expanded from macro 'if_not_cond_guard'
-     316 |         __if_not_cond_guard(_name, __UNIQUE_ID(guard), args)
-         |                                    ^
-   include/linux/compiler.h:189:29: note: expanded from macro '__UNIQUE_ID'
-     189 | #define __UNIQUE_ID(prefix) __PASTE(__PASTE(__UNIQUE_ID_, prefix), __COUNTER__)
-         |                             ^
-   include/linux/compiler_types.h:84:22: note: expanded from macro '__PASTE'
-      84 | #define __PASTE(a,b) ___PASTE(a,b)
-         |                      ^
-   include/linux/compiler_types.h:83:23: note: expanded from macro '___PASTE'
-      83 | #define ___PASTE(a,b) a##b
-         |                       ^
-   <scratch space>:79:1: note: expanded from here
-      79 | __UNIQUE_ID_guard799
-         | ^
->> drivers/iio/adc/ad7380.c:935:2: error: cannot jump from switch statement to this case label
-     935 |         default:
-         |         ^
-   drivers/iio/adc/ad7380.c:911:3: note: jump bypasses initialization of variable with __attribute__((cleanup))
-     911 |                 if_not_cond_guard(iio_claim_direct_try, indio_dev)
-         |                 ^
-   include/linux/cleanup.h:316:29: note: expanded from macro 'if_not_cond_guard'
-     316 |         __if_not_cond_guard(_name, __UNIQUE_ID(guard), args)
-         |                                    ^
-   include/linux/compiler.h:189:29: note: expanded from macro '__UNIQUE_ID'
-     189 | #define __UNIQUE_ID(prefix) __PASTE(__PASTE(__UNIQUE_ID_, prefix), __COUNTER__)
-         |                             ^
-   include/linux/compiler_types.h:84:22: note: expanded from macro '__PASTE'
-      84 | #define __PASTE(a,b) ___PASTE(a,b)
-         |                      ^
-   include/linux/compiler_types.h:83:23: note: expanded from macro '___PASTE'
-      83 | #define ___PASTE(a,b) a##b
-         |                       ^
-   <scratch space>:90:1: note: expanded from here
-      90 | __UNIQUE_ID_guard800
-         | ^
-   3 errors generated.
+The explicit cast is not necessary, especially if the validity function wou=
+ld
+take a u64 argument.
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for MODVERSIONS
-   Depends on [n]: MODULES [=y] && !COMPILE_TEST [=y]
-   Selected by [y]:
-   - RANDSTRUCT_FULL [=y] && (CC_HAS_RANDSTRUCT [=y] || GCC_PLUGINS [=n]) && MODULES [=y]
+>                 return -EINVAL;
+> =20
+>         guard(mutex)(&priv->lock);
+> @@ -1151,6 +1163,81 @@ static void pac1921_regulator_disable(void *data)
+>         regulator_disable(regulator);
+>  }
+> =20
+> +/*
+> + * documentation related to the ACPI device definition
+> + * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/Applic=
+ationNotes/ApplicationNotes/PAC1934-Integration-Notes-for-Microsoft-Windows=
+-10-and-Windows-11-Driver-Support-DS00002534.pdf
 
+It looks like the link is not working, is the following the new one (PAC193=
+4 -> PAC193X) ?
+https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationN=
+otes/ApplicationNotes/PAC193X-Integration-Notes-for-Microsoft-Windows-10-an=
+d-Windows-11-Driver-Support-DS00002534.pdf
 
-vim +823 drivers/iio/adc/ad7380.c
+Should it be updated for the pac1934 driver as well?
 
-   808	
-   809	static int ad7380_read_raw(struct iio_dev *indio_dev,
-   810				   struct iio_chan_spec const *chan,
-   811				   int *val, int *val2, long info)
-   812	{
-   813		struct ad7380_state *st = iio_priv(indio_dev);
-   814		const struct iio_scan_type *scan_type;
-   815	
-   816		scan_type = iio_get_current_scan_type(indio_dev, chan);
-   817	
-   818		if (IS_ERR(scan_type))
-   819			return PTR_ERR(scan_type);
-   820	
-   821		switch (info) {
-   822		case IIO_CHAN_INFO_RAW:
- > 823			if_not_cond_guard(iio_claim_direct_try, indio_dev)
-   824				return -EBUSY;
-   825	
-   826			return ad7380_read_direct(st, chan->scan_index, scan_type, val);
-   827		case IIO_CHAN_INFO_SCALE:
-   828			/*
-   829			 * According to the datasheet, the LSB size is:
-   830			 *    * (2 × VREF) / 2^N, for differential chips
-   831			 *    * VREF / 2^N, for pseudo-differential chips
-   832			 * where N is the ADC resolution (i.e realbits)
-   833			 */
-   834			*val = st->vref_mv;
-   835			*val2 = scan_type->realbits - chan->differential;
-   836	
-   837			return IIO_VAL_FRACTIONAL_LOG2;
-   838		case IIO_CHAN_INFO_OFFSET:
-   839			/*
-   840			 * According to IIO ABI, offset is applied before scale,
-   841			 * so offset is: vcm_mv / scale
-   842			 */
-   843			*val = st->vcm_mv[chan->channel] * (1 << scan_type->realbits)
-   844				/ st->vref_mv;
-   845	
-   846			return IIO_VAL_INT;
-   847		case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-   848			*val = st->oversampling_ratio;
-   849	
-   850			return IIO_VAL_INT;
-   851		default:
-   852			return -EINVAL;
-   853		}
-   854	}
-   855	
-   856	static int ad7380_read_avail(struct iio_dev *indio_dev,
-   857				     struct iio_chan_spec const *chan,
-   858				     const int **vals, int *type, int *length,
-   859				     long mask)
-   860	{
-   861		switch (mask) {
-   862		case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-   863			*vals = ad7380_oversampling_ratios;
-   864			*length = ARRAY_SIZE(ad7380_oversampling_ratios);
-   865			*type = IIO_VAL_INT;
-   866	
-   867			return IIO_AVAIL_LIST;
-   868		default:
-   869			return -EINVAL;
-   870		}
-   871	}
-   872	
-   873	/**
-   874	 * ad7380_osr_to_regval - convert ratio to OSR register value
-   875	 * @ratio: ratio to check
-   876	 *
-   877	 * Check if ratio is present in the list of available ratios and return the
-   878	 * corresponding value that needs to be written to the register to select that
-   879	 * ratio.
-   880	 *
-   881	 * Returns: register value (0 to 7) or -EINVAL if there is not an exact match
-   882	 */
-   883	static int ad7380_osr_to_regval(int ratio)
-   884	{
-   885		int i;
-   886	
-   887		for (i = 0; i < ARRAY_SIZE(ad7380_oversampling_ratios); i++) {
-   888			if (ratio == ad7380_oversampling_ratios[i])
-   889				return i;
-   890		}
-   891	
-   892		return -EINVAL;
-   893	}
-   894	
-   895	static int ad7380_write_raw(struct iio_dev *indio_dev,
-   896				    struct iio_chan_spec const *chan, int val,
-   897				    int val2, long mask)
-   898	{
-   899		struct ad7380_state *st = iio_priv(indio_dev);
-   900		int ret, osr, boost;
-   901	
-   902		switch (mask) {
-   903		case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-   904			osr = ad7380_osr_to_regval(val);
-   905			if (osr < 0)
-   906				return osr;
-   907	
-   908			/* always enable resolution boost when oversampling is enabled */
-   909			boost = osr > 0 ? 1 : 0;
-   910	
-   911			if_not_cond_guard(iio_claim_direct_try, indio_dev)
-   912				return -EBUSY;
-   913	
-   914			ret = regmap_update_bits(st->regmap,
-   915						 AD7380_REG_ADDR_CONFIG1,
-   916						 AD7380_CONFIG1_OSR | AD7380_CONFIG1_RES,
-   917						 FIELD_PREP(AD7380_CONFIG1_OSR, osr) |
-   918						 FIELD_PREP(AD7380_CONFIG1_RES, boost));
-   919	
-   920			if (ret)
-   921				return ret;
-   922	
-   923			st->oversampling_ratio = val;
-   924			st->resolution_boost_enabled = boost;
-   925	
-   926			/*
-   927			 * Perform a soft reset. This will flush the oversampling block
-   928			 * and FIFO but will maintain the content of the configurable
-   929			 * registers.
-   930			 */
-   931			return regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
-   932						  AD7380_CONFIG2_RESET,
-   933						  FIELD_PREP(AD7380_CONFIG2_RESET,
-   934							     AD7380_CONFIG2_RESET_SOFT));
- > 935		default:
-   936			return -EINVAL;
-   937		}
-   938	}
-   939	
+> + */
+> +static int pac1921_match_acpi_device(struct i2c_client *client, struct p=
+ac1921_priv *priv,
+> +                                    struct iio_dev *indio_dev)
+> +{
+> +       acpi_handle handle;
+> +       union acpi_object *rez;
+> +       guid_t guid;
+> +       char *label;
+> +
+> +       guid_parse(PAC1921_DSM_UUID, &guid);
+> +       handle =3D ACPI_HANDLE(&client->dev);
+> +
+> +       rez =3D acpi_evaluate_dsm(handle, &guid, 1, PAC1921_ACPI_GET_UOHM=
+S_VALS, NULL);
+> +       if (!rez)
+> +               return dev_err_probe(&client->dev, -EINVAL,
+> +                                    "Could not read shunt from ACPI tabl=
+e\n");
+> +
+> +       priv->rshunt_uohm =3D rez->package.elements[0].integer.value;
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Doing this assignment before the validity check may result into accepting a
+value out of the 32-bit range which would wrap around in the implicit cast =
+(e.g.
+5KOhm -> ~7Ohm). I think you could either move the validity check before or=
+ use
+a u64 temp var.
+
+> +       ACPI_FREE(rez);
+> +
+> +       if (!pac1921_shunt_is_valid(priv->rshunt_uohm))
+> +               return dev_err_probe(&client->dev, -EINVAL, "Invalid shun=
+t resistor: %u\n",
+> +                                    priv->rshunt_uohm);
+> +
+> +       pac1921_calc_current_scales(priv);
+> +
+> +       rez =3D acpi_evaluate_dsm(handle, &guid, 1, PAC1921_ACPI_GET_NAME=
+, NULL);
+> +       if (!rez)
+> +               return dev_err_probe(&client->dev, -EINVAL,
+> +                                    "Could not read name from ACPI table=
+\n");
+> +
+> +       label =3D devm_kmemdup(&client->dev, rez->package.elements->strin=
+g.pointer,
+> +                            (size_t)rez->package.elements->string.length=
+ + 1,
+> +                            GFP_KERNEL);
+> +       label[rez->package.elements->string.length] =3D '\0';
+> +       indio_dev->label =3D label;
+> +       ACPI_FREE(rez);
+> +
+> +       return 0;
+> +}
+> +
+> +static int pac1921_parse_of_fw(struct i2c_client *client, struct pac1921=
+_priv *priv,
+> +                              struct iio_dev *indio_dev)
+> +{
+> +       int ret;
+> +       struct device *dev =3D &client->dev;
+> +
+> +       ret =3D device_property_read_u32(dev, "shunt-resistor-micro-ohms",
+> +                                      &priv->rshunt_uohm);
+> +       if (ret)
+> +               return dev_err_probe(dev, ret,
+> +                                    "Cannot read shunt resistor property=
+\n");
+> +
+> +       if (!pac1921_shunt_is_valid(priv->rshunt_uohm))
+> +               return dev_err_probe(dev, -EINVAL, "Invalid shunt resisto=
+r: %u\n",
+> +                                    priv->rshunt_uohm);
+> +
+> +       pac1921_calc_current_scales(priv);
+> +
+> +       if (device_property_present(dev, "label")) {
+> +               ret =3D device_property_read_string(dev, "label",
+> +                                                 (const char **)&indio_d=
+ev->label);
+> +               if (ret)
+> +                       return dev_err_probe(&client->dev, ret,
+> +                                            "Invalid rail-name value\n");
+> +       } else {
+> +               indio_dev->label =3D "pac1921";
+> +       }
+
+IIO core already checks for the label string property from DT, see
+industrialio-core.c:__iio_device_register(). So I think it can be removed f=
+rom
+here, unless you want the driver probe to fail for an invalid label string,
+which it would not happen with the IIO core handling. Also, is it necessary=
+ to
+have a default label? It looks meaningless to me since it would have the sa=
+me
+value of the name attribute.
+
+> +
+> +       return 0;
+> +}
+> +
+>  static int pac1921_probe(struct i2c_client *client)
+>  {
+>         struct device *dev =3D &client->dev;
+> @@ -1177,17 +1264,14 @@ static int pac1921_probe(struct i2c_client *clien=
+t)
+>         priv->di_gain =3D PAC1921_DEFAULT_DI_GAIN;
+>         priv->n_samples =3D PAC1921_DEFAULT_NUM_SAMPLES;
+> =20
+> -       ret =3D device_property_read_u32(dev, "shunt-resistor-micro-ohms",
+> -                                      &priv->rshunt_uohm);
+> -       if (ret)
+> -               return dev_err_probe(dev, ret,
+> -                                    "Cannot read shunt resistor property=
+\n");
+> -       if (priv->rshunt_uohm =3D=3D 0 || priv->rshunt_uohm > INT_MAX)
+> -               return dev_err_probe(dev, -EINVAL,
+> -                                    "Invalid shunt resistor: %u\n",
+> -                                    priv->rshunt_uohm);
+> +       if (ACPI_HANDLE(&client->dev))
+> +               ret =3D pac1921_match_acpi_device(client, priv, indio_dev=
+);
+> +       else
+> +               ret =3D pac1921_parse_of_fw(client, priv,  indio_dev);
+> =20
+> -       pac1921_calc_current_scales(priv);
+> +       if (ret < 0)
+> +               return dev_err_probe(&client->dev, ret,
+> +                                    "parameter parsing error\n");
+> =20
+>         priv->vdd =3D devm_regulator_get(dev, "vdd");
+>         if (IS_ERR(priv->vdd))
+> @@ -1244,11 +1328,17 @@ static const struct of_device_id pac1921_of_match=
+[] =3D {
+>  };
+>  MODULE_DEVICE_TABLE(of, pac1921_of_match);
+> =20
+> +static const struct acpi_device_id pac1921_acpi_match[] =3D {
+> +       { "MCHP1921" },
+> +       { }
+> +};
+> +MODULE_DEVICE_TABLE(acpi, pac1921_acpi_match);
+>  static struct i2c_driver pac1921_driver =3D {
+>         .driver  =3D {
+>                 .name =3D "pac1921",
+>                 .pm =3D pm_sleep_ptr(&pac1921_pm_ops),
+>                 .of_match_table =3D pac1921_of_match,
+> +               .acpi_match_table =3D pac1921_acpi_match
+>         },
+>         .probe =3D pac1921_probe,
+>         .id_table =3D pac1921_id,
+>=20
+> base-commit: fec496684388685647652ab4213454fbabdab099
+> --=20
+> 2.43.0
+>=20
+
+Thanks,
+Matteo Martelli
 

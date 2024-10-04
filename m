@@ -1,75 +1,66 @@
-Return-Path: <linux-iio+bounces-10138-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10139-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F8C99074A
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Oct 2024 17:19:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD18799086F
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Oct 2024 18:04:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B50CA1F22729
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Oct 2024 15:19:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 730D2286FF9
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Oct 2024 16:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66F71AA798;
-	Fri,  4 Oct 2024 15:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0311C304E;
+	Fri,  4 Oct 2024 16:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BN2wHc3l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="asK9Ilbn"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D001D9A65;
-	Fri,  4 Oct 2024 15:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CEE1E3766;
+	Fri,  4 Oct 2024 16:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728055145; cv=none; b=Ydk8kUibMjrxUyWNtaSPLazFbiu+6qpDSXAniJqYsHWYSX96szt3sYEVKqMTYc5jwQU0mIWghWmK1XPuEFdw2wF01TE1zFYH+u/60X9U5nwqcms3ABwJwZj05xnN2fY1bd2iVfva9SIPqq0D6TDDWY5gD6amWi8yPC5u6Rud+AU=
+	t=1728057857; cv=none; b=Y03nihe8FoTe6exeREPgdeYGasN/YvvZsFl6Z2WWL+gVsIUQvu0Vco80JmpPImRKlhFpmyMZOYXpoHtH196fspIGj7N5aLPl4hbFVUBbimBOH7nGx0XNmY6E/rBcxxukflDaQlDANaV01/R7Snf6rM4KLsehUY6m9jXpNda85R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728055145; c=relaxed/simple;
-	bh=dD5eDkooA+Ex+iOJP1TfV+XBZ6LzXb1q2bQOSb1wOR8=;
+	s=arc-20240116; t=1728057857; c=relaxed/simple;
+	bh=7nWePiMTOkb09psm6kqrNfokwIWfLXuYfsSBj2qWW7w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nKH3RTfbIu1DAl0VYhk0JFe/VxG2e3+HGHh7tDyTLJ0O8vr1Eho55IjYuELeIhlSMkUrFAJM+eJINAKnPWifIlJCj4cghCtFudCsKWbctm70S820guMiX7Ci0TWf03AKtBKE55igROXPb2JHO3dUdtb3orfz9lEw9+WBNasjrR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BN2wHc3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3EEC4CEC6;
-	Fri,  4 Oct 2024 15:19:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TYfErz6fptCpdaLD8K1oyiUPIUWKcorm+wUBPSlyixiHXo984/94eclhXVUEgQXYU+hwc6wmH5p+zb2Y/1FGsbQnxSVqycSqU0cuNre5YwHY9gTls/e70K5cELAg6zpgpTk2LrRcTwNhoK/6X7AYHMzJQ/ERxOlSF83l1tOUxjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=asK9Ilbn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842EAC4CEC7;
+	Fri,  4 Oct 2024 16:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728055145;
-	bh=dD5eDkooA+Ex+iOJP1TfV+XBZ6LzXb1q2bQOSb1wOR8=;
+	s=k20201202; t=1728057857;
+	bh=7nWePiMTOkb09psm6kqrNfokwIWfLXuYfsSBj2qWW7w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BN2wHc3lP8DgDuHmh1XEeafshXW3bH/+cAOCmwKqQs3d/p/My2rGRs9mZfvoz12EY
-	 41G1vt1s6XY+HSVR5DiRpmkcjc7/wz9nLKw2vgVidRW3nW7H6XpMv7bgkY3e51hUNt
-	 l1Qz8TCUj7c687rW094KYQxK+E2GV79y4BuR2LO4qI/OybH5tHBSSy2b30onU51tL4
-	 1k76F9Q+O1IaPKLpgy4z6H4xD+dgeQg5As5kPk4+pMEBJI5TwNezuAkh86CXaDVC6q
-	 yngD5k5OIp+3WoKFq2u16oZYD7r46oKtxtrExfB63WpXzlxp77QTcdtBaX5LHCu80J
-	 LuqHNTGSGXJWQ==
-Date: Fri, 4 Oct 2024 16:18:58 +0100
+	b=asK9IlbnUAMWgWoLJj2P57oA1qFJkT8xklaHuygRbnRYFqJR1VmEJv40w6McY8kck
+	 umpAhlCu79EhewlrlNvwDUFgvOVQgveFYsX+XOrnm4s2JWeAtCtGbRtHYd11ma+MRx
+	 /zN2VKgGmHYy1IUFKti5fxCN5lZOhNKYUoaSWAKwqfLUJ4nSAQvwiQPT6NR4S8lJlt
+	 MUclapIS16/fSF+oL/VAq4sFHhYSNw5s+ylM8unxrZrOcJmiV9eGEa4gQx6IfAjYAg
+	 6Ji6GkRKPWXXLsYfjYbFi1LW1ri+2rraafAofUcZCjglQ3nK/CiiwfkadTt1OkcfHm
+	 RZEpgVEf1SuYQ==
+Date: Fri, 4 Oct 2024 17:04:12 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Mihail Chindris <mihail.chindris@analog.com>,
 	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Ivan Mikhaylov <fr0st61te@gmail.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-	Dragos Bogdan <dragos.bogdan@analog.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v2 5/7] dt-bindings: iio: adc: add ad485x
-Message-ID: <20241004-elixir-italicize-b7c339903ab7@spud>
-References: <20241004140922.233939-1-antoniu.miclaus@analog.com>
- <20241004140922.233939-5-antoniu.miclaus@analog.com>
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	devicetree@vger.kernel.org, dlechner@baylibre.com,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 05/11] dt-bindings: iio: dac: ad3552r: add iio backend
+ support
+Message-ID: <20241004-unawake-pushchair-58d4b2347897@spud>
+References: <20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-0-ceb157487329@baylibre.com>
+ <20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-5-ceb157487329@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,62 +68,40 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="L8pXIauJ0N/ie8Sx"
+	protocol="application/pgp-signature"; boundary="JCq2Q4DdpKt1JHME"
 Content-Disposition: inline
-In-Reply-To: <20241004140922.233939-5-antoniu.miclaus@analog.com>
+In-Reply-To: <20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-5-ceb157487329@baylibre.com>
 
 
---L8pXIauJ0N/ie8Sx
+--JCq2Q4DdpKt1JHME
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 04, 2024 at 05:07:54PM +0300, Antoniu Miclaus wrote:
-> Add devicetree bindings for ad485x family.
+On Thu, Oct 03, 2024 at 07:29:02PM +0200, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
 >=20
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
-> changes in v2:
->  - link all public parts in the description
->  - add $ref: /schemas/spi/spi-peripheral-props.yaml#
->  - add vee-supply
->  - add vddl-supply
->  - add description for pwms
->  - add pd-gpios
->  - update spi-max-frequency value
->  - make vddh-supply optional, not required.
->  - update example based on new properties added.
->  - fix typos in commit message/title.
->  - update year to 2024
->  - drop "DAS" and "device driver" from bindings description.
->  .../bindings/iio/adc/adi,ad485x.yaml          | 96 +++++++++++++++++++
->  1 file changed, 96 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad485x.=
-yaml
+> There is a version of AXI DAC IP block (for FPGAs) that provides
+> a physical QSPI bus for AD3552R and similar chips, so supporting
+> spi-controller functionalities.
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad485x.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad485x.yaml
-> new file mode 100644
-> index 000000000000..899a65504f12
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad485x.yaml
+> For this case, the binding is modified to include some additional
+> properties.
+>=20
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 
-With a filename matching a compatible,
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-Cheers,
-Conor.
-
---L8pXIauJ0N/ie8Sx
+--JCq2Q4DdpKt1JHME
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZwAHYgAKCRB4tDGHoIJi
-0q31AP4z8Ye1WaISeqNGwUvkApurW7SFE1T1HbG/d5koitug7AEAjJlaen6+2Fow
-/3oQ7tpZyEvfVkraqxSQvIRDjjQrwgM=
-=7XWM
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZwAR/AAKCRB4tDGHoIJi
+0vGPAQC41tO/ln6tykdXvY1rih8XUVOH9JGl7QWP+4EKx7NOLgEA0KVS/ihoXc4O
+RAqEXUTGmB9rQsNoCWw/eo01YL3P3gM=
+=S6rC
 -----END PGP SIGNATURE-----
 
---L8pXIauJ0N/ie8Sx--
+--JCq2Q4DdpKt1JHME--
 

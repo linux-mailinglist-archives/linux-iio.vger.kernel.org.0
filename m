@@ -1,103 +1,129 @@
-Return-Path: <linux-iio+bounces-10195-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10196-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D50E9918E8
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 19:35:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FEAA9918EF
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 19:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB9D91F222A6
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 17:35:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42FEA1F22374
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 17:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A557415539F;
-	Sat,  5 Oct 2024 17:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CF8158D8F;
+	Sat,  5 Oct 2024 17:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uzj8Frlt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FA4Chn6s"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF80344C77;
-	Sat,  5 Oct 2024 17:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7011547FF;
+	Sat,  5 Oct 2024 17:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728149740; cv=none; b=lbaJiLBtvm2/tB9bj5NiimTjZuWiL3Ycdmk0OP6U7niakHM9ctGjdNnj7uUf5t2NhwhC0tnRxsgrAy8NjhczL/if0BAp4b+bndOPwuskMJdL29X3TmIjVP7N2dTvJcSvdphT2APixof2K8ibaJIqWtVaQjUdv1RYclb7YgHPv0Y=
+	t=1728149863; cv=none; b=pzpm8+chXBSKkxc627+DtUTWsdeKpEoXnC4j+D5zTc5V+vS84YffI4UE1B/Jh6jzDtSBCS+1H9a+QgYTGiUem787pPmmx/jSmxrBYEwvrMXvcplz5+KQdCDywa+Iy3sSrVZeExTRss6xWYl8i4T1ih/OixEa+v7OjDng+IP9I8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728149740; c=relaxed/simple;
-	bh=LX4OK9Ao6+30UuUeEaSdtHk1qdTEF6u3IOowQ+dQjK4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FNYEwTu/pmdujibm7lOqF43bdNDXPC5JY7KtkS/GuWxRoUdV13DpFMcT10br6DprgQLtZNK/zgpFS+XgbbL4keM2GtUU/UGQ39xw5RsY8TQ8duyEJkn1XvlwINNO6s6cUi9GbT+TXsmATIiXAEGhQth82eEZ8RvquAapuprYGNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uzj8Frlt; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5399041167cso5037626e87.0;
-        Sat, 05 Oct 2024 10:35:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728149737; x=1728754537; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zaMevDsCDSQy3p0xdoGuwS2vy2OJkKbrzaRiSGEZSnc=;
-        b=Uzj8FrltkdCwMIVnMcFnr9bIN759rAM/taocgOY45QrOyoHIeo3quLNXGe+Ouw0TY7
-         +q1BnHpwdqS3ZdQ4apzW457CZ3aDQzuh00jZh3RDLTnvED5LAT+/78L7MB+8bhSEDHPn
-         wtsQbPHmfv6ByvRmFs9t70oY9it96dk1JkSJ768Kvw6lxLfjv/J4jDiwpzuWZfl5lnhv
-         fHxltI2FguK8jaFekNucxjl7HSymAL9FBuobXOvP+GoLP/l0GeQZdw1mau5GuisXySSZ
-         EYNzZ4L6JcLvx7h+bprCIL7oUEmpyysHb8kIlNJLjAKN1irMWrm9nN/PyG8NlAMHzreL
-         kE0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728149737; x=1728754537;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zaMevDsCDSQy3p0xdoGuwS2vy2OJkKbrzaRiSGEZSnc=;
-        b=hoO8JPQlLy+FemhlVWSw4pgwNTXmNMbeZdzQJCpZL3v+NFoitAFkqXs/OT+ZmJnEnw
-         fg7d3C6uf8erlrkXoCL4m5qeNOb2Qt0L5aU/Q8q+lo2I8BHe3GgpOvydLkiAsNzkdxmm
-         aZB0KF1bFkICwhdLgvKog+et7nwVICeuyI9XLzFZPf+yBTrDvKznfBHkFY1EP2cjF+1e
-         /R9Sf90HIEPqsMNQVeaCb+AsALiG56rk5aa9/AgjhXz4TNr8s3FQSUz7RoS0bKcI1ykt
-         gjmE7JSJSFYY7iGw/bH0PDIXG+nDY5VYCSTyMeduzofqLPqGX6VJjCDWyVvbek6MIxwR
-         MTcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0Cupt29HQ9OTkqK2Qf9ifg3NodI/d8WZgmeHTrvMqJKT1UMf/RTmJkQVAmg7xJ5dZPJby0hzmnR3LPDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9D8sdMD86TP4VeJrliLOKac/WpslY217+9qfneAZSZz3m3PHD
-	RO7ThyIEfoVGr98I2cejv90YNAOoTFIDXDpeMAS1pF20uiYDKPpr9hhz6kYyyRv9IwkzY32DS6K
-	Blq7A6rNV0n09LIyLR32zqk5wQ5k=
-X-Google-Smtp-Source: AGHT+IHonTMEmxAoPIPMkG1DMaD8Zqkme4MoCJJdgz7W2vuerVm+etAiWKpkIbNieVGxxuTMdDjbVI0/z3Rfvfx/Hp0=
-X-Received: by 2002:a05:6512:6c5:b0:52c:d628:c77c with SMTP id
- 2adb3069b0e04-539ab9cf364mr4400695e87.43.1728149736676; Sat, 05 Oct 2024
- 10:35:36 -0700 (PDT)
+	s=arc-20240116; t=1728149863; c=relaxed/simple;
+	bh=vjiiFuJu6wOFYX0q5xESLaDhHDPwUR8bj4MRO3SmJ9U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r9FGQeQXqJaUjRWiREuTZ7nESFFmV2v3czrN1XppkvbuEoSQGW/ZJh7L2sNhRW4aVLCUxl36xzKUr96GJIhAiBnSQzp9pUst+B2G+er0VUIob1mN52GGqcObNPCfmYoVnVUqhhtEbIpaPsGIjsvn/L3NvYu81fw6iV/qz48aNsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FA4Chn6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A17C4CEC2;
+	Sat,  5 Oct 2024 17:37:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728149862;
+	bh=vjiiFuJu6wOFYX0q5xESLaDhHDPwUR8bj4MRO3SmJ9U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FA4Chn6s+XGCtBb9qPaJxNo8pi7AhYc43uWXEJTGFWAVdKUXKo8PWdnxulu2Y6Xi1
+	 0eozqzR8SVaW3SbBERfusJu/HSncS0OwPhEMrDsPNSsxgcJ0bgzA0x940itkdchPjL
+	 93macIIsGQqC9E2HJPTrCzJ4T+CLlLoztTKDkyNYZdWoN6l5t7QNsgXN4YZnfM+1D7
+	 huat2SpRJDWuLLKmHGAii2qiuA12dmzqRvE2crHxwBNpOarpmQ9RAjZ7YTLs6VVHFw
+	 cXi9tYRZ/RpWcVZb1lnubnqb28zcRX5bS8nZAXGVSQTFDva33podlBzOy3CFRk8cfo
+	 VzPqakJCEk+jQ==
+Date: Sat, 5 Oct 2024 18:36:59 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno Sa
+ <nuno.sa@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>, Andy Shevchenko
+ <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, "Mike Looijmans"
+ <mike.looijmans@topic.nl>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <joao.goncalves@toradex.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
+ Sergiu Cuciurean <sergiu.cuciurean@analog.com>, Dragos Bogdan
+ <dragos.bogdan@analog.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-pwm@vger.kernel.org>
+Subject: Re: [PATCH v2 7/7] Documentation: ABI: testing: ad485x: add ABI
+ docs
+Message-ID: <20241005183629.6a9cd4da@jic23-huawei>
+In-Reply-To: <20241004140922.233939-7-antoniu.miclaus@analog.com>
+References: <20241004140922.233939-1-antoniu.miclaus@analog.com>
+	<20241004140922.233939-7-antoniu.miclaus@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241004150148.14033-1-abhashkumarjha123@gmail.com>
- <20241004150148.14033-3-abhashkumarjha123@gmail.com> <20241005174755.6864d482@jic23-huawei>
-In-Reply-To: <20241005174755.6864d482@jic23-huawei>
-From: Abhash jha <abhashkumarjha123@gmail.com>
-Date: Sat, 5 Oct 2024 23:05:25 +0530
-Message-ID: <CAG=0RqJntw8njb-tzbDU5oALCNd2EEb=QFP=Uqzcxsehy4mzbg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] iio: light: vl6180: Added Interrupt support for
- single shot access
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> > +     if (client->irq) {
-> > +             reinit_completion(&data->completion);
->
-> That's late so there is a race condition. You might be delayed just before this
-> and finish the measurement before the reint_completion() in which case you'll
-> clear the complete() that happens in the interrupt handler before
-> then waiting on it.
-Yes this makes sense.
+On Fri, 4 Oct 2024 17:07:56 +0300
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> This reinit needs to be before whatever can potentially trigger
-> that interrupt.
-Can you explain this part, because where can i reinit it, The measurement
-starts when we write the START_STOP bit to SYSRANGE_START. So should
-it be before that.
-I'm kind of confused with this.
+> Add documentation for the packet size.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> changes in v2:
+>  - improve description for packet_format
+>  - add kernel version
+>  .../ABI/testing/sysfs-bus-iio-adc-ad485x         | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad485x
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad485x b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad485x
+> new file mode 100644
+> index 000000000000..5d69a8d30383
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad485x
+> @@ -0,0 +1,16 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/packet_format_available
+> +KernelVersion:	6.13
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Packet sizes on the CMOS or LVDS conversion data output bus.
+> +		Reading this returns the valid values that can be written to the
+> +		packet_format.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/packet_format
+> +KernelVersion:	6.13
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		This attribute configures the frame size on conversion data
+> +		output bus. See packet_format_available for available sizes
+> +		based on the device used.
+> +		Reading returns the actual size used.
+This needs to give some guidance to the user on 'why' they might pick a particular
+format.
 
-Thank you,
-Abhash
+I'm also inclined to suggest that for now we pick a sensible default dependent
+on the other options enabled (oversampling etc) and don't expose it to the user.
+
+Eventually it looks like we may have to figure out a solution to describe
+metadata packed alongside the channel readings but that may take a while
+and I don't want to stall this driver on that discussion.
+
+Thanks,
+
+Jonathan
+
+
 

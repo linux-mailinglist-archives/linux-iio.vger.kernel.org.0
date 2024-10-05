@@ -1,70 +1,67 @@
-Return-Path: <linux-iio+bounces-10196-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10197-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FEAA9918EF
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 19:37:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1912C9918F7
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 19:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42FEA1F22374
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 17:37:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B2001C20EDB
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 17:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CF8158D8F;
-	Sat,  5 Oct 2024 17:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8D01591FC;
+	Sat,  5 Oct 2024 17:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FA4Chn6s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNK3sXfb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7011547FF;
-	Sat,  5 Oct 2024 17:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390DD158DCA;
+	Sat,  5 Oct 2024 17:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728149863; cv=none; b=pzpm8+chXBSKkxc627+DtUTWsdeKpEoXnC4j+D5zTc5V+vS84YffI4UE1B/Jh6jzDtSBCS+1H9a+QgYTGiUem787pPmmx/jSmxrBYEwvrMXvcplz5+KQdCDywa+Iy3sSrVZeExTRss6xWYl8i4T1ih/OixEa+v7OjDng+IP9I8Q=
+	t=1728150059; cv=none; b=GkegITe2jjpBFl9ADt6h/Bm8dHnuSiJsVthMwHWSLAWf44Tb/ijG0jRByKNJKe4vDVg4baymgsiwaPok8VnrtN7c2hPf2E/NPtJnZ9NqJNYNW9v4gX/KeMgFJXjDUARNWhSoKpNTHGgutHXV9XZdkiR/6x067HvrDnunEIENEnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728149863; c=relaxed/simple;
-	bh=vjiiFuJu6wOFYX0q5xESLaDhHDPwUR8bj4MRO3SmJ9U=;
+	s=arc-20240116; t=1728150059; c=relaxed/simple;
+	bh=cBdbuPTUpxfP6eMgC/lhcKtPx49h+a7Y8BWA0yItIA8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r9FGQeQXqJaUjRWiREuTZ7nESFFmV2v3czrN1XppkvbuEoSQGW/ZJh7L2sNhRW4aVLCUxl36xzKUr96GJIhAiBnSQzp9pUst+B2G+er0VUIob1mN52GGqcObNPCfmYoVnVUqhhtEbIpaPsGIjsvn/L3NvYu81fw6iV/qz48aNsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FA4Chn6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A17C4CEC2;
-	Sat,  5 Oct 2024 17:37:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iAcr0dEb64ZyO61l41T+Nj7zwOdmshJFFTrYE6wnOm503R7IsfSwfzioCaU1vs/Alinm4BXgO671tCFsK/wwODhYMY1xvVpTyi0VfF7YT6tLPnLiQy/PuHsI3ScayDcwphJictE3OAWNC8edAAp5Q6eqoPwcPbqMSP7awUp/Dk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNK3sXfb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0CFC4CEC2;
+	Sat,  5 Oct 2024 17:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728149862;
-	bh=vjiiFuJu6wOFYX0q5xESLaDhHDPwUR8bj4MRO3SmJ9U=;
+	s=k20201202; t=1728150058;
+	bh=cBdbuPTUpxfP6eMgC/lhcKtPx49h+a7Y8BWA0yItIA8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FA4Chn6s+XGCtBb9qPaJxNo8pi7AhYc43uWXEJTGFWAVdKUXKo8PWdnxulu2Y6Xi1
-	 0eozqzR8SVaW3SbBERfusJu/HSncS0OwPhEMrDsPNSsxgcJ0bgzA0x940itkdchPjL
-	 93macIIsGQqC9E2HJPTrCzJ4T+CLlLoztTKDkyNYZdWoN6l5t7QNsgXN4YZnfM+1D7
-	 huat2SpRJDWuLLKmHGAii2qiuA12dmzqRvE2crHxwBNpOarpmQ9RAjZ7YTLs6VVHFw
-	 cXi9tYRZ/RpWcVZb1lnubnqb28zcRX5bS8nZAXGVSQTFDva33podlBzOy3CFRk8cfo
-	 VzPqakJCEk+jQ==
-Date: Sat, 5 Oct 2024 18:36:59 +0100
+	b=UNK3sXfbC+99Mklm71r+M3DFqwg4LIjMBwFjJorMyZ9k3DNzO49znYtugIA/Fk1ez
+	 +gnbXv6mCZp5kRs6vcijWSE1cwivb/xPfYh/iuO8Nx5CLQGpOSsn72dg9CuREsqO9p
+	 2HvLY8D3trHBuKcDp2EBtGFM/ejLjGdEY1wY0/irfzr/abjQ4wx1rRANAP9qM8Q31M
+	 6Umt/iUVshCq6/h5oqGA5lsBQJy8fnYuM/DZgEeTAyS4jz+REvp+DMPYVuLVWGjFZ9
+	 Mwuz1R4LnYb5lOlLD4VDOQEBzV6StV+bFE29E8AJQJ8JqDW6ym65xTLmGwnabI0QyD
+	 kA+Gb7Rq7LXGw==
+Date: Sat, 5 Oct 2024 18:40:18 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno Sa
- <nuno.sa@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>, Andy Shevchenko
- <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, "Mike Looijmans"
- <mike.looijmans@topic.nl>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
- =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <joao.goncalves@toradex.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
- Sergiu Cuciurean <sergiu.cuciurean@analog.com>, Dragos Bogdan
- <dragos.bogdan@analog.com>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH v2 7/7] Documentation: ABI: testing: ad485x: add ABI
- docs
-Message-ID: <20241005183629.6a9cd4da@jic23-huawei>
-In-Reply-To: <20241004140922.233939-7-antoniu.miclaus@analog.com>
-References: <20241004140922.233939-1-antoniu.miclaus@analog.com>
-	<20241004140922.233939-7-antoniu.miclaus@analog.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Matti Vaittinen
+ <mazziesaccount@gmail.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, David Lechner <dlechner@baylibre.com>,
+ Nuno Sa <nuno.sa@analog.com>, Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer
+ <sean@geanix.com>, Leonard =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>,
+ Mihail Chindris <mihail.chindris@analog.com>, Alexandru Ardelean
+ <ardeleanalex@gmail.com>, Gustavo Silva <gustavograzs@gmail.com>, Shoji
+ Keita <awaittrot@shjk.jp>, Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+ Dalton Durst <dalton@ubports.com>, Icenowy Zheng <icenowy@aosc.io>, Andreas
+ Klinger <ak@it-klinger.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Ondrej Jirman
+ <megi@xff.cz>
+Subject: Re: [PATCH 04/13] iio: adc: ti-ads8688: add missing select
+ IIO_(TRIGGERED_)BUFFER in Kconfig
+Message-ID: <20241005184018.6b06e850@jic23-huawei>
+In-Reply-To: <20241003-iio-select-v1-4-67c0385197cd@gmail.com>
+References: <20241003-iio-select-v1-0-67c0385197cd@gmail.com>
+	<20241003-iio-select-v1-4-67c0385197cd@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -75,55 +72,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 4 Oct 2024 17:07:56 +0300
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Thu, 03 Oct 2024 23:04:50 +0200
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> Add documentation for the packet size.
+> This driver makes use of triggered buffers, but does not select the
+> required modules.
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Fixes: 2a86487786b5 ("iio: adc: ti-ads8688: add trigger and buffer support")
+> Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+Fixes tag must be part of the tag block.
+
+Also this one looks to be a false positive. The driver includes
+buffer.h but doesn't actually have buffered support.
+
+> 
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 > ---
-> changes in v2:
->  - improve description for packet_format
->  - add kernel version
->  .../ABI/testing/sysfs-bus-iio-adc-ad485x         | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad485x
+>  drivers/iio/adc/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad485x b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad485x
-> new file mode 100644
-> index 000000000000..5d69a8d30383
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad485x
-> @@ -0,0 +1,16 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/packet_format_available
-> +KernelVersion:	6.13
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Packet sizes on the CMOS or LVDS conversion data output bus.
-> +		Reading this returns the valid values that can be written to the
-> +		packet_format.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/packet_format
-> +KernelVersion:	6.13
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		This attribute configures the frame size on conversion data
-> +		output bus. See packet_format_available for available sizes
-> +		based on the device used.
-> +		Reading returns the actual size used.
-This needs to give some guidance to the user on 'why' they might pick a particular
-format.
-
-I'm also inclined to suggest that for now we pick a sensible default dependent
-on the other options enabled (oversampling etc) and don't expose it to the user.
-
-Eventually it looks like we may have to figure out a solution to describe
-metadata packed alongside the channel readings but that may take a while
-and I don't want to stall this driver on that discussion.
-
-Thanks,
-
-Jonathan
-
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 45872a4e2acf..e6be1f1ec79f 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -1483,6 +1483,8 @@ config TI_ADS8344
+>  config TI_ADS8688
+>  	tristate "Texas Instruments ADS8688"
+>  	depends on SPI
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+>  	help
+>  	  If you say yes here you get support for Texas Instruments ADS8684 and
+>  	  and ADS8688 ADC chips
+> 
 
 

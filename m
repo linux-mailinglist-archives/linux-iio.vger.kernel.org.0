@@ -1,413 +1,179 @@
-Return-Path: <linux-iio+bounces-10216-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10217-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7B29919C0
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 20:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D161B9919D1
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 21:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1536D1F22728
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 18:54:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AD481F22251
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 19:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E948A15F3EF;
-	Sat,  5 Oct 2024 18:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0541339B1;
+	Sat,  5 Oct 2024 19:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eg/7GBid"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="dZmWHD4K"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from msa.smtpout.orange.fr (smtp-83.smtpout.orange.fr [80.12.242.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF93815AAD7;
-	Sat,  5 Oct 2024 18:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D547D136E3B;
+	Sat,  5 Oct 2024 19:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728154472; cv=none; b=VMMhMC7StIH3b+f9eqrRgrGu48FCod5YNQHUBG7pzV9Ec5BwBB7/TF70rdoM4azJZcidQ+U0gC79YW9ERopvfqygy1rt7eXbFZmpXxhRTv47AW/Oni/0yYOv5XjgqFwaB742SMoFHcGfSny/FLH+08Cq5aw+6AryUuAA/cFKPd0=
+	t=1728155551; cv=none; b=GM98RiHu5XCelnF0d76LVOtMscYgjMPpQkbb56l1syxFSn+krX5t7FGEC4CRE98pj2oVmkUwhI0W7IXsJIc8wJi1HO30pJa7YO03+aVYGbFIB5aauMbWa59GoUXzclQ/+fmvbQ4A6eQvfniUg6vg+25SfDX2779eS3POh0tQDOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728154472; c=relaxed/simple;
-	bh=6IFKQhQLUJfPYXyVcfNJe2Hz4p82rNuBz6McE9ANNW0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KSuUJowzmsmgTeb/5tIh2FmJp9X5CLeFRirk9j3sS5RXSrxNSzxnut5Du3WlLyH2XxmEGb4zr7lwObSiVzYsnpwB2JllQUT5GyPt/eo5ZmNmGGAvnfdpYknoIeop7ILzlnlgvw1ArZa7KW3na+HlkB9SIRF7tZZjtKXei04dtZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eg/7GBid; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a99422929b2so58430866b.0;
-        Sat, 05 Oct 2024 11:54:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728154469; x=1728759269; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RMmSZeZIFzeYGmzKMn0nfeYr3NgLbMDWwRUaY8CIiEA=;
-        b=eg/7GBidWy7Y3X9tSX367cx9U4SAxKmOcmlKnVFDkSJ95yAZInt7iPYCqLNrkHze0R
-         bso5Wj2YXKhAeSjMCSAlyTlZLaMCPGFq5rUpRMtHPJ+/W7X0f3NWHLjBxuV2k6ohQDVe
-         n8H6BPywwrq7XVmZtQXRXUUValTpMGIwemhgZ2/9EQr1UEu+ahExzEsHt2PqVUKatDxM
-         dIo+VM+t9u6mQ+k5jTPLUhrA5ONCtX+i9tAUD8AEW9Q+clzm89CT89VmqtojX1ihY1dz
-         Yt9f8l+Rtx6NFMbcJEi+Tm2V/CIRh4p82fRzrtlZ+mfvq2He1uglsnw6vMClJFLEtrrw
-         gT1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728154469; x=1728759269;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RMmSZeZIFzeYGmzKMn0nfeYr3NgLbMDWwRUaY8CIiEA=;
-        b=Opb5erJz9zJNzMx7f0e3N8lhteKV/xv8ANMhwQHlNSo1rvvbw+NrXww1a+XLQaJjr6
-         aYxsUUyOfJe6+80SRXY1tn3NjtRn6VDtuwFteIxEHkRozKsQYy8myHb06Hb5pUcL5Sei
-         4HDg0tu+u7X7ypQxTNhDOaaMmmAISU+pl+laDPsoXmXdlt3XLaHGdggFCxsMgiZt2RYr
-         /j5J0cMbh9DyVtiznYQFp60Bv6At7Cf1EJipL024pypUveqPlqlzXJMpk4iihXXtPK1Q
-         g3XQEiGnNx9JcoGGcsSauzA97L4zSbpVeAHBlLIOi61mj+YcmZWnhTnKYteA8kq5CwQi
-         i3sQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSFsVHb4kH0OxmLG3lxW3zymsUmajNiVaOd4fkcwpin3B7UoHCLEKc2B/S47VG9gDSCo3gpJKc5/ga@vger.kernel.org, AJvYcCWOH4W0jyI0+gPkd7/ArsxcQ/GHUX8jkO5xlalixV8D1YtS7dgsaArlSJ1nyvw3NBlvBv4ka+ZSGjv2Rvqj@vger.kernel.org, AJvYcCXc7VmNHkuZk4rq/3yMk2KF10yS/0bUB42U85s1IFZOS3xeSeQa7YWgOAucStAyKGi5OJjMEKi75Jes@vger.kernel.org, AJvYcCXgbdb6Q/XRxK6OgYtjI+kk9Glb6nZyANtMR0OJf0k2z7QEqaN6FPxCoYq0THoLJ7Es4nI4/dB+vvdc@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl06xONMUaSscm7mnRlUHnPrr8T9ENPNGKLoHRbXS54WqCpB/u
-	fgb0Ra7iqt/GNCwl0iAtkeYhGR5+yzJpTATBQfltrFJ3MAzheaf7L1IBMqVn+3R1d6XoFZmBPyk
-	6g9eLh9u+bnJJGP4XxZDqIuubBHE=
-X-Google-Smtp-Source: AGHT+IHYkLpAuHJLyMbHAR8xpsUmUuC+S5mc4tx6KI1lkZAY0mtmYJlDZIzKtWmsUJ19UKuS6hQ4z69RqWjIAk2fdWw=
-X-Received: by 2002:a17:907:6d10:b0:a99:4b63:f810 with SMTP id
- a640c23a62f3a-a994b6400d6mr14677566b.46.1728154469012; Sat, 05 Oct 2024
- 11:54:29 -0700 (PDT)
+	s=arc-20240116; t=1728155551; c=relaxed/simple;
+	bh=dUW5FPkc6TiqyYbCkpJFU0+sWOPoy25nEgUuilRHOLs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IyPnmCGk6rIDZMfIH60KcTKr1t+jewbNDdNcP378vstBKCgPb/j4TE/aWwsam9SvQ6b9x1h6k4e/PDr44bDJt4YEJkRvOEbEBciQnLceOWslHe91rJ9SXT5AFfPgGjDCobKALyfIGOlGIQwIE2EQc0CW+JS2Gkx9FurEWMwV55I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=dZmWHD4K; arc=none smtp.client-ip=80.12.242.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id xACXsHetYzmbmxACXsOuhf; Sat, 05 Oct 2024 21:12:26 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1728155546;
+	bh=OhA3E58mj+rLNcMtdMfNrJ61JKFosbd/9IOaIzgO8Rk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=dZmWHD4KENhS1l87rUrChXQ7DoiqmXSem5ckUd1Q/xXVgttHCRNz3Y1SGLoqNLxlh
+	 JPYWIHLKiRlFvGkEfe6Gno8Mx65cOxVB7Rnf5mtTeIt6UhbfK38LyHzCECHxmRpta7
+	 x7b3spvj5ZEIKOG0sSLItXCPbFylC/LRvw9nqUD/uqOcb1y1Y/oZsyrmH6xcr+2kj2
+	 zetxWAAxTPsEgjYyMqXN/aKHfGv67YczY6iq1cuizz5Uw/4Js7PyuwqnY6SiGjwxFi
+	 K2sYfML4kMOjHTJm4LN9qJ//PbRVDzkZWYQS/1TL5YUY3RXF8Dpi4tMbCvkC5tZMtn
+	 m/78jWP0C/5Iw==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Sat, 05 Oct 2024 21:12:26 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <5e4f121f-85a4-489f-8949-a5b02be99d09@wanadoo.fr>
+Date: Sat, 5 Oct 2024 21:12:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241004140922.233939-1-antoniu.miclaus@analog.com> <20241004140922.233939-6-antoniu.miclaus@analog.com>
-In-Reply-To: <20241004140922.233939-6-antoniu.miclaus@analog.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 5 Oct 2024 21:53:51 +0300
-Message-ID: <CAHp75VeaYBGTA7sN7SefsyMj09kaJLBoMz4=hf0GpxiXtF65+Q@mail.gmail.com>
-Subject: Re: [PATCH v2 6/7] iio: adc: ad485x: add ad485x driver
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>, 
-	Olivier Moysan <olivier.moysan@foss.st.com>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	Marcelo Schmitt <marcelo.schmitt@analog.com>, Mike Looijmans <mike.looijmans@topic.nl>, 
-	Marius Cristea <marius.cristea@microchip.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Alisa-Dariana Roman <alisadariana@gmail.com>, Ivan Mikhaylov <fr0st61te@gmail.com>, 
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, Dragos Bogdan <dragos.bogdan@analog.com>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-pwm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Oct 4, 2024 at 5:12=E2=80=AFPM Antoniu Miclaus
-<antoniu.miclaus@analog.com> wrote:
->
-> Add support for the AD485X DAS familiy.
-
-family.
-
-...
-
-> +#define AD485X_REG_PRODUCT_ID_L                0x04
-> +#define AD485X_REG_PRODUCT_ID_H                0x05
-
-Can this use bulk transfer with __le16 type?
-
-...
-
-> +#define AD485X_REG_CHX_OFFSET_LSB(ch)  AD485X_REG_CHX_OFFSET(ch)
-> +#define AD485X_REG_CHX_OFFSET_MID(ch)  (AD485X_REG_CHX_OFFSET_LSB(ch) + =
-0x01)
-> +#define AD485X_REG_CHX_OFFSET_MSB(ch)  (AD485X_REG_CHX_OFFSET_MID(ch) + =
-0x01)
-
-But can you connect oscilloscope and actually see what's the difference?
-
-...
-
-> +#define AD485X_REG_CHX_GAIN_LSB(ch)    AD485X_REG_CHX_GAIN(ch)
-> +#define AD485X_REG_CHX_GAIN_MSB(ch)    (AD485X_REG_CHX_GAIN(ch) + 0x01)
-
-> +#define AD485X_REG_CHX_PHASE_LSB(ch)   AD485X_REG_CHX_PHASE(ch)
-> +#define AD485X_REG_CHX_PHASE_MSB(ch)   (AD485X_REG_CHX_PHASE_LSB(ch) + 0=
-x01)
-
-__le16 + bulk transfers?
-
-...
-
-> +#define AD485X_SW_RESET                        (BIT(7) | BIT(0))
-
-Is it really a bitfield? What then does each bit mean?
-
-> +#define AD485X_SDO_ENABLE              BIT(4)
-> +#define AD485X_SINGLE_INSTRUCTION      BIT(7)
-> +#define AD485X_ECHO_CLOCK_MODE         BIT(0)
-
-...
-
-> +struct ad485x_chip_info {
-> +       const char *name;
-> +       unsigned int product_id;
-> +       const unsigned int (*scale_table)[2];
-> +       int num_scales;
-> +       const int *offset_table;
-> +       int num_offset;
-> +       const struct iio_chan_spec *channels;
-> +       unsigned int num_channels;
-> +       unsigned long throughput;
-> +       unsigned int resolution;
-
-Have you run `pahole` for this and other data structures you
-introduced? Is there any room for optimization?
-
-> +};
-
-...
-
-> +static int ad485x_find_opt(bool *field, u32 size, u32 *ret_start)
-> +{
-> +       unsigned int i, cnt =3D 0, max_cnt =3D 0, max_start =3D 0;
-> +       int start;
-> +
-> +       for (i =3D 0, start =3D -1; i < size; i++) {
-> +               if (field[i] =3D=3D 0) {
-> +                       if (start =3D=3D -1)
-> +                               start =3D i;
-> +                       cnt++;
-> +               } else {
-> +                       if (cnt > max_cnt) {
-> +                               max_cnt =3D cnt;
-> +                               max_start =3D start;
-> +                       }
-> +                       start =3D -1;
-> +                       cnt =3D 0;
-> +               }
-> +       }
-> +
-> +       if (cnt > max_cnt) {
-> +               max_cnt =3D cnt;
-> +               max_start =3D start;
-> +       }
-> +
-> +       if (!max_cnt)
-> +               return -ENOENT;
-> +
-> +       *ret_start =3D max_start;
-> +
-> +       return max_cnt;
-> +}
-
-Can you describe the search algorithm in the comment?
-
-...
-
-> +static int ad485x_calibrate(struct ad485x_state *st)
-> +{
-> +       unsigned int opt_delay, lane_num, delay, i, s, c;
-> +       enum iio_backend_interface_type interface_type;
-
-> +       bool pn_status[AD485X_MAX_LANES][AD485X_MAX_IODELAY];
-
-Why bool and not bitmap? I think I already asked this, but I don't
-remember what you answered.
-
-> +       int ret;
-
-...
-
-> +static int ad485x_set_packet_format(struct iio_dev *indio_dev,
-> +                                   const struct iio_chan_spec *chan,
-> +                                   unsigned int format)
-> +{
-> +       struct ad485x_state *st =3D iio_priv(indio_dev);
-> +       unsigned int val;
-> +       int ret;
-> +
-> +       if (chan->scan_type.realbits =3D=3D 20)
-
-Missing {}
-
-> +               switch (format) {
-> +               case 0:
-> +                       val =3D 20;
-> +                       break;
-> +               case 1:
-> +                       val =3D 24;
-> +                       break;
-> +               case 2:
-> +                       val =3D 32;
-> +                       break;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +       else if (chan->scan_type.realbits =3D=3D 16)
-
-Ditto.
-
-> +               switch (format) {
-> +               case 0:
-> +                       val =3D 16;
-> +                       break;
-> +               case 1:
-> +                       val =3D 24;
-> +                       break;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +       else
-
-Ditto.
-
-> +               return -EINVAL;
-> +
-> +       ret =3D iio_backend_data_size_set(st->back, val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return regmap_update_bits(st->regmap, AD485X_REG_PACKET,
-> +                                 AD485X_PACKET_FORMAT_MASK, format);
-> +}
-
-...
-
-> +static int ad485x_get_calibscale(struct ad485x_state *st, int ch, int *v=
-al, int *val2)
-> +{
-> +       unsigned int reg_val;
-> +       int gain;
-
-Should be u8 gain[2] and...
-
-> +       int ret;
-> +
-> +       guard(mutex)(&st->lock);
-> +
-> +       ret =3D regmap_read(st->regmap, AD485X_REG_CHX_GAIN_MSB(ch),
-> +                         &reg_val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       gain =3D (reg_val & 0xFF) << 8;
-> +
-> +       ret =3D regmap_read(st->regmap, AD485X_REG_CHX_GAIN_LSB(ch),
-> +                         &reg_val);
-> +       if (ret)
-> +               return ret;
-> +
-> +       gain |=3D reg_val & 0xFF;
-
-> +       *val =3D gain;
-
-...get_unaligned_be/le16().
-
-> +       *val2 =3D 32768;
-> +
-> +       return IIO_VAL_FRACTIONAL;
-> +}
-
-...
-
-> +static int ad485x_set_calibscale(struct ad485x_state *st, int ch, int va=
-l,
-> +                                int val2)
-> +{
-> +       unsigned long long gain;
-> +       unsigned int reg_val;
-> +       int ret;
-
-> +       gain =3D val * MICRO + val2;
-> +       gain =3D DIV_U64_ROUND_CLOSEST(gain * 32768, MICRO);
-> +
-> +       reg_val =3D gain;
-
-In the similar way, put_unaligned and use gain[0], gain[1];
-
-> +       ret =3D regmap_write(st->regmap, AD485X_REG_CHX_GAIN_MSB(ch),
-> +                          reg_val >> 8);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return regmap_write(st->regmap, AD485X_REG_CHX_GAIN_LSB(ch),
-> +                           reg_val & 0xFF);
-> +}
-
-...
-
-> +static int ad485x_get_calibbias(struct ad485x_state *st, int ch, int *va=
-l)
-> +{
-
-> +       if (st->info->resolution =3D=3D 16) {
-> +               *val =3D msb << 8;
-> +               *val |=3D mid;
-> +               *val =3D sign_extend32(*val, 15);
-
-get_unaligned_be16()
-
-> +       } else {
-> +               *val =3D msb << 12;
-> +               *val |=3D mid << 4;
-> +               *val |=3D lsb >> 4;
-
-get_unaligned_be24()
-
-> +               *val =3D sign_extend32(*val, 19);
-> +       }
-
-> +}
-
-...
-
-> +static int ad485x_set_calibbias(struct ad485x_state *st, int ch, int val=
-)
-> +{
-> +       u8 buf[3] =3D { 0 };
-
-0 is not needed.
-
-> +       int ret;
-> +
-> +       if (val < 0)
-> +               return -EINVAL;
-> +
-> +       if (st->info->resolution =3D=3D 16)
-> +               put_unaligned_be16(val, buf);
-> +       else
-> +               put_unaligned_be24(val << 4, buf);
-
-You see, you even did this! Why not in the above functions?
-
-> +}
-
-...
-
-> +static const unsigned int ad485x_scale_avail[] =3D {
-> +       2500, 5000, 10000, 6250, 12500, 20000, 25000, 40000, 50000, 80000=
-,
-
-It's better to have pow-of-2 of numbers on one line. So here each line up t=
-o 8?
-
-       2500, 5000, 10000, 6250, 12500, 20000, 25000, 40000, /* 0-7 */
-       50000, 80000,     /* 8-9 */
-
-> +};
-> +
-> +static void __ad485x_get_scale(struct ad485x_state *st, int scale_tbl,
-> +                              unsigned int *val, unsigned int *val2)
-> +{
-> +       const struct ad485x_chip_info *info =3D st->info;
-> +       const struct iio_chan_spec *chan =3D &info->channels[0];
-> +       unsigned int tmp;
-> +
-> +       tmp =3D (scale_tbl * 1000000ULL) >> chan->scan_type.realbits;
-
-MICRO? MEGA?
-
-> +       *val =3D tmp / 1000000;
-> +       *val2 =3D tmp % 1000000;
-
-Ditto.
-
-
-> +}
-
---
-With Best Regards,
-Andy Shevchenko
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iioc: dac: ltc2664: Fix span variable usage in
+ ltc2664_channel_config function
+To: Mohammed Anees <pvmohammedanees2003@gmail.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>,
+ Kim Seer Paller <kimseer.paller@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Mohammed Anees <pvmohammedanees2003@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241005170722.19542-1-pvmohammedanees2003@gmail.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20241005170722.19542-1-pvmohammedanees2003@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Le 05/10/2024 à 19:07, Mohammed Anees a écrit :
+> In the current implementation of the ltc2664_channel_config function,
+
+Hi,
+
+Usually () are added after function name.
+
+	In the current implementation of ltc2664_channel_config()
+
+Same for other function in the text below.
+
+> a variable named span is declared and initialized to 0, intended to
+> capture the return value of the ltc2664_set_span function. However,
+> the output of ltc2664_set_span is directly assigned to chan->span,
+> leaving span unchanged. As a result, when the function later checks
+> if (span < 0), this condition will never trigger an error since
+> span remains 0, this flaw leads to ineffective error handling. The
+> current patch resolves this issue by using the ret variable for
+
+Usually imperative is preferred in patch description. This could be:
+
+	Resolve this issue by using the ret variable for...
+(without "The current patch")
+
+> getting the return value, later assigning if successful and also
+> effectively removing span variable.
+> 
+> Signed-off-by: Mohammed Anees <pvmohammedanees2003-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Fixes: 4cc2fc445d2e4e63ed6bd5d310752d88d365f8e4
+
+Fixes should be before S-o-b.
+
+Fixes should be Fixes: <12 chars of sha1> ("<title line>")
+So here: Fixes: 4cc2fc445d2e ("iio: dac: ltc2664: Add driver for LTC2664 
+and LTC2672")
+
+I think that running "./scripts/checkpatch.pl" on your patch should warn 
+about it.
+
+> ---
+> v2:
+> - Using the ret variable to store the result from ltc2664_set_span
+> ---
+>   drivers/iio/dac/ltc2664.c | 18 +++++++++++-------
+>   1 file changed, 11 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/dac/ltc2664.c b/drivers/iio/dac/ltc2664.c
+> index 5be5345ac5c8..7dafcba7ece7 100644
+> --- a/drivers/iio/dac/ltc2664.c
+> +++ b/drivers/iio/dac/ltc2664.c
+> @@ -516,7 +516,7 @@ static int ltc2664_channel_config(struct ltc2664_state *st)
+>   	const struct ltc2664_chip_info *chip_info = st->chip_info;
+>   	struct device *dev = &st->spi->dev;
+>   	u32 reg, tmp[2], mspan;
+> -	int ret, span = 0;
+> +	int ret;
+>   
+>   	mspan = LTC2664_MSPAN_SOFTSPAN;
+>   	ret = device_property_read_u32(dev, "adi,manual-span-operation-config",
+> @@ -579,20 +579,24 @@ static int ltc2664_channel_config(struct ltc2664_state *st)
+>   		ret = fwnode_property_read_u32_array(child, "output-range-microvolt",
+>   						     tmp, ARRAY_SIZE(tmp));
+>   		if (!ret && mspan == LTC2664_MSPAN_SOFTSPAN) {
+> -			chan->span = ltc2664_set_span(st, tmp[0] / 1000,
+> +			ret = ltc2664_set_span(st, tmp[0] / 1000,
+>   						      tmp[1] / 1000, reg);
+
+Parameters are not aligned anymore with the opening ( of the previous line.
+
+"./scripts/checkpatch.pl --strict" would also warn about it.
+
+> -			if (span < 0)
+> -				return dev_err_probe(dev, span,
+> +			if (ret < 0)
+> +				return dev_err_probe(dev, ret,
+>   						     "Failed to set span\n");
+> +			else
+
+No need for 'else'.
+
+> +				chan->span = ret;
+>   		}
+>   
+>   		ret = fwnode_property_read_u32_array(child, "output-range-microamp",
+>   						     tmp, ARRAY_SIZE(tmp));
+>   		if (!ret) {
+> -			chan->span = ltc2664_set_span(st, 0, tmp[1] / 1000, reg);
+> -			if (span < 0)
+> -				return dev_err_probe(dev, span,
+> +			ret = ltc2664_set_span(st, 0, tmp[1] / 1000, reg);
+> +			if (ret < 0)
+> +				return dev_err_probe(dev, ret,
+>   						     "Failed to set span\n");
+> +			else
+
+No need for 'else'.
+
+CJ
+
+> +				chan->span = ret;
+>   		}
+>   	}
+>   
+
 

@@ -1,119 +1,158 @@
-Return-Path: <linux-iio+bounces-10212-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10213-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26811991956
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 20:15:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C9E991960
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 20:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0DB21F229EA
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 18:15:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 230951F21EAB
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 18:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898BB158DA0;
-	Sat,  5 Oct 2024 18:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9DF158DA0;
+	Sat,  5 Oct 2024 18:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCjmzIh5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MfClBQLs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B451798C;
-	Sat,  5 Oct 2024 18:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547D81798C;
+	Sat,  5 Oct 2024 18:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728152133; cv=none; b=awJ1nIdmJxFy/TtBojhxqkOZ/dYBXK+vh4NQoN1IDo8Av3QeO0RKh/K5DKFNCeImsWAtAuenjNvza2aQ/r8tdQWgaI9IYzbdyXtGxX3bJHTR2S6K2opVuarqt+AefMi7dGT5zddgzkhf9nh7CjuSeG9i7XqZ8y0nbbngTbAqr2I=
+	t=1728152473; cv=none; b=gTD29Rk9yrPu9kyBKHMkmyLLc5UIUqMn5L/7TWihKphiNxOR9ulZS+r8r61UZgccILOAtQ3Ks48z819retUzLLH49OcsCm1O7/sjKT4SDtiRu5Ed6sQQ7xwWwv3G60Mg3Z3KoRfdt93qTSo8yx5z2Notcz5bnNXqUJZ7ge1Hkts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728152133; c=relaxed/simple;
-	bh=qAgZOPN9/dTABPQLItOCzbUsdyRIzcEXxe0YDfCPPT8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t2m/OLDNOzh+Y6VT2HtmVkC4QolrMjMaHsg9EtxrQPrFYVrgy3WhRpokLWZhnXjxSj9oA0ZunZC93ZvnOPsRlERpglVZIoi1Bh5UHrUEVGySrH2eyXXu0CavjXl+mvI1We48N/f0NFfmLAEC/ViosrKSKKnf3gyBR3j32tEfS/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCjmzIh5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDE8C4CEC7;
-	Sat,  5 Oct 2024 18:15:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728152132;
-	bh=qAgZOPN9/dTABPQLItOCzbUsdyRIzcEXxe0YDfCPPT8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sCjmzIh5++SY2jr3gzV7oNKsob7SBbN4GOOn8xW1aSMaCkH2nkxvUZYDZZqfJIDM4
-	 Zch4fdeC7tY6zX9etvtD/w2JqChcBOy8gkzdYu6Np6TD8FIOQyjPDeofmUWAGO40t4
-	 IXJ2d15rkMMcsLaIXGM5iELNwcIbW/ZquG7d1lp154E9IpGFSMjqRhqF9jRuMi0erF
-	 6/4ICw6EnqRvmm48CrjE9L2tFg309AzzhRyAObmUNv1Q95eZ5JA16tQrs30OgLbxOy
-	 ljn+4oPVPJi0LM/vd4bsCtwPKicDrToPCbkR8buTp9ZAuvifRkFYuEqJ+OvAd2g1+d
-	 bI8KeQi8Oy36w==
-Date: Sat, 5 Oct 2024 19:15:08 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Abhash jha <abhashkumarjha123@gmail.com>
-Cc: linux-iio@vger.kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] iio: light: vl6180: Add support for Continuous Mode
-Message-ID: <20241005191508.16150a9d@jic23-huawei>
-In-Reply-To: <CAG=0RqJNJNg9yydeKfpo87P6sYd5n6Xi0MoLz0OFQrXPgb8cFA@mail.gmail.com>
-References: <20241004150148.14033-1-abhashkumarjha123@gmail.com>
-	<20241004150148.14033-4-abhashkumarjha123@gmail.com>
-	<20241005175932.00438b0f@jic23-huawei>
-	<CAG=0RqJNJNg9yydeKfpo87P6sYd5n6Xi0MoLz0OFQrXPgb8cFA@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1728152473; c=relaxed/simple;
+	bh=DvcMf5/HeKRUSZojHkHZF68QLnGuWSrrXLDKhFRy110=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HVfImkjb+tthFR7ygABYNRqdnjOH+WzWzKn/MUHDjlY9oI4FhSL/2QDK+H7X9IlxHeI/Sb74dEmaICShC89nXniR2G1BbKdkB3dcDBhxMMpqLK5QolK31WmSqpmhGhowXnN+t0MXJvPZ0BkalPTdEkVMRWfURQPhito1k2odm/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MfClBQLs; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37cdbcb139cso2437543f8f.1;
+        Sat, 05 Oct 2024 11:21:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728152470; x=1728757270; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=w0N+f0QrNk/7IBy9s5iZg9Yt6FI+f3/ZQhjUgn06TS0=;
+        b=MfClBQLsZPl/0nSRjfVjsAh44NJ6zD1dlgMrPaAYGoNTy0ZiVLcdRBKYBbKyrOew1z
+         SgEsKi98PMIacpUmeN03WJ/Ns1Pyle/6wmV3FSjbXQQHArxaAIR6pq3/1RP4BmnFY8D+
+         A0H6aX6j3iHxS86hkbr1HpQNT7EFHU/kpo3tUlj0DlKPkz0w1hrqQSSRqK4PtqDh44gL
+         L7VZoVbMQu/rzFW3gvQ4Uxz511iBjoHsgVE8p1a2DM/Ug1djTUJCm6YbqQOyiMzztSXd
+         q9emvS5UMIh+uDmbHRXoHUK80g96s3QamCpLEL/2QS/S807Z1bHfemYgjIb9YTmWPMOy
+         g6WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728152470; x=1728757270;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w0N+f0QrNk/7IBy9s5iZg9Yt6FI+f3/ZQhjUgn06TS0=;
+        b=IHPmMQqG8bucaEUq5+GD293hxkAwLnFy32q/IEps0hZAU+YHztsAo2HTEMBTGRZ9kO
+         LDg17kdi7+OwzZpXcHScX5Gz66soRCo9OrsL0F37WcYkvtkvpnQm4Er/e0wrbFoyHV5n
+         ViWmWoavHENz6QC/6wVkmv1oPdSxNu6gI+FeteRc/7tpLE7QnMDg/9e/XXW8rMHkSZ3D
+         oDUk0oZO3inXclc3c3WeX1PG7dcYJz767aa2TDkstY21QE5bqLKZWEXR3tdgO9buV6ZS
+         4boUqG/PHDHRPce95K0jCAV0OEcQvGQDoSsySNKco+oh2k5Lrq5dLGvsvkqbs4afSkcW
+         4fmA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7yx+hSmgAfTFdRrEw6IBqVNFMbKhKLQgL7lqW0gFUD8GXkp6ReFMmhPehfODUf0K6dFIlFPWKZAQ=@vger.kernel.org, AJvYcCVxG9H5AIjVA/YhSjvBJ/6+H36sCE39ap8YYiMvv+0haWOcY+bLlNMMVHoyX1bISYirX2kjI13TQmO+Xjlj@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6YBs8gTu9E7Ex8k05VRA/HbRKWMA/TpWd23intbnhhDx1QdVt
+	78q1YLIoztWCRCD7g1aU7nC6KdXzWRoRZTVdWgupWgexD/W6oI8r
+X-Google-Smtp-Source: AGHT+IGaSqJpvFxoa+QVTMvgK1Lr6stXy6J1TFOfJXvk4Bslf+lUM+5T5LfW3yFGaNiXOH738zav5w==
+X-Received: by 2002:a5d:6504:0:b0:37c:d558:a931 with SMTP id ffacd0b85a97d-37d0e789e3cmr3576556f8f.31.1728152469345;
+        Sat, 05 Oct 2024 11:21:09 -0700 (PDT)
+Received: from ?IPV6:2a02:8389:41cf:e200:6d78:36fc:b417:bb45? (2a02-8389-41cf-e200-6d78-36fc-b417-bb45.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:6d78:36fc:b417:bb45])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f89ec63c3sm28153005e9.38.2024.10.05.11.21.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 05 Oct 2024 11:21:08 -0700 (PDT)
+Message-ID: <34f22420-ec6b-438e-9edb-1aa7a837eb98@gmail.com>
+Date: Sat, 5 Oct 2024 20:21:06 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/13] iio: adc: ti-ads8688: add missing select
+ IIO_(TRIGGERED_)BUFFER in Kconfig
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
+ Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer <sean@geanix.com>,
+ =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+ Mihail Chindris <mihail.chindris@analog.com>,
+ Alexandru Ardelean <ardeleanalex@gmail.com>,
+ Gustavo Silva <gustavograzs@gmail.com>, Shoji Keita <awaittrot@shjk.jp>,
+ Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+ Dalton Durst <dalton@ubports.com>, Icenowy Zheng <icenowy@aosc.io>,
+ Andreas Klinger <ak@it-klinger.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>
+References: <20241003-iio-select-v1-0-67c0385197cd@gmail.com>
+ <20241003-iio-select-v1-4-67c0385197cd@gmail.com>
+ <20241005184018.6b06e850@jic23-huawei>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20241005184018.6b06e850@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 5 Oct 2024 22:42:43 +0530
-Abhash jha <abhashkumarjha123@gmail.com> wrote:
+On 05/10/2024 19:40, Jonathan Cameron wrote:
+> On Thu, 03 Oct 2024 23:04:50 +0200
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> 
+>> This driver makes use of triggered buffers, but does not select the
+>> required modules.
+>>
+>> Fixes: 2a86487786b5 ("iio: adc: ti-ads8688: add trigger and buffer support")
+>> Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+> Fixes tag must be part of the tag block.
+> 
+> Also this one looks to be a false positive. The driver includes
+> buffer.h but doesn't actually have buffered support.
+> 
 
-> > Hi Abhash,
-> >
-> > Some comments below.
-> > =20
-> Hi Jonathan,
-> I will do the fixes and send a v3.
->=20
-> I have a question though:
-> The device has a 8 x 16-bit HW-buffer.
-> I want to implement the HW buffer support. Where in this driver should
-> I read the hardware buffer?
+Are you sure? These are the errors I get when I compile the ti-ads8688.c:
 
-If it were a fifo there are lots of examples in tree, but those tend
-to 'empty' on read. From your description I'm not sure this one does.
+ld: drivers/iio/adc/ti-ads8688.o: in function `ads8688_probe':
+ti-ads8688.c:(.text+0x1cf): undefined reference to
+`devm_iio_triggered_buffer_setup_ext'
+ld: drivers/iio/adc/ti-ads8688.o: in function `ads8688_trigger_handler':
+ti-ads8688.c:(.text+0x3be): undefined reference to `iio_push_to_buffers'
+ld: ti-ads8688.c:(.text+0x3c9): undefined reference to
+`iio_trigger_notify_done'
+make[2]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
+make[1]: *** [/home/jc/pw/linux/linux-next/Makefile:1173: vmlinux] Error 2
+make: *** [Makefile:224: __sub-make] Error 2
 
-> How is that exposed to userspace? Is it even exposed?
-> There is no buffer-full interrupt, It just has the latest 16 range
-> measurements and
-> latest 8 ALS measurements.
+And I see the offending functions in its code. Am I missing something
+here or are we talking about different drivers?
 
-Ah. Can we tell if the data is new vs data we have already read?
-=46rom a quick glance looks like you can clear it, so maybe we can use that
-though we'll have to be careful about races.  Do we have to stop
-continuous mode to clear it? Sort of looks like that's the case from
-the description of the clear not occuring until a start_stop write.
-
-However we'll have to dead reckon the timing without an interrupt.
-That should be fine, as just configure it to max say 3/4 of the
-time to fill it.
-
->=20
-> There is also a SYSTEM_HISTORY_CTRL register, which configures the HW buf=
-fer,
-> like setting which data to capture (ALS/RANGE) as well as turning the
-> buffer on/off.
-> Where should all this configuration be done?
-> Should it be default or have some sysfs attribute associated with it?
-
-So if it were a conventional fifo it would  mostly be hidden behind the
-software fifo and just act as an optimization of the data capture.
-A few things are exposed though as can make a difference to how you configu=
-re
-the device such as the size of the hardware fifo and the hwfifo threshold
-(affects latency of data capture).  However sounds like you don't have
-that here.
-
-So challenging feature to support.
->=20
-> Thanks,
-> Abhash
+>>
+>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>> ---
+>>  drivers/iio/adc/Kconfig | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+>> index 45872a4e2acf..e6be1f1ec79f 100644
+>> --- a/drivers/iio/adc/Kconfig
+>> +++ b/drivers/iio/adc/Kconfig
+>> @@ -1483,6 +1483,8 @@ config TI_ADS8344
+>>  config TI_ADS8688
+>>  	tristate "Texas Instruments ADS8688"
+>>  	depends on SPI
+>> +	select IIO_BUFFER
+>> +	select IIO_TRIGGERED_BUFFER
+>>  	help
+>>  	  If you say yes here you get support for Texas Instruments ADS8684 and
+>>  	  and ADS8688 ADC chips
+>>
+> 
 
 

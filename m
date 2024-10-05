@@ -1,67 +1,57 @@
-Return-Path: <linux-iio+bounces-10208-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10209-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA8799192F
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 20:04:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B14991932
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 20:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AAECB211D9
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 18:04:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A53D0282EE5
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 18:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EB5156C62;
-	Sat,  5 Oct 2024 18:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4655E158208;
+	Sat,  5 Oct 2024 18:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qRB4z9Kw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpC/wNG2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60944A31;
-	Sat,  5 Oct 2024 18:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02C7A31;
+	Sat,  5 Oct 2024 18:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728151452; cv=none; b=k3SaBDFMpEKZt6AKUJUiY3hiYyb2w+OHXx5Bf0pX7XcAtIUBOQVE0qDkCTmqJnhiQXM6ydV0G1yAHvG7ws+nza55t90Pg0u2CsjM4x2nLpKKsTK84UFT+nafNQVKHCeMPFwVvZCarvptHCcuU/cxSYUbVqy3zWgnQlbRbHPb8Cs=
+	t=1728151598; cv=none; b=PvHrmHGZmp6wuno6qSXr06I/Yg6EUOYgDmvJPgeS53Qg9p3H6MXIYlwPB4yw688/5+cDxMkxXH+tqf8Fha4+NVtfZaqiTXviCvIzHfMnwi9sjvTL7IhtHg4M+6HcdYEupsW0K5Z7jPdEamgmWzK2Wse3VlpOwhPKlNvjLcdHWVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728151452; c=relaxed/simple;
-	bh=yMBbvkOj/igKnf2TGeIut9usz81piSbaIP7f4W/+mT0=;
+	s=arc-20240116; t=1728151598; c=relaxed/simple;
+	bh=6x6Pwu8q6e4S/hIMCuynP0QiDuN8x+ThpPL/EAlwWwc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DLwWxVHqcXkuYStmjbIHzZC+jg3q8YUKR5J7LxSmsRxKQARXaDQ+ihesuzIWbFvp0g/FAkEIWw2x62XO17BLzPkSSR3AWYKJTPZEJ0037jlvFVKNRRilTVndd7ty7bPTSOu4YU5SEzNLHPNCmSKCbWBDy8C8UDWtRIcahyK8PPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qRB4z9Kw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FA7C4CEC2;
-	Sat,  5 Oct 2024 18:03:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A0f1h1BSg8WV0ICEmWvIz3FDLJtaRo3Gl48VofpCB888dYpxItTDnHzlUVy6rcVfhS391e4h/mvcLPAh36VAWgQOn22F9NZe/pYMQgEVQywFZ5h8Y9tWMXKEyfaaRqkkZzggjBftc8LjiTNnG5hWDJdjK2AwUp9txXuMflZG4N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpC/wNG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB8CC4CED2;
+	Sat,  5 Oct 2024 18:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728151452;
-	bh=yMBbvkOj/igKnf2TGeIut9usz81piSbaIP7f4W/+mT0=;
+	s=k20201202; t=1728151597;
+	bh=6x6Pwu8q6e4S/hIMCuynP0QiDuN8x+ThpPL/EAlwWwc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qRB4z9KwAljsWM7Fq/A9zqUKuJxsZjiQViO04edpAj+OJ4dIGguvF+6OoY6lVdsMe
-	 oNLisUxtB6IrjA+yo7MoMBiEsbrk1NuhhY0qabn4akfhCWggKpMoDUUGz0wSg9Drja
-	 XJDt16ffy1+9dAAUhYGfslgJ+yXH9XKMf3rdHsBvuCeeWH/FQAP03PvNiFHFKKYV4n
-	 ZhZpfNwl5OPuFa7jnhIO4tAbiU1/LR4a5sUkLHlkuPUlIXKSllGjI4kxMPeHdSGHK0
-	 y0u0nHbEHwbvyerXG6QOxPRd2CFv75jcPmtuP7cYjhuUzsIzTi4cvh1QGCm0fwOIIl
-	 G54rDW41gHMtw==
-Date: Sat, 5 Oct 2024 19:03:41 +0100
+	b=lpC/wNG2RNc/Q0hzdDWTdKYQfCvy+0amdeNOMdK1dezAZ35cKMBmetj2SBMSlu7tT
+	 aUmsFm1zhSJdZ9MuSFxFNe8QEraXQfGNnQLdFrrtXxEOGBZ1cM5VV/FLJZmuyhvw5s
+	 RhvepMeTok80KRXKuNcb2BoTguCIoiGLYVRYJQmnfkYnUBIzHLIb4piQ/wXDnxkMOH
+	 nbi4g7vmW2hkBn//8Mqb5H+BUq2cH+XFgDlmqczayNmPKbg3OGWi22UaQcB4pw1sLx
+	 lJ+HwL4pLY/CIv5YKJHISlQivAGqqDTrXB2yTGb1bYI+UDugb9BEV5oisPG9iAHsZf
+	 ++3iSJoa2NEWQ==
+Date: Sat, 5 Oct 2024 19:06:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Matti Vaittinen
- <mazziesaccount@gmail.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, David Lechner <dlechner@baylibre.com>,
- Nuno Sa <nuno.sa@analog.com>, Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer
- <sean@geanix.com>, Leonard =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>,
- Mihail Chindris <mihail.chindris@analog.com>, Alexandru Ardelean
- <ardeleanalex@gmail.com>, Gustavo Silva <gustavograzs@gmail.com>, Shoji
- Keita <awaittrot@shjk.jp>, Andrey Skvortsov <andrej.skvortzov@gmail.com>,
- Dalton Durst <dalton@ubports.com>, Icenowy Zheng <icenowy@aosc.io>, Andreas
- Klinger <ak@it-klinger.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Ondrej Jirman
- <megi@xff.cz>
-Subject: Re: [PATCH 13/13] iio: proximity: mb1232: add missing select
- IIO_(TRIGGERED_)BUFFER in Kconfig
-Message-ID: <20241005190341.389e466b@jic23-huawei>
-In-Reply-To: <20241003-iio-select-v1-13-67c0385197cd@gmail.com>
-References: <20241003-iio-select-v1-0-67c0385197cd@gmail.com>
-	<20241003-iio-select-v1-13-67c0385197cd@gmail.com>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: hid-sensors: Fix an error handling path in
+ _hid_sensor_set_report_latency()
+Message-ID: <20241005190620.5f8633a9@jic23-huawei>
+In-Reply-To: <c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr>
+References: <c50640665f091a04086e5092cf50f73f2055107a.1727980825.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,40 +62,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 03 Oct 2024 23:04:59 +0200
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Thu,  3 Oct 2024 20:41:12 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> This driver makes use of triggered buffers, but does not select the
-> required modules.
+> If hid_sensor_set_report_latency() fails, the error code should be returned
+> instead of a value likely to be interpreted as 'success'.
 > 
-> Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
-> 
-> Fixes: 16b05261537e ("mb1232.c: add distance iio sensor with i2c")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Applied.
-
-Thanks for going through looking for these.  Hopefully this will reduce
-chance of us getting a rand config hitting this in the future!
-
-Jonathan
-
+> Fixes: 138bc7969c24 ("iio: hid-sensor-hub: Implement batch mode")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->  drivers/iio/proximity/Kconfig | 2 ++
->  1 file changed, 2 insertions(+)
+> This patch is speculative.
 > 
-> diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
-> index 31c679074b25..a562a78b7d0d 100644
-> --- a/drivers/iio/proximity/Kconfig
-> +++ b/drivers/iio/proximity/Kconfig
-> @@ -86,6 +86,8 @@ config LIDAR_LITE_V2
->  config MB1232
->  	tristate "MaxSonar I2CXL family ultrasonic sensors"
->  	depends on I2C
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
->  	help
->  	  Say Y to build a driver for the ultrasonic sensors I2CXL of
->  	  MaxBotix which have an i2c interface. It can be used to measure
+> The code just *looks* wrong to me. No strong opinion, if it is done on
+> purpose or not.
+Agreed it smells :)  But I'd like more eyes on this before I take the fix
+as maybe there is something subtle going on.
+
+J
+> ---
+>  drivers/iio/common/hid-sensors/hid-sensor-trigger.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> index ad8910e6ad59..abb09fefc792 100644
+> --- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> +++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+> @@ -32,7 +32,7 @@ static ssize_t _hid_sensor_set_report_latency(struct device *dev,
+>  	latency = integer * 1000 + fract / 1000;
+>  	ret = hid_sensor_set_report_latency(attrb, latency);
+>  	if (ret < 0)
+> -		return len;
+> +		return ret;
+>  
+>  	attrb->latency_ms = hid_sensor_get_report_latency(attrb);
+>  
 
 

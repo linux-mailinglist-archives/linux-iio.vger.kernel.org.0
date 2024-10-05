@@ -1,158 +1,94 @@
-Return-Path: <linux-iio+bounces-10213-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10214-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C9E991960
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 20:21:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48A79919B2
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 20:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 230951F21EAB
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 18:21:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47F351F2187B
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Oct 2024 18:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9DF158DA0;
-	Sat,  5 Oct 2024 18:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5296A15F3EF;
+	Sat,  5 Oct 2024 18:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MfClBQLs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZ5c25gv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547D81798C;
-	Sat,  5 Oct 2024 18:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C7C15B99D;
+	Sat,  5 Oct 2024 18:47:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728152473; cv=none; b=gTD29Rk9yrPu9kyBKHMkmyLLc5UIUqMn5L/7TWihKphiNxOR9ulZS+r8r61UZgccILOAtQ3Ks48z819retUzLLH49OcsCm1O7/sjKT4SDtiRu5Ed6sQQ7xwWwv3G60Mg3Z3KoRfdt93qTSo8yx5z2Notcz5bnNXqUJZ7ge1Hkts=
+	t=1728154064; cv=none; b=ZH+l8MJTDb9t4KnmW/dJenVMFMzhQHwpveF6pvu9Yio4KQzfy2XADgybq/eOpAFxBzy1CkitJtTDMOmOdTvjx4OTZNp+2qydQyW4NjcmCARRjzTK0QJyVe2wuj9+tV5N4Q9iHKIgVEuxQPog9xdcjILbsT8ojiIQtWCZHXi9YX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728152473; c=relaxed/simple;
-	bh=DvcMf5/HeKRUSZojHkHZF68QLnGuWSrrXLDKhFRy110=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HVfImkjb+tthFR7ygABYNRqdnjOH+WzWzKn/MUHDjlY9oI4FhSL/2QDK+H7X9IlxHeI/Sb74dEmaICShC89nXniR2G1BbKdkB3dcDBhxMMpqLK5QolK31WmSqpmhGhowXnN+t0MXJvPZ0BkalPTdEkVMRWfURQPhito1k2odm/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MfClBQLs; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37cdbcb139cso2437543f8f.1;
-        Sat, 05 Oct 2024 11:21:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728152470; x=1728757270; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w0N+f0QrNk/7IBy9s5iZg9Yt6FI+f3/ZQhjUgn06TS0=;
-        b=MfClBQLsZPl/0nSRjfVjsAh44NJ6zD1dlgMrPaAYGoNTy0ZiVLcdRBKYBbKyrOew1z
-         SgEsKi98PMIacpUmeN03WJ/Ns1Pyle/6wmV3FSjbXQQHArxaAIR6pq3/1RP4BmnFY8D+
-         A0H6aX6j3iHxS86hkbr1HpQNT7EFHU/kpo3tUlj0DlKPkz0w1hrqQSSRqK4PtqDh44gL
-         L7VZoVbMQu/rzFW3gvQ4Uxz511iBjoHsgVE8p1a2DM/Ug1djTUJCm6YbqQOyiMzztSXd
-         q9emvS5UMIh+uDmbHRXoHUK80g96s3QamCpLEL/2QS/S807Z1bHfemYgjIb9YTmWPMOy
-         g6WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728152470; x=1728757270;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w0N+f0QrNk/7IBy9s5iZg9Yt6FI+f3/ZQhjUgn06TS0=;
-        b=IHPmMQqG8bucaEUq5+GD293hxkAwLnFy32q/IEps0hZAU+YHztsAo2HTEMBTGRZ9kO
-         LDg17kdi7+OwzZpXcHScX5Gz66soRCo9OrsL0F37WcYkvtkvpnQm4Er/e0wrbFoyHV5n
-         ViWmWoavHENz6QC/6wVkmv1oPdSxNu6gI+FeteRc/7tpLE7QnMDg/9e/XXW8rMHkSZ3D
-         oDUk0oZO3inXclc3c3WeX1PG7dcYJz767aa2TDkstY21QE5bqLKZWEXR3tdgO9buV6ZS
-         4boUqG/PHDHRPce95K0jCAV0OEcQvGQDoSsySNKco+oh2k5Lrq5dLGvsvkqbs4afSkcW
-         4fmA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7yx+hSmgAfTFdRrEw6IBqVNFMbKhKLQgL7lqW0gFUD8GXkp6ReFMmhPehfODUf0K6dFIlFPWKZAQ=@vger.kernel.org, AJvYcCVxG9H5AIjVA/YhSjvBJ/6+H36sCE39ap8YYiMvv+0haWOcY+bLlNMMVHoyX1bISYirX2kjI13TQmO+Xjlj@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6YBs8gTu9E7Ex8k05VRA/HbRKWMA/TpWd23intbnhhDx1QdVt
-	78q1YLIoztWCRCD7g1aU7nC6KdXzWRoRZTVdWgupWgexD/W6oI8r
-X-Google-Smtp-Source: AGHT+IGaSqJpvFxoa+QVTMvgK1Lr6stXy6J1TFOfJXvk4Bslf+lUM+5T5LfW3yFGaNiXOH738zav5w==
-X-Received: by 2002:a5d:6504:0:b0:37c:d558:a931 with SMTP id ffacd0b85a97d-37d0e789e3cmr3576556f8f.31.1728152469345;
-        Sat, 05 Oct 2024 11:21:09 -0700 (PDT)
-Received: from ?IPV6:2a02:8389:41cf:e200:6d78:36fc:b417:bb45? (2a02-8389-41cf-e200-6d78-36fc-b417-bb45.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:6d78:36fc:b417:bb45])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f89ec63c3sm28153005e9.38.2024.10.05.11.21.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Oct 2024 11:21:08 -0700 (PDT)
-Message-ID: <34f22420-ec6b-438e-9edb-1aa7a837eb98@gmail.com>
-Date: Sat, 5 Oct 2024 20:21:06 +0200
+	s=arc-20240116; t=1728154064; c=relaxed/simple;
+	bh=CCsUb6uPCpoTXjrHubgnd2r2d40QWaxK5u4uvZlJkhs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oL7k6ulBdFXFqRUw1YZ5IFd4y69xBR+LsNhWEPBzHBz0gXOLpRp1H3Gy2DgWrvtJixAm7FS9RMZG5jPwviggFaWdQUvEcfUv6dkpYokP4sxAAxVpa1vjo+E25NJ0guF52K5NNjqgg8C828ZO8kz/fd9it2hP8UxSyYE0QPBfRwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZ5c25gv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A9EC4CEC2;
+	Sat,  5 Oct 2024 18:47:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728154063;
+	bh=CCsUb6uPCpoTXjrHubgnd2r2d40QWaxK5u4uvZlJkhs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iZ5c25gvKHoopbsKtJjnI5L/BeEh4cBsbLFy+tVlXCG1rYRH2P/urXdhNX549ynVX
+	 iFOWWuCj1O+/XP1dC+I6UT2YkXLKS42vcWv2goocZgL7o+y8CU51Vtz30OF2SmD4RX
+	 fh9BlvCPfxjMJblKcEIINbyVlVfTO4nX0a/xgG/YpfFffgUNpZo1lQexlIvAupLgtv
+	 oM+3yCvVi+5y/AoFGZP55CanVSg5ALVOpMFm1EFNPjr1oQ/IusgcsZWrJ7ARiHJNUm
+	 Y/P1rnmNGZGyogQAwLfrwdZRFmgMs1MrANwTPrr3PqHMDBaXD+Qmg96fbVTN6dOTnB
+	 /EIq7Wj0OKXZg==
+Date: Sat, 5 Oct 2024 13:47:42 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Guillaume Stols <gstols@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pwm@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-doc@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-iio@vger.kernel.org,
+	aardelean@baylibre.com, linux-kernel@vger.kernel.org,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	dlechner@baylibre.com, devicetree@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v3 02/10] dt-bindings: iio: adc: ad7606: Remove spi-cpha
+ from required
+Message-ID: <172815406221.521472.1043315949208476695.robh@kernel.org>
+References: <20241004-ad7606_add_iio_backend_support-v3-0-38757012ce82@baylibre.com>
+ <20241004-ad7606_add_iio_backend_support-v3-2-38757012ce82@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/13] iio: adc: ti-ads8688: add missing select
- IIO_(TRIGGERED_)BUFFER in Kconfig
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
- Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer <sean@geanix.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mihail Chindris <mihail.chindris@analog.com>,
- Alexandru Ardelean <ardeleanalex@gmail.com>,
- Gustavo Silva <gustavograzs@gmail.com>, Shoji Keita <awaittrot@shjk.jp>,
- Andrey Skvortsov <andrej.skvortzov@gmail.com>,
- Dalton Durst <dalton@ubports.com>, Icenowy Zheng <icenowy@aosc.io>,
- Andreas Klinger <ak@it-klinger.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>
-References: <20241003-iio-select-v1-0-67c0385197cd@gmail.com>
- <20241003-iio-select-v1-4-67c0385197cd@gmail.com>
- <20241005184018.6b06e850@jic23-huawei>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20241005184018.6b06e850@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241004-ad7606_add_iio_backend_support-v3-2-38757012ce82@baylibre.com>
 
-On 05/10/2024 19:40, Jonathan Cameron wrote:
-> On Thu, 03 Oct 2024 23:04:50 +0200
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+
+On Fri, 04 Oct 2024 21:48:36 +0000, Guillaume Stols wrote:
+> The documentation is erroneously stating that spi-cpha is required, and
+> the example is erroneously setting both spi-cpol and spi-cpha. According
+> to the datasheet, only cpol should be set.
 > 
->> This driver makes use of triggered buffers, but does not select the
->> required modules.
->>
->> Fixes: 2a86487786b5 ("iio: adc: ti-ads8688: add trigger and buffer support")
->> Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
-> Fixes tag must be part of the tag block.
+> On zedboard for instance, setting the devicetree as in the example will
+> simply not work.
 > 
-> Also this one looks to be a false positive. The driver includes
-> buffer.h but doesn't actually have buffered support.
+> Fixes: 416f882c3b40 ("dt-bindings: iio: adc: Migrate AD7606 documentation to yaml")
+> Fixes: 6e33a125df66 ("dt-bindings: iio: adc: Add docs for AD7606 ADC")
+> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+> ---
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 > 
 
-Are you sure? These are the errors I get when I compile the ti-ads8688.c:
-
-ld: drivers/iio/adc/ti-ads8688.o: in function `ads8688_probe':
-ti-ads8688.c:(.text+0x1cf): undefined reference to
-`devm_iio_triggered_buffer_setup_ext'
-ld: drivers/iio/adc/ti-ads8688.o: in function `ads8688_trigger_handler':
-ti-ads8688.c:(.text+0x3be): undefined reference to `iio_push_to_buffers'
-ld: ti-ads8688.c:(.text+0x3c9): undefined reference to
-`iio_trigger_notify_done'
-make[2]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
-make[1]: *** [/home/jc/pw/linux/linux-next/Makefile:1173: vmlinux] Error 2
-make: *** [Makefile:224: __sub-make] Error 2
-
-And I see the offending functions in its code. Am I missing something
-here or are we talking about different drivers?
-
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->> ---
->>  drivers/iio/adc/Kconfig | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->> index 45872a4e2acf..e6be1f1ec79f 100644
->> --- a/drivers/iio/adc/Kconfig
->> +++ b/drivers/iio/adc/Kconfig
->> @@ -1483,6 +1483,8 @@ config TI_ADS8344
->>  config TI_ADS8688
->>  	tristate "Texas Instruments ADS8688"
->>  	depends on SPI
->> +	select IIO_BUFFER
->> +	select IIO_TRIGGERED_BUFFER
->>  	help
->>  	  If you say yes here you get support for Texas Instruments ADS8684 and
->>  	  and ADS8688 ADC chips
->>
-> 
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
 

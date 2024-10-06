@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-10243-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10244-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F991991E98
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 15:41:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9828991E9E
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 15:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F1132822ED
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 13:41:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E853C1C20C6D
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 13:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F322B176FC5;
-	Sun,  6 Oct 2024 13:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2539176FDF;
+	Sun,  6 Oct 2024 13:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwPryr9z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fs8/Ul/F"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C84165F19;
-	Sun,  6 Oct 2024 13:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C07EC5;
+	Sun,  6 Oct 2024 13:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728222076; cv=none; b=muFxSI35WDUuqueOgN6NTMHskjYOEg8EQugX5T9T1ILk930Et4vkuPfnxgTKAvwkCckj7vV0PS64IfMnwFfNiXLfe41g4TQDbvPLRVhO0Ao3+Iihp79on/XEgaGGLEgnB5AVtq554AXSKx99+xeMwMO6fxwbTVc+Fc5ywu1Xdlc=
+	t=1728222239; cv=none; b=YX37CC/oNeYnOMexbukwyEUZjTP9SeRDcsn0Gdc4ScBvIV41oTh1rlR+nooq94Lk7+2cqh/BC+n97RlpowDFYQ80hG0951ZpIHGKctAV7okt/a95gqlK4KkQKORjHd6IcJ9AJmQHJEPiDZx9K0qZkHnQ5oFvAS5XF8+IH2t/fUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728222076; c=relaxed/simple;
-	bh=K5npnAxiexyEfdq03gplw9O57YzXwDpNOCTcMAefvQA=;
+	s=arc-20240116; t=1728222239; c=relaxed/simple;
+	bh=I0oaN/mY2wrPG/uojHPfeCkMG+gszDmCMqODoHZcs6k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oy5POlQWibNLP0OzySPAfP89NZydZ0POgBHiKwcZ7zf7AfPkZTp+wo5keVkOEDvFx8PE2bFgvzVrnMcpchoJEaoyM62KKhFckCp4pMqEr0Y78OH/0cqHQrCiyvfBybbswbrRN42aEu6WYTnsi8ihoTG9x6MK0EnP51kiRXxhNB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwPryr9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EF9C4CEC5;
-	Sun,  6 Oct 2024 13:41:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UeMaE6/awpP50+cKq1dq6aERbPB5FVPs6neGC9+ZqG94B0wrqctmrP0neVrWDvAl8DPU4Jz7tk9M+/clgWQsMmlzMuBfKTkRjRUhOkH7utJrYbfS6ChgbOk7AkdUTcOrlLPovtem5WT6EfD9bezJDoCkvWftg7uV0jvqtjqWotA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fs8/Ul/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0366DC4CEC5;
+	Sun,  6 Oct 2024 13:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728222076;
-	bh=K5npnAxiexyEfdq03gplw9O57YzXwDpNOCTcMAefvQA=;
+	s=k20201202; t=1728222239;
+	bh=I0oaN/mY2wrPG/uojHPfeCkMG+gszDmCMqODoHZcs6k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kwPryr9zZSYcVwAYwtEFngfzwcxq09/A35aTFcAVzaed8EdypCtDGXYbR2xckOxNy
-	 cqSaugovHq2qpOHQ8t0G6LgxMzC94ZsyWVNBc9wQSpKvbgdNYg149vxmU4xRt+qPwV
-	 u3ffgUjlC3ztBdyyD2fFBn1CZf69IFOvQyK4RBAsaAbJnSp5mpLFUotQVcCkZYMsNW
-	 uNpnr4i6fb+OpuRoxP9rMGBgBBkg4E9XgMK463gLUg/VWLTrWpcDjQ9STraxxFV4VY
-	 CVwMBhFo8SX+AGWGlZZx+SePQUR6EgoY9eXNVdKeSxmTjxZdg0SuhjatjC/t1412IQ
-	 VJsNIWkx/nY8A==
-Date: Sun, 6 Oct 2024 14:41:02 +0100
+	b=Fs8/Ul/Fq3FOggK3zWmgAclFaX8CnSFpoF1fYZoeQB4oiAYUGAR4YiVlFpgCHe1ne
+	 0RcAv+DQqqD55JVQI0hHtujPP4GKyinsh/tPQHHyPRGHMzvFzyFfWuUMSmxFGHCuVV
+	 54kNImAxD/UTOO91fwvSY1Z77oUMHuD2UrRrM4ByQmBxTVNDHWOKddIb1omt+qKcFW
+	 /CT2SvgQ8QvhLAjDpqt3p5sZOUE7CuiKWWBF8hilTeFaYahJubJQupXq2wcKYCRL8D
+	 K4q+29t1K5xcJiDvqYIRB8lP75xbe0e2gkChb60dpb5tKSPwHcBfXx71qftn6bmsS3
+	 sb8mmDo0zHNlw==
+Date: Sun, 6 Oct 2024 14:43:44 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Angelo Dureghello <adureghello@baylibre.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
@@ -53,12 +53,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
  <Jonathan.Cameron@huawei.com>, devicetree@vger.kernel.org,
  dlechner@baylibre.com, Mark Brown <broonie@kernel.org>,
  stable@vger.kernel.org
-Subject: Re: [PATCH v4 02/11] iio: dac: adi-axi-dac: fix wrong register
- bitfield
-Message-ID: <20241006144102.4b44c09f@jic23-huawei>
-In-Reply-To: <20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-2-ceb157487329@baylibre.com>
+Subject: Re: [PATCH v4 04/11] dt-bindings: iio: dac: ad3552r: fix maximum
+ spi speed
+Message-ID: <20241006144344.7d2fcbd2@jic23-huawei>
+In-Reply-To: <20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-4-ceb157487329@baylibre.com>
 References: <20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-0-ceb157487329@baylibre.com>
-	<20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-2-ceb157487329@baylibre.com>
+	<20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-4-ceb157487329@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,45 +69,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 03 Oct 2024 19:28:59 +0200
+On Thu, 03 Oct 2024 19:29:01 +0200
 Angelo Dureghello <adureghello@baylibre.com> wrote:
 
 > From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Fix ADI_DAC_R1_MODE of AXI_DAC_REG_CNTRL_2.
+> Fix maximum SPI clock speed, as per datasheet (Rev. B, page 6).
 > 
-> Both generic DAC and ad3552r DAC IPs docs are reporting
-> bit 5 for it.
-
-Reorder to come before the previous patch.
-This want's backporting. The renames are good but too noisy to
-backport if we can avoid it.
-
-Jonathan
-
-> 
-> Link: https://wiki.analog.com/resources/fpga/docs/axi_dac_ip
-> Fixes: 4e3949a192e4 ("iio: dac: add support for AXI DAC IP core")
+> Fixes: b0a96c5f599e ("dt-bindings: iio: dac: Add adi,ad3552r.yaml")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+I'm going to take this the slow way as it probably doesn't affect any
+existing DTS so can wait a while and taking it via the fixes
+branch would slow down the rest of the series.
+
+I am keen though to cut down how many patches are in revisions
+though so I've picked this one up today. Please rebase on
+my tree before sending v5 to pick this up.
+
+Applied to the togreg branch of iio.git
+
+Thanks,
+Jonathan
 > ---
->  drivers/iio/dac/adi-axi-dac.c | 2 +-
+>  Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-> index e83f70465b46..04193a98616e 100644
-> --- a/drivers/iio/dac/adi-axi-dac.c
-> +++ b/drivers/iio/dac/adi-axi-dac.c
-> @@ -46,7 +46,7 @@
->  #define AXI_DAC_CNTRL_1_REG			0x0044
->  #define   AXI_DAC_CNTRL_1_SYNC			BIT(0)
->  #define AXI_DAC_CNTRL_2_REG			0x0048
-> -#define   ADI_DAC_CNTRL_2_R1_MODE		BIT(4)
-> +#define   ADI_DAC_CNTRL_2_R1_MODE		BIT(5)
->  #define AXI_DAC_DRP_STATUS_REG			0x0074
->  #define   AXI_DAC_DRP_STATUS_DRP_LOCKED		BIT(17)
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+> index fc8b97f82077..41fe00034742 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+> @@ -30,7 +30,7 @@ properties:
+>      maxItems: 1
 >  
+>    spi-max-frequency:
+> -    maximum: 30000000
+> +    maximum: 66000000
+>  
+>    reset-gpios:
+>      maxItems: 1
 > 
 
 

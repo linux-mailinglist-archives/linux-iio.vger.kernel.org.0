@@ -1,60 +1,57 @@
-Return-Path: <linux-iio+bounces-10252-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10253-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FB3991EDB
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 16:23:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAA6991EDD
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 16:25:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 702E01C20F5D
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 14:23:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0715F281B10
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 14:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1446CDBA;
-	Sun,  6 Oct 2024 14:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC296CDBA;
+	Sun,  6 Oct 2024 14:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGD1UZvC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYE/baFK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F143482EF;
-	Sun,  6 Oct 2024 14:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09361BC5C;
+	Sun,  6 Oct 2024 14:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728224608; cv=none; b=dWnkhAG+fIjK/sf41B9GMsSVI2ScnFhgSXi3tJYsrrFdSsjnTHppV4QN9+e9fPubd169VnBslsMLUm/dqzOE4xUDTeFWBernRWhP6Q8lEzHEGkXQ1VZ7KtdFpyRlfpeD/skPpiV2Oe/cW/MZepHbSlq8nsYF8jWi3EGcsyDlXSk=
+	t=1728224743; cv=none; b=qRlwwLX+AAo7JKx/opEKgMzo4anq15X0Cew8uTKpKgS+cKhQcC40UkQ9rUpXINnqsBzXFklIKPRpWiPTGTvZbftW7PNbxx8MiXftX2CDatPn8RHvhPBw6iHG9ZxjYhLodUFoQtznkBB+Acb2UhnChn+g92eNtFxhKOaMCQVCryw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728224608; c=relaxed/simple;
-	bh=CNkPGnoTVRaYye84kjCIZIAeaNWed4UNi5HlPAGQgLM=;
+	s=arc-20240116; t=1728224743; c=relaxed/simple;
+	bh=VkvN3Ikd1Kd8c5idpilxjQqs75DVPd/LG7krmaFwONU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZGr+tddi4YwiZkNshSmOKOn8el59BPprSm7usG4VZ8v9S0WqyRY0dlHs+AgD2AG01fuG1z8W0cIPR9cTDseFxtdoMW03yMFTAqyqFixZ0gbLMCRLrNWiyc5ZZK6ZqXgHkt54cigknJqqftet4CEc33dtUViVkJrdxxQ+ex+k8Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGD1UZvC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F713C4CEC5;
-	Sun,  6 Oct 2024 14:23:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BcpgJR5/SjC4FRD/UARp2G9vTWZUmLzJTMtYDUrBtVQpcD5EHFhFkirXC8clgENmYb7uhm30gW2Iwj5J18GAEPF+kKwO/DwY1fiudR7YxzsQnNWBo4+Da0w8dOhR9gNgm624ODS0AO6iv3r02WO86c0zcLbOY/90aeAhHPz+c5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYE/baFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94E8C4CEC5;
+	Sun,  6 Oct 2024 14:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728224608;
-	bh=CNkPGnoTVRaYye84kjCIZIAeaNWed4UNi5HlPAGQgLM=;
+	s=k20201202; t=1728224742;
+	bh=VkvN3Ikd1Kd8c5idpilxjQqs75DVPd/LG7krmaFwONU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SGD1UZvCs0T8XkCGFmHWSbG34X9W+pdAFS6oGpIbBA3nW7lFhSApjJ5W4XQKzp6l7
-	 fyZZrw9wKdW6VXyx+EETWNKoove6bSwJQvGJ0S7vkcdylNTQNHqJMw8BeBuzFZyC0R
-	 CCGOwlWDaz/QGzyahjrZkJAprWPePVFPi4x5NLb0fkeEr50nmyxBf3fARgoG68QTGd
-	 jAL3SgH1zEFl7UCIggEqyHmKVxH6vgjc9RKHf0FJuTGYk2zOutEHuf6n3SOi347Zel
-	 SdrdcWZ2ZALZ7mga3nQTI2FGksadU3MvxG1Ok2NcWCYje/KKHsMqdIPjIbmSpXI5Kn
-	 97Rh2ISZgneJg==
-Date: Sun, 6 Oct 2024 15:23:18 +0100
+	b=OYE/baFK1amumWqel3sL8cMrJ8BB4n0ctqFm30il2gTUlWfbP1utk2b+XSdLbQjG4
+	 i6jezwXJNyoccxd76beQTaw4RmybG23uouRxlEeWey4MpPK4QF6Zg/Mmtb7OTsn6KF
+	 xu8KyAgxvKN79tzldYlmyckCWOVNADFSmdvyHc0okMwJRb7263Ha439IVH98JDLw3g
+	 nJI3WKKKu6vjV1snRY2D0TVe9hoib6PAGIjv0/cprnIRSjseXu5QHq8K0kQuXDrv+e
+	 tE4Rn6wTA7D+xZdbmI+tPHPVGUtA/kZzpTd3T8FTtAOUG5jImh2IdSF07fLjKJ0ks/
+	 521GNOiyw4Lxg==
+Date: Sun, 6 Oct 2024 15:25:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matteo Martelli <matteomartelli3@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Alisa-Dariana Roman
- <alisa.roman@analog.com>, Christian Eggers <ceggers@arri.de>, Peter Rosin
- <peda@axentia.se>, Paul Cercueil <paul@crapouillou.net>, Sebastian Reichel
- <sre@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH 0/7] iio: fix possible race condition during access of
- available info lists
-Message-ID: <20241006152253.062b9cc5@jic23-huawei>
-In-Reply-To: <20241003-iio-read-avail-release-v1-0-c70cc7d9c2e0@gmail.com>
-References: <20241003-iio-read-avail-release-v1-0-c70cc7d9c2e0@gmail.com>
+To: Mohammed Anees <pvmohammedanees2003@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Michael
+ Hennerich <michael.hennerich@analog.com>, Kim Seer Paller
+ <kimseer.paller@analog.com>, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v2] iioc: dac: ltc2664: Fix span variable usage in
+ ltc2664_channel_config function
+Message-ID: <20241006152533.329d9b59@jic23-huawei>
+In-Reply-To: <20241005170722.19542-1-pvmohammedanees2003@gmail.com>
+References: <20241005170722.19542-1-pvmohammedanees2003@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,150 +62,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 03 Oct 2024 19:34:05 +0200
-Matteo Martelli <matteomartelli3@gmail.com> wrote:
+On Sat,  5 Oct 2024 22:37:22 +0530
+Mohammed Anees <pvmohammedanees2003@gmail.com> wrote:
 
-> Some iio drivers currently share an available info list buffer that
-> might be changed while iio core prints it to sysfs. This could cause the
-> buffer shared with iio core to be corrupted. However, note that I was
-> able to trigger the race condition only by adding a delay between each
-> sysfs_emit_at calls in the iio_format_list() to force the concurrent
-> access to the shared available list buffer.
+> In the current implementation of the ltc2664_channel_config function,
+> a variable named span is declared and initialized to 0, intended to
+> capture the return value of the ltc2664_set_span function. However,
+> the output of ltc2664_set_span is directly assigned to chan->span,
+> leaving span unchanged. As a result, when the function later checks
+> if (span < 0), this condition will never trigger an error since
+> span remains 0, this flaw leads to ineffective error handling. The
+> current patch resolves this issue by using the ret variable for 
+> getting the return value, later assigning if successful and also 
+> effectively removing span variable.
 > 
-> This patch set extends the iio APIs and fixes some affected drivers.
-Thanks for tidying these up.  My comments are very minor but
-as this is changing how a core bit of infrastructure works I'd like
-them to sit on the list another week anyway.
-
-There is just enough here that I'd prefer a v2 though if you don't
-get time I can probably tidy it up whilst applying.
-
-The build bot issue is presumably a missing include.
-
-Thanks,
-
-Jonathan
-
-> 
-> Summary:
-> - Patch 1: iio core: introduce a iio info release callback to let
->   drivers share a copy of their available info list and later free it.
-> 
-> - Patch 2: pac1921: handle the current scale available info via the
->   read_avail+read_avail_release_resource APIs instead of using an ad-hoc
->   ext_info attribute. The latter was used to avoid the risk of a race in
->   the available list.
-> 
-> - Patch 3,4: ad7192, as73211: fix the possible race in the drivers by
->   copying/releasing the affected available lists.
-> 
-> - Patch 5: inkern: make consumers copy and release the available info
->   lists of their producers, necessary after patch 1.
-> 
-> - Patch 6,7: iio-mux, iio-rescale, dpot-dac, ingenic-battery: adapt
->   consumers to inkern API change by freeing the now copied available
->   lists of their producers.
-> 
-> Tested:
-> - pac1921: could not reproduce the race condition with the new APIs,
->   even with additional delays among the sysfs_emit_at calls during a
->   shunt resistor write. No new issue found after the change.
-> 
-> - iio-mux, iio-rescale, dpot-dac: tested with pac1921 as producer, which
->   was adapted to produce a mock raw available info list.
->   The tests did not cover the driver features but focused on assessing
->   the function call sequence. For example the following traced function
->   graph shows a read of the dpot mocked out voltage (with ftrace
->   filters: pac1921* iio* dpot* kmemdup_array* kfree*):
-> 
->  3)               |  iio_read_channel_info_avail [industrialio]() {
->  3)               |    dpot_dac_read_avail [dpot_dac]() {
->  3)               |      iio_read_avail_channel_raw [industrialio]() {
->  3)               |        iio_channel_read_avail [industrialio]() {
->  3)               |          pac1921_read_avail [pac1921]() {
->  3)   5.208 us    |            kmemdup_array();
->  3) + 11.459 us   |          }
->  3)   3.167 us    |          kmemdup_array();
->  3)               |          pac1921_read_avail_release_res [pac1921]() {
->  3)   1.709 us    |            kfree();
->  3)   4.458 us    |          }
->  3) + 25.750 us   |        }
->  3) + 31.792 us   |      }
->  3) + 35.000 us   |    }
->  3) + 37.083 us   |    iio_format_list [industrialio]();
->  3)               |    dpot_dac_read_avail_release_res [dpot_dac]() {
->  3)   1.583 us    |      kfree();
->  3)   4.250 us    |    }
->  3) + 84.292 us   |  }
-> 
-> - ingenic-battery: also tested with mock available info produced by the
->   pac1921 driver. Following the traced graph part that should correspond
->   to the ingenic_battery_set_scale() flow (which is not traceable with
->   the additional ingenic* ftrace filter for some reason):
-> 
->  2)               |  ingenic_battery_probe [ingenic_battery]() {
->                 ...
->  2)               |    iio_read_max_channel_raw [industrialio]() {
->  2)               |      iio_channel_read_avail [industrialio]() {
->  2)               |        pac1921_read_avail [pac1921]() {
->  2)   4.333 us    |          kmemdup_array();
->  2) + 10.834 us   |        }
->  2)   3.500 us    |        kmemdup_array();
->  2)               |        pac1921_read_avail_release_res [pac1921]() {
->  2)   1.791 us    |          kfree();
->  2)   4.625 us    |        }
->  2) + 26.291 us   |      }
->  2)   1.583 us    |      kfree();
->  2) + 35.750 us   |    }
->  2)               |    iio_read_avail_channel_attribute [industrialio]() {
->  2)               |      iio_channel_read_avail [industrialio]() {
->  2)               |        pac1921_read_avail [pac1921]() {
->  2)   3.250 us    |          kmemdup_array();
->  2)   8.209 us    |        }
->  2)   3.458 us    |        kmemdup_array();
->  2)               |        pac1921_read_avail_release_res [pac1921]() {
->  2)   1.542 us    |          kfree();
->  2)   4.292 us    |        }
->  2) + 21.417 us   |      }
->  2) + 26.333 us   |    }
->  2)               |    iio_write_channel_attribute [industrialio]() {
->  2)   4.375 us    |      pac1921_write_raw [pac1921]();
->  2)   9.625 us    |    }
->  2)   1.666 us    |    kfree();
->  2) * 47810.08 us |  }
-> 
-> Not tested:
-> - ad7192, as73211
-> 
-> Link: https://lore.kernel.org/linux-iio/20240724-iio-pac1921-v4-0-723698e903a3@gmail.com/
-> 
-> Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
+> Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
+> Fixes: 4cc2fc445d2e4e63ed6bd5d310752d88d365f8e4
 > ---
-> Matteo Martelli (7):
->       iio: core: add read_avail_release_resource callback to fix race
->       iio: pac1921: use read_avail+release APIs instead of custom ext_info
->       iio: ad7192: copy/release available filter frequencies to fix race
->       iio: as73211: copy/release available integration times to fix race
->       iio: inkern: copy/release available info from producer
->       iio: consumers: release available info buffer copied from producer
->       power: supply: ingenic-battery: free scale buffer after use
-> 
->  drivers/iio/adc/ad7192.c               |  22 +++++-
->  drivers/iio/adc/pac1921.c              | 128 ++++++++++++---------------------
->  drivers/iio/afe/iio-rescale.c          |   8 +++
->  drivers/iio/dac/dpot-dac.c             |   8 +++
->  drivers/iio/industrialio-core.c        |  14 +++-
->  drivers/iio/inkern.c                   |  64 ++++++++++++-----
->  drivers/iio/light/as73211.c            |  23 +++++-
->  drivers/iio/multiplexer/iio-mux.c      |   8 +++
->  drivers/power/supply/ingenic-battery.c |  16 +++--
->  include/linux/iio/consumer.h           |   4 +-
->  include/linux/iio/iio.h                |   4 ++
->  11 files changed, 185 insertions(+), 114 deletions(-)
+> v2:
+> - Using the ret variable to store the result from ltc2664_set_span
 > ---
-> base-commit: fec496684388685647652ab4213454fbabdab099
-> change-id: 20240802-iio-read-avail-release-cb3d2a1e1b98
+>  drivers/iio/dac/ltc2664.c | 18 +++++++++++-------
+>  1 file changed, 11 insertions(+), 7 deletions(-)
 > 
-> Best regards,
+> diff --git a/drivers/iio/dac/ltc2664.c b/drivers/iio/dac/ltc2664.c
+> index 5be5345ac5c8..7dafcba7ece7 100644
+> --- a/drivers/iio/dac/ltc2664.c
+> +++ b/drivers/iio/dac/ltc2664.c
+> @@ -516,7 +516,7 @@ static int ltc2664_channel_config(struct ltc2664_state *st)
+>  	const struct ltc2664_chip_info *chip_info = st->chip_info;
+>  	struct device *dev = &st->spi->dev;
+>  	u32 reg, tmp[2], mspan;
+> -	int ret, span = 0;
+> +	int ret;
+>  
+>  	mspan = LTC2664_MSPAN_SOFTSPAN;
+>  	ret = device_property_read_u32(dev, "adi,manual-span-operation-config",
+> @@ -579,20 +579,24 @@ static int ltc2664_channel_config(struct ltc2664_state *st)
+>  		ret = fwnode_property_read_u32_array(child, "output-range-microvolt",
+>  						     tmp, ARRAY_SIZE(tmp));
+>  		if (!ret && mspan == LTC2664_MSPAN_SOFTSPAN) {
+> -			chan->span = ltc2664_set_span(st, tmp[0] / 1000,
+> +			ret = ltc2664_set_span(st, tmp[0] / 1000,
+>  						      tmp[1] / 1000, reg);
+> -			if (span < 0)
+> -				return dev_err_probe(dev, span,
+> +			if (ret < 0)
+> +				return dev_err_probe(dev, ret,
+>  						     "Failed to set span\n");
+> +			else
+else is unnecessary here as we have the standard check and error and return
+if set pattern.
+
+
+> +				chan->span = ret;
+>  		}
+>  
+>  		ret = fwnode_property_read_u32_array(child, "output-range-microamp",
+>  						     tmp, ARRAY_SIZE(tmp));
+>  		if (!ret) {
+> -			chan->span = ltc2664_set_span(st, 0, tmp[1] / 1000, reg);
+> -			if (span < 0)
+> -				return dev_err_probe(dev, span,
+> +			ret = ltc2664_set_span(st, 0, tmp[1] / 1000, reg);
+> +			if (ret < 0)
+> +				return dev_err_probe(dev, ret,
+>  						     "Failed to set span\n");
+> +			else
+and here.
+> +				chan->span = ret;
+>  		}
+>  	}
+>  
 
 

@@ -1,92 +1,99 @@
-Return-Path: <linux-iio+bounces-10231-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10232-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08B1991E2E
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 13:44:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F80991E3E
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 14:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 852802828D3
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 11:44:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DDB31F21AB4
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 12:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA86173355;
-	Sun,  6 Oct 2024 11:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065A4175548;
+	Sun,  6 Oct 2024 12:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+7ogUuF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZpGjpN1L"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CC1184F;
-	Sun,  6 Oct 2024 11:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73D054F95;
+	Sun,  6 Oct 2024 12:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728215051; cv=none; b=Pa0Yc7NdIeeias2kE+F8xNzo15mC8ZzDDkyKUzuRJuwXnta5IhD6snfX+1rknd/7DJrgdU6USeMy2bmm2yOJyPb2Woil/sdXGLVzG7d6jGNAX1NzHImZRZT0NznQq/DN5ylKi/UwRF7wg8FEVF4cmhLT4t6nSDbWVkFkGx8zoCw=
+	t=1728218104; cv=none; b=QP3d1KrsCj4tL6oj3O3sb2dTAbd0Vw/XubfZEzey3j6Gk33jOC0+K7iowik01wZZoN3vyjZ3LLLdPcLMnlrf6XR0nBTk28gIzG9BxnWPcFruc+5XbA9q/NVMrTZqLG8lcJXAUMRQYiK3KpwNMsnGGqevsXLyYTsYSUo+aGzVTdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728215051; c=relaxed/simple;
-	bh=7Rwt46zuE+8BxWcGBI75z5bmOzDwac4nrnflTqjEbFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XIs/dMfcxrMrljF9wzVoyb8PhVIWSGnxStlfGMTLlmPbbdGyaoOnfTCbG2FJRtvxnuuI7BAW64q27jHHOpdUcMBNNzU6+IQLrAss+wI3Y4UQYvyjgIYl39jzYi4Fj5gxiF5L3NrnoUJgJKNTgN7u+Pb2qXZ/oK+nSDOleZ5TT9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+7ogUuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93417C4CEC5;
-	Sun,  6 Oct 2024 11:44:08 +0000 (UTC)
+	s=arc-20240116; t=1728218104; c=relaxed/simple;
+	bh=h3SNGhBjTTSf5mR7IH3HuSRamIcY1suVQJtnIoobHi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DFWF0vFVhLk/7sO1GSbBtds+l6ngfUGqTsOVWhrVLhEXERoL4OTB8HpGUwRANXzELqki94z3RA7bDMFke/s6zK8ToigA4H8BdciDiNh97DosuLNRYkbCBqgFjo4gupWz8vx/zh1VNwhgq5xbLepFZNr/UQVB4zsaIGEeTpJIDSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZpGjpN1L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAA8C4CEC5;
+	Sun,  6 Oct 2024 12:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728215051;
-	bh=7Rwt46zuE+8BxWcGBI75z5bmOzDwac4nrnflTqjEbFE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=V+7ogUuFYSOzNHERl0q4a685+z/5rWpH/a+JTbTwH7VMZ+bZP15yCyi71xrpNt8YV
-	 v9GZDNfcxZorKdTmMINmpzxXl/AWDw1m7/XfAERivzKk1+WrlW+jJ4jgGuF3BS9rDx
-	 MBpGrEd9gi0T8UKCScfNCAZIk+tMl8+PByCx64xBAyaZmnUIevMyBrPp6fRP22dZcI
-	 niI83E2iQrcq4FkIn3WD5U6TA6eYb9euIeyH3Hs4/XtXWGMayf31QxLsGFWxKxCo+q
-	 leBd6GR3SLucW/mj2L8vZcDmwODhNhDRdkDY9YF+C9pUBL1FNtjaM3PujFZiuecXdU
-	 6B0YNsKuNyWFg==
-Date: Sun, 6 Oct 2024 12:44:03 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Ivin Joel Abraham <ivinjabraham@gmail.com>
-Cc: linux-doc@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: iio: fix grammatical error
-Message-ID: <20241006124403.2a37dfe0@jic23-huawei>
-In-Reply-To: <20241002100341.110435-1-ivinjabraham@gmail.com>
-References: <20241002100341.110435-1-ivinjabraham@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=k20201202; t=1728218104;
+	bh=h3SNGhBjTTSf5mR7IH3HuSRamIcY1suVQJtnIoobHi0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZpGjpN1LimCK4XuwXJXeGjKVNfcugT4LyCo4ObaVglyFK1W3xif68yKp1x7/bfhF0
+	 GVMO7Tk3JqUijNGb3NjT+4m2ZWi8sSl9aLnzA+0jEbwhBgH688zL6Zh29CrNVvqYGm
+	 xGnxBRM/8g76o8rPjEwsl6qsc8Qkc5errI2Tl9FnjocsYX2MSkn/1NVoh09zJq6W8l
+	 vIssWgEggDcFjMyV91Ko6m4p76Ci4ji3/zpBemwhCInVqQ72WBR71m/eYnDpizKerg
+	 H50hMGa4+8H//TMhsq7UGBWR/hr7zgCw4bs66yjo0oI7R5VuH/5cRZfzXzNpdj700P
+	 HySGL4nkl88Pw==
+Date: Sun, 6 Oct 2024 14:34:59 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Per-Daniel Olsson <perdaniel.olsson@axis.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, rickard.andersson@axis.com, 
+	kernel@axis.com
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: Document TI OPT4060 RGBW
+ sensor
+Message-ID: <hgv7h3l7bucgeu4fq6w6q4ikhjp6nzfrl6cxiwdghwkzm6gpdu@565oyl3h6zqn>
+References: <20241005165119.3549472-1-perdaniel.olsson@axis.com>
+ <20241005165119.3549472-2-perdaniel.olsson@axis.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241005165119.3549472-2-perdaniel.olsson@axis.com>
 
-On Wed,  2 Oct 2024 15:33:41 +0530
-Ivin Joel Abraham <ivinjabraham@gmail.com> wrote:
-
-> Clarify the instruction for disabling autocalibration by adding the word
-> "by"
+On Sat, Oct 05, 2024 at 06:51:18PM +0200, Per-Daniel Olsson wrote:
+> Add devicetree bindings for the OPT4060 RGBW color sensor.
 > 
-> Signed-off-by: Ivin Joel Abraham <ivinjabraham@gmail.com>
-Applied.
-
-Thanks,
+> Signed-off-by: Per-Daniel Olsson <perdaniel.olsson@axis.com>
 > ---
->  Documentation/iio/bno055.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/iio/bno055.rst b/Documentation/iio/bno055.rst
-> index 9a489a79d8f5..f1111ff3fe2e 100644
-> --- a/Documentation/iio/bno055.rst
-> +++ b/Documentation/iio/bno055.rst
-> @@ -22,7 +22,7 @@ This driver supports also IIO buffers.
->  
->  The IMU continuously performs an autocalibration procedure if (and only if)
->  operating in fusion mode. The magnetometer autocalibration can however be
-> -disabled writing 0 in the sysfs in_magn_calibration_fast_enable attribute.
-> +disabled by writing 0 in the sysfs in_magn_calibration_fast_enable attribute.
->  
->  The driver provides access to autocalibration flags (i.e. you can known if
->  the IMU has successfully autocalibrated) and to the calibration data blob.
+>  .../bindings/iio/light/ti,opt4060.yaml        | 51 +++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/light/ti,opt4060.yaml
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+---
+
+<form letter>
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, you can skip it (please do
+not feel offended by me posting it here - no bad intentions intended).
+If you do not know the process, here is a short explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions, under or above your Signed-off-by tag. Tag is "received", when
+provided in a message replied to you on the mailing list. Tools like b4
+can help here. However, there's no need to repost patches *only* to add
+the tags. The upstream maintainer will do that for tags received on the
+version they apply.
+
+https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+</form letter>
+
+Best regards,
+Krzysztof
 
 

@@ -1,203 +1,134 @@
-Return-Path: <linux-iio+bounces-10221-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10222-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AF0991CC1
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 08:24:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA00D991D1E
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 10:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE2591F21EC1
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 06:24:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06EB21C2163D
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Oct 2024 08:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A941B16C451;
-	Sun,  6 Oct 2024 06:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AEC16DC3C;
+	Sun,  6 Oct 2024 08:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n8qBoDWu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iU3MPzKE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E63D4C9D;
-	Sun,  6 Oct 2024 06:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD081537CE;
+	Sun,  6 Oct 2024 08:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728195834; cv=none; b=nZ4eRCRjNriMRB3GKDST2g798Qo9uQilKZB5aMCmVBAS8A+sc/24wXF7x4CAhGAe5GS26ifu2F99G3F09QOn12NjRFA6q0k6uSBhGZmkhExv3NB4kD/0qhqb8mYqWChfvat0K5ABGAo5MCIG3OkcuyAxrGatep6yz4P/KnfvTmw=
+	t=1728202456; cv=none; b=fuxNcMtbnBcVNAeL2cpd7dDCL7NKAcs0LmsKSWsK3N1PwkUdNfzN+8Yo4bwH9rmMXNfBpbpOX75E6D38cYhO9tzRiDdPCyHPqaXD7fqwQHIddpYHX0iZE7Uffj1u9Ml4RUa/jUwWHI3YfkjKn3e1/FXAsEd1DNAiAZW5Jk/ejew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728195834; c=relaxed/simple;
-	bh=H/emNg2aVZv4n2YTV6WagRn5Age0z2hVFcUSuk6iDKk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvi4FSTSLK2+4wcpQu+9BWLdBGhX/IR/AMg9XzWdYQsETPkGZ0xktOCKtHA0Yyz6CqgntHVGIgES9fb8FY0F35eUYD0blG9jIBpOK1G5wMJNQapyyWKDFiqCfnN5LU34aitqGdMXUSEjXlED2q5Uge23EYcSbSCGUrAk14XRQGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n8qBoDWu; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728195833; x=1759731833;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=H/emNg2aVZv4n2YTV6WagRn5Age0z2hVFcUSuk6iDKk=;
-  b=n8qBoDWubJK+tzTZjyr9TnvUzF3b14EKjJCnhMURusXYgDnby8ETYN1t
-   UjmxnNPqhjhQ41WMG8teopxFo6kCuCZSZ0msfO3X7H1ADBkMK+Yqcqm5s
-   Bdog/7FRcPUwSYbzspkGZi6XzhtJVGWHyyh91nRyS+s8og9N6f0QiYZXV
-   1mkOoH8gquy0ZkhzWuzhYiLy7SdNJdps4iU/eX5mnWdMtdKW2rBnjqFIC
-   oYTAlPw3lVfj8eqJMOe8aWC9T3S1wpuKbHUIVG91/xo645ALF0xD4KzK8
-   KkRAcVumsDUQs9Non+UJQgWPneZJRu7DtJnoJjzXo/ePKQB6NaIxhhx8k
-   Q==;
-X-CSE-ConnectionGUID: bl4LoanqQealht3LruVIqA==
-X-CSE-MsgGUID: aqd3TEuzTgSyiNzfMKBxBA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11216"; a="27254801"
-X-IronPort-AV: E=Sophos;i="6.11,181,1725346800"; 
-   d="scan'208";a="27254801"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2024 23:23:52 -0700
-X-CSE-ConnectionGUID: gkqTNOEbSYqLP/6WzoJMHA==
-X-CSE-MsgGUID: 2L3DpjURSSmUkBiqjKKkbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,181,1725346800"; 
-   d="scan'208";a="79703327"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 05 Oct 2024 23:23:48 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sxKgD-0003em-1y;
-	Sun, 06 Oct 2024 06:23:45 +0000
-Date: Sun, 6 Oct 2024 14:23:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Guillaume Stols <gstols@baylibre.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-pwm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, aardelean@baylibre.com,
-	dlechner@baylibre.com, Guillaume Stols <gstols@baylibre.com>
-Subject: Re: [PATCH v3 07/10] iio: adc: ad7606: Add compatibility to fw_nodes
-Message-ID: <202410061420.L3sUSK8b-lkp@intel.com>
-References: <20241004-ad7606_add_iio_backend_support-v3-7-38757012ce82@baylibre.com>
+	s=arc-20240116; t=1728202456; c=relaxed/simple;
+	bh=47GPyPJ2OLT87E7JnkqZgK15FwzPw0pI261j1vX70KY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QaBMvNr463B4x6MEbgV+EGMFk+8YKS0nOe+oxH46RD+Q0IN+rIqXuteNetB6VHiRDXNqTvMB0FU7Me9lHiSxXeAqkr/LuqRucRcFkTqGYG1S+4hyn9z+G/h9QrXNuas+RnWCQfaKMCLE5jnUnjocUpu4AtLjFLEjOSlCVhqOIhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iU3MPzKE; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2f75c56f16aso34113511fa.0;
+        Sun, 06 Oct 2024 01:14:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728202453; x=1728807253; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bfdLMk7SeOxjPc0PTFW5Uu8seb41Jd5Pm+0rGb9Zp4U=;
+        b=iU3MPzKEceHnbYSXRUvqfKXNCrydzTCv7qAnH8ixS1eHihj5jqG2U4dFTxthnddZCy
+         rbHphYk1A6Fxi4+ch4FJi9B7tf5gTWXOb5DSsrCn77GjKcNjqiWIxJ5CcsNwr/gUMJgT
+         NGwOuKWNPc0OmfVO7m0wYqgKGzeCnIuraPM2wxVSXO0sBUTgdXNl9B2WA/qli1rbvx9W
+         KuauA1dFU+nDtjry8aQvuofSSEy/cyEYdP+VT2Edq5Gq08ke1B9ewt1LZiUTdncrVvuA
+         XJWWSYYUCPk/20PluRYtI1iOE7DRU0qoVERzNKxCD/rpJOJ09hlGFjaDrSdYSoR7zKhF
+         fJrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728202453; x=1728807253;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bfdLMk7SeOxjPc0PTFW5Uu8seb41Jd5Pm+0rGb9Zp4U=;
+        b=SqBdfQyomFuexdV9KV6G8FZybPaZvcg5gNrKvwjWhXWLYhClLYbT4coaDNFYXVBeBg
+         VxJf2CJj05J+xeW+ANcH5lOt8807weYcdUOZzoHtRPfUPufKAC1WhytIm4R0c8HqEXPK
+         GGREqoc/w5vI3slsMfLQyeZMfFs2ui08Upp4t11r0KrsG9UMUr++0dzd+3LsWh2uezIG
+         eUuBUHLdy1Bzaj08m9jY1F2dOaoDW2m/XRwHCcu1srml4SMAcxmz7j6NJbWz3WELHe3i
+         leekdwJknzucEMu5PfAzEHNrvPxTgsvBUFWsh0FlHJdn2Vfx0298Eh4ihEOjFK2RAB6T
+         KLZw==
+X-Forwarded-Encrypted: i=1; AJvYcCUIJ1sGxl5Vu/qEUyA1NhfvGoI6NGK12lChcXemjVf2vGA4xJhg6fa6LlrHHiT0kYctWH2+Vt9JDxs=@vger.kernel.org, AJvYcCVVqG8McbL8czqBLE5MYAnXQ604jDhSECPa8mGbRa5iM/ZadZ8bI0my/uZUyeDTtSn+VBRjkCGiGj5IanE1@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz32j6alWYOgFUlrukX8pYehK/a8zZxTKBW3uR5eXHiLnHoehxg
+	OQYBCcA8L23jtmo2WaIkZ4FpATOCmqiPyeJI/2nNaJhPegn5uyhW
+X-Google-Smtp-Source: AGHT+IHC15DBnXYol1OlUWy9+YUtrksdB2OhUxqAbrkfCq8drhXVofdvLizFEubXYtOe0IoOv7En9w==
+X-Received: by 2002:a2e:6112:0:b0:2fa:c83e:e882 with SMTP id 38308e7fff4ca-2faf3d71b0emr26673011fa.39.1728202452496;
+        Sun, 06 Oct 2024 01:14:12 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2faf9ac4415sm4818871fa.34.2024.10.06.01.14.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 06 Oct 2024 01:14:10 -0700 (PDT)
+Message-ID: <bf34fd7a-d929-479a-9dea-f6f2ccb67aeb@gmail.com>
+Date: Sun, 6 Oct 2024 14:13:29 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241004-ad7606_add_iio_backend_support-v3-7-38757012ce82@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/13] iio: pressure: bu1390: add missing select
+ IIO_(TRIGGERED_)BUFFER in Kconfig
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
+ Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer <sean@geanix.com>,
+ =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+ Mihail Chindris <mihail.chindris@analog.com>,
+ Alexandru Ardelean <ardeleanalex@gmail.com>,
+ Gustavo Silva <gustavograzs@gmail.com>, Shoji Keita <awaittrot@shjk.jp>,
+ Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+ Dalton Durst <dalton@ubports.com>, Icenowy Zheng <icenowy@aosc.io>,
+ Andreas Klinger <ak@it-klinger.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>
+References: <20241003-iio-select-v1-0-67c0385197cd@gmail.com>
+ <20241003-iio-select-v1-12-67c0385197cd@gmail.com>
+ <20241005190147.084dd468@jic23-huawei>
+ <2199263c-13e5-49b7-bc5f-1fe367c460bd@gmail.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <2199263c-13e5-49b7-bc5f-1fe367c460bd@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Guillaume,
+On 05/10/2024 21:12, Javier Carrasco wrote:
+> On 05/10/2024 20:01, Jonathan Cameron wrote:
+>> On Thu, 03 Oct 2024 23:04:58 +0200
+>> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+>>
+>>> This driver makes use of triggered buffers, but does not select the
+>>> required modules.
+>>>
+>>> Add the missing 'select IIO_BUFFER' and 'select IIO_TRIGGERED_BUFFER'.
+>>>
+>>> Fixes: 81ca5979b6ed ("iio: pressure: Support ROHM BU1390")
+>> Seems unlikely in the bm1390 driver. Huh. It is accurate, but I'll fix the
+>> patch description to refer to the bm1390 which seems to be the right
+>> name and add a note on this as it looks suspect otherwise.
+>>
+> Yes, it seems that there was a typo in the title of the patch that added
+> the driver (The "Fixes:" is therefore right as it is), and I propagated
+> it in the title of this patch as well. But you are right, the driver's
+> name is indeed bm1390.
 
-kernel test robot noticed the following build warnings:
+Yep. I typoed the original patch. The correct sensor model is 
+BM1390GLV-Z. I got things mixed up in my head as I was simultaneously 
+writing drivers the BU270xx light sensors, a BD71851 power management IC 
+and BU18xxxx video serializer and deserializer. All the B?<bunch of 
+numbers> part IDs got better of me :)
 
-[auto build test WARNING on 35307f34d6fef8f9d41a1e8f4f532e4b0a7ee422]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Guillaume-Stols/iio-adc-ad7606-Fix-typo-in-the-driver-name/20241005-055256
-base:   35307f34d6fef8f9d41a1e8f4f532e4b0a7ee422
-patch link:    https://lore.kernel.org/r/20241004-ad7606_add_iio_backend_support-v3-7-38757012ce82%40baylibre.com
-patch subject: [PATCH v3 07/10] iio: adc: ad7606: Add compatibility to fw_nodes
-config: i386-randconfig-062-20241006 (https://download.01.org/0day-ci/archive/20241006/202410061420.L3sUSK8b-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241006/202410061420.L3sUSK8b-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410061420.L3sUSK8b-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/adc/ad7606_spi.c:324:29: sparse: sparse: symbol 'ad7606_spi_bops' was not declared. Should it be static?
->> drivers/iio/adc/ad7606_spi.c:328:29: sparse: sparse: symbol 'ad7616_spi_bops' was not declared. Should it be static?
->> drivers/iio/adc/ad7606_spi.c:337:29: sparse: sparse: symbol 'ad7606b_spi_bops' was not declared. Should it be static?
->> drivers/iio/adc/ad7606_spi.c:346:29: sparse: sparse: symbol 'ad7606c_18_spi_bops' was not declared. Should it be static?
->> drivers/iio/adc/ad7606_spi.c:370:30: sparse: sparse: symbol 'ad7606_4_bus_info' was not declared. Should it be static?
->> drivers/iio/adc/ad7606_spi.c:375:30: sparse: sparse: symbol 'ad7606b_bus_info' was not declared. Should it be static?
->> drivers/iio/adc/ad7606_spi.c:380:30: sparse: sparse: symbol 'ad7606c_16_bus_info' was not declared. Should it be static?
->> drivers/iio/adc/ad7606_spi.c:385:30: sparse: sparse: symbol 'ad7606c_18_bus_info' was not declared. Should it be static?
->> drivers/iio/adc/ad7606_spi.c:390:30: sparse: sparse: symbol 'ad7616_bus_info' was not declared. Should it be static?
-
-vim +/ad7606_spi_bops +324 drivers/iio/adc/ad7606_spi.c
-
-   323	
- > 324	const struct ad7606_bus_ops ad7606_spi_bops = {
-   325		.read_block = ad7606_spi_read_block,
-   326	};
-   327	
- > 328	const struct ad7606_bus_ops ad7616_spi_bops = {
-   329		.read_block = ad7606_spi_read_block,
-   330		.reg_read = ad7606_spi_reg_read,
-   331		.reg_write = ad7606_spi_reg_write,
-   332		.write_mask = ad7606_spi_write_mask,
-   333		.rd_wr_cmd = ad7616_spi_rd_wr_cmd,
-   334		.sw_mode_config = ad7616_sw_mode_config,
-   335	};
-   336	
- > 337	const struct ad7606_bus_ops ad7606b_spi_bops = {
-   338		.read_block = ad7606_spi_read_block,
-   339		.reg_read = ad7606_spi_reg_read,
-   340		.reg_write = ad7606_spi_reg_write,
-   341		.write_mask = ad7606_spi_write_mask,
-   342		.rd_wr_cmd = ad7606B_spi_rd_wr_cmd,
-   343		.sw_mode_config = ad7606B_sw_mode_config,
-   344	};
-   345	
- > 346	const struct ad7606_bus_ops ad7606c_18_spi_bops = {
-   347		.read_block = ad7606_spi_read_block18to32,
-   348		.reg_read = ad7606_spi_reg_read,
-   349		.reg_write = ad7606_spi_reg_write,
-   350		.write_mask = ad7606_spi_write_mask,
-   351		.rd_wr_cmd = ad7606B_spi_rd_wr_cmd,
-   352		.sw_mode_config = ad7606c_18_sw_mode_config,
-   353	};
-   354	
-   355	static const struct ad7606_bus_info ad7605_4_bus_info = {
-   356		.chip_info = &ad7605_4_info,
-   357		.bops = &ad7606_spi_bops,
-   358	};
-   359	
-   360	static const struct ad7606_bus_info ad7606_8_bus_info = {
-   361		.chip_info = &ad7606_8_info,
-   362		.bops = &ad7606_spi_bops,
-   363	};
-   364	
-   365	static const struct ad7606_bus_info ad7606_6_bus_info = {
-   366		.chip_info = &ad7606_6_info,
-   367		.bops = &ad7606_spi_bops,
-   368	};
-   369	
- > 370	const struct ad7606_bus_info ad7606_4_bus_info = {
-   371		.chip_info = &ad7606_4_info,
-   372		.bops = &ad7606_spi_bops,
-   373	};
-   374	
- > 375	const struct ad7606_bus_info ad7606b_bus_info = {
-   376		.chip_info = &ad7606b_info,
-   377		.bops = &ad7606b_spi_bops,
-   378	};
-   379	
- > 380	const struct ad7606_bus_info ad7606c_16_bus_info = {
-   381		.chip_info = &ad7606c_16_info,
-   382		.bops = &ad7606b_spi_bops,
-   383	};
-   384	
- > 385	const struct ad7606_bus_info ad7606c_18_bus_info = {
-   386		.chip_info = &ad7606c_18_info,
-   387		.bops = &ad7606c_18_spi_bops,
-   388	};
-   389	
- > 390	const struct ad7606_bus_info ad7616_bus_info = {
-   391		.chip_info = &ad7616_info,
-   392		.bops = &ad7616_spi_bops,
-   393	};
-   394	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yours,
+	-- Matti
 

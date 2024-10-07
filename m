@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-10267-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10268-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD08992729
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 10:38:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9AF99272C
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 10:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61F701C2233C
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 08:38:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48DC61F20FCF
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 08:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC6718C34D;
-	Mon,  7 Oct 2024 08:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDF618C930;
+	Mon,  7 Oct 2024 08:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DHq2kuUU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZDJ9YdMp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37C018C010;
-	Mon,  7 Oct 2024 08:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01FF18C326;
+	Mon,  7 Oct 2024 08:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728290285; cv=none; b=t1QFe1AgUVvQDSJbhy61HO8W+0il8JCjne7HsS8mljZmHw2pZAYuvr9w/hduJufvhm4KuA0Fua6wldO+nMAl+zUE27MtnYzwyw0Joet6a2DdK1GhYNejEppS/L2+HTWLBG/CbxqHkNvuBROJQ8K477+YVKczKSAzldhstIAH/1w=
+	t=1728290286; cv=none; b=A6TmDeoZRJCCd+DgB1yV3b7zs6mFqBaYHCI8Nr87K96ITTQ7UuyXScHh/gHRpRkzeWRyZVU5Riuz/XeQHojiiDxS88ZYvaTjwfhkdrj23dQh8EejUXx213W085/AGbre5K+hIaori8ks/phc2UoDaM0+P1X/gM8Ai6mHC+hB8Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728290285; c=relaxed/simple;
-	bh=2/hMSftv+3dvVX2Wa2Ap1k9j9lysmFSfimPuu4XRnro=;
+	s=arc-20240116; t=1728290286; c=relaxed/simple;
+	bh=dfQ1cow3unMNifLlLnZ2v6pTkxjaTVb2Cs8MDMVYs38=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AflMu8lrq97c5kKRORIEr9OWMAZGs1eWZ73J60vyrw00MMlERGhnF3XxLmk2bJ/pfy9+Ckt3ftqM1hPEza6ByGPWtC4LQDsFzFbOx/Uwu44IpUmKCcdXsOc1eH/2S13pn05YL+N0frcB0aNen6iIsZL9prYnDLqX7sFwx+dM2+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DHq2kuUU; arc=none smtp.client-ip=209.85.218.42
+	 In-Reply-To:To:Cc; b=IHcg5W7aGIYjNRCgihcG4fxkeaL5JAMsqFmv0HKEcDq4wyKVstWXBQSepW2NkjjMw0ONYCr2gDZvtXHo3pBH4dYUKuNUqJKS98CCHTmVNxQpvip/ulcZafdztSl/UnNJEnvVWqgTpPT6zioPu5LLr3MwJY005N+oWTLl803SCMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZDJ9YdMp; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a995ec65c35so44586966b.1;
-        Mon, 07 Oct 2024 01:38:03 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5c8952f7f95so4949851a12.0;
+        Mon, 07 Oct 2024 01:38:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728290282; x=1728895082; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728290283; x=1728895083; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=MTXdcjBlauvr7yxzI4HI4Dpu0RqCMP0lDL0VjxoSP1k=;
-        b=DHq2kuUUV3BZFac8NoBYfwmYd42aEAswQeUbhvEMGmfV5TSt7UIRWFeu8ZzH+wEjuD
-         qD+SGuaoh4+s3ML9r0LB5sY0p68KChRy7jf/AQWk12yYdQJcW9w7xWs8K4zmLCHh1dSI
-         8Ne43nc/IyXLk53VvQXIYW41Zlq9HhCMoXhsLNHROs1OjTPBUWUTxPuaN/ex9Vrb/6HZ
-         MLAkrLy7jQyehRShYXzhmal3oUyUp5xN2fho5gW04o0K7CZlg7q8IMsErEVx5PVQqcl6
-         PTIWCYSIhnHJlb9IVX5sct8CrOpnpTGjXs4QMTf87CSaf93x/GSoES+PzLD4XGbwcNWo
-         0FaA==
+        bh=1Iupx0UMz9bSEUnxJeQl9iuLZkh4H5XILO0ivcFTJMY=;
+        b=ZDJ9YdMpe0mBjl1CwtzwgYGRPSzbiyUpNtwBq/LIxeNgloJTqsgcrH3EG4geBnvycO
+         X6Kl27lo/MZ84lt+rJtFJkOQpWFV/CNHBkkCxCe8pTa8jccTINIvwA+dNdpJ9TvpppOR
+         +m6isui38jIB9wIEKfI4tQ3QBIDP9+O3h0JRXNnKbRRz616mtR9xHKF8k0F/IjMtuZTa
+         krSfoPjXrN/a/zI40DNbdio7Z81rbXZXUrWI7tJH8emFBGzVoji+tyrqEdZTx7HM7RzS
+         IFU8q5Svh+thr3RUqYcrFHecmpZj5yybKxvHG+TrmXLlLv+xOG/l1Z5yEWzeuOQ15uPF
+         0cUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728290282; x=1728895082;
+        d=1e100.net; s=20230601; t=1728290283; x=1728895083;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MTXdcjBlauvr7yxzI4HI4Dpu0RqCMP0lDL0VjxoSP1k=;
-        b=FtqDoA7UIkYaQ9BE5xqTur7AeetFWXIDN4ew/XyHila2Nmr7uMat1rqNMLIHcy22Jc
-         iai0XeTxffsJAnMTAmfZTS1pE0BsqAhFaBS4NeJLJcQfAwvtDmwri0vPS82MefQVtmcq
-         4q+Ir/1QShzPCRRC7OLfRvoWXQd8CoXaGCWwaDfrwf/B0wDxk2NVcj0hbE/V2T0gDlRM
-         b4sg9dqyQXdHEp5r63+C86uWf2xuINTGBkACifDoFp/ebnLdiJUiJNtb37Qw9NN7DrbX
-         Ebl9TmOYVdYwX1RW6XMffhFKWeULMvbJVZvkxO1BGnr0QLhKGW5Tg375CuHmoVes0LkE
-         +xgA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1OBRG6yM1SffIe2kslSo9+jmwRjT1kaUYeiL0ioiVYsudhsQdCJI+ChRlVSQLfEPgcHRKkdj/dYc=@vger.kernel.org, AJvYcCUrYlAuBR9SCRjyIZSGz12kEZa4xTCWhIeGhoh9x+MYtLS8lmggQq3Iv9O4MPz7fHcfA+53sq37/LhzMzU=@vger.kernel.org, AJvYcCV9wXJqz0UWZTLLU6wjm6uIQrrvDBesCzXWcuJhyDDhahUeQqLbfSqqjE6CDB2z/y44gd+7er02YmVHYg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIHJzOJJZlaBi/JeNkRFsN1PWzZr+A8usu2LrcluxEiBIg7Gbk
-	hYKHNlUVPAyuryxx1NVKvaBk3ZFqKlnYy703vN3j8JMpFNZ3jtRq
-X-Google-Smtp-Source: AGHT+IELlVxbtYI0i+pPyXAVWrLkI+Xdhk8y8wiB6riSCOvuDysWcJUQjy87E4cTcQRY6Whlrv7dqA==
-X-Received: by 2002:a17:907:7e92:b0:a99:4c71:704 with SMTP id a640c23a62f3a-a994c7108famr517619166b.26.1728290281692;
-        Mon, 07 Oct 2024 01:38:01 -0700 (PDT)
+        bh=1Iupx0UMz9bSEUnxJeQl9iuLZkh4H5XILO0ivcFTJMY=;
+        b=qHkuRmwWBTpFNmz7sC+lU1hHvV0OJnnt++gUHFA6t8P8Xlx1RYD1uD6TZNCn3y/F+L
+         H84GraE8aC8yTslo00W+PfObfNZzJ4ytrZhBpP3YUgIvjuFuM76mIjH0gIJDZWU/T/v1
+         D58Q2HJPCJPQ14BjPqEmaA/HWeAxrWonUo3CkV051ZH9m9OyYyUQ8JxaJpCw8LCFoAQx
+         YG4mbN09hTIGbmUCcjMJwRL5O/0HOFXklHUv5LYW/ft7/V+4qf3Nc5fa0IxYdvlKkfe/
+         a7V4WCbFHlDunR5y0rpOn6mTbcmua33CHWOw1LO69amPCElhLf84Bo/DC3yEeNNFl7vf
+         E5wg==
+X-Forwarded-Encrypted: i=1; AJvYcCVS0+r8W7RVLxXhuu+BDHvBElZajv/DQDOj3dJgO230MOUm0LcxNlAyfo7vAxvfJSYhQ2IpiI3/GEs=@vger.kernel.org, AJvYcCWVrRpakMmHkxi+pwdB1vSTCAEth8I4ROgdzp3AuB5+Og1n6lfDv0tbUaMPDaDQMJFylEZN+I0Y/byY1no=@vger.kernel.org, AJvYcCWvUOH4V5Sl1BHYup1v7iiS7cyoaGn9tVLu/ePEF0gzZg6sxQOc4fJrXHjn4E4SuCzmEYLxN4F7YJ1tjg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9qxJMWz8fKdZLlGu1sR4IhB2NnlXAmuLmXIABHnBWAp5qup80
+	fWUijgnYGVFTLL6ln306uAoWWpSMjQnbynkUG8IryIkrI7+SIh7W
+X-Google-Smtp-Source: AGHT+IEO6T0vt8G1kvvCGBqXo4YiEkRYS5FqCX1sucevcI/s4sUILTJIb9ajf21mmHsJZu8JoacNeg==
+X-Received: by 2002:a17:907:1b98:b0:a99:422a:dee5 with SMTP id a640c23a62f3a-a99422adfffmr406402566b.57.1728290282955;
+        Mon, 07 Oct 2024 01:38:02 -0700 (PDT)
 Received: from localhost (host-79-19-52-27.retail.telecomitalia.it. [79.19.52.27])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99420bcc1esm261387766b.199.2024.10.07.01.38.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99414b675esm272651666b.10.2024.10.07.01.38.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 01:38:01 -0700 (PDT)
+        Mon, 07 Oct 2024 01:38:02 -0700 (PDT)
 From: Matteo Martelli <matteomartelli3@gmail.com>
-Date: Mon, 07 Oct 2024 10:37:12 +0200
-Subject: [PATCH v2 3/7] iio: ad7192: copy/release available filter
- frequencies to fix race
+Date: Mon, 07 Oct 2024 10:37:13 +0200
+Subject: [PATCH v2 4/7] iio: as73211: copy/release available integration
+ times to fix race
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241007-iio-read-avail-release-v2-3-245002d5869e@gmail.com>
+Message-Id: <20241007-iio-read-avail-release-v2-4-245002d5869e@gmail.com>
 References: <20241007-iio-read-avail-release-v2-0-245002d5869e@gmail.com>
 In-Reply-To: <20241007-iio-read-avail-release-v2-0-245002d5869e@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -93,82 +93,65 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Matteo Martelli <matteomartelli3@gmail.com>
 X-Mailer: b4 0.14.2
 
-While available filter frequencies are being printed to sysfs by iio
-core (iio_read_channel_info_avail), the sampling frequency might be
-changed. This could cause the buffer shared with iio core to be
-corrupted. To prevent it, make a copy of the filter frequencies buffer
-and free it in the read_avail_release_resource callback.
+While available integration times are being printed to sysfs by iio core
+(iio_read_channel_info_avail), the sampling frequency might be changed.
+This could cause the buffer shared with iio core to be corrupted. To
+prevent it, make a copy of the integration times buffer and free it in
+the read_avail_release_resource callback.
 
 Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
 ---
- drivers/iio/adc/ad7192.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/iio/light/as73211.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 7042ddfdfc03ee5ea58ca07fb1943feb6538175b..acf625ced0b21db8d44f77929e8a875b3c10e1b1 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -1056,12 +1056,19 @@ static int ad7192_read_avail(struct iio_dev *indio_dev,
- 		*length = ARRAY_SIZE(st->scale_avail) * 2;
- 
+diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+index be0068081ebbbb37fdfb252b67a77b302ff725f6..27bc8cb791039944662a74fc72f09e2c3642cfa6 100644
+--- a/drivers/iio/light/as73211.c
++++ b/drivers/iio/light/as73211.c
+@@ -493,17 +493,32 @@ static int as73211_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec co
+ 		*type = IIO_VAL_INT;
  		return IIO_AVAIL_LIST;
--	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
--		*vals = (int *)st->filter_freq_avail;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY: {
- 		*type = IIO_VAL_FRACTIONAL;
- 		*length = ARRAY_SIZE(st->filter_freq_avail) * 2;
  
-+		guard(mutex)(&st->lock);
+-	case IIO_CHAN_INFO_INT_TIME:
++	case IIO_CHAN_INFO_INT_TIME: {
+ 		*length = ARRAY_SIZE(data->int_time_avail);
+-		*vals = data->int_time_avail;
+ 		*type = IIO_VAL_INT_PLUS_MICRO;
+-		return IIO_AVAIL_LIST;
+ 
++		guard(mutex)(&data->mutex);
 +
-+		*vals = kmemdup_array((int *)st->filter_freq_avail, *length,
++		*vals = kmemdup_array(data->int_time_avail, *length,
 +				      sizeof(int), GFP_KERNEL);
 +		if (!*vals)
 +			return -ENOMEM;
 +
- 		return IIO_AVAIL_LIST;
++		return IIO_AVAIL_LIST;
 +	}
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
- 		*vals = (int *)st->oversampling_ratio_avail;
- 		*type = IIO_VAL_INT;
-@@ -1073,6 +1080,14 @@ static int ad7192_read_avail(struct iio_dev *indio_dev,
- 	return -EINVAL;
+ 	default:
+ 		return -EINVAL;
+ 	}
  }
  
-+static void ad7192_read_avail_release_res(struct iio_dev *indio_dev,
-+					  struct iio_chan_spec const *chan,
-+					  const int *vals, long mask)
++static void as73211_read_avail_release_res(struct iio_dev *indio_dev,
++					   struct iio_chan_spec const *chan,
++					   const int *vals, long mask)
 +{
-+	if (mask == IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY)
++	if (mask == IIO_CHAN_INFO_INT_TIME)
 +		kfree(vals);
 +}
 +
- static int ad7192_update_scan_mode(struct iio_dev *indio_dev, const unsigned long *scan_mask)
- {
- 	struct ad7192_state *st = iio_priv(indio_dev);
-@@ -1098,6 +1113,7 @@ static const struct iio_info ad7192_info = {
- 	.write_raw = ad7192_write_raw,
- 	.write_raw_get_fmt = ad7192_write_raw_get_fmt,
- 	.read_avail = ad7192_read_avail,
-+	.read_avail_release_resource = ad7192_read_avail_release_res,
- 	.attrs = &ad7192_attribute_group,
- 	.validate_trigger = ad_sd_validate_trigger,
- 	.update_scan_mode = ad7192_update_scan_mode,
-@@ -1108,6 +1124,7 @@ static const struct iio_info ad7194_info = {
- 	.write_raw = ad7192_write_raw,
- 	.write_raw_get_fmt = ad7192_write_raw_get_fmt,
- 	.read_avail = ad7192_read_avail,
-+	.read_avail_release_resource = ad7192_read_avail_release_res,
- 	.validate_trigger = ad_sd_validate_trigger,
+ static int _as73211_write_raw(struct iio_dev *indio_dev,
+ 			       struct iio_chan_spec const *chan __always_unused,
+ 			       int val, int val2, long mask)
+@@ -699,6 +714,7 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+ static const struct iio_info as73211_info = {
+ 	.read_raw = as73211_read_raw,
+ 	.read_avail = as73211_read_avail,
++	.read_avail_release_resource = as73211_read_avail_release_res,
+ 	.write_raw = as73211_write_raw,
  };
  
-@@ -1116,6 +1133,7 @@ static const struct iio_info ad7195_info = {
- 	.write_raw = ad7192_write_raw,
- 	.write_raw_get_fmt = ad7192_write_raw_get_fmt,
- 	.read_avail = ad7192_read_avail,
-+	.read_avail_release_resource = ad7192_read_avail_release_res,
- 	.attrs = &ad7195_attribute_group,
- 	.validate_trigger = ad_sd_validate_trigger,
- 	.update_scan_mode = ad7192_update_scan_mode,
 
 -- 
 2.46.2

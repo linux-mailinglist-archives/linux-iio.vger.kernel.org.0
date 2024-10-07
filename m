@@ -1,86 +1,95 @@
-Return-Path: <linux-iio+bounces-10296-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10298-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17049931E7
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 17:47:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D15649935EE
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 20:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8F1B1C22AA4
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 15:47:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 358ECB20FAB
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 18:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C958D1DA302;
-	Mon,  7 Oct 2024 15:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595F01DE2AE;
+	Mon,  7 Oct 2024 18:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OFJjcDjJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BDiTCBmT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF311D9323;
-	Mon,  7 Oct 2024 15:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684401DDC18;
+	Mon,  7 Oct 2024 18:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728315971; cv=none; b=WhyzvqrWjJUo4iWj7SMyQ6yZhIGxcrqBOEwPovm8Mm7+TGFPQqx5pOJ+UNmyddpNNcL1Jxso9eY54GIP8r5gl9euBSoSJaE1YuZQLhHhX1vsxe2yoLNFpMw6qQPRVTonSSJWfYJxC51wd2+lZt+9zBIIkQoGmqAPoKZ6lK7CO3k=
+	t=1728325157; cv=none; b=YFdeRKjXuP6KUbI6uECLexfo8GkTIGXjCgN6/gI7hZrlBh81xCfB0FHkWdQf/vpL1FDio9PcLMi9WxfYiCAuiUsQEIyYot7utkkEY+EOj89V4saL80zyOvD6jvn2C7docMRnaKgFFjxDiAOgyGpmtiWpqpaSSBd32tVvLViHTh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728315971; c=relaxed/simple;
-	bh=IPz+aGl2hpLhDFrX5GfJESiSDX1f4cE9gll6GUH7TJY=;
+	s=arc-20240116; t=1728325157; c=relaxed/simple;
+	bh=+fqlVs8atMU9JNdpn1K4HbRS8JdgD3pcPFhRP5DgDK8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YlA6v6UukloKWGf0MO4saVwsrQ7zfJcev5qiqw/f+hWBhbqTNPAzZYN0CzLXKGzbLfACwChLtS+BYHVAfv5bpVZ0Z3+Gax9DXKi1NCB+Y7y02OwUDzQvb90Wh5t7AjLwvoS5at6r9Ay2/qC7bRVgVSA2dPms5qJOItRj+w5HY2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OFJjcDjJ; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37cc9aeb01dso3162060f8f.2;
-        Mon, 07 Oct 2024 08:46:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728315968; x=1728920768; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=n6dprjm0PLZjMBeHgDbl3Q6+Sj+1Lh0wF19FbiiI9Hs=;
-        b=OFJjcDjJSg7zcYMMaOZXiQxxWNFtOXMKsVXvzkwLk8LavbSlP7jt57ezv4mpSf8mlr
-         J5QyhRdjg4tkHYbL9EvqqDSog9oJPyyyKILFg7t+fXDUSHtcv5RhDRD7qSKiyO2UTS6n
-         ol9UV6GUa/nEcNH34RUJyjVqgHeu/UAE8r6BkP0iAloSi7PZvxND51g9Naw2kVbqVjKR
-         TO6BW7+AyPrIVSL2QTOTHYarf6PboU1rhVvZMgvsmIpw1M5M1grNG0HbkN3VCgfAEHUm
-         8QpNJChhBCTgZQJRLk9vMx7KkcktvRbu9yXYPLqU/1tkTOBa6AMidu0GcRZMAmrA1TjG
-         EA3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728315968; x=1728920768;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n6dprjm0PLZjMBeHgDbl3Q6+Sj+1Lh0wF19FbiiI9Hs=;
-        b=wbcL0v9hchiMGFVF6+PJDbtzeIBZNlWIhM/hAUOgIVqANpA2MHlR0yPkx+T5zciOWB
-         fJlspNFhn3/r64kEqOT7VAgnBNcdVskLs0QQzco2L0R5Z6t8P3gifm8k0D5swPXPb21B
-         IHWfo5vPDjboJ8W59mMflqiUymPNLny7TZ1FKWdCEs00AthpcJouKtp38hNmQ8fi8j0p
-         aLyQ/3CWYEo3WMvy1TaWc1jUaWQqrx05LRJPgOR/hwHQJbsKOAa9bboPDqvsP+mbh5z+
-         zxKd8BF8FRl27V1P97OANhS3OsdZ3xdu/lIGcUkmFHJN/A9CMxY5FKahnpwmdDanJw8j
-         b8ww==
-X-Forwarded-Encrypted: i=1; AJvYcCUj8DDC7pd3Wx3/+OpbcQv0nXGTMMrhncK3F90uW87/umX0bdPbqFer+xbbSL2+XuHwuSCTfIokXEOJy0wS@vger.kernel.org, AJvYcCWyefNgs1FAUV7vNiiBovlTfUR3Tl2cmKl2tzdvXXc3NCII7nDxCMiRSFdqprRpfP8XxTwDOvL+Xus=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGOqtKi8VnmOU9i3VQRABAvbV1kcsOJv+GL3YIZiKlWI3o2VwQ
-	dfZ0FK+88pi/O5r92XexkEV2oLqdh56G44YG6aeTO0lupcW4NFFu
-X-Google-Smtp-Source: AGHT+IF+8sfGIn0BZv8JEm8l7fv06gDZuaryeZmXzbmOn6DC8csfkugDv/BvinOfUhgQEn85h8XL9g==
-X-Received: by 2002:a5d:63cc:0:b0:374:c31e:9721 with SMTP id ffacd0b85a97d-37d0e7d40aemr7238976f8f.42.1728315968206;
-        Mon, 07 Oct 2024 08:46:08 -0700 (PDT)
-Received: from redaops ([146.70.124.157])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f89e89b42sm77975205e9.13.2024.10.07.08.46.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 08:46:07 -0700 (PDT)
-Date: Mon, 7 Oct 2024 18:46:05 +0300
-From: Tudor Gheorghiu <tudor.reda@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Nam Cao <namcao@linutronix.de>, Lars-Peter Clausen <lars@metafoo.de>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=UYb7Y+DHxQaNuCl+IOH3O0pzy6AiaKLFmCjtLKSSzfcX8Lt1Ey5xYkPlgoprsf6jyT4TPH6Y1id0HdxbhYF0ztf9sirDqJyBHOg3N93M+i7MM0QTmX1tgUKGtwM7dqsii070Y9hPVyYdPlbMVStZjMFOwJ61ohsthswsTVmQeEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BDiTCBmT; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728325156; x=1759861156;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+fqlVs8atMU9JNdpn1K4HbRS8JdgD3pcPFhRP5DgDK8=;
+  b=BDiTCBmT60NDF8pHBIURy9ZMvqHX+TmByK7Oj8l8v3a5Eridv3pquect
+   V5BMGH7e1V8LZvIWFOqL3R8yTZLLIiaWiHhKFrlQ+guLyGJw7LXhaJLCB
+   ZLfl21C8ZyWYdnKpY+epIIUUaT5JoHOFjai/z/ke4wtI6lENYNO6oOoQY
+   IYI4GAk76ImY+05eK4G7xrB9zuFrsVRqq1OTryo6eLo4VX53f9iPWkYbA
+   bAfZlG7gN0o/Ggb3IAWkdUu85ZrTChFWqk3XQOLtSOhC29YqDecGUueJ9
+   VhHebtjYCsm8VbxSxVYBDm+KfGAet2kav7jT5n0AKvYoFHfR+LFf+cTLo
+   w==;
+X-CSE-ConnectionGUID: r5KkQIHgQwmc3tqXDp0aSA==
+X-CSE-MsgGUID: YQT/+OYrRV2ItfkPQdBakw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="26949054"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
+   d="scan'208";a="26949054"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 11:19:15 -0700
+X-CSE-ConnectionGUID: OERP3/j8SFuuGDqa6h8Yaw==
+X-CSE-MsgGUID: x/MZW99BQQGt4JlOnuv+3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
+   d="scan'208";a="75396018"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 07 Oct 2024 11:19:09 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sxsK2-0005Ns-1T;
+	Mon, 07 Oct 2024 18:19:06 +0000
+Date: Tue, 8 Oct 2024 02:18:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Subject: Re: [PATCH] staging: iio: frequency: rename macros
-Message-ID: <ZwQCPY7tmMg7ciVZ@redaops>
-References: <20241001202430.15874-2-tudor.reda@gmail.com>
- <20241001225426.wUBOFdMi@linutronix.de>
- <Zvy0qyQJP1S17SFv@redaops>
- <20241006122712.2cff065c@jic23-huawei>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Ivan Mikhaylov <fr0st61te@gmail.com>,
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pwm@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 6/7] iio: adc: ad485x: add ad485x driver
+Message-ID: <202410080232.6SxmYFFA-lkp@intel.com>
+References: <20241004140922.233939-6-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -89,38 +98,106 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241006122712.2cff065c@jic23-huawei>
+In-Reply-To: <20241004140922.233939-6-antoniu.miclaus@analog.com>
 
-On Sun, Oct 06, 2024 at 12:27:12PM +0100, Jonathan Cameron wrote:
+Hi Antoniu,
 
-> 
-> Hmm. If you really want to clean this up, then these macros shouldn't
-> exist at all.  They are legacy of ancient IIO code style and some slightly
-> ropey code even then (which is why it's in staging!)
-> 
-> Right option is to use the read_raw callbacks in conjunction with the
-> info_mask_* bitmaps that indicate which attributes the IIO core should create.
-> There are some corners in here such as PHASESYMBOL for which we've
-> never fixed on an ABI and that might need custom attributes, but even
-> then these macros probably wouldn't be involved.
-> 
+kernel test robot noticed the following build errors:
 
-Hi Jonathan!
-Thank you so much for your input!
+[auto build test ERROR on v6.11]
+[cannot apply to jic23-iio/togreg robh/for-next v6.12-rc1 linus/master next-20241004]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I understand, so this is not as simple as just renaming the macros,
-there is actually a lot more to modify in order to make this driver up
-to date with modern standards. I will leave this for the original driver
-developers.
+url:    https://github.com/intel-lab-lkp/linux/commits/Antoniu-Miclaus/iio-backend-add-support-for-data-size-set/20241004-221608
+base:   v6.11
+patch link:    https://lore.kernel.org/r/20241004140922.233939-6-antoniu.miclaus%40analog.com
+patch subject: [PATCH v2 6/7] iio: adc: ad485x: add ad485x driver
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20241008/202410080232.6SxmYFFA-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project fef3566a25ff0e34fb87339ba5e13eca17cec00f)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241008/202410080232.6SxmYFFA-lkp@intel.com/reproduce)
 
-> So I'd don't mind 'fixing' checkpatch or the code, but I'd
-> rather we fixed the drivers up properly.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410080232.6SxmYFFA-lkp@intel.com/
 
-As for this, it is somewhat unrelated to the actual driver (I didn't
-even consider this initially). That is why I submitted a different patch:
+All errors (new ones prefixed by >>):
 
-https://lore.kernel.org/all/20241002133418.7924-2-tudor.reda@gmail.com/
+   In file included from drivers/iio/adc/ad485x.c:18:
+   In file included from include/linux/regmap.h:20:
+   In file included from include/linux/iopoll.h:14:
+   In file included from include/linux/io.h:14:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     548 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from drivers/iio/adc/ad485x.c:18:
+   In file included from include/linux/regmap.h:20:
+   In file included from include/linux/iopoll.h:14:
+   In file included from include/linux/io.h:14:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from drivers/iio/adc/ad485x.c:18:
+   In file included from include/linux/regmap.h:20:
+   In file included from include/linux/iopoll.h:14:
+   In file included from include/linux/io.h:14:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     585 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   In file included from drivers/iio/adc/ad485x.c:19:
+   In file included from include/linux/regulator/consumer.h:35:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:21:
+   In file included from include/linux/mm.h:2232:
+   include/linux/vmstat.h:517:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     517 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+>> drivers/iio/adc/ad485x.c:408:9: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     408 |         return FIELD_GET(AD485X_PACKET_FORMAT_MASK, format);
+         |                ^
+   7 warnings and 1 error generated.
 
-Thanks again,
-Tudor
+
+vim +/FIELD_GET +408 drivers/iio/adc/ad485x.c
+
+   396	
+   397	static int ad485x_get_packet_format(struct iio_dev *indio_dev,
+   398					    const struct iio_chan_spec *chan)
+   399	{
+   400		struct ad485x_state *st = iio_priv(indio_dev);
+   401		unsigned int format;
+   402		int ret;
+   403	
+   404		ret = regmap_read(st->regmap, AD485X_REG_PACKET, &format);
+   405		if (ret)
+   406			return ret;
+   407	
+ > 408		return FIELD_GET(AD485X_PACKET_FORMAT_MASK, format);
+   409	}
+   410	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

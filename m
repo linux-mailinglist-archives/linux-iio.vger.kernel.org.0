@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-10281-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10282-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAC69930F3
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 17:20:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8E69930F6
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 17:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B3831C22316
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 15:20:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9579D1F22652
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 15:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F3F1D88CA;
-	Mon,  7 Oct 2024 15:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E521D8DF0;
+	Mon,  7 Oct 2024 15:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j5axIN50"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TTwxfOOi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7421D88C1;
-	Mon,  7 Oct 2024 15:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8037D1D89FF;
+	Mon,  7 Oct 2024 15:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728314418; cv=none; b=FWHNHUbOg/BmLafD6YDP0mpXWJztqhCuaOhyFWtrHTnsxrV1lfaG1aZhbzoRTROc3ctUeNCXky/QrWq2qaq6z7KXbR3hq+xfW8lGa/xWpLI5apq350esSrlujHRMzphfFfrdCJQ0yW3551VAsJFW8ZHJKAoRdGMLuVmiV5sE5LM=
+	t=1728314421; cv=none; b=dZYpXvufwcY8FFWY22C9IB2U/Vbc9rVm+PTQHfF9rzosF9ZwB99RU2NJgVw26YPUwHmHAkkDRRedoo6M+cqydLZkmHSwNSwKJm5hrTRmhycbAnaoAAUKWCYLEWKtJI5+hldCA86K6fu12m4I+xH4zgT59F5vsOb2kK2YQXOdBFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728314418; c=relaxed/simple;
-	bh=T+QYja7LUJzkV7RCgdEgVqVceSPVINzxqOOsbiHlAtM=;
+	s=arc-20240116; t=1728314421; c=relaxed/simple;
+	bh=y8fpYG9T60OwQP0aXJxzsXaodmkYPpmnD99lrwUmUdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MU1BwcW8JSRNNqsEldeKOQiTALbaxBgINrZyen7Ki8S7i5zCauxLmFNyXF98irz2LoGynmzORwefd01s236/RuCXFPcQAge7xKUE/tlD4PlOZG99ZRupsEptM5H5S2Tzpuytcnf6EmpOqZqj7SwCc397LgtxNbXjfItQ9e7FTFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j5axIN50; arc=none smtp.client-ip=209.85.214.170
+	 MIME-Version; b=TjW+DPHhDO6Jw44Elo7q7yJUnR+PgqBMKHNPFscjGaDBrI2dQbuKqpHnideGAeZq+TuwUWksYm/TuB9+L3K5uoVSiYvvFjdVKdPaQmYaS+w0ugClpZsHlO6+RgKdtUU0pOE6ZhWbgTuHwew7GZP1QEQUD/eqlkWA5fjeDGI9zVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TTwxfOOi; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20b8be13cb1so48968385ad.1;
-        Mon, 07 Oct 2024 08:20:16 -0700 (PDT)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20b0b5cdb57so41329215ad.1;
+        Mon, 07 Oct 2024 08:20:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728314415; x=1728919215; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728314418; x=1728919218; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yUspM/VMPEO1Kn2QXTO9UIPl/J9+OPnNBwBdWZtkysA=;
-        b=j5axIN50mguAA6yZUAb0kv7TX6TOQL8bEjOoTX3FrFxR61pZRw7PYXay8gLVtV6+ST
-         u5E6e3KGuzeHXgHKj1bdlhovIXML89yxElG4lZtUyZ1bxrPBF6po/ozrV/NSjeq7TFov
-         82Sq4lgkJ/buEUBnlBXMj+Vai0r9qYrDvYpstq+H0KqoudbjyBmMasvSAQTgHIjOhTQN
-         m/hXryR4ZBzt89bUcSBk6d3hJafucDymyi+UwcB679BjUOyc4pE+VOdTVqPu7jLLRHLg
-         bv68tBjcAxma6Do9xlFAUA8qniBOnCFr2piVjNGtEODN6atJd7SjsO64qTbiSULYIa1T
-         voPw==
+        bh=i6Q3pN7n5lzASa1iAB1h9SmIQ5Uey3Y3s1sa+1tGPWk=;
+        b=TTwxfOOi9EU8i+irNiRRVyRKys2hw9Ae0eTQhx2HaUuJyvTp6JvA200nTuf6215xqK
+         vRVWUz6fJna1It/lTi9OcSh0oTiAvkcIhxLfGTdjON7XOhp64swCLG0Q9m4SmZI0P44u
+         jAStrWTT6lrZVb1gyN1Ts4xpW45/z6t/bNIFzP3uaB7RUtonnV8LaPp2INbhTnaduZpc
+         YuxrwWSG8lF+VwPS5EgTUbKHDkt98TmUHA9UJUR2pktqFpFYiFItNKtrSt7RIhCvFw4b
+         LcEt19BFvNerqrZtlMmBISv6RGMWACq/EZitei/HGNcmwagWV4nfrb+EcC3Pq/WlrHSC
+         87RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728314415; x=1728919215;
+        d=1e100.net; s=20230601; t=1728314418; x=1728919218;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yUspM/VMPEO1Kn2QXTO9UIPl/J9+OPnNBwBdWZtkysA=;
-        b=CH0UlAHm1vfec9tvatRSq4iyTPoM8T2++/MCD0XDfTdde41no2Biw6/KONK6JYyNu0
-         79/RBBOk51C2PO3PJaZOoQDuMq3TJbyed8b5/zb+VSTxhfzk9nX3RHVEu36QhOj3nrG1
-         GAHjG40eT81abHzf+FoydI3/nui+lpmVo2VqXY3m32V7xe0ZGrU1KZBcNgEOSGCGrEY8
-         M2mEbgVYqAGPcAhh0KVgcGb5NOXB7f88vP72AJeKMDbsDkllABZ97LZxzwfvn6OFgJ38
-         2FWqfAo90IlmITmHADu68xdWA+dY5P5lPJv/SNcplQUBAamQ7IDzpTo+Q0qD8opUUiUl
-         SThQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXIPQ4kYEUlUa9jIkwOlBVraubcMKJnxcYCskCfR9K3jO3EqhbvxSVAZrZB46E3yLbARlOfDIdjHd4uLwg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoDDmdPQO32jVokCIgqeB1a+cVtsBNrtd1ReSQ/meGZFNstN5W
-	IBDM3CmwFzW6tsc4LLhUw1iNPiuNEq8NGSV1YmlZ9Cn5RKPMdFQ+/a0ftZNOyFQ=
-X-Google-Smtp-Source: AGHT+IGv6vbD0vJYQ8PyEEPLjhzoNFhVfuDsNUlr/rmEZWCXQq1pD8nx8hsECFkyRcsEWQedDMdfdA==
-X-Received: by 2002:a17:902:fc4e:b0:202:4666:f018 with SMTP id d9443c01a7336-20bfdfd2693mr202680265ad.15.1728314415059;
-        Mon, 07 Oct 2024 08:20:15 -0700 (PDT)
+        bh=i6Q3pN7n5lzASa1iAB1h9SmIQ5Uey3Y3s1sa+1tGPWk=;
+        b=xKJrJ+ZlF2/bSJcqMv12R1ulTC8xs9XVy/Q8zPtlaNvpUmB4ppjohX1rqi0rI/FZLp
+         JhAQVyQikwMGXi1LB9dGGWkWptbVOt/spaK8yqeiR7Iq8cGeJA+i3mvqXDxULRwG13RD
+         4+DSm0vu3QaDax6Oub/AezsA02WX8A3coey4+yN6qntaPTz9dSEAonOACOu0coxAhOjI
+         rls3RoRifmhzseNy1LmPIndPAhv6WNknqXU7qqfj6ZbDF/7ZQS5OpWEW9+MsuR9nqgyS
+         ehWdN7fxummeY8CXYongQHN8ep1vlPNqXOUK+E4PvpismKetRLxkUyxONtS7qxAq5kGw
+         vyrg==
+X-Forwarded-Encrypted: i=1; AJvYcCVYk8F3eScqU3Mbg2iwLRHmKeqrdQhuMMSLHEoln0uiBKGicO0cZbNdwu9LqBuQL3khV/nktPjKsEH1jOg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwluVOXyf5vjsOUB1/zwaGD3/LV8leQz8docsdWXZ5KsMoFXEL
+	cTHkwBhl2t6Y7sqytMBQfDbhje3vfNZqq1Obe8uafGf6RLQQHULHk43gB0D9XQk=
+X-Google-Smtp-Source: AGHT+IGP30QjcEuP6lWtQgkymsNYOcb0WCuG8oqw5rvdNOtuthT3T4Y6C+jpxhDkdvQ472jsadiBUw==
+X-Received: by 2002:a17:902:d50d:b0:205:59b7:69c2 with SMTP id d9443c01a7336-20bff3912e8mr144356195ad.7.1728314418218;
+        Mon, 07 Oct 2024 08:20:18 -0700 (PDT)
 Received: from abhash-IdeaPad-L340-15IRH-Gaming.. ([136.233.9.100])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-20c138b1395sm41000755ad.3.2024.10.07.08.20.12
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-20c138b1395sm41000755ad.3.2024.10.07.08.20.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 08:20:14 -0700 (PDT)
+        Mon, 07 Oct 2024 08:20:17 -0700 (PDT)
 From: Abhash Jha <abhashkumarjha123@gmail.com>
 To: linux-iio@vger.kernel.org
 Cc: jic23@kernel.org,
 	lars@metafoo.de,
 	linux-kernel@vger.kernel.org,
 	Abhash Jha <abhashkumarjha123@gmail.com>
-Subject: [PATCH v3 1/3] iio: light: vl6180: Add configurable inter-measurement period support
-Date: Mon,  7 Oct 2024 20:49:45 +0530
-Message-ID: <20241007151947.58828-2-abhashkumarjha123@gmail.com>
+Subject: [PATCH v3 2/3] iio: light: vl6180: Added Interrupt support for single shot access
+Date: Mon,  7 Oct 2024 20:49:46 +0530
+Message-ID: <20241007151947.58828-3-abhashkumarjha123@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241007151947.58828-1-abhashkumarjha123@gmail.com>
 References: <20241007151947.58828-1-abhashkumarjha123@gmail.com>
@@ -87,148 +87,112 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Expose the IIO_CHAN_INFO_SAMP_FREQ attribute as a way to configure the
-inter-measurement period for both the IIO_DISTANCE and IIO_LIGHT
-channels. The inter-measurement period must be given in milihertz.
+The interrupts are serviced in the `vl6180_measure` function when the
+irq_handler signals that the reading is complete. We now can read
+asynchronously if `client->irq` is set.
 
 Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
 ---
- drivers/iio/light/vl6180.c | 70 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 68 insertions(+), 2 deletions(-)
+ drivers/iio/light/vl6180.c | 54 +++++++++++++++++++++++++++++---------
+ 1 file changed, 42 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/iio/light/vl6180.c b/drivers/iio/light/vl6180.c
-index a1b2b3c0b..67aa2f101 100644
+index 67aa2f101..a747501b0 100644
 --- a/drivers/iio/light/vl6180.c
 +++ b/drivers/iio/light/vl6180.c
-@@ -38,7 +38,9 @@
- #define VL6180_OUT_OF_RESET 0x016
- #define VL6180_HOLD 0x017
- #define VL6180_RANGE_START 0x018
-+#define VL6180_RANGE_INTER_MEAS_TIME 0x01b
- #define VL6180_ALS_START 0x038
-+#define VL6180_ALS_INTER_MEAS_TIME 0x03e
- #define VL6180_ALS_GAIN 0x03f
- #define VL6180_ALS_IT 0x040
- 
-@@ -86,6 +88,8 @@ struct vl6180_data {
+@@ -86,6 +86,7 @@
+ struct vl6180_data {
+ 	struct i2c_client *client;
  	struct mutex lock;
++	struct completion completion;
  	unsigned int als_gain_milli;
  	unsigned int als_it_ms;
-+	unsigned int als_meas_rate;
-+	unsigned int range_meas_rate;
- };
+ 	unsigned int als_meas_rate;
+@@ -211,29 +212,38 @@ static int vl6180_write_word(struct i2c_client *client, u16 cmd, u16 val)
+ static int vl6180_measure(struct vl6180_data *data, int addr)
+ {
+ 	struct i2c_client *client = data->client;
++	unsigned long time_left;
+ 	int tries = 20, ret;
+ 	u16 value;
  
- enum { VL6180_ALS, VL6180_RANGE, VL6180_PROX };
-@@ -261,12 +265,14 @@ static const struct iio_chan_spec vl6180_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 			BIT(IIO_CHAN_INFO_INT_TIME) |
- 			BIT(IIO_CHAN_INFO_SCALE) |
--			BIT(IIO_CHAN_INFO_HARDWAREGAIN),
-+			BIT(IIO_CHAN_INFO_HARDWAREGAIN) |
-+			BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 	}, {
- 		.type = IIO_DISTANCE,
- 		.address = VL6180_RANGE,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
--			BIT(IIO_CHAN_INFO_SCALE),
-+			BIT(IIO_CHAN_INFO_SCALE) |
-+			BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 	}, {
- 		.type = IIO_PROXIMITY,
- 		.address = VL6180_PROX,
-@@ -333,6 +339,18 @@ static int vl6180_read_raw(struct iio_dev *indio_dev,
- 
- 		return IIO_VAL_FRACTIONAL;
- 
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		switch (chan->type) {
-+		case IIO_DISTANCE:
-+			*val = data->range_meas_rate;
-+			return IIO_VAL_INT;
-+		case IIO_LIGHT:
-+			*val = data->als_meas_rate;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
+ 	mutex_lock(&data->lock);
++	reinit_completion(&data->completion);
 +
- 	default:
- 		return -EINVAL;
+ 	/* Start single shot measurement */
+ 	ret = vl6180_write_byte(client,
+ 		vl6180_chan_regs_table[addr].start_reg, VL6180_STARTSTOP);
+ 	if (ret < 0)
+ 		goto fail;
+ 
+-	while (tries--) {
+-		ret = vl6180_read_byte(client, VL6180_INTR_STATUS);
+-		if (ret < 0)
+-			goto fail;
+-
+-		if (ret & vl6180_chan_regs_table[addr].drdy_mask)
+-			break;
+-		msleep(20);
+-	}
++	if (client->irq) {
++		time_left = wait_for_completion_timeout(&data->completion, HZ / 10);
++		if (time_left == 0)
++			return -ETIMEDOUT;
++	} else {
++		while (tries--) {
++			ret = vl6180_read_byte(client, VL6180_INTR_STATUS);
++			if (ret < 0)
++				goto fail;
++
++			if (ret & vl6180_chan_regs_table[addr].drdy_mask)
++				break;
++			msleep(20);
++		}
+ 
+-	if (tries < 0) {
+-		ret = -EIO;
+-		goto fail;
++		if (tries < 0) {
++			ret = -EIO;
++			goto fail;
++		}
  	}
-@@ -412,11 +430,23 @@ static int vl6180_set_it(struct vl6180_data *data, int val, int val2)
- 	return ret;
+ 
+ 	/* Read result value from appropriate registers */
+@@ -484,6 +494,15 @@ static int vl6180_write_raw(struct iio_dev *indio_dev,
+ 	}
  }
  
-+static int vl6180_meas_reg_val_from_mhz(unsigned int mhz)
++static irqreturn_t vl6180_threaded_irq(int irq, void *priv)
 +{
-+	unsigned int period = DIV_ROUND_CLOSEST(1000 * 1000, mhz);
-+	unsigned int reg_val = 0;
++	struct iio_dev *indio_dev = priv;
++	struct vl6180_data *data = iio_priv(indio_dev);
 +
-+	if (period > 10)
-+		reg_val = period < 2550 ? (DIV_ROUND_CLOSEST(period, 10) - 1) : 254;
-+
-+	return reg_val;
++	complete(&data->completion);
++	return IRQ_HANDLED;
 +}
 +
- static int vl6180_write_raw(struct iio_dev *indio_dev,
- 			     struct iio_chan_spec const *chan,
- 			     int val, int val2, long mask)
- {
- 	struct vl6180_data *data = iio_priv(indio_dev);
-+	unsigned int reg_val;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_INT_TIME:
-@@ -427,6 +457,28 @@ static int vl6180_write_raw(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 
- 		return vl6180_set_als_gain(data, val, val2);
-+
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+	{
-+		guard(mutex)(&data->lock);
-+		switch (chan->type) {
-+		case IIO_DISTANCE:
-+			data->range_meas_rate = val;
-+			reg_val = vl6180_meas_reg_val_from_mhz(val);
-+			return vl6180_write_byte(data->client,
-+				VL6180_RANGE_INTER_MEAS_TIME, reg_val);
-+
-+		case IIO_LIGHT:
-+			data->als_meas_rate = val;
-+			reg_val = vl6180_meas_reg_val_from_mhz(val);
-+			return vl6180_write_byte(data->client,
-+				VL6180_ALS_INTER_MEAS_TIME, reg_val);
-+
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+
- 	default:
- 		return -EINVAL;
- 	}
-@@ -473,6 +525,20 @@ static int vl6180_init(struct vl6180_data *data)
+ static const struct iio_info vl6180_info = {
+ 	.read_raw = vl6180_read_raw,
+ 	.write_raw = vl6180_write_raw,
+@@ -583,6 +602,17 @@ static int vl6180_probe(struct i2c_client *client)
  	if (ret < 0)
  		return ret;
  
-+	/* Default Range inter-measurement time: 50ms or 20000 mHz */
-+	ret = vl6180_write_byte(client, VL6180_RANGE_INTER_MEAS_TIME,
-+				vl6180_meas_reg_val_from_mhz(20000));
-+	if (ret < 0)
-+		return ret;
-+	data->range_meas_rate = 20000;
++	if (client->irq) {
++		ret = devm_request_threaded_irq(&client->dev, client->irq,
++						NULL, vl6180_threaded_irq,
++						IRQF_ONESHOT,
++						indio_dev->name, indio_dev);
++		if (ret)
++			return dev_err_probe(&client->dev, ret, "devm_request_irq error \n");
 +
-+	/* Default ALS inter-measurement time: 10ms or 100000 mHz */
-+	ret = vl6180_write_byte(client, VL6180_ALS_INTER_MEAS_TIME,
-+				vl6180_meas_reg_val_from_mhz(100000));
-+	if (ret < 0)
-+		return ret;
-+	data->als_meas_rate = 100000;
++		init_completion(&data->completion);
++	}
 +
- 	/* ALS integration time: 100ms */
- 	data->als_it_ms = 100;
- 	ret = vl6180_write_word(client, VL6180_ALS_IT, VL6180_ALS_IT_100);
+ 	return devm_iio_device_register(&client->dev, indio_dev);
+ }
+ 
 -- 
 2.43.0
 

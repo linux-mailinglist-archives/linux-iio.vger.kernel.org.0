@@ -1,637 +1,280 @@
-Return-Path: <linux-iio+bounces-10275-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10276-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D57992CDC
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 15:15:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0665D992D84
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 15:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39A6B282193
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 13:15:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2976B1C21EC5
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 13:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE801D45FF;
-	Mon,  7 Oct 2024 13:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EA51D27A5;
+	Mon,  7 Oct 2024 13:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RAh2CfL+"
+	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="jrkk7eYX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011024.outbound.protection.outlook.com [52.101.65.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FF31D3644
-	for <linux-iio@vger.kernel.org>; Mon,  7 Oct 2024 13:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728306895; cv=none; b=EqcAaxNZdFObz8b5le5/LMV9bIDXTW1ridasrBWFmLhxYBG4naUplpEW9ZWHZ25u5gmfye5PLaDk+mQVLrKBG2zEpJ/x2aqxnqWCeK6m9+vuQ1W2ju947/2gdJ+bA2EfzfNITJ5PSWhW3K5Ob+cFW4Hi1mdCB9H3wFpWbYhucW0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728306895; c=relaxed/simple;
-	bh=JE9NM46xm6yUa5BAzvE76L+iWgUrQoHCcP0yblU388c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=p5zIH8HlM2CMUWsgLvRDd9V9kE1etyIKOkWylcfX/XPOml1yTN3OArqsnhJBPq/uu10peAHLzLmicxKyIImCCq4DytLqzS43zWYznLxHP0u4ciOq8poFTB7GuqJ+p9egfux5RNzUhVc4JQ3hbzGWMSZuCmk2Enqn2MB9hKYVwNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RAh2CfL+; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42cd74c0d16so45288775e9.1
-        for <linux-iio@vger.kernel.org>; Mon, 07 Oct 2024 06:14:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728306892; x=1728911692; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hnArz4yfttKAFtln2UG4JPxpJ8Ty/6N11wglgOPOIlI=;
-        b=RAh2CfL+PZKrU7lquH4mq5jGD6j2ccqhhkT0gViwHbWOojPHDTrujYGx5NWPmepFU/
-         HODdFBpTQTGVq+xsl4OJG1Q/aMPs9y5VVnT/6+XAg/iEdSTdq9Xbu7N4cyazDuMe83E7
-         j6e/TzL4dq6vv+t0LQhsOe8QdTToy4gpv7XMnwZib6gOZGcmzP5TsPVo9SZAjCGfCaBv
-         egPy6qaGN2RN40hExg7D1mpEU/U2nOGvc0Tt2SUqKmno66konSSQVntTZ1efIsI+LKOl
-         fkTrttkb0RhQ0zKkxrWw06AgZ0JZ7XSCqxxEo382HSd1VFVEZnyQMmG7iKyBUSxaqlTS
-         x+2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728306892; x=1728911692;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hnArz4yfttKAFtln2UG4JPxpJ8Ty/6N11wglgOPOIlI=;
-        b=xJ8qEoQ9/8BhnxCjVriYwBlPPv1H70ZU//NvlThkWZPMbcUIcXTrgRc6gAv0zw+U5G
-         W/PkkO9LgQiswdVPpVYuootpEf4SfPeXzy9C4Sr9H16DvsigTeaS3lIuInZbj8qP+J2e
-         PhVT5IILdBZxs63ueOi/3un4n3FHDEODp9Rlb+5b5Nb5nE590P1c0RL6H+W7D6ibx4zB
-         9D/E/35f/2U0ct8N6eKVhoZ8P3vM8OFOiYdWUQsdSCbaMN0gF82Z9Ym5WiK8aytIujUQ
-         ecMeaYbP/i0SlLNjBTsZPCzcuPAILOR7ENLJWCF7jJ1Xw0gHRHHCRk7P8/rg5gxugKdF
-         E8Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCUe2YpeLKgKHeG4eWsxgHIVhoLE1nlSKo5FO1dkze0yvUuRk0TTT9m5nG9Oi252O+dXMqxH3busmLs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8qJ2ypZltx3IgYrzIfD2nfMo8a3ORu3h2nLiGo6IHPjZIY4sN
-	4FQ/sXI4AwHF+g+0l9bRStBTGB2RvOHqPBRRxC40km+FJAjhUjEIUtAN7ce+jxE=
-X-Google-Smtp-Source: AGHT+IG9f4vB6T1s6tN6UwA9Vx4hvfJiLo7UbpRm9dR3KAduAY6eAEjDIHlMPls4IGr1n67LhwSTqw==
-X-Received: by 2002:a05:600c:1907:b0:42e:d463:3ea8 with SMTP id 5b1f17b1804b1-42f85aefaeamr104422085e9.34.1728306891710;
-        Mon, 07 Oct 2024 06:14:51 -0700 (PDT)
-Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f89ec6396sm73916475e9.30.2024.10.07.06.14.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 06:14:51 -0700 (PDT)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Date: Mon, 07 Oct 2024 15:14:40 +0200
-Subject: [PATCH 3/3] iio: magnetometer: add Allegro MicroSystems ALS31300
- 3-D Linear Hall Effect driver
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571DA189BAA;
+	Mon,  7 Oct 2024 13:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728308238; cv=fail; b=a9r0GnaCXJQ8i0YV4WeCfv4M/ySJjERdQ7vy7QaTA+BTGLH23iw1wlVGFvTzkxCpa7FHbP918tchy8py6XATVXgJ+mFSSuy+0OPH18OUzjWfDAcJvw+YN65hsJF4UqFt60mcBmiRcVdZOumlPoswy8wdLatIGUwfLOQZjQKOVGY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728308238; c=relaxed/simple;
+	bh=Ex6TLd9K+QQcQPvSnyYrDgeMHIdMa5WTM44qhQ8X2D8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=sl7zOu+Ckb4au63UKMczx4mAn7ZlGPAQazyT2f2Nwe1xilRB2v8a5NVMdd697y+33NwbC0PrjLFQqeD6CcRcSymBjJ9UVFq4F4qqTzxPirxhKHELpqqz6Q22V1ESEUtqUtG4NjxjoN9CyQwI0KZTMRlfnutGU5LQM1a0pamchfc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=jrkk7eYX; arc=fail smtp.client-ip=52.101.65.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BIDJl8naZ8Q2y5sEs9oGKcQ0DCTMu1SBlYN/7HFwfB4Ei/74/O8YG1YLfFqGvdExRFIWmRfQlluGHT026LXKehkv0ZZlNS6SXGtQSdSyPGc+mkuGbVQXvMIEortotUCwQY32YY3YtVnlUpImFNhaNcxdsTOIf9xPbK7Yfj3J8wL/8wFOUPrf82HQPF9+IsTHMrvq7FxJ+6TF8A8T6C1lG1QMPhuZ6v288N3DYjGCyQ85+2V3xaCyy264MIuv8YvpyXavVdkNvP5Ica1j83j+GMGhrXn271rrrN/JdE2GbHaUvdiSBsjQ8cp2yUu7BUou1NJezfLiNDjulvmZTYGjYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0kmsS8fg1yR+hGUbjUq/TzGE340vXPzgRiDhG9pg/18=;
+ b=xkNPDAd4sEGC6LjzhrMFKKos0MFI9kr2la85Nrrv9A9w1+H8OCz/O/kl53eTIlGV9sXpvIHBV9KZSE8yp0dc5Eg+3wGkp6lmkpTO0M71pYnzmCF00cL2Ydcn8usX8zQU0nuSpmoBGRNKnHLWk9HQBlpbXI0lBvUmmOXKTHreAiahUHWxagrFYxO5hIloH6ZpKsZ8L72+SLAIzQKeXM01BFh0RaS82/bTD+G63SJU/CMQQos8FxSLaAZANq0aq4bPf50IR4lplz734GhzShLLeMOotI52i08IMs8MDiXVpkD/Q6aYG/zXKexrTHxmC8Mmh++0IfIEcSfhZIrPjiBGUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axis.com; dmarc=pass action=none header.from=axis.com;
+ dkim=pass header.d=axis.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0kmsS8fg1yR+hGUbjUq/TzGE340vXPzgRiDhG9pg/18=;
+ b=jrkk7eYXJGMhh8UnkDyANz6w3Rgng7319ln/9Yp3iNXdS6oPZh+fnp1s5NEiPQ/qzc5j/x28xksyHFUCehS6iXWavkxzPfp+C0Z1yBODp9/1mid0VCfEu0K9z4higgS0kNCKGLLCm+b6EneJizOyx4eHKfOFfcZPwMCz+KyDX5o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=axis.com;
+Received: from DU0PR02MB9585.eurprd02.prod.outlook.com (2603:10a6:10:41d::20)
+ by AS4PR02MB8669.eurprd02.prod.outlook.com (2603:10a6:20b:58c::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.22; Mon, 7 Oct
+ 2024 13:37:09 +0000
+Received: from DU0PR02MB9585.eurprd02.prod.outlook.com
+ ([fe80::b1a:32b1:13cb:e576]) by DU0PR02MB9585.eurprd02.prod.outlook.com
+ ([fe80::b1a:32b1:13cb:e576%7]) with mapi id 15.20.8026.019; Mon, 7 Oct 2024
+ 13:37:09 +0000
+Message-ID: <3ee27b01-ca9a-4f5c-b48a-c5613139895d@axis.com>
+Date: Mon, 7 Oct 2024 15:37:07 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] Support for Texas Instruments OPT4060 RGBW Color
+ sensor.
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ rickard.andersson@axis.com, kernel@axis.com
+References: <20241005165119.3549472-1-perdaniel.olsson@axis.com>
+ <20241006162446.51a93744@jic23-huawei>
+Content-Language: en-US
+From: Per-Daniel Olsson <perdaniel.olsson@axis.com>
+In-Reply-To: <20241006162446.51a93744@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MM0P280CA0001.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:a::10) To DU0PR02MB9585.eurprd02.prod.outlook.com
+ (2603:10a6:10:41d::20)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241007-topic-input-upstream-als31300-v1-3-2c240ea5cb77@linaro.org>
-References: <20241007-topic-input-upstream-als31300-v1-0-2c240ea5cb77@linaro.org>
-In-Reply-To: <20241007-topic-input-upstream-als31300-v1-0-2c240ea5cb77@linaro.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, Neil Armstrong <neil.armstrong@linaro.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15979;
- i=neil.armstrong@linaro.org; h=from:subject:message-id;
- bh=JE9NM46xm6yUa5BAzvE76L+iWgUrQoHCcP0yblU388c=;
- b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBnA97HXjaosaOJPMPI1ESZnVrgAQ85u53QiofhPTQY
- Sty183aJAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCZwPexwAKCRB33NvayMhJ0Z6tD/
- 9EXkZgx4cNH/5uz8c48SNITuvWDreqwF3wuhdIHAnrLLzM6Z4bSns0e2yDUZ5UinetS5ytJqDedi+F
- XSIgQNaBdgaZdG5xKJK/8F/nMgqV53Ur76zFWntaW6OzhWVNQvhlbkDnsTC4K/Z7naEXlTOA6jMXyF
- bRj7vqYvgRefVxx+wldINVh1WqdQS4f3WXFAZ14psei+0IeBRjlkvDHwSuTCejHioPFbHlXThoF1xd
- O5PiFhbVO9BGtRw7R9ykWfHy3eYY8wKnTBRRTV7SDvRc+PvACuEKKXLt4bY5F2+xF9ATgHI/4ONYRP
- hwsH7j+JhVd5seQwmHBdoss6oI0eVFkMon6sq3e4DKpjI3s6qnMm+LER3ApWytTjhNgzvv5uonOtbO
- vQZHRXuaa7fdK++MSIJ4bAuJn2CzwhbQtwHJhRl5JpCrIhBPwq3YpUUtYu1coCiFoqw4uSsz51pcbY
- ShFkIhBP3UOWS1FloGIpu6//lB102WBWIfpOUJ5/8e/Q9VgqgRVIJyNoh6IdYneCaJjVg4UZV7tKal
- Yb2HUxy5inBKnzAH0ACmJivygrF7ZxdsjEseIkNeqQtSZcXf/e6tgHWw15oqNye0fxh8pP11++9xib
- GRiDg21JNTeZICMlyRtNPP+OIg4PgEhhTWtSpMGIkXctPB7Xa9nRdarzs7bA==
-X-Developer-Key: i=neil.armstrong@linaro.org; a=openpgp;
- fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR02MB9585:EE_|AS4PR02MB8669:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd84af09-a52c-459c-f7d1-08dce6d5242f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VG0weW44eWtXTjY1c1hYeVJvYlA0SWlxZzRIUGRBem5BTzdiZTBIWXk4U2E0?=
+ =?utf-8?B?bHcxMzdTV2I3TDl5aklvZklVTTdPaVJjR2Zia0ZZcVUrS0pWWFRaYUZjc01O?=
+ =?utf-8?B?ZG1WbHpYYk5CWFNoelNtVVk3VnZYcDY2dzIrSGFwT0ROTW9TYXNMMFpDTWNq?=
+ =?utf-8?B?OGVwSUlPWHNHOXlTWmYraU50Nm90Rk95UjFqRnFaLzVuQWJ3K3p3VG52N3dR?=
+ =?utf-8?B?MGlTZXhhS2ZJN2IvR1JFYVZMNjZleHpSTit2WXpaZjZxSDZQTzBLaFJzbmNk?=
+ =?utf-8?B?UXBPYnJGYkZXOWhuZzBVWWp4dE55UHRnTU14MlpVcjFldlhEU3luR0ErN1VN?=
+ =?utf-8?B?elM0aGcrRFJyZlYrbzB6bFN5WnZ5U0tHQjZNdFFYL0ZpRll4WXcwMVY4ZVFX?=
+ =?utf-8?B?RUFkMC9hUzhwUnpoQWxRanJ4RlU2c2IzbkxpOWhJdTZtZEQ1STBoajBoenJz?=
+ =?utf-8?B?T1FDcm1PY2NJUHdCK21PNjNFMUl3ektMMndvZkVkb3Q1VGd6UmR2WE9qYzBN?=
+ =?utf-8?B?SCtJN3Zzb1d0M0dQMlV2MWdiM3lQR3VLaS9rMWFQNCtCUG1MWHlhQ09icG5h?=
+ =?utf-8?B?Mm5LN0lXbHFURUVuMjVtYW0xZGVld1p2SzZWV0JYVTQ1b281UG1sNE9BMll6?=
+ =?utf-8?B?VlBKMmFmaFdGUFpTN2JmVFhxM0xlVEovTUlObzFlOWM1eVM5NzhSSFQ3YVY2?=
+ =?utf-8?B?UGlkZUNMY2prbFB2VXlVR0g3UVRuNXdHdi9EbFBlVVJoMFdZWGEzaVR0djhF?=
+ =?utf-8?B?L1BrdmJtZFZtazVIUituY0NBam14RXlNajh0TUI5QzJBRzhnVVlML2xabHg5?=
+ =?utf-8?B?UEhGcEppc1E4Z3FlaTFSMTNwL3NmL2p0Nm93SE5lTnNBRE9aLzQ5dmxLVUp2?=
+ =?utf-8?B?Wm5ldHRvd0VJVnNaUXhvMFVxRTlVOHZEN1RLdWZ4Sk1yNjM0Z3ZScFBOQjRM?=
+ =?utf-8?B?U1Evc3FpMzJ6YmVkMVZnWFdXVHFXOUZUOVRiRzcrUGpCbS9SMzJSTllGUUJv?=
+ =?utf-8?B?VVpPY1ZYMjkyd3BSWGNvMWVzdUNkNDM4SVY2RVFFWkVNQkRwakowN3NqS0FK?=
+ =?utf-8?B?WmZ3V2ljcjNySEg1SVd2b01MdzV1emRTYnRYYit6Slk2SzVxMXVGZWw1U0gw?=
+ =?utf-8?B?VzBkYy9SQWoxNE9JKzIyaVlKT2I4bmN0UGtwcnBUOU1mazlCbEh5cm9SU1FC?=
+ =?utf-8?B?OW1xS1VTbHlHTUlIdzRCUXFEWmJZVW1MdjJoOW10dGhrMVpkVi9LR3Y3ZCsr?=
+ =?utf-8?B?Zi90U2NEcFo4cklGbXJRaGRvem1yRDdSbW5MYlRsa2hGc3VoR3dVRnJQaFpI?=
+ =?utf-8?B?YXBxLzNiN1k3YjI1SFNOYVBHUzFCVVJOWDZhMEhPVkdmdnkrd1loQWdFWnQ3?=
+ =?utf-8?B?R0E5TmVVUUt6WjRtd3dYZVYvaEhBYzlCYk81Y1JqdC9TN2R1MlJ4WWZ6OExN?=
+ =?utf-8?B?eU1aNFkvS1Z6QjZNWjdLbm12azA1NFRaZ1RtTjFzejZ6ejdmWUZEYmd6M2Iz?=
+ =?utf-8?B?bWlEZDRwdGxEdmlDWXA4c2tRbGJyajlMdVdhNWVreWZzbGpjOVB2R0pxa3U1?=
+ =?utf-8?B?b3A1bUVMb1hKMjN2a1d5cjlhWU1yZlVYME84blVMcGFTSFlQeFp1QWxwOXI3?=
+ =?utf-8?B?UE84ME5HZXhLM1RIV3BUZUNLb1ZJMTVWZzhSTnVLdVhLd1UvK2EzRjlQNW9y?=
+ =?utf-8?B?OERUdk1IVm96R3d4Wk01YkdGY0JkY2FReFRNZkF3b0FYV1dLQmNSdjlBPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR02MB9585.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RE5aSlhHL3ZtY0xsN2dHaVdkZVU1UmI0WGkvMXJiTSs3TW52ZjdabTlDUDdO?=
+ =?utf-8?B?MUpMTzN2ckRKdXo0OXV1TnRHWkNiWUdzajdEQjI2THJHK0g2MlQ0K3RHRVAv?=
+ =?utf-8?B?ZEhQTGZHNjlTN0YwRk91MjVzUDVKMmVoSlZFTDgrWG4xWUhWUkdtbllWWURj?=
+ =?utf-8?B?djczZXdNRWNiOFI3bEJGaVZ0a1A0QlloSHptOUNma1F0Zzh1TFoxZTNJWGJT?=
+ =?utf-8?B?dzBWTjN4RzQ3bk1iV0JtT2c2a1BDM3Z5NkM4MDIrc2lpald6WkllRGdkMVEx?=
+ =?utf-8?B?RWZvVFY1OUdNNVYxZjhoNUh4S0hUS1VDSW1NRmVVS3ZVVnpBOE1SdGxyWE1a?=
+ =?utf-8?B?QTVXMmJ0THoxQllLK3ZzR2t0dzJjUWNoMjFPWFBBR2REUTFreXQwQ1YyS2tV?=
+ =?utf-8?B?cEdMcG5CYjZQMzFMUGRzQWtVS09pSWZCcnVtUUc4Vy9ZNE44My9OcjRyYXU4?=
+ =?utf-8?B?Z3d3VTlWSmxaNmNNZVloclJqaEw3ajBmT0RhOE9FaE1sSWMzTHMybmUxVnZZ?=
+ =?utf-8?B?b0hDanJVY1FBVzg2QjMwUlNRcmErbGJGczNualhYZktrWlV0aHdzbnVrQVR4?=
+ =?utf-8?B?azdJNHpidmxjNU0rOHlkTHI1TGhjbml1TUN0UEFsV1VVcytQQnovdFAyZjhX?=
+ =?utf-8?B?NDBRZjA1ckJDQ0RiNW0vcHd1ZTU4VHFtTUlJWGFWN3NORGZObHpObE5lM01u?=
+ =?utf-8?B?bGlrOTI1ZCtCSkVQOGlTbWhWSmVtTDNZaEFyNXdkSnNBcXpxdXk0bzJhNkov?=
+ =?utf-8?B?N1k0bjVQRWRMdUxZKzJ1ZDFCVjhIYWVlVWg3Uk1oejFkTUNwNldtanV6MEdt?=
+ =?utf-8?B?WFFlZHY4WTgzejg4WUhiRW12QmlUeHZTQ2RxVmUwaVhOV3ZQZ2d0RVZVTDZv?=
+ =?utf-8?B?RGx1WERYelNteDJFNnhzS3ZpM3VJZzZ4aTJRVXFsNWZPY2RBMURqVHErYVFI?=
+ =?utf-8?B?Q0JYMS9HRVpnMGZ2MC9DVFVTRkkxd0hMVitNenRxSE1EaHZBYTAzSlZzZU5h?=
+ =?utf-8?B?TlAyTnFZMXB1cXRWcXJ6VmhMTzJlbTRBQytGVDdCY1p3aHlYMUlCY0dWUy94?=
+ =?utf-8?B?V0pPVEJXbXhkMlY3UVdwcGtPWFVISUxWUlJrWHJ6ZXh5ZFpkU28vVE9EZGwz?=
+ =?utf-8?B?eWtTVHJWNWNtcVhkYTVLbVJKNk5kT25GcU0vWE0vYVdrYWF4clc2Y0g3cnVQ?=
+ =?utf-8?B?Z21OaCtQT2UwR3hMOTdEeksxMjAyeFdXWC8yRDBQcHRNZ2lvMk5oSnRacmxa?=
+ =?utf-8?B?MkdKNEZaM2swYkJEVWhuYWttVDVBQmIvOWptOWV3NUlBWk1na05KYUk2RHVO?=
+ =?utf-8?B?d0Q1NGo2YjhNRG5JQ2pZVitoV1BqUnR0TjhVVi96aEQrMFdIZkJ5SlVFTWcz?=
+ =?utf-8?B?RGtSNHpzTmpYdEpnSngvSVN5Qyt3UGY3cU9uK1Rzbm15M0RnSzNONXEvN1Nz?=
+ =?utf-8?B?bXZvajZmNlRmaUdWSElyUmdNK1Rscmg5eTV1T1Nlc0tVV1BaRFl6M0kwNGJm?=
+ =?utf-8?B?dG55SjNoY2lpWnYyVmZsaVpESUJ4TDI3SEZTY2R1cHhJckdadFNkcjBYVk1Y?=
+ =?utf-8?B?dnNJS2o0ajE2NnBMRzUwaDVSSTZiaHZRU20xc2ludlNmL3l0VDB6elkrckNC?=
+ =?utf-8?B?NjRTZVJrYzBqYWIwNmthYklaRTFOOEQxWG1nSlk0LzVIY3JESHoya0JMSUc1?=
+ =?utf-8?B?ZmFMUUV0NzREQVlVYURLS0UxeTJpNHB2RzBpK29HR0dWV2l3am5RMzZQcFpN?=
+ =?utf-8?B?LzN2OUFTSGtyMHJzSnNpSW5GM2MyNUZnNVZtdmZubFBTTnpuM3E2K0dFUGVP?=
+ =?utf-8?B?UXVTc2F5L1lIcXl3ZEtXdkxBRWlVQ1ZzdDYvY0c3N3FPdTA2L1lBcDhpUmhu?=
+ =?utf-8?B?RTd5Sk81MFpocjYvV0xXaU1zRlFiTHZlZnhOZFpwdGdWTTlNWWNrS3FpZkV3?=
+ =?utf-8?B?aXVzQTJVZ2VVVGZYSEdCdjNZSUxXdVJzTEFtYTg0dUZUeWZTVTc5RXVOa2Ny?=
+ =?utf-8?B?ZEtSMzRjT2FMWHhiWFBldkQ3TWsxZE55M3h4c3N6a3p3d1FPeVJ1L0Q5Ni9x?=
+ =?utf-8?B?Qng3UjV0WXhDZWNRZlJWT2k3OVpLSUFNOEk3eXgxUWt2WXgzR0Y1K0xITVAr?=
+ =?utf-8?Q?RBbU=3D?=
+X-OriginatorOrg: axis.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd84af09-a52c-459c-f7d1-08dce6d5242f
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR02MB9585.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2024 13:37:09.2967
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TvWOxvC9crNDBbSNSSCU3ThCy5G3GnlFasDd1heBFsVUogUzAJnjRTigLvBkxsrN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR02MB8669
 
-The Allegro MicroSystems ALS31300 is a 3-D Linear Hall Effect Sensor
-mainly used for 3D head-on motion sensing applications.
+On 10/6/24 17:24, Jonathan Cameron wrote:
+> On Sat, 5 Oct 2024 18:51:17 +0200
+> Per-Daniel Olsson <perdaniel.olsson@axis.com> wrote:
+> 
+>> This patch series adds support for Texas Instruments OPT4060 RGBW Color sensor
+>> using the i2c interface.
+>>
+>> The driver exposes both raw adc values and calculated lux values though sysfs.
+>> Integration time can be configured though sysfs as well.
+> 
+> Lux is a unit with a particular light curve.  It has no defined meaning for
+> color channels.  As a result we usually only have colors as intensity channels
+> (unit free).  If it is possible to compute an estimate of the illuminance then
+> that can be a separate IIO_LIGHT channel.
 
-The device is configured over I2C, and as part of the Sensor
-data the temperature core is also provided.
+The thing with lux is not actually something I know much about, I just read the
+data sheet (https://www.ti.com/lit/gpn/opt4060). According to chapter 8.4.5.2
+(page 17), lux can be calculated this way:
 
-While the device provides an IRQ gpio, it depends on a configuration
-programmed into the internal EEPROM, thus only the default mode
-is supported and buffered input via trigger is also supported
-to allow streaming values with the same sensing timestamp.
+lux = GREEN_ADC_RAW * 2.15e-3
 
-The device can be configured with different sensitivities in factory,
-but the sensitivity value used to calculate value into the Gauss
-unit is not available from registers, thus the sensitivity is
-provided by the compatible/device-id string which is based
-on the part number as described in the datasheet page 2.
+It is also stated that R=G=B for a D65 standard white light source if red is
+multiplied by 2.4 and blue is multiplied with 1.3. I interpreted this as if
+IIO_LIGHT was the best fit and that's why I didn't use IIO_INTENSITY. Should I
+change to IIO_INTENSITY?
 
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
----
- drivers/iio/magnetometer/Kconfig    |  13 +
- drivers/iio/magnetometer/Makefile   |   1 +
- drivers/iio/magnetometer/als31300.c | 459 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 473 insertions(+)
+> 
+>> The OPT4060 sensor
+>> supports both rising and falling threshold interrupts. These interrupts are
+>> exposed as IIO events. The driver also implements an IIO triggered buffer with
+>> two triggers, one trigger for conversion ready interrupts and one trigger for
+>> threshold interrupts. The typical use case for this is to define a threshold and
+>> listen for the events, and at the same time enable the triggered buffer with the
+>> threshold trigger. Once the application gets the threshold event, the values
+>> from the time of the event will be available in the triggered buffer. This
+>> limits the number of interrupts between sensor and host and also the the usage
+>> of sysfs for reading values after events.
+> 
+> We have had various discussions of threshold triggers in the past, but I don't
+> think we ever merged any (maybe there is one somewhere?) The reasons for that are:
+> 1) They are hard for generic userspace to understand.
+> 2) For light sensors the input tends to be slow moving - grabbing one reading
+>    on a threshold interrupt is rarely that informative (or are you grabbing them
+>    on dataready once the threshold is breached?)
 
-diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
-index 8eb718f5e50f..e7adc11049d6 100644
---- a/drivers/iio/magnetometer/Kconfig
-+++ b/drivers/iio/magnetometer/Kconfig
-@@ -52,6 +52,19 @@ config AK09911
- 	help
- 	  Deprecated: AK09911 is now supported by AK8975 driver.
- 
-+config ALS31300
-+	tristate "Allegro MicroSystems ALS31300 3-D Linear Hall Effect Sensor"
-+	depends on I2C
-+	select REGMAP_I2C
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	help
-+	  Say yes here to build support for the Allegro MicroSystems
-+	  ALS31300 Hall Effect Sensor through its I2C interface.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called als31300.
-+
- config BMC150_MAGN
- 	tristate
- 	select IIO_BUFFER
-diff --git a/drivers/iio/magnetometer/Makefile b/drivers/iio/magnetometer/Makefile
-index ec5c46fbf999..3e4c2ecd9adf 100644
---- a/drivers/iio/magnetometer/Makefile
-+++ b/drivers/iio/magnetometer/Makefile
-@@ -7,6 +7,7 @@
- obj-$(CONFIG_AF8133J)	+= af8133j.o
- obj-$(CONFIG_AK8974)	+= ak8974.o
- obj-$(CONFIG_AK8975)	+= ak8975.o
-+obj-$(CONFIG_ALS31300)	+= als31300.o
- obj-$(CONFIG_BMC150_MAGN) += bmc150_magn.o
- obj-$(CONFIG_BMC150_MAGN_I2C) += bmc150_magn_i2c.o
- obj-$(CONFIG_BMC150_MAGN_SPI) += bmc150_magn_spi.o
-diff --git a/drivers/iio/magnetometer/als31300.c b/drivers/iio/magnetometer/als31300.c
-new file mode 100644
-index 000000000000..123e6a63b516
---- /dev/null
-+++ b/drivers/iio/magnetometer/als31300.c
-@@ -0,0 +1,459 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Driver for the Allegro MicroSystems ALS31300 3-D Linear Hall Effect Sensor
-+ *
-+ * Copyright (c) 2024 Linaro Limited
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/delay.h>
-+#include <linux/module.h>
-+#include <linux/i2c.h>
-+#include <linux/regmap.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regulator/consumer.h>
-+
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+
-+/*
-+ * The Allegro MicroSystems ALS31300 has an EEPROM space to configure how
-+ * the device works and how the interrupt line behaves,
-+ * we only support the default setup with external trigger
-+ *
-+ * Since by default the interrupt line is disable, we don't
-+ * support GPIO interrupt events for now.
-+ *
-+ * It should be possible to adapt the driver to the current
-+ * device setup, but we leave it as a future exercise.
-+ */
-+
-+#define ALS31300_EEPROM_CONFIG		0x02
-+#define ALS31300_EEPROM_INTERRUPT	0x03
-+#define ALS31300_EEPROM_CUSTOMER_1	0x0d
-+#define ALS31300_EEPROM_CUSTOMER_2	0x0e
-+#define ALS31300_EEPROM_CUSTOMER_3	0x0f
-+#define ALS31300_VOLATILE_MODE		0x27
-+#define ALS31300_VOLATILE_MODE_LPDCM		GENMASK(6, 4)
-+#define ALS31300_VOLATILE_MODE_SLEEP		GENMASK(1, 0)
-+#define ALS31300_VOLATILE_MSB		0x28
-+#define ALS31300_VOLATILE_MSB_TEMPERATURE	GENMASK(5, 0)
-+#define ALS31300_VOLATILE_MSB_INTERRUPT		BIT(6)
-+#define ALS31300_VOLATILE_MSB_NEW_DATA		BIT(7)
-+#define ALS31300_VOLATILE_MSB_Z_AXIS		GENMASK(15, 8)
-+#define ALS31300_VOLATILE_MSB_Y_AXIS		GENMASK(23, 16)
-+#define ALS31300_VOLATILE_MSB_X_AXIS		GENMASK(31, 24)
-+#define ALS31300_VOLATILE_LSB		0x29
-+#define ALS31300_VOLATILE_LSB_TEMPERATURE	GENMASK(5, 0)
-+#define ALS31300_VOLATILE_LSB_HALL_STATUS	GENMASK(7, 7)
-+#define ALS31300_VOLATILE_LSB_Z_AXIS		GENMASK(11, 8)
-+#define ALS31300_VOLATILE_LSB_Y_AXIS		GENMASK(15, 12)
-+#define ALS31300_VOLATILE_LSB_X_AXIS		GENMASK(19, 16)
-+#define ALS31300_VOLATILE_LSB_INTERRUPT_WRITE	BIT(20)
-+#define ALS31300_CUSTOMER_ACCESS	0x35
-+
-+#define ALS31300_LPDCM_INACTIVE_0_5_MS		0
-+#define ALS31300_LPDCM_INACTIVE_1_0_MS		1
-+#define ALS31300_LPDCM_INACTIVE_5_0_MS		2
-+#define ALS31300_LPDCM_INACTIVE_10_0_MS		3
-+#define ALS31300_LPDCM_INACTIVE_50_0_MS		4
-+#define ALS31300_LPDCM_INACTIVE_100_0_MS	5
-+#define ALS31300_LPDCM_INACTIVE_500_0_MS	6
-+#define ALS31300_LPDCM_INACTIVE_1000_0_MS	7
-+
-+#define ALS31300_VOLATILE_MODE_ACTIVE_MODE	0
-+#define ALS31300_VOLATILE_MODE_SLEEP_MODE	1
-+#define ALS31300_VOLATILE_MODE_LPDCM_MODE	2
-+
-+#define ALS31300_DATA_X_GET(__buf)			\
-+		((int)(s8)FIELD_GET(ALS31300_VOLATILE_MSB_X_AXIS, __buf[0]) << 4 | \
-+			  FIELD_GET(ALS31300_VOLATILE_LSB_X_AXIS, __buf[1]))
-+#define ALS31300_DATA_Y_GET(__buf)			\
-+		((int)(s8)FIELD_GET(ALS31300_VOLATILE_MSB_Y_AXIS, __buf[0]) << 4 | \
-+			  FIELD_GET(ALS31300_VOLATILE_LSB_Y_AXIS, __buf[1]))
-+#define ALS31300_DATA_Z_GET(__buf)			\
-+		((int)(s8)FIELD_GET(ALS31300_VOLATILE_MSB_Z_AXIS, __buf[0]) << 4 | \
-+			  FIELD_GET(ALS31300_VOLATILE_LSB_Z_AXIS, __buf[1]))
-+#define ALS31300_TEMPERATURE_GET(__buf)			\
-+		((u32)(u8)FIELD_GET(ALS31300_VOLATILE_MSB_TEMPERATURE, __buf[0]) << 6 | \
-+			  FIELD_GET(ALS31300_VOLATILE_LSB_TEMPERATURE, __buf[1]))
-+
-+enum als31300_channels {
-+	TEMPERATURE = 0,
-+	AXIS_X,
-+	AXIS_Y,
-+	AXIS_Z,
-+};
-+
-+struct als31300_data {
-+	struct device *dev;
-+	/* protects power on/off the device and access HW */
-+	struct mutex mutex;
-+	unsigned long sensitivity;
-+	struct regmap *map;
-+	struct {
-+		u16 temperature;
-+		s16 channels[3];
-+		s64 timestamp __aligned(8);
-+	} scan;
-+};
-+
-+/* The whole measure is split into 2x32bit registers, we need to read them both at once */
-+static int als31300_get_measure(struct als31300_data *data, s16 *t, s16 *x,
-+				s16 *y, s16 *z)
-+{
-+	unsigned int count = 0;
-+	u32 buf[2];
-+	int ret;
-+
-+	mutex_lock(&data->mutex);
-+	ret = pm_runtime_resume_and_get(data->dev);
-+	if (ret)
-+		goto unlock;
-+
-+	/* Max update rate it 2KHz, wait up to 1ms */
-+	while (count < 50) {
-+		/* Read Data */
-+		ret = regmap_bulk_read(data->map, ALS31300_VOLATILE_MSB, buf, 2);
-+		if (ret) {
-+			dev_err(data->dev, "read data failed, error %d\n", ret);
-+			goto out;
-+		}
-+
-+		/* Check if data is valid, happens right after getting out of sleep mode */
-+		if (FIELD_GET(ALS31300_VOLATILE_MSB_NEW_DATA, buf[0]))
-+			break;
-+
-+		usleep_range(10, 20);
-+		++count;
-+	}
-+
-+	if (count >= 50) {
-+		ret = -ETIMEDOUT;
-+		goto out;
-+	}
-+
-+	*t = ALS31300_TEMPERATURE_GET(buf);
-+	*x = ALS31300_DATA_X_GET(buf);
-+	*y = ALS31300_DATA_Y_GET(buf);
-+	*z = ALS31300_DATA_Z_GET(buf);
-+
-+out:
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
-+
-+unlock:
-+	mutex_unlock(&data->mutex);
-+
-+	return ret;
-+}
-+
-+static int als31300_read_raw(struct iio_dev *indio_dev,
-+			     const struct iio_chan_spec *chan, int *val,
-+			     int *val2, long mask)
-+{
-+	struct als31300_data *data = iio_priv(indio_dev);
-+	s16 t, x, y, z;
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_PROCESSED:
-+	case IIO_CHAN_INFO_RAW:
-+		ret = als31300_get_measure(data, &t, &x, &y, &z);
-+		if (ret)
-+			return ret;
-+		switch (chan->address) {
-+		case TEMPERATURE:
-+			*val = t;
-+			return IIO_VAL_INT;
-+		case AXIS_X:
-+			*val = x;
-+			return IIO_VAL_INT;
-+		case AXIS_Y:
-+			*val = y;
-+			return IIO_VAL_INT;
-+		case AXIS_Z:
-+			*val = z;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_SCALE:
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			/*
-+			 * Fractional part of:
-+			 *         302(value - 1708)
-+			 * temp = ------------------
-+			 *             4096
-+			 * to convert temperature in Celcius
-+			 */
-+			*val = 302;
-+			*val2 = 4096;
-+			return IIO_VAL_FRACTIONAL;
-+		case IIO_MAGN:
-+			/*
-+			 * Devices are configured in factory
-+			 * with different sensitivities:
-+			 * - 500 GAUSS <-> 4 LSB/Gauss
-+			 * - 1000 GAUSS <-> 2 LSB/Gauss
-+			 * - 2000 GAUSS <-> 1 LSB/Gauss
-+			 * with translates by a division of the returned
-+			 * value to get Gauss value.
-+			 * The sensisitivity cannot be read at runtime
-+			 * so the value depends on the model compatible
-+			 * or device id.
-+			 */
-+			*val = 1;
-+			*val2 = data->sensitivity;
-+			return IIO_VAL_FRACTIONAL;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_OFFSET:
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			*val = -1708;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static irqreturn_t als31300_trigger_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct als31300_data *data = iio_priv(indio_dev);
-+	s16 x, y, z;
-+	u16 t;
-+	int ret;
-+
-+	ret = als31300_get_measure(data, &t, &x, &y, &z);
-+	if (ret)
-+		goto trigger_out;
-+
-+	data->scan.temperature = t;
-+	data->scan.channels[0] = x;
-+	data->scan.channels[1] = y;
-+	data->scan.channels[2] = z;
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
-+					   iio_get_time_ns(indio_dev));
-+
-+trigger_out:
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+#define ALS31300_AXIS_CHANNEL(axis, index)				     \
-+	{								     \
-+		.type = IIO_MAGN,					     \
-+		.modified = 1,						     \
-+		.channel2 = IIO_MOD_##axis,				     \
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		     \
-+				      BIT(IIO_CHAN_INFO_SCALE),		     \
-+		.address = index,					     \
-+		.scan_index = index,					     \
-+		.scan_type = {						     \
-+			.sign = 's',					     \
-+			.realbits = 12,					     \
-+			.storagebits = 16,				     \
-+			.endianness = IIO_CPU,				     \
-+		},							     \
-+	}
-+
-+static const struct iio_chan_spec als31300_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+			BIT(IIO_CHAN_INFO_SCALE) |
-+			BIT(IIO_CHAN_INFO_OFFSET),
-+		.address = TEMPERATURE,
-+		.scan_index = TEMPERATURE,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 16,
-+			.storagebits = 16,
-+			.endianness = IIO_CPU,
-+		},
-+	},
-+	ALS31300_AXIS_CHANNEL(X, AXIS_X),
-+	ALS31300_AXIS_CHANNEL(Y, AXIS_Y),
-+	ALS31300_AXIS_CHANNEL(Z, AXIS_Z),
-+	IIO_CHAN_SOFT_TIMESTAMP(6),
-+};
-+
-+static const struct iio_info als31300_info = {
-+	.read_raw = als31300_read_raw,
-+};
-+
-+static int als31300_set_operating_mode(struct als31300_data *data,
-+				       unsigned int val)
-+{
-+	return regmap_update_bits(data->map, ALS31300_VOLATILE_MODE,
-+				  ALS31300_VOLATILE_MODE_SLEEP, val);
-+}
-+
-+static void als31300_power_down(void *data)
-+{
-+	als31300_set_operating_mode(data, ALS31300_VOLATILE_MODE_SLEEP_MODE);
-+}
-+
-+static const struct iio_buffer_setup_ops als31300_setup_ops = {};
-+
-+static const unsigned long als31300_scan_masks[] = { GENMASK(3, 0), 0 };
-+
-+static bool als31300_volatile_reg(struct device *dev, unsigned int reg)
-+{
-+	return reg == ALS31300_VOLATILE_MSB || reg == ALS31300_VOLATILE_LSB;
-+}
-+
-+static const struct regmap_config als31300_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 32,
-+	.max_register = ALS31300_CUSTOMER_ACCESS,
-+	.volatile_reg = als31300_volatile_reg,
-+};
-+
-+static int als31300_probe(struct i2c_client *i2c)
-+{
-+	struct device *dev = &i2c->dev;
-+	struct als31300_data *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->dev = dev;
-+	i2c_set_clientdata(i2c, indio_dev);
-+
-+	mutex_init(&data->mutex);
-+
-+	data->sensitivity = (unsigned long)of_device_get_match_data(dev);
-+
-+	data->map = devm_regmap_init_i2c(i2c, &als31300_regmap_config);
-+	if (IS_ERR(data->map))
-+		return dev_err_probe(dev, PTR_ERR(data->map),
-+				     "failed to allocate register map\n");
-+
-+	ret = devm_regulator_get_enable(dev, "vcc");
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to enable regulator\n");
-+
-+	ret = als31300_set_operating_mode(data, ALS31300_VOLATILE_MODE_ACTIVE_MODE);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to power on device\n");
-+
-+	ret = devm_add_action_or_reset(dev, als31300_power_down, data);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to add powerdown action\n");
-+
-+	indio_dev->info = &als31300_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->name = i2c->name;
-+	indio_dev->channels = als31300_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(als31300_channels);
-+	indio_dev->available_scan_masks = als31300_scan_masks;
-+
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      als31300_trigger_handler,
-+					      &als31300_setup_ops);
-+	if (ret < 0) {
-+		dev_err(dev, "iio triggered buffer setup failed\n");
-+		return ret;
-+	}
-+
-+	ret = pm_runtime_set_active(dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return ret;
-+
-+	pm_runtime_get_noresume(dev);
-+	pm_runtime_set_autosuspend_delay(dev, 200);
-+	pm_runtime_use_autosuspend(dev);
-+
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "device register failed\n");
-+
-+	return 0;
-+}
-+
-+static int als31300_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct als31300_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = als31300_set_operating_mode(data, ALS31300_VOLATILE_MODE_SLEEP_MODE);
-+	if (ret)
-+		dev_err(dev, "failed to power off device (%pe)\n", ERR_PTR(ret));
-+
-+	return ret;
-+}
-+
-+static int als31300_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct als31300_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = als31300_set_operating_mode(data, ALS31300_VOLATILE_MODE_ACTIVE_MODE);
-+	if (ret)
-+		dev_err(dev, "failed to power on device (%pe)\n", ERR_PTR(ret));
-+
-+	return ret;
-+}
-+
-+static DEFINE_RUNTIME_DEV_PM_OPS(als31300_pm_ops,
-+				 als31300_runtime_suspend, als31300_runtime_resume,
-+				 NULL);
-+
-+static const struct i2c_device_id als31300_id[] = {
-+	{ "als31300-500" },
-+	{ "als31300-1000" },
-+	{ "als31300-2000" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(i2c, als31300_id);
-+
-+static const struct of_device_id als31300_of_match[] = {
-+	{ .compatible = "allegromicro,als31300-500", .data = (void *)4 },
-+	{ .compatible = "allegromicro,als31300-1000", .data = (void *)2 },
-+	{ .compatible = "allegromicro,als31300-2000", .data = (void *)1 },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, als31300_of_match);
-+
-+static struct i2c_driver als31300_driver = {
-+	.driver	 = {
-+		.name = "als31300",
-+		.of_match_table = als31300_of_match,
-+		.pm = pm_ptr(&als31300_pm_ops),
-+	},
-+	.probe = als31300_probe,
-+	.id_table = als31300_id,
-+};
-+module_i2c_driver(als31300_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("ALS31300 3-D Linear Hall Effect Driver");
-+MODULE_AUTHOR("Neil Armstrong <neil.armstrong@linaro.org>");
+When the sensor triggers an interrupt for a threshold, it will also have the bit for
+dataready set. So the values available at that point in time are the values that
+triggered the threshold interrupt.
 
--- 
-2.34.1
+> 3) If we want to do threshold triggers we should really add generic infrastructure
+>    for them based on adding an in kernel events consumer path and a way to
+>    instantiate a trigger based on any event.  Doing it in a single driver creates
+>    an ABI we won't want to retain long term.
+> 
+> So how important is this feature to you and why?  Maybe it is time to finally
+> take a close look at option 3.
+
+Our userspace application needs the values after getting the threshold event. Before
+I implemented the threshold trigger and the triggered buffer, the application would
+read the values from sysfs right after the event. In that case the values will not be
+the ones that actually triggered the event. When the light condition is close to the
+threshold, the value from sysfs might even be on the wrong side of the threshold which
+can be confusing for the state machine in userspace. I would say that this feature is
+fairly important to us, this is the way our userspace is using the sensor.
+
+If I understand you correctly, the problem you see with threshold triggers is that
+it creates an implicit dependency between events and triggers. For the trigger to
+function, userspace will first have to enable the event and set the threshold. I can
+understand this issue, I think. Your suggestion with a way to instantiate triggers
+from events sounds like a potential way forward. Do you have any more thoughts on how
+that could be implemented? How can we proceed? How can I help?
+
+Thank you for you comments so far, looking forward to hearing your thoughts on a way
+forward.
+
+/ P-D
+
+> 
+> Jonathan
+> 
+>>
+>> Changes in v2:
+>> - dt-bindings: Removed incorrect allOf.
+>> - dt-bindings: Changed to generic node name.
+>> - Correction in opt4060_trigger_one_shot(...) for continuous mode.
+>> - Correction in opt4060_power_down(...), wrong register was read.
+>> - Corrected usage of active_scan_mask in opt4060_trigger_handler(...).
+>> - Clean-up of various comments.
+>> - Link to V1: https://lore.kernel.org/lkml/20241003164932.1162049-1-perdaniel.olsson@axis.com/
+>>
+>> Per-Daniel Olsson (2):
+>>   dt-bindings: iio: light: Document TI OPT4060 RGBW sensor
+>>   iio: light: Add support for TI OPT4060 color sensor
+>>
+>>  .../bindings/iio/light/ti,opt4060.yaml        |   51 +
+>>  drivers/iio/light/Kconfig                     |   13 +
+>>  drivers/iio/light/Makefile                    |    1 +
+>>  drivers/iio/light/opt4060.c                   | 1216 +++++++++++++++++
+>>  4 files changed, 1281 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/iio/light/ti,opt4060.yaml
+>>  create mode 100644 drivers/iio/light/opt4060.c
+>>
+>>
+>> base-commit: 0c559323bbaabee7346c12e74b497e283aaafef5
+> 
 
 

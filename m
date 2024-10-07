@@ -1,74 +1,76 @@
-Return-Path: <linux-iio+bounces-10309-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10310-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA397993858
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 22:37:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B0699385B
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 22:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B7E91F22C5F
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 20:37:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2341C228CF
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 20:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3211DE4F4;
-	Mon,  7 Oct 2024 20:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8A0320F;
+	Mon,  7 Oct 2024 20:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C/nxH7lP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K2Jy12nJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D16320F;
-	Mon,  7 Oct 2024 20:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEE31DE897;
+	Mon,  7 Oct 2024 20:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728333416; cv=none; b=Kt3eNWTpxcbpyZjvZfsMrcetbKd8UTrfXmOw4I0pzsNIvpCFFptY+iV/lJU0jDIEQN5jWuAPE62TpIf/PQ2yyeSxND60hoe8GkknggToY3LwR2thssmKkTYnAHkkLRJyBIGpXFns66PelCztQMIQf/bEXZ/uTWFk4UTFcGcZLOc=
+	t=1728333419; cv=none; b=oXeTNw8eWL/MViSRqVYW9ayp0XAnAQsQyNewNbw5SEAZAhUxx3c/TWVrI9CVZzT6sMUAmsaFXJs5/e6U/G1DS67VNYpHURhb2s4gkkyVzKWJxqkGihvJLRxVYdBbeeYZufOWcljHszJQjof6w+gqDZTeRafeLdENn5gs+jztNEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728333416; c=relaxed/simple;
-	bh=ow9NioT5w3FxuoOvHqYRz2hyT9/a1YQqOexCD7IhW0M=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YWCJ8jj8cW1I7QaR3C4Ic8cuCNXO+O+0HEUtf7X7g/aVtSsWo9b1YZmoulTX2REGuV5IiCgQmZlXj8Fcf7AJzcj4eeQoKNemRNMhvTx8V5vjPJ0tnpPF9YY964d5sxm+t/KwakLtsh7xgT5RiSDDpwiSgJEgpKx8+dl6ysJyeLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C/nxH7lP; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1728333419; c=relaxed/simple;
+	bh=y4vqS5nfCnERP4qzOWuVu6eCZ3By6WEqi9MYZeckG9U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=cNq30lcVApFmOfJtW9dc7SSLSYnk3CdJjA6lCmp9TN/zu4Ilau4/JHDm0PyIpljeo8Pmg73uTyZ8uCki4DMLvrAD14UZvjtUela7JpeUdx/d129DiUy7FBema/hDGOODVrxeESsr4PYI7IFl3JBi2Qdev1uOCYhR5sNcrz/VdwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K2Jy12nJ; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-42e5e1e6d37so50185785e9.3;
-        Mon, 07 Oct 2024 13:36:54 -0700 (PDT)
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539908f238fso5462446e87.2;
+        Mon, 07 Oct 2024 13:36:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728333413; x=1728938213; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pgVf/25SpCcPbO1erYr4STgtbMAkebYdtOeFGq+eUGA=;
-        b=C/nxH7lPW8XiWD5VuqEqLaX0TkGjEDpTgdjt+eJp0JEpHXCCkYxEUEqbrO4gIxwyBv
-         1VSxoXNLsgeOzlTNVQDGnflIDtaqGrNy5MS1Z5OBYb15mb+sZefVaiaLF1JTDsyc+u2m
-         VgYsXQXkpZRSaE0BP6Ovf9G0Ae7d6Q6YRtJbtrf0LvNJo5tdlKApO8BAdkDYDi4OLaX+
-         Qd3RSG88i92idXQCrY52Exg2Cws026jP1sA9/wYI1PO2aSwlqSLgh2yllxUNR8KyCxNC
-         ac+UgOkILbNc5S44dQ2lmzvhhZTwj3zWb2W7v1EpBy6ijhMu6x7cYhkJ4Z/tSCvLFipm
-         pQLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728333413; x=1728938213;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1728333416; x=1728938216; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pgVf/25SpCcPbO1erYr4STgtbMAkebYdtOeFGq+eUGA=;
-        b=PLgp17dGzG0QBRyB1Md6ObU4i5xG5xy8p0EVUL5rH7YMSfpyddbk+IbUEgmacUgWIm
-         68I36c5eTtE4IbMzSo6xDThJXXSZarPuvlRPItWxPJtNrgT0hZ3hR6T9q5d1BdFSTRIf
-         pHr26oImy96dO2hCY6kmb/WSZgmYR+qiP9vS/nUIQIB0su0wFu+9kAviZjBm0B0OM9Ww
-         IG/6WSEGH5/BAbW/dUaVsnoBjCA55wUUcaIOzmLjEGOp5jJnhYl1p/SboxnREde7gl/i
-         oVcSe2sfUwENU0X5nY2eFvYeP+6jGBJxvYY+dCCsaD2s+O5U3Hsq9srl7WIYNREcz6Rv
-         rsNw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9UJANlkGoxOVgjtc9bO7U7su6mAMtw9BQepvXSsPXV61GRBKQ1ErblPvGXQPSlWkW3z3+nqSTSVs7@vger.kernel.org, AJvYcCW89aNXezHg27tp3xtfTG9UO6S14kqKVNrKuAEz+3crEniX2eCERg7lL5Ja+FylzqD2fxr51m3gTGNuRxKU@vger.kernel.org, AJvYcCXT6Djjg+//fC8Nx8fjPK1otWP4uphoIkXDX1IzE5baAY7PLy4Ju+1PHpw5atNBFtNeBVRcR4jMsXHC@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsIMThLAddu+sUjIGnxfTU8w7YR1p0QE2CKZIUWVOi/KQD6BNf
-	Hw4AoR0FY8gHOXp+sRTlDvsSzz9PXPIkx14apwIs4mPKMZQSY3i+
-X-Google-Smtp-Source: AGHT+IFebJB9AVFtdGZGbmdzTsl0otcRga3Um93PQ7pkbPTHaPktZ5vUPN29PVCYq6nApctt3WbXcw==
-X-Received: by 2002:a5d:4491:0:b0:37c:d027:d92e with SMTP id ffacd0b85a97d-37d0e772854mr6220359f8f.25.1728333412675;
-        Mon, 07 Oct 2024 13:36:52 -0700 (PDT)
+        bh=k2maYBiM5LIOhyk/i3lQ3qKHgbPUsqZuC6OiA0rm4sE=;
+        b=K2Jy12nJVlB2kzqdq1xCikiXRJwqUl2KHKjEzvKHQFBY7ce13AFzSKrAOR39Z8y6KK
+         ZvrbSb6o8u2ij4twwYAatTfkGgdYY25B7oY8A/KNxe9QB5CxYnsipu4aLqPxRMCfznS3
+         hpZ5VZBTOUXufQBuuI1hctdhe0Gzu05xoD8KoefH4tTwInJfSuIj2bogNoMwOfR8DCEv
+         tJRTqRbbJCdSE63bm7o0yPHKiTYyJmyyAJTbPgbjsv9SmGw0WoWvRRZKArMVLLGibMWe
+         IrpndrD38jwaS412mTW1VDmdg4/xwDcSE+5SScsEPEkyro0tiAljJaRtuXvFzmIGJu9o
+         Dluw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728333416; x=1728938216;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=k2maYBiM5LIOhyk/i3lQ3qKHgbPUsqZuC6OiA0rm4sE=;
+        b=uAJy4xGWHrh2MWaAcU5VyqT6Q/rhn/laWzX3reuSElZKQKAT/G7iGPpoJyrV90KCII
+         vFi6De9aUi5Th/VUgnDkeF4NmVXCVi6EIdCfab3MjZoj/EOPXtMkzdMkhKTBJPgm5vWR
+         y6P72rVoQfksfbsbUbgy6ZPJ610aps1/asWNNdm08UreZKncagRI6QoNLFtyUP4XY7K5
+         oT5Lk+aCRlcnbqa5vcl1Sgs7FfBxTCXPpoXrsLx0ipkDiASskhZmwumEmihiENFIFotq
+         CeVfHqRfZX2C+rS6sqwxDcHP9cqPJTftPqSYlI5NyfPS2/WySS9DpxVHan863JMX1J4O
+         uYDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW2N4yDAGTplbbWT+spKiBkbjQ0FbAyFl2AQRub5LIgLmAXCN17qsoEzRm/Uz+i8qks78qpcVrwj1Yi@vger.kernel.org, AJvYcCWLO0eh/ZPNXTACuc5nO6H9f3u0jIDqp67/6opZHBUdoNzcnL1X+j44tXNF0t/bDEnUD2sACodyXV4EAjV+@vger.kernel.org, AJvYcCXckXoCPFWZXIlZudTt5G9LfcUMBcyEXBXw5fZrxveRHtvA3ynQCQr9GKpVaPlAb7H+ao2tsGYVm76W@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlcazbQ6R6Vvvz2L2nLpmUlyhoFtHPnPnO8xNb75CInkZ1U9iE
+	namZe3JRrrUSeLtEX11ZUNeAYoZ89i693Ez8if2B29W8bi6uOtp8D8wNgA==
+X-Google-Smtp-Source: AGHT+IH6cLAUJNTcmZyhSx914kndG2XyPmg8cfvfVi+R9NAIzUtsooMjqhFu8imn1PFV7qc1Q2YxJw==
+X-Received: by 2002:a05:6512:3d93:b0:533:d3e:16fe with SMTP id 2adb3069b0e04-539ab9eae13mr6638267e87.38.1728333415276;
+        Mon, 07 Oct 2024 13:36:55 -0700 (PDT)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-26cc-001d-7ed0-e346.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:26cc:1d:7ed0:e346])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d1690f75bsm6464315f8f.23.2024.10.07.13.36.51
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d1690f75bsm6464315f8f.23.2024.10.07.13.36.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 13:36:52 -0700 (PDT)
+        Mon, 07 Oct 2024 13:36:53 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH 0/3] iio: light: veml6030: add support for veml7700
-Date: Mon, 07 Oct 2024 22:36:35 +0200
-Message-Id: <20241007-veml7700-v1-0-fb85dd839d63@gmail.com>
+Date: Mon, 07 Oct 2024 22:36:36 +0200
+Subject: [PATCH 1/3] iio: light: veml6035: fix read_avail in no_irq case
+ for veml6035
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,9 +79,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFNGBGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDAwNz3bLU3BxzcwMDXQvjNFOT5DRLEyMzIyWg8oKi1LTMCrBR0bG1tQC
- HnqFnWgAAAA==
+Message-Id: <20241007-veml7700-v1-1-fb85dd839d63@gmail.com>
+References: <20241007-veml7700-v1-0-fb85dd839d63@gmail.com>
+In-Reply-To: <20241007-veml7700-v1-0-fb85dd839d63@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -89,54 +91,101 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  devicetree@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728333411; l=2076;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728333411; l=3278;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=ow9NioT5w3FxuoOvHqYRz2hyT9/a1YQqOexCD7IhW0M=;
- b=xEMYo4nIwCX33BBvd/774g0GcBRzvLeDIMw4hY3VKu+lWtH6kYXDxk71S3b0mr59tODPYiWJ+
- vQDBWbT5ulzC4YPSpiryw4rTx9gOdFLyoxTNClFTYqp6m7tTziGKoST
+ bh=y4vqS5nfCnERP4qzOWuVu6eCZ3By6WEqi9MYZeckG9U=;
+ b=d8Fnn37QwWjf77/oAvh13BikQMOj9HD96wgh4hFpEuy1zxc7fbsQwtR8yUxdIWgxGl9NA4fL1
+ CRCPgjrxNtgBtuytsvT+N+nfc0CcjkIHOpt4IFdLEuyay3PjVU5N+UZ
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-This series adds support for the veml7700 ALS sensor, which is basically
-a vem6030 within a different package, with no pins for the interrupt and
-the I2C address. The changes introduced are meant to hide the event
-functionality in that case, while borrowing the rest from the veml6030.
+The iio_info is identical for veml6030 and veml6035. Moreover,
+veml6035_info_no_irq is missing the initialization of the read_avail
+member, which is actually a bug if no irq is provided.
 
-In theory, the interrupt functionality would still be available as all
-the registers are the same, and some polling could be done to read the
-threshold indicators to generate events. I did not find examples in iio
-where the INIT_DELAYED_WORK() queue_delayed_work() mechanism is used for
-that (some drivers do it to read results), so I am not sure if that
-would be the desired approach. I am open for discussions about that, but
-probably to be applied later on.
+Instead of adding the missing initialization, remove the device-specific
+iio_info and use the existing one for the veml6030.
 
-While testing this "no_irq" device, I noticed that the veml6035 is still
-using dedicated structs for the iio_info, which were there to account
-for the device-specific attribute values before read_avail() was
-introduced in the driver in later versions of the patch series, and they
-managed to survive until v3 was applied.
-Once read_avail() was introduced, the device-specific structs were not
-required anymore, and they are repetitive. Moreover, the initialization
-of the no_irq iio_info for the veml6035 was not updated to account for
-the new read_avail(), which is a bug if no irq is provided, as there is
-no callback to retrieve the available values.
-
+Fixes: ccc26bd7d7d7 ("iio: light: veml6030: add support for veml6035")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Javier Carrasco (3):
-      iio: light: veml6035: fix read_avail in no_irq case for veml6035
-      dt-bindings: iio: light: veml6030: add veml7700
-      iio: light: veml6030: add support for veml7700
+ drivers/iio/light/veml6030.c | 26 ++------------------------
+ 1 file changed, 2 insertions(+), 24 deletions(-)
 
- .../bindings/iio/light/vishay,veml6030.yaml        |  16 ++-
- drivers/iio/light/veml6030.c                       | 130 ++++++++++++++-------
- 2 files changed, 106 insertions(+), 40 deletions(-)
----
-base-commit: 96be67caa0f0420d4128cb67f07bbd7a6f49e03a
-change-id: 20241007-veml7700-83f54cf94262
+diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+index a5deae333554..ca0379945b1c 100644
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -56,8 +56,6 @@ struct veml603x_chip {
+ 	const char *name;
+ 	const int(*scale_vals)[][2];
+ 	const int num_scale_vals;
+-	const struct iio_info *info;
+-	const struct iio_info *info_no_irq;
+ 	int (*hw_init)(struct iio_dev *indio_dev, struct device *dev);
+ 	int (*set_als_gain)(struct iio_dev *indio_dev, int val, int val2);
+ 	int (*get_als_gain)(struct iio_dev *indio_dev, int *val, int *val2);
+@@ -829,28 +827,12 @@ static const struct iio_info veml6030_info = {
+ 	.event_attrs = &veml6030_event_attr_group,
+ };
+ 
+-static const struct iio_info veml6035_info = {
+-	.read_raw  = veml6030_read_raw,
+-	.read_avail  = veml6030_read_avail,
+-	.write_raw = veml6030_write_raw,
+-	.read_event_value = veml6030_read_event_val,
+-	.write_event_value = veml6030_write_event_val,
+-	.read_event_config = veml6030_read_interrupt_config,
+-	.write_event_config = veml6030_write_interrupt_config,
+-	.event_attrs = &veml6030_event_attr_group,
+-};
+-
+ static const struct iio_info veml6030_info_no_irq = {
+ 	.read_raw  = veml6030_read_raw,
+ 	.read_avail  = veml6030_read_avail,
+ 	.write_raw = veml6030_write_raw,
+ };
+ 
+-static const struct iio_info veml6035_info_no_irq = {
+-	.read_raw  = veml6030_read_raw,
+-	.write_raw = veml6030_write_raw,
+-};
+-
+ static irqreturn_t veml6030_event_handler(int irq, void *private)
+ {
+ 	int ret, reg, evtdir;
+@@ -1039,9 +1021,9 @@ static int veml6030_probe(struct i2c_client *client)
+ 					     "irq %d request failed\n",
+ 					     client->irq);
+ 
+-		indio_dev->info = data->chip->info;
++		indio_dev->info = &veml6030_info;
+ 	} else {
+-		indio_dev->info = data->chip->info_no_irq;
++		indio_dev->info = &veml6030_info_no_irq;
+ 	}
+ 
+ 	ret = data->chip->hw_init(indio_dev, &client->dev);
+@@ -1084,8 +1066,6 @@ static const struct veml603x_chip veml6030_chip = {
+ 	.name = "veml6030",
+ 	.scale_vals = &veml6030_scale_vals,
+ 	.num_scale_vals = ARRAY_SIZE(veml6030_scale_vals),
+-	.info = &veml6030_info,
+-	.info_no_irq = &veml6030_info_no_irq,
+ 	.hw_init = veml6030_hw_init,
+ 	.set_als_gain = veml6030_set_als_gain,
+ 	.get_als_gain = veml6030_get_als_gain,
+@@ -1095,8 +1075,6 @@ static const struct veml603x_chip veml6035_chip = {
+ 	.name = "veml6035",
+ 	.scale_vals = &veml6035_scale_vals,
+ 	.num_scale_vals = ARRAY_SIZE(veml6035_scale_vals),
+-	.info = &veml6035_info,
+-	.info_no_irq = &veml6035_info_no_irq,
+ 	.hw_init = veml6035_hw_init,
+ 	.set_als_gain = veml6035_set_als_gain,
+ 	.get_als_gain = veml6035_get_als_gain,
 
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.43.0
 
 

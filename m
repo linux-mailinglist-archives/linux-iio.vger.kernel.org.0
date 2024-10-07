@@ -1,316 +1,228 @@
-Return-Path: <linux-iio+bounces-10287-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10288-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A5A993108
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 17:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0820E9931BA
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 17:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02C461C22D83
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 15:23:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A3131C23634
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 15:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3941D959A;
-	Mon,  7 Oct 2024 15:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2AB1D9592;
+	Mon,  7 Oct 2024 15:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m5PZvXh+"
+	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="sChPqv8v"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2083.outbound.protection.outlook.com [40.107.22.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5508B1D935A;
-	Mon,  7 Oct 2024 15:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728314567; cv=none; b=VSlYTJLQi84Q9D79a5vlAhqSEKx3E5nlUlv1KTVFWY6juz+oBZNAFRm1KaI6Z2MSmgWNcVrECMooyQtnj5aXGumUFO4zS/YGLDA6hqpGdJtIBCndStGoNHYJtg3/BDaY+K6FOQbaHY0DDVXQ1ejwk8tQVBUKNHXBsfT70IWtvo8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728314567; c=relaxed/simple;
-	bh=kahuhEbWhljSN1XdX+Glr547jKdvkKJ3VPKL2ysqdQE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmeQgZBPgjMFCLqqvg0MHcgBOF6RVl6Y7dIbb/sB78JGCjcsaH2kvhdREic0zo0zkqRN2TqtLL+9Q3vEb9AxZw5iM5hEitbaQaOCS/al+dHiCIY9OzKAaAvd+Y3BRZawq+mqPGfBBV9pQnURuzv6tYwJhCKaBfOJZJAhCp7HBQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m5PZvXh+; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-7ea03ecf191so1247701a12.0;
-        Mon, 07 Oct 2024 08:22:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728314564; x=1728919364; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NGXYLWa9PfVlmMvYF4HK1fhAmnNokMXHI7JdaUOAE80=;
-        b=m5PZvXh+2ksgnzjTt2OIzG+fCLmFuSXT+H9VhKBm6xJsrabwDuMBIMhkmMCF97zzTT
-         irpgmnnCp2/OzESudFAsg7Bt+M4eSdbERHfkwrdX8Kie8mjwwXFbK/sjUCs1cQC7hRl6
-         KHHqC4oX53x3EXE9nBF/f4NnfShga/VId3FFCB/f4Cpa3/pXAUxqakB5i1BU8rMjuqBr
-         +x+DIf2L69YfC/qZIBdWX0OjQy4vwjws3Lyy4sgaxKdgjtNWDrIWQcRiK6aPFl63LUZr
-         ySy/cJQ5bHr6YWGzwdf9jWwDU7jp1GbAX+ciNKezfbIEQzLHULad0P7CvTr8aBF2fvXy
-         Ug9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728314564; x=1728919364;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NGXYLWa9PfVlmMvYF4HK1fhAmnNokMXHI7JdaUOAE80=;
-        b=ku71deYx63MPnvgCMjgwlylT1TvXS0WVsD5o2iyLBDAE+vEAlLu63ajGYVZeafyAZY
-         iJphpA7MyYwQx9wleG3ruU+IXf9wIMaZIegWAbAayegzOEXsCzA7+2YuVr9uDXgvBGhX
-         qVetwJYjCBxiBoQzOeapITN/BurKx8mnmL9EYWffD1z9DxJVU12sM1tjj2Su041VWBva
-         7XO6vm5YLAGa/gtd7vCiFGnGn6WGs4MSW+7Gj2F3t4WkGvHUp1Pooj/I4BAtYot/ojZK
-         In6G2SA1doxFaduqXcUiy+CsdD8G/+pZZvMfarU8UPXfEWHkEoRtBFl8eUY60X4calyM
-         zGOw==
-X-Forwarded-Encrypted: i=1; AJvYcCWILr6LiltpAI2clAKY+ZSr4qLEHfRGDGF7XRrA0v/AT93E2wlrkPysKtP9W7ubPml4A9rDl9OmkSfuKJY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSHkXYnWmeKJ9gX/9h/pYEVfrYvs0FjelyHSI4RdUlQMbk7Klt
-	Io9NmciWTAx2AqGLu87kM/PdwYffEYbT9r0Y2cAwxqi47po2XGhFOz+Azw1BrYE=
-X-Google-Smtp-Source: AGHT+IGg4fDZTfwSodiIxvKKC0awHpg5iBCyYkbp+o+1V4s+lZyTXsCLdYL3Vf8ED/UMff0pP5QO8g==
-X-Received: by 2002:a17:90b:3795:b0:2d8:9255:396d with SMTP id 98e67ed59e1d1-2e1e5dc6041mr12735437a91.0.1728314564309;
-        Mon, 07 Oct 2024 08:22:44 -0700 (PDT)
-Received: from abhash-IdeaPad-L340-15IRH-Gaming.. ([136.233.9.100])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2e20ae7169esm5573934a91.10.2024.10.07.08.22.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 08:22:43 -0700 (PDT)
-From: Abhash Jha <abhashkumarjha123@gmail.com>
-To: linux-iio@vger.kernel.org
-Cc: jic23@kernel.org,
-	lars@metafoo.de,
-	linux-kernel@vger.kernel.org,
-	Abhash Jha <abhashkumarjha123@gmail.com>
-Subject: [PATCH v3 3/3] iio: light: vl6180: Add support for Continuous Mode
-Date: Mon,  7 Oct 2024 20:52:23 +0530
-Message-ID: <20241007152223.59008-4-abhashkumarjha123@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241007152223.59008-1-abhashkumarjha123@gmail.com>
-References: <20241007152223.59008-1-abhashkumarjha123@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990B81D6DB7;
+	Mon,  7 Oct 2024 15:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.83
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728315869; cv=fail; b=E6n1n6+RxjcIagFhTnVJR4V7dT7zz0srsTIwOzycjVPSN9j5fkVkG6bf1Gbq/eWsVo6dnaeIFo/4bmdJ1r5cZKmE4/zRuq1sGfXsrgIWjcZJd7/CJhwpuwBmXR+7nSDbg/M6oJT5TEB1wN5ESHxTIoHORDuLbweylGE2GVdrCVg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728315869; c=relaxed/simple;
+	bh=vNNqd2PhbvrvblZkQbaIZGJIg6CmdJrWhy0FXGiB5zU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JwhCLZiQqlURaurwBH1++gK2y+7P4fJdpPXpqThDHAHqPn5JJCT3icmew8RL/a/PALmySXqo69ys2jZY4kuyxaMkWguYpU21YtwXK18Rz09N/iYpi4Q4oZgTjGHat9hFa/7jV0N8rMWf6z4P6OND/lIQ59WuKxEvx+iA4Sli8DE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=sChPqv8v; arc=fail smtp.client-ip=40.107.22.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oDoh7a0ItIbWyqwoAQdgwn21AllbT3p80g2oZylTiSN5PNydXLccNyJoDs3Fcw86xsAQxNZ/RsmOdGyssCECo7Z3p5vVl4JUUR186NnmN132y3WmBWVOvCCkPav+t3zmMreFPih9knUUqTEc5y1GVPBsbopLYNvUBypzcU+7X36y9GrashGJcvHYZLaoOH6lggL58XgjWnlwJWEZUcXoP20NQIk5DnmgNfRjQJI18TC5wQGY00l+Tinza3ihiKZ/vIdZyu9GWJGCnBV6/MySZncDEyniDl6/pg881IaJkQM6O2/NxWsPHmAlOfScGttS4KJPJR9wTWeTmwGJh5TRig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TGHrRUZ37h5pauHCXISGWp2X/8+kXZUgsMEPE2qRkqQ=;
+ b=vko6w1gWiEKbkIwyJsNfvA0Sf+JPY4DEU4IylwlXKU+vfgbxlEFcMJPolpZN1Bx6w69W97pIbO/Ij6B8yUeKcwmOusvRy5NsH7zs99bad5qGFHNzzMCLf+pzZERPNtJVxUk2MQNtX5qnqM9DeV3I8WeVjCWO1s2sHolmSg/Ro6BzR+wiU4tey9zey2e2XbS94gRp4HTBNodIMWw1mNNrBl1/QeHNb46GLrTznyiPb7OWWZ2wlYXp/gZl7BdsMwlsc+Qx/FU59cpz19wKIAmWB1re3aGplQqy5p3HanSSMyZitOVSMk4m1VZgDdMeC3iqz9Dg8bxmoAHg3qgjxa/A/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 217.111.95.7) smtp.rcpttodomain=kernel.org smtp.mailfrom=arri.de; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=arri.de; dkim=none (message
+ not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TGHrRUZ37h5pauHCXISGWp2X/8+kXZUgsMEPE2qRkqQ=;
+ b=sChPqv8vL59/3w6Y/aE1rkoIXEHXjUjJuOVi8b4o1/QZvo9Rsg51cSQVYcEv+Rg+vV6Bh1IHhQFYgieruXg0oKEquyU7ENa5Ptf/U9x7NiofTxZpJxtHRe1q9jvlWqYioEE9POqJOmBti1BpUTZ7Ur+UcZyQng2Q6cSD8fbTRw8=
+Received: from DUZPR01CA0053.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:469::11) by DU2PR07MB8320.eurprd07.prod.outlook.com
+ (2603:10a6:10:27d::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.22; Mon, 7 Oct
+ 2024 15:44:19 +0000
+Received: from DU6PEPF0000B620.eurprd02.prod.outlook.com
+ (2603:10a6:10:469:cafe::a7) by DUZPR01CA0053.outlook.office365.com
+ (2603:10a6:10:469::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.21 via Frontend
+ Transport; Mon, 7 Oct 2024 15:44:19 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
+ smtp.mailfrom=arri.de; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=arri.de;
+Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
+ designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
+ client-ip=217.111.95.7; helo=mta.arri.de;
+Received: from mta.arri.de (217.111.95.7) by
+ DU6PEPF0000B620.mail.protection.outlook.com (10.167.8.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8048.13 via Frontend Transport; Mon, 7 Oct 2024 15:44:18 +0000
+Received: from n9w6sw14.localnet (192.168.54.124) by mta.arri.de (10.10.18.5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.34; Mon, 7 Oct
+ 2024 17:44:18 +0200
+From: Christian Eggers <ceggers@arri.de>
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>, Alisa-Dariana Roman
+	<alisa.roman@analog.com>, Peter Rosin <peda@axentia.se>, Paul Cercueil
+	<paul@crapouillou.net>, Sebastian Reichel <sre@kernel.org>, Matteo Martelli
+	<matteomartelli3@gmail.com>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mips@vger.kernel.org>, <linux-pm@vger.kernel.org>, Matteo Martelli
+	<matteomartelli3@gmail.com>
+Subject: Re: [PATCH v2 4/7] iio: as73211: copy/release available integration times to
+ fix race
+Date: Mon, 7 Oct 2024 17:44:17 +0200
+Message-ID: <2287601.vFx2qVVIhK@n9w6sw14>
+Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
+In-Reply-To: <20241007-iio-read-avail-release-v2-4-245002d5869e@gmail.com>
+References: <20241007-iio-read-avail-release-v2-0-245002d5869e@gmail.com>
+ <20241007-iio-read-avail-release-v2-4-245002d5869e@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU6PEPF0000B620:EE_|DU2PR07MB8320:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63fc4fc3-690d-48f1-eddd-08dce6e6e819
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?YyIS0BlTLLSOEAmar+4e15fD/GRzdFyuNUGOyhlIf9R2DSGdSwr6bNVjLp?=
+ =?iso-8859-1?Q?vdxhSh+MAuWcz+MJ0UP5p7Jto52i0kEAHl2aBUMtImNTC95tUfIjGktSzD?=
+ =?iso-8859-1?Q?YUf4oVhzRzBWnDXK01/40c18tXte8crXn8LC7sDZgWOcb1UswxSP8+x3SN?=
+ =?iso-8859-1?Q?x/o4f5T7X8hE4fgAbi9gISbu+NHv8f5PpfWQETmrNHPYDObj4eP10Y6Qvz?=
+ =?iso-8859-1?Q?W2bLrJaVBadCp6MbOA2mf7p1DETXAb/acDs6G149Tg+TnCC/M8/G9bXLdR?=
+ =?iso-8859-1?Q?r6YeBHiJMnzcd0ntr7FQjSphYXGfLauKsG3VMv3nCuOivtq5Q3uw5IPgI4?=
+ =?iso-8859-1?Q?IkKpgHJsMTrzKgOnoTEVLZAOYKuGpCgKGDJjC9yEu4FKsIvjidcjbJ2Agk?=
+ =?iso-8859-1?Q?TQlebAIyL+8SlE1rbEeWYPT7vH7YZj6sJOanPiSW4jtYroRnWA1iXH3q5c?=
+ =?iso-8859-1?Q?ij4gqCmgGGJ6S2GP1f5axhkkRcK2LRP30cMjNozqb1od3nkPDEiQ70qlmW?=
+ =?iso-8859-1?Q?bje6QGsLyHh+vhXLAqCq4b5s0Qc1bArK5HMvTD16cLgwM6BHRPpzvg/M+J?=
+ =?iso-8859-1?Q?bCx9GFkF6dVhV6VhMQq5piCFXcFfwef2jbTCZEMR31ofh9YNm+GpM4rO0Q?=
+ =?iso-8859-1?Q?G2jcKgc68t4Yv+6Cz6G0Ow+99uJmZMKR65t/F3ekct+U7fcIiCpT0+tELH?=
+ =?iso-8859-1?Q?391+JC7AbHNywaHlCAam1w7vCV0yRMUPlQXpb0BuZgwVgcHgSUXOQsM+Hw?=
+ =?iso-8859-1?Q?4OnUJ5RFwgAG14/oXQabDFcA2jgCHX0rt3Rr+U1wphT77YZhn/Fqqd3BKI?=
+ =?iso-8859-1?Q?C2iJe8Dvw+bc6rmCzcWnqSJJzpZYuQYnDkV+Ny61ZcOQoRsJ3WL60JZW8S?=
+ =?iso-8859-1?Q?FO0Y4r33nAyPTdrCC4b3vKq83VhGNyDdAXZ+42uMt7bpW34WKdZO/xiRsq?=
+ =?iso-8859-1?Q?fXEhlgO1FX+hc12m3z9//Be/+SBGmwicb/WUgj3CzORBYxrjJOcO5WR+uA?=
+ =?iso-8859-1?Q?Pz4EUA/1BW0AMf01qwFM5lHARk+wDvnvQEk/qZf9DdJFbZkznz/Cq8oH5F?=
+ =?iso-8859-1?Q?0Gqp/8rgF1Fwt00sru+GdEjBmKMKcPonH1L5PI8fAh1Dbn/c55J+Qp+FE7?=
+ =?iso-8859-1?Q?jLEI7pfV+wkjG1MnkF3moqzlmGG8meAaAnvewE6gthk1RmmJFxf+SdwaBW?=
+ =?iso-8859-1?Q?3WeeRKsl7R4e8V78idITdRHxWezlCLDOxGw+i9wNEgiRPiBrgp0tWXtCp0?=
+ =?iso-8859-1?Q?9tZpf4bA87GV6Q36ehdaYqXZZF13OIyepnvMeaPIYd36uMuhzUOF2LaPik?=
+ =?iso-8859-1?Q?ugq9LH80ByvWgT/kWPSDgBOzXbWeT4GHF3RIBafwQc86KNfxof+Nsq8irK?=
+ =?iso-8859-1?Q?KSRmNXSTDU4HXVZmFZ2T6+dZJYNY2U7FCdc4+izQXnDmi9vHNqx0CSaJLU?=
+ =?iso-8859-1?Q?RCly/QHNMF/Hf2DI?=
+X-Forefront-Antispam-Report:
+	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arri.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2024 15:44:18.9866
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63fc4fc3-690d-48f1-eddd-08dce6e6e819
+X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU6PEPF0000B620.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR07MB8320
 
-Added support for getting continuous readings from vl6180 using
-triggered buffer approach. The continuous mode can be enabled by enabling
-the buffer. Also added a trigger and appropriate checks to see that it is
-used with this device.
+Hi Matteo,
 
-Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
----
- drivers/iio/light/vl6180.c | 133 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 129 insertions(+), 4 deletions(-)
+originally the `mutex` member of `struct as73211_data` was only intended for
+protecting the cached device registers. So can you please update the
+documentation of this member?
 
-diff --git a/drivers/iio/light/vl6180.c b/drivers/iio/light/vl6180.c
-index a747501b0..f0c7a13a0 100644
---- a/drivers/iio/light/vl6180.c
-+++ b/drivers/iio/light/vl6180.c
-@@ -25,6 +25,10 @@
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
- 
- #define VL6180_DRV_NAME "vl6180"
- 
-@@ -87,10 +91,16 @@ struct vl6180_data {
- 	struct i2c_client *client;
- 	struct mutex lock;
- 	struct completion completion;
-+	struct iio_trigger *trig;
- 	unsigned int als_gain_milli;
- 	unsigned int als_it_ms;
- 	unsigned int als_meas_rate;
- 	unsigned int range_meas_rate;
-+
-+	struct {
-+		u16 chan[2];
-+		aligned_s64 timestamp;
-+	} scan;
- };
- 
- enum { VL6180_ALS, VL6180_RANGE, VL6180_PROX };
-@@ -272,6 +282,12 @@ static const struct iio_chan_spec vl6180_channels[] = {
- 	{
- 		.type = IIO_LIGHT,
- 		.address = VL6180_ALS,
-+		.scan_index = VL6180_ALS,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 16,
-+			.storagebits = 16,
-+		},
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 			BIT(IIO_CHAN_INFO_INT_TIME) |
- 			BIT(IIO_CHAN_INFO_SCALE) |
-@@ -280,14 +296,27 @@ static const struct iio_chan_spec vl6180_channels[] = {
- 	}, {
- 		.type = IIO_DISTANCE,
- 		.address = VL6180_RANGE,
-+		.scan_index = VL6180_RANGE,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 8,
-+			.storagebits = 8,
-+		},
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 			BIT(IIO_CHAN_INFO_SCALE) |
- 			BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 	}, {
- 		.type = IIO_PROXIMITY,
- 		.address = VL6180_PROX,
-+		.scan_index = VL6180_PROX,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 16,
-+			.storagebits = 16,
-+		},
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
--	}
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
- };
- 
- /*
-@@ -499,7 +528,48 @@ static irqreturn_t vl6180_threaded_irq(int irq, void *priv)
- 	struct iio_dev *indio_dev = priv;
- 	struct vl6180_data *data = iio_priv(indio_dev);
- 
--	complete(&data->completion);
-+	if (iio_buffer_enabled(indio_dev))
-+		iio_trigger_poll_nested(indio_dev->trig);
-+	else
-+		complete(&data->completion);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t vl6180_trigger_handler(int irq, void *priv)
-+{
-+	struct iio_poll_func *pf = priv;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct vl6180_data *data = iio_priv(indio_dev);
-+	s64 time_ns = iio_get_time_ns(indio_dev);
-+	int ret, bit, i = 0;
-+
-+	iio_for_each_active_channel(indio_dev, bit) {
-+		if (vl6180_chan_regs_table[bit].word)
-+			ret = vl6180_read_word(data->client,
-+				vl6180_chan_regs_table[bit].value_reg);
-+		else
-+			ret = vl6180_read_byte(data->client,
-+				vl6180_chan_regs_table[bit].value_reg);
-+
-+		if (ret < 0) {
-+			dev_err(&data->client->dev,
-+				"failed to read from value regs: %d\n", ret);
-+			return IRQ_HANDLED;
-+		}
-+
-+		data->scan.chan[i++] = ret;
-+	}
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan, time_ns);
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	/* Clear the interrupt flag after data read */
-+	ret = vl6180_write_byte(data->client, VL6180_INTR_CLEAR,
-+		VL6180_CLEAR_ERROR | VL6180_CLEAR_ALS | VL6180_CLEAR_RANGE);
-+	if (ret < 0)
-+		dev_err(&data->client->dev, "failed to clear irq: %d\n", ret);
-+
- 	return IRQ_HANDLED;
- }
- 
-@@ -507,9 +577,45 @@ static const struct iio_info vl6180_info = {
- 	.read_raw = vl6180_read_raw,
- 	.write_raw = vl6180_write_raw,
- 	.attrs = &vl6180_attribute_group,
-+	.validate_trigger = iio_validate_own_trigger,
- };
- 
--static int vl6180_init(struct vl6180_data *data)
-+static int vl6180_buffer_postenable(struct iio_dev *indio_dev)
-+{
-+	struct vl6180_data *data = iio_priv(indio_dev);
-+	int bit;
-+
-+	iio_for_each_active_channel(indio_dev, bit)
-+		return vl6180_write_byte(data->client,
-+			vl6180_chan_regs_table[bit].start_reg,
-+			VL6180_MODE_CONT | VL6180_STARTSTOP);
-+
-+	return -EINVAL;
-+}
-+
-+static int vl6180_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct vl6180_data *data = iio_priv(indio_dev);
-+	int bit;
-+
-+	iio_for_each_active_channel(indio_dev, bit)
-+		return vl6180_write_byte(data->client,
-+			vl6180_chan_regs_table[bit].start_reg,
-+			VL6180_STARTSTOP);
-+
-+	return -EINVAL;
-+}
-+
-+static const struct iio_buffer_setup_ops iio_triggered_buffer_setup_ops = {
-+	.postenable = &vl6180_buffer_postenable,
-+	.postdisable = &vl6180_buffer_postdisable,
-+};
-+
-+static const struct iio_trigger_ops vl6180_trigger_ops = {
-+	.validate_device = iio_trigger_validate_own_device,
-+};
-+
-+static int vl6180_init(struct vl6180_data *data, struct iio_dev *indio_dev)
- {
- 	struct i2c_client *client = data->client;
- 	int ret;
-@@ -544,6 +650,12 @@ static int vl6180_init(struct vl6180_data *data)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev, NULL,
-+						&vl6180_trigger_handler,
-+						&iio_triggered_buffer_setup_ops);
-+	if (ret)
-+		return ret;
-+
- 	/* Default Range inter-measurement time: 50ms or 20000 mHz */
- 	ret = vl6180_write_byte(client, VL6180_RANGE_INTER_MEAS_TIME,
- 				vl6180_meas_reg_val_from_mhz(20000));
-@@ -598,7 +710,7 @@ static int vl6180_probe(struct i2c_client *client)
- 	indio_dev->name = VL6180_DRV_NAME;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
--	ret = vl6180_init(data);
-+	ret = vl6180_init(data, indio_dev);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -611,6 +723,19 @@ static int vl6180_probe(struct i2c_client *client)
- 			return dev_err_probe(&client->dev, ret, "devm_request_irq error \n");
- 
- 		init_completion(&data->completion);
-+
-+		data->trig = devm_iio_trigger_alloc(&client->dev, "%s-dev%d",
-+						indio_dev->name, iio_device_id(indio_dev));
-+		if (!data->trig)
-+			return -ENOMEM;
-+
-+		data->trig->ops = &vl6180_trigger_ops;
-+		iio_trigger_set_drvdata(data->trig, indio_dev);
-+		ret = devm_iio_trigger_register(&client->dev, data->trig);
-+		if (ret)
-+			return ret;
-+
-+		indio_dev->trig = iio_trigger_get(data->trig);
- 	}
- 
- 	return devm_iio_device_register(&client->dev, indio_dev);
--- 
-2.43.0
+I can perform some testing f=FCr as73211, but I would like to wait until
+the "copy data twice" question has been solved. IMHO a solution like Nuno
+proposed may be easier to understand.
+
+regards,
+Christian
+
+On Monday, 7 October 2024, 10:37:13 CEST, Matteo Martelli wrote:
+> While available integration times are being printed to sysfs by iio core
+> (iio_read_channel_info_avail), the sampling frequency might be changed.
+> This could cause the buffer shared with iio core to be corrupted. To
+> prevent it, make a copy of the integration times buffer and free it in
+> the read_avail_release_resource callback.
+>=20
+> Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
+> ---
+>  drivers/iio/light/as73211.c | 22 +++++++++++++++++++---
+>  1 file changed, 19 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+> index be0068081ebbbb37fdfb252b67a77b302ff725f6..27bc8cb791039944662a74fc7=
+2f09e2c3642cfa6 100644
+> --- a/drivers/iio/light/as73211.c
+> +++ b/drivers/iio/light/as73211.c
+> @@ -493,17 +493,32 @@ static int as73211_read_avail(struct iio_dev *indio=
+_dev, struct iio_chan_spec co
+>  		*type =3D IIO_VAL_INT;
+>  		return IIO_AVAIL_LIST;
+> =20
+> -	case IIO_CHAN_INFO_INT_TIME:
+> +	case IIO_CHAN_INFO_INT_TIME: {
+>  		*length =3D ARRAY_SIZE(data->int_time_avail);
+> -		*vals =3D data->int_time_avail;
+>  		*type =3D IIO_VAL_INT_PLUS_MICRO;
+> -		return IIO_AVAIL_LIST;
+> =20
+> +		guard(mutex)(&data->mutex);
+> +
+> +		*vals =3D kmemdup_array(data->int_time_avail, *length,
+> +				      sizeof(int), GFP_KERNEL);
+> +		if (!*vals)
+> +			return -ENOMEM;
+> +
+> +		return IIO_AVAIL_LIST;
+> +	}
+>  	default:
+>  		return -EINVAL;
+>  	}
+>  }
+> =20
+> +static void as73211_read_avail_release_res(struct iio_dev *indio_dev,
+> +					   struct iio_chan_spec const *chan,
+> +					   const int *vals, long mask)
+> +{
+> +	if (mask =3D=3D IIO_CHAN_INFO_INT_TIME)
+> +		kfree(vals);
+> +}
+> +
+>  static int _as73211_write_raw(struct iio_dev *indio_dev,
+>  			       struct iio_chan_spec const *chan __always_unused,
+>  			       int val, int val2, long mask)
+> @@ -699,6 +714,7 @@ static irqreturn_t as73211_trigger_handler(int irq __=
+always_unused, void *p)
+>  static const struct iio_info as73211_info =3D {
+>  	.read_raw =3D as73211_read_raw,
+>  	.read_avail =3D as73211_read_avail,
+> +	.read_avail_release_resource =3D as73211_read_avail_release_res,
+>  	.write_raw =3D as73211_write_raw,
+>  };
+> =20
+>=20
+>=20
+
+
+
 
 

@@ -1,308 +1,162 @@
-Return-Path: <linux-iio+bounces-10312-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10313-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F3A993861
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 22:37:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 532AB9939DD
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Oct 2024 00:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C81972852C4
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 20:37:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8A0CB237DA
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Oct 2024 22:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A771DED70;
-	Mon,  7 Oct 2024 20:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720F318DF92;
+	Mon,  7 Oct 2024 22:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gV/yCC2M"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f42ekjaj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C0E1DE4F6;
-	Mon,  7 Oct 2024 20:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37F318C929
+	for <linux-iio@vger.kernel.org>; Mon,  7 Oct 2024 22:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728333427; cv=none; b=OUckjvTtpDlT9ER0hIy6xZCV4WodBleLNgsntbuSCpNIOso6ojQWBa7wJiVTl6zM4RgdPLyIlGxuQZJn0WonHUUQuHh4SHouhdR/vet16fbFCDGRk33svwFsxzEXULKR9IG2XfRdx+5m7ZDVrVqUfHHqIx4JpyQGWsrbqcibHX4=
+	t=1728338945; cv=none; b=t1CyMfBCybwaa2CdRkml60df4ZoxZIQg5NZtOB6RTsXJDoyNxZtN39+2eY7wFagLgX9ZgjMY4TIJj0kza+yysCBOroY0TErQUNO4Nrzh/Y8PWFYH/rGOz64p/C7Hdz4bW1BH+dVJZgvnNVJO0fmMTuBZZqt9LzNVotvuqfoRu9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728333427; c=relaxed/simple;
-	bh=ffBqKTIzKKORtDAQTnF0ixHeiBBU1WJxjkoh95cX3hQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SxPMXYP+UTIecb+0S5VdWzYtnCP+JNzk21OLDMLWc2cqvqx4CTk1uaG80a4C8qjscFs8X2wy8GljKAsHw07dRnPgD8Z20B3LlKWUAYQc1sEQ8HksKAGtbnaKymttGIOHJ78quL5rR2746Jcb1V9M+KFEwOUa/fMhi1EgYq6+xgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gV/yCC2M; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37cd8a5aac9so2619369f8f.2;
-        Mon, 07 Oct 2024 13:37:05 -0700 (PDT)
+	s=arc-20240116; t=1728338945; c=relaxed/simple;
+	bh=CqX9Y0dEmHgiIN61I3/zW08Bfod5n7pFQiGUVIMbBVk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PLtU3+Bf0jMbID2bXtWGT6M+5bo5QPQXN+F1UnDxua1eGg0G9n6+VMN4x8ImMvNLwLgy4KkszCbxaNSbTHnJWBAf3YvWtSFsgVOzbvuw78u5PDrevdSFCkCdqwdD5v8MwA6l1TtcqkgHoFyaY6JanVHGhTDGA6eaiv3bc8GJHIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f42ekjaj; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e28e6a1b11eso706183276.0
+        for <linux-iio@vger.kernel.org>; Mon, 07 Oct 2024 15:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728333424; x=1728938224; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R0B/ACvOpGHW6u8EpRZ7oeA/qI9QuVr63Qwli6fHJpg=;
-        b=gV/yCC2MdfGYzqT2FnYyouQJlzI+VmF1ZaPqG5AmiQLqZyUXgt9cBcpGv4lO4dh3yw
-         546VUDdhLs7UsBNEfxioQioiHjydhF91rmjJBRiH8NWxm5ZaG7uDLzEuh2BCgoBzNpBn
-         iHh0NS2dcUFgvA7CpwOAnEy9dcRFX96HDgzxcDSyL7xUWPpV/MtAdhEI2hsif03pMMug
-         3eQywi5C0BBla8GvPO5lykiosVVn/0XJPgivi2NmzoHpZVbW2gw7oQ6LwCJFNTbOiJmY
-         dk/RKpvNhYdeil18hB36jbTzLV5ggQFbiewFrdWacFORe3muAbo7sO6gWelSvnlUf0NC
-         PIbw==
+        d=linaro.org; s=google; t=1728338941; x=1728943741; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CqX9Y0dEmHgiIN61I3/zW08Bfod5n7pFQiGUVIMbBVk=;
+        b=f42ekjajbfDK67ZKARCmr941NjbWO+zYjmvxMyp4Fy4kuKtSrf2iKVgUnqsi4Pq/C8
+         ipLnwDdGgIhMpbV6MbaWihNRjelX2+woJYoIbLTf7wbD0Bhx61DhylVJNKfm5EKD+bxx
+         t76f21S9sdP2+Srx/IKijDY7UfyJgxLwnqWIBzkYi0Sb+DT3hOoxoIAQVRQPbOB/qV3q
+         Adu2DK2XKllz6BnqNBICrcVCCtOrLKrRgH/K3/H9o6de1RgHgyfio5vJeL9oVtyZ5KBH
+         JuVFWDW0N8Y7ot5/Mgf88aiwlINp0hKoeKv2zWBPzzQeNqT2AoyY/oKF9WuxmYryhJzP
+         QjeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728333424; x=1728938224;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=R0B/ACvOpGHW6u8EpRZ7oeA/qI9QuVr63Qwli6fHJpg=;
-        b=wW4wijwwiCSJ58W7fndxPJ2+EtIHWt5e7Rk3RWG8+VPZN058FOAmCy1qNU3UKNoy+Z
-         N5U39vxTph+V3ges99F2CNIS3B8t534/N/7bOG2Cdmgc1JylK53hxIP86dbZRRKXulYn
-         5A/APCCIetR7uffG76s4VOmQ+fYXqrKGyZwmCP+q81YnHM7t5ughIwU5W5OjL8L/R9mr
-         wh1Sgbyvy8m4cMI/U1vdgcdEMFZnBm9kngGc0oy4soXswXwLp95pAkzB2O5KTIuXO1H5
-         UlraDCBUcowvCPLYZIx/UbC2dK9pRqgosdqspb1GVpNUh0QUPa5uI4oV/xdErEClg0g0
-         +ItQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWN8Rd9LSxzcec3a90Xp27FXq4wdVNfhh0lTiE/19IU4H72M0wpt8lPblae/qMEkOJjw7yvO5uGiUyx@vger.kernel.org, AJvYcCWfnw4Rp9OmLx0mc2hoERqCL5IHgKO5Zqk95EBLCkBhXDRAGJF16c//wO1UGigHUPHhhya6ScedxX/o@vger.kernel.org, AJvYcCWsQhICjFUlaxqAp4GaPpMeIdSQRBmFE1J5WnVZTxUtmivM42u0ICohCMRUhpYzJJ9n+my8RqjCZmjicabn@vger.kernel.org
-X-Gm-Message-State: AOJu0YycOwV8WWTbg5vqyutxiN5nN8TbdMQY+c07ye+WEc8qERwSuihc
-	GgE6/1UrqBJfpceLn6G5PC6gO5vV82UTPlqwHDokWCXj9Wu+F/C5
-X-Google-Smtp-Source: AGHT+IElWGF/J3lYVMjLRCX4hUFrco/Kpvzbw/A8jguDUfW3hbZhHKJxw50QPrU3kkSMpcxaaADIdw==
-X-Received: by 2002:adf:e502:0:b0:37c:d2d2:7f67 with SMTP id ffacd0b85a97d-37d0e74b62cmr6056692f8f.30.1728333418972;
-        Mon, 07 Oct 2024 13:36:58 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-26cc-001d-7ed0-e346.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:26cc:1d:7ed0:e346])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d1690f75bsm6464315f8f.23.2024.10.07.13.36.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 13:36:58 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 07 Oct 2024 22:36:38 +0200
-Subject: [PATCH 3/3] iio: light: veml6030: add support for veml7700
+        d=1e100.net; s=20230601; t=1728338941; x=1728943741;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CqX9Y0dEmHgiIN61I3/zW08Bfod5n7pFQiGUVIMbBVk=;
+        b=ocWf4PhW6wakETV9c4ZyhU/Nff2Po909n1+dDXTZ9mM5KpxdwcDOiky57DRHepT72G
+         054RTMbZyyaf6p+dlVpbUDQjGTTRyDApWWaXwPPRLFz3btHh1HVKVKq5C+els4n2fM1Y
+         oyYrp3DcgDzRFAhTmBnGNGlMHOu5iDo32gqmj2OAsUg0L5DHLls2en+uWe2PUQ1X3yCX
+         OQjSWSsOBDSHsM/eNEME9BL6SnNN7TYQNVohPnrvS3USLryZ+Ur/Hciry0ZPiuJMDRFP
+         kLAu/GTbermvEmvgNPjnLjjNgVF//syBzGLxDxBvMQbJ/E9l/BakVeCNE+N0hGtrp5sY
+         Iviw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0NLJTmEyLeoSLEb8x3oqTr8cATSWbvax9xtzy5X+Pq6IYAkQcw9sBdMeLpxX9LUJ2cZidrUMFn50=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6SO3vioI3S9ICYZ9dcDAJwV8J4Tg53bz9fxffak14hjF2WxTb
+	JDjqeMwj7eC+9EVagOSHCezlhXspTfVwIVbatRJtkiYkO42QriDRgoTxI6Ig5Cytl9hb8hE5Pl7
+	wKSa0RCMaxlXMXSX1FNygDvKXTktW0Uh1ozBmBA==
+X-Google-Smtp-Source: AGHT+IE2nJVabbXdwibt1H0pVBms5dYTsG8RkBKKAzfdsgMhYsZ8VyWIk7HanuWHiQPQxXFBk2ezA08qlljJFN0QQR4=
+X-Received: by 2002:a05:6902:848:b0:e28:edbd:765f with SMTP id
+ 3f1490d57ef6-e28edbd7f75mr206026276.2.1728338940867; Mon, 07 Oct 2024
+ 15:09:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241007-veml7700-v1-3-fb85dd839d63@gmail.com>
-References: <20241007-veml7700-v1-0-fb85dd839d63@gmail.com>
-In-Reply-To: <20241007-veml7700-v1-0-fb85dd839d63@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728333411; l=6748;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=ffBqKTIzKKORtDAQTnF0ixHeiBBU1WJxjkoh95cX3hQ=;
- b=Ichfa+n/zTkvi8u7AEtV619VW+zwZUglXdVjgVqUfx5q0Uyv8ESG4JbNPlSN+AW+ibjzpWokV
- 6COuh21LbkRDjH80iDjXhNx4NsBeedR1hVBKoGpWTBdGpxN+viyZJlH
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+References: <20241004094101.113349-1-sakari.ailus@linux.intel.com>
+ <CAPDyKFp0N6UJhnHS164Tdf=xkWB0jzq65L9TdvYazeBQ-6WjeQ@mail.gmail.com> <20241007184924.GH14766@pendragon.ideasonboard.com>
+In-Reply-To: <20241007184924.GH14766@pendragon.ideasonboard.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 8 Oct 2024 00:08:24 +0200
+Message-ID: <CAPDyKFpQVnF7eQv3dup8k-3EijnMjuveCG9sZ=Rpey1Y6MBJEg@mail.gmail.com>
+Subject: Re: [PATCH 00/51] treewide: Switch to __pm_runtime_put_autosuspend()
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	dmaengine@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
+	linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org, 
+	linux-input@vger.kernel.org, patches@opensource.cirrus.com, 
+	iommu@lists.linux.dev, imx@lists.linux.dev, 
+	linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org, 
+	linux-serial@vger.kernel.org, greybus-dev@lists.linaro.org, 
+	asahi@lists.linux.dev, rafael@kernel.org, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-The veml7700 contains the same sensor as the veml6030 in a different
-package with no interrupt line and no pin to select the I2C address.
+On Mon, 7 Oct 2024 at 20:49, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>
+> Hi Ulf,
+>
+> On Fri, Oct 04, 2024 at 04:38:36PM +0200, Ulf Hansson wrote:
+> > On Fri, 4 Oct 2024 at 11:41, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+> > >
+> > > Hello everyone,
+> > >
+> > > This set will switch the users of pm_runtime_put_autosuspend() to
+> > > __pm_runtime_put_autosuspend() while the former will soon be re-purposed
+> > > to include a call to pm_runtime_mark_last_busy(). The two are almost
+> > > always used together, apart from bugs which are likely common. Going
+> > > forward, most new users should be using pm_runtime_put_autosuspend().
+> > >
+> > > Once this conversion is done and pm_runtime_put_autosuspend() re-purposed,
+> > > I'll post another set to merge the calls to __pm_runtime_put_autosuspend()
+> > > and pm_runtime_mark_last_busy().
+> >
+> > That sounds like it could cause a lot of churns.
+> >
+> > Why not add a new helper function that does the
+> > pm_runtime_put_autosuspend() and the pm_runtime_mark_last_busy()
+> > things? Then we can start moving users over to this new interface,
+> > rather than having this intermediate step?
+>
+> I think the API would be nicer if we used the shortest and simplest
+> function names for the most common use cases. Following
+> pm_runtime_put_autosuspend() with pm_runtime_mark_last_busy() is that
+> most common use case. That's why I like Sakari's approach of repurposing
+> pm_runtime_put_autosuspend(), and introducing
+> __pm_runtime_put_autosuspend() for the odd cases where
+> pm_runtime_mark_last_busy() shouldn't be called.
 
-To handle the lack of the interrupt line and profit from the existing
-support for the veml6030, add a specific iio_chan_spec with no
-(num_)event_spec(s), and register the device's info from the
-veml6030_info_no_irq struct.
+Okay, so the reason for this approach is because we couldn't find a
+short and descriptive name that could be used in favor of
+pm_runtime_put_autosuspend(). Let me throw some ideas at it and maybe
+you like it - or not. :-)
 
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/iio/light/veml6030.c | 108 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 91 insertions(+), 17 deletions(-)
+I don't know what options you guys discussed, but to me the entire
+"autosuspend"-suffix isn't really that necessary in my opinion. There
+are more ways than calling pm_runtime_put_autosuspend() that triggers
+us to use the RPM_AUTO flag for rpm_suspend(). For example, just
+calling pm_runtime_put() has the similar effect.
 
-diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-index ca0379945b1c..173c85a05a8d 100644
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0+
- /*
-- * VEML6030 and VMEL6035 Ambient Light Sensors
-+ * VEML6030, VMEL6035 and VEML7700 Ambient Light Sensors
-  *
-  * Copyright (c) 2019, Rishi Gupta <gupt21@gmail.com>
-  *
-@@ -11,6 +11,10 @@
-  * VEML6035:
-  * Datasheet: https://www.vishay.com/docs/84889/veml6035.pdf
-  * Appnote-84944: https://www.vishay.com/docs/84944/designingveml6035.pdf
-+ *
-+ * VEML7700:
-+ * Datasheet: https://www.vishay.com/docs/84286/veml7700.pdf
-+ * Appnote-84323: https://www.vishay.com/docs/84323/designingveml7700.pdf
-  */
- 
- #include <linux/bitfield.h>
-@@ -56,7 +60,10 @@ struct veml603x_chip {
- 	const char *name;
- 	const int(*scale_vals)[][2];
- 	const int num_scale_vals;
-+	const struct iio_chan_spec *channels;
-+	const int num_channels;
- 	int (*hw_init)(struct iio_dev *indio_dev, struct device *dev);
-+	int (*set_info)(struct iio_dev *indio_dev);
- 	int (*set_als_gain)(struct iio_dev *indio_dev, int val, int val2);
- 	int (*get_als_gain)(struct iio_dev *indio_dev, int *val, int *val2);
- };
-@@ -250,6 +257,30 @@ static const struct iio_chan_spec veml6030_channels[] = {
- 	},
- };
- 
-+static const struct iio_chan_spec veml7700_channels[] = {
-+	{
-+		.type = IIO_LIGHT,
-+		.channel = CH_ALS,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				BIT(IIO_CHAN_INFO_PROCESSED) |
-+				BIT(IIO_CHAN_INFO_INT_TIME) |
-+				BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-+						     BIT(IIO_CHAN_INFO_SCALE),
-+	},
-+	{
-+		.type = IIO_INTENSITY,
-+		.channel = CH_WHITE,
-+		.modified = 1,
-+		.channel2 = IIO_MOD_LIGHT_BOTH,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				BIT(IIO_CHAN_INFO_INT_TIME) |
-+				BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
-+						     BIT(IIO_CHAN_INFO_SCALE),
-+	},
-+};
-+
- static const struct regmap_config veml6030_regmap_config = {
- 	.name = "veml6030_regmap",
- 	.reg_bits = 8,
-@@ -862,6 +893,37 @@ static irqreturn_t veml6030_event_handler(int irq, void *private)
- 	return IRQ_HANDLED;
- }
- 
-+static int veml6030_set_info(struct iio_dev *indio_dev)
-+{
-+	struct veml6030_data *data = iio_priv(indio_dev);
-+	struct i2c_client *client = data->client;
-+	int ret;
-+
-+	if (client->irq) {
-+		ret = devm_request_threaded_irq(&client->dev, client->irq,
-+						NULL, veml6030_event_handler,
-+						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-+						indio_dev->name, indio_dev);
-+		if (ret < 0)
-+			return dev_err_probe(&client->dev, ret,
-+					     "irq %d request failed\n",
-+					     client->irq);
-+
-+		indio_dev->info = &veml6030_info;
-+	} else {
-+		indio_dev->info = &veml6030_info_no_irq;
-+	}
-+
-+	return 0;
-+}
-+
-+static int veml7700_set_info(struct iio_dev *indio_dev)
-+{
-+	indio_dev->info = &veml6030_info_no_irq;
-+
-+	return 0;
-+}
-+
- /*
-  * Set ALS gain to 1/8, integration time to 100 ms, PSM to mode 2,
-  * persistence to 1 x integration time and the threshold
-@@ -1007,24 +1069,13 @@ static int veml6030_probe(struct i2c_client *client)
- 		return -EINVAL;
- 
- 	indio_dev->name = data->chip->name;
--	indio_dev->channels = veml6030_channels;
--	indio_dev->num_channels = ARRAY_SIZE(veml6030_channels);
-+	indio_dev->channels = data->chip->channels;
-+	indio_dev->num_channels = data->chip->num_channels;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
--	if (client->irq) {
--		ret = devm_request_threaded_irq(&client->dev, client->irq,
--						NULL, veml6030_event_handler,
--						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
--						indio_dev->name, indio_dev);
--		if (ret < 0)
--			return dev_err_probe(&client->dev, ret,
--					     "irq %d request failed\n",
--					     client->irq);
--
--		indio_dev->info = &veml6030_info;
--	} else {
--		indio_dev->info = &veml6030_info_no_irq;
--	}
-+	ret = data->chip->set_info(indio_dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	ret = data->chip->hw_init(indio_dev, &client->dev);
- 	if (ret < 0)
-@@ -1066,7 +1117,10 @@ static const struct veml603x_chip veml6030_chip = {
- 	.name = "veml6030",
- 	.scale_vals = &veml6030_scale_vals,
- 	.num_scale_vals = ARRAY_SIZE(veml6030_scale_vals),
-+	.channels = veml6030_channels,
-+	.num_channels = ARRAY_SIZE(veml6030_channels),
- 	.hw_init = veml6030_hw_init,
-+	.set_info = veml6030_set_info,
- 	.set_als_gain = veml6030_set_als_gain,
- 	.get_als_gain = veml6030_get_als_gain,
- };
-@@ -1075,11 +1129,26 @@ static const struct veml603x_chip veml6035_chip = {
- 	.name = "veml6035",
- 	.scale_vals = &veml6035_scale_vals,
- 	.num_scale_vals = ARRAY_SIZE(veml6035_scale_vals),
-+	.channels = veml6030_channels,
-+	.num_channels = ARRAY_SIZE(veml6030_channels),
- 	.hw_init = veml6035_hw_init,
-+	.set_info = veml6030_set_info,
- 	.set_als_gain = veml6035_set_als_gain,
- 	.get_als_gain = veml6035_get_als_gain,
- };
- 
-+static const struct veml603x_chip veml7700_chip = {
-+	.name = "veml7700",
-+	.scale_vals = &veml6030_scale_vals,
-+	.num_scale_vals = ARRAY_SIZE(veml6030_scale_vals),
-+	.channels = veml7700_channels,
-+	.num_channels = ARRAY_SIZE(veml7700_channels),
-+	.hw_init = veml6030_hw_init,
-+	.set_info = veml7700_set_info,
-+	.set_als_gain = veml6030_set_als_gain,
-+	.get_als_gain = veml6030_get_als_gain,
-+};
-+
- static const struct of_device_id veml6030_of_match[] = {
- 	{
- 		.compatible = "vishay,veml6030",
-@@ -1089,6 +1158,10 @@ static const struct of_device_id veml6030_of_match[] = {
- 		.compatible = "vishay,veml6035",
- 		.data = &veml6035_chip,
- 	},
-+	{
-+		.compatible = "vishay,veml7700",
-+		.data = &veml7700_chip,
-+	},
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, veml6030_of_match);
-@@ -1096,6 +1169,7 @@ MODULE_DEVICE_TABLE(of, veml6030_of_match);
- static const struct i2c_device_id veml6030_id[] = {
- 	{ "veml6030", (kernel_ulong_t)&veml6030_chip},
- 	{ "veml6035", (kernel_ulong_t)&veml6035_chip},
-+	{ "veml7700", (kernel_ulong_t)&veml7700_chip},
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, veml6030_id);
+Moreover, it's similar for pm_runtime_mark_last_busy(), it's called
+during rpm_resume() too, for example. So why bother about having
+"mark_last_busy" in the new name too.
 
--- 
-2.43.0
+That said, my suggestion is simply "pm_runtime_put_suspend".
 
+If you don't like it, I will certainly not object to your current
+approach, even if I think it leads to unnecessary churns.
+
+[...]
+
+Kind regards
+Uffe
 

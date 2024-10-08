@@ -1,280 +1,196 @@
-Return-Path: <linux-iio+bounces-10332-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10333-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E879199513D
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Oct 2024 16:15:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B6F995397
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Oct 2024 17:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 525011C235A9
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Oct 2024 14:15:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 928C82868B9
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Oct 2024 15:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4D81DF25E;
-	Tue,  8 Oct 2024 14:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A391E0DA9;
+	Tue,  8 Oct 2024 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gR3/uvqX"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eMut9mXw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C38A1DF747
-	for <linux-iio@vger.kernel.org>; Tue,  8 Oct 2024 14:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D657B1E0493
+	for <linux-iio@vger.kernel.org>; Tue,  8 Oct 2024 15:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728396926; cv=none; b=sFRzImMZAUOeaR0BZkDqr8Fh9jonDwsbUdVF4YcKBJGdDgJjp53uWlvpD3DDcOHtgNXlbJdPOfwmX4oo8+QlY1QF4EqvWHU0V43vVPi51xk79c8cmnpugp37NvT5VaORyEihHotS90VIgMM9v7M/uKT2Cd2LjBeyRQ+kqAj7ZpY=
+	t=1728402304; cv=none; b=MMomNLAsTD9ae2606SHI9npR7qEymbUiK55sZeBTML4IQ/WAOcNcQ0tc8gXtqKETXQMQO/JLKJsE9tKQnBAYu0rSjAEH9wcgpnjtBFXnzUdjRNsIhWWGO5JhRkfjVpbNKR+95ymNbCmOpS4nltcRSNd+lkKp+36wZaqvZQnh9RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728396926; c=relaxed/simple;
-	bh=CqreoEFhCQFdVZYvfxwSzFz7kcPrc8UoGAIbyX317wU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fAFhvvA+levajA2NO5cbyHQk4+f4O9P2xMZPTgWcDFUL0tKSfHA561jMZubCm2hKe1/mAR4kTaDnxXsmqDjqWNrZ506s64SnMHtbfVWaZTArKq9BtdAO19KE9JjwQtkNCcK69Zr3n+7o8S+ReNqdfxmNd/cidC7ezxu3BuhPOTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gR3/uvqX; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1728402304; c=relaxed/simple;
+	bh=RnRiLvQZKZfvJRnRy+rTXTfSyB5Kni1K1+NCZ/9Ax68=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=og6xFmAFQLP9wnZ/9J4yVup4y66j0GK+tO80MbKX8/tU7folV04N0wtzacuSg4zEFpCZHvgpPHHbcgPHX0oe61c7EdVMtqnB0Z+naDZnpip7mVvUAJfiKgsGoax3Thqeor+4KJjLCoqbYdsvyEFg87HJYdDW4cvG4VKu7Q3rmB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eMut9mXw; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43055b43604so5015235e9.3
-        for <linux-iio@vger.kernel.org>; Tue, 08 Oct 2024 07:15:23 -0700 (PDT)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cc43454d5so46723085e9.3
+        for <linux-iio@vger.kernel.org>; Tue, 08 Oct 2024 08:45:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728396922; x=1729001722; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YbHZZTOAhsp8JBOuMrZ0YxXm19FoPjC7YvWjJGqNBfs=;
-        b=gR3/uvqXZie4pTVIqfxySbbtK6FOWWc/p3GNkJFD+4nmiCDD1VU2NH5wr/TMr8ZfHE
-         fsR/dAbLrnURXQejXr1k2BNzP409L7y84mWLLoaBZlgatNcgN0X1PKdE03uHruaFKg7P
-         341ODkzxhSqd+BDUOLgUxoS1risk8dWRWXLPbGCsdIwWXuQwoGswrjhlrI81+iVT5EG0
-         F3BLYjdsGz/J40YM2kAI1boHeD2GY8ZHO5ukioRvRYI6ZrxVcHqT9fhN7PDWNugvyYxm
-         KSSUubHJ3Su7I8mz2SnXNd27zGlzDXR2yDbnWJCx7pNOJEHMtIhXLtxyh2cB8nrroGot
-         w9CQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728402299; x=1729007099; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vSAg388iyowQSiF9vFdBp03eOks5liaKiRuZRS3VSgo=;
+        b=eMut9mXwC27+tloN8Uc2vD6PxeZV9mF7GW+M8kayR3HlMlFumDPJA9mWSwPPNgLmOk
+         sUvI2ejxbLvFLt6lGjY6lZ4dS4NdClGF4+7oTDwRYXgRAz31V7eHYjMjBw6zAH4btLOf
+         Nlc0FVcOk7mc0Flb8fFyOF4fySO0AJlw7w/KxNQ1ge0/01aapBgLsDt+O+8d3aPKTeN+
+         8sRe5LiUzjMgpqU6I071stZkn5qYQSpx/ytMM8jW5MDxpF4+K9chudw1SjpoyUofzg3J
+         X0sPsLspYX8JDHb6SyQagPDEzvt08m7+oy14jN6giujuFcvG0bV/6kOv808bDIfo6+l2
+         r+EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728396922; x=1729001722;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YbHZZTOAhsp8JBOuMrZ0YxXm19FoPjC7YvWjJGqNBfs=;
-        b=nY39jCXHUb9XLUC3EQrQ/NtzCQiOsVxRyKXRbtEO046Goku7j/GfeceEInKsGQG8f/
-         oeasVNfnJObjEeRJPP4+aDTEDDz38iI53PJ5u42o2W07fLb8XuYy3OXd5B3mQkRsD28v
-         4NFxEgSRvBn1irCilmflC5oDxmHU9rlPYsugp5r8kR8AlJGqtXrE86rudw4aX5Sp8Ojj
-         dGqVOg4dvFBFLZa7YIilK90OZmOs2eQhRxOTExLNm3aqaPKEm7hwU2abbLySUYWfG8c5
-         Xx0TMCXHWCFfQvO/rY81f8XhuUUsqmsjiY8A3ZhBQ5Lua+UpmHHFYIfIfzGVlof9Nfui
-         r+MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUo+Dpxyo1z0EwwVxHa2vpWw6j1bSUnRsvJch/6lPp64gkYEt2McGkknQRt/9ilLzvSLwnRzXrqDVU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynpF91o2jGeYXhYps30bJbwMjoudVuef/larGdzsC+azATTcYb
-	vysoaTU5h42wgBhhLAEO29Jd4oKKgf8vzGAja+Bcy0o0dinbZ5cUPA6nUwkkI7A=
-X-Google-Smtp-Source: AGHT+IEoQhbVmmbQMTTmc9qQqvTZ3+3Kk0Hi9yFcuaSu4B+QxOUVAbfHqw2zbJ89+CJkgxBFZGPM1A==
-X-Received: by 2002:a05:600c:450f:b0:42f:7ed4:4c26 with SMTP id 5b1f17b1804b1-42f8818577amr96674785e9.12.1728396921317;
-        Tue, 08 Oct 2024 07:15:21 -0700 (PDT)
-Received: from ?IPV6:2a04:cec2:a:a540:2f11:ef35:cca2:1960? ([2a04:cec2:a:a540:2f11:ef35:cca2:1960])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f8d133b73sm97911835e9.9.2024.10.08.07.15.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Oct 2024 07:15:20 -0700 (PDT)
-Message-ID: <ac765343-7804-4bd5-8057-d67fec2f17b1@baylibre.com>
-Date: Tue, 8 Oct 2024 16:15:19 +0200
+        d=1e100.net; s=20230601; t=1728402299; x=1729007099;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vSAg388iyowQSiF9vFdBp03eOks5liaKiRuZRS3VSgo=;
+        b=eOTEA3LH1O6J3UA5qGEw731g40rak35VAdD3gtbfpDXFEqvljTFIPcQ2BfcrI5YItv
+         0iitbM8KH8vJElnlo8bEtF7GrbnrU62Pmi6RxlyEVBI9QiNjNNZDsY/ac2IgMyrDka1k
+         g5CsKkdySPvHlDMGzidz2BzYG9E1q1S9dEW7MSrHcZmPCd2n2T3a6ADZXzYC++fRfElm
+         ymKE/kK3aowiYd11qCMMSJpbCeIJdDPS08FIKRZond1G6D34KP8Z7Jxd107Lw0HY5V/k
+         kFiPbjVlcoNQzV8xP1Ch4hHUTJfgrJHzmTCMtaatGj6z8gJpVz7OID6rXUOiNS2AHNy2
+         lSjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXg95iyIol475o7ZaHU1z8xrZBDYnDxg/gsB1dC825St/ShxsbRttlOny3Glh5j8BSkmsosJFgdUtQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbbQNcXHiJi4nbVAxkVApuXe1ugMD0LAzXqKXli+ByTQALPWRQ
+	UdceIDUoU9UJEwqcn9LquQaxvB7dMdYq/k7vILYb2wpv/4RCtncoHsFd3XJRer0=
+X-Google-Smtp-Source: AGHT+IF9OAOBnQbL91yQ3PAwKSMQxVqIuNhddIeWZgxSomQ3XhzKzEmh04oBqRljaOft4K1cRmG2hg==
+X-Received: by 2002:a05:600c:1907:b0:426:6326:4cec with SMTP id 5b1f17b1804b1-42f85af412bmr114058905e9.29.1728402299141;
+        Tue, 08 Oct 2024 08:44:59 -0700 (PDT)
+Received: from [127.0.1.1] (host-79-54-25-3.retail.telecomitalia.it. [79.54.25.3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f86b1d826sm129591215e9.26.2024.10.08.08.44.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Oct 2024 08:44:57 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH v5 00/10] iio: add support for the ad3552r AXI DAC IP
+Date: Tue, 08 Oct 2024 17:43:32 +0200
+Message-Id: <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-0-3d410944a63d@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/10] iio: adc: ad7606: Add iio-backend support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
- aardelean@baylibre.com, dlechner@baylibre.com,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20241004-ad7606_add_iio_backend_support-v3-0-38757012ce82@baylibre.com>
- <20241004-ad7606_add_iio_backend_support-v3-9-38757012ce82@baylibre.com>
- <20241005125318.0c4a7bc8@jic23-huawei>
-Content-Language: en-US
-From: Guillaume Stols <gstols@baylibre.com>
-In-Reply-To: <20241005125318.0c4a7bc8@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACRTBWcC/x3NQQrCMBBG4auUWTswSRxQryIu0masP0haktIWS
+ u9ucPlt3juoWoFVenQHFVtRMeUGvXQ0fGIejZGayYu/OpEbb5i5/3JMQdUXjjt4FQYmXqwuyCO
+ H5NTuYs56pdaZi72x/x/P13n+AFnG4ydzAAAA
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, dletchner@baylibre.com, 
+ Mark Brown <broonie@kernel.org>, 
+ Angelo Dureghello <adureghello@baylibre.com>, stable@vger.kernel.org, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.1
 
+Purpose is to add ad3552r AXI DAC (fpga-based) support.
 
-On 10/5/24 13:53, Jonathan Cameron wrote:
-> On Fri, 04 Oct 2024 21:48:43 +0000
-> Guillaume Stols <gstols@baylibre.com> wrote:
->
->> - Basic support for iio backend.
->> - Supports IIO_CHAN_INFO_SAMP_FREQ R/W.
->> - Only hardware mode is available, and that IIO_CHAN_INFO_RAW is not
->>    supported if iio-backend mode is selected.
-> I don't much like the trivial window between this patch and the next
-> where the emulated mode is still there but the sleeps aren't adapting with sampling frequency.
->
-> Maybe it's worth a dance of leaving the write_raw support
-> until after this one so the frequency remains fixed until after
-> the fsleep(2) calls are gone?
->
-> There is another bit that I'm unsure is technically correct until after
-> the next patch.  Maybe I'm reading the diff wrong though!
->
-> Thanks,
->
-> J
->
->> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
->> ---
->>   drivers/iio/adc/Kconfig      |   2 +
->>   drivers/iio/adc/ad7606.c     | 124 +++++++++++++++++++++++++++++++++++++------
->>   drivers/iio/adc/ad7606.h     |  15 ++++++
->>   drivers/iio/adc/ad7606_par.c |  94 +++++++++++++++++++++++++++++++-
->>   4 files changed, 219 insertions(+), 16 deletions(-)
->>
->> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->> index 4ab1a3092d88..9b52d5b2c592 100644
->> --- a/drivers/iio/adc/Kconfig
->> +++ b/drivers/iio/adc/Kconfig
->> @@ -224,9 +224,11 @@ config AD7606_IFACE_PARALLEL
->>   	tristate "Analog Devices AD7606 ADC driver with parallel interface support"
->>   	depends on HAS_IOPORT
->>   	select AD7606
->> +	select IIO_BACKEND
->>   	help
->>   	  Say yes here to build parallel interface support for Analog Devices:
->>   	  ad7605-4, ad7606, ad7606-6, ad7606-4 analog to digital converters (ADC).
->> +	  It also support iio_backended devices for AD7606B.
->>   
->>   	  To compile this driver as a module, choose M here: the
->>   	  module will be called ad7606_par.
->> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
->> index 3666a58f8a6f..d86eb7c3e4f7 100644
->> --- a/drivers/iio/adc/ad7606.c
->> +++ b/drivers/iio/adc/ad7606.c
->> @@ -21,6 +21,7 @@
->> @@ -737,6 +773,10 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
->>   			return ret;
->>   
->>   		return 0;
->> +	case IIO_CHAN_INFO_SAMP_FREQ:
->> +		if (val < 0 && val2 != 0)
->> +			return -EINVAL;
->> +		return ad7606_set_sampling_freq(st, val);
-> Currently I think  for the !backend + pwm case this can go out of
-> range for which that code works (fsleep removed in next patch).
-> Perhaps delay adding this until after that patch.
+The "ad3552r" AXI IP, a variant of the generic "DAC" AXI IP,
+has been created to reach the maximum speed (33MUPS) supported
+from the ad3552r. To obtain the maximum transfer rate, a custom
+IP core module has been implemented with a QSPI interface with
+DDR (Double Data Rate) mode.
 
-Hi Jonathan,
+The design is actually using the DAC backend since the register
+map is the same of the generic DAC IP, except for some customized
+bitfields. For this reason, a new "compatible" has been added
+in adi-axi-dac.c.
 
-The sampling frequency can be adjusted only for the backend version, 
-otherwise (including pwm+interrupt), there is no sysfs access to the 
-sampling frequency (only available for AD7606_BI_CHANNEL).
+Also, backend has been extended with all the needed functions
+for this use case, keeping the names gneric.
 
->>   	default:
->>   		return -EINVAL;
->>   	}
->> @@ -1108,7 +1186,24 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
->>   					       st->cnvst_pwm);
->>   		if (ret)
->>   			return ret;
->> +	}
->> +
->> +	if (st->bops->iio_backend_config) {
->> +		/*
->> +		 * If there is a backend, the PWM should not overpass the maximum sampling
->> +		 * frequency the chip supports.
->> +		 */
->> +		ret = ad7606_set_sampling_freq(st,
->> +					       chip_info->max_samplerate ? : 2 * KILO);
->> +		if (ret)
->> +			return ret;
->> +
->> +		ret = st->bops->iio_backend_config(dev, indio_dev);
->> +		if (ret)
->> +			return ret;
->> +		indio_dev->setup_ops = &ad7606_pwm_buffer_ops;
->>   	} else {
->> +		init_completion(&st->completion);
->>   		st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
->>   						  indio_dev->name,
->>   						  iio_device_id(indio_dev));
-> It's a little hard to unwind the patches, but this was previously in the !pwm case.
-> At this point in the series we still allow the pwm case to work with ! backend.
-> So is this now running in that case?   Do we need a temporary additional check
-> on !pwm
+The following patch is actually applying to linux-iio/testing.
 
-mmm actually this should not be in a condition in the PWM  patch. Will 
-fix this directly there.
+---
+Changes in v2:
+- use unsigned int on bus_reg_read/write
+- add a compatible in axi-dac backend for the ad3552r DAC IP
+- minor code alignment fixes
+- fix a return value not checked
+- change devicetree structure setting ad3552r-axi as a backend
+  subnode
+- add synchronous_mode_available in the ABI doc
 
->
->
->> @@ -1126,15 +1221,14 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
->>   						      &ad7606_buffer_ops);
->>   		if (ret)
->>   			return ret;
->> +		ret = devm_request_threaded_irq(dev, irq,
->> +						NULL,
->> +						&ad7606_interrupt,
->> +						IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
->> +						chip_info->name, indio_dev);
->> +		if (ret)
->> +			return ret;
->>   	}
->> -	ret = devm_request_threaded_irq(dev, irq,
->> -					NULL,
->> -					&ad7606_interrupt,
->> -					IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
->> -					chip_info->name, indio_dev);
->> -	if (ret)
->> -		return ret;
->> -
->>   	return devm_iio_device_register(dev, indio_dev);
->>   }
->>   EXPORT_SYMBOL_NS_GPL(ad7606_probe, IIO_AD7606);
->> diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
->> index b87be2f1ca04..6042f6799272 100644
->> --- a/drivers/iio/adc/ad7606_par.c
->> +++ b/drivers/iio/adc/ad7606_par.c
->> @@ -2,7 +2,8 @@
->> +
->> +static int ad7606_bi_setup_iio_backend(struct device *dev, struct iio_dev *indio_dev)
->> +{
->> +	struct ad7606_state *st = iio_priv(indio_dev);
->> +	unsigned int ret, c;
->> +	struct iio_backend_data_fmt data = {
->> +		.sign_extend = true,
->> +		.enable = true,
->> +	};
->> +
->> +	st->back = devm_iio_backend_get(dev, NULL);
->> +	if (IS_ERR(st->back))
->> +		return PTR_ERR(st->back);
->> +
->> +	/* If the device is iio_backend powered the PWM is mandatory */
->> +	if (!st->cnvst_pwm)
->> +		return dev_err_probe(st->dev, -EINVAL,
->> +				     "A PWM is mandatory when using backend.\n");
->> +
->> +	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret = devm_iio_backend_enable(dev, st->back);
->> +	if (ret)
->> +		return ret;
->> +
->> +	for (c = 0; c < indio_dev->num_channels; c++) {
->> +		ret = iio_backend_data_format_set(st->back, c, &data);
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	indio_dev->channels = ad7606b_bi_channels;
-> Ultimately this may want to move into the chip_info structures as more devices are added
-> but this is fine for now I suppose.
-Will do this in a next series where support is added for the other chips.
->
->> +	indio_dev->num_channels = 8;
->> +
->> +	return 0;
->> +}
+Changes in v3:
+- changing AXI backend approach using a dac ip compatible
+- fdt bindings updates accordingly
+- fdt, ad3552r device must be a subnode of the backend
+- allow probe of child devices
+- passing QSPI bus access function by platform data
+- move synchronous mode as a fdt parameter
+- reorganizing defines in proper patches
+- fix make dt_binding_check errors
+- fix ad3552r maximum SPI speed
+- fix samplerate calulcation
+- minor code style fixes
+
+Changes in v4:
+- fix Kconfig
+- fix backend documentation
+- driver renamed to a more gneric "high speed" (ad3552r-hs)
+- restyled axi-dac register names
+- removed synchronous support, dead code
+  (could be added in the future with David sugestions if needed)
+- renaming backend buffer enable/disable calls
+- using model_data in common code
+- using devm_add_action_or_reset
+- minor code style fixes
+
+Changes in v5:
+- patch 2/11 set before fix of ADI_DAC_R1_MODE patch
+- fix dt binding check error
+- patch 4/11 removed
+- fix stream enable/disable call names
+- fix axi-dac clock names
+- fix axi-dac platform device unregistering
+- minor code style fixes
+
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+
+---
+Angelo Dureghello (10):
+      iio: dac: adi-axi-dac: fix wrong register bitfield
+      iio: dac: adi-axi-dac: update register names
+      dt-bindings: iio: dac: ad3552r: add iio backend support
+      dt-bindings: iio: dac: adi-axi-dac: add ad3552r axi variant
+      iio: backend: extend features
+      iio: dac: adi-axi-dac: extend features
+      iio: dac: ad3552r: changes to use FIELD_PREP
+      iio: dac: ad3552r: extract common code (no changes in behavior intended)
+      iio: dac: ad3552r: add high-speed platform driver
+      iio: dac: adi-axi-dac: add registering of child fdt node
+
+ .../devicetree/bindings/iio/dac/adi,ad3552r.yaml   |   7 +
+ .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   |  56 ++-
+ drivers/iio/dac/Kconfig                            |  14 +
+ drivers/iio/dac/Makefile                           |   3 +-
+ drivers/iio/dac/ad3552r-common.c                   | 170 +++++++
+ drivers/iio/dac/ad3552r-hs.c                       | 526 +++++++++++++++++++++
+ drivers/iio/dac/ad3552r.c                          | 461 +++---------------
+ drivers/iio/dac/ad3552r.h                          | 207 ++++++++
+ drivers/iio/dac/adi-axi-dac.c                      | 483 ++++++++++++++++---
+ drivers/iio/industrialio-backend.c                 |  78 +++
+ include/linux/iio/backend.h                        |  17 +
+ include/linux/platform_data/ad3552r-hs.h           |  18 +
+ 12 files changed, 1573 insertions(+), 467 deletions(-)
+---
+base-commit: a620cae575523a8c922ad0842647ca38fc6ccd3c
+change-id: 20241008-wip-bl-ad3552r-axi-v0-iio-testing-3d15e90e1eb5
+
+Best regards,
+-- 
+Angelo Dureghello <adureghello@baylibre.com>
+
 

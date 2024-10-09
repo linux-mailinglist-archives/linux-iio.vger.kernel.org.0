@@ -1,170 +1,212 @@
-Return-Path: <linux-iio+bounces-10353-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10354-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25923996165
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Oct 2024 09:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F429964F6
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Oct 2024 11:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 575581C21CAA
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Oct 2024 07:50:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 824151C21B9A
+	for <lists+linux-iio@lfdr.de>; Wed,  9 Oct 2024 09:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2340183CC2;
-	Wed,  9 Oct 2024 07:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8D9190072;
+	Wed,  9 Oct 2024 09:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VArRZVCI"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="g/NX4I02"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CCD13AD39
-	for <linux-iio@vger.kernel.org>; Wed,  9 Oct 2024 07:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B75A18DF78
+	for <linux-iio@vger.kernel.org>; Wed,  9 Oct 2024 09:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728460216; cv=none; b=KjBgg+h92+ES8cKuzcRNGfuhiypJcl9+VluoNBapLqjCSZ3qYdhwWzVXcF8nvEWmJxU49gMGAuwvgOlP1nOBk/VCnADahL/jwQQDgdoSI7KWQ6mWwfIXFbVQZIiX5oKjX8/E4XDshcGxbIYPef9joFawuD5dMmaRgfPGx/+cV3U=
+	t=1728465588; cv=none; b=Bi0thLaqM5FCmbgjJrkmi2CR3TkTp4gz/EjMy2XD2DQDiDwGMWLe5nZuoP2cPdAGU+AtKN+kA+vAr66Web/PU3NLUFzfehjb/RThZcFvab3eF+ZJroZS8jP940KBPuZCZxdipwM5GD50kvjdWre4UUyjBXdpHQexM3gsC5cNosw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728460216; c=relaxed/simple;
-	bh=5x55/08d462FYxOjcK0FvLQICBYvfjVVslgvjMLUgWU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=agSvr834M/nUub++9bJpD6nPCkK+58NSXexssF2E4F3vQWHD+b56lMssEQ/xIX+f/E6PlWCjmSvTaz1ItUETAFOtT+2QGZHfdE9cf3lHUrcQN7b1KbHtpoN8UFjpBaKFWWJu/ne2vh08YyBm+SqL4ijQUxg7BjT6u48Unsal5GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VArRZVCI; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1728465588; c=relaxed/simple;
+	bh=n9NcSx6B6mq5gEWt7lUtBdnyNqrVS/k0PL3jsKufD5g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lnt5p49pHiR/cW52ft0abEX9DlChR1LmAqtGtu6DDnuKtDhXNGa2BIm5ved/beQcBe1dV4nSN+kkWE1GUwkM6T8vbLzTJSSVxzN52V4YQMPyMBHbPg6AZLQIFiwRjjSn8Svi1ICjV9peVrfgMSyMV1q7q8FEqc2g6pxre3SQGHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=g/NX4I02; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a9957588566so379669166b.3
-        for <linux-iio@vger.kernel.org>; Wed, 09 Oct 2024 00:50:14 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-42f56ad2afaso88160755e9.1
+        for <linux-iio@vger.kernel.org>; Wed, 09 Oct 2024 02:19:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728460213; x=1729065013; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MfO7/CdyTSaSdDUH8300s0Lf+paI5a7n8TXHV5lBIng=;
-        b=VArRZVCIU4rvaFKHRIE9BVna8CvLQ6Ivba4vIi4N21HovmLm/Tg1Hu0jhvaKkoLjlT
-         x3vaE9rSVyoJvosqmzz7QDbMj+Cz61FOm9N5IemI0hSyjtgo3YZJe1oUfBhWdxDVMXsN
-         rYQMojK2XzsJ162ZZcl/rA15QFvUY3RSlXgnvyWGuWMqIXYs95j8DzD7ozUNUwC/Io31
-         UpAlN0Qb9Q8RTWP+TOzKlvnjpxkqjIhQJ1vEXx8VwJhiqAlxb4k/ZjZQdMyvWRIRqSZs
-         7dhKHx9VMNXyl7etQ+9VB3KJ1w0nTLHBJv0ViehP4zlTqCiiC1XO2I9jOy11NXbequbV
-         4CXA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728465583; x=1729070383; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jBR7OYZriJhDfvISw9B9LqPMX41wXLMjEmHGfAiqmLI=;
+        b=g/NX4I02L2fPyqNGD/tN6mEzDnMMeD7pE5MlfoNWYJz4qYQobZ8wFJ8QuqHEx8QvB4
+         wyS1BE6KpcFuaajpDKiOGp6m5Eqw02xDjQJOs1KwEittqGLyJ/g+RrEA8C4/65zP6h4j
+         bi2Ca/rDpWy3n9Zq5LvDo+yYcZN2xiKtxRsekW/rUeKWo+o9o2hMLyYOlvrIHo4mwviT
+         IoFpPkEV+/akfHEetrKBKA/v6ZfrBbXzNHcZQ/P0WAgDnKStgHpOZDoyYF3SdsdAu5jc
+         ZSOhXI8FrgZK/7iZTO51S6O2t6XuElwSVU+++Y/V9/lGpBa3tnl0X+pym7NX3uTkIi1g
+         u7yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728460213; x=1729065013;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MfO7/CdyTSaSdDUH8300s0Lf+paI5a7n8TXHV5lBIng=;
-        b=Fhq+/Pf7fYTTc27qhcbtVniIV2mwByEAitWpQz7Zoiz8ByZ2xx56dAN/MdIHU8yM9s
-         T7V1/dMAR2Jc/yRf490pZ38UCLJuUoi9VGQsdo/0fiQLQWbnFRyVMoNP5I5xNSBK7m3l
-         Lt0vUzfgqFHWaK8mOdB5C+0+m4aZqzN0C4Bx5SCAJYa3aBcKvOOIjnW+Is+CLWO/IVlM
-         5imxX9s4SxzdTk5jl68zWjiU3xiiHaVU/VvlPDVpPiZgnogGtpZnxiEjxNwGuJ6n0lHu
-         XseICmMF1wxxxW7exoO7MyjlF0PIwreRPTHupw5z/SzFbz0kKOfZduRd4eF0WpXHp6RR
-         4X6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUjidj+rKG56bUrr8LEtzZQT2wbD+/2GN+rL5U9j5l8JMo5N/L5TfCUm/9YVoc+Rhj8iYDlx42PdoU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcpEuF/rfGiY44HZT/tvjMNAh/MBkg0m5efTZw9LQYB2P5GvmF
-	IAHW2N0KotgecnJFzUAy/1hIlD1t09wSLotEVLhpa1HJFMADv+EfEjzM5uZxa/4=
-X-Google-Smtp-Source: AGHT+IELkJha79eNO85lN2ia3GPVqHwF4PlD+FNkuvqkfUBcPiLqrkXjVGjtvNtH+Ngh14I9Ck87wQ==
-X-Received: by 2002:a17:907:c7d6:b0:a99:33dd:d8a0 with SMTP id a640c23a62f3a-a998d220fd7mr124352766b.38.1728460212845;
-        Wed, 09 Oct 2024 00:50:12 -0700 (PDT)
-Received: from localhost (p509151f9.dip0.t-ipconnect.de. [80.145.81.249])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a994c1c4c57sm457157566b.208.2024.10.09.00.50.12
+        d=1e100.net; s=20230601; t=1728465583; x=1729070383;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jBR7OYZriJhDfvISw9B9LqPMX41wXLMjEmHGfAiqmLI=;
+        b=imN7PP8kyRDMljXmyzEVCTiYuG0eBCz1H4noMrExnZuuYeKVhmxDMQyrIzv6mMqfBk
+         ET3QCJ/dKgVkOj3hvk+JS6Nqy7z01/EA+O5oJ8VNoxOjlEs/OlS6277bnToNVQfp4eZN
+         vR0bcjddgU0oHCsEvYUgCyNNh6dKsjqOoaSgzWQQkabM4hA9phOlPF9dwatvtIDtLSOM
+         Q0UZj+dwoaK8NdhZM69N+rb0Agv7K+d4fDh2z+5EFUJsvG244eyBeEkvcpboBdZPLEkD
+         IocugOj1KE40lX1Gu/f7fYkAKNSALa48MOeBYdlKV6GH21+t+58iwKWTyL81ljpzJYZy
+         /yJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ6EN4qNW9A3bW0Ji/z0LvTkPKxuGFKIGySKBopOpbiaDnYqGpiEb9OOi1zU6TawJk5h8nZ57UiEw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdVNWrbBbkC33Qm65qu/lkHU1VesKaG4z8PUU7lPIuOVVyh7ZE
+	Slu6aRKU0rA8XyvJpCkBa2hPA3hsP5fslu+YE1lNL7YqLQOX8FVrDUIB/dukG9s=
+X-Google-Smtp-Source: AGHT+IFjXWWvtj0jzmE/w31GHgXvDjDbLGpThHIRDRdfMpzR6HxFmqq2psvrZUA+k9uwR4WGYITAMQ==
+X-Received: by 2002:a05:600c:19ca:b0:42c:bbd5:727b with SMTP id 5b1f17b1804b1-430d70b3d31mr17564835e9.25.1728465582224;
+        Wed, 09 Oct 2024 02:19:42 -0700 (PDT)
+Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430d59b1207sm13892765e9.31.2024.10.09.02.19.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Oct 2024 00:50:12 -0700 (PDT)
-Date: Wed, 9 Oct 2024 09:50:11 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>, 
-	Olivier Moysan <olivier.moysan@foss.st.com>, Andy Shevchenko <andy@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Marcelo Schmitt <marcelo.schmitt@analog.com>, 
-	Mike Looijmans <mike.looijmans@topic.nl>, Marius Cristea <marius.cristea@microchip.com>, 
-	Dumitru Ceclan <mitrutzceclan@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Alisa-Dariana Roman <alisadariana@gmail.com>, 
-	Ivan Mikhaylov <fr0st61te@gmail.com>, Sergiu Cuciurean <sergiu.cuciurean@analog.com>, 
-	Dragos Bogdan <dragos.bogdan@analog.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v2 6/7] iio: adc: ad485x: add ad485x driver
-Message-ID: <mv2smx6m3iqocvplham74aqdcn2eaqmmj36tu7c7qzdjq7jlwu@w2zyijdslrpc>
-References: <20241004140922.233939-1-antoniu.miclaus@analog.com>
- <20241004140922.233939-6-antoniu.miclaus@analog.com>
+        Wed, 09 Oct 2024 02:19:41 -0700 (PDT)
+From: Guillaume Stols <gstols@baylibre.com>
+Subject: [PATCH v4 0/8] Add iio backend compatibility for ad7606
+Date: Wed, 09 Oct 2024 09:19:31 +0000
+Message-Id: <20241009-ad7606_add_iio_backend_support-v4-0-6971a8c0f1d5@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zvp6fihhtexug34p"
-Content-Disposition: inline
-In-Reply-To: <20241004140922.233939-6-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKNKBmcC/4XO3UrEMBCG4VtZcmxk8tMk3SPvQ6RMkqkbdNuad
+ IvL0ns3dkFBhB5+c/DMe2OFcqLCjocby7SkksahDv1wYOGEwyvxFOtmEqQGKxuO0RowHcbYpTR
+ 2HsMbDbErl2ka88yDBqGgQdNKzSoyZerT5/bg+eW+M31c6p/5fmQeC/Ewns9pPh5a48nYgAg9a
+ AlRC+mCN7YH6320aHrdEihk39YplXnM1619ERu2ZTqxm7kIDjwQKhLCC0T95PH6nnymx5qy6Yv
+ 8FVsJu6KsIpB11kkkG+EfUf2IAkDviqqKytnGgpCBnPwjruv6BQwvFpq/AQAA
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Michael Hennerich <michael.hennerich@analog.com>, 
+ linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
+ aardelean@baylibre.com, dlechner@baylibre.com, jstephan@baylibre.com, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Guillaume Stols <gstols@baylibre.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728465581; l=5077;
+ i=gstols@baylibre.com; s=20240417; h=from:subject:message-id;
+ bh=n9NcSx6B6mq5gEWt7lUtBdnyNqrVS/k0PL3jsKufD5g=;
+ b=8So2hJjBpW+YQoPjEqfgcs8pso2hqjXTv7ye0zuY1s3sg325sPLFleO65eS1Sts/VcXsxp6Ht
+ kxlSt+kMRklAr4uGyI7N+uBvarxBJ1NCGA8QJahVt7UdOiV28+XXM6L
+X-Developer-Key: i=gstols@baylibre.com; a=ed25519;
+ pk=XvMm5WHuV67sGYOJZqIYzXndbaJOlNd8Q6li6vnb4Cs=
 
+This series aims to add iio backend support for AD7606X ADCs.
 
---zvp6fihhtexug34p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In a nutshell, iio backend is a paradigm to shift the logic establishing
+the connexion between iio buffers and backend buffers into the backend's
+driver.  This provides a more stable programming interface to the driver
+developers, and give more flexibility in the way the hardware communicates.
 
-Hello,
+The support will be first added on AD7606B, and on next patches AD7606C16
+and AD7606C18 will be added.  The series have been tested on a Zedboard,
+using the latest HDL available, i.e
+https://github.com/analogdevicesinc/hdl/commit/7d0a4cee1b5fa403f175af513d7eb804c3bd75d0
+and an AD7606B FMCZ EKV.  This HDL handles both the conversion trigger
+(through a PWM), and the end of conversion interruption, and is compatible
+with axi-adc, which is "iio-backendable".
 
-On Fri, Oct 04, 2024 at 05:07:55PM +0300, Antoniu Miclaus wrote:
-> +static int ad485x_set_sampling_freq(struct ad485x_state *st, unsigned int freq)
-> +{
-> +	struct pwm_state cnv_state = {
-> +		.duty_cycle = AD485X_T_CNVH_NS,
-> +		.enabled = true,
-> +	};
-> +	int ret;
-> +
-> +	freq = clamp(freq, 0, st->info->throughput);
+More information about this HDL design can be found at:
+https://wiki.analog.com/resources/eval/user-guides/ad7606x-fmc/hdl
 
-freq == 0 will become a problem in the next code line. Increase the
-lower limit of the clamp to 1?!
+The support is thus separated in two parts:
 
-> +	cnv_state.period = DIV_ROUND_CLOSEST_ULL(GIGA, freq);
+- PWM support was first added.  My first intention was to make it available
+  for any version of the driver, but the time required to handle the
+  interruption is not neglectable, and I saw drifts that would eventually
+  cause an overlapping SPI read with a new conversion trigger, whith
+  catastrphic consequences. To mitigate this, CRC check must be
+  implemented, but indeed increasing the samplerate causes more sample to
+  be lost.  Therefore, I decided to only allow PWM for iio-backend
+  powered device as a first intention, leaving open the possibility to
+  add the general compatibility afterwards.
 
-Is ROUND_CLOSEST really the right thing here? The resulting period might
-result in a frequency higher than freq, still more given that
-pwm_apply_might_sleep() might round the period further down.
+- IIO backend support was added: Once the PWM support was ready, the driver
+  can be extended to iio-backend. The iio-backend powered version of the
+  driver is a platform driver, and an exemple devicetree node is available
+  in the bindings.
 
-> +	ret = pwm_apply_might_sleep(st->cnv, &cnv_state);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->sampling_freq = freq;
-> +
-> +	return 0;
-> +}
-> [...]
-> +static int ad485x_probe(struct spi_device *spi)
-> +{
-> [...]
-> +	st->cnv = devm_pwm_get(&spi->dev, NULL);
-> +	if (IS_ERR(st->cnv))
-> +		return PTR_ERR(st->cnv);
+The following features will be added in subsequent patch series:
+ - software mode for iio backend
+ - 18 bits mode (AD7606C18)
+ - single read (IIO_CHAN_READ_RAW)
 
-devm_pwm_get() is silent on error, so adding an error message here would
-be appropriate. I think the same applies to spi_get_device_match_data()
-below.
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+---
+Changes in v4:
+- Removal of accepted patches.
+- Correction on fsleep (missing semicolon and incorrect spelling !).
+- Correction on buffer initialization that should not be conditionned by
+  the presence or not of a PWM, but by the presence of a backend.
+- Addition of blank lines between blocks.
+- Modification of some declaration to switch variables to static.
+- Link to v3: https://lore.kernel.org/r/20241004-ad7606_add_iio_backend_support-v3-0-38757012ce82@baylibre.com
 
-> +	st->info = spi_get_device_match_data(spi);
-> +	if (!st->info)
-> +		return -ENODEV;
-> [...]
+Changes in v3:
+- Rebase on top of the series adding ad7606C16 and AD7606C18 support.
+- Addition of pwm-names actual values and improvement in the
+  description.
+- Introduction of .num_adc_channels field in ad7606_chip_info that
+  defines the number of hardware inputs.
+- Introduction of ad7606_bus_info which couples hardware and wiring
+  informations.
+- Addition of a delay in the scan_direct function for the backend.
+- Link to v2: https://lore.kernel.org/r/20240920-ad7606_add_iio_backend_support-v2-0-0e78782ae7d0@baylibre.com
 
-Best regards
-Uwe
+Changes in v2:
+- Logical change in dt-bindings, using a flag for the interface instead of
+  infering it from the value of the "reg" property.
+- Removal of get_platform_match_data addition, instead the logic is
+  directly used in the file.
+- Removal of use and export of pwm_get_state_hw, returning the configured
+  frequency instead of the running one.
+- Correction on various typos, whitespaces, bad order of includes.
+- Separation of SPI conditions and PWM disabling for no backend in other
+  commits.
+- Link to v1: https://lore.kernel.org/r/20240815-ad7606_add_iio_backend_support-v1-0-cea3e11b1aa4@baylibre.com
 
---zvp6fihhtexug34p
-Content-Type: application/pgp-signature; name="signature.asc"
+---
+Guillaume Stols (8):
+      dt-bindings: iio: adc: ad7606: Remove spi-cpha from required
+      dt-bindings: iio: adc: ad7606: Add iio backend bindings
+      Documentation: iio: Document ad7606 driver
+      iio: adc: ad7606: Add PWM support for conversion trigger
+      iio: adc: ad7606: Add compatibility to fw_nodes
+      iio: adc: ad7606: Introduce num_adc_channels
+      iio: adc: ad7606: Add iio-backend support
+      iio: adc: ad7606: Disable PWM usage for non backend version
 
------BEGIN PGP SIGNATURE-----
+ .../devicetree/bindings/iio/adc/adi,ad7606.yaml    |  72 ++-
+ Documentation/iio/ad7606.rst                       | 145 ++++++
+ Documentation/iio/index.rst                        |   1 +
+ MAINTAINERS                                        |   1 +
+ drivers/iio/adc/Kconfig                            |   2 +
+ drivers/iio/adc/ad7606.c                           | 575 +++++++++++++++------
+ drivers/iio/adc/ad7606.h                           |  51 +-
+ drivers/iio/adc/ad7606_par.c                       | 123 ++++-
+ drivers/iio/adc/ad7606_spi.c                       |  96 ++--
+ 9 files changed, 839 insertions(+), 227 deletions(-)
+---
+base-commit: 96be67caa0f0420d4128cb67f07bbd7a6f49e03a
+change-id: 20240725-ad7606_add_iio_backend_support-c401305a6924
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcGNbAACgkQj4D7WH0S
-/k79MAgAjXjh105N9kSxlycZQZdNxMqX57sWrLJQeFsKBrUH0z/v4SGfMejN2rYN
-XT+RQLRrNMIAqOpU6Akg8g5j2be4UBcEWbSLNgGoqeNZZHsfee6cIwHbfiFtIBEp
-mvVGWNGTjy0pExX3rui3t7Io/ox7/B0zYUa/UNDDuIED+7IVCAqrKAGxm/fCptzB
-eHqVj6LL1olNfpBRNiq4Bt3GX6VXausnsJnUL++Q1uD/iMtf87GoOZlq9nKC3KnO
-huG3IIJ/8XoDHCeSWk6hYYzivQKy9gop6jTojT5wBwrGo4KxWvDn/+/Dal5qnCIO
-qZw+/0E9QyXg5UThi+T1evBJ35a1CA==
-=sDLV
------END PGP SIGNATURE-----
+Best regards,
+--
+Guillaume Stols <gstols@baylibre.com>
 
---zvp6fihhtexug34p--
 

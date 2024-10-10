@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-10425-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10426-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED3F99942A
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 23:03:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0233599942D
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 23:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817061F27486
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 21:03:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CD1DB22104
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 21:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58D31EC012;
-	Thu, 10 Oct 2024 21:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323E41EF0A1;
+	Thu, 10 Oct 2024 21:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4TCImyp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YsggJZEV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCF91EB9F8;
-	Thu, 10 Oct 2024 21:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C80C1EBA1F;
+	Thu, 10 Oct 2024 21:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728594054; cv=none; b=kCZ5MjlPwMABN8ZrDqe2KUm4YCmFsGsA7zwBIrdjT6rxM6yQmvdJv83CMujk1Z/qAcQ/RxEM5ONwx7lpWSd9JX8UpmYR+LFY7DclU26BqOZdeDybh+DpLBRZKVYLLC6LjV8PpJpVl5hfkuORfBDNdAoeLrTsLHxVAFrjBJnd5uc=
+	t=1728594056; cv=none; b=gAa8ikynoQxKNYlfej0h0A7rLcrJyAu+DXI3eLoE0noHSbyfbSaML1L7DoWZskUif8/fC0U2pwvt896KirqCo72k5tvecYf5zIyT+NuSnv3b+xJZ+/CVgcQJeR9XeTrMMYfWZlFE/fuEk2q0T1SHgp1zymAeACZO6uTlq0vN8V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728594054; c=relaxed/simple;
-	bh=uh8NVnp9Ihq+FgmzA1DwT2r7T+ZgJqDWYmeKPcCtfUI=;
+	s=arc-20240116; t=1728594056; c=relaxed/simple;
+	bh=Ro3vKVwG9OrFe7D9KeNbV4BcFPOnK3BB+dJZIDGABNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JxPzvesqJ5CPSmHyuFSs8Ui0f85z4N033nw0QzaTV9BKjBL7aYwhs/5zxihD5p/tmuum2L+OBaYEs1Q2VN/NnIGQClvREf0Xk/7OfMDFxGa+Bw5/4CPotvSVqm/7LGSXkgwcutvihgmz32LwgfjDGGCxPA8fP/jCK6a6PYHWYM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4TCImyp; arc=none smtp.client-ip=209.85.208.43
+	 MIME-Version; b=UGTk4qpG5QPPdnQ1NAaBCTnuJbkfDqLN4LHxzVpnTyjwedk7D/PYhjGoJDibVAB04HxpVkU1S7v9g9JygQTR1M7W5cXODSaiVrEft8OYAN/sR/zZHqRuhx0MiZzfRtxTwK8aMMIwDUEa1jvdY70zJDQ4lLVpckipjePaewD3Q0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YsggJZEV; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5c941623a5aso1418817a12.0;
-        Thu, 10 Oct 2024 14:00:52 -0700 (PDT)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53991d05416so1802772e87.2;
+        Thu, 10 Oct 2024 14:00:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728594051; x=1729198851; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728594052; x=1729198852; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1N9aizlh41CXZ4byNCDj3AnGL9jqT8nuJlmW3/5gIfU=;
-        b=S4TCImypkWgoM0HSKNEl6KJDEYLMrsJJl2MRImR5Jz9P5x35IEsXkiNrxIGSxYxH0x
-         d3VEalJsJpm9FdYn2cmj7scVabxWzi4A3nSK5bsnUanWIu0BZcWbZO52uwpTY3m69eql
-         GkqwA1YSVxVGM9S7MS/tk+qu7REF0A3QTP1uLrOqeEog1tKM3yXIjybWBtqRY4QJeb8z
-         05t4WMq2AGCpvXkJDH+jR6hGMpDBZ/BMLZILNpTtwQLxg4EGqdVw+xjFeg4ImdEtkGjO
-         oqL5BhSIhuT4UVfrQVWTArkZm27AdKsyzZ/MeCVklZaHM20Kng8kla92n3M5E/9jyEfY
-         GI5Q==
+        bh=2CdvgLs5EyJHbZgt0XAtnGGoYU5wfKc655jog4d69Is=;
+        b=YsggJZEVSeiDAjAZ58NAVlKT7ZaVsPZa5yTsgIerTvx7ZcasnIyfPSDil/+5afR60F
+         nJGGwTwXvmMjGDvhCMd1SeTQod/LAMjdb/ziOqNRH62fIpYo0TWwdQUIEWXx2eZIM2PR
+         KpSC/gfA5Fxzl0qshHQDII5n31BuRxr8/n/x82+GfRXB4dhJRz2oZbzzJxkoUSrZ8oYZ
+         /8RLbB9qL4zLRdDDTCLqFkgoqmrwp/BKJWbVcFAadQZsjrDQup8prUHxR6oHx05fbLEB
+         1PauQ6K0yw6J2hfpjrDnlS5uI92ybsBY1sXXdyS88AOQpdtB1nQoSRj+d9Yct/JzeuAP
+         G0og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728594051; x=1729198851;
+        d=1e100.net; s=20230601; t=1728594052; x=1729198852;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1N9aizlh41CXZ4byNCDj3AnGL9jqT8nuJlmW3/5gIfU=;
-        b=jls5nDn+6P5O7t/7CCk3L1yf15R1UMwnBAEm9cZ5sMTw5PRdM+tDLEk+xFA2O4m3tL
-         yXTjQ+Mt2Nb/DLwKe8JGWyDkQpkkXtg8+MwJAQDxAEQfCvoOeEzIZPaiqysi7VzvBBY6
-         /PCw4sSyBMcSEyLIeudVHpWPhdIzZnoUn74YR8gRBmNznZhAYsTnjufJeBPfaPZMVh27
-         p/U/+XAMLZ/HGNlOQ/mARWqazQXY7Ur95h/Tb9c6qAnKnT8kXlch3rmgY1w/hT+QGyNN
-         ebic+vr59MS2AApeH7nqusaBoTl48Thj+7EiEG9cCBYYmolsAZ6ZIWdEXMRipnVtyTQ8
-         wVhA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOJoYJE8Obwh8mqywetgNG3PysMFTlC3pS5C2YRSyw65t6s4zGD0tOGzffzvcJ+qMZPQLfrDLFItVCJAsF@vger.kernel.org, AJvYcCVc6A47Mx0YVJD/2OAoazQIdzb97AE06rl9TWyXYGzr1XPqa0GU4u77evioYXnNIVqENDtDPVs1+0wM@vger.kernel.org, AJvYcCVwFH4+XL3xgtEAoPPcXzdiNB0qGvNxB/Ayg4XT2dp22iNEPLP9+J91HSaxOIsEHDIvNlQMPvrreLzt@vger.kernel.org
-X-Gm-Message-State: AOJu0YyttOJ58Gp2yQrsPT1+92skao69Rls9GojBCUuzn3mitxKeqJLD
-	FdO7MBUv9rJndE/ODDe2Jx/5xSdB9twne/ACENyQi9IaPNwsc5F+
-X-Google-Smtp-Source: AGHT+IFchXI6GpNj3shGEtlnTjxkiGv7lzRcgDZUxwca9Xsl9OIuZ2W3a/v8iPADiYiFAC314TOYvA==
-X-Received: by 2002:a17:907:7e87:b0:a99:57c3:1fbb with SMTP id a640c23a62f3a-a99a10ed84dmr450015766b.9.1728594051159;
-        Thu, 10 Oct 2024 14:00:51 -0700 (PDT)
+        bh=2CdvgLs5EyJHbZgt0XAtnGGoYU5wfKc655jog4d69Is=;
+        b=L99rBsbdwzhNjXcBd3xS7qsN/YMENSBtSnElBZ12+hJYyiaB8N1o901ahap+8dj4Up
+         4okeGo6Azf46oDmBrFT78+EbSxlXuXraBNjvZMmp7yetFnNW+JZ7EId0ddzprujMlELE
+         9vtyL7O5epZhrkGeqOnFfju5sKpyVRv+oKFf5KG+QmtMzUqTIspF2UJR5CuMuHJfjWg/
+         UB5HiShw1wU1MVWRPcTtAVcXtS5X5QiKGl1drUzBQZUPnHzMlf5vaEe7voIeTyT53S9t
+         9XAWXgisEaeBCv2n4xCNNJZ8q1R/sjpjRbyZu3Ef4/yGgo3DvrBPdW0dUhmenQmECA8O
+         0pCA==
+X-Forwarded-Encrypted: i=1; AJvYcCVTXwqNULTiEDFddqGLoWekMshLFzIIf5Nz61v6Yf506bbuPq5NxK4ehyyh6qca77sh1oUhYVjtYIWp@vger.kernel.org, AJvYcCX0M2L2J+p3UJolg8b6IWQ/JMa5p82lXEdTRUKXbbacF12osKKaxrwhCpamXVQoUIOTmhsdrOe4+nWR@vger.kernel.org, AJvYcCXeSTI2JFwnh9VGf0Nik2+QFYiFkIiNbd+OLSo4M9jfOMoedp1vGoIsXpkAiokI8MepNmU9FF+pZzyatoiK@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjwxYnc8k8+oR2+MphPxVn9925aIcFk5IX/gWnkhqw5ayWTzFM
+	rZibOsq2Zq/ukVHKDRib0WmI4y6Av5i5xoJArMikUF3SNCVAFrN5ZPUbG07t
+X-Google-Smtp-Source: AGHT+IH4L2gJ42cSXuloYs3N4M3zCvTDsJLBQzoH7Qk61ueY6LwVwLS83bEg0pvjJXN8c6IFzkQL3Q==
+X-Received: by 2002:a05:6512:1083:b0:539:8d9b:b61c with SMTP id 2adb3069b0e04-539da592814mr99256e87.51.1728594052062;
+        Thu, 10 Oct 2024 14:00:52 -0700 (PDT)
 Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:7eab:ec9d:62da:64f5])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a99a7f25f4dsm135692566b.68.2024.10.10.14.00.49
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a99a7f25f4dsm135692566b.68.2024.10.10.14.00.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 14:00:50 -0700 (PDT)
+        Thu, 10 Oct 2024 14:00:51 -0700 (PDT)
 From: vamoirid <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -80,9 +80,9 @@ Cc: vassilisamir@gmail.com,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 09/13] iio: chemical: bme680: Move ambient temperature to attributes
-Date: Thu, 10 Oct 2024 23:00:26 +0200
-Message-ID: <20241010210030.33309-10-vassilisamir@gmail.com>
+Subject: [PATCH v1 10/13] iio: chemical: bme680: generalize read_*() functions
+Date: Thu, 10 Oct 2024 23:00:27 +0200
+Message-ID: <20241010210030.33309-11-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241010210030.33309-1-vassilisamir@gmail.com>
 References: <20241010210030.33309-1-vassilisamir@gmail.com>
@@ -96,96 +96,145 @@ Content-Transfer-Encoding: 8bit
 
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-Remove the ambient temperature from being a macro and implement it as
-an attribute. This way, it is possible to dynamically configure the
-ambient temperature of the environment to improve the accuracy of the
-measurements.
+Remove the IIO specific scaling measurement units from the read functions
+and add them inside the ->read_raw() function to keep the read_*() generic.
+This way they can be used in other parts of the driver.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/chemical/bme680.h      |  1 -
- drivers/iio/chemical/bme680_core.c | 35 +++++++++++++++++++++++++++++-
- 2 files changed, 34 insertions(+), 2 deletions(-)
+ drivers/iio/chemical/bme680_core.c | 65 ++++++++++++++++++------------
+ 1 file changed, 40 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
-index e9e3e08fa366..95d39c154d59 100644
---- a/drivers/iio/chemical/bme680.h
-+++ b/drivers/iio/chemical/bme680.h
-@@ -45,7 +45,6 @@
- #define BME680_REG_RES_HEAT_0			0x5A
- #define BME680_REG_GAS_WAIT_0			0x64
- #define BME680_ADC_GAS_RES			GENMASK(15, 6)
--#define BME680_AMB_TEMP				25
- 
- #define BME680_REG_CTRL_GAS_1			0x71
- #define   BME680_RUN_GAS_MASK			BIT(4)
 diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index 5fd5740bb7fe..0979c8f0afcf 100644
+index 0979c8f0afcf..4669338ec2e5 100644
 --- a/drivers/iio/chemical/bme680_core.c
 +++ b/drivers/iio/chemical/bme680_core.c
-@@ -120,6 +120,7 @@ struct bme680_data {
- 	u16 heater_temp;
- 
- 	struct regulator_bulk_data supplies[BME680_NUM_SUPPLIES];
-+	int ambient_temp;
- 
- 	union {
- 		u8 buf[3];
-@@ -483,7 +484,7 @@ static u8 bme680_calc_heater_res(struct bme680_data *data, u16 temp)
- 	if (temp > 400) /* Cap temperature */
- 		temp = 400;
- 
--	var1 = (((s32)BME680_AMB_TEMP * calib->par_gh3) / 1000) * 256;
-+	var1 = (((s32)data->ambient_temp * calib->par_gh3) / 1000) * 256;
- 	var2 = (calib->par_gh1 + 784) * (((((calib->par_gh2 + 154009) *
- 						temp * 5) / 100)
- 						+ 3276800) / 10);
-@@ -878,6 +879,37 @@ static int bme680_write_raw(struct iio_dev *indio_dev,
+@@ -661,22 +661,20 @@ static int bme680_gas_config(struct bme680_data *data)
  	return ret;
  }
  
-+static ssize_t ambient_temp_show(struct device *dev,
-+				 struct device_attribute *attr, char *buf)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct bme680_data *data = iio_priv(indio_dev);
-+	int vals[2];
-+
-+	vals[0] = data->ambient_temp;
-+	vals[1] = 1;
-+
-+	return iio_format_value(buf, IIO_VAL_INT, 1, vals);
-+}
-+
-+static ssize_t ambient_temp_store(struct device *dev,
-+				  struct device_attribute *attr,
-+				  const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct bme680_data *data = iio_priv(indio_dev);
-+	int ret, val_int, val_fract;
-+
-+	ret = iio_str_to_fixpoint(buf, 1, &val_int, &val_fract);
-+	if (ret)
-+		return ret;
-+
-+	data->ambient_temp = val_int;
-+	return len;
-+}
-+
-+static IIO_DEVICE_ATTR_RW(ambient_temp, 0);
-+
- static const char bme680_oversampling_ratio_show[] = "1 2 4 8 16";
+-static int bme680_read_temp(struct bme680_data *data, int *val)
++static int bme680_read_temp(struct bme680_data *data, s16 *comp_temp)
+ {
+ 	int ret;
+ 	u32 adc_temp;
+-	s16 comp_temp;
  
- static IIO_CONST_ATTR(oversampling_ratio_available,
-@@ -885,6 +917,7 @@ static IIO_CONST_ATTR(oversampling_ratio_available,
+ 	ret = bme680_read_temp_adc(data, &adc_temp);
+ 	if (ret)
+ 		return ret;
  
- static struct attribute *bme680_attributes[] = {
- 	&iio_const_attr_oversampling_ratio_available.dev_attr.attr,
-+	&iio_dev_attr_ambient_temp.dev_attr.attr,
- 	NULL,
- };
+-	comp_temp = bme680_compensate_temp(data, adc_temp);
+-	*val = comp_temp * 10; /* Centidegrees to millidegrees */
+-	return IIO_VAL_INT;
++	*comp_temp = bme680_compensate_temp(data, adc_temp);
++	return 0;
+ }
  
+-static int bme680_read_press(struct bme680_data *data, int *val, int *val2)
++static int bme680_read_press(struct bme680_data *data, u32 *comp_press)
+ {
+ 	int ret;
+ 	u32 adc_press;
+@@ -690,15 +688,14 @@ static int bme680_read_press(struct bme680_data *data, int *val, int *val2)
+ 	if (ret)
+ 		return ret;
+ 
+-	*val = bme680_compensate_press(data, adc_press, t_fine);
+-	*val2 = 1000;
+-	return IIO_VAL_FRACTIONAL;
++	*comp_press = bme680_compensate_press(data, adc_press, t_fine);
++	return 0;
+ }
+ 
+-static int bme680_read_humid(struct bme680_data *data, int *val, int *val2)
++static int bme680_read_humid(struct bme680_data *data, u32 *comp_humidity)
+ {
+ 	int ret;
+-	u32 adc_humidity, comp_humidity;
++	u32 adc_humidity;
+ 	s32 t_fine;
+ 
+ 	ret = bme680_get_t_fine(data, &t_fine);
+@@ -709,14 +706,11 @@ static int bme680_read_humid(struct bme680_data *data, int *val, int *val2)
+ 	if (ret)
+ 		return ret;
+ 
+-	comp_humidity = bme680_compensate_humid(data, adc_humidity, t_fine);
+-
+-	*val = comp_humidity;
+-	*val2 = 1000;
+-	return IIO_VAL_FRACTIONAL;
++	*comp_humidity = bme680_compensate_humid(data, adc_humidity, t_fine);
++	return 0;
+ }
+ 
+-static int bme680_read_gas(struct bme680_data *data, int *val)
++static int bme680_read_gas(struct bme680_data *data, int *comp_gas_res)
+ {
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 	int ret;
+@@ -751,9 +745,8 @@ static int bme680_read_gas(struct bme680_data *data, int *val)
+ 	}
+ 
+ 	gas_range = FIELD_GET(BME680_GAS_RANGE_MASK, gas_regs_val);
+-
+-	*val = bme680_compensate_gas(data, adc_gas_res, gas_range);
+-	return IIO_VAL_INT;
++	*comp_gas_res = bme680_compensate_gas(data, adc_gas_res, gas_range);
++	return 0;
+ }
+ 
+ static int __bme680_read_raw(struct iio_dev *indio_dev,
+@@ -761,7 +754,7 @@ static int __bme680_read_raw(struct iio_dev *indio_dev,
+ 			     int *val, int *val2, long mask)
+ {
+ 	struct bme680_data *data = iio_priv(indio_dev);
+-	int ret;
++	int chan_val, ret;
+ 
+ 	guard(mutex)(&data->lock);
+ 
+@@ -777,13 +770,35 @@ static int __bme680_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		switch (chan->type) {
+ 		case IIO_TEMP:
+-			return bme680_read_temp(data, val);
++			ret = bme680_read_temp(data, (s16 *)&chan_val);
++			if (ret)
++				return ret;
++
++			*val = chan_val * 10;
++			return IIO_VAL_INT;
+ 		case IIO_PRESSURE:
+-			return bme680_read_press(data, val, val2);
++			ret = bme680_read_press(data, &chan_val);
++			if (ret)
++				return ret;
++
++			*val = chan_val;
++			*val2 = 1000;
++			return IIO_VAL_FRACTIONAL;
+ 		case IIO_HUMIDITYRELATIVE:
+-			return bme680_read_humid(data, val, val2);
++			ret = bme680_read_humid(data, &chan_val);
++			if (ret)
++				return ret;
++
++			*val = chan_val;
++			*val2 = 1000;
++			return IIO_VAL_FRACTIONAL;
+ 		case IIO_RESISTANCE:
+-			return bme680_read_gas(data, val);
++			ret = bme680_read_gas(data, &chan_val);
++			if (ret)
++				return ret;
++
++			*val = chan_val;
++			return IIO_VAL_INT;
+ 		default:
+ 			return -EINVAL;
+ 		}
 -- 
 2.43.0
 

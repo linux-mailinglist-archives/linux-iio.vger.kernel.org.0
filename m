@@ -1,196 +1,130 @@
-Return-Path: <linux-iio+bounces-10395-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10396-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525D5998DB5
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 18:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6130D998E04
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 19:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE59E28243B
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 16:43:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC222835D4
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 17:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCDC198A3F;
-	Thu, 10 Oct 2024 16:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A1519C55F;
+	Thu, 10 Oct 2024 17:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GDklZcCV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D03F1957E4;
-	Thu, 10 Oct 2024 16:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FEE199FDE
+	for <linux-iio@vger.kernel.org>; Thu, 10 Oct 2024 17:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728578585; cv=none; b=IQBP6BZVpstZbD1DAQfgFSSJqVmj5G1wrSH5oZxua/SLSqGbJxAQRw4HE4YZOlXKJs1RXNHFygHNQNLDE9jnJtHnxyFz6zYi7lqn0uzOkQgZUSQjR95Cq50C0TEONF+As9oQFjwmKCzli05qR8KhJNHMMT3zVsN1+X90gI2fd6w=
+	t=1728579917; cv=none; b=fqRjxOntZVhchofuUBFq6VUNKrtJqDFOABdII7jUuR6PxQMM4cWt7ArD0HHEsuWTEBHo5X9wnJa6Gr67VSlh/A2VhYhszEVqvna8fXLdzHRezgr4X/J8onD9rZvSkd9mB/TdCatk/vhAGiT37gEyLIKs1aaePp3ykmz7p3PNFRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728578585; c=relaxed/simple;
-	bh=r4NtgP9B0pH09kJ7304ht3TV5b9FeLsxkrKrQhRaH1k=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=toS0ECZ0Ux8m3GPr6vSsplaWZUzzage7syugRwsplojxPK1DFvKEve87Wk/s3zLybozfc4uXxwJtMb4ELMNK7fgZbVONyhACjk0MFXGGmcXrrePnrY6eSBF0bOBeBql0/QwYyDBwrNC76RirY6JMcTLa4FOnV4cJIRErGP/Iz84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XPbBC3w18z6K6t7;
-	Fri, 11 Oct 2024 00:41:39 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id EF2A6140C98;
-	Fri, 11 Oct 2024 00:43:00 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 10 Oct
- 2024 18:43:00 +0200
-Date: Thu, 10 Oct 2024 17:42:59 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
-CC: Jonathan Cameron <jic23@kernel.org>, "lars@metafoo.de" <lars@metafoo.de>,
-	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"dima.fedrau@gmail.com" <dima.fedrau@gmail.com>, "marcelo.schmitt1@gmail.com"
-	<marcelo.schmitt1@gmail.com>, "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Lorenz Christian (ME-SE/EAD2)"
-	<Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike (ME/PJ-SW3)"
-	<Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
-	<Kai.Dolde@de.bosch.com>
-Subject: Re: [PATCH v8 2/2] iio: imu: smi240: add driver
-Message-ID: <20241010174259.00003742@Huawei.com>
-In-Reply-To: <AM8PR10MB47213230C6E43976AF244587CD782@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-References: <20240923124017.43867-1-Jianping.Shen@de.bosch.com>
-	<20240923124017.43867-3-Jianping.Shen@de.bosch.com>
-	<20240928181121.0e62f0ad@jic23-huawei>
-	<AM8PR10MB47217960E30212DC62ED7821CD712@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-	<20241006121025.50802061@jic23-huawei>
-	<AM8PR10MB47213230C6E43976AF244587CD782@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1728579917; c=relaxed/simple;
+	bh=9FveIuz13TN1AblFtkPdTceZQD0iMtQCCXeK7qgN+sQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H9hwQF5Ir2KnN+p3dPW5lzikPA96GLzVHJFDkW925C6dO93QGFjkt7RGgLMOfDdevwNQcxb+e3OcAOLEHfOoNbIeTFdsZCOpFQT79BafVFVqwkVN9RD7l/L+VrGgRoeDE01c1OZY9F4Jmf60z9d5tP1TqV0C5PU/eUUysxQQz84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GDklZcCV; arc=none smtp.client-ip=209.85.160.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-287c5745a9bso499774fac.0
+        for <linux-iio@vger.kernel.org>; Thu, 10 Oct 2024 10:05:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728579914; x=1729184714; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I4N1UJJB6VzHlLEJOiTTygzAjBQKfKndu8bsLaiWrQc=;
+        b=GDklZcCV0V5t69mCLp1hPAlZj7Q34mB9pilkAHCuQ6GD7zjq76KR/cWymcoOR8ECb3
+         rz22mG8RUFoSwg2QVZJJmA+zpZFd5TKPlsUzviEhX6JF4RgH2ktFRkrbabKlJH1c1DQI
+         Usj9x4m/TATFDzqO2qxwznag8+tz/nqSq2uMBVcwTfp1CLx7+tvrGZYJVA4OmfdwvJS2
+         k7mCGiaTpx6jj+GSqMp6gK9LYArn0PR/Fe5xQSA5Min2PgJ0dQ5v5eHJx7L8xZE7hGzB
+         21G+FjgF06zXGQotXD7Qfh6fvCluxUJlS60/45VSF86fM9vK8oOPcZJLKilIvTCiUpV2
+         lESQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728579914; x=1729184714;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I4N1UJJB6VzHlLEJOiTTygzAjBQKfKndu8bsLaiWrQc=;
+        b=DxHObPXAH4dxfBdyG/Idxilbl+mmbqWdSBNCPtjyLGWpY0en4gKm/vyYTqmxNs+Eml
+         1BeWAhoVBsPRTwPYtQQf6avtz3/uJefEf+USm2KjJQSzwDI/IY1wYRXHTbelMJSyCftY
+         ib7qGe4vrga3m2QcXeAzSr7AlV7se3mgPvBSTPIaevAqCxgVHuGQHXFPgPRoZcXBr5DM
+         BYC6LD0ZRHlP/MyfE97I94xqe5KSEC8BSDswsu2rXdRo+Du/CLIpqdte45tK/mz4P27f
+         0u3jlS+4NbgAad6gBSjBwJM1m2iK3xrKBMxwsQayN/TC05QFu4fykaTpSrd+8bFJhZaj
+         vQLg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4aeGj2LSrPdQETYhGysXEqFWNBMq7IfmdFa6Ir1YTGH2nmL+WppQP1uSVoMtY3jSoVbs+ucF6Mv8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw205ZVUhiDrQkKVKEmpYpmNOOve5zSvX2vyDW/qvUAS3iaSJwy
+	IeEW/p1IMpCAx/zyM/xyFfJJqk4lmDq6IQ7TppLBj5kBDr/no7l7sYoctWQsMjs=
+X-Google-Smtp-Source: AGHT+IFBejNCLo9F+D5dkmW3LXQHsQ8mLCJvv5I50aqSbJ78R7mOKvr0yeKfoBHIYX6hJzvpQBBBrw==
+X-Received: by 2002:a05:6870:c1c3:b0:277:c027:1960 with SMTP id 586e51a60fabf-2883434b155mr4612084fac.25.1728579914084;
+        Thu, 10 Oct 2024 10:05:14 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2885844a8b7sm369613fac.58.2024.10.10.10.05.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Oct 2024 10:05:12 -0700 (PDT)
+Message-ID: <71c4a073-1b5e-42d3-8fee-a2a5215d5856@baylibre.com>
+Date: Thu, 10 Oct 2024 12:05:11 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/7] iio: adc: ad485x: add ad485x driver
+To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Sa, Nuno" <Nuno.Sa@analog.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Andy Shevchenko <andy@kernel.org>,
+ "Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
+ Mike Looijmans <mike.looijmans@topic.nl>,
+ Marius Cristea <marius.cristea@microchip.com>,
+ Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>,
+ Ivan Mikhaylov <fr0st61te@gmail.com>,
+ "Cuciurean, Sergiu" <Sergiu.Cuciurean@analog.com>,
+ "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
+References: <20241004140922.233939-1-antoniu.miclaus@analog.com>
+ <20241004140922.233939-6-antoniu.miclaus@analog.com>
+ <CAHp75VeaYBGTA7sN7SefsyMj09kaJLBoMz4=hf0GpxiXtF65+Q@mail.gmail.com>
+ <CY4PR03MB33992F19FF780FF86234426A9B7E2@CY4PR03MB3399.namprd03.prod.outlook.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <CY4PR03MB33992F19FF780FF86234426A9B7E2@CY4PR03MB3399.namprd03.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, 10 Oct 2024 15:02:18 +0000
-"Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com> wrote:
+On 10/8/24 5:48 AM, Miclaus, Antoniu wrote:
+>>> +static int ad485x_get_calibscale(struct ad485x_state *st, int ch, int *val, int
+>> *val2)
+>>> +{
+>>> +       unsigned int reg_val;
+>>> +       int gain;
+>>
+>> Should be u8 gain[2] and...
+> 
+> As discussed in previous patch series, the bulk operations won't work for these
+> chips. The CS needs to be raised between each byte read/written.
+> 
 
-> >> >> +static int smi240_regmap_spi_read(void *context, const void *reg_buf,
-> >> >> +				  size_t reg_size, void *val_buf,
-> >> >> +				  size_t val_size)
-> >> >> +{
-> >> >> +	int ret;
-> >> >> +	u32 request, response;
-> >> >> +	u16 *val = val_buf;
-> >> >> +	struct spi_device *spi = context;
-> >> >> +	struct iio_dev *indio_dev = dev_get_drvdata(&spi->dev);
-> >> >> +	struct smi240_data *iio_priv_data = iio_priv(indio_dev);
-> >> >> +
-> >> >> +	if (reg_size != 1 || val_size != 2)
-> >> >> +		return -EINVAL;
-> >> >> +
-> >> >> +	request = FIELD_PREP(SMI240_WRITE_BUS_ID_MASK, SMI240_BUS_ID);
-> >> >> +	request |= FIELD_PREP(SMI240_WRITE_CAP_BIT_MASK, iio_priv_data-
-> >> >>capture);
-> >> >> +	request |= FIELD_PREP(SMI240_WRITE_ADDR_MASK, *(u8 *)reg_buf);
-> >> >> +	request |= smi240_crc3(request, SMI240_CRC_INIT,
-> >> >> +SMI240_CRC_POLY);
-> >> >> +
-> >> >> +	iio_priv_data->spi_buf = cpu_to_be32(request);
-> >> >> +
-> >> >> +	/*
-> >> >> +	 * SMI240 module consists of a 32Bit Out Of Frame (OOF)
-> >> >> +	 * SPI protocol, where the slave interface responds to
-> >> >> +	 * the Master request in the next frame.
-> >> >> +	 * CS signal must toggle (> 700 ns) between the frames.
-> >> >> +	 */
-> >> >> +	ret = spi_write(spi, &iio_priv_data->spi_buf, sizeof(request));
-> >> >> +	if (ret)
-> >> >> +		return ret;
-> >> >> +
-> >> >> +	ret = spi_read(spi, &iio_priv_data->spi_buf, sizeof(response));
-> >> >> +	if (ret)
-> >> >> +		return ret;
-> >> >> +
-> >> >> +	response = be32_to_cpu(iio_priv_data->spi_buf);
-> >> >> +
-> >> >> +	if (!smi240_sensor_data_is_valid(response))
-> >> >> +		return -EIO;
-> >> >> +
-> >> >> +	*val = cpu_to_le16(FIELD_GET(SMI240_READ_DATA_MASK, response));  
-> >> >So this is line sparse doesn't like which is reasonable given you are
-> >> >forcing an le16 value into a u16.
-> >> >Minimal fix is just to change type of val to __le16 *
-> >> >
-> >> >I still find the endian handling in here mess and am not convinced
-> >> >the complexity is strictly necessary or correct.
-> >> >
-> >> >I'd expect the requirements of reordering to be same in read and
-> >> >write directions (unless device is really crazy), so why do we need a
-> >> >conversion to le16 here but not one from le16 in the write?  
-> >>
-> >> Hello Jonathan,
-> >>
-> >> yes, you are right. The "cpu_to_le16" is not required at all.  SMI240 does not use  
-> >the standard SPI protocol, on the other side the regmap is designed to use
-> >standard SPI protocol (by default) and may flip the register value dependent on
-> >"val_format_endian".
-> >
-> >It should still need to place the two bytes of that 16 bit value in the correct order to send to hardware.  That may be handled via a 32 bit word length on SPI though.  
-> 
-> 
-> This is the most confusing part.  During the request preparation, we focus on the bit order not the byte order. We need to bring the 16 bit value in the correct bit order, to the correct bit position in the 32 bit request. This is automatically guarantied using FIELD_PREP. FIELD_PREP shifts the data 15-0 to request 18-3. We shall never manually change the byte order of the 16 bit value. The byte order (of the whole request) becomes important when we send it over spi, which will be explained later.
-> 
-> 
-> >>When the both work together, it may lead to confusing.  Let me make it clear.
-> >>
-> >> In the SMI240, the register address is 8 bit and each register is 16 bit. We do not have any register value, which is bigger than 16 bit and need to be stored in multiple registers.  Therefore the device does not need endian. Neither big endian nor Little Endian.   To access the register, it is important to prepare the request frame according to the specification.
-> >>
-> >> A request is 32 bit
-> >>
-> >> 	ID	ADR	W	CAP	*	WDATA	CRC
-> >> 	31-30	29-22	21	20	19	18-3		2-0
-> >>
-> >> ID: device id (if more than 1 device)
-> >> ADR: reg address
-> >> W: write/read
-> >> CAP: capture mode on/off
-> >> *: reserved
-> >> WDATA : reg value bit 15-0 
-> >> CRC: check sum
-> >>
-> >> To prepare the request properly, the bit order is here critical. We need to put each part in its bit position. The request is created as a local u32, with help of FIELD_PREP, we put the value of each part to its bit position. FIELD_PREP will take care of the cpu endian and always put the value to the correct bit position. Before we send the request via SPI, a cpu endian to big endian conversion is required.  
-> >
-> >So there are two possibilities here.  Either the byte order is just reversed for the device in which case fine as you describe or perhaps the SPI transfers should be using a 32 bit word?  You'd do that by overriding the bits_per_word in the individual SPI transfers.
-> >
-> >  
-> >> Since the spi bus transfers data using big endian. When we get the response from spi, the response is big endian and need to be converted in cpu endian.  Any other manually endian conversion is not required.  
-> >
-> >The SPI bus itself has no real concept of endian as such. It just sends bits in the order it is fed them.  The device may require a particular ordering of course if we assume it makes sense to break the transfers up into byte size chnunks.  
-> 
-> 
-> Yes, the device expect that the 32 bit request will be sent from MSBit to LSBit. Which means the ID shall be sent firstly, followed by ADR, W, CAP, *, WDATA, CRC.  If we consider the 32 bit as 4 bytes , then the MSB need to sent firstly, and followed by the LSBs. From this perspective we can say that the SMI240 SPI protocol requires big endian. On the host side the request is a local u32 (4 bytes). To make sure that the MSB will be sent firstly we need to convert the request to big endian before sending it over spi.
+So the datasheet is wrong and Streaming Instruction Mode doesn't actually work?
 
-Understood.  Try a 32 bit word size for the spi transfers.
-I think that should make everything work without any
-need to make it big endian.
-
-Jonathan
-
-> 
-> Best regards
-> Jianping Shen
-> 
-> 
-> >See if setting the word size to 32 bits solves your issues without the need for any endian conversions.
-> >
-> >Jonathan
-> >
-> >  
-> 
-> 
+There is also Nonstreaming Instruction Mode if we need to read/write nonconsecutive
+registers without deasserting CS.
 
 

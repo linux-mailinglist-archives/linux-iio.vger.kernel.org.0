@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-10424-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10425-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59612999427
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 23:02:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED3F99942A
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 23:03:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D2B71C264C2
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 21:02:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817061F27486
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 21:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CAA1EBA0A;
-	Thu, 10 Oct 2024 21:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58D31EC012;
+	Thu, 10 Oct 2024 21:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jGNpw4Tw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4TCImyp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE4B1EABBD;
-	Thu, 10 Oct 2024 21:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCF91EB9F8;
+	Thu, 10 Oct 2024 21:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728594053; cv=none; b=Yowrce51JWdTWjDDO01UydCyu6nB85fXO8ekRkadQ/TaKtYxTeWx2VQzxI0TuNZok/5EjYl8Y3zsI7ex/HjZlSReq/nFTPKkb/JusvgbFp/Fd8gY6CItr40Z8ZttV0hayV3R00LUMFw+hFavWGlhX+0FrVjx9dHdQuRC9nXM6nU=
+	t=1728594054; cv=none; b=kCZ5MjlPwMABN8ZrDqe2KUm4YCmFsGsA7zwBIrdjT6rxM6yQmvdJv83CMujk1Z/qAcQ/RxEM5ONwx7lpWSd9JX8UpmYR+LFY7DclU26BqOZdeDybh+DpLBRZKVYLLC6LjV8PpJpVl5hfkuORfBDNdAoeLrTsLHxVAFrjBJnd5uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728594053; c=relaxed/simple;
-	bh=uGwAGY5iqtreG1Rl2Q91IZhfZ4uzMS1tFym9aD9lrZc=;
+	s=arc-20240116; t=1728594054; c=relaxed/simple;
+	bh=uh8NVnp9Ihq+FgmzA1DwT2r7T+ZgJqDWYmeKPcCtfUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tc3EpHLfu2lpqmMeJH2kHPNyUeyv2AAVP5LyGlnvfVLmxbwRryKCs1QWzcEM7Oj9XKHyeslLRjwKgtr7lgvcyOt4rlfisFcP4p/YuGgWZeAagkiQPMj2TwFkfjVGZZe9j8Sdhb52tqUa/PGpxMqAHyyBGDL99yfMQNaQalx5nnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jGNpw4Tw; arc=none smtp.client-ip=209.85.218.42
+	 MIME-Version; b=JxPzvesqJ5CPSmHyuFSs8Ui0f85z4N033nw0QzaTV9BKjBL7aYwhs/5zxihD5p/tmuum2L+OBaYEs1Q2VN/NnIGQClvREf0Xk/7OfMDFxGa+Bw5/4CPotvSVqm/7LGSXkgwcutvihgmz32LwgfjDGGCxPA8fP/jCK6a6PYHWYM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4TCImyp; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a994ecf79e7so223231366b.0;
-        Thu, 10 Oct 2024 14:00:50 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5c941623a5aso1418817a12.0;
+        Thu, 10 Oct 2024 14:00:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728594049; x=1729198849; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728594051; x=1729198851; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aaXqSuLsFI5WdaDUrYSVDsiRhV/evheqKshVzEAvGPw=;
-        b=jGNpw4Twpmxg6629bD3Q/9kPzvVyBam3abI4y5ZQpTd8cYgWa05m9hbbW7HoscMK3I
-         g6puV4QCXRkZE2tf9al/bKg2D8YifOtdvl+PFByeb1Kqy0tAJnGZzHjIgrU73NLTqV7i
-         zwfClLhCHcbop3vvbdh64WrGr/8vi9Hs1iPtS7X4OW+o/NE80HDIRhFTfY8VHNASqNjw
-         1MIrLjXtVvQeIgvsg3iBHsDboi9d5x1QBGtDrHNHSbPGIsVsK+oNQG+xzPZEmVtRw0oN
-         zOrkRO/ZSxXMldtr+65nvKBWxjAIPiDAnoIMr8iG/BP8YZ+R0Mwpp9NJ4wTqNXzoZNWg
-         M5Lg==
+        bh=1N9aizlh41CXZ4byNCDj3AnGL9jqT8nuJlmW3/5gIfU=;
+        b=S4TCImypkWgoM0HSKNEl6KJDEYLMrsJJl2MRImR5Jz9P5x35IEsXkiNrxIGSxYxH0x
+         d3VEalJsJpm9FdYn2cmj7scVabxWzi4A3nSK5bsnUanWIu0BZcWbZO52uwpTY3m69eql
+         GkqwA1YSVxVGM9S7MS/tk+qu7REF0A3QTP1uLrOqeEog1tKM3yXIjybWBtqRY4QJeb8z
+         05t4WMq2AGCpvXkJDH+jR6hGMpDBZ/BMLZILNpTtwQLxg4EGqdVw+xjFeg4ImdEtkGjO
+         oqL5BhSIhuT4UVfrQVWTArkZm27AdKsyzZ/MeCVklZaHM20Kng8kla92n3M5E/9jyEfY
+         GI5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728594049; x=1729198849;
+        d=1e100.net; s=20230601; t=1728594051; x=1729198851;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aaXqSuLsFI5WdaDUrYSVDsiRhV/evheqKshVzEAvGPw=;
-        b=Tejd9bH0uaMXvpw1mQuGpBedx/59Soxn607RYd7dxdhsZ2bQZXtRKVeeHeTCLR8a3G
-         ZSS9Iuhq48OY/T/vLFKu+enCfgZnVrD9ahN3R4BdY6kq/+N9apT0H5ZUlVt392pa7Zok
-         twcHmb/aSXDEgkzCEIBHij6cxxc69LV0jUd6LaG8UfyFD0C69UFsrVtv+of7XzG9cJTF
-         IFc4CkzaxDipr4JXKe711nIAK6h/GWODLdrnJGGSOwzGBB+HBcaU3rHiVDGmuw0lgG+7
-         09nu+pI3YXK4E1RXTwL5npUqJwV5OVRwszKaximMDW7UC2wzDst9zqbWM/FdgXlL3xYT
-         o0GA==
-X-Forwarded-Encrypted: i=1; AJvYcCVh7XECYTsHWwAZkqqGbgkhIcAOUObM+EN4sBA2QSqr57Q29dTHaT3gtVnkMFfWb8oJ0mKI/dNfC50+@vger.kernel.org, AJvYcCX95H1cEsxdHUZQstjOxZ1tOBDdBGzY9ylSj686eQyhIwxuZN3lUb2oKaOGJNhX40gn6dvfjnFZsWzJIwLl@vger.kernel.org, AJvYcCXwYdAVT8y65N6LT0jbhn1s1k4Tk4c4ZAvZTRMAgRxLfNi8ZP5/19Js9YWp0/VbMb5m8wMWithj7crr@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEXqdU0G9VXK8WBWDF0hHtBaLQJY3QYphOqsgwY1jMMpJ2mByk
-	BgNQ9evp1NR0NsrfHOClSHPSnzNxEoa5wgmvAcwMndlEVmoxd4Z+
-X-Google-Smtp-Source: AGHT+IGDsfwzeqAdM57791o3FOb4sGtnBah0MtDXYgkYPGoPAhOaix3Z0ep25ZNxWyEP+xHGsEPKJg==
-X-Received: by 2002:a17:907:86ab:b0:a8b:ddf4:46f1 with SMTP id a640c23a62f3a-a99b9678822mr23747066b.63.1728594049459;
-        Thu, 10 Oct 2024 14:00:49 -0700 (PDT)
+        bh=1N9aizlh41CXZ4byNCDj3AnGL9jqT8nuJlmW3/5gIfU=;
+        b=jls5nDn+6P5O7t/7CCk3L1yf15R1UMwnBAEm9cZ5sMTw5PRdM+tDLEk+xFA2O4m3tL
+         yXTjQ+Mt2Nb/DLwKe8JGWyDkQpkkXtg8+MwJAQDxAEQfCvoOeEzIZPaiqysi7VzvBBY6
+         /PCw4sSyBMcSEyLIeudVHpWPhdIzZnoUn74YR8gRBmNznZhAYsTnjufJeBPfaPZMVh27
+         p/U/+XAMLZ/HGNlOQ/mARWqazQXY7Ur95h/Tb9c6qAnKnT8kXlch3rmgY1w/hT+QGyNN
+         ebic+vr59MS2AApeH7nqusaBoTl48Thj+7EiEG9cCBYYmolsAZ6ZIWdEXMRipnVtyTQ8
+         wVhA==
+X-Forwarded-Encrypted: i=1; AJvYcCUOJoYJE8Obwh8mqywetgNG3PysMFTlC3pS5C2YRSyw65t6s4zGD0tOGzffzvcJ+qMZPQLfrDLFItVCJAsF@vger.kernel.org, AJvYcCVc6A47Mx0YVJD/2OAoazQIdzb97AE06rl9TWyXYGzr1XPqa0GU4u77evioYXnNIVqENDtDPVs1+0wM@vger.kernel.org, AJvYcCVwFH4+XL3xgtEAoPPcXzdiNB0qGvNxB/Ayg4XT2dp22iNEPLP9+J91HSaxOIsEHDIvNlQMPvrreLzt@vger.kernel.org
+X-Gm-Message-State: AOJu0YyttOJ58Gp2yQrsPT1+92skao69Rls9GojBCUuzn3mitxKeqJLD
+	FdO7MBUv9rJndE/ODDe2Jx/5xSdB9twne/ACENyQi9IaPNwsc5F+
+X-Google-Smtp-Source: AGHT+IFchXI6GpNj3shGEtlnTjxkiGv7lzRcgDZUxwca9Xsl9OIuZ2W3a/v8iPADiYiFAC314TOYvA==
+X-Received: by 2002:a17:907:7e87:b0:a99:57c3:1fbb with SMTP id a640c23a62f3a-a99a10ed84dmr450015766b.9.1728594051159;
+        Thu, 10 Oct 2024 14:00:51 -0700 (PDT)
 Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:7eab:ec9d:62da:64f5])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a99a7f25f4dsm135692566b.68.2024.10.10.14.00.48
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a99a7f25f4dsm135692566b.68.2024.10.10.14.00.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 14:00:48 -0700 (PDT)
+        Thu, 10 Oct 2024 14:00:50 -0700 (PDT)
 From: vamoirid <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -80,9 +80,9 @@ Cc: vassilisamir@gmail.com,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 08/13] iio: chemical: bme680: add power management
-Date: Thu, 10 Oct 2024 23:00:25 +0200
-Message-ID: <20241010210030.33309-9-vassilisamir@gmail.com>
+Subject: [PATCH v1 09/13] iio: chemical: bme680: Move ambient temperature to attributes
+Date: Thu, 10 Oct 2024 23:00:26 +0200
+Message-ID: <20241010210030.33309-10-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241010210030.33309-1-vassilisamir@gmail.com>
 References: <20241010210030.33309-1-vassilisamir@gmail.com>
@@ -96,197 +96,96 @@ Content-Transfer-Encoding: 8bit
 
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-Add runtime power management to the device. To facilitate this, add also
-a struct dev * inside the bme680_data structure to have the device
-accesible from the data structure.
+Remove the ambient temperature from being a macro and implement it as
+an attribute. This way, it is possible to dynamically configure the
+ambient temperature of the environment to improve the accuracy of the
+measurements.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/chemical/bme680.h      |   1 +
- drivers/iio/chemical/bme680_core.c | 100 +++++++++++++++++++++++++++--
- 2 files changed, 95 insertions(+), 6 deletions(-)
+ drivers/iio/chemical/bme680.h      |  1 -
+ drivers/iio/chemical/bme680_core.c | 35 +++++++++++++++++++++++++++++-
+ 2 files changed, 34 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
-index e55a48982b3e..e9e3e08fa366 100644
+index e9e3e08fa366..95d39c154d59 100644
 --- a/drivers/iio/chemical/bme680.h
 +++ b/drivers/iio/chemical/bme680.h
-@@ -75,6 +75,7 @@
- #define BME680_CALIB_RANGE_3_LEN               5
+@@ -45,7 +45,6 @@
+ #define BME680_REG_RES_HEAT_0			0x5A
+ #define BME680_REG_GAS_WAIT_0			0x64
+ #define BME680_ADC_GAS_RES			GENMASK(15, 6)
+-#define BME680_AMB_TEMP				25
  
- extern const struct regmap_config bme680_regmap_config;
-+extern const struct dev_pm_ops bmp280_dev_pm_ops;
- 
- int bme680_core_probe(struct device *dev, struct regmap *regmap,
- 		      const char *name);
+ #define BME680_REG_CTRL_GAS_1			0x71
+ #define   BME680_RUN_GAS_MASK			BIT(4)
 diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index a2039b966f20..5fd5740bb7fe 100644
+index 5fd5740bb7fe..0979c8f0afcf 100644
 --- a/drivers/iio/chemical/bme680_core.c
 +++ b/drivers/iio/chemical/bme680_core.c
-@@ -14,6 +14,7 @@
- #include <linux/device.h>
- #include <linux/log2.h>
- #include <linux/module.h>
-+#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
+@@ -120,6 +120,7 @@ struct bme680_data {
+ 	u16 heater_temp;
  
-@@ -111,6 +112,7 @@ struct bme680_data {
- 	struct regmap *regmap;
- 	struct bme680_calib bme680;
- 	struct mutex lock; /* Protect multiple serial R/W ops to device. */
-+	struct device *dev;
- 	u8 oversampling_temp;
- 	u8 oversampling_press;
- 	u8 oversampling_humid;
-@@ -753,9 +755,9 @@ static int bme680_read_gas(struct bme680_data *data, int *val)
- 	return IIO_VAL_INT;
+ 	struct regulator_bulk_data supplies[BME680_NUM_SUPPLIES];
++	int ambient_temp;
+ 
+ 	union {
+ 		u8 buf[3];
+@@ -483,7 +484,7 @@ static u8 bme680_calc_heater_res(struct bme680_data *data, u16 temp)
+ 	if (temp > 400) /* Cap temperature */
+ 		temp = 400;
+ 
+-	var1 = (((s32)BME680_AMB_TEMP * calib->par_gh3) / 1000) * 256;
++	var1 = (((s32)data->ambient_temp * calib->par_gh3) / 1000) * 256;
+ 	var2 = (calib->par_gh1 + 784) * (((((calib->par_gh2 + 154009) *
+ 						temp * 5) / 100)
+ 						+ 3276800) / 10);
+@@ -878,6 +879,37 @@ static int bme680_write_raw(struct iio_dev *indio_dev,
+ 	return ret;
  }
  
--static int bme680_read_raw(struct iio_dev *indio_dev,
--			   struct iio_chan_spec const *chan,
--			   int *val, int *val2, long mask)
-+static int __bme680_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int *val, int *val2, long mask)
- {
- 	struct bme680_data *data = iio_priv(indio_dev);
- 	int ret;
-@@ -803,14 +805,29 @@ static int bme680_read_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static int bme680_read_raw(struct iio_dev *indio_dev,
-+			   struct iio_chan_spec const *chan,
-+			   int *val, int *val2, long mask)
++static ssize_t ambient_temp_show(struct device *dev,
++				 struct device_attribute *attr, char *buf)
 +{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 +	struct bme680_data *data = iio_priv(indio_dev);
-+	int ret;
++	int vals[2];
 +
-+	pm_runtime_get_sync(data->dev);
-+	ret = __bme680_read_raw(indio_dev, chan, val, val2, mask);
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
++	vals[0] = data->ambient_temp;
++	vals[1] = 1;
 +
-+	return ret;
++	return iio_format_value(buf, IIO_VAL_INT, 1, vals);
 +}
 +
- static bool bme680_is_valid_oversampling(int rate)
- {
- 	return (rate > 0 && rate <= 16 && is_power_of_2(rate));
- }
- 
--static int bme680_write_raw(struct iio_dev *indio_dev,
--			    struct iio_chan_spec const *chan,
--			    int val, int val2, long mask)
-+static int __bme680_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val, int val2, long mask)
- {
- 	struct bme680_data *data = iio_priv(indio_dev);
- 
-@@ -846,6 +863,21 @@ static int bme680_write_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static int bme680_write_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val, int val2, long mask)
++static ssize_t ambient_temp_store(struct device *dev,
++				  struct device_attribute *attr,
++				  const char *buf, size_t len)
 +{
++	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
 +	struct bme680_data *data = iio_priv(indio_dev);
-+	int ret;
++	int ret, val_int, val_fract;
 +
-+	pm_runtime_get_sync(data->dev);
-+	ret = __bme680_write_raw(indio_dev, chan, val, val2, mask);
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
++	ret = iio_str_to_fixpoint(buf, 1, &val_int, &val_fract);
++	if (ret)
++		return ret;
 +
-+	return ret;
++	data->ambient_temp = val_int;
++	return len;
 +}
++
++static IIO_DEVICE_ATTR_RW(ambient_temp, 0);
 +
  static const char bme680_oversampling_ratio_show[] = "1 2 4 8 16";
  
  static IIO_CONST_ATTR(oversampling_ratio_available,
-@@ -873,6 +905,15 @@ static void bme680_regulators_disable(void *data)
- 	regulator_bulk_disable(BME680_NUM_SUPPLIES, supplies);
- }
+@@ -885,6 +917,7 @@ static IIO_CONST_ATTR(oversampling_ratio_available,
  
-+static void bme680_pm_disable(void *data)
-+{
-+	struct device *dev = data;
-+
-+	pm_runtime_get_sync(dev);
-+	pm_runtime_put_noidle(dev);
-+	pm_runtime_disable(dev);
-+}
-+
- int bme680_core_probe(struct device *dev, struct regmap *regmap,
- 		      const char *name)
- {
-@@ -887,6 +928,7 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
- 	data = iio_priv(indio_dev);
- 	mutex_init(&data->lock);
- 	dev_set_drvdata(dev, indio_dev);
-+	data->dev = dev;
- 	data->regmap = regmap;
- 	indio_dev->name = name;
- 	indio_dev->channels = bme680_channels;
-@@ -947,10 +989,56 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
- 		return dev_err_probe(dev, ret,
- 				     "failed to set gas config data\n");
+ static struct attribute *bme680_attributes[] = {
+ 	&iio_const_attr_oversampling_ratio_available.dev_attr.attr,
++	&iio_dev_attr_ambient_temp.dev_attr.attr,
+ 	NULL,
+ };
  
-+	/* Enable runtime PM */
-+	pm_runtime_get_noresume(dev);
-+	pm_runtime_set_active(dev);
-+	pm_runtime_enable(dev);
-+	pm_runtime_set_autosuspend_delay(dev, BME680_STARTUP_TIME_US * 100);
-+	pm_runtime_use_autosuspend(dev);
-+	pm_runtime_put(dev);
-+
-+	ret = devm_add_action_or_reset(dev, bme680_pm_disable, dev);
-+	if (ret)
-+		return ret;
-+
- 	return devm_iio_device_register(dev, indio_dev);
- }
- EXPORT_SYMBOL_NS_GPL(bme680_core_probe, IIO_BME680);
- 
-+static int bme680_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bme680_data *data = iio_priv(indio_dev);
-+
-+	return regulator_bulk_disable(BME680_NUM_SUPPLIES, data->supplies);
-+}
-+
-+static int bme680_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct bme680_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regulator_bulk_enable(BME680_NUM_SUPPLIES, data->supplies);
-+	if (ret)
-+		return ret;
-+
-+	fsleep(BME680_STARTUP_TIME_US);
-+
-+	ret = bme680_chip_config(data);
-+	if (ret)
-+		return ret;
-+
-+	ret = bme680_gas_config(data);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+EXPORT_RUNTIME_DEV_PM_OPS(bme680_dev_pm_ops, bme680_runtime_suspend,
-+			  bme680_runtime_resume, NULL);
-+
- MODULE_AUTHOR("Himanshu Jha <himanshujha199640@gmail.com>");
- MODULE_DESCRIPTION("Bosch BME680 Driver");
- MODULE_LICENSE("GPL v2");
 -- 
 2.43.0
 

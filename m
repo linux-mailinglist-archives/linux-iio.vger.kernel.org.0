@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-10409-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10410-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7486998F87
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 20:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15303998F88
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 20:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67DBC1F25E07
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 18:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9F061F24A78
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 18:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7081CB33E;
-	Thu, 10 Oct 2024 18:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F9A1C9B64;
+	Thu, 10 Oct 2024 18:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X1CkxC8H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/MvHNRR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1D41C9EA4
-	for <linux-iio@vger.kernel.org>; Thu, 10 Oct 2024 18:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CE6198831;
+	Thu, 10 Oct 2024 18:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728583985; cv=none; b=P4IUYIIrvdLHJPdcrW/wERIxJYDzL5XFqToMZ5GwmDJ8KZFrg1ZyCan7iXp+jNcKrjjzFf2Y8HaiP2YWadnXxUnjIm+MugdahMiTaKy1OB3hgqGLbNNWjziBlSw3sKAZKamzdAkjuQJg92iLMpIbKv7YrkQUL+BI6DTBZfZtOF4=
+	t=1728584031; cv=none; b=Hottj3L1TVTd8yy9+wjwbGk6qXJL2ZwGaSTQOm3YW4VRCg+OvEdJfEsa1GnH/wgJGfKpL/HWMQrxESy8oMCj7RXDlV74Ie5EXulS8D9C1gY+X3hiC88skgNoY6YSujMlIcpXd8iE6oDIx09Mo/ohOuNdNhr4ZCdmcHFl4pyRnDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728583985; c=relaxed/simple;
-	bh=kK7ORtn7CCFgTPYFfGDMNziOx7VnEuNtFva4gEqB5lE=;
+	s=arc-20240116; t=1728584031; c=relaxed/simple;
+	bh=jpr9buFT7NlA1GqSd4pkyNy9vIKUIND+QOAsYNG3+h8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iL5igG4GxYhoY4hCbC9oZJ81OChdEcn9iw9dR/CWDXw7S6SBj+cSkXPqmthM4X848vmJkw4OjmSFl/pKNxWw6ZxageJgTo/YwrePyLThV+V34BucpIZvMiKj0hibTmDfCCsFpCujdn7dLNvJTPYldmF91WYsdMavTWV8V48HODw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X1CkxC8H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAADC4CEC5;
-	Thu, 10 Oct 2024 18:13:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J1nuLK6R3rK1jfRoqNvBp/mEuAvhcYTg+YwJfeAShDDJwVcBA065Oz/Pwj6UeRvTeYGg6MJOBK05zIYeDDcrHKebskMg9Z54cz5SKx/54QjwgeZDq1zsUAYimHRBZI2QVsGWVCL4QVHFYLFyww60OpQ1EpqH1DvhAgLsW7A4+3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/MvHNRR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F03DC4CEC5;
+	Thu, 10 Oct 2024 18:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728583985;
-	bh=kK7ORtn7CCFgTPYFfGDMNziOx7VnEuNtFva4gEqB5lE=;
+	s=k20201202; t=1728584030;
+	bh=jpr9buFT7NlA1GqSd4pkyNy9vIKUIND+QOAsYNG3+h8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X1CkxC8Hl8r3q7aHQSnal65OQWhi1Q1594A6FTeZZ/eBu0QeCPuuxdk8r49aQTwqp
-	 jXyIch0aZEQ4LSeGuuIbHiFfgRazJXidFvSgN+eD6IUW68V1NjqbPOL+Fb+JbhyF4A
-	 yLMrOQBY7PnkDv+aolBXemaDeQTtd1T2cEq7Ce3ba47YvmLn68nWOSsjirnpwj50Vi
-	 fxM6dryvkJ6klObfeM0bQSVu3J6I1w7TwDEVH7dYEMuSeVJuboBzxRlptOzbBHdNGV
-	 367+gseVXPBnxCFDWg7bRPu/In6eEnKsYKr+d/qbKqJjAKYjdxxPF7El9k1+ZjlG3d
-	 dBvTwj0MTlMzg==
-Date: Thu, 10 Oct 2024 19:12:56 +0100
+	b=V/MvHNRRigE3LMZo594vknMwHoOY908W61JiHLfUva4bEy5kqq9ZJNI3KGfzcC924
+	 yez/3xoTIvaIdC0I3MHdlHreG3WVYz5TmmDqVAkhkQPEKfrwoy5EzuA5+YymcSuK9v
+	 7z1y4QQ/5Djw8OLxewtFgvPeM417c5lT271mzp3yH4i23qHiMAoH4wyqYHv4/4f9ag
+	 TYIKg/29hJYqjS8oGaWQXdkgAuFebGzWyB2Az/aZ6Indoyrg7o7tJKVqOh1sfkRXeo
+	 K3FPOhZ/AFfXUCS+lGGwMxw1ZrDmAEMti9dP6dcasljlhuq/7pAlHb+EVh1eIH6NAk
+	 fp1aNDwu9QbYw==
+Date: Thu, 10 Oct 2024 19:13:43 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH 0/4] iio: frequecy: adf4371: minor improvements
-Message-ID: <20241010191256.106a5cd4@jic23-huawei>
-In-Reply-To: <20241009-dev-adf4371-minor-improv-v1-0-97f4f22ed941@analog.com>
-References: <20241009-dev-adf4371-minor-improv-v1-0-97f4f22ed941@analog.com>
+To: Tarang Raval <tarang.raval@siliconsignals.io>
+Cc: jagathjog1996@gmail.com, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: bmi323: remove redundant register definition
+Message-ID: <20241010191343.3b298812@jic23-huawei>
+In-Reply-To: <20241009111828.43371-1-tarang.raval@siliconsignals.io>
+References: <20241009111828.43371-1-tarang.raval@siliconsignals.io>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,36 +57,36 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 09 Oct 2024 16:16:42 +0200
-Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Wed,  9 Oct 2024 16:47:51 +0530
+Tarang Raval <tarang.raval@siliconsignals.io> wrote:
 
-> Just some simple and minor cleanups.
-All look good to me.
+> BMI323_STEP_SC1_REG was defined twice.
+> 
+> Redundant definition has been removed
+> 
+> Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
+Applied. Thanks,
 
-Applied.
+Jonathan
 
->=20
 > ---
-> Nuno Sa (4):
->       iio: frequency: adf4371: make use of spi_get_device_match_data()
->       iio: frequency: adf4371: drop spi_set_drvdata()
->       iio: frequency: adf4371: drop clkin from struct adf4371_state
->       iio: frequency: adf4371: make use of dev_err_probe()
->=20
->  drivers/iio/frequency/adf4371.c | 63 +++++++++++++++++++++--------------=
-------
->  1 file changed, 32 insertions(+), 31 deletions(-)
-> ---
-> base-commit: 96be67caa0f0420d4128cb67f07bbd7a6f49e03a
-> change-id: 20241009-dev-adf4371-minor-improv-e7ee6aea3e6e
-> --
->=20
-> Thanks!
-> - Nuno S=C3=A1
->=20
->=20
+>  drivers/iio/imu/bmi323/bmi323.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/iio/imu/bmi323/bmi323.h b/drivers/iio/imu/bmi323/bmi323.h
+> index 209bccb1f335..b4cfe92600a4 100644
+> --- a/drivers/iio/imu/bmi323/bmi323.h
+> +++ b/drivers/iio/imu/bmi323/bmi323.h
+> @@ -141,7 +141,6 @@
+>  #define BMI323_STEP_SC1_REG			0x10
+>  #define BMI323_STEP_SC1_WTRMRK_MSK		GENMASK(9, 0)
+>  #define BMI323_STEP_SC1_RST_CNT_MSK		BIT(10)
+> -#define BMI323_STEP_SC1_REG			0x10
+>  #define BMI323_STEP_LEN				2
+>  
+>  /* Tap gesture config registers */
 
 

@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-10426-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10427-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0233599942D
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 23:03:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4890999942F
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 23:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CD1DB22104
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 21:03:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB61B1F277F1
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 21:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323E41EF0A1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30AA1EF0B9;
 	Thu, 10 Oct 2024 21:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YsggJZEV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d+9uvBZP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C80C1EBA1F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFE11EBFF8;
 	Thu, 10 Oct 2024 21:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728594056; cv=none; b=gAa8ikynoQxKNYlfej0h0A7rLcrJyAu+DXI3eLoE0noHSbyfbSaML1L7DoWZskUif8/fC0U2pwvt896KirqCo72k5tvecYf5zIyT+NuSnv3b+xJZ+/CVgcQJeR9XeTrMMYfWZlFE/fuEk2q0T1SHgp1zymAeACZO6uTlq0vN8V4=
+	t=1728594056; cv=none; b=mtEp0Lef0JrdFp2PqteHVN7jdeK2Fv8HQh3w7NYJmA4K8Z4Jl8bboAojDj1ZXtmLY13XU0o7xBWPcW9hKxV8PceDAM5pXehO3lIW5CNNYoxnVEfN9fENZZtZyNlpjNYYjztxwlf1HR4emcEvHZ8fC9cXcuKqYlxBr962A/GjVQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728594056; c=relaxed/simple;
-	bh=Ro3vKVwG9OrFe7D9KeNbV4BcFPOnK3BB+dJZIDGABNM=;
+	bh=bmhA3SsOWnIZbrU89s1sQYvFCSZk/tlwnESgmddNpJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGTk4qpG5QPPdnQ1NAaBCTnuJbkfDqLN4LHxzVpnTyjwedk7D/PYhjGoJDibVAB04HxpVkU1S7v9g9JygQTR1M7W5cXODSaiVrEft8OYAN/sR/zZHqRuhx0MiZzfRtxTwK8aMMIwDUEa1jvdY70zJDQ4lLVpckipjePaewD3Q0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YsggJZEV; arc=none smtp.client-ip=209.85.167.52
+	 MIME-Version; b=IltG2xdWJMlEpAGrm67KZTudgE5iQzyrFvB6i44p6j9Cm+1KWx04DUdyuKb3OqKtfUiLfVkP5xDmZ1wm5h5oFNXWnre0tmg7KhRtDLMWBkAPclCD66mSgov3+BT6nHJjpcHUH9BD37CQYjs3BNyNoF4CDGAGCBdIe00BwUdEdeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d+9uvBZP; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53991d05416so1802772e87.2;
-        Thu, 10 Oct 2024 14:00:53 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5c9362c26d8so1957701a12.1;
+        Thu, 10 Oct 2024 14:00:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728594052; x=1729198852; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728594053; x=1729198853; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2CdvgLs5EyJHbZgt0XAtnGGoYU5wfKc655jog4d69Is=;
-        b=YsggJZEVSeiDAjAZ58NAVlKT7ZaVsPZa5yTsgIerTvx7ZcasnIyfPSDil/+5afR60F
-         nJGGwTwXvmMjGDvhCMd1SeTQod/LAMjdb/ziOqNRH62fIpYo0TWwdQUIEWXx2eZIM2PR
-         KpSC/gfA5Fxzl0qshHQDII5n31BuRxr8/n/x82+GfRXB4dhJRz2oZbzzJxkoUSrZ8oYZ
-         /8RLbB9qL4zLRdDDTCLqFkgoqmrwp/BKJWbVcFAadQZsjrDQup8prUHxR6oHx05fbLEB
-         1PauQ6K0yw6J2hfpjrDnlS5uI92ybsBY1sXXdyS88AOQpdtB1nQoSRj+d9Yct/JzeuAP
-         G0og==
+        bh=OIki3gH9gwohrIiKjOvxS4lxdekFzOTu2gTcUdwnifU=;
+        b=d+9uvBZP4cUEibarnhgY7g77i+2V/g7Ird09dSC3IWRi2PuC0NjKhnsFs7+DjB+14I
+         tETDHCDBFKSFwdfiuVkv8hReJfhkwotbUGUwYsJ1GM2bLFm++YCo0ngBJ7hMS30f0uVX
+         n/uY23lk+WCK5coEw5t4MBq+Kvko4oYH27yTIYhaaSlmsQ2Vet/wBrohz00PGGmJqZSG
+         TFTSFzmQJVnvqDho/qIk8+NyfjYSeJsiPgkx5HDIDp1zRdPYDd9f02LuaeUbXSykDYMH
+         86kqoQDcic+5XasqgVCjl+lY8TNmuJDpKZm9HU6P/Fl+oG9yMTL1EGjbMuWbmKPEdr9Q
+         7KOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728594052; x=1729198852;
+        d=1e100.net; s=20230601; t=1728594053; x=1729198853;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2CdvgLs5EyJHbZgt0XAtnGGoYU5wfKc655jog4d69Is=;
-        b=L99rBsbdwzhNjXcBd3xS7qsN/YMENSBtSnElBZ12+hJYyiaB8N1o901ahap+8dj4Up
-         4okeGo6Azf46oDmBrFT78+EbSxlXuXraBNjvZMmp7yetFnNW+JZ7EId0ddzprujMlELE
-         9vtyL7O5epZhrkGeqOnFfju5sKpyVRv+oKFf5KG+QmtMzUqTIspF2UJR5CuMuHJfjWg/
-         UB5HiShw1wU1MVWRPcTtAVcXtS5X5QiKGl1drUzBQZUPnHzMlf5vaEe7voIeTyT53S9t
-         9XAWXgisEaeBCv2n4xCNNJZ8q1R/sjpjRbyZu3Ef4/yGgo3DvrBPdW0dUhmenQmECA8O
-         0pCA==
-X-Forwarded-Encrypted: i=1; AJvYcCVTXwqNULTiEDFddqGLoWekMshLFzIIf5Nz61v6Yf506bbuPq5NxK4ehyyh6qca77sh1oUhYVjtYIWp@vger.kernel.org, AJvYcCX0M2L2J+p3UJolg8b6IWQ/JMa5p82lXEdTRUKXbbacF12osKKaxrwhCpamXVQoUIOTmhsdrOe4+nWR@vger.kernel.org, AJvYcCXeSTI2JFwnh9VGf0Nik2+QFYiFkIiNbd+OLSo4M9jfOMoedp1vGoIsXpkAiokI8MepNmU9FF+pZzyatoiK@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjwxYnc8k8+oR2+MphPxVn9925aIcFk5IX/gWnkhqw5ayWTzFM
-	rZibOsq2Zq/ukVHKDRib0WmI4y6Av5i5xoJArMikUF3SNCVAFrN5ZPUbG07t
-X-Google-Smtp-Source: AGHT+IH4L2gJ42cSXuloYs3N4M3zCvTDsJLBQzoH7Qk61ueY6LwVwLS83bEg0pvjJXN8c6IFzkQL3Q==
-X-Received: by 2002:a05:6512:1083:b0:539:8d9b:b61c with SMTP id 2adb3069b0e04-539da592814mr99256e87.51.1728594052062;
-        Thu, 10 Oct 2024 14:00:52 -0700 (PDT)
+        bh=OIki3gH9gwohrIiKjOvxS4lxdekFzOTu2gTcUdwnifU=;
+        b=F1i9KvXQTEdXYLXbWr+sQIyhhJNRwFvLsNS47TlnkWYNK9KPItcfmuUelQ706MyeSK
+         jLPlxfvbiGRTaHktvdU6fLcxc7BzZTe2KssBjpL8lm45m0rDFFvEibPK3+lkfoUYKBQv
+         Bko51fS7xQcHR4Zfan40RqxtoyaYyKyNIwmAlqGtdPMf8x1g+VNnuvSlZ9hEB0BzaO1v
+         cii2l5nvU33c2UkUs4FwV0M2TtU1ae/b0zw9UmzUWNLCBmvMBGsvSr8jSFpJT7J2Egj8
+         UEQdTHqb0C1yNewYn1usGiPsS73GhqBBA621++ziWASrdWrPeEY/iVZsSpOFG57lCu0K
+         fz1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUYcKx7ahjerUhIVqoA0LxOjurW10I1RkSFQpSEgMu/Hd+rsEUjgD5Lp0tTEk1ZevaaRNGAtONtZtNi@vger.kernel.org, AJvYcCVXYaC+Vcn4T+Elu97ZOG8xdQvt0CLruG+qoM5Su2ysy1adzyBpoZb1Ad1nQv3aH91CSM1fbTax1Z6k@vger.kernel.org, AJvYcCXqEBs6YoIzpF9+D3prGLsK2G3PlFj9Nub8XHTcOWyHr3+JF0cslqpAUZBPk7ecmXILueN0AvKd8LRJAIGw@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHUGj6189ldxdkdgreUqqWiEMMBUNF5bbu8wlOy4paC3U4B4It
+	tNLTL/0xknJOZREG1cEjmDl7Lvm85m9VEHhBfIUmNyXApzlBlk2q
+X-Google-Smtp-Source: AGHT+IFmPTUR8VwYFGLVeZSiu+c3uz/wO9gGgR2hjdMGttdYSCSrr9HirJGcZFQN8MhqQflNK+eA0A==
+X-Received: by 2002:a17:907:9495:b0:a8d:4e69:4030 with SMTP id a640c23a62f3a-a99a11092a0mr427547066b.19.1728594053039;
+        Thu, 10 Oct 2024 14:00:53 -0700 (PDT)
 Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:7eab:ec9d:62da:64f5])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a99a7f25f4dsm135692566b.68.2024.10.10.14.00.51
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a99a7f25f4dsm135692566b.68.2024.10.10.14.00.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 14:00:51 -0700 (PDT)
+        Thu, 10 Oct 2024 14:00:52 -0700 (PDT)
 From: vamoirid <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -80,9 +80,9 @@ Cc: vassilisamir@gmail.com,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 10/13] iio: chemical: bme680: generalize read_*() functions
-Date: Thu, 10 Oct 2024 23:00:27 +0200
-Message-ID: <20241010210030.33309-11-vassilisamir@gmail.com>
+Subject: [PATCH v1 11/13] iio: chemical: bme680: Add SCALE and RAW channels
+Date: Thu, 10 Oct 2024 23:00:28 +0200
+Message-ID: <20241010210030.33309-12-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241010210030.33309-1-vassilisamir@gmail.com>
 References: <20241010210030.33309-1-vassilisamir@gmail.com>
@@ -96,145 +96,95 @@ Content-Transfer-Encoding: 8bit
 
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-Remove the IIO specific scaling measurement units from the read functions
-and add them inside the ->read_raw() function to keep the read_*() generic.
-This way they can be used in other parts of the driver.
+Add SCALE,RAW channels to the device. Even though PROCESSED should be
+kept for backwards compatibility add comment to avoid using it if the
+value is not actually reported in IIO values.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/chemical/bme680_core.c | 65 ++++++++++++++++++------------
- 1 file changed, 40 insertions(+), 25 deletions(-)
+ drivers/iio/chemical/bme680_core.c | 51 ++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
 diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index 0979c8f0afcf..4669338ec2e5 100644
+index 4669338ec2e5..7d6f4d8c5fe4 100644
 --- a/drivers/iio/chemical/bme680_core.c
 +++ b/drivers/iio/chemical/bme680_core.c
-@@ -661,22 +661,20 @@ static int bme680_gas_config(struct bme680_data *data)
- 	return ret;
- }
- 
--static int bme680_read_temp(struct bme680_data *data, int *val)
-+static int bme680_read_temp(struct bme680_data *data, s16 *comp_temp)
- {
- 	int ret;
- 	u32 adc_temp;
--	s16 comp_temp;
- 
- 	ret = bme680_read_temp_adc(data, &adc_temp);
- 	if (ret)
- 		return ret;
- 
--	comp_temp = bme680_compensate_temp(data, adc_temp);
--	*val = comp_temp * 10; /* Centidegrees to millidegrees */
--	return IIO_VAL_INT;
-+	*comp_temp = bme680_compensate_temp(data, adc_temp);
-+	return 0;
- }
- 
--static int bme680_read_press(struct bme680_data *data, int *val, int *val2)
-+static int bme680_read_press(struct bme680_data *data, u32 *comp_press)
- {
- 	int ret;
- 	u32 adc_press;
-@@ -690,15 +688,14 @@ static int bme680_read_press(struct bme680_data *data, int *val, int *val2)
- 	if (ret)
- 		return ret;
- 
--	*val = bme680_compensate_press(data, adc_press, t_fine);
--	*val2 = 1000;
--	return IIO_VAL_FRACTIONAL;
-+	*comp_press = bme680_compensate_press(data, adc_press, t_fine);
-+	return 0;
- }
- 
--static int bme680_read_humid(struct bme680_data *data, int *val, int *val2)
-+static int bme680_read_humid(struct bme680_data *data, u32 *comp_humidity)
- {
- 	int ret;
--	u32 adc_humidity, comp_humidity;
-+	u32 adc_humidity;
- 	s32 t_fine;
- 
- 	ret = bme680_get_t_fine(data, &t_fine);
-@@ -709,14 +706,11 @@ static int bme680_read_humid(struct bme680_data *data, int *val, int *val2)
- 	if (ret)
- 		return ret;
- 
--	comp_humidity = bme680_compensate_humid(data, adc_humidity, t_fine);
--
--	*val = comp_humidity;
--	*val2 = 1000;
--	return IIO_VAL_FRACTIONAL;
-+	*comp_humidity = bme680_compensate_humid(data, adc_humidity, t_fine);
-+	return 0;
- }
- 
--static int bme680_read_gas(struct bme680_data *data, int *val)
-+static int bme680_read_gas(struct bme680_data *data, int *comp_gas_res)
- {
- 	struct device *dev = regmap_get_device(data->regmap);
- 	int ret;
-@@ -751,9 +745,8 @@ static int bme680_read_gas(struct bme680_data *data, int *val)
- 	}
- 
- 	gas_range = FIELD_GET(BME680_GAS_RANGE_MASK, gas_regs_val);
--
--	*val = bme680_compensate_gas(data, adc_gas_res, gas_range);
--	return IIO_VAL_INT;
-+	*comp_gas_res = bme680_compensate_gas(data, adc_gas_res, gas_range);
-+	return 0;
- }
- 
- static int __bme680_read_raw(struct iio_dev *indio_dev,
-@@ -761,7 +754,7 @@ static int __bme680_read_raw(struct iio_dev *indio_dev,
- 			     int *val, int *val2, long mask)
- {
- 	struct bme680_data *data = iio_priv(indio_dev);
--	int ret;
-+	int chan_val, ret;
- 
- 	guard(mutex)(&data->lock);
- 
-@@ -777,13 +770,35 @@ static int __bme680_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_PROCESSED:
- 		switch (chan->type) {
- 		case IIO_TEMP:
--			return bme680_read_temp(data, val);
+@@ -155,17 +155,26 @@ EXPORT_SYMBOL_NS(bme680_regmap_config, IIO_BME680);
+ static const struct iio_chan_spec bme680_channels[] = {
+ 	{
+ 		.type = IIO_TEMP,
++		/* PROCESSED maintained for ABI backwards compatibility */
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
++				      BIT(IIO_CHAN_INFO_RAW) |
++				      BIT(IIO_CHAN_INFO_SCALE) |
+ 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+ 	},
+ 	{
+ 		.type = IIO_PRESSURE,
++		/* PROCESSED maintained for ABI backwards compatibility */
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
++				      BIT(IIO_CHAN_INFO_RAW) |
++				      BIT(IIO_CHAN_INFO_SCALE) |
+ 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+ 	},
+ 	{
+ 		.type = IIO_HUMIDITYRELATIVE,
++		/* PROCESSED maintained for ABI backwards compatibility */
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
++				      BIT(IIO_CHAN_INFO_RAW) |
++				      BIT(IIO_CHAN_INFO_SCALE) |
+ 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+ 	},
+ 	{
+@@ -802,6 +811,48 @@ static int __bme680_read_raw(struct iio_dev *indio_dev,
+ 		default:
+ 			return -EINVAL;
+ 		}
++	case IIO_CHAN_INFO_RAW:
++		switch (chan->type) {
++		case IIO_TEMP:
 +			ret = bme680_read_temp(data, (s16 *)&chan_val);
 +			if (ret)
 +				return ret;
 +
-+			*val = chan_val * 10;
++			*val = chan_val;
 +			return IIO_VAL_INT;
- 		case IIO_PRESSURE:
--			return bme680_read_press(data, val, val2);
++		case IIO_PRESSURE:
 +			ret = bme680_read_press(data, &chan_val);
 +			if (ret)
 +				return ret;
 +
 +			*val = chan_val;
-+			*val2 = 1000;
-+			return IIO_VAL_FRACTIONAL;
- 		case IIO_HUMIDITYRELATIVE:
--			return bme680_read_humid(data, val, val2);
++			return IIO_VAL_INT;
++		case IIO_HUMIDITYRELATIVE:
 +			ret = bme680_read_humid(data, &chan_val);
 +			if (ret)
 +				return ret;
 +
 +			*val = chan_val;
++			return IIO_VAL_INT;
++		default:
++			return -EINVAL;
++		}
++	case IIO_CHAN_INFO_SCALE:
++		switch (chan->type) {
++		case IIO_TEMP:
++			*val = 10;
++			return IIO_VAL_INT;
++		case IIO_PRESSURE:
++			*val = 1;
 +			*val2 = 1000;
 +			return IIO_VAL_FRACTIONAL;
- 		case IIO_RESISTANCE:
--			return bme680_read_gas(data, val);
-+			ret = bme680_read_gas(data, &chan_val);
-+			if (ret)
-+				return ret;
-+
-+			*val = chan_val;
-+			return IIO_VAL_INT;
- 		default:
- 			return -EINVAL;
- 		}
++		case IIO_HUMIDITYRELATIVE:
++			*val = 1;
++			*val2 = 1000;
++			return IIO_VAL_FRACTIONAL;
++		default:
++			return -EINVAL;
++		}
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+ 		switch (chan->type) {
+ 		case IIO_TEMP:
 -- 
 2.43.0
 

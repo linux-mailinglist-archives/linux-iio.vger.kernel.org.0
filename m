@@ -1,83 +1,84 @@
-Return-Path: <linux-iio+bounces-10384-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10385-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F82997FA2
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 10:26:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5066499807E
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 10:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9B251C209DD
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 08:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF9AE1F27612
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 08:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD141F8EE9;
-	Thu, 10 Oct 2024 07:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324511D2704;
+	Thu, 10 Oct 2024 08:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHRL7Xj5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h2/cpdPC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1717DBE6F;
-	Thu, 10 Oct 2024 07:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D9F1D07BE;
+	Thu, 10 Oct 2024 08:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728546090; cv=none; b=dENRe6G7eMw2d5CW/JxJkJaglFYKlBdnDBPmU1GNxuG+LFFL/H7vcWrPLYrCnyI7exkDQCG6oQvdEcBEP6b/LDr2ry2jI2bwAqzwYNWdxxlKMlsUNnQZRGIhGExh2e65dS2halbvZveGf5yk7muHKhGkcb3eHINh1yLeK5Rvdqg=
+	t=1728548913; cv=none; b=pHcbE+aMOBO7xt5AwVmizMQMA5DzpKVJbDKHSOht18ZnyIRhi5tIv3y+5VsSC5XRI/asILESz5XMHTJY3dP537mhmt0iG5x4Ym3U1YItsRZ3ODQEkHmCA+nFq0rZL+fZBEHizvIkpJRb79lBDEPgkutzYwQq9qc74LpsNUikS3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728546090; c=relaxed/simple;
-	bh=s4q3+xQ++5Z8ZC4zsN61MEarWatMuJpmvRQkhMBHbGk=;
+	s=arc-20240116; t=1728548913; c=relaxed/simple;
+	bh=5SnhgPRUuU5LmlRag8wTkS8N/CC/zWntHpE1bLWhr6k=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=POgotAk9PjGdVOhKIcFvbMJ04MgkY6P/RaJMD/BXK0ih3Yf0N0RvJ854PvLQIspZ6m762F2mVXuKWeTdCy1c8uXdN3wV/vCzBFZsSt4TOZLsms51fOeyu1HxRq6eSTOkMvzPS0WJ3KB//zR69pAf21gnvvs0ouCXyIlcVWE3w6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHRL7Xj5; arc=none smtp.client-ip=209.85.221.51
+	 Content-Type:MIME-Version; b=liAAnwe5cU2GvODqxXGlJgqdAB4tYjSbXrBq/lSvLbc4/nIuoccFW2T2ramM6e6PX36oKeUKAxKZEgLQtkL6mCw9EW6SLAOXv+nNjoSk86Gfatst37YBcB+1itQE7IJutPG7s9ESDd8YLNhza1N3uFJXlmqBRHomCK5MP3y1Qh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h2/cpdPC; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37d4c482844so164237f8f.0;
-        Thu, 10 Oct 2024 00:41:26 -0700 (PDT)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-37d47b38336so326206f8f.3;
+        Thu, 10 Oct 2024 01:28:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728546085; x=1729150885; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728548909; x=1729153709; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=11GHd1LUSR9eU61AB8lC+QuNmnA8MSrb3JZ4YJSSgWc=;
-        b=nHRL7Xj5I2hLA/6O77qYl28xNL46Dvssr1LyOnFw1+yQFq7hfJby84NDTC1GyOnMHD
-         UvOG3katBFK9Dk73dpVHhKtYCynSgTyIVT9fKlyz4A/KwI3YWIJ2xpYQedRhfnkOsQU1
-         4UFwIcD+U/oosttIDQqh1W8llSjZ/QRGkjm66KnezQDa7nDW4fDP/EIk9rPDOhctiQMk
-         fPq9DW606Gjbcb3Rljxe55vf2n6f4rVXHeuIz5YStzl5XcfmO9N9yKLnWxG3AFmb6uxB
-         A4nzfWArtmoEdeQJJxaUlhRCNaOHW9welPKcouJOeS3kwdOw7LY6QP+aXG6j+rvOFuKh
-         M7pg==
+        bh=FbBN3yZYUGrr8qODI7yZovjpMzT5/HDa5n+6VJGVpUM=;
+        b=h2/cpdPCmlr+04K5CQTOZbs7IKAne/M9LQ+BsChVTOlT6/ILDHxdPMoOfmnx200Cch
+         h0NEfx4jX3Rx31rupK+AXL+9Q0gA68UmjG95ShnlUC+HfggUhjfxe9RWGWleZ9za8q2J
+         UhgHdrUh2oICScgZnqiEPVVvrTDbRyhtpM0YW4STTbtFQEyjp/ZhIxVr8nSqpnaXbte8
+         INc+WqCYOxyd8aeQ4WbVClI0xPR78EehBLRL7YUCIDeeFKYDolXhzXC5Jo0St9Bi7iJA
+         P8yjnA9bJLDrwpCs46QJPjCdMWpiAH+ZP8buWnlD9XBb+Bw5A1+qpJmUjzaMrFbGK7oX
+         qFkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728546085; x=1729150885;
+        d=1e100.net; s=20230601; t=1728548909; x=1729153709;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=11GHd1LUSR9eU61AB8lC+QuNmnA8MSrb3JZ4YJSSgWc=;
-        b=WSxWMYzf+zVt06XG6acp8UtiPzW0sVJftUbuEk5/0mL7Asqn0W3ZlkC5XS/qJozI+5
-         itnVSlEBcCnu+kWVsg1hYm9++hHEHO7nqcBr5jaI9ahgs6/X4qHVkw42MP0NR67N60fr
-         /ZWWGl0xPjnlcwDTeslz4lTtYH7PgJU9R1hEg9z+P9YsiKHqvuOKT+zyg33Bmbwwrz1o
-         3hCX6volhL2QK4T2RKY7ZvKk05yYR0PEZDuSkputs6mNZkubPvTUt3JjJ7BYItr7lw2G
-         mwzhO/yooMXe7qGVf+2xVxt3RoMmA1nC6VmT4s9ZFjYy9iD+3tm8mwJi4Co426OvP3yV
-         yKZw==
-X-Forwarded-Encrypted: i=1; AJvYcCUUzV7/wOydcIGGG+6jzzIpRtQYDSQ4yEGLDBN+zGPns6V+TH7M+F5DU0euD76+SIyz2ius5V8Cjoo=@vger.kernel.org, AJvYcCXRAgpBT7lDXC1UQ0KAca2MPof8xFe30sk7hR5mz+A/N2zqECKfnVkrBUrwgQA1UEkoR5jpQjHY1sBePXi4@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSnJ7J22jSUYHtYYTrzmYtBbjPlffc31Wv6p0AVs7jlsePxcNS
-	nrLXEOLiVHVwIJc9Cvi+OJcWRiobqWDUbaVY8p1PVxoulJOCTP/q
-X-Google-Smtp-Source: AGHT+IGL0nmo7auQ8d3+U7ew9NZlOqBcrxYDlQEr0DSn6igeu1fcpra364m4eZsMAbClUqQ6WBGoFg==
-X-Received: by 2002:adf:eacd:0:b0:37d:4fb1:4faa with SMTP id ffacd0b85a97d-37d4fb15046mr269672f8f.50.1728546085031;
-        Thu, 10 Oct 2024 00:41:25 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef15:2100:2c2b:bcc5:835e:c2dd? (p200300f6ef1521002c2bbcc5835ec2dd.dip0.t-ipconnect.de. [2003:f6:ef15:2100:2c2b:bcc5:835e:c2dd])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b2780c1sm762642f8f.0.2024.10.10.00.41.24
+        bh=FbBN3yZYUGrr8qODI7yZovjpMzT5/HDa5n+6VJGVpUM=;
+        b=aS6h1F2gZU2wxF4swMvRVfUQBn1CFDsqgg8sH8VUIdetTCbgJRR0+XB324nIY33pr+
+         qC7Hqa1u10/ZmKAcqd+DykYG4u7/D5cs893DQxzcLwpPh9oM988UUyH6V8Xgck41j186
+         pKABFMUntFif4mhg+kIZbc2TSvb1oq0eNDfujWQ1E7EWFXx+4t9jyp+ViL8J8bM/ZB/Z
+         q890piBQmsiFUge6VGMa/VPI6aFbdVvnqC5RmSKnjDvwMQaf00gvVf84ObrPSow/Jz64
+         lT8+lp5R4TwoaoXM7Sh+tnjiNOSia6hB/fHDq27fSy4/h/FGy/enOYmwWGOw9zVy6/1m
+         kezw==
+X-Forwarded-Encrypted: i=1; AJvYcCViSO3yTIZMwiSbvFtTMNSmDgQ873ulKbZRJ898HWugt367CsUCkjQnmH4WX3JhFK4nmFxokT1n9ya0yxtW@vger.kernel.org, AJvYcCWqa8nFx13Jqzp31LD/OU05bQqTZuUrepQc7p+lmZWmhgv9duJPpSVATduuoYdlJvGTSmiWxwGiw+I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrCz8b7sVAXQY7ejbE4UXBy3aefWjwJ+2X+p6YEEnYEdSjZJcB
+	1FrPRQ6PPwFfEU+z5HVAvTeOguh2Btyv0OQuqqyG5Le0guWo7CvbPdlPvRcKEbM=
+X-Google-Smtp-Source: AGHT+IGv0xrtHkq6yisyh3etRfRvcNy5X3JAUYEOS4cSzQbRX0+uG9/FRzua21othi4mqgRrHXSfOQ==
+X-Received: by 2002:a5d:5c87:0:b0:37d:43ad:14eb with SMTP id ffacd0b85a97d-37d43ad1534mr2513889f8f.14.1728548908512;
+        Thu, 10 Oct 2024 01:28:28 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef15:2100:888:d3c6:a442:4910? (p200300f6ef1521000888d3c6a4424910.dip0.t-ipconnect.de. [2003:f6:ef15:2100:888:d3c6:a442:4910])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6cfa8fsm832848f8f.49.2024.10.10.01.28.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 00:41:24 -0700 (PDT)
-Message-ID: <8dffe9e084ae96a344d679f5c85113521fed3735.camel@gmail.com>
-Subject: Re: [PATCH] iio: adc: ad4695: Add missing Kconfig select
+        Thu, 10 Oct 2024 01:28:28 -0700 (PDT)
+Message-ID: <b5427f9c7fdbd4b93ba7b355aaf44afde23b0026.camel@gmail.com>
+Subject: Re: [PATCH] iio: adc: ad7944: add namespace to T_QUIET_NS
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
  <jic23@kernel.org>
-Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Thu, 10 Oct 2024 09:45:40 +0200
-In-Reply-To: <20241009-iio-adc-ad4695-fix-kconfig-v1-1-e2a4dfde8d55@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 10 Oct 2024 10:32:44 +0200
+In-Reply-To: <20241009-iio-adc-ad7944-add-namespace-to-t_quiet_ns-v1-1-a216357a065c@baylibre.com>
 References: 
-	<20241009-iio-adc-ad4695-fix-kconfig-v1-1-e2a4dfde8d55@baylibre.com>
+	<20241009-iio-adc-ad7944-add-namespace-to-t_quiet_ns-v1-1-a216357a065c@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.0 
@@ -88,47 +89,48 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2024-10-09 at 16:23 -0500, David Lechner wrote:
-> Add select IIO_BUFFER and select IIO_TRIGGERED_BUFFER to the Kconfig for
-> the ad4695 driver.
+On Wed, 2024-10-09 at 16:26 -0500, David Lechner wrote:
+> Add AD7944_ namespace to T_QUIET_NS. This is the preferred style. This
+> way the bad style won't be copied when we add more T_ macros.
 >=20
-> Fixes: 6cc7e4bf2e08 ("iio: adc: ad4695: implement triggered buffer")
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
 
 Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-> I didn't see this one in the recent series with similar changes [1][2],
-> so here is another one.
+> =C2=A0drivers/iio/adc/ad7944.c | 4 ++--
+> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
 >=20
-> [1]:
-> https://lore.kernel.org/linux-iio/20241003-ad2s1210-select-v1-0-4019453f8=
-c33@gmail.com/
-> [2]:
-> https://lore.kernel.org/linux-iio/20241003-iio-select-v1-0-67c0385197cd@g=
-mail.com/
-> ---
-> =C2=A0drivers/iio/adc/Kconfig | 2 ++
-> =C2=A01 file changed, 2 insertions(+)
->=20
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 85b82a708c36..98d441d6cc5c 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -52,6 +52,8 @@ config AD4695
-> =C2=A0	tristate "Analog Device AD4695 ADC Driver"
-> =C2=A0	depends on SPI
-> =C2=A0	select REGMAP_SPI
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
-> =C2=A0	help
-> =C2=A0	=C2=A0 Say yes here to build support for Analog Devices AD4695 and=
- similar
-> =C2=A0	=C2=A0 analog to digital converters (ADC).
+> diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
+> index 0f36138a7144..a5aea4e9f1a7 100644
+> --- a/drivers/iio/adc/ad7944.c
+> +++ b/drivers/iio/adc/ad7944.c
+> @@ -80,7 +80,7 @@ struct ad7944_adc {
+> =C2=A0};
+> =C2=A0
+> =C2=A0/* quite time before CNV rising edge */
+> -#define T_QUIET_NS	20
+> +#define AD7944_T_QUIET_NS	20
+> =C2=A0
+> =C2=A0static const struct ad7944_timing_spec ad7944_timing_spec =3D {
+> =C2=A0	.conv_ns =3D 420,
+> @@ -150,7 +150,7 @@ static int ad7944_3wire_cs_mode_init_msg(struct devic=
+e
+> *dev, struct ad7944_adc *
+> =C2=A0	 * CS is tied to CNV and we need a low to high transition to start
+> the
+> =C2=A0	 * conversion, so place CNV low for t_QUIET to prepare for this.
+> =C2=A0	 */
+> -	xfers[0].delay.value =3D T_QUIET_NS;
+> +	xfers[0].delay.value =3D AD7944_T_QUIET_NS;
+> =C2=A0	xfers[0].delay.unit =3D SPI_DELAY_UNIT_NSECS;
+> =C2=A0
+> =C2=A0	/*
 >=20
 > ---
 > base-commit: 96be67caa0f0420d4128cb67f07bbd7a6f49e03a
-> change-id: 20241009-iio-adc-ad4695-fix-kconfig-279c9ef8d9ef
+> change-id: 20241009-iio-adc-ad7944-add-namespace-to-t_quiet_ns-a9ed696927=
+18
 >=20
 > Best regards,
 

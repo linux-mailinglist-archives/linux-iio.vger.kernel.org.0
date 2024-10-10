@@ -1,130 +1,130 @@
-Return-Path: <linux-iio+bounces-10396-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10397-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6130D998E04
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 19:05:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7CF998E0A
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 19:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC222835D4
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 17:05:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20B0A1C245A1
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Oct 2024 17:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A1519C55F;
-	Thu, 10 Oct 2024 17:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CF219B5A3;
+	Thu, 10 Oct 2024 17:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GDklZcCV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tb5MxYUY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FEE199FDE
-	for <linux-iio@vger.kernel.org>; Thu, 10 Oct 2024 17:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE47E558B7;
+	Thu, 10 Oct 2024 17:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728579917; cv=none; b=fqRjxOntZVhchofuUBFq6VUNKrtJqDFOABdII7jUuR6PxQMM4cWt7ArD0HHEsuWTEBHo5X9wnJa6Gr67VSlh/A2VhYhszEVqvna8fXLdzHRezgr4X/J8onD9rZvSkd9mB/TdCatk/vhAGiT37gEyLIKs1aaePp3ykmz7p3PNFRg=
+	t=1728580121; cv=none; b=dOgVW+BvGWQpNMJ4FHiD6B2RBUhu4ql2jdXWTmQ/zHlj/JSplnywnfbVbMmAbNP3L53aiHhgI19dcLbCGhRUHERY4gQfz1C+vMqohgBLGWwYd42+/RWgSChAsR7fS6GCVkWQDnt9nFkix9sMSUVm87Hmpy5eqiaigfWE7dvMie4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728579917; c=relaxed/simple;
-	bh=9FveIuz13TN1AblFtkPdTceZQD0iMtQCCXeK7qgN+sQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H9hwQF5Ir2KnN+p3dPW5lzikPA96GLzVHJFDkW925C6dO93QGFjkt7RGgLMOfDdevwNQcxb+e3OcAOLEHfOoNbIeTFdsZCOpFQT79BafVFVqwkVN9RD7l/L+VrGgRoeDE01c1OZY9F4Jmf60z9d5tP1TqV0C5PU/eUUysxQQz84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GDklZcCV; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-287c5745a9bso499774fac.0
-        for <linux-iio@vger.kernel.org>; Thu, 10 Oct 2024 10:05:14 -0700 (PDT)
+	s=arc-20240116; t=1728580121; c=relaxed/simple;
+	bh=83B4gZkVqCXDhd2KE4907JanoMHqwxtUvcT7A8gpdb0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=d/qZoBqW//x39Xee+FqZQYdpdbEm/47q5L5VqW79LFSwMowL9r510YL2WHwDsOp72iNwl3ur+/jpttAaJuej812TUsyobBPC4SmaEsD0yCsJcBGp4P7qdi1hVwzH4DACgf9FvJWc91r8Odrus8vdebU59JzcQg9fjGMBsgnl7ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tb5MxYUY; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a83562f9be9so147105666b.0;
+        Thu, 10 Oct 2024 10:08:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728579914; x=1729184714; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I4N1UJJB6VzHlLEJOiTTygzAjBQKfKndu8bsLaiWrQc=;
-        b=GDklZcCV0V5t69mCLp1hPAlZj7Q34mB9pilkAHCuQ6GD7zjq76KR/cWymcoOR8ECb3
-         rz22mG8RUFoSwg2QVZJJmA+zpZFd5TKPlsUzviEhX6JF4RgH2ktFRkrbabKlJH1c1DQI
-         Usj9x4m/TATFDzqO2qxwznag8+tz/nqSq2uMBVcwTfp1CLx7+tvrGZYJVA4OmfdwvJS2
-         k7mCGiaTpx6jj+GSqMp6gK9LYArn0PR/Fe5xQSA5Min2PgJ0dQ5v5eHJx7L8xZE7hGzB
-         21G+FjgF06zXGQotXD7Qfh6fvCluxUJlS60/45VSF86fM9vK8oOPcZJLKilIvTCiUpV2
-         lESQ==
+        d=gmail.com; s=20230601; t=1728580117; x=1729184917; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s76fMrgrCCIITG8O3wMeuaoCvQZMM5iJlgV4Fc1nwC8=;
+        b=Tb5MxYUYNPm/FA9PFIJ+cu0FpzF1Pxms5Y+ZPdu/jVQpWqMssCaoqibsdObdnVWq13
+         UGi3mMIJn8pboFMrUyUxiN5iyX16bB/RHfELOmsproWidi9IrlOpR+iZhWN0T3qjKocJ
+         +IfNGuVESkPYTwDAVPgUc3wHwyR35bCRFQLOzUumwhYcucgmv1Vv8xUlmhtWsU6jEV7G
+         c9wEzd1K7XNiWjj0HlaFwNqUcyptYOAJK5EMdZ5BBvnJSiYn6NsOo1sIYaL9AMN6OK6T
+         EJdM7YY3rxGyw0OYjroT3u2+JdjBgU0zmMzxS6Gal8mhrIuIlqcztBCoo4w2Mbj4ODXH
+         qJTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728579914; x=1729184714;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I4N1UJJB6VzHlLEJOiTTygzAjBQKfKndu8bsLaiWrQc=;
-        b=DxHObPXAH4dxfBdyG/Idxilbl+mmbqWdSBNCPtjyLGWpY0en4gKm/vyYTqmxNs+Eml
-         1BeWAhoVBsPRTwPYtQQf6avtz3/uJefEf+USm2KjJQSzwDI/IY1wYRXHTbelMJSyCftY
-         ib7qGe4vrga3m2QcXeAzSr7AlV7se3mgPvBSTPIaevAqCxgVHuGQHXFPgPRoZcXBr5DM
-         BYC6LD0ZRHlP/MyfE97I94xqe5KSEC8BSDswsu2rXdRo+Du/CLIpqdte45tK/mz4P27f
-         0u3jlS+4NbgAad6gBSjBwJM1m2iK3xrKBMxwsQayN/TC05QFu4fykaTpSrd+8bFJhZaj
-         vQLg==
-X-Forwarded-Encrypted: i=1; AJvYcCW4aeGj2LSrPdQETYhGysXEqFWNBMq7IfmdFa6Ir1YTGH2nmL+WppQP1uSVoMtY3jSoVbs+ucF6Mv8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw205ZVUhiDrQkKVKEmpYpmNOOve5zSvX2vyDW/qvUAS3iaSJwy
-	IeEW/p1IMpCAx/zyM/xyFfJJqk4lmDq6IQ7TppLBj5kBDr/no7l7sYoctWQsMjs=
-X-Google-Smtp-Source: AGHT+IFBejNCLo9F+D5dkmW3LXQHsQ8mLCJvv5I50aqSbJ78R7mOKvr0yeKfoBHIYX6hJzvpQBBBrw==
-X-Received: by 2002:a05:6870:c1c3:b0:277:c027:1960 with SMTP id 586e51a60fabf-2883434b155mr4612084fac.25.1728579914084;
-        Thu, 10 Oct 2024 10:05:14 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2885844a8b7sm369613fac.58.2024.10.10.10.05.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Oct 2024 10:05:12 -0700 (PDT)
-Message-ID: <71c4a073-1b5e-42d3-8fee-a2a5215d5856@baylibre.com>
-Date: Thu, 10 Oct 2024 12:05:11 -0500
+        d=1e100.net; s=20230601; t=1728580117; x=1729184917;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s76fMrgrCCIITG8O3wMeuaoCvQZMM5iJlgV4Fc1nwC8=;
+        b=VrCmixAIvL2/HUpGEocOW43Wm0hqoM3Ocvu7lrxjzGbFj1cl2dyWD82mx7B9E2LGvt
+         k95Jke5GGmzPDTqzg6JpfuuROA0hHEWks4+v+vQ3nqF1LUlpKQxCJdP7Fy3nC3l8yw7t
+         3D1pRXut80MWvGamiSJB2nQ9tYKbkcOR2+RDaul9/0mzXX2lkP7SVAimshvw3ALJ8Oib
+         WffUpDHNVoIluhxUJJJ8JE5smDx66AWqSZ3ed9Kj/RBk5R+2k6a2fxux2z11b9UCHKHr
+         xPH7BaGJtsbjsdxG58Dlz5iHpt5v/+OYWcZ6lPoE6p6vmIukY2TnkRKII9P8R69uGQT+
+         c/7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWcojQPazGAeWC/PnSbFt/OoldCRFHdf7er9tgxTJzdw8fnM0EuAUgELmYgNuDfp88MliTPo8Fv59U731vI@vger.kernel.org, AJvYcCX5WcUYMpf3ACjwkaE7FVCASqDOI1sX62kRYGBR2QqaD+P8kLJvfkJL3Rg6LQ1H6LtaMXxDuY8Ldr8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsCooSH0ECIH0yc7bHCsXVwiLzXtSeXE9FTFsOvs9XrxpmqxJB
+	kP7qui8zbqY+UoR/n+aqn7aJqPRBx9xKDYDJihijs0KQh32BLoneamE+H2Ns
+X-Google-Smtp-Source: AGHT+IFRAFYFiDsvs3uzupt4RvuE9SDRKJN+vCOE/lzAdDHhgG8lE7FdHSD9DckCx52z3Io+q3thFg==
+X-Received: by 2002:a17:906:d555:b0:a8b:6ee7:ba28 with SMTP id a640c23a62f3a-a99b7672bacmr5533366b.1.1728580116669;
+        Thu, 10 Oct 2024 10:08:36 -0700 (PDT)
+Received: from localhost (craw-09-b2-v4wan-169726-cust2117.vm24.cable.virginm.net. [92.238.24.70])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a7f35f4fsm114421966b.88.2024.10.10.10.08.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Oct 2024 10:08:36 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	linux-iio@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: pressure: rohm-bm1390: Remove redundant if statement
+Date: Thu, 10 Oct 2024 18:08:35 +0100
+Message-Id: <20241010170835.772764-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] iio: adc: ad485x: add ad485x driver
-To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, "Hennerich, Michael" <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, "Sa, Nuno" <Nuno.Sa@analog.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Andy Shevchenko <andy@kernel.org>,
- "Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
- Mike Looijmans <mike.looijmans@topic.nl>,
- Marius Cristea <marius.cristea@microchip.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>,
- Ivan Mikhaylov <fr0st61te@gmail.com>,
- "Cuciurean, Sergiu" <Sergiu.Cuciurean@analog.com>,
- "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-References: <20241004140922.233939-1-antoniu.miclaus@analog.com>
- <20241004140922.233939-6-antoniu.miclaus@analog.com>
- <CAHp75VeaYBGTA7sN7SefsyMj09kaJLBoMz4=hf0GpxiXtF65+Q@mail.gmail.com>
- <CY4PR03MB33992F19FF780FF86234426A9B7E2@CY4PR03MB3399.namprd03.prod.outlook.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CY4PR03MB33992F19FF780FF86234426A9B7E2@CY4PR03MB3399.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 10/8/24 5:48 AM, Miclaus, Antoniu wrote:
->>> +static int ad485x_get_calibscale(struct ad485x_state *st, int ch, int *val, int
->> *val2)
->>> +{
->>> +       unsigned int reg_val;
->>> +       int gain;
->>
->> Should be u8 gain[2] and...
-> 
-> As discussed in previous patch series, the bulk operations won't work for these
-> chips. The CS needs to be raised between each byte read/written.
-> 
+From: Colin Ian King <colin.i.king@intel.com>
 
-So the datasheet is wrong and Streaming Instruction Mode doesn't actually work?
+There is a check on non-zero ret that is redundant because the
+same check is being performed in a previous if statement and
+also before that. The check is not required, remove it.
 
-There is also Nonstreaming Instruction Mode if we need to read/write nonconsecutive
-registers without deasserting CS.
+Signed-off-by: Colin Ian King <colin.i.king@intel.com>
+---
+ drivers/iio/pressure/rohm-bm1390.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/iio/pressure/rohm-bm1390.c b/drivers/iio/pressure/rohm-bm1390.c
+index ccaa07a569c9..f24d9f927681 100644
+--- a/drivers/iio/pressure/rohm-bm1390.c
++++ b/drivers/iio/pressure/rohm-bm1390.c
+@@ -410,23 +410,20 @@ static int __bm1390_fifo_flush(struct iio_dev *idev, unsigned int samples,
+ 	if (ret)
+ 		return ret;
+ 
+ 	if (test_bit(BM1390_CHAN_TEMP, idev->active_scan_mask)) {
+ 		ret = regmap_bulk_read(data->regmap, BM1390_REG_TEMP_HI, &temp,
+ 				       sizeof(temp));
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+-	if (ret)
+-		return ret;
+-
+ 	for (i = 0; i < smp_lvl; i++) {
+ 		buffer[i].temp = temp;
+ 		iio_push_to_buffers(idev, &buffer[i]);
+ 	}
+ 
+ 	return smp_lvl;
+ }
+ 
+ static int bm1390_fifo_flush(struct iio_dev *idev, unsigned int samples)
+ {
+-- 
+2.39.5
 
 

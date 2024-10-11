@@ -1,79 +1,77 @@
-Return-Path: <linux-iio+bounces-10448-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10449-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D3099A19B
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 12:39:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5142499A1BC
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 12:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B10F2860B9
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 10:39:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D09F3286C39
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 10:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0CE1E379F;
-	Fri, 11 Oct 2024 10:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D54A216A33;
+	Fri, 11 Oct 2024 10:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R1W8q/2B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bHa8dkLX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D4320FA83;
-	Fri, 11 Oct 2024 10:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7478216437;
+	Fri, 11 Oct 2024 10:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728643176; cv=none; b=iYOhoo6lKpc+uA2YohcD3CSQZk1hjFHXoOt9mBNFkXPX9Sf0Dsoh13hwJCwSDdcBrYmDJgkSX4eXNLZVdnSjAqwu8XHZ6r/KDMnCXO/QCbKWuvw8rOO/bJGPs38RtqikbN29JGaFYnq1CSYEuaG/F7T0wHPANRckIANTFjxKnCA=
+	t=1728643331; cv=none; b=NmSNGTqLM2IsEwWLohGAYhUrWuf4GY6BTviqYETwBSUqqtMm0ogF9Pov90WeaG2D4PC3+0FZUdtGQ1Nxgih7LihMFWLq92a4fxLsUVYLgkzOjlOvEYm8BCKe13ec+zEzPkVCuvMno42q4xBowogYytwwxNYm+yrIqiL/QysGoQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728643176; c=relaxed/simple;
-	bh=QNV6+hfo8+uIipAV1Xpk/BTtDZyc+iyhhES32I67r64=;
+	s=arc-20240116; t=1728643331; c=relaxed/simple;
+	bh=8oNXqdznljnXVxSrIhnhjZsB8+PHRWcyNeEXqNTFp5M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uyWEMpAn99d1XvV3Ks6twouIL9Mdasv4An1sYYwljQsmH60OtnWK8OIOlgbTZXU54tuH9B87/VDUANqslntbz5vYHA7JvUVuHurHPeJPif1sMpWbnnXyNdrEYHSNLjzSLhqQ59VfL8o6oXnx+vLv1ijY/s6VOfvNTgeLtpY8z1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R1W8q/2B; arc=none smtp.client-ip=192.198.163.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=JH9rMbOVblYcNe3nHPLlztynZ3iZgJYCTr1+yeXKMHoaMgDWz7G6tpiqr2vDXWuIfBVs69KkeFrMsTSn9IaaUNE9GdBitb5tte6VRgCE16YulFIIeIxay8XyasWLNeHKLxreSAVEwY7mqaBFKXVy4WGeOFdWNSvKrdTwPnLWwMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bHa8dkLX; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728643175; x=1760179175;
+  t=1728643330; x=1760179330;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=QNV6+hfo8+uIipAV1Xpk/BTtDZyc+iyhhES32I67r64=;
-  b=R1W8q/2BIogQ5qOfdex7WGJpKvLkn5WXwnameTD8fAyJq39YBiiquXpc
-   xpqFqtqHiMsd/Of3dvWBUpjADI9KZQbHKQv+Ot+VdkVFMrvWWSXvqz5bS
-   FogwbHVO7Tc69OfvZEWCeZiKVZXiCDtTtHd69unUL9Q6dxiRP5QgKfddU
-   LzLSkpo6rKSO/YDi7zleQ6Aal/zlk5yWzyxX09eybOa0LlW5atfOu5YvO
-   krUMhVIorGs1dXibRwl2sbxEKbqAImU4GPNd/UY+2Cyes42XB4K2a83/6
-   xkju6fTnmk5bN3nK3yoJfetqdvRbDpqecRO8Z59PWq70k5v9Lphrk010s
-   w==;
-X-CSE-ConnectionGUID: AAb1g4quQLC9yKhYQhQ76g==
-X-CSE-MsgGUID: iXEX02sfSb+CQeA0i9mk1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="27909114"
+  bh=8oNXqdznljnXVxSrIhnhjZsB8+PHRWcyNeEXqNTFp5M=;
+  b=bHa8dkLX0G83PuldQeBu1dRJs89SyQc7EpPPXKZ2W6Vr+1DxlTFG6Mzd
+   oSO8mkMpEERlfqXAB/QEIoGxlbOj/bRl+mZEwGvLvt/gqaKVgNHK0/Lqh
+   9CHU8rpa4uXgwuCLtDzk0amU0+DdC/WPwUO0Mosu900RGuXv43N9ZLBCQ
+   uH1sRWwscpoaUmjSqME+j0T8CeqtqWclJpEwjASogPSa6kB2yDVaXfLPg
+   zBeTXdQp1Tl9WKohwJYvNerqaT7RGAmAtdvCW5Nfq9M8ylpZYrMtwKfks
+   /YmZ3WIHo4iekgfSUkcXs3fC+QRWejj6JBJkMCFA9Lh44eR5aqALE52fm
+   A==;
+X-CSE-ConnectionGUID: V8roMGsgSM6+5WMZBlGH4g==
+X-CSE-MsgGUID: 9RSe+39YQBezkEOyOl0puQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="28179666"
 X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="27909114"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:39:34 -0700
-X-CSE-ConnectionGUID: OZPGtiSzRw+cIRxNOYW7Zg==
-X-CSE-MsgGUID: yAaSVd2iT0eQApQQShi01A==
+   d="scan'208";a="28179666"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:42:09 -0700
+X-CSE-ConnectionGUID: jKnUvbYTRaC+GGPdJaPf+w==
+X-CSE-MsgGUID: 4YVanIJ4R0ODcb1kcbf2MQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="80885286"
+   d="scan'208";a="76983028"
 Received: from smile.fi.intel.com ([10.237.72.154])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:39:31 -0700
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:42:07 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1szD3R-00000001rTw-1LAS;
-	Fri, 11 Oct 2024 13:39:29 +0300
-Date: Fri, 11 Oct 2024 13:39:29 +0300
+	id 1szD5w-00000001rWt-1Wi8;
+	Fri, 11 Oct 2024 13:42:04 +0300
+Date: Fri, 11 Oct 2024 13:42:04 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: vamoirid <vassilisamir@gmail.com>
 Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, anshulusr@gmail.com, gustavograzs@gmail.com,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 13/13] iio: chemical: bme680: Add support for preheat
- current
-Message-ID: <ZwkAYSvmYyu1F5dU@smile.fi.intel.com>
+Subject: Re: [PATCH v1 00/13]: chemical: bme680: 2nd set of clean and add
+Message-ID: <ZwkA_NW3xLi3dxMb@smile.fi.intel.com>
 References: <20241010210030.33309-1-vassilisamir@gmail.com>
- <20241010210030.33309-14-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,26 +80,41 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241010210030.33309-14-vassilisamir@gmail.com>
+In-Reply-To: <20241010210030.33309-1-vassilisamir@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Oct 10, 2024 at 11:00:30PM +0200, vamoirid wrote:
-> From: Vasileios Amoiridis <vassilisamir@gmail.com>
+On Thu, Oct 10, 2024 at 11:00:17PM +0200, vamoirid wrote:
+> This patch series is continuing the work that started on [1] by
+> improving some small issues of the driver in the commits 1,2,3.
 > 
-> Add functionality to inject a specified amount of current to the heating
-> plate before the start of the gas measurement to allow the sensor to reach
-> faster to the requested temperature.
+> Commits 4,5 are refactorizing existing code.
+> 
+> Commits 6,7,8 are adding DT, regulator and PM support.
+> 
+> Commit 9 is refactorizing one macro to attribute.
+> 
+> Commit 10,11,12 are refactorizing the read/compensate functions
+> to become generic and add triggered buffer support.
+> 
+> Finally, commit 13 adds support for an *output* channel of type
+> IIO_CURRENT in order to preheat the plate that is used to measure the
+> quality of the air.
+> 
+> This and the previous series [1] started with the idea to add support
+> for the new bme688 device but due to the structure of the driver I
+> decided that it is better to restructure and improve some things before
+> adding extra funcitonalities.
 
-...
+Besides the small comments here and there I think you need to rearrange the
+patches layout in the series.
 
-> +	data->preheat_curr = 0; /* milliamps */
+In general it should go in these blocks:
+1) bug fixes (if any);
+2) cleanups (note, whitespace-cleanup-like are the last);
+3) new feature.
 
-Instead of the comment, make it better to any appearance of the variable in the
-code by adding unit suffix.
-
-	data->preheat_curr_mA = 0;
-
-(yes, capital 'A').
+Note that PM runtime belongs to the last group quite close to the patches
+where you more or less start using it more.
 
 -- 
 With Best Regards,

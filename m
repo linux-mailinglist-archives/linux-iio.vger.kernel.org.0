@@ -1,138 +1,127 @@
-Return-Path: <linux-iio+bounces-10432-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10433-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19747999CD9
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 08:42:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56EED999D15
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 08:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8491F225C2
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 06:42:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00085B23AC3
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 06:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73606208993;
-	Fri, 11 Oct 2024 06:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF11A209F27;
+	Fri, 11 Oct 2024 06:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LB9Ii7+9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGJCie79"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C711CC140;
-	Fri, 11 Oct 2024 06:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E92F209660;
+	Fri, 11 Oct 2024 06:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728628969; cv=none; b=MqpIWuhTB/ev5S7uMSC2Y+lJIsfLto0jOCLnTqJwd4hgqbWttPso1b/9GDd0xroYGI1ZgH+MYDZTv2MCJHh0RP/ojfrr5lwQ68RRRfJSuSyPJ0USehrivUctXxbfOPjEu9itw9RDnZoaBAmHQprpcGafGXWzNU+9ZQMj4Ry5xNI=
+	t=1728629468; cv=none; b=h4EwkspcGzbHBcF6EGY0pEhTizSh9G0iYv6+1WkyG3ZOziIYbgmOwuicTIjhZGUdpTvNkbUBS7TwL5XVCiXbi5Rrdfk5ufH3/GzxL/d9a/fP2Gxtkp1hG0niBZkohDu9PQMJldjo31+9XC5k7ewL0PS6D+m6mf/aShRw1QziixA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728628969; c=relaxed/simple;
-	bh=D14SokNvb70cT9cjqKdaSVHsuVfofziDB/m6BXyScws=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=P1L11wVZBLBKBoLADj+ZgU9aG/vt4+2ou6dETHXnWfQvZRpSgWwozarTl2ZkTIO0ZmBnkrzcTVt9RrUpJt2h+wILX8A7jBnzGTmC7Q22UUuTInxbF551B8y+fkT5l8ByApaFfdyg5NRllLGaYHf6OhOPBMpOrNm0anahHVj8jmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LB9Ii7+9; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d4d1b48f3so842771f8f.1;
-        Thu, 10 Oct 2024 23:42:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728628966; x=1729233766; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=D14SokNvb70cT9cjqKdaSVHsuVfofziDB/m6BXyScws=;
-        b=LB9Ii7+957pU2J2IBNNAIBbBZtRBEGTO6Hen8rvJI0fzKl+x4tCoktNflLmyIJYYQl
-         FChmEJQO2z7QR5PHvZbdwyyYtXOZrPliVuWXulE7gp43rQvKKL1smdBovFGbNmSvOjVh
-         JzVCvMyliwti7gqjK3jhv++b2y6Q0KuVEzvsgVZQ6thOa9EsdNOtQTF1MLcHlpQBFGMZ
-         /3f1oVwlSaOoEeMNQS+989iIW8lmSuCj1ZHKtgUPVjViycCWeaWTVUwgwSIHaywEZFrU
-         RJO4LeCurScVD13E31m4w5vBiUJvIu8fFT6q75QPl0lTY2rpKAR0KO+ejFDj3lN3afCT
-         vj6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728628966; x=1729233766;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=D14SokNvb70cT9cjqKdaSVHsuVfofziDB/m6BXyScws=;
-        b=dJQ2oDZEEWvwwtVxJiaKTa5aN13bPh6Hi5YzTNdeZDw8CowccVMyaXzPg421hBsY7o
-         RIsxgWcPwnSu7YcZJB/IAYVktMqEGBdYKVL7NjvF/Oz3XDZS5Ym2OCDbrCwm6BR27/pm
-         DCK2/bO/L9UJByuUPKuWOP/WUYDGxBJcqkSdVa3af9pzOLTBU5eBZD+hxO8KBb1+YxCg
-         1X4FDLbiKgdKLrU/bER+nMlFGTYjqC670DlxKvBHgh3pCCVvjmfAltlzD8vhtRRc4Za3
-         6n66LS3Z/f+4+j+GnrXZezreca/L78C9vElrkOkxQi7+FhWFBO6ipj/yO/OJD9BAjJX7
-         L+3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUWOHr8ne+gg145T+CGPD0pz/6XVdkBN94y1yV4LXiULWlusGCU6MyzsTf9ZQafT2hmwAtQw4b1wXz5aErI@vger.kernel.org, AJvYcCVIvYrXS4t+pJlRw4bXwfRFW+7MTy/Qx+MiUofZvO2kOgHZwRZzlXR9YVYFS5EDiJtJ1vx3auIOSbPu@vger.kernel.org, AJvYcCXMJbo9WAlF264PH0E6Ab2lzFJyEzMT+bD5ga8G7oJZSJ40O/DZ0fGWF4jXzLwE3Ijv4PhInJQKvoC8@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiuP1MwrNnMyiWuJ4uGHhTXVFuQ0BlinmyXj8cYZyYZQtQhOPX
-	DxyPlCsEMMhTabGu6KhJFHZN18ybHGZbSt8+ueGGuU8AQqSrCt95
-X-Google-Smtp-Source: AGHT+IEaDiKj6/tyn+Va/XZKxhAg0mGtUjFKeI0Xc/pJX8QNyUHh2G13fJs68r4b1kEXlAwFqynpyQ==
-X-Received: by 2002:a05:6000:128d:b0:37d:4332:e91d with SMTP id ffacd0b85a97d-37d5529f8f0mr1118580f8f.52.1728628965664;
-        Thu, 10 Oct 2024 23:42:45 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef15:2100:888:d3c6:a442:4910? (p200300f6ef1521000888d3c6a4424910.dip0.t-ipconnect.de. [2003:f6:ef15:2100:888:d3c6:a442:4910])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430ccf45df4sm65754215e9.13.2024.10.10.23.42.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 23:42:45 -0700 (PDT)
-Message-ID: <34ce8e9c13a3680c7a3ab44e5c91ab80042ad009.camel@gmail.com>
-Subject: Re: [PATCH v5 02/10] iio: dac: adi-axi-dac: update register names
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich	
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Jonathan
- Cameron	 <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Olivier Moysan	 <olivier.moysan@foss.st.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, 	linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	devicetree@vger.kernel.org,
- dletchner@baylibre.com, Mark Brown <broonie@kernel.org>
-Date: Fri, 11 Oct 2024 08:47:00 +0200
-In-Reply-To: <eyx4gykoki4b4gwf6rmtnjgqec3ltdgtszbjugidtf37uei4pn@jqczhf3thuka>
-References: 
-	<20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-0-3d410944a63d@baylibre.com>
-	 <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-2-3d410944a63d@baylibre.com>
-	 <a02f256c54089da4faa3ee1807c01b9cb6e70bc6.camel@gmail.com>
-	 <eyx4gykoki4b4gwf6rmtnjgqec3ltdgtszbjugidtf37uei4pn@jqczhf3thuka>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.0 
+	s=arc-20240116; t=1728629468; c=relaxed/simple;
+	bh=6VmDg2Li4aD41/Esto7OymB5gFb9yxweeoxyO9g6QEA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qVtvVgaFW7qdheqvjm3B6EhmGx9vsqTw2cFxUxfoIv4IjyuSJYiDlNNyb8NEpe1QMU5GIZ1xLvydQ4mhufvzEYk2ibrEjOBkU0u8KQHIJmQsrZ0WeT08g+JISUCtKJySzajAfncgrl263WT1jtXY70THC7FpAqVNmDU0/MJWBHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGJCie79; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E649C4CEC3;
+	Fri, 11 Oct 2024 06:51:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728629467;
+	bh=6VmDg2Li4aD41/Esto7OymB5gFb9yxweeoxyO9g6QEA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XGJCie79DbYmp5Go3HmSvZO1n3Ul6N6/liF2H7ZwawhQWUzF/9ycHMiVJaB00ULMG
+	 cGkPGumPyg8eK6IcsCbMYE7Dx+usRddIxa3jPwMduNWbkmKzVsN9FddkKKy4eZi4jm
+	 8/lqXvnhbvHVIB0Vo1z/5VaHBNf8ovQd/vZSqViF/CnE9h+IxFAbonqJW8sovvpUqT
+	 9V79tI2q8tgPzEsE6zBwcycYYX5wud9nwE3a2UqmEiObiU7EgZPpF2eOTaibVnSK9i
+	 7j3/YZS2QiBI5vXJkeSqOfdocdJMEPwe1MrhK0p/OPw0ZTTPHwBiplUjxRJVp8w0AE
+	 Tkt21geFoFFGg==
+Message-ID: <9fc325ee-0c14-4d17-a0a5-8cf35a8ce245@kernel.org>
+Date: Fri, 11 Oct 2024 08:51:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 06/13] dt-bindings: iio: add binding for BME680 driver
+To: vamoirid <vassilisamir@gmail.com>, jic23@kernel.org, lars@metafoo.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: anshulusr@gmail.com, gustavograzs@gmail.com,
+ andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241010210030.33309-1-vassilisamir@gmail.com>
+ <20241010210030.33309-7-vassilisamir@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20241010210030.33309-7-vassilisamir@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2024-10-10 at 19:52 +0200, Angelo Dureghello wrote:
-> Hi Nuno,
->=20
-> On 10.10.2024 14:59, Nuno S=C3=A1 wrote:
-> > On Tue, 2024-10-08 at 17:43 +0200, Angelo Dureghello wrote:
-> > > From: Angelo Dureghello <adureghello@baylibre.com>
-> > >=20
-> > > Non functional, readability change.
-> > >=20
-> > > Update register names so that register bitfields can be more easily
-> > > linked to the register name.
-> > >=20
-> > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > > ---
-> >=20
-> > I don't fully agree that this is so much better that's worth the churn.=
-..
-> >=20
-> > From a quick a look I saw (I think) some defines where _REG seems to be
-> > missing.
-> > Those is fine to change for consistency but I don't really seeing the b=
-ig
-> > benefit in changing them all.
-> >=20
-> > (Sorry for only complaining in v5 about this...)
-> >=20
->=20
-> no problem,
->=20
-> the change was suggested from Jonathan, was not something i need,=20
-> let's see if he has further feedbacks, in case i can roll back
-> easily.
->=20
+On 10/10/2024 23:00, vamoirid wrote:
+> From: Vasileios Amoiridis <vassilisamir@gmail.com>
+> 
+> Add dt-binding for BME680 gas sensor device. The device incorporates as
+> well temperature, pressure and relative humidity sensors.
+> 
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> ---
+>  .../bindings/iio/chemical/bosch,bme680.yaml   | 64 +++++++++++++++++++
+>  1 file changed, 64 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/chemical/bosch,bme680.yaml
 
-Oh, I see... Well, still don't think it's worth the churn but he has the la=
-st
-word on this :)
+The device is already documented. You need to move it from trivial devices.
 
-- Nuno S=C3=A1
+Best regards,
+Krzysztof
+
 

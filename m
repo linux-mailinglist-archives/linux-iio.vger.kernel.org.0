@@ -1,104 +1,101 @@
-Return-Path: <linux-iio+bounces-10436-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10438-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C6599A042
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 11:38:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D90299A082
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 11:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C31ED28568C
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 09:38:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7A601F25AA2
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 09:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0369E20CCD0;
-	Fri, 11 Oct 2024 09:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE8B2141CE;
+	Fri, 11 Oct 2024 09:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dktjKo+C"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jLkHTrD6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A19219413B;
-	Fri, 11 Oct 2024 09:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E41C20C497;
+	Fri, 11 Oct 2024 09:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728639509; cv=none; b=jklCBxFFelMStRxdhiyUeAz9vwE43GLzne//wDHbaC1SwtsqDu9Uu3wtBSV2lvoh+XrpJTYfwAhFCd1o6UU8AEC1mACmmQy09T9zmzThrxc148ZF5gEE7WZ7Uep+VbxpBmfR2CSMHz6AYQ20QZxYma0DIIhUcI/hj+TCxDNRySs=
+	t=1728640508; cv=none; b=kOvvG0f8Ulqwk7pftbZDf0LU5M5rARwjffv3+oyOlVzaPicbYuHJnRYDt1HV19EBGwbbgIiMPibNV38+fhp+QiCAHmLhimlO2pwulY/9QkkofrHltM2z2Ul09ekrUwLQCNI5SynSurGHS6+F96xUkTdCq6BvWh8Yk5qRHsTFY0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728639509; c=relaxed/simple;
-	bh=5Mf6GTx8csDzpA0mkUaAeMnX4COPNsr4k4vKRhcmwdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jZ+9x7bONCa0ltWfnq5dV0qaQnNgq57idHpp32tBKm5djy4mF3nTcg/pMprICJ71xp4OPlNZ4ku56052cnZoqTelTYq8AhMLxVEnGtbutPRu+mhzQAjBIbJmtNbxkTUbPR+utAnKl+451YQoqaO+1HPFjIopL7Z5ZEAPzZwfiOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dktjKo+C; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2fadb636abaso17473271fa.3;
-        Fri, 11 Oct 2024 02:38:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728639506; x=1729244306; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8r+1iVRMnmJIUiFNrZEr9E2TtZ6NXmvUzynyAR8gNzk=;
-        b=dktjKo+C84ulw8cK5K0nYVFv01MoI5qEJ/S7ba4S5cvP6OX/3bX8A9zMjCp/1V4QbN
-         X2HzJ6vgz5oS+1y69efwdQjyhUH5tKU51VaJ/AUPaKWcvOpI6EuqgNLwSCDPzLlrmIqi
-         69wZ+TCHQIYpbvvL/XJbPB42BA/K3id2yEtTWrqP5WvJu4wlYwDc7Ex0pgNtVsIvpwCW
-         uCNJPASZswMFeU7Mf7XPfpmp1RCSxVR2ij1LCXwkhdOsZBIRaf3qfwDaq9975IRKWMEV
-         gCWwgLH+YPYQDh0kwDCY5Rej+h0MtgAf9iliTGZNextoXkeRn4gJ+HkiPsOpvRRAyvoP
-         p0fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728639506; x=1729244306;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8r+1iVRMnmJIUiFNrZEr9E2TtZ6NXmvUzynyAR8gNzk=;
-        b=Oq8RYy+MLifRsGAzmWBI+NhqFwewtVu7lF9ULdUf3Q8NA34U2zF7ycQiktZxXxkn7U
-         hT/gwI6Xg1vnsP2dVHggemQxDuEeXNpY9S7SehUTvxpd7w3P/FS9B8pLKSDk2Ua6WHxh
-         XP7yhv5P/kRyhZ0rlqAvYwX4wZxujcRvS8QfFwiGg3mlZUooRHoJLaDdSpTgvEdMAsbF
-         AwRzjL3z/Z8Bf1U2Dh2D+En14IjZ1PkJCB3VtvWBmQ4nuplBIZxrIGLz0axhr0jHbIS9
-         PRIFDQr7kMP61h1nqsrrjIyzRW5Kg5M9JEG6RzVa7Z+6wrTK72SACP9NlVA2AsW1Pu5b
-         d/nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUpMsA+zDn4GHGx9DKMxzRq0t58vswCehF2lx8KMn1M8jXsn+whRA5Hvcu+SsbvKhrbJ9JJ6d+SLeq+WVKG@vger.kernel.org, AJvYcCXj0I16QUvvay+OFEJ3X7KNHdui5qfL3zZ5Agzk1vlD03MZczaqH0sbHZ+ieB6jnu/KlRExHD3YUdk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzg6tBaSXp6wg8mq79jj+66uaxWxozCLu29zryAtpGR0kkYRBvB
-	zyC3nf2didiFiPK/mZLtpkErhglwGsoDxylzK6YY1dVF9YRnTnk7
-X-Google-Smtp-Source: AGHT+IGw5MBgmnuIvupXeNOP4bZISFOrfHflAPRvqs1fZVAARZdwD1vFFpWIBK6VL2xtLDGzerIzqw==
-X-Received: by 2002:a05:6512:280b:b0:536:7b56:6b90 with SMTP id 2adb3069b0e04-539da5a0813mr836680e87.56.1728639505883;
-        Fri, 11 Oct 2024 02:38:25 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539e0f8237fsm96293e87.308.2024.10.11.02.38.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Oct 2024 02:38:25 -0700 (PDT)
-Message-ID: <e69f7f8d-33e5-4511-ab21-aa7a88a2d4a7@gmail.com>
-Date: Fri, 11 Oct 2024 12:38:24 +0300
+	s=arc-20240116; t=1728640508; c=relaxed/simple;
+	bh=4UhPzKAxq1htJyVXoa6Yn6iXVYNDJylwqoGp59Hnk8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b9AL47MW7e9xiw2WveW3w+LN8i5bXo8S1V2JG5SDj4b3zlm4Bv+OcdYqc5tq4U/NSI5ZnukR/1Pgrp9LtsxGeCEuI/Cow8ZnLerbDDshFvTBQCVeeO4Pa/wzcvUeo1ILzrdPFElDs8oxEUpM9JbmouEQOGvfjGfOKPcQUt3OWK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jLkHTrD6; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728640507; x=1760176507;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4UhPzKAxq1htJyVXoa6Yn6iXVYNDJylwqoGp59Hnk8o=;
+  b=jLkHTrD6ViI4PmiRTFY166/UJT9fAWyI6WuX2yb0uMlKuVt2GzXrvaDA
+   bwInfXl0UOLe3rruXzW0KRaZKihBsbXPPcoRWpHmh0qFy7jN2Mh/p3NMr
+   Y5MI30vmxKpXzw6AVSERdk/gvcz6d7/RTarCzOm9t8Fcq9J/1OHBdKi9r
+   RNyNegrK6RpvHgmbzIdoLhxw297u+2LCi1NXielu3a4KPJSC+Y4uxUGol
+   TsG1dKT6am3oqeAJid0UZPHUID/azw/Py9J0/xUa+UdIWxxNMeL7QFsq+
+   tB0HUnALNgi5FwU2YjO9ahVPXFLTvUshXur2hmy3rxCaH8L7AjtaLqODX
+   w==;
+X-CSE-ConnectionGUID: sD1IUPHxTMuWejysG9JqkQ==
+X-CSE-MsgGUID: qUmJVpm9RSmNRgrggo7vJw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="31736419"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
+   d="scan'208";a="31736419"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 02:55:07 -0700
+X-CSE-ConnectionGUID: NVo8UdIuT1+BB/rfQQu3GQ==
+X-CSE-MsgGUID: p8fLXQakTo2LVPCdCw2hsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
+   d="scan'208";a="81686615"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 02:55:04 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1szCMO-00000001qjM-3g4a;
+	Fri, 11 Oct 2024 12:55:00 +0300
+Date: Fri, 11 Oct 2024 12:55:00 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: vamoirid <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, anshulusr@gmail.com, gustavograzs@gmail.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 01/13] iio: chemical: bme680: Fix indentation and
+ unnecessary spaces
+Message-ID: <Zwj19ONfbDr0f4Fh@smile.fi.intel.com>
+References: <20241010210030.33309-1-vassilisamir@gmail.com>
+ <20241010210030.33309-2-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] iio: pressure: rohm-bm1390: Remove redundant if
- statement
-To: Colin Ian King <colin.i.king@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- linux-iio@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241010170835.772764-1-colin.i.king@gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241010170835.772764-1-colin.i.king@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241010210030.33309-2-vassilisamir@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 10/10/2024 20:08, Colin Ian King wrote:
-> From: Colin Ian King <colin.i.king@intel.com>
+On Thu, Oct 10, 2024 at 11:00:18PM +0200, vamoirid wrote:
+> From: Vasileios Amoiridis <vassilisamir@gmail.com>
 > 
-> There is a check on non-zero ret that is redundant because the
-> same check is being performed in a previous if statement and
-> also before that. The check is not required, remove it.
-> 
-> Signed-off-by: Colin Ian King <colin.i.king@intel.com>
+> Fix indentation issues, line breaking and unnecessary spaces
+> reported by checkpatch.pl.
 
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Can we move this to be the last (or close to the end) in the series?
 
-Thanks!
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

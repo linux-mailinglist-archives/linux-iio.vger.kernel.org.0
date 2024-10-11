@@ -1,83 +1,84 @@
-Return-Path: <linux-iio+bounces-10471-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10472-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3248299AB9B
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 20:55:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 689BA99ABA3
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 20:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D91AC1F21EC6
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 18:55:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1B38B23DE4
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 18:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8AE1C9EAF;
-	Fri, 11 Oct 2024 18:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB941CFECE;
+	Fri, 11 Oct 2024 18:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TZGz8Ctu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h8yK5X/z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B2E7868B;
-	Fri, 11 Oct 2024 18:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B631C68AC;
+	Fri, 11 Oct 2024 18:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728672706; cv=none; b=u5Bx8HsuuU7iR1LAgQXYWe4GCrWogHCdqY+4WddCQV/XQQ9LfhStVaOL5fOz02/KopDgUblw50yKLGN1GgY3srtsNiOWDM7BFSoR8mhXnGQrpINW+sqEWpDRCtRVrMmSxBBU9F2EHrMWkft7TAthneg/3fMOzEajvMhMd2eKQN0=
+	t=1728672810; cv=none; b=QrVav/CNNN+BN7eyUK6JJKAmMFyRfd3BeznRrrnBxlWkXbE5ksljCRvWnX+HwtCa0NjP+y8TRbzq/hDiAemQaWmz6hNGww6t0jxjGXdEz+doNp9iIoqALXjkQkQh4K3O2cEQRdB8SnIlJHuffK/ci0lpEj1+HWDAf/J3fR5oh3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728672706; c=relaxed/simple;
-	bh=yRPVm/DBJkK5IiDZ9InjezCVxKSjpxkg5OZcFNpujqw=;
+	s=arc-20240116; t=1728672810; c=relaxed/simple;
+	bh=wO52izhtaJkYwZP5/i4Xv7aOxNp/1BOGcLs4pvwgzC8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JJCJAbDYhN+cCPOohgrGJyok8lW6zQAtqPl/Scl3xqx738gPDfoJpGakdOh3j4r4A6RRMj3FDN6TrMxK1JV1Ml8aXPS5vB+ENLLFcqIMLco8KBW48G1AAQ6B4/6ZfZ6CSaacyE6tnrfXbqTp76VCFxvvdPRthwWrriGtyA/2708=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TZGz8Ctu; arc=none smtp.client-ip=209.85.221.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=cP3P+v6tVre095HyDfqT+n4HHyBBLAbraHQw4Yj47j/dkf1k7zH5qMgfLjUrIWFbcsXQWRmD8FX/A7HQRA9wjby03oTELXUPNnyd11O/51nsdlB5RlFVXOLx5MQXSDt2yaw+RXXHdn1H84UeZLqtWtlTPXhMdUMTR9SfUNy8Ln4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h8yK5X/z; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d4d1b48f3so1242113f8f.1;
-        Fri, 11 Oct 2024 11:51:45 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539e3f35268so538847e87.3;
+        Fri, 11 Oct 2024 11:53:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728672704; x=1729277504; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728672806; x=1729277606; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yy525F7nihGZPfJhxLTeC5sFotLGbMo0KiOUutsPUCc=;
-        b=TZGz8CtuK4uXtYtBsrAaMlzb9RFKDuEvO/Uu2NUNULki5bK4HPmL3yvNNNOckXVTKS
-         +qx23SYMXYF9jtfkx7O2jlFHZya9BJzDqJw/Fb3lyV60SCCnPlPtCynjlQQsDAVnYhsw
-         9E2qoQGagqfVkRTR7bL8yI5fkX/pZ6xkPqBWja95OnJkpvgNvSt+naGOeok/pWQND6Td
-         DUcFnIDzMFZqHFwuY6OZrMIkmW8DEeIjCiXDxc4pyc95mvIXmVKpQaY9qv5JZ7YUk3cP
-         xrpZdkDOm2Ua1W8pi43zMwvqc1wFbPREG1C6F/hqRPRrnKQM1zEFlCZZ8OluR0S5znuM
-         QXyg==
+        bh=tHtdR9gh6gLJx+S+TYBCPLzeRCEOaHqzDMFEdyNLr/w=;
+        b=h8yK5X/zUlTP2z8LFLFXCLQ6qFBI2sLVfFt6siZ2mTTYu+m2l3MSvKxIuimDQmBMfG
+         z96bRpypYseifQXtkXyFQFQYHTpOSczQri0qTiAR6bKaO2bART9eAYp/rKWU8qRy8Psg
+         jLRr8qhJ6jgRDhCIj3gHRwQy2YsOK9qKydpCzl8B13l+6jrMHn4jemRYKhrINuUOzH+r
+         +EpyLJO71OqRoetn5P5Mc91QmW2MQlHcm9FC8F1cnkrpXc/tVIwZZu3bzyLXIBNgBqDj
+         DCSkJNQmuJech/g0mOCNNJ12LMHpN1n27nuGSQe6QcapdMqayC9Y/T/gUdGt+0kFWnuP
+         ds2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728672704; x=1729277504;
+        d=1e100.net; s=20230601; t=1728672806; x=1729277606;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yy525F7nihGZPfJhxLTeC5sFotLGbMo0KiOUutsPUCc=;
-        b=b0f5tS1nLq41q60oFAph5Zih8WrDRidyaOJOVypRa/Ulaf9KRgEDBBa3Kp7CvLyr1o
-         FCEVx24jrLSYKhYZNik4I+jHQk0gtoc230xj/N+F52TsQL4Cm+9hg2KFXVqW/ZiBppre
-         C2Xzfhu3Ay6Wq9ws7AvuX/ATIgPJEZiMI6831tT8hgu/OPGJMjJQjtj1ms8Qav7E9a/p
-         eTwV1B3Sq+QGJnaMSi+N2Xg0w8N711kqBDbq/sdIPvkJ9e4v66zC6j8OpbGNlQ4f8fCq
-         VW+z5qFSYLOOweyXc9ZxTSY6aFZ6JfLS47rfewlHFq0P3vudY8AorRFfx6LfDDyVQHX9
-         vnjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNtR1sR1WyNYthghvh0Tpa3NxwIQ1erM/T2RNcohxU1QzBoKk2KVV7w/HDUOFj04f9I3AqrKKwgJUZ@vger.kernel.org, AJvYcCUu0sciNHUeDZZKHlRAoSaK6Ew0spXIHYej0c4RO+e0ylQndMCXjzZxVyIzI/WDgAqp3o2aFlf9ArEC@vger.kernel.org, AJvYcCWAbRKd2XmR167YObmRRrQHM6oalKztq4cOnwI5K52GpOiLtULJ5xxADHtnHonWUeHsJKdSIPygn+e2gidK@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5kuK+TFqBAjtKcfdrh9ZCEwA6kIsEuuZ3ttABisVAE8EylUS+
-	GxVqrp31SprcOeHNuAM1eBhyYiucvvK1EfladZ4h148ezn3LWywL
-X-Google-Smtp-Source: AGHT+IHPfkGYWuvscaXOfgQ1QfkI0s0Afa29sBrJujTl5Dr6EwNjdFVVlxmQzBEUFPfpaDvzC7D0YA==
-X-Received: by 2002:a5d:40c1:0:b0:374:c614:73df with SMTP id ffacd0b85a97d-37d552a3962mr2325806f8f.57.1728672703537;
-        Fri, 11 Oct 2024 11:51:43 -0700 (PDT)
+        bh=tHtdR9gh6gLJx+S+TYBCPLzeRCEOaHqzDMFEdyNLr/w=;
+        b=hSuGSOPLtpxKmkhO8YcfVxGLrQR1oK3V4pfcS1puf26Lus1su7AomCe5pb718P8kqN
+         HVpzi1zpgnYDoWSbqs5kv5isN9ckE7UKQ12Fa+TCPSq+aTCncFOGSrNIHUjVeanKQnvW
+         YhLr7EwTyFsTgX9nLPZTUeHAITMf7yd70g149GPAqO+YD/hnoXQ16z3yJVJVhkA8kaxK
+         ILWV3EarYHf+TesMDYppEQ/6r/QdcBQ4k5gGNksafM1EVqQN5Zdw1T3RWD0utzsG04uL
+         zXA5CkdMvtWkV1vMX8wDWMBi3EFT/Y6FvNMrF8kf3WjgLOe0ov2N1GlJcKsw+UEC4JfY
+         Gm9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUuAD2fDtpwrF4h8oXv7Agmqfb4OWrVU49l17g2hN3Z2pE67leM+7BHYwUUS20T7fM+zXYoBlSIEHIv@vger.kernel.org, AJvYcCVbuORXhtsDOGITpQgv0BeEsNiP33YnAKRllGDs0un+yGUtlVVugjLtQZUPR+KMyytk6rpQiJ4Ys/nSWxj6@vger.kernel.org, AJvYcCVjFAsoiefAlJun0s9zxpDoucgYSO6VpQJ98Cuq3Gf2tB1umw9CIpNIE1smFPw7Xab/48VYDsnetvup@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzBUZhxylfJfDUOG8X1bYbnZOAH3/x86CvIUAnDuOjkUituv8r
+	K9Ip9qPCBvXMhSQwaGUzlrfiYMUxb7gx/aH7uFE6fkxkUEPcgVA5gndMNGCeX4w=
+X-Google-Smtp-Source: AGHT+IH3mQrDWOhMaio0jKUTNt1PDvpFsvG5xMJPLXivdzWr7Pe9AF5R7p6TIiO7uYasJ8Md2mytPg==
+X-Received: by 2002:a05:6512:696:b0:52c:dfa0:dca0 with SMTP id 2adb3069b0e04-539e5731751mr287408e87.43.1728672806125;
+        Fri, 11 Oct 2024 11:53:26 -0700 (PDT)
 Received: from vamoirid-laptop ([2a04:ee41:82:7577:73c8:39ee:29b7:ae8c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6a8ba1sm4527905f8f.23.2024.10.11.11.51.42
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4311835d78fsm48459015e9.43.2024.10.11.11.53.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 11:51:43 -0700 (PDT)
-Date: Fri, 11 Oct 2024 20:51:41 +0200
+        Fri, 11 Oct 2024 11:53:25 -0700 (PDT)
+Date: Fri, 11 Oct 2024 20:53:23 +0200
 From: Vasileios Aoiridis <vassilisamir@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, anshulusr@gmail.com, gustavograzs@gmail.com,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 03/13] iio: chemical: bme680: fix startup time
-Message-ID: <ZwlzvboBPppQMEB_@vamoirid-laptop>
+Subject: Re: [PATCH v1 05/13] iio: chemical: bme680: refactorize set_mode()
+ mode
+Message-ID: <Zwl0IzIp0HssyFTh@vamoirid-laptop>
 References: <20241010210030.33309-1-vassilisamir@gmail.com>
- <20241010210030.33309-4-vassilisamir@gmail.com>
- <Zwj3V1oaTO6je-w9@smile.fi.intel.com>
+ <20241010210030.33309-6-vassilisamir@gmail.com>
+ <Zwj3tFd549K6ahbY@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -86,16 +87,45 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zwj3V1oaTO6je-w9@smile.fi.intel.com>
+In-Reply-To: <Zwj3tFd549K6ahbY@smile.fi.intel.com>
 
-On Fri, Oct 11, 2024 at 01:00:55PM +0300, Andy Shevchenko wrote:
-> On Thu, Oct 10, 2024 at 11:00:20PM +0200, vamoirid wrote:
+On Fri, Oct 11, 2024 at 01:02:28PM +0300, Andy Shevchenko wrote:
+> On Thu, Oct 10, 2024 at 11:00:22PM +0200, vamoirid wrote:
 > > From: Vasileios Amoiridis <vassilisamir@gmail.com>
 > > 
-> > According to datasheet's Section 1.1, Table 1, the startup time for the
-> > device is 2ms and not 5ms.
+> > Refactorize the set_mode() function to use an external enum that
+> > describes the possible modes of the BME680 device instead of using
+> > true/false variables for selecting SLEEPING/FORCED mode.
 > 
-> Fixes tag?
+> ...
+> 
+> > -	if (mode) {
+> > -		ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
+> > -					BME680_MODE_MASK, BME680_MODE_FORCED);
+> > -		if (ret < 0)
+> > -			dev_err(dev, "failed to set forced mode\n");
+> > -
+> > -	} else {
+> > -		ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
+> > -					BME680_MODE_MASK, BME680_MODE_SLEEP);
+> > -		if (ret < 0)
+> > -			dev_err(dev, "failed to set sleep mode\n");
+> > -
+> > +	switch (mode) {
+> > +	case BME680_SLEEP:
+> > +	case BME680_FORCED:
+> > +		break;
+> > +	default:
+> > +		return -EINVAL;
+> >  	}
+> >  
+> > +	ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
+> > +				BME680_MODE_MASK, mode);
+> > +	if (ret < 0)
+> > +		dev_err(dev, "failed to set ctrl_meas register\n");
+> 
+> This is an information loss. You shuld probably still have a value of mode to
+> be printed.
 > 
 > -- 
 > With Best Regards,
@@ -103,11 +133,7 @@ On Fri, Oct 11, 2024 at 01:00:55PM +0300, Andy Shevchenko wrote:
 > 
 >
 
-Hi Andy,
-
-It is not affecting at all the operation of the driver so I was not sure
-if it was worth it to be backported to the previous versions. This is
-why I didn't put a fixes tag. You think for such a fix is necessary?
+You are right, I missed a return here.
 
 Cheers,
 Vasilis

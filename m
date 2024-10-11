@@ -1,88 +1,92 @@
-Return-Path: <linux-iio+bounces-10465-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10466-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB48F99AA75
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 19:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9196599AAFA
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 20:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF1FF1C20E95
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 17:38:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD6C51C22281
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 18:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D301CCEED;
-	Fri, 11 Oct 2024 17:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5581F1C8FB7;
+	Fri, 11 Oct 2024 18:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TMtXmRsH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CaPuo91h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8721A1CCB31;
-	Fri, 11 Oct 2024 17:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6905A219FF;
+	Fri, 11 Oct 2024 18:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728668157; cv=none; b=VFHjI32map04x3WmdbQ9/aLS2ETO4u+Xa5RVeqrr+uAvwUoPri+aDDRzlJNPk3rQwYd1qsMeL7NZGvmu5Il5nsbvFLqWXm+V75/WK+2Ln8VIHH6hFE97uAq0JleoQSOk3l3efha1bPsFOgKcp3huuse0LMcm+TrWfbVisnDxjaY=
+	t=1728671531; cv=none; b=qMaOU3Rn9gvDN2+qxZuHFWabpNJdjLBumLorl6XVIHT+xU3DBbW+TFEoWAz4uF+i8daO+CGQ5CDZdlxX3YSVV1SG31mv07Kh1EYmgc+T1qzA+9/Pc0NpxY1Il0znSH9pyWcu7uoOBCacCMgsdYVCoUA5wCf/9IGwgq4OSwfbeiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728668157; c=relaxed/simple;
-	bh=IYbGB9zTZe3U4tbPtF6I2VuL+FdnP/iE5YbWhTENcA4=;
+	s=arc-20240116; t=1728671531; c=relaxed/simple;
+	bh=6ABpjJ5c9laXV1Mofwkc8XFAV1AdWBcZM3Tp255Plkw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lZXTe3VPzEtUpCxCp6hVXcB59lhImp9qJmFlRi4sAhkXvjEaxOALRfEHGpUAVkLfX3iMyW5TdvdMk4UbogQomsdaSFNHqi8VF7jKZImwew7HXzTfEAUMNLOOy8bQnd7Coz9S49QUtymGzujoQtkdT5fxYi0UiPDcSejSFIyu4Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TMtXmRsH; arc=none smtp.client-ip=209.85.128.43
+	 Content-Type:Content-Disposition:In-Reply-To; b=VavLff9YmmJP2RNpgavr5r/3PFF2ofHthfRYHGaDEdy4R6GJZuPCC/G7YXMlmTN+R6GBsLfscurv1hq+NifKUfIB46TQx3sOanZA86dm9nZfbzqve7bFcenjTrT4ZUIVWblFT0Kmbj8MWp2RjZGqX87JepciV1fHeL4O+/KkHcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CaPuo91h; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43117ed8adbso21631155e9.2;
-        Fri, 11 Oct 2024 10:35:55 -0700 (PDT)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37d538fe5f2so845967f8f.2;
+        Fri, 11 Oct 2024 11:32:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728668154; x=1729272954; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728671528; x=1729276328; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lWWmMF+4cpC5c54790uxJHV+gvXu/38t3jODh8WCL1I=;
-        b=TMtXmRsHojJElYIJk5G86EsOTTcqRoB1+I0s1mLxsK7XG0P0O8k7i8f9B9HZky7GyJ
-         mXsJt6uoBFhmd4100oEO6wOlEkhwfmTYIryFO5/HVF3fUNra163IRY+QJnXhZI33YlkB
-         hlGfu3BGinVQV+U+ZUhNV3qQMs/kP+JEEVK97CsUna4+N1Y3rtxVExcoKtyV2azoqhoH
-         lUCZBL0aAv00I8tAV5TF90hq9KSqHKQ8O4J+zpyqDE1j9MwY3KEtNzxh8Qe5ewKcUZ7C
-         sKdow9M5WMeNZ0IzrPOBu4U47V+mRVXYHVeUVec7AWm9p13MQZHSQ923xM/bDEAF1sER
-         qU0w==
+        bh=hzGJQXEa8Jg8mFbIKKFv9fTv+IGcsaWIojSt7WKuh+A=;
+        b=CaPuo91hwA4EyxbwjGKArpS6SMPsqh0z1Aaazl8r4b5TXels9ScF2tcIhLBfdM6JKA
+         Jzxbpdldwb6ETYAq0xUWKCzZfnpvElu19Xe5uNPu6AInbMdSJ93/weFjaccJlARKY8dw
+         wU0RwnLnkIr6tJZJKVB/vEniIUm/sLH5jUp/+CavBOj66E3ganOTfibX/yNIYb1cg2Kt
+         Hz4agwQpcTWUjVxLxRhotmlQoLasrVV1n0odMz0fNWw926nyMyiCP5WLOBwGa7Ytwoih
+         pnjznTgVr6gcmiGtxGPUo+eX7ao7lKn08w4LTrBb9fxVI8xmtOGHnDr+MWfweM8nFDBI
+         qjEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728668154; x=1729272954;
+        d=1e100.net; s=20230601; t=1728671528; x=1729276328;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lWWmMF+4cpC5c54790uxJHV+gvXu/38t3jODh8WCL1I=;
-        b=cyqCaz9VdlSVNYb/7UVuPLzmJt9bGj9gyzCAYE3LqcO79vzURv7tYHcwnLmMbH8ifC
-         B9NqFyi9m11Rq1kp6JexT+Tb8d6zBHwT9uhNEyVY77iMQbNlcZYX3SQevpK9BNWcT8NC
-         pm/FXGJw305j8WAzbxUqNX1ZLJLaXPDSgkYnMomTvFXqGS+15OIMFqn7VZ9vIZ37M5CD
-         cRguGn+cuzPpqrOgxmrK5V3SfPwisPDUNUK9ol4RDwuxOxecuQHi3+rNT1+QNl/voOk7
-         /RmY+aijvLiR0TkarBa84e+FCeBk23/WFFP5ZX0gMgB8/N+k0BSu6ALtJQSKRYi0haOL
-         IURA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5+CPFpq5QKNCWZDzkwtNBICVtLMW8dqzMsCFUA3yiTl8+PJAMiPgrTPfXNwozz2/bFoCqdCqyy70v1u6r@vger.kernel.org, AJvYcCVT4FYD87XkIfgV/SUdtihXjtkyyD4u4uL6s3AD+3T6oo+iIy2kdPCTVyVUvB6LREknBk5zcEbRHCwZ@vger.kernel.org, AJvYcCWw3aAyrKMH4KTElwWcoIZJjrBylAcnPPYuaOCIbSUPHJNUqi/4hKmRRhZ5bseygL8siUUNJ+O2iVp2@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtGadWSKZuHDv8BXfE5IpnACT+gfPKgKP8iAvlnpgSbGzeWYp1
-	2G9/J/2ptrwvSp6bPadKyem9sVnn2bFAZRKrE08ffRtgCkWLxqEn
-X-Google-Smtp-Source: AGHT+IHlbWMalnq6TxqUn2FGn+wxIKQNsE0A9Dg3qiymPAAswYQzCLia0kJLFZN+dVleeD4Jm07Ezw==
-X-Received: by 2002:adf:eac4:0:b0:37d:5130:b380 with SMTP id ffacd0b85a97d-37d5ff8a2a4mr379362f8f.23.1728668153637;
-        Fri, 11 Oct 2024 10:35:53 -0700 (PDT)
+        bh=hzGJQXEa8Jg8mFbIKKFv9fTv+IGcsaWIojSt7WKuh+A=;
+        b=pnRUDyXzS8xbOoZQ29TDzFbE4NEUDuZr7jQzUVtVXcQIJUjtFyOuTD5zVPha7MWcXT
+         ViElkIjAdYhSdm4gQ/jtPGaxGdEdLW6Cep+JSYcxizxP5mmNnaGqCgxcg24CkxmEHgT0
+         wQySfIdQLmb1s5Cz3J927ey9gKQnKgDTgt8husTYrizkwD9wM8Zp8rnTbtdVHVECZmbf
+         V1vv63stxk7MecVjF6N1sC9YIMa+OgmARO9SvNsJenfeBxB9ae8RkIGZVs+PYJ875+bu
+         hCzqiuF+n3FEnMFK0NsQ9iwXZ8yp6hKZuwXqCHaYLVPnM62fBSA52VrNk5PjYuY9mFxY
+         ayeg==
+X-Forwarded-Encrypted: i=1; AJvYcCVC8jXCMIiZkx2Rm/QA1YcYeRuuFhclayZbh9lylNiM6OhD4cZtacH7kC7+IQPHpbkBMEm5n0Xs4vjjsJ0p@vger.kernel.org, AJvYcCVpW0/l12XB4J0kHN+Bf99vPCo22jjtZiDXdrc9s8gDRh7boRDAAN5tv35bZJ7mBGkMecqShpAIydE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzytmLaZr96BR1oS0GR0BEis09OuB9b+UeI/5YEj1WEkM6AK0cB
+	SKxXLoem6ZT1hE4rmLbr2N2UbyD/4/tQDeOENP7wf6/4P8bBHO7b
+X-Google-Smtp-Source: AGHT+IHZfchisX4gDQW0KTvSURH8Cyp5fZ6XTR97BtsqZNdAAQv/sME0MaU1UtwkGoz/6W+YdQerPg==
+X-Received: by 2002:a5d:574e:0:b0:37d:518f:995d with SMTP id ffacd0b85a97d-37d552d92c7mr2193936f8f.56.1728671527597;
+        Fri, 11 Oct 2024 11:32:07 -0700 (PDT)
 Received: from vamoirid-laptop ([2a04:ee41:82:7577:73c8:39ee:29b7:ae8c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a7f25dc6sm234259266b.72.2024.10.11.10.35.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b79faa8sm4504907f8f.66.2024.10.11.11.32.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 10:35:53 -0700 (PDT)
-Date: Fri, 11 Oct 2024 19:35:50 +0200
+        Fri, 11 Oct 2024 11:32:07 -0700 (PDT)
+Date: Fri, 11 Oct 2024 20:32:04 +0200
 From: Vasileios Aoiridis <vassilisamir@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: kernel test robot <lkp@intel.com>, jic23@kernel.org, lars@metafoo.de,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
-	biju.das.jz@bp.renesas.com, javier.carrasco.cruz@gmail.com,
-	semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, christophe.jaillet@wanadoo.fr
-Subject: Re: [PATCH v8 1/4] iio: pressure: bmp280: Use sleep and forced mode
- for oneshot captures
-Message-ID: <Zwlh9rxuEcxSu37C@vamoirid-laptop>
-References: <20241007194945.66192-2-vassilisamir@gmail.com>
- <202410111221.YIeXHxOv-lkp@intel.com>
- <ZwkDoSeXA1T4VD0L@smile.fi.intel.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: "Yo-Jung (Leo) Lin" <0xff07@gmail.com>,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	ricardo@marliere.net, skhan@linuxfoundation.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Adam Rizkalla <ajarizzo@gmail.com>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v2] iio: Fix uninitialized variable
+Message-ID: <ZwlvJCxdiRqRWu6Z@vamoirid-laptop>
+References: <20241011093752.30685-1-0xff07@gmail.com>
+ <20241011115334.367736-1-0xff07@gmail.com>
+ <26f2e35e-0a07-4b24-91a2-a48d4bc5dadc@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,61 +95,76 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZwkDoSeXA1T4VD0L@smile.fi.intel.com>
+In-Reply-To: <26f2e35e-0a07-4b24-91a2-a48d4bc5dadc@gmail.com>
 
-On Fri, Oct 11, 2024 at 01:53:21PM +0300, Andy Shevchenko wrote:
-> On Fri, Oct 11, 2024 at 12:32:12PM +0800, kernel test robot wrote:
-> > Hi Vasileios,
+On Fri, Oct 11, 2024 at 02:31:00PM +0200, Javier Carrasco wrote:
+> On 11/10/2024 13:52, Yo-Jung (Leo) Lin wrote:
+> > clang found that the "offset" in bmp580_trigger_handler doesn't get
+> > initialized before access. Add proper initialization to this variable.
 > > 
-> > kernel test robot noticed the following build warnings:
+> > Signed-off-by: Yo-Jung (Leo) Lin <0xff07@gmail.com>
+> > ---
+> > Change in v2:
+> > - Make value initialization immediate before its first use.
+> > - Link to v1: https://lore.kernel.org/all/20241011093752.30685-1-0xff07@gmail.com/
 > > 
-> > [auto build test WARNING on 96be67caa0f0420d4128cb67f07bbd7a6f49e03a]
+> > ---
+> >  drivers/iio/pressure/bmp280-core.c | 2 ++
+> >  1 file changed, 2 insertions(+)
 > > 
-> > url:    https://github.com/intel-lab-lkp/linux/commits/Vasileios-Amoiridis/iio-pressure-bmp280-Use-sleep-and-forced-mode-for-oneshot-captures/20241008-035238
-> > base:   96be67caa0f0420d4128cb67f07bbd7a6f49e03a
-> > patch link:    https://lore.kernel.org/r/20241007194945.66192-2-vassilisamir%40gmail.com
-> > patch subject: [PATCH v8 1/4] iio: pressure: bmp280: Use sleep and forced mode for oneshot captures
-> > config: i386-randconfig-006-20241011 (https://download.01.org/0day-ci/archive/20241011/202410111221.YIeXHxOv-lkp@intel.com/config)
-> > compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241011/202410111221.YIeXHxOv-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202410111221.YIeXHxOv-lkp@intel.com/
-> > 
-> > All warnings (new ones prefixed by >>):
-> > 
-> > >> drivers/iio/pressure/bmp280-core.c:1051:3: warning: variable 'meas_time_us' is uninitialized when used here [-Wuninitialized]
-> >     1051 |                 meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
-> >          |                 ^~~~~~~~~~~~
-> >    drivers/iio/pressure/bmp280-core.c:1046:32: note: initialize the variable 'meas_time_us' to silence this warning
-> >     1046 |         unsigned int reg, meas_time_us;
-> >          |                                       ^
-> >          |                                        = 0
-> >    drivers/iio/pressure/bmp280-core.c:2452:2: warning: variable 'offset' is uninitialized when used here [-Wuninitialized]
-> >     2452 |         offset += sizeof(s32);
-> >          |         ^~~~~~
-> >    drivers/iio/pressure/bmp280-core.c:2437:17: note: initialize the variable 'offset' to silence this warning
-> >     2437 |         int ret, offset;
-> >          |                        ^
-> >          |                         = 0
+> > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> > index f4df222ed0c3..682329f81886 100644
+> > --- a/drivers/iio/pressure/bmp280-core.c
+> > +++ b/drivers/iio/pressure/bmp280-core.c
+> > @@ -2222,6 +2222,8 @@ static irqreturn_t bmp580_trigger_handler(int irq, void *p)
+> >  		goto out;
+> >  	}
+> >  
+> > +	offset = 0;
+> > +
+> >  	/* Pressure calculations */
+> >  	memcpy(&data->sensor_data[offset], &data->buf[3], 3);
+> >  
 > 
-> Rarely, but looks like this suggestion is okay, rather I would do it as 'else'
-> branch and convert '+=' in the 'if' part to be '='.
+> That was a quick reply. I would recommend you to wait a little bit while
+> the first version is under discussion.
+> 
+> I still see the offset thing a bit weird. data->sensor_data uses an
+> offset to avoid hard-coded numbers, but for data->buf we do exactly
+> that, in the very same lines.
+> 
+> Setting offset to 0 to access the first element i.e. no offset required,
+> and then adding the actual offset sizeof(s32), which could even be a
+> const if the first access was to sensor_data[0], looks to verbose.
+> 
+> These things are of course not critical, and the proposed fix is
+> definitely ok, but I am missing some consistency here.
 
-Hi Andy,
+Hi everyone!
 
-I though exactly the same, thanks for confirming my thoughts and thanks
-for taking the time to suggest it!
+So if you check also the conversations that we had here [1] and in the
+previous versions, indeed the idea behind the offset is to use it as an
+self-explanatory index to a char buffer that holds in fact s32 variables.
+
+The data->buf here holds the values that have just been read from the
+sensor. If you check on the channel specification of this sensor,
+you will see ".realbits = 24" in both values that the sensor returns so
+hence the value 3.
+
+I am not sure if it makes sense to use a macro here for each one of the
+3's that are going to be used only one time each and in order to be more
+"consistent". But I might have a wrong view on this one so feel free to
+correct me!
+
+For the initialization of the offset indeed, it was already mentioned
+here [2] this morning, but on a different patch!!! I couldn't get this
+error though with gcc...
 
 Cheers,
 Vasilis
 
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+[1]: https://lore.kernel.org/all/20240930202353.38203-3-vassilisamir@gmail.com/
+[2]: https://lore.kernel.org/linux-iio/202410111221.YIeXHxOv-lkp@intel.com/
+
+
 

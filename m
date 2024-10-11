@@ -1,78 +1,79 @@
-Return-Path: <linux-iio+bounces-10444-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10445-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B33D99A0E5
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 12:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FAE499A0EC
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 12:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA5F7B24F10
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 10:10:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF3C7B2545D
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 10:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65423212625;
-	Fri, 11 Oct 2024 10:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3395A210C07;
+	Fri, 11 Oct 2024 10:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bQ36qftg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jv4etrwU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91360212622;
-	Fri, 11 Oct 2024 10:10:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26663210182;
+	Fri, 11 Oct 2024 10:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728641430; cv=none; b=jukfQHLvlesk/X2gVeC2T+iinPimGhOU8RtYVw72MbSSl4SVb4iqY50anv4DfjERnDKykE5/CnO8N6nXIJQHjy9qxxCtviwyP8nLLJ6Y4kwx+GJqkMRwRQjMB71LBFwrCsTrJdrnEBFv3LvKEjzQPzRUdeRvSm+MM/5sJ5bm2+k=
+	t=1728641551; cv=none; b=uKT4qJs9MKVI/P8NuXQjBg8/kD+WBBvL8YxzBmjdWRYJygO0q2n5P1iMBbngaRHt+DPeLR8yqPEE0Tna20KGpgT/RZ+S6vPG3meGQOwac7zNWe6cDoDxewMGOXtNkZV1QD9Fpubo2zO3x0N2wBoTXxVrullDwLpX0T9lg2Btg3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728641430; c=relaxed/simple;
-	bh=3RbFEEJnoKS/e7NOWTYtQJLCiaeAfK0OKuMjVXkA7BA=;
+	s=arc-20240116; t=1728641551; c=relaxed/simple;
+	bh=knVAo+b/lJS34xtrgQP01JcZx5fc22uyIO2k7QFKYG0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uaDc4A+1ZBr8f+/UiSSHyHyV+TqC9O4rmOfqdtJ0Ad13C3r9MBgC7cGjgsm5TeETOgXvg5Sm9qFItRYYZ/LBEAePxxC6HvQH/Lrs9x3EzKg8Ylm6FJXdDWbA+WJj3isNyNkHWOPoVXzuTxOq5lYFlCnqdrjs7CXZHbURO1WgFmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bQ36qftg; arc=none smtp.client-ip=192.198.163.8
+	 Content-Type:Content-Disposition:In-Reply-To; b=sLOI8aHzheSQhev50cRmBribTnsX7yNQSLNeEkd56fr5jhCRcvGbjAO3gz2Lbfox/Uk41T+2HBpavwJjjhm4KmAUHYiBcEmF9OQAX2bCmOkvSW0YgPPa5/pXP+PVO2N8rOVD5OGcK/k78qkBVdeIJnHTczdR2f99eo/JboUTRog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jv4etrwU; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728641429; x=1760177429;
+  t=1728641550; x=1760177550;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=3RbFEEJnoKS/e7NOWTYtQJLCiaeAfK0OKuMjVXkA7BA=;
-  b=bQ36qftgHr048hxsOgCH84b3DZOp66qNpKUYnHTckQ/NFHgk7VA50KSj
-   nXEmj6YBHNhNEEzAQpLclVgbtbi5uof6dgDyHUvv6Wtp5NFsboJ1ZRXM4
-   5hx9lsjmNAOJ9exKtWwB1XrzaRXMSOEsqPLuNpD4pup+JEz+4PMDaRy5V
-   CHM0Zml3mTKEhvUR5a4PM6HZD6EVLDVNbygQ3pkfwVOOKjwdKZgWIniCl
-   LiCP5YH2GQMMykbpWbnqlBAyRl/4//RmqxICIiJzfTXiYrUQz62Og1wH/
-   qPOfzIuYS6+RSifaW3hmx5A5YYgGAGJERondfjjtQ8iNeXHxfu/Lv1q09
+  bh=knVAo+b/lJS34xtrgQP01JcZx5fc22uyIO2k7QFKYG0=;
+  b=Jv4etrwUDaEF4A4RCiBQ8cbQGK52iUrdaUjinjIf7toIIivTAdpZbauo
+   9jeu9i3klxidf6SJbHlTuz2Ug3nKt5DRelwIQRtK3n71x/yGAt/aUE5Gk
+   oPbaiSkp1Y8PwP+XeukF9i8TDeyq5WJSNwc8ZvJUh4oBUHl2sVjynJeqo
+   ngk1KkznRwGB239jl9jvXE/Vgk1tYMw8oB93UeJWnKoSFGVrMKGrzWfw3
+   cN1nZC1Lq1tgQUSF/8qvEXu+nwyOvr4gpQowDvnSHo6jdGjIuHibRmVg7
+   46vgrI9ZzMDVoqD5NSoPinDTIoj34ipE2gU1uazj2is++q5lX/fuy1IWn
    w==;
-X-CSE-ConnectionGUID: J4RJlz2uSHeAY1+WqjmgBQ==
-X-CSE-MsgGUID: z9KndGW/SP6A3pWThf9zlg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="45547649"
+X-CSE-ConnectionGUID: hmKjz+bmT6aOERVdbULzvw==
+X-CSE-MsgGUID: +Kwlo+tmTcGGnvXEDEfqfw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="30911655"
 X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="45547649"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:10:26 -0700
-X-CSE-ConnectionGUID: M3WpYnsLRQmDT1wa9hEkBA==
-X-CSE-MsgGUID: Lszo2Nq9QNCE6gtktpDaFA==
+   d="scan'208";a="30911655"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:12:28 -0700
+X-CSE-ConnectionGUID: fOhO5L/GRYi5DupXQr+Vmw==
+X-CSE-MsgGUID: MugWOdI4SOqFoZhH6vHrJg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="76772806"
+   d="scan'208";a="107722257"
 Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:10:23 -0700
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:12:24 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1szCbE-00000001qxR-36js;
-	Fri, 11 Oct 2024 13:10:20 +0300
-Date: Fri, 11 Oct 2024 13:10:20 +0300
+	id 1szCdC-00000001qyw-0iQC;
+	Fri, 11 Oct 2024 13:12:22 +0300
+Date: Fri, 11 Oct 2024 13:12:21 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: vamoirid <vassilisamir@gmail.com>
 Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, anshulusr@gmail.com, gustavograzs@gmail.com,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 08/13] iio: chemical: bme680: add power management
-Message-ID: <Zwj5jBm-_9_FX6ms@smile.fi.intel.com>
+Subject: Re: [PATCH v1 09/13] iio: chemical: bme680: Move ambient temperature
+ to attributes
+Message-ID: <Zwj6BQNhyRp_oN2M@smile.fi.intel.com>
 References: <20241010210030.33309-1-vassilisamir@gmail.com>
- <20241010210030.33309-9-vassilisamir@gmail.com>
+ <20241010210030.33309-10-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,91 +82,35 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241010210030.33309-9-vassilisamir@gmail.com>
+In-Reply-To: <20241010210030.33309-10-vassilisamir@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Oct 10, 2024 at 11:00:25PM +0200, vamoirid wrote:
+On Thu, Oct 10, 2024 at 11:00:26PM +0200, vamoirid wrote:
 > From: Vasileios Amoiridis <vassilisamir@gmail.com>
 > 
-> Add runtime power management to the device. To facilitate this, add also
-> a struct dev * inside the bme680_data structure to have the device
-> accesible from the data structure.
+> Remove the ambient temperature from being a macro and implement it as
+> an attribute. This way, it is possible to dynamically configure the
+> ambient temperature of the environment to improve the accuracy of the
+> measurements.
 
 ...
 
-> --- a/drivers/iio/chemical/bme680.h
-> +++ b/drivers/iio/chemical/bme680.h
-> @@ -75,6 +75,7 @@
->  #define BME680_CALIB_RANGE_3_LEN               5
->  
->  extern const struct regmap_config bme680_regmap_config;
-> +extern const struct dev_pm_ops bmp280_dev_pm_ops;
+> -	var1 = (((s32)BME680_AMB_TEMP * calib->par_gh3) / 1000) * 256;
+> +	var1 = (((s32)data->ambient_temp * calib->par_gh3) / 1000) * 256;
 
-Is pm.h being included already in this header? Otherwise you need to add it.
+MILLI? KILO?
 
 ...
 
->  	struct regmap *regmap;
->  	struct bme680_calib bme680;
->  	struct mutex lock; /* Protect multiple serial R/W ops to device. */
-> +	struct device *dev;
+>  static struct attribute *bme680_attributes[] = {
+>  	&iio_const_attr_oversampling_ratio_available.dev_attr.attr,
+> +	&iio_dev_attr_ambient_temp.dev_attr.attr,
+>  	NULL,
 
-Is it the same that you may get wia regmap_get_device()?
+Side note: Perhaps a patch or an additional change in the existing one to drop
+the trailing comma here.
 
->  	u8 oversampling_temp;
->  	u8 oversampling_press;
->  	u8 oversampling_humid;
-
-...
-
-> +	/* Enable runtime PM */
-> +	pm_runtime_get_noresume(dev);
-> +	pm_runtime_set_active(dev);
-> +	pm_runtime_enable(dev);
-> +	pm_runtime_set_autosuspend_delay(dev, BME680_STARTUP_TIME_US * 100);
-> +	pm_runtime_use_autosuspend(dev);
-> +	pm_runtime_put(dev);
-
-Can we use devm_pm_runtime_enable() for some of the above?
-
-> +	ret = devm_add_action_or_reset(dev, bme680_pm_disable, dev);
-> +	if (ret)
-> +		return ret;
-
-...
-
-> +static int bme680_runtime_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> +	struct bme680_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = regulator_bulk_enable(BME680_NUM_SUPPLIES, data->supplies);
-> +	if (ret)
-> +		return ret;
-> +
-> +	fsleep(BME680_STARTUP_TIME_US);
-> +
-> +	ret = bme680_chip_config(data);
-> +	if (ret)
-> +		return ret;
-
-> +	ret = bme680_gas_config(data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
-
-	return bme680_gas_config(...);
-
-> +}
-
-...
-
-> +EXPORT_RUNTIME_DEV_PM_OPS(bme680_dev_pm_ops, bme680_runtime_suspend,
-> +			  bme680_runtime_resume, NULL);
-
-You also need pm.h for the macro IIRC.
+>  };
 
 -- 
 With Best Regards,

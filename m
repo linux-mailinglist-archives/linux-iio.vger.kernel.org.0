@@ -1,126 +1,143 @@
-Return-Path: <linux-iio+bounces-10478-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10479-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5CD899AC70
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 21:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC1299ACAE
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 21:32:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60609286033
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 19:09:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E42B2829CD
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 19:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32D51CB317;
-	Fri, 11 Oct 2024 19:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7431CF7DB;
+	Fri, 11 Oct 2024 19:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BwQZHENH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mULvvqKu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA6E1BDAA7;
-	Fri, 11 Oct 2024 19:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7191CEE85;
+	Fri, 11 Oct 2024 19:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728673736; cv=none; b=Vea7S+v05PDRlvaPdK8OV12fB21NLcCjmafFqr3GbDO/YyvZf7wlHXIQy2PsM0TeLgYHmsstOgfU2wm9TpBFgf2koWDalT4QlFglPgLg/k99mAsWxNkv08GB3XCUP1SmvVDjDqFWUdLDjjia/ohRxi9nbk9mnqN/ZCQfbO3H2bs=
+	t=1728675165; cv=none; b=SaJ8nwUeelTuemnmYaL2B57+muhKdBC88h2qffZgBH5OIit/pgzjiF5Og6qgN91MVC1rU29vmCz6Qiklr+Gmwk05D1+mXOxIfdRk+Q++R3s4jrnvcVH0CvZ+rCDunc9kuFzBXYk6CkFBmNHLc0uTgKny8wMS+mwzuu5B7sab2uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728673736; c=relaxed/simple;
-	bh=Jd1Y34/j3tpJW7rG0tckaZLKTfi3GtsA1wBtCJgYtFg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kDLZvpv1+WDljqbgfQPQYs2hJrZerDBlzhuFbisXSKNfN40jq1Fk6RsAjmYreDkLFBUeeyOyuUQ5z77sFqtfgHN8lejy4VddeI+9WZ473Hnq9VgsVr12kNq7ir7PuoaKlLCGvtYq7eSzb78rJA4ii9gUlU2f4fgsAlbuglsGqRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BwQZHENH; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1728675165; c=relaxed/simple;
+	bh=jTufO1eqHWvYONgG76j5xyUnwjzmD+Ejxhm+AhPj+AM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s9SD4yQsaNqvYK4jsrcQBbH2bT7iSOOTIq+vHPQuhyU5AuacrW+CHMuj3fYTKTFh5m13GtaBaFpnBMBYnikO5NMzYIliGd2p7JV1WDdDx7rfY4h+G0zS9s6U6QcxaKYXgseXEt3k/QMhcTOEuKBZ33z6ytrqOo0xJWXEpD3NWpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mULvvqKu; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-430558cddbeso15505005e9.1;
-        Fri, 11 Oct 2024 12:08:54 -0700 (PDT)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37d4ac91d97so1781803f8f.2;
+        Fri, 11 Oct 2024 12:32:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728673733; x=1729278533; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zz1WekoT+K59oVc5HCdNd3N/gx+iU50t2zbre263N5w=;
-        b=BwQZHENHSg2M8rYJqzzED1M/L9J3DeJus3uwZDFcKZF75WuC1dgPyjzozyA4tP8K2/
-         Bfj3f46QvjdE6bRNKCIqim5UkNFUKRCtIxYCeMcIpMqwqbLYYTo4jYjky7InCOqkSZEY
-         RCJEGl19lQvnN2IfMSN+uuTE6NEQ9Z96LZ0WjfyV9h7Su3FxAM7QTKD1B35HLbmEQKD7
-         m3aYT9SOizdaZ5SpdrCcaj0wsLjlZgJHMhwxulzBlYA4ucTUThpqmBvmG94fhPorytAO
-         8L70+Mys8Fuq3SAxvFPX9dYOMwWP0igc21jmKObYlog0wRt6AK+2DxUar27gJmUXMKuH
-         r2UQ==
+        d=gmail.com; s=20230601; t=1728675162; x=1729279962; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+HS0NAdsOUYeGI7mRERtfLDO2iH3xgiX9etHXZcQn9A=;
+        b=mULvvqKuDNaZgXFvTT4l0kDnQQszydvwDldHJi6ym8UHzLk8FBeAFftt6M5FwnSmrL
+         2+1/kDhFGFiji6T/Vte1OB9RexpvMLDIjkbzASWOz60YiVnHqTEWdtz5NsiabOw83Zo6
+         jyjvn9yhliqu7B8U6k5eRBmZCCleYxRlZ3YsQcKkosyh461WbBUl10o9bgfLElTTsVGU
+         Cb221Uo3JbHGIeDCTiOkCUH9iaKnGMb1b9sJ/ASg0sYSkEnHMgLWl38h6CnVdUIE5LP+
+         +Qk6QS0g1gwP5M9v+aedmsSYUMjuzDOwF3o5bl24sr63+MynlFuBhGfO1rtJFfAwwGKR
+         lZNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728673733; x=1729278533;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zz1WekoT+K59oVc5HCdNd3N/gx+iU50t2zbre263N5w=;
-        b=c2G/tTj0HJShTmz9UHbOWwwpZywZV7Gy9OuJ/9BmxzfElM/EGKjUlPBoZ4t+M4Gbe0
-         ZBcKVZTucru+sWk2FCAKj9QPrKtMhPFKceeb7bzg4Z3eKWtlmSJgZ8bxDQ/5gcJOdLzq
-         yaciZ8cY+HWuzcDIcJtCxkh+bRBuLdfQVoSo+ilG9Ad9cpVeXoDsJPd/xu8TMrHrOL9S
-         v8vBcJD5ESQE8ZabimorgZbWKkMRfnHLlKrdHq8qU7QbGU8PL0A2Ajmk49ShIXaqdTbd
-         azDvol7X36fRtchnSBkdekAG1mkU9ZnJoTSh5RC/O+nm85cHjsqXbtgwVDpMKA3eyf8p
-         x0MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUrWjzy7O6l8EBWJX+7YGBEjhbDvmhVoyIl6CwUs/h2dZGLCGvfNtpQyXG+/hh9aApCbtyo/Pktf27x4rS/@vger.kernel.org, AJvYcCX5ibQenMuSdZevcXmYEZMDXwW1N0iAztjYRTramSYK0jImbilZc+FD8f8xD6OibvCPm+Qvpe/5Xwds@vger.kernel.org, AJvYcCXvKkDGq1sSBYOcw1ew/QHM9XRdF4moDuKY1EoaT8Z3ZIolDCeFgr30yoYsyJpjzAi7ocgl2X9h9AsB@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx97WaPDZWUWqb+VTDCR9DQWe2QOtTg7qoO/sC6RiJPaWgM7ZnL
-	LWetfUDXIyGwmDf+5hlIuy9JEmG+UbJZLzuuu/fvXWCEgMaBfKei
-X-Google-Smtp-Source: AGHT+IFJ/K5PyB5o1YqUH9GG/hvf0rLF7JeP7OUjXqRnXOVbr8sQJ2OLYXqvgc3PafxIe22YhKgN7w==
-X-Received: by 2002:a05:600c:1c1d:b0:426:67f9:a7d8 with SMTP id 5b1f17b1804b1-4311d9037demr32709925e9.9.1728673733251;
-        Fri, 11 Oct 2024 12:08:53 -0700 (PDT)
-Received: from vamoirid-laptop ([2a04:ee41:82:7577:73c8:39ee:29b7:ae8c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431182ffd8asm48652415e9.16.2024.10.11.12.08.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Oct 2024 12:08:52 -0700 (PDT)
-Date: Fri, 11 Oct 2024 21:08:51 +0200
-From: Vasileios Aoiridis <vassilisamir@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, anshulusr@gmail.com, gustavograzs@gmail.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 13/13] iio: chemical: bme680: Add support for preheat
- current
-Message-ID: <Zwl3w_lwdfqNRYK_@vamoirid-laptop>
-References: <20241010210030.33309-1-vassilisamir@gmail.com>
- <20241010210030.33309-14-vassilisamir@gmail.com>
- <ZwkAYSvmYyu1F5dU@smile.fi.intel.com>
+        d=1e100.net; s=20230601; t=1728675162; x=1729279962;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+HS0NAdsOUYeGI7mRERtfLDO2iH3xgiX9etHXZcQn9A=;
+        b=U5TNMXkphquSWxffPdOs1GJeDcH/+gHMYrB+vdxxOG23xcptsU5K92riZyGHEapOwD
+         dPaowfoP5Wna3SGLEOTsjGt7ZPJi/D8J69s3KbJSq+zBMQFrCBv/Q8kpFi0ctB2pjITJ
+         R6RIkpyjljTvkBlkCqWUtTx8TB8VVr7plNjcgjaML2JO/KMYnHv+AaKg0+5hd/7Em4MW
+         VXqTX9ObXZxQ/XYToMgnsk3Crsfyva7x8/2tFJ3ugDOix2iHMK+7pa/rhF6ljg+AdbX5
+         imYCdr2QJr+XckNcvXXsbvPZALvNFTeFd2na7CQvwBHQr1P74hxNk+fxiMzkzR0U/+XG
+         XAAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMAUApi+XXTeN/LBVMNCAARm/0EOYVdM3vJ16IJj1LXP4/k6KmfzqqyJDgecQIaqHaIgtlNyz49rY=@vger.kernel.org, AJvYcCWXrrawtyZIMhGNJKRhpRysgRldkP6JFp9qdsG/B2HicjGewx7tW7UX+Q2DhWi4sIJU1kXD2VA2tLWdP9IY@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywb1YO1OGlaJ3mrefNi7QMzwNnBYdmtti7rfaHppjx/t8EeuZZv
+	YDuvx8nRBFTI8jOg6XEGOEvPsO824T10kBepePJinVoXVaYfG7Is
+X-Google-Smtp-Source: AGHT+IF9+FsG+E30CjlRvWbpTNN1lU2HNefQEhmynyvChYP7LCMUBll81Ko+v5AnAFFcNs3NnrwZbQ==
+X-Received: by 2002:a5d:62d2:0:b0:37c:d1c6:7e45 with SMTP id ffacd0b85a97d-37d600d2f59mr572270f8f.40.1728675161754;
+        Fri, 11 Oct 2024 12:32:41 -0700 (PDT)
+Received: from ?IPV6:2a02:8389:41cf:e200:55c0:165d:e76c:a019? (2a02-8389-41cf-e200-55c0-165d-e76c-a019.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:55c0:165d:e76c:a019])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6b8d13sm4601028f8f.25.2024.10.11.12.32.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Oct 2024 12:32:41 -0700 (PDT)
+Message-ID: <0ec5fd64-a172-4054-a2ef-1c12db41beb5@gmail.com>
+Date: Fri, 11 Oct 2024 21:32:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZwkAYSvmYyu1F5dU@smile.fi.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iio: Fix uninitialized variable
+To: Vasileios Aoiridis <vassilisamir@gmail.com>
+Cc: "Yo-Jung (Leo) Lin" <0xff07@gmail.com>,
+ linux-kernel-mentees@lists.linuxfoundation.org, ricardo@marliere.net,
+ skhan@linuxfoundation.org, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Angel Iglesias <ang.iglesiasg@gmail.com>, Adam Rizkalla
+ <ajarizzo@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+References: <20241011093752.30685-1-0xff07@gmail.com>
+ <20241011115334.367736-1-0xff07@gmail.com>
+ <26f2e35e-0a07-4b24-91a2-a48d4bc5dadc@gmail.com>
+ <ZwlvJCxdiRqRWu6Z@vamoirid-laptop>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <ZwlvJCxdiRqRWu6Z@vamoirid-laptop>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 11, 2024 at 01:39:29PM +0300, Andy Shevchenko wrote:
-> On Thu, Oct 10, 2024 at 11:00:30PM +0200, vamoirid wrote:
-> > From: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > 
-> > Add functionality to inject a specified amount of current to the heating
-> > plate before the start of the gas measurement to allow the sensor to reach
-> > faster to the requested temperature.
+...
+
 > 
-> ...
+> Hi everyone!
 > 
-> > +	data->preheat_curr = 0; /* milliamps */
+> So if you check also the conversations that we had here [1] and in the
+> previous versions, indeed the idea behind the offset is to use it as an
+> self-explanatory index to a char buffer that holds in fact s32 variables.
 > 
-> Instead of the comment, make it better to any appearance of the variable in the
-> code by adding unit suffix.
-> 
-> 	data->preheat_curr_mA = 0;
-> 
-> (yes, capital 'A').
+> The data->buf here holds the values that have just been read from the
+> sensor. If you check on the channel specification of this sensor,
+> you will see ".realbits = 24" in both values that the sensor returns so
+> hence the value 3.
 > 
 
-Hi Andy,
+So you are using 3 = 24 bits, but s32 not as 4 bytes? the whole thing
+would have turned into sensor_data[0], sensor_data[4], and no variables
+implied, correct? But I am discussing too much for something that in the
+end is more or less the same, I am fine with this proposal.
 
-I used the comment here because it is exactly like this above and I
-though it is more consistent if I do the same. But I guess repeating a
-not so good design choice for consistency might not be the best
-decision.
+> I am not sure if it makes sense to use a macro here for each one of the
+> 3's that are going to be used only one time each and in order to be more
+> "consistent". But I might have a wrong view on this one so feel free to
+> correct me!
+> 
+> For the initialization of the offset indeed, it was already mentioned
+> here [2] this morning, but on a different patch!!! I couldn't get this
+> error though with gcc...
+> 
+> Cheers,
+> Vasilis
+> 
 
-Cheers,
-Vasilis
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+At least for the things I do in the kernel, clang catches more issues
+than gcc. Sometimes even gcc will not complain, and clang will fail to
+compile (e.g. a goto before a cleanup attribute).
+
+And if you run smatch before sending the series, you might discover a
+couple of extra "surprises".
+
+Best regards,
+Javier Carrasco
 

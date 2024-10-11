@@ -1,111 +1,124 @@
-Return-Path: <linux-iio+bounces-10451-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10452-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9BD99A20D
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 12:55:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4444799A23B
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 13:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DECDB1C23548
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 10:55:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C55172879D9
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Oct 2024 11:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D652141C3;
-	Fri, 11 Oct 2024 10:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546FB212F06;
+	Fri, 11 Oct 2024 11:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XGhvySuU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2BVf8jP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E114D2141BA;
-	Fri, 11 Oct 2024 10:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF9B14293;
+	Fri, 11 Oct 2024 11:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728644092; cv=none; b=kfvntX61VjyfpN9jNMXG51ALZ9KqaLXWi1hqAfpEdvfPgRJwIXQmLirnA77RK7wGQYDvmKCqksM8soH001hfagbFw+l40wfsZBltLwfYfAYnY1kVpzIuMWb/+URrpu72rQtHFqpqFE9QiwTeOXTglfuW+LXl50Nx/CnjtGYOzJw=
+	t=1728644585; cv=none; b=rz3ha9lw8aaXzM+qlWxUMihYbFpDTSpdPM4dohBxbDEUAjMb3c8/lH2Q7JomwaQPyVoE1Ic9baEWVrERiTC3tqF8pX7FsDVKINj8cdSFI7FciPgTZ1+uNB4EeEYJBRhryh1voIiOpp/MTTfMex9lTNVHMsOzTGc0iFGGXrO468g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728644092; c=relaxed/simple;
-	bh=0KOKAhCgsCevJee4BgP8YIJB1hQodgg/8jSRCEcfAl4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A36Al538h65b4die5PSg5sVoGqLFXTjqtArU+HCJvWaGS5EHq8Q1AH5xdHe7z8Sm08QSBpE88UdGf+5hfrt7ptRmsQBGrKbKUP0Mc2WiAk88zwSt5IvkbVvljFCmqb7GwDtAwdwxrpmi/pyLLeCqC6ofYsDPBeLibMuugEqN45c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XGhvySuU; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728644091; x=1760180091;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0KOKAhCgsCevJee4BgP8YIJB1hQodgg/8jSRCEcfAl4=;
-  b=XGhvySuUhQzETLNumjpTmgvXykpwxZab0AfMq+WkyTEbPeL8fYJSF7ZV
-   uNV6JWBmMM4u8DDw0Fb4cT3XkYsK4wxkLJBZxKk77r5BNHWKwsbPOob2T
-   I5XZ80xYzeIwpMVqLk+UFURKErHImuBkdG7OOVcNZMHGazLrOp9vomLnu
-   naU8kzdLSOj/ydF2d8udXiEPpt+Qs7RhY7NxLNhZT8PT+CiMKbZKTC5w3
-   Dmn4fRB59j3zoUuwvap5ACPXlPclPp8STy6t5IaLIC4VWX3oarY6os4zw
-   sR7QdRT26u7k9MJDRjQdBSU/JGvsG/l1stTNPhN6FfzyH9sGbKx/S3rNg
-   A==;
-X-CSE-ConnectionGUID: jQeWDQamRXCIw2a9fBHOTg==
-X-CSE-MsgGUID: AXuhQ1CBQ3CjyTsBr5GFkg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="15662686"
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="15662686"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:54:50 -0700
-X-CSE-ConnectionGUID: OZIz0QrrRvWccFrx1xCAzg==
-X-CSE-MsgGUID: PxQCfAhwRvGI8ldeFJ7V+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="81665080"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:54:46 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1szDIA-00000001rlO-2Ab0;
-	Fri, 11 Oct 2024 13:54:42 +0300
-Date: Fri, 11 Oct 2024 13:54:42 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Yo-Jung (Leo) Lin" <0xff07@gmail.com>
-Cc: linux-kernel-mentees@lists.linuxfoundation.org, ricardo@marliere.net,
-	skhan@linuxfoundation.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Adam Rizkalla <ajarizzo@gmail.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] iio: Fix uninitialized variable
-Message-ID: <ZwkD8hXNWcL0z4Cr@smile.fi.intel.com>
-References: <20241011093752.30685-1-0xff07@gmail.com>
+	s=arc-20240116; t=1728644585; c=relaxed/simple;
+	bh=PNsJvaR2hjTB0m5F7S8kPrYH81jNbMy+cnbFnpqGHtw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gC50YkyQ7fi4dqSC3TTv2OmyKLwMuM9GPaczKZ/99p0Qmy+1Ov5PSfwPC7hKiPrq4k+rlA+3tHaRrzpHKxFIUG1lp0wvHTLTpC2Hn3ijNV+QciM4ToOzGmfmwEoT3osP7EazPraHhqYF0/4aTEBnAcdSrD+QLFZLAi46YcQ+0Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2BVf8jP; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5c924667851so2277979a12.3;
+        Fri, 11 Oct 2024 04:03:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728644582; x=1729249382; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jDgqCY+XT65kiTHSQJtsyJ8AXYUcreWmz9KtIDjKv1k=;
+        b=I2BVf8jPuXfqe/fdVmQgByA7XQirL5ucgM2GXaQdgLBFmF0NICdjuVjENBSvqY1+Df
+         KthLdB1lnGO+dDD3O6wYFQUXEwB3HqwXugJtT3wg8jWJjINe6Pwobiyrsc4iXEqPeMAy
+         tCeWxElcaq5vTR9MUuHwlDYn2esZr2rXAmfK2zvr89MXsBgm6h6mlsmL1+qCtKX9RlfP
+         ynxC9br/wMh6tNaGegN7L6mFumInGsX5eRtiJarcicvE+lIrFVsbCaMSReIsTRgV3057
+         75ub67eSPywRSkXmKBnCTiFWTpCDs88nAyriU15ED6MYqAbWwOTcHC+XdBXyMLvF4dq6
+         5RIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728644582; x=1729249382;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jDgqCY+XT65kiTHSQJtsyJ8AXYUcreWmz9KtIDjKv1k=;
+        b=Zg4pqNpVpCOCHRadSQe1AW9x2TTbZ/3xJEY/0wvBwXNFBmHACUjaTipR+IDzyqkOzH
+         3VENWgMG7333nRAv/xQGd/pIZiOz5YLINsBRwGMPCd9oZmIChSCcIN0ef1r/ljRhdK/b
+         q2uZpzzpc2j5HDvhbgOFMrbR2GXmczKNuWdQomLMPwXN8WsuQDXLd0+Z20G87dOfDV07
+         Je0xypy/+QMRQl/+uErdDX/1IcybCypI/8Is5gLRPOLr7hmSvU+vRJ16Hf26MkfF3JvA
+         u0uu1Xq48/gDCTGC4quFEXeSz7d37WV1LulvjL8gHecoApt6+m0n5Ycd+DPnMrlAIFBE
+         HJ6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVlIwp+6JUXLvUCctY+UTG8MqwnzJuV3oA++l3Ns30ZtXNp+khzZbeB+/aLiLiZBuLUT4KcFgOM7m8=@vger.kernel.org, AJvYcCW3VTazhlVpej4Wh8HbhNFQ+T6kURkmbpdvu2sSowLdy44m2mvJ7YcAVERhZVs3vpXNojb6VgcMe/l1eilV@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkqwFP1fGTSDq9ISIk28UrM+h3GKSFp6fQtB4uaSiryu5Jz03S
+	UeV+nVaheJLGWOnaBPZPwbjvFvZHLB1AAiEi0aB6fxaLfHWWrpkz
+X-Google-Smtp-Source: AGHT+IEy14Gx0H4bckIlt3krJcapszDFEJlJFkVFRbRzPFWdbCtdvus5IaXo71tLkpD9oWj2tSQarg==
+X-Received: by 2002:a17:907:944c:b0:a99:4698:cc5a with SMTP id a640c23a62f3a-a99b95bc0d1mr163059766b.47.1728644581797;
+        Fri, 11 Oct 2024 04:03:01 -0700 (PDT)
+Received: from [10.10.12.27] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a7ec573csm200566466b.6.2024.10.11.04.02.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Oct 2024 04:03:01 -0700 (PDT)
+Message-ID: <e9f0310b-c7e7-4da4-92b5-0d2b1948c4a6@gmail.com>
+Date: Fri, 11 Oct 2024 13:02:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241011093752.30685-1-0xff07@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: Fix uninitialized variable
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Yo-Jung (Leo) Lin" <0xff07@gmail.com>
+Cc: linux-kernel-mentees@lists.linuxfoundation.org, ricardo@marliere.net,
+ skhan@linuxfoundation.org, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Vasileios Amoiridis <vassilisamir@gmail.com>,
+ Angel Iglesias <ang.iglesiasg@gmail.com>, Adam Rizkalla
+ <ajarizzo@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+References: <20241011093752.30685-1-0xff07@gmail.com>
+ <ZwkD8hXNWcL0z4Cr@smile.fi.intel.com>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <ZwkD8hXNWcL0z4Cr@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 11, 2024 at 05:37:45PM +0800, Yo-Jung (Leo) Lin wrote:
-> clang found that the "offset" in bmp580_trigger_handler doesn't get
-> initialized before access. Add proper initialization to this variable.
+On 11/10/2024 12:54, Andy Shevchenko wrote:
+> On Fri, Oct 11, 2024 at 05:37:45PM +0800, Yo-Jung (Leo) Lin wrote:
+>> clang found that the "offset" in bmp580_trigger_handler doesn't get
+>> initialized before access. Add proper initialization to this variable.
+> 
+> ...
+> 
+>>  	struct bmp280_data *data = iio_priv(indio_dev);
+>> -	int ret, offset;
+>> +	int ret, offset = 0;
+> 
+> Can it be done closer to the actual user of it?
+> 
+> 
 
-...
+Actually, offset could be initialized to sizeof(32), and only used for
+the temperature calculations.
 
->  	struct bmp280_data *data = iio_priv(indio_dev);
-> -	int ret, offset;
-> +	int ret, offset = 0;
++	int ret, offset = sizeof(s32);
 
-Can it be done closer to the actual user of it?
-
-
--- 
-With Best Regards,
-Andy Shevchenko
+The first memcpy would use 0 as index, as it did before.
 
 
+Best regards,
+Javier Carrasco
 

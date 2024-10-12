@@ -1,63 +1,67 @@
-Return-Path: <linux-iio+bounces-10505-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10506-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4AB99B4E2
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 14:40:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD04899B4F3
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 14:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CE731C20EB7
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 12:40:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36391B224CF
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 12:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7ED4183CAA;
-	Sat, 12 Oct 2024 12:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50F9184542;
+	Sat, 12 Oct 2024 12:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3yQUHpV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q7rOlrTF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797C516F826;
-	Sat, 12 Oct 2024 12:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4991F1F5FA;
+	Sat, 12 Oct 2024 12:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728736819; cv=none; b=iy3NLXV1jA5Uau3FwBowWD6j2G+12JU6ThgFwqS86XuDu3bOqm0oTGB5Zmy21K4kW5EL8Wws7DpytpgzzhJvrAAeYc+rBxGX2aowaQ2NmXt2fE/G/6BSwsZplDfnA7Y7JNvI1AF6ie3Y46q5OcxQo3qMclDNnmSKxMiVH/K79JU=
+	t=1728737326; cv=none; b=US+Nh5BgSMrw5u/qOLOLz5L6rHy6TI2fTMHH29Enbr0MyYN0HmrmKehLwztv0cR60T3ao9OlbnhHKDF8l5uGV3bZacargtIW3SEVyn5SWpnrGLmHg5fE1mCXvgV84T1lL9NAR42RdD6M/fzpPcLmGhROPZGvvGfeQfChZkgYBf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728736819; c=relaxed/simple;
-	bh=jIHKuXxG7RdcY/yByMCx54EVmk/+xKzgtcQYyeOtGEI=;
+	s=arc-20240116; t=1728737326; c=relaxed/simple;
+	bh=kEHSPvWvZBqgdTZFy+tP0oWL6gH6iFh2YX2nHzfWWqM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zr5aBRDlZwgCQnK2oXd1zHNFgTeCQWLR1aZbpsCcazEy5/JeEgk2culilb4YZVwpOULMpJcLHyiJd2nyWxnzcluHrQZMbtlhe/cw2QRKtrD3pz+3LLCZieMl76m+aPmYbGcDj4AD1T6GNwFg5v3iHY/3XOMa++ctNojcoSjwR0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3yQUHpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CF8C4CEC6;
-	Sat, 12 Oct 2024 12:40:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j3wd28P88JWXdidHI/aAEfCDObyU0vpx4EsMUUczZfWnh765Ueq1qj6NK9gwD5sd49pTFI1MbIgrC65FNT5aXK/d1r7A/PUG3bQTyHPLLIT38rZqjhbYmBD+y7v3dbDnxuS2HoextnW3uDnsIM+f0fgUASEWLOCIyTGH58iCXYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q7rOlrTF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A749C4CEC6;
+	Sat, 12 Oct 2024 12:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728736819;
-	bh=jIHKuXxG7RdcY/yByMCx54EVmk/+xKzgtcQYyeOtGEI=;
+	s=k20201202; t=1728737325;
+	bh=kEHSPvWvZBqgdTZFy+tP0oWL6gH6iFh2YX2nHzfWWqM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=j3yQUHpVU7WBvOwl6GPY6lL6NgTpIzcJXM1wuwdBHsOe0sV8V1jQfnrm3XF4pDhLj
-	 rDOQ2WtRuMeDB5+dlApnOCweDjXpNoqLm2ZyCkj/eImkoWdBd/yTovtMcUBsJe9XtJ
-	 ose6ikFPeRTTSxovbEOPdSPTW+P+UQS+NTBEjiRciChnxNibjusdc3CWM83HdZWoPJ
-	 dk+fPMauhF48gC7VCs3msd28nRWGJl2W9PXYpbJl6LPRP80BkX7jP9RL42Z8JfCIR7
-	 Ub+5JsiPnHUNk1F48SEV2FJEG8Y7KcC1c/qsIG9wqoHQzEDKRuqyZMtHRS2ZFFau2j
-	 gERpqWtfoJvEw==
-Date: Sat, 12 Oct 2024 13:40:11 +0100
+	b=Q7rOlrTFiXnLisjmjCE7GIIup2AbY82CuRDY4hyYlMPLFUSbKgEv1aAf4TNfH4a+9
+	 wOPTir+U+zi9juEBWzdH5N6wMSRLbBJHWCR7LWsdry3ta0vuk+hYgfh0kK69eyI+YG
+	 7FpmkVNM0iBNY/yA2swQGaAYev87YBX6cs6xYQJvQUHqpaH+Si6WiU/iEntw+/+Q6u
+	 1KtR+/NS2GW25tL0vjLBr7VB19p457skL8zJnypB4fJsznhldjzV06KO91+mYSOezg
+	 ZpLIqo9MjvDDr3yBd7YXN7MORvMhc1j8sygpIQqN91TavjFt8keqxR3SlEocElxJlj
+	 MBVo2ypKDoutw==
+Date: Sat, 12 Oct 2024 13:48:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
-Cc: Trevor Gamblin <tgamblin@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, David Lechner
- <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v5 0/3] iio: adc: add new ad7625 driver
-Message-ID: <20241012134011.55870567@jic23-huawei>
-In-Reply-To: <6f5sqahnu6nxmzzxfj56432eogjcgell7c5sth5c2arvekl4sx@ndf2tdl73glx>
-References: <20240909-ad7625_r1-v5-0-60a397768b25@baylibre.com>
-	<20240914182848.34edc5e3@jic23-huawei>
-	<6f5sqahnu6nxmzzxfj56432eogjcgell7c5sth5c2arvekl4sx@ndf2tdl73glx>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Guillaume Stols <gstols@baylibre.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?=
+ =?UTF-8?B?Zw==?= <ukleinek@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, linux-pwm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, aardelean@baylibre.com, dlechner@baylibre.com,
+ jstephan@baylibre.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v4 8/8] iio: adc: ad7606: Disable PWM usage for non
+ backend version
+Message-ID: <20241012134833.31531e18@jic23-huawei>
+In-Reply-To: <bff897a52650dbd499a83d955645cbc2290f80ce.camel@gmail.com>
+References: <20241009-ad7606_add_iio_backend_support-v4-0-6971a8c0f1d5@baylibre.com>
+	<20241009-ad7606_add_iio_backend_support-v4-8-6971a8c0f1d5@baylibre.com>
+	<bff897a52650dbd499a83d955645cbc2290f80ce.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,29 +72,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 16 Sep 2024 13:52:40 +0200
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+On Wed, 09 Oct 2024 16:45:40 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Hello Jonathan,
+> On Wed, 2024-10-09 at 09:19 +0000, Guillaume Stols wrote:
+> > Since the pwm was introduced before backend, there was a mock use, with
+> > a GPIO emulation. Now that iio backend is introduced, the mock use can
+> > be removed.
+> >=20
+> > Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+> > --- =20
 >=20
-> On Sat, Sep 14, 2024 at 06:28:48PM +0100, Jonathan Cameron wrote:
-> > Uwe: From a quick look at [1], looks like you plan to queue that lot up
-> > after the merge window.  Would you mind doing an immutable branch for
-> > me to pull into IIO? =20
+> Maybe this was agreed on the previous iterations but I wonder if we shoul=
+dn't just
+> bring PWM support in the same patch as backend support is added...
 >=20
-> Yeah, I intend to put the changes that are necessary for Trevor's series
-> into next after the merge window closes. I'll let them cook a bit there
-> in case some issue pops up, but then I can create an immutable branch
-> for you of course.
->=20
-> Best regards
-> Uwe
 
-pwm tag merged and this series applied.
+I can't remember why we ended up in this position (might have been me
+who asked for it!) but I'm fine with the logical steps we have in the
+series, and it will all merge together. So probably not worth rethinking
+now!
 
-Pushed out for now as testing to let 0-day take a look.
+I took another look and other than the stuff Nuno has raised this series
+looks good to me.
 
-Thanks,
+Figures crossed for v5 :)
 
 Jonathan
+
+
+> - Nuno S=C3=A1
+>=20
+>=20
+>=20
+
 

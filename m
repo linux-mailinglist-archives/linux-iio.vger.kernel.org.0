@@ -1,58 +1,60 @@
-Return-Path: <linux-iio+bounces-10499-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10500-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AA499B4A5
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 13:56:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E09999B4A8
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 13:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 818ADB24B2A
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 11:56:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 434001C20FB2
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 11:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D6117B51B;
-	Sat, 12 Oct 2024 11:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29611547DC;
+	Sat, 12 Oct 2024 11:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+PNmFhw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4pST8XG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC20047F69;
-	Sat, 12 Oct 2024 11:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B544146D57;
+	Sat, 12 Oct 2024 11:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728734031; cv=none; b=ZT/OOHLhI8er5jTOHk+s++IX12bO8jHjO2ftnBehuAV2bFjpoLhK/YHmRSSotQGsu6WsiulBN5xTCjZ6bYb1qr5ZtRjY9WU3b7+51hCZEYlDqc0BEumJXPM1EgJJR+2qwvFH0vfR4p6cjn6wqEM4x0xOhZwOPurgTLuvPkUvamc=
+	t=1728734303; cv=none; b=tSQGLMrMYA+7Tu1lDtaxXs3fY7F8fIoeo3sdi3x/wu5tlMpkyI0RxpthjQTdORYOVhlekqQy/FcLpNDRzqWUkDn/vu9VObNhA5/02tQSNgSHyf/4KZN+VTBtJeZv4qQzZVTkIXE9uXGCFpFLbe0XUV2/XaL+OxYyl7wop1lE/lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728734031; c=relaxed/simple;
-	bh=vXiaSdRg9aRlCNkPnL1YQeRuBmCPYjv8AyNlfWRF9BU=;
+	s=arc-20240116; t=1728734303; c=relaxed/simple;
+	bh=1CDwAkKs/RY56wXGUn+S96ubWSYUFUchIsJqlbvnSSI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AhD1XHpSvEOxYu4+RSgNbSYzv1bsB/cPt3OBK8bhjx2bs0RvwCRlLoFpc5MZN6GRLJQfnCKOm8udoRxXvxYxwA1VaOSZvp1Ngu/M/wWmemgr/BOEQNJiOzq85jgJuEMdyqPk+MSas1PC9vQbzuzP+VR4SDx6/6qhiYblwPT6aiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+PNmFhw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BB6C4CEC6;
-	Sat, 12 Oct 2024 11:53:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kHq8T2nsMp7ojyaEFMopcUSxzkyTNozr/kGXNPERa9Z+TXaDTSvoEId8W8RUlbiuvLfexzNWuii0GXRhdNmdOBVSX77YDGX8yhGq4329fDXYbzU/oDP4CVPFXk0OdlgUeS7WdqRBWR5Ln8dRDpuwDgGdALLlHlIYSfG96a9w0u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4pST8XG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10D2C4CEC6;
+	Sat, 12 Oct 2024 11:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728734031;
-	bh=vXiaSdRg9aRlCNkPnL1YQeRuBmCPYjv8AyNlfWRF9BU=;
+	s=k20201202; t=1728734303;
+	bh=1CDwAkKs/RY56wXGUn+S96ubWSYUFUchIsJqlbvnSSI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R+PNmFhw/bh3e+ceb2rPBKLgv0ZlRtvvGRBe7PKL71ZWi2ydDYpvr+uREfpR3Hyqr
-	 cBySkKHxry7uhCBrcbZZvudi6qpIHbfuVNQF7AkaU/LjIhzbfNmcAiEO0JC23Icy3E
-	 CHFY7i48fNgJLkDVvrQhFS4mJPzm+tkauJ7klDsbtqNURjrHoLTVe39b2gj04CAd/O
-	 XTR3YvOUwhI8cij8tZ4Sygu4GR96yR07mT/xIZakwB9bPqUv7PWL0eQlPjG35dOcIG
-	 Hd2QeEh5IgcB5eQBHE+j48Fcztlw/GGb9KMUCDXRh9Ed5o6QIMPei9KZrRF4OJpUsM
-	 Mb9V4flS4gVew==
-Date: Sat, 12 Oct 2024 12:53:43 +0100
+	b=q4pST8XGBYgG02d6sPp4PMBw2sGhIoykrHd9qH043lcnZsMtWzUyyfBmZIHgPksKt
+	 1/N6w32/elcB1nYt2JfgwJoAwsfpegL9Y82BwFlBrgr0z+SM/vvtM3Px7PC1qV0JvO
+	 WsjLTlaXBFBJYCE2BczsWlSXYokF7NKEIQYG5LcDp6AKD64AwGPOcE0CNHWoEujYX1
+	 PXFS+PRGbQYJQ2UoYIIKaEDKQXni8c5J2buWI3REBar2EJbKCX7B5UrXezqK+4Wb6l
+	 /QrGU2BkwnWnVR93ZBTq9NTAYU5bBNtIy3MNUx642FcnDh0bapNhilK6T6iBybAsvZ
+	 VbDoSrgTDU1nA==
+Date: Sat, 12 Oct 2024 12:58:13 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: vamoirid <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, anshulusr@gmail.com, gustavograzs@gmail.com,
- andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
+To: Vasileios Aoiridis <vassilisamir@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, lars@metafoo.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ anshulusr@gmail.com, gustavograzs@gmail.com, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 07/13] iio: chemical: bme680: add regulators
-Message-ID: <20241012125343.729425e5@jic23-huawei>
-In-Reply-To: <20241010210030.33309-8-vassilisamir@gmail.com>
+Subject: Re: [PATCH v1 08/13] iio: chemical: bme680: add power management
+Message-ID: <20241012125813.1a5ed9ff@jic23-huawei>
+In-Reply-To: <Zwl2SEmDqc-PTtqp@vamoirid-laptop>
 References: <20241010210030.33309-1-vassilisamir@gmail.com>
-	<20241010210030.33309-8-vassilisamir@gmail.com>
+	<20241010210030.33309-9-vassilisamir@gmail.com>
+	<Zwj5jBm-_9_FX6ms@smile.fi.intel.com>
+	<Zwl2SEmDqc-PTtqp@vamoirid-laptop>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,93 +65,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 10 Oct 2024 23:00:24 +0200
-vamoirid <vassilisamir@gmail.com> wrote:
+On Fri, 11 Oct 2024 21:02:32 +0200
+Vasileios Aoiridis <vassilisamir@gmail.com> wrote:
 
-> From: Vasileios Amoiridis <vassilisamir@gmail.com>
+> On Fri, Oct 11, 2024 at 01:10:20PM +0300, Andy Shevchenko wrote:
+> > On Thu, Oct 10, 2024 at 11:00:25PM +0200, vamoirid wrote:  
+> > > From: Vasileios Amoiridis <vassilisamir@gmail.com>
+> > > 
+> > > Add runtime power management to the device. To facilitate this, add also
+> > > a struct dev * inside the bme680_data structure to have the device
+> > > accesible from the data structure.  
+> > 
+> > ...
+> >   
+> > > --- a/drivers/iio/chemical/bme680.h
+> > > +++ b/drivers/iio/chemical/bme680.h
+> > > @@ -75,6 +75,7 @@
+> > >  #define BME680_CALIB_RANGE_3_LEN               5
+> > >  
+> > >  extern const struct regmap_config bme680_regmap_config;
+> > > +extern const struct dev_pm_ops bmp280_dev_pm_ops;  
+> > 
+> > Is pm.h being included already in this header? Otherwise you need to add it.
+> >  
 > 
-> Add support for the regulators described in the dt-binding.
+> No it is not, and indeed I need to add it. Probably because it was
+> included by some other file I didn't get an error from gcc?
 > 
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> ---
->  drivers/iio/chemical/bme680_core.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+> > ...
+> >   
+> > >  	struct regmap *regmap;
+> > >  	struct bme680_calib bme680;
+> > >  	struct mutex lock; /* Protect multiple serial R/W ops to device. */
+> > > +	struct device *dev;  
+> > 
+> > Is it the same that you may get wia regmap_get_device()?
+> >   
 > 
-> diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-> index dedb7edaf43d..a2039b966f20 100644
-> --- a/drivers/iio/chemical/bme680_core.c
-> +++ b/drivers/iio/chemical/bme680_core.c
-> @@ -15,6 +15,7 @@
->  #include <linux/log2.h>
->  #include <linux/module.h>
->  #include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -100,6 +101,12 @@ enum bme680_op_mode {
->  	BME680_FORCED,
->  };
->  
-> +static const char *const bme680_supply_names[] = {
-> +	"vdd", "vddio"
-> +};
-> +
-> +#define BME680_NUM_SUPPLIES ARRAY_SIZE(bme680_supply_names)
-> +
->  struct bme680_data {
->  	struct regmap *regmap;
->  	struct bme680_calib bme680;
-> @@ -110,6 +117,8 @@ struct bme680_data {
->  	u16 heater_dur;
->  	u16 heater_temp;
->  
-> +	struct regulator_bulk_data supplies[BME680_NUM_SUPPLIES];
-> +
->  	union {
->  		u8 buf[3];
->  		unsigned int check;
-> @@ -857,6 +866,13 @@ static const struct iio_info bme680_info = {
->  	.attrs = &bme680_attribute_group,
->  };
->  
-> +static void bme680_regulators_disable(void *data)
-> +{
-> +	struct regulator_bulk_data *supplies = data;
-> +
-> +	regulator_bulk_disable(BME680_NUM_SUPPLIES, supplies);
-> +}
-> +
->  int bme680_core_probe(struct device *dev, struct regmap *regmap,
->  		      const char *name)
->  {
-> @@ -885,6 +901,20 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
->  	data->heater_temp = 320; /* degree Celsius */
->  	data->heater_dur = 150;  /* milliseconds */
->  
-> +	regulator_bulk_set_supply_names(data->supplies, bme680_supply_names,
-> +					BME680_NUM_SUPPLIES);
-> +	ret = devm_regulator_bulk_get(dev, BME680_NUM_SUPPLIES, data->supplies);
+> Yes it is the same. Maybe I can try and see if I can use the following
+> 
+> 	regmap_get_device(data->regmap)
+> 
+> in the places where the pm functions are used in order to not declare a
+> new value inside the struct bme680_data. But in general, is this approach
+> prefered?
 
-devm_regulator_bulk_get_enable() should replace all this with functionally
-equivalent code.  You can also have the supplies list local as you don't
-then need to hang on to a copy.
+slightly by me.  I tend not to poke on that if people have chosen a local
+variable, but it is a little neater.
 
+This patch might get caught up in an effort to simplify the
+autosuspend handling but if it is we'll deal with that whilst merging.
+There 'should' be a clean path to transition from this style to the proposed
+new one where a simple pm_runtime_put() without the mark_last_busy stuff
+is enough for autosuspend cases.
 
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to get regulators\n");
-> +
-> +	ret = regulator_bulk_enable(BME680_NUM_SUPPLIES, data->supplies);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to enable regulators\n");
-> +
-> +	devm_add_action_or_reset(dev, bme680_regulators_disable, data->supplies);
-
-> +
-> +	fsleep(BME680_STARTUP_TIME_US);
-> +
->  	ret = regmap_write(regmap, BME680_REG_SOFT_RESET, BME680_CMD_SOFTRESET);
->  	if (ret < 0)
->  		return dev_err_probe(dev, ret, "Failed to reset chip\n");
-
+Jonathan
 

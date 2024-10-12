@@ -1,59 +1,50 @@
-Return-Path: <linux-iio+bounces-10516-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10517-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B178B99B5A8
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 16:50:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D02B99B5C2
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 17:07:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D50E28317D
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 14:50:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49B53B22FD5
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 15:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D4719885B;
-	Sat, 12 Oct 2024 14:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE881714A1;
+	Sat, 12 Oct 2024 15:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ez1DVwM9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZ5xTJB3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4581D1EA90;
-	Sat, 12 Oct 2024 14:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF8311CA0
+	for <linux-iio@vger.kernel.org>; Sat, 12 Oct 2024 15:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728744651; cv=none; b=MpUgPwnwnH29d4kfAtk+2mFObsYL91x2TN7bSQwHl6sg+AlDARhooZlNfSbYKuMO2V+oYn3ShInnwmxb/L0A1hY0b7H/bj80Vi5tvXYE4eOQ1EZZkssQDzAD5ubfIoLEVdlvNkjV6klDlFQq5hXmXthlQhkRANnxPuURpwNuTJs=
+	t=1728745631; cv=none; b=iJICRPYtU5H6ZeWd0iccUwKoIczcLQKLcx5bboevJ08FDEt0RXxQJ5ESryGDXIonbQrsHnXMNMTiu4ELTdJm845b9GQZnpv5WWEZbF8qjaKKOETxKRTFGISwTH9g4oiRTzyuNjvzEW5GIXqfpf+chnRCPnrlkGhvPNVSi2Cxh5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728744651; c=relaxed/simple;
-	bh=oWK+G35tqjeOrY3nEoHz20aU8gnY6PZxPX47sBfjvH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DBTXi8YtO2K0DPAwFUtv1TNgcaakS5gSdQMqIXneSokZCB8P/YtXWEXMkboySQyMbPeVCcxhHRGGV2hRS0kix/PRxZSu3i758N5j7srP+xua2FNnhg88r64tcSq7R94+6snpEr1QytVpC4vWt62LryrN0d8sH16tFFhgPUQjPek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ez1DVwM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E4BC4CEC6;
-	Sat, 12 Oct 2024 14:50:47 +0000 (UTC)
+	s=arc-20240116; t=1728745631; c=relaxed/simple;
+	bh=jWa2JuSnhlW9UR3OeEdKu1SH0ilKRpJ4h4Wng+tBMvQ=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=nD75WNYuTAQhW9r3ZYx+KDGYAcjOURwrtGjvdyz9z7X3TlYyzZZZdtPjl5scmp+ZE8SuNnWPlCknxelT6TrzuoigeTsFltO8wZYNcs747VrwOjfTIvIUNdmRCbyy0dUf3Vpp8F6DJYajBatMxuKi3QxPKMO1yq5co3d2EgtTujg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZ5xTJB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1590BC4CEC6;
+	Sat, 12 Oct 2024 15:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728744650;
-	bh=oWK+G35tqjeOrY3nEoHz20aU8gnY6PZxPX47sBfjvH8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ez1DVwM9DYYtj/xNopMxe0xN2ngsf1M9rt5q4Nr27kvHDSnGXeBX6FdBoCD4O5isf
-	 9EuTuhWSGW2lQ8KHgPZDo/XknO2fy7mNx4uvUPDxwyAGgqAl8u/PzWMnTN+gOxu3Xl
-	 a/JzPrNGjX9OYbggVwRR4DcaUowhYU7VS+Gs77QUC4wG71FldFiRcto8LXd/Q5OlLh
-	 Sfr0u/CzDqkm/APeFM8/pDXPGLX9Xy8QrY09aXTh4Hhy0l2sz/kPpIS9x5F9UtL37D
-	 9ZXyYj8oGKLTOwFJmms3k1osq+JFK8imuPiV5b4mlNVCMqMQ8/LIuYhQ7DkzTSbSOe
-	 WebBzrodA1CcA==
-Date: Sat, 12 Oct 2024 15:50:43 +0100
+	s=k20201202; t=1728745630;
+	bh=jWa2JuSnhlW9UR3OeEdKu1SH0ilKRpJ4h4Wng+tBMvQ=;
+	h=Date:From:To:Subject:From;
+	b=LZ5xTJB3DXwPpBUFLbmuCQww6dOB7zjzKnEq4nzqfqG5LHvm9F6U4wHbEgMZMXPjO
+	 VKZBW7pzoEF8X+fHgAPlQDhpA2ApbK3Jg4a9vrIBWP0sfQ2spkf/qXgTCdUahokNtu
+	 ezFnV1pYgwthE2PMXkatsmH/rXhSFLexpGhsuJmFv0CDKUhiieE+hIHeS5Z99fL4AR
+	 UyteQ50fNkSgpX3qA3HCb6mdPZ9wkRD8BZp2TLBBz+9ToZtSihMqgLcLDgd+9iONqK
+	 Hz4XBUigSAw/xTYk2WG/807uHDQomZdpTCwXHh3229tlzdbl6Kdkbw3ZzYAzs0viwG
+	 4mDJdFtT5bB1A==
+Date: Sat, 12 Oct 2024 16:07:03 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH 3/3] iio: magnetometer: add Allegro MicroSystems
- ALS31300 3-D Linear Hall Effect driver
-Message-ID: <20241012155043.48b7a4a9@jic23-huawei>
-In-Reply-To: <20241007-topic-input-upstream-als31300-v1-3-2c240ea5cb77@linaro.org>
-References: <20241007-topic-input-upstream-als31300-v1-0-2c240ea5cb77@linaro.org>
-	<20241007-topic-input-upstream-als31300-v1-3-2c240ea5cb77@linaro.org>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] IIO: 1st set of fixes for the 6.12 cycle
+Message-ID: <20241012160703.61b02c87@jic23-huawei>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,463 +55,114 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 07 Oct 2024 15:14:40 +0200
-Neil Armstrong <neil.armstrong@linaro.org> wrote:
+The following changes since commit 9852d85ec9d492ebef56dc5f229416c925758edc:
 
-> The Allegro MicroSystems ALS31300 is a 3-D Linear Hall Effect Sensor
-> mainly used for 3D head-on motion sensing applications.
-> 
-> The device is configured over I2C, and as part of the Sensor
-> data the temperature core is also provided.
-> 
-> While the device provides an IRQ gpio, it depends on a configuration
-> programmed into the internal EEPROM, thus only the default mode
-> is supported and buffered input via trigger is also supported
-> to allow streaming values with the same sensing timestamp.
-> 
-> The device can be configured with different sensitivities in factory,
-> but the sensitivity value used to calculate value into the Gauss
-> unit is not available from registers, thus the sensitivity is
-> provided by the compatible/device-id string which is based
-> on the part number as described in the datasheet page 2.
-> 
-> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Hi Neil.
+  Linux 6.12-rc1 (2024-09-29 15:06:19 -0700)
 
-Pretty clean driver. Just a few minor comments inline.
+are available in the Git repository at:
 
-Thanks,
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.12a
 
-Jonathan
+for you to fetch changes up to 6b8e9dbfaed471627f7b863633b9937717df1d4d:
 
+  iio: frequency: admv4420: fix missing select REMAP_SPI in Kconfig (2024-10-10 19:27:25 +0100)
 
-> diff --git a/drivers/iio/magnetometer/als31300.c b/drivers/iio/magnetometer/als31300.c
-> new file mode 100644
-> index 000000000000..123e6a63b516
-> --- /dev/null
-> +++ b/drivers/iio/magnetometer/als31300.c
-> @@ -0,0 +1,459 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Driver for the Allegro MicroSystems ALS31300 3-D Linear Hall Effect Sensor
-> + *
-> + * Copyright (c) 2024 Linaro Limited
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/delay.h>
-> +#include <linux/module.h>
-> +#include <linux/i2c.h>
-> +#include <linux/regmap.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regulator/consumer.h>
-> +
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +
-> +/*
-> + * The Allegro MicroSystems ALS31300 has an EEPROM space to configure how
-> + * the device works and how the interrupt line behaves,
+----------------------------------------------------------------
+IIO: 1st set of fixes for the 6.12 cycle.
 
-behaves.
+Most of this pull request is the result of Javier Carrasco doing a
+careful audit for missing Kconfig dependencies that luck has meant
+the random builds have never hit. The rest is the usual mix of old
+bugs that have surfaced and some fallout from the recent merge window.
 
-> + * we only support the default setup with external trigger
+adi,ad5686
+ - Fix binding duplication of compatible strings.
+bosch,bma400
+ - Fix an uninitialized variable in the event tap handling.
+bosch,bmi323
+ - Fix several issues in the register saving and restore on suspend/resume
+sensiron,spd500
+ - Fix missing CRC8 dependency
+ti,op3001
+ - Fix a missing full-scale range value (values above this point were
+   all reported wrongly)
+vishay,veml6030
+ - Fix a segmentation fault due to some type confusion.
+ - Fix wrong ambient light sensor resolution.
 
-	Only the default setup with external trigger is supported.
-etc.
+----------------------------------------------------------------
+Christophe JAILLET (1):
+      iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
 
-> + *
-> + * Since by default the interrupt line is disable, we don't
-> + * support GPIO interrupt events for now.
-> + *
-> + * It should be possible to adapt the driver to the current
-> + * device setup, but we leave it as a future exercise.
-> + */
-> +
-> +#define ALS31300_EEPROM_CONFIG		0x02
-> +#define ALS31300_EEPROM_INTERRUPT	0x03
-> +#define ALS31300_EEPROM_CUSTOMER_1	0x0d
-> +#define ALS31300_EEPROM_CUSTOMER_2	0x0e
-> +#define ALS31300_EEPROM_CUSTOMER_3	0x0f
-> +#define ALS31300_VOLATILE_MODE		0x27
+Dan Carpenter (2):
+      iio: bmi323: fix copy and paste bugs in suspend resume
+      iio: bmi323: fix reversed if statement in bmi323_core_runtime_resume()
 
-Is spelling out volatile needed? Maybe VOL or just V or skip
-it completely as it makes for some long lines?
+David Lechner (1):
+      iio: adc: ad4695: Add missing Kconfig select
 
-> +#define ALS31300_VOLATILE_MODE_LPDCM		GENMASK(6, 4)
-> +#define ALS31300_VOLATILE_MODE_SLEEP		GENMASK(1, 0)
-> +#define ALS31300_VOLATILE_MSB		0x28
-> +#define ALS31300_VOLATILE_MSB_TEMPERATURE	GENMASK(5, 0)
-> +#define ALS31300_VOLATILE_MSB_INTERRUPT		BIT(6)
-> +#define ALS31300_VOLATILE_MSB_NEW_DATA		BIT(7)
-> +#define ALS31300_VOLATILE_MSB_Z_AXIS		GENMASK(15, 8)
-> +#define ALS31300_VOLATILE_MSB_Y_AXIS		GENMASK(23, 16)
-> +#define ALS31300_VOLATILE_MSB_X_AXIS		GENMASK(31, 24)
-> +#define ALS31300_VOLATILE_LSB		0x29
-> +#define ALS31300_VOLATILE_LSB_TEMPERATURE	GENMASK(5, 0)
-> +#define ALS31300_VOLATILE_LSB_HALL_STATUS	GENMASK(7, 7)
-> +#define ALS31300_VOLATILE_LSB_Z_AXIS		GENMASK(11, 8)
-> +#define ALS31300_VOLATILE_LSB_Y_AXIS		GENMASK(15, 12)
-> +#define ALS31300_VOLATILE_LSB_X_AXIS		GENMASK(19, 16)
-> +#define ALS31300_VOLATILE_LSB_INTERRUPT_WRITE	BIT(20)
-> +#define ALS31300_CUSTOMER_ACCESS	0x35
-> +
-> +#define ALS31300_LPDCM_INACTIVE_0_5_MS		0
-> +#define ALS31300_LPDCM_INACTIVE_1_0_MS		1
-> +#define ALS31300_LPDCM_INACTIVE_5_0_MS		2
-> +#define ALS31300_LPDCM_INACTIVE_10_0_MS		3
-> +#define ALS31300_LPDCM_INACTIVE_50_0_MS		4
-> +#define ALS31300_LPDCM_INACTIVE_100_0_MS	5
-> +#define ALS31300_LPDCM_INACTIVE_500_0_MS	6
-> +#define ALS31300_LPDCM_INACTIVE_1000_0_MS	7
-I'd move these up to next to the field def above.
-Can play games with indent to make it clear they are the contents of
-that field.
+Emil Gedenryd (1):
+      iio: light: opt3001: add missing full-scale range value
 
-#define ALS31300_VOLATILE_MODE_LPDCM		GENMASK(6, 4)
-#define   ALS31300_LPDCM_INACTIVE_0_5_MS	0
-etc
+Javier Carrasco (24):
+      iio: light: veml6030: fix IIO device retrieval from embedded device
+      iio: light: veml6030: fix ALS sensor resolution
+      iio: accel: kx022a: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: adc: ad7944: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: adc: ti-ads124s08: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: adc: ti-lmp92064: add missing select REGMAP_SPI in Kconfig
+      iio: adc: ti-lmp92064: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: dac: ad3552r: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: dac: ad5766: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: chemical: ens160: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: light: bu27008: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: magnetometer: af8133j: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: pressure: bm1390: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: resolver: ad2s1210 add missing select REGMAP in Kconfig
+      iio: resolver: ad2s1210: add missing select (TRIGGERED_)BUFFER in Kconfig
+      iio: frequency: adf4377: add missing select REMAP_SPI in Kconfig
+      iio: amplifiers: ada4250: add missing select REGMAP_SPI in Kconfig
+      iio: dac: ad5770r: add missing select REGMAP_SPI in Kconfig
+      iio: dac: ltc1660: add missing select REGMAP_SPI in Kconfig
+      iio: dac: stm32-dac-core: add missing select REGMAP_MMIO in Kconfig
+      iio: adc: ti-ads8688: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
+      iio: frequency: {admv4420,adrf6780}: format Kconfig entries
+      iio: frequency: admv4420: fix missing select REMAP_SPI in Kconfig
 
+Jonathan Cameron (1):
+      iio: pressure: sdp500: Add missing select CRC8
 
-> +
-> +#define ALS31300_VOLATILE_MODE_ACTIVE_MODE	0
-> +#define ALS31300_VOLATILE_MODE_SLEEP_MODE	1
-> +#define ALS31300_VOLATILE_MODE_LPDCM_MODE	2
-> +
-> +#define ALS31300_DATA_X_GET(__buf)			\
+Mikhail Lobanov (1):
+      iio: accel: bma400: Fix uninitialized variable field_value in tap event handling.
 
-Why __buf?  I'd just use b
+Mohammed Anees (1):
+      iioc: dac: ltc2664: Fix span variable usage in ltc2664_channel_config()
 
-> +		((int)(s8)FIELD_GET(ALS31300_VOLATILE_MSB_X_AXIS, __buf[0]) << 4 | \
-> +			  FIELD_GET(ALS31300_VOLATILE_LSB_X_AXIS, __buf[1]))
-> +#define ALS31300_DATA_Y_GET(__buf)			\
-> +		((int)(s8)FIELD_GET(ALS31300_VOLATILE_MSB_Y_AXIS, __buf[0]) << 4 | \
-> +			  FIELD_GET(ALS31300_VOLATILE_LSB_Y_AXIS, __buf[1]))
-> +#define ALS31300_DATA_Z_GET(__buf)			\
-> +		((int)(s8)FIELD_GET(ALS31300_VOLATILE_MSB_Z_AXIS, __buf[0]) << 4 | \
-> +			  FIELD_GET(ALS31300_VOLATILE_LSB_Z_AXIS, __buf[1]))
+Nathan Chancellor (1):
+      iio: bmi323: Drop CONFIG_PM guards around runtime functions
 
-Nice way to make these more readable is sign_extend32() rather than the casts.
-So
-	sign_extend32(FIELD_GET(ALS31300_VOLATILE_MSB_X_AXIS, b[0]) << 4 |
-		      FIELD_GET(ALS31300_VOLATILE_LSB_X_AXIS, b[1]),
-		      11);
+Rob Herring (Arm) (1):
+      dt-bindings: iio: dac: adi,ad56xx: Fix duplicate compatible strings
 
-
-> +#define ALS31300_TEMPERATURE_GET(__buf)			\
-> +		((u32)(u8)FIELD_GET(ALS31300_VOLATILE_MSB_TEMPERATURE, __buf[0]) << 6 | \
-> +			  FIELD_GET(ALS31300_VOLATILE_LSB_TEMPERATURE, __buf[1]))
-
-What does the u8 cast change?
-
-> +
-
-> +struct als31300_data {
-> +	struct device *dev;
-> +	/* protects power on/off the device and access HW */
-> +	struct mutex mutex;
-> +	unsigned long sensitivity;
-> +	struct regmap *map;
-> +	struct {
-> +		u16 temperature;
-> +		s16 channels[3];
-> +		s64 timestamp __aligned(8);
-aligned_s64 timestamp
-
-
-It's new so for now only in the togreg branch of iio.git.
-
-> +	} scan;
-> +};
-> +
-> +/* The whole measure is split into 2x32bit registers, we need to read them both at once */
-> +static int als31300_get_measure(struct als31300_data *data, s16 *t, s16 *x,
-> +				s16 *y, s16 *z)
-> +{
-> +	unsigned int count = 0;
-> +	u32 buf[2];
-> +	int ret;
-> +
-> +	mutex_lock(&data->mutex);
-
-	guard(mutex)(&data->mutex) and drop the unlock handling.
-It's a small simplification but still nice to have here.
-
-> +	ret = pm_runtime_resume_and_get(data->dev);
-> +	if (ret)
-> +		goto unlock;
-> +
-> +	/* Max update rate it 2KHz, wait up to 1ms */
-> +	while (count < 50) {
-> +		/* Read Data */
-> +		ret = regmap_bulk_read(data->map, ALS31300_VOLATILE_MSB, buf, 2);
-> +		if (ret) {
-> +			dev_err(data->dev, "read data failed, error %d\n", ret);
-> +			goto out;
-> +		}
-> +
-> +		/* Check if data is valid, happens right after getting out of sleep mode */
-> +		if (FIELD_GET(ALS31300_VOLATILE_MSB_NEW_DATA, buf[0]))
-> +			break;
-> +
-> +		usleep_range(10, 20);
-> +		++count;
-> +	}
-> +
-> +	if (count >= 50) {
-> +		ret = -ETIMEDOUT;
-> +		goto out;
-> +	}
-> +
-> +	*t = ALS31300_TEMPERATURE_GET(buf);
-> +	*x = ALS31300_DATA_X_GET(buf);
-> +	*y = ALS31300_DATA_Y_GET(buf);
-> +	*z = ALS31300_DATA_Z_GET(buf);
-> +
-> +out:
-> +	pm_runtime_mark_last_busy(data->dev);
-> +	pm_runtime_put_autosuspend(data->dev);
-> +
-> +unlock:
-> +	mutex_unlock(&data->mutex);
-> +
-> +	return ret;
-> +}
-> +
-> +static int als31300_read_raw(struct iio_dev *indio_dev,
-> +			     const struct iio_chan_spec *chan, int *val,
-> +			     int *val2, long mask)
-> +{
-> +	struct als31300_data *data = iio_priv(indio_dev);
-> +	s16 t, x, y, z;
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = als31300_get_measure(data, &t, &x, &y, &z);
-> +		if (ret)
-> +			return ret;
-
-blank line here would perhaps make this a tiny bit easier to read.
-
-> +		switch (chan->address) {
-> +		case TEMPERATURE:
-> +			*val = t;
-> +			return IIO_VAL_INT;
-> +		case AXIS_X:
-> +			*val = x;
-> +			return IIO_VAL_INT;
-> +		case AXIS_Y:
-> +			*val = y;
-> +			return IIO_VAL_INT;
-> +		case AXIS_Z:
-> +			*val = z;
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (chan->type) {
-> +		case IIO_TEMP:
-> +			/*
-> +			 * Fractional part of:
-> +			 *         302(value - 1708)
-> +			 * temp = ------------------
-> +			 *             4096
-> +			 * to convert temperature in Celcius
-
-Units in IIO ABI (because we copied hwmon) are millidegrees celcius.
-Bad decision a long time back, but we are stuck with it.
-See Documentation/ABI/testing/sysfs-bus-iio
-
-> +			 */
-> +			*val = 302;
-> +			*val2 = 4096;
-> +			return IIO_VAL_FRACTIONAL;
-> +		case IIO_MAGN:
-> +			/*
-> +			 * Devices are configured in factory
-> +			 * with different sensitivities:
-> +			 * - 500 GAUSS <-> 4 LSB/Gauss
-> +			 * - 1000 GAUSS <-> 2 LSB/Gauss
-> +			 * - 2000 GAUSS <-> 1 LSB/Gauss
-> +			 * with translates by a division of the returned
-> +			 * value to get Gauss value.
-> +			 * The sensisitivity cannot be read at runtime
-> +			 * so the value depends on the model compatible
-> +			 * or device id.
-> +			 */
-> +			*val = 1;
-> +			*val2 = data->sensitivity;
-> +			return IIO_VAL_FRACTIONAL;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		switch (chan->type) {
-> +		case IIO_TEMP:
-> +			*val = -1708;
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static irqreturn_t als31300_trigger_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct als31300_data *data = iio_priv(indio_dev);
-> +	s16 x, y, z;
-> +	u16 t;
-> +	int ret;
-> +
-> +	ret = als31300_get_measure(data, &t, &x, &y, &z);
-> +	if (ret)
-> +		goto trigger_out;
-> +
-> +	data->scan.temperature = t;
-> +	data->scan.channels[0] = x;
-> +	data->scan.channels[1] = y;
-> +	data->scan.channels[2] = z;
-
-This is pretty small. I'd just put scan on the stack in this function.
-
-> +	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
-> +					   iio_get_time_ns(indio_dev));
-
-pf->timestamp given you are providing a non threaded interrupt handler
-to fill that in.
-
-> +
-> +trigger_out:
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-
-> +static const struct iio_chan_spec als31300_channels[] = {
-> +	{
-> +		.type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +			BIT(IIO_CHAN_INFO_SCALE) |
-> +			BIT(IIO_CHAN_INFO_OFFSET),
-> +		.address = TEMPERATURE,
-> +		.scan_index = TEMPERATURE,
-> +		.scan_type = {
-> +			.sign = 'u',
-> +			.realbits = 16,
-> +			.storagebits = 16,
-> +			.endianness = IIO_CPU,
-> +		},
-> +	},
-> +	ALS31300_AXIS_CHANNEL(X, AXIS_X),
-> +	ALS31300_AXIS_CHANNEL(Y, AXIS_Y),
-> +	ALS31300_AXIS_CHANNEL(Z, AXIS_Z),
-> +	IIO_CHAN_SOFT_TIMESTAMP(6),
-
-Why 6?
-
-Technically it's not wrong ABI, just odd to leave a gap between the channels
-and the timestamp.  Probably wants to be 4
-
-> +};
-
-> +static int als31300_probe(struct i2c_client *i2c)
-> +{
-> +	struct device *dev = &i2c->dev;
-> +	struct als31300_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	data->dev = dev;
-> +	i2c_set_clientdata(i2c, indio_dev);
-> +
-> +	mutex_init(&data->mutex);
-> +
-> +	data->sensitivity = (unsigned long)of_device_get_match_data(dev);
-After changing the data to pointers to structures below use
-i2c_get_match_data() That will try various types of firmware and fall
-back to the id tables if appropriate.
-
-> +
-> +	data->map = devm_regmap_init_i2c(i2c, &als31300_regmap_config);
-> +	if (IS_ERR(data->map))
-> +		return dev_err_probe(dev, PTR_ERR(data->map),
-> +				     "failed to allocate register map\n");
-
-...
-
-
-> +
-> +static DEFINE_RUNTIME_DEV_PM_OPS(als31300_pm_ops,
-> +				 als31300_runtime_suspend, als31300_runtime_resume,
-> +				 NULL);
-> +
-> +static const struct i2c_device_id als31300_id[] = {
-> +	{ "als31300-500" },
-
-This needs data as well because you can probe via the sysfs interface instead
-of DT which will use these ids.
-
-> +	{ "als31300-1000" },
-> +	{ "als31300-2000" },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, als31300_id);
-> +
-> +static const struct of_device_id als31300_of_match[] = {
-> +	{ .compatible = "allegromicro,als31300-500", .data = (void *)4 },
-> +	{ .compatible = "allegromicro,als31300-1000", .data = (void *)2 },
-> +	{ .compatible = "allegromicro,als31300-2000", .data = (void *)1 },
-
-Use pointers to structures and also use them above.  Even if those structures
-have just one value in them for now.
-
-Just have something like
-
-struct als31300_variant_info {
-	u8 sensitivity;
-};
-
-static const struct als31300_variant_info al31300_variant_500 = {
-	.sensitivity = 4;
-};
-
-etc.
-
-
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, als31300_of_match);
-> +
-> +static struct i2c_driver als31300_driver = {
-> +	.driver	 = {
-> +		.name = "als31300",
-> +		.of_match_table = als31300_of_match,
-> +		.pm = pm_ptr(&als31300_pm_ops),
-> +	},
-> +	.probe = als31300_probe,
-> +	.id_table = als31300_id,
-> +};
-> +module_i2c_driver(als31300_driver);
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_DESCRIPTION("ALS31300 3-D Linear Hall Effect Driver");
-> +MODULE_AUTHOR("Neil Armstrong <neil.armstrong@linaro.org>");
-> 
-
+ .../devicetree/bindings/iio/dac/adi,ad5686.yaml    | 53 +++++++---------------
+ .../devicetree/bindings/iio/dac/adi,ad5696.yaml    |  3 +-
+ drivers/iio/accel/Kconfig                          |  2 +
+ drivers/iio/accel/bma400_core.c                    |  3 +-
+ drivers/iio/adc/Kconfig                            | 11 +++++
+ drivers/iio/amplifiers/Kconfig                     |  1 +
+ drivers/iio/chemical/Kconfig                       |  2 +
+ .../iio/common/hid-sensors/hid-sensor-trigger.c    |  2 +-
+ drivers/iio/dac/Kconfig                            |  7 +++
+ drivers/iio/dac/ltc2664.c                          | 17 +++----
+ drivers/iio/frequency/Kconfig                      | 34 +++++++-------
+ drivers/iio/imu/bmi323/bmi323_core.c               | 23 +++++-----
+ drivers/iio/light/Kconfig                          |  2 +
+ drivers/iio/light/opt3001.c                        |  4 ++
+ drivers/iio/light/veml6030.c                       |  5 +-
+ drivers/iio/magnetometer/Kconfig                   |  2 +
+ drivers/iio/pressure/Kconfig                       |  4 ++
+ drivers/iio/proximity/Kconfig                      |  2 +
+ drivers/iio/resolver/Kconfig                       |  3 ++
+ 19 files changed, 102 insertions(+), 78 deletions(-)
 

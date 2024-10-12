@@ -1,62 +1,58 @@
-Return-Path: <linux-iio+bounces-10512-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10513-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E91999B54C
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 16:07:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227F099B557
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 16:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BCA5283711
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 14:07:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEC5F1F228E0
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 14:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BD1189905;
-	Sat, 12 Oct 2024 14:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467A61925A8;
+	Sat, 12 Oct 2024 14:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKoY0pfq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZMShh00Y"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0FD1E481;
-	Sat, 12 Oct 2024 14:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F681E481;
+	Sat, 12 Oct 2024 14:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728742059; cv=none; b=YXDCUKRx4hrx2NkT7JVcrMmuh8DMBJG8YcZasoc+vx1Fh3MJAgDOoHfJa21aMxm+mUgtxtEMaYxlUCF+TZh/pPGh5HflCGLuTb0+kREG4LNsz0zCb+7Vlj3zSGqig8uInWQqql+988orfiAjQh3FrLDGqt61Ry/SrlOyIvO+4pU=
+	t=1728742315; cv=none; b=G7DuGY0FXISUtsTk4O+geH6feI+Wx7HrmZ/4SJwQ3fFZwPH75MJrLUK5I2ZuKCnK8R25TSp+HcNNkUDkmWsiDRPpRCp00I/o8g4SooJQ3AgZkWb3Qz+/1MKLn2TFNAF4/w860TyNzj+HdIVi4CBcn4IxUD4QktrhQl1G5zxVhcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728742059; c=relaxed/simple;
-	bh=ltuFTzzWTb1qew2dBIqX+X7BaJwPp5wJl+AbxE9dT/k=;
+	s=arc-20240116; t=1728742315; c=relaxed/simple;
+	bh=JJmVD95mi9UZD5zEzeQNiy9tp+Bk7gw4BLSwv44/Zww=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X3A69elwkAdLm9+wVj250XOxwLDxO1lXgVigjd3ro96gAS5ahCrPhtInCW3j3pbFM4oGNaNm4/TnjP9POfFJFDvyDeUei8g9TsrJP2oUnm4/o8dQK8MaV1WOGumla9Cg/pu//fvWyUh3roiIEZfV9a5QvVhnmn7TSJ6TYsgt2go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKoY0pfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5919EC4CEC6;
-	Sat, 12 Oct 2024 14:07:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SD71Iddhs0nycRNKAffySBY7sBhVClsvIbBrG27e6D9p82Lbq0ik8IahYDokxG7X6lzRt9fysO9A/8l3vZDtcFatiAhMGOAPr8gcOQjgy6TtQFJrcoPbAtEp0oem/z+45/x9PXU6MdENHRL5tXXAtd3n/wk/EBqWAbuP/MvBkzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZMShh00Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78096C4CEC6;
+	Sat, 12 Oct 2024 14:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728742058;
-	bh=ltuFTzzWTb1qew2dBIqX+X7BaJwPp5wJl+AbxE9dT/k=;
+	s=k20201202; t=1728742314;
+	bh=JJmVD95mi9UZD5zEzeQNiy9tp+Bk7gw4BLSwv44/Zww=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hKoY0pfqXnps6ba9Wm5oem4oS6YfeH7THxFHBWkaacZ845cNb9O8JQYKDK+3QUZCp
-	 Sx6KyE5Fejq1fWPsmf/7h7oy31KAH/8ZRoALiaxzoLo0PoNm9y8FJDMRyXy3NPxuO+
-	 sg8z84VqEbDRKBsjPQA0ql0KSaVodPVjbWBMiutIQPE2IAT32TreIiffqV4LDtpzEo
-	 DdsgU7GpApY0eSJYK0gl7dqoseOYYwTRB53s0Vo2iMh3kQdkUcQPdn4MedStcWPONf
-	 t66+wOTJ6D4Bq9RKZC7vueuJt/p5Npmo/uA3Y0o/FTwiPpvdCfgvR3FFFLx0fcFZAS
-	 BU4sisSp2fwwg==
-Date: Sat, 12 Oct 2024 15:07:09 +0100
+	b=ZMShh00YU55ALa1BXqIDW4WEdiUyNA8ESpwXWRr+S0/4d13gjaSeD/R8v2t8iOxCm
+	 uWxx0thxieS/FJSw98zw0BmWV4Q5zC2IXYqStz3eDlk3iztYADAbLcwprLBGFQuq9S
+	 aIRXfkKI9erlO8hNxPhRoorS94JXilGnI1CkqsWBzKd8QeDDXXthCYoen5VIDvknFO
+	 NmW78O958AVm/f42874o5ciMBGTowIOwAY42TVt5i/tjXY0zPDOWxxy/wlfD2BUq4F
+	 tpZGC6jbEx6Tf1CV84w7OMkUuL/kJjoqc7epA2Zq312pA4UN44bZgcwBz9oVCgB7ft
+	 HzxHgVL2MFEIw==
+Date: Sat, 12 Oct 2024 15:11:46 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- dletchner@baylibre.com, Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v5 09/10] iio: dac: ad3552r: add high-speed platform
- driver
-Message-ID: <20241012150709.1278066c@jic23-huawei>
-In-Reply-To: <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-9-3d410944a63d@baylibre.com>
-References: <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-0-3d410944a63d@baylibre.com>
-	<20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-9-3d410944a63d@baylibre.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/3] iio: light: veml6030: add support for veml7700
+Message-ID: <20241012151146.3cd5464b@jic23-huawei>
+In-Reply-To: <20241007-veml7700-v1-0-fb85dd839d63@gmail.com>
+References: <20241007-veml7700-v1-0-fb85dd839d63@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,83 +63,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 08 Oct 2024 17:43:41 +0200
-Angelo Dureghello <adureghello@baylibre.com> wrote:
+On Mon, 07 Oct 2024 22:36:35 +0200
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> From: Angelo Dureghello <adureghello@baylibre.com>
+> This series adds support for the veml7700 ALS sensor, which is basically
+> a vem6030 within a different package, with no pins for the interrupt and
+> the I2C address. The changes introduced are meant to hide the event
+> functionality in that case, while borrowing the rest from the veml6030.
 > 
-> Add High Speed ad3552r platform driver.
+> In theory, the interrupt functionality would still be available as all
+> the registers are the same, and some polling could be done to read the
+> threshold indicators to generate events. I did not find examples in iio
+> where the INIT_DELAYED_WORK() queue_delayed_work() mechanism is used for
+> that (some drivers do it to read results), so I am not sure if that
+> would be the desired approach. I am open for discussions about that, but
+> probably to be applied later on.
 > 
-> The ad3552r DAC is controlled by a custom (fpga-based) DAC IP
-> through the current AXI backend, or similar alternative IIO backend.
+> While testing this "no_irq" device, I noticed that the veml6035 is still
+> using dedicated structs for the iio_info, which were there to account
+> for the device-specific attribute values before read_avail() was
+> introduced in the driver in later versions of the patch series, and they
+> managed to survive until v3 was applied.
+> Once read_avail() was introduced, the device-specific structs were not
+> required anymore, and they are repetitive. Moreover, the initialization
+> of the no_irq iio_info for the veml6035 was not updated to account for
+> the new read_avail(), which is a bug if no irq is provided, as there is
+> no callback to retrieve the available values.
 > 
-> Compared to the existing driver (ad3552r.c), that is a simple SPI
-> driver, this driver is coupled with a DAC IIO backend that finally
-> controls the ad3552r by a fpga-based "QSPI+DDR" interface, to reach
-> maximum transfer rate of 33MUPS using dma stream capabilities.
-> 
-> All commands involving QSPI bus read/write are delegated to the backend
-> through the provided APIs for bus read/write.
-> 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
->  drivers/iio/dac/Kconfig                  |  14 +
->  drivers/iio/dac/Makefile                 |   1 +
->  drivers/iio/dac/ad3552r-hs.c             | 526 +++++++++++++++++++++++++++++++
->  drivers/iio/dac/ad3552r.h                |   7 +
->  include/linux/platform_data/ad3552r-hs.h |  18 ++
-I'd missed this before.  No obvious reason to put the include in a 'global' location
-when for now at least only includers re in drivers/iio/dac/
-
-So please move it there.
-
-Some stuff include/linux/platform_data/ is ancient things dating back to board file
-days.
-
-Other than that and things bit Nuno raised, this series looks good to me.
-Please drop the first 2 patches from v6 as I've applied those now.
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Series applied to the to togreg branch of iio.git. Pushed out as testing for 
+0-day to take a first look at it.
 
 Jonathan
 
-
-> diff --git a/include/linux/platform_data/ad3552r-hs.h b/include/linux/platform_data/ad3552r-hs.h
-> new file mode 100644
-> index 000000000000..4e3213a0c73b
-> --- /dev/null
-> +++ b/include/linux/platform_data/ad3552r-hs.h
-
-This isn't what we'd think of as 'platform_data' normally and it is only used
-in drivers/iio/dac/ so I would simply move the header to drivers/iio/dac/ad3552r-hs.h
-
-> @@ -0,0 +1,18 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * Copyright (c) 2010-2024 Analog Devices Inc.
-
-Generous on the years.  This one should probably just be new copyright given
-the code is effectively new.
-
-> + * Copyright (c) 2024 Baylibre, SAS
-> + */
-> +#ifndef __LINUX_PLATFORM_DATA_AD3552R_HS_H__
-> +#define __LINUX_PLATFORM_DATA_AD3552R_HS_H__
-> +
-> +#include <linux/iio/backend.h>
-For this use a forwards reference
-
-struct iio_backend;
-
-Nice to avoid nests of includes where we can easily do so.
-
-> +
-> +struct ad3552r_hs_platform_data {
-> +	int (*bus_reg_read)(struct iio_backend *back, u32 reg, u32 *val,
-> +			    size_t data_size);
-> +	int (*bus_reg_write)(struct iio_backend *back, u32 reg, u32 val,
-> +			     size_t data_size);
-> +};
-> +
-> +#endif /* __LINUX_PLATFORM_DATA_AD3552R_HS_H__ */
+> ---
+> Javier Carrasco (3):
+>       iio: light: veml6035: fix read_avail in no_irq case for veml6035
+>       dt-bindings: iio: light: veml6030: add veml7700
+>       iio: light: veml6030: add support for veml7700
 > 
+>  .../bindings/iio/light/vishay,veml6030.yaml        |  16 ++-
+>  drivers/iio/light/veml6030.c                       | 130 ++++++++++++++-------
+>  2 files changed, 106 insertions(+), 40 deletions(-)
+> ---
+> base-commit: 96be67caa0f0420d4128cb67f07bbd7a6f49e03a
+> change-id: 20241007-veml7700-83f54cf94262
+> 
+> Best regards,
 
 

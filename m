@@ -1,66 +1,58 @@
-Return-Path: <linux-iio+bounces-10518-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10519-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E31BE99B5D1
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 17:10:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D094399B5D5
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 17:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF6C1F221FF
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 15:10:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CCFF283CAC
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 15:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1035A19993B;
-	Sat, 12 Oct 2024 15:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5591419993B;
+	Sat, 12 Oct 2024 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZN6wHfa1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CdsP8NW6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97A81991BF;
-	Sat, 12 Oct 2024 15:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110BD148FF9;
+	Sat, 12 Oct 2024 15:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728745849; cv=none; b=nFXkFYPLhO6quBiCQ7hTRBG9e2y/qXIgcC43EbADaqK0tUdHFdn0knQJLoicHWnU7WczZ8uZnFPHKxI+2NWG3fpG7eCdIAPe1f/oClA/Oh3plBpl4oTbI65CZUXgXLYJBfpc0P6NYKTestecj13JeJzNAhi+mF2S1AgWh4ZdjXI=
+	t=1728746000; cv=none; b=nNwF7WRaSF/PuCobNpyhupv+Z1v/OHDwi89tEX/EFEmABG3ppeRM4jwhBo1TJ4zpJ6U+rWddWA48I1l5ODG09jUkn+rQ3WYIhan1KSRsV0iapsm7i7g/rB6AOMh54rzWq7pE3zVwAnDkG7h6kirGxuNyF9Vzf/pK6jjVbo+Ec8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728745849; c=relaxed/simple;
-	bh=gcNbMJ4Gd2izwSIIWqm/hjsuE/w9FW79EmcBGXtchag=;
+	s=arc-20240116; t=1728746000; c=relaxed/simple;
+	bh=SkEH81JnxnHX6oz0noXHCHWYqlliGtXCIWKTybqx0Q8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mx/dlTE9a0RMjuwxk4HvzLY2difjyMB+HBKc5I/tG9uym5BdPkUcW+n4kYh+BVDUwkzId5u4MmTTHmsZCrgEYPkl3jalWcl0p/jx4LMz/XRmOuffdyXuFypaniwIBMTxw5wL21ly/754Cowtcm1/UUvqTewabiJxGwgZwUge9BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZN6wHfa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404D5C4CEC6;
-	Sat, 12 Oct 2024 15:10:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=suLP93LctEkWQM2msUcYUd5vIBioi5v7PtRoBgf0Htq7u/QSBLWu0jzTpkcyZ16RkG+v9jsIOshC5STXRPvLPz7ZuITk2bD4jyckK+dd6a5Ts5gWbSO24PzzBkQYZJREOWV38KPmfdaFu/zciV5uaq8s3CLHcD1QFYVoohzSEbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CdsP8NW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BFAC4CEC6;
+	Sat, 12 Oct 2024 15:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728745849;
-	bh=gcNbMJ4Gd2izwSIIWqm/hjsuE/w9FW79EmcBGXtchag=;
+	s=k20201202; t=1728745999;
+	bh=SkEH81JnxnHX6oz0noXHCHWYqlliGtXCIWKTybqx0Q8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZN6wHfa1x4FE1+M18/tYMEzEdHz+XJMkbPjTXduySTpAaayHu1xN0+TJ+C0NXGo5q
-	 DP2WCINjN2zH7H1Qbxpv76tvI6j5Z8F/xrqz195Go4RJXWj/59fvkXM2u78gXUnWoU
-	 jqCiFpQZyyqF+QmnJMjn4qdYem73sF/b0ZK/JbemLVJuk47jeeN7L/sF+5N5QQrL+d
-	 3OAj0LuZzYDGziYpF22Gi1Wj68LmM8LR3yOnRuOzDPMh2F9FCV6CFUOwUbAuwGQYPA
-	 Jgy9pSO+MEybHuSiP6vX4coVcICm6C3ZHdC1vWmabPuzw9nbgFB7JpY4S22E4EhWAl
-	 Hekgag8vSiDIw==
-Date: Sat, 12 Oct 2024 16:10:40 +0100
+	b=CdsP8NW6MnbZBelPSqpB5Ry623TWHmDw1fn7tx+a5TR8O3d8Qyiznqhg/FMauXWZ8
+	 ztDimHpqo6kyWjjAmh/OTYHSYqYuM3GvaS4pvJqmJQBaCoIYj09ysJ1y54EDNjcYdj
+	 qEPDJG8k6GURjax5+2SSn6Ko9c4kp5PuFho430wuSfnTZEQbbt+3klcGHSHuV0pnJj
+	 1dzWARtqsRM3W2MdEUeTnPe3EXraLVdNlz5TVMuE7IxSMCP4/EyeHMWjM0qMZteJNv
+	 u211npQKJqLQmnz9ggjNprzdzl+jjNg6LEuJVEa5Y/t2S+znw8R8TbEjZZbgh9dYzT
+	 f8jnuPgD0KMdA==
+Date: Sat, 12 Oct 2024 16:13:11 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Emil Gedenryd <Emil.Gedenryd@axis.com>
-Cc: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "robh@kernel.org" <robh@kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "dannenberg@ti.com" <dannenberg@ti.com>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "lars@metafoo.de"
- <lars@metafoo.de>, "conor+dt@kernel.org" <conor+dt@kernel.org>, Kernel
- <Kernel@axis.com>
-Subject: Re: [PATCH v4 2/2] iio: light: opt3001: add support for TI's
- opt3002 light sensor
-Message-ID: <20241012161040.1506a7a4@jic23-huawei>
-In-Reply-To: <fab164228b4d567a147cd8d93150e687c6db0c70.camel@axis.com>
-References: <20241003-add_opt3002-v4-0-c550dc4591b4@axis.com>
-	<20241003-add_opt3002-v4-2-c550dc4591b4@axis.com>
-	<20241006141624.3fa5bf34@jic23-huawei>
-	<b40d22b5bdf487b40207e676d35a0507c47cbb26.camel@axis.com>
-	<20241010184742.1747bfe2@jic23-huawei>
-	<fab164228b4d567a147cd8d93150e687c6db0c70.camel@axis.com>
+To: Mohammed Anees <pvmohammedanees2003@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Michael
+ Hennerich <michael.hennerich@analog.com>, Kim Seer Paller
+ <kimseer.paller@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH v3] iioc: dac: ltc2664: Fix span variable usage in
+ ltc2664_channel_config()
+Message-ID: <20241012161311.5adcccfb@jic23-huawei>
+In-Reply-To: <20241005200435.25061-1-pvmohammedanees2003@gmail.com>
+References: <20241005200435.25061-1-pvmohammedanees2003@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,91 +60,78 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 11 Oct 2024 07:12:05 +0000
-Emil Gedenryd <Emil.Gedenryd@axis.com> wrote:
+On Sun,  6 Oct 2024 01:34:35 +0530
+Mohammed Anees <pvmohammedanees2003@gmail.com> wrote:
 
-> On Thu, 2024-10-10 at 18:47 +0100, Jonathan Cameron wrote:
-> > On Mon, 7 Oct 2024 07:19:06 +0000
-> > Emil Gedenryd <Emil.Gedenryd@axis.com> wrote:
-> >  =20
-> > > On Sun, 2024-10-06 at 14:16 +0100, Jonathan Cameron wrote: =20
-> > > > On Thu, 3 Oct 2024 14:22:17 +0200
-> > > > Emil Gedenryd <emil.gedenryd@axis.com> wrote:   =20
-> > > > >=20
-> > > > > +struct opt3001_chip_info {
-> > > > > +	const struct iio_chan_spec (*channels)[2];
-> > > > > +	enum iio_chan_type chan_type;
-> > > > > +	int num_channels;
-> > > > > +
-> > > > > +	const struct opt3001_scale (*scales)[12];   =20
-> > > > This doesn't compile for me as one of the two options only
-> > > > has 11 entries.  You could either force them to be 12
-> > > > entries each or use a pointer without the size and
-> > > > add a num_scales entry in here.
-> > > >=20
-> > > > Jonathan   =20
-> > >=20
-> > > Hi Jonathan,
-> > >=20
-> > > Are you building on top of the patch that was accepted in earlier ver=
-sions of this
-> > > patch set? That patch adds the twelfth missing scale value for the op=
-t3001.
-> > > See:=C2=A0https://lore.kernel.org/all/20240916-add_opt3002-v3-1-984b1=
-90cd68c@axis.com/
-> > >=20
-> > > Should I have added some tag to highlight the dependency for this ver=
-sion of the
-> > > patch set? =20
-> > Ah.  Yes, I was half asleep.
-> > They are going via different branches (slow and fast) so I'll have to
-> > sit on this series until after that fix is in the upstream for the togr=
-eg
-> > branch of iio.git.
-> >=20
-> > If I seem to have lost it after that is the case feel free to give me a=
- poke.
-> >=20
-> > Jonathan
-> >  =20
-> Hi,
->=20
-> No worries. Just to clarify, do you mean sit on it as that you will conti=
-nue reviewing
-> the code after the fix is in upstream, or should I consider this patch to=
- be approved?
-Assuming not other review comes in, I consider this ready to go.
->=20
-> Also, do you have an approximation of what time frame we're talking about?
-2 weeks most likely.
+> In the current implementation of the ltc2664_channel_config() function,
+> a variable named span is declared and initialized to 0, intended to
+> capture the return value of the ltc2664_set_span() function. However,
+> the output of ltc2664_set_span() is directly assigned to chan->span,
+> leaving span unchanged. As a result, when the function later checks
+> if (span < 0), this condition will never trigger an error since
+> span remains 0, this flaw leads to ineffective error handling. Resolve
+> this issue by using the ret variable to get the return value and later
+> assign it if successful and remove unused span variable.
+> 
+> Fixes: 4cc2fc445d2e ("iio: dac: ltc2664: Add driver for LTC2664 and LTC2672")
+> Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
+> ---
+Hmm. I failed to send a reply to say I applied this.
 
-I've just sent Greg KH a pull request with the fix in it. He will hopefully
-pick that up and then send a pull request on to Linus.  Then we wait for the
-next rc after that at which point Greg will probably pull it into char-misc=
--next or
-I can always merge it into my togreg branch once it is in a release candida=
-te of
-Linus' tree.
-
-In parallel with that I'll probably do a pull request for what is already i=
-n the
-togreg tree to get a lot of stuff in char-misc-next for the next cycle. Tha=
-t makes
-the history a little cleaner as I can fast forward my tree and end up with
-whatever is in char-misc-next (hopefully including this).
-
-Anyhow, a bit of tree juggling for me, but we have plenty of time as rc3 wi=
-ll probably
-be out tomorrow and it normally goes to rc7 at one rc a week
-
-Thanks,
+Anyhow better late than never. Applied. Thanks!
 
 Jonathan
-> Best Regards,
-> Emil=20
->=20
+
+> v3
+> - Fixed Styling issues
+> ---
+>  drivers/iio/dac/ltc2664.c | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/iio/dac/ltc2664.c b/drivers/iio/dac/ltc2664.c
+> index 5be5345ac5c8..67f14046cf77 100644
+> --- a/drivers/iio/dac/ltc2664.c
+> +++ b/drivers/iio/dac/ltc2664.c
+> @@ -516,7 +516,7 @@ static int ltc2664_channel_config(struct ltc2664_state *st)
+>  	const struct ltc2664_chip_info *chip_info = st->chip_info;
+>  	struct device *dev = &st->spi->dev;
+>  	u32 reg, tmp[2], mspan;
+> -	int ret, span = 0;
+> +	int ret;
+>  
+>  	mspan = LTC2664_MSPAN_SOFTSPAN;
+>  	ret = device_property_read_u32(dev, "adi,manual-span-operation-config",
+> @@ -579,20 +579,21 @@ static int ltc2664_channel_config(struct ltc2664_state *st)
+>  		ret = fwnode_property_read_u32_array(child, "output-range-microvolt",
+>  						     tmp, ARRAY_SIZE(tmp));
+>  		if (!ret && mspan == LTC2664_MSPAN_SOFTSPAN) {
+> -			chan->span = ltc2664_set_span(st, tmp[0] / 1000,
+> -						      tmp[1] / 1000, reg);
+> -			if (span < 0)
+> -				return dev_err_probe(dev, span,
+> +			ret = ltc2664_set_span(st, tmp[0] / 1000, tmp[1] / 1000, reg);
+> +			if (ret < 0)
+> +				return dev_err_probe(dev, ret,
+>  						     "Failed to set span\n");
+> +			chan->span = ret;
+>  		}
+>  
+>  		ret = fwnode_property_read_u32_array(child, "output-range-microamp",
+>  						     tmp, ARRAY_SIZE(tmp));
+>  		if (!ret) {
+> -			chan->span = ltc2664_set_span(st, 0, tmp[1] / 1000, reg);
+> -			if (span < 0)
+> -				return dev_err_probe(dev, span,
+> +			ret = ltc2664_set_span(st, 0, tmp[1] / 1000, reg);
+> +			if (ret < 0)
+> +				return dev_err_probe(dev, ret,
+>  						     "Failed to set span\n");
+> +			chan->span = ret;
+>  		}
+>  	}
+>  
 
 

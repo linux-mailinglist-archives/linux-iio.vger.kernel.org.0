@@ -1,59 +1,62 @@
-Return-Path: <linux-iio+bounces-10497-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10498-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CDB99B49A
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 13:55:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA88599B49B
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 13:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B999B23F8E
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 11:55:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 913001F21B66
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 11:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED4819D081;
-	Sat, 12 Oct 2024 11:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3896E19E967;
+	Sat, 12 Oct 2024 11:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rmmNXMtp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EvywfWbz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954B2161310;
-	Sat, 12 Oct 2024 11:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E442E19D8A9;
+	Sat, 12 Oct 2024 11:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728733732; cv=none; b=h4yYehQ6kyFw6zVMb43zgM/rAmiS5MZNQD2Z+1/n6Xh78iETTx4uVrIwOuTIdIjUOHvasNzWbxKdXeB5p3+LxvbzNNZaDfgc7THzESXPCNdAoM/V+PrZUQd+mQkItzyKCATtl2+n2dRqe3nixFS3t61wRZEjXvBdoiWO826qCZc=
+	t=1728733756; cv=none; b=TZdFm4hTUlXrtR+KJPqxXXK2f+oggKZ3An9yIfsYO61yX1Yr25DCb1yqknFFfTyTnhaJwKjRhYPEhdOeFq1YY8LwKx3yQ3bK3WDPYtwnTFXzu7DFDiGshibTdYC8SXw5GnGAVzgjUIuIzXvOEj3/AmM0TPvYMzkGiKDyFWQh6YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728733732; c=relaxed/simple;
-	bh=St8PdnurIlPGKo2cMXY48AEAM4yJRD/mF3SjGRaLnCA=;
+	s=arc-20240116; t=1728733756; c=relaxed/simple;
+	bh=ayHqr4UPyqeErk3NI2av9IV9VxtnZOYMncyiCnoXVSU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jYFpnhl7mmm3WOUV3FhvfQyHbv8i6FFcxZF/MM4AE/x47OIMgLujNntV1rAb7jnYRd9xLyP5pjT/KjYpJhLm4DSFWI5sOEMXQtgcMieiTwONBP1np4Com1hYp+ph6/hXoELn6Rt5TkMZEHvGY1sUr72XzFGvabdV0dv+tyCGX5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rmmNXMtp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AB9C4CEC6;
-	Sat, 12 Oct 2024 11:48:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lIo6WzUAOF5uMFBwW71LT1LacnY29yhd3crXntP6ciC9vj8Ay4Q39FDtfRz57wRgja+2ukfRZ4R2cTgTUVrWn2vrRdNUHP7xNomsPv01+TtIrTo05xos4IRDBSmMI6rb4YWA9gXuaQSwvAG5c1SbNFaF5c5tJ9cAPfqQ7tXByMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EvywfWbz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B70BC4CEC6;
+	Sat, 12 Oct 2024 11:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728733732;
-	bh=St8PdnurIlPGKo2cMXY48AEAM4yJRD/mF3SjGRaLnCA=;
+	s=k20201202; t=1728733755;
+	bh=ayHqr4UPyqeErk3NI2av9IV9VxtnZOYMncyiCnoXVSU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rmmNXMtp4rowjQ9QGdP+wMcXwKZPO+Mct8oR5NiYNnaVpXdrfUHg2dgt8CAMWxLVp
-	 llySiZa4J36xyOf5len7xHdxIcSJpW17JGE9OGC9P1jaAUHjEjshiAz8d8vNhZejq7
-	 uwwreKgG/p2tbeVb8ToPSjpdxtgB9KCb6FUskd5ArxJd83rAOM2bhL1vBoQbQRSfza
-	 ta68HtQtlyTY9iPj8nyxu0M7NGdG1ADhw0dGX785E6FuFqZCtQBchq6/pdSI91lesJ
-	 1IYRd9pwH/SbLNUCJLw/CL1IS2hlYUfiRFM6jyr3Zo1EgVkrMr0NdqDYJr1lMzzhPq
-	 hsfk/J40i83Fw==
-Date: Sat, 12 Oct 2024 12:48:38 +0100
+	b=EvywfWbzeSfc/NDi2vDNoI40U55sck42XoS+LqkGMC33yEQTTvfKsPjZr4cQ0W8H5
+	 8ZuBqYkWO3PTV35XcsTXFtvZNw3FZ3qvTkMHOlKqojTHMSjlgoziYwtz6Ba2T0QhCk
+	 VpqrHpIyeu0lf3yJS8FnoPcEGJVs0mQefpkZBHSHu2p+HeiBVXQUIqptSUdVteneFD
+	 wn5BE1giqmX0nmKcrNL3QZeJpBEOyb/U2xvImpR7eac9aj509ZGoW6MJJegiH9DWW7
+	 sLGtNAD4Y7x0WQiytM8wbo/D/o32oa0Uu2DdtOGKnpHsiIm9VEO/D6S34eCZ6hFDuS
+	 enjGV/tAZKIUg==
+Date: Sat, 12 Oct 2024 12:49:07 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: vamoirid <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, anshulusr@gmail.com, gustavograzs@gmail.com,
- andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 05/13] iio: chemical: bme680: refactorize set_mode()
- mode
-Message-ID: <20241012124838.24f6ab8d@jic23-huawei>
-In-Reply-To: <20241010210030.33309-6-vassilisamir@gmail.com>
+To: Vasileios Aoiridis <vassilisamir@gmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, lars@metafoo.de, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, anshulusr@gmail.com,
+ gustavograzs@gmail.com, andriy.shevchenko@linux.intel.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 06/13] dt-bindings: iio: add binding for BME680
+ driver
+Message-ID: <20241012124907.33b18534@jic23-huawei>
+In-Reply-To: <ZwlyI3DasF7PEVqE@vamoirid-laptop>
 References: <20241010210030.33309-1-vassilisamir@gmail.com>
-	<20241010210030.33309-6-vassilisamir@gmail.com>
+	<20241010210030.33309-7-vassilisamir@gmail.com>
+	<9fc325ee-0c14-4d17-a0a5-8cf35a8ce245@kernel.org>
+	<ZwlyI3DasF7PEVqE@vamoirid-laptop>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,100 +67,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 10 Oct 2024 23:00:22 +0200
-vamoirid <vassilisamir@gmail.com> wrote:
+On Fri, 11 Oct 2024 20:44:51 +0200
+Vasileios Aoiridis <vassilisamir@gmail.com> wrote:
 
-> From: Vasileios Amoiridis <vassilisamir@gmail.com>
+> On Fri, Oct 11, 2024 at 08:51:00AM +0200, Krzysztof Kozlowski wrote:
+> > On 10/10/2024 23:00, vamoirid wrote:  
+> > > From: Vasileios Amoiridis <vassilisamir@gmail.com>
+> > > 
+> > > Add dt-binding for BME680 gas sensor device. The device incorporates as
+> > > well temperature, pressure and relative humidity sensors.
+> > > 
+> > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> > > ---
+> > >  .../bindings/iio/chemical/bosch,bme680.yaml   | 64 +++++++++++++++++++
+> > >  1 file changed, 64 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/chemical/bosch,bme680.yaml  
+> > 
+> > The device is already documented. You need to move it from trivial devices.
+> > 
+> > Best regards,
+> > Krzysztof
+> >  
 > 
-> Refactorize the set_mode() function to use an external enum that
-> describes the possible modes of the BME680 device instead of using
-> true/false variables for selecting SLEEPING/FORCED mode.
+> Hi Krzysztof!
 > 
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> ---
->  drivers/iio/chemical/bme680_core.c | 36 ++++++++++++++++--------------
->  1 file changed, 19 insertions(+), 17 deletions(-)
+> Thanks for your time to have a look at this!
 > 
-> diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-> index 9e843e463502..dedb7edaf43d 100644
-> --- a/drivers/iio/chemical/bme680_core.c
-> +++ b/drivers/iio/chemical/bme680_core.c
-> @@ -95,6 +95,11 @@ struct bme680_calib {
->  	s8  range_sw_err;
->  };
->  
-> +enum bme680_op_mode {
-> +	BME680_SLEEP,
-> +	BME680_FORCED,
-> +};
-> +
->  struct bme680_data {
->  	struct regmap *regmap;
->  	struct bme680_calib bme680;
-> @@ -501,25 +506,24 @@ static u8 bme680_calc_heater_dur(u16 dur)
->  	return durval;
->  }
->  
-> -static int bme680_set_mode(struct bme680_data *data, bool mode)
-> +static int bme680_set_mode(struct bme680_data *data, enum bme680_op_mode mode)
->  {
->  	struct device *dev = regmap_get_device(data->regmap);
->  	int ret;
->  
-> -	if (mode) {
-> -		ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
-> -					BME680_MODE_MASK, BME680_MODE_FORCED);
-> -		if (ret < 0)
-> -			dev_err(dev, "failed to set forced mode\n");
-> -
-> -	} else {
-> -		ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
-> -					BME680_MODE_MASK, BME680_MODE_SLEEP);
-> -		if (ret < 0)
-> -			dev_err(dev, "failed to set sleep mode\n");
-> -
-> +	switch (mode) {
-> +	case BME680_SLEEP:
-> +	case BME680_FORCED:
-You are passing in an enum that currently has no other values.
-The compiler should complain if it isn't one of these (and it can tell)
+> You mean to keep this new dt-binging and remove it from trivial devices?
+> 
+Yes
 
-So unless I'm missing you adding another enum value later, this switch
-should be unnecessary.
-
-
-> +		break;
-> +	default:
-> +		return -EINVAL;
->  	}
->  
-> +	ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
-> +				BME680_MODE_MASK, mode);
-> +	if (ret < 0)
-> +		dev_err(dev, "failed to set ctrl_meas register\n");
-> +
->  	return ret;
->  }
->  
-> @@ -612,8 +616,7 @@ static int bme680_gas_config(struct bme680_data *data)
->  	int ret;
->  	u8 heatr_res, heatr_dur;
->  
-> -	/* Go to sleep */
-> -	ret = bme680_set_mode(data, false);
-> +	ret = bme680_set_mode(data, BME680_SLEEP);
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -750,8 +753,7 @@ static int bme680_read_raw(struct iio_dev *indio_dev,
->  
->  	guard(mutex)(&data->lock);
->  
-> -	/* set forced mode to trigger measurement */
-> -	ret = bme680_set_mode(data, true);
-> +	ret = bme680_set_mode(data, BME680_FORCED);
->  	if (ret < 0)
->  		return ret;
->  
+> Cheers,
+> Vasilis
+> 
 
 

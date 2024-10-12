@@ -1,50 +1,66 @@
-Return-Path: <linux-iio+bounces-10517-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10518-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D02B99B5C2
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 17:07:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E31BE99B5D1
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 17:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49B53B22FD5
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 15:07:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF6C1F221FF
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 15:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE881714A1;
-	Sat, 12 Oct 2024 15:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1035A19993B;
+	Sat, 12 Oct 2024 15:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZ5xTJB3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZN6wHfa1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF8311CA0
-	for <linux-iio@vger.kernel.org>; Sat, 12 Oct 2024 15:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97A81991BF;
+	Sat, 12 Oct 2024 15:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728745631; cv=none; b=iJICRPYtU5H6ZeWd0iccUwKoIczcLQKLcx5bboevJ08FDEt0RXxQJ5ESryGDXIonbQrsHnXMNMTiu4ELTdJm845b9GQZnpv5WWEZbF8qjaKKOETxKRTFGISwTH9g4oiRTzyuNjvzEW5GIXqfpf+chnRCPnrlkGhvPNVSi2Cxh5U=
+	t=1728745849; cv=none; b=nFXkFYPLhO6quBiCQ7hTRBG9e2y/qXIgcC43EbADaqK0tUdHFdn0knQJLoicHWnU7WczZ8uZnFPHKxI+2NWG3fpG7eCdIAPe1f/oClA/Oh3plBpl4oTbI65CZUXgXLYJBfpc0P6NYKTestecj13JeJzNAhi+mF2S1AgWh4ZdjXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728745631; c=relaxed/simple;
-	bh=jWa2JuSnhlW9UR3OeEdKu1SH0ilKRpJ4h4Wng+tBMvQ=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=nD75WNYuTAQhW9r3ZYx+KDGYAcjOURwrtGjvdyz9z7X3TlYyzZZZdtPjl5scmp+ZE8SuNnWPlCknxelT6TrzuoigeTsFltO8wZYNcs747VrwOjfTIvIUNdmRCbyy0dUf3Vpp8F6DJYajBatMxuKi3QxPKMO1yq5co3d2EgtTujg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZ5xTJB3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1590BC4CEC6;
-	Sat, 12 Oct 2024 15:07:08 +0000 (UTC)
+	s=arc-20240116; t=1728745849; c=relaxed/simple;
+	bh=gcNbMJ4Gd2izwSIIWqm/hjsuE/w9FW79EmcBGXtchag=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mx/dlTE9a0RMjuwxk4HvzLY2difjyMB+HBKc5I/tG9uym5BdPkUcW+n4kYh+BVDUwkzId5u4MmTTHmsZCrgEYPkl3jalWcl0p/jx4LMz/XRmOuffdyXuFypaniwIBMTxw5wL21ly/754Cowtcm1/UUvqTewabiJxGwgZwUge9BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZN6wHfa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404D5C4CEC6;
+	Sat, 12 Oct 2024 15:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728745630;
-	bh=jWa2JuSnhlW9UR3OeEdKu1SH0ilKRpJ4h4Wng+tBMvQ=;
-	h=Date:From:To:Subject:From;
-	b=LZ5xTJB3DXwPpBUFLbmuCQww6dOB7zjzKnEq4nzqfqG5LHvm9F6U4wHbEgMZMXPjO
-	 VKZBW7pzoEF8X+fHgAPlQDhpA2ApbK3Jg4a9vrIBWP0sfQ2spkf/qXgTCdUahokNtu
-	 ezFnV1pYgwthE2PMXkatsmH/rXhSFLexpGhsuJmFv0CDKUhiieE+hIHeS5Z99fL4AR
-	 UyteQ50fNkSgpX3qA3HCb6mdPZ9wkRD8BZp2TLBBz+9ToZtSihMqgLcLDgd+9iONqK
-	 Hz4XBUigSAw/xTYk2WG/807uHDQomZdpTCwXHh3229tlzdbl6Kdkbw3ZzYAzs0viwG
-	 4mDJdFtT5bB1A==
-Date: Sat, 12 Oct 2024 16:07:03 +0100
+	s=k20201202; t=1728745849;
+	bh=gcNbMJ4Gd2izwSIIWqm/hjsuE/w9FW79EmcBGXtchag=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZN6wHfa1x4FE1+M18/tYMEzEdHz+XJMkbPjTXduySTpAaayHu1xN0+TJ+C0NXGo5q
+	 DP2WCINjN2zH7H1Qbxpv76tvI6j5Z8F/xrqz195Go4RJXWj/59fvkXM2u78gXUnWoU
+	 jqCiFpQZyyqF+QmnJMjn4qdYem73sF/b0ZK/JbemLVJuk47jeeN7L/sF+5N5QQrL+d
+	 3OAj0LuZzYDGziYpF22Gi1Wj68LmM8LR3yOnRuOzDPMh2F9FCV6CFUOwUbAuwGQYPA
+	 Jgy9pSO+MEybHuSiP6vX4coVcICm6C3ZHdC1vWmabPuzw9nbgFB7JpY4S22E4EhWAl
+	 Hekgag8vSiDIw==
+Date: Sat, 12 Oct 2024 16:10:40 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] IIO: 1st set of fixes for the 6.12 cycle
-Message-ID: <20241012160703.61b02c87@jic23-huawei>
+To: Emil Gedenryd <Emil.Gedenryd@axis.com>
+Cc: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "robh@kernel.org" <robh@kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "dannenberg@ti.com" <dannenberg@ti.com>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>, "lars@metafoo.de"
+ <lars@metafoo.de>, "conor+dt@kernel.org" <conor+dt@kernel.org>, Kernel
+ <Kernel@axis.com>
+Subject: Re: [PATCH v4 2/2] iio: light: opt3001: add support for TI's
+ opt3002 light sensor
+Message-ID: <20241012161040.1506a7a4@jic23-huawei>
+In-Reply-To: <fab164228b4d567a147cd8d93150e687c6db0c70.camel@axis.com>
+References: <20241003-add_opt3002-v4-0-c550dc4591b4@axis.com>
+	<20241003-add_opt3002-v4-2-c550dc4591b4@axis.com>
+	<20241006141624.3fa5bf34@jic23-huawei>
+	<b40d22b5bdf487b40207e676d35a0507c47cbb26.camel@axis.com>
+	<20241010184742.1747bfe2@jic23-huawei>
+	<fab164228b4d567a147cd8d93150e687c6db0c70.camel@axis.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -52,117 +68,91 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-The following changes since commit 9852d85ec9d492ebef56dc5f229416c925758edc:
+On Fri, 11 Oct 2024 07:12:05 +0000
+Emil Gedenryd <Emil.Gedenryd@axis.com> wrote:
 
-  Linux 6.12-rc1 (2024-09-29 15:06:19 -0700)
+> On Thu, 2024-10-10 at 18:47 +0100, Jonathan Cameron wrote:
+> > On Mon, 7 Oct 2024 07:19:06 +0000
+> > Emil Gedenryd <Emil.Gedenryd@axis.com> wrote:
+> >  =20
+> > > On Sun, 2024-10-06 at 14:16 +0100, Jonathan Cameron wrote: =20
+> > > > On Thu, 3 Oct 2024 14:22:17 +0200
+> > > > Emil Gedenryd <emil.gedenryd@axis.com> wrote:   =20
+> > > > >=20
+> > > > > +struct opt3001_chip_info {
+> > > > > +	const struct iio_chan_spec (*channels)[2];
+> > > > > +	enum iio_chan_type chan_type;
+> > > > > +	int num_channels;
+> > > > > +
+> > > > > +	const struct opt3001_scale (*scales)[12];   =20
+> > > > This doesn't compile for me as one of the two options only
+> > > > has 11 entries.  You could either force them to be 12
+> > > > entries each or use a pointer without the size and
+> > > > add a num_scales entry in here.
+> > > >=20
+> > > > Jonathan   =20
+> > >=20
+> > > Hi Jonathan,
+> > >=20
+> > > Are you building on top of the patch that was accepted in earlier ver=
+sions of this
+> > > patch set? That patch adds the twelfth missing scale value for the op=
+t3001.
+> > > See:=C2=A0https://lore.kernel.org/all/20240916-add_opt3002-v3-1-984b1=
+90cd68c@axis.com/
+> > >=20
+> > > Should I have added some tag to highlight the dependency for this ver=
+sion of the
+> > > patch set? =20
+> > Ah.  Yes, I was half asleep.
+> > They are going via different branches (slow and fast) so I'll have to
+> > sit on this series until after that fix is in the upstream for the togr=
+eg
+> > branch of iio.git.
+> >=20
+> > If I seem to have lost it after that is the case feel free to give me a=
+ poke.
+> >=20
+> > Jonathan
+> >  =20
+> Hi,
+>=20
+> No worries. Just to clarify, do you mean sit on it as that you will conti=
+nue reviewing
+> the code after the fix is in upstream, or should I consider this patch to=
+ be approved?
+Assuming not other review comes in, I consider this ready to go.
+>=20
+> Also, do you have an approximation of what time frame we're talking about?
+2 weeks most likely.
 
-are available in the Git repository at:
+I've just sent Greg KH a pull request with the fix in it. He will hopefully
+pick that up and then send a pull request on to Linus.  Then we wait for the
+next rc after that at which point Greg will probably pull it into char-misc=
+-next or
+I can always merge it into my togreg branch once it is in a release candida=
+te of
+Linus' tree.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.12a
+In parallel with that I'll probably do a pull request for what is already i=
+n the
+togreg tree to get a lot of stuff in char-misc-next for the next cycle. Tha=
+t makes
+the history a little cleaner as I can fast forward my tree and end up with
+whatever is in char-misc-next (hopefully including this).
 
-for you to fetch changes up to 6b8e9dbfaed471627f7b863633b9937717df1d4d:
+Anyhow, a bit of tree juggling for me, but we have plenty of time as rc3 wi=
+ll probably
+be out tomorrow and it normally goes to rc7 at one rc a week
 
-  iio: frequency: admv4420: fix missing select REMAP_SPI in Kconfig (2024-10-10 19:27:25 +0100)
+Thanks,
 
-----------------------------------------------------------------
-IIO: 1st set of fixes for the 6.12 cycle.
+Jonathan
+> Best Regards,
+> Emil=20
+>=20
 
-Most of this pull request is the result of Javier Carrasco doing a
-careful audit for missing Kconfig dependencies that luck has meant
-the random builds have never hit. The rest is the usual mix of old
-bugs that have surfaced and some fallout from the recent merge window.
-
-adi,ad5686
- - Fix binding duplication of compatible strings.
-bosch,bma400
- - Fix an uninitialized variable in the event tap handling.
-bosch,bmi323
- - Fix several issues in the register saving and restore on suspend/resume
-sensiron,spd500
- - Fix missing CRC8 dependency
-ti,op3001
- - Fix a missing full-scale range value (values above this point were
-   all reported wrongly)
-vishay,veml6030
- - Fix a segmentation fault due to some type confusion.
- - Fix wrong ambient light sensor resolution.
-
-----------------------------------------------------------------
-Christophe JAILLET (1):
-      iio: hid-sensors: Fix an error handling path in _hid_sensor_set_report_latency()
-
-Dan Carpenter (2):
-      iio: bmi323: fix copy and paste bugs in suspend resume
-      iio: bmi323: fix reversed if statement in bmi323_core_runtime_resume()
-
-David Lechner (1):
-      iio: adc: ad4695: Add missing Kconfig select
-
-Emil Gedenryd (1):
-      iio: light: opt3001: add missing full-scale range value
-
-Javier Carrasco (24):
-      iio: light: veml6030: fix IIO device retrieval from embedded device
-      iio: light: veml6030: fix ALS sensor resolution
-      iio: accel: kx022a: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: adc: ad7944: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: adc: ti-ads124s08: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: adc: ti-lmp92064: add missing select REGMAP_SPI in Kconfig
-      iio: adc: ti-lmp92064: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: dac: ad3552r: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: dac: ad5766: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: chemical: ens160: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: light: bu27008: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: magnetometer: af8133j: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: pressure: bm1390: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: proximity: mb1232: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: resolver: ad2s1210 add missing select REGMAP in Kconfig
-      iio: resolver: ad2s1210: add missing select (TRIGGERED_)BUFFER in Kconfig
-      iio: frequency: adf4377: add missing select REMAP_SPI in Kconfig
-      iio: amplifiers: ada4250: add missing select REGMAP_SPI in Kconfig
-      iio: dac: ad5770r: add missing select REGMAP_SPI in Kconfig
-      iio: dac: ltc1660: add missing select REGMAP_SPI in Kconfig
-      iio: dac: stm32-dac-core: add missing select REGMAP_MMIO in Kconfig
-      iio: adc: ti-ads8688: add missing select IIO_(TRIGGERED_)BUFFER in Kconfig
-      iio: frequency: {admv4420,adrf6780}: format Kconfig entries
-      iio: frequency: admv4420: fix missing select REMAP_SPI in Kconfig
-
-Jonathan Cameron (1):
-      iio: pressure: sdp500: Add missing select CRC8
-
-Mikhail Lobanov (1):
-      iio: accel: bma400: Fix uninitialized variable field_value in tap event handling.
-
-Mohammed Anees (1):
-      iioc: dac: ltc2664: Fix span variable usage in ltc2664_channel_config()
-
-Nathan Chancellor (1):
-      iio: bmi323: Drop CONFIG_PM guards around runtime functions
-
-Rob Herring (Arm) (1):
-      dt-bindings: iio: dac: adi,ad56xx: Fix duplicate compatible strings
-
- .../devicetree/bindings/iio/dac/adi,ad5686.yaml    | 53 +++++++---------------
- .../devicetree/bindings/iio/dac/adi,ad5696.yaml    |  3 +-
- drivers/iio/accel/Kconfig                          |  2 +
- drivers/iio/accel/bma400_core.c                    |  3 +-
- drivers/iio/adc/Kconfig                            | 11 +++++
- drivers/iio/amplifiers/Kconfig                     |  1 +
- drivers/iio/chemical/Kconfig                       |  2 +
- .../iio/common/hid-sensors/hid-sensor-trigger.c    |  2 +-
- drivers/iio/dac/Kconfig                            |  7 +++
- drivers/iio/dac/ltc2664.c                          | 17 +++----
- drivers/iio/frequency/Kconfig                      | 34 +++++++-------
- drivers/iio/imu/bmi323/bmi323_core.c               | 23 +++++-----
- drivers/iio/light/Kconfig                          |  2 +
- drivers/iio/light/opt3001.c                        |  4 ++
- drivers/iio/light/veml6030.c                       |  5 +-
- drivers/iio/magnetometer/Kconfig                   |  2 +
- drivers/iio/pressure/Kconfig                       |  4 ++
- drivers/iio/proximity/Kconfig                      |  2 +
- drivers/iio/resolver/Kconfig                       |  3 ++
- 19 files changed, 102 insertions(+), 78 deletions(-)
 

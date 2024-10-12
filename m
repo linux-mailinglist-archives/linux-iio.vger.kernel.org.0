@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-10522-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10523-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8E599B605
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 18:03:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091C699B60A
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 18:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD9A2822B2
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 16:03:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A56B41F21ED5
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Oct 2024 16:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5312E38DE0;
-	Sat, 12 Oct 2024 16:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D6542AA5;
+	Sat, 12 Oct 2024 16:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TuB7VaMY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxHFxlkg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38A81805A;
-	Sat, 12 Oct 2024 16:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978D52E401;
+	Sat, 12 Oct 2024 16:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728749025; cv=none; b=ZabmHm7Tr1aIw4suJvIHVhsHl5XJggL5TwfeeMYBayRVmq/M/m6tJVw86tTmxGUDhDm0jef2Vg04wB0DSq8k8S9WUT8miyjBR2RvncMIz0L6lR0UGFlwQujhYcLAb81iPMsPRgOhRu/QZtkaGKiQXUnQH4F8y0nDez9U5uXK7Vw=
+	t=1728749312; cv=none; b=goHih8SQg/afLnBUaVhn1ihwhkHGn+tu7kvNhSBPaX90aTgsed1KRiPbA6BNX+E9a/vJAOEVgSRSFKgJw12KEZcPXifQsnm0TkePyhcxdzor8VPgUynJ3grwkzXkLzT45Xe+wNkEDYIP2xJCErzc+DAOFsDhv7S3SsiKeptdeEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728749025; c=relaxed/simple;
-	bh=v2IKt7mYsCub94TNOYsOk6LmiqE6keE1I+35vzuQSBs=;
+	s=arc-20240116; t=1728749312; c=relaxed/simple;
+	bh=KyM2WeJo+Oc9zR3gSGuNiRtdbPq4sGgsdLpizlOopAQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kGQRYEHAKaf7oUE51iCutAWqKUecK6VEHEe3DkPVwWrngqg8frvtbGcuJvEvk8c0sVDwsB1ShghsjRh/EJKIrJohYO4FCB77zWbdPJypAiIqOXKYZs4VuWj/Mw3PCdQSIWSZhaQmk2GTD+2TLeTgIaNtCOTfBplhJaI9hLGL3Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TuB7VaMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC92C4CEC6;
-	Sat, 12 Oct 2024 16:03:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pkJ1y/hxkFgovjvLz+oISJHXn0zgc9NtRwH0ZIQllwUgOiWjtdP4HYCMrqEDnbf0drf8BaoVBvSZnUAGVKPQ4kGXjwdOLxlgQV/aknNaUiqhilFjJOkVKXtaL7stO17177e4Tcpjxm5O9JkkJWXZ+/x6uD8uJBhZrriW2WA2YFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxHFxlkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B855C4CEC6;
+	Sat, 12 Oct 2024 16:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728749024;
-	bh=v2IKt7mYsCub94TNOYsOk6LmiqE6keE1I+35vzuQSBs=;
+	s=k20201202; t=1728749312;
+	bh=KyM2WeJo+Oc9zR3gSGuNiRtdbPq4sGgsdLpizlOopAQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TuB7VaMYTxbVc1FeVj8nLN2RLhBd3sxwk3oMKL1pqYTHgDbJCmUF84vOIN5ZgIhDi
-	 XDJ2gaPIENSgVDnsvIWZk/xRkQCIdgQwI0Now3o/juQm6FEdqFUVtU9yktbBaO/b6J
-	 Ng9EMA4yC5SkbQ5sdg6uPeHKhmbzffyXq8G0CksBG1D+QCQdExBZXnVRJuF+PNaiaB
-	 ZcVtS2l7TPWCZa368QhspKylW0QAHywJB0ySzzCsjYzomFefcw2srznc98/H1UvF1n
-	 AFiS/ZOaZbMa6qbH81OzAjmb3zSh84c0SH+oGzlLE6yXrr+E8jh/MFf4HrdAUFqH5v
-	 6QYBBqRWTIb9w==
-Date: Sat, 12 Oct 2024 17:03:33 +0100
+	b=JxHFxlkg+cR4xCAlNL74cm57dxaGzW8ltbmA1UHbumPihQWCMRxYrxH17phTtlrxx
+	 JUejNT5GT5i9L7M5AevTb+UekMn9TXhIYnbFq6h+vEjBFNAdsvRkBU/1q1ijgK16FW
+	 xumrLOIWd0xyulTAYsoErDmTv8P/uarmVxiQZqmfYdbLgqdxuXJ7CB/fAq14I1gv+/
+	 p33pzzFaymeGtc/EtUazHXUicyl0kspmBOHu6qx2BRKmo/lOfTPrWG+LnLGsIWJrOh
+	 CX+r5h2L8gKl8hCH3wBc7Y4eiphdlbWtfBFYKCAkJ6BiovAs1eClW2zkdgaQuwSgKg
+	 1BesdtJJ6Pj/w==
+Date: Sat, 12 Oct 2024 17:08:23 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
@@ -51,12 +51,12 @@ Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
  semen.protsenko@linaro.org, 579lpy@gmail.com, ak@it-klinger.de,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, christophe.jaillet@wanadoo.fr
-Subject: Re: [PATCH v8 1/4] iio: pressure: bmp280: Use sleep and forced mode
- for oneshot captures
-Message-ID: <20241012170333.37059686@jic23-huawei>
-In-Reply-To: <20241007194945.66192-2-vassilisamir@gmail.com>
+Subject: Re: [PATCH v8 3/4] iio: pressure: bmp280: Add data ready trigger
+ support
+Message-ID: <20241012170823.3c6d3df9@jic23-huawei>
+In-Reply-To: <20241007194945.66192-4-vassilisamir@gmail.com>
 References: <20241007194945.66192-1-vassilisamir@gmail.com>
-	<20241007194945.66192-2-vassilisamir@gmail.com>
+	<20241007194945.66192-4-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,151 +67,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  7 Oct 2024 21:49:42 +0200
+On Mon,  7 Oct 2024 21:49:44 +0200
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Add forced mode support in sensors BMP28x, BME28x, BMP3xx and BMP58x.
-> Sensors BMP18x and BMP085 are old and do not support this feature so
-> their operation is not affected at all.
+> The BMP3xx and BMP5xx sensors have an interrupt pin which can be used as
+> a trigger for when there are data ready in the sensor for pick up.
 > 
-> Essentially, up to now, the rest of the sensors were used in normal mode
-> all the time. This means that they are continuously doing measurements
-> even though these measurements are not used. Even though the sensor does
-> provide PM support, to cover all the possible use cases, the sensor needs
-> to go into sleep mode and wake up whenever necessary.
+> This use case is used along with NORMAL_MODE in the sensor, which allows
+> the sensor to do consecutive measurements depending on the ODR rate value.
 > 
-> The idea is that the sensor is by default in sleep mode, wakes up in
-> forced mode when a oneshot capture is requested, or in normal mode
-> when the buffer is enabled. The difference lays in the fact that in
-> forced mode, the sensor does only one conversion and goes back to sleep
-> while in normal mode, the sensor does continuous measurements with the
-> frequency that was set in the ODR registers.
+> The trigger pin can be configured to be open-drain or push-pull and either
+> rising or falling edge.
 > 
-> The bmpX_chip_config() functions which are responsible for applying
-> the requested configuration to the sensor, are modified accordingly
-> in order to set the sensor by default in sleep mode.
-> 
-> DEEP STANDBY, Low Power NORMAL and CONTINUOUS modes, supported only by
-> the BMP58x version, are not added.
+> No support is added yet for interrupts for FIFO, WATERMARK and out of range
+> values.
 > 
 > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Hi Vasilieos
 
-Given it looks like you'll be doing a v9 anyway, a few comments inline
-on some minor simplifications and potential readability improvements.
+Hi Vasileios,
 
-Thanks,
+One questing about locking below.  What you have is probably correct
+but might be tighter than it needs to be, or need a comment to say why
+for future readers.
 
-Jonathan
+I hate register reads with side effects btw.  It's an 'optimization'
+hardware designers thing is nice, but makes for really ugly software
+interfaces.
 
-
-> ---
->  drivers/iio/pressure/bmp280-core.c | 296 +++++++++++++++++++++++++++--
->  drivers/iio/pressure/bmp280.h      |  21 ++
->  2 files changed, 296 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 6811619c6f11..9ad29cf4c2ac 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -16,6 +16,11 @@
-
-
-> @@ -1522,6 +1610,71 @@ static int bmp380_preinit(struct bmp280_data *data)
->  	return bmp380_cmd(data, BMP380_CMD_SOFT_RESET);
+> @@ -2429,6 +2564,88 @@ static int bmp580_chip_config(struct bmp280_data *data)
+>  	return 0;
 >  }
 >  
-> +static const u8 bmp380_operation_mode[] = {
-> +	BMP380_MODE_SLEEP, BMP380_MODE_FORCED, BMP380_MODE_NORMAL,
-> +};
-
-As below - I'd assign these to specific entries to make the fairly obvious association
-even more obvious!
-
-> +
-> +static int bmp380_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
+> +static void bmp580_trigger_reenable(struct iio_trigger *trig)
 > +{
+> +	struct bmp280_data *data = iio_trigger_get_drvdata(trig);
+> +	unsigned int tmp;
 > +	int ret;
 > +
-> +	switch (mode) {
-> +	case BMP280_SLEEP:
-> +	case BMP280_FORCED:
-> +	case BMP280_NORMAL:
-> +		break;
-> +	default:
-> +		return -EINVAL;
+> +	ret = regmap_read(data->regmap, BMP580_REG_INT_STATUS, &tmp);
+As below. Seems this read has side effects (horrible!)
+I'm not sure if this is related to the locking though.
+> +	if (ret)
+> +		dev_err(data->dev, "Failed to reset interrupt.\n");
+> +}
 
-Currently there aren't others. So the compiler should shout if you try to pass
-something else. Hence this check shouldn't be needed.
+> +static int bmp580_int_pin_config(struct bmp280_data *data)
+> +{
+> +	int pin_drive_cfg = FIELD_PREP(BMP580_INT_CONFIG_OPEN_DRAIN,
+> +				       data->trig_open_drain);
+> +	int pin_level_cfg = FIELD_PREP(BMP580_INT_CONFIG_LEVEL,
+> +				       data->trig_active_high);
+> +	int ret, int_pin_cfg = pin_drive_cfg | pin_level_cfg;
+	int int_pin_cfg = pin...
+	int ret;
 
-> +	}
+Is easier to follow.
+
 > +
-> +	ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
-> +				BMP380_MODE_MASK,
-> +				FIELD_PREP(BMP380_MODE_MASK,
-> +					   bmp380_operation_mode[mode]));
+> +	ret = regmap_update_bits(data->regmap, BMP580_REG_INT_CONFIG,
+> +				 BMP580_INT_CONFIG_MASK, int_pin_cfg);
 > +	if (ret) {
-> +		dev_err(data->dev, "failed to  write power control register.\n");
+> +		dev_err(data->dev, "Could not set interrupt settings.\n");
 > +		return ret;
 > +	}
 > +
-> +	data->op_mode = mode;
+> +	ret = regmap_set_bits(data->regmap, BMP580_REG_INT_SOURCE,
+> +			      BMP580_INT_SOURCE_DRDY);
+> +	if (ret)
+> +		dev_err(data->dev, "Could not set interrupt source.\n");
 > +
-> +	return 0;
+> +	return ret;
 > +}
->
-
->  	return PTR_ERR_OR_ZERO(devm_nvmem_register(config.dev, &config));
->  }
->  
-> +static const u8 bmp580_operation_mode[] = {
-> +	BMP580_MODE_SLEEP, BMP580_MODE_FORCED, BMP580_MODE_NORMAL,
-
-For these, explicit setting will make it more obvious.
-	[BMP280_SLEEP] = BMP580_MODE_SLEEP,
-etc
-
-> +};
 > +
-> +static int bmp580_set_mode(struct bmp280_data *data, enum bmp280_op_mode mode)
+> +static irqreturn_t bmp580_irq_thread_handler(int irq, void *p)
 > +{
-> +	struct device *dev = data->dev;
+> +	struct iio_dev *indio_dev = p;
+> +	struct bmp280_data *data = iio_priv(indio_dev);
+> +	unsigned int int_ctrl;
 > +	int ret;
 > +
-> +	switch (mode) {
-> +	case BMP280_SLEEP:
-> +	case BMP280_NORMAL:
-> +		break;
-> +	case BMP280_FORCED:
-> +		ret = regmap_set_bits(data->regmap, BMP580_REG_DSP_CONFIG,
-> +				      BMP580_DSP_IIR_FORCED_FLUSH);
-> +		if (ret) {
-> +			dev_err(dev, "Could not flush IIR filter constants.\n");
-> +			return ret;
-> +		}
-> +		break;
-> +	default:
-There are only the values above, and we should hopefully be able to rely
-on compiler warnings to shout at us if a future modification adds more.
-
-So should be able to drop the default here.
-
-> +		return -EINVAL;
+> +	scoped_guard(mutex, &data->lock) {
+> +		ret = regmap_read(data->regmap, BMP580_REG_INT_STATUS, &int_ctrl);
+What are you locking against here?  Seems this read may have side effects?
+If not the regmap internal locking should be enough for a register read.
+> +		if (ret)
+> +			return IRQ_NONE;
 > +	}
-> +
-> +	ret = regmap_write_bits(data->regmap, BMP580_REG_ODR_CONFIG,
-> +				BMP580_MODE_MASK,
-> +				FIELD_PREP(BMP580_MODE_MASK,
-> +					   bmp580_operation_mode[mode]));
-> +	if (ret) {
-> +		dev_err(dev, "failed to  write power control register.\n");
-> +		return ret;
-> +	}
-> +
-> +	data->op_mode = mode;
-> +
-> +	return 0;
-> +}
+
 
 

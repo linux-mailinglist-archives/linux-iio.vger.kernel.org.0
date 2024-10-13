@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-10535-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10536-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BEC99B9EA
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2024 17:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8339B99B9F2
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2024 17:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 941DFB21057
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2024 15:15:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0E20B21022
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Oct 2024 15:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0E5146D7E;
-	Sun, 13 Oct 2024 15:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D928143C5D;
+	Sun, 13 Oct 2024 15:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3ojjKLz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILPrDjlx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BF91465BE;
-	Sun, 13 Oct 2024 15:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EFD13D2A9;
+	Sun, 13 Oct 2024 15:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728832505; cv=none; b=OreFirI4BXZXvm86dgBXXUdz4877ongKFBE8VGQnADJU4YssWWWPqPLbohELfVZC2PxCfgD3ObtKbMIepU9tVn+kITixdJoZAVBkx5KZVrJJYF89m6RCb0P7E8L0AmbJX2NCCk1i0hwo2W4gZysIbXvVQn/bH1qb1/wIOQuHM4w=
+	t=1728832650; cv=none; b=mCTRD5FCrzVDpzP3qjyuEY1i6fdDSIlV0c3aVifoYrAI3AaYKFyL5GVnIY5ZJdNTCNJxKBt+MR9MBhBugyvpEEnWG/C7ZMhE+KToIGAxLAJLmYxIs0CrTiv7uoJAqBZ65GqG3nwl0asEBxA5x54Ey0bkI4UBU/PhCkAsYuMAH9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728832505; c=relaxed/simple;
-	bh=vkJo+KKJH8jayrJLeIZKAJjSZEELKwa+qrp4QZQxzcw=;
+	s=arc-20240116; t=1728832650; c=relaxed/simple;
+	bh=JVnc1j0mWKQBNdNpDe0f7EtJQgFGHmxyd9P2vLE+dyM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qg7HsNdRvPO75bK1XDpOvQxt3eZSWF9gMXOLV8XYwaojRHvuciuyD9tRu/h1UTmp4KxVMzqETWL/7CepmNO+JgJZoCyzLwrPFOSvboISeWHGFLSLzFONVarGI5N+WzPrhRls3tmxklZAijEkYijwVQvYRNoVFTtC31EYp4baNqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3ojjKLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9834CC4CEC5;
-	Sun, 13 Oct 2024 15:15:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Feuv6X8esHjt+mavdfReCrEQsxqDVJooUGu61tquNdxOHnJpaa/51p5+VkexfMgAroBJHTtL5u8mufNh8CUiTpCsIIvDTI1znPnmufa0Tmccz0g0LV8O3RFyDEmjlDsd1naIv5fLEX3Hqd9D8MS9DCTibqtLgfuvrfh3z3KEW5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILPrDjlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC34C4CEC5;
+	Sun, 13 Oct 2024 15:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728832504;
-	bh=vkJo+KKJH8jayrJLeIZKAJjSZEELKwa+qrp4QZQxzcw=;
+	s=k20201202; t=1728832649;
+	bh=JVnc1j0mWKQBNdNpDe0f7EtJQgFGHmxyd9P2vLE+dyM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k3ojjKLzsHxtMwwEBGCanAIRTnPaFgpECZ0TSkU/8vSuVJITEKqJrBsDK7XcDA0CK
-	 kxfa6eRmNiIthtrhPJSro2mN1MgYuUORs5hDfYiQxblJH7lWFXo2rry+IAJ4C/WXtv
-	 B5mHu0KH+tzTpBtwrtNpEBVj/EeIk6G8rZk/zFpwEHcINeJ0YeibvGY0XaciE5QUOt
-	 VywFlN0R1iUlTJpanTRT40288dC5zRG18CpbeNy/p+5HGvLP+HgBWmdWX+/o+iYUT5
-	 K5F3zkvMlwR8tBn89h/b2sb+FxeWAsyL9qIOqdH3jd2v90ADJXlF8lzQZ0B7OBvLvl
-	 9uD+Sae7BrpKw==
-Date: Sun, 13 Oct 2024 16:14:57 +0100
+	b=ILPrDjlxuztYux4mYStVB0P2qnX3NVL6N3wH37iFTXEBITG9cdDVHNYmYaGBusqWt
+	 IlHLZjdnEiYaMKf+1fK9iyklDTckUrMbensNMa39LUjujDcH3oSpWhM4kLWGIJV1M+
+	 fH29rLSefg6U8wFXYrsz6YzoFgoNIyn2Lh94o4/65hjxuDHmpyaOtXLJxeFSyctaY7
+	 gPG3dibuUp9LghfLff7F94Sl3XedSZ/QpgVQewl+0akeUYmA0bhXr6KaGTq5/n+O6r
+	 yDxA+uscSmgFQsIvdJ/YFtsxqAUDTRQ5nn9ALz9+piByywMCGiSOsb9XxQYlls69Hk
+	 XnRBXnEMvDdYg==
+Date: Sun, 13 Oct 2024 16:17:22 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Justin Weiss <justin@justinweiss.com>
 Cc: Alex Lanzano <lanzano.alex@gmail.com>, Lars-Peter Clausen
  <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  "Derek J . Clark" <derekjohn.clark@gmail.com>, Philip =?UTF-8?B?TcO8bGxl?=
  =?UTF-8?B?cg==?= <philm@manjaro.org>
-Subject: Re: [PATCH 1/3] iio: imu: Add i2c driver for bmi260 imu
-Message-ID: <20241013161457.506c2296@jic23-huawei>
-In-Reply-To: <874j5grafd.fsf@justinweiss.com>
+Subject: Re: [PATCH 2/3] iio: imu: Add triggered buffer for Bosch BMI270 IMU
+Message-ID: <20241013161722.5cb25eb3@jic23-huawei>
+In-Reply-To: <87wmicpvso.fsf@justinweiss.com>
 References: <20241011153751.65152-1-justin@justinweiss.com>
-	<20241011153751.65152-2-justin@justinweiss.com>
-	<20241012120830.338aca19@jic23-huawei>
-	<874j5grafd.fsf@justinweiss.com>
+	<20241011153751.65152-3-justin@justinweiss.com>
+	<20241012121812.0c62ba51@jic23-huawei>
+	<87wmicpvso.fsf@justinweiss.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,76 +65,160 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Sat, 12 Oct 2024 19:43:19 -0700
+Justin Weiss <justin@justinweiss.com> wrote:
 
-> >> +static const struct acpi_device_id bmi270_acpi_match[] = {
-> >> +	{ "BOSC0260", (kernel_ulong_t)&bmi270_chip_info[BMI260] },
-> >> +	{ "BMI0260",  (kernel_ulong_t)&bmi270_chip_info[BMI260] },
-> >> +	{ "BOSC0160", (kernel_ulong_t)&bmi270_chip_info[BMI260] },
-> >> +	{ "BMI0160",  (kernel_ulong_t)&bmi270_chip_info[BMI260] },  
-> >
-> > Sigh.  That's not a valid ACPI ID or PNP ID.
-> > (Well technically it is, but it belongs to the Benson Instrument Company
-> > not Bosch)
-> >
-> > Which of these have been seen in the wild?
-> > For any that are not of the BOSC0160 type form add a comment giving
-> > a device on which they are in use.  
+> Jonathan Cameron <jic23@kernel.org> writes:
 > 
-> I know of the BMI0160 (this seems to be the most common way the BMI260
-> is identified on handheld PCs), and the 10EC5280 has been seen in the
-> wild, as described here:
-> https://lore.kernel.org/all/CAFqHKTm2WRNkcSoBEE=oNbfu_9d9RagQHLydmv6q1=snO_MXyA@mail.gmail.com/
-> 
-> I have not personally seen any devices using BMI0260, but I'll add
-> comments to the BMI0160 and 10EC5280 entries with some examples of
-> devices that use those IDs.
-
-Drop any we don't have evidence are out there.
-
-Do we have any confirmation from Bosch (or products in the wild) for
-the structurally correct BOSC0160 etc?  Those would normally have
-to be tracked by Bosch as allocated for this purpose.
-
-> 
-> >> +	{ "10EC5280", (kernel_ulong_t)&bmi270_chip_info[BMI260] },  
-> >
-> > What's this one?  There is no such vendor ID.
+> > On Fri, 11 Oct 2024 08:37:48 -0700
+> > Justin Weiss <justin@justinweiss.com> wrote:
 > >  
->
-...
-
+> >> Set up a triggered buffer for the accel and angl_vel values.
+> >> 
+> >> Signed-off-by: Justin Weiss <justin@justinweiss.com>  
+> > Hi Justin
+> >
+> > A few suggestions inline. Other than the DMA safe buffer thing, looks good
+> > but you might want to consider using a single bulk read.
+> >
+> > My cynical view is that if someone paid for an IMU they probably want all
+> > the channels, so optimizing for that case is a good plan.
+> >  
+> >> ---
+> >>  drivers/iio/imu/bmi270/Kconfig       |  1 +
+> >>  drivers/iio/imu/bmi270/bmi270.h      |  8 +++++
+> >>  drivers/iio/imu/bmi270/bmi270_core.c | 47 ++++++++++++++++++++++++++++
+> >>  3 files changed, 56 insertions(+)
+> >> 
+> >> diff --git a/drivers/iio/imu/bmi270/Kconfig b/drivers/iio/imu/bmi270/Kconfig
+> >> index 0ffd29794fda..6362acc706da 100644
+> >> --- a/drivers/iio/imu/bmi270/Kconfig
+> >> +++ b/drivers/iio/imu/bmi270/Kconfig
+> >> @@ -6,6 +6,7 @@
+> >>  config BMI270
+> >>  	tristate
+> >>  	select IIO_BUFFER  
+> >
+> > Hmm. The IIO_BUFFER select shouldn't have been here as no obvious use
+> > in the driver. Ah well - this patch 'fixes' that :)
+> >  
+> >> +	select IIO_TRIGGERED_BUFFER
 > >>  
-> >>  static const struct of_device_id bmi270_of_match[] = {
-> >> -	{ .compatible = "bosch,bmi270" },
-> >> +	{ .compatible = "bosch,bmi270", .data = &bmi270_chip_info[BMI270] },  
+> >>  config BMI270_I2C
+> >>  	tristate "Bosch BMI270 I2C driver"
+> >> diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
+> >> index 51e374fd4290..335400c34b0d 100644
+> >> --- a/drivers/iio/imu/bmi270/bmi270.h
+> >> +++ b/drivers/iio/imu/bmi270/bmi270.h
+> >> @@ -11,6 +11,14 @@ struct bmi270_data {
+> >>  	struct device *dev;
+> >>  	struct regmap *regmap;
+> >>  	const struct bmi270_chip_info *chip_info;
+> >> +
+> >> +	/*
+> >> +	 * Ensure natural alignment for timestamp if present.
+> >> +	 * Max length needed: 2 * 3 channels + 4 bytes padding + 8 byte ts.
+> >> +	 * If fewer channels are enabled, less space may be needed, as
+> >> +	 * long as the timestamp is still aligned to 8 bytes.
+> >> +	 */
+> >> +	__le16 buf[12] __aligned(8);
+> >>  };
+> >>  
+> >>  enum bmi270_device_type {
+> >> diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
+> >> index e5ee80c12166..f49db5d1bffd 100644
+> >> --- a/drivers/iio/imu/bmi270/bmi270_core.c
+> >> +++ b/drivers/iio/imu/bmi270/bmi270_core.c
+> >> @@ -7,6 +7,8 @@
+> >>  #include <linux/regmap.h>
+> >>  
+> >>  #include <linux/iio/iio.h>
+> >> +#include <linux/iio/triggered_buffer.h>
+> >> +#include <linux/iio/trigger_consumer.h>
+> >>  
+> >>  #include "bmi270.h"
+> >>  
+> >> @@ -66,6 +68,7 @@ enum bmi270_scan {
+> >>  	BMI270_SCAN_GYRO_X,
+> >>  	BMI270_SCAN_GYRO_Y,
+> >>  	BMI270_SCAN_GYRO_Z,
+> >> +	BMI270_SCAN_TIMESTAMP,
+> >>  };
+> >>  
+> >>  const struct bmi270_chip_info bmi270_chip_info[] = {
+> >> @@ -82,6 +85,29 @@ const struct bmi270_chip_info bmi270_chip_info[] = {
+> >>  };
+> >>  EXPORT_SYMBOL_NS_GPL(bmi270_chip_info, IIO_BMI270);
+> >>  
+> >> +static irqreturn_t bmi270_trigger_handler(int irq, void *p)
+> >> +{
+> >> +	struct iio_poll_func *pf = p;
+> >> +	struct iio_dev *indio_dev = pf->indio_dev;
+> >> +	struct bmi270_data *bmi270_device = iio_priv(indio_dev);
+> >> +	int i, ret, j = 0, base = BMI270_ACCEL_X_REG;
+> >> +	__le16 sample;
+> >> +
+> >> +	for_each_set_bit(i, indio_dev->active_scan_mask, indio_dev->masklength) {
+> >> +		ret = regmap_bulk_read(bmi270_device->regmap,
+> >> +				       base + i * sizeof(sample),
+> >> +				       &sample, sizeof(sample));  
 > >
-> > If the bmi260 supports SPI, should be added here as well. (I've no idea if it does!)
+> > This is always a fun corner.
+> > regmap doesn't guarantee to bounce buffer the data used by the underlying
+> > transport. In the case of SPI that means we need a DMA safe buffer for bulk
+> > accesses.  In practice it may well bounce the data today but there are optmizations
+> > that would make it zero copy that might get applied in future.
 > >
-> > Or is this because you can't test it?  
+> > Easiest way to do that is put your sample variable in the iio_priv structure
+> > at the end and mark it __aligned(IIO_DMA_MINALIGN)
+> >
+> > Given you are reading a bunch of contiguous registers here it may well make
+> > sense to do a single bulk read directly into buf and then use
+> > the available_scan_masks to let the IIO core know it always gets a full set
+> > of samples. Then if the user selects a subset the IIO core will reorganize
+> > the data that they get presented with.  
 > 
-> Yeah, it was because I can't test it, the BMI260 does support SPI. I can
-> add entries here, though.
+> That's convenient :-)
 > 
-> Should the ACPI match entries from I2C also go here? All of the devices
-> with mismatched IDs seem to use I2C so there might not be as much of a
-> problem here.
-We want the incorrect formatted ones to be as hard to use as possible to discourage
-them going into new products.  Can't do anything to solve the i2c cases
-but definitely don't want to allow them for SPI as well if no evidence
-of products where it yet matters.
+> It should make this much simpler. To clarify, I'll use regmap_bulk_read
+> to read all of the registers at once into a stack-allocated buffer, and
+> then push that buffer. Then I can remove bmi270_device->buf entirely,
+> and avoid the DMA problem that way.
 
-If we have confirmation from Bosch of the BOSC forms, then those I would like
-in the SPI drivers as well (to point to the correct option for anyone using
-this in future!)
+Given this supports SPI. The target buffer can't be on the stack.
+You still need the __aligned(IIO_DMA_MINALIGN) element in your iio_priv()
+structure.
+
+> 
+> Then I'll provide one avail_mask that sets all of the
+> BMI270_SCAN_ACCEL_* and BMI270_SCAN_GYRO_* bits.
+Otherwise your description is what I'd expect to see.
+
+> 
+> > Whether that makes sense from a performance point of view depends on
+> > the speed of the spi transfers vs the cost of setting up the individual ones.
+> >
+> > You could optimize contiguous reads in here, but probably not worth that
+> > complexity.
+> >  
+> >> +		if (ret)
+> >> +			goto done;
+> >> +		bmi270_device->buf[j++] = sample;  
+> >
+> > It's not a huge buffer and you aren't DMAing into it, so maybe just put this
+> > on the stack?
+This would only be correct for the case where you aren't DMAing directly into it.
+I guess I confused the message above with this point!
 
 Jonathan
- 
-> 
-> >>  	{ }
-> >>  };
-> >>    
-> 
-> Thanks again,
-> Justin
+
+> >  
+> >> +	}
+> >> +
+> >> +	iio_push_to_buffers_with_timestamp(indio_dev, bmi270_device->buf, pf->timestamp);
+> >> +done:
+> >> +	iio_trigger_notify_done(indio_dev->trig);
+> >> +	return IRQ_HANDLED;
+> >> +}  
 
 

@@ -1,71 +1,65 @@
-Return-Path: <linux-iio+bounces-10581-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10582-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A9A99D717
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 21:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AF299D734
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 21:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C046A1F236E9
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 19:15:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 206E51F25038
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 19:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E531C8781;
-	Mon, 14 Oct 2024 19:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074241CACE3;
+	Mon, 14 Oct 2024 19:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9oVzOP5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="skwhSlWZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AB212B73;
-	Mon, 14 Oct 2024 19:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41A7153BF8;
+	Mon, 14 Oct 2024 19:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728933330; cv=none; b=o86iDypKlU/eCIJ5rXXoZjwP+bJcLohvVtQk2/RjODAWJowjFBTUsHS03ou8lT3fX+/l000ed+Z7kDXjHArVFIwmeUV7TMPoH50/5CniRMZoNCK3LjnEO3GjnuGe55ghMYKLB0IbT0/Ax2gKICiGnBBnL5n0Wjus7GiJYjuJssw=
+	t=1728933611; cv=none; b=kgImQq5rwdlaPggy0mF2nQhUy/agc/AKL/50CqnehkgZajHD778eWHJd/tJ1WfG/NfGC1h/liGlWPAwYoc+Gk3uR1jKL+k3zM+Da7Cxv7rjosM1XtYmfUwQX8h8fcjjVWDseFFX4KSu5T3e8/Q1RajlzJ8sEubuDLc/8LgOJ9S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728933330; c=relaxed/simple;
-	bh=2Zo/obCSn5sslgsyI7NcI4a9viaES0kEmjXw1Txs1R8=;
+	s=arc-20240116; t=1728933611; c=relaxed/simple;
+	bh=oVBpnoWZAGBjYbX2F1GVhytUE4MjLwuvAicTWTgy63Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XwC/ClgDbRiSusyXpwy4MjG9IIhAefsXx2x4oBQXL6vFXGTFUKRb9rAF3RVc/kblYKYysSXsFzNijgVnPE4QDf+0jj0UGQX7s5bjJvCk6vrSLlqao/KNfW4UaNCl6VFEzPxMehK92vt9hrLXiO23KFBGKIGk92RvxK+thHjlV1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9oVzOP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16985C4CEC3;
-	Mon, 14 Oct 2024 19:15:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hwJSP5wkP4vVz48lf3QQrQvYy0tZhnmPa/dIJ4zWdObggtuYewFFAU8mZBECL1piS0XQhms4bCDBr0fviNsp56LwHkHk5TtScDjLnVgxbDSSYcS/pYRTEddRb5yyvcR/UiQh1dlN74BV6YtB0MPGK0N2Z6pdlC2DMZVHxpgtkpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=skwhSlWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC83C4CEC3;
+	Mon, 14 Oct 2024 19:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728933329;
-	bh=2Zo/obCSn5sslgsyI7NcI4a9viaES0kEmjXw1Txs1R8=;
+	s=k20201202; t=1728933611;
+	bh=oVBpnoWZAGBjYbX2F1GVhytUE4MjLwuvAicTWTgy63Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=G9oVzOP5A+O3Y10xCy8sTnXEiZTjgSttozIQKYSb9hWODlNOskBcYxxesmM7nJ8w6
-	 IAtL4Kd83dsPQUBqFRqGH1K/G4r8OURptnimqufsHMCv0WDFzJWarc1kM/gUfUbbsf
-	 6iW/iGWdizJY5kKq8SoOej6kehFEVoqwAJQLjJAD8P5CcyAT6fidhDhjNPv+20/bLu
-	 34Q99LGSMbo73je22Ekl20bBhCnpqC0YwaYLhMDnmDq0sRTLQoaP4mGtcLVO+0TDl/
-	 RYOL+s8g/el5jVuwZ2NF6o1PuObwg7LMqF+uN6ojVgYv14wiFPptZn+PNo8qRczMgv
-	 46+s6JWpQw42Q==
-Date: Mon, 14 Oct 2024 20:15:15 +0100
+	b=skwhSlWZ7tRV2WY/Msi8dUaf1pgssNhvS9xYtVBnpEpS94mEwNbKHSdKRYyptMt50
+	 fck47SFiPiflQXcuYfO9IrbPLtcx+Q5LUKsJGnsCGj+owIpZZOrGXMC5r3iReQCQAw
+	 a2OykhJvsHMaw8YLsaHepOr37+ssyAHD0OWRgwvWtTgQP31LVCNX2fkl12lcKYx8aw
+	 rKcdiURhj+WOgYHRNSiAXXfgI49BmVcw08ErCH7SguibdUuplHSUsdYieQk/DD6QRV
+	 1OXpNHDDnVleqK8f3jHgisb/2Qq/vFrjL8+RWjeR3tmbgsedz1/GJJhO2BlKfOZCLt
+	 brp65uFO6xz9A==
+Date: Mon, 14 Oct 2024 20:20:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Olivier Moysan
- <olivier.moysan@foss.st.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
- <ukleinek@kernel.org>, David Lechner <dlechner@baylibre.com>, Marcelo
- Schmitt <marcelo.schmitt@analog.com>, Ivan Mikhaylov <fr0st61te@gmail.com>,
- Marius Cristea <marius.cristea@microchip.com>, Dumitru Ceclan
- <mitrutzceclan@gmail.com>, =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dh?=
- =?UTF-8?B?bHZlcw==?= <joao.goncalves@toradex.com>, Alisa-Dariana Roman
- <alisadariana@gmail.com>, Mike Looijmans <mike.looijmans@topic.nl>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Sergiu Cuciurean <sergiu.cuciurean@analog.com>, Dragos Bogdan
- <dragos.bogdan@analog.com>, linux-iio@vger.kernel.org,
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Rob Herring <robh@kernel.org>, linux-iio@vger.kernel.org, Olivier Moysan
+ <olivier.moysan@foss.st.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Conor Dooley
+ <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v3 6/6] iio: adc: ad4851: add ad485x driver
-Message-ID: <20241014201515.463c7c07@jic23-huawei>
-In-Reply-To: <Zw0ZM0vQXJep3dFJ@smile.fi.intel.com>
-References: <20241014094154.9439-1-antoniu.miclaus@analog.com>
-	<20241014094154.9439-6-antoniu.miclaus@analog.com>
-	<Zw0ZM0vQXJep3dFJ@smile.fi.intel.com>
+ dlechner@baylibre.com, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH v6 2/8] dt-bindings: iio: dac: adi-axi-dac: add ad3552r
+ axi variant
+Message-ID: <20241014202000.0654a1bd@jic23-huawei>
+In-Reply-To: <r2gmorclmtcrykws4sd7l3hkjzg6f72vbh7ulh3ml2jsnev35z@on2stvxr36qm>
+References: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-0-eeef0c1e0e56@baylibre.com>
+	<20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-2-eeef0c1e0e56@baylibre.com>
+	<172890486251.793259.16216468875581353928.robh@kernel.org>
+	<20241014133823.GA1018400-robh@kernel.org>
+	<r2gmorclmtcrykws4sd7l3hkjzg6f72vbh7ulh3ml2jsnev35z@on2stvxr36qm>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -76,53 +70,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 14 Oct 2024 16:14:27 +0300
-Andy Shevchenko <andy@kernel.org> wrote:
+On Mon, 14 Oct 2024 16:04:35 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> On Mon, Oct 14, 2024 at 12:40:40PM +0300, Antoniu Miclaus wrote:
-> > Add support for the AD485X a fully buffered, 8-channel simultaneous
-> > sampling, 16/20-bit, 1 MSPS data acquisition system (DAS) with
-> > differential, wide common-mode range inputs.  
+> Hi Rob,
 > 
-> ...
+> On 14.10.2024 08:38, Rob Herring wrote:
+> > On Mon, Oct 14, 2024 at 06:21:02AM -0500, Rob Herring (Arm) wrote:  
+> > > 
+> > > On Mon, 14 Oct 2024 12:08:08 +0200, Angelo Dureghello wrote:  
+> > > > From: Angelo Dureghello <adureghello@baylibre.com>
+> > > > 
+> > > > Add a new compatible and related bindigns for the fpga-based
+> > > > "ad3552r" AXI IP core, a variant of the generic AXI DAC IP.
+> > > > 
+> > > > The AXI "ad3552r" IP is a very similar HDL (fpga) variant of the
+> > > > generic AXI "DAC" IP, intended to control ad3552r and similar chips,
+> > > > mainly to reach high speed transfer rates using a QSPI DDR
+> > > > (dobule-data-rate) interface.
+> > > > 
+> > > > The ad3552r device is defined as a child of the AXI DAC, that in
+> > > > this case is acting as an SPI controller.
+> > > > 
+> > > > Note, #io-backend is present because it is possible (in theory anyway)
+> > > > to use a separate controller for the control path than that used
+> > > > for the datapath.
+> > > > 
+> > > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > > > ---
+> > > >  .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   | 56 ++++++++++++++++++++--
+> > > >  1 file changed, 53 insertions(+), 3 deletions(-)
+> > > >   
+> > > 
+> > > My bot found errors running 'make dt_binding_check' on your patch:
+> > > 
+> > > yamllint warnings/errors:
+> > > 
+> > > dtschema/dtc warnings/errors:
+> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.example.dtb: dac@0: spi-max-frequency: 66000000 is greater than the maximum of 30000000
+> > > 	from schema $id: http://devicetree.org/schemas/iio/dac/adi,ad3552r.yaml#  
+> > 
+> > This is at least the third time this issue has been reported. Don't send 
+> > more versions until you fix it.
+> >   
 > 
-> > +config AD4851
-> > +	tristate "Analog Device AD4851 DAS Driver"
-> > +	depends on SPI
-> > +	select REGMAP_SPI
-> > +	select IIO_BACKEND
-> > +	help
-> > +	  Say yes here to build support for Analog Devices AD4851, AD4852,
-> > +	  AD4853, AD4854, AD4855, AD4856, AD4857, AD4858, AD4858I high speed
-> > +	  data acquisition system (DAS).  
+> as stated in the patch message, this patch applies to linux-iio testing,
+> where there are no errors, from my tests.
 > 
-> I think I already commented on this... Anyway, it's much better to support when
-> this list is broke down on per device per line. In such a case it's less churn
-> if we need to remove or add an entry in the future.
-> 
-> > +	  To compile this driver as a module, choose M here: the module will be
-> > +	  called ad4851.  
-> 
-> Also, with all these devices to be supported why not ad485x as the name of
-> the driver? Is it a preference by the IIO subsystem?
+> Error is due to the spi-max-frequency fix already applied in iio testing,
+> but still not where your bot is testing, proably in mainline.
 
-Don't.  We've been bitten by too many cases of manufacturers noticing
-a hole in their part numbers and 'slotting' something unrelated in.
-So it just causes confusion.  Hence strong preference for any new code
-is pick a name from the list.  The wild card also implies restrictions
-that tend to break overtime when other part numbers outside the range
-are used.  Not using a wildcard keeps it consistently wrong so people
-get used to it :)
+Whilst it's a fix, given the fix broadens the accepted range and doesn't matter
+until this patch (which will behind it) I currently have no intention
+of sending that fix until next merge window.
+
+Cynic in me says just change the example to a value under the old limit
+and bot will be happy. Example is just that, so doesn't have to reflect
+the maximum possible or even what people commonly run.
+
+Or include that patch again in this series with a note to say it's
+just here to ensure the base is correct for the bots.
+
+Jonathan
 
 > 
-> ...
+> Regards,
+> angelo
 > 
-> > +#include <asm/unaligned.h>  
-> 
-> linux/unaligned nowadays (I learnt it quite recently).
-> (It requires v6.12-rc2).
-
-Yup.  That bit me in the IIO tree 3 times so far. I've
-merged rc2 in for that reason.
+> > Rob  
 
 

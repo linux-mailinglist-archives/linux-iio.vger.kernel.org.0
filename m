@@ -1,120 +1,111 @@
-Return-Path: <linux-iio+bounces-10562-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10563-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E9999C8A9
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 13:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6B399C929
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 13:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2B8F1C233EF
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 11:22:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8DBB1C21788
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 11:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AEC198826;
-	Mon, 14 Oct 2024 11:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLdZnnEf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67E019CD0B;
+	Mon, 14 Oct 2024 11:42:31 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D6933C5;
-	Mon, 14 Oct 2024 11:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BF614A4DD;
+	Mon, 14 Oct 2024 11:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728904864; cv=none; b=YJETjrN52sEaDpgsvoHNwpZaj98lIg5SxxDDwLTzeDb31qREILP3DJh+o+cl534gn1PC8f5xGDpkRfu6zOx1go+ULFFJzLTJbGcngCo97RWWVnTNURrTiE4Xl5X3R+bHlUdxd7Kw3iIhNQd71CZiH4CtMZhA2nHGwv7gJoFKxn0=
+	t=1728906151; cv=none; b=NTKM2RuEjEzOCeuPO2HiZL9XqqsRQ3aBp1/VKdQ0IMHIn3hKZo4rGBJMoYiNcfOTJBL8VbFZUx5SxDPngOybLvuHYYFCo3wo5c6pwtSbT+XOv2UWM6tGapqeuLaqvnyyVVpcHOaNkzE89wj7bHU+V1tc0axn0Zbryk1Qe7lMy5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728904864; c=relaxed/simple;
-	bh=Xqko9V57lWW0rPEqMq5h99rHhyWdWTenF1P68Pwcwqo=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=ZmwqJ+llhLdVty6ipD9UK9pkj0A1+yT0Kb5mQV6flMxm9o0wR6yRPhuWeDyORnzcWg0Y9RzI7OteyvsHAEEoT4gZF4F+ucE69q9S/f0+WmlLj64Iz9HXi8R0bHzxXfVAmY4xwWVp43BIfdkcolCe9jo4xystkRAOglsCrD+1T88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLdZnnEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF7EFC4CEC3;
-	Mon, 14 Oct 2024 11:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728904863;
-	bh=Xqko9V57lWW0rPEqMq5h99rHhyWdWTenF1P68Pwcwqo=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=iLdZnnEfbChFRYWGWGQ0+hfo5wmBIyWpdA12yqph+iiWnF1sAqtAJnWvISKPoapXc
-	 1saCR1uK+cvmzU85vZnjjCf3REnpd3onFi1dwIPDhOiz+7BpoJMZmnVlTlCwrBrdCQ
-	 +vREwD8tWXU9FrBjs1jkdQQT0ZxVAqSXPh4TJBB+FC+ruOhtWNi5kCiURo7SG6toYh
-	 BOy2uGUCd6prZ36v5LqSBf+tWADBbpT/9dQp1Bu1g6PK7LJ9nKXkQJQOTZ6cYlZErI
-	 b/pVgTZ/F3lRYgFEwP5CnO83nLf8ETfVB2eyrg7i5GF2d45EWcm0vNvIgnqUk9vu+V
-	 xo3MvdbyO2Ilw==
-Date: Mon, 14 Oct 2024 06:21:02 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1728906151; c=relaxed/simple;
+	bh=l5MYO66/WMMI45LSa9nTZsuDWnmoRvXQvjhOQaTwG00=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aWVkBzpsbsQnbL/IbiIYwW62haqbXcCMRkiUkf1/9l3upyqNjIG22+i3heUYDyd/e8dc873wcD+kwNDXpDUP0SZ9b0EW0jRJ/l4CJKJ8+m4Jg1yqIemLqNsDeSYXqQhjymQa+q4FQtfIRlAh4vZZD0PJFo9tiHgiHUgs8x0OqSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: HHN4KzVgTv22IDNJ1x7C0A==
+X-CSE-MsgGUID: 91uInNCVTgOSxG6qnEfQZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11224"; a="32047315"
+X-IronPort-AV: E=Sophos;i="6.11,202,1725346800"; 
+   d="scan'208";a="32047315"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 04:42:30 -0700
+X-CSE-ConnectionGUID: 2grNElgURSCTH1Y+GT/8ZA==
+X-CSE-MsgGUID: kuJeZS/8RwCYfRp33I4/+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,202,1725346800"; 
+   d="scan'208";a="81539575"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 04:42:24 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andy@kernel.org>)
+	id 1t0JSv-00000002srd-2pma;
+	Mon, 14 Oct 2024 14:42:21 +0300
+Date: Mon, 14 Oct 2024 14:42:21 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 3/6] iio: adc: adi-axi-adc: add interface type
+Message-ID: <Zw0DnW88GWMOMPft@smile.fi.intel.com>
+References: <20241014094154.9439-1-antoniu.miclaus@analog.com>
+ <20241014094154.9439-3-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: linux-iio@vger.kernel.org, Olivier Moysan <olivier.moysan@foss.st.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- dlechner@baylibre.com, Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>
-In-Reply-To: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-2-eeef0c1e0e56@baylibre.com>
-References: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-0-eeef0c1e0e56@baylibre.com>
- <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-2-eeef0c1e0e56@baylibre.com>
-Message-Id: <172890486251.793259.16216468875581353928.robh@kernel.org>
-Subject: Re: [PATCH v6 2/8] dt-bindings: iio: dac: adi-axi-dac: add ad3552r
- axi variant
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241014094154.9439-3-antoniu.miclaus@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
+On Mon, Oct 14, 2024 at 12:40:37PM +0300, Antoniu Miclaus wrote:
+> Add support for getting the interface (CMOS or LVDS) used by the AXI ADC
+> ip.
 
-On Mon, 14 Oct 2024 12:08:08 +0200, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
-> 
-> Add a new compatible and related bindigns for the fpga-based
-> "ad3552r" AXI IP core, a variant of the generic AXI DAC IP.
-> 
-> The AXI "ad3552r" IP is a very similar HDL (fpga) variant of the
-> generic AXI "DAC" IP, intended to control ad3552r and similar chips,
-> mainly to reach high speed transfer rates using a QSPI DDR
-> (dobule-data-rate) interface.
-> 
-> The ad3552r device is defined as a child of the AXI DAC, that in
-> this case is acting as an SPI controller.
-> 
-> Note, #io-backend is present because it is possible (in theory anyway)
-> to use a separate controller for the control path than that used
-> for the datapath.
-> 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
->  .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   | 56 ++++++++++++++++++++--
->  1 file changed, 53 insertions(+), 3 deletions(-)
-> 
+IP
 
-My bot found errors running 'make dt_binding_check' on your patch:
+...
 
-yamllint warnings/errors:
+>  #define   ADI_AXI_REG_RSTN_MMCM_RSTN		BIT(1)
+>  #define   ADI_AXI_REG_RSTN_RSTN			BIT(0)
+>  
+> +#define ADI_AXI_ADC_REG_CONFIG			0x000c
+> +#define   ADI_AXI_ADC_REG_CONFIG_CMOS_OR_LVDS_N	BIT(7)
+> +
+>  #define ADI_AXI_ADC_REG_CTRL			0x0044
+>  #define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK	BIT(1)
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.example.dtb: dac@0: spi-max-frequency: 66000000 is greater than the maximum of 30000000
-	from schema $id: http://devicetree.org/schemas/iio/dac/adi,ad3552r.yaml#
+Side note, the field definitions are indented with different amount of white
+spaces.
 
-doc reference errors (make refcheckdocs):
+-- 
+With Best Regards,
+Andy Shevchenko
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-2-eeef0c1e0e56@baylibre.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
 
 

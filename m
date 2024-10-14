@@ -1,131 +1,234 @@
-Return-Path: <linux-iio+bounces-10586-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10587-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8398A99D804
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 22:14:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A06799D8C7
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 23:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEB89B22464
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 20:14:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A813B1C212BF
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 21:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835861CFED2;
-	Mon, 14 Oct 2024 20:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A5E1D0BA4;
+	Mon, 14 Oct 2024 21:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QDsW238a"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RsSFV+bc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF1C1D0492;
-	Mon, 14 Oct 2024 20:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A031ABEBF
+	for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 21:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728936869; cv=none; b=jtETQuhXE6TugSjJMEow/T6LDBszlQTph3+KOXn+UOaQQ0ixSPXjHiZJaaFbEyTBhZLodbA0xz1xSsEjU3w6K+p7VMepuN8lAg760xAsvUvVW2KNcRJ5fvlhVZWBPTTlX82tOCnpvzm+vzWbGmY05P+AsoV69xxkVLQ/RyZGMjE=
+	t=1728940392; cv=none; b=Ud9dzE06kNR7YUMLVaZnh3+4cDHWjV1DhWQ51tOXHSypCGFlz7/zMPJIzQ6wvGPuNM5V+/02nS1ZLD1nKrw9hLOQyDx7ZclLGR5asERcSPf+7oFD7wzmZdCVGA1q0A6OjDnvxtI86A1S4pkT0ThnMT7RdKndjtcUMO7YRDk0tB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728936869; c=relaxed/simple;
-	bh=nGwpSRDiREpgO3GfqtyYak2rOwDtzQPR/ga2NpQROhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VljHpVitA1X160nxgD4VpvDsDLKKSFH2XfS1ZEyRTh9AZwoO17Sz4A6p70ZzMbMye6j1jPD8lQnpet82nzgavG7kBNSvLf3FFUCErhvca5soEJVLaf3ndsOgENX4lCSFHnAixpi71w3Gx9J0Rd9YsYk2V8OGJwjZRupENXwXiu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QDsW238a; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-431160cdbd0so29552925e9.1;
-        Mon, 14 Oct 2024 13:14:27 -0700 (PDT)
+	s=arc-20240116; t=1728940392; c=relaxed/simple;
+	bh=OdET77X1i4ggszon4cmj68cg0TB8oGScO1tomRBYGQg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N37MYp34QCvm4x8NP12IVGj/dueYYoAFcEv3R6QBMV8LhWaZ/rSgqjDeFmD6jxics5SXsUY+oBAc+fFx3Ez+qtkhZ+orxCKGGgGB2DCUVZ8Vt5MU1gXXj1z4ktP6K2Sx34vXzK0bDky9VAM17RLh1bypC6oLbdyniKf5Ot9Vg18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RsSFV+bc; arc=none smtp.client-ip=209.85.160.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-27b7a1480bdso1629769fac.2
+        for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 14:13:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728936866; x=1729541666; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BuTgoSmAu7R32A26a6EEGJkODHQDPwpdQJUMBsyfaMc=;
-        b=QDsW238a0Xv6k48YfnihD3Y7fLyRRmganTcmNAEQK69nEag6bKA8ncr1HuW7PmH7KI
-         IpK1Lb/azV/tu8W8Z1+qL3CWYVEEsF7gqyStV5c6ANEiEpdKwThdvXpl9JfjxuViGkVp
-         nnf0/Gof1DqQ/fURCvJLKWnJCS1568lNutaPu5/IctXCpy1dCzV6A77fIdxuRRqq/g/M
-         weNWAg43iPfRkbV3uhoqWuvfN44M8w9di3OKAYlaEf7EQjUnhW/5rl4dWSVfCrdsqBEl
-         lEdERzFqJycpCTaCzICiLYWYDyqVXquA93+1XiePfyr6BM1wSsEvDd2jSmZuXbP8AUAT
-         IsfA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728940389; x=1729545189; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8Cw88bhy+WAxwwmxSvgd82uwT5sTmI6aznn+bTPeUSI=;
+        b=RsSFV+bcC0u8Jtb6aEnWYQLkJ0uuDLJp2lFewFauXW07EXpa5mxTjCb4YPd5RZpKj5
+         WcCwu2/rE/0ILnyuegs1HpU52OH5Rv/l4BlZIdQkIaMRZSuUXVGjYkj0VTGNo4PTYzje
+         QmsMm1ogoJqPmp5MZCn88mcN/EgzkFqNj01zc+IO0e7z+AIKuv5uevvQdYFOR7cGvyYC
+         dTK2sehEcj1s/IVT8N60tct8yesCJiW8OKiKs5b6UBnCvrPtFBsj8EVini3OgXswixf8
+         hCGgQFggijq68ssOfyEFkztX2h/WBczmk19kJk5YKfiR42icQ/J4tvTIWqRQsPXGXN/j
+         vCwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728936866; x=1729541666;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BuTgoSmAu7R32A26a6EEGJkODHQDPwpdQJUMBsyfaMc=;
-        b=BE6sA9uhIFlFoLik26OyEqUvh2bcP+DLbhmzzaDmHf+kIgqSDLGwLDFg4upEFVkWJX
-         aP6Cf0n3KxgZ2najUYE1a7hi2wne2LHdotKKLLIFylGDor2eCQdotEi5erqQaAZxYksb
-         9nyRjaGQSDGaPNSw1/lD8RErf4fJh6BhROSeN2QKhnH10GB0O5PT87wACIMQWI6AvpbL
-         ymDHcfJOaUvDA3WgyY2Ng66kEV3NWkfJKwA7ZEhHGi2xVFgMMkOUgsc5/hKvuFggNwd1
-         MIjmcEDXq3AdEmy72omFhNVk+DF/8pcdKuZZRCmOzwmNxK8hrRI9j3gCZm3zfMc9i53m
-         iYqA==
-X-Forwarded-Encrypted: i=1; AJvYcCWVY8reQqyH5+ZlTckyeLZrWKO4Yd68UbrFy2fXFyMakc6cq+0xC7amaGKEH8TeYBO3CSaGfJKh76i/@vger.kernel.org, AJvYcCWkH6Ta0f5H/OdbHeJQp4uOShTdML4NdP/X8OIyc94Uh+B0FCfQ+rK2np70+ImjgEiwuDoJ2FyQtYyMZALU@vger.kernel.org, AJvYcCXus9SZwOaG5+3x4SyPMZGMM6fuHAm5RbMK0dys/wzd5xxNXJB+Zp7MzyuVFGXXfHEttFDKppIdMTXf@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqlXfc/OSxy1LlvsQMsxhBKacAyguP3D6Tw990pXjT5NSrKKdl
-	hhGPPfviK5ULfkZBq9SmNUNFut6AruQy+fcXUrmGdYEZkmvMFWBjxg3yHiqM
-X-Google-Smtp-Source: AGHT+IEVVoJsZ0UeZgR/yhPNu16KKqW10F1kgvMH6JC1UCKxFBvNmFIkzhhqC+AwAL5HIQhWp0ph/g==
-X-Received: by 2002:a5d:4c92:0:b0:374:c6b6:c656 with SMTP id ffacd0b85a97d-37d5529cb41mr10209582f8f.21.1728936865698;
-        Mon, 14 Oct 2024 13:14:25 -0700 (PDT)
-Received: from vamoirid-laptop ([2a04:ee41:82:7577:e435:fb96:76da:7162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b918073sm12245045f8f.113.2024.10.14.13.14.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 13:14:25 -0700 (PDT)
-Date: Mon, 14 Oct 2024 22:14:23 +0200
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, anshulusr@gmail.com, gustavograzs@gmail.com,
-	andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 09/13] iio: chemical: bme680: Move ambient temperature
- to attributes
-Message-ID: <Zw17n7DB2LdgDct3@vamoirid-laptop>
-References: <20241010210030.33309-1-vassilisamir@gmail.com>
- <20241010210030.33309-10-vassilisamir@gmail.com>
- <20241012130124.44c69521@jic23-huawei>
+        d=1e100.net; s=20230601; t=1728940389; x=1729545189;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Cw88bhy+WAxwwmxSvgd82uwT5sTmI6aznn+bTPeUSI=;
+        b=J0YsFiQfeE6VdS2AflzmQRIMEqvbwuJSTD/qtRZE0BSVwABFC2OEE3EUiQanPkfQGN
+         A9u9mONn7YFEYHg3N0KCrlxu3LoZp5AicEFoRwAQUxb7gIypd/2GN+A4+7WVPXENj/J7
+         Xp/KiXuXHyGzwh44O+Tk+hlPWqDRJGWnk43TKN8x5+CSlJckcpN6P/rEcx8evF+C6Etn
+         NC45rW0nh/5VjLrQwb6DP1h8tk4Ha988nKPCGPx8K8HqUtDG+XZH5uv8bQxJRPBUkgh0
+         nSk9G9sRDufE/i7/XcMSgxw/3oldD4KuPKRqY23CCnB/Uu8e4oE51RNW/QNt1G/LtwZp
+         IhNg==
+X-Gm-Message-State: AOJu0Yz6MaNk4F+572c9xFvrLX0UY6oUE0OYbbmYnsWS9Jcos+hd+MO8
+	UMXx/T+W0kMv9CSokfxSZx6n1UvyHWvCEaEtwZjQuKr31xM3V7h/IF5I2uzC/U4=
+X-Google-Smtp-Source: AGHT+IEYFwN+KSyQJ/bVArBPweGcc+tcFfbKB16ZPqY76LvpKnB4+T6tOHsbn/aFS7lWk9NFwC1CYA==
+X-Received: by 2002:a05:6870:e243:b0:288:b7f0:f8fc with SMTP id 586e51a60fabf-288b7f0fc20mr2865174fac.41.1728940389056;
+        Mon, 14 Oct 2024 14:13:09 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-288581dcebbsm2956653fac.27.2024.10.14.14.13.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2024 14:13:07 -0700 (PDT)
+Message-ID: <a27eb208-0fa1-45cc-bb0c-18a03b6cce4e@baylibre.com>
+Date: Mon, 14 Oct 2024 16:13:05 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241012130124.44c69521@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/8] dt-bindings: iio: dac: adi-axi-dac: add ad3552r
+ axi variant
+To: Angelo Dureghello <adureghello@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+References: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-0-eeef0c1e0e56@baylibre.com>
+ <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-2-eeef0c1e0e56@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-2-eeef0c1e0e56@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Oct 12, 2024 at 01:01:24PM +0100, Jonathan Cameron wrote:
-> On Thu, 10 Oct 2024 23:00:26 +0200
-> vamoirid <vassilisamir@gmail.com> wrote:
+On 10/14/24 5:08 AM, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> > From: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > 
-> > Remove the ambient temperature from being a macro and implement it as
-> > an attribute. This way, it is possible to dynamically configure the
-> > ambient temperature of the environment to improve the accuracy of the
-> > measurements.
-> > 
-> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> New ABI? Would need docs.
+> Add a new compatible and related bindigns for the fpga-based
+> "ad3552r" AXI IP core, a variant of the generic AXI DAC IP.
 > 
-> However, I 'think' we have a few cases where we handle this via the slightly
-> odd interface of out_temp_processed / _raw with a label saying it's
-> ambient temperature.
+> The AXI "ad3552r" IP is a very similar HDL (fpga) variant of the
+> generic AXI "DAC" IP, intended to control ad3552r and similar chips,
+> mainly to reach high speed transfer rates using a QSPI DDR
+> (dobule-data-rate) interface.
 > 
-> The tenuous argument is that we have heaters that actually control the
-> temperature and the affect of either heating the thing or just happening
-> to know the external temperature ends up being the same. Hence use
-> an output channel for this control.
+> The ad3552r device is defined as a child of the AXI DAC, that in
+> this case is acting as an SPI controller.
 > 
-> Jonathan
+> Note, #io-backend is present because it is possible (in theory anyway)
+> to use a separate controller for the control path than that used
+> for the datapath.
+> 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
+>  .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   | 56 ++++++++++++++++++++--
+>  1 file changed, 53 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
+> index a55e9bfc66d7..2b7e16717219 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
+> @@ -19,11 +19,13 @@ description: |
+>    memory via DMA into the DAC.
+>  
+>    https://wiki.analog.com/resources/fpga/docs/axi_dac_ip
+> +  https://analogdevicesinc.github.io/hdl/library/axi_ad3552r/index.html
+>  
+>  properties:
+>    compatible:
+>      enum:
+>        - adi,axi-dac-9.1.b
+> +      - adi,axi-ad3552r
+>  
+>    reg:
+>      maxItems: 1
+> @@ -36,7 +38,14 @@ properties:
+>        - const: tx
+>  
+>    clocks:
+> -    maxItems: 1
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  clock-names:
+> +    minItems: 1
+> +    items:
+> +      - const: s_axi_aclk
+> +      - const: dac_clk
+>  
+>    '#io-backend-cells':
+>      const: 0
+> @@ -47,7 +56,16 @@ required:
+>    - reg
+>    - clocks
+>  
+> -additionalProperties: false
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: adi,axi-ad3552r
+> +    then:
+> +      $ref: /schemas/spi/spi-controller.yaml#
+  +      properties:
+  +        clocks:
+  +          minItems: 2
+  +        clock-names:
+  +          minItems: 2
+  +      required:
+  +        clock-names
+  +    else:
+  +      properties:
+  +        clocks:
+  +          maxItems: 1
+  +        clock-names:
+  +          maxItems: 1
 
-Hi Jonathan,
+We could make the checking of clocks more strict to show
+the intent:
 
-Thanks for taking the time to review this. I saw your previous messages,
-and I am not responding to all of them so as to not flood you with ACK
-messages.
+adi,axi-dac-9.1.b only has 1 clock and clock-names is optional.
 
-For this one though I have to ask. The last commit of this series is
-adding support for an output current channel that controls the current
-that is being inserted into an internal plate that is heated up in order
-to have more precise acquisition of humidity and gas measurement. Does
-it makes sense to add an ambient temp output channel as well?
+adi,axi-ad3552r always has 2 clocks and clock-names is required.
 
-Cheers,
-Vasilis
+> +
+> +unevaluatedProperties: false
+>  
+>  examples:
+>    - |
+> @@ -57,6 +75,38 @@ examples:
+>          dmas = <&tx_dma 0>;
+>          dma-names = "tx";
+>          #io-backend-cells = <0>;
+> -        clocks = <&axi_clk>;
+> +        clocks = <&clkc 15>;
+> +        clock-names = "s_axi_aclk";
+> +    };
+> +
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    axi_dac: spi@44a70000 {
+> +        compatible = "adi,axi-ad3552r";
+> +        reg = <0x44a70000 0x1000>;
+> +        dmas = <&dac_tx_dma 0>;
+> +        dma-names = "tx";
+> +        #io-backend-cells = <0>;
+> +        clocks = <&clkc 15>, <&ref_clk>;
+> +        clock-names = "s_axi_aclk", "dac_clk";
+> +
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        dac@0 {
+> +            compatible = "adi,ad3552r";
+> +            reg = <0>;
+> +            reset-gpios = <&gpio0 92 GPIO_ACTIVE_HIGH>;
+> +            io-backends = <&axi_dac>;
+> +            spi-max-frequency = <66000000>;
+> +
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            channel@0 {
+> +                reg = <0>;
+> +                adi,output-range-microvolt = <(-10000000) (10000000)>;
+> +            };
+> +        };
+>      };
+>  ...
+> 
+
 

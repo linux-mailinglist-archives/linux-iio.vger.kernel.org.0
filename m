@@ -1,262 +1,171 @@
-Return-Path: <linux-iio+bounces-10573-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10574-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABB899D3CD
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 17:46:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A6F99D606
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 20:00:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C44EC1C259FC
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 15:46:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0A7BB212A6
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 18:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C156231CA4;
-	Mon, 14 Oct 2024 15:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E303B1C7617;
+	Mon, 14 Oct 2024 17:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ALCEt0uU"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nykRahsO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE5F196;
-	Mon, 14 Oct 2024 15:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0074F1C728E
+	for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 17:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728920791; cv=none; b=NhAO+5k3CDKnYFF1WjiDsboXu7IuFsDeJI4J0/cp7j2rzP+ExfyRIkxHuhNu6zOmvsYgHwMrsd4e6otMHLZXNIH2v3vKF/27lDUWjm3imm+wr/Z3JKLvVI0+JqigRHSEt/qAwE6OVirlueZU5pO3I7B5IZDzbSPGAhRR22hxEds=
+	t=1728928794; cv=none; b=hurQBsHvlXlJ50r3HYwo6IqyppCT0LOyt0N1YXTkqO2wgG0ZTmEa4fdRnDAO+D5V8c++mgJcfzuCXye6NCiiG41tzKTMf7palY75dgoP6qbE/qoGveTwKEN0KV/T2EHAihKgpwjgMg8VzZ2MYcClu1VBh2Cw70B+nFUptypwMgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728920791; c=relaxed/simple;
-	bh=cxGpsM/buSYu3pTRW68LEieOicsZzpEFO0dAjHdsYGs=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=K6bF0wyNaewGxxBv+sw6sRjnCWL96xH4VW7P/MjgEXy3GLi9RRcG9sX43FBQpNCR0PQRcWX5Ze+SUhBPGq2xBgjeekxwbhrKh/06qTMjuFtXqXRvQMGVHCGmpMyrQnFpPSYuDVAeqcBZJf6bCOQP8n+Y+oD+qPyCd65nVFWqcdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ALCEt0uU; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-430f6bc9ca6so34699015e9.2;
-        Mon, 14 Oct 2024 08:46:29 -0700 (PDT)
+	s=arc-20240116; t=1728928794; c=relaxed/simple;
+	bh=sL5sMIwFWwCItD6gcYu481WzjPU0/7+yb5y82AD+Wvk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=frqyzLk9GUndEDtwqg5WmVGXazCOUcbZMTX+eNVC9tPUsvIp++h23BwZ5wF4bRJerm0uLgH05mILbrLg/UNx/6Mm9LJKpc6f1acDDvz1qFlBqxjvX1yTKMLsURIthYY2pFuaabEi7nCpovdYcyxTstrBUGYClU3AZ7s55Rpq8Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nykRahsO; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-431198c63cfso4580805e9.1
+        for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 10:59:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728920788; x=1729525588; darn=vger.kernel.org;
-        h=user-agent:message-id:date:to:cc:from:subject:references
-         :in-reply-to:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cxGpsM/buSYu3pTRW68LEieOicsZzpEFO0dAjHdsYGs=;
-        b=ALCEt0uUXrEWpJtdHL8RY0TIMKgEngtt9e0GtiVrfC9a8vAEt9RejbwVpPePDg0St+
-         ed0vGRkvIaJmWmPnOb4kT8vLTHBniT8zSynDsAyy+5uejIq5Jgq4UCfpOdx00MmH5W9J
-         R3dzGoyOyYlyOUjV0AYxIE2UBeA9BsjMFzuEfi8iLU44DFaNoE42Ak1rpf9/9HE6ZMmJ
-         dkbgYk0d2FE9bIWExxxbMWfzvZWOTSkicK0+pv9wcHn7zdSBiS7NDSbx7YIqgdVSoSme
-         8ZQNdFSNBF3wuD455uC8JDxB+sGliRuHObzJ4An0VCd8UZ27NICFafzKHCTrG3jTSenB
-         xFzA==
+        d=linaro.org; s=google; t=1728928791; x=1729533591; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9q/9cP3oWJrsUKpMb0FHSTkpYb3pjCPdKiZ+2qeTeso=;
+        b=nykRahsOSeYdY9l3q+9WKq52D6YXP1YgBf7nnP+2lijkId+Grucf4oV6bCjX8+4Rc4
+         ARDWmLmVlNcshJ70PHQGBl4RZPQIXUmdPkTjMmNCJ4qbHsGbDwxwiuunKeRodAHSgdnd
+         t7bkki8uoURQQTZOm9QzJRQaJkobThx/OtOi34TsyNIObBfREBmJ8Ht52BRkW3QIHGCh
+         6QrC3UGsmNfoYkxRAatUv4EkBEYXGoiyGKAJ+CXP+oZs6y0ruUMkOeTO1zcVKfgm4B6H
+         A/UxcsboK8aV2d/z7meQ3iarqmN0mKOuAt+DgfFh1jiJ6g77a+wGkQfkiKLZiYxIb9Sd
+         iDWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728920788; x=1729525588;
-        h=user-agent:message-id:date:to:cc:from:subject:references
-         :in-reply-to:content-transfer-encoding:mime-version
+        d=1e100.net; s=20230601; t=1728928791; x=1729533591;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cxGpsM/buSYu3pTRW68LEieOicsZzpEFO0dAjHdsYGs=;
-        b=bdJ67Ws9Xf0yoUqPbJIRV8NBT8gzXrj+oy5oYGLfFazNgigBtFro74ZlgdyFI0XgAR
-         Fh+XLT5gwpxuaNa+rD+/vy9E5pwI4BZU0pc7R/7+QdXMIzRGfkUr9+bwG6ybbiQChAOh
-         qD3Er2kt4CPLKfZVz2OsvmYqvdT5kVU8BtLcDraqhQwgTAb4MPuxZRQOCqPQ/YmEnyq5
-         r4Dvq1WcBN8bzA4ihmmbfu8X4RvPc+fzLHLc2U5TzhnNueUsJ+JCF/1gY9W+Dv+q4wwX
-         B44Y/Qqv99AIAr46n5WAQJhr5/K5HRa4wVjRUl1fAghWMC6YElHLTEZ2EwYZBp66wlPo
-         2wEg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwwYlEsE4gsN0YiMr2rRcy9aFeE1v/ueeXl8txd5E6XVs05o5w5olnt3WV3fhROhjWU40CkpwUkc0=@vger.kernel.org, AJvYcCWRADVDKzK+pAu1o9KOvmHuKD548Aur4cbVykqzC3DpMQ2rANa59S5FNqeN5L39YHyqQQS437KuLkqf90+G@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBghk7grKkajQQoycRqCsbqRmlrRgX6ItOwbicI0dOYOIP/3rY
-	47/U6rAFiCJE9fEVv2L52NmZXSjVGUB3+iFGP6egWSUs8/F8Ag65KH84n7ig
-X-Google-Smtp-Source: AGHT+IEUhTOMajNBn8OQg+65jQfGUteQJ145m04pOx3jvSaXJG4bX1j7umqLc29CCWkX0tK/c8ytYA==
-X-Received: by 2002:a5d:5352:0:b0:37d:4894:6878 with SMTP id ffacd0b85a97d-37d5fe95846mr6267029f8f.10.1728920788056;
-        Mon, 14 Oct 2024 08:46:28 -0700 (PDT)
-Received: from localhost (host-79-18-120-72.retail.telecomitalia.it. [79.18.120.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6bd266sm11626177f8f.40.2024.10.14.08.46.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 08:46:27 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        bh=9q/9cP3oWJrsUKpMb0FHSTkpYb3pjCPdKiZ+2qeTeso=;
+        b=Ah3JiD5OlMoIdnnMhloBoK5g2bF/3KJc5cLuoLplnOYLVYnIjq2dEPPaC/wav1r5Hl
+         3UQjfP1lhaYxnl1aPor77ILSGQGFj9JGF1eJGXF/53tGPVFX30OLJFMBkgFQUJcpX/qx
+         Yb96YLRjq/UuTMoayBWdeb8emW10cRhPNnyqM6EylNCNFZ+P+7Ljiv5vdkcTh87KZmyJ
+         kk7qvdUdq8GxTlogUAhSZCca//TTRNOu2rTqNyRo9xuFS3n4K4iA/2ZykVFP5oCiOj7Z
+         99ZO22EvX2VL3jez8UH1/3qgmrxVj7/qH+FB8t78tWregHBU8y7t+qAH49YBqsaqpbTy
+         Y9aQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUoic/ScVexlUIkybmCnoXxkvVLP8AUuRampG0C9fgw4cX2F22R5k/jykM8HyskWBJnhZfnvzLW7Vc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxl5cHHXIBAJLyALKJZ4xtnHGSVK2/hQjPqeidU/VDz/MwL2hLL
+	IW1IIvWYUdyoXOZqV6gCkwgvBjUXhtitv2V6pzPLW686DPEegzPJNkkIYXZOUAs=
+X-Google-Smtp-Source: AGHT+IGTUiH+wxBsHB9dno2CzL2+b4c3qz1CzT2oxTHAu1gqp3Wv6zCH7BYb49kA58Y2eWcu9EOc2g==
+X-Received: by 2002:a05:6000:1866:b0:374:c800:dc3d with SMTP id ffacd0b85a97d-37d55212222mr4267041f8f.1.1728928791216;
+        Mon, 14 Oct 2024 10:59:51 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.211.167])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6cffa5sm12027426f8f.53.2024.10.14.10.59.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2024 10:59:50 -0700 (PDT)
+Message-ID: <7f3ccd71-f885-4f84-bda3-cb2adaffc4fa@linaro.org>
+Date: Mon, 14 Oct 2024 19:59:47 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <e4cad20ed2f8d31bf71bc595ab54c64d96bfb4b4.camel@microchip.com>
-References: <20241011134454.45283-1-victor.duicu@microchip.com> <172872753469.9340.10387646359307852048@njaxe.localdomain> <e4cad20ed2f8d31bf71bc595ab54c64d96bfb4b4.camel@microchip.com>
-Subject: Re: [PATCH v3] iio: adc: pac1921: add ACPI support to Microchip pac1921.
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Cc: Marius.Cristea@microchip.com, linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-To: Victor.Duicu@microchip.com, jic23@kernel.org, lars@metafoo.de
-Date: Mon, 14 Oct 2024 17:46:26 +0200
-Message-ID: <172892078642.158534.11658754591922958169@njaxe.localdomain>
-User-Agent: alot/0.11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/3] dt-bindings: iio: adc: add a7779 doc
+To: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Cosmin Tanislav <cosmin.tanislav@analog.com>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Alexandru Ardelean <alexandru.ardelean@analog.com>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
+ Ana-Maria Cusco <ana-maria.cusco@analog.com>,
+ George Mois <george.mois@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20241014143204.30195-1-ramona.nechita@analog.com>
+ <20241014143204.30195-2-ramona.nechita@analog.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20241014143204.30195-2-ramona.nechita@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Quoting Victor.Duicu@microchip.com (2024-10-14 12:08:05)
-> On Sat, 2024-10-12 at 12:05 +0200, Matteo Martelli wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you
-> > know the content is safe
-> >=20
-> > Quoting victor.duicu@microchip.com=C2=A0(2024-10-11 15:44:54)
-> > > From: Victor Duicu <victor.duicu@microchip.com>
-> > >=20
-> > > This patch implements ACPI support to Microchip pac1921.
-> > > The driver can read shunt resistor value and label from ACPI table.
-> > >=20
-> > > The patch was tested on a minnowboard(64b) and sama5(32b).
-> > > In order to avoid overflow when reading 64b values from ACPi table
-> > > or
-> > > devicetree it is necessary:
-> > > - the revision of .dsl file must be 2 or greater to enable 64b
-> > > arithmetic.
-> > > - the shunt resistor variable in devicetree must have the prefix
-> > > "/bits/ 64".
-> > >=20
-> > > Differences related to previous versions:
-> > > v3:
-> > > - simplify and make inline function pac1921_shunt_is_valid. Make
-> > > argument u64.
-> > > - fix link to DSM documentation.
-> > > - in pac1921_match_acpi_device and pac1921_parse_of_fw, the shunt
-> > > value is
-> > > read as u64.
-> > > - in pac1921_parse_of_fw remove code for reading label value from
-> > > devicetree.
-> > > - in pac1921_write_shunt_resistor cast the multiply result to u64
-> > > in order
-> > > to fix overflow.
-> > >=20
-> > > v2:
-> > > - remove name variable from priv. Driver reads label attribute with
-> > > sysfs.
-> > > - define pac1921_shunt_is_valid function.
-> > > - move default assignments in pac1921_probe to original position.
-> > > - roll back coding style changes.
-> > > - add documentation for DSM(the linked document was used as
-> > > reference).
-> > > - remove acpi_match_device in pac1921_match_acpi_device.
-> > > - remove unnecessary null assignment and comment.
-> > > - change name of function pac1921_match_of_device to
-> > > pac1921_parse_of_fw.
-> > >=20
-> > > v1:
-> > > - initial version for review.
-> > >=20
-> > > Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
+On 14/10/2024 16:31, Ramona Alexandra Nechita wrote:
+> Add dt bindings for AD7779 8-channel, simultaneous sampling ADC
+> family with eight full Σ-Δ ADCs on chip and ultra-low input
+> current to allow direct sensor connection.
+> 
+> Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
 
-...
+<form letter>
+This is a friendly reminder during the review process.
 
-> > > =C2=A0/*
-> > > =C2=A0 * Check if first integration after configuration update has
-> > > completed.
-> > > =C2=A0 *
-> > > @@ -792,13 +801,13 @@ static ssize_t
-> > > pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 return ret;
-> > >=20
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rshunt_uohm =3D val * MICRO + v=
-al_fract;
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (rshunt_uohm =3D=3D 0 || rsh=
-unt_uohm > INT_MAX)
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rshunt_uohm =3D (u64)val * MICR=
-O + val_fract;
-> >=20
-> > In commit a9bb0610b2fa ("iio: pac1921: remove unnecessary explicit
-> > casts"),
-> > unnecessary explicit casts had been removed since it seems the
-> > preferred
-> > approach in order to improve readability. This (u64)val cast seems
-> > unnecessary
-> > as well thus I would keep the expression without it.
->=20
-> While testing on SamA5 board , the multiplication between val and MICRO
-> can overflow when val is greater than INT_MAX. The cast to (u64) is
-> necessary to correctly calculate the new shunt value.
->=20
+It looks like you received a tag and forgot to add it.
 
-You are right, the (u64) explicit cast is necessary and I think the
-issue is relevant even when val is lesser than INT_MAX: on 32bit
-architectures, val * MICRO is implicitly casted to u32, thus a resulting
-value of that multiplication that is bigger than INT_MAX could pass as
-valid even if it's not. For example if val is 0x40000000, val * MICRO
-would be casted to 0 even if way bigger than INT_MAX.
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions, under or above your Signed-off-by tag. Tag is "received", when
+provided in a message replied to you on the mailing list. Tools like b4
+can help here. However, there's no need to repost patches *only* to add
+the tags. The upstream maintainer will do that for tags received on the
+version they apply.
 
-...
+https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
 
-> > > +static int pac1921_parse_of_fw(struct i2c_client *client, struct
-> > > pac1921_priv *priv,
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_dev *indio_dev)
-> > > +{
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int ret;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device *dev =3D &client-=
->dev;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 temp;
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D device_property_read_u6=
-4(dev, "shunt-resistor-micro-
-> > > ohms", &temp);
-> >=20
-> > Since the driver would discard a value out of INT boundaries, I don't
-> > see the
-> > need to read a value larger than u32 that would be discarded anyway.
-> > To my
-> > understanding, device_property_read_u32() should fail for an
-> > overflowing value
-> > thus I would keep device_property_read_u32() here, and at that point
-> > the temp
-> > var would not be necessary as well. I think it would also help to
-> > keep the patch
-> > diff confined in the ACPI extension context.
->=20
-> If the value in .dtso is greater than 32b, at compilation it will be
-> truncated, and the incorrect value will be accepted by the driver. By
-> adding "/bits/ 64" in the devicetree to shunt resistor the value will
-> not be truncated. This way values on 32b and 64b can be read correctly.
->=20
+If a tag was not added on purpose, please state why and what changed.
+</form letter>
 
-I see your point but if I understand this correctly with this change the
-shunt-resistor-micro-ohms field in the DT should always be specified
-with /bits/ 64, even for values in 32bit boundaries. I might be wrong
-but this looks like something that should be documented in
-Documentation/devicetree/bindings, especially since all the other
-shunt-resistor-micro-ohms instances look to be interpreted as u32.
-Also, I think that such change would fit better in a different patch as
-it is not related to the introduction of ACPI support.
+Best regards,
+Krzysztof
 
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret)
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 return dev_err_probe(dev, ret,
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Cann=
-ot read shunt resistor
-> > > property\n");
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (pac1921_shunt_is_valid(temp=
-))
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 return dev_err_probe(dev, -EINVAL, "Invalid shunt
-> > > resistor: %u\n",
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 priv-=
->rshunt_uohm);
-> >=20
-> > The error should be returned when the shunt is NOT valid.
-> >=20
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 priv->rshunt_uohm =3D (u32)temp;
-> >=20
-> > The temp var should not be necessary if switching back to
-> > device_property_read_u32(),
-> > otherwise I would remove the unnecessary explicit cast for the above
-> > reason.
-> >=20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pac1921_calc_current_scales(pri=
-v);
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
-> > > +}
-> > > +
-
-Thanks,
-Matteo Martelli
 

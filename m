@@ -1,149 +1,211 @@
-Return-Path: <linux-iio+bounces-10545-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10546-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E092799C484
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 11:01:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC63F99C656
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 11:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94289288C76
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 09:01:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13FC81C22CD6
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 09:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA98714A0AA;
-	Mon, 14 Oct 2024 09:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEA1156C72;
+	Mon, 14 Oct 2024 09:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Wa8fpNv2"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="sbsNL09D"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C31154C0C
-	for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 09:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D0214B96E;
+	Mon, 14 Oct 2024 09:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728896453; cv=none; b=g0rNRBCPJDcHFXeGwuM40d5NY4CwpNf8JSCHrcXAVzLKW8PeovJTdbaADCop5mYDIq0hUG9JO/g6vrK2ZqvlkL0frdcQPeepAdMgFpnY836KPFHRLfiYnlnlSVHwka87POVaVSurspFD8KYoZVw2HmJbOgCCw9wYBc6k6RLUUeo=
+	t=1728899376; cv=none; b=tLiuYol/ja92gTEwIKCzhwCwQCDhk7mV6gnWX83/It+ISJEfnuHMmZoH7++9+BRs3+h+XiZ8eCMdn9+ks9LgfcLiyiPRkXb65fw4OAQtgGKIp857xohvRcWmcIH8n40kcuMYEDZE+Jzh5hqEaYs7KEbQffHM5Fntvx02+NbEohs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728896453; c=relaxed/simple;
-	bh=MflAoS/JVwsJxPi1EnBqpdAqnLAu6sZoC0d+TTvhdAM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=STR/3O62Ub3YsoCm3wQMocgu8N5bM+ECnYmZ7DKrWv8d7Y/qqwqpRlsF3hxxt3JpT1cISufxup3jMjHz3psF81J3mb8wetsJWKal5aWWNhFt585DnqqNfwn+cnX3AXtoiQWN41wxb50wMISqlim4DIeJWWPo7WlpMIMF0n+UWIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Wa8fpNv2; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a998a5ca499so608604066b.0
-        for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 02:00:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728896450; x=1729501250; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MflAoS/JVwsJxPi1EnBqpdAqnLAu6sZoC0d+TTvhdAM=;
-        b=Wa8fpNv2n0rmPJNhCm2oTJGqGi2zC81zaeIxNvcTy7PonpjLc5Pbil0MLG2X7bk3Us
-         cgMCczONEqz+GjAk8jq27p5w7TN2jHlMuO6kLH8wWOVDRU3Ft1xZEmTzqqTPzXnkZAFy
-         KaJ+r28nwcYXdj2BVM6AEVcqcK4vcWn5ApwxmJY0Bn0FmjQCk6i3AdFmJp4+8rDqdKbC
-         qXf4hTEp/gH6ROkVIC73MwLxMihMF1jzwbcJ0SYvVbAmAO5NoAx/aiKhTYd4OTUN2/02
-         gMVo7g2Oq8+fvkifPUFrRlIBIbExAEmk+LaN5mVdGO4P9pvcAzbNJsJM7L76fHvoCab5
-         lJbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728896450; x=1729501250;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MflAoS/JVwsJxPi1EnBqpdAqnLAu6sZoC0d+TTvhdAM=;
-        b=psMujTrbhJXYWneotmHwhF18JFDJ/bBkSub2zQt6hRXDTevfW7JvErMoLz6igj9QXC
-         RSUjf6csQEsyJ8ayp8b+qjWMeffxoutWAfQpsBfNF0PkLS+bMMLuJ+dopMUI4oHADGpQ
-         FHsrHewOQTvo26G1ZiffUvQaKiJnQpCuCOSNBoFC8LES/eyWDEp80uLFKYjVzSbf4NAR
-         SjO22LXmB7ts/i7BJZhaTSqrRtf65izLZ4bVTAKtJvujMu6Q55S7pfiRSwURddXfxsuB
-         96OQa8b+C4v9UmNtEuztHlA4W+dpgzOhTukbH7InWgFF269tZmXttILSsXq8nuMeGmoq
-         iBUA==
-X-Forwarded-Encrypted: i=1; AJvYcCW/vT8l8/x4Xl55F/H/DR+A4m6WYLYjttoZF4RA2/UTYtdhpa1f2xxuiIJfKRufmI1IcJGPzfR29ik=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRF42DlcvQVZHPN5RTo0t7f0jOgjtUWSD/zKfygGQI5S5fVtFX
-	YbW5IxuaT4ubuqP4KyngajRjH3nqVzQQC+IgAy+cRxC+IVLlv5jc4k3+V3BtemtGUXDCX4eXeJV
-	JVG4WFyWM7TQYrGQZX9NhZff3a4RJVJFOD8uukQ==
-X-Google-Smtp-Source: AGHT+IFlRvGBzelFcPb4MlBwiC6Xm+9AzmFqSrtThZwPQzH3LVUNBawvPUHSA7ddlyUofnVK+089RIIf9I7sU9/EVTw=
-X-Received: by 2002:a17:906:fe4b:b0:a99:8abf:3610 with SMTP id
- a640c23a62f3a-a99e3b30f48mr661900666b.14.1728896449865; Mon, 14 Oct 2024
- 02:00:49 -0700 (PDT)
+	s=arc-20240116; t=1728899376; c=relaxed/simple;
+	bh=JpEXltiIOmmvzmLMRpSPLrxMeQ48oLm1fDT94sQzMxw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KFz1Y7I5zrIR2MDrigLJxByU+LwBS6HCk78yjWgn3L5ReKjBHQICraFcpNl0Op3wdbmgyZiPiCWjMZKDc7+66ORfa9OMkGKOpTaedATVZKhtXK34k2NsXY4jl8UvnH9dfytXfunuBVGjRajH7oxK2PBJOZjw1xT5P6JLkm/TXII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=sbsNL09D; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49E8LdXG001989;
+	Mon, 14 Oct 2024 05:48:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=CQ8z4oxWup1w6nbm5jbDnlve15C
+	K21AYqGfTSdiqiEA=; b=sbsNL09Df2LILJj6WrOfXiLYhLLhigbB7q9i/u1lrq6
+	cXNDS47x5EmShDPBts9UAuns8wMplBwGjN3/J+Q3tXJheSfDFkMbHQSMxOhD64zd
+	HM4jjjlXQXs5n0ovc7Z3LFkDoAxuTy64lhTUBd7xgF+0WzSkilYsltk4vLhOCH3q
+	aA6chB7S1kH2uVTTQfsga0o9wgn0WVpoO6fhknhgmvyXPZ0sYpGXUFPBrz6Qo10y
+	Ma+J7SmLXlMpzXwKImsixx7tk3IB3pPYAaFLhH4iTtsOqzCDV86nE+rZRARNOqD3
+	KiH0kqQ7OUVb+GHGrPEgrPloZykcBVSQHVX6xfRWRoA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 428yqm0anp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Oct 2024 05:48:28 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 49E9mR1R027901
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 14 Oct 2024 05:48:27 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 14 Oct
+ 2024 05:48:26 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 14 Oct 2024 05:48:26 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com ([10.65.36.213])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 49E9m0Gl024017;
+	Mon, 14 Oct 2024 05:48:04 -0400
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, Rob
+ Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor
+ Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+        Olivier Moysan
+	<olivier.moysan@foss.st.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
+	<ukleinek@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        David Lechner
+	<dlechner@baylibre.com>,
+        Marcelo Schmitt <marcelo.schmitt@analog.com>,
+        Dumitru Ceclan <mitrutzceclan@gmail.com>,
+        Ivan Mikhaylov
+	<fr0st61te@gmail.com>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Alisa-Dariana Roman <alisadariana@gmail.com>,
+        =?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+        Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+        Dragos Bogdan
+	<dragos.bogdan@analog.com>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pwm@vger.kernel.org>
+Subject: [PATCH v3 1/6] iio: backend: add API for interface get
+Date: Mon, 14 Oct 2024 12:40:35 +0300
+Message-ID: <20241014094154.9439-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241007-ad7380-fix-supplies-v1-0-badcf813c9b9@baylibre.com>
- <20241007-ad7380-fix-supplies-v1-2-badcf813c9b9@baylibre.com>
- <v7in5n6ktmu5kfzlndn4eujmk5n66fmft4lvwuvucqbcv5r5hb@etdqvn6ev6nl> <20241010192218.12808268@jic23-huawei>
-In-Reply-To: <20241010192218.12808268@jic23-huawei>
-From: Julien Stephan <jstephan@baylibre.com>
-Date: Mon, 14 Oct 2024 11:00:39 +0200
-Message-ID: <CAEHHSvaGTKFA1mUeONXUQ=aTirVemHWFc_E-i76sQgtQ5_Svtg@mail.gmail.com>
-Subject: Re: [PATCH 2/6] dt-bindings: iio: adc: ad7380: fix ad7380-4 reference supply
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: GyH6B_MXqAsY4PyA3YLuusSnnlLTECUt
+X-Proofpoint-GUID: GyH6B_MXqAsY4PyA3YLuusSnnlLTECUt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ mlxlogscore=999 clxscore=1015 bulkscore=0 priorityscore=1501 mlxscore=0
+ malwarescore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410140071
 
-Le jeu. 10 oct. 2024 =C3=A0 20:22, Jonathan Cameron <jic23@kernel.org> a =
-=C3=A9crit :
->
-> On Tue, 8 Oct 2024 09:52:50 +0200
-> Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> > On Mon, Oct 07, 2024 at 05:45:45PM +0200, Julien Stephan wrote:
-> > > ad7380-4 is the only device from ad738x family that doesn't have an
-> > > internal reference. Moreover its external reference is called REFIN i=
-n
-> > > the datasheet while all other use REFIO as an optional external
-> > > reference. If refio-supply is omitted the internal reference is
-> > > used.
-> > >
-> > > Fix the binding by adding refin-supply and makes it required for
-> > > ad7380-4 only.
-> >
-> > Maybe let's just use refio as refin? Reference-IO fits here well.
-> > Otherwise you have two supplies for the same.
-> Whilst it is ugly, the effort this series is going to in order
-> to paper over a naming mismatch makes me agree with Krzysztof.
->
-> I think adding a comment to the dt-binding would be sensible
-> though as people might fall into this hole.
->
+Add backend support for obtaining the interface type used.
 
-Hi Jonathan and Krzysztof,
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+changes in v3:
+ - fix spelling
+ - add serial cmos/lvds in interface type enum
+ - drop comma for last element in enum.
+ drivers/iio/industrialio-backend.c | 24 ++++++++++++++++++++++++
+ include/linux/iio/backend.h        | 13 +++++++++++++
+ 2 files changed, 37 insertions(+)
 
-I am currently adding support for another chip to this family
-(ADAQ4380-4) and it also uses REFIN.. but in another way ad7380-4
-does..
-So:
-- ad7380-4 does not have any internal reference and use a mandatory
-refin supply as external reference
-- adaq4380-4 does not have external reference but uses a 3V internal
-reference derived from a 5V mandatory refin supply
-- all others (AFAIK) use an optional refio external reference. If
-omitted, use an internal 2.5V reference.
+diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+index efe05be284b6..ef1fd4cb0b24 100644
+--- a/drivers/iio/industrialio-backend.c
++++ b/drivers/iio/industrialio-backend.c
+@@ -449,6 +449,30 @@ ssize_t iio_backend_ext_info_set(struct iio_dev *indio_dev, uintptr_t private,
+ }
+ EXPORT_SYMBOL_NS_GPL(iio_backend_ext_info_set, IIO_BACKEND);
+ 
++/**
++ * iio_backend_interface_type_get - get the interface type used.
++ * @back: Backend device
++ * @type: Interface type
++ *
++ * RETURNS:
++ * 0 on success, negative error number on failure.
++ */
++int iio_backend_interface_type_get(struct iio_backend *back,
++				   enum iio_backend_interface_type *type)
++{
++	int ret;
++
++	ret = iio_backend_op_call(back, interface_type_get, type);
++	if (ret)
++		return ret;
++
++	if (*type >= IIO_BACKEND_INTERFACE_MAX)
++		return -EINVAL;
++
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(iio_backend_interface_type_get, IIO_BACKEND);
++
+ /**
+  * iio_backend_extend_chan_spec - Extend an IIO channel
+  * @indio_dev: IIO device
+diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
+index 8099759d7242..ad9fa0ada9b2 100644
+--- a/include/linux/iio/backend.h
++++ b/include/linux/iio/backend.h
+@@ -63,6 +63,14 @@ enum iio_backend_sample_trigger {
+ 	IIO_BACKEND_SAMPLE_TRIGGER_MAX
+ };
+ 
++enum iio_backend_interface_type {
++	IIO_BACKEND_INTERFACE_LVDS,
++	IIO_BACKEND_INTERFACE_CMOS,
++	IIO_BACKEND_INTERFACE_SERIAL_LVDS,
++	IIO_BACKEND_INTERFACE_SERIAL_CMOS,
++	IIO_BACKEND_INTERFACE_MAX
++};
++
+ /**
+  * struct iio_backend_ops - operations structure for an iio_backend
+  * @enable: Enable backend.
+@@ -81,6 +89,7 @@ enum iio_backend_sample_trigger {
+  * @extend_chan_spec: Extend an IIO channel.
+  * @ext_info_set: Extended info setter.
+  * @ext_info_get: Extended info getter.
++ * @interface_type_get: Interface type.
+  **/
+ struct iio_backend_ops {
+ 	int (*enable)(struct iio_backend *back);
+@@ -113,6 +122,8 @@ struct iio_backend_ops {
+ 			    const char *buf, size_t len);
+ 	int (*ext_info_get)(struct iio_backend *back, uintptr_t private,
+ 			    const struct iio_chan_spec *chan, char *buf);
++	int (*interface_type_get)(struct iio_backend *back,
++				  enum iio_backend_interface_type *type);
+ };
+ 
+ int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan);
+@@ -142,6 +153,8 @@ ssize_t iio_backend_ext_info_set(struct iio_dev *indio_dev, uintptr_t private,
+ ssize_t iio_backend_ext_info_get(struct iio_dev *indio_dev, uintptr_t private,
+ 				 const struct iio_chan_spec *chan, char *buf);
+ 
++int iio_backend_interface_type_get(struct iio_backend *back,
++				   enum iio_backend_interface_type *type);
+ int iio_backend_extend_chan_spec(struct iio_dev *indio_dev,
+ 				 struct iio_backend *back,
+ 				 struct iio_chan_spec *chan);
+-- 
+2.46.2
 
-I am not sure using a single refio-supply for all will make things
-clearer.. What do you think? Should I also send the adaq series now to
-bring more context? (I wanted feedback on this series first).
-
-Cheers
-Julien
-
-> Other than the missing ret =3D, rest of series looks fine to me
->
-> Jonathan
->
-> >
-> > Best regards,
-> > Krzysztof
-> >
->
 

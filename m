@@ -1,145 +1,139 @@
-Return-Path: <linux-iio+bounces-10567-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10568-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD3699CC40
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 16:07:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9E799CD6F
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 16:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC03D1F23A3A
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 14:07:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6457E283540
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 14:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3176C1AB52D;
-	Mon, 14 Oct 2024 14:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695E81A76AC;
+	Mon, 14 Oct 2024 14:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DYbi4wBl"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="FDSpz+Mx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BFB1D555
-	for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 14:06:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D8D200CB;
+	Mon, 14 Oct 2024 14:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728914768; cv=none; b=kbMLKjYhZYaGXN2lMSw2vb+ux7tzerHpit0+CuIFD8FFqglkzoitemOwIRLu3jUlC04FCNyc/0LJjnouN/tI3dxQ0GOm8ocNM6BwAeJinQQCaSQrVZjxI4msTU7aIFJsU1WYDQlyVyqdiUvouEaWZSJXOdA4bjF1yj2E5TWTHxc=
+	t=1728916362; cv=none; b=IoDhQOS/Hb5Uku9+4V+YBBnYV5irTZQRYIb421iFDX4ZbfOLYtNzxgtQntNusodMPf+4r918nge9N5xNbUNXw87XEJK02tS8aeHQVKNe+5hwvF23FNv1evqRIgIa/ATW8z21xhiXLvd+BNq7xXqF17uAGWfT4N+osSqRxVReNuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728914768; c=relaxed/simple;
-	bh=qhFTW7QIPjVVpSRlDT+6fXtgWvhKWttXIIqOIcfGqAI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BC9NO/slRu4S7YN/bCavpEo+rJCxDLZvvU5GahMvHL1kqRpYrx18DVaxT93MfmyaR3ao1w1mQH/vyVhXd4ijzl1jkEeIQSRT2RO2KPDuQ3j7+6SjMR6Ry+b+wmeF0z1Q4Brs+UcUTOgpXht7GOOe0ARXI4mVMnYN8vVDarGzh2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DYbi4wBl; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37d533b5412so1980423f8f.2
-        for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 07:06:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728914764; x=1729519564; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PLfXdr9BsaIn75yQ115wB7w9fRCYY4Q6oR31SITc134=;
-        b=DYbi4wBltw6y/LlcUyS4dNi7u07Y37z2PA2wTiECbWcw9IBA2/Z6p5iYMK5F8axZ8i
-         spnQlmER56l1V/Q8NJ+pGYLUVoGqXPeb/DeebAVuZtLzpCWLjTY2sCcaQuUFHPHPCit6
-         GpZt/pNdJ0D1alBxsmZ9F6mafbPFv1tkdJpDaXrRvA4EpEbZqK6AE4+esJW01k9i9Ivc
-         UGR4WjMfImadJT+Uq1m/B81cIc+OUqrP1+2OrtgXY77pha0Puv8DRTF+yy1rfdcdysyI
-         f7gMVq3chTKfDyfHN3vIUBUgA0BnG0IHPRstYmseYEWEbAoLQyzB0ZnSgvwrd0U/9HWF
-         XGHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728914764; x=1729519564;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PLfXdr9BsaIn75yQ115wB7w9fRCYY4Q6oR31SITc134=;
-        b=L1QNRv0txSmSIrAy4PoEZYxWrZtkMwEp/uDjwAuU6mRSJQuf9/9J7wlwrMw1iRWCD6
-         F6ghYhWK0vAG6PSCd0l6n5Khsgf0wX3foDZ40TGr5R69rBX4rbRNzrq6eiLxi0360CME
-         cocRfYnE4+NwZ5Z8vxQ0Rlw6s3ZsLk93voJ63h7Q5iKrOs9IkkNuXBtL4o5PQOlni3Sb
-         CSkJ3GZs9g3YJaSZWjR9mAXbCJxzJTVXjyjh6XRFnmqTePuEZR2ZBj6tBMmJz7Bl9XKu
-         eU+121733aM5u3nDNn5Wygd5mM+E02ApQBqX8yTRNjAnlZaJzyxafLo9MmvZexzN5n6z
-         LI5g==
-X-Gm-Message-State: AOJu0Ywx28MQmmHFZ59ao992H4UvOvwWGFKiWWNAH+Xt4Wma4FBcwGhZ
-	d0CSdy8EcmMmwjC22ckXb8QWbQxcZFZl7YfIDqeRvKqqHPJnY6QqUDQ/wjKQlWQ=
-X-Google-Smtp-Source: AGHT+IGJIKE0j3n+bSOYnhn8s9A4HLTrtvBewTwoHkoBGYIhcVUnPXMQGUvU/Re1B6fDK5qaBVgmVw==
-X-Received: by 2002:adf:8b54:0:b0:37d:52b5:451e with SMTP id ffacd0b85a97d-37d551fc226mr7228923f8f.33.1728914763671;
-        Mon, 14 Oct 2024 07:06:03 -0700 (PDT)
-Received: from dfj (host-79-45-239-138.retail.telecomitalia.it. [79.45.239.138])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6bfc8csm11484743f8f.45.2024.10.14.07.06.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 07:06:03 -0700 (PDT)
-Date: Mon, 14 Oct 2024 16:04:35 +0200
-From: Angelo Dureghello <adureghello@baylibre.com>
-To: Rob Herring <robh@kernel.org>
-Cc: linux-iio@vger.kernel.org, Olivier Moysan <olivier.moysan@foss.st.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Conor Dooley <conor+dt@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dlechner@baylibre.com, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v6 2/8] dt-bindings: iio: dac: adi-axi-dac: add ad3552r
- axi variant
-Message-ID: <r2gmorclmtcrykws4sd7l3hkjzg6f72vbh7ulh3ml2jsnev35z@on2stvxr36qm>
-References: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-0-eeef0c1e0e56@baylibre.com>
- <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-2-eeef0c1e0e56@baylibre.com>
- <172890486251.793259.16216468875581353928.robh@kernel.org>
- <20241014133823.GA1018400-robh@kernel.org>
+	s=arc-20240116; t=1728916362; c=relaxed/simple;
+	bh=c0u3Pu/qy15aftAdNYCISXdLMBzECvsxP/W1mOpcBE0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YmHvgQJrmoqALIC6Z6+8VyT/kSZyrtClPVwEJlRxoNRngiQaNOgY2a2uA3g5pA17lW4vEPG+iLf7oaPjL8+qm0zq1fjSeF5/1qSNNqo2agklRbBSaBHbBakLBWJU5/jBAZMAlE0aWofh/Cj8TTIve2F3dV0RCIzDAuZes17XMLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=FDSpz+Mx; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49EABjsB006039;
+	Mon, 14 Oct 2024 10:32:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=TQ7n8XPd6rg1I/RlFcUOK+2lObv
+	JUAcI4gx/EAXc3kA=; b=FDSpz+MxG2B3kgTaMYCPIEgtTy1wuhGkStp8G/E3Syg
+	gpVt3hu5XXfOWMv34gbtgSJ4SxXlTJkWO+kmzl3w2kybwUVzmfpJwVhbOvxPp+ju
+	HTbukYStXslgrmCZWb8dKOYJ5KBjoJbZZIMvvkHVOXG1Ro+teXKvIBNfF9r7ZxSo
+	zBaeoHVZV/1yWEIVc31fFbMUu6DJa3mWOI7JXn0cj7ECCemBCoLL+lMUlEfOC17r
+	3jKabfJgMzpwn5rVZ7iedRqW9Nr5CeYkm7fGs4OIyooEzoVPvg0u7D9cJl+eLkD6
+	Yp40SQUKa4zQrwnobCF+4b03AWs8wQ1xKADDv4Yr+cw==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 427p137c4x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Oct 2024 10:32:22 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 49EEWK0C041582
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 14 Oct 2024 10:32:20 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 14 Oct
+ 2024 10:32:20 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 14 Oct 2024 10:32:19 -0400
+Received: from HYB-hYN1yfF7zRm.ad.analog.com (HYB-hYN1yfF7zRm.ad.analog.com [10.48.65.186])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 49EEW6bA014258;
+	Mon, 14 Oct 2024 10:32:08 -0400
+From: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Alexandru Ardelean
+	<alexandru.ardelean@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
+        Andy Shevchenko
+	<andy.shevchenko@gmail.com>,
+        Ana-Maria Cusco <ana-maria.cusco@analog.com>,
+        Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+        George Mois
+	<george.mois@analog.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: [PATCH v7 0/3] Add support for AD777x family
+Date: Mon, 14 Oct 2024 17:31:57 +0300
+Message-ID: <20241014143204.30195-1-ramona.nechita@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241014133823.GA1018400-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: Mu0u1vHc2uyERCcRXk1zhS-8gqjQHpLe
+X-Proofpoint-GUID: Mu0u1vHc2uyERCcRXk1zhS-8gqjQHpLe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxlogscore=999
+ mlxscore=0 malwarescore=0 adultscore=0 spamscore=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410140105
 
-Hi Rob,
+v6:
+  * https://lore.kernel.org/all/20240926135418.8342-1-ramona.nechita@analog.com/
+v6:
+  * Patch3:
+    - miscellanous changes regarding coding style
+    - switched timestamp type to aligned_s64
+    - removed length variable from spi_write/read
+    - modified the cast from reg_access
+    - used mult_frac from math.h in the calculation of the frequency function
+    - declared struct device in probe funcrion and reduced the number of lines
+    - removed shadowed error codes
+    - renamed spi_transfer structures to 't'
+    - added comments to all the fsleep function calls
 
-On 14.10.2024 08:38, Rob Herring wrote:
-> On Mon, Oct 14, 2024 at 06:21:02AM -0500, Rob Herring (Arm) wrote:
-> > 
-> > On Mon, 14 Oct 2024 12:08:08 +0200, Angelo Dureghello wrote:
-> > > From: Angelo Dureghello <adureghello@baylibre.com>
-> > > 
-> > > Add a new compatible and related bindigns for the fpga-based
-> > > "ad3552r" AXI IP core, a variant of the generic AXI DAC IP.
-> > > 
-> > > The AXI "ad3552r" IP is a very similar HDL (fpga) variant of the
-> > > generic AXI "DAC" IP, intended to control ad3552r and similar chips,
-> > > mainly to reach high speed transfer rates using a QSPI DDR
-> > > (dobule-data-rate) interface.
-> > > 
-> > > The ad3552r device is defined as a child of the AXI DAC, that in
-> > > this case is acting as an SPI controller.
-> > > 
-> > > Note, #io-backend is present because it is possible (in theory anyway)
-> > > to use a separate controller for the control path than that used
-> > > for the datapath.
-> > > 
-> > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > > ---
-> > >  .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   | 56 ++++++++++++++++++++--
-> > >  1 file changed, 53 insertions(+), 3 deletions(-)
-> > > 
-> > 
-> > My bot found errors running 'make dt_binding_check' on your patch:
-> > 
-> > yamllint warnings/errors:
-> > 
-> > dtschema/dtc warnings/errors:
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.example.dtb: dac@0: spi-max-frequency: 66000000 is greater than the maximum of 30000000
-> > 	from schema $id: http://devicetree.org/schemas/iio/dac/adi,ad3552r.yaml#
-> 
-> This is at least the third time this issue has been reported. Don't send 
-> more versions until you fix it.
-> 
+Ramona Alexandra Nechita (3):
+  dt-bindings: iio: adc: add a7779 doc
+  Documentation: ABI: added filter mode doc in sysfs-bus-iio
+  drivers: iio: adc: add support for ad777x family
 
-as stated in the patch message, this patch applies to linux-iio testing,
-where there are no errors, from my tests.
+ Documentation/ABI/testing/sysfs-bus-iio       |  22 +
+ .../ABI/testing/sysfs-bus-iio-adc-ad4130      |  46 -
+ .../bindings/iio/adc/adi,ad7779.yaml          | 110 +++
+ MAINTAINERS                                   |   1 -
+ drivers/iio/adc/Kconfig                       |  11 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/ad7779.c                      | 909 ++++++++++++++++++
+ 7 files changed, 1053 insertions(+), 47 deletions(-)
+ delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+ create mode 100644 drivers/iio/adc/ad7779.c
 
-Error is due to the spi-max-frequency fix already applied in iio testing,
-but still not where your bot is testing, proably in mainline.
+-- 
+2.43.0
 
-Regards,
-angelo
-
-> Rob
 

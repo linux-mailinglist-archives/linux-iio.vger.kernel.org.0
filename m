@@ -1,171 +1,232 @@
-Return-Path: <linux-iio+bounces-10574-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10575-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A6F99D606
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 20:00:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6D099D697
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 20:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0A7BB212A6
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 18:00:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D060284747
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 18:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E303B1C7617;
-	Mon, 14 Oct 2024 17:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3621CACD9;
+	Mon, 14 Oct 2024 18:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nykRahsO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3ykNKlJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0074F1C728E
-	for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 17:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD734231C95;
+	Mon, 14 Oct 2024 18:33:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728928794; cv=none; b=hurQBsHvlXlJ50r3HYwo6IqyppCT0LOyt0N1YXTkqO2wgG0ZTmEa4fdRnDAO+D5V8c++mgJcfzuCXye6NCiiG41tzKTMf7palY75dgoP6qbE/qoGveTwKEN0KV/T2EHAihKgpwjgMg8VzZ2MYcClu1VBh2Cw70B+nFUptypwMgU=
+	t=1728930839; cv=none; b=LENdcHjRp3frccPQHHVRmkIq3iqlrL0Oi2Ib2pE9q6q4md5drX+Dqc0rgRlpg1/bOHqRxuat7SsxVHgIuPpo5eJWTYYF6rmeIE6MqxrH8TPIN+OAHrAAtVcq7uME7u4P3BFHu87/DA5ZVIIeqZ6Mwfr8qhLRkiOrZLht8/CvkNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728928794; c=relaxed/simple;
-	bh=sL5sMIwFWwCItD6gcYu481WzjPU0/7+yb5y82AD+Wvk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=frqyzLk9GUndEDtwqg5WmVGXazCOUcbZMTX+eNVC9tPUsvIp++h23BwZ5wF4bRJerm0uLgH05mILbrLg/UNx/6Mm9LJKpc6f1acDDvz1qFlBqxjvX1yTKMLsURIthYY2pFuaabEi7nCpovdYcyxTstrBUGYClU3AZ7s55Rpq8Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nykRahsO; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-431198c63cfso4580805e9.1
-        for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 10:59:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728928791; x=1729533591; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9q/9cP3oWJrsUKpMb0FHSTkpYb3pjCPdKiZ+2qeTeso=;
-        b=nykRahsOSeYdY9l3q+9WKq52D6YXP1YgBf7nnP+2lijkId+Grucf4oV6bCjX8+4Rc4
-         ARDWmLmVlNcshJ70PHQGBl4RZPQIXUmdPkTjMmNCJ4qbHsGbDwxwiuunKeRodAHSgdnd
-         t7bkki8uoURQQTZOm9QzJRQaJkobThx/OtOi34TsyNIObBfREBmJ8Ht52BRkW3QIHGCh
-         6QrC3UGsmNfoYkxRAatUv4EkBEYXGoiyGKAJ+CXP+oZs6y0ruUMkOeTO1zcVKfgm4B6H
-         A/UxcsboK8aV2d/z7meQ3iarqmN0mKOuAt+DgfFh1jiJ6g77a+wGkQfkiKLZiYxIb9Sd
-         iDWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728928791; x=1729533591;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9q/9cP3oWJrsUKpMb0FHSTkpYb3pjCPdKiZ+2qeTeso=;
-        b=Ah3JiD5OlMoIdnnMhloBoK5g2bF/3KJc5cLuoLplnOYLVYnIjq2dEPPaC/wav1r5Hl
-         3UQjfP1lhaYxnl1aPor77ILSGQGFj9JGF1eJGXF/53tGPVFX30OLJFMBkgFQUJcpX/qx
-         Yb96YLRjq/UuTMoayBWdeb8emW10cRhPNnyqM6EylNCNFZ+P+7Ljiv5vdkcTh87KZmyJ
-         kk7qvdUdq8GxTlogUAhSZCca//TTRNOu2rTqNyRo9xuFS3n4K4iA/2ZykVFP5oCiOj7Z
-         99ZO22EvX2VL3jez8UH1/3qgmrxVj7/qH+FB8t78tWregHBU8y7t+qAH49YBqsaqpbTy
-         Y9aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUoic/ScVexlUIkybmCnoXxkvVLP8AUuRampG0C9fgw4cX2F22R5k/jykM8HyskWBJnhZfnvzLW7Vc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl5cHHXIBAJLyALKJZ4xtnHGSVK2/hQjPqeidU/VDz/MwL2hLL
-	IW1IIvWYUdyoXOZqV6gCkwgvBjUXhtitv2V6pzPLW686DPEegzPJNkkIYXZOUAs=
-X-Google-Smtp-Source: AGHT+IGTUiH+wxBsHB9dno2CzL2+b4c3qz1CzT2oxTHAu1gqp3Wv6zCH7BYb49kA58Y2eWcu9EOc2g==
-X-Received: by 2002:a05:6000:1866:b0:374:c800:dc3d with SMTP id ffacd0b85a97d-37d55212222mr4267041f8f.1.1728928791216;
-        Mon, 14 Oct 2024 10:59:51 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.211.167])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6cffa5sm12027426f8f.53.2024.10.14.10.59.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Oct 2024 10:59:50 -0700 (PDT)
-Message-ID: <7f3ccd71-f885-4f84-bda3-cb2adaffc4fa@linaro.org>
-Date: Mon, 14 Oct 2024 19:59:47 +0200
+	s=arc-20240116; t=1728930839; c=relaxed/simple;
+	bh=orlkwQXM2I3OU3tc6CiGdUbLmNgwRmnnKgD6e4DJPq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qrbNU4/gEUBCfSL61OKil/49BncQUh+x4d0VL2+yS7JZ3xqKGgAgLXvQ47RVJPsT4F/pkNOk8lcEG8YyBYlHeiRa0yb3yvhkX1yaT98tKi2LlCNGFG2h9sG+KIQ1yi5PWIU5FfXqN5XMwpHfqRzW1SKTG/4EUxx0lGx3CuE8TaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3ykNKlJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E91C4CED0;
+	Mon, 14 Oct 2024 18:33:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728930839;
+	bh=orlkwQXM2I3OU3tc6CiGdUbLmNgwRmnnKgD6e4DJPq0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=X3ykNKlJX2SA0FuyhVHBkDs0cQTNz0wWsHe5Oc+0ls2NlDxbW6OyTRbH2cKs8s6/e
+	 Egar6nR9ccgfzfIzMaaasZFLbfWUntYoYaYsBH67wvF11CbRWQVFE9Asnmdssepb2i
+	 iyTHS/wT89f2Xusxq4GH1FRBCxa8Dw7+Up+wmYzCBIprLSbEEyziVPT+n38DhoyASu
+	 B1b0r2fkxIaadspQXPcbqpErdqMpBW3ubxXRevJe87ycFRtsjclUDXyD8YeP6hDtaQ
+	 V/bXXGcBGwhsx0ihyYewI00DBOZhz1U6aAlBcXZPzG8lKJNjZby5DieqKlPGvpMPDQ
+	 334CmIq+revOQ==
+Date: Mon, 14 Oct 2024 19:33:48 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Trevor Gamblin <tgamblin@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, David
+ Lechner <dlechner@baylibre.com>, Uwe Kleine-Konig
+ <u.kleine-koenig@baylibre.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] iio: adc: ad7625: add driver
+Message-ID: <20241014193348.6f228be6@jic23-huawei>
+In-Reply-To: <20240909-ad7625_r1-v5-2-60a397768b25@baylibre.com>
+References: <20240909-ad7625_r1-v5-0-60a397768b25@baylibre.com>
+	<20240909-ad7625_r1-v5-2-60a397768b25@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/3] dt-bindings: iio: adc: add a7779 doc
-To: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Cosmin Tanislav <cosmin.tanislav@analog.com>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Alexandru Ardelean <alexandru.ardelean@analog.com>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
- Ana-Maria Cusco <ana-maria.cusco@analog.com>,
- George Mois <george.mois@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20241014143204.30195-1-ramona.nechita@analog.com>
- <20241014143204.30195-2-ramona.nechita@analog.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20241014143204.30195-2-ramona.nechita@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 14/10/2024 16:31, Ramona Alexandra Nechita wrote:
-> Add dt bindings for AD7779 8-channel, simultaneous sampling ADC
-> family with eight full Σ-Δ ADCs on chip and ultra-low input
-> current to allow direct sensor connection.
+On Mon, 09 Sep 2024 10:30:48 -0400
+Trevor Gamblin <tgamblin@baylibre.com> wrote:
+
+> Add a driver for the AD762x and AD796x family of ADCs. These are
+> pin-compatible devices using an LVDS interface for data transfer,
+> capable of sampling at rates of 6 (AD7625), 10 (AD7626), and 5
+> (AD7960/AD7961) MSPS, respectively. They also feature multiple voltage
+> reference options based on the configuration of the EN1/EN0 pins, which
+> can be set in the devicetree.
 > 
-> Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+0-day found an issue. I've fixed up as:
+diff --git a/drivers/iio/adc/ad7625.c b/drivers/iio/adc/ad7625.c
+index 19c15002d96c..ddd1e4a26429 100644
+--- a/drivers/iio/adc/ad7625.c
++++ b/drivers/iio/adc/ad7625.c
+@@ -452,9 +452,10 @@ static const struct iio_buffer_setup_ops ad7625_buffer_setup_ops = {
+        .postdisable = &ad7625_buffer_postdisable,
+ };
+ 
+-static int devm_ad7625_pwm_get(struct device *dev, struct clk *ref_clk,
++static int devm_ad7625_pwm_get(struct device *dev,
+                               struct ad7625_state *st)
+ {
++       struct clk *ref_clk;
+        u32 ref_clk_rate_hz;
+ 
+        st->cnv_pwm = devm_pwm_get(dev, "cnv");
+@@ -556,7 +557,6 @@ static int ad7625_probe(struct platform_device *pdev)
+        struct device *dev = &pdev->dev;
+        struct iio_dev *indio_dev;
+        struct ad7625_state *st;
+-       struct clk *ref_clk;
+        int ret;
+        u32 default_sample_freq;
+ 
+@@ -610,7 +610,7 @@ static int ad7625_probe(struct platform_device *pdev)
+                                             "failed to set EN pins\n");
+        }
+ 
+-       ret = devm_ad7625_pwm_get(dev, ref_clk, st);
++       ret = devm_ad7625_pwm_get(dev, st);
+        if (ret)
+               return ret;
 
-<form letter>
-This is a friendly reminder during the review process.
 
-It looks like you received a tag and forgot to add it.
+Let me know if I've missed something.
+I'd guess this is a case of code evolving into a dead end ;)
+The bots win again.
 
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
 
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+Jonathan
 
-If a tag was not added on purpose, please state why and what changed.
-</form letter>
+> +static int devm_ad7625_pwm_get(struct device *dev, struct clk *ref_clk,
+> +			       struct ad7625_state *st)
 
-Best regards,
-Krzysztof
+Here ref_clk is passed in but then overwritten in here.
 
+> +{
+> +	u32 ref_clk_rate_hz;
+> +
+> +	st->cnv_pwm = devm_pwm_get(dev, "cnv");
+> +	if (IS_ERR(st->cnv_pwm))
+> +		return dev_err_probe(dev, PTR_ERR(st->cnv_pwm),
+> +				     "failed to get cnv pwm\n");
+> +
+> +	/* Preemptively disable the PWM in case it was enabled at boot */
+> +	pwm_disable(st->cnv_pwm);
+> +
+> +	st->clk_gate_pwm = devm_pwm_get(dev, "clk_gate");
+> +	if (IS_ERR(st->clk_gate_pwm))
+> +		return dev_err_probe(dev, PTR_ERR(st->clk_gate_pwm),
+> +				     "failed to get clk_gate pwm\n");
+> +
+> +	/* Preemptively disable the PWM in case it was enabled at boot */
+> +	pwm_disable(st->clk_gate_pwm);
+> +
+> +	ref_clk = devm_clk_get_enabled(dev, NULL);
+> +	if (IS_ERR(ref_clk))
+> +		return dev_err_probe(dev, PTR_ERR(ref_clk),
+> +				     "failed to get ref_clk");
+> +
+> +	ref_clk_rate_hz = clk_get_rate(ref_clk);
+> +	if (!ref_clk_rate_hz)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "failed to get ref_clk rate");
+> +
+> +	st->ref_clk_rate_hz = ref_clk_rate_hz;
+> +
+> +	return 0;
+> +}
+
+> +
+> +static int ad7625_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct ad7625_state *st;
+> +	struct clk *ref_clk;
+> +	int ret;
+> +	u32 default_sample_freq;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +
+> +	st->info = device_get_match_data(dev);
+> +	if (!st->info)
+> +		return dev_err_probe(dev, -EINVAL, "no chip info\n");
+> +
+> +	if (device_property_read_bool(dev, "adi,no-dco"))
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "self-clocked mode not supported\n");
+> +
+> +	if (st->info->has_bandwidth_control)
+> +		ret = ad7625_parse_mode(dev, st, 4);
+> +	else
+> +		ret = ad7625_parse_mode(dev, st, 2);
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_ad7625_regulator_setup(dev, st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Set the device mode based on detected EN configuration. */
+> +	if (!st->info->has_bandwidth_control) {
+> +		ad7625_set_en_gpios_for_vref(st, st->have_refin, st->vref_mv);
+> +	} else {
+> +		/*
+> +		 * If neither sampling mode is available, then report an error,
+> +		 * since the other modes are not useful defaults.
+> +		 */
+> +		if (st->can_wide_bandwidth) {
+> +			ret = ad7960_set_mode(st, AD7960_MODE_WIDE_BANDWIDTH,
+> +					      st->have_refin, st->vref_mv);
+> +		} else if (st->can_narrow_bandwidth) {
+> +			ret = ad7960_set_mode(st, AD7960_MODE_NARROW_BANDWIDTH,
+> +					      st->have_refin, st->vref_mv);
+> +		} else {
+> +			return dev_err_probe(dev, -EINVAL,
+> +				"couldn't set device to wide or narrow bandwidth modes\n");
+> +		}
+> +
+> +		if (ret)
+> +			return dev_err_probe(dev, -EINVAL,
+> +					     "failed to set EN pins\n");
+> +	}
+> +
+> +	ret = devm_ad7625_pwm_get(dev, ref_clk, st);
+We pass ref_clk in but don't update the underlying pointer (just a copy of
+it) and don't need it out here anyway.
+
+I've dropped the parameter and moved the definition into pwm_get()
+
+> +	if (ret)
+> +		return ret;
+> +
 

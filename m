@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-10588-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10589-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3ECE99D8CE
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 23:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0F299D8D1
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 23:14:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E73801C212E7
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 21:14:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E6F1C212F9
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Oct 2024 21:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842481D0F61;
-	Mon, 14 Oct 2024 21:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3B81D0F61;
+	Mon, 14 Oct 2024 21:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wV8lYQSL"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="feGxgYTx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9348E1C729B
-	for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 21:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E121C729B
+	for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 21:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728940450; cv=none; b=MAeJOJ87eh+5GnbJWu/P6rYYxdMel2fG4Decd8pIlNcO1cVsziowYrVzR620Vi317PweEbi8yZwUBk4HsOvHuOXzKhnaoJNoZ8j3uNJ+7tuAUPj1IBBw5ihED9N2qbLWTxKottBl1ZPZMkBX0APQeFlPl3baU6Smr+fOPnsplsg=
+	t=1728940487; cv=none; b=R2JOgLAaScaObqha0ezBlhTKdXoa4vqU5KduBHrKcpDIR8vHSO/8NxwGY8Wd/7FeiFLzP81DrWzA4FCaVdYmqmqV2nmKV4H0x0ncRmipmERLodHpicZUCX0AO2yLWgnOi27o5jYdS7F+KqvS0TeqvYxi+nRO/54Wyne7mNTfh1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728940450; c=relaxed/simple;
-	bh=NNULu7V4/uFQOOw1zu9eVvMWDZPrUoD1MFk/IRT5hLU=;
+	s=arc-20240116; t=1728940487; c=relaxed/simple;
+	bh=nAFlkhcRNHKHuaE+HUU7BIj7CjmDG4Q9GvLHO3xcYGY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UlNfcrxNpxu8I+Tu5Hxah6kDbcvoSoT3proFYUGLWxA+q1YbCnpFIFD+NwW8d5aIkLJWohZDgrgTYIHGWH40yEcQyy480dday7i54uRC0DutmxP+1uqxaALVn/P4nKB5LnCllZ2HMLzkyH0YK9hQbQtg3ZeQbwFQnIqt6gsA4yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wV8lYQSL; arc=none smtp.client-ip=209.85.210.43
+	 In-Reply-To:Content-Type; b=J11f1q+UNF82JIgw7C3w4NNmjARW3liFsoj44Py28o+klcWtEJ23tfcifN9iXnjIAAHXBZ3UoXovwrdJT+gOvviuEQKHHbKL/MlzfaqFJmK3RHk0kiTZF9M5QUVQMeldLoRMaDi4qVpLo5BRPb68b7dPNXK1pbWwDaJ9sPBcsME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=feGxgYTx; arc=none smtp.client-ip=209.85.167.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-716ab0c7873so1318565a34.2
-        for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 14:14:08 -0700 (PDT)
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3e5c89b013aso2094250b6e.1
+        for <linux-iio@vger.kernel.org>; Mon, 14 Oct 2024 14:14:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728940448; x=1729545248; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728940485; x=1729545285; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=zq14q1R1F8s50ju9k71p1ZwPAO4Av1bykZb7U4Dj1cE=;
-        b=wV8lYQSLveiIsyBaD9d01kQXbU3B+KqPSMv2Odc571NxUsY/JunsWZSs749976PW/t
-         ll3pCd6M+BJRSp8XBJZohIxKdXD1akV3h3Ynml8mMwvMfL1TB8X+ZNb1oAX47tCAh5k0
-         tDyWg2FgUjq7eltPyg/xnBBvJE1txW71D5x54ZQBQ1iw3PMpJteqwz9BQ/lDrFyv5Mfj
-         yE6BwqUmWAkvvCZ/B64/duZqTOdfEQH8F0XxGDbvv6wl9rX26XtQpjpKm71N9vkBO2kz
-         O5lUypYrNgO731RkwzgeQRnAeP7ExVznivds6vxg7KmI5LmYShktBpVF32EEuRywK7WU
-         WOUg==
+        bh=3ae6cc/rEu7MTh5Go6Mji5YMOFkTKznRBN2CVBXl0w0=;
+        b=feGxgYTx3uu384NqkGC9yoyG7h7KjHm5xYH2H9Nx5M2FtEyJ6eDlq8pgaiZLGCTI6I
+         zmz4MytEzZ/Bv2h3ECghOg6kX25JqZ2XHitxVw7zLfiFzcRs0lLM2KwYjAdkd+dc0Mz4
+         V1K/TxVoFacs67xCmSchqDfi/wwFkTjrJWR2wb7nIEycXteyAoYDLX3Yw8eZE2KFyrKp
+         WtMtqv3TIF9xb7rYxGM6knYqsivqhsVnOWTYz/wJtkgFrS4R64suuLadvNRlEfbSzQ6o
+         srAmT1jnVQ9np3lx5A7GvbTB9J4fQPfkN4u5fZoZBw6we4V02dEl2qDXnLs7eUQrviZv
+         D1nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728940448; x=1729545248;
+        d=1e100.net; s=20230601; t=1728940485; x=1729545285;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zq14q1R1F8s50ju9k71p1ZwPAO4Av1bykZb7U4Dj1cE=;
-        b=LBt5HYfPUtgeeyBAEdzjzYrTQQ3JB2jQttuEeByxDdyCDWpR3i91A5DCT/fvEPu5/3
-         uiW8d5m9pXxKiPvrn7eIpWiJBr1XkRgKvXlBW7iIwK1/5mQd5W0pK1dOSx4CsRoZYK2T
-         NH8iQbwWolNnOni3ysIwR70/glvhoT+v71dLgFDeqStx3BaCap/qmqd6S0RmcTYqCReA
-         balJqSj2fo0tw+PdWNp2lBwZRe7ND5WZrcqENSfbVsa9baxSqpEW9rJT+bG7IU+lWlBy
-         +ddUT/cg9NW3vxRu7e80cR5p9s5ReITP968YE2Gmj5Y1+pe/QEFwzGfM6AbKKzVMRoeC
-         jYiw==
-X-Gm-Message-State: AOJu0Yz7n/XC4vrnbUGhfUlRxP8E2VRPOvJ7+rhgSQ4XlSPzxfz+44Zg
-	1wZD0jhWBhbAfrYADK3Uugmw2yhrE/swHcf3IZaJvpVaHI0cI2e58Xh8lOTuODk=
-X-Google-Smtp-Source: AGHT+IFBQpcdVQJpDxZ/TlLOQl91w5TGGNDrZiZmWC5MClEg9c6QlPh8jb8yUjuS+qoWYS4wRLVRcg==
-X-Received: by 2002:a05:6870:3749:b0:27d:10f5:347 with SMTP id 586e51a60fabf-28887343aa1mr4749601fac.15.1728940447653;
-        Mon, 14 Oct 2024 14:14:07 -0700 (PDT)
+        bh=3ae6cc/rEu7MTh5Go6Mji5YMOFkTKznRBN2CVBXl0w0=;
+        b=wcV2vUOSw5K8KaukWOs2MOD7uLTkQ+UxkVJrL989o8SPP9PE6wPs4Or3ObBYXqkoDf
+         1C6h0/jk3sZpzhHeQY+Ib3PdwCuv02cVxgyGXLMtWb5T1uPm4jS5OPFx6dz1BcWmTn9d
+         CTHCLcqp3o27s+BJ/ceCrppmLPT/tW9ZeKWlcHcqHl1x44MjUDcVf4iLMWEPU6CwL4DC
+         qaSzuV/+xP2SLO7OfZ+m8tlG2rUY5WutJIGvAQQGI6IVO061xKn66zEDdqNqbQy4sV81
+         5HsZx/cgGIiRc0OkpL+hrtupxi18NhbEEwFRYpichUzZVhw46wrxg9zCu1pZgDNlRzFT
+         gVcw==
+X-Gm-Message-State: AOJu0YxyK0ucq1qzrNyektIfGH9eWJ58lTtzNSBABl9+ZPDqoHq/PXxt
+	+JHj48coki9wmO2KDjh9Pc7LX3eL7grb26IgeU7vgQa2BDFzkNtYcPhRGCqtSoM=
+X-Google-Smtp-Source: AGHT+IFuC9H1+XXsY76DwCrYv4lf/aU/+7qcxx5rK85iXsvs6ntFlwhM3N3IXgq1nrn73MMdII/pBA==
+X-Received: by 2002:a05:6808:179a:b0:3e5:dfc9:535 with SMTP id 5614622812f47-3e5dfc907ecmr3429616b6e.40.1728940485322;
+        Mon, 14 Oct 2024 14:14:45 -0700 (PDT)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-288581dcebbsm2957223fac.27.2024.10.14.14.14.04
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e50a29ad61sm2178576b6e.2.2024.10.14.14.14.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Oct 2024 14:14:06 -0700 (PDT)
-Message-ID: <ab559026-7e95-4adc-9978-6db30982b2a6@baylibre.com>
-Date: Mon, 14 Oct 2024 16:14:04 -0500
+        Mon, 14 Oct 2024 14:14:43 -0700 (PDT)
+Message-ID: <161aa7f4-299d-4486-92ad-3f3eab2f2979@baylibre.com>
+Date: Mon, 14 Oct 2024 16:14:42 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,7 +75,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/8] iio: dac: adi-axi-dac: extend features
+Subject: Re: [PATCH v6 5/8] iio: dac: ad3552r: changes to use FIELD_PREP
 To: Angelo Dureghello <adureghello@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
  <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -85,178 +85,187 @@ To: Angelo Dureghello <adureghello@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 References: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-0-eeef0c1e0e56@baylibre.com>
- <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-4-eeef0c1e0e56@baylibre.com>
+ <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-5-eeef0c1e0e56@baylibre.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-4-eeef0c1e0e56@baylibre.com>
+In-Reply-To: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-5-eeef0c1e0e56@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/14/24 5:08 AM, Angelo Dureghello wrote:
 > From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Extend AXI-DAC backend with new features required to interface
-> to the ad3552r DAC. Mainly, a new compatible string is added to
-> support the ad3552r-axi DAC IP, very similar to the generic DAC
-> IP but with some customizations to work with the ad3552r.
-> 
-> Then, a serie of generic functions has been added to match with
-
-spelling: series
-
-> ad3552r needs. Function names has been kept generic as much as
-> possible, to allow re-utilization from other frontend drivers.
+> Changes to use FIELD_PREP, so that driver-specific ad3552r_field_prep
+> is removed. Variables (arrays) that was used to call ad3552r_field_prep
+> are removed too.
 > 
 > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 > ---
 
-...
+Found one likely bug. The rest are suggestions to keep the static
+analyzers happy.
 
-> +static int axi_dac_read_raw(struct iio_backend *back,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val, int *val2, long mask)
-> +{
-> +	struct axi_dac_state *st = iio_backend_get_priv(back);
-> +	int err, reg;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_FREQUENCY:
-> +
-> +		if (!st->info->has_dac_clk)
-> +			return -EOPNOTSUPP;
-> +
-> +		/*
-> +		 * As from ad3552r AXI IP documentation,
-> +		 * returning the SCLK depending on the stream mode.
-> +		 */
-> +		err = regmap_read(st->regmap, AXI_DAC_CUSTOM_CTRL_REG, &reg);
-> +		if (err)
-> +			return err;
-> +
-> +		if (reg & AXI_DAC_CUSTOM_CTRL_STREAM)
-> +			*val = st->dac_clk_rate / 2;
+				\
+> @@ -510,8 +416,14 @@ static int ad3552r_write_raw(struct iio_dev *indio_dev,
+>  					val);
+>  		break;
+>  	case IIO_CHAN_INFO_ENABLE:
+> -		err = ad3552r_set_ch_value(dac, AD3552R_CH_DAC_POWERDOWN,
+> -					   chan->channel, !val);
+> +		if (chan->channel == 0)
+> +			val = FIELD_PREP(AD3552R_MASK_CH_DAC_POWERDOWN(0), !val);
 > +		else
-> +			*val = st->dac_clk_rate / 8;
+> +			val = FIELD_PREP(AD3552R_MASK_CH_DAC_POWERDOWN(1), !val);
 
-To get the DAC sample rate, we only care about the streaming mode
-rate, so this should just always be / 2 and not / 8. Otherwise
-the sampling_frequency attribute in the DAC driver will return
-the wrong value when the buffer is not enabled. We never do buffered
-writes without enabling streaming mode.
+In the past, I've had bots (Sparse, IIRC) complain about using !val
+with FIELD_PREP. Alternative is to write it as val ? 1 : 0.
 
 > +
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int axi_dac_bus_reg_write(struct iio_backend *back, u32 reg, u32 val,
-> +				 size_t data_size)
-> +{
-> +	struct axi_dac_state *st = iio_backend_get_priv(back);
-> +	int ret;
-> +	u32 ival;
-> +
-> +	if (data_size == sizeof(u16))
-> +		ival = FIELD_PREP(AXI_DAC_CUSTOM_WR_DATA_16, val);
-> +	else
-> +		ival = FIELD_PREP(AXI_DAC_CUSTOM_WR_DATA_8, val);
-> +
-> +	ret = regmap_write(st->regmap, AXI_DAC_CUSTOM_WR_REG, ival);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/*
-> +	 * Both REG_CNTRL_2 and AXI_DAC_CNTRL_DATA_WR need to know
-
-I'm guessing these got renamed. REG_CNTRL_2 = AXI_DAC_CNTRL_2_REG
-and AXI_DAC_CNTRL_DATA_WR = AXI_DAC_CUSTOM_WR_REG?
-
-> +	 * the data size. So keeping data size control here only,
-> +	 * since data size is mandatory for the current transfer.
-> +	 * DDR state handled separately by specific backend calls,
-> +	 * generally all raw register writes are SDR.
-> +	 */
-> +	if (data_size == sizeof(u8))
-> +		ret = regmap_set_bits(st->regmap, AXI_DAC_CNTRL_2_REG,
-> +				      AXI_DAC_CNTRL_2_SYMB_8B);
-> +	else
-> +		ret = regmap_clear_bits(st->regmap, AXI_DAC_CNTRL_2_REG,
-> +					AXI_DAC_CNTRL_2_SYMB_8B);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> +				 AXI_DAC_CUSTOM_CTRL_ADDRESS,
-> +				 FIELD_PREP(AXI_DAC_CUSTOM_CTRL_ADDRESS, reg));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> +				 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA,
-> +				 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_read_poll_timeout(st->regmap,
-> +				       AXI_DAC_CUSTOM_CTRL_REG, ival,
-> +				       ival & AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA,
-> +				       10, 100 * KILO);
-> +	if (ret)
-> +		return ret;
-
-Should we also clear AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA on timeout
-so that we don't leave things in a bad state?
-
-> +
-> +	return regmap_clear_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> +				 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA);
-> +}
-> +
-
-...
-
->  static int axi_dac_probe(struct platform_device *pdev)
->  {
-> -	const unsigned int *expected_ver;
->  	struct axi_dac_state *st;
->  	void __iomem *base;
->  	unsigned int ver;
-> @@ -566,15 +793,26 @@ static int axi_dac_probe(struct platform_device *pdev)
->  	if (!st)
->  		return -ENOMEM;
+> +		err = ad3552r_update_reg_field(dac, AD3552R_REG_ADDR_POWERDOWN_CONFIG,
+> +					       AD3552R_MASK_CH_DAC_POWERDOWN(chan->channel),
+> +					       val);
+>  		break;
+>  	default:
+>  		err = -EINVAL;
+> @@ -715,9 +627,9 @@ static int ad3552r_reset(struct ad3552r_desc *dac)
+>  	}
 >  
-> -	expected_ver = device_get_match_data(&pdev->dev);
-> -	if (!expected_ver)
-> +	st->info = device_get_match_data(&pdev->dev);
-> +	if (!st->info)
->  		return -ENODEV;
+>  	return ad3552r_update_reg_field(dac,
+> -					addr_mask_map[AD3552R_ADDR_ASCENSION][0],
+> -					addr_mask_map[AD3552R_ADDR_ASCENSION][1],
+> -					val);
+> +					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
+> +					AD3552R_MASK_ADDR_ASCENSION,
+> +					FIELD_PREP(AD3552R_MASK_ADDR_ASCENSION, val));
+>  }
 >  
-> -	clk = devm_clk_get_enabled(&pdev->dev, NULL);
-> +	clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
-
-This will break existing users that don't have clock-names
-in the DT. It should be fine to leave it as NULL in which
-case it will get the clock at index 0 in the clocks array
-even if there is more than one clock.
-
->  	if (IS_ERR(clk))
->  		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
->  				     "failed to get clock\n");
+>  static void ad3552r_get_custom_range(struct ad3552r_desc *dac, s32 i, s32 *v_min,
+> @@ -812,20 +724,20 @@ static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
+>  				     "mandatory custom-output-range-config property missing\n");
 >  
-> +	if (st->info->has_dac_clk) {
-> +		struct clk *dac_clk;
+>  	dac->ch_data[ch].range_override = 1;
+> -	reg |= ad3552r_field_prep(1, AD3552R_MASK_CH_RANGE_OVERRIDE);
+> +	reg |= FIELD_PREP(AD3552R_MASK_CH_RANGE_OVERRIDE, 1);
+>  
+>  	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-p", &val);
+>  	if (err)
+>  		return dev_err_probe(dev, err,
+>  				     "mandatory adi,gain-scaling-p property missing\n");
+> -	reg |= ad3552r_field_prep(val, AD3552R_MASK_CH_GAIN_SCALING_P);
+> +	reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_P, val);
+>  	dac->ch_data[ch].p = val;
+>  
+>  	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-n", &val);
+>  	if (err)
+>  		return dev_err_probe(dev, err,
+>  				     "mandatory adi,gain-scaling-n property missing\n");
+> -	reg |= ad3552r_field_prep(val, AD3552R_MASK_CH_GAIN_SCALING_N);
+> +	reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_N, val);
+>  	dac->ch_data[ch].n = val;
+>  
+>  	err = fwnode_property_read_u32(gain_child, "adi,rfb-ohms", &val);
+> @@ -841,9 +753,9 @@ static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
+>  	dac->ch_data[ch].gain_offset = val;
+>  
+>  	offset = abs((s32)val);
+> -	reg |= ad3552r_field_prep((offset >> 8), AD3552R_MASK_CH_OFFSET_BIT_8);
+> +	reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_BIT_8, (offset >> 8));
+
+Can drop () from (offset >> 8).
+
+>  
+> -	reg |= ad3552r_field_prep((s32)val < 0, AD3552R_MASK_CH_OFFSET_POLARITY);
+> +	reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_POLARITY, (s32)val < 0);
+
+Instead of (s32) cast, could write val < 0 : 1 : 0 (to be consistent with
+suggestion above for replacing !val).
+
+>  	addr = AD3552R_REG_ADDR_CH_GAIN(ch);
+>  	err = ad3552r_write_reg(dac, addr,
+>  				offset & AD3552R_MASK_CH_OFFSET_BITS_0_7);
+> @@ -886,9 +798,9 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
+>  	}
+>  
+>  	err = ad3552r_update_reg_field(dac,
+> -				       addr_mask_map[AD3552R_VREF_SELECT][0],
+> -				       addr_mask_map[AD3552R_VREF_SELECT][1],
+> -				       val);
+> +				       AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
+> +				       AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
+> +				       FIELD_PREP(AD3552R_MASK_REFERENCE_VOLTAGE_SEL, val));
+>  	if (err)
+>  		return err;
+>  
+> @@ -900,9 +812,9 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
+>  		}
+>  
+>  		err = ad3552r_update_reg_field(dac,
+> -					       addr_mask_map[AD3552R_SDO_DRIVE_STRENGTH][0],
+> -					       addr_mask_map[AD3552R_SDO_DRIVE_STRENGTH][1],
+> -					       val);
+> +					       AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
+> +					       AD3552R_MASK_SDO_DRIVE_STRENGTH,
+> +					       FIELD_PREP(AD3552R_MASK_SDO_DRIVE_STRENGTH, val));
+>  		if (err)
+>  			return err;
+>  	}
+> @@ -938,9 +850,15 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
+>  						     "Invalid adi,output-range-microvolt value\n");
+>  
+>  			val = err;
+> -			err = ad3552r_set_ch_value(dac,
+> -						   AD3552R_CH_OUTPUT_RANGE_SEL,
+> -						   ch, val);
+> +			if (ch == 0)
+> +				val = FIELD_PREP(AD3552R_MASK_CH_OUTPUT_RANGE_SEL(0), val);
+> +			else
+> +				val = FIELD_PREP(AD3552R_MASK_CH_OUTPUT_RANGE_SEL(1), val);
 > +
-> +		dac_clk = devm_clk_get_enabled(&pdev->dev, "dac_clk");
-> +		if (IS_ERR(dac_clk))
-> +			return dev_err_probe(&pdev->dev, PTR_ERR(dac_clk),
-> +					     "failed to get dac_clk clock\n");
+> +			err = ad3552r_update_reg_field(dac,
+> +						       AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
+> +						       AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
+> +						       val);
+>  			if (err)
+>  				return err;
+>  
+> @@ -958,7 +876,14 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
+>  		ad3552r_calc_gain_and_offset(dac, ch);
+>  		dac->enabled_ch |= BIT(ch);
+>  
+> -		err = ad3552r_set_ch_value(dac, AD3552R_CH_SELECT, ch, 1);
+> +		if (ch == 0)
+> +			val = FIELD_PREP(AD3552R_MASK_CH(0), 1);
+> +		else
+> +			val = FIELD_PREP(AD3552R_MASK_CH(1), 1);
 > +
-> +		st->dac_clk_rate = clk_get_rate(dac_clk);
-> +	}
+> +		err = ad3552r_update_reg_field(dac,
+> +					       AD3552R_REG_ADDR_CH_SELECT_16B,
+> +					       AD3552R_MASK_CH(ch), val);
+>  		if (err < 0)
+>  			return err;
+>  
+> @@ -970,8 +895,15 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
+>  	/* Disable unused channels */
+>  	for_each_clear_bit(ch, &dac->enabled_ch,
+>  			   dac->model_data->num_hw_channels) {
+> -		err = ad3552r_set_ch_value(dac, AD3552R_CH_AMPLIFIER_POWERDOWN,
+> -					   ch, 1);
+> +		if (ch == 0)
+> +			val = FIELD_PREP(AD3552R_MASK_CH_OUTPUT_RANGE_SEL(0), 1);
+> +		else
+> +			val = FIELD_PREP(AD3552R_MASK_CH_OUTPUT_RANGE_SEL(1), 1);
+
+Should these be AD3552R_MASK_CH_AMPLIFIER_POWERDOWN instead of
+AD3552R_MASK_CH_OUTPUT_RANGE_SEL? (2 above and 1 below.)
+
 > +
->  	base = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(base))
->  		return PTR_ERR(base);
+> +		err = ad3552r_update_reg_field(dac,
+> +					       AD3552R_REG_ADDR_POWERDOWN_CONFIG,
+> +					       AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
+> +					       val);
+>  		if (err)
+>  			return err;
+>  	}
+> 
+
 

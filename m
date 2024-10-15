@@ -1,285 +1,223 @@
-Return-Path: <linux-iio+bounces-10623-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10626-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C014999E585
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 13:25:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C8E99EE4D
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 15:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 799C928493F
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 11:25:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C59B1F2573E
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 13:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309AC1D89E4;
-	Tue, 15 Oct 2024 11:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0F31B21A7;
+	Tue, 15 Oct 2024 13:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="2bOQRTfv"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Atfazspp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0B4189BB2;
-	Tue, 15 Oct 2024 11:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C791AF0BE
+	for <linux-iio@vger.kernel.org>; Tue, 15 Oct 2024 13:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728991501; cv=none; b=frAiOWDLRzrQl5sPBXmkk9mpk3hw8RmOArjIeaBAAyc9pLqX4wVVMpuDNcrCaW4XmGjEjisgQYMZVYf4wtvMCwaClNOGzoNb8Z8Z/8kUMSl9VxvujZCeMu/5ZbxFOvJLBPiVBQduf8BQCjRTnu9xBUhgFwNjHGS7JMxWDOjcFpQ=
+	t=1729000598; cv=none; b=Iz4OJ09fbM2Bviq2rG4kp3oaAQq41xKsa94MzqbSU5iy9Q3MQzRT3FiPUSBHlQEDNSvtpw7Fn3KUawXwKeRPu9oGVEQtP1sUFOWX0oqBWJTy+/rGWO5t0Wy8ZA2dh2fglkduMIfLcopXMV8o/8IVehtZXaYzWnVXoXN/MCnWUTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728991501; c=relaxed/simple;
-	bh=GDaNjSSJbImDlNQZ4ChJFGlxOUagP5WQW5ICLicnLTc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b9hPpE/F2hOFhzQOYmbg1knDzhB01XHL8xB4cLCKosMqGi3PPoLPAMpWYtjMqJKjS9hDQNp6+Ph4DYqA6zHNW241Nej2s5JVEXUcO/YO/v+bqnEtVXGhCCLDOWTjiiR65B6Jt+s9tzZZbYD2ejlqD7B5v1ZD2Y48zMMM3lKK8rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=2bOQRTfv; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1728991499; x=1760527499;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=GDaNjSSJbImDlNQZ4ChJFGlxOUagP5WQW5ICLicnLTc=;
-  b=2bOQRTfvC/utUDKgcBYgL0aZxrouc4CUXYHUjoCJpHD7ULMvUvLnjFF9
-   gLAIwn9g1o8p3LnPAgF5OLD/SZCxdiwX+GBlFdeuuPJZMSsutHNzkQSEM
-   oqkbj3Tih8mw615+HOtwXFgs8ZvoyJ2YDnEW1ZR3OrlLSIcDZxObWoGO9
-   aZhVNLFYkgzWS7cuP+iUFO6jHEM/GZti+DNyxtS+U34ofjZWds+NphWYg
-   JKv/O3Nh2gcVOtnZnV5uCtq7HZeqdIY1rFAOSWa4WAXgFA2pemQt/jNkB
-   bnnr7zWxxmKqyotNHCycb4OOQDDkZQmyrBlDsjEak/uXrdDwnjGu9ocH3
-   Q==;
-X-CSE-ConnectionGUID: T1FxkLg4T/ecjnzvvsNMBw==
-X-CSE-MsgGUID: 39+YtSOhQ3iCnuOQj+qKAA==
-X-IronPort-AV: E=Sophos;i="6.11,205,1725346800"; 
-   d="scan'208";a="264105777"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Oct 2024 04:24:58 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 15 Oct 2024 04:24:47 -0700
-Received: from vduicu-Virtual-Machine.mshome.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Tue, 15 Oct 2024 04:24:45 -0700
-From: <victor.duicu@microchip.com>
-To: <matteomartelli3@gmail.com>, <jic23@kernel.org>, <lars@metafoo.de>
-CC: <marius.cristea@microchip.com>, <victor.duicu@microchip.com>,
-	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4] iio: adc: pac1921: Add ACPI support to Microchip pac1921
-Date: Tue, 15 Oct 2024 14:24:41 +0300
-Message-ID: <20241015112441.11745-1-victor.duicu@microchip.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1729000598; c=relaxed/simple;
+	bh=mAvJUecqLZb8mQ7JA+zGw3XaC23jD7z91aCXiUApXpg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Mmu+qqQ2z1tXHsU4Aq4iZn6hjlMwD6TjUmsmjTRyy/ZnmEWn/0AHHgsIPxZFlkTbC2nggtRybsMI/EFDQOd4VFu9Vuy+Gn69ExYf1/euOn41GRRKZjArphAoZqHa4pfDWzWZr+wD0S8q/4AZsar+VLzqTJ7DyeXE8K6zS++V1x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Atfazspp; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4311bb9d4beso36678285e9.3
+        for <linux-iio@vger.kernel.org>; Tue, 15 Oct 2024 06:56:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729000593; x=1729605393; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AbMeYD74pGk8oJktHViz+H/uCI+iSWvCml2RdzFQNPc=;
+        b=AtfazsppkQsom4ceXEJYPkPA8x1odwQI+tmwHZw9OBAIjkiiqE2yfcYELVfG68kzaa
+         h8EIoZgKwz9W/EQkUXqRMA5C3l0cbS7ZD7eSczrZU795q2pu1/YeB6eoc6FAu6wweFqT
+         6wVCU1XX5ZGdWVG2jLH16fDEIfkAEu5mCb06YVBmMaYMcfbur/2rygOGyB3ZxMwV+eeU
+         vb24oT1hUt8WUgpL/fMlcm8K0ztZzkJFiRYd8+tk3HTaMheag1VcDZNQY+BscJ3uX0El
+         0yJtm1N+aFx63Nd9C6evSWKm+b0KvzQ1Xml/O1ielgM3bY7OriM1xQTi//36k2xNPUv6
+         L4TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729000593; x=1729605393;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AbMeYD74pGk8oJktHViz+H/uCI+iSWvCml2RdzFQNPc=;
+        b=Yfb9QFi0CWRMndEYTFjmcM5NTdF6wKqTlRoPj/jNOByZZ55oMDpNRGI2Kp74m5zpAu
+         k1p/Py8oKTbFPPcDIScj+eOjD9qlwBoeOJspkMelCPQi8j5IEqNgIXM9/2k3JGGaU+SO
+         LLtLkoXAXGfgSLlem+DB3nSKqyCYUgFp2t3uNJaH/yuLzhe4eHhe4yUqq3QGnXJ3thST
+         XlOMB9/eZT6BNYmKRUIs1YOM3GjhsS0/tShnhvI9DC25+rfCHDqbjwKj2hebOPjQ4145
+         mArY1FMETUkyibj4Ts4xakGSipIOi7ccUVQnuSP0troFDF/s1T1rUZzPoKefSXSVpEuM
+         v35g==
+X-Forwarded-Encrypted: i=1; AJvYcCWHAohKG1MJBYnByNT6+J+sGQwyCYQl1Qpy52OSDMpGI98pcWNRxMPabIoej1RO5QGfT96+8udkViU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKlNlkQ1OmVhOIijubdogKdQT1fJu5FQe/tOcCFum5pnT6mBH1
+	WY7YtibzZK7HASTtt9YS+MbSrsWHfXAGFt17ZYPE58ER2W03sKmOipTXMeIAugY=
+X-Google-Smtp-Source: AGHT+IFnMCPXiLFaoUymAEwxqVwbIQmmOBwrfONlvEq/fqSIvjjlH0Zwe7ri6z5v7v7UlXqJRK2Psw==
+X-Received: by 2002:a05:600c:510f:b0:42c:bf70:a303 with SMTP id 5b1f17b1804b1-43125619eb7mr101725465e9.29.1729000592871;
+        Tue, 15 Oct 2024 06:56:32 -0700 (PDT)
+Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4313f56f241sm18848295e9.22.2024.10.15.06.56.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Oct 2024 06:56:32 -0700 (PDT)
+From: Guillaume Stols <gstols@baylibre.com>
+Subject: [PATCH v5 0/8] Add iio backend compatibility for ad7606
+Date: Tue, 15 Oct 2024 13:56:13 +0000
+Message-Id: <20241015-ad7606_add_iio_backend_support-v5-0-654faf1ae08c@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAH10DmcC/4XOTU7DMBCG4atEXhM0dsY/6Yp7IBSN7Qm1oElx0
+ oiq6t0xqQQIVcrym8Uz70VMnBNPYlddROYlTWkcytAPlQh7Gl65TrFsoUAhWKVritaA6SjGLqW
+ x8xTeeIjddDoexzzXAUE2oMm0CkVBjpn79Lk+eH657cwfp/Jnvh2Fp4nrMB4Oad5VaLRBpKBa3
+ ZgoQVrndSA0DiN4h9Zo3/aE4tvap2ke83ltX+SKrZlObmYusoY6MDUspZdE+OTp/J585seSsuq
+ L+hVbBZuiKiKwddYpYhvhjtj8iBIAN8WmiI2z2oJUgZ26I+Jfsd0UsYimtZJcgF5G/U+8Xq9fy
+ TCILxECAAA=
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Michael Hennerich <michael.hennerich@analog.com>, 
+ linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
+ aardelean@baylibre.com, dlechner@baylibre.com, jstephan@baylibre.com, 
+ nuno.sa@analog.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Guillaume Stols <gstols@baylibre.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729000592; l=5611;
+ i=gstols@baylibre.com; s=20240417; h=from:subject:message-id;
+ bh=mAvJUecqLZb8mQ7JA+zGw3XaC23jD7z91aCXiUApXpg=;
+ b=eA4Nr5B5pKK3BOlqDyvr9iNlZJuWxGBi6BvNGQV27CiYwLbHaMOK2PUFIvM7T0/ULrUhykVbL
+ iYSaMY9Vq82DLnsAcvEJMAXmH7JFgTknN/hGvuMRm/PY6qGm1BVSHfZ
+X-Developer-Key: i=gstols@baylibre.com; a=ed25519;
+ pk=XvMm5WHuV67sGYOJZqIYzXndbaJOlNd8Q6li6vnb4Cs=
 
-From: Victor Duicu <victor.duicu@microchip.com>
+This series aims to add iio backend support for AD7606X ADCs.
 
-This patch implements ACPI support to Microchip pac1921.
-The driver can read shunt resistor value and label from ACPI table.
+In a nutshell, iio backend is a paradigm to shift the logic establishing
+the connexion between iio buffers and backend buffers into the backend's
+driver.  This provides a more stable programming interface to the driver
+developers, and give more flexibility in the way the hardware communicates.
 
-Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
+The support will be first added on AD7606B, and on next patches AD7606C16
+and AD7606C18 will be added.  The series have been tested on a Zedboard,
+using the latest HDL available, i.e
+https://github.com/analogdevicesinc/hdl/commit/7d0a4cee1b5fa403f175af513d7eb804c3bd75d0
+and an AD7606B FMCZ EKV.  This HDL handles both the conversion trigger
+(through a PWM), and the end of conversion interruption, and is compatible
+with axi-adc, which is "iio-backendable".
+
+More information about this HDL design can be found at:
+https://wiki.analog.com/resources/eval/user-guides/ad7606x-fmc/hdl
+
+The support is thus separated in two parts:
+
+- PWM support was first added.  My first intention was to make it available
+  for any version of the driver, but the time required to handle the
+  interruption is not neglectable, and I saw drifts that would eventually
+  cause an overlapping SPI read with a new conversion trigger, whith
+  catastrphic consequences. To mitigate this, CRC check must be
+  implemented, but indeed increasing the samplerate causes more sample to
+  be lost.  Therefore, I decided to only allow PWM for iio-backend
+  powered device as a first intention, leaving open the possibility to
+  add the general compatibility afterwards.
+
+- IIO backend support was added: Once the PWM support was ready, the driver
+  can be extended to iio-backend. The iio-backend powered version of the
+  driver is a platform driver, and an exemple devicetree node is available
+  in the bindings.
+
+The following features will be added in subsequent patch series:
+ - software mode for iio backend
+ - 18 bits mode (AD7606C18)
+ - single read (IIO_CHAN_READ_RAW)
+
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 ---
+Changes in v5:
+- Removal of an useless instruction move.
+- Removal of extra checks on the PWM setters functions.
+- Renaming of buffer postenable/predisable functions.
+- Usage of device_property_present to check if there is a backend
+  property instead of trying to load the backend.
+- Improvement of error handling on PWM GPIO emulation, displaying an
+  error in the kernel log in case the duty cycle set fails.
+- Link to v4: https://lore.kernel.org/r/20241009-ad7606_add_iio_backend_support-v4-0-6971a8c0f1d5@baylibre.com
 
-The patch was tested on minnowboard and sama5.
+Changes in v4:
+- Removal of accepted patches.
+- Correction on fsleep (missing semicolon and incorrect spelling !).
+- Correction on buffer initialization that should not be conditionned by
+  the presence or not of a PWM, but by the presence of a backend.
+- Addition of blank lines between blocks.
+- Modification of some declaration to switch variables to static.
+- Link to v3: https://lore.kernel.org/r/20241004-ad7606_add_iio_backend_support-v3-0-38757012ce82@baylibre.com
 
-Differences related to previous versions:
-v4:
-- change name of pac1921_shunt_is_valid to pac1921_shunt_is_invalid.
-- fix coding style.
-- in pac1921_parse_of_fw change back to device_property_read_u32.
+Changes in v3:
+- Rebase on top of the series adding ad7606C16 and AD7606C18 support.
+- Addition of pwm-names actual values and improvement in the
+  description.
+- Introduction of .num_adc_channels field in ad7606_chip_info that
+  defines the number of hardware inputs.
+- Introduction of ad7606_bus_info which couples hardware and wiring
+  informations.
+- Addition of a delay in the scan_direct function for the backend.
+- Link to v2: https://lore.kernel.org/r/20240920-ad7606_add_iio_backend_support-v2-0-0e78782ae7d0@baylibre.com
 
-v3:
-- simplify and make inline function pac1921_shunt_is_valid. Make argument u64.
-- fix link to DSM documentation.
-- in pac1921_match_acpi_device and pac1921_parse_of_fw, the shunt value is
-read as u64.
-- in pac1921_parse_of_fw remove code for reading label value from
-devicetree.
-- in pac1921_write_shunt_resistor cast the multiply result to u64 in order
-to fix overflow.
+Changes in v2:
+- Logical change in dt-bindings, using a flag for the interface instead of
+  infering it from the value of the "reg" property.
+- Removal of get_platform_match_data addition, instead the logic is
+  directly used in the file.
+- Removal of use and export of pwm_get_state_hw, returning the configured
+  frequency instead of the running one.
+- Correction on various typos, whitespaces, bad order of includes.
+- Separation of SPI conditions and PWM disabling for no backend in other
+  commits.
+- Link to v1: https://lore.kernel.org/r/20240815-ad7606_add_iio_backend_support-v1-0-cea3e11b1aa4@baylibre.com
 
-v2:
-- remove name variable from priv. Driver reads label attribute with
-sysfs.
-- define pac1921_shunt_is_valid function.
-- move default assignments in pac1921_probe to original position.
-- roll back coding style changes.
-- add documentation for DSM(the linked document was used as reference).
-- remove acpi_match_device in pac1921_match_acpi_device.
-- remove unnecessary null assignment and comment.
-- change name of function pac1921_match_of_device to
-pac1921_parse_of_fw.
+---
+Guillaume Stols (8):
+      dt-bindings: iio: adc: ad7606: Remove spi-cpha from required
+      dt-bindings: iio: adc: ad7606: Add iio backend bindings
+      Documentation: iio: Document ad7606 driver
+      iio: adc: ad7606: Add PWM support for conversion trigger
+      iio: adc: ad7606: Add compatibility to fw_nodes
+      iio: adc: ad7606: Introduce num_adc_channels
+      iio: adc: ad7606: Add iio-backend support
+      iio: adc: ad7606: Disable PWM usage for non backend version
 
-v1:
-- initial version for review.
+ .../devicetree/bindings/iio/adc/adi,ad7606.yaml    |  72 ++-
+ Documentation/iio/ad7606.rst                       | 145 ++++++
+ Documentation/iio/index.rst                        |   1 +
+ MAINTAINERS                                        |   1 +
+ drivers/iio/adc/Kconfig                            |   2 +
+ drivers/iio/adc/ad7606.c                           | 576 +++++++++++++++------
+ drivers/iio/adc/ad7606.h                           |  51 +-
+ drivers/iio/adc/ad7606_par.c                       | 122 ++++-
+ drivers/iio/adc/ad7606_spi.c                       |  96 ++--
+ 9 files changed, 838 insertions(+), 228 deletions(-)
+---
+base-commit: 465644ac29536d10178b5ca4684d0b84765b9fa4
+change-id: 20240725-ad7606_add_iio_backend_support-c401305a6924
 
- drivers/iio/adc/pac1921.c | 104 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 90 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
-index a96fae546bc1..8b5127b7ee3c 100644
---- a/drivers/iio/adc/pac1921.c
-+++ b/drivers/iio/adc/pac1921.c
-@@ -67,6 +67,10 @@ enum pac1921_mxsl {
- #define PAC1921_DEFAULT_DI_GAIN		0 /* 2^(value): 1x gain (HW default) */
- #define PAC1921_DEFAULT_NUM_SAMPLES	0 /* 2^(value): 1 sample (HW default) */
- 
-+#define PAC1921_ACPI_GET_UOHMS_VALS             0
-+#define PAC1921_ACPI_GET_LABEL			1
-+#define PAC1921_DSM_UUID                        "f7bb9932-86ee-4516-a236-7a7a742e55cb"
-+
- /*
-  * Pre-computed scale factors for BUS voltage
-  * format: IIO_VAL_INT_PLUS_NANO
-@@ -204,6 +208,11 @@ struct pac1921_priv {
- 	} scan;
- };
- 
-+static inline bool pac1921_shunt_is_invalid(u64 shunt_val)
-+{
-+	return (shunt_val == 0 || shunt_val > INT_MAX);
-+}
-+
- /*
-  * Check if first integration after configuration update has completed.
-  *
-@@ -792,13 +801,13 @@ static ssize_t pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
- 	if (ret)
- 		return ret;
- 
--	rshunt_uohm = val * MICRO + val_fract;
--	if (rshunt_uohm == 0 || rshunt_uohm > INT_MAX)
-+	rshunt_uohm = (u64)val * MICRO + val_fract;
-+	if (pac1921_shunt_is_invalid(rshunt_uohm))
- 		return -EINVAL;
- 
- 	guard(mutex)(&priv->lock);
- 
--	priv->rshunt_uohm = rshunt_uohm;
-+	priv->rshunt_uohm = (u32)rshunt_uohm;
- 
- 	pac1921_calc_current_scales(priv);
- 
-@@ -1150,6 +1159,71 @@ static void pac1921_regulator_disable(void *data)
- 	regulator_disable(regulator);
- }
- 
-+/*
-+ * documentation related to the ACPI device definition
-+ * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC193X-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
-+ */
-+static int pac1921_match_acpi_device(struct i2c_client *client, struct pac1921_priv *priv,
-+				     struct iio_dev *indio_dev)
-+{
-+	acpi_handle handle;
-+	union acpi_object *rez;
-+	guid_t guid;
-+	char *label;
-+	u64 temp;
-+
-+	guid_parse(PAC1921_DSM_UUID, &guid);
-+	handle = ACPI_HANDLE(&client->dev);
-+
-+	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1921_ACPI_GET_UOHMS_VALS, NULL);
-+	if (!rez)
-+		return dev_err_probe(&client->dev, -EINVAL,
-+				     "Could not read shunt from ACPI table\n");
-+
-+	temp = rez->package.elements[0].integer.value;
-+	ACPI_FREE(rez);
-+
-+	if (pac1921_shunt_is_invalid(temp))
-+		return dev_err_probe(&client->dev, -EINVAL, "Invalid shunt resistor\n");
-+
-+	priv->rshunt_uohm = temp;
-+	pac1921_calc_current_scales(priv);
-+
-+	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1921_ACPI_GET_LABEL, NULL);
-+	if (!rez)
-+		return dev_err_probe(&client->dev, -EINVAL,
-+				     "Could not read label from ACPI table\n");
-+
-+	label = devm_kmemdup(&client->dev, rez->package.elements->string.pointer,
-+			     (size_t)rez->package.elements->string.length + 1,
-+			     GFP_KERNEL);
-+	label[rez->package.elements->string.length] = '\0';
-+	indio_dev->label = label;
-+	ACPI_FREE(rez);
-+
-+	return 0;
-+}
-+
-+static int pac1921_parse_of_fw(struct i2c_client *client, struct pac1921_priv *priv)
-+{
-+	int ret;
-+	struct device *dev = &client->dev;
-+
-+	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-+				       &priv->rshunt_uohm);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "Cannot read shunt resistor property\n");
-+
-+	if (pac1921_shunt_is_invalid(priv->rshunt_uohm))
-+		return dev_err_probe(dev, -EINVAL, "Invalid shunt resistor: %u\n",
-+				     priv->rshunt_uohm);
-+
-+	pac1921_calc_current_scales(priv);
-+
-+	return 0;
-+}
-+
- static int pac1921_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
-@@ -1176,17 +1250,13 @@ static int pac1921_probe(struct i2c_client *client)
- 	priv->di_gain = PAC1921_DEFAULT_DI_GAIN;
- 	priv->n_samples = PAC1921_DEFAULT_NUM_SAMPLES;
- 
--	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
--				       &priv->rshunt_uohm);
--	if (ret)
--		return dev_err_probe(dev, ret,
--				     "Cannot read shunt resistor property\n");
--	if (priv->rshunt_uohm == 0 || priv->rshunt_uohm > INT_MAX)
--		return dev_err_probe(dev, -EINVAL,
--				     "Invalid shunt resistor: %u\n",
--				     priv->rshunt_uohm);
--
--	pac1921_calc_current_scales(priv);
-+	if (ACPI_HANDLE(&client->dev))
-+		ret = pac1921_match_acpi_device(client, priv, indio_dev);
-+	else
-+		ret = pac1921_parse_of_fw(client, priv);
-+	if (ret < 0)
-+		return dev_err_probe(&client->dev, ret,
-+				     "parameter parsing error\n");
- 
- 	priv->vdd = devm_regulator_get(dev, "vdd");
- 	if (IS_ERR(priv->vdd))
-@@ -1243,11 +1313,17 @@ static const struct of_device_id pac1921_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, pac1921_of_match);
- 
-+static const struct acpi_device_id pac1921_acpi_match[] = {
-+	{ "MCHP1921" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, pac1921_acpi_match);
- static struct i2c_driver pac1921_driver = {
- 	.driver	 = {
- 		.name = "pac1921",
- 		.pm = pm_sleep_ptr(&pac1921_pm_ops),
- 		.of_match_table = pac1921_of_match,
-+		.acpi_match_table = pac1921_acpi_match
- 	},
- 	.probe = pac1921_probe,
- 	.id_table = pac1921_id,
-
-base-commit: c3e9df514041ec6c46be83801b1891392f4522f7
--- 
-2.43.0
+Best regards,
+--
+Guillaume Stols <gstols@baylibre.com>
 
 

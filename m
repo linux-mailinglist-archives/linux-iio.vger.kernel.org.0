@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-10597-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10598-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE5999DE5F
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 08:30:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2395199DE8D
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 08:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF8B4282A5E
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 06:30:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E16AB236D4
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 06:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09525189F2D;
-	Tue, 15 Oct 2024 06:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BE318A925;
+	Tue, 15 Oct 2024 06:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hAK0vwJE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvxukV/K"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FA9189916;
-	Tue, 15 Oct 2024 06:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EBF189F43;
+	Tue, 15 Oct 2024 06:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728973817; cv=none; b=OOkBkojMsP9Zyio29bAixtt7SACJ3UywhvwoRbHHIt1DQ0zW3Js4Rplr+je5zOBlC3pHNWad8kP0Iief2NvXy+u6Gs20s0+qsSsEt0U11FC9ioEOuw/2tMlvSv328MKfNTnxfxxmjsbMa8W/wxXa4/KZ6098XwUu8u+wVV9lX2M=
+	t=1728974284; cv=none; b=tnQ0H9pQ++0KeYP3bHTyw65u+USGQ4fcrtkS7itEfFHKy/BlXRB7oUQNFogb+51Uke1YrcY7S/VWFtceyoQZ2h/1HtsXjNeRcjhMg+3a3rArJ/QY346goGB20x0Afqq34KNrbpdhkGo1I6YUng66kfFo1ZwrtHWPZNoOvFLmwJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728973817; c=relaxed/simple;
-	bh=41Txd5YoLMl6wAv7Qsle+XXPiZ4/UQIHqTjLCoOyMYE=;
+	s=arc-20240116; t=1728974284; c=relaxed/simple;
+	bh=YgD3cjpe3mkQGu5Jv6mav8icsnWQaCYCpTfcU2SgrY4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RD3UPy+TBVRFK3m8MvYRQpVlTLePmqpcwhoAgxctzSwpEARTcxSyPYe20+eC/fvzSx/nc/ujrjqC0dSf6tCG7YwmGt3/yMvH05xdzGeGUOFtGMGV+CCfsVrR36akVTgnM9nCzasUqIov+UOcWrqa37oQqY2wcZvnqGIdI57Ijpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hAK0vwJE; arc=none smtp.client-ip=209.85.221.44
+	 Content-Type:MIME-Version; b=c9sSwJRweqZFl64caq/ZmvVCXdHiN/WG+gjaRiV2sSQQcVNOLzfyfikv+DuHlJ6jjV7cX0/5yWgCNX4sMrLk64vwQsdqV6lCX5wPFNZbsg30Kb+7GxfJ1NgM7dlrCFhXje5DyiT88S9KbNKTZZQvZfda4YbQgpSMCRNhZ92flas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvxukV/K; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37d447de11dso3615234f8f.1;
-        Mon, 14 Oct 2024 23:30:15 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-539fe76e802so553278e87.1;
+        Mon, 14 Oct 2024 23:38:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728973814; x=1729578614; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728974281; x=1729579081; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=0/51GjD74rmzWSp7jmO+qgKLOzZqeiFNpacQrj2PkHc=;
-        b=hAK0vwJE1TnvRAkeFUJFV+B7pDF3PdsoNadn6H7lS4oTB1lB4CbjuODHookD29phOZ
-         GY1AgJ06dupGXRyVkIoKaQHJbqA+H1G+bmkeE43UIEMJZqsBq4rQS7aIfw21n5FEzzCE
-         C/GZXhEuTSg03N679fou2OcmtRevKy/2P2kBZ4rtxe1xlOaee0tI690ghY2RNdr1sG2F
-         Xn3KpRc96LapQeYfqRvBwc97V2tiUuGsAa2fUztzaRkQkntRmCNPMLXLriBNwfBa6/PN
-         in7t7TLFo5W1bJcxVKqPe4m5bzUHxN0BxiBWG7JcwylEKySwceX/+shxbSrYzH9qBMXK
-         aGXg==
+        bh=F0BPR0yvcNPqJoEqgpzXCJfseSq4ZxLcZ1DyMgnB5po=;
+        b=DvxukV/KP28Dohn1BliRZ3clmvXtGbN7+ynGINQL1X03Ya7xDfbcaCDD/ljDRKhinu
+         DXjgjdWmOm2rJE3XnCLwa3LIgtm48/ViSmKG9EhDb709XiNZE/GFxg3nktFg1a0keipc
+         /F7Y74jIKRHVzeQZ/YCihY9eNagp2UyudA7NM0BT3K1eMI3HIZqHV1ti1As79R3Utmyk
+         y3bgZh7JyogV7qu04Zv2zbwyL2r7fWC8ja9/KTfwoJItuhE9eqEi4DeieLxluEOVX59J
+         X0qND2HNUWiIPuyM/tw/YobizH2wFgg6qG6r9Y9Eq0EiThJIF5A45kwebduq8z3/B/zV
+         YyUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728973814; x=1729578614;
+        d=1e100.net; s=20230601; t=1728974281; x=1729579081;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=0/51GjD74rmzWSp7jmO+qgKLOzZqeiFNpacQrj2PkHc=;
-        b=PXiGFKQGewwOsR7wbSvKlsn9WHy6/LTrIjAHW/tAu0o+ynUPwX0i/XwAH6DdXe/sAT
-         n7VudxONoUwr9HdUkmk41Q+KOef96B794c3cnAN6wufVsHCiXxPvh/SS6nfYghkgH9t0
-         Bi/wSq2PkgQXRdxIoWr7Aud/kIEf8Om9SwP7K7oKNuLRF6XsNQA+3PEaU+lmQj7WsXMi
-         nn9sbc2IDtCf8pYxNVg6jh7nj7ThB65LaEO2edSwqvIDP8gtLCCVPY75o7GfGlQ2ziid
-         sd7JY0uWGPgGijDqZzr1M2ztK+WEgUj1Mb0ZdDXcfuUZURx41ygTowucTOUoDkt75/r6
-         UmEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU7eTzkcDAAu71v9hd5THy+u6ZKYvqC9Wws11R0a+zFD4sgj3UUXDnTNLniLH2+xNiAYrQWZXfdJpf204+H@vger.kernel.org, AJvYcCWDOOC1nFBXlg9MRb3WVkfNRPsULj0RRDFYpgwwG5aVPE+U3TK9wHo4Eo7dpy9Y7vibFtcYi3D6Rys8@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu47JROUvS0VY/ESBCK/cDam884tpK/dfjtaPJh1iMQ97Sdz/w
-	EzWo7hDdf1FYPusF6qnqzzrrSud2BizdYeF+fnXydMpbPkZXhNSo
-X-Google-Smtp-Source: AGHT+IGztSWoQNZUn18NP0qjrUlztyHZzM+Qnb1J/xY9GzqeImDRsQ4KreubkMNqsIUw5R4KTyaejg==
-X-Received: by 2002:adf:a395:0:b0:37d:4fe9:b6a7 with SMTP id ffacd0b85a97d-37d5529effamr9818072f8f.36.1728973814126;
-        Mon, 14 Oct 2024 23:30:14 -0700 (PDT)
+        bh=F0BPR0yvcNPqJoEqgpzXCJfseSq4ZxLcZ1DyMgnB5po=;
+        b=qXun/PfXgwUcvkNJH4ogN33lojdWDtg70zbVD4qKGV5cAWrxWA2YcNO88zuUhBJApH
+         4q3u/4FEqI+nWrqShdo6+ZTxsf9FB7ZC8yov0S4KzuKIA4CbLszlVON5rGO02KnG9px+
+         0ZNTT5DdLKbQOr5RvNT8weCLjVUiWRkw1Ilay12EEUcJSLXNFVINuA24eWA8lZ+oVglU
+         xmGIKLOsXQVCdWnYWdumCGvA58/Jyuq1/mVg8dvRcl9nVp2/3JPRxpiVOw62vaQ9WF6v
+         10PIeRtn8nhZ0fqLm6qCQUztGhMXd/PMSPG8rVKKr9qXEh/qZKciHdsXmiPqDhuy+6Vc
+         UMoA==
+X-Forwarded-Encrypted: i=1; AJvYcCVmCj2LYbi+u3iQyRQbuYgOuOWOdUTZ1Uf6ECjL8CV5uy6A4ekwvWles5MRiT3YyGcxV3CkLGRiN1UC@vger.kernel.org, AJvYcCXRHSoVzvUhSaOT1c4lLsvAQ9VRvAAA3xJaqd7bDqzwV5v9x8DU7mZ0qKK/c570HMz3CCzssvCBUahKtvaU@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUSI4FP/e3JBI7i0doGhqj1SqjrSfaWMhc+MB7hIrVx4y/B7T1
+	XGhRyjADHJHrMygSEkMuf/BLcjB0hVTrSJwl9u7F//O/vBez5U+9
+X-Google-Smtp-Source: AGHT+IEuwWR3ieEarmImxoKYArcYr7YwE+SQATw+oprrZt65xT0iNkFPGoZU+wWvVCJcZg+XpaToZA==
+X-Received: by 2002:a05:6512:1104:b0:539:8bc6:694a with SMTP id 2adb3069b0e04-539e571daf1mr4863962e87.43.1728974280792;
+        Mon, 14 Oct 2024 23:38:00 -0700 (PDT)
 Received: from nsa.fritz.box ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d7fc40a14sm698756f8f.103.2024.10.14.23.30.13
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d7fc445fesm713359f8f.113.2024.10.14.23.38.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 23:30:13 -0700 (PDT)
-Message-ID: <c4a961752398b7ecc6ed2eb59633b662ccfaaf50.camel@gmail.com>
-Subject: Re: [PATCH v6 4/8] iio: dac: adi-axi-dac: extend features
+        Mon, 14 Oct 2024 23:38:00 -0700 (PDT)
+Message-ID: <8642bdb546c6046e8fe1d20ef4c93e70c95c6f71.camel@gmail.com>
+Subject: Re: [PATCH v6 7/8] iio: dac: ad3552r: add high-speed platform driver
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: David Lechner <dlechner@baylibre.com>, Angelo Dureghello
  <adureghello@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
@@ -79,12 +79,12 @@ To: David Lechner <dlechner@baylibre.com>, Angelo Dureghello
  <olivier.moysan@foss.st.com>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Date: Tue, 15 Oct 2024 08:30:13 +0200
-In-Reply-To: <ab559026-7e95-4adc-9978-6db30982b2a6@baylibre.com>
+Date: Tue, 15 Oct 2024 08:37:59 +0200
+In-Reply-To: <c3d55f78-5a54-49f8-b6a1-4ed0f24f8666@baylibre.com>
 References: 
 	<20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-0-eeef0c1e0e56@baylibre.com>
-	 <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-4-eeef0c1e0e56@baylibre.com>
-	 <ab559026-7e95-4adc-9978-6db30982b2a6@baylibre.com>
+	 <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-7-eeef0c1e0e56@baylibre.com>
+	 <c3d55f78-5a54-49f8-b6a1-4ed0f24f8666@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
@@ -95,178 +95,68 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Mon, 2024-10-14 at 16:14 -0500, David Lechner wrote:
+On Mon, 2024-10-14 at 16:15 -0500, David Lechner wrote:
 > On 10/14/24 5:08 AM, Angelo Dureghello wrote:
 > > From: Angelo Dureghello <adureghello@baylibre.com>
 > >=20
-> > Extend AXI-DAC backend with new features required to interface
-> > to the ad3552r DAC. Mainly, a new compatible string is added to
-> > support the ad3552r-axi DAC IP, very similar to the generic DAC
-> > IP but with some customizations to work with the ad3552r.
+> > Add High Speed ad3552r platform driver.
 > >=20
-> > Then, a serie of generic functions has been added to match with
->=20
-> spelling: series
->=20
-> > ad3552r needs. Function names has been kept generic as much as
-> > possible, to allow re-utilization from other frontend drivers.
-> >=20
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---
 >=20
 > ...
 >=20
-> > +static int axi_dac_read_raw(struct iio_backend *back,
-> > +			=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
-> > +			=C2=A0=C2=A0=C2=A0 int *val, int *val2, long mask)
+> > +static int ad3552r_hs_read_raw(struct iio_dev *indio_dev,
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *ch=
+an,
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int *val, int *val2, long mask=
+)
 > > +{
-> > +	struct axi_dac_state *st =3D iio_backend_get_priv(back);
-> > +	int err, reg;
+> > +	struct ad3552r_hs_state *st =3D iio_priv(indio_dev);
+> > +	int ret;
 > > +
 > > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_FREQUENCY:
+> > +	case IIO_CHAN_INFO_SAMP_FREQ: {
+> > +		int sclk;
 > > +
-> > +		if (!st->info->has_dac_clk)
-> > +			return -EOPNOTSUPP;
-> > +
-> > +		/*
-> > +		 * As from ad3552r AXI IP documentation,
-> > +		 * returning the SCLK depending on the stream mode.
-> > +		 */
-> > +		err =3D regmap_read(st->regmap, AXI_DAC_CUSTOM_CTRL_REG, &reg);
-> > +		if (err)
-> > +			return err;
-> > +
-> > +		if (reg & AXI_DAC_CUSTOM_CTRL_STREAM)
-> > +			*val =3D st->dac_clk_rate / 2;
-> > +		else
-> > +			*val =3D st->dac_clk_rate / 8;
+> > +		ret =3D iio_backend_read_raw(st->back, chan, &sclk, 0,
+> > +					=C2=A0=C2=A0 IIO_CHAN_INFO_FREQUENCY);
 >=20
-> To get the DAC sample rate, we only care about the streaming mode
-> rate, so this should just always be / 2 and not / 8. Otherwise
-> the sampling_frequency attribute in the DAC driver will return
-> the wrong value when the buffer is not enabled. We never do buffered
-> writes without enabling streaming mode.
+> FWIW, this still seems like an odd way to get the stream mode SCLK
+> rate from the backend to me. How does the backend know that we want
+> the stream mode clock rate and not some other frequency value?=20
 
-But the question then is, what do we return when streaming mode is off? Div=
-iding by 2
-in that case won't report the actual SCLK. But you do have a point and I th=
-ink a very
-common pattern from userspace is to first get the sampling frequency and on=
-ly then
-starting buffering. In this case, yes, we get the wrong sampling frequency.=
- Bottom
-line I agree with David and we should just care about returning the max sam=
-pling
-frequency which is the one that apps ultimately care about.
+In this case the backend has a dedicated compatible so sky is the limit :).=
+ But yeah,
+I'm also not extremely happy with IIO_CHAN_INFO_FREQUENCY. But what do you =
+have in
+mind? Using the sampling frequency INFO or a dedicated OP?
 
-So, I would say to divide it by 2 during probe and just return that value i=
-n here.
+>=20
+> > +		if (ret !=3D IIO_VAL_INT)
+> > +			return -EINVAL;
+> > +
+> > +		/* Using 4 lanes (QSPI) */
+> > +		*val =3D DIV_ROUND_CLOSEST(sclk * 4 * (1 + st->ddr_mode),
+>=20
+> Since DDR is always enabled for buffered reads, I think we should
+> always be multiplying by 2 here instead of (1 + st->ddr_mode).
+>=20
+> Otherwise the sampling frequency attribute will return the wrong
+> value if it is read when a buffered read is not currently in
+> progress.
+>=20
+> > +					 chan->scan_type.storagebits);
+>=20
+> It would probably be more correct to use realbits here instead of
+> storagebits. Usually realbits is the bits per word being sent over
+> the SPI bus while storagebits can be larger.
 
-- Nuno S=C3=A1
->=20
-> > +
-> > +		return IIO_VAL_INT;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +static int axi_dac_bus_reg_write(struct iio_backend *back, u32 reg, u3=
-2 val,
-> > +				 size_t data_size)
-> > +{
-> > +	struct axi_dac_state *st =3D iio_backend_get_priv(back);
-> > +	int ret;
-> > +	u32 ival;
-> > +
-> > +	if (data_size =3D=3D sizeof(u16))
-> > +		ival =3D FIELD_PREP(AXI_DAC_CUSTOM_WR_DATA_16, val);
-> > +	else
-> > +		ival =3D FIELD_PREP(AXI_DAC_CUSTOM_WR_DATA_8, val);
-> > +
-> > +	ret =3D regmap_write(st->regmap, AXI_DAC_CUSTOM_WR_REG, ival);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/*
-> > +	 * Both REG_CNTRL_2 and AXI_DAC_CNTRL_DATA_WR need to know
->=20
-> I'm guessing these got renamed. REG_CNTRL_2 =3D AXI_DAC_CNTRL_2_REG
-> and AXI_DAC_CNTRL_DATA_WR =3D AXI_DAC_CUSTOM_WR_REG?
->=20
-> > +	 * the data size. So keeping data size control here only,
-> > +	 * since data size is mandatory for the current transfer.
-> > +	 * DDR state handled separately by specific backend calls,
-> > +	 * generally all raw register writes are SDR.
-> > +	 */
-> > +	if (data_size =3D=3D sizeof(u8))
-> > +		ret =3D regmap_set_bits(st->regmap, AXI_DAC_CNTRL_2_REG,
-> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AXI_DAC_CNTRL_2_SYMB_8B);
-> > +	else
-> > +		ret =3D regmap_clear_bits(st->regmap, AXI_DAC_CNTRL_2_REG,
-> > +					AXI_DAC_CNTRL_2_SYMB_8B);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret =3D regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> > +				 AXI_DAC_CUSTOM_CTRL_ADDRESS,
-> > +				 FIELD_PREP(AXI_DAC_CUSTOM_CTRL_ADDRESS, reg));
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret =3D regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> > +				 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA,
-> > +				 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret =3D regmap_read_poll_timeout(st->regmap,
-> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AXI_DAC_CUSTOM_CTRL_REG, ival=
-,
-> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ival & AXI_DAC_CUSTOM_CTRL_TR=
-ANSFER_DATA,
-> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 10, 100 * KILO);
-> > +	if (ret)
-> > +		return ret;
->=20
-> Should we also clear AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA on timeout
-> so that we don't leave things in a bad state?
->=20
-> > +
-> > +	return regmap_clear_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> > +				 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA);
-> > +}
-> > +
->=20
-> ...
->=20
-> > =C2=A0static int axi_dac_probe(struct platform_device *pdev)
-> > =C2=A0{
-> > -	const unsigned int *expected_ver;
-> > =C2=A0	struct axi_dac_state *st;
-> > =C2=A0	void __iomem *base;
-> > =C2=A0	unsigned int ver;
-> > @@ -566,15 +793,26 @@ static int axi_dac_probe(struct platform_device *=
-pdev)
-> > =C2=A0	if (!st)
-> > =C2=A0		return -ENOMEM;
-> > =C2=A0
-> > -	expected_ver =3D device_get_match_data(&pdev->dev);
-> > -	if (!expected_ver)
-> > +	st->info =3D device_get_match_data(&pdev->dev);
-> > +	if (!st->info)
-> > =C2=A0		return -ENODEV;
-> > =C2=A0
-> > -	clk =3D devm_clk_get_enabled(&pdev->dev, NULL);
-> > +	clk =3D devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
->=20
-> This will break existing users that don't have clock-names
-> in the DT. It should be fine to leave it as NULL in which
-> case it will get the clock at index 0 in the clocks array
-> even if there is more than one clock.
-
-Good catch...
+It can go both ways I guess. For channels with eg: status bits in the sampl=
+e,
+realbits won't be the exact word on the bus. OTOH, yes, we do have cases fo=
+r DMA
+buffering where storage bits is bigger that the actual word. So, yeah, no s=
+trong
+feeling about it.
 
 - Nuno S=C3=A1
 

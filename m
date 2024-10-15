@@ -1,169 +1,168 @@
-Return-Path: <linux-iio+bounces-10618-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10619-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A0C99E51B
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 13:07:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D699299E526
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 13:09:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 309E71F23F8F
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 11:07:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 381F6B24CD7
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 11:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9FB1EC01F;
-	Tue, 15 Oct 2024 11:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AFSkbutG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D861E765B;
+	Tue, 15 Oct 2024 11:08:59 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608751EBA0B;
-	Tue, 15 Oct 2024 11:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEDD1E377E;
+	Tue, 15 Oct 2024 11:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728990417; cv=none; b=ZuiDD2ndDgwztnMuaF8WZkV4P9HjbXsuKdMK3aYevQ2O4Wf3jRX+PrP4ugWYqRM4xtwFS4NBSWy7qcjWORSI+eJW/qqfYsPGMmrHBFf8VGjeY3Wgz5D9dpdFXtPioE6U4N0VrT9yUujX3jqi5RGhePW+yfjNs/pcPNxSY81J0oU=
+	t=1728990538; cv=none; b=vBjWHi7swnPgrGQO06MwR7Pb35zAGed8DPEM9BBQMtgs1Rzr6EPwgCblSyCHhyJO/RDbwWb4cmtDtiJszeNZOVS0Al06fvq+YsSrgLgPKXKkvUG2iB4LFV7eBGvCLZU6kzzBNuLO8AMMlAoWioXtg+fgSxedajt2o65QW7xl8k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728990417; c=relaxed/simple;
-	bh=zPhyRDG9F+zgzh0+HIEmtXBb7OQBzROgLZ7mJASXsvQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GAeLNbKzK+90R0rOOqCWvmGLjHBkrqf8Oj93yEuBHbh96f59yDp9zYoLIrybFBY2UHneEnOvHgk2plpPwZCALmKtBjlerfoJPAEPNNmuY2PBfhkO6lamiyrbuYPy8wWgioJSKVnLc/tDDsZ93fTmhaWsOsT/LO4dlnmHgNuMoFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AFSkbutG; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-430576ff251so45679815e9.0;
-        Tue, 15 Oct 2024 04:06:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728990414; x=1729595214; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Yg5C99O5lFsD3GMjKIKiUiVjWoF4T1zlBP/PbUaocsA=;
-        b=AFSkbutG0edBJinqvX3i2EInMETdxjTZImq/9HnTG9GAXnonnmNMKcdQThG2O8kxaf
-         RhCpcDCxfIcWLDJaNwtSOEyXEp1bNuGcpRIn2NTHoYiikQ7+4uolBSOj59nZ2Xdi8HvQ
-         4Eh6INlypp0UIwlOd1GPDsH/EUP8jFXEe8HIa9i2udzdp45lxuRSyOHdrr9pLhgtMtLV
-         pkw1w3sTJw4bEXqFNJ2pn216L07Rqh2Q7nvVgpDy/8tbzdV5Z/QGo38fgFsQUluXdaBr
-         tqR/x8ThOWyXP2y3PPKwsYM9KJ5TEGh49fVwVnl5vKS8XtA6f4piNmB4gvdjEnEtWj3s
-         RakA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728990414; x=1729595214;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yg5C99O5lFsD3GMjKIKiUiVjWoF4T1zlBP/PbUaocsA=;
-        b=eYkjUOP4o2JPjuW8/QvBdnnaR2juZj1bdEz5QX7e84BU3kpPGCm/1Wy+EJK7bxjnKr
-         k2gHaDvk58WG6uLEqp6f08vXPKXCVaeQMEvNdyKJUDGLjx9+rwwlo/6KQRpcSPdONJMc
-         jFPVvihcFB6PgNmFMXUpRKc/3xJOFO2F6u1syEAkBkvor6SGam7cnHDUXG+IHEzQQWo/
-         4WkpJbb+UZePa0pIRNk1QExWgJUpIlwItHymBIMBlFPfVADMLOzLkdrvYVA5L7u+YjID
-         d0Avl0+CddXj8FKXt3F6ivefivfVk00iX4jtttx2tPyxfSJx8vzbqM2g4v0mDE6Ht9e+
-         vVaw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUMWRy3rXVtYwrOw/ck9Caw1SDg71YAwpJROT0eisovofPJ4JH5X6zci1NoIc3t+uU0PydMGbuZxNuiB4=@vger.kernel.org, AJvYcCVl6nQc/BR2N1ldXUzxluFlLl2Zyn+f42+eanTYuOKyufuH7llrAu7/zOn3j5AkkCZkx5pTBH3LXntEJQ==@vger.kernel.org, AJvYcCW6ya1iBRnyq+28fQMWgM+sYNumDSKlMIksF5+R35jk/3Pyl/9Iw4QOk4gFxsj4HVKyOrmBWfYR5c0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuYY7yXvPakMxu+BIl/bxd88Trj0wTtgqjiOHikPdb765FGku/
-	+Q692S0RaAb3Mr3qcco+ehPQYFJlBjGyl6claBxaR+tHgarvgbkA
-X-Google-Smtp-Source: AGHT+IG60MSlabhsrBA6bEZ2PUeFwZkstarjm4Ih1FAL5vlJRowBO16QYUrs13k4ISoJBISPOpLwkA==
-X-Received: by 2002:a05:600c:4e8a:b0:42c:af06:718 with SMTP id 5b1f17b1804b1-4311df435e7mr136981645e9.28.1728990413655;
-        Tue, 15 Oct 2024 04:06:53 -0700 (PDT)
-Received: from localhost (host-79-18-120-72.retail.telecomitalia.it. [79.18.120.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d7fa7a10dsm1289181f8f.2.2024.10.15.04.06.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2024 04:06:53 -0700 (PDT)
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Date: Tue, 15 Oct 2024 13:06:38 +0200
-Subject: [PATCH v3 5/5] iio: as73211: copy/release available integration
- times to fix race
+	s=arc-20240116; t=1728990538; c=relaxed/simple;
+	bh=7vjGjQHfBMbftYavyzTIGaLgrxdYcK7KHDnpT08ZtaM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CsPwlTNJrfK6s6UFwZxjUvZBj/jH7bQ+fgO9QRTE7s9tMwQJBnKIlS+zD/m8vXBzEm0RR/7kDbyq6KdETRVyL4S8uyAaMNVT08LEMtYm2eBGYNg+coz8JcswoeLjL+A68JHRaxDh8tQRUUN/1jzjgSSoe5ChovIMolgcTRIxWpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: oNnjvyTlQJS726R6/G4jfQ==
+X-CSE-MsgGUID: BqDuvhe7RMWh3rr1LViSLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="32295900"
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
+   d="scan'208";a="32295900"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2024 04:08:56 -0700
+X-CSE-ConnectionGUID: A4XlGWDvSqSs2/hGER1uWQ==
+X-CSE-MsgGUID: DF/+bTsNTu2B2M/K1ho2UQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
+   d="scan'208";a="82516728"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2024 04:08:52 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andy@kernel.org>)
+	id 1t0fQ1-00000003FDA-0Jg3;
+	Tue, 15 Oct 2024 14:08:49 +0300
+Date: Tue, 15 Oct 2024 14:08:48 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: "Nechita, Ramona" <Ramona.Nechita@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	"Hennerich, Michael" <Michael.Hennerich@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, "Sa, Nuno" <Nuno.Sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	"Schmitt, Marcelo" <Marcelo.Schmitt@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v6 3/3] drivers: iio: adc: add support for ad777x family
+Message-ID: <Zw5NQM6Z9ATOx6SX@smile.fi.intel.com>
+References: <20240926135418.8342-1-ramona.nechita@analog.com>
+ <20240926135418.8342-4-ramona.nechita@analog.com>
+ <ZvV2mHkl4qxVVmBH@smile.fi.intel.com>
+ <DM6PR03MB4315785FB25B980264748BCBF3782@DM6PR03MB4315.namprd03.prod.outlook.com>
+ <20241010184516.66826055@jic23-huawei>
+ <Zwgb_Fq4dhVwzpf9@smile.fi.intel.com>
+ <20241012114202.425f1b74@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241015-iio-read-avail-release-v3-5-ac3e08f25cb3@gmail.com>
-References: <20241015-iio-read-avail-release-v3-0-ac3e08f25cb3@gmail.com>
-In-Reply-To: <20241015-iio-read-avail-release-v3-0-ac3e08f25cb3@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Alisa-Dariana Roman <alisa.roman@analog.com>, 
- Christian Eggers <ceggers@arri.de>, Peter Rosin <peda@axentia.se>, 
- Paul Cercueil <paul@crapouillou.net>, Sebastian Reichel <sre@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mips@vger.kernel.org, linux-pm@vger.kernel.org, 
- Matteo Martelli <matteomartelli3@gmail.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241012114202.425f1b74@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-While available integration times are being printed to sysfs by iio core
-(iio_read_channel_info_avail), the sampling frequency might be changed.
-This could cause the buffer shared with iio core to be corrupted. To
-prevent it, make a copy of the integration times buffer and free it in
-the read_avail_release_resource callback.
+On Sat, Oct 12, 2024 at 11:42:02AM +0100, Jonathan Cameron wrote:
+> On Thu, 10 Oct 2024 21:25:00 +0300
+> Andy Shevchenko <andy@kernel.org> wrote:
+> > On Thu, Oct 10, 2024 at 06:45:16PM +0100, Jonathan Cameron wrote:
+> > > On Thu, 10 Oct 2024 14:32:49 +0000
+> > > "Nechita, Ramona" <Ramona.Nechita@analog.com> wrote:  
 
-Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
----
- drivers/iio/light/as73211.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+...
 
-diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-index be0068081ebbbb37fdfb252b67a77b302ff725f6..c4c94873e6a1cc926cfb724d906b07222773c43f 100644
---- a/drivers/iio/light/as73211.c
-+++ b/drivers/iio/light/as73211.c
-@@ -108,7 +108,8 @@ struct as73211_spec_dev_data {
-  * @creg1:  Cached Configuration Register 1.
-  * @creg2:  Cached Configuration Register 2.
-  * @creg3:  Cached Configuration Register 3.
-- * @mutex:  Keeps cached registers in sync with the device.
-+ * @mutex:  Keeps cached registers in sync with the device and protects
-+ *          int_time_avail concurrent access for updating and reading.
-  * @completion: Completion to wait for interrupt.
-  * @int_time_avail: Available integration times (depend on sampling frequency).
-  * @spec_dev: device-specific configuration.
-@@ -493,17 +494,32 @@ static int as73211_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec co
- 		*type = IIO_VAL_INT;
- 		return IIO_AVAIL_LIST;
- 
--	case IIO_CHAN_INFO_INT_TIME:
-+	case IIO_CHAN_INFO_INT_TIME: {
- 		*length = ARRAY_SIZE(data->int_time_avail);
--		*vals = data->int_time_avail;
- 		*type = IIO_VAL_INT_PLUS_MICRO;
--		return IIO_AVAIL_LIST;
- 
-+		guard(mutex)(&data->mutex);
-+
-+		*vals = kmemdup_array(data->int_time_avail, *length,
-+				      sizeof(int), GFP_KERNEL);
-+		if (!*vals)
-+			return -ENOMEM;
-+
-+		return IIO_AVAIL_LIST;
-+	}
- 	default:
- 		return -EINVAL;
- 	}
- }
- 
-+static void as73211_read_avail_release_res(struct iio_dev *indio_dev,
-+					   struct iio_chan_spec const *chan,
-+					   const int *vals, long mask)
-+{
-+	if (mask == IIO_CHAN_INFO_INT_TIME)
-+		kfree(vals);
-+}
-+
- static int _as73211_write_raw(struct iio_dev *indio_dev,
- 			       struct iio_chan_spec const *chan __always_unused,
- 			       int val, int val2, long mask)
-@@ -699,6 +715,7 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
- static const struct iio_info as73211_info = {
- 	.read_raw = as73211_read_raw,
- 	.read_avail = as73211_read_avail,
-+	.read_avail_release_resource = as73211_read_avail_release_res,
- 	.write_raw = as73211_write_raw,
- };
- 
+> > > > >> +	/*
+> > > > >> +	 * DMA (thus cache coherency maintenance) requires the
+> > > > >> +	 * transfer buffers to live in their own cache lines.
+> > > > >> +	 */
+> > > > >> +	struct {
+> > > > >> +		u32 chans[8];
+> > > > >> +		s64 timestamp;    
+> > > > >
+> > > > >	aligned_s64 timestamp;
+> > > > >
+> > > > >while it makes no difference in this case, this makes code aligned inside the IIO subsystem.    
+> > > > 
+> > > > I might be missing something but I can't find the aligned_s64 data type, should I define it myself
+> > > > in the driver?  
+> > > 
+> > > Recent addition to the iio tree so it is in linux-next but not in mainline yet.
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=togreg&id=e4ca0e59c39442546866f3dd514a3a5956577daf
+> > > It just missed last cycle.
+> > >   
+> > > > >> +	} data __aligned(IIO_DMA_MINALIGN);    
+> > > > >
+> > > > >Note, this is different alignment to the above. And isn't the buffer below should have it instead?  
+> > > 
+> > > While I'm here:  No to this one.  The s64 alignment is about
+> > > performance of CPU access + consistency across CPU architectures.
+> > > This one (which happens to always be 8 or more) is about DMA safety.  
+> > 
+> > Right, but shouldn't...
+> > 
+> > > > >> +	u32			spidata_tx[8];  
+> > 
+> > > > >> +	u8			reg_rx_buf[3];
+> > > > >> +	u8			reg_tx_buf[3];  
+> > 
+> > ...one of these also be cache aligned for DMA?
+> No need as long as driver doesn't do anything bad like
+> write to these whilst another dma transaction is in flight.
+> (I haven't checked though, but typical drivers don't)
+> All you have to do is ensure that any DMA buffer doesn't share
+> a cacheline with an unrelated bit of data (i.e. a separate allocation or some
+> state tracking etc). It is fine for multiple DMA buffers  (say rx and tx)
+> to be in the same cacheline.  Any DMA device that is stupid enough
+> to stomp it itself is broken (and would be fairly hard to build!). Such
+> a device would need to be worked around in the controller driver.
+> 
+> They are allowed to write back stale data, but not garbage data to unrelated
+> parts of the cacheline.  I.e. a tx buffer that was changed whilst
+> the SPI transaction was going on, might be overwritten with the old value
+> when the SPI controller DMAs back an updated version of the cacheline
+> containing the rx data + a cached copy of the early tx data.
+> The risk we are defending against with this alignment isn't this, it's
+> unrelated (and typically not protected by lock) fields in the structure
+> being overwritten with stale data.  The really nasty one being when
+> the allocator gives the next bit of the cacheline to another allocation.
+> (avoided here because the structure is sized as a multiple of the maximum
+>  alignment).
+> 
+> Now, the code that bounces unaligned dma buffers on arm64 will probably
+> bounce these because it can't tell they are safe :( That's not incorrect
+> it's just less than optimal.
+
+Thanks for the really good elaboration! I will try hard to not forget it.
+
+> > > > >> +	u8			reset_buf[8];  
 
 -- 
-2.47.0
+With Best Regards,
+Andy Shevchenko
+
 
 

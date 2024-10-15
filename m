@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-10615-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10616-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FF199E50E
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 13:07:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA45099E512
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 13:07:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91EDA1C238D7
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 11:07:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AA961F245C2
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Oct 2024 11:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865531E3DE8;
-	Tue, 15 Oct 2024 11:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441241EB9EC;
+	Tue, 15 Oct 2024 11:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YWIaZynb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fN7Rf8Mj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E971D8A0A;
-	Tue, 15 Oct 2024 11:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B621E7664;
+	Tue, 15 Oct 2024 11:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728990413; cv=none; b=B1muR/1Qgd6N5AZnqyreTOL41r6PSkYAlNHZuKo5eXcaQl7ppHHbk/V7BuuyRKJcroNtqpD/gqLyYw1tnADKx+/jWRvBOaoJ8QfFWyYzIj2RDM8uKCpQHOQX2h1mCA+68TLamfO3TvuNNAF+9nEHE0dp00F0YBpfiV8xyN+V1fE=
+	t=1728990415; cv=none; b=D3w+Q+WB0CQJd5Lx0YeXh8YYweN5BBesqodwx8PjFpq2tX49wUD15YenyMkxkqd06kx73OwoaJZ0CyZp4ddYMNP8pDRqzWLmKJpOHts2S7pwdqYOZxKp9Ts0092J6UWmIY6tym0TNEhEHljdXh05HpwceqCFv9hPbChYIsegeDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728990413; c=relaxed/simple;
-	bh=7sklAWXfji9T1wFz6rAfasTB2Thy5tSs15h7yZqzF+0=;
+	s=arc-20240116; t=1728990415; c=relaxed/simple;
+	bh=QdYDXg+F9crN+GcA1VSjP47ejtoSADQbLgM8+WYO3yU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MVMcZxbXQ52GDkp2VPIm68w++0chvIGYz8SqJF49XhEPu92VpfIQ6dek5JAVE2J3/Bm1SC4L3k9IlnLJBib/vdIabGIiWUyBeGVrylBXXKMEQKERWH7E6HgU63GRNSQJ9+a3ICWeqRX4oYgoXmqENXM6FfDtiZ0T1YOmU1dgKaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YWIaZynb; arc=none smtp.client-ip=209.85.221.48
+	 In-Reply-To:To:Cc; b=ggUSEnpKFds937f7GSKHacCpi63V4rqp0jLsIy+dI4gQKpzomOIVhmhbfbhxpA4msmpgUiN4CMBWrYTDycfik7YmQc9UTiF4YYa02838taWjoW1kgf5sZrGFuwpfnIpVJGZQQPcmJS1OqLknL2otbaIXpX69nwRoPFEYDuAsGKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fN7Rf8Mj; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-37d43a9bc03so3166929f8f.2;
-        Tue, 15 Oct 2024 04:06:50 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-430ee5c9570so61599655e9.3;
+        Tue, 15 Oct 2024 04:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728990409; x=1729595209; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728990411; x=1729595211; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7t1EeivanbjtmiS/C63NeyQb2kGTD8e2hmV9UzO5KnQ=;
-        b=YWIaZynbWnCXZIlm6fwCVRp4NOhNNe0oSWAQwPd6CX7pB1cFyAD9tMjDFlYOZzd9P0
-         BPeYxWFeH1Ifx8rQS8TNpxHBofgbi3vK5AO84eZmzr/z0AlEA5RQ9DefFxjb+J8hRo01
-         9ScECVgK+zqbtTkXxUitgOctn3xmcUAgrNqA7ZxKOCTwBDhic4Mr5QG0UDS397jNgIf2
-         kRrDNw2cyfrcL/9m/6PGRwQoHofqiGlk0xeJKBvtD3m8Hgy5LKPrpw/ZE1DUVaAigzSj
-         2WekwJYw/SndxNv/zT+aPo77z+skAonWSYDOmztfV0FknkcbgXLw+9tJPYfCYEpkPDUj
-         +W5Q==
+        bh=sBrQ02u0x+gOef7QkcexjhixwvYLcPbk6l/zE/g/i1o=;
+        b=fN7Rf8MjGYIWdJa6QUVjqiWgujkJiBChwnIRs+31EgGkJFJDSJz2t1UM+C/9KI5YKT
+         ElFWDv3Q7WkNqrdiS8RsVaMzqUIXXA9ES8xaMXspif8vi0xiXtVkQFt7kRblq0P8bCnv
+         NkjqTcomN8cvQzgq7iWLx4UiT5BVV0StQjvdId1G0DLdB/2b1YjwK/jkZWsis28F5EpR
+         9yXoFgJbpAhWDw2LSXsuZIQZCMXXxp3IONGAXOqUBbU9GWhKRym05qOWcnolLzEkgdA8
+         PDtQsqE3q1Z4OWnlRJ5+0t2gLt+JOjxoUtFvUVeE668/bP3CdtF0oBn1TQYb43e68/b+
+         Gufw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728990409; x=1729595209;
+        d=1e100.net; s=20230601; t=1728990411; x=1729595211;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7t1EeivanbjtmiS/C63NeyQb2kGTD8e2hmV9UzO5KnQ=;
-        b=uQ95U+NivygQRlznTYibcHkWyGDne3RMg0D6lCwGGWnga+zlS6cqsONzcYjfyzAH64
-         UxdlXw9VItgIlXVzo9ruWn+nQ2FMjJGgO0NrD7Uy4kzpMH1Pn5abyyNghZwAP6t0votf
-         cje2pmyZ5lwe0mNC+DgGEny9MIDVjkNcGB6wayaLvNDqjf0g54i+8e1Macyme7jjtPDj
-         NRcmIVVMVNv5rvuWyYCCMqPazmGLi6/mAyawmUBXaYgoOvSCwKAgeEkmleK10JWmFNo8
-         VpP+LRJjgscD0LO8NDej4KzGox7XFcGRZL7wsf4/umZCs2QTCB4le9K/HU9tZ2jvKKfQ
-         R17w==
-X-Forwarded-Encrypted: i=1; AJvYcCUuQ+2Tj2o9XJzSOBvmlkbI1rq6KxJ/A8dhUtVwqPB9BJXJip6lg2+0KCXZSkZ/JWqQlC+256p5IJvubaM=@vger.kernel.org, AJvYcCVxujSis48qgX8KwR99NfAj8TfP0oodnug9Nk4bvIlKeqLx7y+cOkCPzYkjHJDyPKHvvjhRJk2hNFc=@vger.kernel.org, AJvYcCX6flGAtcrnvwPCKZ729SdozyehY2MqFWeZl/rtUXKk9GawYMX8V7SNeGraOC9/Hve2ttxIsZFIDHcdXw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRzglGuDY3G69inZNSFa1FnHInhCRXtUrqgcjyWtsMeTtBKtwo
-	fiU3rFD5h4byGBvGIc/HCTEnlY7anIGhMsnZfGyEjF1j2Gdc3ayt
-X-Google-Smtp-Source: AGHT+IHbd06YGB6Br+qw3ogI8F5eEDdorrA+TMPvBg6KlnNLQoKMOS+asZKXizlk+ay5W6eg9Wecvg==
-X-Received: by 2002:a5d:55c9:0:b0:37d:446b:7dfa with SMTP id ffacd0b85a97d-37d5ff6ccf4mr7370889f8f.39.1728990409190;
-        Tue, 15 Oct 2024 04:06:49 -0700 (PDT)
+        bh=sBrQ02u0x+gOef7QkcexjhixwvYLcPbk6l/zE/g/i1o=;
+        b=Yxa7joIYvwpDUqPoSflZzSFy15GonT5mnMgU3tGRG9gIo/w99lVBAhYfa1kQNAD7ui
+         C2k+FCSdwGTg4dsWm1yXDeYQ1N6BNgAtZ55kREybhzgxRBle/c/tnfLAfJiLdndfPqja
+         PtuEO2xUC5PwFfG99f6zuJ9tYK6nz3rO+hQ8qhpW+94Q5T4G/8YvQ59HhkNGM8V8DpJX
+         PSrP/5LBNogxOeGYVE7reuWI/+IYSkwcQvD3duF1OJhPCh/8q8GH2emr4o7up8fiGS2b
+         dz2bMbOd/TloEDEYK4zjmvS44JFXF2EGzzMuzdj/9I3GZJbV740s3P9RtbhE9OyyKZmb
+         Ff/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUG1oVbGAIQgInSywtYlhYZgnkmQN9Nr8RxhPqXySplMiM8maR4LR9TnXoCTkqislirAOfTTXJWgc0=@vger.kernel.org, AJvYcCVlX5xuBowhOOGIqxGca6FY4W37rnuDhOD736ISO5dpt2p542ehY+4dzHgsfr9Felt5PFUv6WaVXUEzvFI=@vger.kernel.org, AJvYcCXLnr1eC4IgP8GcLCBkBC+EAqYIu183WPkz+q5vlizUiGn/8f+OYoh0hMZzHbxy+/3EowFkCRA4Ls93ww==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9TEHasHmBH7j46ViEvPsEWkodhIzqN1K3g0wYGing/IqMEVYg
+	vXrpwlj4W9HSj/L43OafcxjDjvo/YCsTLLgbNB0+IrXaAVnzBEwJOeqk0IWt
+X-Google-Smtp-Source: AGHT+IFTPY+YqfaloGUHhYaFV9LoEdK/S04iLUW4htdOHIlqQfxo5RikCRfVHmY660LYaFHowAsXHw==
+X-Received: by 2002:a05:600c:4e4f:b0:42c:b220:4769 with SMTP id 5b1f17b1804b1-431256167f0mr139921975e9.32.1728990411165;
+        Tue, 15 Oct 2024 04:06:51 -0700 (PDT)
 Received: from localhost (host-79-18-120-72.retail.telecomitalia.it. [79.18.120.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d7fa7a173sm1293664f8f.15.2024.10.15.04.06.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4313f569943sm14423005e9.12.2024.10.15.04.06.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2024 04:06:48 -0700 (PDT)
+        Tue, 15 Oct 2024 04:06:50 -0700 (PDT)
 From: Matteo Martelli <matteomartelli3@gmail.com>
-Date: Tue, 15 Oct 2024 13:06:35 +0200
-Subject: [PATCH v3 2/5] iio: consumers: copy/release available info from
- producer to fix race
+Date: Tue, 15 Oct 2024 13:06:36 +0200
+Subject: [PATCH v3 3/5] iio: pac1921: use read_avail+release APIs instead
+ of custom ext_info
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241015-iio-read-avail-release-v3-2-ac3e08f25cb3@gmail.com>
+Message-Id: <20241015-iio-read-avail-release-v3-3-ac3e08f25cb3@gmail.com>
 References: <20241015-iio-read-avail-release-v3-0-ac3e08f25cb3@gmail.com>
 In-Reply-To: <20241015-iio-read-avail-release-v3-0-ac3e08f25cb3@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -93,300 +93,210 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Matteo Martelli <matteomartelli3@gmail.com>
 X-Mailer: b4 0.14.2
 
-Consumers need to call the producer's read_avail_release_resource()
-callback after reading producer's available info. To avoid a race
-condition with the producer unregistration, change inkern
-iio_channel_read_avail() so that it copies the available info from the
-producer and immediately calls its release callback with info_exists
-locked.
+The pac1921 driver was exposing the available scale info via an ad-hoc
+ext_info attribute instead of using the read_avail API. This to avoid a
+possible race condition: while the available current scales were being
+printed to sysfs by iio core (iio_read_channel_info_avail), the shunt
+resistor might have been changed concurrently.
 
-Also, modify the users of iio_read_avail_channel_raw() and
-iio_read_avail_channel_attribute() to free the copied available buffers
-after calling these functions.
+Switch to the read_avail+release APIs now that the race condition has
+been addressed.
 
 Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
 ---
- drivers/iio/afe/iio-rescale.c          |  8 ++++
- drivers/iio/dac/dpot-dac.c             |  8 ++++
- drivers/iio/inkern.c                   | 68 ++++++++++++++++++++++++++--------
- drivers/iio/multiplexer/iio-mux.c      |  8 ++++
- drivers/power/supply/ingenic-battery.c | 17 ++++++---
- include/linux/iio/consumer.h           |  4 +-
- 6 files changed, 90 insertions(+), 23 deletions(-)
+ drivers/iio/adc/pac1921.c | 128 ++++++++++++++++------------------------------
+ 1 file changed, 45 insertions(+), 83 deletions(-)
 
-diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-index 56e5913ab82d1c045c9ca27012008a4495502cbf..78bb86c291706748b4072a484532ad20c415ff9f 100644
---- a/drivers/iio/afe/iio-rescale.c
-+++ b/drivers/iio/afe/iio-rescale.c
-@@ -249,9 +249,17 @@ static int rescale_read_avail(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
+index a96fae546bc1e6d1bf3a0dbe67204c191d77a3ee..f6f8f9122a78d1b5e63d8184203eb3dae55eb560 100644
+--- a/drivers/iio/adc/pac1921.c
++++ b/drivers/iio/adc/pac1921.c
+@@ -444,11 +444,52 @@ static int pac1921_read_avail(struct iio_dev *indio_dev,
+ 		*vals = pac1921_int_num_samples;
+ 		*length = ARRAY_SIZE(pac1921_int_num_samples);
+ 		return IIO_AVAIL_LIST;
++	case IIO_CHAN_INFO_SCALE:
++		switch (chan->channel) {
++		case PAC1921_CHAN_VBUS:
++			*vals = (const int *)pac1921_vbus_scales;
++			*length = ARRAY_SIZE(pac1921_vbus_scales) * 2;
++			*type = IIO_VAL_INT_PLUS_NANO;
++			return IIO_AVAIL_LIST;
++
++		case PAC1921_CHAN_VSENSE:
++			*vals = (const int *)pac1921_vsense_scales;
++			*length = ARRAY_SIZE(pac1921_vsense_scales) * 2;
++			*type = IIO_VAL_INT_PLUS_NANO;
++			return IIO_AVAIL_LIST;
++
++		case PAC1921_CHAN_CURRENT: {
++			struct pac1921_priv *priv = iio_priv(indio_dev);
++
++			*length = ARRAY_SIZE(priv->current_scales) * 2;
++			*type = IIO_VAL_INT_PLUS_NANO;
++
++			guard(mutex)(&priv->lock);
++
++			*vals = kmemdup_array((int *)priv->current_scales,
++					      *length, sizeof(int), GFP_KERNEL);
++			if (!*vals)
++				return -ENOMEM;
++
++			return IIO_AVAIL_LIST;
++		}
++		default:
++			return -EINVAL;
++		}
+ 	default:
+ 		return -EINVAL;
  	}
  }
  
-+static void rescale_read_avail_release_res(struct iio_dev *indio_dev,
++static void pac1921_read_avail_release_res(struct iio_dev *indio_dev,
 +					   struct iio_chan_spec const *chan,
 +					   const int *vals, long mask)
 +{
-+	kfree(vals);
++	if (mask == IIO_CHAN_INFO_SCALE &&
++	    chan->channel == PAC1921_CHAN_CURRENT)
++		kfree(vals);
 +}
 +
- static const struct iio_info rescale_info = {
- 	.read_raw = rescale_read_raw,
- 	.read_avail = rescale_read_avail,
-+	.read_avail_release_resource = rescale_read_avail_release_res,
- };
- 
- static ssize_t rescale_read_ext_info(struct iio_dev *indio_dev,
-diff --git a/drivers/iio/dac/dpot-dac.c b/drivers/iio/dac/dpot-dac.c
-index f36f10bfb6be7863a56b911b5f58671ef530c977..43d68e17fc3a5fca59fad6ccf818eeadfecdb8c1 100644
---- a/drivers/iio/dac/dpot-dac.c
-+++ b/drivers/iio/dac/dpot-dac.c
-@@ -108,6 +108,13 @@ static int dpot_dac_read_avail(struct iio_dev *indio_dev,
- 	return -EINVAL;
+ /*
+  * Perform configuration update sequence: set the device into read state, then
+  * write the config register and set the device back into integration state.
+@@ -748,6 +789,7 @@ static int pac1921_read_event_value(struct iio_dev *indio_dev,
+ static const struct iio_info pac1921_iio = {
+ 	.read_raw = pac1921_read_raw,
+ 	.read_avail = pac1921_read_avail,
++	.read_avail_release_resource = pac1921_read_avail_release_res,
+ 	.write_raw = pac1921_write_raw,
+ 	.write_raw_get_fmt = pac1921_write_raw_get_fmt,
+ 	.read_label = pac1921_read_label,
+@@ -805,88 +847,7 @@ static ssize_t pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
+ 	return len;
  }
  
-+static void dpot_dac_read_avail_release_res(struct iio_dev *indio_dev,
-+					    struct iio_chan_spec const *chan,
-+					    const int *vals, long mask)
-+{
-+	kfree(vals);
-+}
-+
- static int dpot_dac_write_raw(struct iio_dev *indio_dev,
- 			      struct iio_chan_spec const *chan,
- 			      int val, int val2, long mask)
-@@ -125,6 +132,7 @@ static int dpot_dac_write_raw(struct iio_dev *indio_dev,
- static const struct iio_info dpot_dac_info = {
- 	.read_raw = dpot_dac_read_raw,
- 	.read_avail = dpot_dac_read_avail,
-+	.read_avail_release_resource = dpot_dac_read_avail_release_res,
- 	.write_raw = dpot_dac_write_raw,
- };
- 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 7f325b3ed08fae6674245312cf8f57bb151006c0..7f50e33dc5084673aa66c25731add0c314cb477d 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -760,9 +760,29 @@ static int iio_channel_read_avail(struct iio_channel *chan,
- 	if (!iio_channel_has_available(chan->channel, info))
- 		return -EINVAL;
- 
--	if (iio_info->read_avail)
--		return iio_info->read_avail(chan->indio_dev, chan->channel,
--					    vals, type, length, info);
-+	if (iio_info->read_avail) {
-+		const int *vals_tmp;
-+		int ret;
-+
-+		ret = iio_info->read_avail(chan->indio_dev, chan->channel,
-+					   &vals_tmp, type, length, info);
-+		if (ret < 0)
-+			return ret;
-+
-+		/*
-+		 * Copy the producer's avail buffer with lock_exists locked to
-+		 * avoid possible race with producer unregistration.
-+		 */
-+		*vals = kmemdup_array(vals_tmp, *length, sizeof(int), GFP_KERNEL);
-+		if (!*vals)
-+			return -ENOMEM;
-+
-+		if (iio_info->read_avail_release_resource)
-+			iio_info->read_avail_release_resource(
-+				chan->indio_dev, chan->channel, vals_tmp, info);
-+
-+		return ret;
-+	}
- 	return -EINVAL;
- }
- 
-@@ -789,9 +809,11 @@ int iio_read_avail_channel_raw(struct iio_channel *chan,
- 	ret = iio_read_avail_channel_attribute(chan, vals, &type, length,
- 					       IIO_CHAN_INFO_RAW);
- 
--	if (ret >= 0 && type != IIO_VAL_INT)
-+	if (ret >= 0 && type != IIO_VAL_INT) {
- 		/* raw values are assumed to be IIO_VAL_INT */
-+		kfree(*vals);
- 		ret = -EINVAL;
-+	}
- 
- 	return ret;
- }
-@@ -820,24 +842,31 @@ static int iio_channel_read_max(struct iio_channel *chan,
- 			if (val2)
- 				*val2 = vals[5];
- 		}
--		return 0;
-+		ret = 0;
-+		break;
- 
- 	case IIO_AVAIL_LIST:
--		if (length <= 0)
--			return -EINVAL;
-+		if (length <= 0) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 		switch (*type) {
- 		case IIO_VAL_INT:
- 			*val = max_array(vals, length);
-+			ret = 0;
- 			break;
- 		default:
- 			/* TODO: learn about max for other iio values */
--			return -EINVAL;
-+			ret = -EINVAL;
- 		}
--		return 0;
-+		break;
- 
- 	default:
+-/*
+- * Emit on sysfs the list of available scales contained in scales_tbl
+- *
+- * TODO:: this function can be replaced with iio_format_avail_list() if the
+- * latter will ever be exported.
+- *
+- * Must be called with lock held if the scales_tbl can change runtime (e.g. for
+- * the current scales table)
+- */
+-static ssize_t pac1921_format_scale_avail(const int (*const scales_tbl)[2],
+-					  size_t size, char *buf)
+-{
+-	ssize_t len = 0;
+-
+-	for (unsigned int i = 0; i < size; i++) {
+-		if (i != 0) {
+-			len += sysfs_emit_at(buf, len, " ");
+-			if (len >= PAGE_SIZE)
+-				return -EFBIG;
+-		}
+-		len += sysfs_emit_at(buf, len, "%d.%09d", scales_tbl[i][0],
+-				     scales_tbl[i][1]);
+-		if (len >= PAGE_SIZE)
+-			return -EFBIG;
+-	}
+-
+-	len += sysfs_emit_at(buf, len, "\n");
+-	return len;
+-}
+-
+-/*
+- * Read available scales for a specific channel
+- *
+- * NOTE: using extended info insted of iio.read_avail() because access to
+- * current scales must be locked as they depend on shunt resistor which may
+- * change runtime. Caller of iio.read_avail() would access the table unlocked
+- * instead.
+- */
+-static ssize_t pac1921_read_scale_avail(struct iio_dev *indio_dev,
+-					uintptr_t private,
+-					const struct iio_chan_spec *chan,
+-					char *buf)
+-{
+-	struct pac1921_priv *priv = iio_priv(indio_dev);
+-	const int (*scales_tbl)[2];
+-	size_t size;
+-
+-	switch (chan->channel) {
+-	case PAC1921_CHAN_VBUS:
+-		scales_tbl = pac1921_vbus_scales;
+-		size = ARRAY_SIZE(pac1921_vbus_scales);
+-		return pac1921_format_scale_avail(scales_tbl, size, buf);
+-
+-	case PAC1921_CHAN_VSENSE:
+-		scales_tbl = pac1921_vsense_scales;
+-		size = ARRAY_SIZE(pac1921_vsense_scales);
+-		return pac1921_format_scale_avail(scales_tbl, size, buf);
+-
+-	case PAC1921_CHAN_CURRENT: {
+-		guard(mutex)(&priv->lock);
+-		scales_tbl = priv->current_scales;
+-		size = ARRAY_SIZE(priv->current_scales);
+-		return pac1921_format_scale_avail(scales_tbl, size, buf);
+-	}
+-	default:
 -		return -EINVAL;
-+		ret = -EINVAL;
- 	}
-+out:
-+	kfree(vals);
-+	return ret;
- }
- 
- int iio_read_max_channel_raw(struct iio_channel *chan, int *val)
-@@ -876,24 +905,31 @@ static int iio_channel_read_min(struct iio_channel *chan,
- 			if (val2)
- 				*val2 = vals[1];
- 		}
--		return 0;
-+		ret = 0;
-+		break;
- 
- 	case IIO_AVAIL_LIST:
--		if (length <= 0)
--			return -EINVAL;
-+		if (length <= 0) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 		switch (*type) {
- 		case IIO_VAL_INT:
- 			*val = min_array(vals, length);
-+			ret = 0;
- 			break;
- 		default:
- 			/* TODO: learn about min for other iio values */
--			return -EINVAL;
-+			ret = -EINVAL;
- 		}
--		return 0;
-+		break;
- 
- 	default:
--		return -EINVAL;
-+		ret = -EINVAL;
- 	}
-+out:
-+	kfree(vals);
-+	return ret;
- }
- 
- int iio_read_min_channel_raw(struct iio_channel *chan, int *val)
-diff --git a/drivers/iio/multiplexer/iio-mux.c b/drivers/iio/multiplexer/iio-mux.c
-index 2953403bef53bbe47a97a8ab1c475ed88d7f86d2..31345437784b01c5d6f8ea70263f4c2574388e7a 100644
---- a/drivers/iio/multiplexer/iio-mux.c
-+++ b/drivers/iio/multiplexer/iio-mux.c
-@@ -142,6 +142,13 @@ static int mux_read_avail(struct iio_dev *indio_dev,
- 	return ret;
- }
- 
-+static void mux_read_avail_release_res(struct iio_dev *indio_dev,
-+				       struct iio_chan_spec const *chan,
-+				       const int *vals, long mask)
-+{
-+	kfree(vals);
-+}
-+
- static int mux_write_raw(struct iio_dev *indio_dev,
- 			 struct iio_chan_spec const *chan,
- 			 int val, int val2, long mask)
-@@ -171,6 +178,7 @@ static int mux_write_raw(struct iio_dev *indio_dev,
- static const struct iio_info mux_info = {
- 	.read_raw = mux_read_raw,
- 	.read_avail = mux_read_avail,
-+	.read_avail_release_resource = mux_read_avail_release_res,
- 	.write_raw = mux_write_raw,
- };
- 
-diff --git a/drivers/power/supply/ingenic-battery.c b/drivers/power/supply/ingenic-battery.c
-index 0a40f425c27723ccec49985b8b5e14a737b6a7eb..3db000d9fff9a7a6819631314547b3d16db7f967 100644
---- a/drivers/power/supply/ingenic-battery.c
-+++ b/drivers/power/supply/ingenic-battery.c
-@@ -12,6 +12,7 @@
- #include <linux/platform_device.h>
- #include <linux/power_supply.h>
- #include <linux/property.h>
-+#include <linux/slab.h>
- 
- struct ingenic_battery {
- 	struct device *dev;
-@@ -79,8 +80,10 @@ static int ingenic_battery_set_scale(struct ingenic_battery *bat)
- 		dev_err(bat->dev, "Unable to read channel avail scale\n");
- 		return ret;
- 	}
--	if (ret != IIO_AVAIL_LIST || scale_type != IIO_VAL_FRACTIONAL_LOG2)
--		return -EINVAL;
-+	if (ret != IIO_AVAIL_LIST || scale_type != IIO_VAL_FRACTIONAL_LOG2) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 
- 	max_mV = bat->info->voltage_max_design_uv / 1000;
- 
-@@ -99,7 +102,8 @@ static int ingenic_battery_set_scale(struct ingenic_battery *bat)
- 
- 	if (best_idx < 0) {
- 		dev_err(bat->dev, "Unable to find matching voltage scale\n");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto out;
- 	}
- 
- 	/* Only set scale if there is more than one (fractional) entry */
-@@ -109,10 +113,13 @@ static int ingenic_battery_set_scale(struct ingenic_battery *bat)
- 						  scale_raw[best_idx + 1],
- 						  IIO_CHAN_INFO_SCALE);
- 		if (ret)
--			return ret;
-+			goto out;
- 	}
- 
--	return 0;
-+	ret = 0;
-+out:
-+	kfree(scale_raw);
-+	return ret;
- }
- 
- static enum power_supply_property ingenic_battery_properties[] = {
-diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
-index 333d1d8ccb37f387fe531577ac5e0bfc7f752cec..e3e268d2574b3e01c9412449d90d627de7efcd84 100644
---- a/include/linux/iio/consumer.h
-+++ b/include/linux/iio/consumer.h
-@@ -316,7 +316,7 @@ int iio_read_min_channel_raw(struct iio_channel *chan, int *val);
- /**
-  * iio_read_avail_channel_raw() - read available raw values from a given channel
-  * @chan:		The channel being queried.
-- * @vals:		Available values read back.
-+ * @vals:		Available values read back. Must be freed after use.
-  * @length:		Number of entries in vals.
-  *
-  * Returns an error code, IIO_AVAIL_RANGE or IIO_AVAIL_LIST.
-@@ -334,7 +334,7 @@ int iio_read_avail_channel_raw(struct iio_channel *chan,
- /**
-  * iio_read_avail_channel_attribute() - read available channel attribute values
-  * @chan:		The channel being queried.
-- * @vals:		Available values read back.
-+ * @vals:		Available values read back. Must be freed after use.
-  * @type:		Type of values read back.
-  * @length:		Number of entries in vals.
-  * @attribute:		info attribute to be read back.
+-	}
+-}
+-
+-#define PAC1921_EXT_INFO_SCALE_AVAIL {					\
+-	.name = "scale_available",					\
+-	.read = pac1921_read_scale_avail,				\
+-	.shared = IIO_SEPARATE,						\
+-}
+-
+-static const struct iio_chan_spec_ext_info pac1921_ext_info_voltage[] = {
+-	PAC1921_EXT_INFO_SCALE_AVAIL,
+-	{}
+-};
+-
+ static const struct iio_chan_spec_ext_info pac1921_ext_info_current[] = {
+-	PAC1921_EXT_INFO_SCALE_AVAIL,
+ 	{
+ 		.name = "shunt_resistor",
+ 		.read = pac1921_read_shunt_resistor,
+@@ -910,6 +871,7 @@ static const struct iio_chan_spec pac1921_channels[] = {
+ 		.type = IIO_VOLTAGE,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE),
++		.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),
+ 		.info_mask_shared_by_all =
+ 			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+ 			BIT(IIO_CHAN_INFO_SAMP_FREQ),
+@@ -927,12 +889,12 @@ static const struct iio_chan_spec pac1921_channels[] = {
+ 		.indexed = 1,
+ 		.event_spec = pac1921_overflow_event,
+ 		.num_event_specs = ARRAY_SIZE(pac1921_overflow_event),
+-		.ext_info = pac1921_ext_info_voltage,
+ 	},
+ 	{
+ 		.type = IIO_VOLTAGE,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE),
++		.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),
+ 		.info_mask_shared_by_all =
+ 			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+ 			BIT(IIO_CHAN_INFO_SAMP_FREQ),
+@@ -950,12 +912,12 @@ static const struct iio_chan_spec pac1921_channels[] = {
+ 		.indexed = 1,
+ 		.event_spec = pac1921_overflow_event,
+ 		.num_event_specs = ARRAY_SIZE(pac1921_overflow_event),
+-		.ext_info = pac1921_ext_info_voltage,
+ 	},
+ 	{
+ 		.type = IIO_CURRENT,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE),
++		.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),
+ 		.info_mask_shared_by_all =
+ 			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+ 			BIT(IIO_CHAN_INFO_SAMP_FREQ),
 
 -- 
 2.47.0

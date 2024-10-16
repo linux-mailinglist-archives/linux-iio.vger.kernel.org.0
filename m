@@ -1,241 +1,131 @@
-Return-Path: <linux-iio+bounces-10656-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10657-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401849A07F4
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Oct 2024 13:01:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A3B9A08DA
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Oct 2024 13:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED28F285259
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Oct 2024 11:01:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2C9D1C23834
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Oct 2024 11:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B785207208;
-	Wed, 16 Oct 2024 11:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD4A208983;
+	Wed, 16 Oct 2024 11:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c86G6YB7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9zm1Q7u"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0E820605B;
-	Wed, 16 Oct 2024 11:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D177206979;
+	Wed, 16 Oct 2024 11:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729076474; cv=none; b=j3kXJXUM/OkihiGD2aEn/PDlN2uzP88EkE1N6jovMeS677k1Nq0mDSF6ko64hV1RD8pTyGNwJ6uK1TkgdvFn9Ke3KXyrsKWXCiRMWTblceVJo+KxKso2DwR2pykDOmkscbMS7ZuS0S0p5AtyU1y/W4o78T44jDb1EuWG+/Zea1E=
+	t=1729079691; cv=none; b=i4Zesp0bFgiTj1WyGA8fvXe8/Hg4o0LZ9B/EMIBaUyJmLIdlUfMAiPVzWjW2Uudqzm9PD055ttG6akSxoGbN6fZ4hThSW+EfaY2ZYEMEoWgw4oxVorW+8p/T7RIJApcORZtgMrS4444CNgxWIf1tIJ12kYF2zjzgCYdscQS6p58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729076474; c=relaxed/simple;
-	bh=egoYzhX+UACWenoTpdhK0zSBTuLvjaL2MI+7rxM3Rsk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FiGe5ybtdritEx75ZdWNuVA/0lJoRNt1NppeUoLW6XyaVO4hVX3uxIz+Wv++NDPeEn+B7gcEWsLuJDEZAtsVzAZsZN64lkEe0WkgAag1T+VIS/6zkKa+u1TVVrqFln6p2p9BUaIaBW33rN2H8KW1TXw3H7gI0O5D9ogAu1yj5OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c86G6YB7; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729076472; x=1760612472;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=egoYzhX+UACWenoTpdhK0zSBTuLvjaL2MI+7rxM3Rsk=;
-  b=c86G6YB70/zTq8HIDHffKptTCw64tW9Xg4I+FO7NvtXkIZwK9iypxihJ
-   i6LZl20uBSzrh55u5Eefq3H+VxzpW+yC8t6srtgUBW48Bw8M9R8uiitbZ
-   BcYMd4ug4kRA3VF4iWlKb9ce11HwC8N+gur79/Dqov6JiqQlgi/tGGAvi
-   ng0rhY+Fs+xjwRPzDrwPAfQY0pvT5wEAcP86dMioW8VBN1gV/ANW94yYw
-   PseBDYzZM3IK0VaCrlLLGyS2inV5VTRLkqaI9FJoNrypky4TJ++caq5/e
-   pRtLcm2Od/GfNruHGR9+1dwEJtOEvoHETtHswKKIjphL/nGyH10A5hyav
-   Q==;
-X-CSE-ConnectionGUID: 0kh9pEfAR9qWRMTSfQ19Vg==
-X-CSE-MsgGUID: tr3NxVi4QBSEIeEq9L0J3Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45989993"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="45989993"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 04:01:12 -0700
-X-CSE-ConnectionGUID: 2+JvtSVmRFaN5iVox+zBBQ==
-X-CSE-MsgGUID: 8aadeP2QQNGPIDuoQaQXdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,207,1725346800"; 
-   d="scan'208";a="78253910"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 16 Oct 2024 04:01:08 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t11m6-000KoE-0y;
-	Wed, 16 Oct 2024 11:01:06 +0000
-Date: Wed, 16 Oct 2024 19:00:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Per-Daniel Olsson <perdaniel.olsson@axis.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, rickard.andersson@axis.com,
-	kernel@axis.com, Per-Daniel Olsson <perdaniel.olsson@axis.com>
-Subject: Re: [PATCH v3 2/2] iio: light: Add support for TI OPT4060 color
- sensor
-Message-ID: <202410161852.GepOULQn-lkp@intel.com>
-References: <20241015143713.2017626-3-perdaniel.olsson@axis.com>
+	s=arc-20240116; t=1729079691; c=relaxed/simple;
+	bh=L5o8ve+VBHrYej/fsSNBUxsfqyYd3ayQ8f7khXw4HFI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QASegUVGE8hWbcVE2lpQ4pm95k4Fn6YH8ymXEYmK0du5KUnCXU5KP81gLth/R10Ib295FIZfCVKJxDhelYo6e66nhJi35EQP4CYmBK2e/1HiQzCuFtgJ2Way+Hv4aJOBrSlIjIjxFTwo8iXGvWnuq4W0xoHmXmt4VCdALyAIfvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9zm1Q7u; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a99ffeea60bso526181366b.3;
+        Wed, 16 Oct 2024 04:54:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729079688; x=1729684488; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=z0OTk8uA9zI9WVj1Qu6RX4DnD4VV3Dh4MTgYuYdKIqQ=;
+        b=N9zm1Q7up9OA5XXiNFteryjYZH7G28JYwLjB+HkAqs/eRyUjmA0pjWVBWsahr4rzBQ
+         bGhyeGRAv3bNC1k9gTGieNkPjO/nTV7eIO1nKknzyVK572woTexDacCVifl5GzkhX0U+
+         H2d0ZlOQLIEUvnid8l6IuE/ci//r+7sFE/vFEE5dvn3TVbqAIceKRLlYCxPImjurggGM
+         0xK+y014z4M6ySeA7hvuulPvIMrR9y1f3oLxkNR2nVhxLuIvJbGnYqW0+C/VodtgFemQ
+         tFjxLmb8C7vsk1AyU9s+o/e8UVGmgK64AHv7UGxA69IpswdM3y88AKdzfFukyuaLbGto
+         341Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729079688; x=1729684488;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=z0OTk8uA9zI9WVj1Qu6RX4DnD4VV3Dh4MTgYuYdKIqQ=;
+        b=FoY0vNmhO77UACCkHtmJI3+NoDLi6D+jr60SrrBcRM5lCTxVcWLIzyRbWcvEi/p/GP
+         wC4edCbjkPrjWrv4NRgDOvK0sNo8Lnfx7cjY3q0Rb1B5rv1yo4WPpnyJzNkTDo3VWR8I
+         nHlP3h9y24q+XG0Vh5sohucQjXHB1je1/fFSj3ZdXmW6or/5IKmRECjzAN/O4fuS/HK1
+         hWVVAJ7Jgtd2z1uEEMhK5vWwvydHl9uMIhUjpT9n55CKdd/rxsbm5868fkUGBEXFgiYx
+         /3vW5BBS2/u40D8avhv2ARLeRuP1Ivc5iWaRvQe+3BEkaq3n6Ht1cL/EIjwedemSkcrO
+         h9ww==
+X-Forwarded-Encrypted: i=1; AJvYcCVYjklbzyWMEk/zruA3Xp2Z1nHBmP+7ADbFTrkPkb+0vxaZds6+5VlCdp05p070+QlWa1AvfMiHIboh4U6K@vger.kernel.org, AJvYcCWz3EIhpUTP/Vg4h6g1+b194ETkrf9q8pNwfehyFw/+aPjGA2IGettu7YrQwQ9mx1Wkx/gnB7h3ezQE@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxct8Ju2jJQa1AH9jKkE5e53gK95VKl0TgHG45JIeDMYPstcj+B
+	6W6kVWSABr7aZroKv/3FHo4qvx/063eWf9Ymflp9YAcPMLNmHPt/oluecpGwrjDgjA==
+X-Google-Smtp-Source: AGHT+IF/9oRF6YEKgYiwKxIqKCxwILrNcGJG10m81vLSGKTHRuCSu+6WqBf7IYEFKl9bNKlIV000Xg==
+X-Received: by 2002:a17:907:724f:b0:a99:ee83:2b19 with SMTP id a640c23a62f3a-a99ee832da8mr1278188366b.35.1729079687512;
+        Wed, 16 Oct 2024 04:54:47 -0700 (PDT)
+Received: from ?IPv6:2001:a61:34c9:ea01:14b4:7ed9:5135:9381? ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a298443f3sm173586666b.165.2024.10.16.04.54.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Oct 2024 04:54:47 -0700 (PDT)
+Message-ID: <8caf3074e925dd131ff62375c6849a7f3ac6c5a6.camel@gmail.com>
+Subject: Re: [PATCH v6 7/8] iio: dac: ad3552r: add high-speed platform driver
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Angelo Dureghello
+ <adureghello@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+ <nuno.sa@analog.com>,  Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>,  Jonathan Cameron
+ <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
+ <olivier.moysan@foss.st.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Date: Wed, 16 Oct 2024 13:54:46 +0200
+In-Reply-To: <f1f7f187-f1d4-4d81-9187-ac238c0ca964@baylibre.com>
+References: 
+	<20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-0-eeef0c1e0e56@baylibre.com>
+	 <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-7-eeef0c1e0e56@baylibre.com>
+	 <549566b00524c0230a6a970b74a38dbe58e2589d.camel@gmail.com>
+	 <f1f7f187-f1d4-4d81-9187-ac238c0ca964@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015143713.2017626-3-perdaniel.olsson@axis.com>
 
-Hi Per-Daniel,
+On Tue, 2024-10-15 at 09:48 -0500, David Lechner wrote:
+> On 10/15/24 2:15 AM, Nuno S=C3=A1 wrote:
+> > On Mon, 2024-10-14 at 12:08 +0200, Angelo Dureghello wrote:
+> > > From: Angelo Dureghello <adureghello@baylibre.com>
+>=20
+> ...
+>=20
+> > > +	} else {
+> > > +		err =3D ad3552r_qspi_update_reg_bits(st,
+> > > +					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
+> > > +					AD3552R_MASK_SOFTWARE_RESET,
+> > > +					AD3552R_MASK_SOFTWARE_RESET, 1);
+> > > +		if (err)
+> > > +			return err;
+> > > +	}
+> > > +	msleep(100);
+> >=20
+> > nit: fsleep()
+> >=20
+>=20
+> fsleep() is microseconds, but we really do want milliseconds here.
+> Datasheet t_18 is 100 ms. (Internally, fsleep() calls msleep()
 
-kernel test robot noticed the following build warnings:
+I know. That's why the nitpick :). I just see it as a good practice...
+=20
+> for anything over 20 ms anyway so makes more sense to just call
+> msleep() directly and avoid 3 extra 0s.)
+>=20
 
-[auto build test WARNING on eca631b8fe808748d7585059c4307005ca5c5820]
+Anyways, fair enough
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Per-Daniel-Olsson/dt-bindings-iio-light-Document-TI-OPT4060-RGBW-sensor/20241015-224128
-base:   eca631b8fe808748d7585059c4307005ca5c5820
-patch link:    https://lore.kernel.org/r/20241015143713.2017626-3-perdaniel.olsson%40axis.com
-patch subject: [PATCH v3 2/2] iio: light: Add support for TI OPT4060 color sensor
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20241016/202410161852.GepOULQn-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project bfe84f7085d82d06d61c632a7bad1e692fd159e4)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241016/202410161852.GepOULQn-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410161852.GepOULQn-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from drivers/iio/light/opt4060.c:11:
-   In file included from include/linux/i2c.h:19:
-   In file included from include/linux/regulator/consumer.h:35:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     548 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-         |                                                   ^
-   In file included from drivers/iio/light/opt4060.c:11:
-   In file included from include/linux/i2c.h:19:
-   In file included from include/linux/regulator/consumer.h:35:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-         |                                                   ^
-   In file included from drivers/iio/light/opt4060.c:11:
-   In file included from include/linux/i2c.h:19:
-   In file included from include/linux/regulator/consumer.h:35:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/hexagon/include/asm/io.h:328:
-   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     585 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   In file included from drivers/iio/light/opt4060.c:11:
-   In file included from include/linux/i2c.h:19:
-   In file included from include/linux/regulator/consumer.h:35:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:21:
-   In file included from include/linux/mm.h:2213:
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
->> drivers/iio/light/opt4060.c:836:2: warning: label at end of compound statement is a C23 extension [-Wc23-extensions]
-     836 |         }
-         |         ^
-   8 warnings generated.
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for GET_FREE_REGION
-   Depends on [n]: SPARSEMEM [=n]
-   Selected by [m]:
-   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=m]
-
-
-vim +836 drivers/iio/light/opt4060.c
-
-   807	
-   808	static int opt4060_write_event(struct iio_dev *indio_dev,
-   809				       const struct iio_chan_spec *chan,
-   810				       enum iio_event_type type,
-   811				       enum iio_event_direction dir,
-   812				       enum iio_event_info info,
-   813				       int val, int val2)
-   814	{
-   815		struct opt4060_chip *chip = iio_priv(indio_dev);
-   816	
-   817		switch (info) {
-   818		case IIO_EV_INFO_VALUE:
-   819			if (chan->type == IIO_INTENSITY && type == IIO_EV_TYPE_THRESH) {
-   820				u32 th_lo, th_hi;
-   821	
-   822				if (opt4060_get_thresholds(chip, &th_lo, &th_hi))
-   823					return -EFAULT;
-   824				if (dir == IIO_EV_DIR_FALLING)
-   825					th_lo = val;
-   826				else if (dir == IIO_EV_DIR_RISING)
-   827					th_hi = val;
-   828				if (opt4060_set_thresholds(chip, th_lo, th_hi))
-   829					return -EFAULT;
-   830				return 0;
-   831			}
-   832			break;
-   833		case IIO_EV_INFO_PERIOD:
-   834			return opt4060_write_ev_period(chip, val, val2);
-   835		default:
- > 836		}
-   837		return -EINVAL;
-   838	}
-   839	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+- Nuno S=C3=A1
 

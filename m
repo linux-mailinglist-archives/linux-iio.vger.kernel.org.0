@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-10660-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10662-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1449A0C80
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Oct 2024 16:22:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 465E39A0C82
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Oct 2024 16:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 854A81F22075
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Oct 2024 14:22:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17171F217E8
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Oct 2024 14:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF28020C003;
-	Wed, 16 Oct 2024 14:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B9314F114;
+	Wed, 16 Oct 2024 14:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wkn6DzCG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qu/Fn0zI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBDB14F114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB10020C006
 	for <linux-iio@vger.kernel.org>; Wed, 16 Oct 2024 14:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729088522; cv=none; b=iq+S0Vhh9CaCGGay1rN6zYZaTs6aQSRUtOyuwqV8olQY8A5VOMPuMqYiT2FbwqJc8qlV180RgZywn5NbNNTH/WcadQzzjS9XMkcw8QDqe9miqxJJdBGhzv7BxRclxQ6o7c8qQNfhMcQL5F2705CCIrpWbEdipUgrXrU0zjywTOk=
+	t=1729088522; cv=none; b=jIu5E4SeCb3ZUB8fvjC7y756cJK/gasb3jULXRb/Ri6F8Oc3cNoILrYArV0kYx6TDGx5h99WHXJ0ECbGcVRMc8LE0DhEr6qkzpGlz4BE+vFomelyp0SMSFEERnivSeFIrJhAs7DTVc+2r0SRxxpXrB+1owx5E4L4t7BUZTEQsZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729088522; c=relaxed/simple;
-	bh=tWjFtBmSuKELYDNq4TRiHv0QfjxoJ45jsJ+2VcncvXU=;
+	bh=7UX0WOZb0I8bJ0RJYNd3GaprHRSk5lvjIvfD+BiQSnQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GJLOSz5oySG0DJTDNApXM7Uaq/GgjrUA5NyPyP+oZq/ptfP9AbdLkC2PnqxPFnRyel9MslJ+sfQfwWK+DVlnjGQRxL8jgGBBzQGsw3uYzw+1E69JwheLKg/CG8G5EVyYb5fT8GEcxnKv+Z94aBlDlneg2PgiPVrX2ClxRZnxP7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wkn6DzCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 47BEBC4CECF;
+	 In-Reply-To:To:Cc; b=ouaj/0PT7iV8sxSYt6APCjVg47dqaNm1t+zuo87iBQlckMGNlOjoPX1mK8jNmmcqFV0ZVmWKE3KdZcO2Xk4mV0tZ1l7HMP5JkAe/rRZAD2bovHAiQJpcafdyye2SroaQcR9AX8xr8vJIjIkPyLtoqF+7t5lXJhCGW9RPTQ8CNGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qu/Fn0zI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 535A1C4CEC7;
 	Wed, 16 Oct 2024 14:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1729088522;
-	bh=tWjFtBmSuKELYDNq4TRiHv0QfjxoJ45jsJ+2VcncvXU=;
+	bh=7UX0WOZb0I8bJ0RJYNd3GaprHRSk5lvjIvfD+BiQSnQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Wkn6DzCGi9jxOr5FeI7gRxxRm3i4C3x9MekX+nVX0yI+ieJXUOd3NtAD9c+24haig
-	 AorjG3HWwriPu8Yy7J3orZvhLFgv9OKD2egWHF1dSR3/5Kjj/yz2VTfwJi5HLnLScv
-	 7+1z0oUS+73aP1khUxB65pizPqgST3G5gZO9iEM56DJbtX/dqn2Xoh9FLKEjNVKfr2
-	 KmMbsy36gzwcpPUAKOOsq7fePK+JvQ3wiFzBPtyco4n94pB//ycMgRD+gBwnaOyYgr
-	 8i14xV7dqaFBp11n9e0Pmw9RECQlKK8pK2Av2uXHT43P6COyOfAhID7W+FCTKtXrYt
-	 Ggf10bIryl7Qw==
+	b=Qu/Fn0zIkzDbcPfKHnbdDhvPt29242vTeC5oay1Uz+wORI9zW3tVICgPttU0K8FGV
+	 MTsfQdYOL6bwwh9tpSQWxNmKIrhKY9VejUtHWJECuxIGSZI49XVPJeASKDm8T5D5sO
+	 ChAMcN2SBmpinrTU1asgEEOGDHUe6wkvajIAmHGS9s301orrPd4CAVDdX2bZEDc+vt
+	 SBg7ddCChEBCvUdc/ixci+44Nmcs+SFeccPemkGzbfdmlbyInIo76Qh1OdRe/XW6x9
+	 iZLSnBJ+9hBGYjV81hps0FSOr7j+tt3js+lCW+vzcC4hkMQjFwML9WAbOx2qCZB6LJ
+	 Gw8yaCDIV8W+w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37193D206B5;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46FDFD206BA;
 	Wed, 16 Oct 2024 14:22:02 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Wed, 16 Oct 2024 16:21:59 +0200
-Subject: [PATCH 1/3] iio: addac: ad74413r: drop reset_gpio from struct
- ad74413r_state
+Date: Wed, 16 Oct 2024 16:22:00 +0200
+Subject: [PATCH 2/3] iio: addac: ad74413r: use
+ devm_regulator_get_enable_read_voltage()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241016-dev-ad74413r-minor-improv-v1-1-13c9c769237d@analog.com>
+Message-Id: <20241016-dev-ad74413r-minor-improv-v1-2-13c9c769237d@analog.com>
 References: <20241016-dev-ad74413r-minor-improv-v1-0-13c9c769237d@analog.com>
 In-Reply-To: <20241016-dev-ad74413r-minor-improv-v1-0-13c9c769237d@analog.com>
 To: linux-iio@vger.kernel.org
@@ -65,11 +65,11 @@ Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>,
  Michael Hennerich <Michael.Hennerich@analog.com>, 
  Jonathan Cameron <jic23@kernel.org>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729088521; l=2264;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729088521; l=2669;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=pAXfyFHbRW/SCpMOSEqzhiSiKYRJaTQDO64j4kkjfgA=;
- b=ahi318fIe2pK7kqF1zYIn/ZQPsES8alHToNgzcJw+RVj9yTqqp3uOyL3VpwjvOr1pzrt+N934
- mTnvHsXScTKAers5jFF4OmMHFJ0rSn6QHpMY2Dd3qCyTBulhtXs94Jy
+ bh=jWsbLCxTUm/W19uTe2di1jluXpyIQzkCZn4CIrpSErI=;
+ b=o1ytCpDTla7wfILFbxWK5oft0TJhYrU0CgFRdey37VvNztllXhr37TvyTg0gY286ptPai1UqV
+ ORa4Ph+cWAeCAW3TKbUFeAtnHpM2jv/rEmPmuLeYlD6bfWYQmmJGC/f
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -79,73 +79,83 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-We just need the reset gpio during probe so there's no need to keep it
-in our state struct. Hence, move devm_gpiod_get_optional() into
-ad74413r_reset() and use a local struct gpio_desc.
-
-While at it, request the gpio in the asserted state (GPIOD_OUT_HIGH) so
-that we already perform the reset while requesting the gpio saving us a
-call to gpiod_set_value_cansleep().
-
-Also, explicitly include <gpio/consumer.h> for
-devm_gpiod_get_optional().
+It's highly unlikely for the converter ref voltage to change at runtime.
+Hence, let's read the voltage and save it (instead of the regulator
+struct). While at it, simplify the code by using
+devm_regulator_get_enable_read_voltage().
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/addac/ad74413r.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/iio/addac/ad74413r.c | 28 +++++++---------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index e50c896a07668..550e2460e29ca 100644
+index 550e2460e29c..cfe26a394465 100644
 --- a/drivers/iio/addac/ad74413r.c
 +++ b/drivers/iio/addac/ad74413r.c
-@@ -9,6 +9,7 @@
- #include <linux/crc8.h>
- #include <linux/device.h>
- #include <linux/err.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/gpio/driver.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
-@@ -72,7 +73,6 @@ struct ad74413r_state {
+@@ -60,7 +60,7 @@ struct ad74413r_state {
+ 	unsigned int			num_gpo_gpios;
+ 	unsigned int			num_comparator_gpios;
+ 	u32				sense_resistor_ohms;
+-
++	int				refin_reg_uv;
+ 	/*
+ 	 * Synchronize consecutive operations when doing a one-shot
+ 	 * conversion and when updating the ADC samples SPI message.
+@@ -69,7 +69,6 @@ struct ad74413r_state {
+ 
+ 	const struct ad74413r_chip_info	*chip_info;
+ 	struct spi_device		*spi;
+-	struct regulator		*refin_reg;
  	struct regmap			*regmap;
  	struct device			*dev;
  	struct iio_trigger		*trig;
--	struct gpio_desc		*reset_gpio;
- 
- 	size_t			adc_active_channels;
- 	struct spi_message	adc_samples_msg;
-@@ -407,12 +407,16 @@ static int ad74413r_gpio_set_comp_config(struct gpio_chip *chip,
- 
- static int ad74413r_reset(struct ad74413r_state *st)
+@@ -664,7 +663,7 @@ static int ad74413r_get_output_voltage_scale(struct ad74413r_state *st,
+ static int ad74413r_get_output_current_scale(struct ad74413r_state *st,
+ 					     int *val, int *val2)
  {
-+	struct gpio_desc *reset_gpio;
- 	int ret;
+-	*val = regulator_get_voltage(st->refin_reg);
++	*val = st->refin_reg_uv;
+ 	*val2 = st->sense_resistor_ohms * AD74413R_DAC_CODE_MAX * 1000;
  
--	if (st->reset_gpio) {
--		gpiod_set_value_cansleep(st->reset_gpio, 1);
-+	reset_gpio = devm_gpiod_get_optional(st->dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(reset_gpio))
-+		return PTR_ERR(reset_gpio);
-+
-+	if (reset_gpio) {
- 		fsleep(50);
--		gpiod_set_value_cansleep(st->reset_gpio, 0);
-+		gpiod_set_value_cansleep(reset_gpio, 0);
- 		return 0;
- 	}
+ 	return IIO_VAL_FRACTIONAL;
+@@ -1351,11 +1350,6 @@ static int ad74413r_setup_gpios(struct ad74413r_state *st)
+ 	return 0;
+ }
  
-@@ -1378,10 +1382,6 @@ static int ad74413r_probe(struct spi_device *spi)
+-static void ad74413r_regulator_disable(void *regulator)
+-{
+-	regulator_disable(regulator);
+-}
+-
+ static int ad74413r_probe(struct spi_device *spi)
+ {
+ 	struct ad74413r_state *st;
+@@ -1382,19 +1376,11 @@ static int ad74413r_probe(struct spi_device *spi)
  	if (IS_ERR(st->regmap))
  		return PTR_ERR(st->regmap);
  
--	st->reset_gpio = devm_gpiod_get_optional(st->dev, "reset", GPIOD_OUT_LOW);
--	if (IS_ERR(st->reset_gpio))
--		return PTR_ERR(st->reset_gpio);
+-	st->refin_reg = devm_regulator_get(st->dev, "refin");
+-	if (IS_ERR(st->refin_reg))
+-		return dev_err_probe(st->dev, PTR_ERR(st->refin_reg),
+-				     "Failed to get refin regulator\n");
 -
- 	st->refin_reg = devm_regulator_get(st->dev, "refin");
- 	if (IS_ERR(st->refin_reg))
- 		return dev_err_probe(st->dev, PTR_ERR(st->refin_reg),
+-	ret = regulator_enable(st->refin_reg);
+-	if (ret)
+-		return ret;
+-
+-	ret = devm_add_action_or_reset(st->dev, ad74413r_regulator_disable,
+-				       st->refin_reg);
+-	if (ret)
+-		return ret;
++	ret = devm_regulator_get_enable_read_voltage(st->dev, "refin");
++	if (ret < 0)
++		return dev_err_probe(st->dev, ret,
++				     "Failed to get refin regulator voltage\n");
++	st->refin_reg_uv = ret;
+ 
+ 	st->sense_resistor_ohms = 100000000;
+ 	device_property_read_u32(st->dev, "shunt-resistor-micro-ohms",
 
 -- 
 2.46.1

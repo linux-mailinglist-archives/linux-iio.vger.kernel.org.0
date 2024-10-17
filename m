@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-10672-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10673-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9A09A197B
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 05:51:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F4B9A19CF
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 06:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3D261C217D8
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 03:51:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3D29B210CF
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 04:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7513D13AD29;
-	Thu, 17 Oct 2024 03:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADA614AD2D;
+	Thu, 17 Oct 2024 04:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WzTR+aRh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C70H4M8W"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D0D2D05E;
-	Thu, 17 Oct 2024 03:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D6921E3C1;
+	Thu, 17 Oct 2024 04:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729137060; cv=none; b=kMpa5Fl2kmUzp0t9kc/fYW3ciqYQhc6UQ/Z3SYwhu/vWk1N3EsduKjPHinDnB2LJIxaOb+iEc+NSgsRlGX91zYaJCcclFXqGGNQBWtUbtOzW1flcW9ZfbKChR0SxPJXbOb6z4UcfIFf39ITqUZ7DlyuoxC0EtZ0MHEWuRB757Ok=
+	t=1729140244; cv=none; b=sUN65ihQLnP9KVSxqkEb63BKsYrpyErQYjMIMaSKAIrSK4YcKbezfNjFMRV7skHAp/X+xTNbkgCRhU9f3QTvXknKB7kafmagKj6xQboJg6I4gjHBOzrI6HGls3L8tdVaTZOHQK+KFtNbEdqtKR/fLgoPpM9+r0zjbCAd788RUNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729137060; c=relaxed/simple;
-	bh=L0UjiYZmFtvS99X6G53pstC3l3BtzZhh4ldH4u/KynQ=;
+	s=arc-20240116; t=1729140244; c=relaxed/simple;
+	bh=11YArkhZQS4c8MQnbYUnU5KYPuWA3mgk5RTZHB/jkR0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BpZ99rYUvkwqXv90QDbIFNRxXpEOW75WopeEM4k94f4MDw0T+rwGvpuBOp/yGEowA18vY1GZvAALW9L0P3pIgKUuCVPWfMVdSJjzSE89f391mUaVxM8PnyWh6caHjIdGiPljjCh9xHGyNDfMKtjLUW9XrwgN+rzlrsOvArmxJqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WzTR+aRh; arc=none smtp.client-ip=198.175.65.20
+	 Content-Type:Content-Disposition:In-Reply-To; b=OyWqQ51t03g1Lrj4/psmIx2TpdNltnLZCBal3ywpuqW0mQTJIhMuKmq+U5EHUg8ZMn/sWIp54ZiGdMCR4OfebkBtpj6d5iswntD4wDUEVrAjZkMHVb8YRME69jOa0Sj7cK9qZZck4MBoBroEtQc8IJjv1ApLTGR39o/mq7U1cAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C70H4M8W; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729137058; x=1760673058;
+  t=1729140240; x=1760676240;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=L0UjiYZmFtvS99X6G53pstC3l3BtzZhh4ldH4u/KynQ=;
-  b=WzTR+aRhtfveO1W9jeJo2LxilTMFLX6JwdbFHSAdBKNBQI/WLoZSo4e/
-   7SmrE7O/21JTaE/2DumusUma28l3Hq3ObQ+QKkmZ6lZWpYomqfS0I9Qx+
-   5dFPOMHuk4lnLiy0xNrupmZEADJMpFyUjSqPW5s8s9yi0Yq3LydFXOjZL
-   Goi7u4oUYflw0UF5M9pAc0JmumdHkoAsLG5MK2d58tae3gVldoy9Kz33Q
-   43Awg4Ftl+BYg6GvtJKBfvdsPm1OtfgoaV89YPOz1EInlm1NxorgVeI/d
-   gNU326EcHcMIOmPbKcSG4iIPey64g1sVo1rZV0PJLcjMbaFLZl5oK9J8/
-   g==;
-X-CSE-ConnectionGUID: amFCRoDTRxKiPH4wcvB+Ew==
-X-CSE-MsgGUID: d1IduJ2yRO2/7tBm9GIKwg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28395952"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="28395952"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 20:50:58 -0700
-X-CSE-ConnectionGUID: 0rgLyo/pSU+Z9IW6mKtaqw==
-X-CSE-MsgGUID: zrb50m4RR5mKHvyHvZ1U+g==
+  bh=11YArkhZQS4c8MQnbYUnU5KYPuWA3mgk5RTZHB/jkR0=;
+  b=C70H4M8Wiv7JA0SEM65j8wBwo2ExBPmHHQeIDMDWnIlozhFBVvRQfjs+
+   HVug1zGLJmVn0LsZxxZm5AnEViFMD2Q5LbMq3F5VRSW9LFdH6tX08djvO
+   5Je3WQMMIj5khDHG9osdjzCnrNuEe47MahHdMA8Iu+5E2MSMMD/XQhaMJ
+   1pi29FwJfczsrKejJugvKvT/dtI8ir4b9P8D+gNos49BdJjwqEK8cWGn2
+   37YqkB94R0WU071lVs3ahxTftEJUPCQcVn6mzI4zWNlmkPQLutl4SzSNC
+   BOS6vGhtSIAHUSZ08ZiiQVe4PjwkB7CN/90xQXrnspsh3TU1qoFF0sc1h
+   A==;
+X-CSE-ConnectionGUID: Y51geHx5QVWysjeGMffP0g==
+X-CSE-MsgGUID: JJOjcyqBSWGo/6uzqbUYBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11226"; a="32538601"
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
+   d="scan'208";a="32538601"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 21:44:00 -0700
+X-CSE-ConnectionGUID: RaXAfCgKTmeFaoCq0c1HyA==
+X-CSE-MsgGUID: JgNiXR5kQXGN1ipyHrpcEA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
-   d="scan'208";a="82967404"
+   d="scan'208";a="78585172"
 Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 16 Oct 2024 20:50:55 -0700
+  by orviesa006.jf.intel.com with ESMTP; 16 Oct 2024 21:43:56 -0700
 Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1t1HXI-000Lhd-3A;
-	Thu, 17 Oct 2024 03:50:52 +0000
-Date: Thu, 17 Oct 2024 11:50:14 +0800
+	id 1t1IMc-000Ljj-17;
+	Thu, 17 Oct 2024 04:43:54 +0000
+Date: Thu, 17 Oct 2024 12:43:49 +0800
 From: kernel test robot <lkp@intel.com>
 To: Per-Daniel Olsson <perdaniel.olsson@axis.com>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -75,7 +75,7 @@ Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
 	Per-Daniel Olsson <perdaniel.olsson@axis.com>
 Subject: Re: [PATCH v3 2/2] iio: light: Add support for TI OPT4060 color
  sensor
-Message-ID: <202410171139.5QhZ0EZG-lkp@intel.com>
+Message-ID: <202410171258.CFrNPzC1-lkp@intel.com>
 References: <20241015143713.2017626-3-perdaniel.olsson@axis.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -97,17 +97,22 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Per-Daniel-Olsson/dt-bind
 base:   eca631b8fe808748d7585059c4307005ca5c5820
 patch link:    https://lore.kernel.org/r/20241015143713.2017626-3-perdaniel.olsson%40axis.com
 patch subject: [PATCH v3 2/2] iio: light: Add support for TI OPT4060 color sensor
-config: x86_64-randconfig-121-20241017 (https://download.01.org/0day-ci/archive/20241017/202410171139.5QhZ0EZG-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241017/202410171139.5QhZ0EZG-lkp@intel.com/reproduce)
+config: powerpc64-randconfig-r063-20241017 (https://download.01.org/0day-ci/archive/20241017/202410171258.CFrNPzC1-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241017/202410171258.CFrNPzC1-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410171139.5QhZ0EZG-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410171258.CFrNPzC1-lkp@intel.com/
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/light/opt4060.c:836:9: sparse: sparse: statement expected after case label
+All warnings (new ones prefixed by >>):
+
+>> drivers/iio/light/opt4060.c:836:2: warning: label at end of compound statement is a C2x extension [-Wc2x-extensions]
+     836 |         }
+         |         ^
+   1 warning generated.
+
 
 vim +836 drivers/iio/light/opt4060.c
 

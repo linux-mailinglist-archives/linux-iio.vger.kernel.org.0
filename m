@@ -1,58 +1,62 @@
-Return-Path: <linux-iio+bounces-10690-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10691-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549299A2B82
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 19:56:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B73C9A2BA8
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 20:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1907A283BE3
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 17:56:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2748AB2408C
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 18:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0883C1E04A2;
-	Thu, 17 Oct 2024 17:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD891E009B;
+	Thu, 17 Oct 2024 18:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mb8OutvS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nB8KkKna"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78561E0484;
-	Thu, 17 Oct 2024 17:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AFF1E0089;
+	Thu, 17 Oct 2024 18:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729187728; cv=none; b=ReCdjcxt1N2iL7TG78pv4R2i8/rdTEgkvpOGl+Sh8XGJpkte4c9HI5LUHtC+Qy5hNyFy8yNa5dGdXFmiT26sAW6MR6QbwACF4eCY6aPrv72GWwVpQ3BfUjM1CAnBsehf9BFJZs/NvyLC7n7RGg6XTs4DUy3VIIjGd3T+xzYLJlI=
+	t=1729188317; cv=none; b=OYnbOqSUupIT8a8chqIC5GkwaJ0U53lASFtZE+rEFFI9UirJaZig1oD6SUNHhjgXSNIthJ9UaO3et5K5LStUZ9NvIygZOLtJiluPJCenzqX9RKW7Ew111Prh245YtXmW6207ombIDeHaeMHUijwRPvqaBI2rUsgOAWN6DZkq1sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729187728; c=relaxed/simple;
-	bh=UoZIjoquc7ianrvVX05sSUHV7hg2qpqSbdJFzAVzsU0=;
+	s=arc-20240116; t=1729188317; c=relaxed/simple;
+	bh=RDfDcHscGDDn1krobGn9EY6WlG/idbfvbr+OBlw0sR0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S1UGdIIJ7ErmCUyfPxL9z2jZT5gIRtlU3v+vYfwJIQooBGUxdHvbFd8GTYulZL0ONHaPDsH1Zz33lZ8LxFRH97MFaj7EioGMuna947eY+369ManbBMp0vVzkDTifgEIkKC3n/F3vVMgJ0mJtBSdIsDIYotryqBM7RshiGe6+x+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mb8OutvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C41C4CEC3;
-	Thu, 17 Oct 2024 17:55:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TgswmIRtx5gr7vgrysh5hVb6CLJH5QBFNH6qTsZhcdQ3oOnuSM000KOBEdqE1AqECOis38dfVR5BSCoOKwQwlnxVDLg2UAzrzrCmVOVTnC8phlRTNbzxD77cu+rlNVrisbps2xpXZQi+Fo+7oRAdjRWzZC1aPaonN40YQ+Rezok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nB8KkKna; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771F2C4CECE;
+	Thu, 17 Oct 2024 18:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729187726;
-	bh=UoZIjoquc7ianrvVX05sSUHV7hg2qpqSbdJFzAVzsU0=;
+	s=k20201202; t=1729188316;
+	bh=RDfDcHscGDDn1krobGn9EY6WlG/idbfvbr+OBlw0sR0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Mb8OutvS+HulwhEvASibptQnz7JsKTs3lDxbpwDr/KgyH1R23Wmm7DUkekOo3hWx0
-	 fvRDb16lthRGCzAHDP7gXUDhSs2+8I3MzDSAWIDRhlAzaBzvoWiZPOyzP8faPMWf3+
-	 dJsXv561uK/Kh0ic5L6vBNruWehnd89IfyHuWREVCytJWlKRaKMJd1HRRMOngtJYl4
-	 C9FAkPQpn4uK8QuuU1TH4lhq44JcVEbHErLztouGkAdc4p6vxnyKA+3JL6E1HkHlLC
-	 kMuU6f6gK80g8sVJXnl0QpY6/sy+qJ8tkwk1fpeM+G/rUx6KyPhl2M5jDlOo6TKRZP
-	 hM6+DQ4kfp59Q==
-Date: Thu, 17 Oct 2024 18:55:07 +0100
+	b=nB8KkKnabc1hgY9VeiQy8U110IRxnLEtZmLwYPjdP8nfkmFFjbN5WXwjc3dzurhTV
+	 4ng9ygBNojCXU3M5y9OM6MklUGeUFLcqSk3RMSghF8APGY/oMVZORTtkOuHd2t+QsE
+	 JYMgmCetQgYIG1dRN+8Hl6IqAli8GyP6haS7aYlAtpAI3zuVebIM44cwsXWw7YQ1tF
+	 A5gHGpf2StC+bc2Vm++g9LoBKAxgsiH3KXyIQ+4s4WPfKMOTl6AVw74tDKo6mTTzca
+	 Rb0w14OGaG5CaCVjXBGAG1KGfrf7WxuSWTplpaRLh4h1vcctxoCz7xMk6u0QGHHNnw
+	 fm704pb/lTUlw==
+Date: Thu, 17 Oct 2024 19:05:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alex Lanzano <lanzano.alex@gmail.com>
-Cc: Yang Li <yang.lee@linux.alibaba.com>, lars@metafoo.de,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Abaci Robot
- <abaci@linux.alibaba.com>
-Subject: Re: [PATCH -next] iio: imu: bmi270: Remove duplicated include in
- bmi270_i2c.c
-Message-ID: <20241017185507.547c5505@jic23-huawei>
-In-Reply-To: <v3xzvojyycil7jszgxfnrwjiqxonz6aqrmfs6hgmru7pfuzgyv@3qrbzqo6p5mk>
-References: <20241016003919.113306-1-yang.lee@linux.alibaba.com>
-	<v3xzvojyycil7jszgxfnrwjiqxonz6aqrmfs6hgmru7pfuzgyv@3qrbzqo6p5mk>
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH RFC 1/4] dt-bindings: iio: adc: ad7380: add adaq4370-4
+ and adaq4380-4 compatible parts
+Message-ID: <20241017190500.215b895e@jic23-huawei>
+In-Reply-To: <20241015-ad7380-add-adaq4380-4-support-v1-1-d2e1a95fb248@baylibre.com>
+References: <20241015-ad7380-add-adaq4380-4-support-v1-0-d2e1a95fb248@baylibre.com>
+	<20241015-ad7380-add-adaq4380-4-support-v1-1-d2e1a95fb248@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,42 +64,222 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 15 Oct 2024 22:31:57 -0400
-Alex Lanzano <lanzano.alex@gmail.com> wrote:
+On Tue, 15 Oct 2024 11:09:06 +0200
+Julien Stephan <jstephan@baylibre.com> wrote:
 
-> On Wed, Oct 16, 2024 at 08:39:19AM +0800, Yang Li wrote:
-> > The header files linux/module.h is included twice in bmi270_i2c.c,
-> > so one inclusion of each can be removed.
-> > 
-> > Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> > Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11363
-> > Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-> > ---
-> >  drivers/iio/imu/bmi270/bmi270_i2c.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
-> > index e9025d22d5cc..71cc271cdf30 100644
-> > --- a/drivers/iio/imu/bmi270/bmi270_i2c.c
-> > +++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
-> > @@ -3,7 +3,6 @@
-> >  #include <linux/module.h>
-> >  #include <linux/i2c.h>
-> >  #include <linux/iio/iio.h>
-> > -#include <linux/module.h>
-> >  #include <linux/mod_devicetable.h>
-> >  #include <linux/regmap.h>  
-> 
-> Good catch!
-> 
-> Minor nit: Should remove the top module.h include instead to keep
-> alphabetical ordering.
-> 
+> adaq4370-4 (2MSPS) and adaq4380-4 (4MSPS) are quad-channel precision data
+> acquisition signal chain =CE=BCModule solutions compatible with the ad738x
+> family, with the following differences:
+>=20
+> - configurable gain in front of each 4 adc
+> - internal reference is 3V derived from refin-supply (5V)
 
-Given I messed up the pull request anyway, I've snuck this one is
-as an obviously fine last minute tidy up. With the other entry removed as
-suggested.
+Now I'm confused.=20
+
+The earlier refin-supply change appears unused in this patch.
+I was expecting it to be required for the additional devices.
+With additions to the docs from the fix to explain the new
+cases.  I'm not seeing that in here.
+
+
+> - additional supplies
+>=20
+> To configure the gain a new patternProperties is added to describe each
+> channel. It is restricted to adaq devices.
+>=20
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> ---
+>  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 117 +++++++++++++++=
+++++++
+>  1 file changed, 117 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> index 74d82721637c..3007d8e39684 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> @@ -25,6 +25,8 @@ description: |
+>    * https://www.analog.com/en/products/ad7386-4.html
+>    * https://www.analog.com/en/products/ad7387-4.html
+>    * https://www.analog.com/en/products/ad7388-4.html
+> +  * https://www.analog.com/en/products/adaq4370-4.html
+> +  * https://www.analog.com/en/products/adaq4380-4.html
+> =20
+> =20
+>  $ref: /schemas/spi/spi-peripheral-props.yaml#
+> @@ -46,6 +48,8 @@ properties:
+>        - adi,ad7386-4
+>        - adi,ad7387-4
+>        - adi,ad7388-4
+> +      - adi,adaq4370-4
+> +      - adi,adaq4380-4
+> =20
+>    reg:
+>      maxItems: 1
+> @@ -59,6 +63,9 @@ properties:
+>    vlogic-supply: true
+>    refio-supply: true
+>    refin-supply: true
+> +  vs-p-supply: true
+> +  vs-n-supply: true
+> +  ldo-supply: true
+> =20
+>    aina-supply:
+>      description:
+> @@ -86,12 +93,43 @@ properties:
+>        specify the ALERT interrupt.
+>      maxItems: 1
+> =20
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+>  required:
+>    - compatible
+>    - reg
+>    - vcc-supply
+>    - vlogic-supply
+> =20
+> +patternProperties:
+> +  "^channel@([0-3])$":
+> +    $ref: adc.yaml
+> +    type: object
+> +
+> +    properties:
+> +      reg:
+> +        description:
+> +          The channel number. From 0 to 3 corresponding to channels A,B,=
+C,D
+> +        items:
+> +          minimum: 0
+> +          maximum: 3
+> +
+> +      adi,gain-milli:
+> +        description:
+> +          The hardware gain applied to the ADC input (in milli units).
+> +          If not present, default to 1000 (no actual gain applied).
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        default: 1000
+> +
+> +    required:
+> +      - reg
+> +
+> +    additionalProperties: false
+> +
+>  unevaluatedProperties: false
+> =20
+>  allOf:
+> @@ -128,7 +166,21 @@ allOf:
+>          ainc-supply: false
+>          aind-supply: false
+> =20
+> +  # Using channel to declare gain property only applies to adaq devices
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          not:
+> +            contains:
+> +              enum:
+> +                - adi,adaq4370-4
+> +                - adi,adaq4380-4
+> +    then:
+> +      patternProperties:
+> +        "^channel@([0-3])$": false
+> +
+>    # ad7380-4 uses refin-supply as external reference.
+> +  # adaq devices use internal reference only, derived from refin-supply
+>    # All other chips from ad738x family use refio as optional external re=
+ference.
+>    # When refio-supply is omitted, internal reference is used.
+>    - if:
+> @@ -136,6 +188,8 @@ allOf:
+>          compatible:
+>            enum:
+>              - adi,ad7380-4
+> +            - adi,adaq4370-4
+> +            - adi,adaq4380-4
+>      then:
+>        properties:
+>          refio-supply: false
+> @@ -145,6 +199,24 @@ allOf:
+>        properties:
+>          refin-supply: false
+> =20
+> +  # adaq devices need more supplies
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - adi,adaq4370-4
+> +            - adi,adaq4380-4
+> +    then:
+> +      required:
+> +        - vs-p-supply
+> +        - vs-n-supply
+> +        - ldo-supply
+> +    else:
+> +      properties:
+> +        vs-p-supply: false
+> +        vs-n-supply: false
+> +        ldo-supply: false
+> +
+>  examples:
+>    - |
+>      #include <dt-bindings/interrupt-controller/irq.h>
+> @@ -169,3 +241,48 @@ examples:
+>              refio-supply =3D <&supply_2_5V>;
+>          };
+>      };
+> +
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        adc@0 {
+> +            compatible =3D "adi,adaq4380-4";
+> +            reg =3D <0>;
+> +
+> +            spi-cpol;
+> +            spi-cpha;
+> +            spi-max-frequency =3D <80000000>;
+> +
+> +            interrupts =3D <27 IRQ_TYPE_EDGE_FALLING>;
+> +            interrupt-parent =3D <&gpio0>;
+> +
+> +            vcc-supply =3D <&supply_3_3V>;
+> +            vlogic-supply =3D <&supply_3_3V>;
+> +            refin-supply =3D <&supply_5V>;
+> +            vs-p-supply =3D <&supply_5V>;
+> +            vs-n-supply =3D <&supply_0V>;
+> +            ldo-supply =3D <&supply_5V>;
+> +
+> +            #address-cells =3D <1>;
+> +            #size-cells =3D <0>;
+> +
+> +            channel@0 {
+> +                reg =3D <0>;
+> +                adi,gain-milli =3D <300>;
+> +            };
+> +
+> +            channel@2 {
+> +                reg =3D <2>;
+> +                adi,gain-milli =3D <600>;
+> +            };
+> +
+> +            channel@3 {
+> +                reg =3D <3>;
+> +                adi,gain-milli =3D <1000>;
+> +            };
+> +        };
+> +    };
+>=20
+
 

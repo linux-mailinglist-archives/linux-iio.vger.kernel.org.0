@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-10681-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10682-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A3E49A2026
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 12:38:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC949A2030
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 12:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6730D1C249B0
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 10:38:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA2801F22395
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 10:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF2D1DACAA;
-	Thu, 17 Oct 2024 10:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FB01DA2E0;
+	Thu, 17 Oct 2024 10:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4bhryMC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="feAz8L81"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348A41D270B;
-	Thu, 17 Oct 2024 10:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228151DB92E;
+	Thu, 17 Oct 2024 10:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729161489; cv=none; b=eHr2vDGZNgyO6dB9uBNOahJOPaAzPTDkk8xPBQiRjZ3jueeFjf3lgTFP4es6bzjWxxbdTxQJVv79B2iNjcEF8DFVYMJGWhLphLjbdUw9i1zWBYNRaytJavCrcXGpw+fdsoIBxM72IRCqdLcOPhx2B1gxJ3t6GQbLNJQzob9VFiY=
+	t=1729161494; cv=none; b=HgcAHk+NnXiLEeXH8LN0OeJL+r8xL2jwHLyou+aJFf8iSqlW6Kffy/5zxy9Z1cTynEKkZhUmnJVTuRBrPbwuYZhmviBSVqGYfqVoiDNJ8K5hEMXiYVO+IMVp8rcqUOgbUo2edNvRwODUIOOsCQkdPALxCn2575MwIZsv3wWtHJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729161489; c=relaxed/simple;
-	bh=N2euFngJxSATLtEd1gk9xVj5LrqAKqRPTsHiiP8bK4s=;
+	s=arc-20240116; t=1729161494; c=relaxed/simple;
+	bh=E+GnRkyTSIOyO92KPoBLDhVtU+ZCAKCKHoc2KE53rpQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=n7EC6cxaawytFWahnZgdJYCIu2kEFFA2J5EKkTZ+RpdpSvv2KRgxxtkeTdYNogPcW4JF0d6u1oKxfQlBODgEC1IftbJ1oScWeq2+zsdzhq1RInYqr7RQ72EdzfufZzoz7RavlraiuBYAYQEaj61im10gXR8fqYRaNZxYxdSwmFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4bhryMC; arc=none smtp.client-ip=209.85.214.177
+	 In-Reply-To:To:Cc; b=NxWBqAmr0EW+hxgMe5tVONrTfc5LA4cnNpQY/oACgp7wNzru02itWvLieEmHGWFLUD/pAsf4HOc5MHGv+4owGj6H/qAhYXvIY+X15CxUiB+OXTSxIBB0avykJbXoe3tnwv7LRg6JQt7JtfZPhbO6X6BGeRw+2LTTOLuR5YTYg9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=feAz8L81; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-20cafd36ed0so499705ad.3;
-        Thu, 17 Oct 2024 03:38:07 -0700 (PDT)
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7cd85502a34so105192a12.2;
+        Thu, 17 Oct 2024 03:38:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729161487; x=1729766287; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729161492; x=1729766292; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cRpe7+vlo4mItbiWbHypDvhOSwkwoSf/8TTasmXOfh0=;
-        b=i4bhryMC177PrexcbdYWRwaZGlqYfHDh33HqJAEUUZGAIUAP+nbcYvUTsHxXt6Rq+7
-         pqiyZG/sRZF4YBmQkXKcpRl6ZyNtzTAwCexMW1JoEtcVS0Hfju9hWVwCij6/zKNWwZV0
-         iJ35LYrDkSeCfgcr+6YH0M7kk+W1lR2j1/2QOWf+Mp+APu6OSwf/3lzin0xGdSPmms9F
-         nOK9aBZD8A+Cfo5xvuw39+IhoKQGJyhKR3aB1VA2WHNO5Ln38IDBUNHNiJjKW5d1x0yB
-         RX3ua0FpDVYNr7Mnw5QVm6WVmJLK90o15j6Nnj51Sl4wErPAyjLjAjbscE8tZsGwnfl+
-         h1fg==
+        bh=9Dzn7U1LMeWWKebsUs2ti8S/ZJFlZN95+8Bxqtv15kg=;
+        b=feAz8L81wdx059NJh3ZEaVIzIVBdJcDfZEG8Dlv6m3c+Sxk6UXGjDiWQfWMbnmVbk+
+         GjW14AiYcele/dwPyj5Tx/VwTSfCt74PkEO5tjRwTxeDgFyER4uU5jnjGZQd7TP9abvc
+         zJsm8cA/Ra3CkmDdZWa8i1QeIFjAWhcXNCqEfodm4TR24Hm1D5hvzJKkSELS1/IFt2id
+         ZtcSdVy5ml7x5zEehJq3tekvdr0aRoRIeniVgSK5HOXwGtyNolb9k9J9k0Kmgojox1Wc
+         TK7XjyuZybog9eqVA3yEaJr2gmCNp3QoUZ26AZg14mQvf+GE4+OdLtskS1z5ll2YpLvh
+         2mfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729161487; x=1729766287;
+        d=1e100.net; s=20230601; t=1729161492; x=1729766292;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cRpe7+vlo4mItbiWbHypDvhOSwkwoSf/8TTasmXOfh0=;
-        b=SyYXWiH27ePULyqAPDiXHSaNzCczgAag8+GR5vzgAYIBWL/A8Rlrc/MVWxK3pGdZjl
-         MOLL1TC8BdgcsZ5S+AicMP4MLj9LhSkf74t9gOZ6tQJhhxKImCAIHkp0UbwopxWeq2hE
-         W5bFAWNsIHJ/gIy6ZEZ3hEZMcUMig+llFbfcLv3tRnvVQBFroNuusuwHc6xNEmvNMZZn
-         0YwNiCgMLpN35MT5gNvxP128bVDQr7sv4pgp7l2urKyczwgtyNvgYoc30gyjCJ2wVVHI
-         g3bQ59YmiQOcQLjsIXwqoFGspCIPCAMj6XK3iUEVF90ikukAfNh06lE0xRTCzBbp47U5
-         4yYA==
-X-Forwarded-Encrypted: i=1; AJvYcCV0ayQIFoz2w9Ob9vlkYCqMS7jTM9ukjAlj0zERmkHIiBelWUyxgdITO4EeSTU2vziRBOinY5ZA104N@vger.kernel.org, AJvYcCXTQR3KDOMl+CYTB0IbUTTlXcAfgiBLs0T9eflLnrz4gtAnwtLluumkUE3ilKHCTxQi9KI6WfP9HYfndCzJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhwEZCQP2pKn9i7DesiVIi35IAXiC1/JGnmtNCf23pb0uaUfzm
-	6Xyyf0DMlQ4M4ofSvzhr3MkgYPGnMnsQTETkfoJPuA+uDFXDGGvt
-X-Google-Smtp-Source: AGHT+IFyxBVZYfW4nDKHl+At+1Io4C+ZSSAB5nQBOT29caRs+P5+Tf1jJzse3Kg76dQ4jkocBKzPbQ==
-X-Received: by 2002:a17:902:c94d:b0:20c:5da8:47b8 with SMTP id d9443c01a7336-20d2fd43e1emr35416995ad.5.1729161487394;
-        Thu, 17 Oct 2024 03:38:07 -0700 (PDT)
+        bh=9Dzn7U1LMeWWKebsUs2ti8S/ZJFlZN95+8Bxqtv15kg=;
+        b=SJAPKHA6FYer1rHlVOMuEXPD3nHLoFw6puHwf5Me/U/JuTnKJg9WAbhcVhoHfX8slX
+         TSnLEIEykNrbgoR/vodgIQwFAQxDW0HPgWV/UvxTkbb7jiqDA9drcK0GJHlsdmSxJz2p
+         XeTX4X/5Q/Xi4YzVwit+M4mM5ygHDInvhPsBNrOXo7zPcPGuTl1TRYFMdE4tPp2jCuZ5
+         x3xNA1Uw2PXXvEvp9gTP4JKlE9P1EsbP0foeIvgLubh4xmxOjEV+UQbrH2FYoBTiPVkt
+         /hkD7MpYkyallRbXFMrJEUz4yIbG5GrQAOH7N3ryK8ULfQBUTXq6NOuAPPdexmTpRzey
+         /zIw==
+X-Forwarded-Encrypted: i=1; AJvYcCVjtCnjmqKWNWESQ8/QuL9VllGmUf6MURPmIFI5rBZPM1v4mfT6T2OVOgZ68Ys8Xm/W2HnaJrM+RxPf@vger.kernel.org, AJvYcCWRo9gpWbtit6pByR7vo/y9xgmU7aZma4XN2q2xJGNazdwFdQ5drPtGSDZexdIrBD+wXIDXkpp93Ow904xz@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqXLtxUXIkdYIb4FC7SghXnyg9eqLW7Jc0rs3j1/MdFKL4zu9M
+	27CgQ8ABgAXgjNmt8dmZYerMH896KgblRdof2Re6ieVq5yOSGKeB
+X-Google-Smtp-Source: AGHT+IEFiNg0gL8u2EYIE2ipWU57P3dUlEE7LKHmCHNX1nqWZ4wzBN5dvqhWhkjh9lGFGtOh1OQrRg==
+X-Received: by 2002:a17:902:e808:b0:20c:e2ff:4a4c with SMTP id d9443c01a7336-20d47e23517mr14561335ad.3.1729161492134;
+        Thu, 17 Oct 2024 03:38:12 -0700 (PDT)
 Received: from [127.0.1.1] ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20d17f9d51esm41899025ad.104.2024.10.17.03.38.02
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20d17f9d51esm41899025ad.104.2024.10.17.03.38.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2024 03:38:06 -0700 (PDT)
+        Thu, 17 Oct 2024 03:38:11 -0700 (PDT)
 From: Yasin Lee <yasin.lee.x@gmail.com>
-Date: Thu, 17 Oct 2024 18:36:44 +0800
-Subject: [PATCH v3 1/2] dt-bindings: iio: tyhx,hx9023s: Add performance
- tuning configuration
+Date: Thu, 17 Oct 2024 18:36:45 +0800
+Subject: [PATCH v3 2/2] iio: proximity: hx9023s: Add performance tuning
+ function
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241017-add-performance-tuning-configuration-v3-1-e7289791f523@gmail.com>
+Message-Id: <20241017-add-performance-tuning-configuration-v3-2-e7289791f523@gmail.com>
 References: <20241017-add-performance-tuning-configuration-v3-0-e7289791f523@gmail.com>
 In-Reply-To: <20241017-add-performance-tuning-configuration-v3-0-e7289791f523@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -89,12 +89,13 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Yasin Lee <yasin.lee.x@gmail.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6303; i=yasin.lee.x@gmail.com;
- h=from:subject:message-id; bh=N2euFngJxSATLtEd1gk9xVj5LrqAKqRPTsHiiP8bK4s=;
- b=owGbwMvMwCEYyfeRr6Zs90zG02pJDOkCL1kPbHLOEljXWZrw/9uG5mKZDfFtWmvX3m88s/Nr0
- 4nZ8lWnOkpZGAQ5GGTFFFnOvH7Dmq/6cE/wb9cMmDmsTCBDGLg4BWAicgUM/2NU5on13z1wIWCr
- u2/6v6T8gA1bTocLe8Yf7baU23ZYJ4aRYfO2ObmfUvQ/GrKkNHV3xer+zPxV+f59apWQmv3F2Yf
- lNwMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10193;
+ i=yasin.lee.x@gmail.com; h=from:subject:message-id;
+ bh=E+GnRkyTSIOyO92KPoBLDhVtU+ZCAKCKHoc2KE53rpQ=;
+ b=owGbwMvMwCEYyfeRr6Zs90zG02pJDOkCL1knJOSycp4ut4hd2T1dqn1xwZSwc4yMftYCuik/c
+ vVzpyV2lLIwCHIwyIopspx5/YY1X/XhnuDfrhkwc1iZQIYwcHEKwEQu/mdk2BG6N231uryEzlnX
+ gv/MEsxZWfTnxeewqJtnt/BaeNusfMvIMFv4MEfNfuNJCx60XXle1GjmwiUWsfm/Uunh20UXiy4
+ s1wUA
 X-Developer-Key: i=yasin.lee.x@gmail.com; a=openpgp;
  fpr=CCEBEC056F25E1BC53FB4568590EF10E7C76BB99
 
@@ -103,222 +104,268 @@ performance can be improved by adjusting register settings.
 
 Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
 ---
- .../bindings/iio/proximity/tyhx,hx9023s.yaml       | 195 +++++++++++++++++++++
- 1 file changed, 195 insertions(+)
+ drivers/iio/proximity/hx9023s.c | 234 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 234 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
-index 64ce8bc8bd36..af419a3335eb 100644
---- a/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
-+++ b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
-@@ -28,6 +28,189 @@ properties:
+diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
+index 8b9f84400e00..5d0338588616 100644
+--- a/drivers/iio/proximity/hx9023s.c
++++ b/drivers/iio/proximity/hx9023s.c
+@@ -61,6 +61,7 @@
+ #define HX9023S_OFFSET_DAC4_9_8                0x1E
+ #define HX9023S_SAMPLE_NUM_7_0                 0x1F
+ #define HX9023S_INTEGRATION_NUM_7_0            0x21
++#define HX9023S_GLOBAL_CTRL2                   0x23
+ #define HX9023S_CH_NUM_CFG                     0x24
+ #define HX9023S_LP_ALP_4_CFG                   0x29
+ #define HX9023S_LP_ALP_1_0_CFG                 0x2A
+@@ -623,6 +624,235 @@ static int hx9023s_property_get(struct hx9023s_data *data)
+ 	return 0;
+ }
  
-   vdd-supply: true
++static int hx9023s_performance_tuning(struct hx9023s_data *data)
++{
++	struct device *dev = regmap_get_device(data->regmap);
++	int ret;
++	bool dither;
++	bool chop;
++	u32 odr;
++	u32 range[HX9023S_CH_NUM];
++	u32 avg[HX9023S_CH_NUM];
++	u32 osr[HX9023S_CH_NUM];
++	u32 sample_time;
++	u32 integration_time;
++	u32 lp_alpha[HX9023S_CH_NUM];
++	u32 bl_up_alpha[HX9023S_CH_NUM];
++	u32 bl_down_alpha[HX9023S_CH_NUM];
++	u32 drdy_interrput;
++	u32 int_high_num;
++	u32 int_low_num;
++	u32 temp;
++
++	/* dither */
++	dither = device_property_read_bool(dev, "tyhx,dither");
++	if (dither)
++		ret = regmap_update_bits(data->regmap, HX9023S_GLOBAL_CTRL0, BIT(6), BIT(6));
++	else
++		ret = regmap_update_bits(data->regmap, HX9023S_GLOBAL_CTRL0, BIT(6), 0);
++
++	/* chop */
++	chop = device_property_read_bool(dev, "tyhx,chop");
++	if (chop)
++		ret = regmap_update_bits(data->regmap, HX9023S_GLOBAL_CTRL2, GENMASK(4, 0),
++					GENMASK(4, 0));
++	else
++		ret = regmap_update_bits(data->regmap, HX9023S_GLOBAL_CTRL2, GENMASK(4, 0), 0);
++
++	/* odr */
++	ret = device_property_read_u32(dev, "tyhx,odr", &odr);
++	if (!ret) {
++		ret = regmap_update_bits(data->regmap, HX9023S_PRF_CFG, GENMASK(4, 0),
++					FIELD_PREP(GENMASK(4, 0), odr));
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update odr\n");
++	}
++
++	/* range */
++	ret = device_property_read_u32_array(dev, "tyhx,range", range, ARRAY_SIZE(range));
++	if (!ret) {
++		temp = FIELD_PREP(GENMASK(2, 0), range[0]) | FIELD_PREP(GENMASK(6, 4), range[1]);
++		ret = regmap_update_bits(data->regmap, HX9023S_RANGE_7_0, GENMASK(6, 0), temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update range for ch0 and ch1\n");
++
++		temp = FIELD_PREP(GENMASK(2, 0), range[2]) | FIELD_PREP(GENMASK(6, 4), range[3]);
++		ret = regmap_update_bits(data->regmap, HX9023S_RANGE_9_8, GENMASK(6, 0), temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update range for ch2 and ch3\n");
++
++		temp = FIELD_PREP(GENMASK(2, 0), range[4]);
++		ret = regmap_update_bits(data->regmap, HX9023S_RANGE_18_16, GENMASK(2, 0), temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update range for ch4\n");
++	}
++
++	/* avg */
++	ret = device_property_read_u32_array(dev, "tyhx,avg", avg, ARRAY_SIZE(avg));
++	if (!ret) {
++		temp = FIELD_PREP(GENMASK(7, 5), avg[0]);
++		ret = regmap_update_bits(data->regmap, HX9023S_AVG0_NOSR0_CFG, GENMASK(7, 5),
++					temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update avg for ch0\n");
++
++		temp = FIELD_PREP(GENMASK(6, 4), avg[2]) | FIELD_PREP(GENMASK(2, 0), avg[1]);
++		ret = regmap_update_bits(data->regmap, HX9023S_AVG12_CFG, GENMASK(6, 0), temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update avg for ch1 and ch2\n");
++
++		temp = FIELD_PREP(GENMASK(6, 4), avg[4]) | FIELD_PREP(GENMASK(2, 0), avg[3]);
++		ret = regmap_update_bits(data->regmap, HX9023S_AVG34_CFG, GENMASK(6, 0), temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update avg for ch3 and ch4\n");
++	}
++
++	/* osr */
++	ret = device_property_read_u32_array(dev, "tyhx,osr", osr, ARRAY_SIZE(osr));
++	if (!ret) {
++		temp = FIELD_PREP(GENMASK(4, 2), osr[0]);
++		ret = regmap_update_bits(data->regmap, HX9023S_AVG0_NOSR0_CFG, GENMASK(4, 2),
++					temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update osr for ch0\n");
++
++		temp = FIELD_PREP(GENMASK(6, 4), osr[2]) | FIELD_PREP(GENMASK(2, 0), osr[1]);
++		ret = regmap_update_bits(data->regmap, HX9023S_NOSR12_CFG, GENMASK(6, 0), temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update osr for ch1 and ch2\n");
++
++		temp = FIELD_PREP(GENMASK(6, 4), osr[4]) | FIELD_PREP(GENMASK(2, 0), osr[3]);
++		ret = regmap_update_bits(data->regmap, HX9023S_NOSR34_CFG, GENMASK(6, 0), temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update osr for ch3 and ch4\n");
++	}
++
++	/* sample time */
++	ret = device_property_read_u32(dev, "tyhx,sample-time", &sample_time);
++	if (!ret) {
++		ret = regmap_write(data->regmap, HX9023S_SAMPLE_NUM_7_0, sample_time);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update sample_time\n");
++	}
++
++	/* integration time */
++	ret = device_property_read_u32(dev, "tyhx,integration-time", &integration_time);
++	if (!ret) {
++		ret = regmap_write(data->regmap, HX9023S_INTEGRATION_NUM_7_0, integration_time);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update integration_time\n");
++	}
++
++	/* lp-alpha */
++	ret = device_property_read_u32_array(dev, "tyhx,lp-alpha", lp_alpha, ARRAY_SIZE(lp_alpha));
++	if (!ret) {
++		temp = FIELD_PREP(GENMASK(6, 4), lp_alpha[1])
++			| FIELD_PREP(GENMASK(2, 0), lp_alpha[0]);
++		ret = regmap_write(data->regmap, HX9023S_LP_ALP_1_0_CFG, temp);
++		if (ret)
++			return dev_err_probe(dev, ret,
++						"Failed to update lp-alpha for ch0 and ch1\n");
++
++		temp = FIELD_PREP(GENMASK(6, 4), lp_alpha[3])
++			| FIELD_PREP(GENMASK(2, 0), lp_alpha[2]);
++		ret = regmap_write(data->regmap, HX9023S_LP_ALP_3_2_CFG, temp);
++		if (ret)
++			return dev_err_probe(dev, ret,
++						"Failed to update lp-alpha for ch2 and ch3\n");
++
++		temp = FIELD_PREP(GENMASK(2, 0), lp_alpha[4]);
++		ret = regmap_update_bits(data->regmap, HX9023S_LP_ALP_4_CFG, GENMASK(2, 0), temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update lp-alpha for ch4\n");
++	}
++
++	/* bl-up-alpha */
++	ret = device_property_read_u32_array(dev, "tyhx,bl-up-alpha",
++					bl_up_alpha, ARRAY_SIZE(bl_up_alpha));
++	if (!ret) {
++		temp = FIELD_PREP(GENMASK(7, 4), bl_up_alpha[1])
++			| FIELD_PREP(GENMASK(3, 0), bl_up_alpha[0]);
++		ret = regmap_write(data->regmap, HX9023S_UP_ALP_1_0_CFG, temp);
++		if (ret)
++			return dev_err_probe(dev, ret,
++						"Failed to update bl-up-alpha for ch0 and ch1\n");
++
++		temp = FIELD_PREP(GENMASK(7, 4), bl_up_alpha[3])
++			| FIELD_PREP(GENMASK(3, 0), bl_up_alpha[2]);
++		ret = regmap_write(data->regmap, HX9023S_UP_ALP_3_2_CFG, temp);
++		if (ret)
++			return dev_err_probe(dev, ret,
++						"Failed to update bl-up-alpha for ch2 and ch3\n");
++
++		temp = FIELD_PREP(GENMASK(3, 0), bl_up_alpha[4]);
++		ret = regmap_update_bits(data->regmap, HX9023S_DN_UP_ALP_0_4_CFG, GENMASK(3, 0),
++					temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update bl-up-alpha for ch4\n");
++	}
++
++	/* bl-down-alpha */
++	ret = device_property_read_u32_array(dev, "tyhx,bl-down-alpha",
++					bl_down_alpha, ARRAY_SIZE(bl_down_alpha));
++	if (!ret) {
++		temp = FIELD_PREP(GENMASK(7, 4), bl_down_alpha[0]);
++		ret = regmap_update_bits(data->regmap, HX9023S_DN_UP_ALP_0_4_CFG, GENMASK(7, 4),
++					temp);
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update bl-dn-alpha for ch0\n");
++
++		temp = FIELD_PREP(GENMASK(7, 4), bl_down_alpha[2])
++			| FIELD_PREP(GENMASK(3, 0), bl_down_alpha[1]);
++		ret = regmap_write(data->regmap, HX9023S_DN_ALP_2_1_CFG, temp);
++		if (ret)
++			return dev_err_probe(dev, ret,
++						"Failed to update bl-dn-alpha for ch1 and ch2\n");
++
++		temp = FIELD_PREP(GENMASK(7, 4), bl_down_alpha[4])
++			| FIELD_PREP(GENMASK(3, 0), bl_down_alpha[3]);
++		ret = regmap_write(data->regmap, HX9023S_DN_ALP_4_3_CFG, temp);
++		if (ret)
++			return dev_err_probe(dev, ret,
++						"Failed to update bl-dn-alpha for ch3 and ch4\n");
++	}
++
++	/* dydy-interrupt */
++	ret = device_property_read_u32(dev, "tyhx,drdy-interrupt", &drdy_interrput);
++	if (!ret) {
++		ret = regmap_update_bits(data->regmap, HX9023S_CALI_DIFF_CFG, GENMASK(7, 4),
++					FIELD_PREP(GENMASK(7, 4), drdy_interrput));
++		if (ret)
++			return dev_err_probe(dev, ret,
++						"Failed to update drdy-interrput for ch0~ch3\n");
++
++		ret = regmap_update_bits(data->regmap, HX9023S_DITHER_CFG, BIT(7),
++					FIELD_PREP(BIT(7), drdy_interrput >> 4));
++		if (ret)
++			return dev_err_probe(dev, ret,
++						"Failed to update drdy-interrput for ch4\n");
++	}
++
++	/* int-high-num */
++	ret = device_property_read_u32(dev, "tyhx,int-high-num", &int_high_num);
++	if (!ret) {
++		ret = regmap_update_bits(data->regmap, HX9023S_PROX_INT_HIGH_CFG, GENMASK(3, 0),
++					FIELD_PREP(GENMASK(3, 0), int_high_num));
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update int-high-num\n");
++	}
++
++	/* int-low-num */
++	ret = device_property_read_u32(dev, "tyhx,int-low-num", &int_low_num);
++	if (!ret) {
++		ret = regmap_update_bits(data->regmap, HX9023S_PROX_INT_LOW_CFG, GENMASK(3, 0),
++					FIELD_PREP(GENMASK(3, 0), int_low_num));
++		if (ret)
++			return dev_err_probe(dev, ret, "Failed to update int-low-num\n");
++	}
++
++	return 0;
++}
++
+ static int hx9023s_update_chan_en(struct hx9023s_data *data,
+ 				  unsigned long chan_read,
+ 				  unsigned long chan_event)
+@@ -1045,6 +1275,10 @@ static int hx9023s_probe(struct i2c_client *client)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "channel config failed\n");
  
-+  tyhx,dither:
-+    description: Enable spread spectrum function.
-+    type: boolean
++	ret = hx9023s_performance_tuning(data);
++	if (ret)
++		return dev_err_probe(dev, ret, "performance tuning failed\n");
 +
-+  tyhx,chop:
-+    description: Enable chop function.
-+    type: boolean
-+
-+  tyhx,odr:
-+    description: |
-+      Defines the sensor scanning period. The values range from 0x00 to 0x1F,
-+      corresponding to the following periods.
-+      Val: Period
-+      0x00: Min (no idle time)
-+      0x01: 2 ms
-+      0x02: 4 ms
-+      0x03: 6 ms
-+      0x04: 8 ms
-+      0x05: 10 ms
-+      0x06: 14 ms
-+      0x07: 18 ms
-+      0x08: 22 ms
-+      0x09: 26 ms
-+      0x0A: 30 ms
-+      0x0B: 34 ms
-+      0x0C: 38 ms
-+      0x0D: 42 ms
-+      0x0E: 46 ms
-+      0x0F: 50 ms
-+      0x10: 56 ms
-+      0x11: 62 ms
-+      0x12: 68 ms
-+      0x13: 74 ms
-+      0x14: 80 ms
-+      0x15: 90 ms
-+      0x16: 100 ms
-+      0x17: 200 ms
-+      0x18: 300 ms
-+      0x19: 400 ms
-+      0x1A: 600 ms
-+      0x1B: 800 ms
-+      0x1C: 1000 ms
-+      0x1D: 2000 ms
-+      0x1E: 3000 ms
-+      0x1F: 4000 ms
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0x00
-+    maximum: 0x1F
-+
-+  tyhx,range:
-+    description: |
-+      Defines the full-scale range for each channel.
-+      The values correspond to the following full-scale ranges.
-+      Val: Full Scale
-+      0x0: 1.25pF
-+      0x1: 2.5pF
-+      0x2: 3.75pF
-+      0x3: 5pF
-+      0x4: 0.625pF
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 5
-+    maxItems: 5
-+
-+  tyhx,avg:
-+    description: |
-+      Defines the ADC averaging value for each channel.
-+      The values correspond to the following averages.
-+      Val: Avg Number
-+      0x0: 1
-+      0x1: 2
-+      0x2: 4
-+      0x3: 8
-+      0x4: 16
-+      0x5: 32
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 5
-+    maxItems: 5
-+
-+  tyhx,osr:
-+    description: |
-+      Defines the ADC oversampling rate (OSR) for each channel.
-+      The values correspond to the following OSR.
-+      Val: OSR
-+      0x0: 16
-+      0x1: 32
-+      0x2: 64
-+      0x3: 128
-+      0x4: 256
-+      0x5: 512
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 5
-+    maxItems: 5
-+
-+  tyhx,sample-num:
-+    description: |
-+      Defines the ADC sample frequency.
-+      The sample frequency can be calculated with the following formula:
-+      Fsample = 1.0 / ( sample_num * 200ns ),
-+      where `sample_num` is the value in the register in decimal.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0x00
-+    maximum: 0xFF
-+
-+  tyhx,integration-num:
-+    description: The integration number should be the same as the `sample-num` above.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0x00
-+    maximum: 0xFF
-+
-+  tyhx,lp-alpha:
-+    description: |
-+      Defines the coefficient for the first-order low pass filter for each channel.
-+      The values correspond to the following coefficients.
-+      Val: Coefficient
-+      0x0: 1
-+      0x1: 1/2
-+      0x2: 1/4
-+      0x3: 1/8
-+      0x4: 1/16
-+      0x5: 1/32
-+      0x6: 1/64
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 5
-+    maxItems: 5
-+
-+  tyhx,bl-up-alpha:
-+    description: |
-+      Defines the up coefficient of the first-order low pass filter for each channel.
-+      The values correspond to the following coefficients.
-+      Val: Coefficient
-+      0x0: 0
-+      0x1: 1
-+      0x2: 1/2
-+      0x3: 1/4
-+      0x4: 1/8
-+      0x5: 1/16
-+      0x6: 1/32
-+      0x7: 1/64
-+      0x8: 1/128
-+      0x9: 1/256
-+      0xA: 1/512
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 5
-+    maxItems: 5
-+
-+  tyhx,bl-down-alpha:
-+    description: |
-+      Defines the down coefficient of the first-order low pass filter for each channel.
-+      The values correspond to the following coefficients.
-+      Val: Coefficient
-+      0x0: 0
-+      0x1: 1
-+      0x2: 1/2
-+      0x3: 1/4
-+      0x4: 1/8
-+      0x5: 1/16
-+      0x6: 1/32
-+      0x7: 1/64
-+      0x8: 1/128
-+      0x9: 1/256
-+      0xA: 1/512
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 5
-+    maxItems: 5
-+
-+  tyhx,drdy-interrupt:
-+    description: Enable the interrupt function of each channel when the conversion is ready.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0x00
-+    maximum: 0x1F
-+
-+  tyhx,int-high-num:
-+    description: Defines the Proximity persistency number (Near).
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0x1
-+    maximum: 0xF
-+
-+  tyhx,int-low-num:
-+    description: Defines the Proximity persistency number (Far).
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0x1
-+    maximum: 0xF
-+
-   "#address-cells":
-     const: 1
- 
-@@ -65,6 +248,18 @@ examples:
-         interrupt-parent = <&pio>;
-         interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
-         vdd-supply = <&pp1800_prox>;
-+        tyhx,odr = <0x17>;
-+        tyhx,range = <0x4 0x4 0x4 0x4 0x4>;
-+        tyhx,avg = <0x3 0x3 0x3 0x0 0x0>;
-+        tyhx,osr = <0x4 0x4 0x4 0x0 0x0>;
-+        tyhx,sample-num = <0x65>;
-+        tyhx,integration-num = <0x65>;
-+        tyhx,lp-alpha = <0x2 0x2 0x2 0x2 0x2>;
-+        tyhx,bl-up-alpha = <0x8 0x8 0x8 0x8 0x8>;
-+        tyhx,bl-down-alpha = <0x1 0x1 0x1 0x1 0x1>;
-+        tyhx,drdy-interrupt = <0x1F>;
-+        tyhx,int-high-num = <0x1>;
-+        tyhx,int-low-num = <0x1>;
- 
-         #address-cells = <1>;
-         #size-cells = <0>;
+ 	ret = regcache_sync(data->regmap);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "regcache sync failed\n");
 
 -- 
 2.43.0

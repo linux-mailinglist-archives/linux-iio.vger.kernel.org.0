@@ -1,729 +1,250 @@
-Return-Path: <linux-iio+bounces-10674-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10675-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789A19A1BB5
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 09:29:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB779A1BE9
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 09:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BFC41C21F54
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 07:29:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0F71F23624
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 07:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12131D0178;
-	Thu, 17 Oct 2024 07:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF28E1C1AB1;
+	Thu, 17 Oct 2024 07:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OyzhyW5i"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="pd891q23"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2055.outbound.protection.outlook.com [40.107.20.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170211CDFA3
-	for <linux-iio@vger.kernel.org>; Thu, 17 Oct 2024 07:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729150157; cv=none; b=XMks1A2YSxvM3HYP5cZ93c3XyDiXSsNwtcVWeghGS8ob1waU/aedhyN+Vc2KpdXYEm9g2bDG/74dmExSBBdxhOMg4KWFzzWebtIL7tfoTTzqljuM1RQabR5BOC1Rwib/P/7rctoUTM9Lg5frUT2A6izQKL1YlTU8BK5X3LRyiik=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729150157; c=relaxed/simple;
-	bh=ossDaNiGh5ZyK0hvtucZcrvlFJylkycEd3FSa7HSp/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WRtuFG3swVb1GCPdGKUWwtklkbjyodC2ujSYScatkie0igrlG7oW51TxQYiVp9aAP7nnK9/86b9fPzE+lo9hz98vc5vbdnvc/up9e7LBKgmepngvTH6Dt4LbHkrmex/kX7fB1drPaiBqYzxIAhm6bN0hTYPCOSE5KnIRG0Ac2y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OyzhyW5i; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d808ae924so400220f8f.0
-        for <linux-iio@vger.kernel.org>; Thu, 17 Oct 2024 00:29:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729150151; x=1729754951; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=seV/NH5xCQrFU3sCq8A226JOEp39+iAiZbuksFSfXek=;
-        b=OyzhyW5i5eUiFHT/DovGOECEtWwfldPDq1ptqqNTBjupn8jr67dnCIVUTV8QkTPDoW
-         pwuz5McDs8abD1LTQhQsumrmACv10tV3iBL6jobgDcFZPQNBEMcDdqKjNDP/jRxVaVVZ
-         MdSVpETrLLAJqj0SHBxtBkEqibgUgBv/VOnF+/7YtNAvwWXtfUHbkjo9SWc9K+XLXdsU
-         zZ4mXrzF0lr1w6VAQvTXJmKnxwOqsCi5huGU6WeMBxCTEQQMbZbNJfRo1Z+3u55YNGmy
-         WzfkIq+c1n2Xh+Fn+69oWw7poVXmpT82o8gpNmMA+VlLfkXWEmimKDWw7Hpoeb/KfzsW
-         hxEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729150151; x=1729754951;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=seV/NH5xCQrFU3sCq8A226JOEp39+iAiZbuksFSfXek=;
-        b=a99XJHamAAubSWGDz4WVO34A4WFKBHna/vSsrCRlFYmQFSikIRG1g+TemM6q3Sr8UF
-         sUI7aPrv0gfwFo9Y9g/YfCZf8XUXzIvMFVQKw1WlVEeCHp2umvU8knfzKRmjte5ue84g
-         6QAwbW71mY3E517EQVtAHZba+iut4mh1tLiKognS9SbwZ4arsFM2JuizBwCYFAR2bPpL
-         M31VCuqWQBzLr7IeaMRKyQ5ap62JED9k3xBO/4bsMy27wMyDAnq6Kr/5VGmUuAJNS7V7
-         kSrtAE75WyI2UZR+5ktJUbhnSAGh03Gov5pyDD3j5CqjPUt8zn5FsNw54sGB5Bj4Bbv9
-         OL5A==
-X-Forwarded-Encrypted: i=1; AJvYcCWVEmQ0Ew7NqC34cOYGWgQNGfm/QcK3g/Fpu0OU9y5JHSol8npBNYlweLmpr56K87kXv9qOuBiLAvo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTojSZo0GqAq3xlV0cMNJP3Fgz9Q8w6mIMPCXIkQsz4AZztuU8
-	9D28vOzu+Y54EcyrDgAdBf03BZ+TnQ8hRrJm1tfbP5I8A/r1SzB7aQqltyH6daQ=
-X-Google-Smtp-Source: AGHT+IFida7c4VQypSZlZf1Wq5un5xL87xAcrBsbfcX+XYPjuJ3EysbWGp96PlFit1CyLJLpAm79ag==
-X-Received: by 2002:adf:a3ca:0:b0:378:e8cd:71fa with SMTP id ffacd0b85a97d-37d86d3c5e6mr4168593f8f.39.1729150151168;
-        Thu, 17 Oct 2024 00:29:11 -0700 (PDT)
-Received: from dfj (host-82-61-199-234.retail.telecomitalia.it. [82.61.199.234])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d7fa7a1c8sm6283782f8f.21.2024.10.17.00.29.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2024 00:29:10 -0700 (PDT)
-Date: Thu, 17 Oct 2024 09:27:56 +0200
-From: Angelo Dureghello <adureghello@baylibre.com>
-To: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Olivier Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dlechner@baylibre.com, Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v6 7/8] iio: dac: ad3552r: add high-speed platform driver
-Message-ID: <i3mksgfcza26zbixghsfk2avvxheb32ig6wsqz4zuuqezbok4z@l2rwxoabjkgs>
-References: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-0-eeef0c1e0e56@baylibre.com>
- <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-7-eeef0c1e0e56@baylibre.com>
- <549566b00524c0230a6a970b74a38dbe58e2589d.camel@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E5513AD18;
+	Thu, 17 Oct 2024 07:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729151215; cv=fail; b=DJfPXmYSklIKS5dKJekaMBVa6Y1B1RE0z4LFf0jSvmey23p1bXhTS3kY1hWPpcdDrZDHDRagR5FaGfd7aHDf9gO8mkSFjyyUBDWVYwneyvUhzMR/Gsu04CtKPpkknh6yGPIC8IyDxfrXIXcs2mBQ4hDjwhQOgxNSKi47a+eGDI8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729151215; c=relaxed/simple;
+	bh=9zXoCtsbcXgRAvUdGVV91sLDz4OpBCxlWCfWReslbVw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rH+KVeCTsUhOBQwWd8LgRKEwvXgyFiyOaHgvNC9XTypx9OrSbL/1+s/Fwgjb+OUhp5VQh8GNjK61WlCB0sLQJguRv4FSm2hP0Ib+j0k+XSJYSbbCXMD6mQXyd5NHjoQOEfyJDNclAzCkN0oZUads3hPdLlFNsV2n9m1BXj8wIbk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=pd891q23; arc=fail smtp.client-ip=40.107.20.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pnAVMIkptAG4iOj2tPSt/toSzWowKigCKZEftcrjCyYvxq1XeSheCAM+M16T492CKNUWCykKg94P5Tfqr7KhZ+RirASEP1CD+SZvDZiGkrjmMKIr2e1zj8/oJJRrw2ElpezvjCjN1SS5Xn5UYQw93kSXZJYWcA2fd98Mvm6Id02oXga0YiMYaiOzMJsSMLIydvtpll+n/NZyPSCp9RpiaBafn4RFUU73vYHqXW3DhO6iaJdUF1oS5V0UMRrgDqS0V5TmipBtNMUs9IinWfoerLQLO0cjUh7/aCRKB6MUoP1cSaAQtNL6CST1euiATnd9tEhT2M0HMOwUD1ej5kVVQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V6nhbr5VOHfa4NoViZ5ElfC1A9dCnVcguwmsTrDzM3c=;
+ b=tqJwO5ar9FQkrt2U/0Q0pUmx6+rqToG926253O6e3WC30myvRloWGGM9iiBZm87zHjWrF4e4y1r+Y3EFrb3OXSNC74YzePGiPZ6L3ENqTqlkrviBpnqAKQ0OTAwmd4lm/IX2LUAmjF6nnt78ai5TmhYvGFkuYZPsyg9boC73QutcYp2fICviYuFvdk9Ex31U2mZhLyoIs6hp/VVcqb3goYwrivAOSMaL4ZqY1JgcnnnztAxozx8OdRMLXDikow0eFWO8GcC4t85jhYgEmQia40Oq+BU3a82ZzAIyO8I2YnzyfK1BqydSWncIMn7IzFJfdtSz2oB5yy1PPQPjbkDPGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=de.bosch.com; dmarc=pass action=none header.from=de.bosch.com;
+ dkim=pass header.d=de.bosch.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V6nhbr5VOHfa4NoViZ5ElfC1A9dCnVcguwmsTrDzM3c=;
+ b=pd891q23xke4lG46xc6HD9/RQcHsRHLOhYxEyL/wV20fWEnmVCZ/YPk5b1Z1H1n1DlHuy4Lw7eBKi885/V6tAZEfbtxuY4Qic8X5/OPhJeFtWa460J7OgY2D2rFwO4hBmWHS0zQq9yznBrbjv9bdpR//eKf2pZ6yjpGlaalzXZ9Wr7i2WdDxHXoEmi+BS6kukBZKQ0TXMO/9HE8hYJyVDfBgfNC+HLfcCV09PTdMsrxR8Hh4LJd6H9rwlxtaNkTS++OY7nLNyHHKtuefPt+EK0ZN1oB6Zv6p+jiZ8fVBnTWBPHOxLm23w5eFCpyMtsU9JZ1O69najvMKZ0v2ontFJQ==
+Received: from DB9PR10MB4730.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:252::20)
+ by GVXPR10MB9005.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:1e1::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.8; Thu, 17 Oct
+ 2024 07:46:49 +0000
+Received: from DB9PR10MB4730.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::d41a:c5b1:2c2c:26b4]) by DB9PR10MB4730.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::d41a:c5b1:2c2c:26b4%7]) with mapi id 15.20.8093.000; Thu, 17 Oct 2024
+ 07:46:48 +0000
+From: "Shen Jianping (ME-SE/EAD2)" <Jianping.Shen@de.bosch.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+CC: Jonathan Cameron <jic23@kernel.org>, "lars@metafoo.de" <lars@metafoo.de>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"dima.fedrau@gmail.com" <dima.fedrau@gmail.com>, "marcelo.schmitt1@gmail.com"
+	<marcelo.schmitt1@gmail.com>, "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Lorenz Christian (ME-SE/EAD2)"
+	<Christian.Lorenz3@de.bosch.com>, "Frauendorf Ulrike (ME/PJ-SW3)"
+	<Ulrike.Frauendorf@de.bosch.com>, "Dolde Kai (ME-SE/PAE-A3)"
+	<Kai.Dolde@de.bosch.com>
+Subject: RE: [PATCH v8 2/2] iio: imu: smi240: add driver
+Thread-Topic: [PATCH v8 2/2] iio: imu: smi240: add driver
+Thread-Index:
+ AQHbDbXQJyb1UEtvh02vtlWF5Bgo7rJtd3WAgAf1bqCABDhggIAGe/cwgAAqSICACmbswA==
+Date: Thu, 17 Oct 2024 07:46:48 +0000
+Message-ID:
+ <DB9PR10MB4730F796051995DDAFD03DBFCD472@DB9PR10MB4730.EURPRD10.PROD.OUTLOOK.COM>
+References: <20240923124017.43867-1-Jianping.Shen@de.bosch.com>
+	<20240923124017.43867-3-Jianping.Shen@de.bosch.com>
+	<20240928181121.0e62f0ad@jic23-huawei>
+	<AM8PR10MB47217960E30212DC62ED7821CD712@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+	<20241006121025.50802061@jic23-huawei>
+	<AM8PR10MB47213230C6E43976AF244587CD782@AM8PR10MB4721.EURPRD10.PROD.OUTLOOK.COM>
+ <20241010174259.00003742@Huawei.com>
+In-Reply-To: <20241010174259.00003742@Huawei.com>
+Accept-Language: en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=de.bosch.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB9PR10MB4730:EE_|GVXPR10MB9005:EE_
+x-ms-office365-filtering-correlation-id: b930bcdc-c806-4253-67b7-08dcee7fdb1e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?IDmrtjB0YCTh50dG/k9A7cRO3RwMOhM9PTXK3dVp0Vgx6LtxQgj0Rk+dENmY?=
+ =?us-ascii?Q?paT91KYYIalP1mVG+HK0+Ty0WFXB7EuAaDUFtayudZK3RXnWgZ25VI8AizzB?=
+ =?us-ascii?Q?WUXx5ZI7VxOFTJ5N9haleNsh9jQHg4LlwHOJi2Xl8XQv3TV+elsc7NStgSNV?=
+ =?us-ascii?Q?euVPTnDsMiqJruSFZciwhj0dzY6tDjLkGL/VPlxrCJgwms6BkLOSsJRyDVDc?=
+ =?us-ascii?Q?Y1isUBx3vNTQ9+wwSLhUTQ+94o/JvWCGF0b6dH3+xg+6gQPKdba0Iz/w/N3l?=
+ =?us-ascii?Q?UhAnPLX59xOOviCo4SwCaQISpNBzuGshgvY+3wKjQA2dE6ixbd97Tc0EQHSh?=
+ =?us-ascii?Q?8QFMMqB+msSt/0rNNdYwe0ct7xdPf7S/OKm5ZdmPoXmiiKLVdBuv3ciq6meE?=
+ =?us-ascii?Q?V1Fwz/hjlR51970qCVdK5yqHKxARpfzIZuuAtrLtIbI0JzVPUEkI4e+SeoCG?=
+ =?us-ascii?Q?61wE/VtH/gYnRzm9/FGeiQfXeidCfSmheeCP3hqeq7pzAzyVrrjNsvJxq9Lv?=
+ =?us-ascii?Q?mFBPIXCJUyl6xeN8zZTsJuUojkUm6bt9J2tIYBNHJyDVJmV+jKOmmDaEqyQg?=
+ =?us-ascii?Q?u7vPnCbW6g1AwyVcONE3LQCmfRWASsjHRuTKqTxcPHfNkASB1pR1cB0oTDQc?=
+ =?us-ascii?Q?CfI7MKMTm9Yl0Hpnmj41XpMjajeq0KXEoJx5ja6FANoyCvjmFZZpP9N6J6TW?=
+ =?us-ascii?Q?eSyxH0f8tgY478IJYosRJrO2tGM9RDnU87gjbErqzSWaamwMMd2uWnmxSHDq?=
+ =?us-ascii?Q?eZvABDRZyuzJIw5JQfVV9l4HoU7cAE2fMG/g4jr42MhTJ484tB0sbVAu/L0N?=
+ =?us-ascii?Q?91OU3UEkYh6+ig7X2JqQXUa36cPJk5G47hFPCDLMHP4Jh8EOJwrwCAxGkIn1?=
+ =?us-ascii?Q?Ev7DJepm3yxD1HcCKPQocbse/scwDF0JxOAbWWOmeNSVZUO6SygFH6ETEPFD?=
+ =?us-ascii?Q?iyHNWmnA0mkWl19skiX+R6tcQJYs0+3L4RS4WfttK38AP10kvaVH0tVevHLY?=
+ =?us-ascii?Q?GQSt1kvkfyDSB94/St0dzvX+CN4A8mhbgjVQamjNYY4Nm2tWt5az7f/UTEVw?=
+ =?us-ascii?Q?GTPFHRm1ncebX3YOop2gH7krH9fJMNAsm78uepAO3z622RuPFA678Zm7ZsAE?=
+ =?us-ascii?Q?47sD5864I1E4sOVWkNANC7IlqyYuBFSB371hpwDrl7r+IDHmg4AASQhI0BQi?=
+ =?us-ascii?Q?d5lcXHG890cpJAOO07LzEtBf+JLh6kONSU4lWdN3OarnxLKNJbM1aW7bJ7oP?=
+ =?us-ascii?Q?9/v+j2f1h026aF8ihAbVpg7KfV6LeIrMvXwuOVwpeIrDcHve43xXiSCTM9Cg?=
+ =?us-ascii?Q?j5xHdhdBQdxD+UAXXJ5wcuZMXV8M5JErgfoBzuR5DEVmCUi4U2e13Jnuu5hQ?=
+ =?us-ascii?Q?ovTdGd0=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR10MB4730.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?RXqAz6lv89oqOed+kPoh3D8pNvOhQTF49iKZ3nQhMW5pT+5fbMbzsVaAF6TY?=
+ =?us-ascii?Q?+29aHJiZ5haDZbuiKWatna7bgrsFDpVbhk+lL3Lu53YFIO65t1dtZn5ySEQr?=
+ =?us-ascii?Q?1En1Io/DrheQrFmQl4W5JUTWTm3hJNxKxYPnI/3mSFtRMD1VU8QIGbL47My9?=
+ =?us-ascii?Q?L46Fz6DRcPr0KeaKaBz5WuppuXJLeV0fH2opEeoppW+7FYJ3EiroqhVmXZyo?=
+ =?us-ascii?Q?wWufItHumgMBL0OJRWnWkM/kEmtDzc8UfWrl9JFNhJbiObhUcCbbUKWDkILV?=
+ =?us-ascii?Q?xxmieMM3wjZ9Hjuh/+an8TepADpAdLxdXBsNiGyyeDDJm7UJSzGXH0BRybdE?=
+ =?us-ascii?Q?igSGR9luGLZvCeqfaPAn6TVbC5H2JYXSDbgyde11UuFXGg33d3VD5u+uIiwt?=
+ =?us-ascii?Q?XYUAaNk93oeQZQDhTljDEdZ6MdWa59Tcnq0SX6DeN8CvtT+VemeHzl5b2kZZ?=
+ =?us-ascii?Q?5gof6+huHvo654774SrsjjhT6ol7Z5oJgGgotAN6gpwPN4hSFxtLXVwhFbLq?=
+ =?us-ascii?Q?Tm5+EiR0c6MKCMKjGwJtg5vwRZJXcjkHfQ2AFmOrq9EfyVloDKxz+6P1hhuk?=
+ =?us-ascii?Q?RmXq2FcRypYKrSmtofxSz7lbhubRYu0tASYNkojJbuGUciYresvXksW9hn5Y?=
+ =?us-ascii?Q?6FWgFGR9LrEzZkdFOEcrGWqVy7I3x/64mxCzX3/4OqRHrc9yD+siVHGqj7Hs?=
+ =?us-ascii?Q?tsjolM8A4ClQjxM309X/BahDdwW7nmgeOI8vTQUr27VlboK456ZMylcSPBrI?=
+ =?us-ascii?Q?Rk/EjBe+u01qV0GeQIKQMQbB+Q3zhZ6kXBsI4qYPFiXJOlxR/vcBtGHn5pn5?=
+ =?us-ascii?Q?4NXt0TIzziSSrzyvA36JL5XPzuLTmjDYI3PaRnRrOLucJhFWVVkloTj2j97m?=
+ =?us-ascii?Q?N/aF4X0WkIYpep3Qbb6NQZ0IM60jyU+JqlGSBULBL+7+VtqY0MEYGsO+iheG?=
+ =?us-ascii?Q?lhCDXU7dW19wtIMjNQna2rckZb7XJ41OIuQnxhwEdmOUmlmrZq99ajQ89uAK?=
+ =?us-ascii?Q?UKClbZt4lOFtO0q+vdBO6I+A94N3de0Wfi0Os7zjUmMK2If4fgxIJ8B4rdTg?=
+ =?us-ascii?Q?IthV8eahsfUF1Ye7sexz7fXW4rTv8R9mCdtsMAJUHtIQmuaEltsG8YDStak5?=
+ =?us-ascii?Q?jGmi8voRsZDoTq6THVEhocp2AwomPvyPxqN3nmMckaPgG2xJ5u+ZDNpBC0oP?=
+ =?us-ascii?Q?+85uSyXAnP8C+hdpHI3hXArL3AyqeNTlvsyS1nvgRTxl/k6srJJZ4jkDbxcV?=
+ =?us-ascii?Q?PLKblIHE/5VCyZHIelGfCxnzn0ZDmiOT6LmfAR6ICDMYOFmT5Hvc1yZsBVYd?=
+ =?us-ascii?Q?9Qv1NeTWl7n8+qphpOmwA6tszcOKtkH/t4E43HgfCFdYcR1hpZNsiRc9T4W+?=
+ =?us-ascii?Q?lNfAYSQD2lRxgytvK2dY3Iu6gYL+yUI+ipUm0+dZp874qMbE4V6sdWlBFBe5?=
+ =?us-ascii?Q?Dj3TcJwNlJRTimbyIou9dcIcspgmFmtumEKsGUF4LNv8FXFgiT8gqfdSACjV?=
+ =?us-ascii?Q?iSxNG8LmQN0WsSJ3MQBknMcb2o65jUczhxWJKhH1AQyX2CC2haDBz5vodY/l?=
+ =?us-ascii?Q?TxtNlxwDV7wjUvs1rUo=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <549566b00524c0230a6a970b74a38dbe58e2589d.camel@gmail.com>
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR10MB4730.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: b930bcdc-c806-4253-67b7-08dcee7fdb1e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Oct 2024 07:46:48.4051
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: is5x7dUwi4KSG8/KYEVnyEYlEkp8le3c4CKv8Qvga/HsHeeDst21Fhndp1Vz6zWBRYKUBxICTc7p9KbsPIVw0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR10MB9005
 
-Hi Nuno,
 
-On 15.10.2024 09:15, Nuno Sá wrote:
-> On Mon, 2024-10-14 at 12:08 +0200, Angelo Dureghello wrote:
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> > 
-> > Add High Speed ad3552r platform driver.
-> > 
-> > The ad3552r DAC is controlled by a custom (fpga-based) DAC IP
-> > through the current AXI backend, or similar alternative IIO backend.
-> > 
-> > Compared to the existing driver (ad3552r.c), that is a simple SPI
-> > driver, this driver is coupled with a DAC IIO backend that finally
-> > controls the ad3552r by a fpga-based "QSPI+DDR" interface, to reach
-> > maximum transfer rate of 33MUPS using dma stream capabilities.
-> > 
-> > All commands involving QSPI bus read/write are delegated to the backend
-> > through the provided APIs for bus read/write.
-> > 
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---
-> 
-> Hi Angelo,
-> 
-> Some more questions from me on top of David's review...
-> 
-> >  drivers/iio/dac/Kconfig      |  14 ++
-> >  drivers/iio/dac/Makefile     |   1 +
-> >  drivers/iio/dac/ad3552r-hs.c | 526 +++++++++++++++++++++++++++++++++++++++++++
-> >  drivers/iio/dac/ad3552r-hs.h |  18 ++
-> >  drivers/iio/dac/ad3552r.h    |   7 +
-> >  5 files changed, 566 insertions(+)
-> > 
-> > diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> > index fa091995d002..fc11698e88f2 100644
-> > --- a/drivers/iio/dac/Kconfig
-> > +++ b/drivers/iio/dac/Kconfig
-> > @@ -6,6 +6,20 @@
-> >  
-> >  menu "Digital to analog converters"
-> >  
-> > +config AD3552R_HS
-> > +	tristate "Analog Devices AD3552R DAC High Speed driver"
-> > +	select ADI_AXI_DAC
-> > +	help
-> > +	  Say yes here to build support for Analog Devices AD3552R
-> > +	  Digital to Analog Converter High Speed driver.
-> > +
-> > +          The driver requires the assistance of an IP core to operate,
-> > +          since data is streamed into target device via DMA, sent over a
-> > +	  QSPI + DDR (Double Data Rate) bus.
-> > +
-> > +	  To compile this driver as a module, choose M here: the
-> > +	  module will be called ad3552r-hs.
-> > +
-> >  config AD3552R
-> >  	tristate "Analog Devices AD3552R DAC driver"
-> >  	depends on SPI_MASTER
-> > diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-> > index c92de0366238..d92e08ca93ca 100644
-> > --- a/drivers/iio/dac/Makefile
-> > +++ b/drivers/iio/dac/Makefile
-> > @@ -4,6 +4,7 @@
-> >  #
-> >  
-> >  # When adding new entries keep the list in alphabetical order
-> > +obj-$(CONFIG_AD3552R_HS) += ad3552r-hs.o ad3552r-common.o
-> >  obj-$(CONFIG_AD3552R) += ad3552r.o ad3552r-common.o
-> >  obj-$(CONFIG_AD5360) += ad5360.o
-> >  obj-$(CONFIG_AD5380) += ad5380.o
-> > diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-> > new file mode 100644
-> > index 000000000000..cb29a600e141
-> > --- /dev/null
-> > +++ b/drivers/iio/dac/ad3552r-hs.c
-> > @@ -0,0 +1,526 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Analog Devices AD3552R
-> > + * Digital to Analog converter driver, High Speed version
-> > + *
-> > + * Copyright 2024 Analog Devices Inc.
-> > + */
-> > +
-> > +#include <linux/bitfield.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/gpio/consumer.h>
-> > +#include <linux/iio/backend.h>
-> > +#include <linux/iio/buffer.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/property.h>
-> > +#include <linux/units.h>
-> > +
-> > +#include "ad3552r.h"
-> > +#include "ad3552r-hs.h"
-> > +
-> > +struct ad3552r_hs_state {
-> > +	const struct ad3552r_model_data *model_data;
-> > +	struct gpio_desc *reset_gpio;
-> > +	struct device *dev;
-> > +	struct iio_backend *back;
-> > +	bool single_channel;
-> > +	struct ad3552r_hs_platform_data *data;
-> > +	bool ddr_mode;
-> > +};
-> > +
-> > +static int ad3552r_qspi_update_reg_bits(struct ad3552r_hs_state *st,
-> > +					u32 reg, u32 mask, u32 val,
-> > +					size_t xfer_size)
-> > +{
-> > +	u32 rval;
-> > +	int err;
-> 
-> Be consistent. You have a mixture of err and ret. Personally, slight preference for
-> 'ret'.
-> 
-> > +
-> > +	err = st->data->bus_reg_read(st->back, reg, &rval, xfer_size);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	rval &= ~mask;
-> > +	rval |= val;
-> > +
-> 
-> nit: can be done in one liner...
-> 
-> > +	return st->data->bus_reg_write(st->back, reg, rval, xfer_size);
-> > +}
-> > +
-> > +static int ad3552r_hs_read_raw(struct iio_dev *indio_dev,
-> > +			       struct iio_chan_spec const *chan,
-> > +			       int *val, int *val2, long mask)
-> > +{
-> > +	struct ad3552r_hs_state *st = iio_priv(indio_dev);
-> > +	int ret;
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_SAMP_FREQ: {
-> > +		int sclk;
-> > +
-> > +		ret = iio_backend_read_raw(st->back, chan, &sclk, 0,
-> > +					   IIO_CHAN_INFO_FREQUENCY);
-> > +		if (ret != IIO_VAL_INT)
-> > +			return -EINVAL;
-> > +
-> > +		/* Using 4 lanes (QSPI) */
-> > +		*val = DIV_ROUND_CLOSEST(sclk * 4 * (1 + st->ddr_mode),
-> > +					 chan->scan_type.storagebits);
-> 
-> If we assume ddr always on, don't forget to put that in a comment. In fact, please
-> say that the sampling frequency is only about stream mode (buffering) on.
-> 
-> > +
-> > +		return IIO_VAL_INT;
-> > +	}
-> > +	case IIO_CHAN_INFO_RAW:
-> > +		ret = st->data->bus_reg_read(st->back,
-> > +				AD3552R_REG_ADDR_CH_DAC_16B(chan->channel),
-> > +				val, 2);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		return IIO_VAL_INT;
-> 
-> Hmm, I think there's an important question here. How useful it is to have "just" raw
-> writes? I don't think there's anything preventing us from supporting SCALE and OFFSET
-> as the SPI driver? Those are important pieces for useland to be able to compute the
-> peak voltage level, right? Or am I missing something?
-> 
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +static int ad3552r_hs_write_raw(struct iio_dev *indio_dev,
-> > +				struct iio_chan_spec const *chan,
-> > +				int val, int val2, long mask)
-> > +{
-> > +	struct ad3552r_hs_state *st = iio_priv(indio_dev);
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_RAW:
-> > +		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> > +			return st->data->bus_reg_write(st->back,
-> > +				    AD3552R_REG_ADDR_CH_DAC_16B(chan->channel),
-> > +				    val, 2);
-> > +		}
-> > +		unreachable();
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
-> > +{
-> > +	struct ad3552r_hs_state *st = iio_priv(indio_dev);
-> > +	struct iio_backend_data_fmt fmt = {
-> > +		.type = IIO_BACKEND_DATA_UNSIGNED
-> > +	};
-> > +	int loop_len, val, err;
-> > +
-> > +	/* Inform DAC chip to switch into DDR mode */
-> > +	err = ad3552r_qspi_update_reg_bits(st,
-> > +					   AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> > +					   AD3552R_MASK_SPI_CONFIG_DDR,
-> > +					   AD3552R_MASK_SPI_CONFIG_DDR, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	/* Inform DAC IP to go for DDR mode from now on */
-> > +	err = iio_backend_ddr_enable(st->back);
-> > +	if (err) {
-> > +		dev_warn(st->dev, "could not set DDR mode, not streaming");
-> 
-> To me, this is an error so I would treat it as such. dev_err()
-> 
-> > +		goto exit_err;
-> > +	}
-> > +
-> > +	st->ddr_mode = true;
-> > +
-> > +	switch (*indio_dev->active_scan_mask) {
-> > +	case AD3552R_CH0_ACTIVE:
-> > +		st->single_channel = true;
-> > +		loop_len = 2;
-> > +		val = AD3552R_REG_ADDR_CH_DAC_16B(0);
-> > +		break;
-> > +	case AD3552R_CH1_ACTIVE:
-> > +		st->single_channel = true;
-> > +		loop_len = 2;
-> > +		val = AD3552R_REG_ADDR_CH_DAC_16B(1);
-> > +		break;
-> > +	case AD3552R_CH0_CH1_ACTIVE:
-> > +		st->single_channel = false;
-> > +		loop_len = 4;
-> > +		val = AD3552R_REG_ADDR_CH_DAC_16B(1);
-> > +		break;
-> > +	default:
-> > +		err = -EINVAL;
-> > +		goto exit_err_ddr;
-> > +	}
-> > +
-> > +	err = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_STREAM_MODE,
-> > +				      loop_len, 1);
-> > +	if (err)
-> > +		goto exit_err_ddr;
-> > +
-> > +	err = iio_backend_data_transfer_addr(st->back, val);
-> > +	if (err)
-> > +		goto exit_err_ddr;
-> > +
-> > +	err = iio_backend_data_format_set(st->back, 0, &fmt);
-> > +	if (err)
-> > +		goto exit_err_ddr;
-> > +
-> > +	err = iio_backend_data_stream_enable(st->back);
-> > +	if (err)
-> > +		goto exit_err_ddr;
-> > +
-> > +	return 0;
-> > +
-> > +exit_err_ddr:
-> > +	iio_backend_ddr_disable(st->back);
-> > +
-> > +exit_err:
-> > +	ad3552r_qspi_update_reg_bits(st,
-> > +				     AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> > +				     AD3552R_MASK_SPI_CONFIG_DDR,
-> > +				     0, 1);
-> > +
-> > +	iio_backend_ddr_disable(st->back);
-> > +
-> > +	st->ddr_mode = false;
-> 
-> 'ddr_mode' is pretty much used for the sampling freq, right? If we go the way of just
-> reporting the buffering sampling freq, I guess you can drop this variable.
-> 
-> > +
-> > +	return err;
-> > +}
-> > +
-> > +static int ad3552r_hs_buffer_predisable(struct iio_dev *indio_dev)
-> > +{
-> > +	struct ad3552r_hs_state *st = iio_priv(indio_dev);
-> > +	int err;
-> > +
-> > +	err = iio_backend_data_stream_disable(st->back);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	/* Inform DAC to set in SDR mode */
-> > +	err = ad3552r_qspi_update_reg_bits(st,
-> > +					   AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> > +					   AD3552R_MASK_SPI_CONFIG_DDR,
-> > +					   0, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = iio_backend_ddr_disable(st->back);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	st->ddr_mode = false;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int ad3552r_hs_set_output_range(struct ad3552r_hs_state *st,
-> > +				       unsigned int mode)
-> > +{
-> > +	return ad3552r_qspi_update_reg_bits(st,
-> > +				AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
-> > +				AD3552R_MASK_CH_OUTPUT_RANGE,
-> > +				FIELD_PREP(AD3552R_MASK_CH0_RANGE, mode) |
-> > +				FIELD_PREP(AD3552R_MASK_CH1_RANGE, mode),
-> > +				1);
-> 
-> I think you only call this function once, right? I would do this inline FWIW...
-> 
-> > +}
-> > +
-> > +static int ad3552r_hs_reset(struct ad3552r_hs_state *st)
-> > +{
-> > +	int err;
-> > +
-> > +	st->reset_gpio = devm_gpiod_get_optional(st->dev,
-> > +						 "reset", GPIOD_OUT_LOW);
-> > +	if (IS_ERR(st->reset_gpio))
-> > +		return PTR_ERR(st->reset_gpio);
-> > +
-> 
-> I suspect you actually want GPIOD_OUT_HIGH? Assuming the reset is active low, you
-> need to properly set it as such in DT. Then gpiolib will take care of things for you.
-> Note that, GPIOD_OUT_HIGH means "give me the pin in the asserted state". So if it's
-> active low, then it will be effectively be low.
-> 
-> > +	if (st->reset_gpio) {
-> > +		fsleep(10);
-> > +		gpiod_set_value_cansleep(st->reset_gpio, 1);
-> 
-> Here you want to bring it out of reset and so de-assert the pin:
-> 
-> gpiod_set_value_cansleep(st->reset_gpio, 0);
-> 
-> Again, as long as you set the pin as active low in DT, gpiolib will negate the value
-> for you internally.
-> 
+>> >It should still need to place the two bytes of that 16 bit value in the=
+ correct order to send to hardware.  That may be handled via a 32 bit word =
+length on SPI though.
+>>
+>>
+>> This is the most confusing part.  During the request preparation, we foc=
+us on the bit order not the byte order. We need to bring the 16 bit value i=
+n the correct bit order, to the correct bit position in the 32 bit request.=
+ This is automatically guarantied using FIELD_PREP. FIELD_PREP shifts the d=
+ata 15-0 to request 18-3. We shall never manually change the byte order of =
+the 16 bit value. The byte order (of the whole request) becomes important w=
+hen we send it over spi, which will be explained later.
+>>
+>>
+>> >> In the SMI240, the register address is 8 bit and each register is 16 =
+bit. We do not have any register value, which is bigger than 16 bit and nee=
+d to be stored in multiple registers.  Therefore the device does not need e=
+ndian. Neither big endian nor Little Endian.  To access the register, it is=
+ important to prepare the request frame according to the specification.
+>> >>
+>> >> A request is 32 bit
+>> >>
+>> >> 	ID	ADR	W	CAP	*	WDATA	CRC
+>> >> 	31-30	29-22	21	20	19	18-3		2-0
+>> >>
+>> >> ID: device id (if more than 1 device)
+>> >> ADR: reg address
+>> >> W: write/read
+>> >> CAP: capture mode on/off
+>> >> *: reserved
+>> >> WDATA : reg value bit 15-0
+>> >> CRC: check sum
+>> >>
+>> >> To prepare the request properly, the bit order is here critical. We n=
+eed to put each part in its bit position. The request is created as a local=
+ u32, with help of FIELD_PREP, we put the value of each part to its bit pos=
+ition. FIELD_PREP will take care of the cpu endian and always put the value=
+ to the correct bit position. Before we send the request via SPI, a cpu end=
+ian to big endian conversion is required.
+>> >
+>> >So there are two possibilities here.  Either the byte order is just rev=
+ersed for the device in which case fine as you describe or perhaps the SPI =
+transfers should be using a 32 bit word?  You'd do that by overriding the b=
+its_per_word in the individual SPI transfers.
+>> >
+>> >
+>> >> Since the spi bus transfers data using big endian. When we get the re=
+sponse from spi, the response is big endian and need to be converted in cpu=
+ endian.  Any other manually endian conversion is not required.
+>> >
+>> >The SPI bus itself has no real concept of endian as such. It just sends=
+ bits in the order it is fed them.  The device may require a particular ord=
+ering of course if we assume it makes sense to break the transfers up into =
+byte size chnunks.
+>>
+>>
+>> Yes, the device expect that the 32 bit request will be sent from MSBit t=
+o LSBit. Which means the ID shall be sent firstly, followed by ADR, W, CAP,=
+ *, WDATA, CRC.  If we consider the 32 bit as 4 bytes , then the MSB need t=
+o sent firstly, and followed by the LSBs. From this perspective we can say =
+that the SMI240 SPI protocol requires big endian. On the host side the requ=
+est is a local u32 (4 bytes). To make sure that the MSB will be sent firstl=
+y we need to convert the request to big endian before sending it over spi.
+>
+>Understood.  Try a 32 bit word size for the spi transfers. I think that sh=
+ould make everything work without any need to make it big endian.
+>
+We tried to use 32 bit word size for the spi transfers. Nevertheless not al=
+l the spi libraries supports 32 bit word. A number of spi library just supp=
+ort 8bit. Therefore we will firstly provide a 8bit spi transfer in next ver=
+sion.=20
 
-fixed all the rest. And added scale and offset (now readable from sysfs)
-for the 2 channels, tested that using different ranges on the 2 channels works,
-including custom ranges.
-
-On this point i decided to use the active-high logic (active-low as negated reset
-was more correct) becouse ad3552r.c is doing the same.
-I can use the correct active-low logic here anyway.
-
-> > +	} else {
-> > +		err = ad3552r_qspi_update_reg_bits(st,
-> > +					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
-> > +					AD3552R_MASK_SOFTWARE_RESET,
-> > +					AD3552R_MASK_SOFTWARE_RESET, 1);
-> > +		if (err)
-> > +			return err;
-> > +	}
-> > +	msleep(100);
-> 
-> nit: fsleep()
-> 
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int ad3552r_hs_scratch_pad_test(struct ad3552r_hs_state *st)
-> > +{
-> > +	int err, val;
-> > +
-> > +	err = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
-> > +				      AD3552R_SCRATCH_PAD_TEST_VAL1, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = st->data->bus_reg_read(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
-> > +				     &val, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	if (val != AD3552R_SCRATCH_PAD_TEST_VAL1) {
-> > +		dev_err(st->dev,
-> > +			"SCRATCH_PAD_TEST mismatch. Expected 0x%x, Read 0x%x\n",
-> > +			AD3552R_SCRATCH_PAD_TEST_VAL1, val);
-> > +		return -EIO;
-> 
-> This is in probing right? dev_err_probe()
-> 
-> > +	}
-> > +
-> > +	err = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
-> > +				      AD3552R_SCRATCH_PAD_TEST_VAL2, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = st->data->bus_reg_read(st->back, AD3552R_REG_ADDR_SCRATCH_PAD,
-> > +				     &val, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	if (val != AD3552R_SCRATCH_PAD_TEST_VAL2) {
-> > +		dev_err(st->dev,
-> > +			"SCRATCH_PAD_TEST mismatch. Expected 0x%x, Read 0x%x\n",
-> > +			AD3552R_SCRATCH_PAD_TEST_VAL2, val);
-> > +		return -EIO;
-> 
-> ditto
-> 
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int ad3552r_hs_setup_custom_gain(struct ad3552r_hs_state *st,
-> > +					u16 gain, u16 offset)
-> > +{
-> > +	int err;
-> > +
-> > +	err = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_CH_OFFSET(0),
-> > +				      offset, 1);
-> > +	if (err)
-> > +		return dev_err_probe(st->dev, err, "Error writing register\n");
-> > +
-> > +	err = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_CH_OFFSET(1),
-> > +				      offset, 1);
-> > +	if (err)
-> > +		return dev_err_probe(st->dev, err, "Error writing register\n");
-> > +
-> > +	err = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_CH_GAIN(0),
-> > +				      gain, 1);
-> > +	if (err)
-> > +		return dev_err_probe(st->dev, err, "Error writing register\n");
-> > +
-> > +	err = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_CH_GAIN(1),
-> > +				      gain, 1);
-> > +	if (err)
-> > +		return dev_err_probe(st->dev, err, "Error writing register\n");
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
-> > +{
-> > +	u8 gs_p, gs_n;
-> > +	s16 goffs;
-> > +	u16 id, rfb;
-> > +	u16 gain = 0, offset = 0;
-> > +	u32 val, range;
-> > +	int err;
-> > +
-> > +	err = ad3552r_hs_reset(st);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = iio_backend_ddr_disable(st->back);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = ad3552r_hs_scratch_pad_test(st);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = st->data->bus_reg_read(st->back, AD3552R_REG_ADDR_PRODUCT_ID_L,
-> > +				     &val, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	id = val;
-> > +
-> > +	err = st->data->bus_reg_read(st->back, AD3552R_REG_ADDR_PRODUCT_ID_H,
-> > +				     &val, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	id |= val << 8;
-> > +	if (id != st->model_data->chip_id)
-> > +		dev_info(st->dev, "Chip ID error. Expected 0x%x, Read 0x%x\n",
-> > +			 AD3552R_ID, id);
-> > +
-> > +	err = st->data->bus_reg_write(st->back,
-> > +				      AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
-> > +				      0, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = st->data->bus_reg_write(st->back,
-> > +				      AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> > +				      AD3552R_MASK_QUAD_SPI |
-> > +				      AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = iio_backend_data_source_set(st->back, 0, IIO_BACKEND_EXTERNAL);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = iio_backend_data_source_set(st->back, 1, IIO_BACKEND_EXTERNAL);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = ad3552r_get_ref_voltage(st->dev);
-> > +	if (err < 0)
-> > +		return err;
-> > +
-> > +	val = err;
-> 
-> Then, 'err' is not an error. I don't really like of mixing return values (errors)
-> with values. Please pass the value as a pointer argument to the function.
-> 
-> > +
-> > +	err = ad3552r_qspi_update_reg_bits(st,
-> > +				AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
-> > +				AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
-> > +				val, 1);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = ad3552r_get_drive_strength(st->dev, &val);
-> > +	if (!err) {
-> > +		err = ad3552r_qspi_update_reg_bits(st,
-> > +					AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> > +					AD3552R_MASK_SDO_DRIVE_STRENGTH,
-> > +					val, 1);
-> > +		if (err)
-> > +			return err;
-> > +	}
-> > +
-> > +	struct fwnode_handle *child __free(fwnode_handle) =
-> > +				device_get_named_child_node(st->dev, "channel");
-> > +	if (!child)
-> > +		return -EINVAL;
-> > +
-> > +	/*
-> > +	 * One of "adi,output-range-microvolt" or "custom-output-range-config"
-> > +	 * must be available in fdt.
-> > +	 */
-> > +	err = ad3552r_get_output_range(st->dev, st->model_data, child, &range);
-> > +	if (!err)
-> > +		return ad3552r_hs_set_output_range(st, range);
-> > +	if (err != -ENOENT)
-> > +		return err;
-> 
-> It seems to me you're already getting the span values so it should be possible to
-> export them via sysfs as the spi driver, right?
-> 
-> > +
-> > +	err = ad3552r_get_custom_gain(st->dev, child, &gs_p, &gs_n, &rfb,
-> > +				      &goffs);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	gain = ad3552r_calc_custom_gain(gs_p, gs_n, goffs);
-> > +	offset = abs(goffs);
-> > +
-> > +	return ad3552r_hs_setup_custom_gain(st, gain, offset);
-> > +}
-> > +
-> > +static const struct iio_buffer_setup_ops ad3552r_hs_buffer_setup_ops = {
-> > +	.postenable = ad3552r_hs_buffer_postenable,
-> > +	.predisable = ad3552r_hs_buffer_predisable,
-> > +};
-> > +
-> > +#define AD3552R_CHANNEL(ch) { \
-> > +	.type = IIO_VOLTAGE, \
-> > +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> > +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-> > +	.output = 1, \
-> > +	.indexed = 1, \
-> > +	.channel = (ch), \
-> > +	.scan_index = (ch), \
-> > +	.scan_type = { \
-> > +		.sign = 'u', \
-> > +		.realbits = 16, \
-> > +		.storagebits = 16, \
-> > +		.endianness = IIO_BE, \
-> > +	} \
-> > +}
-> > +
-> > +static const struct iio_chan_spec ad3552r_hs_channels[] = {
-> > +	AD3552R_CHANNEL(0),
-> > +	AD3552R_CHANNEL(1),
-> > +};
-> > +
-> > +static const struct iio_info ad3552r_hs_info = {
-> > +	.read_raw = &ad3552r_hs_read_raw,
-> > +	.write_raw = &ad3552r_hs_write_raw,
-> > +};
-> > +
-> > +static int ad3552r_hs_probe(struct platform_device *pdev)
-> > +{
-> > +	struct ad3552r_hs_state *st;
-> > +	struct iio_dev *indio_dev;
-> > +	int ret;
-> > +
-> > +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*st));
-> > +	if (!indio_dev)
-> > +		return -ENOMEM;
-> > +
-> > +	st = iio_priv(indio_dev);
-> > +	st->dev = &pdev->dev;
-> > +
-> > +	st->data = pdev->dev.platform_data;
-> > +	if (!st->data)
-> > +		dev_err_probe(st->dev, -ENODEV, "No platform data !");
-> 
-> return dev_err_probe()
-> 
-> > +
-> > +	st->back = devm_iio_backend_get(&pdev->dev, NULL);
-> > +	if (IS_ERR(st->back))
-> > +		return PTR_ERR(st->back);
-> > +
-> > +	ret = devm_iio_backend_enable(&pdev->dev, st->back);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	st->model_data = device_get_match_data(&pdev->dev);
-> 
-> error handling...
-> 
-> if (!st->model_data)
-> 	return -ENODEV; (or -EINVAL) - it seems there's no consensus in what to
-> return here.
-> 
-> - Nuno Sá
-> 
+Best Regards
+Jianping Shen
 

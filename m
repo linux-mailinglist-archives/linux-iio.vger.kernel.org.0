@@ -1,113 +1,150 @@
-Return-Path: <linux-iio+bounces-10679-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10680-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCC09A1E37
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 11:24:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854A09A2021
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 12:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C8F11C26758
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 09:24:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 170411F221C1
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Oct 2024 10:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AD31D8A14;
-	Thu, 17 Oct 2024 09:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C510D1D8DEE;
+	Thu, 17 Oct 2024 10:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="o3H/1ZkE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UXYbZDQR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996FA1D6DB6;
-	Thu, 17 Oct 2024 09:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AEF1D270B;
+	Thu, 17 Oct 2024 10:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729157084; cv=none; b=I+Em6trsiqJzZ738jxcV2ApzywYmJd62/CJwExulhxqFlaZ9jgMkH3i+DxFiiaHuI5Ji3C4NEUUhcPzuhF86YCrwo5G5Z6rJbL6qealScKuLsK3K3TBKWRs+CPzOU15d/0B0R8IptMNHoxjq64+NPu6D+pUCvmjzgh31Emr6RVo=
+	t=1729161484; cv=none; b=hyNRHRcddHhH8cg3nmsLnL/xGC6Fz1gkgGTahhn+tndks6qrFecxuYxiy0h+sGz/kxHqlMfn4smIzcnGIQ+p0JwlLa0NPU5/60HeJ3W61SNQHxgZH4sEhPy5lnQB9li1imgutojgtxj/22Dxy2hxlQvg4hIW6GCF383QGVFtsak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729157084; c=relaxed/simple;
-	bh=M+CZBwHFQQVnw0wKiyS9et3jXzRYYEFZJRWpdCs4vLQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qApcBRcRE8FCgcSQjuYaOVHEFoh9bJACF1W6nGe4B1wJku53BlG7oNyyFXx9z/g/bSsvGu0tra13DBWnNCzY+9GFZrD986z7lXDCcNF+eXtoRGHXgiS1Gvu1kdhqM7T9v+Rx5SrD/8XRD+mZW3qTtVX0CNtPpTyX2wyRWjbXqyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=o3H/1ZkE; arc=none smtp.client-ip=54.92.39.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1729157016;
-	bh=loAcfX4M69IyudaFwh1BHHZrjzonlv4S1EdZL66rgkg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=o3H/1ZkEr6Ioh5BsK6brPboy9+AasDTIJ3mW3/KHxl7grk2STysU9/KL+IXk78lXF
-	 iBGAuijVykEfjqODQs1BD8SP0Ft/e5xqR4HyPytIMTaxThG2hr8ShpLLpvCMHjSGsD
-	 FyQavKIRYvWGLnka/JjZB1+6HqT1dsm2HppGG/Nc=
-X-QQ-mid: bizesmtpsz9t1729156947trfrha0
-X-QQ-Originating-IP: gnbZjf9u8w3eKUsFgs6fCGR4vr8zspU9QMv7nTXXxFs=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 17 Oct 2024 17:22:26 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 7113092225127235405
-From: WangYuli <wangyuli@uniontech.com>
-To: puranjay@kernel.org,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	puranjay12@gmail.com,
-	Jonathan.Cameron@huawei.com,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH] iio: accel: adxl355: Fix typo "accelaration"
-Date: Thu, 17 Oct 2024 17:22:21 +0800
-Message-ID: <9F137828F9F185FD+20241017092221.361511-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1729161484; c=relaxed/simple;
+	bh=xvy8QYUo0YSyjxJgjQdwvoTCrWBXm6b95/ydl1O85og=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=r+MopmFrvunZHzLKw/YRbeT8w73uvFFYqq0rSgO8I3vyTkd3yg5/0eqqR4YRnxedAiBJfrxhoWCgMye3ztU6KlE6kKvxf9uL9YbYxqXz48Dnekkfp+h0SL5LyB81fLuzuTZ38FBa4ZMzZQNrwBgXZnqvbWIjF7UM8PQxutAenpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UXYbZDQR; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20b533c6865so158655ad.2;
+        Thu, 17 Oct 2024 03:38:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729161482; x=1729766282; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fJQFaU9PYKDrUfwWE8Dyr8hUKo1FhUF9LzWiqIbRd8s=;
+        b=UXYbZDQR7N9+OcRnDfKtsgyswxxHplpWBN6cIFleQJleXOPvQym2+vsUhQMBnkDuB8
+         ayfJ8Uf6bHR6itvpBtgGUpWJrtEM6Bt18bKXTIFvC6nbZNiR9sIrZMpxWpKfXBbPAxlD
+         OKzEJi4jbWbx+SL3l+CllslHSrfjyU1sTZxbzPHPjeBTcy1zpgmW/ggXgvaaTqT+bzEN
+         vrwKJuJs0gVV6K0rOBzfOlP+RE+bJkNSUscWeK1bl+OWJjIQNCEr9LfrIUiPi7YIgl9U
+         QsSn+F7QOzZ1p78AkGrX1jFTAgzzyJWzjQFLgzthEqZL5UaWzdoUXkiqyObtE/iTlv/U
+         /+sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729161482; x=1729766282;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fJQFaU9PYKDrUfwWE8Dyr8hUKo1FhUF9LzWiqIbRd8s=;
+        b=fr/4yaEdHRrQnCJ0xBHl3aVFHrsOepkUArUIeqEdY9EcCmUMX+tlRzP0A4EZlZ23S1
+         m9H/Ij+c3++fm0WeOo/QqpaOoBfmXuyNYfMAKDWMVIZhy2ZmfxtAdaMMBdze34XPkIqU
+         ojkU12b9cK+6qxywtKG9kkwhQX2r3jI4dWu7LWECmDh7NcNU67MPyomGccxf971eYGvY
+         CUtvqhoSBh60JkP+IIMn3e0xYXn/sDLTY+6mIra/VE9Qpl82+zqnaPh7Ej8Kj91qU9x5
+         6q5bKydxpFfkcX+hGIylH1YXUuvVi6UJgluH+PHbwLfU/ptadj7QRQuJh7cc+4WpnEE4
+         mzMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+moQiaZoBDlyce6rV9a7MPSShiBPtCl7aMx0CWSlOxxGldaLGQTC6/sLIggN5+tyig8CgqN+G3bJUaOzL@vger.kernel.org, AJvYcCVWlwfjVoNfwpCQpnQSEMy1bzWvcFshqQSVteobIuOFLuGEsEJN055rZ30ydng/qsFseCcqKI6KqWuU@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVaCtEXXL6bFk0z23Fdyd/D+TfYiooNtl/w7qU48RAZmHDgOq1
+	M4ObBjtk9OQvloaX75DdlopL1HOLV5TvTNNM/bMeFa2DjHnwIRff
+X-Google-Smtp-Source: AGHT+IGyGn2AOOUh3MpR3jBqCRzIX9fVl91xqa1PifHlX+dSApMhtMPDdJB9mUxD60nuUASNIab5bA==
+X-Received: by 2002:a17:902:db06:b0:20c:876a:fdac with SMTP id d9443c01a7336-20d47d13fefmr15666585ad.0.1729161482324;
+        Thu, 17 Oct 2024 03:38:02 -0700 (PDT)
+Received: from [127.0.1.1] ([45.32.86.188])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20d17f9d51esm41899025ad.104.2024.10.17.03.37.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2024 03:38:01 -0700 (PDT)
+From: Yasin Lee <yasin.lee.x@gmail.com>
+Subject: [PATCH v3 0/2] iio: proximity: hx9023s: Add performance tuning
+ function
+Date: Thu, 17 Oct 2024 18:36:43 +0800
+Message-Id: <20241017-add-performance-tuning-configuration-v3-0-e7289791f523@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MyKZhUs2HEHf+5uQ7KL7ugMgNJeTvaA/pSmy/x5Xa1L8KU4hDL5IL4bM
-	KOEflUA7j1jo80+uk09sIElLmDSAoJ4izmJKey2Gpxi8VdS9SctZYSzcgcQPvnzVocO7yQW
-	HCF4NvokzcoUyi8y0FMSzn5V6T0f54y8p6wLcwsZ2V53VE5AeFsr8+gq49x6+10E4ZHwksL
-	z2iaDTVOrVrUkt3UhFlB2xtTBG5hZMLOlWcEIYOir8L6jGkoubuLioCwAYAxc0VqP9IYwJj
-	7uxOMlBRwo4Ikuv5e8kZNfOspYBABuw2/q9jr5tPdX35Hce9RB15kd3klSjq7/4O6afteae
-	p6ePb30Ma+7v10IHaf5qH0IFM/hl0Iho+tAcCN/WMFLhmG3h4f7uRXS6WWfiZaFZNWtLs/K
-	301ThyZ+IrG/qjsXg73sdvngTLQOMPKX+RozMwIRzmiDuTzDOWOQQykp51ShZ9NpNIFUap/
-	2LqTsk6AFJ+9Obor2bYa3FwmWWOQZYiOMxFo56Lixd/VUhgeIFiPZrMx7EEOCyhWnU+FPD8
-	doFz4ldcxDaSbZS3MXDOcomIDEZvwxuZCBtu4RdBkQ00t9yKD8xyQ4Y5u4cVaFI9OVN5MPD
-	GWTPqOHzRv2tL6LzoaQ03KK4pPz6iRU1NrNIEbz8/XhN34vejpSLgr4XeRjX5yQnCkrMzzf
-	WpftfmfacRRHlt9DV4nOu58wPgPhYCAdQikf8X9tVTFUV/B26R+vxSrixUQcFTsi8mqA0ZV
-	Kn97T+f60bAkMaSyI445Hfgpj5T8ormNs4FQ4JwVNvJcqZ77D3Qh7af3Ey/yA1qTtVNffmk
-	gzKxMQQbgbhMK+VkHbEwQutY64E+58rQHzzVTGUgBbnTL8NkKwnorZr+KP6bjz7sX3Vs61H
-	V9b4qiXly21+BluxI1BK+0AOdGBkVSCYF1PAx1lWX3RpiErKuZMllFxTZJCUKnjY9fuyHNp
-	dWK2YEAZnh6QCDjpgbjMJpKsi3NBlhOei27ToeGELmQJDlnuOpLb4YLTrgmMMH1N8+Lc=
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALvoEGcC/5XNsQ6CMBSF4Vcxna0pFyjo5HsYh9Lewk2kJS0QD
+ eHdLUyMOp4zfP/CIgbCyG6nhQWcKZJ3aeTnE9Odci1yMmkzEFCIK+RcGcMHDNaHXjmNfJwcuZZ
+ r7yy1U1BjAjiCyCQWRqIAlqghoKX3nnk80+4ojj589uqcbe+fgTnjgpd1BSB0rVDjve0VvS7a9
+ 2wLzHBE5Y8oJNSappFlYctKVkd0XdcvWs0V7i0BAAA=
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, yasin.lee.x@outlook.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Yasin Lee <yasin.lee.x@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2615; i=yasin.lee.x@gmail.com;
+ h=from:subject:message-id; bh=xvy8QYUo0YSyjxJgjQdwvoTCrWBXm6b95/ydl1O85og=;
+ b=owGbwMvMwCEYyfeRr6Zs90zG02pJDOkCL07X/a08+Nxp/2O1oP2NdmzhkgVv1WYv9VQXlhTKK
+ 34Q/fB9RykLgyAHg6yYIsuZ129Y81Uf7gn+7ZoBM4eVCWQIAxenAEzEzoDhf8ab4JycorZXGbM3
+ Lts38+LNCbv7xcNXTrp466B/rXN+XhnDf49Pvb9OXvopuKvJYmNTT/Y735nKDV/uMHMduSQcxek
+ aeQsA
+X-Developer-Key: i=yasin.lee.x@gmail.com; a=openpgp;
+ fpr=CCEBEC056F25E1BC53FB4568590EF10E7C76BB99
 
-There is a spelling mistake of 'accelaration' in comments which
-should be 'acceleration'.
+When hardware design introduces significant sensor data noise,
+performance can be improved by adjusting register settings.
 
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
 ---
- drivers/iio/accel/adxl355_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v3:
+- Removed global register block configuration:
+  - Replaced global tuning blob with individual properties for each configurable setting.
+- New properties added for individual configurations:
+  - tyhx,odr: Added scanning period configuration.
+  - tyhx,range: Full-scale range configuration for each channel.
+  - tyhx,avg: ADC averaging number configuration for each channel.
+  - tyhx,osr: Oversampling rate configuration for each channel.
+  - tyhx,sample-num: ADC sample frequency configuration.
+  - tyhx,integration-num: Integration number configuration.
+  - tyhx,lp-alpha: Low-pass filter coefficient configuration for each channel.
+  - tyhx,bl-up-alpha: Baseline filter up coefficient configuration.
+  - tyhx,bl-down-alpha: Baseline filter down coefficient configuration.
+  - tyhx,drdy-interrupt: Added interrupt function enable configuration.
+  - tyhx,int-high-num: Proximity persistency number (Near).
+  - tyhx,int-low-num: Proximity persistency number (Far).
+- General improvements:
+  - Improved description clarity for all properties.
+  - Updated examples section for better clarity and accuracy based on new properties.
+- Parsing functions added:
+  - Implemented parsing functions for the newly added properties.
+- Link to v2: https://lore.kernel.org/r/20240926-add-performance-tuning-configuration-v2-0-fdbb654f5767@gmail.com
 
-diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
-index eabaefa92f19..7ccd2f653b9b 100644
---- a/drivers/iio/accel/adxl355_core.c
-+++ b/drivers/iio/accel/adxl355_core.c
-@@ -643,7 +643,7 @@ static irqreturn_t adxl355_trigger_handler(int irq, void *p)
- 	 * The acceleration data is 24 bits and big endian. It has to be saved
- 	 * in 32 bits, hence, it is saved in the 2nd byte of the 4 byte buffer.
- 	 * The buf array is 14 bytes as it includes 3x4=12 bytes for
--	 * accelaration data of x, y, and z axis. It also includes 2 bytes for
-+	 * acceleration data of x, y, and z axis. It also includes 2 bytes for
- 	 * temperature data.
- 	 */
- 	ret = regmap_bulk_read(data->regmap, ADXL355_XDATA3_REG,
+Changes in v2:
+- In the YAML file, boundary constraints have been applied to the `tyhx,performance-tuning` property, requiring the number of elements to be between 2 and 512. The description also informs users that the number of elements must be a multiple of 2.
+- In the function implementation, boundary checks have been added for this property, ensuring that the number of elements is even.
+- Link to v1: https://lore.kernel.org/r/20240923-add-performance-tuning-configuration-v1-0-587220c8aece@gmail.com
+
+---
+Yasin Lee (2):
+      dt-bindings: iio: tyhx,hx9023s: Add performance tuning configuration
+      iio: proximity: hx9023s: Add performance tuning function
+
+ .../bindings/iio/proximity/tyhx,hx9023s.yaml       | 195 +++++++++++++++++
+ drivers/iio/proximity/hx9023s.c                    | 234 +++++++++++++++++++++
+ 2 files changed, 429 insertions(+)
+---
+base-commit: 7f6f44a9e58cd19093b544423bc04e1d668ec341
+change-id: 20240923-add-performance-tuning-configuration-e2016e4d6e02
+
+Best regards,
 -- 
-2.45.2
+Yasin Lee <yasin.lee.x@gmail.com>
 
 

@@ -1,133 +1,180 @@
-Return-Path: <linux-iio+bounces-10749-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10750-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2136F9A4914
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 23:45:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEFE9A4A20
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 01:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 236F31C21B53
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 21:45:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1E8BB227E3
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 23:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D6418FC9F;
-	Fri, 18 Oct 2024 21:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCDA19049A;
+	Fri, 18 Oct 2024 23:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Q50Sb5CG"
+	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="kRi6T3tJ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pMLMIRZZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB79918C332
-	for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2024 21:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270F914F9D9;
+	Fri, 18 Oct 2024 23:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729287895; cv=none; b=iPNxpC58cZSgWkefj/eXbsnB0voKpQWD5qvcOvVQTqh9hB6E/uG86H+wjm33o76ZhJOLbNBZfkhJJV+CZAgF5wAIo5nklRkUvbVaLe3QsNBbFlBX0WC86DiT9OydhW0wBTo23+ui1MvtW8qn5IGPAftK5franKwDq7CCvfoVQlM=
+	t=1729294712; cv=none; b=CJu+0gRUDkdsROereAshsIZgG5/XIJDeaOsh5XP4B0Kb6ycSVGo3AdSpwYTNvOUCCcHB4rWw8mF2Ml/CvFDpeH8prErtdVEcTiFRBmfXV67c9srFSqoFfvosxe3Wu0ZTYwlsFXjFclBS5d8X+x9dd761GzmB7eOkV13wkNG17vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729287895; c=relaxed/simple;
-	bh=jyy7JLmQxl6wTRjl8UqryYDQaj/jxSGqUmhT8PipY8Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JqE6OR9yvyp4glHQjHLafxTk38t72Rs4kjd12bgYTNt8dOEGLg9fBqsOkYASFcyMgsI4lHManJTo1HbXWndJO1gF8LAVUUY7+cRT9qgZAT5ZIptkMtzTL/Tx6cmNf7M9wds3LcJiMcummvbUjIjHOeZVVdujrJh2z02rWtuWoXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Q50Sb5CG; arc=none smtp.client-ip=209.85.160.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2891055c448so1146372fac.0
-        for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2024 14:44:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729287891; x=1729892691; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FMqjAyuym8kO0S6P2ejY/kfmYTx2+tMdub+GPF3mz6k=;
-        b=Q50Sb5CGl3ra0YsHbSTYgNxcEqQQxxS473+lpJuZN5D+cWhNdckHAOi+8aN5Z3GWZv
-         4W4cY7wCKqGrLeMgm3FbGoMGBWoKVSQt4VKgdymScJrLEp46AxtQaczK5cEtE6A6fUrm
-         jfEOkgYoHalQrE1vyZwfVsj0CsWxfHrj+HbJRJSTlrLPV6hnkGMlD2Jvss3XC3FhQ09A
-         M1QSn9d3C7KBg97R1IMAHGcFtQ+nnmU7jJxrR6GksekDvEjjbAFouB2/201sOkIHXHxY
-         +3bj+rpyqolHuahU7+xAiPFqmLIqbs8xKnuk7oBVkGBRJq4OQ0WQxDoxxtQAp/S6pfas
-         UfmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729287891; x=1729892691;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FMqjAyuym8kO0S6P2ejY/kfmYTx2+tMdub+GPF3mz6k=;
-        b=Qc/NLxcEDroKOodQvu1lcANWa4NMnqMO+K0NXccz+FjRos0d+CU2bHoGazhq3qtgfd
-         lcR0J9b5TK1eA6HTiFez8W5RyNz8kB7oZpwSQ4TadLx39OMMLg/NyHIfNGxZ5OUwvZdw
-         KN0vPsve+6H1btcRs7slHFG/AJb/gWR4aEsMjopUg3QVcWuoaHffwUTMLVkOsLFYoQ4M
-         QolZ2glddPNXo9NsrxZes4Kq5bdmV+JSed/AzTX71oCDg1sQUfPTRoSFK2JgVZpDc2s1
-         Ck5znzGWj7EGcT4qAqrplCidsYJhTBmgORcTJ+ZYuvBxelf92ZdOmJrTdq19ENayVPCa
-         hPpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWYpIhLOuzdPnPRiQisCHTxkSjnU0nO6Yq89aGqQTBd0j3genK+CXJ1E02yO1Hz1NeD/9Yra/Uhj6A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzysjxTM20UWmuSRNORxa+VdcfmowFNimQMQU26/piQ5yUqaM2y
-	GxALY0EOWMN7OKNNiCM5vlodcKGRSQALkVrGxBiD+mV1b6+CkEdD2hSQzQdE90w=
-X-Google-Smtp-Source: AGHT+IFdjwx8P1K2RS/2aLojqgswehswGxjnO25URnODR+tpiphndgig0nezfBUqe5Ek19Hf1Azm9g==
-X-Received: by 2002:a05:6870:b487:b0:288:33d1:a95e with SMTP id 586e51a60fabf-2892c528028mr3869783fac.30.1729287890836;
-        Fri, 18 Oct 2024 14:44:50 -0700 (PDT)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2892ad2e6e8sm691388fac.18.2024.10.18.14.44.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 14:44:50 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 18 Oct 2024 16:44:48 -0500
-Subject: [PATCH] iio: dac: ad8460: add SPI device match table
+	s=arc-20240116; t=1729294712; c=relaxed/simple;
+	bh=4FPYZLVVg17Co/ie7N0rzEIkz+XXrxHLuXUTzig2iCw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KUKsANjBPAQmsc8WFu3qn0EYWoDgxn5pjROvmiZFayKwueCibd2Fnwf9DzezicK8L6EWftJ2Zwlu/ond2vEokWQWeR6VvmuCbQh1T6Mkz1I8wf/U3CaE8hZsXxbCXShFxaBeC3B5tTDafsxN4VA63MoPW8fsNxmkAtlOk1OIoc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=kRi6T3tJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pMLMIRZZ; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justinweiss.com
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 2F3D013801AB;
+	Fri, 18 Oct 2024 19:38:29 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 18 Oct 2024 19:38:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justinweiss.com;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm1; t=1729294709; x=1729381109; bh=+J57weygeT
+	grY1yTeItGKwPc6oaJWjw+mzCVb0ceK7A=; b=kRi6T3tJYvZk37DHbNtIj5cRQE
+	LrzVvnGiaHTKNMac8X7wbFd09q/rSW+QRSXCF0NS3MnjifE98nvceLN6e8d4NkrW
+	4rF+z9fFBEXybAkhEudk2r2zNlJstsRdO5T8IkHOcBQn5HrmGgxguYsnWDNPiIfy
+	hgT5P6T4rSVj9jeYGRq3AsVpn80ZlNeUVkLtyHXAVv2QHu6vcj3DuHhQTfAEgboJ
+	oT+Ol/lGZzTp4YKHvqyF0RumIlcyJniGMlyvPrgvzPu4vjrfCho5ur0IFeec7KLz
+	QplQR+HJMT1oqfFXiJtA79fFXy+IRRCZ6LlLpDf6F7oDw0Ndlsnq2MJ7kpWw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1729294709; x=1729381109; bh=+J57weygeTgrY1yTeItGKwPc6oaJ
+	Wjw+mzCVb0ceK7A=; b=pMLMIRZZf45btg8fsYfGH9wMLmNfwNZtZKTQGyX+8SNs
+	eZsMk3GDOwk04li51anI9P2506YYUZs2pSj1nIYxfFjigr59fS1bNhjjc97nDB6N
+	M/CcjOzZ8HvotiUdS65jSjiSnnJ2xFbifNw+9ZhJelJn7RBt1gifN3MdXbBmXnUT
+	mlciCwdRoQvOp/UmwH8t/0Luow/nfRKOIn3Zg30xpDV1npGpmuz4Qc4raAUkGDVK
+	wG9FvnasuXb+RTZ4vo4mjep6a/sIGAfoPoEZ7BNERinqdETdMJXlLrlD44+pWgjK
+	VuUjn70JoFeHvdf8wr6S4aZbYJ32TYdgjoD4R0cSvQ==
+X-ME-Sender: <xms:dPESZ9Wrn4AR0V4n5ItfTZDaEfP8Fh6MBlq4V23oomhhjxanVAilZQ>
+    <xme:dPESZ9mjr56qhxZbKs6Ljk6zt7eVK3IPIdIlvgV4gfy7JENXCc-LQ2fEgFNBrL5YM
+    0qbpzlNz8bO2x8S2w>
+X-ME-Received: <xmr:dPESZ5YRao-3f_A-zmN7Q6Kq7FEIyt3UG07p3MjWPo8llpnsieZjDrpQIJoDanZbu_3adysAZmO38RJuryBMzr0f-VYJOrIDAeQwkk_4bA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehgedgvdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhephffvvefufffkofgggfestdekredtredttdenucfh
+    rhhomheplfhushhtihhnucghvghishhsuceojhhushhtihhnsehjuhhsthhinhifvghish
+    hsrdgtohhmqeenucggtffrrghtthgvrhhnpefhhfefleehuedvgedtleeuleekleetvdef
+    hfegveeigeeutdfgteelkeekvdetvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhushht
+    ihhnsehjuhhsthhinhifvghishhsrdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhoug
+    gvpehsmhhtphhouhhtpdhrtghpthhtoheplhgrnhiirghnohdrrghlvgigsehgmhgrihhl
+    rdgtohhmpdhrtghpthhtohepjhhitgdvfeeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eplhgrrhhssehmvghtrghfohhordguvgdprhgtphhtthhopehrohgshheskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjuhhsthhi
+    nhesjhhushhtihhnfigvihhsshdrtghomhdprhgtphhtthhopehlihhnuhigqdhiihhose
+    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggvvhhitggvthhrvggvsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:dPESZwWtIevAn3RcgBCh2-0jgSkZ26ch2qLO7aJzE8mqmvR24NkPuA>
+    <xmx:dPESZ3ntqHGVkKLtEzBxq6KTZoenlXF3auS2_4vhqRxdE01M1P7d_Q>
+    <xmx:dPESZ9duuoRhpELzlxItUsVG_SbcKk5RCUoG_GGSTe_Yi9q0S0RHaw>
+    <xmx:dPESZxHtxxXF6mC0Kd5qr6FegJmYLGfJFDGbdW5gBV_bWbHmAzSZ-Q>
+    <xmx:dfESZ69T_YmNCDfHMd7RmVbgD_BEIWXiBvbXCFSWTuLqFtxKCF7w5xZ3>
+Feedback-ID: icf614246:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 18 Oct 2024 19:38:26 -0400 (EDT)
+From: Justin Weiss <justin@justinweiss.com>
+To: Alex Lanzano <lanzano.alex@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Justin Weiss <justin@justinweiss.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Derek J . Clark" <derekjohn.clark@gmail.com>,
+	=?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>
+Subject: [PATCH v2 0/6] Add i2c driver for Bosch BMI260 IMU
+Date: Fri, 18 Oct 2024 16:36:06 -0700
+Message-ID: <20241018233723.28757-1-justin@justinweiss.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241018-iio-dac-ad8460-add-spi-match-table-v1-1-84a5f903bf50@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAM/WEmcC/x2NQQqEMAwAvyI5G0itFNeviIfYxDWwq9KKLIh/3
- +JpmMvMBVmTaYa+uiDpadm2tYirK4gLr29Fk+LQUNM6ch2abSgckaVrAxUI5t3wy0dc8ODpo/i
- iIOJDnMh7KKE96Wy/ZzKM9/0HkmvVZXQAAAA=
-To: Mariel Tinaco <Mariel.Tinaco@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.1
+Content-Transfer-Encoding: 8bit
 
-Add SPI device match table for ADI AD8460 DAC. As described in [1], this
-is required for the module to automatically load, even when using DT.
+Add support for the Bosch BMI260 IMU to the BMI270 device driver.
 
-[1]: https://lore.kernel.org/all/20210921192149.50740-1-broonie@kernel.org/
+The BMI270 and BMI260 have nearly identical register maps, but have
+different chip IDs and firmware.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
+The BMI260 is the IMU on a number of handheld PCs. Unfortunately,
+these devices often misidentify it in ACPI as a BMI160 ("BMI0160," for
+example), and it can only be correctly identified using the chip
+ID. To avoid conflicts with the bmi160 driver, this driver will not
+probe if it detects a BMI160 chip ID.
+
+Also add triggered buffer and scale / sampling frequency attributes,
+which the input tools commonly used on handheld PCs require to support
+IMUs.
+
+Like the BMI270, the BMI260 requires firmware to be provided.
+Signed-off-by: Justin Weiss <justin@justinweiss.com>
 ---
- drivers/iio/dac/ad8460.c | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/iio/dac/ad8460.c b/drivers/iio/dac/ad8460.c
-index dc8c76ba573d..ded442d4060d 100644
---- a/drivers/iio/dac/ad8460.c
-+++ b/drivers/iio/dac/ad8460.c
-@@ -929,12 +929,19 @@ static const struct of_device_id ad8460_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, ad8460_of_match);
- 
-+static const struct spi_device_id ad8460_spi_match[] = {
-+	{ .name = "ad8460" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, ad8460_spi_match);
-+
- static struct spi_driver ad8460_driver = {
- 	.driver = {
- 		.name = "ad8460",
- 		.of_match_table = ad8460_of_match,
- 	},
- 	.probe = ad8460_probe,
-+	.id_table = ad8460_spi_match,
- };
- module_spi_driver(ad8460_driver);
- 
+Changelog:
 
----
-base-commit: f2493655d2d3d5c6958ed996b043c821c23ae8d3
-change-id: 20241018-iio-dac-ad8460-add-spi-match-table-906dd36cb033
+V2
+- Fix commit titles
+- Fix: Change FREQUENCY to SAMP_FREQ
+- Split chip_info refactor into a separate commit from adding bmi260
+- Only fail probe when BMI160 is detected
+- Update chip_info based on detected chip ID
+- Add BMI260 to DT documentation
+- Add BMI260 to of_device_id
+- Add expected BMI260 ACPI ID to the SPI driver
+- Remove unused/unexpected BMI260 ACPI IDs
+- Remove trailing comma for null terminators
+- Use DMA_MINALIGN for channel buffer
+- Read channels in bulk
+- Improve for loops for detecting scale / odr attrs
+- Add missing masks
+- Use FIELD_GET
+- Use read_avail instead of custom attrs
+- Misc. formatting and line wrapping improvements
 
-Best regards,
+v1: https://lore.kernel.org/all/20241011153751.65152-1-justin@justinweiss.com/
+
+Justin Weiss (6):
+  iio: imu: bmi270: Use INFO_SAMP_FREQ instead of INFO_FREQUENCY
+  iio: imu: bmi270: Provide chip info as configuration structure
+  dt-bindings: iio: imu: Add Bosch BMI260
+  iio: imu: bmi270: Add support for BMI260
+  iio: imu: bmi270: Add triggered buffer for Bosch BMI270 IMU
+  iio: imu: bmi270: Add scale and sampling frequency to BMI270 IMU
+
+ .../bindings/iio/imu/bosch,bmi260.yaml        |  77 +++
+ MAINTAINERS                                   |   1 +
+ drivers/iio/imu/bmi270/Kconfig                |   1 +
+ drivers/iio/imu/bmi270/bmi270.h               |  25 +-
+ drivers/iio/imu/bmi270/bmi270_core.c          | 441 +++++++++++++++++-
+ drivers/iio/imu/bmi270/bmi270_i2c.c           |  24 +-
+ drivers/iio/imu/bmi270/bmi270_spi.c           |  19 +-
+ 7 files changed, 574 insertions(+), 14 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml
+
+
+base-commit: 96be67caa0f0420d4128cb67f07bbd7a6f49e03a
 -- 
-David Lechner <dlechner@baylibre.com>
+2.47.0
 
 

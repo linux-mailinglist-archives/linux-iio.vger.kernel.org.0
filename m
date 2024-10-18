@@ -1,424 +1,147 @@
-Return-Path: <linux-iio+bounces-10744-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10745-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4667B9A45C1
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 20:23:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BA19A464A
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 20:55:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00526285D26
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 18:23:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87F5F1F24445
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 18:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8CDE2038DF;
-	Fri, 18 Oct 2024 18:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2ECE2038C8;
+	Fri, 18 Oct 2024 18:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yuk1t5Be"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZU13PlMM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6D1168488;
-	Fri, 18 Oct 2024 18:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC63F20E319;
+	Fri, 18 Oct 2024 18:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729275704; cv=none; b=quFz0EmdpKWjfNy+bHVvE+lnZFxaA3VjgAEgWWdn2SiXEZCcG1TF9ezivGEojBgvdFsxIxSQiJjM8k8F+ECNtZtXCNU421Hk6Ifn2mhk8iTmz3HaCiczyvQQeLg1X2/EUSqBKSklilxCSZEIxOnDnvFBrsttjyr/0p9OPYeg+Kk=
+	t=1729277698; cv=none; b=qlvRUPyCwbgxvmCOl1ysHypP+nfwOsufyroT3oCx1WBzOFPnMH8Gxa61Ccy1MljAq+nBPqXd23vME7eqIlWUHICveCMzSGXAiibsXe3JqlYotpKFEuY2hsIzwJazYBrXoCUtear59TUrrainkiDGXNyYlmXc/4FIjYXERHhb670=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729275704; c=relaxed/simple;
-	bh=gl39e5XMiuaV3vjNzR8IeZRB7zmMZrSilDNVwY2LOPM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kXhoitF3V8elFuIznhcuPccVtIoUlJObRAVJbs7tVDhM8POmdQ1jYd3TcsVlpZ462+77I0l1Vzu7/lh7JiDw5hg0k1ftzZxZlojbQaBN5Ual3InPa5fPbAFTFRJifg8Sc0mi1E/KoEJTc9qCT881SPyHAlofBiZBHJzrHErZdcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yuk1t5Be; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83391C4CEC3;
-	Fri, 18 Oct 2024 18:21:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729275703;
-	bh=gl39e5XMiuaV3vjNzR8IeZRB7zmMZrSilDNVwY2LOPM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Yuk1t5BeqLkIrfS2tfLuGyIJLggpv0Pt+Yb7ob0URwIkKgPta6iNyAhJ5Xh076KZU
-	 j5CZcELZHHmvpm3y3imr5mwr8Nu+eEYv4yNI8S81INem+l5cpJqHt/U2y+HtbAwgeA
-	 nqDjLBsYTdDY5REnR8Rgh7Ly781hy8w4LCutvKRhAwqGLlv7xBnfmKbgzapkCmUugk
-	 6ovVXTMLcoiyJhIUzXYiVyA3jpxiE5U2pRyz06OLDIgICPCc7cgSf6o5dsZm+T6FZu
-	 Y7xyqPFTwQAgtvcB6gX4PTqlz20ucTLGD6XhSNRFdX/dEibEnEJcwvjLSDpLRXvjX1
-	 pgub1GelUc6EA==
-Date: Fri, 18 Oct 2024 19:21:37 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-Cc: jmaneyrol@invensense.com, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: inv_icm42600: Enable Pedometer Functionality
-Message-ID: <20241018192137.0ff44c23@jic23-huawei>
-In-Reply-To: <20241015092035.10482-1-hardevsinh.palaniya@siliconsignals.io>
-References: <20241015092035.10482-1-hardevsinh.palaniya@siliconsignals.io>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1729277698; c=relaxed/simple;
+	bh=odZmaSe2NUxwSwK+Ojy4z/lhi5LMpyFMzzCvQnjosyE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JhyCqR4APR/BoAcnuMhiNGArVDF52WXcP+q9syDpAMJOsni6oWe2DGIf4sXyvFdVBmFNH8wYVwPNLEvO0ClXKWDNksom9+bJJo6j0sXEvC2oq0fQDlkyfJVv4BLcvmqep9oMytCtRPbcKTZScDXDLXSEf9pZEmRrLhkkYM54/Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZU13PlMM; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7ea9739647bso1711980a12.0;
+        Fri, 18 Oct 2024 11:54:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729277696; x=1729882496; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F3AekqJ3EtBItCjGHNZ1BHmF2TjbYs3oRMAWzkxT8OY=;
+        b=ZU13PlMMpEQ4o3v6mQ+Nk/OKwqz7dH9033nmqO3+LeHmH3MnFQHCldFjEenlzaLRd2
+         CMrF5sBXHx+w1lHvVa/kIuTGZpDdkd0ZHvVlMbLQtzPdw7dq/Oyl9fxhqD25xBL3NNTO
+         QxTMvS8DaXC8Dsibu/4pIHcQ9fKgjpWEl2IOMWOr0DOBPTgnsA/DE9ldGf0ScyxsmVWd
+         YcoMPMckxhEqp8ktuSsoYp0qK88lBG9l89hhRuhP6e8GegwK1oZ+de7Xltuf6clEPmhN
+         mNWZuCl4ac1UVnzGBcGghlVki1nk6tWaMxKf0C848Apd+YMrBHvLi8DGtRONTLGHxNor
+         kcPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729277696; x=1729882496;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F3AekqJ3EtBItCjGHNZ1BHmF2TjbYs3oRMAWzkxT8OY=;
+        b=aT7neEtfb0Nw/+bk5A+pvQtWtF86yltRrkoqwPwrDHiGRYVf0Z7yvQppH5a1927BB8
+         l0ixB0rZ3l0JEqs494Uo1CmcQEHhQdCclPaeJ8bjcUQUk2DiwyKSG+b3QGmU34V2zyPM
+         BT7pNtArjqDwrT4ABSp0juXr5W9czAaMLZhnCqFxpd8X5Goqa4OwxOBtRGelQyMlWC8A
+         RaSXs7liCbsHeAFDsFgh3Q7g5BJeGSVOBrIctJyfbNV8gHLbLG5MdhEEqMFSCVZcl0yh
+         1cFmuq2tOMBFA4Jf81IZA7/yIuTT7BUpmUNPfwYQXC1smJc8HAIQEPh7afj3I3mNdF2e
+         KFVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV52c++TMP/HmZUlAKCeAAgCLJU30km9wnBz0HqovID3nCblB+Yi+SKw6ENAfFKFDuXeo8XWuOyzk6KbYo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXO/unWll6DZbr93KhmpdH2DdLpVEPxLwc5QA1ord3XsgkmTt/
+	4yRpUC8jotbEYMG+OIf5SkITNgN6FaiJr88IfYg72Utjv0uF5XkI
+X-Google-Smtp-Source: AGHT+IG9qhjRpw2G1khLgCJq922JNmq/QJWcNC0REKrzBbqXZgXzQLUmm2Ir8ZXq03ypsNTa1OCF7w==
+X-Received: by 2002:a05:6300:44:b0:1d8:a759:525c with SMTP id adf61e73a8af0-1d92c572670mr4652797637.39.1729277695865;
+        Fri, 18 Oct 2024 11:54:55 -0700 (PDT)
+Received: from Emma ([2401:4900:1c97:c88d:5054:ff:fe53:2787])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7eacc23a42esm1719726a12.44.2024.10.18.11.54.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2024 11:54:55 -0700 (PDT)
+From: Karan Sanghavi <karansanghvi98@gmail.com>
+Date: Fri, 18 Oct 2024 18:54:42 +0000
+Subject: [PATCH] iio: chemical: sps30: Add Null pointer check
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241018-cid1593398badshift-v1-1-11550a10ff25@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAPGuEmcC/x3MQQqAIBBA0avErBMaTXC6SrQwnWo2FRoRSHdPW
+ r7F/wUyJ+EMQ1Mg8S1Zjr0C2wbC5veVlcRq0J3usUOngkS0ZAy52ce8yXIpCha1NzPpSFDDM/E
+ izz8dp/f9AASSchBkAAAA
+To: Tomasz Duszynski <tduszyns@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Karan Sanghavi <karansanghavi98@gmail.com>, 
+ Karan Sanghavi <karansanghvi98@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729277691; l=1425;
+ i=karansanghvi98@gmail.com; s=20241017; h=from:subject:message-id;
+ bh=odZmaSe2NUxwSwK+Ojy4z/lhi5LMpyFMzzCvQnjosyE=;
+ b=GbzYKIb7BZUyUqmmCxEbpouMabZsCp77rLR+fCU8qPizrvecasyOU3rrT1K8XWjC6ZLnZVeya
+ uXWMjNKe1wZALbKoQQelE1o9aUANiAxDubn4jTyi8gRAcMRQfinL9js
+X-Developer-Key: i=karansanghvi98@gmail.com; a=ed25519;
+ pk=UAcbefT1C06npNVDJHdgpPqTm4WE9IhaA1fmJb3A37Y=
 
-On Tue, 15 Oct 2024 14:50:03 +0530
-Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io> wrote:
+Add a Null pointer check before assigning and incrementing
+the null pointer
 
-> Enables pedometer functionality in the ICM42605 IMU sensor.
-> 
-> The pedometer feature allows for step counting, which is accessible through
-> a new sysfs entry. Interrupts are triggered when a step event occurs, enabling
-> step event detection.
-> 
-> Signed-off-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-Some additional comments from a quick read.
+Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
+---
+ drivers/iio/chemical/sps30_i2c.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600.h   |  16 ++
->  .../iio/imu/inv_icm42600/inv_icm42600_accel.c | 165 ++++++++++++++++++
->  .../iio/imu/inv_icm42600/inv_icm42600_core.c  |  36 +++-
->  3 files changed, 211 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> index 3a07e43e4cf1..c3471b73152e 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-> @@ -122,6 +122,7 @@ struct inv_icm42600_sensor_conf {
->  	int filter;
->  };
->  #define INV_ICM42600_SENSOR_CONF_INIT		{-1, -1, -1, -1}
-> +#define INV_ICM42600_SENSOR_CONF_APEX		{ 2, 0, 9, 6}
->  
->  struct inv_icm42600_conf {
->  	struct inv_icm42600_sensor_conf gyro;
-> @@ -141,6 +142,8 @@ struct inv_icm42600_suspended {
->   *  @chip:		chip identifier.
->   *  @name:		chip name.
->   *  @map:		regmap pointer.
-> + *  @pedometer_enable	status of pedometer function
-> + *  @pedometer_value	status of steps event occurnce
-Check the kernel-doc style.  Even better run the script over the
-files you are touching.
+diff --git a/drivers/iio/chemical/sps30_i2c.c b/drivers/iio/chemical/sps30_i2c.c
+index 1b21b6bcd0e7..d2142e4c748c 100644
+--- a/drivers/iio/chemical/sps30_i2c.c
++++ b/drivers/iio/chemical/sps30_i2c.c
+@@ -105,16 +105,18 @@ static int sps30_i2c_command(struct sps30_state *state, u16 cmd, void *arg, size
+ 		return ret;
+ 
+ 	/* validate received data and strip off crc bytes */
+-	tmp = rsp;
+-	for (i = 0; i < rsp_size; i += 3) {
+-		crc = crc8(sps30_i2c_crc8_table, buf + i, 2, CRC8_INIT_VALUE);
+-		if (crc != buf[i + 2]) {
+-			dev_err(state->dev, "data integrity check failed\n");
+-			return -EIO;
++	if (rsp) {
++		tmp = rsp;
++		for (i = 0; i < rsp_size; i += 3) {
++			crc = crc8(sps30_i2c_crc8_table, buf + i, 2, CRC8_INIT_VALUE);
++			if (crc != buf[i + 2]) {
++				dev_err(state->dev, "data integrity check failed\n");
++				return -EIO;
++			}
++
++			*tmp++ = buf[i];
++			*tmp++ = buf[i + 1];
+ 		}
+-
+-		*tmp++ = buf[i];
+-		*tmp++ = buf[i + 1];
+ 	}
+ 
+ 	return 0;
 
-You are missing : here.
+---
+base-commit: f2493655d2d3d5c6958ed996b043c821c23ae8d3
+change-id: 20241018-cid1593398badshift-9c512a3b92d9
 
->   *  @vdd_supply:	VDD voltage regulator for the chip.
->   *  @vddio_supply:	I/O voltage regulator for the chip.
->   *  @orientation:	sensor chip orientation relative to main hardware.
-> @@ -157,6 +160,8 @@ struct inv_icm42600_state {
->  	enum inv_icm42600_chip chip;
->  	const char *name;
->  	struct regmap *map;
-> +	bool pedometer_enable;
-> +	bool pedometer_value;
->  	struct regulator *vdd_supply;
->  	struct regulator *vddio_supply;
->  	struct iio_mount_matrix orientation;
-> @@ -301,6 +306,15 @@ struct inv_icm42600_sensor_state {
->  #define INV_ICM42600_GYRO_ACCEL_CONFIG0_GYRO_FILT(_f)	\
->  		FIELD_PREP(GENMASK(3, 0), (_f))
->  
-> +/* Pedometer functionality */
-> +#define INV_ICM42600_REG_APEX_CONFIG0                  0x0056
-> +#define INV_ICM42600_DMP_ODR_50Hz                      BIT(1)
-> +#define INV_ICM42600_PED_ENABLE                        BIT(5)
-> +#define INV_ICM42600_REG_INT_STATUS3                   0x0038
-> +#define INV_ICM42600_STEP_DET_INT                      BIT(5)
-> +#define INV_ICM42600_REG_APEX_DATA                     0x0031 // 2 Byte little-endian
-
-/* */ for comments in IIO (and most of the kernel)
-Also, put it on the line above rather than making such a long line.
-> +
-one blank line is enough.
-> +
->  #define INV_ICM42600_REG_TMST_CONFIG			0x0054
->  #define INV_ICM42600_TMST_CONFIG_MASK			GENMASK(4, 0)
->  #define INV_ICM42600_TMST_CONFIG_TMST_TO_REGS_EN	BIT(4)
-> @@ -373,6 +387,8 @@ struct inv_icm42600_sensor_state {
->  #define INV_ICM42600_INTF_CONFIG6_I3C_SDR_EN		BIT(0)
->  
->  /* User bank 4 (MSB 0x40) */
-> +#define INV_ICM42600_REG_INT_SOURCE6                    0x404D
-> +#define INV_ICM42600_STEP_DET_INT1_EN              	BIT(5)
->  #define INV_ICM42600_REG_INT_SOURCE8			0x404F
->  #define INV_ICM42600_INT_SOURCE8_FSYNC_IBI_EN		BIT(5)
->  #define INV_ICM42600_INT_SOURCE8_PLL_RDY_IBI_EN		BIT(4)
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> index 56ac19814250..90fe4c9e15ab 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> @@ -160,6 +160,13 @@ static const struct iio_chan_spec_ext_info inv_icm42600_accel_ext_infos[] = {
->  	{},
->  };
-
-> +static int inv_icm42600_steps_read_raw(struct iio_dev *indio_dev,
-> +                               struct iio_chan_spec const *chan,
-> +                               int *val, int *val2, long mask)
-> +{
-> +       struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +       __le16 steps;
-> +       int ret;
-> +
-> +       if (mask == IIO_CHAN_INFO_PROCESSED) {
-> +               ret = iio_device_claim_direct_mode(indio_dev);
-> +               if (ret)
-> +                       return ret;
-> +               ret = regmap_bulk_read(st->map, INV_ICM42600_REG_APEX_DATA, &steps, sizeof(steps));
-> +               if (ret)
-> +                       return ret;
-> +               iio_device_release_direct_mode(indio_dev);
-> +               if (ret)
-> +                       return ret;
-> +               *val = steps;
-As the bot pointed out, you need an endian conversion here.
-le16_to_cpu()
-
-> +               return IIO_VAL_INT;
-> +       }
-> +
-> +       return -EINVAL;
-> +}
-> +
->  static int inv_icm42600_accel_read_raw(struct iio_dev *indio_dev,
->  				       struct iio_chan_spec const *chan,
->  				       int *val, int *val2, long mask)
-> @@ -681,6 +721,8 @@ static int inv_icm42600_accel_read_raw(struct iio_dev *indio_dev,
->  		break;
->  	case IIO_TEMP:
->  		return inv_icm42600_temp_read_raw(indio_dev, chan, val, val2, mask);
-> +	case IIO_STEPS:
-> +		return inv_icm42600_steps_read_raw(indio_dev, chan, val, val2, mask);
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -824,6 +866,126 @@ static int inv_icm42600_accel_hwfifo_flush(struct iio_dev *indio_dev,
->  	return ret;
->  }
->  
-> +/*****************Pedometer Functionality**************/
-
-No to structure comments like this. They add little to readability and have
-a habit of rapidly becoming wrong.
-
-> +static int inv_icm42600_step_en(struct inv_icm42600_state *st, int state)
-> +{
-> +	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_APEX;
-> +	int ret, value;
-> +
-> +	if (state) {
-> +
-> +		ret = inv_icm42600_set_accel_conf(st, &conf, NULL);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = regmap_write(st->map, INV_ICM42600_REG_APEX_CONFIG0,
-> +		                        INV_ICM42600_DMP_ODR_50Hz);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = regmap_write(st->map, INV_ICM42600_REG_SIGNAL_PATH_RESET,
-> +		                        INV_ICM42600_SIGNAL_PATH_RESET_DMP_MEM_RESET);
-> +		if (ret)
-> +			return ret;
-> +		msleep(1);
-Document the reason for this value.
-
-> +
-> +		ret = regmap_write(st->map, INV_ICM42600_REG_SIGNAL_PATH_RESET,
-> +		                        INV_ICM42600_SIGNAL_PATH_RESET_DMP_INIT_EN);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = regmap_write(st->map, INV_ICM42600_REG_INT_SOURCE6,
-> +		                        INV_ICM42600_STEP_DET_INT1_EN);
-> +		if (ret)
-> +			return ret;
-> +
-> +		value = INV_ICM42600_DMP_ODR_50Hz | INV_ICM42600_PED_ENABLE;
-> +		ret = regmap_write(st->map, INV_ICM42600_REG_APEX_CONFIG0, value);
-> +		if (ret)
-> +			return ret;
-> +
-> +		st->pedometer_enable = true;
-	return here.
-Then can drop the else.
-
-With two such different paths, even better would be two little functions
-to handle the two operations (enable + disable) as will make each individually
-easier to read.
-> +
-> +	} else {
-> +
-> +		ret = regmap_write(st->map, INV_ICM42600_REG_APEX_CONFIG0, 0);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = regmap_write(st->map, INV_ICM42600_REG_INT_SOURCE6, 0);
-> +		if (ret)
-> +			return ret;
-> +
-> +		st->pedometer_enable = false;
-> +	 }
-> +
-> +	return 0;
-> +}
-> +
-> +static int inv_icm42600_write_event_config(struct iio_dev *indio_dev,
-> +                                     const struct iio_chan_spec *chan,
-> +                                     enum iio_event_type type,
-> +                                     enum iio_event_direction dir, int state)
-> +{
-> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +	int ret;
-> +
-> +	if(chan->type != IIO_STEPS)
-> +	        return -EINVAL;
-> +
-> +	mutex_lock(&st->lock);
-
-guard() is useful in cases like this.
-
-> +
-> +	ret = inv_icm42600_step_en(st, state);
-> +
-> +	mutex_unlock(&st->lock);
-> +	return ret;
-> +}
-> +
-> +static int inv_icm42600_read_event_config(struct iio_dev *indio_dev,
-> +                                    const struct iio_chan_spec *chan,
-> +                                    enum iio_event_type type,
-> +                                    enum iio_event_direction dir)
-> +{
-> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +	int value;
-> +
-> +	if (chan->type != IIO_STEPS)
-> +	        return -EINVAL;
-> +
-> +	regmap_read(st->map, INV_ICM42600_REG_APEX_CONFIG0, &value);
-check return value.
-
-> +
-> +	if (value & INV_ICM42600_PED_ENABLE)
-> +	        return 1;
-> +	else
-> +	        return 0;
-> +}
-> +
-> +static int inv_icm42600_read_event_value(struct iio_dev *indio_dev,
-This isn't to get if the event happened, it's for reading thresholds
-etc. Not relevant for a pedometer.
-
-> +                                   const struct iio_chan_spec *chan,
-> +                                   enum iio_event_type type,
-> +                                   enum iio_event_direction dir,
-> +                                   enum iio_event_info info,
-> +                                   int *val, int *val2)
-> +{
-> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-> +
-> +	mutex_lock(&st->lock);
-guard()
-
-> +
-> +	if (type == IIO_EV_TYPE_CHANGE) {
-
-flip logic and can test that before taking the lock
-
-> +		if (st->pedometer_value == true) {
-> +			*val = 1;
-> +		        st->pedometer_value = false;
-> +		} else {
-> +		        *val = 0;
-> +		}
-> +		mutex_unlock(&st->lock);
-> +		return IIO_VAL_INT;
-> +	}
-> +
-> +	mutex_unlock(&st->lock);
-> +	return -EINVAL;
-> +}
-> +
->  static const struct iio_info inv_icm42600_accel_info = {
->  	.read_raw = inv_icm42600_accel_read_raw,
->  	.read_avail = inv_icm42600_accel_read_avail,
-> @@ -833,6 +995,9 @@ static const struct iio_info inv_icm42600_accel_info = {
->  	.update_scan_mode = inv_icm42600_accel_update_scan_mode,
->  	.hwfifo_set_watermark = inv_icm42600_accel_hwfifo_set_watermark,
->  	.hwfifo_flush_to_buffer = inv_icm42600_accel_hwfifo_flush,
-> +	.write_event_config = inv_icm42600_write_event_config,
-> +	.read_event_config  = inv_icm42600_read_event_config,
-> +	.read_event_value   = inv_icm42600_read_event_value,
->  };
->  
->  struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> index c3924cc6190e..4d78cb5ca396 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-> @@ -15,7 +15,8 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/property.h>
->  #include <linux/regmap.h>
-> -
-Keep the blank line and keep the iio headers in their own section.
-
-> +#include <linux/iio/events.h>
-> +#include <linux/of_irq.h>
-hmm. Can we not use the generic property accessors?
-Also you aren't using any interrupt related new stuff in here so I think
-this is just spurious.
-
->  #include <linux/iio/iio.h>
->  
->  #include "inv_icm42600.h"
-> @@ -533,6 +534,19 @@ static irqreturn_t inv_icm42600_irq_handler(int irq, void *_data)
->  
->  	mutex_lock(&st->lock);
-Probably worth considering use of guard() in here as a precursor patch.
-
->  
-> +	ret = regmap_read(st->map, INV_ICM42600_REG_INT_STATUS3, &status);
-> +	if (ret)
-> +	        goto out_unlock;
-> +
-> +	if (status & INV_ICM42600_STEP_DET_INT) {
-> +	        iio_push_event(st->indio_accel, IIO_MOD_EVENT_CODE(IIO_STEPS, 0,
-> +	                                                     IIO_NO_MOD,
-> +	                                                     IIO_EV_TYPE_CHANGE,
-> +	                                                     IIO_EV_DIR_NONE),
-> +	                                                        st->timestamp.accel);
-> +	        st->pedometer_value = true;
-> +	}
-> +
->  	ret = regmap_read(st->map, INV_ICM42600_REG_INT_STATUS, &status);
->  	if (ret)
->  		goto out_unlock;
-> @@ -860,12 +876,20 @@ static int inv_icm42600_runtime_suspend(struct device *dev)
->  	mutex_lock(&st->lock);
->  
->  	/* disable all sensors */
-> -	ret = inv_icm42600_set_pwr_mgmt0(st, INV_ICM42600_SENSOR_MODE_OFF,
-> -					 INV_ICM42600_SENSOR_MODE_OFF, false,
-> -					 NULL);
-> -	if (ret)
-> -		goto error_unlock;
-> +	if (st->pedometer_enable) {
-> +		ret = inv_icm42600_set_pwr_mgmt0(st, INV_ICM42600_SENSOR_MODE_OFF,
-> +						 INV_ICM42600_SENSOR_MODE_LOW_POWER,
-> +						false, NULL);
-> +		if (ret)
-> +			goto error_unlock;
-> +	} else {
->  
-> +		ret = inv_icm42600_set_pwr_mgmt0(st, INV_ICM42600_SENSOR_MODE_OFF,
-> +						 INV_ICM42600_SENSOR_MODE_OFF,
-> +						 false, NULL);
-> +		if (ret)
-> +			goto error_unlock;
-> +	}
->  	regulator_disable(st->vddio_supply);
->  
->  error_unlock:
+Best regards,
+-- 
+Karan Sanghavi <karansanghvi98@gmail.com>
 
 

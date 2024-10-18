@@ -1,64 +1,59 @@
-Return-Path: <linux-iio+bounces-10741-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10742-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC619A4579
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 20:09:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCABF9A457F
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 20:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB81B1F232EF
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 18:09:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75A1F2852CB
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 18:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467F62040B6;
-	Fri, 18 Oct 2024 18:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DB42040B1;
+	Fri, 18 Oct 2024 18:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlYib0X4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nIBbJnJU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A488472;
-	Fri, 18 Oct 2024 18:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD038472;
+	Fri, 18 Oct 2024 18:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729274986; cv=none; b=EkztLX9Y6XU4ziQ7Du+d4t6wpUhsWmcwCPqdoKBKJ/Haung6WJUsWODoR2Im1O5TYznP0ovz0HfV7QQcwaTKTNeisAcHJ7P28XeDaZKemZsl1e5cExMw6DoiR0XPp3AdHAxP7WVfLT+02vurbRySUcaR20yLYSyQl2tvjRgD20I=
+	t=1729275015; cv=none; b=QDctKL6BID3evdR/O7NvasKPIO9MiKpky24opp8wVFYBrzLDO3qzCgFD2yuSCO2q5FHFpMS6tM7/nOIledV6tM8/Dr2cSCpV5FcmWjtLHS8Kcit2S7mKua/J34M47IAKT/f80b5J50UJgkEuN8nPsVjsbdb0wZzItCfvjkCulIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729274986; c=relaxed/simple;
-	bh=sXIqeDR8KfRnIo7WqdszBU9gzyDxJUvTxH0U262dlnE=;
+	s=arc-20240116; t=1729275015; c=relaxed/simple;
+	bh=9yaCmxGUI0xpIbTKyt2NJCZxUQiqbruYfsGNowkzzOI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pkb3pwIX8WpOnRzQ5EwBV9pL/ihCbPPB2OvYtEpP5/OW3hUnzCGnHozU0DeewCvuLczs9b9SO4BNp64t+qgOnlYwVbBswkockQFjTcuLs6eyktbJHfUQ7o3tp2eJtp1jC8sZ6kQr9sQmVoWMDAB5QKhntRagrgdXsenvP0rOhM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlYib0X4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98905C4CEC3;
-	Fri, 18 Oct 2024 18:09:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tf+wk2FE0KV8uxX9C6orWWnHuML2SQApQjVKbwRBje92XpNTLir7teZ5IBXr5M2M0XMuvt+Aii+S0Vaq3U9waaSnDn33iyx5FkTEAtXM3T/N0Vxpvy2YFHdt0+vYC0uTFZNDxSXe8smvR/0mjWlTHivAIXwroq9MNbJKiicpISs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nIBbJnJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0772AC4CEC5;
+	Fri, 18 Oct 2024 18:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729274985;
-	bh=sXIqeDR8KfRnIo7WqdszBU9gzyDxJUvTxH0U262dlnE=;
+	s=k20201202; t=1729275015;
+	bh=9yaCmxGUI0xpIbTKyt2NJCZxUQiqbruYfsGNowkzzOI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FlYib0X4kf45PiJ9ZI3yaOOF+ZXC8sqO02Bv5EMVEyQSHZJ7HdsB4NSrTfwRmwi14
-	 P/jBeo8olteF3vX3au/Hc9taArKbMPH7TT4Tb39z1+vBNdn3x3/NwdiLpDCyQeMLVF
-	 1AiXyjHb8aJdkQQWoSg4mqxWqqjTJIfxzUDnqqPJ6ksZQJQgLdqrLFzyT25rQtTlWC
-	 sZmpOYxntQWhBEBAypgkTHn991mtLFMOBpKvL2J9nJC66NKe6/KRocjnHX1ypQ4htA
-	 AbmlYjRhUHiIvPLW/hKQN4qHFKE3G2v8VuL6FRYfxIxrCV3JKARTDw7RpZNVHKpJYG
-	 Yn2BYXW6RtVXg==
-Date: Fri, 18 Oct 2024 19:09:35 +0100
+	b=nIBbJnJUHQGzPfWkaOphdIkgsNLrJ2dJ2YKiu6tw3wT07nfGKeHhGUGH7jqS2XEUj
+	 X+r7+sNYnYRyrP/cV+vHex+1ACc9Ur9iqSZF+qf7KfU7eq9tuMewetuW3D8GCZVACH
+	 0RWyjbRRZw/CfGzu9yCHWobScOdiaF+Ya6TOA4UjVR1fKSXtd68E2YrLiG3KMtlst1
+	 lJlqX6jic7T7FJF1d6Ps0mSfgPj/z49ISxYbzsYgE9wDvQ7AXIwRM6jcLKp1EhlnKV
+	 tTbiwpGJh9l6azF/izcokiLgkCb8NM0fKrw1/Fn1bKsVFh8XWLZcjot2JIGLQNAZea
+	 fOSSrgb+eZvsQ==
+Date: Fri, 18 Oct 2024 19:10:05 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC 1/4] dt-bindings: iio: adc: ad7380: add adaq4370-4
- and adaq4380-4 compatible parts
-Message-ID: <20241018190928.6f0ee863@jic23-huawei>
-In-Reply-To: <CAEHHSvZrXNrh_DsyrnjjBfZJ3STYmA+HdysakO-54T6qYwTfrQ@mail.gmail.com>
-References: <20241015-ad7380-add-adaq4380-4-support-v1-0-d2e1a95fb248@baylibre.com>
-	<20241015-ad7380-add-adaq4380-4-support-v1-1-d2e1a95fb248@baylibre.com>
-	<20241017190500.215b895e@jic23-huawei>
-	<CAEHHSvZrXNrh_DsyrnjjBfZJ3STYmA+HdysakO-54T6qYwTfrQ@mail.gmail.com>
+To: <Jianping.Shen@de.bosch.com>
+Cc: <lars@metafoo.de>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+ <conor+dt@kernel.org>, <dima.fedrau@gmail.com>,
+ <marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <Christian.Lorenz3@de.bosch.com>, <Ulrike.Frauendorf@de.bosch.com>,
+ <Kai.Dolde@de.bosch.com>
+Subject: Re: [PATCH v9 0/2] iio: imu: smi240: add bosch smi240 driver
+Message-ID: <20241018191005.4530ad0d@jic23-huawei>
+In-Reply-To: <20241018135234.5446-1-Jianping.Shen@de.bosch.com>
+References: <20241018135234.5446-1-Jianping.Shen@de.bosch.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,250 +64,111 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 18 Oct 2024 09:36:52 +0200
-Julien Stephan <jstephan@baylibre.com> wrote:
+On Fri, 18 Oct 2024 15:52:32 +0200
+<Jianping.Shen@de.bosch.com> wrote:
 
-> Le jeu. 17 oct. 2024 =C3=A0 20:05, Jonathan Cameron <jic23@kernel.org> a =
-=C3=A9crit :
-> >
-> > On Tue, 15 Oct 2024 11:09:06 +0200
-> > Julien Stephan <jstephan@baylibre.com> wrote:
-> > =20
-> > > adaq4370-4 (2MSPS) and adaq4380-4 (4MSPS) are quad-channel precision =
-data
-> > > acquisition signal chain =CE=BCModule solutions compatible with the a=
-d738x
-> > > family, with the following differences:
-> > >
-> > > - configurable gain in front of each 4 adc
-> > > - internal reference is 3V derived from refin-supply (5V) =20
-> >
-> > Now I'm confused.
-> >
-> > The earlier refin-supply change appears unused in this patch.
-> > I was expecting it to be required for the additional devices.
-> > With additions to the docs from the fix to explain the new
-> > cases.  I'm not seeing that in here.
-> >
-> > =20
-> > > - additional supplies
-> > >
-> > > To configure the gain a new patternProperties is added to describe ea=
-ch
-> > > channel. It is restricted to adaq devices.
-> > >
-> > > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-> > > ---
-> > >  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 117 +++++++++++=
-++++++++++
-> > >  1 file changed, 117 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yam=
-l b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> > > index 74d82721637c..3007d8e39684 100644
-> > > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> > > @@ -25,6 +25,8 @@ description: |
-> > >    * https://www.analog.com/en/products/ad7386-4.html
-> > >    * https://www.analog.com/en/products/ad7387-4.html
-> > >    * https://www.analog.com/en/products/ad7388-4.html
-> > > +  * https://www.analog.com/en/products/adaq4370-4.html
-> > > +  * https://www.analog.com/en/products/adaq4380-4.html
-> > >
-> > >
-> > >  $ref: /schemas/spi/spi-peripheral-props.yaml#
-> > > @@ -46,6 +48,8 @@ properties:
-> > >        - adi,ad7386-4
-> > >        - adi,ad7387-4
-> > >        - adi,ad7388-4
-> > > +      - adi,adaq4370-4
-> > > +      - adi,adaq4380-4
-> > >
-> > >    reg:
-> > >      maxItems: 1
-> > > @@ -59,6 +63,9 @@ properties:
-> > >    vlogic-supply: true
-> > >    refio-supply: true
-> > >    refin-supply: true
-> > > +  vs-p-supply: true
-> > > +  vs-n-supply: true
-> > > +  ldo-supply: true
-> > >
-> > >    aina-supply:
-> > >      description:
-> > > @@ -86,12 +93,43 @@ properties:
-> > >        specify the ALERT interrupt.
-> > >      maxItems: 1
-> > >
-> > > +  '#address-cells':
-> > > +    const: 1
-> > > +
-> > > +  '#size-cells':
-> > > +    const: 0
-> > > +
-> > >  required:
-> > >    - compatible
-> > >    - reg
-> > >    - vcc-supply
-> > >    - vlogic-supply
-> > >
-> > > +patternProperties:
-> > > +  "^channel@([0-3])$":
-> > > +    $ref: adc.yaml
-> > > +    type: object
-> > > +
-> > > +    properties:
-> > > +      reg:
-> > > +        description:
-> > > +          The channel number. From 0 to 3 corresponding to channels =
-A,B,C,D
-> > > +        items:
-> > > +          minimum: 0
-> > > +          maximum: 3
-> > > +
-> > > +      adi,gain-milli:
-> > > +        description:
-> > > +          The hardware gain applied to the ADC input (in milli units=
-).
-> > > +          If not present, default to 1000 (no actual gain applied).
-> > > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > > +        default: 1000
-> > > +
-> > > +    required:
-> > > +      - reg
-> > > +
-> > > +    additionalProperties: false
-> > > +
-> > >  unevaluatedProperties: false
-> > >
-> > >  allOf:
-> > > @@ -128,7 +166,21 @@ allOf:
-> > >          ainc-supply: false
-> > >          aind-supply: false
-> > >
-> > > +  # Using channel to declare gain property only applies to adaq devi=
-ces
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          not:
-> > > +            contains:
-> > > +              enum:
-> > > +                - adi,adaq4370-4
-> > > +                - adi,adaq4380-4
-> > > +    then:
-> > > +      patternProperties:
-> > > +        "^channel@([0-3])$": false
-> > > +
-> > >    # ad7380-4 uses refin-supply as external reference.
-> > > +  # adaq devices use internal reference only, derived from refin-sup=
-ply =20
+> From: Shen Jianping <Jianping.Shen@de.bosch.com>
 >=20
-> Hi Jonathan,
+> Add the iio driver for bosch imu smi240. The smi240 is a combined
+> three axis angular rate and three axis acceleration sensor module
+> with a measurement range of +/-300=C2=B0/s and up to 16g. This driver
+> provides raw data access for each axis through sysfs, and tiggered
+> buffer for continuous sampling. A synchronous acc and gyro sampling
+> can be triggered by setting the capture bit in spi read command.
 >=20
-> here I add a quick description on how adaq devices are using refin-supply=
- ...
->=20
-> > >    # All other chips from ad738x family use refio as optional externa=
-l reference.
-> > >    # When refio-supply is omitted, internal reference is used.
-> > >    - if:
-> > > @@ -136,6 +188,8 @@ allOf:
-> > >          compatible:
-> > >            enum:
-> > >              - adi,ad7380-4
-> > > +            - adi,adaq4370-4
-> > > +            - adi,adaq4380-4 =20
->=20
-> ... and adaq devices are added here to require refin-supply.
->=20
-> Maybe I am missing your point? or I still need to improve the description?
-Nope. I just misread the diff!  Thanks for pointing out the key bits.
+Applied to the togreg branch of iio.git and pushed out as testing
+for 0-day to take a first look at it.
+
+Minor tweak needed due to the unaligned.h header moving to linux/
+
+Thanks,
 
 Jonathan
 
+> dt-bindings:=20
+> v1 -> v2
+>     - Add more detail in description
+>     - Add maintainer
+>     - Add vdd and vddio power supply
+>     - Use generic node name
+>     - Order the properties according to DTS coding style
 >=20
-> Cheers
-> Julien
+> v2 -> v3
+>     - Improve description
+>     - Improve supply definition
+>     - Make supply definition as required
+>     - Add supply definition in example
 >=20
-> > >      then:
-> > >        properties:
-> > >          refio-supply: false
-> > > @@ -145,6 +199,24 @@ allOf:
-> > >        properties:
-> > >          refin-supply: false
-> > >
-> > > +  # adaq devices need more supplies
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          enum:
-> > > +            - adi,adaq4370-4
-> > > +            - adi,adaq4380-4
-> > > +    then:
-> > > +      required:
-> > > +        - vs-p-supply
-> > > +        - vs-n-supply
-> > > +        - ldo-supply
-> > > +    else:
-> > > +      properties:
-> > > +        vs-p-supply: false
-> > > +        vs-n-supply: false
-> > > +        ldo-supply: false
-> > > +
-> > >  examples:
-> > >    - |
-> > >      #include <dt-bindings/interrupt-controller/irq.h>
-> > > @@ -169,3 +241,48 @@ examples:
-> > >              refio-supply =3D <&supply_2_5V>;
-> > >          };
-> > >      };
-> > > +
-> > > +  - |
-> > > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > > +
-> > > +    spi {
-> > > +        #address-cells =3D <1>;
-> > > +        #size-cells =3D <0>;
-> > > +
-> > > +        adc@0 {
-> > > +            compatible =3D "adi,adaq4380-4";
-> > > +            reg =3D <0>;
-> > > +
-> > > +            spi-cpol;
-> > > +            spi-cpha;
-> > > +            spi-max-frequency =3D <80000000>;
-> > > +
-> > > +            interrupts =3D <27 IRQ_TYPE_EDGE_FALLING>;
-> > > +            interrupt-parent =3D <&gpio0>;
-> > > +
-> > > +            vcc-supply =3D <&supply_3_3V>;
-> > > +            vlogic-supply =3D <&supply_3_3V>;
-> > > +            refin-supply =3D <&supply_5V>;
-> > > +            vs-p-supply =3D <&supply_5V>;
-> > > +            vs-n-supply =3D <&supply_0V>;
-> > > +            ldo-supply =3D <&supply_5V>;
-> > > +
-> > > +            #address-cells =3D <1>;
-> > > +            #size-cells =3D <0>;
-> > > +
-> > > +            channel@0 {
-> > > +                reg =3D <0>;
-> > > +                adi,gain-milli =3D <300>;
-> > > +            };
-> > > +
-> > > +            channel@2 {
-> > > +                reg =3D <2>;
-> > > +                adi,gain-milli =3D <600>;
-> > > +            };
-> > > +
-> > > +            channel@3 {
-> > > +                reg =3D <3>;
-> > > +                adi,gain-milli =3D <1000>;
-> > > +            };
-> > > +        };
-> > > +    };
-> > > =20
-> > =20
+> v3 -> v4
+>     - No changes
+>=20
+> v4 -> v5
+>     - No changes
+>=20
+> v5 -> v6
+>     - Fix checkpatch findings
+>=20
+> v6 -> v7
+>     - No changes
+>=20
+> v7 -> v8
+>     - No changes
+>=20
+> v8 -> v9
+>     - No changes
+>=20
+> imu driver:
+> v1 -> v2
+>     - Use regmap for register access
+>     - Redefine channel for each singel axis
+>     - Provide triggered buffer
+>     - Fix findings in Kconfig
+>     - Remove unimportant functions
+>=20
+> v2 -> v3
+>     - Use enum f=C3=BCr capture mode
+>     - Using spi default init value instead manual init=20
+>     - remove duplicated module declaration
+>     - Fix code to avoid warning
+>=20
+> v3 -> v4
+>     - Use DMA safe buffer
+>     - Use channel info instead of custom ABI
+>     - Fix other findings
+>=20
+> v4 -> v5
+>     - Merge the implementation in one simple file
+>     - Add channel info for acc/gyro data channel
+>     - Fix other findings
+>=20
+> v5 -> v6
+>     - Fix checkpatch findings
+>     - Fix review findings
+>=20
+> v6 -> v7
+>     - Fix offset and scale
+>=20
+> v7 -> v8
+>     - Use memcpy in spi write to keep CPU endian
+>     - Fix some minor findings
+>=20
+> v8 -> v9
+>     - remove unnecessary cpu_to_le16 for reg value in spi response
+>     - use REGMAP_ENDIAN_NATIVE in regmap config to avoid regmap to flip t=
+he reg value when passing to spi write
+>=20
+> Shen Jianping (2):
+>   dt-bindings: iio: imu: smi240: add Bosch smi240
+>   iio: imu: smi240: add driver
+>=20
+>  .../bindings/iio/imu/bosch,smi240.yaml        |  51 ++
+>  drivers/iio/imu/Kconfig                       |  14 +
+>  drivers/iio/imu/Makefile                      |   2 +
+>  drivers/iio/imu/smi240.c                      | 622 ++++++++++++++++++
+>  4 files changed, 689 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,smi24=
+0.yaml
+>  create mode 100644 drivers/iio/imu/smi240.c
+>=20
 
 

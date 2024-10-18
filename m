@@ -1,174 +1,122 @@
-Return-Path: <linux-iio+bounces-10747-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10748-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F639A47EC
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 22:28:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4AE9A48DD
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 23:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA6B2824EA
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 20:28:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40EF8282CD5
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 21:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72BE204083;
-	Fri, 18 Oct 2024 20:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2ECD205AD3;
+	Fri, 18 Oct 2024 21:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="WwLAkxne";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Iz9A7XZZ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vfsVGrmw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F58E40862;
-	Fri, 18 Oct 2024 20:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E3C204F7F
+	for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2024 21:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729283284; cv=none; b=cerEHjrapUYC8BbMXYgVPgkAtml7NRF7XS3zShqcw4X1Y3o0qCcJV0K9+vbSSo3BvvOPh7azy2HgviNprJLfWMkZraydzon7EB5/5z4EbXjV2kI2Yl7noCGynMqggqoueQhHVD/sMZUzcdeEKTkIqGKR0dFdRKdo+JWWEjB3ekk=
+	t=1729286649; cv=none; b=Lz7UGAnojfsrqzk1lMKV3/ZRETd5+u/Dooj2uUsN34KG5eGSV8CCiObxf/+xwFVmdhw7uJ2gaN+PU2+Pvb8ZWHx02QpEi7qOVLIzzKJaSmqmNsUmV4h++OmHF2s1n0FusqyI+zx94iZEVmRcb1z0LRKfBmn0Ek0WwRPzdddGYKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729283284; c=relaxed/simple;
-	bh=ZVhvqv3R+1MrUboZvyRAl/Dwq4yiUfLLcWFX3hoXp3k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YyRrJ1e9mrNYmtSq77kNtzVhIwEKAWuEDzqlWvN+mmYFrN+24P8qEdvtm96Ntsc9mK0pn3hYbfUNtnF+gsXD28CLMCL096G+ZPEagBgxlNJkUSZpQTkD5Oblus4mJAkhjyhAUr5q9YhiSDzTU50RLA+YIY1tNRHjXspDx8TSLEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=WwLAkxne; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Iz9A7XZZ; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justinweiss.com
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 40E651140077;
-	Fri, 18 Oct 2024 16:28:00 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 18 Oct 2024 16:28:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justinweiss.com;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1729283280; x=
-	1729369680; bh=7Ad1wosag+b1bUBZzzK6r3rBJSGkvCGF7JEu0gQdUbA=; b=W
-	wLAkxneZ2RIj2uqJvlChmICpM3+ygisnyRz5stum7HruyAHCGAHlGWFcbubR/vGc
-	srmwUGSwkC51DwmSr3DrMfB1nn4TRKbNOwdKWTSRpshdildqyhVasfzPr8oSABB+
-	vFVtFotW2LXSm+p+0OvOYr8prGHJrRk9KEBxKyq90wXxw3vt2AzJ4yDLP+NM3j3G
-	h49WU3Z3sJd8EkHb3HuN1FEO6qDFgbsgkTtDaDYVLa/2Z3YRXo7xoAIBEBq6rkq0
-	O5Y9D8DN7M+gwcf1ev1/e6uZwfNdpItoQOOCMYT2JV9ZDH4yxO24yCJQXOnKjcCy
-	NIjxnG56Ro+C06MwUNUyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1729283280; x=1729369680; bh=7Ad1wosag+b1bUBZzzK6r3rBJSGk
-	vCGF7JEu0gQdUbA=; b=Iz9A7XZZbScpGDF5GcmnSrWBscYmWuX99udAVvPRcJjc
-	zV9GpeK0qkr3czp2hMcg1ALQMen1wLsu6bprAHDaI8TXOeccsuQPCjREIE/mbSXl
-	oresaWOHCDStFVgYbskbnJh63fAKN/ryU9HDQolfr6bkhM+Tq5g9mvlt6hOVt327
-	cTH66HVOwvC9RoXB6NPp1/6VeY1joXDia+VtaZjxePCU/nBfG4mrzOcqWlUbh3IE
-	10+FeG11C3dreujXjP/uMNkt5lJ6cUYi6Y57PF30MlncJ+NvBOk3TkD//bDoUtTf
-	m4gT2RhsRO4PRhycSizwhXE/MhtzNwvfgjpxpRQq7w==
-X-ME-Sender: <xms:z8QSZ3PX17g3WiPKDeUgYEl3z3GR-aFW1snACFdr4osO7GX2Xr1Cgg>
-    <xme:z8QSZx8qcj_3ttYf4A39akVRYsefQGjqWYawdEuaqAUJ2SnZflxzs9EdTMjEPwmOB
-    jlH4R7IkxjQtZ7VfA>
-X-ME-Received: <xmr:z8QSZ2QhaEOWXL8KnORL7jIh3GFcvWk_0v2JFY9g4pqxc5nDj1kqYC_SDPoXSdXh2yzHB655HdZ1orSh8sOo88icjqU4geDk4Xw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehfedgudegkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhffkfgfgggtsehttdertddtredt
-    necuhfhrohhmpefluhhsthhinhcuhggvihhsshcuoehjuhhsthhinhesjhhushhtihhnfi
-    gvihhsshdrtghomheqnecuggftrfgrthhtvghrnhepveffhfelvdejjeefkeetleejhfev
-    hfeiveegtdeiveefhedtgeegieefleeivdefnecuffhomhgrihhnpehmihgtrhhoshhofh
-    htrdgtohhmpdhkvghrnhgvlhdrohhrghdprgihrghnvghordgtohhmpdhgphgurdhhkhen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjuhhsth
-    hinhesjhhushhtihhnfigvihhsshdrtghomhdpnhgspghrtghpthhtohepiedpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtohephhguvghgohgvuggvsehrvgguhhgrthdrtghomh
-    dprhgtphhtthhopehlrghrshesmhgvthgrfhhoohdruggvpdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
-    hugidqihhiohesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhhi
-    hidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoh
-    epjhhitgdvfeeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:z8QSZ7t7aQabCA0QB462rQ-K0JSxISToJPXDUSvks6_AMBUVJJrxVw>
-    <xmx:z8QSZ_d0u_at5Ghb-DHQGpahAJeOgn1Tj6EQSNg8hOtNTaoHz8tWnA>
-    <xmx:z8QSZ31Tgf9-dLybE-Wwz7TFF81a4_9HHUPmKbP01NYhES3DZvrKDw>
-    <xmx:z8QSZ79r7Mrs9WpxC0K18Gxs1YaYszEa-CbHkwxmnIHIKvrdumnLtA>
-    <xmx:0MQSZ3T_BQpBgDlVXLWI3MuZ7PRYARqWGx10fOEDveeaikpV-3-EQp-f>
-Feedback-ID: icf614246:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 18 Oct 2024 16:27:58 -0400 (EDT)
-From: Justin Weiss <justin@justinweiss.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-  linux-iio@vger.kernel.org,  linux-kernel@vger.kernel.org,  Lars-Peter
- Clausen <lars@metafoo.de>,  Hans de Goede <hdegoede@redhat.com>
-Subject: Re: [PATCH v1 1/1] iio: gyro: bmg160: Drop most likely fake ACPI IDs
-In-Reply-To: <20241018185105.41a2db06@jic23-huawei> (Jonathan Cameron's
-	message of "Fri, 18 Oct 2024 18:51:05 +0100")
-References: <20241018145732.2181309-1-andriy.shevchenko@linux.intel.com>
-	<20241018185105.41a2db06@jic23-huawei>
-Date: Fri, 18 Oct 2024 13:27:57 -0700
-Message-ID: <87sestcg1e.fsf@justinweiss.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1729286649; c=relaxed/simple;
+	bh=BBdrTo4hw8HK2E2yA2d+cEkf0HPodq5gdVba/Qop9iQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=igPWVNwbi7xMblTgb6DZoDk9A1f+f2+jibRyIjCaUQT7fdSal5xH5JDOG4oyFn8QZecIhvgmhgVbXC6dsgCMC4Hgl1/8Vo9/itJx9zddqdOh5oXYTod5AQpB5Zo5qTzVH5ydpmrRlMU6nPZahMRCtDQ5ca+A3+yoy0e+m8PHg6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vfsVGrmw; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2884910c846so1391133fac.0
+        for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2024 14:24:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729286645; x=1729891445; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Cu3ywbeiueAiLpZlAoRlOExXhdy9SqJHCZ3asIlIMCc=;
+        b=vfsVGrmwnPxfgarfd07e65/IIFOUJKs0goW19UPls3ATqdmX6LbxB1eH60mt/qW6yS
+         526BRrAOp6S3GIqlXpnzaNswJaNaNlt4w+8t8rOFtt+tQjJavh3ilZX86YgeTGdCpHDU
+         Gd23vkeK4aFLGSvcr4KmOyE3XfCbRWXVgjQm7dHjUo0Qv4grOMeY5a9KPpE4ow/XGAhb
+         nsGtUGRlNaZLaiGOJiA0NErfc4Ef24CaJiB5fSOYq7vy2FGQIpxx6xqBJ64mS28CZUAv
+         YQ90CTWMvdtOmoP2eb+1IZ/UvwVdDbD8pqocuW0uskxelPiYZ5uxn3ts4kL1WWE/y/Vd
+         VTew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729286645; x=1729891445;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Cu3ywbeiueAiLpZlAoRlOExXhdy9SqJHCZ3asIlIMCc=;
+        b=Tw8PkbUI7+hpUuFF3DXyGu+8E/Ce7vXjQKCHlD+4spnVxm8wIhYIOR2ILhBMlN4p69
+         iK169z4erA+e0W7JuRNTOozA/SO5g3niuahGyQ/ZFSroBBcyaEjuJpbxI8XslxGnnGhK
+         BQnDmDy3ipjizimLmgPEf+wtaykfVzIb/fdCQe1rr/dhqnYPcM43zHb7y/CrA8uKUPmg
+         yce5eL1okeGtLttXImDXgM/llA+y+nVQjhn1QRN8pT8tkJT2eXbidBebnN/s4D/XlS04
+         SdTePp25H6CBRQRv+uPJjUqnbtTi0DCO/dT56I+GiTjre6lqiNt0jK1a3+cxUR+TuZx2
+         sflg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8IGzhWFIMKGsN2CLxJnNefWWHcXn3h0JVQoXbzwUKv9NnhN55sIAaTx6X133Zr+5P1i+VdsdygKQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDWHfBgibmNSD8bOev+ujMdjJN1IoL3rKFpBy2WzVd5XuKxLzc
+	tMRpDf5vtFowg273wG9eOTl+SjEWovTv907CzHf5c50/1WxsUIQOYhqCJ+zUhEuTVe1Gj6Bcbfg
+	p
+X-Google-Smtp-Source: AGHT+IG96hABqMhdjCx/0hJEiSV691+QsSLQw+YPEtTi9KNT3Z86pZV8qtEDnp5uMzq0c6TALZYKhw==
+X-Received: by 2002:a05:6870:7183:b0:288:b7f0:f8fc with SMTP id 586e51a60fabf-2892c5a9404mr3647435fac.41.1729286645453;
+        Fri, 18 Oct 2024 14:24:05 -0700 (PDT)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2892af3f393sm683309fac.38.2024.10.18.14.24.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2024 14:24:04 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 18 Oct 2024 16:24:01 -0500
+Subject: [PATCH] iio: dac: ad8460: fix DT compatible
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241018-iio-adc-ad8460-fix-dt-compatible-v1-1-058231638527@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAPDREmcC/x2NQQqDMBBFryKzdiATojW9irhIk7EdaI0kIgXx7
+ g4u3uLB4/8DKhfhCs/mgMK7VMmLCrUNxE9Y3oyS1MEa68jQgCIZQ4rK4HqDs/wxbRjzbw2bvL6
+ MnubOeE8Pyw50Zi2s0X0xTud5AbBCE2NyAAAA
+To: Mariel Tinaco <Mariel.Tinaco@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.1
 
-Jonathan Cameron <jic23@kernel.org> writes:
+Fix the DT compatible string in the of_device_id table to match the
+binding documentation. There should not be a space after the comma.
 
-> On Fri, 18 Oct 2024 17:57:32 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->
->> The commits in question do not proove that ACPI IDs exist.
->> Quite likely it was a cargo cult addition while doing that
->> for DT-based enumeration. Drop most likely fake ACPI IDs.
->> 
->> The to be removed IDs has been checked against the following resources:
->> 1) DuckDuckGo
->> 2) Google
->> 3) MS catalog: https://www.catalog.update.microsoft.com/Search.aspx
->> This gives no useful results in regard to DSDT, moreover, the official
->> vendor IDs in the registry for Bosh are BSG and BOSC.
->> 
->
-> I'm nervous about Bosch drivers in the wild given recent report
-> from Justin
-> https://lore.kernel.org/linux-iio/87jzeboi3g.fsf@justinweiss.com/
->
-> Justin, I couldn't find the driver you were referring to for the bmi160,
-> is it online somewhere?
+Fixes: a976ef24c625 ("iio: dac: support the ad8460 Waveform DAC")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/iio/dac/ad8460.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes, the BMI160/260 Windows driver is on this page:
-https://ayaneo.com/support/download
+diff --git a/drivers/iio/dac/ad8460.c b/drivers/iio/dac/ad8460.c
+index dc8c76ba573d..6706c8112094 100644
+--- a/drivers/iio/dac/ad8460.c
++++ b/drivers/iio/dac/ad8460.c
+@@ -924,7 +924,7 @@ static int ad8460_probe(struct spi_device *spi)
+ }
+ 
+ static const struct of_device_id ad8460_of_match[] = {
+-	{ .compatible = "adi, ad8460" },
++	{ .compatible = "adi,ad8460" },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, ad8460_of_match);
 
-It's at the very bottom, under "AYANEO Universal Gyro Driver." GPD also
-has a copy inside their driver pack under the "Drivers & BIOS" tab here:
-https://www.gpd.hk/gpdwinminifirmwaredriver, but the download is often
-at capacity unless you're signed into Google.
+---
+base-commit: f2493655d2d3d5c6958ed996b043c821c23ae8d3
+change-id: 20241018-iio-adc-ad8460-fix-dt-compatible-91f5099172e4
 
-> Also if you have other bosch drivers could you check for these + bmc150
-> IDs Andy is proposing dropping in:
->
-> https://lore.kernel.org/linux-iio/20241018145805.2181682-1-andriy.shevchenko@linux.intel.com/
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
-Unfortunately, the 160/260 driver is the only one I have. I wanted gyro
-support in Linux for a handheld PC I bought, and it was the IMU that
-happened to be inside.
-
-Justin
-
->
->> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> ---
->>  drivers/iio/gyro/bmg160_i2c.c | 2 --
->>  1 file changed, 2 deletions(-)
->> 
->> diff --git a/drivers/iio/gyro/bmg160_i2c.c b/drivers/iio/gyro/bmg160_i2c.c
->> index 672d0b720f61..a81814df5205 100644
->> --- a/drivers/iio/gyro/bmg160_i2c.c
->> +++ b/drivers/iio/gyro/bmg160_i2c.c
->> @@ -39,8 +39,6 @@ static void bmg160_i2c_remove(struct i2c_client *client)
->>  
->>  static const struct acpi_device_id bmg160_acpi_match[] = {
->>  	{"BMG0160", 0},
->> -	{"BMI055B", 0},
->> -	{"BMI088B", 0},
->>  	{},
->>  };
->>  
 

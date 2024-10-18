@@ -1,65 +1,69 @@
-Return-Path: <linux-iio+bounces-10739-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10740-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237819A4561
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 20:02:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FBA9A4575
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 20:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D14A5281356
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 18:02:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 908FD284708
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 18:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DC220403F;
-	Fri, 18 Oct 2024 18:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D112040B3;
+	Fri, 18 Oct 2024 18:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TaKPpL5R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mj0U5Uvz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CCF8472;
-	Fri, 18 Oct 2024 18:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AEC204092;
+	Fri, 18 Oct 2024 18:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729274546; cv=none; b=MAdScaSG/DhCluVRMfX23M88xdnKcFBGV/Gxe7ASN0WId+zWL0J1N6HxdSC59ZcTcH+SeiNS6oh84g/Y7XHW281wVCxailf8+UsxN5KLnHdbb++nyG5tpNHI9S0UgsxzvUG+T9IixJx8g2RxTFlH0iWEadtFNdwtZCjIoN6t5U8=
+	t=1729274970; cv=none; b=lz5JMy0CkEKYC5ors/RSoWYxABk8mVQs6WIO9xOlyh9GKzymumRVJJgljc+G+TRmKScaETd9tZFPuN7DQrSg+0tSJl5gRtfMj2l4mbD+fUEky1k5QzzJSn8npmEiSmCn0Gw6Xjk/arJ356awo1CLoEjPSg6xX3owhmfVnheNbCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729274546; c=relaxed/simple;
-	bh=P4W5WsJ7T2B5pGPBAwjLvDhq586dUwXIusTYcg05BAE=;
+	s=arc-20240116; t=1729274970; c=relaxed/simple;
+	bh=4V6GpGKvYpTfduyTTGEUDYljDeC5zb4hwZzBd8QWZbU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sfQ6fgxps1j1C8T8NXVb697Yw5d97z1p3YSC9hzjMNm1Jmys0Yf/dUxSSSUMEQ0Xh71Og1mIVvGjLy0n8rsMBngceCM5Z5bFiFK8gno0LNn50FKQljYCPrB89nHoVCJKygBcDEulHMpzC1LZntBnnzt9sUeidHHGmO8QOmb4E/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TaKPpL5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D501CC4CEC5;
-	Fri, 18 Oct 2024 18:02:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IRvzC5xkvFfCHqQ1f6U4t/gNVfDJzlxYETujpYLIGTjbrHQvm37J9qoL3G2Iof5r9EjjdICQrSXfDWo3E6MqsnTeaHJObiD/7snVsz5XzukMgbMNEOjwJpGUSSPrZ6oTg6UeJInDv6S8Zz7KZUz1JR93nCI69NXzwJbO1wdDwMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mj0U5Uvz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EE6C4CEC3;
+	Fri, 18 Oct 2024 18:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729274545;
-	bh=P4W5WsJ7T2B5pGPBAwjLvDhq586dUwXIusTYcg05BAE=;
+	s=k20201202; t=1729274970;
+	bh=4V6GpGKvYpTfduyTTGEUDYljDeC5zb4hwZzBd8QWZbU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TaKPpL5RiJjzjLlTZ1KgNmeEw+H17Vgja2H25r1k8HDDFIJtWMBl4qmIB3oyu6uhC
-	 2d+iaqNI+kJvt9yZhTYlfF0KbDa5o4zIiJBzes594EBWMpYH45zAICa0QmLBSjyyWl
-	 6B2xNabrclbuWEEWb3ZdHXUZGJrLNsqsLrr5Tke14PJYhbo5lzF15IQ5BTRDa+u9EH
-	 bHYNxs43rqP0mC1HTf3L5isI9dpxu6TQPS7CKHmCY2uthlRF9Jx61CxnrB3QwUsfqP
-	 /47ykukVrgZDYOi6ClXDCyXiSBUqVAnAIt6pUvWjhZctAMHDaE3DsgOZpjA8sqPMPH
-	 qDqDZCyvZB0iQ==
-Date: Fri, 18 Oct 2024 19:02:18 +0100
+	b=Mj0U5UvzUEUVBxT40igNR6+/uG4eYSK6nR1/GnTbUHqN2u5mg8+0NGh9134x7EsR5
+	 LKSCNsWS/wsVTVRauPKVVgVcJusqVvWAiQgOKGOl+1w5rB+boGK7CZDt+5wfe58848
+	 Z9ye9NWbrpgF9JOTDU+vEPe6sMk0/oyp81nG36+IwQ376TQthZ6s5A8iSSyIFeXP7V
+	 SorUOU87eAqOZdmE9UpKDUUbPHuaqCbSmi52P4jxyCt5rRLGGxri7/eXEzJJGCeNs+
+	 McfjRgOnMrALpoOKwu2QVJyCI6eldGm1Iv7ZuCZr76ZTYG+zCoskf2XndpyEB+afk0
+	 N/NDNesXSM99g==
+Date: Fri, 18 Oct 2024 19:09:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Justin Weiss <justin@justinweiss.com>
-Cc: Alex Lanzano <lanzano.alex@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- "Derek J . Clark" <derekjohn.clark@gmail.com>, Philip =?UTF-8?B?TcO8bGxl?=
- =?UTF-8?B?cg==?= <philm@manjaro.org>
-Subject: Re: [PATCH 3/3] iio: imu: Add scale and sampling frequency to
- BMI270 IMU
-Message-ID: <20241018190218.2e2c04ff@jic23-huawei>
-In-Reply-To: <877ca8alnr.fsf@justinweiss.com>
-References: <20241011153751.65152-1-justin@justinweiss.com>
-	<20241011153751.65152-4-justin@justinweiss.com>
-	<20241012123535.1abe63bd@jic23-huawei>
-	<87jzecpvpd.fsf@justinweiss.com>
-	<20241013164000.19087833@jic23-huawei>
-	<87ttdfn2nr.fsf@justinweiss.com>
-	<20241014201124.5621c4aa@jic23-huawei>
-	<877ca8alnr.fsf@justinweiss.com>
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, David Lechner
+ <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood
+ <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Jonathan Corbet
+ <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 2/6] dt-bindings: iio: adc: ad7380: fix ad7380-4
+ reference supply
+Message-ID: <20241018190920.2a037a24@jic23-huawei>
+In-Reply-To: <CAEHHSvbvGGD=EPjdB+hPoKx3AHjTB8e3f_umLhv83i4=sRJ0Yw@mail.gmail.com>
+References: <20241007-ad7380-fix-supplies-v1-0-badcf813c9b9@baylibre.com>
+	<20241007-ad7380-fix-supplies-v1-2-badcf813c9b9@baylibre.com>
+	<v7in5n6ktmu5kfzlndn4eujmk5n66fmft4lvwuvucqbcv5r5hb@etdqvn6ev6nl>
+	<20241010192218.12808268@jic23-huawei>
+	<CAEHHSvaGTKFA1mUeONXUQ=aTirVemHWFc_E-i76sQgtQ5_Svtg@mail.gmail.com>
+	<20241014193701.40e3785a@jic23-huawei>
+	<CAEHHSvbvGGD=EPjdB+hPoKx3AHjTB8e3f_umLhv83i4=sRJ0Yw@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,145 +71,112 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 15 Oct 2024 18:20:24 -0700
-Justin Weiss <justin@justinweiss.com> wrote:
+On Tue, 15 Oct 2024 11:10:52 +0200
+Julien Stephan <jstephan@baylibre.com> wrote:
 
-> Jonathan Cameron <jic23@kernel.org> writes:
-> 
-> > On Sun, 13 Oct 2024 13:55:36 -0700
-> > Justin Weiss <justin@justinweiss.com> wrote:
-> >  
-> >> Jonathan Cameron <jic23@kernel.org> writes:
-> >>   
-> >> > On Sat, 12 Oct 2024 19:45:18 -0700
-> >> > Justin Weiss <justin@justinweiss.com> wrote:
-> >> >    
-> >> >> Jonathan Cameron <jic23@kernel.org> writes:
-> >> >>     
-> >> >> > On Fri, 11 Oct 2024 08:37:49 -0700
-> >> >> > Justin Weiss <justin@justinweiss.com> wrote:
-> >> >> >      
-> >> >> >> Add read and write functions and create _available entries. Use
-> >> >> >> IIO_CHAN_INFO_SAMP_FREQ instead of IIO_CHAN_INFO_FREQUENCY to match
-> >> >> >> the BMI160 / BMI323 drivers.      
-> >> >> >
-> >> >> > Ah.  Please break dropping _FREQUENCY change out as a separate fix
-> >> >> > with fixes tag etc and drag it to start of the patch. It was never
-> >> >> > wired to anything anyway
-> >> >> >
-> >> >> > That's a straight forward ABI bug so we want that to land ahead
-> >> >> > of the rest of the series.      
-> >> >> 
-> >> >> Thanks, I'll pull that into its own change and make it the first patch.
-> >> >>     
-> >> >> > Does this device have a data ready interrupt and if so what affect
-> >> >> > do the different ODRs for each type of sensor have on that?
-> >> >> > If there are separate data ready signals, you probably want to 
-> >> >> > go with a dual buffer setup from the start as it is hard to unwind
-> >> >> > that later.      
-> >> >> 
-> >> >> It has data ready interrupts for both accelerometer and gyroscope and a
-> >> >> FIFO interrupt. I had held off on interrupts to keep this change
-> >> >> simpler, but if it's a better idea to get it in earlier, I can add it
-> >> >> alongside the triggered buffer change.    
-> >> >
-> >> > Ok. So the challenge is that IIO buffers are only described by external
-> >> > metadata.  We don't carry tags within them.  Hence if you are using
-> >> > either effectively separate datastreams (the two data ready interrupts)
-> >> > or a fifo that is tagged data (how this difference of speed is normally handled
-> >> > if it's one buffer) then when we push them into IIO buffers, they have
-> >> > to go into separate buffers.
-> >> >
-> >> > In older drivers this was done via the heavy weight option of registering
-> >> > two separate IIO devices. Today we have the ability to support multiple buffers
-> >> > in one driver. I'm not sure we've yet used it for this case, so I think
-> >> > there may still be some gaps around triggering that will matter for the
-> >> > separate dataready interrupt case (fifo is fine as no trigger involved).
-> >> > Looking again at that code, it looks like there may need to be quite
-> >> > a bit more work to cover this case proeprly.
-> >> >
-> >> > We may be able to have a migration path from the simple case you have
-> >> > (where timing is an external trigger) to multiple buffers.
-> >> > It would involve:
-> >> > 1) Initial solution where the frequencies must match if the fifo is in use.
-> >> >    Non fifo trigger from data ready might work but we'd need to figure out
-> >> >    if they run in close enough timing.
-> >> > 2) Solution where we add a second buffer and if the channels are enabled
-> >> >    in that we can allow separate timing for the two sensor types.
-> >> >
-> >> > This is one of those hardware features that seems like a good idea
-> >> > from the hardware design point of view but assumes a very specific
-> >> > sort of software model :(
-> >> >
-> >> > Jonathan    
-> >> 
-> >> Hm, that does sound tricky. If there's an example I can follow, I can
-> >> make an attempt at it.  
+> Le lun. 14 oct. 2024 =C3=A0 20:37, Jonathan Cameron <jic23@kernel.org> a =
+=C3=A9crit :
 > >
-> > I don't think it ever got used for a device like this - so probably no
-> > examples, but I might have forgotten one. (this was a few years back).
-> >  
-> >> Otherwise, if there's a change I can make now
-> >> that would help with migrating in the future, I can do that instead.
-> >> 
-> >> Of the devices I've looked at, only one has had the interrupts usable
-> >> and that one only had a single pin available.  
-> > Lovely!  
-> >  
-> >> So if this change doesn't
-> >> make it harder to add later if it's necessary, I would still be OK going
-> >> without full support for now.  
-> > I stopped being lazy and opened the datasheet.
+> > On Mon, 14 Oct 2024 11:00:39 +0200
+> > Julien Stephan <jstephan@baylibre.com> wrote:
+> > =20
+> > > Le jeu. 10 oct. 2024 =C3=A0 20:22, Jonathan Cameron <jic23@kernel.org=
+> a =C3=A9crit : =20
+> > > >
+> > > > On Tue, 8 Oct 2024 09:52:50 +0200
+> > > > Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > > > =20
+> > > > > On Mon, Oct 07, 2024 at 05:45:45PM +0200, Julien Stephan wrote: =
+=20
+> > > > > > ad7380-4 is the only device from ad738x family that doesn't hav=
+e an
+> > > > > > internal reference. Moreover its external reference is called R=
+EFIN in
+> > > > > > the datasheet while all other use REFIO as an optional external
+> > > > > > reference. If refio-supply is omitted the internal reference is
+> > > > > > used.
+> > > > > >
+> > > > > > Fix the binding by adding refin-supply and makes it required for
+> > > > > > ad7380-4 only. =20
+> > > > >
+> > > > > Maybe let's just use refio as refin? Reference-IO fits here well.
+> > > > > Otherwise you have two supplies for the same. =20
+> > > > Whilst it is ugly, the effort this series is going to in order
+> > > > to paper over a naming mismatch makes me agree with Krzysztof.
+> > > >
+> > > > I think adding a comment to the dt-binding would be sensible
+> > > > though as people might fall into this hole.
+> > > > =20
+> > >
+> > > Hi Jonathan and Krzysztof,
+> > >
+> > > I am currently adding support for another chip to this family
+> > > (ADAQ4380-4) and it also uses REFIN.. but in another way ad7380-4
+> > > does..
+> > > So:
+> > > - ad7380-4 does not have any internal reference and use a mandatory
+> > > refin supply as external reference
+> > > - adaq4380-4 does not have external reference but uses a 3V internal
+> > > reference derived from a 5V mandatory refin supply
+> > > - all others (AFAIK) use an optional refio external reference. If
+> > > omitted, use an internal 2.5V reference.
+> > >
+> > > I am not sure using a single refio-supply for all will make things
+> > > clearer.. What do you think? Should I also send the adaq series now to
+> > > bring more context? (I wanted feedback on this series first).
+> > > =20
 > >
-> > Hmm. We have auxiliary channels as well.  oh goody.
-> > Considering just the fifo as that's the high performance route.
-> >
-> > Basically we can do headerless mode trivially as that's just one buffer.
-> > (same ODR for all sensors).
-> > We could do headered version but without messing with multiple buffers
-> > that would be only when all sensors have same ODR (after a messy
-> > transition period perhaps - that bit of the datasheet is less than
-> > intuitive!) The reason we might do headered mode is to support the
-> > timestamps but we can probably get those via a quick read of other
-> > registers after draining the fifo.  
-> 
-> OK, that sounds good. It looks like the BMI323 driver approximates
-> timestamps by slicing up the time period between the last flush and the
-> current flush. It seems like that could also work.
-> 
-> If I understand it right, the simple way forward would be to use only
-> the fifo watermark interrupt, to set the fifo to headerless mode, and
-> only allow that buffer to be enabled when the ODR is the same between
-> the accel and gyro sensors.
-> 
-> Since that sounds like a fairly independent change, I can hold it for a
-> future patch, unless you think it belongs in this set.
-Indeed fine to leave it as it stands for this series.
-We've established a compatible path forwards if those features get added
-so all looks good to me.
+> > Sounds like that context would be useful if you have it more or less
+> > ready to send anyway.  I don't have particularly strong views on this
+> > either way.  If we 'fix' the case you have here, old bindings should
+> > continue to work for the part you are moving over (though no need
+> > to have them in the dt-bindings file).
+> > =20
+>=20
+> Hi Jonathan,
+>=20
+> Just sent the new series with an RFC tag.
+https://lore.kernel.org/all/20241015-ad7380-add-adaq4380-4-support-v1-1-d2e=
+1a95fb248@baylibre.com/
+
+Examples in there look strong enough reason that we are going to need
+refin-supply in the binding anyway shortly. So might as well use it for this
+part as well.
+
+Just include a reference to that patch under the --- in v2.
++ see if you can keep the description from patch 1 and fix the assignment i=
+ssue
+the bot found.
+
+
+Thanks,
 
 Jonathan
 
-> 
-> Thank you for the rest of the feedback and advice, I really appreciate
-> it. I think I have enough for another revision soon.
-> 
-> Justin
-> 
-> > So I'm fine with just not supporting the weird corner cases unless
-> > we get someone turning up who
-> > a) cares
-> > b) if foolish (or motivated) enough to do the necessary work 
-> > c) (if they are lucky) we have the infrastructure in place because someone
-> >    else needed the missing bits.
-> >
+
+
+>=20
+>=20
+> Cheers
+> Julien
+>=20
 > > Jonathan
-> >
-> >  
-> >> 
-> >> Justin  
+> > =20
+> > > Cheers
+> > > Julien
+> > > =20
+> > > > Other than the missing ret =3D, rest of series looks fine to me
+> > > >
+> > > > Jonathan
+> > > > =20
+> > > > >
+> > > > > Best regards,
+> > > > > Krzysztof
+> > > > > =20
+> > > > =20
+> > =20
 
 

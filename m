@@ -1,116 +1,112 @@
-Return-Path: <linux-iio+bounces-10737-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10738-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3B59A4523
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 19:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9704A9A454C
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 19:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B59B2820D9
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 17:42:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5530C288FB8
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 17:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E649E204021;
-	Fri, 18 Oct 2024 17:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C94320400A;
+	Fri, 18 Oct 2024 17:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OkqqebYV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cNo2AeDP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE4020513B
-	for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2024 17:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FA014900E;
+	Fri, 18 Oct 2024 17:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729273199; cv=none; b=fZeo3sjdIP+LsIS4i6EQ65UpQ7emgjIFsWQ6TFa/AJet8oE0OXXKHlrrX/kaum4SBW3obt70oy8SGBrKJDUXvDEEfnEWlFBlgAAMAHlukhW6EQxbLAf/w9QSZAM/F8wfaRwDddvwmxyQPCxtWXl3wE3RMh/Lcj0CygpM91xKaMg=
+	t=1729273873; cv=none; b=La7Pp4UXL2LjXXgdlO7BGOSpOK+XOk4oUrri2bSGBmls2yQs5pS7WX7sxOE4cM15zF0QEZmqg0wWCsuVLqscJHDc9y8atD88Fl8ItiX4Qvd1Wvw1S8Eoq2J17n+HiCnLikLEuZo34Ue2noyp7aXqG8cykfWlMC/i9kilRrgbW0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729273199; c=relaxed/simple;
-	bh=ULmTe9oT5zv7qqW1RD4RCShULoAISyjbuF+adyt0yKs=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SeHo9z2qfUvZKOgljNxYSFrWz1ntQgvtG4LYLwlhBUzIuwZCdgjX6cvLxJ0tAi6vlvNLTVwGEDr0eJXV6nzHBmSOoZP9PFEA7J0m64LZVipk3Zzg2KgAx88lWz66HZbqeDrnzzxbakXz60D70d0Q1LdqXbz9Z8UL174wUGKQ88w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OkqqebYV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 343C4C4CED0
-	for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2024 17:39:59 +0000 (UTC)
+	s=arc-20240116; t=1729273873; c=relaxed/simple;
+	bh=0YBB4cxyd4T5kF4Mwqn6y2w38xHnops4H4HPNt9JZtE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ipcRimKKo3xrc5cBRHAQ5offVy0tl2ITl0s/6WLo/I9A80DxTJeXMbgvBkefgq2JSx4KyOrCkdiGrp4qT1GabyOrsFHTKzVDo7cqII4A+i+59lIO22ojWvdoaMnficrxtVUvA9QvAjNNgAFMQNZnGwZ5B8lmD/B/K3jTJ66+sJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cNo2AeDP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02417C4CEC3;
+	Fri, 18 Oct 2024 17:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729273199;
-	bh=ULmTe9oT5zv7qqW1RD4RCShULoAISyjbuF+adyt0yKs=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=OkqqebYVg4kSALQTLmAxNbSxPTHCqgiThYuXTmHqO1/XGv24kx30RQY2sEjVwwNxA
-	 Y0/fHtTn8qonb2n0Eo0uKCHd9Qpssqsn/nfOHzfroooBMrcvsE76V1b4aktI7Wi/06
-	 kJryE5O+1APBZdoGQ5N4mCaoZFswkdUxtYq0c9B7MD81lOr7bC9JWDjLSpPpIW8JB0
-	 ByJ/NT4rhR4F+781BNFWJ2Ph7pIuKmzU2yi8XFhYYarqAoZ+qD6I1Zxrpg5a6w25bS
-	 AW4nnLXF04hsB8jouYt83QfNUtsoHv20a3ct/ZyxX34nshRSs2j+jvHRFMO3usBqYz
-	 Oe9hSqABPRcbA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 26FCCC53BCE; Fri, 18 Oct 2024 17:39:59 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 219192] drivers/iio/imu/adis16400.o: warning: objtool:
- adis16400_write_raw() falls through to next function
- adis16400_show_flash_count()
-Date: Fri, 18 Oct 2024 17:39:58 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: jic23@kernel.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-219192-217253-MkuhDJiuvs@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-219192-217253@https.bugzilla.kernel.org/>
-References: <bug-219192-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1729273873;
+	bh=0YBB4cxyd4T5kF4Mwqn6y2w38xHnops4H4HPNt9JZtE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cNo2AeDP/eT0MZKDbrULHMJbVvgWOdBBne3cUifVh3NkQywOUfVygur5SXolN4btb
+	 FYU2Jqys992vxxb2VXemMgBC2YnBggNIijkSqOgL0HqV0rlnIhKZEv3avTmOQ9dqP3
+	 SCgkTxbg7Gu5+9FgR3ewe22TWp3tHxJPJPuhHe0G8eEce7r/XbcbFNN589T3hGkSAt
+	 2m9Bph6hS0If2BG2mxvyUtAA1aRH+vcm32HeTyk64qpLIVuLtANCyxW4eqsnpANyZj
+	 RpaF2uFKI7ZRqDttI0c0J2ecM8T8RJ6X1lP+P/RQs5iBlM8THt90rteAs20Oi3T19B
+	 IX8mrjrrqo04w==
+Date: Fri, 18 Oct 2024 18:51:05 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Hans de Goede <hdegoede@redhat.com>, Justin
+ Weiss <justin@justinweiss.com>
+Subject: Re: [PATCH v1 1/1] iio: gyro: bmg160: Drop most likely fake ACPI
+ IDs
+Message-ID: <20241018185105.41a2db06@jic23-huawei>
+In-Reply-To: <20241018145732.2181309-1-andriy.shevchenko@linux.intel.com>
+References: <20241018145732.2181309-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219192
+On Fri, 18 Oct 2024 17:57:32 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
---- Comment #10 from Jonathan Cameron (jic23@kernel.org) ---
-On Fri, 18 Oct 2024 11:02:41 +0000
-bugzilla-daemon@kernel.org wrote:
+> The commits in question do not proove that ACPI IDs exist.
+> Quite likely it was a cargo cult addition while doing that
+> for DT-based enumeration. Drop most likely fake ACPI IDs.
+> 
+> The to be removed IDs has been checked against the following resources:
+> 1) DuckDuckGo
+> 2) Google
+> 3) MS catalog: https://www.catalog.update.microsoft.com/Search.aspx
+> This gives no useful results in regard to DSDT, moreover, the official
+> vendor IDs in the registry for Bosh are BSG and BOSC.
+> 
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D219192
->=20
-> --- Comment #9 from Andy Shevchenko (andy.shevchenko@gmail.com) ---
-> This
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git/commit/?h=3Df=
-or-6.13/core&id=3Db2b8a75e1d88c551a0b30d44d0be552210219eea
-> one is related and may be used as an example how to fix that.
->=20
+I'm nervous about Bosch drivers in the wild given recent report
+from Justin
+https://lore.kernel.org/linux-iio/87jzeboi3g.fsf@justinweiss.com/
 
-Maybe.  Though not quite the same as in this case the code
-really is unreachable. The compiler is simply failing to discover it.
-We could but BUG() in all these places but that is nasty.
+Justin, I couldn't find the driver you were referring to for the bmi160,
+is it online somewhere?
 
-The series:
-https://lore.kernel.org/all/20241001-cleanup-if_not_cond_guard-v1-0-7753810=
-b0f7a@baylibre.com/
+Also if you have other bosch drivers could you check for these + bmc150
+IDs Andy is proposing dropping in:
 
-gives code the compiler should never fail to figure out, so
-using that instead is a better approach in my opinion and
-Peter Z just applied the infrastructure to his tree today.
+https://lore.kernel.org/linux-iio/20241018145805.2181682-1-andriy.shevchenko@linux.intel.com/
 
-Jonathan
 
---=20
-You may reply to this email to add a comment.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/iio/gyro/bmg160_i2c.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/iio/gyro/bmg160_i2c.c b/drivers/iio/gyro/bmg160_i2c.c
+> index 672d0b720f61..a81814df5205 100644
+> --- a/drivers/iio/gyro/bmg160_i2c.c
+> +++ b/drivers/iio/gyro/bmg160_i2c.c
+> @@ -39,8 +39,6 @@ static void bmg160_i2c_remove(struct i2c_client *client)
+>  
+>  static const struct acpi_device_id bmg160_acpi_match[] = {
+>  	{"BMG0160", 0},
+> -	{"BMI055B", 0},
+> -	{"BMI088B", 0},
+>  	{},
+>  };
+>  
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
 

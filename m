@@ -1,169 +1,236 @@
-Return-Path: <linux-iio+bounces-10711-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10712-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554429A3B30
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 12:18:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0DF59A3BA3
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 12:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F38EC1F23FC5
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 10:18:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C15A282143
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 10:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD57F202F67;
-	Fri, 18 Oct 2024 10:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F812201252;
+	Fri, 18 Oct 2024 10:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KZEfnDiN"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="idakSHy6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6D420262F;
-	Fri, 18 Oct 2024 10:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF781192B8F
+	for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2024 10:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729246625; cv=none; b=GrUVR+ODjW5itMpvAY/1oVSM8yl6FR0KPiFiuKbDw4CBccfzo28g9LCcqcArknAbMqixfFP8iNHt0QeEsluPdC/P6k6DyiQ1EPCDaMEYGoZo5JezUpAl5mwUkowfbNXEP6n4wxDk3C+hdZYRbgJo7wYQpCKXtmMees0rJJyfWYo=
+	t=1729247653; cv=none; b=n+9YQYTyQt/lii3cm8gd8cQKiIhPsr/2byTH+aePq0tvPNk7VsjlaMYBP0XNFiVFEXlnKgprScYGATh51hTQkNCmMY8csVvldlb8Hkir7PZaFmP0fIdj1YBK1OGRHDjQ16egcQOkVgMRjw0KwRe/LVOD10Fkv6/TBL472V6lhSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729246625; c=relaxed/simple;
-	bh=zPhyRDG9F+zgzh0+HIEmtXBb7OQBzROgLZ7mJASXsvQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ji5U242up16IbWqr98Ru3+w63BRvhY5UEx1DWRFW1F1Sh8plnkqO6W/vIdw6/7W5RXHl2VG3r3se3+VrfDcY7NBVuvqHwENvT2KC2lFa0oTM+HT1BdUrF71l/c2NLUL6VNNpWMrDA1zNsrkJUkils3uwwzSTJolwgRtinY/qHuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KZEfnDiN; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4311c285bc9so19132635e9.3;
-        Fri, 18 Oct 2024 03:17:03 -0700 (PDT)
+	s=arc-20240116; t=1729247653; c=relaxed/simple;
+	bh=mA2KOXf3Z7bwRh07kEeE6r06chstYOPzx3Jp7aOFLBc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=kZkqD05KDIB5S6oRFFvhE77Jt6fauJY261gxP04MyyT0OpQC+4Jqob5ot1ICOzQit61ljGpIEtEOUgHX0w1DHBP2X0jtOCjGTh/uA1dJhdfVy5bBZMP0x4EqJeg6PjVcJeHMCjJsEfEWrbfgnA7iMb56O6Dqwj2vEE4CSK8cIKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=idakSHy6; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37ec4e349f4so420330f8f.0
+        for <linux-iio@vger.kernel.org>; Fri, 18 Oct 2024 03:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729246622; x=1729851422; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1729247650; x=1729852450; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Yg5C99O5lFsD3GMjKIKiUiVjWoF4T1zlBP/PbUaocsA=;
-        b=KZEfnDiNukXZzeCNsmYRTFp4l+1S0hhJ6MZA9fycmEXMwCOd0IckNeQojiJHTHY+4l
-         jXgTw49k3+7dFTc5AZqCk9apqimEn5Z1uw0P2A4hiYuVEcWcFX6ogesGtj0Tx4FKYM9d
-         0BLHzVruluyvhWhjVnyojwwspo0qGn+ocpnSu9FzSh1TWbe99zB6h/hV/OyLvqGvmNPh
-         WBcIorX6oTa38vcMREvKALeagQmoPEQIgH9+FZXUezhjAFpMETH8MMZe29HCg75lq8l2
-         vLkly61mALj0m4VNibAMgansStrONoY5nujcG3D0V/Ia5g8hsyQmJTJ5z4rhlxcJJl7o
-         OsOQ==
+        bh=/9HaPGj36d/cYoGWTqva/i0G1iTFOrr3BULtRnZFT68=;
+        b=idakSHy6Lo38qIE26Mp1f6IJGJHCYzE52BU7GnLJupPzcMq0evXglAtQ4Bs34GpGOu
+         tuzHo7D8Fy83gaWfGZ79T0RWpyV8p4ZYDpbYx7BnFUkS1yjl9JEAIPah96rlxXjB8eUF
+         3FK2Jgkq8RLofO4bq9ED0wLLCs/Wwy16bMULBstNiU5Bnkdl129buOeKattNYvN5VXCh
+         cFJhcFuCD58TGzWdSIUEZ1077RSEgBQwNh5pG76bAiDy+U6KDRd2Rpw+cExVYH72MyxY
+         e+BC9CEpMptaXKFKlFoplrxXY6pXrzTGcBftLTrIbDLMa0N4J7klVqOqQmjblV6Omjev
+         N/+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729246622; x=1729851422;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yg5C99O5lFsD3GMjKIKiUiVjWoF4T1zlBP/PbUaocsA=;
-        b=l0QNUKgLikyREu+doQ/NeE+9q656JGwZ3IRjlqOh5FYJl696ePbRBoVj2jcriEemVH
-         MIgYb5ZSJpUOr/bOTSijO3WaNBgCWIDuOl4lsV9eN1vsPOpg5jszgDHmyLlGIKrQFIO9
-         SIXcgH6JpACyRbdAGZFsCK2+wLG+2PFmtuAOmp6qz5rnpZ2ZhOuOazxMaWfpbgxiULiA
-         TTTUVA7RnsFgvCVGYtBvlDuPYVU0q1JBxZ1RitUW9DsA8ncja5sOZwa+HZVwmvkZOHeE
-         78MvCYzsyzeZRRWzz8OOAf28/V8/+B3dOzzHqoycycSDKY+HPYQcIWudIOc943PkimmG
-         0gmA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJH6/7dbfyrXffsX62nC8cwpeuLpDoaeBiRnFGDY9DbjC9vNXNXAE6yD5dAJekMEILtvbfyP3kcsEPWuQ=@vger.kernel.org, AJvYcCXU6UTTZfbV9a47G3wYtAew97yrXWJGT7+YUdUZNZalrKeUQJJNkV7iC1vBzXMUWIeBxyRibmPzc/4=@vger.kernel.org, AJvYcCXjJ+mrn/81FbqxWlKCV3fLjV3ZEnPcdIrNcWCbI/tMe+OY5VWUdR/HM7b7p/iFOp5KjsZXoT7rWt/Uug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpD+OOQzEuCF70sDmhFP4CeJExmjhgOF8NvMMlyoNW1R+7aSdy
-	MV28v2Js7JgMg6kzzqsMmf2+WuguTaUAk6xGecn+Bf/voye2wuIjwwwBgZ0ggf0=
-X-Google-Smtp-Source: AGHT+IEeLVJ7h84WQ4/+u3k4S9ShFi1dHNq8ZcXPQUIGtlWymZVFe8HnRUMIjBIrqeVsPikZlvPQ7g==
-X-Received: by 2002:a05:600c:3d99:b0:431:588a:4498 with SMTP id 5b1f17b1804b1-4316164dd18mr16051385e9.14.1729246621980;
-        Fri, 18 Oct 2024 03:17:01 -0700 (PDT)
-Received: from localhost (host-79-18-120-72.retail.telecomitalia.it. [79.18.120.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ecf146e2asm1512707f8f.116.2024.10.18.03.17.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 03:17:01 -0700 (PDT)
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Date: Fri, 18 Oct 2024 12:16:44 +0200
-Subject: [PATCH v4 5/5] iio: as73211: copy/release available integration
- times to fix race
+        d=1e100.net; s=20230601; t=1729247650; x=1729852450;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/9HaPGj36d/cYoGWTqva/i0G1iTFOrr3BULtRnZFT68=;
+        b=azuaOJ93UwYmzEXoae+w6Q8ohAUbJWmpnHDMlTC8Dl9Jre3g1O6QRTPZxqcVDvXPw4
+         YCo6ZX5ZQhW/3TDc8fhcAg8s08Drhma5g10Yr9vhR/KVPhSBL1ifEU3iLVJ8ZwqXdbaU
+         DN91oJnjurbXYtHDCkvtCm2Vq18nV0MKp8wWO2eBNIq/xIC9KCk69zi+LuSCe7/f54Ie
+         xapKC/eWK1voQxcV8AS5Few3PddiQUsjmjQPWQ4nL2EaRrHXqe9kDJmAdXGNidHJ+dvD
+         QrUtSblRBS+ZvVdyn9XL4WHLVedYa+TIA0feGTJXZDtD/ozWfWswTJ/me1rwf5xgNVJS
+         hAuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWmLb6QRlOnlqHo4dIFM4wL1YckiWFt0+NM96sepcNac0kqKy4Gdu/7gxJnb8VUSRJokNR6MKSX1uM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUycLCdxrCqkUcob1NOHmZoST9rKSsZ/ERwXXHvBbbJZ1wPL1C
+	OuOb4wdR1Reu249onWiCZW1XjB0Fd+hriycmPlNv/nsvsUHIKYuIEgq+pGWfS/Y=
+X-Google-Smtp-Source: AGHT+IG6ZDIajn6ShPY3FAqnQ4bAfURvGcVHOxUhQQT02CMSmKBZf/ad6QQ/DVZsaMQDhk80rkx34g==
+X-Received: by 2002:a5d:4e05:0:b0:374:af19:7992 with SMTP id ffacd0b85a97d-37ea2140176mr1126087f8f.7.1729247650225;
+        Fri, 18 Oct 2024 03:34:10 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:b623:41fc:e293:c9b1? ([2a01:e0a:982:cbb0:b623:41fc:e293:c9b1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ecf062dd8sm1579482f8f.35.2024.10.18.03.34.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Oct 2024 03:34:09 -0700 (PDT)
+Message-ID: <20fc022c-874f-489f-8ac8-843db2726393@linaro.org>
+Date: Fri, 18 Oct 2024 12:34:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH 2/3] dt-bindings: iio: magnetometer: document the Allegro
+ MicroSystems ALS31300 3-D Linear Hall Effect Sensor
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20241007-topic-input-upstream-als31300-v1-0-2c240ea5cb77@linaro.org>
+ <20241007-topic-input-upstream-als31300-v1-2-2c240ea5cb77@linaro.org>
+ <20241012152051.644e0e61@jic23-huawei>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20241012152051.644e0e61@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241018-iio-read-avail-release-v4-5-53c8ac618585@gmail.com>
-References: <20241018-iio-read-avail-release-v4-0-53c8ac618585@gmail.com>
-In-Reply-To: <20241018-iio-read-avail-release-v4-0-53c8ac618585@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Alisa-Dariana Roman <alisa.roman@analog.com>, 
- Christian Eggers <ceggers@arri.de>, Peter Rosin <peda@axentia.se>, 
- Paul Cercueil <paul@crapouillou.net>, Sebastian Reichel <sre@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mips@vger.kernel.org, linux-pm@vger.kernel.org, 
- Matteo Martelli <matteomartelli3@gmail.com>
-X-Mailer: b4 0.14.2
 
-While available integration times are being printed to sysfs by iio core
-(iio_read_channel_info_avail), the sampling frequency might be changed.
-This could cause the buffer shared with iio core to be corrupted. To
-prevent it, make a copy of the integration times buffer and free it in
-the read_avail_release_resource callback.
+Hi Jonathan,
 
-Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
----
- drivers/iio/light/as73211.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+On 12/10/2024 16:20, Jonathan Cameron wrote:
+> On Mon, 07 Oct 2024 15:14:39 +0200
+> Neil Armstrong <neil.armstrong@linaro.org> wrote:
+> 
+>> Document the bindings for the Allegro MicroSystems ALS31300 3-D Linear Hall
+>> Effect Sensor controller by an I2C interface, mainly used in 3D head-on
+>> motion sensing applications.
+>>
+>> The device can be configured with different sensitivities in factory,
+>> but the sensitivity value used to calculate value into the Gauss
+>> unit is not available from registers, thus the sensitivity is
+>> provided by the compatible/device-id string which is based
+>> on the part number as described in the datasheet page 2.
+>>
+>> The datasheet is available on the product website at [1].
+>>
+>> [1] https://www.allegromicro.com/en/products/sense/linear-and-angular-position/linear-position-sensor-ics/als31300
+> Use Datasheet tag. It's not that common but it makes it clear what this is and some scripting
+> can pick it up.
 
-diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-index be0068081ebbbb37fdfb252b67a77b302ff725f6..c4c94873e6a1cc926cfb724d906b07222773c43f 100644
---- a/drivers/iio/light/as73211.c
-+++ b/drivers/iio/light/as73211.c
-@@ -108,7 +108,8 @@ struct as73211_spec_dev_data {
-  * @creg1:  Cached Configuration Register 1.
-  * @creg2:  Cached Configuration Register 2.
-  * @creg3:  Cached Configuration Register 3.
-- * @mutex:  Keeps cached registers in sync with the device.
-+ * @mutex:  Keeps cached registers in sync with the device and protects
-+ *          int_time_avail concurrent access for updating and reading.
-  * @completion: Completion to wait for interrupt.
-  * @int_time_avail: Available integration times (depend on sampling frequency).
-  * @spec_dev: device-specific configuration.
-@@ -493,17 +494,32 @@ static int as73211_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec co
- 		*type = IIO_VAL_INT;
- 		return IIO_AVAIL_LIST;
- 
--	case IIO_CHAN_INFO_INT_TIME:
-+	case IIO_CHAN_INFO_INT_TIME: {
- 		*length = ARRAY_SIZE(data->int_time_avail);
--		*vals = data->int_time_avail;
- 		*type = IIO_VAL_INT_PLUS_MICRO;
--		return IIO_AVAIL_LIST;
- 
-+		guard(mutex)(&data->mutex);
-+
-+		*vals = kmemdup_array(data->int_time_avail, *length,
-+				      sizeof(int), GFP_KERNEL);
-+		if (!*vals)
-+			return -ENOMEM;
-+
-+		return IIO_AVAIL_LIST;
-+	}
- 	default:
- 		return -EINVAL;
- 	}
- }
- 
-+static void as73211_read_avail_release_res(struct iio_dev *indio_dev,
-+					   struct iio_chan_spec const *chan,
-+					   const int *vals, long mask)
-+{
-+	if (mask == IIO_CHAN_INFO_INT_TIME)
-+		kfree(vals);
-+}
-+
- static int _as73211_write_raw(struct iio_dev *indio_dev,
- 			       struct iio_chan_spec const *chan __always_unused,
- 			       int val, int val2, long mask)
-@@ -699,6 +715,7 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
- static const struct iio_info as73211_info = {
- 	.read_raw = as73211_read_raw,
- 	.read_avail = as73211_read_avail,
-+	.read_avail_release_resource = as73211_read_avail_release_res,
- 	.write_raw = as73211_write_raw,
- };
- 
+Ack sure I'll use that instead
 
--- 
-2.47.0
+> 
+>>
+> Datasheet: https://www.allegromicro.com/en/products/sense/linear-and-angular-position/linear-position-sensor-ics/als31300
+>> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+> Hi Neil,
+> 
+>> ---
+>>   .../iio/magnetometer/allegro,als31300.yaml         | 43 ++++++++++++++++++++++
+>>   1 file changed, 43 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/allegro,als31300.yaml b/Documentation/devicetree/bindings/iio/magnetometer/allegro,als31300.yaml
+>> new file mode 100644
+>> index 000000000000..0a08e769f3aa
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/magnetometer/allegro,als31300.yaml
+> 
+> Rob's bot has better eyes than me.  Filename needs to be allegromicro,als31300.yaml
 
+Yeah I did modifications without testing it, bad habit....
+
+> 
+>> @@ -0,0 +1,43 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/magnetometer/allegromicro,als31300.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Allegro MicroSystems ALS31300 3-D Linear Hall Effect sensor
+>> +
+>> +maintainers:
+>> +  - Neil Armstrong <neil.armstrong@linaro.org>
+>> +
+>> +properties:
+>> +  $nodename:
+>> +    pattern: '^magnetometer@[0-9a-f]+$'
+>> +
+>> +  compatible:
+>> +    enum:
+>> +      - allegromicro,als31300-500 # Factory configured at 500 Gauss input range
+>> +      - allegromicro,als31300-1000 # Factory configured at 1000 Gauss input range
+>> +      - allegromicro,als31300-2000 # Factory configured at 2000 Gauss input range
+> 
+> I was wondering if the range should be a separate property, but given these
+> are the part numbers the parts are sold under, I think compatibles are fine.
+
+Yeah, I had the same conclusion
+
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  vcc-supply:
+>> +    description: 5.5V supply
+> A quick glance at the pinout google fed me suggests an interrupt pin.
+> Even though the driver doesn't yet support it (I assume as I've not looked at that yet)
+> the binding should include it.
+
+Sure I'll add it even if how it's configured in the epprom, it's barely usable by default.
+
+> 
+>> +
+>> +required:
+>> +  - compatible
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    i2c {
+>> +      #address-cells = <1>;
+>> +      #size-cells = <0>;
+>> +      sensor@61 {
+> 
+> magnetometer@61 {
+
+Ack
+
+> 
+>> +        compatible = "allegromicro,als31300";
+>> +        reg = <0x61>;
+>> +        vcc-supply = <&hall_vcc>;
+>> +      };
+>> +    };
+>>
+> 
+
+Thanks for the review,
+Neil
 

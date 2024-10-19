@@ -1,60 +1,61 @@
-Return-Path: <linux-iio+bounces-10781-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10782-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062179A4E6E
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 15:55:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44309A4E7A
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 16:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA5702864F5
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 13:55:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C212B265B6
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 14:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33F62B9D2;
-	Sat, 19 Oct 2024 13:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC97C38DD8;
+	Sat, 19 Oct 2024 14:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Obc6rqY2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOF7+HTW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC172F3E;
-	Sat, 19 Oct 2024 13:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FB1179BC;
+	Sat, 19 Oct 2024 14:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729346127; cv=none; b=Q+6ARyGP0RGFY8I6Phn6D2B4XxiAt9CP9MSimYRP3cTc5AYzV4O2d2BKk4rHeNMSRxJDocWlSUfhlKIW+C0aXdJXOWz9vE5UhnEfnb3NB20O6Qwq8CEC+uy9sZ04Dhp5aHzJCGZA6zYkAYHjxWlYUaYpoy1aaJi1DqCc0D26Z7Q=
+	t=1729346400; cv=none; b=h/SMZbGBBNceQ4xaXJ9QRZcE+JMiavUafi82X6fw0YzpoZ0xRNr2qsmd0tU4KIGm6g+unvWjsZmlXK3IlOjacyPvv5qkM5yfFv1izGdZUfGQB6YqWdJVEweks/qLDwVc/2+p/fInykAT+/WP/01TEvqsO5nxMrivfeeBDqe7Qbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729346127; c=relaxed/simple;
-	bh=zumrPbhqF+Wg2/vD3Uex3r2TyNNpKk7KfAyiRdrjxT0=;
+	s=arc-20240116; t=1729346400; c=relaxed/simple;
+	bh=CXVTKQ2lO/E8UkOgX5TgeRaO/Mv81ac62pj6rNEoRJ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=duby+iHLR3ZFKGEpJuWXTDLZ7M3jFi+3Wn7i/Glp5D4BQSxqgtPSkdvqekg2OANfFnwuAj/iYWR8foP4/QHrv7olTDw0lwbn4b9NKt1JSB1kvqCIzA+OXa3HCPx8b2EdUu4nnCQMoJ4bYFCZoAbesJln3PK7V5pgYKZ9QBecTkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Obc6rqY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997C7C4CEC5;
-	Sat, 19 Oct 2024 13:55:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QL6XggVbdGHXSzYwXZDb10vf8gljwwBf4kqncO4eFnxwbEe4VELrDhQBpJ8d1j1R8FE8bKO/uj4PqbuNrRs4hijl4YtFSTNRTBLLK6hPWh+jRR09plnw7FQ62N+dRnGczplMcOjmnWmn4Zxowia62v2GA6OZ8oBbZnuu6+gjEmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOF7+HTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86105C4CEC5;
+	Sat, 19 Oct 2024 13:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729346127;
-	bh=zumrPbhqF+Wg2/vD3Uex3r2TyNNpKk7KfAyiRdrjxT0=;
+	s=k20201202; t=1729346399;
+	bh=CXVTKQ2lO/E8UkOgX5TgeRaO/Mv81ac62pj6rNEoRJ4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Obc6rqY2ShEaFb5QMUfeYMLUyho5V3YwN17VaTs8iFSpALGGHmesL7A/T05udpH0U
-	 XZ9JPFl8Lcot3yF4GffKv1cXX1D4sOQX8GZNSEIld5HfGj6vU0+G5n2F1TaM1HBRAB
-	 PCwc2obv/eC40bhtwnsgJ4BobsGInge5fW8l9Fj9VSRI506LqtWv9CPaDH/dP8Pa6i
-	 QhIiFsW7Zfik1PhEF2wO/bkWYxqhSnUK7wUX+xeICzJyaL/sNXOaR3goG1Ieu2dF/F
-	 e0OuODziC7jwb8WOwtK7HLsnARO/iJQjZmkXM3CxD/1UhovyBqhgJRukLVi+ndj9j3
-	 rBw/9Lud4+w9g==
-Date: Sat, 19 Oct 2024 14:55:07 +0100
+	b=VOF7+HTWRc1En2VDqPL/oNKqC5DGjumSRkAe7H5Q5TU8QdvfDsNlAklgdolWHKzIr
+	 Y1apDf2r8wZCAE0B+QxqsB6NRqPfLdIbcV6WZjy41RBKtXMGZ8GuP7GtjQuiy+/L0q
+	 pDbwQagU8BZ09f/IKrT29Ek40lg3zYCsa174Et3JoiYUJHjTfXk7RaUL3qsHBUTJM+
+	 fYiAnU3Pn4u6zFGUjCx5eHBt+ScBS0mNS69Yjj0sYu7m+V7m2tt1xaN7sv4G+a0Iyy
+	 O6vpP1DSnRcDYeKQUVjweRsJzgy6MHGvRPNYxB3EMfoEjY5kZk4hMUyD1Nk7C3DcFg
+	 LDz3mkz1IzlEA==
+Date: Sat, 19 Oct 2024 14:59:25 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
- ang.iglesiasg@gmail.com, ajarizzo@gmail.com, biju.das.jz@bp.renesas.com,
- linus.walleij@linaro.org, semen.protsenko@linaro.org, 579lpy@gmail.com,
- ak@it-klinger.de, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 0/4] pressure: bmp280: Minor cleanup and interrupt
- support
-Message-ID: <20241019145507.3a9a8956@jic23-huawei>
-In-Reply-To: <20241017233022.238250-1-vassilisamir@gmail.com>
-References: <20241017233022.238250-1-vassilisamir@gmail.com>
+ conor+dt@kernel.org, anshulusr@gmail.com, gustavograzs@gmail.com,
+ andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 09/13] iio: chemical: bme680: Move ambient
+ temperature to attributes
+Message-ID: <20241019145925.5d54e7b4@jic23-huawei>
+In-Reply-To: <Zw17n7DB2LdgDct3@vamoirid-laptop>
+References: <20241010210030.33309-1-vassilisamir@gmail.com>
+	<20241010210030.33309-10-vassilisamir@gmail.com>
+	<20241012130124.44c69521@jic23-huawei>
+	<Zw17n7DB2LdgDct3@vamoirid-laptop>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,50 +66,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 18 Oct 2024 01:30:18 +0200
+On Mon, 14 Oct 2024 22:14:23 +0200
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Changes in v9:
+> On Sat, Oct 12, 2024 at 01:01:24PM +0100, Jonathan Cameron wrote:
+> > On Thu, 10 Oct 2024 23:00:26 +0200
+> > vamoirid <vassilisamir@gmail.com> wrote:
+> >   
+> > > From: Vasileios Amoiridis <vassilisamir@gmail.com>
+> > > 
+> > > Remove the ambient temperature from being a macro and implement it as
+> > > an attribute. This way, it is possible to dynamically configure the
+> > > ambient temperature of the environment to improve the accuracy of the
+> > > measurements.
+> > > 
+> > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>  
+> > New ABI? Would need docs.
+> > 
+> > However, I 'think' we have a few cases where we handle this via the slightly
+> > odd interface of out_temp_processed / _raw with a label saying it's
+> > ambient temperature.
+> > 
+> > The tenuous argument is that we have heaters that actually control the
+> > temperature and the affect of either heating the thing or just happening
+> > to know the external temperature ends up being the same. Hence use
+> > an output channel for this control.
+> > 
+> > Jonathan  
 > 
-> PATCH 1/4:
-> 	- fixed warning of uninitialized variable that was generated by
-> 	  the kernel test robot in v8.
+> Hi Jonathan,
 > 
-> PATCH 4/4:
-> 	- Remove extra lock and unneeded reenable function since the irq is
-> 	  being reset on the first read in the irq handler.
+> Thanks for taking the time to review this. I saw your previous messages,
+> and I am not responding to all of them so as to not flood you with ACK
+> messages.
+> 
+> For this one though I have to ask. The last commit of this series is
+> adding support for an output current channel that controls the current
+> that is being inserted into an internal plate that is heated up in order
+> to have more precise acquisition of humidity and gas measurement. Does
+> it makes sense to add an ambient temp output channel as well?
 
-Applied to the togreg branch of iio.git and pushed out as testing for the normal reasons.
+If we need to know that temperature to calculate the meaning of the pressure
+channels then I think it does.
 
-Note I'll probably rebase that tree in a few days to pick up some precusor fixes needed
-for another series.
+I am a little confused though as this device measures the temperature.
+Why isn't that the right value to use?  Is that because the heater
+is confusing things?
 
-Jonathan
 
 > 
-> ---
-> v8: https://lore.kernel.org/linux-iio/20241007194945.66192-1-vassilisamir@gmail.com
-> v7: https://lore.kernel.org/linux-iio/20240914002900.45158-1-vassilisamir@gmail.com
-> v6: https://lore.kernel.org/linux-iio/20240912233234.45519-1-vassilisamir@gmail.com
-> v5: https://lore.kernel.org/linux-iio/20240902184222.24874-1-vassilisamir@gmail.com
-> v4: https://lore.kernel.org/linux-iio/20240828205128.92145-1-vassilisamir@gmail.com
-> v3: https://lore.kernel.org/linux-iio/20240823181714.64545-1-vassilisamir@gmail.com
-> v2: https://lore.kernel.org/linux-iio/20240725231039.614536-1-vassilisamir@gmail.com
-> v1: https://lore.kernel.org/linux-iio/20240711211558.106327-1-vassilisamir@gmail.com
-> 
-> Vasileios Amoiridis (4):
->   iio: pressure: bmp280: Use sleep and forced mode for oneshot captures
->   dt-bindings: iio: pressure: bmp085: Add interrupts for BMP3xx and
->     BMP5xx devices
->   iio: pressure: bmp280: Add data ready trigger support
->   iio: pressure: bmp280: Move bmp085 interrupt to new configuration
-> 
->  .../bindings/iio/pressure/bmp085.yaml         |  22 +-
->  drivers/iio/pressure/bmp280-core.c            | 536 ++++++++++++++++--
->  drivers/iio/pressure/bmp280-i2c.c             |   4 +-
->  drivers/iio/pressure/bmp280-spi.c             |   4 +-
->  drivers/iio/pressure/bmp280.h                 |  43 ++
->  5 files changed, 568 insertions(+), 41 deletions(-)
+> Cheers,
+> Vasilis
 > 
 
 

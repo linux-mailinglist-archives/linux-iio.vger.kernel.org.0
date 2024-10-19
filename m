@@ -1,62 +1,69 @@
-Return-Path: <linux-iio+bounces-10799-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10800-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2D69A4F0A
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 17:16:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E7B9A4F11
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 17:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A29F2B21DB6
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 15:16:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 256291F21B87
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 15:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB9D61FEB;
-	Sat, 19 Oct 2024 15:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E91E7DA62;
+	Sat, 19 Oct 2024 15:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbfXxFBN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4U4fHrf"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8646410E4;
-	Sat, 19 Oct 2024 15:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D6E26AFB;
+	Sat, 19 Oct 2024 15:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729350992; cv=none; b=mpnFUVlH+bn5wKRdRnGt9Fz8kFC4YOacRTwBLPYPZllpNI2UniLlWwYxDINfjPO0OZNOcZ+Qd8vZZJ1loPW8SCtnvSes085U2BkgLVzgyx82Z005Drv3Bh+llr/zw+odD/Mm4sZNBarkOJ/c2FQK/rhmdjsUkmzRv5ivKMzh1MQ=
+	t=1729351186; cv=none; b=NRuffgh3862bs5xSKMtZ3821bwm6cGazeFMEZVvjLAG+7OjhVbbe1Chd+69BCgdOqXNz1qpnMhPJYoeSJYREr8hVR1Srjjf0PYFjuqz6GkI2zKbRQDIczhywDClHVCGe+TDQkK+pBil0bcZKskBfSH1gYVsy5iUmcDJF0x75KVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729350992; c=relaxed/simple;
-	bh=3/eaC3Oc0bPaRKKVcrfUBzt/D2U5MUHCT+S7BOLzJtY=;
+	s=arc-20240116; t=1729351186; c=relaxed/simple;
+	bh=n38Cn7znuna16E9x6S68VuKzbnu4jWCKLsCooMGMjmE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R12rCP2v32hyOumlhHzkYkMz8qzAr6B2or+u5FgTdQ3vWU1U1tCM3Gwj7+V1cHcFTQ0S7Sz+i7fu+WfFwj4kPhY9Vgq+Qt4eQS7btCkIFyrsJEf0y9A1OFvnJkFJULedQchomMlL75f0l9qyLAXfmedauV3MFNGg+UfOhd99OLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbfXxFBN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDD3C4CEC5;
-	Sat, 19 Oct 2024 15:16:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=idFFmKkVCdCp9PFkR+sV9EeynrEDerhF3vsKrISYVpYebzJ55Xgd+H9WiS9TQGMWn7ZN8wl8CXgMBN6875WV4YwWJfw26OtZ1wvVHfG7ZWkslcm08qhOMXY0Rv05pTPegbmx7lIy2ErfH5ygS5nbKtn95Z9Uy+sUDngifmJDphU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4U4fHrf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E10BC4CEC5;
+	Sat, 19 Oct 2024 15:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729350991;
-	bh=3/eaC3Oc0bPaRKKVcrfUBzt/D2U5MUHCT+S7BOLzJtY=;
+	s=k20201202; t=1729351185;
+	bh=n38Cn7znuna16E9x6S68VuKzbnu4jWCKLsCooMGMjmE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lbfXxFBN7TMDXS/C8c0H7QXTadXfiatUwzfLzl5AjNp/CXIKZ6A8xtG8R429xeGIb
-	 Jcg8Z9/1eCxXwsCPJBX35Nq5lC4mNoD1b5CeYNfycTVuFW09xnqJwBnVc8NR8QOG3K
-	 nWIaUvmxOXsqRQao7kKib56VRQofuDhfV8zAIG6jn2OfN5YaLh36N8Fadv4U/PBKFn
-	 6rZzU3j1MEUOzRlLdLVNgqnTq06VKJU7KOhKJT6PPzx/LFMuOyz+K6zkbanD2IezLa
-	 6i4KGCwaIUEnEnySCSy0H9D3Fm6YzhVx3bCaj0LNbDwNNrE8s2+bHFi0ZTHCsHQBz6
-	 lcOGH5IDdu1PQ==
-Date: Sat, 19 Oct 2024 16:15:46 +0100
+	b=H4U4fHrf4MFpP4Woru/os5HbLA69o9+QmbFzJ7tmdE+fmbG3P++XFfjjmTFUc4XQn
+	 kzZICvSswx0W955NrJIGyYmhTzeCqDfEyoNJh231/9rDejVrrN5SP9OVW+vv7gcLPl
+	 vi3wPjFmC2kjErNA90DCbEz0fSXegoci9mvaonBvusQkAnCNRCKVDHtttkqbatixlW
+	 dAvMBOhaTznpEPXMKYAK7KcA7KKMSfOI1lL+RC+XguO1+t3i45KJJMLHlzoqoEd+9T
+	 Ok2CmBmxlqK8y57GC0cM7zqMeEP394I99kbSu7YDYkMWUQbqXfU9kTUarOWxj3C/cl
+	 ncwe3Rr4Qk4tA==
+Date: Sat, 19 Oct 2024 16:18:55 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, dlechner@baylibre.com, Mark Brown
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Angelo Dureghello
+ <adureghello@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown
  <broonie@kernel.org>
-Subject: Re: [PATCH v6 6/8] iio: dac: ad3552r: extract common code (no
- changes in behavior intended)
-Message-ID: <20241019161546.026f02e7@jic23-huawei>
-In-Reply-To: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-6-eeef0c1e0e56@baylibre.com>
+Subject: Re: [PATCH v6 7/8] iio: dac: ad3552r: add high-speed platform
+ driver
+Message-ID: <20241019161855.32078709@jic23-huawei>
+In-Reply-To: <61cf3072af74a8b2951c948ddc2383ba1e55954d.camel@gmail.com>
 References: <20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-0-eeef0c1e0e56@baylibre.com>
-	<20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-6-eeef0c1e0e56@baylibre.com>
+	<20241014-wip-bl-ad3552r-axi-v0-iio-testing-v6-7-eeef0c1e0e56@baylibre.com>
+	<c3d55f78-5a54-49f8-b6a1-4ed0f24f8666@baylibre.com>
+	<8642bdb546c6046e8fe1d20ef4c93e70c95c6f71.camel@gmail.com>
+	<2815c8b0-e2ad-47cb-b5aa-00297cf57899@baylibre.com>
+	<781cf5fa075e13260e1b20f5acadb70bd8107cd0.camel@gmail.com>
+	<23dafe91-2733-4ed6-901a-d324749d11b2@baylibre.com>
+	<61cf3072af74a8b2951c948ddc2383ba1e55954d.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,69 +71,63 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 14 Oct 2024 12:08:12 +0200
-Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> From: Angelo Dureghello <adureghello@baylibre.com>
-> 
-> Extracting common code, to share common code to be used later
-> by the AXI driver version (ad3552r-axi.c).
-> 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-One suggestion inline.
+> > >  =20
+> > > >=20
+> > > > Re: the other recent discussions about getting too many
+> > > > callbacks. Instead of a dedicated function like this, we
+> > > > could make a set of generic functions:
+> > > >=20
+> > > > iio_backend_{g,s}et_property_{s,u}(8, 16, 32, 64}()
+> > > >  =20
+> > >=20
+> > > Hmm interesting approach. I don't dislike it. Kind of a generic gette=
+r/setter
+> > > thingy.
+> > > We could then still have optional inline helpers that would call the =
+generic
+> > > functions with the proper enum value.
+> > >  =20
+> > > > that take an enum parameter for the property. This way,
+> > > > for each new property, we just have to add an enum member
+> > > > instead of creating a get/set callback pair.
+> > > >=20
+> > > > Unrelated to this particular case, but taking the idea even
+> > > > farther, we could also do the same with enable/disable
+> > > > functions. We talked before about cutting the number of
+> > > > callbacks in half by using a bool parameter instead of
+> > > > separate enable/disable callbacks. But we could cut it down
+> > > > even more by having an enum parameter for the thing we are
+> > > > enabling/disabling. =20
+> > >=20
+> > > If we don't get too strict about types it could even fall into the ab=
+ove u8
+> > > category.
+> > >=20
+> > > Instead of lot of new simple ops we just grow an enum. =20
+> >=20
+> > Sure. For that matter, maybe try to just stick with 32-bit
+> > for everything to keep it simple. Probably will eventually
+> > need 64-bit for some things, but might be able to get away
+> > with avoiding 8 and 16-bit.
+> >  =20
+>=20
+> Agreed. Anyways, nothing that I will take care in the near future (I woul=
+d first like
+> for things to stabilize a bit). That said, if you want (or anybody else),=
+ feel free
+> to send the patches :)
+
+Definitely don't do the many size versions.  Large signed integers
+are nice and flexible. Maybe just go s64 from the start.
 
 Jonathan
 
-> ---
->  drivers/iio/dac/Makefile         |   2 +-
->  drivers/iio/dac/ad3552r-common.c | 170 ++++++++++++++++++++++
->  drivers/iio/dac/ad3552r.c        | 303 ++++-----------------------------------
->  drivers/iio/dac/ad3552r.h        | 200 ++++++++++++++++++++++++++
->  4 files changed, 398 insertions(+), 277 deletions(-)
-> 
-> diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-> index 621d553bd6e3..c92de0366238 100644
-> --- a/drivers/iio/dac/Makefile
-> +++ b/drivers/iio/dac/Makefile
-> @@ -4,7 +4,7 @@
->  #
->  
->  # When adding new entries keep the list in alphabetical order
-> -obj-$(CONFIG_AD3552R) += ad3552r.o
-> +obj-$(CONFIG_AD3552R) += ad3552r.o ad3552r-common.o
->  obj-$(CONFIG_AD5360) += ad5360.o
->  obj-$(CONFIG_AD5380) += ad5380.o
->  obj-$(CONFIG_AD5421) += ad5421.o
-> diff --git a/drivers/iio/dac/ad3552r-common.c b/drivers/iio/dac/ad3552r-common.c
-> new file mode 100644
-> index 000000000000..9a892abf99ac
-> --- /dev/null
-> +++ b/drivers/iio/dac/ad3552r-common.c
-> @@ -0,0 +1,170 @@
+>=20
+> - Nuno S=C3=A1
+>=20
 
-> +
-> +u16 ad3552r_calc_custom_gain(u8 p, u8 n, s16 goffs)
-> +{
-> +	u16 reg;
-> +
-> +	reg = FIELD_PREP(AD3552R_MASK_CH_RANGE_OVERRIDE, 1);
-> +	reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_P, p);
-> +	reg |= FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_N, n);
-> +	reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_BIT_8, abs(goffs));
-> +	reg |= FIELD_PREP(AD3552R_MASK_CH_OFFSET_POLARITY, goffs < 0);
-Trivial but whilst here, to me this is no more readable than.
-
-	return FIELD_PREP(AD3552R_MASK_CH_RANGE_OVERRIDE, 1) |
-	       FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_P, p) |
-	       FIELD_PREP(AD3552R_MASK_CH_GAIN_SCALING_N, n) |
-	       FIELD_PREP(AD3552R_MASK_CH_OFFSET_BIT_8, abs(goffs)) |
-	       FIELD_PREP(AD3552R_MASK_CH_OFFSET_POLARITY, goffs < 0);
-
-> +
-> +	return reg;
-> +}
->
 

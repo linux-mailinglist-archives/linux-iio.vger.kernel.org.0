@@ -1,527 +1,175 @@
-Return-Path: <linux-iio+bounces-10756-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10757-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320889A4A32
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 01:39:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66989A4AAD
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 02:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E014B23DE5
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Oct 2024 23:39:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0A51F22966
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 00:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A725192D86;
-	Fri, 18 Oct 2024 23:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5966D1922EF;
+	Sat, 19 Oct 2024 00:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="aGnroQid";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Z9prkcC5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gcv56uEv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BC118FC75;
-	Fri, 18 Oct 2024 23:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05E029CF6;
+	Sat, 19 Oct 2024 00:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729294723; cv=none; b=VxxCu4a7atngLpjBxl7n7ghstoBuBFQC0TH3mdqyyYi8CvXMpwokpXH6agP20l0Y1LuT5LhwdaqZeSFTCWYHvH0NI91BbRoHYVfz9nahEcbZScja8h8CC9qnD+VvVjt30z1LteUxG4fmK91M5+U9Gs5Ur3CDEtyV5wcgyYDrxNs=
+	t=1729298243; cv=none; b=Qb11SaxX/l/QytKuqvrgiZpkmqVsnznAPua261ymEWily8dQjQQWoc1V+ZgU62QwALO6wn/c3DIc960OeukJCMYEygj41uwlvVF/JU1YcgA/mKdiF9BtEsPEpwbhgkBIR5qDfrnBptjyDYOjU8MwoILlAQN8NfGFh+v3fZQQpyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729294723; c=relaxed/simple;
-	bh=H3o6ust5TtWf1YCVzQJ2oGdTQvq7q/eoAIiPmlCTtH8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJzi8/hXGD0xR5SjlJ3HzIvV+GsrefjPsmqm58WuVHieXBfYjLN6TvH14w1LXKwB7Y8VbDf2eViOwdZ+JTq+oLWnwTjvyYahvtHeEoIXmdFVz7t+tQM+C8qm0TcigbXBN5okSaLFyM70mAtCsmH4CPOol8mB9zQqQXtJbpi6r0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=aGnroQid; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Z9prkcC5; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justinweiss.com
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 8626911401AA;
-	Fri, 18 Oct 2024 19:38:40 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Fri, 18 Oct 2024 19:38:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justinweiss.com;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1729294720; x=
-	1729381120; bh=kddeGIUsRBS+Tfy6+HMUhxC0WI/aqwj15PsI6K+5vZw=; b=a
-	GnroQidNwmtlS8kQPWkj+y1Egu3mjbd2D11c2cjfELzbZ4F7SZhfs5hG9x6C4jUp
-	0Z08cw+SyGBd2eRTxhLL09MRbtAfcMmGB8gdKf/GdLXZkbyGWUTe9XQT3i+KVUwa
-	qiC9js8dJOSUnMrWc+wpRc3IAbCjb6Ohl9w7EeszVr4mZR+0UdfaZuKsAKvea0In
-	oBADi3uUmbRoQhmdLz8wUaM75v66A4BgJO+ZyKzza5tteNmSy4gP7QtSau3xAgDC
-	Mdg4CwKpNxYi2tAO90hcAAweNyCN0jeGLSkbBBclk25jQ9pG6Z/uKb4vHN3hMex7
-	oNMNJzz89OG3AmF+ge27g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1729294720; x=
-	1729381120; bh=kddeGIUsRBS+Tfy6+HMUhxC0WI/aqwj15PsI6K+5vZw=; b=Z
-	9prkcC5UmqbY1LQk1OVISIqOljLjWSpnxd1gNoe79skoGsoU8pQO9re/fHtt5jz1
-	jcG4sW3ztocmWjvLlm0dPBwOJjPTToliy5yTQxkixeggR68Y6BbAVzL/aX/GSchv
-	eG77F3C4rKsmJ5CQcrz82Gx1vAsAmTVTiz8i+c9Tca+Wz0W+P2JV86dKK4Px6KmR
-	zSwOYpiXCPFzzl1Gf8629Q05HWIfQatFuGWT3fpHuU44tTj5kY4TNXvSWARZ/iep
-	7Drz5cF2bgNy+me15oWl47CmzIGkpP/qrb3sWfu/yaxO2Aa4qfucXionjYh1t+cB
-	paXU4s3I5/SMt2NglWfow==
-X-ME-Sender: <xms:gPESZztawNsNmIWjaWtxAFzLzaCvrI9U2MJTd_XmpZ4LqAmaqyUv9w>
-    <xme:gPESZ0eJUQIIuv6VEen8V9zfrC79YuHe1bvKd843DfeXLu8STg1VGjlfg1VR5b60P
-    KdtH7i_SvoeWvshoQ>
-X-ME-Received: <xmr:gPESZ2yV4VRprzfv12-QeR8H_-9UbDatYlzkpKxUmcPRJMpffldwDgeqyS18UJetrqbNrs8QVNe3hOr9LSPeM4BnuJrXe7DMVOF0vdVtBw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehgedgvdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttden
-    ucfhrhhomheplfhushhtihhnucghvghishhsuceojhhushhtihhnsehjuhhsthhinhifvg
-    hishhsrdgtohhmqeenucggtffrrghtthgvrhhnpeeiffdtvdfgtddvieetffduhfejtdef
-    teelkefgteekgeegffduiefhudeiveejkeenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehjuhhsthhinhesjhhushhtihhnfigvihhsshdrtgho
-    mhdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
-    hlrghniigrnhhordgrlhgvgiesghhmrghilhdrtghomhdprhgtphhtthhopehjihgtvdef
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlrghrshesmhgvthgrfhhoohdruggvpd
-    hrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdo
-    ughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepjhhushhtihhnsehjuhhsthhinhifvghishhsrdgtohhm
-    pdhrtghpthhtoheplhhinhhugidqihhiohesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopeguvghvihgtvghtrhgvvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:gPESZyMTv3w0kFAZg9NaaR4Bm7xMTp3lc51dih-u6Kfyxh7rIHfXvA>
-    <xmx:gPESZz9cFAM-XLnCOtYeY5eO80VM8JZklVFhCV10rt4rSQk9KM7D6Q>
-    <xmx:gPESZyV9hsdYZdnrfEVWuFZeV5mTbu5e44xhnmXX_K2XzsVb4d17ZA>
-    <xmx:gPESZ0cYbK8k6ogJg1nzqekDG8aw1-kNffQelw1tcnFgFhBCTEALEg>
-    <xmx:gPESZ2W4eqmaWdkdERYZFtHFWPi7Jyi6padZ4DbL-JAo3MnIO3aQOFNj>
-Feedback-ID: icf614246:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 18 Oct 2024 19:38:38 -0400 (EDT)
-From: Justin Weiss <justin@justinweiss.com>
-To: Alex Lanzano <lanzano.alex@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
+	s=arc-20240116; t=1729298243; c=relaxed/simple;
+	bh=PfaYoaaPCu5DWdfaaTW12VQJY6h3MD3ntyNmux/6daA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ciharSbb853aMxwfR/JYpIm01UBK3efcveTcBALA54yNldnDIi1V/hp1vK3O03AJ1F++6mdlSQnekrdLlOMOwZBrXgZKt1EzJpLGB09xOiI/BK1BZRnzo3G9CLEbGr5xEvU3+sbXW+z0FeJHb2lohwfOZ49n000ZNjBGYI13aos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gcv56uEv; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729298241; x=1760834241;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PfaYoaaPCu5DWdfaaTW12VQJY6h3MD3ntyNmux/6daA=;
+  b=gcv56uEva/ctlcfisaZHxrXvvu0APnuamyfhAUh3Jfzvx1YxkuMIcm14
+   GB/tP+4qx0qFnlb17rnW+WFVKAmCdG82AOXsayVk4I82LiAm3jH8zWyFC
+   lb5q+0R0NPVgKz868Jh/+b2cOxpQFXL+Ecf8iHYu/3s0gwt3BxvtE85ko
+   8L+J6bg8XVVGDobC4HAT0buGdXfWy5Lzb0wqaMOFH5ftzNtSvMkAbaEyT
+   PF13VZ+qrPi1Qk4oLEibUqoOuCamUfRbIpZ6Ao39MhB0jKZkJnK7JtI2w
+   18Y2v3gz6TnHjuvI6dZ0J4L6KdjMiCgvvvZ9xXvCN1GmFO28Sw7gcDKzp
+   g==;
+X-CSE-ConnectionGUID: P2Y5Ib0YQ0KooHhXYQO8/A==
+X-CSE-MsgGUID: x90PeKqvT3GUstjntTtZ6A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11229"; a="29054681"
+X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
+   d="scan'208";a="29054681"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2024 17:37:18 -0700
+X-CSE-ConnectionGUID: 6YMgxZiVR9emesg1GpNAHA==
+X-CSE-MsgGUID: 7zFAV9PvT6+fQq/pN8dEoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
+   d="scan'208";a="109771570"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 18 Oct 2024 17:37:13 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t1xSw-000OTl-3C;
+	Sat, 19 Oct 2024 00:37:10 +0000
+Date: Sat, 19 Oct 2024 08:36:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guillaume Stols <gstols@baylibre.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Justin Weiss <justin@justinweiss.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Derek J . Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>
-Subject: [PATCH v2 6/6] iio: imu: bmi270: Add scale and sampling frequency to BMI270 IMU
-Date: Fri, 18 Oct 2024 16:36:12 -0700
-Message-ID: <20241018233723.28757-7-justin@justinweiss.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241018233723.28757-1-justin@justinweiss.com>
-References: <20241018233723.28757-1-justin@justinweiss.com>
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	aardelean@baylibre.com, dlechner@baylibre.com,
+	jstephan@baylibre.com, nuno.sa@analog.com,
+	Guillaume Stols <gstols@baylibre.com>
+Subject: Re: [PATCH v5 7/8] iio: adc: ad7606: Add iio-backend support
+Message-ID: <202410190802.CLaySBOq-lkp@intel.com>
+References: <20241015-ad7606_add_iio_backend_support-v5-7-654faf1ae08c@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015-ad7606_add_iio_backend_support-v5-7-654faf1ae08c@baylibre.com>
 
-Add read and write functions and create _available entries.
+Hi Guillaume,
 
-Signed-off-by: Justin Weiss <justin@justinweiss.com>
----
- drivers/iio/imu/bmi270/bmi270_core.c | 338 +++++++++++++++++++++++++++
- 1 file changed, 338 insertions(+)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-index 69b011f97324..bc3604e66f85 100644
---- a/drivers/iio/imu/bmi270/bmi270_core.c
-+++ b/drivers/iio/imu/bmi270/bmi270_core.c
-@@ -7,6 +7,7 @@
- #include <linux/regmap.h>
- 
- #include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
- #include <linux/iio/triggered_buffer.h>
- #include <linux/iio/trigger_consumer.h>
- 
-@@ -35,6 +36,9 @@
- #define BMI270_ACC_CONF_BWP_NORMAL_MODE			0x02
- #define BMI270_ACC_CONF_FILTER_PERF_MSK			BIT(7)
- 
-+#define BMI270_ACC_CONF_RANGE_REG			0x41
-+#define BMI270_ACC_CONF_RANGE_MSK			GENMASK(1, 0)
-+
- #define BMI270_GYR_CONF_REG				0x42
- #define BMI270_GYR_CONF_ODR_MSK				GENMASK(3, 0)
- #define BMI270_GYR_CONF_ODR_200HZ			0x09
-@@ -43,6 +47,9 @@
- #define BMI270_GYR_CONF_NOISE_PERF_MSK			BIT(6)
- #define BMI270_GYR_CONF_FILTER_PERF_MSK			BIT(7)
- 
-+#define BMI270_GYR_CONF_RANGE_REG			0x43
-+#define BMI270_GYR_CONF_RANGE_MSK			GENMASK(2, 0)
-+
- #define BMI270_INIT_CTRL_REG				0x59
- #define BMI270_INIT_CTRL_LOAD_DONE_MSK			BIT(0)
- 
-@@ -96,6 +103,265 @@ const struct bmi270_chip_info bmi270_chip_info[] = {
- };
- EXPORT_SYMBOL_NS_GPL(bmi270_chip_info, IIO_BMI270);
- 
-+enum bmi270_sensor_type {
-+	BMI270_ACCEL	= 0,
-+	BMI270_GYRO,
-+};
-+
-+struct bmi270_scale {
-+	int scale;
-+	int uscale;
-+};
-+
-+struct bmi270_odr {
-+	int odr;
-+	int uodr;
-+};
-+
-+static const struct bmi270_scale bmi270_accel_scale[] = {
-+	{ 0, 598 },
-+	{ 0, 1197 },
-+	{ 0, 2394 },
-+	{ 0, 4788 },
-+};
-+
-+static const struct bmi270_scale bmi270_gyro_scale[] = {
-+	{ 0, 1065 },
-+	{ 0, 532 },
-+	{ 0, 266 },
-+	{ 0, 133 },
-+	{ 0, 66 },
-+};
-+
-+struct bmi270_scale_item {
-+	const struct bmi270_scale *tbl;
-+	int num;
-+};
-+
-+static const struct bmi270_scale_item bmi270_scale_table[] = {
-+	[BMI270_ACCEL] = {
-+		.tbl	= bmi270_accel_scale,
-+		.num	= ARRAY_SIZE(bmi270_accel_scale),
-+	},
-+	[BMI270_GYRO] = {
-+		.tbl	= bmi270_gyro_scale,
-+		.num	= ARRAY_SIZE(bmi270_gyro_scale),
-+	},
-+};
-+
-+static const struct bmi270_odr bmi270_accel_odr[] = {
-+	{ 0, 781250 },
-+	{ 1, 562500 },
-+	{ 3, 125000 },
-+	{ 6, 250000 },
-+	{ 12, 500000 },
-+	{ 25, 0 },
-+	{ 50, 0 },
-+	{ 100, 0 },
-+	{ 200, 0 },
-+	{ 400, 0 },
-+	{ 800, 0 },
-+	{ 1600, 0 },
-+};
-+
-+static const u8 bmi270_accel_odr_vals[] = {
-+	0x01,
-+	0x02,
-+	0x03,
-+	0x04,
-+	0x05,
-+	0x06,
-+	0x07,
-+	0x08,
-+	0x09,
-+	0x0A,
-+	0x0B,
-+	0x0C,
-+};
-+
-+static const struct bmi270_odr bmi270_gyro_odr[] = {
-+	{ 25, 0 },
-+	{ 50, 0 },
-+	{ 100, 0 },
-+	{ 200, 0 },
-+	{ 400, 0 },
-+	{ 800, 0 },
-+	{ 1600, 0 },
-+	{ 3200, 0 },
-+};
-+
-+static const u8 bmi270_gyro_odr_vals[] = {
-+	0x06,
-+	0x07,
-+	0x08,
-+	0x09,
-+	0x0A,
-+	0x0B,
-+	0x0C,
-+	0x0D,
-+};
-+
-+struct bmi270_odr_item {
-+	const struct bmi270_odr *tbl;
-+	const u8 *vals;
-+	int num;
-+};
-+
-+static const struct  bmi270_odr_item bmi270_odr_table[] = {
-+	[BMI270_ACCEL] = {
-+		.tbl	= bmi270_accel_odr,
-+		.vals   = bmi270_accel_odr_vals,
-+		.num	= ARRAY_SIZE(bmi270_accel_odr),
-+	},
-+	[BMI270_GYRO] = {
-+		.tbl	= bmi270_gyro_odr,
-+		.vals   = bmi270_gyro_odr_vals,
-+		.num	= ARRAY_SIZE(bmi270_gyro_odr),
-+	},
-+};
-+
-+static int bmi270_set_scale(struct bmi270_data *data,
-+			    int chan_type, int uscale)
-+{
-+	int i;
-+	int reg, mask;
-+	struct bmi270_scale_item bmi270_scale_item;
-+
-+	switch (chan_type) {
-+	case IIO_ACCEL:
-+		reg = BMI270_ACC_CONF_RANGE_REG;
-+		mask = BMI270_ACC_CONF_RANGE_MSK;
-+		bmi270_scale_item = bmi270_scale_table[BMI270_ACCEL];
-+		break;
-+	case IIO_ANGL_VEL:
-+		reg = BMI270_GYR_CONF_RANGE_REG;
-+		mask = BMI270_GYR_CONF_RANGE_MSK;
-+		bmi270_scale_item = bmi270_scale_table[BMI270_GYRO];
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	for (i = 0; i < bmi270_scale_item.num; i++) {
-+		if (bmi270_scale_item.tbl[i].uscale != uscale)
-+			continue;
-+
-+		return regmap_update_bits(data->regmap, reg, mask, i);
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int bmi270_get_scale(struct bmi270_data *bmi270_device,
-+			    int chan_type, int *uscale)
-+{
-+	int ret;
-+	unsigned int val;
-+	struct bmi270_scale_item bmi270_scale_item;
-+
-+	switch (chan_type) {
-+	case IIO_ACCEL:
-+		ret = regmap_read(bmi270_device->regmap,
-+				  BMI270_ACC_CONF_RANGE_REG, &val);
-+		if (ret)
-+			return ret;
-+
-+		val = FIELD_GET(BMI270_ACC_CONF_RANGE_MSK, val);
-+		bmi270_scale_item = bmi270_scale_table[BMI270_ACCEL];
-+		break;
-+	case IIO_ANGL_VEL:
-+		ret = regmap_read(bmi270_device->regmap,
-+				  BMI270_GYR_CONF_RANGE_REG, &val);
-+		if (ret)
-+			return ret;
-+
-+		val = FIELD_GET(BMI270_GYR_CONF_RANGE_MSK, val);
-+		bmi270_scale_item = bmi270_scale_table[BMI270_GYRO];
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (val >= bmi270_scale_item.num)
-+		return -EINVAL;
-+
-+	*uscale = bmi270_scale_item.tbl[val].uscale;
-+	return 0;
-+}
-+
-+static int bmi270_set_odr(struct bmi270_data *data, int chan_type,
-+			  int odr, int uodr)
-+{
-+	int i;
-+	int reg, mask;
-+	struct bmi270_odr_item bmi270_odr_item;
-+
-+	switch (chan_type) {
-+	case IIO_ACCEL:
-+		reg = BMI270_ACC_CONF_REG;
-+		mask = BMI270_ACC_CONF_ODR_MSK;
-+		bmi270_odr_item = bmi270_odr_table[BMI270_ACCEL];
-+		break;
-+	case IIO_ANGL_VEL:
-+		reg = BMI270_GYR_CONF_REG;
-+		mask = BMI270_GYR_CONF_ODR_MSK;
-+		bmi270_odr_item = bmi270_odr_table[BMI270_GYRO];
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	for (i = 0; i < bmi270_odr_item.num; i++) {
-+		if (bmi270_odr_item.tbl[i].odr != odr ||
-+		    bmi270_odr_item.tbl[i].uodr != uodr)
-+			continue;
-+
-+		return regmap_update_bits(data->regmap, reg, mask,
-+					  bmi270_odr_item.vals[i]);
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int bmi270_get_odr(struct bmi270_data *data, int chan_type,
-+			  int *odr, int *uodr)
-+{
-+	int i, val, ret;
-+	struct bmi270_odr_item bmi270_odr_item;
-+
-+	switch (chan_type) {
-+	case IIO_ACCEL:
-+		ret = regmap_read(data->regmap, BMI270_ACC_CONF_REG, &val);
-+		if (ret)
-+			return ret;
-+
-+		val = FIELD_GET(BMI270_ACC_CONF_ODR_MSK, val);
-+		bmi270_odr_item = bmi270_odr_table[BMI270_ACCEL];
-+		break;
-+	case IIO_ANGL_VEL:
-+		ret = regmap_read(data->regmap, BMI270_GYR_CONF_REG, &val);
-+		if (ret)
-+			return ret;
-+
-+		val = FIELD_GET(BMI270_GYR_CONF_ODR_MSK, val);
-+		bmi270_odr_item = bmi270_odr_table[BMI270_GYRO];
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	for (i = 0; i < bmi270_odr_item.num; i++) {
-+		if (val != bmi270_odr_item.vals[i])
-+			continue;
-+
-+		*odr = bmi270_odr_item.tbl[i].odr;
-+		*uodr = bmi270_odr_item.tbl[i].uodr;
-+		return 0;
-+	}
-+
-+	return -EINVAL;
-+}
-+
- static irqreturn_t bmi270_trigger_handler(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
-@@ -158,6 +424,70 @@ static int bmi270_read_raw(struct iio_dev *indio_dev,
- 			return ret;
- 
- 		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = 0;
-+		ret = bmi270_get_scale(bmi270_device, chan->type, val2);
-+		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = bmi270_get_odr(bmi270_device, chan->type, val, val2);
-+		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int bmi270_write_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val, int val2, long mask)
-+{
-+	struct bmi270_data *data = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		return bmi270_set_scale(data, chan->type, val2);
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return bmi270_set_odr(data, chan->type, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int bmi270_read_avail(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     const int **vals, int *type, int *length,
-+			     long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		switch (chan->type) {
-+		case IIO_ANGL_VEL:
-+			*vals = (const int *)bmi270_gyro_scale;
-+			*length = ARRAY_SIZE(bmi270_gyro_scale) * 2;
-+			return IIO_AVAIL_LIST;
-+		case IIO_ACCEL:
-+			*vals = (const int *)bmi270_accel_scale;
-+			*length = ARRAY_SIZE(bmi270_accel_scale) * 2;
-+			return IIO_AVAIL_LIST;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		switch (chan->type) {
-+		case IIO_ANGL_VEL:
-+			*vals = (const int *)bmi270_gyro_odr;
-+			*length = ARRAY_SIZE(bmi270_gyro_odr) * 2;
-+			return IIO_AVAIL_LIST;
-+		case IIO_ACCEL:
-+			*vals = (const int *)bmi270_accel_odr;
-+			*length = ARRAY_SIZE(bmi270_accel_odr) * 2;
-+			return IIO_AVAIL_LIST;
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -165,6 +495,8 @@ static int bmi270_read_raw(struct iio_dev *indio_dev,
- 
- static const struct iio_info bmi270_info = {
- 	.read_raw = bmi270_read_raw,
-+	.write_raw = bmi270_write_raw,
-+	.read_avail = bmi270_read_avail,
- };
- 
- #define BMI270_ACCEL_CHANNEL(_axis) {				\
-@@ -174,6 +506,9 @@ static const struct iio_info bmi270_info = {
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
- 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
-+	.info_mask_shared_by_type_available =			\
-+		BIT(IIO_CHAN_INFO_SCALE) |			\
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
- 	.scan_index = BMI270_SCAN_ACCEL_##_axis,		\
- 	.scan_type = {						\
- 		.sign = 's',					\
-@@ -190,6 +525,9 @@ static const struct iio_info bmi270_info = {
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
- 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
-+	.info_mask_shared_by_type_available =			\
-+		BIT(IIO_CHAN_INFO_SCALE) |			\
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
- 	.scan_index = BMI270_SCAN_GYRO_##_axis,			\
- 	.scan_type = {						\
- 		.sign = 's',					\
+[auto build test WARNING on 465644ac29536d10178b5ca4684d0b84765b9fa4]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Guillaume-Stols/dt-bindings-iio-adc-ad7606-Remove-spi-cpha-from-required/20241015-215831
+base:   465644ac29536d10178b5ca4684d0b84765b9fa4
+patch link:    https://lore.kernel.org/r/20241015-ad7606_add_iio_backend_support-v5-7-654faf1ae08c%40baylibre.com
+patch subject: [PATCH v5 7/8] iio: adc: ad7606: Add iio-backend support
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20241019/202410190802.CLaySBOq-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241019/202410190802.CLaySBOq-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410190802.CLaySBOq-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/iio/adc/ad7606_par.c:173:22: warning: unused variable 'back' [-Wunused-variable]
+     173 |         struct iio_backend *back;
+         |                             ^~~~
+   1 warning generated.
+
+
+vim +/back +173 drivers/iio/adc/ad7606_par.c
+
+   164	
+   165	static int ad7606_par_probe(struct platform_device *pdev)
+   166	{
+   167		const struct ad7606_chip_info *chip_info;
+   168		const struct platform_device_id *id;
+   169		struct resource *res;
+   170		void __iomem *addr;
+   171		resource_size_t remap_size;
+   172		int irq;
+ > 173		struct iio_backend *back;
+   174	
+   175		/*
+   176		 * If a firmware node is available (ACPI or DT), platform_device_id is null
+   177		 * and we must use get_match_data.
+   178		 */
+   179		if (dev_fwnode(&pdev->dev)) {
+   180			chip_info = device_get_match_data(&pdev->dev);
+   181			if (device_property_present(&pdev->dev, "io-backends"))
+   182				/*
+   183				 * If a backend is available ,call the core probe with backend
+   184				 * bops, otherwise use the former bops.
+   185				 */
+   186				return ad7606_probe(&pdev->dev, 0, NULL,
+   187						    chip_info,
+   188						    &ad7606_bi_bops);
+   189		} else {
+   190			id = platform_get_device_id(pdev);
+   191			chip_info = (const struct ad7606_chip_info *)id->driver_data;
+   192		}
+   193	
+   194		irq = platform_get_irq(pdev, 0);
+   195		if (irq < 0)
+   196			return irq;
+   197	
+   198		addr = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+   199		if (IS_ERR(addr))
+   200			return PTR_ERR(addr);
+   201	
+   202		remap_size = resource_size(res);
+   203	
+   204		return ad7606_probe(&pdev->dev, irq, addr, chip_info,
+   205				    remap_size > 1 ? &ad7606_par16_bops :
+   206				    &ad7606_par8_bops);
+   207	}
+   208	
+
 -- 
-2.47.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

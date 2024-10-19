@@ -1,56 +1,58 @@
-Return-Path: <linux-iio+bounces-10792-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10793-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD39A9A4EB1
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 16:34:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DBE9A4EB9
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 16:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 084231C23147
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 14:34:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E66DB288127
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 14:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D19477F1B;
-	Sat, 19 Oct 2024 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FF813635F;
+	Sat, 19 Oct 2024 14:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oB3ayMje"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZH8rXmOB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CDE28F1;
-	Sat, 19 Oct 2024 14:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2131B20E31D;
+	Sat, 19 Oct 2024 14:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729348469; cv=none; b=XSz/Ikha7wlFO+ZzI73mcTFSDgbRJ2d/qJWNbZVPVCu4edyVhz7D5vbXWqRvHK9/KjN7zQlaY9TCv679wpDkfgJ4H1pPxeOY7GWeQVnDWjJa0DWbbfpSknOskm6G20vmfWaWhX8XmLGzNedIHoedsP6ERy27zzIMXUAHedZiHnA=
+	t=1729348769; cv=none; b=FXS+2p+W61MhHL/rQE4kpMJpVv+gVZLRsQ4I5J6d8sWXHY0jSME+F+EM4BudFg+qXwJhvdVfN4LlzW2wbUmTtOpH8A55WxEUbZw95Hbcq13mMmF0h5uU5cO9sx1iafBuTSOrS5J/SYGNt0Ycgphis/EXXbGYxZuNltjxpm6NZgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729348469; c=relaxed/simple;
-	bh=EN2pJm8CsnqE5Nqnwx01B6lZEI8XjbHkYX+r0Te3o+Y=;
+	s=arc-20240116; t=1729348769; c=relaxed/simple;
+	bh=81/ghkAOqgeLnz35EXcMjWBh9WQm0EeXKaLcwBuu/8w=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SFJG0CJCLM9yOequaj7LVhbgnmtr46ILUcu5YNj+3Q3Ui2FVDL5t9OC9o2kX4xiEcbDDdtU+OOj4UWhvgZtbjtbqjVnkv6eW/21FtmLD/Dk8Jtc6NPjWoSFpH4RsFVuCxCV7WmNT/ycnICN2SMk8uugIQIJnzP8geFUB7V9weNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oB3ayMje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49B9C4CEC5;
-	Sat, 19 Oct 2024 14:34:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HT6+3KNZ2X6tAofB5BhlT/cTHc/nAde8Vd6bXsIdjGJAqfcq56bl1gyyd3VhyTRbUD/L+nS0RSeYcXk0Cjef2S18r5JHLIBRD3M3lhgRsjtLqC3b4++09i5PHCV/ELcLNiGmcYU1xh/n4aXRnq20M5RuYrjsTw2besO6m0/AhU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZH8rXmOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB06C4CEC5;
+	Sat, 19 Oct 2024 14:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729348468;
-	bh=EN2pJm8CsnqE5Nqnwx01B6lZEI8XjbHkYX+r0Te3o+Y=;
+	s=k20201202; t=1729348768;
+	bh=81/ghkAOqgeLnz35EXcMjWBh9WQm0EeXKaLcwBuu/8w=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oB3ayMjeIakUXhrSgPyVyCClsu2ylGaxMtwmrpyhvBEOsijT6rP+ngZA+bE5aPyL8
-	 DArGsFfCn3eh7tTPb8A2ew/Y4JnVSBjyL/USfA4KmAWIzzqHfsh4r2cHhaLZYJT1Rd
-	 STXNir8WPdpoWjKQJtTgCVpyMlgCmRGVkfczQi8s26BYuwUZ1qdsxuHn3txT1Oe66B
-	 dUmmSNh7JYQSUGwmnMWo9GBacvIXY2XuWEPKywqXglPQrEk1cf7N3q+GNwJrE8uqys
-	 xEwBfpCWdUHNy04EDf6KN2AUiZvpAt0hIa/xNBcJ48WShFyAgHMot58SBOqwXG/k5l
-	 r69JjaMj8sgCg==
-Date: Sat, 19 Oct 2024 15:33:59 +0100
+	b=ZH8rXmOBb6jVVc+F9rJKG75/ImbMTrNvM6UMJMOMmfZ6ZtHr1+qZO9eTSdVxFP8nZ
+	 awMNWJ4r9qixwgqwqjq/G4Kmz7Oh1BZmMGu7VEPojyD6EfIjGzWT2SvnYdwTuRqqxy
+	 Tpm7UfuMQoTtnlwffSc4Tpreh5BEioU43fM8q8M/oOElrDbJhoA99bUzPus4JM9oPf
+	 mmVPgamTbXJdYCouKKcOB94OjlCGiSfkQISBFvllHXq5+ENTNSU5K1blzrw67maC46
+	 jECOfhTGgrYoN1MZ1AtrdOQI/+c2nDJndEpMQ5ZnGihW01dc+NHkrFpuNLBKhGXrdG
+	 OSmgTB/7BgRsg==
+Date: Sat, 19 Oct 2024 15:39:12 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rishi Gupta <gupt21@gmail.com>,
+To: Jean-Baptiste Maneyrol via B4 Relay
+ <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Cc: jean-baptiste.maneyrol@tdk.com, Lars-Peter Clausen <lars@metafoo.de>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: light: veml6030: fix microlux value calculation
-Message-ID: <20241019153359.43f0c1af@jic23-huawei>
-In-Reply-To: <20241016-veml6030-fix-processed-micro-v1-1-4a5644796437@gmail.com>
-References: <20241016-veml6030-fix-processed-micro-v1-1-4a5644796437@gmail.com>
+Subject: Re: [PATCH] iio: invensense: fix multiple odr switch when FIFO is
+ off
+Message-ID: <20241019153912.43e050a0@jic23-huawei>
+In-Reply-To: <20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com>
+References: <20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,68 +60,126 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 16 Oct 2024 19:04:31 +0200
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Thu, 17 Oct 2024 16:06:28 +0200
+Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com=
+@kernel.org> wrote:
 
-> The raw value conversion to obtain a measurement in lux as
-> INT_PLUS_MICRO does not calculate the decimal part properly to display
-> it as micro (in this case microlux). It only calculates the module to
-> obtain the decimal part from a resolution that is 10000 times the
-> provided in the datasheet (0.5376 lux/cnt for the veml6030). The
-> resulting value must still be multiplied by 100 to make it micro.
-> 
-> This bug was introduced with the original implementation of the driver.
-> 
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+>=20
+> When multiple ODR switch happens during FIFO off, the change could
+> not be taken into account if you get back to previous FIFO on value.
+> For example, if you run sensor buffer at 50Hz, stop, change to
+> 200Hz, then back to 50Hz and restart buffer, data will be timestamped
+> at 200Hz. This due to testing against mult and not new_mult.
+>=20
+> To prevent this, let's just run apply_odr automatically when FIFO is
+> off. It will also simplify driver code.
+>=20
+> Update inv_mpu6050 and inv_icm42600 to delete now useless apply_odr.
+>=20
+> Fixes: 95444b9eeb8c ("iio: invensense: fix odr switching to same value")
 > Cc: stable@vger.kernel.org
-> Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Applied to the fixes-togreg branch of iio.git.
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-Thanks,
+In at least some of the cases ts is no longer used:
 
-Jonathan
+  CHECK   drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c: In function =E2=80=98inv_=
+icm42600_gyro_update_scan_mode=E2=80=99:
+drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c:103:39: warning: unused va=
+riable =E2=80=98ts=E2=80=99 [-Wunused-variable]
+  103 |         struct inv_sensors_timestamp *ts =3D &gyro_st->ts;
+      |                                       ^~
+drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c: In function =E2=80=98inv=
+_icm42600_accel_update_scan_mode=E2=80=99:
+drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c:203:39: warning: unused v=
+ariable =E2=80=98ts=E2=80=99 [-Wunused-variable]
+  203 |         struct inv_sensors_timestamp *ts =3D &accel_st->ts;
+      |                                       ^~
+
+So drop those as well for v2.
+
 
 > ---
-> I found this almost by chance while testing new supported devices. The
-> decimal part was always suspiciously small, and when I compared samples
-> to the expected value according to the datasheet, it became clear what was
-> going on.
-> 
-> Example with a veml7700 (same resolution as the veml6030):
-> 
-> Resolution for gain = 1/8, IT = 100 ms: 0.5736 lux/cnt.
-> 
-> cat in_illuminance_raw in_illuminance_input
-> 40
-> 21.005040 -> wrong! 40 * 0.5736 is 21.504.
-> 
-> Tested with a veml6035 and a veml7700, the same will happen with the
-> original veml6030, as the operation is identical for all devices.
+>  drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 4 ++++
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c      | 1 -
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c       | 1 -
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c          | 1 -
+>  4 files changed, 4 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/dri=
+vers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> index f44458c380d92823ce2e7e5f78ca877ea4c06118..37d0bdaa8d824f79dcd2f341b=
+e7501d249926951 100644
+> --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> @@ -70,6 +70,10 @@ int inv_sensors_timestamp_update_odr(struct inv_sensor=
+s_timestamp *ts,
+>  	if (mult !=3D ts->mult)
+>  		ts->new_mult =3D mult;
+> =20
+> +	/* When FIFO is off, directly apply the new ODR */
+> +	if (!fifo)
+> +		inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
+> +
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_update_odr, IIO_INV_SENSORS_T=
+IMESTAMP);
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/=
+iio/imu/inv_icm42600/inv_icm42600_accel.c
+> index 56ac198142500a2e1fc40b62cdd465cc736d8bf0..d061a64ebbf71859a3bc44644=
+a14137dff0f9efe 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+> @@ -229,7 +229,6 @@ static int inv_icm42600_accel_update_scan_mode(struct=
+ iio_dev *indio_dev,
+>  	}
+> =20
+>  	/* update data FIFO write */
+> -	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
+>  	ret =3D inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+> =20
+>  out_unlock:
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/i=
+io/imu/inv_icm42600/inv_icm42600_gyro.c
+> index 938af5b640b00f58d2b8185f752c4755edfb0d25..f1e5a9648c4f5dd34f40136d0=
+2c72c90473eff37 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+> @@ -128,7 +128,6 @@ static int inv_icm42600_gyro_update_scan_mode(struct =
+iio_dev *indio_dev,
+>  	}
+> =20
+>  	/* update data FIFO write */
+> -	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
+>  	ret =3D inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+> =20
+>  out_unlock:
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/=
+imu/inv_mpu6050/inv_mpu_trigger.c
+> index 3bfeabab0ec4f6fa28fbbcd47afe92af5b8a58e2..5b1088cc3704f1ad1288a0d65=
+b2f957b91455d7f 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> @@ -112,7 +112,6 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state=
+ *st, bool enable)
+>  	if (enable) {
+>  		/* reset timestamping */
+>  		inv_sensors_timestamp_reset(&st->timestamp);
+> -		inv_sensors_timestamp_apply_odr(&st->timestamp, 0, 0, 0);
+>  		/* reset FIFO */
+>  		d =3D st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
+>  		ret =3D regmap_write(st->map, st->reg->user_ctrl, d);
+>=20
 > ---
->  drivers/iio/light/veml6030.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> index d6f3b104b0e6..a0bf03e37df7 100644
-> --- a/drivers/iio/light/veml6030.c
-> +++ b/drivers/iio/light/veml6030.c
-> @@ -691,7 +691,7 @@ static int veml6030_read_raw(struct iio_dev *indio_dev,
->  			}
->  			if (mask == IIO_CHAN_INFO_PROCESSED) {
->  				*val = (reg * data->cur_resolution) / 10000;
-> -				*val2 = (reg * data->cur_resolution) % 10000;
-> +				*val2 = (reg * data->cur_resolution) % 10000 * 100;
->  				return IIO_VAL_INT_PLUS_MICRO;
->  			}
->  			*val = reg;
-> 
-> ---
-> base-commit: 15e7d45e786a62a211dd0098fee7c57f84f8c681
-> change-id: 20241016-veml6030-fix-processed-micro-616d00d555dc
-> 
+> base-commit: c3e9df514041ec6c46be83801b1891392f4522f7
+> change-id: 20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-3f2911=
+0e95d0
+>=20
 > Best regards,
 
 

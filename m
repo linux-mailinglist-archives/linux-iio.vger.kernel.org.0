@@ -1,58 +1,60 @@
-Return-Path: <linux-iio+bounces-10780-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10781-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E2B9A4E63
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 15:49:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062179A4E6E
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 15:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90B491C21906
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 13:49:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA5702864F5
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 13:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDE028366;
-	Sat, 19 Oct 2024 13:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33F62B9D2;
+	Sat, 19 Oct 2024 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fa8Kj6J0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Obc6rqY2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74258C153;
-	Sat, 19 Oct 2024 13:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC172F3E;
+	Sat, 19 Oct 2024 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729345761; cv=none; b=adBGSbRUFmQEbYF770amH1XpdZqUiUAS5mc8fYIkLmQCLXvxwNRuMaCoAg7ndR6AOE2zhHoA2Eq058XGskjeXD8pbGfBLYJf2CA+HcHlufCbSmYTCfIguNrB63TVofjTTrJp49sB+BKIaFRrfxpxT4IxT0YomVSOfHCW/0vBluQ=
+	t=1729346127; cv=none; b=Q+6ARyGP0RGFY8I6Phn6D2B4XxiAt9CP9MSimYRP3cTc5AYzV4O2d2BKk4rHeNMSRxJDocWlSUfhlKIW+C0aXdJXOWz9vE5UhnEfnb3NB20O6Qwq8CEC+uy9sZ04Dhp5aHzJCGZA6zYkAYHjxWlYUaYpoy1aaJi1DqCc0D26Z7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729345761; c=relaxed/simple;
-	bh=JqD4UEmY84yK9GwSLt3rLagkP2TW8IsPUxluCAO3+/o=;
+	s=arc-20240116; t=1729346127; c=relaxed/simple;
+	bh=zumrPbhqF+Wg2/vD3Uex3r2TyNNpKk7KfAyiRdrjxT0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aPPebgJwGTLLSPdixy8MjqYIjqPuU0jE+PLthPnyHJZNWBPM6fw6nym7MQr4i5ixV5NdL0akgRGYl49DhPpGdXdsotdgQCbV2mMkz3F8HAa/hTPHS2qq/KjhlB9e4MrQeoHKGdFYJXWL7OSr51DAetcNdyQDrmKzgjFsEfDjGok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fa8Kj6J0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471B0C4CEC5;
-	Sat, 19 Oct 2024 13:49:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=duby+iHLR3ZFKGEpJuWXTDLZ7M3jFi+3Wn7i/Glp5D4BQSxqgtPSkdvqekg2OANfFnwuAj/iYWR8foP4/QHrv7olTDw0lwbn4b9NKt1JSB1kvqCIzA+OXa3HCPx8b2EdUu4nnCQMoJ4bYFCZoAbesJln3PK7V5pgYKZ9QBecTkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Obc6rqY2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997C7C4CEC5;
+	Sat, 19 Oct 2024 13:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729345761;
-	bh=JqD4UEmY84yK9GwSLt3rLagkP2TW8IsPUxluCAO3+/o=;
+	s=k20201202; t=1729346127;
+	bh=zumrPbhqF+Wg2/vD3Uex3r2TyNNpKk7KfAyiRdrjxT0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Fa8Kj6J0IF9TgU3/oG4WefEo5nQJ+2aX76iZeKlRPNpdxfk0V4xMCtyPu/diJaXa4
-	 ZXx/e1Olu7XfLw/Van1eLNTLI+ZMrhw2V6+R3gLYRYGvG06ExjiU9kqWXJYZRMiVmP
-	 CNw51LDV3C6xPKLtl+RAJx1m1jWqjOhC/WMFXiBxgEfTE4z6IFMgsqxfn7S9/ILFfb
-	 xI2n0Dx8tZ6AKtDsLW8ChRSyPVGGguicKMBLwXabUlZO0bT5TAZBD7D21Bz2X3QB+u
-	 SMa2kCF4y9eedYHrEUnMGuISd55dpfcPPtifZIx63AZLu9X4gJxfEPP32a3q2aT1Fn
-	 aaPpmpQ8zEL3w==
-Date: Sat, 19 Oct 2024 14:49:12 +0100
+	b=Obc6rqY2ShEaFb5QMUfeYMLUyho5V3YwN17VaTs8iFSpALGGHmesL7A/T05udpH0U
+	 XZ9JPFl8Lcot3yF4GffKv1cXX1D4sOQX8GZNSEIld5HfGj6vU0+G5n2F1TaM1HBRAB
+	 PCwc2obv/eC40bhtwnsgJ4BobsGInge5fW8l9Fj9VSRI506LqtWv9CPaDH/dP8Pa6i
+	 QhIiFsW7Zfik1PhEF2wO/bkWYxqhSnUK7wUX+xeICzJyaL/sNXOaR3goG1Ieu2dF/F
+	 e0OuODziC7jwb8WOwtK7HLsnARO/iJQjZmkXM3CxD/1UhovyBqhgJRukLVi+ndj9j3
+	 rBw/9Lud4+w9g==
+Date: Sat, 19 Oct 2024 14:55:07 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <robh@kernel.org>, <krzk+dt@kernel.org>, <nuno.sa@analog.com>,
- <conor+dt@kernel.org>, <ukleinek@kernel.org>, <dragos.bogdan@analog.com>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH v4 6/6] iio: adc: ad4851: add ad485x driver
-Message-ID: <20241019144912.697d9d29@jic23-huawei>
-In-Reply-To: <20241018104210.51659-6-antoniu.miclaus@analog.com>
-References: <20241018104210.51659-1-antoniu.miclaus@analog.com>
-	<20241018104210.51659-6-antoniu.miclaus@analog.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
+ ang.iglesiasg@gmail.com, ajarizzo@gmail.com, biju.das.jz@bp.renesas.com,
+ linus.walleij@linaro.org, semen.protsenko@linaro.org, 579lpy@gmail.com,
+ ak@it-klinger.de, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 0/4] pressure: bmp280: Minor cleanup and interrupt
+ support
+Message-ID: <20241019145507.3a9a8956@jic23-huawei>
+In-Reply-To: <20241017233022.238250-1-vassilisamir@gmail.com>
+References: <20241017233022.238250-1-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,94 +65,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 18 Oct 2024 13:42:10 +0300
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Fri, 18 Oct 2024 01:30:18 +0200
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Add support for the AD485X a fully buffered, 8-channel simultaneous
-> sampling, 16/20-bit, 1 MSPS data acquisition system (DAS) with
-> differential, wide common-mode range inputs.
+> Changes in v9:
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> PATCH 1/4:
+> 	- fixed warning of uninitialized variable that was generated by
+> 	  the kernel test robot in v8.
+> 
+> PATCH 4/4:
+> 	- Remove extra lock and unneeded reenable function since the irq is
+> 	  being reset on the first read in the irq handler.
 
-A few minor things from me that I could fix whilst applying,
-but David gave a much more detailed review of v3, so I'll wait
-for his feedback on this.  I haven't dug into datasheets much and
-may well have missed other things.
+Applied to the togreg branch of iio.git and pushed out as testing for the normal reasons.
 
->  obj-$(CONFIG_AD7091R8) += ad7091r8.o
-> diff --git a/drivers/iio/adc/ad4851.c b/drivers/iio/adc/ad4851.c
-> new file mode 100644
-> index 000000000000..65aa434b535f
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad4851.c
-> @@ -0,0 +1,1155 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Analog Devices AD4851 DAS driver
-> + *
-> + * Copyright 2024 Analog Devices Inc.
-> + */
-> +
-> +#include <linux/array_size.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/delay.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/minmax.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/pwm.h>
-> +#include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/types.h>
-> +#include <linux/units.h>
-> +
-> +#include <linux/iio/backend.h>
-> +#include <linux/iio/iio.h>
-> +
-> +#include <asm/unaligned.h>
-This moved. I can fix up whilst applying but it is now at linux/unaligned.h
-as of rc2.
+Note I'll probably rebase that tree in a few days to pick up some precusor fixes needed
+for another series.
 
+Jonathan
 
+> 
+> ---
+> v8: https://lore.kernel.org/linux-iio/20241007194945.66192-1-vassilisamir@gmail.com
+> v7: https://lore.kernel.org/linux-iio/20240914002900.45158-1-vassilisamir@gmail.com
+> v6: https://lore.kernel.org/linux-iio/20240912233234.45519-1-vassilisamir@gmail.com
+> v5: https://lore.kernel.org/linux-iio/20240902184222.24874-1-vassilisamir@gmail.com
+> v4: https://lore.kernel.org/linux-iio/20240828205128.92145-1-vassilisamir@gmail.com
+> v3: https://lore.kernel.org/linux-iio/20240823181714.64545-1-vassilisamir@gmail.com
+> v2: https://lore.kernel.org/linux-iio/20240725231039.614536-1-vassilisamir@gmail.com
+> v1: https://lore.kernel.org/linux-iio/20240711211558.106327-1-vassilisamir@gmail.com
+> 
+> Vasileios Amoiridis (4):
+>   iio: pressure: bmp280: Use sleep and forced mode for oneshot captures
+>   dt-bindings: iio: pressure: bmp085: Add interrupts for BMP3xx and
+>     BMP5xx devices
+>   iio: pressure: bmp280: Add data ready trigger support
+>   iio: pressure: bmp280: Move bmp085 interrupt to new configuration
+> 
+>  .../bindings/iio/pressure/bmp085.yaml         |  22 +-
+>  drivers/iio/pressure/bmp280-core.c            | 536 ++++++++++++++++--
+>  drivers/iio/pressure/bmp280-i2c.c             |   4 +-
+>  drivers/iio/pressure/bmp280-spi.c             |   4 +-
+>  drivers/iio/pressure/bmp280.h                 |  43 ++
+>  5 files changed, 568 insertions(+), 41 deletions(-)
+> 
 
-> +static int ad4851_get_calibscale(struct ad4851_state *st, int ch, int *val, int *val2)
-> +{
-> +	unsigned int reg_val;
-> +	int gain;
-> +	int ret;
-> +
-> +	guard(mutex)(&st->lock);
-> +
-> +	ret = regmap_read(st->regmap, AD4851_REG_CHX_GAIN_MSB(ch),
-> +			  &reg_val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	gain = (reg_val & 0xFF) << 8;
-
-The register size is 8 bits, so I'm not sure what that masking is adding.
-	gain = reg_val << 8; should be fine.  Maybe the compiler or some
-static analysis is wrong?
-
-> +
-> +	ret = regmap_read(st->regmap, AD4851_REG_CHX_GAIN_LSB(ch),
-> +			  &reg_val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	gain |= reg_val & 0xFF;
-
-same here.
-
-> +
-> +	*val = gain;
-> +	*val2 = 32768;
-> +
-> +	return IIO_VAL_FRACTIONAL;
-> +}
-> +
 

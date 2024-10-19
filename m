@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-10768-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10769-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C129A4D1B
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 13:30:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FB19A4D1D
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 13:33:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5B86283C2F
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 11:30:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022591F228C8
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 11:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FE71DFD84;
-	Sat, 19 Oct 2024 11:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238D11DF752;
+	Sat, 19 Oct 2024 11:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gM/4Ogvw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BijMo7lN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7661DE8AE;
-	Sat, 19 Oct 2024 11:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B1818FDA3;
+	Sat, 19 Oct 2024 11:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729337415; cv=none; b=hYRrOLBGb9sJeM4oVowrObe3Evmn96a+fSR3oQTHU1/1PKF8t/qeFIfUegTtc2wPj70/0zfblrr8AnPvMxEecZ1QlAz6B0fVxziPFvISYFYA5N3n5GwT2WAJoD3j5km5MBKuZsFl+IGFRc4nSVgYBs6nukAwSZFoOoSkH6N2aCU=
+	t=1729337628; cv=none; b=oq7u8KpGLKqJfbOn+36sjvZBFzsAJrH2NycrJITcUrz+CvhjzglFWhNDfhodpJGM+rOzBQg7QhXNHO4qzh/ChpMnrxtn2SGAKFCxZkdkKurVhC9W4cdNLVA/062D1CizC/Qfk6qycwVZMwSrIvXq4HFpWuasQYve2S9fJa9HJ9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729337415; c=relaxed/simple;
-	bh=f4hvk3RHnG/3sXHIgPWKeaVEnM6TqEIkzeccwqLYhfA=;
+	s=arc-20240116; t=1729337628; c=relaxed/simple;
+	bh=20C8vmgTvtwj+pWKXsdakfN0BlXeXYFDm08Ta84e6Xc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NsB+oFj7jqHh7jRaKwPoe/ZkI65wV4LvVohiSDLYmpJ5PgqKHQHOeKfdBMRty5JXdxqw2ZnCoEmo4ZdemyfUd7ZUZIuGnDWxvYBiCYOiGFC3ljkwgvMmhlo6bRw7ddaUTllGTr1rHzCTHZgUunFoiclQFqBYnc5uFnW7O/aho4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gM/4Ogvw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A602FC4CEC5;
-	Sat, 19 Oct 2024 11:30:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fspRC3mGW5ICMrPX4bC7V+omR1aroxh0LX4jtjHVpHkeiIKh2vsSuYsYMcl9/Z9Z9mBtiYsr65mndxvYlN2WokuowBNZNNeHNiTq+9sJkpvyr+dH8R2IVDTg+L1K2cCPo+Hq6aea3PBM2cDKZKS0nVf3XHBSofegpW/pIXUiAYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BijMo7lN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1F3C4CEC5;
+	Sat, 19 Oct 2024 11:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729337414;
-	bh=f4hvk3RHnG/3sXHIgPWKeaVEnM6TqEIkzeccwqLYhfA=;
+	s=k20201202; t=1729337628;
+	bh=20C8vmgTvtwj+pWKXsdakfN0BlXeXYFDm08Ta84e6Xc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gM/4OgvwrIq/erzS+1h/Qu+aQVNwfHrvFnkyUf3hWWMNxTT/jCemSaA04f/vYs9LY
-	 AWdk4INN18PzqVdHh8nF87FOlZzhURCtGok2qc6YTvqNdYdHi9Z3C8BD+Qf7VZr83X
-	 6DIBjDwluzWwGBxnrIXeItGRh7GzreZJHFV/Y/PfAXBIE67bB5EpEx8DGDX20ZTmN5
-	 6GlQFhDAEe9/rpEoZwu0LfPLOM7UXPdDhqOS4tV2mMEP7GInkqvvFWvixW6mb1R1Kj
-	 J3gxrlXihw330OuA4YQbAMZI0Sg5n6/tBRtjJemX6ZzFugNYhV0Qx3g3e143B/TNmJ
-	 DTmk9iwv0AgCQ==
-Date: Sat, 19 Oct 2024 12:30:05 +0100
+	b=BijMo7lNedNSCzd3BPb0A/JJ4kkmm9CwKd8tRhl8ZuxUg9GZLCyBEEAP2DZ0Gsrd0
+	 H9flrRxwGqduc6WtS6spXclXDQMjtSyGecdIQLYW+ssPrgB5iy2u+/C61kdFWbX2vL
+	 UvSj51MgjMS0bBLBREgeSOV7MOVirTGXY7ihDOjXyJciN+aIjQbEQwjUtQNW+WJtDz
+	 TZ7PHzJ/1rE6DiCXvLvcKTmIg5wZFQwHv8MHXd3yfsbKJQ2NDB3s2zupHkpQ9zQ5jG
+	 oYRs2n36Y1YZEIdv/ZJh46gIplQitnLPdxn6uRZCMRMU3jl6nbXk7mr5nqLR2TAjmj
+	 pfs9V9RxCJp2Q==
+Date: Sat, 19 Oct 2024 12:33:39 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Justin Weiss <justin@justinweiss.com>
 Cc: Alex Lanzano <lanzano.alex@gmail.com>, Lars-Peter Clausen
@@ -51,12 +51,12 @@ Cc: Alex Lanzano <lanzano.alex@gmail.com>, Lars-Peter Clausen
  linux-kernel@vger.kernel.org, "Derek J . Clark"
  <derekjohn.clark@gmail.com>, Philip =?UTF-8?B?TcO8bGxlcg==?=
  <philm@manjaro.org>
-Subject: Re: [PATCH v2 1/6] iio: imu: bmi270: Use INFO_SAMP_FREQ instead of
- INFO_FREQUENCY
-Message-ID: <20241019123005.096f03c3@jic23-huawei>
-In-Reply-To: <20241018233723.28757-2-justin@justinweiss.com>
+Subject: Re: [PATCH v2 2/6] iio: imu: bmi270: Provide chip info as
+ configuration structure
+Message-ID: <20241019123339.155c046c@jic23-huawei>
+In-Reply-To: <20241018233723.28757-3-justin@justinweiss.com>
 References: <20241018233723.28757-1-justin@justinweiss.com>
-	<20241018233723.28757-2-justin@justinweiss.com>
+	<20241018233723.28757-3-justin@justinweiss.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,47 +67,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 18 Oct 2024 16:36:07 -0700
+On Fri, 18 Oct 2024 16:36:08 -0700
 Justin Weiss <justin@justinweiss.com> wrote:
 
-> Use IIO_CHAN_INFO_SAMP_FREQ instead of IIO_CHAN_INFO_FREQUENCY
-> to match the BMI160 / BMI323 drivers.
+> Prepare the bmi270 driver to support similar devices like the bmi260.
 > 
-> Fixes: 3ea51548d6b2 ("iio: imu: Add i2c driver for bmi270 imu")
 > Signed-off-by: Justin Weiss <justin@justinweiss.com>
-
-Whilst this gets rid of the wrong attributes, they still aren't
-wired up to anything either way so a read will always return an error.
-
-For now, the fix is drop the bit and bring it back in a patch
-that adds the read_raw handling for the sampling frequency
-(patch 6 I think).
+One thing in here.  The enum ID thing tends to end up costing more than
+the benefit it brings, so for newer drivers preferred option is separate
+structure instances rather than an array.
 
 > ---
->  drivers/iio/imu/bmi270/bmi270_core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/iio/imu/bmi270/bmi270.h      | 15 ++++++++++++++-
+>  drivers/iio/imu/bmi270/bmi270_core.c | 18 +++++++++++++++---
+>  drivers/iio/imu/bmi270/bmi270_i2c.c  | 11 ++++++++---
+>  drivers/iio/imu/bmi270/bmi270_spi.c  | 11 ++++++++---
+>  4 files changed, 45 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-> index aeda7c4228df..87036f352698 100644
-> --- a/drivers/iio/imu/bmi270/bmi270_core.c
-> +++ b/drivers/iio/imu/bmi270/bmi270_core.c
-> @@ -122,7 +122,7 @@ static const struct iio_info bmi270_info = {
->  	.channel2 = IIO_MOD_##_axis,				\
->  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
->  	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
-> -		BIT(IIO_CHAN_INFO_FREQUENCY),			\
-> +		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
->  }
+> diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
+> index 8ac20ad7ee94..2e8d85a4e419 100644
+> --- a/drivers/iio/imu/bmi270/bmi270.h
+> +++ b/drivers/iio/imu/bmi270/bmi270.h
+> @@ -10,10 +10,23 @@ struct device;
+>  struct bmi270_data {
+>  	struct device *dev;
+>  	struct regmap *regmap;
+> +	const struct bmi270_chip_info *chip_info;
+> +};
+> +
+> +enum bmi270_device_type {
+> +	BMI270,
+
+Whilst quite a few drivers do it this way, over time we've found that it's
+much easier to just skip the array of structures and have independent ones.
+Increase the extern lines to one per supported device, but removes
+need for an enum here and generally gives slightly more readable code.
+
+
+> +};
+
+>  };
 >  
->  #define BMI270_ANG_VEL_CHANNEL(_axis) {				\
-> @@ -131,7 +131,7 @@ static const struct iio_info bmi270_info = {
->  	.channel2 = IIO_MOD_##_axis,				\
->  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
->  	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
-> -		BIT(IIO_CHAN_INFO_FREQUENCY),			\
-> +		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
->  }
+>  static const struct of_device_id bmi270_of_match[] = {
+> -	{ .compatible = "bosch,bmi270" },
+> +	{ .compatible = "bosch,bmi270", .data = &bmi270_chip_info[BMI270] },
+
+After dropping the enum this just becomes &bmi270_chip_info
+and later you'll add bmi260_chip_info etc.
+
+>  	{ }
+>  };
 >  
->  static const struct iio_chan_spec bmi270_channels[] = {
 
 

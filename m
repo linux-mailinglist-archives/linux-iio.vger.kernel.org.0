@@ -1,94 +1,95 @@
-Return-Path: <linux-iio+bounces-10806-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10807-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2BF9A50D4
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 22:49:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E2709A50D6
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 22:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F109B2191F
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 20:49:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B4B92857C7
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 20:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658B11922F3;
-	Sat, 19 Oct 2024 20:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7955B1922DB;
+	Sat, 19 Oct 2024 20:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="YrgLADPz";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="m+bQ6PPU"
+	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="DLcqmVTp";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VRRXsU+c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1B215C15E;
-	Sat, 19 Oct 2024 20:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011A815C15E;
+	Sat, 19 Oct 2024 20:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729370950; cv=none; b=Na1JmgbD4EcebMAj17vATX+5Pv76qj5tIFrlEQwxNhOrdLS9BHgxXg5OEYnuwAnQn9/VpvpoesclIpv/NweA7drZ4sMEKi53kB889O3B9DJD90kNIyTkDR0Qe7XNVZ25JmBMn/2RYsXU10TtQVi7iZXKY8sqW5hDuXh6nSJtwRc=
+	t=1729370981; cv=none; b=qd7NNRBb4Mv2zb3ukt6lYwaEe9uYcmvykH/ar9ZGyx4PAGhwPQyLpAAxNYwh6AkTI8qa7GUmAv2/X8djJXVNWtv3EomFY0EFAA/J+ZFcFo5mV3OsotFAadVzLUbfuj+AepMo42AQhEXmgOPSt8Nj7hxTRCCN9tXrlYrssxDwqE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729370950; c=relaxed/simple;
-	bh=wU1gtZH3OND6Bb/TJAcxxaR248qRJyS8kvLg7wSohjI=;
+	s=arc-20240116; t=1729370981; c=relaxed/simple;
+	bh=M5aX9O7+XwA3SzgFspSeyRnxBC3sAVY/dqhk+D0vKBM=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AL/jOZWS+y9pkr14OGndSC9SNQGStWDE25Iw4XPQaawV5krFzACNXDz9TyjqeTg1Rkkw3a/x9ols7y0UM2h4pbdfAJEtK9DQF7de4SjMqD32dUs9OxlD5JA1X22oLsPFS3E713TZUPcyHZ3nCcHAvAjaFi9A9Wvpx1KvvzgRr0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=YrgLADPz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=m+bQ6PPU; arc=none smtp.client-ip=103.168.172.158
+	 MIME-Version:Content-Type; b=Fk4/G5DZaf+kprnEfXkebP6COXpOyIqgFGtfZue8+wmiNS4RwHxmESwIdqa9o6M8dIFqpG1Fm179kMMTahH4LYUYuaeZeO9PSDJIXq4LzA6XzpTbTOr+NJ2hc0McG858PHEoxuU2E81u7IHoa14AGePMFV/wO9GLymbu5Fut9Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=DLcqmVTp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VRRXsU+c; arc=none smtp.client-ip=103.168.172.145
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justinweiss.com
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E62F911400EF;
-	Sat, 19 Oct 2024 16:49:06 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Sat, 19 Oct 2024 16:49:06 -0400
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id 1473E13801F2;
+	Sat, 19 Oct 2024 16:49:38 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Sat, 19 Oct 2024 16:49:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justinweiss.com;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1729370946; x=
-	1729457346; bh=3g+Z8Lj9PqDMz7hWu8P3zL/ESZzkB+Cubp76re/2bfY=; b=Y
-	rgLADPzHG5otkBjxSagNwifSq1Ct/tgTmDZ1lOsm14A7NXq80I7UPbeJB+oyh2G+
-	mVBTGXasqW/+jyySaTDF4HCjt88qL1I7wg+9ukdqJAkHSSeMn4jMK147h6xBNfL6
-	NldxnwwbQL4+8t3U5u/BPOTkNSN4rOQP+tDLowLLQju3VeX05NqRAfS0Gnzhft1B
-	h62r1pJ5tOBNT6df9pMXrTDfDyF81dVAkXcBkEJgaL09luUZACKQMCATCbkfI/Cn
-	QtETzSr/ZfE9TLjb0n+nyyOnD8O+SZYc+ReYDu1maZ20+oiKNr55hYosch19S2LK
-	f27B+6Z0a1h/ojxT4tHoQ==
+	:reply-to:subject:subject:to:to; s=fm1; t=1729370978; x=
+	1729457378; bh=cs2DNxtWXLHkyMcVloVgw6XHpgglVXrJ0AkyDaPqICQ=; b=D
+	LcqmVTpXdFH7C9JhwqjkhC+3PhtLRxakhUZ/udlQ6VBOJXPRs79ZcgRzePsMiFT2
+	Y/mYn81uxMPkN//eqAgrKMpgPZFJsohhUCAPy5NVp9IaMawlaZH5Lr1ogBp7jRhB
+	fKJCUn4VWIXnSvNeMk3Gr6ZGu3NBRB8QvUQukTHGsDyURdCriCMNiY2b2zv0Rp2E
+	2tgMZ8p8a7JmrzDvelcZ7KWA+DriNc6yRdpONlqeGoFNCqitZRxG+GGZ94t+F/3u
+	656aiV+Kozz5gFZEk0fh7Fziefi8UDCArwXt/C3cZD+7tAcAtKDEz0BQUeMpuYRw
+	UfalGJXE/9NuBIISaFEJg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1729370946; x=1729457346; bh=3g+Z8Lj9PqDMz7hWu8P3zL/ESZzk
-	B+Cubp76re/2bfY=; b=m+bQ6PPUsulIxIIaWFZa/Dbf7yaH8b2HK4s5EKhhK8q+
-	05FTxrnySqiBE9FJlICgNRyE5kjruO+hRkkX7h28Rn5bigijbSWN0YY0pCLCf5fj
-	pnmHQYSvJ1M7GATujKNODZBaoPT2m1GcaDZghyHu6Bgu+DcoLH3zvztinU6MJZi4
-	TpySrv5vIdeH4Ff568dz/cajpipIxN4IPwiUQcv87oZw5B0ASLXH9wSfkPr2Tlqq
-	/QegqCnv/jyjhDFsOpBTG8+uYo8DQ88GQ///ulOnqA4NQMjiZ3iy4odv99Y68lz+
-	gvzP4zRhd8f0VY+YFtgVOeRcyekXJpcygS1QUWTGtw==
-X-ME-Sender: <xms:QhsUZ-M-ve5L4RVdNcpw9t-OIFtvQODqV0yE7R3mZ0PAMTj9Hy23Qg>
-    <xme:QhsUZ8_UTcipcg9Q1DmEtVdOrgIDbAJURiDjN8QHRNv8L1VDoeFydTc7fn4KR7FJW
-    dYpMAcHwRVUiX_ehQ>
-X-ME-Received: <xmr:QhsUZ1Tuid4itpKVrwJtqVSgEWqQYz8TNisMpWzycAZUtBfNw-GW8VOPTuInFeiipOoNkLIuzL5LwWqH9rZsruFX0xfmHmT0oao>
+	fm2; t=1729370978; x=1729457378; bh=cs2DNxtWXLHkyMcVloVgw6XHpggl
+	VXrJ0AkyDaPqICQ=; b=VRRXsU+cFok18lFIJ3PVRitMjFf++H8t1cDxjwxMqpJr
+	dXsR5PR8dHRd9+piGreBYDuj/l6+ox2O81JskdbByF9P12DclUiYF6uYw0YzkauN
+	viWLA349bprZlh2qAGkgmUbuWd8r0/UnMoBWkFkNDvyj0/ltcPBJobjMx1tvs2xR
+	UZVocwkunduTpZsGLuE2ywPJ7tfAgnEz70Vr0aWtsyUjx3x0bHcJxeRy/5UNC6fU
+	sGIdhDZ5HwAZJLhgw6Q8ABxHQuTmj2Oks9s9CejhApK3dAcTxYkBGO+JqsHxjmdN
+	SKJXFkjiIJxT4BAnqvjCRTrLpIbYfDQQLIiYEPI3rQ==
+X-ME-Sender: <xms:YRsUZyDrEzKYrGBV3rTSo92FLfRPAgwI6EQjQRZqbjJSsotV4NesHQ>
+    <xme:YRsUZ8j4LwEOSqvqpBZg1cuFu6uQqei9MJmQIWenYCFmd6tUueDZm2phD1ebT-wfO
+    9QWQPOI5qwZxV-1ag>
+X-ME-Received: <xmr:YRsUZ1n1sFoXtYk2raGglIYKJVHx9VX0eNTqWYB4C8v5Q7JrRvwA2i_WPFjiXEIQfRd9Z0RFN39Dr_iC8juRo3Iq-bzzDjbpSD0>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehhedgudehiecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
     hnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhffkfgfgggtsehttdertddtredt
     necuhfhrohhmpefluhhsthhinhcuhggvihhsshcuoehjuhhsthhinhesjhhushhtihhnfi
-    gvihhsshdrtghomheqnecuggftrfgrthhtvghrnhepgfeugeeuieehffekkedtteffgfff
-    ueeikedvfeeijedvfeeigfevhfeihfefgfevnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepjhhushhtihhnsehjuhhsthhinhifvghishhsrdgt
-    ohhmpdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epphhhihhlmhesmhgrnhhjrghrohdrohhrghdprhgtphhtthhopeguvghrvghkjhhohhhn
-    rdgtlhgrrhhksehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
-    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggvvhhitggvthhrvggv
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqihhiohesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlrghrshesmhgv
-    thgrfhhoohdruggv
-X-ME-Proxy: <xmx:QhsUZ-tdLX-Rol1qRVR3SOxPQbB-XWWgrQ8CdWFPI29luc0sNxNicQ>
-    <xmx:QhsUZ2fjmYNNhF7qqhCzJArBYpx-5YUF-ovfC6DzIjNiFNVvrfAvqQ>
-    <xmx:QhsUZy35rsD4NOyk__x1NZv4p0XxBetvlX7-4sp8X2Or5P7jrE6_vA>
-    <xmx:QhsUZ68XeGzzHoe5xu8OBw7RzVLlLMIIajcbyhhg07gkahQDkvVnqA>
-    <xmx:QhsUZy2xWVEtNCJ9HZ4pAUSRRsZWkeCf0zXJKIeQVzLIshSusxtmgdZN>
+    gvihhsshdrtghomheqnecuggftrfgrthhtvghrnhepfedukeegledvffefveethfehkefg
+    veduveffgfelueeiveelkeevudejfeeuuefgnecuffhomhgrihhnpeguvghvihgtvghtrh
+    gvvgdrohhrghdpsghoshgthhdqshgvnhhsohhrthgvtgdrtghomhenucevlhhushhtvghr
+    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjuhhsthhinhesjhhushhtih
+    hnfigvihhsshdrtghomhdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopehphhhilhhmsehmrghnjhgrrhhordhorhhgpdhrtghpthhtohepug
+    gvrhgvkhhjohhhnhdrtghlrghrkhesghhmrghilhdrtghomhdprhgtphhtthhopehlihhn
+    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeguvg
+    hvihgtvghtrhgvvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhiihhosehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorh
+    doughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eplhgrrhhssehmvghtrghfohhordguvg
+X-ME-Proxy: <xmx:YRsUZwzZtTrliAjQmyov9ajVc9zK37LCyB_u3xajAMPtLndAZoqejA>
+    <xmx:YRsUZ3T2wRvCNTWTo_4l0bFFo0LKF4kEib-sor-cxPBv7tX8zlwdWg>
+    <xmx:YRsUZ7bD2GCJBhW-XRThNe5Lle4VDzVG8sTJWxhs2wN8O7cGXzoidw>
+    <xmx:YRsUZwRqhq7WneJKeXwZb29mxM7WlHfL-9LdcXe6TNJXh-IaIP1f3A>
+    <xmx:YhsUZ_Yvn3U2wuS2qyvzM7-802TAI_S7gH079SgyYEF7oH3ZGeYhhzPl>
 Feedback-ID: icf614246:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 19 Oct 2024 16:49:05 -0400 (EDT)
+ 19 Oct 2024 16:49:36 -0400 (EDT)
 From: Justin Weiss <justin@justinweiss.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Alex Lanzano <lanzano.alex@gmail.com>,  Lars-Peter Clausen
@@ -98,15 +99,14 @@ Cc: Alex Lanzano <lanzano.alex@gmail.com>,  Lars-Peter Clausen
   linux-kernel@vger.kernel.org,  "Derek J . Clark"
  <derekjohn.clark@gmail.com>,  Philip =?utf-8?Q?M=C3=BCller?=
  <philm@manjaro.org>
-Subject: Re: [PATCH v2 2/6] iio: imu: bmi270: Provide chip info as
- configuration structure
-In-Reply-To: <20241019123339.155c046c@jic23-huawei> (Jonathan Cameron's
-	message of "Sat, 19 Oct 2024 12:33:39 +0100")
+Subject: Re: [PATCH v2 3/6] dt-bindings: iio: imu: Add Bosch BMI260
+In-Reply-To: <20241019123623.210ac09d@jic23-huawei> (Jonathan Cameron's
+	message of "Sat, 19 Oct 2024 12:36:23 +0100")
 References: <20241018233723.28757-1-justin@justinweiss.com>
-	<20241018233723.28757-3-justin@justinweiss.com>
-	<20241019123339.155c046c@jic23-huawei>
-Date: Sat, 19 Oct 2024 13:49:04 -0700
-Message-ID: <875xpnbyyn.fsf@justinweiss.com>
+	<20241018233723.28757-4-justin@justinweiss.com>
+	<20241019123623.210ac09d@jic23-huawei>
+Date: Sat, 19 Oct 2024 13:49:35 -0700
+Message-ID: <87zfmzakdc.fsf@justinweiss.com>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -118,61 +118,126 @@ Content-Type: text/plain
 
 Jonathan Cameron <jic23@kernel.org> writes:
 
-> On Fri, 18 Oct 2024 16:36:08 -0700
+> On Fri, 18 Oct 2024 16:36:09 -0700
 > Justin Weiss <justin@justinweiss.com> wrote:
 >
->> Prepare the bmi270 driver to support similar devices like the bmi260.
+>> Add devicetree description document for Bosch BMI260, a 6-Axis IMU.
 >> 
 >> Signed-off-by: Justin Weiss <justin@justinweiss.com>
-> One thing in here.  The enum ID thing tends to end up costing more than
-> the benefit it brings, so for newer drivers preferred option is separate
-> structure instances rather than an array.
+> Looks like this would be much better as an additional compatible id
+> in the existing bosch,bmi270.yaml binding doc.
+>
+> From a quick comparison they look nearly identical.
+> Even if there are small differences the dt binding schema allows
+> those to be expressed in a single file.
+>
+> Jonathan
 
-That makes sense to me, even considering your comments on patch #4. I'll
-switch to separate structures here and keep the if / else in that later
-patch.
+Sounds good, will update in v3.
 
 Justin
 
 >> ---
->>  drivers/iio/imu/bmi270/bmi270.h      | 15 ++++++++++++++-
->>  drivers/iio/imu/bmi270/bmi270_core.c | 18 +++++++++++++++---
->>  drivers/iio/imu/bmi270/bmi270_i2c.c  | 11 ++++++++---
->>  drivers/iio/imu/bmi270/bmi270_spi.c  | 11 ++++++++---
->>  4 files changed, 45 insertions(+), 10 deletions(-)
+>>  .../bindings/iio/imu/bosch,bmi260.yaml        | 77 +++++++++++++++++++
+>>  MAINTAINERS                                   |  1 +
+>>  2 files changed, 78 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml
 >> 
->> diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
->> index 8ac20ad7ee94..2e8d85a4e419 100644
->> --- a/drivers/iio/imu/bmi270/bmi270.h
->> +++ b/drivers/iio/imu/bmi270/bmi270.h
->> @@ -10,10 +10,23 @@ struct device;
->>  struct bmi270_data {
->>  	struct device *dev;
->>  	struct regmap *regmap;
->> +	const struct bmi270_chip_info *chip_info;
->> +};
+>> diff --git
+>> a/Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml
+>> b/Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml
+>> new file mode 100644
+>> index 000000000000..6786b5e4d0fa
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml
+>> @@ -0,0 +1,77 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/imu/bosch,bmi260.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 >> +
->> +enum bmi270_device_type {
->> +	BMI270,
->
-> Whilst quite a few drivers do it this way, over time we've found that it's
-> much easier to just skip the array of structures and have independent ones.
-> Increase the extern lines to one per supported device, but removes
-> need for an enum here and generally gives slightly more readable code.
->
->
->> +};
->
->>  };
->>  
->>  static const struct of_device_id bmi270_of_match[] = {
->> -	{ .compatible = "bosch,bmi270" },
->> +	{ .compatible = "bosch,bmi270", .data = &bmi270_chip_info[BMI270] },
->
-> After dropping the enum this just becomes &bmi270_chip_info
-> and later you'll add bmi260_chip_info etc.
->
->>  	{ }
->>  };
+>> +title: Bosch BMI260 6-Axis IMU
+>> +
+>> +maintainers:
+>> +  - Justin Weiss <justin@justinweiss.com>
+>> +
+>> +description: |
+>> +  BMI260 is a 6-axis inertial measurement unit that can measure acceleration and
+>> +  angular velocity. The sensor also supports configurable interrupt events such
+>> +  as motion detection and step counting. The sensor can communicate over
+>> +  I2C or SPI.
+>> +  https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi260/
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: bosch,bmi260
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  vdd-supply: true
+>> +  vddio-supply: true
+>> +
+>> +  interrupts:
+>> +    minItems: 1
+>> +    maxItems: 2
+>> +
+>> +  interrupt-names:
+>> +    minItems: 1
+>> +    maxItems: 2
+>> +    items:
+>> +      enum:
+>> +        - INT1
+>> +        - INT2
+>> +
+>> +  drive-open-drain:
+>> +    description:
+>> +      set if the specified interrupt pins should be configured as
+>> +      open drain. If not set, defaults to push-pull.
+>> +
+>> +  mount-matrix:
+>> +    description:
+>> +      an optional 3x3 mounting rotation matrix.
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - vdd-supply
+>> +  - vddio-supply
+>> +
+>> +allOf:
+>> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+>> +
+>> +unevaluatedProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>> +    i2c {
+>> +        #address-cells = <1>;
+>> +        #size-cells = <0>;
+>> +
+>> +        imu@68 {
+>> +            compatible = "bosch,bmi260";
+>> +            reg = <0x68>;
+>> +            vdd-supply = <&vdd>;
+>> +            vddio-supply = <&vddio>;
+>> +            interrupt-parent = <&gpio1>;
+>> +            interrupts = <16 IRQ_TYPE_EDGE_RISING>;
+>> +            interrupt-names = "INT1";
+>> +        };
+>> +    };
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 6011af70c12e..73b6b7721dd8 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -4047,6 +4047,7 @@ BOSCH SENSORTEC BMI270 IMU IIO DRIVER
+>>  M:	Alex Lanzano <lanzano.alex@gmail.com>
+>>  L:	linux-iio@vger.kernel.org
+>>  S:	Maintained
+>> +F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml
+>>  F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
+>>  F:	drivers/iio/imu/bmi270/
 >>  
 

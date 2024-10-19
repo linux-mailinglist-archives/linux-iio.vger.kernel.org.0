@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-10770-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10771-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D141F9A4D24
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 13:36:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD1E9A4D2E
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 13:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 836BD2820D6
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 11:36:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 203BD1C21395
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Oct 2024 11:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C521DFE00;
-	Sat, 19 Oct 2024 11:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973841E0091;
+	Sat, 19 Oct 2024 11:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhYcqAjN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RVASYNh8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9186218FDA3;
-	Sat, 19 Oct 2024 11:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E60318CBF7;
+	Sat, 19 Oct 2024 11:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729337791; cv=none; b=nBZoGA2cNg3/RVRlKtIInfe4EMTijquIhRmXyssUA8YALXm7MtLE9E5sD8Pzvlsig3tB5VUr36A7xgUcqeA0+Rb6wssYN6lVkBZyD2G5xSP58sVKjY3t5iUQdwMslIg3l8kzAqSXGs3CMpPa1ppfgd5bsKPwo9As9thIu0mD62Q=
+	t=1729338021; cv=none; b=aSyYXsKwUQMolpOEPpQfWHYKlX1ZlXSGpuRR1nAuvO5mkUnUwOW8gXt3rk37pLJp9i3it/LsguIoLPYk3MmHvZlqtsyud+BK7DpVOP26HNv56Ipbe98T53AUjYR/F4u0JFhoXRytwExB3BOZD6MDh3eaA52+F0R+zaIV8QDVoCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729337791; c=relaxed/simple;
-	bh=AoYUksVy1/NcyqpEo/Od4emIysf0jcpyQy+I/XrN6Vw=;
+	s=arc-20240116; t=1729338021; c=relaxed/simple;
+	bh=v4LkJ80NQPm85wR1G2ziYwxdba3NkVX/9/XwrEpfKJk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qNRmye9CGNGl2uBoVoTnMZarh6C4EEOyjdXYvZeK+zlYdHd+mjOH+9Jvs1MKVxVnHyCEkNNDmIHNQIgNrDOQIHfEKr3MxLM2XUcMyNNjjWVWlzAfz+TcUwyDTt7xqTB9JVVPb35la7Du+uSKlQ5VjMiu1Su5tOYuV1AcUqPrYzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhYcqAjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3393C4CEC5;
-	Sat, 19 Oct 2024 11:36:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g2LSqmtxFjqEJa87GFoDvDdJU/7YwPkJ5d3rXTKSBxExTlYBqRxH8sTdO73DyV0u3h7Xv1Tmd93i44IgDaedEXUVz5RJ++67/WA1dotq2gVRKKMZcvmPsXOf322wc5GKUc80cvCvR5Vs7QhGt27E049IoUhNCIfv1Z8VV5MqUX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RVASYNh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC56C4CEC5;
+	Sat, 19 Oct 2024 11:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729337791;
-	bh=AoYUksVy1/NcyqpEo/Od4emIysf0jcpyQy+I/XrN6Vw=;
+	s=k20201202; t=1729338020;
+	bh=v4LkJ80NQPm85wR1G2ziYwxdba3NkVX/9/XwrEpfKJk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WhYcqAjN9ndlY0a1CVIXsefWOX9y4FlJHmtpcxYUG2UvSHLWI5hnB/+tDa6qGVOUk
-	 7fXB0EmIh5MHMy12X/Bfuk0aYdplAH0qwfLRPgcdXseT4fKxRmhBTi6ld3ME1+mb+F
-	 n+EiBChBu4qjOnMYzQl9Pwbjv6sIUyZVXMqDX1Y2cSnLOGkb4/iyr6jqbx/PrxUigZ
-	 YLNNnGH+Hxh22YHl6JocYDjnYcZ3LBlYaQK6NtnG/jVfuuOI4vzv2Mm4vTWiKoCM+1
-	 vnT9paIvD4N4WBBLsx2eneEGOgbRAgaBfnQkXP25Qzr4+EVfs/RBv3nNvq9Q2Tre0l
-	 b2HQHmNZ5vpSA==
-Date: Sat, 19 Oct 2024 12:36:23 +0100
+	b=RVASYNh8QV6z1j2M3mrQdgp2SzqMwQEupADP1lKkQM8Ky4UqNfpP7hxnkiy39VhaL
+	 DEjpHpa1VhayTRDdcGBj5mlp+yd8lx84JavkIIFCjb1Tc/RL/clqjTBre3K12frHE5
+	 KSYxm7Np/Y8cd+mJEPSXw0wTxytitNhUJAmW1/HxeM0lIO1h1P9ytPXhL8sOUUvzj3
+	 s5f6W8XeR8PwEtyC14dTlaVYoblVyRJGEolSe2NNPjjmZ1M31sdQEEbKvOQ/soclMR
+	 GmSEj+gpX0iEmqJsCZywxV0gf5Hjz0LI9n9fa83Q06xLbrJfOuzsPMxNcLPmJe48q/
+	 +KTQ3bdBf442w==
+Date: Sat, 19 Oct 2024 12:40:13 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Justin Weiss <justin@justinweiss.com>
 Cc: Alex Lanzano <lanzano.alex@gmail.com>, Lars-Peter Clausen
@@ -51,11 +51,11 @@ Cc: Alex Lanzano <lanzano.alex@gmail.com>, Lars-Peter Clausen
  linux-kernel@vger.kernel.org, "Derek J . Clark"
  <derekjohn.clark@gmail.com>, Philip =?UTF-8?B?TcO8bGxlcg==?=
  <philm@manjaro.org>
-Subject: Re: [PATCH v2 3/6] dt-bindings: iio: imu: Add Bosch BMI260
-Message-ID: <20241019123623.210ac09d@jic23-huawei>
-In-Reply-To: <20241018233723.28757-4-justin@justinweiss.com>
+Subject: Re: [PATCH v2 4/6] iio: imu: bmi270: Add support for BMI260
+Message-ID: <20241019124013.0575e05b@jic23-huawei>
+In-Reply-To: <20241018233723.28757-5-justin@justinweiss.com>
 References: <20241018233723.28757-1-justin@justinweiss.com>
-	<20241018233723.28757-4-justin@justinweiss.com>
+	<20241018233723.28757-5-justin@justinweiss.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,127 +64,107 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Fri, 18 Oct 2024 16:36:09 -0700
+On Fri, 18 Oct 2024 16:36:10 -0700
 Justin Weiss <justin@justinweiss.com> wrote:
 
-> Add devicetree description document for Bosch BMI260, a 6-Axis IMU.
->=20
+> Adds support for the Bosch BMI260 6-axis IMU to the Bosch BMI270
+> driver. Setup and operation is nearly identical to the Bosch BMI270,
+> but has a different chip ID and requires different firmware.
+> 
+> Firmware is requested and loaded from userspace.
+> 
 > Signed-off-by: Justin Weiss <justin@justinweiss.com>
-Looks like this would be much better as an additional compatible id
-in the existing bosch,bmi270.yaml binding doc.
-
-=46rom a quick comparison they look nearly identical.
-Even if there are small differences the dt binding schema allows
-those to be expressed in a single file.
+Trivial comments inline and a discussion on whether my earlier
+don't use an array comment makes sense in this particular case.
 
 Jonathan
 
 > ---
->  .../bindings/iio/imu/bosch,bmi260.yaml        | 77 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  2 files changed, 78 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bmi26=
-0.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml =
-b/Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml
-> new file mode 100644
-> index 000000000000..6786b5e4d0fa
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml
-> @@ -0,0 +1,77 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/imu/bosch,bmi260.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Bosch BMI260 6-Axis IMU
-> +
-> +maintainers:
-> +  - Justin Weiss <justin@justinweiss.com>
-> +
-> +description: |
-> +  BMI260 is a 6-axis inertial measurement unit that can measure accelera=
-tion and
-> +  angular velocity. The sensor also supports configurable interrupt even=
-ts such
-> +  as motion detection and step counting. The sensor can communicate over
-> +  I2C or SPI.
-> +  https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi260/
-> +
-> +properties:
-> +  compatible:
-> +    const: bosch,bmi260
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +  vddio-supply: true
-> +
-> +  interrupts:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  interrupt-names:
-> +    minItems: 1
-> +    maxItems: 2
-> +    items:
-> +      enum:
-> +        - INT1
-> +        - INT2
-> +
-> +  drive-open-drain:
-> +    description:
-> +      set if the specified interrupt pins should be configured as
-> +      open drain. If not set, defaults to push-pull.
-> +
-> +  mount-matrix:
-> +    description:
-> +      an optional 3x3 mounting rotation matrix.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
-> +  - vddio-supply
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        imu@68 {
-> +            compatible =3D "bosch,bmi260";
-> +            reg =3D <0x68>;
-> +            vdd-supply =3D <&vdd>;
-> +            vddio-supply =3D <&vddio>;
-> +            interrupt-parent =3D <&gpio1>;
-> +            interrupts =3D <16 IRQ_TYPE_EDGE_RISING>;
-> +            interrupt-names =3D "INT1";
-> +        };
-> +    };
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 6011af70c12e..73b6b7721dd8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4047,6 +4047,7 @@ BOSCH SENSORTEC BMI270 IMU IIO DRIVER
->  M:	Alex Lanzano <lanzano.alex@gmail.com>
->  L:	linux-iio@vger.kernel.org
->  S:	Maintained
-> +F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi260.yaml
->  F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
->  F:	drivers/iio/imu/bmi270/
-> =20
+>  drivers/iio/imu/bmi270/bmi270.h      |  1 +
+>  drivers/iio/imu/bmi270/bmi270_core.c | 25 +++++++++++++++++++++++--
+>  drivers/iio/imu/bmi270/bmi270_i2c.c  | 13 +++++++++++++
+>  drivers/iio/imu/bmi270/bmi270_spi.c  |  8 ++++++++
+>  4 files changed, 45 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
+> index 2e8d85a4e419..51e374fd4290 100644
+> --- a/drivers/iio/imu/bmi270/bmi270.h
+> +++ b/drivers/iio/imu/bmi270/bmi270.h
+> @@ -14,6 +14,7 @@ struct bmi270_data {
+>  };
+>  
+>  enum bmi270_device_type {
+> +	BMI260,
+>  	BMI270,
+>  };
+>  
+> diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
+> index 799df78ec862..b30201dc4e22 100644
+> --- a/drivers/iio/imu/bmi270/bmi270_core.c
+> +++ b/drivers/iio/imu/bmi270/bmi270_core.c
+> @@ -11,6 +11,8 @@
+>  #include "bmi270.h"
+>  
+>  #define BMI270_CHIP_ID_REG				0x00
+> +#define BMI160_CHIP_ID_VAL				0xD1
 
+This one looks like a cut and paste error.
+
+> +#define BMI260_CHIP_ID_VAL				0x27
+>  #define BMI270_CHIP_ID_VAL				0x24
+>  #define BMI270_CHIP_ID_MSK				GENMASK(7, 0)
+>  
+> @@ -55,6 +57,7 @@
+>  #define BMI270_PWR_CTRL_ACCEL_EN_MSK			BIT(2)
+>  #define BMI270_PWR_CTRL_TEMP_EN_MSK			BIT(3)
+>  
+> +#define BMI260_INIT_DATA_FILE "bmi260-init-data.fw"
+>  #define BMI270_INIT_DATA_FILE "bmi270-init-data.fw"
+>  
+>  enum bmi270_scan {
+> @@ -67,6 +70,11 @@ enum bmi270_scan {
+>  };
+>  
+>  const struct bmi270_chip_info bmi270_chip_info[] = {
+> +	[BMI260] = {
+> +		.name = "bmi260",
+> +		.chip_id = BMI260_CHIP_ID_VAL,
+> +		.fw_name = BMI260_INIT_DATA_FILE,
+> +	},
+>  	[BMI270] = {
+>  		.name = "bmi270",
+>  		.chip_id = BMI270_CHIP_ID_VAL,
+> @@ -163,8 +171,21 @@ static int bmi270_validate_chip_id(struct bmi270_data *bmi270_device)
+>  	if (ret)
+>  		return dev_err_probe(dev, ret, "Failed to read chip id");
+>  
+> -	if (chip_id != BMI270_CHIP_ID_VAL)
+> -		dev_info(dev, "Unknown chip id 0x%x", chip_id);
+> +	/*
+> +	 * Some manufacturers use "BMI0160" for both the BMI160 and
+> +	 * BMI260. If the device is actually a BMI160, the bmi160
+> +	 * driver should handle it and this driver should not.
+> +	 */
+> +	if (chip_id == BMI160_CHIP_ID_VAL)
+> +		return -ENODEV;
+> +
+> +	if (chip_id != bmi270_device->chip_info->chip_id)
+> +		dev_info(dev, "Unexpected chip id 0x%x", chip_id);
+> +
+> +	if (chip_id == BMI260_CHIP_ID_VAL)
+
+Ah. My argument on separate IDs means you'd have to do it this way whereas
+I was thinking maybe a loop would be a better idea.  Ah well if we
+get a lot of supported chips, then we can rethink how to handle this.
+For now what you have here is fine and should deal with lack of appropriate
+ACPI ID mess.
+
+> +		bmi270_device->chip_info = &bmi270_chip_info[BMI260];
+> +	else if (chip_id == BMI270_CHIP_ID_VAL)
+> +		bmi270_device->chip_info = &bmi270_chip_info[BMI270];
+>  
+>  	return 0;
+>  }
 

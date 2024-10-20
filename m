@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-10815-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10816-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0B99A53E7
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 13:54:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D389A53EA
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 13:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 842321C2098F
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 11:54:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4588E1C20971
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 11:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B5F191F7C;
-	Sun, 20 Oct 2024 11:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537D9192584;
+	Sun, 20 Oct 2024 11:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8XqYg1O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rCPRz0/i"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72E2158218;
-	Sun, 20 Oct 2024 11:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1455EEC5;
+	Sun, 20 Oct 2024 11:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729425284; cv=none; b=DEzk/ZPfSWPAhSuouyP7brBhlYkk8RTWIKveBeMhXFSMYuHODWdgWzPBzo9twN+UFs9f5e7ffhLFcEkD2b8OcYtgu8Sy1MITW51zexDsbfpqHahSHOqso8oURxUtNbmHZYZ6yeV2FiU+qifK7NZOo2yxacaMaCrKoZLj9lD8n6E=
+	t=1729425383; cv=none; b=uoTJdPg92r1ZLY/QtW+GJYVWm6GRvJjmtUom+m1LRuPL2Bhie5LmIMHP8pvaOqfnaMebte319l/l/uPbLs8D+lK0P1xb6myWqlecDGEuLxWX/enLkBLgVvirT/oGdd6i4XEXlMsZSBra49xuG90H8XS9WRwdxfY0DvPZee45dog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729425284; c=relaxed/simple;
-	bh=9OsH+p90AXrfDXBV285K5elUYwwAbWh750l1tDLivtI=;
+	s=arc-20240116; t=1729425383; c=relaxed/simple;
+	bh=+0p5NkerOmvHfi35QPuQhFjpevnJp/owSssWdYHgSGM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=acVtIWrs6j4WJsClkji2h5AML2cRsHYhzPru1FrubrB+zJ9jvLuY/LsaE/7y0XvOsmvsw3IXziROLrh6rRY7/B/Spquy3ehBeiKjM2D0Y9+xWgRGarQXzNG0EhB3t1xCllW/wBFNn6GcldxDOXhG7wazzjz52PgLzNXO8/dI91M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8XqYg1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0063C4CEC6;
-	Sun, 20 Oct 2024 11:54:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JRJ0QhRgG+LmkLdDePuT5AY0Z8dCjfQDOhllFwq+3BIwzVHqaY+2IOHE4dFtyk3LtHJIB3zqu80IYZ4GXI3gGV3p6DGYnlnVbs3WfIqzhwAdHxaSXHGYowpdHwlwTGTNn/ufCPUTFyRDXLT2C9G61/Mtknlpf1BlUoiPRkaS0U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rCPRz0/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB26BC4CEC6;
+	Sun, 20 Oct 2024 11:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729425284;
-	bh=9OsH+p90AXrfDXBV285K5elUYwwAbWh750l1tDLivtI=;
+	s=k20201202; t=1729425382;
+	bh=+0p5NkerOmvHfi35QPuQhFjpevnJp/owSssWdYHgSGM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=b8XqYg1O+w+dI7v7R/UKyONeoCUFdXLlEpxWmSmJdAcY0JAuzdOkMc5MHA1VplHPx
-	 K893/FkNPedNRHD/jFDqJsIbKL/7xfdMuY+sS6gEnoTvZVHE8xuPghw0jQgn6MBJFn
-	 1YZxUGYrlycXIvAIuFfx0kLRr8Aiegw3vbLWubZ8Iplml0hYdSRuTxODn/AjyKMad2
-	 9P7P1UO3Gxg54SxCIJSSlOFDoDy4iZ4gwOO+7zVF93/1qgzhRSOKkLe4uSFFJqjZ6O
-	 AEHv7H85emIpifUb+KAyyceZ78iMbI5uow9ArPTW2rsPO5LjgXs+sZg7dnqPNzp2TA
-	 eemgC9mjb4otA==
-Date: Sun, 20 Oct 2024 12:54:37 +0100
+	b=rCPRz0/iXnI9k/4NroLOaILStRwtaHc60W60TVkQczROmUVPGfyvETOQDxNMvIYbD
+	 yTLEJi0vX7vSD/ooet7e59kMrwLprqFUEiTO+/yOBMCP1HoYdZKnTEKcE/nacAcj+0
+	 87l/o84GdkwxNNitIK+yX9XQyNgJAglKm1mfLZCEmQ5qr6FjLya4PMgfGGJxEgA9Z9
+	 GI8hniQwmdREMyohHrDxNsbDIZyBiCOk+jVvKRPzJsmX7Rsh4jKx+GIplVWdsjZc+m
+	 Rtt2k0p2kmK/yBiyALS2AjVD4mgcU7c4mXyskAV65yjr44XBARCT56mgw19oUAKYeV
+	 rXObioLHHMdkw==
+Date: Sun, 20 Oct 2024 12:56:12 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Ramona Alexandra Nechita <ramona.nechita@analog.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Cosmin Tanislav
@@ -88,6 +88,9 @@ tabs then spaces for indentation of the \
 
 series applied to the togreg branch of iio.git and initially pushed
 out as testing so 0-day can take a look.
+
+One missing return in the debugfs register access as well. Please
+check I fixed that up correctly.
 
 Thanks,
 

@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-10832-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10833-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6BE9A572A
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 00:02:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7870F9A572D
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 00:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C2C31F220FD
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 22:02:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8C01B22445
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 22:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B790119924E;
-	Sun, 20 Oct 2024 22:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E987F199EA8;
+	Sun, 20 Oct 2024 22:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="dv+yqjL4";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oIg+pGtk"
+	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="p1LYkbyp";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZIkPC6Kx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D09E19923A;
-	Sun, 20 Oct 2024 22:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886D81993BA;
+	Sun, 20 Oct 2024 22:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729461689; cv=none; b=DTO9G5IEtL4/ReEnaPBXmO6hptrUAujFCWSTlyHDxduzufoKJ/Z4hsRNsUqGoN4A3DrsPTqRgr3OD91arXXmKeefoXcwcyzkVD7+w+J3ilYU22jjDb/vdGyamnijgUf2tARVu2izEvkyYPCqdJce1WcKVUXh/8r8Y7QbULKcCKc=
+	t=1729461691; cv=none; b=NXBvGhjiHrfkcu51SmQWZAohMRGMOJF6/Jt6z6yQWMslEPSpJEW3fSPcpQvuDXMpiEih1JKSCgACku84L0tLO7fSZ8l1QnUMC2cZQgu0vZgAgOxeKQ8L86sm8PmHuIGDLqw/Z75vlYGMELeqlJpfPIKIhIhm0yVPtfLeD77X+zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729461689; c=relaxed/simple;
-	bh=DZ2bx7zJ032LMc6mL9mqFRpePhr64LSdUHo6or2i7tY=;
+	s=arc-20240116; t=1729461691; c=relaxed/simple;
+	bh=CxNCSF8NoJCOEhg4BM8L5ZjwqS4AkGsSGeH5dxRmZvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuvMs1g6g9+h25mbMdX7OcqYXllqBnZ5tWzzKcwaHoYNMVB5Q5F3mThYZj3exQLgwUtK9zhX6hAmGF03+TI9e6zGMm2S73M4D06x0VEcCv9sZbQiKWnHF/Trfkgs+0CQFHzxvJTY5Cxe6LXWiMaFf6bbbFD2uJAIlm3XqBT1QD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=dv+yqjL4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oIg+pGtk; arc=none smtp.client-ip=202.12.124.151
+	 MIME-Version; b=RDy2hdqYLjTflhSLKjoxZjks5A1IWie7ERNGbSE1aJ15/ow2DzsHijco8kPZzV/KSBgwyqiW4tuof2XQT1tQ+YHaAFw3bzqp8kYEzoJAmcab+HYgxCbVATMonc/XkO7CLY3hBq7YZ8xYDA24h2NBbRxmARZYKT4iK8hpmpg3mDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=p1LYkbyp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZIkPC6Kx; arc=none smtp.client-ip=202.12.124.151
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justinweiss.com
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 2D84111400A6;
-	Sun, 20 Oct 2024 18:01:26 -0400 (EDT)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 5DD6D114008E;
+	Sun, 20 Oct 2024 18:01:28 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Sun, 20 Oct 2024 18:01:26 -0400
+  by phl-compute-06.internal (MEProxy); Sun, 20 Oct 2024 18:01:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justinweiss.com;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1729461686; x=
-	1729548086; bh=iVqj9XZD2JsvGg/ibY285jQCG1X6rPsjya8e6dV1l68=; b=d
-	v+yqjL4Gq4Y/o1fYSKAWz5PWmkA+paZaoFJgCB2P4HHuHIx3szZIR84dZ4HNbdYO
-	O4pMoL03mOTni+MUUqGWPGb9kfJ897ZBuAhCwu3zEoLRho7vjUwuCyrlt/pYluOX
-	+ABVj8JMs/y+R+LA8rPjj9aiHHSNhwQ7rENFkyJoVt3tNl3gzCTNI9/CEMRZAea8
-	gOtDsx6AtgYdQZd/s97YVmmLJyxovxQ/VHbgdhuCY2FmmQzIpnsx2QyNYe/dXq/4
-	mlZ6ue/iYclw6wqawCGTaK5cJw1y25zxZkjjhkrm7Zqc0G5IBXxEg3skfZK8VdAl
-	qqHXQY4J1EWtFaEkA6BXw==
+	:reply-to:subject:subject:to:to; s=fm2; t=1729461688; x=
+	1729548088; bh=v7JdK+EfV4NU1+GpmRFSjPS2tNauAbxiLGo8QCU/BU0=; b=p
+	1LYkbyprI8+dTsKrO6SlUlPdRY/HJvY4lZtCIiqWP9TCeir5HcQzwyE+ABrYDk4f
+	j+Gjxi6Z7IoAZpMVHbL5Xyxe1ybG1REa3swQ68rNYWdjXBL84eGNIhDI0OWKAUXJ
+	pePIFUW1k0pQvI/Ytq/ONvYtie9Rb0pH+eN16ewUDrnFuQjIREgS4YBt8X48VLxe
+	zTLzvdenBWjYngUBpF93HkM8edhCx/XphQ5L9Vfy2FSoHbefPl+MKXqKYKTDsg8/
+	OYHqfBQ35vhsPIA6c/2K89+q6b9Q5RRJDmPlOe4tIUodJyKu5r1ck54+0E98tyDa
+	dl1sBOXpV+t4Lv294yauA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1729461686; x=
-	1729548086; bh=iVqj9XZD2JsvGg/ibY285jQCG1X6rPsjya8e6dV1l68=; b=o
-	Ig+pGtkiSRKFutg+2JSLNyD4gacmI8A3XY31Ph7iw4cA8bPWJs+6YaxvR7ADr2GB
-	2lzV0pU8ZnsOtKFWBxBvaJqCaLJKDD88YRn7WcLcYY2ab2vpFtIE4GojMkC7bnpj
-	g2s4xIY+UuUmFs4eqqM1Uqg/I/g8XQLB395McpkP+0J0sv3417MeevmpYohB8/f5
-	MY86vRQ9d+Gl+XizSt94d8fa+QO8hOyPKmR3lrDIjKx11JFRv3WHzdhdAPoJtN70
-	xRKDPQv3ydihyLNd38urNoDjcQCabxMm42+uBSk6+sJmVJtNOuCnxYhGfhPFllIN
-	QQifNSRUp1MtETN7w+qBA==
-X-ME-Sender: <xms:tX0VZySTR6e_e-urcnRy1kSRafWETotRAOkrTalLc3nY-RYW5oXjlg>
-    <xme:tX0VZ3wa0qw4ZK4sN3aJsMRbweUJF-dvOwlJuvNGFVoZCHYPadwnZ3RLHAibrN3VO
-    ukSx2IYnNMU3094tg>
-X-ME-Received: <xmr:tX0VZ_0G8UK01Ibb8tY_6uFgLnviwnau6up_XLbZEeXEFsDGKbLSQBNOROcqXkl5uIaUuv2Zqcfru-NUJ-mrmj3ofgyzH7pj2voMZAURQA>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1729461688; x=
+	1729548088; bh=v7JdK+EfV4NU1+GpmRFSjPS2tNauAbxiLGo8QCU/BU0=; b=Z
+	IkPC6Kxf7o3hFYGTE/SKMKvh/fgpbiFf0eJxaAn3T6L2Pa0rVuEl0u+UrXbYZTst
+	QEnKnv6VL2gXc05BRc5h4Ic7D50sVE1sn21YlhEqUHULfCTJdU3WKKqg6AXsHjzG
+	YR2oaRZercwUmAizbzW7U5Zdd+f590xs6qLWaGRzb/yNrobz/ouphpjMKE/ZZJec
+	CW0VEef6EpmYdsr8nFhDCPsD5cCgJp7ao9DXE6zCRizY4uBtnKEir4c/kYalCZPL
+	Ew9zirUlSLrWLrXd0YzP9JlhaEzqEKl1RdJNZ1msjyKgV1k0wcOE3paa8UTbSIHQ
+	l4Ix1UdRjw2fRZv5v6CiA==
+X-ME-Sender: <xms:uH0VZ3-Pf2UBuN03VDV4a1oVVNz9hAnOv6-bwMr7dUw2a_gyYIBjBg>
+    <xme:uH0VZztPRoXutm9WshIAtSV4zotG9d5lxGpCNVDH1FekxhDmdr865kbbO4SnDJvJ9
+    5ESgs0Tqj8qSk5mZQ>
+X-ME-Received: <xmr:uH0VZ1AW4xVnzFMlcelsowEQ8UgG3AZ8o08Hhad7Dt4puOEliykHvmibeOcvQbAKRqYSWFR9d6RlYiWKF4__hutZar8mie4BG0QNP90O9w>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehkedgtdeiucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
     rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
     htshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttden
     ucfhrhhomheplfhushhtihhnucghvghishhsuceojhhushhtihhnsehjuhhsthhinhifvg
     hishhsrdgtohhmqeenucggtffrrghtthgvrhhnpeeiffdtvdfgtddvieetffduhfejtdef
-    teelkefgteekgeegffduiefhudeiveejkeenucevlhhushhtvghrufhiiigvpedtnecurf
+    teelkefgteekgeegffduiefhudeiveejkeenucevlhhushhtvghrufhiiigvpedunecurf
     grrhgrmhepmhgrihhlfhhrohhmpehjuhhsthhinhesjhhushhtihhnfigvihhsshdrtgho
     mhdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
     hlrghniigrnhhordgrlhgvgiesghhmrghilhdrtghomhdprhgtphhtthhopehjihgtvdef
@@ -81,14 +81,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehkedgtdeiucetufdoteggod
     hlrdhorhhgpdhrtghpthhtohepjhhushhtihhnsehjuhhsthhinhifvghishhsrdgtohhm
     pdhrtghpthhtoheplhhinhhugidqihhiohesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
     gtphhtthhopeguvghvihgtvghtrhgvvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:tX0VZ-CzBilUFP0xVvxHbZp2E4Uu6K4qhTYUr5kdLbUJFLBgIBO4Hg>
-    <xmx:tX0VZ7iaOcy36xT9x5rK-DmTguOkg-JEyZilEYJDJJHxNYYvb5266Q>
-    <xmx:tX0VZ6rMDmhHblQ8ebTts_jprgeo0u8EaeYj-2o4zp30u8Jg7WVGww>
-    <xmx:tX0VZ-hxgyXXOn4pQdcrSh3_bqvvV1GoCsALFD5TaSDpv8mlkc8nQA>
-    <xmx:tn0VZ0a8D9Ew6Q75P6XkhmPVROk5dstaOGh7xJ67XQEMDm0il0k0v9f3>
+X-ME-Proxy: <xmx:uH0VZzfMX459R0au3XUvrmQnLV6sI4IGeZqY5SnAKeSryjr1gVbolA>
+    <xmx:uH0VZ8MhO-HRSUdljsjS1zDSixkEjOfNgTIc0DyUH3KkgrM9Zhbf8w>
+    <xmx:uH0VZ1kuLcEcXXgoPgyQpJhanP1w7dMFvkJjPurp63WtMo0ZKzOtqg>
+    <xmx:uH0VZ2tDijI20xba0PRmNfxNBRATRO6Wdfr42rgoFZ71nTL2qwxAOw>
+    <xmx:uH0VZ4n0yTy4KjR85LZN68U2sffhaC0CmNbPH23VRNKbvIyoRlckV2VZ>
 Feedback-ID: icf614246:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 20 Oct 2024 18:01:24 -0400 (EDT)
+ 20 Oct 2024 18:01:26 -0400 (EDT)
 From: Justin Weiss <justin@justinweiss.com>
 To: Alex Lanzano <lanzano.alex@gmail.com>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -102,9 +102,9 @@ Cc: Justin Weiss <justin@justinweiss.com>,
 	linux-kernel@vger.kernel.org,
 	"Derek J . Clark" <derekjohn.clark@gmail.com>,
 	=?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>
-Subject: [PATCH v3 4/6] iio: imu: bmi270: Add support for BMI260
-Date: Sun, 20 Oct 2024 15:00:08 -0700
-Message-ID: <20241020220011.212395-5-justin@justinweiss.com>
+Subject: [PATCH v3 5/6] iio: imu: bmi270: Add triggered buffer for Bosch BMI270 IMU
+Date: Sun, 20 Oct 2024 15:00:09 -0700
+Message-ID: <20241020220011.212395-6-justin@justinweiss.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241020220011.212395-1-justin@justinweiss.com>
 References: <20241020220011.212395-1-justin@justinweiss.com>
@@ -116,160 +116,159 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Adds support for the Bosch BMI260 6-axis IMU to the Bosch BMI270
-driver. Setup and operation is nearly identical to the Bosch BMI270,
-but has a different chip ID and requires different firmware.
-
-Firmware is requested and loaded from userspace.
+Set up a triggered buffer for the accel and angl_vel values.
 
 Signed-off-by: Justin Weiss <justin@justinweiss.com>
 ---
- drivers/iio/imu/bmi270/bmi270.h      |  1 +
- drivers/iio/imu/bmi270/bmi270_core.c | 28 +++++++++++++++++++++++++++-
- drivers/iio/imu/bmi270/bmi270_i2c.c  | 13 +++++++++++++
- drivers/iio/imu/bmi270/bmi270_spi.c  |  8 ++++++++
- 4 files changed, 49 insertions(+), 1 deletion(-)
+ drivers/iio/imu/bmi270/Kconfig       |  1 +
+ drivers/iio/imu/bmi270/bmi270.h      |  9 +++++
+ drivers/iio/imu/bmi270/bmi270_core.c | 56 ++++++++++++++++++++++++++++
+ 3 files changed, 66 insertions(+)
 
+diff --git a/drivers/iio/imu/bmi270/Kconfig b/drivers/iio/imu/bmi270/Kconfig
+index 0ffd29794fda..6362acc706da 100644
+--- a/drivers/iio/imu/bmi270/Kconfig
++++ b/drivers/iio/imu/bmi270/Kconfig
+@@ -6,6 +6,7 @@
+ config BMI270
+ 	tristate
+ 	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 
+ config BMI270_I2C
+ 	tristate "Bosch BMI270 I2C driver"
 diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
-index 93e5f387607b..d8f6d7cf47fc 100644
+index d8f6d7cf47fc..fdfad5784cc5 100644
 --- a/drivers/iio/imu/bmi270/bmi270.h
 +++ b/drivers/iio/imu/bmi270/bmi270.h
-@@ -20,6 +20,7 @@ struct bmi270_chip_info {
+@@ -11,6 +11,15 @@ struct bmi270_data {
+ 	struct device *dev;
+ 	struct regmap *regmap;
+ 	const struct bmi270_chip_info *chip_info;
++
++	/*
++	 * Where IIO_DMA_MINALIGN may be larger than 8 bytes, align to
++	 * that to ensure a DMA safe buffer.
++	 */
++	struct {
++		__le16 channels[6];
++		aligned_s64 timestamp;
++	} data __aligned(IIO_DMA_MINALIGN);
  };
  
- extern const struct regmap_config bmi270_regmap_config;
-+extern const struct bmi270_chip_info bmi260_chip_info;
- extern const struct bmi270_chip_info bmi270_chip_info;
- 
- int bmi270_core_probe(struct device *dev, struct regmap *regmap,
+ struct bmi270_chip_info {
 diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-index 5f08d786fa21..24e45d6f0706 100644
+index 24e45d6f0706..5b643afae9f7 100644
 --- a/drivers/iio/imu/bmi270/bmi270_core.c
 +++ b/drivers/iio/imu/bmi270/bmi270_core.c
-@@ -11,6 +11,11 @@
+@@ -7,6 +7,8 @@
+ #include <linux/regmap.h>
+ 
+ #include <linux/iio/iio.h>
++#include <linux/iio/triggered_buffer.h>
++#include <linux/iio/trigger_consumer.h>
+ 
  #include "bmi270.h"
  
- #define BMI270_CHIP_ID_REG				0x00
-+
-+/* Used to prevent sending incompatible firmware to BMI160 devices */
-+#define BMI160_CHIP_ID_VAL				0xD1
-+
-+#define BMI260_CHIP_ID_VAL				0x27
- #define BMI270_CHIP_ID_VAL				0x24
- #define BMI270_CHIP_ID_MSK				GENMASK(7, 0)
- 
-@@ -55,6 +60,7 @@
- #define BMI270_PWR_CTRL_ACCEL_EN_MSK			BIT(2)
- #define BMI270_PWR_CTRL_TEMP_EN_MSK			BIT(3)
- 
-+#define BMI260_INIT_DATA_FILE "bmi260-init-data.fw"
- #define BMI270_INIT_DATA_FILE "bmi270-init-data.fw"
- 
- enum bmi270_scan {
-@@ -66,6 +72,13 @@ enum bmi270_scan {
+@@ -70,6 +72,17 @@ enum bmi270_scan {
+ 	BMI270_SCAN_GYRO_X,
+ 	BMI270_SCAN_GYRO_Y,
  	BMI270_SCAN_GYRO_Z,
- };
- 
-+const struct bmi270_chip_info bmi260_chip_info = {
-+	.name = "bmi260",
-+	.chip_id = BMI260_CHIP_ID_VAL,
-+	.fw_name = BMI260_INIT_DATA_FILE,
-+};
-+EXPORT_SYMBOL_NS_GPL(bmi260_chip_info, IIO_BMI270);
-+
- const struct bmi270_chip_info bmi270_chip_info = {
- 	.name = "bmi270",
- 	.chip_id = BMI270_CHIP_ID_VAL,
-@@ -157,8 +170,21 @@ static int bmi270_validate_chip_id(struct bmi270_data *bmi270_device)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to read chip id");
- 
-+	/*
-+	 * Some manufacturers use "BMI0160" for both the BMI160 and
-+	 * BMI260. If the device is actually a BMI160, the bmi160
-+	 * driver should handle it and this driver should not.
-+	 */
-+	if (chip_id == BMI160_CHIP_ID_VAL)
-+		return -ENODEV;
-+
- 	if (chip_id != bmi270_device->chip_info->chip_id)
--		dev_info(dev, "Unknown chip id 0x%x", chip_id);
-+		dev_info(dev, "Unexpected chip id 0x%x", chip_id);
-+
-+	if (chip_id == bmi260_chip_info.chip_id)
-+		bmi270_device->chip_info = &bmi260_chip_info;
-+	else if (chip_id == bmi270_chip_info.chip_id)
-+		bmi270_device->chip_info = &bmi270_chip_info;
- 
- 	return 0;
- }
-diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
-index 394f27996059..3d0d8f3e8b63 100644
---- a/drivers/iio/imu/bmi270/bmi270_i2c.c
-+++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
-@@ -32,11 +32,23 @@ static int bmi270_i2c_probe(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id bmi270_i2c_id[] = {
-+	{ "bmi260", (kernel_ulong_t)&bmi260_chip_info },
- 	{ "bmi270", (kernel_ulong_t)&bmi270_chip_info },
- 	{ }
- };
- 
-+static const struct acpi_device_id bmi270_acpi_match[] = {
-+	/* OrangePi NEO */
-+	{ "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
-+	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
-+	{ "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
-+	/* GPD Win Max 2 */
-+	{ "10EC5280", (kernel_ulong_t)&bmi260_chip_info },
-+	{ }
++	BMI270_SCAN_TIMESTAMP,
 +};
 +
- static const struct of_device_id bmi270_of_match[] = {
-+	{ .compatible = "bosch,bmi260", .data = &bmi260_chip_info },
- 	{ .compatible = "bosch,bmi270", .data = &bmi270_chip_info },
- 	{ }
++static const unsigned long bmi270_avail_scan_masks[] = {
++	(BIT(BMI270_SCAN_ACCEL_X) |
++	 BIT(BMI270_SCAN_ACCEL_Y) |
++	 BIT(BMI270_SCAN_ACCEL_Z) |
++	 BIT(BMI270_SCAN_GYRO_X) |
++	 BIT(BMI270_SCAN_GYRO_Y) |
++	 BIT(BMI270_SCAN_GYRO_Z)),
++	0
  };
-@@ -44,6 +56,7 @@ static const struct of_device_id bmi270_of_match[] = {
- static struct i2c_driver bmi270_i2c_driver = {
- 	.driver = {
- 		.name = "bmi270_i2c",
-+		.acpi_match_table = bmi270_acpi_match,
- 		.of_match_table = bmi270_of_match,
- 	},
- 	.probe = bmi270_i2c_probe,
-diff --git a/drivers/iio/imu/bmi270/bmi270_spi.c b/drivers/iio/imu/bmi270/bmi270_spi.c
-index 7c2062c660d9..7f42ed74023b 100644
---- a/drivers/iio/imu/bmi270/bmi270_spi.c
-+++ b/drivers/iio/imu/bmi270/bmi270_spi.c
-@@ -65,11 +65,18 @@ static int bmi270_spi_probe(struct spi_device *spi)
+ 
+ const struct bmi270_chip_info bmi260_chip_info = {
+@@ -86,6 +99,27 @@ const struct bmi270_chip_info bmi270_chip_info = {
+ };
+ EXPORT_SYMBOL_NS_GPL(bmi270_chip_info, IIO_BMI270);
+ 
++static irqreturn_t bmi270_trigger_handler(int irq, void *p)
++{
++	struct iio_poll_func *pf = p;
++	struct iio_dev *indio_dev = pf->indio_dev;
++	struct bmi270_data *bmi270_device = iio_priv(indio_dev);
++	int ret;
++
++	ret = regmap_bulk_read(bmi270_device->regmap, BMI270_ACCEL_X_REG,
++			       &bmi270_device->data.channels,
++			       sizeof(bmi270_device->data.channels));
++
++	if (ret)
++		goto done;
++
++	iio_push_to_buffers_with_timestamp(indio_dev, &bmi270_device->data,
++					   pf->timestamp);
++done:
++	iio_trigger_notify_done(indio_dev->trig);
++	return IRQ_HANDLED;
++}
++
+ static int bmi270_get_data(struct bmi270_data *bmi270_device,
+ 			   int chan_type, int axis, int *val)
+ {
+@@ -141,6 +175,13 @@ static const struct iio_info bmi270_info = {
+ 	.modified = 1,						\
+ 	.channel2 = IIO_MOD_##_axis,				\
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
++	.scan_index = BMI270_SCAN_ACCEL_##_axis,		\
++	.scan_type = {						\
++		.sign = 's',					\
++		.realbits = 16,					\
++		.storagebits = 16,				\
++		.endianness = IIO_LE				\
++	},	                                                \
  }
  
- static const struct spi_device_id bmi270_spi_id[] = {
-+	{ "bmi260", (kernel_ulong_t)&bmi260_chip_info},
- 	{ "bmi270", (kernel_ulong_t)&bmi270_chip_info },
- 	{ }
+ #define BMI270_ANG_VEL_CHANNEL(_axis) {				\
+@@ -148,6 +189,13 @@ static const struct iio_info bmi270_info = {
+ 	.modified = 1,						\
+ 	.channel2 = IIO_MOD_##_axis,				\
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
++	.scan_index = BMI270_SCAN_GYRO_##_axis,			\
++	.scan_type = {						\
++		.sign = 's',					\
++		.realbits = 16,					\
++		.storagebits = 16,				\
++		.endianness = IIO_LE				\
++	},	                                                \
+ }
+ 
+ static const struct iio_chan_spec bmi270_channels[] = {
+@@ -157,6 +205,7 @@ static const struct iio_chan_spec bmi270_channels[] = {
+ 	BMI270_ANG_VEL_CHANNEL(X),
+ 	BMI270_ANG_VEL_CHANNEL(Y),
+ 	BMI270_ANG_VEL_CHANNEL(Z),
++	IIO_CHAN_SOFT_TIMESTAMP(BMI270_SCAN_TIMESTAMP),
  };
  
-+static const struct acpi_device_id bmi270_acpi_match[] = {
-+	{ "BOSC0260",  (kernel_ulong_t)&bmi260_chip_info },
-+	{ }
-+};
+ static int bmi270_validate_chip_id(struct bmi270_data *bmi270_device)
+@@ -327,9 +376,16 @@ int bmi270_core_probe(struct device *dev, struct regmap *regmap,
+ 	indio_dev->channels = bmi270_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(bmi270_channels);
+ 	indio_dev->name = chip_info->name;
++	indio_dev->available_scan_masks = bmi270_avail_scan_masks;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->info = &bmi270_info;
+ 
++	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
++					      iio_pollfunc_store_time,
++					      bmi270_trigger_handler, NULL);
++	if (ret)
++		return ret;
 +
- static const struct of_device_id bmi270_of_match[] = {
-+	{ .compatible = "bosch,bmi260", .data = &bmi260_chip_info },
- 	{ .compatible = "bosch,bmi270", .data = &bmi270_chip_info },
- 	{ }
- };
-@@ -77,6 +84,7 @@ static const struct of_device_id bmi270_of_match[] = {
- static struct spi_driver bmi270_spi_driver = {
- 	.driver = {
- 		.name = "bmi270",
-+		.acpi_match_table = bmi270_acpi_match,
- 		.of_match_table = bmi270_of_match,
- 	},
- 	.probe = bmi270_spi_probe,
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+ EXPORT_SYMBOL_NS_GPL(bmi270_core_probe, IIO_BMI270);
 -- 
 2.47.0
 

@@ -1,176 +1,146 @@
-Return-Path: <linux-iio+bounces-10824-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10825-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1FE9A55DA
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 20:31:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5645A9A55F5
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 21:13:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06FB21C20DC1
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 18:31:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2CE51F2232D
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 19:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4746197A7C;
-	Sun, 20 Oct 2024 18:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BDB319644B;
+	Sun, 20 Oct 2024 19:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OgSyavW6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LfyObKub"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A456B194AD6;
-	Sun, 20 Oct 2024 18:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B3D1990A8;
+	Sun, 20 Oct 2024 19:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729449067; cv=none; b=N4NH49B7X34gsoCNMEJfAr87UvHZrB5TiD3mso2oDvZHQPtpYtwzsGXMUVOFFxtPsr31mSN+vTonjJ1wTnaVeouo4rSn2cMepuEDqGob1wl9Zi0vZ6hblQm6xz1r1XTDUyEbRHMZFnViaV3B/260bvD5+dlTY2fot4pX2/PZq3A=
+	t=1729451550; cv=none; b=aUuGjhd0CHmLv3CHOTK6BYjslydEHYODrUUCnQMYNm+YGzwFrGA65zjABKKme/aU9bb1J9YWq0XL3EMghMYzaXgJGPXUJJmlHWrlA99aYQwW7WVmaYQoCaOnM183bDNxkwqQ83DG4e6iLoTomt+G629hrdI6N8nV5gN4kuQFmF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729449067; c=relaxed/simple;
-	bh=v39Rr5eF3eWe0K5Su3ujXYO57zb/mrOvhsFkm+1e1nU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sY+RCFK1KOcCRkcAdXdvybnNrfQyFLiPJXglGdMir/ZOGx3k/UCRiF92HToBkzmeP7ufrLKVNzocmXTuXoyTKZzRnShCnaYLyww9oLI9A1UZwSWHL6rD+vz28GNAmCfOf4JwvGwJwMzQeZbhM0YBPVD7LtDOPs6H3unltsRsbxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OgSyavW6; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729449065; x=1760985065;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=v39Rr5eF3eWe0K5Su3ujXYO57zb/mrOvhsFkm+1e1nU=;
-  b=OgSyavW6TdS2Hu03Fyl1SeYcvOCrEyXPdXqj8R7aYQCecRS0bx1bV8OO
-   odvtZ77Pduno001HMZxnotJCPmzKs1k/LvjkwYBN6Siajhowmsil0Dtzo
-   n3czd4hRjB6DIYzuBAxYQ+qEPufqcFbMyrLfNS0IbrTOVu2PJ1a9pY5i3
-   g4laPKmknQ5YmZqd0wzVy4zwNRaxcG/bfvFomMlGQ+gzyvn2OFl8LK6ND
-   o3HHzjg5M1rLGuC54fLO5w4GQM1CGyRuklZ6wYP64Os/kufTuej/JbeDw
-   URlMLPX+/BxDwQTeyLDtlEQgn1kMW2Ev/oE958PqEbdzR7jTOf6ZZeCtG
-   Q==;
-X-CSE-ConnectionGUID: r0ndL4RfQl6axx+phGfxeQ==
-X-CSE-MsgGUID: MqNBRm1nQ5ysCbfX3xeacA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11231"; a="32840925"
-X-IronPort-AV: E=Sophos;i="6.11,219,1725346800"; 
-   d="scan'208";a="32840925"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2024 11:31:05 -0700
-X-CSE-ConnectionGUID: OzBYEk6pRU2avgDpHiDMBQ==
-X-CSE-MsgGUID: G8xMv0IUThyf5uIazvRcLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,219,1725346800"; 
-   d="scan'208";a="116786918"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 20 Oct 2024 11:31:03 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t2ahg-000Qgy-1Q;
-	Sun, 20 Oct 2024 18:31:00 +0000
-Date: Mon, 21 Oct 2024 02:30:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH] iio: invensense: fix multiple odr switch when FIFO is off
-Message-ID: <202410210200.tPt6CQU4-lkp@intel.com>
-References: <20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com>
+	s=arc-20240116; t=1729451550; c=relaxed/simple;
+	bh=i8au2tTyl+TZJnNky4a259WdCcwNgPybYwXiwc0iy0w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=B6LCwCD/DY/F/PYosTkFVhxkaWbORAafBnBdLH645y+Wkh6LH7Rf0jOF9v2CyEF0RH+2b1WZbNF27UQQ5nM2YaXpaaLDMo//jX1mAYK6wHJ4t/zWwywitMy1Tyi7Wu85kQlZGFhk0P0nzn57p5h6lYMBEZrtYrnTPny94wKMjZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LfyObKub; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-431481433bdso39291135e9.3;
+        Sun, 20 Oct 2024 12:12:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729451546; x=1730056346; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5YTlFE9y0ioXpBTOeyys0wnNuvycwpmvcV0ld9ft1sg=;
+        b=LfyObKubBreXTEuQULlSJHTHLIKSwzRWqk8HWq+ZYSlCIPBjG22pS3y8eDd/E9zzVS
+         OFHQvz4lQF7w+wdlQv7Bguk14MsVdcBhtGEgGuGhHmrZA3/YEpfwr84BUgR31SiTLxPe
+         5B/TYqbB7jxjpaIlVwLZQ8a0PS2LdfRbsSJW1pT09YidnjOlphSYG+msD594aHVQeBfr
+         t+BhXMcQAJcJgaM460QK952HHWW5GPUwAnk8X02wWOVVNQjaLNrzOS96fYaUoO1gY2km
+         Z1bLXyocfcckM9mmqa8EKr//hQmA3uboq2Sb4fjo8HSLPx/HQqM12v+TBlfRDau2kpDe
+         +caQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729451546; x=1730056346;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5YTlFE9y0ioXpBTOeyys0wnNuvycwpmvcV0ld9ft1sg=;
+        b=rpEw0pA0De0AWaiEYhvY9H/PMhzsRG5i8RIpBvqyopJx+KpnfmnYYg6wPEJlzkyDuM
+         pt/IbummLuTZ9+cxrEXsCUdVv+tKi7UdSQFCliDRqFNONiiizuMdW2fwK1j7/HINb7At
+         TnRiTtvGvv43pQhXUOORFGG1KjLIwys9oShrBp9CFQK/g+/x1pFLuBXyFC/q/TA6RW6Q
+         zJuah1+4vO3ko5j20NKlk0hY2ZRARy6BeYHx0hm1t7YcdNspiCKv3wiQRqC5JXa2YU10
+         4+IwkYMXn7JtN8Os6kUqkSBkoh8aaZTzk/Z0K2H8yhYEFTOItWBGsd8KnANyFc6iUxxr
+         DgWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVf6WsmB4QtZTmD9l58iDBcYbEZQuTqyHPUMtJk4uxm4IZW5BKOEtWat85sjCkG2WV0/U3IEMzPFIir@vger.kernel.org, AJvYcCXr1JS2qrX8PWhydFX3YK80s7a/TN0Guey54ssPHHrcE+KoiXICKaUuUAgGBA6uTFwb4Qb2aPpIAppgo8tE@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/v1rf1xKQgS9CfPqCdXsRLnPsbhpQgH0lcpLMybyAkET2QbyI
+	hv6mJ4xOdt2moIHjoFLbczmixyPdUfAwKsW2Wrl8lqxLB1u5V35J
+X-Google-Smtp-Source: AGHT+IHQI/nVv/AGRuFjGRqaU0I7eAI6IZqLNPv63crK6t7y5algYa2k8nMJ4UC2qvvVBhVBwcHypQ==
+X-Received: by 2002:a05:600c:4e93:b0:431:5ecf:2a39 with SMTP id 5b1f17b1804b1-431616970cfmr56988475e9.35.1729451545912;
+        Sun, 20 Oct 2024 12:12:25 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-6b9f-98af-2a5c-6ed2.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:6b9f:98af:2a5c:6ed2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f57b8e0sm31589775e9.12.2024.10.20.12.12.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Oct 2024 12:12:24 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v2 0/2] iio: light: add support for veml3235
+Date: Sun, 20 Oct 2024 21:12:15 +0200
+Message-Id: <20241020-veml3235-v2-0-4bc7cfad7e0b@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA9WFWcC/0XMQQqDMBCF4avIrJsySdRqV71HcRF1ogNqSlJCi
+ +TuTaXQ5f94fDsE8kwBrsUOniIHdlsOdSpgmM02keAxNyhUpUS8iEjropWuBBrdqLqitjcE+f7
+ wZPl1UPcu98zh6fz7kKP8rj9E1n8kSoGib7G0DarRkL1Nq+HlPLgVupTSB6FIfCygAAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729451544; l=2030;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=i8au2tTyl+TZJnNky4a259WdCcwNgPybYwXiwc0iy0w=;
+ b=1MpQtsi3sZorBQ6PYaLZ3MfJnXFIyRiHsgCShnUKSC1tHVcL1yXpG8vNkCY0ZEB2HJkAxISz+
+ ccLIy3+GyttCdh2YWe6No9qdDW2IhV91Rpzt0htCKHxRf+otvsTJdeg
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Hi Jean-Baptiste,
+This series adds support for the Vishay veml3235 ambient light sensor
+with I2C protocol interface.
 
-kernel test robot noticed the following build warnings:
+I attempted to add support for this device in the existing veml6030
+driver, as it shares some operating principles with the supported
+devices. But given that the veml3235 has different register addresses,
+bit arrangements, and limited functionality, it ended up making most of
+the driver kind of device-agnostic.
 
-[auto build test WARNING on c3e9df514041ec6c46be83801b1891392f4522f7]
+Instead, the proposed driver is based on the recently updated veml6030
+with multiple simplifications and a few clean ups (e.g. regfields,
+right definition of shared-by-all info masks, which can't be modified
+in veml6030 as it breaks the ABI).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jean-Baptiste-Maneyrol-via-B4-Relay/iio-invensense-fix-multiple-odr-switch-when-FIFO-is-off/20241017-220821
-base:   c3e9df514041ec6c46be83801b1891392f4522f7
-patch link:    https://lore.kernel.org/r/20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b%40tdk.com
-patch subject: [PATCH] iio: invensense: fix multiple odr switch when FIFO is off
-config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20241021/202410210200.tPt6CQU4-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241021/202410210200.tPt6CQU4-lkp@intel.com/reproduce)
+On the other hand, the dt-bindings can be recycled as there is no real
+reason to add new ones. From a dt-bindings point of view it resembles
+the already supported veml7700. But if for whatever reason new bindings
+would be preferred, I am willing to provide them in further versions.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410210200.tPt6CQU4-lkp@intel.com/
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v2:
+- Rename SD/SD0 bits to include register name.
+- Switch to dev_info() when checking ID.
+- Simplify val/val2 handling in veml3235_set_gain().
+- Move return -EINVAL to the default case in veml3235_read_avail().
+- Link to v1: https://lore.kernel.org/r/20241016-veml3235-v1-0-b904f802daef@gmail.com
 
-All warnings (new ones prefixed by >>):
+---
+Javier Carrasco (2):
+      dt-bindings: iio: light: veml6030: add veml3235
+      iio: light: add support for veml3235
 
-   drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c: In function 'inv_icm42600_gyro_update_scan_mode':
->> drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c:103:39: warning: unused variable 'ts' [-Wunused-variable]
-     103 |         struct inv_sensors_timestamp *ts = &gyro_st->ts;
-         |                                       ^~
---
-   drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c: In function 'inv_icm42600_accel_update_scan_mode':
->> drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c:203:39: warning: unused variable 'ts' [-Wunused-variable]
-     203 |         struct inv_sensors_timestamp *ts = &accel_st->ts;
-         |                                       ^~
+ .../bindings/iio/light/vishay,veml6030.yaml        |   5 +-
+ MAINTAINERS                                        |   6 +
+ drivers/iio/light/Kconfig                          |  11 +
+ drivers/iio/light/Makefile                         |   1 +
+ drivers/iio/light/veml3235.c                       | 540 +++++++++++++++++++++
+ 5 files changed, 562 insertions(+), 1 deletion(-)
+---
+base-commit: b852e1e7a0389ed6168ef1d38eb0bad71a6b11e8
+change-id: 20241007-veml3235-0a38265e9bae
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for GET_FREE_REGION
-   Depends on [n]: SPARSEMEM [=n]
-   Selected by [y]:
-   - RESOURCE_KUNIT_TEST [=y] && RUNTIME_TESTING_MENU [=y] && KUNIT [=y]
-
-
-vim +/ts +103 drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   96  
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   97  /* enable gyroscope sensor and FIFO write */
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   98  static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   99  					      const unsigned long *scan_mask)
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  100  {
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  101  	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
-a1432b5b4f4c44 Jean-Baptiste Maneyrol    2024-04-22  102  	struct inv_icm42600_sensor_state *gyro_st = iio_priv(indio_dev);
-a1432b5b4f4c44 Jean-Baptiste Maneyrol    2024-04-22 @103  	struct inv_sensors_timestamp *ts = &gyro_st->ts;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  104  	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  105  	unsigned int fifo_en = 0;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  106  	unsigned int sleep_gyro = 0;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  107  	unsigned int sleep_temp = 0;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  108  	unsigned int sleep;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  109  	int ret;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  110  
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  111  	mutex_lock(&st->lock);
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  112  
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  113  	if (*scan_mask & INV_ICM42600_SCAN_MASK_TEMP) {
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  114  		/* enable temp sensor */
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  115  		ret = inv_icm42600_set_temp_conf(st, true, &sleep_temp);
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  116  		if (ret)
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  117  			goto out_unlock;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  118  		fifo_en |= INV_ICM42600_SENSOR_TEMP;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  119  	}
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  120  
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  121  	if (*scan_mask & INV_ICM42600_SCAN_MASK_GYRO_3AXIS) {
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  122  		/* enable gyro sensor */
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  123  		conf.mode = INV_ICM42600_SENSOR_MODE_LOW_NOISE;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  124  		ret = inv_icm42600_set_gyro_conf(st, &conf, &sleep_gyro);
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  125  		if (ret)
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  126  			goto out_unlock;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  127  		fifo_en |= INV_ICM42600_SENSOR_GYRO;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  128  	}
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  129  
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  130  	/* update data FIFO write */
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  131  	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  132  
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  133  out_unlock:
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  134  	mutex_unlock(&st->lock);
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  135  	/* sleep maximum required time */
-c788b9e56acd46 Bragatheswaran Manickavel 2023-10-27  136  	sleep = max(sleep_gyro, sleep_temp);
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  137  	if (sleep)
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  138  		msleep(sleep);
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  139  	return ret;
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  140  }
-7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  141  
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
+
 

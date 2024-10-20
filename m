@@ -1,377 +1,176 @@
-Return-Path: <linux-iio+bounces-10823-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10824-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C210C9A55AF
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 20:07:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1FE9A55DA
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 20:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7364A2810B3
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 18:07:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06FB21C20DC1
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Oct 2024 18:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE36194ACA;
-	Sun, 20 Oct 2024 18:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4746197A7C;
+	Sun, 20 Oct 2024 18:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFp67uDE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OgSyavW6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5517462
-	for <linux-iio@vger.kernel.org>; Sun, 20 Oct 2024 18:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A456B194AD6;
+	Sun, 20 Oct 2024 18:31:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729447655; cv=none; b=f8qyf1xPF0ZnkO65O0MpYvKhniEMrTrKFkyAWDg/AE41xa12VOLWVE/M3/y9F5Wl8PCYKJqVrncLIo15jKPCOs5ilxNtIdJjAcekGU7s4vR4ZFmGj/QnIhhdR6zNQ6Z4HF5SbJz5wbK5TgZ+0Qfu3E9RR7Q2/qU3ycKl164/bL0=
+	t=1729449067; cv=none; b=N4NH49B7X34gsoCNMEJfAr87UvHZrB5TiD3mso2oDvZHQPtpYtwzsGXMUVOFFxtPsr31mSN+vTonjJ1wTnaVeouo4rSn2cMepuEDqGob1wl9Zi0vZ6hblQm6xz1r1XTDUyEbRHMZFnViaV3B/260bvD5+dlTY2fot4pX2/PZq3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729447655; c=relaxed/simple;
-	bh=owU6QdBUBmqBnYeY6I+jqeKFcjm2zdyJtKjciWxA6qs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nZhFxNdcekFtPX4Cy6qMzr8DCCz4HVrPF8CPG8lX7VghPIzm76zP94V4zl9E77fhdz8k1lHN9DpHpA9e5qhsKnB3CAdOo3FQbtjmBeNSMmY7TeyEwBA+1k4h4ojWE/+49iMHrWnDafGkSUFjZ461b0sApTTr3oyp1p+oOy3yjJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFp67uDE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD57C4CEC6;
-	Sun, 20 Oct 2024 18:07:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729447655;
-	bh=owU6QdBUBmqBnYeY6I+jqeKFcjm2zdyJtKjciWxA6qs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MFp67uDEXVw93Lovt36yUuTS0q1XqBrgvxtOrq2eUcPP9t9guWTuKzHX/MNAIsMLi
-	 uh2xWBc167H6+iIjHN/I2WTvXbNy7Z2rzRb5qGU1kS0NUnzhJR+sD7V4lVilEjgJxh
-	 NPx4N5Xmx57JcFT4VR9grbKvn1obitnMU+G/ADKi5v3t6e98ayT0cGrERnxgLiA7bj
-	 S7l0/NRvrzvIc6ZlWJbcpdfVrASDBbOYgW7Pcx5gm97nZUnNvUikT/AYQ0rQHEm6UB
-	 txK5V7rcUkYomnEak8up9GwI8raEzH0qYefUlktKPFwWeR8ozkbHYi95lxRWxG+DsF
-	 uuhmYQhCwcAuw==
-From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH] iio: accel: replace s64 __aligned(8) with aligned_s64
-Date: Sun, 20 Oct 2024 19:07:20 +0100
-Message-ID: <20241020180720.496327-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1729449067; c=relaxed/simple;
+	bh=v39Rr5eF3eWe0K5Su3ujXYO57zb/mrOvhsFkm+1e1nU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sY+RCFK1KOcCRkcAdXdvybnNrfQyFLiPJXglGdMir/ZOGx3k/UCRiF92HToBkzmeP7ufrLKVNzocmXTuXoyTKZzRnShCnaYLyww9oLI9A1UZwSWHL6rD+vz28GNAmCfOf4JwvGwJwMzQeZbhM0YBPVD7LtDOPs6H3unltsRsbxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OgSyavW6; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729449065; x=1760985065;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=v39Rr5eF3eWe0K5Su3ujXYO57zb/mrOvhsFkm+1e1nU=;
+  b=OgSyavW6TdS2Hu03Fyl1SeYcvOCrEyXPdXqj8R7aYQCecRS0bx1bV8OO
+   odvtZ77Pduno001HMZxnotJCPmzKs1k/LvjkwYBN6Siajhowmsil0Dtzo
+   n3czd4hRjB6DIYzuBAxYQ+qEPufqcFbMyrLfNS0IbrTOVu2PJ1a9pY5i3
+   g4laPKmknQ5YmZqd0wzVy4zwNRaxcG/bfvFomMlGQ+gzyvn2OFl8LK6ND
+   o3HHzjg5M1rLGuC54fLO5w4GQM1CGyRuklZ6wYP64Os/kufTuej/JbeDw
+   URlMLPX+/BxDwQTeyLDtlEQgn1kMW2Ev/oE958PqEbdzR7jTOf6ZZeCtG
+   Q==;
+X-CSE-ConnectionGUID: r0ndL4RfQl6axx+phGfxeQ==
+X-CSE-MsgGUID: MqNBRm1nQ5ysCbfX3xeacA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11231"; a="32840925"
+X-IronPort-AV: E=Sophos;i="6.11,219,1725346800"; 
+   d="scan'208";a="32840925"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2024 11:31:05 -0700
+X-CSE-ConnectionGUID: OzBYEk6pRU2avgDpHiDMBQ==
+X-CSE-MsgGUID: G8xMv0IUThyf5uIazvRcLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,219,1725346800"; 
+   d="scan'208";a="116786918"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 20 Oct 2024 11:31:03 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t2ahg-000Qgy-1Q;
+	Sun, 20 Oct 2024 18:31:00 +0000
+Date: Mon, 21 Oct 2024 02:30:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH] iio: invensense: fix multiple odr switch when FIFO is off
+Message-ID: <202410210200.tPt6CQU4-lkp@intel.com>
+References: <20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com>
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Hi Jean-Baptiste,
 
-e4ca0e59c394 ("types: Complement the aligned types with signed 64-bit one")
-introduced aligned_s64. Use it for all IIO accelerometer drivers.
+kernel test robot noticed the following build warnings:
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[auto build test WARNING on c3e9df514041ec6c46be83801b1891392f4522f7]
 
----
+url:    https://github.com/intel-lab-lkp/linux/commits/Jean-Baptiste-Maneyrol-via-B4-Relay/iio-invensense-fix-multiple-odr-switch-when-FIFO-is-off/20241017-220821
+base:   c3e9df514041ec6c46be83801b1891392f4522f7
+patch link:    https://lore.kernel.org/r/20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b%40tdk.com
+patch subject: [PATCH] iio: invensense: fix multiple odr switch when FIFO is off
+config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20241021/202410210200.tPt6CQU4-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241021/202410210200.tPt6CQU4-lkp@intel.com/reproduce)
 
-I debated whether to split this up by driver by the time we've done all IIO
-drivers that will be a very large number of trivial patches.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410210200.tPt6CQU4-lkp@intel.com/
 
-The changes are minor enough that they shouldn't present much of a
-backporting challenge if needed for future fixes etc.
+All warnings (new ones prefixed by >>):
 
-I'm find splitting them up if people prefer.
-Next on my list is to look at adding runtime checks that the buffers
-containing these timestamps are big enough but I want this out of the
-way first.
+   drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c: In function 'inv_icm42600_gyro_update_scan_mode':
+>> drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c:103:39: warning: unused variable 'ts' [-Wunused-variable]
+     103 |         struct inv_sensors_timestamp *ts = &gyro_st->ts;
+         |                                       ^~
+--
+   drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c: In function 'inv_icm42600_accel_update_scan_mode':
+>> drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c:203:39: warning: unused variable 'ts' [-Wunused-variable]
+     203 |         struct inv_sensors_timestamp *ts = &accel_st->ts;
+         |                                       ^~
 
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/accel/bma180.c          | 3 ++-
- drivers/iio/accel/bma220_spi.c      | 1 +
- drivers/iio/accel/bma400_core.c     | 2 +-
- drivers/iio/accel/bmc150-accel.h    | 3 ++-
- drivers/iio/accel/fxls8962af-core.c | 3 ++-
- drivers/iio/accel/kionix-kx022a.c   | 3 ++-
- drivers/iio/accel/kxcjk-1013.c      | 3 ++-
- drivers/iio/accel/kxsd9.c           | 3 ++-
- drivers/iio/accel/mma7455_core.c    | 3 ++-
- drivers/iio/accel/mma8452.c         | 3 ++-
- drivers/iio/accel/msa311.c          | 3 ++-
- drivers/iio/accel/mxc4005.c         | 3 ++-
- drivers/iio/accel/stk8312.c         | 3 ++-
- drivers/iio/accel/stk8ba50.c        | 3 ++-
- 14 files changed, 26 insertions(+), 13 deletions(-)
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for GET_FREE_REGION
+   Depends on [n]: SPARSEMEM [=n]
+   Selected by [y]:
+   - RESOURCE_KUNIT_TEST [=y] && RUNTIME_TESTING_MENU [=y] && KUNIT [=y]
 
-diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
-index 1fe20eb78a0b..41a517e1630f 100644
---- a/drivers/iio/accel/bma180.c
-+++ b/drivers/iio/accel/bma180.c
-@@ -21,6 +21,7 @@
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-+#include <linux/types.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- #include <linux/iio/buffer.h>
-@@ -144,7 +145,7 @@ struct bma180_data {
- 	/* Ensure timestamp is naturally aligned */
- 	struct {
- 		s16 chan[4];
--		s64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- };
- 
-diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
-index d33218e40c79..2d27a592a61e 100644
---- a/drivers/iio/accel/bma220_spi.c
-+++ b/drivers/iio/accel/bma220_spi.c
-@@ -9,6 +9,7 @@
- #include <linux/kernel.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/types.h>
- #include <linux/spi/spi.h>
- 
- #include <linux/iio/buffer.h>
-diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-index d96840d135c6..eb32c963dfc8 100644
---- a/drivers/iio/accel/bma400_core.c
-+++ b/drivers/iio/accel/bma400_core.c
-@@ -115,7 +115,7 @@ struct bma400_data {
- 	struct {
- 		__le16 buff[3];
- 		u8 temperature;
--		s64 ts __aligned(8);
-+		aligned_s64 ts;
- 	} buffer __aligned(IIO_DMA_MINALIGN);
- 	__le16 status;
- 	__be16 duration;
-diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
-index 7775c5edaeef..7a7baf52e595 100644
---- a/drivers/iio/accel/bmc150-accel.h
-+++ b/drivers/iio/accel/bmc150-accel.h
-@@ -6,6 +6,7 @@
- #include <linux/iio/iio.h>
- #include <linux/mutex.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/types.h>
- #include <linux/workqueue.h>
- 
- struct regmap;
-@@ -69,7 +70,7 @@ struct bmc150_accel_data {
- 	 */
- 	struct {
- 		__le16 channels[3];
--		s64 ts __aligned(8);
-+		aligned_s64 ts;
- 	} scan;
- 	u8 bw_bits;
- 	u32 slope_dur;
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 37f33c29fb4b..ab427f3461db 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -22,6 +22,7 @@
- #include <linux/property.h>
- #include <linux/regulator/consumer.h>
- #include <linux/regmap.h>
-+#include <linux/types.h>
- 
- #include <linux/iio/buffer.h>
- #include <linux/iio/events.h>
-@@ -163,7 +164,7 @@ struct fxls8962af_data {
- 	const struct fxls8962af_chip_info *chip_info;
- 	struct {
- 		__le16 channels[3];
--		s64 ts __aligned(8);
-+		aligned_s64 ts;
- 	} scan;
- 	int64_t timestamp, old_timestamp;	/* Only used in hw fifo mode. */
- 	struct iio_mount_matrix orientation;
-diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
-index 53d59a04ae15..32387819995d 100644
---- a/drivers/iio/accel/kionix-kx022a.c
-+++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -16,6 +16,7 @@
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
- #include <linux/string_choices.h>
-+#include <linux/types.h>
- #include <linux/units.h>
- 
- #include <linux/iio/iio.h>
-@@ -292,7 +293,7 @@ struct kx022a_data {
- 	__le16 buffer[8] __aligned(IIO_DMA_MINALIGN);
- 	struct {
- 		__le16 channels[3];
--		s64 ts __aligned(8);
-+		aligned_s64 ts;
- 	} scan;
- };
- 
-diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-index b76df8816323..bbf65fc97b08 100644
---- a/drivers/iio/accel/kxcjk-1013.c
-+++ b/drivers/iio/accel/kxcjk-1013.c
-@@ -11,6 +11,7 @@
- #include <linux/bitops.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-+#include <linux/types.h>
- #include <linux/acpi.h>
- #include <linux/pm.h>
- #include <linux/pm_runtime.h>
-@@ -250,7 +251,7 @@ struct kxcjk1013_data {
- 	/* Ensure timestamp naturally aligned */
- 	struct {
- 		s16 chans[AXIS_MAX];
--		s64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	u8 odr_bits;
- 	u8 range;
-diff --git a/drivers/iio/accel/kxsd9.c b/drivers/iio/accel/kxsd9.c
-index 70dfd6e354db..6d2b0a22e550 100644
---- a/drivers/iio/accel/kxsd9.c
-+++ b/drivers/iio/accel/kxsd9.c
-@@ -15,6 +15,7 @@
- #include <linux/kernel.h>
- #include <linux/sysfs.h>
- #include <linux/slab.h>
-+#include <linux/types.h>
- #include <linux/module.h>
- #include <linux/regmap.h>
- #include <linux/bitops.h>
-@@ -215,7 +216,7 @@ static irqreturn_t kxsd9_trigger_handler(int irq, void *p)
- 	 */
- 	struct {
- 		__be16 chan[4];
--		s64 ts __aligned(8);
-+		aligned_s64 ts;
- 	} hw_values;
- 	int ret;
- 
-diff --git a/drivers/iio/accel/mma7455_core.c b/drivers/iio/accel/mma7455_core.c
-index a34195b3215d..50f7ac1845c6 100644
---- a/drivers/iio/accel/mma7455_core.c
-+++ b/drivers/iio/accel/mma7455_core.c
-@@ -19,6 +19,7 @@
- #include <linux/iio/triggered_buffer.h>
- #include <linux/module.h>
- #include <linux/regmap.h>
-+#include <linux/types.h>
- 
- #include "mma7455.h"
- 
-@@ -58,7 +59,7 @@ struct mma7455_data {
- 	 */
- 	struct {
- 		__le16 channels[3];
--		s64 ts __aligned(8);
-+		aligned_s64 ts;
- 	} scan;
- };
- 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 62e6369e2269..de4525b30edc 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -32,6 +32,7 @@
- #include <linux/delay.h>
- #include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/types.h>
- 
- #define MMA8452_STATUS				0x00
- #define  MMA8452_STATUS_DRDY			(BIT(2) | BIT(1) | BIT(0))
-@@ -115,7 +116,7 @@ struct mma8452_data {
- 	/* Ensure correct alignment of time stamp when present */
- 	struct {
- 		__be16 channels[3];
--		s64 ts __aligned(8);
-+		aligned_s64 ts;
- 	} buffer;
- };
- 
-diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
-index 57025354c7cd..e7fb860f3233 100644
---- a/drivers/iio/accel/msa311.c
-+++ b/drivers/iio/accel/msa311.c
-@@ -34,6 +34,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/string_choices.h>
-+#include <linux/types.h>
- #include <linux/units.h>
- 
- #include <linux/iio/buffer.h>
-@@ -893,7 +894,7 @@ static irqreturn_t msa311_buffer_thread(int irq, void *p)
- 	__le16 axis;
- 	struct {
- 		__le16 channels[MSA311_SI_Z + 1];
--		s64 ts __aligned(8);
-+		aligned_s64 ts;
- 	} buf;
- 
- 	memset(&buf, 0, sizeof(buf));
-diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
-index fc54a2a4693c..cb5c4e354fc0 100644
---- a/drivers/iio/accel/mxc4005.c
-+++ b/drivers/iio/accel/mxc4005.c
-@@ -11,6 +11,7 @@
- #include <linux/iio/iio.h>
- #include <linux/mod_devicetable.h>
- #include <linux/regmap.h>
-+#include <linux/types.h>
- #include <linux/iio/sysfs.h>
- #include <linux/iio/trigger.h>
- #include <linux/iio/buffer.h>
-@@ -69,7 +70,7 @@ struct mxc4005_data {
- 	/* Ensure timestamp is naturally aligned */
- 	struct {
- 		__be16 chans[3];
--		s64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	bool trigger_enabled;
- 	unsigned int control;
-diff --git a/drivers/iio/accel/stk8312.c b/drivers/iio/accel/stk8312.c
-index abead190254b..471c154c3631 100644
---- a/drivers/iio/accel/stk8312.c
-+++ b/drivers/iio/accel/stk8312.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/delay.h>
-+#include <linux/types.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -105,7 +106,7 @@ struct stk8312_data {
- 	/* Ensure timestamp is naturally aligned */
- 	struct {
- 		s8 chans[3];
--		s64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- };
- 
-diff --git a/drivers/iio/accel/stk8ba50.c b/drivers/iio/accel/stk8ba50.c
-index a32a77324e92..cab592a68622 100644
---- a/drivers/iio/accel/stk8ba50.c
-+++ b/drivers/iio/accel/stk8ba50.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
-+#include <linux/types.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -94,7 +95,7 @@ struct stk8ba50_data {
- 	/* Ensure timestamp is naturally aligned */
- 	struct {
- 		s16 chans[3];
--		s64 timetamp __aligned(8);
-+		aligned_s64 timetamp;
- 	} scan;
- };
- 
+
+vim +/ts +103 drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   96  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   97  /* enable gyroscope sensor and FIFO write */
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   98  static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22   99  					      const unsigned long *scan_mask)
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  100  {
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  101  	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+a1432b5b4f4c44 Jean-Baptiste Maneyrol    2024-04-22  102  	struct inv_icm42600_sensor_state *gyro_st = iio_priv(indio_dev);
+a1432b5b4f4c44 Jean-Baptiste Maneyrol    2024-04-22 @103  	struct inv_sensors_timestamp *ts = &gyro_st->ts;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  104  	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  105  	unsigned int fifo_en = 0;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  106  	unsigned int sleep_gyro = 0;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  107  	unsigned int sleep_temp = 0;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  108  	unsigned int sleep;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  109  	int ret;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  110  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  111  	mutex_lock(&st->lock);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  112  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  113  	if (*scan_mask & INV_ICM42600_SCAN_MASK_TEMP) {
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  114  		/* enable temp sensor */
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  115  		ret = inv_icm42600_set_temp_conf(st, true, &sleep_temp);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  116  		if (ret)
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  117  			goto out_unlock;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  118  		fifo_en |= INV_ICM42600_SENSOR_TEMP;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  119  	}
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  120  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  121  	if (*scan_mask & INV_ICM42600_SCAN_MASK_GYRO_3AXIS) {
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  122  		/* enable gyro sensor */
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  123  		conf.mode = INV_ICM42600_SENSOR_MODE_LOW_NOISE;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  124  		ret = inv_icm42600_set_gyro_conf(st, &conf, &sleep_gyro);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  125  		if (ret)
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  126  			goto out_unlock;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  127  		fifo_en |= INV_ICM42600_SENSOR_GYRO;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  128  	}
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  129  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  130  	/* update data FIFO write */
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  131  	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  132  
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  133  out_unlock:
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  134  	mutex_unlock(&st->lock);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  135  	/* sleep maximum required time */
+c788b9e56acd46 Bragatheswaran Manickavel 2023-10-27  136  	sleep = max(sleep_gyro, sleep_temp);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  137  	if (sleep)
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  138  		msleep(sleep);
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  139  	return ret;
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  140  }
+7f85e42a6c54c0 Jean-Baptiste Maneyrol    2020-06-22  141  
+
 -- 
-2.46.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

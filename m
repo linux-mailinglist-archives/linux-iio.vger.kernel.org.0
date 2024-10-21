@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-10903-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10904-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DBA9A905B
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 21:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B46139A905F
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 21:56:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6CB51F217A5
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 19:55:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AFF51F2144F
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 19:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9A91FF02F;
-	Mon, 21 Oct 2024 19:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6247A1FF5FE;
+	Mon, 21 Oct 2024 19:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DYOq1kEQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZgSLa9UP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88B51DE8A8;
-	Mon, 21 Oct 2024 19:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769BE1FF03F;
+	Mon, 21 Oct 2024 19:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729540425; cv=none; b=ica+tsKLX/veeVE6u6JHo4x3tp+Ij2RmJ02MNULh5pAsowI5moQlBJO9azZgRghcaOWB5c65AJGPXz/aM40UD3U6gNGSCwk2+O0jx4CSgJIQXBf4j6zF7XCIlGleEpPNgvWRqXrRC2FDQ+sQoXq6x0sM9evhTFwlIt8mLnsw6Ck=
+	t=1729540428; cv=none; b=relvCewhdgLOgzYWbWI8C5/OZv9VAZIEW9/ZV3WhSgOPs3Bx0u7wiQifOWWzkBazWXmgbmfFzdoAenX7fBuT9oQ1x6zAvsvcHgq1SzxwmGaaIbz0YChEx4/mOW09OrMKZOVX+hwb1uSNJbaf0vaNmPatnyKiWZNro37HJRZPjbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729540425; c=relaxed/simple;
-	bh=HuRrGvLfUNfkAK5g4HYaKiG55r68O+ccWYCmax6cs7A=;
+	s=arc-20240116; t=1729540428; c=relaxed/simple;
+	bh=Iv1qVeHWsnGwCkKp4JfXyhKcEjlk1L71tw7kBPDfmW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4+wtlDZ7b+vixaofyYauvLYXBa3VQUenhy9uCxjiA6I61d4Qk8DxgD45neZqqAEFc8gIJMm20ZPzDSChmE6PooBdb2j86DXkFkwzTWp3BGTyBuUOHWuYPNIbT7T0hBHpn1gggejF40ckM5nsCgrSILag/GOAFSo5+jyhGsMbio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DYOq1kEQ; arc=none smtp.client-ip=209.85.208.45
+	 MIME-Version; b=EMKF6WGbknTcgfir60Dwdf8U21Lk1dgbI5NUekHFa7u16e5Zu34Wt8NQFlaFZjz3wG6UfkXnmEVhCwYYrMbV9D2WlgoR4pkAREiaBIrLuSCyFlpHpDSrwPKA0BJM8nYy+WSFMDZHCHVlL6ePoHMhmvO2KyvH60sKcNZxWjxRGQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZgSLa9UP; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c9552d02e6so6172073a12.2;
-        Mon, 21 Oct 2024 12:53:43 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-539f84907caso5516286e87.3;
+        Mon, 21 Oct 2024 12:53:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729540422; x=1730145222; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729540424; x=1730145224; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yiDiHoQKEX2h2gMZ6AYiTcdgVDx/hK9ufvUgR+J5zhg=;
-        b=DYOq1kEQJJ4WVKxPx0e5MqdH42Y/bhszQTmQPIz5l6E+wQL477g9x+AXY0I0DYRwUG
-         Cd5qxOUzN81P6AVtQ8Q2O1XP3g6+q/QlIO01HdJZ3iswXsIkloMBeEAn3j38NxadFM+f
-         NqPspXBzSQ3M3HZzC+wbFlSCxcy9xDj4EJZNT723XSGWHR2VtNNJCOGPEiymCxwyXzsv
-         ehYs+rgt1rEkfxSrqWfzVVxs4Fc8DhKEeaW97OI8U+bPi7lz/94V47b1QaRidJ/LXkVZ
-         XYa7qfrE/fJWI0Znp+vEKfBzvo2t+Q+r77DgRqzrW//7cgJLwIexaq1CIK6XIa2Xcx2t
-         sfFw==
+        bh=N7S9rQla1y9kYh7NcqnpT6la+7XaYudbdijz15z2RK4=;
+        b=ZgSLa9UPNEW7QvY3GE8dqxaz9qILZCv5Y6pXGszUphTyDAneXamETHZQib9LFRnjiG
+         6R8l6N7vhI1/O2TgCy5V4Nvz5T9tvVgsjCjKfXbHdXDXOjxnJRiiBWJQqyfCUjE+ra7O
+         NIoaYFHfLB1icR3UzkGKeqISt57M7fJHdvlgWnfoqsGnD5C+6I20duTZlw+aLOZ5kJCf
+         jLv/IZ6jHL38nFcrKmUK1f1vc4i8bcZxk89H8JR6VfPSIxWXQQ+HuxOszxQJ6PWknu97
+         qupOTa2dlVG38BoiRHXaVqphYkDWpWWNAXpsYdz0cjvk8xh7KrCIFiwxeuamxAWmacZD
+         BGlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729540422; x=1730145222;
+        d=1e100.net; s=20230601; t=1729540425; x=1730145225;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yiDiHoQKEX2h2gMZ6AYiTcdgVDx/hK9ufvUgR+J5zhg=;
-        b=KEuTWVX+pDREi2lzw0xP/Ud1cG1cAQStfNaDYznUii5wY1f8BkNt1Ui0wy0H7haeGr
-         YS2PGrKi/OeA15FEmbpLCDR0w9kgi80wDb6XojuT9b4tf5B57nHEX6x+QwnQpMxBJpxI
-         ANuyFjAx32Z435d0LamMmklK8qmcvyYlazaZ7BvbDjgryXQmlRxIthMT43PdIRow2zb1
-         5pdgt6nqF5ePhPNA/anew3zcAQKEo59O8/1BtG90JG/Hoe+gTlcvd39ZI2SX63olzVbT
-         QTmQSPSXd+hoQwwa1XHfGbr6hmY/YadAGHZQ6Atp6om/vjOoWkzoy/wqcICRYtPICOkT
-         X9qw==
-X-Forwarded-Encrypted: i=1; AJvYcCUe41BQHw4Lb6WBC9ZGerNuQHeidCQAHItThzdv9xNNj8t7ywUFyG1Z64RyQSkoqgmRwRLMTXQ78WfXuVIO@vger.kernel.org, AJvYcCW5rflwdaqiyQKjrnaKV1SyIGRQQ/ilKqPvfj6/tncQwtBmwFyfSS7geWVsJKdhiEb+wSMHTonYYR16@vger.kernel.org, AJvYcCXYmvIk86oTAYJL4ySDL6ZORLjsiW0GTGsfTc/o3Yw8nwtuh6Jwwu2NcN8W8zkLkUZVhGT5aA89Rk+k@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6nvrzbiynIRLKQ+j0YnNU75M+FqcUPb71RJSgegyjs4MmIkOt
-	kjtHUtLOD2WGaAtjzQwrsqvb4v61orth8sAiuwO1zVl7e6njp4YdFMoxzg==
-X-Google-Smtp-Source: AGHT+IGZ3G6tkdAZXdOQVSnMdBgIlCvNW0HxUJpss8n0EtF7X5UP6Futk+URaFkK8drWShm5ByfY6Q==
-X-Received: by 2002:a05:6402:2313:b0:5c9:6eea:8e06 with SMTP id 4fb4d7f45d1cf-5ca0ae87e13mr9153927a12.24.1729540422010;
-        Mon, 21 Oct 2024 12:53:42 -0700 (PDT)
+        bh=N7S9rQla1y9kYh7NcqnpT6la+7XaYudbdijz15z2RK4=;
+        b=dbvErmFyH8j4lN13hDSRGMF0G8YP0r1c3wws7QsBXIwM9HxcN4E3bUwtPYkIhlcpMS
+         u/F7YXVo4+IAHzXsHD8Pr4uA/XF9oLa4xBrspMd1+Fmxv4Lk3ei0sKyVa3aur/f/IpQj
+         9k4ZmpJUxnULFeZNtit/vQitkOQoHF25LLQRSYa+FP4mUITQZON/BXItYUY8+l1RBs/z
+         t8g8o4nrvskCroltulIvD2D30H93T+m3dL7wH3N0WEkvtbCHswLfoj2YUQVWE6Ur6uTY
+         ZQdRlFainu/p8e4gOZKQDr/D08aZBaw74vD7slkXP+AqtiD4SS0gmhKepEx32W7rNZTA
+         UuRw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+hdMeRBNGYps8vc5A/oNy5epEpJi2VZCbQR1zM7OCypkta72OeNHTuX6r2fnVfb+S4Bp0A7OyY/UC@vger.kernel.org, AJvYcCWJ+E58xRug0PwLsVN2+st7xsn+TlTvaD5iqKz3d4dwx4H+DtRKnSUpeoVnFt0deT1T5fbK5sj6LYTf@vger.kernel.org, AJvYcCWeKf1BzfLHGFj/tXF44SFCzu3ggPkuaC8cJZ0RV9emwKX4IEbosaSPRxdws14OqcFxvjLFXQXGu3w7HN96@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzd17nnOPHpmLR5DGkCp8QCxp7FAR7je/8bj+HNvPjKX243d2YS
+	LAQaqzV0i5my7CqNjOmGhmGHEjzYgw7GfTw9rmyk1QuRXwflr4L6
+X-Google-Smtp-Source: AGHT+IEIPVVkuMV4TTd4zpUQBME0OL0V+C1tdauapDgdNByMAL8QgfDQfJGVgGhMQ0zoVTL4Qqmp8w==
+X-Received: by 2002:a05:6512:3d05:b0:53a:16b:f14f with SMTP id 2adb3069b0e04-53a152193abmr6281588e87.19.1729540424350;
+        Mon, 21 Oct 2024 12:53:44 -0700 (PDT)
 Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:9cf6:f1e5:ce2b:ea6b])
-        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66c6b12dsm2338702a12.77.2024.10.21.12.53.41
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66c6b12dsm2338702a12.77.2024.10.21.12.53.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 12:53:41 -0700 (PDT)
+        Mon, 21 Oct 2024 12:53:43 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -80,9 +80,9 @@ Cc: vassilisamir@gmail.com,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 11/13] dt-bindings: iio: add binding for BME680 driver
-Date: Mon, 21 Oct 2024 21:53:14 +0200
-Message-ID: <20241021195316.58911-12-vassilisamir@gmail.com>
+Subject: [PATCH v2 12/13] iio: chemical: bme680: add regulators
+Date: Mon, 21 Oct 2024 21:53:15 +0200
+Message-ID: <20241021195316.58911-13-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241021195316.58911-1-vassilisamir@gmail.com>
 References: <20241021195316.58911-1-vassilisamir@gmail.com>
@@ -94,99 +94,60 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add dt-binding for BME680 gas sensor device. The device incorporates as
-well temperature, pressure and relative humidity sensors.
+Add support for the regulators described in the dt-binding.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- .../bindings/iio/chemical/bosch,bme680.yaml   | 64 +++++++++++++++++++
- .../devicetree/bindings/trivial-devices.yaml  |  2 -
- 2 files changed, 64 insertions(+), 2 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/chemical/bosch,bme680.yaml
+ drivers/iio/chemical/bme680_core.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/chemical/bosch,bme680.yaml b/Documentation/devicetree/bindings/iio/chemical/bosch,bme680.yaml
-new file mode 100644
-index 000000000000..e54df3afa7b2
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/chemical/bosch,bme680.yaml
-@@ -0,0 +1,64 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/chemical/bosch,bme680.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+index 8c80a5f1ef9e..2d9d20f203aa 100644
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -15,6 +15,7 @@
+ #include <linux/log2.h>
+ #include <linux/module.h>
+ #include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
+ 
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/iio.h>
+@@ -110,6 +111,10 @@ enum bme680_scan {
+ 	BME680_GAS,
+ };
+ 
++static const char *const bme680_supply_names[] = { "vdd", "vddio" };
 +
-+title: Bosch BME680 Gas sensor
++#define BME680_NUM_SUPPLIES ARRAY_SIZE(bme680_supply_names)
 +
-+maintainers:
-+  - Vasileios Amoiridis <vassilisamir@gmail.com>
+ struct bme680_data {
+ 	struct regmap *regmap;
+ 	struct bme680_calib bme680;
+@@ -121,6 +126,8 @@ struct bme680_data {
+ 	u16 heater_dur;
+ 	u16 heater_temp;
+ 
++	struct regulator_bulk_data supplies[BME680_NUM_SUPPLIES];
 +
-+description:
-+  BME680 is a gas sensor which combines relative humidity, barometric pressure,
-+  ambient temperature and gas (VOC - Volatile Organic Compounds) measurements.
+ 	struct {
+ 		s32 chan[4];
+ 		aligned_s64 ts;
+@@ -1114,6 +1121,14 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+ 	data->heater_dur = 150;  /* milliseconds */
+ 	data->preheat_curr_mA = 0;
+ 
++	ret = devm_regulator_bulk_get_enable(dev, BME680_NUM_SUPPLIES,
++					     bme680_supply_names);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "failed to get and enable supplies.\n");
 +
-+  https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme680-ds001.pdf
++	fsleep(BME680_STARTUP_TIME_US);
 +
-+properties:
-+  compatible:
-+    const: bosch,bme680
-+
-+  reg:
-+    maxItems: 1
-+
-+  vdd-supply: true
-+  vddio-supply: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - vdd-supply
-+  - vddio-supply
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        bme680@77 {
-+            compatible = "bosch,bme680";
-+            reg = <0x77>;
-+            vddio-supply = <&vddio>;
-+            vdd-supply = <&vdd>;
-+        };
-+    };
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        bme680@0 {
-+            compatible = "bosch,bme680";
-+            reg = <0>;
-+            spi-max-frequency = <500000>;
-+            vddio-supply = <&vddio>;
-+            vdd-supply = <&vdd>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 0108d7507215..3d9c08ed7bce 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -55,8 +55,6 @@ properties:
-           - atmel,atsha204a
-             # BPA-RS600: Power Supply
-           - blutek,bpa-rs600
--            # Bosch Sensortec pressure, temperature, humididty and VOC sensor
--          - bosch,bme680
-             # CM32181: Ambient Light Sensor
-           - capella,cm32181
-             # CM3232: Ambient Light Sensor
+ 	ret = regmap_write(regmap, BME680_REG_SOFT_RESET, BME680_CMD_SOFTRESET);
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "Failed to reset chip\n");
 -- 
 2.43.0
 

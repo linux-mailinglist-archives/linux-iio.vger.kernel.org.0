@@ -1,75 +1,74 @@
-Return-Path: <linux-iio+bounces-10849-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10850-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BEA79A65D1
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 13:05:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 972EA9A6625
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 13:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF6C21F23AFA
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 11:05:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96A89B218DC
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 11:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DE51E4113;
-	Mon, 21 Oct 2024 11:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62CF1E47C6;
+	Mon, 21 Oct 2024 11:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N98tdp60"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+XGsCE4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9985D1E22E0;
-	Mon, 21 Oct 2024 11:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F5A1E4113;
+	Mon, 21 Oct 2024 11:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729508702; cv=none; b=i9mDM48yXbEdIPuT8Nysfy1H5ls6S+tULHcj3KFLEvKuZ3mTvchCEg0YrPPBU0r6eS7Jp4824DPwqzwmqEXWDTxWoVLhmze6nmtzKJ6A8WkoV28LjtFYu2GzQiqdLxOWQ3lK8BF2A3zdyMvgS/gD+q20WyEMRWoTZmq5wwMZfNI=
+	t=1729509067; cv=none; b=ucXQXLW1FO7xqU7/2fuK+RRmHWDQklUYuj5nCbnZZaaf5mBioHgIvyEn8QVGIFblBRtC/LyKCvANuM76+qG3hBbD8PTbQGc4zKm1n4ZDxzWNNOyCCbeBHpgoz1dy2YfD/3SxpOUKEhAAvP5HWes8MQ+frpGbNoiFAoZCzlHb6ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729508702; c=relaxed/simple;
-	bh=g0XRn4bL8F+PTYYHuf+ssiQVBA3GRk+jCGwAwlGe9wY=;
+	s=arc-20240116; t=1729509067; c=relaxed/simple;
+	bh=+bAzZdHJkLhYT2xViaFvj/FYA8M7o0i0u5aBFglRTtg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sTGbZAV34jTXdmE/glBzBnztUKrj/7uf6wFxHbZdvks12jVnBT7BEiB0dTlmqHrkwPN62xv8paH6GePoR/peJLmsiH5YCgtXnWzHi0Z4SDI9Z2dey8NwkmPJeLruH1SlmrS5pZCGB4AV43SnPQ3/EDqxthcxTeb6gPNXH9/D2LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N98tdp60; arc=none smtp.client-ip=209.85.208.44
+	 Content-Type:MIME-Version; b=Wa+dhzzgnYXQn0XGb6Fo4XD/CIZW/yvZItQIZ+QJQQf1DnQ8Pr682FcSaBQyKOx1dRs3vanzOwe0YfqDMuXpBztM/alzlkKvez+1ETnHgD+5+k5NjCSpJkcaP33wj0poIpD+3zXpnLZ2LZIVIsvewwj+t8SiuKBdgQgbZdi7njo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+XGsCE4; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c9552d02e6so5452115a12.2;
-        Mon, 21 Oct 2024 04:05:00 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a9a68480164so382449266b.3;
+        Mon, 21 Oct 2024 04:11:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729508699; x=1730113499; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729509063; x=1730113863; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=u8y6wsn+hwPGY3Mz4O0vA++AgJV95+UM0IhRExtgmsY=;
-        b=N98tdp60sDzAtJu/Rb1eEE3WMq/rCx36pAlUOn4Uo4UDV8zRxtce+fQeE77ZIq5fzW
-         BpaF7JqNnZf7VtfggEtCjC4zCXW8GNFunmvvcZxVYLbe2NDOyrdJD1H0WX95nOocZmEb
-         m1YjtZXhv9WvAPMkpNf0RLKTaYz5uyrdeAi4jYVryJ0+qpF4NIWMfvpzWL2YWwmc6OlK
-         sJkIcVnPEttuJ0KqxwHFiOjWE2yUn5LyCh7nFkimrerkFtLvtOuHZGZnDfedCZWHIDmn
-         St+q6/ceMlnSnGz772DCTknS/RdzHnBTol/cKjKm4dVC3o1VaJBDcauhvpb5FF1tZhUv
-         3wyw==
+        bh=MRPhe3PD01BFPF5Vj//QclQdPB2/iRm6LQpX4eTiwB4=;
+        b=Z+XGsCE4x9RCRy04lziYQnQplcKTr7mUGYY44k9cd7Ad73Jg3J8HCI7YmY6NH1V6Px
+         j4eEGZvkrH9vxAO+rtmRioThAUC7BzBcKlxBsSLZtBMLyIDiPOwNOny4md9YHbUN89MQ
+         l/LM9ivuF+LAUFl0U5eU3Fe0bPgvOBXGStQ84r6qWYGS9YOeloVwESBlubPz74lG0oXA
+         fB5+js+GzkZ8dH0jYe30AyyOD+J83A/bk8GIiV9I2owOcQpZMwWT6+Y/OiPySI2U1Tbi
+         zMiQwaazgBy5Z0bpYP58Io0uPQKX2EWCuduDbHt/buqOa3iOLPq8zSkZDOG7DI6/0aWO
+         A2/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729508699; x=1730113499;
+        d=1e100.net; s=20230601; t=1729509063; x=1730113863;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=u8y6wsn+hwPGY3Mz4O0vA++AgJV95+UM0IhRExtgmsY=;
-        b=AtIg+mU6y5LkoPlg1KzUjMp1Qf0QvQd3V21L/nGDTpQQV8kHcyMRFAp6LvLNKdJ1br
-         LEci/Hj7IUZf0Yjjhify3TMYmq9TBFfDSTcz1iHSRar3ixNr106FdPzt2iE0GWhXBFRC
-         U8FruqiAwmjZcvwntPnAfsxxSseiwguz3oHLFl293SfIjs3U2WA0BMjaF1Ya9wUKKKFA
-         nNYmDgLfO1u+bDf0M709CNPK8KUkLQR47jKFH+2upWSdWgqmOqhNDtHlJKa23xbLOOpA
-         j22SAHQVbja4OOJbY6mJqsKJNUYyGkb73i/eUGa33JG7evVWfwwB1AhQqsbrTK/DOAtB
-         M5dQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUCWiiq6Ooz3ErbTUv3rD62T2ZSzdhSF5PtpU9cqWMdILwVDKdQaWV9KX3Sl5pRZgJlam7zfdvCaoJUn7pj@vger.kernel.org, AJvYcCWn1A2g/5bMLXW0Lnwx95ejcO/ZvFUli29kcVkbh4uSGLJhMJUpjAROSemeFpVw3B9yzsiF9vFIbFG3@vger.kernel.org, AJvYcCXBVsLWvgbWQBUgokJbHvLg85aPEjn+2lLfNXFejACPtOX+TwkrLL+00g8LejlbZ97/upbVn+ORfDkp@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4t7DyS1dnl01KNd8EFXyVpOAo4oCs1iBd0bHtV5GDUF/nWo93
-	cSne1lDEgzElEsPRU7qiNl3H7bb66qqP5wBHbhTPBskbtgtWQ89q
-X-Google-Smtp-Source: AGHT+IGEtyi8VupGoBT33qoHmiwSF9tw2ilDsmKB1r8ZskLq3PAFf7t6swIjWVimig/TzwQhLAb/ag==
-X-Received: by 2002:a17:906:dc92:b0:a99:5601:7dc1 with SMTP id a640c23a62f3a-a9a69c67619mr873431866b.49.1729508698497;
-        Mon, 21 Oct 2024 04:04:58 -0700 (PDT)
+        bh=MRPhe3PD01BFPF5Vj//QclQdPB2/iRm6LQpX4eTiwB4=;
+        b=WIHm1ao+VRCUuN0J125NuwBHmMxY2wOupv1a7HLPpfOrsa8ZltHmx2mWPpSft6D5cq
+         L9MZB4M2u0DlXw/uqyM1oXOgtE8RLeIEbdIxMjIGkqsbyA3vou0vZ/Tm1kFfxhmJ66SV
+         qrqr7IFkb6qVeSwQdPfsRtO1DJyhtXvnhRjC4YxYim1e8xDK6483pL0Cfls/l1mymFM4
+         rXa75Y490hg56L2mv5GrlWed9wpvnY1dwrFa82Soy7ayPNFJtNUOjcHLhjMSe0otWHeF
+         gc70fPKfaXPu1GddfQfybzCfQ59zE+wF92z3pPH0RX18dwOnl9PQHggmJV1kG6J8FPt3
+         Gw6g==
+X-Forwarded-Encrypted: i=1; AJvYcCU4/+7qqF+2sV/R3loyeKUWh+09spZPYbtHwEKBZfQauqqUVVLArLML6hvCkska8GQw4QSD1/CdH32VX+XO@vger.kernel.org, AJvYcCWHYclWot8TSxwxYsmgikyl1SxvZSx/62s9Tv3Z1ZxEbuLlePsPtnhFRvV2YfWu8ZfSY1gVGGWgEZu3@vger.kernel.org, AJvYcCWyev77GnCZ/d4oGqO6GsNbxM78SuA+Dazvo/KKiS5kEeQnYqv8EVjrZUZrFu5WB/gk26ioAaW+uJxs@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZCyJ0qzYtAMK5KPkJRG/UA7jsFR+rAXhGXi4yF/5WcETxOE47
+	ondbFZ5Tscw3augV6h3Wl3Tb7A82sYocVKgyqJu+nskQtAOjP0f/
+X-Google-Smtp-Source: AGHT+IFK3pr6f74QbQLaXjvX4/32aLS267OYD/Dpq4m+daaWjBcfyOz+uUb5G4u2sNzwSsqzBHj2VA==
+X-Received: by 2002:a17:907:e89:b0:a99:ebcc:bfbe with SMTP id a640c23a62f3a-a9a69bad270mr1061976666b.27.1729509062344;
+        Mon, 21 Oct 2024 04:11:02 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef15:2100:888:d3c6:a442:4910? (p200300f6ef1521000888d3c6a4424910.dip0.t-ipconnect.de. [2003:f6:ef15:2100:888:d3c6:a442:4910])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a9157183bsm191928766b.143.2024.10.21.04.04.57
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91573603sm192833666b.179.2024.10.21.04.11.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 04:04:58 -0700 (PDT)
-Message-ID: <81255bd6069702ee896562dc1a03451a5b455b6b.camel@gmail.com>
-Subject: Re: [PATCH v2 2/5] iio: adc: ad7380: use
- devm_regulator_get_enable_read_voltage()
+        Mon, 21 Oct 2024 04:11:02 -0700 (PDT)
+Message-ID: <717d15c36fbd1a5c23526ac87bc9d66cd39c54d3.camel@gmail.com>
+Subject: Re: [PATCH v2 3/5] iio: adc: ad7380: add missing supplies
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen
  <lars@metafoo.de>,  Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
@@ -81,10 +80,10 @@ To: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-doc@vger.kernel.org
-Date: Mon, 21 Oct 2024 13:09:15 +0200
-In-Reply-To: <20241021-ad7380-fix-supplies-v2-2-2ca551b3352a@baylibre.com>
+Date: Mon, 21 Oct 2024 13:15:19 +0200
+In-Reply-To: <20241021-ad7380-fix-supplies-v2-3-2ca551b3352a@baylibre.com>
 References: <20241021-ad7380-fix-supplies-v2-0-2ca551b3352a@baylibre.com>
-	 <20241021-ad7380-fix-supplies-v2-2-2ca551b3352a@baylibre.com>
+	 <20241021-ad7380-fix-supplies-v2-3-2ca551b3352a@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.0 
@@ -96,170 +95,232 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Mon, 2024-10-21 at 12:00 +0200, Julien Stephan wrote:
-> Use devm_regulator_get_enable_read_voltage() to simplify the code.
+> vcc and vlogic are required but are not retrieved and enabled in the
+> probe. Add them.
+>=20
+> In order to prepare support for additional parts requiring different
+> supplies, add vcc and vlogic to the platform specific structures
 >=20
 > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 > ---
 
-LGTM,
+One small not below... With that,
 
 Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/adc/ad7380.c | 81 +++++++++++++------------------------=
-----------
-> -
-> =C2=A01 file changed, 21 insertions(+), 60 deletions(-)
+> =C2=A0drivers/iio/adc/ad7380.c | 43 +++++++++++++++++++++++++++++++++++++=
+++++++
+> =C2=A01 file changed, 43 insertions(+)
 >=20
 > diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
 > index
-> e8bddfb0d07dbcf3e2a43344a4e0516f4d617548..e033c734191143a25a490b09c730dbf=
-95f79
-> 6737 100644
+> e033c734191143a25a490b09c730dbf95f796737..e257f78d63edd7910fcb936ec534492=
+2f8e7
+> 0b99 100644
 > --- a/drivers/iio/adc/ad7380.c
 > +++ b/drivers/iio/adc/ad7380.c
-> @@ -956,7 +956,7 @@ static const struct iio_info ad7380_info =3D {
-> =C2=A0	.debugfs_reg_access =3D &ad7380_debugfs_reg_access,
+> @@ -75,6 +75,7 @@
+> =C2=A0#define T_CONVERT_NS 190		/* conversion time */
+> =C2=A0#define T_CONVERT_0_NS 10		/* 1st conversion start time
+> (oversampling) */
+> =C2=A0#define T_CONVERT_X_NS 500		/* xth conversion start time
+> (oversampling) */
+> +#define T_POWERUP_MS 5			/* Power up */
+> =C2=A0
+> =C2=A0struct ad7380_timing_specs {
+> =C2=A0	const unsigned int t_csh_ns;	/* CS minimum high time */
+> @@ -86,6 +87,8 @@ struct ad7380_chip_info {
+> =C2=A0	unsigned int num_channels;
+> =C2=A0	unsigned int num_simult_channels;
+> =C2=A0	bool has_mux;
+> +	const char * const *supplies;
+> +	unsigned int num_supplies;
+> =C2=A0	const char * const *vcm_supplies;
+> =C2=A0	unsigned int num_vcm_supplies;
+> =C2=A0	const unsigned long *available_scan_masks;
+> @@ -243,6 +246,10 @@ DEFINE_AD7380_8_CHANNEL(ad7386_4_channels, 16, 0, u)=
+;
+> =C2=A0DEFINE_AD7380_8_CHANNEL(ad7387_4_channels, 14, 0, u);
+> =C2=A0DEFINE_AD7380_8_CHANNEL(ad7388_4_channels, 12, 0, u);
+> =C2=A0
+> +static const char * const ad7380_supplies[] =3D {
+> +	"vcc", "vlogic",
+> +};
+> +
+> =C2=A0static const char * const ad7380_2_channel_vcm_supplies[] =3D {
+> =C2=A0	"aina", "ainb",
 > =C2=A0};
-> =C2=A0
-> -static int ad7380_init(struct ad7380_state *st, struct regulator *vref)
-> +static int ad7380_init(struct ad7380_state *st, bool external_ref_en)
-> =C2=A0{
-> =C2=A0	int ret;
-> =C2=A0
-> @@ -968,13 +968,13 @@ static int ad7380_init(struct ad7380_state *st, str=
-uct
-> regulator *vref)
-> =C2=A0	if (ret < 0)
-> =C2=A0		return ret;
-> =C2=A0
-> -	/* select internal or external reference voltage */
-> -	ret =3D regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
-> -				 AD7380_CONFIG1_REFSEL,
-> -				 FIELD_PREP(AD7380_CONFIG1_REFSEL,
-> -					=C2=A0=C2=A0=C2=A0 vref ? 1 : 0));
-> -	if (ret < 0)
-> -		return ret;
-> +	if (external_ref_en) {
-> +		/* select external reference voltage */
-> +		ret =3D regmap_set_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD7380_CONFIG1_REFSEL);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> =C2=A0
-> =C2=A0	/* This is the default value after reset. */
-> =C2=A0	st->oversampling_ratio =3D 1;
-> @@ -987,16 +987,11 @@ static int ad7380_init(struct ad7380_state *st, str=
-uct
-> regulator *vref)
-> =C2=A0				=C2=A0 FIELD_PREP(AD7380_CONFIG2_SDO, 1));
-> =C2=A0}
-> =C2=A0
-> -static void ad7380_regulator_disable(void *p)
-> -{
-> -	regulator_disable(p);
-> -}
-> -
-> =C2=A0static int ad7380_probe(struct spi_device *spi)
-> =C2=A0{
-> =C2=A0	struct iio_dev *indio_dev;
-> =C2=A0	struct ad7380_state *st;
-> -	struct regulator *vref;
-> +	bool external_ref_en;
-> =C2=A0	int ret, i;
-> =C2=A0
-> =C2=A0	indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> @@ -1009,37 +1004,17 @@ static int ad7380_probe(struct spi_device *spi)
+> @@ -338,6 +345,8 @@ static const struct ad7380_chip_info ad7380_chip_info=
+ =3D {
+> =C2=A0	.channels =3D ad7380_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7380_channels),
+> =C2=A0	.num_simult_channels =3D 2,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.available_scan_masks =3D ad7380_2_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_timing,
+> =C2=A0};
+> @@ -347,6 +356,8 @@ static const struct ad7380_chip_info ad7381_chip_info=
+ =3D {
+> =C2=A0	.channels =3D ad7381_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7381_channels),
+> =C2=A0	.num_simult_channels =3D 2,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.available_scan_masks =3D ad7380_2_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_timing,
+> =C2=A0};
+> @@ -356,6 +367,8 @@ static const struct ad7380_chip_info ad7383_chip_info=
+ =3D {
+> =C2=A0	.channels =3D ad7383_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7383_channels),
+> =C2=A0	.num_simult_channels =3D 2,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.vcm_supplies =3D ad7380_2_channel_vcm_supplies,
+> =C2=A0	.num_vcm_supplies =3D ARRAY_SIZE(ad7380_2_channel_vcm_supplies),
+> =C2=A0	.available_scan_masks =3D ad7380_2_channel_scan_masks,
+> @@ -367,6 +380,8 @@ static const struct ad7380_chip_info ad7384_chip_info=
+ =3D {
+> =C2=A0	.channels =3D ad7384_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7384_channels),
+> =C2=A0	.num_simult_channels =3D 2,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.vcm_supplies =3D ad7380_2_channel_vcm_supplies,
+> =C2=A0	.num_vcm_supplies =3D ARRAY_SIZE(ad7380_2_channel_vcm_supplies),
+> =C2=A0	.available_scan_masks =3D ad7380_2_channel_scan_masks,
+> @@ -378,6 +393,8 @@ static const struct ad7380_chip_info ad7386_chip_info=
+ =3D {
+> =C2=A0	.channels =3D ad7386_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7386_channels),
+> =C2=A0	.num_simult_channels =3D 2,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.has_mux =3D true,
+> =C2=A0	.available_scan_masks =3D ad7380_2x2_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_timing,
+> @@ -388,6 +405,8 @@ static const struct ad7380_chip_info ad7387_chip_info=
+ =3D {
+> =C2=A0	.channels =3D ad7387_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7387_channels),
+> =C2=A0	.num_simult_channels =3D 2,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.has_mux =3D true,
+> =C2=A0	.available_scan_masks =3D ad7380_2x2_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_timing,
+> @@ -398,6 +417,8 @@ static const struct ad7380_chip_info ad7388_chip_info=
+ =3D {
+> =C2=A0	.channels =3D ad7388_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7388_channels),
+> =C2=A0	.num_simult_channels =3D 2,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.has_mux =3D true,
+> =C2=A0	.available_scan_masks =3D ad7380_2x2_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_timing,
+> @@ -408,6 +429,8 @@ static const struct ad7380_chip_info ad7380_4_chip_in=
+fo =3D
+> {
+> =C2=A0	.channels =3D ad7380_4_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7380_4_channels),
+> =C2=A0	.num_simult_channels =3D 4,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.available_scan_masks =3D ad7380_4_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_4_timing,
+> =C2=A0};
+> @@ -417,6 +440,8 @@ static const struct ad7380_chip_info ad7381_4_chip_in=
+fo =3D
+> {
+> =C2=A0	.channels =3D ad7381_4_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7381_4_channels),
+> =C2=A0	.num_simult_channels =3D 4,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.available_scan_masks =3D ad7380_4_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_4_timing,
+> =C2=A0};
+> @@ -426,6 +451,8 @@ static const struct ad7380_chip_info ad7383_4_chip_in=
+fo =3D
+> {
+> =C2=A0	.channels =3D ad7383_4_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7383_4_channels),
+> =C2=A0	.num_simult_channels =3D 4,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.vcm_supplies =3D ad7380_4_channel_vcm_supplies,
+> =C2=A0	.num_vcm_supplies =3D ARRAY_SIZE(ad7380_4_channel_vcm_supplies),
+> =C2=A0	.available_scan_masks =3D ad7380_4_channel_scan_masks,
+> @@ -437,6 +464,8 @@ static const struct ad7380_chip_info ad7384_4_chip_in=
+fo =3D
+> {
+> =C2=A0	.channels =3D ad7384_4_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7384_4_channels),
+> =C2=A0	.num_simult_channels =3D 4,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.vcm_supplies =3D ad7380_4_channel_vcm_supplies,
+> =C2=A0	.num_vcm_supplies =3D ARRAY_SIZE(ad7380_4_channel_vcm_supplies),
+> =C2=A0	.available_scan_masks =3D ad7380_4_channel_scan_masks,
+> @@ -448,6 +477,8 @@ static const struct ad7380_chip_info ad7386_4_chip_in=
+fo =3D
+> {
+> =C2=A0	.channels =3D ad7386_4_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7386_4_channels),
+> =C2=A0	.num_simult_channels =3D 4,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.has_mux =3D true,
+> =C2=A0	.available_scan_masks =3D ad7380_2x4_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_4_timing,
+> @@ -458,6 +489,8 @@ static const struct ad7380_chip_info ad7387_4_chip_in=
+fo =3D
+> {
+> =C2=A0	.channels =3D ad7387_4_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7387_4_channels),
+> =C2=A0	.num_simult_channels =3D 4,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.has_mux =3D true,
+> =C2=A0	.available_scan_masks =3D ad7380_2x4_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_4_timing,
+> @@ -468,6 +501,8 @@ static const struct ad7380_chip_info ad7388_4_chip_in=
+fo =3D
+> {
+> =C2=A0	.channels =3D ad7388_4_channels,
+> =C2=A0	.num_channels =3D ARRAY_SIZE(ad7388_4_channels),
+> =C2=A0	.num_simult_channels =3D 4,
+> +	.supplies =3D ad7380_supplies,
+> +	.num_supplies =3D ARRAY_SIZE(ad7380_supplies),
+> =C2=A0	.has_mux =3D true,
+> =C2=A0	.available_scan_masks =3D ad7380_2x4_channel_scan_masks,
+> =C2=A0	.timing_specs =3D &ad7380_4_timing,
+> @@ -1004,6 +1039,14 @@ static int ad7380_probe(struct spi_device *spi)
 > =C2=A0	if (!st->chip_info)
 > =C2=A0		return dev_err_probe(&spi->dev, -EINVAL, "missing match
 > data\n");
 > =C2=A0
-> -	vref =3D devm_regulator_get_optional(&spi->dev, "refio");
-> -	if (IS_ERR(vref)) {
-> -		if (PTR_ERR(vref) !=3D -ENODEV)
-> -			return dev_err_probe(&spi->dev, PTR_ERR(vref),
-> -					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to get refio
-> regulator\n");
-> -
-> -		vref =3D NULL;
-> -	}
-> -
-> =C2=A0	/*
-> =C2=A0	 * If there is no REFIO supply, then it means that we are using
-> =C2=A0	 * the internal 2.5V reference, otherwise REFIO is reference volta=
-ge.
-> =C2=A0	 */
-> -	if (vref) {
-> -		ret =3D regulator_enable(vref);
-> -		if (ret)
-> -			return ret;
-> +	ret =3D devm_regulator_get_enable_read_voltage(&spi->dev, "refio");
-> +	if (ret < 0 && ret !=3D -ENODEV)
+> +	ret =3D devm_regulator_bulk_get_enable(&spi->dev, st->chip_info-
+> >num_supplies,
+> +					=C2=A0=C2=A0=C2=A0=C2=A0 st->chip_info->supplies);
+> +
+> +	if (ret)
 > +		return dev_err_probe(&spi->dev, ret,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to get refio regulator\n");
-> =C2=A0
-> -		ret =3D devm_add_action_or_reset(&spi->dev,
-> -					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ad7380_regulator_disable,
-> vref);
-> -		if (ret)
-> -			return ret;
-> -
-> -		ret =3D regulator_get_voltage(vref);
-> -		if (ret < 0)
-> -			return ret;
-> -
-> -		st->vref_mv =3D ret / 1000;
-> -	} else {
-> -		st->vref_mv =3D AD7380_INTERNAL_REF_MV;
-> -	}
-> +	external_ref_en =3D ret !=3D -ENODEV;
-> +	st->vref_mv =3D external_ref_en ? ret / 1000 : AD7380_INTERNAL_REF_MV;
-> =C2=A0
-> =C2=A0	if (st->chip_info->num_vcm_supplies > ARRAY_SIZE(st->vcm_mv))
-> =C2=A0		return dev_err_probe(&spi->dev, -EINVAL,
-> @@ -1050,27 +1025,13 @@ static int ad7380_probe(struct spi_device *spi)
-> =C2=A0	 * input pin.
-> =C2=A0	 */
-> =C2=A0	for (i =3D 0; i < st->chip_info->num_vcm_supplies; i++) {
-> -		struct regulator *vcm;
-> -
-> -		vcm =3D devm_regulator_get(&spi->dev,
-> -					 st->chip_info->vcm_supplies[i]);
-> -		if (IS_ERR(vcm))
-> -			return dev_err_probe(&spi->dev, PTR_ERR(vcm),
-> -					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to get %s regulator\n",
-> -					=C2=A0=C2=A0=C2=A0=C2=A0 st->chip_info->vcm_supplies[i]);
-> +		const char *vcm =3D st->chip_info->vcm_supplies[i];
-> =C2=A0
-> -		ret =3D regulator_enable(vcm);
-> -		if (ret)
-> -			return ret;
-> -
-> -		ret =3D devm_add_action_or_reset(&spi->dev,
-> -					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ad7380_regulator_disable,
-> vcm);
-> -		if (ret)
-> -			return ret;
-> -
-> -		ret =3D regulator_get_voltage(vcm);
-> +		ret =3D devm_regulator_get_enable_read_voltage(&spi->dev, vcm);
-> =C2=A0		if (ret < 0)
-> -			return ret;
-> +			return dev_err_probe(&spi->dev, ret,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to get %s regulator\n",
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 vcm);
-> =C2=A0
-> =C2=A0		st->vcm_mv[i] =3D ret / 1000;
-> =C2=A0	}
-> @@ -1135,7 +1096,7 @@ static int ad7380_probe(struct spi_device *spi)
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> -	ret =3D ad7380_init(st, vref);
-> +	ret =3D ad7380_init(st, external_ref_en);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
->=20
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to enable power supplies\n");
+> +	msleep(T_POWERUP_MS);
+
+T_POWERUP_MS is 5ms so msleep() is not the advised API to use. In order to =
+have
+not to think about it, use fsleep(). This came up recently and this is one =
+of
+the reasons why I think (in most common cases at least) using fsleep() is a=
+ good
+practise even if we already know which function we need to call. Also makes
+reviewers lives easier as we don't have to double check the time being slep=
+t.
+
+- Nuno S=C3=A1
 
 

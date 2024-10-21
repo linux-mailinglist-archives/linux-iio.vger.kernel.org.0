@@ -1,52 +1,73 @@
-Return-Path: <linux-iio+bounces-10842-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10843-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F5A9A5ECF
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 10:39:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72679A60E5
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 12:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B14011F2288C
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 08:39:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F112283A75
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 10:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14FA1E22F8;
-	Mon, 21 Oct 2024 08:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE641E47AC;
+	Mon, 21 Oct 2024 10:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OpD6Jwjo"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dBG9Xv+R"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B30C1E1C2D;
-	Mon, 21 Oct 2024 08:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17331974F4
+	for <linux-iio@vger.kernel.org>; Mon, 21 Oct 2024 10:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729499933; cv=none; b=k6BO1ZctrpSa5l8YMre+YQoUX/kAC8reK0FSTFmr7wOTVidxP3Mje8dHMymyYE1io2jYn5cv5TZk6McL+gUcZW4rzDr8oPQKPa/x26w4olfSZSTxLz4Ik9CFTDgbJ1rQYvKtKA5tzcZCKcb71/xwCR4aaFENIeiU8Wi3DlTMU0U=
+	t=1729504817; cv=none; b=IL3HqX8OrGjfQ5a2aO2ssmKLbmiKLYpOFrpkdhB/XlS6Db2LnmtToKqPwtXXIinI19PteVRYGMgcd05vzGBdxuXAda0ueYQebqKWiYpV/Ka0wG2ztnsTvrSF8xhRUZam67rd/EoYa7xL+fbobndENUHwbwa6gCY3KWdXRGQVT70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729499933; c=relaxed/simple;
-	bh=WbYlBVy0U1GnLrIaCO/CCGOrRCmdbhg78fXAroW8hGI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ILIsVZ3ZN9YB0zVKsYiotYSEOcFdakGNiJKIP5p4PX6epjo5aGO/TB6Bc5X27607Qhq/0e5TnT8obGWqDQEQ7DsP4V7Nuj0PaUCivS2in/mHiE4E0NSwdw+vwymp1NOrWiYaSS1DW2IUOlaY13Z5cerHlSlwxBAFcnj2p3HbL/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OpD6Jwjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 264FFC4CEC3;
-	Mon, 21 Oct 2024 08:38:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729499933;
-	bh=WbYlBVy0U1GnLrIaCO/CCGOrRCmdbhg78fXAroW8hGI=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=OpD6JwjoEbpXWdXRei8CEF7VlerKKO3JhBHq2c+VxPlqZvPw4728gWC3WOECXySBL
-	 Mn4pNZIYCdAkuB0GX3nXJrWUWWeANaiiwMcpM1lYDVh6YKvjiJPuLDhDvq+JLFg4pa
-	 iE4HLfClPYo708F69LKJUXTnEyX4DpxMweljx25MqEXcLjPTx5T0ngDNMoq6t4fssY
-	 NneMJPKNdfCH/5v9xpqY95TIjUPukB+ROBA4cKYcyU6uEgC8MAkzCMX+zXdNi3gv/0
-	 YKMsx2cUitz46diDiKFzDbaGrswf3ERyTH6JHlNrOWkjoPoqIQlIdMGIbup+hiArYk
-	 FTnkuR1vFwGRw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DA02D0E6CE;
-	Mon, 21 Oct 2024 08:38:53 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Mon, 21 Oct 2024 10:38:42 +0200
-Subject: [PATCH v2] iio: invensense: fix multiple odr switch when FIFO is
- off
+	s=arc-20240116; t=1729504817; c=relaxed/simple;
+	bh=LG9mv9A5S7JtcUZ3x3v5Oc4S0zx/0RbcU0WFxYrah0A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oFB0s/kKZ6ZSkWOSAS2H+Mr9uK0KzjwpJbgT2e06AtDVerWV8A3WaPvlOpLn9ND+yi6ct2tGydklv4wc/aLvFGGQPOcQbJWxjITwP7Z+vhA5UQHI9uJt7pd9TCbLPgQxNn1e0dFcuc+JGaXA63f2ITk9AOp0ErgMRa7vy8sIr8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dBG9Xv+R; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43155afca99so30052315e9.1
+        for <linux-iio@vger.kernel.org>; Mon, 21 Oct 2024 03:00:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729504812; x=1730109612; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nEQgoXWurslujnhmekbXopxUBMb8xPqnpQko+0aaeq0=;
+        b=dBG9Xv+RzsRWR16DwlYq1DSmf2KajQBA8eX2iit0E3zCUaU4++rMb2gbc6zFxPncTX
+         +CWHmVIlayO6GJ776jgzkj9gQGqWoppjrxTVXQsBIQ4+WUgn1KPXqmzDR3CBuDY6ECtC
+         d1h5LTYQyinvIGUaKGHmgbh1f2wJPhiFMbfEBOa5N0vQk2brqaDo7Q6GKfkjWNNQtagv
+         75XZfgmqUFLqlqhF3GgZQ71EmWRTwCtjsanykVjFIS4GJ54Wxs4oHE7ys/+XBZ6w3iNv
+         ZJvXGvwhpSEvgCOGTVFi294HlZCENAGaLCie+r+vdHzajBYo5F9jSWDedjXTY3AswIQr
+         J+TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729504812; x=1730109612;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nEQgoXWurslujnhmekbXopxUBMb8xPqnpQko+0aaeq0=;
+        b=AFeznd3hxxbifhpeGBDgZRwf1bKie3d+K54Tab0Hk+eppDWsLOvronOvEerJL7x9+I
+         SH1anp5O7qp1GhLMXVctTtXOdO+I8nuK982mQTGqFedEJLG1RC882J6PzmGwSc/te0E6
+         6J00ihmsTL5pE0loaRERernWr0ObdrKcc7mqToZ/6y8mtZgKH2w1EiMjdrxoBMwVjcJR
+         V0zzyL/XWFUbJFUulKkQ8Lbra8y4XaAUdMbPvZukDCArqbZRicWFwK2q01dawkd86Zyk
+         k2F1P8V6w32xaxO7pTTtINbBP5cRAeZRnKdpo/pKtdi0/isRJoWT+sXafhMM/69LaAgt
+         E/xA==
+X-Gm-Message-State: AOJu0YwUyjRqtFxzqGtNY1Q6LVFL2O39M8l7ucLAhn62Ps8pvBIxKUTE
+	hUhvQT4F6hzk2eCC5u8bZUej+9oiWHZB+cM5TISOxuJsyPKDns3Me9u4QG5YX7k=
+X-Google-Smtp-Source: AGHT+IERELLrHoxhs+BrqkBuHWu/+dVs+uiy2dyn6XFdwv/PzU/E0Nv+i8bR/x6sYA9bUHowK6vwQA==
+X-Received: by 2002:a05:600c:4e12:b0:42c:b98d:b993 with SMTP id 5b1f17b1804b1-4316161db92mr57044745e9.2.1729504812233;
+        Mon, 21 Oct 2024 03:00:12 -0700 (PDT)
+Received: from [192.168.1.64] (2a02-842a-d52e-6101-6fd0-06c4-5d68-f0a5.rev.sfr.net. [2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f58bbaasm52375995e9.23.2024.10.21.03.00.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2024 03:00:11 -0700 (PDT)
+From: Julien Stephan <jstephan@baylibre.com>
+Subject: [PATCH v2 0/5] iio: adc: ad7380: fix several supplies issues
+Date: Mon, 21 Oct 2024 12:00:08 +0200
+Message-Id: <20241021-ad7380-fix-supplies-v2-0-2ca551b3352a@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,134 +76,67 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241021-invn-inv-sensors-timestamp-fix-switch-fifo-off-v2-1-39ffd43edcc4@tdk.com>
-X-B4-Tracking: v=1; b=H4sIABETFmcC/52N0QrCMAxFf2X02UhbJ2U++R+yh65LXZC1oylVG
- ft3u32CBEJOuNyzCsZEyOLWrCJhIaYYKuhTI9xkwxOBxspCS90qqQxQKGFfwBg4JoZMM3K28wK
- ePsBvym6qp48QvYeL151SErvrKEUtXRLW2CF89JUn4hzT9/AXtX//VhUFdQbnrZHWtGa45/F1d
- nEW/bZtP/cHZmDqAAAA
-X-Change-ID: 20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-3f29110e95d0
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+X-B4-Tracking: v=1; b=H4sIACgmFmcC/22NwQ6CMBBEf4Xs2TUtRQqc/A/DoS1FNkFoWiUSw
+ r+7knjz+GYybzZIPpJP0GQbRL9QonliyE8ZuMFMd4/UMUMu8kIKUaDptKoE9vTG9Aph5DGqUmt
+ VXlxfGQO8DNFzf1hvLfNA6TnH9ThZ5Df9+fRf3yJRoDUdC6Vyta2v1qwj2ejPbn5Au+/7B1jbS
+ gK5AAAA
+X-Change-ID: 20241004-ad7380-fix-supplies-3677365cf8aa
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-doc@vger.kernel.org, 
+ Julien Stephan <jstephan@baylibre.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729499932; l=4913;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=HwKkaznxa/GtKkxWPn8/QMQwIOns9lkHLrxgztbXJrs=;
- b=/sQVEhyGw77DuiPXFRVEer1YQBIacJXR2hYlZQwCLOik+ZPXySdxk1USKK4w3JDsy4VFRjklU
- v5nmDzjaHoyC++TpxnT4m2GYvVMc7wwyJIUh73MoyP9kJGq2pZsJ6V+
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Hello,
 
-When multiple ODR switch happens during FIFO off, the change could
-not be taken into account if you get back to previous FIFO on value.
-For example, if you run sensor buffer at 50Hz, stop, change to
-200Hz, then back to 50Hz and restart buffer, data will be timestamped
-at 200Hz. This due to testing against mult and not new_mult.
+This series tries to fix several issues found on the ad7380 driver about
+supplies:
 
-To prevent this, let's just run apply_odr automatically when FIFO is
-off. It will also simplify driver code.
+- vcc and vlogic are required, but are not retrieved and enabled in the
+probe function
+- ad7380-4 is the only device from the family that does not have internal
+reference and uses REFIN instead of REFIO for external reference.
 
-Update inv_mpu6050 and inv_icm42600 to delete now useless apply_odr.
+driver, bindings, and doc are fixed accordingly
 
-Fixes: 95444b9eeb8c ("iio: invensense: fix odr switching to same value")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 ---
 Changes in v2:
-- Delete unused anymore local variables.
-- Link to v1: https://lore.kernel.org/r/20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-v1-1-1bcfa70a747b@tdk.com
----
- drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 4 ++++
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c      | 2 --
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c       | 3 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c          | 1 -
- 4 files changed, 4 insertions(+), 6 deletions(-)
+- Fix kernel test robot warning about variable uninitialized when used [1]
+- drop commit removing supply description in bindings
+- after discussion on [2] we decided to add refin supply here, as it
+  will be needed in the futur
 
-diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-index f44458c380d92823ce2e7e5f78ca877ea4c06118..37d0bdaa8d824f79dcd2f341be7501d249926951 100644
---- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-+++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-@@ -70,6 +70,10 @@ int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
- 	if (mult != ts->mult)
- 		ts->new_mult = mult;
- 
-+	/* When FIFO is off, directly apply the new ODR */
-+	if (!fifo)
-+		inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index 56ac198142500a2e1fc40b62cdd465cc736d8bf0..7968aa27f9fd798f206e72891f1c9b483811dea2 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -200,7 +200,6 @@ static int inv_icm42600_accel_update_scan_mode(struct iio_dev *indio_dev,
- {
- 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
- 	struct inv_icm42600_sensor_state *accel_st = iio_priv(indio_dev);
--	struct inv_sensors_timestamp *ts = &accel_st->ts;
- 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
- 	unsigned int fifo_en = 0;
- 	unsigned int sleep_temp = 0;
-@@ -229,7 +228,6 @@ static int inv_icm42600_accel_update_scan_mode(struct iio_dev *indio_dev,
- 	}
- 
- 	/* update data FIFO write */
--	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
- 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
- 
- out_unlock:
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-index 938af5b640b00f58d2b8185f752c4755edfb0d25..c6bb68bf5e1449d4b961ac962311cbc5aa3c0a97 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -99,8 +99,6 @@ static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
- 					      const unsigned long *scan_mask)
- {
- 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
--	struct inv_icm42600_sensor_state *gyro_st = iio_priv(indio_dev);
--	struct inv_sensors_timestamp *ts = &gyro_st->ts;
- 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
- 	unsigned int fifo_en = 0;
- 	unsigned int sleep_gyro = 0;
-@@ -128,7 +126,6 @@ static int inv_icm42600_gyro_update_scan_mode(struct iio_dev *indio_dev,
- 	}
- 
- 	/* update data FIFO write */
--	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
- 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
- 
- out_unlock:
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-index 3bfeabab0ec4f6fa28fbbcd47afe92af5b8a58e2..5b1088cc3704f1ad1288a0d65b2f957b91455d7f 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -112,7 +112,6 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
- 	if (enable) {
- 		/* reset timestamping */
- 		inv_sensors_timestamp_reset(&st->timestamp);
--		inv_sensors_timestamp_apply_odr(&st->timestamp, 0, 0, 0);
- 		/* reset FIFO */
- 		d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
- 		ret = regmap_write(st->map, st->reg->user_ctrl, d);
+- Link to v1: https://lore.kernel.org/r/20241007-ad7380-fix-supplies-v1-0-badcf813c9b9@baylibre.com
+
+[1] https://lore.kernel.org/oe-kbuild-all/202410081608.ZxEPPZ0u-lkp@intel.com/
+[2] https://lore.kernel.org/all/20241015-ad7380-add-adaq4380-4-support-v1-0-d2e1a95fb248@baylibre.com/:warning
 
 ---
-base-commit: c3e9df514041ec6c46be83801b1891392f4522f7
-change-id: 20241017-invn-inv-sensors-timestamp-fix-switch-fifo-off-3f29110e95d0
+Julien Stephan (5):
+      dt-bindings: iio: adc: ad7380: fix ad7380-4 reference supply
+      iio: adc: ad7380: use devm_regulator_get_enable_read_voltage()
+      iio: adc: ad7380: add missing supplies
+      iio: adc: ad7380: fix supplies for ad7380-4
+      docs: iio: ad7380: fix supply for ad7380-4
+
+ .../devicetree/bindings/iio/adc/adi,ad7380.yaml    |  21 ++++
+ Documentation/iio/ad7380.rst                       |  13 +-
+ drivers/iio/adc/ad7380.c                           | 136 ++++++++++++---------
+ 3 files changed, 110 insertions(+), 60 deletions(-)
+---
+base-commit: 1a8b58362f6a6fef975032f7fceb7c4b80d20d60
+change-id: 20241004-ad7380-fix-supplies-3677365cf8aa
 
 Best regards,
 -- 
-Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-
+Julien Stephan <jstephan@baylibre.com>
 
 

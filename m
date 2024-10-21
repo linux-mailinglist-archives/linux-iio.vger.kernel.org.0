@@ -1,56 +1,59 @@
-Return-Path: <linux-iio+bounces-10888-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10889-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF389A7263
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 20:33:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D28FA9A7286
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 20:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D4701F24B40
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 18:33:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31554B20FAF
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 18:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931631F9419;
-	Mon, 21 Oct 2024 18:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C658C1FAC29;
+	Mon, 21 Oct 2024 18:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chQWSQK0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IlvP5uRD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0001EF941
-	for <linux-iio@vger.kernel.org>; Mon, 21 Oct 2024 18:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3D91DF754;
+	Mon, 21 Oct 2024 18:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729535580; cv=none; b=bfFqhggeyaC0HzsvGk1ZjR4Y2B7gJNEP+sdk9i+Cx9AQJwb3zDDjiQzuB6s4fvjBKd29uJWh1d8ThQvyFe2El033gzp/r0/qGipIAkS2qc51rw7stv+rG6Opx1DU9iHFP0IKPhwsIMSydBGdizgeU5l/F+W/yA6K/5SK7/d4E5s=
+	t=1729535981; cv=none; b=OD4aIosMJDah+VDr/dE+Asz5tUVhXGMD9GmQQD2B1EFSvOt+6akxTIJArcF8dzrLBwPFBRqzK4nEJ5xNVKAmdiYUcowXTcGd1+69A8Q9Sn+XiVL54uPUiUv+PutfOCAE+D3nusRb/wsfVwlOgKf4J558Uu0v10g9rEw1b9sklU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729535580; c=relaxed/simple;
-	bh=xvA4avjANey+0vEHMf7eD4Rioj05sFnrEhAP0yzYz0M=;
+	s=arc-20240116; t=1729535981; c=relaxed/simple;
+	bh=gqiLiE9bKe2zKK/B0GMPEQArDkJ82dcLNkYhMn29Lhw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ch3NWkr5Cki1gQ4Gh8yC+bejeTdD46ilLDMFsdHyDCrGLntIAr3Wpd+UV7FohIfq3YB3vD4KfZt0v/FIWZ9xhMK+Htj7VP1bYg/BM/fjLMQdcibQVY1aFd6jpWEma8Si52fjBTV8mTh6EjFt/TeRpbldd/XFeizxC0y6aSQ+82Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chQWSQK0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E45CC4CEC3;
-	Mon, 21 Oct 2024 18:32:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RzwOJEoCKc6KFDjlc96yW75B1Zj6p2ZxR/tCjYFCMDtCTWpjMSNIX0DP0rjxrzzpSw5s7nkxp3ELTjdGtMo0KsLc0D/tYJ7GNnQWcwo1AHtEeUfWLFdrkBHB7kLXVrruS8TDjetw3sqlAtiMfm5ylEa5KQc4CygxAq5YdWYIhbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IlvP5uRD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE681C4CEC3;
+	Mon, 21 Oct 2024 18:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729535579;
-	bh=xvA4avjANey+0vEHMf7eD4Rioj05sFnrEhAP0yzYz0M=;
+	s=k20201202; t=1729535981;
+	bh=gqiLiE9bKe2zKK/B0GMPEQArDkJ82dcLNkYhMn29Lhw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=chQWSQK0IhvpKyJbuVJjiWYm1tAafkqVkVAZ4WYqOTmIOozPaVnHhN6MVeQRAFaNX
-	 CJrShY9UjKV72Vv9GYObkfyWMIxan5OG/++4RRFO+ILSpOoKuGd1L4y3LPvPWsAR/M
-	 Tjh6wb30sBMXbBNep688wS1yY6qK7giApV2qPxQ9iucYUvM4rg8TB1rflL2UY1fAj7
-	 OyVtyulo9+5wsG+WmDfWHp5iyEv+D4dzXewTgon8PgN99amekeZE3+9uKKfW9jgI8p
-	 GBMMcak7zabcNB1/xNyP2KIX3N9mnn+aaDMyONQHZjqQXBD91zpGKwpxqF+/jcHPCL
-	 3XKkkBpggLU4A==
-Date: Mon, 21 Oct 2024 19:32:54 +0100
+	b=IlvP5uRDNgIIDDFoRC/zKiPRfBbBPEaTMI166oIJAJ8jl8Ci4rRNogAxQUiVmK+mE
+	 oFzqyWnPNjg2WxKG5LIEQgStUB8FPqqmLhjn75K4GB74g28Cv8i0e76h3RzS5VnkhT
+	 QEsaSlTpv9y16BovcbncRTHdY4vERZr8GyphCS1+J4euxAoEt6RAFnuu5AkN71asJQ
+	 SEQFs3Vhx1QvGy3nsO5FPTIjVORNDH/toaioJZ0i80H7kOgIMls/2NCs+sro0/yH6k
+	 ssonJ+0OVoIneAYBXZHnTCS52Y4MhGW8Xes2HNtk7hB4X5MaMXhmYAdTkdjhfUinJ+
+	 Ax47KKk7fTQ+A==
+Date: Mon, 21 Oct 2024 19:39:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] iio: accel: replace s64 __aligned(8) with aligned_s64
-Message-ID: <20241021193254.61ea9048@jic23-huawei>
-In-Reply-To: <ZxX-YXTOuYEb8AoY@smile.fi.intel.com>
-References: <20241020180720.496327-1-jic23@kernel.org>
-	<ZxX-YXTOuYEb8AoY@smile.fi.intel.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: light: add support for veml3235
+Message-ID: <20241021193933.59c2d2b6@jic23-huawei>
+In-Reply-To: <20241020-veml3235-v2-2-4bc7cfad7e0b@gmail.com>
+References: <20241020-veml3235-v2-0-4bc7cfad7e0b@gmail.com>
+	<20241020-veml3235-v2-2-4bc7cfad7e0b@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,38 +64,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 21 Oct 2024 10:10:25 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Sun, 20 Oct 2024 21:12:17 +0200
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> On Sun, Oct 20, 2024 at 07:07:20PM +0100, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > e4ca0e59c394 ("types: Complement the aligned types with signed 64-bit one")
-> > introduced aligned_s64. Use it for all IIO accelerometer drivers.
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > ---
-> > 
-> > I debated whether to split this up by driver by the time we've done all IIO
-> > drivers that will be a very large number of trivial patches.
-> > 
-> > The changes are minor enough that they shouldn't present much of a
-> > backporting challenge if needed for future fixes etc.
-> > 
-> > I'm find splitting them up if people prefer.
-> > Next on my list is to look at adding runtime checks that the buffers
-> > containing these timestamps are big enough but I want this out of the
-> > way first.  
+> The Vishay veml3235 is a low-power ambient light sensor with I2C
+> interface. It provides a minimum detectable intensity of
+> 0.0021 lx/cnt, configurable integration time and gain, and an additional
+> white channel to distinguish between different light sources.
 > 
-> I agree on all your points.
-> 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Hi Javier,
 
-Applied given it's so trivial and 3 people already reviewed!
-
-Thanks,
+I missed one thing on previous review...
+There is no obvious reason this driver needs to provide raw and processed
+values.  Unless I'm missing something, just provide raw and let userspace
+do the maths for us.
 
 Jonathan
+
+> diff --git a/drivers/iio/light/veml3235.c b/drivers/iio/light/veml3235.c
+> new file mode 100644
+> index 000000000000..fa2141cced8f
+> --- /dev/null
+> +++ b/drivers/iio/light/veml3235.c
+
+> +static const struct iio_chan_spec veml3235_channels[] = {
+> +	{
+> +		.type = IIO_LIGHT,
+> +		.channel = CH_ALS,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +				      BIT(IIO_CHAN_INFO_PROCESSED),
+Why both raw + scale and processed?
+
+We normally only provide raw and processed for light sensors if:
+1) The conversion is non linear and hard to reverse.
+2) There are events that are thresholds on the raw value.
+
+Here it is linear so just provide _RAW.
+
+> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
+> +					   BIT(IIO_CHAN_INFO_SCALE),
+> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
+> +						     BIT(IIO_CHAN_INFO_SCALE),
+> +	},
+> +	{
+> +		.type = IIO_INTENSITY,
+> +		.channel = CH_WHITE,
+> +		.modified = 1,
+> +		.channel2 = IIO_MOD_LIGHT_BOTH,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME) |
+> +					   BIT(IIO_CHAN_INFO_SCALE),
+> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
+> +						     BIT(IIO_CHAN_INFO_SCALE),
+> +	},
+> +};
 

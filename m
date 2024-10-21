@@ -1,117 +1,197 @@
-Return-Path: <linux-iio+bounces-10891-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10892-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83059A8FD0
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 21:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FD59A9039
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 21:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6CEC1C218FC
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 19:31:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AB5A1C22A13
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Oct 2024 19:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB15D1D0E20;
-	Mon, 21 Oct 2024 19:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4D91CF291;
+	Mon, 21 Oct 2024 19:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QfyNN+2I"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ar40kziH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1417418EFDE
-	for <linux-iio@vger.kernel.org>; Mon, 21 Oct 2024 19:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368E21C68AC;
+	Mon, 21 Oct 2024 19:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729539082; cv=none; b=XFGaUPvnAc/UCleV5tZFYu7m5TE/fFyYhq8aAlXBh36QkyyxdCBfyG1bXdephmD4dqXeRYUxB/AnflaX63luZl8uwQ7rZftiM1wVOFmsU5qDYmwsJSZiZ1GVEk0WNKg2npgbG6NyufnDIJ63SaWx2t7jVdXG275MFyK3UtsQWJo=
+	t=1729540404; cv=none; b=fSRQOrQ3n/LItAqFeE/6HpLqvOWiiOPdo1TZkk9c9UpMns7JVlp0Gnh5ljYG/DH/2wwpFjAnug/l+tSOU8ZdHNKW9bSaQh4jUoVVwwvEZQk25O8dZo1n4+tR0QU9Nxm1pb2003prRNYSLOl6MKAGYSsM4KTnKJ5KZTOZXGNzTXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729539082; c=relaxed/simple;
-	bh=3EWgHc592+Mga34PVRoNecbdBz5HVaYwI+iMGjqCWmY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=rW2zrcx5oXKVLR+lqUgWC/Y3sqnaIv08Wtr5bdcUZach7GubNYJpmZg1lIPjt7oU7ZSVnrXL2V+pIrl2CtBHUdp1c6b1jcXI+h9ts76fWjQf9lAuqdMy3swODBWDs70THPFra6OaaBzybIxJSnClE+3acqr432T9MV3WGaUJ0RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QfyNN+2I; arc=none smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-287b8444ff3so1920108fac.1
-        for <linux-iio@vger.kernel.org>; Mon, 21 Oct 2024 12:31:19 -0700 (PDT)
+	s=arc-20240116; t=1729540404; c=relaxed/simple;
+	bh=1ODOQKyatQ9aosi/Ebuhj+1MZLUlp4wf/eNSuDHF7nc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PWe8axWbOHwLQ/JuhvJyI4rpUBw6IhDbO2CmOx7DR9gS5oXzb+NaTtMJyAaZjhFVt51s7wFWrHaAL08OKC1U1n6evu38mrWj70mLMS5mz6UwtdaXo544ssx0Zk3TNPzn899QDW13V9xPK4PVcoYyWNA00upLVxUp+HAsYqads5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ar40kziH; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2fb5a9c7420so48597761fa.3;
+        Mon, 21 Oct 2024 12:53:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729539079; x=1730143879; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=p0/WpS2qRb6CVWNPpC7YhTrCcU9WXqsS6VwTJB//wjI=;
-        b=QfyNN+2Ie2+WZELmNMIq0J5aCsmiWWpcHFpETNguYEhDIkmYKCrb/8/fPfWC9Rt0HS
-         BlFMESGVT25sfIxcfp/oFpt5xUdDYaW9Fpju6udZ30RTPC+zZFBf5WrwOKUJ6l1EtkWm
-         9UaYCs6g1m8g2IiXMtGCljTVkcn0UueL4SwDKXM5sD0otsnGCDgkN+GD780BHet743Qj
-         RyJi4wT6LKVm5kbrP97E0g0cSOFtDJuFWePO9Ohgns/VA1n3Xv/6KCKBrfrNhWoIDGeZ
-         E9AvgZyM4zqX2OpReyy8dpiqEkNyDuduohC/FF43zpZDXFwWri0zKiKJ+RgTZuBTdw/I
-         FdFQ==
+        d=gmail.com; s=20230601; t=1729540401; x=1730145201; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T+IFLjRjd7myM3ODT1z2z8w2/OGdry3PTB9Rc7SaXbE=;
+        b=Ar40kziHcvjYoZ4Ou6DGWbYX/+wg2Zo4ih4B0NtroQDyU60gw21wVw7xzMNI0UK8l1
+         tFEop6ZTgQaEauZCmwtNFdPmRRmLQSexjOrUt3SkV0rBxKYwb+vlYAXYrLEXSkiF+fKz
+         ykfFxqRAQKM05kPABLNcWlYeTttd3q0SYzuNy6rZtHLL3ORkDgoQm8I42qA3oOF6XGyU
+         w1P56elv3peDCsHc/5JVvsQN2v3XJtqii53Trskd0PwxPjS53+07l7Z7KfjyVF49wDPX
+         XswYaJTaKfkFJdVBvUzLPDqQqWfUwngUEEyo8Bc/E6FdO0Xyu1np3ul8zWXnxgamlqMi
+         IWFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729539079; x=1730143879;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p0/WpS2qRb6CVWNPpC7YhTrCcU9WXqsS6VwTJB//wjI=;
-        b=vZvLSZ6fETKjWDkn0ilP8PLL2sOwnNDKs37M3MPgXVFVJzDingC1tpGo+nj2I5RbQ1
-         kzDWr+pR/Z044c/QJcrSuIfIkUnF4PTBUJpD7b12ReBU+6S7D1aQi1iKs27JpjTuZ6Fq
-         gdfMt7766NDzP/x6ReIFIHH5ts8g/61gfMtYGn1mcI0WwMscnD7TExtYMgO/YXkB5WGI
-         g/vz8/KQYK0fxkhmy7FFcaqHTTPQLOMhLeRtuIxV/aBTH2wf7YaJnoFhQh33MSiKGEwy
-         vtHXltBPyre9nTdpTYdwRctG2/9uFepZb8UwIed5eYA/IhWwn9Xmd0+aStqiDPigPrDK
-         LkOw==
-X-Forwarded-Encrypted: i=1; AJvYcCXgq7nRtcl1jCduPSYjBPMHf54YniuNeWKCHwyDqOzTZIirNmnvltE0RwQwOyQpMIHsGOGp7/pVIj4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywa251wnx2x/G5YB3ovaDC6ycSRGgQwA1UR7iTDp+x2ThRMDUoG
-	DwrfzD2boPh6AjgmoIM9bkd8XoG/EIAR4iXhBm+BXxMVHACXkUyleS/FOlHRlxM=
-X-Google-Smtp-Source: AGHT+IEyOxjwwUrsOEmDwkwJPBUJStAekQGUL3vnae7jaD5J0VYvQNUnrEgaW0zebq3M2e+WlBTxRw==
-X-Received: by 2002:a05:6870:6488:b0:28c:8476:dd76 with SMTP id 586e51a60fabf-28cb00ff030mr178834fac.29.1729539079102;
-        Mon, 21 Oct 2024 12:31:19 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-28c792046ebsm1268246fac.11.2024.10.21.12.31.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Oct 2024 12:31:17 -0700 (PDT)
-Message-ID: <1dbc8e19-d6fd-42dd-b116-f08c408b6a5c@baylibre.com>
-Date: Mon, 21 Oct 2024 14:31:15 -0500
+        d=1e100.net; s=20230601; t=1729540401; x=1730145201;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=T+IFLjRjd7myM3ODT1z2z8w2/OGdry3PTB9Rc7SaXbE=;
+        b=bqUe3JpFKiVnWmFfiuywi6W0pPZZDwDappv8QoGlRKSSUXbdVxgAEJ4WQc4WeXvuaL
+         CKGTYA5fvuq3R7Fhvo4ThtXo6KwAznNWvMfc2VtV8267wPo2CzhY4YS/4oJx/TMHdpTc
+         yF5/NNdBxkoSwbW+CPxx+0fszAHFYTFwyMWfo7fYYqL6L7h8M+QjfFu71dUPeKaQC3R8
+         Dyj25BQn4GC+eToUI3ZprkVoh9jLlOg0LU41SDN42HEKFHP0r1CF3hRuy/qnb1AEZE0k
+         QrqIwgnD0Ic0EpEXDve0R+UJJi+DCtJJHKCRp9cmsd12MVqa23OGzQoogMHaxbi4CFPq
+         aidA==
+X-Forwarded-Encrypted: i=1; AJvYcCULjzCa5TBYCixsQU0/y9P+TM9+nRvCJubLbE3cE0mqOkRPrY36Fcofxh/eQWWjtgoO2bcbhqDPvUHzyva+@vger.kernel.org, AJvYcCWdcM8gVSRfxUFkaT6jGprE/knDt0SCLDRMM0Pmwg6jM6WCnGt1dQYe0wqw/1WXv5aDCvn30Q45tfOB@vger.kernel.org, AJvYcCXBkMqdDyZpvzgZMFE9cGFoV9ydpAFPm6LTBQX9ZQyZ/dXPhUmFBs0LbBbmGn85CMOnqlXkyc8v33Gi@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+mD6rFkboJ7rx2BGZ2BreYhy5PmZ9sv5FDbaL/PESYv/pwx3y
+	uTO5YIrApkCyXDep1GBhQqp7PDz8SfSgL5Mo/3HBJjRaCWmOeZMz
+X-Google-Smtp-Source: AGHT+IE5reZAV5HNrGraupO5HA/2bG4D0HTEshCdhsCl4g3s/5Hw4xu5N6fZx2zPUx7gvwc21Cp2fA==
+X-Received: by 2002:a2e:b8c6:0:b0:2fb:3c44:7f8b with SMTP id 38308e7fff4ca-2fb83226eb4mr57448761fa.43.1729540401091;
+        Mon, 21 Oct 2024 12:53:21 -0700 (PDT)
+Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:9cf6:f1e5:ce2b:ea6b])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66c6b12dsm2338702a12.77.2024.10.21.12.53.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2024 12:53:19 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andriy.shevchenko@linux.intel.com
+Cc: vassilisamir@gmail.com,
+	anshulusr@gmail.com,
+	gustavograzs@gmail.com,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/13]: chemical: bme680: 2nd set of cleanup
+Date: Mon, 21 Oct 2024 21:53:03 +0200
+Message-ID: <20241021195316.58911-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] iio: adc: ad7606: fix issue/quirk with find_closest()
- for oversampling
-From: David Lechner <dlechner@baylibre.com>
-To: Alexandru Ardelean <aardelean@baylibre.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc: jic23@kernel.org, krzk+dt@kernel.org, robh@kernel.org, lars@metafoo.de,
- michael.hennerich@analog.com, gstols@baylibre.com
-References: <20241021130221.1469099-1-aardelean@baylibre.com>
- <20241021130221.1469099-3-aardelean@baylibre.com>
- <2842cbb5-680e-483a-af62-4c08e7818a85@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <2842cbb5-680e-483a-af62-4c08e7818a85@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/21/24 2:03 PM, David Lechner wrote:
-> On 10/21/24 8:02 AM, Alexandru Ardelean wrote:
->> There's a small issue with setting oversampling-ratio that seems to have
->> been there since the driver was in staging.
->> Trying to set an oversampling value of '2' will set an oversampling value
->> of '1'. This is because find_closest() does an average + rounding of 1 + 2,
->> and we get '1'.
->>
->> This is the only issue with find_closest(), at least in this setup. The
->> other values (above 2) work reasonably well. Setting 3, rounds to 2, so a
->> quick fix is to round 'val' to 3 (if userspace provides 2).
-> 
-> This sounds like a bug in find_closest() instead of in this driver.
-> 
-> If there is an exact match in the list, it seems reasonable to expect
-> that the exact match is returned by find_closest().
-> 
+Changes in v2:
 
-Likely also affected by this bug since they have values 1, 2 in the list:
+Generally, the patches were rearranged according to comments from Andy
+in previous version in order to be more consistent. The refactoring of
+the ambient temperature was dropped for now because it was a bit more
+complicated than I thought and this series is already heavy enough.
 
-* rtq6056_adc_set_average()
-* si1133_scale_to_swgain()
+[PATCH v2 01/13]:
+	- New patch
+
+[PATCH v2 02/13]:
+	- v1 1/13
+	- used "optimized" in commit message to not prompt for a fix.
+	- added documentation of where this sleep comes from
+
+[PATCH v2 03/13]:
+	- v1 2/13
+	- Fix indentation of array and removed extra whitespace.
+
+[PATCH v2 04/13]:
+	- v1 5/13
+	- removed extra check inside the set_mode() function.
+
+[PATCH v2 06/13]:
+	- v1 1/13
+	- removed indentation fixes which are fixed later since code is
+	  changed in those lines in later commits.
+
+[PATCH v2 09/13]:
+	- v1 12/13
+	- removed unnecessary debug messages
+	- Used struture instead of buffer to push data to userspace
+
+[PATCH v2 10/13]:
+	- v1 13/13
+	- used better naming
+	- made channel index to -1
+
+[PATCH v2 11/13]:
+	- v1 06/13
+	- removed device from trivial-devices
+
+[PATCH v2 12/13]:
+	- v1 07/13
+	- use devm_regulator_bulk_get_enable()
+
+[PATCH v2 13/13]:
+	- v1 08/13
+	- removed internal usage of dev structure
+	- added missing header in both bme680_core.c and bme680.h
+	- used devm_pm_runtime_enable
+
+---
+v1: https://lore.kernel.org/linux-iio/20241010210030.33309-1-vassilisamir@gmail.com
+
+This patch series is continuing the work that started on [1] by
+improving some small issues of the driver in the commits 1,2,3.
+
+Commits 4,5 are refactorizing existing code.
+
+Commits 6,7,8 are adding DT, regulator and PM support.
+
+Commit 9 is refactorizing one macro to attribute.
+
+Commit 10,11,12 are refactorizing the read/compensate functions
+to become generic and add triggered buffer support.
+
+Finally, commit 13 adds support for an *output* channel of type
+IIO_CURRENT in order to preheat the plate that is used to measure the
+quality of the air.
+
+This and the previous series [1] started with the idea to add support
+for the new bme688 device but due to the structure of the driver I
+decided that it is better to restructure and improve some things before
+adding extra funcitonalities.
+
+[1]: https://lore.kernel.org/linux-iio/20240609233826.330516-1-vassilisamir@gmail.com
+
+Vasileios Amoiridis (13):
+  iio: chemical: bme680: Fix missing header
+  iio: chemical: bme680: optimize startup time
+  iio: chemical: bme680: avoid using camel case
+  iio: chemical: bme680: refactorize set_mode() mode
+  iio: chemical: bme680: move to fsleep()
+  iio: chemical: bme680: Fix indentation and unnecessary spaces
+  iio: chemical: bme680: generalize read_*() functions
+  iio: chemical: bme680: Add SCALE and RAW channels
+  iio: chemical: bme680: Add triggered buffer support
+  iio: chemical: bme680: Add support for preheat current
+  dt-bindings: iio: add binding for BME680 driver
+  iio: chemical: bme680: add regulators
+  iio: chemical: bme680: add power management
+
+ .../bindings/iio/chemical/bosch,bme680.yaml   |  64 +++
+ .../devicetree/bindings/trivial-devices.yaml  |   2 -
+ drivers/iio/chemical/Kconfig                  |   2 +
+ drivers/iio/chemical/bme680.h                 |  11 +-
+ drivers/iio/chemical/bme680_core.c            | 505 +++++++++++++++---
+ 5 files changed, 508 insertions(+), 76 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/bosch,bme680.yaml
+
+-- 
+2.43.0
 
 

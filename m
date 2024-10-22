@@ -1,69 +1,69 @@
-Return-Path: <linux-iio+bounces-10914-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10915-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71029A99CD
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 08:31:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2499A9A58
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 08:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A7021F22B39
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 06:31:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E75DB2133E
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 06:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149BE13AD32;
-	Tue, 22 Oct 2024 06:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A781474A2;
+	Tue, 22 Oct 2024 06:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="UJAo0jEg"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zghSAd2L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA021126C02
-	for <linux-iio@vger.kernel.org>; Tue, 22 Oct 2024 06:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB79146A9F
+	for <linux-iio@vger.kernel.org>; Tue, 22 Oct 2024 06:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729578711; cv=none; b=n6JYs8/ARfmOk0NvVtGlaxIDTmfLhY3dQWPTOYSkrruoYWsCyY20C4H/dLUtjwRu9GNIS0OSD5T35T/iB/XdcoxoIUcH9csgtf/2Eju41vIT7i47IR9IRYXkfq+fj4BnGucLgyI1W12cPDuraSTeLlStMkLwIXUoDsoYrPA3LjM=
+	t=1729580372; cv=none; b=Pl2It1MkMf7NE9K3DZwWaD4fMRaeUNqSuUJZxmDIFmT7JofaUSpMP56URpZ1durX0bUFVT5+hyLQvhmyEFKp/VIvtJ6HH5a3j7doAW5tSxX31qQLwbo+P8snc18vo4Ys3BgHVXYtD3jfv+zDcc8gFqLIPaxNJqCVpBPwkgf2ZCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729578711; c=relaxed/simple;
-	bh=UA8peE4aqBis176Dq9lkDvGeZvGkh4OgIM0eopFMjow=;
+	s=arc-20240116; t=1729580372; c=relaxed/simple;
+	bh=TvjGSE5GNJjW4VdXHD6cIJ+b9CBXevZuw8+amadgwWU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=An4XKU9X44ebUzmxUf3BcEnV8wMjxyheM32VC/YYoR0Xha/tlhGD2eycAwI5+vHxBLaC/7b4Ipr3iolK5JAddFxdJANfVUN1TngFhh794YebOBi7KGtLfv7X0/7Eca9KpXbMZ0bI2gx6UNBog5GmrIeHagof9ZgBOVgSczAU0bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=UJAo0jEg; arc=none smtp.client-ip=209.85.221.173
+	 To:Cc:Content-Type; b=pYkQ2qSrkNcBq2yKw8oKmQbOhsnM+9JcydMfPxh07ScFXEUVt5IYoVV4zJFhOV4m6l+Bawhv6xxhiWFekBty6LYJzcSq7wnfBKDlq/T+KAGhTYbWpyjPN8vti23Py09aOKuE1HIBG0MM8YeLuMXcLOrY5S0/SJyqd04qoTrrCN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zghSAd2L; arc=none smtp.client-ip=209.85.221.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-50c9f4efd09so1614333e0c.2
-        for <linux-iio@vger.kernel.org>; Mon, 21 Oct 2024 23:31:49 -0700 (PDT)
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-50d5d6f9fdaso1597408e0c.2
+        for <linux-iio@vger.kernel.org>; Mon, 21 Oct 2024 23:59:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729578709; x=1730183509; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729580369; x=1730185169; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UA8peE4aqBis176Dq9lkDvGeZvGkh4OgIM0eopFMjow=;
-        b=UJAo0jEgnOmJRx2pNvTMy1oZBwG5qKEtT4atVR2IMrMg62XtxjFEEsm4m/zv9cfBIa
-         E2NZSAeYtad4ld4+D5Do3TTL8TXpx14x8plQE0dOAezGypoW3fem7eloMQLr3bAK6JjC
-         93LyuU7dseHpkOT39jMM+VFmY3oPpOjCA51r48eVQbjGZ8db2KqxB1SG5DdFn+z5aB10
-         L8wLs/iFk1RLKIW6Or8s5QJUwNHqZ3sGNzgCujhVApmnWQTT5OAZOYhOI4hIFFjsPniR
-         gJjSjRGznLuyFienR+pRrWxZj6omU3cFIq86ll53Zy4ZjJDrFFwtcmBDRi9vrjIHivaR
-         jGnw==
+        bh=EmrMnZQE3a07XKbFi4coi+hrWjINxdc/YU4ZsynDMvw=;
+        b=zghSAd2LEJJ5hlv5Om9FUv2ZOZKJmN9ICEFtjkZpvck+hF2+Opw1yUDq1mUVZNqQX8
+         wvD9BSmCOlxRleRgKf1H+aBNnvUYDNBfJFLT/eCWdrWFjLiuLPclgbn3TOOsx7bWZBzq
+         5D+rikUMCFpV7mga0qrjzz5S29YWPeArzWrIFEmTISWtpU4qAet45GwNnfeNUBeDWK08
+         NEZYGuvuWANZMjyGgH3JRAR2ctiw3zLdr3L2WumaSnqxq7Ds9eSzj8w9M4n5oeae3t8H
+         b3/iJll86vPAe0hKjbnJ86H32EY0EcfgieCcomM27mcy5Q+SGQ2FPljkk8ELRCWEg0iz
+         q4jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729578709; x=1730183509;
+        d=1e100.net; s=20230601; t=1729580369; x=1730185169;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UA8peE4aqBis176Dq9lkDvGeZvGkh4OgIM0eopFMjow=;
-        b=muaI52+gsVvm3NcoJkT0ys8t0Z5x10Ka88bobU7tLIwsZAC6wyaYKcPfRBe/MYx0Nl
-         oa4n8zvbJVyGgV7Qef/wUo/2SHOlZtE3nn2aP3wUazULA5J+/V+/RScJ9OYxz0Ma4bDr
-         c8eKMpY7tJFG7SdHeg3C49yvoNay/8wlVBV2uoH59PtiHqUnRwLvr9EbDX21tas8PSeG
-         ClnNKh14CEoaHLskj4DRiKHOmWWkdyPl6Fd7PL5IMnI3iMcC+dUTqSsEThuY4EqqjyU/
-         wrzvwYnADlgf04cIQFwi6g3/+3tX1QuFCCW4E90oX4sWYVuduWhv/QjlRNEti/7z3MM/
-         rhUg==
-X-Gm-Message-State: AOJu0YxmllCcMzshpdCOsFkU1ArMFdZw0y6Np0PsJlU9cE8MGWYYGYqg
-	lWY0I2wosUrYJVx5rgN9VY/nRg0vu/g3vMzkWR4YtqPkWEEZtCVtGnzzPXAQl/miqapMQCQvQrU
-	A8/jGDRzOdy9Dc/O5fjXMfFd9jY/5L5kglwOf5A==
-X-Google-Smtp-Source: AGHT+IFOCcrJoYXRgEW2qz+ymyN0Gck1g+lyMApoiYLfdYnlbLEKw+Rb3ciR3agjaxWEa8c5lSru4E5xt3YoNOkB+SU=
-X-Received: by 2002:a05:6122:169f:b0:50a:76c9:1b7 with SMTP id
- 71dfb90a1353d-50dda3c6942mr11641929e0c.12.1729578708667; Mon, 21 Oct 2024
- 23:31:48 -0700 (PDT)
+        bh=EmrMnZQE3a07XKbFi4coi+hrWjINxdc/YU4ZsynDMvw=;
+        b=UcYiWGJPfk/ctb9r+0PAbPFADUgM9ln5+20Fy1My0V7yVp066pjJXxIEDneAcGi6AP
+         UY7Mfn4pxyTmix74J9Q7xxJpuXTzGYw0jAf4bwF4x+ZjdTRi47e7ik8yLXNOZ31gnoqr
+         kN7PtH2GaJIKLP5pnStpkziBDYLLOyhY6pL3uuvHZzC7aEHwq+2y4fCx1AVRza+g/I/9
+         S6HVlUbOqbLa1mQFEr20V74ktOHb2LZ34ek2xvINCkma5yy+THYb4y8olf37FTLEGwp5
+         3EUXkUvETLD9qy3xORQ1/ZI695oytPBcbTSV6sfu5IZH10PDC954NFIhIyRmGXAkS/vG
+         Nlqg==
+X-Gm-Message-State: AOJu0YyEn3PM/d19MFIcj2II3b0eg2+pKTf7Nhx+yIq9cxhiARyqqVlm
+	aTkY+eAA6yg2NzoNBcmLjkB2Krv6MryyxDS0G/iIUyqK0YFUiVBONmT1IeBYzFW+dR3/c2VSNUa
+	rykT1tdCOIpaouxYKxrGfBd60UPq3pHw1GrsDxQ==
+X-Google-Smtp-Source: AGHT+IEX+86wBXIxaEn+JJmosniozV/wBNVR8nbW+AlAIx4DcXOLbFziVIp6cF0B0dDVKfGnCGfxDkGyRjEPYGwyzVk=
+X-Received: by 2002:a05:6122:3188:b0:50d:2dd4:e62a with SMTP id
+ 71dfb90a1353d-50dda3c723emr9671921e0c.13.1729580367724; Mon, 21 Oct 2024
+ 23:59:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -71,63 +71,164 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241021130221.1469099-1-aardelean@baylibre.com>
- <20241021130221.1469099-3-aardelean@baylibre.com> <2842cbb5-680e-483a-af62-4c08e7818a85@baylibre.com>
- <1dbc8e19-d6fd-42dd-b116-f08c408b6a5c@baylibre.com>
-In-Reply-To: <1dbc8e19-d6fd-42dd-b116-f08c408b6a5c@baylibre.com>
+ <20241021130221.1469099-5-aardelean@baylibre.com> <0a7c5305-b4f7-4166-8a8a-05cf6e3273cc@baylibre.com>
+In-Reply-To: <0a7c5305-b4f7-4166-8a8a-05cf6e3273cc@baylibre.com>
 From: Alexandru Ardelean <aardelean@baylibre.com>
-Date: Tue, 22 Oct 2024 09:31:38 +0300
-Message-ID: <CA+GgBR-8i-S2gnp39TnOxayfGqLpdhAceOjNDpE+Y7t_5Xeaig@mail.gmail.com>
-Subject: Re: [PATCH 2/6] iio: adc: ad7606: fix issue/quirk with find_closest()
- for oversampling
+Date: Tue, 22 Oct 2024 09:59:16 +0300
+Message-ID: <CA+GgBR_tT5J8Lq7DmSw9GdETiRScXzPzcf5UkDk32GLP8tSrQw@mail.gmail.com>
+Subject: Re: [PATCH 4/6] iio: adc: ad7606: rework scale-available to be static
 To: David Lechner <dlechner@baylibre.com>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org, 
 	robh@kernel.org, lars@metafoo.de, michael.hennerich@analog.com, 
-	gstols@baylibre.com, brgl@bgdev.pl
+	gstols@baylibre.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 21, 2024 at 10:31=E2=80=AFPM David Lechner <dlechner@baylibre.c=
-om> wrote:
+On Mon, Oct 21, 2024 at 9:17=E2=80=AFPM David Lechner <dlechner@baylibre.co=
+m> wrote:
 >
-> On 10/21/24 2:03 PM, David Lechner wrote:
-> > On 10/21/24 8:02 AM, Alexandru Ardelean wrote:
-> >> There's a small issue with setting oversampling-ratio that seems to ha=
-ve
-> >> been there since the driver was in staging.
-> >> Trying to set an oversampling value of '2' will set an oversampling va=
-lue
-> >> of '1'. This is because find_closest() does an average + rounding of 1=
- + 2,
-> >> and we get '1'.
-> >>
-> >> This is the only issue with find_closest(), at least in this setup. Th=
-e
-> >> other values (above 2) work reasonably well. Setting 3, rounds to 2, s=
-o a
-> >> quick fix is to round 'val' to 3 (if userspace provides 2).
+> On 10/21/24 8:02 AM, Alexandru Ardelean wrote:
+> > The main driver for this change is the AD7607 part, which has a scale o=
+f
+> > "1.220703" for the =C2=B110V range. The AD7607 has a resolution of 14-b=
+its.
 > >
-> > This sounds like a bug in find_closest() instead of in this driver.
+> > So, just adding the scale-available list for that part would require so=
+me
+> > quirks to handle just that scale value.
+> > But to do it more neatly, the best approach is to rework the scale
+> > available lists to have the same format as it is returned to userspace.
+> > That way, we can also get rid of the allocation for the 'scale_avail_sh=
+ow'
+> > array.
 > >
-
-Adding Bart (the original author of find_closest()).
-
-> > If there is an exact match in the list, it seems reasonable to expect
-> > that the exact match is returned by find_closest().
-> >
+> > Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
+> > ---
 >
-> Likely also affected by this bug since they have values 1, 2 in the list:
+> ...
 >
-> * rtq6056_adc_set_average()
-> * si1133_scale_to_swgain()
+>
+> >  static ssize_t in_voltage_scale_available_show(struct device *dev,
+> >                                              struct device_attribute *a=
+ttr,
+> >                                              char *buf)
+> > @@ -703,8 +690,16 @@ static ssize_t in_voltage_scale_available_show(str=
+uct device *dev,
+> >       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
+> >       struct ad7606_state *st =3D iio_priv(indio_dev);
+> >       struct ad7606_chan_scale *cs =3D &st->chan_scales[0];
+> > +     const unsigned int (*vals)[2] =3D cs->scale_avail;
+> > +     unsigned int i;
+> > +     size_t len =3D 0;
+> >
+> > -     return ad7606_show_avail(buf, cs->scale_avail, cs->num_scales, tr=
+ue);
+> > +     for (i =3D 0; i < cs->num_scales; i++)
+> > +             len +=3D scnprintf(buf + len, PAGE_SIZE - len, "%u.%06u "=
+,
+> > +                              vals[i][0], vals[i][1]);
+> > +     buf[len - 1] =3D '\n';
+> > +
+> > +     return len;
+> >  }
+> >
+> >  static IIO_DEVICE_ATTR_RO(in_voltage_scale_available, 0);
+>
+> Probably a reason for this that I forgot, but why is this handled in a
+> custom attribute instead of ad7606_read_avail()?
 
-Yeah.
-I forgot to mention this sooner.
-But this patch is more of an RFC patch about how to handle this
-situation with find_closest().
+[1]
+So, this is a quirk of this driver that would require a bigger cleanup.
+It could be done as a different series.
+Or (otherwise said) I would do it in a different series (unless
+requested otherwise).
 
-For monotonic values with an increment of 1, find_closest() is a bit buggy.
-Will try to fix find_closest()
+These device-level attributes are attached in the probe() of this
+driver, based on the GPIO configurations provided via DT.
+There's that bit of code
+
+        if (st->gpio_os) {
+                if (st->gpio_range)
+                        indio_dev->info =3D &ad7606_info_os_and_range;
+                else
+                        indio_dev->info =3D &ad7606_info_os;
+        } else {
+                if (st->gpio_range)
+                        indio_dev->info =3D &ad7606_info_range;
+                else
+                        indio_dev->info =3D &ad7606_info_no_os_or_range;
+        }
+
+The "range" there refers to "scale_available", which is only attached
+like this, for HW mode.
+A rework of HW-mode would be a good idea.
+
+>
+> > @@ -742,6 +737,7 @@ static int ad7606_write_raw(struct iio_dev *indio_d=
+ev,
+> >                           long mask)
+> >  {
+> >       struct ad7606_state *st =3D iio_priv(indio_dev);
+> > +     unsigned int scale_avail[AD760X_MAX_SCALES];
+>
+> Calling this scale_avail_uv would make the code easier for me to understa=
+nd.
+
+Ack.
+
+>
+> >       struct ad7606_chan_scale *cs;
+> >       int i, ret, ch =3D 0;
+> >
+> > @@ -752,7 +748,12 @@ static int ad7606_write_raw(struct iio_dev *indio_=
+dev,
+> >               if (st->sw_mode_en)
+> >                       ch =3D chan->address;
+> >               cs =3D &st->chan_scales[ch];
+> > -             i =3D find_closest(val2, cs->scale_avail, cs->num_scales)=
+;
+> > +             for (i =3D 0; i < cs->num_scales; i++) {
+> > +                     scale_avail[i] =3D cs->scale_avail[i][0] * 100000=
+0 +
+>
+>                                                                  MICRO
+
+Ack.
+
+>
+> > +                                      cs->scale_avail[i][1];
+> > +             }
+> > +             val =3D val * 1000000 + val2;
+> > +             i =3D find_closest(val, scale_avail, cs->num_scales);
+> >               ret =3D st->write_scale(indio_dev, ch, i + cs->reg_offset=
+);
+> >               if (ret < 0)
+> >                       return ret;
+> > @@ -788,9 +789,15 @@ static ssize_t ad7606_oversampling_ratio_avail(str=
+uct device *dev,
+> >  {
+> >       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
+> >       struct ad7606_state *st =3D iio_priv(indio_dev);
+> > +     const unsigned int *vals =3D st->oversampling_avail;
+> > +     unsigned int i;
+> > +     size_t len =3D 0;
+> >
+> > -     return ad7606_show_avail(buf, st->oversampling_avail,
+> > -                              st->num_os_ratios, false);
+> > +     for (i =3D 0; i < st->num_os_ratios; i++)
+> > +             len +=3D scnprintf(buf + len, PAGE_SIZE - len, "%u ", val=
+s[i]);
+> > +     buf[len - 1] =3D '\n';
+> > +
+> > +     return len;
+> >  }
+> >
+> >  static IIO_DEVICE_ATTR(oversampling_ratio_available, 0444,
+>
+> Same question about ad7606_read_avail() instead for this one.
+
+See [1]
 
 >
 

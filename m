@@ -1,91 +1,90 @@
-Return-Path: <linux-iio+bounces-10917-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10918-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BAC39A9C3C
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 10:20:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 662D49A9C51
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 10:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A2011C21F15
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 08:20:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D399BB21178
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 08:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B723D1714BA;
-	Tue, 22 Oct 2024 08:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D0716DECB;
+	Tue, 22 Oct 2024 08:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hccPh/h3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c17O3H6A"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C452E13BAC6;
-	Tue, 22 Oct 2024 08:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD64158D7B;
+	Tue, 22 Oct 2024 08:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729585219; cv=none; b=sCU17KIMF6+IVRj+m1Jk+h0ebjc0v4os6GWYtDhBu5OAZvDBNlqiMaKgnyTHKwq5WJRmwKnBcWC9l3eWIQMsKlWisVv/K1fd4yz9R1HFmQUl15Lx1YMSVQpymvDRWUk/Ns/KH8CoXLgMw8ro97bz0dwC6JSsQTotgRz4VlJ4UEw=
+	t=1729585466; cv=none; b=re2hixvB/fhpYG3RRPP18zT/5U2jj5IKIbipy4Yk+tzwxpgXNalTidBAyzITv1/h3mgD0st8+2RFvDjcU0CNYUok35Ms8xi/MTcNUeJpzQqPXrpPElNFHJI8s0lgd01D8DjOjPY13hEmY5VyrMzHW4IC82yu9LGbn9gvsaPQTAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729585219; c=relaxed/simple;
-	bh=DtkD7/WOyzheoNuGOwX4n9uo4j8otWxfGYuvhmDO8yE=;
+	s=arc-20240116; t=1729585466; c=relaxed/simple;
+	bh=ukPEnMSX5kbqTfKI6FalbDRRnwjbTnVhFzN7tzRJ8Fw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PcEVCswn6/9avchnQSD+D3Gtkw+j8zPjicQ4aAyfzg85CRb7G2T7MQtvuC8ovPhvWoVHsBErX6kBrjhq0hY1NdxPKFr2IX4pkBYvygPrXHHlkBhFrpvwolpRsqxyc5R/shjLohGuYAICh8CLCSmj5PYZD/nNACbUjboImid+0ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hccPh/h3; arc=none smtp.client-ip=209.85.128.51
+	 Content-Type:MIME-Version; b=TVtj390UES4sBsEJfTu2f6n5+0cKsdrO1vq2OxlvArV0GWfTcJRcsn48VG4bPBy2nTR6VvzFAN7iEioWrm0idlPYOIKbd+6yazDOfOkNMV5MYFh7Ve4RieIj+lwfhQ9o9DVHfS3iM9zko+mNqhT3aYAJPv1eZc3+P7aB9V96gek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c17O3H6A; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4315f24a6bbso45095125e9.1;
-        Tue, 22 Oct 2024 01:20:17 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43161e7bb25so40527725e9.2;
+        Tue, 22 Oct 2024 01:24:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729585216; x=1730190016; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729585463; x=1730190263; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=DtkD7/WOyzheoNuGOwX4n9uo4j8otWxfGYuvhmDO8yE=;
-        b=hccPh/h3YUGyawgTje+Y0WRCArGzk1NL4SmpDkxsXzW1ipYVn86t8YmhI43kq8FQQe
-         lMILXofabHHU4BvNiW12aHlOuV156boSQgobY+XQxYfg3/s0HBOHfIpfzZCaiCqGkWdc
-         vJ/EcZevFphxL4g+2uXGaYIwEYjbuMfRUkOIj4pncDEJ5+N9YMUr/wRf1poiP/Ilujn0
-         aJrMLjRyeejsxQsRHnJ27mt3xRCJOpY9kddWSN6JwqdsyBxvzWTsZjpt+xTuhIn9hOal
-         RF3GXLmviAd5keOslJ+UjqTY0/FzV2Yv/7FuJZTKRNF4rr7ElYOO8BQ2PilswcgHLA8Z
-         ZU3A==
+        bh=ukPEnMSX5kbqTfKI6FalbDRRnwjbTnVhFzN7tzRJ8Fw=;
+        b=c17O3H6AbGnLYtDjJ8LN/KV8chyfI81Z+LZJFS5q6T45WX3x8E+yvYLGW/scr1pCDR
+         LRhTMZ7gEetNLe9A1Mc7b/EhwyhuhsbM6eDyl9mdQvLSTjXoN7U2CxjCuG/cQxbbBKy7
+         A6D9Eh8vKDW54PjEwj0Jm3ZQUT6P8tUNyuVi/z61TeyahPzYmyP0HmPUlzQClHhosItK
+         BVwQbmePz4kDvu25FumaIIqKjebuPFEoe8mES01YR6KWsGCHaKOg1SRKgqRJ5XRFdW1W
+         tcx/64SmYAlxqUvAEDQ+K6dnOgtKprK5aRR/bdETUPkBjD2hkXCPtR4z9Rd2qUM6YMVT
+         pK0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729585216; x=1730190016;
+        d=1e100.net; s=20230601; t=1729585463; x=1730190263;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=DtkD7/WOyzheoNuGOwX4n9uo4j8otWxfGYuvhmDO8yE=;
-        b=TYMSZjRExCs7+ZAyBv3S97ixvoP3faBiPjrMFK3vFD6kb9JZviDdNh6U1xdgJ5QP9n
-         Mv5gh3y1+/DayHdw8xbdnA0CRtRXifRjvmCps/bIlWRGtD9jTkxoetBqDcdh+GJU/Jxi
-         YeOw12mh9ZiIQyxiDpMCbE/iDs9ma4nl24idmqiztr9BDGU4oSKrKnkMMPrGIphWTnUY
-         LlQOtUrY7sW+nMQ4+m4b76DQkc07883STPmk0tBE04wMSRVFaj1lTC8gZMOMQmWLD3di
-         gOC3+MgXLBi8gg6lh0rgwhL0IU6H1hE229AIl2uriUnYCexi7i8X1qw6Vi5/4JXtaGY2
-         pCAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGQBfi3SNvxrhu1QjzTxQYLvlAIKoUmVwqqfBwf8BzIvafUTm/IkxWVhLfKx2RzN872+U1fXk3S3pTD9yd@vger.kernel.org, AJvYcCWCKOQfY91ONcC/HiRmNw85hT1fDyX+PJE005nKUIkK94Crb9+SnV66QDQtY5fXhrtAwXf0HShCuyNU@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxp/UaklzLFnu1xamkF3M4nKEGCV1ndcf+P5fyh6jwZHAun3CAE
-	vRul3cjaTRhtzaK75icoObl48RO+rMnTD/MDq7k3GcKIoeLjkxYa
-X-Google-Smtp-Source: AGHT+IF6e+OhDpwMYF0L2Cd0RKYv1mC/Z+QmSowZ9xsOSlUMsH/VtZdOszcs6pRLPJH3IWSPvcT2dQ==
-X-Received: by 2002:adf:979a:0:b0:37d:5352:c83f with SMTP id ffacd0b85a97d-37eab6dab50mr9219218f8f.17.1729585215955;
-        Tue, 22 Oct 2024 01:20:15 -0700 (PDT)
+        bh=ukPEnMSX5kbqTfKI6FalbDRRnwjbTnVhFzN7tzRJ8Fw=;
+        b=AYkquIpEmyu43LCor5mznI8ZXwu77c95eomjVgLOSY4OOZfZAXSr9CHXvR+0PY8XLp
+         j7nZU0WPXDIxP5v1pBCVKib7fR3SLTik2grbNZrdqGgThfSUWzQ5HOgs8leW+5P9uOdl
+         kxYRHrT2kTG45ZNNqtCDXIUJPPmK5asklVjFhlau19cmeqDrSDKIUgDtdgVJE1QgiZj0
+         UXPyZPzMYAr+yN9dRqggJjqQNjIImztiZijJWeXoY3sWyLSqLuRA4b2bIPP1s+Jb5bHm
+         qjAQxsHCWTyiKBYMM4zJppptZbe8nvrELZqNIwaKqUawG2CoVBIwR4ws0ES3MBx1arF4
+         i1lA==
+X-Forwarded-Encrypted: i=1; AJvYcCUmX+cjrEwbSkcx9S9dHnmTnbrX1R2j7bAhSF1GkQ50hrFplGziTzHhkmJgIEweB5j0G3tEYL6JZZD+@vger.kernel.org, AJvYcCWQKQozdWLQepCrbw/tq5fOs9CHzfsZW8A1+1GJMU1Gzg87LEV9WOdnYHZPRkUMeNjcTlLx//RrIgcw6EOy@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdhQGcZsFi+e+lq5chf/S0D8UKu04HBIhAAOVhRVUfQpx/QJhp
+	KRjDu/MNrc1fSiQ3/GkQM6DAjOyEyGgVe62b0G3HbCFI67E8b4L0
+X-Google-Smtp-Source: AGHT+IGepLLb+O1n6mDqgL9Oop1ZhSrzptoKk9PYdaWutmvWNcfopSTKd5E6TrNqjp7YUqpfVXB/zg==
+X-Received: by 2002:a05:600c:1c8d:b0:431:5044:e388 with SMTP id 5b1f17b1804b1-4317b90e37bmr19705365e9.22.1729585462328;
+        Tue, 22 Oct 2024 01:24:22 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef15:2100:888:d3c6:a442:4910? (p200300f6ef1521000888d3c6a4424910.dip0.t-ipconnect.de. [2003:f6:ef15:2100:888:d3c6:a442:4910])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0b9442bsm6040959f8f.78.2024.10.22.01.20.15
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f5c2d39sm82037085e9.37.2024.10.22.01.24.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Oct 2024 01:20:15 -0700 (PDT)
-Message-ID: <41c6f424ed42655a62a7b66aa81604605676a551.camel@gmail.com>
-Subject: Re: [PATCH 2/6] iio: adc: ad7606: fix issue/quirk with
- find_closest() for oversampling
+        Tue, 22 Oct 2024 01:24:22 -0700 (PDT)
+Message-ID: <9083e7ff5471e9f8c478a10a67a7c606b81c6287.camel@gmail.com>
+Subject: Re: [PATCH 4/6] iio: adc: ad7606: rework scale-available to be
+ static
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Alexandru Ardelean <aardelean@baylibre.com>, David Lechner
 	 <dlechner@baylibre.com>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org,
  robh@kernel.org, 	lars@metafoo.de, michael.hennerich@analog.com,
- gstols@baylibre.com, brgl@bgdev.pl
-Date: Tue, 22 Oct 2024 10:24:33 +0200
-In-Reply-To: <CA+GgBR-8i-S2gnp39TnOxayfGqLpdhAceOjNDpE+Y7t_5Xeaig@mail.gmail.com>
+ gstols@baylibre.com
+Date: Tue, 22 Oct 2024 10:28:40 +0200
+In-Reply-To: <CA+GgBR_tT5J8Lq7DmSw9GdETiRScXzPzcf5UkDk32GLP8tSrQw@mail.gmail.com>
 References: <20241021130221.1469099-1-aardelean@baylibre.com>
-	 <20241021130221.1469099-3-aardelean@baylibre.com>
-	 <2842cbb5-680e-483a-af62-4c08e7818a85@baylibre.com>
-	 <1dbc8e19-d6fd-42dd-b116-f08c408b6a5c@baylibre.com>
-	 <CA+GgBR-8i-S2gnp39TnOxayfGqLpdhAceOjNDpE+Y7t_5Xeaig@mail.gmail.com>
+	 <20241021130221.1469099-5-aardelean@baylibre.com>
+	 <0a7c5305-b4f7-4166-8a8a-05cf6e3273cc@baylibre.com>
+	 <CA+GgBR_tT5J8Lq7DmSw9GdETiRScXzPzcf5UkDk32GLP8tSrQw@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
 User-Agent: Evolution 3.54.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -94,67 +93,67 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Tue, 2024-10-22 at 09:31 +0300, Alexandru Ardelean wrote:
-> On Mon, Oct 21, 2024 at 10:31=E2=80=AFPM David Lechner <dlechner@baylibre=
-.com> wrote:
-> >=20
-> > On 10/21/24 2:03 PM, David Lechner wrote:
-> > > On 10/21/24 8:02 AM, Alexandru Ardelean wrote:
-> > > > There's a small issue with setting oversampling-ratio that seems to=
- have
-> > > > been there since the driver was in staging.
-> > > > Trying to set an oversampling value of '2' will set an oversampling
-> > > > value
-> > > > of '1'. This is because find_closest() does an average + rounding o=
-f 1 +
-> > > > 2,
-> > > > and we get '1'.
-> > > >=20
-> > > > This is the only issue with find_closest(), at least in this setup.=
- The
-> > > > other values (above 2) work reasonably well. Setting 3, rounds to 2=
-, so
-> > > > a
-> > > > quick fix is to round 'val' to 3 (if userspace provides 2).
-> > >=20
-> > > This sounds like a bug in find_closest() instead of in this driver.
-> > >=20
->=20
-> Adding Bart (the original author of find_closest()).
->=20
-> > > If there is an exact match in the list, it seems reasonable to expect
-> > > that the exact match is returned by find_closest().
-> > >=20
-> >=20
-> > Likely also affected by this bug since they have values 1, 2 in the lis=
-t:
-> >=20
-> > * rtq6056_adc_set_average()
-> > * si1133_scale_to_swgain()
->=20
-> Yeah.
-> I forgot to mention this sooner.
-> But this patch is more of an RFC patch about how to handle this
-> situation with find_closest().
->=20
-> For monotonic values with an increment of 1, find_closest() is a bit bugg=
-y.
-> Will try to fix find_closest()
->=20
-> >=20
+T24gVHVlLCAyMDI0LTEwLTIyIGF0IDA5OjU5ICswMzAwLCBBbGV4YW5kcnUgQXJkZWxlYW4gd3Jv
+dGU6Cj4gT24gTW9uLCBPY3QgMjEsIDIwMjQgYXQgOToxN+KAr1BNIERhdmlkIExlY2huZXIgPGRs
+ZWNobmVyQGJheWxpYnJlLmNvbT4gd3JvdGU6Cj4gPiAKPiA+IE9uIDEwLzIxLzI0IDg6MDIgQU0s
+IEFsZXhhbmRydSBBcmRlbGVhbiB3cm90ZToKPiA+ID4gVGhlIG1haW4gZHJpdmVyIGZvciB0aGlz
+IGNoYW5nZSBpcyB0aGUgQUQ3NjA3IHBhcnQsIHdoaWNoIGhhcyBhIHNjYWxlIG9mCj4gPiA+ICIx
+LjIyMDcwMyIgZm9yIHRoZSDCsTEwViByYW5nZS4gVGhlIEFENzYwNyBoYXMgYSByZXNvbHV0aW9u
+IG9mIDE0LWJpdHMuCj4gPiA+IAo+ID4gPiBTbywganVzdCBhZGRpbmcgdGhlIHNjYWxlLWF2YWls
+YWJsZSBsaXN0IGZvciB0aGF0IHBhcnQgd291bGQgcmVxdWlyZSBzb21lCj4gPiA+IHF1aXJrcyB0
+byBoYW5kbGUganVzdCB0aGF0IHNjYWxlIHZhbHVlLgo+ID4gPiBCdXQgdG8gZG8gaXQgbW9yZSBu
+ZWF0bHksIHRoZSBiZXN0IGFwcHJvYWNoIGlzIHRvIHJld29yayB0aGUgc2NhbGUKPiA+ID4gYXZh
+aWxhYmxlIGxpc3RzIHRvIGhhdmUgdGhlIHNhbWUgZm9ybWF0IGFzIGl0IGlzIHJldHVybmVkIHRv
+IHVzZXJzcGFjZS4KPiA+ID4gVGhhdCB3YXksIHdlIGNhbiBhbHNvIGdldCByaWQgb2YgdGhlIGFs
+bG9jYXRpb24gZm9yIHRoZSAnc2NhbGVfYXZhaWxfc2hvdycKPiA+ID4gYXJyYXkuCj4gPiA+IAo+
+ID4gPiBTaWduZWQtb2ZmLWJ5OiBBbGV4YW5kcnUgQXJkZWxlYW4gPGFhcmRlbGVhbkBiYXlsaWJy
+ZS5jb20+Cj4gPiA+IC0tLQo+ID4gCj4gPiAuLi4KPiA+IAo+ID4gCj4gPiA+IMKgc3RhdGljIHNz
+aXplX3QgaW5fdm9sdGFnZV9zY2FsZV9hdmFpbGFibGVfc2hvdyhzdHJ1Y3QgZGV2aWNlICpkZXYs
+Cj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RydWN0IGRldmljZV9hdHRy
+aWJ1dGUKPiA+ID4gKmF0dHIsCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+Y2hhciAqYnVmKQo+ID4gPiBAQCAtNzAzLDggKzY5MCwxNiBAQCBzdGF0aWMgc3NpemVfdCBpbl92
+b2x0YWdlX3NjYWxlX2F2YWlsYWJsZV9zaG93KHN0cnVjdAo+ID4gPiBkZXZpY2UgKmRldiwKPiA+
+ID4gwqDCoMKgwqDCoCBzdHJ1Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gZGV2X3RvX2lpb19kZXYo
+ZGV2KTsKPiA+ID4gwqDCoMKgwqDCoCBzdHJ1Y3QgYWQ3NjA2X3N0YXRlICpzdCA9IGlpb19wcml2
+KGluZGlvX2Rldik7Cj4gPiA+IMKgwqDCoMKgwqAgc3RydWN0IGFkNzYwNl9jaGFuX3NjYWxlICpj
+cyA9ICZzdC0+Y2hhbl9zY2FsZXNbMF07Cj4gPiA+ICvCoMKgwqDCoCBjb25zdCB1bnNpZ25lZCBp
+bnQgKCp2YWxzKVsyXSA9IGNzLT5zY2FsZV9hdmFpbDsKPiA+ID4gK8KgwqDCoMKgIHVuc2lnbmVk
+IGludCBpOwo+ID4gPiArwqDCoMKgwqAgc2l6ZV90IGxlbiA9IDA7Cj4gPiA+IAo+ID4gPiAtwqDC
+oMKgwqAgcmV0dXJuIGFkNzYwNl9zaG93X2F2YWlsKGJ1ZiwgY3MtPnNjYWxlX2F2YWlsLCBjcy0+
+bnVtX3NjYWxlcywKPiA+ID4gdHJ1ZSk7Cj4gPiA+ICvCoMKgwqDCoCBmb3IgKGkgPSAwOyBpIDwg
+Y3MtPm51bV9zY2FsZXM7IGkrKykKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBsZW4g
+Kz0gc2NucHJpbnRmKGJ1ZiArIGxlbiwgUEFHRV9TSVpFIC0gbGVuLCAiJXUuJTA2dSAiLAo+ID4g
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCB2YWxzW2ldWzBdLCB2YWxzW2ldWzFdKTsKPiA+ID4gK8KgwqDCoMKgIGJ1ZltsZW4gLSAx
+XSA9ICdcbic7Cj4gPiA+ICsKPiA+ID4gK8KgwqDCoMKgIHJldHVybiBsZW47Cj4gPiA+IMKgfQo+
+ID4gPiAKPiA+ID4gwqBzdGF0aWMgSUlPX0RFVklDRV9BVFRSX1JPKGluX3ZvbHRhZ2Vfc2NhbGVf
+YXZhaWxhYmxlLCAwKTsKPiA+IAo+ID4gUHJvYmFibHkgYSByZWFzb24gZm9yIHRoaXMgdGhhdCBJ
+IGZvcmdvdCwgYnV0IHdoeSBpcyB0aGlzIGhhbmRsZWQgaW4gYQo+ID4gY3VzdG9tIGF0dHJpYnV0
+ZSBpbnN0ZWFkIG9mIGFkNzYwNl9yZWFkX2F2YWlsKCk/Cj4gCj4gWzFdCj4gU28sIHRoaXMgaXMg
+YSBxdWlyayBvZiB0aGlzIGRyaXZlciB0aGF0IHdvdWxkIHJlcXVpcmUgYSBiaWdnZXIgY2xlYW51
+cC4KPiBJdCBjb3VsZCBiZSBkb25lIGFzIGEgZGlmZmVyZW50IHNlcmllcy4KPiBPciAob3RoZXJ3
+aXNlIHNhaWQpIEkgd291bGQgZG8gaXQgaW4gYSBkaWZmZXJlbnQgc2VyaWVzICh1bmxlc3MKPiBy
+ZXF1ZXN0ZWQgb3RoZXJ3aXNlKS4KCkFncmVlZC4uLgoKPiAKPiBUaGVzZSBkZXZpY2UtbGV2ZWwg
+YXR0cmlidXRlcyBhcmUgYXR0YWNoZWQgaW4gdGhlIHByb2JlKCkgb2YgdGhpcwo+IGRyaXZlciwg
+YmFzZWQgb24gdGhlIEdQSU8gY29uZmlndXJhdGlvbnMgcHJvdmlkZWQgdmlhIERULgo+IFRoZXJl
+J3MgdGhhdCBiaXQgb2YgY29kZQo+IAo+IMKgwqDCoMKgwqDCoMKgIGlmIChzdC0+Z3Bpb19vcykg
+ewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoc3QtPmdwaW9fcmFuZ2UpCj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpbmRpb19kZXYt
+PmluZm8gPSAmYWQ3NjA2X2luZm9fb3NfYW5kX3JhbmdlOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBlbHNlCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCBpbmRpb19kZXYtPmluZm8gPSAmYWQ3NjA2X2luZm9fb3M7Cj4gwqDCoMKgwqDCoMKg
+wqAgfSBlbHNlIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKHN0LT5ncGlv
+X3JhbmdlKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+aW5kaW9fZGV2LT5pbmZvID0gJmFkNzYwNl9pbmZvX3JhbmdlOwo+IMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCBlbHNlCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBpbmRpb19kZXYtPmluZm8gPSAmYWQ3NjA2X2luZm9fbm9fb3Nfb3JfcmFuZ2U7
+Cj4gwqDCoMKgwqDCoMKgwqAgfQo+IAo+IFRoZSAicmFuZ2UiIHRoZXJlIHJlZmVycyB0byAic2Nh
+bGVfYXZhaWxhYmxlIiwgd2hpY2ggaXMgb25seSBhdHRhY2hlZAo+IGxpa2UgdGhpcywgZm9yIEhX
+IG1vZGUuCj4gQSByZXdvcmsgb2YgSFctbW9kZSB3b3VsZCBiZSBhIGdvb2QgaWRlYS4KPiAKCk1h
+eWJlIGl0J3MgYWxzbyBkdWUgdG8gLnJlYWRfYXZhaWwoKSBub3QgYmVpbmcgYXJvdW5kIHdoZW4g
+dGhlIGRyaXZlciB3YXMgZmlyc3QKYWRkZWQgKGJ1dCBub3Qgc3VyZSBhYm91dCB0aGF0KS4KCi0g
+TnVubyBTw6EKCj4gCg==
 
-FWIW, I'm not a fan of using find_closest() in this situation. We have an
-available attr wich outputs the supported values. To me, -EINVAL is the way=
- to
-go if some user writes an invalid value.
-
-I feel the usage of find_closest() in these case is likely to make the code
-easier. Maybe an helper analogous to match_string() would be seen with good=
- eyes
-(like match_value()).
-
-But yeah, I guess that changing the behavior now could break some userspace
-users.
-
-- Nuno S=C3=A1
 

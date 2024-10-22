@@ -1,154 +1,120 @@
-Return-Path: <linux-iio+bounces-10911-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10912-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BAED9A9507
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 02:38:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA119A9528
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 02:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB6511C21A49
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 00:38:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AF871C229BC
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 00:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C8318E1A;
-	Tue, 22 Oct 2024 00:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B8F83CD6;
+	Tue, 22 Oct 2024 00:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="epMbfrj4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eiFOO6Qe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DCE322A;
-	Tue, 22 Oct 2024 00:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE8A335C7;
+	Tue, 22 Oct 2024 00:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729557522; cv=none; b=cENjINXmSYS1D3A5/tS5RQ/Z0t7bdkby428dS+SoQ+z4bCKrCyaHmg3EqhpNXsEVscrKONTClN69cv+pq4UUYYZ6cmjZLQA051eFUp0oO+SpeyNhWUo8d/aCo6ze6YGCmMFsrgQjZpqC3bqqsheQ6FUjfnbHVfNQH3lh2nqOriw=
+	t=1729558134; cv=none; b=uNRmifora9w1ni+2J7f0J3T0sl60GUqrocytv7qFiIubw4xEEdbXt7mh4TUeSTAqgKNWb9F/wkbRuxhSK7bTVpS1fkNcCmDhkSmoHHGtJmIZFrIINPs7xW/9p3YI7ZXLXnzxCIBPZ9CeTlz90iz/TlfgAwHLyGIVk+pnomuPsSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729557522; c=relaxed/simple;
-	bh=ljRP45hZhcU5TIdoOUX/MFdLEpvuS4DRBUh5mJBPMLM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oXRWTHNInt9R378o/C3OuoJBtGVpzIAdHgOC1rtjqQTxfm/JDXrqF4ZzpnINhlrRqghysYvvOD945T5pDkbLdDOT9fTQMorCT+e5G4Dpnu4ONPGxJ7REfaHB7ytJrmYjU5O0H5zM/6DIW21x7elTXgh0ZMxMiM7HS8Da9/CcRlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=epMbfrj4; arc=none smtp.client-ip=209.85.210.182
+	s=arc-20240116; t=1729558134; c=relaxed/simple;
+	bh=7F8DbQEbrxckIUC5fjLbZWDIn7DchAKhdMVow5F9+9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E43KqkHZ5VUSyqKBlw4dxgP+G7ZAsFxpoGxaK0YRpCgoU6miimC0e3IUPRhwqY4Ji64yc7bA2OVAU34aKC+biQvAlnpt/OqHEEc3xd9U9T7CNn4oLL/jxqRaCFV35gDXxPdxf/KZxnZD8gLV/NbeCGYofK9Wx4jaId29cI/Bnjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eiFOO6Qe; arc=none smtp.client-ip=209.85.167.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-71e49ef3bb9so3565949b3a.1;
-        Mon, 21 Oct 2024 17:38:40 -0700 (PDT)
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3e60d3adecbso1197762b6e.2;
+        Mon, 21 Oct 2024 17:48:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729557520; x=1730162320; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=magtwdh/LfBPRMtVpw+N0PEp+2NPatDBY6KH3mR8XnA=;
-        b=epMbfrj4EobW0qtiilcY2/+GveoJXuBLs052AjCbRRIstSz2pjK+KRyQLRF9HCUZUG
-         n7eiP6sEqkxC1Zaw/ffLxAMG288uGUREEdbe/OF5nCkE05I4iQi80n8YrXvMVeDKk49Q
-         6WgX54wtn83NasTY11LvHoFXgcwl0Hu0R3mYQGlNmEqW+NmzgB+xdJm/9Jzv7WhU50+M
-         aLAaGt4qePFfyhl7sbLVdjpHNX0EFl4jNaOztCZP5yCqUOv8nXQQoRQGmZLkO6nrLJxK
-         vsItUze0n5ZmU+nxrgkaiGvr8362h4Clw50s1QU0Ss2qliu8A8KzO7DgfBYmxDvDpn+D
-         nhGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729557520; x=1730162320;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1729558132; x=1730162932; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=magtwdh/LfBPRMtVpw+N0PEp+2NPatDBY6KH3mR8XnA=;
-        b=QpHiI04MeQBNPbiK54GXkaFGX8nJxGBt3vTZ4Dkz6zTNhxUGrarjWO1CZlHLr6hQsF
-         ZG5BHJMAxGSN9W7G+ftuIR4DLCbyNP6SVhCF32nTso7u/XHfY2bv6qmAZu6w7WcijnJV
-         cRFHwGgi5yAWJjg7I+6efZLhmzKGym3EoJEqNaRPlClIUMTDNI4VWIx3R+t8Vce2w7W/
-         dgigwU/wNZo9Lm6rAHCRL1OJw9nB2e3WCALa3SbAzSqjHCR8/bJZNtpDNkI6DYOrNSdi
-         secmwVMjp6I/X7olhViErN7QdbRLbjd+VSDlb1WaPUzvqzo3MHJC54IYwPqLieEVIBK3
-         brQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKbP31mEMY06ZJHgx0secsFxtP2xzGsg7/o5NO6mlb81GW0eGJkVqiS1xK5XlOGkGggH1nLIPdn6pF@vger.kernel.org, AJvYcCWhCSUPO6fT58Mu9Y04yY1W63lQtCrNn3CYrTfWyym1dMaqKA9kJXgfAbrwS4tl/eIYYUoA+gjaX/sT@vger.kernel.org, AJvYcCXFeLm4+iBTNSMAzDCKdHRvQ2EahquEKBthfNmEwGYsUENIFzY9Tb0BR/27PRw7JjhvKWfP+ZB+G2ARXDy+@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq6FyfY7WkBzwVvpbLzFk3gcQfDt+rtoMwYVlI8ZeKFsopiMKK
-	y+on0S/kq2A4pGTp9EWWxye4JmME/2PGRYsxWr8oFuuhwkO9O9dg
-X-Google-Smtp-Source: AGHT+IHV8M9cBXnFbidcYyHefhv6RPjbtsN8XZLPfnMQLKyzNP9kmzIyA20Jtvdd6EaL6arRZgb+1w==
-X-Received: by 2002:a05:6a00:270f:b0:71e:591d:cb4c with SMTP id d2e1a72fcca58-71edc132de9mr2016686b3a.1.1729557519596;
-        Mon, 21 Oct 2024 17:38:39 -0700 (PDT)
-Received: from localhost ([2001:da8:7001:11::cb])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec132ff7fsm3517619b3a.71.2024.10.21.17.38.39
+        bh=ho9z0/EYibqNU6D6zg4eN1k82sn+fVQ2QwMUjuMq4Kc=;
+        b=eiFOO6QeXiE62/DFsbf7SeOSQaoW01hqH0lNB7BOiRN+XcxBLmDQcPpHNyv3NEAKBU
+         BFxcKFY2KALrmMYtuYkz6jUbFHwqn89ce0iyJbRa6ucIs18dmB7xYTiy597OkFD5njFM
+         LafQoarUd9qz4gSciaW06Vo3AQ3j+IT6diJd7ThibnZ4e7zkjtpsMSZSsPKvKT9gFw++
+         +EF1BATdnWUOnW+x5F7Fl5KkeAyUw3KVQRilQrMdjv2VNFF2Plyb1zaWYlQ8IHk7XcOD
+         t3nYP9l8RCxOsXupzU4ELabvz1cbu2n58pWLR14OR0J7I9wFG4LwX3yKr+logoVgJeVj
+         q3DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729558132; x=1730162932;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ho9z0/EYibqNU6D6zg4eN1k82sn+fVQ2QwMUjuMq4Kc=;
+        b=WPYKWS224QiUjrwCYT7g8iUBt2FOg2BJe0RcxWbbVFInVQf8ne+TbF7G7rllrX6w53
+         zWfEqQq5DElcoDyQ+dtUicZuL9Tv6AddDLDIc6uD4iJRtvMTynMui9ICjiFgWkZufeKd
+         KWtiDbUHMXye46E4IU/j9F+7/vrHEfLUL2jVrarzqo14i/vyx/hCf/QT/u8Z7LUx12xX
+         /KVMcYa3f//swm9ToRotzc2MAIVlORq76LbO0RGBnbBe11inq3m6iVluxXmd1DaLSlqQ
+         gMAHdgmeyKdWfdUNbn6I6jqc531RhxrFkVWqO9N7E/8i4txRKN/aTD/agl68/duXfcGv
+         OdVw==
+X-Forwarded-Encrypted: i=1; AJvYcCVpOq1ceSyPS8X4JmXENPbJzVQlj91ScdpCMwFhJF9mdQax4hIMM5kYhBvUNeWffJ7PXtdKpzHXVK+w@vger.kernel.org, AJvYcCW0M8SOZSP9bSJkLwk87vfW+mr+DVtyoCjd9Vk20wo3v09PuinQhVpy8VLOyWCso7P3KklNcrV3rG+CcIdj@vger.kernel.org, AJvYcCXtA3MEzL8esjzgJeUg8cQ2+h+EKpBuOmR6rowxSzoqn3ud7mlaf0VeaGKKONX7g5CBQBTzKuf36Wol@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSDSDVv9CfbW1RMcOaAsKbzbV/zC2gnV9GwI0KksrL93F7FUc5
+	ZH/b2sdtlHpIOUyDutTThCdv1J+h4Y66bVF9YraIBJDCrd0taLoR
+X-Google-Smtp-Source: AGHT+IHR8vksB3qvtmCF54R+Y3XoqQ3hLdiVVfiCsrYy9GdmGCJexTpDrdDYjcOCmNRujUWqNNrwiQ==
+X-Received: by 2002:a05:6808:2020:b0:3e5:d8b9:fcff with SMTP id 5614622812f47-3e602da1233mr8951179b6e.42.1729558132067;
+        Mon, 21 Oct 2024 17:48:52 -0700 (PDT)
+Received: from localhost ([121.250.214.124])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7eaeab48f46sm3785613a12.41.2024.10.21.17.48.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 17:38:39 -0700 (PDT)
-Date: Tue, 22 Oct 2024 08:38:04 +0800
+        Mon, 21 Oct 2024 17:48:51 -0700 (PDT)
 From: Inochi Amaoto <inochiama@gmail.com>
-To: Inochi Amaoto <inochiama@outlook.com>, 
-	Thomas Bonnefille <thomas.bonnefille@bootlin.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen Wang <unicorn_wang@outlook.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	=?utf-8?Q?Miqu=C3=A8l?= Raynal <miquel.raynal@bootlin.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	Inochi Amaoto <inochiama@gmail.com>
-Subject: Re: [PATCH v5 3/3] riscv: dts: sophgo: Add SARADC description for
- Sophgo CV1800B
-Message-ID: <b2dtsxyae5d4pueaz2ar5pl5b3c2mjg75hvj7rljtxgfd5wxer@bkxe2uls4en4>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Inochi Amaoto <inochiama@outlook.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+Cc: Inochi Amaoto <inochiama@gmail.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	=?UTF-8?q?Miqu=C3=A8l=20Raynal?= <miquel.raynal@bootlin.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: (subset) [PATCH v5 0/3] Add SARADC support on Sophgo CV18XX series
+Date: Tue, 22 Oct 2024 08:48:30 +0800
+Message-ID: <172955777486.235966.17435293788419031097.b4-ty@gmail.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
 References: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
- <20240829-sg2002-adc-v5-3-aacb381e869b@bootlin.com>
- <IA1PR20MB495323339EFB06E194204904BB902@IA1PR20MB4953.namprd20.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <IA1PR20MB495323339EFB06E194204904BB902@IA1PR20MB4953.namprd20.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 31, 2024 at 08:49:22PM +0800, Inochi Amaoto wrote:
-> On Thu, Aug 29, 2024 at 02:31:52PM GMT, Thomas Bonnefille wrote:
-> > Add SARADC node for the Successive Approximation Analog to
-> > Digital Converter used in Sophgo CV1800B SoC.
-> > This patch only adds the active domain controller.
-> > 
-> > Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-> > ---
-> >  arch/riscv/boot/dts/sophgo/cv18xx.dtsi | 22 ++++++++++++++++++++++
-> >  1 file changed, 22 insertions(+)
-> > 
-> > diff --git a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-> > index 891932ae470f..da1ac59e976f 100644
-> > --- a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-> > +++ b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-> > @@ -133,6 +133,28 @@ portd: gpio-controller@0 {
-> >  			};
-> >  		};
-> >  
-> > +		saradc: adc@30f0000 {
-> > +			compatible = "sophgo,cv1800b-saradc";
-> > +			reg = <0x030f0000 0x1000>;
-> > +			clocks = <&clk CLK_SARADC>;
-> > +			interrupts = <100 IRQ_TYPE_LEVEL_HIGH>;
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +			status = "disabled";
-> > +
+On Thu, 29 Aug 2024 14:31:49 +0200, Thomas Bonnefille wrote:
+> This patchset adds initial ADC support for Sophgo CV18XX series SoC. This driver can
+> work with or without interrupt.
 > 
-> > +			channel@0 {
-> > +				reg = <0>;
-> > +			};
-> > +
-> > +			channel@1 {
-> > +				reg = <1>;
-> > +			};
-> > +
-> > +			channel@2 {
-> > +				reg = <2>;
-> > +			};
+> Link: https://github.com/sophgo/sophgo-doc/releases/download/sg2002-trm-v1.0/sg2002_trm_en.pdf
 > 
-> I think it may better to move channel definition to board file.
 > 
 
-It seems OK, let's drop my previous comment.
+Applied to for-next, thanks!
 
-Reviewed-by: Inochi Amaoto <inochiama@gmail.com>
+[3/3] riscv: dts: sophgo: Add SARADC description for Sophgo CV1800B
+      https://github.com/sophgo/linux/commit/45a544a62ef7cac9ecc69585a90da72ca68af898
 
-> > +		};
-> > +
-> >  		i2c0: i2c@4000000 {
-> >  			compatible = "snps,designware-i2c";
-> >  			reg = <0x04000000 0x10000>;
-> > 
-> > -- 
-> > 2.46.0
-> > 
+Thanks,
+Inochi
+
 

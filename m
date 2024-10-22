@@ -1,192 +1,176 @@
-Return-Path: <linux-iio+bounces-10943-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10944-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED449AB473
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 18:54:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF05B9AB4DE
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 19:21:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8601A284F22
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 16:54:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A292855CC
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 17:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032A21BC067;
-	Tue, 22 Oct 2024 16:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7B71BCA1B;
+	Tue, 22 Oct 2024 17:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LJSooZUE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hT0FzQ6Y"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91EF256D;
-	Tue, 22 Oct 2024 16:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9220C6EB7C;
+	Tue, 22 Oct 2024 17:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729616051; cv=none; b=FSManAzXfl5xcBIlewrZsxW0+6KH3x84p7uG757soA2EdYhZPU12KNuqFVuQnMSf1ALFg9WPmW8YmN1u+Qxs+PxRBeXFjK8MNhiwUOyeYCiqMWIQOUMWNZucDekkqXp7SSKvrN4p22GF/hUZqmZmZXmIVKUBYAwhB6WS4M0Nj08=
+	t=1729617665; cv=none; b=A66l5zWhonNxgaoLAAchugVwkz8CeZ24bpIndxrxCVtlRGo+VgVkRmtrdSYyddeckxAHgwUvOykCvK42gegXye2cLV6LR5PRM2EwpluQp2GM8v01VnyJwF923+h0F5Vwgr3nRSb9ivcnuPrcS4aeoXD7Sibu/kyPb788k/2egI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729616051; c=relaxed/simple;
-	bh=21FGDlkDZDMyZ5GJ6BJz6Gt8X4VrzWOYX6AaQwHE7IY=;
+	s=arc-20240116; t=1729617665; c=relaxed/simple;
+	bh=Xk5gutzTyy9L+8sDdGxf/MzDuFdHh5gkcje73KuaIRU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OE/kvF2zDE530RqBNzQOi1j2xvvun0Sn04i0CPQB3oy67w4gqG//5NIx69a5yXignVuYg59jNsh3ZrZkRGM4y5XOkUHxWgQGFnfNIi6t69xoyzFe/Bs3F9ZR2Voe0ieniNpIkDDQS7grxQRbXGHfkrcdqTLUySQv7RDmHn077l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LJSooZUE; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729616050; x=1761152050;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=21FGDlkDZDMyZ5GJ6BJz6Gt8X4VrzWOYX6AaQwHE7IY=;
-  b=LJSooZUECVCZNtwLe94I02NTTQyeuqOb1FFrpGcUBJwbSPwVGCwvArMF
-   QMjccfbQ4qPY9k31Cs1geASWfVljjE79eNUF7Uk8y4Z62b3e950UjGk7L
-   7HgbeNu16XDb4wSDqzBPyXXrYeVu8pprrndTmt4bSCpky9d4oYaOVSkQx
-   BfYhPgA91n7ftRoNwIuSHEsxdTS5zQY2AXNKOXc0HrXYXwlUMMWyoCI8X
-   f01S6sNha6MSjBWDSxGOmoqFmI5V/1UHJyldPVJLA9eivNYWQl8reJROm
-   JvSwYnlqr2g3VCyRgjck9NpvP164h56+JOs9QKUQUjs43aF3z6f09CyPK
-   g==;
-X-CSE-ConnectionGUID: QJKsr1GoQiahiMjtaq/nsw==
-X-CSE-MsgGUID: o+UFr4bNQGetv/GVgNzuag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="33092301"
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="33092301"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 09:54:09 -0700
-X-CSE-ConnectionGUID: eEdBCSfSRS2QY5tcIcJjHw==
-X-CSE-MsgGUID: wDFEbFreQGieR2D1CE4V0Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="110751317"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 09:54:06 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1t3I8x-00000005vZC-1mSW;
-	Tue, 22 Oct 2024 19:54:03 +0300
-Date: Tue, 22 Oct 2024 19:54:03 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Justin Weiss <justin@justinweiss.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=YKopxsFbYnK9Gi6YQlbptwoBlWcHmp5DliAhZVbsSruK89OyN2bpQdxSRDL6QdcJy/Yc6Q9ve0VKQmPE0yC/uDzpyPwoVcQJidy+My3VcE8DeesInvbKmHBT2L7A5dcvFe9at+XO+GWtm0VVV4AyN0ZboC/6L+laNMdQDSRAXZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hT0FzQ6Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4229BC4CEC3;
+	Tue, 22 Oct 2024 17:21:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729617665;
+	bh=Xk5gutzTyy9L+8sDdGxf/MzDuFdHh5gkcje73KuaIRU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hT0FzQ6YIEMJNGQzYZNKdjjwqU79Ti/1vFNNSM6CODsVVxtwmqF1/YamfNLhCJRUu
+	 bO+riaCDdp4e/8lD1qBrC5EBtQUjlGj69uIyEFPqvpto5jDfZidVa1iIBVIjsHDVaT
+	 MebM3jkzBExC/931UEAbxA09OUyyvsyXhqACc7JhVHSvMU8qpsniG0ZL0zLG+wIiUP
+	 ICPDijJVqWWFaYOwePSMNSTgMkwrXVxW7jUgb0QiHCg0CXFSwZYnAsOca4grEReFJe
+	 A4GostZVrnzTU9XHCrjVMwK4SnZ3G7Pr2c+2D5LC55ZCDDk0Eoiy/8U3c5U29HhQtX
+	 UUmkcUR68MGTw==
+Date: Tue, 22 Oct 2024 18:21:00 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: Angelo Dureghello <adureghello@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Derek J . Clark" <derekjohn.clark@gmail.com>,
-	Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>,
-	Alex Lanzano <lanzano.alex@gmail.com>
-Subject: Re: [PATCH v3 4/6] iio: imu: bmi270: Add support for BMI260
-Message-ID: <ZxfYq1Eo2xhVhIei@smile.fi.intel.com>
-References: <20241020220011.212395-1-justin@justinweiss.com>
- <20241020220011.212395-5-justin@justinweiss.com>
- <87msiwm90s.fsf@justinweiss.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dlechner@baylibre.com,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v7 4/8] iio: dac: adi-axi-dac: extend features
+Message-ID: <20241022-napped-labored-6956ce18d986@spud>
+References: <20241021-wip-bl-ad3552r-axi-v0-iio-testing-v7-0-969694f53c5d@baylibre.com>
+ <20241021-wip-bl-ad3552r-axi-v0-iio-testing-v7-4-969694f53c5d@baylibre.com>
+ <b1ac7d51280caf729d192ca871c26260fdf3697c.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="GEYcqo5TSMEtxtrT"
 Content-Disposition: inline
-In-Reply-To: <87msiwm90s.fsf@justinweiss.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-
-On Tue, Oct 22, 2024 at 08:50:43AM -0700, Justin Weiss wrote:
-> Justin Weiss <justin@justinweiss.com> writes:
-
-...
-
-> The ACPI IDs with device pointers are here:
-> 
-> > +static const struct acpi_device_id bmi270_acpi_match[] = {
-> > +	/* OrangePi NEO */
-> > +	{ "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
-> > +	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
-> > +	{ "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
-> > +	/* GPD Win Max 2 */
-> > +	{ "10EC5280", (kernel_ulong_t)&bmi260_chip_info },
-> > +	{ }
-
-Cool! But please, keep them alphabetically ordered by ID.
-
-Can we push OrangePI NED to go and fix ACPI IDs eventually?
-
-> > +};
-> 
-> I pulled DSDT device excerpts for the GPD Win Mini (which uses the
-> BMI0160 ACPI ID, even though it has a bmi260) and the OrangePi NEO
-> (which uses the BMI0260 ACPI ID).
-> 
-> I couldn't find a shipping device with a bmi260 using the 10EC5280 ACPI
-> ID. Some prototype devices with the bmi260 may have used them:
-> https://lore.kernel.org/all/CAFqHKTm2WRNkcSoBEE=oNbfu_9d9RagQHLydmv6q1=snO_MXyA@mail.gmail.com/
-> 
-> I can remove that ID from this changeset for now.
-
-Yes, please do not add anything that has no evidence of existence in the wild
-or approved vendor allocated ID.
-
-> GPD Win Mini:
-
-Add short parts of these to the commit message, or better split these to two
-patches each of them adding a new ID to the table.
-
-See below what I do want to see there (no need to have everything),
-i.e. I removed unneeded lines:
-
-> Device (BMI2)
-> {
->     Name (_ADR, Zero)  // _ADR: Address
-
-My gosh, can this be fixed (seems rhetorical)? The _ADR must NOT be present
-together with _HID.  It's against the ACPI specifications.
-
->     Name (_HID, "BMI0160")  // _HID: Hardware ID
->     Name (_CID, "BMI0160")  // _CID: Compatible ID
->     Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
->     Name (_UID, One)  // _UID: Unique ID
->     Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
->     {
->         Name (RBUF, ResourceTemplate ()
->         {
->             I2cSerialBusV2 (0x0068, ControllerInitiated, 0x00061A80,
->                 AddressingMode7Bit, "\\_SB.I2CB",
->                 0x00, ResourceConsumer, , Exclusive,
->                 )
->             GpioInt (Edge, ActiveLow, Exclusive, PullDefault, 0x0000,
->                 "\\_SB.GPIO", 0x00, ResourceConsumer, ,
->                 )
->                 {   // Pin list
->                     0x008B
->                 }
->         })
->         Return (RBUF) /* \_SB_.I2CB.BMI2._CRS.RBUF */
->     }
-      ...
-> }
-> 
-
-> OrangePi NEO:
-
-Same comments for this device.
-
-...
-
-> > +static const struct acpi_device_id bmi270_acpi_match[] = {
-> > +	{ "BOSC0260",  (kernel_ulong_t)&bmi260_chip_info },
-> > +	{ }
-> > +};
-> 
-> I can't find any evidence of BOSC0260 being used, besides existing in
-> the Windows driver. As suggested in an earlier review, I added it here
-> to encourage people looking at this driver in the future to use the
-> correct ACPI ID.
-
-Are you official representative of Bosch or do you have a proof by the vendor
-that they allocated this ID? Otherwise we may NOT allocate IDs on their behalf
-and has not to be added.
-
--- 
-With Best Regards,
-Andy Shevchenko
+In-Reply-To: <b1ac7d51280caf729d192ca871c26260fdf3697c.camel@gmail.com>
 
 
+--GEYcqo5TSMEtxtrT
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Oct 22, 2024 at 02:36:44PM +0200, Nuno S=E1 wrote:
+> On Mon, 2024-10-21 at 14:40 +0200, Angelo Dureghello wrote:
+> > From: Angelo Dureghello <adureghello@baylibre.com>
+> >=20
+> > Extend AXI-DAC backend with new features required to interface
+> > to the ad3552r DAC. Mainly, a new compatible string is added to
+> > support the ad3552r-axi DAC IP, very similar to the generic DAC
+> > IP but with some customizations to work with the ad3552r.
+> >=20
+> > Then, a series of generic functions has been added to match with
+> > ad3552r needs. Function names has been kept generic as much as
+> > possible, to allow re-utilization from other frontend drivers.
+> >=20
+> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > ---
+>=20
+> Looks mostly good,
+>=20
+> one minor thing that (I think) could be improved
+> > =A0drivers/iio/dac/adi-axi-dac.c | 269 ++++++++++++++++++++++++++++++++=
++++++++--
+> > -
+> > =A01 file changed, 255 insertions(+), 14 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-da=
+c.c
+> > index 04193a98616e..9d6809fe7a67 100644
+> > --- a/drivers/iio/dac/adi-axi-dac.c
+> > +++ b/drivers/iio/dac/adi-axi-dac.c
+> > @@ -46,9 +46,28 @@
+> > =A0#define AXI_DAC_CNTRL_1_REG			0x0044
+> > =A0#define=A0=A0 AXI_DAC_CNTRL_1_SYNC			BIT(0)
+> > =A0#define AXI_DAC_CNTRL_2_REG			0x0048
+> > +#define=A0=A0 AXI_DAC_CNTRL_2_SDR_DDR_N		BIT(16)
+> > +#define=A0=A0 AXI_DAC_CNTRL_2_SYMB_8B		BIT(14)
+> > =A0#define=A0=A0 ADI_DAC_CNTRL_2_R1_MODE		BIT(5)
+> > +#define=A0=A0 AXI_DAC_CNTRL_2_UNSIGNED_DATA		BIT(4)
+> > +#define AXI_DAC_STATUS_1_REG			0x0054
+> > +#define AXI_DAC_STATUS_2_REG			0x0058
+> > =A0#define AXI_DAC_DRP_STATUS_REG			0x0074
+> > =A0#define=A0=A0 AXI_DAC_DRP_STATUS_DRP_LOCKED		BIT(17)
+> > +#define AXI_DAC_CUSTOM_RD_REG			0x0080
+> > +#define AXI_DAC_CUSTOM_WR_REG			0x0084
+> > +#define=A0=A0 AXI_DAC_CUSTOM_WR_DATA_8		GENMASK(23, 16)
+> > +#define=A0=A0 AXI_DAC_CUSTOM_WR_DATA_16		GENMASK(23, 8)
+> > +#define AXI_DAC_UI_STATUS_REG			0x0088
+> > +#define=A0=A0 AXI_DAC_UI_STATUS_IF_BUSY		BIT(4)
+> > +#define AXI_DAC_CUSTOM_CTRL_REG			0x008C
+> > +#define=A0=A0 AXI_DAC_CUSTOM_CTRL_ADDRESS		GENMASK(31, 24)
+> > +#define=A0=A0 AXI_DAC_CUSTOM_CTRL_SYNCED_TRANSFER	BIT(2)
+> > +#define=A0=A0 AXI_DAC_CUSTOM_CTRL_STREAM		BIT(1)
+> > +#define=A0=A0 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA	BIT(0)
+>=20
+> ...
+> =A0
+> > =A0static int axi_dac_probe(struct platform_device *pdev)
+> > =A0{
+> > -	const unsigned int *expected_ver;
+> > =A0	struct axi_dac_state *st;
+> > =A0	void __iomem *base;
+> > =A0	unsigned int ver;
+> > @@ -566,14 +780,29 @@ static int axi_dac_probe(struct platform_device *=
+pdev)
+> > =A0	if (!st)
+> > =A0		return -ENOMEM;
+> > =A0
+> > -	expected_ver =3D device_get_match_data(&pdev->dev);
+> > -	if (!expected_ver)
+> > +	st->info =3D device_get_match_data(&pdev->dev);
+> > +	if (!st->info)
+> > =A0		return -ENODEV;
+> > +	clk =3D devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
+> > +	if (IS_ERR(clk)) {
+>=20
+> If clock-names is not given, then we'll get -EINVAL. Hence we could assum=
+e that:
+>=20
+> 		if (PTR_ERR(clk) !=3D -EINVAL)
+> 			return dev_err_probe();
+
+clock-names isn't a required property, but the driver code effectively
+makes it one. Doesn't this lookup need to be by index, unless
+clock-names is made required for this variant?
+
+--GEYcqo5TSMEtxtrT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZxfe/AAKCRB4tDGHoIJi
+0i2sAP45YDFwtSt/GUcsoW7PROW5pXqdvmVSpehhlInslpVBmQEAlwHiLUeV0efe
+1vfCEwKCvA6j0s7TcoFcKzkvkvTgFgE=
+=HtA6
+-----END PGP SIGNATURE-----
+
+--GEYcqo5TSMEtxtrT--
 

@@ -1,120 +1,174 @@
-Return-Path: <linux-iio+bounces-10912-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10913-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA119A9528
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 02:49:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B359A9976
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 08:14:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AF871C229BC
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 00:49:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E29EA1C246F7
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Oct 2024 06:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B8F83CD6;
-	Tue, 22 Oct 2024 00:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4BD14A4DC;
+	Tue, 22 Oct 2024 06:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eiFOO6Qe"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lGY53Q9h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE8A335C7;
-	Tue, 22 Oct 2024 00:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEF2145A19
+	for <linux-iio@vger.kernel.org>; Tue, 22 Oct 2024 06:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729558134; cv=none; b=uNRmifora9w1ni+2J7f0J3T0sl60GUqrocytv7qFiIubw4xEEdbXt7mh4TUeSTAqgKNWb9F/wkbRuxhSK7bTVpS1fkNcCmDhkSmoHHGtJmIZFrIINPs7xW/9p3YI7ZXLXnzxCIBPZ9CeTlz90iz/TlfgAwHLyGIVk+pnomuPsSI=
+	t=1729577399; cv=none; b=rnC/tHojXcW0PJDhHDBweQc+IpiyODr8tcwBW8jeC8hI1r7gdpqQFBCN+sYKQDY8FnZ7TVPcqJW4tKEbGzPpHLek8pOxLFwLQzr/kKOVVQZ8PdhGnnkOtP+ZqRbpbR9SkneTczIIVFfdIizNEc8o64VD9+sP5GZyBguwtFSPxzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729558134; c=relaxed/simple;
-	bh=7F8DbQEbrxckIUC5fjLbZWDIn7DchAKhdMVow5F9+9c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E43KqkHZ5VUSyqKBlw4dxgP+G7ZAsFxpoGxaK0YRpCgoU6miimC0e3IUPRhwqY4Ji64yc7bA2OVAU34aKC+biQvAlnpt/OqHEEc3xd9U9T7CNn4oLL/jxqRaCFV35gDXxPdxf/KZxnZD8gLV/NbeCGYofK9Wx4jaId29cI/Bnjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eiFOO6Qe; arc=none smtp.client-ip=209.85.167.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3e60d3adecbso1197762b6e.2;
-        Mon, 21 Oct 2024 17:48:52 -0700 (PDT)
+	s=arc-20240116; t=1729577399; c=relaxed/simple;
+	bh=RYNViOPjs0qfwljodNXQeGyiOsVETWKj6+tpPo0gw3A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lal6ArbH/7IvdHyMQaBIzOE2vkZLtLlgmOulHwmGA0whhZDNnLjP+HQVaoSLDDLkOYxBID0eipA9M5YrKwGiwI/24+S/mlpdfIPWgIr3cHTdJah75LrEnbmUqG0kpbGPTKxmZw7mGkTULt12o3sv9s5zQUb129VeMVm7pLpOQjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lGY53Q9h; arc=none smtp.client-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-50e08caccaaso432209e0c.3
+        for <linux-iio@vger.kernel.org>; Mon, 21 Oct 2024 23:09:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729558132; x=1730162932; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729577395; x=1730182195; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ho9z0/EYibqNU6D6zg4eN1k82sn+fVQ2QwMUjuMq4Kc=;
-        b=eiFOO6QeXiE62/DFsbf7SeOSQaoW01hqH0lNB7BOiRN+XcxBLmDQcPpHNyv3NEAKBU
-         BFxcKFY2KALrmMYtuYkz6jUbFHwqn89ce0iyJbRa6ucIs18dmB7xYTiy597OkFD5njFM
-         LafQoarUd9qz4gSciaW06Vo3AQ3j+IT6diJd7ThibnZ4e7zkjtpsMSZSsPKvKT9gFw++
-         +EF1BATdnWUOnW+x5F7Fl5KkeAyUw3KVQRilQrMdjv2VNFF2Plyb1zaWYlQ8IHk7XcOD
-         t3nYP9l8RCxOsXupzU4ELabvz1cbu2n58pWLR14OR0J7I9wFG4LwX3yKr+logoVgJeVj
-         q3DQ==
+        bh=+oPA1++gLWQWFvzTYpeR6sYF2qQIZ9tBVu8CJKZGcRQ=;
+        b=lGY53Q9haZmTB+kT7pjemn/Xkt6Lv8H+3aBzAHycjYEHUjQXXgzJIXtSKFkEKK+TGS
+         TRvwxaddsmCnTVe9JjfxNzNep/iJUNn2Pnd9NSNlKFa52RKjiH3KN7OAfroOw+x74wlP
+         ub1bi1+t9P7JtCCX705o7iKrDuTUu9/+fVPKdr4M4FnazksB4H7EmRibcFSHsDfRd5aB
+         LxDNwwgcLGh9Oc6MfgJ2YOciZM3KqtGXWJBCDmvgalAbIQqfyLwSf30TeICIxm9hG5Ha
+         EMB9ZmO7wKYbpkbRHti7kc3eXsireoj0OWjxcMamZ3Fbx+TQES+4NztvkvGkAbG9rYab
+         zyOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729558132; x=1730162932;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1729577395; x=1730182195;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ho9z0/EYibqNU6D6zg4eN1k82sn+fVQ2QwMUjuMq4Kc=;
-        b=WPYKWS224QiUjrwCYT7g8iUBt2FOg2BJe0RcxWbbVFInVQf8ne+TbF7G7rllrX6w53
-         zWfEqQq5DElcoDyQ+dtUicZuL9Tv6AddDLDIc6uD4iJRtvMTynMui9ICjiFgWkZufeKd
-         KWtiDbUHMXye46E4IU/j9F+7/vrHEfLUL2jVrarzqo14i/vyx/hCf/QT/u8Z7LUx12xX
-         /KVMcYa3f//swm9ToRotzc2MAIVlORq76LbO0RGBnbBe11inq3m6iVluxXmd1DaLSlqQ
-         gMAHdgmeyKdWfdUNbn6I6jqc531RhxrFkVWqO9N7E/8i4txRKN/aTD/agl68/duXfcGv
-         OdVw==
-X-Forwarded-Encrypted: i=1; AJvYcCVpOq1ceSyPS8X4JmXENPbJzVQlj91ScdpCMwFhJF9mdQax4hIMM5kYhBvUNeWffJ7PXtdKpzHXVK+w@vger.kernel.org, AJvYcCW0M8SOZSP9bSJkLwk87vfW+mr+DVtyoCjd9Vk20wo3v09PuinQhVpy8VLOyWCso7P3KklNcrV3rG+CcIdj@vger.kernel.org, AJvYcCXtA3MEzL8esjzgJeUg8cQ2+h+EKpBuOmR6rowxSzoqn3ud7mlaf0VeaGKKONX7g5CBQBTzKuf36Wol@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSDSDVv9CfbW1RMcOaAsKbzbV/zC2gnV9GwI0KksrL93F7FUc5
-	ZH/b2sdtlHpIOUyDutTThCdv1J+h4Y66bVF9YraIBJDCrd0taLoR
-X-Google-Smtp-Source: AGHT+IHR8vksB3qvtmCF54R+Y3XoqQ3hLdiVVfiCsrYy9GdmGCJexTpDrdDYjcOCmNRujUWqNNrwiQ==
-X-Received: by 2002:a05:6808:2020:b0:3e5:d8b9:fcff with SMTP id 5614622812f47-3e602da1233mr8951179b6e.42.1729558132067;
-        Mon, 21 Oct 2024 17:48:52 -0700 (PDT)
-Received: from localhost ([121.250.214.124])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7eaeab48f46sm3785613a12.41.2024.10.21.17.48.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 17:48:51 -0700 (PDT)
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Inochi Amaoto <inochiama@outlook.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-Cc: Inochi Amaoto <inochiama@gmail.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	=?UTF-8?q?Miqu=C3=A8l=20Raynal?= <miquel.raynal@bootlin.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: (subset) [PATCH v5 0/3] Add SARADC support on Sophgo CV18XX series
-Date: Tue, 22 Oct 2024 08:48:30 +0800
-Message-ID: <172955777486.235966.17435293788419031097.b4-ty@gmail.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
-References: <20240829-sg2002-adc-v5-0-aacb381e869b@bootlin.com>
+        bh=+oPA1++gLWQWFvzTYpeR6sYF2qQIZ9tBVu8CJKZGcRQ=;
+        b=Iq5xvs5fEncsQv97+DwOBqcpRM7Soc4DCnj3hmg66swDkEfmuR/raqvenutS8x9Dbb
+         9iNhC5Oqhj4+Bsmiy5umMNrGQ0D1yDyUDWF6GINYbBaE+o6rCzSAn0NNc+8b4v6eLxnc
+         Ki+Rz/4H4Ng5vwqwXNFmPem4QHMw5u8fIw8z1gW3r8/dhAlNXHhx/ZCEDrftPg0TsTAQ
+         kuIPjh0QmNDcV92cAuY+qjVwWtEDKOWmL5vJwAhmlSehQi8HUk0VJGucKTERXXBdt7GY
+         YOx0B1kxow1EHt0kwE/cpRh87YNl9gJbWATWwgcG3clrWGDElTnp2/rM2VdExdvkOwMb
+         balg==
+X-Gm-Message-State: AOJu0YzXv1Q1zEJJpE04I+e3sUjDM7Ct/cuXRWGA5Hzy9rwIiSfeVtJb
+	4OJywSSufOTWo8mlYkoNzFztH3MhwjYuacdD/dh80P2ZeRwCDwS9h63+GAhlZhu4WLDPpHdUFPV
+	F9k30Lg/Ap/XkdKP3IxSJ+JngA7aw1DplChu0mQ==
+X-Google-Smtp-Source: AGHT+IE3wc+LCKuHli2wuMbRdahOui7PqfSTzFfrH+tmjl9a3NTlUglV7xXSsSlrCqlm17xHnQ5uDRj+5ZkjFmjANCc=
+X-Received: by 2002:a05:6122:169e:b0:50d:8d89:9f4 with SMTP id
+ 71dfb90a1353d-50fb2707490mr2701901e0c.3.1729577395133; Mon, 21 Oct 2024
+ 23:09:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20241021130221.1469099-1-aardelean@baylibre.com>
+ <20241021130221.1469099-4-aardelean@baylibre.com> <f319c8bd-1edc-451b-aeb2-27ec529267a3@baylibre.com>
+In-Reply-To: <f319c8bd-1edc-451b-aeb2-27ec529267a3@baylibre.com>
+From: Alexandru Ardelean <aardelean@baylibre.com>
+Date: Tue, 22 Oct 2024 09:09:45 +0300
+Message-ID: <CA+GgBR-eKUir7FGOfimv0rE2yP3P3awMZSG8=6t202GAthi=Mg@mail.gmail.com>
+Subject: Re: [PATCH 3/6] iio: adc: ad7606: use realbits for sign-extending in scan_direct
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, jic23@kernel.org, krzk+dt@kernel.org, 
+	robh@kernel.org, lars@metafoo.de, michael.hennerich@analog.com, 
+	gstols@baylibre.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 29 Aug 2024 14:31:49 +0200, Thomas Bonnefille wrote:
-> This patchset adds initial ADC support for Sophgo CV18XX series SoC. This driver can
-> work with or without interrupt.
-> 
-> Link: https://github.com/sophgo/sophgo-doc/releases/download/sg2002-trm-v1.0/sg2002_trm_en.pdf
-> 
-> 
+On Mon, Oct 21, 2024 at 8:19=E2=80=AFPM David Lechner <dlechner@baylibre.co=
+m> wrote:
+>
+> On 10/21/24 8:02 AM, Alexandru Ardelean wrote:
+> > Currently the 'ad7606' driver supports parts with 18 and 16 bits
+> > resolutions.
+> > But when adding support for AD7607 (which has a 14-bit resolution) we
+> > should check for the 'realbits' field, to be able to sign-extend correc=
+tly.
+> >
+> > Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
+> > ---
+> >  drivers/iio/adc/ad7606.c | 24 +++++++++++++++++++-----
+> >  1 file changed, 19 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> > index d0fe9fd65f3f..a1f0c2feb04a 100644
+> > --- a/drivers/iio/adc/ad7606.c
+> > +++ b/drivers/iio/adc/ad7606.c
+> > @@ -568,7 +568,7 @@ static int ad7606_scan_direct(struct iio_dev *indio=
+_dev, unsigned int ch,
+> >                             int *val)
+> >  {
+> >       struct ad7606_state *st =3D iio_priv(indio_dev);
+> > -     unsigned int storagebits =3D st->chip_info->channels[1].scan_type=
+.storagebits;
+> > +     unsigned int realbits =3D st->chip_info->channels[1].scan_type.re=
+albits;
+> >       const struct iio_chan_spec *chan;
+> >       int ret;
+> >
+> > @@ -603,15 +603,29 @@ static int ad7606_scan_direct(struct iio_dev *ind=
+io_dev, unsigned int ch,
+> >
+> >       chan =3D &indio_dev->channels[ch + 1];
+> >       if (chan->scan_type.sign =3D=3D 'u') {
+> > -             if (storagebits > 16)
+>
+> I think it would be simpler to keep this if statement for choosing
+> which data.bufXX to use since there are only 2 choices.
+>
+>
+> > +             switch (realbits) {
+> > +             case 18:
+> >                       *val =3D st->data.buf32[ch];
+> > -             else
+> > +                     break;
+> > +             case 16:
+> >                       *val =3D st->data.buf16[ch];
+> > +                     break;
+> > +             default:
+> > +                     ret =3D -EINVAL;
+> > +                     break;
+> > +             }
+> >       } else {
+> > -             if (storagebits > 16)
+> > +             switch (realbits) {
+> > +             case 18:
+> >                       *val =3D sign_extend32(st->data.buf32[ch], 17);
+> > -             else
+> > +                     break;
+> > +             case 16:
+> >                       *val =3D sign_extend32(st->data.buf16[ch], 15);
+> > +                     break;
+> > +             default:
+> > +                     ret =3D -EINVAL;
+> > +                     break;
+> > +             }
+>
+> We can change this to:
+>
+>         *val =3D sign_extend32(st->data.buf16[ch], reablbits - 1);
+>
+> Then no additional changes should be needed to support 14-bit chips.
+>
+> And similarly, we could avoid the need to use the more verbose
+> switch statement.
 
-Applied to for-next, thanks!
+Ack.
 
-[3/3] riscv: dts: sophgo: Add SARADC description for Sophgo CV1800B
-      https://github.com/sophgo/linux/commit/45a544a62ef7cac9ecc69585a90da72ca68af898
-
-Thanks,
-Inochi
-
+>
+> >       }
+> >
+> >  error_ret:
+>
+>
 

@@ -1,206 +1,142 @@
-Return-Path: <linux-iio+bounces-10979-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10980-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84E69AC777
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 12:10:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917F69AC78E
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 12:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 159011C20F60
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 10:10:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B669BB2267F
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 10:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C1419F43B;
-	Wed, 23 Oct 2024 10:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C600719E99E;
+	Wed, 23 Oct 2024 10:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="Umr0psrm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JtPkbRih"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1480319E99E;
-	Wed, 23 Oct 2024 10:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8977159209;
+	Wed, 23 Oct 2024 10:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729678231; cv=none; b=Q1T5+wMUKuVxz4c9YeqcbEfgXsOl1bc3fR690nqMtWYgVb1a2IQ8ZYiLUaU7eeL3scFUbZbOQ/piKxPlvNKawJaKwF2WtX1t6lz68G5E5k7TMMsbtGwg4BVyAR+npPSmq6HPlhoC2YTUlbsJtj9Zl65YgZjwHgGUZ3lnOhas/LQ=
+	t=1729678416; cv=none; b=ZFOBk3muTv9nCdxt78hXsU6KI2y+YSJZQpmAu0uU1EmAOBIHj2MZsyfG/3KU1ImJUyfqCIQX3lU4CNDwBZiB3esgn9d3Qy0Kz3lNy4ofe53luVcqbsbl9WbrmLiKZ8d/N52NAIFaYQADcpS22wS0bGULsxscPqFj+sjde91dAwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729678231; c=relaxed/simple;
-	bh=k3SnHG7oA3l5HZSfi1tB7TiZdo9WbfAs0mivdJqWgUA=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=ClprA59Dm1ZXxkrQs5niJ6O8VPNoYP7rWjihtgazvzI7U0o20z0rq6jWyflUEzO8nSwnAVxB0ZYyJk+1oDWQKAoVH7gyf8hIxKibxV1nY5GUwPTlVgnHZshFMsuECqF7KP1/Ep29HPC9Z4ZKKYBqpSLG07BIEH1BlzBLFlhZAOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=Umr0psrm; arc=none smtp.client-ip=159.100.241.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.154])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 5BD4F20056;
-	Wed, 23 Oct 2024 10:10:27 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay4.mymailcheap.com (Postfix) with ESMTPS id 4D9932031B;
-	Wed, 23 Oct 2024 10:10:17 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 50CB940071;
-	Wed, 23 Oct 2024 10:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1729678215; bh=k3SnHG7oA3l5HZSfi1tB7TiZdo9WbfAs0mivdJqWgUA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Umr0psrmam/LzPClkicD6UONSbNtPFt2zd+HnRZ33WMqljjb/ERG1gQxqLuL/UALX
-	 zG1oHfQPfJpGIvCVJirzaft9phPUwh2VWYIbowP8RGXfcifTkvUpdgW1qijU76cBPO
-	 SNrwEqnmTJd/9tabIqPFGhObkbafmG+vYJZEA7po=
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id AAADC411E7;
-	Wed, 23 Oct 2024 10:10:14 +0000 (UTC)
+	s=arc-20240116; t=1729678416; c=relaxed/simple;
+	bh=jiFWTr1yK0c5qNSVHMLoMxrTZ5Q7ClvphQUAgHgsaQA=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bfIexfJjXoywyzNaxB9dxQyWdxpwunzcFh1L5u56brQSLIIMfqMNima5xO/4f8KNvhcWXAE5mtr7t8jGw0cF9Ej7d/cpVyc1ouT2n1uyuZVbLwkDMwiUtZ7wpuDyBn9zxnhddhnkZY/1thg2wKXZXYzuuEaD4so5uTuCMUFeDOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JtPkbRih; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4314fa33a35so67982905e9.1;
+        Wed, 23 Oct 2024 03:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729678412; x=1730283212; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0D0rjMh1Id9nhsW30frAC0nQPf7+TS+o8M3NpIefQEM=;
+        b=JtPkbRihtfrVY3jo0u23x86hZp7Zhu5wU+bitSSvZ+4U4P8QZY6Hwtz7I63Es0GjKb
+         iBGcaLPCEw3jI/ILLuRhdopY7ekcSF/GLFdTu3EzJHrt7PVO+pkYCoxwLPtGEEizNOCr
+         wfO7Ro2NfmWtVuebZvn95snAj/Zl+43jpiR9YdIWh1LS4RO4jdZMkMCrZlQnrUhpGASM
+         5wT4SztbPnhJe/ghIy/jA3IuFWrYm6IFCy8sWZAWbnhu3CJuKnPLy8Tt7ZREyn47D8Vr
+         sGj9LjZQBzfZWHt2GQiijyth38pgJaONflMiPwwo3mnyG48HQ2ddcYKs8yKjhL4kSWc3
+         2SxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729678412; x=1730283212;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0D0rjMh1Id9nhsW30frAC0nQPf7+TS+o8M3NpIefQEM=;
+        b=ZraGnbEbGvRJT3euNX3Y0H9bkTNNxzu4DqfYFeCs+522wm1jOMS0HgmL3y1QqIA8CX
+         fUbWB73h0jS59LMrkGWuPmk4Zh/jHBVOA0Dr05P7nMfeYuAJbEsjpRjVVC51d3VDCNlW
+         mLVtbAwCGa8dYhi+jQhAWYZc7TwAZxO3VMoNb8ibRkoJAD1WEaZ4zTIJ0RkJuQmjfE41
+         d2wY1I8nzYbX9KSDTsALyi9DzAP8JgOYIG/8998ZzIlsis11cwPtCS5xBRkKwJSCBGP1
+         0JS/QNgkkTYQPbYpMHD14OEmP+fK5lIbYhm0DKtGQBQROsRw55AScHFTS3je/+uvI4f0
+         eLBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVP5Zpq28sMS96eIJoYftdYeWgtqRskWSCWNHdnGR0UPbSr7fHjCueIA99VUpFRpYAUe+2uPifz4os=@vger.kernel.org, AJvYcCWbnt3oVvogEkvLwgCZM1DxIX6PhS4V1Nf2uZFvJG12edvuST/14KwXB/XKRv7jVlN/AlTQHrtcWKf/TLUD@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP0eBQunKjlxmbDC/sT1Dczlzs35gFKJOVVLaUoorZhiB1ePlv
+	0ZoOfo5+YaCYGw2ueNejihsWbvf+lB7iTkaL6erYCc0k7+gDoTeD
+X-Google-Smtp-Source: AGHT+IEywc8szkUMHQDOljEex/6r3uy4FmMPF2bR5Hx5t6Pyhx6U8tx6rVawlFy2QLilLK8nOu8VOw==
+X-Received: by 2002:a05:600c:3b16:b0:431:5ed4:7e7d with SMTP id 5b1f17b1804b1-4318415b482mr15586585e9.18.1729678411627;
+        Wed, 23 Oct 2024 03:13:31 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef15:2100:888:d3c6:a442:4910? (p200300f6ef1521000888d3c6a4424910.dip0.t-ipconnect.de. [2003:f6:ef15:2100:888:d3c6:a442:4910])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a3805esm8648459f8f.9.2024.10.23.03.13.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 03:13:31 -0700 (PDT)
+Message-ID: <f81545a095136cd64b1991bae4027ad1dfe9597f.camel@gmail.com>
+Subject: Re: [PATCH] iio: Fix build error for ltc2664
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>, Jinjie Ruan	
+ <ruanjinjie@huawei.com>, jic23@kernel.org, lars@metafoo.de, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	nuno.sa@analog.com, conor.dooley@microchip.com,
+ michael.hennerich@analog.com, 	anshulusr@gmail.com, sunke@kylinos.cn,
+ kimseer.paller@analog.com, 	linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-riscv@lists.infradead.org
+Date: Wed, 23 Oct 2024 12:17:49 +0200
+In-Reply-To: <ae939f90-c23f-483b-b4bc-70891d0de167@gmail.com>
+References: <20241023082309.1002917-1-ruanjinjie@huawei.com>
+	 <ae939f90-c23f-483b-b4bc-70891d0de167@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 23 Oct 2024 18:10:14 +0800
-From: Mingcong Bai <jeffbai@aosc.io>
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: WangYuli <wangyuli@uniontech.com>, gregkh@linuxfoundation.org,
- patches@lists.linux.dev, nikita@trvn.ru, ink@jurassic.park.msu.ru,
- shc_work@mail.ru, richard.henderson@linaro.org, mattst88@gmail.com,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- fancer.lancer@gmail.com, linux-hwmon@vger.kernel.org,
- dmaengine@vger.kernel.org, xeb@mail.ru, netdev@vger.kernel.org,
- s.shtylyov@omp.ru, linux-ide@vger.kernel.org, serjk@netup.ru,
- aospan@netup.ru, linux-media@vger.kernel.org, ddrokosov@sberdevices.ru,
- linux-iio@vger.kernel.org, v.georgiev@metrotek.ru,
- linux-mips@vger.kernel.org, ntb@lists.linux.dev,
- linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-spi@vger.kernel.org, dushistov@mail.ru,
- manivannan.sadhasivam@linaro.org, conor.dooley@microchip.com,
- linux-fpga@vger.kernel.org, tsbogend@alpha.franken.de,
- hoan@os.amperecomputing.com, geert@linux-m68k.org,
- wsa+renesas@sang-engineering.com
-Subject: Re: [PATCH] MAINTAINERS: Remove some entries due to various
- compliance requirements.
-In-Reply-To: <418359de-e084-47f9-9090-7980e41661e0@flygoat.com>
-References: <2024101835-tiptop-blip-09ed@gregkh>
- <A74519B4332040FA+20241023063058.223139-1-wangyuli@uniontech.com>
- <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
- <444fa53bdfdee75522a1af41655a99b0@aosc.io>
- <418359de-e084-47f9-9090-7980e41661e0@flygoat.com>
-Message-ID: <5d8614084599ff1b7f70aa1b427bdfb3@aosc.io>
-X-Sender: jeffbai@aosc.io
-Organization: Anthon Open Source Community
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Rspamd-Queue-Id: 50CB940071
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.40 / 10.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_ONE(0.00)[1];
-	RCPT_COUNT_TWELVE(0.00)[37];
-	TAGGED_RCPT(0.00)[renesas];
-	MID_RHS_MATCH_FROM(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,mail.ru];
-	FREEMAIL_CC(0.00)[uniontech.com,linuxfoundation.org,lists.linux.dev,trvn.ru,jurassic.park.msu.ru,mail.ru,linaro.org,gmail.com,vger.kernel.org,lists.infradead.org,omp.ru,netup.ru,sberdevices.ru,metrotek.ru,microchip.com,alpha.franken.de,os.amperecomputing.com,linux-m68k.org,sang-engineering.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MISSING_XM_UA(0.00)[]
 
-Greetings again (oops),
+On Wed, 2024-10-23 at 10:41 +0200, Javier Carrasco wrote:
+> On 23/10/2024 10:23, Jinjie Ruan wrote:
+> > If REGMAP_SPI is n and LTC2664 is y, the following build error occurs:
+> >=20
+> > 	riscv64-unknown-linux-gnu-ld: drivers/iio/dac/ltc2664.o: in
+> > function `ltc2664_probe':
+> > 	ltc2664.c:(.text+0x714): undefined reference to
+> > `__devm_regmap_init_spi'
+> >=20
+> > Select REGMAP_SPI for LTC2664 to fix it.
+> >=20
+> > Fixes: 4cc2fc445d2e ("iio: dac: ltc2664: Add driver for LTC2664 and
+> > LTC2672")
+> > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> > ---
+> > =C2=A0drivers/iio/dac/Kconfig | 1 +
+> > =C2=A01 file changed, 1 insertion(+)
+> >=20
+> > diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> > index 45e337c6d256..ae6d04c758d1 100644
+> > --- a/drivers/iio/dac/Kconfig
+> > +++ b/drivers/iio/dac/Kconfig
+> > @@ -381,6 +381,7 @@ config LTC2664
+> > =C2=A0	tristate "Analog Devices LTC2664 and LTC2672 DAC SPI driver"
+> > =C2=A0	depends on SPI
+> > =C2=A0	select REGMAP
+> > +	select REGMAP_SPI
+>=20
+> Should you not replace REGMAP with REGMAP_SPI instead?
 
-I messed up the reference levels when I sent my disclosure. Jiaxun got 
-most of the references right but the last sentence.
+Yes, I think so...=C2=A0The commit title could also be improved
 
-在 2024-10-23 17:53，Jiaxun Yang 写道：
-> On 2024/10/23 09:26, Mingcong Bai wrote:
->> No, no, no. Nuh, uh.
->> 
->> Greg has unfortunately decided to respond in private over a matter 
->> that by no means should be glossed over. Here below is our 
->> conversation:
-> 
-> I can't believe a senior maintainer is breaking our agreed netiquette 
-> [1], but that's happening.
-> 
->> 在 2024-10-23 15:55，Greg KH 写道：
-> [...]
->> 
->> Request declined. Your response is now public knowledge (and hey, if 
->> this is not by your will, my apologies). Again, this matter requires 
->> public response.
->> 
->>> 在 2024-10-23 14:30，WangYuli 写道： Although this commit has been merged, 
->>> it's still important to know the
->>> specific reason (or even an example) that triggered this change for
->>> everyone here, right?
->>> 
->>> And those maintainers who have been removed should be notified.
->>> Seconded.
->> 
->> Sorry, but that's not how this is allowed to work.  Please contact 
->> your
->> company lawyers if you have any questions about this.  And this only
->> affects maintainers, as you aren't listed in the MAINTAINERS file, 
->> there
->> should not be any issue, but again, contact your company if you have 
->> any
->> questions as they know what is going on.
-> 
-> I think there are no regulations on earth preventing itself from being 
-> referenced.
-> Even if the regulation prevents further communication with affected 
-> bodies,
-> the wider community still deserves an explanation.
-> 
-> As a person with M entries I found this behavior appalling. It shakes 
-> mutual
-> trust between maintainers, as we all assumed that patches being applied 
-> are
-> well scrutinized.
-> 
-> Besides, many of us are working on kernel as hobbyist  in a personal 
-> capacity.
-> That means we don't have access to lawyers, especially US one. While I 
-> understand
-> corporate participants may be the majority of the community, please 
-> don't leave
-> hobbyists behind!
-> 
-> I've had some interactions with some of people being removed here, and 
-> I would
-> say they are all brilliant individuals. It's  really sad to see them 
-> being turned away :-(
-> 
->> 
->> Just *wink* if you were compelled into this.
-> ^ It sounds unprofessional to me.
+"iio: dac: kconfig: ..."
 
-For the record, I wrote that unprofessional sentence ("Just *wink*"), 
-since it was private.
+With that:
 
-Best Regards,
-Mingcong Bai
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-> 
-> Thanks
-> - Jiaxun
-> 
-> [1]: https://people.kernel.org/tglx/notes-about-netiquette-qw89
->> 
->>> thanks,
->>> 
->>> greg k-h
->> 
->> Best Regards,
->> Mingcong Bai
->> 
+>=20
+>=20
+> > =C2=A0	help
+> > =C2=A0	=C2=A0 Say yes here to build support for Analog Devices
+> > =C2=A0	=C2=A0 LTC2664 and LTC2672 converters (DAC).
+>=20
+>=20
+> Best regards,
+> Javier Carrasco
+
 

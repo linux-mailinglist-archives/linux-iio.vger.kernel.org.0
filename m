@@ -1,291 +1,518 @@
-Return-Path: <linux-iio+bounces-10988-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10989-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E1E9ACDA2
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 16:57:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5FC9ACDC6
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 17:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9D691C25859
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 14:57:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 384B3283BD5
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 15:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490011F5848;
-	Wed, 23 Oct 2024 14:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6426620013C;
+	Wed, 23 Oct 2024 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="BCdZj1Cw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tcn1UYBp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2083.outbound.protection.outlook.com [40.107.249.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB4E1F4732;
-	Wed, 23 Oct 2024 14:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729694638; cv=fail; b=nnu5Xojce/fDZk95O1qVHW8UmEv1+yPgI4AIfQQieusqzwO1Qt9bnKFHkvm0rlcS772m73Fb39fZI1lgT9Skq8TjTx5H6HzluCxi7URKFEbwIX7vREu8D6qkazLcoQHqNLrFkAYcgsa42n/yzdGQELizQzVud1w2txZtOBG/CiE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729694638; c=relaxed/simple;
-	bh=2j8F6Bx+64AuGBqjcjWUzQF6lkrN9GagkbnbCLJlNkY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=pwCGDrPZ3fhSkO819dSNegz7acrPMT7P4yrXUl2XaqEXd+joKxxeiOngDafNl1z8jllH4WEFYM4XiUo7snKYbwaXdaXOY9KDe6NXmj46OoO6FaF/ql6AXTXAeki+r59w857e/rmWpPf4jgkl+Gcp8JOLjwI1kIzb9NPPgAoll70=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=BCdZj1Cw; arc=fail smtp.client-ip=40.107.249.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mWdEEnhg+5skRbEl69qV3gz0z5xkn/3POYoim9kGTwBmx3SfuyBqpAsaaQ+uSFROoxQkNFiD6Xsx3YJMkeNBxLep76bW1seCUxh7dQhZ4Ml+qgANr0KpV5lvMY8E4Hfi7XnXmFFPWvaFRPTC39g8J3KhcwhWlEC/AWKRDttXNLx7h82blmMd6V5TneqAS8hLSAfEs5kSFV0j/8n+Z55DY+nYZWSZxSPcPu+S+sP5OLg2TTgDlUid9ClKu6EnUXN1lc2UrAgrWCyuQWTHU+jW9kC2hkyWW5q/hOoxp5eP3LdBw/kBVIHEv0bXxAyuTGpReoppeon5NVZ0qRX/p80vCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gLoOfLquWZFVOTNKLhquZMh4FpGrfaol01Reca4DY2I=;
- b=YgbMkt4wAopwwRKI4BfrvkA0EQbjevZqXFrXc+zLCYH5NAYgQ0g2UqpC7bzq6TJF1cNISaaRNDi9H9hNE+HfsbbLLnib/wixWpNOXjmA6W8SYjipv9eaq1mU6N9MlWBn/YjKaJuLLG/fukwU1YCFswB8Jr5B0yxRc+VpwIJNlA675husKg40KnREA2hNy9bLdqWpDxYrx/GkgogzFBrBXH6QmjeKeYiMLLw3o7L1l2SWkV94mKl9B/1sLonzM9jDn0ynBob361xTAtykoxVxLTbkN/BB600Nxiv4QOjrHhYRGY7CDTxwFsYVBuiG01ep+4/GJDmJOll6A7ZeLUsHrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axis.com; dmarc=pass action=none header.from=axis.com;
- dkim=pass header.d=axis.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gLoOfLquWZFVOTNKLhquZMh4FpGrfaol01Reca4DY2I=;
- b=BCdZj1CwkhP56m1yakFOBMNo0CLTzB2j+8kmEeKbfCizP+thaAVHFlCXrGrVIBb/vdPIU7cl2VlGRIb0GGKOMHfrs3eX8gp3kz2/QXthSDzLUDYHv12YRC2HRHlYGi9gdbA5glSZbvKYkBEFzeI4oev4x+N/iuCDECjaI/C9ThY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axis.com;
-Received: from DU0PR02MB9585.eurprd02.prod.outlook.com (2603:10a6:10:41d::20)
- by AS8PR02MB9789.eurprd02.prod.outlook.com (2603:10a6:20b:61e::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Wed, 23 Oct
- 2024 14:43:51 +0000
-Received: from DU0PR02MB9585.eurprd02.prod.outlook.com
- ([fe80::b1a:32b1:13cb:e576]) by DU0PR02MB9585.eurprd02.prod.outlook.com
- ([fe80::b1a:32b1:13cb:e576%7]) with mapi id 15.20.8069.027; Wed, 23 Oct 2024
- 14:43:51 +0000
-Message-ID: <75c205a0-1621-4bb9-8aa4-2bf43478bad9@axis.com>
-Date: Wed, 23 Oct 2024 16:43:48 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] iio: light: Add support for TI OPT4060 color
- sensor
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- rickard.andersson@axis.com, kernel@axis.com
-References: <20241016213409.3823162-1-perdaniel.olsson@axis.com>
- <20241016213409.3823162-3-perdaniel.olsson@axis.com>
- <20241020135105.36b29fe8@jic23-huawei>
- <10d6bba4-4d25-4ee0-877e-48a27c622bde@axis.com>
- <20241023142735.000018cb@Huawei.com>
-Content-Language: en-US
-From: Per-Daniel Olsson <perdaniel.olsson@axis.com>
-In-Reply-To: <20241023142735.000018cb@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MM0P280CA0009.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:a::24) To DU0PR02MB9585.eurprd02.prod.outlook.com
- (2603:10a6:10:41d::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA3F1CEAB0;
+	Wed, 23 Oct 2024 14:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729694868; cv=none; b=ETgJfQlNTkXu78ou9k9m/+npA3MhSPW1Bx6K1HJKJ5eXWcSt+cUjtFgAJgxPAh8kItsW+5vsCAm6r9GXV19eguVafokTGDft+kI1C7cUTbvxdHhOrSoBqe7l9uuJQAHR0GMBEyzmjFwfXfMZHlpeWTbzwIzwSa5ZA+mMwUDU1sk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729694868; c=relaxed/simple;
+	bh=G7nV0595+QdxL/Bdb/5BBR9rBXEA70xZKwEIsowEpy8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IkVDIFZX/+EIUaMNXs34rxQ6trvjJvkpTsOIQIzmFKd1UBa7kZjYg7WotLqn5/dCVvgNEfrmtfu+1+k2btjSWdjQ8yde3VOq78G9RkD9iMeamRTRXVeZtwLaJa4mv9E6BNHx0Hdy46GiqDU/kuuV8VRcXsd9KYnlQb7K6eVtHmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tcn1UYBp; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20cbca51687so67788305ad.1;
+        Wed, 23 Oct 2024 07:47:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729694865; x=1730299665; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oUqhFqL+Zg6XvavgGcWGzdRxe6SAMlyCd/batBn/A/8=;
+        b=Tcn1UYBpAdn6BY5wAW3isKREP5nhDHYoV5evczO8AcqqqS1LWBozUOKzLwg1AibGpe
+         vUnUP1yZOf8hYwfyk9pjdk64/ezDeP9FHPJmLI6Hsmis9XW1p6zYJ6VLDh+AWSBsWZpn
+         biIKp83MUmHgAXMcz2InfvR0q0LJ6qBhs9XtMKcOmmm+GcdX+zRHKhNBj0Lpvyw24hyV
+         psOzXWGhWQ1KUQcGK9U930D5YGYhR3Zw21rHH25Y0Pi7W9LZmQA5Qc1+XxsyuLVVfDOM
+         4ap9xCmWBTd5vGKmOrqmo4b/UOtw3xx9ul6JiVnsSIVk4D/J6slWl/uAAbcFsSf07mO/
+         HGEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729694865; x=1730299665;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oUqhFqL+Zg6XvavgGcWGzdRxe6SAMlyCd/batBn/A/8=;
+        b=kXVAtSyV1MawsWy1CvCGnwYwctLb350pL3gep7H+/Mmnu4ydrFa7r2DPZoAIdxrhdJ
+         CYChlBxHyf9TSdJGpYXjHCbMWjvjbMu1GVX8SLmhu2+hHkltZA/FusBKQjuycjnu//b/
+         4DWv8d1DljQzSY4namwQsuBNh9hqyxvff0mo9AzClfYgd9A3wH2AWMF/vn6V4QeBY3zX
+         8WNIg9mOy9giugS64kc8kxapkTfj+9GewmMq/8iT46wZvT7M/GV5k1YAozBsakkG/FhU
+         N4ZC4CjUz/jtNdtp3r7oz2TtZAqH0xeTFG9H/T+BelZBBpwqikEcISUv8r35rnubQ5Zh
+         +0ew==
+X-Forwarded-Encrypted: i=1; AJvYcCU16CNRnYudIyVyH0mvQZ+VxcnWU8KPDmBUi2GbDfICISl2p80o4O5sD2ZlvaFd1OFjsnwkRyJutx5J@vger.kernel.org, AJvYcCUB8uWPs1ndldRDtXk3vNqtvOJgxc3y8AgapsAmDCubyXQYxeybBAe4LmxhtJsNgKGRIiYCUaiCXPIu@vger.kernel.org, AJvYcCVL16qrH12VdNJlWDR7rxUrG4OxEewcT8BDLKK5R4dZuoWs5Sxd/w+vqiEcX8vXQtQReepZTwn4yCE=@vger.kernel.org, AJvYcCVRIHYfNkI7XqmD69wmV6ac+SKqujPZY7hqy3sW+awBc5qcdZBfZUsSTerjKUVGcLyZpAMQCOuQkAMW@vger.kernel.org, AJvYcCVY0gq3parTtB/ud/chYdZKSnPak6+lQceeMjz2zVaN6RD1YTY26258kUcKacGZ9t7YElvD6/V/ZS9gNSY=@vger.kernel.org, AJvYcCVimJsOIXZB/8/T+gjwdo0xvHuX9xk1nK4S9B/r40R1Qh/qoYozGr+58c+XHZklW7MoJdK0Kqfs@vger.kernel.org, AJvYcCVvw2zCghYOfO+NId1UC/boBhiYBhTaOIt/x3Mw1UPWztuL3QAXTszl2P4iwMtTJF+r/Ez3kB5klEiAq/g=@vger.kernel.org, AJvYcCWT+cmmPi6Yy/CpYRAFKhpTZXuGRnGpVCyuD7BWCgnsZi+cS5Mx7vXXb4u++Y/uztk7Dx2BtIWpaoDyQmN2JWUlRCU=@vger.kernel.org, AJvYcCWl24ymEgeQJbn1INGOxRtz8n/UCNmL2K8cWB5YzcSgcHmUNDLQHZs8JuuL81z2yth4XpqwKHQqLPzVew==@vger.kernel.org, AJvYcCWo4nc0BLjVnC1sgvZV6DE/6oCE
+ twsFncEvmU1JZ6ilxRI1ICqqYVJ+eBHaEbYVf6XZ6ZIvuOJNy94BFg==@vger.kernel.org, AJvYcCWuvxXgxvAQl4NXmBY9iUsbc4k++pUMtGZKdSOsvBlGfByQkBPRavYea/9cfE7+hiSR11q4KuErrXrn0Qw=@vger.kernel.org, AJvYcCXtJQsxfa1s3+NjfOW3osvE0zSMlUrfRdWdWl5AuQq9Pwm2NnMy8jrK7z3wfw9+zgFOLUUlobO++xKiyg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+lVN2amSBv1+gbZ06kijv7FzO0X9JzZgW9Jrnb0hLVsDQlStH
+	Q+fGdeZ7KN1MlFdjKSFP7ImJOaWz0wPgEGPlnOJYoksBKRbMhqUj
+X-Google-Smtp-Source: AGHT+IFrOeQe/TaOIUf37oS9/kPD1q9KCCPzPv9f2hTZnTNLqUg1SZo5nQm+mzGCGEJmuC13zVMRVA==
+X-Received: by 2002:a17:902:ea0f:b0:206:c486:4c4c with SMTP id d9443c01a7336-20fab2da20cmr33057325ad.57.1729694864996;
+        Wed, 23 Oct 2024 07:47:44 -0700 (PDT)
+Received: from localhost.localdomain ([43.129.202.66])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7f0c0e09sm58444105ad.139.2024.10.23.07.47.34
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 23 Oct 2024 07:47:44 -0700 (PDT)
+From: Lance Yang <ioworker0@gmail.com>
+To: kexybiscuit@aosc.io
+Cc: aospan@netup.ru,
+	conor.dooley@microchip.com,
+	ddrokosov@sberdevices.ru,
+	dmaengine@vger.kernel.org,
+	dushistov@mail.ru,
+	fancer.lancer@gmail.com,
+	geert@linux-m68k.org,
+	gregkh@linuxfoundation.org,
+	hoan@os.amperecomputing.com,
+	ink@jurassic.park.msu.ru,
+	jeffbai@aosc.io,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-fpga@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	manivannan.sadhasivam@linaro.org,
+	mattst88@gmail.com,
+	netdev@vger.kernel.org,
+	nikita@trvn.ru,
+	ntb@lists.linux.dev,
+	patches@lists.linux.dev,
+	richard.henderson@linaro.org,
+	s.shtylyov@omp.ru,
+	serjk@netup.ru,
+	shc_work@mail.ru,
+	torvalds@linux-foundation.org,
+	tsbogend@alpha.franken.de,
+	v.georgiev@metrotek.ru,
+	wangyuli@uniontech.com,
+	wsa+renesas@sang-engineering.com,
+	xeb@mail.ru,
+	Lance Yang <ioworker0@gmail.com>
+Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various compliance requirements."
+Date: Wed, 23 Oct 2024 22:47:14 +0800
+Message-ID: <20241023144716.69132-1-ioworker0@gmail.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241023080935.2945-2-kexybiscuit@aosc.io>
+References: <20241023080935.2945-2-kexybiscuit@aosc.io>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR02MB9585:EE_|AS8PR02MB9789:EE_
-X-MS-Office365-Filtering-Correlation-Id: db6217e2-1457-4ca1-d14d-08dcf3711be3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QldsZzZpWHBIeVlPSENNSk5lWkZGUHhKWWZlZzdqWjViYUNObnNVQ3Q3aEU2?=
- =?utf-8?B?M1Rkb015MHVRR0xJMzJWZTJ5RklVN1N1dk9jSU8yZ2E4b1c3VHE5aGNIUURY?=
- =?utf-8?B?bEpadk9OaVo1MHk5bnFlWVUzSlNTYUxJQkUvSkFSdVhnU2tVWE5pQWpXcTdC?=
- =?utf-8?B?dlFtNk1ha0Judm5FVmVsNGtYZ1kxRURkekxVb3FuRjRkM0Q5RTNnUW1UVStl?=
- =?utf-8?B?V3lybW8rN2dZZGZhM3lraVVZUWFlVEd2RVFHZ2gxSDVTTmtpU1UyNjVScjQ5?=
- =?utf-8?B?WVUrV1hqUGFLK21DL25WZ0xLZURTbkpVS0xPN01pZ0R3VnVDMW8vZUZsOENT?=
- =?utf-8?B?UEtFU25qVUZkR2ZuY3BVQXV1ZWVBNjNSK3l1VU9JZkpmNXRxOVpORWw1cUdB?=
- =?utf-8?B?UnJrNVhrTm1GNHdZNG56KzRqQlJkWmRPVzVBL3N4Zkg2KzdzNDdGNEc0Q3VM?=
- =?utf-8?B?RFZDUFAwc21lajl6M1I0TTB1Z0JvUkFFZ1FpZzZEQ1p3M0RmZ3NzemhDRDVH?=
- =?utf-8?B?Q09JWFl6QmdDTnVvcnRPWUpVYVlqYUI5bnQwWkdJNXowOHgvcEZOcmhvYmty?=
- =?utf-8?B?TStucngxTTczYWRmWFA2RWtJRTZQTDd3dnRTWlF2amNVNU15V3RJc3VUaDRX?=
- =?utf-8?B?RnVvbHFPZVUrRUp0SXhSMkpMdVpIZzJKeEQ2cTljODl6alNBMzNyMkpDRVJR?=
- =?utf-8?B?WklCUkhVbWljQmtWVXJlejNMdzIxN2pyWkZzemRYVlZXdk5kREJlZlRMcXNT?=
- =?utf-8?B?bjFVQUlicUNRSzhmZzQrTGlYYmk2d29uZlJzZXM2T1QyNjRSaU5WL0ZQeHZ5?=
- =?utf-8?B?K1FCdDVva3dqdDJQaWRtN20rQzk2c0RCbmMvUEk2MXdhTEVWWEZDYzJ6d3Zl?=
- =?utf-8?B?eE9MbjIvak9uUURpN0FmN25WbWU1a0E5VzM1UHhORk1WVnFQQ1pnOUFVaFY2?=
- =?utf-8?B?bXQ2M0w4U2RrTlRrN2gzVTYraTVQMGdiUndtbldOeWRDYjVSa3NtMXorUkxn?=
- =?utf-8?B?TnhHcVlOQ1gvclcvSVBxTkh5VGZmVi9KdUQyUWFTUFFEaGV2bmJKTVpQOXVK?=
- =?utf-8?B?RDBPSk44aTU1dG4zTmpoSGdlT0gybWZXVER0RUwxN2Y5bnp5REY5SmNlWE1Z?=
- =?utf-8?B?WDZ4cWU3TjcyMFA0VG82Zis5ZXZaQnNJd3JtQ2dGQjBuUXlDS2lyMFVFbzBO?=
- =?utf-8?B?eFRDbVdZbDczZ1hqeXZCY0Nya05ZMTFxZ0RWTEdNT0FLQ0QwV3hOZjlXdEVs?=
- =?utf-8?B?c3NBdys0REpXdmdjbVUra010WHpiWk10OU9DZDVpd29iajNsUXlJcDhUcXVM?=
- =?utf-8?B?c3lvNzkreUZmeXBoN2tMd055T2hjTzF4emI1TFFQb1Yyazh4SnhiV2MrOXBu?=
- =?utf-8?B?Q0IxcWNHdlh6T216RlFyd3BJd245eW5XOHRHSjVFMXpHSmtKcGh6eWNUWTd0?=
- =?utf-8?B?R2E4aVhWUDNhV3Fra1ptb0JpRWJ1L3VPb2NHRjNHdEZwb3hWb2orcWlpckZ6?=
- =?utf-8?B?K25yMWpzRXVrTXlmT2kveUhRSGV4SjROa09tRnl6ZnVRL1FjZHFEc1VmQWpB?=
- =?utf-8?B?eFJkME5VRHJKWU1CK2hLbE1MaXZMeGViZnl3TEJrTHBPakNoODlid0l5T1U3?=
- =?utf-8?B?MG9XeGxTcFhaU3p0MXdiSVloZ01jeEExNWN2eUxCRko1eVR0eTQ2YU5zaWRU?=
- =?utf-8?B?U0V2M01mQ3ZaSDFNcmF5K001YXNaTU11TmNTL2phbVpuUlk1SHFoc3VJVVVE?=
- =?utf-8?Q?y7iaEytodYZF6rqOTIo/j4S3pqvYLY7Awk7ugnC?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR02MB9585.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S2lBUy9LVU42UysrZG1kS0hGS0l0SG1rQVlKUjdJbG9FaEZWbTEwMHE2Ymtp?=
- =?utf-8?B?L01OYlNoQ2d1U2NtcVkvUEhJN2VNSjZMUlJiVTg2bkZwWkNFOXNRVXN6S0Qr?=
- =?utf-8?B?VGdLc3BqU2JQZ3h3NjNYR0NFQ1BMUjA3b1B2VlNlZWx2MXdnRFlNV0xtbXh3?=
- =?utf-8?B?dG13R0hlaWJaQkF2bkQrOWYxdkN1YXMySEF5Q0Fscmc2ZU13ZG85L3AwZHk0?=
- =?utf-8?B?MnN6K3VTdDRDNjliNXhCY1R5RVV5UHdnYk1vYXNzdE8weE5ZUnNYeVg0dGZZ?=
- =?utf-8?B?Q25QWjZienBqZzkwVm9McUxtOWY5UTJzeDJVcjlDRURub1piUzA5bnVieXFX?=
- =?utf-8?B?eEV6YUtWd29yTEpNemJJdzRmU1VYa3NNSUplV3lJSnlDWGdPeURDZFRRVURl?=
- =?utf-8?B?OVo5eVc5d2ticzZNcDUvN2NjTnpGZndsUnBNUnVKUUpZU0RDU3NnWERnU054?=
- =?utf-8?B?K1RPYks2UFI0MzNoQkdpaXZaNndjOHZkSWZiQnZHM0k2aUJRUUdFUUNLUEtu?=
- =?utf-8?B?ZENWT2Y0WTArMGR5V3FTSGJBU2xKMlpUSEVDaER1VVRNTW5lR2FmbDJST2VG?=
- =?utf-8?B?V1d2dGxid1RaV0x2dnNRbXdSWHZ2aWptTEM2dnBBNVZqVi9TQ29TWFk3S2lW?=
- =?utf-8?B?OVlZdDY0WUFBN2pFbDdCcDBIZTRCeXNHOXBXNzdjVXA2dG56dzFXMG1xMjFC?=
- =?utf-8?B?NmxZWmJRT0psRUxYVjBZaTh0OXlBTUNSSm5vZ2NmRUZuNWRhL0lRVHhORURK?=
- =?utf-8?B?cDArakhjWkY2YXJlWlFTMkdWUWJyM1RkNGt0cDBoRGFNT0NhUzFqN2ZXMWFU?=
- =?utf-8?B?SWZTYjdhQm1zQnFRNEN5Z0ovQnk5Tm4xNkQzQWdXQlhOZGtiZVYrTGZTdzgw?=
- =?utf-8?B?UmVnTWpPREFFSU1VUEgzUE16UUMxZzIxNC9VZEkzZENlZHhBcE0rMTI0aFFZ?=
- =?utf-8?B?cFJCWW44RCtLQVZ2VHplZTlpc3pkMWNkUXYydU0zZWU5RTZtOUtmYjJsVWtV?=
- =?utf-8?B?Wi9rNkMrSW1vb3cyMWFMdythS1VlaEZlaG9HMzdkcGhYMWJVWjJHK0pHalpZ?=
- =?utf-8?B?eWNNa0wwTXhaKzhxaTR5L0ZvTnJhUDh0cklMOE4wRzl2UzlnVDN0cS83eklL?=
- =?utf-8?B?ejdER1hXL2pGc3dkQjN6V25kQVRLdHJQMVNpOXYxRWw5cm5Ca1VTNTdwREJj?=
- =?utf-8?B?UTVRMitEVnJ4dmZKOTlTSndmRWt2cW9sa1RxVlp3S3RDZk42V25DV1lmbnpa?=
- =?utf-8?B?dGlUUXdZWTBKTlVPNWNQVXZDY01uOXVGQ0lrcEVYTUVleURDTGlVWUtoSDNp?=
- =?utf-8?B?QmowOXQxQWNNQytyNUd6Ti9ncko1dWRPSmZTZmhmcktkTGRMNk9MQ3lBZDFx?=
- =?utf-8?B?MkxYbmVOM3h3b3RXL25vZCtSTFQvMWp3WHZUUVdzenFnMDIrUi9jRU85Y2Vl?=
- =?utf-8?B?cnFsaVF5c3k4eThsRW43cGlpMkppWG1ubU5ZVDB2OXh0UXJKT0JGSGRuM2kx?=
- =?utf-8?B?VysxRHV4dFkrb0xGVlM5cGFZU0tVNS90WDBkODRHUGFNdDZaZzNNN1B5eGYv?=
- =?utf-8?B?ZmJKaStGOVpST1JySzNLb0xGdmVnTEd2YlBDMnlLQlFUR01VRVQvZjh3dEll?=
- =?utf-8?B?SGtsbFRYMUJXSm5oUXJoZ01DWitFTFAzV1BhNHptdU9MU2F6a3ZQeDVqTGFF?=
- =?utf-8?B?NWw2b3BKR09CeXZobkRkamJlNkdyQW0zWUdwZkFHbXgyTGZPdzlmeE9oQW1L?=
- =?utf-8?B?UU9WL1NZdk5zYWVLLytnWXNjWVZJV3N3eWFScys0Sll6dE1jek5iOXA5ZThr?=
- =?utf-8?B?d2FZNEtONEJLR1Z0UFE4b0VYbUtCOHhMZVZNNy9YdW5KRS9NVEt3MTREMGQw?=
- =?utf-8?B?ZHlWVVcxWEp1cDIzV08wK0ZYS05tL2pvUTFUMStMOSs1eDJFMkJ0Y0V6a1Vl?=
- =?utf-8?B?dEo2WU91S2kwZjJ3Q202RnNFY0hvZTJxZloxa2Z0WHNGNzhPdDhmRklzU1ls?=
- =?utf-8?B?bkpDcmVlSE9UbVRsZFc3dlNSZjZCdDBMWlQxbTZRWU5DODdaTzZsdElPNjRV?=
- =?utf-8?B?SWViaFN2YzlwQWF4QWNyUGRmMUFYb2I1TXAyN0hTSllMbzNNN00rbVkraDIr?=
- =?utf-8?Q?7E50=3D?=
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db6217e2-1457-4ca1-d14d-08dcf3711be3
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR02MB9585.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2024 14:43:51.2055
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q+N23MjTq04Gm1w+F4np4BnQX1qQ7w5MTdS5pBJ5zxLEUBQKbVfAZ8r1MqlxI0Zi
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR02MB9789
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 10/23/24 15:27, Jonathan Cameron wrote:
-> On Wed, 23 Oct 2024 09:29:08 +0200
-> Per-Daniel Olsson <perdaniel.olsson@axis.com> wrote:
-> 
->> Hi Jonathan,
->>
->> Thank you for your feedback, much appreciated. I have added questions and
->> comments inline below regarding channels and triggers. I will address the other
->> comments in the next patch.
->>
->> Best regards / Per-Daniel
->>
->> On 10/20/24 14:51, Jonathan Cameron wrote:
->>> On Wed, 16 Oct 2024 23:34:09 +0200
->>> Per-Daniel Olsson <perdaniel.olsson@axis.com> wrote:
->>>   
->>>> Add support for Texas Instruments OPT4060 RGBW Color sensor.
->>>>
->>>> Signed-off-by: Per-Daniel Olsson <perdaniel.olsson@axis.com>  
->>>
->>> Hi Per-Daniel,
->>>
->>> Comments inline.
->>>
->>> Jonathan
->>>   
->>>> diff --git a/drivers/iio/light/opt4060.c b/drivers/iio/light/opt4060.c
->>>> new file mode 100644
->>>> index 000000000000..2c3761ec423a
->>>> --- /dev/null
->>>> +++ b/drivers/iio/light/opt4060.c
->>>> @@ -0,0 +1,1259 @@  
->>>
->>> ...
->>>   
->>>> +
->>>> +struct opt4060_buffer {
->>>> +	u32 chan[OPT4060_NUM_CHANS];
->>>> +	s64 ts __aligned(8);  
->>>
->>> aligned_s64 is now available in linux-next + the IIO tree.
->>>   
->>>> +};
->>>> +
->>>> +static const struct opt4060_channel_factor opt4060_channel_factors[] = {
->>>> +	{
->>>> +		/* RED 2.4 * 2.15e-3 */  
->>> This needs more details on wrt to what standard etc.
->>>
->>> The datasheet is a little vague, but it seems to me like TI invented their
->>> own standard. To use this stuff in a consistent ABI we need to have
->>> a common standard or at least an approximation of one.
->>> The illuminance estimates from some devices are bad approximations, but they
->>> are at least attempting to approximate a well defined standard.  
->>
->> I have read the datasheet again to try to figure out what TI means. When I read
->> it now with your remarks from this email and previous emails in mind, I think I'm
->> starting to understand more.
->>
->> I think we should expose the data from the sensor in the following way:
->> - Four raw channels (R, G, B and Clear)
->> - Three processed IIO_INTENSITY channels with normalized values (R, G, B)
->>   to get the relative color components independent of light intensity.
->> - One IIO_LIGHT channel giving the lux value.
->>
->> This is basically what TI is stating in chapter 8.4.5.2. I know that you don't
->> like how TI are calculating the lux value using the green channel. But after
->> reading the description and detailed description parts of the datasheet again,
->> I think it sort of makes sense. Looking at the spectral response curves on the
->> first page, the green curve covers the whole visible spectrum. It seems like this
->> is what the sensor is actually designed for, measuring light intensity in lux and
->> color independent of the light intensity.
->>
->> Does this sound like a way forward you think?
-> Not keen on the colour part.
-> 
-> As far as I can tell TI made up a colour standard.  If it were
-> CIE 1931 RGB or then 'maybe' we could consider presenting them as processed,
-> though as they are linear scales even then should present _raw and _scale, not
-> _input (processed).  We would still need to figure out if we needed to handle
-> multiple colour space definitions.
-> As it is, if we have two different colour sensors, there is no way to compare the
-> values.  In particular that Green is way too broad for the colour standards
-> I quickly compared this with.
-> 
-> The green curve does (based on eyeballing it rather than anything formal)
-> look much closer to the luminosity function (one used for illuminance)
-> than I was assuming (given it's called green!)
-> 
-> So not ideal but that one feels ok (with comments in the code explaining
-> this) to use for illuminance.
-> 
-> 
-> For the color channels maybe we could present with _scale provided
-> if we add suitable documentation to say that the scaling is to arbitrary
-> datasheet specified normalization and that the resulting _raw * _scale
-> values cannot be compared across different sensors. I don't like that
-> but it does seem silly to not present the scaling if it might be useful
-> to someone.  So if you want to do this, propose some additions
-> to Documentation/testing/ABI/sysfs-bus-iio
-> to cover this for in_intensity_red_scale
-> etc.
-> 
-> Jonathan
-> 
-> 
+On Wed, Oct 23, 2024 at 4:19 PM Kexy Biscuit <kexybiscuit@aosc.io> wrote:
+>
+> This reverts commit 6e90b675cf942e50c70e8394dfb5862975c3b3b2.
+>
+> An absolutely no-one-ever-reviewed patch, not even by the maintainers who
+> got removed themselves - at least not on the mailing list. Then the patch
+> just got slipped into an unrelated subsystem pull request, and got pulled
+> by Torvalds with not even a comment.
+>
+> What about the next time? Who next would be removed from the MAINTAINERS
+> file, the kernel.org infrastructure? What if the compliance requires
+> another XZ backdoor to be developed without further explanation? Is the
+> kernel development process still done in public?
+>
+> Are the "compliance requirements" documented on docs.kernel.org? Who are
+> responsible for them? Are all that are responsible employees of
+> The Linux Foundation, which is regulated by the U.S. legislature?
+>
+> Fixes: 6e90b675cf94 ("MAINTAINERS: Remove some entries due to various compliance requirements.")
+> Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
 
-Ok, great. Thank you for responding so quickly. I will try to implement it
-according to your suggestions in the next patch and also patch the
-documentation.
+OMG, I cannot believe this is true :(
+Please keep all discussions on at least one of the mailling lists.
 
-/ P-D
+Acked-by: Lance Yang <ioworker0@gmail.com>
+
+Thanks,
+Lance
+
+> ---
+> Please keep all discussions on at least one of the mailing lists.
+>
+>  MAINTAINERS | 178 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 178 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e9659a5a7fb3..501aa5c0887e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -258,6 +258,12 @@ L: linux-acenic@sunsite.dk
+>  S:     Maintained
+>  F:     drivers/net/ethernet/alteon/acenic*
+>
+> +ACER ASPIRE 1 EMBEDDED CONTROLLER DRIVER
+> +M:     Nikita Travkin <nikita@trvn.ru>
+> +S:     Maintained
+> +F:     Documentation/devicetree/bindings/platform/acer,aspire1-ec.yaml
+> +F:     drivers/platform/arm64/acer-aspire1-ec.c
+> +
+>  ACER ASPIRE ONE TEMPERATURE AND FAN DRIVER
+>  M:     Peter Kaestle <peter@piie.net>
+>  L:     platform-driver-x86@vger.kernel.org
+> @@ -882,6 +888,7 @@ F:  drivers/staging/media/sunxi/cedrus/
+>
+>  ALPHA PORT
+>  M:     Richard Henderson <richard.henderson@linaro.org>
+> +M:     Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+>  M:     Matt Turner <mattst88@gmail.com>
+>  L:     linux-alpha@vger.kernel.org
+>  S:     Odd Fixes
+> @@ -2256,6 +2263,12 @@ L:       linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:     Maintained
+>  F:     arch/arm/mach-ep93xx/ts72xx.c
+>
+> +ARM/CIRRUS LOGIC CLPS711X ARM ARCHITECTURE
+> +M:     Alexander Shiyan <shc_work@mail.ru>
+> +L:     linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+> +S:     Odd Fixes
+> +N:     clps711x
+> +
+>  ARM/CIRRUS LOGIC EP93XX ARM ARCHITECTURE
+>  M:     Hartley Sweeten <hsweeten@visionengravers.com>
+>  M:     Alexander Sverdlin <alexander.sverdlin@gmail.com>
+> @@ -3802,6 +3815,14 @@ F:       drivers/video/backlight/
+>  F:     include/linux/backlight.h
+>  F:     include/linux/pwm_backlight.h
+>
+> +BAIKAL-T1 PVT HARDWARE MONITOR DRIVER
+> +M:     Serge Semin <fancer.lancer@gmail.com>
+> +L:     linux-hwmon@vger.kernel.org
+> +S:     Supported
+> +F:     Documentation/devicetree/bindings/hwmon/baikal,bt1-pvt.yaml
+> +F:     Documentation/hwmon/bt1-pvt.rst
+> +F:     drivers/hwmon/bt1-pvt.[ch]
+> +
+>  BARCO P50 GPIO DRIVER
+>  M:     Santosh Kumar Yadav <santoshkumar.yadav@barco.com>
+>  M:     Peter Korsgaard <peter.korsgaard@barco.com>
+> @@ -6455,6 +6476,7 @@ F:        drivers/mtd/nand/raw/denali*
+>
+>  DESIGNWARE EDMA CORE IP DRIVER
+>  M:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> +R:     Serge Semin <fancer.lancer@gmail.com>
+>  L:     dmaengine@vger.kernel.org
+>  S:     Maintained
+>  F:     drivers/dma/dw-edma/
+> @@ -9737,6 +9759,14 @@ F:       drivers/gpio/gpiolib-cdev.c
+>  F:     include/uapi/linux/gpio.h
+>  F:     tools/gpio/
+>
+> +GRE DEMULTIPLEXER DRIVER
+> +M:     Dmitry Kozlov <xeb@mail.ru>
+> +L:     netdev@vger.kernel.org
+> +S:     Maintained
+> +F:     include/net/gre.h
+> +F:     net/ipv4/gre_demux.c
+> +F:     net/ipv4/gre_offload.c
+> +
+>  GRETH 10/100/1G Ethernet MAC device driver
+>  M:     Andreas Larsson <andreas@gaisler.com>
+>  L:     netdev@vger.kernel.org
+> @@ -12929,6 +12959,12 @@ S:     Maintained
+>  F:     drivers/ata/pata_arasan_cf.c
+>  F:     include/linux/pata_arasan_cf_data.h
+>
+> +LIBATA PATA DRIVERS
+> +R:     Sergey Shtylyov <s.shtylyov@omp.ru>
+> +L:     linux-ide@vger.kernel.org
+> +F:     drivers/ata/ata_*.c
+> +F:     drivers/ata/pata_*.c
+> +
+>  LIBATA PATA FARADAY FTIDE010 AND GEMINI SATA BRIDGE DRIVERS
+>  M:     Linus Walleij <linus.walleij@linaro.org>
+>  L:     linux-ide@vger.kernel.org
+> @@ -12945,6 +12981,15 @@ F:     drivers/ata/ahci_platform.c
+>  F:     drivers/ata/libahci_platform.c
+>  F:     include/linux/ahci_platform.h
+>
+> +LIBATA SATA AHCI SYNOPSYS DWC CONTROLLER DRIVER
+> +M:     Serge Semin <fancer.lancer@gmail.com>
+> +L:     linux-ide@vger.kernel.org
+> +S:     Maintained
+> +T:     git git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.git
+> +F:     Documentation/devicetree/bindings/ata/baikal,bt1-ahci.yaml
+> +F:     Documentation/devicetree/bindings/ata/snps,dwc-ahci.yaml
+> +F:     drivers/ata/ahci_dwc.c
+> +
+>  LIBATA SATA PROMISE TX2/TX4 CONTROLLER DRIVER
+>  M:     Mikael Pettersson <mikpelinux@gmail.com>
+>  L:     linux-ide@vger.kernel.org
+> @@ -14140,6 +14185,16 @@ S:     Maintained
+>  T:     git git://linuxtv.org/media_tree.git
+>  F:     drivers/media/platform/nxp/imx-pxp.[ch]
+>
+> +MEDIA DRIVERS FOR ASCOT2E
+> +M:     Sergey Kozlov <serjk@netup.ru>
+> +M:     Abylay Ospan <aospan@netup.ru>
+> +L:     linux-media@vger.kernel.org
+> +S:     Supported
+> +W:     https://linuxtv.org
+> +W:     http://netup.tv/
+> +T:     git git://linuxtv.org/media_tree.git
+> +F:     drivers/media/dvb-frontends/ascot2e*
+> +
+>  MEDIA DRIVERS FOR CXD2099AR CI CONTROLLERS
+>  M:     Jasmin Jessich <jasmin@anw.at>
+>  L:     linux-media@vger.kernel.org
+> @@ -14148,6 +14203,16 @@ W:     https://linuxtv.org
+>  T:     git git://linuxtv.org/media_tree.git
+>  F:     drivers/media/dvb-frontends/cxd2099*
+>
+> +MEDIA DRIVERS FOR CXD2841ER
+> +M:     Sergey Kozlov <serjk@netup.ru>
+> +M:     Abylay Ospan <aospan@netup.ru>
+> +L:     linux-media@vger.kernel.org
+> +S:     Supported
+> +W:     https://linuxtv.org
+> +W:     http://netup.tv/
+> +T:     git git://linuxtv.org/media_tree.git
+> +F:     drivers/media/dvb-frontends/cxd2841er*
+> +
+>  MEDIA DRIVERS FOR CXD2880
+>  M:     Yasunari Takiguchi <Yasunari.Takiguchi@sony.com>
+>  L:     linux-media@vger.kernel.org
+> @@ -14192,6 +14257,35 @@ F:     drivers/media/platform/nxp/imx-mipi-csis.c
+>  F:     drivers/media/platform/nxp/imx7-media-csi.c
+>  F:     drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+>
+> +MEDIA DRIVERS FOR HELENE
+> +M:     Abylay Ospan <aospan@netup.ru>
+> +L:     linux-media@vger.kernel.org
+> +S:     Supported
+> +W:     https://linuxtv.org
+> +W:     http://netup.tv/
+> +T:     git git://linuxtv.org/media_tree.git
+> +F:     drivers/media/dvb-frontends/helene*
+> +
+> +MEDIA DRIVERS FOR HORUS3A
+> +M:     Sergey Kozlov <serjk@netup.ru>
+> +M:     Abylay Ospan <aospan@netup.ru>
+> +L:     linux-media@vger.kernel.org
+> +S:     Supported
+> +W:     https://linuxtv.org
+> +W:     http://netup.tv/
+> +T:     git git://linuxtv.org/media_tree.git
+> +F:     drivers/media/dvb-frontends/horus3a*
+> +
+> +MEDIA DRIVERS FOR LNBH25
+> +M:     Sergey Kozlov <serjk@netup.ru>
+> +M:     Abylay Ospan <aospan@netup.ru>
+> +L:     linux-media@vger.kernel.org
+> +S:     Supported
+> +W:     https://linuxtv.org
+> +W:     http://netup.tv/
+> +T:     git git://linuxtv.org/media_tree.git
+> +F:     drivers/media/dvb-frontends/lnbh25*
+> +
+>  MEDIA DRIVERS FOR MXL5XX TUNER DEMODULATORS
+>  L:     linux-media@vger.kernel.org
+>  S:     Orphan
+> @@ -14199,6 +14293,16 @@ W:     https://linuxtv.org
+>  T:     git git://linuxtv.org/media_tree.git
+>  F:     drivers/media/dvb-frontends/mxl5xx*
+>
+> +MEDIA DRIVERS FOR NETUP PCI UNIVERSAL DVB devices
+> +M:     Sergey Kozlov <serjk@netup.ru>
+> +M:     Abylay Ospan <aospan@netup.ru>
+> +L:     linux-media@vger.kernel.org
+> +S:     Supported
+> +W:     https://linuxtv.org
+> +W:     http://netup.tv/
+> +T:     git git://linuxtv.org/media_tree.git
+> +F:     drivers/media/pci/netup_unidvb/*
+> +
+>  MEDIA DRIVERS FOR NVIDIA TEGRA - VDE
+>  M:     Dmitry Osipenko <digetx@gmail.com>
+>  L:     linux-media@vger.kernel.org
+> @@ -14842,6 +14946,13 @@ F:     drivers/mtd/
+>  F:     include/linux/mtd/
+>  F:     include/uapi/mtd/
+>
+> +MEMSENSING MICROSYSTEMS MSA311 DRIVER
+> +M:     Dmitry Rokosov <ddrokosov@sberdevices.ru>
+> +L:     linux-iio@vger.kernel.org
+> +S:     Maintained
+> +F:     Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
+> +F:     drivers/iio/accel/msa311.c
+> +
+>  MEN A21 WATCHDOG DRIVER
+>  M:     Johannes Thumshirn <morbidrsa@gmail.com>
+>  L:     linux-watchdog@vger.kernel.org
+> @@ -15175,6 +15286,7 @@ F:      drivers/tty/serial/8250/8250_pci1xxxx.c
+>
+>  MICROCHIP POLARFIRE FPGA DRIVERS
+>  M:     Conor Dooley <conor.dooley@microchip.com>
+> +R:     Vladimir Georgiev <v.georgiev@metrotek.ru>
+>  L:     linux-fpga@vger.kernel.org
+>  S:     Supported
+>  F:     Documentation/devicetree/bindings/fpga/microchip,mpf-spi-fpga-mgr.yaml
+> @@ -15429,6 +15541,17 @@ F:     arch/mips/
+>  F:     drivers/platform/mips/
+>  F:     include/dt-bindings/mips/
+>
+> +MIPS BAIKAL-T1 PLATFORM
+> +M:     Serge Semin <fancer.lancer@gmail.com>
+> +L:     linux-mips@vger.kernel.org
+> +S:     Supported
+> +F:     Documentation/devicetree/bindings/bus/baikal,bt1-*.yaml
+> +F:     Documentation/devicetree/bindings/clock/baikal,bt1-*.yaml
+> +F:     drivers/bus/bt1-*.c
+> +F:     drivers/clk/baikal-t1/
+> +F:     drivers/memory/bt1-l2-ctl.c
+> +F:     drivers/mtd/maps/physmap-bt1-rom.[ch]
+> +
+>  MIPS BOSTON DEVELOPMENT BOARD
+>  M:     Paul Burton <paulburton@kernel.org>
+>  L:     linux-mips@vger.kernel.org
+> @@ -15441,6 +15564,7 @@ F:      include/dt-bindings/clock/boston-clock.h
+>
+>  MIPS CORE DRIVERS
+>  M:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> +M:     Serge Semin <fancer.lancer@gmail.com>
+>  L:     linux-mips@vger.kernel.org
+>  S:     Supported
+>  F:     drivers/bus/mips_cdmm.c
+> @@ -16408,6 +16532,12 @@ F:     include/linux/ntb.h
+>  F:     include/linux/ntb_transport.h
+>  F:     tools/testing/selftests/ntb/
+>
+> +NTB IDT DRIVER
+> +M:     Serge Semin <fancer.lancer@gmail.com>
+> +L:     ntb@lists.linux.dev
+> +S:     Supported
+> +F:     drivers/ntb/hw/idt/
+> +
+>  NTB INTEL DRIVER
+>  M:     Dave Jiang <dave.jiang@intel.com>
+>  L:     ntb@lists.linux.dev
+> @@ -18428,6 +18558,13 @@ F:     drivers/pps/
+>  F:     include/linux/pps*.h
+>  F:     include/uapi/linux/pps.h
+>
+> +PPTP DRIVER
+> +M:     Dmitry Kozlov <xeb@mail.ru>
+> +L:     netdev@vger.kernel.org
+> +S:     Maintained
+> +W:     http://sourceforge.net/projects/accel-pptp
+> +F:     drivers/net/ppp/pptp.c
+> +
+>  PRESSURE STALL INFORMATION (PSI)
+>  M:     Johannes Weiner <hannes@cmpxchg.org>
+>  M:     Suren Baghdasaryan <surenb@google.com>
+> @@ -19518,6 +19655,15 @@ S:     Supported
+>  F:     Documentation/devicetree/bindings/i2c/renesas,iic-emev2.yaml
+>  F:     drivers/i2c/busses/i2c-emev2.c
+>
+> +RENESAS ETHERNET AVB DRIVER
+> +R:     Sergey Shtylyov <s.shtylyov@omp.ru>
+> +L:     netdev@vger.kernel.org
+> +L:     linux-renesas-soc@vger.kernel.org
+> +F:     Documentation/devicetree/bindings/net/renesas,etheravb.yaml
+> +F:     drivers/net/ethernet/renesas/Kconfig
+> +F:     drivers/net/ethernet/renesas/Makefile
+> +F:     drivers/net/ethernet/renesas/ravb*
+> +
+>  RENESAS ETHERNET SWITCH DRIVER
+>  R:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+>  L:     netdev@vger.kernel.org
+> @@ -19567,6 +19713,14 @@ F:     Documentation/devicetree/bindings/i2c/renesas,rmobile-iic.yaml
+>  F:     drivers/i2c/busses/i2c-rcar.c
+>  F:     drivers/i2c/busses/i2c-sh_mobile.c
+>
+> +RENESAS R-CAR SATA DRIVER
+> +R:     Sergey Shtylyov <s.shtylyov@omp.ru>
+> +L:     linux-ide@vger.kernel.org
+> +L:     linux-renesas-soc@vger.kernel.org
+> +S:     Supported
+> +F:     Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
+> +F:     drivers/ata/sata_rcar.c
+> +
+>  RENESAS R-CAR THERMAL DRIVERS
+>  M:     Niklas Söderlund <niklas.soderlund@ragnatech.se>
+>  L:     linux-renesas-soc@vger.kernel.org
+> @@ -19642,6 +19796,16 @@ S:     Supported
+>  F:     Documentation/devicetree/bindings/i2c/renesas,rzv2m.yaml
+>  F:     drivers/i2c/busses/i2c-rzv2m.c
+>
+> +RENESAS SUPERH ETHERNET DRIVER
+> +R:     Sergey Shtylyov <s.shtylyov@omp.ru>
+> +L:     netdev@vger.kernel.org
+> +L:     linux-renesas-soc@vger.kernel.org
+> +F:     Documentation/devicetree/bindings/net/renesas,ether.yaml
+> +F:     drivers/net/ethernet/renesas/Kconfig
+> +F:     drivers/net/ethernet/renesas/Makefile
+> +F:     drivers/net/ethernet/renesas/sh_eth*
+> +F:     include/linux/sh_eth.h
+> +
+>  RENESAS USB PHY DRIVER
+>  M:     Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+>  L:     linux-renesas-soc@vger.kernel.org
+> @@ -22295,11 +22459,19 @@ F:    drivers/tty/serial/8250/8250_lpss.c
+>
+>  SYNOPSYS DESIGNWARE APB GPIO DRIVER
+>  M:     Hoan Tran <hoan@os.amperecomputing.com>
+> +M:     Serge Semin <fancer.lancer@gmail.com>
+>  L:     linux-gpio@vger.kernel.org
+>  S:     Maintained
+>  F:     Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
+>  F:     drivers/gpio/gpio-dwapb.c
+>
+> +SYNOPSYS DESIGNWARE APB SSI DRIVER
+> +M:     Serge Semin <fancer.lancer@gmail.com>
+> +L:     linux-spi@vger.kernel.org
+> +S:     Supported
+> +F:     Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+> +F:     drivers/spi/spi-dw*
+> +
+>  SYNOPSYS DESIGNWARE AXI DMAC DRIVER
+>  M:     Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+>  S:     Maintained
+> @@ -23609,6 +23781,12 @@ L:     linux-input@vger.kernel.org
+>  S:     Maintained
+>  F:     drivers/hid/hid-udraw-ps3.c
+>
+> +UFS FILESYSTEM
+> +M:     Evgeniy Dushistov <dushistov@mail.ru>
+> +S:     Maintained
+> +F:     Documentation/admin-guide/ufs.rst
+> +F:     fs/ufs/
+> +
+>  UHID USERSPACE HID IO DRIVER
+>  M:     David Rheinsberg <david@readahead.eu>
+>  L:     linux-input@vger.kernel.org
+> --
+> 2.47.0
+>
+>
+
+-- 
+2.45.2
+
 

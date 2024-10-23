@@ -1,229 +1,159 @@
-Return-Path: <linux-iio+bounces-11007-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11008-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E9B9ACEA4
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 17:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE189ACEF0
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 17:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C9F11C24E2D
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 15:25:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BC1B1C228E8
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 15:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1FC1CACE1;
-	Wed, 23 Oct 2024 15:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB9F1C6F54;
+	Wed, 23 Oct 2024 15:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZANycmS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gQT6eEYv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C469C1C8FB3;
-	Wed, 23 Oct 2024 15:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B854E1C4605
+	for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 15:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729696981; cv=none; b=sfnNyJ+qb9Zh9ZZqLi2937p9hY6FRuI1q/U/SvgixmOWvlSf2k/kMzLSOSgPeL8vYyR/ZcpOuwV70dOdGA0Vn/ZF5WAt+onvFnS1N0pbyYQnbh1wbO6TNHWtoLfLDHfbJQ5uB5eAsOeJjpfnJjDZ/l+8ErXbqI1+nWaoEEREcRQ=
+	t=1729697788; cv=none; b=j4yefvT+A5Tg8DFeopdNxpuQ8UF8DV1eRylfDxN211cDXM/xyP82bo47x2U2FILqGZxUvY0KdgnwZcQTAYpsXAHzoTcw9js6ua9Z6cAb0LUVg0N92372Dcbe/r0vr05kGmKNB0jnE8RBtotTimKcL0PPaW2dNgvYF7hEdi25Ops=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729696981; c=relaxed/simple;
-	bh=KXkbSwlGbCZMCSuO/HqUDNu6DmitH+pQc626B5yFwFY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TrUeiVPbbcNJ2uewd/hfhbWJeqOIq4Vu8X4qmRAWKU6UfPBlZ1BzzY182rZQkTQmxZ6bmdU6sSHwZrmHzNEoXOAWUEFkSUoX/l21zUcglCrFei3sp4/IaOAsrCtip30k9DNT+k5N2S+h+k8DfMv6iNu0QVdLf122UIMl/dM9YZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZANycmS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613FCC4CECD;
-	Wed, 23 Oct 2024 15:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729696981;
-	bh=KXkbSwlGbCZMCSuO/HqUDNu6DmitH+pQc626B5yFwFY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AZANycmSnzGOxPgI8KK5fXhNpNn4LV5haxmCQJgpwlbzvIB72HJjTJduSk7C4D/jN
-	 c5HH9n6mNDhJd0ezGRDc8IvN++xEk3uF4DcpNNCizXGBiHGeKcJAlwUDp5n3Q50OWP
-	 7FIqAxTJ8wQfx6lBAu0hp7G2rhrdzRRWIhpV8fN9M1nRFaGyyV0FDMkmPAgnrwN+Kq
-	 JYDGS0EI20ZY6nlDRypzZDK/sEdXGgVBOWXTDdsDlMPbt70hwAyVgp0U0l2sxmrEOw
-	 WW6tqv+aXe45a+z9RtrpPHQ7Z+k1DymCwsCSJoHKaFLsRX6OuNm9ZXRHrDEy7sezVU
-	 N3JYrItlnmN5Q==
-Date: Wed, 23 Oct 2024 16:22:56 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc: Angelo Dureghello <adureghello@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dlechner@baylibre.com,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v7 4/8] iio: dac: adi-axi-dac: extend features
-Message-ID: <20241023-nifty-electable-64d3b42bce3b@spud>
-References: <20241021-wip-bl-ad3552r-axi-v0-iio-testing-v7-0-969694f53c5d@baylibre.com>
- <20241021-wip-bl-ad3552r-axi-v0-iio-testing-v7-4-969694f53c5d@baylibre.com>
- <b1ac7d51280caf729d192ca871c26260fdf3697c.camel@gmail.com>
- <20241022-napped-labored-6956ce18d986@spud>
- <7a4f8c718029c8c57596d950495fcf28562c6e78.camel@gmail.com>
+	s=arc-20240116; t=1729697788; c=relaxed/simple;
+	bh=hLA1RQo8/RcVFBLspjlNQ/FEotGEHQu2tn1mH5H7qGg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N/XSm8Fdtg3JWUc64x5wKjsLvUNwG1ecHH/FFHY2n6N1fyTzaCMTHnO0NtuwN7J9kHpxQ+qQRgEoqF4of5a7jgcQOqXW3GQxNRQOn4PvT6HEiffiCXj4GeNe1EdSC46D/GuyyQh7+oonqQHicwBAMpA5MZ4KmA+rtflEc52B3bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gQT6eEYv; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729697785;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W12atCawGWIIMbzM+o0TKKbvEulWWaQhHboBuLLrayc=;
+	b=gQT6eEYvOfLjKV7ERBVQMmFNUrkIeVZGqcM7chhzuFzpP1jVALgbhD4RkUnJQLvPCUTce+
+	XrtqooKX3Ui/vHtwtX30M7ndS7Im5gg+1KtMjG2zTLe7XpHJcAU9CS+SvwKTGjhivKTW4y
+	ZlhyoyO7jR0mpcTmDGUYgCUgRNKi6E4=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-7-etFaFRp9NTC3oYh5Q4xNkQ-1; Wed, 23 Oct 2024 11:36:23 -0400
+X-MC-Unique: etFaFRp9NTC3oYh5Q4xNkQ-1
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-539eeb63cc3so5201242e87.2
+        for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 08:36:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729697782; x=1730302582;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W12atCawGWIIMbzM+o0TKKbvEulWWaQhHboBuLLrayc=;
+        b=gXmFuZZX5kAG1obMOIgW1nSfXyq/fpo8i/9C9kFK29sAmcD0s1AaZYDpxr63FrDvMK
+         2yuv/zWKlwiPNcBXRXW7H58cTYauvWRq8xZpStvneTT6e6BJx7Dj2L0Wo4fVz6mqziTE
+         X7bmbO7FyUi2bg5/69OD6WczUyHHYCA+SIcvbg8QrTzOauKrt+HJmutdKtLVdJWg6NuM
+         ew6FAUSB20eWkRG6EblZkdc2L9gbvd0VoCKbNvAmIkP2Z+p30VN+sDqR7wBLMV2T5onK
+         8545lcsLWAlqsd053ix586X/fRANBXhxti6IevhkE9yjG7SKnqnZ4GR/2xMQ2WwxFMuB
+         O/Rw==
+X-Forwarded-Encrypted: i=1; AJvYcCVYbO4GowjPFOuPWim5zgDBji1NfToYfHdcNwLuvfUDBjQfi5P4bL9ogRRBmsQMV8AKvI58hd1SOFs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuLtW8uWvZUwknRT55WLKSpDJr7VDdlr0zjCwNW1SpU0wijACc
+	Vpp4dHnVp9gB/9czl5I6Eh1uK64Gn0p18YHH6zop/FtyEzkob+2oJJQJjTMHKNBPS5mzoyUKV1C
+	jrJJk2TPL8bz6AouA0ApeQvze+Utcxvs+1gKiwN1wU3H6UDgwq9CIGb4LOA==
+X-Received: by 2002:a05:6512:3caa:b0:539:f630:f233 with SMTP id 2adb3069b0e04-53b1a396616mr1704037e87.57.1729697782031;
+        Wed, 23 Oct 2024 08:36:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOTmpkqv0SJnjqxX01hB8AB1rRaXAa5SfDtN0cPFdQexruh9uHn2xIIyAyw/VnACPHbMqdEA==
+X-Received: by 2002:a05:6512:3caa:b0:539:f630:f233 with SMTP id 2adb3069b0e04-53b1a396616mr1704015e87.57.1729697781553;
+        Wed, 23 Oct 2024 08:36:21 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66a653f5sm4571880a12.26.2024.10.23.08.36.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Oct 2024 08:36:21 -0700 (PDT)
+Message-ID: <6d6d038a-bc0a-4a13-9dcb-94e289767b44@redhat.com>
+Date: Wed, 23 Oct 2024 17:36:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="FcRsxxiByCiYsStm"
-Content-Disposition: inline
-In-Reply-To: <7a4f8c718029c8c57596d950495fcf28562c6e78.camel@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 00/13] iio: Clean up acpi_match_device() use cases
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Marius Cristea <marius.cristea@microchip.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+References: <20241023152145.3564943-1-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20241023152145.3564943-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+On 23-Oct-24 5:17 PM, Andy Shevchenko wrote:
+> There are current uses of acpi_match_device():
+> - as strange way of checking if the device was enumerated via ACPI
+> - as a way to get IIO device name as ACPI device instance name
+> - as above with accompanying driver data
+> 
+> Deduplicate its use by providing two new helper functions in IIO ACPI
+> library and update the rest accordingly.
+> 
+> This also includes a rework of previously sent ltr501 patch.
+
+Thanks, the entire series looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+for the series.
+
+Regards,
+
+Hans
 
 
---FcRsxxiByCiYsStm
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Andy Shevchenko (13):
+>   iio: magnetometer: bmc150: Drop dead code from the driver
+>   iio: adc: pac1934: Replace strange way of checking type of enumeration
+>   iio: imu: inv_mpu6050: Replace strange way of checking type of
+>     enumeration
+>   iio: acpi: Improve iio_read_acpi_mount_matrix()
+>   iio: acpi: Add iio_get_acpi_device_name_and_data() helper function
+>   iio: accel: mma9551: Replace custom implementation of
+>     iio_get_acpi_device_name()
+>   iio: accel: mma9553: Replace custom implementation of
+>     iio_get_acpi_device_name()
+>   iio: gyro: bmg160: Replace custom implementation of
+>     iio_get_acpi_device_name()
+>   iio: light: isl29018: Replace a variant of
+>     iio_get_acpi_device_name_and_data()
+>   iio: light: isl29018: drop ACPI_PTR() and CONFIG_ACPI guards
+>   iio: light: ltr501: Drop most likely fake ACPI IDs
+>   iio: light: ltr501: Add LTER0303 to the supported devices
+>   iio: light: ltr501: Replace a variant of
+>     iio_get_acpi_device_name_and_data()
+> 
+>  drivers/iio/accel/mma9551.c                | 19 ++-------
+>  drivers/iio/accel/mma9553.c                | 19 ++-------
+>  drivers/iio/adc/pac1934.c                  |  2 +-
+>  drivers/iio/gyro/bmg160_core.c             | 15 --------
+>  drivers/iio/gyro/bmg160_i2c.c              |  4 +-
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c |  5 +--
+>  drivers/iio/industrialio-acpi.c            | 45 ++++++++++++++++++++--
+>  drivers/iio/light/isl29018.c               | 38 ++++++------------
+>  drivers/iio/light/ltr501.c                 | 29 +++++---------
+>  drivers/iio/magnetometer/bmc150_magn.c     | 15 --------
+>  include/linux/iio/iio.h                    | 10 +++++
+>  11 files changed, 86 insertions(+), 115 deletions(-)
+> 
 
-On Wed, Oct 23, 2024 at 04:56:39PM +0200, Nuno S=E1 wrote:
-> On Tue, 2024-10-22 at 18:21 +0100, Conor Dooley wrote:
-> > On Tue, Oct 22, 2024 at 02:36:44PM +0200, Nuno S=E1 wrote:
-> > > On Mon, 2024-10-21 at 14:40 +0200, Angelo Dureghello wrote:
-> > > > From: Angelo Dureghello <adureghello@baylibre.com>
-> > > >=20
-> > > > Extend AXI-DAC backend with new features required to interface
-> > > > to the ad3552r DAC. Mainly, a new compatible string is added to
-> > > > support the ad3552r-axi DAC IP, very similar to the generic DAC
-> > > > IP but with some customizations to work with the ad3552r.
-> > > >=20
-> > > > Then, a series of generic functions has been added to match with
-> > > > ad3552r needs. Function names has been kept generic as much as
-> > > > possible, to allow re-utilization from other frontend drivers.
-> > > >=20
-> > > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > > > ---
-> > >=20
-> > > Looks mostly good,
-> > >=20
-> > > one minor thing that (I think) could be improved
-> > > > =A0drivers/iio/dac/adi-axi-dac.c | 269
-> > > > +++++++++++++++++++++++++++++++++++++++--
-> > > > -
-> > > > =A01 file changed, 255 insertions(+), 14 deletions(-)
-> > > >=20
-> > > > diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-ax=
-i-dac.c
-> > > > index 04193a98616e..9d6809fe7a67 100644
-> > > > --- a/drivers/iio/dac/adi-axi-dac.c
-> > > > +++ b/drivers/iio/dac/adi-axi-dac.c
-> > > > @@ -46,9 +46,28 @@
-> > > > =A0#define AXI_DAC_CNTRL_1_REG			0x0044
-> > > > =A0#define=A0=A0 AXI_DAC_CNTRL_1_SYNC			BIT(0)
-> > > > =A0#define AXI_DAC_CNTRL_2_REG			0x0048
-> > > > +#define=A0=A0 AXI_DAC_CNTRL_2_SDR_DDR_N		BIT(16)
-> > > > +#define=A0=A0 AXI_DAC_CNTRL_2_SYMB_8B		BIT(14)
-> > > > =A0#define=A0=A0 ADI_DAC_CNTRL_2_R1_MODE		BIT(5)
-> > > > +#define=A0=A0 AXI_DAC_CNTRL_2_UNSIGNED_DATA		BIT(4)
-> > > > +#define AXI_DAC_STATUS_1_REG			0x0054
-> > > > +#define AXI_DAC_STATUS_2_REG			0x0058
-> > > > =A0#define AXI_DAC_DRP_STATUS_REG			0x0074
-> > > > =A0#define=A0=A0 AXI_DAC_DRP_STATUS_DRP_LOCKED		BIT(17)
-> > > > +#define AXI_DAC_CUSTOM_RD_REG			0x0080
-> > > > +#define AXI_DAC_CUSTOM_WR_REG			0x0084
-> > > > +#define=A0=A0 AXI_DAC_CUSTOM_WR_DATA_8		GENMASK(23, 16)
-> > > > +#define=A0=A0 AXI_DAC_CUSTOM_WR_DATA_16		GENMASK(23, 8)
-> > > > +#define AXI_DAC_UI_STATUS_REG			0x0088
-> > > > +#define=A0=A0 AXI_DAC_UI_STATUS_IF_BUSY		BIT(4)
-> > > > +#define AXI_DAC_CUSTOM_CTRL_REG			0x008C
-> > > > +#define=A0=A0 AXI_DAC_CUSTOM_CTRL_ADDRESS		GENMASK(31, 24)
-> > > > +#define=A0=A0 AXI_DAC_CUSTOM_CTRL_SYNCED_TRANSFER	BIT(2)
-> > > > +#define=A0=A0 AXI_DAC_CUSTOM_CTRL_STREAM		BIT(1)
-> > > > +#define=A0=A0 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA	BIT(0)
-> > >=20
-> > > ...
-> > > =A0
-> > > > =A0static int axi_dac_probe(struct platform_device *pdev)
-> > > > =A0{
-> > > > -	const unsigned int *expected_ver;
-> > > > =A0	struct axi_dac_state *st;
-> > > > =A0	void __iomem *base;
-> > > > =A0	unsigned int ver;
-> > > > @@ -566,14 +780,29 @@ static int axi_dac_probe(struct platform_devi=
-ce
-> > > > *pdev)
-> > > > =A0	if (!st)
-> > > > =A0		return -ENOMEM;
-> > > > =A0
-> > > > -	expected_ver =3D device_get_match_data(&pdev->dev);
-> > > > -	if (!expected_ver)
-> > > > +	st->info =3D device_get_match_data(&pdev->dev);
-> > > > +	if (!st->info)
-> > > > =A0		return -ENODEV;
-> > > > +	clk =3D devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
-> > > > +	if (IS_ERR(clk)) {
-> > >=20
-> > > If clock-names is not given, then we'll get -EINVAL. Hence we could a=
-ssume
-> > > that:
-> > >=20
-> > > 		if (PTR_ERR(clk) !=3D -EINVAL)
-> > > 			return dev_err_probe();
-> >=20
-> > clock-names isn't a required property, but the driver code effectively
-> > makes it one. Doesn't this lookup need to be by index, unless
-> > clock-names is made required for this variant?
->=20
-> Likely I'm missing something but the driver is not making clock-names man=
-datory,
-> is it?
-
-Did you miss the "for this variant"? Maybe I left the comment in not
-exactly the right place, but I don't think the code works correctly for
-the new variant if clock-names aren't provided:
-
-+	if (st->info->has_dac_clk) {
-+		struct clk *dac_clk;
-+		dac_clk =3D devm_clk_get_enabled(&pdev->dev, "dac_clk");
-+		if (IS_ERR(dac_clk))
-+			return dev_err_probe(&pdev->dev, PTR_ERR(dac_clk),
-+					     "failed to get dac_clk clock\n");
-+
-+		/* We only care about the streaming mode rate */
-+		st->dac_clk_rate =3D clk_get_rate(dac_clk) / 2;
-
-Isn't this going to cause a probe failure?
-
-> At least for the s_axi_aclk, we first try to get it using clock-names and=
- if
-> that fails we backup to what we're doing which is passing NULL (which
-> effectively get's the first clock in the array).
->=20
-> The reasoning is that on the generic variant we only need the AXI clk and=
- we
-> can't now enforce clock-names on it. But to keep things flexible, this was
-> purposed.
-
-Why not always just get the first clock by index and avoid the
-complexity?
-
-> Another alternative that might have more lines of code (but simpler to
-> understand the intent) is to have (for example) a callback get_clocks fun=
-ction
-> that we set depending on the variant. And this also makes me realize that=
- we
-> could improve the bindings. I mean, for the generic dac variant we do not=
- need
-> clock-names but for this new variant, clock-names is mandatory and I'm fa=
-irly
-> sure we can express that in the bindings.
-
-Right. You can "edit" required in the if/then/else branch for the new
-variant.
-
---FcRsxxiByCiYsStm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZxkUvwAKCRB4tDGHoIJi
-0iH0AQDT3WZkbiqQZikEUWqx6FC6ZERzFp5cE6EJ0uvCHfGrpwD+MwupjN9w4Yz7
-A9SQRFg6vReiv04lQ/Myk3KErlH/8Qg=
-=anK4
------END PGP SIGNATURE-----
-
---FcRsxxiByCiYsStm--
 

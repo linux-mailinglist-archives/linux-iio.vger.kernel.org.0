@@ -1,103 +1,126 @@
-Return-Path: <linux-iio+bounces-11036-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11037-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F53A9AD7A0
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 00:32:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285109AD8BD
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 01:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DD041C20CC5
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 22:32:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE2B11F26586
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 23:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05601FEFC9;
-	Wed, 23 Oct 2024 22:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C5A1EABAE;
+	Wed, 23 Oct 2024 23:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=notyourfox.coffee header.i=@notyourfox.coffee header.b="Qzx5NnIV"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IWeF66v7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.notyourfox.coffee (mail.notyourfox.coffee [92.63.193.195])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8717A156C6F;
-	Wed, 23 Oct 2024 22:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.63.193.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23621BDDF
+	for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 23:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729722716; cv=none; b=q3vuSn1p3c97UrS+1/8igS+d2zV4MGkUzQfYPYZIYixRDNsplNqK39LH+qM8YoPgUyVu5EwEmPDYFcd6+CatuaTVawmofLVbxFQxt9AqpvHP8+wTt46WdgEryR5bMgUOaISxgxIajJGTJC04h36+czba5ZlGhvJ627LfhA+TeH4=
+	t=1729727680; cv=none; b=sN9Xhx39TRS0tuZaj2wQmzLzx1Q9zVfU/6+E30U5ikL8gHeI/0Tuqu4Kk5drBsFmYpbFIM867MQF6ciQ+avz+WunagBxNSMJNLMuae+5wo4jm/RJ8Yzs6maBkRJrQF5Cy0IuoZU5rdTJ6xDjMQOD77IPxCQMSZ64PVnqY6biJFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729722716; c=relaxed/simple;
-	bh=lBqM5PBwzs7x9XceHQ9rfZgT7htaBeYa/E3GDqF9nXU=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=WB337mOGkhic3fNsyKeUY7XtqugTyJsmFsSwSXo+scTxrZOwEvZkXdfnUsuqYjTgMwE155hCPJ2faWh84m5/LKqT2Mse7TfJMF8c0nWdTNaKuFnMlsxgqfQnWtG3m2G2BY63BNs6CnC016blMzFzw7YYwwhNgFw36Wc44zyzKX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=notyourfox.coffee; spf=pass smtp.mailfrom=notyourfox.coffee; dkim=pass (2048-bit key) header.d=notyourfox.coffee header.i=@notyourfox.coffee header.b=Qzx5NnIV; arc=none smtp.client-ip=92.63.193.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=notyourfox.coffee
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=notyourfox.coffee
-DKIM-Signature: a=rsa-sha256; bh=21ozGVKPYTmOqYBKOcOmOK+mSJIkuon14lUJ9oaW7vM=;
- c=relaxed/relaxed; d=notyourfox.coffee;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@notyourfox.coffee; s=mail; t=1729721693; v=1; x=1730153693;
- b=Qzx5NnIVSz7GYrDq8cD6l5rVz4+yd3Yy0awiIXQ74n7AFlsPGnqrWQg6R6416QT+gDRK9zC8
- 9xhmK/sXgtRFfrZuRTrJT44F2y0hvsfoeDKX+jvRt/xYJezg0GvKvAfTGTChJHSFh9G5Px8JJDQ
- ItihhXdHyhCSdjbd56F+uiNFCT1zCuJG/Ri/sCwEuVj440Wyh1yTbfFA2uTKwQh8BGf1pSB7Ve+
- G1ukignizWPp5P6QKWyCjWYu/mi/HkS83y71a1L99yqksWnODf1S+p7ekZij6dMqSGCUF0KoEae
- Q6vlmTQmE/I5KlptBRFhJuu+uy+Wxrv/d/yn77tWE1ZEg==
-Received: by mail.notyourfox.coffee (envelope-sender
- <contact@notyourfox.coffee>) with ESMTPS id 9d61df4a; Wed, 23 Oct 2024
- 22:14:53 +0000
-Message-ID: <bd0c85d0-6941-4693-bae5-a3f6613f829c@notyourfox.coffee>
-Date: Thu, 24 Oct 2024 01:14:51 +0300
+	s=arc-20240116; t=1729727680; c=relaxed/simple;
+	bh=I4GmRGGB3tkiacRF5gleikU6SA37GO6iMlLu3WWb6eo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JP3HzEiOpaucVLw1zv4L66fVr+eanGLLD3ljDoToT7jJztl7pRpkI5ls1U0KFmLBZ/BaFfcNEFjYzqYwietOztaUtzHwQ8lHhXRlKrt4RY5EYH9CFTElN6vFzwl6Aqa56ZZM1poWl+vb6ZDCD3DMxy1QqnBVpkReHyhizyCEJIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IWeF66v7; arc=none smtp.client-ip=209.85.161.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5eb5be68c7dso161251eaf.0
+        for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 16:54:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729727677; x=1730332477; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DPfmr5DaiqCsn7BKKUPbilfPKXqx/V+Fx2eV3zkRXcw=;
+        b=IWeF66v7rhFiW/6y0xDEIAV9FDw4s4i9RxbCf3PcJGb6Flh5lVzKeTJOvkhGo/YBmM
+         PJu1fLHw4r1pTeJmni9PnRnK0SaRW9f4S2mCYL3R/YoD/ZOmIra3UdrGWYgD7+qiB3Jq
+         b1Eyk7NeLz3TFCyA7p/5pkOGOCXx3ZMq62sJZNH61dhRMbx+l+4Pvny70v7UxUpME5/E
+         RfrBetPO85/cEo05jx5dE1LU20Zf21d3iIVMnKpXj6oE9W2nVLelmgHKMV6cJIEfFHgh
+         ViKB3Dc081mWA1PndJfQ2MSJc2LT8+72fYM3Eyn+cUIroEvMZRziRnFU4uIcri1W1f/6
+         K4yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729727677; x=1730332477;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DPfmr5DaiqCsn7BKKUPbilfPKXqx/V+Fx2eV3zkRXcw=;
+        b=MiNwx31Qd2H6Ib19clq1YjrvuptGlQlHh7eYKmR/86FxT/hNo5sgjhh+o9tCtzfKRw
+         Pe0ZSPk5UL+Qzs2GD33hASMLLRYpW4G2IkFkk53PQ+BaC7uDgMRh9KpKEOrJzazXYxKN
+         WtbL+RZPfviJr0sqQZb5mi7zdVkZ043wWeF6APUqaCK8r0yiVbg8JgB3w5xdif8CMPE8
+         JDxBPkzBA8SugoEjs4CIvPPIgafbGRizhCCrTlxPkK7oKwENvnwrQBAJ6JBaJxpk0KkN
+         Y4AFHix1yDBsePScEqa73GEgYX+dJCjUcVDRUqYGanQHSaYE7PFTsjnN4IbuxwK3F39m
+         WM5A==
+X-Forwarded-Encrypted: i=1; AJvYcCWKpRKKXBYwuHH6UyN0v2A3buu8DHGmbe/HnGhTPaELSvHWKG65EpwrykZSkSPsfteXc1E/CVU7AH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7CxxpGcbTwrC6doOawuqhbGAiWipJsxRK1kNn1IyB81LtUjud
+	LeirnoGKOuP71rMRKMi6788Sqfw0K48C74/a6UNtBq+WVP+RtDzuZ8EwHseFJ7o=
+X-Google-Smtp-Source: AGHT+IEVKSKJy6sL2E5e5mWOJyf6hp0HoBDaNv5hM2DcLgkFq6rNlqassOJBWoptlq0H1kHReioeYg==
+X-Received: by 2002:a05:6820:541:b0:5e5:d0c8:8030 with SMTP id 006d021491bc7-5ebee8e372emr3546007eaf.3.1729727676897;
+        Wed, 23 Oct 2024 16:54:36 -0700 (PDT)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5ec02c2b25bsm132002eaf.39.2024.10.23.16.54.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 16:54:35 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH 00/11] iio: use devm_regulator_get_enable_read_voltage
+ round 5
+Date: Wed, 23 Oct 2024 18:54:04 -0500
+Message-Id: <20241023-iio-regulator-refactor-round-5-v1-0-d0bd396b3f50@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: torvalds@linux-foundation.org
-Cc: aospan@netup.ru, conor.dooley@microchip.com, ddrokosov@sberdevices.ru,
- dmaengine@vger.kernel.org, dushistov@mail.ru, fancer.lancer@gmail.com,
- geert@linux-m68k.org, gregkh@linuxfoundation.org,
- hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru, jeffbai@aosc.io,
- kexybiscuit@aosc.io, linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-fpga@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
- manivannan.sadhasivam@linaro.org, mattst88@gmail.com,
- netdev@vger.kernel.org, nikita@trvn.ru, ntb@lists.linux.dev,
- patches@lists.linux.dev, richard.henderson@linaro.org, s.shtylyov@omp.ru,
- serjk@netup.ru, shc_work@mail.ru, torvic9@mailbox.org,
- tsbogend@alpha.franken.de, v.georgiev@metrotek.ru, wangyuli@uniontech.com,
- wsa+renesas@sang-engineering.com, xeb@mail.ru
-References: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
-Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
- compliance requirements."
-Content-Language: en-US
-From: NotYourFox <contact@notyourfox.coffee>
-In-Reply-To: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJyMGWcC/1WNywrCMBBFf0WydiSvSuPK/5Au8mwHaiOJLZbSf
+ 3fszsXAPcPlno3VWDBWdjttrMQFK+aJQJxPzA926iNgIGaSS81boQAxQ4n9PNp3LpSS9UfI8xS
+ gASV1a4zyRjnOaORFDfwcgkdHPGCl+nr4FvH7/k/b4On01TTg5pRiiYEkNsAigYNxTpjkhZHa3
+ Z1dR3QlXnx+sm7f9y+ZWKZfzQAAAA==
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.1
 
-Dear Linus,
+Here comes another round of reducing boilerplate code by simplifying
+getting reference voltages and dropping more driver remove callbacks.
 
-Yet another of probably a million "actual innocent Russian bystanders" 
-is here. For quite a reason. While I do not contribute to Linux kernel, 
-I am a long-time user of Linux and a big fan of FOSS. You may consider 
-it a spam, and it might as well be, but this just blew up our IT-related 
-media.
-I am, or, rather, many of us are disappointed in the way you put 
-politics over software freedom now.
-This move did nothing against Russian aggression, but rather 
-disappointed a lot of us, who don't support or have anything to do with 
-the ongoing war. The contributors you dropped for, as it seems, no 
-reason other than "compliance requirements" have done some actual work 
-to improve Linux, so kicking them for apparently just being from Russia 
-is... just plain discrimination.
-If that's the law you have to follow, go on. If it's your own actual 
-choice - you need to revisit what "free software" means.
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+David Lechner (11):
+      iio: dac: ad5380: use devm_regulator_get_enable_read_voltage()
+      iio: dac: ad5380: drop driver remove callbacks
+      iio: dac: ad5446: use devm_regulator_get_enable_read_voltage()
+      iio: dac: ad5446: drop driver remove callbacks
+      iio: dac: ad5504: use devm_regulator_get_enable_read_voltage()
+      iio: dac: ad5504: drop driver remove callback
+      iio: dac: ad5624r: use devm_regulator_get_enable_read_voltage()
+      iio: dac: ad5624r: drop driver remove callback
+      iio: dac: ad5761: use devm_regulator_get_enable_read_voltage()
+      iio: dac: ad5761: drop driver remove callback
+      iio: dac: ad5770r: use devm_regulator_get_enable_read_voltage()
 
-If I am blatantly wrong about all this, knowing it would only be a balm 
-for my soul.
+ drivers/iio/dac/ad5380.c      |  85 +++++++-------------------------
+ drivers/iio/dac/ad5446.c      |  77 +++++++----------------------
+ drivers/iio/dac/ad5504.c      |  59 ++++++-----------------
+ drivers/iio/dac/ad5624r.h     |   1 -
+ drivers/iio/dac/ad5624r_spi.c |  71 +++++----------------------
+ drivers/iio/dac/ad5761.c      | 109 +++++++++---------------------------------
+ drivers/iio/dac/ad5770r.c     |  41 ++--------------
+ 7 files changed, 88 insertions(+), 355 deletions(-)
+---
+base-commit: 9090ececac9ff1e22fb7e042f3c886990a8fb090
+change-id: 20240813-iio-regulator-refactor-round-5-3248993c93b0
 
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

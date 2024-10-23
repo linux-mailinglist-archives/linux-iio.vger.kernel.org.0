@@ -1,125 +1,252 @@
-Return-Path: <linux-iio+bounces-11019-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11020-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15C19AD538
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 21:51:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD03A9AD5E9
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 22:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D127E1C20F95
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 19:50:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61C2F1F2334D
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 20:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C9F1E1C0E;
-	Wed, 23 Oct 2024 19:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817081E766A;
+	Wed, 23 Oct 2024 20:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="r2hHWu/g"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oANJdccm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9328F78C9C;
-	Wed, 23 Oct 2024 19:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351251E2826
+	for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 20:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729713050; cv=none; b=Yp7JUeQ4JMkdNmb2cc82x/RPouWKyyi6ylKldPxnRHLSGzko+PkZUx03oOsOcCdxyhLglWQyCh9KLoRzMraNFOmYbg05QXx+HUruj2dYJlxHFx1L71xCXoPXvUlCPV1HHA8OiYf54gNhwr/4ZI0tAXpLxn/UpagFbRNaBQ7FuFk=
+	t=1729717160; cv=none; b=m0ZhTU9ku/BGEDbdcUyUI6EozXkjxsu9z10twFpD6sLbX7AZDr3KP+p31rBR/WcOF4FODyldakkr9qDTG1lVLQsEYw+sK/CsGC5v0V+F5Sj9AGpLfOGFdRgbnhz1i2sKs+VwbcH8Aa6t4nlEZByT2LzJvAiXrgo7pymPLz3SM6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729713050; c=relaxed/simple;
-	bh=2ghk0RCQfrEQ5PI5QuMxPEnNHhK1nZSzgig7gukZ/Mo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ONOf2+5ev3jBzRqUo7KHjsJJy0JaFOcoB8+D9RJBo1+8jMWEjEIrLHDVzHvTX5Fg+egAZljoot3BfzxXObVqZWcWFD4E0ZSq3xwL54nZi4UPs88LxYkbH+CXGs7FTlWNiykR3cmu8cb0ASZwLqS1sFufJ4nuOr8br99GnKoLgiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=r2hHWu/g; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4XYfmH2B6Bz9t06;
-	Wed, 23 Oct 2024 21:50:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1729713039;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+DiBGY7JXTau9/+lExprJsgF423QWQvTINVO37mbHBA=;
-	b=r2hHWu/gsNMva0I9QpfanG6ib8PMatoREIpS03GQI99J5qN8kYcgZDEQ1a0TaReloWibzZ
-	bZ54lvnJek1CXI+BYnY6aZtMSl7X/R5Yv3b6pe0jO21XelmY+QWq7vXPmtSQn9PFTImpvi
-	kvfSOWFc5LEQE3wGn9L8a8wSgSiBfBklT5Y40nj43eWhnILCGp2qEQYbGWfHlsIFZSTy4y
-	hWQalszvnBs3MQa3UbqvIgfi+l7k6QgwiLPkmsDRA9hmJ+JSMhMpGX/Kd2Q514C4QPGfbP
-	3APh6xRPvSFN0/6mnVNau4AeuVXQUkWF6fTS4udK9eWIaW9K9+22sY/0nm7Fsw==
-Message-ID: <dc3df94f-7281-4a42-8db1-ee4f556b3d6f@mailbox.org>
-Date: Wed, 23 Oct 2024 21:50:27 +0200
+	s=arc-20240116; t=1729717160; c=relaxed/simple;
+	bh=gUkuBY9bo71JJTJB5re/xUdAobzayyfJ8VRpLHGMDaU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aVmkFhGJg9yz18a8hjUumv7A34aeW/Nod8Qo0IlbyL19D3SimTY/v+Pz+jF3hdEpawUU00S52NRKDZDgAv80A2mv/S8NWjP6PH258p08yjh3uZNCXOM2Gm78D6yC0xvGZCS2v0kONjujP6cPK31D4rzbrPR7cw4/FZNVO92l5ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oANJdccm; arc=none smtp.client-ip=209.85.161.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5e5b5715607so131158eaf.1
+        for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 13:59:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729717156; x=1730321956; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Sq3YErNwXlYIDZenVr/C+NE9FZlP0tU7NSaS67Os0c=;
+        b=oANJdccmolGUM+wDY3oJPnn4o6irj/s3KlNDOVy61nKYd0WLqDprl5VGGO6TjNXtwx
+         c3vFQZ21T3x7ck5m6JUkDX4s1YZ3ipNplBqXmPuUuVQDKSG93fUV5xNdv0p2AmxpdCbv
+         roFadTTb6sCkICIElniOXMqYgVutQPVUTVnEwnMBNa8ixF3w5/rbvPmbyTZ7vsjdWlq9
+         2db88OGI6d+28nThhMs4QR+VR+4ENvl8ZvcJ6w5kup5FVj4eBygonQA0cAE7/DBaxp32
+         kmGx3/ac+Q2RRjhyy6yWJLft+yGIeYIJP2DXhkWmllxA2kgkH8u4/Vua3QcTYOy3lsgd
+         KRTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729717156; x=1730321956;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2Sq3YErNwXlYIDZenVr/C+NE9FZlP0tU7NSaS67Os0c=;
+        b=BFih0obgYYxVAKYJ/R5jMze3GfprBPBHnyOHYI7atmukPxToqg7He1XFs+Z9jFG+MD
+         gES+Rk4F7jays0JizqNuRKPFn/HQCY2roRajIdOP9q/G4CCbdqC6Su1ZrKX1QzqG3F/j
+         YkPU5Rh8l32Lz7H4cUv8i6ygdE0z1HS6lZa8Q7UnugO1GpyD8HtEllnejtVZZBBg/tmB
+         5/zvEAZzJS9LKT4OZmOOSVXpAT/GNYRG7uv8P/o8zJ4G/QyDXbDLDyQqVV6YFMkvfg32
+         m/mJJDt63NUpB6Yv4vnBHo76cNk4QrV+SoplTxQKiJizztUWbE1FcZ0FXz5Jy86NlJFM
+         YM+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUJa/GtZ9/8q5bemiKTQ9637F5/hntUXx+XuKsueZp0LjY/njDqZXPu8YXVBP1R6v//ZMGaK0f9WGQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydKPBQ/gOEE4VxAjmsS8H/VDjfqarlIvzLNI++IgXBEe+mnqpF
+	cENC6YnYwQuiSz0udWgdXXAPMp/POAIeM/54kjYvjCO/cdI3U0uVvQWwHX3XHFc=
+X-Google-Smtp-Source: AGHT+IF5vEkcFWBunbct3xDPJTcfOq2aHXuUYYMQqfOKidYToX+9CfBb1xysM7teRKdV7vOUrfBZ2A==
+X-Received: by 2002:a05:6820:2293:b0:5d6:ab0:b9a6 with SMTP id 006d021491bc7-5ebee27a8a1mr2398714eaf.4.1729717156206;
+        Wed, 23 Oct 2024 13:59:16 -0700 (PDT)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5ec02c2c157sm52730eaf.44.2024.10.23.13.59.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 13:59:14 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH RFC v4 00/15] spi: axi-spi-engine: add offload support
+Date: Wed, 23 Oct 2024 15:59:07 -0500
+Message-Id: <20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
- compliance requirements."
-Content-Language: en-US
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>, jeffbai@aosc.io,
- gregkh@linuxfoundation.org, wangyuli@uniontech.com, aospan@netup.ru,
- conor.dooley@microchip.com, ddrokosov@sberdevices.ru,
- dmaengine@vger.kernel.org, dushistov@mail.ru, fancer.lancer@gmail.com,
- geert@linux-m68k.org, hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-spi@vger.kernel.org, manivannan.sadhasivam@linaro.org,
- mattst88@gmail.com, netdev@vger.kernel.org, nikita@trvn.ru,
- ntb@lists.linux.dev, patches@lists.linux.dev, richard.henderson@linaro.org,
- s.shtylyov@omp.ru, serjk@netup.ru, shc_work@mail.ru,
- tsbogend@alpha.franken.de, v.georgiev@metrotek.ru,
- wsa+renesas@sang-engineering.com, xeb@mail.ru
-References: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
- <20241023080935.2945-2-kexybiscuit@aosc.io>
- <124c1b03-24c9-4f19-99a9-6eb2241406c2@mailbox.org>
- <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
-From: Tor Vic <torvic9@mailbox.org>
-In-Reply-To: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: wwofu5okm3posc3pe5gem39bz8ctt5wq
-X-MBO-RS-ID: e798e6f1cba1393a8e6
+X-B4-Tracking: v=1; b=H4sIAJtjGWcC/5WNQQrCMBBFryJZOxLT1KgrQfAAbsVFkk7agTSRR
+ IpSendjN4Ir3Xz+n4H3RpYxEWa2X4ws4UCZYihDLhfMdjq0CNSUzQQXktdrDo1H20GvKXgKCPl
+ GgKF91+icj7oBAdpZrNSOm1obVki3hI4es+XCzqcju5ZjR/ke03M2D2J+/SUZBHDYKq50CSur+
+ mD005NJuLKxnxVD9cEqIX7DVgWrpOAo68ZtduYLO03TC+a9ArM1AQAA
+To: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>, 
+ Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.1
 
+In this revision, I ended up changing quite a bit more that I was
+expecting.
 
+In the DT bindings, I ended up dropping the #spi-offload-cells and
+spi-offload properties. A couple of reasons for this:
 
-On 10/23/24 19:45, Linus Torvalds wrote:
-> Ok, lots of Russian trolls out and about.
-> 
-> It's entirely clear why the change was done, it's not getting
-> reverted, and using multiple random anonymous accounts to try to
-> "grass root" it by Russian troll factories isn't going to change
-> anything.
-> 
+1. Several people commented that it is odd to have a separate provider/
+   consumer binding for something that already has a parent/child
+   relationship (both on this series and in another unrelated series
+   with io-backends). For now, the only SPI offload provider is the AXI
+   SPI Engine, which is a SPI controller.
+2. In a discussion unrelated to this series, but related to the idea
+   of SPI offloads [1], it became apparent that the proposed use for
+   the cells to select triggers and tx/rx streams doesn't actually
+   work for that case.
+3. In offline review, it was suggested that assigning specific offloads
+   to specific peripherals may be too restrictive, e.g. if there are
+   controllers that have pools of identical offloads. This idea of
+   pools of generic offloads has also come up in previous discussions
+   on the mailing list.
 
-I'm getting tired of reading this type of accusations.
+[1]: https://lore.kernel.org/linux-iio/e5310b63-9dc4-43af-9fbe-0cc3b604ab8b@baylibre.com/
 
-It's true that I'm just a random unimportant Linux user following the 
-mailing list, but this account is not a "multiple" account emanating 
-from a troll factory.
+So the idea is that if we do end up needing to use DT to assign certain
+resources (triggers, DMA channels, etc.) to specific peripherals, we
+would make a mapping attribute in the controller node rather than using
+phandle cells. But we don't need this yet, so it isn't present in The
+current patches.
 
-'git log' gives you more info.
+And if we ever end up with a SPI offload provider that is not a SPI
+controller, we can bring back the #spi-offload-cells and
+spi-offload properties.
 
-> And FYI for the actual innocent bystanders who aren't troll farm
-> accounts - the "various compliance requirements" are not just a US
-> thing.
-> 
-> If you haven't heard of Russian sanctions yet, you should try to read
-> the news some day.  And by "news", I don't mean Russian
-> state-sponsored spam.
-> 
-> As to sending me a revert patch - please use whatever mush you call
-> brains. I'm Finnish. Did you think I'd be *supporting* Russian
-> aggression? Apparently it's not just lack of real news, it's lack of
-> history knowledge too.
-> 
->                        Linus
+Regarding the SPI core changes, there are more details on each
+individual patch, but a lot has changed there due to adding a second
+ADC consumer that is wired up differently. The AD7944 is as pictured
+below, but the AD4695 that has been added has the ADC chip itself as
+the SPI offload trigger source, which I found to not be compatible with
+many of the assumptions we made in previous revisions. So there isn't
+much that is still the same as in previous revisions.
+
+---
+Changes in v4:
+- Dropped #spi-offload-cells and spi-offload properties from DT bindings.
+- Made an attempt at a more generic trigger interface instead of using
+  clk framework. This also includes a new driver for a generic PWM
+  trigger.
+- Addressed IIO review comments.
+- Added new patches for iio/adc/ad4695 as 2nd user of SPI offload.
+- Link to v3: https://lore.kernel.org/r/20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com
+
+Changes in v3:
+- Reworked DT bindings to have things physically connected to the SPI
+  controller be properties of the SPI controller and use more
+  conventional provider/consumer properties.
+- Added more SPI APIs for peripheral drivers to use to get auxillary
+  offload resources, like triggers.
+- Link to v2: https://lore.kernel.org/r/20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com
+
+Individual patches have more details on these changes and earlier revisions too.
+---
+
+As a recap, here is the background and end goal of this series:
+
+The AXI SPI Engine is a SPI controller that has the ability to record a
+series of SPI transactions and then play them back using a hardware
+trigger. This allows operations to be performed, repeating many times,
+without any CPU intervention. This is needed for achieving high data
+rates (millions of samples per second) from ADCs and DACs that are
+connected via a SPI bus.
+
+The offload hardware interface consists of a trigger input and a data
+output for the RX data. These are connected to other hardware external
+to the SPI controller.
+
+To record one or more transactions, commands and TX data are written
+to memories in the controller (RX buffer is not used since RX data gets
+streamed to an external sink). This sequence of transactions can then be
+played back when the trigger input is asserted.
+
+This series includes core SPI support along with the first SPI
+controller (AXI SPI Engine) and SPI peripheral (AD7944 ADC) that use
+them. This enables capturing analog data at 2 million samples per
+second.
+
+The hardware setup looks like this:
+
++-------------------------------+   +------------------+
+|                               |   |                  |
+|  SOC/FPGA                     |   |  AD7944 ADC      |
+|  +---------------------+      |   |                  |
+|  | AXI SPI Engine      |      |   |                  |
+|  |             SPI Bus ============ SPI Bus          |
+|  |                     |      |   |                  |
+|  |  +---------------+  |      |   |                  |
+|  |  | Offload 0     |  |      |   +------------------+
+|  |  |   RX DATA OUT > > > >   |
+|  |  |    TRIGGER IN < < <  v  |
+|  |  +---------------+  | ^ v  |
+|  +---------------------+ ^ v  |
+|  | AXI PWM             | ^ v  |
+|  |                 CH0 > ^ v  |
+|  +---------------------+   v  |
+|  | AXI DMA             |   v  |
+|  |                 CH0 < < <  |
+|  +---------------------+      |
+|                               |
++-------------------------------+
+
+---
+David Lechner (15):
+      pwm: core: export pwm_get_state_hw()
+      spi: add basic support for SPI offloading
+      spi: offload: add support for hardware triggers
+      spi: dt-bindings: add trigger-source.yaml
+      spi: dt-bindings: add PWM SPI offload trigger
+      spi: offload-trigger: add PWM trigger driver
+      spi: add offload TX/RX streaming APIs
+      spi: dt-bindings: axi-spi-engine: add SPI offload properties
+      spi: axi-spi-engine: implement offload support
+      iio: buffer-dmaengine: document iio_dmaengine_buffer_setup_ext
+      iio: buffer-dmaengine: add devm_iio_dmaengine_buffer_setup_ext2()
+      iio: adc: ad7944: don't use storagebits for sizing
+      iio: adc: ad7944: add support for SPI offload
+      dt-bindings: iio: adc: adi,ad4695: add SPI offload properties
+      iio: adc: ad4695: Add support for SPI offload
+
+ .../devicetree/bindings/iio/adc/adi,ad4695.yaml    |  13 +-
+ .../bindings/spi/adi,axi-spi-engine.yaml           |  22 +
+ .../devicetree/bindings/spi/trigger-pwm.yaml       |  39 ++
+ .../devicetree/bindings/spi/trigger-source.yaml    |  28 ++
+ drivers/iio/adc/Kconfig                            |   2 +
+ drivers/iio/adc/ad4695.c                           | 470 +++++++++++++++++++--
+ drivers/iio/adc/ad7944.c                           | 249 ++++++++++-
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c | 104 ++++-
+ drivers/pwm/core.c                                 |  55 ++-
+ drivers/spi/Kconfig                                |  16 +
+ drivers/spi/Makefile                               |   4 +
+ drivers/spi/spi-axi-spi-engine.c                   | 273 +++++++++++-
+ drivers/spi/spi-offload-trigger-pwm.c              | 169 ++++++++
+ drivers/spi/spi-offload.c                          | 446 +++++++++++++++++++
+ drivers/spi/spi.c                                  |  10 +
+ include/linux/iio/buffer-dmaengine.h               |   5 +
+ include/linux/pwm.h                                |   1 +
+ include/linux/spi/spi-offload.h                    | 166 ++++++++
+ include/linux/spi/spi.h                            |  19 +
+ 19 files changed, 1995 insertions(+), 96 deletions(-)
+---
+base-commit: 6c4b0dd7d0df3a803766d4954dc064dc57aeda17
+change-id: 20240510-dlech-mainline-spi-engine-offload-2-afce3790b5ab
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

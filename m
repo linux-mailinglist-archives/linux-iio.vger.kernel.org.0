@@ -1,742 +1,103 @@
-Return-Path: <linux-iio+bounces-11035-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11036-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF279AD636
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 23:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F53A9AD7A0
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 00:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 779571C20CC2
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 21:03:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DD041C20CC5
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 22:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6C7207A26;
-	Wed, 23 Oct 2024 21:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05601FEFC9;
+	Wed, 23 Oct 2024 22:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bAMCips6"
+	dkim=pass (2048-bit key) header.d=notyourfox.coffee header.i=@notyourfox.coffee header.b="Qzx5NnIV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+Received: from mail.notyourfox.coffee (mail.notyourfox.coffee [92.63.193.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F41420604A
-	for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 21:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8717A156C6F;
+	Wed, 23 Oct 2024 22:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.63.193.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729717203; cv=none; b=IzXhCEfuyzffHG9RTvbRPdnKGDaPLjXp991G1Pj0H7tb8NLU8/Fjon0WCk5uD4bUJdbrI5VzGZLpEQpdW0CVxoQHlky12mJxX+bY1SZYBRnFrQz/bo5RvjFO3nHMvh4D+zF5iiUsCYM0+g8koHSiKpC4KiD+lzxNg6Og1OFUBVY=
+	t=1729722716; cv=none; b=q3vuSn1p3c97UrS+1/8igS+d2zV4MGkUzQfYPYZIYixRDNsplNqK39LH+qM8YoPgUyVu5EwEmPDYFcd6+CatuaTVawmofLVbxFQxt9AqpvHP8+wTt46WdgEryR5bMgUOaISxgxIajJGTJC04h36+czba5ZlGhvJ627LfhA+TeH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729717203; c=relaxed/simple;
-	bh=yNmOcChsKq4/9GgjRbr9ryWwkcaHw6cRDMeIchBwwRM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eJYFP1HvAterYF2hWHWzPtGB5Kkb9yww3/e6xHrqJ56zsZjdfLa50ZvwJpbWiDuWfo6gmzP4/+kPQ/vcFJ8ep2/7SMQBmE3lLVUY8VKDfm4I4J9ni5z1aroCyI90mOBW3Jj3LOsmMVqrXdm7AXkGZeYuPIydKCH6uUaAdZGHbkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bAMCips6; arc=none smtp.client-ip=209.85.161.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5eb67d926c4so140106eaf.0
-        for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 14:00:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729717199; x=1730321999; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NpqewWkBeL5YA+0h8Tu2l8PEEwW8v5sVkJknMJkiYMA=;
-        b=bAMCips633jgJEawwY/nQ8bXGmPfvVDC4w3VlpXYU0EkEACP7j/BlkJ740wQamWwEB
-         NGPIHyNYB53JuHAE2FPtG+xpI3j3k7HQIV2d+Jqsuqj7FoxEj5hdNvAR6idVLmfpuA+1
-         iBP3M9nRzw5qG0yf23cnpL+StfQCYnL+RU1eLDvV+1wMEz2rg8xRo++s9lSWBHfVBQwV
-         fRsTM1o+GagHK5ulNtyv4COKrPupm7m6qGstsYmIf7X54GOiXzvBtSIPFlxsiTgypv9A
-         3VegU4r1SwwRDJmjJyKLHJwBXe2h6IUL70ftMMIK6HrnKuLVSxsvZIGoETJvYgapQ/jx
-         4tOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729717199; x=1730321999;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NpqewWkBeL5YA+0h8Tu2l8PEEwW8v5sVkJknMJkiYMA=;
-        b=Gd2HJl0Hc0flZGqA4tFrD71I1sA+gRG6iyawyEiOl29HnkzIm8wi7M54qGIinXzPS/
-         CpTpLw7eNgdLiY27kIGtalL4MgnhwIpFbBE376o4C1A56R2twFOPDzf6V85QsHjH+GJK
-         EScoe1zktDyctDwL4Z2cEy4XprU8DX0nWLHp3wdVGKnJ2HfMJgaBgTAWGv25PtWJwkq7
-         +DmyW9CBaC6TH/3xGKQD6ThMTePdrVEa+b9Otoin50lIHCN0corrUwK9bi8FWH6z92ny
-         WSoHFnA1A1T4MxqOndkcXdzZy7BP2DCi1824pi6IrHrlBBxE3HBrMAZNkCBGhmTOGXyU
-         6DhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWeQelVfXcsVHpd7OYqebyhCBIffioxuYazwDIGSXR9DAEZpR3+MpIEIQ1/Ur9FkJOSBnR+8LC0Tr4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAiKlweT/3MSY2AOymq0tUcXzbpI3M+GLQnB0JKAoynvKEwQ0L
-	+/lDq+XGR3xfrM7ud2VjqcgW5HPXqTT84t7+ukPxd0ynkk9uUE67/MDL4YpOc/s=
-X-Google-Smtp-Source: AGHT+IEq8xTH1knR1qZber5eXHa4hS9/pMfWY5RtrwXk/Ht06SeRlMq6G/tOoUSvZ9OAaxDSBg1lsw==
-X-Received: by 2002:a05:6820:160d:b0:5eb:6b3e:ce7f with SMTP id 006d021491bc7-5ebedeb15f8mr2185894eaf.0.1729717199564;
-        Wed, 23 Oct 2024 13:59:59 -0700 (PDT)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5ec02c2c157sm52730eaf.44.2024.10.23.13.59.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 13:59:58 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 23 Oct 2024 15:59:22 -0500
-Subject: [PATCH RFC v4 15/15] iio: adc: ad4695: Add support for SPI offload
+	s=arc-20240116; t=1729722716; c=relaxed/simple;
+	bh=lBqM5PBwzs7x9XceHQ9rfZgT7htaBeYa/E3GDqF9nXU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=WB337mOGkhic3fNsyKeUY7XtqugTyJsmFsSwSXo+scTxrZOwEvZkXdfnUsuqYjTgMwE155hCPJ2faWh84m5/LKqT2Mse7TfJMF8c0nWdTNaKuFnMlsxgqfQnWtG3m2G2BY63BNs6CnC016blMzFzw7YYwwhNgFw36Wc44zyzKX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=notyourfox.coffee; spf=pass smtp.mailfrom=notyourfox.coffee; dkim=pass (2048-bit key) header.d=notyourfox.coffee header.i=@notyourfox.coffee header.b=Qzx5NnIV; arc=none smtp.client-ip=92.63.193.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=notyourfox.coffee
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=notyourfox.coffee
+DKIM-Signature: a=rsa-sha256; bh=21ozGVKPYTmOqYBKOcOmOK+mSJIkuon14lUJ9oaW7vM=;
+ c=relaxed/relaxed; d=notyourfox.coffee;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@notyourfox.coffee; s=mail; t=1729721693; v=1; x=1730153693;
+ b=Qzx5NnIVSz7GYrDq8cD6l5rVz4+yd3Yy0awiIXQ74n7AFlsPGnqrWQg6R6416QT+gDRK9zC8
+ 9xhmK/sXgtRFfrZuRTrJT44F2y0hvsfoeDKX+jvRt/xYJezg0GvKvAfTGTChJHSFh9G5Px8JJDQ
+ ItihhXdHyhCSdjbd56F+uiNFCT1zCuJG/Ri/sCwEuVj440Wyh1yTbfFA2uTKwQh8BGf1pSB7Ve+
+ G1ukignizWPp5P6QKWyCjWYu/mi/HkS83y71a1L99yqksWnODf1S+p7ekZij6dMqSGCUF0KoEae
+ Q6vlmTQmE/I5KlptBRFhJuu+uy+Wxrv/d/yn77tWE1ZEg==
+Received: by mail.notyourfox.coffee (envelope-sender
+ <contact@notyourfox.coffee>) with ESMTPS id 9d61df4a; Wed, 23 Oct 2024
+ 22:14:53 +0000
+Message-ID: <bd0c85d0-6941-4693-bae5-a3f6613f829c@notyourfox.coffee>
+Date: Thu, 24 Oct 2024 01:14:51 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: torvalds@linux-foundation.org
+Cc: aospan@netup.ru, conor.dooley@microchip.com, ddrokosov@sberdevices.ru,
+ dmaengine@vger.kernel.org, dushistov@mail.ru, fancer.lancer@gmail.com,
+ geert@linux-m68k.org, gregkh@linuxfoundation.org,
+ hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru, jeffbai@aosc.io,
+ kexybiscuit@aosc.io, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-fpga@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+ manivannan.sadhasivam@linaro.org, mattst88@gmail.com,
+ netdev@vger.kernel.org, nikita@trvn.ru, ntb@lists.linux.dev,
+ patches@lists.linux.dev, richard.henderson@linaro.org, s.shtylyov@omp.ru,
+ serjk@netup.ru, shc_work@mail.ru, torvic9@mailbox.org,
+ tsbogend@alpha.franken.de, v.georgiev@metrotek.ru, wangyuli@uniontech.com,
+ wsa+renesas@sang-engineering.com, xeb@mail.ru
+References: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
+Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
+ compliance requirements."
+Content-Language: en-US
+From: NotYourFox <contact@notyourfox.coffee>
+In-Reply-To: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241023-dlech-mainline-spi-engine-offload-2-v4-15-f8125b99f5a1@baylibre.com>
-References: <20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
-In-Reply-To: <20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
-To: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>, 
- Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.1
 
-Add support for SPI offload to the ad4695 driver. SPI offload allows
-sampling data at the max sample rate (500kSPS or 1MSPS).
+Dear Linus,
 
-This is developed and tested against the ADI example FPGA design for
-this family of ADCs [1].
+Yet another of probably a million "actual innocent Russian bystanders" 
+is here. For quite a reason. While I do not contribute to Linux kernel, 
+I am a long-time user of Linux and a big fan of FOSS. You may consider 
+it a spam, and it might as well be, but this just blew up our IT-related 
+media.
+I am, or, rather, many of us are disappointed in the way you put 
+politics over software freedom now.
+This move did nothing against Russian aggression, but rather 
+disappointed a lot of us, who don't support or have anything to do with 
+the ongoing war. The contributors you dropped for, as it seems, no 
+reason other than "compliance requirements" have done some actual work 
+to improve Linux, so kicking them for apparently just being from Russia 
+is... just plain discrimination.
+If that's the law you have to follow, go on. If it's your own actual 
+choice - you need to revisit what "free software" means.
 
-[1]: http://analogdevicesinc.github.io/hdl/projects/ad469x_fmc/index.html
+If I am blatantly wrong about all this, knowing it would only be a balm 
+for my soul.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/Kconfig  |   1 +
- drivers/iio/adc/ad4695.c | 470 +++++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 440 insertions(+), 31 deletions(-)
-
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 92dfb495a8ce..f76a3f62a9ad 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -53,6 +53,7 @@ config AD4695
- 	depends on SPI
- 	select REGMAP_SPI
- 	select IIO_BUFFER
-+	select IIO_BUFFER_DMAENGINE
- 	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say yes here to build support for Analog Devices AD4695 and similar
-diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
-index 595ec4158e73..c150851d1fb1 100644
---- a/drivers/iio/adc/ad4695.c
-+++ b/drivers/iio/adc/ad4695.c
-@@ -19,14 +19,18 @@
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/iio/buffer-dmaengine.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/triggered_buffer.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/minmax.h>
-+#include <linux/mutex.h>
- #include <linux/property.h>
-+#include <linux/pwm.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/spi/spi-offload.h>
- #include <linux/spi/spi.h>
- #include <linux/units.h>
- 
-@@ -66,6 +70,8 @@
- #define AD4695_REG_STD_SEQ_CONFIG			0x0024
- #define AD4695_REG_GPIO_CTRL				0x0026
- #define AD4695_REG_GP_MODE				0x0027
-+#define   AD4695_REG_GP_MODE_BUSY_GP_SEL		  BIT(5)
-+#define   AD4695_REG_GP_MODE_BUSY_GP_EN			  BIT(1)
- #define AD4695_REG_TEMP_CTRL				0x0029
- #define   AD4695_REG_TEMP_CTRL_TEMP_EN			  BIT(0)
- #define AD4695_REG_CONFIG_IN(n)				(0x0030 | (n))
-@@ -87,6 +93,7 @@
- 
- /* timing specs */
- #define AD4695_T_CONVERT_NS		415
-+#define AD4695_T_CNVH_NS		10
- #define AD4695_T_WAKEUP_HW_MS		3
- #define AD4695_T_WAKEUP_SW_MS		3
- #define AD4695_T_REFBUF_MS		100
-@@ -121,9 +128,18 @@ struct ad4695_channel_config {
- 
- struct ad4695_state {
- 	struct spi_device *spi;
-+	struct spi_offload *offload;
-+	struct spi_offload_trigger *offload_trigger;
-+	u32 spi_max_speed_hz;
- 	struct regmap *regmap;
- 	struct regmap *regmap16;
- 	struct gpio_desc *reset_gpio;
-+	/* currently PWM CNV only supported with SPI offload use */
-+	struct pwm_device *cnv_pwm;
-+	/* protects against concurrent use of cnv_pwm */
-+	struct mutex cnv_pwm_lock;
-+	/* offload also requires separate gpio to manually control CNV */
-+	struct gpio_desc *cnv_gpio;
- 	/* voltages channels plus temperature and timestamp */
- 	struct iio_chan_spec iio_chan[AD4695_MAX_CHANNELS + 2];
- 	struct ad4695_channel_config channels_cfg[AD4695_MAX_CHANNELS];
-@@ -571,6 +587,167 @@ static irqreturn_t ad4695_trigger_handler(int irq, void *p)
- 	return IRQ_HANDLED;
- }
- 
-+static void ad4695_cnv_manual_trigger(struct ad4695_state *st)
-+{
-+	gpiod_set_value_cansleep(st->cnv_gpio, 1);
-+	ndelay(10);
-+	gpiod_set_value_cansleep(st->cnv_gpio, 0);
-+}
-+
-+static int ad4695_offload_buffer_postenable(struct iio_dev *indio_dev)
-+{
-+	struct ad4695_state *st = iio_priv(indio_dev);
-+	struct spi_offload_trigger_config config = {
-+		.type = SPI_OFFLOAD_TRIGGER_DATA_READY,
-+	};
-+	struct spi_transfer *xfer = &st->buf_read_xfer[0];
-+	struct pwm_state state;
-+	u8 temp_chan_bit = st->chip_info->num_voltage_inputs;
-+	u8 num_slots = 0;
-+	u8 temp_en = 0;
-+	unsigned int bit;
-+	int ret;
-+
-+	iio_for_each_active_channel(indio_dev, bit) {
-+		if (bit == temp_chan_bit) {
-+			temp_en = 1;
-+			continue;
-+		}
-+
-+		ret = regmap_write(st->regmap, AD4695_REG_AS_SLOT(num_slots),
-+				   FIELD_PREP(AD4695_REG_AS_SLOT_INX, bit));
-+		if (ret)
-+			return ret;
-+
-+		num_slots++;
-+	}
-+
-+	/*
-+	 * For non-offload, we could discard data to work around this
-+	 * restriction, but with offload, that is not possible.
-+	 */
-+	if (num_slots < 2) {
-+		dev_err(&st->spi->dev,
-+			"At least two voltage channels must be enabled.\n");
-+		return -EINVAL;
-+	}
-+
-+	ret = regmap_update_bits(st->regmap, AD4695_REG_TEMP_CTRL,
-+				 AD4695_REG_TEMP_CTRL_TEMP_EN,
-+				 FIELD_PREP(AD4695_REG_TEMP_CTRL_TEMP_EN,
-+					    temp_en));
-+	if (ret)
-+		return ret;
-+
-+	/* Each BUSY event means just one sample for one channel is ready. */
-+	memset(xfer, 0, sizeof(*xfer));
-+	xfer->offload_flags = SPI_OFFLOAD_XFER_RX_STREAM;
-+	xfer->bits_per_word = 16;
-+	xfer->len = 2;
-+
-+	spi_message_init_with_transfers(&st->buf_read_msg, xfer, 1);
-+	st->buf_read_msg.offload = st->offload;
-+
-+	st->spi->max_speed_hz = st->spi_max_speed_hz;
-+	ret = spi_optimize_message(st->spi, &st->buf_read_msg);
-+	st->spi->max_speed_hz = AD4695_REG_ACCESS_SCLK_HZ;
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * NB: technically, this is part the SPI offload trigger enable, but it
-+	 * doesn't work to call it from the offload trigger enable callback
-+	 * due to issues with ordering with respect to entering/exiting
-+	 * conversion mode.
-+	 */
-+	ret = regmap_set_bits(st->regmap, AD4695_REG_GP_MODE,
-+			      AD4695_REG_GP_MODE_BUSY_GP_EN);
-+	if (ret)
-+		goto err_unoptimize_message;
-+
-+	ret = spi_offload_trigger_enable(st->offload, st->offload_trigger,
-+					 &config);
-+	if (ret)
-+		goto err_disable_busy_output;
-+
-+	ret = ad4695_enter_advanced_sequencer_mode(st, num_slots);
-+	if (ret)
-+		goto err_offload_trigger_disable;
-+
-+	guard(mutex)(&st->cnv_pwm_lock);
-+	pwm_get_state(st->cnv_pwm, &state);
-+	/*
-+	 * PWM subsystem generally rounds down, so requesting 2x minimum high
-+	 * time ensures that we meet the minimum high time in any case.
-+	 */
-+	state.duty_cycle = AD4695_T_CNVH_NS * 2;
-+	ret = pwm_apply_might_sleep(st->cnv_pwm, &state);
-+	if (ret)
-+		goto err_offload_exit_conversion_mode;
-+
-+	return 0;
-+
-+err_offload_exit_conversion_mode:
-+	/* have to unwind in a different order to avoid triggering offload */
-+	spi_offload_trigger_disable(st->offload, st->offload_trigger);
-+	ad4695_cnv_manual_trigger(st);
-+	ad4695_exit_conversion_mode(st);
-+	goto err_disable_busy_output;
-+
-+err_offload_trigger_disable:
-+	spi_offload_trigger_disable(st->offload, st->offload_trigger);
-+
-+err_disable_busy_output:
-+	regmap_clear_bits(st->regmap, AD4695_REG_GP_MODE,
-+			  AD4695_REG_GP_MODE_BUSY_GP_EN);
-+
-+err_unoptimize_message:
-+	spi_unoptimize_message(&st->buf_read_msg);
-+
-+	return ret;
-+}
-+
-+static int ad4695_offload_buffer_predisable(struct iio_dev *indio_dev)
-+{
-+	struct ad4695_state *st = iio_priv(indio_dev);
-+	struct pwm_state state;
-+	int ret;
-+
-+	scoped_guard(mutex, &st->cnv_pwm_lock) {
-+		pwm_get_state(st->cnv_pwm, &state);
-+		state.duty_cycle = 0;
-+		ret = pwm_apply_might_sleep(st->cnv_pwm, &state);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	spi_offload_trigger_disable(st->offload, st->offload_trigger);
-+
-+	/*
-+	 * We have to trigger on more conversion to ensure that the exit
-+	 * conversion mode command works.
-+	 */
-+	ad4695_cnv_manual_trigger(st);
-+
-+	ret = ad4695_exit_conversion_mode(st);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_clear_bits(st->regmap, AD4695_REG_GP_MODE,
-+				AD4695_REG_GP_MODE_BUSY_GP_EN);
-+	if (ret)
-+		return ret;
-+
-+	spi_unoptimize_message(&st->buf_read_msg);
-+
-+	return 0;
-+}
-+
-+static const struct iio_buffer_setup_ops ad4695_offload_buffer_setup_ops = {
-+	.postenable = ad4695_offload_buffer_postenable,
-+	.predisable = ad4695_offload_buffer_predisable,
-+};
-+
- /**
-  * ad4695_read_one_sample - Read a single sample using single-cycle mode
-  * @st: The AD4695 state
-@@ -583,13 +760,20 @@ static irqreturn_t ad4695_trigger_handler(int irq, void *p)
-  */
- static int ad4695_read_one_sample(struct ad4695_state *st, unsigned int address)
- {
--	struct spi_transfer xfer[2] = { };
--	int ret, i = 0;
-+	struct spi_transfer xfer = { };
-+	int ret;
- 
- 	ret = ad4695_set_single_cycle_mode(st, address);
- 	if (ret)
- 		return ret;
- 
-+	/*
-+	 * If CNV is connected to CS, the previous function will have triggered
-+	 * the conversion, otherwise, we do it manually.
-+	 */
-+	if (st->cnv_gpio)
-+		ad4695_cnv_manual_trigger(st);
-+
- 	/*
- 	 * Setting the first channel to the temperature channel isn't supported
- 	 * in single-cycle mode, so we have to do an extra xfer to read the
-@@ -598,23 +782,29 @@ static int ad4695_read_one_sample(struct ad4695_state *st, unsigned int address)
- 	if (address == AD4695_CMD_TEMP_CHAN) {
- 		/* We aren't reading, so we can make this a short xfer. */
- 		st->cnv_cmd2 = AD4695_CMD_TEMP_CHAN << 3;
--		xfer[0].tx_buf = &st->cnv_cmd2;
--		xfer[0].len = 1;
--		xfer[0].cs_change = 1;
--		xfer[0].cs_change_delay.value = AD4695_T_CONVERT_NS;
--		xfer[0].cs_change_delay.unit = SPI_DELAY_UNIT_NSECS;
-+		xfer.tx_buf = &st->cnv_cmd2;
-+		xfer.len = 1;
-+
-+		ret = spi_sync_transfer(st->spi, &xfer, 1);
-+		if (ret)
-+			return ret;
- 
--		i = 1;
-+		/*
-+		 * If CNV is connected to CS, the previous function will have
-+		 * triggered the conversion, otherwise, we do it manually.
-+		 */
-+		if (st->cnv_gpio)
-+			ad4695_cnv_manual_trigger(st);
- 	}
- 
- 	/* Then read the result and exit conversion mode. */
- 	st->cnv_cmd = AD4695_CMD_EXIT_CNV_MODE << 11;
--	xfer[i].bits_per_word = 16;
--	xfer[i].tx_buf = &st->cnv_cmd;
--	xfer[i].rx_buf = &st->raw_data;
--	xfer[i].len = 2;
-+	xfer.bits_per_word = 16;
-+	xfer.tx_buf = &st->cnv_cmd;
-+	xfer.rx_buf = &st->raw_data;
-+	xfer.len = 2;
- 
--	return spi_sync_transfer(st->spi, xfer, i + 1);
-+	return spi_sync_transfer(st->spi, &xfer, 1);
- }
- 
- static int ad4695_read_raw(struct iio_dev *indio_dev,
-@@ -721,11 +911,34 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_SAMP_FREQ: {
-+		struct pwm_state state;
-+
-+		ret = pwm_get_state_hw(st->cnv_pwm, &state);
-+		if (ret)
-+			return ret;
-+
-+		*val = DIV_ROUND_UP_ULL(NSEC_PER_SEC, state.period);
-+
-+		return IIO_VAL_INT;
-+	}
- 	default:
- 		return -EINVAL;
- 	}
- }
- 
-+static int ad4695_write_raw_get_fmt(struct iio_dev *indio_dev,
-+				    struct iio_chan_spec const *chan,
-+				    long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return IIO_VAL_INT;
-+	default:
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	}
-+}
-+
- static int ad4695_write_raw(struct iio_dev *indio_dev,
- 			    struct iio_chan_spec const *chan,
- 			    int val, int val2, long mask)
-@@ -779,6 +992,17 @@ static int ad4695_write_raw(struct iio_dev *indio_dev,
- 			default:
- 				return -EINVAL;
- 			}
-+		case IIO_CHAN_INFO_SAMP_FREQ: {
-+			struct pwm_state state;
-+
-+			if (val <= 0)
-+				return -EINVAL;
-+
-+			guard(mutex)(&st->cnv_pwm_lock);
-+			pwm_get_state(st->cnv_pwm, &state);
-+			state.period = DIV_ROUND_UP_ULL(NSEC_PER_SEC, val);
-+			return pwm_apply_might_sleep(st->cnv_pwm, &state);
-+		}
- 		default:
- 			return -EINVAL;
- 		}
-@@ -857,6 +1081,7 @@ static int ad4695_debugfs_reg_access(struct iio_dev *indio_dev,
- 
- static const struct iio_info ad4695_info = {
- 	.read_raw = &ad4695_read_raw,
-+	.write_raw_get_fmt = &ad4695_write_raw_get_fmt,
- 	.write_raw = &ad4695_write_raw,
- 	.read_avail = &ad4695_read_avail,
- 	.debugfs_reg_access = &ad4695_debugfs_reg_access,
-@@ -970,26 +1195,173 @@ static int ad4695_parse_channel_cfg(struct ad4695_state *st)
- 	return 0;
- }
- 
-+static bool ad4695_offload_trigger_match(void *priv,
-+					 enum spi_offload_trigger_type type,
-+					 u64 *args, u32 nargs)
-+{
-+	if (type != SPI_OFFLOAD_TRIGGER_DATA_READY)
-+		return false;
-+
-+	// TODO: create macros for args[0] and args[1]
-+	// args[0] is the trigger signal, 0 == BUSY
-+	// args[1] is the GPIO pin number, 0 == GP0, 3 == GP3
-+	if (nargs != 2 || args[0] != 0)
-+		return false;
-+
-+	return true;
-+}
-+
-+static int ad4695_offload_trigger_request(void *priv,
-+					  enum spi_offload_trigger_type type,
-+					  u64 *args, u32 nargs)
-+{
-+	struct ad4695_state *st = priv;
-+
-+	/* Should already be validated by match, but just in case. */
-+	if (nargs != 2)
-+		return -EINVAL;
-+
-+	/* DT tells us if BUSY signal uses GP0 or GP3 */
-+	if (args[1] == 3)
-+		return regmap_set_bits(st->regmap, AD4695_REG_GP_MODE,
-+				       AD4695_REG_GP_MODE_BUSY_GP_SEL);
-+
-+	return regmap_clear_bits(st->regmap, AD4695_REG_GPIO_CTRL,
-+				 AD4695_REG_GP_MODE_BUSY_GP_SEL);
-+}
-+
-+static int ad4695_offload_trigger_validate(void *priv, struct spi_offload_trigger_config *config)
-+{
-+	if (config->type != SPI_OFFLOAD_TRIGGER_DATA_READY)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+/*
-+ * NB: There are no enable/disable callbacks here due to requiring a SPI
-+ * message to enable or disable the BUSY output on the ADC.
-+ */
-+static const struct spi_offload_trigger_ops ad4695_offload_trigger_ops = {
-+	.match = ad4695_offload_trigger_match,
-+	.request = ad4695_offload_trigger_request,
-+	.validate = ad4695_offload_trigger_validate,
-+};
-+
-+static void ad4695_restore_spi_max_speed_hz(void *data)
-+{
-+	struct ad4695_state *st = data;
-+
-+	st->spi->max_speed_hz = st->spi_max_speed_hz;
-+}
-+
-+static void ad4695_pwm_disable(void *pwm)
-+{
-+	pwm_disable(pwm);
-+}
-+
-+static int ad4695_probe_spi_offload(struct iio_dev *indio_dev,
-+				    struct ad4695_state *st)
-+{
-+	struct device *dev = &st->spi->dev;
-+	struct spi_offload_trigger_info trigger_info = {
-+		.name = "data-ready",
-+		.id = 0,
-+		.parent = dev,
-+		.fwnode = dev_fwnode(dev),
-+		.ops = &ad4695_offload_trigger_ops,
-+	};
-+	struct spi_offload_trigger *trigger;
-+	struct pwm_state pwm_state;
-+	struct dma_chan *rx_dma;
-+	int ret, i;
-+
-+	indio_dev->num_channels = st->chip_info->num_voltage_inputs + 1;
-+	indio_dev->setup_ops = &ad4695_offload_buffer_setup_ops;
-+
-+	if (!st->cnv_gpio)
-+		return dev_err_probe(dev, -ENODEV,
-+				     "CNV GPIO is required for SPI offload\n");
-+
-+	trigger = devm_spi_offload_trigger_alloc(dev, &trigger_info);
-+	if (IS_ERR(trigger))
-+		return dev_err_probe(dev, PTR_ERR(trigger),
-+				     "failed to allocate offload trigger\n");
-+
-+	ret = devm_spi_offload_trigger_register(dev, trigger, st);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to register offload trigger\n");
-+
-+	st->offload_trigger = devm_spi_offload_trigger_get(dev, st->offload,
-+		SPI_OFFLOAD_TRIGGER_DATA_READY);
-+	if (IS_ERR(st->offload_trigger))
-+		return dev_err_probe(dev, PTR_ERR(st->offload_trigger),
-+				     "failed to get offload trigger\n");
-+
-+	/* Currently, only self-provided trigger is supported. */
-+	if (st->offload_trigger != trigger)
-+		return dev_err_probe(dev, -EINVAL, "offload trigger mismatch\n");
-+
-+	ret = devm_mutex_init(dev, &st->cnv_pwm_lock);
-+	if (ret)
-+		return ret;
-+
-+	st->cnv_pwm = devm_pwm_get(dev, NULL);
-+	if (IS_ERR(st->cnv_pwm))
-+		return dev_err_probe(dev, PTR_ERR(st->cnv_pwm),
-+				     "failed to get CNV PWM\n");
-+
-+	pwm_init_state(st->cnv_pwm, &pwm_state);
-+
-+	/* If firmware didn't provide default rate, use 10kHz (arbitrary). */
-+	if (pwm_state.period == 0)
-+		pwm_state.period = 100 * MILLI;
-+
-+	pwm_state.enabled = true;
-+
-+	ret = pwm_apply_might_sleep(st->cnv_pwm, &pwm_state);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to apply CNV PWM\n");
-+
-+	ret = devm_add_action_or_reset(dev, ad4695_pwm_disable, st->cnv_pwm);
-+	if (ret)
-+		return ret;
-+
-+	rx_dma = devm_spi_offload_rx_stream_request_dma_chan(dev, st->offload);
-+	if (IS_ERR(rx_dma))
-+		return dev_err_probe(dev, PTR_ERR(rx_dma),
-+				     "failed to get offload RX DMA\n");
-+
-+	/*
-+	 * REVISIT: ideally, we would ask the RX DMA stream what the
-+	 * buffer layout is. Right now, the only supported offload is
-+	 * the ADI ad469x HDL project which always uses 32-bit word
-+	 * size for data values, regardless of the SPI bits per word.
-+	 */
-+
-+	for (i = 0; i < indio_dev->num_channels; i++) {
-+		struct iio_chan_spec *chan = &st->iio_chan[i];
-+
-+		/* update storagebits to match offload capabilities */
-+		chan->scan_type.storagebits = 32;
-+		/* add sample frequency for PWM CNV trigger */
-+		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SAMP_FREQ);
-+	}
-+
-+	return devm_iio_dmaengine_buffer_setup_ext2(dev, indio_dev, rx_dma,
-+						    IIO_BUFFER_DIRECTION_IN);
-+}
-+
- static int ad4695_probe(struct spi_device *spi)
- {
- 	struct device *dev = &spi->dev;
- 	struct ad4695_state *st;
- 	struct iio_dev *indio_dev;
--	struct gpio_desc *cnv_gpio;
- 	bool use_internal_ldo_supply;
- 	bool use_internal_ref_buffer;
- 	int ret;
- 
--	cnv_gpio = devm_gpiod_get_optional(dev, "cnv", GPIOD_OUT_LOW);
--	if (IS_ERR(cnv_gpio))
--		return dev_err_probe(dev, PTR_ERR(cnv_gpio),
--				     "Failed to get CNV GPIO\n");
--
--	/* Driver currently requires CNV pin to be connected to SPI CS */
--	if (cnv_gpio)
--		return dev_err_probe(dev, -ENODEV,
--				     "CNV GPIO is not supported\n");
--
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
- 	if (!indio_dev)
- 		return -ENOMEM;
-@@ -1002,8 +1374,13 @@ static int ad4695_probe(struct spi_device *spi)
- 		return -EINVAL;
- 
- 	/* Registers cannot be read at the max allowable speed */
-+	st->spi_max_speed_hz = spi->max_speed_hz;
- 	spi->max_speed_hz = AD4695_REG_ACCESS_SCLK_HZ;
- 
-+	ret = devm_add_action_or_reset(dev, ad4695_restore_spi_max_speed_hz, st);
-+	if (ret)
-+		return ret;
-+
- 	st->regmap = devm_regmap_init_spi(spi, &ad4695_regmap_config);
- 	if (IS_ERR(st->regmap))
- 		return dev_err_probe(dev, PTR_ERR(st->regmap),
-@@ -1014,6 +1391,11 @@ static int ad4695_probe(struct spi_device *spi)
- 		return dev_err_probe(dev, PTR_ERR(st->regmap16),
- 				     "Failed to initialize regmap16\n");
- 
-+	st->cnv_gpio = devm_gpiod_get_optional(dev, "cnv", GPIOD_OUT_LOW);
-+	if (IS_ERR(st->cnv_gpio))
-+		return dev_err_probe(dev, PTR_ERR(st->cnv_gpio),
-+				     "Failed to get CNV GPIO\n");
-+
- 	ret = devm_regulator_bulk_get_enable(dev,
- 					     ARRAY_SIZE(ad4695_power_supplies),
- 					     ad4695_power_supplies);
-@@ -1139,14 +1521,39 @@ static int ad4695_probe(struct spi_device *spi)
- 	indio_dev->info = &ad4695_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = st->iio_chan;
--	indio_dev->num_channels = st->chip_info->num_voltage_inputs + 2;
- 
--	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
--					      iio_pollfunc_store_time,
--					      ad4695_trigger_handler,
--					      &ad4695_buffer_setup_ops);
--	if (ret)
--		return ret;
-+	static const struct spi_offload_config ad4695_offload_config = {
-+		.capability_flags = SPI_OFFLOAD_CAP_TRIGGER
-+				  | SPI_OFFLOAD_CAP_RX_STREAM_DMA,
-+	};
-+
-+	st->offload = devm_spi_offload_get(dev, spi, &ad4695_offload_config);
-+	ret = PTR_ERR_OR_ZERO(st->offload);
-+	if (ret && ret != -ENODEV)
-+		return dev_err_probe(dev, ret, "failed to get SPI offload\n");
-+
-+	if (ret == -ENODEV) {
-+		/* If no SPI offload, fall back to low speed usage. */
-+		dev_info(dev, "SPI offload not available\n");
-+
-+		/* Driver currently requires CNV pin to be connected to SPI CS */
-+		if (st->cnv_gpio)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "CNV GPIO is not supported\n");
-+
-+		indio_dev->num_channels = st->chip_info->num_voltage_inputs + 2;
-+
-+		ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+						      iio_pollfunc_store_time,
-+						      ad4695_trigger_handler,
-+						      &ad4695_buffer_setup_ops);
-+		if (ret)
-+			return ret;
-+	} else {
-+		ret = ad4695_probe_spi_offload(indio_dev, st);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	return devm_iio_device_register(dev, indio_dev);
- }
-@@ -1183,3 +1590,4 @@ MODULE_AUTHOR("Ramona Gradinariu <ramona.gradinariu@analog.com>");
- MODULE_AUTHOR("David Lechner <dlechner@baylibre.com>");
- MODULE_DESCRIPTION("Analog Devices AD4695 ADC driver");
- MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IIO_DMAENGINE_BUFFER);
-
--- 
-2.43.0
 
 

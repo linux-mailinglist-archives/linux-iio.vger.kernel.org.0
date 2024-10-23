@@ -1,176 +1,119 @@
-Return-Path: <linux-iio+bounces-10986-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-10987-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032229ACB29
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 15:27:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0369ACB68
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 15:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF18D1F228AC
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 13:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B97B01C21732
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Oct 2024 13:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D891ADFF7;
-	Wed, 23 Oct 2024 13:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69071B4F23;
+	Wed, 23 Oct 2024 13:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Bi1jmQbS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCC31DFEF;
-	Wed, 23 Oct 2024 13:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830BC12B71
+	for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 13:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729690064; cv=none; b=Y11nwtwbQ0Puy/7mu/gmuIimRYqEYx9PMI9tORnovpOID/oWF0Iqi67w5zG2f9gx1JgXG9WD6EDU0qINnvTFaUrB1eMWcQWIgSpFnrge8y52/NVhqrbtJUHdES6JRQjezUtx+a7SI+lErAKYpm3WYOWuIIdTixwTadSLORbVBmo=
+	t=1729690790; cv=none; b=CKb8tK06EYo4fF+Rnjj/D9UoNqdDmtHTb7wrfVLS3dRe5ehHYzSB5fU5Js2uhvnQHHpRUYr0RnW/XKd7y2Zefkwsh5KnQJzaEl/OSazE4/F/M+Db0xc6vY6LAnWXoEnFhU+w/QmLLEeANRfkNyiGWCJu0P7bN6nhPEOqcWNw8dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729690064; c=relaxed/simple;
-	bh=F2ZxZPlaC9l+JfMZiw3EGc1lSCa3SkUfM7rIWrIRM4k=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IZwwXTImN9z+Hk11ZmY9QlmEIJ8XWuY31rQq97GPsN2N+/gVWSxcBq3En/S8ycDBoy+fdJr3YPX38qmK5uoaP0K9Cyq1xl57woOVZbVXUDnxb1reLyns+LGZJXFTqOVtExeQSDzKthinffd0jVQ3LaS4fLJmC7uZGH+D51BdZiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XYV8x6NhWz6LD2C;
-	Wed, 23 Oct 2024 21:22:57 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4E4291400F4;
-	Wed, 23 Oct 2024 21:27:38 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 23 Oct
- 2024 15:27:37 +0200
-Date: Wed, 23 Oct 2024 14:27:35 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Per-Daniel Olsson <perdaniel.olsson@axis.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<rickard.andersson@axis.com>, <kernel@axis.com>
-Subject: Re: [PATCH v4 2/2] iio: light: Add support for TI OPT4060 color
- sensor
-Message-ID: <20241023142735.000018cb@Huawei.com>
-In-Reply-To: <10d6bba4-4d25-4ee0-877e-48a27c622bde@axis.com>
-References: <20241016213409.3823162-1-perdaniel.olsson@axis.com>
-	<20241016213409.3823162-3-perdaniel.olsson@axis.com>
-	<20241020135105.36b29fe8@jic23-huawei>
-	<10d6bba4-4d25-4ee0-877e-48a27c622bde@axis.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1729690790; c=relaxed/simple;
+	bh=utKFdkdjq0xMRyp+lW25/4LBehAW3zy6wl4Q0VbobbQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZGBSpmzpWZf2E/vscjZlcO9RSLZeX2n5VspzHqRhgzy6BSzFjLlRJKsagMd5mrtrrb5/tMpB8oZ6VL0nO1KRkQpQtzvlY+25ijcZKFAxQDwcWU6oM5+TXKAsQvqoq6hhArfv6GfbJ3IZkPWCE00l6UvJ5vXiYxFbawotnqscdPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Bi1jmQbS; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4316a44d1bbso40825395e9.3
+        for <linux-iio@vger.kernel.org>; Wed, 23 Oct 2024 06:39:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729690786; x=1730295586; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HUlJoqDYE70A1gpRbWu72Eu6LvCFd2GVUQe1MqOiVh4=;
+        b=Bi1jmQbSl5+PJZ4eCKiV87PNu5xGFJWRuk5qiJOe7PazwttXnmT7KWAyNIEcp07ZQa
+         F5mzbf7w7GDAZHbQoBdxQhrpP2ajrLPJkHDw4dtIL8D9/CSxMaT/c/7MxkA7itkUxzXU
+         Na7XArHh6XLpDCo/JcYxy4lyH9xB7Swlo8t0dAw6al/2Cb4Rpre/t9O0BqjbWeCQuJ9p
+         Y9saUOLeolwfLW7moCCoipNG6hw2bd/5sxHHX48fyOAcngyqWsCMqXI5zOHgUhc2q1k7
+         OTzDErlXf6YG8Ty/LdXS5/01FKL3wkVDFa5auBGoGbSmbatHdiyKcX7eej+nqSc20u4n
+         vXKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729690786; x=1730295586;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HUlJoqDYE70A1gpRbWu72Eu6LvCFd2GVUQe1MqOiVh4=;
+        b=Mk/qfL5kpbDAHbZH17bFBqzslfFH2q3SHd0sa6+Df5FOHlNyTrJ2KRaSvoLBpd60Vx
+         sSXw31D0FlguSSGn3qibOIxQmmQnm3WPOL9PkkjC4Y/DceD3Xwl0o69kyVhoG4ea7ppr
+         M3hQv6izBTTql0pcXF8Pc7DhAOjYXNJchMycYji777nf7fa8CYvzYYnG7eDTsZzMDJOU
+         7fk8Mc+N/VKB1IXLEJv0SArRMGegYckNIChNB21oxMlqsiIkhboM2Q7w5Pig4lreo2H6
+         wQPa14LRj6M0SBvvIuVNoOUQc2yfElkIQGT2rUSa3p0DCtaqSR5aWfQ34+/E68dOtAD9
+         HCEg==
+X-Gm-Message-State: AOJu0YyZbssWJVjzHVQBtvh0FMaxCFl6jEtWHLiD74Xkdr06Y//gkTfJ
+	8vp3FaYuaWdpzp5orge/nZ9EWIm6duE0VT3hnZuFRFS1bTIHhvkBC8oDC3TbEvdOVDY4+9xb5O2
+	D+nU=
+X-Google-Smtp-Source: AGHT+IExswePHkNE0dR4iXJ9chlIEUNAaME1pWtSUYeDKO2T2oUNoJmlM9/XGeRksrNxlUpMxXvZzw==
+X-Received: by 2002:a05:600c:1d27:b0:431:57d2:d7b4 with SMTP id 5b1f17b1804b1-43184189bf9mr22925705e9.26.1729690785563;
+        Wed, 23 Oct 2024 06:39:45 -0700 (PDT)
+Received: from [192.168.1.62] (2a02-842a-d52e-6101-6f8f-5617-c4b6-8627.rev.sfr.net. [2a02:842a:d52e:6101:6f8f:5617:c4b6:8627])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a4ae36sm8949860f8f.43.2024.10.23.06.39.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 06:39:45 -0700 (PDT)
+From: Julien Stephan <jstephan@baylibre.com>
+Date: Wed, 23 Oct 2024 15:39:40 +0200
+Subject: [PATCH] iio: gyro: bmg160_core: remove trailing tab
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Message-Id: <20241023-iio-gyro-bmg160_core-remove-trailing-tab-v1-1-9343c7dc4110@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAJv8GGcC/x3NQQrCMBBG4auUWTuQxCLEq4hI0vzGAZvIpJRK6
+ d0NLr/Nezs1qKDRddhJsUqTWjrsaaDpFUoGS+omZ9xojTuzSOX81cpxzvZiHlNVsGKuK3jRIG8
+ pmZcQ2XpvxgTE5EE991E8Zfuvbvfj+AFbEbIXegAAAA==
+X-Change-ID: 20241023-iio-gyro-bmg160_core-remove-trailing-tab-19904deebd9e
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Julien Stephan <jstephan@baylibre.com>
+X-Mailer: b4 0.14.2
 
-On Wed, 23 Oct 2024 09:29:08 +0200
-Per-Daniel Olsson <perdaniel.olsson@axis.com> wrote:
+Remove trailing tab
 
-> Hi Jonathan,
-> 
-> Thank you for your feedback, much appreciated. I have added questions and
-> comments inline below regarding channels and triggers. I will address the other
-> comments in the next patch.
-> 
-> Best regards / Per-Daniel
-> 
-> On 10/20/24 14:51, Jonathan Cameron wrote:
-> > On Wed, 16 Oct 2024 23:34:09 +0200
-> > Per-Daniel Olsson <perdaniel.olsson@axis.com> wrote:
-> >   
-> >> Add support for Texas Instruments OPT4060 RGBW Color sensor.
-> >>
-> >> Signed-off-by: Per-Daniel Olsson <perdaniel.olsson@axis.com>  
-> > 
-> > Hi Per-Daniel,
-> > 
-> > Comments inline.
-> > 
-> > Jonathan
-> >   
-> >> diff --git a/drivers/iio/light/opt4060.c b/drivers/iio/light/opt4060.c
-> >> new file mode 100644
-> >> index 000000000000..2c3761ec423a
-> >> --- /dev/null
-> >> +++ b/drivers/iio/light/opt4060.c
-> >> @@ -0,0 +1,1259 @@  
-> > 
-> > ...
-> >   
-> >> +
-> >> +struct opt4060_buffer {
-> >> +	u32 chan[OPT4060_NUM_CHANS];
-> >> +	s64 ts __aligned(8);  
-> > 
-> > aligned_s64 is now available in linux-next + the IIO tree.
-> >   
-> >> +};
-> >> +
-> >> +static const struct opt4060_channel_factor opt4060_channel_factors[] = {
-> >> +	{
-> >> +		/* RED 2.4 * 2.15e-3 */  
-> > This needs more details on wrt to what standard etc.
-> > 
-> > The datasheet is a little vague, but it seems to me like TI invented their
-> > own standard. To use this stuff in a consistent ABI we need to have
-> > a common standard or at least an approximation of one.
-> > The illuminance estimates from some devices are bad approximations, but they
-> > are at least attempting to approximate a well defined standard.  
-> 
-> I have read the datasheet again to try to figure out what TI means. When I read
-> it now with your remarks from this email and previous emails in mind, I think I'm
-> starting to understand more.
-> 
-> I think we should expose the data from the sensor in the following way:
-> - Four raw channels (R, G, B and Clear)
-> - Three processed IIO_INTENSITY channels with normalized values (R, G, B)
->   to get the relative color components independent of light intensity.
-> - One IIO_LIGHT channel giving the lux value.
-> 
-> This is basically what TI is stating in chapter 8.4.5.2. I know that you don't
-> like how TI are calculating the lux value using the green channel. But after
-> reading the description and detailed description parts of the datasheet again,
-> I think it sort of makes sense. Looking at the spectral response curves on the
-> first page, the green curve covers the whole visible spectrum. It seems like this
-> is what the sensor is actually designed for, measuring light intensity in lux and
-> color independent of the light intensity.
-> 
-> Does this sound like a way forward you think?
-Not keen on the colour part.
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+---
+ drivers/iio/gyro/bmg160_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-As far as I can tell TI made up a colour standard.  If it were
-CIE 1931 RGB or then 'maybe' we could consider presenting them as processed,
-though as they are linear scales even then should present _raw and _scale, not
-_input (processed).  We would still need to figure out if we needed to handle
-multiple colour space definitions.
-As it is, if we have two different colour sensors, there is no way to compare the
-values.  In particular that Green is way too broad for the colour standards
-I quickly compared this with.
+diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
+index 10728d5ccae398d15c1d51e0380306042675d5c0..9ae03631090a4ac68ffab92726ee8b8e9c1bb401 100644
+--- a/drivers/iio/gyro/bmg160_core.c
++++ b/drivers/iio/gyro/bmg160_core.c
+@@ -444,7 +444,7 @@ static int bmg160_setup_new_data_interrupt(struct bmg160_data *data,
+ 
+ static int bmg160_get_bw(struct bmg160_data *data, int *val)
+ {
+-	struct device *dev = regmap_get_device(data->regmap);	
++	struct device *dev = regmap_get_device(data->regmap);
+ 	int i;
+ 	unsigned int bw_bits;
+ 	int ret;
 
-The green curve does (based on eyeballing it rather than anything formal)
-look much closer to the luminosity function (one used for illuminance)
-than I was assuming (given it's called green!)
+---
+base-commit: 9090ececac9ff1e22fb7e042f3c886990a8fb090
+change-id: 20241023-iio-gyro-bmg160_core-remove-trailing-tab-19904deebd9e
 
-So not ideal but that one feels ok (with comments in the code explaining
-this) to use for illuminance.
-
-
-For the color channels maybe we could present with _scale provided
-if we add suitable documentation to say that the scaling is to arbitrary
-datasheet specified normalization and that the resulting _raw * _scale
-values cannot be compared across different sensors. I don't like that
-but it does seem silly to not present the scaling if it might be useful
-to someone.  So if you want to do this, propose some additions
-to Documentation/testing/ABI/sysfs-bus-iio
-to cover this for in_intensity_red_scale
-etc.
-
-Jonathan
-
+Best regards,
+-- 
+Julien Stephan <jstephan@baylibre.com>
 
 

@@ -1,62 +1,63 @@
-Return-Path: <linux-iio+bounces-11092-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11093-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00A09AE2D8
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 12:42:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E299AE391
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 13:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5827FB219E0
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 10:42:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 612B01C228B0
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 11:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB221C4A38;
-	Thu, 24 Oct 2024 10:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/jxCsBg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E881CB9FA;
+	Thu, 24 Oct 2024 11:17:21 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F7F1B6D1F;
-	Thu, 24 Oct 2024 10:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D811B6D0A;
+	Thu, 24 Oct 2024 11:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729766519; cv=none; b=VJ41T5/dPUEu8AztwgzqrbLdXgxrbTPmRIZ4/iiEom/OhFiFf4HIQ9AicanAakNAPXqF/Knk//j7r7oit3sTLyUPRqGkeIXfdEWETMWm7kiQmNHgENmcinmaE38NAb9BXnjuc6YStBo/4XiItFsYD1fXMNLInXC6EO2Lf4VxhbI=
+	t=1729768641; cv=none; b=dMYj07k/4J2KIwyEnM07xfQsGSdxU8dpGKWm44qII7jSayaOXKzo8UWUY3UPAPKvEYy3hwgOMHeqxTttm3ZGH6TnIZKVBp31ikIdD77fSggd4Pz5SVKWzlx8ybHQETFiR2tIWgmGVMa8lHPt9iOCX8Jw5s9EuB1HjBQ8RHMJ+gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729766519; c=relaxed/simple;
-	bh=CkOAGRd26mLI67dmD/BaQdzbXEOWA3GpFBs26vS3Fj8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HoNG4ogaSZmj5L8JVBYIeHGrhKiUek4JT0GA2p3hNjLKph2MdiL7pcFYdqmGLeJDlbUEMQRMQ4jiaXMiv+rgtrqYWyxEN4dh31TXTvItLXzEMcx1A4i3EoTqoxhQR8rq36+Pp8Afac5oib6dYGA6c//JVUTVX+FLbjCjMrvQ/3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/jxCsBg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6862DC4CEC7;
-	Thu, 24 Oct 2024 10:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729766519;
-	bh=CkOAGRd26mLI67dmD/BaQdzbXEOWA3GpFBs26vS3Fj8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J/jxCsBgDfMeAKjiuCwahGbBWnueVH7zNvbB1HbZAAC5BM6BjdVGigaXkQlXMTLDy
-	 hHL9/CJGBsyYHj+D42jZ3sxiJzakW+naQGpCb5fv5UjquXyr9oBQ+b/reIjswHlPAk
-	 lLPd7StIfrhrZlb78DiJwrvpSirqhtvPmr2J2olct9eTjv6POXFEuqDLTiP8lSVIun
-	 HKAIdfa2mpnNUv0IdaCmrr+1c3ngJjYxP0LhW2J5vO5cnukFqXXePteFYtawXvLe3L
-	 xlNLeRHzX/D4DR2txiWlsxL2rdp2Kg4kVUIpc++ymcWK0GYJq+8rqvNGLMp7SEXNom
-	 hHdapvf8rIQRg==
-Date: Thu, 24 Oct 2024 12:41:55 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	brgl@bgdev.pl, mkl@pengutronix.de, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v1 3/9] i2c: Add Nuvoton NCT6694 I2C support
-Message-ID: <linka6lz5zpnaf64vmunrn2ezqts5gp5rsbwiaffm4v2mtnqyg@npxgcksgizrn>
-References: <20241024085922.133071-1-tmyu0@nuvoton.com>
- <20241024085922.133071-4-tmyu0@nuvoton.com>
+	s=arc-20240116; t=1729768641; c=relaxed/simple;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=h2MPjCF5ul0ReA18/SKdQVd/gVlC/5NdMq75520rztDyBzIfc14ywq+ITFYfi2TFQmIK4R4UhC69sLkrFEAmR82+7rYHsgi9FY3y2s1sFCjCi7LczNRzJN2HUpKLDdiORp7puNfDpg+aFq3aZfR06kmldLyPv1nEqKCKznQ4uVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.10])
+	by gateway (Coremail) with SMTP id _____8AxquG4LBpncpoKAA--.24865S3;
+	Thu, 24 Oct 2024 19:17:12 +0800 (CST)
+Received: from localhost (unknown [10.20.42.10])
+	by front1 (Coremail) with SMTP id qMiowMDx2OK3LBpnOWUPAA--.19906S2;
+	Thu, 24 Oct 2024 19:17:11 +0800 (CST)
+Date: Thu, 24 Oct 2024 19:17:34 +0800
+From: Wanglei <wanglei@loongson.cn>
+To: mike@altlinux.ru
+Cc: aospan@netup.ru, conor.dooley@microchip.com, ddrokosov@sberdevices.ru,
+	dmaengine@vger.kernel.org, dushistov@mail.ru,
+	fancer.lancer@gmail.com, geert@linux-m68k.org,
+	gregkh@linuxfoundation.org, hoan@os.amperecomputing.com,
+	ink@jurassic.park.msu.ru, jeffbai@aosc.io, kexybiscuit@aosc.io,
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-spi@vger.kernel.org, manivannan.sadhasivam@linaro.org,
+	mattst88@gmail.com, netdev@vger.kernel.org, nikita@trvn.ru,
+	ntb@lists.linux.dev, patches@lists.linux.dev,
+	richard.henderson@linaro.org, s.shtylyov@omp.ru, serjk@netup.ru,
+	shc_work@mail.ru, torvalds@linux-foundation.org,
+	torvic9@mailbox.org, tsbogend@alpha.franken.de,
+	v.georgiev@metrotek.ru, wangyuli@uniontech.com,
+	wsa+renesas@sang-engineering.com, xeb@mail.ru
+Subject: Re: what about CoC? (was: [PATCH] Revert "MAINTAINERS: Remove some
+ entries due to various compliance requirements.")
+Message-ID: <20241024111734.GA22436@loongson-pc>
+Reply-To: Wanglei <wanglei@loongson.cn>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,35 +66,26 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241024085922.133071-4-tmyu0@nuvoton.com>
+In-Reply-To: <20241024095339.GA32487@imap.altlinux.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CM-TRANSID:qMiowMDx2OK3LBpnOWUPAA--.19906S2
+X-CM-SenderInfo: pzdqwzthl6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
+	BjDU0xBIdaVrnRJUUUPKb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26c
+	xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
+	j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxV
+	AFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x02
+	67AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21le4C262xC7I0v67AEwI8IwI
+	1l57IF6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv2
+	0xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7
+	xvr2IY64vIr41lFIxGxcIEc7CjxVCFY4xvr7I5M4kE6I8I3I0E14AKx2xKxVC2ax8xMxAI
+	w28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r4a6rW5MI
+	8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr0_Jr4lx4CE17CEb7AF67AK
+	xVWrXVW8Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW5JVW7JwCI42IY6xIIjx
+	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+	jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
+	ZFpf9x07j0E__UUUUU=
 
-Hi Ming,
 
-...
-
-> +static int __init nct6694_init(void)
-> +{
-> +	int err;
-> +
-> +	err = platform_driver_register(&nct6694_i2c_driver);
-> +	if (!err) {
-> +		if (err)
-> +			platform_driver_unregister(&nct6694_i2c_driver);
-> +	}
-> +
-> +	return err;
-> +}
-> +subsys_initcall(nct6694_init);
-> +
-> +static void __exit nct6694_exit(void)
-> +{
-> +	platform_driver_unregister(&nct6694_i2c_driver);
-> +}
-> +module_exit(nct6694_exit);
-
-Have you thought about using auxiliary driver here?
-(auxiliary_bus.h)
-
-Thanks,
-Andi
 

@@ -1,139 +1,181 @@
-Return-Path: <linux-iio+bounces-11143-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11144-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92BD09AEAA0
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 17:34:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2502F9AEAAA
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 17:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E67B1F22B98
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 15:34:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2178B21318
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 15:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5FC1F585C;
-	Thu, 24 Oct 2024 15:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ld+0kXID"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30261EB9FF;
+	Thu, 24 Oct 2024 15:35:30 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86CB1E8833;
-	Thu, 24 Oct 2024 15:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962701E2614
+	for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 15:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729784076; cv=none; b=JxhOy8OMvhu2HQPxHKMwnaS5g/5GnUUZOoycw1+CKq9r3iYUbmTFn9O4GW6rwn2zYSBuficuHNCPeCdxwxMv4dKOx5vvYCqR/18cuGKCTBWEbQ2HhQlJE0gLJvOOCBaZByjA6/IH0uTTLPm9P+9zzlAhEWfB5FXmgRu+e+13Mxs=
+	t=1729784130; cv=none; b=HCzdJbyTHk6fWMGOCYyZceBPyNgwBxc31UpiGKno6arqqeiVGLNpKbxfifNc2t9YV0n7pIyRlnP3dsRuq6V7byYU5hrrX+rNq0L2Imwv/Q7+chHw0Xq5/ukkjC3TaNX0Ap3gu6JA6MJuI/PH/FPkUF0ju2Z9TqSdruLQxkIZZHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729784076; c=relaxed/simple;
-	bh=r86jBE+8OoJgKUMUpwbaAODQYFEMIqxXdzxjdpA4+K8=;
+	s=arc-20240116; t=1729784130; c=relaxed/simple;
+	bh=CN8P9Y2BisqH7A6ZALnGt0nbNcWLhB/EW/0TAqNdOfQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jg1BwPpdTg+EJE6mV9cf+c663H7SyyagFOsyInnYSE/vtoASavwHjeab9oUdbRdcmWBrAx6ojOjuNMI0Ked+eM+KoVPra/gVcr+Ug93F1yxPMgvdKqhqzaiX8cI0qhkkmc4zUc/0dwf7jbICBJ5lvkggdoyOsbesMbHbI0XXQM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ld+0kXID; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729784074; x=1761320074;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=r86jBE+8OoJgKUMUpwbaAODQYFEMIqxXdzxjdpA4+K8=;
-  b=ld+0kXIDKcNgIjNUFgEhSN/0wCutavhp5w4hLA2j3zHtskSWa5lO3hSk
-   0isPKcyVxkHXcIrC3OHIQTHf+ha93YPoOwe79bRW9ocAcF5gydB7L3JmL
-   oxUOcA1A3cRSHQvDrSdV/yUkUwsdwowhBIsXP1fEpeJ9Srolfd7xbMUun
-   9k5O0HNUSwelVLLhEOJF+HhYhjvtjPe2YYiXCkkZJyRgThCgZS61/3blU
-   uzK2kXr8l+t4tzGBj3yRBtkCWCbRqVLyNjfpAfyb3nLgw3xhLcZHpPkj2
-   R5b3VI6t7jZI6A+6TqfDw5mWowFNRfdQJe/i49FM5Nrga35N/blmeVNJ7
-   w==;
-X-CSE-ConnectionGUID: ss4YkRxfRU+Z3B3rXVUsHg==
-X-CSE-MsgGUID: 4GVsmTdKRpKR+zmT5lpKCA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="29322812"
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
-   d="scan'208";a="29322812"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 08:34:07 -0700
-X-CSE-ConnectionGUID: bDqK43xcSWaBDgv74YyBNg==
-X-CSE-MsgGUID: /8c3sObzRfmInXX3ETIyBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
-   d="scan'208";a="80916460"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa010.fm.intel.com with ESMTP; 24 Oct 2024 08:33:58 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 95E83252; Thu, 24 Oct 2024 18:33:57 +0300 (EEST)
-Date: Thu, 24 Oct 2024 18:33:57 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>, jeffbai@aosc.io,
-	gregkh@linuxfoundation.org, wangyuli@uniontech.com,
-	torvalds@linux-foundation.org, aospan@netup.ru,
-	conor.dooley@microchip.com, ddrokosov@sberdevices.ru,
-	dmaengine@vger.kernel.org, dushistov@mail.ru,
-	fancer.lancer@gmail.com, geert@linux-m68k.org,
-	hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru,
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, linux-ide@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-spi@vger.kernel.org, manivannan.sadhasivam@linaro.org,
-	mattst88@gmail.com, netdev@vger.kernel.org, nikita@trvn.ru,
-	ntb@lists.linux.dev, patches@lists.linux.dev,
-	richard.henderson@linaro.org, s.shtylyov@omp.ru, serjk@netup.ru,
-	shc_work@mail.ru, tsbogend@alpha.franken.de, v.georgiev@metrotek.ru,
-	wsa+renesas@sang-engineering.com, xeb@mail.ru
-Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
- compliance requirements."
-Message-ID: <Zxpo5VMY56iMOTWi@black.fi.intel.com>
-References: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
- <20241023080935.2945-2-kexybiscuit@aosc.io>
- <64ef261c-82d0-4fad-ba8a-562f247340fb@metux.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HTuGZWDW1BQM8+x65ZPfhQfbK0usEFxoyAfI1nhhc5qzi4z7mEAJay46nj6OTsqTbtravzZ4aSmlRQrcP681Lx7LFv3nZJqCh+vWdwRBFqpvW3z9H2W9MqUt9/1os2QsWVtjGE4KqCvmE6xJlsJSjgQHoqatb0ch/uYhiuJj0E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t3zrQ-0005ut-4t; Thu, 24 Oct 2024 17:34:52 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t3zrP-000DoH-0H;
+	Thu, 24 Oct 2024 17:34:51 +0200
+Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 934ED35DE9F;
+	Thu, 24 Oct 2024 15:34:50 +0000 (UTC)
+Date: Thu, 24 Oct 2024 17:34:50 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Ming Yu <a0282524688@gmail.com>
+Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
+	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
+	jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org, 
+	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org
+Subject: Re: [PATCH v1 1/9] mfd: Add core driver for Nuvoton NCT6694
+Message-ID: <20241024-pumpkin-parrot-of-excellence-299c57-mkl@pengutronix.de>
+References: <20241024085922.133071-1-tmyu0@nuvoton.com>
+ <20241024085922.133071-2-tmyu0@nuvoton.com>
+ <20241024-adventurous-imaginary-hornet-4d5c46-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wnpvn5ew6ixufwbw"
 Content-Disposition: inline
-In-Reply-To: <64ef261c-82d0-4fad-ba8a-562f247340fb@metux.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-
-On Thu, Oct 24, 2024 at 05:05:13PM +0200, Enrico Weigelt, metux IT consult wrote:
-> On 23.10.24 10:09, Kexy Biscuit wrote:
-
-...
-
-> I grew up in the GDR, which was factually Russian/Soviet-occupied for 40
-> years. I grew up behind the iron curtain. And part of my family coming
-> from near Mariuopol.
-
-Interesting. Let's have a beer at some point and may be talk about this
-(I'm from Donetsk, Ukraine).
-
-> They also suffered from that horrible war (and many
-> of the wider family fled to Germany).
-
-...
-
-> or maybe just having an .ru mail address
-
-It's not about .ru if you read the original patch.
-
-...
-
-> Who's the only nation who used nuclear bombs against civilians ?
-> The US.
-
-Since you haven't defined _how_ it was used, you are mistaken.
-In the 70-x Soviets did a lot of experiments with nuclear and
-you may find an information about, e.g., the underground nuke
-in the Donetsk (Donbass if speaking of coal mines) region in order
-to see if it improves the efficiency of the coal mining. It didn't,
-and as a consequences it becomes exactly the use against civilians.
-
--- 
-With Best Regards,
-Andy Shevchenko
+In-Reply-To: <20241024-adventurous-imaginary-hornet-4d5c46-mkl@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 
 
+--wnpvn5ew6ixufwbw
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 1/9] mfd: Add core driver for Nuvoton NCT6694
+MIME-Version: 1.0
+
+On 24.10.2024 17:20:57, Marc Kleine-Budde wrote:
+
+[...]
+
+> > +	nct6694->cmd_buffer =3D devm_kcalloc(dev, CMD_PACKET_SZ,
+> > +					   sizeof(unsigned char), GFP_KERNEL);
+> > +	if (!nct6694->cmd_buffer)
+> > +		return -ENOMEM;
+> > +	nct6694->rx_buffer =3D devm_kcalloc(dev, MAX_PACKET_SZ,
+> > +					  sizeof(unsigned char), GFP_KERNEL);
+> > +	if (!nct6694->rx_buffer)
+> > +		return -ENOMEM;
+> > +	nct6694->tx_buffer =3D devm_kcalloc(dev, MAX_PACKET_SZ,
+> > +					  sizeof(unsigned char), GFP_KERNEL);
+> > +	if (!nct6694->tx_buffer)
+> > +		return -ENOMEM;
+> > +	nct6694->int_buffer =3D devm_kcalloc(dev, MAX_PACKET_SZ,
+> > +					   sizeof(unsigned char), GFP_KERNEL);
+> > +	if (!nct6694->int_buffer)
+> > +		return -ENOMEM;
+> > +
+> > +	nct6694->int_in_urb =3D usb_alloc_urb(0, GFP_KERNEL);
+> > +	if (!nct6694->int_in_urb) {
+> > +		dev_err(&udev->dev, "Failed to allocate INT-in urb!\n");
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	/* Bulk pipe maximum packet for each transaction */
+> > +	bulk_pipe =3D usb_sndbulkpipe(udev, BULK_OUT_ENDPOINT);
+> > +	nct6694->maxp =3D usb_maxpacket(udev, bulk_pipe);
+> > +
+> > +	mutex_init(&nct6694->access_lock);
+> > +	nct6694->udev =3D udev;
+> > +	nct6694->timeout =3D URB_TIMEOUT;	/* Wait until urb complete */
+> > +
+> > +	INIT_LIST_HEAD(&nct6694->handler_list);
+> > +	spin_lock_init(&nct6694->lock);
+> > +
+> > +	usb_fill_int_urb(nct6694->int_in_urb, udev, pipe,
+> > +			 nct6694->int_buffer, maxp, usb_int_callback,
+> > +			 nct6694, int_endpoint->bInterval);
+> > +	ret =3D usb_submit_urb(nct6694->int_in_urb, GFP_KERNEL);
+> > +	if (ret)
+> > +		goto err_urb;
+> > +
+> > +	dev_set_drvdata(&udev->dev, nct6694);
+> > +	usb_set_intfdata(iface, nct6694);
+> > +
+> > +	ret =3D mfd_add_hotplug_devices(&udev->dev, nct6694_dev,
+> > +				      ARRAY_SIZE(nct6694_dev));
+> > +	if (ret) {
+> > +		dev_err(&udev->dev, "Failed to add mfd's child device\n");
+> > +		goto err_mfd;
+> > +	}
+> > +
+> > +	nct6694->async_workqueue =3D alloc_ordered_workqueue("asyn_workqueue"=
+, 0);
+>=20
+> Where is the async_workqueue used?
+
+Sorry - it's used in the driver, which live in separate directories -
+you can ignore this comment.
+
+But then the question comes up, it looks racy to _first_ add the devices
+and _then_ the workqueue.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--wnpvn5ew6ixufwbw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcaaRcACgkQKDiiPnot
+vG/fsQf5AT540awLLu44vdz0zDdKD5R2NLLug4ZfmbzvVp2Opxvknvb8e5KL/26b
+d8ISI6r0m0RhQ2ok1x73GeY4py7o5bOKIXcz7ZFGBLyWEaZZs/4ZOdJNij0au5GZ
+tuNW/EXe7WiVSxJwD3ntTOy0YniudIvK9nFuPWayh9sKUj2RRFcc4KX5mEkIn6TN
+pBep8mwT4cx1y2azhwaEXI7uGiumNPl6tHOCIIIkDnhek3d2u8/NhkFALvNk0F6k
+sBNkEQv2r9xH4Nqj6nyMwXLcKMCzpl/joGpLWB9r7BSZYHWKUd/2ns47LciaMLBN
+7M1Nbpn9wCh3h9zr9D0Tk6YZEjIbAQ==
+=MwIJ
+-----END PGP SIGNATURE-----
+
+--wnpvn5ew6ixufwbw--
 

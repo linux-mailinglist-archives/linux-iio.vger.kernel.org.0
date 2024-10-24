@@ -1,103 +1,102 @@
-Return-Path: <linux-iio+bounces-11050-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11051-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7139ADB0D
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 06:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B61E69ADC61
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 08:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA8FF28374A
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 04:42:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771BC28515E
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 06:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8159171675;
-	Thu, 24 Oct 2024 04:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E3E18990D;
+	Thu, 24 Oct 2024 06:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iYwBDNZC"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="rJhx8LlQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B464F16D9B8;
-	Thu, 24 Oct 2024 04:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DD06F305;
+	Thu, 24 Oct 2024 06:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729744929; cv=none; b=Kb5PVQQ5Hvc1m3+uBmCnG79KYnjpHAHYwxyo1jo/Hjlpwi9dW9jMJbOApFSyb8OLSxa7IU5mZgbxu6/MOw4i/GDCY7DngflV/DuoKt5xAan3p+RMaETiG4D5VqOmg1mqtWglGG7GFDSiE2nzTU5ieAONw1EEF8jfLd17qaCgEf4=
+	t=1729752070; cv=none; b=p+beNj6IIb/JmNtACAEf3d6jeAl0vncUfnJGWAy1t/vEEn/VJJkOxyXdN7xlIb2C8SmthTf5EccKdSFU7TZ/6fIF51VzqJNJKp5WndtwE3KjX6z3Ute1KjR6OTN0szpMS6xqrZKhpQqCwn9qs8T9QA+sF/8eb2tSbb60HoSy/hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729744929; c=relaxed/simple;
-	bh=/E05jT6POpOqZDCpwe8J4QUwk/2Ud1uqQgjbaLBTXt0=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=qe7SXfWJeqMkBqkBNX+jZ04P6GKiGbO2ltLOqohlDiQmUKkTsHZ74cgn8yzHBqtC+6DJGH4YeGaS7QKAA4J43B9KWvjg5TmwweKNB7l6wzbHEii9kDGkE4SvfTZMXZVL7ZEMFE4+ZKo88KH/StUCnNXQKspQU+uC+lrJda7k0Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iYwBDNZC; arc=none smtp.client-ip=209.85.167.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3e5f6e44727so379622b6e.0;
-        Wed, 23 Oct 2024 21:42:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729744927; x=1730349727; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/E05jT6POpOqZDCpwe8J4QUwk/2Ud1uqQgjbaLBTXt0=;
-        b=iYwBDNZCE4PIvv2GzhNkgR0nhcJHXEMmQ/4Es1RoDp6eS9i9Sy60W5PZP8GRnBmEQ6
-         eCCmoVkahEHUNX0q757rmHgTCnBb3OiP48oSMYxH3hwxOOK8iHWG7fky8fMtk2p52LAK
-         aw2egkSYqXKUmnhsQlR5oP1ciT0QSZoe8Ua0LsHzURqcMsZwTOOtJnywIDnho84lV0nc
-         x0OIyT0adoIeK9mJpEx9aiz7EWL42XeLz8mkexAKqjIkRHwUY9S6ZZuln1XBv6bFcmle
-         aG+CFNtIdNk++42zFJOY9Gi++ALFS9125ln/LhKvlC44e/jbe+smGXwgx2AVgiUGl++B
-         H6iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729744927; x=1730349727;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/E05jT6POpOqZDCpwe8J4QUwk/2Ud1uqQgjbaLBTXt0=;
-        b=m6tnofiDEOr2PL0e46WFkiqwcr6hc9BJ56/St3gPSsXrnNyQcRtqkAjQ8fKpRfh966
-         lBkenycEEVpeewH/KTZeRCEYaTqxk8WSuCxZCi2e0dbA3FxMjvL85PdV2bpiVMeG4km7
-         wV1wIVe8mUrz1iCj/ZsVWeSB1hjJ1Xso9RuT10JuNSe+m/O7GK+uLP5Rp/PeZO2N91hU
-         lsfwDr6HW2nERIealvnmW6fgqH8FbwvKLrT9HGXyxRGhSCFHWSWMfmOqcnVzBU3luSXf
-         FyQhHId5tc3X04QH9aNAq21fXTPnmc9J1yUJu0m24UpjGt/DO7NDx0vD79BtA3Jw1iY/
-         wiNg==
-X-Forwarded-Encrypted: i=1; AJvYcCU8yXETFVXvX4Qy1lZW1xs5lTH2lDQr7n4qoJtN5K7zt4C8lMgBoyfPoZ7CiZFV0smzrFxpZQ5x27tizU8=@vger.kernel.org, AJvYcCUAFEcVi/E1h+gCSHIpQxg8Ebc4ZC/nZgWy0nzEqeAC7JYgIlFvAR6lpmDosDYml4HSuxjjNr00onoWJ8U=@vger.kernel.org, AJvYcCUrgyH22CeC2NO0Ru+7cgXphwZ/7a9w3hNmnsDomhP7O6yc+dEfbFVtbe74vKNMWnnr41/QEPBroD4C@vger.kernel.org, AJvYcCVpdjGI1wKOXlaFnQaV8saJPykrbhNYfcgbjZ4XK4iF8BcLwxxXg5UuoR9v9eaUUihTuK8zaDPOyU0lWA==@vger.kernel.org, AJvYcCVtjXdUbAeNbiJcutBuf3oVFmCDP3xIY4M09km2QULbKi/7q5g0hmomejUuOZXmZTWS3v3dUQhdIWU=@vger.kernel.org, AJvYcCWcXrye6ten84Z/7bReyRPrOMmGPpeaVuQ6I0R1kZNJxLiK2NOkxJfO1hNWA3r5cwSkCdN10SKSupfC@vger.kernel.org, AJvYcCX8AMOF8wqogJfgUsEQBcHMnHix14/XGtMrv7W66Tb0M+hEwJokY1etik+bebMgKlZrVMbQKXVcArZn@vger.kernel.org, AJvYcCXAByLVofUKiQGmamMKhrI/MpBF4gn2yR/cMxj28pGrVyc2n9d5u9Rf4Mc2WLQ4mWTtHUucF8WxpDqqPg==@vger.kernel.org, AJvYcCXIXjF9a4H3tzvMOWrTxznlh6L4e/zBzOYNwWrAZaQldauWmZ9NX2ieS+jZhmLBArO/SZQHCzoHpHnsWU4=@vger.kernel.org, AJvYcCXUGvStD/7y2uW31S6Jy+p3hPok
- AoH0TFIrvPmw+QqOKm3WaEDc+P6pKamJWG9MVVC0xuXiZbPL@vger.kernel.org, AJvYcCXr7C7x0L+IYNAN4Ho8VhzN/7/cxGYsf889UdlOp8gMIpi7+/SYoPXi3SaZN0h7PltlbN5nR1Iuv6je4B7gc8ygXeM=@vger.kernel.org, AJvYcCXxiFpBwWKKL3DbZ8TtwYWyxkwu/PG2+l4Ya7zS9/yaeIFM3pzOwIi1L/2H9Enio2iNc40fgIA6ZD3Hrg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy79KG7HsQRrtfq58Kx5WV+6qcfbD1L2dr14l5saBwpnqUyzrcH
-	r4jgLp3Pns1jAUVZb6M/Zss58G2Rs6608WFUHMx9VS9xaV0H9gr2HRzAFP1GT0I/TktE8hLiiHh
-	GMiVWbrV7I6u0v9ChP5cYGIb7/dpOiDpCcv+ozAzg
-X-Google-Smtp-Source: AGHT+IEcPxkLcRYoYZ+qYqdz3rf9C8aaTqIgeoOwaGj1dLh0kiz4T/GQTSq6ljBIHvhnOb/5OXIeeI806cLnduNI9A0=
-X-Received: by 2002:a05:6870:3324:b0:286:f2cc:7a4a with SMTP id
- 586e51a60fabf-28ccb9e54fbmr5220982fac.34.1729744926679; Wed, 23 Oct 2024
- 21:42:06 -0700 (PDT)
+	s=arc-20240116; t=1729752070; c=relaxed/simple;
+	bh=bc6iJeWXEaxOjG4jKgwzgxdbpD8V7c42zt7De09e2Ao=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ly5pKVk838XrlneWJtjDt8P3xQHx1WtWIP+ooK7VMB079RC8uzXSZCwjT2i/SKM7bNnyJEy+PCT/D0JnW0QvXdIa2/FIIXgQ+IQksNjBLva5gGTFGDFmGJ+s8VbkXhnHNR2s5+JR1MJY2p0pGrQvQwvD2HFKED6hgPDnpJR4M3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=rJhx8LlQ; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+Message-ID: <ae3213db-4edb-4fba-8f9d-c6f283735e9f@manjaro.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1729752059;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ACl2tqbewGvJw92CJ4kNP9tneHmagPklyabSFXr2GmQ=;
+	b=rJhx8LlQ6zR+RekM8VyNLFoBhSVFfoGrxtQ9asWXTZGponDEH5hcveOXdXrXe/F0xSkEPG
+	8zU+BM3zjaiPnugA2aL5pXTCSUu0q99M/hItuQ5KajoHJF19niXpnDU3tCw52GFnHOTR9A
+	uDX/4CFqgsCDNuc8IhjzcVC+fvJsjgSRAWX1T+bg3JkYT6IK+w5g0Cl96le8WhNKD8/kdB
+	ISKDx/cZ1YzTgSj116TRf2/NsYvYZh6dMTsAzSzDSJ2fzQxv6pFfwG206ywOKDpeBpWf4H
+	Tm77zzglh29h+vOr5QaF/Q2f9tDgyVnvpi+P+aX17AtsuN9Vag/MSpz3OeZkIg==
+Date: Thu, 24 Oct 2024 13:40:50 +0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Ar Worf <fricks6@gmail.com>
-Date: Thu, 24 Oct 2024 09:42:02 +0500
-Message-ID: <CANSmiqmTobiHdS3zi794hg=rmvg6ePWDp7_vhgMD4_Sb4by7hA@mail.gmail.com>
-Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
- compliance requirements."
-To: torvalds@linux-foundation.org
-Cc: aospan@netup.ru, conor.dooley@microchip.com, ddrokosov@sberdevices.ru, 
-	dmaengine@vger.kernel.org, dushistov@mail.ru, fancer.lancer@gmail.com, 
-	geert@linux-m68k.org, gregkh@linuxfoundation.org, hoan@os.amperecomputing.com, 
-	ink@jurassic.park.msu.ru, jeffbai@aosc.io, kexybiscuit@aosc.io, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-hwmon@vger.kernel.org, linux-ide@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-spi@vger.kernel.org, manivannan.sadhasivam@linaro.org, 
-	Matt Turner <mattst88@gmail.com>, netdev@vger.kernel.org, nikita@trvn.ru, 
-	ntb@lists.linux.dev, patches@lists.linux.dev, richard.henderson@linaro.org, 
-	s.shtylyov@omp.ru, serjk@netup.ru, shc_work@mail.ru, torvic9@mailbox.org, 
-	tsbogend@alpha.franken.de, v.georgiev@metrotek.ru, wangyuli@uniontech.com, 
-	wsa+renesas@sang-engineering.com, xeb@mail.ru
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v3 4/6] iio: imu: bmi270: Add support for BMI260
+To: Justin Weiss <justin@justinweiss.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Derek J . Clark" <derekjohn.clark@gmail.com>,
+ Alex Lanzano <lanzano.alex@gmail.com>, Furkan Kardame
+ <f.kardame@manjaro.org>, 'Roman Gilg' <romangg@manjaro.org>
+References: <20241020220011.212395-1-justin@justinweiss.com>
+ <20241020220011.212395-5-justin@justinweiss.com>
+ <87msiwm90s.fsf@justinweiss.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
+Organization: Manjaro Community
+In-Reply-To: <87msiwm90s.fsf@justinweiss.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
 
-> I'm Finnish.
+On 22/10/24 22:50, Justin Weiss wrote:
+ > I couldn't find a shipping device with a bmi260 using the 10EC5280 ACPI
+ > ID. Some prototype devices with the bmi260 may have used them:
+ > https://lore.kernel.org/all/
+ > CAFqHKTm2WRNkcSoBEE=oNbfu_9d9RagQHLydmv6q1=snO_MXyA@mail.gmail.com/
 
-Said a descendant of Swedish occupiers. Ooookay.
+The Arch wiki has some recordings of that. Most likely got fixed in 
+newer BIOSs to the BMI0XXX coding.
 
-If you deleted all the code committed by Russians, that would be at
-least understandable. But what you just have done is refusing the
-people who contributed to the kernel due credit for their work, while
-keeping the results. A totally imperialist mindset.
+https://wiki.archlinux.org/title/AYA_NEO_2021#IMU_(Accelerometer_+_Gyro)
+https://wiki.archlinux.org/title/GPD_Win_Max#IMU_(Accelerometer_+_Gyro)
+
+On 22/10/24 22:50, Justin Weiss wrote:
+> I can't find any evidence of BOSC0260 being used, besides existing in
+> the Windows driver. As suggested in an earlier review, I added it here
+> to encourage people looking at this driver in the future to use the
+> correct ACPI ID.
+
+Based on the BIOS code from the OrangePi Neo the default value was 
+10EC5280 which got commented out and replaced by BMI0260. For BIOS v1.19 
+however OrangePi will use BOSC0260. I might provide a new DSDT dump as 
+soon as I get the newer BIOS from the vendor.
+
+-- 
+Best, Philip
 

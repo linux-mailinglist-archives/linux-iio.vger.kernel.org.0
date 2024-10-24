@@ -1,169 +1,235 @@
-Return-Path: <linux-iio+bounces-11146-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11147-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BD29AEB78
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 18:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE579AEB8F
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 18:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D07B1F22666
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 16:07:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E69D1F22D37
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 16:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943D51F5825;
-	Thu, 24 Oct 2024 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD7B1F76B3;
+	Thu, 24 Oct 2024 16:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nonI6kIS"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="avfvlAd+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B24139578;
-	Thu, 24 Oct 2024 16:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A121F76A5
+	for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 16:12:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729786013; cv=none; b=lDrlsnqgRfJwczUDW+AnxO+99Bzc7Vtv8bbtWZVUV5f/QFVp9ufnOzI/A7lJi+1rgv4r7ZH+I3XC5XnMDRbKatJsWBtgS88F5Ba+CnTh1L3pHGERCd6mqqsWYeY9NIprA9CF+X3wTlaodIk3bmZCM1INt44tbOp5AnsZu1YcOdU=
+	t=1729786340; cv=none; b=O/0+moPXAnkju2mYnvIWxMjxvmwDuF4OfF1t7/NjBxe8CJrplfPx2yY3mI7tMehR5mZMUljYUXpDd0P4joJk57z/oFEaSDd7PdDtSLF2K+W9fIeh9QbAaW9V9zqKOHcmAR3/hxbtLJESRwYiGeStngiNwedw7xUITqfyJ/1CGVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729786013; c=relaxed/simple;
-	bh=/kwiBkUdrwk/ft8X37mw8OAYaR+w559zlg+w6Nu5+Yw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aqp5+/Dlt/jXJMjcN2AGuqh9r8pPp/fpM/aROMXjE8iSyzGJLiZX6t0MDfc0S+p6ZIPc+6uXqN3paZCh6ufhyqWzF+qRulxZRd1mCBCY5/9xpr3mBRiEZ23pTBzAP49+XL+evjJ4h2BxdgMuxQ41mZsRU5UjaK7qj4hJH3pk7f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nonI6kIS; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20c714cd9c8so10330225ad.0;
-        Thu, 24 Oct 2024 09:06:51 -0700 (PDT)
+	s=arc-20240116; t=1729786340; c=relaxed/simple;
+	bh=YOl+jdRdLxBkVt8b/cajw2Uh9M6+GntmVhC8RkIqJwo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Zv4/SE/v7HsH/nclmViX56M55LSwH2A12aHdW0dvOSGqRARuvZCw4JqPK/mVWZixeVt1SwxR2AyZkRkdQ03MWMaMB7lrIUUswV5OsXkc6GkUgIOMMM34iSLgq6JTVfdVQpr1s1tuwroKjM7KmN91XP7vobnmbX+cuBOvhXansq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=avfvlAd+; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7180d9d0dcbso589496a34.3
+        for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 09:12:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729786011; x=1730390811; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=RMpYMGB8pLXbWeaijOZtSy80NUgHC2RS6rF8BuCiCr0=;
-        b=nonI6kIS6pn3+C8nAn4mWFqxhLaUrTzJkuID9j4xUo6IzTxJLylJeUuc/OYioeoIHC
-         A2VNVbVVMX7DEA1oF0i1OmV4sEeOl9v3Lq8L+Dl75a2RqaNOy2bkt8m4fPyd0ah9qLJA
-         ZB4VpjFMc/YUeUy39hh+bkrHBZmjmVyOqJQ01aiXI+ytHnZZV3LPpXTCXfWYjhPpETeE
-         SPidtFfVrzCez2XUqVpw7p9f7QtohfdGLm8GzvQZNqzvkhbzT8l92gcmVQ1+nJa1NwnL
-         WXNGmKO8SvExzW2yhk7FeHze7Waw5Az99NiMg3LDyqrCZ5AWn9HB8gtgEyOVEU5areJ2
-         gmBw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729786336; x=1730391136; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yqHRHn8vLXvapMZ39Cgc0iJX3AUAdIkxL0Txgf+Yb1M=;
+        b=avfvlAd+9lCVpRyLauMnMF4xlycMe9EeRqZMmvuJaMCQ4AtSYSvO+OYQrJXjDDDLm7
+         4UCtzdfgYdt6ySFbtc15bBYQCd2ZbBXvrOsN/8sTnDuM20+JUgFFU5OTJnZGm69k1sts
+         D+vV61sOdIXKk5YVUGbkg/pV9OZmJn0pyLVX5z55ymzMiV1Alyi+2XwFYoaeES4nYvZ6
+         2lqVkUxK3/eQqUhr50PCGFfC3Q9iU0pSsKd/MYR90aDkNkAeN4wF2RUhFgpZ1YHS19NW
+         fX937TrCTzNh2KHtYpFSA+ZDYPLEPRv2J0tZVtUBhmpSIe3eZ0k2ni+PLIyJuDBH/Wxb
+         Zb+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729786011; x=1730390811;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RMpYMGB8pLXbWeaijOZtSy80NUgHC2RS6rF8BuCiCr0=;
-        b=aRIlzxe6FZgX1TwE2ca86ptMlmlaqg6RZvZHBGLkYvUlH4X8UJK/E5uLYX5IpUlCag
-         Hw+jRJnCtXaBkTig10vNB3bqP5j0A3bqMMgdkKWwbLSUZfbm8LGcSNUP5L4TXqb/QJLz
-         enO13rk/xYyjCICFvuqqOFjNClNNxiKyqhTULZgN7XRIMeNubhGn8EPHIpgnMmzKm+dU
-         xKV5Se++Hdp9AWje0sJ5JSU1a85NKqn4qe03gWUL1kDZBwLosQyWVwt/ImgVv7kBUD2X
-         BYWN7xLHTddS81g72pRurD7aknUxNXt7mkQnY5mnACuGzad+ydk2NxjlNqQaJviS36LK
-         IcvA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHeI+XNMNWUxjPJb9BBNSl/K3ChNyEz8vlMIGHC3Uae7nGPdr2K3tserNgucAtA71dsOGI4tQYI+I=@vger.kernel.org, AJvYcCVNPjDzmMR+M/bmGApuoZbvxsYlhWDNRCWMIEcB5UXJvIrwE6NcqzxaVSDSMWbcOoFmgSMOpOlgju6c@vger.kernel.org, AJvYcCVy219ZuJoBza1OTSteR86OIwVMh6jkJ52tQH05TGm9uWZc7v/t3xtWGey3jkADevhwweIuLGMKrxhOCg==@vger.kernel.org, AJvYcCW1QVbur8twbHD+mXpxb/mRnRMdQmiJ00TGhONVhomqCRgjqFT1ugQ7j2uUKwQni/yPfUzdRLMmNStr@vger.kernel.org, AJvYcCW4v6sfGOkp03uiq/s3WcWJPxuxAszIDTqQeCEKVX2w9avjldvWnY/ZH3CtlzyQkbpv75fYbm8J@vger.kernel.org, AJvYcCWB62CW1uTIbf1wPNVoQnutOOevdxdEFykD9vM6lROCeqCiZmhCGj2YGSjuAgJ+uyHlklTfH/LlOKfO@vger.kernel.org, AJvYcCWwu8+YKT1HurfZiIV+cGHwd7ZtUnckbB+Hn5x3N05a8BaXbNT8pZjWsPZVQTpSGRJ3S0aA2jeIzJwFuE8zFBo=@vger.kernel.org, AJvYcCX0hHn0La0OjwBOjXvlo9osZ/Qa7fCUy0AhCWFRWuoSg/YpLUapUDV6olDSlI3NfJxuzuLXqtDhhTLY/s4=@vger.kernel.org, AJvYcCXBHs4zfEzsLgIpw6P9w+Bmw8QvHWvLhKQkEQUn8j5tdtxIT0CFiU+OWWQS+HZsIeZFmgh9OTMpIZXx@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzihd3vDCKoB6N80ej+sq9qTMJygJLTL6Qrobgx26J+Nkvt3USo
-	/M4PDR4gGDOBcJDxZIr2QOFEzPoSXR2scp5Qcl1yME/TUyqayaLL
-X-Google-Smtp-Source: AGHT+IFVaoS0y1PnVxdLbIxOvUdsHIL8kzqzLHIcf0Zoa5OMyMBmDSTAU8jwn0PXfyPZekS3A5U/2w==
-X-Received: by 2002:a17:902:ea08:b0:20e:55b0:3607 with SMTP id d9443c01a7336-20fa9deaa86mr94235495ad.2.1729786010468;
-        Thu, 24 Oct 2024 09:06:50 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7eeecf1csm74256945ad.17.2024.10.24.09.06.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Oct 2024 09:06:49 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <daab0b5d-8877-46ce-8ffb-0602164be5ca@roeck-us.net>
-Date: Thu, 24 Oct 2024 09:06:46 -0700
+        d=1e100.net; s=20230601; t=1729786336; x=1730391136;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yqHRHn8vLXvapMZ39Cgc0iJX3AUAdIkxL0Txgf+Yb1M=;
+        b=dXvhiiE97LmWclDZPfIYRljG0umTRcWWe4S5WoxUW5uPrs4+R5f1IkEuvKsSJpmvxM
+         B3gr98gtlFEOBMmiod/be2Mc5Jzoakgg1ryPXATrrDnCKs+VoNLsDxSEuZhj57yxJp1e
+         mJCwcIkI7vzX/372wQjYuhs0KkZWeneJcef5Q1w3H8YvbnbyY7O1fSG+bafwGI1fgtV8
+         ESa52Nd6tB/HCv7Dt3WLrJQM+WjQDPOZGzv4LFtl8oprR0gWdmvhFEMuJWvIvQswgPuC
+         q6Yin36cey6cxvGyt6503/ClIa6XZEWeU4/RxFzFRRkmhMzrD4Uh7BjfwWVuSwbFVYcm
+         r8bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWDJGBN5SpjSCab5YYdt3mdStR5K3EQoh5nbRdTALa7BwY/ReDTgdpJ10kwu5/EBlAZGf2nBdQop2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwroanxCdrL0xFGMIl3U/Lxw8hzWgjr72uzbF+6ZB5iWN6RZXyu
+	XQG5slxtlYC868aLYKztE9DF7p4pA4uP3kX6HGAxnKa5ltCxnnsePTbicE8zy1Y=
+X-Google-Smtp-Source: AGHT+IHFS2g+HAiwrBGtBUE2E1tTT5mJ8knQJc868BjEF+Hh0NWfqW+DfIUaRbNNK8gnX0OdGFIpyw==
+X-Received: by 2002:a05:6830:6f01:b0:718:10ce:c6a7 with SMTP id 46e09a7af769-7184b348e49mr5715982a34.30.1729786336306;
+        Thu, 24 Oct 2024 09:12:16 -0700 (PDT)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7182eb21b6asm2166675a34.8.2024.10.24.09.12.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Oct 2024 09:12:15 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Thu, 24 Oct 2024 11:12:10 -0500
+Subject: [PATCH v2] iio: adc: ad7380: use if_not_cond_guard for claim
+ direct
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 5/9] watchdog: Add Nuvoton NCT6694 WDT support
-To: Ming Yu <a0282524688@gmail.com>, tmyu0@nuvoton.com, lee@kernel.org,
- linus.walleij@linaro.org, brgl@bgdev.pl, andi.shyti@kernel.org,
- mkl@pengutronix.de, mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, wim@linux-watchdog.org, jdelvare@suse.com,
- jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org,
- alexandre.belloni@bootlin.com
-Cc: linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-can@vger.kernel.org,
- netdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org
-References: <20241024085922.133071-1-tmyu0@nuvoton.com>
- <20241024085922.133071-6-tmyu0@nuvoton.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20241024085922.133071-6-tmyu0@nuvoton.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241024-cleanup-if_not_cond_guard-v2-1-1bef98c9fd2e@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIANlxGmcC/42NWw6DIBBFt2LmuzRgH1C/uo/GGIRBJ7FgQE2Nc
+ e+lrqCf5yT33A0SRsIEVbFBxIUSBZ+hPBVgeu07ZGQzQ8nLq+BcMDOg9vPIyDU+TI0J3jbdrKN
+ l/KGEVXdprVOQ92NER5+j/aoz95SmENfjahE/+091EYwzKW8XJXjLndTPVq8DtRHPJryh3vf9C
+ 378CkTFAAAA
+To: Peter Zijlstra <peterz@infradead.org>, 
+ Jonathan Cameron <jic23@kernel.org>
+Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Michael Hennerich <michael.hennerich@analog.com>, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.1
 
-On 10/24/24 01:59, Ming Yu wrote:
-> This driver supports Watchdog timer functionality for NCT6694 MFD
-> device based on USB interface.
-> 
-> Signed-off-by: Ming Yu <tmyu0@nuvoton.com>
-> ---
-[ ... ]
+Replace usage of iio_device_claim_direct_scoped() with
+if_not_cond_guard().
 
-> +
-> +static int nct6694_wdt_start(struct watchdog_device *wdev)
-> +{
-> +	struct nct6694_wdt_data *data = watchdog_get_drvdata(wdev);
-> +
-> +	pr_debug("%s: WDT(%d) Start\n", __func__, data->wdev_idx);
-> +
-> +	return 0;
-> +}
-> +
+This makes fewer lines of code, less indentation, avoids having the
+error return statement in the macro args, and avoids needing to use
+unreachable().
 
-That doesn't make sense. How is the watchdog started if not here ?
-Something is conceptually wrong.
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+This is addressing the build failure reported on Peter's locking/test
+branch [1]. I've done a test compile locally with LLVM=1 and it compiles
+successfully.
 
-Guenter
+[1]: https://lore.kernel.org/oe-kbuild-all/202410240802.VMztsHsW-lkp@intel.com/
+---
+Changes in v2:
+- Add {} around case statements to avoid clang compiler error
+- Link to v1: https://lore.kernel.org/r/20241001-cleanup-if_not_cond_guard-v1-0-7753810b0f7a@baylibre.com
+---
+ drivers/iio/adc/ad7380.c | 76 ++++++++++++++++++++++++------------------------
+ 1 file changed, 38 insertions(+), 38 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
+index e8bddfb0d07d..34adc5aeb6f3 100644
+--- a/drivers/iio/adc/ad7380.c
++++ b/drivers/iio/adc/ad7380.c
+@@ -569,15 +569,15 @@ static const struct regmap_config ad7380_regmap_config = {
+ static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
+ 				     u32 writeval, u32 *readval)
+ {
+-	iio_device_claim_direct_scoped(return  -EBUSY, indio_dev) {
+-		struct ad7380_state *st = iio_priv(indio_dev);
++	struct ad7380_state *st = iio_priv(indio_dev);
+ 
+-		if (readval)
+-			return regmap_read(st->regmap, reg, readval);
+-		else
+-			return regmap_write(st->regmap, reg, writeval);
+-	}
+-	unreachable();
++	if_not_cond_guard(iio_claim_direct_try, indio_dev)
++		return -EBUSY;
++
++	if (readval)
++		return regmap_read(st->regmap, reg, readval);
++
++	return regmap_write(st->regmap, reg, writeval);
+ }
+ 
+ /*
+@@ -819,12 +819,12 @@ static int ad7380_read_raw(struct iio_dev *indio_dev,
+ 		return PTR_ERR(scan_type);
+ 
+ 	switch (info) {
+-	case IIO_CHAN_INFO_RAW:
+-		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-			return ad7380_read_direct(st, chan->scan_index,
+-						  scan_type, val);
+-		}
+-		unreachable();
++	case IIO_CHAN_INFO_RAW: {
++		if_not_cond_guard(iio_claim_direct_try, indio_dev)
++			return -EBUSY;
++
++		return ad7380_read_direct(st, chan->scan_index, scan_type, val);
++	}
+ 	case IIO_CHAN_INFO_SCALE:
+ 		/*
+ 		 * According to the datasheet, the LSB size is:
+@@ -901,7 +901,7 @@ static int ad7380_write_raw(struct iio_dev *indio_dev,
+ 	int ret, osr, boost;
+ 
+ 	switch (mask) {
+-	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO: {
+ 		osr = ad7380_osr_to_regval(val);
+ 		if (osr < 0)
+ 			return osr;
+@@ -909,31 +909,31 @@ static int ad7380_write_raw(struct iio_dev *indio_dev,
+ 		/* always enable resolution boost when oversampling is enabled */
+ 		boost = osr > 0 ? 1 : 0;
+ 
+-		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-			ret = regmap_update_bits(st->regmap,
+-					AD7380_REG_ADDR_CONFIG1,
+-					AD7380_CONFIG1_OSR | AD7380_CONFIG1_RES,
+-					FIELD_PREP(AD7380_CONFIG1_OSR, osr) |
+-					FIELD_PREP(AD7380_CONFIG1_RES, boost));
++		if_not_cond_guard(iio_claim_direct_try, indio_dev)
++			return -EBUSY;
+ 
+-			if (ret)
+-				return ret;
++		ret = regmap_update_bits(st->regmap,
++					 AD7380_REG_ADDR_CONFIG1,
++					 AD7380_CONFIG1_OSR | AD7380_CONFIG1_RES,
++					 FIELD_PREP(AD7380_CONFIG1_OSR, osr) |
++					 FIELD_PREP(AD7380_CONFIG1_RES, boost));
+ 
+-			st->oversampling_ratio = val;
+-			st->resolution_boost_enabled = boost;
+-
+-			/*
+-			 * Perform a soft reset. This will flush the oversampling
+-			 * block and FIFO but will maintain the content of the
+-			 * configurable registers.
+-			 */
+-			return regmap_update_bits(st->regmap,
+-					AD7380_REG_ADDR_CONFIG2,
+-					AD7380_CONFIG2_RESET,
+-					FIELD_PREP(AD7380_CONFIG2_RESET,
+-						   AD7380_CONFIG2_RESET_SOFT));
+-		}
+-		unreachable();
++		if (ret)
++			return ret;
++
++		st->oversampling_ratio = val;
++		st->resolution_boost_enabled = boost;
++
++		/*
++		 * Perform a soft reset. This will flush the oversampling block
++		 * and FIFO but will maintain the content of the configurable
++		 * registers.
++		 */
++		return regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
++					  AD7380_CONFIG2_RESET,
++					  FIELD_PREP(AD7380_CONFIG2_RESET,
++						     AD7380_CONFIG2_RESET_SOFT));
++	}
+ 	default:
+ 		return -EINVAL;
+ 	}
+
+---
+base-commit: 431c39f6d3edbab14f48dbf37a58ccdc0ac3be1e
+change-id: 20241001-cleanup-if_not_cond_guard-0981d867ddf8
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

@@ -1,130 +1,109 @@
-Return-Path: <linux-iio+bounces-11163-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11164-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDDF59AEE7B
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 19:46:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C819AEE7E
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 19:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B18BF282CD3
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 17:46:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF2FAB220AB
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 17:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA0E1FEFC3;
-	Thu, 24 Oct 2024 17:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4BA1FC7F7;
+	Thu, 24 Oct 2024 17:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2gnKRPi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB411F76A3;
-	Thu, 24 Oct 2024 17:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290E01F76A3;
+	Thu, 24 Oct 2024 17:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729791968; cv=none; b=Cjb6STv6dXmPbCcrhgtaIlxM49genq/hh843eUlnSTxHJT5cucQZRwu4k2TRPuqCgFqqq43/UFxa5lVgWkiGca6MVEw5mOQou1rb0yGWIBkRQZc3l2nYNX6KA8N3GDql3DAyGm+ZNUho27+mYJG+lZ3cEcF+AukbGqwa2T9Q+O0=
+	t=1729792004; cv=none; b=svyFLpgG1RpGycBPJxOy+HAAs1j7VpqYOSLB045rF0duQkIq70hPLM/udxegjv4gfgkAYcBbSdQE2jWtKqKPg0mn+qWT0jArI2gJWMmKRALeQND/zDrjivqvP9zsLC6nfnm5XzFjfzDfUoLnUIXcXHNCoI/ccCBeT2zEN6f7Pqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729791968; c=relaxed/simple;
-	bh=I9Q4P1XK4E+Wu/v/AH+WHEDOhWLlmc7Q+i47sR0qHAE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=csFIvibFHb/161y3uufrFVmG/8fcDNCokzCvoN7M3SIUyy631T004XCbTDpyw45/PA2mQXQsF4Tzu1xPTXRfoi71I78Bkn1ENSxE0LL8x60sPVleQXcqGbKDXy2Cc7xT3b7Ws+72smUQzMDGCIEqMFGe9KEMxHYNtBd5ScW+QsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [192.168.2.102] (213.87.90.120) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 24 Oct
- 2024 20:45:45 +0300
-Message-ID: <884de5fe-9f3b-4720-8be6-88972d8fc897@omp.ru>
-Date: Thu, 24 Oct 2024 20:45:44 +0300
+	s=arc-20240116; t=1729792004; c=relaxed/simple;
+	bh=0oe8ZaFyqJHIzvDer+HKlnboZayD2eODXd02TS0w2+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=faatVBiMRpf+4Eyd5bLJFbKxpYo5ieUIP26jFglUlwRIOmAcOGehAm40AgxW3stYCK5ZljFkH0Q+EI7LbjVwsMCViys77dX1Ue9rRgVxdBr6Ey4PvmHb5QNTH5ZOPXHuYgy/KipPfIzTW8obaoZjbtOpL6jb4hCT+t5bs0JWJ40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2gnKRPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60947C4CEC7;
+	Thu, 24 Oct 2024 17:46:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729792003;
+	bh=0oe8ZaFyqJHIzvDer+HKlnboZayD2eODXd02TS0w2+8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Y2gnKRPioD/Z5egwlJ/6dS+E/lum1fNQLt/sPBMPdcjNKpydwW0bZDFh0ZPU8rlX/
+	 AGoSyQ5eDpRFfVzR2BkED0rtDVJLGsu8iGhAv4jBZhIgLGtyOlke3Fk4uR8LgL6IYb
+	 ZXU8MzikUVwqgR0iewFfhkYpTWxhkXal5hU+RYDwGePDNJ39y+WdXrQkCJZv+N9vKQ
+	 QyYk/qguUbsGAJRvMBZ+hMEdrnke6vsa/RUbd/KGLjmRhJd5tfz8GvpzAIxwlEN9NT
+	 GIbrPgmohatXfVQzMrcltgwrKl4nvNDhXDs8YPKOF42TwpBkAjYboqthttTv4mib9e
+	 bCRB56R17vzaA==
+Date: Thu, 24 Oct 2024 18:46:34 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: <lars@metafoo.de>, <paul.walmsley@sifive.com>, <palmer@dabbelt.com>,
+ <aou@eecs.berkeley.edu>, <nuno.sa@analog.com>,
+ <javier.carrasco.cruz@gmail.com>, <sunke@kylinos.cn>,
+ <conor.dooley@microchip.com>, <anshulusr@gmail.com>,
+ <kimseer.paller@analog.com>, <michael.hennerich@analog.com>,
+ <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-riscv@lists.infradead.org>, <noname.nuno@gmail.com>
+Subject: Re: [PATCH v2] iio: dac: Kconfig: Fix build error for ltc2664
+Message-ID: <20241024184634.3bfcde82@jic23-huawei>
+In-Reply-To: <20241024015553.1111253-1-ruanjinjie@huawei.com>
+References: <20241024015553.1111253-1-ruanjinjie@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
- compliance requirements."
-To: Ivan Epifanov <isage.dna@gmail.com>, <andriy.shevchenko@intel.com>
-CC: <aospan@netup.ru>, <conor.dooley@microchip.com>,
-	<ddrokosov@sberdevices.ru>, <dmaengine@vger.kernel.org>, <dushistov@mail.ru>,
-	<fancer.lancer@gmail.com>, <geert@linux-m68k.org>,
-	<gregkh@linuxfoundation.org>, <hoan@os.amperecomputing.com>,
-	<ink@jurassic.park.msu.ru>, <jeffbai@aosc.io>, <kexybiscuit@aosc.io>,
-	<linux-alpha@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-fpga@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-	<linux-hwmon@vger.kernel.org>, <linux-ide@vger.kernel.org>,
-	<linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
-	<linux-mips@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>, <manivannan.sadhasivam@linaro.org>,
-	<mattst88@gmail.com>, <netdev@vger.kernel.org>, <nikita@trvn.ru>,
-	<ntb@lists.linux.dev>, <patches@lists.linux.dev>,
-	<richard.henderson@linaro.org>, <serjk@netup.ru>, <shc_work@mail.ru>,
-	<torvalds@linux-foundation.org>, <torvic9@mailbox.org>,
-	<tsbogend@alpha.franken.de>, <v.georgiev@metrotek.ru>,
-	<wangyuli@uniontech.com>, <wsa+renesas@sang-engineering.com>, <xeb@mail.ru>
-References: <Zxpqnf1M8rPTB4DN@black.fi.intel.com>
- <20241024170743.241144-1-isage.dna@gmail.com>
-Content-Language: en-US
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-In-Reply-To: <20241024170743.241144-1-isage.dna@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.0, Database issued on: 10/24/2024 17:32:48
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 19
-X-KSE-AntiSpam-Info: Lua profiles 188703 [Oct 24 2024]
-X-KSE-AntiSpam-Info: Version: 6.1.0.4
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 40 0.3.40
- cefee68357d12c80cb9cf2bdcf92256b1d238d22
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_arrow_text}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 213.87.90.120 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 213.87.90.120 in (user)
- dbl.spamhaus.org}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 213.87.90.120
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 19
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/24/2024 17:35:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 10/24/2024 2:57:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-On 10/24/24 8:07 PM, Ivan Epifanov wrote:
-[...]
+On Thu, 24 Oct 2024 09:55:53 +0800
+Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 
->> $ git log --author="andriy.shevchenko@intel.com"
->> $ 
+> If REGMAP_SPI is n and LTC2664 is y, the following build error occurs:
 > 
-> Look who's talking
+> 	riscv64-unknown-linux-gnu-ld: drivers/iio/dac/ltc2664.o: in function `ltc2664_probe':
+> 	ltc2664.c:(.text+0x714): undefined reference to `__devm_regmap_init_spi'
+> 
+> Select REGMAP_SPI instead of REGMAP for LTC2664 to fix it.
+> 
+> Fixes: 4cc2fc445d2e ("iio: dac: ltc2664: Add driver for LTC2664 and LTC2672")
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Applied to the fixes-togreg branch of iio.git 
+Thanks,
 
-$ git shortlog | grep "Andy Shevchenko"
-Andy Shevchenko (5564):
-[...]
+Jonathan
 
-   Even I was surprised!
-
-MBR, Sergey
+> ---
+> v2:
+> - Select REGMAP_SPI instead of REGMAP.
+> - Update the commit subject.
+> - Add Reviewed-by.
+> ---
+>  drivers/iio/dac/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index 45e337c6d256..9f5d5ebb8653 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -380,7 +380,7 @@ config LTC2632
+>  config LTC2664
+>  	tristate "Analog Devices LTC2664 and LTC2672 DAC SPI driver"
+>  	depends on SPI
+> -	select REGMAP
+> +	select REGMAP_SPI
+>  	help
+>  	  Say yes here to build support for Analog Devices
+>  	  LTC2664 and LTC2672 converters (DAC).
 
 

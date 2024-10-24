@@ -1,228 +1,188 @@
-Return-Path: <linux-iio+bounces-11063-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11064-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE109ADF03
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 10:21:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6889ADFA2
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 11:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6D8428A446
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 08:21:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA40B1C21A64
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 09:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A6A1AF0C4;
-	Thu, 24 Oct 2024 08:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09ECB1B393C;
+	Thu, 24 Oct 2024 08:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dJLlWfvX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XBPPVemd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01157166F07
-	for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 08:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12151B0F19;
+	Thu, 24 Oct 2024 08:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729757991; cv=none; b=rBkINu4t6uDv0HGvmyQxqAwqV2cSHi3Ggnrs0MHFt3yyIXIvD957XSVkEDntLmFQEs3FgaGnZ1FFiSAVuZ6BfSsOOqfb8YFpSUesC8LHX8nPhfzyoiik09CVYL8obHKVsbKqR8X6QIgHwaQUYhW9f75zy8+BBtFOfmODhzlqYks=
+	t=1729760384; cv=none; b=LGjn80SqkZSelJz8/LVpgWg2mO4VvgKW19v3bJ0zr/5RcN3Yq5XooVDHudFSvnGoCe5ngf4xiHYsTFGBZ0RvAnQgTgc0QGq9lCE7ivs/9kdScC7eD55ADiy+fGT7CX+ySKIMLuQshCuKCiE70d0Kmyfzwl0UDJ9+cG6RCMTmG8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729757991; c=relaxed/simple;
-	bh=jJpoDcZzcf17R/3zdN17SftmPrsJXoXPfK84W/H5pz4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bzjGMwGeGnOeoKlkOtepDC3DDPnKWtbhslDHY1r2mwX0dFJCgUsl87mdb0z9NHso/+cZ9TpvtbDxmvJOgQX7s0VIqh4FKnAGnDwKgB8YZD3TyPgpHfZ3xodtjlW06UXYaNCBP7s9ULGMytPQJspmtFrHph5ezEQLRkMSeJ79NC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dJLlWfvX; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5c95a962c2bso769943a12.2
-        for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 01:19:48 -0700 (PDT)
+	s=arc-20240116; t=1729760384; c=relaxed/simple;
+	bh=fWZRKKDMjH6AV4L2EpcN1Z+Dw912vE6hGK1NZIhh4cs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BMwhJTOGQrgKAcsap72WnPzHNtCV3yydqvdtzD0vjRbMMOKkA2Q73CB/QvfSdozXvhvLQie0Enr44kk8IrNr90wRRFJYS1Ys639KvmClLDczEe5JF6e7yqMaP4Or0HNOxuQxVnmi56N0FXjC5OTS6PLZlJDmTcGpbcBZEIWbCDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XBPPVemd; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-20cbca51687so5384395ad.1;
+        Thu, 24 Oct 2024 01:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729757987; x=1730362787; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qs/aKFg3NFl0djqnSQfP+JloM/IzfO1teCS8RmqnkF8=;
-        b=dJLlWfvXuhEKV0cSSRuOIDOdoPHHuGdzxu9B+6jm46B80TYgrX0h+hQXfhixIuYYJJ
-         qgRVvlJe9svZ9oVRdWbRIU+Aa8Vuzbc6pyuaHb1jZMRsU6OJuFzR71W2WLh+ldFLceR4
-         t3MNYG1W2MeyAPsWN+MygfzO35/uqVg35n88qQj0XiFSpkhodFEdEW+wS1aoJ4e9PKT5
-         P1KwDcuv9JY8by1A9yhl81vR41rtf7tIwcGFwruUU0wK4x71dstoOlbflynVKi5wUSyh
-         QGInFRNWIr6UD77kjZCGo491No9yzObgGnx3Skl/+ep2sXxrExWdfGgeEBbO/54KIoZv
-         yuvA==
+        d=gmail.com; s=20230601; t=1729760382; x=1730365182; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=M0Y48yxp1xFIkBVIBLGxo7k5thlINaCSsNpWdPdeLiA=;
+        b=XBPPVemdcCZ6JXXDHrwJfyDRfjIJ4NtrlHhncJVteYaH8otcHa/tyqQMmvqiVNK1eO
+         bf0wadbdmE03/hAez0/5+GiKVT5Hw51t7vZzNgMhn4B6J7e8AcFLZ7U2tjsK7ZRWtNDd
+         6GurXdL6q8ciK2Psty3smiB/wp+NIlAEb9m3rmWVM83dmUfOGzz7TCdDjVYstA5XykIa
+         rvG2XAFQsBHiBWxQLJegm35fMIm2B5c7AAx1JlYscI0R/OanV00EgMsACxGSHAC24uqt
+         JDqmkIP0F1Uaq3SFuztA3KPRFPBzPA09+KQxLyiSxBCkcJQ43hg/CtrE8AP4vHmUM3MJ
+         yaWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729757987; x=1730362787;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Qs/aKFg3NFl0djqnSQfP+JloM/IzfO1teCS8RmqnkF8=;
-        b=k0lGAwel1dYYgXOLOX6OEdVtfHk22Aal6dT9XE9LNlzJbFRsAfUbjNQifSXQTttOAy
-         tCKTj2t6hM+iOqlzC/6YfeT3VtUtuPOpxrKvxSVEEN/F0BL0IN8rZ2NmZVWwvmOCQJLt
-         jCLbM8Xl21TB7xFYOPpDZW9C2nxOIOPpGgAh8ZeM2DqCybVdriQ5t7LfAkAuYG4Cd8o9
-         kgVBQ2hGGBhDaqJSZAf+pqwVhmsbsCeUzB4NtmGHC5mrUd45+hTQ8Vkk31MVtdo6owzq
-         F18I3ibha4A24tupDQoTgRSTavYTFTD5RaE0okspWBB0RdjZO2fgKvWvmnICkdllw2yE
-         3xpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVIydqT44+sfJk7WTXTPnrQVjjynAwNBjD3GXgq+ckJIuMIcLpfIvyhrR8m4VGdCwMnWc8wx005P2U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoiS28UrEn8DaYy7tO/FvTVdBLj55b0yWY2To17Zzm0OLX8cqg
-	JrqVZ8tY8r0r4HMRwsidpWb9MrcqkP/aaJdZqBGPXDe3EvAT6V08bBVPnR8kg1XLkL9+ZTIHcTD
-	Tsj95UyplGMiM+T41tO3AXKJkaF9WCqMwhQbcsg==
-X-Google-Smtp-Source: AGHT+IEUz97/zglX4GUT3Pds+XQ9vhw/84CeXDgQkpGMRP1blc6osQow8h9eQWkAj9ZNoShkMCwOCiaT+o5nm4LK8oY=
-X-Received: by 2002:a17:907:3206:b0:a99:fb56:39cc with SMTP id
- a640c23a62f3a-a9abf8d2614mr562372866b.38.1729757987320; Thu, 24 Oct 2024
- 01:19:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729760382; x=1730365182;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=M0Y48yxp1xFIkBVIBLGxo7k5thlINaCSsNpWdPdeLiA=;
+        b=P8Q7y2NMC8YPMoH6XUdtw3IeJC/CTNC3b48m7jofCO/lKfwHieCYIsPxy79Bfpqn9B
+         j/cNsCe7hJOREuL0K4XB92wJta6spDupe341eq1Mum8BBgcscuckuNdvARD/E5lUyLHM
+         U7ZU5obA9CB6GkJEoydsb8u4Kgwn14ivtN3uND1Mk/32a58jPWlxlps34e8AZmKeQThq
+         ijv07jRETqBb45lrbzotAdPB0TFMq86Kzc8eeHh33kwVu6kiWcgGFXQXCessWVJ8Eu+C
+         ONE+/lnHeIKpxvyUrcTOp18EimVPCeQyxgnDVIULF0Jx4qQ2wUxxL4nqt3fnFWQ4fMOP
+         TVgg==
+X-Forwarded-Encrypted: i=1; AJvYcCU5q7zbIxMwV0vHLnMY0MVMn0s2gTs9TSu3ePcZ7tj2a+rp56qH5ogVOKeZhjD+EAs0r54DMVpbuc0Q@vger.kernel.org, AJvYcCUqsQV4miPOct+eW5McMrOy5ZpaHD96gBA9X9LSGnoTfHZ0N1Ke3bHXnIMjJfoZaUuiFWI74BcprIzy@vger.kernel.org, AJvYcCVKTKgTov2kcO8GScamM3u4n3136b3y07CbteI4/QGdBpunAXSLnLmQ8etKwQ/BIsF9e1Fywl7h@vger.kernel.org, AJvYcCW56tQ+M/Mfw0Ek8mFsiu7zm3FWx7D+wGoiOCzhBqkdGmf/v4g3dvqiee2SmRjHXCKDWoER56197Jc=@vger.kernel.org, AJvYcCWFYHB56j7nNxyggej1S8dQEFI3qCZLtc+wpPkB31S7QpOCGrRNs/NI/zIIQuEapG8PUDJZAvpLZAzg0mT5W+Q=@vger.kernel.org, AJvYcCXBl6a7K7vxQckXIT7eUA8mz1zxOfzqUEFlZGO32MAbp644fXaLXAS7uqtgyHTCs81xCyBaCTeDQ/tzw+o=@vger.kernel.org, AJvYcCXI4KgNVj0k0lmT8C8uq3Iy53H1aE47blRHIWL5hpA95RCGaRhQQqR7cd5jln8QFlkXUZj7u6SLfXf7@vger.kernel.org, AJvYcCXI6dVfI0pAuZuOV0bz8fWnzBqGErMfeNVhfLjWw2FgIb9J3EUsb8YMqxTTQlbkw7YCjrV/nk9+iSqE4A==@vger.kernel.org, AJvYcCXLHBB2xR0gSpcPEyiujFZg3xRlUNY/2hDUSel8hc3YwXN1Bvo1OKIIN/huuCD8qb99K/h1ZtFEUJli@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3MZN3RJLM6JMQlurq0KzxmPwmf3peyowlVtvBSbPXfBe3Wvcx
+	Zt/57HgZmcDNRCWp4tfrxgEjRaC9aMpCNPMVmYs3IMUexCcmlj8C
+X-Google-Smtp-Source: AGHT+IFwOHTmv7xybBTY9E1hOrVStUF7eEvo0pWRQYLqNOIKdK0keUMlla+cJjiazlWheUoWCc8y9w==
+X-Received: by 2002:a17:903:1cd:b0:205:6a9b:7e3e with SMTP id d9443c01a7336-20fab2da04dmr74934675ad.56.1729760381872;
+        Thu, 24 Oct 2024 01:59:41 -0700 (PDT)
+Received: from hcdev-d520mt2.. (60-250-192-107.hinet-ip.hinet.net. [60.250.192.107])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7f0f6e89sm68503615ad.277.2024.10.24.01.59.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Oct 2024 01:59:41 -0700 (PDT)
+From: Ming Yu <a0282524688@gmail.com>
+X-Google-Original-From: Ming Yu <tmyu0@nuvoton.com>
+To: tmyu0@nuvoton.com,
+	lee@kernel.org,
+	linus.walleij@linaro.org,
+	brgl@bgdev.pl,
+	andi.shyti@kernel.org,
+	mkl@pengutronix.de,
+	mailhol.vincent@wanadoo.fr,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	wim@linux-watchdog.org,
+	linux@roeck-us.net,
+	jdelvare@suse.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	ukleinek@kernel.org,
+	alexandre.belloni@bootlin.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-watchdog@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-pwm@vger.kernel.org,
+	linux-rtc@vger.kernel.org
+Subject: [PATCH v1 0/9] Add Nuvoton NCT6694 MFD devices
+Date: Thu, 24 Oct 2024 16:59:13 +0800
+Message-Id: <20241024085922.133071-1-tmyu0@nuvoton.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241023-ad7380-add-adaq4380-4-support-v2-0-d55faea3bedf@baylibre.com>
- <20241023-ad7380-add-adaq4380-4-support-v2-1-d55faea3bedf@baylibre.com> <7uih5kvpy6i4ggq5o7eudzczbicopbdnmbtkyprfperkkqgsmt@42q6bncox3ml>
-In-Reply-To: <7uih5kvpy6i4ggq5o7eudzczbicopbdnmbtkyprfperkkqgsmt@42q6bncox3ml>
-From: Julien Stephan <jstephan@baylibre.com>
-Date: Thu, 24 Oct 2024 10:19:32 +0200
-Message-ID: <CAEHHSvY3QWkjDo6LdyFg-X+UnyY-cJ6kAFUYP-ZWBqgHoKxmkQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] dt-bindings: iio: adc: ad7380: add adaq4370-4 and
- adaq4380-4 compatible parts
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le jeu. 24 oct. 2024 =C3=A0 09:29, Krzysztof Kozlowski <krzk@kernel.org> a =
-=C3=A9crit :
->
-> On Wed, Oct 23, 2024 at 11:19:33AM +0200, Julien Stephan wrote:
-> > +  vs-p-supply:
-> > +    description:
-> > +      Amplifiers positive supply.
-> > +
-> > +  vs-n-supply:
-> > +    description:
-> > +      Amplifiers negative supply.
-> > +
-> > +  ldo-supply:
-> > +    description:
-> > +      LDO supply. Connect to vs-p-supply or a 3.6 to 5.5 V supply.
-> >
-> >    aina-supply:
-> >      description:
-> > @@ -97,12 +115,46 @@ properties:
-> >        specify the ALERT interrupt.
-> >      maxItems: 1
-> >
-> > +  '#address-cells':
->
-> If there is going to be new version/resend, then keep consistent quotes:
-> " or '.
->
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 0
-> > +
-> >  required:
-> >    - compatible
-> >    - reg
-> >    - vcc-supply
-> >    - vlogic-supply
-> >
-> > +patternProperties:
-> > +  "^channel@([0-3])$":
->
-> () are not necessary
->
-> > +    $ref: adc.yaml
-> > +    type: object
-> > +
-> > +    properties:
-> > +      reg:
-> > +        description:
-> > +          The channel number. From 0 to 3 corresponding to channels A,=
-B,C,D
-> > +        items:
-> > +          minimum: 0
-> > +          maximum: 3
->
-> No improvements, no response to comment.
+This patch series introduces support for Nuvoton NCT6694, a peripheral
+expander based on USB interface. It models the chip as an MFD driver
+(1/9), GPIO driver(2/9), I2C Adapter driver(3/9), CANfd driver(4/9),
+WDT driver(5/9), HWMON driver(6/9), IIO driver(7/9), PWM driver(8/9),
+and RTC driver(9/9).
 
-Hi Krzysztof,
+The MFD driver implements USB device functionality to issue
+custom-define USB bulk pipe packets for NCT6694. Each child device can
+use the USB functions nct6694_read_msg() and nct6694_write_msg() to issue
+a command. They can also register a handler function that will be called
+when the USB device receives its interrupt pipe.
 
-I am sorry, it got lost during my rebase. It was planned to be on the
-v2 (even added it to the changelog in the cover letter).
-Thank you for noticing it.  I sent a v3 with all the changes.
+The following introduces the custom-define USB transactions:
+	nct6694_read_msg - Send bulk-out pipe to write request packet
+			   Receive bulk-in pipe to read response packet
+			   Receive bulk-in pipe to read data packet
 
-Cheers
-Julien
->
-> > +
-> > +      adi,gain-milli:
-> > +        description:
-> > +          The hardware gain applied to the ADC input (in milli units).
-> > +          If not present, default to 1000 (no actual gain applied).
-> > +          Refer to the typical connection diagrams section of the data=
-sheet for
-> > +          pin wiring.
-> > +        $ref: /schemas/types.yaml#/definitions/uint16
-> > +        enum: [300, 600, 1000, 1600]
-> > +        default: 1000
-> > +
-> > +    required:
-> > +      - reg
-> > +
-> > +    additionalProperties: false
-> > +
-> >  unevaluatedProperties: false
-> >
-> >  allOf:
-> > @@ -140,6 +192,7 @@ allOf:
-> >          aind-supply: false
-> >
-> >    # ad7380-4 uses refin-supply as external reference.
-> > +  # adaq devices use internal reference only, derived from refin-suppl=
-y
-> >    # All other chips from ad738x family use refio as optional external =
-reference.
-> >    # When refio-supply is omitted, internal reference is used.
-> >    - if:
-> > @@ -147,6 +200,8 @@ allOf:
-> >          compatible:
-> >            enum:
-> >              - adi,ad7380-4
-> > +            - adi,adaq4370-4
-> > +            - adi,adaq4380-4
-> >      then:
-> >        properties:
-> >          refio-supply: false
-> > @@ -156,6 +211,27 @@ allOf:
-> >        properties:
-> >          refin-supply: false
-> >
-> > +  # adaq devices need more supplies and using channel to declare gain =
-property
-> > +  # only applies to adaq devices
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          enum:
-> > +            - adi,adaq4370-4
-> > +            - adi,adaq4380-4
-> > +    then:
-> > +      required:
-> > +        - vs-p-supply
-> > +        - vs-n-supply
-> > +        - ldo-supply
-> > +    else:
-> > +      properties:
-> > +        vs-p-supply: false
-> > +        vs-n-supply: false
-> > +        ldo-supply: false
-> > +      patternProperties:
-> > +        "^channel@([0-3])$": false
->
-> () are not necessary
->
-> Best regards,
-> Krzysztof
->
+	nct6694_write_msg - Send bulk-out pipe to write request packet
+			    Send bulk-out pipe to write data packet
+                            Receive bulk-in pipe to read response packet
+                            Receive bulk-in pipe to read data packet
+
+Ming Yu (9):
+  mfd: Add core driver for Nuvoton NCT6694
+  gpio: Add Nuvoton NCT6694 GPIO support
+  i2c: Add Nuvoton NCT6694 I2C support
+  can: Add Nuvoton NCT6694 CAN support
+  watchdog: Add Nuvoton NCT6694 WDT support
+  hwmon: Add Nuvoton NCT6694 HWMON support
+  iio: adc: Add Nuvoton NCT6694 IIO support
+  pwm: Add Nuvoton NCT6694 PWM support
+  rtc: Add Nuvoton NCT6694 RTC support
+
+ MAINTAINERS                      |  15 +
+ drivers/gpio/Kconfig             |  12 +
+ drivers/gpio/Makefile            |   1 +
+ drivers/gpio/gpio-nct6694.c      | 489 ++++++++++++++++++
+ drivers/hwmon/Kconfig            |  10 +
+ drivers/hwmon/Makefile           |   1 +
+ drivers/hwmon/nct6694-hwmon.c    | 407 +++++++++++++++
+ drivers/i2c/busses/Kconfig       |  10 +
+ drivers/i2c/busses/Makefile      |   1 +
+ drivers/i2c/busses/i2c-nct6694.c | 166 ++++++
+ drivers/iio/adc/Kconfig          |  10 +
+ drivers/iio/adc/Makefile         |   1 +
+ drivers/iio/adc/nct6694_adc.c    | 616 ++++++++++++++++++++++
+ drivers/mfd/Kconfig              |  10 +
+ drivers/mfd/Makefile             |   2 +
+ drivers/mfd/nct6694.c            | 394 +++++++++++++++
+ drivers/net/can/Kconfig          |  10 +
+ drivers/net/can/Makefile         |   1 +
+ drivers/net/can/nct6694_canfd.c  | 843 +++++++++++++++++++++++++++++++
+ drivers/pwm/Kconfig              |  10 +
+ drivers/pwm/Makefile             |   1 +
+ drivers/pwm/pwm-nct6694.c        | 245 +++++++++
+ drivers/rtc/Kconfig              |  10 +
+ drivers/rtc/Makefile             |   1 +
+ drivers/rtc/rtc-nct6694.c        | 276 ++++++++++
+ drivers/watchdog/Kconfig         |  11 +
+ drivers/watchdog/Makefile        |   1 +
+ drivers/watchdog/nct6694_wdt.c   | 329 ++++++++++++
+ include/linux/mfd/nct6694.h      | 168 ++++++
+ 29 files changed, 4051 insertions(+)
+ create mode 100644 drivers/gpio/gpio-nct6694.c
+ create mode 100644 drivers/hwmon/nct6694-hwmon.c
+ create mode 100644 drivers/i2c/busses/i2c-nct6694.c
+ create mode 100644 drivers/iio/adc/nct6694_adc.c
+ create mode 100644 drivers/mfd/nct6694.c
+ create mode 100644 drivers/net/can/nct6694_canfd.c
+ create mode 100644 drivers/pwm/pwm-nct6694.c
+ create mode 100644 drivers/rtc/rtc-nct6694.c
+ create mode 100644 drivers/watchdog/nct6694_wdt.c
+ create mode 100644 include/linux/mfd/nct6694.h
+
+-- 
+2.34.1
+
 

@@ -1,65 +1,65 @@
-Return-Path: <linux-iio+bounces-11230-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11235-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECF99AF270
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 21:19:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCE39AF27B
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 21:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95F4A1F264A8
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 19:19:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BF00B234BF
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 19:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1ED224B6F;
-	Thu, 24 Oct 2024 19:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E756222A4BD;
+	Thu, 24 Oct 2024 19:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y3wYR7EP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aLUd6vlC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78308218D7F;
-	Thu, 24 Oct 2024 19:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2E8228B62;
+	Thu, 24 Oct 2024 19:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729797138; cv=none; b=FcEihCzcAzMjVjEuzPfcyNWZ+0MxbGmayRfm+P9lPaf7qa2fTKRuzGLyTMRmKRxIjdFat3LzQFlWV99/VadmKfcxaO/Hs4XB3Xv9JeUGfu41kiTgtITRujJgitUG6kt5P1K/JomoT3v0ozElMfGMro7FbfqhLP+6z6sKyDIF298=
+	t=1729797142; cv=none; b=tqrDrkC/Tnw7q/93Kb7s02279AHC8KePD+41zr+jhMdVAkgl9xGRhLmZ+R1mou9QfO8+y1mx/skPR9l5KO3i1yDhY/xcrosxOt1AwiTPeWpQFLhcWcre9atKkpGvMzYt+2XAxb5sp6v6DCr6LmkL5c4oE/ASKK0t33+PJR2AwU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729797138; c=relaxed/simple;
-	bh=zxQd+68Z1zPrrX9bNKxVFx6C4dGvd3tUJFvHEY8+Vz4=;
+	s=arc-20240116; t=1729797142; c=relaxed/simple;
+	bh=8sCpK1pd7nRUkCdMXWy4llb6XrvP6fxWrADB2+farzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SmwhLTUGwIAcamcTCKzF91BbyjejcbgexxgoX5noUkHjLPMTprsB9qGH+vyy91ktqbfFBiHyXC7c4CtxeNvPIPeKag+U8DzO7o+XPWmQ/RggMciwmWOgC9gsI0OfVkWhENMJ0mpHf2JsAn99ZnxxXOds+yNalKeEBdRbDqY6H6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y3wYR7EP; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=fsxga8KoU9zEzbtuHlLVA/VdqJQRV9gH1f9BIKArRQixejMWqkiAVEFfwbfNpRw0WFvhr6FB64Ky/n8ZvrzNzvrkkR/ywuDmCGIN38wk/HxjVZCL/JHCbL4Vxkv9Qlp5R+2ckHvY0rpMsBymypQurK+q0v8aG+XRK/B8bsZ8MG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aLUd6vlC; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729797136; x=1761333136;
+  t=1729797140; x=1761333140;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=zxQd+68Z1zPrrX9bNKxVFx6C4dGvd3tUJFvHEY8+Vz4=;
-  b=Y3wYR7EPqnDcRLveifZ5FWoqfWb+jamTAu9QfrmsUczcfPHMsQ8IY3Hw
-   iIJPE82IB3NMRvu/OSRw5p61pGcMj0j5rmmhjBCV5gQcewR8apUcmaj6p
-   IAuTPC4XeSYmrd4qwwyjjwc1qCNL75CIw3T4Y04EM38KDLi9fBV1jVUi/
-   iWWeD3XWnF3dlnNLcWfGSXNEUJG2+5GEouO+zUZTy8ZmEu7LTt52yMzCJ
-   knA5Y+7qEStRzdsFJxkZF8S0CmG3lNCpckFwYTNqDUZ/ZSMTxrxOa/N98
-   DsVTk75AqOS6+vP8MFEc/RgO+gI0mUNKJe4hzoThcFNuavIBI5riRZzZf
+  bh=8sCpK1pd7nRUkCdMXWy4llb6XrvP6fxWrADB2+farzU=;
+  b=aLUd6vlCBWApooPx+k053YXnrK4vD7Z3YNGQ/zs9GkxX3FgnHzAMMOxx
+   CfrOdjlrQa/k6xKe2/xdtWPXMDLQAAMQ0w6BbFcO8O+Jtck0qI4wviFiw
+   ywX+LZGfG+eAsgJ+OJJWGW9IxJKs7ZhvQVUpNVOztq0X62MD4o1JQNufR
+   Ea/zbgHW01ib5nza4GhhCA+BNh6/bnX0U13Cwjpm8nSrt0IybdAPSOJW0
+   9vz3US7gq/x68cr087zBisrqnst+ayvdTRru+PIzDmVZhYajyCHfm/emq
+   dNzoZkXUyASC2DD9bb0xY+wOJOXGgqKmqted9F6eNMosUIFy70y95cDHB
    w==;
-X-CSE-ConnectionGUID: tkgAj+w4SzGMhnCZ6mlJow==
-X-CSE-MsgGUID: vnvODcQ/SgiOmFV2sZ4MNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="46934505"
+X-CSE-ConnectionGUID: jcPN8I9FTNKDcW/9g6sc/w==
+X-CSE-MsgGUID: 8YzzzbdbR5SPMh8jNKcgYQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="46934542"
 X-IronPort-AV: E=Sophos;i="6.11,230,1725346800"; 
-   d="scan'208";a="46934505"
+   d="scan'208";a="46934542"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 12:12:11 -0700
-X-CSE-ConnectionGUID: 7+UF6+JeR8afNWZmZpDFqg==
-X-CSE-MsgGUID: ZFhJ9pZXTDup4dBV96Wl9w==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 12:12:12 -0700
+X-CSE-ConnectionGUID: xEwNjSDTSG+s0b1HBxkeHw==
+X-CSE-MsgGUID: UgyuPlXuTk67rQddw1vj4A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,230,1725346800"; 
-   d="scan'208";a="80266714"
+   d="scan'208";a="80266716"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmviesa006.fm.intel.com with ESMTP; 24 Oct 2024 12:12:08 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id CF6AC7F9; Thu, 24 Oct 2024 22:12:01 +0300 (EEST)
+	id DA01480A; Thu, 24 Oct 2024 22:12:01 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -71,9 +71,9 @@ To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-kernel@vger.kernel.org
 Cc: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v3 16/24] iio: accel: kxcjk-1013: drop ACPI_PTR() and move ID out of CONFIG_ACPI guards
-Date: Thu, 24 Oct 2024 22:05:05 +0300
-Message-ID: <20241024191200.229894-17-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 17/24] iio: accel: mma9551: Replace custom implementation of iio_get_acpi_device_name()
+Date: Thu, 24 Oct 2024 22:05:06 +0300
+Message-ID: <20241024191200.229894-18-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20241024191200.229894-1-andriy.shevchenko@linux.intel.com>
 References: <20241024191200.229894-1-andriy.shevchenko@linux.intel.com>
@@ -85,90 +85,62 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The complexity of config guards needed for ACPI_PTR() is not worthwhile
-for the small amount of saved data. This example was doing it correctly
-but I am proposing dropping this so as to reduce chance of cut and paste
-where it is done wrong. Also added linux/mod_devicetable.h for
-struct acpi_device_id definition.
+IIO core (ACPI part) provides a generic helper that may be used in
+the driver. Replace custom implementation of iio_get_acpi_device_name().
 
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/accel/kxcjk-1013.c | 41 +++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 20 deletions(-)
+ drivers/iio/accel/mma9551.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-index e8074e0c59a4..baa2674b93f0 100644
---- a/drivers/iio/accel/kxcjk-1013.c
-+++ b/drivers/iio/accel/kxcjk-1013.c
-@@ -4,11 +4,12 @@
+diff --git a/drivers/iio/accel/mma9551.c b/drivers/iio/accel/mma9551.c
+index fa1799b0b0df..a5d20d8d08b8 100644
+--- a/drivers/iio/accel/mma9551.c
++++ b/drivers/iio/accel/mma9551.c
+@@ -4,11 +4,11 @@
   * Copyright (c) 2014, Intel Corporation.
   */
  
 -#include <linux/module.h>
  #include <linux/i2c.h>
  #include <linux/interrupt.h>
- #include <linux/delay.h>
- #include <linux/bitops.h>
 +#include <linux/mod_devicetable.h>
 +#include <linux/module.h>
  #include <linux/slab.h>
- #include <linux/string.h>
- #include <linux/types.h>
-@@ -465,24 +466,6 @@ static int kiox010a_dsm(struct device *dev, int fn_index)
- 	ACPI_FREE(obj);
+-#include <linux/acpi.h>
+ #include <linux/delay.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/iio/iio.h>
+@@ -435,17 +435,6 @@ static int mma9551_gpio_probe(struct iio_dev *indio_dev)
  	return 0;
  }
+ 
+-static const char *mma9551_match_acpi_device(struct device *dev)
+-{
+-	const struct acpi_device_id *id;
 -
--static const struct acpi_device_id kx_acpi_match[] = {
--	{"KIOX0008", (kernel_ulong_t)&kxcj91008_info },
--	{"KIOX0009", (kernel_ulong_t)&kxtj21009_info },
--	{"KIOX000A", (kernel_ulong_t)&kxcj91008_info },
--	/* KXCJ91008 in the display of a yoga 2-in-1 */
--	{"KIOX010A", (kernel_ulong_t)&kxcj91008_kiox010a_info },
--	/* KXCJ91008 in the base of a yoga 2-in-1 */
--	{"KIOX020A", (kernel_ulong_t)&kxcj91008_kiox020a_info },
--	{"KXCJ1008", (kernel_ulong_t)&kxcj91008_info },
--	{"KXCJ1013", (kernel_ulong_t)&kxcjk1013_info },
--	{"KXCJ9000", (kernel_ulong_t)&kxcj91008_info },
--	{"KXJ2109",  (kernel_ulong_t)&kxtj21009_info },
--	{"KXTJ1009", (kernel_ulong_t)&kxtj21009_info },
--	{"SMO8500",  (kernel_ulong_t)&kxcj91008_smo8500_info },
--	{ }
--};
--MODULE_DEVICE_TABLE(acpi, kx_acpi_match);
- #endif
+-	id = acpi_match_device(dev->driver->acpi_match_table, dev);
+-	if (!id)
+-		return NULL;
+-
+-	return dev_name(dev);
+-}
+-
+ static int mma9551_probe(struct i2c_client *client)
+ {
+ 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+@@ -464,8 +453,8 @@ static int mma9551_probe(struct i2c_client *client)
  
- static int kxcjk1013_set_mode(struct kxcjk1013_data *data,
-@@ -1736,10 +1719,28 @@ static const struct of_device_id kxcjk1013_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, kxcjk1013_of_match);
+ 	if (id)
+ 		name = id->name;
+-	else if (ACPI_HANDLE(&client->dev))
+-		name = mma9551_match_acpi_device(&client->dev);
++	else
++		name = iio_get_acpi_device_name(&client->dev);
  
-+static const struct acpi_device_id kx_acpi_match[] = {
-+	{"KIOX0008", (kernel_ulong_t)&kxcj91008_info },
-+	{"KIOX0009", (kernel_ulong_t)&kxtj21009_info },
-+	{"KIOX000A", (kernel_ulong_t)&kxcj91008_info },
-+	/* KXCJ91008 in the display of a yoga 2-in-1 */
-+	{"KIOX010A", (kernel_ulong_t)&kxcj91008_kiox010a_info },
-+	/* KXCJ91008 in the base of a yoga 2-in-1 */
-+	{"KIOX020A", (kernel_ulong_t)&kxcj91008_kiox020a_info },
-+	{"KXCJ1008", (kernel_ulong_t)&kxcj91008_info },
-+	{"KXCJ1013", (kernel_ulong_t)&kxcjk1013_info },
-+	{"KXCJ9000", (kernel_ulong_t)&kxcj91008_info },
-+	{"KXJ2109",  (kernel_ulong_t)&kxtj21009_info },
-+	{"KXTJ1009", (kernel_ulong_t)&kxtj21009_info },
-+	{"SMO8500",  (kernel_ulong_t)&kxcj91008_smo8500_info },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, kx_acpi_match);
-+
- static struct i2c_driver kxcjk1013_driver = {
- 	.driver = {
- 		.name	= KXCJK1013_DRV_NAME,
--		.acpi_match_table = ACPI_PTR(kx_acpi_match),
-+		.acpi_match_table = kx_acpi_match,
- 		.of_match_table = kxcjk1013_of_match,
- 		.pm	= pm_ptr(&kxcjk1013_pm_ops),
- 	},
+ 	ret = mma9551_init(data);
+ 	if (ret < 0)
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 

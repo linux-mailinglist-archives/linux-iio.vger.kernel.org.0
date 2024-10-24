@@ -1,187 +1,126 @@
-Return-Path: <linux-iio+bounces-11054-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11056-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157589ADD9F
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 09:30:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7BC9ADE38
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 09:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4459A1C2177C
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 07:30:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA4C11C21ACA
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 07:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AC8198826;
-	Thu, 24 Oct 2024 07:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380701AC445;
+	Thu, 24 Oct 2024 07:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QffVILSX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ufwazgcy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56797169AE4;
-	Thu, 24 Oct 2024 07:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E617F198E9B;
+	Thu, 24 Oct 2024 07:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729754999; cv=none; b=q8u7yINzlvpv6B6c+HkCWYsl3cY27nOUWMsi4/oSQy4gJY767vVtwQmM2VickabDIHntBjcD9YENOhmyHp3N7HJgVczvxC68aJVdAcNn+eu2rKjtBGfxrgtKl1LuSbNSNec0DWXsIk9hPJ3NzdRsoIxZC6x4O3/AxBJPpCanG3Y=
+	t=1729756360; cv=none; b=Jm3S6aKQhAow9dqDyK+tD21XFqYVA3epOaxeEb/lXXuijuK9IOaRIibLBCwmgkU8+bHQR4ZvG+sOH/4DRyp7h/vwmpQkeJIgB8FTMg0FCMcmwpX65YdHW7N7kXO8g4bJxO2vVx2urNWQuEbMWfDth7y1BkQGILoQPHBtFHWNYR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729754999; c=relaxed/simple;
-	bh=G22QRFhSX2UGYMXTZ/s188G3HnD+jJva75a/AyvugZM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YDVCpC5k8y3Mf0+/I1GP8QiAfrOJaSIM4RaXOIcrv4CYc1RddFyK+PKlYlh//dW7BH2SD9LfsHk6KPNlHk+5A+YuRpXfrZqs5YrFpf/5TfUH4KkAhNkgKPuV7rxHVt/nKWZRwfFAyf0f3SGNZVm8mM5Ww1fAHlm9oK8F+YV4zqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QffVILSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B5FC4CEC7;
-	Thu, 24 Oct 2024 07:29:57 +0000 (UTC)
+	s=arc-20240116; t=1729756360; c=relaxed/simple;
+	bh=iuAEsgdQuR7QXql0865AuzrLAn3JGMitY8NvxPwXVYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F0dksZvwduwRH5QrkriXVn5CspH5uF1RxkS9susbDB0C+ZM5iFyRspoD7VrVlEsDE67Mzblgilb3vrMLlf5i2uWDkVxPe6JI7S9Y3FroMW4498z1J02tzNtjUNgSYm/gzF5FzZJ33jAPYE8qSnIoTn49JHG5JioqNjTrX+7EIEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ufwazgcy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C067C4CEC7;
+	Thu, 24 Oct 2024 07:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729754998;
-	bh=G22QRFhSX2UGYMXTZ/s188G3HnD+jJva75a/AyvugZM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QffVILSX4nWEfDxU73jAV9Ve5wNKTKFTWSDuIWMl8ARu6tGib9uJQvYDR2VAE39V/
-	 I/XLp41RPgpK/ycWEDLlWdswjvbdZmA17K/VJTkVSqCooGeOh0G0Ss/F0QEvHU/wKx
-	 +NRaioIzQjCD4+JbvMCbW0ZBZBu1TLj3R7qxsZCR69sZrA4uu4pBuhPBWaNlFLOmzm
-	 mDHqlCxVkQu5MP5nnuBtCz9D+Lu/2kAizhU6rOsdhqZa2WKUJSud0Pb5c7R8Fxl5wn
-	 9rmRIv66vFS3oNW6hWDSvH9TF/2iyBaJI7DynunSktWzfTjkNw0xh2xmcV0GdpIcwA
-	 zQo6X1DYdIoPw==
-Date: Thu, 24 Oct 2024 09:29:54 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: iio: adc: ad7380: add adaq4370-4 and
- adaq4380-4 compatible parts
-Message-ID: <7uih5kvpy6i4ggq5o7eudzczbicopbdnmbtkyprfperkkqgsmt@42q6bncox3ml>
-References: <20241023-ad7380-add-adaq4380-4-support-v2-0-d55faea3bedf@baylibre.com>
- <20241023-ad7380-add-adaq4380-4-support-v2-1-d55faea3bedf@baylibre.com>
+	s=k20201202; t=1729756359;
+	bh=iuAEsgdQuR7QXql0865AuzrLAn3JGMitY8NvxPwXVYc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ufwazgcyvS3+PqWhNPLE7RWn/6xzkkfrQOC70JQlPDSXAPdWFiJ4cocW+zRM50qL8
+	 8N4CYetxsWQ1apYszsX3/QoGsujnm53IfE4nE1V9ywjAsI5kaCijfLZMNPteULgpk3
+	 jYQfCwHKkAWbRBTuw6pyXwBkniLjvyHZxZHcnGrlESmBIgjuqTwfWvK8r1/SqDRhwL
+	 umZSgNhP84+2toqbWDoF0/odM50d5mqS/22AsuMdILu7Yk3pjfqESARNgaqJQ1sOho
+	 /DzqVFgR0h6dqxUQx1ACuT8FaFaLrpLNTk1bhb5pr0Heoij+sdkURE4l3vJdD62Kbg
+	 OjxpVCjGBJM7A==
+Date: Thu, 24 Oct 2024 08:52:31 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Marius Cristea
+ <marius.cristea@microchip.com>, Trevor Gamblin <tgamblin@baylibre.com>,
+ Hans de Goede <hdegoede@redhat.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH v1 00/13] iio: Clean up acpi_match_device() use cases
+Message-ID: <20241024085231.132a8786@jic23-huawei>
+In-Reply-To: <20241023152145.3564943-1-andriy.shevchenko@linux.intel.com>
+References: <20241023152145.3564943-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241023-ad7380-add-adaq4380-4-support-v2-1-d55faea3bedf@baylibre.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 23, 2024 at 11:19:33AM +0200, Julien Stephan wrote:
-> +  vs-p-supply:
-> +    description:
-> +      Amplifiers positive supply.
-> +
-> +  vs-n-supply:
-> +    description:
-> +      Amplifiers negative supply.
-> +
-> +  ldo-supply:
-> +    description:
-> +      LDO supply. Connect to vs-p-supply or a 3.6 to 5.5 V supply.
->  
->    aina-supply:
->      description:
-> @@ -97,12 +115,46 @@ properties:
->        specify the ALERT interrupt.
->      maxItems: 1
->  
-> +  '#address-cells':
+On Wed, 23 Oct 2024 18:17:23 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-If there is going to be new version/resend, then keep consistent quotes:
-" or '.
+> There are current uses of acpi_match_device():
+> - as strange way of checking if the device was enumerated via ACPI
+> - as a way to get IIO device name as ACPI device instance name
 
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
->  required:
->    - compatible
->    - reg
->    - vcc-supply
->    - vlogic-supply
->  
-> +patternProperties:
-> +  "^channel@([0-3])$":
+Quick note on this one. That's an ABI bug that we are stuck with because
+we missed it in review a long time back and names aren't critical enough
+to justify forcing a fix through.
 
-() are not necessary
+I don't have a particular problem with a function to wrap that up,
+but thought I'd just make it clear in this thread that no new
+driver should ever do this!
 
-> +    $ref: adc.yaml
-> +    type: object
-> +
-> +    properties:
-> +      reg:
-> +        description:
-> +          The channel number. From 0 to 3 corresponding to channels A,B,C,D
-> +        items:
-> +          minimum: 0
-> +          maximum: 3
+Jonathan
 
-No improvements, no response to comment.
 
-> +
-> +      adi,gain-milli:
-> +        description:
-> +          The hardware gain applied to the ADC input (in milli units).
-> +          If not present, default to 1000 (no actual gain applied).
-> +          Refer to the typical connection diagrams section of the datasheet for
-> +          pin wiring.
-> +        $ref: /schemas/types.yaml#/definitions/uint16
-> +        enum: [300, 600, 1000, 1600]
-> +        default: 1000
-> +
-> +    required:
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
->  unevaluatedProperties: false
->  
->  allOf:
-> @@ -140,6 +192,7 @@ allOf:
->          aind-supply: false
->  
->    # ad7380-4 uses refin-supply as external reference.
-> +  # adaq devices use internal reference only, derived from refin-supply
->    # All other chips from ad738x family use refio as optional external reference.
->    # When refio-supply is omitted, internal reference is used.
->    - if:
-> @@ -147,6 +200,8 @@ allOf:
->          compatible:
->            enum:
->              - adi,ad7380-4
-> +            - adi,adaq4370-4
-> +            - adi,adaq4380-4
->      then:
->        properties:
->          refio-supply: false
-> @@ -156,6 +211,27 @@ allOf:
->        properties:
->          refin-supply: false
->  
-> +  # adaq devices need more supplies and using channel to declare gain property
-> +  # only applies to adaq devices
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - adi,adaq4370-4
-> +            - adi,adaq4380-4
-> +    then:
-> +      required:
-> +        - vs-p-supply
-> +        - vs-n-supply
-> +        - ldo-supply
-> +    else:
-> +      properties:
-> +        vs-p-supply: false
-> +        vs-n-supply: false
-> +        ldo-supply: false
-> +      patternProperties:
-> +        "^channel@([0-3])$": false
-
-() are not necessary
-
-Best regards,
-Krzysztof
+> - as above with accompanying driver data
+> 
+> Deduplicate its use by providing two new helper functions in IIO ACPI
+> library and update the rest accordingly.
+> 
+> This also includes a rework of previously sent ltr501 patch.
+> 
+> Andy Shevchenko (13):
+>   iio: magnetometer: bmc150: Drop dead code from the driver
+>   iio: adc: pac1934: Replace strange way of checking type of enumeration
+>   iio: imu: inv_mpu6050: Replace strange way of checking type of
+>     enumeration
+>   iio: acpi: Improve iio_read_acpi_mount_matrix()
+>   iio: acpi: Add iio_get_acpi_device_name_and_data() helper function
+>   iio: accel: mma9551: Replace custom implementation of
+>     iio_get_acpi_device_name()
+>   iio: accel: mma9553: Replace custom implementation of
+>     iio_get_acpi_device_name()
+>   iio: gyro: bmg160: Replace custom implementation of
+>     iio_get_acpi_device_name()
+>   iio: light: isl29018: Replace a variant of
+>     iio_get_acpi_device_name_and_data()
+>   iio: light: isl29018: drop ACPI_PTR() and CONFIG_ACPI guards
+>   iio: light: ltr501: Drop most likely fake ACPI IDs
+>   iio: light: ltr501: Add LTER0303 to the supported devices
+>   iio: light: ltr501: Replace a variant of
+>     iio_get_acpi_device_name_and_data()
+> 
+>  drivers/iio/accel/mma9551.c                | 19 ++-------
+>  drivers/iio/accel/mma9553.c                | 19 ++-------
+>  drivers/iio/adc/pac1934.c                  |  2 +-
+>  drivers/iio/gyro/bmg160_core.c             | 15 --------
+>  drivers/iio/gyro/bmg160_i2c.c              |  4 +-
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c |  5 +--
+>  drivers/iio/industrialio-acpi.c            | 45 ++++++++++++++++++++--
+>  drivers/iio/light/isl29018.c               | 38 ++++++------------
+>  drivers/iio/light/ltr501.c                 | 29 +++++---------
+>  drivers/iio/magnetometer/bmc150_magn.c     | 15 --------
+>  include/linux/iio/iio.h                    | 10 +++++
+>  11 files changed, 86 insertions(+), 115 deletions(-)
+> 
 
 

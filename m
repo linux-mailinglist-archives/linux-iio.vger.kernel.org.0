@@ -1,206 +1,322 @@
-Return-Path: <linux-iio+bounces-11118-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11119-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69079AE675
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 15:31:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E5A9AE689
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 15:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17866B286F1
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 13:31:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4CCB28973E
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 13:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBBE1FF048;
-	Thu, 24 Oct 2024 13:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495281F80AD;
+	Thu, 24 Oct 2024 13:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="0TPgJpI5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lD8d0D6J"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2073.outbound.protection.outlook.com [40.107.243.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39E21FF03A;
-	Thu, 24 Oct 2024 13:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.73
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729776335; cv=fail; b=CLdK1IsSWv/J3zkyG3lMcTNcoE1okPnIEr034OMhatRBSXdHnJHWWK8KhllTsQ6xHpQdan41+GzMnMZF7dI3V+OH9jtEp5j5i8CXezluWd+ZjBUz00QVBVYLU0SaYx/zRMDWgsCJ6IjCXfrpMThEV/iAvOemOEdC/rgtW35eyaY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729776335; c=relaxed/simple;
-	bh=ffC6HSR8aKubmBXWfHlB2/AiDorJ0PlD4q6DWeOXN7k=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=a/RBcqGfbcxWXBWm03SHwdnSFRWHqjUQKXP+Dy/Z/t2RrPJd7QqxJiqN5t3IOnUrTZHQ6lZ6DBCR7xiJxyLovP2R4Ay6OKQoTOLEO1GO5A5OyKT+THnW3hi6aIO7XXyLa6OEdSsdvls+BpYjWQyGGgebtsigCb1p1fMybDaWJ9I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=0TPgJpI5; arc=fail smtp.client-ip=40.107.243.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VK7KwPeLsWExtp7MpJ5jm+/rccR9ZOplx+eI2KRa2hMgHr8fzuqqRF+cqy9TMFWlSCAyto6j9TYmDqZNANqZyC5nuyTD8nNLbgYOChkN7i41mMfj5daHUHrZlqJK4JLlLHxdVn5IWSFXoQQgDJLbCcRLP+yVs8aRHeIs+BWHjUMTEbjl8gIpOSkJvNMnoywTM22E4iR39ElMkdIo/W/agSQs+29vm5YAoNKcmNzwo2R0YVf+pzlgu1WX3ljl9ZfdzV2d843ICHEJnxWPn7gcGrC64+ZTYsVyN+j7Sun2JG3TeVwjOuamPvueSDxxs3iDzyjQ8uOCZAo3tKe4phf7rA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ffC6HSR8aKubmBXWfHlB2/AiDorJ0PlD4q6DWeOXN7k=;
- b=s1PHBgCapGysr98TbXlrev3EHZ32C1nRWtMP9kT4QaryUnfDgz4SLsoKIiRkHl3Pc9YdUYzB7IwL+71K/dVJrzS93eVUlt7ca1AecB6rkALPFN8cHhWEnIGdEqnoL/lJw156oO/zsC+jmeyJvsOsuQ2oZgLiIrrAVhaUGAA2GHxuaaDEsnklTUo5KORKVvRYy9SsEk3MFKdXZWKqUh0ldiZC5q91B7qhMcU5qGH0HGfwuZ7it/sIAvDeYUdVEc94ao9ATejvG9U/53HTGz39cvWX8qmgCCvdIz2TltyQZ0zgVNe7rM+pbeQoknbNG84KrfzW0CK1cSpBTm6bDbjK5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ffC6HSR8aKubmBXWfHlB2/AiDorJ0PlD4q6DWeOXN7k=;
- b=0TPgJpI53J4jHYCfvFqxEKFTumWoQuHmVv+FwkevDz0dLJH+ScHKy946FNV/HWJ/4cbg3SZbnD4EiYXi0tftjiFtgTX/o1X3HqKWKflKa3CXGfGaQ19pFe/KYWRWlWSaO7VBQLEIB8U/O+mPvCpTWszT0qjfi8Du6xnoCUO/4LptzGg+H6M/C3FQrbQr1abUml8l2JlkwpOkbwWwzQJBMKfXJOiUfmyEN38P5tF2WTMPGb29VU29EDxpXomfVVhgt9p3kAzX8tw/XVuBIj7/EBsMUSGl1pyx4i/wAE93omS9I8i0V/Z0AVP90x/RYwapCsM9fDAZUToDu5y0xm4QdQ==
-Received: from SN6PR11MB3167.namprd11.prod.outlook.com (2603:10b6:805:c6::10)
- by IA1PR11MB8804.namprd11.prod.outlook.com (2603:10b6:208:597::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.17; Thu, 24 Oct
- 2024 13:25:28 +0000
-Received: from SN6PR11MB3167.namprd11.prod.outlook.com
- ([fe80::4863:3d2c:e708:fccf]) by SN6PR11MB3167.namprd11.prod.outlook.com
- ([fe80::4863:3d2c:e708:fccf%4]) with mapi id 15.20.8069.027; Thu, 24 Oct 2024
- 13:25:28 +0000
-From: <Marius.Cristea@microchip.com>
-To: <hdegoede@redhat.com>, <andriy.shevchenko@linux.intel.com>,
-	<Jonathan.Cameron@huawei.com>, <tgamblin@baylibre.com>,
-	<jean-baptiste.maneyrol@tdk.com>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <jic23@kernel.org>, <lars@metafoo.de>
-Subject: Re: [PATCH v2 02/13] iio: adc: pac1934: Replace strange way of
- checking type of enumeration
-Thread-Topic: [PATCH v2 02/13] iio: adc: pac1934: Replace strange way of
- checking type of enumeration
-Thread-Index: AQHbJhVGs3ye4BwQ8kOceS6i3U03bbKV5DQA
-Date: Thu, 24 Oct 2024 13:25:28 +0000
-Message-ID: <2fa19c12e335ce00414a971d16867322c9bdad7b.camel@microchip.com>
-References: <20241024130424.3818291-1-andriy.shevchenko@linux.intel.com>
-	 <20241024130424.3818291-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20241024130424.3818291-3-andriy.shevchenko@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microchip.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR11MB3167:EE_|IA1PR11MB8804:EE_
-x-ms-office365-filtering-correlation-id: 94b650a4-2f54-4ac1-065c-08dcf42f538c
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR11MB3167.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?dkNVd3lqM2hVVzkrdWcxVDhqMWF6MGVKaXlZN0gvbGptaU53QnRBTndyQ1VL?=
- =?utf-8?B?YzVTQ09oWHVOUHg2T1plZ2Z0Qy9lNHBid09MUFZTNXF4aSt2RTkxS1hkTW9C?=
- =?utf-8?B?N2pLdnhIVTZJM3ExUXgvMkFMOEZGcnlPTEMrUklLNHB3SHVrKzBBWlI2cFZL?=
- =?utf-8?B?dUJsQmVyZFBucnNIUWlSTXJ4VE56VFg3QVVkajR6OE5wWVFpNTVtUWFEQXY0?=
- =?utf-8?B?UXFPbmlleVB5c1ptZVRZVXNZd1daWFFEWWkwQzJUNGJyS05TQm5kRWRUaG5h?=
- =?utf-8?B?NW8zRXVYdk5ZUGJDUUE3eXRXdk03ekk3Y1hHWDNxZkp5enZsVk5iNkRpWFpu?=
- =?utf-8?B?YnBpM0Z3VXJ6Rld0Z2Q2R3pXTXFzUXR2SXlBRi9tTzl2K2M5d05uQkxKU3Rt?=
- =?utf-8?B?K3ZVSGNCY2tWUlVGVTVTRjJscjNZS0l3emwyNDRSdlllNHh2NXRHdTQzaDRX?=
- =?utf-8?B?Z0JFVXplZjB3RlN1WHZxcTFUYWtTSElvakVCaU45RmNrMnlnU1Y0UGhDYkMz?=
- =?utf-8?B?aUtqTDN0VjBSUldtZ1hmNWlJbW9FbFJlK25wejNjOWdNQmVJRk9reU1FWG5w?=
- =?utf-8?B?RTlPZGEzLzNyUlhsY0RjZ1Z3a0hvOHZVSWFDK2QrbHZZWDhJemlsTUtWS1pn?=
- =?utf-8?B?bERYUFFOMm5CRERRVVBLVzdMS2FvY2JWTldVWWsrelR6UWxWcUZFRlVLR2hT?=
- =?utf-8?B?c0tjYTBpVVEyWG80YjlaR2FsNEl3SFFNS1RpL1puOWpYTExuSHZncnlVTjdT?=
- =?utf-8?B?YnQrcW41RTN3ek5kS1BKaW9heUpkTVFEMEtUaFNLSkZDZ2s4blNKV0g1aFNo?=
- =?utf-8?B?bzFLRXMwTlFRcGtleklkNHU1a3ZvRTFmZFlYSStlTk1leVZnaTZuWU8wK3M0?=
- =?utf-8?B?ZDJVT2xWT0lOQ2ovOTNva1czMUR3b3JhUjlra0lScExmNkZQczRRaTRSU3lY?=
- =?utf-8?B?K3U1MzdtcmhDZGpodzlQKzRIREpVblZpdlB3VWRWMGhHYVdEbmRoaGtFNlYr?=
- =?utf-8?B?emtkRlZEc0JEYmJlaTN6R21PU25mUXppeUlPank0Y204OEZsREJMUkw2b21D?=
- =?utf-8?B?OUFpK2QvRnk5N2ZaZU1FcE0rVG1WQTFMQ1ljdHdSeVFuc1lvK1RuaGJBVnF6?=
- =?utf-8?B?OE8xbnByUjM2ZUpsdDd1elEzTlZkZUFzS0dPNDQ2WnAwY3NDVTRpaTQ5Wm9j?=
- =?utf-8?B?WEsveGJYbXQ4Q01kVWRFYlVNOFdmM1Q4U1Q0bVgxbzVJVVdncTVEOTZPVFVY?=
- =?utf-8?B?Z3RLM09PcnVpMnRNQkxUNFA0bEczeTBrSUFvYXcrKzJtMnBNcHo3dm1kTFBi?=
- =?utf-8?B?aFAwVm1KZmpWTHJzazhEU2xVSXU0azRXUllMczhBRjNCMXRwUWZpUHZ4N0ZC?=
- =?utf-8?B?MWxRdFllazJXZWJ0dTVOY3h2SmlseStCNFFnM3djc3pXbzkwZkluTDVBZ0pU?=
- =?utf-8?B?UStsR3gvN040a3RQMkFhZWpmcnVHbEQwMjF2aVdKWC9qblpmdGk1YzBDM1BM?=
- =?utf-8?B?SDRDTUZLN2VtWm1nVi9ZUkFWYmlwVDAzYS9Vd1ZJZ3lVQm5Jb1c5WHZuMEJj?=
- =?utf-8?B?WjNaMWN1dEk3UXh6TnljRjJmM0hSck5HYkhPYW9mcG5vZVZ4U3d1d0R6bzVx?=
- =?utf-8?B?cVVnaTVQRkQ1bmdwQXd2MUJyVDNjdTM3dkhOeW1mREFKUGkvOUtnWDEyUDdl?=
- =?utf-8?B?R1BlYWJ0b1hIZTdMOVB0SEw1U00vRjVDbjRMd3ViOTNIU29GYkNVZzVoeUJo?=
- =?utf-8?B?WGpwcEcrMmFYMW5SRHo4emtvcCtpRVZ0dXdnL2o4Q3NVOUoxS2JROXVKZXV6?=
- =?utf-8?Q?i5ZXJZywNosAUP7ub09JbH4n4Jw+33Ne2P7tg=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?eHNLSlhMYkdXWjRMZVN1SGxFU1BGcXpLME0rcWxhSlUyNGx3cUkzc2FXNEF2?=
- =?utf-8?B?dk9ZVHBwV0lQMUI5bklyNERBNFhNY0ZBbTZzdXFPN09FdFBSZS9RNHl3Yno1?=
- =?utf-8?B?KzlCSWphSURpRkN1UTk1ak42c2p1UWRMekVBelNFT1VOMGFYd3pNMlpBZzQz?=
- =?utf-8?B?VkJkcW9JS0M1eXo4ekV2bExYb2ZneW91RDVrN0U0eVRFNmZ1dVkyZ3ZDK0Rq?=
- =?utf-8?B?UC9DZjVEV09SOFVGM1EwaEZlMHNYQWtHVzR0bFEzRmZ0K0x0Yy9rcjZtS0Zw?=
- =?utf-8?B?akdlaEhsbzUwYXdySkpkWmFIWTh0dDFWK3lJNDJhOFh1YTM4YVVzYWVJWVRV?=
- =?utf-8?B?TXpXc3hDSmlGMVVEcEhQb0NCRGo4QkJGN0xwZlVDU1gwQkNxdi9CbFdvMUJu?=
- =?utf-8?B?SjM1QTc4cEFSRlg2Z2hWUjIrdFlxSHA4UHlldnhlRkYyZXdPZlcwWmlBNGFt?=
- =?utf-8?B?QVozZWI3ZllMOW0vQXowRUNaOE9NWGtXSkhHamJvdE9UcDViN21lK2dHRTRv?=
- =?utf-8?B?MXBiaEN1c2VrSE01bUJHVEREc3Q4TDdackE1UUtWV2FGcTd2L2Q4VGNKdC81?=
- =?utf-8?B?UmlBWm1iMTQ5WC9tS1pFRkFBRUdFS0h1YnFtVmRmcnJnWlJmMThuSGRvOTJr?=
- =?utf-8?B?dmovRWsyR3c4Q2dxZDBzQVI2RmJpRWd2QzlJSzRCVXcyNEtzOXRUT1F2Z245?=
- =?utf-8?B?a1VsZDVvaGFMQitBZ1NzVW5kWDZBWHlwNEY2UVFBNUsxSWExdG0ra1lHTHRy?=
- =?utf-8?B?NW11VTIvY3ZpY2Q1V1JrM2UwWkdUcEtZZHRBV1BRN2RsWEhHMEdkWnh2RkRW?=
- =?utf-8?B?RUo2QSsyMkZiZXRGNjRyQjV5OXVwd0M0OVZ4T2pWc1pDQUhNVG51T3RGVUdC?=
- =?utf-8?B?dHIvY29zb0xpdXlTM2NZS1U1L2dLWU5VdmJudlhLR0Z6M05JM2c3MHdGaHYz?=
- =?utf-8?B?dytkbEdTTTdJK1lUdDlLSk5QYUoxajZUUjM4d1ZMMTlyeEwwMVZwbHlyVTJX?=
- =?utf-8?B?YjBETDlDTk5tYXo5VVUzWHVaT0kvZ0VZbUNocGw5RWFZUjVLUmZ5aXc4NVNs?=
- =?utf-8?B?U1Q3N1V1S1pWMThEQThkWXh5RnA1UE9xSUNhTzVyKzFZZ3hTNnI0bDFBcEZk?=
- =?utf-8?B?dkt6d2FwZ3BYWEF5ejhUS28vc05sL3JuQ3huRVR2ZzBVeHBUQkN0UnRVM09u?=
- =?utf-8?B?YVVROEhscks3L2FJbmhuVjhVOUJ6UjhBaXRzVHUwZjdNb0hQK3ZSeFpGVHdn?=
- =?utf-8?B?dFFIN1FIWmlYd0s4YTBuTGxVQVdQdERwbHZxSTA2WUo0Tml1RFRnMm9LNThu?=
- =?utf-8?B?ZWdydmd6RVRSeGIvS2UvUkNCVnRlbEU4RjZSY1IxUThNNzdXbGdBS1E1QVhN?=
- =?utf-8?B?TVgvNjhaRDBCUjBZSjVmbTIrRGp2VEJlRm5nVzVzQjllcHV5VkVGaDR1QXB5?=
- =?utf-8?B?N25IaENNS0tUazVwczBta0ZtWERDTndxc1NCdmZRN1RYeGp4Z2NmMW5kcThi?=
- =?utf-8?B?ZitPaWRDMktERU9nOXFtQ0d2eGk5Y1lFK253cnF3K256ZDlSK2VVQzl2NGJi?=
- =?utf-8?B?V1JwMXU0cmhUUzJSMFNaT0czOEg4OXRTVmJhaC9adTZSWXVtT0dXNzZUZlVo?=
- =?utf-8?B?Zm1pNm9xbk1TNHJONHhkTzNEWDk2bHJGMmJ6TE8vckJMSDZDRVByd2pLbHoy?=
- =?utf-8?B?Q1pqcVd6MjFteFZFUmVieWJtT0U1OUpYK1RkdDRLNi9pUlQ3d2FXVnFSa2hp?=
- =?utf-8?B?SllYZ1FVWU81d0hXTzVYUHdkOTdPZDFZcHZnNkpHOFdHNmFHdnJyMjFPdVVj?=
- =?utf-8?B?SkFGbFNKV2k1Qk5jNG8vMU1xOXJEejJXNzVSclNUbXdsYXVYdDJPN1pieWE3?=
- =?utf-8?B?K05ndmVSNVNRZGZDZVRtcE4zNFY4ZVdMWkdqN0RyNlFqaFNHOGVNc3NSRFRp?=
- =?utf-8?B?N0FpSTdUWi81V1N2K2NDbHBlMGxOSjRueDFxaFZXSnBSNzFnMVRmaDFqV1l5?=
- =?utf-8?B?dzlsbE0xYW1hengrNVl1Q1ZRdi9vdFd3SldOTkFaVDBIeThza1FiN2J6TVpC?=
- =?utf-8?B?SUZoSVVXd0xxeUNRa2NhVjZmK1NsbHpOaHdtb242NWt3T1JYNjVZenpBcEEr?=
- =?utf-8?B?ZDNqb3RMd3RNeFczRHFsUHlIc09HdkxSdTdhTlNIYzhkQTRIN2JhZGVjdy9Z?=
- =?utf-8?B?Y1E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C8F94A6F81CC11459D4B92E79466DB49@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5623F1BBBEB;
+	Thu, 24 Oct 2024 13:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729776442; cv=none; b=ReGCdo8LozE9iJVWzwCe7IsmPIyyxgsN8X1xMP7I8cE/jwIdoPbtCo6T2fEJ83hOUSJ25nuaTqn1wre4vWS0zXXpGSUhi8OFYcsS34MaU2dKRD59h8mg/8H1dwziQvj09P7YlaqsFW/rjC420iLUulIkzGPQXjv7do7YyfLBHXQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729776442; c=relaxed/simple;
+	bh=YqJofZ36BW/TRJuXv7SdP08LIVcE0smc5fN4el3bLKs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QQNoOChkSxiEKYAe/e5g25Vx7hb6Z3csdy6VY3sjgdOlZkI2IymMC1YGmPrIkQgHkDdyLTllwBXbZ9JJTSJs6vc6/KWuY/JZz4YfaZRISmo75zM2mU0Wjlg5yDOM89jEkjkfMomAgH3sQY6hMoJa21vb1SxNp1z7Z/i8CmW6aJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lD8d0D6J; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d6ff1cbe1so628503f8f.3;
+        Thu, 24 Oct 2024 06:27:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729776438; x=1730381238; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lh/Aemo/gwLUT93xOhFMFPtYx/PANCkObOqWYsHf0oU=;
+        b=lD8d0D6JzKgS6avhOD2Y8kCIaAWZwBC4r58OCH7ZXsmKtPlnZwWQW51D35axwB2ezm
+         G3lzBk+obpvKKkrb8+RfYvHXjhgtuD+A1a+Km0PZjgVMia3skSU35+vk9jyPL8qyA7fx
+         Cp6M5ZR3K8clBokpMEbtB0Uri0PN68m6GKRz1a/37gGFPCoNwLmxuAktcv4yTJRe5S/W
+         01ljBeE0UqkbqOsW3WiaXpa+bG4ucyKyXD+uwyOcMwNOkmS+BIP1/YUYSLDWrdTKUdGK
+         c8kDxAG/S2dBDX75V8peiCeO/lX5Q610fBUUhMc9Wk3l9C9dXopoYTZepuZiZsfkQ2SG
+         kiqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729776438; x=1730381238;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lh/Aemo/gwLUT93xOhFMFPtYx/PANCkObOqWYsHf0oU=;
+        b=QDaO1UHncYcmlkn89F0FWonzV6A72R+CVMc98kCeniBSVtLNMTY/A+8lw5sVfDORVR
+         TDpw4FahKIhbmggOipquanE06U/Z9UqtGmXDWiT+/L7n96dR9gwR8RKgMn7gURmWtlbv
+         WHbvfF/mb7n926AfRVl2SwK+uo2LhPv1b3N4rt4qPNe+SQlcvy/NbczETUjSimzxJ4Oz
+         aehpoL8THnLNbOg7P1Qce9DvX18R/U98wVs+P7uc6+yMBs1Q5tg74UON5xotwnZiI9gw
+         Bild6HTR19HuWOWfdT5j5V9BJGyOOfJQ9E0WtdK+SnOSbr1P42LicgFzyB6F1LkOQ7GF
+         3ZCg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8msp3eoYJ8BP7vFe1eKv5tvVZ29j2DuJxddNM/XG5CTusxHQbIrJff8RDKCGLWIHNQgAR0ctAkaU0@vger.kernel.org, AJvYcCVE1Y/u9F7sxwHlyb5u4sFj7tADxCQ1syW31WnZF+Dp+1/0Qowg1vSOPC8IlVF13KgpX9WuRTzr9LgP@vger.kernel.org, AJvYcCVaQxmXqnY35rStocCRKvGXxSnBANU3qkRgcNx2Qh3A7Vaks46d5w+jZxfP2Mn47nUPGkzjSip6dDUu/FNK@vger.kernel.org, AJvYcCX+E5TzQ3WDto6RWgbF2PYix4t/8Vdh4fUq39uEHVifyQdBHj3gQBNYTv3r1VmOSxmAjyGvUjxTaNS2@vger.kernel.org, AJvYcCXwE0b3wpMfAD2UuCasTgdvpXg38MIchddg4oDGtwgJXm7NioBJEQ8akrDqKtVahSaYGRuicRhVZ5QB@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8kkk6VoHqJ+v4+sjbB8NjzO2z+JDC3Map1xg6AZFuHjgHiLmU
+	wGbMCS58wGtvrH9SdlbYXs05i7sPv0nRCX59i2Wjbj0p5ytvDn8l
+X-Google-Smtp-Source: AGHT+IF9o4FDi/qZPAdyapVJFH/1h0r+fDXv1zwkewBYzgCtc4WAQVTBFq7r/5rH6N5woWxjtXTKvA==
+X-Received: by 2002:adf:e54b:0:b0:37d:4d80:34ae with SMTP id ffacd0b85a97d-37efcf00d4amr4051647f8f.4.1729776437276;
+        Thu, 24 Oct 2024 06:27:17 -0700 (PDT)
+Received: from ?IPv6:2001:a61:34c9:ea01:14b4:7ed9:5135:9381? ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43186bd6a52sm47556215e9.8.2024.10.24.06.27.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Oct 2024 06:27:17 -0700 (PDT)
+Message-ID: <ba3eed090e29deda797b0dea8162949c82743ccf.camel@gmail.com>
+Subject: Re: [PATCH RFC v4 02/15] spi: add basic support for SPI offloading
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Uwe
+ =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen
+	 <lars@metafoo.de>, David Jander <david@protonic.nl>, Martin Sperl
+	 <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
+Date: Thu, 24 Oct 2024 15:27:15 +0200
+In-Reply-To: <20241023-dlech-mainline-spi-engine-offload-2-v4-2-f8125b99f5a1@baylibre.com>
+References: 
+	<20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
+	 <20241023-dlech-mainline-spi-engine-offload-2-v4-2-f8125b99f5a1@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microchip.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB3167.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94b650a4-2f54-4ac1-065c-08dcf42f538c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Oct 2024 13:25:28.1901
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 6XSFKIJsNEiCdejb0pPiOfzjVUJDJNXFGDBnbgLfQAdhdNfRX/cAKk5ChPIhpcvIwMkRkwy4t2eCxO8O8K7nazHC0OXLQWdPKYKQsVLmS2Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8804
 
-SGkgQW5keSwNCg0KICBUaGFuayB5b3UgZm9yIHRoZSBwYXRjaC4gSXQgbG9va3MgT0sgZm9yIG1l
-Lg0KDQpSZXZpZXdlZC1ieTogTWFyaXVzIENyaXN0ZWEgPG1hcml1cy5jcmlzdGVhQG1pY3JvY2hp
-cC5jb20+DQoNClJlZ2FyZHMsDQpNYXJpdXMNCg0KDQpPbiBUaHUsIDIwMjQtMTAtMjQgYXQgMTU6
-MzYgKzAzMDAsIEFuZHkgU2hldmNoZW5rbyB3cm90ZToNCj4gRVhURVJOQUwgRU1BSUw6IERvIG5v
-dCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5b3UNCj4ga25vdyB0aGUg
-Y29udGVudCBpcyBzYWZlDQo+IA0KPiBXaGVuIGRldmljZSBpcyBlbnVtZXJhdGVkIHZpYSBBQ1BJ
-IHRoZSByZXNwZWN0aXZlIGRldmljZSBub2RlIGlzIG9mDQo+IEFDUEkgZGV2aWNlIHR5cGUuIFVz
-ZSB0aGF0IHRvIGNoZWNrIGZvciBBQ1BJIGVudW1lcmF0aW9uLCByYXRoZXIgdGhhbg0KPiBjYWxs
-aW5nIGZvciBmdWxsIG1hdGNoIHdoaWNoIGlzIE8obikgdnMuIE8oMSkgZm9yIHRoZSByZWd1bGFy
-IGNoZWNrLg0KPiANCj4gUmV2aWV3ZWQtYnk6IEhhbnMgZGUgR29lZGUgPGhkZWdvZWRlQHJlZGhh
-dC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IEFuZHkgU2hldmNoZW5rbyA8YW5kcml5LnNoZXZjaGVu
-a29AbGludXguaW50ZWwuY29tPg0KPiAtLS0NCj4gwqBkcml2ZXJzL2lpby9hZGMvcGFjMTkzNC5j
-IHwgMiArLQ0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigt
-KQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2FkYy9wYWMxOTM0LmMgYi9kcml2ZXJz
-L2lpby9hZGMvcGFjMTkzNC5jDQo+IGluZGV4IDdlZjI0OWQ4MzI4Ni4uMjA4MDJiN2Y0OWVhIDEw
-MDY0NA0KPiAtLS0gYS9kcml2ZXJzL2lpby9hZGMvcGFjMTkzNC5jDQo+ICsrKyBiL2RyaXZlcnMv
-aWlvL2FkYy9wYWMxOTM0LmMNCj4gQEAgLTE1MDcsNyArMTUwNyw3IEBAIHN0YXRpYyBpbnQgcGFj
-MTkzNF9wcm9iZShzdHJ1Y3QgaTJjX2NsaWVudA0KPiAqY2xpZW50KQ0KPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgaW5kaW9fZGV2LT5uYW1lID0gcGFjMTkzNF9jaGlwX2NvbmZpZ1ty
-ZXRdLm5hbWU7DQo+IMKgwqDCoMKgwqDCoMKgIH0NCj4gDQo+IC3CoMKgwqDCoMKgwqAgaWYgKGFj
-cGlfbWF0Y2hfZGV2aWNlKGRldi0+ZHJpdmVyLT5hY3BpX21hdGNoX3RhYmxlLCBkZXYpKQ0KPiAr
-wqDCoMKgwqDCoMKgIGlmIChpc19hY3BpX2RldmljZV9ub2RlKGRldl9md25vZGUoZGV2KSkpDQo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXQgPSBwYWMxOTM0X2FjcGlfcGFyc2Vf
-Y2hhbm5lbF9jb25maWcoY2xpZW50LA0KPiBpbmZvKTsNCj4gwqDCoMKgwqDCoMKgwqAgZWxzZQ0K
-PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyoNCj4gLS0NCj4gMi40My4wLnJjMS4x
-MzM2LmczNmI1MjU1YTAzYWMNCj4gDQoNCg==
+On Wed, 2024-10-23 at 15:59 -0500, David Lechner wrote:
+> Add the basic infrastructure to support SPI offload providers and
+> consumers.
+>=20
+> SPI offloading is a feature that allows the SPI controller to perform
+> transfers without any CPU intervention. This is useful, e.g. for
+> high-speed data acquisition.
+>=20
+> SPI controllers with offload support need to implement the get_offload
+> callback and can use the devm_spi_offload_alloc() to allocate offload
+> instances.
+>=20
+> SPI peripheral drivers will call devm_spi_offload_get() to get a
+> reference to the matching offload instance. This offload instance can
+> then be attached to a SPI message to request offloading that message.
+>=20
+> It is expected that SPI controllers with offload support will check for
+> the offload instance in the SPI message in the optimize_message()
+> callback and handle it accordingly.
+>=20
+> CONFIG_SPI_OFFLOAD is intended to be a select-only option. Both
+> consumer and provider drivers should `select SPI_OFFLOAD` in their
+> Kconfig to ensure that the SPI core is built with offload support.
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+
+Hi David,
+
+Just one minor comment...
+
+>=20
+> v4 changes:
+> * SPI offload functions moved to a separate file instead of spi.c
+> =C2=A0 (spi.c is already too long).
+> * struct spi_offload and devm_spi_offload_get() are back, similar to
+> =C2=A0 but improved over v1. This avoids having to pass the function ID
+> =C2=A0 string to every function call and re-lookup the offload instance.
+> * offload message prepare/unprepare functions are removed. Instead the
+> =C2=A0 existing optimize/unoptimize functions should be used. Setting
+> =C2=A0 spi_message::offload pointer is used as a flag to differentiate
+> =C2=A0 between an offloaded message and a regular message.
+>=20
+> v3 changes:
+> * Minor changes to doc comments.
+> * Changed to use phandle array for spi-offloads.
+> * Changed id to string to make use of spi-offload-names.
+>=20
+> v2 changes:
+> * This is a rework of "spi: add core support for controllers with offload
+> =C2=A0 capabilities" from v1.
+> * The spi_offload_get() function that Nuno didn't like is gone. Instead,
+> =C2=A0 there is now a mapping callback that uses the new generic devicetr=
+ee
+> =C2=A0 binding to request resources automatically when a SPI device is pr=
+obed.
+> * The spi_offload_enable/disable() functions for dealing with hardware
+> =C2=A0 triggers are deferred to a separate patch.
+> * This leaves adding spi_offload_prepare/unprepare() which have been
+> =C2=A0 reworked to be a bit more robust.
+> ---
+> =C2=A0drivers/spi/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 3 ++
+> =C2=A0drivers/spi/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> =C2=A0drivers/spi/spi-offload.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 104=
+ ++++++++++++++++++++++++++++++++++++++++
+> =C2=A0include/linux/spi/spi-offload.h |=C2=A0 64 ++++++++++++++++++++++++=
++
+> =C2=A0include/linux/spi/spi.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 16 +++++++
+> =C2=A05 files changed, 188 insertions(+)
+>=20
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 823797217404..d65074b85f62 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -55,6 +55,9 @@ config SPI_MEM
+> =C2=A0	=C2=A0 This extension is meant to simplify interaction with SPI me=
+mories
+> =C2=A0	=C2=A0 by providing a high-level interface to send memory-like com=
+mands.
+> =C2=A0
+> +config SPI_OFFLOAD
+> +	bool
+> +
+> =C2=A0comment "SPI Master Controller Drivers"
+> =C2=A0
+> =C2=A0config SPI_AIROHA_SNFI
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index a9b1bc259b68..6a470eb475a2 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -10,6 +10,7 @@ ccflags-$(CONFIG_SPI_DEBUG) :=3D -DDEBUG
+> =C2=A0obj-$(CONFIG_SPI_MASTER)		+=3D spi.o
+> =C2=A0obj-$(CONFIG_SPI_MEM)			+=3D spi-mem.o
+> =C2=A0obj-$(CONFIG_SPI_MUX)			+=3D spi-mux.o
+> +obj-$(CONFIG_SPI_OFFLOAD)		+=3D spi-offload.o
+> =C2=A0obj-$(CONFIG_SPI_SPIDEV)		+=3D spidev.o
+> =C2=A0obj-$(CONFIG_SPI_LOOPBACK_TEST)		+=3D spi-loopback-test.o
+> =C2=A0
+> diff --git a/drivers/spi/spi-offload.c b/drivers/spi/spi-offload.c
+> new file mode 100644
+> index 000000000000..c344cbf50bdb
+> --- /dev/null
+> +++ b/drivers/spi/spi-offload.c
+> @@ -0,0 +1,104 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2024 Analog Devices Inc.
+> + * Copyright (C) 2024 BayLibre, SAS
+> + */
+> +
+> +#define DEFAULT_SYMBOL_NAMESPACE SPI_OFFLOAD
+
+Cool, was not aware of this :)
+> +
+> +#include <linux/cleanup.h>
+> +#include <linux/device.h>
+> +#include <linux/export.h>
+> +#include <linux/mutex.h>
+> +#include <linux/property.h>
+> +#include <linux/spi/spi-offload.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/types.h>
+> +
+> +/**
+> + * devm_spi_offload_alloc() - Allocate offload instances
+> + * @dev: Device for devm purposes
+> + * @num_offloads: Number of offloads to allocate
+> + * @priv_size: Size of private data to allocate for each offload
+> + *
+> + * Offload providers should use this to allocate offload instances.
+> + *
+> + * Return: Pointer to array of offloads or error on failure.
+> + */
+> +struct spi_offload *devm_spi_offload_alloc(struct device *dev,
+> +					=C2=A0=C2=A0 size_t num_offloads,
+> +					=C2=A0=C2=A0 size_t priv_size)
+> +{
+> +	struct spi_offload *offloads;
+> +	void *privs;
+> +	size_t i;
+> +
+> +	offloads =3D devm_kcalloc(dev, num_offloads, sizeof(*offloads) + priv_s=
+ize,
+> +				GFP_KERNEL);
+> +	if (!offloads)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	privs =3D (void *)(offloads + num_offloads);
+> +
+> +	for (i =3D 0; i < num_offloads; i++) {
+> +		struct spi_offload *offload =3D offloads + i;
+> +		void *priv =3D privs + i * priv_size;
+> +
+> +		offload->provider_dev =3D dev;
+> +		offload->priv =3D priv;
+> +	}
+> +
+> +	return offloads;
+> +}
+> +EXPORT_SYMBOL_GPL(devm_spi_offload_alloc);
+> +
+> +static void spi_offload_put(void *data)
+> +{
+> +	struct spi_offload *offload =3D data;
+> +
+> +	offload->spi =3D NULL;
+> +	put_device(offload->provider_dev);
+> +}
+> +
+> +/**
+> + * devm_spi_offload_get() - Get an offload instance
+> + * @dev: Device for devm purposes
+> + * @spi: SPI device to use for the transfers
+> + * @config: Offload configuration
+> + *
+> + * Peripheral drivers call this function to get an offload instance that=
+ meets
+> + * the requirements specified in @config. If no suitable offload instanc=
+e is
+> + * available, -ENODEV is returned.
+> + *
+> + * Return: Offload instance or error on failure.
+> + */
+> +struct spi_offload *devm_spi_offload_get(struct device *dev,
+> +					 struct spi_device *spi,
+> +					 const struct spi_offload_config *config)
+> +{
+> +	struct spi_offload *offload;
+> +	int ret;
+> +
+> +	if (!spi || !config)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	if (!spi->controller->get_offload)
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	offload =3D spi->controller->get_offload(spi, config);
+> +	if (IS_ERR(offload))
+> +		return offload;
+> +
+> +	if (offload->spi)
+> +		return ERR_PTR(-EBUSY);
+> +
+> +	offload->spi =3D spi;
+> +	get_device(offload->provider_dev);
+
+Isn't this redundant? From what I can tell, we're assuming that the spi con=
+troller
+(of the spi device) is the offload provider. Therefore, getting an extra re=
+ference
+for it does not really seems necessary. The device cannot go away without u=
+nder the
+spi_device feet. If that could happen, then we would also need to take care=
+ about
+callback access and things like that. Going this way, it would also be argu=
+able to
+have a try_module_get().
+
+- Nuno S=C3=A1
+
+
 

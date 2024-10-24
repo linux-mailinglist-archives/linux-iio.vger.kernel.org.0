@@ -1,59 +1,57 @@
-Return-Path: <linux-iio+bounces-11161-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11162-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9208C9AEE69
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 19:41:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EECA9AEE6D
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 19:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56679282A08
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 17:41:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2444CB23D5D
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 17:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991D91FCF7B;
-	Thu, 24 Oct 2024 17:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC081FF023;
+	Thu, 24 Oct 2024 17:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBEv5Z7j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z4BXJJT3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFF01FC7F7;
-	Thu, 24 Oct 2024 17:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8831FE100;
+	Thu, 24 Oct 2024 17:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729791676; cv=none; b=NDji7Z3wQb40PIKkqkSR8zGFcMBU4LlbCUi7fvOPZZF2Jwr6kSSPj6ymjEis3aTeTIn4oMG7QusKbBnTEZPg5WmZAzhQ8c8rMiDIyhXM1104KniIWl27pnR3UIY6tj63kIz6BDVx/myAvycaWcqXAiRFDXx3RiC7TJ6YRWpvH1I=
+	t=1729791773; cv=none; b=rw9ocUNFcbXUcllxLWU2HDGsIcpTCA9L0F+0OmLBOlgJMgjK/mn89qAdas6BOZ+55M7YUpY0x+QfaOLvl2mhPzi0FS+OHb+MTLCEw8175BzO8XED6ez7DY+lbiGx/fd/a13PuwsKm1/sI5S+0YnnvXly+q4mbCYbKZmP6iUJXJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729791676; c=relaxed/simple;
-	bh=VjnOFKGWB+Vsz4mAbhv8vBkTom++FJLCVR2sgrw5c8U=;
+	s=arc-20240116; t=1729791773; c=relaxed/simple;
+	bh=rgwkQHONl3k5lKfdipk3SO5F9eAWZNlyVIfQ29lbZsY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sWgFArahlqqg/G8v0AatN67zK2UodcYCLsPoosnkZejtJWwF0sqMspdus/nHBUh2uYfFgx9UZu8kVcTQxdBGZZ0vVkjDNhQQpjaQ0S5F7+5bfTuF3FtoGT57hxMdLuVmGRfdFNjbAbvbK8QUGG3zZEs+EbLREj/Owy1EfdA/m4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBEv5Z7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC7EC4CEC7;
-	Thu, 24 Oct 2024 17:41:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VVb3BiNYNukdTp/LykjI6/ZSe2C/Vp+a1yqd/nsc6zyU/IL8+xI60u0E5USm8h03UZElJ8inlXCeTRYkTymm2Aevy4iq+D58/S5BKfi7HpCkSH5SURFIREbbnR8x2JSf6vp8+OZfjRB+EpK75pbPZ5aysEisWao2QaMHSmLmQek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z4BXJJT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816EFC4CEC7;
+	Thu, 24 Oct 2024 17:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729791675;
-	bh=VjnOFKGWB+Vsz4mAbhv8vBkTom++FJLCVR2sgrw5c8U=;
+	s=k20201202; t=1729791772;
+	bh=rgwkQHONl3k5lKfdipk3SO5F9eAWZNlyVIfQ29lbZsY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iBEv5Z7jpalzMzU8Cv70eDJWsODtcLv8MJpoM975/moa4CRl0mqa2947WAKyw6bou
-	 Dprt7RvYkr0HBN4CirZQqvKfXtL4V9QXaVVdo0q8Izkl6IEtN/O59SOUFm0/1iBcqX
-	 fqvzwFCHezHOzqXUv1ic7BpNj6k3Q/KdcJ+V+zG4zObX8WLuEx3Er9Z/aZYdwnCdU0
-	 cZkUOS9034URL8EeaqBQKhDBJkQF40gOKqXo5tMBrAtQn7jwZcViPjABM6bhTlN9ZW
-	 nm9xu4xKzpJqnBVjI1E3wD6B0XYvIcaJ2ba9d42YR7lueE78RuCwn4jel2qEtLG9jD
-	 +mteokZgcJMvA==
-Date: Thu, 24 Oct 2024 18:41:08 +0100
+	b=Z4BXJJT3aWuRhvYRTkGPI59Apy2sdoSkVAv5dFPSmEO8LO8SXDsNQFFyh8gRe4uK3
+	 LZEqv1nNXcUn1BimMR7XxSCOUj3R4HLfWkFreNu6O9An5WtWVrJGkQ0R7Sc1fJ0lJf
+	 hvocUfCtPb7MNFwwKbzQMWzVHJmHJOjv5YuZNESW96EsOE3EssZ+MsGYV4BCuW3slA
+	 DoxW/TLUE+oFevwzmJIMCSjocAmRpiGEKe7RMwBgtQjtdLCmpKCpqRDBeDyKsFXT8V
+	 pAuUhY3SigID/oDsLyHmlhOrhDijOI4MjN/jhpPXR6bvjiFN9RHzzMIHyDn9LQHSvZ
+	 cJPwEecvAvtew==
+Date: Thu, 24 Oct 2024 18:42:45 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Greg KH <greg@kroah.com>, Arnd
- Bergmann <arnd@arndb.de>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next
- Mailing List <linux-next@vger.kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: linux-next: manual merge of the char-misc tree with the
- iio-fixes tree
-Message-ID: <20241024184108.6eb3bdf0@jic23-huawei>
-In-Reply-To: <22f9dbb6-ba5e-4c85-8aa2-6090008e7da4@gmail.com>
-References: <20241023141015.0ec5346d@canb.auug.org.au>
-	<22f9dbb6-ba5e-4c85-8aa2-6090008e7da4@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rishi Gupta <gupt21@gmail.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: light: veml6030: fix microlux value calculation
+Message-ID: <20241024184245.29374611@jic23-huawei>
+In-Reply-To: <20241019153359.43f0c1af@jic23-huawei>
+References: <20241016-veml6030-fix-processed-micro-v1-1-4a5644796437@gmail.com>
+	<20241019153359.43f0c1af@jic23-huawei>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,68 +62,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 23 Oct 2024 20:17:30 +0200
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Sat, 19 Oct 2024 15:33:59 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On 23/10/2024 05:10, Stephen Rothwell wrote:
-> > Hi all,
-> > 
-> > Today's linux-next merge of the char-misc tree got a conflict in:
-> > 
-> >   drivers/iio/light/veml6030.c
-> > 
-> > between commit:
-> > 
-> >   de9981636774 ("iio: light: veml6030: fix microlux value calculation")
-> > 
-> > from the iio-fixes tree and commit:
-> > 
-> >   ed59fc90f38a ("iio: light: veml6030: drop processed info for white channel")
-> > 
-> > from the char-misc tree.
-> > 
-> > I fixed it up (the latter removed the line updated by the former) and
-> > can carry the fix as necessary. This is now fixed as far as linux-next
-> > is concerned, but any non trivial conflicts should be mentioned to your
-> > upstream maintainer when your tree is submitted for merging.  You may
-> > also want to consider cooperating with the maintainer of the conflicting
-> > tree to minimise any particularly complex conflicts.
-> >   
+> On Wed, 16 Oct 2024 19:04:31 +0200
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 > 
-> 
-> Hi Stephen,
-> 
-> I doubled checked the status of the driver in linux-next, and everything
-> looks as it should: the first commit applied as a single chunk, as its
-> second chunk affects lines that the second commit removed.
-> 
-> Thank you for fixing it up.
+> > The raw value conversion to obtain a measurement in lux as
+> > INT_PLUS_MICRO does not calculate the decimal part properly to display
+> > it as micro (in this case microlux). It only calculates the module to
+> > obtain the decimal part from a resolution that is 10000 times the
+> > provided in the datasheet (0.5376 lux/cnt for the veml6030). The
+> > resulting value must still be multiplied by 100 to make it micro.
+> > 
+> > This bug was introduced with the original implementation of the driver.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
+> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>  
+> Applied to the fixes-togreg branch of iio.git.
 
-Not quite. This was a lucky merge issue as it highlighted something I'd
-messed up.
+As per the linux-next merge conflict email that I've just +CC linux-iio on,
+I messed this up and it landed on the wrong code block.
 
-A rare case of a fuzzy application of a patch picking the wrong block but still
-giving a very plausible looking diff that fooled me.
-
-I picked up the fix via a different tree from where you expected.
-In char-misc-next / iio/togreg there is only one instance of this code block because
-the larger driver rework removed one of the two that was in the tree that
-iio-fixes is based on (effectively mainline).
-
-The fix got applied to the one that is going away (which is going away because
-the scale makes no sense on the intensity channel) not the illuminance / IIO_LIGHT
-channel that was intended.
-
-I've move it to the right block with the side effect that the merge conflict
-should go away.  Javier, please check iio.git/fixes-togreg to be 100% sure
-I haven't messed it up again.
-
-Thanks Stephen for your hard work on linux-next!
+Tried again...
 
 Jonathan
 
 > 
-> Best regards,
-> Javier Carrasco
+> Thanks,
+> 
+> Jonathan
+> 
+> > ---
+> > I found this almost by chance while testing new supported devices. The
+> > decimal part was always suspiciously small, and when I compared samples
+> > to the expected value according to the datasheet, it became clear what was
+> > going on.
+> > 
+> > Example with a veml7700 (same resolution as the veml6030):
+> > 
+> > Resolution for gain = 1/8, IT = 100 ms: 0.5736 lux/cnt.
+> > 
+> > cat in_illuminance_raw in_illuminance_input
+> > 40
+> > 21.005040 -> wrong! 40 * 0.5736 is 21.504.
+> > 
+> > Tested with a veml6035 and a veml7700, the same will happen with the
+> > original veml6030, as the operation is identical for all devices.
+> > ---
+> >  drivers/iio/light/veml6030.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+> > index d6f3b104b0e6..a0bf03e37df7 100644
+> > --- a/drivers/iio/light/veml6030.c
+> > +++ b/drivers/iio/light/veml6030.c
+> > @@ -691,7 +691,7 @@ static int veml6030_read_raw(struct iio_dev *indio_dev,
+> >  			}
+> >  			if (mask == IIO_CHAN_INFO_PROCESSED) {
+> >  				*val = (reg * data->cur_resolution) / 10000;
+> > -				*val2 = (reg * data->cur_resolution) % 10000;
+> > +				*val2 = (reg * data->cur_resolution) % 10000 * 100;
+> >  				return IIO_VAL_INT_PLUS_MICRO;
+> >  			}
+> >  			*val = reg;
+> > 
+> > ---
+> > base-commit: 15e7d45e786a62a211dd0098fee7c57f84f8c681
+> > change-id: 20241016-veml6030-fix-processed-micro-616d00d555dc
+> > 
+> > Best regards,  
+> 
+> 
 
 

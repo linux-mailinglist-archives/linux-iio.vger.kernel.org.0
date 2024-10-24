@@ -1,324 +1,144 @@
-Return-Path: <linux-iio+bounces-11211-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11237-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99309AF246
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 21:15:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D4E9AF3F3
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 22:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC4D21C24881
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 19:15:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D30A91C22753
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 20:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9C23DAC0F;
-	Thu, 24 Oct 2024 19:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB28C2170C8;
+	Thu, 24 Oct 2024 20:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fsFvuXT8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CWJCvmCs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f196.google.com (mail-lj1-f196.google.com [209.85.208.196])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87356217313;
-	Thu, 24 Oct 2024 19:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872A7170A27;
+	Thu, 24 Oct 2024 20:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729796981; cv=none; b=urTfHEEy62Y7bNdrbI99UlIdO+PDJ+eld7azbmzgrNaxymy6rOb/Azg6NoTLjNwawohjnlJlAGDO7r69Hp91GVgKkRDesSqPyScXbmWXG6TfJyEFw1vNbZxSJV6GNbbyDjkKyzyNwLygYoaADgyVCkOs0eVWPBFziXipnGv/f1Y=
+	t=1729802696; cv=none; b=FssI8EPDqIqiBwASbzEK0oYfI46NqFfT7FuSWGlPhKvDnuEfsZdqFC+D6RTVsq22D1D/Tc64migIKJ4apCCY6UyjIgx+fJFck9MhMSvSxutH5zR6FAuU2lfGSrAUev+c68eoI95cIk1iAy/E+rZihiaQfzlt+tof9EjAJPQgExo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729796981; c=relaxed/simple;
-	bh=6rLVkYT85aPE762YWX/Qza6i4TLO/D+UE9Oy6vAHa5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQwKObg24rrFvgY9D1+z4siQbWdoNSHPMVPiQdTRv9BDLNPArxrWyNkjqOFiMo6Bx4tEUicKzrrBJVmjX3faPQ7ls4bMW/ppI16veJeCsswSXhszTTi7NUiSyRqbrqqRG0WnawZTJQMYzh0z6HqD03WtaxPLaNKTdWOmP0HCBfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fsFvuXT8; arc=none smtp.client-ip=209.85.208.196
+	s=arc-20240116; t=1729802696; c=relaxed/simple;
+	bh=7Jk1r7FEDBwbN3+UFT8qeXUAWHBJzRgT1WoU9XdCVb4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dNz1S3mFGvv8NRB3+kc6GxJHyix61E0ZB54S6z30SPHZcf+FnyYAM+AhPy+n2/yhAtHHlBT4/YRSgrAiv+XCMcFPqcMcvQsvvSYd8aXd0gHJ6bBjRoNLJfQx3gQwrp1dNOFc2yvdYK2jbBHRKqLwlqTOrWbacyxGxQNRaIYuJGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CWJCvmCs; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f196.google.com with SMTP id 38308e7fff4ca-2fb56cb61baso10529421fa.1;
-        Thu, 24 Oct 2024 12:09:38 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42f6bec84b5so14198125e9.1;
+        Thu, 24 Oct 2024 13:44:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729796977; x=1730401777; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6rLVkYT85aPE762YWX/Qza6i4TLO/D+UE9Oy6vAHa5Y=;
-        b=fsFvuXT80NI6PPukVBR3fQbAIw2PWJnmswQjIENQ9xj97yJ2cjhWj+5MJg1I8QPrrj
-         EMHmk/OW08D9j7tn2tBB/OgTu1MrSJZiME9Mv8Pj5HdDeR+pXnZ35e2mQagXlXvuXPbp
-         HpkOnNfQ7mB/kae7Zh10/bglbZMs3dnKJUgAyzlrD5UBd+2YMOopp5nABHKXPwlnySBa
-         ARcBbdgYg1n03rLOVjp2PpKEwYLNPGGXACCHQ1ivKlzMPU0p2KDw7ENvA2ToI4tUCxfD
-         nSBZEiaddozMr+kXX5/1NZoqXkDfn5K3EUZ1sT49Oj9XKRQIIDE9X2XPIIn+p/UPhUx4
-         71Kw==
+        d=gmail.com; s=20230601; t=1729802693; x=1730407493; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oEY3S1tCv6SXbdC1v1hCbjXPWXWqVFBlAfEOqTO87X8=;
+        b=CWJCvmCsYnDw7nCq9qP79h00QXUVnsG9TvBSCtx0OyHjamVjGOpKt4W7N2YfZOSbqF
+         320DV60Lfddk4c2WhlInsa5HKyBYzA5Wb6hHDXMaxhBcnmXEkChCAutyV8CfeYHmupCt
+         r6dCh0rg8g7fYjjFLNrjfDQszWp+RJTLsvVNie3K2WEIfS8FGnJjjvw3kJ8/ihXBl8VX
+         aThxMd9kzMFy8SRiM0Yjy+sbe1jzvjsGfLmchKd8jjUWzzHSefxi8Rpf65hu6phHZj3F
+         wr31t0KjVIvBSObT6L7H39keU3JJSf7Ph4Uep/yNZ+Mf2t8UqbUz0DkcXChUxkzwm+b1
+         dFDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729796977; x=1730401777;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6rLVkYT85aPE762YWX/Qza6i4TLO/D+UE9Oy6vAHa5Y=;
-        b=QSpp2qBkgoh8gH68tjQ2dnyn72YaZ51rERoAGxFFCwbVOB6BrWFwQ7XKxxjQiDzP29
-         /65UIp+0dx9iOy2qVtht3KeKn9W8A2bBFWfr+zPviGChj/mZZn8Hy/kLRLTljWcOgmn/
-         Ttal64s/MoeIAMjVF6gw7B0aY6x2y07U6xCiVCejp2YiXhqaOMoQncaUm11OT7F0St/F
-         qRebbHL/a+Vc7wD8tmpfnUhqoAo6LAyKPhIRmQn4dQQGbvhE/HvbucG7Hwbk2FLIhtje
-         UD5rf762Y7lKTUcoajs/qw5WxHLDcVB5gYjEULX5HEJYqlmEPgqo8ACLUilduKnyUZ+2
-         d0ug==
-X-Forwarded-Encrypted: i=1; AJvYcCUQG4QwwPr/RUySIlwogIF390xif4LcjkD6ErL1yGgVYUhoRA3BcBgZdz4bHUcCU0TznEe9KU3fxxQDew==@vger.kernel.org, AJvYcCUVQqGy9IOj4gnZd9c/hPw3DtCi5T+Hj+tULTVLK2MKGcXgCubRg1N4oCfAG5OFQJQuzGuBGzaD3prd73E=@vger.kernel.org, AJvYcCUwwPotPBbtV2FBeMuY91alRamNQAWNUa7fBeOm+QUzWlz/KzLj5hAwzB8br4hnJQ0JK0NlFjDXLnGUQ8k=@vger.kernel.org, AJvYcCV33YSfP9Q6ICGTFw2O5WJ3LFdbJt8y/YE2H3MlN8dPD2DUhl/SO5CYlUbnoFlzVfmeP/geKReguvdXHX0C7bSayTo=@vger.kernel.org, AJvYcCV95+eB+JhF016OxrheTs3J2w/hzxyiVg4uPcMmETBcWdW9U8no/aQ3ZKUz7dHqIbi4B+suE/zt@vger.kernel.org, AJvYcCVRb1ovrXl6q75n64iwigq+xQN+pEAts+M2v5XVImLNEYucRoE99pXpif/fbZZtER5GAvudKS/gYvRhVg==@vger.kernel.org, AJvYcCVhkhmtos193sDP/jnQWOIZu2FoNGvkz2EysfFArs56eCkiQYjqbTxyxOuittOwqxl32oATWL9OSInUtWs=@vger.kernel.org, AJvYcCW5AnB5HqNOgqdIw+NkS1gsgU4BpJ4SKZOMbidHIPTobBSzXnu692m44hIsxWpQd9wF+ZI8Lf/Jz1Df@vger.kernel.org, AJvYcCWBT0ZW0CGJ5uOLEVzCYwewT9hXYveJTneHP4YvIBLUnECMzZhX1izQAEQR/x1Xgzyi//1EbcIIT3Ph@vger.kernel.org, AJvYcCWE3c+YrnHoGnp/h0qs
- pS9TuJsswFc52iiwA2qdnoZST8Q1UgJ/o5MW5P3Uu7qn0fpWRaz5phKoXPI=@vger.kernel.org, AJvYcCWTxwL1Rp/xVQSGBtv6GGRPsd2Qba3F2KAlz1M67sOldCaGcQqxHdCJSAAFiTKFByv5n7zQLuoEP6Zn@vger.kernel.org, AJvYcCWfTV4Ot7FQ1HxhS9nUw1BPyGXZCx5f/66fFYsEInzWDdPHu3Dn0T8n/7Kf9i3M+haFY5LsKOavEoN9hA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3I1D4d044fyyI6uqMIQPtZSa00hSCVI/8fmlz/n8X3kelqPqD
-	becRCnue8cDgHl6c4j1y1ZzhXlFpdhT0RevmUuQZaBWdHDI0MTjr
-X-Google-Smtp-Source: AGHT+IGDZSxlCbsTRRDrlADY9xf/FeuikVNO0XKyrbvhvT68OG6hcNp/RMPI6u9Uj4MeELBy7mQJQQ==
-X-Received: by 2002:a2e:d09:0:b0:2fb:44ca:801c with SMTP id 38308e7fff4ca-2fc9d5e335cmr33424471fa.35.1729796976493;
-        Thu, 24 Oct 2024 12:09:36 -0700 (PDT)
-Received: from localhost.localdomain ([176.106.245.80])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb9ae12072sm14875321fa.110.2024.10.24.12.09.33
+        d=1e100.net; s=20230601; t=1729802693; x=1730407493;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oEY3S1tCv6SXbdC1v1hCbjXPWXWqVFBlAfEOqTO87X8=;
+        b=w+kMsxU6cSMo1XOWmSW/Qob1OSHZMHiJNFwG6dV0ux4oBqEGnIEk8FURLTA9IW5jHv
+         Q818CkfIyuaNGeLXlvfwUi1TjF3Y2xLSm7OM1zI2Vk0Dlq5O1TV0VU17AEeSsIPH4oUY
+         qjz8vVQ0qWBVJ+Rj+5MXq7qbKNMf0zR/rjavlztWnymM115o/vdsqNnvPi1GpsWT7D4C
+         IE8TEH9TdRphF6A3yheQCcLVsj0l78LWHAT4ysrebgNaz/St35vzpIY4dtZQE1B85Y1L
+         oq465GPmRQmoIyRtC3WVHu1PHn9TCsS/SosfVOtwHDN1ugcT+gDyrJf6f+E1OuwUZ1mF
+         ATzA==
+X-Forwarded-Encrypted: i=1; AJvYcCV6vZBfDqUIH2ROzNxzsOd6cD7GzxHxS2xRz+aAIAWJNk6NoUdJ6wf13qr8jg4PeJeQAIdWqUT7fGkd@vger.kernel.org, AJvYcCW5xE0WP0Qa/jMlhxL/vt3+ziMpD3p1W+Mq0cm1zpudPRi6rJOAMqEwIMawdCVDkUADnEV10qSRCy6DPIje@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrfXOG+e+2hoNBwOaIO3LukfaBzo67BH72d2WmligYjf++CNZN
+	WJ9nqgygcoJL2ul97RKDOi2qNRXjn4H+E1/JMGGouNtUrfVI/k8h4BdyYg==
+X-Google-Smtp-Source: AGHT+IEAH8NpRrDUMYeicG2rAmt5mKr/3D6/Y0ofdlREFgSmhTaCHojirwDiNb4HplHUDFaTOqH4xQ==
+X-Received: by 2002:a05:600c:354b:b0:42f:75cd:2566 with SMTP id 5b1f17b1804b1-4318c6e902dmr27718905e9.2.1729802692427;
+        Thu, 24 Oct 2024 13:44:52 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-937a-2f15-cf5f-c6fb.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:937a:2f15:cf5f:c6fb])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a4ad48sm12105728f8f.42.2024.10.24.13.44.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 12:09:35 -0700 (PDT)
-From: Russian Troll Factory No271241182262529470158368334307958208204522924631681408115158110636801578517908140749826211402494881312487421951176430536853 <vladimirputin693389@gmail.com>
-To: torvalds@linux-foundation.org
-Cc: aospan@netup.ru,
-	conor.dooley@microchip.com,
-	ddrokosov@sberdevices.ru,
-	dmaengine@vger.kernel.org,
-	dushistov@mail.ru,
-	fancer.lancer@gmail.com,
-	geert@linux-m68k.org,
-	gregkh@linuxfoundation.org,
-	hoan@os.amperecomputing.com,
-	ink@jurassic.park.msu.ru,
-	jeffbai@aosc.io,
-	kexybiscuit@aosc.io,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fpga@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	manivannan.sadhasivam@linaro.org,
-	mattst88@gmail.com,
-	netdev@vger.kernel.org,
-	nikita@trvn.ru,
-	ntb@lists.linux.dev,
-	patches@lists.linux.dev,
-	richard.henderson@linaro.org,
-	s.shtylyov@omp.ru,
-	serjk@netup.ru,
-	shc_work@mail.ru,
-	torvic9@mailbox.org,
-	tsbogend@alpha.franken.de,
-	v.georgiev@metrotek.ru,
-	wangyuli@uniontech.com,
-	wsa+renesas@sang-engineering.com,
-	xeb@mail.ru
-Subject: Magisk patch for android nox devices
-Date: Thu, 24 Oct 2024 22:09:31 +0300
-Message-ID: <20241024190931.14805-1-vladimirputin693389@gmail.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
-References: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
+        Thu, 24 Oct 2024 13:44:51 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v2 0/2] iio: light: veml6070: add integration time
+Date: Thu, 24 Oct 2024 22:44:47 +0200
+Message-Id: <20241024-veml6070-integration-time-v2-0-d53272ec0feb@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL+xGmcC/32NQQqDMBBFryKz7pQkVVO66j2Ki8GMOmC0JCG0i
+ HdvKnTb5fvw3t8gchCOcKs2CJwlyroUMKcK+omWkVFcYTDK1FrpGjP7uVVWoSyJx0CpCJjEM9q
+ ro6FmImcGKP4z8CCvo/3oCk8S0xrex1XW3/VXtX+qWaPCS6Os09Y1raH76Enmc7966PZ9/wCnF
+ fkdwgAAAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1729802691; l=2000;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=7Jk1r7FEDBwbN3+UFT8qeXUAWHBJzRgT1WoU9XdCVb4=;
+ b=FQ/grfkkDv0owoaTQ8Zy5xy8l5Svj1oYU0d1/Uy5ZoCeU8/uuMUKAkmQW+b2U91Y4KP3lPCSv
+ hSN0dC7lLC8CRMeqi29DgfjOqcsX/STMHqM99trGQI4yCa16ozv0ppv
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
+This series adds a missing feature in the veml6070 driver to select the
+integration time, which also depends on an external restistor that has
+been added to the corresponding bindings.
 
-Hi, the linux mailing list.
-You have asked me for your opinion. I present my opinion to you:
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
-LINUS TORVALDS IS A DICK
+The datasheet provides a Refresh time vs Rset graph (figure 7), which
+does not clearly specify the minimum and maximum values for Rset. The
+manufacuter has confirmed that no values under 75 kohms should be used
+to keep linearity, and the graph does not go beyond 1200 kohms, which is
+also the biggest Rset used in the application note. The default value of
+270 kohms is the one currently used in the driver to calculate the UVI.
 
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v2:
+- Rebase onto iio/testing and drop applied patches.
+- veml6075.yaml: use documented -ohms, top-level definition and
+  per-device restriction.
+- veml6075.yaml: add default value.
+- veml6075.yaml: fix typo in commit message.
+- veml6070.c: adjust rset property name and convert from ohms to kohms
+  to avoid overflows and work with the same units as in the datasheet.
+- veml6070.c: change default to 270 kohms (already used as default
+  value to calculate UVI).
+- veml6070.c: calculate UVI according to the current integration time.
+- veml6070.c: re-calculate measurement time (i.e. msleep()) with the
+  current integration time.
+- Link to v1: https://lore.kernel.org/r/20241017-veml6070-integration-time-v1-0-3507d17d562a@gmail.com
 
+---
+Javier Carrasco (2):
+      dt-bindings: iio: light: veml6075: document rset-ohms
+      iio: light: veml6070: add support for integration time
+
+ .../bindings/iio/light/vishay,veml6075.yaml        |  27 ++++
+ drivers/iio/light/veml6070.c                       | 137 +++++++++++++++++++--
+ 2 files changed, 156 insertions(+), 8 deletions(-)
+---
+base-commit: 9090ececac9ff1e22fb7e042f3c886990a8fb090
+change-id: 20241014-veml6070-integration-time-78daf4eaad2f
+
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 

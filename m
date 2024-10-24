@@ -1,284 +1,365 @@
-Return-Path: <linux-iio+bounces-11084-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11085-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3889AE0D2
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 11:32:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B649AE15B
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 11:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9D33284698
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 09:32:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6443E1C21997
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 09:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816F01B219E;
-	Thu, 24 Oct 2024 09:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C9D1AF0C4;
+	Thu, 24 Oct 2024 09:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VUcJ5P75"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Dz30bllZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0761B393E
-	for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 09:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC6D1B0F18
+	for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 09:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729762190; cv=none; b=fgr4kTXGs0vpkP/3pGELqbQVjcG8fQTbmUz7cPMH5YfRECE/YnWsKFqETmgKFXvGXxbX7yLFhc1ERMCRsIT/Q8XAtHqemuheLBAZnz2Ke3k5GoffAoAKtMdQ+kiLPefIjJ+9zG7rddwWIWTelLvnL1tT1kY/KEMT1SnFjTXVTPU=
+	t=1729763271; cv=none; b=GFP6Ic++cz9ucec3nXjUdXA756sL3uDou8XdYnGX1TxxPnfUCubXGQdR6Dz4wB/aZfmL7jCw/4+tH/fNNj3hX2KQNsYFuhy8lnHgjTeMGNyUEYc8DxhxHJcSxdn4ge8jsOLoI+LSIpN5c0LUeFY7H1tgmuq8wBJtybKCuyeGrWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729762190; c=relaxed/simple;
-	bh=7GLMKjoFMHeu21FwG9v6K0Az4LLutw0rnj4PK+vdB84=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JDzCzYrXbOTApjUl7KuctsiMum1tMJb+fjBbn8XrOwtDBv93xuzYgoDe8rIugplm4m/R54fhkoOu4y8zG0BduiiE5RnAjUyaKSGH96UggprJ2BPGbl9tkCUcYLYonnN1vgn7ZznkFccjCMGRa6NstD/La+MRcYAOYyMtG6iQ6Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VUcJ5P75; arc=none smtp.client-ip=209.85.128.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-43168d9c6c9so7233005e9.3
-        for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 02:29:45 -0700 (PDT)
+	s=arc-20240116; t=1729763271; c=relaxed/simple;
+	bh=6oZISG8zyOtWCv3Xk/jvqSSwQW1cfD2LoGxyXi6vTwc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KP5wfX1l3UsbmPfOMH47hVOauz/px0uLVMjph84itKjgrJ4gN0HqoJiwXqBM6JhgNJqlLmSedD1lfbyfNyezkjcy9Y2AfEwNZO/+sijs421rR/Z/O4ia4HXtogoqHFY2rlAUdlO+RRgOvLdy+KSgPI97TLAJ8jTxaUOWTcLc8Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Dz30bllZ; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539f76a6f0dso662788e87.1
+        for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 02:47:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729762184; x=1730366984; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=umDPNaddrw8s7LRTfU20jVzV71EK0gpRXjXBcrPfdR4=;
-        b=VUcJ5P75hhSQERFiAUJkcvjR38deR8nARh7R/pZDTsTLZC/ukgY3qgyKj0vqzthPiy
-         CihOCTaV6blzVFc51B3mwNXm7a8nn4LdNDL7U4rFjE5akxtQZ7RV3gUBMeJqblOjg6yl
-         OxbVGrx7Oq3Wq4FygKgB3NkfVQZcNx29aSk5ecKmaA3+4oIKx053MOve2aBx8vI5nDrW
-         SGJN7PHwUg+hYJ9LD1bKDiP9nkGvyyrPRyQ7g4MmKJ0C5kcC2n+tEAyiwn9QEPMkG4Jn
-         n6ID8zlFAyn1xMJTY2hsJqiT0sl4TKU+Pm/uQ2K9QvRNft5Rr6u7KzNUwIIxxER/B6VS
-         PN8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729762184; x=1730366984;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1729763267; x=1730368067; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=umDPNaddrw8s7LRTfU20jVzV71EK0gpRXjXBcrPfdR4=;
-        b=Q6QR5296UYGIceu0folRX3JNwYjlLshZFrP9ZXXjrAg4MseoP+g68NMMCXf7ER0bQ4
-         NgSkrto7J5pv3EMpiSR7HRyooxINVryXCC5BNG8FJrNo6Mr83SgDF2ZJHXzs2rhHyqSl
-         Z23w4CBg1JpkTj/pNxCzCnr/sE3u3WsNYyJSUJKpB9riC/VyQMy+IElrY94/+jMOOGcj
-         JAGhph2qzKjZ7M4Q6u2RQOR9ih/XF2HlElAPp5WB+sM51uq8IhuPbUahCbvfBSUQHef/
-         MGvfD+eggEWsyZVi1N/qvtS+aGBXwT1cATQKmFT/Vs+tKg/fA+t8PHmuuyvTxmE6Zdap
-         uojA==
-X-Forwarded-Encrypted: i=1; AJvYcCUq9b87RQF/Q326B5KYuPT3dtL6jP2454KIrVGQsVMGH059a8JJ/nrZTnsnOUqktyHSKvORgUkt9lM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrJ+jCrtMDMbgJdRT2wVxseDrn6Ot67z50CmZc0tijdelpUWZG
-	o9fUhCHw0at7HisiqdnENJcwfO0t9AgLNcVjwDZ1vKUTpRkmaKnGoBsCD4sVCEg=
-X-Google-Smtp-Source: AGHT+IHTibw7Z57bMSTW7jJ8HbWjR1xpaNPqq+EEvaB8gOserl9u9FOnRWOtXqAUaSCVT0K/dJMLOQ==
-X-Received: by 2002:a05:600c:6045:b0:42c:af06:703 with SMTP id 5b1f17b1804b1-4318c8df606mr10485325e9.31.1729762184261;
-        Thu, 24 Oct 2024 02:29:44 -0700 (PDT)
-Received: from dfj (host-79-41-194-153.retail.telecomitalia.it. [79.41.194.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43186bde1b5sm39559315e9.12.2024.10.24.02.29.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 02:29:43 -0700 (PDT)
-Date: Thu, 24 Oct 2024 11:28:27 +0200
-From: Angelo Dureghello <adureghello@baylibre.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Olivier Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dlechner@baylibre.com, Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v7 2/8] dt-bindings: iio: dac: adi-axi-dac: add ad3552r
- axi variant
-Message-ID: <zfggfhasl3njyux5n44j2au4dlyjlngbtt4fps2xqzpngbwn42@72icpspkogtz>
-References: <20241021-wip-bl-ad3552r-axi-v0-iio-testing-v7-0-969694f53c5d@baylibre.com>
- <20241021-wip-bl-ad3552r-axi-v0-iio-testing-v7-2-969694f53c5d@baylibre.com>
- <20241022-flagpole-subject-51e68e81e948@spud>
+        bh=Vfv6ibufZ+CwrpcqLdBrsrQ/W9gQaceAobDNplXh7i0=;
+        b=Dz30bllZ46xfmjHsyBnRQ/Hsj0atcO52eIbyzx2rrsTKJPRdTg+Ec+LbVfUZVNxdmo
+         yXQeVX18Y6wTCQKdpJdZY9szhhliTd5XPJYVzEn4at4qSeRiFNDhY8qncfpaUhIt5kk0
+         o4/0D2kYj+qLEZeFFFkEJRiADyXhJRJI7cr9egDEZW4FagwzO97yIrIyDcIvSxXMUuHO
+         NNfdUfpyuyTSa+sRUrB9HHMWWrUx1XgQGr3wg3XgwCsXnD2c5RGVpu0OOFUonzqfr4lP
+         5+MJA7IEr6GJA3e3M+y90KCqPu6HA38iOtfOtQ1pkqAK0cCp9LG0zjI2N8/ss4x9CAIw
+         i6Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729763267; x=1730368067;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Vfv6ibufZ+CwrpcqLdBrsrQ/W9gQaceAobDNplXh7i0=;
+        b=l7A24kJUsUkaMFK2fhCQO8JXASn4okGwxaVr1NQKRHAhF/QrhYtkPKkrJXeUvwG9vs
+         jZWvytMzdFKzBPC+TKvpO+o+/HiXHwKi71hpvlEmfpCFUigVAy5JtOuaMZInXNxtW3gF
+         KYd8WNIIt27AnAzp6Rr6MKAAafIIeAYINTx1GkOKa/qmtYOUYAsUVAdvWvQd6icvhf0K
+         cF3mR5q0sm3CtlBq5L2CTsXTKryNSVuzO18Ny5FXJAYmHmDxwQ3ZBZomKT70cR4tR3tq
+         hRB3fjTg2tvoL12YGBv5i2ntm8YBpOk2HEEZubMlUbwh150Ycb7jLQOU4aC02sWWsUVZ
+         RoPA==
+X-Forwarded-Encrypted: i=1; AJvYcCVVTdP6rk4zh17zoZBkPHj70vF2MBmYLtcSZb4ILJWL6Lo3SzBOucbryuJmRifc83oio/eNmyW2u00=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY9Td3LXWc+EydgGEx/eJIUMfULGZUW8mr1xVbPf1m/96v9TC3
+	m1KyC6fmLgnPsQxJBkyUt7JhCi3orVZy2urkFMGSWHBUTygN/VqLx7YKdFzSLnKWMlzDNgQUSJE
+	6mBBl3z/ulYR0aSTxZJ//QpKYXsIlxBQ6ycFA1g==
+X-Google-Smtp-Source: AGHT+IEWBEehWTnq4Rbixjghfb8o2yvBF/xxe7NK2SwSHJgjYLywf14gzBfaH+tfcPlaC6bw5yJWICqXJ+gwpbBN2SY=
+X-Received: by 2002:a05:6512:2810:b0:539:f763:789d with SMTP id
+ 2adb3069b0e04-53b1a36c638mr3298988e87.43.1729763266315; Thu, 24 Oct 2024
+ 02:47:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241022-flagpole-subject-51e68e81e948@spud>
+References: <20241024085922.133071-1-tmyu0@nuvoton.com> <20241024085922.133071-3-tmyu0@nuvoton.com>
+In-Reply-To: <20241024085922.133071-3-tmyu0@nuvoton.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 24 Oct 2024 11:47:34 +0200
+Message-ID: <CAMRc=Mc+SZN=EytxY=qA-qBEAY_F17GP-7FRE9oLojLbdUoPaQ@mail.gmail.com>
+Subject: Re: [PATCH v1 2/9] gpio: Add Nuvoton NCT6694 GPIO support
+To: Ming Yu <a0282524688@gmail.com>
+Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
+	andi.shyti@kernel.org, mkl@pengutronix.de, mailhol.vincent@wanadoo.fr, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, wim@linux-watchdog.org, 
+	linux@roeck-us.net, jdelvare@suse.com, jic23@kernel.org, lars@metafoo.de, 
+	ukleinek@kernel.org, alexandre.belloni@bootlin.com, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-rtc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Conor,
-
-On 22.10.2024 18:22, Conor Dooley wrote:
-> On Mon, Oct 21, 2024 at 02:40:12PM +0200, Angelo Dureghello wrote:
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> > 
-> > Add a new compatible and related bindigns for the fpga-based
-> > "ad3552r" AXI IP core, a variant of the generic AXI DAC IP.
-> > 
-> > The AXI "ad3552r" IP is a very similar HDL (fpga) variant of the
-> > generic AXI "DAC" IP, intended to control ad3552r and similar chips,
-> > mainly to reach high speed transfer rates using a QSPI DDR
-> > (dobule-data-rate) interface.
-> > 
-> > The ad3552r device is defined as a child of the AXI DAC, that in
-> > this case is acting as an SPI controller.
-> > 
-> > Note, #io-backend is present because it is possible (in theory anyway)
-> > to use a separate controller for the control path than that used
-> > for the datapath.
-> > 
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---
-> >  .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   | 69 +++++++++++++++++++++-
-> >  1 file changed, 66 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
-> > index a55e9bfc66d7..0aabb210f26d 100644
-> > --- a/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,axi-dac.yaml
-> > @@ -19,11 +19,13 @@ description: |
-> >    memory via DMA into the DAC.
-> >  
-> >    https://wiki.analog.com/resources/fpga/docs/axi_dac_ip
-> > +  https://analogdevicesinc.github.io/hdl/library/axi_ad3552r/index.html
-> >  
-> >  properties:
-> >    compatible:
-> >      enum:
-> >        - adi,axi-dac-9.1.b
-> > +      - adi,axi-ad3552r
-> >  
-> >    reg:
-> >      maxItems: 1
-> > @@ -36,7 +38,12 @@ properties:
-> >        - const: tx
-> >  
-> >    clocks:
-> > -    maxItems: 1
-> > +    minItems: 1
-> > +    maxItems: 2
-> > +
-> > +  clock-names:
-> > +    minItems: 1
-> > +    maxItems: 2
-> >  
-> >    '#io-backend-cells':
-> >      const: 0
-> > @@ -47,7 +54,31 @@ required:
-> >    - reg
-> >    - clocks
-> >  
-> > -additionalProperties: false
-> > +allOf:
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            const: adi,axi-ad3552r
-> > +    then:
-> > +      $ref: /schemas/spi/spi-controller.yaml#
-> > +      properties:
-> > +        clocks:
-> > +          minItems: 2
-> > +          maxItems: 2
-> 
-> Is this maxItems required? It matches the outer maximum.
-> 
-> > +        clock-names:
-> > +          items:
-> > +            - const: s_axi_aclk
-> > +            - const: dac_clk
-> 
-> The names are the same in both cases, you can move the definitions
-> outside of the if/then/else stuff and only constrain it here.
+On Thu, Oct 24, 2024 at 10:59=E2=80=AFAM Ming Yu <a0282524688@gmail.com> wr=
+ote:
 >
-thanks, could you maybe have a look if it's ok now ?
-(maxItems not needed for a const list)
+> This driver supports GPIO and IRQ functionality for NCT6694 MFD
+> device based on USB interface.
+>
+> Signed-off-by: Ming Yu <tmyu0@nuvoton.com>
+> ---
+>  MAINTAINERS                 |   1 +
+>  drivers/gpio/Kconfig        |  12 +
+>  drivers/gpio/Makefile       |   1 +
+>  drivers/gpio/gpio-nct6694.c | 489 ++++++++++++++++++++++++++++++++++++
+>  4 files changed, 503 insertions(+)
+>  create mode 100644 drivers/gpio/gpio-nct6694.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 30157ca95cf3..2c86d5dab3f1 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16438,6 +16438,7 @@ NUVOTON NCT6694 MFD DRIVER
+>  M:     Ming Yu <tmyu0@nuvoton.com>
+>  L:     linux-kernel@vger.kernel.org
+>  S:     Supported
+> +F:     drivers/gpio/gpio-nct6694.c
+>  F:     drivers/mfd/nct6694.c
+>  F:     include/linux/mfd/nct6694.h
+>
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index d93cd4f722b4..aa78ad9ff4ac 100644
+> --- a/drivers/gpio/Kconfig
+> +++ b/drivers/gpio/Kconfig
+> @@ -1450,6 +1450,18 @@ config GPIO_MAX77650
+>           GPIO driver for MAX77650/77651 PMIC from Maxim Semiconductor.
+>           These chips have a single pin that can be configured as GPIO.
+>
+> +config GPIO_NCT6694
+> +       tristate "Nuvoton NCT6694 GPIO controller support"
+> +       depends on MFD_NCT6694
+> +       select GENERIC_IRQ_CHIP
+> +       select GPIOLIB_IRQCHIP
+> +       help
+> +         This driver supports 8 GPIO pins per bank that can all be inter=
+rupt
+> +         sources.
+> +
+> +         This driver can also be built as a module. If so, the module wi=
+ll be
+> +         called gpio-nct6694.
+> +
+>  config GPIO_PALMAS
+>         bool "TI PALMAS series PMICs GPIO"
+>         depends on MFD_PALMAS
+> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+> index 1429e8c0229b..02c94aa28017 100644
+> --- a/drivers/gpio/Makefile
+> +++ b/drivers/gpio/Makefile
+> @@ -121,6 +121,7 @@ obj-$(CONFIG_GPIO_MXC)                      +=3D gpio=
+-mxc.o
+>  obj-$(CONFIG_GPIO_MXS)                 +=3D gpio-mxs.o
+>  obj-$(CONFIG_GPIO_NOMADIK)             +=3D gpio-nomadik.o
+>  obj-$(CONFIG_GPIO_NPCM_SGPIO)          +=3D gpio-npcm-sgpio.o
+> +obj-$(CONFIG_GPIO_NCT6694)             +=3D gpio-nct6694.o
+>  obj-$(CONFIG_GPIO_OCTEON)              +=3D gpio-octeon.o
+>  obj-$(CONFIG_GPIO_OMAP)                        +=3D gpio-omap.o
+>  obj-$(CONFIG_GPIO_PALMAS)              +=3D gpio-palmas.o
+> diff --git a/drivers/gpio/gpio-nct6694.c b/drivers/gpio/gpio-nct6694.c
+> new file mode 100644
+> index 000000000000..42c0e6e76730
+> --- /dev/null
+> +++ b/drivers/gpio/gpio-nct6694.c
+> @@ -0,0 +1,489 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Nuvoton NCT6694 GPIO controller driver based on USB interface.
+> + *
+> + * Copyright (C) 2024 Nuvoton Technology Corp.
+> + */
+> +
+> +#include <linux/gpio.h>
 
-  clocks:
-    minItems: 1
-    maxItems: 2
+Don't include this header. It's documented as obsolete.
 
-  clock-names:
-    items:
-      - const: s_axi_aclk
-      - const: dac_clk
-    minItems: 1
+> +#include <linux/gpio/driver.h>
+> +#include <linux/module.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/mfd/nct6694.h>
+> +
 
-  '#io-backend-cells':
-    const: 0
+You only use it once, drop it.
 
-required:
-  - compatible
-  - dmas
-  - reg
-  - clocks
+> +#define DRVNAME "nct6694-gpio"
+> +
+> +/* Host interface */
+> +#define REQUEST_GPIO_MOD               0xFF
+> +#define REQUEST_GPIO_LEN               0x01
+> +
+> +/* Report Channel */
+> +#define GPIO_VER_REG                   0x90
+> +#define GPIO_VALID_REG                 0x110
+> +#define GPI_DATA_REG                   0x120
+> +#define GPO_DIR_REG                    0x170
+> +#define GPO_TYPE_REG                   0x180
+> +#define GPO_DATA_REG                   0x190
+> +
+> +#define GPI_STS_REG                    0x130
+> +#define GPI_CLR_REG                    0x140
+> +#define GPI_FALLING_REG                        0x150
+> +#define GPI_RISING_REG                 0x160
+> +
 
-allOf:
-  - if:
-      properties:
-        compatible:
-          contains:
-            const: adi,axi-ad3552r
-    then:
-      $ref: /schemas/spi/spi-controller.yaml#
-      properties:
-        clocks:
-          minItems: 2
-        clock-names:
-          minItems: 2
-    else:
-      properties:
-        clocks:
-          maxItems: 1
-        clock-names:
-          maxItems: 1
+Please use the NCT6694 prefix for these defines, otherwise it's not
+clear whether they come from the driver or from GPIO core.
 
-unevaluatedProperties: false
+[]
 
-...
+> +
+> +static const char * const nct6694_gpio_name[] =3D {
+> +       "NCT6694-GPIO0",
+> +       "NCT6694-GPIO1",
+> +       "NCT6694-GPIO2",
+> +       "NCT6694-GPIO3",
+> +       "NCT6694-GPIO4",
+> +       "NCT6694-GPIO5",
+> +       "NCT6694-GPIO6",
+> +       "NCT6694-GPIO7",
+> +       "NCT6694-GPIO8",
+> +       "NCT6694-GPIO9",
+> +       "NCT6694-GPIOA",
+> +       "NCT6694-GPIOB",
+> +       "NCT6694-GPIOC",
+> +       "NCT6694-GPIOD",
+> +       "NCT6694-GPIOE",
+> +       "NCT6694-GPIOF",
+> +};
 
-> > +    else:
-> > +      properties:
-> > +        clocks:
-> > +          maxItems: 1
-> > +        clock-names:
-> > +          items:
-> > +            - const: s_axi_aclk
-> > +
-> > +unevaluatedProperties: false
-> >  
-> >  examples:
-> >    - |
-> > @@ -57,6 +88,38 @@ examples:
-> >          dmas = <&tx_dma 0>;
-> >          dma-names = "tx";
-> >          #io-backend-cells = <0>;
-> > -        clocks = <&axi_clk>;
-> > +        clocks = <&clkc 15>;
-> > +        clock-names = "s_axi_aclk";
-> > +    };
-> > +
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +    axi_dac: spi@44a70000 {
-> > +        compatible = "adi,axi-ad3552r";
-> > +        reg = <0x44a70000 0x1000>;
-> > +        dmas = <&dac_tx_dma 0>;
-> > +        dma-names = "tx";
-> > +        #io-backend-cells = <0>;
-> > +        clocks = <&clkc 15>, <&ref_clk>;
-> > +        clock-names = "s_axi_aclk", "dac_clk";
-> > +
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        dac@0 {
-> > +            compatible = "adi,ad3552r";
-> > +            reg = <0>;
-> > +            reset-gpios = <&gpio0 92 GPIO_ACTIVE_HIGH>;
-> > +            io-backends = <&axi_dac>;
-> > +            spi-max-frequency = <20000000>;
-> > +
-> > +            #address-cells = <1>;
-> > +            #size-cells = <0>;
-> > +
-> > +            channel@0 {
-> > +                reg = <0>;
-> > +                adi,output-range-microvolt = <(-10000000) (10000000)>;
-> > +            };
-> > +        };
-> >      };
-> >  ...
-> > 
-> > -- 
-> > 2.45.0.rc1
-> > 
+This looks like it corresponds with the MFD cells and makes me wonder:
+am I getting that wrong or do you want to register 0xf GPIO chips? Or
+a single GPIO chip with 0xf lines? What is the topology?
 
+> +
+> +static int nct6694_gpio_probe(struct platform_device *pdev)
+> +{
+> +       const struct mfd_cell *cell =3D mfd_get_cell(pdev);
+> +       struct nct6694 *nct6694 =3D dev_get_drvdata(pdev->dev.parent);
+> +       struct nct6694_gpio_data *data;
+> +       struct gpio_irq_chip *girq;
+> +       int ret;
+> +
+> +       data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+> +       if (!data)
+> +               return -ENOMEM;
+> +
+> +       data->nct6694 =3D nct6694;
+> +       data->group =3D cell->id;
+> +
+> +       data->gpio.label                =3D nct6694_gpio_name[cell->id];
+> +       data->gpio.direction_input      =3D nct6694_direction_input;
+> +       data->gpio.get                  =3D nct6694_get_value;
+> +       data->gpio.direction_output     =3D nct6694_direction_output;
+> +       data->gpio.set                  =3D nct6694_set_value;
+> +       data->gpio.get_direction        =3D nct6694_get_direction;
+> +       data->gpio.set_config           =3D nct6694_set_config;
+> +       data->gpio.init_valid_mask      =3D nct6694_init_valid_mask;
+> +       data->gpio.base                 =3D -1;
+> +       data->gpio.can_sleep            =3D false;
+> +       data->gpio.owner                =3D THIS_MODULE;
+> +       data->gpio.ngpio                =3D 8;
+> +
+> +       INIT_WORK(&data->irq_work, nct6694_irq);
+> +       INIT_WORK(&data->irq_trig_work, nct6694_irq_trig);
+> +       mutex_init(&data->irq_lock);
+> +
+> +       ret =3D nct6694_register_handler(nct6694, GPIO_IRQ_STATUS,
+> +                                      nct6694_gpio_handler, data);
+> +       if (ret) {
+> +               dev_err(&pdev->dev, "%s:  Failed to register handler: %pe=
+\n",
+> +                       __func__, ERR_PTR(ret));
+> +               return ret;
+> +       }
+> +
+> +       platform_set_drvdata(pdev, data);
+> +
+> +       ret =3D nct6694_get_irq_trig(data);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* Register gpio chip to GPIO framework */
+> +       girq =3D &data->gpio.irq;
+> +       gpio_irq_chip_set_chip(girq, &nct6694_irq_chip);
+> +       girq->parent_handler =3D NULL;
+> +       girq->num_parents =3D 0;
+> +       girq->parents =3D NULL;
+> +       girq->default_type =3D IRQ_TYPE_NONE;
+> +       girq->handler =3D handle_level_irq;
+> +       girq->threaded =3D true;
+> +
+> +       ret =3D gpiochip_add_data(&data->gpio, data);
+> +       if (ret) {
+> +               dev_err(&pdev->dev, "%s: Failed to register GPIO chip: %p=
+e",
+> +                       __func__, ERR_PTR(ret));
+> +               return ret;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static void nct6694_gpio_remove(struct platform_device *pdev)
+> +{
+> +       struct nct6694_gpio_data *data =3D platform_get_drvdata(pdev);
+> +
+> +       gpiochip_remove(&data->gpio);
 
+This should be dropped in favor of using devm_gpiochip_add_data().
+Especially since you probably want to cancel the irq_work before
+removing the chip.
+
+> +       cancel_work(&data->irq_work);
+> +       cancel_work(&data->irq_trig_work);
+> +}
+> +
+> +static struct platform_driver nct6694_gpio_driver =3D {
+> +       .driver =3D {
+> +               .name   =3D DRVNAME,
+> +       },
+> +       .probe          =3D nct6694_gpio_probe,
+> +       .remove         =3D nct6694_gpio_remove,
+> +};
+> +
+> +static int __init nct6694_init(void)
+> +{
+> +       int err;
+> +
+> +       err =3D platform_driver_register(&nct6694_gpio_driver);
+> +       if (!err) {
+> +               if (err)
+
+If err is equal to 0, check if it's not equal to zero?
+
+> +                       platform_driver_unregister(&nct6694_gpio_driver);
+
+If platform_driver_register() failed, then the device was never registered.
+
+> +       }
+> +
+> +       return err;
+> +}
+> +subsys_initcall(nct6694_init);
+
+Any reason why this must be initialized earlier? It's a USB driver after al=
+l.
+
+> +
+> +static void __exit nct6694_exit(void)
+> +{
+> +       platform_driver_unregister(&nct6694_gpio_driver);
+> +}
+> +module_exit(nct6694_exit);
+> +
+> +MODULE_DESCRIPTION("USB-GPIO controller driver for NCT6694");
+> +MODULE_AUTHOR("Ming Yu <tmyu0@nuvoton.com>");
+> +MODULE_LICENSE("GPL");
+> --
+> 2.34.1
+>
+
+Bart
 

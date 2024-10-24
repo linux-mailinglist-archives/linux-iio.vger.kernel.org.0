@@ -1,147 +1,131 @@
-Return-Path: <linux-iio+bounces-11130-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11131-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0E79AE88F
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 16:26:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336F49AE8D9
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 16:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D68C91F21088
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 14:26:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA792292AE5
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 14:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8549920012B;
-	Thu, 24 Oct 2024 14:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F181F76BE;
+	Thu, 24 Oct 2024 14:28:22 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDBB200139
-	for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 14:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B351F669F;
+	Thu, 24 Oct 2024 14:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729779652; cv=none; b=Rd36MEFktB/3PpHfWdwPngLfAe625gAygF2lOu6V5LAQ7G0D9/zG/e95f0LTPtg/TalLoi4HypQdttazhoViUCra5wdkOQRaQqbMTdeKbXX0Wspl1xbGCpNZUh4twpcoa339UB4i1Y3q/keWooJHMsEll2HBxIlZjkNp4uEpSi8=
+	t=1729780102; cv=none; b=sBayP/2KkMjL1Z6Fz4U3VmBrtfhTo3/DTFZt3MOB3ZPglhTBmRTb3Vowo0UWG9yEGeHDF0ZjjEGvT3LS1EPeensUstqJghFvmIIY27EIdZK01zfqSwop+6zDlkvYH9RIjTbLOvlK899GMlA++oZAllh/bbFBDUSvHNo4NLS4kkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729779652; c=relaxed/simple;
-	bh=CeH6d9jYHaUoXOEafD41IQtDoDuY9WGiGrn3lPFqJ9E=;
+	s=arc-20240116; t=1729780102; c=relaxed/simple;
+	bh=9KmBYw1eiZZ45NfTasyieiF5LdLBmbJ72ug2/gAsLL4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RNH1qMM2FWP5PMcaxJM+Zj0x2AIXKnFCUdN2m96YjauxWJUB8JkJ12QMtZ4UjdbR2v1Z9yvtevlUkD5K+lwMkcggAWLQFTIJkPx5D2C3nhLQWuO2iN8piG7j6t12jXMBirLfEpfLPz236D71vPl4bYKn0z2ls+pZIFV+9FY2Vqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t3yhJ-000452-8g; Thu, 24 Oct 2024 16:20:21 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t3yhI-000DEt-35;
-	Thu, 24 Oct 2024 16:20:20 +0200
-Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8119C35DCED;
-	Thu, 24 Oct 2024 14:20:20 +0000 (UTC)
-Date: Thu, 24 Oct 2024 16:20:20 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v1 4/9] can: Add Nuvoton NCT6694 CAN support
-Message-ID: <20241024-cryptic-giga-mole-54e2b5-mkl@pengutronix.de>
-References: <20241024085922.133071-1-tmyu0@nuvoton.com>
- <20241024085922.133071-5-tmyu0@nuvoton.com>
- <20241024-poetic-offbeat-alligator-d6b9fe-mkl@pengutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eepb3oj2sOgPU1bMVfknhzV9wAih8uCZbJRGu865gLd/VRgijLgwO3mf3/1HrTsT/b8Rzfl7njwuARUswFD/OWieq1U1d2Bm5Hy1/JCrZXaQsRR4vZteXHEOF81zS1ZRkC3ukR9kBd4btp9jA7YPxpeY/qGq4zaCFmnDVXKd21k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+X-CSE-ConnectionGUID: dcA/yEC9RTOptQYJQJFs5Q==
+X-CSE-MsgGUID: q+V8CnhlQyKW+z9MOo4oLA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="33209024"
+X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
+   d="scan'208";a="33209024"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 07:28:19 -0700
+X-CSE-ConnectionGUID: kAxyAEgGRsqzP2CbF2dKlA==
+X-CSE-MsgGUID: ROTIQ0wXTPGJYZDISuk74A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
+   d="scan'208";a="80776831"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa006.jf.intel.com with ESMTP; 24 Oct 2024 07:28:16 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 30C1B252; Thu, 24 Oct 2024 17:28:14 +0300 (EEST)
+Date: Thu, 24 Oct 2024 17:28:14 +0300
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Rayyan Ansari <rayyan@ansari.sh>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	Bjorn Andersson <andersson@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Yang <decatf@gmail.com>, Rob Herring <robh@kernel.org>,
+	Sean Rhodes <sean@starlabs.systems>
+Subject: Re: [PATCH 2/3] iio: accel: kxcjk-1013: Add support for KX022-1020
+Message-ID: <ZxpZfgsf-KldiX4w@black.fi.intel.com>
+References: <20240714173431.54332-1-rayyan@ansari.sh>
+ <20240714173431.54332-3-rayyan@ansari.sh>
+ <823ce598-dffd-4983-bffa-32559558235d@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="umhghwnwqoavy3lt"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241024-poetic-offbeat-alligator-d6b9fe-mkl@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <823ce598-dffd-4983-bffa-32559558235d@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+
+On Mon, Jul 15, 2024 at 10:30:46AM +0200, Hans de Goede wrote:
+> On 7/14/24 7:33 PM, Rayyan Ansari wrote:
+> > Add compatible for the KX022-1020 accelerometer [1] using the
+> > KX022-1023 [2] register map as both have an identical i2c interface.
+> > 
+> > [1]: https://kionixfs.azureedge.net/en/datasheet/KX022-1020%20Specifications%20Rev%2012.0.pdf
+> > [2]: https://kionixfs.azureedge.net/en/datasheet/KX023-1025%20Specifications%20Rev%2012.0.pdf
+> > 
+> > Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
+> 
+> Thanks, patch looks good to me:
+> 
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Note, this patch broke kx231025 case...
+
+> >  	KXCJ91008,
+> >  	KXTJ21009,
+> >  	KXTF9,
+> > +	KX0221020,
+> >  	KX0231025,
+> >  	KX_MAX_CHIPS /* this must be last */
+> >  };
+
+...because this enum is used of ODR startup timeout settings which
+are all moved now to be 0 and new ID inherited the timeouts from
+the KX0231025 case.
+
+Since I have been looking into the driver, and I have a few patches
+coming, I propose to do the following (as it's still ODR data being
+missed) to:
+1) revert this one;
+2) apply my set;
+3) re-apply this with the fixed data.
+
+Another approach can be done (but probably not by me) is to move the ID
+to the proper location, add ODR startup timeouts or explain why it's not
+needed and then apply my patch.
+
+But, taking into account that we are almost at -rc5 and I want my stuff
+not to be postponed, I tend to follow the first approach.
+
+Opinions, comments?
+
+P.S. FWIW, my set will include switching this driver to use chip_info
+structure so the similar mistakes won't happen again, that's also why
+I prefer the first approach I listed above.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---umhghwnwqoavy3lt
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 4/9] can: Add Nuvoton NCT6694 CAN support
-MIME-Version: 1.0
-
-On 24.10.2024 16:17:52, Marc Kleine-Budde wrote:
-> On 24.10.2024 16:59:17, Ming Yu wrote:
-> > This driver supports Socket CANfd functionality for NCT6694 MFD
-> > device based on USB interface.
-> >=20
-> > Signed-off-by: Ming Yu <tmyu0@nuvoton.com>
-> > ---
-> >  MAINTAINERS                     |   1 +
-> >  drivers/net/can/Kconfig         |  10 +
-> >  drivers/net/can/Makefile        |   1 +
-> >  drivers/net/can/nct6694_canfd.c | 843 ++++++++++++++++++++++++++++++++
-
-|   CC [M]  drivers/net/can/nct6694_canfd.o
-| drivers/net/can/nct6694_canfd.c: In function =E2=80=98nct6694_canfd_start=
-_xmit=E2=80=99:
-| drivers/net/can/nct6694_canfd.c:282:22: error: variable =E2=80=98echo_byt=
-e=E2=80=99 set but not used [-Werror=3Dunused-but-set-variable]
-|   282 |         unsigned int echo_byte;
-|       |                      ^~~~~~~~~
-| drivers/net/can/nct6694_canfd.c: In function =E2=80=98nct6694_canfd_rx_wo=
-rk=E2=80=99:
-| drivers/net/can/nct6694_canfd.c:677:34: error: variable =E2=80=98stats=E2=
-=80=99 set but not used [-Werror=3Dunused-but-set-variable]
-|   677 |         struct net_device_stats *stats;
-|       |                                  ^~~~~
-| cc1: all warnings being treated as errors
-
-If compiling with C=3D1, sparse throws the following errors:
-
-| drivers/net/can/nct6694_canfd.c:417:14: warning: cast to restricted __le32
-| drivers/net/can/nct6694_canfd.c:750:9: warning: cast to restricted __le32
-| drivers/net/can/nct6694_canfd.c:777:32: warning: cast to restricted __le32
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---umhghwnwqoavy3lt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcaV6EACgkQKDiiPnot
-vG+E+Qf8CIIlMRqAUgax6FgoXWP0LDl3JVfJSfoClGvwvTGIR6r0hAAYhY6YXdy9
-gUPusFE69CRe780ZIu4/gR45YWIRpof1exG4JAIoKbU/4Bdq/42x1BKSXifWPayo
-Rm/mm+HyVCjb7WTpopxM7ZCnZMks9xOUwl6A+/ShIRZA3pWBz8ll4yRCtTq1V6xy
-GMKhYsYP4mDY3YyD1+hUfLBmiBu2XvhnGksdoLRZHNMNKlNhZnpRSLeQew5EHSy1
-03BltphJ6YsdAgTfyR7AT4nTisdNyYl+IhnJq1+FSKsWxdHcelNMaM3JwlLrXMBO
-FbotT17CV8J3M14xFrwqL7cRROi57A==
-=lV4A
------END PGP SIGNATURE-----
-
---umhghwnwqoavy3lt--
 

@@ -1,129 +1,136 @@
-Return-Path: <linux-iio+bounces-11100-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11107-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7F39AE4E3
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 14:34:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 626FE9AE591
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 15:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B8641C234CA
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 12:34:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A46E284F1A
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 13:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DAC1D63E7;
-	Thu, 24 Oct 2024 12:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5892E1D89E3;
+	Thu, 24 Oct 2024 13:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QY5nFZuD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fU8S6YAy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f66.google.com (mail-oa1-f66.google.com [209.85.160.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D911D173E;
-	Thu, 24 Oct 2024 12:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BEE1D63FB;
+	Thu, 24 Oct 2024 13:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729773278; cv=none; b=ofj3/KFHwOwb+B8IxQqJAXH6wO9t32aYBE3psdMxfuLnAhX9ha3nr4ML3VcCv6wmB5HIPZfi0tPHr5GvSsQ8vBV1EM6kIclr2U4OZWvfog9gwYaMiPqB2qyI/bgQ9a0tVARiCqsYCDYDBUUOxqjhk0sKj4YCkP/RbT0OER98HdU=
+	t=1729775083; cv=none; b=N7UUq0KAe/XVHm64oRyxPR1sndrIdLXMdrbVBt7VnIZLiOPCyrOYCK27HBwrUmfhy99usJEe0j23jVWYAdgQxp1gWSdcw1xz48grw0A64afBSA3j0RdonLbf37iGMtcFUs2JZXDo2uvbclzw+qXXHCxAiH5L4vu7H88ikp0Uetk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729773278; c=relaxed/simple;
-	bh=WqKO+VQufYnnSQGNsjJoV9pHpcM4NLycUTcWyfMcgg8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfFby7ktPfaM8Je8ZJnyk8skBpp7XZRTCl0OqQC88l6642lhOF7FcfDcgJd+zNUZQ4rB4108yO0VyGZYa3CXHToQZTItxSK0bg1D3Ns8W0bPHGykElhta433X8w+U3+LcLnK5c7UnAkc7FMM5uLjQqkkZ8uIj86y+CtQTwkIUPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QY5nFZuD; arc=none smtp.client-ip=209.85.160.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f66.google.com with SMTP id 586e51a60fabf-288d4da7221so473930fac.1;
-        Thu, 24 Oct 2024 05:34:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729773275; x=1730378075; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WqKO+VQufYnnSQGNsjJoV9pHpcM4NLycUTcWyfMcgg8=;
-        b=QY5nFZuDXaIz7hz38L7u08qLHJU9QTkiHyR4KBf6myTWmCmHp27MKIhJecgns2o+4V
-         4p4Nh6WlL+7dPV+cor4kUZf/tz9KonupNS9HApE8oeYnBpxR4aCnHZMtz9ocPaZmToG1
-         iPR0aRPRA5Uoao8soXfnmCQotbfG3008Y4YhjhCn4TNW9TG4zuGCAZpCmnucgTKms2qQ
-         RekgoDPsB2rCltMDzuo/5YQqvkIQv+olENuHTCpkkXryQGKu3KHLQU0aJUkQlQ2Y1XjZ
-         4SLGPgeP+ce4YflOV5yjLxVo6xE+cXGe3RdLDd3qzy1d7pHauEowpkeyCx6/lZdQPcTE
-         AvaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729773275; x=1730378075;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WqKO+VQufYnnSQGNsjJoV9pHpcM4NLycUTcWyfMcgg8=;
-        b=qTiGzFVrMt1EyMsjVxDe4G6XcIKZiDN2rXhI4tpF9MZaLPkuv9FI542kmZAIZPk0Zb
-         jmrdSdlLgmS2W6BV8iGiWcF8Nv6od4eQ5lHPL95OdHT46dPUWsUZfsOJ6bMzJZVLs+Jl
-         HpZrjW7XS1pW/Gd5MlP3raddszk/0SHshJaL6ctTeMe3F6DyMxs5hIqTNL2mkNBCCufv
-         OtrGcxhzYx3J/a6VaJrHsTI41msitnrcSBq2pfEA3gZ7XTN8R6IhUIVDB4dHwNQHJQbR
-         Var78HkJSF30nIIMExYAhjlUB9KMS6msvLH7DnW9FGzDl1A5LewYy3cTpg1vKoUalS0G
-         UkDA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2vvn5noWPlY4iJCBdY9lxNNnYJLqu/IM8Kcd13tGz8snuXTzQFjYhV+9zmYUa8Rl+i2rmkagw@vger.kernel.org, AJvYcCUZsUwqSRJp8CS0WbEEM5aG+2xmLL2xcqFXmR6BH0puZxe9JnnY05HCgAkpDqJZL6A5NUf2HxfpxM0YsA==@vger.kernel.org, AJvYcCUbRy9XuQJFui5oX48VThIyGx4Km9w+KzajCAPMTgzA2JF6ISU7c5B4bn7v7NG0chT9RKV/PDorlmYANw==@vger.kernel.org, AJvYcCV6L293Bp2qTrY+a86NaOdNRC3SGt9y6jeL+9CggvQATYPPGYR5X5yEWF5qvNdo/iLilJObNG1zLPGM@vger.kernel.org, AJvYcCVNAwFpNXUtlp58uCjGEorQWmXFUTf9ezrQRW5AzzVxXS8IPN1W2sV/cHQYwIovHf3KxQ8aq2xpsFo=@vger.kernel.org, AJvYcCVe0wHAc9zlluGKuixl3o0a+io5bdY/JyIaQA8TTRk7u/rIuD85cfznqglOulVb6FmF9v2EiPYHpZNUSw==@vger.kernel.org, AJvYcCVhBRQ/qFqZQz+XhQJXwRWCjrq4YW44Rklq/Yto5cxD7v59BKnrjgjSOe8+SW7uXncDBA6/J5MOZgYU@vger.kernel.org, AJvYcCVuE0txY9BBBIkJgJbv1bcnq/8Ir+eZTNzATDiGHnKB2lXyEMV3cCLJrqUVxnh53Ls0R5i3Sero6qx9rbI=@vger.kernel.org, AJvYcCW27sOniGN1zgpb4M9bDiUYEFc6n8VqBFteaFnAXhmgkvFeHzdLqZzlqjEvW09aR8VRb2bfw30UZUZ1itUc/ZKCkEg=@vger.kernel.org, AJvYcCXCJZv/W+xQ0nGI+Ghuf6oP
- o+pjp6yfzM5+3PYbZcRzbMJtIsKhav+JFtVJdOiIhTfjjxv+GtIuib187QE=@vger.kernel.org, AJvYcCXtXgWsXO4huUUJqnOP4ex9X/XOFIMAfYNpfUYg7FUKFnNXn5c3kshqwaON/OdiwV7N7er/rABDxT6viS0=@vger.kernel.org, AJvYcCXuF1n7iMtbLMswFc+x39qg3hS6vTaTzhPnR9GvDD35bX9zF+2XZg2OhU79Lbdpf/xs0IpZFr54zaqF@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMSe76u5tzX4N+ZthQZ0PmmSB32k0KFWPzwBqERw+TJKiPP/bv
-	I5wZQzuUvK4oWfLPSe9dm7/fNYXm0onruHPVbc3HOO7Pd4hwnhNo
-X-Google-Smtp-Source: AGHT+IGNbdDr4bWOuekBU0ohovYD+u0SLmOKefBPtfh2fzqlR42/5wZYBu+ZqeJfv789Y4nUSEsYRQ==
-X-Received: by 2002:a05:6870:218a:b0:277:fb59:b74c with SMTP id 586e51a60fabf-28ced48efd0mr1364818fac.40.1729773275318;
-        Thu, 24 Oct 2024 05:34:35 -0700 (PDT)
-Received: from localhost.localdomain ([114.246.193.69])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7eaeab48f62sm8534093a12.42.2024.10.24.05.34.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 05:34:34 -0700 (PDT)
-From: =?UTF-8?q?=E9=99=88=E5=AF=92=E5=BD=A4?= <cxwdyx620@gmail.com>
-To: jensenhuangnvdia@gmail.com
-Cc: aospan@netup.ru,
-	conor.dooley@microchip.com,
-	ddrokosov@sberdevices.ru,
-	dmaengine@vger.kernel.org,
-	dushistov@mail.ru,
-	fancer.lancer@gmail.com,
-	geert@linux-m68k.org,
-	gregkh@linuxfoundation.org,
-	hoan@os.amperecomputing.com,
-	ink@jurassic.park.msu.ru,
-	jeffbai@aosc.io,
-	kexybiscuit@aosc.io,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fpga@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-ide@vger.kernel.org,
+	s=arc-20240116; t=1729775083; c=relaxed/simple;
+	bh=fnr+wlY4mm9fxB3WttBrUUaubpN0xpag/hGemkkYPyc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uCcO3Ke15Bw9qwZzhPVTW41gJYb+uNh4B95kPRruQ3+vI8A2IVhOdbv5CBTq0JhUC1FnvfHb9jAgzvzh8XHqmADsPkgCABYHjOVOHdUdwdjVz8BE8ryG7o17EqOXD6N5AG9eFeMMcV32xSomykKqf0RsBPuWKUDZy9jdx8/uEqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fU8S6YAy; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729775081; x=1761311081;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=fnr+wlY4mm9fxB3WttBrUUaubpN0xpag/hGemkkYPyc=;
+  b=fU8S6YAyf/at+QiQPPQmz2JjY2fNRZNN+eot6GMfqOfr4Z1J1+VD2N0A
+   /Ogm4/Q4txDrXY6Qb+/Nt3RyPJVpeYsvPymTIand57G+BO3KbQ2+DZoZC
+   t/GhAQTcwh3+dD7mKkwS2T03Hdy938CRwxb5NvXqOZ/GKwoFhBbiZqXE4
+   V/Zy5Q2REq9gKJsPWbVAwUhC4aI+Owp0qRrefjy5CxNY/tkmfkbc2aOay
+   VG7hzR16gUBgYyh6zgCCFWiMk5lQIONsk0bHzVvln0yX1vPn4Q6eQpJpS
+   4wA5n5dlSEfmdgvR2yxoWj8jeLc1XtE8C+y4oYXMKe76Y/XPmklpnCsTB
+   g==;
+X-CSE-ConnectionGUID: DyTPi9yBS8KOYOueOQCI+Q==
+X-CSE-MsgGUID: JZkZoWNHQAu9HTkzloRy8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="54802768"
+X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
+   d="scan'208";a="54802768"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 06:04:28 -0700
+X-CSE-ConnectionGUID: dsqS1srlQkud69Tl7sw3SA==
+X-CSE-MsgGUID: zDOc5cSNRf6k/6pZ6a+Fxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; 
+   d="scan'208";a="80238761"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa007.fm.intel.com with ESMTP; 24 Oct 2024 06:04:25 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id B2B2D331; Thu, 24 Oct 2024 16:04:24 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	manivannan.sadhasivam@linaro.org,
-	mattst88@gmail.com,
-	netdev@vger.kernel.org,
-	nikita@trvn.ru,
-	ntb@lists.linux.dev,
-	patches@lists.linux.dev,
-	richard.henderson@linaro.org,
-	s.shtylyov@omp.ru,
-	serjk@netup.ru,
-	shc_work@mail.ru,
-	torvalds@linux-foundation.org,
-	torvic9@mailbox.org,
-	tsbogend@alpha.franken.de,
-	v.georgiev@metrotek.ru,
-	wangyuli@uniontech.com,
-	wsa+renesas@sang-engineering.com,
-	xeb@mail.ru
-Subject: Re: [PATCH] MAINTAINERS: Remove some entries due to various compliance requirements.
-Date: Thu, 24 Oct 2024 20:34:03 +0800
-Message-ID: <20241024123403.154-1-cxwdyx620@gmail.com>
-X-Mailer: git-send-email 2.47.0.windows.1
-In-Reply-To: <20241024113246.22901-1-JensenHuangNVDIA@gmail.com>
-References: <20241024113246.22901-1-JensenHuangNVDIA@gmail.com>
+	linux-kernel@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v2 00/13] iio: Clean up acpi_match_device() use cases
+Date: Thu, 24 Oct 2024 15:36:05 +0300
+Message-ID: <20241024130424.3818291-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Well, the fact is that Linus Torvalds, our leader of Linux, is not **Palest=
-inian** but **Finnish**.=0D
+There are current uses of acpi_match_device():
+- as strange way of checking if the device was enumerated via ACPI
+- as a way to get IIO device name as ACPI device instance name
+- as above with accompanying driver data
+
+Deduplicate its use by providing two new helper functions in IIO ACPI
+library and update the rest accordingly.
+
+This also includes a rework of previously sent ltr501 patch.
+
+In v2:
+- collected tags (Hans, Jean-Baptiste)
+- updated SoB chain in patch 4
+
+Andy Shevchenko (13):
+  iio: magnetometer: bmc150: Drop dead code from the driver
+  iio: adc: pac1934: Replace strange way of checking type of enumeration
+  iio: imu: inv_mpu6050: Replace strange way of checking type of
+    enumeration
+  iio: acpi: Improve iio_read_acpi_mount_matrix()
+  iio: acpi: Add iio_get_acpi_device_name_and_data() helper function
+  iio: accel: mma9551: Replace custom implementation of
+    iio_get_acpi_device_name()
+  iio: accel: mma9553: Replace custom implementation of
+    iio_get_acpi_device_name()
+  iio: gyro: bmg160: Replace custom implementation of
+    iio_get_acpi_device_name()
+  iio: light: isl29018: Replace a variant of
+    iio_get_acpi_device_name_and_data()
+  iio: light: isl29018: drop ACPI_PTR() and CONFIG_ACPI guards
+  iio: light: ltr501: Drop most likely fake ACPI IDs
+  iio: light: ltr501: Add LTER0303 to the supported devices
+  iio: light: ltr501: Replace a variant of
+    iio_get_acpi_device_name_and_data()
+
+ drivers/iio/accel/mma9551.c                | 19 ++-------
+ drivers/iio/accel/mma9553.c                | 19 ++-------
+ drivers/iio/adc/pac1934.c                  |  2 +-
+ drivers/iio/gyro/bmg160_core.c             | 15 --------
+ drivers/iio/gyro/bmg160_i2c.c              |  4 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_acpi.c |  5 +--
+ drivers/iio/industrialio-acpi.c            | 45 ++++++++++++++++++++--
+ drivers/iio/light/isl29018.c               | 38 ++++++------------
+ drivers/iio/light/ltr501.c                 | 29 +++++---------
+ drivers/iio/magnetometer/bmc150_magn.c     | 15 --------
+ include/linux/iio/iio.h                    | 10 +++++
+ 11 files changed, 86 insertions(+), 115 deletions(-)
+
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
+
 

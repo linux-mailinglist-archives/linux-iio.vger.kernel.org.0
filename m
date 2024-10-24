@@ -1,109 +1,99 @@
-Return-Path: <linux-iio+bounces-11164-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11165-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C819AEE7E
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 19:46:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BF49AEF48
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 20:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF2FAB220AB
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 17:46:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3F43B23254
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 18:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4BA1FC7F7;
-	Thu, 24 Oct 2024 17:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DB42003C7;
+	Thu, 24 Oct 2024 18:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2gnKRPi"
+	dkim=pass (2048-bit key) header.d=notyourfox.coffee header.i=@notyourfox.coffee header.b="JHSUzjKl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.notyourfox.coffee (mail.notyourfox.coffee [92.63.193.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290E01F76A3;
-	Thu, 24 Oct 2024 17:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68331FC7F6;
+	Thu, 24 Oct 2024 18:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.63.193.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729792004; cv=none; b=svyFLpgG1RpGycBPJxOy+HAAs1j7VpqYOSLB045rF0duQkIq70hPLM/udxegjv4gfgkAYcBbSdQE2jWtKqKPg0mn+qWT0jArI2gJWMmKRALeQND/zDrjivqvP9zsLC6nfnm5XzFjfzDfUoLnUIXcXHNCoI/ccCBeT2zEN6f7Pqg=
+	t=1729793454; cv=none; b=jvbsQZLXfGJUShLlZpRBJplMyAnli7Pn1xPZzLSddIz9qtwwAFVv5/5jXyCeH7WCWcp8GsYv0sG4VQCIvyo/LKiAcG5ikNKThq2ypSf0UmC5gh2CWQ9W+wmzujJgbvD8NLtyWx3oN44nBJlayLB7muNC0KlzFFOxuePzDOFKRfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729792004; c=relaxed/simple;
-	bh=0oe8ZaFyqJHIzvDer+HKlnboZayD2eODXd02TS0w2+8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=faatVBiMRpf+4Eyd5bLJFbKxpYo5ieUIP26jFglUlwRIOmAcOGehAm40AgxW3stYCK5ZljFkH0Q+EI7LbjVwsMCViys77dX1Ue9rRgVxdBr6Ey4PvmHb5QNTH5ZOPXHuYgy/KipPfIzTW8obaoZjbtOpL6jb4hCT+t5bs0JWJ40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2gnKRPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60947C4CEC7;
-	Thu, 24 Oct 2024 17:46:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729792003;
-	bh=0oe8ZaFyqJHIzvDer+HKlnboZayD2eODXd02TS0w2+8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Y2gnKRPioD/Z5egwlJ/6dS+E/lum1fNQLt/sPBMPdcjNKpydwW0bZDFh0ZPU8rlX/
-	 AGoSyQ5eDpRFfVzR2BkED0rtDVJLGsu8iGhAv4jBZhIgLGtyOlke3Fk4uR8LgL6IYb
-	 ZXU8MzikUVwqgR0iewFfhkYpTWxhkXal5hU+RYDwGePDNJ39y+WdXrQkCJZv+N9vKQ
-	 QyYk/qguUbsGAJRvMBZ+hMEdrnke6vsa/RUbd/KGLjmRhJd5tfz8GvpzAIxwlEN9NT
-	 GIbrPgmohatXfVQzMrcltgwrKl4nvNDhXDs8YPKOF42TwpBkAjYboqthttTv4mib9e
-	 bCRB56R17vzaA==
-Date: Thu, 24 Oct 2024 18:46:34 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: <lars@metafoo.de>, <paul.walmsley@sifive.com>, <palmer@dabbelt.com>,
- <aou@eecs.berkeley.edu>, <nuno.sa@analog.com>,
- <javier.carrasco.cruz@gmail.com>, <sunke@kylinos.cn>,
- <conor.dooley@microchip.com>, <anshulusr@gmail.com>,
- <kimseer.paller@analog.com>, <michael.hennerich@analog.com>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-riscv@lists.infradead.org>, <noname.nuno@gmail.com>
-Subject: Re: [PATCH v2] iio: dac: Kconfig: Fix build error for ltc2664
-Message-ID: <20241024184634.3bfcde82@jic23-huawei>
-In-Reply-To: <20241024015553.1111253-1-ruanjinjie@huawei.com>
-References: <20241024015553.1111253-1-ruanjinjie@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1729793454; c=relaxed/simple;
+	bh=4HaM2tprLpARFSOFiAD1IewWveAq50xA4izcD+Ol1hg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=F/19doZ4IYXXulnHQ4taEYkLYGFE63YNrEi2RX0OKR72gmYEnSQVs+p2GJ8QkwGLlYRR0C2iF02XxpMyqge8fU+SkvG7afPqCQTm94mrIGc1+forNCtUer098veSHlzfPHEZlbtNZyJvQb61kjdbFKiHO8hTuZm4xQzhtgT9dxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=notyourfox.coffee; spf=pass smtp.mailfrom=notyourfox.coffee; dkim=pass (2048-bit key) header.d=notyourfox.coffee header.i=@notyourfox.coffee header.b=JHSUzjKl; arc=none smtp.client-ip=92.63.193.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=notyourfox.coffee
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=notyourfox.coffee
+DKIM-Signature: a=rsa-sha256; bh=zD/MvoTUjjchDlHO31PqaPi5FVCTTnWec43Dr2sc5uE=;
+ c=relaxed/relaxed; d=notyourfox.coffee;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@notyourfox.coffee; s=mail; t=1729793394; v=1; x=1730225394;
+ b=JHSUzjKls5Wm839qvhA6nxJdgjfFHYyuIMcFJC4py2Th5/lRpBJL87itZiTg0D7g72byla2/
+ RGt9j0YQZcrrSnTMUigTkonLFjKQ1wty2LN+88I2MCPC3PFacLmQ6qZhW6CFbZFxlrquYkL2uWA
+ 8n/E59Ut+LmSKvFcVYkl9wkkdRh8MLTO73De9KCAPILQIWuDQToZmui76W//DdF1v3lfmvIwrLC
+ 00BhABRp1gebdHeZoI70ehEYTqlEw8KiEoYc1vSAp1tKTck0QShQZ9gBb/1Ia55r4kKsUVkpN30
+ gJICGzIIOhLel8x+rFvTjeBr9jYMQEnr6fmrnHA+6Rz6Q==
+Received: by mail.notyourfox.coffee (envelope-sender
+ <contact@notyourfox.coffee>) with ESMTPS id 1345da47; Thu, 24 Oct 2024
+ 18:09:54 +0000
+Message-ID: <c58172db-e3cc-488d-baa6-f095588a8771@notyourfox.coffee>
+Date: Thu, 24 Oct 2024 21:09:52 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+To: vladimir_putin_rus@kremlin.ru
+Cc: aospan@netup.ru, conor.dooley@microchip.com, ddrokosov@sberdevices.ru,
+ dmaengine@vger.kernel.org, dushistov@mail.ru, fancer.lancer@gmail.com,
+ geert@linux-m68k.org, gregkh@linuxfoundation.org,
+ hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru, jeffbai@aosc.io,
+ kexybiscuit@aosc.io, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-fpga@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-spi@vger.kernel.org, manivannan.sadhasivam@linaro.org,
+ mattst88@gmail.com, netdev@vger.kernel.org, nikita@trvn.ru,
+ ntb@lists.linux.dev, patches@lists.linux.dev, richard.henderson@linaro.org,
+ s.shtylyov@omp.ru, serjk@netup.ru, shc_work@mail.ru,
+ torvalds@linux-foundation.org, torvic9@mailbox.org,
+ tsbogend@alpha.franken.de, v.georgiev@metrotek.ru, wangyuli@uniontech.com,
+ wsa+renesas@sang-engineering.com, xeb@mail.ru
+References: <20241024140353.384881-1-vladimir_putin_rus@kremlin.ru>
+Subject: Re: [PATCH 0/2] MAINTAINERS: Remove few Chinese Entries
+Content-Language: en-US
+From: NotYourFox <contact@notyourfox.coffee>
+In-Reply-To: <20241024140353.384881-1-vladimir_putin_rus@kremlin.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 24 Oct 2024 09:55:53 +0800
-Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+And what were you trying to accomplish?
 
-> If REGMAP_SPI is n and LTC2664 is y, the following build error occurs:
-> 
-> 	riscv64-unknown-linux-gnu-ld: drivers/iio/dac/ltc2664.o: in function `ltc2664_probe':
-> 	ltc2664.c:(.text+0x714): undefined reference to `__devm_regmap_init_spi'
-> 
-> Select REGMAP_SPI instead of REGMAP for LTC2664 to fix it.
-> 
-> Fixes: 4cc2fc445d2e ("iio: dac: ltc2664: Add driver for LTC2664 and LTC2672")
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Applied to the fixes-togreg branch of iio.git 
-Thanks,
+On 10/23/24 1:45 PM, Linus Torvalds wrote:
+ > Ok, lots of Russian trolls out and about.
 
-Jonathan
+You just made his statement valid by showing yourself off. Thanks for no 
+help at all.
 
-> ---
-> v2:
-> - Select REGMAP_SPI instead of REGMAP.
-> - Update the commit subject.
-> - Add Reviewed-by.
-> ---
->  drivers/iio/dac/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> index 45e337c6d256..9f5d5ebb8653 100644
-> --- a/drivers/iio/dac/Kconfig
-> +++ b/drivers/iio/dac/Kconfig
-> @@ -380,7 +380,7 @@ config LTC2632
->  config LTC2664
->  	tristate "Analog Devices LTC2664 and LTC2672 DAC SPI driver"
->  	depends on SPI
-> -	select REGMAP
-> +	select REGMAP_SPI
->  	help
->  	  Say yes here to build support for Analog Devices
->  	  LTC2664 and LTC2672 converters (DAC).
+---
+
+И что вы пытались этим сделать?
+
+On 10/23/24 1:45 PM, Linus Torvalds wrote:
+ > Ok, lots of Russian trolls out and about.
+
+Вы только сделали его высказывание верным, решив выставить это напоказ. 
+Спасибо за абсолютный ноль помощи.
 
 

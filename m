@@ -1,285 +1,252 @@
-Return-Path: <linux-iio+bounces-11074-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11075-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A759AE03B
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 11:13:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 651769AE03E
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 11:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71BB7B2288A
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 09:13:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E161283864
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Oct 2024 09:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A8C1B3939;
-	Thu, 24 Oct 2024 09:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ABB1B6CFD;
+	Thu, 24 Oct 2024 09:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dl3fqVlN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BEF1A3028
-	for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 09:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4ED1B218B
+	for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 09:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729761165; cv=none; b=p05wJEmFrxI3VKPPk6sbR3DIDAqruJ9U6EFg5iJZMqbkbmtBCJMGWNO5mifnolgvkObiZmIY/C7JbInGen2LujI60VrJaxMr7uijClUMDJMJouvJXx/nHZBsWiPgZGniOk8Z3CcpHd8hQ5BqMlNmarH/TXOEZ+GbN6Kc/7C+ocE=
+	t=1729761172; cv=none; b=jZv2avb9qUEKBdGoxS/YCnJKF957JsVxbAkxIjsixouEZq1NTJFVJ/btqRC30+vKtSMwt7I0nJrUL1FZg6T0vihau79C+KYR0ipttUrbY57fhzsHKD7URiWrmS6HbVVzDtnGu/Eqh1cq3GQBzRv66C42xa8K9xDSuqNyXkQ1FwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729761165; c=relaxed/simple;
-	bh=qOFmV9WZ9sh/+C3fpLshCL2Kht2BK/C1cpKcjRH+csw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rEWea7daVQyDuD6YEDj7HqdAKmJuX90RwdC5JQVd8CITs/wXZirvjq3CANAai5RF/eWHVfLEm1ItAmSOQ6BI+q1rttxvGX/Z5QMCf1iVNW1G0axDRK1xJpfIIAmcY98hddIAlysPwAFgo98i7k01JJudh0aZBLBJLHoxEkpp9ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t3tsw-0002gF-W9; Thu, 24 Oct 2024 11:12:03 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1t3tsu-000AhL-0y;
-	Thu, 24 Oct 2024 11:12:00 +0200
-Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 275DB35D8E6;
-	Thu, 24 Oct 2024 09:03:43 +0000 (UTC)
-Date: Thu, 24 Oct 2024 11:03:42 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
-	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v1 1/9] mfd: Add core driver for Nuvoton NCT6694
-Message-ID: <20241024-daffodil-raccoon-of-champagne-6f6f04-mkl@pengutronix.de>
-References: <20241024085922.133071-1-tmyu0@nuvoton.com>
- <20241024085922.133071-2-tmyu0@nuvoton.com>
+	s=arc-20240116; t=1729761172; c=relaxed/simple;
+	bh=QGdUMjRpMYxCmFq2pXqUJVmN8eN7QxzrP+sC6cNn0qU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Nfoifdca0z1yjmQaNIk0m64IomlYWNYIUdpVDEiecYVaJRxgi2dgON2jT4z9FAUmi5SwZB6Vo9Rj9wgfxEQNU9ptGvMKbahKFETdY7nzuzqbXPOawe/Ck/aT/pOa68YU0pxBLWiN9rsyFI5Xc3Lz34uTLU1jBSBpBvYlupUKnzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dl3fqVlN; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-37d462c91a9so435562f8f.2
+        for <linux-iio@vger.kernel.org>; Thu, 24 Oct 2024 02:12:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729761168; x=1730365968; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vx0eUgvgDMYu97caj8Fvwuv1gvofiM1BDQhVIQnSVpg=;
+        b=dl3fqVlNzKQNi37KAG3QEVFN1KfdV+l6CxQQ8qHXyXJd3Pio5k+2xBeUrNcUtf3ldv
+         12tf8/LQNPoXD8f51C0K27vDfoc4jH8UYEkqpHzYrvAHB78NORbfG2vma4Y9bM4es67n
+         6RxsHr/kj+eUZH87rLSoAm65xeti3nRRotyWRJH8yhL8ExN91YhwUoJ4TQ04vw8l8cUs
+         slywsNApMC3p2T/HmmNxgqvzraK3bcQswWAixGuJqDf7UmXCWtbcfSJ9vm1VUmxAF/aq
+         Dpl0KmL5xNV/BMls5ilpYsrob2QyeNOuU6MFBZdXXe4RYfylsj2NhyFNq8OzyKcNxbRQ
+         sxZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729761168; x=1730365968;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vx0eUgvgDMYu97caj8Fvwuv1gvofiM1BDQhVIQnSVpg=;
+        b=L6Au7Wf/sHQW7VOtAXSP1JRqu+HA42GSjod122OxBOwFoT1nV87jk5hIXES0Lldova
+         416fpM5Y2B6OKHgoSwuGBluBNV3cZynD2QvPGTpvZb04K8e4+5YB2FmThowZgloLqZc+
+         g/mgEXoAjnz0ruWL0eafuuhk0ztVOLOBuoLafBGofRH0vjmQIl2Fh45n9e/z0OKLvUCQ
+         RipP104kld9vioXvu0aJOQ+3tquuioyf/9Rh8CGyPeiE7XwvM5SnDMg2SFpwjJfi0IUr
+         wS3jQcm+DjGW+xNE8eqRNq87LbWoWV/G699giKeJ4CK3a8aTIq5IIIFxKIIwjsKiV1tz
+         /0zw==
+X-Gm-Message-State: AOJu0YyfB+ZzPk7QDibHD7gdxFFwGiEJriHXyXZoH/Wv63g6y0yD6eU+
+	PQXqJZbgK2EQYD5Nu36EXJdDXI+v8ZNrLk14fjm3yMRwRxT1qd+t24yhWsNxmYM=
+X-Google-Smtp-Source: AGHT+IHA45txqMv6fiCd6E+I5xqCrbrjkPK/VXPgue7ugGcgW6QHaUAS7lo3qSSFpDfYjE1RQxWTIA==
+X-Received: by 2002:a5d:49c8:0:b0:371:8319:4dcc with SMTP id ffacd0b85a97d-37efcef0d0dmr3531695f8f.2.1729761167762;
+        Thu, 24 Oct 2024 02:12:47 -0700 (PDT)
+Received: from [192.168.1.64] (2a02-842a-d52e-6101-6fd0-06c4-5d68-f0a5.rev.sfr.net. [2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0b94071sm10843701f8f.89.2024.10.24.02.12.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Oct 2024 02:12:47 -0700 (PDT)
+From: Julien Stephan <jstephan@baylibre.com>
+Subject: [PATCH 0/7] iio: fix write_event_config signature
+Date: Thu, 24 Oct 2024 11:11:22 +0200
+Message-Id: <20241024-iio-fix-write-event-config-signature-v1-0-7d29e5a31b00@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dwvre6734ixnnoql"
-Content-Disposition: inline
-In-Reply-To: <20241024085922.133071-2-tmyu0@nuvoton.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADoPGmcC/x2NsQ7CMAwFf6XyjKUmwMKvIIaS2OEtDnJCqVT13
+ 4kYb7i7nZo4pNFt2sllRUO1AeE0UXotVoSRB1Oc4yXM8cxAZcXGX0cXllWsc6qmKNxQbOkfFw7
+ PFPQaNUtWGqm3y3D+m/vjOH4as7IidgAAAA==
+X-Change-ID: 20241023-iio-fix-write-event-config-signature-1bc1f52fdedf
+To: Mudit Sharma <muditsharma.info@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Anshul Dalal <anshulusr@gmail.com>, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Cosmin Tanislav <cosmin.tanislav@analog.com>, 
+ Ramona Gradinariu <ramona.gradinariu@analog.com>, 
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Dan Robertson <dan@dlrobertson.com>, 
+ Marcelo Schmitt <marcelo.schmitt@analog.com>, 
+ Matteo Martelli <matteomartelli3@gmail.com>, 
+ Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, 
+ Michal Simek <michal.simek@amd.com>, 
+ Mariel Tinaco <Mariel.Tinaco@analog.com>, 
+ Jagath Jog J <jagathjog1996@gmail.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, 
+ Kevin Tsai <ktsai@capellamicro.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev, 
+ Julien Stephan <jstephan@baylibre.com>, 
+ Julia Lawall <julia.lawall@inria.fr>
+X-Mailer: b4 0.14.2
 
+Hello,
 
---dwvre6734ixnnoql
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 1/9] mfd: Add core driver for Nuvoton NCT6694
-MIME-Version: 1.0
+This series update the write_event_config callback signature to use
+a boolean instead of an int for state variable. iio_ev_state_store
+is actually using kstrtobool to check user input, then gives the
+converted boolean value to write_event_config.
 
-On 24.10.2024 16:59:14, Ming Yu wrote:
-> The Nuvoton NCT6694 is a peripheral expander with 16 GPIO chips,
-> 6 I2C controllers, 2 CANfd controllers, 2 Watchdog timers, ADC,
-> PWM, and RTC.
->=20
-> This driver implements USB device functionality and shares the
-> chip's peripherals as a child device.
->=20
-> Each child device can use the USB functions nct6694_read_msg()
-> and nct6694_write_msg() to issue a command. They can also register
-> a handler function that will be called when the USB device receives
-> its interrupt pipe.
->=20
-> Signed-off-by: Ming Yu <tmyu0@nuvoton.com>
-> ---
->  MAINTAINERS                 |   7 +
->  drivers/mfd/Kconfig         |  10 +
->  drivers/mfd/Makefile        |   2 +
->  drivers/mfd/nct6694.c       | 394 ++++++++++++++++++++++++++++++++++++
->  include/linux/mfd/nct6694.h | 168 +++++++++++++++
->  5 files changed, 581 insertions(+)
->  create mode 100644 drivers/mfd/nct6694.c
->  create mode 100644 include/linux/mfd/nct6694.h
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e9659a5a7fb3..30157ca95cf3 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16434,6 +16434,13 @@ F:	drivers/nubus/
->  F:	include/linux/nubus.h
->  F:	include/uapi/linux/nubus.h
-> =20
-> +NUVOTON NCT6694 MFD DRIVER
-> +M:	Ming Yu <tmyu0@nuvoton.com>
-> +L:	linux-kernel@vger.kernel.org
-> +S:	Supported
-> +F:	drivers/mfd/nct6694.c
-> +F:	include/linux/mfd/nct6694.h
-> +
->  NVIDIA (rivafb and nvidiafb) FRAMEBUFFER DRIVER
->  M:	Antonino Daplas <adaplas@gmail.com>
->  L:	linux-fbdev@vger.kernel.org
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index f9325bcce1b9..da2600958697 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -546,6 +546,16 @@ config MFD_MX25_TSADC
->  	  i.MX25 processors. They consist of a conversion queue for general
->  	  purpose ADC and a queue for Touchscreens.
-> =20
-> +config MFD_NCT6694
-> +	tristate "Nuvoton NCT6694 support"
-> +	select MFD_CORE
-> +	depends on USB
-> +	help
-> +	  This adds support for Nuvoton USB device NCT6694 sharing peripherals
-> +	  This includes the USB devcie driver and core APIs.
-> +	  Additional drivers must be enabled in order to use the functionality
-> +	  of the device.
-> +
->  config MFD_HI6421_PMIC
->  	tristate "HiSilicon Hi6421 PMU/Codec IC"
->  	depends on OF
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index 2a9f91e81af8..2cf816d67d03 100644
-> --- a/drivers/mfd/Makefile
-> +++ b/drivers/mfd/Makefile
-> @@ -116,6 +116,8 @@ obj-$(CONFIG_TWL6040_CORE)	+=3D twl6040.o
-> =20
->  obj-$(CONFIG_MFD_MX25_TSADC)	+=3D fsl-imx25-tsadc.o
-> =20
-> +obj-$(CONFIG_MFD_NCT6694)	+=3D nct6694.o
-> +
->  obj-$(CONFIG_MFD_MC13XXX)	+=3D mc13xxx-core.o
->  obj-$(CONFIG_MFD_MC13XXX_SPI)	+=3D mc13xxx-spi.o
->  obj-$(CONFIG_MFD_MC13XXX_I2C)	+=3D mc13xxx-i2c.o
-> diff --git a/drivers/mfd/nct6694.c b/drivers/mfd/nct6694.c
-> new file mode 100644
-> index 000000000000..9838c7be0b98
-> --- /dev/null
-> +++ b/drivers/mfd/nct6694.c
-> @@ -0,0 +1,394 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Nuvoton NCT6694 MFD driver based on USB interface.
-> + *
-> + * Copyright (C) 2024 Nuvoton Technology Corp.
-> + */
-> +
-> +#include <linux/io.h>
-> +#include <linux/usb.h>
-> +#include <linux/slab.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/mfd/core.h>
-> +#include <linux/mfd/nct6694.h>
-> +
-> +#define DRVNAME "nct6694-usb_mfd"
-> +
-> +#define MFD_DEV_SIMPLE(_name)		\
-> +{					\
-> +	.name =3D NCT6694_DEV_##_name,	\
-> +}					\
-> +
-> +#define MFD_DEV_WITH_ID(_name, _id)	\
-> +{					\
-> +	.name =3D NCT6694_DEV_##_name,	\
-> +	.id =3D _id,			\
-> +}
-> +
-> +/* MFD device resources */
-> +static const struct mfd_cell nct6694_dev[] =3D {
-> +	MFD_DEV_WITH_ID(GPIO, 0x0),
-> +	MFD_DEV_WITH_ID(GPIO, 0x1),
-> +	MFD_DEV_WITH_ID(GPIO, 0x2),
-> +	MFD_DEV_WITH_ID(GPIO, 0x3),
-> +	MFD_DEV_WITH_ID(GPIO, 0x4),
-> +	MFD_DEV_WITH_ID(GPIO, 0x5),
-> +	MFD_DEV_WITH_ID(GPIO, 0x6),
-> +	MFD_DEV_WITH_ID(GPIO, 0x7),
-> +	MFD_DEV_WITH_ID(GPIO, 0x8),
-> +	MFD_DEV_WITH_ID(GPIO, 0x9),
-> +	MFD_DEV_WITH_ID(GPIO, 0xA),
-> +	MFD_DEV_WITH_ID(GPIO, 0xB),
-> +	MFD_DEV_WITH_ID(GPIO, 0xC),
-> +	MFD_DEV_WITH_ID(GPIO, 0xD),
-> +	MFD_DEV_WITH_ID(GPIO, 0xE),
-> +	MFD_DEV_WITH_ID(GPIO, 0xF),
-> +
-> +	MFD_DEV_WITH_ID(I2C, 0x0),
-> +	MFD_DEV_WITH_ID(I2C, 0x1),
-> +	MFD_DEV_WITH_ID(I2C, 0x2),
-> +	MFD_DEV_WITH_ID(I2C, 0x3),
-> +	MFD_DEV_WITH_ID(I2C, 0x4),
-> +	MFD_DEV_WITH_ID(I2C, 0x5),
-> +
-> +	MFD_DEV_WITH_ID(CAN, 0x0),
-> +	MFD_DEV_WITH_ID(CAN, 0x1),
-> +
-> +	MFD_DEV_WITH_ID(WDT, 0x0),
-> +	MFD_DEV_WITH_ID(WDT, 0x1),
-> +
-> +	MFD_DEV_SIMPLE(IIO),
-> +	MFD_DEV_SIMPLE(HWMON),
-> +	MFD_DEV_SIMPLE(PWM),
-> +	MFD_DEV_SIMPLE(RTC),
-> +};
-> +
-> +int nct6694_register_handler(struct nct6694 *nct6694, int irq_bit,
-> +			     void (*handler)(void *), void *private_data)
-> +{
-> +	struct nct6694_handler_entry *entry;
-> +	unsigned long flags;
-> +
-> +	entry =3D kmalloc(sizeof(*entry), GFP_KERNEL);
-> +	if (!entry)
-> +		return -ENOMEM;
-> +
-> +	entry->irq_bit =3D irq_bit;
-> +	entry->handler =3D handler;
-> +	entry->private_data =3D private_data;
-> +
-> +	spin_lock_irqsave(&nct6694->lock, flags);
-> +	list_add_tail(&entry->list, &nct6694->handler_list);
-> +	spin_unlock_irqrestore(&nct6694->lock, flags);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(nct6694_register_handler);
+First, fix the write_event_config callbacks from iio drivers that are
+checking state input, or that are converting state to bool. This is
+useless code, then update signature.
 
-Where's the corresponding nct6694_free_handler() function?
+This patch has been partially written using coccinelle with the
+following script:
 
-Marc
+$ cat iio-bool.cocci
+// Options: --all-includes
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+virtual patch
 
---dwvre6734ixnnoql
-Content-Type: application/pgp-signature; name="signature.asc"
+@c1@
+identifier iioinfo;
+identifier wecfunc;
+@@
+ static const struct iio_info iioinfo = {
+        ...,
+        .write_event_config =
+(
+ wecfunc
+|
+ &wecfunc
+),
+        ...,
+ };
 
------BEGIN PGP SIGNATURE-----
+@@
+identifier c1.wecfunc;
+identifier indio_dev, chan, type, dir, state;
+@@
+ int wecfunc(struct iio_dev *indio_dev, const struct iio_chan_spec *chan, enum iio_event_type type, enum iio_event_direction dir,
+-int
++bool
+ state) {
+  ...
+ }
 
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmcaDWsACgkQKDiiPnot
-vG/14wgAgoWLTibZpUmoNvOo0qLLAlp/YFpDa4iS3anD0MVkcgJIJwOg6aHDIw+F
-qp749L7WL9qp+19SQjeSUvHyDgc3Eqv4PuQae5NMAcY+KFqQcItGBFkB2j2ewhn6
-JMI5tSpNKoqJUflio0P0nNHt7JRciyi6EBfiU5TvB0J2+9cf6qRHjknmIkrxROSD
-OMBmGK0e0Ki8TfOnhi8PQmLbv8RhoIe7/W6qHzTsOOPZ/66fjGqDcBUC6oi+Vw7f
-mOVr2zW2DJ7xr++nBsBsvCzM8YQ7NDzt3qfBIHS21WE04dOWyBQlj6n01LYL7mta
-+1F9tQnxpRonNQlU1mjXj6tMn2DjUw==
-=raiy
------END PGP SIGNATURE-----
+make coccicheck MODE=patch COCCI=iio-bool.cocci M=drivers/iio
 
---dwvre6734ixnnoql--
+Unfortunately, this script didn't match all files:
+* all write_event_config callbacks using iio_device_claim_direct_scoped
+  were not detected and not patched.
+* all files that do not assign and declare the write_event_config
+  callback in the same file.
+
+iio.h was also manually updated.
+
+The patch was build tested using allmodconfig config.
+
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+---
+Julien Stephan (7):
+      iio: light: bh1745: simplify code in write_event_config callback
+      iio: light: ltr390: simplify code in write_event_config callback
+      iio: light: ltr501: simplify code in write_event_config callback
+      iio: light: veml6030: simplify code in write_event_config callback
+      iio: imu: inv_mpu6050: simplify code in write_event_config callback
+      iio: light: stk3310: simplify code in write_event_config callback
+      iio: fix write_event_config signature
+
+ drivers/iio/accel/adxl367.c                    |  2 +-
+ drivers/iio/accel/adxl372.c                    |  2 +-
+ drivers/iio/accel/adxl380.c                    |  2 +-
+ drivers/iio/accel/bma400_core.c                |  2 +-
+ drivers/iio/accel/bmc150-accel-core.c          |  2 +-
+ drivers/iio/accel/fxls8962af-core.c            |  2 +-
+ drivers/iio/accel/kxcjk-1013.c                 |  2 +-
+ drivers/iio/accel/mma8452.c                    |  2 +-
+ drivers/iio/accel/mma9551.c                    |  2 +-
+ drivers/iio/accel/mma9553.c                    |  3 +-
+ drivers/iio/accel/sca3000.c                    |  2 +-
+ drivers/iio/adc/ad7091r-base.c                 |  3 +-
+ drivers/iio/adc/ad7291.c                       |  2 +-
+ drivers/iio/adc/ad799x.c                       |  2 +-
+ drivers/iio/adc/hi8435.c                       |  2 +-
+ drivers/iio/adc/max1363.c                      |  2 +-
+ drivers/iio/adc/pac1921.c                      |  3 +-
+ drivers/iio/adc/palmas_gpadc.c                 |  2 +-
+ drivers/iio/adc/ti-ads1015.c                   |  2 +-
+ drivers/iio/adc/xilinx-ams.c                   |  2 +-
+ drivers/iio/adc/xilinx-xadc-events.c           |  2 +-
+ drivers/iio/adc/xilinx-xadc.h                  |  2 +-
+ drivers/iio/cdc/ad7150.c                       |  2 +-
+ drivers/iio/dac/ad5421.c                       |  2 +-
+ drivers/iio/dac/ad8460.c                       |  2 +-
+ drivers/iio/dummy/iio_simple_dummy.h           |  2 +-
+ drivers/iio/dummy/iio_simple_dummy_events.c    |  2 +-
+ drivers/iio/gyro/bmg160_core.c                 |  2 +-
+ drivers/iio/imu/bmi323/bmi323_core.c           |  2 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c     |  9 ++---
+ drivers/iio/imu/kmx61.c                        |  2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   |  2 +-
+ drivers/iio/light/adux1020.c                   |  3 +-
+ drivers/iio/light/apds9300.c                   |  2 +-
+ drivers/iio/light/apds9306.c                   |  2 +-
+ drivers/iio/light/apds9960.c                   |  4 +--
+ drivers/iio/light/bh1745.c                     | 50 ++++++++++++--------------
+ drivers/iio/light/cm36651.c                    |  2 +-
+ drivers/iio/light/gp2ap002.c                   |  2 +-
+ drivers/iio/light/gp2ap020a00f.c               |  2 +-
+ drivers/iio/light/iqs621-als.c                 |  2 +-
+ drivers/iio/light/ltr390.c                     |  5 +--
+ drivers/iio/light/ltr501.c                     |  6 +---
+ drivers/iio/light/max44009.c                   |  2 +-
+ drivers/iio/light/opt3001.c                    |  2 +-
+ drivers/iio/light/stk3310.c                    |  5 +--
+ drivers/iio/light/tcs3472.c                    |  2 +-
+ drivers/iio/light/tsl2563.c                    |  2 +-
+ drivers/iio/light/tsl2591.c                    |  2 +-
+ drivers/iio/light/tsl2772.c                    |  2 +-
+ drivers/iio/light/us5182d.c                    |  2 +-
+ drivers/iio/light/vcnl4000.c                   |  5 +--
+ drivers/iio/light/veml6030.c                   |  5 +--
+ drivers/iio/position/iqs624-pos.c              |  2 +-
+ drivers/iio/proximity/aw96103.c                |  2 +-
+ drivers/iio/proximity/cros_ec_mkbp_proximity.c |  2 +-
+ drivers/iio/proximity/hx9023s.c                |  2 +-
+ drivers/iio/proximity/irsd200.c                |  3 +-
+ drivers/iio/proximity/sx9500.c                 |  2 +-
+ drivers/iio/proximity/sx_common.c              |  2 +-
+ drivers/iio/proximity/sx_common.h              |  2 +-
+ drivers/iio/proximity/vcnl3020.c               |  2 +-
+ drivers/iio/temperature/mcp9600.c              |  2 +-
+ drivers/iio/temperature/tmp007.c               |  2 +-
+ include/linux/iio/iio.h                        |  2 +-
+ 65 files changed, 96 insertions(+), 112 deletions(-)
+---
+base-commit: 9090ececac9ff1e22fb7e042f3c886990a8fb090
+change-id: 20241023-iio-fix-write-event-config-signature-1bc1f52fdedf
+
+Best regards,
+-- 
+Julien Stephan <jstephan@baylibre.com>
+
 

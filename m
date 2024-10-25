@@ -1,93 +1,93 @@
-Return-Path: <linux-iio+bounces-11241-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11242-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A188F9AF9AD
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 08:14:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E5C9AF9F5
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 08:29:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DE1A1F23B44
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 06:14:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25306B21C81
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 06:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECC1198E81;
-	Fri, 25 Oct 2024 06:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F9C1A4AAA;
+	Fri, 25 Oct 2024 06:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AoboBaJP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bz1HAba6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249E918C030;
-	Fri, 25 Oct 2024 06:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51F54436A;
+	Fri, 25 Oct 2024 06:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729836836; cv=none; b=WzZueWi9L0Vkq7TLrGa+8gWO9ltFcwb+twb1tt5iJyKAOICh3R5xwVc/9HbOLV6ZxdU0DNDQLY7DpVdWAsRAdGKJGewzZg+ycDDaMp87nWynQNbp3QDZECA2rtoC/IExxP0Q3TfHDCd/z4qxd3zvZBiKIglwInIVn7jP1lLyFAo=
+	t=1729837771; cv=none; b=QyMY5YbR24KG8TISMQ4QOnFWphGOkQm92r7sRCiaaKcsatWuQfX0muVq6OvuoRmp9A9G60wLsB8rFv/ZQpz4o1Tsw9gxDlLrEQkfjIjzsRSeKCJKLaIdOYeObi4hg6xrnHvOMR43vBppYShbBc0pSAQRjfxNgqp1teaDtSWRYck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729836836; c=relaxed/simple;
-	bh=ftZRSZ1gbOsPmw5ihJaDFTNc4xbRCmEIuAcNB+CpY7s=;
+	s=arc-20240116; t=1729837771; c=relaxed/simple;
+	bh=+XahwEo3QmX+6o02dYWVxQaY93fMwzTYeg7GdldkdOw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QqXgaaFDHIP5v5jAfpBN8jf0NnQVetKVIVCMsAxrXoLiaxsA/aKRHh2Egb/9K8cBXR8iXwRbYXCf1qU9fF5d2/ZU/5xamHC6Wmdv1QIKzPGQ6CSzg1yMPevv2sAHnJO5hGIc3/K0/JmYIfVFYS72Tacv2XF2t3zoFc/k6KRv5hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AoboBaJP; arc=none smtp.client-ip=209.85.218.54
+	 Content-Type:MIME-Version; b=aC/DAvJDVsLNxWJg7AJcgNQm2jzWDN7nwwnGCgJ8P1JZNypCkOHvVGPEhg3vtMCmuUWV+vhXjKekztsZSLnWWpsQNKAs00ew9I9L/zRKBRnRrW7RRu26lNfQ+mwkrUMVbDdFlg+HjK+jC3p3nQz14LzbDYvZAeC6OleWQBznIJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bz1HAba6; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a9a0ef5179dso218483866b.1;
-        Thu, 24 Oct 2024 23:13:53 -0700 (PDT)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5cb6b2b7127so2035009a12.1;
+        Thu, 24 Oct 2024 23:29:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729836832; x=1730441632; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729837765; x=1730442565; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=hQxLMO8GfBgHfGm4i8Pyx/epeXStpaAQg45viyWWx70=;
-        b=AoboBaJPdxS98oLYBGRBTGs3wXOGXftb4J19mZnCyi5RugX+M52wifHHfLoF+DhRgR
-         2SGodGUtssMx2j54yevelk1bv8FluvncdAsQ6WOEew8FhDrB1E7Jjg4UcFtS4dcJj+tp
-         +T/VB5chPl/qDXcnTmnSY49PIRue845klRTw/S5TQqTndAFRW9VHHf9i67ufQaHOj+BL
-         k8wRVScM7DBIBY+kJ1yhJCyFRjsmGW6hHL8C6LugRwqL89syANmkU+m/K6xW0WBduBfp
-         /onxpghGL5Kh43gS9vj2h/mvKZL+cODkPHfh3yeqGK3H4GJsF5vW07HMh4qfx5wun763
-         uQ+Q==
+        bh=B1LmMY9VF83ON1MEVw29i3xkyJ5S9+Q5AomoQOw126k=;
+        b=bz1HAba6gkOjQ4fGHW9b75bTee8tCvbUsuQAfZsiWs6pJMO1ZIgA/F56h2UNqksqsV
+         BMudfdnYIti41CmHDCTcJskGWDxTzMx0LfX+3fYIEwYC9AT40VfpKycWGIkVCRzqI3IA
+         TDa478eWZmc4ZhQwTyeBkc7V62C5CwgguRAfKPU0wcJX/tKYornuRPkwLS2386Uy4Q/C
+         0JCigyEqD7LrDxOG4dlcht+A42G/txJqcC5G+ooRGcCeKgkZtyTyblmL8K7/LP11d8lJ
+         Bx19WHn7a+6HLZfUCMAkTwshJW/Kej5V02uaJy6i5sGQ7BoMM985897GNYUp9EycuIA4
+         wJJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729836832; x=1730441632;
+        d=1e100.net; s=20230601; t=1729837765; x=1730442565;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=hQxLMO8GfBgHfGm4i8Pyx/epeXStpaAQg45viyWWx70=;
-        b=oG4i2BIjbEdoBb18W8DMkONh2kw0DITnv7PrH0a1RZZDh1vFt3IBGT+Sf2Fe5mVDJQ
-         EX/ttueDhGE8XU/LhUOJRw29v7scQX19UMbMz5K7f2DMgGs8wdYKX6uJWq6Wtc8LEsDe
-         3KKbxwQFEmN1gLFOe/YKkwfcdZXUq7o8/hWuKPLWrIw3GtaJzwh4anr21yB1Gu4wJ4HJ
-         0oW6XSZdxaIH7E8Wn9NWHjwWNXaEuWx+1ahaKxzLtfYKciZQALd5/AHOftvEvj1GaggG
-         Ezyt+QUMXlfNUih83Mww/zzXi/V65ag2yENRUYHh7rhhjUwZuwRq7eISFRIMgvT6wUiM
-         S4cw==
-X-Forwarded-Encrypted: i=1; AJvYcCULalIvSBjJqbO96Giv1sCsDZkD74JYuTLzynuU8dpnyNuwdJr825u2eBzug/N/m5imshSuBI2dqCDHutcK@vger.kernel.org, AJvYcCVnYAf9nRxUty0o2z7F4b2yA0KA3HV5/A0y4FlF0sHyLY0GE+VAsXjgAI2fvmuzrytBhXi/w+4Q3bCB@vger.kernel.org, AJvYcCWD3vtieoEJy+EYqgIDSlNEA0Yzicl5ZgedLUcEEsLJ0ndeK534WEn24EfkIqtlivW0Zetz8WPC9r/4@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzErOvjn1roxEQ6iz0FnNom9+SqjzRPY2+NPOvnM4iwOeXvcLU
-	MaKJiQazq85m1+AVz2L3q0BdpDCJxjRyL3sJhEPpuUSrt6DMjqX7nduHX6e0JtD4yQ==
-X-Google-Smtp-Source: AGHT+IHA6RHsMt5MuhUG1erEmFD4uckiBwq5oXRKpLstJF8EE5mZ1SIsRI5TYojYk+uJ2XYnHr1Z9g==
-X-Received: by 2002:a17:907:6e93:b0:a9a:e2b:1711 with SMTP id a640c23a62f3a-a9ad257c4a8mr391769566b.0.1729836832067;
-        Thu, 24 Oct 2024 23:13:52 -0700 (PDT)
+        bh=B1LmMY9VF83ON1MEVw29i3xkyJ5S9+Q5AomoQOw126k=;
+        b=anOhYVx27VAmvKQ/XeUGndBSkF5EGiNfgJAeNwPFreKz79qCgjgUoZMvyqpqPfkJ7h
+         +ArCVOjRef7LetLZjeTRdlPGst0vARf9w74Oxa9TB590jeQ/Ujskq4gwYk21odsSG/eJ
+         n445pqrXTakhS4BOqc/80cm7ZwGA0DLHMOJ1sEcUwu4OusW6u4Z3hpWHJSxQoG/pSKUP
+         TncFRutSAMLKTIAaHboRaB9Bci7O9Jk3noedxjlVKi05G3E5gxGmvxwp+R5vsmW4gD+Q
+         L5ZL1IRfV74noXKVuj4ty+x7kF+tnlwrHU4IdtnU3mgmuT1LEFBlNLxIT87stw5Qp1l/
+         a8dA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdKm/+0+nbqRUSKK8+3iSw+yEegyv9H2gHmRNGtJhDeE0VtNdeAhv7UHprtrUU3/UvuZx8UPW0arxL@vger.kernel.org, AJvYcCUzXCQGKlKSGutLnCfuM8ZZP8lbo0n6gkRvbE0yrphTcolxmLPloz+EF1tI76Q2e/c1Pz5kmaqSdfP7@vger.kernel.org, AJvYcCVADQ1AqQHC+7xA5fLQ30ZhMoBxP+cWPKawxwVpHB8WbNP5CcUr5hch+lBdvksGBvIgxrA8U2nNSePJ@vger.kernel.org, AJvYcCXMNvhFUVorxYD3gqPTSo3L34gDw0XOfV03Ojs7y2KyzVyMamG+f2HRYhV1yhOUeXxvjgLaXNwvlxfgS53U@vger.kernel.org, AJvYcCXkdZoaDOwmLdiPne7GcFZr9vLfcCxAZZi4QFjyGcvD0yqnAOCQQS7ktQcEZ7RW49EiINqzGCU/LIq+@vger.kernel.org
+X-Gm-Message-State: AOJu0YxITWk91T5iOf4c0TY4XqFy6pDK/1jXLvun5ZeOkU7ufTSj/Jgv
+	RecgpSOLVEZR5WMH3xGytONqRJhvx80M6MZd2IDKbkPCqTjzBexL
+X-Google-Smtp-Source: AGHT+IHdBjFJy8whlH5uXwInL5O8VcnvN0wo2fl1irS12tPY4Ac3qsdQ41G7Boc0gW6PVx5vwe8dNw==
+X-Received: by 2002:a17:907:2cc7:b0:a99:da6c:f607 with SMTP id a640c23a62f3a-a9abf92f857mr760072766b.44.1729837764442;
+        Thu, 24 Oct 2024 23:29:24 -0700 (PDT)
 Received: from nsa.fritz.box ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1dec7b90sm30770166b.28.2024.10.24.23.13.51
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f298df1sm31562866b.135.2024.10.24.23.29.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 23:13:51 -0700 (PDT)
-Message-ID: <31e09df8a3fd562eff9a5bf6bd7a7706f27449b6.camel@gmail.com>
-Subject: Re: [PATCH v7 7/8] iio: dac: ad3552r: add high-speed platform driver
+        Thu, 24 Oct 2024 23:29:24 -0700 (PDT)
+Message-ID: <1715db810c98d5e8acc01d8348603c2426a4df4e.camel@gmail.com>
+Subject: Re: [PATCH RFC v4 03/15] spi: offload: add support for hardware
+ triggers
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
  Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- linux-iio@vger.kernel.org,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, dlechner@baylibre.com,  Mark Brown
- <broonie@kernel.org>
-Date: Fri, 25 Oct 2024 08:13:50 +0200
-In-Reply-To: <wvnyqgng5h2trpjlrwuvxryvy2i7sftnribnkjp5uh5ogrxdoc@wbh5do3rmqqe>
+ <conor+dt@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Uwe
+ =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen
+	 <lars@metafoo.de>, David Jander <david@protonic.nl>, Martin Sperl
+	 <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
+Date: Fri, 25 Oct 2024 08:29:23 +0200
+In-Reply-To: <9d801823-aa90-4b15-9dbb-9da6ad2cb3e4@baylibre.com>
 References: 
-	<20241021-wip-bl-ad3552r-axi-v0-iio-testing-v7-0-969694f53c5d@baylibre.com>
-	 <20241021-wip-bl-ad3552r-axi-v0-iio-testing-v7-7-969694f53c5d@baylibre.com>
-	 <9f00e86e8a7d8f821cdb79d5b083235daec481a9.camel@gmail.com>
-	 <exprb7zhsr5qbpjdhbxisodmm4pf74hwl7ijql5o6zyuc3assg@sf53j42lzurf>
-	 <14d0f5fb4240a7e0c3665d4ffc128117c5515ac6.camel@gmail.com>
-	 <wvnyqgng5h2trpjlrwuvxryvy2i7sftnribnkjp5uh5ogrxdoc@wbh5do3rmqqe>
+	<20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
+	 <20241023-dlech-mainline-spi-engine-offload-2-v4-3-f8125b99f5a1@baylibre.com>
+	 <9762d3f3d3a2e5fbe5e5041cbdc928a9ab24e40b.camel@gmail.com>
+	 <9d801823-aa90-4b15-9dbb-9da6ad2cb3e4@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
@@ -98,231 +98,217 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Hi Angelo,
-
-Just some minor (not that big of a deal comments)
-
-On Thu, 2024-10-24 at 17:02 +0200, Angelo Dureghello wrote:
-> Hi Nuno,
->=20
-> On 24.10.2024 15:05, Nuno S=C3=A1 wrote:
-> > On Tue, 2024-10-22 at 18:40 +0200, Angelo Dureghello wrote:
-> > > Hi Nuno,
+On Thu, 2024-10-24 at 10:02 -0500, David Lechner wrote:
+> On 10/24/24 9:04 AM, Nuno S=C3=A1 wrote:
+> > On Wed, 2024-10-23 at 15:59 -0500, David Lechner wrote:
+> > > Extend SPI offloading to support hardware triggers.
 > > >=20
-> > > On 22.10.2024 14:28, Nuno S=C3=A1 wrote:
-> > > > On Mon, 2024-10-21 at 14:40 +0200, Angelo Dureghello wrote:
-> > > > > From: Angelo Dureghello <adureghello@baylibre.com>
-> > > > >=20
-> > > > > Add High Speed ad3552r platform driver.
-> > > > >=20
-> > > > > The ad3552r DAC is controlled by a custom (fpga-based) DAC IP
-> > > > > through the current AXI backend, or similar alternative IIO backe=
-nd.
-> > > > >=20
-> > > > > Compared to the existing driver (ad3552r.c), that is a simple SPI
-> > > > > driver, this driver is coupled with a DAC IIO backend that finall=
-y
-> > > > > controls the ad3552r by a fpga-based "QSPI+DDR" interface, to rea=
-ch
-> > > > > maximum transfer rate of 33MUPS using dma stream capabilities.
-> > > > >=20
-> > > > > All commands involving QSPI bus read/write are delegated to the b=
-ackend
-> > > > > through the provided APIs for bus read/write.
-> > > > >=20
-> > > > > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > > > > ---
-> > > > > =C2=A0drivers/iio/dac/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 14 ++
-> > > > > =C2=A0drivers/iio/dac/Makefile=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
-=A0 1 +
-> > > > > =C2=A0drivers/iio/dac/ad3552r-hs.c | 547
-> > > > > +++++++++++++++++++++++++++++++++++++++++++
-> > > > > =C2=A0drivers/iio/dac/ad3552r-hs.h |=C2=A0 18 ++
-> > > > > =C2=A0drivers/iio/dac/ad3552r.h=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 4=
- +
-> > > > > =C2=A05 files changed, 584 insertions(+)
-> > > > >=20
-> > > > > diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> > > > > index fa091995d002..fc11698e88f2 100644
-> > > > > --- a/drivers/iio/dac/Kconfig
-> > > > > +++ b/drivers/iio/dac/Kconfig
-> > > > > @@ -6,6 +6,20 @@
-> > > > > =C2=A0
-> > > > > =C2=A0menu "Digital to analog converters"
-> > > > > =C2=A0
-> > > > > +config AD3552R_HS
-> > > > > +	tristate "Analog Devices AD3552R DAC High Speed driver"
-> > > > > +	select ADI_AXI_DAC
-> > > > > +	help
-> > > > > +	=C2=A0 Say yes here to build support for Analog Devices AD3552R
-> > > > > +	=C2=A0 Digital to Analog Converter High Speed driver.
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 The drive=
-r requires the assistance of an IP core to operate,
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 since dat=
-a is streamed into target device via DMA, sent over a
-> > > > > +	=C2=A0 QSPI + DDR (Double Data Rate) bus.
-> > > > > +
-> > > > > +	=C2=A0 To compile this driver as a module, choose M here: the
-> > > > > +	=C2=A0 module will be called ad3552r-hs.
-> > > > > +
-> > > > > =C2=A0config AD3552R
-> > > > > =C2=A0	tristate "Analog Devices AD3552R DAC driver"
-> > > > > =C2=A0	depends on SPI_MASTER
-> > > > > diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-> > > > > index c92de0366238..d92e08ca93ca 100644
-> > > > > --- a/drivers/iio/dac/Makefile
-> > > > > +++ b/drivers/iio/dac/Makefile
-> > > > > @@ -4,6 +4,7 @@
-> > > > > =C2=A0#
-> > > > > =C2=A0
-> > > > > =C2=A0# When adding new entries keep the list in alphabetical ord=
-er
-> > > > > +obj-$(CONFIG_AD3552R_HS) +=3D ad3552r-hs.o ad3552r-common.o
-> > > > > =C2=A0obj-$(CONFIG_AD3552R) +=3D ad3552r.o ad3552r-common.o
-> > > > > =C2=A0obj-$(CONFIG_AD5360) +=3D ad5360.o
-> > > > > =C2=A0obj-$(CONFIG_AD5380) +=3D ad5380.o
-> > > > > diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad355=
-2r-hs.c
-> > > > > new file mode 100644
-> > > > > index 000000000000..27bdc35fdc29
-> > > > > --- /dev/null
-> > > > > +++ b/drivers/iio/dac/ad3552r-hs.c
-> > > > > @@ -0,0 +1,547 @@
-> > > > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > > > +/*
-> > > > > + * Analog Devices AD3552R
-> > > > > + * Digital to Analog converter driver, High Speed version
-> > > > > + *
-> > > > > + * Copyright 2024 Analog Devices Inc.
-> > > > > + */
-> > > > > +
-> > > > > +#include <linux/bitfield.h>
-> > > > > +#include <linux/delay.h>
-> > > > > +#include <linux/gpio/consumer.h>
-> > > > > +#include <linux/iio/backend.h>
-> > > > > +#include <linux/iio/buffer.h>
-> > > > > +#include <linux/mod_devicetable.h>
-> > > > > +#include <linux/platform_device.h>
-> > > > > +#include <linux/property.h>
-> > > > > +#include <linux/units.h>
-> > > > > +
-> > > > > +#include "ad3552r.h"
-> > > > > +#include "ad3552r-hs.h"
-> > > > > +
-> > > > > +struct ad3552r_hs_state {
-> > > > > +	const struct ad3552r_model_data *model_data;
-> > > > > +	struct gpio_desc *reset_gpio;
-> > > > > +	struct device *dev;
-> > > > > +	struct iio_backend *back;
-> > > > > +	bool single_channel;
-> > > > > +	struct ad3552r_ch_data ch_data[AD3552R_MAX_CH];
-> > > > > +	struct ad3552r_hs_platform_data *data;
-> > > > > +};
-> > > > > +
-> > > > > +static int ad3552r_qspi_update_reg_bits(struct ad3552r_hs_state =
-*st,
-> > > > > +					u32 reg, u32 mask, u32 val,
-> > > > > +					size_t xfer_size)
-> > > > > +{
-> > > > > +	u32 rval;
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	ret =3D st->data->bus_reg_read(st->back, reg, &rval, xfer_size)=
-;
-> > > > > +	if (ret)
-> > > > > +		return ret;
-> > > > > +
-> > > > > +	rval =3D (rval & ~mask) | val;
-> > > > > +
-> > > > > +	return st->data->bus_reg_write(st->back, reg, rval, xfer_size);
-> > > > > +}
-> > > > > +
-> > > > > +static int ad3552r_hs_read_raw(struct iio_dev *indio_dev,
-> > > > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec con=
-st *chan,
-> > > > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int *val, int *val2, lon=
-g mask)
-> > > > > +{
-> > > > > +	struct ad3552r_hs_state *st =3D iio_priv(indio_dev);
-> > > > > +	int ret;
-> > > > > +	int ch =3D chan->channel;
-> > > > > +
-> > > > > +	switch (mask) {
-> > > > > +	case IIO_CHAN_INFO_SAMP_FREQ: {
-> > > > > +		int sclk;
-> > > > > +
-> > > > > +		ret =3D iio_backend_read_raw(st->back, chan, &sclk, 0,
-> > > > > +					=C2=A0=C2=A0 IIO_CHAN_INFO_FREQUENCY);
-> > > > > +		if (ret !=3D IIO_VAL_INT)
-> > > > > +			return -EINVAL;
-> > > > > +
-> > > >=20
-> > > > I just saw you had some questions on v6 that everyone failed to see=
-. See my
-> > > > reply to David here:
-> > > >=20
-> > > > https://lore.kernel.org/linux-iio/61cf3072af74a8b2951c948ddc2383ba1=
-e55954d.camel@gmail.com/
-> > > >=20
-> > > > It should be easy and it's something that makes sense (at least to =
-me :))
-> > > >=20
+> > > This allows an arbitrary hardware trigger to be used to start a SPI
+> > > transfer that was previously set up with spi_optimize_message().
 > > >=20
-> > > I understood that we would improve things later in case.
+> > > A new struct spi_offload_trigger is introduced that can be used to
+> > > configure any type of trigger. It has a type discriminator and a unio=
+n
+> > > to allow it to be extended in the future. Two trigger types are defin=
+ed
+> > > to start with. One is a trigger that indicates that the SPI periphera=
+l
+> > > is ready to read or write data. The other is a periodic trigger to
+> > > repeat a SPI message at a fixed rate.
 > > >=20
-> > > Could we maybe stay with IIO_CHAN_INFO_FREQUENCY ? It doesn't seems t=
-o me
-> > > so out of scope. Sorry but i am trying to finalize someway this job,
-> > > so i am trying to conatain changes now at v7, if code is not really=
-=20
-> > > totally wrong.
+> > > There is also a spi_offload_hw_trigger_validate() function that works
+> > > similar to clk_round_rate(). It basically asks the question of if we
+> > > enabled the hardware trigger what would the actual parameters be. Thi=
+s
+> > > can be used to test if the requested trigger type is actually support=
+ed
+> > > by the hardware and for periodic triggers, it can be used to find the
+> > > actual rate that the hardware is capable of.
+> > >=20
+> > > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> > > ---
+> > >=20
+> > > In previous versions, we locked the SPI bus when the hardware trigger
+> > > was enabled, but we found this to be too restrictive. In one use case=
+,
+> > > to avoid a race condition, we need to enable the SPI offload via a
+> > > hardware trigger, then write a SPI message to the peripheral to place
+> > > it into a mode that will generate the trigger. If we did it the other
+> > > way around, we could miss the first trigger.
+> > >=20
+> > > Another likely use case will be enabling two offloads/triggers at one
+> > > time on the same device, e.g. a read trigger and a write trigger. So
+> > > the exclusive bus lock for a single trigger would be too restrictive =
+in
+> > > this case too.
+> > >=20
+> > > So for now, I'm going with Nuno's suggestion to leave any locking up =
+to
+> > > the individual controller driver. If we do find we need something mor=
+e
+> > > generic in the future, we could add a new spi_bus_lock_exclusive() AP=
+I
+> > > that causes spi_bus_lock() to fail instead of waiting and add "locked=
+"
+> > > versions of trigger enable functions. This would allow a peripheral t=
+o
+> > > claim exclusive use of the bus indefinitely while still being able to
+> > > do any SPI messaging that it needs.
+> > >=20
+> > > v4 changes:
+> > > * Added new struct spi_offload_trigger that is a generic struct for a=
+ny
+> > > =C2=A0 hardware trigger rather than returning a struct clk.
+> > > * Added new spi_offload_hw_trigger_validate() function.
+> > > * Dropped extra locking since it was too restrictive.
+> > >=20
+> > > v3 changes:
+> > > * renamed enable/disable functions to spi_offload_hw_trigger_*mode*_.=
+..
+> > > * added spi_offload_hw_trigger_get_clk() function
+> > > * fixed missing EXPORT_SYMBOL_GPL
+> > >=20
+> > > v2 changes:
+> > > * This is split out from "spi: add core support for controllers with
+> > > =C2=A0 offload capabilities".
+> > > * Added locking for offload trigger to claim exclusive use of the SPI
+> > > =C2=A0 bus.
+> > > ---
+> > > =C2=A0drivers/spi/spi-offload.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+ 266 ++++++++++++++++++++++++++++++++++++++++
+> > > =C2=A0include/linux/spi/spi-offload.h |=C2=A0 78 ++++++++++++
+> > > =C2=A02 files changed, 344 insertions(+)
+> > >=20
+> > > diff --git a/drivers/spi/spi-offload.c b/drivers/spi/spi-offload.c
+> > > index c344cbf50bdb..2a1f9587f27a 100644
+> > > --- a/drivers/spi/spi-offload.c
+> > > +++ b/drivers/spi/spi-offload.c
+> > > @@ -9,12 +9,26 @@
+> > > =C2=A0#include <linux/cleanup.h>
+> > > =C2=A0#include <linux/device.h>
+> > > =C2=A0#include <linux/export.h>
+> > > +#include <linux/list.h>
+> > > =C2=A0#include <linux/mutex.h>
+> > > +#include <linux/of.h>
+> > > =C2=A0#include <linux/property.h>
+> > > =C2=A0#include <linux/spi/spi-offload.h>
+> > > =C2=A0#include <linux/spi/spi.h>
+> > > =C2=A0#include <linux/types.h>
+> > > =C2=A0
+> > > +struct spi_offload_trigger {
+> > > +	struct list_head list;
+> > > +	struct device dev;
+> > > +	/* synchronizes calling ops and driver registration */
+> > > +	struct mutex lock;
+> > > +	const struct spi_offload_trigger_ops *ops;
+> > > +	void *priv;
+> > > +};
+> > > +
+> > > +static LIST_HEAD(spi_offload_triggers);
+> > > +static DEFINE_MUTEX(spi_offload_triggers_lock);
+> > > +
+> > > =C2=A0/**
+> > > =C2=A0 * devm_spi_offload_alloc() - Allocate offload instances
+> > > =C2=A0 * @dev: Device for devm purposes
+> > > @@ -102,3 +116,255 @@ struct spi_offload *devm_spi_offload_get(struct=
+ device
+> > > *dev,
+> > > =C2=A0	return offload;
+> > > =C2=A0}
+> > > =C2=A0EXPORT_SYMBOL_GPL(devm_spi_offload_get);
+> > > +
+> > > +static void spi_offload_trigger_release(void *data)
+> > > +{
+> > > +	struct spi_offload_trigger *trigger =3D data;
+> > > +
+> > > +	guard(mutex)(&trigger->lock);
+> > > +	if (trigger->priv && trigger->ops->release)
+> > > +		trigger->ops->release(trigger->priv);
+> > > +
+> > > +	put_device(&trigger->dev);
+> > > +}
+> > > +
+> > > +struct spi_offload_trigger
+> > > +*devm_spi_offload_trigger_get(struct device *dev,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct spi_offload *offload,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum spi_offload_trigger_type type=
+)
+> > > +{
+> > > +	struct spi_offload_trigger *trigger;
+> > > +	struct fwnode_reference_args args;
+> > > +	bool match =3D false;
+> > > +	int ret;
+> > > +
+> > > +	ret =3D fwnode_property_get_reference_args(dev_fwnode(offload-
+> > > > provider_dev),
+> > > +						 "trigger-sources",
+> > > +						 "#trigger-source-cells", 0,
+> > > 0,
+> > > +						 &args);
+> > > +	if (ret)
+> > > +		return ERR_PTR(ret);
+> > > +
+> > > +	struct fwnode_handle *trigger_fwnode __free(fwnode_handle) =3D
+> > > args.fwnode;
+> > > +
+> > > +	guard(mutex)(&spi_offload_triggers_lock);
+> > > +
+> > > +	list_for_each_entry(trigger, &spi_offload_triggers, list) {
+> > > +		if (trigger->dev.fwnode !=3D args.fwnode)
+> > > +			continue;
+> > > +
+> > > +		match =3D trigger->ops->match(trigger->priv, type, args.args,
+> > > args.nargs);
+> > > +		if (match)
+> > > +			break;
+> > > +	}
+> > > +
+> > > +	if (!match)
+> > > +		return ERR_PTR(-EPROBE_DEFER);
+> > > +
+> > > +	guard(mutex)(&trigger->lock);
+> > > +
+> > > +	if (!trigger->priv)
+> > > +		return ERR_PTR(-ENODEV);
 > >=20
-> > I think you're trying to rush in the series. I can understand your frus=
-tration
-> > but
-> > believe me that v7 (or v8) is not so bad :).
-> >=20
-> > David already raised concerns about using IIO_CHAN_INFO_FREQUENCY. I'm =
-also not a
-> > fan
-> > of it and gave you another option that should be trivial and makes sens=
-e (given
-> > that
-> > bus_read and write are already being done through the platform_data int=
-erface).
-> > So
-> > no, I don't think we're going to accept "is not really totally wrong.".=
- IOW, We
-> > want
-> > it to be totally right - if such a thing exists :).
-> >=20
-> > >=20
+> > This is a bit odd tbh. Not a real deal breaker for me but the typical p=
+attern I
+> > would
+> > expect is for methods of the trigger to get a struct spi_offload_trigge=
+r opaque
+> > pointer. Then we provide a get_private kind of API for the private data=
+. I guess
+> > you
+> > want to avoid that but IMO it makes for neater API instead of getting v=
+oid
+> > pointers.
 >=20
-> i changed this way, using platform_data:
+> I was just trying to save a step of an extra call to get *priv
+> in each callback implementation, but yeah, no problem to change
+> it to something more "normal" looking.
+
+Yeah, I figured that but I guess any of these paths are fastpaths anyways..=
+.=20
 >=20
-> static int axi_dac_bus_clok(struct iio_backend *back)
+> >=20
+> > Another thing is, can the above actually happen? We have the
+> > spi_offload_triggers_lock grabbed and we got a match so the trigger sho=
+uld not be
+> > able to go away (should block on the same lock).
+>=20
+> The problem is that it could have gone away before we took the lock.
+>=20
+> It could happen like this:
+>=20
+> * Trigger driver registers trigger - sets *priv.
+> * SPI peripheral driver gets reference to trigger.
+> * Trigger driver unregisters trigger - removes *priv.
+> * SPI peripheral tries to call trigger function.
+>=20
 
-If we don't have error I would change it to:
-
-static void axi_dac_bus_clock(struct iio_backend *back, u64 *rate) - or at =
-the very
-least return u64 and not int.
-
-But alternatively, if you want to take simplicity one step further, you can=
- just save
-a u64 bus_clock variable in your platform_data and access it directly (give=
-n that
-we're only assuming the streaming rate in which case this is constant). And=
- If we
-ever have an usecase where we need more flexibility, it should be fairly st=
-aright to
-bring this the bus_clock() callback.
-
-I'm fine either way so up to you :)
+Ah I see... we're using scoped_guard() in the unregister path.
 
 - Nuno S=C3=A1
-
+>=20
 
 

@@ -1,175 +1,158 @@
-Return-Path: <linux-iio+bounces-11293-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11294-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9539B08C7
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 17:45:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4A89B0936
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 18:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA201C22921
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 15:45:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53EFA281642
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 16:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3954D170854;
-	Fri, 25 Oct 2024 15:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eKAN5jJl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD0F172BB9;
+	Fri, 25 Oct 2024 16:09:03 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FEA158219;
-	Fri, 25 Oct 2024 15:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C878816FF44;
+	Fri, 25 Oct 2024 16:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729871057; cv=none; b=JdKlwIUsJT5A59wJ4AR/iOXtAWmCGoKQngo70XL+imHYVO7zeIYta/vlXC0xfrn0LNKI1ti0DF+ZHHxLV15cnhAGbXIX6yW4ObasvES/tonVx1bx35CP5SDOQO5GD+b7O9fIHXD57ahTjepADHGRFMG7NU2oArGVBYibY9mzWA0=
+	t=1729872543; cv=none; b=QUnupwe/ftqBAQuWjyf/C8OY7DrwLelr23CJCxzkTc4Z8zOF0umHHBzUUmcnfhheriSGtKH5u1A20tEbvaFTfINaOo34STX5GXg5yq+nEXj0z07TKnjQzPgDn8FpN/eQIMBPc+Zzu01txIyMrF0i1XZl5Fw2P78w8I+SoaZ5YTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729871057; c=relaxed/simple;
-	bh=vn4L0Kssm4qHDv91ZX0qDxoa9pCjsHBUmi11Lv0rAEY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f5A4ENxXCUzmKMQvvxkL/ug9m3P4ZBJLEduKQTU5sWbS0ILG4+hxB7ytBWaEphLROHBlG4uSNyUJnn7QHhZZhb/tgOWjHBSN0r7OuNeBAi0G7nMcM5XvUuJaFkHeEiUCInfSTFTpvqZWxpMPMcY+DdyF5qEzTobEpUednJ2Xt7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eKAN5jJl; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20c805a0753so21098445ad.0;
-        Fri, 25 Oct 2024 08:44:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729871054; x=1730475854; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=SN8DcWX/dROqTArXD5nH9xajfGXdWvMk5oxxXOT+XxU=;
-        b=eKAN5jJlqIG/9pVTTQUuzq9wsu6M/HmM/KbKtiBF5OpUALPDMOhn8YfCcQoO9cM+/0
-         j2ACBVj4+Va1vYhfh4DsKe6UjgzbayFOEUcS8iT2VmWiOfwxYSKthFSBlxQigZGP++Cf
-         9ifsXnyJCEAGVRs2ovLdVqK8m9AlDhGFg093mh3CzgkxETTonf6bia7Mb9FLJIu2ba1L
-         GeihZfrG+mFxKzkihRfa09fcgO57y8hVSqHZDBzm3Cm6SRpA2f8LBIWLYQfESJ7v6LAz
-         yoWTd2rwV2BIh9GE8Y5Xi/H8s5+zPWGhGFPKVqd9qgfxvvXM7kkOy21Dn2riFEzVruVP
-         3pCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729871054; x=1730475854;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SN8DcWX/dROqTArXD5nH9xajfGXdWvMk5oxxXOT+XxU=;
-        b=E23APc0XYcm+/debEqxXdnmVnnrEckVno0ZX7TyxhO1JB+3E+t064Adbg4U1Dj9YvZ
-         9fQtNyPuVmxNzIHRtTZu9I/Wy59St7MuvxxUZzLABaUBl9ssh0+sdqWTo5T0Og51m5pE
-         gjUVvVwBVVCb6cftjx7ET50zq4Z2cjZy7Zk69N2jTRScLM364fJDS9h/0gAOASU/Wljq
-         2alkZ9eAxevxgteHlD1To19EZDIKCsWYYlc2a6bASdtBmzWCvu0HiMFqva+1kjDdImAU
-         0QKMVkzGZOOPlpN+Rax4CQmSo26wNfQiM4fLOdeRSSWbaJu0nFVUT6T2aAGi/b0EZV1i
-         rAjg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFWOz9N7ucZpdaoV6IuywkhcBGXy8c7KKh/tvXzhVGxqXm66GxcM4H8bj3+ogMxD8QGhXdYYfvbIU=@vger.kernel.org, AJvYcCUMh14mN4GYjQpPgX97Bt1s/P5PKf23KJHz/3/nCM/eWcJZIl6iOfTQC8UjRahnfX8ftgG4FYnBWefwzzr5@vger.kernel.org, AJvYcCUpk1fmZDAkb72U+nfmfiQpxku/TbjwY6CZbXnbuemRsqp5aaOlzITqVICggX9SsfpJw9sp1U7r02Ab@vger.kernel.org, AJvYcCUvxp7dnhpn9aDx0rwzvqI3sQOlQnoNaiANWCneoU5dAFtYhsytOx4xugUCL0UA6EwFY3111zh7@vger.kernel.org, AJvYcCVCxJ+XRZR6EQ0BLF3vEGah/gksdxilT4pXJE7B7xw8dYoctbrc87tL18SRuXKr/+NAkYwRhuhn6T5U@vger.kernel.org, AJvYcCVskDOMGAnA39rPr2zJ0ILMBVVTzIy1g3cmtClGQgkj3deXeQkx+N9ucjMUQsvKvZdMx5gmeqXKv4ai@vger.kernel.org, AJvYcCVznUGOYXdTV8gj7rt7oHcqADTYv68uBo/qXZS6dbcs79w482YyWEgkpseppaRbRUH3Y725cYDk7GUJaNs=@vger.kernel.org, AJvYcCWeh1amK8/z9mGNglE1ysuVQz4NdrPyBuIXv40fbywb1PTPZmPYvOh1CaJq1u7l3/GFFJTL8xdewjj+opuD0DU=@vger.kernel.org, AJvYcCX88ITaoM3RllEwTaauV7H1N78FG6smoCzL5sKxlxDsDXHfYjTPUqIFdUXuQ8y2s8LOFtpJbltaf4C37w==@vger.kernel.org, AJvYcCXs2TmkDtDG8RiNXXPvyAbHttVDL1u4
- ASluOqKm9nGHggjwix4jzRMBhcxqExnBLhNzeHEzG2E4wmfC@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNa2cgkmll2rMuBpVk6vTCMcudxkPUm7EYWiRknnV0wfar9pi4
-	QfEJZmZKUsoy55UUdxtX12TUWxbzfxtJsk1bRMr4XKJ7hJyZYL6y
-X-Google-Smtp-Source: AGHT+IE+7zMSTWMWl0WD/H7aqI4fO7bMiX7i3W2UCxfMlbQ/sZdV0uOKx4IL/fYIV7PAJP1kE+ECSA==
-X-Received: by 2002:a17:902:f549:b0:205:8bad:171c with SMTP id d9443c01a7336-20fb98f1e18mr74160475ad.12.1729871052720;
-        Fri, 25 Oct 2024 08:44:12 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-210bc02e94csm10715745ad.198.2024.10.25.08.44.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Oct 2024 08:44:11 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <817d24e1-6fdd-4ce2-9408-eccc94134559@roeck-us.net>
-Date: Fri, 25 Oct 2024 08:44:08 -0700
+	s=arc-20240116; t=1729872543; c=relaxed/simple;
+	bh=zYjnBwvtGTqIrdDRx9LwMu2z0itwomSygbNeb4iemIk=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lhO5VTA/7VGqj4hvlcSg2M2ugGXnD4IqCmFv/x/+xbdmn98qaJDVoIv88EUDaSx1386vUreLk2v8h0S+s5xzVqfjSRzcLEMvh08ECO22qLBlBAWuTBeSATTxOmopP/5Vxirj+VZzoJh9Mfp1tAwPqNMeXuPqXqe2pwnKZdpQAX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XZnj31jzhz6K6Fx;
+	Sat, 26 Oct 2024 00:06:47 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 32D6414039E;
+	Sat, 26 Oct 2024 00:08:57 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 25 Oct
+ 2024 18:08:56 +0200
+Date: Fri, 25 Oct 2024 17:08:55 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Stephen Rothwell
+	<sfr@canb.auug.org.au>, Greg KH <greg@kroah.com>, Arnd Bergmann
+	<arnd@arndb.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	<linux-iio@vger.kernel.org>
+Subject: Re: linux-next: manual merge of the char-misc tree with the
+ iio-fixes tree
+Message-ID: <20241025170855.00001f0a@Huawei.com>
+In-Reply-To: <d5a57cad-7311-4075-8b6e-04f22ed510f7@gmail.com>
+References: <20241023141015.0ec5346d@canb.auug.org.au>
+	<22f9dbb6-ba5e-4c85-8aa2-6090008e7da4@gmail.com>
+	<20241024184108.6eb3bdf0@jic23-huawei>
+	<d5a57cad-7311-4075-8b6e-04f22ed510f7@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 6/9] hwmon: Add Nuvoton NCT6694 HWMON support
-To: Ming Yu <a0282524688@gmail.com>
-Cc: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>,
- tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
- andi.shyti@kernel.org, mkl@pengutronix.de, mailhol.vincent@wanadoo.fr,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, wim@linux-watchdog.org,
- jdelvare@suse.com, jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org,
- alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-can@vger.kernel.org, netdev@vger.kernel.org,
- linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-rtc@vger.kernel.org
-References: <20241024085922.133071-1-tmyu0@nuvoton.com>
- <20241024085922.133071-7-tmyu0@nuvoton.com>
- <CAH-L+nPGGhgDFge0Ov4rX_7vUyLN8uu51cks80=kt38h22N7zQ@mail.gmail.com>
- <62ea5a91-816f-4600-bfec-8f70798051db@roeck-us.net>
- <CAOoeyxX=A5o5PhxpniPwPgMCBv1VwMstt=wXCxHiGPF59gm5wQ@mail.gmail.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <CAOoeyxX=A5o5PhxpniPwPgMCBv1VwMstt=wXCxHiGPF59gm5wQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On 10/25/24 08:22, Ming Yu wrote:
-[ ... ]
+On Thu, 24 Oct 2024 20:39:57 +0200
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
->>>> +static int nct6694_fan_write(struct device *dev, u32 attr, int channel,
->>>> +                            long val)
->>>> +{
->>>> +       struct nct6694_hwmon_data *data = dev_get_drvdata(dev);
->>>> +       unsigned char enable_buf[REQUEST_HWMON_CMD0_LEN] = {0};
->>> [Kalesh] Please try to maintain RCT order for variable declaration
->>
->> Ok, but that is already the case here ?
+> On 24/10/2024 19:41, Jonathan Cameron wrote:
+> > On Wed, 23 Oct 2024 20:17:30 +0200
+> > Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> >   
+> >> On 23/10/2024 05:10, Stephen Rothwell wrote:  
+> >>> Hi all,
+> >>>
+> >>> Today's linux-next merge of the char-misc tree got a conflict in:
+> >>>
+> >>>   drivers/iio/light/veml6030.c
+> >>>
+> >>> between commit:
+> >>>
+> >>>   de9981636774 ("iio: light: veml6030: fix microlux value calculation")
+> >>>
+> >>> from the iio-fixes tree and commit:
+> >>>
+> >>>   ed59fc90f38a ("iio: light: veml6030: drop processed info for white channel")
+> >>>
+> >>> from the char-misc tree.
+> >>>
+> >>> I fixed it up (the latter removed the line updated by the former) and
+> >>> can carry the fix as necessary. This is now fixed as far as linux-next
+> >>> is concerned, but any non trivial conflicts should be mentioned to your
+> >>> upstream maintainer when your tree is submitted for merging.  You may
+> >>> also want to consider cooperating with the maintainer of the conflicting
+> >>> tree to minimise any particularly complex conflicts.
+> >>>     
+> >>
+> >>
+> >> Hi Stephen,
+> >>
+> >> I doubled checked the status of the driver in linux-next, and everything
+> >> looks as it should: the first commit applied as a single chunk, as its
+> >> second chunk affects lines that the second commit removed.
+> >>
+> >> Thank you for fixing it up.  
+> > 
+> > Not quite. This was a lucky merge issue as it highlighted something I'd
+> > messed up.
+> > 
+> > A rare case of a fuzzy application of a patch picking the wrong block but still
+> > giving a very plausible looking diff that fooled me.
+> > 
+> > I picked up the fix via a different tree from where you expected.
+> > In char-misc-next / iio/togreg there is only one instance of this code block because
+> > the larger driver rework removed one of the two that was in the tree that
+> > iio-fixes is based on (effectively mainline).
+> > 
+> > The fix got applied to the one that is going away (which is going away because
+> > the scale makes no sense on the intensity channel) not the illuminance / IIO_LIGHT
+> > channel that was intended.
+> > 
+> > I've move it to the right block with the side effect that the merge conflict
+> > should go away.  Javier, please check iio.git/fixes-togreg to be 100% sure
+> > I haven't messed it up again.
+> > 
+> > Thanks Stephen for your hard work on linux-next!
+> > 
+> > Jonathan
+> >   
+> >>
+> >> Best regards,
+> >> Javier Carrasco  
+> >   
 > 
-> [Ming] Is there anything that needs to be changed?
+> What I see in iio.git/fixes-togreg is right in the sense that the fix
+> fro the processed value (commit 63dd163cd61dd) is only applied to the
+> processed value of the IIO_LIGHT channel, and not to IIO_INTENSITY.
 > 
+> The processed value of the IIO_INTENSITY channel should be then dropped
+> at some point with the other patch, as it has already been done in
+> linux-next/master.
+> 
+Yes. We may want to separately chase back dropping the processed
+IIO_INTENSITY later given the issues that are left there.
+Once the change is upstream, I'd be fine with that as a backported
+fix.
 
-I don't think so, If two lines have the same length, the order is up
-to the developer to decide.
+Jonathan
 
-Question though is if the buffer needs to be initialized. You should drop
-the initialization if it is not necessary. In that case the second line
-would be shorter anyway, and the order question would not arise.
-
-Thanks,
-Guenter
+> Best regards,
+> Javier Carrasco
 
 

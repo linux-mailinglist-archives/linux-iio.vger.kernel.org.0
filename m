@@ -1,166 +1,216 @@
-Return-Path: <linux-iio+bounces-11300-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11302-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DEB69B0D68
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 20:33:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9C09B0DAD
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 20:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91B091C22E9E
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 18:33:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC1661C230A8
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 18:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DBB20BB28;
-	Fri, 25 Oct 2024 18:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF4820D50C;
+	Fri, 25 Oct 2024 18:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DLC9spTf"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="gdBTGg9q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C531FB899;
-	Fri, 25 Oct 2024 18:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A656107A0;
+	Fri, 25 Oct 2024 18:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729881222; cv=none; b=U5bzucBZMDHMVO99cR9DK9JXN2P8konhwqDmwMS5Z33VIZ+t+Xo6Ac8+vha+qRLDErXJY5nwc75NdalYbSwsNb/znNHeqlk34o3POQVqa4NoGbgL8n1T+OIgoaLFQyOGNlP0ml0/afSGryvt3K10LGyOlKXyKHFGb1eLE89mJ1M=
+	t=1729881950; cv=none; b=qt7qI9WWxkJ7pkgFioFWaH/9wVwv2LDyG0NyFwQvGYaK4vnEup4xiHgmISkGGqXwbNfh1mOGmsToc6kgrCkRoqiEdP1W9B/85qNbvCouB0/uyPdNGPHPB3Jff8u6PFDYyLyNn+J/Votl6GIAICgHnuBYqPX9+DOKJ+H65hPYlP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729881222; c=relaxed/simple;
-	bh=PFuF2Y9/+ewHm3GZ7MwlHRnV69cbNKKUlmjY2oSyAsM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fzIoFP408PzsItjv9iobQslZhe5MkbkqcRws4yp8yd6oEQNoRJPLCeszLlKD1aKkjWJYvmzN5SVHDoVHbS7o2p+7Y65eT4jX+XjWJeUFtZHwkbyivVFPHouv+za1bFIgSN96+HLZNpQ6/qFDgL+XINSnzAL01IXALFD3AHfAI0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DLC9spTf; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-539983beb19so3026080e87.3;
-        Fri, 25 Oct 2024 11:33:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729881218; x=1730486018; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iNHfasfIV5+HJoEc/2e6AI/MHWsXMOc2lwon+csxK/U=;
-        b=DLC9spTfvDaqIgTVB6kJ1Rjga/WBcO4Kxbr5k99nWihUjrSq0XaNNFsexktBywxEQx
-         JllBovscVKDCkRBZ0uASFzIM85dOTJTFsHjQ3xydv4sDvH3aq5tlEYIHiFeKXmZ4R9+Z
-         mgk9UnPEeCQ/5+AJI9LPZj1Wz0/N7RWCUirZF5mW6bCii11ith9aNufLwo3XkweLbkGN
-         A0iF/cJMBun80cxAtFeSKa3I6bjv9haWCYtqpSPPRFBIv0UJ074HiR5mXYnzjnY/7CTH
-         ipgwLa8TLFSSnnCpmJ7LHJiE80SffslT4Vp68O4RTUUnvoIVr8Kl8Z0irelFi5wee1eS
-         ZXmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729881218; x=1730486018;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iNHfasfIV5+HJoEc/2e6AI/MHWsXMOc2lwon+csxK/U=;
-        b=QLtSrnl770jlGIdH8KOTzg/Y8kWH1sMnG790V+Xn3MP2CWMvgrLEvYpKbuVJt+wYZJ
-         qV2XqYuxB/7WvOZeG5fnRVY9rLp33EYsFYpC0ZLF/+uQUJBy9CLIlHunIgQL883fP5WR
-         dzZJeDnh5/jV82/zan0I7Vfg/k7iPHXeIyn4YZxy426BT4k1yPLLNDHM8IoNh0WQPTbC
-         LMIkhLxYIebl33MkpSLXvgxE9DdSBq6nk5Nv2xDIQ66kjKIRdd00QhOELt+OVNA9FH3N
-         U8FKdFHW0ziblc8Z+KBiCWcKzbUzoIFvr5jJD0CfVIypHjiEI5jzmgbDb/n/Fg4xkL0H
-         lPtw==
-X-Forwarded-Encrypted: i=1; AJvYcCUSZvQw0Vq0OFiv3ILnNYVxQqRh+L/k2mevMbQzz5/uHm5NBx0ItF6buFuQo65WRiLWKU5zCE426QH2G08g7g==@vger.kernel.org, AJvYcCWDHYhvAObduKgdWQvY2GUayAZWWNxEa3olu3CVphTsW2YprHqTVKO575Knv1cjlWYd7Glq8x2gbNDHDsZ1@vger.kernel.org, AJvYcCXhA88dKMgBXPFW8Onph0JN5MxqD2SBuycbyiW8dhKmB8IHEnevIt/DZv7cPhERyqecXo8O2qVKzK85@vger.kernel.org, AJvYcCXr71Yws29V4S66eqmRr2htK5XGIrgrxqiIrCZNHbRNS+e1AETCYLehzVts1NjvF9fimWJMBT8TQOXY@vger.kernel.org
-X-Gm-Message-State: AOJu0YytztOZgDnxqr4kFzIm9H5GmenFkAGnIGUOajoISB3HTljO1Jt+
-	OR/JUo9gMZK761KQryI/95kIziNvPcY6aOcaGYO3nrqMjBWpI3IbqwXjTjqvCIdJDCiBuA4y4J4
-	sD13TqWi8pI8GlUvd7Uw+3x13aO7P8gMA
-X-Google-Smtp-Source: AGHT+IESY941DMsos/v9jY/70rLdmFnnc61/VqhA8KDMnRbz+S6+o57bGRLKhxNrPoktyz1hscuRItPt5KURAyt3OKg=
-X-Received: by 2002:a05:6512:3baa:b0:53a:a26:5690 with SMTP id
- 2adb3069b0e04-53b348e57d1mr97390e87.34.1729881218147; Fri, 25 Oct 2024
- 11:33:38 -0700 (PDT)
+	s=arc-20240116; t=1729881950; c=relaxed/simple;
+	bh=eoe/fP8YHFbJUGJWPDVWR2pm8bdAzVvuYmLMkOvFUCc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s5Ld4AF2zg5xfBatop7nXqenoaZYeXvlebP509Wab0KC1SkTmqDR7J3bmPgMQm0WoYQlN+eSbt33GZ/YckryYrmL5I29wYpm8jeOaq4NHc4txpvZHwmxxT00yAm2FMVNwsgkIeIhuVHIcOsYXGJXtjQydZqOb1ZY6K24mPhlxUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=gdBTGg9q; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4XZs5L3sP6z9snx;
+	Fri, 25 Oct 2024 20:39:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1729881574;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lSojNFdw8ftg3T7NakOd4AZhT9UMaiDwBHmwcORfhmk=;
+	b=gdBTGg9qaBnIiiH6XUTjeUDIpm/w19h2mJ2NxyWek4JBdbfHEfy1l85WLscQ4teM7X3Y8E
+	SzmAWuY6Tiv8TrbprFm973WyyZ+4RlCRZSgfEyQVNqd0vqp4fkqFnrWEBZthKLrpibPdn8
+	zOUeUEpcyhLgwtmKEbx1GfoJj+wV9qWVvuN6kVStn1ig/Bghe328CY4APIAqqMM1/M6DTp
+	Oi88jdSqZLP4fc+Ctf69KIG1PcmVc9Uqx7eoBdxCRl/yvszGacX3FksxcbsLOSr1RTVZ7U
+	RwAHePsvYqanhR6nADNx5z06lDr7cIO+uU+cHTctUfx45NWDJnFzydXg0RISPg==
+Message-ID: <872c8823-f62b-42f8-8bf3-86342374aa84@mailbox.org>
+Date: Fri, 25 Oct 2024 20:39:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240714173431.54332-1-rayyan@ansari.sh> <20240714173431.54332-3-rayyan@ansari.sh>
- <823ce598-dffd-4983-bffa-32559558235d@redhat.com> <ZxpZfgsf-KldiX4w@black.fi.intel.com>
- <20241024173454.00006240@Huawei.com>
-In-Reply-To: <20241024173454.00006240@Huawei.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 25 Oct 2024 21:33:01 +0300
-Message-ID: <CAHp75VegkzEgbZhFxQpW=hi6foRvRtoe_rs47kimxGOCXwGPRA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] iio: accel: kxcjk-1013: Add support for KX022-1020
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Hans de Goede <hdegoede@redhat.com>, Rayyan Ansari <rayyan@ansari.sh>, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
-	Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Robert Yang <decatf@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Sean Rhodes <sean@starlabs.systems>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
+ compliance requirements."
+Content-Language: en-US
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>, jeffbai@aosc.io,
+ gregkh@linuxfoundation.org, wangyuli@uniontech.com, aospan@netup.ru,
+ conor.dooley@microchip.com, ddrokosov@sberdevices.ru,
+ dmaengine@vger.kernel.org, dushistov@mail.ru, fancer.lancer@gmail.com,
+ geert@linux-m68k.org, hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru,
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-ide@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-spi@vger.kernel.org, manivannan.sadhasivam@linaro.org,
+ mattst88@gmail.com, netdev@vger.kernel.org, nikita@trvn.ru,
+ ntb@lists.linux.dev, patches@lists.linux.dev, richard.henderson@linaro.org,
+ s.shtylyov@omp.ru, serjk@netup.ru, shc_work@mail.ru,
+ tsbogend@alpha.franken.de, v.georgiev@metrotek.ru,
+ wsa+renesas@sang-engineering.com, xeb@mail.ru
+References: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
+ <20241023080935.2945-2-kexybiscuit@aosc.io>
+ <124c1b03-24c9-4f19-99a9-6eb2241406c2@mailbox.org>
+ <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
+From: Tor Vic <torvic9@mailbox.org>
+In-Reply-To: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: fcapfso3xo4bfkqbzachb4s163eexrjr
+X-MBO-RS-ID: 80e4fa8c609ea0e1360
 
-On Thu, Oct 24, 2024 at 7:34=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
-> On Thu, 24 Oct 2024 17:28:14 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Jul 15, 2024 at 10:30:46AM +0200, Hans de Goede wrote:
-> > > On 7/14/24 7:33 PM, Rayyan Ansari wrote:
-> > > > Add compatible for the KX022-1020 accelerometer [1] using the
-> > > > KX022-1023 [2] register map as both have an identical i2c interface=
-.
-> > > >
-> > > > [1]: https://kionixfs.azureedge.net/en/datasheet/KX022-1020%20Speci=
-fications%20Rev%2012.0.pdf
-> > > > [2]: https://kionixfs.azureedge.net/en/datasheet/KX023-1025%20Speci=
-fications%20Rev%2012.0.pdf
-> > > >
-> > > > Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
-> > >
-> > > Thanks, patch looks good to me:
-> > >
-> > > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> >
-> > Note, this patch broke kx231025 case...
-> >
-> > > >   KXCJ91008,
-> > > >   KXTJ21009,
-> > > >   KXTF9,
-> > > > + KX0221020,
-> > > >   KX0231025,
-> > > >   KX_MAX_CHIPS /* this must be last */
-> > > >  };
-> >
-> > ...because this enum is used of ODR startup timeout settings which
-> > are all moved now to be 0 and new ID inherited the timeouts from
-> > the KX0231025 case.
-> >
-> > Since I have been looking into the driver, and I have a few patches
-> > coming, I propose to do the following (as it's still ODR data being
-> > missed) to:
-> > 1) revert this one
-> > 2) apply my set;
-> > 3) re-apply this with the fixed data.
->
-> > Another approach can be done (but probably not by me) is to move the ID
-> > to the proper location, add ODR startup timeouts or explain why it's no=
-t
-> > needed and then apply my patch.
-> >
-> > But, taking into account that we are almost at -rc5 and I want my stuff
-> > not to be postponed, I tend to follow the first approach.
-> >
-> > Opinions, comments?
-> >
-> > P.S. FWIW, my set will include switching this driver to use chip_info
-> > structure so the similar mistakes won't happen again, that's also why
-> > I prefer the first approach I listed above.
->
-> Hmm. Either I want the revert in before the release, or your series
-> to make the merge window (and hence probably hit in first couple of stabl=
-e
-> releases).
 
-I have sent the v3 (out of 24 patches) that includes revert and a fix
-in the I2C ID table. Those two can be backported.
 
-> Ideal would be revert very soon and chase it in to togreg so your series
-> can go on top, but that would rely on some lucky timing of pull requests
-> and merges that is probably too optimistic.
+On 10/23/24 19:45, Linus Torvalds wrote:
+> Ok, lots of Russian trolls out and about.
 
-Up to you how to proceed, the patches are available in the mailing list :-)
+I was a little bit sick when I wrote my previous comment, but I wanted 
+to elaborate, so here we go:
+> 
+> It's entirely clear why the change was done, it's not getting
+> reverted, and using multiple random anonymous accounts to try to
+> "grass root" it by Russian troll factories isn't going to change
+> anything.
+> 
 
---=20
-With Best Regards,
-Andy Shevchenko
+Of course it's not going to be reverted, and I don't mind.
+
+I do however mind about the fact that you accuse contributors (however 
+minimal their contributions were, like in my case) of being "Russian 
+trolls" using "multiple accounts".
+
+I would have thought that a man of your stature, knowledge and 
+publicity, wrote a more sensible, neutral comment than that childish 
+gibberish you produced.
+Such comments can be seen in the hundreds on every major news website's 
+comment section.
+Unfortunately, this is now common discussion standard at least in the 
+Western world:
+
+"You don't agree with X? You must be a Y!"
+
+There is no doubt that there are Russian troll factories - but there is 
+equally no doubt that there are Western troll factories. Without them, 
+this "game" wouldn't work.
+
+You could just have done a simple 'git log --grep="Name"' to find out 
+that most of those people who you accused of being trolls are actually 
+not trolls. Because trolls do not contribute.
+
+> And FYI for the actual innocent bystanders who aren't troll farm
+> accounts - the "various compliance requirements" are not just a US
+> thing.
+
+Of course not. It's a USUKEU thing. Or, dare I say, a thing of the 
+unipolar anglo-american empire. There is no way around a multipolar 
+world order if we as humans want to progress.
+
+Why didn't you (or Greg) elaborate on the "various compliance 
+requirements" in the first place?
+You could just have said:
+
+"Due to the sanctions against Russia, we as a US-based foundation are 
+required to abide and therefore we have to remove some maintainers that 
+are thought to be directly collaborating with the current regime" (I 
+specifically used a "Western" language).
+That, at least, would have been somewhat honest, though still hypocrite.
+
+And I did read through (most of) these EU compliance requirements 
+because of my job (not IT), so I'm not *that* clueless.
+
+The sanctions are absurd anyway - I don't remember that the US had been 
+sanctioned because of their illegal invasion of [insert country of your 
+choice]. US athletes excluded from the Olympics?? How dare you?
+
+I also don't remember that France or UK had been sanctioned because they 
+abused their UN mandate to get rid of Gaddafi.
+
+The "country" Kosovo, created by a war, isn't even recognized by all EU 
+member states!
+
+And don't even get me started on that Eastern Mediterranian country that 
+can commit the worst atrocities without ever getting seriously sanctioned.
+
+Meanwhile, we sanction Iran (hasn't started a war in ages), Cuba (hasn't 
+started a war in ages), North Korea (hasn't started a war in ages) etc.
+
+The Western arrogance and decadence is disgusting, and I say that as a 
+born and bred Western European.
+
+> 
+> If you haven't heard of Russian sanctions yet, you should try to read
+> the news some day.  And by "news", I don't mean Russian
+> state-sponsored spam.
+
+I'm already more than fed up with the state-sponsored spam on German TV 
+- and I even have to pay for that BS!
+Now, I don't know how it is in Finland because I don't follow Finnish 
+news due to a total lack of language knowledge.
+
+I wish my country would quit NATO, and then I see that Finland *joined*. 
+Sorry, but I don't understand. No NATO, no war in Ukraine.
+Even as late as 2013, Russia and Ukraine did naval manoevers in the 
+Black Sea - together!
+
+This war is sooo totally unnecessary. Maybe you should ask Vicky "F!ck 
+the EU" Newland why this all happened.
+
+> 
+> As to sending me a revert patch - please use whatever mush you call
+> brains. I'm Finnish. Did you think I'd be *supporting* Russian
+> aggression? Apparently it's not just lack of real news, it's lack of
+> history knowledge too.
+
+Why do you even mention your nationality?
+Just a few weeks ago, I read about the role of Finland in (and before) WW2.
+I don't think there is a big lack of history knowledge on my side.
+
+My country was occupied by Germany twice, in 1914 and in 1940.
+And yet, I have absolutely no bad feelings about either Germany as a 
+country nor Germans as a people. OK, their government is the worst since 
+1945, but that's a different matter.
+
+Wasn't Mannerheim married to a Russian? Eh?
+
+The former German Minister of Foreign Affairs, Guido Westerwelle, once 
+talked about "late Roman decadence", albeit in a different context.
+
+And yet, he was totally right even in other contexts. The Western world 
+is actually in the state of "late Roman decadence".
+And what follows after that decadence? Right, the downfall. And it might 
+be a huge chance to create a better, more equitable world.
+
+> 
+>                        Linus
+
+Tor Vic
 

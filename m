@@ -1,178 +1,207 @@
-Return-Path: <linux-iio+bounces-11256-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11257-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088679AFCFA
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 10:46:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041FC9AFD7B
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 11:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7CE22810E6
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 08:46:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76EF4B22CA5
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 09:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C0E1D2B22;
-	Fri, 25 Oct 2024 08:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0471D4356;
+	Fri, 25 Oct 2024 09:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="ZYJ0YyU6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hhTLQZQ6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from IND01-MAX-obe.outbound.protection.outlook.com (mail-maxind01olkn2021.outbound.protection.outlook.com [40.92.102.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B6918DF6E;
-	Fri, 25 Oct 2024 08:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.102.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729845991; cv=fail; b=M1XDVWLxie4wvewvoQ7Xrs+yZHaA/09hIQMjTSvVqQWHG3wo+GlMm+NbsS6XuUV33Rn/f4tvFKMoIjJWvHRni1SZ7IjWIGAU5ZJK2FguikXfULw41SR2+aKFWnMc9lSmDSs74ky/7VWzgZHiNU1hc5O3wYv72b8zR4q74HAgIIg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729845991; c=relaxed/simple;
-	bh=JKFPQmfZw1+qgzIKVcYl2RISQNf/So9eCTL264nq6H4=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=KHxa9rrjR219/nsHtSYMZPmGcut+fOs/+CImHBhC15+JUsEG2VYSTscFjZJQO2GoWpASsMH9q7TX8sZbOYrfF1Yasja8grFbzjSwOPkeQVCRufRrRmLDLktILt/tKT2ZQ8DWaLLYcRfhkv80AnARh5kt2dtoFNSXMpQjII8VQ9k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=ZYJ0YyU6; arc=fail smtp.client-ip=40.92.102.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BDAoMGyCgUZIwfGp1VVFQ8J7SFaP79hPXEmy9QmvHbIrQk3VuXIC/IFr5tw/aoO4YpbxpW7xuuk9bSmeewyBmToGjbC3sPEf1MkIhIrq2qYkbHl+ZV0ntKtUXPoel/Ak/4tkYTpn6Long61dK6vCL2i5GhfmQyrU+m4wzm5A/5zf/DusXXm57jtlVNQ2UB1GqCl2nFrqmTWdgyMSI8rG4IXUl4zDk4Q6qtUfR0ZWlvlsldoBIpdeGrIRpfJ+d5t43EXOdZs3KoySWjf4NCrdkcrQlvm1axwm1h6kKKezD8evEQ1MQlI1YVmhtBgt8++/BDng76puGeh8Kg2YCIZXCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JKFPQmfZw1+qgzIKVcYl2RISQNf/So9eCTL264nq6H4=;
- b=WQgSnT5T0De1KhZ7K79pw+b7FE8nXJRY5PLrq+waFSX2qjO8cVHZ/EVXO+tEbs2YIO2LlAeeRu0XwNDv4AbJdQ4AXnEsgtBodnuWo+1f9QIV1cPxtF5sFsCKYEkSYyLUGw+jdhSs2SXm9nYVkwA45c4xiOX98z0g0x8Jbg01RXOPxl/stqPuBH47cJQVJ1CCS29ERdHrYNFXAjgGMphndj2bI5d93VBnFbW1Bn4cGo730aFxtwRBumSsy0EZLPe68xwjdGyzP/JOXAp0Jw32SOAI+akEmNEt/7nlGlsviSd/sssc7yNRxZea9PH7qIH+zXOEjMRc6EDuYLScQ66FEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JKFPQmfZw1+qgzIKVcYl2RISQNf/So9eCTL264nq6H4=;
- b=ZYJ0YyU6g0k5Rhl/d5NmYEel5UDbFx9nQAeCD+qpVoypryFORYUXOF8pfYaqJP+i26LTMGUIukJUOC9tHoVXv2JfThTShSLNF8qYNfga0C0hkd726PwwA39I9esZ6KtIpfcVcEGDTmftVQGmRnrDkX547RGCbDmg5TL/AbgZVejHs+oAXD8pIKK5H99yFLO78ZnjEASAa/RAc+1X+ZyLFNHx/sruwdZevyE002ORYuUGh9iHv43WkLqaZl80aXxLuE7JQE2lNJAbBb8ke+/6SEWAXsiV8G9RoETCwsdwBXLIRLs0w2bJLoquin8dF2BK1JfGm7GKRlIlIIU89z/ncg==
-Received: from MA0P287MB0594.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:119::13)
- by MAYP287MB3581.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:149::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Fri, 25 Oct
- 2024 08:46:11 +0000
-Received: from MA0P287MB0594.INDP287.PROD.OUTLOOK.COM
- ([fe80::621d:8529:f377:8921]) by MA0P287MB0594.INDP287.PROD.OUTLOOK.COM
- ([fe80::621d:8529:f377:8921%3]) with mapi id 15.20.8093.018; Fri, 25 Oct 2024
- 08:46:09 +0000
-From: thomas superb <thomasdeutsch123@hotmail.com>
-To: "nikolay@oldum.net" <nikolay@oldum.net>
-CC: "aospan@netup.ru" <aospan@netup.ru>, "campaigns@fsf.org"
-	<campaigns@fsf.org>, "conor.dooley@microchip.com"
-	<conor.dooley@microchip.com>, "ddrokosov@sberdevices.ru"
-	<ddrokosov@sberdevices.ru>, "dmaengine@vger.kernel.org"
-	<dmaengine@vger.kernel.org>, "dushistov@mail.ru" <dushistov@mail.ru>,
-	"fancer.lancer@gmail.com" <fancer.lancer@gmail.com>, "geert@linux-m68k.org"
-	<geert@linux-m68k.org>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, "hoan@os.amperecomputing.com"
-	<hoan@os.amperecomputing.com>, "ink@jurassic.park.msu.ru"
-	<ink@jurassic.park.msu.ru>, "jeffbai@aosc.io" <jeffbai@aosc.io>,
-	"kexybiscuit@aosc.io" <kexybiscuit@aosc.io>, "linux-alpha@vger.kernel.org"
-	<linux-alpha@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-fpga@vger.kernel.org"
-	<linux-fpga@vger.kernel.org>, "linux-gpio@vger.kernel.org"
-	<linux-gpio@vger.kernel.org>, "linux-hwmon@vger.kernel.org"
-	<linux-hwmon@vger.kernel.org>, "linux-ide@vger.kernel.org"
-	<linux-ide@vger.kernel.org>, "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>, "linux-mips@vger.kernel.org"
-	<linux-mips@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
-	<linux-renesas-soc@vger.kernel.org>, "linux-spi@vger.kernel.org"
-	<linux-spi@vger.kernel.org>, "m.novosyolov@rosalinux.ru"
-	<m.novosyolov@rosalinux.ru>, "manivannan.sadhasivam@linaro.org"
-	<manivannan.sadhasivam@linaro.org>, "mattst88@gmail.com"
-	<mattst88@gmail.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"nikita@trvn.ru" <nikita@trvn.ru>, "ntb@lists.linux.dev"
-	<ntb@lists.linux.dev>, "patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"peter@typeblog.net" <peter@typeblog.net>, "richard.henderson@linaro.org"
-	<richard.henderson@linaro.org>, "rms@gnu.org" <rms@gnu.org>,
-	"s.shtylyov@omp.ru" <s.shtylyov@omp.ru>, "serjk@netup.ru" <serjk@netup.ru>,
-	"shc_work@mail.ru" <shc_work@mail.ru>, "torvalds@linux-foundation.org"
-	<torvalds@linux-foundation.org>, "torvic9@mailbox.org" <torvic9@mailbox.org>,
-	"tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
-	"v.georgiev@metrotek.ru" <v.georgiev@metrotek.ru>, "wangyuli@uniontech.com"
-	<wangyuli@uniontech.com>, "wsa+renesas@sang-engineering.com"
-	<wsa+renesas@sang-engineering.com>, "xeb@mail.ru" <xeb@mail.ru>
-Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
- compliance requirements."
-Thread-Topic: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
- compliance requirements."
-Thread-Index: AQHbJrmTO2m52qT8oUye+I/sF+SUew==
-Date: Fri, 25 Oct 2024 08:46:09 +0000
-Message-ID:
- <MA0P287MB05942920747924ABB7B0365C8B4F2@MA0P287MB0594.INDP287.PROD.OUTLOOK.COM>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MA0P287MB0594:EE_|MAYP287MB3581:EE_
-x-ms-office365-filtering-correlation-id: 6d727a70-1eac-4a40-f14e-08dcf4d178b6
-x-microsoft-antispam:
- BCL:0;ARA:14566002|7092599003|15080799006|461199028|15030799003|19110799003|8062599003|8060799006|3430499032|4295299021|102099032|440099028|3412199025;
-x-microsoft-antispam-message-info:
- HDbMVXnnTopariHKmrNZ9Uw6miA/2ffBqzuKLZqtIQLj5TODNdaEmY9LIOQK+bcwEjX9j2aWB0fIeK3QkE4LYVLQZ7nP8dC1/iJy52Mk3Ea2SnTkcF9Z5Ai5QalgYrtjaeZoZ+FVsB6RX1i15qkwhrQHLjjOQwrXUIHTanFYq83umVI8XSxkYbOUEzY+7ryb74uHiHH57Ah7sRebjUNIjlQ6c4isWolr/ZHW5pLKbs0SuBCfBVeFtCZILUyt2Nk0cGZ4AGbD9YaixKVJrqA4ftJcLH6eJBxPo3bSGlRgBK0Itvf9qlHyZEuFK5NbrE/fF8WIXMZ88BMZ+PzJLlTSdl7Ebx6YYR9bD5NjtXPR2gkU0qYxjlG8r1FFzngEwZLGln9b0a4Bij7wWjHucDQjdqSPkcCZKOHm4oQIDQRXdQLdh+uiyT7yFmzgI7bwHrAeioDVGKYZPUAx3LCPlCVvW8+aDP69umbR9PnZBs2PG2FfGJkE+Km5JmkTYvvpUUTzMUDZ/7caKTOFIqbQbD5yjsXrwhzdP0jaypn7ZXssH0gsh8sbgq2xJOk5nRhwqu6zeL52JK4+73tbn9lR2xCOwffj+lyVvZVeWW/vrVf6qQUjRjgk3fyU3qOB3AlKaOWN7lcHy+dzhC3n2Ac4rpibuBA6/ewQk0ZClqb4G//eGeybOVc4epB7wY8AfPyDSDK2xeyPj7toH7qhqkMH2X37d/gZrwHXi0w9bTbdgOHwdWM6P5n5XJoiG89HqyFuHOjxl39w6rtSDh2Yud1tpDSoQw==
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?Windows-1252?Q?L9WFzDji0RbJrCBg+TK72DF+9CEeEys3VnbQZubdBF+A/gRFYLjTAFFS?=
- =?Windows-1252?Q?OQvwc4DirfTw0aIR8rJay5GQUtDZOdmMHvrbuzwq7Y6VK0xLNfDc/rtV?=
- =?Windows-1252?Q?IN5YKifb3GVCopS8Dj4tJSTUoB2mThQoDXNxORmFZ+YqUS9jYy+sNmD5?=
- =?Windows-1252?Q?YcX7Qy3FWxiD7Fem851MZy5jM2kEVB048vm5OyEvOYsfZH+/l/MnzGXV?=
- =?Windows-1252?Q?z4i/SfZWe122kFRxpete3xsTB+ke1Lo7vngXbKqfx/i1RAjLnvUwVTAT?=
- =?Windows-1252?Q?5NW5VzFsd8+Qm4HElctYMDLeo61sKwm8BZF3ET57XJYB6+ua3GbVd47f?=
- =?Windows-1252?Q?PUpuX3btSqYizZUHbg99WJYiWwjM+jDSKaedK9FiK4vcWo/PWsnrjq2Z?=
- =?Windows-1252?Q?zgf4xt3Yx5nbB6dgCuh3jLMX15ZW1r8El+a6uHrFNbp7IDeSijV2Uuq+?=
- =?Windows-1252?Q?PNZYRocScZsUamuo3TMenMxoi0HOjiscbcxumx/90+HCQh/680/dBXM3?=
- =?Windows-1252?Q?UKqb4eavf8js7OT3o0qoHzlBXoE0Ark8Vmtkz2NLHTvlWRqPopddUyM0?=
- =?Windows-1252?Q?QIq8gJKoWVYCCfgWVUpYzI/aOQEtQlDfGEWHH3oH3or04Nn33MiRn1oG?=
- =?Windows-1252?Q?blWoaQmFkEf51iiox9VuzAnjxZjttNNryf5sRD+iOy5BPdUfXV5fTRan?=
- =?Windows-1252?Q?g7AtrjIQPbsX/0aPZkHVx6DJzQ/Ie2shllpO4KylRTsFE/TLhJMsS9kY?=
- =?Windows-1252?Q?F+kRx0j10AOJjeQ1UnSaWLCnEqI3FsbL9GyGpPx5V9y120mNZu0LKgLf?=
- =?Windows-1252?Q?M5+J8RJIgKpgXKAEjT2RVtXtHASa1wuY6FIQDUV2oxhxr+ZLtJLRoH7k?=
- =?Windows-1252?Q?phQffGTDH3cKZymdnOlgyK4PvBq9l/gFEWjj7VGzXTu65fmfxOv09OKC?=
- =?Windows-1252?Q?K8LK6Cx2+nQe1EgOQLYTJnr0PSSOy/bmANLS6AY3fRDQuwmq0ZGgsIsg?=
- =?Windows-1252?Q?4aPRm9hhZeW/WIv83fmMXRo1ME5V9dFD0NE5eTTQVPN3KkflTpxG+tln?=
- =?Windows-1252?Q?Ho47Zz4p6FmFautLhT0cJJvgxJz+spTD+Tu7IoYAEdfpqad7X/O9mdn8?=
- =?Windows-1252?Q?kslmXcDAokbAgEsNOg8PPuq6ROG+EcTRk6On9NHhzVIyM8X6ZxLbc8l3?=
- =?Windows-1252?Q?KN3gj5jLMbVZjgBrfp96hX9oIYsD4NplJ6DYHnuHasfR/aq6RyyxFHOp?=
- =?Windows-1252?Q?x3d4yJwVgnQik0BX7RDyiKAcVe9RBap6NLXOCqXMS3dzj7tmtc7xOWPX?=
- =?Windows-1252?Q?/CBobQmf2GhMjH+0j8aQOLcFg14=3D?=
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C551D4325;
+	Fri, 25 Oct 2024 09:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729846917; cv=none; b=Gz+9N5de7QdR1Bw1YHiDjZNvpOyCdks4VsNdk0JSG0P6aWS294k3enawozl01TE2B1FsAzsKngNpwoJOoBAL6FgOEq+86/wQ/75SyaP3R6Y0/STmjo1CjGGA8kLlfDxHVJMWrWMQFvtGTbxC+5BiFHswtATwr0s0yHvPO2WkREg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729846917; c=relaxed/simple;
+	bh=htC/6QMDF8HVGn5CRNi07vqi5NpRMzbknlYRKztT9jk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hKT2w6i5txAfRnJFELcQdRlgL1AXcCpoLM8fgqeLfjyNDRUGpFkYVbMDIC1jRX9GJiQxLQCfRxUY5BMk5WpZOQiFVZN2Srx72DAhru0UARyoZrYq75lLjD0N9bS+6Y3Vx2w2O9b29ZIXEOowswIn4uQ83RDZNr1wmr2imnx1Qv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hhTLQZQ6; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729846916; x=1761382916;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=htC/6QMDF8HVGn5CRNi07vqi5NpRMzbknlYRKztT9jk=;
+  b=hhTLQZQ6yr9GVJeXoPK8AjnTKrneaWjS9yR4LB4u1JSfal7eSLwWhn4B
+   RwRzKKT+ieGHbeR/BfaiHZmm4Qpe/YKPCQJckeX7MLHgQHskKW8ltUvP6
+   Ylmt62uXx9UjGxERANiMrVfGlBEnt2LCdewF/Ivy1s+X9e7BDfrRx8Qky
+   sb45ROQRa61oQZCC4hMNbTpNmyn2JsNtPs6Ac30esJF2gZvOoWp/txz3Q
+   9asMcucPq1D9fDR+fMpo1x1ad3EpSGOtRPBZmzJYCTmy5IvNVo8veNMuq
+   eVh/iMemV/r+50h94FVJKwKjhcm4C+FhmJdiFhv/IRQYSpKOJ6Zga/mgC
+   A==;
+X-CSE-ConnectionGUID: DGKbz6hVTjSL3lrEAPsgNg==
+X-CSE-MsgGUID: E7I9ATUyTKatCMAmiM3Thw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52064597"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="52064597"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 02:01:55 -0700
+X-CSE-ConnectionGUID: aomwVR+sSpSr6jfrzBx1Aw==
+X-CSE-MsgGUID: QKJd9hcgRwaUxHbYSG+U3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="85620158"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 25 Oct 2024 02:01:52 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t4GCb-000Xuo-2n;
+	Fri, 25 Oct 2024 09:01:49 +0000
+Date: Fri, 25 Oct 2024 17:01:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: Re: [PATCH v3 2/2] iio: light: add support for veml3235
+Message-ID: <202410251610.kB7u6xMJ-lkp@intel.com>
+References: <20241023-veml3235-v3-2-8490f2622f9a@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-24072.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MA0P287MB0594.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d727a70-1eac-4a40-f14e-08dcf4d178b6
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Oct 2024 08:46:09.0290
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MAYP287MB3581
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241023-veml3235-v3-2-8490f2622f9a@gmail.com>
 
-=0A=
-Hi folks,=0A=
-it is very sad for me to see so many political nonsenses=A0here, therefore =
-I need to express my view as a newbie here and a long time Linux user.=0A=
-I understand the standing of Linus, but sanction against a certain group of=
- people is unbeneficial for open-source projects: at one hand it is technic=
-ally impossible to stop them effectively from obtaining the new code and ke=
-eping =93hitchhiking=94 the ecosystem(think how North Korea develop their o=
-wn distribution and produce smartphones which probably also use Linux kerne=
-l), on the other hand the upstream repo and community will probably permane=
-ntly lost their contribution.=0A=
-I think Linus and Greg need to reestablish the trust that their own politic=
-al standing won=92t jeopardize the free essence of the Kernel, and the comm=
-unity need to start considering how to defend the critical elements like Ke=
-rnel of the digital world from political pressures (whoever do it) and keep=
- them free as the air.=0A=
-Thanks,=0A=
-A Linux user=0A=
+Hi Javier,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on ceab669fdf7b7510b4e4997b33d6f66e433a96db]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Javier-Carrasco/dt-bindings-iio-light-veml6030-add-veml3235/20241024-030144
+base:   ceab669fdf7b7510b4e4997b33d6f66e433a96db
+patch link:    https://lore.kernel.org/r/20241023-veml3235-v3-2-8490f2622f9a%40gmail.com
+patch subject: [PATCH v3 2/2] iio: light: add support for veml3235
+config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20241025/202410251610.kB7u6xMJ-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241025/202410251610.kB7u6xMJ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410251610.kB7u6xMJ-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/iio/light/veml3235.c: In function 'veml3235_set_it':
+>> drivers/iio/light/veml3235.c:148:26: warning: variable 'it_idx' set but not used [-Wunused-but-set-variable]
+     148 |         int ret, new_it, it_idx;
+         |                          ^~~~~~
+   drivers/iio/light/veml3235.c: In function 'veml3235_set_gain':
+>> drivers/iio/light/veml3235.c:191:28: warning: variable 'gain_idx' set but not used [-Wunused-but-set-variable]
+     191 |         int ret, new_gain, gain_idx;
+         |                            ^~~~~~~~
+
+
+vim +/it_idx +148 drivers/iio/light/veml3235.c
+
+   144	
+   145	static int veml3235_set_it(struct iio_dev *indio_dev, int val, int val2)
+   146	{
+   147		struct veml3235_data *data = iio_priv(indio_dev);
+ > 148		int ret, new_it, it_idx;
+   149	
+   150		if (val)
+   151			return -EINVAL;
+   152	
+   153		switch (val2) {
+   154		case 50000:
+   155			new_it = 0x00;
+   156			it_idx = 4;
+   157			break;
+   158		case 100000:
+   159			new_it = 0x01;
+   160			it_idx = 3;
+   161			break;
+   162		case 200000:
+   163			new_it = 0x02;
+   164			it_idx = 2;
+   165			break;
+   166		case 400000:
+   167			new_it = 0x03;
+   168			it_idx = 1;
+   169			break;
+   170		case 800000:
+   171			new_it = 0x04;
+   172			it_idx = 0;
+   173			break;
+   174		default:
+   175			return -EINVAL;
+   176		}
+   177	
+   178		ret = regmap_field_write(data->rf.it, new_it);
+   179		if (ret) {
+   180			dev_err(data->dev,
+   181				"failed to update integration time: %d\n", ret);
+   182			return ret;
+   183		}
+   184	
+   185		return 0;
+   186	}
+   187	
+   188	static int veml3235_set_gain(struct iio_dev *indio_dev, int val, int val2)
+   189	{
+   190		struct veml3235_data *data = iio_priv(indio_dev);
+ > 191		int ret, new_gain, gain_idx;
+   192	
+   193		if (val2 != 0)
+   194			return -EINVAL;
+   195	
+   196		switch (val) {
+   197		case 1:
+   198			new_gain = 0x00;
+   199			gain_idx = 3;
+   200			break;
+   201		case 2:
+   202			new_gain = 0x01;
+   203			gain_idx = 2;
+   204			break;
+   205		case 4:
+   206			new_gain = 0x03;
+   207			gain_idx = 1;
+   208			break;
+   209		case 8:
+   210			new_gain = 0x07;
+   211			gain_idx = 0;
+   212			break;
+   213		default:
+   214			return -EINVAL;
+   215		}
+   216	
+   217		ret = regmap_field_write(data->rf.gain, new_gain);
+   218		if (ret) {
+   219			dev_err(data->dev, "failed to set gain: %d\n", ret);
+   220			return ret;
+   221		}
+   222	
+   223		return 0;
+   224	}
+   225	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

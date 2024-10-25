@@ -1,216 +1,181 @@
-Return-Path: <linux-iio+bounces-11302-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11301-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9C09B0DAD
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 20:46:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ECE39B0D8F
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 20:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC1661C230A8
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 18:46:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 929421C22EF3
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 18:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF4820D50C;
-	Fri, 25 Oct 2024 18:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E803C20BB5C;
+	Fri, 25 Oct 2024 18:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="gdBTGg9q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PmUlchIc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A656107A0;
-	Fri, 25 Oct 2024 18:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80189185E50;
+	Fri, 25 Oct 2024 18:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729881950; cv=none; b=qt7qI9WWxkJ7pkgFioFWaH/9wVwv2LDyG0NyFwQvGYaK4vnEup4xiHgmISkGGqXwbNfh1mOGmsToc6kgrCkRoqiEdP1W9B/85qNbvCouB0/uyPdNGPHPB3Jff8u6PFDYyLyNn+J/Votl6GIAICgHnuBYqPX9+DOKJ+H65hPYlP0=
+	t=1729881646; cv=none; b=Ed5awnu1NhkX9URuuMUW/6qU2ysMCntK+QWU85QVkJu2zslEg/OsjXuiwrGJkc2CakNyoirj8JoGmoPfTrDSRq2qdu8x/68cahoGwg4PhwtZa2holVyL6lisNZFuyLCpCXXJqCnvWRCSG8vdv1294aerNuCFTiTxy3jOpyXmpHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729881950; c=relaxed/simple;
-	bh=eoe/fP8YHFbJUGJWPDVWR2pm8bdAzVvuYmLMkOvFUCc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s5Ld4AF2zg5xfBatop7nXqenoaZYeXvlebP509Wab0KC1SkTmqDR7J3bmPgMQm0WoYQlN+eSbt33GZ/YckryYrmL5I29wYpm8jeOaq4NHc4txpvZHwmxxT00yAm2FMVNwsgkIeIhuVHIcOsYXGJXtjQydZqOb1ZY6K24mPhlxUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=gdBTGg9q; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4XZs5L3sP6z9snx;
-	Fri, 25 Oct 2024 20:39:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1729881574;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lSojNFdw8ftg3T7NakOd4AZhT9UMaiDwBHmwcORfhmk=;
-	b=gdBTGg9qaBnIiiH6XUTjeUDIpm/w19h2mJ2NxyWek4JBdbfHEfy1l85WLscQ4teM7X3Y8E
-	SzmAWuY6Tiv8TrbprFm973WyyZ+4RlCRZSgfEyQVNqd0vqp4fkqFnrWEBZthKLrpibPdn8
-	zOUeUEpcyhLgwtmKEbx1GfoJj+wV9qWVvuN6kVStn1ig/Bghe328CY4APIAqqMM1/M6DTp
-	Oi88jdSqZLP4fc+Ctf69KIG1PcmVc9Uqx7eoBdxCRl/yvszGacX3FksxcbsLOSr1RTVZ7U
-	RwAHePsvYqanhR6nADNx5z06lDr7cIO+uU+cHTctUfx45NWDJnFzydXg0RISPg==
-Message-ID: <872c8823-f62b-42f8-8bf3-86342374aa84@mailbox.org>
-Date: Fri, 25 Oct 2024 20:39:19 +0200
+	s=arc-20240116; t=1729881646; c=relaxed/simple;
+	bh=JRxNUr5yui2gNVAeX4FE/a5Z8KBgsyO2L2DGHu/TKtU=;
+	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:Content-Type; b=J4sBl3IhfUNIvQS8LUEBhFX2jMXVPrkCR9mL/esmXmQB6DFZvtxCAL3OKT++IKN7ttJ9Klw8jKM6uqpmZFl5FQ6+xnTaSOvL9DvwN/4H0GH32fo274mVXvnn9lfmdynyFtO3HzrHvHjskW2P2bEUxLzpo78iM4pPyxntUAui4So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PmUlchIc; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-37d462c91a9so1598331f8f.2;
+        Fri, 25 Oct 2024 11:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729881643; x=1730486443; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:message-id:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JRxNUr5yui2gNVAeX4FE/a5Z8KBgsyO2L2DGHu/TKtU=;
+        b=PmUlchIchkKzpGCZm2vPQcINgkMTki8G8xL4aQVHV4lIKyUHIblgMKFC0HQuBdh4w2
+         md1esL0R77wspbiz0v57LTCcdpBYluHBS14BIWj2sy2I6oIvF+s8mg9YGiVHdgqoSOqt
+         HyN6bBLG0Ph5VGL6XYTrKULSx6ICVVkSszKOD3iyErVeCQncF3ZbYEnEVXFPHTG4+Wt2
+         4zqzozTmcQeqd+bCzSBWZ/Qa0IdOzkbnRtNQsTaY2n8BxZMYX/+hklToscp8QpeTdHNv
+         uzLRulQS9uKVY51SZfIu9tuUQoXdSwUyjbj8h0ZoNFSmm3LQn44enhMkGkF2dahV3R99
+         Rrtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729881643; x=1730486443;
+        h=content-transfer-encoding:mime-version:subject:message-id:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JRxNUr5yui2gNVAeX4FE/a5Z8KBgsyO2L2DGHu/TKtU=;
+        b=xRWs4UwOraFmkorxze2F6cwl07h2MkwqRa9KJHozVsZy1BtehlYRua0pCaZmH7aFfU
+         KDmPvZvl00r/U1YVU2Vs+hFWurZtnKUDZgGvWL7USy59u2cXUgOtv+TzgcQX6LRpf4sh
+         FZqIcPox0RsVGjKvLcQghJ2pbtiJq1hG0lT0gxFPQI26FnAQNWjrFgIAiKStGWg3CYEh
+         dr/tuaA8qJRdfqcktmtMYdxiWxjU7rJG3CtZG78PC72qxIexPXFlyeSO4zG2N77T3NMD
+         0o1pSxnv1UadjN9UbkJHUPWmg/kkw/reJ+C13CpHNZgOZAkspR+JjHU7hL9pNwA9URDL
+         u1gA==
+X-Forwarded-Encrypted: i=1; AJvYcCU80Prdd9iHJTthnpNQfiQRK7iCfZ5uPMPnmLn2OPP6ueHPWP0Kk6Idd1Z8UYYDMRapCWXr8rphKs8j@vger.kernel.org, AJvYcCVBOlO4ZrpibAy0Rt2/xAi4vorXfSA5FaN0M/S0h5JXA9i/YKMtaariCKYKY0Yt9zXAyvKBdbYSAPWV@vger.kernel.org, AJvYcCX+OQET6fwLnlBNoiy4KBIronzbq1DE7HKfcwBfV0kCgQEL/TLgjlYC1WHKTZu4J65ss4S2ryq3qQ3c@vger.kernel.org, AJvYcCXCILfq2rWi4HxBw6dFBdbDG431pGcR+dE9mP87D9s0YwlXqMdLxcfUA45VnXp95pJgZaP8ACA/PBNN@vger.kernel.org, AJvYcCXqn17Q0wNCYjQaaXtWfuSDiiE8TMB+phzRXrzjDrOnxdWwCUbPjAGT/BhAsXBsMMEZIn1DCW1Cik04+Qft@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmdmgqyNNXaaRR0jmeL0/ipbdieoA6uYYx+PuMMD+qc0NbpXkP
+	Ono62HUdZiLJV7rrlw9W9dOPu3IyPKATuimMjT5BGBeBrp4SfpH99slHQj/jEb1kcqtt
+X-Google-Smtp-Source: AGHT+IGS6rcHOlbTprJsbT/HrRycQKHd080NuZIR69soUsvtun0u2f/I9JB4hvq+jJZoGz6PjNSYZQ==
+X-Received: by 2002:a5d:4311:0:b0:374:c17a:55b5 with SMTP id ffacd0b85a97d-3806111a1bemr275137f8f.14.1729881642551;
+        Fri, 25 Oct 2024 11:40:42 -0700 (PDT)
+Received: from [127.0.0.1] (aftr-62-216-210-211.dynamic.mnet-online.de. [62.216.210.211])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70c91sm2193563f8f.85.2024.10.25.11.40.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Oct 2024 11:40:42 -0700 (PDT)
+Date: Fri, 25 Oct 2024 20:40:42 +0200 (GMT+02:00)
+From: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
+Message-ID: <dc52cda0-47d9-4cbf-a68e-0af304edc32e@gmail.com>
+Subject: Re: [PATCH RFC v4 11/15] iio: buffer-dmaengine: add
+ devm_iio_dmaengine_buffer_setup_ext2()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
- compliance requirements."
-Content-Language: en-US
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>, jeffbai@aosc.io,
- gregkh@linuxfoundation.org, wangyuli@uniontech.com, aospan@netup.ru,
- conor.dooley@microchip.com, ddrokosov@sberdevices.ru,
- dmaengine@vger.kernel.org, dushistov@mail.ru, fancer.lancer@gmail.com,
- geert@linux-m68k.org, hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-spi@vger.kernel.org, manivannan.sadhasivam@linaro.org,
- mattst88@gmail.com, netdev@vger.kernel.org, nikita@trvn.ru,
- ntb@lists.linux.dev, patches@lists.linux.dev, richard.henderson@linaro.org,
- s.shtylyov@omp.ru, serjk@netup.ru, shc_work@mail.ru,
- tsbogend@alpha.franken.de, v.georgiev@metrotek.ru,
- wsa+renesas@sang-engineering.com, xeb@mail.ru
-References: <a08dc31ab773604d8f206ba005dc4c7a@aosc.io>
- <20241023080935.2945-2-kexybiscuit@aosc.io>
- <124c1b03-24c9-4f19-99a9-6eb2241406c2@mailbox.org>
- <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
-From: Tor Vic <torvic9@mailbox.org>
-In-Reply-To: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: fcapfso3xo4bfkqbzachb4s163eexrjr
-X-MBO-RS-ID: 80e4fa8c609ea0e1360
+Content-Transfer-Encoding: quoted-printable
+X-Correlation-ID: <dc52cda0-47d9-4cbf-a68e-0af304edc32e@gmail.com>
 
+Oct 25, 2024 18:42:02 David Lechner <dlechner@baylibre.com>:
 
+> On 10/25/24 8:24 AM, Nuno S=C3=A1 wrote:
+>> I still need to look better at this but I do have one though already=20
+>> :)
+>>
+>> On Wed, 2024-10-23 at 15:59 -0500, David Lechner wrote:
+>>> Add a new devm_iio_dmaengine_buffer_setup_ext2() function to handle
+>>> cases where the DMA channel is managed by the caller rather than=20
+>>> being
+>>> requested and released by the iio_dmaengine module.
+>>>
+>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+>>> ---
+>>>
+>>> v4 changes:
+>>> * This replaces "iio: buffer-dmaengine: generalize requesting DMA=20
+>>> channel"
+>>> ---
+>
+> ...
+>
+>>> @@ -282,12 +281,38 @@ void iio_dmaengine_buffer_free(struct=20
+>>> iio_buffer *buffer)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio_buffer_to_dmaengine_buff=
+er(buffer);
+>>> =C2=A0
+>>> =C2=A0=C2=A0=C2=A0 iio_dma_buffer_exit(&dmaengine_buffer->queue);
+>>> -=C2=A0=C2=A0 dma_release_channel(dmaengine_buffer->chan);
+>>> -
+>>> =C2=A0=C2=A0=C2=A0 iio_buffer_put(buffer);
+>>> +
+>>> +=C2=A0=C2=A0 if (dmaengine_buffer->owns_chan)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dma_release_channel(dmaengine_buf=
+fer->chan);
+>>
+>> Not sure if I agree much with this owns_chan flag. The way I see it,=20
+>> we should always
+>> handover the lifetime of the DMA channel to the IIO DMA framework.=20
+>> Note that even the
+>> device you pass in for both requesting the channel of the spi_offload=C2=
+=A0=20
+>> and for
+>> setting up the DMA buffer is the same (and i suspect it will always=20
+>> be) so I would
+>> not go with the trouble. And with this assumption we could simplify a=20
+>> bit more the
+>> spi implementation.
+>
+> I tried something like this in v3 but Jonathan didn't seem to like it.
+>
+> https://lore.kernel.org/all/20240727144303.4a8604cb@jic23-huawei/
+>
+>>
+>> And not even related but I even suspect the current implementation=20
+>> could be
+>> problematic. Basically I'm suspecting that the lifetime of the DMA=20
+>> channel should be
+>> attached to the lifetime of the iio_buffer. IOW, we should only=20
+>> release the channel
+>> in iio_dmaengine_buffer_release() - in which case the current=20
+>> implementation with the
+>> spi_offload would also be buggy.
+>
+> The buffer can outlive the iio device driver that created the buffer?
 
-On 10/23/24 19:45, Linus Torvalds wrote:
-> Ok, lots of Russian trolls out and about.
+Yes, it can as the IIO device itself. In case a userspace app has an open=
+=20
+FD for the buffer chardev, we get a reference that is only released when=20
+the FD is closed (which can outlive the device behind bound to its=20
+driver). That is why we nullify indio_dev->info and check for it on the=20
+read() and write() fops.
 
-I was a little bit sick when I wrote my previous comment, but I wanted 
-to elaborate, so here we go:
-> 
-> It's entirely clear why the change was done, it's not getting
-> reverted, and using multiple random anonymous accounts to try to
-> "grass root" it by Russian troll factories isn't going to change
-> anything.
-> 
+FWIW, I raised concerns about this in the past (as we don't have any lock=
+=20
+in those paths) but Jonathan rightfully wanted to see a real race. And I=20
+was too lazy to try and reproduce one but I'm still fairly sure we have=20
+theoretical (at least) races in those paths. And one of them could be (I=20
+think) concurrently hitting a DMA submit block while the device is being=20
+unbound. In that case the DMA chan would be already released and we could=
+=20
+still try to initiate a transfer. I did not check if that would crash or=20
+something but it should still not happen.
 
-Of course it's not going to be reverted, and I don't mind.
-
-I do however mind about the fact that you accuse contributors (however 
-minimal their contributions were, like in my case) of being "Russian 
-trolls" using "multiple accounts".
-
-I would have thought that a man of your stature, knowledge and 
-publicity, wrote a more sensible, neutral comment than that childish 
-gibberish you produced.
-Such comments can be seen in the hundreds on every major news website's 
-comment section.
-Unfortunately, this is now common discussion standard at least in the 
-Western world:
-
-"You don't agree with X? You must be a Y!"
-
-There is no doubt that there are Russian troll factories - but there is 
-equally no doubt that there are Western troll factories. Without them, 
-this "game" wouldn't work.
-
-You could just have done a simple 'git log --grep="Name"' to find out 
-that most of those people who you accused of being trolls are actually 
-not trolls. Because trolls do not contribute.
-
-> And FYI for the actual innocent bystanders who aren't troll farm
-> accounts - the "various compliance requirements" are not just a US
-> thing.
-
-Of course not. It's a USUKEU thing. Or, dare I say, a thing of the 
-unipolar anglo-american empire. There is no way around a multipolar 
-world order if we as humans want to progress.
-
-Why didn't you (or Greg) elaborate on the "various compliance 
-requirements" in the first place?
-You could just have said:
-
-"Due to the sanctions against Russia, we as a US-based foundation are 
-required to abide and therefore we have to remove some maintainers that 
-are thought to be directly collaborating with the current regime" (I 
-specifically used a "Western" language).
-That, at least, would have been somewhat honest, though still hypocrite.
-
-And I did read through (most of) these EU compliance requirements 
-because of my job (not IT), so I'm not *that* clueless.
-
-The sanctions are absurd anyway - I don't remember that the US had been 
-sanctioned because of their illegal invasion of [insert country of your 
-choice]. US athletes excluded from the Olympics?? How dare you?
-
-I also don't remember that France or UK had been sanctioned because they 
-abused their UN mandate to get rid of Gaddafi.
-
-The "country" Kosovo, created by a war, isn't even recognized by all EU 
-member states!
-
-And don't even get me started on that Eastern Mediterranian country that 
-can commit the worst atrocities without ever getting seriously sanctioned.
-
-Meanwhile, we sanction Iran (hasn't started a war in ages), Cuba (hasn't 
-started a war in ages), North Korea (hasn't started a war in ages) etc.
-
-The Western arrogance and decadence is disgusting, and I say that as a 
-born and bred Western European.
-
-> 
-> If you haven't heard of Russian sanctions yet, you should try to read
-> the news some day.  And by "news", I don't mean Russian
-> state-sponsored spam.
-
-I'm already more than fed up with the state-sponsored spam on German TV 
-- and I even have to pay for that BS!
-Now, I don't know how it is in Finland because I don't follow Finnish 
-news due to a total lack of language knowledge.
-
-I wish my country would quit NATO, and then I see that Finland *joined*. 
-Sorry, but I don't understand. No NATO, no war in Ukraine.
-Even as late as 2013, Russia and Ukraine did naval manoevers in the 
-Black Sea - together!
-
-This war is sooo totally unnecessary. Maybe you should ask Vicky "F!ck 
-the EU" Newland why this all happened.
-
-> 
-> As to sending me a revert patch - please use whatever mush you call
-> brains. I'm Finnish. Did you think I'd be *supporting* Russian
-> aggression? Apparently it's not just lack of real news, it's lack of
-> history knowledge too.
-
-Why do you even mention your nationality?
-Just a few weeks ago, I read about the role of Finland in (and before) WW2.
-I don't think there is a big lack of history knowledge on my side.
-
-My country was occupied by Germany twice, in 1914 and in 1940.
-And yet, I have absolutely no bad feelings about either Germany as a 
-country nor Germans as a people. OK, their government is the worst since 
-1945, but that's a different matter.
-
-Wasn't Mannerheim married to a Russian? Eh?
-
-The former German Minister of Foreign Affairs, Guido Westerwelle, once 
-talked about "late Roman decadence", albeit in a different context.
-
-And yet, he was totally right even in other contexts. The Western world 
-is actually in the state of "late Roman decadence".
-And what follows after that decadence? Right, the downfall. And it might 
-be a huge chance to create a better, more equitable world.
-
-> 
->                        Linus
-
-Tor Vic
+- Nuno S=C3=A1
 

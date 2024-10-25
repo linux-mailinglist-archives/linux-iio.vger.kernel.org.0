@@ -1,96 +1,103 @@
-Return-Path: <linux-iio+bounces-11242-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11243-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E5C9AF9F5
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 08:29:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2D89AFAAF
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 09:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25306B21C81
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 06:29:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 025531C21214
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Oct 2024 07:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F9C1A4AAA;
-	Fri, 25 Oct 2024 06:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3721B3945;
+	Fri, 25 Oct 2024 07:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bz1HAba6"
+	dkim=pass (2048-bit key) header.d=oldum-net.20230601.gappssmtp.com header.i=@oldum-net.20230601.gappssmtp.com header.b="IwMlbUTZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51F54436A;
-	Fri, 25 Oct 2024 06:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508B61B0F14
+	for <linux-iio@vger.kernel.org>; Fri, 25 Oct 2024 07:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729837771; cv=none; b=QyMY5YbR24KG8TISMQ4QOnFWphGOkQm92r7sRCiaaKcsatWuQfX0muVq6OvuoRmp9A9G60wLsB8rFv/ZQpz4o1Tsw9gxDlLrEQkfjIjzsRSeKCJKLaIdOYeObi4hg6xrnHvOMR43vBppYShbBc0pSAQRjfxNgqp1teaDtSWRYck=
+	t=1729840296; cv=none; b=X8gI/Tt7cl9Fd2/nB7zx9OfTyjSFjS+Qdrq1PAq/C9kwJUDH4MLTS23At8hwT8JNENY+TdM4nxbkf3QUb3Pi3CedxrGwJfB0+H2wzF6gK8zpgjSdIUFobrozFfofGEzXpO8HsiAJwkveeXBo0ItGb4dGVF5iWDMtsxfb5vCZI9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729837771; c=relaxed/simple;
-	bh=+XahwEo3QmX+6o02dYWVxQaY93fMwzTYeg7GdldkdOw=;
+	s=arc-20240116; t=1729840296; c=relaxed/simple;
+	bh=2Yot5CVMrhD1GTtMp0Szbyl+xfW+qQ/vMp2WrwCQU80=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aC/DAvJDVsLNxWJg7AJcgNQm2jzWDN7nwwnGCgJ8P1JZNypCkOHvVGPEhg3vtMCmuUWV+vhXjKekztsZSLnWWpsQNKAs00ew9I9L/zRKBRnRrW7RRu26lNfQ+mwkrUMVbDdFlg+HjK+jC3p3nQz14LzbDYvZAeC6OleWQBznIJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bz1HAba6; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5cb6b2b7127so2035009a12.1;
-        Thu, 24 Oct 2024 23:29:26 -0700 (PDT)
+	 Content-Type:MIME-Version; b=GWIRKaBgGhCuv/3qNRYS9jDGjTWmXQQhcq7OqUSG4IgLgzMPJN3g1nK3suN7IlUUmB1VK2YGlPHDkxzjpDtdH9RO7UBr2Qk6+xlaXfBYwiXRLn+BuvgQWA57dxWLCaQFhCklRj6wDNFQYTKlCxjw4VgANhpUcFUCBISq5MkXoZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=oldum.net; spf=pass smtp.mailfrom=oldum.net; dkim=pass (2048-bit key) header.d=oldum-net.20230601.gappssmtp.com header.i=@oldum-net.20230601.gappssmtp.com header.b=IwMlbUTZ; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=oldum.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oldum.net
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c9150f9ed4so2182159a12.0
+        for <linux-iio@vger.kernel.org>; Fri, 25 Oct 2024 00:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729837765; x=1730442565; darn=vger.kernel.org;
+        d=oldum-net.20230601.gappssmtp.com; s=20230601; t=1729840292; x=1730445092; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=B1LmMY9VF83ON1MEVw29i3xkyJ5S9+Q5AomoQOw126k=;
-        b=bz1HAba6gkOjQ4fGHW9b75bTee8tCvbUsuQAfZsiWs6pJMO1ZIgA/F56h2UNqksqsV
-         BMudfdnYIti41CmHDCTcJskGWDxTzMx0LfX+3fYIEwYC9AT40VfpKycWGIkVCRzqI3IA
-         TDa478eWZmc4ZhQwTyeBkc7V62C5CwgguRAfKPU0wcJX/tKYornuRPkwLS2386Uy4Q/C
-         0JCigyEqD7LrDxOG4dlcht+A42G/txJqcC5G+ooRGcCeKgkZtyTyblmL8K7/LP11d8lJ
-         Bx19WHn7a+6HLZfUCMAkTwshJW/Kej5V02uaJy6i5sGQ7BoMM985897GNYUp9EycuIA4
-         wJJg==
+        bh=2Yot5CVMrhD1GTtMp0Szbyl+xfW+qQ/vMp2WrwCQU80=;
+        b=IwMlbUTZwZ2V4lgyH/Q3JZmhuSQBx8rzI9GCTTNjvLGy2h0vZsjxX1Fws8FEjvRUSo
+         2/8pkIokWFpMNxu1NBMrO60d76GLvhEd1DdZO4Xi/lNzzyDLSi8hPRA4oMZPcWVYIh9f
+         RSHnmNk8wjdKb/vcc6ztEXWzfGuURa+B2L6RzVGtHmUXLVQrQkjGQXnUzUJEQIN+fWyj
+         JGvG/BdJMBHskchqRLCsi3YlNOHREcS3tFEn5PBhM5kwOGbm17gn5PAGjKF+WlPCVAAA
+         cyYIU/kM9ASp8sGNTlgu6rJL7f4sI2YDThYywtmGsIJ67yUgSH3QOYNKp9hjSeE2tSDX
+         OY7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729837765; x=1730442565;
+        d=1e100.net; s=20230601; t=1729840292; x=1730445092;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=B1LmMY9VF83ON1MEVw29i3xkyJ5S9+Q5AomoQOw126k=;
-        b=anOhYVx27VAmvKQ/XeUGndBSkF5EGiNfgJAeNwPFreKz79qCgjgUoZMvyqpqPfkJ7h
-         +ArCVOjRef7LetLZjeTRdlPGst0vARf9w74Oxa9TB590jeQ/Ujskq4gwYk21odsSG/eJ
-         n445pqrXTakhS4BOqc/80cm7ZwGA0DLHMOJ1sEcUwu4OusW6u4Z3hpWHJSxQoG/pSKUP
-         TncFRutSAMLKTIAaHboRaB9Bci7O9Jk3noedxjlVKi05G3E5gxGmvxwp+R5vsmW4gD+Q
-         L5ZL1IRfV74noXKVuj4ty+x7kF+tnlwrHU4IdtnU3mgmuT1LEFBlNLxIT87stw5Qp1l/
-         a8dA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdKm/+0+nbqRUSKK8+3iSw+yEegyv9H2gHmRNGtJhDeE0VtNdeAhv7UHprtrUU3/UvuZx8UPW0arxL@vger.kernel.org, AJvYcCUzXCQGKlKSGutLnCfuM8ZZP8lbo0n6gkRvbE0yrphTcolxmLPloz+EF1tI76Q2e/c1Pz5kmaqSdfP7@vger.kernel.org, AJvYcCVADQ1AqQHC+7xA5fLQ30ZhMoBxP+cWPKawxwVpHB8WbNP5CcUr5hch+lBdvksGBvIgxrA8U2nNSePJ@vger.kernel.org, AJvYcCXMNvhFUVorxYD3gqPTSo3L34gDw0XOfV03Ojs7y2KyzVyMamG+f2HRYhV1yhOUeXxvjgLaXNwvlxfgS53U@vger.kernel.org, AJvYcCXkdZoaDOwmLdiPne7GcFZr9vLfcCxAZZi4QFjyGcvD0yqnAOCQQS7ktQcEZ7RW49EiINqzGCU/LIq+@vger.kernel.org
-X-Gm-Message-State: AOJu0YxITWk91T5iOf4c0TY4XqFy6pDK/1jXLvun5ZeOkU7ufTSj/Jgv
-	RecgpSOLVEZR5WMH3xGytONqRJhvx80M6MZd2IDKbkPCqTjzBexL
-X-Google-Smtp-Source: AGHT+IHdBjFJy8whlH5uXwInL5O8VcnvN0wo2fl1irS12tPY4Ac3qsdQ41G7Boc0gW6PVx5vwe8dNw==
-X-Received: by 2002:a17:907:2cc7:b0:a99:da6c:f607 with SMTP id a640c23a62f3a-a9abf92f857mr760072766b.44.1729837764442;
-        Thu, 24 Oct 2024 23:29:24 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f298df1sm31562866b.135.2024.10.24.23.29.23
+        bh=2Yot5CVMrhD1GTtMp0Szbyl+xfW+qQ/vMp2WrwCQU80=;
+        b=DLp9y4h0/PCS7S/Na4WUKfb54tIzOqr4h9OuUxzsyuAv13BbKjtPhOdq6sO90Krzjt
+         Jjb6+PcAugQEFyoB8e0ZC/wMRrWZfDy42o9V0WqHOoJaQRsrSkqgfiJBchzPHBI5nWGr
+         zipQx4Sp9p/fnciTUY0xLSewDyt6HAF6F4RIPhzoQ59KpoJYso+UZUVwpzSB+h+XUBKX
+         mfoWoYs/crCjs7+OCbRQe9QuxBEDV8bA/DB4cYV9Gu61Hz35LVQEsj2kv4hu9ldBT40n
+         TwtCN41bSF52E/UZ+GTpdklhieOokomndHdDOgq1zRMAE3bfAueL00f3CnWcUKWl4j9M
+         tDUA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEfdVlgxP10nJB6iaVSvor8pDeh9bOHutO6GKxL4rSLfpXNKGP3KxuSfU+gjFGy+a3ysRtRr3iR3Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybnlNSfKeqjWA8B4iyjMsvoENaYx0mjjbHPFjHQ9UqhLL7EY1n
+	AQHG3LepoQZgT43jaE4ukWQSUC92SJRMPW7g5v8LKUmuyJ/Djr1joSlIqLjsgm0=
+X-Google-Smtp-Source: AGHT+IGBdf9M+MhMVkkAf67M7SvMWvUIw/h/7r8rJ3Hdx2EtRLd3htedYCpRhV8dD7bWUo1PL92GzA==
+X-Received: by 2002:a17:907:3e9f:b0:a9a:bbcc:508c with SMTP id a640c23a62f3a-a9ad2710a64mr438727766b.2.1729840291504;
+        Fri, 25 Oct 2024 00:11:31 -0700 (PDT)
+Received: from [10.1.0.200] (178-169-191-169.parvomai.ddns.bulsat.com. [178.169.191.169])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a9b1f0298e7sm35760066b.75.2024.10.25.00.11.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 23:29:24 -0700 (PDT)
-Message-ID: <1715db810c98d5e8acc01d8348603c2426a4df4e.camel@gmail.com>
-Subject: Re: [PATCH RFC v4 03/15] spi: offload: add support for hardware
- triggers
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen
-	 <lars@metafoo.de>, David Jander <david@protonic.nl>, Martin Sperl
-	 <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
-Date: Fri, 25 Oct 2024 08:29:23 +0200
-In-Reply-To: <9d801823-aa90-4b15-9dbb-9da6ad2cb3e4@baylibre.com>
+        Fri, 25 Oct 2024 00:11:31 -0700 (PDT)
+Message-ID: <3ace1329d4ef99b87780d0ef07db179d27d04d44.camel@oldum.net>
+Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
+ compliance requirements."
+From: Nikolay Kichukov <nikolay@oldum.net>
+To: Mikhail Novosyolov <m.novosyolov@rosalinux.ru>, 
+	torvalds@linux-foundation.org
+Cc: aospan@netup.ru, conor.dooley@microchip.com, ddrokosov@sberdevices.ru, 
+ dmaengine@vger.kernel.org, dushistov@mail.ru, fancer.lancer@gmail.com, 
+ geert@linux-m68k.org, gregkh@linuxfoundation.org,
+ hoan@os.amperecomputing.com,  ink@jurassic.park.msu.ru, jeffbai@aosc.io,
+ kexybiscuit@aosc.io,  linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,  linux-fpga@vger.kernel.org,
+ linux-gpio@vger.kernel.org,  linux-hwmon@vger.kernel.org,
+ linux-ide@vger.kernel.org,  linux-iio@vger.kernel.org,
+ linux-media@vger.kernel.org,  linux-mips@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org,  linux-spi@vger.kernel.org,
+ manivannan.sadhasivam@linaro.org, mattst88@gmail.com, 
+ netdev@vger.kernel.org, nikita@trvn.ru, ntb@lists.linux.dev, 
+ patches@lists.linux.dev, peter@typeblog.net, richard.henderson@linaro.org, 
+ s.shtylyov@omp.ru, serjk@netup.ru, shc_work@mail.ru, torvic9@mailbox.org, 
+ tsbogend@alpha.franken.de, v.georgiev@metrotek.ru, wangyuli@uniontech.com, 
+ wsa+renesas@sang-engineering.com, xeb@mail.ru, rms@gnu.org,
+ campaigns@fsf.org
+Date: Fri, 25 Oct 2024 10:11:27 +0300
+In-Reply-To: <20241024210120.4126-1-m.novosyolov@rosalinux.ru>
 References: 
-	<20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
-	 <20241023-dlech-mainline-spi-engine-offload-2-v4-3-f8125b99f5a1@baylibre.com>
-	 <9762d3f3d3a2e5fbe5e5041cbdc928a9ab24e40b.camel@gmail.com>
-	 <9d801823-aa90-4b15-9dbb-9da6ad2cb3e4@baylibre.com>
+	<CAHk-=wjw0i-95S_3Wgk+rGu0TUs8r1jVyBv0L8qfsz+TJR8XTQ@mail.gmail.com>
+	 <20241024210120.4126-1-m.novosyolov@rosalinux.ru>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+User-Agent: Evolution 3.50.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -98,217 +105,101 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2024-10-24 at 10:02 -0500, David Lechner wrote:
-> On 10/24/24 9:04 AM, Nuno S=C3=A1 wrote:
-> > On Wed, 2024-10-23 at 15:59 -0500, David Lechner wrote:
-> > > Extend SPI offloading to support hardware triggers.
-> > >=20
-> > > This allows an arbitrary hardware trigger to be used to start a SPI
-> > > transfer that was previously set up with spi_optimize_message().
-> > >=20
-> > > A new struct spi_offload_trigger is introduced that can be used to
-> > > configure any type of trigger. It has a type discriminator and a unio=
-n
-> > > to allow it to be extended in the future. Two trigger types are defin=
-ed
-> > > to start with. One is a trigger that indicates that the SPI periphera=
-l
-> > > is ready to read or write data. The other is a periodic trigger to
-> > > repeat a SPI message at a fixed rate.
-> > >=20
-> > > There is also a spi_offload_hw_trigger_validate() function that works
-> > > similar to clk_round_rate(). It basically asks the question of if we
-> > > enabled the hardware trigger what would the actual parameters be. Thi=
-s
-> > > can be used to test if the requested trigger type is actually support=
-ed
-> > > by the hardware and for periodic triggers, it can be used to find the
-> > > actual rate that the hardware is capable of.
-> > >=20
-> > > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > > ---
-> > >=20
-> > > In previous versions, we locked the SPI bus when the hardware trigger
-> > > was enabled, but we found this to be too restrictive. In one use case=
-,
-> > > to avoid a race condition, we need to enable the SPI offload via a
-> > > hardware trigger, then write a SPI message to the peripheral to place
-> > > it into a mode that will generate the trigger. If we did it the other
-> > > way around, we could miss the first trigger.
-> > >=20
-> > > Another likely use case will be enabling two offloads/triggers at one
-> > > time on the same device, e.g. a read trigger and a write trigger. So
-> > > the exclusive bus lock for a single trigger would be too restrictive =
-in
-> > > this case too.
-> > >=20
-> > > So for now, I'm going with Nuno's suggestion to leave any locking up =
-to
-> > > the individual controller driver. If we do find we need something mor=
-e
-> > > generic in the future, we could add a new spi_bus_lock_exclusive() AP=
-I
-> > > that causes spi_bus_lock() to fail instead of waiting and add "locked=
-"
-> > > versions of trigger enable functions. This would allow a peripheral t=
-o
-> > > claim exclusive use of the bus indefinitely while still being able to
-> > > do any SPI messaging that it needs.
-> > >=20
-> > > v4 changes:
-> > > * Added new struct spi_offload_trigger that is a generic struct for a=
-ny
-> > > =C2=A0 hardware trigger rather than returning a struct clk.
-> > > * Added new spi_offload_hw_trigger_validate() function.
-> > > * Dropped extra locking since it was too restrictive.
-> > >=20
-> > > v3 changes:
-> > > * renamed enable/disable functions to spi_offload_hw_trigger_*mode*_.=
-..
-> > > * added spi_offload_hw_trigger_get_clk() function
-> > > * fixed missing EXPORT_SYMBOL_GPL
-> > >=20
-> > > v2 changes:
-> > > * This is split out from "spi: add core support for controllers with
-> > > =C2=A0 offload capabilities".
-> > > * Added locking for offload trigger to claim exclusive use of the SPI
-> > > =C2=A0 bus.
-> > > ---
-> > > =C2=A0drivers/spi/spi-offload.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
- 266 ++++++++++++++++++++++++++++++++++++++++
-> > > =C2=A0include/linux/spi/spi-offload.h |=C2=A0 78 ++++++++++++
-> > > =C2=A02 files changed, 344 insertions(+)
-> > >=20
-> > > diff --git a/drivers/spi/spi-offload.c b/drivers/spi/spi-offload.c
-> > > index c344cbf50bdb..2a1f9587f27a 100644
-> > > --- a/drivers/spi/spi-offload.c
-> > > +++ b/drivers/spi/spi-offload.c
-> > > @@ -9,12 +9,26 @@
-> > > =C2=A0#include <linux/cleanup.h>
-> > > =C2=A0#include <linux/device.h>
-> > > =C2=A0#include <linux/export.h>
-> > > +#include <linux/list.h>
-> > > =C2=A0#include <linux/mutex.h>
-> > > +#include <linux/of.h>
-> > > =C2=A0#include <linux/property.h>
-> > > =C2=A0#include <linux/spi/spi-offload.h>
-> > > =C2=A0#include <linux/spi/spi.h>
-> > > =C2=A0#include <linux/types.h>
-> > > =C2=A0
-> > > +struct spi_offload_trigger {
-> > > +	struct list_head list;
-> > > +	struct device dev;
-> > > +	/* synchronizes calling ops and driver registration */
-> > > +	struct mutex lock;
-> > > +	const struct spi_offload_trigger_ops *ops;
-> > > +	void *priv;
-> > > +};
-> > > +
-> > > +static LIST_HEAD(spi_offload_triggers);
-> > > +static DEFINE_MUTEX(spi_offload_triggers_lock);
-> > > +
-> > > =C2=A0/**
-> > > =C2=A0 * devm_spi_offload_alloc() - Allocate offload instances
-> > > =C2=A0 * @dev: Device for devm purposes
-> > > @@ -102,3 +116,255 @@ struct spi_offload *devm_spi_offload_get(struct=
- device
-> > > *dev,
-> > > =C2=A0	return offload;
-> > > =C2=A0}
-> > > =C2=A0EXPORT_SYMBOL_GPL(devm_spi_offload_get);
-> > > +
-> > > +static void spi_offload_trigger_release(void *data)
-> > > +{
-> > > +	struct spi_offload_trigger *trigger =3D data;
-> > > +
-> > > +	guard(mutex)(&trigger->lock);
-> > > +	if (trigger->priv && trigger->ops->release)
-> > > +		trigger->ops->release(trigger->priv);
-> > > +
-> > > +	put_device(&trigger->dev);
-> > > +}
-> > > +
-> > > +struct spi_offload_trigger
-> > > +*devm_spi_offload_trigger_get(struct device *dev,
-> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct spi_offload *offload,
-> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum spi_offload_trigger_type type=
-)
-> > > +{
-> > > +	struct spi_offload_trigger *trigger;
-> > > +	struct fwnode_reference_args args;
-> > > +	bool match =3D false;
-> > > +	int ret;
-> > > +
-> > > +	ret =3D fwnode_property_get_reference_args(dev_fwnode(offload-
-> > > > provider_dev),
-> > > +						 "trigger-sources",
-> > > +						 "#trigger-source-cells", 0,
-> > > 0,
-> > > +						 &args);
-> > > +	if (ret)
-> > > +		return ERR_PTR(ret);
-> > > +
-> > > +	struct fwnode_handle *trigger_fwnode __free(fwnode_handle) =3D
-> > > args.fwnode;
-> > > +
-> > > +	guard(mutex)(&spi_offload_triggers_lock);
-> > > +
-> > > +	list_for_each_entry(trigger, &spi_offload_triggers, list) {
-> > > +		if (trigger->dev.fwnode !=3D args.fwnode)
-> > > +			continue;
-> > > +
-> > > +		match =3D trigger->ops->match(trigger->priv, type, args.args,
-> > > args.nargs);
-> > > +		if (match)
-> > > +			break;
-> > > +	}
-> > > +
-> > > +	if (!match)
-> > > +		return ERR_PTR(-EPROBE_DEFER);
-> > > +
-> > > +	guard(mutex)(&trigger->lock);
-> > > +
-> > > +	if (!trigger->priv)
-> > > +		return ERR_PTR(-ENODEV);
-> >=20
-> > This is a bit odd tbh. Not a real deal breaker for me but the typical p=
-attern I
-> > would
-> > expect is for methods of the trigger to get a struct spi_offload_trigge=
-r opaque
-> > pointer. Then we provide a get_private kind of API for the private data=
-. I guess
-> > you
-> > want to avoid that but IMO it makes for neater API instead of getting v=
-oid
-> > pointers.
+On Fri, 2024-10-25 at 00:01 +0300, Mikhail Novosyolov wrote:
+> Linus, Greg,
 >=20
-> I was just trying to save a step of an extra call to get *priv
-> in each callback implementation, but yeah, no problem to change
-> it to something more "normal" looking.
+> First of all thanks to you for taking by far not the most harmful
+> actions to achieve what your lawyers very kindly asked you to do.
+>=20
+> Unfortunately, already a lot of highly qualified people have started
+> thinking that you acted very badly. Of course, there are questions
+> like why removed maintainers were not properly notified and did not
+> receive any additional explanations, but, to my mind, it is useless to
+> try to find 100% justice -- it is not possible. Overton windows has
+> been opened a bit more.
+>=20
+> Usually the first contribution is much harder to make then the
+> following ones. A big problem here is that now many people even will
+> not try to contribute to the Linux kernel and other open source
+> projects: their pride for themselves, their homeland, their colleagues
+> has been severely hurt (we are ready to fight for all that).
+>=20
+> It is not clear what to do with this problem. Any ideas?
+>=20
+> I am sure that people from any country and of any nationality will
+> have similar feelings if you act with them or their colleagues in a
+> similar way.
+>=20
+> Thanks to people who were not afraid to say something against this
+> action. Chinese, Latin American, African and other people probably
+> understand that they may be the next ones to be dropped from
+> maintainers. Hope that we will not have to form another Linux kernel
+> upstream one day...
+>=20
+> I am sorry that you have to read a lot of text from people who you
+> call trolls -- it is hard to keep calm.
+>=20
+> You know, you have really made it much harder to motivate people to
+> contribute into the kernel. There is such problem among developers of
+> hardware that they do not feel comfortable enough to show their code,
+> for example because they think that it is not perfect. Let=E2=80=99s take
+> Baikal Electronics. They do publish their kernel code, but in a form
+> of tarballs without git. They slowly, but constantly worked on
+> contributing support of their hardware into the upstream kernel,
+> fixing not Baikal-related bugs by the way. One day someone told them
+> that =E2=80=9Cwe are not comfortable with accepting your patches=E2=80=9D=
+. And they
+> stopped their work on upstream. Now that man has been removed from
+> maintainers of previously contributed code (code for not Russian
+> hardware, by the way).
+>=20
+> What do I suggest to do? Well, I don=E2=80=99t know, but I do not see dir=
+ect
+> legal reasons why doing this was required and why patches from Baikal
+> could not be accepted (the fact that I do not see does not mean that
+> they do not exist, but please show them). Politicians and activists
+> can be shown a finger in some places, by both developers and lawyers,
+> at least to prevent them from being too ambitious, when they decide to
+> break something working next time... But maybe I do not know something
+> about truly democratic regimes :-)
+>=20
+> Thanks for reading.
+>=20
+Hi folks,
 
-Yeah, I figured that but I guess any of these paths are fastpaths anyways..=
-.=20
->=20
-> >=20
-> > Another thing is, can the above actually happen? We have the
-> > spi_offload_triggers_lock grabbed and we got a match so the trigger sho=
-uld not be
-> > able to go away (should block on the same lock).
->=20
-> The problem is that it could have gone away before we took the lock.
->=20
-> It could happen like this:
->=20
-> * Trigger driver registers trigger - sets *priv.
-> * SPI peripheral driver gets reference to trigger.
-> * Trigger driver unregisters trigger - removes *priv.
-> * SPI peripheral tries to call trigger function.
->=20
+I also do not consider what's happened here as normal. The maintainers
+removal stands against the key principles and values of our GNU/Linux
+communities and the FOSS ideology. Values and ideas most of us have been
+protecting and advocating for since we can remember!
 
-Ah I see... we're using scoped_guard() in the unregister path.
+This hurt so badly! Really. This is betrial.
 
-- Nuno S=C3=A1
->=20
+Even if this is now reverted, or the upstream kernel is forked and a new
+upstream kernel repository is elected, the history of it will remain and
+haunt us all.
 
+Turned out our beloved and "free" as in freedom kernel has been
+compromised by compliance to a government.
+
+But this is the Linux kernel, how could this have happened?! It is used,
+improved and copied all over the world, not just one country! Why did we
+let this happen?
+
+This is a precedent that tells everybody what can come next, due to
+"compliance" reasons the kernel could receive code produced by a
+government institution that serves not the Linux community, but the
+governement.
+
+Surely it is not just me thinking towards what can change so we never
+again have to comply to a government of a country when fighting for
+freedom!
+
+FSF, any comments on this?
+
+Resist!
+
++rms and fsf
+
+Thanks,
+Nikolay
 

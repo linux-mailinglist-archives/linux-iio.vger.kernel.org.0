@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-11310-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11311-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0B89B173C
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 13:02:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBB49B173E
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 13:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E76AB1F2304E
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 11:02:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD6441C2140B
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 11:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B560D18308A;
-	Sat, 26 Oct 2024 11:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6481D2796;
+	Sat, 26 Oct 2024 11:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YjCKoBnj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OVcuhhZG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E41A217F22;
-	Sat, 26 Oct 2024 11:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5AF217F22;
+	Sat, 26 Oct 2024 11:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729940562; cv=none; b=Ik7Ur/FsDM9oWCVbFZFG8VVdlizIpItp8bPGQTPV4cgQH0x3YkNTaO4rrL9/sjzEHMOQpjBIVL7rFF65yK8hgXF0jcWChSlQhxDveJO3a94Ku5Bbhd3b1qARBgCPXGl9cdHQVbeYNmmCZsIQ8+pQvEFr+H4jNRQ56N11YZTKr5A=
+	t=1729940641; cv=none; b=n4iPDdhFFuETnUOwKfchYmhJK9hXSrPF44U0nprxM6QOLzpFAe254/GgIdicvAG1C4TavKErf7Zq95v/76h36b9yVqhbRv++5yJWjBbaPtUr72pPKJeJLUnA48NLMsQ2IkrEC754bWVkU4KVjuzSE+zqLt/d43c9YA2alqecYBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729940562; c=relaxed/simple;
-	bh=2+e2mkXeYY/1Bbeta2CvQuMBxUdG6325UmJ8QQzA0KY=;
+	s=arc-20240116; t=1729940641; c=relaxed/simple;
+	bh=6/j2yB4KsWr+cGt2R31iVvsCkKMPgvqnN3uoX7PQMkQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZyzN++YbuLRyuwxWjtNMDf5Yun1IW2E4iBFOJovJNrMBer9JwuM2X5Zcf88hdY4EGpwsIuCHWAYnMdwT+c4sch+Hz9f8P5Y0hT7ccjJj8eX1Lr2Ajn+CgubRWd01qOhZ/x1qQH6Q3W/4JEbMYfVhO4jKDddHH3pQc00n2H/HESA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YjCKoBnj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24D0C4CEC6;
-	Sat, 26 Oct 2024 11:02:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JmuEkiBj0Ko33gi0gB/jjTD7j0YnCd3i9uOsKRxY5hq+rZceJhvHIDOxhPrNzzK/omoowe9WRZaTq80Wfu564hxqwgpc7N1DRMq8zT+qe2uuREaK3RjGZeQ/oKNijReb4IAJj2QZMAvyLM0dHzCwyefAsE3+vxyudfRujBdYq18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OVcuhhZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66E7C4CEC6;
+	Sat, 26 Oct 2024 11:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729940562;
-	bh=2+e2mkXeYY/1Bbeta2CvQuMBxUdG6325UmJ8QQzA0KY=;
+	s=k20201202; t=1729940640;
+	bh=6/j2yB4KsWr+cGt2R31iVvsCkKMPgvqnN3uoX7PQMkQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YjCKoBnjxrXWTBahClag5j3YE1tq8dvrSAJjXnT2e34DgGQKSotgwxTBwz4uMWxvY
-	 O1ZjKlNcavNFQAGrmXAVlnRletm9yAPxrQEPihvuQLlU1gxI6VQ0PWk6jP9n3j/JVQ
-	 FxLv+4q+68bMeNNTbsbvpjFssXIDaRVI+LcZOdMbe1eoeEOpnLxH9QeyU85wz5jaND
-	 OYgImW93/fnG1XUkkkR2NeGcJpEJoXQTZNND44CjyZAXO/MpDH+1LH+6Dv8jHiA6ZP
-	 7+kn94GiKvUAwy/dG/NCxzDYQCzukiy4lZ3Ff0iRzgn35w2aPcsR+kUSWuWrqO6g/f
-	 rCO0JJUnYDqBA==
-Date: Sat, 26 Oct 2024 12:02:36 +0100
+	b=OVcuhhZGqMQ7YwaVOZ8dvtXqFFR+woVRrdxd7rxJuSqGvHc2XkeWc0nIfWIq2Gxem
+	 xVueS5N/8i/TUG8TLrZuHulAC+H//WZj+t7RyutP+EAXeXFnB0pbtEUIYFCZ2aRmHA
+	 uaRRIrM+G9pmOWz08eYNvj6fkKwqVI9PIAGedTq3MastZFj4woN7k7T2g6u8zjbCzL
+	 nkpSEDiSaJHgR+tzEllNdGb9klZr2rCihpr9fcGxQ39nNjHPYKbH9r+IKeNStetmtP
+	 0GuhDY7SoNpeDdp/fa2AYbZ0QaLx5rWU5nyjXlPKrc+EP3B51FEF6+BE3F6zs1CEQ7
+	 PTdST8VqvWMdA==
+Date: Sat, 26 Oct 2024 12:03:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Marius Cristea
@@ -49,12 +49,12 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Marius Cristea
  Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, Hans de Goede
  <hdegoede@redhat.com>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v3 01/24] iio: magnetometer: bmc150: Drop dead code from
- the driver
-Message-ID: <20241026120236.743c6f70@jic23-huawei>
-In-Reply-To: <20241024191200.229894-2-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v3 02/24] iio: adc: pac1934: Replace strange way of
+ checking type of enumeration
+Message-ID: <20241026120352.33ea650c@jic23-huawei>
+In-Reply-To: <20241024191200.229894-3-andriy.shevchenko@linux.intel.com>
 References: <20241024191200.229894-1-andriy.shevchenko@linux.intel.com>
-	<20241024191200.229894-2-andriy.shevchenko@linux.intel.com>
+	<20241024191200.229894-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,20 +65,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 24 Oct 2024 22:04:50 +0300
+On Thu, 24 Oct 2024 22:04:51 +0300
 Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Since there is no ACPI IDs for this driver to be served for,
-> drop dead ACPI bits from it completely.
+> When device is enumerated via ACPI the respective device node is of
+> ACPI device type. Use that to check for ACPI enumeration, rather than
+> calling for full match which is O(n) vs. O(1) for the regular check.
 > 
 > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> Reviewed-by: Marius Cristea <marius.cristea@microchip.com>
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Given lots of somewhat independent stuff in this series, I'm going to review
-an pick them up one by one.
+Applied
+> ---
+>  drivers/iio/adc/pac1934.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
+> index 7ef249d83286..20802b7f49ea 100644
+> --- a/drivers/iio/adc/pac1934.c
+> +++ b/drivers/iio/adc/pac1934.c
+> @@ -1507,7 +1507,7 @@ static int pac1934_probe(struct i2c_client *client)
+>  		indio_dev->name = pac1934_chip_config[ret].name;
+>  	}
+>  
+> -	if (acpi_match_device(dev->driver->acpi_match_table, dev))
+> +	if (is_acpi_device_node(dev_fwnode(dev)))
+>  		ret = pac1934_acpi_parse_channel_config(client, info);
+>  	else
+>  		/*
 
-Applied this one.
-
-Thanks,
-
-Jonathan
 

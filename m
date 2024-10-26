@@ -1,129 +1,116 @@
-Return-Path: <linux-iio+bounces-11336-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11338-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECCB9B17FC
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 14:23:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB829B1808
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 14:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AE4C1F21ECA
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 12:23:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B47B6282B94
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 12:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DB51D54C1;
-	Sat, 26 Oct 2024 12:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810321D5ABE;
+	Sat, 26 Oct 2024 12:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oe/0w62J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dO2Up6ey"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520AE1CEABB;
-	Sat, 26 Oct 2024 12:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CAC1D54E9;
+	Sat, 26 Oct 2024 12:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729945422; cv=none; b=WjewhlstrVrQx7PhFxK4uE18+Ss/fNLLdYmEDtVsrgMnBXYf79SHssNbHTMTBPzguZeZFVYRBjTsMgIVVYHIgyDXoPQHFAVTUzvqngXljuMXDecZ4ZphFoqeATdy/H0uCvQK6VvJ1puMsH+ovW8Qf/h8aSX8rfj3QxsTlqhXwq4=
+	t=1729945601; cv=none; b=b5hHdSg6ZumIodymmhySflSivJQpAQhy4iSRmSUdcGGDjdCcILOTua7pP1j8ES1+NGVDU6NkOFXwtjDi84uYWWPAzCFzkl0jYFVuCliKwC6//gmXMHYAje2W2qnNshGC2V9PBtoyIAmwpI3+J3Tqn48yz1EXR4j4Cl/4XCRxdFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729945422; c=relaxed/simple;
-	bh=7xIivhA1EXxgO1w5r3JW6hnItDJPqu0yDX6zXM57fqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hD39rFx3pnw4IDZaOG3jOrWl9rhA7r7JHBWSvLi7dMwInG9y3+YL6o0HDBmyF1X2PdLES9XGT/mVbv2eWjNn2pni+RZOa3tbxNQuzOVsSXeIKBtP4L4+wMwN90rVlYctIuAun8gAzGGDKpejTegElIc6jg61puntvmWE21AlRTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oe/0w62J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD70AC4CEC6;
-	Sat, 26 Oct 2024 12:23:40 +0000 (UTC)
+	s=arc-20240116; t=1729945601; c=relaxed/simple;
+	bh=vlTJxPv2hpMGHbCdwNowbs1x9acLLoluxWNNFVabxMM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pQ1rT6ooSuNuJWNqVCdLETOOD9D02bVC5OOXt7qAsYVeQfp9LKFCGPzCwF82niG5jc3A59h4aYW/FfhpRFne6KDEOCnJA5k//R6sENlN2pA+8Vh/h94tqxeFTKgiE9BNFeRBXbHTUJEvygEKfyrC+sCQeLIar1U4uJzSICF/bGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dO2Up6ey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F06AC4CEC6;
+	Sat, 26 Oct 2024 12:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729945421;
-	bh=7xIivhA1EXxgO1w5r3JW6hnItDJPqu0yDX6zXM57fqc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Oe/0w62J1Y5g5F5kDrn728Ij5+DYGbbqEXHIxoBecYUB1+KLqUPEW+s/lroul8odm
-	 Gtkbo1OcvJ+WygaZE0LtWLinNvxUI6PcHF1wHMVnlKDc72BkXr8mZJRfR5khJjaGX3
-	 4vnEWGR4S7Cg45og2naqlPi5Cl0TuAuz3FR7CDQQdJ+yvdG1J0UoictLIkwsHKKS8a
-	 HLHtrV5OFlfhmiPqxBcR4LTSC02i8TNxyL1hEu/7pPHcU8jyn+P36woAxP2lKp7KOm
-	 pSyyVV4tTK33tk5xCVZ9R3iO0mVeUfVLjnRKSpmpH0LMXmnVdFAwEdXDqIO5Htxh3E
-	 7jkW+4S4s9VMQ==
-Date: Sat, 26 Oct 2024 14:23:37 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: veml6075: document
- rset-ohms
-Message-ID: <sn66fvaqxohambw6aijimjek2cjshg2g75oh7baa2yhc4w2yh7@ox7bzsmdbpzk>
-References: <20241024-veml6070-integration-time-v2-0-d53272ec0feb@gmail.com>
- <20241024-veml6070-integration-time-v2-1-d53272ec0feb@gmail.com>
+	s=k20201202; t=1729945600;
+	bh=vlTJxPv2hpMGHbCdwNowbs1x9acLLoluxWNNFVabxMM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dO2Up6eyFA00wtIu1eKIzr4FHLenroJ+GhPOJGXPB30hjWhR7vkq09eQzcjKqya57
+	 rJKnZlBhTu1zfFDjvaIQ18QYeDOL08aiaLP0mV3Dl7Z4wsFv5oFRmxVPCusH9NjiQb
+	 C0DaH+jMpUg2gydCUy/T6pXM0eJzudxFtlY/0o6zbZzcspwn1GzZ4bWx01JdC2ffuR
+	 TWp95dUb3HYQKeBFB+r1fkwPJ33hwaoJ7wOqEMyIIhl72Mrk2C9W/03cLGl5NUGKj+
+	 MeqX6HJSdGAENBbPYmuB9zhw7j/sffaJeQH8Q4JebVodN1/+E5D4I00W4G/11oQSTo
+	 2tb+KZcb+F+Yw==
+Date: Sat, 26 Oct 2024 13:25:47 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Anshul Dalal <anshulusr@gmail.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>, Ramona Gradinariu
+ <ramona.gradinariu@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Dan Robertson <dan@dlrobertson.com>, Marcelo
+ Schmitt <marcelo.schmitt@analog.com>, Matteo Martelli
+ <matteomartelli3@gmail.com>, Anand Ashok Dumbre
+ <anand.ashok.dumbre@xilinx.com>, Michal Simek <michal.simek@amd.com>,
+ Mariel Tinaco <Mariel.Tinaco@analog.com>, Jagath Jog J
+ <jagathjog1996@gmail.com>, Lorenzo Bianconi <lorenzo@kernel.org>, Subhajit
+ Ghosh <subhajit.ghosh@tweaklogic.com>, Kevin Tsai <ktsai@capellamicro.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Benson Leung
+ <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
+Subject: Re: [PATCH 4/7] iio: light: veml6030: simplify code in
+ write_event_config callback
+Message-ID: <20241026132547.481ca1be@jic23-huawei>
+In-Reply-To: <20241024-iio-fix-write-event-config-signature-v1-4-7d29e5a31b00@baylibre.com>
+References: <20241024-iio-fix-write-event-config-signature-v1-0-7d29e5a31b00@baylibre.com>
+	<20241024-iio-fix-write-event-config-signature-v1-4-7d29e5a31b00@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241024-veml6070-integration-time-v2-1-d53272ec0feb@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 24, 2024 at 10:44:48PM +0200, Javier Carrasco wrote:
-> The veml6070 provides a configurable integration time by means of an
-> external resistor (Rset in the datasheet) with values between 75 and
-> 1200 kohms.
+On Thu, 24 Oct 2024 11:11:26 +0200
+Julien Stephan <jstephan@baylibre.com> wrote:
+
+> iio_ev_state_store is actually using kstrtobool to check user
+> input, then gives the converted boolean value to the write_event_config
+> callback.
 > 
-> Document rset-ohms to select the integration time.
+> Remove useless code in write_event_config callback.
 > 
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Applied.
+
+After patch 7 this will include a shift of a bool which is a little
+unusual but valid C.
+
 > ---
->  .../bindings/iio/light/vishay,veml6075.yaml        | 27 ++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
+>  drivers/iio/light/veml6030.c | 3 ---
+>  1 file changed, 3 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-> index 96c1317541fa..dfd64c411658 100644
-> --- a/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-> +++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-> @@ -22,6 +22,10 @@ properties:
->    reg:
->      maxItems: 1
+> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+> index d6f3b104b0e6be8e095a1ad9f20acb81ce492630..95751c1015909cd80543a559673f435d1a168f68 100644
+> --- a/drivers/iio/light/veml6030.c
+> +++ b/drivers/iio/light/veml6030.c
+> @@ -826,9 +826,6 @@ static int veml6030_write_interrupt_config(struct iio_dev *indio_dev,
+>  	int ret;
+>  	struct veml6030_data *data = iio_priv(indio_dev);
 >  
-> +  rset-ohms:
-> +    description:
-> +      Resistor used to select the integration time.
-
-Widest constraints should go here. If only one device supports them,
-then it even simplifies the if:then.
-
-> +
->    vdd-supply: true
->  
->  required:
-> @@ -29,6 +33,29 @@ required:
->    - reg
->    - vdd-supply
->  
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - vishay,veml6040
-> +            - vishay,veml6075
-> +    then:
-> +      properties:
-> +        rset-ohms: false
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - vishay,veml6070
-> +    then:
-> +      properties:
-> +        rset-ohms:
-> +          default: 270000
-> +          minimum: 75000
-> +          maximum: 1200000
-
-Move these three to top-level and then you can drop this if:.
-
-Best regards,
-Krzysztof
+> -	if (state < 0 || state > 1)
+> -		return -EINVAL;
+> -
+>  	ret = veml6030_als_shut_down(data);
+>  	if (ret < 0) {
+>  		dev_err(&data->client->dev,
+> 
 
 

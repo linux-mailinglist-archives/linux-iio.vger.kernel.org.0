@@ -1,62 +1,60 @@
-Return-Path: <linux-iio+bounces-11364-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11365-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E419B1A36
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 19:58:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD309B1A53
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 20:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 222F8282537
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 17:58:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E867EB21648
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 18:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7710E1D3628;
-	Sat, 26 Oct 2024 17:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBF91D3639;
+	Sat, 26 Oct 2024 18:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQKJuZGd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fR2PgP0w"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D94538A;
-	Sat, 26 Oct 2024 17:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FC013B2A8;
+	Sat, 26 Oct 2024 18:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729965487; cv=none; b=TEdWZIG6mdECYkcwdUVluDiswjzDoBTQ3AqctXQNDkaVWzjSad+EEMrAaN+p7Xe6bAABVHOl5uzL8C0jStOLePjH14wPqEBsqOduGV9C3kdhAI1uSSjcytM15fhppK0WQC2jV1kjdVOseEOSUvwgZX4yJvPcPj15pEpzJZEm8eU=
+	t=1729966246; cv=none; b=qogH9CIXu4Md1gwLeSkmiq4BFFOCI6dzSQOxGfG2ycAY15zxD+NplGEpsdLLAtiaVyEejCrhfgFvETPtbF4nMod2IqnSZQy2VC9NQjIEEn0G4pMXCgLEt8Fv9hl9RJMPj8Iy+kmbvsqjzGWpsITuabps+ehuT6u8tLBysQbd6wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729965487; c=relaxed/simple;
-	bh=M87z23jSPeioI44sjRMgAaGcyWOo5qKOQuk/rn6unzg=;
+	s=arc-20240116; t=1729966246; c=relaxed/simple;
+	bh=sqTmSUJazM7nhjfb4jtbIvz0Z/sA3IyEDRELq86/kVE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kmjrjh8YWD9f+tvJYiO0N5p2JVUxC4277eabP1b9R+YfQ/rNxdDB92ILCmT9fMnTY7pBn0qr1TR/xZi8YY0/Zh/5+FM7ijf62PdYgLyu4Q7js2IDYk9zQhMe6VF6sKtuxa0a9VBxnroOWeAMOFO31CQHizrKi/FpsK5EUwXai4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQKJuZGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985DAC4CEC6;
-	Sat, 26 Oct 2024 17:57:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RzkuXudl8A12OqxltWZqemCisQgaRAX/8ioIFp8CoT1tYmQmcqtxWXd11cwyfALtAXqAuJmRkhw9NMftxqeI6IYcrcO5Lg9/FwygpM6vjAWSLJtclBdvcnNdq0zibRRfr/765eKxOzsziZHzAqu0U3Ba0G0lZ0peAXGP6ziMV2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fR2PgP0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54683C4CEC6;
+	Sat, 26 Oct 2024 18:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729965486;
-	bh=M87z23jSPeioI44sjRMgAaGcyWOo5qKOQuk/rn6unzg=;
+	s=k20201202; t=1729966245;
+	bh=sqTmSUJazM7nhjfb4jtbIvz0Z/sA3IyEDRELq86/kVE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AQKJuZGdKwY9QmpMNK0cyVjvO+jUN7g8cYTbPwV3h+FB3/Erb11vSHYLTx+HnTAE5
-	 xRGdyleZFyU/gC7zxddQxpmcyBma93jfmypG78byunc7caPkKK4t8+MOK43EuP3CFu
-	 UH0UFAfLzwhJ/P5YxOV6waeDt0GzMuN007bFDgSZ4i82nOwc7cXE1x2VMZCaedFq2M
-	 iAt4QM0aJZKqIROHoMrGEjrTskVwMUKvO2i4flFdBcSzQHsik5GLRLQcWlm6bIUP3w
-	 mE3k5j9TWPSSgkPfvrrmNac9oqdzXlRuyboZupYx+YF9q1VHoBKjbTsJFDt/6KUFWF
-	 sIxPt51d+Wr/Q==
-Date: Sat, 26 Oct 2024 18:57:40 +0100
+	b=fR2PgP0wqA4/c4qLzwYX49undL34eOeNtT1hCUeujeKS00SbzC5K5SrVnY+ssRDoU
+	 8gO88OSBlal6lPGvHOm4jGw+QSWuSmwa4Ktm5b2ztM298RORHsumt13RstGWkln+9Q
+	 5CXtyrbzz3P09C46gSmphTXrYhH8cvI5VwRj4DRr1KBALhNUNkweh/g0OcvSWV9MsV
+	 1SXhIHjA3KM2b2XHL0rp+qmOi0B9cujN5o3NMzkMHJkFVijn20MB8tLQTkVQmIV2ot
+	 k8oiX4EtR0A5c1L3Du/dNABclExSh0bFsdpmjKm45LJLFTYsPfab7dhdTj/mlI88pF
+	 X++RfNYdy/5WQ==
+Date: Sat, 26 Oct 2024 19:10:01 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
- <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown
- <broonie@kernel.org>, dlechner@baylibre.com
-Subject: Re: [PATCH v8 7/8] iio: dac: ad3552r: add high-speed platform
- driver
-Message-ID: <20241026185740.4144f6c8@jic23-huawei>
-In-Reply-To: <20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-7-74ca7dd60567@baylibre.com>
-References: <20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-0-74ca7dd60567@baylibre.com>
-	<20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-7-74ca7dd60567@baylibre.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: kernel test robot <lkp@intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
+ oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] iio: light: add support for veml3235
+Message-ID: <20241026191001.10acd773@jic23-huawei>
+In-Reply-To: <19c8e07f-4b9b-4d4b-aa18-f6766b65b33e@gmail.com>
+References: <20241023-veml3235-v3-2-8490f2622f9a@gmail.com>
+	<202410251610.kB7u6xMJ-lkp@intel.com>
+	<19c8e07f-4b9b-4d4b-aa18-f6766b65b33e@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,125 +65,94 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 25 Oct 2024 11:49:40 +0200
-Angelo Dureghello <adureghello@baylibre.com> wrote:
+Hi Javier,
 
-> From: Angelo Dureghello <adureghello@baylibre.com>
+> >    222	
+> >    223		return 0;
+> >    224	}
+> >    225	
+> >   
 > 
-> Add High Speed ad3552r platform driver.
 > 
-> The ad3552r DAC is controlled by a custom (fpga-based) DAC IP
-> through the current AXI backend, or similar alternative IIO backend.
-> 
-> Compared to the existing driver (ad3552r.c), that is a simple SPI
-> driver, this driver is coupled with a DAC IIO backend that finally
-> controls the ad3552r by a fpga-based "QSPI+DDR" interface, to reach
-> maximum transfer rate of 33MUPS using dma stream capabilities.
-> 
-> All commands involving QSPI bus read/write are delegated to the backend
-> through the provided APIs for bus read/write.
-> 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
-Hi Angelo,
+> Unused as there is no processed values anymore. I will drop them for v4.
+Given I didn't have any other comments I just fixed these up whilst applying.
 
-I'd missed a build issue in previous reviews. :(
-
->  drivers/iio/dac/Kconfig      |  14 ++
->  drivers/iio/dac/Makefile     |   1 +
->  drivers/iio/dac/ad3552r-hs.c | 530 +++++++++++++++++++++++++++++++++++++++++++
->  drivers/iio/dac/ad3552r-hs.h |  19 ++
->  drivers/iio/dac/ad3552r.h    |   4 +
->  5 files changed, 568 insertions(+)
-> 
-> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> index 26f9de55b79f..f76eaba140d8 100644
-> --- a/drivers/iio/dac/Kconfig
-> +++ b/drivers/iio/dac/Kconfig
-> @@ -6,6 +6,20 @@
->  
->  menu "Digital to analog converters"
->  
-> +config AD3552R_HS
-> +	tristate "Analog Devices AD3552R DAC High Speed driver"
-> +	select ADI_AXI_DAC
-> +	help
-> +	  Say yes here to build support for Analog Devices AD3552R
-> +	  Digital to Analog Converter High Speed driver.
-> +
-> +          The driver requires the assistance of an IP core to operate,
-> +          since data is streamed into target device via DMA, sent over a
-> +	  QSPI + DDR (Double Data Rate) bus.
-
-Tabs and space mix that needs fixing.
-
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called ad3552r-hs.
-> +
->  config AD3552R
->  	tristate "Analog Devices AD3552R DAC driver"
->  	depends on SPI_MASTER
-> diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-> index c92de0366238..d92e08ca93ca 100644
-> --- a/drivers/iio/dac/Makefile
-> +++ b/drivers/iio/dac/Makefile
-> @@ -4,6 +4,7 @@
->  #
->  
->  # When adding new entries keep the list in alphabetical order
-> +obj-$(CONFIG_AD3552R_HS) += ad3552r-hs.o ad3552r-common.o
->  obj-$(CONFIG_AD3552R) += ad3552r.o ad3552r-common.o
-
-This causes all sorts of issues. The same code should not be linked into two
-separate drivers.  Try building one as a module and one built in.
-
-The trick is a hidden symbol in Kconfig and an extra line in here
-obj-$(CONFIG_AD3352R_LIB) += ad3552-common.o
-
-and 
-//note no text as we don't want this to be user selectable
-
-config AD3352R_LIB
-	tristate
-
-config AD3552R_HS
-	tristate "Analog Devices AD3552R DAC High Speed driver"
-	select ADI_AXI_DAC
-	select AD3352R_LIB
-	help
-	  Say yes here to build support for Analog Devices AD3552R
-	  Digital to Analog Converter High Speed driver.
-
-	  The driver requires the assistance of an IP core to operate,
-	  since data is streamed into target device via DMA, sent over a
-	  QSPI + DDR (Double Data Rate) bus.
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called ad3552r-hs.
-
-
-config AD3552R
- 	tristate "Analog Devices AD3552R DAC driver"
- 	depends on SPI_MASTER
-	select AD3352R_LIB
-	help
-	  ...
-
-The pressure/mpl115 is done like this.
-
-
->  obj-$(CONFIG_AD5360) += ad5360.o
->  obj-$(CONFIG_AD5380) += ad5380.o
-
-Anyhow, to me the code looks ready to go subject to this.
-
-If nothing else comes up I'm almost confident enough of the fix to just
-do it (and the few trivial things in previous review), but probably quicker
-and less prone to error if you have time to spin a v9, perhaps after letting others
-have a day or two to review v8 next week.
-
-rc5 is tomorrow, so we have a little time left this cycle.
+Series applied to the togreg branch of iio.git and initially pushed out as
+testing for 0-day to take a first look at it.
+Thanks,
 
 Jonathan
+
+p.s. Diff was as follows, shout if I mess it up.
+
+diff --git a/drivers/iio/light/veml3235.c b/drivers/iio/light/veml3235.c
+index 18ab73f4377c..66361c3012a3 100644
+--- a/drivers/iio/light/veml3235.c
++++ b/drivers/iio/light/veml3235.c
+@@ -145,7 +145,7 @@ static int veml3235_get_it(struct veml3235_data *data, int *val, int *val2)
+ static int veml3235_set_it(struct iio_dev *indio_dev, int val, int val2)
+ {
+        struct veml3235_data *data = iio_priv(indio_dev);
+-       int ret, new_it, it_idx;
++       int ret, new_it;
+ 
+        if (val)
+                return -EINVAL;
+@@ -153,23 +153,18 @@ static int veml3235_set_it(struct iio_dev *indio_dev, int val, int val2)
+        switch (val2) {
+        case 50000:
+                new_it = 0x00;
+-               it_idx = 4;
+                break;
+        case 100000:
+                new_it = 0x01;
+-               it_idx = 3;
+                break;
+        case 200000:
+                new_it = 0x02;
+-               it_idx = 2;
+                break;
+        case 400000:
+                new_it = 0x03;
+-               it_idx = 1;
+                break;
+        case 800000:
+                new_it = 0x04;
+-               it_idx = 0;
+                break;
+        default:
+                return -EINVAL;
+@@ -188,7 +183,7 @@ static int veml3235_set_it(struct iio_dev *indio_dev, int val, int val2)
+ static int veml3235_set_gain(struct iio_dev *indio_dev, int val, int val2)
+ {
+        struct veml3235_data *data = iio_priv(indio_dev);
+-       int ret, new_gain, gain_idx;
++       int ret, new_gain;
+ 
+        if (val2 != 0)
+                return -EINVAL;
+@@ -196,19 +191,15 @@ static int veml3235_set_gain(struct iio_dev *indio_dev, int val, int val2)
+        switch (val) {
+        case 1:
+                new_gain = 0x00;
+-               gain_idx = 3;
+                break;
+        case 2:
+                new_gain = 0x01;
+-               gain_idx = 2;
+                break;
+        case 4:
+                new_gain = 0x03;
+-               gain_idx = 1;
+                break;
+        case 8:
+                new_gain = 0x07;
+-               gain_idx = 0;
+                break;
+        default:
+                return -EINVAL;
+
+
+> 
+
 

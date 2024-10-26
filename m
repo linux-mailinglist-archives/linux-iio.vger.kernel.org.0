@@ -1,195 +1,123 @@
-Return-Path: <linux-iio+bounces-11306-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11307-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E419D9B1680
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 11:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B2C9B1724
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 12:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13C5A1C20FCD
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 09:20:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 311321C21822
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 10:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E7C1D043A;
-	Sat, 26 Oct 2024 09:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3857B1D1F71;
+	Sat, 26 Oct 2024 10:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q714rRt/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odGeK1mH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680A718C023;
-	Sat, 26 Oct 2024 09:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F3F18787E
+	for <linux-iio@vger.kernel.org>; Sat, 26 Oct 2024 10:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729934406; cv=none; b=fDB6RfvfzqFMTRrwwJxqoeLd32mF2YvJ4hCtEG4RamiI/P0HxMx5NOvaAvz8Uy1zhYsoC1acMhExAimJsguXg+TrV8pg9dKfUMvsj4K/lD5AlcoTv3/TbuY9oY8NUxf7X3SgIpUMQcgULh0C8PiMHCGRBXyCi9zlWPJL7CXO7r0=
+	t=1729939174; cv=none; b=qmlcD8oomKAAjzmYtxR7qkuZhvAU27mncBZoVyyUCqz8cENpSnUabIjL9Q7WO4zdzonPmSY5TuMMKYvN0WEltJAmIH6qucelyY5REIf+j+gjZnisu/JrIjtX7G+HAybhNvCZKrp3S64Mwi1S7hs9mwa1BCSoddO1zteppjcOO6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729934406; c=relaxed/simple;
-	bh=10Q0HTxapRuroNftzlAwfnnmV8FtywyCht+84Buc/bo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BXwxFv7SZIwP0cJd6F2G/ajoL+TQrnSVUtyZ60EvzVcQsZkIAc7uXpIHmq0MCTMyIys6mNCDKtJfjs5wHpSJl4iBC5zvX4mKJY/9vehkBl77NiGPiRoEikGfpaVXcsAK3yHMKBtchhXwSFOJG7tZexO5XsoIbJNJLXNwFNczwik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q714rRt/; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729934404; x=1761470404;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=10Q0HTxapRuroNftzlAwfnnmV8FtywyCht+84Buc/bo=;
-  b=Q714rRt/34DyKrnM5vRl5o+qehTqQoCyrhFvNaOmWl+u5XpqNzUcshI0
-   RPyEeFORW8ItMuHELdzkG4Q03XBHRZnRKjtqGfkUOOOBuUU4mkNMp3nRi
-   Se0I5YzbvhlMKNC/3QOaBSHDw21dYFBn5U4aU3+DFpdlEDxWXzEcGMY/I
-   Ry8U2zfJoc3vNt1dLvREfLBq5fJ18JuvtatnopYlz5KRdq8NF3iLqeC76
-   0NXfVlTvHCeo5IoUHjUiiVWcfhgaLgnVjBUWvgQXiDnSVwcJiFUjVWsyt
-   77UfJDJ2SIA/zSvbtDfe1YiA1E6QtlQG8H5ssd8iwaMI4doEN8LeLzQSN
-   g==;
-X-CSE-ConnectionGUID: VhVXWAfoTsypcQgOYIxwdA==
-X-CSE-MsgGUID: x0ms3nWOT+qsQhXaW/oVwA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11236"; a="40181199"
-X-IronPort-AV: E=Sophos;i="6.11,234,1725346800"; 
-   d="scan'208";a="40181199"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2024 02:20:02 -0700
-X-CSE-ConnectionGUID: UUYp0zKATxul9nb+G/K1XQ==
-X-CSE-MsgGUID: 8WPtDW1qQ6uodo7Tr5GRxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,234,1725346800"; 
-   d="scan'208";a="85920356"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 26 Oct 2024 02:19:56 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t4cxc-000ZT6-2l;
-	Sat, 26 Oct 2024 09:19:52 +0000
-Date: Sat, 26 Oct 2024 17:19:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ming Yu <a0282524688@gmail.com>, tmyu0@nuvoton.com, lee@kernel.org,
-	linus.walleij@linaro.org, brgl@bgdev.pl, andi.shyti@kernel.org,
-	mkl@pengutronix.de, mailhol.vincent@wanadoo.fr,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, wim@linux-watchdog.org,
-	linux@roeck-us.net, jdelvare@suse.com, jic23@kernel.org,
-	lars@metafoo.de, ukleinek@kernel.org, alexandre.belloni@bootlin.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-can@vger.kernel.org, netdev@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org,
-	linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v1 5/9] watchdog: Add Nuvoton NCT6694 WDT support
-Message-ID: <202410261752.lUVTJO2Y-lkp@intel.com>
-References: <20241024085922.133071-6-tmyu0@nuvoton.com>
+	s=arc-20240116; t=1729939174; c=relaxed/simple;
+	bh=O65eMf3Exaq875fyQ4tocAe2Lz+SN4AqW1u4FBmyu8Q=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=XAW46XVE08+s3ldelq1flIZikKSQ3vX+lvfKl1F2jEby13hOhsdV+njDFKFldYioXMiqn4mWybSg/OciN3CpodkMfxEnDCtasnIpmOCu43bWdl3XUN27JoOlv7XVRgMr74m1k/nnyMgrFF5WkulKcsIejW4Fi0gx7DGK9KAV7pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odGeK1mH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32652C4CEC6;
+	Sat, 26 Oct 2024 10:39:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729939173;
+	bh=O65eMf3Exaq875fyQ4tocAe2Lz+SN4AqW1u4FBmyu8Q=;
+	h=Date:From:To:Subject:From;
+	b=odGeK1mH0SKQ5zwFPsV4eLw1oL4BmuINpAOOooECwUl350ZM+wBf/L0eMsh/IABBr
+	 MpnhQckQbqcfjT49iZskcyo32KYhN26BTWZlSqY3c1higvIr54rKfZ1e7lM21MnYhA
+	 O4iKWqMpdUQskmRVknffCn8SE2zqrbY/RgtzEwnxA5HgUMAdjFFUT2/ahFlpvwCDwt
+	 JVMIOgVPXiEe5IUPZShonpBn+Zx5YNW3ZIwWugOhFZnbg3lasovswQZLn+UQQPYbW/
+	 AeF5Gs0KlymSI9CFoT1FjFdsuc0MNXHp7uv7zOdJqHotpYNGMFsqfU7488OF/N1Eyj
+	 I6LDfB/Gq4arw==
+Date: Sat, 26 Oct 2024 11:39:27 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] IIO: Fixes for 6.12 - set 2
+Message-ID: <20241026113927.333b48c1@jic23-huawei>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024085922.133071-6-tmyu0@nuvoton.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Ming,
 
-kernel test robot noticed the following build warnings:
+The following changes since commit 2471787c1f0dae6721f60ab44be37460635d3732:
 
-[auto build test WARNING on lee-mfd/for-mfd-next]
-[also build test WARNING on brgl/gpio/for-next andi-shyti/i2c/i2c-host mkl-can-next/testing groeck-staging/hwmon-next jic23-iio/togreg abelloni/rtc-next linus/master lee-mfd/for-mfd-fixes v6.12-rc4 next-20241025]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+  misc: microchip: pci1xxxx: add support for NVMEM_DEVID_AUTO for OTP device (2024-10-13 18:17:57 +0200)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ming-Yu/mfd-Add-core-driver-for-Nuvoton-NCT6694/20241024-170528
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git for-mfd-next
-patch link:    https://lore.kernel.org/r/20241024085922.133071-6-tmyu0%40nuvoton.com
-patch subject: [PATCH v1 5/9] watchdog: Add Nuvoton NCT6694 WDT support
-config: arc-randconfig-r132-20241026 (https://download.01.org/0day-ci/archive/20241026/202410261752.lUVTJO2Y-lkp@intel.com/config)
-compiler: arceb-elf-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20241026/202410261752.lUVTJO2Y-lkp@intel.com/reproduce)
+are available in the Git repository at:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410261752.lUVTJO2Y-lkp@intel.com/
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.12b
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/watchdog/nct6694_wdt.c:133:42: sparse: sparse: cast to restricted __le32
->> drivers/watchdog/nct6694_wdt.c:133:42: sparse: sparse: cast to restricted __le32
->> drivers/watchdog/nct6694_wdt.c:133:42: sparse: sparse: cast to restricted __le32
->> drivers/watchdog/nct6694_wdt.c:133:42: sparse: sparse: cast to restricted __le32
->> drivers/watchdog/nct6694_wdt.c:133:42: sparse: sparse: cast to restricted __le32
->> drivers/watchdog/nct6694_wdt.c:133:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:134:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:134:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:134:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:134:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:134:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:134:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:166:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:166:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:166:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:166:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:166:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:166:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:167:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:167:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:167:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:167:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:167:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:167:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:220:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:220:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:220:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:220:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:220:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:220:42: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:221:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:221:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:221:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:221:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:221:45: sparse: sparse: cast to restricted __le32
-   drivers/watchdog/nct6694_wdt.c:221:45: sparse: sparse: cast to restricted __le32
+for you to fetch changes up to 7bd4923940c8d67d9f3f3fde8d7c067e9e804fc6:
 
-vim +133 drivers/watchdog/nct6694_wdt.c
+  iio: dac: Kconfig: Fix build error for ltc2664 (2024-10-24 18:46:04 +0100)
 
-   115	
-   116	static int nct6694_wdt_set_timeout(struct watchdog_device *wdev,
-   117					   unsigned int timeout)
-   118	{
-   119		struct nct6694_wdt_data *data = watchdog_get_drvdata(wdev);
-   120		struct nct6694 *nct6694 = data->nct6694;
-   121		unsigned int timeout_fmt, pretimeout_fmt;
-   122		unsigned char buf[REQUEST_WDT_CMD0_LEN];
-   123		int ret;
-   124	
-   125		if (timeout < wdev->pretimeout) {
-   126			pr_err("%s: 'timeout' must be greater than 'pre timeout'!\n",
-   127			       __func__);
-   128			return -EINVAL;
-   129		}
-   130	
-   131		timeout_fmt = timeout * 1000 | (WDT_TIMEOUT_ACT << 24);
-   132		pretimeout_fmt = wdev->pretimeout * 1000 | (WDT_PRETIMEOUT_ACT << 24);
- > 133		set_buf32(&buf[WDT_TIMEOUT_IDX], le32_to_cpu(timeout_fmt));
-   134		set_buf32(&buf[WDT_PRETIMEOUT_IDX], le32_to_cpu(pretimeout_fmt));
-   135	
-   136		ret = nct6694_write_msg(nct6694, REQUEST_WDT_MOD,
-   137					REQUEST_WDT_CMD0_OFFSET(data->wdev_idx),
-   138					REQUEST_WDT_CMD0_LEN, buf);
-   139		if (ret) {
-   140			pr_err("%s: Don't write the setup command in Start stage!\n",
-   141			       __func__);
-   142			return ret;
-   143		}
-   144	
-   145		wdev->timeout = timeout;
-   146	
-   147		return 0;
-   148	}
-   149	
+----------------------------------------------------------------
+IIO: Fixes for 6.12, set 2
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Usual mixed back of fixes for ancient bugs and some more recently
+introduced problems.
+
+gts-helper module
+- Memory leak fixes for this library code to handle complex gain cases.
+adi,ad7124
+- Fix a divide by zero that can be triggered from userspace.
+adi,ad7380
+- Various supply fixes. Includes some minor rework that simplifies the
+  fix though increases the apparent scale of the change.
+adi,ad9832
+- Avoid a potential divide by zero if clk_get_rate() returns 0.
+adi,ltc2642
+- Fix wrong Kconfig regmap dependency.
+vishay,veml6030
+- Fix a scaling problem with decimal part of processed channel.
+  Note that only the illuminance channel is fixed as a larger series
+  of cleanups not suitable for this point in the rc cycle removes
+  the intensity channel anyway.
+
+----------------------------------------------------------------
+Javier Carrasco (1):
+      iio: light: veml6030: fix microlux value calculation
+
+Jinjie Ruan (3):
+      iio: gts-helper: Fix memory leaks in iio_gts_build_avail_scale_table()
+      iio: gts-helper: Fix memory leaks for the error path of iio_gts_build_avail_scale_table()
+      iio: dac: Kconfig: Fix build error for ltc2664
+
+Julien Stephan (5):
+      dt-bindings: iio: adc: ad7380: fix ad7380-4 reference supply
+      iio: adc: ad7380: use devm_regulator_get_enable_read_voltage()
+      iio: adc: ad7380: add missing supplies
+      iio: adc: ad7380: fix supplies for ad7380-4
+      docs: iio: ad7380: fix supply for ad7380-4
+
+Zicheng Qu (2):
+      staging: iio: frequency: ad9832: fix division by zero in ad9832_calc_freqreg()
+      iio: adc: ad7124: fix division by zero in ad7124_set_channel_odr()
+
+ .../devicetree/bindings/iio/adc/adi,ad7380.yaml    |  21 ++++
+ Documentation/iio/ad7380.rst                       |  13 +-
+ drivers/iio/adc/ad7124.c                           |   2 +-
+ drivers/iio/adc/ad7380.c                           | 136 ++++++++++++---------
+ drivers/iio/dac/Kconfig                            |   2 +-
+ drivers/iio/industrialio-gts-helper.c              |   4 +-
+ drivers/iio/light/veml6030.c                       |   2 +-
+ drivers/staging/iio/frequency/ad9832.c             |   7 +-
+ 8 files changed, 121 insertions(+), 66 deletions(-)
 

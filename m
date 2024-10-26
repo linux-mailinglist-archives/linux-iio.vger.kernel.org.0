@@ -1,65 +1,63 @@
-Return-Path: <linux-iio+bounces-11358-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11359-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF269B19F9
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 19:11:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B71859B1A0A
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 19:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6111F21ECE
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 17:11:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1472CB2178F
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 17:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798721D0BAE;
-	Sat, 26 Oct 2024 17:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9851413B286;
+	Sat, 26 Oct 2024 17:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jy01RoNS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ij+mOZt9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAA32F36;
-	Sat, 26 Oct 2024 17:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539953BBD8;
+	Sat, 26 Oct 2024 17:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729962671; cv=none; b=kcwQRId1GZtaAF9DBLC+htzzwNsMWA5s807OfbRRuejhze4agwjQKSoScYrwzSGcTyoQNjvPZ0k/gNczyu5hx4KV9cvSZ4ct3B6YKKCLnoQmkE8sp2Sc/eQYMXbuHQ+A90dPexCyV8Iq8mCj7UOACjaJnd0lPSICXi0GKLjd4YM=
+	t=1729963303; cv=none; b=qd3EPyXTj0y1U0aDVpQWJS22xl8AuzbuBoRsuoxl39odrC7z2CFZL7RHzdD3JaNB7sjXTz9lI+gbmNh2hkNBr1VM48hhwfES4ZiTw44Ys3RvKVd+YMMM/F4WHCC2IT4blB0FqOokXJIegF6zQh8x0I3neQq7ucgn4ssAlT/5wBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729962671; c=relaxed/simple;
-	bh=wJG7RauQd5nrrvEXZ40WfItE9gp5JKSZNYtYgBx0jII=;
+	s=arc-20240116; t=1729963303; c=relaxed/simple;
+	bh=WK1VLVpGK8zbKx9v6ZjvFchh32hBkFjWGCosFKSMLyc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YvtOPELkbbh+4BcJfgCHRJBF41MP9EldI/UDDAocD+bBlmULhQKAnsvqtv61o/XDPMnAS2u6rVODLGD7K9n+ore2Fkl0QJPP8oKxxvlINy5N00RDkFFc6sV+iJTJ6idZ6cE1OFcnde3SrA17y87xXhM7o+YJ7mtgJLIdSV9PdSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jy01RoNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE58C4CEC6;
-	Sat, 26 Oct 2024 17:10:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DI2M2fc6v8zDWHYPfi4TdTVw7QX618stZoYIzD6iOCV43ZMVt3mqbDS4ygccRbTJbcwyluNlHsHkrfYKA/EukX1OGJIEl50tQfpeiF1Kf74AUIAmxWbnM0sCSqoKODtKrijNpdFGUJLkxYM0Oaa0loKmND7cm57UUx0s+j12FzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ij+mOZt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18663C4CEC6;
+	Sat, 26 Oct 2024 17:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729962670;
-	bh=wJG7RauQd5nrrvEXZ40WfItE9gp5JKSZNYtYgBx0jII=;
+	s=k20201202; t=1729963302;
+	bh=WK1VLVpGK8zbKx9v6ZjvFchh32hBkFjWGCosFKSMLyc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jy01RoNShE6koWDMeKaVLWmHmq2PF1w8ic0RrCiIORPNmfLg2c+XQF8ep6lminENr
-	 kbAd1IsfQhrrhjJvfPTUg5Fgx0D/VA1Mpm+ePg9fK6W3kA1VJIoQwkx4A0OiMVYR5C
-	 6h+tmFdDTFFTxIqL8j6hDt/R/tTETSQ2+uJR2c2BFWKuRGqlEEyiTyPAVi4zlOdGwf
-	 5+FOo4pAvai6XgMtLkPU5t87r7lHeEzPsbLy5yCChtSg0vaVJ2PWI3gjvF3asIHY+n
-	 13ymdflpv2tAEoc3XAAPuew3j5KNT3jaFIDg1zEeV3LktesyuELJPxQd0OuMXfgZpZ
-	 c4MbsO6V/X2Aw==
-Date: Sat, 26 Oct 2024 18:10:31 +0100
+	b=ij+mOZt9nmJtaLrL9fyEYRQAt5roZsH3fRMvxg/vQBh2nolY/hJzasBYy/tcPqZJ4
+	 +s1gZ/wyqIvbWty6XZghLFwR9+HBDcXlV7SKK6eEnmBEjejQlvoWybOLEV2/SP83r/
+	 nOqgdwEs4P1yzPEt4dxA/wMz9BbGC49Ty96EldvAChgH/mPNeYF2K+YNJjS+qrIUHe
+	 yvrd17g3DWpf1NT6JpQ5FomPL+DX1owu6kpL+htUQOXqQkUEj3V70k2Tlia+1X+z6Q
+	 Pqdl+hFVRebl4v6Dq4ol/HZ1E7JTH21foU7ZWv1Xuy9aAVS4g9f6+Jc2GPiLzBtjsf
+	 XVj2vd2RX8rFw==
+Date: Sat, 26 Oct 2024 18:21:04 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Cc: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>, Rob Herring
- <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Sa, Nuno"
- <Nuno.Sa@analog.com>, "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH v3 6/6] iio: adc: ad4851: add ad485x driver
-Message-ID: <20241026181031.73d29339@jic23-huawei>
-In-Reply-To: <315f158e-0c3b-48e3-b288-27170f0659ed@baylibre.com>
-References: <20241014094154.9439-1-antoniu.miclaus@analog.com>
-	<20241014094154.9439-6-antoniu.miclaus@analog.com>
-	<60452f83-28a1-4a80-8e90-1f1ed32a594e@baylibre.com>
-	<CY4PR03MB33996900AAB90A050375CBB39B4F2@CY4PR03MB3399.namprd03.prod.outlook.com>
-	<f3351a7f-318b-42d6-aa1a-e8279eb06b78@baylibre.com>
-	<315f158e-0c3b-48e3-b288-27170f0659ed@baylibre.com>
+To: Rayyan Ansari <rayyan@ansari.sh>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Marius Cristea
+ <marius.cristea@microchip.com>, Trevor Gamblin <tgamblin@baylibre.com>,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, Hans de Goede
+ <hdegoede@redhat.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v3 07/24] iio: accel: kxcjk-1013: Revert "Add support
+ for KX022-1020"
+Message-ID: <20241026182104.01086e41@jic23-huawei>
+In-Reply-To: <fc87c8d8-db22-41f8-9594-4687f89881f9@ansari.sh>
+References: <20241024191200.229894-1-andriy.shevchenko@linux.intel.com>
+	<20241024191200.229894-8-andriy.shevchenko@linux.intel.com>
+	<20241026121619.668d07d7@jic23-huawei>
+	<fc87c8d8-db22-41f8-9594-4687f89881f9@ansari.sh>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,95 +68,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 25 Oct 2024 14:55:13 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Sat, 26 Oct 2024 15:58:52 +0100
+Rayyan Ansari <rayyan@ansari.sh> wrote:
 
-> On 10/25/24 9:29 AM, David Lechner wrote:
-> > On 10/25/24 6:35 AM, Miclaus, Antoniu wrote:  
-> >>>  
-> > ...
+> On 26/10/2024 12:16, Jonathan Cameron wrote:
+> > On Thu, 24 Oct 2024 22:04:56 +0300
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 > >   
-> >>>
-> >>> See the ad7380 driver as an example of how to impelemt this. [2]
-> >>>
-> >>> [2]: https://urldefense.com/v3/__https://lore.kernel.org/linux-
-> >>> iio/20240530-iio-add-support-for-multiple-scan-types-v3-5-
-> >>> cbc4acea2cfa@baylibre.com/__;!!A3Ni8CS0y2Y!4LS7UI11XqIHRgT3ckx76VYn
-> >>> CyeikpTumyjO0qDTn7eF7Fd-
-> >>> jFFL8yqpYcMAxP_u3VC09bfIAB7gW_rvGoM_sEA$
-> >>>
-> >>> Also, I would expect the .sign value to depend on how the
-> >>> input is being used. If it is differential or single-ended
-> >>> bipolar, then it is signed, but if it is signle-ended unipoloar
-> >>> then it is unsiged.
-> >>>
-> >>> Typically, this is coming from the devicetree because it
-> >>> depends on what is wired up to the input.  
+> >> The mentioned change effectively broke the ODR startup timeouts
+> >> settungs for KX023-1025 case. Let's revert it for now and see
+> >> how we can handle it with the better approach after switching
+> >> the driver to use data structure instead of enum.
 > >>
-> >> This topic is mentioned in the cover letter, maybe not argued enough there.
-> >> Yes, the go-to approach is to specify the unipolar/bipolar configuration in the devicetree.
-> >> But this is a request from the actual users of the driver: to have the softspan fully
-> >> controlled from userspace. That's why the offset and scale implementations were added.
-> >> Both these attributes are influencing the softspan.
-> >>  
-> >>>> +	},								\
-> >>>> +}  
-> >>>  
+> >> This reverts commit d5cbe1502043124ff8af8136b80f93758c4a61e0.
+> >>
+> >> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
+> > I'll take this the slow way as I don't think there is time to chase the revert
+> > through the various trees and still get the dependent patches in.
+> > Hopefully we will fairly quickly get the missing table data and can
+> > bring this back again.
 > > 
-> > The cover letter did not get sent, so we did not see this.  
+> > For now, applied to the togreg branch of iio.git.
+> > I have tagged it as a fix though. and +CC Rayyan
+> > (I'm guessing maybe that will bounce as you rarely miss people you should
+> > CC!)  
+> Hi,
+> Sorry for not replying earlier, I've just caught up with the discussion.
 > 
-> So please resend it so we can get the full explanation.
+> I don't fully understand why this is breaking KX023-1025, but you know 
+> more than I do here.
+> Does this not mean that the use of KX022-1020 in the 3 devices (Lumia 
+> 640, 640 XL, 735) using this from qcom-msm8226-microsoft-common.dtsi 
+> will now be broken?
 > 
-> > 
-> > Still, I have doubts about using the offset attribute for
-> > this since a 0 raw value is always 0V for both unipolar
-> > and bipolar cases. There is never an offset to apply to
-> > the raw value.
-> > 
-> > So I think we will need to find a different way to control
-> > this other than the offset attribute.  
-> 
-> I thought about this some more and I have an idea to solve the
-> issue without using devicetree or the offset attribute.
-> 
-> But we should see what Jonathan thinks before implementing this
-> in case it isn't a good idea.
-> 
-> We can expose each voltage input to userspace as two different
-> channels, a single-ended channel and a differential channel.
+Yes.  The issues in the currently driver is here
+https://elixir.bootlin.com/linux/v6.12-rc4/source/drivers/iio/accel/kxcjk-1013.c#L321
 
-That was common in early drivers - such as the max1363 because they
-were well prior to having sufficiently complex bindings to specify
-wired channels.  We also have drivers that do this if no channel
-subnodes are provided (kind of a fallback).
+This array is indexed using the enum
+https://elixir.bootlin.com/linux/v6.12-rc4/source/drivers/iio/accel/kxcjk-1013.c#L176
+and the new entry for the KX022-1020 mean we are one short of those startup
+time definitions.
 
-> 
-> For an 8 channel chip, we would have 16 IIO channels (in order
-> of scan_index):
-> 
-> in_voltage0_raw
-> in_voltage0-voltage8_raw
-> in_voltage1_raw
-> in_voltage1-voltage9_raw
-> ...
-> in_voltage7_raw
-> in_voltage7-voltage15_raw
-> 
-> If you read the voltage using in_voltageX_raw, then the SoftSpan
-> for that channel gets set to the 0V to +V value based on
-> in_voltageX_scale. Likewise, if you read the in_voltageX-voltageY_raw
-> attribute, the SoftSpan gets set to -V to +V according to
-> in_voltageX-voltageY_scale.
-> 
-> For buffered reads, only one of each in_voltageX_raw/in_voltageX-voltageY_raw
-> pair can be enabled at the same time (because the chip is simultaneous
-> sampling).
-> 
-This approach is fine as it's pretty much what some existing parts
-are doing even if mostly people are these days preferring the
-specified channel route.
+Without that the values retrieved for the KX022-1025 are all 0.
+
+It should be a relatively easy fix if we have those times.
+One side effect of this series of Andy's is that it makes it much harder to have
+similar bugs in future. 
 
 Jonathan
 
+> Thanks,
+> Rayyan
 
 

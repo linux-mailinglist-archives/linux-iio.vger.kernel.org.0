@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-11335-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11337-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239D89B17FA
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 14:22:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F519B17FE
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 14:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 493F7B20E7F
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 12:22:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0253C1F21F57
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 12:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334231D5175;
-	Sat, 26 Oct 2024 12:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6845E1D54CD;
+	Sat, 26 Oct 2024 12:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEOeoPES"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mthH6Alb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8C31CEABB;
-	Sat, 26 Oct 2024 12:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE331CEABB;
+	Sat, 26 Oct 2024 12:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729945351; cv=none; b=k462nABPd3Rb6EHivEq0EIgPoMf50QfKxV/Joz9CcYEW7S34Ory6qFUfJKaYOfijF7ekd13LqAOt7ptY0HyrzliKg4QC+IO7ZPnOli8FMYd7LFt99flLzcpmE+8cdBMKMXt40lpg487A8T0fx1uyWGchXowFF3UG2m0pNt5J0ZA=
+	t=1729945458; cv=none; b=Aedt0DqOtdk9IxKq3xIDDWeGZzXK+a5lgkIcJgJuxONIr+kSv8d/5gVEutJU6zn0nzsC+R32No6PPgp1QMkmkimZbkeJGlWNqhLQ4BlWSQj+6ru4Uq1CbARc+NeOjDiTVS+52xebix1QAULJo3RzBqvps6p5gO5G59RWf4+f3P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729945351; c=relaxed/simple;
-	bh=nN9ySBQFhI6eChKsKY01UO/86r/vMQHDkXXeMgpaQuM=;
+	s=arc-20240116; t=1729945458; c=relaxed/simple;
+	bh=kO1q2x2TNqovqSKbL+rwFnj9xp9ouk5oRfZzFVn7LN4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E2mtuHZ0/hdmOLIJn8eJF8V8jbq4OVYb8Hjzv/nDnRsPJdpCnmo9dB4NB2ZMW8WWSTk4Kz7yC91IuDcPYf4CsRDETZuKS1+POdCa4HOARx/D70BTYHLTc3hGg+FbEEMO9/9frqdjRS9MgmSCKJzomQROb0kH7AaBcg5o5vpuP2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEOeoPES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873FAC4CEC6;
-	Sat, 26 Oct 2024 12:22:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SG/hjB8ABngO+Icp0GBlLAAI7uC0AxlcfSf08fqXa29ikpw1O9hWTTUMefY1NE/+zUx0CuwbnvbC9ebBaU3tFumsuPyuudZGkDNPUOlmrrhgjPMvsZG1vVR+Alo1tdDfSzAh0GSjuR+bqmumP41MbQw9ktR54J3rXWRKEF66QSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mthH6Alb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8AFC4CEC6;
+	Sat, 26 Oct 2024 12:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729945350;
-	bh=nN9ySBQFhI6eChKsKY01UO/86r/vMQHDkXXeMgpaQuM=;
+	s=k20201202; t=1729945457;
+	bh=kO1q2x2TNqovqSKbL+rwFnj9xp9ouk5oRfZzFVn7LN4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hEOeoPESHoSNQTqbqubJnp5p1c4P0R4aVFF9XaRXSalTHz/vjsXFMwWmCjCkMIVqK
-	 DrptHqyoqXrMwF5gMZibAYCrs3Laqsh2YAlynRDlADU/NFYpHWb6uJfUHhiu4SZreu
-	 5E7yKePUlRwgCfK7Xbi6T0tu5VqnlHze9AK5fVNlSpbUQIVDbHT+DkU8ejkNSpwEjV
-	 IB1T0YGgx8ZZlR8ymYbJ6U8+xDDEpz/+5qlmHsWXVh/akxFMmkialIOfzHWSo5Og52
-	 Iy8apVUzzUfCPnU1CsVyViSRphyyd9kNho4hWA003vwp7TTzgBMGxfkqtOrLI0ZirY
-	 cc9/Z6q4wXjnA==
-Date: Sat, 26 Oct 2024 13:22:04 +0100
+	b=mthH6AlbHiPMsUNrjGp6yVtLLDqxtd8g4cIebz1H1zt7h00qm7TpB2D1LtmgNMrMZ
+	 D2suiFczBjLaPlDggh2kieOezM8UmOcVHIKjbQa6AMP6fbrvx/r2EBheE3w0GXbH5+
+	 lYjaGgvJrvIhXRIwlas+XEySa/kQ7VljFfUnAKSkilUo+PDE54o+StlG7fZhRItVV0
+	 /pC5QXdOe0WOZIMIjZbGBAogsg4yulH1HoPWVSAWqQf0+MBl/ldoPRnTwnw0yPY82f
+	 dYH3P6b9/+MLE7lLk2KpB12OnJWKy05LUVT6MAJEWE3bvDCgfG/hMxQdT7FdPQWiO+
+	 o4hf6pTCUMlcg==
+Date: Sat, 26 Oct 2024 13:23:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Julien Stephan <jstephan@baylibre.com>
 Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
@@ -62,12 +62,12 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
  <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
-Subject: Re: [PATCH 2/7] iio: light: ltr390: simplify code in
+Subject: Re: [PATCH 3/7] iio: light: ltr501: simplify code in
  write_event_config callback
-Message-ID: <20241026132204.4466fb54@jic23-huawei>
-In-Reply-To: <20241024-iio-fix-write-event-config-signature-v1-2-7d29e5a31b00@baylibre.com>
+Message-ID: <20241026132333.2ed8f343@jic23-huawei>
+In-Reply-To: <20241024-iio-fix-write-event-config-signature-v1-3-7d29e5a31b00@baylibre.com>
 References: <20241024-iio-fix-write-event-config-signature-v1-0-7d29e5a31b00@baylibre.com>
-	<20241024-iio-fix-write-event-config-signature-v1-2-7d29e5a31b00@baylibre.com>
+	<20241024-iio-fix-write-event-config-signature-v1-3-7d29e5a31b00@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -78,7 +78,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 24 Oct 2024 11:11:24 +0200
+On Thu, 24 Oct 2024 11:11:25 +0200
 Julien Stephan <jstephan@baylibre.com> wrote:
 
 > iio_ev_state_store is actually using kstrtobool to check user
@@ -88,29 +88,5 @@ Julien Stephan <jstephan@baylibre.com> wrote:
 > Remove useless code in write_event_config callback.
 > 
 > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-> ---
->  drivers/iio/light/ltr390.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
-> index 8e0a3fc3d923a6f65d2a629c87e7bfd35d82a507..ff6b5d8b582b33eba60b769dff529caa00fb7244 100644
-> --- a/drivers/iio/light/ltr390.c
-> +++ b/drivers/iio/light/ltr390.c
-> @@ -558,9 +558,6 @@ static int ltr390_write_event_config(struct iio_dev *indio_dev,
->  	struct ltr390_data *data = iio_priv(indio_dev);
->  	int ret;
->  
-> -	if (state != 1  && state != 0)
-> -		return -EINVAL;
-> -
->  	if (state == 0)
-
-Once you apply the final patch, the == 0 here will make less sense.
-Can tidy that up here or in that final patch by just making this
-if (!state) etc
-
->  		return regmap_clear_bits(data->regmap, LTR390_INT_CFG, LTR390_LS_INT_EN);
->  
-> 
-
+Applied.
 

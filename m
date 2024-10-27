@@ -1,346 +1,336 @@
-Return-Path: <linux-iio+bounces-11366-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11367-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F979B1AFD
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 23:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F98F9B1B6A
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 02:02:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB87C28241A
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Oct 2024 21:18:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36A1D282374
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 00:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F4217E017;
-	Sat, 26 Oct 2024 21:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CAB4685;
+	Sun, 27 Oct 2024 00:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="a1o/Jdsw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDF2161
-	for <linux-iio@vger.kernel.org>; Sat, 26 Oct 2024 21:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910EC2F41
+	for <linux-iio@vger.kernel.org>; Sun, 27 Oct 2024 00:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729977497; cv=none; b=PNY4Bl6H7gnj8xKqODwidZp+I9ZYbgZkmTi0i9l9smcJvYQ9hhpbNQ0lkGiqpIo+PzCXlOiCRsJHz55CpUAASYrn1+aMlMDsjaxDWZndj6CMmnUnKr3pXTscHXrfV8S8QrSVIvj3bJaphroUj6WD6qcKrkdBfuNeFYctdsaMwGA=
+	t=1729987322; cv=none; b=SgS67lSDzWbN5LPSowxSfHqK6uGTfAsigKo+RcUAvjLlUFxtj5JaF0/StUGogEAaHEX9Lfm7PVTrK9BpOS6H0LCjrMAgVcj4fytSQmoNeCG5OoTgCfCZsOJCFRzNQJzix+tvP+acbKC2UsFCjsxuXD9psZd8obcVhvoejRhwVII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729977497; c=relaxed/simple;
-	bh=M1FIJtbMp9XTyhiX8Qr3cAi6OQrW7iFIhRDlMg/oDa0=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q4RpvUq/rWphJKDZlc6AKWBU4KwRL3uAuGsuzAWC6oJzNS/VTGS0yhl59K3GJs99LhLrzKgwaAIvpPDiuL7u7FcXSkXBG0keN26Oo+LbxkxBchZNgJqkqmFQhzxKLeE8NRjM+5uBHtWgjfFp/pEV3ABMGyj2snV/iOl28usIwDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-24-75.elisa-laajakaista.fi [88.113.24.75])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id c58833d2-93df-11ef-886f-005056bdd08f;
-	Sun, 27 Oct 2024 00:17:57 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 27 Oct 2024 00:17:57 +0300
-To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] iio: magnetometer: add Allegro MicroSystems
- ALS31300 3-D Linear Hall Effect driver
-Message-ID: <Zx1chYp4FRyG8fKM@surfacebook.localdomain>
-References: <20241021-topic-input-upstream-als31300-v2-0-36a4278a528e@linaro.org>
- <20241021-topic-input-upstream-als31300-v2-3-36a4278a528e@linaro.org>
+	s=arc-20240116; t=1729987322; c=relaxed/simple;
+	bh=XtHzNcCTescXvZ9bmJ21cJwyQyCROOdHRf81dam67xc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Uym6NbfdojZt7P8ZIrqLh5xJzXdqMlKPqTlv/wqHnZ3UvXd1TSRuCEdFTmLL+zeIZslICydWWSnhnsGvZi5fS7xdRYnKTia4IU/hsEhYBkG3d7Fc5rHY+9xt0TY6r/eI1RwYi6CSclXWbNqTbivYunIzWVqk2Ew36UazKEdp3K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=a1o/Jdsw; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-71809fe188cso1822975a34.0
+        for <linux-iio@vger.kernel.org>; Sat, 26 Oct 2024 17:01:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729987317; x=1730592117; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pB662/UrG0gsr42jN3Byh38T4paHRcUICgBizIXwO94=;
+        b=a1o/JdswcuUg3tMsrcphbiZ496cUAplZUhttZYQ/QStrW1mHA5c9LwQGZfRS2UeIdU
+         H+oYjd1qJuAgxAG+oVmfAtwe9TDFcKk3GU6KzBrv3/ZMGnQaqe8fe6200cbO8W8p4oKL
+         /NeEGJ1aWgE/C/ggG1AqJf03nhzxyZpc/Fk8wUyP3ocWbbidICbEulZ8URyPO/zkt607
+         sfmlIsV/FPVJaBu2QlSSn68MCkIN5QtwcIHgnHNVVNN7Cnw7r2BnZsZvQ7rlcQ3hvrEP
+         HwCeTkDDpDo/juBtBW8LUT8SyGHzTDtOXFE/A3moycLF3OFXwnzEBkmql6kMA/tDLS4v
+         eH+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729987317; x=1730592117;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pB662/UrG0gsr42jN3Byh38T4paHRcUICgBizIXwO94=;
+        b=auQeOvouF9tUQmDjJEwPwUYC8J4rAKx/g+HN5cr2EAGNVIhJl1rDIc7+xdnNyC6QM7
+         FhhxCCjKjAFSvb1+TAdh6vS4cUfoPq+qet54nJFklue5rBo6cKOWzTKukREDspHy9vjQ
+         h/lH7h1DDSsJjvj+51/lj4kTp8dNjWUUs7cpn+tBgkX3Bbz++nG3VQNJhoo0FcYuZ78o
+         NFZ2a+u2N+d0SFTXk92nO4yyDCVSleESHftko1rsETp+TGjZTb3vKVk38ta33/IOOZKS
+         FY2NAINVDihaMkhxp8rjQBXbV3ttVjRDyCQjVLrfdBCUHE8EOV9LZSOkkHaUN6Gl+Hg/
+         nIXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXYInq6UUPaIOwO4tXwTCbpNgEwJ3QqjUEFmA5+yc3OnUGznp5Rpg4QM72eL7hnXKZvCknBMWNA/Js=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0ZhgU7ES9j5ZTM8MqoTaW1BeN2NVQJ1rWlMU6KxAlKHZxkJlc
+	wuIqFFqKpEjuZ6k7f9/MhO9m85CvGwpBISPS9jJV5SFyOA25/d5bGh64CCXL7wE=
+X-Google-Smtp-Source: AGHT+IH2z0sp0u1GTEj5o+cvNnbB6imPt8Lme4yRFhIieZGB3/RPpO4DgbjBPb7ujfBjNHRtdhMihQ==
+X-Received: by 2002:a05:6830:2707:b0:718:4063:4c71 with SMTP id 46e09a7af769-7186827359fmr2739914a34.15.1729987317363;
+        Sat, 26 Oct 2024 17:01:57 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-718616104a5sm942278a34.22.2024.10.26.17.01.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 26 Oct 2024 17:01:55 -0700 (PDT)
+Message-ID: <5a090847-ee53-41be-ad28-b7604cf9020a@baylibre.com>
+Date: Sat, 26 Oct 2024 19:01:53 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021-topic-input-upstream-als31300-v2-3-36a4278a528e@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v4 15/15] iio: adc: ad4695: Add support for SPI
+ offload
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>,
+ Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
+ <20241023-dlech-mainline-spi-engine-offload-2-v4-15-f8125b99f5a1@baylibre.com>
+ <20241026170038.4b629cff@jic23-huawei>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241026170038.4b629cff@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Mon, Oct 21, 2024 at 02:38:55PM +0200, Neil Armstrong kirjoitti:
-> The Allegro MicroSystems ALS31300 is a 3-D Linear Hall Effect Sensor
-> mainly used for 3D head-on motion sensing applications.
+On 10/26/24 11:00 AM, Jonathan Cameron wrote:
+> On Wed, 23 Oct 2024 15:59:22 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
 > 
-> The device is configured over I2C, and as part of the Sensor data the
-> temperature core is also provided.
+>> Add support for SPI offload to the ad4695 driver. SPI offload allows
+>> sampling data at the max sample rate (500kSPS or 1MSPS).
+>>
+>> This is developed and tested against the ADI example FPGA design for
+>> this family of ADCs [1].
+>>
+>> [1]: http://analogdevicesinc.github.io/hdl/projects/ad469x_fmc/index.html
+>>
+>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> A few questions inline. In general looks ok, but it's complex code and I'm
+> too snowed under for a very close look at the whole thing for a least a few weeks.
 > 
-> While the device provides an IRQ gpio, it depends on a configuration
-> programmed into the internal EEPROM, thus only the default mode is
-> supported and buffered input via trigger is also supported to allow
-> streaming values with the same sensing timestamp.
+> Jonathan
 > 
-> The device can be configured with different sensitivities in factory,
-> but the sensitivity value used to calculate value into the Gauss
-> unit is not available from registers, thus the sensitivity is provided
-> by the compatible/device-id string which is based on the part number
-> as described in the datasheet page 2.
+>> ---
+>>  drivers/iio/adc/Kconfig  |   1 +
+>>  drivers/iio/adc/ad4695.c | 470 +++++++++++++++++++++++++++++++++++++++++++----
+>>  2 files changed, 440 insertions(+), 31 deletions(-)
+>>
+>> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+>> index 92dfb495a8ce..f76a3f62a9ad 100644
+>> --- a/drivers/iio/adc/Kconfig
+>> +++ b/drivers/iio/adc/Kconfig
+>> @@ -53,6 +53,7 @@ config AD4695
+>>  	depends on SPI
+>>  	select REGMAP_SPI
+>>  	select IIO_BUFFER
+>> +	select IIO_BUFFER_DMAENGINE
+>>  	select IIO_TRIGGERED_BUFFER
+>>  	help
+>>  	  Say yes here to build support for Analog Devices AD4695 and similar
+> 
+>> +static int ad4695_offload_buffer_postenable(struct iio_dev *indio_dev)
+>> +{
+>> +	struct ad4695_state *st = iio_priv(indio_dev);
+>> +	struct spi_offload_trigger_config config = {
+>> +		.type = SPI_OFFLOAD_TRIGGER_DATA_READY,
+>> +	};
+>> +	struct spi_transfer *xfer = &st->buf_read_xfer[0];
+>> +	struct pwm_state state;
+>> +	u8 temp_chan_bit = st->chip_info->num_voltage_inputs;
+>> +	u8 num_slots = 0;
+>> +	u8 temp_en = 0;
+>> +	unsigned int bit;
+>> +	int ret;
+>> +
+>> +	iio_for_each_active_channel(indio_dev, bit) {
+>> +		if (bit == temp_chan_bit) {
+>> +			temp_en = 1;
+>> +			continue;
+>> +		}
+>> +
+>> +		ret = regmap_write(st->regmap, AD4695_REG_AS_SLOT(num_slots),
+>> +				   FIELD_PREP(AD4695_REG_AS_SLOT_INX, bit));
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		num_slots++;
+>> +	}
+>> +
+>> +	/*
+>> +	 * For non-offload, we could discard data to work around this
+>> +	 * restriction, but with offload, that is not possible.
+>> +	 */
+>> +	if (num_slots < 2) {
+>> +		dev_err(&st->spi->dev,
+>> +			"At least two voltage channels must be enabled.\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	ret = regmap_update_bits(st->regmap, AD4695_REG_TEMP_CTRL,
+>> +				 AD4695_REG_TEMP_CTRL_TEMP_EN,
+>> +				 FIELD_PREP(AD4695_REG_TEMP_CTRL_TEMP_EN,
+>> +					    temp_en));
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/* Each BUSY event means just one sample for one channel is ready. */
+>> +	memset(xfer, 0, sizeof(*xfer));
+>> +	xfer->offload_flags = SPI_OFFLOAD_XFER_RX_STREAM;
+>> +	xfer->bits_per_word = 16;
+>> +	xfer->len = 2;
+>> +
+>> +	spi_message_init_with_transfers(&st->buf_read_msg, xfer, 1);
+>> +	st->buf_read_msg.offload = st->offload;
+>> +
+>> +	st->spi->max_speed_hz = st->spi_max_speed_hz;
+>> +	ret = spi_optimize_message(st->spi, &st->buf_read_msg);
+>> +	st->spi->max_speed_hz = AD4695_REG_ACCESS_SCLK_HZ;
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/*
+>> +	 * NB: technically, this is part the SPI offload trigger enable, but it
+>> +	 * doesn't work to call it from the offload trigger enable callback
+>> +	 * due to issues with ordering with respect to entering/exiting
+>> +	 * conversion mode.
+> Give some detail on the operations order.
+> 
+>> +	 */
+>> +	ret = regmap_set_bits(st->regmap, AD4695_REG_GP_MODE,
+>> +			      AD4695_REG_GP_MODE_BUSY_GP_EN);
+>> +	if (ret)
+>> +		goto err_unoptimize_message;
+>> +
+>> +	ret = spi_offload_trigger_enable(st->offload, st->offload_trigger,
+>> +					 &config);
+>> +	if (ret)
+>> +		goto err_disable_busy_output;
+>> +
+>> +	ret = ad4695_enter_advanced_sequencer_mode(st, num_slots);
+>> +	if (ret)
+>> +		goto err_offload_trigger_disable;
+>> +
+>> +	guard(mutex)(&st->cnv_pwm_lock);
+>> +	pwm_get_state(st->cnv_pwm, &state);
+>> +	/*
+>> +	 * PWM subsystem generally rounds down, so requesting 2x minimum high
+>> +	 * time ensures that we meet the minimum high time in any case.
+>> +	 */
+>> +	state.duty_cycle = AD4695_T_CNVH_NS * 2;
+>> +	ret = pwm_apply_might_sleep(st->cnv_pwm, &state);
+>> +	if (ret)
+>> +		goto err_offload_exit_conversion_mode;
+>> +
+>> +	return 0;
+>> +
+>> +err_offload_exit_conversion_mode:
+>> +	/* have to unwind in a different order to avoid triggering offload */
+> 
+> Needs more details here.
+> 
+>> +	spi_offload_trigger_disable(st->offload, st->offload_trigger);
+>> +	ad4695_cnv_manual_trigger(st);
+>> +	ad4695_exit_conversion_mode(st);
+>> +	goto err_disable_busy_output;
+>> +
+>> +err_offload_trigger_disable:
+>> +	spi_offload_trigger_disable(st->offload, st->offload_trigger);
+>> +
+>> +err_disable_busy_output:
+>> +	regmap_clear_bits(st->regmap, AD4695_REG_GP_MODE,
+>> +			  AD4695_REG_GP_MODE_BUSY_GP_EN);
+>> +
+>> +err_unoptimize_message:
+>> +	spi_unoptimize_message(&st->buf_read_msg);
+>> +
+>> +	return ret;
+>> +}
+> 
+>> +
+>>  static int ad4695_write_raw(struct iio_dev *indio_dev,
+>>  			    struct iio_chan_spec const *chan,
+>>  			    int val, int val2, long mask)
+>> @@ -779,6 +992,17 @@ static int ad4695_write_raw(struct iio_dev *indio_dev,
+>>  			default:
+>>  				return -EINVAL;
+>>  			}
+>> +		case IIO_CHAN_INFO_SAMP_FREQ: {
+>> +			struct pwm_state state;
+>> +
+>> +			if (val <= 0)
+>> +				return -EINVAL;
+>> +
+>> +			guard(mutex)(&st->cnv_pwm_lock);
+>> +			pwm_get_state(st->cnv_pwm, &state);
+> 
+> What limits this to rates the ADC can cope with?
+> 
+>> +			state.period = DIV_ROUND_UP_ULL(NSEC_PER_SEC, val);
+>> +			return pwm_apply_might_sleep(st->cnv_pwm, &state);
+>> +		}
+>>  		default:
+>>  			return -EINVAL;
+>>  		}
+> 
+>>  static int ad4695_probe(struct spi_device *spi)
+>>  {
+>>  	struct device *dev = &spi->dev;
+>>  	struct ad4695_state *st;
+>>  	struct iio_dev *indio_dev;
+>> -	struct gpio_desc *cnv_gpio;
+>>  	bool use_internal_ldo_supply;
+>>  	bool use_internal_ref_buffer;
+>>  	int ret;
+>>  
+>> -	cnv_gpio = devm_gpiod_get_optional(dev, "cnv", GPIOD_OUT_LOW);
+>> -	if (IS_ERR(cnv_gpio))
+>> -		return dev_err_probe(dev, PTR_ERR(cnv_gpio),
+>> -				     "Failed to get CNV GPIO\n");
+>> -
+>> -	/* Driver currently requires CNV pin to be connected to SPI CS */
+>> -	if (cnv_gpio)
+>> -		return dev_err_probe(dev, -ENODEV,
+>> -				     "CNV GPIO is not supported\n");
+>> -
+>>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+>>  	if (!indio_dev)
+>>  		return -ENOMEM;
+>> @@ -1002,8 +1374,13 @@ static int ad4695_probe(struct spi_device *spi)
+>>  		return -EINVAL;
+>>  
+>>  	/* Registers cannot be read at the max allowable speed */
+>> +	st->spi_max_speed_hz = spi->max_speed_hz;
+>>  	spi->max_speed_hz = AD4695_REG_ACCESS_SCLK_HZ;
+>>  
+>> +	ret = devm_add_action_or_reset(dev, ad4695_restore_spi_max_speed_hz, st);
+> 
+> Why do you need to put it back in devm? What happens after this but without
+> a driver restart that uses that faster rate?
+> 
+I should have added a comment here as this was a weird bug to trace.
 
-...
+The core SPI framework sets the initial value of spi->max_speed_hz
+to the minimum of the controller max rate and the max rate specified
+by the devicetree.
 
-Some headers are missing...
+The SPI device lives beyond this driver, so if we bind the driver
+and set spi->max_speed_hz to something other than what the SPI core
+set it, then the next time we bind the driver, we don't get the
+the max rate from the SPI core, but rather we changed it to when
+the driver unbound.
 
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/delay.h>
-> +#include <linux/module.h>
-> +#include <linux/i2c.h>
-> +#include <linux/regmap.h>
+So on the second bind, the max rate would be the slow register
+read rate instead of the actual max allowable rate.
 
-+ pm.h
+So we need to reset spi->max_speed_hz to what it was originally
+on driver unbind so that everything works as expected on the
+next bind.
 
-> +#include <linux/pm_runtime.h>
-
-> +#include <linux/regulator/consumer.h>
-
-+ types.h
-
-...
-
-> +#define ALS31300_DATA_X_GET(b)		\
-> +		sign_extend32(FIELD_GET(ALS31300_VOL_MSB_X_AXIS, b[0]) << 4 | \
-> +			      FIELD_GET(ALS31300_VOL_LSB_X_AXIS, b[1]), 11)
-> +#define ALS31300_DATA_Y_GET(b)		\
-> +		sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Y_AXIS, b[0]) << 4 | \
-> +			      FIELD_GET(ALS31300_VOL_LSB_Y_AXIS, b[1]), 11)
-> +#define ALS31300_DATA_Z_GET(b)		\
-> +		sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Z_AXIS, b[0]) << 4 | \
-> +			      FIELD_GET(ALS31300_VOL_LSB_Z_AXIS, b[1]), 11)
-> +#define ALS31300_TEMPERATURE_GET(b)	\
-> +		(FIELD_GET(ALS31300_VOL_MSB_TEMPERATURE, b[0]) << 6 | \
-> +		 FIELD_GET(ALS31300_VOL_LSB_TEMPERATURE, b[1]))
-
-These and in the code seems like you make a home grown endianes conversion.
-I suppose all of them have to be __beXX with the respective masks that cover
-all the bits.
-
-> +static int als31300_get_measure(struct als31300_data *data,
-> +				u16 *t, s16 *x, s16 *y, s16 *z)
-> +{
-> +	unsigned int count = 0;
-> +	u32 buf[2];
-
-Shouldn't this be __be64 buf?
-
-> +	int ret;
-> +
-> +	guard(mutex)(&data->mutex);
-> +
-> +	ret = pm_runtime_resume_and_get(data->dev);
-> +	if (ret)
-> +		return ret;
-
-> +	/* Max update rate is 2KHz, wait up to 1ms */
-> +	while (count < 50) {
-> +		/* Read Data */
-> +		ret = regmap_bulk_read(data->map, ALS31300_VOL_MSB, buf, 2);
-
-At bare minimum ARRAY_SIZE(), but see above, I think it should use the respective type.
-
-> +		if (ret) {
-> +			dev_err(data->dev, "read data failed, error %d\n", ret);
-> +			goto out;
-> +		}
-> +
-> +		/* Check if data is valid, happens right after getting out of sleep mode */
-> +		if (FIELD_GET(ALS31300_VOL_MSB_NEW_DATA, buf[0]))
-> +			break;
-> +
-> +		usleep_range(10, 20);
-> +		++count;
-> +	}
-> +
-> +	if (count >= 50) {
-> +		ret = -ETIMEDOUT;
-> +		goto out;
-> +	}
-
-This one of the longest variant of implementing
-
-	do {
-		...
-	} while (!FIELD_GET(...) && --count)
-
-But you also may consider something from iopoll.h (I don't remember if we have
-regmap_read_poll_timeout() for bulk transfers.
-
-> +	*t = ALS31300_TEMPERATURE_GET(buf);
-> +	*x = ALS31300_DATA_X_GET(buf);
-> +	*y = ALS31300_DATA_Y_GET(buf);
-> +	*z = ALS31300_DATA_Z_GET(buf);
-> +
-> +out:
-> +	pm_runtime_mark_last_busy(data->dev);
-> +	pm_runtime_put_autosuspend(data->dev);
-
-Last discussion with Rafael on the topic of the above puts a question mark to
-all these cases when runtime PM idle callback has not been implemented.
-
-Shouldn't this be simply 
-
-	pm_runtime_put(data->dev);
-
-?
-
-> +	return ret;
-> +}
-
-...
-
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (chan->type) {
-> +		case IIO_TEMP:
-> +			/*
-> +			 * Fractional part of:
-> +			 *         1000 * 302 * (value - 1708)
-> +			 * temp = ----------------------------
-> +			 *             4096
-> +			 * to convert temperature in millicelcius
-> +			 */
-> +			*val = 1000 * 302;
-
-MILLI from units.h ?
-
-> +			*val2 = 4096;
-> +			return IIO_VAL_FRACTIONAL;
-> +		case IIO_MAGN:
-> +			/*
-> +			 * Devices are configured in factory
-> +			 * with different sensitivities:
-> +			 * - 500 GAUSS <-> 4 LSB/Gauss
-> +			 * - 1000 GAUSS <-> 2 LSB/Gauss
-> +			 * - 2000 GAUSS <-> 1 LSB/Gauss
-> +			 * with translates by a division of the returned
-> +			 * value to get Gauss value.
-> +			 * The sensisitivity cannot be read at runtime
-> +			 * so the value depends on the model compatible
-> +			 * or device id.
-> +			 */
-> +			*val = 1;
-> +			*val2 = data->variant_info->sensitivity;
-> +			return IIO_VAL_FRACTIONAL;
-> +		default:
-> +			return -EINVAL;
-> +		}
-
-...
-
-> +	struct {
-> +		u16 temperature;
-> +		s16 channels[3];
-> +		aligned_s64 timestamp;
-> +	} __packed scan;
-
-Why __packed?
-
-...
-
-> +static int als31300_set_operating_mode(struct als31300_data *data,
-> +				       unsigned int val)
-> +{
-> +	int ret;
-> +
-> +	ret = regmap_update_bits(data->map, ALS31300_VOL_MODE,
-> +				 ALS31300_VOL_MODE_SLEEP, val);
-> +	if (ret) {
-> +		dev_err(data->dev, "failed to set operating mode (%pe)\n", ERR_PTR(ret));
-> +		return ret;
-> +	}
-> +
-> +	/* The time it takes to exit sleep mode is equivalent to Power-On Delay Time */
-> +	if (val == ALS31300_VOL_MODE_ACTIVE_MODE)
-> +		usleep_range(600, 650);
-> +
-> +	return ret;
-
-	return 0;
-
-> +}
-
-...
-
-> +static int als31300_probe(struct i2c_client *i2c)
-> +{
-> +	struct device *dev = &i2c->dev;
-> +	struct als31300_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	data->dev = dev;
-> +	i2c_set_clientdata(i2c, indio_dev);
-
-> +	mutex_init(&data->mutex);
-
-Why not devm_mutex_init()? How does this being cleaned up?
-
-> +	data->variant_info = i2c_get_match_data(i2c);
-> +	if (!data->variant_info)
-> +		return -EINVAL;
-> +
-> +	data->map = devm_regmap_init_i2c(i2c, &als31300_regmap_config);
-> +	if (IS_ERR(data->map))
-> +		return dev_err_probe(dev, PTR_ERR(data->map),
-> +				     "failed to allocate register map\n");
-> +
-> +	ret = devm_regulator_get_enable(dev, "vcc");
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to enable regulator\n");
-> +
-> +	ret = als31300_set_operating_mode(data, ALS31300_VOL_MODE_ACTIVE_MODE);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to power on device\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, als31300_power_down, data);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to add powerdown action\n");
-> +
-> +	indio_dev->info = &als31300_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->name = i2c->name;
-> +	indio_dev->channels = als31300_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(als31300_channels);
-> +	indio_dev->available_scan_masks = als31300_scan_masks;
-> +
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> +					      iio_pollfunc_store_time,
-> +					      als31300_trigger_handler,
-> +					      &als31300_setup_ops);
-> +	if (ret < 0) {
-> +		dev_err(dev, "iio triggered buffer setup failed\n");
-> +		return ret;
-
-Why not return dev_err_probe(...);
-
-> +	}
-> +
-> +	ret = pm_runtime_set_active(dev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = devm_pm_runtime_enable(dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	pm_runtime_get_noresume(dev);
-> +	pm_runtime_set_autosuspend_delay(dev, 200);
-> +	pm_runtime_use_autosuspend(dev);
-> +
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "device register failed\n");
-> +
-> +	return 0;
-> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+(Or we call this a SPI core bug and fix it there instead).
 
 

@@ -1,293 +1,155 @@
-Return-Path: <linux-iio+bounces-11406-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11407-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF969B1F63
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 18:22:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 723929B1FE3
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 20:41:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0534B2117C
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 17:22:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3E7F1C20BBF
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 19:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC38117E472;
-	Sun, 27 Oct 2024 17:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808F217CA04;
+	Sun, 27 Oct 2024 19:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="baogTKWQ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CKRVWrUy"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eoW56xCr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3971417C9F8;
-	Sun, 27 Oct 2024 17:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FC616CD35
+	for <linux-iio@vger.kernel.org>; Sun, 27 Oct 2024 19:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730049716; cv=none; b=Kp37noRv80yZdZsZqhmYsBQuG5tAjBK/HlJQPCc/e7xf89CngY3QzaXls54DG1zS3czXEUEs+t40qV20P7fGmLm8+KmgPeO99ADAtKKiW7sxD52TxW2q0DXJDcU08DwhuFYyICFxQ7z3Mkzzn17gEUw6SJ3Fixs3Q7meBq0KLRs=
+	t=1730058090; cv=none; b=V0MJ0LrC5wr+DZWc/xgtH53u6Fu0bQNqB/P3PfQbX+T7g3Rr1SkeZi6CEg67itRZ+Ys+ZsVjCUO9ujYyS4h9YaOUABI3Zo4KomhNPN/5Qo4Q0nAcns/lx7MH/dENX9OeRKu94IkCd4BtMd3bdQT4HsxRo8ZfDSO7XhC0PfeFbko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730049716; c=relaxed/simple;
-	bh=mZli/58Bf8b2rVFGCQQ5z0QEq2d90jadrU+ROb/40TA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fppkjrTtz2UQ96YqZjz2OqHwnZxU5TSvBkc+UpXNTv/4dkO6kuQcMfKqPQAX7r/6nt8JNXZAZj9NCaOuN0FPrQM/GKtdpETRET/lSG+c2H4HQq/J9fVPSlGYrL1lkpnif1Uoi41jV0i74kqTq6N0yNgPX1EraHVzVOnNgxNWXKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=baogTKWQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CKRVWrUy; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justinweiss.com
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 0320325400A4;
-	Sun, 27 Oct 2024 13:21:52 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Sun, 27 Oct 2024 13:21:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justinweiss.com;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1730049712; x=
-	1730136112; bh=HZ0f4dodd217AkGZBJ4uwjooGTB/NPsDwvhotzR1ZOw=; b=b
-	aogTKWQ9MqVrjOh/u0IijpEnBp/BT/RtM+EIFoSX7oaSHROmpWPPQL/ell9hp+Jv
-	Up1HDCYeBvrjcPL5gD63ZFnDBxjCo/cyBYiVqj11GkV315yCEivX5IPWwZ/I85Yx
-	YncMBYr6BcPimzd4xAf7eax090cy6iYFFjatqpGR4InBU0sAD899VD3tm4oUVM1S
-	EWtI38ZGLTlX2mKL5IH6AFy9bPsWxuyWLINy9d9ZGESmR5IT3NKUu7vBma3PZn7r
-	98nf+gMY92YEMwiiMm8VstMmN+HYzz3ioDK12ltXeFjUdX0Utbxd9AkLfcjOpg5k
-	7rQdEKu4dl/D8q4dDUY8g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730049712; x=
-	1730136112; bh=HZ0f4dodd217AkGZBJ4uwjooGTB/NPsDwvhotzR1ZOw=; b=C
-	KRVWrUyYOk00Y4ZfyUBSkAQI6Rki9PC5X2v8NilCOFbIaXkypcbAT4VpaDznp52h
-	Xp7PEyc+U2Rpj4GBE22fuvG9ri02T+UpeQhQz5M0qxzYrUtYGsTumkuYCnLbh5R6
-	PuX+ENbodQNLqrWHF+D33YSEuEpODKnBI011LJJ6skMmd8uy0n7FpfOVZtUDeRn9
-	Npeq+wedC9lmBeBoPm7C1nlJZyNTjKBkS8G6BQby3agszAS9zG2dIMAMFMwDx4+k
-	ScNu/zO06coBtya4SuGUibdC6v8FJERgyeXQOWHrkt9ptVw1i2H1v7ISC01peTn6
-	sTL3sYKnvRekPjvDZqx6g==
-X-ME-Sender: <xms:sHYeZxgU_XWYYEQnUSMtFxOK2W2gHxaQ5g7NGRD8c-FK24e5DmuG8Q>
-    <xme:sHYeZ2A65Tqdat2VTS1MozpyKRDhgCsBdxs6OPnDtMDEyUtDuAzr7mdxelY-ccZl2
-    bPh00wvVNoMgwGPWg>
-X-ME-Received: <xmr:sHYeZxFz7A07CUQiYctzIEoXHxqtmV5q7iQR_Sqd0sOoxoGRJ60dnB00wkQjHgzIATnIdEcYaBiHZOTuxQVhjz36H-7GD37MXTB3kUet-g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejiedguddttdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddt
-    necuhfhrohhmpefluhhsthhinhcuhggvihhsshcuoehjuhhsthhinhesjhhushhtihhnfi
-    gvihhsshdrtghomheqnecuggftrfgrthhtvghrnhepfeeuvdehieefleeiiedugfefleei
-    uedtveevkeeigeeiudfhleeluedvkeeiveelnecuffhomhgrihhnpegsmhhivddrpggtrh
-    hsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhu
-    shhtihhnsehjuhhsthhinhifvghishhsrdgtohhmpdhnsggprhgtphhtthhopedufedpmh
-    houggvpehsmhhtphhouhhtpdhrtghpthhtoheplhgrnhiirghnohdrrghlvgigsehgmhgr
-    ihhlrdgtohhmpdhrtghpthhtohepjhhitgdvfeeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheplhgrrhhssehmvghtrghfohhordguvgdprhgtphhtthhopehrohgshheskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgu
-    rhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpth
-    htohepjhhushhtihhnsehjuhhsthhinhifvghishhsrdgtohhmpdhrtghpthhtoheplhhi
-    nhhugidqihhiohesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:sHYeZ2SwnXMfUJwq52yY0X7EzybAtRhKTg3Qh196OiqmKgKhEpDLsw>
-    <xmx:sHYeZ-y2EXdo8vbGYGl7CnoYK_KvM9uY6lexyQf-Ns5mXOuBHT5uFQ>
-    <xmx:sHYeZ86GWWd_PX4KEwEIJc65Zszwn3Gjdlzp9rM2iOQ_BJX_UP2Dpg>
-    <xmx:sHYeZzwLwcw4bk3MHL_EK92OEhPAtlg2k8bkALmJ1WmSUM5jtlDylQ>
-    <xmx:sHYeZygDcd-mbAoGwmQ-KWLUevUlRxt7kB7E3VL4e9zF-w6veQIR8TxC>
-Feedback-ID: icf614246:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 27 Oct 2024 13:21:51 -0400 (EDT)
-From: Justin Weiss <justin@justinweiss.com>
-To: Alex Lanzano <lanzano.alex@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Justin Weiss <justin@justinweiss.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Derek J . Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>
-Subject: [PATCH v4 4/4] iio: imu: bmi270: Add support for BMI260
-Date: Sun, 27 Oct 2024 10:20:25 -0700
-Message-ID: <20241027172029.160134-5-justin@justinweiss.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241027172029.160134-1-justin@justinweiss.com>
-References: <20241027172029.160134-1-justin@justinweiss.com>
+	s=arc-20240116; t=1730058090; c=relaxed/simple;
+	bh=v+vz7OIIFECPzMyfYUR86ehGfecvzTQY7cT6KQHCzi4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pXxCu+Lw4TyPBgUiVotv9qGiVzazHbkPviiBMpN5rKTa+tg0a5ixRpz1Q22NAiAKGm1oD8iTTFfwtB42MoogdYkC4goMN/0p+Oq9sljLfNWpVioEBUQLS4q0nyPZG1t2aiFV/Civ2AWk81LUptQ5iR7rWT5JXFxpt1K/5hBgGCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eoW56xCr; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5ebc04d495aso2084718eaf.2
+        for <linux-iio@vger.kernel.org>; Sun, 27 Oct 2024 12:41:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730058085; x=1730662885; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DS49mL6mh3qfyGHT1zyM0qeylEka6PaSbeWVh4VtAn4=;
+        b=eoW56xCrKC0eCdUB+TOfPm+jOxMWzEvMD7IvLIrwfd6VgdYerfpY4lrubbzfk+XVH1
+         NSjTetAcsP3kiHGH90h3tAvtyDzdVgRHiriQJzKiCBwFQJRvywvvSJvA5qDcCXj965Zd
+         eEs9VVLLAKvb9GqAkL8wxvIhcTJAlIUvEwWWp70RZJudPDZJ41rFtj5hHdLXi+cbLSKX
+         k+8tVWDCVtntFv/bGzSvL/4r9WFWsgDaFj1c0aBPMrmzz2nxKNdBHIvYAMeg8ZJ95vAV
+         5J0OGAQZTjsyFg15m/dKpCp0yTkuFskuEyCrkpwpW3sSObXhm+AHEnAsndo9gbrkwbLz
+         gM6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730058085; x=1730662885;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DS49mL6mh3qfyGHT1zyM0qeylEka6PaSbeWVh4VtAn4=;
+        b=heRs7eFzrYdL5LE9cfDZVLwKvyjy4MJhfWms3DcWhh6nuOHg/qBD6gS5GeaXi8G5Xo
+         iKnvPq4RNhNS4vC+7YCXyonwsd6tz06HlWiIfRUAjGgFLsmyzlQkqFGpgNhQzCiT5uYQ
+         DiN/eHCMz8U3TeRMHuBwR4QCLR45KYgQcsFG3jklzCOAI8DMfxpGM4WHg4TI5xY4zRNj
+         Q1dr5CvqW+lwuwzJKnqWQXJ0KcpqA3uiXcfccVpZNdPt1CdilYrG5UjmrPNjKtWTt3Z9
+         80Fu8XRBI7XohFRO7bNsLgjxikHK3t+3sQ7I1lOLBiMhpcyD2zNHssuIYFZOma6VsxuP
+         Vq2w==
+X-Gm-Message-State: AOJu0YxpkepoKhtqsmOHVV1PZ3zP/W1UGnhHP1w/W7mSfRrEIh5uFUqQ
+	gVmKFLt4VLCr7fPVCPz0oLXBF6Fo3E1YEoh+rt7ctazKUGCPdnuZ3/wqdQ44Cdo=
+X-Google-Smtp-Source: AGHT+IEN4f17W5Pxyu0a3Sg3sLpksasKzlX7/jnfpEUhNEtj1KFkavvwEUUQrUhY89AcYkgtdZMp9A==
+X-Received: by 2002:a05:6870:170f:b0:288:18a0:e169 with SMTP id 586e51a60fabf-29051b4d49dmr4184676fac.19.1730058085605;
+        Sun, 27 Oct 2024 12:41:25 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29035da4b9bsm1589189fac.15.2024.10.27.12.41.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Oct 2024 12:41:24 -0700 (PDT)
+Message-ID: <776b38c3-1bca-4416-a855-d45b759ec2c2@baylibre.com>
+Date: Sun, 27 Oct 2024 14:41:22 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] docs: iio: ad7380: add adaq4370-4 and adaq4380-4
+To: Julien Stephan <jstephan@baylibre.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20241024-ad7380-add-adaq4380-4-support-v3-0-6a29bd0f79da@baylibre.com>
+ <20241024-ad7380-add-adaq4380-4-support-v3-4-6a29bd0f79da@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241024-ad7380-add-adaq4380-4-support-v3-4-6a29bd0f79da@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Adds support for the Bosch BMI260 6-axis IMU to the Bosch BMI270
-driver. Setup and operation is nearly identical to the Bosch BMI270,
-but has a different chip ID and requires different firmware.
+On 10/24/24 3:16 AM, Julien Stephan wrote:
+> Adding documentation for adaq4370-4 and adaq4380-4 supported devices. In
+> particular, document the reference voltage mechanism and the gain
+> parameter that are specific to adaq devices.
+> 
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> ---
+>  Documentation/iio/ad7380.rst | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/Documentation/iio/ad7380.rst b/Documentation/iio/ad7380.rst
+> index 6f70b49b9ef27c1ac32acaefecd1146e5c8bd6cc..ae408ff2fa9c97427a9fef57020fb54203d2d33e 100644
+> --- a/Documentation/iio/ad7380.rst
+> +++ b/Documentation/iio/ad7380.rst
+> @@ -27,6 +27,8 @@ The following chips are supported by this driver:
+>  * `AD7386-4 <https://www.analog.com/en/products/ad7386-4.html>`_
+>  * `AD7387-4 <https://www.analog.com/en/products/ad7387-4.html>`_
+>  * `AD7388-4 <https://www.analog.com/en/products/ad7388-4.html>`_
+> +* `ADAQ4370-4 <https://www.analog.com/en/products/adaq4370-4.html>`_
+> +* `ADAQ4380-4 <https://www.analog.com/en/products/adaq4380-4.html>`_
+>  
+>  
+>  Supported features
+> @@ -47,6 +49,12 @@ ad7380-4
+>  ad7380-4 supports only an external reference voltage (2.5V to 3.3V). It must be
+>  declared in the device tree as ``refin-supply``.
+>  
+> +adaq devices
+> +~~~~~~~~~~~~
+> +
+> +adaq4370-4 and adaq4380-4 don't have an external reference, but use a 3V
+> +internal reference derived from one of its supplies (``refin-supply``)
+> +
+>  All other devices from ad738x family
+>  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>  
+> @@ -121,6 +129,16 @@ Example for AD7386/7/8 (2 channels parts):
+>  
+>  When enabling sequencer mode, the effective sampling rate is divided by two.
+>  
+> +
+> +Gain (adaq devices only)
+> +~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +adaq devices have a pin selectable gain in front of each adc. The appropriate
 
-Firmware is requested and loaded from userspace.
+If we are doing a v4 anyway, it would be nice to use caps for acronyms
+like ADAQ and ADC here and elsewhere.
 
-Adds ACPI ID BMI0160, used by several devices including the GPD Win
-Mini, Aya Neo AIR Pro, and OXP Mini Pro.
-
-GPD Win Mini:
-
-Device (BMI2)
-{
-    Name (_ADR, Zero)  // _ADR: Address
-    Name (_HID, "BMI0160")  // _HID: Hardware ID
-    Name (_CID, "BMI0160")  // _CID: Compatible ID
-    Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
-    Name (_UID, One)  // _UID: Unique ID
-    Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-    {
-        Name (RBUF, ResourceTemplate ()
-        {
-            I2cSerialBusV2 (0x0068, ControllerInitiated, 0x00061A80,
-                AddressingMode7Bit, "\\_SB.I2CB",
-                0x00, ResourceConsumer, , Exclusive,
-                )
-            GpioInt (Edge, ActiveLow, Exclusive, PullDefault, 0x0000,
-                "\\_SB.GPIO", 0x00, ResourceConsumer, ,
-                )
-                {   // Pin list
-                    0x008B
-                }
-        })
-        Return (RBUF) /* \_SB_.I2CB.BMI2._CRS.RBUF */
-    }
-    ...
-}
-
-Signed-off-by: Justin Weiss <justin@justinweiss.com>
----
- drivers/iio/imu/bmi270/bmi270.h      |  1 +
- drivers/iio/imu/bmi270/bmi270_core.c | 28 +++++++++++++++++++++++++++-
- drivers/iio/imu/bmi270/bmi270_i2c.c  |  9 +++++++++
- drivers/iio/imu/bmi270/bmi270_spi.c  |  2 ++
- 4 files changed, 39 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
-index 6173be929bac..fdfad5784cc5 100644
---- a/drivers/iio/imu/bmi270/bmi270.h
-+++ b/drivers/iio/imu/bmi270/bmi270.h
-@@ -29,6 +29,7 @@ struct bmi270_chip_info {
- };
- 
- extern const struct regmap_config bmi270_regmap_config;
-+extern const struct bmi270_chip_info bmi260_chip_info;
- extern const struct bmi270_chip_info bmi270_chip_info;
- 
- int bmi270_core_probe(struct device *dev, struct regmap *regmap,
-diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-index 27e501a15095..938cf14d46bd 100644
---- a/drivers/iio/imu/bmi270/bmi270_core.c
-+++ b/drivers/iio/imu/bmi270/bmi270_core.c
-@@ -14,6 +14,11 @@
- #include "bmi270.h"
- 
- #define BMI270_CHIP_ID_REG				0x00
-+
-+/* Checked to prevent sending incompatible firmware to BMI160 devices */
-+#define BMI160_CHIP_ID_VAL				0xD1
-+
-+#define BMI260_CHIP_ID_VAL				0x27
- #define BMI270_CHIP_ID_VAL				0x24
- #define BMI270_CHIP_ID_MSK				GENMASK(7, 0)
- 
-@@ -64,6 +69,7 @@
- #define BMI270_PWR_CTRL_ACCEL_EN_MSK			BIT(2)
- #define BMI270_PWR_CTRL_TEMP_EN_MSK			BIT(3)
- 
-+#define BMI260_INIT_DATA_FILE "bmi260-init-data.fw"
- #define BMI270_INIT_DATA_FILE "bmi270-init-data.fw"
- 
- enum bmi270_scan {
-@@ -86,6 +92,13 @@ static const unsigned long bmi270_avail_scan_masks[] = {
- 	0
- };
- 
-+const struct bmi270_chip_info bmi260_chip_info = {
-+	.name = "bmi260",
-+	.chip_id = BMI260_CHIP_ID_VAL,
-+	.fw_name = BMI260_INIT_DATA_FILE,
-+};
-+EXPORT_SYMBOL_NS_GPL(bmi260_chip_info, IIO_BMI270);
-+
- const struct bmi270_chip_info bmi270_chip_info = {
- 	.name = "bmi270",
- 	.chip_id = BMI270_CHIP_ID_VAL,
-@@ -546,8 +559,21 @@ static int bmi270_validate_chip_id(struct bmi270_data *bmi270_device)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to read chip id");
- 
-+	/*
-+	 * Some manufacturers use "BMI0160" for both the BMI160 and
-+	 * BMI260. If the device is actually a BMI160, the bmi160
-+	 * driver should handle it and this driver should not.
-+	 */
-+	if (chip_id == BMI160_CHIP_ID_VAL)
-+		return -ENODEV;
-+
- 	if (chip_id != bmi270_device->chip_info->chip_id)
--		dev_info(dev, "Unknown chip id 0x%x", chip_id);
-+		dev_info(dev, "Unexpected chip id 0x%x", chip_id);
-+
-+	if (chip_id == bmi260_chip_info.chip_id)
-+		bmi270_device->chip_info = &bmi260_chip_info;
-+	else if (chip_id == bmi270_chip_info.chip_id)
-+		bmi270_device->chip_info = &bmi270_chip_info;
- 
- 	return 0;
- }
-diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
-index 394f27996059..6bd82e4362ab 100644
---- a/drivers/iio/imu/bmi270/bmi270_i2c.c
-+++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
-@@ -32,11 +32,19 @@ static int bmi270_i2c_probe(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id bmi270_i2c_id[] = {
-+	{ "bmi260", (kernel_ulong_t)&bmi260_chip_info },
- 	{ "bmi270", (kernel_ulong_t)&bmi270_chip_info },
- 	{ }
- };
- 
-+static const struct acpi_device_id bmi270_acpi_match[] = {
-+	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
-+	{ "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
-+	{ }
-+};
-+
- static const struct of_device_id bmi270_of_match[] = {
-+	{ .compatible = "bosch,bmi260", .data = &bmi260_chip_info },
- 	{ .compatible = "bosch,bmi270", .data = &bmi270_chip_info },
- 	{ }
- };
-@@ -44,6 +52,7 @@ static const struct of_device_id bmi270_of_match[] = {
- static struct i2c_driver bmi270_i2c_driver = {
- 	.driver = {
- 		.name = "bmi270_i2c",
-+		.acpi_match_table = bmi270_acpi_match,
- 		.of_match_table = bmi270_of_match,
- 	},
- 	.probe = bmi270_i2c_probe,
-diff --git a/drivers/iio/imu/bmi270/bmi270_spi.c b/drivers/iio/imu/bmi270/bmi270_spi.c
-index 7c2062c660d9..b1fd9fc5dc98 100644
---- a/drivers/iio/imu/bmi270/bmi270_spi.c
-+++ b/drivers/iio/imu/bmi270/bmi270_spi.c
-@@ -65,11 +65,13 @@ static int bmi270_spi_probe(struct spi_device *spi)
- }
- 
- static const struct spi_device_id bmi270_spi_id[] = {
-+	{ "bmi260", (kernel_ulong_t)&bmi260_chip_info},
- 	{ "bmi270", (kernel_ulong_t)&bmi270_chip_info },
- 	{ }
- };
- 
- static const struct of_device_id bmi270_of_match[] = {
-+	{ .compatible = "bosch,bmi260", .data = &bmi260_chip_info },
- 	{ .compatible = "bosch,bmi270", .data = &bmi270_chip_info },
- 	{ }
- };
--- 
-2.47.0
+> +gain is selectable from device tree using the ``adi,gain-milli`` property.
+> +Refer to the typical connection diagrams section of the datasheet for pin
+> +wiring.
+> +
+> +
+>  Unimplemented features
+>  ----------------------
+>  
+> 
 
 

@@ -1,211 +1,194 @@
-Return-Path: <linux-iio+bounces-11399-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11400-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D3C9B1D9F
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 13:14:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A8F9B1DA6
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 13:24:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E57BAB210C8
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 12:14:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06F8CB20FA3
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 12:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE07153803;
-	Sun, 27 Oct 2024 12:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1B41547E1;
+	Sun, 27 Oct 2024 12:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cs2OVS4Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VAFtCyLD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D91145A0B;
-	Sun, 27 Oct 2024 12:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EB62770B;
+	Sun, 27 Oct 2024 12:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730031261; cv=none; b=TmC0MFHF98m1X7YTmDOpHmFZu38Xx371Qs+b4C5dTMCbaQBaZsrpnjsvAjBKrDHqNUpGYMWoQIZWOfs5cnB4h/gA/CvISDFgt7iWAob0wRR5WMVFzHkV8nwCVFk3QtjdpaT2lVvmeNwaQv2qGKJdE59ztG0H0Lu8dymWsa+nAa8=
+	t=1730031842; cv=none; b=UyCfeDR1gwsqfNs2xBf6FPo3q1D3JnlfWMp+9d4G80999WBgTs6IsdEqpRc28rvpuU3lo5s4HarOqCYPYyueaBp777WihsMPS0WisOXyJy6XFRTDI9sHqszCOZpoA4hgfprVwMeaXqHrN1vuljowQWw+UsGRC8UfhZ1QUdTLpE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730031261; c=relaxed/simple;
-	bh=K7mregKkm97B4UPy/3KG+ChtXDnIj722Cg4nu0OcQo4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uodfHkz2PIu/MvX1GSdMhPkoGEm8Po5ttxjiorieJaYttVEkNrX36wnR4paNngfLTn5vcl14K+Iq+xsG5IrSUz5JFLg73EdH9cSyDxhdRqxZ9VX4wAjpSMIfBiI+1dP3HfIU2frxtdK2XRJXLLU0jykMs26tc+W0Ljejo9U5Jb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cs2OVS4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE50EC4CEC3;
-	Sun, 27 Oct 2024 12:14:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730031260;
-	bh=K7mregKkm97B4UPy/3KG+ChtXDnIj722Cg4nu0OcQo4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cs2OVS4QiuO2vtmi0FttGb/TU9hJlSJ4VyA2eZmmwZG6iz3ke1ATlLavT8/UfM6dd
-	 xRNm7ExTV01i5aKwgmAXsFbt4Cm5fWxeTdZ/oKLYg9xmxBg+zHbMqeG6jmsm8xQCwl
-	 NppURYlTFFwkASRMfVbYJEQSJsW0nFKHeyFKFdA+A7zMs3HZcTYO+lLNu5BZ2mQNpt
-	 ex/SJRvyOWItBTCBOqDj3SSVEMW0z2pnrjJ/6E+y9sTnElPBjk/dacECdi86Q86jXM
-	 +KoWAT/faEA0td0fiikrR7A/yogJTFv5/CVj3htjT0CMr4i40wDsWnCWAew9ZZMnjv
-	 iEMNI0Ogm2fvw==
-Date: Sun, 27 Oct 2024 12:14:12 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: <victor.duicu@microchip.com>
-Cc: <matteomartelli3@gmail.com>, <lars@metafoo.de>,
- <marius.cristea@microchip.com>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6] iio: adc: pac1921: Add ACPI support to Microchip
- pac1921
-Message-ID: <20241027121412.0a71eb55@jic23-huawei>
-In-Reply-To: <20241024100050.4727-1-victor.duicu@microchip.com>
-References: <20241024100050.4727-1-victor.duicu@microchip.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1730031842; c=relaxed/simple;
+	bh=8BEcUjVXSgt7ZVdHArbN5cGhrKqtINZ0r1zgZsa29TE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gGPQnmBwZvXFmZOVsSDdcsekL8+wUrpoymw9LH+MT7Gif0KpuPV8CnuR3VFsRNvUzsFW82zWxAl1Ut462VgDAGWejCcfeerlbmVrmPkCZTd/D2NMExxqfUOXWlxOQn+eYE9iKV56LBC8vWdGsbiMUqOIq+9ekr1oP3qaKKlmOQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VAFtCyLD; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-431548bd1b4so33442765e9.3;
+        Sun, 27 Oct 2024 05:24:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730031839; x=1730636639; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kVEQu3tU/qXzrZf1hfF77Y9BaGDuOCVJOekxBG22NJo=;
+        b=VAFtCyLDYz1AFdqxPKDFY/9gGH6jILUuBh9leBeWG+t9IVh1FVoB2nWvUXAvyHtE7c
+         RG1sC4VSI7G/iyW//A9ihm8tNa958A3Qn5N4tsq6ERmKl+9MtOMzilw+6f0f/87l5a5W
+         nwvQuCPeOJp6Xd0X0UnogkZiFYDPXnZFdvOM6Hwy7kNIuuUVaCQqGeR1Z1fTpc5LZlzD
+         qmFx4iDAYiI/V6JToaeI8CNtFsJKtP18aBkfaF+PgJrPGBrbrOgpFVU9UAY5KAsyHhQU
+         S82OSTAPi+zF7+atT150GEt9TTOHsbd5i6UkdJoOIELpuEUrzZwY4zlN5TfTychCvpFq
+         HFwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730031839; x=1730636639;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kVEQu3tU/qXzrZf1hfF77Y9BaGDuOCVJOekxBG22NJo=;
+        b=slxtU6TJGC8loaN/3GLEMqY4f1Js+s8U+YzEQ+hQ9nPI5WH65lWRnfN20a99TO53sB
+         06Bkf/vGscpgK/MZalaX1L7r2qGynQX0Ebz8laT6c0Dd4istTACjV3uuQBO5TIiCRXZ/
+         f4sv41J1/Eeal8ePYH4GLl00NNyl7rbTkbLFPv8lSPZfmf00jK5w33Z7ejvAnL/XtXzR
+         bPXTpiRP5U0i1xFrsuAsVVXn7Yt/3+Nl7BbCrZ6s3aKFLgcUEgRpu+mq4Jsrp4k9WXHV
+         DmMqV30/+PwZhor3sA23ekWs/TJcwnfPcdp2KpLhwBBDYCwQAVEYH9yl9S2AJaWHowZR
+         cVXg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3av2pmEWbggFFWk26Y1yqBYKbLxqa2r/njV0XPvsJfiYrkJyOymtmeS9vtvNXPhfZl6Xs1QL2iHtcRi26@vger.kernel.org, AJvYcCX8KVGd2DtAJE2mNARe1v5XHXDlJ5IWHsB3zQsP3XPV/qdUhGI7vxbS534IL3YLh6cWqUPD/NgMAcnQ@vger.kernel.org, AJvYcCXzpMgEBYAjRQChAXPAZd+LXLahwIo6PEEyXDTfp4MQ6+LWqUnc7/IZIIC7KkdCDgYA0DEbNZIP+w5s@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrWSP0cC/V7h9p/EQcqV1OWpY2TXg8+ptmGoczlwMocDmF2o9/
+	3qWWv9/215Rsw9GC8tNwcSwd15ZiZrJgn5uzYOlBE2hvD2kUkVGp
+X-Google-Smtp-Source: AGHT+IHpOK+Lv3dg8V4hr4K0sH/2+e+bw1brMh5Xn1jCRU17+3uvBpMz5BcUxkquTXe6UmJDzRQafA==
+X-Received: by 2002:a05:600c:5110:b0:431:54f3:11b1 with SMTP id 5b1f17b1804b1-4319ad36874mr48559505e9.34.1730031838825;
+        Sun, 27 Oct 2024 05:23:58 -0700 (PDT)
+Received: from ?IPV6:2a02:8389:41cf:e200:a7df:fd2d:69ec:cea7? (2a02-8389-41cf-e200-a7df-fd2d-69ec-cea7.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:a7df:fd2d:69ec:cea7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b55f784sm103866385e9.19.2024.10.27.05.23.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Oct 2024 05:23:58 -0700 (PDT)
+Message-ID: <59d024d4-e27c-4fcc-9007-7622f9fa8bd5@gmail.com>
+Date: Sun, 27 Oct 2024 13:23:56 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] iio: light: add support for veml3235
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: kernel test robot <lkp@intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
+ oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241023-veml3235-v3-2-8490f2622f9a@gmail.com>
+ <202410251610.kB7u6xMJ-lkp@intel.com>
+ <19c8e07f-4b9b-4d4b-aa18-f6766b65b33e@gmail.com>
+ <20241026191001.10acd773@jic23-huawei>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20241026191001.10acd773@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Thu, 24 Oct 2024 13:00:50 +0300
-<victor.duicu@microchip.com> wrote:
-
-> From: Victor Duicu <victor.duicu@microchip.com>
+On 26/10/2024 20:10, Jonathan Cameron wrote:
+> Hi Javier,
 > 
-> This patch implements ACPI support to Microchip pac1921.
-> The driver can read shunt resistor value and label from ACPI table.
+>>>    222	
+>>>    223		return 0;
+>>>    224	}
+>>>    225	
+>>>   
+>>
+>>
+>> Unused as there is no processed values anymore. I will drop them for v4.
+> Given I didn't have any other comments I just fixed these up whilst applying.
 > 
-> Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
-Hi Victor,
-
-Been a while since I looked at a version of this. Some comments inline
-on stuff that I probably missed before now.
-
-Jonathan
-
->  };
->  
-> +static inline bool pac1921_shunt_is_invalid(u32 shunt_val)
-> +{
-> +	return (shunt_val == 0 || shunt_val > INT_MAX);
-
-Drop the brackets as they don't add anything much.
-
-> +}
-> +
-
-> +/*
-> + * documentation related to the ACPI device definition
-> + * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC193X-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
-> + */
-> +static int pac1921_match_acpi_device(struct i2c_client *client, struct pac1921_priv *priv,
-> +				     struct iio_dev *indio_dev)
-> +{
-> +	acpi_handle handle;
-> +	union acpi_object *rez;
-> +	guid_t guid;
-> +	char *label;
-> +
-> +	guid_parse(PAC1921_DSM_UUID, &guid);
-> +	handle = ACPI_HANDLE(&client->dev);
-> +
-> +	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1921_ACPI_GET_UOHMS_VALS, NULL);
-> +	if (!rez)
-> +		return dev_err_probe(&client->dev, -EINVAL,
-> +				     "Could not read shunt from ACPI table\n");
-> +
-> +	priv->rshunt_uohm = rez->package.elements[0].integer.value;
-> +	ACPI_FREE(rez);
-> +
-> +	if (pac1921_shunt_is_invalid(priv->rshunt_uohm))
-> +		return dev_err_probe(&client->dev, -EINVAL, "Invalid shunt resistor\n");
-> +
-> +	pac1921_calc_current_scales(priv);
-
-As below - I'd do this and the validity check outside of this function to avoid
-duplication for the two firmware types.
-
-> +
-> +	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1921_ACPI_GET_LABEL, NULL);
-> +	if (!rez)
-> +		return dev_err_probe(&client->dev, -EINVAL,
-> +				     "Could not read label from ACPI table\n");
-> +
-> +	label = devm_kmemdup(&client->dev, rez->package.elements->string.pointer,
-> +			     (size_t)rez->package.elements->string.length + 1,
-Are you duplicating one off the of the string?
-I'm curious at the need for a null.
-
-Consider devm_kstrdup() which only copies the actual string + adds the terminator.
-
-+ check for allocation failure label may be NULL.
-
-> +			     GFP_KERNEL);
-> +	label[rez->package.elements->string.length] = '\0';
-> +	indio_dev->label = label;
-> +	ACPI_FREE(rez);
-> +
-> +	return 0;
-> +}
-> +
-> +static int pac1921_parse_of_fw(struct i2c_client *client, struct pac1921_priv *priv)
-> +{
-> +	int ret;
-> +	struct device *dev = &client->dev;
-> +
-> +	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-> +				       &priv->rshunt_uohm);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Cannot read shunt resistor property\n");
-> +
-> +	if (pac1921_shunt_is_invalid(priv->rshunt_uohm))
-> +		return dev_err_probe(dev, -EINVAL, "Invalid shunt resistor: %u\n",
-> +				     priv->rshunt_uohm);
-> +
-> +	pac1921_calc_current_scales(priv);
-
-Why not do the sanity checks and scale calc outside of the firmware specific code
-given it is duplicated and not related to the firmware parsing itself.
-
-
-> +
-> +	return 0;
-> +}
-> +
->  static int pac1921_probe(struct i2c_client *client)
+> Series applied to the togreg branch of iio.git and initially pushed out as
+> testing for 0-day to take a first look at it.
+> Thanks,
+> 
+> Jonathan
+> 
+> p.s. Diff was as follows, shout if I mess it up.
+> 
+> diff --git a/drivers/iio/light/veml3235.c b/drivers/iio/light/veml3235.c
+> index 18ab73f4377c..66361c3012a3 100644
+> --- a/drivers/iio/light/veml3235.c
+> +++ b/drivers/iio/light/veml3235.c
+> @@ -145,7 +145,7 @@ static int veml3235_get_it(struct veml3235_data *data, int *val, int *val2)
+>  static int veml3235_set_it(struct iio_dev *indio_dev, int val, int val2)
 >  {
->  	struct device *dev = &client->dev;
-> @@ -1176,17 +1254,13 @@ static int pac1921_probe(struct i2c_client *client)
->  	priv->di_gain = PAC1921_DEFAULT_DI_GAIN;
->  	priv->n_samples = PAC1921_DEFAULT_NUM_SAMPLES;
+>         struct veml3235_data *data = iio_priv(indio_dev);
+> -       int ret, new_it, it_idx;
+> +       int ret, new_it;
 >  
-> -	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-> -				       &priv->rshunt_uohm);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret,
-> -				     "Cannot read shunt resistor property\n");
-> -	if (priv->rshunt_uohm == 0 || priv->rshunt_uohm > INT_MAX)
-> -		return dev_err_probe(dev, -EINVAL,
-> -				     "Invalid shunt resistor: %u\n",
-> -				     priv->rshunt_uohm);
-> -
-> -	pac1921_calc_current_scales(priv);
-> +	if (ACPI_HANDLE(&client->dev))
-> +		ret = pac1921_match_acpi_device(client, priv, indio_dev);
-
-priv is trivial to get from the indio_dev, so don't pass them both in.
-Client also trivial to get from there, so just pass in the indio_dev to both
-calls.
-
-
-> +	else
-> +		ret = pac1921_parse_of_fw(client, priv);
-> +	if (ret < 0)
-> +		return dev_err_probe(&client->dev, ret,
-Use dev as it is the same device.
-
-> +				     "parameter parsing error\n");
+>         if (val)
+>                 return -EINVAL;
+> @@ -153,23 +153,18 @@ static int veml3235_set_it(struct iio_dev *indio_dev, int val, int val2)
+>         switch (val2) {
+>         case 50000:
+>                 new_it = 0x00;
+> -               it_idx = 4;
+>                 break;
+>         case 100000:
+>                 new_it = 0x01;
+> -               it_idx = 3;
+>                 break;
+>         case 200000:
+>                 new_it = 0x02;
+> -               it_idx = 2;
+>                 break;
+>         case 400000:
+>                 new_it = 0x03;
+> -               it_idx = 1;
+>                 break;
+>         case 800000:
+>                 new_it = 0x04;
+> -               it_idx = 0;
+>                 break;
+>         default:
+>                 return -EINVAL;
+> @@ -188,7 +183,7 @@ static int veml3235_set_it(struct iio_dev *indio_dev, int val, int val2)
+>  static int veml3235_set_gain(struct iio_dev *indio_dev, int val, int val2)
+>  {
+>         struct veml3235_data *data = iio_priv(indio_dev);
+> -       int ret, new_gain, gain_idx;
+> +       int ret, new_gain;
 >  
->  	priv->vdd = devm_regulator_get(dev, "vdd");
->  	if (IS_ERR(priv->vdd))
-> @@ -1243,11 +1317,17 @@ static const struct of_device_id pac1921_of_match[] = {
->  };
->  MODULE_DEVICE_TABLE(of, pac1921_of_match);
+>         if (val2 != 0)
+>                 return -EINVAL;
+> @@ -196,19 +191,15 @@ static int veml3235_set_gain(struct iio_dev *indio_dev, int val, int val2)
+>         switch (val) {
+>         case 1:
+>                 new_gain = 0x00;
+> -               gain_idx = 3;
+>                 break;
+>         case 2:
+>                 new_gain = 0x01;
+> -               gain_idx = 2;
+>                 break;
+>         case 4:
+>                 new_gain = 0x03;
+> -               gain_idx = 1;
+>                 break;
+>         case 8:
+>                 new_gain = 0x07;
+> -               gain_idx = 0;
+>                 break;
+>         default:
+>                 return -EINVAL;
+> 
+> 
+>>
+> 
 
+
+Hi Jonathan, that is exactly the diff I wanted to add for v4. Thanks for
+fixing it.
+
+Best regards,
+Javier Carrasco
 

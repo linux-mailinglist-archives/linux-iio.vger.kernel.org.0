@@ -1,155 +1,111 @@
-Return-Path: <linux-iio+bounces-11407-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11408-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 723929B1FE3
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 20:41:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1569B1FE5
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 20:43:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3E7F1C20BBF
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 19:41:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CB51281532
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 19:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808F217CA04;
-	Sun, 27 Oct 2024 19:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDE617B402;
+	Sun, 27 Oct 2024 19:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eoW56xCr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9IuK0Xu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FC616CD35
-	for <linux-iio@vger.kernel.org>; Sun, 27 Oct 2024 19:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3761F957
+	for <linux-iio@vger.kernel.org>; Sun, 27 Oct 2024 19:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730058090; cv=none; b=V0MJ0LrC5wr+DZWc/xgtH53u6Fu0bQNqB/P3PfQbX+T7g3Rr1SkeZi6CEg67itRZ+Ys+ZsVjCUO9ujYyS4h9YaOUABI3Zo4KomhNPN/5Qo4Q0nAcns/lx7MH/dENX9OeRKu94IkCd4BtMd3bdQT4HsxRo8ZfDSO7XhC0PfeFbko=
+	t=1730058209; cv=none; b=RYAc26U8lqGrqabeXwHasvlETPG1nCKbS3Az0E8D5wpj0fgAMWRvircX7B2sFh7f8NkAsun+8E4RIdJXnzJ49RTP/50y2KvFt7ZXeXxKNC8X8SSLFThUE/kxo3BzL1Q5MK5g3EMdWYRfi6TauZPKnBsHha9o8GHgd7Ti8spbVwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730058090; c=relaxed/simple;
-	bh=v+vz7OIIFECPzMyfYUR86ehGfecvzTQY7cT6KQHCzi4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pXxCu+Lw4TyPBgUiVotv9qGiVzazHbkPviiBMpN5rKTa+tg0a5ixRpz1Q22NAiAKGm1oD8iTTFfwtB42MoogdYkC4goMN/0p+Oq9sljLfNWpVioEBUQLS4q0nyPZG1t2aiFV/Civ2AWk81LUptQ5iR7rWT5JXFxpt1K/5hBgGCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eoW56xCr; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5ebc04d495aso2084718eaf.2
-        for <linux-iio@vger.kernel.org>; Sun, 27 Oct 2024 12:41:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730058085; x=1730662885; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DS49mL6mh3qfyGHT1zyM0qeylEka6PaSbeWVh4VtAn4=;
-        b=eoW56xCrKC0eCdUB+TOfPm+jOxMWzEvMD7IvLIrwfd6VgdYerfpY4lrubbzfk+XVH1
-         NSjTetAcsP3kiHGH90h3tAvtyDzdVgRHiriQJzKiCBwFQJRvywvvSJvA5qDcCXj965Zd
-         eEs9VVLLAKvb9GqAkL8wxvIhcTJAlIUvEwWWp70RZJudPDZJ41rFtj5hHdLXi+cbLSKX
-         k+8tVWDCVtntFv/bGzSvL/4r9WFWsgDaFj1c0aBPMrmzz2nxKNdBHIvYAMeg8ZJ95vAV
-         5J0OGAQZTjsyFg15m/dKpCp0yTkuFskuEyCrkpwpW3sSObXhm+AHEnAsndo9gbrkwbLz
-         gM6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730058085; x=1730662885;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DS49mL6mh3qfyGHT1zyM0qeylEka6PaSbeWVh4VtAn4=;
-        b=heRs7eFzrYdL5LE9cfDZVLwKvyjy4MJhfWms3DcWhh6nuOHg/qBD6gS5GeaXi8G5Xo
-         iKnvPq4RNhNS4vC+7YCXyonwsd6tz06HlWiIfRUAjGgFLsmyzlQkqFGpgNhQzCiT5uYQ
-         DiN/eHCMz8U3TeRMHuBwR4QCLR45KYgQcsFG3jklzCOAI8DMfxpGM4WHg4TI5xY4zRNj
-         Q1dr5CvqW+lwuwzJKnqWQXJ0KcpqA3uiXcfccVpZNdPt1CdilYrG5UjmrPNjKtWTt3Z9
-         80Fu8XRBI7XohFRO7bNsLgjxikHK3t+3sQ7I1lOLBiMhpcyD2zNHssuIYFZOma6VsxuP
-         Vq2w==
-X-Gm-Message-State: AOJu0YxpkepoKhtqsmOHVV1PZ3zP/W1UGnhHP1w/W7mSfRrEIh5uFUqQ
-	gVmKFLt4VLCr7fPVCPz0oLXBF6Fo3E1YEoh+rt7ctazKUGCPdnuZ3/wqdQ44Cdo=
-X-Google-Smtp-Source: AGHT+IEN4f17W5Pxyu0a3Sg3sLpksasKzlX7/jnfpEUhNEtj1KFkavvwEUUQrUhY89AcYkgtdZMp9A==
-X-Received: by 2002:a05:6870:170f:b0:288:18a0:e169 with SMTP id 586e51a60fabf-29051b4d49dmr4184676fac.19.1730058085605;
-        Sun, 27 Oct 2024 12:41:25 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29035da4b9bsm1589189fac.15.2024.10.27.12.41.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Oct 2024 12:41:24 -0700 (PDT)
-Message-ID: <776b38c3-1bca-4416-a855-d45b759ec2c2@baylibre.com>
-Date: Sun, 27 Oct 2024 14:41:22 -0500
+	s=arc-20240116; t=1730058209; c=relaxed/simple;
+	bh=GdvJxGVyXoRfka4O2q2M1zEId8CKyntJhUb7BVob4Q8=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=r4XHnhSq40mjxNhHOPug8GGcYDlIripLx9dvZs1Lit1w+3EvQqaCRmtpb1arZWj2c5Il7C9ERzD9+3lVY8fj7bPINiIne+JWWZqiwjrwqJNVHR8G1Ea7z53L3Hcn1kUY0FW1GHMk6XFhuINiXwux/PO6XS3LZwE5zvKvdXimZq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9IuK0Xu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8C015C4CEC3
+	for <linux-iio@vger.kernel.org>; Sun, 27 Oct 2024 19:43:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730058205;
+	bh=GdvJxGVyXoRfka4O2q2M1zEId8CKyntJhUb7BVob4Q8=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=S9IuK0XutCiD9OlRLs3fmrXLNLOPYD6mvWF+S7aI+IiJ96vb5F3jDTC64uNUjKoL7
+	 GKFvO7BAx3C+Ih6lbXCBRrOVF0mGSAspF/ujSZZMbGqlxsts37DQaIhtk+7OnBKx/G
+	 ECmOvnmTd8a5yRdaIdt7+d/YGy9YsMf/Qq35Vdsf/gbggZ6NYOUuL2f4TNUvV3phLo
+	 R9hNXzsDKqSuGWC/XcsxRXWrevuUTAGqGIGHxOpFXOv+g3FlEyzsmOLrGdiwA7gP5r
+	 htAHeEEMORdLK5iCjr+fv/gyjEt+lZrVpIdXdwMS0mFFtKXteul3aRVE3uY2vEhvif
+	 YnA/AroHKjxyA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 752FAC53BC2; Sun, 27 Oct 2024 19:43:25 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 219418] BOSC0200 Accelerometer Invalid chip 12 initialization
+ error
+Date: Sun, 27 Oct 2024 19:43:25 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: cameraphone77@gmail.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-219418-217253-tGfKE3wATs@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-219418-217253@https.bugzilla.kernel.org/>
+References: <bug-219418-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] docs: iio: ad7380: add adaq4370-4 and adaq4380-4
-To: Julien Stephan <jstephan@baylibre.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20241024-ad7380-add-adaq4380-4-support-v3-0-6a29bd0f79da@baylibre.com>
- <20241024-ad7380-add-adaq4380-4-support-v3-4-6a29bd0f79da@baylibre.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20241024-ad7380-add-adaq4380-4-support-v3-4-6a29bd0f79da@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 10/24/24 3:16 AM, Julien Stephan wrote:
-> Adding documentation for adaq4370-4 and adaq4380-4 supported devices. In
-> particular, document the reference voltage mechanism and the gain
-> parameter that are specific to adaq devices.
-> 
-> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-> ---
->  Documentation/iio/ad7380.rst | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/Documentation/iio/ad7380.rst b/Documentation/iio/ad7380.rst
-> index 6f70b49b9ef27c1ac32acaefecd1146e5c8bd6cc..ae408ff2fa9c97427a9fef57020fb54203d2d33e 100644
-> --- a/Documentation/iio/ad7380.rst
-> +++ b/Documentation/iio/ad7380.rst
-> @@ -27,6 +27,8 @@ The following chips are supported by this driver:
->  * `AD7386-4 <https://www.analog.com/en/products/ad7386-4.html>`_
->  * `AD7387-4 <https://www.analog.com/en/products/ad7387-4.html>`_
->  * `AD7388-4 <https://www.analog.com/en/products/ad7388-4.html>`_
-> +* `ADAQ4370-4 <https://www.analog.com/en/products/adaq4370-4.html>`_
-> +* `ADAQ4380-4 <https://www.analog.com/en/products/adaq4380-4.html>`_
->  
->  
->  Supported features
-> @@ -47,6 +49,12 @@ ad7380-4
->  ad7380-4 supports only an external reference voltage (2.5V to 3.3V). It must be
->  declared in the device tree as ``refin-supply``.
->  
-> +adaq devices
-> +~~~~~~~~~~~~
-> +
-> +adaq4370-4 and adaq4380-4 don't have an external reference, but use a 3V
-> +internal reference derived from one of its supplies (``refin-supply``)
-> +
->  All other devices from ad738x family
->  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->  
-> @@ -121,6 +129,16 @@ Example for AD7386/7/8 (2 channels parts):
->  
->  When enabling sequencer mode, the effective sampling rate is divided by two.
->  
-> +
-> +Gain (adaq devices only)
-> +~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +adaq devices have a pin selectable gain in front of each adc. The appropriate
+https://bugzilla.kernel.org/show_bug.cgi?id=3D219418
 
-If we are doing a v4 anyway, it would be nice to use caps for acronyms
-like ADAQ and ADC here and elsewhere.
+--- Comment #6 from Camera Phone (cameraphone77@gmail.com) ---
+(In reply to Jonathan Cameron from comment #5)
+> On Sat, 26 Oct 2024 17:06:36 +0000
+> bugzilla-daemon@kernel.org wrote:
+>=20
+> Without a datasheet this is hard, but you 'could' try just hacking in the
+> ID in the driver and see what works?  Particularly if scales match up with
+> the
+> stuff on the flyer that is available for the BMA422.
+>=20
+> Jonathan
 
-> +gain is selectable from device tree using the ``adi,gain-milli`` property.
-> +Refer to the typical connection diagrams section of the datasheet for pin
-> +wiring.
-> +
-> +
->  Unimplemented features
->  ----------------------
->  
-> 
+I did try hard-coding each of the 5 chip_ids from bmc150_accel_chip_info_tb=
+l in
+bmc150-accel-core.c, unfortunately none of them worked.  monitor-sensor wou=
+ld
+not register any changes when moving the display panel.
 
+I did find this which does confirm it is a BMA422 chip based on the 0x12
+chip_id:
+
+https://git.15h.org/mrothfuss/chrome-ec/src/commit/003ec08f8c67845ae8481d3f=
+b4124555213b04c4/driver/accel_bma422.h
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-11397-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11398-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FD99B1D8C
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 12:54:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB80C9B1D93
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 13:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653BD1C2123C
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 11:54:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43F5B1F215D6
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 12:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CE815442D;
-	Sun, 27 Oct 2024 11:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A3D14B941;
+	Sun, 27 Oct 2024 12:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtFCTf4Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZHtwAl4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A825F7DA67;
-	Sun, 27 Oct 2024 11:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6B671747;
+	Sun, 27 Oct 2024 12:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730030058; cv=none; b=ZIdcPHLya/ZrQ57pFwL6rybHFpBUpmh4yRqE/T0QilGq67YmV4s/ybsr0wp6fcw8bm/7J3cQjiDSXkHB9AaebGFiifTBQCuTqHsiN6Ja6vNmiX+dWauteSladLU92i6SckfdxZvIkGyy311Kr5hFgCIEbA8+N9KDscJFQtaFJxg=
+	t=1730030688; cv=none; b=I/VZfpFRjR20t4iOsocPgKny2yD/A3oOChW/v6F2GqBiJkVhLocacuTt482Ts1e+dTEIxDmY6BNDkmcUb4P5rY2jdDKEqy3Y1Wpq+mqrWyHaYTQS9CLYilxgxKLmKuSKTlwtrlII7e36le27SxMoR3+roPEKbRZB7dz8I6C3kd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730030058; c=relaxed/simple;
-	bh=rBH8OJYHjgxREN6PmXbHBEyIuzPCI+AXxPTRjbJiYLs=;
+	s=arc-20240116; t=1730030688; c=relaxed/simple;
+	bh=rEeuT4721V3IdmzMnFRS5E3GS9UL13xeeJrz0S9lWfs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RnX/3oLgMjGehYV7BNyRYVLvhRUVU1fflFSq/H8ZDwE9C5RltCWEtRjpwTiBXk/XzdeqP69DNXNbEL7xtLfqaOJy5beZ9EeySGitFRaI4jrKPijbJ3dntc2F9QskgxIvQA4kvmm0561el2tHSoxWOtOZG7O9rzJmaHsYqnC4FnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtFCTf4Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23C7C4CEC3;
-	Sun, 27 Oct 2024 11:54:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KZscX3jFir7Mic48CNPO+Al9vkd9Al8ZnoV216LwFXwBbHTWPr/WyTHcgDl9UAe5UPYv7bNxwvYrjSwu80U9XJtrR8/iCm0qjzjkC3FtEQVRh5NB8mq9hxK1ptjWu2MtR89Bftz5L7l8+HuKS7YsRD1VQ1JQ4OyDE3g9NGhY3FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZHtwAl4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7967FC4CEC3;
+	Sun, 27 Oct 2024 12:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730030058;
-	bh=rBH8OJYHjgxREN6PmXbHBEyIuzPCI+AXxPTRjbJiYLs=;
+	s=k20201202; t=1730030687;
+	bh=rEeuT4721V3IdmzMnFRS5E3GS9UL13xeeJrz0S9lWfs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TtFCTf4ZxoLWyTBEkTNqx7yTEKMhW9By9po7bzRw44kz6h+onAWkFs+yMi8WikTIG
-	 wSdlUiJiKV/rrUZTOPICpg5Nt1MgmYMkbnhHXMYYtNx3kE2/IljSsX4dAu3a1DSevF
-	 YGb2I36n0CSnswxIQgIKlCzdwrPIGnat6QnklYT9MgmA3nR3Op5zuimUvzjPiTZXhI
-	 c883oFlH0Hf17vJJ4UQWrznGhcdvNtMwKNoWqnHuZnchjPRDZebM97s9P1i+m/4a1r
-	 9oGypsmGTIIoovXLSZs4zQ/EpDJDSx0byv5pE8zqbH7qbRUCUJdCEbkJLu+/FxMmtk
-	 ozWY96XuW4O4g==
-Date: Sun, 27 Oct 2024 11:54:09 +0000
+	b=SZHtwAl4r4k296EG1ppZ9njff2FkJnBBLgqR5bf9PBBlQrWADYE1AzmU+XsRKahiB
+	 UkVZKTUr5SVIsyFmX9gWvEiPLe0nYZButH2wub3L80IwD/00rv2nZBEXpeDLxHrxYX
+	 5FSrg4kL4oCDLWVlq2ybDBRLw9ZQBXWMJYvxeUUqSuph9Kx6v5Jta6hH9tpQpznG75
+	 NucdJH6xaI/kMGqBIDuUdOm4iYhyU37fkRf9m+tfet3wsN11FCTDhZoD4Lw0sFitPs
+	 TAVTRvUXyr2QEKAgcPzyI3TwTd9NO+DbebioQMiO3lci0UjxjnBRvQFqE+gFG42WVU
+	 ueACumbcjle/w==
+Date: Sun, 27 Oct 2024 12:04:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
 Cc: Alexandru Tachici <alexandru.tachici@analog.com>, Conor Dooley
@@ -51,12 +51,12 @@ Cc: Alexandru Tachici <alexandru.tachici@analog.com>, Conor Dooley
  Hennerich <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob
  Herring <robh@kernel.org>, devicetree@vger.kernel.org,
  linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: iio: adc: adi,ad7124: Allow
- specifications of a gpio for irq line
-Message-ID: <20241027115409.2de280dd@jic23-huawei>
-In-Reply-To: <20241024171703.201436-6-u.kleine-koenig@baylibre.com>
+Subject: Re: [PATCH 2/3] iio: adc: ad_sigma_delta: Add support for reading
+ irq status using a GPIO
+Message-ID: <20241027120439.664bc74f@jic23-huawei>
+In-Reply-To: <20241024171703.201436-7-u.kleine-koenig@baylibre.com>
 References: <20241024171703.201436-5-u.kleine-koenig@baylibre.com>
-	<20241024171703.201436-6-u.kleine-koenig@baylibre.com>
+	<20241024171703.201436-7-u.kleine-koenig@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,88 +67,131 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 24 Oct 2024 19:17:03 +0200
+On Thu, 24 Oct 2024 19:17:04 +0200
 Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
 
-> For the AD7124 chip the logical irq line (=CC=85R=CC=85D=CC=85Y) is physi=
-cally on the same
-> pin as the spi MISO output (DOUT) and so reading a register might
-> trigger an interrupt. For correct operation it's critical that the
-> actual state of the pin can be read to judge if an interrupt event is a
-> real one or just a spurious one triggered by toggling the line in its
-> MISO mode.
-
-This text should note that this is a limitation with the interrupt controll=
-er.
-The IRQ is disabled when those reads are going on, yet the controller is
-still detecting the interrupt and reporting it on reenable.
-I'm not an expert in what the kernel IRQ subsystem requires so maybe
-this is a valid implementation.
-
+> Some of the ADCs by Analog signal their irq condition on the MISO line.
+> So typically that line is connected to an SPI controller and a GPIO. The
+> GPIO is used as input and the respective interrupt is enabled when the
+> last SPI transfer is completed.
 >=20
-> Allow specification of an "interrupt-gpios" property instead of a plain
-> interrupt. The semantic is that the GPIO's interrupt is to be used as
-> event source and reading the GPIO can be used to differentiate between a
-> real event and one triggered by MISO.
+> Depending on the GPIO controller the toggling MISO line might make the
+> interrupt pending even while it's masked. In that case the irq handler
+> is called immediately after irq_enable() and so before the device
+> actually pulls that line low which results in non-sense values being
+> reported to the upper layers.
+>=20
+> The only way to find out if the line was actually pulled low is to read
+> the GPIO. (There is a flag in AD7124's status register that also signals
+> if an interrupt was asserted, but reading that register toggles the MISO
+> line and so might trigger another spurious interrupt.)
+>=20
+> Add the possibility to specify an interrupt GPIO in the machine
+> description instead of a plain interrupt. This GPIO is used as interrupt
+> source and to check if the irq line is actually active in the irq
+> handler.
 
-This sort of hack is a bit nasty and if we are going to do it we should
-allow for double wiring - so to separate GPIO and interrupt pins on the
-host wired to single pin on the device.
+Maybe we should just implement polling instead and never enable the interru=
+pt
+for cases like this?
 
-The binding does that by allowing both interrupts and interrupt-gpio
-but we need to make that explicit in this text. Arguably even when
-they are the same pin the binding should treat them as independent
-and the driver should get the gpio from one, and the interrupt from
-the other.
+I'm not sure if it is the device assumptions that are wrong wrt to the Linux
+interrupt model, or the GPIO/IRQ chip you have doing something it shouldn't.
+I am worried this solution is fragile.
 
-I also definitely need input from Analog Devices folk on this series.
-
-Jonathan
+Polling was never in the driver because the interrupt is always wired
+but if we need it to get around the fact it is wired, but to a pin we can't
+really use as an interrupt, then maybe it is time to add polling.
+(probably just a fixed delay and check the status register).
 
 >=20
 > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
 > ---
->  .../devicetree/bindings/iio/adc/adi,ad7124.yaml     | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
+>  drivers/iio/adc/ad_sigma_delta.c       | 36 +++++++++++++++++++++-----
+>  include/linux/iio/adc/ad_sigma_delta.h |  1 +
+>  2 files changed, 31 insertions(+), 6 deletions(-)
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> index 35ed04350e28..feb3a41a148e 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> @@ -37,6 +37,9 @@ properties:
->      description: IRQ line for the ADC
->      maxItems: 1
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_=
+delta.c
+> index e2bed2d648f2..d35602cfb093 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -539,12 +539,29 @@ static irqreturn_t ad_sd_data_rdy_trig_poll(int irq=
+, void *private)
+>  {
+>  	struct ad_sigma_delta *sigma_delta =3D private;
 > =20
-> +  interrupt-gpios:
-> +    description: GPIO reading the interrupt line
+> -	complete(&sigma_delta->completion);
+> -	disable_irq_nosync(irq);
+> -	sigma_delta->irq_dis =3D true;
+> -	iio_trigger_poll(sigma_delta->trig);
+> +	/*
+> +	 * AD7124 and a few others use the same physical line for interrupt
+> +	 * reporting (nRDY) and MISO.
+
+This is pretty common, so I'd drop the 'and a few others' bit.
+
+> +	 * As MISO toggles when reading a register, this likely results in a
+> +	 * pending interrupt. This has two consequences: a) The irq might
+> +	 * trigger immediately after it's enabled even though the conversion
+> +	 * isn't done yet; and b) checking the STATUS register's nRDY flag is
+> +	 * off-limits as reading that would trigger another irq event.
+> +	 *
+> +	 * So read the MOSI line as GPIO (if available) and only trigger the irq
+> +	 * if the line is active.
+> +	 */
+> =20
+> -	return IRQ_HANDLED;
+> +	if (!sigma_delta->irq_gpiod || gpiod_get_value(sigma_delta->irq_gpiod))=
+ {
+> +		complete(&sigma_delta->completion);
+> +		disable_irq_nosync(irq);
+> +		sigma_delta->irq_dis =3D true;
+> +		iio_trigger_poll(sigma_delta->trig);
 > +
->    '#address-cells':
->      const: 1
+> +		return IRQ_HANDLED;
+> +	} else {
+> +		return IRQ_NONE;
+> +	}
+>  }
 > =20
-> @@ -57,7 +60,12 @@ required:
->    - reg
->    - clocks
->    - clock-names
-> -  - interrupts
-> +
-> +oneOf:
-> +  - required:
-> +      - interrupts
-> +  - required:
-> +      - interrupt-gpios
+>  /**
+> @@ -676,8 +693,15 @@ int ad_sd_init(struct ad_sigma_delta *sigma_delta, s=
+truct iio_dev *indio_dev,
 > =20
->  patternProperties:
->    "^channel@([0-9]|1[0-5])$":
-> @@ -119,8 +127,7 @@ examples:
->          compatible =3D "adi,ad7124-4";
->          reg =3D <0>;
->          spi-max-frequency =3D <5000000>;
-> -        interrupts =3D <25 2>;
-> -        interrupt-parent =3D <&gpio>;
-> +        interrupt-gpios =3D <&gpio 25 2>;
->          refin1-supply =3D <&adc_vref>;
->          clocks =3D <&ad7124_mclk>;
->          clock-names =3D "mclk";
+>  	if (info->irq_line)
+>  		sigma_delta->irq_line =3D info->irq_line;
+> -	else
+> +	else if (spi->irq)
+>  		sigma_delta->irq_line =3D spi->irq;
+> +	else {
+> +		sigma_delta->irq_gpiod =3D devm_gpiod_get(&spi->dev, "interrupt", GPIO=
+D_IN);
+> +		if (IS_ERR(sigma_delta->irq_gpiod))
+> +			return dev_err_probe(&spi->dev, PTR_ERR(sigma_delta->irq_gpiod),
+> +					     "Failed to find interrupt gpio\n");
+> +		sigma_delta->irq_line =3D gpiod_to_irq(sigma_delta->irq_gpiod);
+
+As I mentioned on the binding if this is something we are going to do there=
+ should be
+no assumption of the gpio and the irq being the same pin.
+
+> +	}
+> =20
+>  	iio_device_set_drvdata(indio_dev, sigma_delta);
+> =20
+> diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/a=
+dc/ad_sigma_delta.h
+> index f8c1d2505940..fc0141e0f0ef 100644
+> --- a/include/linux/iio/adc/ad_sigma_delta.h
+> +++ b/include/linux/iio/adc/ad_sigma_delta.h
+> @@ -96,6 +96,7 @@ struct ad_sigma_delta {
+>  	unsigned int		active_slots;
+>  	unsigned int		current_slot;
+>  	unsigned int		num_slots;
+> +	struct gpio_desc	*irq_gpiod;
+>  	int		irq_line;
+>  	bool			status_appended;
+>  	/* map slots to channels in order to know what to expect from devices */
 
 

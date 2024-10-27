@@ -1,59 +1,58 @@
-Return-Path: <linux-iio+bounces-11390-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11391-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F389B1D31
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 11:19:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D449B1D3E
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 11:30:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31F2C281E40
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 10:19:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEFD11F214E4
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 10:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D671384B3;
-	Sun, 27 Oct 2024 10:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A4213AA2A;
+	Sun, 27 Oct 2024 10:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="siB7qZ7K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezBeS0EN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694D64CB36;
-	Sun, 27 Oct 2024 10:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5442340849;
+	Sun, 27 Oct 2024 10:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730024336; cv=none; b=XGrPugKPhHV0VB2RniT6GP5nPaZxZEo1lV6I6c7hfY8Kk/RbSEYpEPs9Ymw+VaWmKybfzZ5z8y1R0j81QwzYq4+LQ0iIyPeuCoyOuEGxaDfx3jmi/jmVEiWncpBdFWrAeB48XkuYbM65k+z23vKb/fmkUBkLkUndp2yzGJqHryU=
+	t=1730025022; cv=none; b=Fg6TZ4AfAkl1ApdJQ6q2TWuMZkBpc+s4Jy8HnA/bCIor8KqFHxBpowosQlRSJWzKYVIrniqVMNhuuwb3ek1YjHlP4hRrjbW+6Uhm0OYPRL1M32wfJFRYaxRicqnfQ7U9Ra6+sQGFUnKd5Qr6a+73+2V2yHytfQueKZwdQuG/3YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730024336; c=relaxed/simple;
-	bh=DZAiTzzDfSKTYhX4YwUN8oAhhtxjZoB0/J5R9UOIc30=;
+	s=arc-20240116; t=1730025022; c=relaxed/simple;
+	bh=7n96grImI12MhhgoEFSYkUuA3tu9WoinnlFhwCWD814=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FteVL8RRR5cPueKKr1e/LRg6GKFCy3/MyDwxtfzx+/Fuh61VhbYtbF2v2iIKFwUoLpM+TMRcisUVx8B6dXV8Ls1HBA4WwPRvg+XqheZYxw7narqU8W16W1trlHTtBny3tLUt/vZhq1UwvQgCrmGQKKajIG+AfrfJNXPq29wGdcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=siB7qZ7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF32C4CEC3;
-	Sun, 27 Oct 2024 10:18:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bkpwsuSX3rw4GK9TgR1mLZaya/GOoaoGTPkABJESS93vPRyPZXqR9kE/bmAqgVeq70bjltQyD4vk49oN4fqDiuogsxTDuON6VVWw9+XWN3wbdqGtvJjHZ0CnePaAFOl6YMlAnu4ENrWarfNm7Atr+F68oAMz2yOJohSSvlzVByY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezBeS0EN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF52C4CEC3;
+	Sun, 27 Oct 2024 10:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730024335;
-	bh=DZAiTzzDfSKTYhX4YwUN8oAhhtxjZoB0/J5R9UOIc30=;
+	s=k20201202; t=1730025021;
+	bh=7n96grImI12MhhgoEFSYkUuA3tu9WoinnlFhwCWD814=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=siB7qZ7KcqAlFhPldSWGesfXRFwZfnwrUJB8vX5/XTV9jexU6TcKVoMmtkbNp6xHH
-	 tQe6u3vSdAk+1ip3noOcKFz4aA8pGVkBL91LCyy7spO8AV+WimqEWNPgdVdSIC5Xt5
-	 be59t8+LcK0dv63y62mogFDyljZyo029+NsURw8JgpCNX4viRSpLqhjCjAL2oQjMx2
-	 UtSz1HZ3ujnicDFpo7hGcV9j5Ndh0HOD5h6pOflvf6d7OAin9SzDgfPru1734h4cAu
-	 j/qsKEXtVTrhri8/Tgr5BrsDrltR9wWS/8vIzghtNCp2we1ZW40ej2Zt6U9dh86kC7
-	 vQ6DLgmN2DmEg==
-Date: Sun, 27 Oct 2024 10:18:47 +0000
+	b=ezBeS0ENO2Wtvy1MXJFehF8YVqzl+90F/wAAVEe0ESn1Zd2kihMFdj2WSteTYNSkd
+	 8VEmARpo5zWqqdmQvLH94X+0yUvyWWX1Np2cmc/2m0twEG+IBhlyE2EYRAZxPMi83v
+	 BQ8vp0BnzwRYEil71gVYtrPHafrLh7Xqqa4KTs5udlqmFsj1F7ctAH8vOrTZpw2Z6s
+	 r3BC3SyJeSDKHb5SBoY/7nX7CFzb1s3KTpiuYq5almrJw/CDN8NIdN0Pl7+z2lwdSl
+	 AHkv7nN2OVCHVWtTuVRW48k+MlDn54CD/dw6RfO7PikmI3EhYOLKDgBCiNyH4uDZad
+	 hY9BHItFP1AXw==
+Date: Sun, 27 Oct 2024 10:30:13 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
  anshulusr@gmail.com, gustavograzs@gmail.com, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 09/13] iio: chemical: bme680: Add triggered buffer
- support
-Message-ID: <20241027101847.0d386058@jic23-huawei>
-In-Reply-To: <20241021195316.58911-10-vassilisamir@gmail.com>
+Subject: Re: [PATCH v2 13/13] iio: chemical: bme680: add power management
+Message-ID: <20241027103013.06daac42@jic23-huawei>
+In-Reply-To: <20241021195316.58911-14-vassilisamir@gmail.com>
 References: <20241021195316.58911-1-vassilisamir@gmail.com>
-	<20241021195316.58911-10-vassilisamir@gmail.com>
+	<20241021195316.58911-14-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,23 +63,156 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 21 Oct 2024 21:53:12 +0200
+On Mon, 21 Oct 2024 21:53:16 +0200
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Add triggered buffer and soft timestamp support. The available scan mask
-> enables all the channels of the sensor in order to follow the operation of
-> the sensor. The sensor basically starts to capture from all channels
-> as long as it enters into FORCED mode.
-> 
-> The bulk read, reads a total of 15 registers from the sensor, 0x1D..0x2B.
-> Even though some of those registers are not reported in the register map
-> of the device, this is how the BME680 Sensor API [1] proposes to do it.
-> This allows to have one bulk read instead of multiple ones.
-> 
-> Link: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L1200
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-LGTM, but can't apply until patch 4 is sorted out.
-So let's see this one in v3.
+> Add runtime power management to the device. To facilitate this, add also
+> a struct dev* inside the bme680_data structure to have the device
+> accesible from the data structure.
 
-Jonathan
+Needs an update as you are now getting that from the regmap.
+
+
+> 
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> ---
+>  drivers/iio/chemical/bme680.h      |   2 +
+>  drivers/iio/chemical/bme680_core.c | 126 +++++++++++++++++++++++++++--
+>  2 files changed, 121 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
+> index e5d82a6d5b59..74e97e35e35a 100644
+> --- a/drivers/iio/chemical/bme680.h
+> +++ b/drivers/iio/chemical/bme680.h
+> @@ -2,6 +2,7 @@
+>  #ifndef BME680_H_
+>  #define BME680_H_
+>  
+> +#include <linux/pm.h>
+>  #include <linux/regmap.h>
+>  
+>  #define BME680_REG_CHIP_ID			0xD0
+> @@ -82,6 +83,7 @@
+>  #define BME680_CALIB_RANGE_3_LEN               5
+>  
+>  extern const struct regmap_config bme680_regmap_config;
+> +extern const struct dev_pm_ops bme680_dev_pm_ops;
+
+You seem to have missed the changes that use this in the i2c and spi drivers.
+
+
+>  static const char bme680_oversampling_ratio_show[] = "1 2 4 8 16";
+>  
+>  static IIO_CONST_ATTR(oversampling_ratio_available,
+> @@ -1091,6 +1125,39 @@ static irqreturn_t bme680_trigger_handler(int irq, void *p)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static int bme680_buffer_preenable(struct iio_dev *indio_dev)
+> +{
+> +	struct bme680_data *data = iio_priv(indio_dev);
+> +	struct device *dev = regmap_get_device(data->regmap);
+> +
+> +	pm_runtime_get_sync(dev);
+> +	return 0;
+> +}
+> +
+> +static int bme680_buffer_postdisable(struct iio_dev *indio_dev)
+> +{
+> +	struct bme680_data *data = iio_priv(indio_dev);
+> +	struct device *dev = regmap_get_device(data->regmap);
+> +
+> +	pm_runtime_mark_last_busy(dev);
+> +	pm_runtime_put_autosuspend(dev);
+> +	return 0;
+> +}
+> +
+> +static const struct iio_buffer_setup_ops bme680_buffer_setup_ops = {
+> +	.preenable = bme680_buffer_preenable,
+> +	.postdisable = bme680_buffer_postdisable,
+> +};
+> +
+> +static void bme680_pm_disable(void *data)
+> +{
+> +	struct device *dev = data;
+> +
+> +	pm_runtime_get_sync(dev);
+> +	pm_runtime_put_noidle(dev);
+This dance is to get the device powered up on runtime pm tear down
+I think?  Whilst we sometimes do this, why is it needed in this particular driver?
+
+> +	pm_runtime_disable(dev);
+> +}
+> +
+>  int bme680_core_probe(struct device *dev, struct regmap *regmap,
+>  		      const char *name)
+>  {
+> @@ -1164,15 +1231,60 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+>  	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+>  					      iio_pollfunc_store_time,
+>  					      bme680_trigger_handler,
+> -					      NULL);
+> +					      &bme680_buffer_setup_ops);
+>  	if (ret)
+>  		return dev_err_probe(dev, ret,
+>  				     "iio triggered buffer setup failed\n");
+>  
+> +	/* Enable runtime PM */
+> +	pm_runtime_get_noresume(dev);
+> +	pm_runtime_set_autosuspend_delay(dev, BME680_STARTUP_TIME_US * 100);
+> +	pm_runtime_use_autosuspend(dev);
+> +	pm_runtime_set_active(dev);
+> +	ret = devm_pm_runtime_enable(dev);
+
+Take a look at what this unwinds in the devm handler. You don't need to do
+as much (or possibly anything) yourself.
+
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	pm_runtime_put(dev);
+> +
+> +	ret = devm_add_action_or_reset(dev, bme680_pm_disable, dev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	return devm_iio_device_register(dev, indio_dev);
+>  }
+>  EXPORT_SYMBOL_NS_GPL(bme680_core_probe, IIO_BME680);
+>  
+> +static int bme680_runtime_suspend(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +	struct bme680_data *data = iio_priv(indio_dev);
+> +
+> +	return regulator_bulk_disable(BME680_NUM_SUPPLIES, data->supplies);
+> +}
+> +
+> +static int bme680_runtime_resume(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +	struct bme680_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = regulator_bulk_enable(BME680_NUM_SUPPLIES, data->supplies);
+> +	if (ret)
+> +		return ret;
+> +
+> +	fsleep(BME680_STARTUP_TIME_US);
+> +
+> +	ret = bme680_chip_config(data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return bme680_gas_config(data);
+> +}
+> +
+> +EXPORT_RUNTIME_DEV_PM_OPS(bme680_dev_pm_ops, bme680_runtime_suspend,
+> +			  bme680_runtime_resume, NULL);
+> +
+>  MODULE_AUTHOR("Himanshu Jha <himanshujha199640@gmail.com>");
+>  MODULE_DESCRIPTION("Bosch BME680 Driver");
+>  MODULE_LICENSE("GPL v2");
+
 

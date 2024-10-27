@@ -1,70 +1,70 @@
-Return-Path: <linux-iio+bounces-11403-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11404-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B0E9B1F59
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 18:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF509B1F5D
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 18:22:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2F631C20EE3
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 17:22:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 411441C2098A
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Oct 2024 17:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC988178CCA;
-	Sun, 27 Oct 2024 17:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291AF17BB32;
+	Sun, 27 Oct 2024 17:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="k8aqnkw8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gUafitMw"
+	dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b="Qx+WRquR";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fqW2teji"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE14838F82;
-	Sun, 27 Oct 2024 17:21:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3178F175D4F;
+	Sun, 27 Oct 2024 17:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730049709; cv=none; b=gnjr3DnY5nxK7ed60izbNArB5SdpPBz4X4I9jmkJ0QYoFbgEg1/Nwt36XbTjapcdnAFphzClTX+oSvfWKGel03p6BThgI5SsoXPkfwm4aTFapDM0O7vRe3cP+URNHdsslHaBMsiXfNhFBK+bsVitCiGAi8mHluuFT1DNfbvTYmE=
+	t=1730049711; cv=none; b=PuTDzUDZa9YI6mTxokN4XYAiVTgAxdEOh2+s9qq1wbp90gFOZ5k3dVKAZtsN1tWqZU+bEnUmbaxkE/vFplDWJD0otna0pgb3KWYkcQzPmLcxMrk+Rdc3StwxqcYPTB0hW2sLv/JNPecYchc551WHxjZgkZEPF2THhgv1QZVy5ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730049709; c=relaxed/simple;
-	bh=Nsxs3CXHgYFu8qUUqadgrTXp6c1kCCUvahwZ69uwwKA=;
+	s=arc-20240116; t=1730049711; c=relaxed/simple;
+	bh=bp983poLAcKtxPrBrfKTRuNcMz1BqZz6VM2dc/JnW7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3N1QkLthbtBEWdt8tXFlFoBc0iMZo0IHyWkC4d982+zmYlQV6+e+fSlGXm3Y0Hd8844AE/cADGhsam8giI9lFba5jIIOSIQ96GNq3cTYMAe9QtQl11+pRkKHHwqkjKiYO7Sq53ztV4Sqd2wfgxfzswikC9NaHcy87WHTEmfcjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=k8aqnkw8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gUafitMw; arc=none smtp.client-ip=202.12.124.158
+	 MIME-Version; b=YHqtiGEIz/sZiOnCPiOzZpnKHYwIS5P970JlOOJsFI1GkBwWsoI52O05c1Gic1Tph9b9EtURk58AizL6MY8S5nx0ivLd9ecOMDnX/Wa+d/ZOnD5BN5En6CeXlcoavyvVODa3ekDPSVQbZ0F7HjIbGqGMiJgXw7Uxnw6EDsN3pHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com; spf=pass smtp.mailfrom=justinweiss.com; dkim=pass (2048-bit key) header.d=justinweiss.com header.i=@justinweiss.com header.b=Qx+WRquR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fqW2teji; arc=none smtp.client-ip=202.12.124.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=justinweiss.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justinweiss.com
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 3FB98254009C;
-	Sun, 27 Oct 2024 13:21:45 -0400 (EDT)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.stl.internal (Postfix) with ESMTP id E1DAA11400CF;
+	Sun, 27 Oct 2024 13:21:47 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Sun, 27 Oct 2024 13:21:45 -0400
+  by phl-compute-12.internal (MEProxy); Sun, 27 Oct 2024 13:21:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justinweiss.com;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1730049705; x=
-	1730136105; bh=CwZceMBqTT2pEGup3sQN8Jo7JhDAcLQmyspij77zCCM=; b=k
-	8aqnkw8/Bfg8uBo+L7WgmnQ67P0axF6zZzmHcPbU3auBgIXBcASVYWHpk7rA71S5
-	TKn2s/h9+L2oeiphD6T1JcTlNRmR7SJmJcONBhSVtGtUeghMY7CIagLAPEpCHGhu
-	tgr1G5R3hPjNt0Nk/49FizV2F6HCzo4meUNF2/HxrWSV3jFMNGwTJgsC+2AipdPw
-	F21WY40AWp7Wtbs+8tzzcwneUckUlGoQsm8aiJi9ObcqzG/eR1FiDHsDkyhS4Nfk
-	2HGyIGCUewbhSXua+C64ubvC1tj+7H17oyi7wmIXp4iRjd1YGoYvWxG/LHfI9kHj
-	VD7qu3xguP7wyV4u6vxRQ==
+	:reply-to:subject:subject:to:to; s=fm2; t=1730049707; x=
+	1730136107; bh=CH9W/hAloaYyEdc4LPF+ff9/zId9y0OyHWzDLblVZXQ=; b=Q
+	x+WRquR8pNcb7qvdpRblrkxPWTyEisIm2yM4I2KWWXnWioddcyqx3gscCC5MXWLa
+	MnL80lubQGuOme4jqVJN/5rcKRbHrXdngN2Bkm9hyGP9V+0j+N+4ASko5QcvgFcI
+	mmwvUK/7OAE4hejhkcLq+EnTW+4Vn6mZ89xDolq5SsPQXxwa5Sey9l4Jv1ILOppB
+	6amTnsvNBwCgkjOZv9TyA5Cyz4cNxU9gRnDRiMutkwKmWQH55TsI7SZsBycQ8vo2
+	gLUdbNnxZ3XpFsJqb7MO7GdWint73tS8JvauUZuwBXAsbbCt6hbNrnJV+7mpuxl+
+	423UJMzIOHLkAI7MoY14Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730049705; x=
-	1730136105; bh=CwZceMBqTT2pEGup3sQN8Jo7JhDAcLQmyspij77zCCM=; b=g
-	UafitMw+DI0xQFzHP5y2lAVwsp0oLOHCY6BNWNgHsIBwjd3yByN+Y4XeC98kaSYS
-	BjIreVog7eIsLJBlMqToNwUq/7YSa3xD7JjQGB5FC7IBPzFRky4BvMzw7hZzw5XX
-	p+ogaWsnKiSea0HHV/Ylbil81mWe7BkaehrhBiQtELC/+WW+1FQJYTSthOkYFhel
-	/bq/F91oaMg36ILOGgdWNVpu8d1kOFVNFl00L2Hzw2ANdEIhzUlBMOvaUKEdWX3E
-	ayQnaB9ZC26xail4agUzaHK16VfLocp8U+gzHj53zb9QMASt+xIxbDNEsXZxbJg8
-	4RdwWAWbOIQLlCgUJwxbQ==
-X-ME-Sender: <xms:qHYeZ92F_2ww0VvtQSsaZ4lDVk-tzmesV23g64BWW-TE5DygtTXGUQ>
-    <xme:qHYeZ0GpwlBrDTMV3q2uXV7xJ2zhxKxno9DIzZ4JweD0Yys1isch2LcGxNHfBnOP2
-    -MZJDq4kP9cgyaZaw>
-X-ME-Received: <xmr:qHYeZ97OPqQ3u9HLHpXGyk3d-lrm12ubhPzjI3DG8GnqrsNUfAZo4yQp5b4uxRgQS4MK9NFwVXigWjw2GfwyU_2yCD45zcZ4muKYVROIdA>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730049707; x=
+	1730136107; bh=CH9W/hAloaYyEdc4LPF+ff9/zId9y0OyHWzDLblVZXQ=; b=f
+	qW2teji5dcyfKKyXIl7Oi5TOeRwbNaP1n0y4qxYPBGop6rQGublM+8ShAmDnlRRG
+	MMvZYYH4kV5YMRLTy4ovQ3vmIUwI9BloMf/0kOZuVOEH6kn1FD53CkL4/4FZov4z
+	C/Ckkigh63yssau+Mc/aQu53VmTMOhGSR58JVJ5kvaJrPG5yzPjk6oOKsDoW2D+6
+	iX8HtF5RR/l+HlkkwSxrI1vlxp/7jYcyhEHeJS25sxFHQwnhthaHkfh8q6gYJgro
+	4Pbq+hDbpJfhROzBA2gk1nRMWMw3jRkiHOZsb/+pJRQnGU44PFhex0tgVdb0FLOp
+	5NBKhTnz6HvKliLnc7o3A==
+X-ME-Sender: <xms:q3YeZ8gmkznx9LE6WmYp6zn3lk2zzKowdXUirn_C24pdaLJ_IcRbOw>
+    <xme:q3YeZ1BP1TBtrUbI5GpxlN9EdFnzjuR7IEq5yPR6XngLWhP36FZYJ7IK9WCech65S
+    UA3UV5OQBe2YHKlSw>
+X-ME-Received: <xmr:q3YeZ0H9NOX3m5Ib1B-85_LEKVXYEFuYWG_cdvBC2Y89Zd0mpEKZLCTp4Esgzl8ATAJ2DiCP9zmJq2wS0cc0D8CbvN33dViToVGYHu0U0Q>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejiedguddttdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
@@ -82,14 +82,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejiedguddttdcutefuodetgg
     uhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepjhhushhtihhnsehjuhhsthhinhifvg
     hishhsrdgtohhmpdhrtghpthhtoheplhhinhhugidqihhiohesvhhgvghrrdhkvghrnhgv
     lhdrohhrgh
-X-ME-Proxy: <xmx:qHYeZ630JNqbVE7Q2g2Ky49h-ZOw0mGFlpYV6fxYcQDdxm59fFx12g>
-    <xmx:qHYeZwFgT-fdDXbeEART-bYzy6tRZ0LaffyvNMcXvBiDBycDXk7J7g>
-    <xmx:qHYeZ79i36ykwokklDk6yV5yvxB3B-URWsPb30w0Om-IEotCHiHvyg>
-    <xmx:qHYeZ9k2hmqYmUkqFLoUXYmrSIwNEHjgArvQImaTMleTneJ2sP6j1Q>
-    <xmx:qXYeZ0FLi08HarCizRwd9RYuV2-TQ-RxX_0IoiNV9hU1nXTZbJgf044F>
+X-ME-Proxy: <xmx:q3YeZ9Sm5036ynzTZ1sN1prLshkCzi4U1LS9n3rOgcOcgmayPrq5NQ>
+    <xmx:q3YeZ5xEOCv7bMprzv5Ojavp86h74AHmJue4x_wwq2rfz6xJl_HLJg>
+    <xmx:q3YeZ776T_0fxTK4aUq5GQ81WyR_SxMLry4ibXebeziZ_YQkdEFluw>
+    <xmx:q3YeZ2wIGhRnoRxzrtqNCHNtWA1Ax9S7R5qj4YflAYfxS0S2idteIw>
+    <xmx:q3YeZ5gs5DOYgia9m8HoWxRaq1zVXPGfdyTEwq9LNZuH6cSCz8BA1kaB>
 Feedback-ID: icf614246:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 27 Oct 2024 13:21:43 -0400 (EDT)
+ 27 Oct 2024 13:21:45 -0400 (EDT)
 From: Justin Weiss <justin@justinweiss.com>
 To: Alex Lanzano <lanzano.alex@gmail.com>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -104,9 +104,9 @@ Cc: Justin Weiss <justin@justinweiss.com>,
 	linux-kernel@vger.kernel.org,
 	"Derek J . Clark" <derekjohn.clark@gmail.com>,
 	=?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>
-Subject: [PATCH v4 1/4] iio: imu: bmi270: Add triggered buffer for Bosch BMI270 IMU
-Date: Sun, 27 Oct 2024 10:20:22 -0700
-Message-ID: <20241027172029.160134-2-justin@justinweiss.com>
+Subject: [PATCH v4 2/4] iio: imu: bmi270: Add scale and sampling frequency to BMI270 IMU
+Date: Sun, 27 Oct 2024 10:20:23 -0700
+Message-ID: <20241027172029.160134-3-justin@justinweiss.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241027172029.160134-1-justin@justinweiss.com>
 References: <20241027172029.160134-1-justin@justinweiss.com>
@@ -118,159 +118,413 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Set up a triggered buffer for the accel and angl_vel values.
+Add read and write functions and create _available entries.
 
 Signed-off-by: Justin Weiss <justin@justinweiss.com>
 ---
- drivers/iio/imu/bmi270/Kconfig       |  1 +
- drivers/iio/imu/bmi270/bmi270.h      |  9 +++++
- drivers/iio/imu/bmi270/bmi270_core.c | 56 ++++++++++++++++++++++++++++
- 3 files changed, 66 insertions(+)
+ drivers/iio/imu/bmi270/bmi270_core.c | 340 +++++++++++++++++++++++++++
+ 1 file changed, 340 insertions(+)
 
-diff --git a/drivers/iio/imu/bmi270/Kconfig b/drivers/iio/imu/bmi270/Kconfig
-index 0ffd29794fda..6362acc706da 100644
---- a/drivers/iio/imu/bmi270/Kconfig
-+++ b/drivers/iio/imu/bmi270/Kconfig
-@@ -6,6 +6,7 @@
- config BMI270
- 	tristate
- 	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 
- config BMI270_I2C
- 	tristate "Bosch BMI270 I2C driver"
-diff --git a/drivers/iio/imu/bmi270/bmi270.h b/drivers/iio/imu/bmi270/bmi270.h
-index 93e5f387607b..6173be929bac 100644
---- a/drivers/iio/imu/bmi270/bmi270.h
-+++ b/drivers/iio/imu/bmi270/bmi270.h
-@@ -11,6 +11,15 @@ struct bmi270_data {
- 	struct device *dev;
- 	struct regmap *regmap;
- 	const struct bmi270_chip_info *chip_info;
-+
-+	/*
-+	 * Where IIO_DMA_MINALIGN may be larger than 8 bytes, align to
-+	 * that to ensure a DMA safe buffer.
-+	 */
-+	struct {
-+		__le16 channels[6];
-+		aligned_s64 timestamp;
-+	} data __aligned(IIO_DMA_MINALIGN);
- };
- 
- struct bmi270_chip_info {
 diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-index 5f08d786fa21..1608cb2c8fb5 100644
+index 1608cb2c8fb5..27e501a15095 100644
 --- a/drivers/iio/imu/bmi270/bmi270_core.c
 +++ b/drivers/iio/imu/bmi270/bmi270_core.c
-@@ -7,6 +7,8 @@
+@@ -7,6 +7,7 @@
  #include <linux/regmap.h>
  
  #include <linux/iio/iio.h>
-+#include <linux/iio/triggered_buffer.h>
-+#include <linux/iio/trigger_consumer.h>
++#include <linux/iio/sysfs.h>
+ #include <linux/iio/triggered_buffer.h>
+ #include <linux/iio/trigger_consumer.h>
  
- #include "bmi270.h"
+@@ -33,6 +34,9 @@
+ #define BMI270_ACC_CONF_BWP_NORMAL_MODE			0x02
+ #define BMI270_ACC_CONF_FILTER_PERF_MSK			BIT(7)
  
-@@ -64,6 +66,17 @@ enum bmi270_scan {
- 	BMI270_SCAN_GYRO_X,
- 	BMI270_SCAN_GYRO_Y,
- 	BMI270_SCAN_GYRO_Z,
-+	BMI270_SCAN_TIMESTAMP,
-+};
++#define BMI270_ACC_CONF_RANGE_REG			0x41
++#define BMI270_ACC_CONF_RANGE_MSK			GENMASK(1, 0)
 +
-+static const unsigned long bmi270_avail_scan_masks[] = {
-+	(BIT(BMI270_SCAN_ACCEL_X) |
-+	 BIT(BMI270_SCAN_ACCEL_Y) |
-+	 BIT(BMI270_SCAN_ACCEL_Z) |
-+	 BIT(BMI270_SCAN_GYRO_X) |
-+	 BIT(BMI270_SCAN_GYRO_Y) |
-+	 BIT(BMI270_SCAN_GYRO_Z)),
-+	0
- };
+ #define BMI270_GYR_CONF_REG				0x42
+ #define BMI270_GYR_CONF_ODR_MSK				GENMASK(3, 0)
+ #define BMI270_GYR_CONF_ODR_200HZ			0x09
+@@ -41,6 +45,9 @@
+ #define BMI270_GYR_CONF_NOISE_PERF_MSK			BIT(6)
+ #define BMI270_GYR_CONF_FILTER_PERF_MSK			BIT(7)
  
- const struct bmi270_chip_info bmi270_chip_info = {
-@@ -73,6 +86,27 @@ const struct bmi270_chip_info bmi270_chip_info = {
++#define BMI270_GYR_CONF_RANGE_REG			0x43
++#define BMI270_GYR_CONF_RANGE_MSK			GENMASK(2, 0)
++
+ #define BMI270_INIT_CTRL_REG				0x59
+ #define BMI270_INIT_CTRL_LOAD_DONE_MSK			BIT(0)
+ 
+@@ -86,6 +93,265 @@ const struct bmi270_chip_info bmi270_chip_info = {
  };
  EXPORT_SYMBOL_NS_GPL(bmi270_chip_info, IIO_BMI270);
  
-+static irqreturn_t bmi270_trigger_handler(int irq, void *p)
++enum bmi270_sensor_type {
++	BMI270_ACCEL	= 0,
++	BMI270_GYRO,
++};
++
++struct bmi270_scale {
++	int scale;
++	int uscale;
++};
++
++struct bmi270_odr {
++	int odr;
++	int uodr;
++};
++
++static const struct bmi270_scale bmi270_accel_scale[] = {
++	{ 0, 598 },
++	{ 0, 1197 },
++	{ 0, 2394 },
++	{ 0, 4788 },
++};
++
++static const struct bmi270_scale bmi270_gyro_scale[] = {
++	{ 0, 1065 },
++	{ 0, 532 },
++	{ 0, 266 },
++	{ 0, 133 },
++	{ 0, 66 },
++};
++
++struct bmi270_scale_item {
++	const struct bmi270_scale *tbl;
++	int num;
++};
++
++static const struct bmi270_scale_item bmi270_scale_table[] = {
++	[BMI270_ACCEL] = {
++		.tbl	= bmi270_accel_scale,
++		.num	= ARRAY_SIZE(bmi270_accel_scale),
++	},
++	[BMI270_GYRO] = {
++		.tbl	= bmi270_gyro_scale,
++		.num	= ARRAY_SIZE(bmi270_gyro_scale),
++	},
++};
++
++static const struct bmi270_odr bmi270_accel_odr[] = {
++	{ 0, 781250 },
++	{ 1, 562500 },
++	{ 3, 125000 },
++	{ 6, 250000 },
++	{ 12, 500000 },
++	{ 25, 0 },
++	{ 50, 0 },
++	{ 100, 0 },
++	{ 200, 0 },
++	{ 400, 0 },
++	{ 800, 0 },
++	{ 1600, 0 },
++};
++
++static const u8 bmi270_accel_odr_vals[] = {
++	0x01,
++	0x02,
++	0x03,
++	0x04,
++	0x05,
++	0x06,
++	0x07,
++	0x08,
++	0x09,
++	0x0A,
++	0x0B,
++	0x0C,
++};
++
++static const struct bmi270_odr bmi270_gyro_odr[] = {
++	{ 25, 0 },
++	{ 50, 0 },
++	{ 100, 0 },
++	{ 200, 0 },
++	{ 400, 0 },
++	{ 800, 0 },
++	{ 1600, 0 },
++	{ 3200, 0 },
++};
++
++static const u8 bmi270_gyro_odr_vals[] = {
++	0x06,
++	0x07,
++	0x08,
++	0x09,
++	0x0A,
++	0x0B,
++	0x0C,
++	0x0D,
++};
++
++struct bmi270_odr_item {
++	const struct bmi270_odr *tbl;
++	const u8 *vals;
++	int num;
++};
++
++static const struct  bmi270_odr_item bmi270_odr_table[] = {
++	[BMI270_ACCEL] = {
++		.tbl	= bmi270_accel_odr,
++		.vals   = bmi270_accel_odr_vals,
++		.num	= ARRAY_SIZE(bmi270_accel_odr),
++	},
++	[BMI270_GYRO] = {
++		.tbl	= bmi270_gyro_odr,
++		.vals   = bmi270_gyro_odr_vals,
++		.num	= ARRAY_SIZE(bmi270_gyro_odr),
++	},
++};
++
++static int bmi270_set_scale(struct bmi270_data *data,
++			    int chan_type, int uscale)
 +{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct bmi270_data *bmi270_device = iio_priv(indio_dev);
-+	int ret;
++	int i;
++	int reg, mask;
++	struct bmi270_scale_item bmi270_scale_item;
 +
-+	ret = regmap_bulk_read(bmi270_device->regmap, BMI270_ACCEL_X_REG,
-+			       &bmi270_device->data.channels,
-+			       sizeof(bmi270_device->data.channels));
++	switch (chan_type) {
++	case IIO_ACCEL:
++		reg = BMI270_ACC_CONF_RANGE_REG;
++		mask = BMI270_ACC_CONF_RANGE_MSK;
++		bmi270_scale_item = bmi270_scale_table[BMI270_ACCEL];
++		break;
++	case IIO_ANGL_VEL:
++		reg = BMI270_GYR_CONF_RANGE_REG;
++		mask = BMI270_GYR_CONF_RANGE_MSK;
++		bmi270_scale_item = bmi270_scale_table[BMI270_GYRO];
++		break;
++	default:
++		return -EINVAL;
++	}
 +
-+	if (ret)
-+		goto done;
++	for (i = 0; i < bmi270_scale_item.num; i++) {
++		if (bmi270_scale_item.tbl[i].uscale != uscale)
++			continue;
 +
-+	iio_push_to_buffers_with_timestamp(indio_dev, &bmi270_device->data,
-+					   pf->timestamp);
-+done:
-+	iio_trigger_notify_done(indio_dev->trig);
-+	return IRQ_HANDLED;
++		return regmap_update_bits(data->regmap, reg, mask, i);
++	}
++
++	return -EINVAL;
 +}
 +
- static int bmi270_get_data(struct bmi270_data *bmi270_device,
- 			   int chan_type, int axis, int *val)
++static int bmi270_get_scale(struct bmi270_data *bmi270_device,
++			    int chan_type, int *uscale)
++{
++	int ret;
++	unsigned int val;
++	struct bmi270_scale_item bmi270_scale_item;
++
++	switch (chan_type) {
++	case IIO_ACCEL:
++		ret = regmap_read(bmi270_device->regmap,
++				  BMI270_ACC_CONF_RANGE_REG, &val);
++		if (ret)
++			return ret;
++
++		val = FIELD_GET(BMI270_ACC_CONF_RANGE_MSK, val);
++		bmi270_scale_item = bmi270_scale_table[BMI270_ACCEL];
++		break;
++	case IIO_ANGL_VEL:
++		ret = regmap_read(bmi270_device->regmap,
++				  BMI270_GYR_CONF_RANGE_REG, &val);
++		if (ret)
++			return ret;
++
++		val = FIELD_GET(BMI270_GYR_CONF_RANGE_MSK, val);
++		bmi270_scale_item = bmi270_scale_table[BMI270_GYRO];
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	if (val >= bmi270_scale_item.num)
++		return -EINVAL;
++
++	*uscale = bmi270_scale_item.tbl[val].uscale;
++	return 0;
++}
++
++static int bmi270_set_odr(struct bmi270_data *data, int chan_type,
++			  int odr, int uodr)
++{
++	int i;
++	int reg, mask;
++	struct bmi270_odr_item bmi270_odr_item;
++
++	switch (chan_type) {
++	case IIO_ACCEL:
++		reg = BMI270_ACC_CONF_REG;
++		mask = BMI270_ACC_CONF_ODR_MSK;
++		bmi270_odr_item = bmi270_odr_table[BMI270_ACCEL];
++		break;
++	case IIO_ANGL_VEL:
++		reg = BMI270_GYR_CONF_REG;
++		mask = BMI270_GYR_CONF_ODR_MSK;
++		bmi270_odr_item = bmi270_odr_table[BMI270_GYRO];
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	for (i = 0; i < bmi270_odr_item.num; i++) {
++		if (bmi270_odr_item.tbl[i].odr != odr ||
++		    bmi270_odr_item.tbl[i].uodr != uodr)
++			continue;
++
++		return regmap_update_bits(data->regmap, reg, mask,
++					  bmi270_odr_item.vals[i]);
++	}
++
++	return -EINVAL;
++}
++
++static int bmi270_get_odr(struct bmi270_data *data, int chan_type,
++			  int *odr, int *uodr)
++{
++	int i, val, ret;
++	struct bmi270_odr_item bmi270_odr_item;
++
++	switch (chan_type) {
++	case IIO_ACCEL:
++		ret = regmap_read(data->regmap, BMI270_ACC_CONF_REG, &val);
++		if (ret)
++			return ret;
++
++		val = FIELD_GET(BMI270_ACC_CONF_ODR_MSK, val);
++		bmi270_odr_item = bmi270_odr_table[BMI270_ACCEL];
++		break;
++	case IIO_ANGL_VEL:
++		ret = regmap_read(data->regmap, BMI270_GYR_CONF_REG, &val);
++		if (ret)
++			return ret;
++
++		val = FIELD_GET(BMI270_GYR_CONF_ODR_MSK, val);
++		bmi270_odr_item = bmi270_odr_table[BMI270_GYRO];
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	for (i = 0; i < bmi270_odr_item.num; i++) {
++		if (val != bmi270_odr_item.vals[i])
++			continue;
++
++		*odr = bmi270_odr_item.tbl[i].odr;
++		*uodr = bmi270_odr_item.tbl[i].uodr;
++		return 0;
++	}
++
++	return -EINVAL;
++}
++
+ static irqreturn_t bmi270_trigger_handler(int irq, void *p)
  {
-@@ -128,6 +162,13 @@ static const struct iio_info bmi270_info = {
- 	.modified = 1,						\
- 	.channel2 = IIO_MOD_##_axis,				\
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-+	.scan_index = BMI270_SCAN_ACCEL_##_axis,		\
-+	.scan_type = {						\
-+		.sign = 's',					\
-+		.realbits = 16,					\
-+		.storagebits = 16,				\
-+		.endianness = IIO_LE				\
-+	},	                                                \
- }
+ 	struct iio_poll_func *pf = p;
+@@ -148,6 +414,68 @@ static int bmi270_read_raw(struct iio_dev *indio_dev,
+ 			return ret;
  
- #define BMI270_ANG_VEL_CHANNEL(_axis) {				\
-@@ -135,6 +176,13 @@ static const struct iio_info bmi270_info = {
- 	.modified = 1,						\
- 	.channel2 = IIO_MOD_##_axis,				\
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-+	.scan_index = BMI270_SCAN_GYRO_##_axis,			\
-+	.scan_type = {						\
-+		.sign = 's',					\
-+		.realbits = 16,					\
-+		.storagebits = 16,				\
-+		.endianness = IIO_LE				\
-+	},	                                                \
- }
+ 		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		*val = 0;
++		ret = bmi270_get_scale(bmi270_device, chan->type, val2);
++		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		ret = bmi270_get_odr(bmi270_device, chan->type, val, val2);
++		return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int bmi270_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int val, int val2, long mask)
++{
++	struct bmi270_data *data = iio_priv(indio_dev);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		return bmi270_set_scale(data, chan->type, val2);
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return bmi270_set_odr(data, chan->type, val, val2);
++	default:
++		return -EINVAL;
++	}
++}
++
++static int bmi270_read_avail(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		switch (chan->type) {
++		case IIO_ANGL_VEL:
++			*vals = (const int *)bmi270_gyro_scale;
++			*length = ARRAY_SIZE(bmi270_gyro_scale) * 2;
++			return IIO_AVAIL_LIST;
++		case IIO_ACCEL:
++			*vals = (const int *)bmi270_accel_scale;
++			*length = ARRAY_SIZE(bmi270_accel_scale) * 2;
++			return IIO_AVAIL_LIST;
++		default:
++			return -EINVAL;
++		}
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		switch (chan->type) {
++		case IIO_ANGL_VEL:
++			*vals = (const int *)bmi270_gyro_odr;
++			*length = ARRAY_SIZE(bmi270_gyro_odr) * 2;
++			return IIO_AVAIL_LIST;
++		case IIO_ACCEL:
++			*vals = (const int *)bmi270_accel_odr;
++			*length = ARRAY_SIZE(bmi270_accel_odr) * 2;
++			return IIO_AVAIL_LIST;
++		default:
++			return -EINVAL;
++		}
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -155,6 +483,8 @@ static int bmi270_read_raw(struct iio_dev *indio_dev,
  
- static const struct iio_chan_spec bmi270_channels[] = {
-@@ -144,6 +192,7 @@ static const struct iio_chan_spec bmi270_channels[] = {
- 	BMI270_ANG_VEL_CHANNEL(X),
- 	BMI270_ANG_VEL_CHANNEL(Y),
- 	BMI270_ANG_VEL_CHANNEL(Z),
-+	IIO_CHAN_SOFT_TIMESTAMP(BMI270_SCAN_TIMESTAMP),
+ static const struct iio_info bmi270_info = {
+ 	.read_raw = bmi270_read_raw,
++	.write_raw = bmi270_write_raw,
++	.read_avail = bmi270_read_avail,
  };
  
- static int bmi270_validate_chip_id(struct bmi270_data *bmi270_device)
-@@ -301,9 +350,16 @@ int bmi270_core_probe(struct device *dev, struct regmap *regmap,
- 	indio_dev->channels = bmi270_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(bmi270_channels);
- 	indio_dev->name = chip_info->name;
-+	indio_dev->available_scan_masks = bmi270_avail_scan_masks;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->info = &bmi270_info;
- 
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      bmi270_trigger_handler, NULL);
-+	if (ret)
-+		return ret;
-+
- 	return devm_iio_device_register(dev, indio_dev);
- }
- EXPORT_SYMBOL_NS_GPL(bmi270_core_probe, IIO_BMI270);
+ #define BMI270_ACCEL_CHANNEL(_axis) {				\
+@@ -162,6 +492,11 @@ static const struct iio_info bmi270_info = {
+ 	.modified = 1,						\
+ 	.channel2 = IIO_MOD_##_axis,				\
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
++		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
++	.info_mask_shared_by_type_available =			\
++		BIT(IIO_CHAN_INFO_SCALE) |			\
++		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
+ 	.scan_index = BMI270_SCAN_ACCEL_##_axis,		\
+ 	.scan_type = {						\
+ 		.sign = 's',					\
+@@ -176,6 +511,11 @@ static const struct iio_info bmi270_info = {
+ 	.modified = 1,						\
+ 	.channel2 = IIO_MOD_##_axis,				\
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
++		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
++	.info_mask_shared_by_type_available =			\
++		BIT(IIO_CHAN_INFO_SCALE) |			\
++		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
+ 	.scan_index = BMI270_SCAN_GYRO_##_axis,			\
+ 	.scan_type = {						\
+ 		.sign = 's',					\
 -- 
 2.47.0
 

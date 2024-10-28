@@ -1,111 +1,117 @@
-Return-Path: <linux-iio+bounces-11982-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11988-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C229C06C7
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2024 14:06:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89019C083B
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2024 14:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 191E21F21FB5
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2024 13:06:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A9ED28527F
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2024 13:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B18212D1B;
-	Thu,  7 Nov 2024 12:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iD63z4HW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B49B21262B;
+	Thu,  7 Nov 2024 13:56:51 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E672101A1;
-	Thu,  7 Nov 2024 12:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6552F20F5AA;
+	Thu,  7 Nov 2024 13:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730984348; cv=none; b=trDtV2cqoFq9dbBfRg/HB0XdP++V3ziJMBSi6Y7k59DcBxozZNI+R59WAKKTQsNmHd338RRdJgVwLf6AxBZh1CidB1uuAjcrdTGKuWLCV82V6jnndepM65ZhQ/gGlso7DHJYW1crnyq0P4NpU8HCc2icnc2PqqpmHzNHfjQet9M=
+	t=1730987811; cv=none; b=JrC8PiAaxFINzymortJjSjk9uCVqie7c44YFo0hEiv1zUghJepPTqlxdbpZfx666Zaff/rMFHD+ozTAzQR2LIfJiyqiZ5VXOGdC214XU3dBrpWZv1Y0yUqFkV320d1xrQYxNqeJ5hFpo0MjT7rNi+l6dXXmUjmo1aFv4Z9W5TUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730984348; c=relaxed/simple;
-	bh=O2jEPTTUJi8YuBrD4uo+6+5CJE7GCRdzMd3WNJyIb5Y=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=t4cwznAuAehwUFU9S+2q5s7305TCIeWFYv9F+imj+nnqj9Rby9Sam3YFF892ArXz/3Jyd2Kc1durds2lWasL1jfHU2E1jrn+v0by+Rm/9/C73cY+iovs68ll9cSmhgPR1Ru3WuerWlhWkRkZFZDRv3eFFavZsF1kqJTBOtfjLPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iD63z4HW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC64C4CED0;
-	Thu,  7 Nov 2024 12:59:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730984347;
-	bh=O2jEPTTUJi8YuBrD4uo+6+5CJE7GCRdzMd3WNJyIb5Y=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=iD63z4HWcMWir7bHC1m9R+CT/cgDL1VVsJnEYKSEV2jU7HGI+2dVFuZypj0yOnSMM
-	 mn3gjCdYb+BdncyjpsM7aAENfKfDqDXnjHN+2pZzXcAtNKO7WmYhwE7RzeUBCUKw2h
-	 Nup1Iz0s1HgQ3Gb4OUa/iOOIVQiZ4CeVgWd2UBMnORr7GbcAdAEXM1MgcLuoSUbXms
-	 X6tG5gVUTPfyBUebk8mkJuHitQAqBK1utoJ6fBjCahU4wIHzJtNHElOGwm7LDcPfaW
-	 MRn8cczXOJQV1BRqGDf6dCM2YXKLjO2zUv3syEb+P+BmVoRQB7n7BShvU1hPmmuX3Q
-	 BivsrE6XS583g==
-Date: Thu, 7 Nov 2024 13:59:04 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Heiko Stuebner <heiko@sntech.de>
-cc: lee@kernel.org, jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-    conor+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net, 
-    srinivas.pandruvada@linux.intel.com, bentiss@kernel.org, 
-    dmitry.torokhov@gmail.com, pavel@ucw.cz, ukleinek@debian.org, 
-    devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org, 
-    linux-iio@vger.kernel.org, linux-leds@vger.kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH v9 1/9] HID: hid-sensor-hub: don't use stale platform-data
- on remove
-In-Reply-To: <20241107114712.538976-2-heiko@sntech.de>
-Message-ID: <nycvar.YFH.7.76.2411071358210.20286@cbobk.fhfr.pm>
-References: <20241107114712.538976-1-heiko@sntech.de> <20241107114712.538976-2-heiko@sntech.de>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=arc-20240116; t=1730987811; c=relaxed/simple;
+	bh=7v/jldVNPehBirnoJkZk0fUgltTH/iaWGYa4s4Cqmj0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Mk4McP2LNQeX9YVta3Ttp+buwVB1UlNMuilIvD4C3UQpSrs4+UxBM16JHSTW05EmQh0yycMNqFUQUAwF6jOCkvb4gewyblesLvCJwd7NUHpeHVKbjeDSmEV+9DrGs+bNhAwsRKuSaxLeAIH0yN1kwAjhMCLLWh4nc3yB+5P6bAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xkk952JS5z6K99D;
+	Thu,  7 Nov 2024 21:55:05 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id A05BF140856;
+	Thu,  7 Nov 2024 21:56:45 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 7 Nov
+ 2024 14:56:44 +0100
+Date: Mon, 28 Oct 2024 17:05:21 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Robert Budai <robert.budai@analog.com>
+CC: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+	<Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, "Ramona
+ Gradinariu" <ramona.gradinariu@analog.com>, Antoniu Miclaus
+	<antoniu.miclaus@analog.com>, Jonathan Cameron <jic23@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Jagath Jog J
+	<jagathjog1996@gmail.com>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <robi_budai@yahoo.com>
+Subject: Re: [PATCH 0/5] Add support for ADIS16550 and ADIS16550W
+Message-ID: <20241028170521.0000325c@Huawei.com>
+In-Reply-To: <20241028123550.9128-1-robert.budai@analog.com>
+References: <20241028123550.9128-1-robert.budai@analog.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, 7 Nov 2024, Heiko Stuebner wrote:
+On Mon, 28 Oct 2024 14:35:42 +0200
+Robert Budai <robert.budai@analog.com> wrote:
 
-> The hid-sensor-hub creates the individual device structs and transfers them
-> to the created mfd platform-devices via the platform_data in the mfd_cell.
-> 
-> Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
-> the sensor-hub was managing access centrally, with one "completion" in the
-> hub's data structure, which needed to be finished on removal at the latest.
-> 
-> The mentioned commit then moved this central management to each hid sensor
-> device, resulting on a completion in each struct hid_sensor_hub_device.
-> The remove procedure was adapted to go through all sensor devices and
-> finish any pending "completion".
-> 
-> What this didn't take into account was, platform_device_add_data() that is
-> used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
-> platform-data. So the data the platform-device gets is a copy of the
-> original data, meaning that the device worked on a different completion
-> than what sensor_hub_remove() currently wants to access.
-> 
-> To fix that, use device_for_each_child() to go through each child-device
-> similar to how mfd_remove_devices() unregisters the devices later and
-> with that get the live platform_data to finalize the correct completion.
-> 
-> Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
-> Cc: stable@vger.kernel.org
-> Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-> Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> The ADIS16550 is a complete inertial system that includes a triaxis gyros=
+cope
+> and a triaxis accelerometer. Each inertial sensor in the ADIS16550 combin=
+es
+> industry leading MEMS only technology with signal conditioning that optim=
+izes
+> dynamic performance. The factory calibration characterizes each sensor fo=
+r
+> sensitivity, bias, and alignment. As a result, each sensor has its own dy=
+namic
+> compensation formulas that provide accurate sensor measurements.
 
-Acked-by: Jiri Kosina <jkosina@suse.com>
 
-Are you planning to merge this together with the rest of the set, or do 
-you want me to expedite it? I'll be happy to apply it separately as a 
-proper fix.
+Dropping the more marketing parts of this preferred.  Second
+sentence doesn't add much that we care about.
+The rest is fine.
 
-Thanks,
-
--- 
-Jiri Kosina
-SUSE Labs
+>=20
+> Nuno S=E1 (3):
+>   iio: imu: adis: Add custom ops struct
+>   iio: imu: adis: Add DIAG_STAT register size
+>   iio: imu: adis16550: add adis16550 support
+>=20
+> Ramona Gradinariu (2):
+>   dt-bindings: iio: Add adis16550 bindings
+>   docs: iio: add documentation for adis16550 driver
+>=20
+>  .../bindings/iio/imu/adi,adis16550.yaml       |   95 ++
+>  Documentation/iio/adis16550.rst               |  389 ++++++
+>  Documentation/iio/index.rst                   |    1 +
+>  MAINTAINERS                                   |   10 +
+>  drivers/iio/imu/Kconfig                       |   13 +
+>  drivers/iio/imu/Makefile                      |    1 +
+>  drivers/iio/imu/adis.c                        |   33 +-
+>  drivers/iio/imu/adis16550.c                   | 1228 +++++++++++++++++
+>  include/linux/iio/imu/adis.h                  |   33 +-
+>  9 files changed, 1788 insertions(+), 15 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis165=
+50.yaml
+>  create mode 100644 Documentation/iio/adis16550.rst
+>  create mode 100644 drivers/iio/imu/adis16550.c
+>=20
 
 

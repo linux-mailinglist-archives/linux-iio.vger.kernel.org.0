@@ -1,38 +1,39 @@
-Return-Path: <linux-iio+bounces-11475-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11469-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B91199B3383
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 15:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2E3B9B3342
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 15:21:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FD9A1F228C5
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 14:30:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99BE81F22622
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 14:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726A01DDC13;
-	Mon, 28 Oct 2024 14:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67951DD9A6;
+	Mon, 28 Oct 2024 14:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="AVB+177H"
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="lIbTPM/A"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840AD18C93D;
-	Mon, 28 Oct 2024 14:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7A51DD0C9;
+	Mon, 28 Oct 2024 14:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730125813; cv=none; b=c88n4z7uowoZFLhukMrkXn6FeR5E+fVoRqs2VxD1vgRdPhRtnpOl7Nkc36trVWZ+9U/aBOZIePKaLcRfkMfDxIECrWhrRigXr7/iJAPXD6GMTssdBXv+eTLa5qVYPH/Gy2Yrd/+oEbUaOEB64iU9CUl/vA4YUOBz7E4iXalQEB0=
+	t=1730125312; cv=none; b=LZo0QavqlqmfGuyY0vIbydTph3TzJ1tCQZTtnYvytHVBg2GgbUIJt7V6qqu0ViTtIPpNIa/RobfFhVitDqi0aQAYKth0r2FEgRiddTUFkZKIuTVU/PxFS9CMVDHaln8mn5ihz2lsSudDyS+75JiPRbrO/qM2Zo/NKt9Qd4jim3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730125813; c=relaxed/simple;
-	bh=sdstsogHfVVzt/qF2FVu3AhaNVUWpR2HAeKX/JoSshs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZMCAIdVsNmapcun4lDdaEaGo0e122KrCaqVLN0yfB7kkgvIN1KLz8bnX1JLZp6vBooS7uF/lIdh+prXNSnnfPgn3Lz8hsECK5+iZ55tlpFHK+fH5NhruL6Pkq4eEVaslQxW6YHf8EOV/jNutmrMiF1jqvCZXd7iGt7vQ/k9IL+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=AVB+177H; arc=none smtp.client-ip=206.189.193.133
+	s=arc-20240116; t=1730125312; c=relaxed/simple;
+	bh=/YzjZ2+kWaCJYiOsHNNNL2840PxUKMK+oiKSq/YkNaw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GVRpOzZ7xUdKOgZh6OMXQKIQ+zRSfDBLnqrO4P1ODfqmPRmQ1S1ho506NY65WiIdDA39gF85hMpQh+6SHv1XjKxk0Nr43kl4j8DlQyW4oXLgTXCwfwDB/+Evd2aTadLGpxGsWpceDZPKi/S56D86QqlnH19MuUYR6SbR7bBiBuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=lIbTPM/A; arc=none smtp.client-ip=206.189.193.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
 Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-	by a.peacevolution.org (Postfix) with ESMTPA id 0ADD64C564;
-	Mon, 28 Oct 2024 14:21:41 +0000 (UTC)
+	by a.peacevolution.org (Postfix) with ESMTPA id 588034C736;
+	Mon, 28 Oct 2024 14:21:48 +0000 (UTC)
 From: Aren Moynihan <aren@peacevolution.org>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -54,10 +55,13 @@ Cc: Aren Moynihan <aren@peacevolution.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-sunxi@lists.linux.dev,
 	Dragan Simic <dsimic@manjaro.org>,
-	phone-devel@vger.kernel.org
-Subject: [PATCH v3 0/6] iio: light: stk3310: support powering off during suspend
-Date: Mon, 28 Oct 2024 10:19:54 -0400
-Message-ID: <20241028142000.1058149-1-aren@peacevolution.org>
+	phone-devel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 1/6] dt-bindings: iio: light: stk33xx: add vdd and leda regulators
+Date: Mon, 28 Oct 2024 10:19:55 -0400
+Message-ID: <20241028142000.1058149-2-aren@peacevolution.org>
+In-Reply-To: <20241028142000.1058149-1-aren@peacevolution.org>
+References: <20241028142000.1058149-1-aren@peacevolution.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -66,55 +70,54 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
-X-Spam-Level: ****
-X-Spamd-Bar: ++++
+X-Spam-Level: ******
+X-Spamd-Bar: ++++++
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
-	s=dkim; t=1730125303;
-	h=from:subject:date:message-id:to:cc:mime-version:content-transfer-encoding;
-	bh=O8RsRfQ0OglbTcLNh0bfBx27J2SnHEfQFA6wmv/Gu7k=;
-	b=AVB+177HK9Qd1iMLpM+4bhuIlh+W5zJ0k9Xni0T4R1EpdgmfO27T9W+uRd7xZWcMQn1Umk
-	eBOM/iW098j9le51t7XRoFHmU0h8egOB+38mmvB8050DsIcJnp/DyEcpwyx4p2IhRx7Q0X
-	F2Ni2tmH1dq7ve0XTTiY5Up5GMew57U=
+	s=dkim; t=1730125309;
+	h=from:subject:date:message-id:to:cc:mime-version:content-transfer-encoding:in-reply-to:references;
+	bh=6wjZ1pTHZq/+k3MCnSbbzmSo0hoqjpDUYVU+ZZfLBNM=;
+	b=lIbTPM/AeaMflAcdwUJTLIqKg+0qzjN+F7YnXFOaviiL719lrG2kCKUyGQWu4NKN79l5qL
+	5mqVD0tWkcaaCIf3a1sRdridQwMCanS1iTHnmY5GoM4GLEIMQpq+ZcPYw6LsTkZLoS7yEw
+	yQBC8DXXeh9XO+ZV2jk9kFdDP9rki/Y=
 
-In the Pine64 PinePhone, the stk3310 chip is powered by a regulator that is
-disabled at system boot and can be shut off during suspend. To ensure that
-the chip properly initializes, both after boot and suspend, we need to
-manage this regulator.
+stk3310 and stk3311 are typically connected to power supplies for the
+chip (vdd) and the infrared LED (leda). Add properties so we can power
+these up / down appropriately.
 
-Additionally if the chip is shut off in suspend, we need to make sure that
-it gets reinitialized with the same parameters after resume.
+Signed-off-by: Aren Moynihan <aren@peacevolution.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
 
-Major changes in v3:
- - Use bulk regulators instead of two individual ones
- - Replace stk3310_remove with devm callbacks
- - Hopefully I haven't missed anything, it's been a while since I worked on this
-   patch, and I didn't take good enough notes
+Notes:
+    Changes in v2:
+     - add leda-supply
+     - add supplies to examples
 
-Major changes in v2:
- - Add handling of the IR LED. I was hesitant to include this as it is the
-   same as pull-up regulator for the i2c bus on the hardware I have, so I
-   can't test it well. I think leaving it out is more likely to cause
-   issues than including it.
- - Convert stk3310 to use dev_err_probe for errors.
- - Always enable / disable regulators and rely on dummy devices if they're
-   not specified.
- - more listed in individual patches
+ Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Aren Moynihan (5):
-  dt-bindings: iio: light: stk33xx: add vdd and leda regulators
-  iio: light: stk3310: handle all remove logic with devm callbacks
-  iio: light: stk3310: Implement vdd and leda supplies
-  iio: light: stk3310: use dev_err_probe where possible
-  iio: light: stk3310: log error if reading the chip id fails
-
-Ondrej Jirman (1):
-  arm64: dts: allwinner: pinephone: Add power supplies to stk3311
-
- .../bindings/iio/light/stk33xx.yaml           |   4 +
- .../dts/allwinner/sun50i-a64-pinephone.dtsi   |   2 +
- drivers/iio/light/stk3310.c                   | 156 +++++++++++++-----
- 3 files changed, 118 insertions(+), 44 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+index e4341fdced98..96ee8ec16463 100644
+--- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
++++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+@@ -34,6 +34,8 @@ properties:
+   interrupts:
+     maxItems: 1
+ 
++  vdd-supply: true
++  leda-supply: true
+   proximity-near-level: true
+ 
+ required:
+@@ -57,6 +59,8 @@ examples:
+                 proximity-near-level = <25>;
+                 interrupt-parent = <&gpio1>;
+                 interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
++                vdd-supply = <&vdd_regulator>;
++                leda-supply = <&led_regulator>;
+         };
+     };
+ ...
 -- 
 2.47.0
 

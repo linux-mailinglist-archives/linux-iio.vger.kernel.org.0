@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-11518-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11519-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFCE9B3B35
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 21:18:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524D79B3B4C
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 21:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED5DC1C22079
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 20:18:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDB131F22C23
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 20:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4991DFE38;
-	Mon, 28 Oct 2024 20:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E696E1E0094;
+	Mon, 28 Oct 2024 20:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bwx/3aip"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAVPmWkO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D691DF753;
-	Mon, 28 Oct 2024 20:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994811DF969;
+	Mon, 28 Oct 2024 20:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730146708; cv=none; b=F6F4k6Gcbf3yrkUHZpwYmuLR/9z4fnHlMdDyydnft4CgqZTYNoVVzd2nJkflOLEXSyHLLWl+U5EQMYsGZNh/77QWufKNK4N8mlY7pbcIqizE11ks8aR+lyGGN+qVgtjxEf7ljqDY5PesJfmxBJyckhnGhLcGNirsZ9Dp/7DTezg=
+	t=1730146948; cv=none; b=HlDnhAoEIvdq2BUFkJ929trjVBONAubNxqhJwrbYa9No2rRB6nsS2Pz8paG/oqyIg0bWFzFTDeWistKpvWsUMGlFWMSNwwx7/bE2XfkLd66qIEFok3mMQSM6ZW/AAJCxWjUBwgRgVwsPKvf3D2lmaXFi6NEllRYrg/nCQQNX9es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730146708; c=relaxed/simple;
-	bh=5SUnNxKVWVENJsAtwK7JAsZE/0C7b8RZuFMSyTpntOQ=;
+	s=arc-20240116; t=1730146948; c=relaxed/simple;
+	bh=pT9vby1FTXJmcSXQkwFvclL5W11uGqMmkI13cHc4kTk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TfGVjxYo9Eb1yPBKcm4ZrxTOgCd44cjt29TL02bh5060zDklxw875tVrxmHkak5mVUqZlfLIDMezHqqwGSbXez2t2qjNQV1ZyoKJ6tCDpNd5TaVJgMQVyPiK1+CF2vPH6JVtWu+8KbFlP33CeHsL0+9iHv0QKlJqN7Z+rlsl19w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bwx/3aip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E168EC4CEE3;
-	Mon, 28 Oct 2024 20:18:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j5Wcy3HltGVABXmGEyr0W0g+yu2TFmHK6EIYEtI7aRniiCjJV9Y7kMMN+S/JzYFwYDHpsvbWot+leueAiAXoG37UoDTg72jvaCs+G+Wqa2zYhaf2NA/UhhQL++t84qUdPfbMk6uIYhidP1GoguH+tevwkq9BKciaRVBClmoZWF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAVPmWkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95097C4CEC3;
+	Mon, 28 Oct 2024 20:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730146705;
-	bh=5SUnNxKVWVENJsAtwK7JAsZE/0C7b8RZuFMSyTpntOQ=;
+	s=k20201202; t=1730146946;
+	bh=pT9vby1FTXJmcSXQkwFvclL5W11uGqMmkI13cHc4kTk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Bwx/3aipWoMpQQIIgEkdjUGt1RCTQYebepjURPxWhOJj4Zzb63nHTkBq3CuOU1+64
-	 0uRqcasUCaVi1p/6VExDHTwW456bOZDbwlBXkfh1aD2nr2kZR11J9+qWLOhY7PZy5h
-	 ZUWcvcqM1MibBDcdfPEo0eTaiEl4zrSFuDLon+T+Ntcg4mZ7eCYk+uTfYrWMnB6kZa
-	 QYi0CJ1dbp2YlyakUfAVfHxKRnYWc1LpNYH9aFvTUcqNPXi81MQRqE7Z9d5irnL/yo
-	 +bbStYkeUO6Hzc70VDxB5lf5G2w6fCmSgvp76dUF2wdzKehYgVq6463J+LL52xwsPh
-	 vhUYRONZw9ntQ==
-Date: Mon, 28 Oct 2024 20:18:17 +0000
+	b=AAVPmWkO4WSftmmQc+29HfYTGruEDuceF/k8m3cEJM04cBSrAafckXkADvDuWG/vV
+	 7MsVdYMvz/9cfbAONzoEWhwKk8qxZ/p4D5dftfLAwcDRr0d3LNWLWfNdn5WAL+eJGU
+	 aEMMDRUPmyBKSsNzN3TyBICCnUd2xYX4abDxNomYPHWe3RT9umhwdEjVaEfLKEFeN0
+	 vyPvKh22kk+kjnnuQ0WAQC9WKP02e4nL9fDJuwtx4mx1kXbyJYSSekNk7oiRtO7NuK
+	 5pMsMtxFGPDCWZFSKOjwspYfgWMqgf7pqNg8RM9vnEiQgRSRW+sZBUuss6/3miGWGZ
+	 toYjg0b1Rn9hA==
+Date: Mon, 28 Oct 2024 20:22:18 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Justin Weiss <justin@justinweiss.com>
-Cc: Alex Lanzano <lanzano.alex@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, "Derek J . Clark"
- <derekjohn.clark@gmail.com>, Philip =?UTF-8?B?TcO8bGxlcg==?=
- <philm@manjaro.org>
-Subject: Re: [PATCH v4 0/4] Add i2c driver for Bosch BMI260 IMU
-Message-ID: <20241028201817.71bebfee@jic23-huawei>
-In-Reply-To: <20241027172029.160134-1-justin@justinweiss.com>
-References: <20241027172029.160134-1-justin@justinweiss.com>
+To: ahaslam@baylibre.com
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, nuno.sa@analog.com,
+ dlechner@baylibre.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/6] iio: dac: ad5791: Include chip_info in device match
+ tables
+Message-ID: <20241028202218.0f0b3d14@jic23-huawei>
+In-Reply-To: <20241028071118.699951-4-ahaslam@baylibre.com>
+References: <20241028071118.699951-1-ahaslam@baylibre.com>
+	<20241028071118.699951-4-ahaslam@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,94 +64,132 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 27 Oct 2024 10:20:21 -0700
-Justin Weiss <justin@justinweiss.com> wrote:
+On Mon, 28 Oct 2024 08:11:15 +0100
+ahaslam@baylibre.com wrote:
 
-> Add support for the Bosch BMI260 IMU to the BMI270 device driver.
+> From: Axel Haslam <ahaslam@baylibre.com>
 > 
-> The BMI270 and BMI260 have nearly identical register maps, but have
-> different chip IDs and firmware.
+> Include a chip info struct in device SPI and device OF match tables to
+> provide channel definitions for each particular ADC model and drop
+> device enum.
 > 
-> The BMI260 is the IMU on a number of handheld PCs. Unfortunately,
-> these devices often misidentify it in ACPI as a BMI160 ("BMI0160," for
-> example), and it can only be correctly identified using the chip
-> ID. To avoid conflicts with the bmi160 driver, this driver will not
-> probe if it detects a BMI160 chip ID.
+> Suggested-by: Nuno Sa <nuno.sa@analog.com>
+> Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
+> ---
+>  drivers/iio/dac/ad5791.c | 107 +++++++++++++++++++--------------------
+>  1 file changed, 51 insertions(+), 56 deletions(-)
 > 
-> Also add triggered buffer and scale / sampling frequency attributes,
-> which the input tools commonly used on handheld PCs require to support
-> IMUs.
-> 
-> Like the BMI270, the BMI260 requires firmware to be provided.
-> Signed-off-by: Justin Weiss <justin@justinweiss.com>
+> diff --git a/drivers/iio/dac/ad5791.c b/drivers/iio/dac/ad5791.c
+> index 553431bf0232..a11e81211669 100644
+> --- a/drivers/iio/dac/ad5791.c
+> +++ b/drivers/iio/dac/ad5791.c
+> @@ -65,7 +65,9 @@
+>   */
+Whilst adding the docs for the missing entries, please delete this
+blank line!
 
-Applied with a few tweaks thanks to Andy's review.
-
-I'll push this out as testing to let 0-day poke at it before it goes
-into linux-next in a few days time.
-
-Thanks,
+Otherwise patch looks good to me.
 
 Jonathan
+	
+>  
+>  struct ad5791_chip_info {
+> -	int (*get_lin_comp)	(unsigned int span);
+> +	const char *name;
+> +	const struct iio_chan_spec channel;
+> +	int (*get_lin_comp)(unsigned int span);
+>  };
+>  
+>  /**
+> @@ -98,13 +100,6 @@ struct ad5791_state {
+>  	} data[3] __aligned(IIO_DMA_MINALIGN);
+>  };
+>  
+> -enum ad5791_supported_device_ids {
+> -	ID_AD5760,
+> -	ID_AD5780,
+> -	ID_AD5781,
+> -	ID_AD5791,
+> -};
+> -
+>  static int ad5791_spi_write(struct ad5791_state *st, u8 addr, u32 val)
+>  {
+>  	st->data[0].d32 = cpu_to_be32(AD5791_CMD_WRITE |
+> @@ -228,20 +223,6 @@ static int ad5780_get_lin_comp(unsigned int span)
+>  	else
+>  		return AD5780_LINCOMP_10_20;
+>  }
+> -static const struct ad5791_chip_info ad5791_chip_info_tbl[] = {
+> -	[ID_AD5760] = {
+> -		.get_lin_comp = ad5780_get_lin_comp,
+> -	},
+> -	[ID_AD5780] = {
+> -		.get_lin_comp = ad5780_get_lin_comp,
+> -	},
+> -	[ID_AD5781] = {
+> -		.get_lin_comp = ad5791_get_lin_comp,
+> -	},
+> -	[ID_AD5791] = {
+> -		.get_lin_comp = ad5791_get_lin_comp,
+> -	},
+> -};
+>  
+>  static int ad5791_read_raw(struct iio_dev *indio_dev,
+>  			   struct iio_chan_spec const *chan,
+> @@ -289,30 +270,34 @@ static const struct iio_chan_spec_ext_info ad5791_ext_info[] = {
+>  	{ },
+>  };
+>  
+> -#define AD5791_CHAN(bits, _shift) {			\
+> -	.type = IIO_VOLTAGE,				\
+> -	.output = 1,					\
+> -	.indexed = 1,					\
+> -	.address = AD5791_ADDR_DAC0,			\
+> -	.channel = 0,					\
+> -	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
+> -	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
+> -		BIT(IIO_CHAN_INFO_OFFSET),		\
+> -	.scan_type = {					\
+> -		.sign = 'u',				\
+> -		.realbits = (bits),			\
+> -		.storagebits = 24,			\
+> -		.shift = (_shift),			\
+> -	},						\
+> -	.ext_info = ad5791_ext_info,			\
+> +#define AD5791_DEFINE_CHIP_INFO(_name, bits, _shift, _lin_comp)		\
+> +static const struct ad5791_chip_info _name##_chip_info = {		\
+> +	.name = #_name,							\
+> +	.get_lin_comp = &(_lin_comp),					\
+> +	.channel = {							\
+> +			.type = IIO_VOLTAGE,				\
+> +			.output = 1,					\
+> +			.indexed = 1,					\
+> +			.address = AD5791_ADDR_DAC0,			\
+> +			.channel = 0,					\
+> +			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
+> +			.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
+> +				BIT(IIO_CHAN_INFO_OFFSET),		\
+> +			.scan_type = {					\
+> +				.sign = 'u',				\
+> +				.realbits = (bits),			\
+> +				.storagebits = 24,			\
+> +				.shift = (_shift),			\
+> +			},						\
+> +			.ext_info = ad5791_ext_info,			\
+> +	},								\
+>  }
+>  
+> -static const struct iio_chan_spec ad5791_channels[] = {
+> -	[ID_AD5760] = AD5791_CHAN(16, 4),
+> -	[ID_AD5780] = AD5791_CHAN(18, 2),
+> -	[ID_AD5781] = AD5791_CHAN(18, 2),
+> -	[ID_AD5791] = AD5791_CHAN(20, 0)
+> -};
+> +AD5791_DEFINE_CHIP_INFO(ad5760, 16, 4, ad5780_get_lin_comp);
+> +AD5791_DEFINE_CHIP_INFO(ad5780, 18, 2, ad5780_get_lin_comp);
+> +AD5791_DEFINE_CHIP_INFO(ad5781, 18, 2, ad5791_get_lin_comp);
+> +AD5791_DEFINE_CHIP_INFO(ad5790, 20, 0, ad5791_get_lin_comp);
+> +AD5791_DEFINE_CHIP_INFO(ad5791, 20, 0, ad5791_get_lin_comp);
 
-> ---
-> 
-> Changelog:
-> 
-> V4
-> - Move triggered buffer and attributes patches to the front of the set
-> - Add more detailed commit message to DT documentation patch
-> - Remove ACPI IDs from SPI driver
-> - Remove 10EC5280 and BMI0260 ACPI IDs from I2C driver
-> - Add DSDT excerpt for BMI0160 ACPI ID
-> 
-> V3
-> https://lore.kernel.org/lkml/20241020220011.212395-1-justin@justinweiss.com/
-> - Fix: Remove SCALE and FREQUENCY attributes
-> - Use separate configuration structures instead of an array
-> - Add bmi260 as compatible ID in bmi270 dt binding doc
-> - Check chip ID against value in configuration instead of constant
-> - Update comment for DMA alignment
-> - Remove unreachable return statement
-> 
-> V2
-> https://lore.kernel.org/all/20241018233723.28757-1-justin@justinweiss.com/
-> - Fix commit titles
-> - Fix: Change FREQUENCY to SAMP_FREQ
-> - Split chip_info refactor into a separate commit from adding bmi260
-> - Only fail probe when BMI160 is detected
-> - Update chip_info based on detected chip ID
-> - Add BMI260 to DT documentation
-> - Add BMI260 to of_device_id
-> - Add expected BMI260 ACPI ID to the SPI driver
-> - Remove unused/unexpected BMI260 ACPI IDs
-> - Remove trailing comma for null terminators
-> - Use DMA_MINALIGN for channel buffer
-> - Read channels in bulk
-> - Improve for loops for detecting scale / odr attrs
-> - Add missing masks
-> - Use FIELD_GET
-> - Use read_avail instead of custom attrs
-> - Misc. formatting and line wrapping improvements
-> 
-> V1
-> https://lore.kernel.org/all/20241011153751.65152-1-justin@justinweiss.com/
-> 
-> Justin Weiss (4):
->   iio: imu: bmi270: Add triggered buffer for Bosch BMI270 IMU
->   iio: imu: bmi270: Add scale and sampling frequency to BMI270 IMU
->   dt-bindings: iio: imu: bmi270: Add Bosch BMI260
->   iio: imu: bmi270: Add support for BMI260
-> 
->  .../bindings/iio/imu/bosch,bmi270.yaml        |   4 +-
->  drivers/iio/imu/bmi270/Kconfig                |   1 +
->  drivers/iio/imu/bmi270/bmi270.h               |  10 +
->  drivers/iio/imu/bmi270/bmi270_core.c          | 424 +++++++++++++++++-
->  drivers/iio/imu/bmi270/bmi270_i2c.c           |   9 +
->  drivers/iio/imu/bmi270/bmi270_spi.c           |   2 +
->  6 files changed, 448 insertions(+), 2 deletions(-)
-> 
-> 
-> base-commit: 9090ececac9ff1e22fb7e042f3c886990a8fb090
 
 

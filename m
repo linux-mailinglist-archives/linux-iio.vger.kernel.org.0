@@ -1,112 +1,132 @@
-Return-Path: <linux-iio+bounces-11480-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11481-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52469B33EF
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 15:45:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63B09B347A
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 16:09:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51796B2265E
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 14:45:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7443E2811C9
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 15:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FA31DDC11;
-	Mon, 28 Oct 2024 14:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF7D1DE3D1;
+	Mon, 28 Oct 2024 15:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xs1Y9ZPE"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="b+vT8B6q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2869F18E778;
-	Mon, 28 Oct 2024 14:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE638185B68;
+	Mon, 28 Oct 2024 15:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730126747; cv=none; b=oEhRmit7EQq88/gz9nrbhqPxfkCQbBj2mQ1Q3sHzue2KQPNJ61wpnWP2o7LtCwNoUqCjUdLUbZQe5MPJKUhhHfKi3+XKHL70tC2CRJXGkx5xQOD6gEyRdKmzBV6Tp5qiD1mkDTjUmqQT+73kmEZQtb/WJkVZos8mMZOWZyHsdl4=
+	t=1730128150; cv=none; b=Utv0PZmp9hZWmGEXj1scwyVcayjAB38MscGKBAP+pI298Wb0LQlOFwH3Dn1OhKZPZCXwTI0rmjYa6TwhIVOUS0sS8vnscCHrrif+aC5oGouK5CfxZWFiw9RJgiLYmAk+JH5IjQVbg/QSEHMdZP40Cde3RIwdRH4IPSCidqtD9gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730126747; c=relaxed/simple;
-	bh=UnDAvpzTjiJ2n7QorFmV93OWIKQH82nfR4Oun/gbU5A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gma3GAuedIa8FncakEUftL//DYpjffCRU/wDOiHzHn8n4eU6ByY3KGwfvvqoUNvwKkJ0x+eMG7IqRsjWg+M4XLqUcmqjZUo2J8IsaiCWmdMNXco+/m7xkRDEvzT9uFvDba9uC/37JtWMhiiySRT0S6vcqx77U4Bgn2EGfwLlxTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xs1Y9ZPE; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730126745; x=1761662745;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UnDAvpzTjiJ2n7QorFmV93OWIKQH82nfR4Oun/gbU5A=;
-  b=Xs1Y9ZPEWNWyWt0jNvnjURxdH0O5es88ZJ3b7It5Ply6wcqK05UdD6iJ
-   3DJue9rO05Uofs9wA3PT6rvtyNTBjkPMQs8O5TlLWao1Wv9yScs7+ei/t
-   MP4NCzO2TtDEG5kpR2vwmkjwDG/3hEx5+E+PpRYl21gYc5pnn6mwY2vsP
-   gCrgUqDNobRyzIXT52Ho8SEtSu1GSk9G6VtiTadfbZ2y9qP3MJItYZR4F
-   zraXcvIZrPsl1mZu9Av2BFpuoZbuQnTt4Wr/SQLrLcNaMDtIJH4R4ay0+
-   G93Lvn/15PbuztMpwN7q2knw1FHkz9acrByFS4qwBiZOnGmOkghN+DyAR
-   g==;
-X-CSE-ConnectionGUID: kjmqCBqEQ72CB5/8FPF/vg==
-X-CSE-MsgGUID: W+5WEPZyTkiQ8x1w/9c1xw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="47186266"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="47186266"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 07:45:44 -0700
-X-CSE-ConnectionGUID: 4vzrq205TqGg5djw1tymcQ==
-X-CSE-MsgGUID: +juHO9pRRQC0nMF8RrENCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="82456817"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 07:45:39 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1t5Qzv-000000085kO-3T5j;
-	Mon, 28 Oct 2024 16:45:35 +0200
-Date: Mon, 28 Oct 2024 16:45:35 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Aren Moynihan <aren@peacevolution.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Kaustabh Chakraborty <kauschluss@disroot.org>,
-	=?iso-8859-1?B?QmFybmFi4XMgQ3rpbeFu?= <trabarni@gmail.com>,
-	Ondrej Jirman <megi@xff.cz>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] iio: light: stk3310: log error if reading the
- chip id fails
-Message-ID: <Zx-jj8FEldW6sG55@smile.fi.intel.com>
-References: <20241028142000.1058149-1-aren@peacevolution.org>
- <20241028142000.1058149-6-aren@peacevolution.org>
+	s=arc-20240116; t=1730128150; c=relaxed/simple;
+	bh=neoFJQoBplIOMB2Oli0Va+P0LfEckZZNG2EuEzQElTg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=e4VAyQk4egwO10WoO5EhgqD04voYkmHHziPYuPKQ07Gw3AGHZp/RmkZm72XA0w/ydXzkIEaVwU3RCbYoAjrpBDbAfeJwqI99+tSnWOmFJWrxgqCkG2Vdet1CfhUssvbHuvTPMRPijw0kELmL3ufoDZMlMBKsra0nUawOXrCD+Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=b+vT8B6q; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49SF8JL1091957;
+	Mon, 28 Oct 2024 10:08:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1730128099;
+	bh=PcG6NepwaS5v72y5EW4BrZy3aZfCt9DWG2OfGvOadBQ=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=b+vT8B6q2raKBHSXuY35w2rCwScPCPJi5zOj91ho3/XcT4GZlyJkCGMufrCEjMs4O
+	 ZDNJvlPRfsafg3PhRB1HPR0cetK/SZA5vYZWCack5ewd3SJTq1KR4Q1msiGhrRmR95
+	 cWHYyyaCryvomCR6UxZpkfMAU6SoZ3sVg8kNfCVg=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49SF8Jsq057726;
+	Mon, 28 Oct 2024 10:08:19 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 28
+ Oct 2024 10:08:18 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 28 Oct 2024 10:08:18 -0500
+Received: from uda0132425.dhcp.ti.com (uda0132425.dhcp.ti.com [172.24.227.94])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49SF5tcs129665;
+	Mon, 28 Oct 2024 10:08:15 -0500
+From: Vignesh Raghavendra <vigneshr@ti.com>
+To: William Breathitt Gray <wbg@kernel.org>, Judith Mendez <jm@ti.com>
+CC: Vignesh Raghavendra <vigneshr@ti.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Tero Kristo <kristo@kernel.org>, David Lechner
+	<david@lechnology.com>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v6 0/5] Enable eQEP DT support for Sitara K3 platforms
+Date: Mon, 28 Oct 2024 20:35:24 +0530
+Message-ID: <173012710989.558239.256253831200168385.b4-ty@ti.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20240924220700.886313-1-jm@ti.com>
+References: <20240924220700.886313-1-jm@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028142000.1058149-6-aren@peacevolution.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Mon, Oct 28, 2024 at 10:19:59AM -0400, Aren Moynihan wrote:
-> If the chip isn't powered, this call is likely to return an error.
-> Without a log here the driver will silently fail to probe. Common errors
-> are ENXIO (when the chip isn't powered) and ETIMEDOUT (when the i2c bus
-> isn't powered).
+Hi Judith Mendez,
 
-The commit message does not explain why dev_err_probe() has been chosen
-and not simple dev_err().
+On Tue, 24 Sep 2024 17:06:55 -0500, Judith Mendez wrote:
+> Git rebased the series since due to merge conflicts, part of the
+> series was not merged. Also dropped the patches that were already
+> merged.
+> 
+> This patch series adds eQEP DT nodes for K3 Sitara devices:
+> - AM62x
+> - AM62ax
+> - AM62px
+> - AM64x
+> 
+> [...]
 
--- 
-With Best Regards,
-Andy Shevchenko
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
 
+[1/5] arm64: dts: ti: k3-am62-main: Add eQEP nodes
+      commit: 79e668d0d938ca05f340bd1faf37262f31c7a029
+[2/5] arm64: dts: ti: k3-am62a-main: Add eQEP nodes
+      commit: 36370ccf93bd0bd2be0c529ef7c0b687988ad3c0
+[3/5] arm64: dts: ti: k3-am62p-main: Add eQEP nodes
+      commit: 0f4a318ee64c647e2cbf7d802b8d06b03aef31e5
+[4/5] arm64: dts: ti: k3-am64-main: Add eQEP nodes
+      commit: 78b918b58e4b13ad53373882b01945106d196ff9
+[5/5] arm64: dts: ti: k3-am64x-sk: Enable eQEP
+      commit: 25da98eb3997d21e128ab75d426923a0dc23c4e4
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+--
+Vignesh
 
 

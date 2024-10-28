@@ -1,74 +1,75 @@
-Return-Path: <linux-iio+bounces-11462-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11463-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CE29B3187
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 14:20:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AAC9B3193
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 14:22:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8498282BB1
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 13:20:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DD58282DDE
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 13:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3221DBB2C;
-	Mon, 28 Oct 2024 13:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EBD1DB95F;
+	Mon, 28 Oct 2024 13:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WRds89C5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fBxmVBIE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517BD18A921;
-	Mon, 28 Oct 2024 13:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FE538396;
+	Mon, 28 Oct 2024 13:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730121630; cv=none; b=Ceag1DYJUnRDCZDfxSZIJ40k5LINURP6wrTGVA5BpuydPdP/kZBH7jB3hAjJvtUndderhHjO2KasYIfb2XEx9L8IPKe5YarcQxsr/2qDyPmKwPpqh3JuJ/3RGb2kDtID3Pn72MugjaydtEhoWO58QLpEE7cZJidV8DAcgCMuVUY=
+	t=1730121705; cv=none; b=fIncyFq2vGXs5o7ztXmkVIvKJ85nMD6AuLtMEvKPsgVi2a2TCFxVNnfBktOCWQZIkvusZvE4E/Ugfq2WaqcC4o5+eEMt1ch9Oo9+Kw3kvPOOTpFr6wdApZA0za/9GguqgwTA5dNqcnGZLcWTua+Nd47DfzTvIkQ041QRTWGq964=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730121630; c=relaxed/simple;
-	bh=5vTWdXkFAFJXuOpfjWd/sBDvYteH/Lk+r86USHZo73E=;
+	s=arc-20240116; t=1730121705; c=relaxed/simple;
+	bh=7TuPc3feWSvvQhQIz+bxMMlQTvI0FsbZ2ScG8u6EvtQ=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pbrC1BmRNo9q/OyB80WYuyN33264ld8ynlgtZiWppBYQKtg04+dwCoLVzQ1ltKITozS+HjAzVrToPxNHGRthUcndGiMMXtS7W619CiauoPmFHrynKoHDFj737dhGYNXFvZGkDorxj/Y57KbEhXnUX+mp9fPsGXe5aVXdqic/TDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WRds89C5; arc=none smtp.client-ip=209.85.128.50
+	 Content-Type:MIME-Version; b=ugn5Ejn6SQbe15xOE6liNLmBP2wWSBybwFKxqqYl9u3ey9/FClWTJVHPBug4x2rQ9LKPFUBAMIj1gTw7dRAD8hV01GqlFpbqB+t45kVzwwjDcFOSXLCMKdvDXvYtIYix15ldzKcxpSASlAYNRFCJUTm5pAssP9ua3BfaEl4upgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fBxmVBIE; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4314b316495so40163485e9.2;
-        Mon, 28 Oct 2024 06:20:25 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d63a79bb6so3053508f8f.0;
+        Mon, 28 Oct 2024 06:21:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730121624; x=1730726424; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730121702; x=1730726502; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=r+1U9XCKxv3c9TJtgNKZ57QqTtYuIGktFC2ML/OSMqc=;
-        b=WRds89C5lwRBPmw7kBICvKU8TKFreaiyYpdjcY+E01kvGT3DOyn9RATLlO5HyA7HLn
-         +FZeZiv2v6j5YN/qgwPWq/o9Q1HeJA0d6upIZh3hq2A3UiWBpT4MX2QWREDuRxM0efkp
-         A3e/QJSh1GoVaFiQoIaC4UCXHUzBf6xkV/im161LxpQPNO1lsPlIllQ6YnmXRsQwF1k1
-         1CcpL7GjVVsD++tNUbIsgz7deoSHRQvdovgIPRETTdzlJ9KAQ5E2d2S9uENzgXIUogkd
-         ZQ/TOJg0amiZu0AVGMMY/3SuwluxrTaV1WumYIv/Ii+uCtWYT7ugPI5MtJ6vDaRIj0rB
-         ka+Q==
+        bh=BG3wkrWSDrRhF05VtR0jwHgzIBr9FFDY8I+sNxfXSRM=;
+        b=fBxmVBIEhd3daO2x+Y81QlDxI+/wavNQXuLJg9NJ8ls8w/I0xXqNAF5kv5kTx0y3h2
+         PzwjwB2WE/TUPYf3D0FKIjr5wjidmuznNkzaj4hRFXF5+Kw3udo1lmUw23KMXZtpiN9c
+         RzgX6w8YvLsH+GtEiyUlGcmSouI55Eb2LXfhicrJLnW/7949nuh5LBAdOsz7x2tWEN9g
+         u1jOl0bwhgMxYbujmOJuOjg7QXX4+WhEVI3YR7XkmwVEQhXoo0omnMlRKsPA+jMZ1psL
+         e6v8UiEj4wWeAVNJInmreFgap48L0M+Wbzj49ssM0I6JOMjOj0Vk4jB3op4GFMJrin2n
+         LacA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730121624; x=1730726424;
+        d=1e100.net; s=20230601; t=1730121702; x=1730726502;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=r+1U9XCKxv3c9TJtgNKZ57QqTtYuIGktFC2ML/OSMqc=;
-        b=azfMdX/xVzGakBtbkpzrWLTVLhioyXJUogMAvjCt6jShNS7n9oZzoyLVfUF34D+woG
-         qMxU3C1Ml+UokXFju6l+INkKWX3TMr5xfhZ2eR4TxQ10DodUoHBxEUpJGjjUWZ3wLup6
-         GPRebQq2wBjoAmRm+P+uF3OJGhuqdouH4FghPKA/45C7cQlMFFZYgfoJyFDMGwjtUS9W
-         IdVYfEecDtzycWjR7akTRFt/ZlpNooWWxltFpEBQANz3S55o5NkvWhFc8a8XIdCgc668
-         FkkjfUFZ7d8AK/j5bfQy0GbbDsSek4ALwk6T8xvOpLiWH5srmeaYGUkoRi7qTxrmSSwB
-         q2tg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYwfIUJ7HPGM97nPDB+ErnJWJsZk+cwLTXGpUUJjzTggctODAy7QDRaJfyawa/QEboLsy4fj7sqKbfGI4B@vger.kernel.org, AJvYcCX+Gpo8k3NosgmXzPknu469cnozhNSoOJW0Ka4ZkNkHm2lcvQtrQGT8hZuT0I8OmJJMVEKQ8U9P/S57@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSC+x1p6qfK1OY+Dql2eLfPgPAFEnF18yg1WgJIUiH0qR/LW8V
-	9tdTlwl8uvvqGkTAytYPgcQ3h8WeXBVnAc8MdtvOWKePip+3wpuJ
-X-Google-Smtp-Source: AGHT+IGt6ZwqtTltYNjjced99Ih2ZKZpE+sPRBXodcOjqgLwI56gzvPIpNCyWukoA9+KflTJ9Uv7Bw==
-X-Received: by 2002:a5d:6206:0:b0:37c:d227:d193 with SMTP id ffacd0b85a97d-380610f4bf3mr6285163f8f.10.1730121624253;
-        Mon, 28 Oct 2024 06:20:24 -0700 (PDT)
+        bh=BG3wkrWSDrRhF05VtR0jwHgzIBr9FFDY8I+sNxfXSRM=;
+        b=bLPERYZWNB0eapeHHwhLyhr+Zo2HZn+vuLmK+KsDu5iYmryAWfl9u2q0WbBeDwRPCC
+         hd1Xv7UL8Ut5E7B02pOOk5x9hE/d1Vy9kp1tm4OkoJTORH/Jq0nnqa5qhzkSeCw1TLgS
+         BL+jhu0UyD33uMbGupmZTaFPbys2TcKWyUkSsCXurDTHgbBb4bjP8XX1YY27GE0bB+hZ
+         eWy8jC5VXMUgoqQOhV6DNjcHErUBs8ZetkZuba9yolOG6a1+sRlxm/5tIy9QUrgKuLdd
+         QC3GbkNSbtjMKR5li5QGy8wuia0VHEpLjZQaeC/bw64EfYUIwS+n+CDZLbsD7tKLpWbe
+         zRPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFv/gQCduph3CsjMrdYGsw9N6FmagJxuWNiGPMrvIjUAJp8mAUoThij2CVnV5KotAdA2X4ZXPwZImR@vger.kernel.org, AJvYcCUbPoJcV3dFbb3MssfuiRtvS5882KqeHantBZaVFo9G6u6eYE6pr1VJTaLTNbZY4S54rZl44a8Oby0cHh0/@vger.kernel.org
+X-Gm-Message-State: AOJu0YwE+nHXuQIVwj4/6PcSAPStbLDNr+Qv/aYX4oy2F6S/cwhVPZet
+	U/yds6/tZhA8BX0cdZoMt2x2qtYIdjjGZhBy/tbDnTp1GQnNnd0m
+X-Google-Smtp-Source: AGHT+IEhEFClPDRnkTjmfTmB9xrTyx/+XWTKThHdsI0L2SWzd7xQqvlFSqgTaQWb1mU8t9ZBhNOwqw==
+X-Received: by 2002:adf:f18d:0:b0:37d:4821:fa0 with SMTP id ffacd0b85a97d-3806120b2c5mr6374380f8f.48.1730121701671;
+        Mon, 28 Oct 2024 06:21:41 -0700 (PDT)
 Received: from ?IPv6:2001:a61:34c9:ea01:14b4:7ed9:5135:9381? ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b56facasm139014615e9.33.2024.10.28.06.20.23
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b49d20sm9413128f8f.62.2024.10.28.06.21.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 06:20:23 -0700 (PDT)
-Message-ID: <ec00354792bf076d72875a57898a55ac648bd1b5.camel@gmail.com>
-Subject: Re: [PATCH v8 4/8] iio: dac: adi-axi-dac: extend features
+        Mon, 28 Oct 2024 06:21:41 -0700 (PDT)
+Message-ID: <90be82063f25f703a9a813122e08eb156843d981.camel@gmail.com>
+Subject: Re: [PATCH v8 8/8] iio: dac: adi-axi-dac: add registering of child
+ fdt node
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
 	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
@@ -79,11 +80,11 @@ To: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
 	dlechner@baylibre.com
-Date: Mon, 28 Oct 2024 14:20:23 +0100
-In-Reply-To: <20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-4-74ca7dd60567@baylibre.com>
+Date: Mon, 28 Oct 2024 14:21:40 +0100
+In-Reply-To: <20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-8-74ca7dd60567@baylibre.com>
 References: 
 	<20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-0-74ca7dd60567@baylibre.com>
-	 <20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-4-74ca7dd60567@baylibre.com>
+	 <20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-8-74ca7dd60567@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
@@ -97,135 +98,123 @@ MIME-Version: 1.0
 On Fri, 2024-10-25 at 11:49 +0200, Angelo Dureghello wrote:
 > From: Angelo Dureghello <adureghello@baylibre.com>
 >=20
-> Extend AXI-DAC backend with new features required to interface
-> to the ad3552r DAC. Mainly, a new compatible string is added to
-> support the ad3552r-axi DAC IP, very similar to the generic DAC
-> IP but with some customizations to work with the ad3552r.
+> Change to obtain the fdt use case as reported in the
+> adi,ad3552r.yaml file in this patchset.
 >=20
-> Then, a series of generic functions has been added to match with
-> ad3552r needs. Function names has been kept generic as much as
-> possible, to allow re-utilization from other frontend drivers.
+> The DAC device is defined as a child node of the backend.
+> Registering the child fdt node as a platform devices.
 >=20
 > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 > ---
-> =C2=A0drivers/iio/dac/adi-axi-dac.c | 244 +++++++++++++++++++++++++++++++=
-++++++++---
-> =C2=A01 file changed, 230 insertions(+), 14 deletions(-)
+
+LGTM,
+
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+
+> =C2=A0drivers/iio/dac/adi-axi-dac.c | 56 ++++++++++++++++++++++++++++++++=
++++++++++++
+> =C2=A01 file changed, 56 insertions(+)
 >=20
 > diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.=
 c
-> index 04193a98616e..148e40a8ab2a 100644
+> index 148e40a8ab2a..dc9f881bf9ce 100644
 > --- a/drivers/iio/dac/adi-axi-dac.c
 > +++ b/drivers/iio/dac/adi-axi-dac.c
-> @@ -46,9 +46,28 @@
-> =C2=A0#define AXI_DAC_CNTRL_1_REG			0x0044
-> =C2=A0#define=C2=A0=C2=A0 AXI_DAC_CNTRL_1_SYNC			BIT(0)
-> =C2=A0#define AXI_DAC_CNTRL_2_REG			0x0048
-> +#define=C2=A0=C2=A0 AXI_DAC_CNTRL_2_SDR_DDR_N		BIT(16)
-> +#define=C2=A0=C2=A0 AXI_DAC_CNTRL_2_SYMB_8B		BIT(14)
-> =C2=A0#define=C2=A0=C2=A0 ADI_DAC_CNTRL_2_R1_MODE		BIT(5)
-> +#define=C2=A0=C2=A0 AXI_DAC_CNTRL_2_UNSIGNED_DATA		BIT(4)
-> +#define AXI_DAC_STATUS_1_REG			0x0054
-> +#define AXI_DAC_STATUS_2_REG			0x0058
-> =C2=A0#define AXI_DAC_DRP_STATUS_REG			0x0074
-> =C2=A0#define=C2=A0=C2=A0 AXI_DAC_DRP_STATUS_DRP_LOCKED		BIT(17)
-> +#define AXI_DAC_CUSTOM_RD_REG			0x0080
-> +#define AXI_DAC_CUSTOM_WR_REG			0x0084
-> +#define=C2=A0=C2=A0 AXI_DAC_CUSTOM_WR_DATA_8		GENMASK(23, 16)
-> +#define=C2=A0=C2=A0 AXI_DAC_CUSTOM_WR_DATA_16		GENMASK(23, 8)
-> +#define AXI_DAC_UI_STATUS_REG			0x0088
-> +#define=C2=A0=C2=A0 AXI_DAC_UI_STATUS_IF_BUSY		BIT(4)
-> +#define AXI_DAC_CUSTOM_CTRL_REG			0x008C
-> +#define=C2=A0=C2=A0 AXI_DAC_CUSTOM_CTRL_ADDRESS		GENMASK(31, 24)
-> +#define=C2=A0=C2=A0 AXI_DAC_CUSTOM_CTRL_SYNCED_TRANSFER	BIT(2)
-> +#define=C2=A0=C2=A0 AXI_DAC_CUSTOM_CTRL_STREAM		BIT(1)
-> +#define=C2=A0=C2=A0 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA	BIT(0)
-
-...
-
+> @@ -29,6 +29,8 @@
+> =C2=A0#include <linux/iio/buffer.h>
+> =C2=A0#include <linux/iio/iio.h>
+> =C2=A0
+> +#include "ad3552r-hs.h"
+> +
+> =C2=A0/*
+> =C2=A0 * Register definitions:
+> =C2=A0 *=C2=A0=C2=A0 https://wiki.analog.com/resources/fpga/docs/axi_dac_=
+ip#register_map
+> @@ -97,6 +99,7 @@ struct axi_dac_info {
+> =C2=A0	unsigned int version;
+> =C2=A0	const struct iio_backend_info *backend_info;
+> =C2=A0	bool has_dac_clk;
+> +	bool has_child_nodes;
+> =C2=A0};
+> =C2=A0
+> =C2=A0struct axi_dac_state {
+> @@ -699,6 +702,36 @@ static int axi_dac_bus_reg_read(struct iio_backend *=
+back, u32
+> reg, u32 *val,
+> =C2=A0	return regmap_read(st->regmap, AXI_DAC_CUSTOM_RD_REG, val);
+> =C2=A0}
+> =C2=A0
+> +static void axi_dac_child_remove(void *data)
+> +{
+> +	platform_device_unregister(data);
+> +}
+> +
+> +static int axi_dac_create_platform_device(struct axi_dac_state *st,
+> +					=C2=A0 struct fwnode_handle *child)
+> +{
+> +	struct ad3552r_hs_platform_data pdata =3D {
+> +		.bus_reg_read =3D axi_dac_bus_reg_read,
+> +		.bus_reg_write =3D axi_dac_bus_reg_write,
+> +		.bus_sample_data_clock_hz =3D st->dac_clk_rate,
+> +	};
+> +	struct platform_device_info pi =3D {
+> +		.parent =3D st->dev,
+> +		.name =3D fwnode_get_name(child),
+> +		.id =3D PLATFORM_DEVID_AUTO,
+> +		.fwnode =3D child,
+> +		.data =3D &pdata,
+> +		.size_data =3D sizeof(pdata),
+> +	};
+> +	struct platform_device *pdev;
+> +
+> +	pdev =3D platform_device_register_full(&pi);
+> +	if (IS_ERR(pdev))
+> +		return PTR_ERR(pdev);
+> +
+> +	return devm_add_action_or_reset(st->dev, axi_dac_child_remove, pdev);
+> +}
+> +
+> =C2=A0static const struct iio_backend_ops axi_dac_generic_ops =3D {
+> =C2=A0	.enable =3D axi_dac_enable,
+> =C2=A0	.disable =3D axi_dac_disable,
+> @@ -840,6 +873,28 @@ static int axi_dac_probe(struct platform_device *pde=
+v)
+> =C2=A0		return dev_err_probe(&pdev->dev, ret,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 "failed to register iio backend\n");
+> =C2=A0
+> +	device_for_each_child_node_scoped(&pdev->dev, child) {
+> +		int val;
+> +
+> +		if (!st->info->has_child_nodes)
+> +			return dev_err_probe(&pdev->dev, -EINVAL,
+> +					=C2=A0=C2=A0=C2=A0=C2=A0 "invalid fdt axi-dac compatible.");
+> +
+> +		/* Processing only reg 0 node */
+> +		ret =3D fwnode_property_read_u32(child, "reg", &val);
+> +		if (ret)
+> +			return dev_err_probe(&pdev->dev, ret,
+> +						"invalid reg property.");
+> +		if (val !=3D 0)
+> +			return dev_err_probe(&pdev->dev, -EINVAL,
+> +						"invalid node address.");
+> +
+> +		ret =3D axi_dac_create_platform_device(st, child);
+> +		if (ret)
+> +			return dev_err_probe(&pdev->dev, -EINVAL,
+> +						"cannot create device.");
+> +	}
+> +
+> =C2=A0	dev_info(&pdev->dev, "AXI DAC IP core (%d.%.2d.%c) probed\n",
+> =C2=A0		 ADI_AXI_PCORE_VER_MAJOR(ver),
+> =C2=A0		 ADI_AXI_PCORE_VER_MINOR(ver),
+> @@ -857,6 +912,7 @@ static const struct axi_dac_info dac_ad3552r =3D {
+> =C2=A0	.version =3D ADI_AXI_PCORE_VER(9, 1, 'b'),
+> =C2=A0	.backend_info =3D &axi_ad3552r,
+> =C2=A0	.has_dac_clk =3D true,
+> +	.has_child_nodes =3D true,
+> =C2=A0};
+> =C2=A0
+> =C2=A0static const struct of_device_id axi_dac_of_match[] =3D {
 >=20
-> +
-> +static int axi_dac_bus_reg_write(struct iio_backend *back, u32 reg, u32 =
-val,
-> +				 size_t data_size)
-> +{
-> +	struct axi_dac_state *st =3D iio_backend_get_priv(back);
-> +	int ret;
-> +	u32 ival;
-> +
-> +	/*
-> +	 * Both AXI_DAC_CNTRL_2_REG and AXI_DAC_CUSTOM_WR_REG need to know
-> +	 * the data size. So keeping data size control here only,
-> +	 * since data size is mandatory for the current transfer.
-> +	 * DDR state handled separately by specific backend calls,
-> +	 * generally all raw register writes are SDR.
-> +	 */
-> +	if (data_size =3D=3D sizeof(u16))
-> +		ival =3D FIELD_PREP(AXI_DAC_CUSTOM_WR_DATA_16, val);
-> +	else
-> +		ival =3D FIELD_PREP(AXI_DAC_CUSTOM_WR_DATA_8, val);
-> +
-> +	ret =3D regmap_write(st->regmap, AXI_DAC_CUSTOM_WR_REG, ival);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (data_size =3D=3D sizeof(u8))
-> +		ret =3D regmap_set_bits(st->regmap, AXI_DAC_CNTRL_2_REG,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AXI_DAC_CNTRL_2_SYMB_8B);
-> +	else
-> +		ret =3D regmap_clear_bits(st->regmap, AXI_DAC_CNTRL_2_REG,
-> +					AXI_DAC_CNTRL_2_SYMB_8B);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> +				 AXI_DAC_CUSTOM_CTRL_ADDRESS,
-> +				 FIELD_PREP(AXI_DAC_CUSTOM_CTRL_ADDRESS, reg));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> +				 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA,
-> +				 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D regmap_read_poll_timeout(st->regmap,
-> +				AXI_DAC_UI_STATUS_REG, ival,
-> +				FIELD_GET(AXI_DAC_UI_STATUS_IF_BUSY, ival) =3D=3D 0,
-> +				10, 100 * KILO);
-> +	if (ret =3D=3D -ETIMEDOUT)
-> +		dev_err(st->dev, "AXI read timeout\n");
-> +
-> +	/* Cleaning always AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA */
-> +	return regmap_clear_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> +				 AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA);
-> +}
-> +
-> +static int axi_dac_bus_reg_read(struct iio_backend *back, u32 reg, u32 *=
-val,
-> +				size_t data_size)
-> +{
-> +	struct axi_dac_state *st =3D iio_backend_get_priv(back);
-> +	int ret;
-> +
-> +	/*
-> +	 * SPI, we write with read flag, then we read just at the AXI
-> +	 * io address space to get data read.
-> +	 */
-> +	ret =3D axi_dac_bus_reg_write(back, AXI_DAC_RD_ADDR(reg), 0, data_size)=
-;
-> +	if (ret)
-> +		return ret;
-> +
-> +	return regmap_read(st->regmap, AXI_DAC_CUSTOM_RD_REG, val);
-> +}
-
-Just noticed now that both reg_read() and reg_write() should use the lock. =
-That meas
-having an unlocked helper of reg_write. Other than that, LGTM.
-
-- Nuno S=C3=A1
-
 
 

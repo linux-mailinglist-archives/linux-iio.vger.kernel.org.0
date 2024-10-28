@@ -1,126 +1,238 @@
-Return-Path: <linux-iio+bounces-11436-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11437-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757079B2B18
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 10:13:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B219B2B1D
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 10:15:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6DF61F22077
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 09:13:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47F8D1C21939
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 09:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656FB1990CF;
-	Mon, 28 Oct 2024 09:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C092C19066B;
+	Mon, 28 Oct 2024 09:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PX+Yh9aY"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dbWt5/vc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DF0190676
-	for <linux-iio@vger.kernel.org>; Mon, 28 Oct 2024 09:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A4515573A
+	for <linux-iio@vger.kernel.org>; Mon, 28 Oct 2024 09:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730106809; cv=none; b=vCMeqfLRjP6dCluMBOZxNZQ6tCNnM7RQkq0iydDlEh54fpYMcsf7HVHrgryLOfJ5rDyZ9rimrtlRzYNbMWdeyqS7rUqV7zRmxAw533MsH6dd5/A0+YbrocnpJEuQjSYLL+0U7XRtmH3TKds9PbA/afZNnF7Xvx2e6DMvTdFU6p8=
+	t=1730106949; cv=none; b=fkXaPvQroF5KOkk4f8BgnX4EA09JIpzhwSKQagcvaEtdn0TQJhrYkX2cvs2fAA7MUNcCv9SZHru11qQn0EZ2JT9SMIxbQn+dgcTbwl5HPTUF+JE1GFCJqjDXWTmSQmVSrIPJGmtAHZQntLJBWcuYNzxC3lhf9Uj0eLAti97WjO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730106809; c=relaxed/simple;
-	bh=G8mQbc6rB6Tph32tQsb7U/J0yIX1zGT8Ftv6HRDkbiM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GvObWeswCXbOBsYICcXmC6TNrzhCV5Zt4PyGvbIdUrHnTvA39j4/SyQkHdRyeEE6flDulr8nvQoTfX+agzwwDlzJiM9Kio3QOVKgFTPzrR78T2gW7U7CtIz26UnrD8JdkqFKTksFIFDU0hGMuIP1lkcBNqndHLCulLUgfZXTkmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PX+Yh9aY; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730106805;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8mL9AnFpvR2FSeyCUCVsZyVlwtWLR5Tt1r0vRldbLhI=;
-	b=PX+Yh9aY93BLzeXgUhfiNbLBECexVS8Tr3D6x/CbNTD7svQAX11A7vH0Ari5t9Wq0Exp5z
-	XcLt8i6gUaGr87Im2vpUWy61xp22/OWyTnq435jlDIYznvl2bDcu/HjyQkv+kVSzbkPtZq
-	mkCbGw17XmME3I4AcQgIbmM95Z6lmWI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-GsUGQcQ5NZ2pOP_8bhucaQ-1; Mon, 28 Oct 2024 05:13:23 -0400
-X-MC-Unique: GsUGQcQ5NZ2pOP_8bhucaQ-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4317391101aso30135165e9.2
-        for <linux-iio@vger.kernel.org>; Mon, 28 Oct 2024 02:13:23 -0700 (PDT)
+	s=arc-20240116; t=1730106949; c=relaxed/simple;
+	bh=oZyLRnaQSadJQweLa9GSaQLcuK9wRKBQ+f0KBLvZ3Q8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WTDLnBnjT80JzrHfaIBUen77/7DowH+SqiWn0TARfhnSj6HGpe9+h9RbGvqXQbrb0k21l54/53cPeZBUXRCKGMQ2Jz5zd5zpBxq94CzwWaVpE1lVT5+sroM5xZRyFDHyT9gB6OXJ9x29E7pIEZY4EnT01Zmz3cEORSYKzawpkFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dbWt5/vc; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43152b79d25so38092115e9.1
+        for <linux-iio@vger.kernel.org>; Mon, 28 Oct 2024 02:15:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730106945; x=1730711745; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aFl7hG9APtv3+aifN3HCuVVr9QjPzn9re0x6vzwqTPw=;
+        b=dbWt5/vc7DSRMBLNOjB19esujSFl62vS41nxE0xFxna04mIq+t7aeEzgX3zAPEwvCt
+         g54cqkV0SknwtFitv1GYhq9YFilKu2qKRZyxXeeRkNty9u9dz2MT8bPRuP9yqxiVNvZf
+         lxKXjBbgAuCHNZFhMl329f7kmvLGEhHYfzhytYDJq11usEf9yb3L7SpzFYVPIFemU5e5
+         PCW85YZdbFy9S4+ANYfJ7nouiftRjzkCNZeeNkxEzOOg9Rera9JGrfDXn5ZNa4dOSVlA
+         wn1i3ygQkrzZcTVhGZxkfsvrPiSVXAPwFQRZTZyU7zfa7pncBzUsKWmssGNjVc+3Mx7E
+         K8UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730106802; x=1730711602;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8mL9AnFpvR2FSeyCUCVsZyVlwtWLR5Tt1r0vRldbLhI=;
-        b=LmF4tu+DyK2br3OmFTqrJwMXGqiIDvUGesfP9IfhcHgsLYseP443SzwD7fn+aQMHda
-         fcRfwBNnj9Snd1fuOVl7JliDRz9lsYH+Hefkox/EFeDrt3OrxAn2T7y7MfXkVXTGgo+S
-         lwZCrvL+GhS54oqw7OE01UL1EahD0YnXkc+EhmqObspBxX2OyQKqbCklPeD9s4nLT+vp
-         y2Lf/cQfkENKqVZY5cB1xD6EykAgsypIOXSAbiXEDYnZ7E8hm52T/nafCiCkR3kvgSEv
-         MogLhaO1BPx41qmygkarZ9rljO08z6fh8Jw63ht7PfpI9sMriawb0YEw9Nv7UL3GZmmr
-         tODw==
-X-Gm-Message-State: AOJu0YxZx142TME9/yaAvnjEG1eNTavPijNHWDLETTAn8KEFxD3Xe5Rs
-	pLQuDKrtKST3TmiYR/DwGCQ0JEUj4NH+yBVDlDV/I4fMsBFqFbo2g8vbP2FtueVetutaKRL4SRg
-	kgH5cibObreMl7Qx4obp553oqVIiS5ECSKxE9qo4zo7kVPa459aShEM+DiA==
-X-Received: by 2002:a05:600c:5110:b0:431:54f3:11b1 with SMTP id 5b1f17b1804b1-4319ad36874mr70631545e9.34.1730106802223;
-        Mon, 28 Oct 2024 02:13:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEaLRTeEMPXMzQVxdxTiM2sxZawcWWohp2DQMruQZSAWoGfBb8mhKObRqq9Iqzltt0ErRbieg==
-X-Received: by 2002:a05:600c:5110:b0:431:54f3:11b1 with SMTP id 5b1f17b1804b1-4319ad36874mr70631245e9.34.1730106801644;
-        Mon, 28 Oct 2024 02:13:21 -0700 (PDT)
-Received: from eisenberg.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431935a5921sm104543305e9.28.2024.10.28.02.13.21
+        d=1e100.net; s=20230601; t=1730106945; x=1730711745;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aFl7hG9APtv3+aifN3HCuVVr9QjPzn9re0x6vzwqTPw=;
+        b=p5yLeuCTa8r1mZLH/sROkW7PFU/SWYPfjVf4XfO8WL3+YWX4Po+0Klpd67hx6emOCD
+         NIl9eRNWBPzs89/8aSRj4/uvsZXaNZ9Ptu8Zxpd3wWnF09rXvV7ytFxW5c1iUCDwMn9w
+         /ShgEFwjJSveQDkKjoiVpLP8MIK+tWsUCh8Avi4oULF3cMmd0YQOk2i4kiPR9FHHemeG
+         L+eMepk9m50Vmj1e/9zHfWGQpbXKmwzgjTMn28nn4+YX4UKKGOHZxgC2A61pOagku0tq
+         lJZBeNTKuTbh8p+cuvJzu+FMN2JRCVb/Sh0T5vQKbAgYTigM73ALKP2BT6JKdKILbj+G
+         l8rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVGA8N8JqdqBQ6MkHGngyqjY6gT+ePL4durzKQO4HuftqWbJORA31dQgsDl9TlhM2vV4lgRiwZKdGU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUaGt0ZWgLGWUpxKVVvmVPri4f6JRbZm+CdoRlW6wSkcFCaqUH
+	AL/VJg95pgnbEcQoyaSDYKLaRbnNHEv42zGvAf93Qhq7c8KEpOkApdaMBczdAIw=
+X-Google-Smtp-Source: AGHT+IFdLvrC+MErOR++5DexXxcgqyL1Q7tYBy5PcHkbh3y1oxzE1IWhdO6YoyYcmx448jkYqA49lg==
+X-Received: by 2002:a7b:cd8e:0:b0:42c:bd27:4c12 with SMTP id 5b1f17b1804b1-431a0c394b6mr48163875e9.10.1730106944878;
+        Mon, 28 Oct 2024 02:15:44 -0700 (PDT)
+Received: from dfj (host-95-245-34-85.retail.telecomitalia.it. [95.245.34.85])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43193595c51sm101439625e9.20.2024.10.28.02.15.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Oct 2024 02:13:21 -0700 (PDT)
-From: Philipp Stanner <pstanner@redhat.com>
-To: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Philipp Stanner <pstanner@redhat.com>
-Subject: [PATCH] counter: intel-qep: Replace deprecated PCI functions
-Date: Mon, 28 Oct 2024 10:13:13 +0100
-Message-ID: <20241028091312.17045-2-pstanner@redhat.com>
-X-Mailer: git-send-email 2.47.0
+        Mon, 28 Oct 2024 02:15:43 -0700 (PDT)
+Date: Mon, 28 Oct 2024 10:14:25 +0100
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>, dlechner@baylibre.com
+Subject: Re: [PATCH v8 7/8] iio: dac: ad3552r: add high-speed platform driver
+Message-ID: <3boluky2zvz6n4u3gjgxuzlo2cm3a4xcbfq5sjmzoz3i5lfsml@j3wikyf74xyj>
+References: <20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-0-74ca7dd60567@baylibre.com>
+ <20241025-wip-bl-ad3552r-axi-v0-iio-testing-v8-7-74ca7dd60567@baylibre.com>
+ <20241026185740.4144f6c8@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241026185740.4144f6c8@jic23-huawei>
 
-pcim_iomap_regions() and pcim_iomap_table() have been deprecated in
-commit e354bb84a4c1 ("PCI: Deprecate pcim_iomap_table(),
-pcim_iomap_regions_request_all()").
+Hi Jonathan,
 
-Replace these functions with pcim_iomap_region().
+On 26.10.2024 18:57, Jonathan Cameron wrote:
+> On Fri, 25 Oct 2024 11:49:40 +0200
+> Angelo Dureghello <adureghello@baylibre.com> wrote:
+> 
+> > From: Angelo Dureghello <adureghello@baylibre.com>
+> > 
+> > Add High Speed ad3552r platform driver.
+> > 
+> > The ad3552r DAC is controlled by a custom (fpga-based) DAC IP
+> > through the current AXI backend, or similar alternative IIO backend.
+> > 
+> > Compared to the existing driver (ad3552r.c), that is a simple SPI
+> > driver, this driver is coupled with a DAC IIO backend that finally
+> > controls the ad3552r by a fpga-based "QSPI+DDR" interface, to reach
+> > maximum transfer rate of 33MUPS using dma stream capabilities.
+> > 
+> > All commands involving QSPI bus read/write are delegated to the backend
+> > through the provided APIs for bus read/write.
+> > 
+> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > ---
+> Hi Angelo,
+> 
+> I'd missed a build issue in previous reviews. :(
+> 
+> >  drivers/iio/dac/Kconfig      |  14 ++
+> >  drivers/iio/dac/Makefile     |   1 +
+> >  drivers/iio/dac/ad3552r-hs.c | 530 +++++++++++++++++++++++++++++++++++++++++++
+> >  drivers/iio/dac/ad3552r-hs.h |  19 ++
+> >  drivers/iio/dac/ad3552r.h    |   4 +
+> >  5 files changed, 568 insertions(+)
+> > 
+> > diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> > index 26f9de55b79f..f76eaba140d8 100644
+> > --- a/drivers/iio/dac/Kconfig
+> > +++ b/drivers/iio/dac/Kconfig
+> > @@ -6,6 +6,20 @@
+> >  
+> >  menu "Digital to analog converters"
+> >  
+> > +config AD3552R_HS
+> > +	tristate "Analog Devices AD3552R DAC High Speed driver"
+> > +	select ADI_AXI_DAC
+> > +	help
+> > +	  Say yes here to build support for Analog Devices AD3552R
+> > +	  Digital to Analog Converter High Speed driver.
+> > +
+> > +          The driver requires the assistance of an IP core to operate,
+> > +          since data is streamed into target device via DMA, sent over a
+> > +	  QSPI + DDR (Double Data Rate) bus.
+> 
+> Tabs and space mix that needs fixing.
+> 
+> > +
+> > +	  To compile this driver as a module, choose M here: the
+> > +	  module will be called ad3552r-hs.
+> > +
+> >  config AD3552R
+> >  	tristate "Analog Devices AD3552R DAC driver"
+> >  	depends on SPI_MASTER
+> > diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
+> > index c92de0366238..d92e08ca93ca 100644
+> > --- a/drivers/iio/dac/Makefile
+> > +++ b/drivers/iio/dac/Makefile
+> > @@ -4,6 +4,7 @@
+> >  #
+> >  
+> >  # When adding new entries keep the list in alphabetical order
+> > +obj-$(CONFIG_AD3552R_HS) += ad3552r-hs.o ad3552r-common.o
+> >  obj-$(CONFIG_AD3552R) += ad3552r.o ad3552r-common.o
+> 
+> This causes all sorts of issues. The same code should not be linked into two
+> separate drivers.  Try building one as a module and one built in.
+> 
+right now, seems i cannot catch any issue, nor building or in runtime:
 
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
----
- drivers/counter/intel-qep.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ad3552r     [M]
+ad3552r-hs  [*]
+(ad3552r-common stays built in), ad3552r visible in lsmod, ad3552r-hs works
 
-diff --git a/drivers/counter/intel-qep.c b/drivers/counter/intel-qep.c
-index af5942e66f7d..ee2bae27b728 100644
---- a/drivers/counter/intel-qep.c
-+++ b/drivers/counter/intel-qep.c
-@@ -408,13 +408,9 @@ static int intel_qep_probe(struct pci_dev *pci, const struct pci_device_id *id)
- 
- 	pci_set_master(pci);
- 
--	ret = pcim_iomap_regions(pci, BIT(0), pci_name(pci));
--	if (ret)
--		return ret;
--
--	regs = pcim_iomap_table(pci)[0];
--	if (!regs)
--		return -ENOMEM;
-+	regs = pcim_iomap_region(pci, 0, pci_name(pci));
-+	if (IS_ERR(regs))
-+		return PTR_ERR(regs);
- 
- 	qep->dev = dev;
- 	qep->regs = regs;
--- 
-2.47.0
+ad3552r     [*]
+ad3552r-hs  [M]
+(ad3552r-common stays built in), ad3552r-hs visible in lsmod, ad3552r-hs works
 
+ad3552r     [M]
+ad3552r-hs  [M]
+(ad3552r-common.ko), ad3552r, ad3552r-hs and ad3552r-common are visible in lsmod,
+ad3552r-hs works, probe and removal, and also link/unlink tested).
+
+Please let me know, i can proceed modifying as you require, if it's the case.
+
+
+> The trick is a hidden symbol in Kconfig and an extra line in here
+> obj-$(CONFIG_AD3352R_LIB) += ad3552-common.o
+> 
+> and 
+> //note no text as we don't want this to be user selectable
+> 
+> config AD3352R_LIB
+> 	tristate
+> 
+> config AD3552R_HS
+> 	tristate "Analog Devices AD3552R DAC High Speed driver"
+> 	select ADI_AXI_DAC
+> 	select AD3352R_LIB
+> 	help
+> 	  Say yes here to build support for Analog Devices AD3552R
+> 	  Digital to Analog Converter High Speed driver.
+> 
+> 	  The driver requires the assistance of an IP core to operate,
+> 	  since data is streamed into target device via DMA, sent over a
+> 	  QSPI + DDR (Double Data Rate) bus.
+> 
+> 	  To compile this driver as a module, choose M here: the
+> 	  module will be called ad3552r-hs.
+> 
+> 
+> config AD3552R
+>  	tristate "Analog Devices AD3552R DAC driver"
+>  	depends on SPI_MASTER
+> 	select AD3352R_LIB
+> 	help
+> 	  ...
+> 
+> The pressure/mpl115 is done like this.
+> 
+> 
+> >  obj-$(CONFIG_AD5360) += ad5360.o
+> >  obj-$(CONFIG_AD5380) += ad5380.o
+> 
+> Anyhow, to me the code looks ready to go subject to this.
+> 
+> If nothing else comes up I'm almost confident enough of the fix to just
+> do it (and the few trivial things in previous review), but probably quicker
+> and less prone to error if you have time to spin a v9, perhaps after letting others
+> have a day or two to review v8 next week.
+> 
+> rc5 is tomorrow, so we have a little time left this cycle.
+> 
+> Jonathan
+
+Regards,
+  angelo
 

@@ -1,134 +1,168 @@
-Return-Path: <linux-iio+bounces-11498-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11497-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FCB9B36CD
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 17:39:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0DD9B36C9
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 17:39:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4EE81F228E1
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 16:39:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A2621C220E7
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 16:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357301DEFE0;
-	Mon, 28 Oct 2024 16:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bLUX3CBN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BD41DEFFD;
+	Mon, 28 Oct 2024 16:39:16 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0D81DE2DC;
-	Mon, 28 Oct 2024 16:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135591DE2BF;
+	Mon, 28 Oct 2024 16:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730133582; cv=none; b=Q5PRabqkwqesgvnKqt5SIxIXkYoFSX5wFRk9KsVikmAuK5U7A3j8wvTlwedHQlrGOX02SUTL6430ooSKsepE1dnrOGbpD59V1JX2Jcs3tf4DvfFqzmIgUbCkfAAo9eUV9HXt9tGW8jtpFcWUvIvPoic0OogiaegUushgydxhngU=
+	t=1730133555; cv=none; b=hWLWW3eiU0fHAkT4USi8bUkcbV+oAsYAQ8P4jiB1DIdSRC3pQueo6KU7y7ZmiLc6q2RqhwfRJrEYmLe5GLSQFucGBCgu4Ksixd6qY9BQp42WnZIDTwjri9s6RO14hQmZkZ64fCDOMtFF/+HS9ccEJaPItJTZwYRfSP3FNXGXpDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730133582; c=relaxed/simple;
-	bh=fiXY0vBhE6jws7H+dL2nxhmyZmqprXYvqHlCr/avfYM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bBnTQ6jeMqMCxNuCEawM2xzxVxH5rA/NkdGY6LCa3gXaepMoRq2RQyn9XfbYKDcgSmREq6uHdUtcJLJRoktAILtmPYyI4MtVsRFFhnCnxbQwRXB9m91DM24tZnzQfL136cCQfn4vtD0H5gbYs7WVHUSYKCAsQeMuBE4EOXwT2FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bLUX3CBN; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730133580; x=1761669580;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fiXY0vBhE6jws7H+dL2nxhmyZmqprXYvqHlCr/avfYM=;
-  b=bLUX3CBNyqIyw25KAWaEJb6N4XuR9tosg0Q18GlNbrpsODh9ixZW/uH7
-   nJBEwxJ8xK4fDIywFkz5f75Wexn3iBk3zmSDzL0ZIZhIk4K4x7StbtmH6
-   wMeBdvdL/VyzM6Y2o6JBRt569vcFgrr5aGawA93laPkNJQAqty0FdoIJI
-   B/xB1uUYqfRGhhSQF2IjeagQOXjjiFd3S8gJYuN3tHl4G5hAlSb2QXmei
-   1xVvN4Qhi/eIJ9n1d9ZLVSMkwd5Asya4W5Dp0FDsf+MHtg18tbnn4+8FZ
-   eozeHMHDd0TOHQVAHSebvj/tQx8L5iGSnCK54FlYSsRBJa0b8GHEYUA9b
-   g==;
-X-CSE-ConnectionGUID: 67UzsGSOQ5yIdPkyvbuGnw==
-X-CSE-MsgGUID: 9aeZluSfRFS51TnKkomMJA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="29847735"
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="29847735"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:39:16 -0700
-X-CSE-ConnectionGUID: ChGe4zLBS9qZI1XWNKWzOA==
-X-CSE-MsgGUID: sBwlz7ESR2C0kEEeyAkrTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="112487136"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 28 Oct 2024 09:39:13 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t5Slq-000cdw-21;
-	Mon, 28 Oct 2024 16:39:10 +0000
-Date: Tue, 29 Oct 2024 00:38:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: ahaslam@baylibre.com, lars@metafoo.de, Michael.Hennerich@analog.com,
-	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Axel Haslam <ahaslam@baylibre.com>
-Subject: Re: [PATCH 3/6] iio: dac: ad5791: Include chip_info in device match
- tables
-Message-ID: <202410282349.YFq0jd85-lkp@intel.com>
-References: <20241028071118.699951-4-ahaslam@baylibre.com>
+	s=arc-20240116; t=1730133555; c=relaxed/simple;
+	bh=jeqOaqJuFOoxOEWYmX6WO8I6UoLf98HeNqbukHCZ4qU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RUx52C7YG4+a/7JS9ISfIlhgn2l3mQPK9w/plvbQXEwFJAEtx7sBXcU/PAsZxkshe95yAyIveK5wEAwg1SBKHNMmnHESCIpf2AnzRfvKqfpM5ga84TuWqMlL8R/FOcmriYPSbZnffIM9zw+tidbfuTS4HLrbiSlVEQg8KGO+NKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xcf9T3pWzz6LDXM;
+	Tue, 29 Oct 2024 00:34:21 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id E8BE91404FC;
+	Tue, 29 Oct 2024 00:39:09 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 28 Oct
+ 2024 17:39:09 +0100
+Date: Mon, 28 Oct 2024 16:39:07 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: David Lechner <dlechner@baylibre.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Mark Brown <broonie@kernel.org>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
+	<ukleinek@kernel.org>, Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, <linux-spi@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>
+Subject: Re: [PATCH RFC v4 15/15] iio: adc: ad4695: Add support for SPI
+ offload
+Message-ID: <20241028163907.00007e12@Huawei.com>
+In-Reply-To: <2679570d-6255-467b-8312-117e553a52b4@baylibre.com>
+References: <20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
+	<20241023-dlech-mainline-spi-engine-offload-2-v4-15-f8125b99f5a1@baylibre.com>
+	<20241026170038.4b629cff@jic23-huawei>
+	<5a090847-ee53-41be-ad28-b7604cf9020a@baylibre.com>
+	<20241027091244.2fe3c0ad@jic23-huawei>
+	<2679570d-6255-467b-8312-117e553a52b4@baylibre.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028071118.699951-4-ahaslam@baylibre.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hi,
+On Sun, 27 Oct 2024 14:52:17 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> On 10/27/24 4:12 AM, Jonathan Cameron wrote:
+> > On Sat, 26 Oct 2024 19:01:53 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >   
+> >> On 10/26/24 11:00 AM, Jonathan Cameron wrote:  
+> >>> On Wed, 23 Oct 2024 15:59:22 -0500
+> >>> David Lechner <dlechner@baylibre.com> wrote:
+> >>>     
+> 
+> ...
+> 
+> >>>     
+> >>>>  static int ad4695_probe(struct spi_device *spi)
+> >>>>  {
+> >>>>  	struct device *dev = &spi->dev;
+> >>>>  	struct ad4695_state *st;
+> >>>>  	struct iio_dev *indio_dev;
+> >>>> -	struct gpio_desc *cnv_gpio;
+> >>>>  	bool use_internal_ldo_supply;
+> >>>>  	bool use_internal_ref_buffer;
+> >>>>  	int ret;
+> >>>>  
+> >>>> -	cnv_gpio = devm_gpiod_get_optional(dev, "cnv", GPIOD_OUT_LOW);
+> >>>> -	if (IS_ERR(cnv_gpio))
+> >>>> -		return dev_err_probe(dev, PTR_ERR(cnv_gpio),
+> >>>> -				     "Failed to get CNV GPIO\n");
+> >>>> -
+> >>>> -	/* Driver currently requires CNV pin to be connected to SPI CS */
+> >>>> -	if (cnv_gpio)
+> >>>> -		return dev_err_probe(dev, -ENODEV,
+> >>>> -				     "CNV GPIO is not supported\n");
+> >>>> -
+> >>>>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+> >>>>  	if (!indio_dev)
+> >>>>  		return -ENOMEM;
+> >>>> @@ -1002,8 +1374,13 @@ static int ad4695_probe(struct spi_device *spi)
+> >>>>  		return -EINVAL;
+> >>>>  
+> >>>>  	/* Registers cannot be read at the max allowable speed */
+> >>>> +	st->spi_max_speed_hz = spi->max_speed_hz;
+> >>>>  	spi->max_speed_hz = AD4695_REG_ACCESS_SCLK_HZ;
+> >>>>  
+> >>>> +	ret = devm_add_action_or_reset(dev, ad4695_restore_spi_max_speed_hz, st);    
+> >>>
+> >>> Why do you need to put it back in devm? What happens after this but without
+> >>> a driver restart that uses that faster rate?
+> >>>     
+> >> I should have added a comment here as this was a weird bug to trace.
+> >>
+> >> The core SPI framework sets the initial value of spi->max_speed_hz
+> >> to the minimum of the controller max rate and the max rate specified
+> >> by the devicetree.
+> >>
+> >> The SPI device lives beyond this driver, so if we bind the driver
+> >> and set spi->max_speed_hz to something other than what the SPI core
+> >> set it, then the next time we bind the driver, we don't get the
+> >> the max rate from the SPI core, but rather we changed it to when
+> >> the driver unbound.
+> >>
+> >> So on the second bind, the max rate would be the slow register
+> >> read rate instead of the actual max allowable rate.
+> >>
+> >> So we need to reset spi->max_speed_hz to what it was originally
+> >> on driver unbind so that everything works as expected on the
+> >> next bind.
+> >>
+> >> (Or we call this a SPI core bug and fix it there instead).  
+> > Definitely a question to ask.  Directly accessing spi_max_speed_hz may
+> > be the fundamental issue as I don't think the driver is generally
+> > expected to touch that in a dynamic fashion.  Should we be instead setting it
+> > per transfer for the ones that need it controlled?
+> > 
+> > Jonathan
+> >   
+> 
+> The problem is that we are using regmap and that doesn't have
+> a way to specify the max frequency for register reads that is
+> different from other uses of the SPI bus (i.e. reading sample
+> data). So we could fix it in the generic SPI regmap (not exactly
+> trivial) or we could write our own regmap read/write callbacks
+> in this driver that properly sets the per-transfer max speed.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.12-rc5 next-20241028]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Custom read / write callbacks seems the best approach at first
+glance, given this is pretty rare thing to do. 
 
-url:    https://github.com/intel-lab-lkp/linux/commits/ahaslam-baylibre-com/dt-bindings-iio-dac-ad5791-Add-optional-reset-clr-and-ldac-gpios/20241028-151319
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20241028071118.699951-4-ahaslam%40baylibre.com
-patch subject: [PATCH 3/6] iio: dac: ad5791: Include chip_info in device match tables
-config: parisc-randconfig-r071-20241028 (https://download.01.org/0day-ci/archive/20241028/202410282349.YFq0jd85-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241028/202410282349.YFq0jd85-lkp@intel.com/reproduce)
+> 
+> 
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410282349.YFq0jd85-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/dac/ad5791.c:71: warning: Function parameter or struct member 'name' not described in 'ad5791_chip_info'
->> drivers/iio/dac/ad5791.c:71: warning: Function parameter or struct member 'channel' not described in 'ad5791_chip_info'
-
-
-vim +71 drivers/iio/dac/ad5791.c
-
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04  61  
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04  62  /**
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04  63   * struct ad5791_chip_info - chip specific information
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04  64   * @get_lin_comp:	function pointer to the device specific function
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04  65   */
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04  66  
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04  67  struct ad5791_chip_info {
-18e83b303d6e05 drivers/iio/dac/ad5791.c         Axel Haslam        2024-10-28  68  	const char *name;
-18e83b303d6e05 drivers/iio/dac/ad5791.c         Axel Haslam        2024-10-28  69  	const struct iio_chan_spec channel;
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04  70  	int (*get_lin_comp)(unsigned int span);
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04 @71  };
-20374d1a36df3e drivers/staging/iio/dac/ad5791.c Lars-Peter Clausen 2012-06-04  72  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

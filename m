@@ -1,216 +1,153 @@
-Return-Path: <linux-iio+bounces-11503-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11504-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7129B3762
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 18:12:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E559B376C
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 18:14:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFCFF1F2377E
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 17:12:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B312C1F239AB
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Oct 2024 17:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71B81DF25C;
-	Mon, 28 Oct 2024 17:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9C31DF273;
+	Mon, 28 Oct 2024 17:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ct+fVxZ5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F3113AD11;
-	Mon, 28 Oct 2024 17:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC17A1DF246;
+	Mon, 28 Oct 2024 17:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730135515; cv=none; b=r/sPj5jeIXSOv0f2IcALRDXrCVqzsXhVg+Y4u7i+XljKRdSfF8p9Z7g9T5/bMPggcpQJBbhArAcgT+M+NQn5QyyL9/LnzgoRkc8RZZ6JTSu5NLAJfjrHsTznp81X4Vja6+rDecQE6R05K2Ru+tSssphI4T8lMFp4zDD/R26RM50=
+	t=1730135649; cv=none; b=BnP56bGbgalkVzOh5m1YJ706eEcKdOgTi6GAATDFZNltUsEiu5bNfn8Aqn/aDptkcLIisNA4OaLde5N30PhHSxE9SoSaCF7HIKBLKyqEhsAWdy9T9NwKrx6H1A2Kl54Og+OwlESaRKNEuj5ltm94iLLhLZqR4aOqdptrT3CZy+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730135515; c=relaxed/simple;
-	bh=ffodTM6IF0oBZFbsq4Qck8Pspk75k2WpADJL+sZmS3Q=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IZiX1wFhmna7zk6HHDPv6Ty9mZsgoJ0FLcQsElkVlDVwYQ8o76ehfzoU/ej5C6BALPnhgqW5rMUE9EnRo7uRoSVaGqkw9aI0k0yhtWH8vXnCnU9FqEVDDLAQpwoZed1xMkVae712030Aw09MfeU1s3nb4/mG7EAR8/9F+dEG/vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xcfy20k99z67wqY;
-	Tue, 29 Oct 2024 01:09:30 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 50BB7140C72;
-	Tue, 29 Oct 2024 01:11:49 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 28 Oct
- 2024 18:11:48 +0100
-Date: Mon, 28 Oct 2024 17:11:46 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Robert Budai <robert.budai@analog.com>
-CC: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
-	<Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, "Ramona
- Gradinariu" <ramona.gradinariu@analog.com>, Antoniu Miclaus
-	<antoniu.miclaus@analog.com>, Jonathan Cameron <jic23@kernel.org>, "Rob
- Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, "Jagath Jog
- J" <jagathjog1996@gmail.com>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <robi_budai@yahoo.com>
-Subject: Re: [PATCH 3/5] dt-bindings: iio: Add adis16550 bindings
-Message-ID: <20241028171146.0000676a@Huawei.com>
-In-Reply-To: <20241028123550.9128-2-robert.budai@analog.com>
-References: <20241028123550.9128-1-robert.budai@analog.com>
-	<20241028123550.9128-2-robert.budai@analog.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1730135649; c=relaxed/simple;
+	bh=7m5wXDiwv06gpjNw2JsVejh2q1Px/bfyGJOLGg/xMnk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DP92Ppx37EKvcubQdXuyBWvrkz8raESiPmmzv3ZaIE66Qepd5mMH67L7mbLqHmqTYuKoexLGu0vflw6qnp3gQgn+fjzsoOft19a4ziqbCYe3vGTl+AXycDJUCIhK67QWE2rLByZSJDsQn6bYfM7zAXhShrJLe0tLrTlkjTIcOJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ct+fVxZ5; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43167ff0f91so45859525e9.1;
+        Mon, 28 Oct 2024 10:14:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730135646; x=1730740446; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2TQgkgIq5ZmGgVbkeehsOSAF3zSViUzgIHhHB8QyBIU=;
+        b=Ct+fVxZ5e6Ox+wGYkwsBt2iU5yOKnnlD3pq705UeUbK9HcWg+snZQi2gg34RNVIhch
+         hvgFEadjcGytM7rdqa53KtKeOeDMkdYAlvwGYDY1KxPdAEH2U4I5eqAS5fWtYh8QzpUO
+         lHPbPfV2/DvWQVSJ+lCMmRQqMnAaXZaCp4nQQAOChTQj0P0JBm7zHL0WQIvg9KLcQw9w
+         3zFqBeVN9PPbGqyTWhc0m5WcZZTpYWYFY82uWArin6jwnK2LrrCz+f+JLueQ9FRF/MHM
+         +hYNNUE5Q9FX2f0fh0xYgSK9iSgZhMQbebhYrOLBAoEls1FWXCr/47YQHughQYNVOZZl
+         cEaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730135646; x=1730740446;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2TQgkgIq5ZmGgVbkeehsOSAF3zSViUzgIHhHB8QyBIU=;
+        b=MnblT9FesqSUPodB5YEtXpr0+8DK93g+smnCBpJzdJ7sjjleDUE+hdzbWUESCeQokr
+         Yf/aGxj9LOcf4CBIM6hwQaKaxYjCijemN/6QPrgcUDTS2RERClOjMoSU4R9yBnfTF7ol
+         Bu7FBnONkikOG1+lG2+pIkkbFNMQgxP27rOdzBdMKp9bzdY95//DMn9oOPbLSuH3F6zH
+         FwO+4G9KYWLj5rRv+bb6mhzu7LLbrFsIW1J3ntoerCBS9SakPP9mgqGOOddvOWXrerBz
+         Fv2eRuJULKacceClp6h+V88H6BlsuJF5tak0Sv/YaWwOaUogBIusBjiuzda5MVUBgo4z
+         6bVg==
+X-Forwarded-Encrypted: i=1; AJvYcCVYlgWUQLMowOVDwcSLHOxvMtWTowYqfFiEn00jhdKOxoVL5BHUj+n/yTs4MJgTmL7byRwUUCTNL6P7i97u@vger.kernel.org, AJvYcCWGugXZYtvle1kjxlnxFDiALkOX7RwhtMnEWuhBtx4BWi0Z9aAO+dCpefdRZ+zjheZkzrPlGAH4l7HD@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYMr0TRHzUYtcByq74WlOkwhYWZzdIo6bgM7gxnulk3e9xwTlA
+	0dLDrXoMs43mnrjKKtFTnBXdZHILRbXbAah9SKzr7WgYdnALvzh1glMIgA==
+X-Google-Smtp-Source: AGHT+IH80hcLSPDbqezNso9e0Ius3puDDPEIZoJ82jPsXytO4hdHe23fSDkOjYRyTDg+NMLxfWcpLw==
+X-Received: by 2002:a05:600c:3c9a:b0:431:5d14:1cae with SMTP id 5b1f17b1804b1-4319acb1d60mr73927265e9.19.1730135645914;
+        Mon, 28 Oct 2024 10:14:05 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-b273-88b2-f83b-5936.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:b273:88b2:f83b:5936])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43193595470sm114693795e9.15.2024.10.28.10.14.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Oct 2024 10:14:05 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v3 0/2] iio: light: veml6070: add integration time
+Date: Mon, 28 Oct 2024 18:14:00 +0100
+Message-Id: <20241028-veml6070-integration-time-v3-0-dd7ace62f480@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- frapeml500008.china.huawei.com (7.182.85.71)
+X-B4-Tracking: v=1; b=H4sIAFjGH2cC/33OTQqDMBAF4KtI1k1Jxp+UrnqP0kVqJjpgVJIQW
+ sS7NwoFVy7fwPveLCygJwzsXizMY6JA05hDeSlY2+uxQ04mZwYCKilkxRO6oRFKcBojdl7HXOC
+ RHHJ1M9pWqLUBy3J/9mjps9vPV849hTj57z6V5Hb9q+pETZILXtZCGalM3YB+dE7TcG0nxzY1w
+ UGCs/8SZMnUJSjAVlh8H6V1XX9EqWYnDAEAAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730135643; l=2472;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=7m5wXDiwv06gpjNw2JsVejh2q1Px/bfyGJOLGg/xMnk=;
+ b=cCAUSJMqxZRH+52IXxD8JFbJ3jENtwu2N814G7xHnblVWbE5sj91VGS7kkxgjAthdQG/pBvEs
+ 1bOM40dmQ90DICY+ghypEbAdat68SezaHhdMEgd8bmTEHuaQNO8kF9S
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-On Mon, 28 Oct 2024 14:35:43 +0200
-Robert Budai <robert.budai@analog.com> wrote:
+This series adds a missing feature in the veml6070 driver to select the
+integration time, which also depends on an external restistor that has
+been added to the corresponding bindings.
 
-> From: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> 
-> Document the ADIS16550 device devicetree bindings.
-What is the difference between the 16550 and 16550w.
-Need to give an indication here of why the need separate compatibles.
- 
-> Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> ---
->  .../bindings/iio/imu/adi,adis16550.yaml       | 95 +++++++++++++++++++
->  MAINTAINERS                                   |  9 ++
->  2 files changed, 104 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-> new file mode 100644
-> index 000000000000..a4690b39f0bd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-> @@ -0,0 +1,95 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/imu/adi,adis16550.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices ADIS16550 and similar IMUs
-> +
-> +maintainers:
-> +  - Nuno Sa <nuno.sa@analog.com>
-> +  - Ramona Gradinariu <ramona.gradinariu@analog.com>
-> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,adis16550
-> +      - adi,adis16550w
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-cpha: true
-> +
-> +  spi-cpol: true
-> +
-> +  spi-max-frequency:
-> +    maximum: 15000000
-> +
-> +  vdd-supply: true
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description:
-> +      Must be the device tree identifier of the RESET pin. If specified,
-> +      it will be asserted during driver probe. As the line is active low,
-> +      it should be marked GPIO_ACTIVE_LOW.
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +    description: If not provided, then the internal clock is used.
-> +
-> +  adi,sync-mode:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: |
-> +      Configures the device SYNC pin.
-> +    enum:
-> +      - direct_sync
-> +      - scaled_sync
-More detail needed on this. I'm not sure why it belongs in DT and
-can't be controlled based on clock input and requested sampling
-frequency.  
+The datasheet provides a Refresh time vs Rset graph (figure 7), which
+does not clearly specify the minimum and maximum values for Rset. The
+manufacuter has confirmed that no values under 75 kohms should be used
+to keep linearity, and the graph does not go beyond 1200 kohms, which is
+also the biggest Rset used in the application note. The default value of
+270 kohms is the one currently used in the driver to calculate the UVI.
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - spi-cpha
-> +  - spi-cpol
-> +  - spi-max-frequency
-> +  - vdd-supply
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        adi,sync-mode:
-> +          enum: [direct_sync, scaled_sync]
-> +
-> +    then:
-> +      dependencies:
-> +        adi,sync-mode: [ clocks ]
-> +
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        imu@0 {
-> +            compatible = "adi,adis16550";
-> +            reg = <0>;
-> +            spi-max-frequency = <15000000>;
-> +            spi-cpol;
-> +            spi-cpha;
-> +            vdd-supply = <&vdd>;
-> +            interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
-> +            interrupt-parent = <&gpio>;
-> +        };
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a27407950242..4f45478d271a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1411,6 +1411,15 @@ W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
->  F:	drivers/iio/imu/adis16475.c
->  
-> +ANALOG DEVICES INC ADIS16550 DRIVER
-> +M:	Nuno Sa <nuno.sa@analog.com>
-> +M:	Ramona Gradinariu <ramona.gradinariu@analog.com>
-> +M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Supported
-> +W:	https://ez.analog.com/linux-software-drivers
-> +F:	Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-> +
->  ANALOG DEVICES INC ADM1177 DRIVER
->  M:	Michael Hennerich <Michael.Hennerich@analog.com>
->  L:	linux-hwmon@vger.kernel.org
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v3:
+- veml6075.yaml: simplify property handling (describe it completely at
+  the top and add block for the devices that do not support it).
+- veml6070.c: use int instead of u32 for the integration times.
+- veml6070.c: refactor default rset value assignment.
+- veml6070.c: drop comment about default Rset and IT.
+- veml6070.c: use units from units.h
+- Link to v2: https://lore.kernel.org/r/20241024-veml6070-integration-time-v2-0-d53272ec0feb@gmail.com
+
+Changes in v2:
+- Rebase onto iio/testing and drop applied patches.
+- veml6075.yaml: use documented -ohms, top-level definition and
+  per-device restriction.
+- veml6075.yaml: add default value.
+- veml6075.yaml: fix typo in commit message.
+- veml6070.c: adjust rset property name and convert from ohms to kohms
+  to avoid overflows and work with the same units as in the datasheet.
+- veml6070.c: change default to 270 kohms (already used as default
+  value to calculate UVI).
+- veml6070.c: calculate UVI according to the current integration time.
+- veml6070.c: re-calculate measurement time (i.e. msleep()) with the
+  current integration time.
+- Link to v1: https://lore.kernel.org/r/20241017-veml6070-integration-time-v1-0-3507d17d562a@gmail.com
+
+---
+Javier Carrasco (2):
+      dt-bindings: iio: light: veml6075: document rset-ohms
+      iio: light: veml6070: add support for integration time
+
+ .../bindings/iio/light/vishay,veml6075.yaml        |  18 +++
+ drivers/iio/light/veml6070.c                       | 134 +++++++++++++++++++--
+ 2 files changed, 144 insertions(+), 8 deletions(-)
+---
+base-commit: 9090ececac9ff1e22fb7e042f3c886990a8fb090
+change-id: 20241014-veml6070-integration-time-78daf4eaad2f
+
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 

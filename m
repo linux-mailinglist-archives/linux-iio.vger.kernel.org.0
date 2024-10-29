@@ -1,214 +1,445 @@
-Return-Path: <linux-iio+bounces-11552-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11553-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8429B43B8
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 09:05:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1249B43D1
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 09:09:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E171C21ED3
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 08:05:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D3E8283903
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 08:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821211854;
-	Tue, 29 Oct 2024 08:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2AC20370C;
+	Tue, 29 Oct 2024 08:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vfalQd62"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="d2HPFWmk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F305202642
-	for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 08:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD79E2036F8
+	for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 08:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730189127; cv=none; b=Z94ryoZxmPzpcgUYh2yt53/sny5zPStwL0XmrcNYNgZ3+UmuYje/0BerfWpJadbU1Ca+Cnfii7m1t2zPVHFYzZ/BQUTOxTUOKzxvJMdxhuI9rE7h6hhjKqA9Qhz+S87AsEkaR0A2QpfmOxq1QU8+w3MD5mqDNLiuE9cEIIpqMWM=
+	t=1730189358; cv=none; b=GYxs8+u62qg/8EMYeD6+d9Pqi168YgXctSdIT6SyJfkMAH1O2R/jn2gI+1eXRgD8FvAh6FAULjgR/uQ2HTGWz+Evoq6W/AhtPgvsrafQpOgWwIzNIIfQfiSKHbvyUYD/Hwm3fv6UA+CQEJvZNvr7PoyNJuxVfMvUkdPvW17/onE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730189127; c=relaxed/simple;
-	bh=Wgu4Q3YZ64aWSqvWoqqloTsZbrePlNg2P6R61VqI7S4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g9PYVXkc77Uyea1bDoXv0HT42SF6XheyfF7NgylgbMjldpLHukYrRYgu4wOTGqCzZsyVPsvSFFyOdiQMQ/B1O6K1vq4j+FmkhAsrybjllHdDlYrx8GtQGcZ7JlgGd6NhQDE1MnaS5AqIRKslBuX4ykqoMEBKywRB/mGLEPkdtCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vfalQd62; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43159c9f617so50033325e9.2
-        for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 01:05:24 -0700 (PDT)
+	s=arc-20240116; t=1730189358; c=relaxed/simple;
+	bh=1yYFZUgzwZJX8c97cDYGNMLz5Det8+K3peNnR8iF278=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=AlsWU4FuACSKedkS6tdMthAvXf+/8As6NmT6zjZVayGzmYb/KPZUQ8lq6/VRML+c+FwE+M1XWAIz0/QccRqKL0cwOT1v2ANmN3ttMbqLoDzhjco3CkQe1e3Fb8WmHjEQFlhTKhN4WRQVFtSHsn2Hqr6gHJz/hql7X4KCpEc34oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=d2HPFWmk; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4316a44d1bbso47462275e9.3
+        for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 01:09:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730189123; x=1730793923; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3lN2eRb6bl0eRsqhdld34k6abaNSa22uP0f7TfgqVgM=;
-        b=vfalQd62VFx9TyfFbm23aog8MWNlyilO7c+TXVpv/WyeQiZc5C1AddMIV8VL5J5sEx
-         qg/0DpK2AsAMon+bogO1Ez2RgCe+VOerS0m8Z9uLqgb2NB45VV6mP4vEVZsUiovcalBQ
-         3dJPiUCP+h8meYBsDjK29m4JXEjVwhvSIMxrpub6ERXJy1bLxhMzAa/sSWufKKGQhYBL
-         wTgx7o+wvbIjJSesxRcmgflIdH6RQOgm1QDif+sODDobRFWtwroXLPgVirLcJB+W38h9
-         NGa4Se6XB1nllE/e1useaOv8R0S+6wlJjUMTjCjZ7P3cyT99MjCazMDmESEdyyiuiQ9A
-         Fh8g==
+        d=linaro.org; s=google; t=1730189354; x=1730794154; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eZARtYlmzZ5XHKlzg/NydBknT2s1reu45newK8+BNnU=;
+        b=d2HPFWmkTUB5YPPcId9x4ql22n19kFo5RD4KhqawjHNtq1F0B0mojSumHSJl4J/rKD
+         xy+4EgcHIJej93fCMAgSI40qGxF/GM/NMBiJEzFG+DQbMQuPUyW2Hecx7Gw11taOhxVl
+         NoJX957Ygo6U6YCl/xNHB1zCnzdXiv6rZUoI3odvIyr0TbkNM3ahJ3+/fV2yy8oGRlVA
+         cEvjt/DLTR2H9jRJR6gzW9l4pEVU8nfAN9/Pv1jWi2jG7K8rOtzIjogvmoLlVybdjZb5
+         ThJ1cf0KUyulh0sNEipPEHomq+lzdP4hBrIgnRxjDf1PvkJo4GZM3D9EVGHYCyKUmwf6
+         rAZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730189123; x=1730793923;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3lN2eRb6bl0eRsqhdld34k6abaNSa22uP0f7TfgqVgM=;
-        b=VbxI1grTMOqWqS5VHVG19jHzflDRfZd9rpq5y3m1hXRpe6sDfrsoNavPin5Oc/5sOE
-         9WSgKaoTzq6OMH/TN+r0zh+d1WNd29GSgYcrXvVut3hzUDcKhllrWzorYSprWmS4EeVN
-         GVgkKyUAT1to8QqKh0f+S9jUu0Tc2tOZoYPY//2BPQvqe6Yvko3sOY9n4qu6j8G2ENzB
-         I4BLjb+/3FEkABlg96loNpONG5jVqbwUCVku9HOGt3v4qOAp8PyIDLFTxLcHTi5Ohct0
-         j2umGoVz/8poVWhXCsz/mnIjHaGDqaX96HIh5NGaK4Ijq5WG3SEQhnKZ6StTkml3t1/F
-         UXUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWWw3CfWt6neBVZh4doliaOjaOboMRol2bHSc1xivMbZ0wICOa1e4WeVxALlMeozvYWqgGdR4xIWmA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykhzU5D558KtJe53E2hMqEl34wF1Kb6yYl3JIJ+Fw7b5FENm+N
-	WgnNQ0r82HQWMR8tAjcm0twrGmJrjZhdsuc8kEI5CgpuTvTgNqJAoKJljYDoKBw=
-X-Google-Smtp-Source: AGHT+IFSjfQXCa5GW1Npbhe93OduAXI4SGUOVExv2PPgkmuE8+77dW4spir8TRXtu2Ia2kzTS2IFQA==
-X-Received: by 2002:a05:600c:46d4:b0:427:ff3b:7a20 with SMTP id 5b1f17b1804b1-4319ad049a8mr79735435e9.27.1730189123296;
-        Tue, 29 Oct 2024 01:05:23 -0700 (PDT)
-Received: from localhost (p50915d2d.dip0.t-ipconnect.de. [80.145.93.45])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b5433f2sm167003775e9.1.2024.10.29.01.05.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 01:05:22 -0700 (PDT)
-Date: Tue, 29 Oct 2024 09:05:21 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	David Jander <david@protonic.nl>, Martin Sperl <kernel@martin.sperl.org>, 
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH RFC v4 01/15] pwm: core: export pwm_get_state_hw()
-Message-ID: <mavlxxjza7ud7ylgoewz6fz3chtuwljvcjjf6o3kcv555iolwa@wdnrsiow5u5w>
-References: <20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
- <20241023-dlech-mainline-spi-engine-offload-2-v4-1-f8125b99f5a1@baylibre.com>
+        d=1e100.net; s=20230601; t=1730189354; x=1730794154;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eZARtYlmzZ5XHKlzg/NydBknT2s1reu45newK8+BNnU=;
+        b=OlyEv+Xv6BMblycB+9z94/QbskueftpQYNP1KfegMKxze3BXfem+aG3YuRsKbjJTPC
+         zvnd1qgoRIyBqzxEUQLa4ciyl6TF2pl7+IpGr0mDQArKLw7cTeadysh4rAGzQPVHgYiI
+         Qyw6ihRReKvV/fqVp4sYhgOxH5P3Z9wcRq1uW3xNsHdbKsmSELESmOiQAWXENezIGJTN
+         GBxsgSyNL/uOHoUkIKOu2oFP4QXTfeg8t9lHKQM2/GKhmtj+N93rGDe4zMxs8k3EqrBn
+         2Zb7PyAO39YUojkhFo/6qubRV5uonm9kf0wSheOalzMGIhs5J1k9aF1+cyj7Kzqbbfs0
+         npdA==
+X-Forwarded-Encrypted: i=1; AJvYcCUZifv/rHkJV1dgQN1eQtVB9Joe/wKBpYYEev7VY19EGhPMxsoBdQZYFmSYPd90lm7tDq3sOdYrXro=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwllCNEx/FhOyZKZ9gVtVKz1tyb4Qwh5dOce/ge42dSHl7heb8Q
+	Xd+wW7jaU7IZkKMXW2GLMR1sOWIHWMxK78rcPJ6/B2TqEute0HWEvCMembN+/ZE=
+X-Google-Smtp-Source: AGHT+IGxFQXHuW0OzAuWHrz5fijZ/uyGD0EUznIY4hDu5MFz+6O/zXl2JbKHyMQdxvX3Ic/B6Av8Hw==
+X-Received: by 2002:a05:600c:1c1a:b0:431:55af:a22f with SMTP id 5b1f17b1804b1-4319aca400bmr96009235e9.13.1730189353939;
+        Tue, 29 Oct 2024 01:09:13 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:ca93:e94:9ce5:a5e0? ([2a01:e0a:982:cbb0:ca93:e94:9ce5:a5e0])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431b437d362sm18228645e9.0.2024.10.29.01.09.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Oct 2024 01:09:13 -0700 (PDT)
+Message-ID: <9f8b6789-ca87-425c-9645-c4b97dcb2424@linaro.org>
+Date: Tue, 29 Oct 2024 09:09:09 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="j43zmgztsm2qmibl"
-Content-Disposition: inline
-In-Reply-To: <20241023-dlech-mainline-spi-engine-offload-2-v4-1-f8125b99f5a1@baylibre.com>
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH v2 3/3] iio: magnetometer: add Allegro MicroSystems
+ ALS31300 3-D Linear Hall Effect driver
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20241021-topic-input-upstream-als31300-v2-0-36a4278a528e@linaro.org>
+ <20241021-topic-input-upstream-als31300-v2-3-36a4278a528e@linaro.org>
+ <Zx1chYp4FRyG8fKM@surfacebook.localdomain>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <Zx1chYp4FRyG8fKM@surfacebook.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Hi,
 
---j43zmgztsm2qmibl
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH RFC v4 01/15] pwm: core: export pwm_get_state_hw()
-MIME-Version: 1.0
+On 26/10/2024 23:17, Andy Shevchenko wrote:
+> Mon, Oct 21, 2024 at 02:38:55PM +0200, Neil Armstrong kirjoitti:
+>> The Allegro MicroSystems ALS31300 is a 3-D Linear Hall Effect Sensor
+>> mainly used for 3D head-on motion sensing applications.
+>>
+>> The device is configured over I2C, and as part of the Sensor data the
+>> temperature core is also provided.
+>>
+>> While the device provides an IRQ gpio, it depends on a configuration
+>> programmed into the internal EEPROM, thus only the default mode is
+>> supported and buffered input via trigger is also supported to allow
+>> streaming values with the same sensing timestamp.
+>>
+>> The device can be configured with different sensitivities in factory,
+>> but the sensitivity value used to calculate value into the Gauss
+>> unit is not available from registers, thus the sensitivity is provided
+>> by the compatible/device-id string which is based on the part number
+>> as described in the datasheet page 2.
+> 
+> ...
+> 
+> Some headers are missing...
+> 
+>> +#include <linux/bitfield.h>
+>> +#include <linux/bits.h>
+>> +#include <linux/delay.h>
+>> +#include <linux/module.h>
+>> +#include <linux/i2c.h>
+>> +#include <linux/regmap.h>
+> 
+> + pm.h
+> 
+>> +#include <linux/pm_runtime.h>
+> 
+>> +#include <linux/regulator/consumer.h>
+> 
+> + types.h
 
-Hello David,
+Ack
 
-On Wed, Oct 23, 2024 at 03:59:08PM -0500, David Lechner wrote:
-> Export the pwm_get_state_hw() function. This is useful in cases where
-> we want to know what the hardware is actually doing, rather than what
-> what we requested it should do.
->=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->=20
-> v4 changes: new patch in v4
->=20
-> And FYI for Uwe and Jonathan, there are a couple of other series
-> introducing PWM conversion triggers that could make use of this
-> so that the sampling_frequency attribute can return the actual rate
-> rather than the requested rate.
->=20
-> Already applied:
-> https://lore.kernel.org/linux-iio/20241015-ad7606_add_iio_backend_support=
--v5-4-654faf1ae08c@baylibre.com/
->=20
-> Under review:
-> https://lore.kernel.org/linux-iio/aea7f92b-3d12-4ced-b1c8-90bcf1d992d3@ba=
-ylibre.com/T/#m1377d5acd7e996acd1f59038bdd09f0742d3ac35
-> ---
->  drivers/pwm/core.c  | 55 +++++++++++++++++++++++++++++++++++++----------=
-------
->  include/linux/pwm.h |  1 +
->  2 files changed, 40 insertions(+), 16 deletions(-)
->=20
-> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-> index 634be56e204b..a214d0165d09 100644
-> --- a/drivers/pwm/core.c
-> +++ b/drivers/pwm/core.c
-> @@ -718,7 +718,7 @@ int pwm_apply_atomic(struct pwm_device *pwm, const st=
-ruct pwm_state *state)
->  }
->  EXPORT_SYMBOL_GPL(pwm_apply_atomic);
-> =20
-> -static int pwm_get_state_hw(struct pwm_device *pwm, struct pwm_state *st=
-ate)
-> +static int __pwm_get_state_hw(struct pwm_device *pwm, struct pwm_state *=
-state)
->  {
->  	struct pwm_chip *chip =3D pwm->chip;
->  	const struct pwm_ops *ops =3D chip->ops;
-> @@ -730,29 +730,50 @@ static int pwm_get_state_hw(struct pwm_device *pwm,=
- struct pwm_state *state)
-> =20
->  		BUG_ON(WFHWSIZE < ops->sizeof_wfhw);
-> =20
-> -		scoped_guard(pwmchip, chip) {
-> -
-> -			ret =3D __pwm_read_waveform(chip, pwm, &wfhw);
-> -			if (ret)
-> -				return ret;
-> +		ret =3D __pwm_read_waveform(chip, pwm, &wfhw);
-> +		if (ret)
-> +			return ret;
-> =20
-> -			ret =3D __pwm_round_waveform_fromhw(chip, pwm, &wfhw, &wf);
-> -			if (ret)
-> -				return ret;
-> -		}
-> +		ret =3D __pwm_round_waveform_fromhw(chip, pwm, &wfhw, &wf);
-> +		if (ret)
-> +			return ret;
-> =20
->  		pwm_wf2state(&wf, state);
-> =20
->  	} else if (ops->get_state) {
-> -		scoped_guard(pwmchip, chip)
-> -			ret =3D ops->get_state(chip, pwm, state);
-> -
-> +		ret =3D ops->get_state(chip, pwm, state);
->  		trace_pwm_get(pwm, state, ret);
->  	}
-> =20
->  	return ret;
->  }
+> 
+> ...
+> 
+>> +#define ALS31300_DATA_X_GET(b)		\
+>> +		sign_extend32(FIELD_GET(ALS31300_VOL_MSB_X_AXIS, b[0]) << 4 | \
+>> +			      FIELD_GET(ALS31300_VOL_LSB_X_AXIS, b[1]), 11)
+>> +#define ALS31300_DATA_Y_GET(b)		\
+>> +		sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Y_AXIS, b[0]) << 4 | \
+>> +			      FIELD_GET(ALS31300_VOL_LSB_Y_AXIS, b[1]), 11)
+>> +#define ALS31300_DATA_Z_GET(b)		\
+>> +		sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Z_AXIS, b[0]) << 4 | \
+>> +			      FIELD_GET(ALS31300_VOL_LSB_Z_AXIS, b[1]), 11)
+>> +#define ALS31300_TEMPERATURE_GET(b)	\
+>> +		(FIELD_GET(ALS31300_VOL_MSB_TEMPERATURE, b[0]) << 6 | \
+>> +		 FIELD_GET(ALS31300_VOL_LSB_TEMPERATURE, b[1]))
+> 
+> These and in the code seems like you make a home grown endianes conversion.
+> I suppose all of them have to be __beXX with the respective masks that cover
+> all the bits.
 
-I don't understand why you introduce __pwm_get_state_hw() (a variant of
-pwm_get_state_hw() that expects the caller to hold the chip lock) when the
-single caller (apart from plain pwm_get_state_hw()) could just continue
-to use pwm_get_state_hw().
+This has nothing do to with endianess conversion, the bits of the 4 channels
+are split on 2 registers, look at the defines.
 
-In principle I'm open to such a patch and wonder if there is already a
-merge plan for this series. If you send a simpler patch soon with the
-same objective, I'll make sure it goes into v6.13-rc1 in the assumption
-that it's to late for the whole series to go in then. Or do you still
-target 6.13-rc1 for the spi bits? Then it would probably better to let
-this patch go in with the rest via the spi tree.
+> 
+>> +static int als31300_get_measure(struct als31300_data *data,
+>> +				u16 *t, s16 *x, s16 *y, s16 *z)
+>> +{
+>> +	unsigned int count = 0;
+>> +	u32 buf[2];
+> 
+> Shouldn't this be __be64 buf?
 
-Best regards
-Uwe
+No this is 2 separate registers with different fields, not a single 64bit big-endian register
 
---j43zmgztsm2qmibl
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+>> +	int ret;
+>> +
+>> +	guard(mutex)(&data->mutex);
+>> +
+>> +	ret = pm_runtime_resume_and_get(data->dev);
+>> +	if (ret)
+>> +		return ret;
+> 
+>> +	/* Max update rate is 2KHz, wait up to 1ms */
+>> +	while (count < 50) {
+>> +		/* Read Data */
+>> +		ret = regmap_bulk_read(data->map, ALS31300_VOL_MSB, buf, 2);
+> 
+> At bare minimum ARRAY_SIZE(), but see above, I think it should use the respective type.
 
------BEGIN PGP SIGNATURE-----
+I'll use ARRAY_SIZE
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcglz8ACgkQj4D7WH0S
-/k4VNgf/SnQ3FDnC2c7bg2CyahKuEnbI1V+Mh1n4mLdEhbjuD3kDrXmP8S8QoYN3
-UPKt/DB95LNR4rW23vH6A/VwT0Z2pxGUFkWUc+rph/XLlHGSlTHA24wqcAUFmv9U
-LrdFn6se1JD/0iqekbIgSw4Z1wmMUyDgVf5qPhCr0T8q/5xMfRnOnDRot9OLxHAE
-2wthItMXrD74GNxg7hYr+Egp9RNtEj+V8CUqOriJuHx3HDEgx+tPFT5zaBKAFOnf
-tNIEHM9s2IYxsbR97SmlSVnOdVHutuGAEsgaPGjzynuoLYqT5Wi39UbZc0Z4wCoP
-RnMNIRjxMCTHTibMjVPASVQRLwvN6g==
-=MQGh
------END PGP SIGNATURE-----
+> 
+>> +		if (ret) {
+>> +			dev_err(data->dev, "read data failed, error %d\n", ret);
+>> +			goto out;
+>> +		}
+>> +
+>> +		/* Check if data is valid, happens right after getting out of sleep mode */
+>> +		if (FIELD_GET(ALS31300_VOL_MSB_NEW_DATA, buf[0]))
+>> +			break;
+>> +
+>> +		usleep_range(10, 20);
+>> +		++count;
+>> +	}
+>> +
+>> +	if (count >= 50) {
+>> +		ret = -ETIMEDOUT;
+>> +		goto out;
+>> +	}
+> 
+> This one of the longest variant of implementing
+> 
+> 	do {
+> 		...
+> 	} while (!FIELD_GET(...) && --count)
+> 
+> But you also may consider something from iopoll.h (I don't remember if we have
+> regmap_read_poll_timeout() for bulk transfers.
 
---j43zmgztsm2qmibl--
+There's no poll for bulk read, I'll try using an IOPOLL function
+
+> 
+>> +	*t = ALS31300_TEMPERATURE_GET(buf);
+>> +	*x = ALS31300_DATA_X_GET(buf);
+>> +	*y = ALS31300_DATA_Y_GET(buf);
+>> +	*z = ALS31300_DATA_Z_GET(buf);
+>> +
+>> +out:
+>> +	pm_runtime_mark_last_busy(data->dev);
+>> +	pm_runtime_put_autosuspend(data->dev);
+> 
+> Last discussion with Rafael on the topic of the above puts a question mark to
+> all these cases when runtime PM idle callback has not been implemented.
+> 
+> Shouldn't this be simply
+> 
+> 	pm_runtime_put(data->dev);
+> 
+> ?
+
+Probably, I just used the same schema as other similar IIO drivers
+
+> 
+>> +	return ret;
+>> +}
+> 
+> ...
+> 
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		switch (chan->type) {
+>> +		case IIO_TEMP:
+>> +			/*
+>> +			 * Fractional part of:
+>> +			 *         1000 * 302 * (value - 1708)
+>> +			 * temp = ----------------------------
+>> +			 *             4096
+>> +			 * to convert temperature in millicelcius
+>> +			 */
+>> +			*val = 1000 * 302;
+> 
+> MILLI from units.h ?
+
+Well, sure, but it's still 1000, should I also define ONE to 1 and so on ?
+
+> 
+>> +			*val2 = 4096;
+>> +			return IIO_VAL_FRACTIONAL;
+>> +		case IIO_MAGN:
+>> +			/*
+>> +			 * Devices are configured in factory
+>> +			 * with different sensitivities:
+>> +			 * - 500 GAUSS <-> 4 LSB/Gauss
+>> +			 * - 1000 GAUSS <-> 2 LSB/Gauss
+>> +			 * - 2000 GAUSS <-> 1 LSB/Gauss
+>> +			 * with translates by a division of the returned
+>> +			 * value to get Gauss value.
+>> +			 * The sensisitivity cannot be read at runtime
+>> +			 * so the value depends on the model compatible
+>> +			 * or device id.
+>> +			 */
+>> +			*val = 1;
+>> +			*val2 = data->variant_info->sensitivity;
+>> +			return IIO_VAL_FRACTIONAL;
+>> +		default:
+>> +			return -EINVAL;
+>> +		}
+> 
+> ...
+> 
+>> +	struct {
+>> +		u16 temperature;
+>> +		s16 channels[3];
+>> +		aligned_s64 timestamp;
+>> +	} __packed scan;
+> 
+> Why __packed?
+
+Probably unneeded, will drop
+
+> 
+> ...
+> 
+>> +static int als31300_set_operating_mode(struct als31300_data *data,
+>> +				       unsigned int val)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = regmap_update_bits(data->map, ALS31300_VOL_MODE,
+>> +				 ALS31300_VOL_MODE_SLEEP, val);
+>> +	if (ret) {
+>> +		dev_err(data->dev, "failed to set operating mode (%pe)\n", ERR_PTR(ret));
+>> +		return ret;
+>> +	}
+>> +
+>> +	/* The time it takes to exit sleep mode is equivalent to Power-On Delay Time */
+>> +	if (val == ALS31300_VOL_MODE_ACTIVE_MODE)
+>> +		usleep_range(600, 650);
+>> +
+>> +	return ret;
+> 
+> 	return 0;
+
+It's the same but ok
+
+> 
+>> +}
+> 
+> ...
+> 
+>> +static int als31300_probe(struct i2c_client *i2c)
+>> +{
+>> +	struct device *dev = &i2c->dev;
+>> +	struct als31300_data *data;
+>> +	struct iio_dev *indio_dev;
+>> +	int ret;
+>> +
+>> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+>> +	if (!indio_dev)
+>> +		return -ENOMEM;
+>> +
+>> +	data = iio_priv(indio_dev);
+>> +	data->dev = dev;
+>> +	i2c_set_clientdata(i2c, indio_dev);
+> 
+>> +	mutex_init(&data->mutex);
+> 
+> Why not devm_mutex_init()? How does this being cleaned up?
+
+Indeed, good catch
+
+> 
+>> +	data->variant_info = i2c_get_match_data(i2c);
+>> +	if (!data->variant_info)
+>> +		return -EINVAL;
+>> +
+>> +	data->map = devm_regmap_init_i2c(i2c, &als31300_regmap_config);
+>> +	if (IS_ERR(data->map))
+>> +		return dev_err_probe(dev, PTR_ERR(data->map),
+>> +				     "failed to allocate register map\n");
+>> +
+>> +	ret = devm_regulator_get_enable(dev, "vcc");
+>> +	if (ret)
+>> +		return dev_err_probe(dev, ret, "failed to enable regulator\n");
+>> +
+>> +	ret = als31300_set_operating_mode(data, ALS31300_VOL_MODE_ACTIVE_MODE);
+>> +	if (ret)
+>> +		return dev_err_probe(dev, ret, "failed to power on device\n");
+>> +
+>> +	ret = devm_add_action_or_reset(dev, als31300_power_down, data);
+>> +	if (ret)
+>> +		return dev_err_probe(dev, ret, "failed to add powerdown action\n");
+>> +
+>> +	indio_dev->info = &als31300_info;
+>> +	indio_dev->modes = INDIO_DIRECT_MODE;
+>> +	indio_dev->name = i2c->name;
+>> +	indio_dev->channels = als31300_channels;
+>> +	indio_dev->num_channels = ARRAY_SIZE(als31300_channels);
+>> +	indio_dev->available_scan_masks = als31300_scan_masks;
+>> +
+>> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+>> +					      iio_pollfunc_store_time,
+>> +					      als31300_trigger_handler,
+>> +					      &als31300_setup_ops);
+>> +	if (ret < 0) {
+>> +		dev_err(dev, "iio triggered buffer setup failed\n");
+>> +		return ret;
+> 
+> Why not return dev_err_probe(...);
+
+Sure
+
+> 
+>> +	}
+>> +
+>> +	ret = pm_runtime_set_active(dev);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	ret = devm_pm_runtime_enable(dev);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	pm_runtime_get_noresume(dev);
+>> +	pm_runtime_set_autosuspend_delay(dev, 200);
+>> +	pm_runtime_use_autosuspend(dev);
+>> +
+>> +	pm_runtime_mark_last_busy(dev);
+>> +	pm_runtime_put_autosuspend(dev);
+>> +
+>> +	ret = devm_iio_device_register(dev, indio_dev);
+>> +	if (ret)
+>> +		return dev_err_probe(dev, ret, "device register failed\n");
+>> +
+>> +	return 0;
+>> +}
+> 
+
+Thanks,
+Neil
 

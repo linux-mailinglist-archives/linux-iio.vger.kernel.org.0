@@ -1,48 +1,74 @@
-Return-Path: <linux-iio+bounces-11540-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11541-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6759B4262
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 07:27:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0D59B426D
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 07:35:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 031ED1F234A4
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 06:27:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82D452832A3
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 06:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81652010FB;
-	Tue, 29 Oct 2024 06:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4050201108;
+	Tue, 29 Oct 2024 06:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ni0Y7ewS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PwWSJiCI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4571DF243;
-	Tue, 29 Oct 2024 06:27:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF151E0B93;
+	Tue, 29 Oct 2024 06:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730183272; cv=none; b=NxoPX4ol6q7LBQQ54qDoXAkD37h7px2U1ROW8J2aJMSJ48cj08qpzJtWpor6uHb786+S+Wz26H++HsX8X7YNbAfq8yipWgV2pWJj5lYRU01ZB57wwKuN142ZbAjYkjBqrlblv6ufREeiblOw9jQ8VLm4o9Ic59JdyEkB0uP8EQo=
+	t=1730183696; cv=none; b=QiogwTD69i/+G37n2LFjMrKQwajGd4oSaFdYJ/r7LLiI3LvaSwDnriEzYALyyR+aImh7RaYir/374XS0oN8bPvqTrfyzeTVPjDEK7XIPBaIcNn9GbKkL6DelRj3MtpGMzZvtMFKUIapQngYzQUxhBfm96YhSBNJsknJ+zPH938A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730183272; c=relaxed/simple;
-	bh=eAzylK+hv6jMYnKPj+5LSLODUQp3qoC2xEEK9E3zeTs=;
+	s=arc-20240116; t=1730183696; c=relaxed/simple;
+	bh=cB3UuohXNvIsjeVdbHwVYAB8OTFa3RaX1V6PrY6zhl4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dNpaZnkwX7b6t5d1KAyWhlZ31a/MOnNBj4dUhOJjXzrvH3HSNM2cuOddc4B6M4w+KUlsiTEtOy4QOgcF+Ir3zudt0xEzBNgo/IFNFgM/6qhV7M885DwHDLJuYAoNmtQl1aBwXQk+XyYh/H8HjT3ryHQeEG+xapgGXHhRzsoh+PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ni0Y7ewS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB74C4CECD;
-	Tue, 29 Oct 2024 06:27:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730183272;
-	bh=eAzylK+hv6jMYnKPj+5LSLODUQp3qoC2xEEK9E3zeTs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ni0Y7ewS9Jh7DyIHALNuYs7DQzWUQ6sxt92D7b2rq2+6EFnPgHhkcFZZ3wYEEQjwo
-	 1dckWBdgZGbJ4igOrKBn54k3jeSuezxn1SuS+pZIvNrywpi+Xp7p/qT30QkkNjShEe
-	 fuKW9sclQZsatMoiuu/Bh/Pi7HncLJkFhQrYcl/wl5OA48TP6OOoHvpWSTTB3mDZFJ
-	 VF+8sM6a/XmEK/zFyGq2A6EUK4lmT6Y2w8K+d5j1rcF0l6RXpXuqeVkl1Zt2DzBJHt
-	 Tfs2QFXpr/SPhqrQCkZJJ+HHRsNGHzG5qn93F/3sQheqCR89q6x8ctIEFfZDn9xE17
-	 Dg7kbW2YzG+aQ==
-Message-ID: <0fff543c-ff71-4541-8ebb-c67198c6fafd@kernel.org>
-Date: Tue, 29 Oct 2024 07:27:45 +0100
+	 In-Reply-To:Content-Type; b=WSG9yaK2TPixUBjHX9RPSSYteuZBwsQYBhAcm6R+RbhcNCfBDRUU6lad9X524B7otH+idQXIBgjFJYdjFS9/CnCyHZR8wgljcrUYzxTPkSjfm6QjGaZ/wbPXGrY/CGzc6Y/X3eBdvFdBP4ZnT6WPerEFCF28FamsuJdFARvSxIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PwWSJiCI; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-539e59dadebso5942631e87.0;
+        Mon, 28 Oct 2024 23:34:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730183693; x=1730788493; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U7lWcMDGFyPr0tPj1+w5lqRWcRyFwcQQ9skKFiNTRgo=;
+        b=PwWSJiCIL9Fz7mwa4yhYmOVnnaFF/YRrfMzU5RydW35zxpCjfuU7fZmGqffBnXdqw8
+         +7lP2dL7MFmne8RHwqrtXb2zK7t2EJV3lzqzmq6roqnqE14BieVwLT0T/Yg+THRYi2zu
+         ztXzNCMrDszt43ms+WpCCKZ1mtbGbelaC4M3PGy+lJVmgys4FXnHZQVYl27i0SMuj12n
+         p7qrJ4ymzfpAEKc2Dw7NDJzLNPkrlPHeVNl6hSAdqbARCPniao1Bpz2a0OZ0QJGxCS4P
+         FXJU+7hJh75X3NGVAx9D7TBd8PMuqjaR5DgkGBEMVzuxPwosMr7AHVXiQetVRfYxqLHE
+         teBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730183693; x=1730788493;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U7lWcMDGFyPr0tPj1+w5lqRWcRyFwcQQ9skKFiNTRgo=;
+        b=nEPkBXNQDOgkxYNOnyyjO1Wr69wm2sRKbWfZ/xHe7552umFIaYiVp9h98QKiZ5yAkH
+         BF3ubWkdc4QIyGI6mKv/0xImWiKAgN3zMKsMZ8QdVyCVNJpdHelOLKySHR+FAzQWckI0
+         Edt4tKGiV5hkZF0xf0e+IHZ9EqQiTgUt46hvsMntslFuZOP6W4yemQ0Tk/CTuy9XgVOa
+         CYs9wFyGY9G1VGltvigH7/7/pSvnJntTtr0u3tQvwoYoLeqMNhnNVwrP6namE4hq2mR3
+         dbmu3TNTy2WafE0IgLluyKU/B5cBE1mYiMWoWD4h+JAC99fDS7hSRf1Ip94oKpyqG8ON
+         zrow==
+X-Forwarded-Encrypted: i=1; AJvYcCXVgqqhBMeDwaCNm7yfHA40/m1Vio76kidFwZTrT+gw5nj3VsHhFVvlyNKB9yUECFeyo/3iNcf03AJJZT6n@vger.kernel.org, AJvYcCXxloQmakzt4wII7zxpBbZqufzfjQvzu56BtiMTdx1SPGrVqhcxYeHr65JGqk3OXKnU2gQqgIRQ88Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyysViZtJb7RS+ZOXqGZ3eA/5YL4l9klo5kq1zEmlfIJHy+Mhmc
+	D6FYiHhrcdcOSHU/7dsUgMyMHoutU2Zz7YPppPs0X6BcTL5ahSvdWI3Pb/8r
+X-Google-Smtp-Source: AGHT+IHeIl7D20nNjh7KL0gDsAUCF23pvJQWxOjbznPcnRgY55HUeE7wmGFkWsncyod3M/jyWWARbA==
+X-Received: by 2002:a05:6512:684:b0:539:ffb5:8d2c with SMTP id 2adb3069b0e04-53b3490f2eemr4596597e87.30.1730183692306;
+        Mon, 28 Oct 2024 23:34:52 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53b2e10a8f0sm1280136e87.15.2024.10.28.23.34.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Oct 2024 23:34:51 -0700 (PDT)
+Message-ID: <a72e0950-be11-45a3-8387-5b51b9a2e78a@gmail.com>
+Date: Tue, 29 Oct 2024 08:34:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,78 +76,74 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] dt-bindings: iio: dac: ad5791: Add required voltage
- supplies
-To: ahaslam@baylibre.com, lars@metafoo.de, Michael.Hennerich@analog.com,
- jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- nuno.sa@analog.com, dlechner@baylibre.com
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+Subject: Re: [PATCH v3 00/24] iio: Clean up acpi_match_device() use cases
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Marius Cristea <marius.cristea@microchip.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+ Hans de Goede <hdegoede@redhat.com>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-References: <20241028071118.699951-1-ahaslam@baylibre.com>
- <20241028071118.699951-3-ahaslam@baylibre.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20241028071118.699951-3-ahaslam@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+References: <20241024191200.229894-1-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20241024191200.229894-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 28/10/2024 08:11, ahaslam@baylibre.com wrote:
-> From: Axel Haslam <ahaslam@baylibre.com>
+On 24/10/2024 22:04, Andy Shevchenko wrote:
+> There are current uses of acpi_match_device():
+> - as strange way of checking if the device was enumerated via ACPI
+> - as a way to get IIO device name as ACPI device instance name
+> - as above with accompanying driver data
 > 
-> Vcc, iovcc, vrefp, and vrefn are needed for the DAC to work.
-> Add them as required bindings for ad5791.
+> Deduplicate its use by providing two new helper functions in IIO ACPI
+> library and update the rest accordingly.
 > 
-> Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
-> ---
->  .../bindings/iio/dac/adi,ad5791.yaml          | 24 +++++++++++++++++++
->  1 file changed, 24 insertions(+)
+> This also includes a rework of previously sent ltr501 patch.
+> 
+> Besides that there ie a big clean up for the kxcjk-1013 driver, started
+> with the revert of the one patch discussed earlier today. Feel free to
+> route that one via fixes branch of your tree.
+> 
+> In v3:
+> - collected tags (Marius)
+> - added note to the documentation about usage of new API (Jonathan)
+> - added a handful patches for kxcjk-1013 driver
+> 
+> In v2:
+> - collected tags (Hans, Jean-Baptiste)
+> - updated SoB chain in patch 4
+> 
+> Andy Shevchenko (24):
+>    iio: magnetometer: bmc150: Drop dead code from the driver
+>    iio: adc: pac1934: Replace strange way of checking type of enumeration
+>    iio: imu: inv_mpu6050: Replace strange way of checking type of
+>      enumeration
+>    iio: acpi: Improve iio_read_acpi_mount_matrix()
+>    iio: acpi: Add iio_get_acpi_device_name_and_data() helper function
+>    iio: accel: kxcjk-1013: Remove redundant I²C ID
+>    iio: accel: kxcjk-1013: Revert "Add support for KX022-1020"
+>    iio: accel: kxcjk-1013: Switch from CONFIG_PM guards to pm_ptr() etc
+>    iio: accel: kxcjk-1013: Use local variable for regs
+>    iio: accel: kxcjk-1013: Rename kxcjk1013_info
+>    iio: accel: kxcjk-1013: Start using chip_info variables instead of
+>      enum
+>    iio: accel: kxcjk-1013: Move odr_start_up_times up in the code
+>    iio: accel: kxcjk-1013: Convert ODR times array to variable in
+>      chip_info
+>    iio: accel: kxcjk-1013: Get rid of enum kx_chipset
+>    iio: accel: kxcjk-1013: Replace a variant of
+>      iio_get_acpi_device_name_and_data()
+>    iio: accel: kxcjk-1013: drop ACPI_PTR() and move ID out of CONFIG_ACPI
+>      guards
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+I missed reviewing these kxcjk changes. Not sure I loved all of them but 
+I must admit the resulting code is looks better in general.
 
-Best regards,
-Krzysztof
+Thanks for the clean-up Andy!
 
+Yours,
+	-- Matti
 

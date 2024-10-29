@@ -1,131 +1,167 @@
-Return-Path: <linux-iio+bounces-11583-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11584-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43CDE9B54F0
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 22:20:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39EA9B55BF
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 23:26:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7582A1C225BA
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 21:20:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B38A2285851
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 22:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBB920ADD2;
-	Tue, 29 Oct 2024 21:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B358220ADDE;
+	Tue, 29 Oct 2024 22:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uFDUo/Yt"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xClEgT+q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442E8209F4F
-	for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 21:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A3A20A5DB
+	for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 22:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730236749; cv=none; b=VbutbwsTtitSCp5zrdPfzNcXWJJUX2AxCGDl5/loSrCTAeABqYd5Zwa+ZqV7ulcVmTILG1TbVZYZShmh9O1OmDLuTr/hViWaCMcKU6CQX12qMjsiBLHlZFHVncdu8u2qRkNlYrW11MmukV9AMZJjIfphoEyjMKSQa5HvLCQtzxc=
+	t=1730240772; cv=none; b=KiEFDFhyWR8EKmXc0hvub5IJ8xRTmFlxpmzS1RKzbSPfOWCRPCcJ5nqxRsOTcUrmlB8tIrJ/uGbvgDz858nRmPPJHimD522ekF3SdOr2D2uf9oi7BWPOcYHiRH6SJTdJCnXrnd11w9kOnqw7tTqZ/NN8BBNgnmw3+A3I044woSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730236749; c=relaxed/simple;
-	bh=pTM0zMdu3d6TO9urzgyfiUUlPjCSI6OIMoF7GWE/KtA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kCJH/RKUYchIeUrIOkDNQ7RAq4Woxe7fXD9/JyTtJLEgAac2qnaXvL3gol+mK6uYtw2YqQ4J9L15JB3q/oWMT3SY/rJuHRZXJtkLqT1+ZXUwW3CPbx+6GRaKlseiknSZ9Jq7sAiBy8Io1Qx6XYaTcUt1MVP74vN+UAHkBagZxh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=uFDUo/Yt; arc=none smtp.client-ip=209.85.167.180
+	s=arc-20240116; t=1730240772; c=relaxed/simple;
+	bh=t5+4Q8OWpVdp/0RgGYt6wGLBd/T5QhCCqDsGYRkkzmo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iF8oS0Rw91CnuicuWkguKQ393CkWBV/YfPP4fupvVbMhHNwltT3vYGzveLVUelSqX8q4s/FxdIAL1UgYkHRMTcqZfNn/dzRHJ4gyzz88Wght5/DfaVLpFCKRz1XWi5w3YUdDYqtJdnP3BxLXObkb59Mlhkr72y8N8vtZO5hgD5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xClEgT+q; arc=none smtp.client-ip=209.85.167.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3e6048bc23cso3295083b6e.3
-        for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 14:19:06 -0700 (PDT)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3e602a73ba1so3425279b6e.2
+        for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 15:26:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730236745; x=1730841545; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x1eyK4YeafZM3wWbxx8SgDvrmQ+/xdJDtwtTgNckCGQ=;
-        b=uFDUo/YtT/plC2lRd8HNa3IAb08SCXC9qtTccrzgrUQ0hwU3T5Aku1/ysh9JYrEGWS
-         OW3lFbz+UmJm0xXdArKcVcdhIjmJr7tRiTwQqhGaS830VKh719tBA/tHSxxDzcWY7yOs
-         lXkRjsjnW24T6hM1DWIuV3Dit/zcQukr/aGG+rX7LHAi2geIZwouqDl7t082a4VMfN2P
-         UTKjGtpPpDnp1GHILccA5C91mmliCNjn8+I6L6hMeEu6sli7YVBt23L8Mo3qhRBxJExg
-         lJe2VfZrs54xAAwuwqFVM6xiJKVmTLyN2X6TvsEe2l3MKr8M5Q311ZZczN96z1AuIOt8
-         Elng==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730240769; x=1730845569; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JlW02YBV+5dPho8DkByoe+gPa11gJkbgA1l/C1eYeW4=;
+        b=xClEgT+qYhpknxBOr3R27bCuYGRvNZTX8SlqE/R3uqZauJBKBhzcl+SStQG3JJWN5B
+         +W5oa+DrNkXM3kNtnE4JC7Lc4gaG1s9u+7VzAHct2byk0/fmbo3jcNdYHxEem8yAcvDl
+         MbG7DUIHxjtL6WSuK3xYZMWhk94YHJ2xXiA1bnedsOA7tO/QCEscxiXk5EhiFIRE0lCA
+         5CtUEL9kfPCJuZZEqyPn9XypA70rfVcNbzRVXSRhnUcu0Y2PAiHRrZTRv8s0mfowvsyZ
+         K3AimnEYPmb8CgivA1wXkS6tUIJ+Axjhu6X4gkUm/wC1Y3XehH8cpFCbc/I8GSqnJBpf
+         JAEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730236745; x=1730841545;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x1eyK4YeafZM3wWbxx8SgDvrmQ+/xdJDtwtTgNckCGQ=;
-        b=FL263KRjmklrkWj1s9zGWa11Nc8pUVIEmoN7W0u3hUnYFh+QxgZ9fJ3UF4tJHa1asu
-         KQ4SQInZr2kgnOeC9LZj5Wfv/Nsj9ksmzp7vmCHS8Swu1t/f9NY+Dvesr9y8jLuLx/ez
-         fjiP3bky3pfxlb2Ce0w23PW65QolfCViXX2PGE+QSLxaBHkdwTliyLRDsMWmxWQONYIh
-         ryn7Xrl4yKM1lLTGj8vcQMYkQ2DZSj8VJ/z9Iv8L0OjQv+/ELSRTuNc5ORsnRl/eoZ1s
-         aXZiDcSt78d6WXXc7oL7l2VWt46f4Fr5IysOGRsX9L3FlNJh8jfghNGub76kBZZiql5a
-         Sdrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOBIU+WPr85bGyXKxmnqwrSUilMSk/bDhrI8PmfUrkN48zFQOOD+psYRf7bioLjQ9feS3sLxtygnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIJCZQv8Rerwlzo/DWocCWb1NDUwCXVL27yRw6DPwL5PbfEQOO
-	kcjJUlXTPOOCMUJvJsqzsAwZTM7ix9zuOOVuyqzxxlrzjPKhj4UkyGu1o2mfAR3wUspW3jHjmaQ
-	6
-X-Google-Smtp-Source: AGHT+IHNyylNNYk4pJl4v9Wic0OnFFDI+mUGd5rmtr8KeXqE5vw1L04LSd4rV1eOn4xDGik8dGnw4g==
-X-Received: by 2002:a05:6808:2183:b0:3e5:fd08:d020 with SMTP id 5614622812f47-3e6384c54ebmr12182255b6e.42.1730236745444;
-        Tue, 29 Oct 2024 14:19:05 -0700 (PDT)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e6325b87ecsm2280559b6e.54.2024.10.29.14.19.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 14:19:04 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 29 Oct 2024 16:18:50 -0500
-Subject: [PATCH v2 2/2] iio: adc: ad7606: finish pwm_get_state_hw() TODO
+        d=1e100.net; s=20230601; t=1730240769; x=1730845569;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JlW02YBV+5dPho8DkByoe+gPa11gJkbgA1l/C1eYeW4=;
+        b=a0/ms7tk506SptfKzoqzHZtyhQPNT5pczH+Gyd4NUIS9ae1PkH9wp3OtEdtVcNajQD
+         IMLUNGzV4oXi3KJImfjHQAkcLn25jBh8nIA3gwYTKEasAUhAwijK4DU8eckmvmWPVrcx
+         3/xTrZZUgLtP168cwK2rh+JrsBUKjxuSSiunYGSD9MoRoPfDfY5mu1uHn+EFKGvb/DQj
+         oXDIzdpzV2mYWCgpccSzifG2OXW/PU/DAy7oZIqSmhpIWA4VBeV/DaTRt3lfsSYaxOdT
+         8ZSHhuD2LpQmiDtBheQpB0KsZYcn4f8PG9nkq89E9oSdyXhp9PuV6DK1kAg1tXuz9h8Q
+         99bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCz4Y+cngWz0kqVNTnd1pAKrXVaNN/Izc+SKLx0zSD+cp2fy6+tDBjl1Kxaw3uvY3HhWd4k6Vu3ZY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywzu3PI3aF0KgnAV8hFqE/YBx4iad4yLTP4UnMhNXS8FntzE1qr
+	nznzkmBcnQPYuxl7l+e+DeXNKoLgZFtB8WdKj21pGuzYXOEvGb5VeTthFsqUFFA=
+X-Google-Smtp-Source: AGHT+IH+xL4WkT7PHq4e4eGpDTEdBuUhuyNcG6ApkM+ymrg3d/hbpgqXXO+NZSR4pqqXg7V3HUjnJg==
+X-Received: by 2002:a05:6808:22a6:b0:3e5:fc09:7f51 with SMTP id 5614622812f47-3e63823916cmr11524333b6e.9.1730240768711;
+        Tue, 29 Oct 2024 15:26:08 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e6340bbb20sm2221777b6e.7.2024.10.29.15.26.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Oct 2024 15:26:08 -0700 (PDT)
+Message-ID: <b9da1c5e-3177-4bd1-abb2-5e92b0c2fb4c@baylibre.com>
+Date: Tue, 29 Oct 2024 17:26:06 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] iio: Add channel type for attention
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ Ricardo Ribalda <ribalda@chromium.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Jiri Kosina <jikos@kernel.org>,
+ Benjamin Tissoires <bentiss@kernel.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Harvey Yang <chenghaoyang@google.com>,
+ linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241028-hpd-v2-0-18f6e79154d7@chromium.org>
+ <20241028-hpd-v2-3-18f6e79154d7@chromium.org>
+ <20241028203437.3eb5268d@jic23-huawei>
+ <CANiDSCu7G8gDKaY5jJR+JGyqGDobkDPRG+9NOfpXvVviqkQizA@mail.gmail.com>
+ <20241029143847.00004392@Huawei.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241029143847.00004392@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241029-pwm-export-pwm_get_state_hw-v2-2-03ba063a3230@baylibre.com>
-References: <20241029-pwm-export-pwm_get_state_hw-v2-0-03ba063a3230@baylibre.com>
-In-Reply-To: <20241029-pwm-export-pwm_get_state_hw-v2-0-03ba063a3230@baylibre.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Jonathan Cameron <jic23@kernel.org>, Guillaume Stols <gstols@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
- linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.1
 
-Replace the call to pwm_get_state() with a call to pwm_get_state_hw() in
-the ad7606 driver. This allows reading the sampling_frequency attribute
-to return the rate the hardware is actually running at rather than the
-rate that was requested. These may differ when the hardware isn't
-capable of running at exactly the requested frequency.
-
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-
-I went ahead and made this patch since it is trivial, but it would be
-nice to get a Tested-by from Guillaume to make sure it actually works
-as expected.
----
- drivers/iio/adc/ad7606.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 8b2046baaa3e..1581eb31b8f9 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -762,11 +762,9 @@ static int ad7606_read_raw(struct iio_dev *indio_dev,
- 		*val = st->oversampling;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		/*
--		 * TODO: return the real frequency intead of the requested one once
--		 * pwm_get_state_hw comes upstream.
--		 */
--		pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
-+		ret = pwm_get_state_hw(st->cnvst_pwm, &cnvst_pwm_state);
-+		if (ret < 0)
-+			return ret;
- 		*val = DIV_ROUND_CLOSEST_ULL(NSEC_PER_SEC, cnvst_pwm_state.period);
- 		return IIO_VAL_INT;
- 	}
-
--- 
-2.43.0
+On 10/29/24 9:38 AM, Jonathan Cameron wrote:
+> On Tue, 29 Oct 2024 13:20:06 +0100
+> Ricardo Ribalda <ribalda@chromium.org> wrote:
+> 
+>> Hi Jonathan
+>>
+>> On Mon, 28 Oct 2024 at 21:34, Jonathan Cameron <jic23@kernel.org> wrote:
+>>>
+>>> On Mon, 28 Oct 2024 10:12:23 +0000
+>>> Ricardo Ribalda <ribalda@chromium.org> wrote:
+>>>  
+>>>> Add a new channel type representing if the user's attention state to the
+>>>> the system. This usually means if the user is looking at the screen or
+>>>> not.
+>>>>
+>>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+>>>> ---
+>>>>  Documentation/ABI/testing/sysfs-bus-iio | 7 +++++++
+>>>>  drivers/iio/industrialio-core.c         | 1 +
+>>>>  include/uapi/linux/iio/types.h          | 1 +
+>>>>  tools/iio/iio_event_monitor.c           | 2 ++
+>>>>  4 files changed, 11 insertions(+)
+>>>>
+>>>> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+>>>> index 89943c2d54e8..d5a2f93bd051 100644
+>>>> --- a/Documentation/ABI/testing/sysfs-bus-iio
+>>>> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+>>>> @@ -2339,3 +2339,10 @@ KernelVersion: 6.10
+>>>>  Contact:     linux-iio@vger.kernel.org
+>>>>  Description:
+>>>>               The value of current sense resistor in Ohms.
+>>>> +
+>>>> +What:                /sys/.../iio:deviceX/in_attention_raw
+>>>> +KernelVersion:       6.13
+>>>> +Contact:     linux-iio@vger.kernel.org
+>>>> +Description:
+>>>> +             Boolean value representing the user's attention to the system.
+>>>> +             This usually means if the user is looking at the screen or not.  
+>>>
+>>> Hmm. I should have thought of this when I replied to suggest a new channel type.
+>>> The question is 'units' for a decision.
+>>>
+>>> Last time we hit something like this where processing is used to make a decision
+>>> we decided to at least allow for the concept of 'certainty'.
+>>>
+>>> The idea being that smarter sensors would tell us something about how sure they
+>>> are that the attention is on the device.
+>>> The analogy being with activity detection. See in_activity_walking_input
+>>> in Documentation/ABI/testing/sysfs-bus-iio
+>>>
+>>> Do you think that would be appropriate here as well?  For this device
+>>> it would take the values 0 and 100 rather than 0 and 1.  
+>>
+>> For the particular device that I want to support, they are giving me a
+>> value of 1 and 0, and the example from usb.org seems to work the same
+>> way (Logical Maximum of 1)
+>> https://www.usb.org/sites/default/files/hutrr107-humanpresenceattention_1.pdf
+>>
+>> I have no problem multiplying my value by 100 if you think there will
+>> be a use case for that. It will not have a major performance impact on
+>> the driver.
+> Same was true (0 or 1) for the activity classification but I'm not
+> keen on certainty :)  So lets' copy that precedence and *100
+> 
+> 
+And I assume we would want this to be in_attention_input (processed),
+not in_attention_raw.
 
 

@@ -1,296 +1,253 @@
-Return-Path: <linux-iio+bounces-11575-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11576-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121219B52F7
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 20:49:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5C369B5327
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 21:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AEFF1F24060
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 19:49:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 528EEB21890
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 20:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938122071FF;
-	Tue, 29 Oct 2024 19:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fIb6z4VN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A99206E61;
+	Tue, 29 Oct 2024 20:14:20 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035BE205ACD;
-	Tue, 29 Oct 2024 19:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693231DEFD0
+	for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 20:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730231364; cv=none; b=obWtuPgimUBzFPcl65srqRj3pjvZY90ESQrFUE+FJiKzR4SCVLWiPJIzb0cQMwNQJzUpfsLW2A72MX7YwBzzuvRtH3SmszteyPEVckX79wWs+5GmZtsGhxysSyoKyhF/H/Wpiyx9x8wthMCriZ2ZmurHcMcueuDdouQwYB02hUk=
+	t=1730232860; cv=none; b=sDvH8MdIAhqff/cxgKHLChgQv68MIC15GYl8Gvqn+Hgrw/9qx0cTSo3dfMjc7ZQqV1Y/+16wkhx6j16eKGuQd0v6a9ghUWdJt6tYAzvALH753xRx/h0E0Mx5ocW7AEjxvIcIsJiK1wP4qlHQIJAiVQ1zch6mx40xIq9ww14htd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730231364; c=relaxed/simple;
-	bh=awdoH5rFFbiqcZock4aM2tIsTeFivVpQfSVpnLjh0kE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=soT28yoesXeJuGdG19XIVAe3atk9lp0NdXHC/kr8MOmUPivj3qS4MXYbvb7yzGvjM69mJBWBXYhLRTJ76Ov5UgH+RaeyoO3RDsa9Mv4/JtI+43FOgocQOSlOl6qvUZHCSU2lWhXvGfBPfo9JfsOi6HpUux8txAkUTBoR1tT/Pc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fIb6z4VN; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a99f646ff1bso739415066b.2;
-        Tue, 29 Oct 2024 12:49:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730231360; x=1730836160; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gvu3soGzeUup65TCa4YHvz4LZhITDevElDnbRUoM1J8=;
-        b=fIb6z4VN44K5stPurnpzi53g0foWukPQ0b0YcoH3n2BO8MzMT2y6E7h2vlMiUXB99+
-         v7HgYLlVZwS2TcnckCUQosn41W0eVoEiv9wppZT/S65n5cWkN8jb/YdLSX191KMNxowL
-         oPo3tvH/wAwfpF/B36XW9jWP09EFaRxdfhc++d/StefWi5K1e1MPs5ndrE/+noQOlTWe
-         +JOYEgMl90OxA4qopRrUk/Lo/FdwZZpqCfpdt8AwTP07AoLlprxJqSw+4E9ycWWhskyR
-         nOu1oLPRZrejWPdSZfhCpz2vUrQfz5TZLynRgSnUGGT1iR77INKPzrKzoDnA1zkazHbk
-         wYJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730231360; x=1730836160;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Gvu3soGzeUup65TCa4YHvz4LZhITDevElDnbRUoM1J8=;
-        b=Gnw8IN0NK5Yr6bHs2qnbVQRAjBaQ5tOj2VriLAUKjVf8qe2ItHaCOLQU9yuoePhD88
-         Ds3yV427GJ/n0K2h/pOK3aJ8oAjvCGdYJuZBewz4um6bWAxqSsof8GEe1qzePpThATGA
-         6YwR7LEaKxW8P6+Ksh5Fe3+oTtIfxnfz8HJ8cmlXBDojRvI6p8UVY5gBPe3ZYzAn8MFF
-         BO5ceO4DIkvsGUI3bj1YN9rCLBxaCbYjBUoscaerEjjwrbqEaSE0H0sN79XAsVEj5Kix
-         teBNgFYFMVXI09okfcebs0RcE+la2h/AdeMlJnV1b8foBANWvRgSr6HIHsluG6rPpDV5
-         z33w==
-X-Forwarded-Encrypted: i=1; AJvYcCVh/w1JVjJjgGJue5/FnJ5jkhDr1Tp2KTaaelVKLm9M9pQZuPHYv5PLn6f/vuomCC+KJpv84s52zN8qvcPu@vger.kernel.org, AJvYcCWSsAj3pfCNTTI2/NJeF3LnhYNgLCZVmopgDU+V2KgWOCy2cjBSr38sJPI9wU8ZRyy8yJoEqOF0n1wU@vger.kernel.org, AJvYcCX106WMubYhVYT3fdzB6h1pXSwCiBvXbZ/4mwqJlkrCGL/BJxED4TYDzM6BhRqOgIKvIhLc16k9nq4i@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1fYztg6QkHjj6fkYH0pYIDvpJwVgiQyXxzCET6lhW0dhmOsbo
-	DG+i+MnGK0Ha2Cs026UvLRfCSapuZluwwN4GohGhvV60NjalkCkBTjPOwj1eOgLr8OzjRIyyfV0
-	GCnuet5y+NAFZOoYaUVThAijWrcsxZsod
-X-Google-Smtp-Source: AGHT+IFkl/d3NegynTrjcdaD7515ZshkwvuLCJzsB7qoiisnKif/TjKlae2JUVKHozBuT0llM79ZvOjdmNOuPhJ9Iyg=
-X-Received: by 2002:a17:907:970e:b0:a9a:2a56:91e with SMTP id
- a640c23a62f3a-a9e3a574f2cmr74443566b.6.1730231360049; Tue, 29 Oct 2024
- 12:49:20 -0700 (PDT)
+	s=arc-20240116; t=1730232860; c=relaxed/simple;
+	bh=/WXO8zC1tMtIE11ww7hVOXlZN/bNRSd8hZhLxkXpuO4=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m+ZSHBntdTk7614tvCEIP2R3HXLNeyNqM/3tXzBLYQCCRGXu29r7hP+pN/yVFqw0ZYfXZDRcRAL0Ho7Nv64YGa4AdSjQPTtIBEBiTwbd3cdsKAn1m0AdMggAcJ220RgKHPbpEdMfxXXiuLTw5/R5i/247k5N/mRyBc6DSdtT4Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-24-75.elisa-laajakaista.fi [88.113.24.75])
+	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+	id 5852ce3b-9632-11ef-9a70-005056bd6ce9;
+	Tue, 29 Oct 2024 22:14:04 +0200 (EET)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 29 Oct 2024 22:14:04 +0200
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC] iio: adc: ad7380: add alert support
+Message-ID: <ZyFCDHsA4hoVnNy2@surfacebook.localdomain>
+References: <20241029-ad7380-add-alert-support-v1-1-d0359401b788@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241029-topic-input-upstream-als31300-v3-0-147926dd63b3@linaro.org>
- <20241029-topic-input-upstream-als31300-v3-3-147926dd63b3@linaro.org>
-In-Reply-To: <20241029-topic-input-upstream-als31300-v3-3-147926dd63b3@linaro.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 29 Oct 2024 21:48:42 +0200
-Message-ID: <CAHp75VdH7bxuPW6Fx4Mcq18hQfr1sDhBYDwGn8OeurQOAar2kg@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] iio: magnetometer: add Allegro MicroSystems
- ALS31300 3-D Linear Hall Effect driver
-To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241029-ad7380-add-alert-support-v1-1-d0359401b788@baylibre.com>
 
-On Tue, Oct 29, 2024 at 4:13=E2=80=AFPM Neil Armstrong
-<neil.armstrong@linaro.org> wrote:
->
-> The Allegro MicroSystems ALS31300 is a 3-D Linear Hall Effect Sensor
-> mainly used for 3D head-on motion sensing applications.
->
-> The device is configured over I2C, and as part of the Sensor data the
-> temperature core is also provided.
->
-> While the device provides an IRQ gpio, it depends on a configuration
-> programmed into the internal EEPROM, thus only the default mode is
-> supported and buffered input via trigger is also supported to allow
-> streaming values with the same sensing timestamp.
->
-> The device can be configured with different sensitivities in factory,
-> but the sensitivity value used to calculate value into the Gauss
-> unit is not available from registers, thus the sensitivity is provided
-> by the compatible/device-id string which is based on the part number
-> as described in the datasheet page 2.
-
-Thank you for an update, this looks more or less good. I have a few
-nit-picks below. With them addressed,
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-
-...
-
-> +#include <linux/types.h>
-> +#include <linux/units.h>
-
-It's a bit of an unusual order. Do you mean to put them after the
-regulator/*.h one?
-
-> +#include <linux/bits.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/delay.h>
-> +#include <linux/module.h>
-> +#include <linux/i2c.h>
-> +#include <linux/regmap.h>
-> +#include <linux/pm.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regulator/consumer.h>
+Tue, Oct 29, 2024 at 04:02:46PM +0100, Julien Stephan kirjoitti:
+> The alert functionality is an out of range indicator and can be used as an
+> early indicator of an out of bounds conversion result.
+> 
+> ALERT_LOW_THRESHOLD and ALERT_HIGH_THRESHOLD registers are common to all
+> channels.
+> 
+> When using 1 SDO line (only mode supported by the driver right now), i.e
+> data outputs only on SDOA, SDOB (or SDOD for 4 channels variants) is
+> used as an alert pin. The alert pin is updated at the end of the
+> conversion (set to low if an alert occurs) and is cleared on a falling
+> edge of CS.
+> 
+> The ALERT register contains information about the exact alert status:
+> channel and direction. Unfortunately we can't read this register because
+> in buffered read we cannot claim for direct mode.
+> 
+> User can set high/low thresholds and enable event detection using the
+> regular iio events:
+> 
+>   events/in_thresh_falling_value
+>   events/in_thresh_rising_value
+>   events/thresh_either_en
+> 
+> Because we cannot read ALERT register, we can't determine the exact
+> channel that triggers the alert, neither the direction (hight/low
+> threshold violation), so we send and IIO_EV_DIR_EITHER event for all
+> channels. This is ok, because the primary use case for this chip is to
+> hardwire the alert line to shutdown the device.
+> 
+> When reading a channel raw data, we have to trigger 2 spi transactions: a
+> first transaction that will trigger a conversion and a second
+> transaction to read the conversion. By design a new conversion is
+> initiated on each falling edge of CS. This will trigger a second
+> interrupt. To avoid that we disable irq in the hard irq handler and
+> re-enable them in thread handler.
 
 ...
 
-> +#define ALS31300_DATA_X_GET(b)         \
-> +               sign_extend32(FIELD_GET(ALS31300_VOL_MSB_X_AXIS, b[0]) <<=
- 4 | \
-> +                             FIELD_GET(ALS31300_VOL_LSB_X_AXIS, b[1]), 1=
-1)
-> +#define ALS31300_DATA_Y_GET(b)         \
-> +               sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Y_AXIS, b[0]) <<=
- 4 | \
-> +                             FIELD_GET(ALS31300_VOL_LSB_Y_AXIS, b[1]), 1=
-1)
-> +#define ALS31300_DATA_Z_GET(b)         \
-> +               sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Z_AXIS, b[0]) <<=
- 4 | \
-> +                             FIELD_GET(ALS31300_VOL_LSB_Z_AXIS, b[1]), 1=
-1)
-> +#define ALS31300_TEMPERATURE_GET(b)    \
-> +               (FIELD_GET(ALS31300_VOL_MSB_TEMPERATURE, b[0]) << 6 | \
-> +                FIELD_GET(ALS31300_VOL_LSB_TEMPERATURE, b[1]))
+>  #include <linux/iio/buffer.h>
+>  #include <linux/iio/iio.h>
+> +#include <linux/iio/events.h>
 
-Yeah, I have got that the data is interlaced, and it's still possible
-to use the __be64, but the resulting code might be too overengineered
-for this simple case (as it would require bitmap operations to remap
-interlaced bits and an additional churn on top of u64 to be
-represented as set of unsigned long:s).
+Perhaps keep it ordered?
+
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
 
 ...
 
-> +/* The whole measure is split into 2x32bit registers, we need to read th=
-em both at once */
-
-32-bit
-
-...
-
-> +       /*
-> +        * Loop until data is valid, new data should have the
-> +        * ALS31300_VOL_MSB_NEW_DATA bit set to 1.
-> +        * Max update rate is 2KHz, wait up to 1ms
-
-Missing period at the end.
-
-> +        */
-
-...
-
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_PROCESSED:
-> +       case IIO_CHAN_INFO_RAW:
-> +               ret =3D als31300_get_measure(data, &t, &x, &y, &z);
-> +               if (ret)
-> +                       return ret;
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +		struct ad7380_state *st = iio_priv(indio_dev);
+> +		int ret;
 > +
-> +               switch (chan->address) {
-> +               case TEMPERATURE:
-> +                       *val =3D t;
-> +                       return IIO_VAL_INT;
-> +               case AXIS_X:
-> +                       *val =3D x;
-> +                       return IIO_VAL_INT;
-> +               case AXIS_Y:
-> +                       *val =3D y;
-> +                       return IIO_VAL_INT;
-> +               case AXIS_Z:
-> +                       *val =3D z;
-> +                       return IIO_VAL_INT;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +       case IIO_CHAN_INFO_SCALE:
-> +               switch (chan->type) {
-> +               case IIO_TEMP:
-> +                       /*
-> +                        * Fractional part of:
-> +                        *         1000 * 302 * (value - 1708)
-> +                        * temp =3D ----------------------------
-> +                        *             4096
-> +                        * to convert temperature in millicelcius
-
- Missing period at the end.
-
-> +                        */
-> +                       *val =3D MILLI * 302;
-> +                       *val2 =3D 4096;
-> +                       return IIO_VAL_FRACTIONAL;
-> +               case IIO_MAGN:
-> +                       /*
-> +                        * Devices are configured in factory
-> +                        * with different sensitivities:
-> +                        * - 500 GAUSS <-> 4 LSB/Gauss
-> +                        * - 1000 GAUSS <-> 2 LSB/Gauss
-> +                        * - 2000 GAUSS <-> 1 LSB/Gauss
-> +                        * with translates by a division of the returned
-> +                        * value to get Gauss value.
-> +                        * The sensisitivity cannot be read at runtime
-
-sensitivity
-
-> +                        * so the value depends on the model compatible
-> +                        * or device id.
-> +                        */
-> +                       *val =3D 1;
-> +                       *val2 =3D data->variant_info->sensitivity;
-> +                       return IIO_VAL_FRACTIONAL;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +       case IIO_CHAN_INFO_OFFSET:
-> +               switch (chan->type) {
-> +               case IIO_TEMP:
-> +                       *val =3D -1708;
-> +                       return IIO_VAL_INT;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-
+> +		if (state == st->alert_en)
+> +			return 0;
 > +
+> +		/*
+> +		 * According to the datasheet, high threshold must always be
+> +		 * greater than low threshold
 
-Seems like a stray blank line here.
+Missed period at the end.
 
-> +       default:
-> +               return -EINVAL;
-> +       }
+> +		 */
+> +		if (state && st->high_th < st->low_th)
+> +			return -EINVAL;
+> +
+> +		ret = regmap_update_bits(st->regmap,
+> +					 AD7380_REG_ADDR_CONFIG1,
+> +					 AD7380_CONFIG1_ALERTEN,
+> +					 FIELD_PREP(AD7380_CONFIG1_ALERTEN, state));
+> +
+> +		if (ret)
+> +			return ret;
+> +
+> +		st->alert_en = state;
+> +
+> +		return 0;
+> +	}
+> +	unreachable();
 > +}
 
 ...
 
-> +static int als31300_set_operating_mode(struct als31300_data *data,
-> +                                      unsigned int val)
+> +static int ad7380_write_event_value(struct iio_dev *indio_dev,
+> +				    const struct iio_chan_spec *chan,
+> +				    enum iio_event_type type,
+> +				    enum iio_event_direction dir,
+> +				    enum iio_event_info info,
+> +				    int val, int val2)
 > +{
-> +       int ret;
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +		struct ad7380_state *st = iio_priv(indio_dev);
+> +		int ret;
 > +
-> +       ret =3D regmap_update_bits(data->map, ALS31300_VOL_MODE,
-> +                                ALS31300_VOL_MODE_SLEEP, val);
-> +       if (ret) {
-> +               dev_err(data->dev, "failed to set operating mode (%pe)\n"=
-, ERR_PTR(ret));
-> +               return ret;
-> +       }
+> +		/*
+> +		 * According to the datasheet,
+> +		 * AD7380_REG_ADDR_ALERT_HIGH_TH[11:0] are the MSB of the 16-bit
+> +		 * internal alert high register. LSB are set to 0x0.
+> +		 * AD7380_REG_ADDR_ALERT_LOW_TH[11:0] are the MSB of the 16 bit
+> +		 * internal alert low register. LSB are set to 0xf.
+> +		 *
+> +		 * When alert is enabled the conversion from the adc is compared
+> +		 * immediately to the alert high/low thresholds, before any
+> +		 * oversampling. This means that the thresholds are the same for
+> +		 * normal mode and oversampling mode.
+> +		 * For 12 and 14 bits, the thresholds are still on 16 bits.
+> +		 */
+> +		if (val < 0 || val > 2047)
+
+What about having val >= BIT(11) here?
+
+> +			return -EINVAL;
 > +
-> +       /* The time it takes to exit sleep mode is equivalent to Power-On=
- Delay Time */
-> +       if (val =3D=3D ALS31300_VOL_MODE_ACTIVE_MODE)
-> +               usleep_range(600, 650);
+> +		switch (dir) {
+> +		case IIO_EV_DIR_RISING:
+> +			ret = regmap_write(st->regmap,
+> +					   AD7380_REG_ADDR_ALERT_HIGH_TH,
+> +					   val);
+> +			if (!ret)
+> +				st->high_th = val << 4 | 0xf;
 
-fsleep() ?
+GENMASK() ? Predefined constant?
 
-> +       return 0;
+> +			return ret;
+
+
+			if (ret)
+				return ret;
+			...
+			return 0;
+
+(yes, more verbose, but better for reading and maintenance)
+
+> +		case IIO_EV_DIR_FALLING:
+> +			ret = regmap_write(st->regmap,
+> +					   AD7380_REG_ADDR_ALERT_LOW_TH,
+> +					   val);
+> +			if (!ret)
+> +				st->low_th = val << 4;
+> +			return ret;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	}
+> +	unreachable();
 > +}
 
 ...
 
-> +       devm_mutex_init(dev, &data->mutex);
+> +	st->high_th = 0x7ff;
+> +	st->low_th = 0x800;
 
-Hmm... While not critical, this may still return an error. There were
-only two (out of ~15) users that ignored the error code, in v6.12
-there are two more in IIO, while one is checking for it. I would like
-to check for an error and bail out (and maybe I'll update the other
-drivers in IIO to follow, including one GPIO module that ignores it).
+I would go with BIT(11) - 1 and BIT(11) as it seems related to the amount of
+bits in the hardware.
 
---=20
+...
+
+> +static irqreturn_t ad7380_event_handler(int irq, void *private)
+> +{
+> +	struct iio_dev *indio_dev = private;
+> +	s64 timestamp = iio_get_time_ns(indio_dev);
+> +	struct ad7380_state *st = iio_priv(indio_dev);
+> +	const struct iio_chan_spec *chan = &indio_dev->channels[0];
+> +	int i = 0, j = 0;
+
+Why signed? And for 'i' the assignment is redundant.
+
+> +
+> +	for (i = 0; i < st->chip_info->num_channels - 1; i++) {
+> +		iio_push_event(indio_dev,
+> +			       chan->differential ?
+> +			       IIO_DIFF_EVENT_CODE(IIO_VOLTAGE,
+> +						   j,
+> +						   j + 1,
+> +						   IIO_EV_TYPE_THRESH,
+> +						   IIO_EV_DIR_EITHER) :
+> +			       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE,
+> +						    i,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_EITHER),
+> +			       timestamp);
+> +		j += 2;
+> +	}
+> +
+> +	enable_irq(irq);
+> +
+> +	return IRQ_HANDLED;
+> +}
+
+-- 
 With Best Regards,
 Andy Shevchenko
+
+
 

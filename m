@@ -1,167 +1,194 @@
-Return-Path: <linux-iio+bounces-11584-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11585-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39EA9B55BF
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 23:26:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA809B56EC
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 00:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B38A2285851
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 22:26:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D289B22C9D
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Oct 2024 23:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B358220ADDE;
-	Tue, 29 Oct 2024 22:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20FE20C022;
+	Tue, 29 Oct 2024 23:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xClEgT+q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZ7Rsd6b"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A3A20A5DB
-	for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 22:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2F920ADDC;
+	Tue, 29 Oct 2024 23:28:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730240772; cv=none; b=KiEFDFhyWR8EKmXc0hvub5IJ8xRTmFlxpmzS1RKzbSPfOWCRPCcJ5nqxRsOTcUrmlB8tIrJ/uGbvgDz858nRmPPJHimD522ekF3SdOr2D2uf9oi7BWPOcYHiRH6SJTdJCnXrnd11w9kOnqw7tTqZ/NN8BBNgnmw3+A3I044woSU=
+	t=1730244489; cv=none; b=jCNnV2m26FI6x5NJUaDcXFkCfVZi09OVBLlaGIKWG6qLNmDOTrMF/NG6bdnEp0WLKzPG+KYG6pk1JW6eaAO1DDa3GBu67RiBxvn68aCz1EJ1xxaC6t1TjRg9Nch6V50iVlugAZ8w9TqVpiP2ba8uQyRgNpJOLVYe7HC7pWoRDcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730240772; c=relaxed/simple;
-	bh=t5+4Q8OWpVdp/0RgGYt6wGLBd/T5QhCCqDsGYRkkzmo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iF8oS0Rw91CnuicuWkguKQ393CkWBV/YfPP4fupvVbMhHNwltT3vYGzveLVUelSqX8q4s/FxdIAL1UgYkHRMTcqZfNn/dzRHJ4gyzz88Wght5/DfaVLpFCKRz1XWi5w3YUdDYqtJdnP3BxLXObkb59Mlhkr72y8N8vtZO5hgD5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xClEgT+q; arc=none smtp.client-ip=209.85.167.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3e602a73ba1so3425279b6e.2
-        for <linux-iio@vger.kernel.org>; Tue, 29 Oct 2024 15:26:09 -0700 (PDT)
+	s=arc-20240116; t=1730244489; c=relaxed/simple;
+	bh=dJ360g6wR0oB3al1wCLc2vvKC50BXvkFxNqeLxsxMOw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U1NyXWJJL2NiU0sX3oErBeZAWo/THCDdn7fYaGmrtBhrG/ZHDhuJCkDrzPqtvmEKidn+Idf7viSVn0F3CMgxBR6/UFSZWEn15ooJ6K6i2gqsZyiwNcT3c9nbyA/8yVt46/4elNTofOVSl328to1go5ameet7JCxj7toLYCeCAoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZ7Rsd6b; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a9a6acac4c3so941078166b.0;
+        Tue, 29 Oct 2024 16:28:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730240769; x=1730845569; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JlW02YBV+5dPho8DkByoe+gPa11gJkbgA1l/C1eYeW4=;
-        b=xClEgT+qYhpknxBOr3R27bCuYGRvNZTX8SlqE/R3uqZauJBKBhzcl+SStQG3JJWN5B
-         +W5oa+DrNkXM3kNtnE4JC7Lc4gaG1s9u+7VzAHct2byk0/fmbo3jcNdYHxEem8yAcvDl
-         MbG7DUIHxjtL6WSuK3xYZMWhk94YHJ2xXiA1bnedsOA7tO/QCEscxiXk5EhiFIRE0lCA
-         5CtUEL9kfPCJuZZEqyPn9XypA70rfVcNbzRVXSRhnUcu0Y2PAiHRrZTRv8s0mfowvsyZ
-         K3AimnEYPmb8CgivA1wXkS6tUIJ+Axjhu6X4gkUm/wC1Y3XehH8cpFCbc/I8GSqnJBpf
-         JAEw==
+        d=gmail.com; s=20230601; t=1730244486; x=1730849286; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qzIxLUOYaE3vMGtIdY0G5UqFA4HTz9FjS4uuJtpOC/0=;
+        b=RZ7Rsd6bWQWwjoE2D2MUPtt6Rsx9uK0uS12zjpvMQ3jexbsObB5ZYN54HzWM7A8xOr
+         f1zyUuB4TislhLq91ASrqCnCpAzHbuz1hLZ8CBNCoFgOPAgnq/hXQtZhD20qDKqFMdrI
+         wxQ1oY2qJ/2iWcYRizZffeR0mHoLs+lHH/7/m0TTuM3RO8TI5qQaoQ7LWGCiYRu0/c5O
+         fBS8LwobKz9DRSH+iPUGLh78C6z9ugw5hAAmNIv4XS8CUlDVYKVU3xeTxVs99FNnRDgO
+         PEdbPDzqZKbeH4c/3PtBlDO5wnyJYwIpCkKv2vXTGKjefxEI8MPe8NpuCcqhJ7kvk1v3
+         5oDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730240769; x=1730845569;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JlW02YBV+5dPho8DkByoe+gPa11gJkbgA1l/C1eYeW4=;
-        b=a0/ms7tk506SptfKzoqzHZtyhQPNT5pczH+Gyd4NUIS9ae1PkH9wp3OtEdtVcNajQD
-         IMLUNGzV4oXi3KJImfjHQAkcLn25jBh8nIA3gwYTKEasAUhAwijK4DU8eckmvmWPVrcx
-         3/xTrZZUgLtP168cwK2rh+JrsBUKjxuSSiunYGSD9MoRoPfDfY5mu1uHn+EFKGvb/DQj
-         oXDIzdpzV2mYWCgpccSzifG2OXW/PU/DAy7oZIqSmhpIWA4VBeV/DaTRt3lfsSYaxOdT
-         8ZSHhuD2LpQmiDtBheQpB0KsZYcn4f8PG9nkq89E9oSdyXhp9PuV6DK1kAg1tXuz9h8Q
-         99bQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWCz4Y+cngWz0kqVNTnd1pAKrXVaNN/Izc+SKLx0zSD+cp2fy6+tDBjl1Kxaw3uvY3HhWd4k6Vu3ZY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywzu3PI3aF0KgnAV8hFqE/YBx4iad4yLTP4UnMhNXS8FntzE1qr
-	nznzkmBcnQPYuxl7l+e+DeXNKoLgZFtB8WdKj21pGuzYXOEvGb5VeTthFsqUFFA=
-X-Google-Smtp-Source: AGHT+IH+xL4WkT7PHq4e4eGpDTEdBuUhuyNcG6ApkM+ymrg3d/hbpgqXXO+NZSR4pqqXg7V3HUjnJg==
-X-Received: by 2002:a05:6808:22a6:b0:3e5:fc09:7f51 with SMTP id 5614622812f47-3e63823916cmr11524333b6e.9.1730240768711;
-        Tue, 29 Oct 2024 15:26:08 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e6340bbb20sm2221777b6e.7.2024.10.29.15.26.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Oct 2024 15:26:08 -0700 (PDT)
-Message-ID: <b9da1c5e-3177-4bd1-abb2-5e92b0c2fb4c@baylibre.com>
-Date: Tue, 29 Oct 2024 17:26:06 -0500
+        d=1e100.net; s=20230601; t=1730244486; x=1730849286;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qzIxLUOYaE3vMGtIdY0G5UqFA4HTz9FjS4uuJtpOC/0=;
+        b=TjxodcvW7Bpj6pgkxNsHkdPcWRnKJv3Epoo8HDTlPOb322cAC8v9bLhHFzVnP0Dp0M
+         1Ef3L9kenN0Dh13h/R2vcyagTuYBrXKAEq9cx78SWJeOCpLBs8o/RNYO017tdX/Rwy/7
+         M6EVYijdkNaw/XhI+KouKzYImHeg/M6FoHq4E7UirELp6IldWq8TTypEch5rdgGezqLD
+         QXboN6oMLN8+Jkm8BMJcnTRjTf7UMwKcS9pEP2g+rEVJktHjSzituke7USKgdoA0nOS/
+         NQcmAihRd0xCKiVkFWv6E+SujCBJHL2GAMNJiokJCHHnm3NYMXJN5Z+zWHx3MV5j5V0U
+         5uow==
+X-Forwarded-Encrypted: i=1; AJvYcCUBoTzL8oT+A8WwFKAxkw6dbmWVpaQdYPC5ohrJ60gT8z5CVW0evLRGNgr20JRl6Dcy+/TR9OvquynK@vger.kernel.org, AJvYcCV7f9vEdOrxa+bPwPwAPHJ6jms/vVEJCujrywgCbsUmLBYmPtuwvtbg+a92lAs+Nvs52mtI//IKe54UaH6f@vger.kernel.org, AJvYcCWAk2SocXC8bMuf++r37QocolmG5cRMwF6Mi27tkyMwLGjvUcT0rrdGtv7ieiRxB24CbdwRPwfDgeUe@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY7R+NBZpv0UvptWdXKIWLeyjtr9XlA/Q0G0wP6ir7xse+OFe8
+	BPeqjl9AKfLnJJkXrryCwVCC4fBKpYZR3l67hzxiWCmjTawfa9Wp
+X-Google-Smtp-Source: AGHT+IENOuf55S7BPSy+6UBBkR0PUVAFo5/qztlIUA5f3Xh/wyAfuDl0DXdRgwTzNReTidfTZkKNSA==
+X-Received: by 2002:a17:907:7289:b0:a99:fa4e:ba97 with SMTP id a640c23a62f3a-a9de5ff9192mr1243038566b.39.1730244485596;
+        Tue, 29 Oct 2024 16:28:05 -0700 (PDT)
+Received: from vamoirid-laptop ([2a04:ee41:82:7577:89e7:cc9d:3a72:92f3])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f2982e1sm517969166b.99.2024.10.29.16.28.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 16:28:05 -0700 (PDT)
+Date: Wed, 30 Oct 2024 00:28:03 +0100
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
+	anshulusr@gmail.com, gustavograzs@gmail.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 04/13] iio: chemical: bme680: refactorize set_mode()
+ mode
+Message-ID: <ZyFvg5JyA2IJp4v0@vamoirid-laptop>
+References: <20241021195316.58911-1-vassilisamir@gmail.com>
+ <20241021195316.58911-5-vassilisamir@gmail.com>
+ <20241027095939.5ad376ad@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] iio: Add channel type for attention
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Ricardo Ribalda <ribalda@chromium.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Jiri Kosina <jikos@kernel.org>,
- Benjamin Tissoires <bentiss@kernel.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Harvey Yang <chenghaoyang@google.com>,
- linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20241028-hpd-v2-0-18f6e79154d7@chromium.org>
- <20241028-hpd-v2-3-18f6e79154d7@chromium.org>
- <20241028203437.3eb5268d@jic23-huawei>
- <CANiDSCu7G8gDKaY5jJR+JGyqGDobkDPRG+9NOfpXvVviqkQizA@mail.gmail.com>
- <20241029143847.00004392@Huawei.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20241029143847.00004392@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241027095939.5ad376ad@jic23-huawei>
 
-On 10/29/24 9:38 AM, Jonathan Cameron wrote:
-> On Tue, 29 Oct 2024 13:20:06 +0100
-> Ricardo Ribalda <ribalda@chromium.org> wrote:
+On Sun, Oct 27, 2024 at 09:59:39AM +0000, Jonathan Cameron wrote:
+> On Mon, 21 Oct 2024 21:53:07 +0200
+> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 > 
->> Hi Jonathan
->>
->> On Mon, 28 Oct 2024 at 21:34, Jonathan Cameron <jic23@kernel.org> wrote:
->>>
->>> On Mon, 28 Oct 2024 10:12:23 +0000
->>> Ricardo Ribalda <ribalda@chromium.org> wrote:
->>>  
->>>> Add a new channel type representing if the user's attention state to the
->>>> the system. This usually means if the user is looking at the screen or
->>>> not.
->>>>
->>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
->>>> ---
->>>>  Documentation/ABI/testing/sysfs-bus-iio | 7 +++++++
->>>>  drivers/iio/industrialio-core.c         | 1 +
->>>>  include/uapi/linux/iio/types.h          | 1 +
->>>>  tools/iio/iio_event_monitor.c           | 2 ++
->>>>  4 files changed, 11 insertions(+)
->>>>
->>>> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
->>>> index 89943c2d54e8..d5a2f93bd051 100644
->>>> --- a/Documentation/ABI/testing/sysfs-bus-iio
->>>> +++ b/Documentation/ABI/testing/sysfs-bus-iio
->>>> @@ -2339,3 +2339,10 @@ KernelVersion: 6.10
->>>>  Contact:     linux-iio@vger.kernel.org
->>>>  Description:
->>>>               The value of current sense resistor in Ohms.
->>>> +
->>>> +What:                /sys/.../iio:deviceX/in_attention_raw
->>>> +KernelVersion:       6.13
->>>> +Contact:     linux-iio@vger.kernel.org
->>>> +Description:
->>>> +             Boolean value representing the user's attention to the system.
->>>> +             This usually means if the user is looking at the screen or not.  
->>>
->>> Hmm. I should have thought of this when I replied to suggest a new channel type.
->>> The question is 'units' for a decision.
->>>
->>> Last time we hit something like this where processing is used to make a decision
->>> we decided to at least allow for the concept of 'certainty'.
->>>
->>> The idea being that smarter sensors would tell us something about how sure they
->>> are that the attention is on the device.
->>> The analogy being with activity detection. See in_activity_walking_input
->>> in Documentation/ABI/testing/sysfs-bus-iio
->>>
->>> Do you think that would be appropriate here as well?  For this device
->>> it would take the values 0 and 100 rather than 0 and 1.  
->>
->> For the particular device that I want to support, they are giving me a
->> value of 1 and 0, and the example from usb.org seems to work the same
->> way (Logical Maximum of 1)
->> https://www.usb.org/sites/default/files/hutrr107-humanpresenceattention_1.pdf
->>
->> I have no problem multiplying my value by 100 if you think there will
->> be a use case for that. It will not have a major performance impact on
->> the driver.
-> Same was true (0 or 1) for the activity classification but I'm not
-> keen on certainty :)  So lets' copy that precedence and *100
+> > Refactorize the set_mode() function to use an external enum that
+> > describes the possible modes of the BME680 device instead of using
+> > true/false variables for selecting SLEEPING/FORCED mode.
+> > 
+> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> I changed my mind on this one...
+> 
+> > ---
+> >  drivers/iio/chemical/bme680_core.c | 30 +++++++++++++-----------------
+> >  1 file changed, 13 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+> > index d228f90b4dc6..9002519d2c33 100644
+> > --- a/drivers/iio/chemical/bme680_core.c
+> > +++ b/drivers/iio/chemical/bme680_core.c
+> > @@ -95,6 +95,11 @@ struct bme680_calib {
+> >  	s8  range_sw_err;
+> >  };
+> >  
+> > +enum bme680_op_mode {
+> > +	BME680_SLEEP,
+> > +	BME680_FORCED,
+> Use this enum to replace the existing BME680_MODE_SLEEP etc definitions
+> rather than adding another one.
+> Also assign explicit values as you are going to write this into a register
+> so they matter.
 > 
 > 
-And I assume we would want this to be in_attention_input (processed),
-not in_attention_raw.
 
+Hi Jonathan,
+
+Thank you very much once again for the review! I totally understand what
+you mean and I will fix it for next version.
+
+Cheers,
+Vasilis
+
+> > +};
+> > +
+> >  struct bme680_data {
+> >  	struct regmap *regmap;
+> >  	struct bme680_calib bme680;
+> > @@ -502,23 +507,16 @@ static u8 bme680_calc_heater_dur(u16 dur)
+> >  	return durval;
+> >  }
+> >  
+> > -static int bme680_set_mode(struct bme680_data *data, bool mode)
+> > +static int bme680_set_mode(struct bme680_data *data, enum bme680_op_mode mode)
+> >  {
+> >  	struct device *dev = regmap_get_device(data->regmap);
+> >  	int ret;
+> >  
+> > -	if (mode) {
+> > -		ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
+> > -					BME680_MODE_MASK, BME680_MODE_FORCED);
+> > -		if (ret < 0)
+> > -			dev_err(dev, "failed to set forced mode\n");
+> > -
+> > -	} else {
+> > -		ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
+> > -					BME680_MODE_MASK, BME680_MODE_SLEEP);
+> > -		if (ret < 0)
+> > -			dev_err(dev, "failed to set sleep mode\n");
+> > -
+> > +	ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
+> > +				BME680_MODE_MASK, mode);
+> This is the problematic code.  No obvious reason the enum should match the original
+> values. It does, but that should be made true by only having an enum, not definitions
+> and an enum.
+> 
+> > +	if (ret < 0) {
+> > +		dev_err(dev, "failed to set ctrl_meas register\n");
+> > +		return ret;
+> >  	}
+> >  
+> >  	return ret;
+> > @@ -615,8 +613,7 @@ static int bme680_gas_config(struct bme680_data *data)
+> >  	int ret;
+> >  	u8 heatr_res, heatr_dur;
+> >  
+> > -	/* Go to sleep */
+> > -	ret = bme680_set_mode(data, false);
+> > +	ret = bme680_set_mode(data, BME680_SLEEP);
+> >  	if (ret < 0)
+> >  		return ret;
+> >  
+> > @@ -756,8 +753,7 @@ static int bme680_read_raw(struct iio_dev *indio_dev,
+> >  
+> >  	guard(mutex)(&data->lock);
+> >  
+> > -	/* set forced mode to trigger measurement */
+> > -	ret = bme680_set_mode(data, true);
+> > +	ret = bme680_set_mode(data, BME680_FORCED);
+> >  	if (ret < 0)
+> >  		return ret;
+> >  
+> 
 

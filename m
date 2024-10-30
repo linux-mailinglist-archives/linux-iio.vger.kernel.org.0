@@ -1,345 +1,193 @@
-Return-Path: <linux-iio+bounces-11622-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11623-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768609B67A2
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 16:24:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5645E9B67DF
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 16:30:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFFB41F22870
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 15:24:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D18DF1F2275B
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 15:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC6221F4CA;
-	Wed, 30 Oct 2024 15:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79F6213EED;
+	Wed, 30 Oct 2024 15:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VsU4B5Kk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F9xcXFqI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996CE21F4A4
-	for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 15:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEBD1EABA2
+	for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 15:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730301472; cv=none; b=mPtqaDgIg0FhnlHP7EKEJcXrpa6DGsmvTvJeNKcn6VTNPdiP9lwW8gYS0p7R4nieWO2D0vGNzSM2z8EuycyHLu6PjsKUxRKTV398IxEp+HADyycYiHFG0rjAlfHTVDl5FHRxbAdnIc98X/FuAI1b8UqqZNauskivSsQt7SD/AAU=
+	t=1730302232; cv=none; b=mLFCm3OU9inOpbXAqCXcMp4jlWfk7e4eJYDlW/PtwjHJp4dgnuHLmcy/7oiD0t/EzfQJzSxgcAi4l6ZYH8oTqlPD1bEBJRMz5y4dh43TLRmm5v+IO4JdNudleRaBpN6RFXOMY0YoC4aZMTMq7ApzPFQ1OMtAo6c1b+/Q1p4Tqjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730301472; c=relaxed/simple;
-	bh=KMe95Oav9UUtjQ8KxL+YP0fkRFrOhYva3HOMiL+GHlw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=BnH1xPHz+kK5kibpZq6/FXaRPZkRb3xJxIyueOh8fsSpUzV2JPPjdQhHDLGMU8ZS2EEf2SwF+Rnz9Rt8STQgBxua8V1fxdkl7GrYWeAvKuGWbNNAjam+MkNm8ECCH9/i/y+2McC+qRySJbqrdvb7zH20R2J8jwhAHDwq+ccChgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VsU4B5Kk; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1730302232; c=relaxed/simple;
+	bh=oGCPC4WQtceCeXznYVFm3J6HRXKtenOwpTRHuoSpNpE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UpuhJGM8ZVX9BdO/COaraRe1zUW2rZ0IsVP5kWgYxatG5HknpSX0cVKvrrbl9ncEgGiV/bzSZ3KImPatRxKBiRtrtHDXFa0uoVZGNMChgFUeqjm2qxF4QoXAe17i87XjQtVJDYxcEJZCtGWpT4Jhtjk+67IMNm1uvxM8yZw/S58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F9xcXFqI; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4316cce103dso85855445e9.3
-        for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 08:17:48 -0700 (PDT)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4315df7b43fso66205605e9.0
+        for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 08:30:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730301467; x=1730906267; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nld+5lX6B0RPTIruuP0JriChCtvGT9xr3rmugHCDdIU=;
-        b=VsU4B5KkufbIveTwAIZCMTC+E6rWHejo9rdJ9duXUxAjWaYy+4k93C6Bxt+PgSrsJx
-         408+wsaMRT3yRTP/EW94ZWsDUrX/co8V2ZQQJS8SXPDkJnykMJOy5W0S2ZNpV/d04bm1
-         U9i/5Kii0QhFKCbBzHvqc1yUAVod1+qmvG8Ke+CSt96Zt4vyM9dZiO5nhtaUUyud31PW
-         nDn5WBl5JqhZUUuthAc3aStPK6yGJ2Bk2LRrvV6qy/0aCtC8D1nQh+nc0KeEokrUsK7r
-         hinOAgqwV4OGmZADMsnZH7Q1FhdI8veUkqS07nOOj0wWDOFCHO0GwdSltkcHTXwgiQKq
-         MHmA==
+        d=linaro.org; s=google; t=1730302227; x=1730907027; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Nm2tLAMuR5VQSjESa6r82m8ESUsEoS2u94Sem0i/oc=;
+        b=F9xcXFqI71XNDzf2Rm6hb95hMv0/USsbRIc26zvanKtKlNaFVUB2nklT8UKkTngYNi
+         MjCTiXqTrPI3KjCwpcm7hgZdqWsyw/5wHSJpt1rY0Er8yxBRB/bQ0GqIbAakwFDcYuTi
+         xXrwyP0XlTzyq6KExqI7zNU1PUvHLL54hTn01tSdFpoHw6tnVsg1lLkrWYvc3Od/JJ7v
+         S2HunmL8F9N4Ppryq20POwJOS8LjzuU7/eQZSXhs+fRTM3a6E7wUYWp7QYp6L5NAt+Ve
+         EfIY+GH+X2WbRMyHE/2MfE01eWBuddb6BlPSuaMKc04q9ipGY3zUw+xsxYoVX5uyjXFf
+         Kprw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730301467; x=1730906267;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nld+5lX6B0RPTIruuP0JriChCtvGT9xr3rmugHCDdIU=;
-        b=jQHJivPOWuIwMJVwfL7Zk7yMKz9IegL3uPA1V6kQSMhojhUSp6t8Eol7iUp+8PXmxj
-         Dp0TCQbTb/LgJkZWVzdhr/wJFt7OhPDp1j4SDEWuztSVIy/o4vPPEpjpJ6xFVNC22pTR
-         KHLgZ3DoG3ianBl6kXTQRuJROFoDbbwXOPseYyfD2w1jNSHi0kOOyu3s9aSvb3VqTg1c
-         jYRrUmzyMHnzx1/vdsCAx3XG4i/K8e9dvF/hpox7EAlkLWf+MR2kOHqF5NqPBlDYDNXr
-         jMHQQr3cuCUA4MajJCsd7uTJZIWDKQI2MbVPLeminpy0oLxohm2+1ImsVGPEM6NEFiwD
-         EDQw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvW86Wj4D0yZ5RBdtcV6LDyNXHnv+0c9z5M3ldOndOwAMI9Z9wpzs/9tRp+2GsGpqiPJoL80Kazmw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCLRzHp77ovl0I/E3LdBrjgJlHVEUXIG4th+bSZt/YbZF8rhiS
-	hRdVHGz9IdNPwgwYmNSFpjxQ5kS0cAXUa7Mi6bg4mPRuTtCL0MD54QoNyJr48eA=
-X-Google-Smtp-Source: AGHT+IFMEIV+VkKJg+SIopG7mLkdPPD/4rj1St9eYxgEzLUvExSb5n0MdRjl9vUGWFWdoQemIFIVzA==
-X-Received: by 2002:adf:fe91:0:b0:37d:3f5f:9191 with SMTP id ffacd0b85a97d-380611d983cmr14962200f8f.33.1730301466911;
-        Wed, 30 Oct 2024 08:17:46 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:201:dd6:9287:c715? ([2a01:e0a:982:cbb0:201:dd6:9287:c715])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70c91sm15556802f8f.85.2024.10.30.08.17.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Oct 2024 08:17:46 -0700 (PDT)
-Message-ID: <ff90fb92-ab4a-4719-b9c4-7b21245207b1@linaro.org>
-Date: Wed, 30 Oct 2024 16:17:45 +0100
+        d=1e100.net; s=20230601; t=1730302227; x=1730907027;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1Nm2tLAMuR5VQSjESa6r82m8ESUsEoS2u94Sem0i/oc=;
+        b=iAmDiz+AEzKpjUhmm0ysB29miKyP0iLfD1Rf6dKI8GEwTdFRb1i+mQDfoxfPOw3VH2
+         YfK3IAk/EXlYhvudKhoJ8NBMWrAHLnHI+mJrWSbNjz0C5JO7PozqNXjdyIqgoyXfZp9s
+         UMfYCQ5NNKc2iauPE9E+loZcZwvYsFaNE4gAAJDeIjQw1PY65GT4hrIW4xnQnCCh7JPC
+         Ojj9gRuWhcPqzdBo/xM1wpQjYX/OCOyxc1WrwoLoIpMNx63ngUog9gZMU6BaNugPTJkN
+         ETbcEh5tb1nKhlWHh2NZhMNpxPDAye9xctwjHWGCnNRtMo3hqkhrTXQpj2x5hTujP+/s
+         xurw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCc4HRv2jtv4KPyfHWwk93W7B+uvGREvlcX6BeOSOq+PklEPqsvhORNaUDwe3uNridlAqIYkJQLS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZHMZNUArXHLH+Kwch5ZfNtLki+p1Kgu83daTOtr52Sl6CJPb0
+	gfvDwzd4IjZWy/htPtKZL+/vfdnbJCnTvz5KuxzyMIEf9mBvduNaMIBdSWXC2UQ=
+X-Google-Smtp-Source: AGHT+IEcJIgJ0swoxDmGPVd8MDHoy/uFqvVvZeKiSkWZypEzyJHY+b113TcGuNYnM9giuhoFoQ0VfA==
+X-Received: by 2002:a05:6000:dd0:b0:374:c3e4:d6de with SMTP id ffacd0b85a97d-380611e484bmr13072026f8f.41.1730302227251;
+        Wed, 30 Oct 2024 08:30:27 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:8261:5fff:fe11:bdda])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b3c236sm15604040f8f.35.2024.10.30.08.30.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 08:30:26 -0700 (PDT)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH v4 0/3] iio: magnetometer: add support for the Allegro
+ MicroSystems ALS31300 3-D Linear Hall Effect Sensor
+Date: Wed, 30 Oct 2024 16:30:21 +0100
+Message-Id: <20241030-topic-input-upstream-als31300-v4-0-494297c9e50a@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH v3 3/3] iio: magnetometer: add Allegro MicroSystems
- ALS31300 3-D Linear Hall Effect driver
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20241029-topic-input-upstream-als31300-v3-0-147926dd63b3@linaro.org>
- <20241029-topic-input-upstream-als31300-v3-3-147926dd63b3@linaro.org>
- <CAHp75VdH7bxuPW6Fx4Mcq18hQfr1sDhBYDwGn8OeurQOAar2kg@mail.gmail.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <CAHp75VdH7bxuPW6Fx4Mcq18hQfr1sDhBYDwGn8OeurQOAar2kg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA5RImcC/4XNQQrCMBCF4atI1kYmk9ioK+8hLqbpqAPalKQWR
+ Xp3oyAoLrr83+J7D5U5CWe1mT1U4kGyxLaEm89UOFF7ZC1NaYWAzgCg7mMnQUvbXXt97XKfmC6
+ aztkaC6ADeQeOa0c1qGJ0iQ9ye/u7femT5D6m+/tuMK/1I/sJeTAaNAZ0wLQMtffbs7SU4iKmo
+ 3rRA35xaKY4LJytyKFf0RJX/MfZb249xdnCGefXWDVNZWv7w43j+ATbp4/DaQEAAA==
+X-Change-ID: 20241002-topic-input-upstream-als31300-ca7404eb4ab0
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Andy Shevchenko <andy@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3603;
+ i=neil.armstrong@linaro.org; h=from:subject:message-id;
+ bh=oGCPC4WQtceCeXznYVFm3J6HRXKtenOwpTRHuoSpNpE=;
+ b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBnIlEQZubupZBTZHeKsXpsUuCLGzSLXYYRsvV7uGrs
+ Y++SfVSJAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCZyJREAAKCRB33NvayMhJ0aU0D/
+ 9emG6OtyX/dGjCOxQp4P8+m+/2BS6KWX0G6TDDhv6QJ69WqUsJJwuenAlzKI5MVK4gHqvrldIBxuZR
+ fPkf6cyhyhpgvM9U7IPlymSi/tE9r6eiiM50oE1vVZeaWQkzl/LFacd4hzMzU0mhLf8eBdPfPQxaKD
+ 8MOZGJWsV/iC/6WE6oPn3mDXBcJOntmAt8VeQWluRJzmwMg1e6M6C3c2Tn4rOFJ14rAb0IWhfBdS03
+ +uYK+ZnyQOlSQAs4PdxH+el+SSVBxi2VaU6itNKcGZp4ZuVRSGgMfcosdSgX2iC3wrFKsqnnZVZdaD
+ j+wdod2BYz1674eYaJ3ijmDXB+mPtEYmORXkKGUui7UmRZlbMFrLB+StIwn50egyCp2LNyWegWE3j9
+ IkEGYuf0VXBdv3RZng1RLUMsPvePGP5DLUNvka7n8b5AV5+q5pbrIb6r+Yg4s/Er2rGrQFRKeh1K9P
+ R1s136kV/qegilPkSFAN2JQIxJb7GaVKBk3/c+55oEujSah5qAtK3IPJsNzdTOoioJA1yUv3xnlhOF
+ NRvAjxcRjEE5k2QYBpzQMD2RD8scvWbzbOCR3IOmQ1Rgy/F1LjOd/iKuJpo6sByvCcSX2VBcfMgNkr
+ Ckd21lliNUQrOMFlBFOmERgTvHzbZX0hb5na+69s7YaKfpmN71/cBdURoiSg==
+X-Developer-Key: i=neil.armstrong@linaro.org; a=openpgp;
+ fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
 
-On 29/10/2024 20:48, Andy Shevchenko wrote:
-> On Tue, Oct 29, 2024 at 4:13 PM Neil Armstrong
-> <neil.armstrong@linaro.org> wrote:
->>
->> The Allegro MicroSystems ALS31300 is a 3-D Linear Hall Effect Sensor
->> mainly used for 3D head-on motion sensing applications.
->>
->> The device is configured over I2C, and as part of the Sensor data the
->> temperature core is also provided.
->>
->> While the device provides an IRQ gpio, it depends on a configuration
->> programmed into the internal EEPROM, thus only the default mode is
->> supported and buffered input via trigger is also supported to allow
->> streaming values with the same sensing timestamp.
->>
->> The device can be configured with different sensitivities in factory,
->> but the sensitivity value used to calculate value into the Gauss
->> unit is not available from registers, thus the sensitivity is provided
->> by the compatible/device-id string which is based on the part number
->> as described in the datasheet page 2.
-> 
-> Thank you for an update, this looks more or less good. I have a few
-> nit-picks below. With them addressed,
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> 
-> ...
-> 
->> +#include <linux/types.h>
->> +#include <linux/units.h>
-> 
-> It's a bit of an unusual order. Do you mean to put them after the
-> regulator/*.h one?
+The Allegro MicroSystems ALS31300 is a 3-D Linear Hall Effect Sensor
+mainly used in 3D sensing applications for head-on motion.
 
-Ack
+The device is configured over I2C, and as part of the Sensor
+data the temperature core is also provided.
 
-> 
->> +#include <linux/bits.h>
->> +#include <linux/bitfield.h>
->> +#include <linux/delay.h>
->> +#include <linux/module.h>
->> +#include <linux/i2c.h>
->> +#include <linux/regmap.h>
->> +#include <linux/pm.h>
->> +#include <linux/pm_runtime.h>
->> +#include <linux/regulator/consumer.h>
-> 
-> ...
-> 
->> +#define ALS31300_DATA_X_GET(b)         \
->> +               sign_extend32(FIELD_GET(ALS31300_VOL_MSB_X_AXIS, b[0]) << 4 | \
->> +                             FIELD_GET(ALS31300_VOL_LSB_X_AXIS, b[1]), 11)
->> +#define ALS31300_DATA_Y_GET(b)         \
->> +               sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Y_AXIS, b[0]) << 4 | \
->> +                             FIELD_GET(ALS31300_VOL_LSB_Y_AXIS, b[1]), 11)
->> +#define ALS31300_DATA_Z_GET(b)         \
->> +               sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Z_AXIS, b[0]) << 4 | \
->> +                             FIELD_GET(ALS31300_VOL_LSB_Z_AXIS, b[1]), 11)
->> +#define ALS31300_TEMPERATURE_GET(b)    \
->> +               (FIELD_GET(ALS31300_VOL_MSB_TEMPERATURE, b[0]) << 6 | \
->> +                FIELD_GET(ALS31300_VOL_LSB_TEMPERATURE, b[1]))
-> 
-> Yeah, I have got that the data is interlaced, and it's still possible
-> to use the __be64, but the resulting code might be too overengineered
-> for this simple case (as it would require bitmap operations to remap
-> interlaced bits and an additional churn on top of u64 to be
-> represented as set of unsigned long:s).
-> 
-> ...
-> 
->> +/* The whole measure is split into 2x32bit registers, we need to read them both at once */
-> 
-> 32-bit
+While the device provides an IRQ gpio, it depends on a configuration
+programmed into the internal EEPROM, thus only the default mode
+is supported and buffered input via trigger is also supported
+to allow streaming values with the same sensing timestamp.
 
-Ack
+The device can be configured with different sensitivities in factory,
+but the sensitivity value used to calculate value into the Gauss
+unit is not available from registers, thus the sensitivity is
+provided by the compatible/device-id string which is based
+on the part number as described in the datasheet page 2.
+    
+The datasheet is available on the product website at [1].
 
-> 
-> ...
-> 
->> +       /*
->> +        * Loop until data is valid, new data should have the
->> +        * ALS31300_VOL_MSB_NEW_DATA bit set to 1.
->> +        * Max update rate is 2KHz, wait up to 1ms
-> 
-> Missing period at the end.
+[1] https://www.allegromicro.com/en/products/sense/linear-and-angular-position/linear-position-sensor-ics/als31300
 
-Ack
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+---
+Changes in v4:
+- reorder includes
+- fix typos in comments
+- drop spurious empty line
+- use fsleep instead of usleep_range(600, 650);
+- check return of devm_mutex_init
+- add Andy's review tag
+- Link to v3: https://lore.kernel.org/r/20241029-topic-input-upstream-als31300-v3-0-147926dd63b3@linaro.org
 
-> 
->> +        */
-> 
-> ...
-> 
->> +       switch (mask) {
->> +       case IIO_CHAN_INFO_PROCESSED:
->> +       case IIO_CHAN_INFO_RAW:
->> +               ret = als31300_get_measure(data, &t, &x, &y, &z);
->> +               if (ret)
->> +                       return ret;
->> +
->> +               switch (chan->address) {
->> +               case TEMPERATURE:
->> +                       *val = t;
->> +                       return IIO_VAL_INT;
->> +               case AXIS_X:
->> +                       *val = x;
->> +                       return IIO_VAL_INT;
->> +               case AXIS_Y:
->> +                       *val = y;
->> +                       return IIO_VAL_INT;
->> +               case AXIS_Z:
->> +                       *val = z;
->> +                       return IIO_VAL_INT;
->> +               default:
->> +                       return -EINVAL;
->> +               }
->> +       case IIO_CHAN_INFO_SCALE:
->> +               switch (chan->type) {
->> +               case IIO_TEMP:
->> +                       /*
->> +                        * Fractional part of:
->> +                        *         1000 * 302 * (value - 1708)
->> +                        * temp = ----------------------------
->> +                        *             4096
->> +                        * to convert temperature in millicelcius
-> 
->   Missing period at the end.
+Changes in v3:
+- Add missing includes
+- Use read_poll_timeout() in als31300_get_measure()
+- Use MILLI instead of 1000
+- Remove __packed attribute
+- Return 0 at the end of als31300_set_operating_mode()
+- Use devm_mutex_init
+- Use dev_err_probe() to handle devm_iio_triggered_buffer_setup() error
+- Link to v2: https://lore.kernel.org/r/20241021-topic-input-upstream-als31300-v2-0-36a4278a528e@linaro.org
 
-Ack
+Changes in v2:
+- Add rob's Ack on patch 1
+- Fix commit message layout on patches 2 & 3
+- Use Datasheet tag on patch 2
+- Fix bindings file name, add options interrupts, fix example node name & compatible
+- Fix driver with Jonathan's advices:
+  - Reword top file comments
+  - Reduce VOLATILE defines
+  - Move registers values next to register define and add an indent
+  - Use sign_extend32() to X/Y/Z macro, dtop cast on temperature macro
+  - Add als31300_variant_info to pass to i2c/of device_id
+  - Move scan buffer to irq function
+  - Use guard(mutex)
+  - Return fractional for millicelcius
+  - switch to aligned_s64
+  - use index 4 for IIO_CHAN_SOFT_TIMESTAMP
+  - Add usleep after switching to ACTIVE state to avoid hitting read errors after wake up
+  - simplify suspend/resume functions by returning als31300_set_operating_mode()
+- Link to v1: https://lore.kernel.org/r/20241007-topic-input-upstream-als31300-v1-0-2c240ea5cb77@linaro.org
 
-> 
->> +                        */
->> +                       *val = MILLI * 302;
->> +                       *val2 = 4096;
->> +                       return IIO_VAL_FRACTIONAL;
->> +               case IIO_MAGN:
->> +                       /*
->> +                        * Devices are configured in factory
->> +                        * with different sensitivities:
->> +                        * - 500 GAUSS <-> 4 LSB/Gauss
->> +                        * - 1000 GAUSS <-> 2 LSB/Gauss
->> +                        * - 2000 GAUSS <-> 1 LSB/Gauss
->> +                        * with translates by a division of the returned
->> +                        * value to get Gauss value.
->> +                        * The sensisitivity cannot be read at runtime
-> 
-> sensitivity
+---
+Neil Armstrong (3):
+      dt-bindings: vendor-prefixes: Add Allegro MicroSystems, Inc
+      dt-bindings: iio: magnetometer: document the Allegro MicroSystems ALS31300 3-D Linear Hall Effect Sensor
+      iio: magnetometer: add Allegro MicroSystems ALS31300 3-D Linear Hall Effect driver
 
-Good catch
+ .../iio/magnetometer/allegromicro,als31300.yaml    |  46 ++
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ drivers/iio/magnetometer/Kconfig                   |  13 +
+ drivers/iio/magnetometer/Makefile                  |   1 +
+ drivers/iio/magnetometer/als31300.c                | 494 +++++++++++++++++++++
+ 5 files changed, 556 insertions(+)
+---
+base-commit: 57573ace0c1b142433dfe3d63ebf375269c80fc1
+change-id: 20241002-topic-input-upstream-als31300-ca7404eb4ab0
 
-> 
->> +                        * so the value depends on the model compatible
->> +                        * or device id.
->> +                        */
->> +                       *val = 1;
->> +                       *val2 = data->variant_info->sensitivity;
->> +                       return IIO_VAL_FRACTIONAL;
->> +               default:
->> +                       return -EINVAL;
->> +               }
->> +       case IIO_CHAN_INFO_OFFSET:
->> +               switch (chan->type) {
->> +               case IIO_TEMP:
->> +                       *val = -1708;
->> +                       return IIO_VAL_INT;
->> +               default:
->> +                       return -EINVAL;
->> +               }
-> 
->> +
-> 
-> Seems like a stray blank line here.
-
-Ack
-
-> 
->> +       default:
->> +               return -EINVAL;
->> +       }
->> +}
-> 
-> ...
-> 
->> +static int als31300_set_operating_mode(struct als31300_data *data,
->> +                                      unsigned int val)
->> +{
->> +       int ret;
->> +
->> +       ret = regmap_update_bits(data->map, ALS31300_VOL_MODE,
->> +                                ALS31300_VOL_MODE_SLEEP, val);
->> +       if (ret) {
->> +               dev_err(data->dev, "failed to set operating mode (%pe)\n", ERR_PTR(ret));
->> +               return ret;
->> +       }
->> +
->> +       /* The time it takes to exit sleep mode is equivalent to Power-On Delay Time */
->> +       if (val == ALS31300_VOL_MODE_ACTIVE_MODE)
->> +               usleep_range(600, 650);
-> 
-> fsleep() ?
-
-Sure
-
-> 
->> +       return 0;
->> +}
-> 
-> ...
-> 
->> +       devm_mutex_init(dev, &data->mutex);
-> 
-> Hmm... While not critical, this may still return an error. There were
-> only two (out of ~15) users that ignored the error code, in v6.12
-> there are two more in IIO, while one is checking for it. I would like
-> to check for an error and bail out (and maybe I'll update the other
-> drivers in IIO to follow, including one GPIO module that ignores it).
-> 
-
-Ack, thanks for the review!
-
-Neil
-
+Best regards,
+-- 
+Neil Armstrong <neil.armstrong@linaro.org>
 
 

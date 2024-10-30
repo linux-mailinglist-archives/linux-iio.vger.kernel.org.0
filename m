@@ -1,129 +1,111 @@
-Return-Path: <linux-iio+bounces-11656-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11657-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436BD9B6E6F
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 22:09:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8AB9B6EC4
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 22:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDE5B1F225E5
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 21:09:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 433B4281BC5
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 21:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F622144C8;
-	Wed, 30 Oct 2024 21:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1684F21503D;
+	Wed, 30 Oct 2024 21:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hUJ+M//G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r3Amj9hj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009A31EF940
-	for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 21:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCF91EB9FD;
+	Wed, 30 Oct 2024 21:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730322587; cv=none; b=R0UukweS7ATlTL91j/+93cMQrGppln3fybUL1OHpUaKfwQu/08+IpiaX172nrU/dDmh2uGq94eYI+jTRe3Nd9E1PzG8L51P5u6cSGRjgtXh2VSUwjnFCE08x//nTba0AAV3MaGlDJZuw+FRz0XlbswwPjy87hdw5IL1MuJxApEw=
+	t=1730323507; cv=none; b=h2ITlYFhxqhOt/8NO7hxx8a3fsVIJaopf05i+c3BJC6zX1nFa+8e+L95Eu5FBsjpQrTXBrg5GMKgAFN5u0roZ3zp2CqIFnMYUiKj+1T+SFTMHHs5qgq61XN0SG+OlUEcxraVjk9Le+4uWM7gZ2q0BZ3hlX18kJgcWdUARo9fpP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730322587; c=relaxed/simple;
-	bh=dtzSsuOsjrMsDUkaJ8ZCN4Md4sSP4PrAoDcNwjhOekA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gY0qESoeTrkuOTrlYQg/GoTp0H0iXDqGZiAxvrdA7suRjCudf7iWZXGyrAiFKowRfVU2TeVZgFmcZf5nLTsyJGp+SmYkZ7+yLhDq0w996mcddT7lyWiOwo1LWAvod86izSBJ8q83mfYExACz4Dc5zhJtSQWWfgj7rEO+k0epDZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hUJ+M//G; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7180a400238so164689a34.0
-        for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 14:09:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730322583; x=1730927383; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v946MMe7vLct0HqxsJKsBrfIkZPTq8ZRm2oG1sT2VpY=;
-        b=hUJ+M//GSSAAc92pM/Fi7+R0kxyQkIjMpATbVwpc7r/xWDa2v5Z9VXSRr7yIAAsEUK
-         29liW6bus9rugEJC50He17dnng3ToCVOhROghpysIkQUtTzf2cbV+E0x3QIoKzSpSkco
-         pGEpNBdZMrZwDVnwp3Hf3CG/wL9sY4T3EW6LSUGltVS4Fya4Yci6XiEyWjQ8y95nxuIo
-         Hk8gW6tS6wAUq5qieqRZJcAUH6O8t3wq7RpsEx7KUy6ClHWbfG/cyIdI8eHVaA0++hwQ
-         wcwpkv69u7cdS3O+LThaer87w5DoCYyEfgMDLh0Jr3dxiiH7MqPtRSEpDvdxul+dPiDn
-         2fvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730322583; x=1730927383;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v946MMe7vLct0HqxsJKsBrfIkZPTq8ZRm2oG1sT2VpY=;
-        b=QBftGCRtkZlw8LSkg0dQlcGuXlpSPGvDSfvnwLKQz4khW+tYNiWDS2yM+uVtRoGPxy
-         +SiOziDlzz7EJ7xM5JsRl2rZC3frIHr+xb9vp9vSwn7FzNfrtMFHFb2tZhztWt5XDyhO
-         reYvImNrzjQ8Whrw8bfKsSY4cbllu2EHcX9GGtMHqVyaVR3KR4K+zMN0G07/SRzZ+jQL
-         XjNYsOd23VfPOAm6s/vbXLDcB8gToyhW4ooMX3sbqzZB79QWhI/O3XzeOZmqgebQS4ts
-         oyWGW4axBxRo6Dvgkv5ICerwBdj1YB2fVkOF1G+rQHiKxU+0YBzEbTuGOIMmt9lrRTau
-         LU5w==
-X-Forwarded-Encrypted: i=1; AJvYcCX1dngOKM9ML0gycMCm7KD8RJmYdsvMBeYKiu7dHfFyoWJNWgccGS4zySckrLHDVx6WSoilJ3ktEUg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxutO6aFvScKnj9s/KViY71kMNP/MTcnG9orRsA7EHv1SlFMxut
-	/6DjnNKQAoK9+r7YvpsczKRFvGK2LW3lJMMvsZRnFeEdIBl87X7WRnQhMmGIdg4=
-X-Google-Smtp-Source: AGHT+IGTjtKWZENtiMSPHMMhWP5XL9suYtm5rdO9OICFcYMD33T6XZ+W6/+ori11obVOa0lQc20Hjg==
-X-Received: by 2002:a05:6830:358e:b0:709:3a3d:6cca with SMTP id 46e09a7af769-7189d50dc56mr38971a34.11.1730322582945;
-        Wed, 30 Oct 2024 14:09:42 -0700 (PDT)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7189cc7ff23sm38814a34.41.2024.10.30.14.09.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 14:09:42 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 30 Oct 2024 16:09:41 -0500
-Subject: [PATCH] iio: adc: ad4000: fix reading unsigned data
+	s=arc-20240116; t=1730323507; c=relaxed/simple;
+	bh=HqMNgKCMVJf0qZFzcCiaUNfllfqVoCmIcc6FTWRTOLk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aKDWkiWFtj1lFia9fYPurlUkbuOXq92G1vHWrWhd3Es7ekgeKbepw54jOHtN+8J2tkLfw+aw04+vXwfi/B9ZZPkr4t8Bc6Z85NigZIbT3ZnHgqC16X7s756VDsTpBsr3z6m27C8JcY7TpgbsPH2xtzcBL5teY5ouxr4Tj3OTHtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r3Amj9hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2314CC4CECE;
+	Wed, 30 Oct 2024 21:25:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730323507;
+	bh=HqMNgKCMVJf0qZFzcCiaUNfllfqVoCmIcc6FTWRTOLk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=r3Amj9hjHHB/5N2J3vUBEOL8o4Rp+AL7IPLsdojeZ0fr4nVXY73pQ+mPrz1ei/5N+
+	 WUkcIGUOykvH+tKcS1Gta9FPMXXtrKXBBDEXDbky59xJO9BnFDCBRqriWy1gyml3mN
+	 je5hPo0KxRM7VXOqKAyGO5a2Uunc1wv7MBKmYxZUUF1Ue9mkGPBFSGGNKT0oF7ljUZ
+	 SUEq7wPT68Ep8cujOtB/PfeAO3lLc9ymh5lJp5W3HlLDDk9gwnlIpQHaPPMiL4r4FY
+	 voSkFBOkYrkxTb7QZQ03Wla0Dc08w6STFGfJyMgTd3iUZ2DYtfkYthGwKv40fQzvjw
+	 zTtYVvSs6KaEw==
+Date: Wed, 30 Oct 2024 16:25:05 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Angelo Dureghello <angelo@kernel-space.org>
+Cc: Angelo Dureghello <adureghello@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+	dlechner@baylibre.com, devicetree@vger.kernel.org,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 2/8] dt-bindings: iio: dac: adi-axi-dac: add ad3552r
+ axi variant
+Message-ID: <173032348133.2084422.16647794815032410489.robh@kernel.org>
+References: <20241028-wip-bl-ad3552r-axi-v0-iio-testing-v9-0-f6960b4f9719@kernel-space.org>
+ <20241028-wip-bl-ad3552r-axi-v0-iio-testing-v9-2-f6960b4f9719@kernel-space.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241030-iio-adc-ad4000-fix-reading-unsigned-data-v1-1-2e28dd75fe29@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAJSgImcC/x2NQQrCQAxFr1KyNpCplQ5eRVyESTrNJpUZlULp3
- Q0u3uLB4/8DujbTDvfhgKZf67Z5SLoMUFb2qmgSDiONU6IrodmGLCWYiAgX27Epi3nFj3erroL
- Cb8acOYnmXJbbDDH3ahrx/+rxPM8fTDyDj3oAAAA=
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
- Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241028-wip-bl-ad3552r-axi-v0-iio-testing-v9-2-f6960b4f9719@kernel-space.org>
 
-Fix reading unsigned data from the AD4000 ADC via the _raw sysfs
-attribute by ensuring that *val is set before returning from
-ad4000_single_conversion(). This was not being set in any code path
-and was causing the attribute to return a random value.
 
-Fixes: 938fd562b974 ("iio: adc: Add support for AD4000")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-FYI, there is also another unrelated bug I noticed but didn't fix.
+On Mon, 28 Oct 2024 22:45:29 +0100, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> Add a new compatible and related bindigns for the fpga-based
+> "ad3552r" AXI IP core, a variant of the generic AXI DAC IP.
+> 
+> The AXI "ad3552r" IP is a very similar HDL (fpga) variant of the
+> generic AXI "DAC" IP, intended to control ad3552r and similar chips,
+> mainly to reach high speed transfer rates using a QSPI DDR
+> (dobule-data-rate) interface.
+> 
+> The ad3552r device is defined as a child of the AXI DAC, that in
+> this case is acting as an SPI controller.
+> 
+> Note, #io-backend is present because it is possible (in theory anyway)
+> to use a separate controller for the control path than that used
+> for the datapath.
+> 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
+>  .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   | 69 +++++++++++++++++++++-
+>  1 file changed, 66 insertions(+), 3 deletions(-)
+> 
 
-We are calling iio_push_to_buffers_with_timestamp() but there isn't
-actually a IIO_CHAN_SOFT_TIMESTAMP() channel. I assume the intention
-was to have the timestamp channel?
----
- drivers/iio/adc/ad4000.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
-index 6ea491245084..fc9c9807f89d 100644
---- a/drivers/iio/adc/ad4000.c
-+++ b/drivers/iio/adc/ad4000.c
-@@ -344,6 +344,8 @@ static int ad4000_single_conversion(struct iio_dev *indio_dev,
- 
- 	if (chan->scan_type.sign == 's')
- 		*val = sign_extend32(sample, chan->scan_type.realbits - 1);
-+	else
-+		*val = sample;
- 
- 	return IIO_VAL_INT;
- }
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
 
----
-base-commit: fa4076314480bcb2bb32051027735b1cde07eea2
-change-id: 20241030-iio-adc-ad4000-fix-reading-unsigned-data-88a1de88cf57
+If a tag was not added on purpose, please state why and what changed.
 
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+Missing tags:
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
+
 
 

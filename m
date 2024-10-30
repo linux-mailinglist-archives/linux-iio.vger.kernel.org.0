@@ -1,182 +1,232 @@
-Return-Path: <linux-iio+bounces-11644-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11645-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4EDB9B6C06
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 19:23:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E019B6C71
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 20:00:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 146EA1C23D8C
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 18:23:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D417D1F21C0D
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 19:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9F41CB333;
-	Wed, 30 Oct 2024 18:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0391CF5E3;
+	Wed, 30 Oct 2024 19:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTIS6BbG"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="n2plqsMZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB161C6882;
-	Wed, 30 Oct 2024 18:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D52A1BD9DB;
+	Wed, 30 Oct 2024 19:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730312610; cv=none; b=XjcQBUFLcKxlqsWukqyuipQIY+q2alcx/Tgh92cJ11Yrti+EiMtLci4RPHTzqLWjjE2BqQ2YCD3N56YPxGO/1W1GpHD+jBx0asBUmeIH1gkUNaCyBEKmKeykJr3L05c/IF0IRq/p5r46gL9s3oLtRN52M6aaHrdaumRIJAWeUuQ=
+	t=1730314819; cv=none; b=FJwlwy8NMBKooO4GHzSNJqoc7nTGCEsi+JuznBo1dUczXXiCMx5tGQvocllWDdLmQjtmZ+mhUxYv1yoO+Q63/jmJJfcz6TIxYFDAaBxcrm9DhW2GwgcLYPGgSIm46hTFaaXLt02DaXqTpuUFhanXiQvH+Dpzrli80ByCW4lkzPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730312610; c=relaxed/simple;
-	bh=UpafUuBFTrMsWIBnqEUYBI1K0lVwV0sEiSv0e+WT6GM=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=A+5D/GxDXX7riAg7ytQVQ1YjWlF7XUc1c+OceWUF1OJRwwSonJff1s0CeoDYAJTsN/iK0lwU49+FfGILfo8hTwA+/awTejuXdZLTVXB2SHaOlOIijDCFOTxrtW3oAMTtwIqBkcYZYP+Kg8P3GFzRUCsXu1d3dCeWBgpZpBhzfro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTIS6BbG; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-431548bd1b4so900555e9.3;
-        Wed, 30 Oct 2024 11:23:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730312606; x=1730917406; darn=vger.kernel.org;
-        h=user-agent:message-id:date:to:cc:from:subject:references
-         :in-reply-to:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4TADLeOOFvbCsr2nx+51bEXXXPmsK4FMPMLQQn8enb8=;
-        b=LTIS6BbGq6vlZKneYw87YxleuhKA+asRnQOmqkSQrrgDy3G0Tusw/D6YvGw1K29yui
-         aTbNnZpAiTxkRrioGWUh3ZyuSkMd0W6INZBNzbJL/OlQc92tLNcTZauNaBM3kI4ABc2s
-         dUPMflg+f+cnuuekNaUFHfABjIfMNrpi8/IwYka6hCGbGD8Sx6S4os69M6dUu4QFiI7M
-         R2cS/smFRkN9s0KLxI3/Tm1ajZQX+D0D3kNJJds0cQEtsNpVIWaSTfJvdBmKo0Dr+fQw
-         fDYfWDcAtEPgjiiW1dho4WKQ0EOuw0xsZUDCny2KCsB9BOKk+Xxj1vhdoV2ApjFOlOu7
-         thbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730312606; x=1730917406;
-        h=user-agent:message-id:date:to:cc:from:subject:references
-         :in-reply-to:content-transfer-encoding:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4TADLeOOFvbCsr2nx+51bEXXXPmsK4FMPMLQQn8enb8=;
-        b=fLgCZGQ+nYXIhjAjB31I8fKVU6VzLIQkJUTqBNo2jVg+pWM2AiroxA4x8HVPsqzJO+
-         bIrIrh0koc80Qy4QKpNllHTwkf+3uPHI0g8JRWEViP5ttVsxBA+aj9YgmjRxAwdeCU6Q
-         emAqVA07nBvKoq7BdETIONxBKUyeCCZ2mTc7Zl4ZAP+oqeb74l/SjZHn88IjsM6m3uBK
-         v70jOEWePT7OENfvzw52V5A/OSqV3/skULvYnhxmgmQKGkUSa9KuVrMEsVkNHNmAGBtc
-         nN/a3W2u16fLiM9bKRd3346gxrneO8czE8ZUiVzm8KIDI1EF8e5twbuyYVb2hCUkXoW+
-         gqfA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+pBKtkyUY+mUwAttGJ8CFtlALhngmHqYaDiLGaYFJLwb2NHKuiXnrX9X7bdLoQH9cCw9XwUHN7VA=@vger.kernel.org, AJvYcCVFY6yksRvOybCGGwV3pw5PEDPuetFWyp/VP/rCogHfK8dz/gHxPjcLOctXbO4WJFh3BS0i3Y0djEMxrBqd@vger.kernel.org, AJvYcCVlvfUcKinrHMjkDqmN33qbS7Qqte5N8f6AMhFxZ/DPdA5jHXY7xKkK14h5c/H3rupkBXV8GreG13ADeA==@vger.kernel.org, AJvYcCXRX8d7/NDNsu0db/ZCdjzsQPwuQ2ShHrduZEJUGayJYsV9Zy2BK8qSmMDbmptcpr2JMF0lgOVn1sk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaYQ30/APYZCrnzEZr1ovj7JPla+cNCM+E8jP9qhPTtzmt+TnC
-	EeYHMc79QnI/TSNNCGeyy3VMRbFIkIVOCFXAV6uHSh8JQcZoC06j
-X-Google-Smtp-Source: AGHT+IFa/usD7ZeOcHhDzlKCYij3gJcMtoMlBhi8yutM+nCN14bgxOw7OaYkPYBKbl0kidfI8s9Rig==
-X-Received: by 2002:a05:600c:3c8c:b0:431:251a:9dc9 with SMTP id 5b1f17b1804b1-4319ad166femr143396085e9.25.1730312605816;
-        Wed, 30 Oct 2024 11:23:25 -0700 (PDT)
-Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd97d84bsm28748925e9.30.2024.10.30.11.23.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 11:23:25 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1730314819; c=relaxed/simple;
+	bh=OF3jxYif7OIgiU0uGPXB90IJD6pEaA045G2FkwvF+Og=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=flZq5DrR5IiRFRvYpvP5aLJCPgv7iiTqf4sE6o6e6paCUV+wxrIbY76Wx2Z1g940rH5QPxoLKvgURcVlmmgDED96nUlbTQxHYh4XSAj0BUkd3yv4ViQyWrO4hmaVPEF3JO+nLDnbtyyhwF6PfNoqo62g6a73pV24spZk5zxp9Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=n2plqsMZ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49UDWOMZ004039;
+	Wed, 30 Oct 2024 18:59:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=nOQH/QELfolESQZEn7JiGe
+	aI3UaVZB0XdZlKYFkG05I=; b=n2plqsMZTiXziUf7EgnsX5/s50uWp1TYEUjOyq
+	K9pyJpPqzbr3rBz9aLW3ENETO4Qc2neguQnZMvmHWQKJ2lw7re/YBWH4OsGj/TUh
+	fJeTWjhVO7UwgIVT4K3FhKvUXsNWxvN+Q3T+jhhrQp0dSjWEUN5fEVqTkW2MYZ3X
+	NqrBTMJ2RkDv08l/MnKUT2NuBSLlP3mEHXh0ryOLm5Mwzivqg/fq9syYem+2WxD8
+	HfeCyejWadUEMUujCFSTBNKxlD6T0b/If2sRG94/UENNH8dZdSY3kiugJyvfb2ch
+	mqdSeoTxHwgRq2uKvirSrlMfGGc+TZDYyWebr+xR+Vx/wnLw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42kns3gwbe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 18:59:46 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49UIxj7v011940
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 18:59:45 GMT
+Received: from hu-jprakash-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 30 Oct 2024 11:59:37 -0700
+From: Jishnu Prakash <quic_jprakash@quicinc.com>
+To: <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+        <agross@kernel.org>, <andersson@kernel.org>,
+        <dmitry.baryshkov@linaro.org>, <konrad.dybcio@linaro.org>,
+        <daniel.lezcano@linaro.org>, <sboyd@kernel.org>,
+        <quic_subbaram@quicinc.com>, <quic_collinsd@quicinc.com>,
+        <quic_amelende@quicinc.com>, <quic_kamalw@quicinc.com>,
+        <amitk@kernel.org>
+CC: <lee@kernel.org>, <rafael@kernel.org>, <rui.zhang@intel.com>,
+        <lukasz.luba@arm.com>, <lars@metafoo.de>, <quic_skakitap@quicinc.com>,
+        <neil.armstrong@linaro.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <cros-qcom-dts-watchers@chromium.org>,
+        Jishnu Prakash
+	<quic_jprakash@quicinc.com>
+Subject: [PATCH V4 0/4] Add support for QCOM SPMI PMIC5 Gen3 ADC
+Date: Thu, 31 Oct 2024 00:28:50 +0530
+Message-ID: <20241030185854.4015348-1-quic_jprakash@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <ZyJHFp6vbQ7deLFs@black.fi.intel.com>
-References: <20241021-iio-read-avail-release-v5-0-b168713fab33@gmail.com> <20241021-iio-read-avail-release-v5-2-b168713fab33@gmail.com> <ZyJHFp6vbQ7deLFs@black.fi.intel.com>
-Subject: Re: [PATCH v5 2/5] iio: consumers: copy/release available info from producer to fix race
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Alisa-Dariana Roman <alisa.roman@analog.com>, Christian Eggers <ceggers@arri.de>, Peter Rosin <peda@axentia.se>, Paul Cercueil <paul@crapouillou.net>, Sebastian Reichel <sre@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-pm@vger.kernel.org
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Date: Wed, 30 Oct 2024 19:23:21 +0100
-Message-ID: <173031260171.39393.109639772708550094@njaxe.localdomain>
-User-Agent: alot/0.11
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 8B-XN7OGf2zLa-78uRoAtlexlZkdwSux
+X-Proofpoint-ORIG-GUID: 8B-XN7OGf2zLa-78uRoAtlexlZkdwSux
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ adultscore=0 spamscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ bulkscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410300150
 
-Quoting Andy Shevchenko (2024-10-30 15:47:50)
-> On Mon, Oct 21, 2024 at 02:54:15PM +0200, Matteo Martelli wrote:
-> > Consumers need to call the producer's read_avail_release_resource()
-> > callback after reading producer's available info. To avoid a race
-> > condition with the producer unregistration, change inkern
-> > iio_channel_read_avail() so that it copies the available info from the
-> > producer and immediately calls its release callback with info_exists
-> > locked.
-> >=20
-> > Also, modify the users of iio_read_avail_channel_raw() and
-> > iio_read_avail_channel_attribute() to free the copied available buffers
-> > after calling these functions. To let users free the copied buffer with
-> > a cleanup pattern, also add a iio_read_avail_channel_attr_retvals()
-> > consumer helper that is equivalent to iio_read_avail_channel_attribute()
-> > but stores the available values in the returned variable.
->=20
-> ...
->=20
-> > +static void dpot_dac_read_avail_release_res(struct iio_dev *indio_dev,
-> > +                                         struct iio_chan_spec const *c=
-han,
-> > +                                         const int *vals, long mask)
-> > +{
-> > +     kfree(vals);
-> > +}
-> > +
-> >  static int dpot_dac_write_raw(struct iio_dev *indio_dev,
-> >                             struct iio_chan_spec const *chan,
-> >                             int val, int val2, long mask)
-> > @@ -125,6 +132,7 @@ static int dpot_dac_write_raw(struct iio_dev *indio=
-_dev,
-> >  static const struct iio_info dpot_dac_info =3D {
-> >       .read_raw =3D dpot_dac_read_raw,
-> >       .read_avail =3D dpot_dac_read_avail,
-> > +     .read_avail_release_resource =3D dpot_dac_read_avail_release_res,
-> >       .write_raw =3D dpot_dac_write_raw,
-> >  };
->=20
-> I have a problem with this approach. The issue is that we allocate
-> memory in one place and must clear it in another. This is not well
-> designed thingy in my opinion. I was thinking a bit of the solution and
-> at least these two comes to my mind:
->=20
-> 1) having a special callback for .read_avail_with_copy (choose better
-> name) that will dump the data to the intermediate buffer and clean it
-> after all;
->=20
-> 2) introduce a new type (or bit there), like IIO_AVAIL_LIST_ALLOC.
+PMIC5 Gen3 has a similar ADC architecture to that on PMIC5 Gen2,
+with all SW communication to ADC going through PMK8550 which
+communicates with other PMICs through PBS. The major difference is
+that the register interface used here is that of an SDAM present on
+PMK8550, rather than a dedicated ADC peripheral. There may be more than one
+SDAM used for ADC5 Gen3. Each ADC SDAM has eight channels, each of which may
+be used for either immediate reads (same functionality as previous PMIC5 and
+PMIC5 Gen2 ADC peripherals) or recurring measurements (same as PMIC5 and PMIC5
+Gen2 ADC_TM functionality). In this case, we have VADC and ADC_TM functionality
+combined into the same driver.
 
-Could you elaborate more about these potential solutions? Maybe with some
-usage examples?
+Patch 1 is a cleanup, to move the QCOM ADC dt-bindings files from
+dt-bindings/iio to dt-bindings/iio/adc folder, as they are
+specifically for ADC devices. It also fixes all compilation errors
+with this change in driver and devicetree files and similar errors
+in documentation for dtbinding check.
 
-If I get it correctly, in both cases you are suggesting to pass ownership
-of the vals buffer to the caller, iio_read_channel_info_avail() in this
-case, so that it would take care of freeing the buffer after calling
-iio_format_after_*(). We considered this approach during an initial
-discussion with Jonathan (see read_avail_ext() in [1]), where he suggested
-to let the driver keep the release control through a callback for two
-reasons:
+Patch 2 adds bindings for ADC5 Gen3 peripheral.
 
-1) Apparently it's a bad pattern to pass the buffer ownership to the core,
-   maybe Jonathan can elaborate why? The risk I can think of is that the dr=
-iver
-   could still keep the buffer copy in its private data after giving it awa=
-y,
-   resulting in fact in a double ownership. However I think it would be cle=
-ar
-   enough in this case that the copy should be handled by the caller, or ma=
-ybe
-   not?
+Patch 3 adds the main driver for ADC5 Gen3.
 
-2) Some driver might want to avoid allocating a new copy of a big table if
-   the race does not occur (e.g. with additional checks on buffer access
-   code) and thus wouldn't call a free() in the release callback.
+Patch 4 adds the auxiliary thermal driver which supports the ADC_TM
+functionality of ADC5 Gen3.
 
->=20
-> In any case it looks fragile and not scalable. I propose to drop this
-> and think again.
+Changes since v3:
+- Updated files affected by adc file path change in /arch/arm folder,
+  which were missed earlier.
+- Added ADC5 Gen3 documentation changes in existing qcom,spmi-vadc.yaml file
+  instead of adding separate file and addressed reviewer comments for all bindings.
+- Addressed review comments in driver patch. Split out TM functionality into
+  auxiliary driver in separate patch and added required changes in main driver.
+- Link to v3: https://lore.kernel.org/all/20231231171237.3322376-1-quic_jprakash@quicinc.com/
 
-I see your concerns, I am open to reconsider this in case we come up with
-better solution after addressing the points above.
+Changes since v2:
+- Reordered patches to keep cleanup change for ADC files first.
+- Moved ADC5 Gen3 documentation into a separate file
 
-> Yes, yes, I'm fully aware about the problem you are trying to solve and
-> agree on the report, I think this solution is not good enough.
->=20
-> --=20
-> With Best Regards,
-> Andy Shevchenko
->=20
+Changes since v1:
+- Dropped patches 1-5 for changing 'ADC7' peripheral name to 'ADC5 Gen2'.
+- Addressed reviewer comments for binding and driver patches for ADC5 Gen3.
+- Combined patches 8-11 into a single patch as requested by reviewers to make
+  the change clearer and made all fixes required in same patch.
 
-[1]: https://lore.kernel.org/linux-iio/20240729211100.0d602d6e@jic23-huawei/
+Jishnu Prakash (4):
+  dt-bindings: iio/adc: Move QCOM ADC bindings to iio/adc folder
+  dt-bindings: iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+  iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+  thermal: qcom: add support for PMIC5 Gen3 ADC thermal monitoring
 
-Best regards,
-Matteo Martelli
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 226 +++++-
+ .../bindings/mfd/qcom,spmi-pmic.yaml          |   2 +-
+ .../bindings/thermal/qcom-spmi-adc-tm-hc.yaml |   2 +-
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml   |   6 +-
+ arch/arm/boot/dts/qcom/pm8226.dtsi            |   2 +-
+ arch/arm/boot/dts/qcom/pm8941.dtsi            |   2 +-
+ arch/arm/boot/dts/qcom/pma8084.dtsi           |   2 +-
+ arch/arm/boot/dts/qcom/pmx55.dtsi             |   2 +-
+ arch/arm64/boot/dts/qcom/pm4125.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pm6125.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pm6150.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pm6150l.dtsi         |   2 +-
+ arch/arm64/boot/dts/qcom/pm660.dtsi           |   2 +-
+ arch/arm64/boot/dts/qcom/pm660l.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi         |   2 +-
+ arch/arm64/boot/dts/qcom/pm8150.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pm8150b.dtsi         |   2 +-
+ arch/arm64/boot/dts/qcom/pm8150l.dtsi         |   2 +-
+ arch/arm64/boot/dts/qcom/pm8916.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pm8950.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pm8953.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pm8994.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pm8998.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pmi632.dtsi          |   2 +-
+ arch/arm64/boot/dts/qcom/pmi8950.dtsi         |   2 +-
+ arch/arm64/boot/dts/qcom/pmm8155au_1.dtsi     |   2 +-
+ arch/arm64/boot/dts/qcom/pmp8074.dtsi         |   2 +-
+ arch/arm64/boot/dts/qcom/pms405.dtsi          |   2 +-
+ .../boot/dts/qcom/qcm6490-fairphone-fp5.dts   |   4 +-
+ .../boot/dts/qcom/qcm6490-shift-otter.dts     |   4 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dts       |   2 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi      |   2 +-
+ arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi    |   4 +-
+ arch/arm64/boot/dts/qcom/sc8180x-pmics.dtsi   |   2 +-
+ .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    |   2 +-
+ arch/arm64/boot/dts/qcom/sc8280xp-pmics.dtsi  |   6 +-
+ .../boot/dts/qcom/sm7225-fairphone-fp4.dts    |   2 +-
+ .../boot/dts/qcom/sm7325-nothing-spacewar.dts |   6 +-
+ arch/arm64/boot/dts/qcom/sm8450-hdk.dts       |   8 +-
+ drivers/iio/adc/Kconfig                       |  25 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/qcom-spmi-adc5-gen3.c         | 724 ++++++++++++++++++
+ drivers/iio/adc/qcom-spmi-adc5.c              |   2 +-
+ drivers/iio/adc/qcom-spmi-vadc.c              |   2 +-
+ drivers/thermal/qcom/Kconfig                  |  11 +
+ drivers/thermal/qcom/Makefile                 |   1 +
+ drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c | 489 ++++++++++++
+ .../iio/adc/qcom,spmi-adc5-gen3-pm8550.h      |  46 ++
+ .../iio/adc/qcom,spmi-adc5-gen3-pm8550b.h     |  85 ++
+ .../iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h    |  22 +
+ .../iio/adc/qcom,spmi-adc5-gen3-pmk8550.h     |  52 ++
+ .../iio/{ => adc}/qcom,spmi-adc7-pm7325.h     |   2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pm8350.h     |   2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pm8350b.h    |   2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pmk8350.h    |   2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pmr735a.h    |   2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-pmr735b.h    |   2 +-
+ .../iio/{ => adc}/qcom,spmi-adc7-smb139x.h    |   2 +-
+ .../iio/{ => adc}/qcom,spmi-vadc.h            |  81 ++
+ include/linux/iio/adc/qcom-adc5-gen3-common.h | 233 ++++++
+ 60 files changed, 2032 insertions(+), 82 deletions(-)
+ create mode 100644 drivers/iio/adc/qcom-spmi-adc5-gen3.c
+ create mode 100644 drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c
+ create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550.h
+ create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550b.h
+ create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pm8550vx.h
+ create mode 100644 include/dt-bindings/iio/adc/qcom,spmi-adc5-gen3-pmk8550.h
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm7325.h (98%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h (98%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h (99%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h (97%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h (95%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h (95%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-smb139x.h (93%)
+ rename include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h (77%)
+ create mode 100644 include/linux/iio/adc/qcom-adc5-gen3-common.h
+
+
+base-commit: 6fb2fa9805c501d9ade047fc511961f3273cdcb5
+-- 
+2.25.1
+
 

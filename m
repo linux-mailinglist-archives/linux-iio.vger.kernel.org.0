@@ -1,111 +1,158 @@
-Return-Path: <linux-iio+bounces-11657-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11658-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8AB9B6EC4
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 22:25:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A853F9B704F
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 00:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 433B4281BC5
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 21:25:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E48832821FF
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 23:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1684F21503D;
-	Wed, 30 Oct 2024 21:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61661E378D;
+	Wed, 30 Oct 2024 23:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r3Amj9hj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFYxGTcm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCF91EB9FD;
-	Wed, 30 Oct 2024 21:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1501BD9EA;
+	Wed, 30 Oct 2024 23:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730323507; cv=none; b=h2ITlYFhxqhOt/8NO7hxx8a3fsVIJaopf05i+c3BJC6zX1nFa+8e+L95Eu5FBsjpQrTXBrg5GMKgAFN5u0roZ3zp2CqIFnMYUiKj+1T+SFTMHHs5qgq61XN0SG+OlUEcxraVjk9Le+4uWM7gZ2q0BZ3hlX18kJgcWdUARo9fpP0=
+	t=1730329807; cv=none; b=aHgbtSkpg10hAlnnjmVuxWO0vdni24jHJDneG6sbm7pqsBYXiYvvPIhCzfhzGcFWSMbZuELtnC5/cLKYn8A9K61UaiVCg8lh87YyifBMZwMz/3BhF60cBPonjqhS0ZNjhG30fVoVjq3g7fZhjxi3qlH/LfzF4xKH2UTJKxU+wEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730323507; c=relaxed/simple;
-	bh=HqMNgKCMVJf0qZFzcCiaUNfllfqVoCmIcc6FTWRTOLk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aKDWkiWFtj1lFia9fYPurlUkbuOXq92G1vHWrWhd3Es7ekgeKbepw54jOHtN+8J2tkLfw+aw04+vXwfi/B9ZZPkr4t8Bc6Z85NigZIbT3ZnHgqC16X7s756VDsTpBsr3z6m27C8JcY7TpgbsPH2xtzcBL5teY5ouxr4Tj3OTHtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r3Amj9hj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2314CC4CECE;
-	Wed, 30 Oct 2024 21:25:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730323507;
-	bh=HqMNgKCMVJf0qZFzcCiaUNfllfqVoCmIcc6FTWRTOLk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r3Amj9hjHHB/5N2J3vUBEOL8o4Rp+AL7IPLsdojeZ0fr4nVXY73pQ+mPrz1ei/5N+
-	 WUkcIGUOykvH+tKcS1Gta9FPMXXtrKXBBDEXDbky59xJO9BnFDCBRqriWy1gyml3mN
-	 je5hPo0KxRM7VXOqKAyGO5a2Uunc1wv7MBKmYxZUUF1Ue9mkGPBFSGGNKT0oF7ljUZ
-	 SUEq7wPT68Ep8cujOtB/PfeAO3lLc9ymh5lJp5W3HlLDDk9gwnlIpQHaPPMiL4r4FY
-	 voSkFBOkYrkxTb7QZQ03Wla0Dc08w6STFGfJyMgTd3iUZ2DYtfkYthGwKv40fQzvjw
-	 zTtYVvSs6KaEw==
-Date: Wed, 30 Oct 2024 16:25:05 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Angelo Dureghello <angelo@kernel-space.org>
-Cc: Angelo Dureghello <adureghello@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-	dlechner@baylibre.com, devicetree@vger.kernel.org,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 2/8] dt-bindings: iio: dac: adi-axi-dac: add ad3552r
- axi variant
-Message-ID: <173032348133.2084422.16647794815032410489.robh@kernel.org>
-References: <20241028-wip-bl-ad3552r-axi-v0-iio-testing-v9-0-f6960b4f9719@kernel-space.org>
- <20241028-wip-bl-ad3552r-axi-v0-iio-testing-v9-2-f6960b4f9719@kernel-space.org>
+	s=arc-20240116; t=1730329807; c=relaxed/simple;
+	bh=auAiNbXfgIKCEEDea46U230t6q8u6kIkwuEuHfBdFBA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fxtJGDxPSdAmZipJyKRZX8GGhit5iSfXlcdl3xCm3/fJ2K6Z2jox1ryAP4nAeJo9ztC6i0Db4ZMJUSCcEurSEgdlE5zC4PKt6s9+YTMebM5tNMgE36JSNfubBOSmU9K7w45wRrwERb9Tujstn4YLwwyzpV6fowspHiGcn4DrhmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFYxGTcm; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4316e9f4a40so2752395e9.2;
+        Wed, 30 Oct 2024 16:10:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730329804; x=1730934604; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+5WzI5HxfSBqQEgFz9hVmlgATX39LKoP9nE0o2zk+Jc=;
+        b=mFYxGTcm27MW8a9dZC//n812f1EGKcW1pIdO4UVIarEjvk554RFZDXxLo3XNvGwx2q
+         tOzprMt3vE/O6/z6b4bQHefXbGHQQwHXT0AhIG0ZM0aKnmBRppHi89TSIvZx5TrWx264
+         0fkyig+Z9G8FrZ7pUGstQ94wwZmlB5433xnmO+yNi8EGYv9L8wtNapCtZ9jIApvfPOl9
+         1UAZyTsS1I8/fQGu9zOysMPp1lNTSjD5KrxYIp5UqEh/NZ5hP1CGEyo4gLCnGEymMT13
+         bUct6c2mA4ZNIXxXVtxJnZpxg2gfkce3FkQgQP5erdjFABrXcvqI2PWAqTctsSe3+EE1
+         AjWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730329804; x=1730934604;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+5WzI5HxfSBqQEgFz9hVmlgATX39LKoP9nE0o2zk+Jc=;
+        b=huwJ6Y1WgYzSw4r5JyHfdi9TGJUTVfc0iyzFOaY55vloHt0WAghOrKaI0mU0b3O8Wv
+         EJi1KEW1691Xhv+I3GJz9OId7Jebgp2T7M8DZpaNcQM2IItXA0wLNLKMU2G8nE3e41r4
+         w9iYX9BmDPH0x1vYtK6Inlh9YdSHYthCBdCZiM0pEbAmnT550y0sMwcqTGE4R4QxnPWt
+         NEiJu/xW86j7li1toCj41mCfaCFNdn3uqdTUcPgtV2c+b8zTj1MZWXYyNKhzTAI2yizw
+         M08YfyQQ5Hu7w9Hr6OTX2XPSYHlGJom+On/ZGILwi3yoZu9QcHCOvwc4NhAtC1QwBgzE
+         C4Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCUCyY7uYoLRjfDFLMKjegmiu2zrOxHMZeAiAK9iIPD00EnkQBvSlsmQEDwbRR1Tm0aai42QInAGjn/4@vger.kernel.org, AJvYcCXljq5vTcSApJGZJRdH+FYw5vxdqEkjjHe6CEslGo78q1fsEXEb0hudkK2NH81XZfqULjqfM+GqUMqDP98I@vger.kernel.org
+X-Gm-Message-State: AOJu0YwD6ZjTPFfyRcFeOdZKYjl5T7QJTmmsYKgvlfVfMLehhyXZ9Y8A
+	aS8HXZuUuqnws17l9YhqAhTAEV8yz2dPz7AP8akgAKmysgT48lhA2s4gX3sZ
+X-Google-Smtp-Source: AGHT+IEj/yV4fDw3OYd3zmVyJk3KOhBcxME+PIhT0t8qvtCMrWrYOD40bDOhxipMsz7DyOLFNjb0ZA==
+X-Received: by 2002:a05:600c:214d:b0:431:b42a:2978 with SMTP id 5b1f17b1804b1-431b42a2d0emr70698115e9.9.1730329803609;
+        Wed, 30 Oct 2024 16:10:03 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-fbf3-0656-23c1-5ba1.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:fbf3:656:23c1:5ba1])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd8e848csm34819375e9.3.2024.10.30.16.10.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 16:10:02 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v4 0/2] iio: light: veml6070: add integration time
+Date: Thu, 31 Oct 2024 00:09:56 +0100
+Message-Id: <20241031-veml6070-integration-time-v4-0-c66da6788256@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241028-wip-bl-ad3552r-axi-v0-iio-testing-v9-2-f6960b4f9719@kernel-space.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMS8ImcC/33OTQqDMBAF4KuUrJuSTKKRrnqP0kWaTHTAnxIlt
+ Ih3bxQK0oXLN/C+NzMbMRKO7HqaWcREIw19Dvp8Yq6xfY2cfM4MBGgppOYJu7YURnDqJ6yjnXK
+ BT9QhN5W3QaO1HgLL/VfEQO/Nvj9ybmichvjZppJcrz/VHKhJcsFVIYyXxhcl2FvdWWovbujYq
+ ibYSXD0X4Is+UKBAXQi4PNfUnupOpLUKnljHZYQdCX20rIsX21bJ8pWAQAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730329801; l=2740;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=auAiNbXfgIKCEEDea46U230t6q8u6kIkwuEuHfBdFBA=;
+ b=xVpLBN1JVnKOJHl09uieorMsbNja4Izs68vIjs2FDbs93KUHdRw6iCPZDwtCy+nW2Zk2fl2cF
+ 40gTfwkGkTLAOHiZyUxR5t4A/Tj+DubHAFUxCK3g/2VGdWoOkuqz/UJ
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
+This series adds a missing feature in the veml6070 driver to select the
+integration time, which also depends on an external restistor that has
+been added to the corresponding bindings.
 
-On Mon, 28 Oct 2024 22:45:29 +0100, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
-> 
-> Add a new compatible and related bindigns for the fpga-based
-> "ad3552r" AXI IP core, a variant of the generic AXI DAC IP.
-> 
-> The AXI "ad3552r" IP is a very similar HDL (fpga) variant of the
-> generic AXI "DAC" IP, intended to control ad3552r and similar chips,
-> mainly to reach high speed transfer rates using a QSPI DDR
-> (dobule-data-rate) interface.
-> 
-> The ad3552r device is defined as a child of the AXI DAC, that in
-> this case is acting as an SPI controller.
-> 
-> Note, #io-backend is present because it is possible (in theory anyway)
-> to use a separate controller for the control path than that used
-> for the datapath.
-> 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
->  .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   | 69 +++++++++++++++++++++-
->  1 file changed, 66 insertions(+), 3 deletions(-)
-> 
+The datasheet provides a Refresh time vs Rset graph (figure 7), which
+does not clearly specify the minimum and maximum values for Rset. The
+manufacuter has confirmed that no values under 75 kohms should be used
+to keep linearity, and the graph does not go beyond 1200 kohms, which is
+also the biggest Rset used in the application note. The default value of
+270 kohms is the one currently used in the driver to calculate the UVI.
 
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v4:
+- Add vendor prefix to rset-ohms property (bindings and driver).
+- Drop default values for out-of-range rset and fail the probe instead.
+- Link to v3: https://lore.kernel.org/r/20241028-veml6070-integration-time-v3-0-dd7ace62f480@gmail.com
 
-Please add Acked-by/Reviewed-by tags when posting new versions. However,
-there's no need to repost patches *only* to add the tags. The upstream
-maintainer will do that for acks received on the version they apply.
+Changes in v3:
+- veml6075.yaml: simplify property handling (describe it completely at
+  the top and add block for the devices that do not support it).
+- veml6070.c: use int instead of u32 for the integration times.
+- veml6070.c: refactor default rset value assignment.
+- veml6070.c: drop comment about default Rset and IT.
+- veml6070.c: use units from units.h
+- Link to v2: https://lore.kernel.org/r/20241024-veml6070-integration-time-v2-0-d53272ec0feb@gmail.com
 
-If a tag was not added on purpose, please state why and what changed.
+Changes in v2:
+- Rebase onto iio/testing and drop applied patches.
+- veml6075.yaml: use documented -ohms, top-level definition and
+  per-device restriction.
+- veml6075.yaml: add default value.
+- veml6075.yaml: fix typo in commit message.
+- veml6070.c: adjust rset property name and convert from ohms to kohms
+  to avoid overflows and work with the same units as in the datasheet.
+- veml6070.c: change default to 270 kohms (already used as default
+  value to calculate UVI).
+- veml6070.c: calculate UVI according to the current integration time.
+- veml6070.c: re-calculate measurement time (i.e. msleep()) with the
+  current integration time.
+- Link to v1: https://lore.kernel.org/r/20241017-veml6070-integration-time-v1-0-3507d17d562a@gmail.com
 
-Missing tags:
+---
+Javier Carrasco (2):
+      dt-bindings: iio: light: veml6075: document vishay,rset-ohms
+      iio: light: veml6070: add support for integration time
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+ .../bindings/iio/light/vishay,veml6075.yaml        |  18 +++
+ drivers/iio/light/veml6070.c                       | 131 +++++++++++++++++++--
+ 2 files changed, 141 insertions(+), 8 deletions(-)
+---
+base-commit: e2687d0723257db5025a4cf8cefbd80bed1e2681
+change-id: 20241014-veml6070-integration-time-78daf4eaad2f
 
-
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 

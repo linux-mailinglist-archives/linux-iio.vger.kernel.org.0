@@ -1,109 +1,109 @@
-Return-Path: <linux-iio+bounces-11627-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11629-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71DC9B6887
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 16:55:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0FC9B68E0
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 17:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 836CB1F23069
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 15:55:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B89E51F216B4
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 16:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB40A2141C0;
-	Wed, 30 Oct 2024 15:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E91214402;
+	Wed, 30 Oct 2024 16:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="II0PQP69"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CO9E9tDx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842502141B5;
-	Wed, 30 Oct 2024 15:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1015A433D5;
+	Wed, 30 Oct 2024 16:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730303730; cv=none; b=QRMEUOS+A9MdoeKLfbG9E0TV/Us4eCzQUTJPz/9iYEy+wkADMqB2aItynUALOOAPAJMwvBmSlfz9XyCAXfczyq1JrxlUZVMUgeQdVCNZsOJVyKqZeGPY5WrDBlyQjyyhHcwujTsLczEegytmMuVbI6zXqWMQYlpghIf4Tc/8e9g=
+	t=1730304484; cv=none; b=bCFXciWi+uXrhjNY6s8BKTSlCLZVsEzw6rtliH2i9Z6n49LhyxIr+9hX7AbfqsZK3XZdRheiEjAxpny1KD7wCi5VlqdX26MbJrO60tElLbrWL5CGfkK8zbcBjRJO+PX/FJxVdKUTt5q3acgX99K9hVwg0lyTNoMHGcoE2GMRhsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730303730; c=relaxed/simple;
-	bh=3yyLl30TQjYKD071Dpap+W12aDnptjFmDQr9KsgJj4U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WAYXw3vMHugbSbXEJk300/OkuDToPYQv/eQGwvPTKIeyuVRVQVFOAZpu824VAxRi5MXhA2yAqX9LXksqX1BkVMggT2YkpHL+N03nXERqWKPL4RNL8FqF/6K3t9diiaW6gj/rgKT7au+8wocsIfyOgL21kqXf5VqxlWYRw+kczxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=II0PQP69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BDEC4CECE;
-	Wed, 30 Oct 2024 15:55:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730303730;
-	bh=3yyLl30TQjYKD071Dpap+W12aDnptjFmDQr9KsgJj4U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=II0PQP69uWeP8lH2TXSIqUAQTe8WyNMJpjFfn+2Ctqok/d+umG4MHgWALYdMPIzVY
-	 mCKwu5o+4F+M0RaJEHnflVbiau/dHaakOVDDWkC2gejogLJ3G3UFyb65te+GHzG8LP
-	 09bMmB/73rZFHV7tiJS9uTCZh7nqqsam6un7bSc2ygu25rAoUPD785aZHTMA/tSYYa
-	 FZbCf6ZRYSopkB5ThsQNKWjF+5kmXV1j/+cWRSX3yxE3zU03j/r8TC1+9bdLCBFmsZ
-	 zHJWnFjAUtwG+smzYdbgEPbqgk+ujO4X5KRB8q9jZjBSWYo9oEeqdaaLo3J+MhKlJj
-	 /9Dh9N2CvzTEQ==
-Date: Wed, 30 Oct 2024 15:55:24 +0000
-From: Mark Brown <broonie@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	David Jander <david@protonic.nl>,
-	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH RFC v4 02/15] spi: add basic support for SPI offloading
-Message-ID: <e1b4f91a-ac94-4939-90eb-fc10e9a72ee9@sirena.org.uk>
-References: <20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
- <20241023-dlech-mainline-spi-engine-offload-2-v4-2-f8125b99f5a1@baylibre.com>
+	s=arc-20240116; t=1730304484; c=relaxed/simple;
+	bh=dN6/EfUjzLbl6wnJHhWh2GGFGEvnCDY56lOMQ6JTL3s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bTTqwy4JkntrkpZGm4pY98BtSIJ6E7+jYgto5EUczXH4ITB8uBxl2xt0ZT8/60kZx2txJjg+jJXt3h53cuAnPIdg6QHhcf2L/F7EdgiAWyWQd9MZKWaUI2JmZ5OD/iP0kRhk+PBBYIEwPZjdJh35Tf+fbfmIpsdAtbI+PGh+sus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CO9E9tDx; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730304482; x=1761840482;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dN6/EfUjzLbl6wnJHhWh2GGFGEvnCDY56lOMQ6JTL3s=;
+  b=CO9E9tDxKweZH5lssTGh51YM8k1Xh359WwAGaMQHYFgMKAzRTxiVt0+o
+   cDDg5KTZZU5dNeVcTE6rWHZqUwdaTnmIdzuhuGD6y2Y3GyLPR7Z4eJkZ2
+   LDI9iG+iuWMUVN95wKU2HjTNfS3Ri0MxTDe0BYKrYG5jRPcChhlhKbfmQ
+   TlSk9sPKIyTzXb/3mr/KgxOVj4InZ8RdsijahgQogR3q9jzZ5rixE0TpQ
+   x122T/Jp0or/CRj4FQ9qxnJKjieKw9uyk0MNMpNIjHFTaBFBPbpY8B3bt
+   LlnD25sWFlTuR0b2FJiRUNpMp3+4BvP16WFe29qnpV4fQUtoIZcAdMF6H
+   A==;
+X-CSE-ConnectionGUID: OM+00Kl9TrWnbwDZwvdiXQ==
+X-CSE-MsgGUID: 4YHa62i9Qlenp34ewp2XIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="29432032"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="29432032"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 09:08:01 -0700
+X-CSE-ConnectionGUID: d+cMCHTzTOOwJ5xLAJBUhA==
+X-CSE-MsgGUID: YHfdmT5GR/aKfrkSlwgl0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
+   d="scan'208";a="82523845"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa006.jf.intel.com with ESMTP; 30 Oct 2024 09:08:00 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 3C21D1FD; Wed, 30 Oct 2024 18:07:58 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v1 0/4] iio: acpi: always initialise data in iio_get_acpi_device_name_and_data()
+Date: Wed, 30 Oct 2024 18:02:16 +0200
+Message-ID: <20241030160756.2099326-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wIB7CppBQdb9BVMQ"
-Content-Disposition: inline
-In-Reply-To: <20241023-dlech-mainline-spi-engine-offload-2-v4-2-f8125b99f5a1@baylibre.com>
-X-Cookie: I feel partially hydrogenated!
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+Dan reported that data might be used uninitialised in some cases.
+Let's initialise it to NULL (patch 1). With that, update one driver
+to drop an unneeded anymore check (patch 2). Another driver (patch 4)
+gain almost a dead code — feel free to not apply it.
 
---wIB7CppBQdb9BVMQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+While at it, one more cleanup to kxcjk-1013 (patch 3) is added.
 
-On Wed, Oct 23, 2024 at 03:59:09PM -0500, David Lechner wrote:
+Jonathan, dunno if you want to rebase at this stage (probably not),
+but if you do, feel free to fold the patches 1-2 to the initial code.
+The rest seems to me like the independent patches.
 
-> +struct spi_offload *devm_spi_offload_alloc(struct device *dev,
-> +					   size_t num_offloads,
-> +					   size_t priv_size)
+Andy Shevchenko (4):
+  iio: acpi: Fill data with NULL when
+    iio_get_acpi_device_name_and_data() fails
+  iio: accel: kxcjk-1013: Drop duplicate NULL check in kxcjk1013_probe()
+  iio: accel: kxcjk-1013: Deduplicate ODR startup time array
+  iio: light: isl29018: Check if name is valid in isl29018_probe()
 
-> +	privs = (void *)(offloads + num_offloads);
+ drivers/iio/accel/kxcjk-1013.c  | 28 +++++-----------------------
+ drivers/iio/industrialio-acpi.c |  6 +++++-
+ drivers/iio/light/isl29018.c    |  2 ++
+ 3 files changed, 12 insertions(+), 24 deletions(-)
 
-Casting to or from void * is generally suspicious.
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-> +		void *priv = privs + i * priv_size;
-
-Can we have some brackets here for clarity please?
-
---wIB7CppBQdb9BVMQ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmciVusACgkQJNaLcl1U
-h9Chqgf8DW8de4pnIgIUw/jsiKAtu3L5MxZFUkpBXjxY07ECczmWImt2iWoseFYJ
-rILRHF01ca8kZn1PRVsO9CFoP89a+jkwZgvXjYT7A+9jy3yBgGSddeOkrrvgOUBD
-1R5JngdpYU4IesCQWUopjqKJw61zFZvwmKboQR38z3Yxnfb88Ea1+XkwE/sCofPp
-KB7Z918mA4iyn5L9p8nrA1t8ivRc/KC0zBzH3smen+WzAqsLz5HfIJke5UzbTN6I
-zsYQP0gBHr0SDkivg9dKJ3oCcTwGpQ8iZySndgpLOHbBVEUxMTTmKetyOGldmpKF
-1MR7dfo/8rpKErN0COB/DbEgmN2RBQ==
-=NEXq
------END PGP SIGNATURE-----
-
---wIB7CppBQdb9BVMQ--
 

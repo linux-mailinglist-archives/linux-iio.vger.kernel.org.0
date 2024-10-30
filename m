@@ -1,154 +1,345 @@
-Return-Path: <linux-iio+bounces-11621-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11622-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71379B669C
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 15:56:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 768609B67A2
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 16:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E88341C213A3
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 14:56:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFFB41F22870
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 15:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB241F471A;
-	Wed, 30 Oct 2024 14:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC6221F4CA;
+	Wed, 30 Oct 2024 15:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IBBZdaEN"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VsU4B5Kk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B301EF92C;
-	Wed, 30 Oct 2024 14:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996CE21F4A4
+	for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 15:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730300171; cv=none; b=MhKQ5YPZaMq1Bw5kLsTlvfnFBYPnzUHMXuYnvNnuCFauvh8kbojGMo5Hrm/Z5Gz5aJfl55zlkTFYDK6HJ/1jJ+hlKnRhDXt/rXiMHRkJs2KB8Y7gedD/cXWx/hEsFlTGP42yZv2L7kzPcmVdbnc7oSf4K8AXorLUYePqm+7BkTE=
+	t=1730301472; cv=none; b=mPtqaDgIg0FhnlHP7EKEJcXrpa6DGsmvTvJeNKcn6VTNPdiP9lwW8gYS0p7R4nieWO2D0vGNzSM2z8EuycyHLu6PjsKUxRKTV398IxEp+HADyycYiHFG0rjAlfHTVDl5FHRxbAdnIc98X/FuAI1b8UqqZNauskivSsQt7SD/AAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730300171; c=relaxed/simple;
-	bh=PJgQRoa9dILAfNfnvnH/aiHEDJBY/XzwXb7TDFNXcbI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cuS9FRi13C6v5Xspk/+uY56of9Aze3+zRGJY9cmRSfo+UPN+HW6+W3TrQ9l/CtgLDO69/lvldBphLz9bKTpXWOnCror3cJgtYOFr6zK1W7fvfsmB/2wPYS0C38rLknYxj972NX4HtlOQNOKm1d/DVf1t7ehUPvrMy1iBLA57vcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IBBZdaEN; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730300169; x=1761836169;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=PJgQRoa9dILAfNfnvnH/aiHEDJBY/XzwXb7TDFNXcbI=;
-  b=IBBZdaENrnhbsTlYneKmZp4Imd7g0Gwlh4lZZJJd8iFOo4oFWtg5erl6
-   S8F+HCZjy9xUQUfIKSk0139nuf8R5i7n6Wwwn8TxJHLGLt76YseedRNCU
-   C2nJk+AgNf6EPIDP3lnKPlDwKZj/F+wHmCuxATcV+yF677/NNegrtYdjc
-   HDK2pnRDpX4K7a9zcK/CHB41JREdzKB0ZEVlT0rR98PNlDp7BVza2z/s3
-   TIBZZBQKGfG1lUXR3tf6gr7+YUSRn/p9qbbkmTmRQjTv2814IdPz6UUDh
-   qZ1FSzUUJ+dw2OKUHnb40VQkzdy8SQdn2QVXw4JcC0fuq3fej4Oezdl52
-   Q==;
-X-CSE-ConnectionGUID: pfab72t5RmW1TQEtaUYu5g==
-X-CSE-MsgGUID: bw52Ja7eQwWQmq1+T1gUeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="17649858"
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="17649858"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 07:56:08 -0700
-X-CSE-ConnectionGUID: 0xKPsEU0S7aiJfh1R0Wc+A==
-X-CSE-MsgGUID: yADDrZNsTRaxdq4D7dk97Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; 
-   d="scan'208";a="82756096"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 07:56:05 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1t6A78-000000094Vj-1vpg;
-	Wed, 30 Oct 2024 16:56:02 +0200
-Date: Wed, 30 Oct 2024 16:56:02 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Hans de Goede <hdegoede@redhat.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v3 00/24] iio: Clean up acpi_match_device() use cases
-Message-ID: <ZyJJAl8AalZG9Zo9@smile.fi.intel.com>
-References: <20241024191200.229894-1-andriy.shevchenko@linux.intel.com>
- <a72e0950-be11-45a3-8387-5b51b9a2e78a@gmail.com>
+	s=arc-20240116; t=1730301472; c=relaxed/simple;
+	bh=KMe95Oav9UUtjQ8KxL+YP0fkRFrOhYva3HOMiL+GHlw=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=BnH1xPHz+kK5kibpZq6/FXaRPZkRb3xJxIyueOh8fsSpUzV2JPPjdQhHDLGMU8ZS2EEf2SwF+Rnz9Rt8STQgBxua8V1fxdkl7GrYWeAvKuGWbNNAjam+MkNm8ECCH9/i/y+2McC+qRySJbqrdvb7zH20R2J8jwhAHDwq+ccChgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VsU4B5Kk; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4316cce103dso85855445e9.3
+        for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 08:17:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730301467; x=1730906267; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nld+5lX6B0RPTIruuP0JriChCtvGT9xr3rmugHCDdIU=;
+        b=VsU4B5KkufbIveTwAIZCMTC+E6rWHejo9rdJ9duXUxAjWaYy+4k93C6Bxt+PgSrsJx
+         408+wsaMRT3yRTP/EW94ZWsDUrX/co8V2ZQQJS8SXPDkJnykMJOy5W0S2ZNpV/d04bm1
+         U9i/5Kii0QhFKCbBzHvqc1yUAVod1+qmvG8Ke+CSt96Zt4vyM9dZiO5nhtaUUyud31PW
+         nDn5WBl5JqhZUUuthAc3aStPK6yGJ2Bk2LRrvV6qy/0aCtC8D1nQh+nc0KeEokrUsK7r
+         hinOAgqwV4OGmZADMsnZH7Q1FhdI8veUkqS07nOOj0wWDOFCHO0GwdSltkcHTXwgiQKq
+         MHmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730301467; x=1730906267;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nld+5lX6B0RPTIruuP0JriChCtvGT9xr3rmugHCDdIU=;
+        b=jQHJivPOWuIwMJVwfL7Zk7yMKz9IegL3uPA1V6kQSMhojhUSp6t8Eol7iUp+8PXmxj
+         Dp0TCQbTb/LgJkZWVzdhr/wJFt7OhPDp1j4SDEWuztSVIy/o4vPPEpjpJ6xFVNC22pTR
+         KHLgZ3DoG3ianBl6kXTQRuJROFoDbbwXOPseYyfD2w1jNSHi0kOOyu3s9aSvb3VqTg1c
+         jYRrUmzyMHnzx1/vdsCAx3XG4i/K8e9dvF/hpox7EAlkLWf+MR2kOHqF5NqPBlDYDNXr
+         jMHQQr3cuCUA4MajJCsd7uTJZIWDKQI2MbVPLeminpy0oLxohm2+1ImsVGPEM6NEFiwD
+         EDQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvW86Wj4D0yZ5RBdtcV6LDyNXHnv+0c9z5M3ldOndOwAMI9Z9wpzs/9tRp+2GsGpqiPJoL80Kazmw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCLRzHp77ovl0I/E3LdBrjgJlHVEUXIG4th+bSZt/YbZF8rhiS
+	hRdVHGz9IdNPwgwYmNSFpjxQ5kS0cAXUa7Mi6bg4mPRuTtCL0MD54QoNyJr48eA=
+X-Google-Smtp-Source: AGHT+IFMEIV+VkKJg+SIopG7mLkdPPD/4rj1St9eYxgEzLUvExSb5n0MdRjl9vUGWFWdoQemIFIVzA==
+X-Received: by 2002:adf:fe91:0:b0:37d:3f5f:9191 with SMTP id ffacd0b85a97d-380611d983cmr14962200f8f.33.1730301466911;
+        Wed, 30 Oct 2024 08:17:46 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:201:dd6:9287:c715? ([2a01:e0a:982:cbb0:201:dd6:9287:c715])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70c91sm15556802f8f.85.2024.10.30.08.17.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Oct 2024 08:17:46 -0700 (PDT)
+Message-ID: <ff90fb92-ab4a-4719-b9c4-7b21245207b1@linaro.org>
+Date: Wed, 30 Oct 2024 16:17:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH v3 3/3] iio: magnetometer: add Allegro MicroSystems
+ ALS31300 3-D Linear Hall Effect driver
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20241029-topic-input-upstream-als31300-v3-0-147926dd63b3@linaro.org>
+ <20241029-topic-input-upstream-als31300-v3-3-147926dd63b3@linaro.org>
+ <CAHp75VdH7bxuPW6Fx4Mcq18hQfr1sDhBYDwGn8OeurQOAar2kg@mail.gmail.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <CAHp75VdH7bxuPW6Fx4Mcq18hQfr1sDhBYDwGn8OeurQOAar2kg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a72e0950-be11-45a3-8387-5b51b9a2e78a@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Oct 29, 2024 at 08:34:48AM +0200, Matti Vaittinen wrote:
-> On 24/10/2024 22:04, Andy Shevchenko wrote:
-> > There are current uses of acpi_match_device():
-> > - as strange way of checking if the device was enumerated via ACPI
-> > - as a way to get IIO device name as ACPI device instance name
-> > - as above with accompanying driver data
-> > 
-> > Deduplicate its use by providing two new helper functions in IIO ACPI
-> > library and update the rest accordingly.
-> > 
-> > This also includes a rework of previously sent ltr501 patch.
-> > 
-> > Besides that there ie a big clean up for the kxcjk-1013 driver, started
-> > with the revert of the one patch discussed earlier today. Feel free to
-> > route that one via fixes branch of your tree.
-> > 
-> > In v3:
-> > - collected tags (Marius)
-> > - added note to the documentation about usage of new API (Jonathan)
-> > - added a handful patches for kxcjk-1013 driver
-> > 
-> > In v2:
-> > - collected tags (Hans, Jean-Baptiste)
-> > - updated SoB chain in patch 4
-> > 
-> > Andy Shevchenko (24):
-> >    iio: magnetometer: bmc150: Drop dead code from the driver
-> >    iio: adc: pac1934: Replace strange way of checking type of enumeration
-> >    iio: imu: inv_mpu6050: Replace strange way of checking type of
-> >      enumeration
-> >    iio: acpi: Improve iio_read_acpi_mount_matrix()
-> >    iio: acpi: Add iio_get_acpi_device_name_and_data() helper function
-> >    iio: accel: kxcjk-1013: Remove redundant I²C ID
-> >    iio: accel: kxcjk-1013: Revert "Add support for KX022-1020"
-> >    iio: accel: kxcjk-1013: Switch from CONFIG_PM guards to pm_ptr() etc
-> >    iio: accel: kxcjk-1013: Use local variable for regs
-> >    iio: accel: kxcjk-1013: Rename kxcjk1013_info
-> >    iio: accel: kxcjk-1013: Start using chip_info variables instead of
-> >      enum
-> >    iio: accel: kxcjk-1013: Move odr_start_up_times up in the code
-> >    iio: accel: kxcjk-1013: Convert ODR times array to variable in
-> >      chip_info
-> >    iio: accel: kxcjk-1013: Get rid of enum kx_chipset
-> >    iio: accel: kxcjk-1013: Replace a variant of
-> >      iio_get_acpi_device_name_and_data()
-> >    iio: accel: kxcjk-1013: drop ACPI_PTR() and move ID out of CONFIG_ACPI
-> >      guards
+On 29/10/2024 20:48, Andy Shevchenko wrote:
+> On Tue, Oct 29, 2024 at 4:13â€¯PM Neil Armstrong
+> <neil.armstrong@linaro.org> wrote:
+>>
+>> The Allegro MicroSystems ALS31300 is a 3-D Linear Hall Effect Sensor
+>> mainly used for 3D head-on motion sensing applications.
+>>
+>> The device is configured over I2C, and as part of the Sensor data the
+>> temperature core is also provided.
+>>
+>> While the device provides an IRQ gpio, it depends on a configuration
+>> programmed into the internal EEPROM, thus only the default mode is
+>> supported and buffered input via trigger is also supported to allow
+>> streaming values with the same sensing timestamp.
+>>
+>> The device can be configured with different sensitivities in factory,
+>> but the sensitivity value used to calculate value into the Gauss
+>> unit is not available from registers, thus the sensitivity is provided
+>> by the compatible/device-id string which is based on the part number
+>> as described in the datasheet page 2.
 > 
-> I missed reviewing these kxcjk changes. Not sure I loved all of them
-
-Patches are welcome! :-)
-
-> but I must admit the resulting code is looks better in general.
+> Thank you for an update, this looks more or less good. I have a few
+> nit-picks below. With them addressed,
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
 > 
-> Thanks for the clean-up Andy!
+> ...
+> 
+>> +#include <linux/types.h>
+>> +#include <linux/units.h>
+> 
+> It's a bit of an unusual order. Do you mean to put them after the
+> regulator/*.h one?
 
-Thank you for looking at this!
+Ack
 
--- 
-With Best Regards,
-Andy Shevchenko
+> 
+>> +#include <linux/bits.h>
+>> +#include <linux/bitfield.h>
+>> +#include <linux/delay.h>
+>> +#include <linux/module.h>
+>> +#include <linux/i2c.h>
+>> +#include <linux/regmap.h>
+>> +#include <linux/pm.h>
+>> +#include <linux/pm_runtime.h>
+>> +#include <linux/regulator/consumer.h>
+> 
+> ...
+> 
+>> +#define ALS31300_DATA_X_GET(b)         \
+>> +               sign_extend32(FIELD_GET(ALS31300_VOL_MSB_X_AXIS, b[0]) << 4 | \
+>> +                             FIELD_GET(ALS31300_VOL_LSB_X_AXIS, b[1]), 11)
+>> +#define ALS31300_DATA_Y_GET(b)         \
+>> +               sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Y_AXIS, b[0]) << 4 | \
+>> +                             FIELD_GET(ALS31300_VOL_LSB_Y_AXIS, b[1]), 11)
+>> +#define ALS31300_DATA_Z_GET(b)         \
+>> +               sign_extend32(FIELD_GET(ALS31300_VOL_MSB_Z_AXIS, b[0]) << 4 | \
+>> +                             FIELD_GET(ALS31300_VOL_LSB_Z_AXIS, b[1]), 11)
+>> +#define ALS31300_TEMPERATURE_GET(b)    \
+>> +               (FIELD_GET(ALS31300_VOL_MSB_TEMPERATURE, b[0]) << 6 | \
+>> +                FIELD_GET(ALS31300_VOL_LSB_TEMPERATURE, b[1]))
+> 
+> Yeah, I have got that the data is interlaced, and it's still possible
+> to use the __be64, but the resulting code might be too overengineered
+> for this simple case (as it would require bitmap operations to remap
+> interlaced bits and an additional churn on top of u64 to be
+> represented as set of unsigned long:s).
+> 
+> ...
+> 
+>> +/* The whole measure is split into 2x32bit registers, we need to read them both at once */
+> 
+> 32-bit
+
+Ack
+
+> 
+> ...
+> 
+>> +       /*
+>> +        * Loop until data is valid, new data should have the
+>> +        * ALS31300_VOL_MSB_NEW_DATA bit set to 1.
+>> +        * Max update rate is 2KHz, wait up to 1ms
+> 
+> Missing period at the end.
+
+Ack
+
+> 
+>> +        */
+> 
+> ...
+> 
+>> +       switch (mask) {
+>> +       case IIO_CHAN_INFO_PROCESSED:
+>> +       case IIO_CHAN_INFO_RAW:
+>> +               ret = als31300_get_measure(data, &t, &x, &y, &z);
+>> +               if (ret)
+>> +                       return ret;
+>> +
+>> +               switch (chan->address) {
+>> +               case TEMPERATURE:
+>> +                       *val = t;
+>> +                       return IIO_VAL_INT;
+>> +               case AXIS_X:
+>> +                       *val = x;
+>> +                       return IIO_VAL_INT;
+>> +               case AXIS_Y:
+>> +                       *val = y;
+>> +                       return IIO_VAL_INT;
+>> +               case AXIS_Z:
+>> +                       *val = z;
+>> +                       return IIO_VAL_INT;
+>> +               default:
+>> +                       return -EINVAL;
+>> +               }
+>> +       case IIO_CHAN_INFO_SCALE:
+>> +               switch (chan->type) {
+>> +               case IIO_TEMP:
+>> +                       /*
+>> +                        * Fractional part of:
+>> +                        *         1000 * 302 * (value - 1708)
+>> +                        * temp = ----------------------------
+>> +                        *             4096
+>> +                        * to convert temperature in millicelcius
+> 
+>   Missing period at the end.
+
+Ack
+
+> 
+>> +                        */
+>> +                       *val = MILLI * 302;
+>> +                       *val2 = 4096;
+>> +                       return IIO_VAL_FRACTIONAL;
+>> +               case IIO_MAGN:
+>> +                       /*
+>> +                        * Devices are configured in factory
+>> +                        * with different sensitivities:
+>> +                        * - 500 GAUSS <-> 4 LSB/Gauss
+>> +                        * - 1000 GAUSS <-> 2 LSB/Gauss
+>> +                        * - 2000 GAUSS <-> 1 LSB/Gauss
+>> +                        * with translates by a division of the returned
+>> +                        * value to get Gauss value.
+>> +                        * The sensisitivity cannot be read at runtime
+> 
+> sensitivity
+
+Good catch
+
+> 
+>> +                        * so the value depends on the model compatible
+>> +                        * or device id.
+>> +                        */
+>> +                       *val = 1;
+>> +                       *val2 = data->variant_info->sensitivity;
+>> +                       return IIO_VAL_FRACTIONAL;
+>> +               default:
+>> +                       return -EINVAL;
+>> +               }
+>> +       case IIO_CHAN_INFO_OFFSET:
+>> +               switch (chan->type) {
+>> +               case IIO_TEMP:
+>> +                       *val = -1708;
+>> +                       return IIO_VAL_INT;
+>> +               default:
+>> +                       return -EINVAL;
+>> +               }
+> 
+>> +
+> 
+> Seems like a stray blank line here.
+
+Ack
+
+> 
+>> +       default:
+>> +               return -EINVAL;
+>> +       }
+>> +}
+> 
+> ...
+> 
+>> +static int als31300_set_operating_mode(struct als31300_data *data,
+>> +                                      unsigned int val)
+>> +{
+>> +       int ret;
+>> +
+>> +       ret = regmap_update_bits(data->map, ALS31300_VOL_MODE,
+>> +                                ALS31300_VOL_MODE_SLEEP, val);
+>> +       if (ret) {
+>> +               dev_err(data->dev, "failed to set operating mode (%pe)\n", ERR_PTR(ret));
+>> +               return ret;
+>> +       }
+>> +
+>> +       /* The time it takes to exit sleep mode is equivalent to Power-On Delay Time */
+>> +       if (val == ALS31300_VOL_MODE_ACTIVE_MODE)
+>> +               usleep_range(600, 650);
+> 
+> fsleep() ?
+
+Sure
+
+> 
+>> +       return 0;
+>> +}
+> 
+> ...
+> 
+>> +       devm_mutex_init(dev, &data->mutex);
+> 
+> Hmm... While not critical, this may still return an error. There were
+> only two (out of ~15) users that ignored the error code, in v6.12
+> there are two more in IIO, while one is checking for it. I would like
+> to check for an error and bail out (and maybe I'll update the other
+> drivers in IIO to follow, including one GPIO module that ignores it).
+> 
+
+Ack, thanks for the review!
+
+Neil
 
 
 

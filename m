@@ -1,143 +1,136 @@
-Return-Path: <linux-iio+bounces-11601-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11602-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A154E9B5F96
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 11:02:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAD79B5FC7
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 11:13:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57A6D1F212D5
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 10:02:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FA711C2153F
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 10:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBFF1E2618;
-	Wed, 30 Oct 2024 09:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hgVPRn2g"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6277E1E260C;
+	Wed, 30 Oct 2024 10:13:24 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF105194151
-	for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 09:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8291E22F1
+	for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 10:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730282287; cv=none; b=dNFP8HiwtE3rlC6YNUrGvLcLRoAK9+w/c7hvUOJgytgcMZ0Hy6lPOnYtrR+Z/6+kpn+K+MaxCXfHsTEfDiJBoA694onSjqf1cVhV996nIs0tbtIJhCNBlGzo7C79PhHNP1mJoMvT38NxltEk6QR1E6SPxPcZ9TRnKVGxYUVcVw0=
+	t=1730283204; cv=none; b=flpdK2JFQDity76fPpD/mOTZtJNKLpySEF9dS+3s/6N8YksARaGn3WPx1XAbf9j+VZkdLIFZ0calirRHHczDj9dBi28RbEP0eiw0T6/vSDMkrgHIgCMfKuZZ8ln4iSjneYQ6AdptTizacMeRtASfz9tDqtOD01yj6eqpiSstmVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730282287; c=relaxed/simple;
-	bh=cdblxGztPJzu5+WvkgT/n0QsNB1ieq4mA/SuIyCDBzo=;
+	s=arc-20240116; t=1730283204; c=relaxed/simple;
+	bh=d5UJW7t9fo/lwYCkIPNEd46l8GiWAIsHzZ3+8jA04tU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ieEXMnRQk2l7trl08NDrdI2YKN38Uf91cVhfWEOIK0lK+PuOA6VR/sTzvaZgW7mlgAF5N0FJ/vJm7MGPiFd40ElZxHhaxQ73FFtQQV2UrFGxxiuEHrk0q1mufzzOcaH724dUAiq+CY8nq3MeEf0d2VYWP7TbJrS+7Kpy+AFUgE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hgVPRn2g; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9a0ef5179dso940922566b.1
-        for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 02:58:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730282284; x=1730887084; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vl6lnQTwg90A2yjCJ5XaXJgbf18xnHCYTZ+Gnq0N/NA=;
-        b=hgVPRn2gI8NGq2+FlupbqC1+ruweaCwG8NNMDpQX3MEDZaSHnzImqxi7ICKw84VV5B
-         EJb+lyZd/6oeh6WltlV990HgjAD+uZrFikYwJncPLsmx+P3nQciIsy9bYLkpNUkPoWeB
-         xW/ymN0/+OjNXgXvt6yiFi+il66Y5coV+m4MARqpfnImU4URwYK0+o83ZXqd1RLag+6e
-         Sqg5vZwEO1Ln8mKwCnc955jZI51uuLSXoX77lNDSExWebx4qiAHl7fOP977nBmmVLyje
-         O0yPp7i5hbwIYC6pF8jlVGPaITWu6NaHgV8fMViS+tzUJ970MADS03c17QQqLjN7Ur1B
-         bxAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730282284; x=1730887084;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vl6lnQTwg90A2yjCJ5XaXJgbf18xnHCYTZ+Gnq0N/NA=;
-        b=h0kkwyQLks1MppngLTqoF9WRtdzdU2bVDqCO8cX768rRGFE2iCud6/WTZw3b2QKGzi
-         91k6btz7R3DSn64Qu+5xu9GtQJCgB2quG+CnciypjMpnIQs1FiNIBdR6a5nX1krOFiTq
-         2P5vey5aPYcrv6N1cRe6jSWcGkk3X6XPDKy6jC3twZsR315/v9z+P4Ir82VWzif4XRQe
-         615Hzkhp8Yj16JUgIPXwkt+Gf4RcecsZETUqrcq2UdG6Kx6RIyaASIEdksIzFupsNFpR
-         OURVkLHhWNIVExXrvODMj8KMVHmrJmPJGiW4A7Yk6+kiLu4p8AbbrC67YoU63GPs+kns
-         6GDg==
-X-Gm-Message-State: AOJu0YzNsvhQqkryMa5DP6ShPj2lCnWGoJE30c5oPHqu+EWXfBUoi35e
-	cTqhQz8iPDgd9CzBK2Zx0LH15N1/hjYwKSJm+03CnohUHeokYvOk
-X-Google-Smtp-Source: AGHT+IFuqoK7gE2fVjx5HU21eoL42aC6R+KG9W34nhXCLCRPgtWQUZyJxURKIFt19QH+1cxyrWYYgA==
-X-Received: by 2002:a17:907:7d8d:b0:a9a:1e4d:856d with SMTP id a640c23a62f3a-a9de5edb084mr1454777166b.22.1730282283835;
-        Wed, 30 Oct 2024 02:58:03 -0700 (PDT)
-Received: from vamoirid-laptop ([2a04:ee41:82:7577:89e7:cc9d:3a72:92f3])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f0298fdsm557179866b.54.2024.10.30.02.58.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 02:58:03 -0700 (PDT)
-Date: Wed, 30 Oct 2024 10:58:01 +0100
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: [bug report] iio: chemical: bme680: generalize read_*() functions
-Message-ID: <ZyIDKdX7NKopqT4W@vamoirid-laptop>
-References: <13f764f7-4cc4-4563-81f6-0393732729a6@stanley.mountain>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZVCETReSNZZSjs8udkXSuIrDGX1eleR+hyGuh6KWSlnWHfNJQVxwfPrnkaODmemncrnSnghgFh3+kA5x6/y5Lxh6xWnW7kc/tNrME/l3EONpjqkKMx++bQrmEQ96R7DlvN/A+LbxZdtzFuzhxFYzwN8iP9QjDNSu72UT0U7un1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t65h1-0001bM-Mj; Wed, 30 Oct 2024 11:12:47 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1t65gx-001B9S-3A;
+	Wed, 30 Oct 2024 11:12:44 +0100
+Received: from pengutronix.de (pd9e595f8.dip0.t-ipconnect.de [217.229.149.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 837433622F0;
+	Wed, 30 Oct 2024 10:12:43 +0000 (UTC)
+Date: Wed, 30 Oct 2024 11:12:43 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Ming Yu <a0282524688@gmail.com>
+Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, 
+	brgl@bgdev.pl, andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
+	jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org, 
+	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org
+Subject: Re: [PATCH v1 0/9] Add Nuvoton NCT6694 MFD devices
+Message-ID: <20241030-industrious-sidewinder-of-strength-efbe4a-mkl@pengutronix.de>
+References: <20241024085922.133071-1-tmyu0@nuvoton.com>
+ <20241024-eminent-dancing-narwhal-8f25dd-mkl@pengutronix.de>
+ <CAOoeyxV4K=jR+tofeQtsMB7+smuu+Ghas5Tqfx4JvhuVK8dXrA@mail.gmail.com>
+ <20241025-modest-hasty-angelfish-1e9193-mkl@pengutronix.de>
+ <CAOoeyxU9VwsM=mRZy5AtjH=V3iSGQxkKw18qL+yeUxkh1OVHgQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="frl5xcswfbpqjn4v"
 Content-Disposition: inline
-In-Reply-To: <13f764f7-4cc4-4563-81f6-0393732729a6@stanley.mountain>
+In-Reply-To: <CAOoeyxU9VwsM=mRZy5AtjH=V3iSGQxkKw18qL+yeUxkh1OVHgQ@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 
-On Wed, Oct 30, 2024 at 12:26:13PM +0300, Dan Carpenter wrote:
-> Hello Vasileios Amoiridis,
-> 
-> Commit 9b4071ab8cbe ("iio: chemical: bme680: generalize read_*()
-> functions") from Oct 21, 2024 (linux-next), leads to the following
-> Smatch static checker warning:
-> 
-> 	drivers/iio/chemical/bme680_core.c:760 bme680_read_raw()
-> 	warn: passing casted pointer '&chan_val' to 'bme680_read_temp()' 32 vs 16.
-> 
-> drivers/iio/chemical/bme680_core.c
->     738 static int bme680_read_raw(struct iio_dev *indio_dev,
->     739                            struct iio_chan_spec const *chan,
->     740                            int *val, int *val2, long mask)
->     741 {
->     742         struct bme680_data *data = iio_priv(indio_dev);
->     743         int chan_val, ret;
->     744 
->     745         guard(mutex)(&data->lock);
->     746 
->     747         /* set forced mode to trigger measurement */
->     748         ret = bme680_set_mode(data, true);
->     749         if (ret < 0)
->     750                 return ret;
->     751 
->     752         ret = bme680_wait_for_eoc(data);
->     753         if (ret)
->     754                 return ret;
->     755 
->     756         switch (mask) {
->     757         case IIO_CHAN_INFO_PROCESSED:
->     758                 switch (chan->type) {
->     759                 case IIO_TEMP:
-> --> 760                         ret = bme680_read_temp(data, (s16 *)&chan_val);
-> 
-> The bme680_read_temp() function takes an s16 pointer but we're passing a s32.
-> This will not work on big endian systems and even on little endian systems, we
-> haven't initialized the last 16 bits of chan_val so it's an uninitialized
-> variable bug.
-> 
 
-Hi Dan,
+--frl5xcswfbpqjn4v
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 0/9] Add Nuvoton NCT6694 MFD devices
+MIME-Version: 1.0
 
-Thanks for letting me know! What I could do is instead of reusing the
-int chan_val, I could use a local s16 temp_chan_val so there is no need
-for typecasting here. How does that sound to you Jonathan?
+On 30.10.2024 16:30:37, Ming Yu wrote:
+> I am trying to register interrupt controller for the MFD deivce.
+> I need to queue work to call handle_nested_irq() in the callback
+> of the interrupt pipe, right?
 
-Cheers,
-Vasilis
+I think you can directly demux the IRQ from the interrupt endpoint
+callback. But handle_nested_irq() only works from threaded IRQ context,
+so you have to use something like generic_handle_domain_irq_safe().
 
->     761                         if (ret)
->     762                                 return ret;
->     763 
->     764                         *val = chan_val * 10;
->     765                         return IIO_VAL_INT;
-> 
-> regards,
-> dan carpenter
+Have a look for how to setup the IRQ domain:
+
+| drivers/net/usb/lan78xx.c
+| drivers/net/usb/smsc95xx.c
+
+But the IRQ demux in the lan78xx only handles the PHY IRQ. The ksz
+driver does proper IRQ demux:
+
+| net/dsa/microchip/ksz_common.c
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--frl5xcswfbpqjn4v
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmciBpgACgkQKDiiPnot
+vG8nUQgAjlFmdH0l/1kIMmisd2Oil+MBaXTjGPuahpQda7WUz6pZi56UHxgat+ZF
+Hr/eYxOz73BjWGuXCp3FfL1Mqp5NY66h0ZYdjgItMGN/0Dic5naFg/RnfniUnSUE
+rPYn+MI4K/R/n+O7ZFzg6LTU5isPKsCfmJhD1M4WXpd/QRX7Jv5yo6qdtlfwYFM2
+sDX5CRR4iyfcdaM4kyF/JCfhlzYqDBEQG2tLdJfU8zlqm8SW+CNGLDs7uWOIguaA
+SINbHFo2E4UONkdEhDkgn4seDDr4ykSKfazN/YbvhimF3862GtEUbeK7R8l8SJN6
+r76RxQK4oMaCy7/ydWFpcaOqfWG4qA==
+=BTYV
+-----END PGP SIGNATURE-----
+
+--frl5xcswfbpqjn4v--
 

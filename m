@@ -1,160 +1,165 @@
-Return-Path: <linux-iio+bounces-11606-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11607-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FEF9B63AD
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 14:05:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6131B9B63DD
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 14:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBC91B22E4D
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 13:05:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 849E11C20B12
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 13:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCC71E9072;
-	Wed, 30 Oct 2024 13:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353E147A73;
+	Wed, 30 Oct 2024 13:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CWATzUEO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pjun1mSb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7E71E3DD3;
-	Wed, 30 Oct 2024 13:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1FD1E9093;
+	Wed, 30 Oct 2024 13:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730293504; cv=none; b=e4vy6i9VJbtfcjxtKnbdC/SPkIM1z2PHZPuTempvgDR0Fb3fiVL7yehmmiMt0OVQ2A17b/Ja7zc1aRgWc0KJyWkU06LKS5piiHVd0dVOJZKDojUgtYEMag7KvCfDKks1dsxL6AObtqyS2xJGWWSgYi6htGRssMUkD5l7H4jLlBo=
+	t=1730294185; cv=none; b=aXYcqZrHqbYASxm+RZgKC7vhCj5jdXkkRCPaG2ABSt2oOYPpyumkUp3Po7gsRKZDcvdSr9Fe5Pg2WgzjTNThQ20vxqsCH9jBo8KQ9XjFkh7ryWxpEVHZgtpQGnpTPZaeiL3RUb4DRLW5fdB6MoFZXTriKUvcIZX18yxL5lAfKWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730293504; c=relaxed/simple;
-	bh=078Xyy2dsa/WIxqMkf70NPMDAWJaZI2RrYQPgzscuXI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mnb30Y2DoFzSui66IJXl4S8nymgf+zRtlbvZLzMwcpL9B0fJHG1pzsUBnEjZagdM9xfsQMUpJ9B5d3Nzfj3vuoapHTWPRR939B+YbkfPMOrOvf/xwN+7dszaDFBshzyGu96LkDhNo8xCtTT1m+HrJ6MjsxLtJaMsC9YaUXEAqno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CWATzUEO; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1730294185; c=relaxed/simple;
+	bh=mjpOykWQQEPD08Zedf+uqfUx3hOJDIiOsWhO6tR9sJg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=YYMhHX+dKOwHJB/Edp9eXmwljrfCQxHtWlmSPoqZusdOPF1Q3mLwDorTRQWKSM0JByLXo2bsp84QScHkadeo5f73lZP4PRjhvL4mJCLWXFTlzCj0Znjs85+OpcbcZhTy9aAyjqHf8C8gNtfsOKYGjw3d7rZaGV/w6kRY93005UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pjun1mSb; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-37d47eff9acso4677408f8f.3;
-        Wed, 30 Oct 2024 06:05:01 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539ebb5a20aso6825024e87.2;
+        Wed, 30 Oct 2024 06:16:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730293500; x=1730898300; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=078Xyy2dsa/WIxqMkf70NPMDAWJaZI2RrYQPgzscuXI=;
-        b=CWATzUEOahPXo+eO5YLCTh1I8anJnKYI++9aDjA+aLB4o64Q70je2ZGZNtITiH4CwA
-         E3eM18ewxSLvxV7TTmmhkKQX0Id1qdxW3XYc/wiYCbZ0FJrxxxovR1E2/wDP4EekDNmL
-         Bu4s/ezr68Q+AvV3W9QW1crFWrYEaSvDHXEXY/L1PYqVxu8EoRbbBKXQoIDUPUYHG3n5
-         tEwJWuTnHoUZdFeC8Zi9w5chGDe3B5hfbPx60E3rDQ0dc/CdunhC1HkslAJpjuQxMK11
-         uDP+xA5Z8wAPGcm+JFyzH4PXYYm8ZjaBXote3C3uCXUemL3JleMgJiQ2ivw4a82Cjpz/
-         xK/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730293500; x=1730898300;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=gmail.com; s=20230601; t=1730294181; x=1730898981; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=078Xyy2dsa/WIxqMkf70NPMDAWJaZI2RrYQPgzscuXI=;
-        b=Bnamcnt/srzFxy3byQU3OthaPC/zgX7WFWIxgfsWUCHoW6sogQ45Gi9KUyrlm0er7d
-         +aNfWttqDG5Zmpp4kzqW+Kpir8L3z3qvBB6NP62CQGpEoJbmob+jGx7SBxv+pldIYpaq
-         JrsvMN7Tyv76sr7FNdRqbQCsvGeRSazKg2PbWu7N24BAXvy0eo12dmhWLSs/n5Fg0kW2
-         h2CyBeTKTLFp4EwB7nD6nr9nHgdg/RgvnIDd/KEqFaKHUZjsOrjaGQ+/Syhe66/yI8Dc
-         NOULqsNyWQyk+s2bvkZeckNZ90gahyDtlVpW+c8yVOqpBuptNX3anTT4uGhzO9FqAGmU
-         c70Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVQvAvXCG8afXu8DfMXaTSAKJmy5TRQl/d0IlYou43vThzlroImhiUH0gj6HVyNjGrNfbdtbtvgquI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRCHwOteXRu7wtlcRIoZxymumG5rGrdkqlnF7NApzEaZkjUhQh
-	bDH5IMhRkz8yHRi/Ja2DfYoJvE4e2gsmp2WzrxShj0hkrtz09ihk
-X-Google-Smtp-Source: AGHT+IFpOOd/uvf/Jny8m0n3aBYwWdwnNXjb09/Dv9El2B+45ip09m74HMLDQ+30Ig3aA5elOTbF/g==
-X-Received: by 2002:adf:edc9:0:b0:378:89d8:8242 with SMTP id ffacd0b85a97d-38061163b1dmr10053379f8f.26.1730293499587;
-        Wed, 30 Oct 2024 06:04:59 -0700 (PDT)
-Received: from ?IPv6:2001:a61:34c9:ea01:14b4:7ed9:5135:9381? ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b48216sm15257332f8f.59.2024.10.30.06.04.58
+        bh=EwlnyAJH2YmkogP0eusSK0qgfGqw+0ITGuYRph0kP/c=;
+        b=Pjun1mSbVgfhugL494m3+/K7jJdM8J/QkOWQn4y6BgPtrJJz2PqgJfSUEaYwiLVIms
+         bx5JC8euHJAwbQQPjRM2BfPu5Z8GcIjJ8xxPQEHrucQRVjkI2HgplaE7L+k+ol+0Wt7y
+         Afm1prlFxwck2kYThD028My5vYO6JQrUHP08ZUHF5VzY+ls+upA+PhuBMzyRqlpt8Fnr
+         PIuHd/7/fLVKDgXswQfsE+1U6pSzh2WPQRFfuvvHOy3bEfRC86Tn6r+Sv6VnZn3riikr
+         5UFyA1vGIawPIGUB29rwhQfKojOU6vTrzd9xO1gWQ8Ux/K5+y1lAmpLK4WWYhqFDFB8J
+         M5Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730294181; x=1730898981;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EwlnyAJH2YmkogP0eusSK0qgfGqw+0ITGuYRph0kP/c=;
+        b=ixwpPXqOg4imbRxiKtPYqBQlFZmAlnzTnUkhJcdqFAluvzOKOgSMMbSZcZ07zW4jYn
+         ZTfkyV2+3GvAdWJye4800KWbJbpqIykjpAmm+2QCZY0vIpZxph5oplGObldOmdV3dDjg
+         ++QzpB031jZx2i4441i7QDL58g1GkJDPy5qlqnKCqeNzD1UPGh1n+FC4D/g8tTAjNhGk
+         ZJ85AkiBLc/x4PSGebkjb30OS49zsAaw93psKaXPHSWzUx453xKEZskoHipNWP0rdEzH
+         7UmChTMr6j56LQmZtKIg0kvFk6E+O9VWzeMaEby4r8p2zZW8xFioM9lwxtzA7b11k3mm
+         I0ow==
+X-Forwarded-Encrypted: i=1; AJvYcCW4VkIzKF5mPJd3vRxKtKAaMPU6mLLtQu4pTkyNFJVTKBAt4rbQWrtXvpWMFup9T8VBfwm/8j7yhQc=@vger.kernel.org, AJvYcCWkg42ALjpE5mE5p0bID8AKKYxnobWTxlEnR+saZh38yzZauJUP/54WXPBdRPspbhOPFAAkiu6JVQITMEFM@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywk3GAw8+6Mqv5JQv92seMpYW5ly2v5vDHUMB6ossbXRwBHW+xP
+	n5A7ONfZJz4WbyoFdxE41Dm4E28fozvMphtSEdSoLxAl0AE5HOXV
+X-Google-Smtp-Source: AGHT+IFS8fxarz/Ajf87YTbmEN+WSlQK6b9XCgaXn95oIJM9OIcg90gyB/QNrP022LYByL9LIcA1OA==
+X-Received: by 2002:a05:6512:3406:b0:539:88f7:d3c4 with SMTP id 2adb3069b0e04-53b348ded37mr8251994e87.29.1730294180723;
+        Wed, 30 Oct 2024 06:16:20 -0700 (PDT)
+Received: from mva-rohm ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53bc0d6fd23sm246359e87.271.2024.10.30.06.16.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 06:04:59 -0700 (PDT)
-Message-ID: <a575430a74a7825a2df9fad1a8e073ad0507b0e7.camel@gmail.com>
-Subject: Re: [PATCH v2 3/4] iio: adc: ad_sigma_delta: Add support for
- reading irq status using a GPIO
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>, 
- Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Dumitru Ceclan <dumitru.ceclan@analog.com>, Jonathan Cameron
- <jic23@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Lars-Peter
- Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring
- <robh@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org
-Date: Wed, 30 Oct 2024 14:04:58 +0100
-In-Reply-To: <20241028160748.489596-9-u.kleine-koenig@baylibre.com>
-References: <20241028160748.489596-6-u.kleine-koenig@baylibre.com>
-	 <20241028160748.489596-9-u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+        Wed, 30 Oct 2024 06:16:19 -0700 (PDT)
+Date: Wed, 30 Oct 2024 15:16:11 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Kalle Niemi <kaleposti@gmail.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: kx022a: Fix raw read format
+Message-ID: <ZyIxm_zamZfIGrnB@mva-rohm>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-On Mon, 2024-10-28 at 17:07 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> Some of the ADCs by Analog signal their irq condition on the MISO line.
-> So typically that line is connected to an SPI controller and a GPIO. The
-> GPIO is used as input and the respective interrupt is enabled when the
-> last SPI transfer is completed.
->=20
-> Depending on the GPIO controller the toggling MISO line might make the
-> interrupt pending even while it's masked. In that case the irq handler
-> is called immediately after irq_enable() and so before the device
-> actually pulls that line low which results in non-sense values being
-> reported to the upper layers.
->=20
-> The only way to find out if the line was actually pulled low is to read
-> the GPIO. (There is a flag in AD7124's status register that also signals
-> if an interrupt was asserted, but reading that register toggles the MISO
-> line and so might trigger another spurious interrupt.)
->=20
-> Add the possibility to specify an interrupt GPIO in the machine
-> description instead of a plain interrupt. This GPIO is used as interrupt
-> source and to check if the irq line is actually active in the irq
-> handler.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> ---
-
-Hi all,
-
-Regarding this, I do share some of the concerns already raised by Jonathan.=
- I fear
-that we're papering around an issue with the IRQ controller rather than bei=
-ng an
-issue with the device. When I look at irq_disable() docs [1], it feels that=
- we're
-already doing what we're supposed to do. IOW, we disable the lazy approach =
-so we
-*should* not get any pending IRQ. Also looking at drivers as the xilinx gpi=
-o
-controller, it seems some are careful about this [2] and make sure to clear=
- all
-pending IRQs when unmasking.
-
-Jonathan also said this:
-
-"True enough - that race is a possibility, but not all interrupt inputs
-are capable of gpio usage whilst setup to received interrupts."
-
-To my understanding this also means this is doomed to fail for some devices=
- or am I
-not following it?
-
-All that said, my naive feeling would be for a masked line to not get any p=
-ending IRQ
-and if it does, the driver should make sure to clean all outstanding interr=
-upts when
-unmasking. But I'm far from being an expert of the IRQ subsystem. Maybe it =
-would be
-interesting to get some inputs about someone who actually knows better?
-
-[1]: https://elixir.bootlin.com/linux/v6.11.5/source/kernel/irq/chip.c#L366
-[2]: https://elixir.bootlin.com/linux/v6.11.5/source/kernel/irq/chip.c#L366
-
-- Nuno S=C3=A1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="9YP4nW3d0VQmSZYA"
+Content-Disposition: inline
 
 
+--9YP4nW3d0VQmSZYA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+The KX022A provides the accelerometer data in two subsequent registers.
+The registers are laid out so that the value obtained via bulk-read of
+these registers can be interpreted as signed 16-bit little endian value.
+The read value is converted to cpu_endianes and stored into 32bit integer.
+The le16_to_cpu() casts value to unsigned 16-bit value, and when this is
+assigned to 32-bit integer the resulting value will always be positive.
+
+This has not been a problem to users (at least not all users) of the sysfs
+interface, who know the data format based on the scan info and who have
+converted the read value back to 16-bit signed value.
+
+This, however, will be a problem for those who use the in-kernel
+interfaces, especially the iio_read_channel_processed_scale().
+
+The iio_read_channel_processed_scale() performs multiplications to the
+returned (always positive) raw value, which will cause strange results
+when the data from the sensor has been negative.
+
+Fix the read_raw format by casting the result of the le_to_cpu() to
+signed 16-bit value before assigning it to the integer. This will make
+the negative readings to be correctly reported as negative.
+
+This fix will be visible to users by changing values returned via sysfs
+to appear in correct (negative) format.
+
+Reported-by: Kalle Niemi <kaleposti@gmail.com>
+Fixes: 7c1d1677b322 ("iio: accel: Support Kionix/ROHM KX022A accelerometer")
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Tested-by: Kalle Niemi <kaleposti@gmail.com>
+---
+ drivers/iio/accel/kionix-kx022a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-k=
+x022a.c
+index 53d59a04ae15..b6a828a6df93 100644
+--- a/drivers/iio/accel/kionix-kx022a.c
++++ b/drivers/iio/accel/kionix-kx022a.c
+@@ -594,7 +594,7 @@ static int kx022a_get_axis(struct kx022a_data *data,
+ 	if (ret)
+ 		return ret;
+=20
+-	*val =3D le16_to_cpu(data->buffer[0]);
++	*val =3D (s16)le16_to_cpu(data->buffer[0]);
+=20
+ 	return IIO_VAL_INT;
+ }
+
+base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
+--=20
+2.47.0
+
+
+--9YP4nW3d0VQmSZYA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmciMZcACgkQeFA3/03a
+ocUAbAf8CemZaa8l9ZL0wm+5dOk5Q6Xqc0R6LoHRx4ub7WgqoXh2gnPzQIjZJNEa
+ZHL/M6o2GQucL0I2+mWSmXAzYaEXe/eCT3gJ3trEYN6RJxN0j9m2v59jqxCK/eO6
+OfDWKiDUk+edc5Gy0DfnmP2KOa2JfR/CX6JxEz5NSA1LbsMpAYO4YJkJRwBPiAPr
+tC1pmbJ2RitWdGGGHtF5Ip6ObuPqZy0P3y0ixayasWiar412gsGP5kRan+8I/u6K
+JKa9K7jOdVM7Lbg9PP2l+XOT6aQxm9qk7ctGWwn+QBi97vhYzvbHQGarchkqofOg
+R2b+7OrZSvVcSNhEcroCJ1c9l6rsVQ==
+=Q3JL
+-----END PGP SIGNATURE-----
+
+--9YP4nW3d0VQmSZYA--
 

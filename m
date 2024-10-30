@@ -1,141 +1,128 @@
-Return-Path: <linux-iio+bounces-11604-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11605-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB519B6071
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 11:48:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA009B6357
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 13:50:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E88BC1C215B5
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 10:48:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64797B21AE7
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 12:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7212C6A3;
-	Wed, 30 Oct 2024 10:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5D21EABA6;
+	Wed, 30 Oct 2024 12:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tbajf4iN"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=metux@gmx.de header.b="UxbVmpXW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A477E1E3DF3
-	for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 10:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8B51E9066;
+	Wed, 30 Oct 2024 12:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730285251; cv=none; b=Qo0NRzET2Bpz6IhgD1JE6aHX1X42DMZTYfGPGIQqP0TbEipRdINlQv7TPDjviaazhSBfmuSrajTzLxW+sWfmeRBD/eID+B4IzZujIKEyE7gL4CEWg8LP6HVIlo3E8grO8pl5MFW5/6LsZ12sALJWh4OEr/ui7bQ4Nt98sJ8KUeE=
+	t=1730292587; cv=none; b=tTBqZdEbrR6j1L0WV7aTvrbcOhp/wn9myBG0TKQ41+VmI7zMf/vLPnnQ3SObAXUxNib8+KZSeq2WwNNb5gaW0B3EWrIXWMvnIWgYe87vsFdynU1jQkUGlhHc8rhruVblYSNNLDzGL6HN/LiSTcBAu0DPFBBKeHW1gEjswYBiS5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730285251; c=relaxed/simple;
-	bh=uusnrMKkwU4/Rd+T3S5PR9LlWSbDvbqgPrvPIlOGyGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=okN7cgmtLGJdNCiPz4y0GP6UFdEm8zxW7Ax51QENrC/Uf2oGLqWgN0BZLUpGEmt7KbEGtme9wRHw5XgtJE7PxQY2U2whLd5z+85L+2mbDSmNSdi+SWNcFVoJrLE8gtK1quKIxFFWUvDwIp2ydD1kwAkeyYZ7Vp+JsCiXH9siXss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tbajf4iN; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-539e7e73740so5488441e87.3
-        for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 03:47:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730285246; x=1730890046; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RVQ4fy8h4cnmxa/mMX1f5z/7pQb5o/lGulLsihlTE/U=;
-        b=tbajf4iNsDhw4SfZwB0cJCI1K96YrqvQIex+BsMDEWA3Jel7E/39B7e2J0ti5mnboW
-         fBE2kK0rV5HKg8TE6KLoIoQ2kr+alED2QqJ3hwqby8ibLOaeEdSpQiorTdzhCWp8m2ld
-         Om8P5UXWDK/oT2BFsCema//ODxv4jyxLRnYTmMkUfT8Ste1u0SaauSijehiRXKT+lFXE
-         /FmY3088zB28Mmqq9uDtih8W9TDiOsS3k0xR144Kk7VBurigVALUVXn+MhqAzuYPuigw
-         iju7k1a7frgzU8MxF34DyHFh0DlSfA5+fFtxL1YqwIFhlEW+vDmqbT8u7/5lV77jSLeL
-         oECA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730285246; x=1730890046;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RVQ4fy8h4cnmxa/mMX1f5z/7pQb5o/lGulLsihlTE/U=;
-        b=NjhVTZg484zeNVoHzp0/meAAe/VQpT62XQWwTDvdBNHPSpU/kOU6B8NI9Dht39vvKh
-         B0sBpHdBgqb1yC5INJWof2+9d2Alq8h/Jw785qympbb4wNaCsY7IgNMkNbNhSyIkhIow
-         hlP5B0W3JHmvGE8UN8/729ijGLiqXd/C3IdJswa0BOZZHakUHUn0oRcHsOnpnZiyAtrB
-         mTBxQLjOOHp+svai50PeUPZJzA+CsB4PSXFF3m3Bfj4gvt4IJfIcahJRBe75n3q6CXGW
-         gQGZeZ8u85PkSkUGE5wUMcPwCxzUENpoJOq6J7ZrkUctSeEG8QM5LcGhXnZpQxKt/vuh
-         JyZw==
-X-Gm-Message-State: AOJu0YyGETllgm38vJdY33X6DCd02PELBIcKddC1sxQDIROyBMtAPXmC
-	CGO4Kj72fZlUjcuswpGTsSrxaGvcQttVIrSw0s94xJJms5rZVK3XDOGpeUsurca7u313awUqLvr
-	v
-X-Google-Smtp-Source: AGHT+IGt3lKQkJEiejvEaJm5OL0FQ2PY5VnypqTLplb2VMJzNUkDcXM021VPOTBCcPot92rH2fUuQg==
-X-Received: by 2002:a05:6512:1255:b0:539:93ef:9ed9 with SMTP id 2adb3069b0e04-53b7ecfc5ebmr1774863e87.36.1730285245644;
-        Wed, 30 Oct 2024 03:47:25 -0700 (PDT)
-Received: from localhost ([41.210.143.198])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b713f0sm15010944f8f.75.2024.10.30.03.47.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 03:47:25 -0700 (PDT)
-Date: Wed, 30 Oct 2024 13:47:20 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: [bug report] iio: chemical: bme680: generalize read_*() functions
-Message-ID: <7c694cba-9444-415c-ac6e-458cdd600ae7@stanley.mountain>
-References: <13f764f7-4cc4-4563-81f6-0393732729a6@stanley.mountain>
- <ZyIDKdX7NKopqT4W@vamoirid-laptop>
+	s=arc-20240116; t=1730292587; c=relaxed/simple;
+	bh=+YCnTpHf4kgqcsvGPEJmRwKHA8R5k5OeoiGplCCzf7Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OwPtEP3D/a3ACyOXZS2HVEF7dK4/AyQzb7VLQfdEEomhe6oS+Wz9o41KmnN58L7qj/wMkMw8u5ZvVbt358Yhv9Zw6qkgwitjzfxDke2GpKYJhYWjgfsw/BeqqrEz3yQsIn5ofkeUQig1lHEeQsLzi6uuc1Xt8nVL0jQS790QoDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=metux@gmx.de header.b=UxbVmpXW; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1730292502; x=1730897302; i=metux@gmx.de;
+	bh=+YCnTpHf4kgqcsvGPEJmRwKHA8R5k5OeoiGplCCzf7Q=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=UxbVmpXWvyWFMdu+GATuiw1ytz1oNpvm5GNdgPbapjupaP25dsmWNYV/SdmkFCpE
+	 VX+3bwgCyi7J1vZWt8hxBFNjCqYXAs/90EF5MTi5XI4T3wPAud49gsLSmSGWAgCFH
+	 L/MlMEdcnBrC3Z6I/Y0EX4qgIzoVFOZM2ueUS8NENLEQofE14R0wXa31OvlhCEm1F
+	 9lgOEB79j/9vjsYX9KbXu2T/UCUxO61Yl+VZqyc98kF/0soDrfczquDVKjoNkb+Qg
+	 C3a2MT2iG3Shr2kXGTjhv+n6z7zTnhYsIVyC7TaB+61rRJr4ZYE9Z0EHkdrRrpF0j
+	 0MTyH7Gn6TRMn1XJ3Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.178] ([95.114.207.188]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MUXpK-1tExqH3yV6-00WDT5; Wed, 30
+ Oct 2024 13:48:22 +0100
+Message-ID: <d769ffcf-95e6-4db9-8f80-fe8a7dae0441@gmx.de>
+Date: Wed, 30 Oct 2024 13:48:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZyIDKdX7NKopqT4W@vamoirid-laptop>
+User-Agent: Mozilla Thunderbird
+Subject: lore.kernel.org getting senile ? [WAS: [PATCH 1/2] MAINTAINERS:
+ Remove Huawei due to compilance requirements.
+To: Vladimir Vladimirovich Putin <vladimir_putin_rus@kremlin.ru>,
+ torvalds@linux-foundation.org
+Cc: aospan@netup.ru, conor.dooley@microchip.com, ddrokosov@sberdevices.ru,
+ dmaengine@vger.kernel.org, dushistov@mail.ru, fancer.lancer@gmail.com,
+ geert@linux-m68k.org, gregkh@linuxfoundation.org,
+ hoan@os.amperecomputing.com, ink@jurassic.park.msu.ru, jeffbai@aosc.io,
+ kexybiscuit@aosc.io, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-fpga@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+ manivannan.sadhasivam@linaro.org, mattst88@gmail.com,
+ netdev@vger.kernel.org, nikita@trvn.ru, ntb@lists.linux.dev,
+ patches@lists.linux.dev, richard.henderson@linaro.org, s.shtylyov@omp.ru,
+ serjk@netup.ru, shc_work@mail.ru, torvic9@mailbox.org,
+ tsbogend@alpha.franken.de, v.georgiev@metrotek.ru, wangyuli@uniontech.com,
+ wsa+renesas@sang-engineering.com, xeb@mail.ru,
+ LKML <linux-kernel@vger.kernel.org>, phoronix@phoronix.com,
+ redaktion@golem.de
+References: <CAHk-=whNGNVnYHHSXUAsWds_MoZ-iEgRMQMxZZ0z-jY4uHT+Gg@mail.gmail.com>
+ <20241024140353.384881-1-vladimir_putin_rus@kremlin.ru>
+ <20241024140353.384881-2-vladimir_putin_rus@kremlin.ru>
+Content-Language: tl
+From: metux <metux@gmx.de>
+In-Reply-To: <20241024140353.384881-2-vladimir_putin_rus@kremlin.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:1/p4ha3marvAu2CXeYNmBSD+weQhVbztKCP0nISPKnffRdbsPI3
+ zPctzMmHLcQZTqlh2zjZzgis1SjXx91Sovsuto7k7PtiaIGSg5OcFzLBWgRcu14kWBAZy2V
+ 6iBOO6GAd+WQX6yFBtItp11ISEXll6ojoO2a1WoqxVo2LnaaL9WPMNYPLxG752dUTxTITZF
+ LcInJHKfb0M4bP+h7xstA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:4vaZnIPP94U=;1c9up5UAbh4Ag/QzXUXNQvA2l0p
+ 44Ceg39Q9FQgjnuFRb4ctiEQZ6+ThY3ohI4R7ghaxJvwW9GLmQklj8ELuO6HJZM3haO1kBQuj
+ lPf9DjnCWUfcGZ6Ecr8v4m+aEFlTj6r1/zlhPs8EVJwnS4Pe706PuXTBJpkg5WIn7GxOQO2JW
+ XajGhvRcjBrJhZNk7taO4FNBbp5dLDGkB6UepQiBXV68RMT6oTpFOwswwn3/eBeat+lHalNB/
+ gw+WciTtplBXIMbtRlqxaAJboJIHQLy0eXfzWRe/U26hY4FalvSL6RW63w2giJVSyCEe63Xf2
+ pnU7T294h4NAY+Lk1Uh+0usTGhMn+kqSHhbyz6XuQ9SUym/02iNMzOAUQU4B9rMEU5q6ZVIUd
+ 0PZ3f2zoM/AhE/8kfql73M86UBv0ANHdx6CqwXixMw8ZaIdo+GaFI0OcAUT9fQKIyYZczFTBp
+ AGABaZ971CQOkfqz9ZNcYAdXDG9laz6+7WLmruYJKXEeAyGdx7twTMJrs8FULcTe1ZOzQm3ZB
+ DT9XeRboVEyBNz53wj4/qAD1UsQODVRq/XAMxGruSGXdp9S8U1GLjLvbeblVDHTp4i143RIfc
+ UOHfXVzYXn7bC0uCHBJq1Wwe+j/PPMUEteRmxPqlOJxW/zJnk/+MhQ+nsjD3nQeqM4mO62C+8
+ cGyUVjqqCH9JFck+CUdFeZs+muR6CcuaNof+jRlxFMXiRxLHv+44RU3hyg04PrdKE21G5zjmC
+ EK9fu4IcYIpfrqOOb5TemzZQb0+1b1bsoLkyszrXyxOXZlQryGt702z9+snDKhQG4NhdmMGOd
+ ZwypTOh+SvzsGp5g+0qej1rGVGE9aJPkSwI0X0drGzsuc=
 
-On Wed, Oct 30, 2024 at 10:58:01AM +0100, Vasileios Amoiridis wrote:
-> On Wed, Oct 30, 2024 at 12:26:13PM +0300, Dan Carpenter wrote:
-> > Hello Vasileios Amoiridis,
-> > 
-> > Commit 9b4071ab8cbe ("iio: chemical: bme680: generalize read_*()
-> > functions") from Oct 21, 2024 (linux-next), leads to the following
-> > Smatch static checker warning:
-> > 
-> > 	drivers/iio/chemical/bme680_core.c:760 bme680_read_raw()
-> > 	warn: passing casted pointer '&chan_val' to 'bme680_read_temp()' 32 vs 16.
-> > 
-> > drivers/iio/chemical/bme680_core.c
-> >     738 static int bme680_read_raw(struct iio_dev *indio_dev,
-> >     739                            struct iio_chan_spec const *chan,
-> >     740                            int *val, int *val2, long mask)
-> >     741 {
-> >     742         struct bme680_data *data = iio_priv(indio_dev);
-> >     743         int chan_val, ret;
-> >     744 
-> >     745         guard(mutex)(&data->lock);
-> >     746 
-> >     747         /* set forced mode to trigger measurement */
-> >     748         ret = bme680_set_mode(data, true);
-> >     749         if (ret < 0)
-> >     750                 return ret;
-> >     751 
-> >     752         ret = bme680_wait_for_eoc(data);
-> >     753         if (ret)
-> >     754                 return ret;
-> >     755 
-> >     756         switch (mask) {
-> >     757         case IIO_CHAN_INFO_PROCESSED:
-> >     758                 switch (chan->type) {
-> >     759                 case IIO_TEMP:
-> > --> 760                         ret = bme680_read_temp(data, (s16 *)&chan_val);
-> > 
-> > The bme680_read_temp() function takes an s16 pointer but we're passing a s32.
-> > This will not work on big endian systems and even on little endian systems, we
-> > haven't initialized the last 16 bits of chan_val so it's an uninitialized
-> > variable bug.
-> > 
-> 
-> Hi Dan,
-> 
-> Thanks for letting me know! What I could do is instead of reusing the
-> int chan_val, I could use a local s16 temp_chan_val so there is no need
-> for typecasting here.
+On 24.10.24 16:03, Vladimir Vladimirovich Putin wrote:
+> Huawei Corp was added to the US Entity List[1] on 08/20/2020.
+>
+> The Entity List is a trade restriction list published by the United
+> States Department of Commerce's Bureau of Industry and Security (BIS),
+> consisting of certain foreign persons, entities, or governments.
+> It is published as Supplement 4 of Part 744 of the Code
+> of Federal Regulations. [2]
 
-That works.  Not a fan of the name though.  "temp" means "temperature" and "tmp"
-means "temporary".  chan_val16 perhaps?
+Interesting to see that this message got removed from lore.kernel.org.
 
-regards,
-dan carpenter
+Google still has it in it's index, and marc.info still has the whole threa=
+d.
 
+The internet doesn't forget.
+
+
+=2D-mtx
 

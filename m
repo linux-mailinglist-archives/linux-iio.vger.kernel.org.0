@@ -1,154 +1,129 @@
-Return-Path: <linux-iio+bounces-11598-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11599-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4A79B5DE9
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 09:31:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD169B5ED6
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 10:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A5971F23916
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 08:31:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA0DE2840B1
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 09:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137CA1E1052;
-	Wed, 30 Oct 2024 08:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FEB1E2017;
+	Wed, 30 Oct 2024 09:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EHjwf91M"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GGXUtsIc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA65114F90;
-	Wed, 30 Oct 2024 08:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199B11E1C2F
+	for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 09:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730277051; cv=none; b=YINPAZRjdZgjj3IRQMZ53I7xi6iXJAzBsdy6Pbrlm6T4K54n7tKQz3ReTcBLOShXH+X8MkLgSqs+/kQAddSbfrRzE30frJ7bdZYqFMWSkQbnaDJHz3hzSA+bPAWXTYbOF88Fmt20DdkCplSi+GbiWdiD9qiaRw4aE/6SjQHjrl4=
+	t=1730280386; cv=none; b=icgDXMjGlSpLEpg7Z+bHYaAYXcC42ZUm3OFXBFIKR/tCmUWeOI1BzS+AZopgpR9ZXvXOHaaBkJUCUp44IuZxI8M/kG+WgHc+xM4gq9jaZZebKt+Y74tAxt98tl3nyeqgxLLzu2f6v+EaoH6F+yQo9FMhyVa4UXaCHIAYseQM8aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730277051; c=relaxed/simple;
-	bh=kaltN+RuaBtKA+njTIOTqNhKc1ILmMjKsnquuYPjYb4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iiaQn1oBnWypIBAYv7bwtGgGZRYK++KWXbxS/H80wgn3ksfYaliJMw/2/hIaAxrZ6g6fhBUbJkg3x3NGFKBlthedW+bfgI5EWAzIZglfnJB3mbOMQCn5vDJG9tSjORQwX1QbK1H3PJMxJT43VYbv5zt7lX6F+Bq9b332c4EpXT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EHjwf91M; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e2972abc807so6172157276.3;
-        Wed, 30 Oct 2024 01:30:49 -0700 (PDT)
+	s=arc-20240116; t=1730280386; c=relaxed/simple;
+	bh=DTYefueHEnyXzuaHeIAgssX80hJhE0vqTRwPxfHzWJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=YW0TmJlnlCS6VGJYh6aqFotzTTDJ0qDmyJkhszESNpuEHhqkqVeCTPWhFzJRCAGgLgnu2lbo78gFwom2yN3gdfPFfTa6hhdsDL/s+5CvNxEpIxcojRZatoe6Zd/VQSL7oPDSIiBZoazmSuWiW/JbxDNvP99bBls2ScQoMQZm4Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GGXUtsIc; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d4ac91d97so5226197f8f.2
+        for <linux-iio@vger.kernel.org>; Wed, 30 Oct 2024 02:26:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730277049; x=1730881849; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=83QsD+0SmOIU2ZSbEm0g75qhVVIQnebcpG7P/LY0U3o=;
-        b=EHjwf91MtE6JMHX9Ebi1m61WjVZvdJmB+3zHLskYVQNrOGDil7hZiAcc4GVHAd6Pas
-         5eaO0lQQfdtj859uCfrCCDDmSUGOtAkOAWgxeTQ1SdE/V6nQ2ZzGGNiGrNNYoKpXGHfQ
-         j1BEoVLl5NPI/D1dHI5jqvUClIJ3GQeL5y/ZLD+p7tCxMvySDcxhSCkk8rO7FPjdbRTJ
-         BGAQAvwjWrkefaxJOmse/N2R0OIJys79ttCbgFBZ7qB+SlLOkoXPUQoK3VVnKAxs2peu
-         /K13ysnTZIV0m1BpipkM02pLVHBFA0w8iWjHwlpeNll3kSdAAWUJg66O/wkUGV4omBVh
-         Rqzg==
+        d=linaro.org; s=google; t=1730280382; x=1730885182; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yHRFmTjg4zti63TlEyf/WSLKZEbQh43/RraQ/OO7bDE=;
+        b=GGXUtsIc4nQoh8eZLDw+7xZwqhs6Gi4OosLN+BntEmcUWkIertFtBON+1t6jb5WkP4
+         cKK/BE5uYCavcGabtGKl9GzIoS3rKsK1Nh0mCnPU7hPb8NbmBv6vVoOgyUDuxHlHAaHE
+         CXSo42ma2URasgbG+Nxh5wC8qXNpjyFydSHJlpkTDN23t8oQPF6met89j5uerm/b8Y2f
+         BcQfbipBj/dHRbBleMWn+/FX5SUWRvyvXXU31a5PDUSqFYcDR9pQGYHAvjysfDhrZwai
+         BdLX4AheAhECNZwrwhPMRBZRZa8n5j6ev6/3nWKucgvnlIEezSfwElx7pw5yj0HX58ct
+         6KFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730277049; x=1730881849;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=83QsD+0SmOIU2ZSbEm0g75qhVVIQnebcpG7P/LY0U3o=;
-        b=jhtqIFe3mbzqvtbJKl2ld8fna/N2XxDbd9VnWsry+6TrHVaRunbg3mb1/c6cTx6EJv
-         szk6j8Hk6nqR3NnoyuqsBEulggWL8W70MFlOh1UYLWsU4EDZeamCxu1JexPMWnxpgz8E
-         gB+CzoSzlT5iGS8fmyyt5CtcuSBUz0nF9wcNPLk/nDIk8xpxOCOomQLTw+cyrIIpmNur
-         c+xf9+OAVjoAMH0Cmg/DbUzbc+S8PK1vLFhJlany1Z+q9UxQAFo8nbuFaoDtavXucnrX
-         cTI74MpSSy6SVpoul9nCbMyo4FX26d7ENxYBtQKFHDHM/ooa/pdPzE7ngDTvPtqAKqY5
-         PZrg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7xnoX3QHKM8BfrdZQ6kCyMmpV9XORVR5Z5nw8lMaUjUcTyP0ksCUTVVNGWGsrvqpmlbHadnpqE8pL@vger.kernel.org, AJvYcCUKOQRmyBco+TUNRLB9/5HncvM9JrzY9GpfLf6Cz/tUFVcwsZjGM2A0hmq7+FBZICPtOwR1pdmuuF8jF6hY1qY=@vger.kernel.org, AJvYcCUiH6SOhc9QxVCoQfcSqfZXcTtBqGblOoZT/hRAhrBaF0Mi4+KbxndZF4R+WLSuecxx/KNvdKC63T+v@vger.kernel.org, AJvYcCVRndUBZx4ULbzi5/XKSIfXl4+GX6PiY496AWkySkIUNFTmByL5UWo8LlKfXY9Yti0qJbYS2JC2ziVJ@vger.kernel.org, AJvYcCVYo5kZOQ6kHg6XYmYEcLz+7sSixrg49qf3vcFfNMTaJ2/aNtRd6PQXP9NpkF69pTG1+3dbBp0v1qw=@vger.kernel.org, AJvYcCVfdg/TcpLk+2+Y4VJbciae/J88tpWANkysluUaOFdL1K27ddq+pux7dGldq5pZwn+xsAZVILN2N6+zXw==@vger.kernel.org, AJvYcCW1eJc578bgGWqhk9N987kqvapowvrwrYAZXjqPRo1PjxqfecQ7sYrs6pCByS7D+mLhQdxM0QOyewxVWp8=@vger.kernel.org, AJvYcCWhMVHWaA3z8CAB2jKAUiBC/I9BqnVzCzmjGb0gvi8wD/PQMqRddAeFpPVtVMFFn39o6gnPdJv0@vger.kernel.org, AJvYcCWqEbZxVo+obMyLaNjQFvKfxb+g+ZKNaAGTDXk+HhrLu75NizClGuKuHaqXcEYnvvHFNrlDcyJ67i9P@vger.kernel.org, AJvYcCXRBQ1u0uqMoro+5Q9nmYeRPumVVfUJp7KM
- w5A6EHLfWbylMuWkmx3PS8z+Bakm0H9Ea/ZSJiTrqjbyXT5W@vger.kernel.org
-X-Gm-Message-State: AOJu0YzK2JYi9nzaEbVbDnfg7hcEIE+NclBxRic87I2vcJ5u0YRYe+k/
-	MhtxdOBC8Pffqqyq2weB2MyuE4aR5VWir9japz4jThdLfycmFhByb42PoVt+q9SDM4igTvX1OFo
-	Gbb7NVpxfObYXN/1+2j8sMApt/mk=
-X-Google-Smtp-Source: AGHT+IGXNYy381QkNndFOp7Kep7v+AsfnJYrtU85o86EwyuP7sESCo7RFZ/IU1mfbniSwKfrtjlalqvrFol9fGaaTOU=
-X-Received: by 2002:a05:6902:1144:b0:e30:da6f:ccb4 with SMTP id
- 3f1490d57ef6-e30da6fce98mr354099276.43.1730277048550; Wed, 30 Oct 2024
- 01:30:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730280382; x=1730885182;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yHRFmTjg4zti63TlEyf/WSLKZEbQh43/RraQ/OO7bDE=;
+        b=Hsw2A5xM3GbjmlptfYlLN84FFf6XJmtwTLaQ5vAJaobuXy4WrJpRl0HlsaC+6rY9Hi
+         QpLI9xSA4od2GTnL8KTrtU0v78D2dic43mMJaMqMSWFehFK1JIQmG91QYt0xStrLLVZx
+         z/scbTOVXW9MKnRbpwNbw1ENoNVzlMdB+BbkfUbRq4Yyrr4vZCPSbaOWvbM5loq9ESAy
+         3syLYluO2QyKnbQieHwvYx3lU306tUucip3V6xsXFLmOrauvB2ArOxP8JJRPYF5gHyPc
+         1Udv7TUkVIi6vhPa+U3SgSagh+sJYp6vyVWzyyhFIHJsxG/ystLHBoQ/IyX5oGbDvrrv
+         5arw==
+X-Gm-Message-State: AOJu0YyEw3eKCJ0wPeug/C4EqFvBRSxn+jCPie8KcUxEvARhqto6exbB
+	Hdb78K1K8LPiK405GPPsUgZb+cH6cjZKY7qx6QJepMuG2pf8cxXgHQouYLnCxlc=
+X-Google-Smtp-Source: AGHT+IGvAOpC+O8Vl3WA/q+L/hNE/hJwMH+Zx1keane7VMqW+ocqBaQwM7kCsh5LA0OWdXJMudb76g==
+X-Received: by 2002:adf:fb06:0:b0:37d:4eeb:7366 with SMTP id ffacd0b85a97d-3806114195cmr13546934f8f.4.1730280382404;
+        Wed, 30 Oct 2024 02:26:22 -0700 (PDT)
+Received: from localhost ([41.210.143.198])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70bc1sm14968368f8f.70.2024.10.30.02.26.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 02:26:21 -0700 (PDT)
+Date: Wed, 30 Oct 2024 12:26:13 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: linux-iio@vger.kernel.org
+Subject: [bug report] iio: chemical: bme680: generalize read_*() functions
+Message-ID: <13f764f7-4cc4-4563-81f6-0393732729a6@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241024085922.133071-1-tmyu0@nuvoton.com> <20241024-eminent-dancing-narwhal-8f25dd-mkl@pengutronix.de>
- <CAOoeyxV4K=jR+tofeQtsMB7+smuu+Ghas5Tqfx4JvhuVK8dXrA@mail.gmail.com> <20241025-modest-hasty-angelfish-1e9193-mkl@pengutronix.de>
-In-Reply-To: <20241025-modest-hasty-angelfish-1e9193-mkl@pengutronix.de>
-From: Ming Yu <a0282524688@gmail.com>
-Date: Wed, 30 Oct 2024 16:30:37 +0800
-Message-ID: <CAOoeyxU9VwsM=mRZy5AtjH=V3iSGQxkKw18qL+yeUxkh1OVHgQ@mail.gmail.com>
-Subject: Re: [PATCH v1 0/9] Add Nuvoton NCT6694 MFD devices
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl, 
-	andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-rtc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Dear Marc,
+Hello Vasileios Amoiridis,
 
-I am trying to register interrupt controller for the MFD deivce.
-I need to queue work to call handle_nested_irq() in the callback
-of the interrupt pipe, right?
+Commit 9b4071ab8cbe ("iio: chemical: bme680: generalize read_*()
+functions") from Oct 21, 2024 (linux-next), leads to the following
+Smatch static checker warning:
 
-Best regards,
-Ming
+	drivers/iio/chemical/bme680_core.c:760 bme680_read_raw()
+	warn: passing casted pointer '&chan_val' to 'bme680_read_temp()' 32 vs 16.
 
-Marc Kleine-Budde <mkl@pengutronix.de> =E6=96=BC 2024=E5=B9=B410=E6=9C=8825=
-=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=884:33=E5=AF=AB=E9=81=93=EF=BC=
-=9A
->
-> On 25.10.2024 16:22:01, Ming Yu wrote:
-> > Marc Kleine-Budde <mkl@pengutronix.de> =E6=96=BC 2024=E5=B9=B410=E6=9C=
-=8824=E6=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8B=E5=8D=887:57=E5=AF=AB=E9=81=93=
-=EF=BC=9A
-> > > On 24.10.2024 16:59:13, Ming Yu wrote:
-> > > > This patch series introduces support for Nuvoton NCT6694, a periphe=
-ral
-> > > > expander based on USB interface. It models the chip as an MFD drive=
-r
-> > > > (1/9), GPIO driver(2/9), I2C Adapter driver(3/9), CANfd driver(4/9)=
-,
-> > > > WDT driver(5/9), HWMON driver(6/9), IIO driver(7/9), PWM driver(8/9=
-),
-> > > > and RTC driver(9/9).
-> > > >
-> > > > The MFD driver implements USB device functionality to issue
-> > > > custom-define USB bulk pipe packets for NCT6694. Each child device =
-can
-> > > > use the USB functions nct6694_read_msg() and nct6694_write_msg() to=
- issue
-> > > > a command. They can also register a handler function that will be c=
-alled
-> > > > when the USB device receives its interrupt pipe.
-> > >
-> > > What about implementing a proper IRQ demux handler instead?
->
-> > I think the currently planned IRQ process meets expectations.
-> > Is there anything that needs improvement?
->
-> You can register the IRQs of the MFD device with the Linux kernel. This
-> way the devices can request a threaded IRQ handler directly via the
-> kernel function, instead of registering the callback.
->
-> With a threaded IRQ handler you can directly call the
-> nct6694_read_msg(), nct6694_write_msg() without the need to start a
-> workqueue from the callback.
->
-> Marc
->
-> --
-> Pengutronix e.K.                 | Marc Kleine-Budde          |
-> Embedded Linux                   | https://www.pengutronix.de |
-> Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-> Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+drivers/iio/chemical/bme680_core.c
+    738 static int bme680_read_raw(struct iio_dev *indio_dev,
+    739                            struct iio_chan_spec const *chan,
+    740                            int *val, int *val2, long mask)
+    741 {
+    742         struct bme680_data *data = iio_priv(indio_dev);
+    743         int chan_val, ret;
+    744 
+    745         guard(mutex)(&data->lock);
+    746 
+    747         /* set forced mode to trigger measurement */
+    748         ret = bme680_set_mode(data, true);
+    749         if (ret < 0)
+    750                 return ret;
+    751 
+    752         ret = bme680_wait_for_eoc(data);
+    753         if (ret)
+    754                 return ret;
+    755 
+    756         switch (mask) {
+    757         case IIO_CHAN_INFO_PROCESSED:
+    758                 switch (chan->type) {
+    759                 case IIO_TEMP:
+--> 760                         ret = bme680_read_temp(data, (s16 *)&chan_val);
+
+The bme680_read_temp() function takes an s16 pointer but we're passing a s32.
+This will not work on big endian systems and even on little endian systems, we
+haven't initialized the last 16 bits of chan_val so it's an uninitialized
+variable bug.
+
+    761                         if (ret)
+    762                                 return ret;
+    763 
+    764                         *val = chan_val * 10;
+    765                         return IIO_VAL_INT;
+
+regards,
+dan carpenter
 

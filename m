@@ -1,125 +1,146 @@
-Return-Path: <linux-iio+bounces-11639-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11640-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0168B9B697F
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 17:48:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276A89B6992
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 17:51:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B5C1C20B1B
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 16:48:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 591091C20F2E
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Oct 2024 16:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628BA2144B5;
-	Wed, 30 Oct 2024 16:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YpnFElbe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6E2215027;
+	Wed, 30 Oct 2024 16:51:01 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDA6768FC;
-	Wed, 30 Oct 2024 16:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B9021502A;
+	Wed, 30 Oct 2024 16:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730306878; cv=none; b=l2MMgW2mJyfUWWa3yLeKclSa2t/uSL8xmwAjAUYL6bI8ULzFSpP6GxwnDfW5BQCLOB53ZMdIf4oxmqMGEOGXfcNtPHTBjhrzlXHe/j4+4EGyHZLa9hoVk0ky8WcnnlZ9OAT7uR20JU3pjr3kn98PJ2/sxq0RJ6gyaTy5o6njAWE=
+	t=1730307061; cv=none; b=M7dCFZEYi8YJbYE8V/CV+giesS8jbT6dFMnA2x5RHy06MbsQ1qzFCa1O30Y/GJMhipvZTw1LEuJLCddrNUFPKntQp7Mp/eve4ne/u1FXLX/FxgtJd5V9R5GS8OGXHmlHTOWILoLwpVZ9Uzklycxn59RqlHToyDPuMmAhA/F07I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730306878; c=relaxed/simple;
-	bh=D2oJYtwG9EKSoZ7I5siUsipoREy99xEvaxJ67nyWbRU=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=H6A6BzVEkhwBvFrF5EUWqx4dAFVR8B0PX5RYNMiYOfxRy+xyNSiDwcoLi8cO7grqZFuYOkZju2A/BNJHjXH0rn8+OU0Fei1Q4wErjy9LDxInPe4+nHPUYWIHNmsBY8xUGbdlo6LHW4TwwuDPwCunF+VppsMyGpk/KVVM4XNbK6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YpnFElbe; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d4ac91d97so67046f8f.2;
-        Wed, 30 Oct 2024 09:47:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730306875; x=1730911675; darn=vger.kernel.org;
-        h=user-agent:message-id:date:to:cc:from:subject:references
-         :in-reply-to:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pyAZDfpaHEPPobXVP0C8mBTxkDr4yKYduYhVIQw6zIQ=;
-        b=YpnFElbexnAoI4p3nm+oEnOGznhVnG70iHajdfyBa0oxavF4ooeYk8qU4A9ryLUESL
-         tbso8zUvEnmgAoFa801y+1QUzgYXkA3kpn+wEoTQU70hPD+/3VjXnXogTS/+YdExqr8m
-         fOgbnyDtY27NvD4A6wkJBOqK85lSMb6du9GLchaufOp0es7oCnkpUlL12pdUfCez4DMC
-         pzm976YB9X2/Yo5MTWEQ57odkaUCONykKLZzP7t4UyKhdLNbQl0SJ4eLmXfu1MhKRMXp
-         XL1DNjoZXXsxBYTdkgxbSDwtX3tGAEAlpmYRo70XoeVQPYzAfiKfVyZ0ZhcUjjgLIvGG
-         T3Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730306875; x=1730911675;
-        h=user-agent:message-id:date:to:cc:from:subject:references
-         :in-reply-to:content-transfer-encoding:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pyAZDfpaHEPPobXVP0C8mBTxkDr4yKYduYhVIQw6zIQ=;
-        b=MG18yXkc9mz6O9rCyNpquT9Ikp3EsBR9YTzEnyk5rq/3/nXiZmMjkyBJTYaikmRA38
-         y0HNZ3tB2Fp1j7ILFRiwgJDCBxnfVDOVWl4f8138r16HIQTIhuVTq8SaoZBNKcCJzXMp
-         lSYeicM2XGzWmhLm5G8BEtAHMwBNcv9bNbSU6ARsMgHakxLG+hkWkB8gHRccTbZgAqFk
-         YbS93heRuQLMSbqWjfuPbNJFRAa7b+YRZGaotz2fhTCw3+RtUvZxmVuYezI1uj275xzd
-         c/Or2ftArpmx1nxRccLnwF2oAzZmaSORr4IrRLZb7t2NMK+Xo0bqJ4WMQum4a73JtrO9
-         pHyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUR+4yob1g5g09XHn4NCGU56dJhYUprdklsjjWA8v6apMSIcW1WFFG/aEETOUFlYlHt1uuBhEm4gPQOkQkO@vger.kernel.org, AJvYcCXHQq52B3FL0UwOWMWSci5cc+kSo9DvQJz0GxRDPvl9bBCeNvAeC4k8PJZhpD3YhKRXOPAycT4OyR8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIBWL4YoLtwODHSOaebereRuis2JQybvA+u7XLgyjVnO4llran
-	htFfEmgaiIv+I2MMeKc2zt/MER4x07iqEgVoRrRdNVcuSlwxzkLx
-X-Google-Smtp-Source: AGHT+IG57LVIgndXcx5SWpD+2PATOaWbuFrMV4s6ZZHtymFNkj3j2HhNOX8+RKbSuV0gHdI/styCyg==
-X-Received: by 2002:adf:edd1:0:b0:37d:332e:d6ab with SMTP id ffacd0b85a97d-38061228332mr15422792f8f.43.1730306874368;
-        Wed, 30 Oct 2024 09:47:54 -0700 (PDT)
-Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b3b57bsm15915247f8f.26.2024.10.30.09.47.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 09:47:53 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1730307061; c=relaxed/simple;
+	bh=bOTH/OjrpnC8FNfhLzXIlR186DhrR59YRd1DzOWN72Q=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GTkWLs64FNzeNUpRIDXUhpLoZmdTGmHsSo6GLUWw2b3pOY5dANxwYrxsw70GiN+gdosoQA1CzzIOgmX/FQElOeKMUnmulL86Cuw8gL2iaHPx/gcWy73RuKjzGS6RxrhdoLh3nehAesQhhcJlc7tFQmwA9IPDuamzBNLsM0Ylamg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XdtQ70XY1z6K5VJ;
+	Thu, 31 Oct 2024 00:49:35 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id A9119140B39;
+	Thu, 31 Oct 2024 00:50:53 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 30 Oct
+ 2024 17:50:53 +0100
+Date: Wed, 30 Oct 2024 16:50:51 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: David Lechner <dlechner@baylibre.com>
+CC: Ricardo Ribalda <ribalda@chromium.org>, Jonathan Cameron
+	<jic23@kernel.org>, Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires
+	<bentiss@kernel.org>, Srinivas Pandruvada
+	<srinivas.pandruvada@linux.intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
+	Harvey Yang <chenghaoyang@google.com>, <linux-input@vger.kernel.org>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 3/5] iio: Add channel type for attention
+Message-ID: <20241030165051.000023a1@Huawei.com>
+In-Reply-To: <b9da1c5e-3177-4bd1-abb2-5e92b0c2fb4c@baylibre.com>
+References: <20241028-hpd-v2-0-18f6e79154d7@chromium.org>
+	<20241028-hpd-v2-3-18f6e79154d7@chromium.org>
+	<20241028203437.3eb5268d@jic23-huawei>
+	<CANiDSCu7G8gDKaY5jJR+JGyqGDobkDPRG+9NOfpXvVviqkQizA@mail.gmail.com>
+	<20241029143847.00004392@Huawei.com>
+	<b9da1c5e-3177-4bd1-abb2-5e92b0c2fb4c@baylibre.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20241030162013.2100253-3-andriy.shevchenko@linux.intel.com>
-References: <20241030162013.2100253-1-andriy.shevchenko@linux.intel.com> <20241030162013.2100253-3-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 2/2] iio: adc: pac1921: Check for error code from devm_mutex_init() call
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 30 Oct 2024 17:47:52 +0100
-Message-ID: <173030687241.39393.12307342500543400932@njaxe.localdomain>
-User-Agent: alot/0.11
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Quoting Andy Shevchenko (2024-10-30 17:19:19)
-> Even if it's not critical, the avoidance of checking the error code
-> from devm_mutex_init() call today diminishes the point of using devm
-> variant of it. Tomorrow it may even leak something. Add the missed
-> check.
->=20
-> Fixes: 371f778b83cd ("iio: adc: add support for pac1921")
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/iio/adc/pac1921.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
-> index f6f8f9122a78..385e86ecc441 100644
-> --- a/drivers/iio/adc/pac1921.c
-> +++ b/drivers/iio/adc/pac1921.c
-> @@ -1132,7 +1132,9 @@ static int pac1921_probe(struct i2c_client *client)
->                 return dev_err_probe(dev, PTR_ERR(priv->regmap),
->                                      "Cannot initialize register map\n");
-> =20
-> -       devm_mutex_init(dev, &priv->lock);
-> +       ret =3D devm_mutex_init(dev, &priv->lock);
-> +       if (ret)
-> +               return ret;
-> =20
->         priv->dv_gain =3D PAC1921_DEFAULT_DV_GAIN;
->         priv->di_gain =3D PAC1921_DEFAULT_DI_GAIN;
-> --=20
-> 2.43.0.rc1.1336.g36b5255a03ac
->=20
+On Tue, 29 Oct 2024 17:26:06 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-Totally agree, thanks!
+> On 10/29/24 9:38 AM, Jonathan Cameron wrote:
+> > On Tue, 29 Oct 2024 13:20:06 +0100
+> > Ricardo Ribalda <ribalda@chromium.org> wrote:
+> >   
+> >> Hi Jonathan
+> >>
+> >> On Mon, 28 Oct 2024 at 21:34, Jonathan Cameron <jic23@kernel.org> wrote:  
+> >>>
+> >>> On Mon, 28 Oct 2024 10:12:23 +0000
+> >>> Ricardo Ribalda <ribalda@chromium.org> wrote:
+> >>>    
+> >>>> Add a new channel type representing if the user's attention state to the
+> >>>> the system. This usually means if the user is looking at the screen or
+> >>>> not.
+> >>>>
+> >>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> >>>> ---
+> >>>>  Documentation/ABI/testing/sysfs-bus-iio | 7 +++++++
+> >>>>  drivers/iio/industrialio-core.c         | 1 +
+> >>>>  include/uapi/linux/iio/types.h          | 1 +
+> >>>>  tools/iio/iio_event_monitor.c           | 2 ++
+> >>>>  4 files changed, 11 insertions(+)
+> >>>>
+> >>>> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> >>>> index 89943c2d54e8..d5a2f93bd051 100644
+> >>>> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> >>>> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> >>>> @@ -2339,3 +2339,10 @@ KernelVersion: 6.10
+> >>>>  Contact:     linux-iio@vger.kernel.org
+> >>>>  Description:
+> >>>>               The value of current sense resistor in Ohms.
+> >>>> +
+> >>>> +What:                /sys/.../iio:deviceX/in_attention_raw
+> >>>> +KernelVersion:       6.13
+> >>>> +Contact:     linux-iio@vger.kernel.org
+> >>>> +Description:
+> >>>> +             Boolean value representing the user's attention to the system.
+> >>>> +             This usually means if the user is looking at the screen or not.    
+> >>>
+> >>> Hmm. I should have thought of this when I replied to suggest a new channel type.
+> >>> The question is 'units' for a decision.
+> >>>
+> >>> Last time we hit something like this where processing is used to make a decision
+> >>> we decided to at least allow for the concept of 'certainty'.
+> >>>
+> >>> The idea being that smarter sensors would tell us something about how sure they
+> >>> are that the attention is on the device.
+> >>> The analogy being with activity detection. See in_activity_walking_input
+> >>> in Documentation/ABI/testing/sysfs-bus-iio
+> >>>
+> >>> Do you think that would be appropriate here as well?  For this device
+> >>> it would take the values 0 and 100 rather than 0 and 1.    
+> >>
+> >> For the particular device that I want to support, they are giving me a
+> >> value of 1 and 0, and the example from usb.org seems to work the same
+> >> way (Logical Maximum of 1)
+> >> https://www.usb.org/sites/default/files/hutrr107-humanpresenceattention_1.pdf
+> >>
+> >> I have no problem multiplying my value by 100 if you think there will
+> >> be a use case for that. It will not have a major performance impact on
+> >> the driver.  
+> > Same was true (0 or 1) for the activity classification but I'm not
+> > keen on certainty :)  So lets' copy that precedence and *100
+> > 
+> >   
+> And I assume we would want this to be in_attention_input (processed),
+> not in_attention_raw.
+Good point. Yes.
+> 
 
-Acked-by: Matteo Martelli <matteomartelli3@gmail.com>
-
-Best regards,
-Matteo Martelli
 

@@ -1,164 +1,141 @@
-Return-Path: <linux-iio+bounces-11713-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11714-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE06B9B801B
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 17:29:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FC19B81F2
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 18:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CE0A285443
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 16:29:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 914BF1F223F3
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 17:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771CB1CB329;
-	Thu, 31 Oct 2024 16:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54371C8FBA;
+	Thu, 31 Oct 2024 17:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="q5M/Oj9i"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TE3YMvI3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB6D1CB324
-	for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 16:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8AD1C2456
+	for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 17:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730392071; cv=none; b=mib9hHgwgBSAbPPBqsf+mbNuny/f0ZSmgtC+fNjNC+xGbsTu7py+nyJvpGksVl9Cd9SozvWYXODI2pDcqrnwSNQa8db2EeoINl67ITH7o5eQkt/ZYSnNIdSCAmExLvFhV4LekcmlB2eAqzwerSbFNxvPU2iUNQ5YsChcDswM844=
+	t=1730397485; cv=none; b=C9sSmtQCR4mCbB0MiihFD54hgAxM4zwtv3Ph9b+qh+4hC4vTCrtw9JfJ/jMJHoMcKa672rnogQTx91UDE+vFpAiqJLyEW7DaH7apzpFYVXdi07DkcNj+0RTZb4s4llRFZaFHXfJmylFHmYkMb/acAWwlF7DOcWWKDu9IMQ5w/ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730392071; c=relaxed/simple;
-	bh=NXkq/qyOqhp8iiSocyYd5F4iMl9dEpzBnig3MAjD1ws=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y/BKE3Nkmm70qUVhgxz7AsLQEEVCw9UCC2CgQz0OD3077iNOiiRPE1QtFFZqqii3Ky0TmjPlKPa9MN99ssU6jJL7B/LPiqekG7EjbMySAK+6lYxEj3U8J+E177kA+t/3u4aufL7q1Wj04yI1R7Z4RtW9IHU9E4cWKYH+0hxnSBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=q5M/Oj9i; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-71807ad76a8so579446a34.0
-        for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 09:27:48 -0700 (PDT)
+	s=arc-20240116; t=1730397485; c=relaxed/simple;
+	bh=s98ZX28OsVpUZzWaaWrFm/+3vCU+Pr78M3qXyvNi430=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XVupOeSnnef/nDJcdBBkg9LPdiPBpqhv3uKoLwtI7aJLN7sTfafmSNAlJIRtottzdFjzDoGiS5N9Zqy5+8ax997c501nv0ZRSm47KQ/cyV8KbvETvLqy+i0YfzTQzy16wLl6inNMvzPSjlqEAkIi29V9UKLNDi1Fu1ZJvbB5PdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TE3YMvI3; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-539e8607c2aso1343512e87.3
+        for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 10:58:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730392068; x=1730996868; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8zkuoswXbu0x76VZ9dkSgVo5XUz825DeoWuELNa3+zU=;
-        b=q5M/Oj9i+XqVZc0GrEkuCxFJfj8OZBgHXw0lBI/odPbQvz4o76tGKXZ4a98Oj95Teg
-         NE7qbtFqX/M5poFVVX00GCuUc69wAYNMwdGETpLXaJ1QXGVqDpxJLHoFY3H5wMYng6ol
-         Ufd8lUxtTEhXq/QniyAhaBB7CfeIhcohnWOSmqB1Rnqxf2BBMgv+p/6lw6+CEb4aWP2O
-         4OswJ5tyDTDxjLZk6/L7gHOL1Hkuem9de0eMx9Kjk/R/qjazmik86pMeMmUuheJ5SLKI
-         oa6QbxVUhTFyBAe1GhljdsPsUpnAmh42AUOaTHrmc/kzdcFG8/lA1rHO1VImy0O2btvW
-         2fFw==
+        d=linaro.org; s=google; t=1730397481; x=1731002281; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=P83QC4divwjdwrOkzc0beaK7x66pdeMqgQ1qbe4pGZQ=;
+        b=TE3YMvI3gX8v3czSKkqhq73RscaYYFOYVzLdo4u52ig90xybOIIpbe5iR1r5IMPxdr
+         0qMZaYYfEaEbr88BieHkHhE1TBpfSZ1mJtr4bwI6Tfk9x9bzfu/3GRanxP+wSSZeHAqc
+         8zTnpenvflZw391sG/a3Yp7wHaDJs0xbWcnxo0kJAByYxCvZsZVF7O6BwsuV9xan8VJW
+         DHqdjRep895ikJ+hbw53gWmZRtii3CwsSSuWV9tklMhJN0rLiCUTaGusecGgMUtXvyF9
+         o345UfGapyOlYSOAGu4P7gQtZ/mAxFl2vbnw4mKEBIDsLdX1K2gXKWyNw4iUtrGk0Wrp
+         H3oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730392068; x=1730996868;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8zkuoswXbu0x76VZ9dkSgVo5XUz825DeoWuELNa3+zU=;
-        b=QZk4Gwpy3YuTGkHrAuOe6l01SO5FzzmcfqBEiPqtYIRKdofi8Ig32NMgURlR4/Edes
-         C/X6gdi61DeIzZTmlzR1BwTmwYHR7oS3BpBH6THUa5hPg9eKGZDNe+OS+B3bMnu96CV5
-         PEswF1ZZzm6MgnGsf1I4RlLx1H1HTa2tZMledA7b/qDcwphFeDmmYrTCvxUPEN5cyfzv
-         jWSAQSDWrzxJamGg+Ox0rL26Knn+hT2AyPwoR+kyCfxkkZhht7lRNSGRZy0CJHTthMR1
-         2WTGTLsVJW2zzqEj5+5ryBcmej0LK8p3seqMl0BRHeJ8BtN4Khh+ic9tr5dj7r1w1rE8
-         HEgQ==
-X-Gm-Message-State: AOJu0YynD3t88Xg9Zby/Mw2pp6I/a5IaZdtlwqX7sF2dEVaXOkg0KeLa
-	J+C2fu8CAMde2ouMfOmv7hqiZVZXvioHJCY+K7Y1n+WqqTMUqGDJIpbGHDv+oDs=
-X-Google-Smtp-Source: AGHT+IGn3VcXN2vRbd8Rr0640Qt+w79Jerb9SkZNzmKhPFUbewiTnVqw/wQKsRc9oFeGGtT+FubdUQ==
-X-Received: by 2002:a05:6830:4123:b0:718:43b6:b0a0 with SMTP id 46e09a7af769-7189b4b76edmr3540707a34.4.1730392067759;
-        Thu, 31 Oct 2024 09:27:47 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7189cc69b1dsm402044a34.18.2024.10.31.09.27.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Oct 2024 09:27:47 -0700 (PDT)
-Message-ID: <ef4fe230-b7fb-4f7e-9173-ae85d305e9ae@baylibre.com>
-Date: Thu, 31 Oct 2024 11:27:45 -0500
+        d=1e100.net; s=20230601; t=1730397481; x=1731002281;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P83QC4divwjdwrOkzc0beaK7x66pdeMqgQ1qbe4pGZQ=;
+        b=m/JZnUyZlkYi7r7pnKyasS8A+S63r0vT5VFaRiGuISe++Qq5cf/J3NS7gX+p23CQtH
+         VbbL/VtDDfzsmP3PY2adbOmonDdOTl41Mg8p2PUFnuJddH2jiJ9hOXGonI03QFAjq+6B
+         ZSq7OLArU4iOe7pLz/eZtGPuaPjVck45ywQfz4fcDMGqss4/fzM14B6lhlgb6e74dw+q
+         k4kCrnuDIGgMV6LrA0DgKVbu6P4n3K100OfMquGknLufyEu1K3bAk7FufOD81+1ggvwN
+         TEkWt5X5vl8efHRa8jV5IxdDs4xweFkRSi8WV/fNr9HknXVdmoEdDAnSPqi1a8Z/zTDg
+         7M5g==
+X-Forwarded-Encrypted: i=1; AJvYcCX/HJAhfNr4hc4UZM/mv9MpUSKk741SuFupVB8aReseElX/DyJFFOG4MBE7N7UqPmkTwipt9sjvfpQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIXnn0auL7OsA7lV5r7bLpKyXkAFT2r3kivBnAp0QNXFPvyhT6
+	V5JxMO04BvTDTxRB+uCVdxeD9Rz6sm34O+0BbWKYmTGtdFqR7b3pboAX5LhFQYY=
+X-Google-Smtp-Source: AGHT+IGSV5srlEIwYq4ukshM4Ah7sMYFPuqhx1GlJEoXoE2aV6eQnDSC8Wx080gm6OXkRcNzRUro1A==
+X-Received: by 2002:a05:6512:687:b0:536:581c:9d9f with SMTP id 2adb3069b0e04-53b348d6ademr10336086e87.24.1730397481275;
+        Thu, 31 Oct 2024 10:58:01 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bc9c9f3sm282595e87.116.2024.10.31.10.57.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2024 10:58:00 -0700 (PDT)
+Date: Thu, 31 Oct 2024 19:57:58 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Jishnu Prakash <quic_jprakash@quicinc.com>
+Cc: jic23@kernel.org, robh+dt@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org, 
+	konrad.dybcio@linaro.org, daniel.lezcano@linaro.org, sboyd@kernel.org, 
+	quic_subbaram@quicinc.com, quic_collinsd@quicinc.com, quic_amelende@quicinc.com, 
+	quic_kamalw@quicinc.com, amitk@kernel.org, lee@kernel.org, rafael@kernel.org, 
+	rui.zhang@intel.com, lukasz.luba@arm.com, lars@metafoo.de, quic_skakitap@quicinc.com, 
+	neil.armstrong@linaro.org, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	cros-qcom-dts-watchers@chromium.org
+Subject: Re: [PATCH V4 2/4] dt-bindings: iio: adc: Add support for QCOM PMIC5
+ Gen3 ADC
+Message-ID: <ag3wqsjdec7ujcba2jpvhzgcbbc5vnyjyes5ljyyf5b4edw7j3@rj23a25wvoyd>
+References: <20241030185854.4015348-1-quic_jprakash@quicinc.com>
+ <20241030185854.4015348-3-quic_jprakash@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/15] iio: light: adux1020: write_event_config: use
- local variable for interrupt value
-To: Julien Stephan <jstephan@baylibre.com>,
- Mudit Sharma <muditsharma.info@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Anshul Dalal <anshulusr@gmail.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Cosmin Tanislav <cosmin.tanislav@analog.com>,
- Ramona Gradinariu <ramona.gradinariu@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Dan Robertson <dan@dlrobertson.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
- Michal Simek <michal.simek@amd.com>, Mariel Tinaco
- <Mariel.Tinaco@analog.com>, Jagath Jog J <jagathjog1996@gmail.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
- Kevin Tsai <ktsai@capellamicro.com>, Linus Walleij
- <linus.walleij@linaro.org>, Benson Leung <bleung@chromium.org>,
- Guenter Roeck <groeck@chromium.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
-References: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
- <20241031-iio-fix-write-event-config-signature-v2-6-2bcacbb517a2@baylibre.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-6-2bcacbb517a2@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241030185854.4015348-3-quic_jprakash@quicinc.com>
 
-On 10/31/24 10:27 AM, Julien Stephan wrote:
-> state parameter is currently an int, but it is actually a boolean.
-> iio_ev_state_store is actually using kstrtobool to check user input,
-> then gives the converted boolean value to write_event_config.  The code
-> in adux1020_write_event_config re-uses state parameter to store an
-> integer value. To prepare for updating the write_event_config signature
-> to use a boolean for state, introduce a new local int variable.
+On Thu, Oct 31, 2024 at 12:28:52AM +0530, Jishnu Prakash wrote:
+> For the PMIC5-Gen3 type PMICs, ADC peripheral is present in HW for the
+> following PMICs: PMK8550, PM8550, PM8550B and PM8550VX PMICs.
 > 
-> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> It is similar to PMIC5-Gen2, with SW communication to ADCs on all PMICs
+> going through PBS(Programmable Boot Sequence) firmware through a single
+> register interface. This interface is implemented on an SDAM (Shared
+> Direct Access Memory) peripheral on the master PMIC PMK8550 rather
+> than a dedicated ADC peripheral.
+> 
+> Add documentation for PMIC5 Gen3 ADC and macro definitions for ADC
+> channels and virtual channels (combination of ADC channel number and
+> PMIC SID number) per PMIC, to be used by clients of this device.
+> 
+> Co-developed-by: Anjelique Melendez <quic_amelende@quicinc.com>
+> Signed-off-by: Anjelique Melendez <quic_amelende@quicinc.com>
+> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
 > ---
->  drivers/iio/light/adux1020.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> Changes since v3:
+> - Added ADC5 Gen3 documentation changes in existing qcom,spmi-vadc.yaml file
+>   instead of adding separate file and updated top-level constraints in documentation
+>   file based on discussion with reviewers.
+
+I think it has been better, when it was a separate file. Krzysztof asked
+for rationale, not for merging it back. Two different things.
+
+> - Dropped default SID definitions.
+> - Addressed other reviewer comments.
 > 
-> diff --git a/drivers/iio/light/adux1020.c b/drivers/iio/light/adux1020.c
-> index 2e0170be077aef9aa194fab51afbb33aec02e513..db57d84da616b91add8c5d1aba08a73ce18c367e 100644
-> --- a/drivers/iio/light/adux1020.c
-> +++ b/drivers/iio/light/adux1020.c
-> @@ -505,7 +505,7 @@ static int adux1020_write_event_config(struct iio_dev *indio_dev,
->  				       enum iio_event_direction dir, int state)
->  {
->  	struct adux1020_data *data = iio_priv(indio_dev);
-> -	int ret, mask;
-> +	int ret, mask, val;
->  
->  	mutex_lock(&data->lock);
->  
-> @@ -526,12 +526,12 @@ static int adux1020_write_event_config(struct iio_dev *indio_dev,
->  			mask = ADUX1020_PROX_OFF1_INT;
->  
->  		if (state)
-> -			state = 0;
-> +			val = 0;
->  		else
-> -			state = mask;
-> +			val = mask;
->  
->  		ret = regmap_update_bits(data->regmap, ADUX1020_REG_INT_MASK,
-> -					 mask, state);
-> +					 mask, val);
->  		if (ret < 0)
->  			goto fail;
->  
+> Changes since v2:
+> - Moved ADC5 Gen3 documentation into a separate new file.
+> 
+> Changes since v1:
+> - Updated properties separately for all compatibles to clarify usage
+>   of new properties and updates in usage of old properties for ADC5 Gen3.
+> - Avoided updating 'adc7' name to 'adc5 gen2' and just left a comment
+>   mentioning this convention.
+> - Used predefined channel IDs in individual PMIC channel definitions
+>   instead of numeric IDs.
+> - Addressed other comments from reviewers.
 > 
 
-Instead of introducing `val`, I would rewrite this as:
-
-	if (state)
-		ret = regmap_clear_bits(...);
-	else
-		ret = regmap_set_bits(...);
-
-
-
+-- 
+With best wishes
+Dmitry
 

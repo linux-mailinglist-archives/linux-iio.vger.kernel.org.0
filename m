@@ -1,142 +1,171 @@
-Return-Path: <linux-iio+bounces-11684-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11685-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E9E9B76A1
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 09:39:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 436639B77F0
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 10:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A486B1C20A82
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 08:39:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00245287138
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 09:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0319A1553A7;
-	Thu, 31 Oct 2024 08:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D391990B7;
+	Thu, 31 Oct 2024 09:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uxDqicQK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWYWDuyk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EC3D517
-	for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 08:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0632A198E70;
+	Thu, 31 Oct 2024 09:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730363954; cv=none; b=IHG9wbaukWJk/dUX9t3mAy7lUqBGDI5qakjODxvHDAd3UPsUi29jXXISefvXdWE+5x9/9uW4L/MMGgoc6lMN9Cm/OEVPlPElFm9oFLuFH2QcHTQJw4S/0MgAWFVXKBJ5lt9JHTZXPAlkFH95x8j7G2B1gof78XPjsIna07Hq+GI=
+	t=1730368251; cv=none; b=pZvhKUIdX00JElAZBKRz01VgfpNhiftJenuuZ4yGCI05H62tim9Cknw7Y05b2T4Ok8cbd2CrCUzinwjL6yekVfdTc9vPCohNLxJklHFjCOqiO3YnUmYUtKzhO6vwOxe+G4/jIxPIPBZrN3n8R8XDQSO+ohxFbLPYv+mlkzqyKew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730363954; c=relaxed/simple;
-	bh=UlsVD/TQVZndaI39d2Ui/SFBNudIU291HqxrNdD5V9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iHTPjJYlVap0RCfDZZRuMwex//Q6pYIwz9Fa+ntcYo3b8II3lacMOF0fjj3sDH1+bPbrVvAAKAsdIEB6x1reCsIbLLa0UJjNXJhMi5T2IqUP7tAJa4GwzRIG8ZlXBokLeDbhRDOGsgl2SkUyqFDIowI0zYZEVTp8c8MkUiJTx3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uxDqicQK; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2fb3110b964so5662951fa.1
-        for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 01:39:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730363951; x=1730968751; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qFY3qc5m2k8ZV+nDfFga6B9StcU3TvC46on2VL5WFOQ=;
-        b=uxDqicQK2dIHHlw/XHlzjqI4HdZF0wiAkzKVTaeSFrsY4z3e4N7t2lVZ4wxp+sf8KI
-         Zwb5nvurHo7LpMYGI/ZSNfWjtFnmWUmXQ4WlMbasbR/cOWMDXvANi1aW8+i030mYlHCd
-         lOTnb7U4FHkE/KRcEJ0yEyhQmaTQxbZEmAbe3xLx2Sn/cxAWxx4qUGBkogGyrK7TwcIQ
-         aCCfdinix2SMMHLksObFzzVzI9O8hh1ENvA7E4O5Vfz5dqd5IxpMdHM9oRI9HtF4vrj6
-         zF+QIxY5NFAnUgxZpKg96q0L6WCsUoT5Z3j0MSBka4XM5galHQZPO4smLKDOmse8OFIE
-         yQew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730363951; x=1730968751;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qFY3qc5m2k8ZV+nDfFga6B9StcU3TvC46on2VL5WFOQ=;
-        b=Jbo3qWt9yBouigGkgybNXcALNt/s1h9goTohi/ZZyElpak9UgoOvkoEXpSYdeCnH3E
-         HE++EXfXehF+rJN4rzY/+vlj9nSaO+mF+TJXimUHEt20tI5YvNwyzVlLCgJYkl/ivizV
-         bDe+FtkbY8WzqF2zZuteGUV4S8qikQ0EPq4vhL4vUYherV0eucUuJi2HzAVpgQFGKvrb
-         zZlozxb/y835fJr11Y0nQYjDP2Xi8YropuHMy8dzwxzo3BMP/nhym0gG0VQmBGtxdYwg
-         kWe3mpFmeDfJn7YSC4S+w1Fp1JChu9/QMExTgTQAScGTDaiGkmCRsgmb60Htq1p33Pyt
-         wqUg==
-X-Gm-Message-State: AOJu0Yx9mz1yXvksWZRwPPowo9DHjFI0m+2/9DQC8Q3nnCx2N+a6iyGe
-	z2Qzsagsa9ejAnEXXZW/Yh60asP2YTtNinA8x2aMidXrbUiYETo6w6I+nBm062Q=
-X-Google-Smtp-Source: AGHT+IHS8hP/f50MkKSSTe+1BKUWK35QdVYHEsQ7LVItFs6/nTYgis2VuOVrfJP3UKC/6SVOHBObHQ==
-X-Received: by 2002:a05:6512:3ba3:b0:536:a564:fd48 with SMTP id 2adb3069b0e04-53b348c15a8mr10223150e87.3.1730363950559;
-        Thu, 31 Oct 2024 01:39:10 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d698055sm17276685e9.40.2024.10.31.01.39.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2024 01:39:10 -0700 (PDT)
-Date: Thu, 31 Oct 2024 11:39:06 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: [bug report] iio: light: isl29018: Replace a variant of
- iio_get_acpi_device_name_and_data()
-Message-ID: <8d693972-99a5-45b4-b7f3-82338afd1c70@stanley.mountain>
-References: <54fac4a7-b601-40ce-8c00-d94807f5e214@stanley.mountain>
- <ZyJHpaWms8Fe2x94@smile.fi.intel.com>
- <ZyM98BnZ-0yQFAHu@smile.fi.intel.com>
+	s=arc-20240116; t=1730368251; c=relaxed/simple;
+	bh=Vjh+3r/T5wXwLUhjDZ9Z5nnKZ/Su77T2fS+C3WYnF70=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VAEGbRVSkehGEOdNuG1grWgQ+PTNZb04NQRjlPXTkDMVwHBFkGie7NK230SJGWlMVIiny/QceJfNb88C0N0FppI9gwcJRMvWQ8WZL1Wd//W0rLqao0Nw3oYxudYzvfJxKXhQgHOKxcodkCfzNobN2I2Y4loMvdotqXGBPjnwUJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWYWDuyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543DBC4CEC3;
+	Thu, 31 Oct 2024 09:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730368250;
+	bh=Vjh+3r/T5wXwLUhjDZ9Z5nnKZ/Su77T2fS+C3WYnF70=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TWYWDuyk4z6lBKH9oDOionHLuqSbNreW5L9Fn8Q7kjcgu9rF2TdYi5Xe/4VrF+Aok
+	 8vwR9CUvm+x3i13zuMNlyaGeSMM6ZUQ6KZebggcTpH6oGAIsEFQJJF812JnOqP9Nq5
+	 S+U+LUuEQzkE6oMlrB9tXxPMO1jyXKb1Cn6/d7E6D1XQXv8ip6GgkZdEM9iMOvRXFC
+	 w88D6YLXcFd/5LMuJGzdxFGOPzD84TS6lgtRrz5CxxNyODY9+vzPTvj27l7rMILcn9
+	 RPOzcwOjrplsorMIQ9dtztEM/QjQu0qxE8Nmta23LMMrOX9PftCMRWuFrztfwDcaem
+	 OkDFfhZSzq+gA==
+Message-ID: <24e81091-e0f9-40c7-b781-10354b4a3ea2@kernel.org>
+Date: Thu, 31 Oct 2024 10:50:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZyM98BnZ-0yQFAHu@smile.fi.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] dt-bindings: mfd: sprd,sc2731: convert to YAML
+To: Stanislav Jakubek <stano.jakubek@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Chunyan Zhang <zhang.lyra@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Sebastian Reichel <sre@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-rtc@vger.kernel.org
+References: <ZyExK01iprBHhGm6@standask-GA-A55M-S2HP>
+ <ki4wvjslncrngwpz7qukknzgdsjkxvrhitem7i5lof6ggyhu4e@tviovrd2wi77>
+ <ZyHjW86v9Y59-TJQ@standask-GA-A55M-S2HP>
+ <7db6431e-1892-463e-9c74-cd466ae3ca32@kernel.org>
+ <ZyHq4FJ0ubQVGREo@standask-GA-A55M-S2HP>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <ZyHq4FJ0ubQVGREo@standask-GA-A55M-S2HP>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 31, 2024 at 10:21:04AM +0200, Andy Shevchenko wrote:
-> On Wed, Oct 30, 2024 at 04:50:14PM +0200, Andy Shevchenko wrote:
-> > On Wed, Oct 30, 2024 at 12:53:57PM +0300, Dan Carpenter wrote:
-> > > Hello Andy Shevchenko,
-> > > 
-> > > Commit 14686836fb69 ("iio: light: isl29018: Replace a variant of
-> > > iio_get_acpi_device_name_and_data()") from Oct 24, 2024 (linux-next),
-> > > leads to the following Smatch static checker warning:
-> > > 
-> > >     drivers/iio/light/isl29018.c:724 isl29018_probe() error: uninitialized symbol 'ddata'.
-> > >     drivers/iio/light/ltr501.c:1514 ltr501_probe() error: uninitialized symbol 'ddata'.
-> > > 
-> > > drivers/iio/light/isl29018.c
-> > >     701 static int isl29018_probe(struct i2c_client *client)
-> > >     702 {
-> > >     703         const struct i2c_device_id *id = i2c_client_get_device_id(client);
-> > >     704         struct isl29018_chip *chip;
-> > >     705         struct iio_dev *indio_dev;
-> > >     706         const void *ddata;
-> > >     707         const char *name;
-> > >     708         int dev_id;
-> > >     709         int err;
-> > >     710 
-> > >     711         indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-> > >     712         if (!indio_dev)
-> > >     713                 return -ENOMEM;
-> > >     714 
-> > >     715         chip = iio_priv(indio_dev);
-> > >     716 
-> > >     717         i2c_set_clientdata(client, indio_dev);
-> > >     718 
-> > >     719         if (id) {
-> > >     720                 name = id->name;
-> > >     721                 dev_id = id->driver_data;
-> > >     722         } else {
-> > >     723                 name = iio_get_acpi_device_name_and_data(&client->dev, &ddata);
-> > > --> 724                 dev_id = (intptr_t)ddata;
-> > > 
-> > > How do we know that iio_get_acpi_device_name_and_data() will succeed?
-> > 
-> > Ideally we need to file &ddata with NULL in such case, but it will be
-> > equal to 0, so it only works with the chip_info in place.
-> > 
-> > Let me look into this once more, thanks for the good catch!
+On 30/10/2024 09:14, Stanislav Jakubek wrote:
+> On Wed, Oct 30, 2024 at 08:48:25AM +0100, Krzysztof Kozlowski wrote:
+>> On 30/10/2024 08:42, Stanislav Jakubek wrote:
+>>>>
+>>>>> +
+>>>>> +  '#address-cells':
+>>>>> +    const: 1
+>>>>> +
+>>>>> +  '#interrupt-cells':
+>>>>> +    const: 1
+>>>>> +
+>>>>> +  '#size-cells':
+>>>>> +    const: 0
+>>>>> +
+>>>>> +  regulators:
+>>>>> +    type: object
+>>>>> +    $ref: /schemas/regulator/sprd,sc2731-regulator.yaml#
+>>>>> +
+>>>>> +patternProperties:
+>>>>> +  "^adc@[0-9a-f]+$":
+>>>>> +    type: object
+>>>>> +    $ref: /schemas/iio/adc/sprd,sc2720-adc.yaml#
+>>>>> +
+>>>>> +  "^charger@[0-9a-f]+$":
+>>>>> +    type: object
+>>>>> +    $ref: /schemas/power/supply/sc2731-charger.yaml#
+>>>>> +
+>>>>> +  "^efuse@[0-9a-f]+$":
+>>>>> +    type: object
+>>>>> +    $ref: /schemas/nvmem/sprd,sc2731-efuse.yaml#
+>>>>
+>>>> I don't think this was merged. You still have dependency.
+>>>
+>>> This is in next-20241029, which this patch is based on.
+>>
+>> Try what I wrote below and see if this works...
 > 
-> I have sent a patch series to address that (you are in Cc there), does it help?
+> I assume you meant the MFD maintainers' tree here.
+> Yes, that tree doesn't have the nvmem patch this depends on.
 > 
+> Would the approach with listing the compatibles and additionalProperties:
+> true be considered a temporary workaround?
 
-Yes.  Thanks!
+Not really, it's a correct approach. The node will be validated anyway
+by efuse/child schema.
 
-regards,
-dan carpenter
-
+Best regards,
+Krzysztof
 
 

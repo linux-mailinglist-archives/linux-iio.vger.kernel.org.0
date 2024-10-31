@@ -1,63 +1,58 @@
-Return-Path: <linux-iio+bounces-11724-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11725-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0FE9B8541
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 22:26:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F3E9B856B
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 22:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 840F6281D21
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 21:26:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B022A284598
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 21:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568F31AF4E9;
-	Thu, 31 Oct 2024 21:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4615D1C9ECA;
+	Thu, 31 Oct 2024 21:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlcKdQzf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tSgnsPOP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D0816DEBD;
-	Thu, 31 Oct 2024 21:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE06913C9C0;
+	Thu, 31 Oct 2024 21:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730409997; cv=none; b=cyCp4tfvnHw0P4BYhPSBi9f5UO1gcqODf0jBPwMI1A08aVfLRTFy6fEchyfKzNB0eT4nStVl4Z+ElKPJeRR2Hr925DewT43kDMLN7j1M2ocNLhbm44/38I0uF33F41Kee4Wxfa9q1S3IPgNhHDhM2LuI4B2JLHoH0z/0Br0NUIQ=
+	t=1730410694; cv=none; b=bRuoDa+4FLXz882jrExn9bhjFyDoC50+r6+GwPAxFFCkwcTTatQTyvc67nDjAVIp8nm/ov2uRHf+RGJVd2N6Udsf9fQcHnYT07xQByg1uMQgYpXvjmAyDqNegYg3wmn/v/4Q5LnsEjgSayI9NNipDODXj0NbKwqA9nyvie3gwVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730409997; c=relaxed/simple;
-	bh=VUzrvm/tYBA/5bAwUvD6nwsQCs04brxQF4rlYCrJQmI=;
+	s=arc-20240116; t=1730410694; c=relaxed/simple;
+	bh=UQA+pBzbmjeweaV1WYjyz+d4v5GqK1bI6ARj7fWOqQU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mfLlDrfssGfDdCdRGRuKVWJBm+68Jld9BTa8mZAY5MvpJ3pelKpy7003iI4DHpf0wGkZ19wMv04uPLOL5qQ9AM3MROwKZHc2HauqG/BTH88D3KM0SO6v4y/GgFQ2huTSXW+CXI9On/5NiwAltT90p2eWuTOvUGhvv14OMDZlDBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlcKdQzf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729B3C4CEC3;
-	Thu, 31 Oct 2024 21:26:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hUSeIMioebORfxyx9cIwn1AR+Hb54uVip7Q+5At3/vlxTwunaNPcjjeiJd2JHa/n/zNCf+UjKrLlpKs4jrqydXIxYVgXhxNYjg5Sl0nshvgKmX1Oc8Ed2oiZ4p60WCElyGoBYM0DOnYVpm8NOmkLe+yp/Q0j3/REWrZrP6n0KgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tSgnsPOP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBBEC4CEC3;
+	Thu, 31 Oct 2024 21:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730409996;
-	bh=VUzrvm/tYBA/5bAwUvD6nwsQCs04brxQF4rlYCrJQmI=;
+	s=k20201202; t=1730410693;
+	bh=UQA+pBzbmjeweaV1WYjyz+d4v5GqK1bI6ARj7fWOqQU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LlcKdQzfEw3ANX6Md4RVtTUoRCbB1Gvi9LlkVxWk6wKaV6B8fA0ObJG2+2qPmf8F1
-	 vicor3fo541Gb5WNebFijltdSm1BATfAgWpRcKBYUuNsveDrNf8FE3zpB7J6+MPwnl
-	 rHwZjL4ie8bbWCaO28ZznFen5fDklPfv3n8fbrhlGwd4VCUEsBNCY+7ZAEiAkPsHOE
-	 vZbvxLhp3fxdHpoD5+M0f+9GQLiyVGVoTKrUQc5RAPKE1diZ6YwhkdAYaladDdi3Fs
-	 cW+naEes8US07Ncg6E2NZhi++d0LSqt0Qjx49gSeO2n1cQQ0sgsnsdw300tX32O4BC
-	 nHC2H2Pq8n1pA==
-Date: Thu, 31 Oct 2024 21:26:26 +0000
+	b=tSgnsPOP+v2JMGWOB9zwXWXtJOM4jMaA8ntrPD+qFz/z0We9uMAlqfQe74M83sjEo
+	 WmwVbDnRjVIfHdYAjt1LVD5/FDQUcCBEjlRZD6prIJCxGgTDuIQVIM6fkDRZv0YLZc
+	 wl3RCx5FzB38xxj5f4pABmmCM0vRiU43zgWnBhcLCOiGUUWaFMdoM/3unNGAegFlI2
+	 FiARggYnJB2rODJbdEAkj5wG18CMhUTCkHWpwfymDNYKnk6O8HdKnCsUsnDS8vH6D+
+	 IvtCccLNu+RQw1g9kEITd02IXRyUlOCVLjxTmuSxGVVOiva1NlRVsXNK5zzjiK0X36
+	 oJV+dMUoknJkw==
+Date: Thu, 31 Oct 2024 21:38:03 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Angelo Dureghello <angelo@kernel-space.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Angelo
- Dureghello <adureghello@baylibre.com>, Conor Dooley
- <conor.dooley@microchip.com>
-Subject: Re: [PATCH v9 0/8] iio: add support for the ad3552r AXI DAC IP
-Message-ID: <20241031212626.64b30020@jic23-huawei>
-In-Reply-To: <139a7fb4-124a-4d0e-b1a1-32f8d2fb65f2@baylibre.com>
-References: <20241028-wip-bl-ad3552r-axi-v0-iio-testing-v9-0-f6960b4f9719@kernel-space.org>
-	<139a7fb4-124a-4d0e-b1a1-32f8d2fb65f2@baylibre.com>
+To: ahaslam@baylibre.com
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, nuno.sa@analog.com,
+ dlechner@baylibre.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/6] Improvements and Enhancements for AD5791 DAC
+ Driver
+Message-ID: <20241031213803.18091910@jic23-huawei>
+In-Reply-To: <20241031071746.848694-1-ahaslam@baylibre.com>
+References: <20241031071746.848694-1-ahaslam@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,37 +63,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 29 Oct 2024 14:08:15 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 31 Oct 2024 08:17:40 +0100
+ahaslam@baylibre.com wrote:
 
-> On 10/28/24 4:45 PM, Angelo Dureghello wrote:
-> > Purpose is to add ad3552r AXI DAC (fpga-based) support.
-> > 
-> > The "ad3552r" AXI IP, a variant of the generic "DAC" AXI IP,
-> > has been created to reach the maximum speed (33MUPS) supported
-> > from the ad3552r. To obtain the maximum transfer rate, a custom
-> > IP core module has been implemented with a QSPI interface with
-> > DDR (Double Data Rate) mode.
-> > 
-> > The design is actually using the DAC backend since the register
-> > map is the same of the generic DAC IP, except for some customized
-> > bitfields. For this reason, a new "compatible" has been added
-> > in adi-axi-dac.c.
-> > 
-> > Also, backend has been extended with all the needed functions
-> > for this use case, keeping the names gneric.
-> > 
-> > The following patch is actually applying to linux-iio/testing.
-> > 
-> > ---  
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> From: Axel Haslam <ahaslam@baylibre.com>
+> 
+> These patches aim to improve on the ad5791 driver:
+>  - make use of chip_info / match tables, and drop device enum id.
+>  - Add reset, clr and ldac gpios that have to be set to the correct level in case they
+>    are not hardwired on the setup/PCB.
+>  - simplify probe by using the devm_* functions to automatically free resources.
+Applied. Thanks,
+
+> ---
+> Changes in v3:
+> - v2 is missing the version prefix. Im sending v3 just with the added review-by tag.
+> - Add review-by tag from David Lechner
+> - Link to V2: https://lore.kernel.org/all/94a03835-bdd1-4243-88c7-0ad85784fe36@baylibre.com/
+> 
+> Changes in v2:
+> - Fix probe error print using uninitialized ret.
+> - Add documentation for new struct parameters
+> - Add review-by tags to device tree bindings
+> - Link to V1: https://lore.kernel.org/all/CAKXjFTPwN2TYW6sq1kj3miZ0f5OqKX0aTk8eGf1sj9TBk1_e=A@mail.gmail.com/T/
+> 
+> Axel Haslam (6):
+>   dt-bindings: iio: dac: ad5791: Add optional reset, clr and ldac gpios
+>   dt-bindings: iio: dac: ad5791: Add required voltage supplies
+>   iio: dac: ad5791: Include chip_info in device match tables
+>   iio: dac: ad5791: Add reset, clr and ldac gpios
+>   iio: dac: ad5791: Use devm_regulator_get_enable_read_voltage
+>   iio: dac: ad5791: Use devm_iio_device_register
+> 
+>  .../bindings/iio/dac/adi,ad5791.yaml          |  39 ++++
+>  drivers/iio/dac/ad5791.c                      | 203 ++++++++----------
+>  2 files changed, 131 insertions(+), 111 deletions(-)
 > 
 
-Series applied with 2 tweaks as called out in replies to individual
-patches. Pushed out initially as testing for 0-day to see if there
-are any issues my (admittedly now very lazy) build tests didn't find.
-
-Thanks,
-
-Jonathan
 

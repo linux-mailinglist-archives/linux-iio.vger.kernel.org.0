@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-11727-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11728-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4149B85AF
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 22:47:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED159B85B7
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 22:50:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D90811F2118D
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 21:47:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 118A31C21C44
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 21:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CADA1BC9ED;
-	Thu, 31 Oct 2024 21:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804F11CB32B;
+	Thu, 31 Oct 2024 21:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFqE5MEK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sC4Zyj+q"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F9C14A4F9;
-	Thu, 31 Oct 2024 21:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390C319DF4C;
+	Thu, 31 Oct 2024 21:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730411244; cv=none; b=uQjn8mGXfz4jw2uRwZglJdfsXi80D/T7gcMigMmyXa7bttgzTYo7T4YcdnrdAFLfV2/E5kSiJyoa4O63eMy6RXmPviD4NWBmVT7/fCtFfxNbNQd5EhbQ10lHwPaywA9tBNEiP/3Ru6OhCAFmVOPuuA8GpMQNSQcSKaIhX+fsF9U=
+	t=1730411406; cv=none; b=dv1ZQH9uOLBV8E0lG6VD9sQW/8mJ5WbgmQsDOW6488RX6Ia+MU4QQZNVWhkn1nwe3tmN11Zo98XQBGyFbBmGWmAaUWDmathJ1CckHWLGuCnQw/uKpgYAXJNEWuwfb9+w3d1q3HEJzkbPAZ0VLgme+gKODlCm9wXgghBwuA2wP6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730411244; c=relaxed/simple;
-	bh=j01ox2pPpI10vAJWlnPz5AUadi7QODA0/ZcH8lLTl+A=;
+	s=arc-20240116; t=1730411406; c=relaxed/simple;
+	bh=L/HbupDxsZ4Xi2SAYCY3SZneM1GHtRw9NHcBu+eZO5g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mCkfXG4S/8y51CEXZRKj5IUuQcf8MB7YKONgC666EjvOVmbSnHBxjrNHv4NvNgTIXPzMYu28UvVCewh9i4WzXgcHlrx3RcmxAA22Im8Cst2VNZzbM+ZUt7C5OiW2zKFM3OFAMiZy0x9LKJTKkGLUvwGoegb4q/FS9VgqX/W9H0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFqE5MEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0638C4CEC3;
-	Thu, 31 Oct 2024 21:47:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e/ojoe/mf5YrU67dBSUPSV6xyutLg6lnvqBQSU0EHX4n5rraKk2Jj4L/NBKL+cOuXG9h4NBD5mHd08I8Lm2O+jnOG6KhU5sXpn9vTrORU7I2BTt2bC0Ca+LOixFQw+1w2MCthWGbBrGGvQJQ8TYS0cCeBdHnDeHWG2ctQ4aP8bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sC4Zyj+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E6BC4CEC3;
+	Thu, 31 Oct 2024 21:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730411243;
-	bh=j01ox2pPpI10vAJWlnPz5AUadi7QODA0/ZcH8lLTl+A=;
+	s=k20201202; t=1730411405;
+	bh=L/HbupDxsZ4Xi2SAYCY3SZneM1GHtRw9NHcBu+eZO5g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WFqE5MEKS3b7/vY4CCBTD6GBldx80qrXbn9o763Ft733afM4u3FTc1FwUb0yPo4TD
-	 Q3Ot3fAr5FK7pkoX99I1BuB0+c2UygJWNkiNjFMWxH4rIgaA7XL/OkcXAVCpKpu1Jj
-	 0bJvABU3h/60c0CPOqqgMpf64qE/p3sHCQ8k0lmwJuVvhNIZFeVUa/nmiS6oZShbkv
-	 iWLUBlfucrcrMd9npAfHwhPRwKciR/WIoIuPhtFDTz6TdGfsfC7lrMVbJla8h5sD4v
-	 lCk33Zs/8GHyde3lNxHAsQMfPn+4pn1qerAlltJxMNH7kvWn6QS8lvdgZ2DZan3HPX
-	 0045zeMXUVhUw==
-Date: Thu, 31 Oct 2024 21:47:15 +0000
+	b=sC4Zyj+qQvN8cpB1aMD3J/DtSNaUwHSsWKvDQnANCH1lhu7NIJAFyk1cW/NYPn8CY
+	 TLw8qRlIvwE2+j9Xo7+r9OmBD+fcLgpGuX5nLlOrdN1g1YcwHIC8ascauWCcrf5HQX
+	 W4VO7EP/8y62kOiZq4z5jFRYUPiSFHkKFUrLc56krKEo8CiZ260tKSbcgNWALhs0u3
+	 hign8xafCXe4aZQK7kZPab88UyVEEF1U7fZUDqE/XlpolzLnj8UDyQm4qk/l9iiUUy
+	 Y/WoKFvSgdmFPF7xzJFL6+Vf+eIvQTYs/vO7lptB0XRlUCi6P1+QGZaUNLPMujzqjo
+	 LFClrpR/U943w==
+Date: Thu, 31 Oct 2024 21:49:57 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Zicheng Qu <quzicheng@huawei.com>, lars@metafoo.de,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  tanghui20@huawei.com, zhangqiao22@huawei.com, judy.chenhui@huawei.com
-Subject: Re: [PATCH] iio: Fix uninitialized symbol 'ret'
-Message-ID: <20241031214715.50c4788d@jic23-huawei>
-In-Reply-To: <5f80c1a2-118a-4685-ac1b-81b3479f5064@gmail.com>
-References: <20241031014505.2313035-1-quzicheng@huawei.com>
-	<5f80c1a2-118a-4685-ac1b-81b3479f5064@gmail.com>
+Subject: Re: [PATCH] iio: fix infinite loop for gain_to_scaletables()
+Message-ID: <20241031214957.609e21c0@jic23-huawei>
+In-Reply-To: <5dae4924-5c07-48b6-a818-809cd4dd1c80@gmail.com>
+References: <20241031014626.2313077-1-quzicheng@huawei.com>
+	<5dae4924-5c07-48b6-a818-809cd4dd1c80@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,18 +62,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 31 Oct 2024 09:13:16 +0200
+On Thu, 31 Oct 2024 09:25:16 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Hi Zicheng,
+> Thanks again Zicheng!
 > 
-> Thanks for the patch.
-> 
-> On 31/10/2024 03:45, Zicheng Qu wrote:
-> > Initialize the variable ret at the time of declaration to prevent it from
-> > being returned without a defined value. Fixes smatch warning:
-> > drivers/iio/industrialio-gts-helper.c:256 gain_to_scaletables() error:
-> > uninitialized symbol 'ret'.
+> On 31/10/2024 03:46, Zicheng Qu wrote:
+> > In iio_gts_build_avail_time_table(), it is checked that gts->num_itime is
+> > non-zero, but gts->num_itime is not checked in gain_to_scaletables(). The
+> > variable time_idx is initialized as gts->num_itime - 1. This implies that
+> > time_idx might initially be set to -1 (0 - 1 = -1). Consequently, using
+> > while (time_idx--) could lead to an infinite loop.
 > > 
 > > Cc: stable@vger.kernel.org # v6.6+
 > > Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
@@ -83,49 +82,33 @@ Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > >   1 file changed, 1 insertion(+), 1 deletion(-)
 > > 
 > > diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
-> > index 59d7615c0f56..c5dc5b51693d 100644
+> > index 59d7615c0f56..f3acd392f4fc 100644
 > > --- a/drivers/iio/industrialio-gts-helper.c
 > > +++ b/drivers/iio/industrialio-gts-helper.c
-> > @@ -167,7 +167,7 @@ static int iio_gts_gain_cmp(const void *a, const void *b)
+> > @@ -205,7 +205,7 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
+> >   	memcpy(all_gains, gains[time_idx], gain_bytes);
+> >   	new_idx = gts->num_hwgain;
 > >   
-> >   static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
-> >   {
-> > -	int ret, i, j, new_idx, time_idx;
-> > +	int i, j, new_idx, time_idx, ret = 0;
-> >   	int *all_gains;
-> >   	size_t gain_bytes;
-> >     
+> > -	while (time_idx--) {
+> > +	while (time_idx-- > 0) {
+> >   		for (j = 0; j < gts->num_hwgain; j++) {
+> >   			int candidate = gains[time_idx][j];
+> >   			int chk;  
 > 
-> So, if I read it right, this handles a (corner) case where there is no 
-> times given. I am not sure how well such use has been considered because 
-> the point of GTS is helping out with cases where the gain and 
-> integration time both impact to scale.
+> This, too, brings the question if supporting 0 times is worth.
 > 
-> How do you see the benefits of the gts if there is no such shared impact 
-> to scale? Sure the gts could still provide the 'standard table format' 
-> to present the gains (or times), and conversions from the register 
-> values to gains (or times), and perhaps the available scale table(s) - 
-> but I suppose it also brings a lot of unused code and some 
-> initialization overhead. (I have a vague feeling this was discussed with 
-> Jonathan during the reviews).
+> At least this shows that it'd be nice to cover the "only times, no 
+> hw-gains" and "no times, only hw-gains" cases in the Kunit tests...
 > 
-> Reason I am asking these questions is that I wonder if the usage should 
-> be limited to cases where we have both gains and times? We could check 
-> this in the iio_gts_sanity_check(). (And, I am actually a bit surprized 
-> this check was not implemented).
-> 
-> Well, initialization fixes a potential bug here and does not really cost 
-> much - so big thanks to you :)
+> Anyways - Thanks!
 > 
 > Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Indeed I'm not convinced this is a a bug that can be hit, but it is
-obviously good hardening so applied to the fixes togreg branch of iio.git.
-Note I'd like a follow up to use __free() + early returns in this function.
-Will reduce complexity and that last line will become a return 0;
+Applied
 
 > 
 > Yours,
->   -- Matti Vaittinen
+> 	-- Matti
+> 
 > 
 
 

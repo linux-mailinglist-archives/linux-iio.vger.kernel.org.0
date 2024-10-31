@@ -1,219 +1,260 @@
-Return-Path: <linux-iio+bounces-11689-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11690-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B349B7949
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 12:03:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 794719B79A7
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 12:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4DCCB2419E
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 11:03:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B5DB1C20CD2
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 11:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69513199FD7;
-	Thu, 31 Oct 2024 11:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2234219AD90;
+	Thu, 31 Oct 2024 11:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NTBPMv1Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fd/IPDcH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DEA19925A
-	for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 11:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A3719ABD1;
+	Thu, 31 Oct 2024 11:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730372592; cv=none; b=W3iqSGtZvQE9MXD+GsDtcGBNcpmQgPocAJHRkbLo9oD/75tj9oZ8+1e36y2SFMw/WI0WkcerGSxOcbIzC7U+nQ1Lk/k/jRungoc/6QUl9E7Hu5kruiv/OMqAmtHCl7zBr23gRhzk7nGf+XjyR6Kz2Ikx76GhFmU1Yr3MqZvpgJg=
+	t=1730373990; cv=none; b=cIG/30W/ryNE+r2YRNAtQr1vdg6H7Reo/NZzXMvL47zFUs9hSRnUoRbnIa7DeBDvTJ7X+se9Ea0M5IthsVXH5acThH1jQllFz+4AyikFxhuejaLipQzxrM1DsrIlKvlMNfHK0ZS+qzxoh8XJoc+QCv0aYL4yH6a2j5Vn/0GKpFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730372592; c=relaxed/simple;
-	bh=0Bt5LTg7vL5N+VdcE6SWBvlJfb0aEl6cLE8AigdCTpc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sN9yc+prT1Ys7Hw2lyhaHoWDi/vgoilGtxOU8ZsHEWvMScB62KVKTz2xmE/eQuPFX/7+dDe8+aBPMLPuhmoGHIaAKaSHhShoNWOBF4GppkR4u7AH5bbTtm3pv1iM82UJpNXE6AKVIq1tRu2WVngYmDHcloQAvjFrrS9PY6U79dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NTBPMv1Z; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37d4eac48d8so36835f8f.0
-        for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 04:03:09 -0700 (PDT)
+	s=arc-20240116; t=1730373990; c=relaxed/simple;
+	bh=hzudRnhY5g6fYzOL8bxyYrlk3c3jll8mroM69zcnwN8=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=V8MvxKM1NGYoRA4t7blljconWWajBnZfLMKwkRKxCz/q9I0u4tVnbWlW5wqJByVJK3RcSHfHoOxpchKj7yna2oMOzHYP44dmVwL32X8XErJLxRBk1NC9OAdzzPfpWw8tNcN4eNwE45qsK26Xq1Z/xYxOySANse575fnvDSib5X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fd/IPDcH; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5c9150f9ed4so1154602a12.0;
+        Thu, 31 Oct 2024 04:26:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730372588; x=1730977388; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qo88u10AiueQwvU4VBGK/VQSQWRw8gLUSxPNaLTjLm4=;
-        b=NTBPMv1ZDG60bgl7AbiVpYnSEdf2BilnpJbKMdZuwKhw51ynkm+inMPR/EiqJF6r1M
-         CC7NFSwTwEa8CELBmMYjfQiqZtyFbDQ+2O5AeZEfHHfVSCXZGoaki3a+rCSUPJdR9db1
-         T87pzdwFHINMTRTrocnRT3bldJzMvWI6dmldmCw35WeesVFgnRZLIouQh2u55nT8mABK
-         t3Y9NLxi3gMzYOw6UnD+jNIrb25WvZXsilWLTeZ99uGBsLXxUw49rhMIjOonvELQORgx
-         KtlgFHn8+pjQRG7NC8N3d7XRe8BSfXyFZDygUNLTGzB0+Md025uxbVkmAvHN62Yq8RcK
-         DvoQ==
+        d=gmail.com; s=20230601; t=1730373987; x=1730978787; darn=vger.kernel.org;
+        h=user-agent:message-id:date:to:cc:from:subject:references
+         :in-reply-to:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=du8RsPSSmfKdksX84UQ+FWRuhhilBEXtJldK005aAhw=;
+        b=fd/IPDcH6PUzEI5G13DQe1XGk/9ZQKbc7FF9+RFZrAktrag4Ds0BqMnOXaFxoheKsu
+         aq11VBVFEyPZLh5Lje/ljryOjTNpCz3T0lIWQZobOM2WBxg2PQEwCttkhLCOcBlRrozY
+         +vuq4VfZnhquDxRJHYFwivTmTEeDvwmoG5YIhL9MIQEKtPrwFdjullCF9ylM4Pliir9k
+         ysR+l+mJ32mqO0wlu31Itvwnv71vuyfDXujKtAvJgXHowWp9u8Q2dgXlHFlj3yBbr1Tp
+         ICSLaeQ2q09D1DvOLah7On4y954kZymoX2ShY0+IEjHBZRq8e9MKvE8o8YXHAtchu/5o
+         /gkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730372588; x=1730977388;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qo88u10AiueQwvU4VBGK/VQSQWRw8gLUSxPNaLTjLm4=;
-        b=Ge+yzfAqhFNtHPrK1uahS50GKuNB1fL+gVgrnRlokvLFAa8wDxbtq9gSeKPJ6GbwvS
-         wo4XONvQna2qfy5j9L3ByXPC2ho646ZFMTvA5DCC8LvGdBc9Aws0z1LsM0qaroA0m2Kz
-         Rqs+POj9bQozwpKKPKC7XRqUPgYbE9gtN1cmxfeZpqsaQ7BzIjTo8c5lVsdxY1eCAxqm
-         x7jZRIATioZ0WISxDLybpX/1qfk56uRAWa/vtp7xqY1tbLkcnUTlyMU+SL/N79Dlp3+e
-         B3tu7ZdvuqdM56Qs5wsQXFkNSHO+LQ9Hn95U0tIeOhLBtE00/3v/UsEMcJHP7Q1T7gnF
-         aYKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWsAOaYJW+iWMBFgakqzy0rcXUVdDWyJwt9Mhmog3vF4FbBC8KSIALgTstDRpOys7BhWnS1jl31O94=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxp/5PO780q/UDTvz18GyqNpNtQUqja+KHXno/SDA+lvq2tRTHL
-	VDMsnDZE/7HdOH3fs/umFobnVn/CtVCgH6Q5Q0e8cRCqann+0mIceOemrM7QqMo=
-X-Google-Smtp-Source: AGHT+IGpz05VAvoftrmqHGfIqbT6FeVhxMMAZYmAw+E/a0Z2XhM7QtyYiu84O24YpcEKqkICIt9TLg==
-X-Received: by 2002:a05:6000:2a3:b0:37c:f388:cd48 with SMTP id ffacd0b85a97d-380611a4f13mr7093799f8f.8.1730372588137;
-        Thu, 31 Oct 2024 04:03:08 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.211.167])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113e6aasm1797059f8f.67.2024.10.31.04.03.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Oct 2024 04:03:07 -0700 (PDT)
-Message-ID: <d0511a78-8eca-4342-949b-9dea293e064f@linaro.org>
-Date: Thu, 31 Oct 2024 12:03:04 +0100
+        d=1e100.net; s=20230601; t=1730373987; x=1730978787;
+        h=user-agent:message-id:date:to:cc:from:subject:references
+         :in-reply-to:content-transfer-encoding:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=du8RsPSSmfKdksX84UQ+FWRuhhilBEXtJldK005aAhw=;
+        b=HVtWZfCjaAge98DqdlLbqUzYP2AnQ/bG14T1rmpoUQ90q+Cc/tiLMMubg0/cKN0VPv
+         H7nZTCkcOldUPgTtC3OxvFv00Zq3yERxR00x/b9Ur1f/ixDJxJBfbBSYHL//6i7W9fQA
+         04sqGsKxu8+3ut6PI3cdyb5mnHlNlnQQlq/7NIe95F2ta3aVUpnaTvl8TZzy/mvEKUcd
+         dJjZUjZvW/yun5Pi4xw7gXSu64e+Avqwfgg1pBl4kTK9mWJkCRafybl+SaU1ga2qbS+Q
+         HY7iaTMxIbmKmNCy+YgStL/Be644drf/eFhxsLmW5vGDDlbS0jmKIzN2p5vAumNhLgch
+         +spg==
+X-Forwarded-Encrypted: i=1; AJvYcCVhhbDZycL6lpY08TA6Wca07lwEMMIshav8CklVedQmJbGnVdIhdUrMrYbyzqmA9z6ElsDRgy5eET9ahA==@vger.kernel.org, AJvYcCX+DolMKuR1vC4RQJ8dKEtJ78HT7GL57DK7SCqnODQX0H6pw66DlI63g0IyLmepWMzpBH1LTgMUIZtEIeKa@vger.kernel.org, AJvYcCX0ZEFzukkeQBI2O7x3p2+OdWM3+Gp2aJCaunlWCHTBpvcB0qI7EP9FstFAXsqZ1SdtyKJD4gBDrUM=@vger.kernel.org, AJvYcCXhjIsjjDHm3+E/+bFwRE/fa6ud9ys9vEfNK60j1O1o0uRPIS98jo+olr+AkJ3jS+JvE+ZPdHgNToo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtSzRJ+hi5RcvzhvDkWOrLT4oY9aePzidZ3WTGscJc27ptO3WV
+	blDOT+2kvvpmRQIbIYSpMPsuUZ81suvIr65IfpReQ7IfPmlRtEkS
+X-Google-Smtp-Source: AGHT+IGPM1ys92XJWy55iaMc+mkkiiSwTT3VmXdYtDiJ0hU+Inj8aTV0aI+/6k+hyeDL2q/6nruBXQ==
+X-Received: by 2002:a05:6402:3481:b0:5c9:2a5a:5f0e with SMTP id 4fb4d7f45d1cf-5cbbf94abacmr14848930a12.28.1730373986367;
+        Thu, 31 Oct 2024 04:26:26 -0700 (PDT)
+Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ceac5cb8fbsm476840a12.0.2024.10.31.04.26.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2024 04:26:25 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 3/4] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
-To: Jishnu Prakash <quic_jprakash@quicinc.com>, jic23@kernel.org,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- agross@kernel.org, andersson@kernel.org, dmitry.baryshkov@linaro.org,
- konrad.dybcio@linaro.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
- quic_subbaram@quicinc.com, quic_collinsd@quicinc.com,
- quic_amelende@quicinc.com, quic_kamalw@quicinc.com, amitk@kernel.org
-Cc: lee@kernel.org, rafael@kernel.org, rui.zhang@intel.com,
- lukasz.luba@arm.com, lars@metafoo.de, quic_skakitap@quicinc.com,
- neil.armstrong@linaro.org, devicetree@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- cros-qcom-dts-watchers@chromium.org
-References: <20241030185854.4015348-1-quic_jprakash@quicinc.com>
- <20241030185854.4015348-4-quic_jprakash@quicinc.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20241030185854.4015348-4-quic_jprakash@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241030203050.5cdf3450@jic23-huawei>
+References: <20241021-iio-read-avail-release-v5-0-b168713fab33@gmail.com> <20241021-iio-read-avail-release-v5-2-b168713fab33@gmail.com> <ZyJHFp6vbQ7deLFs@black.fi.intel.com> <173031260171.39393.109639772708550094@njaxe.localdomain> <20241030203050.5cdf3450@jic23-huawei>
+Subject: Re: [PATCH v5 2/5] iio: consumers: copy/release available info from producer to fix race
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Alisa-Dariana Roman <alisa.roman@analog.com>, Christian Eggers <ceggers@arri.de>, Peter Rosin <peda@axentia.se>, Paul Cercueil <paul@crapouillou.net>, Sebastian Reichel <sre@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-pm@vger.kernel.org
+To: Jonathan Cameron <jic23@kernel.org>
+Date: Thu, 31 Oct 2024 12:26:24 +0100
+Message-ID: <173037398492.12348.265826723028347056@njaxe.localdomain>
+User-Agent: alot/0.11
 
-On 30/10/2024 19:58, Jishnu Prakash wrote:
-> +
-> +static int adc5_gen3_read(struct adc5_device_data *adc, unsigned int sdam_index,
-> +			  u16 offset, u8 *data, int len)
-> +{
-> +	return regmap_bulk_read(adc->regmap, adc->base[sdam_index].base_addr + offset, data, len);
-> +}
-> +
-> +static int adc5_gen3_write(struct adc5_device_data *adc, unsigned int sdam_index,
-> +			   u16 offset, u8 *data, int len)
-> +{
-> +	return regmap_bulk_write(adc->regmap, adc->base[sdam_index].base_addr + offset, data, len);
-> +}
-> +
-> +/*
-> + * Worst case delay from PBS in readying handshake bit
-> + * can be up to 15ms, when PBS is busy running other
-> + * simultaneous transactions, while in the best case, it is
-> + * already ready at this point. Assigning polling delay and
-> + * retry count accordingly.
-> + */
-> +
-> +#define ADC5_GEN3_HS_DELAY_MIN_US		100
-> +#define ADC5_GEN3_HS_DELAY_MAX_US		110
-> +#define ADC5_GEN3_HS_RETRY_COUNT		150
-> +
-> +static int adc5_gen3_poll_wait_hs(struct adc5_device_data *adc,
-> +				  unsigned int sdam_index)
-> +{
-> +	u8 conv_req = ADC5_GEN3_CONV_REQ_REQ;
-> +	int ret, count;
-> +	u8 status = 0;
-> +
-> +	for (count = 0; count < ADC5_GEN3_HS_RETRY_COUNT; count++) {
-> +		ret = adc5_gen3_read(adc, sdam_index, ADC5_GEN3_HS, &status, 1);
-> +		if (ret)
-> +			return ret;
-> +
-> +		if (status == ADC5_GEN3_HS_READY) {
-> +			ret = adc5_gen3_read(adc, sdam_index, ADC5_GEN3_CONV_REQ,
-> +					     &conv_req, 1);
-> +			if (ret)
-> +				return ret;
-> +
-> +			if (!conv_req)
-> +				return 0;
-> +		}
-> +
-> +		usleep_range(ADC5_GEN3_HS_DELAY_MIN_US, ADC5_GEN3_HS_DELAY_MAX_US);
-> +	}
-> +
-> +	pr_err("Setting HS ready bit timed out, sdam_index:%d, status:%#x\n", sdam_index, status);
-> +	return -ETIMEDOUT;
-> +}
-> +
-> +static void adc5_gen3_update_dig_param(struct adc5_channel_common_prop *prop, u8 *data)
-> +{
-> +	/* Update calibration select and decimation ratio select */
-> +	*data &= ~(ADC5_GEN3_DIG_PARAM_CAL_SEL_MASK | ADC5_GEN3_DIG_PARAM_DEC_RATIO_SEL_MASK);
-> +	*data |= FIELD_PREP(ADC5_GEN3_DIG_PARAM_CAL_SEL_MASK, prop->cal_method);
-> +	*data |= FIELD_PREP(ADC5_GEN3_DIG_PARAM_DEC_RATIO_SEL_MASK, prop->decimation);
-> +}
-> +
-> +static int adc5_gen3_status_clear(struct adc5_device_data *adc,
-> +				  int sdam_index, u16 offset, u8 *val, int len)
-> +{
+Quoting Jonathan Cameron (2024-10-30 21:30:50)
+> On Wed, 30 Oct 2024 19:23:21 +0100
+> Matteo Martelli <matteomartelli3@gmail.com> wrote:
+>=20
+> > Quoting Andy Shevchenko (2024-10-30 15:47:50)
+> > > On Mon, Oct 21, 2024 at 02:54:15PM +0200, Matteo Martelli wrote: =20
+> > > > Consumers need to call the producer's read_avail_release_resource()
+> > > > callback after reading producer's available info. To avoid a race
+> > > > condition with the producer unregistration, change inkern
+> > > > iio_channel_read_avail() so that it copies the available info from =
+the
+> > > > producer and immediately calls its release callback with info_exists
+> > > > locked.
+> > > >=20
+> > > > Also, modify the users of iio_read_avail_channel_raw() and
+> > > > iio_read_avail_channel_attribute() to free the copied available buf=
+fers
+> > > > after calling these functions. To let users free the copied buffer =
+with
+> > > > a cleanup pattern, also add a iio_read_avail_channel_attr_retvals()
+> > > > consumer helper that is equivalent to iio_read_avail_channel_attrib=
+ute()
+> > > > but stores the available values in the returned variable. =20
+> > >=20
+> > > ...
+> > >  =20
+> > > > +static void dpot_dac_read_avail_release_res(struct iio_dev *indio_=
+dev,
+> > > > +                                         struct iio_chan_spec cons=
+t *chan,
+> > > > +                                         const int *vals, long mas=
+k)
+> > > > +{
+> > > > +     kfree(vals);
+> > > > +}
+> > > > +
+> > > >  static int dpot_dac_write_raw(struct iio_dev *indio_dev,
+> > > >                             struct iio_chan_spec const *chan,
+> > > >                             int val, int val2, long mask)
+> > > > @@ -125,6 +132,7 @@ static int dpot_dac_write_raw(struct iio_dev *i=
+ndio_dev,
+> > > >  static const struct iio_info dpot_dac_info =3D {
+> > > >       .read_raw =3D dpot_dac_read_raw,
+> > > >       .read_avail =3D dpot_dac_read_avail,
+> > > > +     .read_avail_release_resource =3D dpot_dac_read_avail_release_=
+res,
+> > > >       .write_raw =3D dpot_dac_write_raw,
+> > > >  }; =20
+> > >=20
+> > > I have a problem with this approach. The issue is that we allocate
+> > > memory in one place and must clear it in another. This is not well
+> > > designed thingy in my opinion. I was thinking a bit of the solution a=
+nd
+> > > at least these two comes to my mind:
+> > >=20
+> > > 1) having a special callback for .read_avail_with_copy (choose better
+> > > name) that will dump the data to the intermediate buffer and clean it
+> > > after all;
+> > >=20
+> > > 2) introduce a new type (or bit there), like IIO_AVAIL_LIST_ALLOC. =20
+> >=20
+> > Could you elaborate more about these potential solutions? Maybe with so=
+me
+> > usage examples?
+> >=20
+> > If I get it correctly, in both cases you are suggesting to pass ownersh=
+ip
+> > of the vals buffer to the caller, iio_read_channel_info_avail() in this
+> > case, so that it would take care of freeing the buffer after calling
+> > iio_format_after_*(). We considered this approach during an initial
+> > discussion with Jonathan (see read_avail_ext() in [1]), where he sugges=
+ted
+> > to let the driver keep the release control through a callback for two
+> > reasons:
+> >=20
+> > 1) Apparently it's a bad pattern to pass the buffer ownership to the co=
+re,
+> >    maybe Jonathan can elaborate why? The risk I can think of is that th=
+e driver
+> >    could still keep the buffer copy in its private data after giving it=
+ away,
+> >    resulting in fact in a double ownership. However I think it would be=
+ clear
+> >    enough in this case that the copy should be handled by the caller, o=
+r maybe
+> >    not?
+> Mostly the lack of desire to have to copy for the 95% of cases where it's
+> not needed and that it prevents any optimization like you mention.
 
-Wait, what? Why are you defining functions in header causing multiple
-copies of them? And even if: why this is not inline? But regardless:
-this is a strong NAK from me.
+I think the suggestion here is to add an additional .read_avail_with_copy()
+without replacing the original .read_avail(), so all the current drivers th=
+at
+use a constant avail list would not be affected. And I think this was the s=
+ame
+idea for the additional read_avail_ext() or the additional argument for the
+read_avail() we were considering in [1]. So I would think that
+iio_read_channel_info_avail() would do something like the following:
+
+    if (indio_dev->info->read_avail_with_copy)
+        indio_dev->info->read_avail_with_copy(vals);
+    else
+        indio_dev->info->read_avail(vals);
+
+    ...
+    iio_format_avail_list(vals);
+    ...
+
+    if (indio_dev->info->read_avail_with_copy)
+        kfree(vals);
+
+And the drivers would choose whether to define the read_avail or the
+read_avail_with_copy.
+
+What I was referring to is that, back then, you mentioned you would have
+preferred to avoid passing ownership of the buffer around:
+
+> That's a corner case we should think about closing. Would require an indi=
+cator
+> to read_avail that the buffer it has been passed is a snapshot that it sh=
+ould
+> free on completion of the string building.  I don't like passing ownership
+> of data around like that, but it is fiddly to do anything else given
+> any simple double buffering is subject to race conditions.
+
+I guess there is some other reason other than avoiding the copy when not
+necessary, since by introducing an additional function or argument or return
+type, most of the unnecessary copies would already be avoided right?
+
+Anyway any of this solutions would still prevent the potential optimization=
+s of
+point 2). It's worth mentioning that those kind of optimizations are curren=
+tly
+not adopted by any driver.
+
+>=20
+> Jonathan
+> >=20
+> > 2) Some driver might want to avoid allocating a new copy of a big table=
+ if
+> >    the race does not occur (e.g. with additional checks on buffer access
+> >    code) and thus wouldn't call a free() in the release callback.
+> >=20
+> > >=20
+> > > In any case it looks fragile and not scalable. I propose to drop this
+> > > and think again. =20
+> >=20
+> > I see your concerns, I am open to reconsider this in case we come up wi=
+th
+> > better solution after addressing the points above.
+> >=20
+> > > Yes, yes, I'm fully aware about the problem you are trying to solve a=
+nd
+> > > agree on the report, I think this solution is not good enough.
+> > >=20
+> > > --=20
+> > > With Best Regards,
+> > > Andy Shevchenko
+> > >  =20
+> >=20
+> > [1]: https://lore.kernel.org/linux-iio/20240729211100.0d602d6e@jic23-hu=
+awei/
+> >=20
+> > Best regards,
+> > Matteo Martelli
+>=20
+
+I hope I've brought a little more clarity to the discussion by providing so=
+me
+history instead of making it more confusing.
 
 Best regards,
-Krzysztof
-
+Matteo Martelli
 

@@ -1,147 +1,126 @@
-Return-Path: <linux-iio+bounces-11671-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11672-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 250A99B7515
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 08:13:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9CA9B7525
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 08:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A547FB240FF
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 07:13:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 947A92863A5
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 07:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841C81487E5;
-	Thu, 31 Oct 2024 07:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583561494B0;
+	Thu, 31 Oct 2024 07:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cvxhs6lI"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cGZMBBh7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281EC1487D1;
-	Thu, 31 Oct 2024 07:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455DB146D68
+	for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 07:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730358805; cv=none; b=A7pcfSqYIcTBRqKiA0y8Pz36T+dbh+gXbv8O3PJm8edn6d8yiOFNOQGK8/jB8tTZmWu72T69YEaRhgiACHrC51nTyyef9iqDJ9VtaFXTiURe/JMSIbAGwQFKJxCKJI5y9LCOcGFRfLHV5X8L8ua+glAAICV90tgVxPit/Mlyml4=
+	t=1730359074; cv=none; b=XweeO4w4WyLfrZbPkR+LJG+FgnT7YrPfUFSHLnlfJTShgbHtRLfwOzQlerG4isAZkvFGt6mpwLh3PonP1t3Xc3+QyoHXXEtmH17N6Rvm5K14B0+hFvdFvOEH5Q6hFBPz0upNh8pGDf4nMUt8RIr++zp2TLcKmXg88NcsderN4bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730358805; c=relaxed/simple;
-	bh=n5s7BqFiTVpjwTRoFk2o50PhU1UZYPkhkSQjRdzBSsw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GZuHDjGBTUDNfXx1tDR5/Nfro0/YTG6w9+0l0i9/4XyMOryijJLs/mfcBoyLyL9i9sQ/ASYs0iksqmY8IPNXrGWRSM3vq5vKAykmq5e+KTHLqYyOgxEwqFlV2QrUxETqqwOjZcWHPczKEKCUeVwO68fAz21M1QhYSb9tRfEm9eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cvxhs6lI; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53c779ef19cso633262e87.3;
-        Thu, 31 Oct 2024 00:13:22 -0700 (PDT)
+	s=arc-20240116; t=1730359074; c=relaxed/simple;
+	bh=BnctoaThzk9TCtG6Rxw+H7YIyitDA6GU43ZIVeyO6HE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=te5IhDovV2+RYNIfDHWu3+04VwJJ79wzOy7FQReF/s1EM/kZrciCCgzR7fz/+PrIsGBitgggYYMI6DuiBeiGO2IqbhBWm0eTEI6XyQOQ196oweDrWqSqDtHWfTlNw0ScbLDJ23rdq++YZS3Km30qGCY+NqZhvUdFwzjrrmYQ34s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cGZMBBh7; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37d4c482844so385266f8f.0
+        for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 00:17:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730358801; x=1730963601; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xYNKPpW5+LOAj9rPQp09PnGF4rkl3/FgO55cWEjPbcI=;
-        b=Cvxhs6lIdsOxZAmEV5Fpssss4TNO+ZyPMVewKhno7oijkwdxzhoEiUPb/1FR8oZPTs
-         7Pfukg4WLw5XT68E5cTzPl5mWUK8rd4JtVgc0MlCtpAHC+7hUlE67UztcWw1OsTjB7EQ
-         NtZwT6ayrAVk6e599B0T/ByHDHZ3I7cdsTvZMb48nkxxsjtsdWO/Z3ahAy0xArLoqnQj
-         yFXQD01BxxFrHNQ5Tgx2M3X7XF+q5dwbfUck+JrUfQeskyshazWTCeXqdSniQN4RVnl+
-         a66jxwsLWP77C1Hq6MspWbzbmztsIiMbw5NEiDAPmXZAQgLDeLlV+DiqkXHP+zWtgdRP
-         TOww==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730359070; x=1730963870; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vbdfq8Je3d3l1JKu54Y52BJh8JgRsihwOk8O/lVTfe0=;
+        b=cGZMBBh7q3rAMIzrVkPom8YzdLggcV+PrDTMNBOg1j82O5cUHJebHkcr9CimlZDoUW
+         AD/WOgbl1Miw0kZIs+sFjXPkHZN7eARgC18LFYJgNixJLhaesW6I0Vv+E/SIW/l30BlO
+         3/OdjzZ4BlkepY2h8mo6QEyfLwREF/M1VPh3fhf7ZRq0Xzu6fNNByGCIxqYfE+AWbRiq
+         2BLsjN4AaKn0boDgiyRHZhOAcYNj8tbtI3rjXrh3eCEt1/zk6zsoPpOg43SSqe5JMRjc
+         0RUly4Uo7GiQ2SCfpDUyyLHUzfrf7N6LS0wTZMCOm5We9k8JwQWMWV+zQkmoi2zZyU6W
+         Qn1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730358801; x=1730963601;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xYNKPpW5+LOAj9rPQp09PnGF4rkl3/FgO55cWEjPbcI=;
-        b=uMHlsyCROt4oW43wDoYq4osxWqJiwyglOgqiv6/Y/vTXzBLwVIo5xvimn7quBX3xR9
-         2wrPq7LSt7CIDIlV39GNQGtXzuMERfXd6bXjB4tGMqixEyApuYA4/RiEXe0aTOaPoZ2V
-         cS/c5H5AE4AINMWRref6RUbBPlGrSqq3mluTOEp6GIHH73MjGpxqjpdp3RlGLtT6J9J0
-         l22IF+RWUgVqNzt8Xe9q/aGphBBUK/jlJxc3mJGmH5nkJ7yHN2FbZ2o+aT8TBJItgiQH
-         sC5qJqRnMGuUHygwRdc8jTbTI7l7qnlYX0yvRL2evTQia4znennXWlK+MmIQPCN+vrY9
-         nGTg==
-X-Forwarded-Encrypted: i=1; AJvYcCW0yqtQsp8SVmz28icHEJXHd9jk2uJPE4oj4uz6DceK6RR86GLzTAxM+zmTAfuKGn9j7yBcOQciabI=@vger.kernel.org, AJvYcCXrkm7XRTZ2zJgqebk9KmkRF+H3n2YHB1dIflC3Bf6K+bb2KzvrIzFcABFhH7JHnDdVqVAsPl8kTVeuEksR@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy99QSAj6QxjJp24ORFP7/Ix2SPlH6o9dk2eP2Um0wNF4ReX8T2
-	z7q2lkq/aKq5KlU6FK4kWZEGGVlHGjqEDA/7xCEzRZlMKJcomFIHJD8+g5A2
-X-Google-Smtp-Source: AGHT+IGaq/3cf1ZA6yndcd7zOvzovZRCdC7n8N9ta65eO3kLRkR97DVsBL2jOkPLcT0ci6t/nnvjeg==
-X-Received: by 2002:a05:6512:4012:b0:539:f26f:d285 with SMTP id 2adb3069b0e04-53c79e15c9fmr963931e87.3.1730358800885;
-        Thu, 31 Oct 2024 00:13:20 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bdcbfa6sm108212e87.208.2024.10.31.00.13.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Oct 2024 00:13:19 -0700 (PDT)
-Message-ID: <5f80c1a2-118a-4685-ac1b-81b3479f5064@gmail.com>
-Date: Thu, 31 Oct 2024 09:13:16 +0200
+        d=1e100.net; s=20230601; t=1730359070; x=1730963870;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vbdfq8Je3d3l1JKu54Y52BJh8JgRsihwOk8O/lVTfe0=;
+        b=IQpRK3finb7PDb/axI75iIDI56AoB6yZwlamJ0WjMFmgGs0ncaWN0mcOc6V0WEQkHO
+         X35NGFgDJLeiGZvpVChPayjLvC91l8ClzWplxpIPiCfu9PPKUOJ1MvKvneMVHsio/Ec1
+         HKi8I59CLT/mCQvjw8EpFX2nYyBc9okuqmgssc6dDTnEcAoSQv6Zy4GXCm1Tkjltjn9B
+         B5hnkJvtQ0jrziHjHs4aiTRwl2uKOFT6vmCkXQkNuZh0oJ/jha+WNun2SAZaT1Iut+cO
+         52qUEL205LlBW+dlK1i8mn4hqtDC+ddk3uoXs0igwhGz/CdzB5r+y4z7egYi9jSa+gh3
+         ecPw==
+X-Gm-Message-State: AOJu0YwWAEHmkE+cQ9b2cvjnKnhcENiB2ETn6recikpBn6Ng8G2O4WTg
+	Wxhk+aQnW08o35hUepqPnjmK9R24pYUMIS+xxTp4j8ESkNGy0ZXCOn9i1tlIjgw=
+X-Google-Smtp-Source: AGHT+IH0ecoJmTJyGmkK2ASaEkXcOU4g+2rVZqrKqcLhxnzq14TG+MSD/Flf10ahMxtm5wkcwC2XhQ==
+X-Received: by 2002:a5d:4106:0:b0:37c:d558:a931 with SMTP id ffacd0b85a97d-3806115902emr13662094f8f.31.1730359069635;
+        Thu, 31 Oct 2024 00:17:49 -0700 (PDT)
+Received: from axelh-ThinkPad-T450s.home (lfbn-nic-1-251-169.w2-15.abo.wanadoo.fr. [2.15.94.169])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113e694sm1187547f8f.86.2024.10.31.00.17.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2024 00:17:49 -0700 (PDT)
+From: ahaslam@baylibre.com
+To: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	nuno.sa@analog.com,
+	dlechner@baylibre.com
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Axel Haslam <ahaslam@baylibre.com>
+Subject: [PATCH v3 0/6] Improvements and Enhancements for AD5791 DAC Driver
+Date: Thu, 31 Oct 2024 08:17:40 +0100
+Message-Id: <20241031071746.848694-1-ahaslam@baylibre.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: Fix uninitialized symbol 'ret'
-To: Zicheng Qu <quzicheng@huawei.com>, jic23@kernel.org, lars@metafoo.de,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: tanghui20@huawei.com, zhangqiao22@huawei.com, judy.chenhui@huawei.com
-References: <20241031014505.2313035-1-quzicheng@huawei.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241031014505.2313035-1-quzicheng@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Zicheng,
+From: Axel Haslam <ahaslam@baylibre.com>
 
-Thanks for the patch.
+These patches aim to improve on the ad5791 driver:
+ - make use of chip_info / match tables, and drop device enum id.
+ - Add reset, clr and ldac gpios that have to be set to the correct level in case they
+   are not hardwired on the setup/PCB.
+ - simplify probe by using the devm_* functions to automatically free resources.
+---
+Changes in v3:
+- v2 is missing the version prefix. Im sending v3 just with the added review-by tag.
+- Add review-by tag from David Lechner
+- Link to V2: https://lore.kernel.org/all/94a03835-bdd1-4243-88c7-0ad85784fe36@baylibre.com/
 
-On 31/10/2024 03:45, Zicheng Qu wrote:
-> Initialize the variable ret at the time of declaration to prevent it from
-> being returned without a defined value. Fixes smatch warning:
-> drivers/iio/industrialio-gts-helper.c:256 gain_to_scaletables() error:
-> uninitialized symbol 'ret'.
-> 
-> Cc: stable@vger.kernel.org # v6.6+
-> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
-> Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-> ---
->   drivers/iio/industrialio-gts-helper.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
-> index 59d7615c0f56..c5dc5b51693d 100644
-> --- a/drivers/iio/industrialio-gts-helper.c
-> +++ b/drivers/iio/industrialio-gts-helper.c
-> @@ -167,7 +167,7 @@ static int iio_gts_gain_cmp(const void *a, const void *b)
->   
->   static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->   {
-> -	int ret, i, j, new_idx, time_idx;
-> +	int i, j, new_idx, time_idx, ret = 0;
->   	int *all_gains;
->   	size_t gain_bytes;
->   
+Changes in v2:
+- Fix probe error print using uninitialized ret.
+- Add documentation for new struct parameters
+- Add review-by tags to device tree bindings
+- Link to V1: https://lore.kernel.org/all/CAKXjFTPwN2TYW6sq1kj3miZ0f5OqKX0aTk8eGf1sj9TBk1_e=A@mail.gmail.com/T/
 
-So, if I read it right, this handles a (corner) case where there is no 
-times given. I am not sure how well such use has been considered because 
-the point of GTS is helping out with cases where the gain and 
-integration time both impact to scale.
+Axel Haslam (6):
+  dt-bindings: iio: dac: ad5791: Add optional reset, clr and ldac gpios
+  dt-bindings: iio: dac: ad5791: Add required voltage supplies
+  iio: dac: ad5791: Include chip_info in device match tables
+  iio: dac: ad5791: Add reset, clr and ldac gpios
+  iio: dac: ad5791: Use devm_regulator_get_enable_read_voltage
+  iio: dac: ad5791: Use devm_iio_device_register
 
-How do you see the benefits of the gts if there is no such shared impact 
-to scale? Sure the gts could still provide the 'standard table format' 
-to present the gains (or times), and conversions from the register 
-values to gains (or times), and perhaps the available scale table(s) - 
-but I suppose it also brings a lot of unused code and some 
-initialization overhead. (I have a vague feeling this was discussed with 
-Jonathan during the reviews).
+ .../bindings/iio/dac/adi,ad5791.yaml          |  39 ++++
+ drivers/iio/dac/ad5791.c                      | 203 ++++++++----------
+ 2 files changed, 131 insertions(+), 111 deletions(-)
 
-Reason I am asking these questions is that I wonder if the usage should 
-be limited to cases where we have both gains and times? We could check 
-this in the iio_gts_sanity_check(). (And, I am actually a bit surprized 
-this check was not implemented).
-
-Well, initialization fixes a potential bug here and does not really cost 
-much - so big thanks to you :)
-
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
-Yours,
-  -- Matti Vaittinen
+-- 
+2.34.1
 
 

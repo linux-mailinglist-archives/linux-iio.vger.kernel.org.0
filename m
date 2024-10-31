@@ -1,145 +1,254 @@
-Return-Path: <linux-iio+bounces-11695-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11696-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567C39B7CAA
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 15:20:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0AB9B7CE4
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 15:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15B3E282E85
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 14:20:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D55B281DFD
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 14:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83691A072C;
-	Thu, 31 Oct 2024 14:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g4a/OJvR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149C719E97A;
+	Thu, 31 Oct 2024 14:31:40 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67ECF126BEF;
-	Thu, 31 Oct 2024 14:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830E1126C00;
+	Thu, 31 Oct 2024 14:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730384429; cv=none; b=ZjdcaxUSkUCcb9UyoTd6VDEy8lLj6qadMepkeX3Csjz9c08dEl0niT7e7F777RanV4Vf1ZW5HpdEtIduPrento5VjY17L3u83wOxVCD/19cm7CHkfBJ5LjMenzPAr7BAmm2hh+fBFsKd69zz2s33DXGVR+R/Br75DLC9PZjUzbo=
+	t=1730385099; cv=none; b=hzOsXfY4O6+OwwV9NaJ2ihnbq06nYD/KVOttiB2ASBGNsN2+5OG39sOsEpfcCLy5ToLyi2FE4mJLhCaC5IOXgkkY/eWyyn9d8CEQFZAS2ziK/FwxKsSL+809tR3SESqpple+NKyCxZWVh5amyO4b9yOLMjriN5QquZXb73eWcdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730384429; c=relaxed/simple;
-	bh=WubJgVoi6PG6mHA8Hf3mBv1Yym6DwrDwuVi/BNcnArg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ndlZJm4N/E6oVRucRmUIWiKAzAG6RMQvrEDYfZWuCN1YjuZUHV+OlSFzh0OWhNWgXg57svSxC/G8EBetjWDtMGsJptq9r8rxds9qDKF2iWQ3zxXmTX2X8MZopsyqARrFuEhzsqeMorIZ3CNH7eb0y5NXx7yH6QokV0ZzW+3gQwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g4a/OJvR; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-431548bd1b4so8065025e9.3;
-        Thu, 31 Oct 2024 07:20:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730384426; x=1730989226; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=djH3xY8dq5iylljAgal9aGEEdDS+uM5AxS6wGMBJ2o8=;
-        b=g4a/OJvRQa6Cagm7H+jIS8GSQJRNxkOqJvhsLacS1Ya6DDW2O6g977g7sUpSUVuZx4
-         6amB9+qZwG6IJF4paaM4jT4+E7fiWpby3BAxfTGQo4cKgnYSxuMFgEFedvVoY3MToDtH
-         kgBlT9/EkfuOxuIT1FPfFKuX81dlNGLQVr9eMC82OrvNwY46m51mv+8+Smej5CLtedQ8
-         6jLyCI2PBraWFTq3IIufmJIIK/6Np/P76jG9ZDS8qUsHI1GXVaE7kvvFD7WIRbwaCTl4
-         7pojgZ9QzytBcrsGukaVnekFc+7M6c/JozivmkUP+5NQkN/50IiiMRoNpeV+nx/cEXwX
-         OgxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730384426; x=1730989226;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=djH3xY8dq5iylljAgal9aGEEdDS+uM5AxS6wGMBJ2o8=;
-        b=f/JiZQet3G1B3CvPQidGI8fIS56A23Y1jh/S5U1dSn1S9C078dxx3jmDEfqk+BoEVa
-         p1z9xaePx7U+KtTHW0HD5x41Am2dnkEy/1+BwpxRF/+vSHBTOjmQh68HRq4hFixajr0G
-         bhBymTrzE9UcEOgyDWU4tkG8M1kNf/LUKilIEi9YOCK6h4lbo1rOzwr/9JL5klvaCfLs
-         J29XXQHxHVjg7bwxvuYT24nRMphWUjKEQeN0A54Pd71Y8pjwXTo0PPrOH4z/dXyZpPHx
-         Y1wJmdnZGNgFT794ebc5rpjkl29jnZLA0uDhI8ZIlyksNC3wJOqcyDUQK8vSQhTl3Y7S
-         5rhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKIno9qUmd2mjIRWpP91zyiAZs7k/3YTLdw3C+H9+TgIfP3O1HNRZHETs8VWI2N0LcfwgWiWCOnIY=@vger.kernel.org, AJvYcCVEsbg77Xj2ixTGvGnnLz4qnbbzUP5tx7ialHmQ1a8DGUbf5ft+mbGWM0/VvoTeUvIRlPxaWTnU6ccspsYr@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+CuRUaI5pOveQ5gYWDs0ar9x24woUXWyIV8eKAasFkSxqTEc6
-	ZXKhqadskCogh1btc8jIwhSH0X0s2RaLvN++46HJjRHHXkKXt4dR
-X-Google-Smtp-Source: AGHT+IHnnWWxWqwFHUA8ebQJ9jzEPeDxBePOMzMIocOqw7uibyVZhqpa7EYoXeri/foB3J0gggPd5w==
-X-Received: by 2002:a05:6000:18ac:b0:37d:51a2:accd with SMTP id ffacd0b85a97d-381c7973bf8mr145305f8f.0.1730384425443;
-        Thu, 31 Oct 2024 07:20:25 -0700 (PDT)
-Received: from ?IPv6:2001:a61:34c9:ea01:14b4:7ed9:5135:9381? ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c116abc0sm2215836f8f.94.2024.10.31.07.20.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2024 07:20:24 -0700 (PDT)
-Message-ID: <4760ad42ae34ea53ffb98995d65c5f1d6a6b3f9e.camel@gmail.com>
-Subject: Re: [PATCH v2] iio: adc: ad7923: Fix buffer overflow for tx_buf and
- ring_xfer
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Zicheng Qu <quzicheng@huawei.com>, jic23@kernel.org, nuno.sa@analog.com,
-  lars@metafoo.de, Michael.Hennerich@analog.com, djunho@gmail.com, 
- alexandru.ardelean@analog.com, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Cc: tanghui20@huawei.com, zhangqiao22@huawei.com, judy.chenhui@huawei.com
-Date: Thu, 31 Oct 2024 15:20:24 +0100
-In-Reply-To: <20241029134637.2261336-1-quzicheng@huawei.com>
-References: <20241028142357.1032380-1-quzicheng@huawei.com>
-	 <20241029134637.2261336-1-quzicheng@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1730385099; c=relaxed/simple;
+	bh=PuDbDPSsaYw6fzKpOB6WGo3iQDhxrpPMSFphqPAYYpo=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EN28I5JAEc6VDfn4PEbOzatLq94W/w6VmutorAxlxxp9PC5ywPodkbXL7ZdUHH747jHCVCo85UAHGn8QWGlw7kx6Y6txra/pOOYgSCoYOIJdzDcgLFCxEWfcAR/vL0wliXEEsDAqmZlcFV1vJV59hm+cGAJ+/5ds78hAV8H6QU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XfRBl4Tjhz6GDmf;
+	Thu, 31 Oct 2024 22:26:39 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 20CAB140136;
+	Thu, 31 Oct 2024 22:31:32 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 31 Oct
+ 2024 15:31:31 +0100
+Date: Thu, 31 Oct 2024 14:31:29 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Matteo Martelli <matteomartelli3@gmail.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@intel.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Alisa-Dariana Roman
+	<alisa.roman@analog.com>, Christian Eggers <ceggers@arri.de>, Peter Rosin
+	<peda@axentia.se>, Paul Cercueil <paul@crapouillou.net>, Sebastian Reichel
+	<sre@kernel.org>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+	<linux-pm@vger.kernel.org>
+Subject: Re: [PATCH v5 2/5] iio: consumers: copy/release available info from
+ producer to fix race
+Message-ID: <20241031143129.0000014e@Huawei.com>
+In-Reply-To: <173037398492.12348.265826723028347056@njaxe.localdomain>
+References: <20241021-iio-read-avail-release-v5-0-b168713fab33@gmail.com>
+	<20241021-iio-read-avail-release-v5-2-b168713fab33@gmail.com>
+	<ZyJHFp6vbQ7deLFs@black.fi.intel.com>
+	<173031260171.39393.109639772708550094@njaxe.localdomain>
+	<20241030203050.5cdf3450@jic23-huawei>
+	<173037398492.12348.265826723028347056@njaxe.localdomain>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Tue, 2024-10-29 at 13:46 +0000, Zicheng Qu wrote:
-> The AD7923 was updated to support devices with 8 channels, but the size
-> of tx_buf and ring_xfer was not increased accordingly, leading to a
-> potential buffer overflow in ad7923_update_scan_mode().
->=20
-> Fixes: 851644a60d20 ("iio: adc: ad7923: Add support for the ad7908/ad7918=
-/ad7928")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Nuno S=C3=A1 <noname.nuno@gmail.com>
-> Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-> ---
+On Thu, 31 Oct 2024 12:26:24 +0100
+Matteo Martelli <matteomartelli3@gmail.com> wrote:
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> Quoting Jonathan Cameron (2024-10-30 21:30:50)
+> > On Wed, 30 Oct 2024 19:23:21 +0100
+> > Matteo Martelli <matteomartelli3@gmail.com> wrote:
+> >   
+> > > Quoting Andy Shevchenko (2024-10-30 15:47:50)  
+> > > > On Mon, Oct 21, 2024 at 02:54:15PM +0200, Matteo Martelli wrote:    
+> > > > > Consumers need to call the producer's read_avail_release_resource()
+> > > > > callback after reading producer's available info. To avoid a race
+> > > > > condition with the producer unregistration, change inkern
+> > > > > iio_channel_read_avail() so that it copies the available info from the
+> > > > > producer and immediately calls its release callback with info_exists
+> > > > > locked.
+> > > > > 
+> > > > > Also, modify the users of iio_read_avail_channel_raw() and
+> > > > > iio_read_avail_channel_attribute() to free the copied available buffers
+> > > > > after calling these functions. To let users free the copied buffer with
+> > > > > a cleanup pattern, also add a iio_read_avail_channel_attr_retvals()
+> > > > > consumer helper that is equivalent to iio_read_avail_channel_attribute()
+> > > > > but stores the available values in the returned variable.    
+> > > > 
+> > > > ...
+> > > >     
+> > > > > +static void dpot_dac_read_avail_release_res(struct iio_dev *indio_dev,
+> > > > > +                                         struct iio_chan_spec const *chan,
+> > > > > +                                         const int *vals, long mask)
+> > > > > +{
+> > > > > +     kfree(vals);
+> > > > > +}
+> > > > > +
+> > > > >  static int dpot_dac_write_raw(struct iio_dev *indio_dev,
+> > > > >                             struct iio_chan_spec const *chan,
+> > > > >                             int val, int val2, long mask)
+> > > > > @@ -125,6 +132,7 @@ static int dpot_dac_write_raw(struct iio_dev *indio_dev,
+> > > > >  static const struct iio_info dpot_dac_info = {
+> > > > >       .read_raw = dpot_dac_read_raw,
+> > > > >       .read_avail = dpot_dac_read_avail,
+> > > > > +     .read_avail_release_resource = dpot_dac_read_avail_release_res,
+> > > > >       .write_raw = dpot_dac_write_raw,
+> > > > >  };    
+> > > > 
+> > > > I have a problem with this approach. The issue is that we allocate
+> > > > memory in one place and must clear it in another. This is not well
+> > > > designed thingy in my opinion. I was thinking a bit of the solution and
+> > > > at least these two comes to my mind:
+> > > > 
+> > > > 1) having a special callback for .read_avail_with_copy (choose better
+> > > > name) that will dump the data to the intermediate buffer and clean it
+> > > > after all;
+> > > > 
+> > > > 2) introduce a new type (or bit there), like IIO_AVAIL_LIST_ALLOC.    
+> > > 
+> > > Could you elaborate more about these potential solutions? Maybe with some
+> > > usage examples?
+> > > 
+> > > If I get it correctly, in both cases you are suggesting to pass ownership
+> > > of the vals buffer to the caller, iio_read_channel_info_avail() in this
+> > > case, so that it would take care of freeing the buffer after calling
+> > > iio_format_after_*(). We considered this approach during an initial
+> > > discussion with Jonathan (see read_avail_ext() in [1]), where he suggested
+> > > to let the driver keep the release control through a callback for two
+> > > reasons:
+> > > 
+> > > 1) Apparently it's a bad pattern to pass the buffer ownership to the core,
+> > >    maybe Jonathan can elaborate why? The risk I can think of is that the driver
+> > >    could still keep the buffer copy in its private data after giving it away,
+> > >    resulting in fact in a double ownership. However I think it would be clear
+> > >    enough in this case that the copy should be handled by the caller, or maybe
+> > >    not?  
+> > Mostly the lack of desire to have to copy for the 95% of cases where it's
+> > not needed and that it prevents any optimization like you mention.  
+> 
+> I think the suggestion here is to add an additional .read_avail_with_copy()
+> without replacing the original .read_avail(), so all the current drivers that
+> use a constant avail list would not be affected. And I think this was the same
+> idea for the additional read_avail_ext() or the additional argument for the
+> read_avail() we were considering in [1]. So I would think that
+> iio_read_channel_info_avail() would do something like the following:
+> 
+>     if (indio_dev->info->read_avail_with_copy)
+>         indio_dev->info->read_avail_with_copy(vals);
+>     else
+>         indio_dev->info->read_avail(vals);
+> 
+>     ...
+>     iio_format_avail_list(vals);
+>     ...
+> 
+>     if (indio_dev->info->read_avail_with_copy)
+>         kfree(vals);
 
-> v2:
-> - Fixed: Addressed buffer overflow in ad7923_update_scan_mode() due to=
-=20
-> insufficient tx_buf and ring_xfer size for 8-channel devices.
-> - Issue: Original patch attempted to fix the overflow by limiting the=20
-> length, but did not address the root cause of buffer size mismatch.
-> - Solution: Increased tx_buf and ring_xfer sizes recommended by Nuno to=
-=20
-> support all 8 channels, ensuring adequate buffer capacity.
-> - Previous patch link:=20
-> https://lore.kernel.org/linux-iio/20241028142357.1032380-1-quzicheng@huaw=
-ei.com/T/#u
-> =C2=A0drivers/iio/adc/ad7923.c | 4 ++--
-> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
-> index 09680015a7ab..acc44cb34f82 100644
-> --- a/drivers/iio/adc/ad7923.c
-> +++ b/drivers/iio/adc/ad7923.c
-> @@ -48,7 +48,7 @@
-> =C2=A0
-> =C2=A0struct ad7923_state {
-> =C2=A0	struct spi_device		*spi;
-> -	struct spi_transfer		ring_xfer[5];
-> +	struct spi_transfer		ring_xfer[9];
-> =C2=A0	struct spi_transfer		scan_single_xfer[2];
-> =C2=A0	struct spi_message		ring_msg;
-> =C2=A0	struct spi_message		scan_single_msg;
-> @@ -64,7 +64,7 @@ struct ad7923_state {
-> =C2=A0	 * Length =3D 8 channels + 4 extra for 8 byte timestamp
-> =C2=A0	 */
-> =C2=A0	__be16				rx_buf[12] __aligned(IIO_DMA_MINALIGN);
-> -	__be16				tx_buf[4];
-> +	__be16				tx_buf[8];
-> =C2=A0};
-> =C2=A0
-> =C2=A0struct ad7923_chip_info {
+Ok, sure that would work, but...
+
+I don't really see this as being much less fragile than
+the existing solution + in cases that we do have where
+only some available are not const we will have to copy them
+all.
+
+If anything it's more complex than making it a driver problem
+to provide the release call however it wants to do it.
+ 
+
+> 
+> And the drivers would choose whether to define the read_avail or the
+> read_avail_with_copy.
+> 
+> What I was referring to is that, back then, you mentioned you would have
+> preferred to avoid passing ownership of the buffer around:
+> 
+> > That's a corner case we should think about closing. Would require an indicator
+> > to read_avail that the buffer it has been passed is a snapshot that it should
+> > free on completion of the string building.  I don't like passing ownership
+> > of data around like that, but it is fiddly to do anything else given
+> > any simple double buffering is subject to race conditions.  
+> 
+> I guess there is some other reason other than avoiding the copy when not
+> necessary, since by introducing an additional function or argument or return
+> type, most of the unnecessary copies would already be avoided right?
+
+It's not a strong reason beyond limiting scope of clever design +
+the key bit my mind is that the above is not substantially simpler and
+reduces our flexibility.
+
+> 
+> Anyway any of this solutions would still prevent the potential optimizations of
+> point 2). It's worth mentioning that those kind of optimizations are currently
+> not adopted by any driver.
+
+That one indeed not, but mixing dynamic and non dynamic is something
+you do in your pac1921 patch.
+
+Jonathan
+
+
+> 
+> > 
+> > Jonathan  
+> > > 
+> > > 2) Some driver might want to avoid allocating a new copy of a big table if
+> > >    the race does not occur (e.g. with additional checks on buffer access
+> > >    code) and thus wouldn't call a free() in the release callback.
+> > >   
+> > > > 
+> > > > In any case it looks fragile and not scalable. I propose to drop this
+> > > > and think again.    
+> > > 
+> > > I see your concerns, I am open to reconsider this in case we come up with
+> > > better solution after addressing the points above.
+> > >   
+> > > > Yes, yes, I'm fully aware about the problem you are trying to solve and
+> > > > agree on the report, I think this solution is not good enough.
+> > > > 
+> > > > -- 
+> > > > With Best Regards,
+> > > > Andy Shevchenko
+> > > >     
+> > > 
+> > > [1]: https://lore.kernel.org/linux-iio/20240729211100.0d602d6e@jic23-huawei/
+> > > 
+> > > Best regards,
+> > > Matteo Martelli  
+> >   
+> 
+> I hope I've brought a little more clarity to the discussion by providing some
+> history instead of making it more confusing.
+
+Sure, the code example in particular is useful.
+
+Jonathan
+
+> 
+> Best regards,
+> Matteo Martelli
+> 
+> 
 
 

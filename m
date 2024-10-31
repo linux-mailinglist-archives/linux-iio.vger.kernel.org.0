@@ -1,171 +1,262 @@
-Return-Path: <linux-iio+bounces-11685-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11686-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436639B77F0
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 10:51:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B90E9B78D4
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 11:41:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00245287138
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 09:51:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AAB6B23C76
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 10:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D391990B7;
-	Thu, 31 Oct 2024 09:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01F1199E9B;
+	Thu, 31 Oct 2024 10:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWYWDuyk"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WnAesqFu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0632A198E70;
-	Thu, 31 Oct 2024 09:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C24199939
+	for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 10:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730368251; cv=none; b=pZvhKUIdX00JElAZBKRz01VgfpNhiftJenuuZ4yGCI05H62tim9Cknw7Y05b2T4Ok8cbd2CrCUzinwjL6yekVfdTc9vPCohNLxJklHFjCOqiO3YnUmYUtKzhO6vwOxe+G4/jIxPIPBZrN3n8R8XDQSO+ohxFbLPYv+mlkzqyKew=
+	t=1730371249; cv=none; b=KuWMdqpy7zKJ6KpOSTX6akcc8bsJtdbY5xqAs7rbUDqwtOsHpbX7oHUJ9H6k4h8qNtRPdhwt9NM0Aw7Py6jwJ3WXGxvTLg5+rFx4xVYdedWLaHXdE2ZYSqI/+b1u2MLUTmZuHq3xJ0/LgBItDjRLKlVcrZlU2hX8zedQuReXqGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730368251; c=relaxed/simple;
-	bh=Vjh+3r/T5wXwLUhjDZ9Z5nnKZ/Su77T2fS+C3WYnF70=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VAEGbRVSkehGEOdNuG1grWgQ+PTNZb04NQRjlPXTkDMVwHBFkGie7NK230SJGWlMVIiny/QceJfNb88C0N0FppI9gwcJRMvWQ8WZL1Wd//W0rLqao0Nw3oYxudYzvfJxKXhQgHOKxcodkCfzNobN2I2Y4loMvdotqXGBPjnwUJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWYWDuyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543DBC4CEC3;
-	Thu, 31 Oct 2024 09:50:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730368250;
-	bh=Vjh+3r/T5wXwLUhjDZ9Z5nnKZ/Su77T2fS+C3WYnF70=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TWYWDuyk4z6lBKH9oDOionHLuqSbNreW5L9Fn8Q7kjcgu9rF2TdYi5Xe/4VrF+Aok
-	 8vwR9CUvm+x3i13zuMNlyaGeSMM6ZUQ6KZebggcTpH6oGAIsEFQJJF812JnOqP9Nq5
-	 S+U+LUuEQzkE6oMlrB9tXxPMO1jyXKb1Cn6/d7E6D1XQXv8ip6GgkZdEM9iMOvRXFC
-	 w88D6YLXcFd/5LMuJGzdxFGOPzD84TS6lgtRrz5CxxNyODY9+vzPTvj27l7rMILcn9
-	 RPOzcwOjrplsorMIQ9dtztEM/QjQu0qxE8Nmta23LMMrOX9PftCMRWuFrztfwDcaem
-	 OkDFfhZSzq+gA==
-Message-ID: <24e81091-e0f9-40c7-b781-10354b4a3ea2@kernel.org>
-Date: Thu, 31 Oct 2024 10:50:41 +0100
+	s=arc-20240116; t=1730371249; c=relaxed/simple;
+	bh=XtnAwlHqbDwEqBbAVelZJFoPIxrzfr7UOto+zsLrlkw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nb8l5eskZaTaLAF6p6P5kmpOPaH/TmJsVEXD+1aZqmFihQzRGLDU6JqCBiTooWM+PHKnqJ7mizYIELpk7/pMEAISioJqTkeuKVhf5oVvNjc1XpPKNcqxM/wxfBljcSNMrKHYdVoz+4KyoX8+iPFfTNn78UKwnuDzaSJMJyAcm8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WnAesqFu; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4316cce103dso8144395e9.3
+        for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 03:40:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730371244; x=1730976044; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lgKmGA2XP6AGtqM9oW1AxbuyILWkrlt7gPefc+gScmU=;
+        b=WnAesqFuDcvek1e+QHgl4Bpl3rZuQvcSZyBeB+aZTFhmUsnXaWhaYGFBEJ+7kfnsPs
+         AsKtsRyISTpgbzzt0i5yazgmHbcsLyXjuJ1l5qEnutpaw1jIuTFrnj3Z57CDM8jOoec/
+         WqrNb3nV7qUmobnd4O+S6tEEJtW91fnc5SeINuKq4OmFe0Eb4xsreSNgLztwW/8+c9y9
+         wXjf/PJ+eQiyeLpd2wMLxU8NLTpDVVNgwSEdDEBmCX98HDPBdfZvAxn8clkiYnmYV2ts
+         XQ52+smTpnqtcOG3qez7yTP3f8CbD+/26YUXprElkmIFqgjqyIVbRYS54rM4kt3Z+RZz
+         V+HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730371244; x=1730976044;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lgKmGA2XP6AGtqM9oW1AxbuyILWkrlt7gPefc+gScmU=;
+        b=uH6qlX+RQ6G0u5Ym1wCqa4y5anG8LWPhL/MOdRvuq713oIGJ0mNXzzLyy+Q0JyvcRg
+         XasaPFn8yhAid4VNqzoA0RGWZmBDRpVwFKbhg3ytxwopsZgPjmfL8yJairCNakyY1cEo
+         B3mL5s3Y50UQPG+wDLfxY/vWOwPD4y9D6c1n8/fK/IrJ+h47zaRZqSCbWd7P8LEMuK5f
+         MaY51QJI0isIES7uX8W4p/4ztu6cGO14X5swEZjRks1UDHqc1F/tptMzrbTu4g3DhYL3
+         Y4WDBkjZKhZo9DMZxwIZLUT1760Z46P+4hIhk+SBXL3R0fpmNqMirOCKnKyXyluDRmde
+         QUrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUgrYvpJmpsO1UiivP9kOxLckcaMIUqSW9XJzanydI6j37AjutBvMVAY0UnYtD9Ye0h4OsPJrrRWFs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGCYcAPpOSr/wDoMTO8zn5/dG6q2r1aLLR/q1Ejv5/mZaIKxlE
+	hn0SS06sBKGzR2WKcjgTeZCEvLdC4LJ3Pe9/OI4CPUdfdFdOFUvA538dVjLFAIs=
+X-Google-Smtp-Source: AGHT+IFPYqx1ZOnNkJk+PcsQb0H+6RC0VdaFuA9KFeFSW0MTwuAVcXEfqSuPspkXtnVhb/q30nPQfA==
+X-Received: by 2002:a05:600c:1d8b:b0:426:59fe:ac27 with SMTP id 5b1f17b1804b1-4319ad06901mr232128505e9.26.1730371244319;
+        Thu, 31 Oct 2024 03:40:44 -0700 (PDT)
+Received: from localhost (p50915d2d.dip0.t-ipconnect.de. [80.145.93.45])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d6984f0sm21970065e9.46.2024.10.31.03.40.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2024 03:40:43 -0700 (PDT)
+Date: Thu, 31 Oct 2024 11:40:42 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>, 
+	Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Dumitru Ceclan <dumitru.ceclan@analog.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Nuno Sa <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, 
+	linux-iio@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v2 3/4] iio: adc: ad_sigma_delta: Add support for reading
+ irq status using a GPIO
+Message-ID: <y3amm7yj37lravbk6fcwze3jlllp4extmffqtx4jaoeqjt6uyl@nsdrcy2dk5kr>
+References: <20241028160748.489596-6-u.kleine-koenig@baylibre.com>
+ <20241028160748.489596-9-u.kleine-koenig@baylibre.com>
+ <a575430a74a7825a2df9fad1a8e073ad0507b0e7.camel@gmail.com>
+ <20241030204429.70cdcf35@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] dt-bindings: mfd: sprd,sc2731: convert to YAML
-To: Stanislav Jakubek <stano.jakubek@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Sebastian Reichel <sre@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-rtc@vger.kernel.org
-References: <ZyExK01iprBHhGm6@standask-GA-A55M-S2HP>
- <ki4wvjslncrngwpz7qukknzgdsjkxvrhitem7i5lof6ggyhu4e@tviovrd2wi77>
- <ZyHjW86v9Y59-TJQ@standask-GA-A55M-S2HP>
- <7db6431e-1892-463e-9c74-cd466ae3ca32@kernel.org>
- <ZyHq4FJ0ubQVGREo@standask-GA-A55M-S2HP>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <ZyHq4FJ0ubQVGREo@standask-GA-A55M-S2HP>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vu4ylvzikv3ve35j"
+Content-Disposition: inline
+In-Reply-To: <20241030204429.70cdcf35@jic23-huawei>
 
-On 30/10/2024 09:14, Stanislav Jakubek wrote:
-> On Wed, Oct 30, 2024 at 08:48:25AM +0100, Krzysztof Kozlowski wrote:
->> On 30/10/2024 08:42, Stanislav Jakubek wrote:
->>>>
->>>>> +
->>>>> +  '#address-cells':
->>>>> +    const: 1
->>>>> +
->>>>> +  '#interrupt-cells':
->>>>> +    const: 1
->>>>> +
->>>>> +  '#size-cells':
->>>>> +    const: 0
->>>>> +
->>>>> +  regulators:
->>>>> +    type: object
->>>>> +    $ref: /schemas/regulator/sprd,sc2731-regulator.yaml#
->>>>> +
->>>>> +patternProperties:
->>>>> +  "^adc@[0-9a-f]+$":
->>>>> +    type: object
->>>>> +    $ref: /schemas/iio/adc/sprd,sc2720-adc.yaml#
->>>>> +
->>>>> +  "^charger@[0-9a-f]+$":
->>>>> +    type: object
->>>>> +    $ref: /schemas/power/supply/sc2731-charger.yaml#
->>>>> +
->>>>> +  "^efuse@[0-9a-f]+$":
->>>>> +    type: object
->>>>> +    $ref: /schemas/nvmem/sprd,sc2731-efuse.yaml#
->>>>
->>>> I don't think this was merged. You still have dependency.
->>>
->>> This is in next-20241029, which this patch is based on.
->>
->> Try what I wrote below and see if this works...
-> 
-> I assume you meant the MFD maintainers' tree here.
-> Yes, that tree doesn't have the nvmem patch this depends on.
-> 
-> Would the approach with listing the compatibles and additionalProperties:
-> true be considered a temporary workaround?
 
-Not really, it's a correct approach. The node will be validated anyway
-by efuse/child schema.
+--vu4ylvzikv3ve35j
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 3/4] iio: adc: ad_sigma_delta: Add support for reading
+ irq status using a GPIO
+MIME-Version: 1.0
 
-Best regards,
-Krzysztof
+Hello,
 
+On Wed, Oct 30, 2024 at 08:44:29PM +0000, Jonathan Cameron wrote:
+> On Wed, 30 Oct 2024 14:04:58 +0100
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>=20
+> > On Mon, 2024-10-28 at 17:07 +0100, Uwe Kleine-K=C3=B6nig wrote:
+> > > Some of the ADCs by Analog signal their irq condition on the MISO lin=
+e.
+> > > So typically that line is connected to an SPI controller and a GPIO. =
+The
+> > > GPIO is used as input and the respective interrupt is enabled when the
+> > > last SPI transfer is completed.
+> > >=20
+> > > Depending on the GPIO controller the toggling MISO line might make the
+> > > interrupt pending even while it's masked. In that case the irq handler
+> > > is called immediately after irq_enable() and so before the device
+> > > actually pulls that line low which results in non-sense values being
+> > > reported to the upper layers.
+> > >=20
+> > > The only way to find out if the line was actually pulled low is to re=
+ad
+> > > the GPIO. (There is a flag in AD7124's status register that also sign=
+als
+> > > if an interrupt was asserted, but reading that register toggles the M=
+ISO
+> > > line and so might trigger another spurious interrupt.)
+> > >=20
+> > > Add the possibility to specify an interrupt GPIO in the machine
+> > > description instead of a plain interrupt. This GPIO is used as interr=
+upt
+> > > source and to check if the irq line is actually active in the irq
+> > > handler.
+> > >=20
+> > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+> > > --- =20
+> >=20
+> > Hi all,
+> >=20
+> > Regarding this, I do share some of the concerns already raised by Jonat=
+han. I fear
+> > that we're papering around an issue with the IRQ controller rather than=
+ being an
+> > issue with the device. When I look at irq_disable() docs [1], it feels =
+that we're
+> > already doing what we're supposed to do. IOW, we disable the lazy appro=
+ach so we
+> > *should* not get any pending IRQ.
+
+I think this is wrong and you always have to be prepared to see an irq
+triggering that became pending while masked.
+
+> > Also looking at drivers as the xilinx gpio controller, it seems some
+> > are careful about this [2] and make sure to clear all pending IRQs
+> > when unmasking.
+> Your links are both to the same place.
+
+The right one is:
+https://elixir.bootlin.com/linux/v6.11.5/source/drivers/gpio/gpio-xilinx.c#=
+L419
+
+I think this is buggy, see below for the reasoning.
+
+> > Jonathan also said this:
+> >=20
+> > "True enough - that race is a possibility, but not all interrupt inputs
+> > are capable of gpio usage whilst setup to received interrupts."
+> Race should be easy to avoid using a level interrupt now I think more on =
+that:
+> can't miss a level.
+
+In general this isn't true. If it were that easy we could just assume
+all irqs being level interrupts and simplify the irq code a bit. At
+least for the ad7124 if a conversion is done, the chip holds the line
+low until the next conversion is done. In that case it deasserts
+DOUT/=CC=85R=CC=85D=CC=85Y for a short while to create another falling edge=
+ signalling
+another event. I can imagine this to confuse level detection?!
+
+> > To my understanding this also means this is doomed to fail for some dev=
+ices or am I
+> > not following it?
+>=20
+> If you were wired to one of those, you couldn't use the GPIO trick, but t=
+hen
+> don't have a GPIO in your DT in that case.
+
+Yes. If the device isn't properly connected in hardware you're out of
+luck. But that is also true if the spi clock line isn't connected. So
+apart from the requirement that "properly" involves things that are
+unusual for other SPI devices, that's expected. Having said that it was
+clear before because the MISO (aka DOUT/=CC=85R=CC=85D=CC=85Y) line was alr=
+eady know to have
+to be connected to an irq capable pin.
+=20
+> > All that said, my naive feeling would be for a masked line to not get a=
+ny pending IRQ
+> > and if it does, the driver should make sure to clean all outstanding in=
+terrupts when
+> > unmasking. But I'm far from being an expert of the IRQ subsystem. Maybe=
+ it would be
+> > interesting to get some inputs about someone who actually knows better?
+> +CC Thomas Gleixner,
+>=20
+> Annoying case where a wire is both the interrupt source for dataready and=
+ the
+> SPI data line (if separate clock signal is toggling)  So currently the dr=
+iver
+> masks interrupts at the host end, but we have at least one interrupt cont=
+roller
+> where they end up pending and fire on reenabling the interrupt.  Querying=
+ the
+> device to check the status register then ends up causing it to happen aga=
+in,
+> so that doesn't help.
+>=20
+> Proposal is to query it as a GPIO (or maybe a separate GPIO wired to the =
+same
+> pin) to check the level when an interrupt comes in.
+
+In my understanding it's the expected behaviour of an irq controller
+that a masked irq becomes pending if the irq event (level or edge)
+happens and then triggers immediately after enable_irq() -- independent
+of laziness being used or not.
+
+That's also the only way to prevent missing interrupts. To understand
+that consider an irq that signals there is data in a fifo. The handler
+reads that data out and when it's empty returns. Returning results in
+unmasking the interrupt again. If new data arrives between seeing the
+fifo empty and reenabling the irq you miss the event if the irq doesn't
+become pending while it's masked.
+
+> Any thoughts on this nasty hardware and what is responsiblity of the devi=
+ce
+> driver vs the interrupt controller driver in this case?
+
++1
+
+Best regards
+Uwe
+
+--vu4ylvzikv3ve35j
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcjXqcACgkQj4D7WH0S
+/k6l0Qf9H43QChnW4w6qaJbshV3+8ZGstbguoZE1x5XYLSNe+7l2bvdXeQHitndw
+e3f6GhaFNsrUJDleicZxpAqPQ/btwJ3RsUs57l84iuH3svthZsiXpFASAAgzSNDn
+FB0oEaA7tBqP5df2mV6hgatju/wJ60nSfE+SksNW1newP61JGLohqv3FCwJk3hgi
+ZOitlJonKXLhZGt7o+vpyJ20giyFftf0LY7/5uKNGorfoKODJHFz4OVSehEAC82u
+WCtdJ3/5j/bcrAJZcV+HUS5MVJiIQ5ZpxS2A+BIW7qGBZ8NE3azjxHlRbzDzMLNv
+58mIqfx8LXGKjOF7ekIr4iJHRfIo7Q==
+=2pE1
+-----END PGP SIGNATURE-----
+
+--vu4ylvzikv3ve35j--
 

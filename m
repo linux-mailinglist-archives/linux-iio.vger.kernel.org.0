@@ -1,254 +1,270 @@
-Return-Path: <linux-iio+bounces-11696-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11698-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E0AB9B7CE4
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 15:31:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 832C09B7E56
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 16:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D55B281DFD
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 14:31:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0825C1F2172D
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 15:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149C719E97A;
-	Thu, 31 Oct 2024 14:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94B01A3A80;
+	Thu, 31 Oct 2024 15:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IzinpzcT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830E1126C00;
-	Thu, 31 Oct 2024 14:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DBF19EEC0
+	for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 15:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730385099; cv=none; b=hzOsXfY4O6+OwwV9NaJ2ihnbq06nYD/KVOttiB2ASBGNsN2+5OG39sOsEpfcCLy5ToLyi2FE4mJLhCaC5IOXgkkY/eWyyn9d8CEQFZAS2ziK/FwxKsSL+809tR3SESqpple+NKyCxZWVh5amyO4b9yOLMjriN5QquZXb73eWcdQ=
+	t=1730388433; cv=none; b=oefejdj7o7iqyY4wXlPPos0V3enlbS14gaVlqiXNz4cccU+CW3+p+EEOdjELMJDoHX2Qk2oF2iq3ZLjSU1ehFXOPcKEJNoQ3nqLIWTRvB+sTEsJWPkrEx045vxEACioXp+7QM0UvIjsTDczrVHwUc/Brb7hjG6z9Jrpq7IcamIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730385099; c=relaxed/simple;
-	bh=PuDbDPSsaYw6fzKpOB6WGo3iQDhxrpPMSFphqPAYYpo=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EN28I5JAEc6VDfn4PEbOzatLq94W/w6VmutorAxlxxp9PC5ywPodkbXL7ZdUHH747jHCVCo85UAHGn8QWGlw7kx6Y6txra/pOOYgSCoYOIJdzDcgLFCxEWfcAR/vL0wliXEEsDAqmZlcFV1vJV59hm+cGAJ+/5ds78hAV8H6QU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XfRBl4Tjhz6GDmf;
-	Thu, 31 Oct 2024 22:26:39 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 20CAB140136;
-	Thu, 31 Oct 2024 22:31:32 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 31 Oct
- 2024 15:31:31 +0100
-Date: Thu, 31 Oct 2024 14:31:29 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Matteo Martelli <matteomartelli3@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko
-	<andriy.shevchenko@intel.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Alisa-Dariana Roman
-	<alisa.roman@analog.com>, Christian Eggers <ceggers@arri.de>, Peter Rosin
-	<peda@axentia.se>, Paul Cercueil <paul@crapouillou.net>, Sebastian Reichel
-	<sre@kernel.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mips@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v5 2/5] iio: consumers: copy/release available info from
- producer to fix race
-Message-ID: <20241031143129.0000014e@Huawei.com>
-In-Reply-To: <173037398492.12348.265826723028347056@njaxe.localdomain>
-References: <20241021-iio-read-avail-release-v5-0-b168713fab33@gmail.com>
-	<20241021-iio-read-avail-release-v5-2-b168713fab33@gmail.com>
-	<ZyJHFp6vbQ7deLFs@black.fi.intel.com>
-	<173031260171.39393.109639772708550094@njaxe.localdomain>
-	<20241030203050.5cdf3450@jic23-huawei>
-	<173037398492.12348.265826723028347056@njaxe.localdomain>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1730388433; c=relaxed/simple;
+	bh=f1d8I7fA7sw+sUfmK05uH6O9ujVnIEfnleGw3Ox4pGs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tUiYR5dYXA43j84kMQ5OaGGWnUBc+iCr+hE6Co7d1kr8oLGiGhG8WxMUqbn/yhiHZYrds1Auf9OK1gF4iZYqBeFWR6waFGu/lpqEd4r7iH8wxV/DIn7hAUDFa2FlTB5hadA5V5TARK73NjA75pEz7JcjY+KyqZVkocGXJ24iX9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IzinpzcT; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37d6ff1cbe1so779917f8f.3
+        for <linux-iio@vger.kernel.org>; Thu, 31 Oct 2024 08:27:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730388428; x=1730993228; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0WwNTu1vlvbHuN9HbKDO0xkQz2gUitr+1C+jlofiLKI=;
+        b=IzinpzcTT1TCK0CezgXhsW7B+6LyRTXIaG4CK3eP0rGMzIWi93aN1swt+5R8nsYbFW
+         vSAQdQKHFHa+Pw/4m+qLreKyH2UgZGD9EP4fDqm7ONxbYt2mEx6yHigmO70C4cpzs1v+
+         zeAVo0xEw5HTpR22N5y6CAVXwandBxLvSyik/EAoiyFjjbwg1Py/Tbb8AoR0CR62YyFI
+         0jkI0mG4q/KPp5gQ1kmy04Cwx6iBJG4Ov53JipYqunExCDym4IdMhJ8/czJQvvreOino
+         SAX08x8BlpWqHANxuinxfsI/B6jjrwo2WSH2InZef1TS6/H95GpzfwMOPlYvZNP8voZy
+         DaPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730388428; x=1730993228;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0WwNTu1vlvbHuN9HbKDO0xkQz2gUitr+1C+jlofiLKI=;
+        b=n2n+BRS/a65GjnRftmexxM4HbnFoqcg/BrSm4rFxDoPV0s3vzD7I+xJYji0HZC8FQ4
+         IajVyUI7P84eyFGMojP8mrc3P74T6IMnqRz8bnFmzEimHF9t/ZaLsWFpG9Yfxzd1JQt2
+         7NGCK7oTVl2EBZYTb0MGQLBW8yiFks7WiaYPUyKTowaLd8F1ikLREXMBLpgPLF15ryqr
+         IrNCB7YL6anOYo/TmbpJlw7nQR/WxmOWktqwatO6YF0x24SPxHfNGTMyc3oUeeHblRjl
+         3P3rZveN0Aml7q+AQebsySdankvwKxIL0fEqc5bYxmF06lZ99qdzmrdHg3m7ZgVk2Dui
+         z2iw==
+X-Gm-Message-State: AOJu0YwwyxrzqLZ6PycZOobnIZGqsaBamamRGQyWKJ94TnEASN0Yv6+P
+	+fSUIBKVJL+NB6VkIA5e9Ei775j1l2bkSsIqmVzzo7xdvOvHfCQevLQrIOVmtSs=
+X-Google-Smtp-Source: AGHT+IFb1d7/9RTsGMROhFf+wqRTbx7hjNdlDFSlqM1RaxGhrI/oNHTEKXbi327qzy4zNRL3SmwMYg==
+X-Received: by 2002:a05:6000:1888:b0:37d:50e1:a2c1 with SMTP id ffacd0b85a97d-381bea1bf05mr3054559f8f.46.1730388427847;
+        Thu, 31 Oct 2024 08:27:07 -0700 (PDT)
+Received: from [192.168.1.64] (2a02-8428-e55b-1101-1e41-304e-170b-482f.rev.sfr.net. [2a02:8428:e55b:1101:1e41:304e:170b:482f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d5bf429sm29399475e9.12.2024.10.31.08.27.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2024 08:27:07 -0700 (PDT)
+From: Julien Stephan <jstephan@baylibre.com>
+Subject: [PATCH v2 00/15] iio: fix write_event_config signature
+Date: Thu, 31 Oct 2024 16:26:55 +0100
+Message-Id: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- frapeml500008.china.huawei.com (7.182.85.71)
+X-B4-Tracking: v=1; b=H4sIAL+hI2cC/43PwQ7CIAyA4VcxnK0BtsXoyfcwOwwoWxMFBYYuy
+ 95dnHr3+Ddpv3RmEQNhZMfNzAJmiuRdCbndMD10rkcgU5pJLmvBZQVEHiw94REoIWBGl0B7Z6m
+ HSL3r0hgQhNLCNtIaNJaVU7eAZWdlzm3pgWLyYVrVLN7TH1D/B2QBHPZGHrDpKqE4P6luupAKu
+ NP+ytrlgwa8j+Wl9JWX5QVpKE728AAAAA==
+X-Change-ID: 20241023-iio-fix-write-event-config-signature-1bc1f52fdedf
+To: Mudit Sharma <muditsharma.info@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Anshul Dalal <anshulusr@gmail.com>, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Cosmin Tanislav <cosmin.tanislav@analog.com>, 
+ Ramona Gradinariu <ramona.gradinariu@analog.com>, 
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Dan Robertson <dan@dlrobertson.com>, 
+ Marcelo Schmitt <marcelo.schmitt@analog.com>, 
+ Matteo Martelli <matteomartelli3@gmail.com>, 
+ Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, 
+ Michal Simek <michal.simek@amd.com>, 
+ Mariel Tinaco <Mariel.Tinaco@analog.com>, 
+ Jagath Jog J <jagathjog1996@gmail.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, 
+ Kevin Tsai <ktsai@capellamicro.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev, 
+ Julien Stephan <jstephan@baylibre.com>, 
+ Julia Lawall <julia.lawall@inria.fr>
+X-Mailer: b4 0.14.2
 
-On Thu, 31 Oct 2024 12:26:24 +0100
-Matteo Martelli <matteomartelli3@gmail.com> wrote:
+Hello,
 
-> Quoting Jonathan Cameron (2024-10-30 21:30:50)
-> > On Wed, 30 Oct 2024 19:23:21 +0100
-> > Matteo Martelli <matteomartelli3@gmail.com> wrote:
-> >   
-> > > Quoting Andy Shevchenko (2024-10-30 15:47:50)  
-> > > > On Mon, Oct 21, 2024 at 02:54:15PM +0200, Matteo Martelli wrote:    
-> > > > > Consumers need to call the producer's read_avail_release_resource()
-> > > > > callback after reading producer's available info. To avoid a race
-> > > > > condition with the producer unregistration, change inkern
-> > > > > iio_channel_read_avail() so that it copies the available info from the
-> > > > > producer and immediately calls its release callback with info_exists
-> > > > > locked.
-> > > > > 
-> > > > > Also, modify the users of iio_read_avail_channel_raw() and
-> > > > > iio_read_avail_channel_attribute() to free the copied available buffers
-> > > > > after calling these functions. To let users free the copied buffer with
-> > > > > a cleanup pattern, also add a iio_read_avail_channel_attr_retvals()
-> > > > > consumer helper that is equivalent to iio_read_avail_channel_attribute()
-> > > > > but stores the available values in the returned variable.    
-> > > > 
-> > > > ...
-> > > >     
-> > > > > +static void dpot_dac_read_avail_release_res(struct iio_dev *indio_dev,
-> > > > > +                                         struct iio_chan_spec const *chan,
-> > > > > +                                         const int *vals, long mask)
-> > > > > +{
-> > > > > +     kfree(vals);
-> > > > > +}
-> > > > > +
-> > > > >  static int dpot_dac_write_raw(struct iio_dev *indio_dev,
-> > > > >                             struct iio_chan_spec const *chan,
-> > > > >                             int val, int val2, long mask)
-> > > > > @@ -125,6 +132,7 @@ static int dpot_dac_write_raw(struct iio_dev *indio_dev,
-> > > > >  static const struct iio_info dpot_dac_info = {
-> > > > >       .read_raw = dpot_dac_read_raw,
-> > > > >       .read_avail = dpot_dac_read_avail,
-> > > > > +     .read_avail_release_resource = dpot_dac_read_avail_release_res,
-> > > > >       .write_raw = dpot_dac_write_raw,
-> > > > >  };    
-> > > > 
-> > > > I have a problem with this approach. The issue is that we allocate
-> > > > memory in one place and must clear it in another. This is not well
-> > > > designed thingy in my opinion. I was thinking a bit of the solution and
-> > > > at least these two comes to my mind:
-> > > > 
-> > > > 1) having a special callback for .read_avail_with_copy (choose better
-> > > > name) that will dump the data to the intermediate buffer and clean it
-> > > > after all;
-> > > > 
-> > > > 2) introduce a new type (or bit there), like IIO_AVAIL_LIST_ALLOC.    
-> > > 
-> > > Could you elaborate more about these potential solutions? Maybe with some
-> > > usage examples?
-> > > 
-> > > If I get it correctly, in both cases you are suggesting to pass ownership
-> > > of the vals buffer to the caller, iio_read_channel_info_avail() in this
-> > > case, so that it would take care of freeing the buffer after calling
-> > > iio_format_after_*(). We considered this approach during an initial
-> > > discussion with Jonathan (see read_avail_ext() in [1]), where he suggested
-> > > to let the driver keep the release control through a callback for two
-> > > reasons:
-> > > 
-> > > 1) Apparently it's a bad pattern to pass the buffer ownership to the core,
-> > >    maybe Jonathan can elaborate why? The risk I can think of is that the driver
-> > >    could still keep the buffer copy in its private data after giving it away,
-> > >    resulting in fact in a double ownership. However I think it would be clear
-> > >    enough in this case that the copy should be handled by the caller, or maybe
-> > >    not?  
-> > Mostly the lack of desire to have to copy for the 95% of cases where it's
-> > not needed and that it prevents any optimization like you mention.  
-> 
-> I think the suggestion here is to add an additional .read_avail_with_copy()
-> without replacing the original .read_avail(), so all the current drivers that
-> use a constant avail list would not be affected. And I think this was the same
-> idea for the additional read_avail_ext() or the additional argument for the
-> read_avail() we were considering in [1]. So I would think that
-> iio_read_channel_info_avail() would do something like the following:
-> 
->     if (indio_dev->info->read_avail_with_copy)
->         indio_dev->info->read_avail_with_copy(vals);
->     else
->         indio_dev->info->read_avail(vals);
-> 
->     ...
->     iio_format_avail_list(vals);
->     ...
-> 
->     if (indio_dev->info->read_avail_with_copy)
->         kfree(vals);
+This series update the write_event_config callback signature to use
+a boolean instead of an int for state variable. iio_ev_state_store
+is actually using kstrtobool to check user input, then gives the
+converted boolean value to write_event_config.
 
-Ok, sure that would work, but...
+First, fix the write_event_config callbacks from iio drivers that are
+checking state input, or that are converting state to bool. This is
+useless code, then update signature.
 
-I don't really see this as being much less fragile than
-the existing solution + in cases that we do have where
-only some available are not const we will have to copy them
-all.
+This patch has been partially written using coccinelle with the
+following script:
 
-If anything it's more complex than making it a driver problem
-to provide the release call however it wants to do it.
- 
+$ cat iio-bool.cocci
+// Options: --all-includes
 
-> 
-> And the drivers would choose whether to define the read_avail or the
-> read_avail_with_copy.
-> 
-> What I was referring to is that, back then, you mentioned you would have
-> preferred to avoid passing ownership of the buffer around:
-> 
-> > That's a corner case we should think about closing. Would require an indicator
-> > to read_avail that the buffer it has been passed is a snapshot that it should
-> > free on completion of the string building.  I don't like passing ownership
-> > of data around like that, but it is fiddly to do anything else given
-> > any simple double buffering is subject to race conditions.  
-> 
-> I guess there is some other reason other than avoiding the copy when not
-> necessary, since by introducing an additional function or argument or return
-> type, most of the unnecessary copies would already be avoided right?
+virtual patch
 
-It's not a strong reason beyond limiting scope of clever design +
-the key bit my mind is that the above is not substantially simpler and
-reduces our flexibility.
+@c1@
+identifier iioinfo;
+identifier wecfunc;
+@@
+ static const struct iio_info iioinfo = {
+        ...,
+        .write_event_config =
+(
+ wecfunc
+|
+ &wecfunc
+),
+        ...,
+ };
 
-> 
-> Anyway any of this solutions would still prevent the potential optimizations of
-> point 2). It's worth mentioning that those kind of optimizations are currently
-> not adopted by any driver.
+@@
+identifier c1.wecfunc;
+identifier indio_dev, chan, type, dir, state;
+@@
+ int wecfunc(struct iio_dev *indio_dev, const struct iio_chan_spec *chan, enum iio_event_type type, enum iio_event_direction dir,
+-int
++bool
+ state) {
+  ...
+ }
 
-That one indeed not, but mixing dynamic and non dynamic is something
-you do in your pac1921 patch.
+make coccicheck MODE=patch COCCI=iio-bool.cocci M=drivers/iio
 
-Jonathan
+Unfortunately, this script didn't match all files:
+* all write_event_config callbacks using iio_device_claim_direct_scoped
+  were not detected and not patched.
+* all files that do not assign and declare the write_event_config
+  callback in the same file.
 
+iio.h was also manually updated.
 
-> 
-> > 
-> > Jonathan  
-> > > 
-> > > 2) Some driver might want to avoid allocating a new copy of a big table if
-> > >    the race does not occur (e.g. with additional checks on buffer access
-> > >    code) and thus wouldn't call a free() in the release callback.
-> > >   
-> > > > 
-> > > > In any case it looks fragile and not scalable. I propose to drop this
-> > > > and think again.    
-> > > 
-> > > I see your concerns, I am open to reconsider this in case we come up with
-> > > better solution after addressing the points above.
-> > >   
-> > > > Yes, yes, I'm fully aware about the problem you are trying to solve and
-> > > > agree on the report, I think this solution is not good enough.
-> > > > 
-> > > > -- 
-> > > > With Best Regards,
-> > > > Andy Shevchenko
-> > > >     
-> > > 
-> > > [1]: https://lore.kernel.org/linux-iio/20240729211100.0d602d6e@jic23-huawei/
-> > > 
-> > > Best regards,
-> > > Matteo Martelli  
-> >   
-> 
-> I hope I've brought a little more clarity to the discussion by providing some
-> history instead of making it more confusing.
+The patch was build tested using allmodconfig config.
 
-Sure, the code example in particular is useful.
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+---
+Changes in v2:
+- removed commits that were already applied
+- added new commits to fix comments from Jonathan Cameron: cleanup code
+  in few callbacks to update driver internal function signature to also use
+  bool for state and update the driver internal state variable to bool.
+- few minor fixes along the way on different driver
+- Link to v1: https://lore.kernel.org/r/20241024-iio-fix-write-event-config-signature-v1-0-7d29e5a31b00@baylibre.com
 
-Jonathan
+---
+Julien Stephan (15):
+      iio: light: ltr390: simplify code in write_event_config callback
+      iio: proximity: hx9023s: simplify code in write_event_config callback
+      iio: light: tsl2772: simplify code in write_event_config callback
+      iio: proximity: irsd200: simplify code in write_event_config callback
+      iio: proximity: sx9500: simplify code in write_event_config callback
+      iio: light: adux1020: write_event_config: use local variable for interrupt value
+      iio: fix write_event_config signature
+      iio: accel: mma9551: use bool for event state
+      iio: accel: sca3000: use bool for event state
+      iio: imu: bmi323: use bool for event state
+      iio: imu: st_lsm6dsx: use bool for event state
+      iio: light: apds9300: use bool for event state
+      iio: light: apds9306: simplifies if branch in apds9306_write_event_config
+      iio: light: apds9960: convert als_int and pxs_int to bool
+      iio: light: apds9960: remove useless return
 
-> 
-> Best regards,
-> Matteo Martelli
-> 
-> 
+ drivers/iio/accel/adxl367.c                    |  2 +-
+ drivers/iio/accel/adxl372.c                    |  2 +-
+ drivers/iio/accel/adxl380.c                    |  2 +-
+ drivers/iio/accel/bma400_core.c                |  2 +-
+ drivers/iio/accel/bmc150-accel-core.c          |  2 +-
+ drivers/iio/accel/fxls8962af-core.c            |  2 +-
+ drivers/iio/accel/kxcjk-1013.c                 |  2 +-
+ drivers/iio/accel/mma8452.c                    |  2 +-
+ drivers/iio/accel/mma9551.c                    |  8 ++++----
+ drivers/iio/accel/mma9553.c                    |  3 ++-
+ drivers/iio/accel/sca3000.c                    |  6 +++---
+ drivers/iio/adc/ad7091r-base.c                 |  3 ++-
+ drivers/iio/adc/ad7291.c                       |  2 +-
+ drivers/iio/adc/ad799x.c                       |  2 +-
+ drivers/iio/adc/hi8435.c                       |  2 +-
+ drivers/iio/adc/max1363.c                      |  2 +-
+ drivers/iio/adc/pac1921.c                      |  3 ++-
+ drivers/iio/adc/palmas_gpadc.c                 |  2 +-
+ drivers/iio/adc/ti-ads1015.c                   |  2 +-
+ drivers/iio/adc/xilinx-ams.c                   |  2 +-
+ drivers/iio/adc/xilinx-xadc-events.c           |  2 +-
+ drivers/iio/adc/xilinx-xadc.h                  |  2 +-
+ drivers/iio/cdc/ad7150.c                       |  2 +-
+ drivers/iio/dac/ad5421.c                       |  2 +-
+ drivers/iio/dac/ad8460.c                       |  2 +-
+ drivers/iio/dummy/iio_simple_dummy.h           |  2 +-
+ drivers/iio/dummy/iio_simple_dummy_events.c    |  2 +-
+ drivers/iio/gyro/bmg160_core.c                 |  2 +-
+ drivers/iio/imu/bmi323/bmi323_core.c           | 10 +++++-----
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c     |  2 +-
+ drivers/iio/imu/kmx61.c                        |  2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   |  4 ++--
+ drivers/iio/light/adux1020.c                   | 11 ++++++-----
+ drivers/iio/light/apds9300.c                   | 10 +++++-----
+ drivers/iio/light/apds9306.c                   |  7 ++-----
+ drivers/iio/light/apds9960.c                   |  8 +++-----
+ drivers/iio/light/bh1745.c                     |  2 +-
+ drivers/iio/light/cm36651.c                    |  2 +-
+ drivers/iio/light/gp2ap002.c                   |  2 +-
+ drivers/iio/light/gp2ap020a00f.c               |  2 +-
+ drivers/iio/light/iqs621-als.c                 |  2 +-
+ drivers/iio/light/ltr390.c                     |  7 ++-----
+ drivers/iio/light/ltr501.c                     |  2 +-
+ drivers/iio/light/max44009.c                   |  2 +-
+ drivers/iio/light/opt3001.c                    |  2 +-
+ drivers/iio/light/stk3310.c                    |  2 +-
+ drivers/iio/light/tcs3472.c                    |  2 +-
+ drivers/iio/light/tsl2563.c                    |  2 +-
+ drivers/iio/light/tsl2591.c                    |  2 +-
+ drivers/iio/light/tsl2772.c                    |  6 +++---
+ drivers/iio/light/us5182d.c                    |  2 +-
+ drivers/iio/light/vcnl4000.c                   |  5 +++--
+ drivers/iio/light/veml6030.c                   |  2 +-
+ drivers/iio/position/iqs624-pos.c              |  2 +-
+ drivers/iio/proximity/aw96103.c                |  2 +-
+ drivers/iio/proximity/cros_ec_mkbp_proximity.c |  2 +-
+ drivers/iio/proximity/hx9023s.c                |  4 ++--
+ drivers/iio/proximity/irsd200.c                |  5 +++--
+ drivers/iio/proximity/sx9500.c                 |  6 +++---
+ drivers/iio/proximity/sx_common.c              |  2 +-
+ drivers/iio/proximity/sx_common.h              |  2 +-
+ drivers/iio/proximity/vcnl3020.c               |  2 +-
+ drivers/iio/temperature/mcp9600.c              |  2 +-
+ drivers/iio/temperature/tmp007.c               |  2 +-
+ include/linux/iio/iio.h                        |  2 +-
+ 65 files changed, 100 insertions(+), 102 deletions(-)
+---
+base-commit: ce2785a44e784240e3dbb142942c9d88c2cac3d0
+change-id: 20241023-iio-fix-write-event-config-signature-1bc1f52fdedf
+
+Best regards,
+-- 
+Julien Stephan <jstephan@baylibre.com>
 
 

@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-11679-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11680-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876E19B7551
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 08:25:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F5F9B7563
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 08:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F13B1F213B0
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 07:25:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B696B21085
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Oct 2024 07:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D10B1494BF;
-	Thu, 31 Oct 2024 07:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DF114D2A7;
+	Thu, 31 Oct 2024 07:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JNjsDuDA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uck0mrUo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97DA1494B2;
-	Thu, 31 Oct 2024 07:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEFF10A3E;
+	Thu, 31 Oct 2024 07:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730359525; cv=none; b=CWjsbPL+XtMlLoMU5RoyTsPvz4hIgrg5mj/JmLZiEq22oFJIZMg4lV56E7ZyBPq1ylQTDk4qzSneHVGc1VRAebQkBSjw7bfMvGb7KXpR3NQScH2znq5Mczb5TRFt7nsjURgX0VZncPPOyhfTNx6ZGX9WyoCYCvWj2lhMFFsUhqE=
+	t=1730359937; cv=none; b=W20aYMeA6ZbbILB9Dd7nMMqhCpXHsy8QTuyD++uoIPTI1BhJyIAIUcGbtBwssaAF1FfVnq/Su5Gw9nEQ6m2hpySAr1QP1+7C2PKaORjqotuvsQTRwojtBu3mIf72tUHX+C90n6klhAoTDC9mEKclLa2IpJxiCd6LHJyj0j/a92M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730359525; c=relaxed/simple;
-	bh=Sz7qDKICTc5bBuDPsYR42CI3Rb1sCu9teJwpA4RUY2Q=;
+	s=arc-20240116; t=1730359937; c=relaxed/simple;
+	bh=ByNryT807jPQO2/Nq8j6KK8oRmiXZmFa/Dm/RwytioE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JDe0WaJkXz//58zMbYG0ZCGurqjdJ8yIhntxjsXoDUuIxlUfMws0sDFxlZJISctndkM7qfR4Pq9VPIVSI8oOXaHRhM5cBlw4r8fbM0YCbdS8r/EaEh6TBiFmR/r9xONXs0ECK6bSm+riJecn85Y6fmIcJ/nEvhlhDCFW3ghE/R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JNjsDuDA; arc=none smtp.client-ip=209.85.208.171
+	 In-Reply-To:Content-Type; b=i7DJFOiEf+UApIhOy4zFM9YBy7V39+OWNtOTrVow6DDGU6Nb4yxdpz4IpjJhOk/+9ZaCqbpIoL8jrPncLCu2UrSn+4scoi4Tpe025POnBC3HsH3NsLFGUXm+ze48KDZ6vUPheYNiGX3vsA+tUv5yfAl/awAq12zun6rPEY0Hl1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uck0mrUo; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2f75c56f16aso5217641fa.0;
-        Thu, 31 Oct 2024 00:25:22 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-539f72c8fc1so981769e87.1;
+        Thu, 31 Oct 2024 00:32:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730359521; x=1730964321; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730359933; x=1730964733; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=x7I6q0OWTgGB2347r7NhGbbFs0GMHHfMCetjtNNAxog=;
-        b=JNjsDuDAx10hJd7nhaxF+9Z+9aTk62oDk1ATsh0Pyr1+wZ4qGFIosxXUBnMN2jsu4B
-         n/Q/S4udY4GlKfWM+iV65VDbKCbLnt4BkLTqZP3NJZgssjHZpu4mXsWHHg1Zvn5Dj2ss
-         6lnubIHRbtA65EsD9B8n14UkW/usikO9HTvM9qikfUo+ConyD2npnPjrOljkzNN/SiT6
-         yPnkmpVElo8k3RjdgMsxQwQpDNKM6Zl5PMpn96r8M/ILd0bSxqF8jyy2/Eb6zh1oVmuT
-         YeWMEzlSphXe8d7IJi1ywTYYSl1MtsI+G3b+nrdo1avJMdZ5hGFrgKq7+QCvAoAQeXZE
-         1cBA==
+        bh=nXBCAE5YFs7bIo9qj6bwIQiECKD+0RVcggJ63Dxnmlg=;
+        b=Uck0mrUoQMzrT0LO7yuBtGjjMA5fawcnAOW/FKSAnyrLcxh5Ao/JyK0JD9640gY/0p
+         mI5Mb6sah3BsSLXtlU8n9BPmjVG2dfaRODHNf0DBe6klpqc0e5Wqph5cj5Ld7+3ugnMu
+         v38w279LQvm+Mgh0LQtakeDJI/fijDRKBnI01ai+bxALPRNeWqyP07Z5xOclhjL+fU+3
+         ErPY1R9sNfg9q7W/W8dDt/E1+U7Wo/DwmDjQZwVYBwC0ylZPOdlM90VtvuKXdZPktKkl
+         vYwI9zcZBY7RAqLzHs8Rp9Uio2iLgYE6O4mZNKuUGuCka1Ex3k578ZEw66lzQqTmREtr
+         YELQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730359521; x=1730964321;
+        d=1e100.net; s=20230601; t=1730359933; x=1730964733;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x7I6q0OWTgGB2347r7NhGbbFs0GMHHfMCetjtNNAxog=;
-        b=ZfppbXqu043Kc/yxrPKUxHLUHliy5XUcLFo0IMesiOAjhsVF134i+gAbWVk9PNRv2e
-         q7/kC8e8wO+yEoaa2kxp8bWAxJAqjrncS1c9QpWnwZZebZ2lnX6p5zW4ywOT1UR2LMgn
-         glNXkdjTMb+uNnSQbThjB0ynL1NnedLkerkT0YjvNQ6jp3fz3UmF/Hnk8QhUU8H61qkB
-         GO9dR8xOw+A+IzvQRlWPnp/xMblzT/i/1uRZGEuNUHQ0tZtN2VxoWWj3p9gcUs/wsHZt
-         zFLGDkZaBajFonDmeiXKl8fHZHNnes3VtSx/OHaYdes8kBlbjPFewwGYkHXg4Wu9FGQC
-         PX6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUv6f7jf5bzj4ib3ye+0y/bMQhAK7+Q6JzKq7qn+yyaI4ti9DQfaZKODcl9VbFhT3IHCn6jVWqj1m0=@vger.kernel.org, AJvYcCXecG29sBqLaPRKnUmR5uyXRy63YL/ynVk/CVQveMFMbZo+3VYdfgUoZhUA3OwFAXj90waHzyQQ8OUkLnw8@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDefBDbSPOfkuly/vKs677e5NvamTGAfaTDWiGOQ/jYKaLTtyL
-	vP7P5oyWZ0RPoFZYy9YxLEpfI1n6w/3i7edLEHJ8zSu2bvHk2V6ZxbLeRVkk
-X-Google-Smtp-Source: AGHT+IFFkKLJwxLXGkUZpjP6xjSxY1TOEzKg5XHG5OP1/9/PxTLmE9TVCN4SvKx9SZw59oBG/SYFCw==
-X-Received: by 2002:a05:651c:b22:b0:2fb:51e0:951 with SMTP id 38308e7fff4ca-2fdec47a727mr11068841fa.7.1730359520619;
-        Thu, 31 Oct 2024 00:25:20 -0700 (PDT)
+        bh=nXBCAE5YFs7bIo9qj6bwIQiECKD+0RVcggJ63Dxnmlg=;
+        b=KnIqnzoU6qQUHka74DWL4udMgc9e4UB947DCDxqEDxyyB71c3TlJ90yqRiLCmPaN5k
+         q1/oLQzkYClQjFPFGR7B8GP1A15oBykqAZm/zU2T536knDP5ysB3EMDBjvgj6hChRwZq
+         pHpe/gqN0Tu9ZPpIJ4ZAy+ANEwizMl/j8fJwYS2c5x3MZs8LHZshwVzlg9xd+EFVBQ6O
+         0thJLgYIrXE+JE5tOTQoAgSKNhjpU9b07e+XfrqkNx2GxJPVKwA63vcvLGV3ihC1Gc8b
+         Bqbv1OxfrfZu2ZtqLgfg49C3x6TKwa+WemneWMjV6F87zfWc55y9KCGVc7OANnPObgUy
+         jt9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUMc+9mauOdhYkvVbuNM1RidKHUud+Y25RK9Cbe03HunYbElgHl1nR9fTqmnUx/fk+1YEJlV1Si9K4=@vger.kernel.org, AJvYcCX2z55H+oLHOqLWV5ZHfXIITeAogeW8ENWTo4oHxis8cwvGGzQ/cxl7+VEuFaDHYpprKlWn5pUD+WLzYzz8@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeRnA6P0aJKdA4/HH85U12jzoDXRMgruPEEq1jpgLhUZfdBJlu
+	WZjWUD/ujmF5knNwRMozzUbjDxTqvnYobLmE8E3uBwrjlQtXb31r
+X-Google-Smtp-Source: AGHT+IHhXTBpS0JMzRUCqX+rY8GoD1Grx/DK8687++qnb7Sryc7gUhJGbtTkg+njK3XB+s1bvdTD2g==
+X-Received: by 2002:a05:6512:1090:b0:539:f13c:e5d1 with SMTP id 2adb3069b0e04-53b7ed18ccemr3441270e87.38.1730359932788;
+        Thu, 31 Oct 2024 00:32:12 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fdef5d5ca0sm1344081fa.30.2024.10.31.00.25.17
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bde02easm112589e87.250.2024.10.31.00.32.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Oct 2024 00:25:18 -0700 (PDT)
-Message-ID: <5dae4924-5c07-48b6-a818-809cd4dd1c80@gmail.com>
-Date: Thu, 31 Oct 2024 09:25:16 +0200
+        Thu, 31 Oct 2024 00:32:12 -0700 (PDT)
+Message-ID: <9ee46109-8503-4b5d-bfd4-45b7ac03029a@gmail.com>
+Date: Thu, 31 Oct 2024 09:32:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,55 +76,55 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: fix infinite loop for gain_to_scaletables()
+Subject: Re: [PATCH] iio: fix memory leak for
+ iio_gts_build_avail_scale_table()
 To: Zicheng Qu <quzicheng@huawei.com>, jic23@kernel.org, lars@metafoo.de,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: tanghui20@huawei.com, zhangqiao22@huawei.com, judy.chenhui@huawei.com
-References: <20241031014626.2313077-1-quzicheng@huawei.com>
+References: <20241031014743.2313121-1-quzicheng@huawei.com>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241031014626.2313077-1-quzicheng@huawei.com>
+In-Reply-To: <20241031014743.2313121-1-quzicheng@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Thanks again Zicheng!
+Hi Zicheng
 
-On 31/10/2024 03:46, Zicheng Qu wrote:
-> In iio_gts_build_avail_time_table(), it is checked that gts->num_itime is
-> non-zero, but gts->num_itime is not checked in gain_to_scaletables(). The
-> variable time_idx is initialized as gts->num_itime - 1. This implies that
-> time_idx might initially be set to -1 (0 - 1 = -1). Consequently, using
-> while (time_idx--) could lead to an infinite loop.
+On 31/10/2024 03:47, Zicheng Qu wrote:
+> In iio_gts_build_avail_scale_table(), the memory allocated for
+> per_time_gains is freed using kfree(per_time_gains) before return 0.
+> However, the type per_time_gains is 'int **', and the memory allocated
+> for its inner elements is not being freed, leading to a memory leak.
 > 
 > Cc: stable@vger.kernel.org # v6.6+
 > Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
 > Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
 > ---
->   drivers/iio/industrialio-gts-helper.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/iio/industrialio-gts-helper.c | 2 ++
+>   1 file changed, 2 insertions(+)
 > 
 > diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
-> index 59d7615c0f56..f3acd392f4fc 100644
+> index 59d7615c0f56..f2450b2e740d 100644
 > --- a/drivers/iio/industrialio-gts-helper.c
 > +++ b/drivers/iio/industrialio-gts-helper.c
-> @@ -205,7 +205,7 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->   	memcpy(all_gains, gains[time_idx], gain_bytes);
->   	new_idx = gts->num_hwgain;
+> @@ -307,6 +307,8 @@ static int iio_gts_build_avail_scale_table(struct iio_gts *gts)
+>   	if (ret)
+>   		goto err_free_out;
 >   
-> -	while (time_idx--) {
-> +	while (time_idx-- > 0) {
->   		for (j = 0; j < gts->num_hwgain; j++) {
->   			int candidate = gains[time_idx][j];
->   			int chk;
+> +	for (j = 0; j < gts->num_itime; j++)
+> +		kfree(per_time_gains[i]);
+>   	kfree(per_time_gains);
+>   	gts->per_time_avail_scale_tables = per_time_scales;
+>   
 
-This, too, brings the question if supporting 0 times is worth.
+You're right, thanks!
+This, however, was already fixed by:
+https://lore.kernel.org/all/20241011095512.3667549-1-ruanjinjie@huawei.com/
 
-At least this shows that it'd be nice to cover the "only times, no 
-hw-gains" and "no times, only hw-gains" cases in the Kunit tests...
-
-Anyways - Thanks!
-
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Out of the curiosity (and no need to respond if you don't feel like) - 
+are you using the gts helpers in some of your project(s)? I am glad 
+seeing these fixes coming in and just wondered if all these bugs are 
+found because these helpers are being used outside the ROHM drivers :)
 
 Yours,
 	-- Matti

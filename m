@@ -1,115 +1,115 @@
-Return-Path: <linux-iio+bounces-11802-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11803-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D5F9B95B3
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 17:43:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C319B95CB
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 17:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20FFE1F2287C
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:43:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C1E9284108
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FB11C9B97;
-	Fri,  1 Nov 2024 16:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E861CDA14;
+	Fri,  1 Nov 2024 16:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eQPUnopE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RUwoG//T"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6602A1CBE98;
-	Fri,  1 Nov 2024 16:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1B11CDA02;
+	Fri,  1 Nov 2024 16:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730479369; cv=none; b=IRd0wUAuMP3P8kawgea0jRku8hyONFQBCfQh2t9GJGzQwCu4nRPMnnBxjLY33FEZw98fJ9kGgnInpdFolLysEQafTCvY/PRPm4ogjIMxmWLgXilugA4BhYV69dH6rKgeUnxSZhr/xgUI3gkPUq4f5q35zd2NjqbamumsJJQeKUk=
+	t=1730479468; cv=none; b=MWEs7I89E0TuSFuMh0wB1SCHRpahf767n4sRZCgf9SzrIKOllG7tWBeUvmln6UuFKtyqTbSx2ECydCOWGedj2z6AkMqUiZrTwa1W8QaQiNk02vtpEt2UOTFt1UP5xw3rBV2YM48K9lg9Mv0EcVtrlnMZva+upqsO0KT+cwUr70k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730479369; c=relaxed/simple;
-	bh=cVy0S1byr07G00hHlUDVxRSACJrhKuqzww/9nKHjnlI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V8OHNb0h32N37IiJB8VAjHCD6cSQWXuJfaACSsSmFzx+ElrfqzHgQXLrolT9BsSFeCYFQTmJMBLMUNi9OlJ8mpe7UTmzlJt3DZTQh3+R1uvHcmkccVwmBFnx4zSA/mxAJi1DVobCpUN+HJRQq58sswLZhq5H3goMyUgwgmJoml8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eQPUnopE; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730479367; x=1762015367;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cVy0S1byr07G00hHlUDVxRSACJrhKuqzww/9nKHjnlI=;
-  b=eQPUnopEl05tp86t8eWaIIVXpfDpIbxAJb6ML41biRHXl22R2JsODHkD
-   +PhaJfrCxFABZBBsDRJXWPNT996HbQOwFZ5W0OWk/sBPOWqPTCUUVS+bx
-   f9zEinYgpEXFZPAKOg5XRpHRJuh+6o7s6fvE0Z6C/TMPmHKCJrP3v0m84
-   qO+wKt8IuDCS2RpZcxjOHP+w/ghRZi7niM2AAsLEi7PYLgw1RZte4ZoF7
-   6JygrMymvbuvEQE/pPiJeJp1zNlx7Xc5xr7RvUweSZtXo+RSUUGj9d7ML
-   MUeJJzry6i55pby5xXE/4ahq8gIVaKlNMIoSFXeeAprRxsaw0oOkfPT9Y
-   w==;
-X-CSE-ConnectionGUID: 0VYW/7+zT6+CMk+43pC6Zg==
-X-CSE-MsgGUID: vFQr+hxgSxSEGMJ0BBwa+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="33087464"
-X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
-   d="scan'208";a="33087464"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 09:42:46 -0700
-X-CSE-ConnectionGUID: dQQxg3LgSLeUCe0xuaVMOw==
-X-CSE-MsgGUID: +ixHzwP1QWO9HdqyfJOB9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
-   d="scan'208";a="113785863"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 09:42:45 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1t6ujS-0000000A6GR-1aW5;
-	Fri, 01 Nov 2024 18:42:42 +0200
-Date: Fri, 1 Nov 2024 18:42:42 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v3 0/4] iio: initialise ddata for
- iio_get_acpi_device_name_and_data()
-Message-ID: <ZyUFAjwjAWcJH8ag@smile.fi.intel.com>
-References: <20241101131705.3697913-1-andriy.shevchenko@linux.intel.com>
- <20241101145938.304fd98b@jic23-huawei>
+	s=arc-20240116; t=1730479468; c=relaxed/simple;
+	bh=1CfY2+o4mRhy02U7CFSYwo0qVuQU+kj4WkP+HlKqRn0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TPJCfb+o81Ks5tEgAPd9EPaCModKB1emBk+2qPbN9S6Nf+ROfCWikB1LZVzmNTlwvOQttfSXVe+JzkXTo0Vgx0wqXJwF5pfXMQtz/xriePIdDEOPNxedwEPLlWihgEsHjUJnHdzYQAg0+emWwyY6dBOvAQXqub/XuKRCxxHv1JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RUwoG//T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1145FC4CED3;
+	Fri,  1 Nov 2024 16:44:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730479468;
+	bh=1CfY2+o4mRhy02U7CFSYwo0qVuQU+kj4WkP+HlKqRn0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RUwoG//TVOvFq/Z1QHtZYQirIJMBlS/ZHXo9vBPUi0Cy17F9j38/a/zHCwtOEm+A+
+	 jdAI7FoQWJ3E7573lT0saQ+1WwkRsUr30AomYt07P6Jm+HAD55oXdbAlh5JgFHBBcg
+	 /TivdakH0u8CYOnH1xagXujZ4e7+vg4FIIUfiQC9/kUkDKREYlEuTHucOjUyKDNV43
+	 16tmfjxwvKsDTI1rAC/Y7BUc/mC+Me2Nl1FXZcv/bTXZocBCLFYBI0Pu2XZyW91u7I
+	 ZuYJZdvuiJJ9W/q5PRmAmH9rXDbLOLxB4bwEnwBWVn+TDgr9N6e/CSZG/uMhTF5l0s
+	 2FGA5tFv/zEXA==
+Date: Fri, 1 Nov 2024 16:44:14 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Anshul Dalal <anshulusr@gmail.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>, Ramona Gradinariu
+ <ramona.gradinariu@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Dan Robertson <dan@dlrobertson.com>, Marcelo
+ Schmitt <marcelo.schmitt@analog.com>, Matteo Martelli
+ <matteomartelli3@gmail.com>, Anand Ashok Dumbre
+ <anand.ashok.dumbre@xilinx.com>, Michal Simek <michal.simek@amd.com>,
+ Mariel Tinaco <Mariel.Tinaco@analog.com>, Jagath Jog J
+ <jagathjog1996@gmail.com>, Lorenzo Bianconi <lorenzo@kernel.org>, Subhajit
+ Ghosh <subhajit.ghosh@tweaklogic.com>, Kevin Tsai <ktsai@capellamicro.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Benson Leung
+ <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
+Subject: Re: [PATCH v2 15/15] iio: light: apds9960: remove useless return
+Message-ID: <20241101164414.4f14c75f@jic23-huawei>
+In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-15-2bcacbb517a2@baylibre.com>
+References: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
+	<20241031-iio-fix-write-event-config-signature-v2-15-2bcacbb517a2@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241101145938.304fd98b@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 01, 2024 at 02:59:38PM +0000, Jonathan Cameron wrote:
-> On Fri,  1 Nov 2024 15:16:00 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Thu, 31 Oct 2024 16:27:10 +0100
+Julien Stephan <jstephan@baylibre.com> wrote:
+
+> return 0 statement at the end of apds9960_read_event_config is useless.
+> Remove it.
+Strange that never triggered a build warning that I noticed.
+
+Anyhow applied.  
+
+So I did end up more or less (i.e. with tweaks) applying the whole series.
+If you have time to follow up on the few cases I spotted where passing the
+bool value into functions instead of an int may make for better
+readability.
+
 > 
-> > Dan reported that ddata might be used uninitialised in some cases.
-> > Let's initialise it to NULL (patches 1 - 3). With that, update one driver
-> > to drop an unneeded anymore check (included in patch 3).
-> > 
-> > While at it, one more cleanup to kxcjk-1013 (patch 4) is added.
-> > 
-> > Jonathan, dunno if you want to rebase at this stage (probably not),
-> > but if you do, feel free to fold the patches 1-3 to the initial code.
-> Ah. I've just picked v2, but given I squashed anyway the commit message
-> changes don't matter.
-
-Thanks, I have looked into the resulting changes and it all LGTM!
-
-> I was curious what Assing meant but not need to
-> ask given I wasn't going to keep it.
-
-He-he :-)
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> ---
+>  drivers/iio/light/apds9960.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
+> index 7b3da88885693c488807da459ceaa1cbb3881bcd..d30441d3370309fce9d6c717d42b829ff1db3174 100644
+> --- a/drivers/iio/light/apds9960.c
+> +++ b/drivers/iio/light/apds9960.c
+> @@ -749,8 +749,6 @@ static int apds9960_read_event_config(struct iio_dev *indio_dev,
+>  	default:
+>  		return -EINVAL;
+>  	}
+> -
+> -	return 0;
+>  }
+>  
+>  static int apds9960_write_event_config(struct iio_dev *indio_dev,
+> 
 
 

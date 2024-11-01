@@ -1,52 +1,51 @@
-Return-Path: <linux-iio+bounces-11793-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11794-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C092B9B94A8
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:45:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBEA49B9578
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 17:33:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41C801F2218E
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 15:45:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B75AB2150E
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E491C7B9C;
-	Fri,  1 Nov 2024 15:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD21614884F;
+	Fri,  1 Nov 2024 16:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVs0UfvS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBtLqn68"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C8B2CAB;
-	Fri,  1 Nov 2024 15:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C772AE74;
+	Fri,  1 Nov 2024 16:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730475905; cv=none; b=OAn+tYqslvWiI2deUUkmXgRM8IlHLBuiUCshsNB19SwQiQhCGf0H9RnyNesBOSq3QQ0wm1d7J18ouE53PvHtIips8M/KAQUjE0GKuqXbPatOrvO8Cf9bzyR6YSccboIaONReNpZBddoLt0be4ybejp5ctwp/hNdVyXet3hxhwAQ=
+	t=1730478787; cv=none; b=ovhCXcUnbwpjYLwnHRI/2RWk3qmKDHN/Va5HNts0CSzjGmddphZHWcTMVMEs2hOLcW2SwtXj2JfJRFKeIaMvRSv4zkmF9tFR3qRRGKh7fscDymA30tqaDRBwQ8UL1BsgWCUGHobcE/jum7WUK4H9ATW25sJnLdKSEAaZYPiMZPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730475905; c=relaxed/simple;
-	bh=t1pJkvv5ArO95EBUpDZbdsLDepiY0M1etPEVdzcYgMM=;
+	s=arc-20240116; t=1730478787; c=relaxed/simple;
+	bh=+/EHCXpDx5L4TC1H3xO4NniCxN6vsO+DisWCZAUvFfQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZuTpVe0gHuiW9bAKxx+aqJGGjFtbOLyUJEG+mp02mb/svoPhoPjuMaJv10/0f+XIhchqbu4f5bFHrOfDKOqBhPn76mA07A5cFuONakg/ZSrrmpFIFQHwf2sXZ3MDgvhgIjGMtUC+xc55Fe5nCOSmL0t7qhzp8moogFIOk57o4mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVs0UfvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA75C4CECD;
-	Fri,  1 Nov 2024 15:44:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f151/fZ3zU35dVj3JwL+MCu1nCO51UyAFm83K72pngRuUfkB3hHJ9O+kIkxjtYfq9mlg/8vTTXseEQLMb2KqNGdTfr7uTrNSTtaitI0PclsTt3l4PCttcTJ3NFEZNCAzz/EcwGdDpXV/iSqNuWPmH8AcrALQdDsS/G8RlT46zCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBtLqn68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B808C4CED1;
+	Fri,  1 Nov 2024 16:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730475904;
-	bh=t1pJkvv5ArO95EBUpDZbdsLDepiY0M1etPEVdzcYgMM=;
+	s=k20201202; t=1730478787;
+	bh=+/EHCXpDx5L4TC1H3xO4NniCxN6vsO+DisWCZAUvFfQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SVs0UfvSjddoObL1YP4TcTpN6+JMKTAlMOtHqoNu/N5W++S8ZoFPFicaoCsigBZWY
-	 tzsC/HX9IzAFBDK7yJ0jUUgykge+QshPJphUaXyfeUUF+JuEpS/o/COytqjHhw6bfk
-	 Puqx0C4Dn8D1jyyOrR697msu4an59gWO287LimKF2sfZWd8QG8Johu2Ruz2CxZ96Mr
-	 96oWxW1+Q0h3FQJIq3Euy8DNRcTjyRLRpuV3HXN/mRruETfNZ8TVV/wuABpuviyGn+
-	 5gMXDGfb2eU9CbNsoC5MxD6+lYem2NKv3+WKaecfvPJz1LBb1ZEvgNrUSeIb6LtuMV
-	 +upizTDVi/RKg==
-Date: Fri, 1 Nov 2024 15:44:51 +0000
+	b=MBtLqn68LZmCHrH+m2q+Ee/PWSyb1Rvg+5Fv/hPKvpVh3jY05/3tva+cCIdP41T1Z
+	 7YcitCuFcBXL8gnUakCUv5+/pIhEiE/zRETRnzd1+eu4jiNSJ81ciVE69aYgaZQWn6
+	 hWh/E97wU+AuCtetOZZ/13vi4oqK7IFjaX97YHy2Ah5S3yYTdd6tW8DA7/wBi+//FR
+	 VWpaxupDfjRBdmCCfri9Gp4P+FrUJO+40jZS5FAYXVXC811dO7vCeGruTpavORgqOL
+	 /Oja0SOgIzdZxPMV2gr0UicMD0nAqtoV94WLXlRmr0r6oJTLe262XwITFd1uRLtFsL
+	 Iax0cC2YMmLKA==
+Date: Fri, 1 Nov 2024 16:32:55 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Julien Stephan <jstephan@baylibre.com>, Mudit Sharma
- <muditsharma.info@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Anshul
- Dalal <anshulusr@gmail.com>, Javier Carrasco
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Anshul Dalal <anshulusr@gmail.com>, Javier Carrasco
  <javier.carrasco.cruz@gmail.com>, Jean-Baptiste Maneyrol
  <jean-baptiste.maneyrol@tdk.com>, Michael Hennerich
  <Michael.Hennerich@analog.com>, Cosmin Tanislav
@@ -62,14 +61,13 @@ Cc: Julien Stephan <jstephan@baylibre.com>, Mudit Sharma
  Linus Walleij <linus.walleij@linaro.org>, Benson Leung
  <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
-Subject: Re: [PATCH v2 06/15] iio: light: adux1020: write_event_config: use
- local variable for interrupt value
-Message-ID: <20241101154451.227defba@jic23-huawei>
-In-Reply-To: <ef4fe230-b7fb-4f7e-9173-ae85d305e9ae@baylibre.com>
+ linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev,
+ Julia Lawall <julia.lawall@inria.fr>
+Subject: Re: [PATCH v2 07/15] iio: fix write_event_config signature
+Message-ID: <20241101163255.5f4d9d70@jic23-huawei>
+In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-7-2bcacbb517a2@baylibre.com>
 References: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
-	<20241031-iio-fix-write-event-config-signature-v2-6-2bcacbb517a2@baylibre.com>
-	<ef4fe230-b7fb-4f7e-9173-ae85d305e9ae@baylibre.com>
+	<20241031-iio-fix-write-event-config-signature-v2-7-2bcacbb517a2@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -78,121 +76,111 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Thu, 31 Oct 2024 11:27:45 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 31 Oct 2024 16:27:02 +0100
+Julien Stephan <jstephan@baylibre.com> wrote:
 
-> On 10/31/24 10:27 AM, Julien Stephan wrote:
-> > state parameter is currently an int, but it is actually a boolean.
-> > iio_ev_state_store is actually using kstrtobool to check user input,
-> > then gives the converted boolean value to write_event_config.  The code
-> > in adux1020_write_event_config re-uses state parameter to store an
-> > integer value. To prepare for updating the write_event_config signature
-> > to use a boolean for state, introduce a new local int variable.
-> >=20
-> > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-> > ---
-> >  drivers/iio/light/adux1020.c | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/light/adux1020.c b/drivers/iio/light/adux1020.c
-> > index 2e0170be077aef9aa194fab51afbb33aec02e513..db57d84da616b91add8c5d1=
-aba08a73ce18c367e 100644
-> > --- a/drivers/iio/light/adux1020.c
-> > +++ b/drivers/iio/light/adux1020.c
-> > @@ -505,7 +505,7 @@ static int adux1020_write_event_config(struct iio_d=
-ev *indio_dev,
-> >  				       enum iio_event_direction dir, int state)
-> >  {
-> >  	struct adux1020_data *data =3D iio_priv(indio_dev);
-> > -	int ret, mask;
-> > +	int ret, mask, val;
-> > =20
-> >  	mutex_lock(&data->lock);
-> > =20
-> > @@ -526,12 +526,12 @@ static int adux1020_write_event_config(struct iio=
-_dev *indio_dev,
-> >  			mask =3D ADUX1020_PROX_OFF1_INT;
-> > =20
-> >  		if (state)
-> > -			state =3D 0;
-> > +			val =3D 0;
-> >  		else
-> > -			state =3D mask;
-> > +			val =3D mask;
-> > =20
-> >  		ret =3D regmap_update_bits(data->regmap, ADUX1020_REG_INT_MASK,
-> > -					 mask, state);
-> > +					 mask, val);
-> >  		if (ret < 0)
-> >  			goto fail;
-> > =20
-> >  =20
->=20
-> Instead of introducing `val`, I would rewrite this as:
->=20
-> 	if (state)
-> 		ret =3D regmap_clear_bits(...);
-> 	else
-> 		ret =3D regmap_set_bits(...);
->=20
-Good idea.  Rather than go around again and potentially stall the end of th=
-is series.
-I made that change whilst applying.  Shout if either of you doesn't
-like the result. Diff doesn't do a perfect job on readability (it does
-if I add a line break but then the code looks worse in the end!)
+> write_event_config callback use an int for state, but it is actually a
+> boolean. iio_ev_state_store is actually using kstrtobool to check user
+> input, then gives the converted boolean value to write_event_config.
+> 
+> Fix signature and update all iio drivers to use the new signature.
+> 
+> This patch has been partially written using coccinelle with the
+> following script:
+> 
+> $ cat iio-bool.cocci
+> // Options: --all-includes
+> 
+> virtual patch
+> 
+> @c1@
+> identifier iioinfo;
+> identifier wecfunc;
+> @@
+>  static const struct iio_info iioinfo = {
+>         ...,
+>         .write_event_config =
+> (
+>  wecfunc
+> |
+>  &wecfunc
+> ),
+>         ...,
+>  };
+> 
+> @@
+> identifier c1.wecfunc;
+> identifier indio_dev, chan, type, dir, state;
+> @@
+>  int wecfunc(struct iio_dev *indio_dev, const struct iio_chan_spec *chan, enum iio_event_type type, enum iio_event_direction dir,
+> -int
+> +bool
+>  state) {
+>   ...
+>  }
+> 
+> make coccicheck MODE=patch COCCI=iio-bool.cocci M=drivers/iio
+> 
+> Unfortunately, this script didn't match all files:
+> * all write_event_config callbacks using iio_device_claim_direct_scoped
+>   were not detected and not patched.
+> * all files that do not assign and declare the write_event_config
+>   callback in the same file.
+> 
+> iio.h was also manually updated.
+> 
+> The patch was build tested using allmodconfig config.
+> 
+> cc: Julia Lawall <julia.lawall@inria.fr>
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 
-=46rom 06a1ca816450d1b5524f6010581a83ab9935d51b Mon Sep 17 00:00:00 2001
-From: Julien Stephan <jstephan@baylibre.com>
-Date: Thu, 31 Oct 2024 16:27:01 +0100
-Subject: [PATCH] iio: light: adux1020: write_event_config: use local variab=
-le
- for interrupt value
+Hi Julien,
 
-state parameter is currently an int, but it is actually a boolean.
-iio_ev_state_store is actually using kstrtobool to check user input,
-then gives the converted boolean value to write_event_config.  The code
-in adux1020_write_event_config re-uses state parameter to store an
-integer value. To prepare for updating the write_event_config signature
-to use a boolean for state, introduce a new local int variable.
+I went through these by hand.  There are somewhere maybe it is worth
+passing booleans down into leaf functions and only convert to int
+right at the end (for a field write) but I don't think we care.
+The cases here are more of the variety of converting a bool to an int
+to use it as a bool (like the ones you clear up later in this series).
 
-Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Link: https://patch.msgid.link/20241031-iio-fix-write-event-config-signatur=
-e-v2-6-2bcacbb517a2@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/light/adux1020.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+Neither is wrong, just inefficient, so applied and pushed out as testing
+for 0-day to take a look.
+Fingers crossed nothing got missed!
 
-diff --git a/drivers/iio/light/adux1020.c b/drivers/iio/light/adux1020.c
-index 2e0170be077a..06d5bc1d246c 100644
---- a/drivers/iio/light/adux1020.c
-+++ b/drivers/iio/light/adux1020.c
-@@ -526,12 +526,11 @@ static int adux1020_write_event_config(struct iio_dev=
- *indio_dev,
- 			mask =3D ADUX1020_PROX_OFF1_INT;
-=20
- 		if (state)
--			state =3D 0;
-+			ret =3D regmap_clear_bits(data->regmap,
-+						ADUX1020_REG_INT_MASK, mask);
- 		else
--			state =3D mask;
--
--		ret =3D regmap_update_bits(data->regmap, ADUX1020_REG_INT_MASK,
--					 mask, state);
-+			ret =3D regmap_set_bits(data->regmap,
-+					      ADUX1020_REG_INT_MASK, mask);
- 		if (ret < 0)
- 			goto fail;
-=20
---=20
-2.46.2
+Jonathan
+
+> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+> index ab427f3461dbbef535c2ec2cf2982202ca97bb82..f07fba17048e7b5c1958807b14d4bcb3ff87e26d 100644
+> --- a/drivers/iio/accel/fxls8962af-core.c
+> +++ b/drivers/iio/accel/fxls8962af-core.c
+> @@ -617,7 +617,7 @@ static int
+>  fxls8962af_write_event_config(struct iio_dev *indio_dev,
+>  			      const struct iio_chan_spec *chan,
+>  			      enum iio_event_type type,
+> -			      enum iio_event_direction dir, int state)
+> +			      enum iio_event_direction dir, bool state)
+>  {
+>  	struct fxls8962af_data *data = iio_priv(indio_dev);
+>  	u8 enable_event, enable_bits;
+This passes the state variable into fxls8962af_event_setup() as an integer
+and uses it as a boolean.  Might as well be bool all the way.
 
 
+> diff --git a/drivers/iio/light/gp2ap020a00f.c b/drivers/iio/light/gp2ap020a00f.c
+> index 81e718cdeae32d60581cb490148f4f1c0bd695c7..1a352c88598e5d701256aa8659a7f9683bce56f9 100644
+> --- a/drivers/iio/light/gp2ap020a00f.c
+> +++ b/drivers/iio/light/gp2ap020a00f.c
+> @@ -1159,7 +1159,7 @@ static int gp2ap020a00f_write_event_config(struct iio_dev *indio_dev,
+>  					   const struct iio_chan_spec *chan,
+>  					   enum iio_event_type type,
+>  					   enum iio_event_direction dir,
+> -					   int state)
+> +					   bool state)
+This one could do with a follow up as the state variable is passed as an integer
+to another function that then uses it as a bool.
 
->=20
->=20
-
+>  {
+>  	struct gp2ap020a00f_data *data = iio_priv(indio_dev);
+>  	enum gp2ap020a00f_cmd cmd;
 

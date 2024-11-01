@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-11796-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11797-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029B79B9580
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 17:34:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE999B9585
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 17:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339411C2204F
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:34:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CB511C2200E
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653531CACE0;
-	Fri,  1 Nov 2024 16:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAAE1B4F2D;
+	Fri,  1 Nov 2024 16:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WEEZYmFh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X1tpwuz/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEE51DA53;
-	Fri,  1 Nov 2024 16:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F25214884F;
+	Fri,  1 Nov 2024 16:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730478879; cv=none; b=sUibz0srz5TtG+iu/IzpjxW//p7TP5NiqjwodqM4W3lARn7U03aYHnUYC31cR8Wxmejd8TLoYkvfnv9f0rQEDNOncoowalX38v8Wo5h6BuumU0Gt7XuhMC5jDMD+50gW8U5m6C18DofIKBd7Vl5gDymBRI1GINeQTynN/WpXDIE=
+	t=1730478947; cv=none; b=mR1bXfNIPeDiMirgBZ0ii6XLo+gruH1V6tZ6fCHMiko3iE1WpeE5FIjcbIO8Ewy04A/XnZ8X2QT/Op9/ra0LJ0W/hhJLt/p8vMnZYbggU65ZFbNjnmoU9KHAlVU6Vzk6U8P8kyKKY+axhuEa6+kwJZue8pYtUkKamT4LlrG+Ysc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730478879; c=relaxed/simple;
-	bh=qTEpZeX5h5BrvEm5uvCJhihnL5J4dBpTWfPtxvKIQr8=;
+	s=arc-20240116; t=1730478947; c=relaxed/simple;
+	bh=VAe8JaPazApSPoTOUWuTu3lf+OPBhaGqX0zo7n9+08M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QJ6QyUz+OSJAbW/wWz0o1RB7r1rgD+cAXismKajMDiit6i1e3yHKnQaokcJqTbplJX5am+xTq0JCKL4fsLIHeGoCm2FSGbT7YRycu7TjbK06+xig7ePyHeOdSOqYeEtEwtyBiLuNajKkY2ttwf9NtSvjM5SVaukdDPDxQk1axPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WEEZYmFh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D7BC4CECD;
-	Fri,  1 Nov 2024 16:34:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CWL5jk0db7UymXwhDaZvx62ra8/NwbhVNmn7M/74Ksndfv44xQFvoLvEhR4TX2KWeaylIFDkoWvBOMp15eOlfP8EnFKp7SVPCm4bipO0gLFVrncw+scV5BqqKm6c0X//qMAgppnvLQz+hvdwSfPwRMgvxSbmef0EFQfWe9RGz/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X1tpwuz/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5961FC4CECD;
+	Fri,  1 Nov 2024 16:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730478878;
-	bh=qTEpZeX5h5BrvEm5uvCJhihnL5J4dBpTWfPtxvKIQr8=;
+	s=k20201202; t=1730478946;
+	bh=VAe8JaPazApSPoTOUWuTu3lf+OPBhaGqX0zo7n9+08M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WEEZYmFhVei4xYtLqNT5xERqEDKa4LsyeSJA+vRyONXu1PON2O9YAA28WvhzumSm/
-	 P7ss/OsrhaAwQPUCt3fxzGY8oMkvwDroediE64Y4qPJ1GKUoN0cG8Y69aM57YVvD5e
-	 WmL4Wqz8nj1/GjJrrYynROUzphMc6LF3lCfXgGxbBquZLuwOkq3+VQ7LHAaXamgB2s
-	 qJ3TOYuyToFdAk/3ebKBMRfBUtLk5bDYb+drPbM64j8rP3Qmxwzk/wXyNhADWciOvJ
-	 oBC3u5avJcQPoS8hhF+NUwwfVm+JjhMn4yBUNEvrYdOxFKYY8JtDV5YX2kcviJ7ffk
-	 O+oqIcHc9Idfw==
-Date: Fri, 1 Nov 2024 16:34:29 +0000
+	b=X1tpwuz/azyd+hEHYQjWyu3g6WzlxirePGr5tCzhPoWJyPcCzmsEvwV5GXsMRiwNa
+	 vlsRjpdYWH3r9cTrFOMjThIeBCPTmSrYRXty9uluBDplvDMsRjzeVBufZIv23P8Py5
+	 B7z70h1jPSyqTn6Og+yxxM/Tsp42XQ3+MjY/4Ls2AIA8SfGIUxy4UOBUr+IYDTPa5V
+	 aVTDYB2GetSTplCXpGubAh0HZbMfrkG/YtEAt2E80CgPtLFf2CYFwUvcnRW7i/BlVU
+	 9+Zvvh0KxeSd6F46d7hxskBtXy5cumZz/EbDo5FuUh1umx64DRth2XtYdUIki3KtSn
+	 RvS3gzWoPPEgg==
+Date: Fri, 1 Nov 2024 16:35:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Julien Stephan <jstephan@baylibre.com>
 Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
@@ -62,11 +62,11 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
  <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
-Subject: Re: [PATCH v2 09/15] iio: accel: sca3000: use bool for event state
-Message-ID: <20241101163429.29745c05@jic23-huawei>
-In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-9-2bcacbb517a2@baylibre.com>
+Subject: Re: [PATCH v2 10/15] iio: imu: bmi323: use bool for event state
+Message-ID: <20241101163535.644a006f@jic23-huawei>
+In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-10-2bcacbb517a2@baylibre.com>
 References: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
-	<20241031-iio-fix-write-event-config-signature-v2-9-2bcacbb517a2@baylibre.com>
+	<20241031-iio-fix-write-event-config-signature-v2-10-2bcacbb517a2@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -77,40 +77,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 31 Oct 2024 16:27:04 +0100
+On Thu, 31 Oct 2024 16:27:05 +0100
 Julien Stephan <jstephan@baylibre.com> wrote:
 
 > Since the write_event_config callback now uses a bool for the state
 > parameter, update the signatures of the functions it calls accordingly.
 > 
 > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Applied
+Applied.
 > ---
->  drivers/iio/accel/sca3000.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/iio/imu/bmi323/bmi323_core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-> index 36cbfcbba04d6920ba68bebd70d21bc3898a044d..3fb0f386c3db603714a746c28be36ee78d1b2a6a 100644
-> --- a/drivers/iio/accel/sca3000.c
-> +++ b/drivers/iio/accel/sca3000.c
-> @@ -1158,7 +1158,7 @@ static int sca3000_read_event_config(struct iio_dev *indio_dev,
->  	return ret;
+> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
+> index 76a88e1ccc1d89988eb52d6b1be8da0f5005f0e6..161bb1d2e761688dd740635f8a2830e9562d1b59 100644
+> --- a/drivers/iio/imu/bmi323/bmi323_core.c
+> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
+> @@ -467,7 +467,7 @@ static int bmi323_feature_engine_events(struct bmi323_data *data,
+>  			    BMI323_FEAT_IO_STATUS_MSK);
 >  }
 >  
-> -static int sca3000_freefall_set_state(struct iio_dev *indio_dev, int state)
-> +static int sca3000_freefall_set_state(struct iio_dev *indio_dev, bool state)
+> -static int bmi323_step_wtrmrk_en(struct bmi323_data *data, int state)
+> +static int bmi323_step_wtrmrk_en(struct bmi323_data *data, bool state)
 >  {
->  	struct sca3000_state *st = iio_priv(indio_dev);
+>  	enum bmi323_irq_pin step_irq;
 >  	int ret;
-> @@ -1181,7 +1181,7 @@ static int sca3000_freefall_set_state(struct iio_dev *indio_dev, int state)
+> @@ -484,7 +484,7 @@ static int bmi323_step_wtrmrk_en(struct bmi323_data *data, int state)
+>  	ret = bmi323_update_ext_reg(data, BMI323_STEP_SC1_REG,
+>  				    BMI323_STEP_SC1_WTRMRK_MSK,
+>  				    FIELD_PREP(BMI323_STEP_SC1_WTRMRK_MSK,
+> -					       state ? 1 : 0));
+> +					       state));
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -506,7 +506,7 @@ static int bmi323_motion_config_reg(enum iio_event_direction dir)
 >  }
 >  
->  static int sca3000_motion_detect_set_state(struct iio_dev *indio_dev, int axis,
-> -					   int state)
-> +					   bool state)
+>  static int bmi323_motion_event_en(struct bmi323_data *data,
+> -				  enum iio_event_direction dir, int state)
+> +				  enum iio_event_direction dir, bool state)
 >  {
->  	struct sca3000_state *st = iio_priv(indio_dev);
->  	int ret, ctrlval;
+>  	unsigned int state_value = state ? BMI323_FEAT_XYZ_MSK : 0;
+>  	int config, ret, msk, raw, field_value;
+> @@ -570,7 +570,7 @@ static int bmi323_motion_event_en(struct bmi323_data *data,
+>  }
+>  
+>  static int bmi323_tap_event_en(struct bmi323_data *data,
+> -			       enum iio_event_direction dir, int state)
+> +			       enum iio_event_direction dir, bool state)
+>  {
+>  	enum bmi323_irq_pin tap_irq;
+>  	int ret, tap_enabled;
 > 
 
 

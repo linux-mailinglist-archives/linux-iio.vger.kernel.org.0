@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-11800-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11801-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 531819B95A6
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 17:41:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BBD9B95A8
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 17:42:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AF6E281008
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:41:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBFF8280F71
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3149E145FE0;
-	Fri,  1 Nov 2024 16:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBC51AC88B;
+	Fri,  1 Nov 2024 16:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FH1q8YKC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dlWLeQto"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60E61AC88B;
-	Fri,  1 Nov 2024 16:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBA11798C;
+	Fri,  1 Nov 2024 16:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730479293; cv=none; b=VVuyX7aGNXkPcqODtuEf+wdW+lUd9wjpy6yzyrW3WTtkTTY/BjnuYwbEofJiHj4kXdx1jlVEGXwKmC2HidMUe4RicyNe3+hYHERr0RIOoHKwL5TrQgNnz+7FlpRcVkssSfbk2DyhCPLgMphHAQl4QX/BIkgrz+ScJC0ZD683haA=
+	t=1730479343; cv=none; b=hpBdVGUOby+9Vv4lMnVJ4Bvzm8CrSJKkrPK0jY7LlaPwNqSAL+JryUbalYb4Bq1K6QBIhIpqZ7mPaRpaqh83gSG9x8MMxE0WxNhtJF6DLusIYwTbN3NHMXzx/xnDJpUUTO3uM4Htw/KYSESN6hG/ESQ0cH4ndJGcU3Z7XIhpmPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730479293; c=relaxed/simple;
-	bh=RnVmu4KMn0cYcEtJmqOHewUj8MapyZAuXdZ2ik2BBwk=;
+	s=arc-20240116; t=1730479343; c=relaxed/simple;
+	bh=eYks79MFdCeXodwGGFKWKp7Y3D0VclXHgXCntP1ZON0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JuEuyIM5PfQo9LoMjNo+qUV/FwEvXLrLFydVS/2wyuUN8lqwEHMXr3+XfEKYOr9bz/nlqDsrlb0C6es1tVjRLqStiE4nxEbCEU+zc5br9cwxbG1uwABpEzl7V3g64LuZ5ESXrN8KTTV6MvHQtICoIcBSAN7YTmStqzheS0VPYHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FH1q8YKC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3B2C4CECD;
-	Fri,  1 Nov 2024 16:41:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u/m201c+XXGdgB/pN3yfdy1XZUOtDTS2fE2htIl401ju002ya76Vy3ISXQjHdqGJ1ZvGWZbQ2wLo31lvFs1g4oSxXQ65KhJ9CeEBPVw9ebmH3ld6mbqAzNuZEqWcMMvCrMBvPT/eNdud72t69gN7cp1dROVNRjxfP8XShxRyuV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dlWLeQto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BA9C4CECD;
+	Fri,  1 Nov 2024 16:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730479292;
-	bh=RnVmu4KMn0cYcEtJmqOHewUj8MapyZAuXdZ2ik2BBwk=;
+	s=k20201202; t=1730479342;
+	bh=eYks79MFdCeXodwGGFKWKp7Y3D0VclXHgXCntP1ZON0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FH1q8YKCIGY6guripygnr5/X3GiZsfOtWqz7B5YyRdEvi8alczpqthsNyfSEUf0QE
-	 YzPta1HyOjTt0iwV6ZiaRFc/LWdu+oebKdb7Vf/HU8ceebCZDvSdPhdIZgmVHJWpNF
-	 CLNuIm9LO+SzfRdv3Xe+9ZNj2teoce5Dhx4e93vAu8wKuVO/obJOETKj2wOz6jWNN7
-	 tz79KaeMKPC9QDSpUeIegKhgfvMTg6DX1VpOvI+6O0gec03aeih35q3Ke76Vhbv7dy
-	 ptiYxEM0cX485g/gkeSLwRNLiMVLcHppe+BF3g0GWoz69Mpcp7c+yMzBrdctpinnxu
-	 GDm7jaLHfT9hA==
-Date: Fri, 1 Nov 2024 16:41:18 +0000
+	b=dlWLeQtokne+QgI9Z+5Asb5yiBmPqRnDRQRBU7GjWr5Mfm2Sc/dJDHE74H/EuhrER
+	 1FhjTnmZTpSzhW6ji5fqrdinVlh9VAqUP87j2Y01K7QB3wpW4XuovFc8DA+mhMBXVZ
+	 ahm2BHoQMgbFh+M0DAb4cD4hjMPBRwfOs3xlHkjHBUejSZE00z6q6BJ/+IXUciBQY9
+	 l1dsNGbIJC0mozF+H3D6dBoWWNyouhae6p7mpnBTVLq7qgHEgzUFIpOtbGoM9lEqtL
+	 t2D1zzku7zqY3mR0U9CDrUJCExfRAcztBuTVLB7aHrs2xCl5xz9obFRFabcYRJeFUf
+	 M1FQzr3pUnSVA==
+Date: Fri, 1 Nov 2024 16:42:10 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Julien Stephan <jstephan@baylibre.com>
 Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
@@ -62,12 +62,12 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
  <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
-Subject: Re: [PATCH v2 13/15] iio: light: apds9306: simplifies if branch in
- apds9306_write_event_config
-Message-ID: <20241101164118.687be624@jic23-huawei>
-In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-13-2bcacbb517a2@baylibre.com>
+Subject: Re: [PATCH v2 14/15] iio: light: apds9960: convert als_int and
+ pxs_int to bool
+Message-ID: <20241101164210.4a33197d@jic23-huawei>
+In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-14-2bcacbb517a2@baylibre.com>
 References: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
-	<20241031-iio-fix-write-event-config-signature-v2-13-2bcacbb517a2@baylibre.com>
+	<20241031-iio-fix-write-event-config-signature-v2-14-2bcacbb517a2@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -78,33 +78,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 31 Oct 2024 16:27:08 +0100
+On Thu, 31 Oct 2024 16:27:09 +0100
 Julien Stephan <jstephan@baylibre.com> wrote:
 
-> Simplifies the regmap_wite if branch in apds9306_write_event_config.
+> Since the write_event_config callback now uses a bool for the state
+> parameter, update type of als_int and pxs_int to bool.
 Applied.
 > 
 > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 > ---
->  drivers/iio/light/apds9306.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+>  drivers/iio/light/apds9960.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
-> index 8adc74040db2bddf93fbb773e3519abcc726b9a6..9c08e7c3ad0c17519689a630d42fe9b90438dfe8 100644
-> --- a/drivers/iio/light/apds9306.c
-> +++ b/drivers/iio/light/apds9306.c
-> @@ -1125,10 +1125,7 @@ static int apds9306_write_event_config(struct iio_dev *indio_dev,
->  		}
->  	}
->  	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-> -		if (state)
-> -			return regmap_field_write(rf->int_thresh_var_en, 1);
-> -		else
-> -			return regmap_field_write(rf->int_thresh_var_en, 0);
-> +		return regmap_field_write(rf->int_thresh_var_en, state);
->  	default:
->  		return -EINVAL;
->  	}
+> diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
+> index a7f0cc99f236685900f89fbc48de3be0e9a40704..7b3da88885693c488807da459ceaa1cbb3881bcd 100644
+> --- a/drivers/iio/light/apds9960.c
+> +++ b/drivers/iio/light/apds9960.c
+> @@ -133,8 +133,8 @@ struct apds9960_data {
+>  	struct regmap_field *reg_enable_pxs;
+>  
+>  	/* state */
+> -	int als_int;
+> -	int pxs_int;
+> +	bool als_int;
+> +	bool pxs_int;
+>  	int gesture_mode_running;
+>  
+>  	/* gain values */
 > 
 
 

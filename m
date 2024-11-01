@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-11797-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11798-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE999B9585
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 17:35:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 754A19B9590
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 17:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CB511C2200E
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:35:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BCC0B211C7
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAAE1B4F2D;
-	Fri,  1 Nov 2024 16:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4D21A2562;
+	Fri,  1 Nov 2024 16:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X1tpwuz/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l14K5SRt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F25214884F;
-	Fri,  1 Nov 2024 16:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E9E450E2;
+	Fri,  1 Nov 2024 16:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730478947; cv=none; b=mR1bXfNIPeDiMirgBZ0ii6XLo+gruH1V6tZ6fCHMiko3iE1WpeE5FIjcbIO8Ewy04A/XnZ8X2QT/Op9/ra0LJ0W/hhJLt/p8vMnZYbggU65ZFbNjnmoU9KHAlVU6Vzk6U8P8kyKKY+axhuEa6+kwJZue8pYtUkKamT4LlrG+Ysc=
+	t=1730479023; cv=none; b=FEmUuAnIWW1ys6HgkY4f8YCjjexOXZ8ywgbdybWk5dz1B8B9zqpkkfD+Tsah2mKulfYxLKlD9HjLPBeQyhyrnKBQp1Lw2bTKdFA76m4/outtckmqgDM9mfYSDqRgg1dSLMqURXbeFOBmn33MPEqH8CmXZ82YDJY1wGhs1RG3boY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730478947; c=relaxed/simple;
-	bh=VAe8JaPazApSPoTOUWuTu3lf+OPBhaGqX0zo7n9+08M=;
+	s=arc-20240116; t=1730479023; c=relaxed/simple;
+	bh=QET17fHgUqNbmUw/e9EdVPDP2UwGuQA8tvgZ5/yNPgE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CWL5jk0db7UymXwhDaZvx62ra8/NwbhVNmn7M/74Ksndfv44xQFvoLvEhR4TX2KWeaylIFDkoWvBOMp15eOlfP8EnFKp7SVPCm4bipO0gLFVrncw+scV5BqqKm6c0X//qMAgppnvLQz+hvdwSfPwRMgvxSbmef0EFQfWe9RGz/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X1tpwuz/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5961FC4CECD;
-	Fri,  1 Nov 2024 16:35:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hELM1OUBxEvOoV/1VgCPP4Ic+Go7+3UXySi4eqBzhsA1igsjrvNpx4b5fh311OUTX11OybQXCczi2SOXvSqmlUtFvoqfd3E+zrm7Avf894eFv5MOHOtcqPBskepW4/lzuH876bx8/z3hr+zGl4LfKssBERwOi/F0Vvhxf3FM1/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l14K5SRt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1342DC4CECD;
+	Fri,  1 Nov 2024 16:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730478946;
-	bh=VAe8JaPazApSPoTOUWuTu3lf+OPBhaGqX0zo7n9+08M=;
+	s=k20201202; t=1730479023;
+	bh=QET17fHgUqNbmUw/e9EdVPDP2UwGuQA8tvgZ5/yNPgE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X1tpwuz/azyd+hEHYQjWyu3g6WzlxirePGr5tCzhPoWJyPcCzmsEvwV5GXsMRiwNa
-	 vlsRjpdYWH3r9cTrFOMjThIeBCPTmSrYRXty9uluBDplvDMsRjzeVBufZIv23P8Py5
-	 B7z70h1jPSyqTn6Og+yxxM/Tsp42XQ3+MjY/4Ls2AIA8SfGIUxy4UOBUr+IYDTPa5V
-	 aVTDYB2GetSTplCXpGubAh0HZbMfrkG/YtEAt2E80CgPtLFf2CYFwUvcnRW7i/BlVU
-	 9+Zvvh0KxeSd6F46d7hxskBtXy5cumZz/EbDo5FuUh1umx64DRth2XtYdUIki3KtSn
-	 RvS3gzWoPPEgg==
-Date: Fri, 1 Nov 2024 16:35:35 +0000
+	b=l14K5SRt1vC7zG+/VORahqbr+H6ulbVRDGBFQqXQrlK65o/ub6oYejiOTlB3PTP+t
+	 ojIvFQAiM6eCZyGzENOs0yMHTr2uO8dWnwfinokslRJsBu9P37TMZnux02xYOlCtzM
+	 EK6rS/bitNuCRQeM04K0w8i1fLTqvY1KCpyTTO2NKLQRnQndxkAEUdekfUn/utuDTd
+	 oOCDKuIEdj4R85KlKTGWq2I0JD6y348/hop0m/AUa2FbOMlj77L8f6dHmIh6//o3Mn
+	 MuOX0BLZg2wZpUTzzIeaMq8bP81cyI1nIOFo50d6vJ288U5hiHbTmy88m3C7SKeuRO
+	 wPHYT0ZSpEvKA==
+Date: Fri, 1 Nov 2024 16:36:51 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Julien Stephan <jstephan@baylibre.com>
 Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
@@ -62,11 +62,11 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
  <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
-Subject: Re: [PATCH v2 10/15] iio: imu: bmi323: use bool for event state
-Message-ID: <20241101163535.644a006f@jic23-huawei>
-In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-10-2bcacbb517a2@baylibre.com>
+Subject: Re: [PATCH v2 11/15] iio: imu: st_lsm6dsx: use bool for event state
+Message-ID: <20241101163651.09ca52d4@jic23-huawei>
+In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-11-2bcacbb517a2@baylibre.com>
 References: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
-	<20241031-iio-fix-write-event-config-signature-v2-10-2bcacbb517a2@baylibre.com>
+	<20241031-iio-fix-write-event-config-signature-v2-11-2bcacbb517a2@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -77,58 +77,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 31 Oct 2024 16:27:05 +0100
+On Thu, 31 Oct 2024 16:27:06 +0100
 Julien Stephan <jstephan@baylibre.com> wrote:
 
 > Since the write_event_config callback now uses a bool for the state
-> parameter, update the signatures of the functions it calls accordingly.
+> parameter, update the signature of the function it calls accordingly.
 > 
 > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 Applied.
 > ---
->  drivers/iio/imu/bmi323/bmi323_core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/imu/bmi323/bmi323_core.c b/drivers/iio/imu/bmi323/bmi323_core.c
-> index 76a88e1ccc1d89988eb52d6b1be8da0f5005f0e6..161bb1d2e761688dd740635f8a2830e9562d1b59 100644
-> --- a/drivers/iio/imu/bmi323/bmi323_core.c
-> +++ b/drivers/iio/imu/bmi323/bmi323_core.c
-> @@ -467,7 +467,7 @@ static int bmi323_feature_engine_events(struct bmi323_data *data,
->  			    BMI323_FEAT_IO_STATUS_MSK);
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index caefa15e559b8808051ff1c7f82c3f36c947933c..509e0169dcd54e773540c4e3f1b56e5b737f80c3 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1865,7 +1865,7 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
+>  	return err;
 >  }
 >  
-> -static int bmi323_step_wtrmrk_en(struct bmi323_data *data, int state)
-> +static int bmi323_step_wtrmrk_en(struct bmi323_data *data, bool state)
+> -static int st_lsm6dsx_event_setup(struct st_lsm6dsx_hw *hw, int state)
+> +static int st_lsm6dsx_event_setup(struct st_lsm6dsx_hw *hw, bool state)
 >  {
->  	enum bmi323_irq_pin step_irq;
->  	int ret;
-> @@ -484,7 +484,7 @@ static int bmi323_step_wtrmrk_en(struct bmi323_data *data, int state)
->  	ret = bmi323_update_ext_reg(data, BMI323_STEP_SC1_REG,
->  				    BMI323_STEP_SC1_WTRMRK_MSK,
->  				    FIELD_PREP(BMI323_STEP_SC1_WTRMRK_MSK,
-> -					       state ? 1 : 0));
-> +					       state));
->  	if (ret)
->  		return ret;
->  
-> @@ -506,7 +506,7 @@ static int bmi323_motion_config_reg(enum iio_event_direction dir)
->  }
->  
->  static int bmi323_motion_event_en(struct bmi323_data *data,
-> -				  enum iio_event_direction dir, int state)
-> +				  enum iio_event_direction dir, bool state)
->  {
->  	unsigned int state_value = state ? BMI323_FEAT_XYZ_MSK : 0;
->  	int config, ret, msk, raw, field_value;
-> @@ -570,7 +570,7 @@ static int bmi323_motion_event_en(struct bmi323_data *data,
->  }
->  
->  static int bmi323_tap_event_en(struct bmi323_data *data,
-> -			       enum iio_event_direction dir, int state)
-> +			       enum iio_event_direction dir, bool state)
->  {
->  	enum bmi323_irq_pin tap_irq;
->  	int ret, tap_enabled;
+>  	const struct st_lsm6dsx_reg *reg;
+>  	unsigned int data;
 > 
 
 

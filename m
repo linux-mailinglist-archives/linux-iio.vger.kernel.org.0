@@ -1,78 +1,75 @@
-Return-Path: <linux-iio+bounces-11756-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11757-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB629B8E31
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 10:53:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D12A9B8FC3
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 11:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C3DA1F2214B
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 09:52:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF17E1C2116D
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 10:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B8115990E;
-	Fri,  1 Nov 2024 09:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B1C168488;
+	Fri,  1 Nov 2024 10:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="oMbMQnuh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ghJQ3v9o"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F9842C0B;
-	Fri,  1 Nov 2024 09:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAB9170A3D;
+	Fri,  1 Nov 2024 10:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730454772; cv=none; b=CqJeyY4MYH/yCRwvNvmf40aLpl6OSZL1mE9Dqtu7D4IlntbP+qG5uK3FkOQ+kxUuwtpfxU61bsN42dtyuSgDm/L5BwfzMKOa5itJTvavsAPKNg/SIVIQUzG5Ze+Q3W+aVPBFlWbIWzoGkyR+69npHmTq4WpsTS/G+UKQA0a1lyQ=
+	t=1730458429; cv=none; b=FIhC6HIbT9bnn5jh3OKfCjmBiuaByDGMDOE21HWzNFljcRluZ4QDz7PzNoafm0oPw9Q4JZc2QH9hZS5aJ9Mv3goVqLkf0DdokNCXcbnFJJbkwJAh96CNhPbMyTMwuQMP/ivzv9IQHvb4IiyRgm7EcjbzSUMRV77/LSkqr4QmFKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730454772; c=relaxed/simple;
-	bh=tJ/fGoA1skodvpCiPIjWJ9O2i9YYHjMXa6li6wcUc6w=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NN1Kp9xzbygpnBXc/cx2TRCL4ZpESPaSiwcnUdLuQoVoBIbPq9i4/s+AWt1wXijl6ZtYqSXN5dEvnseK+tnJsiRsCbOSaI8GfNb0UuRUaw1h5q8zZoHiby2sOWLJypzvzKyKjwZjinkjWupx+x6mWAw13i4nW2YXmWPcs0y7Iio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=oMbMQnuh; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A15jHCq026680;
-	Fri, 1 Nov 2024 05:52:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=Fa6jU1MdHl7FUJcaJ91oK3EAi56
-	FdnhF8cp9byp/Ojs=; b=oMbMQnuhqKuvs/jVvB19p0RZfBbpW/VNl5j8KRDilHM
-	MRbD0roI/TYbLV78JuMcPRLeNtBFxCFhXcawGnJnt4mto6O5ayo6RJZl0J7z4+sV
-	duHTKgJXQH5nlmyA9LiPGKlpyDwq8GFEqJlnV9qSaJdv24vn78FcVmq8MLyT0w6c
-	EQroVorBDyLRGUV4dw2s6h22J1JxWwB7VAOChXHabaampji3ZA27B+WvOf4IFLJ3
-	aOpVoOSyl+rmMlx6yTUqEBJPaHv2OFbtPoxYfJdJp9WdpWqo2gEd/9qIsrWOwFvf
-	a5YX6V7SV0QWUzZ2vijCR/8dxW0pRLWKoiym7GguoWg==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 42m2gmps96-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Nov 2024 05:52:30 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4A19qTNo030992
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 1 Nov 2024 05:52:29 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 1 Nov 2024
- 05:52:29 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 1 Nov 2024 05:52:29 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.114])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4A19qDY6011849;
-	Fri, 1 Nov 2024 05:52:15 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich
-	<Michael.Hennerich@analog.com>,
-        Ramona Gradinariu
-	<ramona.gradinariu@analog.com>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] iio: accel: adxl380: fix raw sample read
-Date: Fri, 1 Nov 2024 11:52:01 +0200
-Message-ID: <20241101095202.20121-1-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1730458429; c=relaxed/simple;
+	bh=3nd+aO8xFQcDiX2wwxz/jvBUUPBaYHyn5n+Smz/yuVs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eCB8whRsoRDAGYvRuJTbyz/TemfrhSjkiqVpH3uaTjyIy/IpTyfFhZ2J4hOTcrCNoOF/p5Ue5qSiIyyl1ZYwqiRmpZpOe3YGVK/05DJv7tzjIIRL4MRpVkCt8ge0vErbxA4E8D5WFtQbCc6xKZVWcqIblsqkRUYcCvROj+Sy9p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ghJQ3v9o; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730458427; x=1761994427;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3nd+aO8xFQcDiX2wwxz/jvBUUPBaYHyn5n+Smz/yuVs=;
+  b=ghJQ3v9oMBzEBBP8Gz630GLOWmGVKmM3AA2iRHSOyDoMzrRcH0uG4MoK
+   sES0BgooQWZuGuu2apD9ejLoTQb+ofVtGwg2QQVQnBdBrjxJQ5qSRppMZ
+   CuDxbS1jfCtu43y4LeMxRnPhTP91kQabaHJgOqEl2qpBv//EOnrDwVJrU
+   PnjnFSjKT538LOo32e6T8hQ+pDa3zkH5LSoOfdwXaLEdfgRu7b+icAq2M
+   GSIa4g8vtrxssXTfAzaPbyLxRUX0HBncca9YePilhv6Z1XyEVF4N8jgsi
+   ri+cm5jMYQyAxQYJH74XyAy7cb/k2rReV8M0MHao2MOq835nEmOIee8+7
+   A==;
+X-CSE-ConnectionGUID: fNvHRwlHTk+T6pQZ0A5CHA==
+X-CSE-MsgGUID: fYru22mWQcOzf1NybcV8CQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30179197"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="30179197"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 03:53:47 -0700
+X-CSE-ConnectionGUID: 6jJUseMgSh6YMKn1wOdLBQ==
+X-CSE-MsgGUID: nI7LtuUOTBaUS/BqiH5rfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,249,1725346800"; 
+   d="scan'208";a="87748250"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa005.jf.intel.com with ESMTP; 01 Nov 2024 03:53:45 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id BA8871AC; Fri, 01 Nov 2024 12:53:43 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] iio: Mark iio_dev::priv member with __private
+Date: Fri,  1 Nov 2024 12:53:42 +0200
+Message-ID: <20241101105342.3645018-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -80,44 +77,52 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: ieRXWa07U8RK7zF_5F7INSsP718VLQKv
-X-Proofpoint-ORIG-GUID: ieRXWa07U8RK7zF_5F7INSsP718VLQKv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- mlxlogscore=999 spamscore=0 impostorscore=0 clxscore=1011
- priorityscore=1501 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411010070
 
-The adxl380_read_chn function returns either a negative value in case an
-error occurs or the actual sample.
+The member is not supposed to be accessed directly, mark it with
+__private to catch the misuses up.
 
-Check only for negative values after a channel is read.
-
-Fixes: df36de13677a ("iio: accel: add ADXL380 driver")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/accel/adxl380.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/industrialio-core.c | 2 +-
+ include/linux/iio/iio.h         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
-index f80527d899be..b19ee37df7f1 100644
---- a/drivers/iio/accel/adxl380.c
-+++ b/drivers/iio/accel/adxl380.c
-@@ -1181,7 +1181,7 @@ static int adxl380_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 6a6568d4a2cb..4c543490e56c 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1665,7 +1665,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	indio_dev = &iio_dev_opaque->indio_dev;
  
- 		ret = adxl380_read_chn(st, chan->address);
- 		iio_device_release_direct_mode(indio_dev);
--		if (ret)
-+		if (ret < 0)
- 			return ret;
+ 	if (sizeof_priv)
+-		indio_dev->priv = (char *)iio_dev_opaque +
++		ACCESS_PRIVATE(indio_dev, priv) = (char *)iio_dev_opaque +
+ 			ALIGN(sizeof(*iio_dev_opaque), IIO_DMA_MINALIGN);
  
- 		*val = sign_extend32(ret >> chan->scan_type.shift,
+ 	indio_dev->dev.parent = parent;
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index 445d6666a291..5c6682bd4cb9 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -624,7 +624,7 @@ struct iio_dev {
+ 	const struct iio_info		*info;
+ 	const struct iio_buffer_setup_ops	*setup_ops;
+ 
+-	void				*priv;
++	void				*priv __private;
+ };
+ 
+ int iio_device_id(struct iio_dev *indio_dev);
+@@ -785,7 +785,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv);
+ /* The information at the returned address is guaranteed to be cacheline aligned */
+ static inline void *iio_priv(const struct iio_dev *indio_dev)
+ {
+-	return indio_dev->priv;
++	return ACCESS_PRIVATE(indio_dev, priv);
+ }
+ 
+ void iio_device_free(struct iio_dev *indio_dev);
 -- 
-2.47.0
+2.43.0.rc1.1336.g36b5255a03ac
 
 

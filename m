@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-11789-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11790-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6D39B9478
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:35:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0249C9B947A
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:35:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B84441F215C3
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 15:35:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28E91F218A3
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 15:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587271B4F2E;
-	Fri,  1 Nov 2024 15:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A751BB6B6;
+	Fri,  1 Nov 2024 15:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ExR7YdMP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q3AiIkIU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8AD82C7E;
-	Fri,  1 Nov 2024 15:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8944B25634;
+	Fri,  1 Nov 2024 15:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730475287; cv=none; b=m9tACw2QJnXCDDmgb/JGg1dyVoYyE5hGQ6UcmcMnxtTdIP4r1oRW19AGxczOfxZj1e8n4XlFsJUWEkRTcrxmK31gIWbkcB40npyZa0NY9lMJ90wX29mDcidBDaR/33t1d3XsPWk+gdCVqXyvwX+ZLtAxjn8p9oRyFNlVh/kLi3o=
+	t=1730475321; cv=none; b=NBDk6T3esdGlOO1nsAUiB/m7PeEbxE6xYGy8HKuXmppvBjacHFh2CJ9oSM4bLE/HfOTxFQZr97qz6ux2UXCkEJ8gUiMgqhEXNWeR6wZWLm7sWy0/ej3jLZWdOdUTFYvE4/+4dPsSceK7F8Zjje+97FcOyPBo6UMh1++LuFk3F7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730475287; c=relaxed/simple;
-	bh=3gF4dUs4I0hbZEB/vl2nNOfNJfrWUy9SgixJZc2ZpYg=;
+	s=arc-20240116; t=1730475321; c=relaxed/simple;
+	bh=uwTrmg5E+/4Xe9TIGAk2cAH3uSAcEGblqU7abk42CGk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E4tlZMAJrxUlPOTeOtenP8LhDeTSmJIhsmx9vUdjdnei8RWGKv/U6pq1HhepEgeAP1UFenPp2hV2/PRe9G+6Igd62Aqgzp6wkjqsJUNCY5g/vB5Y5O5A7gvA64Nb1aXwpOF6tq0+pM94a7zeN1S3hJKgnFQkuRVg+ZW7zHf5NVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ExR7YdMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50629C4CECD;
-	Fri,  1 Nov 2024 15:34:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kncyo/fdcGF71UPKwUWlcvxWKly+fc68SjusX7WqZ5Eaccu7ANN+BR/hkw5X1fY+zTIizPy49pGiJnyx0opIxazL0SBfb1BscXcD7b7ih+toTYGxQvZb9/PRN8a6Y4f2cShMDs01wdmJoVGnx2ja0QH6be2ova9t+plsSkPq0qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q3AiIkIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5625C4CECD;
+	Fri,  1 Nov 2024 15:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730475286;
-	bh=3gF4dUs4I0hbZEB/vl2nNOfNJfrWUy9SgixJZc2ZpYg=;
+	s=k20201202; t=1730475321;
+	bh=uwTrmg5E+/4Xe9TIGAk2cAH3uSAcEGblqU7abk42CGk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ExR7YdMPH4ej6K7ujfnj4MwHuH/ToU0rvxAgB76QLIOBPcjQVQwD0RnU/KhoWucTr
-	 7THMxdiDKds6yE9+xL6TTZTncVEfFMjP1V2Ik4AXfTlGUGzhUoxA7r7Ck89HCCh+QZ
-	 Z0zaqgT4DcM9JJeSsr6hY4ZY/+XjCozJb5jzEAj0Aut+XaN+deDpesWtuh0olIVhEF
-	 vU7bmW6UR4yxJdX1o3mSNkSR4399Uek5adBzhXoudUfhmcUtwvicAJFd+mlNwpNFA5
-	 zM4ooysvKCmWA0G1nhHe6buqZl6LjmNTjOeTmxBMUtOxyXgNUDa5DWgJiBmKf/D0wH
-	 BUZ+itl6SwQJQ==
-Date: Fri, 1 Nov 2024 15:34:34 +0000
+	b=Q3AiIkIU/BSsjG/DRK0gOBsQNCmallFcN03rt4Dn64kR6xgsju3LZdub0MGEhcFbO
+	 8hVC7lrN2OqSTEB5eKdoNpk+yavuzjdG6TvlVlzJFHFsBoZg6v2t5i1UVtJI6u4uNL
+	 C+GYScq1jm8Z5A+QG4H/DnxGU6Ag+0qbprQUXSZnulLE6Pu3iRb5/6iqc1BQXWVVbu
+	 SkzRUcGyqaccScCfOrrGHpxBk4w/0/JdfESf6O52gSE4IacVL1tA4lgEJqjPSIZBVy
+	 ywXIYDDdFa0pOL0fgDqnzHbPKfd5KOjSZ07O+i8vjcbIFVLbf83BU2S9A0rW67jPwW
+	 FjFvCR9XuDoHg==
+Date: Fri, 1 Nov 2024 15:35:09 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Julien Stephan <jstephan@baylibre.com>
 Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
@@ -62,12 +62,12 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
  <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
-Subject: Re: [PATCH v2 02/15] iio: proximity: hx9023s: simplify code in
+Subject: Re: [PATCH v2 03/15] iio: light: tsl2772: simplify code in
  write_event_config callback
-Message-ID: <20241101153434.11d85f8b@jic23-huawei>
-In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-2-2bcacbb517a2@baylibre.com>
+Message-ID: <20241101153509.11ae74b9@jic23-huawei>
+In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-3-2bcacbb517a2@baylibre.com>
 References: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
-	<20241031-iio-fix-write-event-config-signature-v2-2-2bcacbb517a2@baylibre.com>
+	<20241031-iio-fix-write-event-config-signature-v2-3-2bcacbb517a2@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -78,7 +78,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 31 Oct 2024 16:26:57 +0100
+On Thu, 31 Oct 2024 16:26:58 +0100
 Julien Stephan <jstephan@baylibre.com> wrote:
 
 > iio_ev_state_store is actually using kstrtobool to check user
@@ -88,31 +88,27 @@ Julien Stephan <jstephan@baylibre.com> wrote:
 > Remove useless code in write_event_config callback.
 > 
 > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Applied to the togreg branch of iio.git and pushed out as testing.
-Note if anyone else has time to review, I can still add tags for now.
-
-I'll probably push it out as an (in theory) not rebasing tree early
-next week to give a bit of time in next before a pull request.
-
-Jonathan
-
+Applied.
 > ---
->  drivers/iio/proximity/hx9023s.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/light/tsl2772.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-> index d8fb34060d3db88a3ba5ecdc209b14be8e42e8b9..38441b1ee040c7c26047b0cb2ac443ecb8396df3 100644
-> --- a/drivers/iio/proximity/hx9023s.c
-> +++ b/drivers/iio/proximity/hx9023s.c
-> @@ -879,7 +879,7 @@ static int hx9023s_write_event_config(struct iio_dev *indio_dev,
->  	struct hx9023s_data *data = iio_priv(indio_dev);
+> diff --git a/drivers/iio/light/tsl2772.c b/drivers/iio/light/tsl2772.c
+> index cab468a82b616a23394977da1d8822d29d8941d3..26082f239c4c3aeabfe73ed100d6e885f5266329 100644
+> --- a/drivers/iio/light/tsl2772.c
+> +++ b/drivers/iio/light/tsl2772.c
+> @@ -1086,9 +1086,9 @@ static int tsl2772_write_interrupt_config(struct iio_dev *indio_dev,
+>  	struct tsl2772_chip *chip = iio_priv(indio_dev);
 >  
->  	if (test_bit(chan->channel, &data->chan_in_use)) {
-> -		hx9023s_ch_en(data, chan->channel, !!state);
-> +		hx9023s_ch_en(data, chan->channel, state);
->  		__assign_bit(chan->channel, &data->chan_event,
->  			     data->ch_data[chan->channel].enable);
->  	}
+>  	if (chan->type == IIO_INTENSITY)
+> -		chip->settings.als_interrupt_en = val ? true : false;
+> +		chip->settings.als_interrupt_en = val;
+>  	else
+> -		chip->settings.prox_interrupt_en = val ? true : false;
+> +		chip->settings.prox_interrupt_en = val;
+>  
+>  	return tsl2772_invoke_change(indio_dev);
+>  }
 > 
 
 

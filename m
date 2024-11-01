@@ -1,128 +1,99 @@
-Return-Path: <linux-iio+bounces-11757-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11758-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D12A9B8FC3
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 11:53:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738A99B8FD7
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 11:57:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF17E1C2116D
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 10:53:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F2A11F22A1D
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 10:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B1C168488;
-	Fri,  1 Nov 2024 10:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374C0176FA2;
+	Fri,  1 Nov 2024 10:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ghJQ3v9o"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dbAjmW5C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAB9170A3D;
-	Fri,  1 Nov 2024 10:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7801714BC;
+	Fri,  1 Nov 2024 10:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730458429; cv=none; b=FIhC6HIbT9bnn5jh3OKfCjmBiuaByDGMDOE21HWzNFljcRluZ4QDz7PzNoafm0oPw9Q4JZc2QH9hZS5aJ9Mv3goVqLkf0DdokNCXcbnFJJbkwJAh96CNhPbMyTMwuQMP/ivzv9IQHvb4IiyRgm7EcjbzSUMRV77/LSkqr4QmFKg=
+	t=1730458625; cv=none; b=VrlYo5ct5UYoFJZb0Lh27sCoCExzg+92BrpqBiGHfRgi+BClnRe1Xp/3xTwNVaFuNxk1LB9EtID9nWNZxEUJwIrb4Kb4zuqNXyxyY0ALvxJJr3VOMdR2P6ZeV8ZW9Zl6oZ/dZyBTumIyE5Uuv0Fs0JSZ4TFH0s/kezhdKRrKPq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730458429; c=relaxed/simple;
-	bh=3nd+aO8xFQcDiX2wwxz/jvBUUPBaYHyn5n+Smz/yuVs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eCB8whRsoRDAGYvRuJTbyz/TemfrhSjkiqVpH3uaTjyIy/IpTyfFhZ2J4hOTcrCNoOF/p5Ue5qSiIyyl1ZYwqiRmpZpOe3YGVK/05DJv7tzjIIRL4MRpVkCt8ge0vErbxA4E8D5WFtQbCc6xKZVWcqIblsqkRUYcCvROj+Sy9p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ghJQ3v9o; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730458427; x=1761994427;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3nd+aO8xFQcDiX2wwxz/jvBUUPBaYHyn5n+Smz/yuVs=;
-  b=ghJQ3v9oMBzEBBP8Gz630GLOWmGVKmM3AA2iRHSOyDoMzrRcH0uG4MoK
-   sES0BgooQWZuGuu2apD9ejLoTQb+ofVtGwg2QQVQnBdBrjxJQ5qSRppMZ
-   CuDxbS1jfCtu43y4LeMxRnPhTP91kQabaHJgOqEl2qpBv//EOnrDwVJrU
-   PnjnFSjKT538LOo32e6T8hQ+pDa3zkH5LSoOfdwXaLEdfgRu7b+icAq2M
-   GSIa4g8vtrxssXTfAzaPbyLxRUX0HBncca9YePilhv6Z1XyEVF4N8jgsi
-   ri+cm5jMYQyAxQYJH74XyAy7cb/k2rReV8M0MHao2MOq835nEmOIee8+7
-   A==;
-X-CSE-ConnectionGUID: fNvHRwlHTk+T6pQZ0A5CHA==
-X-CSE-MsgGUID: fYru22mWQcOzf1NybcV8CQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30179197"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30179197"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 03:53:47 -0700
-X-CSE-ConnectionGUID: 6jJUseMgSh6YMKn1wOdLBQ==
-X-CSE-MsgGUID: nI7LtuUOTBaUS/BqiH5rfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,249,1725346800"; 
-   d="scan'208";a="87748250"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa005.jf.intel.com with ESMTP; 01 Nov 2024 03:53:45 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id BA8871AC; Fri, 01 Nov 2024 12:53:43 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] iio: Mark iio_dev::priv member with __private
-Date: Fri,  1 Nov 2024 12:53:42 +0200
-Message-ID: <20241101105342.3645018-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+	s=arc-20240116; t=1730458625; c=relaxed/simple;
+	bh=in+hn4D17+str9yWgKks8piJDUKpP4SgZMTxn5xT41g=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=ioFranc2e50lOW1UlqxkmEKBDO9ks714niKd4xM68OZXaBpgOMLygnaRkcYuB8L/GwqM3lqLSklPF3PVD0LdyvbAHN8SSDbLNwZS5vDz277KxlSfiNOcIyTkyZEFpdevUcvASRSGTu2AVM1ZycyVjvkIuboQFl5c8tmBgDzuwsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dbAjmW5C; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1730458561; x=1731063361; i=markus.elfring@web.de;
+	bh=in+hn4D17+str9yWgKks8piJDUKpP4SgZMTxn5xT41g=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=dbAjmW5CHzvdNrIFLygErgLmbeBdtghdhG8383EIgVzY8YNk34w3ZBvbr20610v3
+	 2BVwMwPC/07v92MZHz76oukcLbswvtIByKk3kdEjUDbyI/kn1dIpnSignD71Ef53A
+	 Zpy9ejCRFTK6d56ZIKKoQkdt/uaXnsEXXgAqxwYN9bdipmVKkJq1xflFPIs9tc/ib
+	 MsVPDWuINLhIJkw43kF/R31unIpLB4e+OaSL6ZMZigIzzceYQEOfbpNK30FBIDP1X
+	 Rkt6YzoYmRlIgu2LU3Rmc3TYB7Ytic77w2cmRK92pPq1HPZv4P7DVuGFvlXKpTHkY
+	 +wr41/I+2xWDA0cM2w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N4eGT-1toRjK27SJ-00vtmg; Fri, 01
+ Nov 2024 11:56:01 +0100
+Message-ID: <568c32d4-c555-4512-8b93-637cde04d0d3@web.de>
+Date: Fri, 1 Nov 2024 11:56:00 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-iio@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Dan Carpenter <dan.carpenter@linaro.org>, Jonathan Cameron
+ <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+References: <20241101081203.3360421-2-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2 1/4] iio: light: ltr501: Assing ddata to NULL
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20241101081203.3360421-2-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:NlV6rrsWjeuUspjnIvOegbcU/y9LP6vJyl+59v+9NCfgfnmsy9c
+ /3YjV7irkODux1aZ5Eh/taHG7b4NkWVCsncU4+RN7CpMrNXwnvureSI+PHrZD+3QAr6ELvn
+ JJAiOuV+r6yODkgxjYWycajnSNcdhDJaKbS37JD00Dn+L44R1jX9hPckMjrWVloO8Jppr3t
+ QRhHGRw6j+hRg2NhNbNIw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:I/X1U8sCkqw=;LP4VVBfK7LAVgpDtLofSop8GMl6
+ bJEwNL5Xg//dCgIRwzyUR/n1R/MskXSC9h1a7SfPR665W0SJJgMLOhouxxMM7Si4ULxBovomH
+ 1BzAJo4RfcL1DfxAjmvwSxjvGNlwXEEngngBi8q5kB+9atxQO804SbTJI68Evd94bPhtqRKsi
+ eaVpL4Q+Ujy3B3o+2Fmqaz77LCuh5kv4sBUJBXi637rZ8GHWgbMM7TtFkzQ1JcmQaOrxr1M1Z
+ DPET7KCro3SXOfdChiu59JmTBr8u7HYyMwG1Is/1pAfBz/sbO92U2ucjdmBmt9sMWKOymP1vE
+ xExEpKxjcWmgI7yzJ3l07drX1+7i2OHmCiqydngrXlWfQzYtNDzwyL4oMneZ3iCFGNYgPuuxU
+ H6lmicuxaoc3ibZcWJGm0NtVZeCLrTeP2XTZ0l59SiAqTb7G7OS3BPqhS7Q72PxKvA0aDdADB
+ ycBndIpgNNal8hpBfITwbnex/3tSIfMPbDTAqGAYF+7hpGVHDeUid7TYDTP/zRPMhJnUZyvqa
+ O64oik5J2GHx7LFG76ifpj2mKusGbpM/IFrZaAzlh/Z2FRtfpEWTRMD+BQx9121+qAG9xafr2
+ mmp4s4PN9tWZ+j/V6x7A1KuaRrT4K/nLLifu4e32lgcsTX7RMeot4kbNpYK20o58+xt7GBBJk
+ wuPZNGrEzfgHG8lYAFVigtxKUWR0bmtmyvuYR1TUJ4NCQw4AmGoBtsGxG4KSh1cegSDQcl24J
+ ar5KMnQMRhWPl8S1IkYRPln1xHsxT6nSabqu0X6zW0ok+kxxsDLUw4QPmzUouhEvdTTlLOJeq
+ ODAvLwPAmLnuJCyml4EwpBqA==
 
-The member is not supposed to be accessed directly, mark it with
-__private to catch the misuses up.
+> When iio_get_acpi_device_name_and_data() fails, the ddata may be left
+> uninitialised. Initialise it to NULL.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/industrialio-core.c | 2 +-
- include/linux/iio/iio.h         | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+Would you like to use the summary phrase =E2=80=9CAssign NULL to ddata in =
+ltr501_probe()=E2=80=9D accordingly?
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 6a6568d4a2cb..4c543490e56c 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1665,7 +1665,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	indio_dev = &iio_dev_opaque->indio_dev;
- 
- 	if (sizeof_priv)
--		indio_dev->priv = (char *)iio_dev_opaque +
-+		ACCESS_PRIVATE(indio_dev, priv) = (char *)iio_dev_opaque +
- 			ALIGN(sizeof(*iio_dev_opaque), IIO_DMA_MINALIGN);
- 
- 	indio_dev->dev.parent = parent;
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 445d6666a291..5c6682bd4cb9 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -624,7 +624,7 @@ struct iio_dev {
- 	const struct iio_info		*info;
- 	const struct iio_buffer_setup_ops	*setup_ops;
- 
--	void				*priv;
-+	void				*priv __private;
- };
- 
- int iio_device_id(struct iio_dev *indio_dev);
-@@ -785,7 +785,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv);
- /* The information at the returned address is guaranteed to be cacheline aligned */
- static inline void *iio_priv(const struct iio_dev *indio_dev)
- {
--	return indio_dev->priv;
-+	return ACCESS_PRIVATE(indio_dev, priv);
- }
- 
- void iio_device_free(struct iio_dev *indio_dev);
--- 
-2.43.0.rc1.1336.g36b5255a03ac
-
+Regards,
+Markus
 

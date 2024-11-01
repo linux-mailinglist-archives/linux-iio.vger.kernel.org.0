@@ -1,106 +1,233 @@
-Return-Path: <linux-iio+bounces-11766-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11767-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA45B9B914B
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 13:49:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CB79B9156
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 13:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8248F1F2219D
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 12:49:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6929A283677
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 12:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17556158DD0;
-	Fri,  1 Nov 2024 12:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F8919E826;
+	Fri,  1 Nov 2024 12:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="arSkomw8"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Kah5fHKI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB459F9D9;
-	Fri,  1 Nov 2024 12:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1CE20B22;
+	Fri,  1 Nov 2024 12:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730465335; cv=none; b=mtfeicfWgWHplKKi1R0x0HfdGcxrZgWnIm02lKHVXytjhfvaawoVcF01HN6k6Zjgvuzpy1CzPGlMdkXRZgybJXZiVubkUclZen2zTEEfoULdIcWDZIWQTSPesukNPD91kWwwnkHPXr0pjM9s+pRssMJb/OnxwmeWDR5RNdHXlwM=
+	t=1730465636; cv=none; b=qMjKGl/aG7txxbPt138KKAg0rLHDMd8J+40IidFvBp2lsnNM9K4EmeruXxGD8q+n/3MAVecaXd3gFZuk/WVBHXa9/BsFh9PvVBrB020BBNU9XQ7TLbKabgXDuwpxN3X7DbA0NrVTryhcjdlrLov7SqGuYRm04fIOcH8z3TxiByc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730465335; c=relaxed/simple;
-	bh=t6MOPlAFLeix/1c7rFrh7y0ZxRC8o+cTFGNYkWdBSF4=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=cUMCvk3ThwAzGsIDvtZnZL26rH1nSaxfEbW9fh96VYg+FmMGRkOokOnciIeuZ2IPSc0W0txrVuwPvSVfH+gRrT0FREjj6Rog5PxSBc5HRo12/9f3XPdJxz+jCvRp2gcbnoATiKlJLeQ9sUS5NcX18DUl6MZkJXP0bMy7Ep88K+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=arSkomw8; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1730464991; x=1731069791; i=markus.elfring@web.de;
-	bh=wC6WwKWnhI299rVfj7xX/miU/prcrbdI5Rd6yT/vKLg=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=arSkomw8bsI+nNP//y/cuEP5WVFZgcivYOYB/OOo5NclW286/y/ewY6Iv5mKQnq4
-	 RABBihg0yesZVZDy+nmwdFzInw4M1AQAnAIEbJk7FDf1Mfpj//RTkt5DVR1yQ8YIM
-	 YF/BQEleimA8nz4+lN5ScyrxLtiHqO/WkvjKN52kxxkyOhqy3zL4zxxGY1V89FFRm
-	 15z/t9W2JPv5VxqMGw+99tOAjL9Q3eC4u3e7/PZ/pXZ7+oKlbNI/vCsAWJRDAfWEP
-	 W5ieFluaphewatZhB20DNBaTVsTnJiYANlaOjkOBk9Q6ZXf1CFfMH/Bnsvx96LO+t
-	 hwqOxhFz3YJMEUUvfg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MDMvE-1sxXKq3amE-005IGv; Fri, 01
- Nov 2024 13:43:10 +0100
-Message-ID: <8c7a5bcc-1fdb-45af-8f0c-1f9b6f0cf058@web.de>
-Date: Fri, 1 Nov 2024 13:43:06 +0100
+	s=arc-20240116; t=1730465636; c=relaxed/simple;
+	bh=naIgWMhRlgu17ljNE7N7xNhXFj+cgL9eiosdsdxpzwY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uYDACqyHTxM+K5TLpXfu8/hwWJYnoz4BQq2FWBJ7FoT66ruBwYzs6bfeHGWctoYz+8eslWyV2DYoo6FjA0+IFQLbdnT8ycSkzMy8Yw2+nD0E8oZh+xUldQNCCX0dbX+wNrhFBByUgB2xChr4xe6f2zbsTV1aRaYy1gfFAAmZsmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Kah5fHKI; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A1Bl2Wx006083;
+	Fri, 1 Nov 2024 08:53:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=UgtRzF3Sc55mSjc0ClfMKxRTcjn
+	xSIbLGaB3KWAKWlc=; b=Kah5fHKIry1wmOX3hKCYa8Aing8IjxnQkZL5pnuQxJf
+	Kepjn3jX4/LVEuoEW5q913nLTXd3k0fyGWgsJNRKwOOKf8+Om7sboksEQM0mQfLB
+	FuLf3/dzCsb27wIg0K/GQ9SXN3GgnKyxS/L7RMCbXpqRWcLwzf8jf72+Qfv0r7Sm
+	gp1qZePw0OR5vpkUx2WULVkwg3VZqJn4Wmg73piSg5pAIRqysB4Z4pdTvHCn5fQx
+	QxxW4NEBzuPXmUYOcYCVGxV2wQnkV9BL49DzhhbjjRWO8MIhiWSqNJYpEgNb7ZUx
+	YxPMfK8x3gOHUmWU7rHSVj2uiMs9Diw/pJ5y92CXoxA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 42k6yvf5b4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Nov 2024 08:53:51 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4A1Cro4q045060
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 1 Nov 2024 08:53:50 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 1 Nov 2024 08:53:49 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 1 Nov 2024 08:53:49 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 1 Nov 2024 08:53:49 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4A1CrflA029504;
+	Fri, 1 Nov 2024 08:53:44 -0400
+From: Darius Berghe <darius.berghe@analog.com>
+To: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <jic23@kernel.org>, <darius.berghe@analog.com>
+Subject: [PATCH 1/3] iio: imu: adis16480: add devices to adis16480 driver
+Date: Fri, 1 Nov 2024 15:07:40 +0200
+Message-ID: <20241101130742.3479110-1-darius.berghe@analog.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linux-iio@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Dan Carpenter <dan.carpenter@linaro.org>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-References: <20241101081203.3360421-2-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 1/4] iio: light: ltr501: Assing ddata to NULL
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20241101081203.3360421-2-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:0NMoCiaEoR2Qle64Ww0/lEfZ7OUQnbY7y7k5caHPwgeIESC6aSw
- nukqSpEJnzmCoJFCQhIBOrHhLe6rlKThC59jSIBAiXlf4zifql/HPq6KFx5sDgPxwYpwzui
- jIg1BHfPd5AiMEQIY+gkvF2T1to56ub17bb6HWpSa+pX2m+miINs4Jth+YtBNT6SQqptxJk
- 7VSEpIMac4nccF88d7Now==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:KhywX60mZHU=;JH6165shfRPTr6Ef7sCjRBvj+ga
- fo5DmQfOJBMZuczQpJyGn8/4kwK/wifVGur0kKnYujKsPppKZOy2F4os1Ph4CicULk/fMtmkX
- TDG4kOBRKbk2Z8bWXpvFvC/vwz17BgVfx/c0kP5bThdvafAQmKgOIgU+lHa3SLxEY9MAl3Prs
- yHJFStd/o0JjzG+kDZvtmB5m03SLyVwXiPcR3KpD7WKJmiE/yCDfDFexsHwjBI+5LEeR0xS7H
- /McjpN5VvkBZMOiVq2VehEguipMWIgKL7nfHLhbYqrGw1ufoO84Jrp4rVqBBrFYP0cHAcjrQq
- QCzDWHuw4EOSwFKxs/ICaxsy4Kj1pde2U+COyHWB8tZTCxPTF9cLYkkdVwIY90kdmWvIXyTQa
- wHxZZB8tslVIlbm6xNo6xxJTDw5JS92VwjPhzyC9B46gdM3bbUg0T+11+6jDmImBphnFv2pTq
- DbRH4lUmHLAdR5YfBaFSG/FPD5Kg2tvrM9cOJ9W6B0+W+VBTr8XC3xFCfTZFlHKLMk/8hajHR
- wnZijKjXuoo01Ag/DeoAVcwEMucli8vmprGfOhX5K3Jlzfub71bDCqDgAHac7Re5d9gx6t3uh
- b9emX9csvl04EzjBmFgPpv1zZ9W7Of0TH1Legq+a/llSazGNNn4vpVGGj4DxEqyS0mVb85C2M
- MA0m+YqAr8LRJxU1ObmHZa6B6LNdVriOInh2mwm8/kMDpiEhFpWnQsnvkxLzsOLAHMWjG2iPl
- 5Q+/aHtoc+EKOz3B5fRpoc/DSAyfhn0jaG1p0DvV6KkHygbZwPrxJYblrgEn6ze6ILv/Hcafg
- tw6BbHRBM+yrNvwsL3TmoTvQ==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: SBv6NRkp7CdNtbn-P4O60KAA2beQw53h
+X-Proofpoint-GUID: SBv6NRkp7CdNtbn-P4O60KAA2beQw53h
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=999
+ lowpriorityscore=0 clxscore=1011 suspectscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 phishscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411010093
 
-> When iio_get_acpi_device_name_and_data() fails, the ddata may be left
-> uninitialised. Initialise it to NULL.
+Add support for adis16486, adis16487 and adis16489 Six Degrees
+of Freedom Inertial Sensors into the existing adis16480 iio
+subsystem driver. The adis16487 is functionally equivalent to
+the already supported adis16485. The others have slight
+differences in terms of channels and scales with the already
+supported devices.
 
-How do you think about to perform the variable assignment only in
-a corresponding else branch?
+Signed-off-by: Darius Berghe <darius.berghe@analog.com>
+---
+ drivers/iio/imu/adis16480.c | 75 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
 
-Can it be that this adjustment does not really matter here because of
-the following statement?
+diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
+index 7bfda7133a96..03a2f21dd779 100644
+--- a/drivers/iio/imu/adis16480.c
++++ b/drivers/iio/imu/adis16480.c
+@@ -912,6 +912,24 @@ static const struct iio_chan_spec adis16485_channels[] = {
+ 	ADIS16480_DELTVEL_CHANNEL_NO_SCAN(Z),
+ };
+ 
++static const struct iio_chan_spec adis16489_channels[] = {
++	ADIS16480_GYRO_CHANNEL(X),
++	ADIS16480_GYRO_CHANNEL(Y),
++	ADIS16480_GYRO_CHANNEL(Z),
++	ADIS16480_ACCEL_CHANNEL(X),
++	ADIS16480_ACCEL_CHANNEL(Y),
++	ADIS16480_ACCEL_CHANNEL(Z),
++	ADIS16480_PRESSURE_CHANNEL(),
++	ADIS16480_TEMP_CHANNEL(),
++	IIO_CHAN_SOFT_TIMESTAMP(8),
++	ADIS16480_DELTANG_CHANNEL_NO_SCAN(X),
++	ADIS16480_DELTANG_CHANNEL_NO_SCAN(Y),
++	ADIS16480_DELTANG_CHANNEL_NO_SCAN(Z),
++	ADIS16480_DELTVEL_CHANNEL_NO_SCAN(X),
++	ADIS16480_DELTVEL_CHANNEL_NO_SCAN(Y),
++	ADIS16480_DELTVEL_CHANNEL_NO_SCAN(Z),
++};
++
+ static const struct iio_chan_spec adis16495_channels[] = {
+ 	ADIS16480_GYRO_CHANNEL(X),
+ 	ADIS16480_GYRO_CHANNEL(Y),
+@@ -952,7 +970,10 @@ enum adis16480_variant {
+ 	ADIS16375,
+ 	ADIS16480,
+ 	ADIS16485,
++	ADIS16486,
++	ADIS16487,
+ 	ADIS16488,
++	ADIS16489,
+ 	ADIS16490,
+ 	ADIS16495_1,
+ 	ADIS16495_2,
+@@ -1108,6 +1129,38 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+ 		.filter_freqs = adis16480_def_filter_freqs,
+ 		.adis_data = ADIS16480_DATA(16485, &adis16485_timeouts, 0, 0),
+ 	},
++	[ADIS16486] = {
++		.channels = adis16485_channels,
++		.num_channels = ARRAY_SIZE(adis16485_channels),
++		.gyro_max_val = 22500 << 16,
++		.gyro_max_scale = IIO_DEGREE_TO_RAD(450),
++		.accel_max_val = IIO_M_S_2_TO_G(20000 << 16),
++		.accel_max_scale = 18,
++		.temp_scale = 5650, /* 5.65 milli degree Celsius */
++		.deltang_max_val = IIO_DEGREE_TO_RAD(720),
++		.deltvel_max_val = 200,
++		.int_clk = 2460000,
++		.max_dec_rate = 2048,
++		.has_sleep_cnt = true,
++		.filter_freqs = adis16480_def_filter_freqs,
++		.adis_data = ADIS16480_DATA(16486, &adis16480_timeouts, 0, 0),
++	},
++	[ADIS16487] = {
++		.channels = adis16485_channels,
++		.num_channels = ARRAY_SIZE(adis16485_channels),
++		.gyro_max_val = 22500 << 16,
++		.gyro_max_scale = IIO_DEGREE_TO_RAD(450),
++		.accel_max_val = IIO_M_S_2_TO_G(20000 << 16),
++		.accel_max_scale = 5,
++		.temp_scale = 5650, /* 5.65 milli degree Celsius */
++		.deltang_max_val = IIO_DEGREE_TO_RAD(720),
++		.deltvel_max_val = 50,
++		.int_clk = 2460000,
++		.max_dec_rate = 2048,
++		.has_sleep_cnt = true,
++		.filter_freqs = adis16480_def_filter_freqs,
++		.adis_data = ADIS16480_DATA(16487, &adis16485_timeouts, 0, 0),
++	},
+ 	[ADIS16488] = {
+ 		.channels = adis16480_channels,
+ 		.num_channels = ARRAY_SIZE(adis16480_channels),
+@@ -1124,6 +1177,22 @@ static const struct adis16480_chip_info adis16480_chip_info[] = {
+ 		.filter_freqs = adis16480_def_filter_freqs,
+ 		.adis_data = ADIS16480_DATA(16488, &adis16485_timeouts, 0, 0),
+ 	},
++	[ADIS16489] = {
++		.channels = adis16489_channels,
++		.num_channels = ARRAY_SIZE(adis16489_channels),
++		.gyro_max_val = 22500 << 16,
++		.gyro_max_scale = IIO_DEGREE_TO_RAD(450),
++		.accel_max_val = IIO_M_S_2_TO_G(20000 << 16),
++		.accel_max_scale = 18,
++		.temp_scale = 5650, /* 5.65 milli degree Celsius */
++		.deltang_max_val = IIO_DEGREE_TO_RAD(720),
++		.deltvel_max_val = 200,
++		.int_clk = 2460000,
++		.max_dec_rate = 2048,
++		.has_sleep_cnt = true,
++		.filter_freqs = adis16480_def_filter_freqs,
++		.adis_data = ADIS16480_DATA(16489, &adis16480_timeouts, 0, 0),
++	},
+ 	[ADIS16490] = {
+ 		.channels = adis16485_channels,
+ 		.num_channels = ARRAY_SIZE(adis16485_channels),
+@@ -1841,7 +1910,10 @@ static const struct spi_device_id adis16480_ids[] = {
+ 	{ "adis16375", ADIS16375 },
+ 	{ "adis16480", ADIS16480 },
+ 	{ "adis16485", ADIS16485 },
++	{ "adis16486", ADIS16486 },
++	{ "adis16487", ADIS16487 },
+ 	{ "adis16488", ADIS16488 },
++	{ "adis16489", ADIS16489 },
+ 	{ "adis16490", ADIS16490 },
+ 	{ "adis16495-1", ADIS16495_1 },
+ 	{ "adis16495-2", ADIS16495_2 },
+@@ -1863,7 +1935,10 @@ static const struct of_device_id adis16480_of_match[] = {
+ 	{ .compatible = "adi,adis16375" },
+ 	{ .compatible = "adi,adis16480" },
+ 	{ .compatible = "adi,adis16485" },
++	{ .compatible = "adi,adis16486" },
++	{ .compatible = "adi,adis16487" },
+ 	{ .compatible = "adi,adis16488" },
++	{ .compatible = "adi,adis16489" },
+ 	{ .compatible = "adi,adis16490" },
+ 	{ .compatible = "adi,adis16495-1" },
+ 	{ .compatible = "adi,adis16495-2" },
+-- 
+2.46.1
 
-	if (!name)
-		return -ENODEV;
-
-
-Regards,
-Markus
 

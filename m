@@ -1,124 +1,93 @@
-Return-Path: <linux-iio+bounces-11738-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11739-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCEB9B8AAC
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 06:35:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D139B8AC6
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 06:59:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 439441F230B1
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 05:35:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 843A31F226C5
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 05:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7015E14A60C;
-	Fri,  1 Nov 2024 05:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3979314A092;
+	Fri,  1 Nov 2024 05:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cCZGEqym"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nVh7VB2e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43300A48;
-	Fri,  1 Nov 2024 05:35:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E088F36B;
+	Fri,  1 Nov 2024 05:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730439322; cv=none; b=r+d+0nSZwsAYwGbRUaLz8hWvpMdUfbvK/DlfyB6bhT84OVsiPnOwwWRCeYNfXwihGHzGZdLu0j9I5OLJMO8pPlK0NpDw1IpjCSreMNYyrEIAGTya5itYgXFOEP1qF1GmV1Bu7acwpkPdagztpRaC47igEGWk2Gkm9PONL1+sQwg=
+	t=1730440765; cv=none; b=CIjM47FwZQEuC5l3miRqtySz2132VNm5KiaXRsShdDBexWSKsOymXqW52RubnV/ZEJiWdYA+oSPj28uzSBUT5vdDd55poFGirgRAzQUiwPC5onNytuH66imC5KPxK2L65P5wJkBPamKjWHRVkYdIe7YMOWmTnzwRuOfJ+mtsfhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730439322; c=relaxed/simple;
-	bh=mF3wB2Jve8vniIrTi1Xu3LFkNp5iYzxBBRHNal2XVNQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dh/aM2N+nzz7QgplGDz6yImKHv30OqaUmexRWwJ3umR6jODR738TNnjAjeclaHRbkwbGtpbv5jjT/Ewt+wNELWLBd3YnZkdL/2k1Q2IjNhFbzJN2QN7OYDdDAAI7Df2BjAG/TTXi369q+OhCaIOL9Pg2jT0mWXaSJ1tTzNF0QIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cCZGEqym; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6e5a5a59094so15449217b3.3;
-        Thu, 31 Oct 2024 22:35:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730439319; x=1731044119; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mF3wB2Jve8vniIrTi1Xu3LFkNp5iYzxBBRHNal2XVNQ=;
-        b=cCZGEqymPnBETDPvpPrm/C0UvUww/+/PKLLAQHdHNit8GPGfYCiOEViZozi9Kq0rEx
-         bRjiqC42edWs7n2VrKHi/tLeixDpWvzAFwpRogayzmKJupyYB/BzEBK1NdvOfHO0jKOt
-         d1SHe2VBiFmP4CGmKW5DqwgIWbBvLgROtGyfkISWpjs0iEG9ooJR4DXljgE4KfS+7e3X
-         fOjyri3I0vatF2SwECeHsQEDKnWkqCEd+lDlGgC8q8ysLfh/SG/w/taOE33iev5VlPdH
-         i+vd3tl/B08V3wPTTYZQq55NDTPGQuHd9X3P9WPBa5DGRBpLQko3GhRmV/PoPx5++FVp
-         0ULQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730439319; x=1731044119;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mF3wB2Jve8vniIrTi1Xu3LFkNp5iYzxBBRHNal2XVNQ=;
-        b=cYjX00J/EIh9AMNS86MPaq5V9LZrabi/DiEPgHyDT6iDNYjb2407a1g2Ey97u/brPU
-         I5o1ujE0z4q6yghFqLqUBuFMjAh+Rnv7ZKD/46VxfExp+nlDPTF4nJHc8wEPg9WxF0GK
-         em+trRbebQBA2nbHbLQDfybUt24tRQ/9e48fT+op1DzWsM1BUHx8VlvgBx1tXECGJ/XA
-         C3MfBShvLc4UYOJzTTawwU4ZyZA9jZHEjCeLM3EXF3vHc7fX55+lz6ybQIcI5pFbm2hO
-         8A/ZibOBiTwTg9D4qobsh1Gy45PyW4nu8AXIrt4asdp8xDNshtVUgumfX6yB2T1dSAa3
-         m3Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2FLZxnAHzt0byOx3Ta9zGYb76POv7lzrJuWuUpovtOr+VYQRr/7Gtm+I420pvg4/1iO+XCk/WMda4@vger.kernel.org, AJvYcCUXFOn+PLLogV8p22eJdb2FQbhLrHlXi3PPgMAIPg7uuvyEQlwv9obbJDHH0X08WOurHb2tT3iU9iVCudB9jA8=@vger.kernel.org, AJvYcCV6gjrPz3OqKHMfm02+kZBGGc02wVELf5FldZtrg2D0AN8mf36nPzIJu2AkseKh9ipPVZY7I5GF1zklFYE=@vger.kernel.org, AJvYcCV9JuXtdnQWnR0tzRMcDYSy1KRj9hXhPev/Y7KPITreqhm2X/WCN1RoOdjOmIN/7Jsz4IY6e7OJpOuS@vger.kernel.org, AJvYcCVQqsYDNwnfaJWifVn/rmoCyeMLO3+6F1H4BqPTGZDy1g123YmGW8o479L2clNslqwuYt2YZEUjhZ3Dlw==@vger.kernel.org, AJvYcCVZW1+laTclbX7nvDS6yjq6YqG4wAUAimf6QCCH5dFPe1IlOnsG0v9xPo8xFncb0jYVfVwoCQBPl9gLA/AJ@vger.kernel.org, AJvYcCX/11Gcnu7iZe6RzMU7coJmbwixkp812Wp1YxJ31/i1zckQjECDbekPv1c/7xGMJVTU07RW/9PrQvw=@vger.kernel.org, AJvYcCXhVPpB6+eI3akFNPL0G7mf2ayjdPG+eyVhaR4xKNkZQZ5d4qUbdYRsEkiOzLPc+OFwOP0A0Bp6DRTq@vger.kernel.org, AJvYcCXw2jW6uaX9ZMtbjJXSBkOQy7MDL8ffMVO7ISKgkACpcZFeovErIUj9sRk45P5yczYS4yHftwlY7Z8N@vger.kernel.org, AJvYcCXydXEX9ADXKixVFwTXge2p1D24
- 6XExmf+mCdK0N4U0F4/xfSGxRM1trpowdkt6dAsuMP0bKNIU@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzdr2NnkrAscnGbXJSU3PbHRsuUCtmHeU5kyn/79C2aBqfz7GUz
-	PTjCtSA1lDMYKt6UxTS5MlKKWmgkNQVm2oiduxOT8DLaSx1KKzsMi8U1BjmktZdAP/3xMCha0kb
-	hnbxMCFTGPUGkTh9dVS5zbP9FkVw=
-X-Google-Smtp-Source: AGHT+IHjsVRspkXLMwsYEmdGwWWGIm1yStruCFD+i35y9G/88OmDQfdzXmmSjrklqqMdHbeNzsY2oAGGOZsTre5vDXo=
-X-Received: by 2002:a05:690c:600a:b0:6e2:af9b:a862 with SMTP id
- 00721157ae682-6ea64acc9ddmr26252277b3.13.1730439319137; Thu, 31 Oct 2024
- 22:35:19 -0700 (PDT)
+	s=arc-20240116; t=1730440765; c=relaxed/simple;
+	bh=bsORacs+XRwGPNAegb+drBs5u+8UfBOTbC/pTO7y+6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BVm/Hyc1ZWBOGRKMZ/tPAj8ogg7bma9fKPIKkYqVLIA0gKDsT9DOyuBMbbP3a+bJv+ssxLr+JdQ/0sZG8cdKA2Y3cw7HpMkYiWTFV35GNBXHOeLKiY7tBesxke985o3ns+NLVH5OVre/1e8woRh71F15+FkNY9qG/NbXWKAS2zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nVh7VB2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FBCC4CECD;
+	Fri,  1 Nov 2024 05:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730440764;
+	bh=bsORacs+XRwGPNAegb+drBs5u+8UfBOTbC/pTO7y+6M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nVh7VB2enHZJz2ft2TzPQ6heULNsJCk/uXeTpmnaSnRpCSLN3C+NK1iX/bEEpFt6h
+	 2W87GxwcpSE6QV0JhzJLL4ZPyLIxWmPUk7IrZ91GhE+SvdErRpmR/bKPeYJBzVWBSF
+	 5nmnuQ13mIjRxAt+KZj4/QkjkcQmspvZyLu7/XXJPbnJHrzicUmDx00kFnWxVUVJj4
+	 LSTrz3fUPlaveJozHNHqe0b/UlpNOBQKepLyfu944Z3dH6lAnjZYmBry1ulIq0rRON
+	 sLVHcMBAgmPa9jd5wnj5e9StQtSQNO+qIdFGgclPRPr1SvHWBeC6itjriO85bJDkOQ
+	 tbuAf+2fGkghw==
+From: William Breathitt Gray <wbg@kernel.org>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	William Breathitt Gray <william.gray@linaro.org>,
+	linux-iio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] counter: stm32-timer-cnt: fix device_node handling in probe_encoder()
+Date: Fri,  1 Nov 2024 14:59:18 +0900
+Message-ID: <173044055547.648361.10787383264184720457.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241027-stm32-timer-cnt-of_node_put-v1-1-ebd903cdf7ac@gmail.com>
+References: <20241027-stm32-timer-cnt-of_node_put-v1-1-ebd903cdf7ac@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241024-adventurous-imaginary-hornet-4d5c46-mkl@pengutronix.de>
- <CAOoeyxUhnyYG3p+DQJG-tvU5vc5WYQZLLqCXW=uPcXTjq2gVfw@mail.gmail.com>
- <20241025-truthful-honest-newt-c371c8-mkl@pengutronix.de> <CAOoeyxUEf5vjqL67WjR-DbrhE0==2hqHLEyZ5XEBhEfMfQ5pag@mail.gmail.com>
- <20241025-spirited-nocturnal-antelope-ce93dd-mkl@pengutronix.de>
- <CAOoeyxW5QwPMGAYCWhQDtZwJJLG5xj9HXpL3-cduRSgF+4VHhg@mail.gmail.com>
- <20241028-uptight-modest-puffin-0556e7-mkl@pengutronix.de>
- <CAOoeyxU1r3ayhNWrbE_muDhA0imfZYX3-UHxSen9TqsTrSsxyA@mail.gmail.com>
- <20241028-observant-gentle-doberman-0a2baa-mkl@pengutronix.de>
- <CAOoeyxWh1-=NVQdmNp5HBzf1YPo9tQdh=OzUUVFmvC-F7sCHWg@mail.gmail.com> <20241029-fresh-dinosaur-of-penetration-d695ff-mkl@pengutronix.de>
-In-Reply-To: <20241029-fresh-dinosaur-of-penetration-d695ff-mkl@pengutronix.de>
-From: Ming Yu <a0282524688@gmail.com>
-Date: Fri, 1 Nov 2024 13:35:08 +0800
-Message-ID: <CAOoeyxW4Wrnm=R=ygmF1pMvheP++h6aL_rEDOGTxg--ME2PNyw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/9] mfd: Add core driver for Nuvoton NCT6694
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: tmyu0@nuvoton.com, lee@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl, 
-	andi.shyti@kernel.org, mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	jic23@kernel.org, lars@metafoo.de, ukleinek@kernel.org, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-rtc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=663; i=wbg@kernel.org; h=from:subject:message-id; bh=MbN8O+C+5FEujeJNUwaWgYqQSEexIAnJ9ZIqUSvRh8g=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDOkquc+e8rirfDxrXaT1uHa6lYSF0KIjb/autf6fMKMth bvYJflDRykLgxgXg6yYIkuv+dm7Dy6pavx4MX8bzBxWJpAhDFycAjCRdxMYGTamMhRzCfX8PB7v sq/R65r1lmq3+ZazZ4n3fSt9cnDGV1tGhpurmXXXnq+9fmCXyx7J5mUT/63wM+6aqJei7HLGaEV JIAsA
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
+Content-Transfer-Encoding: 8bit
 
-> > Okay, so each child device may allocate a buffer like this during probe():
-> > priv->xmit_buf = devm_kcalloc(dev, MAX_PACKET_SZ, sizeof(unsigned char),
-> > GFP_KERNEL), right?
->
-> basically yes, probably devm_kzalloc() or embed it into the priv struct
-> directly with ____cacheline_aligned:
->
-> | https://elixir.bootlin.com/linux/v6.11.5/source/drivers/net/can/spi/mcp251xfd/mcp251xfd.h#L498
->
-> The size of the driver's RX and TX buffers depend on what they want to
-> send and expect to receive. The next step would be to create structs the
-> describe the RX and TX buffers for each driver. If you have a common
-> header between each driver, create that first.
->
-> regards,
-> Marc
->
 
-Understood, I'll make these modifications in the next patch.
+On Sun, 27 Oct 2024 13:26:49 +0100, Javier Carrasco wrote:
+> Device nodes accessed via of_get_compatible_child() require
+> of_node_put() to be called when the node is no longer required to avoid
+> leaving a reference to the node behind, leaking the resource.
+> 
+> In this case, the usage of 'tnode' is straightforward and there are no
+> error paths, allowing for a single of_node_put() when 'tnode' is no
+> longer required.
+> 
+> [...]
 
-Thanks,
-Ming
+Applied, thanks!
+
+[1/1] counter: stm32-timer-cnt: fix device_node handling in probe_encoder()
+      commit: 147359e23e5c9652ff8c5a98a51a7323bd51c94a
+
+Best regards,
+-- 
+William Breathitt Gray <wbg@kernel.org>
 

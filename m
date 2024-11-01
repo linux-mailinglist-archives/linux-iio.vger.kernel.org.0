@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-11743-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11744-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CB49B8C33
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 08:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BD49B8C37
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 08:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDD3D1C21F84
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 07:46:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CC2F1C21DED
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 07:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CED6155330;
-	Fri,  1 Nov 2024 07:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F67155C8A;
+	Fri,  1 Nov 2024 07:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EouYWk0K"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bJRS5Dw5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1D5154BEC
-	for <linux-iio@vger.kernel.org>; Fri,  1 Nov 2024 07:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1983A155303
+	for <linux-iio@vger.kernel.org>; Fri,  1 Nov 2024 07:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730447193; cv=none; b=TXpfJzYWNTFpNT77F8XfY4i9c/Y1RPMxSj7RWqb5Q3LWFmAnc+MABQF/24Dg9D0zhqB2XpUR4IRzDCo/0/QOhP9MgJk+NoIAoTVqgmH9A9CkvOem3VfWwv2qbdnBBAR1sTv1WmESjU4OAtJfYUrAkD8tny7MyYGZ9qbu0Rwo4Vg=
+	t=1730447196; cv=none; b=ND/Ucm3tdlTVe3e5iA1d8dcK+cIdgB2j/2wRAory0NO6O3+ndz6BcIy28XZpm7gwzpfSFMPSaFG9pxQz3W7Ip5EbD23smgnN9sAKNpzlOoeDNUaR4ZFt+2evMUc9Wt9j8s+nwwkL1bfo+onc2jeTbEyn7qauJAHs6Ob32PdDcCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730447193; c=relaxed/simple;
-	bh=7oyqoYAZJ0gGfbJjT6X/Fu83uh1qveXspIJipeFQvcM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WEswcC12/aQ5gYi6InMFxmGnq3v5Pcf0HdOAaxY4R+7Zpq0PwgTh4D0Bt/yZmPY8awnGQd1J1Sw0BW3aTUo6Nd39FOxDaSj9C41vJSGwJRziJnoKDFngg1iSTtQ7/LlW0QrondFzB5AylgiUjvnYRl42ICl6Is2aiLUg2i8YfzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EouYWk0K; arc=none smtp.client-ip=209.85.128.170
+	s=arc-20240116; t=1730447196; c=relaxed/simple;
+	bh=E5IKpWlBrs6BrNxKGj8gL69lGAFGxkNE1Vi/39M/35Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=s1dOmKlMuKk1AF/RQZj0Yn68Vr3SaYLH0tFSHkApSa4ZgInB6ixNSNAuibZMKeBgnaR1/NJcEDVM5Yt8CP9DewulCRF3Gy8Uy8Sg6fr1PfnpuFF7B+G3hzS1POaievZRaQVF8WMrFXX9uuyef3x8a9OkzzsLE/CEtJ5XPn5Le0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bJRS5Dw5; arc=none smtp.client-ip=209.85.219.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6e390d9ad1dso14731367b3.3
-        for <linux-iio@vger.kernel.org>; Fri, 01 Nov 2024 00:46:31 -0700 (PDT)
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6cbe700dcc3so11223916d6.3
+        for <linux-iio@vger.kernel.org>; Fri, 01 Nov 2024 00:46:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1730447191; x=1731051991; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x3aKq6CnvOZI2TVkmKTbWKWHY8LJPTSe8Jutza5MdE4=;
-        b=EouYWk0Kt6MmXM4jynRnZPWLkEahQCW99d5/iu+Nbzw7I4Gm1fj7NrQ6ksELFtSe7L
-         woEtAQYgO1qK0lRlfkvYApjnm2jMfvm1xp2H+UNtf85TSloUFLjfvcaDSJv3KbEbh3mz
-         6sjlgzKTHIEymmBLc2xthYD4YBc36W9MVMEbU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730447191; x=1731051991;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=chromium.org; s=google; t=1730447193; x=1731051993; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=x3aKq6CnvOZI2TVkmKTbWKWHY8LJPTSe8Jutza5MdE4=;
-        b=gNSePzf4st4UI8bv/rcmpqfEUdAG84pJ99jzAz+qXWrxkNiNo1OI8KuWpeoqM4l3WB
-         Yfj3t/tQyCQc3Y/r/lw+kpPrZQV7U0p7vmaVHkfDrDnKDixuiWdGY2Fj1Yggxt5edWCY
-         KIDwXdEdiHRbP+kQbBXqzbONXlxadF8HvonWEoERSbuzgyJ4GpbFfBL6F8SefTWSjTMj
-         dR8lZASk1Tjqbhy4b9SpQkPVrKSblWofozRx6siUiBnKPIO4D5ZXIi+UHtIv3DnS0CpG
-         ae6PX6qctVVJ/4qFACpd/mnSg2y8zjCFNBJwJWmMSbVacLL0bCQO/DeAWrFdMow5IMAs
-         IxRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW2NDMXMY54WycUipe7ryxJ8filTaM2Y7oj3DtUNr7xTa/R6+lyz+nQTITnrNUUWklpEFv8Aya4kXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0Uh52sxy3SoqkvavzGWLP84fcl+tF8T9TvKaTKG+CWCYKPXRw
-	68+TdZm3g4JUadhCzqDFcWCLHmg0xLOoeFbjQMcB/VLKK6Xzc/B7XY1Kt0ruLQ==
-X-Google-Smtp-Source: AGHT+IH20R7XRxWI1RSTumQ0lC2tj6dVSIE7SoL2mi9HjVgdEmX6PF6aQq/YAwxBUE/8KKjA26yrtQ==
-X-Received: by 2002:a05:690c:6506:b0:6dd:b9d4:71a1 with SMTP id 00721157ae682-6ea52378522mr72312107b3.16.1730447190788;
-        Fri, 01 Nov 2024 00:46:30 -0700 (PDT)
+        bh=XRIQcTwMhYqGctEPu/xoF4uEWBP35j2ZdxAtYHSbb2E=;
+        b=bJRS5Dw5Wtylh77JiND2eJPvXo38bl8BLLLMdbb+3nFGYV3u/RcUJPmbPrUZoj4WAJ
+         fUnuue8zJWyjeeoyatVZr0HwGvzULX8LjhbjTseKVW+lz8Nmxzzz0t8QwoVXvl1qAweE
+         hZ7lnIkXc2vGSNqH4hKHMa72JHo9Hqyqn8iVM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730447193; x=1731051993;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XRIQcTwMhYqGctEPu/xoF4uEWBP35j2ZdxAtYHSbb2E=;
+        b=H3LliEWb59IzWaDMzkFshYCKSK6q1p/6VA0vxQgpijlUBbKEwovhFiM3/FMupHkxFt
+         JXTXhH6lSxwJQ97IwzmJogAJJDX8OXoNToU/EoRl40uoAVp5rAFoY3+2js9zIVZK/1SK
+         bh3ks8u6VQkw2t551+5ffiU7rjB0wrk6Zd1oGcotANWfpbSPJ2NouCX8VQhVAQZtWhI4
+         l1QQPOyIOpGNchIsatrnrN3DmpRzyW/6+BDlkNLX6DTEXUhMumCPtuE/gJFmzNmw5Bb4
+         cDhxTLonIZKu0fLmRHyph0ljn3R191e5NCIH6QQi6bSiIVnlK4v8ogNTcu3ZImZc0MG4
+         BsFw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJpZKsvbie6ejbpBNZn2wvIErmAiF9EpQXnX7PwokQX9DeuY6il3ENhBaAH1LPh3aH0M+h6LlsuSs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCDNJdbAoFhto1vycdn1wiOu/xFQ/upR8K5OwkRW81A3Sa6/GE
+	rd6N7NBoHo/uhraS/WAzEc7df4ktVZmhWfCDNfLnh75nGE8lBDKUICXnHuJ9gQ==
+X-Google-Smtp-Source: AGHT+IH85FO08smW7QUBXDwLWXCmrXXu+RueVAcXXNTAt6+T1hoAvANzKfmJkD42BgY3VSx0XSfq7Q==
+X-Received: by 2002:a05:6214:54c3:b0:6cd:f236:d127 with SMTP id 6a1803df08f44-6d185683724mr358670136d6.2.1730447192949;
+        Fri, 01 Nov 2024 00:46:32 -0700 (PDT)
 Received: from denia.c.googlers.com (189.216.85.34.bc.googleusercontent.com. [34.85.216.189])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d35415b1casm16444236d6.78.2024.11.01.00.46.28
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d35415b1casm16444236d6.78.2024.11.01.00.46.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2024 00:46:29 -0700 (PDT)
+        Fri, 01 Nov 2024 00:46:31 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH v3 0/5] iio: hid-sensors-prox: Add support for more
- channels
-Date: Fri, 01 Nov 2024 07:46:26 +0000
-Message-Id: <20241101-hpd-v3-0-e9c80b7c7164@chromium.org>
+Date: Fri, 01 Nov 2024 07:46:27 +0000
+Subject: [PATCH v3 1/5] iio: hid-sensors: Add proximity and attention IDs
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -74,11 +74,10 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFOHJGcC/13MQQ6CMBCF4auQrq1hhiLVlfcwLpBO6SygpNVGQ
- 7i7BWNiXL7JfP8sIgWmKE7FLAIljuzHPKpdITrXjj1JNnkLLFFBiZV0k5Fk6FY1FqztlMifUyD
- Lz61yuebtON59eG3RBOv169XmE8hSYgtYa405o8+dC37gx7D3oRdrIuEv0x+GmYG2B2qOUCvT/
- LFlWd4kZroG0AAAAA==
+Content-Transfer-Encoding: 8bit
+Message-Id: <20241101-hpd-v3-1-e9c80b7c7164@chromium.org>
+References: <20241101-hpd-v3-0-e9c80b7c7164@chromium.org>
+In-Reply-To: <20241101-hpd-v3-0-e9c80b7c7164@chromium.org>
 To: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
  Jonathan Cameron <jic23@kernel.org>, 
  Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
@@ -88,46 +87,47 @@ Cc: Harvey Yang <chenghaoyang@google.com>, linux-input@vger.kernel.org,
  Ricardo Ribalda <ribalda@chromium.org>
 X-Mailer: b4 0.13.0
 
-EgisVision 620 provides two additional channels:
-- proximity
-- attention
+The HID Usage Table at https://usb.org/sites/default/files/hut1_5.pdf
+reserves:
 
-Add support for them.
+- 0x4b2 for Human Proximity Range
+Distance between a human and the computer. Default unit of
+measure is meters;
+https://www.usb.org/sites/default/files/hutrr39b_0.pdf
+
+- 0x4bd for Human Attention Detected
+Human-Presence sensors detect the presence of humans in the sensor’s
+field-of-view using diverse and evolving technologies. Some presence
+sensors are implemented with low resolution video cameras, which can
+additionally track a subject’s attention (i.e. if the
+user is ‘looking’ at the system with the integrated sensor).
+A Human-Presence sensor, providing a Host with the user’s attention
+state, allows the Host to optimize its behavior. For example, to
+brighten/dim the system display, based on the user’s attention to the
+system (potentially prolonging battery life). Default unit is
+true/false;
+https://www.usb.org/sites/default/files/hutrr107-humanpresenceattention_1.pdf
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
-Changes in v3:
-- Make attention CHAN_INFO_PROCESSED.
-- Fix comment style.
-- Multiply attention by 100 to make it a percentage.
-- Link to v2: https://lore.kernel.org/r/20241028-hpd-v2-0-18f6e79154d7@chromium.org
+ include/linux/hid-sensor-ids.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Changes in v2 (Thanks Jonathan):
-- Create new attention channel type.
-- Improve documentation for HID usages.
-- Link to v1: https://lore.kernel.org/r/20241024-hpd-v1-0-2a125882f1f8@chromium.org
+diff --git a/include/linux/hid-sensor-ids.h b/include/linux/hid-sensor-ids.h
+index 6730ee900ee1..8a03d9696b1c 100644
+--- a/include/linux/hid-sensor-ids.h
++++ b/include/linux/hid-sensor-ids.h
+@@ -30,6 +30,8 @@
+ #define HID_USAGE_SENSOR_PROX                                   0x200011
+ #define HID_USAGE_SENSOR_DATA_PRESENCE                          0x2004b0
+ #define HID_USAGE_SENSOR_HUMAN_PRESENCE                         0x2004b1
++#define HID_USAGE_SENSOR_HUMAN_PROXIMITY                        0x2004b2
++#define HID_USAGE_SENSOR_HUMAN_ATTENTION                        0x2004bd
+ 
+ /* Pressure (200031) */
+ #define HID_USAGE_SENSOR_PRESSURE                               0x200031
 
----
-Ricardo Ribalda (5):
-      iio: hid-sensors: Add proximity and attention IDs
-      iio: hid-sensors-prox: Factor-in hid_sensor_push_data
-      iio: Add channel type for attention
-      iio: hid-sensors-prox: Make proximity channel indexed
-      iio: hid-sensor-prox: Add support for more channels
-
- Documentation/ABI/testing/sysfs-bus-iio |   8 ++
- drivers/iio/industrialio-core.c         |   1 +
- drivers/iio/light/hid-sensor-prox.c     | 195 ++++++++++++++++++--------------
- include/linux/hid-sensor-ids.h          |   2 +
- include/uapi/linux/iio/types.h          |   1 +
- tools/iio/iio_event_monitor.c           |   2 +
- 6 files changed, 122 insertions(+), 87 deletions(-)
----
-base-commit: c2ee9f594da826bea183ed14f2cc029c719bf4da
-change-id: 20241023-hpd-edeb37f1ffc4
-
-Best regards,
 -- 
-Ricardo Ribalda <ribalda@chromium.org>
+2.47.0.163.g1226f6d8fa-goog
 
 

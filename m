@@ -1,99 +1,135 @@
-Return-Path: <linux-iio+bounces-11758-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11759-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738A99B8FD7
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 11:57:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3349B902E
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 12:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F2A11F22A1D
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 10:57:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 137FC1F22262
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 11:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374C0176FA2;
-	Fri,  1 Nov 2024 10:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC205199FB2;
+	Fri,  1 Nov 2024 11:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dbAjmW5C"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="CqPusi1I"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7801714BC;
-	Fri,  1 Nov 2024 10:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D51E14A62B;
+	Fri,  1 Nov 2024 11:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730458625; cv=none; b=VrlYo5ct5UYoFJZb0Lh27sCoCExzg+92BrpqBiGHfRgi+BClnRe1Xp/3xTwNVaFuNxk1LB9EtID9nWNZxEUJwIrb4Kb4zuqNXyxyY0ALvxJJr3VOMdR2P6ZeV8ZW9Zl6oZ/dZyBTumIyE5Uuv0Fs0JSZ4TFH0s/kezhdKRrKPq4=
+	t=1730460285; cv=none; b=pW00sETgEcbK8aSsLXmrUJF+r8bVwXseLFofEG4Ajgzz3umsoxk5901GKxuyFrgaRP56/u8lFAjCU8gj8ph3yfA6QQY4FLbB2XNS8pUoZ0ELfjvw5ynqIL5zdMkuHoSS0yN5YAlMwtHoVNyn3GsSI82qPITdwYixtC4eZojfE8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730458625; c=relaxed/simple;
-	bh=in+hn4D17+str9yWgKks8piJDUKpP4SgZMTxn5xT41g=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=ioFranc2e50lOW1UlqxkmEKBDO9ks714niKd4xM68OZXaBpgOMLygnaRkcYuB8L/GwqM3lqLSklPF3PVD0LdyvbAHN8SSDbLNwZS5vDz277KxlSfiNOcIyTkyZEFpdevUcvASRSGTu2AVM1ZycyVjvkIuboQFl5c8tmBgDzuwsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dbAjmW5C; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1730458561; x=1731063361; i=markus.elfring@web.de;
-	bh=in+hn4D17+str9yWgKks8piJDUKpP4SgZMTxn5xT41g=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=dbAjmW5CHzvdNrIFLygErgLmbeBdtghdhG8383EIgVzY8YNk34w3ZBvbr20610v3
-	 2BVwMwPC/07v92MZHz76oukcLbswvtIByKk3kdEjUDbyI/kn1dIpnSignD71Ef53A
-	 Zpy9ejCRFTK6d56ZIKKoQkdt/uaXnsEXXgAqxwYN9bdipmVKkJq1xflFPIs9tc/ib
-	 MsVPDWuINLhIJkw43kF/R31unIpLB4e+OaSL6ZMZigIzzceYQEOfbpNK30FBIDP1X
-	 Rkt6YzoYmRlIgu2LU3Rmc3TYB7Ytic77w2cmRK92pPq1HPZv4P7DVuGFvlXKpTHkY
-	 +wr41/I+2xWDA0cM2w==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1N4eGT-1toRjK27SJ-00vtmg; Fri, 01
- Nov 2024 11:56:01 +0100
-Message-ID: <568c32d4-c555-4512-8b93-637cde04d0d3@web.de>
-Date: Fri, 1 Nov 2024 11:56:00 +0100
+	s=arc-20240116; t=1730460285; c=relaxed/simple;
+	bh=53IWbInwjlO7Z5VBHcWpCMQqe7HNtwdsn8Flx18kno4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WmGoFScptbPNUBncKxGdCD0+CDSR3c22UE6+StE+LUJYxNcVJxp11MMTqn3AGfTenh/fKj2EUy0cttHoPLgYu1wv6pqVZOvVdfp3fRqMJ15vHNW+JT8fsyc2K9+5StcKlqpgx0UE4Y4/4J+DSduNL9AB7ynQlrDBBCKTAMi7MJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=CqPusi1I; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A16R460006546;
+	Fri, 1 Nov 2024 07:24:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=4ytrpuro3bSWG9Tt8uGzvDdhz3t
+	76ddrHBtHeXSYhV8=; b=CqPusi1I/vd9NYupPnGaEIjVHNKJFR5vjIyuNghzplz
+	4n6gcl+1ICB3rUlDoyZLDrHbpNe2Tj4NSlFxsPyfoJtebp0EPaCHdVIg44CbjKlz
+	JUKch4L6lAHt15XGzMM/MeJwONIpF5JMxV+IiVNIH9uWL6se15pZTxmtDwFPP8Dq
+	1VzjctAuuRTTezxEo9UWyQ4Lqy3+fjZwziUd/nkBdMscOQAVFxfG9sJUNS0xHL8p
+	NV965wyNclaOwqeYd7CjZOmYbbab/WiFyrCWIFPjYIrsYlXh9P1VA4kidnx3QSZJ
+	JdiIud+86mcg538MNptCd5K+ypefH2Dae3eKE0kyquA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 42k6yveu14-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Nov 2024 07:24:38 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4A1BObXX038436
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 1 Nov 2024 07:24:37 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 1 Nov 2024
+ 07:24:37 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 1 Nov 2024 07:24:37 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.114])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4A1BOP8i016631;
+	Fri, 1 Nov 2024 07:24:27 -0400
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <conor+dt@kernel.org>, <dlechner@baylibre.com>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH 0/7] *** Add support for AD485x DAS Family ***
+Date: Fri, 1 Nov 2024 13:23:52 +0200
+Message-ID: <20241101112358.22996-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linux-iio@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Dan Carpenter <dan.carpenter@linaro.org>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-References: <20241101081203.3360421-2-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 1/4] iio: light: ltr501: Assing ddata to NULL
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20241101081203.3360421-2-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:NlV6rrsWjeuUspjnIvOegbcU/y9LP6vJyl+59v+9NCfgfnmsy9c
- /3YjV7irkODux1aZ5Eh/taHG7b4NkWVCsncU4+RN7CpMrNXwnvureSI+PHrZD+3QAr6ELvn
- JJAiOuV+r6yODkgxjYWycajnSNcdhDJaKbS37JD00Dn+L44R1jX9hPckMjrWVloO8Jppr3t
- QRhHGRw6j+hRg2NhNbNIw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:I/X1U8sCkqw=;LP4VVBfK7LAVgpDtLofSop8GMl6
- bJEwNL5Xg//dCgIRwzyUR/n1R/MskXSC9h1a7SfPR665W0SJJgMLOhouxxMM7Si4ULxBovomH
- 1BzAJo4RfcL1DfxAjmvwSxjvGNlwXEEngngBi8q5kB+9atxQO804SbTJI68Evd94bPhtqRKsi
- eaVpL4Q+Ujy3B3o+2Fmqaz77LCuh5kv4sBUJBXi637rZ8GHWgbMM7TtFkzQ1JcmQaOrxr1M1Z
- DPET7KCro3SXOfdChiu59JmTBr8u7HYyMwG1Is/1pAfBz/sbO92U2ucjdmBmt9sMWKOymP1vE
- xExEpKxjcWmgI7yzJ3l07drX1+7i2OHmCiqydngrXlWfQzYtNDzwyL4oMneZ3iCFGNYgPuuxU
- H6lmicuxaoc3ibZcWJGm0NtVZeCLrTeP2XTZ0l59SiAqTb7G7OS3BPqhS7Q72PxKvA0aDdADB
- ycBndIpgNNal8hpBfITwbnex/3tSIfMPbDTAqGAYF+7hpGVHDeUid7TYDTP/zRPMhJnUZyvqa
- O64oik5J2GHx7LFG76ifpj2mKusGbpM/IFrZaAzlh/Z2FRtfpEWTRMD+BQx9121+qAG9xafr2
- mmp4s4PN9tWZ+j/V6x7A1KuaRrT4K/nLLifu4e32lgcsTX7RMeot4kbNpYK20o58+xt7GBBJk
- wuPZNGrEzfgHG8lYAFVigtxKUWR0bmtmyvuYR1TUJ4NCQw4AmGoBtsGxG4KSh1cegSDQcl24J
- ar5KMnQMRhWPl8S1IkYRPln1xHsxT6nSabqu0X6zW0ok+kxxsDLUw4QPmzUouhEvdTTlLOJeq
- ODAvLwPAmLnuJCyml4EwpBqA==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: Vvu0rksF9wL1-mYRZm3GyIPdVvirzoH7
+X-Proofpoint-GUID: Vvu0rksF9wL1-mYRZm3GyIPdVvirzoH7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=999
+ lowpriorityscore=0 clxscore=1015 suspectscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 phishscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411010082
 
-> When iio_get_acpi_device_name_and_data() fails, the ddata may be left
-> uninitialised. Initialise it to NULL.
+Add support for AD485X fully buffered, 8-channel simultaneous sampling,
+16/20-bit, 1 MSPS data acquisition system (DAS) with differential, wide
+common-mode range inputs.
 
-Would you like to use the summary phrase =E2=80=9CAssign NULL to ddata in =
-ltr501_probe()=E2=80=9D accordingly?
+Some particularities:
+1. softspan - the devices support multiple softspans which are represented in iio
+              through offset/scale. The current handling implies changing both
+              the scale and the offset separately via IIO, therefore in order to
+              properly set the softspan, each time the offset changes the softspan
+              is set to the default value. And only after changing also the scale
+              the desired softspan is set. This is the approach we are suggesting
+              since we need the softspan configurable from userspace and not from
+              devicetree.
 
-Regards,
-Markus
+2. packet format - Data provided on the CMOS and LVDS conversion data output buses
+                   are packaged into eight channel packets. This is currently handled
+                   as extended info.
+
+Antoniu Miclaus (7):
+  iio: backend: add API for interface get
+  iio: backend: add support for data size set
+  iio: adc: adi-axi-adc: add interface type
+  iio: adc: adi-axi-adc: set data format
+  dt-bindings: iio: adc: add ad458x
+  iio: adc: ad485x: add ad485x driver
+  Documentation: ABI: testing: ad485x: add ABI docs
+
+ .../ABI/testing/sysfs-bus-iio-adc-ad485x      |   14 +
+ .../bindings/iio/adc/adi,ad485x.yaml          |   82 ++
+ drivers/iio/adc/Kconfig                       |   12 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/ad485x.c                      | 1061 +++++++++++++++++
+ drivers/iio/adc/adi-axi-adc.c                 |   44 +
+ drivers/iio/industrialio-backend.c            |   45 +
+ include/linux/iio/backend.h                   |   13 +
+ 8 files changed, 1272 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad485x
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad485x.yaml
+ create mode 100644 drivers/iio/adc/ad485x.c
+
+-- 
+2.46.0
+
 

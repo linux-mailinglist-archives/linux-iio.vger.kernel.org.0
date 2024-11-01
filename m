@@ -1,51 +1,52 @@
-Return-Path: <linux-iio+bounces-11792-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11793-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9138B9B948A
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:37:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C092B9B94A8
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56039281A46
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 15:37:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41C801F2218E
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 15:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A271C761F;
-	Fri,  1 Nov 2024 15:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E491C7B9C;
+	Fri,  1 Nov 2024 15:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYC00OtJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVs0UfvS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468D21C729B;
-	Fri,  1 Nov 2024 15:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C8B2CAB;
+	Fri,  1 Nov 2024 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730475430; cv=none; b=ClSwbqC2HSeSXmesApoNx8wJyhTfkRPbKql5XpAA+7TFWgaXAt0G2uXRdS46N4d/syRoOXCoJIlyKkTgAQiQyvWiaRxKk9Lp3VxvxUXkz707EL6BRbhbHETpnbzwz8jQeQCNqE4vcQygVZbPLyndE+57mQ0yjbuysdvspsYCCAE=
+	t=1730475905; cv=none; b=OAn+tYqslvWiI2deUUkmXgRM8IlHLBuiUCshsNB19SwQiQhCGf0H9RnyNesBOSq3QQ0wm1d7J18ouE53PvHtIips8M/KAQUjE0GKuqXbPatOrvO8Cf9bzyR6YSccboIaONReNpZBddoLt0be4ybejp5ctwp/hNdVyXet3hxhwAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730475430; c=relaxed/simple;
-	bh=7A7xoAlxFzqvHKjOX7THt9g8OUG8yAzJ9stzmiv/cWs=;
+	s=arc-20240116; t=1730475905; c=relaxed/simple;
+	bh=t1pJkvv5ArO95EBUpDZbdsLDepiY0M1etPEVdzcYgMM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Io4FYKk/toMiPDIZ5s8QA7qO988qKnmPyf7BbsDksL4tTFQDiPvGiV/oeBgp0kKaJTwwFdiTWchc+BdskX3lRs569Qusu98aGL1P/eFRBYgXlSQyejvggHKFCkfe6rwqZocBN3GIm/7FqpxCHJK3N6gk+PNh0BXL07rs03T/+jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYC00OtJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB34C4CED1;
-	Fri,  1 Nov 2024 15:37:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZuTpVe0gHuiW9bAKxx+aqJGGjFtbOLyUJEG+mp02mb/svoPhoPjuMaJv10/0f+XIhchqbu4f5bFHrOfDKOqBhPn76mA07A5cFuONakg/ZSrrmpFIFQHwf2sXZ3MDgvhgIjGMtUC+xc55Fe5nCOSmL0t7qhzp8moogFIOk57o4mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVs0UfvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA75C4CECD;
+	Fri,  1 Nov 2024 15:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730475429;
-	bh=7A7xoAlxFzqvHKjOX7THt9g8OUG8yAzJ9stzmiv/cWs=;
+	s=k20201202; t=1730475904;
+	bh=t1pJkvv5ArO95EBUpDZbdsLDepiY0M1etPEVdzcYgMM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DYC00OtJJLTmceKdnDnDi/ze3IYHInLzbnPJwblyMVaZ6/79mK5qNn1SBTsLb2THP
-	 wEREqCfpvTEaW5eef9G+TzESdyHDAqBsE1oTqLFuHosJ88c3NBvKmU+YtSnZ3oKrUh
-	 Uzl4tqNObZKVsoPUoGqXbC6FT/AX2y+R0jCD16AQbRx0ABdAgP7+77wWIBR5vnJnZo
-	 aUi86jXogCaDebDgWfXyKeM26AwlXLz6IkVtcmzqMBtbVKOyZl82LVACQfOuP4p01+
-	 blVT77UVEHoRlXfrR2z5xR7w4Na1L+PRK7eYp0wJbonYPlKOCeuifbpSGEgls0PJ2w
-	 Y760sWGMOHvSw==
-Date: Fri, 1 Nov 2024 15:36:56 +0000
+	b=SVs0UfvSjddoObL1YP4TcTpN6+JMKTAlMOtHqoNu/N5W++S8ZoFPFicaoCsigBZWY
+	 tzsC/HX9IzAFBDK7yJ0jUUgykge+QshPJphUaXyfeUUF+JuEpS/o/COytqjHhw6bfk
+	 Puqx0C4Dn8D1jyyOrR697msu4an59gWO287LimKF2sfZWd8QG8Johu2Ruz2CxZ96Mr
+	 96oWxW1+Q0h3FQJIq3Euy8DNRcTjyRLRpuV3HXN/mRruETfNZ8TVV/wuABpuviyGn+
+	 5gMXDGfb2eU9CbNsoC5MxD6+lYem2NKv3+WKaecfvPJz1LBb1ZEvgNrUSeIb6LtuMV
+	 +upizTDVi/RKg==
+Date: Fri, 1 Nov 2024 15:44:51 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Anshul Dalal <anshulusr@gmail.com>, Javier Carrasco
+To: David Lechner <dlechner@baylibre.com>
+Cc: Julien Stephan <jstephan@baylibre.com>, Mudit Sharma
+ <muditsharma.info@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Anshul
+ Dalal <anshulusr@gmail.com>, Javier Carrasco
  <javier.carrasco.cruz@gmail.com>, Jean-Baptiste Maneyrol
  <jean-baptiste.maneyrol@tdk.com>, Michael Hennerich
  <Michael.Hennerich@analog.com>, Cosmin Tanislav
@@ -62,12 +63,13 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
  <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
-Subject: Re: [PATCH v2 05/15] iio: proximity: sx9500: simplify code in
- write_event_config callback
-Message-ID: <20241101153656.43e27240@jic23-huawei>
-In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-5-2bcacbb517a2@baylibre.com>
+Subject: Re: [PATCH v2 06/15] iio: light: adux1020: write_event_config: use
+ local variable for interrupt value
+Message-ID: <20241101154451.227defba@jic23-huawei>
+In-Reply-To: <ef4fe230-b7fb-4f7e-9173-ae85d305e9ae@baylibre.com>
 References: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
-	<20241031-iio-fix-write-event-config-signature-v2-5-2bcacbb517a2@baylibre.com>
+	<20241031-iio-fix-write-event-config-signature-v2-6-2bcacbb517a2@baylibre.com>
+	<ef4fe230-b7fb-4f7e-9173-ae85d305e9ae@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -76,51 +78,121 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 31 Oct 2024 16:27:00 +0100
-Julien Stephan <jstephan@baylibre.com> wrote:
+On Thu, 31 Oct 2024 11:27:45 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> iio_ev_state_store is actually using kstrtobool to check user
-> input, then gives the converted boolean value to the write_event_config
-> callback.
-> 
-> Remove useless code in write_event_config callback.
-> 
-> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Applied and pushed out as testing. Still time for other reviews if anyone
-cares to take a look.
+> On 10/31/24 10:27 AM, Julien Stephan wrote:
+> > state parameter is currently an int, but it is actually a boolean.
+> > iio_ev_state_store is actually using kstrtobool to check user input,
+> > then gives the converted boolean value to write_event_config.  The code
+> > in adux1020_write_event_config re-uses state parameter to store an
+> > integer value. To prepare for updating the write_event_config signature
+> > to use a boolean for state, introduce a new local int variable.
+> >=20
+> > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> > ---
+> >  drivers/iio/light/adux1020.c | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/light/adux1020.c b/drivers/iio/light/adux1020.c
+> > index 2e0170be077aef9aa194fab51afbb33aec02e513..db57d84da616b91add8c5d1=
+aba08a73ce18c367e 100644
+> > --- a/drivers/iio/light/adux1020.c
+> > +++ b/drivers/iio/light/adux1020.c
+> > @@ -505,7 +505,7 @@ static int adux1020_write_event_config(struct iio_d=
+ev *indio_dev,
+> >  				       enum iio_event_direction dir, int state)
+> >  {
+> >  	struct adux1020_data *data =3D iio_priv(indio_dev);
+> > -	int ret, mask;
+> > +	int ret, mask, val;
+> > =20
+> >  	mutex_lock(&data->lock);
+> > =20
+> > @@ -526,12 +526,12 @@ static int adux1020_write_event_config(struct iio=
+_dev *indio_dev,
+> >  			mask =3D ADUX1020_PROX_OFF1_INT;
+> > =20
+> >  		if (state)
+> > -			state =3D 0;
+> > +			val =3D 0;
+> >  		else
+> > -			state =3D mask;
+> > +			val =3D mask;
+> > =20
+> >  		ret =3D regmap_update_bits(data->regmap, ADUX1020_REG_INT_MASK,
+> > -					 mask, state);
+> > +					 mask, val);
+> >  		if (ret < 0)
+> >  			goto fail;
+> > =20
+> >  =20
+>=20
+> Instead of introducing `val`, I would rewrite this as:
+>=20
+> 	if (state)
+> 		ret =3D regmap_clear_bits(...);
+> 	else
+> 		ret =3D regmap_set_bits(...);
+>=20
+Good idea.  Rather than go around again and potentially stall the end of th=
+is series.
+I made that change whilst applying.  Shout if either of you doesn't
+like the result. Diff doesn't do a perfect job on readability (it does
+if I add a line break but then the code looks worse in the end!)
 
-Thanks,
+=46rom 06a1ca816450d1b5524f6010581a83ab9935d51b Mon Sep 17 00:00:00 2001
+From: Julien Stephan <jstephan@baylibre.com>
+Date: Thu, 31 Oct 2024 16:27:01 +0100
+Subject: [PATCH] iio: light: adux1020: write_event_config: use local variab=
+le
+ for interrupt value
 
-Jonathan
+state parameter is currently an int, but it is actually a boolean.
+iio_ev_state_store is actually using kstrtobool to check user input,
+then gives the converted boolean value to write_event_config.  The code
+in adux1020_write_event_config re-uses state parameter to store an
+integer value. To prepare for updating the write_event_config signature
+to use a boolean for state, introduce a new local int variable.
 
-> ---
->  drivers/iio/proximity/sx9500.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
-> index 3f4eace05cfc6a4679fe82854dc059aa4a710d6d..e3da709424d5b2bd4e746df7adc4a4969e62f2a6 100644
-> --- a/drivers/iio/proximity/sx9500.c
-> +++ b/drivers/iio/proximity/sx9500.c
-> @@ -551,7 +551,7 @@ static int sx9500_write_event_config(struct iio_dev *indio_dev,
->  
->  	mutex_lock(&data->mutex);
->  
-> -	if (state == 1) {
-> +	if (state) {
->  		ret = sx9500_inc_chan_users(data, chan->channel);
->  		if (ret < 0)
->  			goto out_unlock;
-> @@ -571,7 +571,7 @@ static int sx9500_write_event_config(struct iio_dev *indio_dev,
->  	goto out_unlock;
->  
->  out_undo_chan:
-> -	if (state == 1)
-> +	if (state)
->  		sx9500_dec_chan_users(data, chan->channel);
->  	else
->  		sx9500_inc_chan_users(data, chan->channel);
-> 
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Link: https://patch.msgid.link/20241031-iio-fix-write-event-config-signatur=
+e-v2-6-2bcacbb517a2@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/light/adux1020.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/iio/light/adux1020.c b/drivers/iio/light/adux1020.c
+index 2e0170be077a..06d5bc1d246c 100644
+--- a/drivers/iio/light/adux1020.c
++++ b/drivers/iio/light/adux1020.c
+@@ -526,12 +526,11 @@ static int adux1020_write_event_config(struct iio_dev=
+ *indio_dev,
+ 			mask =3D ADUX1020_PROX_OFF1_INT;
+=20
+ 		if (state)
+-			state =3D 0;
++			ret =3D regmap_clear_bits(data->regmap,
++						ADUX1020_REG_INT_MASK, mask);
+ 		else
+-			state =3D mask;
+-
+-		ret =3D regmap_update_bits(data->regmap, ADUX1020_REG_INT_MASK,
+-					 mask, state);
++			ret =3D regmap_set_bits(data->regmap,
++					      ADUX1020_REG_INT_MASK, mask);
+ 		if (ret < 0)
+ 			goto fail;
+=20
+--=20
+2.46.2
+
+
+
+>=20
+>=20
 
 

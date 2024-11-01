@@ -1,57 +1,73 @@
-Return-Path: <linux-iio+bounces-11786-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11787-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6C89B945A
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:24:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122439B9470
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 16:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3378BB21552
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 15:24:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 957051F21B26
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Nov 2024 15:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3BB1C68A6;
-	Fri,  1 Nov 2024 15:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588931AA7A3;
+	Fri,  1 Nov 2024 15:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RbLYIlFF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a1uOO8A9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C2C1B86F7;
-	Fri,  1 Nov 2024 15:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8367482;
+	Fri,  1 Nov 2024 15:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730474671; cv=none; b=uuDOYn8R0GiRXISdrwtnM1oa6ICAwPGx93Z/qT9DD7UiVEaAb9jkUxOHBy/itNhrh64a8chPNiWcynXVQ8jCEyBp4IU+PHnr3by8BNbMXrSZp8BQdVemb8nAb1qZT38NyYI7yl2SH6EvKlsMCKBP7sayPZFTKhwCKcSVpJIhlug=
+	t=1730475173; cv=none; b=Nl8i1u4g0C1wgMdHNqz4bhUzlThArb3aEaoCBDTQLTwMukIIPf01N9xWGP1nUbd3TR7LIGzcX70uNQde1inA5Cir0ikjfbI76DmVKZnbpKN66N1U4euYlT/KKCQvhsmQ2ltLsu5wFLUYP5RQqAKPO4ZA31Sqh3BQ2rqxPDro0zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730474671; c=relaxed/simple;
-	bh=+S9uvFzfwYUkLPFmzbYaKSolz7QHTYLAlHRB4F/Jz5M=;
+	s=arc-20240116; t=1730475173; c=relaxed/simple;
+	bh=eA6sS7IrYwjajIXFNQUoLe6SENHwun0qV7uEqwc+0NQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fi0aNCtA9y/+oZCbgZnJo15Qw3QszB+rTHBrl0hRV9F0oTWJhzTP3yeoihLyxIHU3vo5ONOyzGjwgB41M9z4MbCOGRLo8IZu0Y7cGP6I2KNAKcQl0X/eLxUpPZQ18U5zL1HghaWCASGy1R8rKs/IuHP2M2/MJM1q9aaBOXK+Sxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RbLYIlFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09812C4CECD;
-	Fri,  1 Nov 2024 15:24:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rGuZ7Ij2pgWU5YSNh9XZN5HFFKGE517/X8whfhzt5cvrQAEXx7xu2WyknJQQzvd3vmQbArnm26CPHQUf9VK/Dm5RTcBfLZ8i2qgYjEFBrySLBPa4+XRUk5IC1anbS/Jtqxhv1Y+UqCZEQPnQ5i0NV9WTPkovjUdYV6LCSURmffk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a1uOO8A9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB1BC4CECD;
+	Fri,  1 Nov 2024 15:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730474670;
-	bh=+S9uvFzfwYUkLPFmzbYaKSolz7QHTYLAlHRB4F/Jz5M=;
+	s=k20201202; t=1730475172;
+	bh=eA6sS7IrYwjajIXFNQUoLe6SENHwun0qV7uEqwc+0NQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RbLYIlFFlg+iCjVSQzBwXKClnwCAgt7P9vyJmV/U823clD0N4XffoPe1cS6ZzVeyC
-	 uMO1t+r4fd8VfYK5YwsVoBknIANWta1Sp/5F+16I8zgWmEmvBI4xPBGTAfwJgPVLt6
-	 tB2Z4mJ/+CsKiS1WTQ++jqXCYmnm+9c5aJRoc8WLFDoUiqY7o+WWkiCDEl9wi2Ok06
-	 qfb7sPjV3sHUAk8QDJNuugeGetqhdo40Vy6nEm991dg8szKWPRkR0/HI0iPGadD4KU
-	 ktrr8cjw+t+68y+mn9gYe4F2mPZDfXGsOlmaAXIODwMSc/XD/T6LofL/ENWvPlpgBn
-	 vyfKy2yzKe/DA==
-Date: Fri, 1 Nov 2024 15:24:23 +0000
+	b=a1uOO8A9pfM8WLPoRG18XrKF5+1d2xT6jefKmyNwGStSAA0rRVPyClCMwQDVlfo6b
+	 CDjhRIsoP4G+xNsWGL3JHgccSZszyX1hnFFvEAN1FO8gaQ42f/eGb8j25LmNcvvLyO
+	 kB85rKqEj/WKRrEOb4YhPSluUMA3GsCXeKRiXZXuQ+4psGlZoYwIHHtYahkQXmEm7p
+	 z5MTPLZFt0GdZM/I2VvZmUSqfNkidvpUKYIe+iyV0xmk7RR0BfLpo73LO+UecHnuuq
+	 +yrG59A8512fb+Tdxz9+RmU245U+91mCbX3NzCWd8VsdjI3gc+911PQWC5NpzRcyDe
+	 bKPCA6CZb8l8Q==
+Date: Fri, 1 Nov 2024 15:32:40 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Ramona Gradinariu
- <ramona.gradinariu@analog.com>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: accel: adxl380: fix raw sample read
-Message-ID: <20241101152423.7d3f4c94@jic23-huawei>
-In-Reply-To: <20241101095202.20121-1-antoniu.miclaus@analog.com>
-References: <20241101095202.20121-1-antoniu.miclaus@analog.com>
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Mudit Sharma <muditsharma.info@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Anshul Dalal <anshulusr@gmail.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>, Ramona Gradinariu
+ <ramona.gradinariu@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Dan Robertson <dan@dlrobertson.com>, Marcelo
+ Schmitt <marcelo.schmitt@analog.com>, Matteo Martelli
+ <matteomartelli3@gmail.com>, Anand Ashok Dumbre
+ <anand.ashok.dumbre@xilinx.com>, Michal Simek <michal.simek@amd.com>,
+ Mariel Tinaco <Mariel.Tinaco@analog.com>, Jagath Jog J
+ <jagathjog1996@gmail.com>, Lorenzo Bianconi <lorenzo@kernel.org>, Subhajit
+ Ghosh <subhajit.ghosh@tweaklogic.com>, Kevin Tsai <ktsai@capellamicro.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Benson Leung
+ <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, chrome-platform@lists.linux.dev
+Subject: Re: [PATCH v2 01/15] iio: light: ltr390: simplify code in
+ write_event_config callback
+Message-ID: <20241101153240.26c6c5ea@jic23-huawei>
+In-Reply-To: <20241031-iio-fix-write-event-config-signature-v2-1-2bcacbb517a2@baylibre.com>
+References: <20241031-iio-fix-write-event-config-signature-v2-0-2bcacbb517a2@baylibre.com>
+	<20241031-iio-fix-write-event-config-signature-v2-1-2bcacbb517a2@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,38 +78,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 1 Nov 2024 11:52:01 +0200
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Thu, 31 Oct 2024 16:26:56 +0100
+Julien Stephan <jstephan@baylibre.com> wrote:
 
-> The adxl380_read_chn function returns either a negative value in case an
-> error occurs or the actual sample.
+> iio_ev_state_store is actually using kstrtobool to check user
+> input, then gives the converted boolean value to the write_event_config
+> callback.
 > 
-> Check only for negative values after a channel is read.
+> Remove useless code in write_event_config callback.
 > 
-> Fixes: df36de13677a ("iio: accel: add ADXL380 driver")
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-ouch. Applied to the fixes-togreg branch of iio.git.
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Given these are good cleanup even without the final patches I'm going to
+pick them up as I go. Maybe I'll end up taking the lot though!
 
-Thanks,
+Applied this one.
+
+Thanks
 
 Jonathan
 
 > ---
->  drivers/iio/accel/adxl380.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/light/ltr390.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
-> index f80527d899be..b19ee37df7f1 100644
-> --- a/drivers/iio/accel/adxl380.c
-> +++ b/drivers/iio/accel/adxl380.c
-> @@ -1181,7 +1181,7 @@ static int adxl380_read_raw(struct iio_dev *indio_dev,
+> diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+> index 8e0a3fc3d923a6f65d2a629c87e7bfd35d82a507..3bdffb6360bcbaab4df1a2d39c8ea3813b5d6bd3 100644
+> --- a/drivers/iio/light/ltr390.c
+> +++ b/drivers/iio/light/ltr390.c
+> @@ -558,10 +558,7 @@ static int ltr390_write_event_config(struct iio_dev *indio_dev,
+>  	struct ltr390_data *data = iio_priv(indio_dev);
+>  	int ret;
 >  
->  		ret = adxl380_read_chn(st, chan->address);
->  		iio_device_release_direct_mode(indio_dev);
-> -		if (ret)
-> +		if (ret < 0)
->  			return ret;
+> -	if (state != 1  && state != 0)
+> -		return -EINVAL;
+> -
+> -	if (state == 0)
+> +	if (!state)
+>  		return regmap_clear_bits(data->regmap, LTR390_INT_CFG, LTR390_LS_INT_EN);
 >  
->  		*val = sign_extend32(ret >> chan->scan_type.shift,
+>  	guard(mutex)(&data->lock);
+> 
 
 

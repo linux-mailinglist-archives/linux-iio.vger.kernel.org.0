@@ -1,160 +1,171 @@
-Return-Path: <linux-iio+bounces-11826-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11827-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8242B9B9E67
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2024 10:46:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 352DB9B9F0D
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2024 11:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06B421F22F47
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2024 09:46:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C9F11C215CD
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2024 10:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A945B1684A1;
-	Sat,  2 Nov 2024 09:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3361714D9;
+	Sat,  2 Nov 2024 10:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HN7JLOH3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hfmsa6p8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74251684A3;
-	Sat,  2 Nov 2024 09:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D50D17085C;
+	Sat,  2 Nov 2024 10:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730540782; cv=none; b=PP1GnmTXZsNqP3nKZ7DUNEWORDZIZ52xS6y918z8qJ8ZBdUuRRmmneIFG+jHUCVRpVRIwKwH+ACGZMKGGo9Twgr4FJEcOrw0/qb/CHHwISCXOox9d62zxtDP6l0bZ2pvjPOHaw6/UF0ov8snxEOHmecO/CzCedS1Y/S0WARMu3c=
+	t=1730544461; cv=none; b=ib9Ibb+HwaTpSQsDfmrvbQbFBWWBg2wUtCSSp/gN4fvLPB4F6qG5YIX9AuyS7xV/H1V+x2WZP35IgNoe9TRcIj1Y9zPMY8IwsFktJJfSP+FPYsZNZc8tvwqBlFbjoaZopNoLiy5vdBtXGQvKY05EBby/wpOWlVU7v07O6Ij8SDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730540782; c=relaxed/simple;
-	bh=EEpXsLH7FMnOH77EQNDaG9sFaWCGs5J4qvhA6IoQ+gg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BUfcQQdie4g/Y814BqwtsssIvikoFLGrjjFP4tnXBI8Qwb3Z+vBvYxL8Aik+sPUrGEYNlxTSBBwele8llrINEfzRTMwhWWLzEPverFT5xxkp0PbZnnD8hUZbCRrdztKnqxGEaAjZwVVKs5oipYFD7CxJb2KzMRc2ePpxJL4Hsug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HN7JLOH3; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-539fe02c386so3353306e87.0;
-        Sat, 02 Nov 2024 02:46:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730540779; x=1731145579; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6h31oGAUdhzBo1I0jU3FfVnne5DJXap7lGCy6/tdAUQ=;
-        b=HN7JLOH3bD73eR674wBxV4HVVyNVQ9Bna63SVv/ukML0TzPu3CnDKytRuMmw5OZjdD
-         yoH3fug3IU08qt926Y2yHmDaCMS0i82qWMDKzzat1cr4xq9BK7OzXScJ0XB9HvzzC39N
-         pB9Z2IytyhOTsaNfCZvlWt/hEqaBByUvT9V4V9f/1tQ47PKG8a4qhgdyIwesqY+myYbO
-         N2m7WDdiA1ltS/uGXyA8jw7GkIdyshO2wcyvtjx/ZRjNgYBE7vEZ63r0UqDKQ92zctSE
-         UtjRHUWShITogLZvlRsRTrA3w495QZs1yVWSQU1ZoX/hxHo6GAAiipMEwzO5hYIkmc7o
-         InkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730540779; x=1731145579;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6h31oGAUdhzBo1I0jU3FfVnne5DJXap7lGCy6/tdAUQ=;
-        b=MzyM+l61s/PnL5KjDFZ1f8WjRFUE+ikHcPq8ve0IFlVEcsNEXIrR45/p2VL7at8H4W
-         Qy6BjIXQtXv8Q4AdLAu7nSL4+JkRqicS09Bxf1LCGEcaAR3d85kFOYrCUAW5FH3D9Hq5
-         y/RT1bWgdU+MUEZpaLb9Cecf31xOlLTVDobPo6+lSi3eu7FtX+1bjFq741QhiYh4cOHR
-         /RQEOQXIdTkCvG1KZ6D6mQz7OXa/ZrF/0kg6WP50q/53vX9qsN5X2wey6J9DNRS/eVGf
-         irE2l00SePgSlANLUdj95EUXeLaScALXdyMSwCefISUcdEVA0JvRGeKb1hXXVbBOO/ZF
-         SH0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWEc5bGbzYarRkRRekfKkMS5FUSulKRIxLDWWWWXkLnGgQbX6UD2hv/348I6x7Y28EsBYAVasmEFYM=@vger.kernel.org, AJvYcCWRBCbxqOOK86uuMX20graRL45MTXHvS+nwSFyYSkM9+Z94gyC3xZeutR8mBEv6raAyaJt6mAWafJh6Rp5M@vger.kernel.org
-X-Gm-Message-State: AOJu0YylnBjOo37ZpL9OFbdQnpNwLZnGvkXfNHtcWrjgzE9zydLKnEb4
-	YsvvT/22CTBsK2rFJ8uDxyqPQprXvAV19tIpIsxZCLUfM4MnD59ek3dW5/OS
-X-Google-Smtp-Source: AGHT+IHyDFat3XfhzSWUxcywYA3sZfddwzxFakOJXkr6GNompHCyshO7KL2NhMV8bPtY4oCeOMaXcg==
-X-Received: by 2002:a05:6512:692:b0:53a:a3:907a with SMTP id 2adb3069b0e04-53c7bbcbd7dmr3447393e87.6.1730540778438;
-        Sat, 02 Nov 2024 02:46:18 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bdd03f2sm846431e87.232.2024.11.02.02.46.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 Nov 2024 02:46:16 -0700 (PDT)
-Message-ID: <d13887a9-a321-4329-82e5-34afd33e0300@gmail.com>
-Date: Sat, 2 Nov 2024 11:46:14 +0200
+	s=arc-20240116; t=1730544461; c=relaxed/simple;
+	bh=zybFxd/JEqTLlTVQcJAakhPKB9jHi5x6yGUbpN3RLkQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BdMC5xPGX1tTNpHAA2sEBaox+NGAEV+UucC0AIOcG3MLjNfnZQhAhYO6KGwUnybyQ2xRU0JKRralT5rkutLJ+3MB15kWl0o39Rm2VJ1Q55KZIlTEGe2XRAEsRzEQlTAvg3YHDfsKw9B9c1ajG30DpvrBC8KgeWHB4KkuK6oP48c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hfmsa6p8; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730544459; x=1762080459;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zybFxd/JEqTLlTVQcJAakhPKB9jHi5x6yGUbpN3RLkQ=;
+  b=Hfmsa6p8WAIo5Ql42LN8E4rqZoCP36SKdUjzedRAh0CfwpYF50gXMdat
+   +mwD5vUhGbmG2h2lE4T2efJsqgxcQmwARODj+oXq94F7e1oXPOYT1yKSO
+   oaR+EL9YQL1fDp0AQd5sOLz0TMY3Te0SBN7EerFI7FaJRI27i6ZhmkJ7X
+   0YCmUNKiKXZLRfuiSiVdBl6sx1h+e3zrj4v9nCz/JAWSUM5LCiPLGDGAI
+   AhSmkL4SnGF5g72FmVhG2yBxXAtqQrBMomuLiVVVFOrjweWIOwqX7/Uj1
+   gxyIRsIJjFGwCjznpvaZ3uv+cMeXOc31LxmQJSD9DWPDYnUTXqfvJVBVs
+   w==;
+X-CSE-ConnectionGUID: uIoyf/SYSBmO7OJeBt4oZA==
+X-CSE-MsgGUID: JckAahPFS/aIccDj13yQ6A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52865922"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="52865922"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2024 03:47:38 -0700
+X-CSE-ConnectionGUID: fdgXRwBHRWaknwcAKmGDkA==
+X-CSE-MsgGUID: 33/uCdm4SVmTE6cRcbybZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,252,1725346800"; 
+   d="scan'208";a="113978725"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 02 Nov 2024 03:47:32 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t7BfF-000inD-0a;
+	Sat, 02 Nov 2024 10:47:29 +0000
+Date: Sat, 2 Nov 2024 18:46:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jishnu Prakash <quic_jprakash@quicinc.com>, jic23@kernel.org,
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
+	dmitry.baryshkov@linaro.org, konrad.dybcio@linaro.org,
+	daniel.lezcano@linaro.org, sboyd@kernel.org,
+	quic_subbaram@quicinc.com, quic_collinsd@quicinc.com,
+	quic_amelende@quicinc.com, quic_kamalw@quicinc.com,
+	amitk@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, lee@kernel.org, rafael@kernel.org,
+	rui.zhang@intel.com, lukasz.luba@arm.com, lars@metafoo.de,
+	quic_skakitap@quicinc.com, neil.armstrong@linaro.org,
+	devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
+	Jishnu Prakash <quic_jprakash@quicinc.com>
+Subject: Re: [PATCH V4 3/4] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+Message-ID: <202411021830.6iNtNN1E-lkp@intel.com>
+References: <20241030185854.4015348-4-quic_jprakash@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: Fix uninitialized symbol 'ret'
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Zicheng Qu <quzicheng@huawei.com>, lars@metafoo.de,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- tanghui20@huawei.com, zhangqiao22@huawei.com, judy.chenhui@huawei.com
-References: <20241031014505.2313035-1-quzicheng@huawei.com>
- <5f80c1a2-118a-4685-ac1b-81b3479f5064@gmail.com>
- <20241031214715.50c4788d@jic23-huawei>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241031214715.50c4788d@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241030185854.4015348-4-quic_jprakash@quicinc.com>
 
-On 31/10/2024 23:47, Jonathan Cameron wrote:
-> On Thu, 31 Oct 2024 09:13:16 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> Hi Zicheng,
->>
->> Thanks for the patch.
->>
->> On 31/10/2024 03:45, Zicheng Qu wrote:
->>> Initialize the variable ret at the time of declaration to prevent it from
->>> being returned without a defined value. Fixes smatch warning:
->>> drivers/iio/industrialio-gts-helper.c:256 gain_to_scaletables() error:
->>> uninitialized symbol 'ret'.
->>>
->>> Cc: stable@vger.kernel.org # v6.6+
->>> Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
->>> Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
->>> ---
->>>    drivers/iio/industrialio-gts-helper.c | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
->>> index 59d7615c0f56..c5dc5b51693d 100644
->>> --- a/drivers/iio/industrialio-gts-helper.c
->>> +++ b/drivers/iio/industrialio-gts-helper.c
->>> @@ -167,7 +167,7 @@ static int iio_gts_gain_cmp(const void *a, const void *b)
->>>    
->>>    static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->>>    {
->>> -	int ret, i, j, new_idx, time_idx;
->>> +	int i, j, new_idx, time_idx, ret = 0;
->>>    	int *all_gains;
->>>    	size_t gain_bytes;
->>>      
->>
->> So, if I read it right, this handles a (corner) case where there is no
->> times given. I am not sure how well such use has been considered because
->> the point of GTS is helping out with cases where the gain and
->> integration time both impact to scale.
->>
->> How do you see the benefits of the gts if there is no such shared impact
->> to scale? Sure the gts could still provide the 'standard table format'
->> to present the gains (or times), and conversions from the register
->> values to gains (or times), and perhaps the available scale table(s) -
->> but I suppose it also brings a lot of unused code and some
->> initialization overhead. (I have a vague feeling this was discussed with
->> Jonathan during the reviews).
->>
->> Reason I am asking these questions is that I wonder if the usage should
->> be limited to cases where we have both gains and times? We could check
->> this in the iio_gts_sanity_check(). (And, I am actually a bit surprized
->> this check was not implemented).
->>
->> Well, initialization fixes a potential bug here and does not really cost
->> much - so big thanks to you :)
->>
->> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Indeed I'm not convinced this is a a bug that can be hit, but it is
-> obviously good hardening so applied to the fixes togreg branch of iio.git.
-> Note I'd like a follow up to use __free() + early returns in this function.
-> Will reduce complexity and that last line will become a return 0;
+Hi Jishnu,
 
-I suppose it is time for me to adapt to use the __cleanup based 
-helpers... I'll add this to my TODO-list :)
+kernel test robot noticed the following build warnings:
 
-Yours,
-	-- Matti
+[auto build test WARNING on 6fb2fa9805c501d9ade047fc511961f3273cdcb5]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Jishnu-Prakash/dt-bindings-iio-adc-Move-QCOM-ADC-bindings-to-iio-adc-folder/20241031-030237
+base:   6fb2fa9805c501d9ade047fc511961f3273cdcb5
+patch link:    https://lore.kernel.org/r/20241030185854.4015348-4-quic_jprakash%40quicinc.com
+patch subject: [PATCH V4 3/4] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20241102/202411021830.6iNtNN1E-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241102/202411021830.6iNtNN1E-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411021830.6iNtNN1E-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/iio/adc/qcom-spmi-adc5-gen3.c:31: warning: Cannot understand  * @adc_tm: indicates TM type if the channel is used for TM measurements.
+    on line 31 - I thought it was a doc line
+>> drivers/iio/adc/qcom-spmi-adc5-gen3.c:70: warning: Function parameter or struct member 'dev_data' not described in 'adc5_chip'
+>> drivers/iio/adc/qcom-spmi-adc5-gen3.c:70: warning: Function parameter or struct member 'tm_aux' not described in 'adc5_chip'
+
+
+vim +31 drivers/iio/adc/qcom-spmi-adc5-gen3.c
+
+    29	
+    30	/**
+  > 31	 * @adc_tm: indicates TM type if the channel is used for TM measurements.
+    32	 * @chip: pointer to top-level ADC device structure.
+    33	 */
+    34	
+    35	struct adc5_channel_prop {
+    36		struct adc5_channel_common_prop common_props;
+    37		int				adc_tm;
+    38		struct adc5_chip		*chip;
+    39	};
+    40	
+    41	/**
+    42	 * struct adc5_chip - ADC private structure.
+    43	 * @dev: SPMI ADC5 Gen3 device.
+    44	 * @num_sdams: number of SDAMs (Shared Direct Access Memory Module) being used.
+    45	 * @nchannels: number of ADC channels.
+    46	 * @chan_props: array of ADC channel properties.
+    47	 * @iio_chans: array of IIO channels specification.
+    48	 * @complete: ADC result notification after interrupt is received.
+    49	 * @lock: ADC lock for access to the peripheral, to prevent concurrent
+    50	 * requests from multiple clients.
+    51	 * @n_tm_channels: number of ADC channels used for TM measurements.
+    52	 * @data: software configuration data.
+    53	 */
+    54	struct adc5_chip {
+    55		struct device			*dev;
+    56		struct adc5_device_data	dev_data;
+    57		unsigned int			num_sdams;
+    58		unsigned int			nchannels;
+    59		struct adc5_channel_prop	*chan_props;
+    60		struct iio_chan_spec		*iio_chans;
+    61		struct completion		complete;
+    62		/*
+    63		 * lock for access to the peripheral, to prevent concurrent
+    64		 * requests from multiple clients.
+    65		 */
+    66		struct mutex			lock;
+    67		const struct adc5_data		*data;
+    68		unsigned int			n_tm_channels;
+    69		struct auxiliary_device		*tm_aux;
+  > 70	};
+    71	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

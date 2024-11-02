@@ -1,57 +1,59 @@
-Return-Path: <linux-iio+bounces-11851-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11852-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787039BA14A
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2024 16:45:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D39059BA151
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2024 17:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE06A1C20DCF
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2024 15:45:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14F981C20CF7
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Nov 2024 16:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9CB19E975;
-	Sat,  2 Nov 2024 15:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFB419DFAC;
+	Sat,  2 Nov 2024 16:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u+sAMh9m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OoodaCKS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387CF5A4D5;
-	Sat,  2 Nov 2024 15:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1AC45016;
+	Sat,  2 Nov 2024 16:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730562316; cv=none; b=ebedktdN3GB+4awus4kSKj9V1HQImjzlnQ3dzTCKYSp1Cy/ekZq13oAobdlvZmK+ECJlnQq9VEBEwAEfaoqYUfkA+yL8HdsA5wM/z7Y+5CRMdFXlbwRSbZjnYme7mHYwQGG2F/TixYsnu/DVaJENK4HXix4N88kevJjCkDDSqL0=
+	t=1730563213; cv=none; b=exda6ZBqj/WNymV2+XrvAQYMBZkJnKjnR8j2QidPVRwQmioL8SW01OG5KUWklNAyqm5HljK9XurqfEp69NOtbI2HJItfq/xH9yQA1cLGtNq2lXOMAqqAF1Mta2UJI6jCMaaCvKGCuRgCTIr9U7dGMvPL9LmAZlufcil0ZBgEyxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730562316; c=relaxed/simple;
-	bh=8DsoVdW5mlk2YCLJUT4atpMPQdRVvCf3/gfbYRNyfT8=;
+	s=arc-20240116; t=1730563213; c=relaxed/simple;
+	bh=l/Le7rPKDbhqxrBPy/uf3Tc5Pa9oda1Gxc5J2ngcZJ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qc0tqYAwN/DDSIU5gUhbzISYPVz1Flyx+BZDq2KsZ7Crmw9LgKtk4o4Dbha+EyjMCA0H+WwGTg2cLIMty0LOomD1pRubq7cLHD+s/iCXrjgdOO13gtDoR+Esn4hNAZXCtt+7OY6ca8WXRxiaM3bUGxYZFpEwz9g0C2r5beUGH2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u+sAMh9m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89855C4CEC3;
-	Sat,  2 Nov 2024 15:45:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fNXxfta6AeENM/Cmce+KKGXJ5utISGx0bK+dQPlPouy7G7U/tAMPyKt2xb/4SjWbm8PtpGekXC1P+GJyfP5lsfhnL7qiqT8uRQLbNxv4sU7/dp0pX1BQFUsiMN6HbAKwtx9PW3iAUzeFNAgQfzNR8KfoDKde8E5imhPmo61TDSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OoodaCKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4225C4CEC3;
+	Sat,  2 Nov 2024 16:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730562315;
-	bh=8DsoVdW5mlk2YCLJUT4atpMPQdRVvCf3/gfbYRNyfT8=;
+	s=k20201202; t=1730563212;
+	bh=l/Le7rPKDbhqxrBPy/uf3Tc5Pa9oda1Gxc5J2ngcZJ4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=u+sAMh9mFN7LWVhHpe4U3l57yqSH9z4svGRysiHvCJerWIWfnWuQ9ou+HD3taAJDD
-	 sjcRSpk/1rIC7+94sbW+VjUao6S6p/6dPbYCN1E9PW1Mf+mR44P/BZzmau1ZHb9TTn
-	 t+FFvom9nPP6/Yw8heMY5BQr2ewX8E1CPeoKstN9KBpuMCyVcnq8vmmA3ItryeuOXs
-	 f1HnOxKCYJHQ/nUn07hTmZe/f/wOCfPUwK+bTz/43t4/aYFGzG+IxJmhQznx9dUVUK
-	 Y+z35Q6CRVDHOgbA38exsGRk1WrKh3/ZhYsSudEzWOIbm72npk9ZVtjEtvDp1BrEgg
-	 dUEWo6tcPiM0w==
-Date: Sat, 2 Nov 2024 15:45:09 +0000
+	b=OoodaCKS3k40A8FPD9hYtz3WRAACLqjoXkQJrpKFt70JWqDe6JuynHvf4K0tBQkdZ
+	 BTUXDnPPXSsY/7zqAmt2wva1e2KDC13VIWFpWWZotqe5TixRFeNXl0rfSKo1/UWYnT
+	 j5k3w9WLSIDbwkcghRYTylrmq0ADT7Yw9Zr3ey6yHjd77y3NgSg0pB4YdAwDZbImlm
+	 MZ1YQQRGBtrmDAhxYfytcTrDDkp6oz6n2oC+C4SK2z92WcdytCJRn5VGcYR3Q5ek7v
+	 YjDw1GfuEgW3IiIuwlENy2AZ/zVIL1X83Ifh0//FyWPb2Vau41hPplew6HZRbysf+q
+	 P4B/uvj2zDCeA==
+Date: Sat, 2 Nov 2024 16:00:04 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: <victor.duicu@microchip.com>
-Cc: <matteomartelli3@gmail.com>, <lars@metafoo.de>,
- <marius.cristea@microchip.com>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7] iio: adc: pac1921: Add ACPI support to Microchip
- pac1921
-Message-ID: <20241102154509.4b2495fa@jic23-huawei>
-In-Reply-To: <20241031065205.50154-1-victor.duicu@microchip.com>
-References: <20241031065205.50154-1-victor.duicu@microchip.com>
+To: Nam Cao <namcao@linutronix.de>
+Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker
+ <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Miguel
+ Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 26/44] iio: Switch to use hrtimer_setup()
+Message-ID: <20241102160004.3c7874a7@jic23-huawei>
+In-Reply-To: <516b30771b0d627d6b7461611cbf476aa1fa0e6c.1729865485.git.namcao@linutronix.de>
+References: <cover.1729865485.git.namcao@linutronix.de>
+	<516b30771b0d627d6b7461611cbf476aa1fa0e6c.1729865485.git.namcao@linutronix.de>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,68 +64,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 31 Oct 2024 08:52:05 +0200
-<victor.duicu@microchip.com> wrote:
+On Mon, 28 Oct 2024 08:35:02 +0100
+Nam Cao <namcao@linutronix.de> wrote:
 
-> From: Victor Duicu <victor.duicu@microchip.com>
+> There is a newly introduced hrtimer_setup() which will replace
+> hrtimer_init(). This new function is similar to the old one, except that it
+> also sanity-checks and initializes the timer's callback function.
 > 
-> This patch implements ACPI support to Microchip pac1921.
-> The driver can read shunt resistor value and label from ACPI table.
+> Switch to use this new function.
 > 
-> Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
-Hi Victor.
+> Patch was created by using Coccinelle.
+> 
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I made a few minor tweaks whilst applying (see inline)
+Seems sensible to me.
 
-Applied to the togreg branch of iio.git and pushed out as testing for now
-so that the bots can take a look and see if we missed anything.
+https://lore.kernel.org/lkml/2159c09badceec667d800005ac98824105ba8dc6.1729864615.git.namcao@linutronix.de/
+Has definition of hrtimer_setup()
+
++CC  linux-iio as an FYI.
 
 Jonathan
 
-> +/*
-> + * documentation related to the ACPI device definition
-> + * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC193X-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
-> + */
-> +static int pac1921_match_acpi_device(struct iio_dev *indio_dev)
-> +{
-> +	acpi_handle handle;
-> +	union acpi_object *rez;
-> +	guid_t guid;
-> +	char *label;
-> +	struct pac1921_priv *priv = iio_priv(indio_dev);
-> +	struct device *dev = &priv->client->dev;
-> +
-> +	guid_parse(PAC1921_DSM_UUID, &guid);
-> +	handle = ACPI_HANDLE(dev);
-> +
-> +	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1921_ACPI_GET_UOHMS_VALS, NULL);
-> +	if (!rez)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "Could not read shunt from ACPI table\n");
-> +
-> +	priv->rshunt_uohm = rez->package.elements[0].integer.value;
-> +	ACPI_FREE(rez);
-> +
-> +	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1921_ACPI_GET_LABEL, NULL);
-> +	if (!rez)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "Could not read label from ACPI table\n");
-> +
-> +	label = devm_kstrdup(dev, rez->package.elements->string.pointer, GFP_KERNEL);
-> +	if (!label)
-> +		return dev_err_probe(dev, -EINVAL, "Label is NULL\n");
-ENOMEM appropriate I think. 
-
-Also, a package is an array of elements, and this is the first one so
-maybe res->package.elements[0].string.pointer is more appropriate?
-(similar to above).
-
-
-> +
-> +	indio_dev->label = label;
-> +	ACPI_FREE(rez);
-> +
-> +	return 0;
-> +}
+> ---
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> ---
+>  drivers/iio/adc/ti-tsc2046.c           | 4 +---
+>  drivers/iio/trigger/iio-trig-hrtimer.c | 4 ++--
+>  2 files changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+> index 311d97001249..87c86d752293 100644
+> --- a/drivers/iio/adc/ti-tsc2046.c
+> +++ b/drivers/iio/adc/ti-tsc2046.c
+> @@ -812,9 +812,7 @@ static int tsc2046_adc_probe(struct spi_device *spi)
+>  
+>  	spin_lock_init(&priv->state_lock);
+>  	priv->state = TSC2046_STATE_SHUTDOWN;
+> -	hrtimer_init(&priv->trig_timer, CLOCK_MONOTONIC,
+> -		     HRTIMER_MODE_REL_SOFT);
+> -	priv->trig_timer.function = tsc2046_adc_timer;
+> +	hrtimer_setup(&priv->trig_timer, tsc2046_adc_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
+>  
+>  	ret = devm_iio_trigger_register(dev, trig);
+>  	if (ret) {
+> diff --git a/drivers/iio/trigger/iio-trig-hrtimer.c b/drivers/iio/trigger/iio-trig-hrtimer.c
+> index 716c795d08fb..82c72baccb62 100644
+> --- a/drivers/iio/trigger/iio-trig-hrtimer.c
+> +++ b/drivers/iio/trigger/iio-trig-hrtimer.c
+> @@ -145,8 +145,8 @@ static struct iio_sw_trigger *iio_trig_hrtimer_probe(const char *name)
+>  	trig_info->swt.trigger->ops = &iio_hrtimer_trigger_ops;
+>  	trig_info->swt.trigger->dev.groups = iio_hrtimer_attr_groups;
+>  
+> -	hrtimer_init(&trig_info->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_HARD);
+> -	trig_info->timer.function = iio_hrtimer_trig_handler;
+> +	hrtimer_setup(&trig_info->timer, iio_hrtimer_trig_handler, CLOCK_MONOTONIC,
+> +		      HRTIMER_MODE_REL_HARD);
+>  
+>  	trig_info->sampling_frequency[0] = HRTIMER_DEFAULT_SAMPLING_FREQUENCY;
+>  	trig_info->period = NSEC_PER_SEC / trig_info->sampling_frequency[0];
 
 

@@ -1,57 +1,67 @@
-Return-Path: <linux-iio+bounces-11866-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11867-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0439BA53C
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 12:18:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 344E29BA540
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 12:22:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB67281D92
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 11:18:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D3AEB218E0
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 11:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0AC15F40B;
-	Sun,  3 Nov 2024 11:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC29916BE14;
+	Sun,  3 Nov 2024 11:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3j5uip9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMuhZ73R"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDC0156C40;
-	Sun,  3 Nov 2024 11:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BCB156C40;
+	Sun,  3 Nov 2024 11:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730632721; cv=none; b=qbouRZeWzhZsSE3NGwXWBz4SAcZZQE44WgYpPIm5RuE+4GVZzeJaEPOScezY2e/aeMdPkwXwpQam6clCLTJJaUjt7WEYcdHEOQ+o9K72lOym492l1kg3BF+rIRvkIT9C8u6PDpf9bDvPzl1GAVTT/IuUL97E7wgYLrvHUleLLP4=
+	t=1730632943; cv=none; b=LyWu8bWIZykURiP42dyZxev/QXcVe1PxyTm06JXp6RciYv1yX64FiMlQRGfm1vcnTSCo26jbUlvA3W2bJpRoABwcHDoHA+ssaeklMEWxAy/YBmoYip+ZieRHIlxKQxe3jNvycnoSJtwbBkfONuczelenhldTRDAPx461sqXTH14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730632721; c=relaxed/simple;
-	bh=tsdwG1Q1xmRmxAsCgP2WDVLVVMRmygDokm5rALXU01o=;
+	s=arc-20240116; t=1730632943; c=relaxed/simple;
+	bh=rojxZqDQYmo7DcaabxpY+qtg25SoBSbQIlcnA6osyJw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eQbBk7Qz2+szQ5gU3kXKGlsO3Fym/qpa4tR9gvF5YN5R92RnxIaW3Rqr5O8qxo9neUbo7aaj0uUM1APhNgI2/pvM27W7CD4rlPHQaOW585y2x6mtPPVdRRwuF8VaG8Oh2lgl+HqPB39algwyKfjV/sp9VtS7R43ddcoRNjOzA8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3j5uip9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE74C4CECD;
-	Sun,  3 Nov 2024 11:18:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rCyb0FbrTshCmqxOX6Fv2q9bDUBoJjVJMQmBy/GKEmf32KNwGOEgs+BmUU5MDPYB5GVklI+CqTR+cTpI9aRKuSYvhpwqwTf5D2LXZCD2V9LnAOHHVecum4fj+imefkkpZaoWQUm3C1iGC09XI1E5PvanFZK6v81e+XMVSQxGaQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMuhZ73R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68023C4CECD;
+	Sun,  3 Nov 2024 11:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730632720;
-	bh=tsdwG1Q1xmRmxAsCgP2WDVLVVMRmygDokm5rALXU01o=;
+	s=k20201202; t=1730632942;
+	bh=rojxZqDQYmo7DcaabxpY+qtg25SoBSbQIlcnA6osyJw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=V3j5uip97WbWrAa/Xn2h4XP7A71nZWwI7ETFvR+uqCSaPAoDaZEXhVYpmxr6AfzlH
-	 KJ4nosvuO7+Yh8dtW8/bui6ZkAtKTJtubB+j3WCNfbRVhAVMJTbE6Jz/EkMRiRBOXk
-	 pXLIEhxWm5m5BiOuukWMP3rk1DqAASYoauPqXJSVu8thwXSbTXrZMdxlkMdEAqSGY9
-	 9Go1hP6Aw+aUU2r/V6eCSC6qd810vwU+NZ/Vtn1zlkE8XmHKn4muqdhfLV5jkPfRAw
-	 XZxvFhRG2Ll10d8Euig8OXwLo8a8oG/p6trKmaBVazEc1B7m46B4LWRFPDnhWQgG1R
-	 W/C+SvykBPRMQ==
-Date: Sun, 3 Nov 2024 11:18:27 +0000
+	b=SMuhZ73RSbfxkOVpJ71Fpb2kdzTjWQp4utVDK1cYMBga+Y9ldKNQNO6JdoVCpiUzi
+	 ldZxXWejGjuoh/mttBC91vjRPBeD5CaLuxzqUXg5WNZYRg3LGw7WUhZlnEDQ3IOgWp
+	 t0YArjF1QmzwZJ9QErSzlQEe9RdJFLi5l30Yp1ikl2yu8lwJe8R+X/2PtfgtGvJiD6
+	 47FfeL33TwgYT1D0YZT/jKVQY3rcRqNJZiPV990lXtONr/brsrv90vrnsiFZs3vS4x
+	 CXSYmBxelswPO8yaIDyHklTeDtkona74buBXRZyAW6uti9etKk3CWqAZZtdGGhwGqn
+	 XKSVTianPzfMQ==
+Date: Sun, 3 Nov 2024 11:22:08 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Karan Sanghavi <karansanghvi98@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, Anup
- <anupnewsmail@gmail.com>
-Subject: Re: [PATCH] iio: invensense: fix integer overflow while
- multiplication
-Message-ID: <20241103111827.0894a40a@jic23-huawei>
-In-Reply-To: <20241103-coverity1586045integeroverflow-v1-1-43ea37a3f3cd@gmail.com>
-References: <20241103-coverity1586045integeroverflow-v1-1-43ea37a3f3cd@gmail.com>
+To: Aren Moynihan <aren@peacevolution.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Kaustabh
+ Chakraborty <kauschluss@disroot.org>, =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?=
+ <trabarni@gmail.com>, Ondrej Jirman <megi@xff.cz>, Uwe =?UTF-8?B?S2xlaW5l?=
+ =?UTF-8?B?LUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
+ phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 2/6] iio: light: stk3310: handle all remove logic
+ with devm callbacks
+Message-ID: <20241103112208.233f7180@jic23-huawei>
+In-Reply-To: <20241102195037.3013934-7-aren@peacevolution.org>
+References: <20241102195037.3013934-3-aren@peacevolution.org>
+	<20241102195037.3013934-7-aren@peacevolution.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,50 +72,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 03 Nov 2024 08:43:14 +0000
-Karan Sanghavi <karansanghvi98@gmail.com> wrote:
+Hi Aren,
 
-Hi Karan,
-
-> Typecast a variable to int64_t for 64-bit arithmetic multiplication
-
-The path to actually triggering this is non obvious as these
-inputs are the result of rather complex code paths and per chip
-constraints.  Have you identified a particular combination that overflows
-or is this just based on the type?  I have no problem with applying this
-as hardening against future uses but unless we have a path to trigger
-it today it isn't a fix.
-
-If you do have a path, this description should state what it is.
-
-> 
-> Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
-If it's a real bug, needs a Fixes tag so we know how far to backport it.
-
-> ---
->  drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> index f44458c380d9..d1d11d0b2458 100644
-> --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> @@ -105,8 +105,8 @@ static bool inv_update_chip_period(struct inv_sensors_timestamp *ts,
+> @@ -624,7 +640,7 @@ static int stk3310_probe(struct i2c_client *client)
+>  	device_property_read_u32(&client->dev, "proximity-near-level",
+>  				 &data->ps_near_level);
 >  
->  static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
->  {
-> -	const int64_t period_min = ts->min_period * ts->mult;
-> -	const int64_t period_max = ts->max_period * ts->mult;
-> +	const int64_t period_min = (int64_t)ts->min_period * ts->mult;
-> +	const int64_t period_max = (int64_t)ts->max_period * ts->mult;
->  	int64_t add_max, sub_max;
->  	int64_t delta, jitter;
->  	int64_t adjust;
-> 
-> ---
-> base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
-> change-id: 20241102-coverity1586045integeroverflow-cbbf357475d9
-> 
-> Best regards,
+> -	mutex_init(&data->lock);
+> +	devm_mutex_init(&client->dev, &data->lock);
+ret = devm_mutex_init()
+if (ret)
+	return ret;
+
+It is very unlikely to fail but technically it can.  Andy has been fixing
+this up across the kernel (including IIO) so let's not introduce another
+case that doesn't check it!
+
+If nothing else comes up I can probably tidy that up whilst applying.
+
+Jonathan
+
+>  
+>  	ret = stk3310_regmap_init(data);
+>  	if (ret < 0)
+> @@ -650,29 +666,17 @@ static int stk3310_probe(struct i2c_client *client)
+>  		if (ret < 0) {
+>  			dev_err(&client->dev, "request irq %d failed\n",
+>  				client->irq);
+> -			goto err_standby;
+> +			return ret;
+>  		}
+>  	}
+>  
+> -	ret = iio_device_register(indio_dev);
+> +	ret = devm_iio_device_register(&client->dev, indio_dev);
+>  	if (ret < 0) {
+>  		dev_err(&client->dev, "device_register failed\n");
+> -		goto err_standby;
+> +		return ret;
+>  	}
+>  
+>  	return 0;
+> -
+> -err_standby:
+> -	stk3310_set_state(data, STK3310_STATE_STANDBY);
+> -	return ret;
+> -}
+> -
+> -static void stk3310_remove(struct i2c_client *client)
+> -{
+> -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> -
+> -	iio_device_unregister(indio_dev);
+> -	stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
+>  }
+>  
+>  static int stk3310_suspend(struct device *dev)
+> @@ -736,7 +740,6 @@ static struct i2c_driver stk3310_driver = {
+>  		.acpi_match_table = stk3310_acpi_id,
+>  	},
+>  	.probe =        stk3310_probe,
+> -	.remove =           stk3310_remove,
+>  	.id_table =         stk3310_i2c_id,
+>  };
+>  
 
 

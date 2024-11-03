@@ -1,141 +1,168 @@
-Return-Path: <linux-iio+bounces-11873-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11874-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508389BA761
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 19:25:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABA69BA7E2
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 21:20:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2E12281730
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 18:25:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C8D9B20F73
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 20:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E02A1632E0;
-	Sun,  3 Nov 2024 18:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359887C0BE;
+	Sun,  3 Nov 2024 20:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nv9dgrYy"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z5tmOAc0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C80970817;
-	Sun,  3 Nov 2024 18:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3882018A6D3
+	for <linux-iio@vger.kernel.org>; Sun,  3 Nov 2024 20:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730658307; cv=none; b=UBHWzR0r3Wg/3083/SEiC4O+QCvVfRc+CxyPgUUprD8iWnW6OknrsrJjZqm6VsBRIzkO8o+6NqORB0vbdrv38GRIZ9rnbMiTLKtoK6tI/pfNHRjVUPSN78XJSaoQ5+8/gGOYOqvpDnilgUJalbPP8hRqCZwDMbu1T5Ho8zq7lVM=
+	t=1730665249; cv=none; b=XNb/wuCOFczHckWunDEyM0SG9vgOCCF2DUpEGS3fa+BSnLeC0BCQFr1ad7gZFjI5l8KcAieRZsJn2gGogolGLaCtmGDvIAZ6z2vu3qMbPtIYPCyuZyCAz3CIFdTuVT8NE0hFHzROEDZTXqyDG9/7RX3Z7K2gXTgnxsvbML/0gHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730658307; c=relaxed/simple;
-	bh=gCIaL/JjG/wAmPugcC+kEJYrC4MCgm7tSb3DijSsJoc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ew03V6t58x/Q/S1MkjP58ysmuPeF4cBmcvpydHRqFrSO+iq1gf1enxGUw67RqnrBlMTCBaidqkVjRPmR2ytqM8S761wm5PtZkx4axsuD7RqFn88ufTaeWeLJcksU47I9eiC7hGYt1CXt7I6nDfXGTM3OzVosMwmG4lfi2tTR5ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nv9dgrYy; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-46098928354so25625811cf.1;
-        Sun, 03 Nov 2024 10:25:06 -0800 (PST)
+	s=arc-20240116; t=1730665249; c=relaxed/simple;
+	bh=0zoz5lm1V6JN5CFOkg53xcxKckUvGgvBhj7EMYnnUzU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ozSfAYx6+IwzV1hAan7lv6K4DFyaFPe5k25zI1pu18GJpzaipuy8804MAto3ypMSbRr6xpEv5GNV7CzCUdJN0GjZC2tFVRYy1bgyFARLbvnfaIyytGOjt5p2TtKwcKN9fIsHOiwfk14SMC/c+BGksk+xZDtAwu1I93BFApKRsqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z5tmOAc0; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5cebcf96fabso2538500a12.3
+        for <linux-iio@vger.kernel.org>; Sun, 03 Nov 2024 12:20:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730658305; x=1731263105; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yzgzMpcRdmKNSKal7H2bOhmkB/Lh3IDIXdJcfZ+Ojsc=;
-        b=Nv9dgrYyI7Mju+5eFUwPElvn5pILtZ4vt19DchnEsKHb8elgThKkhGvIvJm3Jec1Wo
-         Y820ShdoVp/16OpzyF34vPZZSmNuC1VNOkwKOBZWTN98OzlYOQQduMlaFOdHOv9+9ymU
-         wf492m8P5b/VOuCaihJL7/FtQoLGjrNUh+gIGQyPulyZj7iGM2YglEcIZP86rtlfGvH3
-         7NZJ18LPXJRl1NvxkBvBHlaPEfpHfKVl4mmVp2mv/AeY9k5Z0jfpqDDxa0DkYb3DdI6i
-         bmsiXLJDuXP+UyoMmoWQ9W0pHMPdegwMNrwotLisdyrS1dRgzOiF+WtjZmlx5e6D8JgG
-         jUng==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730665245; x=1731270045; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zp4YtXuSexn4oBzrN9Y8dVklYvGXzwQ+TOitGbf9SkE=;
+        b=z5tmOAc090s0kPeiDxnkmFhXW5Jf9maBTEID8du/BuEbrkHbkP7X46J1cbP2LxrMe7
+         5UP4ZdLZASnacZ63kzwmoVLF6ADRAudSHnO0fizGZEgMP+pOgVkW8qKf8ii8MpVZ9khC
+         xYMaq7UJ2M6T65RWPhGBdxdYcVlvvqA4kvOG7exd02CNUnfrd26nhtGwURm3TW3lhcIc
+         F3+uzbonBV1PEols+BZrFIPLh9ETz4pr0qyjhLMYRF3fIGO8SqL8JRFVwKF1QLwa7h7E
+         HVzIsMaeHjDaf6kcV2saA8sHfsdtUOr8myBKec3KO+Y+q/OdN71gPC+pR9Tgbon7qtMh
+         cKOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730658305; x=1731263105;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yzgzMpcRdmKNSKal7H2bOhmkB/Lh3IDIXdJcfZ+Ojsc=;
-        b=UsK9QpLOYfsM7z5kDiv9hVTbKJ3bMO4s074SsYyTZEZzLMXgeJpKUi4qEYhOw7cLbQ
-         eW7jZDXtHwwW1JsK9RKTjyIMxOSRtuFy5dUCxAuzThEkcpj0EOO7igMgUqRLozIdTxKX
-         t2IcVy+RUzGLTuptFEP9XTQeNM44lE1htr9EGOQ4f7/pF6PbyyePfQo3hslZIBQKsp43
-         TNtFeSsYCsIhL/jUVEyr+SQt3DpNrsI4E7PdfVIwTLSLRrXfQ0YPzZ0E0Lz1YZnAsxyY
-         0E843QNsLw+LzBZ7DMR5lhhZiebTOOslpPNvYp1u/RPjAHnCogeEUhhS3jWV6ocMIqmE
-         kl5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWq5MiJLRTdHOvuTVqHMdhlqQ/ncmLDccYkUSdjnMImUW6AZ3Sq/PPkhtDTh6s1ibA8rQ/qotuRS0S1j/k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7JnFkdPeoUeXNZDexIw1RKWsg8cUolE/my2qdiLpPBAVRg+6W
-	tit0J3vMVe7rLXqAHU1ihhlAnRa56oMdYZBwipVWPHxWaUGH0c+K
-X-Google-Smtp-Source: AGHT+IEaw3nGMJ8bhhqo73g756ybtLD42XoRl05nXL1wjuN+i1W03TlspIeQ3fHjcuKr936uMQ2V8g==
-X-Received: by 2002:ac8:5a87:0:b0:460:8bb8:fd79 with SMTP id d75a77b69052e-462b8646bc9mr145956651cf.12.1730658305244;
-        Sun, 03 Nov 2024 10:25:05 -0800 (PST)
-Received: from newman.cs.purdue.edu ([128.10.127.250])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ad19b328sm39287511cf.85.2024.11.03.10.25.04
+        d=1e100.net; s=20230601; t=1730665245; x=1731270045;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zp4YtXuSexn4oBzrN9Y8dVklYvGXzwQ+TOitGbf9SkE=;
+        b=Oqg/UP336nX8thmIT1RILYbzPMhoWdozJQoq7zNblFME6ddLEddPRaMFDguv6PJM65
+         Zj/Mv3KF/NuQotu/6V9kyVCTGeYp4xX9vxPorKinQ7cIvST+nMP409DvYqaaaPFWsSCi
+         M3XqzIo7jveiMR7rcewnrBGIL8zvtVfhZ04vA/yw6nLg+CWsOu2lvwlxma4QEADZZp7b
+         Vrqjb0Iwj39wdgWfqWNnEdQTgdMUT0fuuoMm8jd/SJXPe/yyst/d72YHvfDzS+38iOiI
+         t91rurUzfKPNNS/eAo4n0DaueiXPK32Y/f7RQfntKl9FExNegR3fwPVzAaidnm8F1Ptv
+         3Ryg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFNMtuon4nD5uCHlLAIhwzpKxjnSeFNDluhri7vxJ3kJ73lFYMyxKOjs59A2s0M1N7TYnFL0zzmGQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3O3kmbHUHoLt5SukyUDIAkMfbMdVdBb8Ne11l4MJCAKwKCWq+
+	HjHY76nFdwil6WbK+tTTkHioCk+uvMNLpG4NAi/UnAJqNM/nB/er+jW6AChItmY=
+X-Google-Smtp-Source: AGHT+IERawzdo8mdjAZRJEgHt5N6dGAKA+wUD+Xe4d/NURkOTWW3DdQKRBXsu7LEK76VCRW3HpCjkg==
+X-Received: by 2002:a05:6402:270e:b0:5ce:dd11:6244 with SMTP id 4fb4d7f45d1cf-5cedd11630cmr597417a12.32.1730665245259;
+        Sun, 03 Nov 2024 12:20:45 -0800 (PST)
+Received: from localhost ([2a02:8071:b783:6940:711f:c21d:28dc:9f01])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ceac77015esm3548592a12.23.2024.11.03.12.20.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Nov 2024 10:25:04 -0800 (PST)
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-To: fabrice.gasnier@foss.st.com,
-	wbg@kernel.org,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	Jonathan.Cameron@huawei.com,
-	benjamin.gaignard@st.com,
-	gregkh@linuxfoundation.org
-Cc: linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jiasheng Jiang <jiashengjiangcool@outlook.com>
-Subject: [PATCH] counter: stm32-timer-cnt: Add check for clk_enable()
-Date: Sun,  3 Nov 2024 18:25:02 +0000
-Message-Id: <20241103182502.8384-1-jiashengjiangcool@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Sun, 03 Nov 2024 12:20:43 -0800 (PST)
+Date: Sun, 3 Nov 2024 21:20:41 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: kernel test robot <lkp@intel.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Guillaume Stols <gstols@baylibre.com>, oe-kbuild-all@lists.linux.dev, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7606: finish pwm_get_state_hw() TODO
+Message-ID: <awpjqzq2ksbqvlfkbh4xnpwqxrnf4np6amifdweasrh52v3jl3@lz3md7ydyhji>
+References: <20241029-pwm-export-pwm_get_state_hw-v2-2-03ba063a3230@baylibre.com>
+ <202411020101.5Hs6MkwQ-lkp@intel.com>
+ <d44ab5s73kmochmwis3buhd6ci7ff4rwd7kgh47aqar6xeyqna@f4plwf6qbvlm>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="brypaa3fkyl5s5wz"
+Content-Disposition: inline
+In-Reply-To: <d44ab5s73kmochmwis3buhd6ci7ff4rwd7kgh47aqar6xeyqna@f4plwf6qbvlm>
 
-From: Jiasheng Jiang <jiashengjiangcool@outlook.com>
 
-Add check for the return value of clk_enable() in order to catch the
-potential exception.
+--brypaa3fkyl5s5wz
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7606: finish pwm_get_state_hw() TODO
+MIME-Version: 1.0
 
-Fixes: c5b8425514da ("counter: stm32-timer-cnt: add power management support")
-Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
----
- drivers/counter/stm32-timer-cnt.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+On Sun, Nov 03, 2024 at 03:00:14PM +0100, Uwe Kleine-K=F6nig wrote:
+> Hello David,
+>=20
+> On Sat, Nov 02, 2024 at 01:50:35AM +0800, kernel test robot wrote:
+> > kernel test robot noticed the following build errors:
+> >=20
+> > [auto build test ERROR on 6fb2fa9805c501d9ade047fc511961f3273cdcb5]
+> >=20
+> > url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/pw=
+m-core-export-pwm_get_state_hw/20241030-052134
+> > base:   6fb2fa9805c501d9ade047fc511961f3273cdcb5
+> > patch link:    https://lore.kernel.org/r/20241029-pwm-export-pwm_get_st=
+ate_hw-v2-2-03ba063a3230%40baylibre.com
+> > patch subject: [PATCH v2 2/2] iio: adc: ad7606: finish pwm_get_state_hw=
+() TODO
+> > config: i386-randconfig-141-20241101 (https://download.01.org/0day-ci/a=
+rchive/20241102/202411020101.5Hs6MkwQ-lkp@intel.com/config)
+> > compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
+hive/20241102/202411020101.5Hs6MkwQ-lkp@intel.com/reproduce)
+> >=20
+> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
+rsion of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202411020101.5Hs6MkwQ-l=
+kp@intel.com/
+> >=20
+> > All errors (new ones prefixed by >>):
+> >=20
+> >    drivers/iio/adc/ad7606.c: In function 'ad7606_read_raw':
+> > >> drivers/iio/adc/ad7606.c:765:23: error: implicit declaration of func=
+tion 'pwm_get_state_hw'; did you mean 'pwm_get_state'? [-Werror=3Dimplicit-=
+function-declaration]
+> >      765 |                 ret =3D pwm_get_state_hw(st->cnvst_pwm, &cnv=
+st_pwm_state);
+> >          |                       ^~~~~~~~~~~~~~~~
+> >          |                       pwm_get_state
+> >    cc1: some warnings being treated as errors
+>=20
+> The problem here is that there is no declaration (and implementation) of
+> pwm_get_state_hw() with CONFIG_PWM=3Dn. Does it make sense to enable the
+> ad7606 driver without enabling PWM support? If yes, we should add a
+> dummy implementation of pwm_get_state_hw(), if not, a depends on PWM
+> should be introduced.
 
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index 186e73d6ccb4..0593c9b73992 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -214,11 +214,15 @@ static int stm32_count_enable_write(struct counter_device *counter,
- {
- 	struct stm32_timer_cnt *const priv = counter_priv(counter);
- 	u32 cr1;
-+	int ret;
- 
- 	if (enable) {
- 		regmap_read(priv->regmap, TIM_CR1, &cr1);
--		if (!(cr1 & TIM_CR1_CEN))
--			clk_enable(priv->clk);
-+		if (!(cr1 & TIM_CR1_CEN)) {
-+			ret = clk_enable(priv->clk);
-+			if (ret)
-+				return ret;
-+		}
- 
- 		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
- 				   TIM_CR1_CEN);
-@@ -816,7 +820,9 @@ static int __maybe_unused stm32_timer_cnt_resume(struct device *dev)
- 		return ret;
- 
- 	if (priv->enabled) {
--		clk_enable(priv->clk);
-+		ret = clk_enable(priv->clk);
-+		if (ret)
-+			return ret;
- 
- 		/* Restore registers that may have been lost */
- 		regmap_write(priv->regmap, TIM_SMCR, priv->bak.smcr);
--- 
-2.25.1
+Looking at the driver, the PWM is optional. So I rewrote the commit from
+patch 1/2 in this series and added a dummy.
 
+Best regards
+Uwe
+
+--brypaa3fkyl5s5wz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcn2xcACgkQj4D7WH0S
+/k6qGwf+PRPPjDTaPe2Qq2XZE5P9C3PLoXwH95RnwAf/b+F/pZAYoH5F1SadS/o8
+Jg7TDfoA+w7Zqca+t9Q7rnheds6dlQk5b2Z8sxglqjnguD3zSXniYbmsZTM+dIrk
+uNRFgxf/1mRaTQsy9y9N7TmJcTdxSelLX0mBhYMAzk3RejZQbF9xjWDr1HhtQjkg
+Ulve7uX6Cx+/MqaN78w/mUgnXifuZvwQdohOHznn/hyVAW4+emkcTGtQqBvCyl6C
+FWWz4N1qd9+G3dblWDB3WsKAUO04wq/B/I/O66VThD4IU+uz1SL2GqQ5CI0Daefw
+woJYAQpnylt82oWds3lAKJW00hfN3w==
+=VNtb
+-----END PGP SIGNATURE-----
+
+--brypaa3fkyl5s5wz--
 

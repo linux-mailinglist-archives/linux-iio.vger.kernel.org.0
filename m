@@ -1,252 +1,163 @@
-Return-Path: <linux-iio+bounces-11868-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11869-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAAD9BA542
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 12:31:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132E79BA5DE
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 15:00:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E4D1F218D3
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 11:31:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEC741F216FA
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 14:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D378716A949;
-	Sun,  3 Nov 2024 11:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1422582;
+	Sun,  3 Nov 2024 14:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfsI9xbL"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZUlANDey"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E64770832;
-	Sun,  3 Nov 2024 11:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B632F33FE
+	for <linux-iio@vger.kernel.org>; Sun,  3 Nov 2024 14:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730633483; cv=none; b=qlKoxuxPr2NL3BdiKG3+dDdlg6p9qjwwU9vEpt4JgaWICDv1Kmbhvauh6d8Xr4Mui55vLkoVNg4fy9fzLXij3Gh0mGHAI2Yx0sVwrS/WlGihBbdgXCwDwL717zW9fjTw99kzriEzHjjdt9Ibkx7I3IQKiZd4wA2AOHo1+6S4AgI=
+	t=1730642424; cv=none; b=bqzuT57dpJwwj7f/DD+GE0px7KIieDXN8Wcu5MIBVnMYqJwQ400ALi/a/fv2LMvMtK/bf3KO3qLNJiEyXhbBen+oRrsC1QjkL1hb2iHjOVInQWTWjSx49zXvG7xhYPe8tcOAJzfXRayoptkStTk8WJ9rNcSzzJ7TlUCDPgw4lC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730633483; c=relaxed/simple;
-	bh=ZvbVHVuun8oeRhQlJajET7qBhOvsWylLAA2B8VkfPFY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qFxUng7VldNrQKJcFvDqJZ/gwUWTp/+vRkoCj4b+E8TUbUoy/130mwf9QPL7UstAP0CqfRSxwlqb8TPsmWMwrS6+keBSVuX186Fcm14OWcFPsWNW7J6+LHKFuqNn1Mn4jUdqZnlAHpLmw+vPS+w5e4LGpyWcIBFUjgAoZqttR9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfsI9xbL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD515C4CECD;
-	Sun,  3 Nov 2024 11:31:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730633483;
-	bh=ZvbVHVuun8oeRhQlJajET7qBhOvsWylLAA2B8VkfPFY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WfsI9xbLsIDKjoAK61UpdaKB1MZDf+nzsNT6q0hqXnk+BOWHDvW+ZejPDr83/cTcC
-	 5p0njkFXStrBEqtWjGHGB9TDDyanBXuM99CK93l8AEemJBPfXy8vS/PZLK3EiO8XLG
-	 3XUKYcaiTZoAJKwbQlZRqIJ1nIw+0U4J4uut0SH5BJwUv1wbA1UxDXkuVbXu1q5mr1
-	 v/7jbnVwp9LzEbLO5xuLhuRlX4GFPWG0RwW7rLq8L0B+EUBk9Z8m/Ei9WnH/5ntr6H
-	 aYmjPhjfBmQpayBwpDHyvUFpoj7tl3JH+OhSLDKlgC93FHrKqVVWMhk7jbFEgjE6nz
-	 hizgVfwY6NINA==
-Date: Sun, 3 Nov 2024 11:31:03 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Aren Moynihan <aren@peacevolution.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Kaustabh
- Chakraborty <kauschluss@disroot.org>, =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?=
- <trabarni@gmail.com>, Ondrej Jirman <megi@xff.cz>, Uwe =?UTF-8?B?S2xlaW5l?=
- =?UTF-8?B?LUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
- phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 3/6] iio: light: stk3310: Implement vdd and leda
- supplies
-Message-ID: <20241103112933.60f96f97@jic23-huawei>
-In-Reply-To: <20241102195037.3013934-9-aren@peacevolution.org>
-References: <20241102195037.3013934-3-aren@peacevolution.org>
-	<20241102195037.3013934-9-aren@peacevolution.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1730642424; c=relaxed/simple;
+	bh=HW0xkDerZUwC1H4Kuq1940vxcFFwZNOG+FdLrgr34zE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uoQq4357QIMb220qfLXDXaSEKJF/GGQAAFnkMW22EBCOhxEyJ07+WlnJu2UrgNDkjanB64WbUxAsooNH9yUDJk/GiR7teXB1V2t0UUc7p5WCiXIe6bGUlXjBst9nRvmJ8Yyr2VVXacUwr6gaR2f0kZrU4yBnb4e2eCoWUUK78sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZUlANDey; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5c94a7239cfso2066309a12.3
+        for <linux-iio@vger.kernel.org>; Sun, 03 Nov 2024 06:00:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730642420; x=1731247220; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6Zwcc6mJ2Z+M1jD5t38WLUuaC+7Hx/sCtRGVgR6vlbk=;
+        b=ZUlANDeyvzxiHScaQ2FEQ9Jq9RuXItkIYIFLsjKRosBPwOWPUzSQkKdBmQ9j9DRSaK
+         t2NPdgYqRT8XQyqXTAeZ46IWepony0ntayu2WwMuFBllwStN6pVbvyScsAbiGU2+L37Z
+         VHyfJEqXZZz4wQHNldqLVMJNWPISvKqMP4Z7yGfgrl+gHFCyQt9wnD/C3UW3m82wX54k
+         +m6eN714llaNVAdsnpjVXkrKffAtGWYGSY8i9bReez95c4HcNZ5LNaR1XjTF6XzhkUZJ
+         JWJ9BCYeoHMJCnvfVHaQex+YKzTO1hHihLRwKf4YHhiC1R4vQUa5hWJNvxrLbFVRoNgv
+         2DPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730642420; x=1731247220;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6Zwcc6mJ2Z+M1jD5t38WLUuaC+7Hx/sCtRGVgR6vlbk=;
+        b=pjhuG2jIfCpL1t4mjfs06xsljY1SdO3R57JF3sFgOlw62aT6v+QopaVlOm0hGed48E
+         2z7y0px2tSZUSlmT2hLrZ/Fe+d+EJreSV6p7UMrRlbpXbaSt9Tobfl8QqJeRCJGdCUEh
+         xdUbxNTVfUYEj3Yw8SXAkksJOf8pXWAShB/l8Nm3M3+6qxLT6Xk5TyCKlN+ZEILrpNDD
+         0/nrzubkVk6/5s0xAhB4QumCs2b9ZwiNclAEsn28DkNxjEbHHAD+euaVXTXZJGfQbEBQ
+         QRVB5YBvo60JYkRsmPvNqAS7VFHyezorxjqDP9RAYDnzEj+TmIDd9375YlqGysXT/x0E
+         wvBg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9Nvup9bzLwkTBXQ6OZw8Pxd81RSTKqMcF2ErYUMZ+e9mLl3i0th68BU6LZkvmU0I11ZzeBtcVLi0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybPJ2x+735n9vzVmNeC0JbEsCxKHSvBnh4F/i7f2gpeywHDeiG
+	aTmYDiz7XO60YZh8ypkeen5nF0nKVgaJ5AAV6oO8nRXqxHOM0w2RUxNkwG7aQcE=
+X-Google-Smtp-Source: AGHT+IHuuxLDk9hwg0+iu/v28lzVF3K4zk9CZmxe8Kkj+OthvudFByHtLuWu3au1z0eWR3PyoVpO5g==
+X-Received: by 2002:a05:6402:2106:b0:5ce:b715:6529 with SMTP id 4fb4d7f45d1cf-5ceb923efadmr10173655a12.3.1730642419742;
+        Sun, 03 Nov 2024 06:00:19 -0800 (PST)
+Received: from localhost ([2a02:8071:b783:6940:d0c0:5ce1:4bb1:2797])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ceac7c8c77sm3265183a12.61.2024.11.03.06.00.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Nov 2024 06:00:18 -0800 (PST)
+Date: Sun, 3 Nov 2024 15:00:14 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: kernel test robot <lkp@intel.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Guillaume Stols <gstols@baylibre.com>, oe-kbuild-all@lists.linux.dev, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7606: finish pwm_get_state_hw() TODO
+Message-ID: <d44ab5s73kmochmwis3buhd6ci7ff4rwd7kgh47aqar6xeyqna@f4plwf6qbvlm>
+References: <20241029-pwm-export-pwm_get_state_hw-v2-2-03ba063a3230@baylibre.com>
+ <202411020101.5Hs6MkwQ-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vwkk7mov6pa2u6sg"
+Content-Disposition: inline
+In-Reply-To: <202411020101.5Hs6MkwQ-lkp@intel.com>
 
-On Sat,  2 Nov 2024 15:50:39 -0400
-Aren Moynihan <aren@peacevolution.org> wrote:
 
-> The vdd and leda supplies must be powered on for the chip to function
-> and can be powered off during system suspend.
-> 
-> This was originally based on a patch by Ondrej Jirman[1], but has been
-> rewritten since.
-> 
-> 1: https://codeberg.org/megi/linux/commit/a933aff8b7a0e6e3c9cf1d832dcba07022bbfa82
-> 
-> Signed-off-by: Aren Moynihan <aren@peacevolution.org>
-> ---
-> 
-> Notes:
->     Changes in v4:
->      - fix variable declaration order in stk3310_resume to match the rest of
->        the driver
+--vwkk7mov6pa2u6sg
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7606: finish pwm_get_state_hw() TODO
+MIME-Version: 1.0
 
-For this Andy was asking for consistency.  Generally we don't insist on a
-particular ordering in IIO drivers, but we do prefer them to be the same.
-Your new ordering is inconsistent between resume and suspend.  Whilst
-existing code may be inconsistent, you can still pick most common ordering
-and use that for your new code.
+Hello David,
 
-If the existing driver is inconsistent then feel free to tidy that up but
-do it in a precursor patch so there is a consistent style for you to then
-carry on.
+On Sat, Nov 02, 2024 at 01:50:35AM +0800, kernel test robot wrote:
+> kernel test robot noticed the following build errors:
+>=20
+> [auto build test ERROR on 6fb2fa9805c501d9ade047fc511961f3273cdcb5]
+>=20
+> url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/pwm-=
+core-export-pwm_get_state_hw/20241030-052134
+> base:   6fb2fa9805c501d9ade047fc511961f3273cdcb5
+> patch link:    https://lore.kernel.org/r/20241029-pwm-export-pwm_get_stat=
+e_hw-v2-2-03ba063a3230%40baylibre.com
+> patch subject: [PATCH v2 2/2] iio: adc: ad7606: finish pwm_get_state_hw()=
+ TODO
+> config: i386-randconfig-141-20241101 (https://download.01.org/0day-ci/arc=
+hive/20241102/202411020101.5Hs6MkwQ-lkp@intel.com/config)
+> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20241102/202411020101.5Hs6MkwQ-lkp@intel.com/reproduce)
+>=20
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202411020101.5Hs6MkwQ-lkp=
+@intel.com/
+>=20
+> All errors (new ones prefixed by >>):
+>=20
+>    drivers/iio/adc/ad7606.c: In function 'ad7606_read_raw':
+> >> drivers/iio/adc/ad7606.c:765:23: error: implicit declaration of functi=
+on 'pwm_get_state_hw'; did you mean 'pwm_get_state'? [-Werror=3Dimplicit-fu=
+nction-declaration]
+>      765 |                 ret =3D pwm_get_state_hw(st->cnvst_pwm, &cnvst=
+_pwm_state);
+>          |                       ^~~~~~~~~~~~~~~~
+>          |                       pwm_get_state
+>    cc1: some warnings being treated as errors
 
->     
->     Changes in v3:
->      - use bulk regulators instead of two individual ones
->      - handle cleanup using devm callbacks instead of the remove function
->     
->     Changes in v2:
->      - always enable / disable regulators and rely on a dummy regulator if
->        one isn't specified
->      - replace usleep_range with fsleep
->      - reorder includes so iio headers are last
->      - add missing error handling to resume
-> 
->  drivers/iio/light/stk3310.c | 76 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 74 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
-> index 181b7acb3f96..f93689c61f44 100644
-> --- a/drivers/iio/light/stk3310.c
-> +++ b/drivers/iio/light/stk3310.c
-> @@ -13,6 +13,8 @@
->  #include <linux/module.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +
->  #include <linux/iio/events.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -130,6 +132,7 @@ struct stk3310_data {
->  	struct regmap_field *reg_int_ps;
->  	struct regmap_field *reg_flag_psint;
->  	struct regmap_field *reg_flag_nf;
-> +	struct regulator_bulk_data supplies[2];
->  };
->  
->  static const struct iio_event_spec stk3310_events[] = {
-> @@ -621,6 +624,31 @@ static irqreturn_t stk3310_irq_event_handler(int irq, void *private)
->  	return IRQ_HANDLED;
->  }
->  
-> +static int stk3310_regulators_enable(struct stk3310_data *data)
-> +{
-> +	int ret;
-> +
-> +	ret = regulator_bulk_enable(ARRAY_SIZE(data->supplies), data->supplies);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* we need a short delay to allow the chip time to power on */
-> +	fsleep(1000);
-> +
-> +	return 0;
-> +}
-> +
-> +static void stk3310_regulators_disable(void *private)
-> +{
-> +	int ret;
-> +	struct stk3310_data *data = private;
-> +	struct device *dev = &data->client->dev;
-> +
-> +	ret = regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
-> +	if (ret)
-> +		dev_err(dev, "failed to disable regulators: %d\n", ret);
-> +}
-> +
->  static int stk3310_probe(struct i2c_client *client)
->  {
->  	int ret;
-> @@ -642,6 +670,13 @@ static int stk3310_probe(struct i2c_client *client)
->  
->  	devm_mutex_init(&client->dev, &data->lock);
->  
-> +	data->supplies[0].supply = "vdd";
-> +	data->supplies[1].supply = "leda";
-> +	ret = devm_regulator_bulk_get(&client->dev, ARRAY_SIZE(data->supplies),
-> +				      data->supplies);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret, "get regulators failed\n");
-> +
->  	ret = stk3310_regmap_init(data);
->  	if (ret < 0)
->  		return ret;
-> @@ -652,6 +687,16 @@ static int stk3310_probe(struct i2c_client *client)
->  	indio_dev->channels = stk3310_channels;
->  	indio_dev->num_channels = ARRAY_SIZE(stk3310_channels);
->  
-> +	ret = stk3310_regulators_enable(data);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "regulator enable failed\n");
-> +
-> +	ret = devm_add_action_or_reset(&client->dev, stk3310_regulators_disable, data);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "failed to register regulator cleanup\n");
-> +
->  	ret = stk3310_init(indio_dev);
->  	if (ret < 0)
->  		return ret;
-> @@ -682,18 +727,45 @@ static int stk3310_probe(struct i2c_client *client)
->  static int stk3310_suspend(struct device *dev)
->  {
->  	struct stk3310_data *data;
-> +	int ret;
->  
->  	data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
->  
-> -	return stk3310_set_state(data, STK3310_STATE_STANDBY);
-> +	ret = stk3310_set_state(data, STK3310_STATE_STANDBY);
-> +	if (ret)
-> +		return ret;
-> +
-> +	regcache_mark_dirty(data->regmap);
-> +
-> +	ret = regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
-> +	if (ret) {
-> +		dev_err(dev, "failed to disable regulators: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
->  }
->  
->  static int stk3310_resume(struct device *dev)
->  {
-> -	u8 state = 0;
-> +	int ret;
->  	struct stk3310_data *data;
-> +	u8 state = 0;
->  
->  	data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
-> +
-> +	ret = stk3310_regulators_enable(data);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to re-enable regulators: %d", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = regcache_sync(data->regmap);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to restore registers: %d\n", ret);
-> +		return ret;
-> +	}
-> +
->  	if (data->ps_enabled)
->  		state |= STK3310_STATE_EN_PS;
->  	if (data->als_enabled)
+The problem here is that there is no declaration (and implementation) of
+pwm_get_state_hw() with CONFIG_PWM=3Dn. Does it make sense to enable the
+ad7606 driver without enabling PWM support? If yes, we should add a
+dummy implementation of pwm_get_state_hw(), if not, a depends on PWM
+should be introduced.
 
+Best regards
+Uwe
+
+--vwkk7mov6pa2u6sg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcngewACgkQj4D7WH0S
+/k7XQgf/S5oqIxrk+tCZrofLS72CSpw69wFvTYhfwN/NrMGBNVp95W3Ophsa+Pkr
+XdTPbdySiDYjjnL1fdSTpiQSYCm9hKuJG/656ke78cPP6duNzPVpckAyAJcvNhjb
+NbbQdNn+HtQCH/MXFX4iqoTZw0jR/IT7F1KE/+1Dm5DszUQMreoC94p9IcCwUdcH
+kwxwZph/2ztSwcAqOGlIQOy+qo3Jb2GXD+rTlJ46t2hNqji0P7XvMLwspODMf3EV
+7qYGcw83e5J+TBvXiloklNFCaP9YBIyeijW2TrWq9SoPFLc4otl6YJUMytgjWL8H
+4YxpizEk2QB8e6Qdh2eyTObScTuqIw==
+=RL7H
+-----END PGP SIGNATURE-----
+
+--vwkk7mov6pa2u6sg--
 

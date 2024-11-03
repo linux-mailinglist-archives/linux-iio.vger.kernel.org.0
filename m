@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-11867-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11868-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344E29BA540
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 12:22:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAAD9BA542
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 12:31:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D3AEB218E0
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 11:22:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E4D1F218D3
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Nov 2024 11:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC29916BE14;
-	Sun,  3 Nov 2024 11:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D378716A949;
+	Sun,  3 Nov 2024 11:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMuhZ73R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfsI9xbL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BCB156C40;
-	Sun,  3 Nov 2024 11:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E64770832;
+	Sun,  3 Nov 2024 11:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730632943; cv=none; b=LyWu8bWIZykURiP42dyZxev/QXcVe1PxyTm06JXp6RciYv1yX64FiMlQRGfm1vcnTSCo26jbUlvA3W2bJpRoABwcHDoHA+ssaeklMEWxAy/YBmoYip+ZieRHIlxKQxe3jNvycnoSJtwbBkfONuczelenhldTRDAPx461sqXTH14=
+	t=1730633483; cv=none; b=qlKoxuxPr2NL3BdiKG3+dDdlg6p9qjwwU9vEpt4JgaWICDv1Kmbhvauh6d8Xr4Mui55vLkoVNg4fy9fzLXij3Gh0mGHAI2Yx0sVwrS/WlGihBbdgXCwDwL717zW9fjTw99kzriEzHjjdt9Ibkx7I3IQKiZd4wA2AOHo1+6S4AgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730632943; c=relaxed/simple;
-	bh=rojxZqDQYmo7DcaabxpY+qtg25SoBSbQIlcnA6osyJw=;
+	s=arc-20240116; t=1730633483; c=relaxed/simple;
+	bh=ZvbVHVuun8oeRhQlJajET7qBhOvsWylLAA2B8VkfPFY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rCyb0FbrTshCmqxOX6Fv2q9bDUBoJjVJMQmBy/GKEmf32KNwGOEgs+BmUU5MDPYB5GVklI+CqTR+cTpI9aRKuSYvhpwqwTf5D2LXZCD2V9LnAOHHVecum4fj+imefkkpZaoWQUm3C1iGC09XI1E5PvanFZK6v81e+XMVSQxGaQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMuhZ73R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68023C4CECD;
-	Sun,  3 Nov 2024 11:22:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qFxUng7VldNrQKJcFvDqJZ/gwUWTp/+vRkoCj4b+E8TUbUoy/130mwf9QPL7UstAP0CqfRSxwlqb8TPsmWMwrS6+keBSVuX186Fcm14OWcFPsWNW7J6+LHKFuqNn1Mn4jUdqZnlAHpLmw+vPS+w5e4LGpyWcIBFUjgAoZqttR9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfsI9xbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD515C4CECD;
+	Sun,  3 Nov 2024 11:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730632942;
-	bh=rojxZqDQYmo7DcaabxpY+qtg25SoBSbQIlcnA6osyJw=;
+	s=k20201202; t=1730633483;
+	bh=ZvbVHVuun8oeRhQlJajET7qBhOvsWylLAA2B8VkfPFY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SMuhZ73RSbfxkOVpJ71Fpb2kdzTjWQp4utVDK1cYMBga+Y9ldKNQNO6JdoVCpiUzi
-	 ldZxXWejGjuoh/mttBC91vjRPBeD5CaLuxzqUXg5WNZYRg3LGw7WUhZlnEDQ3IOgWp
-	 t0YArjF1QmzwZJ9QErSzlQEe9RdJFLi5l30Yp1ikl2yu8lwJe8R+X/2PtfgtGvJiD6
-	 47FfeL33TwgYT1D0YZT/jKVQY3rcRqNJZiPV990lXtONr/brsrv90vrnsiFZs3vS4x
-	 CXSYmBxelswPO8yaIDyHklTeDtkona74buBXRZyAW6uti9etKk3CWqAZZtdGGhwGqn
-	 XKSVTianPzfMQ==
-Date: Sun, 3 Nov 2024 11:22:08 +0000
+	b=WfsI9xbLsIDKjoAK61UpdaKB1MZDf+nzsNT6q0hqXnk+BOWHDvW+ZejPDr83/cTcC
+	 5p0njkFXStrBEqtWjGHGB9TDDyanBXuM99CK93l8AEemJBPfXy8vS/PZLK3EiO8XLG
+	 3XUKYcaiTZoAJKwbQlZRqIJ1nIw+0U4J4uut0SH5BJwUv1wbA1UxDXkuVbXu1q5mr1
+	 v/7jbnVwp9LzEbLO5xuLhuRlX4GFPWG0RwW7rLq8L0B+EUBk9Z8m/Ei9WnH/5ntr6H
+	 aYmjPhjfBmQpayBwpDHyvUFpoj7tl3JH+OhSLDKlgC93FHrKqVVWMhk7jbFEgjE6nz
+	 hizgVfwY6NINA==
+Date: Sun, 3 Nov 2024 11:31:03 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Aren Moynihan <aren@peacevolution.org>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko
@@ -56,12 +56,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
  phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 2/6] iio: light: stk3310: handle all remove logic
- with devm callbacks
-Message-ID: <20241103112208.233f7180@jic23-huawei>
-In-Reply-To: <20241102195037.3013934-7-aren@peacevolution.org>
+Subject: Re: [PATCH v4 3/6] iio: light: stk3310: Implement vdd and leda
+ supplies
+Message-ID: <20241103112933.60f96f97@jic23-huawei>
+In-Reply-To: <20241102195037.3013934-9-aren@peacevolution.org>
 References: <20241102195037.3013934-3-aren@peacevolution.org>
-	<20241102195037.3013934-7-aren@peacevolution.org>
+	<20241102195037.3013934-9-aren@peacevolution.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,69 +72,181 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Hi Aren,
+On Sat,  2 Nov 2024 15:50:39 -0400
+Aren Moynihan <aren@peacevolution.org> wrote:
 
-> @@ -624,7 +640,7 @@ static int stk3310_probe(struct i2c_client *client)
->  	device_property_read_u32(&client->dev, "proximity-near-level",
->  				 &data->ps_near_level);
->  
-> -	mutex_init(&data->lock);
-> +	devm_mutex_init(&client->dev, &data->lock);
-ret = devm_mutex_init()
-if (ret)
-	return ret;
+> The vdd and leda supplies must be powered on for the chip to function
+> and can be powered off during system suspend.
+> 
+> This was originally based on a patch by Ondrej Jirman[1], but has been
+> rewritten since.
+> 
+> 1: https://codeberg.org/megi/linux/commit/a933aff8b7a0e6e3c9cf1d832dcba07022bbfa82
+> 
+> Signed-off-by: Aren Moynihan <aren@peacevolution.org>
+> ---
+> 
+> Notes:
+>     Changes in v4:
+>      - fix variable declaration order in stk3310_resume to match the rest of
+>        the driver
 
-It is very unlikely to fail but technically it can.  Andy has been fixing
-this up across the kernel (including IIO) so let's not introduce another
-case that doesn't check it!
+For this Andy was asking for consistency.  Generally we don't insist on a
+particular ordering in IIO drivers, but we do prefer them to be the same.
+Your new ordering is inconsistent between resume and suspend.  Whilst
+existing code may be inconsistent, you can still pick most common ordering
+and use that for your new code.
 
-If nothing else comes up I can probably tidy that up whilst applying.
+If the existing driver is inconsistent then feel free to tidy that up but
+do it in a precursor patch so there is a consistent style for you to then
+carry on.
 
-Jonathan
-
->  
->  	ret = stk3310_regmap_init(data);
->  	if (ret < 0)
-> @@ -650,29 +666,17 @@ static int stk3310_probe(struct i2c_client *client)
->  		if (ret < 0) {
->  			dev_err(&client->dev, "request irq %d failed\n",
->  				client->irq);
-> -			goto err_standby;
-> +			return ret;
->  		}
->  	}
->  
-> -	ret = iio_device_register(indio_dev);
-> +	ret = devm_iio_device_register(&client->dev, indio_dev);
->  	if (ret < 0) {
->  		dev_err(&client->dev, "device_register failed\n");
-> -		goto err_standby;
-> +		return ret;
->  	}
->  
->  	return 0;
-> -
-> -err_standby:
-> -	stk3310_set_state(data, STK3310_STATE_STANDBY);
-> -	return ret;
-> -}
-> -
-> -static void stk3310_remove(struct i2c_client *client)
-> -{
-> -	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> -
-> -	iio_device_unregister(indio_dev);
-> -	stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
->  }
->  
->  static int stk3310_suspend(struct device *dev)
-> @@ -736,7 +740,6 @@ static struct i2c_driver stk3310_driver = {
->  		.acpi_match_table = stk3310_acpi_id,
->  	},
->  	.probe =        stk3310_probe,
-> -	.remove =           stk3310_remove,
->  	.id_table =         stk3310_i2c_id,
+>     
+>     Changes in v3:
+>      - use bulk regulators instead of two individual ones
+>      - handle cleanup using devm callbacks instead of the remove function
+>     
+>     Changes in v2:
+>      - always enable / disable regulators and rely on a dummy regulator if
+>        one isn't specified
+>      - replace usleep_range with fsleep
+>      - reorder includes so iio headers are last
+>      - add missing error handling to resume
+> 
+>  drivers/iio/light/stk3310.c | 76 ++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 74 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+> index 181b7acb3f96..f93689c61f44 100644
+> --- a/drivers/iio/light/stk3310.c
+> +++ b/drivers/iio/light/stk3310.c
+> @@ -13,6 +13,8 @@
+>  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +
+>  #include <linux/iio/events.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> @@ -130,6 +132,7 @@ struct stk3310_data {
+>  	struct regmap_field *reg_int_ps;
+>  	struct regmap_field *reg_flag_psint;
+>  	struct regmap_field *reg_flag_nf;
+> +	struct regulator_bulk_data supplies[2];
 >  };
 >  
+>  static const struct iio_event_spec stk3310_events[] = {
+> @@ -621,6 +624,31 @@ static irqreturn_t stk3310_irq_event_handler(int irq, void *private)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static int stk3310_regulators_enable(struct stk3310_data *data)
+> +{
+> +	int ret;
+> +
+> +	ret = regulator_bulk_enable(ARRAY_SIZE(data->supplies), data->supplies);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* we need a short delay to allow the chip time to power on */
+> +	fsleep(1000);
+> +
+> +	return 0;
+> +}
+> +
+> +static void stk3310_regulators_disable(void *private)
+> +{
+> +	int ret;
+> +	struct stk3310_data *data = private;
+> +	struct device *dev = &data->client->dev;
+> +
+> +	ret = regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
+> +	if (ret)
+> +		dev_err(dev, "failed to disable regulators: %d\n", ret);
+> +}
+> +
+>  static int stk3310_probe(struct i2c_client *client)
+>  {
+>  	int ret;
+> @@ -642,6 +670,13 @@ static int stk3310_probe(struct i2c_client *client)
+>  
+>  	devm_mutex_init(&client->dev, &data->lock);
+>  
+> +	data->supplies[0].supply = "vdd";
+> +	data->supplies[1].supply = "leda";
+> +	ret = devm_regulator_bulk_get(&client->dev, ARRAY_SIZE(data->supplies),
+> +				      data->supplies);
+> +	if (ret)
+> +		return dev_err_probe(&client->dev, ret, "get regulators failed\n");
+> +
+>  	ret = stk3310_regmap_init(data);
+>  	if (ret < 0)
+>  		return ret;
+> @@ -652,6 +687,16 @@ static int stk3310_probe(struct i2c_client *client)
+>  	indio_dev->channels = stk3310_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(stk3310_channels);
+>  
+> +	ret = stk3310_regulators_enable(data);
+> +	if (ret)
+> +		return dev_err_probe(&client->dev, ret,
+> +				     "regulator enable failed\n");
+> +
+> +	ret = devm_add_action_or_reset(&client->dev, stk3310_regulators_disable, data);
+> +	if (ret)
+> +		return dev_err_probe(&client->dev, ret,
+> +				     "failed to register regulator cleanup\n");
+> +
+>  	ret = stk3310_init(indio_dev);
+>  	if (ret < 0)
+>  		return ret;
+> @@ -682,18 +727,45 @@ static int stk3310_probe(struct i2c_client *client)
+>  static int stk3310_suspend(struct device *dev)
+>  {
+>  	struct stk3310_data *data;
+> +	int ret;
+>  
+>  	data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
+>  
+> -	return stk3310_set_state(data, STK3310_STATE_STANDBY);
+> +	ret = stk3310_set_state(data, STK3310_STATE_STANDBY);
+> +	if (ret)
+> +		return ret;
+> +
+> +	regcache_mark_dirty(data->regmap);
+> +
+> +	ret = regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
+> +	if (ret) {
+> +		dev_err(dev, "failed to disable regulators: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+>  }
+>  
+>  static int stk3310_resume(struct device *dev)
+>  {
+> -	u8 state = 0;
+> +	int ret;
+>  	struct stk3310_data *data;
+> +	u8 state = 0;
+>  
+>  	data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
+> +
+> +	ret = stk3310_regulators_enable(data);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to re-enable regulators: %d", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = regcache_sync(data->regmap);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to restore registers: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+>  	if (data->ps_enabled)
+>  		state |= STK3310_STATE_EN_PS;
+>  	if (data->als_enabled)
 
 

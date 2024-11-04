@@ -1,54 +1,87 @@
-Return-Path: <linux-iio+bounces-11899-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11900-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA1B9BBDC8
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 20:09:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DD69BBDDD
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 20:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B01311C23142
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 19:09:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50FE5283490
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 19:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268311CDFD1;
-	Mon,  4 Nov 2024 19:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3C518CC00;
+	Mon,  4 Nov 2024 19:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pAomZYac"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bbzx6VrD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49D018D642;
-	Mon,  4 Nov 2024 19:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C563AD2D;
+	Mon,  4 Nov 2024 19:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730747337; cv=none; b=YxGbq8+wRv6JSo1n2suUjen/3Q2rgOguE/+sfE3N9eV0KHxfB/xpAJxeQjs3gxr8crWisXgApoFByETLiOw/6wOpe1fFIikJ/okxF67asRmDpqG9QF5d3pr+pC8H67Bg49gAU7/MU2AmoANfuVYSe7OQ+h87ZtxYgzaFefxs638=
+	t=1730747910; cv=none; b=VcfcyBZb4PtJTpVYCdARa7y9sTkq13Z8c2CDoWaOTu3p1Taqrg4i1AnKtN8YH60M7HpAJr6udeJzgA52QwZ8sMb2RFebksUh7pZrNZSFX3RreBhim6IL2Q9TV62ANZYYW2dYobMKKieiqf6HX6K0sBxOSQ2ML7EIm6pOUFljHZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730747337; c=relaxed/simple;
-	bh=r55W5L8ATrLR6WUSatifGaaRs+SAe8J4+623y6OD2Lc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YJJ9taBlPZYNNTSW8IT2BNu4Wd+cpvUdSU8scf6v0/+HxvbVYc0p2wSubbk8+FiDku/LY1f2MOHwdTPvv7PRP79v5Ep8TUhjyLE84sKbqyLnUhPg/aQYHJO5/0AQ4GCSg4OoJ0RbJKkAddgcP4X36O7S7eQ75laPEPbdOKogkw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pAomZYac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AC0C4CECE;
-	Mon,  4 Nov 2024 19:08:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730747337;
-	bh=r55W5L8ATrLR6WUSatifGaaRs+SAe8J4+623y6OD2Lc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pAomZYacLrvS/rbe9p5p5uzdYFKVDn6XrcbLnfy3AGtpoHmo4aWpBd6wf6S+s9mPF
-	 k1cQTWIJzZFJJyJIi3Lu3z98b/6/vJP1OWWnRqyoaG5WJVSWLGaVUh1UUi14PNC3uI
-	 0mUjko+v8bE/mZ/6P1PFAsCX4lSt+v1ahheZe2YBrcQDMKBFaDYMaYmPYpCE5UZruh
-	 88gQlj+I0mFLz2g3DuQTh3/lUyMMhy5fEXOUdM70n3cTDhHrq0UGZSaW5vwr64hcMp
-	 mJZXY4lidxhvoA/atJktMX2OMiJ5U27a7wLOmTTvZUn2Qwnvx7gO/odlBizhLdtQ3x
-	 G4KadXN1SFYZQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
+	s=arc-20240116; t=1730747910; c=relaxed/simple;
+	bh=S9jUQmg8h331e2Pj63NU2N83tcF8B984es3Wedsa/lk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oVP0PvzK44ugSEm1T5opmSbDdXBUj52Mg4n72o3P45t+RN4trgnVyuManLP8lI6ZjMxHW6TZJrdVGnK+rl7LFQ1oNGRFdlhwAhJXl7LAtYZd7vpDdxEd4rWY5906JbccILZSWFa2RJGETLaDdXoW5StEoUuIU4Qbk9+3+vdTHJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bbzx6VrD; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-460ad98b043so36536091cf.1;
+        Mon, 04 Nov 2024 11:18:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730747908; x=1731352708; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=unJ9b+rts3y1hb3/PAxKDJbTMcuKEtEuGFYI5bvW40k=;
+        b=bbzx6VrDTBD/vh/ksEzbQb8gmhPgQDM5rgjkjg3tMgc7IBR2agJqmEVgd6qK3z1W+Z
+         Si8O8bKsaWwczBBssLAAI2ntckkgF51MSgUJj9Unh9ZkWVBSmbOt61lbUzWrSNZqEqRO
+         YycCHfnH24T/qJkKgfUduEm2/mhethQkn/tX855M0kVTYXFMYP+xgMZOua69An+XSEHe
+         2AQgidJcYuyv8kVndgLXzn+qr8Doo38jspi5R1sWjfir0fYJJQ2McEyP1hFZiShAikig
+         +InsMAfa9blE6deAuQ2lB614bNlnL54sVC+vB32DfAqVQs7Iw6pvLwLV7qYZe2LoyYCJ
+         n4ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730747908; x=1731352708;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=unJ9b+rts3y1hb3/PAxKDJbTMcuKEtEuGFYI5bvW40k=;
+        b=icbmxweGA+G8kZwAArArHj5mxujgP5FqSqbDT266ucn59sduJrNAWeGeQmQnNF/2SU
+         t9I3I9OrmJGu/qJpmVeUGRPM+yi66U//xoZL81TVrOC9RnN58ckmMxWaF2P4Oi4RPhw3
+         M6tbHjZ/lI2hrJrCx1Wi8v2jq9QNbXR9AwJ+hojGG/1m8hiOS5zZT346YNBrqTYrs8aT
+         0+LUE1ZjE8loa33Vqe9S8daK6HRwqRGnpBzAHcvZf3zZU5DntcScL+MuAAvXEDl/BDhJ
+         WIZ2Fj8NSltoI/Wu4RnkvPjPM/BZNahACE8Z3qzEcK8g30TQXlWazNSl0G/7LtvHrdsy
+         25Qg==
+X-Forwarded-Encrypted: i=1; AJvYcCWsl1XX3Am2BePaz4skbYh+UCTtc4gqGH+mNtEN4+5dVScZcDSEe5DMgpxSrIwOSPMoqAFZUqRmAoCtUU4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTIgk+3qBUOOAbG8MgkGHUYR/cmVa/3n9b+KL6i0N1iImzZdaV
+	Dnj+ReNOjX+yS3lkGBwXpVhB98e0YSuyMxZlEC9E0N6pF8AkhESd
+X-Google-Smtp-Source: AGHT+IELakiFzr59EudtKLiMCMHPt484NaNIT6Kjz/ZSDX/NpW9fjmCjoWrs7c/vQ4eTZTNX7i2z4g==
+X-Received: by 2002:ac8:58ce:0:b0:44f:fb6d:4b2f with SMTP id d75a77b69052e-462b6e83130mr228655931cf.23.1730747908255;
+        Mon, 04 Nov 2024 11:18:28 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ad086e55sm50174351cf.7.2024.11.04.11.18.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 11:18:28 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: wbg@kernel.org,
+	fabrice.gasnier@foss.st.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	Jonathan.Cameron@huawei.com,
+	benjamin.gaignard@st.com,
+	gregkh@linuxfoundation.org
 Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: dac: mcp4725: Use of_property_present() for non-boolean properties
-Date: Mon,  4 Nov 2024 13:08:46 -0600
-Message-ID: <20241104190846.278417-1-robh@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Subject: [PATCH v2] counter: stm32-timer-cnt: Add check for clk_enable()
+Date: Mon,  4 Nov 2024 19:18:25 +0000
+Message-Id: <20241104191825.40155-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -57,29 +90,60 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The use of of_property_read_bool() for non-boolean properties is
-deprecated in favor of of_property_present() when testing for property
-presence.
+Add check for the return value of clk_enable() in order to catch the
+potential exception.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: c5b8425514da ("counter: stm32-timer-cnt: add power management support")
+Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 ---
- drivers/iio/dac/mcp4725.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changelog:
 
-diff --git a/drivers/iio/dac/mcp4725.c b/drivers/iio/dac/mcp4725.c
-index 25bb1c0490af..1337fb02ccf5 100644
---- a/drivers/iio/dac/mcp4725.c
-+++ b/drivers/iio/dac/mcp4725.c
-@@ -379,7 +379,7 @@ static int mcp4725_probe_dt(struct device *dev,
- 			    struct mcp4725_platform_data *pdata)
+v1 -> v2:
+
+1. Add dev_err() to indicate the reason for the error code.
+---
+ drivers/counter/stm32-timer-cnt.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+index 186e73d6ccb4..9c188d9edd89 100644
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -214,11 +214,17 @@ static int stm32_count_enable_write(struct counter_device *counter,
  {
- 	/* check if is the vref-supply defined */
--	pdata->use_vref = device_property_read_bool(dev, "vref-supply");
-+	pdata->use_vref = device_property_present(dev, "vref-supply");
- 	pdata->vref_buffered =
- 		device_property_read_bool(dev, "microchip,vref-buffered");
+ 	struct stm32_timer_cnt *const priv = counter_priv(counter);
+ 	u32 cr1;
++	int ret;
  
+ 	if (enable) {
+ 		regmap_read(priv->regmap, TIM_CR1, &cr1);
+-		if (!(cr1 & TIM_CR1_CEN))
+-			clk_enable(priv->clk);
++		if (!(cr1 & TIM_CR1_CEN)) {
++			ret = clk_enable(priv->clk);
++			if (ret) {
++				dev_err(counter->parent, "Cannot enable clock %d\n", ret);
++				return ret;
++			}
++		}
+ 
+ 		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+ 				   TIM_CR1_CEN);
+@@ -816,7 +822,11 @@ static int __maybe_unused stm32_timer_cnt_resume(struct device *dev)
+ 		return ret;
+ 
+ 	if (priv->enabled) {
+-		clk_enable(priv->clk);
++		ret = clk_enable(priv->clk);
++		if (ret) {
++			dev_err(dev, "Cannot enable clock %d\n", ret);
++			return ret;
++		}
+ 
+ 		/* Restore registers that may have been lost */
+ 		regmap_write(priv->regmap, TIM_SMCR, priv->bak.smcr);
 -- 
-2.45.2
+2.25.1
 
 

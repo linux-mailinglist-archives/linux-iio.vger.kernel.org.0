@@ -1,185 +1,153 @@
-Return-Path: <linux-iio+bounces-11887-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11888-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B39F9BAF57
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 10:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 200189BB0DB
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 11:19:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC945281096
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 09:13:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3CC4281572
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 10:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3086F1AC459;
-	Mon,  4 Nov 2024 09:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0191B0F18;
+	Mon,  4 Nov 2024 10:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I6I02Yb8"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="moyF9DbF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F82E1AD3E1;
-	Mon,  4 Nov 2024 09:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664F719309A
+	for <linux-iio@vger.kernel.org>; Mon,  4 Nov 2024 10:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730711610; cv=none; b=N2BqE2IYGlOYfp117lvCZynCreMaz7jfa8wjNckeEMVBOZU1biTuKECUZjXVMMfWnGBLwj2DmEWxZvyztGXfxU4YMQgd30pJZQeb0tmgESbvr9sMM8/0/wBgRhoi69LUT5GdmoucZou7XcwXsl+v3EfZvBwFmEAWLpqpqGvCgcY=
+	t=1730715567; cv=none; b=PyIs9+tXg4Fr0kNWRUEIlu5NALsPcJUlsoyF2e2qJ12R6wvcv9SEA34MJJolyM2vYpNgiFiiH0DwxkdJ1KGZt+7SGEJ92o2eoWn2SOtGePGbH/+hst2qhBjpchZAPlf3wocVPdMI6Oz6SqbiC4zxBjttSXDSgZoWQMC3JzG1mHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730711610; c=relaxed/simple;
-	bh=hOjkAJ5SCB6kTsK3AmNEPFiSQj/wTUWWKnVCS6ZPCc8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PbXJyy+8pm9M1C7HM9yMGtpayV49bnHQZXgi/Qw1RsCnlVO3vbmmKkCyI3hgWVEb9db7haPnaCouYoWH66hf/z2p/gizXmvxjz9hcs3uGWN7ui+vC+F9i52VqBUTRLPptN30RnrUbscNCYZYYSo1QM24HKuUXqFpNuggi2VUZJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I6I02Yb8; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a9a628b68a7so633500666b.2;
-        Mon, 04 Nov 2024 01:13:27 -0800 (PST)
+	s=arc-20240116; t=1730715567; c=relaxed/simple;
+	bh=p02u5ugaKpWhKVqfxEAznxhLGO4mT4uCMsWfpBLALds=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SKIvbn+Er2bjBk4ydK5yfGfIopxY7Yy6HXTd3h0uUKwEI2JcQp6NREDAyf7EVYW0s9SaMz5mR3FEfzc+UG/YJOs4iWIg/PqLReEE6Qg6NlDuXvg7AG7OmdBDeM4bfKq7oTi9+T6i0Zs31DKX/PL9xUW4VGrPc0yYsd59w9eAPLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=moyF9DbF; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4314b316495so34024975e9.2
+        for <linux-iio@vger.kernel.org>; Mon, 04 Nov 2024 02:19:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730711606; x=1731316406; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZsyqYVJ5/bVxaZHofzYlbCWudDklkcbSgz9H2bcDlZk=;
-        b=I6I02Yb8xUF4bvtZJee6xeJvGj2MaP5FFo0kazcEFNh8aTBYkQjdwmpXI8Ple7CB29
-         oebWQPBCgE5syuOZLzKawToGtKTtip0JgcdNX0/DId6dbYAxFnJupyMzucMwEzXogBbw
-         WRNcsBQl4LzFqsiPtorvG9c2uWHX3/BOGj0xqoSQ51PkwjEYB9FX1i1vsXbKtmXNIFuE
-         pIkK50rQhjS8Fd1qCLIB9/iu5g+XGAoiMP+ml5VbRqj56yoTkqFmt9Z5wLHlXBooQeVi
-         ivUtsR9B6GemAHdUS3LL1EM6Yw7mWJ3AFnGMC5e5N4FxkiMIns06/E0wBzQWe1QhLS5S
-         mduQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730715562; x=1731320362; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ISWAroPoW2Cp/mKeny0CkcawM1MmOld3TK+B1w8Xgd4=;
+        b=moyF9DbFW0KZ2QxpaCTUaY3aTqXQpt1GdP1Qcu8jZUI+kwn/o+zrC8rvbZGwz7dJ41
+         AxXxVzjoOCye0ZZo4f9ac7Ie+zbWUDgGjLXltbnQ3bfQh+i3sO7tYB+KpnmwQdMx6PG4
+         ozYRdeVmtY5OR0YSufayJSJLmUHopu/3SZPoNoQMbdfSt3NYNLMFHdonnk4LRHyjksbm
+         Wzuk6gq76S5kFC93WlLB0ivXOu0bLROV820CY2ZU3XWqHnZNcnITy4Forl3kSz6xCvRf
+         3cpl9ivfFBCm+wsdtW0ouHE2UX+NlFpq04ym3Do6ge0TlxVWikTCHhw/6rJyZ3VuHE1g
+         1xiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730711606; x=1731316406;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZsyqYVJ5/bVxaZHofzYlbCWudDklkcbSgz9H2bcDlZk=;
-        b=ApuR4toODZq6YXXnS499IIOQHnRKuc1vbuevKWtLJ4X/MShVsGn3Q8PNAx1UnIjl8d
-         b0snMRwogyTswyHhVkJl1Dwz/YM+d3Vul1Wmr97CcoItj2ZOu2tksRq2XghxuziBvKqC
-         cz3Vzv1R0qc7j5PYBUDQHdOX8Q3d2A/3nLqYYmZrEZ/LI9/OHDEk749WfSpSGB2qBQ4v
-         CSBynRzSyMdl1YzNqBQm7p2jVbdnpros902deQaQI1szpN3wdgsK0H8LpB2jmFf8VbTK
-         LExlLIXbkWCMiMRVwxjq0T22c1QWmeCEstrnHdfbtrtOvd/umISS1Z7/jP2F6/tZtzup
-         GX/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUX1Nf+o5fbfGXzabZUIUNL/7RIvhiXMUokeQTuny2G6Blpw2zWE2UbBiKONc+3lcyVFkmamq0DKBN8TbQ1@vger.kernel.org, AJvYcCV+8Swu1eaYmAhjkXQ6OPTrKfMRzJIt4uYKN6GygsryNJ3uQY2Y04jYylO/nX+09sxKjwr8K+bDYqw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/2Hl79uADbgOiNCL8OWbl/dPCGCOQap6J7xyEfhs/CZG8zid/
-	nNVeaoT9TtX+4UeznJm6RlvfPcA1AB9WqDC41JaVle0AAmfz0L1g
-X-Google-Smtp-Source: AGHT+IHKyIxhG50uCvmxgG42SM/8gWqwGCkeMI2XnTBb3rbM0dKMmYxMg6IWDWtFHr32FJpraqjcRQ==
-X-Received: by 2002:a17:907:97c6:b0:a99:2ab0:d973 with SMTP id a640c23a62f3a-a9e657fd76dmr1092897966b.55.1730711606239;
-        Mon, 04 Nov 2024 01:13:26 -0800 (PST)
-Received: from ?IPv6:2001:a61:34c9:ea01:14b4:7ed9:5135:9381? ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e564942c8sm527500266b.28.2024.11.04.01.13.25
+        d=1e100.net; s=20230601; t=1730715562; x=1731320362;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ISWAroPoW2Cp/mKeny0CkcawM1MmOld3TK+B1w8Xgd4=;
+        b=J5HvFto/+6enXhS1MWku89+hxTuOb+njcekIuCQRGI27LjW9Z7wUwNqxUO9+rvynRd
+         qSEZVWLalFQIhUzMlWvt9K4wQnIizhb3tnRUt3UM1V0w9gDgwJhcy2f1cRJE78XGchsj
+         Fhb38nmK43hGmhwNvPA9qmvN1F4A+mPCQYkHmeB+UizIpmzqN1oXrqDxN8tEJVBX431x
+         Xj2hFjwtIG1kLeOLRU1Dt2cej5rUUDdAz4JxDTTruPjLIenEC6S6Y4Ejc6/c6jghwIyq
+         hOFlXpKhSIkKG0h/N1UC68yHD7NSd7Pk5qK5+AttaURQLL0GyidSCKtA/eqtCF41Hs24
+         pbZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGD7hav3K1TjCN0/QMiuxKhHUV+n4I8wx2Q+/eSXDJqDLJf8aKOpIVN07NmBQyHQZiuMlXTf62YxA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyECxi4YKBLeaO84Er2k2A1t0kmplTp3oF5Jc8I4whJocH4jAMV
+	0qvEsILDavlNiLK0pdlRMshwZ6TMybvaHXrYJo4yaMJDhdDjMrFNSlF6DMzLboU=
+X-Google-Smtp-Source: AGHT+IGHBx2Wfh4vX522CnWiby+5Vc1dK4lFkw+tq96nrFTY32QtNrkmHCTwETHp0Q7Y5pJBnfMIXw==
+X-Received: by 2002:a05:600c:548d:b0:431:60ac:9b0c with SMTP id 5b1f17b1804b1-4327b6fd376mr124782995e9.20.1730715561767;
+        Mon, 04 Nov 2024 02:19:21 -0800 (PST)
+Received: from localhost (p50915d2d.dip0.t-ipconnect.de. [80.145.93.45])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d5e8915sm148643405e9.27.2024.11.04.02.19.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 01:13:25 -0800 (PST)
-Message-ID: <4ed54857ed03779ee07d0dce66d6cd9c25c481e6.camel@gmail.com>
-Subject: Re: [PATCH v2] iio: adc: ad7923: Fix buffer overflow for tx_buf and
- ring_xfer
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+        Mon, 04 Nov 2024 02:19:20 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Zicheng Qu <quzicheng@huawei.com>, nuno.sa@analog.com, lars@metafoo.de, 
- Michael.Hennerich@analog.com, djunho@gmail.com,
- alexandru.ardelean@analog.com,  linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, tanghui20@huawei.com, 
- zhangqiao22@huawei.com, judy.chenhui@huawei.com
-Date: Mon, 04 Nov 2024 10:13:25 +0100
-In-Reply-To: <20241031210501.3da82113@jic23-huawei>
-References: <20241028142357.1032380-1-quzicheng@huawei.com>
-	 <20241029134637.2261336-1-quzicheng@huawei.com>
-	 <4760ad42ae34ea53ffb98995d65c5f1d6a6b3f9e.camel@gmail.com>
-	 <20241031210501.3da82113@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Guillaume Ranquet <granquet@baylibre.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: ad7124: Disable all channels at probe time
+Date: Mon,  4 Nov 2024 11:19:04 +0100
+Message-ID: <20241104101905.845737-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2510; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=p02u5ugaKpWhKVqfxEAznxhLGO4mT4uCMsWfpBLALds=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnKJ+Zur8byYe7r6sBCec7CjSYmSuaMA0BkMcL7 8U72Z2JZQiJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZyifmQAKCRCPgPtYfRL+ Tph2B/0Q0OQGXvioezD7/2j1hrcpeyLTWoQpl3jeMqbAHoTixhKqjkGqYFX2hfyKQl/aklir2+4 YOnMiGarQRVtQFY30FVdtTCdktbT/qb2Wub3y+/oe4hTvjnWIx9o+8Kd1BqYhQ0FIkwunaFYi52 QaCWInxtFQ2U/BEh920lUnaMFqLjCIqgF5PMsO67YkuY9cElbZAqNEDuq0DVBopTj24kFG2s9GK eDXXgKfh7KrZIAtWIona9NWS+a0Cd6PaBv5slOwiqeIQySHwTYnXg8SxkibA5PviXVZlb8yrm1z JX0Ww4IbUZd8mW6cIEBs0miHDPDsz689Y46otMzTZDw9i1Uo
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-10-31 at 21:05 +0000, Jonathan Cameron wrote:
-> On Thu, 31 Oct 2024 15:20:24 +0100
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Tue, 2024-10-29 at 13:46 +0000, Zicheng Qu wrote:
-> > > The AD7923 was updated to support devices with 8 channels, but the si=
-ze
-> > > of tx_buf and ring_xfer was not increased accordingly, leading to a
-> > > potential buffer overflow in ad7923_update_scan_mode().
-> > >=20
-> > > Fixes: 851644a60d20 ("iio: adc: ad7923: Add support for the
-> > > ad7908/ad7918/ad7928")
-> > > Cc: <stable@vger.kernel.org>
-> > > Signed-off-by: Nuno S=C3=A1 <noname.nuno@gmail.com>
-> > > Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-> > > ---=C2=A0=20
-> >=20
-> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> >=20
->=20
-> Confusing one. I'll fix the authorship up for your analog address
->=20
-> Zicheng, usually a Suggested-by after checking with the author if it's
-> a patch in a review thread.
->=20
-> You can't really give someone elses' SoB without them explicitly sending =
-it.
-> If Nuno let you know that was fine off the list, then just mention that u=
-nder
-> ---
->=20
-> This time I'm going to take Nuno's RB as fine to indicate no objection
-> to the SoB. Nuno, feel free to shout if you want to handle this different=
-ly.
->=20
+When during a measurement two channels are enabled, two measurements are
+done that are reported sequencially in the DATA register. As the code
+triggered by reading one of the sysfs properties expects that only one
+channel is enabled it only reads the first data set which might or might
+not belong to the intended channel.
 
-Oh, TBH, I did not realized by SOB tag was there. I'm fine with it even tho=
-ugh I
-agree a Suggested-by would likely make more sense.
+To prevent this situation disable all channels during probe. This fixes
+a problem in practise because the reset default for channel 0 is
+enabled. So all measurements before the first measurement on channel 0
+(which disables channel 0 at the end) might report wrong values.
 
-- Nuno S=C3=A1
- =20
-> Applied.
->=20
-> Jonathan
->=20
->=20
-> > > v2:
-> > > - Fixed: Addressed buffer overflow in ad7923_update_scan_mode() due t=
-o=20
-> > > insufficient tx_buf and ring_xfer size for 8-channel devices.
-> > > - Issue: Original patch attempted to fix the overflow by limiting the=
-=20
-> > > length, but did not address the root cause of buffer size mismatch.
-> > > - Solution: Increased tx_buf and ring_xfer sizes recommended by Nuno =
-to=20
-> > > support all 8 channels, ensuring adequate buffer capacity.
-> > > - Previous patch link:=20
-> > > https://lore.kernel.org/linux-iio/20241028142357.1032380-1-quzicheng@=
-huawei.com/T/#u
-> > > =C2=A0drivers/iio/adc/ad7923.c | 4 ++--
-> > > =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
-> > > index 09680015a7ab..acc44cb34f82 100644
-> > > --- a/drivers/iio/adc/ad7923.c
-> > > +++ b/drivers/iio/adc/ad7923.c
-> > > @@ -48,7 +48,7 @@
-> > > =C2=A0
-> > > =C2=A0struct ad7923_state {
-> > > =C2=A0	struct spi_device		*spi;
-> > > -	struct spi_transfer		ring_xfer[5];
-> > > +	struct spi_transfer		ring_xfer[9];
-> > > =C2=A0	struct spi_transfer		scan_single_xfer[2];
-> > > =C2=A0	struct spi_message		ring_msg;
-> > > =C2=A0	struct spi_message		scan_single_msg;
-> > > @@ -64,7 +64,7 @@ struct ad7923_state {
-> > > =C2=A0	 * Length =3D 8 channels + 4 extra for 8 byte timestamp
-> > > =C2=A0	 */
-> > > =C2=A0	__be16				rx_buf[12]
-> > > __aligned(IIO_DMA_MINALIGN);
-> > > -	__be16				tx_buf[4];
-> > > +	__be16				tx_buf[8];
-> > > =C2=A0};
-> > > =C2=A0
-> > > =C2=A0struct ad7923_chip_info {=C2=A0=20
-> >=20
->=20
+Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
+
+this patch was part of a series before. The remaining patches are still
+under discussion. As this is a fix orthogonal to the other patches of
+the series (apart from the other relevant change there also being
+necessary to make the ad7124 work for me) it IMHO makes sense to apply
+this one already now. There are machines that don't suffer from the
+other issue (i.e. the device irq becoming pending by spi traffic), so
+this fix is also valuable stand alone. It's IMHO good enough to go in
+before v6.12.
+
+The previous submission is available at
+https://lore.kernel.org/linux-iio/20241028160748.489596-10-u.kleine-koenig@baylibre.com/
+
+b4 ignored Nuno's Reviewed-by tag with
+
+	NOTE: some trailers ignored due to from/email mismatches:
+	    ! Trailer: Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+	     Msg From: Nuno Sá <noname.nuno@gmail.com>
+
+I wonder if other maintainers use b4 apply's -S by default, because I
+often run into this issue but don't see others mentioning that.
+I added the tag here anyhow.
+
+ drivers/iio/adc/ad7124.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index a5d91933f505..749304d38415 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -917,6 +917,9 @@ static int ad7124_setup(struct ad7124_state *st)
+ 		 * set all channels to this default value.
+ 		 */
+ 		ad7124_set_channel_odr(st, i, 10);
++
++		/* Disable all channels to prevent unintended conversions. */
++		ad_sd_write_reg(&st->sd, AD7124_CHANNEL(i), 2, 0);
+ 	}
+ 
+ 	ret = ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_control);
+
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+-- 
+2.45.2
 
 

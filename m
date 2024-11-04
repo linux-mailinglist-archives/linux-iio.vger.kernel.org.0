@@ -1,186 +1,131 @@
-Return-Path: <linux-iio+bounces-11892-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11893-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19859BB58C
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 14:15:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 005F69BB6FB
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 15:01:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5021F216F4
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 13:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A14B31F2394D
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 14:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEDCAD24;
-	Mon,  4 Nov 2024 13:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23E51304B0;
+	Mon,  4 Nov 2024 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZUVJg5b7"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c98vcCDI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7A133FE;
-	Mon,  4 Nov 2024 13:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5741A8BEE;
+	Mon,  4 Nov 2024 14:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730726154; cv=none; b=RjQb0JQPqJChjL75FUT3H3XyR6PpC3FIDWlDAPw2IgBIIX/ZP7SRnXTFvRpgT9nAV0ZSzaPpSkKKhEcUIAjECI9Dlpp9EcmdwAvFlU8GDoKbeBNM58dJAviObAudt4Adfd0zMDuI/MId5zBYtByn2xRyvhVF8syPNzPbpdG2iE8=
+	t=1730728874; cv=none; b=tQvEfM0xGBm9vsEKK3hsAarsr8M92+2UcA9I5QTnvn5C6TvPWySMFcs6VoAOI1uze8BCWcZyJB4CbsHw2vqBmNzNJwb2pqZYSzEV4Gd4BZ8osJSXLdqJkD5gk8IdZ+JTlzo8FlCXzZan6y3EUsCvbxFgP0rZy2bqeeGCn1P6UGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730726154; c=relaxed/simple;
-	bh=GFcu93LZhgflzHwjgZxoMyYv2ii1WI65MwCPlXsbtiA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O1uUmS9TcvRFnDU0+qE+YeKOZknSBZLdGlZiexofEEy4xS6BeiLA7BHOShOxoejJJ/JCljbfVZlRfu5FZy1hbJpW1gMufx1scfLuAAq1kug6UFmV6Xdz63wToxYAWBOXKhnocOS26lZdNqrMlrEKBXQDKM/A4RvRxSWgulm6gy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZUVJg5b7; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9a16b310f5so691910866b.0;
-        Mon, 04 Nov 2024 05:15:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730726151; x=1731330951; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=05Fw0734yDPEZPjYpClPOaXgwFb0vYgwUd4a3SYU9ZA=;
-        b=ZUVJg5b7jZbL+MvudG+Ji04VRo1wFXRdHX46+mg94QsZ59kge8/ps9+ogApMgj35hF
-         X1/6iV1ALt6cegWTOaQPveccHYzoPgXkLsWp2qYrY1Xv4Xsd0G4stVyAcfjTfLZ/MqrO
-         GPZnbYxsArrnWbO1HYoNGjBMTLbarLiD1Bo/aQyjWERafudzF5jy4VIJNMSOr7t6FhpF
-         NMuxBoWUnoiC+hnxoUaq9uCtyUNrvJCgPHQHQy/m3BZ3aRI6yLibaAcwRYb0qNK5omI0
-         ISwqlTFmy98L3wBmBmwSlampl3A5PZzQXxxYtQHd1j6Jp0uRrJZUtUkG0gFg1DOb3Gdi
-         kCDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730726151; x=1731330951;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=05Fw0734yDPEZPjYpClPOaXgwFb0vYgwUd4a3SYU9ZA=;
-        b=EIGCPArNHOH6jG07VzG5M89U6CJWAvBaKdKfuCeV0UwelrG1mCCDVR8pIZ+L3xdr/J
-         HF34Xry5Z1JarOHUgTyTN2YToADBlQma81c3PHlBVz/nmTHdDTDtPbILyA/SDIChckhm
-         D/l12mz6eYsF5MzI72NboDgoTzTNLmwutbGm4UbPbA7wQWKB3LKUQY00L4z7an5P1X9M
-         XPc8jLFKuFBVJFoy+snPKHSOYe545ZeeCPX/IWU5Atc4oU7oD8ykvsTf9V9zO82KTR9H
-         sytciFV5xNkcacxqLZc0ef5FGcqVen+G2O5vav5LkVfrj3XwmBwKporT6b6ugg8HyGGr
-         /aeA==
-X-Forwarded-Encrypted: i=1; AJvYcCVuDkNPitg8z1Om5uZ4VbPXPN/o39ew98PWc0rveFzCXWvkFTZ2OfgMgzqfwlk/luOppueQQEQP4KEm@vger.kernel.org, AJvYcCW4tXvwywTvJcCigTYYfE/uNriJbTrPfb9Z+9wVnyIm3H7GSVrpLVB6MHzMLevD9AiigJ/0Kn5TIZes@vger.kernel.org
-X-Gm-Message-State: AOJu0YyffRKuQgJqKWXM4Xeaibt2WG1aPV32yNPP51cU21c7QgPTvEE5
-	X2WWYn5hdc+0ZWXGFOxQJ0TahsdJecK2euh02lKdiTIWQIIkfN3P
-X-Google-Smtp-Source: AGHT+IF366frdwJAN/Nic5KZbsxx4yX8nROBvgKs2H27mCpl9Co95JYTaTu07b3xJMfTVPR/Qu/Rzg==
-X-Received: by 2002:a17:907:6d09:b0:a9a:122b:e545 with SMTP id a640c23a62f3a-a9e5093f0b3mr1643923466b.32.1730726150528;
-        Mon, 04 Nov 2024 05:15:50 -0800 (PST)
-Received: from ?IPv6:2001:a61:34c9:ea01:14b4:7ed9:5135:9381? ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e5663bd47sm564198666b.144.2024.11.04.05.15.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 05:15:50 -0800 (PST)
-Message-ID: <2760d1a59114d0eec79405c56253aa82268ecba7.camel@gmail.com>
-Subject: Re: [PATCH v2 3/4] iio: adc: ad_sigma_delta: Add support for
- reading irq status using a GPIO
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-  David Lechner <dlechner@baylibre.com>, Dumitru Ceclan
- <dumitru.ceclan@analog.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring
- <robh@kernel.org>, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
- Thomas Gleixner <tglx@linutronix.de>, Russell King <linux@armlinux.org.uk>
-Date: Mon, 04 Nov 2024 14:15:49 +0100
-In-Reply-To: <xka5svqs3jbjiqcz6bacih7hjqzjbrugutjii6qusdbqoxfrp5@5hcv3htsjtlp>
-References: <20241028160748.489596-6-u.kleine-koenig@baylibre.com>
-	 <20241028160748.489596-9-u.kleine-koenig@baylibre.com>
-	 <a575430a74a7825a2df9fad1a8e073ad0507b0e7.camel@gmail.com>
-	 <20241030204429.70cdcf35@jic23-huawei>
-	 <y3amm7yj37lravbk6fcwze3jlllp4extmffqtx4jaoeqjt6uyl@nsdrcy2dk5kr>
-	 <1de551c284aaa9f4e91f91fa0c4ac570c8b7f2c9.camel@gmail.com>
-	 <xka5svqs3jbjiqcz6bacih7hjqzjbrugutjii6qusdbqoxfrp5@5hcv3htsjtlp>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1730728874; c=relaxed/simple;
+	bh=hYwWE6NSgcNV54B1JYLg3MC+AgkpywJBzoMNETV4gyQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZXSukgcYABOQPpaWwrxhS4N4OzJEIQRKihDQDO3CU3ipZUcKyR2fDwCYj6UUe+EvCUds6mvXiQBbhMMuVY5ACGB23+FociLlrwZkFNkNe9Znnv/K5gfcab57CSvBkKqJCD0ArvdKcYgb1AAoUXNp5XjPQZGrTNHVeJCXMYsaIrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c98vcCDI; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=/9WKCT0vx39Ceviq8KsWhLeea2L5rBVepa8c56heqKo=; b=c98vcCDIrWnXOfKLZO0yXX66AJ
+	yVyjghqAnlZKmkWjAC6ruTsEfVlkBhuN8dcgk3DQ77wMlvu2DrlsivAN+m7VaCOdn2QTfLUvqeUPo
+	jHDZu4NmjLEcKKwFd1bOzbs2TwVzv4nkhWcnYp/Q6uB7kTdT8kN8N+AyqRfxwxt5JBHDuXx8Ci7N8
+	b/ha1C0ttMvCMCGMDtbrpay4gt3eoGL6pDW+gobvM86CmUtVEOvzOVJqnR94TJaO3Vhkk86Q18MKB
+	Et5RcE3YOJoHzhuJ+Er3YFRq8C8+cGVxdnNG4L7kcT6j2k42F931LK6hGOOI6N+XuCm91c8sY88h3
+	Jla4Knig==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1t7xdi-0000000BLB4-34O0;
+	Mon, 04 Nov 2024 14:01:07 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 6121030042E; Mon,  4 Nov 2024 15:01:06 +0100 (CET)
+Date: Mon, 4 Nov 2024 15:01:06 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>, megi@xff.cz,
+	jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org
+Subject: Re: linux-next: build failure after merge of the tip tree
+Message-ID: <20241104140106.GF24862@noisy.programming.kicks-ass.net>
+References: <20241028165336.7b46ce25@canb.auug.org.au>
+ <20241101141952.4990f238@canb.auug.org.au>
+ <dd740dda-a03e-4f3a-bb46-e551f0799c50@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dd740dda-a03e-4f3a-bb46-e551f0799c50@intel.com>
 
-On Mon, 2024-11-04 at 13:49 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> Hello,
->=20
-> [adding rmk to Cc as the docs state that he invented lazy disabling]
->=20
-> On Thu, Oct 31, 2024 at 01:05:21PM +0100, Nuno S=C3=A1 wrote:
-> > On Thu, 2024-10-31 at 11:40 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > > On Wed, Oct 30, 2024 at 08:44:29PM +0000, Jonathan Cameron wrote:
-> > > > On Wed, 30 Oct 2024 14:04:58 +0100
-> > > > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> > > > > Regarding this, I do share some of the concerns already raised by=
- Jonathan.
-> > > > > I fear
-> > > > > that we're papering around an issue with the IRQ controller rathe=
-r than
-> > > > > being an
-> > > > > issue with the device. When I look at irq_disable() docs [1], it =
-feels that
-> > > > > we're
-> > > > > already doing what we're supposed to do. IOW, we disable the lazy=
- approach
-> > > > > so we
-> > > > > *should* not get any pending IRQ.
-> > >=20
-> > > I think this is wrong and you always have to be prepared to see an ir=
-q
-> > > triggering that became pending while masked.
->=20
-> I did some research, here are my findings:
->=20
-> https://www.kernel.org/doc/html/v6.12-rc6/core-api/genericirq.html#delaye=
-d-interrupt-disable
-> reads:
->=20
-> 	The interrupt is kept enabled and is masked in the flow handler
-> 	when an interrupt event happens. This prevents losing edge
-> 	interrupts on hardware which does not store an edge interrupt
-> 	event while the interrupt is disabled at the hardware level.
->=20
-> This suggests that lazy disabling is needed for some controllers that
-> stop their event detection when disabled. I read that as: *Normally* an
-> irq event gets pending in hardware while the irq is disabled.
 
-I might be wrong, but I think that the lazy approach is the one for optimiz=
-ation. I
-think the reasoning is that __normally__ no more IRQs will come so no need =
-to access
-the HW. But also thinking more on the subject and looking at what the lazy =
-approach
-is doing, I take back what I said in previous emails. I *think* the expecta=
-tion for a
-received IRQ while the line is masked (or disabled?!), is to keep it as pen=
-ding (both
-on HW - when possible - and in SW).
+It might help if we put the relevant maintainers on Cc?
 
->=20
-> The lazy disable approach is expected to work fine always, the reason to
-> implement non-lazy disabling is "only" a performance optimisation. See
-> commit e9849777d0e27cdd2902805be51da73e7c79578c.
-
-Not sure If I understood you correctly, but I think is the other way around=
-?=C2=A0
-Also, as said in the commit, I think it also prevents the same interrupt fr=
-om
-happening twice (in some cases).
-
->=20
-> With the DOUT/=CC=85R=CC=85D=CC=85Y pin the ad7124 (and others) is in thi=
-s "Unfortunately
-> there are devices which do not allow the interrupt to be disabled easily
-> at the device level." class.
->=20
-> However that makes me wonder what is the difference between the
-> irq_mask() and irq_disable() callbacks defined in struct irq_chip.
-
-Wondering the same...
-
-Thanks for digging into this. This has been a long standing thing with sigm=
-a delta
-ADCs (I'm fairly sure this discussion about being an issue on the IRQ contr=
-oller or
-not already happened before).
-
-- Nuno S=C3=A1
-
+On Mon, Nov 04, 2024 at 02:37:57PM +0100, Przemek Kitszel wrote:
+> On 11/1/24 04:19, Stephen Rothwell wrote:
+> > Hi all,
+> > 
+> > On Mon, 28 Oct 2024 16:53:36 +1100 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+> > > 
+> > > After merging the tip tree, today's linux-next build (x86_64 allmodconfig)
+> > > failed like this:
+> > > 
+> > > drivers/iio/magnetometer/af8133j.c: In function 'af8133j_set_scale':
+> > > drivers/iio/magnetometer/af8133j.c:315:12: error: suggest explicit braces to avoid ambiguous 'else' [-Werror=dangling-else]
+> > >    315 |         if (!pm_runtime_status_suspended(dev))
+> > >        |            ^
+> > > cc1: all warnings being treated as errors
+> > > 
+> > > Probably caused by commit
+> > > 
+> > >    fcc22ac5baf0 ("cleanup: Adjust scoped_guard() macros to avoid potential warning")
+> > > 
+> > > I have applied the following for today but I wonder if there may be
+> > > others.
+> > > 
+> > > From: Stephen Rothwell <sfr@canb.auug.org.au>
+> > > Date: Mon, 28 Oct 2024 16:01:15 +1100
+> > > Subject: [PATCH] fix up for "cleanup: Adjust scoped_guard() macros to avoid
+> > >   potential warning"
+> > > 
+> > > Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> > > ---
+> > >   drivers/iio/magnetometer/af8133j.c | 3 ++-
+> > >   1 file changed, 2 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/iio/magnetometer/af8133j.c b/drivers/iio/magnetometer/af8133j.c
+> > > index d81d89af6283..acd291f3e792 100644
+> > > --- a/drivers/iio/magnetometer/af8133j.c
+> > > +++ b/drivers/iio/magnetometer/af8133j.c
+> > > @@ -312,10 +312,11 @@ static int af8133j_set_scale(struct af8133j_data *data,
+> > >   	 * When suspended, just store the new range to data->range to be
+> > >   	 * applied later during power up.
+> > >   	 */
+> > > -	if (!pm_runtime_status_suspended(dev))
+> > > +	if (!pm_runtime_status_suspended(dev)) {
+> > >   		scoped_guard(mutex, &data->mutex)
+> > >   			ret = regmap_write(data->regmap,
+> > >   					   AF8133J_REG_RANGE, range);
+> > > +	}
+> > >   	pm_runtime_enable(dev);
+> > 
+> > I am still applying this patch.
+> > 
+> 
+> This patch of yours is necessary, could you make it permanent?
+> 
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 

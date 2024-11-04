@@ -1,178 +1,185 @@
-Return-Path: <linux-iio+bounces-11886-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11887-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8159BAE80
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 09:49:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B39F9BAF57
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 10:13:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F02EB1C20F8D
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 08:49:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC945281096
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 09:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F761AB517;
-	Mon,  4 Nov 2024 08:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3086F1AC459;
+	Mon,  4 Nov 2024 09:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="arkw82XE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I6I02Yb8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A0B1AA7BE;
-	Mon,  4 Nov 2024 08:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F82E1AD3E1;
+	Mon,  4 Nov 2024 09:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730710135; cv=none; b=Ur74W9pmczwgVi2SApsb/xarucIB7/8J/+oeKz4gW5BQGB1OHLzG2eMOk4w0QlnZDvxfEl/6zRf0BwqjzXJp7zFFY/GfjdQZd1XvPUBwD1y+we+Rv/brLZjV7IEXba3GFhebJvRSpVRbAJ8H6hUZKoF2I/8FldLPFf1yvyDsf9g=
+	t=1730711610; cv=none; b=N2BqE2IYGlOYfp117lvCZynCreMaz7jfa8wjNckeEMVBOZU1biTuKECUZjXVMMfWnGBLwj2DmEWxZvyztGXfxU4YMQgd30pJZQeb0tmgESbvr9sMM8/0/wBgRhoi69LUT5GdmoucZou7XcwXsl+v3EfZvBwFmEAWLpqpqGvCgcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730710135; c=relaxed/simple;
-	bh=5+i72FmZ741eQj/KKoKDxRcngb3xinsXBjALXLspk8w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eZosqDKmurhGYI7Co3nmxI9l6w88aG5YvISjl/iB2U225QvsFsxGarAyT3P9S4OqljQiaYgyt+soO05e6vlWlIpR3+0eXeWZd3ZrHtYAAl8qIml3FQozz+N2DeNYSCHD88h5UVoF/lyNY0kbBqDEOmsaPhCFLpKRhzJb4/oqMqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=arkw82XE; arc=none smtp.client-ip=209.85.208.49
+	s=arc-20240116; t=1730711610; c=relaxed/simple;
+	bh=hOjkAJ5SCB6kTsK3AmNEPFiSQj/wTUWWKnVCS6ZPCc8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PbXJyy+8pm9M1C7HM9yMGtpayV49bnHQZXgi/Qw1RsCnlVO3vbmmKkCyI3hgWVEb9db7haPnaCouYoWH66hf/z2p/gizXmvxjz9hcs3uGWN7ui+vC+F9i52VqBUTRLPptN30RnrUbscNCYZYYSo1QM24HKuUXqFpNuggi2VUZJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I6I02Yb8; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cedea84d77so382036a12.1;
-        Mon, 04 Nov 2024 00:48:53 -0800 (PST)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a9a628b68a7so633500666b.2;
+        Mon, 04 Nov 2024 01:13:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730710132; x=1731314932; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+ZZ+0RjkzenRGrYKXv3Grrd59Lbf3Pn66/QGdrg4mvE=;
-        b=arkw82XEU85j/VEAMfUyq29hPO4qx8mqs6zT/faDy7jpFz9XeNBEbvzfcRNFMP4YKD
-         J6eLGiU11eGsrzwF9BWpsqJMoVhSlxedK+Df5ew70JuSriwpV7h/GymitSdw8Q/Zg01K
-         SpExxsAwJixam4OOfyGkuAHa0zQxdkzGj8WN7jZ3JRSW0jP0597rpHlmlKHuEB9OroIu
-         4OMKdNQYbOqpwFqkXk+s3rodyPuvszmFfnWnHjuqO1MNk0KtaDimEDkrKdzCzP/DiEVw
-         FYvIKMphqSOkPT5KwQKj1ywC9j18Qxn5aV8aUGCjDV6xUtURDCQx51skSbKmeNBhIc3G
-         KmnA==
+        d=gmail.com; s=20230601; t=1730711606; x=1731316406; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZsyqYVJ5/bVxaZHofzYlbCWudDklkcbSgz9H2bcDlZk=;
+        b=I6I02Yb8xUF4bvtZJee6xeJvGj2MaP5FFo0kazcEFNh8aTBYkQjdwmpXI8Ple7CB29
+         oebWQPBCgE5syuOZLzKawToGtKTtip0JgcdNX0/DId6dbYAxFnJupyMzucMwEzXogBbw
+         WRNcsBQl4LzFqsiPtorvG9c2uWHX3/BOGj0xqoSQ51PkwjEYB9FX1i1vsXbKtmXNIFuE
+         pIkK50rQhjS8Fd1qCLIB9/iu5g+XGAoiMP+ml5VbRqj56yoTkqFmt9Z5wLHlXBooQeVi
+         ivUtsR9B6GemAHdUS3LL1EM6Yw7mWJ3AFnGMC5e5N4FxkiMIns06/E0wBzQWe1QhLS5S
+         mduQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730710132; x=1731314932;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+ZZ+0RjkzenRGrYKXv3Grrd59Lbf3Pn66/QGdrg4mvE=;
-        b=NYt9nLzi6UCqGcA+abFCy3h55X1Z0Hrrxi94OrB2v4RKCyHBKCbhGYhaWb6K0VdRjS
-         +O44HTlei2PuPM9gvCQXKIDoF8KDdphL7B5X38YjBPalpphDFR456ZeOhY/IlJ3rmInO
-         ZoRdBYV2DRUQT8GfxenZw9NvNVn/AmgagD03e6WQ3Zc0RvCH0/yrQY7E3UU6HjfeOVyB
-         NXv8Q5Gk8hMFAEaxK79RtqUcqEDw/J0dn/qFpvWaGudQfSIRwl/VEui3iKMprY+8s3L7
-         iTAzILk3b2ELOLWSd9SWYzPu2ba10Ftlvr4DNuxeDRPpayUgOJ5g9FX2rl5L017wZlIx
-         LWng==
-X-Forwarded-Encrypted: i=1; AJvYcCUq8R7+k4sTI8388AVzyRud1w3P9bdOf0wFksvmYF0e6raIkd5BTluo4NcX+XaYsXVvV1mtKbuLajI=@vger.kernel.org, AJvYcCW9ozONZvKOPIx4trJ15bk1dV68MG6xFJN7uHPhhhm8c4d8i/8PPU887i0Qoeke+FZlg+rg9HGj2PuSBkR7@vger.kernel.org, AJvYcCWA1jF/GOC1fCAdTEm/e38/qTfms1C4/x8QqfGsZqaR7I9OQbVCSKMsDbyH0qxtg6D6AKzvTO9ooG0bqA==@vger.kernel.org, AJvYcCWnKIZmLudQPNh93zreF04wNJB3mNCcV7EdvzItixKOxSVsTy9huy5AieE8ySDI564qQRaMTsmkhA6U@vger.kernel.org, AJvYcCWxS/LyHlmb6OY72QaxmW8ItTfr195jopys/sNBqoFJ6V58VmL9nzkVfa14EJggdI1AhDFfk3XZvpU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPZqZIu96MWf1NGpB0aovczcP3UqVC1l4kmRZ1CBC66uv9BbTP
-	WTizYsSDlcfvDKv8ae4JrYf2UTWf0YpKq01oM4s9dUGZLHN3DoaR
-X-Google-Smtp-Source: AGHT+IGpRKouQd21becr4NL7JTcNVTWUEzIT1ATcrtRapmmpmOnf8sfq9N/NkZy3dwUV4Zteb6HUlw==
-X-Received: by 2002:a05:6402:274b:b0:5ce:df46:70f4 with SMTP id 4fb4d7f45d1cf-5cedf467240mr505986a12.36.1730710131795;
-        Mon, 04 Nov 2024 00:48:51 -0800 (PST)
-Received: from standask-GA-A55M-S2HP (lu-nat-113-247.ehs.sk. [188.123.113.247])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ceac76fb46sm3957953a12.26.2024.11.04.00.48.50
+        d=1e100.net; s=20230601; t=1730711606; x=1731316406;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZsyqYVJ5/bVxaZHofzYlbCWudDklkcbSgz9H2bcDlZk=;
+        b=ApuR4toODZq6YXXnS499IIOQHnRKuc1vbuevKWtLJ4X/MShVsGn3Q8PNAx1UnIjl8d
+         b0snMRwogyTswyHhVkJl1Dwz/YM+d3Vul1Wmr97CcoItj2ZOu2tksRq2XghxuziBvKqC
+         cz3Vzv1R0qc7j5PYBUDQHdOX8Q3d2A/3nLqYYmZrEZ/LI9/OHDEk749WfSpSGB2qBQ4v
+         CSBynRzSyMdl1YzNqBQm7p2jVbdnpros902deQaQI1szpN3wdgsK0H8LpB2jmFf8VbTK
+         LExlLIXbkWCMiMRVwxjq0T22c1QWmeCEstrnHdfbtrtOvd/umISS1Z7/jP2F6/tZtzup
+         GX/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUX1Nf+o5fbfGXzabZUIUNL/7RIvhiXMUokeQTuny2G6Blpw2zWE2UbBiKONc+3lcyVFkmamq0DKBN8TbQ1@vger.kernel.org, AJvYcCV+8Swu1eaYmAhjkXQ6OPTrKfMRzJIt4uYKN6GygsryNJ3uQY2Y04jYylO/nX+09sxKjwr8K+bDYqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/2Hl79uADbgOiNCL8OWbl/dPCGCOQap6J7xyEfhs/CZG8zid/
+	nNVeaoT9TtX+4UeznJm6RlvfPcA1AB9WqDC41JaVle0AAmfz0L1g
+X-Google-Smtp-Source: AGHT+IHKyIxhG50uCvmxgG42SM/8gWqwGCkeMI2XnTBb3rbM0dKMmYxMg6IWDWtFHr32FJpraqjcRQ==
+X-Received: by 2002:a17:907:97c6:b0:a99:2ab0:d973 with SMTP id a640c23a62f3a-a9e657fd76dmr1092897966b.55.1730711606239;
+        Mon, 04 Nov 2024 01:13:26 -0800 (PST)
+Received: from ?IPv6:2001:a61:34c9:ea01:14b4:7ed9:5135:9381? ([2001:a61:34c9:ea01:14b4:7ed9:5135:9381])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e564942c8sm527500266b.28.2024.11.04.01.13.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 00:48:51 -0800 (PST)
-Date: Mon, 4 Nov 2024 09:48:49 +0100
-From: Stanislav Jakubek <stano.jakubek@gmail.com>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: [PATCH v3 2/2] dt-bindings: mfd: sprd,sc2731: reference
- sprd,sc2731-efuse bindings
-Message-ID: <cd8cc95b59c31418b174bba521dd2599a7929fda.1730709384.git.stano.jakubek@gmail.com>
-References: <efd200c3b5b75405e4e450d064b026f10ae2f8e0.1730709384.git.stano.jakubek@gmail.com>
+        Mon, 04 Nov 2024 01:13:25 -0800 (PST)
+Message-ID: <4ed54857ed03779ee07d0dce66d6cd9c25c481e6.camel@gmail.com>
+Subject: Re: [PATCH v2] iio: adc: ad7923: Fix buffer overflow for tx_buf and
+ ring_xfer
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Zicheng Qu <quzicheng@huawei.com>, nuno.sa@analog.com, lars@metafoo.de, 
+ Michael.Hennerich@analog.com, djunho@gmail.com,
+ alexandru.ardelean@analog.com,  linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, tanghui20@huawei.com, 
+ zhangqiao22@huawei.com, judy.chenhui@huawei.com
+Date: Mon, 04 Nov 2024 10:13:25 +0100
+In-Reply-To: <20241031210501.3da82113@jic23-huawei>
+References: <20241028142357.1032380-1-quzicheng@huawei.com>
+	 <20241029134637.2261336-1-quzicheng@huawei.com>
+	 <4760ad42ae34ea53ffb98995d65c5f1d6a6b3f9e.camel@gmail.com>
+	 <20241031210501.3da82113@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <efd200c3b5b75405e4e450d064b026f10ae2f8e0.1730709384.git.stano.jakubek@gmail.com>
 
-Directly reference the sc2731-efuse bindings to simplify the schema.
-Remove the duplicate example from the efuse bindings.
+On Thu, 2024-10-31 at 21:05 +0000, Jonathan Cameron wrote:
+> On Thu, 31 Oct 2024 15:20:24 +0100
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>=20
+> > On Tue, 2024-10-29 at 13:46 +0000, Zicheng Qu wrote:
+> > > The AD7923 was updated to support devices with 8 channels, but the si=
+ze
+> > > of tx_buf and ring_xfer was not increased accordingly, leading to a
+> > > potential buffer overflow in ad7923_update_scan_mode().
+> > >=20
+> > > Fixes: 851644a60d20 ("iio: adc: ad7923: Add support for the
+> > > ad7908/ad7918/ad7928")
+> > > Cc: <stable@vger.kernel.org>
+> > > Signed-off-by: Nuno S=C3=A1 <noname.nuno@gmail.com>
+> > > Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+> > > ---=C2=A0=20
+> >=20
+> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> >=20
+>=20
+> Confusing one. I'll fix the authorship up for your analog address
+>=20
+> Zicheng, usually a Suggested-by after checking with the author if it's
+> a patch in a review thread.
+>=20
+> You can't really give someone elses' SoB without them explicitly sending =
+it.
+> If Nuno let you know that was fine off the list, then just mention that u=
+nder
+> ---
+>=20
+> This time I'm going to take Nuno's RB as fine to indicate no objection
+> to the SoB. Nuno, feel free to shout if you want to handle this different=
+ly.
+>=20
 
-Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
----
-Changes in V3:
-- new patch due to a missing dependency in the MFD tree 
+Oh, TBH, I did not realized by SOB tag was there. I'm fine with it even tho=
+ugh I
+agree a Suggested-by would likely make more sense.
 
-Link to V2: https://lore.kernel.org/lkml/ZyExK01iprBHhGm6@standask-GA-A55M-S2HP/
-Link to V1: https://lore.kernel.org/lkml/Zr3X1RoQs7ElTnlJ@standask-GA-A55M-S2HP/
-
- .../devicetree/bindings/mfd/sprd,sc2731.yaml  | 10 +------
- .../bindings/nvmem/sprd,sc2731-efuse.yaml     | 29 -------------------
- 2 files changed, 1 insertion(+), 38 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/mfd/sprd,sc2731.yaml b/Documentation/devicetree/bindings/mfd/sprd,sc2731.yaml
-index 8beec7e8e4c6..bd5f2504b44b 100644
---- a/Documentation/devicetree/bindings/mfd/sprd,sc2731.yaml
-+++ b/Documentation/devicetree/bindings/mfd/sprd,sc2731.yaml
-@@ -67,15 +67,7 @@ patternProperties:
- 
-   "^efuse@[0-9a-f]+$":
-     type: object
--    additionalProperties: true
--    properties:
--      compatible:
--        enum:
--          - sprd,sc2720-efuse
--          - sprd,sc2721-efuse
--          - sprd,sc2723-efuse
--          - sprd,sc2730-efuse
--          - sprd,sc2731-efuse
-+    $ref: /schemas/nvmem/sprd,sc2731-efuse.yaml#
- 
-   "^fuel-gauge@[0-9a-f]+$":
-     type: object
-diff --git a/Documentation/devicetree/bindings/nvmem/sprd,sc2731-efuse.yaml b/Documentation/devicetree/bindings/nvmem/sprd,sc2731-efuse.yaml
-index dc25fe3d1841..8672bde24a9b 100644
---- a/Documentation/devicetree/bindings/nvmem/sprd,sc2731-efuse.yaml
-+++ b/Documentation/devicetree/bindings/nvmem/sprd,sc2731-efuse.yaml
-@@ -36,33 +36,4 @@ allOf:
-   - $ref: nvmem-deprecated-cells.yaml#
- 
- unevaluatedProperties: false
--
--examples:
--  - |
--    pmic {
--      #address-cells = <1>;
--      #size-cells = <0>;
--
--      efuse@380 {
--        compatible = "sprd,sc2731-efuse";
--        reg = <0x380>;
--        hwlocks = <&hwlock 12>;
--        #address-cells = <1>;
--        #size-cells = <1>;
--
--        /* Data cells */
--        fgu_calib: calib@6 {
--          reg = <0x6 0x2>;
--          bits = <0 9>;
--        };
--
--        adc_big_scale: calib@24 {
--          reg = <0x24 0x2>;
--        };
--
--        adc_small_scale: calib@26 {
--          reg = <0x26 0x2>;
--        };
--      };
--    };
- ...
--- 
-2.43.0
+- Nuno S=C3=A1
+ =20
+> Applied.
+>=20
+> Jonathan
+>=20
+>=20
+> > > v2:
+> > > - Fixed: Addressed buffer overflow in ad7923_update_scan_mode() due t=
+o=20
+> > > insufficient tx_buf and ring_xfer size for 8-channel devices.
+> > > - Issue: Original patch attempted to fix the overflow by limiting the=
+=20
+> > > length, but did not address the root cause of buffer size mismatch.
+> > > - Solution: Increased tx_buf and ring_xfer sizes recommended by Nuno =
+to=20
+> > > support all 8 channels, ensuring adequate buffer capacity.
+> > > - Previous patch link:=20
+> > > https://lore.kernel.org/linux-iio/20241028142357.1032380-1-quzicheng@=
+huawei.com/T/#u
+> > > =C2=A0drivers/iio/adc/ad7923.c | 4 ++--
+> > > =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
+> > > index 09680015a7ab..acc44cb34f82 100644
+> > > --- a/drivers/iio/adc/ad7923.c
+> > > +++ b/drivers/iio/adc/ad7923.c
+> > > @@ -48,7 +48,7 @@
+> > > =C2=A0
+> > > =C2=A0struct ad7923_state {
+> > > =C2=A0	struct spi_device		*spi;
+> > > -	struct spi_transfer		ring_xfer[5];
+> > > +	struct spi_transfer		ring_xfer[9];
+> > > =C2=A0	struct spi_transfer		scan_single_xfer[2];
+> > > =C2=A0	struct spi_message		ring_msg;
+> > > =C2=A0	struct spi_message		scan_single_msg;
+> > > @@ -64,7 +64,7 @@ struct ad7923_state {
+> > > =C2=A0	 * Length =3D 8 channels + 4 extra for 8 byte timestamp
+> > > =C2=A0	 */
+> > > =C2=A0	__be16				rx_buf[12]
+> > > __aligned(IIO_DMA_MINALIGN);
+> > > -	__be16				tx_buf[4];
+> > > +	__be16				tx_buf[8];
+> > > =C2=A0};
+> > > =C2=A0
+> > > =C2=A0struct ad7923_chip_info {=C2=A0=20
+> >=20
+>=20
 
 

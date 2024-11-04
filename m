@@ -1,60 +1,73 @@
-Return-Path: <linux-iio+bounces-11878-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11879-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3FB9BAA17
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 02:15:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5A99BAE14
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 09:30:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5B121C203FF
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 01:15:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF9A1C21134
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 08:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFFA15A848;
-	Mon,  4 Nov 2024 01:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CBB18C330;
+	Mon,  4 Nov 2024 08:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="TwkDpXXG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77ED464A8F;
-	Mon,  4 Nov 2024 01:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57597132111
+	for <linux-iio@vger.kernel.org>; Mon,  4 Nov 2024 08:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730682903; cv=none; b=UBUnIGsmDCXKbku/HhlQci0jKGJrjWMr3d2qFlZPd5W0JRH9egt5syWHQleyNJV8PU5f3/kGHxZfpIV8HRJ2FAgAFyKhk6FVnD1mIdGRaQqzb4zmEamcvyT+2tNKgCqe0bbbAETXHA6rC1ZP7YW0meMNj924jPPV8Y49A1jhPxA=
+	t=1730709048; cv=none; b=HOKmh0OE9wSV8zrbsJUirk45KtE7UN9amwjZ5ojbepoydUNylsPTuIUfWMqZ4JQuaPCRb4K4axoRxP0RFJ/Bp8N9Id0HLywT8HBXSdVwFFmewz+pYJB4sW2DvW3m3JQSY/iFCwD3MBGw4AOpr9w6H5vM77qS+JzSUFYqXVBG8zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730682903; c=relaxed/simple;
-	bh=2sLLZZEpzcDpW+d6iEMd/uqbYcQ5CycLlYps/tyOOLs=;
+	s=arc-20240116; t=1730709048; c=relaxed/simple;
+	bh=5VkJOu+g5b0qKiJ1jIlwSX5lX2+9tMD4oEX3nkRSlOU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UYvMR5IGGSOrzta7/GrO73hjHcsBz5dDDE3JvzLuuVL8c2oOjFG05pg/DwI4E+vFU0p1jEnWjh9oktegyKsLNoV0bskJlX2ZhdZv9elASAQQ/U7xyCeiGcngHf6MG1A07rbq/RQgOtFizcPzdcaJD7ka30VsSxKKa6qcMD7gUYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 2ed0c24a9a4a11efa216b1d71e6e1362-20241104
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.38,REQID:904603b0-5bd3-4011-9813-1654b379fa8a,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:82c5f88,CLOUDID:f5f0a59fe6f9f85a74ec417bd17f5ee5,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,URL:0
-	,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-	NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 2ed0c24a9a4a11efa216b1d71e6e1362-20241104
-Received: from node4.com.cn [(10.44.16.170)] by mailgw.kylinos.cn
-	(envelope-from <xiaopei01@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 617807153; Mon, 04 Nov 2024 09:14:47 +0800
-Received: from node4.com.cn (localhost [127.0.0.1])
-	by node4.com.cn (NSMail) with SMTP id 5BB2E16002081;
-	Mon,  4 Nov 2024 09:14:47 +0800 (CST)
-X-ns-mid: postfix-67282007-30317774
-Received: from [10.42.116.241] (unknown [10.42.116.241])
-	by node4.com.cn (NSMail) with ESMTPA id ECF1216002081;
-	Mon,  4 Nov 2024 01:14:45 +0000 (UTC)
-Message-ID: <34ab4d22-0b07-43ba-9d4f-eb4b2867f36a@kylinos.cn>
-Date: Mon, 4 Nov 2024 09:14:45 +0800
+	 In-Reply-To:Content-Type; b=VdWMgDPibAaocMlf5Ctp/v4p861B6NQ99/SsGgjmVv6jsIw5mshyEt5uMnI0MsN7Dz4dVia1DlWqdHxUFJT5nNceu8IGAkIJVUTPn/DY0UOUGqEWJTaCMaYfnaxuL6ic7++tzuw3unY6VzcJF6hpsjMsrz8B9TnJr5zj8RqnvHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=TwkDpXXG; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4314f38d274so48283635e9.1
+        for <linux-iio@vger.kernel.org>; Mon, 04 Nov 2024 00:30:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730709044; x=1731313844; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1QGb6/0TsMbjRxg1vp5PNXgU38SBTpwljeMmmAjykPk=;
+        b=TwkDpXXGoOqJEt2O0sXuXl+/xTKmFcyjJ+YtjXH3dVO9AdT+gnoD/KrdCM0B6ihWXW
+         S23CNdLqaKDfJ+SxQOEOOv7h7VCh6qevuiQuLcg909kOhsb9ZYDfseh3aqm1vbmpeBRg
+         J9LN16v7ShJQhvEOiGmX6Ywd9cf53A4b9W4oMdywVq1k82+qR1F5lhoa7JP8vnK5Q+yC
+         pAHO5byFbE527TS75/cu2hVvb9XGYacBIja4ootgps65m/e70Qxlj+6mVl58Xp6bfXsq
+         ORafEloXj89Sct/oprxLWPHPbXVTxTbDVq1KeX4MjKmi95RMsc9l/Mtr6+3rlyUZre50
+         1KJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730709044; x=1731313844;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1QGb6/0TsMbjRxg1vp5PNXgU38SBTpwljeMmmAjykPk=;
+        b=I3U3VFWva4x29BRMtlIHD9+yINOwvCkATUAzNz29ZKfg6nLB+jN8FS1ZxUtnfyUXTj
+         akYMVzALLv5quyruRVpbXBVPnnkQti6osUGvx52/Cle7V+BQn4OclJtzh7vWxCQjdgP5
+         BIrCLqH88dBxl5JRox+MBebK+NExNwc853gAbAeeROhIB0n7pz8D7j59erXVh5bsGLTs
+         vMYyGRWq5PESHm/8bC2Cz+kdEDgSha7t/zCwOR0uQYLomlvpH5O4XAb0V7IOqMvYrfim
+         O0sz3HwU2G3nwNMUlNY9+xEKULxas9vPPf0z9hiiXUUu2q8/zIwew0R52+GlFw67uixA
+         Gptg==
+X-Gm-Message-State: AOJu0YzW9OQsV6fucckGZbyQHUjrYFOYGd1DcDVhuRJq/3Th+sS0W6Wf
+	tEh114MJvbi25SX7oH19HKgiEurIRtUCBps++txVXmWLVaOGtZ+78u/QEFbnr5Q=
+X-Google-Smtp-Source: AGHT+IFVV5wGFTKKBwe9YF3sHy2XdahxtRxXMb+KfShZQJ9smORqFjeuuKbIuJHbFCl9WsNYnco+Xw==
+X-Received: by 2002:a05:600c:3c83:b0:431:24c3:dbaa with SMTP id 5b1f17b1804b1-43283242aefmr123723985e9.2.1730709043788;
+        Mon, 04 Nov 2024 00:30:43 -0800 (PST)
+Received: from [192.168.1.94] (56.31.102.84.rev.sfr.net. [84.102.31.56])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd8e9145sm175101275e9.1.2024.11.04.00.30.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Nov 2024 00:30:43 -0800 (PST)
+Message-ID: <f91f55a1-850c-4368-86ef-9fce7cc4ccf1@baylibre.com>
+Date: Mon, 4 Nov 2024 09:30:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,75 +75,46 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: test : check null return of kunit_kmalloc in
- iio_rescale_test_scale
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: liambeguin@gmail.com, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, xiaopeitux@foxmail.com
-References: <ecd56a85e54a96c2f0313c114075a21a76071ea2.1730259869.git.xiaopei01@kylinos.cn>
- <20241101172926.4e8e3f43@jic23-huawei>
+Subject: Re: [PATCH] counter: ti-ecap-capture: Add check for clk_enable()
+To: Jiasheng Jiang <jiashengjiangcool@gmail.com>, vigneshr@ti.com,
+ wbg@kernel.org, gregkh@linuxfoundation.org
+Cc: linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241103213910.31976-1-jiashengjiangcool@gmail.com>
 Content-Language: en-US
-From: Pei Xiao <xiaopei01@kylinos.cn>
-In-Reply-To: <20241101172926.4e8e3f43@jic23-huawei>
+From: Julien Panis <jpanis@baylibre.com>
+In-Reply-To: <20241103213910.31976-1-jiashengjiangcool@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 11/3/24 22:39, Jiasheng Jiang wrote:
+> Add check for the return value of clk_enable() in order to catch the
+> potential exception.
+>
+> Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
+> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+> ---
+>   drivers/counter/ti-ecap-capture.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
+> index 675447315caf..30a269fa5da0 100644
+> --- a/drivers/counter/ti-ecap-capture.c
+> +++ b/drivers/counter/ti-ecap-capture.c
+> @@ -574,8 +574,11 @@ static int ecap_cnt_resume(struct device *dev)
+>   {
+>   	struct counter_device *counter_dev = dev_get_drvdata(dev);
+>   	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
+> +	int ret;
+>   
+> -	clk_enable(ecap_dev->clk);
+> +	ret = clk_enable(ecap_dev->clk);
+> +	if (ret)
+> +		return ret;
+>   
+>   	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
+>   
 
+Reviewed-by: Julien Panis <jpanis@baylibre.com>
 
-On 2024/11/2 01:29, Jonathan Cameron Wrote:
-> On Wed, 30 Oct 2024 11:48:54 +0800
-> Pei Xiao <xiaopei01@kylinos.cn> wrote:
-> 
->> kunit_kmalloc may fail, return value might be NULL and will cause
->> NULL pointer dereference.Add KUNIT_ASSERT_NOT_ERR_OR_NULL fix it.
-> Can it be an error?  If not why not use KUNIT_ASSERT_NOT_NULL?
-As you thought, initially I felt that we should use 
-KUNIT_ASSERT_NOT_NULL. However, when I used grep 
-KUNIT_ASSERT_NOT_ERR_OR_NULL -nr drivers/iio/test/, I found that the 
-drivers/iio/test/ directory exclusively uses 
-KUNIT_ASSERT_NOT_ERR_OR_NULL instead of KUNIT_ASSERT_NOT_NULL. To 
-maintain consistency, I have changed it to KUNIT_ASSERT_NOT_ERR_OR_NULL.
-
-drivers/iio/test/iio-test-format.c:22: 
-KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
-drivers/iio/test/iio-test-format.c:52: 
-KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
-drivers/iio/test/iio-test-format.c:113: 
-KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
-drivers/iio/test/iio-test-format.c:153: 
-KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
-drivers/iio/test/iio-test-format.c:193: 
-KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
-drivers/iio/test/iio-test-format.c:208: 
-KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
->>
->> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
->> Fixes: 8e74a48d17d5 ("iio: test: add basic tests for the iio-rescale driver")
->> ---
->>   drivers/iio/test/iio-test-rescale.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/iio/test/iio-test-rescale.c b/drivers/iio/test/iio-test-rescale.c
->> index 31ee55a6faed..11bfff6636a3 100644
->> --- a/drivers/iio/test/iio-test-rescale.c
->> +++ b/drivers/iio/test/iio-test-rescale.c
->> @@ -652,6 +652,8 @@ static void iio_rescale_test_scale(struct kunit *test)
->>   	int rel_ppm;
->>   	int ret;
->>   
->> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buff);
->> +
->>   	rescale.numerator = t->numerator;
->>   	rescale.denominator = t->denominator;
->>   	rescale.offset = t->offset;
->> @@ -681,6 +683,8 @@ static void iio_rescale_test_offset(struct kunit *test)
->>   	int values[2];
->>   	int ret;
->>   
->> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buff_off);
->> +
->>   	rescale.numerator = t->numerator;
->>   	rescale.denominator = t->denominator;
->>   	rescale.offset = t->offset;
-> 
 

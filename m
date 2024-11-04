@@ -1,149 +1,85 @@
-Return-Path: <linux-iio+bounces-11898-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11899-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F359BBA53
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 17:26:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA1B9BBDC8
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 20:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D6C01F217A2
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 16:26:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B01311C23142
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Nov 2024 19:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1F01C1ABC;
-	Mon,  4 Nov 2024 16:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268311CDFD1;
+	Mon,  4 Nov 2024 19:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HGGdLSe7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pAomZYac"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9130D4A08;
-	Mon,  4 Nov 2024 16:26:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49D018D642;
+	Mon,  4 Nov 2024 19:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730737600; cv=none; b=W9CTUcinGyy/+Tc4VZ7h3GBOoOA9b+2d9fZQ8N/3e3VVZMs6dGOPoXw1fWufqvft2tM59CUEIOFIjLKKRk9moNwO8rueuigTKY4LSY15qLwiHMN0GH5Z8o8ax01y9QfgCGM0ptumjY3PzQ1z4JEJwMhyVTBmAwvsOklorULFn+E=
+	t=1730747337; cv=none; b=YxGbq8+wRv6JSo1n2suUjen/3Q2rgOguE/+sfE3N9eV0KHxfB/xpAJxeQjs3gxr8crWisXgApoFByETLiOw/6wOpe1fFIikJ/okxF67asRmDpqG9QF5d3pr+pC8H67Bg49gAU7/MU2AmoANfuVYSe7OQ+h87ZtxYgzaFefxs638=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730737600; c=relaxed/simple;
-	bh=7R3Dk2gJ543VSNlT8vmuLD0jP6XJIEys+cP5iYmfBfg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WiDULc9p/JHz91XIrSaheyv7FtXFX5BRTDxA5rfOUyK8LCVN0vcaNXfVEC/xiMuRO7FFXNif17Si++hvHH7nQ6EF1P/xzW1p1eOKOySIOrMYvw1LnDGor/7eSkbqOeScTAS/5KCnJwb5f5XL1W4ugiqZ+y8abZi/CkAiOEuHtbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HGGdLSe7; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20cb7139d9dso39608785ad.1;
-        Mon, 04 Nov 2024 08:26:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730737598; x=1731342398; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0z6VRhmL+riFADmXem2uFU7dggIvvunuyK9Zh9Vgkqw=;
-        b=HGGdLSe7rlpHfAofstRzW380umdd/rkMQTyj4+j566I1VegCgV8cYeWUE2cZXILnq8
-         ZUN19C97wc7HyDRmpOM/qfqHB3cU+gAJbxDAvCx4gMmfEA+8Mv6TyXesGxd1L7FkgYmc
-         ufYT82YoLX9OhQWVuW6pj1mcvw+K4b3ZPF3yz2Sz3YWNJD56cHXJUr112dWN03BzX6Tr
-         3CONSTPZOV13DkDUAs1T5Ux8atjZ+kBN4hJVXpsnG56t+RZD1nbLmTcCRAaxWdgNcg/5
-         HsTP3e6lgSSHL5jEiDS6AAvysB2P86ElxZEGFnEgSkW4TgzfILHCev5uWGOGfEtQNN2s
-         cr/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730737598; x=1731342398;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0z6VRhmL+riFADmXem2uFU7dggIvvunuyK9Zh9Vgkqw=;
-        b=L6MnxlFUyl7vVsu6ZWE8IjEpRcPxWG2yyErjIE3QtzRZMHYCM5bhVycNY0IeXGIWma
-         VRUntdZuxn8CiBZqjprhPbirXhmbAkaC7fJrTHQVgzJtUdNOUrKe5Azttr1oMHhc16T5
-         OqiR4aUtN6y6qIgsUWijg+d4wB6YKF4HpXCLuy+9dSyzw8hdFPrYVvbfd8JgjRfZ5Q+S
-         hFaAPB0RebXhEsprwwBkqvc3uPgJ4UXO5oxmVK0PGiKgf+SWe7xMHA6dCvzFUsSp5nMr
-         xMrPcqqLELxbEacJ/s48kyOFDag+XHiWhPhXU5uIHJ4Zvd/ApV/WrN2+VakiRb2xauwk
-         E0mw==
-X-Forwarded-Encrypted: i=1; AJvYcCUy033TEZXe4VCyaWvk+RpKlGCfXX3cbLQxzkHYbO/jeWWST+xSN2Q+swmshRpU/6j37BL0sfPpA460MJQF@vger.kernel.org, AJvYcCWr34lVUuWwuG2ZFOxlAtzms9CbasdzlAIQ9kL8/ZO3VHAMn2T4bREsXqxmcweLpwRfxAfILP/RBm0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSAh66oD5Nqs1dSNLSSQKRuvasY1UPqIrpbjPgrHSx3psBXtGo
-	VpNqLyO2+EzogTTLlOc8ZcYNvNX0HVM8jFq9ZrVRbYkt/f2NXT3yDz6R8mYlbEY=
-X-Google-Smtp-Source: AGHT+IHl1idgZsKyhWYsf7s0AoATg2Jw6nH4qo4UBXojQLFOxileExNRi8STmwbVY73p2VdWdA6GJA==
-X-Received: by 2002:a17:902:d4c2:b0:20e:590f:58af with SMTP id d9443c01a7336-210c6877322mr435198045ad.1.1730737597584;
-        Mon, 04 Nov 2024 08:26:37 -0800 (PST)
-Received: from Emma ([2401:4900:1c97:5a7:5054:ff:fe53:2787])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21131de4918sm39213525ad.5.2024.11.04.08.26.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 08:26:37 -0800 (PST)
-Date: Mon, 4 Nov 2024 16:26:31 +0000
-From: Karan Sanghavi <karansanghvi98@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, 
-	Anup <anupnewsmail@gmail.com>
-Subject: Re: [PATCH] iio: invensense: fix integer overflow while
- multiplication
-Message-ID: <clo3nj5fokr47vheikv7nozr2exzha3rwkyfqq7n3s6vqyglzr@g6eu2ycy6gzo>
-References: <20241103-coverity1586045integeroverflow-v1-1-43ea37a3f3cd@gmail.com>
- <20241103111827.0894a40a@jic23-huawei>
+	s=arc-20240116; t=1730747337; c=relaxed/simple;
+	bh=r55W5L8ATrLR6WUSatifGaaRs+SAe8J4+623y6OD2Lc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YJJ9taBlPZYNNTSW8IT2BNu4Wd+cpvUdSU8scf6v0/+HxvbVYc0p2wSubbk8+FiDku/LY1f2MOHwdTPvv7PRP79v5Ep8TUhjyLE84sKbqyLnUhPg/aQYHJO5/0AQ4GCSg4OoJ0RbJKkAddgcP4X36O7S7eQ75laPEPbdOKogkw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pAomZYac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AC0C4CECE;
+	Mon,  4 Nov 2024 19:08:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730747337;
+	bh=r55W5L8ATrLR6WUSatifGaaRs+SAe8J4+623y6OD2Lc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pAomZYacLrvS/rbe9p5p5uzdYFKVDn6XrcbLnfy3AGtpoHmo4aWpBd6wf6S+s9mPF
+	 k1cQTWIJzZFJJyJIi3Lu3z98b/6/vJP1OWWnRqyoaG5WJVSWLGaVUh1UUi14PNC3uI
+	 0mUjko+v8bE/mZ/6P1PFAsCX4lSt+v1ahheZe2YBrcQDMKBFaDYMaYmPYpCE5UZruh
+	 88gQlj+I0mFLz2g3DuQTh3/lUyMMhy5fEXOUdM70n3cTDhHrq0UGZSaW5vwr64hcMp
+	 mJZXY4lidxhvoA/atJktMX2OMiJ5U27a7wLOmTTvZUn2Qwnvx7gO/odlBizhLdtQ3x
+	 G4KadXN1SFYZQ==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: dac: mcp4725: Use of_property_present() for non-boolean properties
+Date: Mon,  4 Nov 2024 13:08:46 -0600
+Message-ID: <20241104190846.278417-1-robh@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241103111827.0894a40a@jic23-huawei>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 03, 2024 at 11:18:27AM +0000, Jonathan Cameron wrote:
-> On Sun, 03 Nov 2024 08:43:14 +0000
-> Karan Sanghavi <karansanghvi98@gmail.com> wrote:
-> 
-> Hi Karan,
-> 
-> > Typecast a variable to int64_t for 64-bit arithmetic multiplication
-> 
-> The path to actually triggering this is non obvious as these
-> inputs are the result of rather complex code paths and per chip
-> constraints.  Have you identified a particular combination that overflows
-> or is this just based on the type?  I have no problem with applying this
-> as hardening against future uses but unless we have a path to trigger
-> it today it isn't a fix.
-> 
-> If you do have a path, this description should state what it is.
->
+The use of of_property_read_bool() for non-boolean properties is
+deprecated in favor of of_property_present() when testing for property
+presence.
 
-The above issue is discovered by Coverity with CID 1586045 and 1586044.
-Link: https://scan7.scan.coverity.com/#/project-view/51946/11354?selectedIssue=1586045
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ drivers/iio/dac/mcp4725.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Should I mention this path in the commit short message?
+diff --git a/drivers/iio/dac/mcp4725.c b/drivers/iio/dac/mcp4725.c
+index 25bb1c0490af..1337fb02ccf5 100644
+--- a/drivers/iio/dac/mcp4725.c
++++ b/drivers/iio/dac/mcp4725.c
+@@ -379,7 +379,7 @@ static int mcp4725_probe_dt(struct device *dev,
+ 			    struct mcp4725_platform_data *pdata)
+ {
+ 	/* check if is the vref-supply defined */
+-	pdata->use_vref = device_property_read_bool(dev, "vref-supply");
++	pdata->use_vref = device_property_present(dev, "vref-supply");
+ 	pdata->vref_buffered =
+ 		device_property_read_bool(dev, "microchip,vref-buffered");
+ 
+-- 
+2.45.2
 
-> > 
-> > Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
-> If it's a real bug, needs a Fixes tag so we know how far to backport it.
-> 
-
-What kind of Fixes tag should I provide here. 
-
-> > ---
-> >  drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> > index f44458c380d9..d1d11d0b2458 100644
-> > --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> > +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> > @@ -105,8 +105,8 @@ static bool inv_update_chip_period(struct inv_sensors_timestamp *ts,
-> >  
-> >  static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
-> >  {
-> > -	const int64_t period_min = ts->min_period * ts->mult;
-> > -	const int64_t period_max = ts->max_period * ts->mult;
-> > +	const int64_t period_min = (int64_t)ts->min_period * ts->mult;
-> > +	const int64_t period_max = (int64_t)ts->max_period * ts->mult;
-> >  	int64_t add_max, sub_max;
-> >  	int64_t delta, jitter;
-> >  	int64_t adjust;
-> > 
-> > ---
-> > base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
-> > change-id: 20241102-coverity1586045integeroverflow-cbbf357475d9
-> > 
-> > Best regards,
->
-
-Thank you,
-Karan.
 

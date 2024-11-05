@@ -1,84 +1,82 @@
-Return-Path: <linux-iio+bounces-11926-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11927-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3839BD203
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 17:15:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE309BD39B
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 18:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1D41C22052
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 16:15:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58EE1F23626
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 17:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB76117B50A;
-	Tue,  5 Nov 2024 16:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4DD1E47B9;
+	Tue,  5 Nov 2024 17:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="P/tITIXd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIQCUrTZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17057EAD2
-	for <linux-iio@vger.kernel.org>; Tue,  5 Nov 2024 16:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBFB1E285D;
+	Tue,  5 Nov 2024 17:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730823315; cv=none; b=s1KerThAup7kExWke4QTJPqi/bX0S/StxOe6L9BR/cuMKN0AbQmTC3H8TdM3JEpRI6MHM8LosSHzr2lnSpt3TQPVDUuTpbY0UrNrIuvkgsoSR50AuG2XwqAdr/bqd/xlgHf41QIC1EWsLFnT7yd41QyYlgovgLY8wGRhOi8FpmQ=
+	t=1730828385; cv=none; b=MpIN2x2wxXkAXkjfC8AeT3a8QhZFHj/gZ8zQOFxqU/pGNp92Xf8yiNUobx605dsOo9fIqEt/Z8iEMSdm7zdAm/Vy75xFv9H3CnbvqQibW+Rk4EnvRS5BO2Atdao8kEvhH/POANWbis4+PVq6T8JoKPyaTC0LBEGnAFOhF2b+KoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730823315; c=relaxed/simple;
-	bh=WUSAP7JfoT0KrQZ5hTAXo1+SUCAu6hsTJMVzWxbiRos=;
+	s=arc-20240116; t=1730828385; c=relaxed/simple;
+	bh=//t3fv7IHALZDb+9vEeYfS9gixpboKbA/f3rzebXHIk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C3CoI78i8Y7sRM+9AeK1ysbdrGgaTUwPGwfM2BjhUJV35zvrD2sAS2DixgNB+CxO1f9SREyvENCCCJ94zHBig/ezIOiWnDjJMsdN/yAsBCqS9JTw0DEGS/7/t0fSAVjxF++4bnCTQceT3yuanDprJNGGGGApYXbz2e2ik1kTdQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=P/tITIXd; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37d49ffaba6so3846648f8f.0
-        for <linux-iio@vger.kernel.org>; Tue, 05 Nov 2024 08:15:13 -0800 (PST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=mx33W7/GnN/4Cqz+pk5mT7ZG4HFmYexFYBtyP8CeWjfGXK2I6Zg3iuzNZnP37BdaWPLnFc/j04ft+/HCz4tvq87xfnaQIGhz1Th/k2J1+4WhUO04TYm8cJS9q0kH86+uilnskD+yj4Rxvjfl6ds0l0BfgKKEvBtjzaXc9orYdV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIQCUrTZ; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-720aa3dbda5so4194075b3a.1;
+        Tue, 05 Nov 2024 09:39:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730823312; x=1731428112; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730828383; x=1731433183; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CW1Cg/cnkPv9u+n4mqogPh24pUykRgt3ujnVhJASOW8=;
-        b=P/tITIXdTv0fZl4tjdOEF+QtSFrVS+PQNaer+z/KqSAk7ANCuM4Vu+kmpefysZOxm7
-         f7uQ+MVdf6JAaA2x84wvTLYuHxzHtKelrOXtj7L+eS77AT9QM5Cw54WWUGLJaGuSNObs
-         ixw88bSmfyPta1Zm8fgYzI/9PgC6eA0wepE1F2gYElNSzfhDTbK4iK4i9avoTYJ6fuKr
-         PB7KjiKRpA01PM6fjcBMAbcAZNk9DmB9kbB8chd/+4cQSJdEYC9ijGieGJJ2pvsMR2cb
-         ZdZ6GMpv7Aw+JaVjTLKowvLsfaZjlD6EA/0om16iQH60laBnPk7XgoLdysHba9jhIkDV
-         NrKg==
+        bh=D+fe20P1tDN9qmX/MwpVQyjr05QyE2RvNajCiS4GD+Q=;
+        b=TIQCUrTZ4ZbfhEinElpzQ+OavCwrZmKj46pVO/EotiAf3oNPwGHZX+UBM7FVIsUbxs
+         zKtkNN/qsBtnzfY+oN4p2/Vtoz1eI1peVxiHGx+sjR2ToQKsqUh2jvH0zN6Xn3dsbiCf
+         uWe8tcSE8eZqmPVMXoazKwR5cD6eyEeYtjonwhohnPtwri+s443GpeJ+26goTEkZ8CHv
+         jZhem/YyzKeURMVUTfZVcfXd3y+X1TgBceCACLCtcQNpgEurY8FQcC4eN6HlBr/gXOkt
+         XyHLj2C5PTpDaVZ/C77XbTNcDI3NSyPCgl+XYXtskLvNye1agxQ8jyJfQ8URhfHyDZhq
+         gMiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730823312; x=1731428112;
+        d=1e100.net; s=20230601; t=1730828383; x=1731433183;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CW1Cg/cnkPv9u+n4mqogPh24pUykRgt3ujnVhJASOW8=;
-        b=gGF/I+5jA4wo28TJQ9MV+eSGRwIYjIioLme4AQfZuQomoPi7iO3kl4NI78qkZBKYFx
-         ooWO5qPeukhaYMKEZ6ijuMf/8JE4HiYzqqggCoW2bkPl64ayYspXm2bKYE5o2IvjjOI9
-         2mprz4gdxYcgJIp3jaOU2v3HY95mppTkbJU6beS7E21/HcuCU1C3tHDQUzbpjZ3NVFh6
-         7k9nJKqCvHCUm3zXfN0wV2Cj8PZN/PY6pI/+nsUFh3zJdUyTRlE9M825dwZGxHuAEO13
-         JFHa3EMFZhY004528rQ9Cub62EN3b2SJo5xM/s3aDcZGnA6Ak4D0pLGlPiHEKyEVvLMf
-         1JBw==
-X-Forwarded-Encrypted: i=1; AJvYcCVx53kVczCDTOXciMkL9rpeTMnb4ldJBhQLII6NQbRLC97aXE7lrN2ayv/RaEXhbjYq6nQ0y85RXeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yylz/bvWOEsoMnBjpJ9/+Aqen+hlr36tPvWX/ZXFlTl8YMmNDMu
-	CwzRSOmT9kY66AA9pGNvah7VjUI3T7nX/iiStZtBXkkXdGWuP0GojQPD3u9N7Po=
-X-Google-Smtp-Source: AGHT+IF6QXzlIan7zLZ+Ti4McbwWx86e1nJWzWZWC0DEaU8zyIoc2LEiFjd311LHzgQU2S/tBukzHQ==
-X-Received: by 2002:a05:6000:ac1:b0:37d:3280:203a with SMTP id ffacd0b85a97d-381b7057644mr17370896f8f.10.1730823312316;
-        Tue, 05 Nov 2024 08:15:12 -0800 (PST)
-Received: from localhost ([89.101.134.25])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113e771sm16717277f8f.81.2024.11.05.08.15.11
+        bh=D+fe20P1tDN9qmX/MwpVQyjr05QyE2RvNajCiS4GD+Q=;
+        b=lKZnrufqJvKGYLlew45aW7Thda+00WayK/8R6y/WMScq7yMCVFEyCnL6o/GGrEE7a4
+         Wm1CE8XEJ+O2Hv8WaVBMdUchsqteDpLZN1I4QgrFfyXXTjb4IfnrSINV74hJm/TGPfno
+         /iFgFaI1hMgnZUkLE3NFuFu+gLrHsYcEbzU+E2KkMzgnI9oPubJ8NAoDvLBl7UAhucAB
+         3+vmeiUzABuIOLm/7WTcZE7YxLaewhNlIBeaoE9SpID0H3FXQzo6MtK/F3EKzL6aCkzd
+         OkGb5qwwM+3gr2ia7WUq39CxumA2geDzJiXYiP+v/NacJgHGOsjMBCnOqXdb9YBuDAXM
+         HIgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU39v85et+rgwLMAeGBdzDISCumaVs84WbgDfXnjqOMZIVjPcbQOipUTPkzvE/cfDJ9+uNKCVa4ZHijyRmH@vger.kernel.org, AJvYcCWw8hvrhTid5xB82FisxeG/mkrh4zjihe4T0GXzimAsRElL52Jm2cmxVrqRRYjvhhLONfxAQydbSok=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFS7qRiQ8oAIIBN+xzYd9a2669Ch9SdzqmK1/DQGVESICd+QxN
+	J8vG7TKrXNefTHsgeYhv/UODXLOMzC/DQ0sGJYcPQKvyiwbJNFpV
+X-Google-Smtp-Source: AGHT+IHneVKAeOmejkaaF7F6uzEtsGTngUHMIDr8g/ZYKsQZJoEIWsiIYWYVbuz/PjRR8FuHSZS4xQ==
+X-Received: by 2002:a05:6a00:ac4:b0:71e:587d:f268 with SMTP id d2e1a72fcca58-720ab39e43dmr35923944b3a.4.1730828382921;
+        Tue, 05 Nov 2024 09:39:42 -0800 (PST)
+Received: from Emma ([2401:4900:1c97:5a7:5054:ff:fe53:2787])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-720bc2c9382sm9895501b3a.138.2024.11.05.09.39.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Nov 2024 08:15:11 -0800 (PST)
-Date: Tue, 5 Nov 2024 19:15:11 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Zicheng Qu <quzicheng@huawei.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	gregkh@linuxfoundation.org, cristina.opriceana@gmail.com,
-	daniel.baluta@intel.com, linux-iio@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	tanghui20@huawei.com, zhangqiao22@huawei.com,
-	judy.chenhui@huawei.com
-Subject: Re: [PATCH 2/2] staging: iio: ad9832: Correct phase range check
-Message-ID: <fe767a87-f3a4-47a8-882a-2a33f7eca2e7@suswa.mountain>
-References: <20241105140359.2465656-1-quzicheng@huawei.com>
- <20241105140359.2465656-3-quzicheng@huawei.com>
+        Tue, 05 Nov 2024 09:39:42 -0800 (PST)
+Date: Tue, 5 Nov 2024 17:39:36 +0000
+From: Karan Sanghavi <karansanghvi98@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, 
+	Anup <anupnewsmail@gmail.com>
+Subject: Re: [PATCH] iio: invensense: fix integer overflow while
+ multiplication
+Message-ID: <zttjwj47aro4xr56c5qwme3zyiv7v5fdu4e5c2sgzllpwljw7e@iasdxaxjylt3>
+References: <20241103-coverity1586045integeroverflow-v1-1-43ea37a3f3cd@gmail.com>
+ <20241103111827.0894a40a@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -87,22 +85,65 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241105140359.2465656-3-quzicheng@huawei.com>
+In-Reply-To: <20241103111827.0894a40a@jic23-huawei>
 
-On Tue, Nov 05, 2024 at 02:03:59PM +0000, Zicheng Qu wrote:
-> The phase register for the AD9832 is 12 bits, which means the valid
-> phase values range from 0 to 4095 (2^12 - 1). The current check uses a
-> greater-than condition with BIT(12), which equals 4096. This allows an
-> invalid phase value of 4096 to pass.
+On Sun, Nov 03, 2024 at 11:18:27AM +0000, Jonathan Cameron wrote:
+> On Sun, 03 Nov 2024 08:43:14 +0000
+> Karan Sanghavi <karansanghvi98@gmail.com> wrote:
 > 
-> This patch corrects the check to use greater-than-or-equal-to, ensuring
-> that only phase values within the valid range are accepted.
+> Hi Karan,
 > 
-> Fixes: f1d05b5f68cb ("Staging: iio: Prefer using the BIT macro")
+> > Typecast a variable to int64_t for 64-bit arithmetic multiplication
+> 
+> The path to actually triggering this is non obvious as these
+> inputs are the result of rather complex code paths and per chip
+> constraints.  Have you identified a particular combination that overflows
+> or is this just based on the type?  I have no problem with applying this
+> as hardening against future uses but unless we have a path to trigger
+> it today it isn't a fix.
+> 
+> If you do have a path, this description should state what it is.
+>
+I found this in the coverity scan with CID:1586045 stating
 
-Same comments.
+overflow_before_widen: Potentially overflowing expression ts->min_period * ts->mult with type 
+unsigned int (32 bits, unsigned) is evaluated using 32-bit arithmetic, and then used in a 
+context that expects an expression of type int64_t const (64 bits, signed).
 
-regards,
-dan carpenter
-
+> > 
+> > Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
+> If it's a real bug, needs a Fixes tag so we know how far to backport it.
+>
+I thought that this is a fix to this coverity issue thus used fix in the
+subject. 
+If I have to mention the fix tag for this then can you please let me
+know what should I mention in the fix tag.
+> > ---
+> >  drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> > index f44458c380d9..d1d11d0b2458 100644
+> > --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> > +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+> > @@ -105,8 +105,8 @@ static bool inv_update_chip_period(struct inv_sensors_timestamp *ts,
+> >  
+> >  static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
+> >  {
+> > -	const int64_t period_min = ts->min_period * ts->mult;
+> > -	const int64_t period_max = ts->max_period * ts->mult;
+> > +	const int64_t period_min = (int64_t)ts->min_period * ts->mult;
+> > +	const int64_t period_max = (int64_t)ts->max_period * ts->mult;
+> >  	int64_t add_max, sub_max;
+> >  	int64_t delta, jitter;
+> >  	int64_t adjust;
+> > 
+> > ---
+> > base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
+> > change-id: 20241102-coverity1586045integeroverflow-cbbf357475d9
+> > 
+> > Best regards,
+>  
+Thank you,
+Karan.
 

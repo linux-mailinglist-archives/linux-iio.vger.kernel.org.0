@@ -1,149 +1,209 @@
-Return-Path: <linux-iio+bounces-11927-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11928-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE309BD39B
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 18:39:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B3059BD5E4
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 20:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58EE1F23626
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 17:39:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 241DA1F238C9
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 19:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4DD1E47B9;
-	Tue,  5 Nov 2024 17:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1860520D505;
+	Tue,  5 Nov 2024 19:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIQCUrTZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PWlhPsqF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBFB1E285D;
-	Tue,  5 Nov 2024 17:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507021EB9EC;
+	Tue,  5 Nov 2024 19:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730828385; cv=none; b=MpIN2x2wxXkAXkjfC8AeT3a8QhZFHj/gZ8zQOFxqU/pGNp92Xf8yiNUobx605dsOo9fIqEt/Z8iEMSdm7zdAm/Vy75xFv9H3CnbvqQibW+Rk4EnvRS5BO2Atdao8kEvhH/POANWbis4+PVq6T8JoKPyaTC0LBEGnAFOhF2b+KoQ=
+	t=1730835143; cv=none; b=XLnmxH9FcfRzR870r/FBu4bj5gVsKTcvNHjHFkhr2x0bYoBA8edz70sVDfnWCk0dNVJNEZoeCYyXJW2ejD11g7ZndiqfsEHBDPBxflIzaC6EbqfKzVaVO755QH2MIu2qXF+PGi3gs14xrtu/k9ONCy9VU9RlGnKdJvr7MC/6Vls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730828385; c=relaxed/simple;
-	bh=//t3fv7IHALZDb+9vEeYfS9gixpboKbA/f3rzebXHIk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mx33W7/GnN/4Cqz+pk5mT7ZG4HFmYexFYBtyP8CeWjfGXK2I6Zg3iuzNZnP37BdaWPLnFc/j04ft+/HCz4tvq87xfnaQIGhz1Th/k2J1+4WhUO04TYm8cJS9q0kH86+uilnskD+yj4Rxvjfl6ds0l0BfgKKEvBtjzaXc9orYdV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIQCUrTZ; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1730835143; c=relaxed/simple;
+	bh=qLEWU4xRhKVleppQ9yRG49K89MpB2qshrxMMpXqLLkU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sJUTTmMJXxJHo8LJb9/g3Zz4CU2cXmplPZMMXFSgDkp6CWFHu/Pk+KicWrQ1s8F3UAyYTehItRVmQyRi14Pb3MSfZ/sZdwuKZmtkPj1IWGthaegZ+KzsszA2XN05wouyHANg0SzOLnqumASW+tkgVCuHxULx4V6rkcXp4UXIvcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWlhPsqF; arc=none smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-720aa3dbda5so4194075b3a.1;
-        Tue, 05 Nov 2024 09:39:43 -0800 (PST)
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7b157c9ad12so368964885a.1;
+        Tue, 05 Nov 2024 11:32:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730828383; x=1731433183; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=D+fe20P1tDN9qmX/MwpVQyjr05QyE2RvNajCiS4GD+Q=;
-        b=TIQCUrTZ4ZbfhEinElpzQ+OavCwrZmKj46pVO/EotiAf3oNPwGHZX+UBM7FVIsUbxs
-         zKtkNN/qsBtnzfY+oN4p2/Vtoz1eI1peVxiHGx+sjR2ToQKsqUh2jvH0zN6Xn3dsbiCf
-         uWe8tcSE8eZqmPVMXoazKwR5cD6eyEeYtjonwhohnPtwri+s443GpeJ+26goTEkZ8CHv
-         jZhem/YyzKeURMVUTfZVcfXd3y+X1TgBceCACLCtcQNpgEurY8FQcC4eN6HlBr/gXOkt
-         XyHLj2C5PTpDaVZ/C77XbTNcDI3NSyPCgl+XYXtskLvNye1agxQ8jyJfQ8URhfHyDZhq
-         gMiA==
+        d=gmail.com; s=20230601; t=1730835141; x=1731439941; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mlpXLUDiuAj4Ax3s/8PaCa808KyyiZFwFmndcMeabmA=;
+        b=PWlhPsqFmUP6ayMAZCJ0b+H1wLRIVpa288Z48AKsx8Td7ylVCigDPVlMRgqsuFN5xF
+         7+GBIDiAB0kUXQBCveA2Qn3kJkoTknzPVs+JJPTbBqyclZZ04NJcSyyeoEWAZYPqRAlV
+         zKkD2o7ADgzpBzUcNqgAx/++LrU9u5FsJY9msLFwkxD/CAKHuYCQ6JSGcYx7JLkvFwlW
+         SdRDyVcOaZFrFZVqTsApHhlfmpY0Ftbgcq/fgm4/7sZKW3ALYne76R/KLWWFhLYNsmig
+         3LXUEut+A6f4g1HvF7QC930ftcY4f6OxJNLpxMyw4E9m+3BeXnMOAJ/mgSzOpPu1th4t
+         2V5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730828383; x=1731433183;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D+fe20P1tDN9qmX/MwpVQyjr05QyE2RvNajCiS4GD+Q=;
-        b=lKZnrufqJvKGYLlew45aW7Thda+00WayK/8R6y/WMScq7yMCVFEyCnL6o/GGrEE7a4
-         Wm1CE8XEJ+O2Hv8WaVBMdUchsqteDpLZN1I4QgrFfyXXTjb4IfnrSINV74hJm/TGPfno
-         /iFgFaI1hMgnZUkLE3NFuFu+gLrHsYcEbzU+E2KkMzgnI9oPubJ8NAoDvLBl7UAhucAB
-         3+vmeiUzABuIOLm/7WTcZE7YxLaewhNlIBeaoE9SpID0H3FXQzo6MtK/F3EKzL6aCkzd
-         OkGb5qwwM+3gr2ia7WUq39CxumA2geDzJiXYiP+v/NacJgHGOsjMBCnOqXdb9YBuDAXM
-         HIgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU39v85et+rgwLMAeGBdzDISCumaVs84WbgDfXnjqOMZIVjPcbQOipUTPkzvE/cfDJ9+uNKCVa4ZHijyRmH@vger.kernel.org, AJvYcCWw8hvrhTid5xB82FisxeG/mkrh4zjihe4T0GXzimAsRElL52Jm2cmxVrqRRYjvhhLONfxAQydbSok=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFS7qRiQ8oAIIBN+xzYd9a2669Ch9SdzqmK1/DQGVESICd+QxN
-	J8vG7TKrXNefTHsgeYhv/UODXLOMzC/DQ0sGJYcPQKvyiwbJNFpV
-X-Google-Smtp-Source: AGHT+IHneVKAeOmejkaaF7F6uzEtsGTngUHMIDr8g/ZYKsQZJoEIWsiIYWYVbuz/PjRR8FuHSZS4xQ==
-X-Received: by 2002:a05:6a00:ac4:b0:71e:587d:f268 with SMTP id d2e1a72fcca58-720ab39e43dmr35923944b3a.4.1730828382921;
-        Tue, 05 Nov 2024 09:39:42 -0800 (PST)
-Received: from Emma ([2401:4900:1c97:5a7:5054:ff:fe53:2787])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-720bc2c9382sm9895501b3a.138.2024.11.05.09.39.39
+        d=1e100.net; s=20230601; t=1730835141; x=1731439941;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mlpXLUDiuAj4Ax3s/8PaCa808KyyiZFwFmndcMeabmA=;
+        b=nuRzIVBHMqOsgRj7b/nD3MMyqL+jpkaS50HMXU9Qi8/Lo8RYhxVnDbTkqt3uiQN6Uu
+         3PMPkYiJAHLijmDabTQlcYNbCmYdCHLURm4uOlHbSGS8fzbFrI0dZhoPjBeNlELIwy2h
+         2vZVjM/U49vd5vwcypB8frJEopAZQFlTqNV9KsCgqe9k13LH3NtLrBPg73wByzE1KjFD
+         shKfBMEx3RxjbqLzPO1j4pUcWE3uZEW3gG3OxFbWursApjqY3QoBBh0vxZq/YwYlku8F
+         g7424a/hg7XWG4XwnYi9ebLvLHVQZfL0+fcRkRLm3ExUN4daK/oTmfWp5tRLj5K2sMN0
+         ZDdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUThfin3EwSsuosmXvQBsrF/62J/cp+MPzSFXZjRPoKNXpg5rHh9xE+QdwYH7rpSoaH7D8Y0xKBfw8wO6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzre9rj5OlsGyCcVpaBXq8LjZF/G2KBPun3DR2BRaz2ygksdPIU
+	MULJucISvbiKSHBPhm12yXsrTvesily5VQquRreZ9Zo4r1jpJLiM
+X-Google-Smtp-Source: AGHT+IHmPYcPWfZhwOxujigyXrVRSB8kRoNxKABpVBwVCQzAOZBWznyCKjCQL89t1FiTLIwjVZF9zw==
+X-Received: by 2002:a05:620a:14e:b0:7ac:ae32:286a with SMTP id af79cd13be357-7b193f041d5mr4080201485a.34.1730835141086;
+        Tue, 05 Nov 2024 11:32:21 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f3a9b991sm553343285a.127.2024.11.05.11.32.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Nov 2024 09:39:42 -0800 (PST)
-Date: Tue, 5 Nov 2024 17:39:36 +0000
-From: Karan Sanghavi <karansanghvi98@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, 
-	Anup <anupnewsmail@gmail.com>
-Subject: Re: [PATCH] iio: invensense: fix integer overflow while
- multiplication
-Message-ID: <zttjwj47aro4xr56c5qwme3zyiv7v5fdu4e5c2sgzllpwljw7e@iasdxaxjylt3>
-References: <20241103-coverity1586045integeroverflow-v1-1-43ea37a3f3cd@gmail.com>
- <20241103111827.0894a40a@jic23-huawei>
+        Tue, 05 Nov 2024 11:32:20 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	u.kleine-koenig@baylibre.com,
+	tgamblin@baylibre.com,
+	fabrice.gasnier@st.com,
+	benjamin.gaignard@linaro.org,
+	lee@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Subject: [PATCH] iio: trigger: stm32-timer-trigger: Add check for clk_enable()
+Date: Tue,  5 Nov 2024 19:32:12 +0000
+Message-Id: <20241105193212.2082-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241103111827.0894a40a@jic23-huawei>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 03, 2024 at 11:18:27AM +0000, Jonathan Cameron wrote:
-> On Sun, 03 Nov 2024 08:43:14 +0000
-> Karan Sanghavi <karansanghvi98@gmail.com> wrote:
-> 
-> Hi Karan,
-> 
-> > Typecast a variable to int64_t for 64-bit arithmetic multiplication
-> 
-> The path to actually triggering this is non obvious as these
-> inputs are the result of rather complex code paths and per chip
-> constraints.  Have you identified a particular combination that overflows
-> or is this just based on the type?  I have no problem with applying this
-> as hardening against future uses but unless we have a path to trigger
-> it today it isn't a fix.
-> 
-> If you do have a path, this description should state what it is.
->
-I found this in the coverity scan with CID:1586045 stating
+Add check for the return value of clk_enable() in order to catch the
+potential exception.
 
-overflow_before_widen: Potentially overflowing expression ts->min_period * ts->mult with type 
-unsigned int (32 bits, unsigned) is evaluated using 32-bit arithmetic, and then used in a 
-context that expects an expression of type int64_t const (64 bits, signed).
+Fixes: 3192ade7b6f6 ("iio: trigger: stm32-timer: enable clock when in master mode")
+Fixes: 90938ca432e6 ("iio: trigger: stm32-timer: add enable attribute")
+Fixes: 93fbe91b5521 ("iio: Add STM32 timer trigger driver")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+---
+ drivers/iio/trigger/stm32-timer-trigger.c | 40 +++++++++++++++++++----
+ 1 file changed, 33 insertions(+), 7 deletions(-)
 
-> > 
-> > Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
-> If it's a real bug, needs a Fixes tag so we know how far to backport it.
->
-I thought that this is a fix to this coverity issue thus used fix in the
-subject. 
-If I have to mention the fix tag for this then can you please let me
-know what should I mention in the fix tag.
-> > ---
-> >  drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> > index f44458c380d9..d1d11d0b2458 100644
-> > --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> > +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> > @@ -105,8 +105,8 @@ static bool inv_update_chip_period(struct inv_sensors_timestamp *ts,
-> >  
-> >  static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
-> >  {
-> > -	const int64_t period_min = ts->min_period * ts->mult;
-> > -	const int64_t period_max = ts->max_period * ts->mult;
-> > +	const int64_t period_min = (int64_t)ts->min_period * ts->mult;
-> > +	const int64_t period_max = (int64_t)ts->max_period * ts->mult;
-> >  	int64_t add_max, sub_max;
-> >  	int64_t delta, jitter;
-> >  	int64_t adjust;
-> > 
-> > ---
-> > base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
-> > change-id: 20241102-coverity1586045integeroverflow-cbbf357475d9
-> > 
-> > Best regards,
->  
-Thank you,
-Karan.
+diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
+index 0684329956d9..0d5bb808c61d 100644
+--- a/drivers/iio/trigger/stm32-timer-trigger.c
++++ b/drivers/iio/trigger/stm32-timer-trigger.c
+@@ -119,7 +119,7 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+ 			     unsigned int frequency)
+ {
+ 	unsigned long long prd, div;
+-	int prescaler = 0;
++	int prescaler = 0, ret;
+ 	u32 ccer;
+ 
+ 	/* Period and prescaler values depends of clock rate */
+@@ -153,7 +153,13 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+ 	mutex_lock(&priv->lock);
+ 	if (!priv->enabled) {
+ 		priv->enabled = true;
+-		clk_enable(priv->clk);
++		ret = clk_enable(priv->clk);
++		if (ret) {
++			mutex_unlock(&priv->lock);
++			return dev_err_probe(priv->dev, ret,
++					     "failed to enable clock: %d\n",
++					     ret);
++		}
+ 	}
+ 
+ 	regmap_write(priv->regmap, TIM_PSC, prescaler);
+@@ -307,7 +313,7 @@ static ssize_t stm32_tt_store_master_mode(struct device *dev,
+ 	struct stm32_timer_trigger *priv = dev_get_drvdata(dev);
+ 	struct iio_trigger *trig = to_iio_trigger(dev);
+ 	u32 mask, shift, master_mode_max;
+-	int i;
++	int i, ret;
+ 
+ 	if (stm32_timer_is_trgo2_name(trig->name)) {
+ 		mask = TIM_CR2_MMS2;
+@@ -326,7 +332,13 @@ static ssize_t stm32_tt_store_master_mode(struct device *dev,
+ 			if (!priv->enabled) {
+ 				/* Clock should be enabled first */
+ 				priv->enabled = true;
+-				clk_enable(priv->clk);
++				ret = clk_enable(priv->clk);
++				if (ret) {
++					mutex_unlock(&priv->lock);
++					return dev_err_probe(priv->dev, ret,
++							     "failed to enable clock: %d\n",
++							     ret);
++				}
+ 			}
+ 			regmap_update_bits(priv->regmap, TIM_CR2, mask,
+ 					   i << shift);
+@@ -482,6 +494,7 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
+ 				   int val, int val2, long mask)
+ {
+ 	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
++	int ret;
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+@@ -496,7 +509,13 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
+ 		if (val) {
+ 			if (!priv->enabled) {
+ 				priv->enabled = true;
+-				clk_enable(priv->clk);
++				ret = clk_enable(priv->clk);
++				if (ret) {
++					mutex_unlock(&priv->lock);
++					return dev_err_probe(priv->dev, ret,
++							     "failed to enable clock: %d\n",
++							     ret);
++				}
+ 			}
+ 			regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 		} else {
+@@ -601,7 +620,7 @@ static int stm32_set_enable_mode(struct iio_dev *indio_dev,
+ 				 unsigned int mode)
+ {
+ 	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
+-	int sms = stm32_enable_mode2sms(mode);
++	int sms = stm32_enable_mode2sms(mode), ret;
+ 
+ 	if (sms < 0)
+ 		return sms;
+@@ -611,7 +630,14 @@ static int stm32_set_enable_mode(struct iio_dev *indio_dev,
+ 	 */
+ 	mutex_lock(&priv->lock);
+ 	if (sms == 6 && !priv->enabled) {
+-		clk_enable(priv->clk);
++		ret = clk_enable(priv->clk);
++		if (ret) {
++			mutex_unlock(&priv->lock);
++			return dev_err_probe(priv->dev, ret,
++					     "failed to enable clock: %d\n",
++					     ret);
++		}
++
+ 		priv->enabled = true;
+ 	}
+ 	mutex_unlock(&priv->lock);
+-- 
+2.25.1
+
 

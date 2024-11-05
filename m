@@ -1,255 +1,201 @@
-Return-Path: <linux-iio+bounces-11915-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11916-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5429BCA6E
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 11:26:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E52449BCE52
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 14:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66AF51F24F51
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 10:26:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A25528369E
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Nov 2024 13:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0001D26F6;
-	Tue,  5 Nov 2024 10:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50F61D79B6;
+	Tue,  5 Nov 2024 13:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bsiKsDXn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h+PDJR+D"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520D91CC881;
-	Tue,  5 Nov 2024 10:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9A11D45EA;
+	Tue,  5 Nov 2024 13:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730802401; cv=none; b=EAXja0s5m57KFxq/Rn5rVdAFgm+NKej5CrAUKyYoyaxPnv6GYwsmPotQOq/76XY1Pkq8o/Ds280K4S0+Wa1MhXTpjMat7COqYPUDKwcKmVrT7hv0ucD1Kdu9PzUNuS6QR1Qfu5LT/yu1eAzBmyCq8USl3xA/0pXRP9GvTc7hQXE=
+	t=1730814815; cv=none; b=m7uiY64G1S/OoOuRthSaUzwZ1hXKeYcyHUy45XrDuzSQ2Zc59QlYMz9rOyySdl30+Hjxj2EOBmjxpsCFLk3JJ7NucdNs3JTrkc3gVjniBSt7XsrSwHHO/VgSL6HqK6ocbrOAqs6UptmVbfvtUOOpC6h9rTtAYWbNECc31IS3aHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730802401; c=relaxed/simple;
-	bh=aMMN0XF3aQXNYKr0ca+QnEsqzWRHakQrf9MDJLffMdE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=anpb/3w27G9nFmKmpF0oFA4VYWQWBZEZGC2Xk3VyvJygve37wZzrUHpiiqt5e2P001/j8qMKr/9yPjyVcU8Y9dpTy3zQedJL9k0EDvmwcEODSJsdMbxuq/zeLd1XWC4OlWuonwsp59NhPI/gDmH2wGxp6K+IFt8RuE275Hf1LzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bsiKsDXn; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5ced377447bso2979485a12.1;
-        Tue, 05 Nov 2024 02:26:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730802397; x=1731407197; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=uXRmrldv0abJ1KuKD/CwJRavhPmq1r5j2UOmv6zY/I8=;
-        b=bsiKsDXnouk7jg3FbP4bAplMzYH0XNYbaAv25JroAHbmoC5EKEWrFBAPbUuU3M5NM7
-         bP5MXK84OHKqGuFN38RFqf5jTyyQDLcyRBT21LomPADVlLRbyd9DKJ29K+eEMhpFn7SI
-         a3aAdaZXtZ6XFRvIrkAFXKqfLBERHTbl3YPlxfOaAAJ8wddthpneRIkJC5U6L3GJbF6k
-         dy1dmEevv8dCuSng/GIKubTK7Zsm3VEuy/uDXwx8B8nPQPZfwBZlhrqhDD5j4KBZeOuR
-         G4yz0lNzB9RI9f7KbhZ251iyGpwoAPZvLct3r1PkjkWyEneG1b+dwDj32AKNq6q9i70v
-         aaCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730802397; x=1731407197;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uXRmrldv0abJ1KuKD/CwJRavhPmq1r5j2UOmv6zY/I8=;
-        b=ss2jAKVsYyrbaI2VBmEnY0tW9WmlNRCdrPgqWdz+6N8b3L+RWZvzJYiBPYhNLBEXvW
-         ECB1P6K+s7rZpRIHmYrWGUC1i3M7JsWEiQhgX1B3R00kuyprCI5OOAppEMb9MlrSnhH6
-         RQTRi1Uu1DBq/iJthPTUR8F7Kf4YRxIcVkwpLcFj8tOUvsvI1qXkSH2bWP2+Yudg2TSN
-         lhDuGs8mvPXOonguyFd5eAd6pIrGnMITkfoTYwgm8vr8qqv6AyCpkoEJ3/uQ+7tYl7Pq
-         IsxKLMrQUyy469Fyg0V7igBjDMwbrg4lDpYgAS3qtahQ5L4MZejC0u3adQLay8h7OgZE
-         /zew==
-X-Forwarded-Encrypted: i=1; AJvYcCVrtLW9/oUh7wKIfZfBcE4eFkNjMifm/Wo6N1JMf4Tl1gqyhyLNn67TSbi0A/xe07lYGp4B3Q1w6adg@vger.kernel.org, AJvYcCX+JPIyXv8mkL4uViLzR+5/bOP9248TQQx4sgW5idMe4fHz3NYLUrHMvfZ3JQyQsJhuxLOIME6RXVRz@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWWiXVxWML7TQV2Qtu2LMMnd23/pp1sh/0j3wVAZKO0cu20gHd
-	5p9Sf4CN8214jJbOPU72S5Bdn99Ht2nxjAQUsIQbNS/ciaUO5tOiAC5z8hwCVJg=
-X-Google-Smtp-Source: AGHT+IFjjpWORLG5EZwmDcCkf0azWSxPO1Bct/TWivucAAOMC5AokZ+K3ztYFsVpWHl476cCiDvc1w==
-X-Received: by 2002:a17:907:2d88:b0:a9a:c691:dcbc with SMTP id a640c23a62f3a-a9e3a57a2e5mr2460466666b.12.1730802397128;
-        Tue, 05 Nov 2024 02:26:37 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef18:1c00:c8b:7f34:a3dc:c7fc? (p200300f6ef181c000c8b7f34a3dcc7fc.dip0.t-ipconnect.de. [2003:f6:ef18:1c00:c8b:7f34:a3dc:c7fc])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9eb16a3d30sm113692166b.35.2024.11.05.02.26.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Nov 2024 02:26:36 -0800 (PST)
-Message-ID: <1e6aba2a95441abfbd6763f8892c4efa4f05ad12.camel@gmail.com>
-Subject: Re: [PATCH v2 3/4] iio: adc: ad_sigma_delta: Add support for
- reading irq status using a GPIO
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-  David Lechner <dlechner@baylibre.com>, Dumitru Ceclan
- <dumitru.ceclan@analog.com>, Krzysztof Kozlowski	 <krzk+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich	
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring	
- <robh@kernel.org>, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
- Thomas Gleixner <tglx@linutronix.de>, Russell King <linux@armlinux.org.uk>
-Date: Tue, 05 Nov 2024 11:30:58 +0100
-In-Reply-To: <6qecwcncfjxphezk6zwwafo5khpiqn4g7tsklrd6wv2xlzaok2@pm3rbfhaolzw>
-References: <20241028160748.489596-6-u.kleine-koenig@baylibre.com>
-	 <20241028160748.489596-9-u.kleine-koenig@baylibre.com>
-	 <a575430a74a7825a2df9fad1a8e073ad0507b0e7.camel@gmail.com>
-	 <20241030204429.70cdcf35@jic23-huawei>
-	 <y3amm7yj37lravbk6fcwze3jlllp4extmffqtx4jaoeqjt6uyl@nsdrcy2dk5kr>
-	 <1de551c284aaa9f4e91f91fa0c4ac570c8b7f2c9.camel@gmail.com>
-	 <xka5svqs3jbjiqcz6bacih7hjqzjbrugutjii6qusdbqoxfrp5@5hcv3htsjtlp>
-	 <2760d1a59114d0eec79405c56253aa82268ecba7.camel@gmail.com>
-	 <6qecwcncfjxphezk6zwwafo5khpiqn4g7tsklrd6wv2xlzaok2@pm3rbfhaolzw>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.1 
+	s=arc-20240116; t=1730814815; c=relaxed/simple;
+	bh=bcHiwJs4IVlRBeorVrw2V8nVNqnrV5jvY/5NCJVZP4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mW2LU9iWI1UaN29Q6Oo+ONCVEZSRIPcrXThPHGr7tdKvVag0MoJeP549eEzW7Jo8wnbdkK40Lv3bnmV8lvMD6CCy1aqorlHeuj2kneQer0qw1hYXle4hgg2xpoulvmJcAA1oNAc1WWGXS69dBAndsqsN6igbEby2cT04mj/11lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h+PDJR+D; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730814814; x=1762350814;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bcHiwJs4IVlRBeorVrw2V8nVNqnrV5jvY/5NCJVZP4M=;
+  b=h+PDJR+DEpgR9bEXFr80BoM3DHHLaQOPE1k0GGukmowfP3t1z4AMeqFe
+   3GQCnDwKT4yQI46jQcGhrvpRq/JbFI89PhHK4cmfdS1Ozlkdz68jjZI0f
+   jomiScOmh36MsSQbkh6LCadqzAS7DCf220Fb8meb8GC7j9UQgeeqe5EpI
+   JQTDOu9Ww5/2RH6/vizILxfPRTg5lMnjZ9VXFK+ElMFmSQOKtsFvzwNzH
+   T1cKVzydpyxbCs45Pw7Cze1ky61ck/y84+wAOR1ZAEf3BUxtVRAJutIC8
+   HDQFRvujj/E3u77EO9UqtTIFc7i4+lQo+oj6fmJ8NPGy5/7CwMtu0p3E/
+   w==;
+X-CSE-ConnectionGUID: 6Sg8RzZhTNSsOPihAEQSyg==
+X-CSE-MsgGUID: AAvvZ5DTSV6H9DNO/+UiVg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="30671884"
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; 
+   d="scan'208";a="30671884"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 05:53:33 -0800
+X-CSE-ConnectionGUID: nIOTDAXsRuyN3p9bBGhYVA==
+X-CSE-MsgGUID: 1C04mx9KRXCAsYVq1kdfnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; 
+   d="scan'208";a="84361458"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 05 Nov 2024 05:53:32 -0800
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t8Jzt-000m6l-06;
+	Tue, 05 Nov 2024 13:53:29 +0000
+Date: Tue, 5 Nov 2024 21:53:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>, Haibo Chen <haibo.chen@nxp.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	"open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER" <linux-iio@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/2] iio: adc: vf610_adc: limit i.MX6SX's channel number
+ to 4
+Message-ID: <202411052136.jstxD0iJ-lkp@intel.com>
+References: <20241104231200.2745342-2-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241104231200.2745342-2-Frank.Li@nxp.com>
 
-On Tue, 2024-11-05 at 10:20 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> Hello Nuno,
->=20
-> On Mon, Nov 04, 2024 at 02:15:49PM +0100, Nuno S=C3=A1 wrote:
-> > On Mon, 2024-11-04 at 13:49 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > > On Thu, Oct 31, 2024 at 01:05:21PM +0100, Nuno S=C3=A1 wrote:
-> > > > On Thu, 2024-10-31 at 11:40 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > > > > On Wed, Oct 30, 2024 at 08:44:29PM +0000, Jonathan Cameron wrote:
-> > > > > > On Wed, 30 Oct 2024 14:04:58 +0100
-> > > > > > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> > > > > > > Regarding this, I do share some of the concerns already raise=
-d by
-> > > > > > > Jonathan.
-> > > > > > > I fear
-> > > > > > > that we're papering around an issue with the IRQ controller r=
-ather
-> > > > > > > than
-> > > > > > > being an
-> > > > > > > issue with the device. When I look at irq_disable() docs [1],=
- it
-> > > > > > > feels that
-> > > > > > > we're
-> > > > > > > already doing what we're supposed to do. IOW, we disable the =
-lazy
-> > > > > > > approach
-> > > > > > > so we
-> > > > > > > *should* not get any pending IRQ.
-> > > > >=20
-> > > > > I think this is wrong and you always have to be prepared to see a=
-n irq
-> > > > > triggering that became pending while masked.
-> > >=20
-> > > I did some research, here are my findings:
-> > >=20
-> > > https://www.kernel.org/doc/html/v6.12-rc6/core-api/genericirq.html#de=
-layed-interrupt-disable
-> > > reads:
-> > >=20
-> > > 	The interrupt is kept enabled and is masked in the flow handler
-> > > 	when an interrupt event happens. This prevents losing edge
-> > > 	interrupts on hardware which does not store an edge interrupt
-> > > 	event while the interrupt is disabled at the hardware level.
-> > >=20
-> > > This suggests that lazy disabling is needed for some controllers that
-> > > stop their event detection when disabled. I read that as: *Normally* =
-an
-> > > irq event gets pending in hardware while the irq is disabled.
-> >=20
-> > I might be wrong, but I think that the lazy approach is the one for
-> > optimization.
->=20
-> It's both. Needed for some controllers *and* an optimisation (that
-> isn't beneficial in some corner cases).
->=20
-> > I think the reasoning is that __normally__ no more IRQs will come so
-> > no need to access the HW. But also thinking more on the subject and
-> > looking at what the lazy approach is doing, I take back what I said in
-> > previous emails. I *think* the expectation for a received IRQ while
-> > the line is masked (or disabled?!), is to keep it as pending (both on
-> > HW - when possible - and in SW).
-> >=20
-> > > The lazy disable approach is expected to work fine always, the reason=
- to
-> > > implement non-lazy disabling is "only" a performance optimisation. Se=
-e
-> > > commit e9849777d0e27cdd2902805be51da73e7c79578c.
-> >=20
-> > Not sure If I understood you correctly, but I think is the other way
-> > around?=C2=A0
-> > Also, as said in the commit, I think it also prevents the same interrup=
-t
-> > from
-> > happening twice (in some cases).
->=20
-> The conversation thread isn't complete on lore.kernel.org, so I don't
-> know for sure, but the way I understand it is: Normally while you handle
-> an irq no new irq comes in and so it's sensible to do lazy disabling.
-> Approximately: In 99.9 % of the cases you save 1 =C2=B5s by not masking a=
-nd
-> in the remaining 0.1% you get another hard irq that costs you say
-> 500 =C2=B5s. So on average you save: 0.999 * 1 =C2=B5s + 0.001 * (1 - 500=
-) =C2=B5s =3D 0.5 =C2=B5s.
->=20
-> However if for a certain device it's normal that another irq comes in
-> the "improvement" degrades to: In 20 % of the cases you save 1 =C2=B5s an=
-d in
-> the remaining 80 % you get a penalty of 500 =C2=B5s. So in this case it's=
- not
-> an expected win anymore and you can better stop doing lazy disabling and
-> invest the time to mask the irq improving the average cost from
-> - 0.2 * 1 =C2=B5s + 0.8 * 499 =C2=B5s =3D 399.4 =C2=B5s to 1 =C2=B5s.
->=20
-> The interrupt happening twice is not a problem for correctness as the
-> second one is not given to the device driver but caught in the irq
-> subsystem that only then disables the irq in hardware and marking it
-> pending for later consumption. It "only" costs cpu time. (And maybe it's
-> given to the driver twice after enable_irq is called?)
+Hi Frank,
 
-Yeah, enable_irq() was what I meant. So, in the commit message, it's stated=
-:
+kernel test robot noticed the following build warnings:
 
-"Unfortunately there are devices which do not allow the interrupt to be
-disabled easily at the device level. They are forced to use
-disable_irq_nosync(). This can result in taking each interrupt twice."
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on next-20241105]
+[cannot apply to linus/master v6.12-rc6]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-And the taking twice part was something that I was not getting it. Still no=
-t
-100% sure but I think that what is meant is that when we enable the IRQ we =
-might
-get it through [1] and then afterwards through the IRQ controller for devic=
-es
-that latch the events (as soon as you unmask the line, the event should
-trigger). On [1], there's a retrigger path that goes through HW and I'm not=
- sure
-if that one is problematic. But I would expect the SW one to be...
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/iio-adc-vf610_adc-limit-i-MX6SX-s-channel-number-to-4/20241105-071339
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20241104231200.2745342-2-Frank.Li%40nxp.com
+patch subject: [PATCH 2/2] iio: adc: vf610_adc: limit i.MX6SX's channel number to 4
+config: alpha-randconfig-r072-20241105 (https://download.01.org/0day-ci/archive/20241105/202411052136.jstxD0iJ-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241105/202411052136.jstxD0iJ-lkp@intel.com/reproduce)
 
-[1]: https://elixir.bootlin.com/linux/v6.11.6/source/kernel/irq/chip.c#L283
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411052136.jstxD0iJ-lkp@intel.com/
 
-- Nuno S=C3=A1
->=20
-> Looking at the problem at hand with the shared DOUT/=CC=85R=CC=85D=CC=85Y=
- line: It's
-> (nearly?) 100% of the cases that the line toggles while the irq is
-> logically disabled/masked. So it makes sense to do
->=20
-> 	irq_set_status_flags(sigma_delta->irq_line, IRQ_DISABLE_UNLAZY);
->=20
-> which however should only have an effect iff the irq controller doesn't
-> miss an edge while the irq is disabled.
->=20
-> So assuming my understanding is correct, there is something to do about
-> the raspberry pi gpio controller to prevent setting IRQ_DISABLE_UNLAZY
-> have an effect, because that one looses events.
->=20
-> > > However that makes me wonder what is the difference between the
-> > > irq_mask() and irq_disable() callbacks defined in struct irq_chip.
-> >=20
-> > Wondering the same...
-> >=20
-> > Thanks for digging into this. This has been a long standing thing with =
-sigma
-> > delta
-> > ADCs (I'm fairly sure this discussion about being an issue on the IRQ
-> > controller or
-> > not already happened before).
->=20
-> I keep that paragraph in my reply because the question is still open
-> even though I don't add new infos here.
->=20
-> Best regards
-> Uwe
+All warnings (new ones prefixed by >>):
 
+   drivers/iio/adc/vf610_adc.c: In function 'vf610_adc_probe':
+>> drivers/iio/adc/vf610_adc.c:874:35: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+     874 |         indio_dev->num_channels = (u32)device_get_match_data(dev);
+         |                                   ^
+
+
+vim +874 drivers/iio/adc/vf610_adc.c
+
+   817	
+   818	static int vf610_adc_probe(struct platform_device *pdev)
+   819	{
+   820		struct device *dev = &pdev->dev;
+   821		struct vf610_adc *info;
+   822		struct iio_dev *indio_dev;
+   823		int irq;
+   824		int ret;
+   825	
+   826		indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct vf610_adc));
+   827		if (!indio_dev)
+   828			return dev_err_probe(&pdev->dev, -ENOMEM, "Failed allocating iio device\n");
+   829	
+   830		info = iio_priv(indio_dev);
+   831		info->dev = &pdev->dev;
+   832	
+   833		info->regs = devm_platform_ioremap_resource(pdev, 0);
+   834		if (IS_ERR(info->regs))
+   835			return PTR_ERR(info->regs);
+   836	
+   837		irq = platform_get_irq(pdev, 0);
+   838		if (irq < 0)
+   839			return irq;
+   840	
+   841		ret = devm_request_irq(info->dev, irq,
+   842					vf610_adc_isr, 0,
+   843					dev_name(&pdev->dev), indio_dev);
+   844		if (ret < 0)
+   845			dev_err_probe(&pdev->dev, ret, "failed requesting irq, irq = %d\n", irq);
+   846	
+   847		info->clk = devm_clk_get_enabled(&pdev->dev, "adc");
+   848		if (IS_ERR(info->clk))
+   849			return dev_err_probe(&pdev->dev, PTR_ERR(info->clk),
+   850					     "failed getting clock, err = %ld\n",
+   851					     PTR_ERR(info->clk));
+   852	
+   853		info->vref = devm_regulator_get(&pdev->dev, "vref");
+   854		if (IS_ERR(info->vref))
+   855			return PTR_ERR(info->vref);
+   856	
+   857		info->vref_uv = devm_regulator_get_enable_read_voltage(&pdev->dev, "vref");
+   858		if (info->vref_uv < 0)
+   859			return info->vref_uv;
+   860	
+   861		device_property_read_u32_array(dev, "fsl,adck-max-frequency", info->max_adck_rate, 3);
+   862	
+   863		info->adc_feature.default_sample_time = DEFAULT_SAMPLE_TIME;
+   864		device_property_read_u32(dev, "min-sample-time", &info->adc_feature.default_sample_time);
+   865	
+   866		platform_set_drvdata(pdev, indio_dev);
+   867	
+   868		init_completion(&info->completion);
+   869	
+   870		indio_dev->name = dev_name(&pdev->dev);
+   871		indio_dev->info = &vf610_adc_iio_info;
+   872		indio_dev->modes = INDIO_DIRECT_MODE;
+   873		indio_dev->channels = vf610_adc_iio_channels;
+ > 874		indio_dev->num_channels = (u32)device_get_match_data(dev);
+   875	
+   876		vf610_adc_cfg_init(info);
+   877		vf610_adc_hw_init(info);
+   878	
+   879		ret = devm_iio_triggered_buffer_setup(&pdev->dev, indio_dev, &iio_pollfunc_store_time,
+   880						      NULL, &iio_triggered_buffer_setup_ops);
+   881		if (ret < 0)
+   882			return dev_err_probe(&pdev->dev, ret, "Couldn't initialise the buffer\n");
+   883	
+   884		mutex_init(&info->lock);
+   885	
+   886		ret = devm_iio_device_register(&pdev->dev, indio_dev);
+   887		if (ret)
+   888			return dev_err_probe(&pdev->dev, ret, "Couldn't register the device.\n");
+   889	
+   890		return 0;
+   891	}
+   892	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

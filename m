@@ -1,108 +1,119 @@
-Return-Path: <linux-iio+bounces-11939-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11940-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7EA49BE350
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 10:58:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52B29BE46A
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 11:38:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BFEE284C20
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 09:58:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7997928557F
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 10:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038EE1DD0CB;
-	Wed,  6 Nov 2024 09:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769E91DE3B3;
+	Wed,  6 Nov 2024 10:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J4tFQcBG"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Edm/wyRZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB1F1DBB19;
-	Wed,  6 Nov 2024 09:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E441DE2DA
+	for <linux-iio@vger.kernel.org>; Wed,  6 Nov 2024 10:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730887094; cv=none; b=HLOioQqb8FHwnEUUzyiLnRTMqUFqZZwNKzBX99N3vvql9Jsbh5NOkMvTDtpbD2MNDUqdd1V0hhBWrD51T6mVc3Ah0XdSnbS698VA922MA4KvNwII5EWSt5ATPDX24ZgPQTvh+a0kIQjd8ZGHN9Ke+6VyUxOovJekMCccNAl9q1Q=
+	t=1730889514; cv=none; b=JErLmo9RaiFDJaKzBjuw0uXJtzfRAk2DOdvndH/tqOVHFd7qxEvckChoR8nwadlUNEBlH1k0hO/1lyG0A8DViJ5l2cnvzWKiPWDYyhtMf6quck2zYOvtxKbM3z5RNkb8re8zd+SPfxl631DWM1tXx3QsQuGefPcPwwZn+vtIkbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730887094; c=relaxed/simple;
-	bh=v8MGY8fIOjiRO62KuDPIpuuvvuGKfZqakLVcpgvfos8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A/edl9fF69BfkxahyjN8dsuQFHj0b8sXsdojKU5njGuLEGH1j2yNPtBFXfc7dyafOMfzCqcpUFNIYqfiDWTYaOfOBfiAUwzNw+/k4P2IYcJWlL4Gnfszbur2taPQphq+hiK+e+27Vx6k2A0CW3+j6Sia+7CY2CUDtg5lWbWmce0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4tFQcBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5476C4CECD;
-	Wed,  6 Nov 2024 09:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730887094;
-	bh=v8MGY8fIOjiRO62KuDPIpuuvvuGKfZqakLVcpgvfos8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=J4tFQcBGImd7zjqBscyrbJmQyZBmDm9vp/5LyzdgUxK5hLHXwadxt/fGg1M0w1thZ
-	 ns/NmF1+evjJkaVRvI+uYAimqkHX6aFthvTl8HBxQax5BzZ5Wt0DUrHW5zHo6L3xvw
-	 bCnIf+/icPcrnEwWCUUZNydB4wfi46a7ogvDGh/I5MQLPEojIOa61UA3q/4IVUUpci
-	 mdWk7nPrNxJM81fnmeWHCNjlTJc9wlUcI8fw+pULFZCY/ZX3pOM/fUR1Ru85+LcSLe
-	 oNs5TnnQRGHKVXekvT1M82Pmel82WAfV6IyoFb2cXrI7qiTkvw4ehENVta550zPMOG
-	 JnPo4UTF8Zv2g==
-Date: Wed, 6 Nov 2024 09:58:05 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Conor Dooley
- <conor.dooley@microchip.com>
-Subject: Re: [PATCH v4 0/5] ad7380: add adaq4370-4 and adaq4380-4 support
-Message-ID: <20241106095805.0a3c49ef@jic23-huawei>
-In-Reply-To: <20241102153718.6d12295e@jic23-huawei>
-References: <20241030-ad7380-add-adaq4380-4-support-v4-0-864ff02babae@baylibre.com>
-	<78073c49-899a-4646-a834-6d5006d59501@baylibre.com>
-	<20241102153718.6d12295e@jic23-huawei>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1730889514; c=relaxed/simple;
+	bh=xfVECVyPhstuVzixwnpeD2YetzBptltzs/LNlYU8a0I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZIsTmL0FGflGuPka+hkr03y+a1y5ilBU0n1c04wkj6ie9xEn+CnUWXAfVvzvWJeZES0bnMJIhJ+J2Y4pRTeOAPsJqYrBYYTw/nHhtjPxBZQDMaAsAhTs/azoVwMlUVWODhEsXmg3oL4F7sFnQZnJQrM9eNGxjCREUKj5i7LUIbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Edm/wyRZ; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4315f24a6bbso51227415e9.1
+        for <linux-iio@vger.kernel.org>; Wed, 06 Nov 2024 02:38:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730889510; x=1731494310; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VY6uZFvxEU5LyK6YK1tW8F5ABPl0h8dIQVI4hDIvL6U=;
+        b=Edm/wyRZ3h2Z0upEfBE5EFTB2uqTUKD+iMYH1BJt8Bms242NbnzlEJt6ITQZmhnbzD
+         bOGdG6IBt3OD0fdBHKKJnM7B8zXzAYknpX7KYm2kCsW+dgNp0qc2HpOeG9zfKtGyDg6W
+         3VXMoUJz8wMPg0gMYZGJ3dr4xA5OZPCFjzJoF6fcpnQ62abHi2VWWbYUkM3HYAbLH7ih
+         KbqHfWqLVbLbGn3R82EMTT1XAQHesiG15W1lv92Xl0Xz75mXzxseLDTUwzCD+KGq8Qao
+         VNm5mQSBigR0heCmnbEaUlVHnkmjNozai+eRQrADHzTpImxTSf0E2N0MA8PnurJPo+EO
+         6W/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730889510; x=1731494310;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VY6uZFvxEU5LyK6YK1tW8F5ABPl0h8dIQVI4hDIvL6U=;
+        b=hKLZRA9ghsktNO1zVy9U4i0YyBUhY884fCcx97dnCRg1zknHeP6ycM/JdbZDcMaqq8
+         EPK0N+aUBGJt0RHsiGs+6LZCAdBpHzqBI/LPZLDTLzM9ysuGq0s+zQvthtXO+OyVnD3Z
+         +fxmAlaAs0psQmViXB5MVChELwDEz472GrHi5YUTz902U4nx3uSGoMe8an0dVMsbbvd5
+         V3T95wiS0v2xUHGWsBV74DHlRdKZ587EG20WAkW4KIg3fhaSF03SHfwQ4x+Y4S2qE4y2
+         K1JAb5QvVo3sbwi3Ce1kPbkEPgwjddAXqen7LGfXW6Tzp/ANcBU2cV1vderyPrBSouJD
+         cmng==
+X-Forwarded-Encrypted: i=1; AJvYcCWdm4iV5GEmLiz0BqPsNZKedC+E/eLn/wT2QWVItkg5K98ZDCyzQo2HGFtG8RWL6XAoLjBKSnXoXUM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVK2tG/+qI6vCx3NjR09jCtqlATZJYu0tMVVkTCUisn05YTXKv
+	Rt96RvMux5GsXFaQfSA5Q52d7PGZsfW5qwm5xZF3zIHBI3bjGfk0nkzA8sfcTzc=
+X-Google-Smtp-Source: AGHT+IG0moN4/ZDGzWYlA0aTjJYKTQ0jeyFFEkAKoyArrCWMEt0WHKRL7KNUzqDgf3nMKBqq7+I6Ng==
+X-Received: by 2002:a05:600c:2d81:b0:431:93dd:8e77 with SMTP id 5b1f17b1804b1-431b172b3bemr312880835e9.31.1730889509969;
+        Wed, 06 Nov 2024 02:38:29 -0800 (PST)
+Received: from axel-x1.baylibre (amontpellier-556-1-151-252.w109-210.abo.wanadoo.fr. [109.210.7.252])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa6da89bsm17667715e9.30.2024.11.06.02.38.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2024 02:38:29 -0800 (PST)
+From: ahaslam@baylibre.com
+To: jic23@kernel.org,
+	krzk+dt@kernel.org,
+	dlechner@baylibre.com
+Cc: Michael.Hennerich@analog.com,
+	robh@kernel.org,
+	conor+dt@kernel.org,
+	ahaslam@baylibre.com,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings: iio: dac: ad5791: ldac gpio is active low
+Date: Wed,  6 Nov 2024 11:38:24 +0100
+Message-Id: <20241106103824.579292-1-ahaslam@baylibre.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, 2 Nov 2024 15:37:18 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+From: Axel Haslam <ahaslam@baylibre.com>
 
-> On Wed, 30 Oct 2024 09:32:23 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
->=20
-> > On 10/30/24 8:44 AM, Julien Stephan wrote: =20
-> > > Hello,
-> > >=20
-> > > This series add support for adaq4370-4 (2MSPS) and adaq4380-4 (4MSPS)
-> > > which are quad-channel precision data acquisition signal chain =CE=BC=
-Module
-> > > solutions compatible with the ad738x family, with the following diffe=
-rences:
-> > >    =20
-> > Reviewed-by: David Lechner <dlechner@baylibre.com> =20
->=20
-> FWIW, this looks fine to me and I can tweak the voltage in the docs whilst
-> applying.  I'm stalled on merging this series by the fix dependency worki=
-ng
-> it's way into upstream.=20
-Applied.  I tweaked that voltage in the docs to 3.3V as per David's feedbac=
-k.
+On the example, the ldac gpio is flagged as active high, when in reality
+its an active low gpio. Fix the example by using the active low flag for
+the ldac gpio.
 
-Pushed out as testing to give 0-day a brief look.
+Fixes: baaa92d284d5 ("dt-bindings: iio: dac: ad5791: Add optional reset, clr and ldac gpios")
+Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
+---
+ Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Note I merged rc6 to get the fix this was dependent on.
-
->=20
-> Thanks,
->=20
-> Jonathan
->=20
-> >  =20
->=20
->=20
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
+index 79cb4b78a88a..2bd89e0aa46b 100644
+--- a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
+@@ -91,7 +91,7 @@ examples:
+             vrefn-supply = <&dac_vrefn>;
+             reset-gpios = <&gpio_bd 16 GPIO_ACTIVE_LOW>;
+             clear-gpios = <&gpio_bd 17 GPIO_ACTIVE_LOW>;
+-            ldac-gpios = <&gpio_bd 18 GPIO_ACTIVE_HIGH>;
++            ldac-gpios = <&gpio_bd 18 GPIO_ACTIVE_LOW>;
+         };
+     };
+ ...
+-- 
+2.34.1
 
 

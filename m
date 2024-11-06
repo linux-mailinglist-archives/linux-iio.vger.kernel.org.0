@@ -1,62 +1,63 @@
-Return-Path: <linux-iio+bounces-11938-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11939-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180349BE2F5
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 10:45:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7EA49BE350
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 10:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0D81F236A6
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 09:45:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BFEE284C20
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 09:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076751D88BF;
-	Wed,  6 Nov 2024 09:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038EE1DD0CB;
+	Wed,  6 Nov 2024 09:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NwFXZbfg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J4tFQcBG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B057C3211;
-	Wed,  6 Nov 2024 09:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB1F1DBB19;
+	Wed,  6 Nov 2024 09:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730886319; cv=none; b=UmpnzBr+jCJ4gwKTeackDWqC3YxBO53L07TyeM13M+Vr+RUMZfq8O3+CTTdeubBZUEfRIrxBuEB/6eHHGkpYrDKIIV9uvZ+YJYZv2E0ZYckz3cDryc1mYZG3Slgo2tVVWscv4Wzf9evlEjj6x4rlTBo1RmK5lZzAOe27/yZFMhY=
+	t=1730887094; cv=none; b=HLOioQqb8FHwnEUUzyiLnRTMqUFqZZwNKzBX99N3vvql9Jsbh5NOkMvTDtpbD2MNDUqdd1V0hhBWrD51T6mVc3Ah0XdSnbS698VA922MA4KvNwII5EWSt5ATPDX24ZgPQTvh+a0kIQjd8ZGHN9Ke+6VyUxOovJekMCccNAl9q1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730886319; c=relaxed/simple;
-	bh=IrjvnY9pMMzq8Aj0Nx18xgmSSg9tmfrMJz8voL6BzL0=;
+	s=arc-20240116; t=1730887094; c=relaxed/simple;
+	bh=v8MGY8fIOjiRO62KuDPIpuuvvuGKfZqakLVcpgvfos8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hYOfql4+sOtPBaVgkV6kc3Ar8I4/YJynvP4y41igrtIqe9ta6psjGkDzGGQ45v3RU6MUjAjmsaajdOJ62VwG9uf5JHlynbC+QIslcI7sDQSDuK6hXxWOHS9sPQJu6GEauJFVe0Xn/M8aaB8Lj8DKKnLzCO9mAa6vzaQdcruH3os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NwFXZbfg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90E6C4CECD;
-	Wed,  6 Nov 2024 09:45:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A/edl9fF69BfkxahyjN8dsuQFHj0b8sXsdojKU5njGuLEGH1j2yNPtBFXfc7dyafOMfzCqcpUFNIYqfiDWTYaOfOBfiAUwzNw+/k4P2IYcJWlL4Gnfszbur2taPQphq+hiK+e+27Vx6k2A0CW3+j6Sia+7CY2CUDtg5lWbWmce0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4tFQcBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5476C4CECD;
+	Wed,  6 Nov 2024 09:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730886319;
-	bh=IrjvnY9pMMzq8Aj0Nx18xgmSSg9tmfrMJz8voL6BzL0=;
+	s=k20201202; t=1730887094;
+	bh=v8MGY8fIOjiRO62KuDPIpuuvvuGKfZqakLVcpgvfos8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NwFXZbfgLDHnYQfA5ZLZmRsRzVvSGmk5PZ6dTEVvZMAe3qGF/ouJWFlg8KZbi0QwD
-	 Mgkj2n7UitYcGtEpu/vwLn4ZTlBXgIxRI0KHwuq5P4lxU5fjXG1q4OrE48btfA9Pyc
-	 saKmiKSP96bwvRi7LTXQjYLS2MLRYiXto+INl4q8MFUBG/ovyLHPJ/FrxJTFXqlj6i
-	 tUd9mEeJhoPmCOlNnIm6Gn78izFnczCLnLMVuz/3cNSbqEt2q4rZnFdjLP/pz0OOSX
-	 pLmgsQxiUk4Fae1k/n2HzKG/vrf23bpd4960xH9DXc4qV5/F2bmRn1DAPeKrUr3SWC
-	 oT/8yVQTUq9Sw==
-Date: Wed, 6 Nov 2024 09:45:10 +0000
+	b=J4tFQcBGImd7zjqBscyrbJmQyZBmDm9vp/5LyzdgUxK5hLHXwadxt/fGg1M0w1thZ
+	 ns/NmF1+evjJkaVRvI+uYAimqkHX6aFthvTl8HBxQax5BzZ5Wt0DUrHW5zHo6L3xvw
+	 bCnIf+/icPcrnEwWCUUZNydB4wfi46a7ogvDGh/I5MQLPEojIOa61UA3q/4IVUUpci
+	 mdWk7nPrNxJM81fnmeWHCNjlTJc9wlUcI8fw+pULFZCY/ZX3pOM/fUR1Ru85+LcSLe
+	 oNs5TnnQRGHKVXekvT1M82Pmel82WAfV6IyoFb2cXrI7qiTkvw4ehENVta550zPMOG
+	 JnPo4UTF8Zv2g==
+Date: Wed, 6 Nov 2024 09:58:05 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>, Stephen Rothwell
- <sfr@canb.auug.org.au>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Linux Kernel Mailing
- List <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>, megi@xff.cz, lars@metafoo.de,
- linux-iio@vger.kernel.org
-Subject: Re: linux-next: build failure after merge of the tip tree
-Message-ID: <20241106094510.3234cae1@jic23-huawei>
-In-Reply-To: <20241104140106.GF24862@noisy.programming.kicks-ass.net>
-References: <20241028165336.7b46ce25@canb.auug.org.au>
-	<20241101141952.4990f238@canb.auug.org.au>
-	<dd740dda-a03e-4f3a-bb46-e551f0799c50@intel.com>
-	<20241104140106.GF24862@noisy.programming.kicks-ass.net>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Conor Dooley
+ <conor.dooley@microchip.com>
+Subject: Re: [PATCH v4 0/5] ad7380: add adaq4370-4 and adaq4380-4 support
+Message-ID: <20241106095805.0a3c49ef@jic23-huawei>
+In-Reply-To: <20241102153718.6d12295e@jic23-huawei>
+References: <20241030-ad7380-add-adaq4380-4-support-v4-0-864ff02babae@baylibre.com>
+	<78073c49-899a-4646-a834-6d5006d59501@baylibre.com>
+	<20241102153718.6d12295e@jic23-huawei>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,80 +65,44 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 4 Nov 2024 15:01:06 +0100
-Peter Zijlstra <peterz@infradead.org> wrote:
+On Sat, 2 Nov 2024 15:37:18 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> It might help if we put the relevant maintainers on Cc?
-> 
-> On Mon, Nov 04, 2024 at 02:37:57PM +0100, Przemek Kitszel wrote:
-> > On 11/1/24 04:19, Stephen Rothwell wrote:  
-> > > Hi all,
-> > > 
-> > > On Mon, 28 Oct 2024 16:53:36 +1100 Stephen Rothwell <sfr@canb.auug.org.au> wrote:  
-> > > > 
-> > > > After merging the tip tree, today's linux-next build (x86_64 allmodconfig)
-> > > > failed like this:
-> > > > 
-> > > > drivers/iio/magnetometer/af8133j.c: In function 'af8133j_set_scale':
-> > > > drivers/iio/magnetometer/af8133j.c:315:12: error: suggest explicit braces to avoid ambiguous 'else' [-Werror=dangling-else]
-> > > >    315 |         if (!pm_runtime_status_suspended(dev))
-> > > >        |            ^
-> > > > cc1: all warnings being treated as errors
-> > > > 
-> > > > Probably caused by commit
-> > > > 
-> > > >    fcc22ac5baf0 ("cleanup: Adjust scoped_guard() macros to avoid potential warning")
-> > > > 
-> > > > I have applied the following for today but I wonder if there may be
-> > > > others.
-> > > > 
-> > > > From: Stephen Rothwell <sfr@canb.auug.org.au>
-> > > > Date: Mon, 28 Oct 2024 16:01:15 +1100
-> > > > Subject: [PATCH] fix up for "cleanup: Adjust scoped_guard() macros to avoid
-> > > >   potential warning"
-> > > > 
-> > > > Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> > > > ---
-> > > >   drivers/iio/magnetometer/af8133j.c | 3 ++-
-> > > >   1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/iio/magnetometer/af8133j.c b/drivers/iio/magnetometer/af8133j.c
-> > > > index d81d89af6283..acd291f3e792 100644
-> > > > --- a/drivers/iio/magnetometer/af8133j.c
-> > > > +++ b/drivers/iio/magnetometer/af8133j.c
-> > > > @@ -312,10 +312,11 @@ static int af8133j_set_scale(struct af8133j_data *data,
-> > > >   	 * When suspended, just store the new range to data->range to be
-> > > >   	 * applied later during power up.
-> > > >   	 */
-> > > > -	if (!pm_runtime_status_suspended(dev))
-> > > > +	if (!pm_runtime_status_suspended(dev)) {
-> > > >   		scoped_guard(mutex, &data->mutex)
-> > > >   			ret = regmap_write(data->regmap,
-> > > >   					   AF8133J_REG_RANGE, range);
-> > > > +	}
+> On Wed, 30 Oct 2024 09:32:23 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
+>=20
+> > On 10/30/24 8:44 AM, Julien Stephan wrote: =20
+> > > Hello,
+> > >=20
+> > > This series add support for adaq4370-4 (2MSPS) and adaq4380-4 (4MSPS)
+> > > which are quad-channel precision data acquisition signal chain =CE=BC=
+Module
+> > > solutions compatible with the ad738x family, with the following diffe=
+rences:
+> > >    =20
+> > Reviewed-by: David Lechner <dlechner@baylibre.com> =20
+>=20
+> FWIW, this looks fine to me and I can tweak the voltage in the docs whilst
+> applying.  I'm stalled on merging this series by the fix dependency worki=
+ng
+> it's way into upstream.=20
+Applied.  I tweaked that voltage in the docs to 3.3V as per David's feedbac=
+k.
 
-Might as well flip it to a guard() given the scope is the same and it will
-be a little more readable.
+Pushed out as testing to give 0-day a brief look.
 
-Otherwise I'm fine taking a patch doing this if someone can send on to
-linux-iio@vger.kernel.org
+Note I merged rc6 to get the fix this was dependent on.
 
-
-I'll get to making a patch at somepoint but just back from travel
-so a lot of other things on my queue today.
-
-
-
-> > > >   	pm_runtime_enable(dev);  
-> > > 
-> > > I am still applying this patch.
-> > >   
-> > 
-> > This patch of yours is necessary, could you make it permanent?
-> > 
-> > Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>  
+>=20
+> Thanks,
+>=20
+> Jonathan
+>=20
+> >  =20
+>=20
+>=20
 
 

@@ -1,92 +1,96 @@
-Return-Path: <linux-iio+bounces-11947-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11948-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2254D9BEFE8
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 15:15:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38369BF220
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 16:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEC201F218CA
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 14:15:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 315921C26332
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Nov 2024 15:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C940201278;
-	Wed,  6 Nov 2024 14:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5223205ADC;
+	Wed,  6 Nov 2024 15:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+rRsnjh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X9HLUjdY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F06201102;
-	Wed,  6 Nov 2024 14:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802AA1DFD87;
+	Wed,  6 Nov 2024 15:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730902503; cv=none; b=Ti9nv04LofXJKogLOjufqD1Bc7DAZeN79ILepqj6PyQ7pXL8DGYnrASeTaQQd7JxdVqRF1K2Ba8OT9ZaVpxbghkEmKsCykAXoN5Wq65TXPI3BJZuYbBnnFkD2Xu0iFA9NUc2TcVNEJKtDcWvFZPpOxue1fOQ1pAVXU1weUcpc68=
+	t=1730908026; cv=none; b=hTHHI/mqhbVqMDrlZKjPePVjZtMfaJ8wm6bULXBoBF4mRmQ5JP0bIkQKRKfssH8FKRlATuHw5Y7MrYUmv2REivPc66Vk2Q8wkFEmiQjU2jZL3TvySL3DDKDKuO3dYVCI03XYVATcRoahotQjNnPZ7dr1yCquhD81RVv6qg11R28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730902503; c=relaxed/simple;
-	bh=11PMx9PUL7fbdUFkuufBbDuWSsqlV0+8mLWc3JFbaIc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=dsmwt53jVWDaP7VsaapTqQaJglln+ofjpLt8tF+xo/dQITa8nggmxF5Th/LZqKZ2jaP9+GqHtcqH+OSm+oxDc0dQ91GjuHsIZOpVf2N3N+NGwEBJyhntTnPuTRcXqkeAwwhk4pP+K0iRZKCozszLDR2dliA/jVrIqVajTIPawy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+rRsnjh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E715C4CECC;
-	Wed,  6 Nov 2024 14:15:01 +0000 (UTC)
+	s=arc-20240116; t=1730908026; c=relaxed/simple;
+	bh=8lbGqJHY73uBPSfmVU0xiiMipRoMO+tIzDfLTjIAcsA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QVGbzCPHTvxO2Yqn8F9P3KoqaiHJecx9BK7FQXkbnyuEqM9jBDITZzrljsjNlUJVjqq6PICCyUktw2pZGnLJwbMV4JoOx+j9nQ45TjzBLU3UCC4bLX/oujwpy6279eBmaNuEm8vLdtOvuiTxqai1Ub2TenNX7UP8XeHgpDFka00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X9HLUjdY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5410C4CEC6;
+	Wed,  6 Nov 2024 15:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730902502;
-	bh=11PMx9PUL7fbdUFkuufBbDuWSsqlV0+8mLWc3JFbaIc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=F+rRsnjhBcvNds6EfcEKKubrxKhvs4gJK379dg+ThvzdwHmBuPwmU1upveo3K8emM
-	 TAupZHHPt/16+ctZEEEXRlbhMSYy4kkcacC5gjAFm6sE5ZR2OJcXWlHqsej+vWzViJ
-	 SSKPyfIv9gJEkIse95rurPFjOqHht1ofB99YBFVNOvqdDVDfKBkS29xb0RABdY5GqE
-	 4PZ0le5EcKNlwS7bfHPanYMksI4pommYjDq/fl45goSdVfCc62N7oj/yaLgomHE4fS
-	 mvAYAvaEWmZ5O3b6vB7fJtsj8CkuPeu3UYs/YITbjyGtsgGyw2V7DTlnfIoOmRQV4N
-	 dCUt0v0BT2+ww==
-Date: Wed, 6 Nov 2024 15:14:59 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-cc: Ricardo Ribalda <ribalda@chromium.org>, 
-    Benjamin Tissoires <bentiss@kernel.org>, 
-    Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-    Lars-Peter Clausen <lars@metafoo.de>, 
-    Harvey Yang <chenghaoyang@google.com>, linux-input@vger.kernel.org, 
-    linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/5] iio: hid-sensors-prox: Add support for more
- channels
-In-Reply-To: <20241101153255.4d835495@jic23-huawei>
-Message-ID: <nycvar.YFH.7.76.2411061514451.20286@cbobk.fhfr.pm>
-References: <20241101-hpd-v3-0-e9c80b7c7164@chromium.org> <20241101153255.4d835495@jic23-huawei>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=k20201202; t=1730908026;
+	bh=8lbGqJHY73uBPSfmVU0xiiMipRoMO+tIzDfLTjIAcsA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X9HLUjdYW5h5t1seMKXIJdTeuV/CNRnbkeMRfrndnvvTDRfKUNSp6Z9XDby6clIIM
+	 bLs489/CO5wZLoo2eCGT6LqmBTL17VarDQcxBryeLBpgP/hW0HutPxG5PPf+fKr5eg
+	 Kh0Z9z/I1LbAxbjj8saNVsCFBVtf9OtuXgmhhKKxuuz8l0M7Xkkrj8FBiD51mm9TBw
+	 Is7tVVVxbYWf0zA7vRTtCF3VPdLAjONcj+ygU1VpGOyZ00ErphvqHLfduS0HfneXTI
+	 ZxeJOcrcCZ1O/R+r5ciyRNDq4TjVec9nxM17ni3alXrh/Mx9Gl7u7nCvXj+HAioA/V
+	 DbHCf8vYNaP+A==
+Date: Wed, 6 Nov 2024 15:47:01 +0000
+From: Conor Dooley <conor@kernel.org>
+To: ahaslam@baylibre.com
+Cc: jic23@kernel.org, krzk+dt@kernel.org, dlechner@baylibre.com,
+	Michael.Hennerich@analog.com, robh@kernel.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: dac: ad5791: ldac gpio is active low
+Message-ID: <20241106-tableful-outdoors-298ad815a107@spud>
+References: <20241106103824.579292-1-ahaslam@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Mn0ppnsPgnjOw68c"
+Content-Disposition: inline
+In-Reply-To: <20241106103824.579292-1-ahaslam@baylibre.com>
 
-On Fri, 1 Nov 2024, Jonathan Cameron wrote:
 
-> On Fri, 01 Nov 2024 07:46:26 +0000
-> Ricardo Ribalda <ribalda@chromium.org> wrote:
-> 
-> > EgisVision 620 provides two additional channels:
-> > - proximity
-> > - attention
-> > 
-> > Add support for them.
-> > 
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> Looks good to me. I'll queue it up, but Jiri / Srinivas if either of you have time
-> to take a look as well that would be great of course.
+--Mn0ppnsPgnjOw68c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-FWIW:
+On Wed, Nov 06, 2024 at 11:38:24AM +0100, ahaslam@baylibre.com wrote:
+> From: Axel Haslam <ahaslam@baylibre.com>
+>=20
+> On the example, the ldac gpio is flagged as active high, when in reality
+> its an active low gpio. Fix the example by using the active low flag for
+> the ldac gpio.
+>=20
+> Fixes: baaa92d284d5 ("dt-bindings: iio: dac: ad5791: Add optional reset, =
+clr and ldac gpios")
+> Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
 
-	Acked-by: Jiri Kosina <jkosina@suse.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-Thanks,
+--Mn0ppnsPgnjOw68c
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Jiri Kosina
-SUSE Labs
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZyuPdQAKCRB4tDGHoIJi
+0vRtAQDWYbkkjwjfH/Jyh9+9Vb+PhqhYnbpRCwL+og1vGe8BAAEAnfAYAHLqHTQe
+M8c6kYLdS4J10mF3AdkqXhE34m6FqQc=
+=h8lz
+-----END PGP SIGNATURE-----
+
+--Mn0ppnsPgnjOw68c--
 

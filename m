@@ -1,117 +1,116 @@
-Return-Path: <linux-iio+bounces-11988-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-11983-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89019C083B
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2024 14:56:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7B29C078C
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2024 14:33:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A9ED28527F
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2024 13:56:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A47321F21706
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Nov 2024 13:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B49B21262B;
-	Thu,  7 Nov 2024 13:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B951212F0F;
+	Thu,  7 Nov 2024 13:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="ni6taHqX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6552F20F5AA;
-	Thu,  7 Nov 2024 13:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6ED212F03;
+	Thu,  7 Nov 2024 13:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730987811; cv=none; b=JrC8PiAaxFINzymortJjSjk9uCVqie7c44YFo0hEiv1zUghJepPTqlxdbpZfx666Zaff/rMFHD+ozTAzQR2LIfJiyqiZ5VXOGdC214XU3dBrpWZv1Y0yUqFkV320d1xrQYxNqeJ5hFpo0MjT7rNi+l6dXXmUjmo1aFv4Z9W5TUU=
+	t=1730986306; cv=none; b=TkbmvdIJxfZ5t+EH4zf1tbWSPnYHP930c+1sj8C2448MPB0uDy+cagqWmBPQTVZ1FWGFcGwNTPiBAGCsl2B4/TXxmun7syePylff9T2flljrasitkDYnkMxKWtBTNnscrr3EZOvEtoEWitAK/3ZC+0SZueTfMj5RDlLslmBZtgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730987811; c=relaxed/simple;
-	bh=7v/jldVNPehBirnoJkZk0fUgltTH/iaWGYa4s4Cqmj0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Mk4McP2LNQeX9YVta3Ttp+buwVB1UlNMuilIvD4C3UQpSrs4+UxBM16JHSTW05EmQh0yycMNqFUQUAwF6jOCkvb4gewyblesLvCJwd7NUHpeHVKbjeDSmEV+9DrGs+bNhAwsRKuSaxLeAIH0yN1kwAjhMCLLWh4nc3yB+5P6bAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Xkk952JS5z6K99D;
-	Thu,  7 Nov 2024 21:55:05 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id A05BF140856;
-	Thu,  7 Nov 2024 21:56:45 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 7 Nov
- 2024 14:56:44 +0100
-Date: Mon, 28 Oct 2024 17:05:21 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Robert Budai <robert.budai@analog.com>
-CC: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
-	<Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, "Ramona
- Gradinariu" <ramona.gradinariu@analog.com>, Antoniu Miclaus
-	<antoniu.miclaus@analog.com>, Jonathan Cameron <jic23@kernel.org>, "Rob
- Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Jagath Jog J
-	<jagathjog1996@gmail.com>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <robi_budai@yahoo.com>
-Subject: Re: [PATCH 0/5] Add support for ADIS16550 and ADIS16550W
-Message-ID: <20241028170521.0000325c@Huawei.com>
-In-Reply-To: <20241028123550.9128-1-robert.budai@analog.com>
-References: <20241028123550.9128-1-robert.budai@analog.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1730986306; c=relaxed/simple;
+	bh=O4Ly+TUbcNgizUM1IEqHG6sZzsVmPfKjoOUUN/qY6OU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p/8CQouaBs2ah26gvH+Fec5EWpfqIw7IIJM9s92mFCwRQdo55k3ilusUEaJUvtNYEdHNhxWd0U71gC6DyDVZCPiMgJuJTxzAnocuP9P9t89jpfntYMgpcK6273YIJHRRM2/Mg6QE50A9b3IWG/06KN6UleVw+TD3v9b9HGfL3is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=ni6taHqX; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7DH96r005049;
+	Thu, 7 Nov 2024 08:31:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=dQpYsJYMGMBaCtPWFQEdS4VtUyv
+	uxNAP5yuT99fgGKs=; b=ni6taHqX7Bw0dtal2mrYy6giiWs6ZaacLzdUoS1d6Xk
+	i/e5Tg89fGBcSS4Ei/I4FsJc+qtWxYVlJ5kQvnWg4TZrQ+0TBBsFDyS9VK7nmLEP
+	6s3N1y0NdrAitBR8qDjycbpBNI2GxEbn96xZWogh9ysFWD87+AZajRr0c4Bz2Fdd
+	8B9an8NeTFDwUCL281uqYX6bg7HF8YU6KJwR5JQ1piWSzUEqgAcmK6QWUQHVKDrX
+	k/y+FZQLXKBmHgvTFpDve2jj0ZMTpZalrWSIrzQTPFscaP3QfusjM7lcMNeGW9vi
+	PDytharrL02fBQPdMOFFpnTStrwroWxJ7mhKnPUBEXw==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 42rsdks7u8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 08:31:41 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4A7DVe36034819
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 7 Nov 2024 08:31:40 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 7 Nov 2024 08:31:40 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 7 Nov 2024 08:31:40 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 7 Nov 2024 08:31:40 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4A7DVUGq019172;
+	Thu, 7 Nov 2024 08:31:32 -0500
+From: Darius Berghe <darius.berghe@analog.com>
+To: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <jic23@kernel.org>, <darius.berghe@analog.com>
+Subject: [PATCH v2 0/3] iio: imu: add devices to adis16480 driver
+Date: Thu, 7 Nov 2024 15:45:14 +0200
+Message-ID: <20241107134517.3089112-1-darius.berghe@analog.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 9U0tJdebFaLj8DpJ0aeVvT0QEAxdarBj
+X-Proofpoint-ORIG-GUID: 9U0tJdebFaLj8DpJ0aeVvT0QEAxdarBj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 mlxlogscore=999 clxscore=1015 mlxscore=0 suspectscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411070105
 
-On Mon, 28 Oct 2024 14:35:42 +0200
-Robert Budai <robert.budai@analog.com> wrote:
+Thanks for the review and input Jonathan, I've addressed the 2 points
+you raised in V1, here's the breakdown.
 
-> The ADIS16550 is a complete inertial system that includes a triaxis gyros=
-cope
-> and a triaxis accelerometer. Each inertial sensor in the ADIS16550 combin=
-es
-> industry leading MEMS only technology with signal conditioning that optim=
-izes
-> dynamic performance. The factory calibration characterizes each sensor fo=
-r
-> sensitivity, bias, and alignment. As a result, each sensor has its own dy=
-namic
-> compensation formulas that provide accurate sensor measurements.
+Changes in v2:
+ - document in the commit description the main differences between 
+   the newly added and the already supported devices
+ - make adis16487 fallback compatible with adis16485 since they are
+   functionally equivalent
 
+Darius Berghe (3):
+  iio: imu: adis16480: add devices to adis16480 driver
+  iio: imu: adis16480: add devices to adis16480 - docs
+  dt-bindings: iio: adis16480: add devices to adis16480
 
-Dropping the more marketing parts of this preferred.  Second
-sentence doesn't add much that we care about.
-The rest is fine.
+ .../bindings/iio/imu/adi,adis16480.yaml       |  5 ++
+ Documentation/iio/adis16480.rst               |  3 +
+ drivers/iio/imu/adis16480.c                   | 75 +++++++++++++++++++
+ 3 files changed, 83 insertions(+)
 
->=20
-> Nuno S=E1 (3):
->   iio: imu: adis: Add custom ops struct
->   iio: imu: adis: Add DIAG_STAT register size
->   iio: imu: adis16550: add adis16550 support
->=20
-> Ramona Gradinariu (2):
->   dt-bindings: iio: Add adis16550 bindings
->   docs: iio: add documentation for adis16550 driver
->=20
->  .../bindings/iio/imu/adi,adis16550.yaml       |   95 ++
->  Documentation/iio/adis16550.rst               |  389 ++++++
->  Documentation/iio/index.rst                   |    1 +
->  MAINTAINERS                                   |   10 +
->  drivers/iio/imu/Kconfig                       |   13 +
->  drivers/iio/imu/Makefile                      |    1 +
->  drivers/iio/imu/adis.c                        |   33 +-
->  drivers/iio/imu/adis16550.c                   | 1228 +++++++++++++++++
->  include/linux/iio/imu/adis.h                  |   33 +-
->  9 files changed, 1788 insertions(+), 15 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis165=
-50.yaml
->  create mode 100644 Documentation/iio/adis16550.rst
->  create mode 100644 drivers/iio/imu/adis16550.c
->=20
+-- 
+2.46.1
 
 

@@ -1,118 +1,155 @@
-Return-Path: <linux-iio+bounces-12023-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12024-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF939C1990
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 10:56:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303AF9C1AB8
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 11:36:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9633E1F24237
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 09:56:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 533021C26833
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 10:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD141E1C02;
-	Fri,  8 Nov 2024 09:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0641E32CE;
+	Fri,  8 Nov 2024 10:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mKn1UdaM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IWDScEZ6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEDD1E0E10;
-	Fri,  8 Nov 2024 09:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F8A1E5739;
+	Fri,  8 Nov 2024 10:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731059801; cv=none; b=fWVG3CxOF920pnya6GefYlqrNB+J7lVdR1dm50xz4SFgss5JRyamzlHoPZQK8+EoaCzxXoTXHyBk2h0/AHFc4cmUGad3ycH/XjQIcXJu/hD3h41iSm79/txZBjpFm5s0gyVmR5W4TFgwxEgwAYsnCvTJsvweKVwu2lBbr7RrRHY=
+	t=1731062015; cv=none; b=RQXDYMF7oyV/fH8NyKwR+JjMV/5heeApr4U+o/S/xioQ1CfNgFL/8mIgyRwhVbvUM/0uBleb9kIww3nIpnf7f2m9k2FA8+BI39Uo7ZpNH6pote/Z7SDjnkRg3KumuW6eJIEZT7or/+d8M4ChNUfq1Q551EPXjh3erGGVcxGTJtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731059801; c=relaxed/simple;
-	bh=hYaMho2xmCZaKDNeS5BXAfI2dUcDW/vxWs5iXQ0WFAE=;
-	h=Date:Message-ID:From:Subject:To:Cc:In-Reply-To:References; b=BVSs5BEmpfhaRh1uXYREBRZPMXL1EHmNs+Nx42OnOBmnxQWl2EF/LFX8L/xm/fj1Pv86fyqtWkFh9oKQWp7cqqcmjBqX+YojTF+mtGosc3Ajc+0KKIRRUo8r7zJkiInqaGRiIn1ZEMu3ZgH4OrujS4pmFyh+htOp4c0Bgi8ozFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mKn1UdaM; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1731062015; c=relaxed/simple;
+	bh=KxMStCD8O5sR+ziGmKPiHtWoXQum/CRCg9cCdsNOX2Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=INSJfDp/cdontQksf/+onlkiuSqwthXqOwTCGFlcp5WGtgFfBf4dB4qCvaqHPJMhXgSGlD1XuNE/B/MB+nXMuv1UwbmhzZnEwWrGwU5hmyD463bTDtRpDN/D+vsCqErtFlFQIUi2JpNz5pvfRkjLMzVKQbxfqjL+TfgnOejdT1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IWDScEZ6; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-37d6a2aa748so1168088f8f.1;
-        Fri, 08 Nov 2024 01:56:39 -0800 (PST)
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5ceb75f9631so2443256a12.0;
+        Fri, 08 Nov 2024 02:33:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731059798; x=1731664598; darn=vger.kernel.org;
-        h=references:in-reply-to:cc:to:subject:from:message-id:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aAr6sgwxPDvgR7Ievvwf3Fx3Iaha2fuCw5YJazZVzW8=;
-        b=mKn1UdaMxVYA+LeBiI4Yby1Sm+COMtiim+d6ICoRaQfqVdHxPs6IT58YvJa5ClLm4s
-         NxVEkXADrKsIkg+Gu0lHiOynoREsgBhyhhlaBQ49CLq+SjPw/I9Htl/2lYeLYuhu3jhh
-         D/843gyeUikprzPsvLZrpsz2pXQmE/BftH7oMC0iRSQg/CFac6ZgSL1QL3VlwRHg9Eck
-         Qu70/4Q92/dEOg9A5Es3R1JsgGtspWPh+7x86sd/s+JyhmNA1BTtyKt52EdD5LYR72LC
-         zAuczp5s0sCn7lGC2EAfECUu9Vg8jgXASJq4rcupVjOfU1MbgJGKjD1dVCTCkpurTbTe
-         Qk4w==
+        d=gmail.com; s=20230601; t=1731062011; x=1731666811; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=say4a8HZSCpRMrLiH7BqEglV9Ia5G13yVfGZKq/ufis=;
+        b=IWDScEZ6SYYIxfBcy6tq1IYmdQWz9CSCjRC+6Y8SD+1MaEmOrCxtX2ZMHJQ/Fpwh25
+         PtCNPc/XSbrdnQwlIEtkLTAqFURnZOlbf/JWkfWyRXKIu6FpUTb4Tn69LSoHryGDJ4fm
+         v/ZSL0b9dEiq7YZran7em7p8s8uMec/Jj4s60VFcW3K0faStTYYfM7qnAWsZHEdXyy1O
+         nIMVRvFQ5xLfIinN/aWskMcpg62AihNrn2cMEMAthS4KZKDA2+Mdd/Me0Oqc7+1c6m0p
+         Wf1u+7iHWBMzdHKG2r7vDPeLsm7Pwu5nawUSLNH01Q6uUEiDSc8fmWhv/YKMpOG0f9eR
+         9+fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731059798; x=1731664598;
-        h=references:in-reply-to:cc:to:subject:from:message-id:date
+        d=1e100.net; s=20230601; t=1731062011; x=1731666811;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aAr6sgwxPDvgR7Ievvwf3Fx3Iaha2fuCw5YJazZVzW8=;
-        b=rbGRTBVBJNhEdmh+TGKtXhmoLkwE2bwJy45xx01Bmla0NRHX01aIi+/we1d0Tj91Dz
-         MhzrX3jnkMnn8y+RQ2rBBnpixPmX1Ij03xY+d7nkvphQ7X9Hw6buHgAvGVTT46KOpAMx
-         f6xiYjM0xvnp/MJ6zHFJvh3Dubo2vXlzIu9Aq8/AixtsLt66yUqEwCPljR4EYTsBu3Uv
-         RaLLVdU+UhfZYnk8RAwn6/LyDcSA2DesFaoHl4r2vXQY0jzot1sfU1qP5oLLE02S1NeZ
-         7TNXYwxHDIGGf3zxlfAX/Sjdq3ZoOkrAyAls8fFHhpWF4oLELl/UeDvGpDb8QOLm6Ix1
-         UNsw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2cOUY+MQ5yhyuYFRm53SbyxxQGRLm3B8MeScP9hWHGW6F3ISLSlbmlUFsM1lPg9o5j51WKHan2X//gFhI@vger.kernel.org, AJvYcCW+Ih9QUS8nIa1gI37r8c48zCqrNrTzYCf0CSD2D93UGkXTxxLkF5KNkQSfjIw5kMRPlc8J+gBslC4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyESSkLgR4WdFCk/bQaN3t0AIcXFqB7oPBBqMCT0nACqYI2vAp4
-	fRwPBz8CVAw4Tatl5FYoxOTCB+k9pqTkHk1A8owypIqGhexzz4Lv
-X-Google-Smtp-Source: AGHT+IGoDRHZCbSpROoPOD3gnGRQWfsnf1DfpZ5BkN1VKMg3Ug8FJSJ5FYWfqj5MZ0fcRSw+0nzdcA==
-X-Received: by 2002:a5d:59a7:0:b0:37d:3301:9891 with SMTP id ffacd0b85a97d-381f1866eefmr1537614f8f.17.1731059797799;
-        Fri, 08 Nov 2024 01:56:37 -0800 (PST)
-Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381eda07097sm4062228f8f.106.2024.11.08.01.56.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2024 01:56:37 -0800 (PST)
-Date: Fri, 08 Nov 2024 10:56:36 +0100
-Message-ID: <6069300280c17c4568bf4e3bcc826797@gmail.com>
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Subject: Re: [PATCH v8] iio: adc: pac1921: Add ACPI support to Microchip
- pac1921
-To: Andy Shevchenko <andy.shevchenko@gmail.com>, victor.duicu@microchip.com
-Cc: jic23@kernel.org, lars@metafoo.de, marius.cristea@microchip.com,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <CAHp75Vd924pNBKkoWNse5Bjazrp9+HuqBJ5nj2tdk6vngaOiJg@mail.gmail.com>
-References: <20241108085012.13147-1-victor.duicu@microchip.com>
-	<CAHp75Vd924pNBKkoWNse5Bjazrp9+HuqBJ5nj2tdk6vngaOiJg@mail.gmail.com>
+        bh=say4a8HZSCpRMrLiH7BqEglV9Ia5G13yVfGZKq/ufis=;
+        b=AWO1bt0lSqNol/9aRkB+mKVUWcapYlLE1eH03nmK5kDXSsY7KdLHr9QqImqby+0H+y
+         1mYJ8651JgL9CgOIr8WobYrKdLirmOemsw40aFWxb3Z4HMcNzyKEUOsSlXCcXqB8xHuc
+         MFeMEQCW6du2QeCF/MZbUvS1DcC2wxBDOVEaHpNOIer3tKbxAL3S9hy0snETknOReJdJ
+         GKYLRvUpuzQkQmuxmGgfFND5Un9aiJAlhdziZvCcexYMhr9oUMu13uf9gKKPXHDWCtAI
+         WQF+vFCQWmaOFBQym2tToWjffviGy/O2igoy4YYMzQxos47T6yQs9gGJNasq3QgrYDuC
+         GDMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmR/NV0HicH9DP6qp+l3Rmnm6xqKWMt04ym5yhnQDk9SsNdVlmfj8ry6mA4Kh7bYDnZGkOnEbJwHM=@vger.kernel.org, AJvYcCXlUNPjxca2lU8NevuLvhK1lYSo5OdtHYPnCpsAafmqc0VpXuBerVKnKJDLD4dYXu6FvwEn+pMWSaqWn70b@vger.kernel.org
+X-Gm-Message-State: AOJu0YyW86l+hDgr80Kavvk9nzUw+expzsnE6oTyZEIvuZV+7MblAexc
+	JQM/McXAY2QupvGUNFhH8uL+nZcTFh9SXvRmrgKAAouysmAZsFIedTCgEw==
+X-Google-Smtp-Source: AGHT+IH6SbnJDhnOo+P4X7t5LTjB6WoMVghmVCUWwRJfZp0LeUW2NZpfgNYdyUiXXfnc7FGQqqThMQ==
+X-Received: by 2002:a05:6402:268e:b0:5c9:76b6:d14e with SMTP id 4fb4d7f45d1cf-5cf0a31f545mr1881877a12.16.1731062010505;
+        Fri, 08 Nov 2024 02:33:30 -0800 (PST)
+Received: from [10.10.40.97] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03b7f2b8sm1823499a12.32.2024.11.08.02.33.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 Nov 2024 02:33:28 -0800 (PST)
+Message-ID: <17464711-bdc2-46c9-a216-93851112abbb@gmail.com>
+Date: Fri, 8 Nov 2024 11:33:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: light: veml6030: add support for triggered buffer
+To: kernel test robot <lkp@intel.com>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241107-veml6030_triggered_buffer-v1-1-4810ab86cc56@gmail.com>
+ <202411081703.Ft0YjqcK-lkp@intel.com>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <202411081703.Ft0YjqcK-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 8 Nov 2024 11:23:18 +0200, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> On Fri, Nov 8, 2024 at 10:52 AM <victor.duicu@microchip.com> wrote:
-> >
-> > From: Victor Duicu <victor.duicu@microchip.com>
-> >
-
-...
-
-> > +static inline bool pac1921_shunt_is_valid(u32 shunt_val)
-> > +{
-> > +       return shunt_val > 0 && shunt_val <= INT_MAX;
-> > +}
+On 08/11/2024 10:41, kernel test robot wrote:
+> Hi Javier,
 > 
-> This basically is the (shunt_val - 1) & BIT(31) which can be used
-> inline in the caller. Hence, drop this function and use the check
-> inline. See also below.
+> kernel test robot noticed the following build warnings:
 > 
+> [auto build test WARNING on c9f8285ec18c08fae0de08835eb8e5953339e664]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Javier-Carrasco/iio-light-veml6030-add-support-for-triggered-buffer/20241108-042332
+> base:   c9f8285ec18c08fae0de08835eb8e5953339e664
+> patch link:    https://lore.kernel.org/r/20241107-veml6030_triggered_buffer-v1-1-4810ab86cc56%40gmail.com
+> patch subject: [PATCH] iio: light: veml6030: add support for triggered buffer
+> config: i386-randconfig-062-20241108 (https://download.01.org/0day-ci/archive/20241108/202411081703.Ft0YjqcK-lkp@intel.com/config)
+> compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411081703.Ft0YjqcK-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202411081703.Ft0YjqcK-lkp@intel.com/
+> 
+> sparse warnings: (new ones prefixed by >>)
+>>> drivers/iio/light/veml6030.c:958:39: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __le16 @@     got int [addressable] reg @@
+>    drivers/iio/light/veml6030.c:958:39: sparse:     expected restricted __le16
+>    drivers/iio/light/veml6030.c:958:39: sparse:     got int [addressable] reg
+> 
+> vim +958 drivers/iio/light/veml6030.c
+> 
+>    944	
+>    945	static irqreturn_t veml6030_trigger_handler(int irq, void *p)
+>    946	{
+>    947		struct iio_poll_func *pf = p;
+>    948		struct iio_dev *iio = pf->indio_dev;
+>    949		struct veml6030_data *data = iio_priv(iio);
+>    950		int i, ret, reg;
+>    951		int j = 0;
+>    952	
+>    953		iio_for_each_active_channel(iio, i) {
+>    954			ret = regmap_read(data->regmap, VEML6030_REG_DATA(i), &reg);
+>    955			if (ret)
+>    956				goto done;
+>    957	
+>  > 958			data->scan.chans[j++] = reg;
 
-I think the current comparison check is more clear. Also my suggestion
-to move the check in a seperate function was to keep it consistent in
-different places since such check can change in future and one might
-change it only in one place, as it was happening during the first
-iterations of this series. However I am fine to remove the function and
-move the check back inline in the caller as the check is now only in two
-places and it shouldn't be a big deal.
+chans is currently declared as __le16 chans[2], but it should be u16
+chans[2], as regmap already handles the endianness.
 
-...
+Then the direct assignment does not raise any warnings. When at it, I
+will define reg as unsigned int.
 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+>    959		}
+>    960	
+>    961		iio_push_to_buffers_with_timestamp(iio, &data->scan, pf->timestamp);
+>    962	
+>    963	done:
+>    964		iio_trigger_notify_done(iio->trig);
+>    965	
+>    966		return IRQ_HANDLED;
+>    967	}
+>    968	
+> 
 
 Best regards,
-Matteo Martelli
+Javier Carrasco
 

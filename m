@@ -1,132 +1,120 @@
-Return-Path: <linux-iio+bounces-12043-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12044-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08939C2463
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 18:58:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C479C2496
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 19:04:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C1631C20CA0
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 17:58:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A47F91C281CE
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 18:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEF221CFBC;
-	Fri,  8 Nov 2024 17:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQlw8ioA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929151917F4;
+	Fri,  8 Nov 2024 18:02:50 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EEA21CFA7;
-	Fri,  8 Nov 2024 17:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE213233D61;
+	Fri,  8 Nov 2024 18:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731088085; cv=none; b=mXDgKHDMjyUqbtb+zw4CAOG9IHw8NkIy2s7F/nCxdHQNadye+kTDVAw9OE2m2UZjdB9m/doY+ENWB2c+nUVBb5bDzOHeVsr7y4smw9FQRrggohZCYUNdUNbb/dTu9IcZ0EhS6YO4rFvE08iFXF0o7JzfRrnqoJG5nxvUgLooZKc=
+	t=1731088970; cv=none; b=EaxtYnmq5g/rK87QAD+3lylHZ+PttqMRkoITp8fPchXQsLbjLWn1ZOyBSDFRIMahxFv95tJR4OvSspZEgetzP1oNKERVaf048eRwvkejaV//No0ttpv1F6RMXTm1dy9AkdSQ7mVrIbNnfacFw9Dr1BnQsGo5EyVF9zJQOKxrshU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731088085; c=relaxed/simple;
-	bh=1aUgru2o3+ohxnEw3ic1aU0QZvsJMvqqwbA9o6Tjhco=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fzUlMov7IsfhKnGJiBXxG17QDKRpTNe2FYM5FRuHLm/71k8EXGCm/IItxzZxWOWpraMM+FIwh2Vjoj54aeqVgZ81Z5caSsu47ICjPksfBzyxGTe/wMq8yd+09krCaxYYQUznDERrvF2vwnjpVOZjPPWRKvv0mvHXpVcyolXQqNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQlw8ioA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B6BC4CECF;
-	Fri,  8 Nov 2024 17:48:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731088085;
-	bh=1aUgru2o3+ohxnEw3ic1aU0QZvsJMvqqwbA9o6Tjhco=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oQlw8ioAsLCZR6EGz/lj/mKtMcg0xuyBdUiP8Gt2ouPpGWJmc+4eZB3115pN/YO6d
-	 JwZErhkqXOhlI2yZfsMLSWPqXNjdOqA3bBruP7vihKmqQs+Mbt+o3thgLahp/nX4Ay
-	 sxLjzvtwI2jQDrB2TpRwIuy8tkiOrYJTMuerD+DxJQssWlr87HbaqI1FrsrJi+iP8D
-	 CYq2MEpR6qjH+E92NwbJhYcZDcTot/o0Z1Ye1EuZmCBVXmSZPBhOC89D/321DrB/9Q
-	 bbBZ3VkC6+KxlUaeUKL6sXdxRUIvuZwrEKap5gUsAUDzM21g0s/q/NwRKIfIcHnvOn
-	 vpC98j+VSXRmw==
-Date: Fri, 8 Nov 2024 17:47:59 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/3] dt-bindings: trivial-devices: Add NXP P3T1085UK
- I3C/I2C temperature sensor
-Message-ID: <20241108-deuce-skimpily-a1d2149edd64@spud>
-References: <20241107-p3t1085-v1-0-9a76cb85673f@nxp.com>
- <20241107-p3t1085-v1-1-9a76cb85673f@nxp.com>
- <20241108084547.dzmxgdwllwvbiw5n@pengutronix.de>
+	s=arc-20240116; t=1731088970; c=relaxed/simple;
+	bh=9/hFmSn3anL6QFSvv6Vt7Qx8CSCybfea/bPR0zRVthc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W09TKke/JWF3+EOYu4gOEKfO/rIH17acxG3C1MWXXY0Tsw82Dou1jgL2V7qJcFGTNJh9fYBx4pUovY6b9S2VvdIzbv9ohmkQSYmoioDboR+gC14egpgnpN2R4GKXfHaksQwB0n3geadjR8rJ/ZgUjzHNLd6xh0o7bCW+VFtQ4CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XlRY32V00z6K7HF;
+	Sat,  9 Nov 2024 01:59:51 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id AA1A91400CA;
+	Sat,  9 Nov 2024 02:02:45 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 8 Nov
+ 2024 19:02:45 +0100
+Date: Fri, 8 Nov 2024 18:02:43 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+CC: <megi@xff.cz>, Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+	<lars@metafoo.de>, <linux-iio@vger.kernel.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, <hpa@zytor.com>, "Peter
+ Zijlstra" <peterz@infradead.org>, <linux-kernel@vger.kernel.org>, "Stephen
+ Rothwell" <sfr@canb.auug.org.au>, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iio: magnetometer: fix if () scoped_guard() formatting
+Message-ID: <20241108180243.00000c27@huawei.com>
+In-Reply-To: <20241108154258.21411-1-przemyslaw.kitszel@intel.com>
+References: <20241108154258.21411-1-przemyslaw.kitszel@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="7nHnTVEESqYlNb9S"
-Content-Disposition: inline
-In-Reply-To: <20241108084547.dzmxgdwllwvbiw5n@pengutronix.de>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
+On Fri,  8 Nov 2024 16:41:27 +0100
+Przemek Kitszel <przemyslaw.kitszel@intel.com> wrote:
 
---7nHnTVEESqYlNb9S
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> From: Stephen Rothwell <sfr@canb.auug.org.au>
+> 
+> Add mising braces after an if condition that contains scoped_guard().
+> 
+> This style is both preferred and necessary here, to fix warning after
+> scoped_guard() change in commit fcc22ac5baf0 ("cleanup: Adjust
+> scoped_guard() macros to avoid potential warning") to have if-else inside
+> of the macro. Current (no braces) use in af8133j_set_scale() yields
+> the following warnings:
+> af8133j.c:315:12: warning: suggest explicit braces to avoid ambiguous 'else' [-Wdangling-else]
+> af8133j.c:316:3: warning: add explicit braces to avoid dangling else [-Wdangling-else]
+> 
+> Fixes: fcc22ac5baf0 ("cleanup: Adjust scoped_guard() macros to avoid potential warning")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202409270848.tTpyEAR7-lkp@intel.com/
+> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> ---
+> I have forgot to add this patch prior to the cited Fixes: commit,
+> so Stephen Rothwell had to reinvent it, in order to fix linux-next.
+> original posting by Stephen Rothwell:
+> https://lore.kernel.org/lkml/20241028165336.7b46ce25@canb.auug.org.au/
+> ---
+>  drivers/iio/magnetometer/af8133j.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/magnetometer/af8133j.c b/drivers/iio/magnetometer/af8133j.c
+> index d81d89af6283..acd291f3e792 100644
+> --- a/drivers/iio/magnetometer/af8133j.c
+> +++ b/drivers/iio/magnetometer/af8133j.c
+> @@ -312,10 +312,11 @@ static int af8133j_set_scale(struct af8133j_data *data,
+>  	 * When suspended, just store the new range to data->range to be
+>  	 * applied later during power up.
+>  	 */
+> -	if (!pm_runtime_status_suspended(dev))
+> +	if (!pm_runtime_status_suspended(dev)) {
 
-On Fri, Nov 08, 2024 at 09:45:47AM +0100, Marco Felsch wrote:
-> On 24-11-07, Frank Li wrote:
-> > P3T1085UK is a temperature-to-digital converter with a -40 =B0C to +125=
- =B0C
-> > range. The device can be communicated by a controller via the 2-wire se=
-rial
-> > I3C (up to 12.5 MHz) and I2C (up to 3.4 MHz) interface.
-> >=20
-> > Add it to trivial-devices.yaml because only one 'reg' and 'interrupts'
-> > needs.
-> >=20
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/D=
-ocumentation/devicetree/bindings/trivial-devices.yaml
-> > index 6ecd6432b021b..361943b3d73bc 100644
-> > --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> > +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> > @@ -301,6 +301,8 @@ properties:
-> >            - national,lm92
-> >              # Nuvoton Temperature Sensor
-> >            - nuvoton,w83773g
-> > +            # NXP I2C/I3C Temperature Sensor (-40 =B0C to +125 =B0C)
-> > +          - nxp,p3t1085
->=20
-> The description of this binding says:
->=20
-> "This is a list of trivial I2C and SPI devices ..."
->=20
-> but you add a I2C and I3C device.
->=20
-> Also I really like to see that you add a "power-supply" property which
-> is most the time missing for such simple devices but always required.
+I thought I replied to say don't do it this way. Ah well probably went astray
+as I was having some email issues yesterday.
 
-Aye, the done thing in iio land is to make the supplies required too.
+		guard(mutex)(&data->mutex);
+		ret = regmap_write...
 
---7nHnTVEESqYlNb9S
-Content-Type: application/pgp-signature; name="signature.asc"
+>  		scoped_guard(mutex, &data->mutex)
+>  			ret = regmap_write(data->regmap,
+>  					   AF8133J_REG_RANGE, range);
+> +	}
+>  
+>  	pm_runtime_enable(dev);
+>  
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZy5OzwAKCRB4tDGHoIJi
-0jokAP9Dkn068XT6Vudin7/GU6TzC36mN4490js3el82D0oMagD+PARCNk+APpU1
-AkdWfs0ES1SrzM+YIhQFAXt20uDgCwQ=
-=3YSF
------END PGP SIGNATURE-----
-
---7nHnTVEESqYlNb9S--
 

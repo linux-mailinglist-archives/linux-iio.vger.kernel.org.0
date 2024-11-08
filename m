@@ -1,141 +1,118 @@
-Return-Path: <linux-iio+bounces-12022-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12023-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A283A9C1960
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 10:42:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF939C1990
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 10:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5949D1F21676
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 09:42:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9633E1F24237
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 09:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC661E104F;
-	Fri,  8 Nov 2024 09:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD141E1C02;
+	Fri,  8 Nov 2024 09:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P9h5eJY+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mKn1UdaM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B0719259F;
-	Fri,  8 Nov 2024 09:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEDD1E0E10;
+	Fri,  8 Nov 2024 09:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731058922; cv=none; b=nuPOEmEwsm5+ZYuSHwmcbotanula3fGYKuzQb+CcX3NSD6UjdjtoPzugXgPMJ/4cdiTFIgGVw3tWKTxdtxJH+1IAo7fYzL7u2cir4/sdDi9Ov/ed8G12lVFwslvD6/mZHBVELVUqczJOltd8vGZLk/Ho30TuLUwr05S9OPfsw4c=
+	t=1731059801; cv=none; b=fWVG3CxOF920pnya6GefYlqrNB+J7lVdR1dm50xz4SFgss5JRyamzlHoPZQK8+EoaCzxXoTXHyBk2h0/AHFc4cmUGad3ycH/XjQIcXJu/hD3h41iSm79/txZBjpFm5s0gyVmR5W4TFgwxEgwAYsnCvTJsvweKVwu2lBbr7RrRHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731058922; c=relaxed/simple;
-	bh=nKtPPXEpNUH5k10o5RiNH9EMeDmQXlCLSScB7FkiAHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VvrTfcNIo54CnWp2oWcz+M6LD0XgdP7VscM33d7D/fHNL3+Gw04DwyD+cC7Lg1+RGMUfTTXYmRU55lQvWqsCn8HUcK5pu1uLy77SOYgf5ttzZstgvdfkZp43uSCGUiS1NFPO2QgGgtnsPaPUcMoXJj1dxeYg+u5auKWnm+2qIK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P9h5eJY+; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731058920; x=1762594920;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nKtPPXEpNUH5k10o5RiNH9EMeDmQXlCLSScB7FkiAHk=;
-  b=P9h5eJY+aODno/f8FxfvmrCb/9Hy36Q1i3Z+OKZus5FcHcXN3nIA0Zk9
-   iLr3d7eKeFlem5I2mykfRXjQjkaH1OFVKVsoWMc4LS0jRozNtTiYWoMXv
-   rrMw3QgvClpB56Oe+Z50tDkbKnKckBQwdk+Tqt+LZct7Zh6Qhvb2hZw1y
-   OWajkiw2wYqanKQFWBHgmBFJO7E6bQDqWYOHDmHon70UUTzTv4v4ylj4A
-   Wq4dVafsCz4En9h78jtnWRJVktgA6HfRXY8Af3CH8hUp1IknwDkYKYHJA
-   5PUqKhm5ar2qzdBs2SqH/01rolM+mVdsEMpIYeIkwZu70XS5E4g5Ut+cZ
-   A==;
-X-CSE-ConnectionGUID: NIVUQYdcTyONPpR00QPn9g==
-X-CSE-MsgGUID: hRIun5PVTCegqeSj9ESFNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="41544582"
-X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="41544582"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 01:41:59 -0800
-X-CSE-ConnectionGUID: 089upF2OTkK+V+4iykwmiQ==
-X-CSE-MsgGUID: jnIgSbSUSxa9l979yxDy5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="90014552"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 08 Nov 2024 01:41:57 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t9LV5-000rGx-2v;
-	Fri, 08 Nov 2024 09:41:55 +0000
-Date: Fri, 8 Nov 2024 17:41:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: Re: [PATCH] iio: light: veml6030: add support for triggered buffer
-Message-ID: <202411081703.Ft0YjqcK-lkp@intel.com>
-References: <20241107-veml6030_triggered_buffer-v1-1-4810ab86cc56@gmail.com>
+	s=arc-20240116; t=1731059801; c=relaxed/simple;
+	bh=hYaMho2xmCZaKDNeS5BXAfI2dUcDW/vxWs5iXQ0WFAE=;
+	h=Date:Message-ID:From:Subject:To:Cc:In-Reply-To:References; b=BVSs5BEmpfhaRh1uXYREBRZPMXL1EHmNs+Nx42OnOBmnxQWl2EF/LFX8L/xm/fj1Pv86fyqtWkFh9oKQWp7cqqcmjBqX+YojTF+mtGosc3Ajc+0KKIRRUo8r7zJkiInqaGRiIn1ZEMu3ZgH4OrujS4pmFyh+htOp4c0Bgi8ozFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mKn1UdaM; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-37d6a2aa748so1168088f8f.1;
+        Fri, 08 Nov 2024 01:56:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731059798; x=1731664598; darn=vger.kernel.org;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aAr6sgwxPDvgR7Ievvwf3Fx3Iaha2fuCw5YJazZVzW8=;
+        b=mKn1UdaMxVYA+LeBiI4Yby1Sm+COMtiim+d6ICoRaQfqVdHxPs6IT58YvJa5ClLm4s
+         NxVEkXADrKsIkg+Gu0lHiOynoREsgBhyhhlaBQ49CLq+SjPw/I9Htl/2lYeLYuhu3jhh
+         D/843gyeUikprzPsvLZrpsz2pXQmE/BftH7oMC0iRSQg/CFac6ZgSL1QL3VlwRHg9Eck
+         Qu70/4Q92/dEOg9A5Es3R1JsgGtspWPh+7x86sd/s+JyhmNA1BTtyKt52EdD5LYR72LC
+         zAuczp5s0sCn7lGC2EAfECUu9Vg8jgXASJq4rcupVjOfU1MbgJGKjD1dVCTCkpurTbTe
+         Qk4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731059798; x=1731664598;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aAr6sgwxPDvgR7Ievvwf3Fx3Iaha2fuCw5YJazZVzW8=;
+        b=rbGRTBVBJNhEdmh+TGKtXhmoLkwE2bwJy45xx01Bmla0NRHX01aIi+/we1d0Tj91Dz
+         MhzrX3jnkMnn8y+RQ2rBBnpixPmX1Ij03xY+d7nkvphQ7X9Hw6buHgAvGVTT46KOpAMx
+         f6xiYjM0xvnp/MJ6zHFJvh3Dubo2vXlzIu9Aq8/AixtsLt66yUqEwCPljR4EYTsBu3Uv
+         RaLLVdU+UhfZYnk8RAwn6/LyDcSA2DesFaoHl4r2vXQY0jzot1sfU1qP5oLLE02S1NeZ
+         7TNXYwxHDIGGf3zxlfAX/Sjdq3ZoOkrAyAls8fFHhpWF4oLELl/UeDvGpDb8QOLm6Ix1
+         UNsw==
+X-Forwarded-Encrypted: i=1; AJvYcCU2cOUY+MQ5yhyuYFRm53SbyxxQGRLm3B8MeScP9hWHGW6F3ISLSlbmlUFsM1lPg9o5j51WKHan2X//gFhI@vger.kernel.org, AJvYcCW+Ih9QUS8nIa1gI37r8c48zCqrNrTzYCf0CSD2D93UGkXTxxLkF5KNkQSfjIw5kMRPlc8J+gBslC4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyESSkLgR4WdFCk/bQaN3t0AIcXFqB7oPBBqMCT0nACqYI2vAp4
+	fRwPBz8CVAw4Tatl5FYoxOTCB+k9pqTkHk1A8owypIqGhexzz4Lv
+X-Google-Smtp-Source: AGHT+IGoDRHZCbSpROoPOD3gnGRQWfsnf1DfpZ5BkN1VKMg3Ug8FJSJ5FYWfqj5MZ0fcRSw+0nzdcA==
+X-Received: by 2002:a5d:59a7:0:b0:37d:3301:9891 with SMTP id ffacd0b85a97d-381f1866eefmr1537614f8f.17.1731059797799;
+        Fri, 08 Nov 2024 01:56:37 -0800 (PST)
+Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381eda07097sm4062228f8f.106.2024.11.08.01.56.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 01:56:37 -0800 (PST)
+Date: Fri, 08 Nov 2024 10:56:36 +0100
+Message-ID: <6069300280c17c4568bf4e3bcc826797@gmail.com>
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Subject: Re: [PATCH v8] iio: adc: pac1921: Add ACPI support to Microchip
+ pac1921
+To: Andy Shevchenko <andy.shevchenko@gmail.com>, victor.duicu@microchip.com
+Cc: jic23@kernel.org, lars@metafoo.de, marius.cristea@microchip.com,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <CAHp75Vd924pNBKkoWNse5Bjazrp9+HuqBJ5nj2tdk6vngaOiJg@mail.gmail.com>
+References: <20241108085012.13147-1-victor.duicu@microchip.com>
+	<CAHp75Vd924pNBKkoWNse5Bjazrp9+HuqBJ5nj2tdk6vngaOiJg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241107-veml6030_triggered_buffer-v1-1-4810ab86cc56@gmail.com>
 
-Hi Javier,
+On Fri, 8 Nov 2024 11:23:18 +0200, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> On Fri, Nov 8, 2024 at 10:52 AM <victor.duicu@microchip.com> wrote:
+> >
+> > From: Victor Duicu <victor.duicu@microchip.com>
+> >
 
-kernel test robot noticed the following build warnings:
+...
 
-[auto build test WARNING on c9f8285ec18c08fae0de08835eb8e5953339e664]
+> > +static inline bool pac1921_shunt_is_valid(u32 shunt_val)
+> > +{
+> > +       return shunt_val > 0 && shunt_val <= INT_MAX;
+> > +}
+> 
+> This basically is the (shunt_val - 1) & BIT(31) which can be used
+> inline in the caller. Hence, drop this function and use the check
+> inline. See also below.
+> 
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Javier-Carrasco/iio-light-veml6030-add-support-for-triggered-buffer/20241108-042332
-base:   c9f8285ec18c08fae0de08835eb8e5953339e664
-patch link:    https://lore.kernel.org/r/20241107-veml6030_triggered_buffer-v1-1-4810ab86cc56%40gmail.com
-patch subject: [PATCH] iio: light: veml6030: add support for triggered buffer
-config: i386-randconfig-062-20241108 (https://download.01.org/0day-ci/archive/20241108/202411081703.Ft0YjqcK-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411081703.Ft0YjqcK-lkp@intel.com/reproduce)
+I think the current comparison check is more clear. Also my suggestion
+to move the check in a seperate function was to keep it consistent in
+different places since such check can change in future and one might
+change it only in one place, as it was happening during the first
+iterations of this series. However I am fine to remove the function and
+move the check back inline in the caller as the check is now only in two
+places and it shouldn't be a big deal.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411081703.Ft0YjqcK-lkp@intel.com/
+...
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/light/veml6030.c:958:39: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __le16 @@     got int [addressable] reg @@
-   drivers/iio/light/veml6030.c:958:39: sparse:     expected restricted __le16
-   drivers/iio/light/veml6030.c:958:39: sparse:     got int [addressable] reg
+> -- 
+> With Best Regards,
+> Andy Shevchenko
 
-vim +958 drivers/iio/light/veml6030.c
-
-   944	
-   945	static irqreturn_t veml6030_trigger_handler(int irq, void *p)
-   946	{
-   947		struct iio_poll_func *pf = p;
-   948		struct iio_dev *iio = pf->indio_dev;
-   949		struct veml6030_data *data = iio_priv(iio);
-   950		int i, ret, reg;
-   951		int j = 0;
-   952	
-   953		iio_for_each_active_channel(iio, i) {
-   954			ret = regmap_read(data->regmap, VEML6030_REG_DATA(i), &reg);
-   955			if (ret)
-   956				goto done;
-   957	
- > 958			data->scan.chans[j++] = reg;
-   959		}
-   960	
-   961		iio_push_to_buffers_with_timestamp(iio, &data->scan, pf->timestamp);
-   962	
-   963	done:
-   964		iio_trigger_notify_done(iio->trig);
-   965	
-   966		return IRQ_HANDLED;
-   967	}
-   968	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,
+Matteo Martelli
 

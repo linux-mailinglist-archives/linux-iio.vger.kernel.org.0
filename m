@@ -1,122 +1,125 @@
-Return-Path: <linux-iio+bounces-12036-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12037-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A69E9C1E2B
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 14:34:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B0C9C205C
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 16:29:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D9732897EB
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 13:34:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 781681C226CE
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 15:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7549E1EBFFB;
-	Fri,  8 Nov 2024 13:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d6W+T92d"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99793206E93;
+	Fri,  8 Nov 2024 15:29:04 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8531EBA00;
-	Fri,  8 Nov 2024 13:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A77D205145;
+	Fri,  8 Nov 2024 15:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731072834; cv=none; b=Wcz4qZbcY8JiGbSenuz6YvHT4LplEXDga9GL+3th+s0oI0D0sEjhrZHqrHN0EV7E8Eujd+G+GWNohxCFZDFh5c3qi3VNpSxusweGKUxEL/ZdfswCYwnFUIZgZBcNtxHtvcMRxntW/h1BaO2FOIq7ZzPYTQwNRUzxTguwP9n0Ql0=
+	t=1731079744; cv=none; b=HyGVI6clEBbsFe8immM6HW+xib5hkYSoCZ/XBCDCV1btyzzeNaMdUoR01JFpWV9k6hYaKcYLONCqO9LVC70U2ePFI5MpBebZBkaum8gDI0gv5+WBzLjSzta+LXcvrtjG3CXTKcKKtK6vPoyGOz0Luotg1W3MywF0Ba6qnksHPxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731072834; c=relaxed/simple;
-	bh=JAEOKGBin/BjpP+sOkUXewDZtBs7MLiDqJdiwY11fIA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PWEs6LQEl425tzXM5/hb6cgYrji3eErE2l1go/bF+Bg3DlpuPQqlHs1LOSxBKblLD506nG12DEzcwlLEnBYiv022hj9kNmcs+uO+k81g5oIfMqIfqkQqKxk0VMZqjWcHT55GMb3N/ZO10yMjTB1i8ua4995OSkSFtdzzTQO74Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d6W+T92d; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a9ed0ec0e92so276036366b.0;
-        Fri, 08 Nov 2024 05:33:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731072831; x=1731677631; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MAwIxYg8+dnr1jOWQr9wFbOWatGyVStyXLICiB+s1To=;
-        b=d6W+T92d1xqdDwuTYQugsVZSk5POPM+IO0LvAV7yNP1j6ZeJ2+e36hHG2Lce7G1jBh
-         3JXfzZf0f/CssQeUz2vypPatkQNz9EcvEI2keuECbxGAw+QWk6hH0oRDdIDIgylgxk2U
-         3YtEAe+41STsMh0qDIwJQPeZ9j+Of96rJW1/r15Qq5hVV7FcwadhE07XMvfXwbft1GS6
-         tGxj/FIL08an5Xj+1PDmSxjhEprQA/YqZTtuCF6IDDV5oGHOwj3xwvEvUIrURQhP5be/
-         Qg752cciGmZ2ilFIULKSu8lywDRvsEBOrs9R1DyYV3O7EgbDCunh4Ec8RIl6aBcnfdZZ
-         zqYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731072831; x=1731677631;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MAwIxYg8+dnr1jOWQr9wFbOWatGyVStyXLICiB+s1To=;
-        b=txFG8w0RcqBOquuY9r673I7zpUdPhbilqxdvXNR3G1U54Dq1LAWXM4K9VUUDI0dWlx
-         GLPimbjk9dVkGmAeDIxKKWRjc4gTD15rPQYqJPgfMXzq3LWrhmqZvFUIacblUU+k6LAl
-         xFOIQ4/UsGs+eNt8lheuQkLOh3gUXc4KRLJLVvSrM1mmJmHPsyV2g0zvxdFfHZJosCT7
-         7LObTM2ZKAlGRHmfYywZgSgILspzrDy6hRZt3YaGazJbV4susEhsp3jKtCCdYhb6Tln9
-         T3y6nW9dAejrV4k3HcVtSmgqp+SDNbtyxoDNZDz6o5clEFXx6vVM6+gPvZFTMj36pXsc
-         yXcg==
-X-Forwarded-Encrypted: i=1; AJvYcCVB2MINckkP+S8/e8W1OsbajCU+m3OTaVdtcIyD9sCeStriK4yywMSzW7nZVI6C5eiersYG+5QYU8M=@vger.kernel.org, AJvYcCXPDm9r/ltnddXzS6uzP+nIKZt4RJUo7eoVnu2GqdPVd0xkKS3kiPila1Hx2MuUWyrkC0iTlt1eAkzu6TiW@vger.kernel.org
-X-Gm-Message-State: AOJu0YzopEerHDdUsstq5rM8B0wr5BE5JzOnBYvdgSvcoE7CbW4tjzYN
-	eGFeqdTjbDcf7UtYsBxuefifcid8WejWxttJls2UP2dDomVlUC9b1wORgL5qlXOq4J6spso5D5H
-	AhBAYvu/kyHcbRIsxwVfXOH4IvSQ=
-X-Google-Smtp-Source: AGHT+IEDXgYdDocfjpsZf3BKLs4tZnmRmbMDo7n1mBPdQQRoUfZ+ox6amxEQwJWJd6cxqtVp5JqVPWwVK3nVw9mjuRA=
-X-Received: by 2002:a17:907:9344:b0:a9e:c263:29a7 with SMTP id
- a640c23a62f3a-a9eefeecd74mr234054566b.23.1731072830695; Fri, 08 Nov 2024
- 05:33:50 -0800 (PST)
+	s=arc-20240116; t=1731079744; c=relaxed/simple;
+	bh=C8Akrgaf1ocHN+nK6Q93L1JBKd8GM74wo4hUrqK3hbs=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dFqeFUOue5ub0cVMPOGaGxFC/+AQB9+wm5bEy4n0LtslUnP/aykJnJv8KXrV/lMfTNVZexKbblGiLJspa6p8qgHAMqeJ/tqHrJW1kPK7Tmzo/xnTh6N4tJtAXLNT21xTjdfpWVFyFptZYgvXefYGPjEUNwJjvUhuruRsUXEPxfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XlNBs1hWmz6J7gR;
+	Fri,  8 Nov 2024 23:28:53 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id CBC7B140133;
+	Fri,  8 Nov 2024 23:28:58 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 8 Nov
+ 2024 16:28:57 +0100
+Date: Fri, 8 Nov 2024 15:28:56 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Frank Li <Frank.Li@nxp.com>
+CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-iio@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, Carlos Song <carlos.song@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>, Jean Delvare <jdelvare@suse.com>, Guenter
+ Roeck <linux@roeck-us.net>, <linux-hwmon@vger.kernel.org>
+Subject: Re: [PATCH 0/3] iio: temperature: Add support for P3T1085
+Message-ID: <20241108152856.000042ed@huawei.com>
+In-Reply-To: <20241107-p3t1085-v1-0-9a76cb85673f@nxp.com>
+References: <20241107-p3t1085-v1-0-9a76cb85673f@nxp.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241108085012.13147-1-victor.duicu@microchip.com>
- <CAHp75Vd924pNBKkoWNse5Bjazrp9+HuqBJ5nj2tdk6vngaOiJg@mail.gmail.com> <6069300280c17c4568bf4e3bcc826797@gmail.com>
-In-Reply-To: <6069300280c17c4568bf4e3bcc826797@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 8 Nov 2024 15:33:14 +0200
-Message-ID: <CAHp75VdobsXLQXsopyi1Ms3AHxL=wWZMjfLQjRRNWyhr6Q7q7Q@mail.gmail.com>
-Subject: Re: [PATCH v8] iio: adc: pac1921: Add ACPI support to Microchip pac1921
-To: Matteo Martelli <matteomartelli3@gmail.com>
-Cc: victor.duicu@microchip.com, jic23@kernel.org, lars@metafoo.de, 
-	marius.cristea@microchip.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Fri, Nov 8, 2024 at 11:56=E2=80=AFAM Matteo Martelli
-<matteomartelli3@gmail.com> wrote:
-> On Fri, 8 Nov 2024 11:23:18 +0200, Andy Shevchenko <andy.shevchenko@gmail=
-.com> wrote:
-> > On Fri, Nov 8, 2024 at 10:52=E2=80=AFAM <victor.duicu@microchip.com> wr=
-ote:
+On Thu, 07 Nov 2024 18:02:26 -0500
+Frank Li <Frank.Li@nxp.com> wrote:
 
-...
+> Add basic function support for P3T1085 temperature sensor.
+> - Add binding doc trivial.yaml
+> - Add basic read temperature driver
+Hi Frank,
 
-> > > +static inline bool pac1921_shunt_is_valid(u32 shunt_val)
-> > > +{
-> > > +       return shunt_val > 0 && shunt_val <=3D INT_MAX;
-> > > +}
-> >
-> > This basically is the (shunt_val - 1) & BIT(31) which can be used
-> > inline in the caller. Hence, drop this function and use the check
-> > inline. See also below.
->
-> I think the current comparison check is more clear. Also my suggestion
-> to move the check in a seperate function was to keep it consistent in
-> different places since such check can change in future and one might
-> change it only in one place, as it was happening during the first
-> iterations of this series. However I am fine to remove the function and
-> move the check back inline in the caller as the check is now only in two
-> places and it shouldn't be a big deal.
+For a simple temperature sensor the usual question is why IIO rather
+than hwmon?
 
-Up to you. But then drop the comment (which kinda useless) in the
-caller and add in the callee, i.e. in this helper to explain the range
-of valid values more clearly, ideally with reference to datasheet text
-or so.
+Previous reasons have been:
+- Very high performmance / accuracy part (i.e. expensive)
+- Remote temperature so not typically hw monitoring.
+- Same silicon with a more complex sensor (typically humidity or similar).
 
---=20
-With Best Regards,
-Andy Shevchenko
+Any of those apply?  Or some other reason?
+
++CC hwmon maintainers and list.
+
+Jonathan
+
+> - Update imx93-9x9-qsb.dts
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Carlos Song (1):
+>       iio: temperature: Add support for P3T1085
+> 
+> Frank Li (2):
+>       dt-bindings: trivial-devices: Add NXP P3T1085UK I3C/I2C temperature sensor
+>       arm64: dts: imx93-9x9-qsb: add temp-sensor nxp,p3t1085
+> 
+>  .../devicetree/bindings/trivial-devices.yaml       |  2 +
+>  arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts    |  5 ++
+>  drivers/iio/temperature/Kconfig                    |  1 +
+>  drivers/iio/temperature/Makefile                   |  2 +
+>  drivers/iio/temperature/p3t/Kconfig                | 29 ++++++++
+>  drivers/iio/temperature/p3t/Makefile               |  5 ++
+>  drivers/iio/temperature/p3t/p3t1085.h              | 31 +++++++++
+>  drivers/iio/temperature/p3t/p3t1085_core.c         | 79 ++++++++++++++++++++++
+>  drivers/iio/temperature/p3t/p3t1085_i2c.c          | 68 +++++++++++++++++++
+>  drivers/iio/temperature/p3t/p3t1085_i3c.c          | 59 ++++++++++++++++
+>  10 files changed, 281 insertions(+)
+> ---
+> base-commit: 74741a050b79d31d8d2eeee12c77736596d0a6b2
+> change-id: 20241107-p3t1085-fbd8726cbc0e
+> 
+> Best regards,
+> ---
+> Frank Li <Frank.Li@nxp.com>
+> 
+> 
+
 

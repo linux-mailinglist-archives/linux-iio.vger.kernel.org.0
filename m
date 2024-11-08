@@ -1,145 +1,491 @@
-Return-Path: <linux-iio+bounces-12026-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12027-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E569C1AEE
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 11:43:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B95A79C1BCA
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 12:03:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E1F81C24B0D
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 10:43:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF46E1C20CB5
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Nov 2024 11:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E7E1E32C3;
-	Fri,  8 Nov 2024 10:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDlqH75k"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57A81E1A14;
+	Fri,  8 Nov 2024 11:03:11 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F1F1E284D;
-	Fri,  8 Nov 2024 10:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656F029408
+	for <linux-iio@vger.kernel.org>; Fri,  8 Nov 2024 11:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731062600; cv=none; b=k5AuR4gS5zHmPyrHu0Mer8+7nR8jKtwZS2qIKFLf7Sff3KNWvohpHyx7+ZD6I+z3otGG2GM6U8b8c8hDiS2NaZYhzhX4RDt/lwO2ZbUJvifP/XM69k6mKE/hDQj3a6hkDIyf24G9D5CoiT8V9+hxtJjIg3R/+8RnRv+VUvMgkgc=
+	t=1731063791; cv=none; b=lYE1ZOFIr4ulFGRjQHyBECVrvC+Bzjonai0IxoqmHowxfv4YNCUw8d481T1+k3Wv5dUscpX93vzqRsHYmyr5Iohv5CTAeY127+bJFw0BpQbo91xUyYvIglZFDmnwvOjapgydQ1k7jjjVsfj251SHq5aeBeBkfqHIH+zzxKbSSBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731062600; c=relaxed/simple;
-	bh=X9bvTkvZaRpOZ+CjXCy5vrFFW3EUaXdbLno5dbmYmOA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EoBaz/p/YevjoC2oI4HlfpZdquzDEnW5fi2WaueTYzB5z3AOPvyMKZ7GVIWrq6CMNyM0lYElt7HHBpEVwo3cF+BVbGUIAEbFeH0dNcVTYfLTM/bDxInc6PWRctGpsRaf21M70Q0k9u+3oah8TeCkte45qG9k9iETZ7T5gyc0yvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDlqH75k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5BBC4CECD;
-	Fri,  8 Nov 2024 10:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731062598;
-	bh=X9bvTkvZaRpOZ+CjXCy5vrFFW3EUaXdbLno5dbmYmOA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cDlqH75kGXSacBpSMraZNw4rZ4ndf3+n8yb3whHlArEv5CWWtzmhnsaWM4h+ZYbn5
-	 J46RChmv21hNthvQ32kpsXoAdiwafXwhOExCpwjbwzr3WIP2+Aalk3xpLa8rI4NDdQ
-	 7/M3eU25R9TGol1Y3z/73Nn1blLmYS86jXEJ/6ixMXNY1LjapdUSBHkHr2Z5kRwnx/
-	 gA46kh4luVwto15FHeaQ5R3SGuf5rf4tOSekBcUYgIr+W+X2laDppFfcHOLeOfuefJ
-	 xQV6sQAJbNFwTHz/7lXy7yIyOT2kRKBn9OisNNpKUTssajMskh4sf9XWc4+NCD+6bR
-	 y7iJTEQRx2zbA==
-Message-ID: <f19d96a8-8f67-4aa6-a3c6-f850cbbfb109@kernel.org>
-Date: Fri, 8 Nov 2024 11:43:14 +0100
+	s=arc-20240116; t=1731063791; c=relaxed/simple;
+	bh=JseS7kIWm3BK7q3rP6Qk0MfwoE0Ga+CCxgXbjkVgz1o=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JfFFVav9bUIbBMaNTNzGA4fQBOIMRZBygcTxQ1s+jSf5Gx8VhB4uPpnbDYovfkbYQiZAigYJW5rLQaS90+T6Sv498WrTNOFAq77/8FGBxQmUbQotl+cAkr50yrAEccvMCCm/adgf0ibXYXIrKOyYQnm39AosyFH0ggsLcp8PZLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4XlGGC1HzQz6K5Vq;
+	Fri,  8 Nov 2024 19:01:23 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 02EE5140133;
+	Fri,  8 Nov 2024 19:03:06 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 8 Nov
+ 2024 12:03:05 +0100
+Date: Fri, 8 Nov 2024 11:03:03 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: kernel test robot <lkp@intel.com>
+CC: <oe-kbuild-all@lists.linux.dev>, Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>, <linux-iio@vger.kernel.org>, "Will
+ Deacon" <will@kernel.org>
+Subject: Re: [jic23-iio:togreg 7/7] include/linux/iio/iio.h:788:16: sparse:
+ sparse: incorrect type in return expression (different modifiers)
+Message-ID: <20241108110303.00005bac@huawei.com>
+In-Reply-To: <20241108103830.00005f19@huawei.com>
+References: <202411081329.1XVxvCVQ-lkp@intel.com>
+	<20241108103830.00005f19@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] dt-bindings: iio: adis16480: add devices to
- adis16480
-To: Darius Berghe <darius.berghe@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: jic23@kernel.org
-References: <20241107134517.3089112-1-darius.berghe@analog.com>
- <20241107134517.3089112-4-darius.berghe@analog.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20241107134517.3089112-4-darius.berghe@analog.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On 07/11/2024 14:45, Darius Berghe wrote:
-> Add the adis16486, adis16487 and adis16489 Six Degrees
-> of Freedom Inertial Sensors to the list of compatible devices
-> of the adis16480 iio subsystem driver.
+On Fri, 8 Nov 2024 10:38:30 +0000
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+
+> On Fri, 8 Nov 2024 13:13:17 +0800
+> kernel test robot <lkp@intel.com> wrote:
 > 
-> adis16486 is similar to adis16485, has the exact same channels
-> but acceleration and delta velocity scales are different.
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+> > head:   6415477ba63dea58b5cbf9ddcae75f18f33c71a4
+> > commit: 6415477ba63dea58b5cbf9ddcae75f18f33c71a4 [7/7] iio: Move __private marking before struct element priv in struct iio_dev
+> > config: x86_64-randconfig-122-20241108 (https://download.01.org/0day-ci/archive/20241108/202411081329.1XVxvCVQ-lkp@intel.com/config)
+> > compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411081329.1XVxvCVQ-lkp@intel.com/reproduce)  
 > 
-> adis16487 is fallback compatible with adis16485.
+> This isn't going well and we need to resolve this fast.
+> 
+> I'll have a brief go at figuring out what is tripping sparse
+> up but if not I'll pull the patch for this cycle.
 
-This was never tested - visible easily from the diff. No need to ask
-reviewers to do the tools job. Tools are for that.
+Superficially it seems the macro magic trips up on pointer types.
+I'm not sure if this is a fundamental issue or just a corner case that
+needs some tweaks.
 
-<form letter>
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
+A few ways around this occur.
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
+1) Store the pointer in an uintptr_t
+2) Store offset from the parent structure instead of the pointer.
 
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
+Either is probably to high risk to slip in at this point in the cycle.
+So I'll drop the patch for now.
 
-Please kindly resend and include all necessary To/Cc entries.
-</form letter>
+Jonathan
 
-Best regards,
-Krzysztof
+> 
+> Any suggestions welcome!
+> 
+> Jonathan
+> 
+> > 
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202411081329.1XVxvCVQ-lkp@intel.com/
+> > 
+> > sparse warnings: (new ones prefixed by >>)
+> >    drivers/iio/proximity/srf04.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/srf08.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/rfd77402.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/mb1232.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/sx9360.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/sx9310.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/vl53l0x-i2c.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/irsd200.c: note: in included file (through include/linux/iio/buffer.h):  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/isl29501.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/aw96103.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/sx9500.c: note: in included file:  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/sx_common.c: note: in included file (through include/linux/iio/buffer.h):  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > --
+> >    drivers/iio/proximity/hx9023s.c: note: in included file (through include/linux/iio/buffer.h):  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const  
+> > >> include/linux/iio/iio.h:788:16: sparse: sparse: incorrect type in return expression (different modifiers) @@     expected void * @@     got void [noderef] *const @@    
+> >    include/linux/iio/iio.h:788:16: sparse:     expected void *
+> >    include/linux/iio/iio.h:788:16: sparse:     got void [noderef] *const
+> > 
+> > vim +788 include/linux/iio/iio.h
+> > 
+> > 6f7c8ee585e9db drivers/staging/iio/iio.h Jonathan Cameron   2011-04-15  784  
+> > 6d4ebd565d15f3 include/linux/iio/iio.h   Alexandru Ardelean 2020-06-30  785  /* The information at the returned address is guaranteed to be cacheline aligned */
+> > f8c6f4e9a40d47 drivers/staging/iio/iio.h Jonathan Cameron   2011-10-06  786  static inline void *iio_priv(const struct iio_dev *indio_dev)
+> > 6f7c8ee585e9db drivers/staging/iio/iio.h Jonathan Cameron   2011-04-15  787  {
+> > 9a5a2483bc60c1 include/linux/iio/iio.h   Andy Shevchenko    2024-11-01 @788  	return ACCESS_PRIVATE(indio_dev, priv);
+> > 6f7c8ee585e9db drivers/staging/iio/iio.h Jonathan Cameron   2011-04-15  789  }
+> > 6f7c8ee585e9db drivers/staging/iio/iio.h Jonathan Cameron   2011-04-15  790  
+> > 
+> > :::::: The code at line 788 was first introduced by commit
+> > :::::: 9a5a2483bc60c12d73ac6ca5ac5ab95361a895f4 iio: Mark iio_dev::priv member with __private
+> > 
+> > :::::: TO: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > :::::: CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >   
+> 
+> 
 
 

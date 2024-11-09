@@ -1,296 +1,181 @@
-Return-Path: <linux-iio+bounces-12082-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12083-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B4DB9C2DD6
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 15:44:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D5F9C2DE2
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 15:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A767E1C20D47
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 14:44:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50133282898
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 14:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F352F197A92;
-	Sat,  9 Nov 2024 14:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFB9197A98;
+	Sat,  9 Nov 2024 14:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pbslrb+k"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AIT1FVEc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A501C155322;
-	Sat,  9 Nov 2024 14:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAFC1E4B2;
+	Sat,  9 Nov 2024 14:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731163487; cv=none; b=IyqOkKQzF5QHyUgU9x0iEnz7t/sK1pjEE5Z6RZ6bETUI3cCGivA+/WhUFTiFh+GYOGShb8qeHIvVpJhzKokxV5xy9MgqVPOcObs+vMIENMNDHAmwARrcIKlnMj3dtiv1WapTSfFzFAwdrMVt+0oo8l2+U4GbJAE1ktqgZ+Wz70Y=
+	t=1731164014; cv=none; b=S4gVpTvj/aDx4R18KptllC/kpOZmltou6QNwdNC/TB1pY2O2dojYrjuUmMVQEQ5T5D2aK5/1X56B+fjgcFju2wG2+Q9Zfsk1jxqrgfAnD3SEqhHOBqcBy6s5bSGGJTBbToCuBNlBduQezXuM595Dkx36fBXPJuapJ4jai8ExvKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731163487; c=relaxed/simple;
-	bh=weSm0YjYu27aKnLWXNTkSsfDtVn2MLb2C0lRPRWOg8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R5ahO1vNi3Xi4pEnaGAfuPMdNmljiUI64XcRN6JmtPHaLkRLPjVp9Y+y+clTAgJtI4ItbuPIlYc/r7tkxcG1EGzFeHH6GqJNYXH0g1EVaF2Nay0v1NnMqcTyFZT5eQDnVYKP9/5bsx09TwKbI/Jto/U1uTUAu6eQ6ZKB6vW+I0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pbslrb+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09594C4CED2;
-	Sat,  9 Nov 2024 14:44:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731163487;
-	bh=weSm0YjYu27aKnLWXNTkSsfDtVn2MLb2C0lRPRWOg8c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pbslrb+kTQlwJK6bP7byxrN2O2mB3WGD4Xdy3HCkndKW1I0GjjFyxRUfV/Hr5xDXK
-	 fDm7gwORHdcyDCi1d/LMILegcpWbPzgdGea13R1mLscaaeAgIfD3sV+C/yl/+e7EYr
-	 JkGbvTIWqim9l7OBTwrxWw/X0odnclUysx3Pwz1XitXaDlOSDzHWWUpyeO/gqNoS0Q
-	 zeRXKZbvqC54Xoh3NaqU/M/aJz4oKCdD4C1Be1j1WWQhW40XoFjlhMfrQvncJKlf+y
-	 lIoSd7NUzlUNyO8Nud62OFD0gNBY00PhdjPOqCpVAzYwOCtCk+J2TANGjNLNKL4Vuz
-	 LDeXprXmqu7gQ==
-Date: Sat, 9 Nov 2024 14:44:38 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Per-Daniel Olsson <perdaniel.olsson@axis.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, rickard.andersson@axis.com, kernel@axis.com
-Subject: Re: [PATCH v5 2/2] iio: light: Add support for TI OPT4060 color
- sensor
-Message-ID: <20241109144438.575249df@jic23-huawei>
-In-Reply-To: <202411070820.GxSGRFR6-lkp@intel.com>
-References: <20241106120036.986755-3-perdaniel.olsson@axis.com>
-	<202411070820.GxSGRFR6-lkp@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1731164014; c=relaxed/simple;
+	bh=VJ8ompsICNZ2GHQCxcP7VzkTwKcmU79VWOQb7QIr5no=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uz1k7C0l5z0LlbCmHml233Hv2j307jizAKD18m3sSRMA9L5poLchQKRyTfJkFV7mGWmvogVVqZCBG/s0fSF2obTeZOtqyd0M3WH31c4jSt7nRu2y6Sy5rar33v2vT8Deoga+2IPal0HILN9GuLr8S1U7KoyOeyqclk37CJIYXx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AIT1FVEc; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-207115e3056so31853875ad.2;
+        Sat, 09 Nov 2024 06:53:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731164012; x=1731768812; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=ghbuLAThgkIRMv7v5y1QI1mRj61wYj6v1lVWxgIrotk=;
+        b=AIT1FVEc0vIcd47afY7hX/2FWX0kLMDfSqa4nVBWJLulUGsH9kP2nu9iJENXWyzu/E
+         WuocH0mxd56iDeXP7guxuGzfXbD6GqDdaV3RTlAiRBoDe74+T5cx/aMUNDt9cofIyAu3
+         wd9i0tzYFenaTYs8rwSrNAqZqF5JssOnGf+8qQ9fywvyA6/gUmZEtkGwkMbRgwJJS8Z6
+         TYbEtdsa4UK9QNJr3c3kA3VGhTxZscx11NKBWMAwrZITmWXkuHEiZeHKPsdtv1ObdRzi
+         CQQT1G+W2hdMMpokD/8/8DcB1GJOMrQqqNOtbTZ6Czcf/91sxKm9370coFwAwClY74JC
+         QSdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731164012; x=1731768812;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ghbuLAThgkIRMv7v5y1QI1mRj61wYj6v1lVWxgIrotk=;
+        b=PqCQfusZHFBS6wrvDc5+1uOTXMIn7SzYBgpMjfhr4WP6OUYnV6fPJAf3hgJZRRqS0O
+         qMezBDS9/Bw84YfJefvNGQWeTLwRKRv//7qpS+TQABiKu/CrnjHsroGKKGUiuZsNpgaX
+         Bm3wexZaXjKc6NpdjeU/kfTdyouOfR6Z+FSBtCweXYvXAylzL6QXEBacUjxZ7DPDeEL9
+         GirM3akQxCbYco+kmm06Lbw8lxlLambpxdsjFHk6z8vi+IdtcsSU9xBkx8MeCX5melKq
+         WpkbZz+Rt7Fos2tjypboBtNb3ttnPjqL8WPxNXMuSwpEWJ9h2RyZmIJPO/E+iQZMv+WZ
+         vY1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU7dA0unGgDnxc82T1BJwAd4kTYVch981gJ02SpZwoEmzL9RpRUe+yJIddJCUqYY84bFHdstSLNxzU3GnE=@vger.kernel.org, AJvYcCUag75IE+b7x8N8meKpbvEOheu9j/0xJgvpk1V+swdnLpbeyRXmf5vQDHho35AlIOkwnGAO/xtuWugVaLb4@vger.kernel.org, AJvYcCWDGdlNnhUk/jQcu3anqnHE+wJWxABXpihfiDOu1679rvWfYefp5bpEKiOlqC11nBbaKLOHj8OJ7FbK@vger.kernel.org, AJvYcCWXJXxl2NzqELiSAv3o/8bb7nsiyLSnXBWcNjVDhRRpVkuh+/RZ1eFM+fxYO+6Ua6JgBgme98mVa3rw@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvJ7luks1umXL3Bkyi+QvFHc8BZUXJqkVEHbKGfmfZSQIWKqkf
+	AZK+2+D2RT50w0NbD1nViPKTXHbEcvi1zNdKWTV5nS2iQ5BZj4e7
+X-Google-Smtp-Source: AGHT+IHH537SxY8wFxXvHEldQOX00jSQbhq86kY8P4E7+gzAi230SDoUD4kLOapioickwHuD7+FOwA==
+X-Received: by 2002:a17:902:c40b:b0:20d:2848:2bee with SMTP id d9443c01a7336-21183507aa0mr95841435ad.16.1731164012349;
+        Sat, 09 Nov 2024 06:53:32 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e87544sm46034065ad.283.2024.11.09.06.53.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 Nov 2024 06:53:31 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <014410fc-8a4c-440f-a6eb-1fafccc444a6@roeck-us.net>
+Date: Sat, 9 Nov 2024 06:53:28 -0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] hwmon: tmp108: Add support for I3C device
+To: Jonathan Cameron <jic23@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Jean Delvare <jdelvare@suse.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Krzysztof Kozlowski <krzk@kernel.org>,
+ linux-hwmon@vger.kernel.org
+References: <20241108-p3t1085-v2-0-6a8990a59efd@nxp.com>
+ <20241108-p3t1085-v2-3-6a8990a59efd@nxp.com>
+ <20241109131604.5d8b701a@jic23-huawei>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20241109131604.5d8b701a@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Thu, 7 Nov 2024 08:39:56 +0800
-kernel test robot <lkp@intel.com> wrote:
+On 11/9/24 05:16, Jonathan Cameron wrote:
+> On Fri, 08 Nov 2024 17:26:57 -0500
+> Frank Li <Frank.Li@nxp.com> wrote:
+> 
+>> Add support for I3C device in the tmp108 driver to handle the P3T1085
+>> sensor. Register the I3C device driver to enable I3C functionality for the
+>> sensor.
+>>
+>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>> ---
+>>   drivers/hwmon/tmp108.c | 31 +++++++++++++++++++++++++++++++
+>>   1 file changed, 31 insertions(+)
+>>
+>> diff --git a/drivers/hwmon/tmp108.c b/drivers/hwmon/tmp108.c
+>> index bfbea6349a95f..83d6847cb542c 100644
+>> --- a/drivers/hwmon/tmp108.c
+>> +++ b/drivers/hwmon/tmp108.c
+>> @@ -13,6 +13,8 @@
+>>   #include <linux/mutex.h>
+>>   #include <linux/of.h>
+>>   #include <linux/i2c.h>
+>> +#include <linux/i3c/device.h>
+>> +#include <linux/i3c/master.h>
+> 
+> Seems odd you need master.h in a device driver.
+> I'll guess that's because you should be using i3cdev_to_device()
 
-> Hi Per-Daniel,
-> 
-> kernel test robot noticed the following build errors:
-> 
-> [auto build test ERROR on jic23-iio/togreg]
-> [also build test ERROR on robh/for-next linus/master v6.12-rc6 next-20241106]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Per-Daniel-Olsson/dt-bindings-iio-light-Document-TI-OPT4060-RGBW-sensor/20241106-200407
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-> patch link:    https://lore.kernel.org/r/20241106120036.986755-3-perdaniel.olsson%40axis.com
-> patch subject: [PATCH v5 2/2] iio: light: Add support for TI OPT4060 color sensor
-> config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20241107/202411070820.GxSGRFR6-lkp@intel.com/config)
-> compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241107/202411070820.GxSGRFR6-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202411070820.GxSGRFR6-lkp@intel.com/
+I assume you mean i3cdev_to_dev() ?
 
-As you have probably realized, your series crossed with a change of parameter type.
+Good point, but there are not many examples to draw from. The one
+existing iio driver (st_lsm6dsx) doesn't use it either. I'll send
+a patch shortly to fix that to prevent others from making the same
+mistake.
 
-If there is nothing else to warrant a respin I can fix this up whilst applying.
-
-Jonathan
-
-> 
-> All error/warnings (new ones prefixed by >>):
-> 
->    In file included from drivers/iio/light/opt4060.c:11:
->    In file included from include/linux/i2c.h:19:
->    In file included from include/linux/regulator/consumer.h:35:
->    In file included from include/linux/suspend.h:5:
->    In file included from include/linux/swap.h:9:
->    In file included from include/linux/memcontrol.h:21:
->    In file included from include/linux/mm.h:2213:
->    include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
->      504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
->          |                            ~~~~~~~~~~~~~~~~~~~~~ ^
->      505 |                            item];
->          |                            ~~~~
->    include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
->      511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
->          |                            ~~~~~~~~~~~~~~~~~~~~~ ^
->      512 |                            NR_VM_NUMA_EVENT_ITEMS +
->          |                            ~~~~~~~~~~~~~~~~~~~~~~
->    include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
->      518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
->          |                               ~~~~~~~~~~~ ^ ~~~
->    include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
->      524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
->          |                            ~~~~~~~~~~~~~~~~~~~~~ ^
->      525 |                            NR_VM_NUMA_EVENT_ITEMS +
->          |                            ~~~~~~~~~~~~~~~~~~~~~~
-> >> drivers/iio/light/opt4060.c:847:3: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]  
->      847 |                 u32 th_lo, th_hi;
->          |                 ^
->    drivers/iio/light/opt4060.c:884:3: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]
->      884 |                 u32 th_lo, th_hi;
->          |                 ^
-> >> drivers/iio/light/opt4060.c:977:24: error: incompatible function pointer types initializing 'int (*)(struct iio_dev *, const struct iio_chan_spec *, enum iio_event_type, enum iio_event_direction, bool)' (aka 'int (*)(struct iio_dev *, const struct iio_chan_spec *, enum iio_event_type, enum iio_event_direction, _Bool)') with an expression of type 'int (struct iio_dev *, const struct iio_chan_spec *, enum iio_event_type, enum iio_event_direction, int)' [-Wincompatible-function-pointer-types]  
->      977 |         .write_event_config = opt4060_write_event_config,
->          |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
->    6 warnings and 1 error generated.
-> 
-> 
-> vim +977 drivers/iio/light/opt4060.c
-> 
->    829	
->    830	static int opt4060_read_event(struct iio_dev *indio_dev,
->    831				      const struct iio_chan_spec *chan,
->    832				      enum iio_event_type type,
->    833				      enum iio_event_direction dir,
->    834				      enum iio_event_info info,
->    835				      int *val, int *val2)
->    836	{
->    837		int ret;
->    838		struct opt4060_chip *chip = iio_priv(indio_dev);
->    839	
->    840		if (chan->type != IIO_INTENSITY)
->    841			return -EINVAL;
->    842		if (type != IIO_EV_TYPE_THRESH)
->    843			return -EINVAL;
->    844	
->    845		switch (info) {
->    846		case IIO_EV_INFO_VALUE:
->  > 847			u32 th_lo, th_hi;  
->    848	
->    849			ret = opt4060_get_thresholds(chip, &th_lo, &th_hi);
->    850			if (ret)
->    851				return ret;
->    852			if (dir == IIO_EV_DIR_FALLING) {
->    853				*val = th_lo;
->    854				ret = IIO_VAL_INT;
->    855			} else if (dir == IIO_EV_DIR_RISING) {
->    856				*val = th_hi;
->    857				ret = IIO_VAL_INT;
->    858			}
->    859			return ret;
->    860		case IIO_EV_INFO_PERIOD:
->    861			return opt4060_read_ev_period(chip, val, val2);
->    862		default:
->    863			return -EINVAL;
->    864		}
->    865	}
->    866	
->    867	static int opt4060_write_event(struct iio_dev *indio_dev,
->    868				       const struct iio_chan_spec *chan,
->    869				       enum iio_event_type type,
->    870				       enum iio_event_direction dir,
->    871				       enum iio_event_info info,
->    872				       int val, int val2)
->    873	{
->    874		struct opt4060_chip *chip = iio_priv(indio_dev);
->    875		int ret;
->    876	
->    877		if (chan->type != IIO_INTENSITY)
->    878			return -EINVAL;
->    879		if (type != IIO_EV_TYPE_THRESH)
->    880			return -EINVAL;
->    881	
->    882		switch (info) {
->    883		case IIO_EV_INFO_VALUE:
->    884			u32 th_lo, th_hi;
->    885	
->    886			ret = opt4060_get_thresholds(chip, &th_lo, &th_hi);
->    887			if (ret)
->    888				return ret;
->    889			if (dir == IIO_EV_DIR_FALLING)
->    890				th_lo = val;
->    891			else if (dir == IIO_EV_DIR_RISING)
->    892				th_hi = val;
->    893			return opt4060_set_thresholds(chip, th_lo, th_hi);
->    894		case IIO_EV_INFO_PERIOD:
->    895			return opt4060_write_ev_period(chip, val, val2);
->    896		default:
->    897			return -EINVAL;
->    898		}
->    899	}
->    900	
->    901	static int opt4060_read_event_config(struct iio_dev *indio_dev,
->    902					     const struct iio_chan_spec *chan,
->    903					     enum iio_event_type type,
->    904					     enum iio_event_direction dir)
->    905	{
->    906		int ch_sel, ch_idx = chan->scan_index;
->    907		struct opt4060_chip *chip = iio_priv(indio_dev);
->    908		int ret;
->    909	
->    910		if (chan->type != IIO_INTENSITY)
->    911			return -EINVAL;
->    912		if (type != IIO_EV_TYPE_THRESH)
->    913			return -EINVAL;
->    914	
->    915		ret = opt4060_get_channel_sel(chip, &ch_sel);
->    916		if (ret)
->    917			return ret;
->    918	
->    919		if (((dir == IIO_EV_DIR_FALLING) && chip->thresh_event_lo_active) ||
->    920		    ((dir == IIO_EV_DIR_RISING) && chip->thresh_event_hi_active))
->    921			return ch_sel == ch_idx;
->    922	
->    923		return ret;
->    924	}
->    925	
->    926	static int opt4060_write_event_config(struct iio_dev *indio_dev,
->    927					      const struct iio_chan_spec *chan,
->    928					      enum iio_event_type type,
->    929					      enum iio_event_direction dir, int state)
->    930	{
->    931		int ch_sel, ch_idx = chan->scan_index;
->    932		struct opt4060_chip *chip = iio_priv(indio_dev);
->    933		int ret;
->    934	
->    935		if (chan->type != IIO_INTENSITY)
->    936			return -EINVAL;
->    937		if (type != IIO_EV_TYPE_THRESH)
->    938			return -EINVAL;
->    939	
->    940		ret = opt4060_get_channel_sel(chip, &ch_sel);
->    941		if (ret)
->    942			return ret;
->    943	
->    944		if (state) {
->    945			/* Only one channel can be active at the same time */
->    946			if ((chip->thresh_event_lo_active ||
->    947				chip->thresh_event_hi_active) && (ch_idx != ch_sel))
->    948				return -EBUSY;
->    949			if (dir == IIO_EV_DIR_FALLING)
->    950				chip->thresh_event_lo_active = true;
->    951			else if (dir == IIO_EV_DIR_RISING)
->    952				chip->thresh_event_hi_active = true;
->    953			ret = opt4060_set_channel_sel(chip, ch_idx);
->    954			if (ret)
->    955				return ret;
->    956		} else {
->    957			if (ch_idx == ch_sel) {
->    958				if (dir == IIO_EV_DIR_FALLING)
->    959					chip->thresh_event_lo_active = false;
->    960				else if (dir == IIO_EV_DIR_RISING)
->    961					chip->thresh_event_hi_active = false;
->    962			}
->    963		}
->    964	
->    965		return opt4060_event_set_state(indio_dev, chip->thresh_event_hi_active |
->    966					       chip->thresh_event_lo_active);
->    967	}
->    968	
->    969	static const struct iio_info opt4060_info = {
->    970		.read_raw = opt4060_read_raw,
->    971		.write_raw = opt4060_write_raw,
->    972		.write_raw_get_fmt = opt4060_write_raw_get_fmt,
->    973		.read_avail = opt4060_read_available,
->    974		.read_event_value = opt4060_read_event,
->    975		.write_event_value = opt4060_write_event,
->    976		.read_event_config = opt4060_read_event_config,
->  > 977		.write_event_config = opt4060_write_event_config,  
->    978	};
->    979	
-> 
+Thanks,
+Guenter
 
 

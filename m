@@ -1,58 +1,55 @@
-Return-Path: <linux-iio+bounces-12069-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12070-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4744F9C2D83
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 14:21:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08E29C2D86
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 14:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72C9C1C2102F
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 13:21:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19FB31F21CBD
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 13:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010D81922F1;
-	Sat,  9 Nov 2024 13:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CC218EFC1;
+	Sat,  9 Nov 2024 13:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZOkDO4+9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VdXblRqd"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB99115098A;
-	Sat,  9 Nov 2024 13:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E313822083;
+	Sat,  9 Nov 2024 13:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731158471; cv=none; b=NJhgcMeFYf3x89P8zAtcUfzZZoMyJ3WeTExqRtnMctkKbgHlkQSVyb7f9VbkeTWLkHSaoYjq9HgKrpNN0No4N6XypUinXYzGYTubw78/UIl1oMvYT0e5lCB/ACbaIjM7vlT9LiHVxAxMLYY1MxZX/6qKpcFE7OhmKXXinolwcJ8=
+	t=1731158856; cv=none; b=mY44koSM4LS58uwxBolh2ovA5Eqwk4fNsJquoOX/vuFixb3XipWM9BdhJa+S4YsakRf3UB/UsX3vMwvtmvZ9wplh/ajhs2fK4B8mibNPVBPsTCyCaKktUOSSxdIze8OWnEoDda7Hozrb89ZFb3JSD5+FpxrKTQvFWPt12c8pxf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731158471; c=relaxed/simple;
-	bh=8HxP5y3oRo0+Y2U3FnB66HnVy4it2wNsyZ5AAWMeRxo=;
+	s=arc-20240116; t=1731158856; c=relaxed/simple;
+	bh=8gLKa8jowajasZQ5CeY9jgmzVXqM23mtZ1YyTqitf0A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pVuGNEAi0B8V6SBPQ5CFVBhT+b7IcuLNmoJ4+91uh2ZzptuPpfuRQMMENmApZ7MH7TKLC2g2kaHumWhe+m/jArZGyhleneoPGlmawjVlya1fcOOO2PGzMpj5yuEZ9ccMCbcKuY1n9WFaqFdwzxKz/7IkXPiCZ+7st4iBTrHkE54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZOkDO4+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5A1C4CECE;
-	Sat,  9 Nov 2024 13:21:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zg6AwOj8NKbHOMobev+V5ayhqH6kFg848hu6mbeeWBiChXzjvXcm7uCxpdGUig36pIA/bGdXEYYrWg2DcH9qAkOH5QCYYS3PZd8cd9vfwTJMsPywRdqxeK6i/xxHAfWJ76fgCKKseXK2dRq5ZicbdmKEZWY10mlHbFa07tvDgg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VdXblRqd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0F9C4CECE;
+	Sat,  9 Nov 2024 13:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731158471;
-	bh=8HxP5y3oRo0+Y2U3FnB66HnVy4it2wNsyZ5AAWMeRxo=;
+	s=k20201202; t=1731158855;
+	bh=8gLKa8jowajasZQ5CeY9jgmzVXqM23mtZ1YyTqitf0A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZOkDO4+9fukaFekFvgGd7K3yqj7jb/9QvtiUruVMvPTbUd0J71n4kjWz/LKzPHAEf
-	 RXsIMHMSw05JsGAfocvr5Ndpc+mmT0lYWu/1Gj46kr9T4Oz5E7heYpNwDt/SGXhP1N
-	 R5OGlYYkKms8tOSlAKoV6be3Q93TImWPtxCwDEJa59z1q04/c0hk+8vfoH+3Mmkhgs
-	 J1IJRKaMvQhkdloaQ2u/HwtgMEbfRSL5W+jVMaA88msndyCdHqB0kPj4+c/3AUCXYB
-	 v8Lffs/Au/z1u59jxBYt+lLLVWUzeVSKc5ZVqKALEpl8GXs9MpnlXl2QB0rYL2MhAN
-	 EoJSgHIxFPtPw==
-Date: Sat, 9 Nov 2024 13:21:05 +0000
+	b=VdXblRqdpTO8S4KkGQIUqLM7uUiSt3z0uFNcRPmvQ4ryI20qOFx9wq7aIaIth87oJ
+	 uzQAQKpEC7NtHE/LlmFRfdz9VHq1FL+MopJfrHBOCUx/Cp2RBxLNVgcwJ1YLoY4Jgr
+	 ZGrG6VBuKVX0jqmTfz2aiWYbicjwGcW+OdZN210a7ywJzoKY6SaAXPoruAsGEmUBNX
+	 u19RgN5o8geC9bfTnsRTrsBRC5te9aVmQpbPPIEl+S3cGa9UVGg0vCsb9eR+gmv4Cg
+	 066YzeCF5gAJaz2peFw1Q2jrcziaGSD1fk+wII5zw7Fx6Yum1JdIC5cWYocGE+c+nb
+	 a4vjcMvFB8YTQ==
+Date: Sat, 9 Nov 2024 13:27:29 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: kernel test robot <lkp@intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
- oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] iio: light: veml6030: add support for triggered buffer
-Message-ID: <20241109132105.0a6bfc0b@jic23-huawei>
-In-Reply-To: <17464711-bdc2-46c9-a216-93851112abbb@gmail.com>
+Message-ID: <20241109132729.1459cf0a@jic23-huawei>
+In-Reply-To: <20241107-veml6030_triggered_buffer-v1-1-4810ab86cc56@gmail.com>
 References: <20241107-veml6030_triggered_buffer-v1-1-4810ab86cc56@gmail.com>
-	<202411081703.Ft0YjqcK-lkp@intel.com>
-	<17464711-bdc2-46c9-a216-93851112abbb@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,75 +60,208 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 8 Nov 2024 11:33:27 +0100
+On Thu, 07 Nov 2024 21:22:45 +0100
 Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> On 08/11/2024 10:41, kernel test robot wrote:
-> > Hi Javier,
-> > 
-> > kernel test robot noticed the following build warnings:
-> > 
-> > [auto build test WARNING on c9f8285ec18c08fae0de08835eb8e5953339e664]
-> > 
-> > url:    https://github.com/intel-lab-lkp/linux/commits/Javier-Carrasco/iio-light-veml6030-add-support-for-triggered-buffer/20241108-042332
-> > base:   c9f8285ec18c08fae0de08835eb8e5953339e664
-> > patch link:    https://lore.kernel.org/r/20241107-veml6030_triggered_buffer-v1-1-4810ab86cc56%40gmail.com
-> > patch subject: [PATCH] iio: light: veml6030: add support for triggered buffer
-> > config: i386-randconfig-062-20241108 (https://download.01.org/0day-ci/archive/20241108/202411081703.Ft0YjqcK-lkp@intel.com/config)
-> > compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411081703.Ft0YjqcK-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202411081703.Ft0YjqcK-lkp@intel.com/
-> > 
-> > sparse warnings: (new ones prefixed by >>)  
-> >>> drivers/iio/light/veml6030.c:958:39: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __le16 @@     got int [addressable] reg @@  
-> >    drivers/iio/light/veml6030.c:958:39: sparse:     expected restricted __le16
-> >    drivers/iio/light/veml6030.c:958:39: sparse:     got int [addressable] reg
-> > 
-> > vim +958 drivers/iio/light/veml6030.c
-> > 
-> >    944	
-> >    945	static irqreturn_t veml6030_trigger_handler(int irq, void *p)
-> >    946	{
-> >    947		struct iio_poll_func *pf = p;
-> >    948		struct iio_dev *iio = pf->indio_dev;
-> >    949		struct veml6030_data *data = iio_priv(iio);
-> >    950		int i, ret, reg;
-> >    951		int j = 0;
-> >    952	
-> >    953		iio_for_each_active_channel(iio, i) {
-> >    954			ret = regmap_read(data->regmap, VEML6030_REG_DATA(i), &reg);
-> >    955			if (ret)
-> >    956				goto done;
-> >    957	  
-> >  > 958			data->scan.chans[j++] = reg;  
+> All devices supported by this driver (currently veml6030, veml6035
+> and veml7700) have two 16-bit channels, and can profit for the same
+> configuration to support data access via triggered buffers.
 > 
-> chans is currently declared as __le16 chans[2], but it should be u16
-> chans[2], as regmap already handles the endianness.
+> The measurements are stored in two 16-bit consecutive registers
+> (addresses 0x04 and 0x05) as little endian, unsigned data.
 > 
-> Then the direct assignment does not raise any warnings. When at it, I
-> will define reg as unsigned int.
-Make sure you update the chan_spec as well to reflect that are CPU endian.
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Hi Javier,
 
-This makes sense because the registers are 16 bit on this device.
-> 
-> >    959		}
-> >    960	
-> >    961		iio_push_to_buffers_with_timestamp(iio, &data->scan, pf->timestamp);
-> >    962	
-> >    963	done:
-> >    964		iio_trigger_notify_done(iio->trig);
-> >    965	
-> >    966		return IRQ_HANDLED;
-> >    967	}
-> >    968	
-> >   
-> 
-> Best regards,
-> Javier Carrasco
-> 
+Some comments inline below.
 
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/light/Kconfig    |  2 ++
+>  drivers/iio/light/veml6030.c | 84 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 86 insertions(+)
+> 
+> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+> index 29ffa8491927..0e2566ff5f7b 100644
+> --- a/drivers/iio/light/Kconfig
+> +++ b/drivers/iio/light/Kconfig
+> @@ -683,6 +683,8 @@ config VEML3235
+>  config VEML6030
+>  	tristate "VEML6030 and VEML6035 ambient light sensors"
+>  	select REGMAP_I2C
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+>  	depends on I2C
+>  	help
+>  	  Say Y here if you want to build a driver for the Vishay VEML6030
+> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+> index ccb43dfd5cf7..d57ae0c4cae3 100644
+> --- a/drivers/iio/light/veml6030.c
+> +++ b/drivers/iio/light/veml6030.c
+> @@ -28,6 +28,8 @@
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+>  #include <linux/iio/events.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+>  
+>  /* Device registers */
+>  #define VEML6030_REG_ALS_CONF   0x00
+> @@ -37,6 +39,7 @@
+>  #define VEML6030_REG_ALS_DATA   0x04
+>  #define VEML6030_REG_WH_DATA    0x05
+>  #define VEML6030_REG_ALS_INT    0x06
+> +#define VEML6030_REG_DATA(ch)   (VEML6030_REG_ALS_DATA + (ch))
+>  
+>  /* Bit masks for specific functionality */
+>  #define VEML6030_ALS_IT       GENMASK(9, 6)
+> @@ -56,6 +59,18 @@
+>  #define VEML6035_INT_CHAN     BIT(3)
+>  #define VEML6035_CHAN_EN      BIT(2)
+>  
+> +enum veml6030_scan {
+> +	VEML6030_SCAN_ALS,
+> +	VEML6030_SCAN_WH,
+> +	VEML6030_SCAN_TIMESTAMP,
+> +};
+> +
+> +static const unsigned long veml6030_avail_scan_masks[] = {
+> +	(BIT(VEML6030_SCAN_ALS) |
+> +	 BIT(VEML6030_SCAN_WH)),
+
+I'd not wrap the two lines above.  Also outer brackets don't add much
+so maybe drop them.
+
+> +	0
+> +};
+> +
+>  struct veml603x_chip {
+>  	const char *name;
+>  	const int(*scale_vals)[][2];
+> @@ -86,6 +101,10 @@ struct veml6030_data {
+>  	int cur_gain;
+>  	int cur_integration_time;
+>  	const struct veml603x_chip *chip;
+> +	struct {
+> +		__le16 chans[2];
+> +		aligned_s64 timestamp;
+> +	} scan;
+
+This is pretty small and as it's i2c, you don't need to be careful with alignment
+(everything is bounce buffered anyway). So you could just have it on the stack
+in the trigger_handler function.
+
+>  };
+>  
+>  static const int veml6030_it_times[][2] = {
+> @@ -242,6 +261,14 @@ static const struct iio_chan_spec veml6030_channels[] = {
+>  						     BIT(IIO_CHAN_INFO_SCALE),
+>  		.event_spec = veml6030_event_spec,
+>  		.num_event_specs = ARRAY_SIZE(veml6030_event_spec),
+> +		.scan_index = VEML6030_SCAN_ALS,
+> +		.scan_type = {
+> +			.sign = 'u',
+> +			.realbits = 16,
+> +			.shift = 0,
+> +			.storagebits = 16,
+> +			.endianness = IIO_LE,
+> +		},
+>  	},
+>  	{
+>  		.type = IIO_INTENSITY,
+> @@ -253,7 +280,16 @@ static const struct iio_chan_spec veml6030_channels[] = {
+>  				BIT(IIO_CHAN_INFO_SCALE),
+>  		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
+>  						     BIT(IIO_CHAN_INFO_SCALE),
+> +		.scan_index = VEML6030_SCAN_WH,
+> +		.scan_type = {
+> +			.sign = 'u',
+> +			.realbits = 16,
+> +			.shift = 0,
+> +			.storagebits = 16,
+> +			.endianness = IIO_LE,
+> +		},
+>  	},
+> +	IIO_CHAN_SOFT_TIMESTAMP(VEML6030_SCAN_TIMESTAMP),
+>  };
+>  
+>  static const struct iio_chan_spec veml7700_channels[] = {
+> @@ -266,6 +302,14 @@ static const struct iio_chan_spec veml7700_channels[] = {
+>  				BIT(IIO_CHAN_INFO_SCALE),
+>  		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
+>  						     BIT(IIO_CHAN_INFO_SCALE),
+> +		.scan_index = VEML6030_SCAN_ALS,
+> +		.scan_type = {
+> +			.sign = 'u',
+> +			.realbits = 16,
+> +			.shift = 0,
+
+Don't bother specifying shift when the value is 0 and obvious.
+C spec will deal with setting that to 0 for you.
+
+> +			.storagebits = 16,
+> +			.endianness = IIO_LE,
+
+As per other branch of the thread, seems this should be IIO_CPU
+
+> +		},
+>  	},
+>  	{
+>  		.type = IIO_INTENSITY,
+> @@ -277,7 +321,16 @@ static const struct iio_chan_spec veml7700_channels[] = {
+>  				BIT(IIO_CHAN_INFO_SCALE),
+>  		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_INT_TIME) |
+>  						     BIT(IIO_CHAN_INFO_SCALE),
+> +		.scan_index = VEML6030_SCAN_WH,
+> +		.scan_type = {
+> +			.sign = 'u',
+> +			.realbits = 16,
+> +			.shift = 0,
+> +			.storagebits = 16,
+> +			.endianness = IIO_LE,
+> +		},
+>  	},
+> +	IIO_CHAN_SOFT_TIMESTAMP(VEML6030_SCAN_TIMESTAMP),
+>  };
+>  
+>  static const struct regmap_config veml6030_regmap_config = {
+> @@ -889,6 +942,30 @@ static irqreturn_t veml6030_event_handler(int irq, void *private)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static irqreturn_t veml6030_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *iio = pf->indio_dev;
+> +	struct veml6030_data *data = iio_priv(iio);
+> +	int i, ret, reg;
+> +	int j = 0;
+> +
+> +	iio_for_each_active_channel(iio, i) {
+Given you've set the available_scan_masks such that all channels are on
+or off, you should be able to read them unconditionally.
+The IIO core demux code will break them up if the user requested a subset.
+
+If it makes sense to allow individual channels (looks like it here)
+then don't provide available_scan_masks.
+
+A bulk read may make sense (I've not checked register values).
+
+> +		ret = regmap_read(data->regmap, VEML6030_REG_DATA(i), &reg);
+> +		if (ret)
+> +			goto done;
+> +
+> +		data->scan.chans[j++] = reg;
+> +	}
+> +
+> +	iio_push_to_buffers_with_timestamp(iio, &data->scan, pf->timestamp);
+> +
+> +done:
+> +	iio_trigger_notify_done(iio->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
 

@@ -1,65 +1,56 @@
-Return-Path: <linux-iio+bounces-12087-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12088-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72849C2E17
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 16:15:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA469C2E19
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 16:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 868B51F21DE5
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 15:15:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703B11F21B8A
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Nov 2024 15:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D441991A1;
-	Sat,  9 Nov 2024 15:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465E61990B7;
+	Sat,  9 Nov 2024 15:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zvs42O4D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GHL6qMb6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E25022083;
-	Sat,  9 Nov 2024 15:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0258B233D6B;
+	Sat,  9 Nov 2024 15:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731165342; cv=none; b=aiHz4MBspDEAgsRn3cbdUw6HJO2kndgTV+XoDC99kG29VDhvpk6f9cEPx3ZkvcikMZ86SIFOAOXwuL1FQbCFbGoLmpDnCrX23v+gPrzq6tfsuum3d5no+JQ3SNL+KT9bSAObmfkpayRWJgN/pvsL6W8iH6RJ4C1lZGR+YGFW1G8=
+	t=1731165411; cv=none; b=X3jvzbaPdcAfhq6OtrTVRtHY5xiYMSLD9qa0vvthGGLC+LjAfWNz6jm4uEvktXSCExyf4NbKEzKutgZSJBsbgNjXC4UR+S+xcamqt+yc8+cp50g1AKGusg4aVpCknmjL1BzjgBZCBLDrLql9cP5aUK1RKYck2Py31JglwZm+NdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731165342; c=relaxed/simple;
-	bh=VJ9+yL4/Qo6csHxmltBLugUE69mq36tQ6mfEaJh/YeA=;
+	s=arc-20240116; t=1731165411; c=relaxed/simple;
+	bh=EXT/Hr8H1uClY9YwJej/y3rLcg3RbWDHKELZLF8UgOU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qsS6WASH8eN5JxEMjyEgvuzCVwlb+ux1/eTeeB5agCxCiOfRDLnjZeho6lDg3GGAi+lqIwXeoLAtS9LuyyDlteuHV4Dol00+Eg6IkqvF5LDVps0iHBb2jf+mt62RHjH9cIlrfzag5AcUTPk98U9Dzti5XI1jR9DEjzTZz9cGqeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zvs42O4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0187C4CECE;
-	Sat,  9 Nov 2024 15:15:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bhwZXhqxZpnwFx36O1+Gf2bTxi9ool6yBlOYk8OAHw6TC7F1xmRAW7xcnB0Sc/LLRei0oeiJzqWIFBeKgQsp6kEQr2DVi3vFLVqf0Pxg0G5KUvVE5/PZBzjInjCoayVCt6gNTYO8ec4HLk2LlQJfeEyhryB2X8S2QLZMUqIncCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GHL6qMb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91579C4CECE;
+	Sat,  9 Nov 2024 15:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731165342;
-	bh=VJ9+yL4/Qo6csHxmltBLugUE69mq36tQ6mfEaJh/YeA=;
+	s=k20201202; t=1731165410;
+	bh=EXT/Hr8H1uClY9YwJej/y3rLcg3RbWDHKELZLF8UgOU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Zvs42O4DOgKodK1TVptRlfMe7K+kCM9K8JReUjWCtsRxb4rOuLx+ukaDcddGAw08S
-	 n+JN/YPByhxF+1e4uXRfSWBJacmuZ3EblQXlJDlhIerAX9Cqulav7Sd0N3JS+13g4X
-	 49r5rgRcL0ECJ9jO992a6gDZWlHk7PQlWgm9zhQLtxQiK6TcB0tmQO1ccDDpHVqELZ
-	 BbQT0U/if5IY6+aFbvj8bUiCGVLEDkD/ittWQwzY4INH7vWXL+9Gk1yJwLOhpyjJhd
-	 GqDn2v75wOJj7fhsnM7t+gY3HSf5dcwr//sP2Zd567f+ZYOm0+G50npKVSwdjHexTU
-	 JvgJBUoPbgioA==
-Date: Sat, 9 Nov 2024 15:15:31 +0000
+	b=GHL6qMb6x/Zv/rsd1Mc9Qlf7oUfHAw6CgzKoTidJIN+CkK79u4o1kBiCGUlEJd+SA
+	 NDfeJGfYyc51sTNcN4WvH+qs9X9z7mwskzCYniW5Nfrxcf4XbA9YgxgJ5i0Z6N0grr
+	 c6XaRF2HLubJxRhoMYiUjfIu2buWOVGhFdPyYnf0DQAf9ghaei8fMZW7pRvQhaveGF
+	 N8axeuMFwA3UFhVo/uWbujkGQKWzdKdcGAC5mNeiw9j21lm570+MTkL060ct0gRpDn
+	 4MIoqi6/mpLTpf3XYd2674VZ+y0oiELVU2qQeTWdY5JFQT2EBg0D9h3oN6DwU6yyrV
+	 XmZXsFsW6WbEA==
+Date: Sat, 9 Nov 2024 15:16:43 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Guenter Roeck <linux@roeck-us.net>
-Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Jean Delvare
- <jdelvare@suse.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Krzysztof
- Kozlowski <krzk@kernel.org>, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] hwmon: tmp108: Add support for I3C device
-Message-ID: <20241109151531.37ac4226@jic23-huawei>
-In-Reply-To: <014410fc-8a4c-440f-a6eb-1fafccc444a6@roeck-us.net>
-References: <20241108-p3t1085-v2-0-6a8990a59efd@nxp.com>
-	<20241108-p3t1085-v2-3-6a8990a59efd@nxp.com>
-	<20241109131604.5d8b701a@jic23-huawei>
-	<014410fc-8a4c-440f-a6eb-1fafccc444a6@roeck-us.net>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: lsm6dsx: Use i3cdev_to_dev to get device
+ pointer
+Message-ID: <20241109151643.4e4608bf@jic23-huawei>
+In-Reply-To: <20241109145430.3702482-1-linux@roeck-us.net>
+References: <20241109145430.3702482-1-linux@roeck-us.net>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,48 +61,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 9 Nov 2024 06:53:28 -0800
+On Sat,  9 Nov 2024 06:54:30 -0800
 Guenter Roeck <linux@roeck-us.net> wrote:
 
-> On 11/9/24 05:16, Jonathan Cameron wrote:
-> > On Fri, 08 Nov 2024 17:26:57 -0500
-> > Frank Li <Frank.Li@nxp.com> wrote:
-> >   
-> >> Add support for I3C device in the tmp108 driver to handle the P3T1085
-> >> sensor. Register the I3C device driver to enable I3C functionality for the
-> >> sensor.
-> >>
-> >> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> >> ---
-> >>   drivers/hwmon/tmp108.c | 31 +++++++++++++++++++++++++++++++
-> >>   1 file changed, 31 insertions(+)
-> >>
-> >> diff --git a/drivers/hwmon/tmp108.c b/drivers/hwmon/tmp108.c
-> >> index bfbea6349a95f..83d6847cb542c 100644
-> >> --- a/drivers/hwmon/tmp108.c
-> >> +++ b/drivers/hwmon/tmp108.c
-> >> @@ -13,6 +13,8 @@
-> >>   #include <linux/mutex.h>
-> >>   #include <linux/of.h>
-> >>   #include <linux/i2c.h>
-> >> +#include <linux/i3c/device.h>
-> >> +#include <linux/i3c/master.h>  
-> > 
-> > Seems odd you need master.h in a device driver.
-> > I'll guess that's because you should be using i3cdev_to_device()  
+> I3C client drivers should not include linux/i3c/master.h. Use
+> i3cdev_to_dev() to get the device pointer from struct i3c_device
+> to be able to avoid that include.
 > 
-> I assume you mean i3cdev_to_dev() ?
-> 
-Indeed! :(
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Applied to the testing branch of iio.git. I'll be rebasing that
+on 6.13-rc1 once available and then push out as togreg for linux-next
+to pick up.
 
-> Good point, but there are not many examples to draw from. The one
-> existing iio driver (st_lsm6dsx) doesn't use it either. I'll send
-> a patch shortly to fix that to prevent others from making the same
-> mistake.
-Excellent.
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> Thanks,
-> Guenter
-> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+> index 3b0c8b19c448..207dcc0ad988 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+> @@ -9,7 +9,6 @@
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+>  #include <linux/i3c/device.h>
+> -#include <linux/i3c/master.h>
+>  #include <linux/slab.h>
+>  #include <linux/regmap.h>
+>  
+> @@ -30,15 +29,16 @@ static int st_lsm6dsx_i3c_probe(struct i3c_device *i3cdev)
+>  	};
+>  	const struct i3c_device_id *id = i3c_device_match_id(i3cdev,
+>  							    st_lsm6dsx_i3c_ids);
+> +	struct device *dev = i3cdev_to_dev(i3cdev);
+>  	struct regmap *regmap;
+>  
+>  	regmap = devm_regmap_init_i3c(i3cdev, &st_lsm6dsx_i3c_regmap_config);
+>  	if (IS_ERR(regmap)) {
+> -		dev_err(&i3cdev->dev, "Failed to register i3c regmap %ld\n", PTR_ERR(regmap));
+> +		dev_err(dev, "Failed to register i3c regmap %ld\n", PTR_ERR(regmap));
+>  		return PTR_ERR(regmap);
+>  	}
+>  
+> -	return st_lsm6dsx_probe(&i3cdev->dev, 0, (uintptr_t)id->data, regmap);
+> +	return st_lsm6dsx_probe(dev, 0, (uintptr_t)id->data, regmap);
+>  }
+>  
+>  static struct i3c_driver st_lsm6dsx_driver = {
 
 

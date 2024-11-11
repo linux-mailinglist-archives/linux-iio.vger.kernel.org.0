@@ -1,242 +1,195 @@
-Return-Path: <linux-iio+bounces-12137-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12138-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2949C4245
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 17:00:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB829C4253
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 17:03:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B34341F2574C
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 16:00:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEDB9288428
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 16:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9417A1A0BFF;
-	Mon, 11 Nov 2024 15:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304E119E836;
+	Mon, 11 Nov 2024 16:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kn3gIP/i"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Lnui4sA0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992AB19F430
-	for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 15:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560B01448C1
+	for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 16:03:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731340789; cv=none; b=GPUxANQx3nQDWSlOsWDsb+1MDKKe9i2b9wQ8GMhz7VHILdn3PjhqCOMxMGrbDJrFA6ybaOsWLj+bk/irAAho+hZQdlBMyMslWB5/RSsfavHPIVi90+muN3l261AlUgDwmtqZA6prV7DQ/GJUF48sLcQXJXG1BH8yI3dZD3Y8WC4=
+	t=1731341006; cv=none; b=LQiGsbrm3rfw54comu7vYSiKJFOtErxp2Fxg0QxVEPOwu7uzffBhPb/JkI3CPRrCCihlJd772mkJj1FCb3KzU53GUDWrkNSuRYSq24Voee8BAzmGBU1Ig7v0iz+x0W5IG7Z1NhrLkPEupR3KaQLFM7/DfjvFEIdLpsz4qMRhooE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731340789; c=relaxed/simple;
-	bh=HDcW1VcFC6TUobbEsvgtNwj7T/A2DfMJi7G65Cb9CEw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RNn8YoMr9RNz1nvtDWwkMhN2pjI04bglNy/6ZKZWgMgaO+ACt+zGMnSb4g8SYEhBTAmFyIrwTlJnHiuLg0u3twHbiintX4pVnw03BxlPEKSutLeydprPAG2RTqC0jhpRYGGCU6IxVG+r2TjhzngmL1pvfXokbICiNHv8z55m9D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kn3gIP/i; arc=none smtp.client-ip=209.85.166.42
+	s=arc-20240116; t=1731341006; c=relaxed/simple;
+	bh=RMcY9dVuvJYHvQZXGJIyg3WpxmaCxUvAXlj08zgoK68=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n9fto45ycqE8DQMUOeVrG29HgXlQ/sGjFpWkOCqCYTj9es08zc/B0DwHNxwilqQvWX4sufeoZKhqf/vK6NAFOFpZDE+2/H2mftTEyk/3DLNlgyrmd7GZTFVLLMzlGynKej8FkEwifau5B15Xks8yhS4j9WpkZ3uqjXxwFm4BCZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Lnui4sA0; arc=none smtp.client-ip=209.85.160.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-83abcfb9fd4so179654339f.3
-        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 07:59:47 -0800 (PST)
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2887326be3dso2068169fac.1
+        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 08:03:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731340787; x=1731945587; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MRx61QutqkHqE8LsifHeDvLFt2mQ7Pk/J2Li4P0J5EU=;
-        b=kn3gIP/iAqIFjThhhJdpY5p+TfBzmvYJuz+/2qolTlJII5mEKK3j7U07QJoL3wSF3p
-         jPelUIGdgnhYM50ecJrK8+Pv/8/tuFnv0h+pHKanUQPIUaFsxKSJYnOobzeTkdpSdXq6
-         WAKSIhzw7pwP8nbNXiPfqzfsFfhhDfaLwWj1Q6jMhDdebiz1BuEU9tH4WTQcklwnQqee
-         FUZdV+8Xq32DcT044rA3HqOe6V3qjYo9jQPTC+AvVdZWPBLqnfpc4HkD1QMtV6Lmzv/F
-         Z7Me14w4U3UoVW3VSlUTDO1j9LyDLyk2/3KGSwdfzcEod4P4uVqBHRZbBIuaRLNpJNfT
-         mCYw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731341003; x=1731945803; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/N8FbaMperQCZPDQIvnd2hsxjkQB8NICoW/WVIIrTK0=;
+        b=Lnui4sA0SdPqgX+jj232OiFg5LQJpy1v55VAzh9LzELrJeBO+uIRTmtzuqzaKZ3hAZ
+         /DDAXyIeA0/uRBhqXe2IIboB3huMGBih5a+DQdr9sA0MouBcq34kyD0TNfqH29EobLh+
+         TYp1+lLPW0+YneSm6R+FLrBeF5o5ARgkUI1fgSa056+jR4Mvsr8B1f0lk0QhCjSQXo3z
+         /AtrjYULnpTtlNE+yZVRvx7MqZkxQN9ZJ2xFZG6pnOHZGWbod/rzXqqP0+8Y5VorkW48
+         AvMxqN3FChnc1aBSSSPZSBzA8aDDsxs/aj2MkOUEOmto4YkeYZJ9C04J0DPWYuPt98ul
+         OumA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731340787; x=1731945587;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MRx61QutqkHqE8LsifHeDvLFt2mQ7Pk/J2Li4P0J5EU=;
-        b=EzvJgFLYyt9aU9nVkBsG31HX0YkfFH+649w/pDwnIGHGOUREIVc+ryXCsjerMkzL+Y
-         0+Y2lkD4ZuO5Kz5Kshkyd/b8c2lfvlca+YYXUhM146Fbbau5yiY9o/EDeNq/VUN0JC6v
-         UXl2y4uslzd5SVu82GbxNEWROkgZaawpaH07UsgVJoEzuOSdF8MZj+fiTU7dzJFsZyOr
-         99T4POzYaL8DcDDy5fXqNO5fkOfEautm0TnHaFhGp4COfzUa7jamewmndM9oGp08QWxa
-         gLREVQOanNlL1LKdQ7wp+QrYamnD2sFMvV7+u5F8QH3nZvWYGwmHS5sfjL4qTqvoaKek
-         WHfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVUJDQFre1MvcAiC/bx2qozPmJ/ZEIlIaeAC6k+DLNSP4GY9BdKSodb5eDiA+NCJsP7iJUev4IM/T4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5s/yBz/y2pc1Q6k/0N5qSouAk2mXpcfucNUg0ejTyMGS9Pr+x
-	HaUSzc8dtpFikWbVUUadJKP7/UUg4IVNGnTcW6SbPuLTFUGEll92qANiZTk24Jw=
-X-Google-Smtp-Source: AGHT+IFz5onGePgbNMaG6Xw/7Xs9ETfUP+zGO0bMsWlJBZyv1Ip2qkVxHrYh9z77fz9YgW2JWKoJmg==
-X-Received: by 2002:a05:6602:13d3:b0:83a:acfa:b0ba with SMTP id ca18e2360f4ac-83e032a171dmr1370582039f.1.1731340786793;
-        Mon, 11 Nov 2024 07:59:46 -0800 (PST)
-Received: from [127.0.1.1] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4de787d62c6sm1410986173.81.2024.11.11.07.59.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2024 07:59:46 -0800 (PST)
-From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 11 Nov 2024 10:59:44 -0500
-Subject: [PATCH 3/3] iio: adc: ad4695: add custom regmap bus callbacks
+        d=1e100.net; s=20230601; t=1731341003; x=1731945803;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/N8FbaMperQCZPDQIvnd2hsxjkQB8NICoW/WVIIrTK0=;
+        b=GpDolv44dDdBxNnZYN+VE0uwF2vpSSzk8ULFH85jFH2VX1tcP6mcOxlDclXnvUvjXp
+         7BILrnoyI8dZtxISVlcwsBPrt7S/mViKCJYYQOToPk996c1bHGvrgtEpJP77sXCmrwgP
+         LIE7xKjNbbKlOkgCvabgoRzuidGEkNbnBdK79VhIpHyXm7WZIlprf+r+oij/qPZRXzVS
+         IvvcBMFP4Vdc0qZ4oydNNmXj5Tf1X0HpkgqzsO+5WWGlxDWd1laswEzy+PhM4jhC0hdy
+         j0lHpcIfTlQNJKsz2P7O9VMzgKqBcuyoZiC3M953bttiCXqNjjt1AfrJeLmr/iIGrci4
+         5P2g==
+X-Forwarded-Encrypted: i=1; AJvYcCW9HDzWe2STmdulsQcFp2bbnTG/FhC6wCXDUUoChp+A9Fikj81vxKnsK0e8xk4QZRP2+pP6Pc7xW0w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt7qpu2eJyeDdmrukYfbB7y3FKEp8YzurZZ65X77UspX3ND5on
+	2mQ8K3wNNFvAB6DjMNjRzJC3LSQ+SC0hEBj4h04q6OBbPoXX8dvRfYy9QlsGlpE=
+X-Google-Smtp-Source: AGHT+IEeMYF9fjp84gVQ5HjlsLWjQNij4qGsNBDmcSGf6EKVQAKNreK+WhsXtiaTLQ9OQ1rpyf+sQA==
+X-Received: by 2002:a05:6871:582a:b0:270:2c3:f362 with SMTP id 586e51a60fabf-2956027f6e9mr10361835fac.32.1731341003314;
+        Mon, 11 Nov 2024 08:03:23 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29546cf44cesm2825954fac.21.2024.11.11.08.03.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Nov 2024 08:03:21 -0800 (PST)
+Message-ID: <182b9144-9a68-4e60-9a1b-4284731ab367@baylibre.com>
+Date: Mon, 11 Nov 2024 10:03:21 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 6/6] iio: adc: ad4851: add ad485x driver
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
+References: <20241101112358.22996-1-antoniu.miclaus@analog.com>
+ <20241101112358.22996-7-antoniu.miclaus@analog.com>
+ <de120709-b60b-4e85-912e-b60ca18a8001@baylibre.com>
+ <CY4PR03MB339993CDE9BA8DD3976CF2F29B5C2@CY4PR03MB3399.namprd03.prod.outlook.com>
+ <1f2b8d91-19be-46b7-9202-824aa177dff6@baylibre.com>
+ <146a24a7-d7a1-4969-98c0-f621a1709dd7@baylibre.com>
+ <20241109153946.4f4df9d2@jic23-huawei>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241109153946.4f4df9d2@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241111-tgamblin-ad4695_improvements-v1-3-698af4512635@baylibre.com>
-References: <20241111-tgamblin-ad4695_improvements-v1-0-698af4512635@baylibre.com>
-In-Reply-To: <20241111-tgamblin-ad4695_improvements-v1-0-698af4512635@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Trevor Gamblin <tgamblin@baylibre.com>
-X-Mailer: b4 0.14.1
 
-Add a custom implementation of regmap read/write callbacks using the SPI
-bus. This allows them to be performed at a lower SCLK rate than data
-reads. Previously, all SPI transfers were being performed at a lower
-speed, but with this change sample data is read at the max bus speed
-while the register reads/writes remain at the lower rate.
+On 11/9/24 9:39 AM, Jonathan Cameron wrote:
+> On Thu, 7 Nov 2024 10:47:52 -0600
+> David Lechner <dlechner@baylibre.com> wrote:
+> 
+>> On 11/7/24 10:13 AM, David Lechner wrote:
+>>> On 11/7/24 4:51 AM, Miclaus, Antoniu wrote:  
+>>
+>>
+>>>>> I'm pretty sure that calibscale and calibbias also need to take into
+>>>>> account if resolution boost is enabled or not.  
+>>>>
+>>>> Can you please detail a bit on this topic? I am not sure what I should do.
+>>>>  
+>>>
+>>> We haven't implemented oversampling yet in ad4695 yet, so I don't know
+>>> exactly what we need to do either. ;-)
+>>>
+>>> But this is how I would test it to see if it is working correctly or
+>>> not. We will need to test this with a 20-bit chip since that is the
+>>> only one that will change the _scale attribute when oversampling is
+>>> enabled.
+>>>
+>>> First, with oversampling disabled (_oversampling_ratio = 1), generate
+>>> a constant voltage of 1V for the input. Read the _raw attribute. Let's
+>>> call this value raw0. Read the _scale attribute, call it scale0 and
+>>> the _offset attribute, call it offset0.
+>>>
+>>> Then we should have (raw0 + offset0) * scale0 = 1000 mV (+/- some
+>>> noise).
+>>>
+>>> Then change the offset calibrate to 100 mV. To do this, we reverse
+>>> the calculation 100 mV / scale0 = calibbias (raw units). Write the
+>>> raw value to the _calibbias attribute. Then read the _raw
+>>> attribute again, call it raw0_with_calibbias.
+>>>
+>>> This time, we should have (raw0_with_calibbias + offset0) * scale0
+>>> = 1100 mV (+/- some noise).
+>>>
+>>> Then set _calibbias back to 0 and repeat the above by setting the
+>>> _calibscale attribute to 0.90909 (this is 1 / 1.1, which should  
+>>
 
-Also remove .can_multi_write from the AD4695 driver's regmap_configs, as
-this isn't implemented or needed.
+After a bit more testing, I realized I was testing with a
+differential channel, this math only applies to that.
 
-For some background context, see:
+For a single ended channel, applying a calibscale of 1.1 with
+a generated signal of 1V will cause the measured value to change
+from 1V to 1.1V as one might expect.
 
-https://lore.kernel.org/linux-iio/20241028163907.00007e12@Huawei.com/
 
-Suggested-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
----
- drivers/iio/adc/Kconfig  |  2 +-
- drivers/iio/adc/ad4695.c | 74 +++++++++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 68 insertions(+), 8 deletions(-)
+>> Now that I have written this, this has me second-guessing if I
+>> implemented calibscale correctly on ad4695. It would seem more
+>> logical that if we have an actual input voltage of 1 V and a
+>> calibscale of 1.1, then the resulting processed value we read
+>> should be 1100 mV.
+>>
+>> Jonathan, can you set me straight? The sysfs ABI docs aren't
+>> clear on this point.
+> 
+> Deliberately vague in this case.  calibbias is kind of the wild west
+> of ABI. Often we have no meaningful information on what the tweak
+> register settings actually do beyond 'up vs down'.  In some cases
+> the datasheets even refer to them as taps up or taps down.
+> 
+> I don't think we've ever said if it should be consistent as you
+> change other parameters.  If you care about calibration you probably
+> need to redo it for your new settings anyway and tweak the calibbias
+> /calibscale till it gives the right values.
+> 
+> Obviously that is easier to do if you have a consistent scheme for
+> a given device and if possible allow calibrating at just one setting
+> but I don't think we can apply general rules.
+> 
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 6c4e74420fd2..e0f9d01ce37d 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -51,9 +51,9 @@ config AD4130
- config AD4695
- 	tristate "Analog Device AD4695 ADC Driver"
- 	depends on SPI
--	select REGMAP_SPI
- 	select IIO_BUFFER
- 	select IIO_TRIGGERED_BUFFER
-+	select REGMAP
- 	help
- 	  Say yes here to build support for Analog Devices AD4695 and similar
- 	  analog to digital converters (ADC).
-diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
-index f36c1a1db886..180a0fd4f03c 100644
---- a/drivers/iio/adc/ad4695.c
-+++ b/drivers/iio/adc/ad4695.c
-@@ -150,6 +150,8 @@ struct ad4695_state {
- 	/* Commands to send for single conversion. */
- 	u16 cnv_cmd;
- 	u8 cnv_cmd2;
-+	/* Buffer for storing data from regmap bus reads/writes */
-+	u8 regmap_bus_data[4];
- };
- 
- static const struct regmap_range ad4695_regmap_rd_ranges[] = {
-@@ -194,7 +196,6 @@ static const struct regmap_config ad4695_regmap_config = {
- 	.max_register = AD4695_REG_AS_SLOT(127),
- 	.rd_table = &ad4695_regmap_rd_table,
- 	.wr_table = &ad4695_regmap_wr_table,
--	.can_multi_write = true,
- };
- 
- static const struct regmap_range ad4695_regmap16_rd_ranges[] = {
-@@ -226,7 +227,67 @@ static const struct regmap_config ad4695_regmap16_config = {
- 	.max_register = AD4695_REG_GAIN_IN(15),
- 	.rd_table = &ad4695_regmap16_rd_table,
- 	.wr_table = &ad4695_regmap16_wr_table,
--	.can_multi_write = true,
-+};
-+
-+static int ad4695_regmap_bus_reg_write(void *context, const void *data,
-+				       size_t count)
-+{
-+	struct ad4695_state *st = context;
-+	struct spi_transfer xfer = {
-+			.speed_hz = AD4695_REG_ACCESS_SCLK_HZ,
-+			.len = count,
-+			.tx_buf = st->regmap_bus_data,
-+	};
-+
-+	if (count > ARRAY_SIZE(st->regmap_bus_data))
-+		return -EINVAL;
-+
-+	memcpy(st->regmap_bus_data, data, count);
-+
-+	return spi_sync_transfer(st->spi, &xfer, 1);
-+}
-+
-+static int ad4695_regmap_bus_reg_read(void *context, const void *reg,
-+				      size_t reg_size, void *val,
-+				      size_t val_size)
-+{
-+	struct ad4695_state *st = context;
-+	struct spi_transfer xfers[] = {
-+		{
-+			.speed_hz = AD4695_REG_ACCESS_SCLK_HZ,
-+			.len = reg_size,
-+			.tx_buf = &st->regmap_bus_data[0],
-+		}, {
-+			.speed_hz = AD4695_REG_ACCESS_SCLK_HZ,
-+			.len = val_size,
-+			.rx_buf = &st->regmap_bus_data[2],
-+		},
-+	};
-+	int ret;
-+
-+	if (reg_size > 2)
-+		return -EINVAL;
-+
-+	if (val_size > 2)
-+		return -EINVAL;
-+
-+	memcpy(&st->regmap_bus_data[0], reg, reg_size);
-+
-+	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-+	if (ret)
-+		return ret;
-+
-+	memcpy(val, &st->regmap_bus_data[2], val_size);
-+
-+	return 0;
-+}
-+
-+static const struct regmap_bus ad4695_regmap_bus = {
-+	.write = ad4695_regmap_bus_reg_write,
-+	.read = ad4695_regmap_bus_reg_read,
-+	.read_flag_mask = 0x80,
-+	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
-+	.val_format_endian_default = REGMAP_ENDIAN_BIG,
- };
- 
- static const struct iio_chan_spec ad4695_channel_template = {
-@@ -1040,15 +1101,14 @@ static int ad4695_probe(struct spi_device *spi)
- 	if (!st->chip_info)
- 		return -EINVAL;
- 
--	/* Registers cannot be read at the max allowable speed */
--	spi->max_speed_hz = AD4695_REG_ACCESS_SCLK_HZ;
--
--	st->regmap = devm_regmap_init_spi(spi, &ad4695_regmap_config);
-+	st->regmap = devm_regmap_init(dev, &ad4695_regmap_bus, st,
-+				      &ad4695_regmap_config);
- 	if (IS_ERR(st->regmap))
- 		return dev_err_probe(dev, PTR_ERR(st->regmap),
- 				     "Failed to initialize regmap\n");
- 
--	st->regmap16 = devm_regmap_init_spi(spi, &ad4695_regmap16_config);
-+	st->regmap16 = devm_regmap_init(dev, &ad4695_regmap_bus, st,
-+					&ad4695_regmap_config);
- 	if (IS_ERR(st->regmap16))
- 		return dev_err_probe(dev, PTR_ERR(st->regmap16),
- 				     "Failed to initialize regmap16\n");
+Thanks for the clarification.
 
--- 
-2.39.5
+> Jonathan
+> 
+>>
+>>> add 10% to the measured raw value). Read, the _raw attribute again,
+>>> call it raw0_with_caliscale.
+>>>
+>>> This time, we should have (raw0_with_caliscale + offset0) * scale0
+>>> = 1100 mV (+/- some noise).
+>>>
+>>> Set _calibscale back to 0. Then set _oversampling_ratio to 2. Read
+>>> _scale and _offset again, call these scale1 and offset1.
+>>>
+>>> Then repeat the steps above using scale1 and offset1 in the
+>>> calculations. The raw values will be different but the resulting
+>>> processed values (mV) should all be the same if the attributes
+>>> are implemented correctly.
+>>>   
+> 
 
 

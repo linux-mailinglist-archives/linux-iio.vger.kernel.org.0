@@ -1,195 +1,110 @@
-Return-Path: <linux-iio+bounces-12138-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12139-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB829C4253
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 17:03:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BCF9C42CE
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 17:42:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEDB9288428
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 16:03:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7C14284029
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 16:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304E119E836;
-	Mon, 11 Nov 2024 16:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5458D1A303C;
+	Mon, 11 Nov 2024 16:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Lnui4sA0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMt+8H06"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560B01448C1
-	for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 16:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1EF1A0B13;
+	Mon, 11 Nov 2024 16:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731341006; cv=none; b=LQiGsbrm3rfw54comu7vYSiKJFOtErxp2Fxg0QxVEPOwu7uzffBhPb/JkI3CPRrCCihlJd772mkJj1FCb3KzU53GUDWrkNSuRYSq24Voee8BAzmGBU1Ig7v0iz+x0W5IG7Z1NhrLkPEupR3KaQLFM7/DfjvFEIdLpsz4qMRhooE=
+	t=1731343232; cv=none; b=MRqnJ6XiKjKtY9nNarI6/k3HODRTYtZXvsGLClIm/QbauV7UXvRsAvRURi8c96ldRJTTWPK486C5vFnRPb0/kjTJ/x40mVEiV5rkIKgBB42YHgaKAjQMpQglIPcrUHk5HZK8N7PPJmwUJqUo9EVWtUVPH38fgO1zR5pgJvqDZQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731341006; c=relaxed/simple;
-	bh=RMcY9dVuvJYHvQZXGJIyg3WpxmaCxUvAXlj08zgoK68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n9fto45ycqE8DQMUOeVrG29HgXlQ/sGjFpWkOCqCYTj9es08zc/B0DwHNxwilqQvWX4sufeoZKhqf/vK6NAFOFpZDE+2/H2mftTEyk/3DLNlgyrmd7GZTFVLLMzlGynKej8FkEwifau5B15Xks8yhS4j9WpkZ3uqjXxwFm4BCZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Lnui4sA0; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2887326be3dso2068169fac.1
-        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 08:03:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731341003; x=1731945803; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/N8FbaMperQCZPDQIvnd2hsxjkQB8NICoW/WVIIrTK0=;
-        b=Lnui4sA0SdPqgX+jj232OiFg5LQJpy1v55VAzh9LzELrJeBO+uIRTmtzuqzaKZ3hAZ
-         /DDAXyIeA0/uRBhqXe2IIboB3huMGBih5a+DQdr9sA0MouBcq34kyD0TNfqH29EobLh+
-         TYp1+lLPW0+YneSm6R+FLrBeF5o5ARgkUI1fgSa056+jR4Mvsr8B1f0lk0QhCjSQXo3z
-         /AtrjYULnpTtlNE+yZVRvx7MqZkxQN9ZJ2xFZG6pnOHZGWbod/rzXqqP0+8Y5VorkW48
-         AvMxqN3FChnc1aBSSSPZSBzA8aDDsxs/aj2MkOUEOmto4YkeYZJ9C04J0DPWYuPt98ul
-         OumA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731341003; x=1731945803;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/N8FbaMperQCZPDQIvnd2hsxjkQB8NICoW/WVIIrTK0=;
-        b=GpDolv44dDdBxNnZYN+VE0uwF2vpSSzk8ULFH85jFH2VX1tcP6mcOxlDclXnvUvjXp
-         7BILrnoyI8dZtxISVlcwsBPrt7S/mViKCJYYQOToPk996c1bHGvrgtEpJP77sXCmrwgP
-         LIE7xKjNbbKlOkgCvabgoRzuidGEkNbnBdK79VhIpHyXm7WZIlprf+r+oij/qPZRXzVS
-         IvvcBMFP4Vdc0qZ4oydNNmXj5Tf1X0HpkgqzsO+5WWGlxDWd1laswEzy+PhM4jhC0hdy
-         j0lHpcIfTlQNJKsz2P7O9VMzgKqBcuyoZiC3M953bttiCXqNjjt1AfrJeLmr/iIGrci4
-         5P2g==
-X-Forwarded-Encrypted: i=1; AJvYcCW9HDzWe2STmdulsQcFp2bbnTG/FhC6wCXDUUoChp+A9Fikj81vxKnsK0e8xk4QZRP2+pP6Pc7xW0w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt7qpu2eJyeDdmrukYfbB7y3FKEp8YzurZZ65X77UspX3ND5on
-	2mQ8K3wNNFvAB6DjMNjRzJC3LSQ+SC0hEBj4h04q6OBbPoXX8dvRfYy9QlsGlpE=
-X-Google-Smtp-Source: AGHT+IEeMYF9fjp84gVQ5HjlsLWjQNij4qGsNBDmcSGf6EKVQAKNreK+WhsXtiaTLQ9OQ1rpyf+sQA==
-X-Received: by 2002:a05:6871:582a:b0:270:2c3:f362 with SMTP id 586e51a60fabf-2956027f6e9mr10361835fac.32.1731341003314;
-        Mon, 11 Nov 2024 08:03:23 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29546cf44cesm2825954fac.21.2024.11.11.08.03.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Nov 2024 08:03:21 -0800 (PST)
-Message-ID: <182b9144-9a68-4e60-9a1b-4284731ab367@baylibre.com>
-Date: Mon, 11 Nov 2024 10:03:21 -0600
+	s=arc-20240116; t=1731343232; c=relaxed/simple;
+	bh=4+LfvrNrOJzDJzYO94ZEFGs1qWzyzDFuwT9KH8sin3s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lt7jsKWyzx2mKtW1CCvnRGjdrL4afPW1s5Sil2PlXpDa8kOzDwAEBp2JVYh6DyiO5CeKO/BkbE5cXgjfU0shxHwOsIkF0xDo/0seQSvPje+LRx2LRWgkU+fLVv+mHpgoNuvk+8gj9+/G6c9q3uT8ogFM0xJkS/Att5h9SucVYf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMt+8H06; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A88BC4CECF;
+	Mon, 11 Nov 2024 16:40:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731343231;
+	bh=4+LfvrNrOJzDJzYO94ZEFGs1qWzyzDFuwT9KH8sin3s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SMt+8H06+j+UMFnKWqdWYpA/uT0dG5C32IVkPJFy1ekeDpFk/xR3CP19Bas/1t/HQ
+	 HIGWbBx78ZPGrWAA1EMeBKidsMpzoBFLN4Xvj4evuMC2bwtwpvyv2McSfZyxFS7eq+
+	 vlSAD0fCzCgCbZHDUFrPMoNRCFi/VRY+YgVU5QpcdDRbe8+cBz0kDx/2Yl1czjc0xO
+	 SuBfQMWBaqi2nLzFN4i9aiBK0r3cdDSLyj8lv2mpkur8WkwW3u/WWdZCjsFKRS84Y/
+	 Q2JOn4aJALdnlrPXu8mnW5P5sNdg+zkwiIAFs9g8LbOO48J+I35rggVV3eQdHJ4iTW
+	 0cyGV/M5pj5LA==
+Date: Mon, 11 Nov 2024 16:40:24 +0000
+From: Lee Jones <lee@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Cc: Stanislav Jakubek <stano.jakubek@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Sebastian Reichel <sre@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-rtc@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] dt-bindings: mfd: sprd,sc2731: reference
+ sprd,sc2731-efuse bindings
+Message-ID: <20241111164024.GC8552@google.com>
+References: <efd200c3b5b75405e4e450d064b026f10ae2f8e0.1730709384.git.stano.jakubek@gmail.com>
+ <cd8cc95b59c31418b174bba521dd2599a7929fda.1730709384.git.stano.jakubek@gmail.com>
+ <20241106090509.GL1807686@google.com>
+ <20241107155806.GA2774753-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 6/6] iio: adc: ad4851: add ad485x driver
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-References: <20241101112358.22996-1-antoniu.miclaus@analog.com>
- <20241101112358.22996-7-antoniu.miclaus@analog.com>
- <de120709-b60b-4e85-912e-b60ca18a8001@baylibre.com>
- <CY4PR03MB339993CDE9BA8DD3976CF2F29B5C2@CY4PR03MB3399.namprd03.prod.outlook.com>
- <1f2b8d91-19be-46b7-9202-824aa177dff6@baylibre.com>
- <146a24a7-d7a1-4969-98c0-f621a1709dd7@baylibre.com>
- <20241109153946.4f4df9d2@jic23-huawei>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20241109153946.4f4df9d2@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241107155806.GA2774753-robh@kernel.org>
 
-On 11/9/24 9:39 AM, Jonathan Cameron wrote:
-> On Thu, 7 Nov 2024 10:47:52 -0600
-> David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 07 Nov 2024, Rob Herring wrote:
+
+> On Wed, Nov 06, 2024 at 09:05:09AM +0000, Lee Jones wrote:
+> > On Mon, 04 Nov 2024, Stanislav Jakubek wrote:
+> > 
+> > > Directly reference the sc2731-efuse bindings to simplify the schema.
+> > > Remove the duplicate example from the efuse bindings.
+> > > 
+> > > Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
+> > > ---
+> > > Changes in V3:
+> > > - new patch due to a missing dependency in the MFD tree 
+> > > 
+> > > Link to V2: https://lore.kernel.org/lkml/ZyExK01iprBHhGm6@standask-GA-A55M-S2HP/
+> > > Link to V1: https://lore.kernel.org/lkml/Zr3X1RoQs7ElTnlJ@standask-GA-A55M-S2HP/
+> > > 
+> > >  .../devicetree/bindings/mfd/sprd,sc2731.yaml  | 10 +------
+> > >  .../bindings/nvmem/sprd,sc2731-efuse.yaml     | 29 -------------------
+> > 
+> > Srini, you happy for this to go in via MFD?
 > 
->> On 11/7/24 10:13 AM, David Lechner wrote:
->>> On 11/7/24 4:51 AM, Miclaus, Antoniu wrote:  
->>
->>
->>>>> I'm pretty sure that calibscale and calibbias also need to take into
->>>>> account if resolution boost is enabled or not.  
->>>>
->>>> Can you please detail a bit on this topic? I am not sure what I should do.
->>>>  
->>>
->>> We haven't implemented oversampling yet in ad4695 yet, so I don't know
->>> exactly what we need to do either. ;-)
->>>
->>> But this is how I would test it to see if it is working correctly or
->>> not. We will need to test this with a 20-bit chip since that is the
->>> only one that will change the _scale attribute when oversampling is
->>> enabled.
->>>
->>> First, with oversampling disabled (_oversampling_ratio = 1), generate
->>> a constant voltage of 1V for the input. Read the _raw attribute. Let's
->>> call this value raw0. Read the _scale attribute, call it scale0 and
->>> the _offset attribute, call it offset0.
->>>
->>> Then we should have (raw0 + offset0) * scale0 = 1000 mV (+/- some
->>> noise).
->>>
->>> Then change the offset calibrate to 100 mV. To do this, we reverse
->>> the calculation 100 mV / scale0 = calibbias (raw units). Write the
->>> raw value to the _calibbias attribute. Then read the _raw
->>> attribute again, call it raw0_with_calibbias.
->>>
->>> This time, we should have (raw0_with_calibbias + offset0) * scale0
->>> = 1100 mV (+/- some noise).
->>>
->>> Then set _calibbias back to 0 and repeat the above by setting the
->>> _calibscale attribute to 0.90909 (this is 1 / 1.1, which should  
->>
-
-After a bit more testing, I realized I was testing with a
-differential channel, this math only applies to that.
-
-For a single ended channel, applying a calibscale of 1.1 with
-a generated signal of 1V will cause the measured value to change
-from 1V to 1.1V as one might expect.
-
-
->> Now that I have written this, this has me second-guessing if I
->> implemented calibscale correctly on ad4695. It would seem more
->> logical that if we have an actual input voltage of 1 V and a
->> calibscale of 1.1, then the resulting processed value we read
->> should be 1100 mV.
->>
->> Jonathan, can you set me straight? The sysfs ABI docs aren't
->> clear on this point.
+> Can you? AIUI, you don't have nvmem/sprd,sc2731-efuse.yaml in your tree.
 > 
-> Deliberately vague in this case.  calibbias is kind of the wild west
-> of ABI. Often we have no meaningful information on what the tweak
-> register settings actually do beyond 'up vs down'.  In some cases
-> the datasheets even refer to them as taps up or taps down.
-> 
-> I don't think we've ever said if it should be consistent as you
-> change other parameters.  If you care about calibration you probably
-> need to redo it for your new settings anyway and tweak the calibbias
-> /calibscale till it gives the right values.
-> 
-> Obviously that is easier to do if you have a consistent scheme for
-> a given device and if possible allow calibrating at just one setting
-> but I don't think we can apply general rules.
-> 
+> So take patch 1 now and this one will have to go next cycle.
 
-Thanks for the clarification.
+Works for me.
 
-> Jonathan
-> 
->>
->>> add 10% to the measured raw value). Read, the _raw attribute again,
->>> call it raw0_with_caliscale.
->>>
->>> This time, we should have (raw0_with_caliscale + offset0) * scale0
->>> = 1100 mV (+/- some noise).
->>>
->>> Set _calibscale back to 0. Then set _oversampling_ratio to 2. Read
->>> _scale and _offset again, call these scale1 and offset1.
->>>
->>> Then repeat the steps above using scale1 and offset1 in the
->>> calculations. The raw values will be different but the resulting
->>> processed values (mV) should all be the same if the attributes
->>> are implemented correctly.
->>>   
-> 
-
+-- 
+Lee Jones [李琼斯]
 

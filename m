@@ -1,110 +1,151 @@
-Return-Path: <linux-iio+bounces-12139-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12140-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BCF9C42CE
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 17:42:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3A09C4354
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 18:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7C14284029
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 16:41:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CEA1F21B81
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 17:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5458D1A303C;
-	Mon, 11 Nov 2024 16:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1181A9B32;
+	Mon, 11 Nov 2024 17:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMt+8H06"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vP/sPaGN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1EF1A0B13;
-	Mon, 11 Nov 2024 16:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B931A725A
+	for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 17:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731343232; cv=none; b=MRqnJ6XiKjKtY9nNarI6/k3HODRTYtZXvsGLClIm/QbauV7UXvRsAvRURi8c96ldRJTTWPK486C5vFnRPb0/kjTJ/x40mVEiV5rkIKgBB42YHgaKAjQMpQglIPcrUHk5HZK8N7PPJmwUJqUo9EVWtUVPH38fgO1zR5pgJvqDZQA=
+	t=1731345247; cv=none; b=TE8tvP1lPyBMzu1LOXYUoMyX+TObUgC/Y93gw4ckzTg9yySOjp/v/uQlZPDZbTUzKwlrjDlusYNfLvXtmUshRj2u0/9WdgKPrq4K+oO83RsdUXOuhd+BNuSig4jpLzNeURGP6KqC8mM+olGxD3DcfTPsJOQ5M0rKhpT/0jeBD/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731343232; c=relaxed/simple;
-	bh=4+LfvrNrOJzDJzYO94ZEFGs1qWzyzDFuwT9KH8sin3s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lt7jsKWyzx2mKtW1CCvnRGjdrL4afPW1s5Sil2PlXpDa8kOzDwAEBp2JVYh6DyiO5CeKO/BkbE5cXgjfU0shxHwOsIkF0xDo/0seQSvPje+LRx2LRWgkU+fLVv+mHpgoNuvk+8gj9+/G6c9q3uT8ogFM0xJkS/Att5h9SucVYf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMt+8H06; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A88BC4CECF;
-	Mon, 11 Nov 2024 16:40:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731343231;
-	bh=4+LfvrNrOJzDJzYO94ZEFGs1qWzyzDFuwT9KH8sin3s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SMt+8H06+j+UMFnKWqdWYpA/uT0dG5C32IVkPJFy1ekeDpFk/xR3CP19Bas/1t/HQ
-	 HIGWbBx78ZPGrWAA1EMeBKidsMpzoBFLN4Xvj4evuMC2bwtwpvyv2McSfZyxFS7eq+
-	 vlSAD0fCzCgCbZHDUFrPMoNRCFi/VRY+YgVU5QpcdDRbe8+cBz0kDx/2Yl1czjc0xO
-	 SuBfQMWBaqi2nLzFN4i9aiBK0r3cdDSLyj8lv2mpkur8WkwW3u/WWdZCjsFKRS84Y/
-	 Q2JOn4aJALdnlrPXu8mnW5P5sNdg+zkwiIAFs9g8LbOO48J+I35rggVV3eQdHJ4iTW
-	 0cyGV/M5pj5LA==
-Date: Mon, 11 Nov 2024 16:40:24 +0000
-From: Lee Jones <lee@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Stanislav Jakubek <stano.jakubek@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-rtc@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] dt-bindings: mfd: sprd,sc2731: reference
- sprd,sc2731-efuse bindings
-Message-ID: <20241111164024.GC8552@google.com>
-References: <efd200c3b5b75405e4e450d064b026f10ae2f8e0.1730709384.git.stano.jakubek@gmail.com>
- <cd8cc95b59c31418b174bba521dd2599a7929fda.1730709384.git.stano.jakubek@gmail.com>
- <20241106090509.GL1807686@google.com>
- <20241107155806.GA2774753-robh@kernel.org>
+	s=arc-20240116; t=1731345247; c=relaxed/simple;
+	bh=3Q6uao6+hgf+7cigQULGQb1eC8zzAjVmlImprrPNtzA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rO361aYcRt8BLvpLX3RpN0VCpE9uKcQcanmPLv/vOG6bkM5clyYsEclfnHCwo0m/QzZSlMzaD0mm0zR3hUxDzm5yAcEHdVUJEShrTTM64wPJZXfjPdvTxZkUprJcgzR477/qFs0/1L8K4GTIHemGC0pjexj8mBfywU5zJCu5OCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vP/sPaGN; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5ebc0c05e25so2293167eaf.3
+        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 09:14:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731345245; x=1731950045; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xHhQX9dLBXKUZ4ddho1L9OkyErwYL/K98ij6HZC9tXE=;
+        b=vP/sPaGNvx7/JZ2s6B8A3tuoVFOk/HmiRoDniCZKagcUlX9iJR0+hb+aamlmx37RJM
+         SGW9214YoxjwmpqcMY/+ILdA22HOoJXJR9R/odOWP+qAdLv1kx4Rza8TgdzPX+gcnuDY
+         /Zi+zF1AUi0hbNurxi1Oe5sSqc+y6t42l4uaoaYsEggtNCN4xMHHSujI69GsimI0YFD/
+         RZCAnV1LZ4na/f543PWameCQAdjofAlMQU1IYlAf2per7vnyg6EQyj49LfI/YZnIY2ai
+         YkxorNwTaslEz8f4S1RvTWxM9tk//XvDDzepqXsCLBH34H0iR3EAmNl6Pve8xxhe+KWD
+         a7dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731345245; x=1731950045;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xHhQX9dLBXKUZ4ddho1L9OkyErwYL/K98ij6HZC9tXE=;
+        b=A0w1DDBgqE9CPyvlNG+Al5nZ7sYzFz2JB9XGfyeij6z/9goMnIhyPW3I4ZlvOB0eFB
+         ReBTlcoK7KgltdJlfPBeZUKaSHBCAvW7mgxYzqjHnrx9Hv0o2TDKSZzbOHIVwxg8bE3F
+         kgZCJ1Ziv/X86wwLcKYOs+oKH6FmAgk37X8LuH+t8BEU57UU4aGARm3mjsHA7xe/wW7K
+         u9lMc4UGzeByV1QMwNxa0M+7g8CI+6mOrX0N/kno3Lip31k+/gcy+cHNcQ7P89voBllb
+         aC5oaOGlMLYsvNaW/Xj6yQEfMX1x+aMcFytP8w1AuwI2tOtZ1iMdeaH+YmAcxEtAjQat
+         ItZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVGbJqQF9bYeanB+2dNUAxZgjaSA4/EZBPdsaZU5GhC9qYGWx8kqVqmCuieQUk6GEoviLcUiWJ6nY0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAfhM/zXq0YUvw2ihN6iE2OhVggmuBxOhscny4fRJfXCeSJMrO
+	NERQKMxneSVMHjNGm2n09m5fhK8QXxOiM+k6Hj0zlK/7d0oP6IqUrlvIUoVPaeg=
+X-Google-Smtp-Source: AGHT+IF3GCiZjWfr7xWBoGgZ81GYnxm9pAH/iF3fOY2T/R1DiZIJojhpwe+oKLoYI62MFyjsBFrMIQ==
+X-Received: by 2002:a05:6820:1f08:b0:5e1:e748:7ad with SMTP id 006d021491bc7-5ee57c77c36mr8888000eaf.7.1731345244850;
+        Mon, 11 Nov 2024 09:14:04 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5ee496afdd5sm1993171eaf.31.2024.11.11.09.14.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Nov 2024 09:14:03 -0800 (PST)
+Message-ID: <66b3e462-bb17-4806-b991-8f0eb33b1233@baylibre.com>
+Date: Mon, 11 Nov 2024 11:14:01 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241107155806.GA2774753-robh@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v4 02/15] spi: add basic support for SPI offloading
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>,
+ Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com>
+ <20241023-dlech-mainline-spi-engine-offload-2-v4-2-f8125b99f5a1@baylibre.com>
+ <20241026160521.52205cb0@jic23-huawei>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241026160521.52205cb0@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 07 Nov 2024, Rob Herring wrote:
-
-> On Wed, Nov 06, 2024 at 09:05:09AM +0000, Lee Jones wrote:
-> > On Mon, 04 Nov 2024, Stanislav Jakubek wrote:
-> > 
-> > > Directly reference the sc2731-efuse bindings to simplify the schema.
-> > > Remove the duplicate example from the efuse bindings.
-> > > 
-> > > Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
-> > > ---
-> > > Changes in V3:
-> > > - new patch due to a missing dependency in the MFD tree 
-> > > 
-> > > Link to V2: https://lore.kernel.org/lkml/ZyExK01iprBHhGm6@standask-GA-A55M-S2HP/
-> > > Link to V1: https://lore.kernel.org/lkml/Zr3X1RoQs7ElTnlJ@standask-GA-A55M-S2HP/
-> > > 
-> > >  .../devicetree/bindings/mfd/sprd,sc2731.yaml  | 10 +------
-> > >  .../bindings/nvmem/sprd,sc2731-efuse.yaml     | 29 -------------------
-> > 
-> > Srini, you happy for this to go in via MFD?
+On 10/26/24 10:05 AM, Jonathan Cameron wrote:
+> On Wed, 23 Oct 2024 15:59:09 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
 > 
-> Can you? AIUI, you don't have nvmem/sprd,sc2731-efuse.yaml in your tree.
+
+...
+
+>> +struct spi_offload *devm_spi_offload_get(struct device *dev,
+>> +					 struct spi_device *spi,
+>> +					 const struct spi_offload_config *config)
+>> +{
+>> +	struct spi_offload *offload;
+>> +	int ret;
+>> +
+>> +	if (!spi || !config)
+>> +		return ERR_PTR(-EINVAL);
+>> +
+>> +	if (!spi->controller->get_offload)
+>> +		return ERR_PTR(-ENODEV);
+>> +
+>> +	offload = spi->controller->get_offload(spi, config);
 > 
-> So take patch 1 now and this one will have to go next cycle.
+> Why let this return an offload that is already in use?
+> Maybe make that a problem for the spi controller
+> Seems odd to pass it spi then set it later.
+> 
+> I.e. have this return ERR_PTR(-EBUSY);
 
-Works for me.
+I would expect that to effectively be handled by the
+if (IS_ERR(offload)) below. Only the controller can
+know which offloads are already in use, so the callback
+should return the appropriate -EBUSY in that case.
 
--- 
-Lee Jones [李琼斯]
+> 
+> 
+>> +	if (IS_ERR(offload))
+>> +		return offload;
+>> +
+>> +	if (offload->spi)
+>> +		return ERR_PTR(-EBUSY);
+>> +
+>> +	offload->spi = spi;
+>> +	get_device(offload->provider_dev);
+>> +
+>> +	ret = devm_add_action_or_reset(dev, spi_offload_put, offload);
+>> +	if (ret)
+>> +		return ERR_PTR(ret);
+>> +
+>> +	return offload;
+>> +}
+>> +EXPORT_SYMBOL_GPL(devm_spi_offload_get);
+
 

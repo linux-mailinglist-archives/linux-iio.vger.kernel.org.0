@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-12114-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12115-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31ECF9C3B02
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 10:38:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6442C9C3B2C
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 10:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0512282F8A
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 09:38:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB988B22456
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 09:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB031531C5;
-	Mon, 11 Nov 2024 09:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6034715624D;
+	Mon, 11 Nov 2024 09:45:02 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8C9143C72;
-	Mon, 11 Nov 2024 09:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37CF143C72;
+	Mon, 11 Nov 2024 09:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731317905; cv=none; b=iuJQdDSZeHlhOMGON38xDnj+kve2ZSIjVNt7QLp0d4IDHaeqA8xezmjq65tSZDdO5OlWKrSRRd1v2ok7ZdEdS0yVZh5jTqshFuRwl0IgaBPoffRPc7eSs+L5u193ZbDtlhF+3ntNnU0mn7hudelVYCnLDctjsUUDjxwBcd5VmAM=
+	t=1731318302; cv=none; b=vBlNh5QNopoEr36AZxoFWRijZsQx12ZI+d+ZQsCF1Rr7zZfNQBjbpSFHMlnFqkqSX1bBUnhj44+Q3diay6Smcf1aJxvzN7C5SaEej+S/F2xm001Fp6UvkB+Z6fgyEjoTMmczAh+FlzBw4+b5zyyWxw/hjt+0NBP26EU43lVpAhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731317905; c=relaxed/simple;
-	bh=xeAyYEonYfltQhc7TK13Y/TErfyKMLlkw7rNEBEmLZM=;
+	s=arc-20240116; t=1731318302; c=relaxed/simple;
+	bh=fZNzFehdsn1KYuBdyXoOclvk0TirGAtQUi7fLN6E00Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CMUoR/BOcz9HkmXezVcfh/XEMNPsy54Q6giEjP749Fqy4/wrAWUYqNjrhqvTY62jhhSQUcNQhlBF3b1CmDyb+1oKan/LFJ36W1x6MpZr8+BkIMDYvFE/8doX3JvO8eVHyARWT1Pa+X2kXWlnRkElExCwn8jYYAnjUdgsTQx01ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=198.175.65.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=tbb0RbQOohiJTWFxHs/aPYElqBXDxo0+YS0z2AYbEBlowKWbHFjcI/YJJzA7pLrsViU2bChQ4fe5MQKFkBwgqF1kpnXtjO3W7Dc+R+AE8mdoHcFe52RGba4W469a+hXf7kWw9fFYeZk3QPY+EtKF6M+oFyIdXZe/sEaIo8f5Tw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-X-CSE-ConnectionGUID: SHRe0o4mSM2Dbi0HHIojsA==
-X-CSE-MsgGUID: 7TM6ngcORletU/gd1KwUIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="31283510"
+X-CSE-ConnectionGUID: QdeBMHObTxqGGq77nM22kA==
+X-CSE-MsgGUID: MsWjFg1cSiWCavtgXzfRRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30972332"
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="31283510"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 01:38:23 -0800
-X-CSE-ConnectionGUID: vKgxvLnxSW2eLqkX5QZQww==
-X-CSE-MsgGUID: e+5VjbTJS5GlYdx0irgteA==
+   d="scan'208";a="30972332"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 01:45:00 -0800
+X-CSE-ConnectionGUID: /eX76d9LRjOk6/8VeX37PA==
+X-CSE-MsgGUID: UvJCofyfTlmID8eXgH3kkA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,144,1728975600"; 
-   d="scan'208";a="87640065"
+   d="scan'208";a="91926457"
 Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 01:38:20 -0800
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2024 01:44:55 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andy.shevchenko@gmail.com>)
-	id 1tAQsB-0000000DXr3-2uiO;
-	Mon, 11 Nov 2024 11:38:15 +0200
-Date: Mon, 11 Nov 2024 11:38:15 +0200
+	id 1tAQya-0000000DXxa-0N1Q;
+	Mon, 11 Nov 2024 11:44:52 +0200
+Date: Mon, 11 Nov 2024 11:44:51 +0200
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
 To: Aren <aren@peacevolution.org>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -64,15 +64,15 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
 	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 2/6] iio: light: stk3310: handle all remove logic with
- devm callbacks
-Message-ID: <ZzHQh8CV4c2HC4NY@smile.fi.intel.com>
+Subject: Re: [PATCH v4 4/6] iio: light: stk3310: use dev_err_probe where
+ possible
+Message-ID: <ZzHSE9Nrf4YySJrq@smile.fi.intel.com>
 References: <20241102195037.3013934-3-aren@peacevolution.org>
- <20241102195037.3013934-7-aren@peacevolution.org>
- <ZyiGiK6bSd_d0VQ6@smile.fi.intel.com>
- <mlvzaskgxqjfu6yiib2u7m3pczsifsluc4mqnzy6w3xzxblvm6@xrxvvruzftn2>
- <ZzEOqC9dAHCRX5a9@surfacebook.localdomain>
- <qqk4rbx6wxr7vofepk63yvuimavafbiy2srkqx2zvl2kxttlrk@axpphmdxffis>
+ <20241102195037.3013934-11-aren@peacevolution.org>
+ <ZyiIcDaANjxwtCz-@smile.fi.intel.com>
+ <m7x526sv5krgt4t2whn5ykyktoz5u7ihsxv3qa5yue3ucbk6lb@37spwsmlcylm>
+ <ZzEPACoblmcQD9yu@surfacebook.localdomain>
+ <xubjmxig4luag27ifnmqmv3x3bvzhwczwvw34kw6tssaa2d24t@ysnqh5e3g7sz>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,33 +81,99 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <qqk4rbx6wxr7vofepk63yvuimavafbiy2srkqx2zvl2kxttlrk@axpphmdxffis>
+In-Reply-To: <xubjmxig4luag27ifnmqmv3x3bvzhwczwvw34kw6tssaa2d24t@ysnqh5e3g7sz>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Sun, Nov 10, 2024 at 05:37:56PM -0500, Aren wrote:
-> On Sun, Nov 10, 2024 at 09:51:04PM +0200, Andy Shevchenko wrote:
-> > Sun, Nov 10, 2024 at 01:38:39PM -0500, Aren kirjoitti:
-> > > On Mon, Nov 04, 2024 at 10:32:08AM +0200, Andy Shevchenko wrote:
-> > > > On Sat, Nov 02, 2024 at 03:50:37PM -0400, Aren Moynihan wrote:
+On Sun, Nov 10, 2024 at 04:34:30PM -0500, Aren wrote:
+> On Sun, Nov 10, 2024 at 09:52:32PM +0200, Andy Shevchenko wrote:
+> > Sun, Nov 10, 2024 at 02:14:24PM -0500, Aren kirjoitti:
+> > > On Mon, Nov 04, 2024 at 10:40:16AM +0200, Andy Shevchenko wrote:
+> > > > On Sat, Nov 02, 2024 at 03:50:41PM -0400, Aren Moynihan wrote:
 
 ...
 
-> > > > > +	ret = devm_add_action_or_reset(&client->dev, stk3310_set_state_disable, data);
+> > > > >  #define STK3310_REGFIELD(name)						    \
+> > > > >  	do {								    \
+> > > > >  		data->reg_##name =					    \
+> > > > > -			devm_regmap_field_alloc(&client->dev, regmap,	    \
+> > > > > +			devm_regmap_field_alloc(dev, regmap,		    \
+> > > > >  				stk3310_reg_field_##name);		    \
+> > > > > -		if (IS_ERR(data->reg_##name)) {				    \
+> > > > > -			dev_err(&client->dev, "reg field alloc failed.\n"); \
+> > > > > -			return PTR_ERR(data->reg_##name);		    \
+> > > > > -		}							    \
+> > > > > +		if (IS_ERR(data->reg_##name))				    \
 > > > > 
-> > > > Why not simply 'dev' as in below call?
+> > > > > +			return dev_err_probe(dev,			    \
+> > > > > +				PTR_ERR(data->reg_##name),		    \
+> > > > 
+> > > > AFAICS these two can be put on one.
 > > > 
-> > > I was trying to avoid refactoring the entire function to replace
-> > > &client->dev with dev, I'll add a patch for that to the next revision.
+> > > This doesn't leave room for whitespace between the end of line and "\",
 > > 
-> > I'm not talking about refactoring, I'm talking only about the lines that you
-> > have touched / added.
+> > Is it a problem?
 > 
-> Ah right, this one makes sense, my comment should have been on the next
-> patch in this series which is a little more complex. For that patch it
-> seemed inconsistent to use dev only in new code and mix it with calls
-> using &client->dev.
+> It feels a bit camped and not as readable to me:
+> 
+> #define STK3310_REGFIELD(name)						    \
+> 	do {								    \
+> 		data->reg_##name =					    \
+> 			devm_regmap_field_alloc(dev, regmap,		    \
+> 				stk3310_reg_field_##name);		    \
+> 		if (IS_ERR(data->reg_##name))				    \
+> 			return dev_err_probe(dev, PTR_ERR(data->reg_##name),\
+> 					     "reg field alloc failed.\n");  \
+> 	} while (0)
 
-It's fine, you can add a new cleanup patch later on.
+Rather this way (besides the fact of having spaces instead of TABs for
+the last formatting, in such case you even can simply add yet another
+column with spaces):
+
+#define STK3310_REGFIELD(name)								\
+	do {										\
+		data->reg_##name =							\
+			devm_regmap_field_alloc(dev, regmap, stk3310_reg_field_##name);	\
+		if (IS_ERR(data->reg_##name))						\
+			return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
+					     "reg field alloc failed.\n");		\
+	} while (0)
+
+> Removing a level of indentation makes it much better
+
+You can do it differently
+
+#define STK3310_REGFIELD(name)							\
+do {										\
+	data->reg_##name =							\
+		devm_regmap_field_alloc(dev, regmap, stk3310_reg_field_##name);	\
+	if (IS_ERR(data->reg_##name))						\
+		return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
+				     "reg field alloc failed.\n");		\
+} while (0)
+
+> #define STK3310_REGFIELD(name) ({						\
+> 	data->reg_##name = devm_regmap_field_alloc(dev, regmap,			\
+> 						   stk3310_reg_field_##name);   \
+> 	if (IS_ERR(data->reg_##name))						\
+> 		return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
+> 				     "reg field alloc failed\n");		\
+> })
+
+I am against unneeded use of GNU extensions.
+
+> > > replacing "do { } while (0)" with "({ })" and deindenting could make
+> > > enough room to clean this up the formatting of this macro though.
+> > 
+> > do {} while (0) is C standard, ({}) is not.
+> 
+> ({ }) is used throughout the kernel, and is documented as such[1]. I
+> don't see a reason to avoid it, if it helps readability.
+
+I don't see how it makes things better here, and not everybody is familiar with
+the concept even if it's used in the kernel here and there. Also if a tool is
+being used in one case it doesn't mean it's suitable for another.
+
+> 1: the "GNU Extensions" section of Documentation/kernel-hacking/hacking.rst
 
 -- 
 With Best Regards,

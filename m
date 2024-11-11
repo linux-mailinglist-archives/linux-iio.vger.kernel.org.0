@@ -1,203 +1,133 @@
-Return-Path: <linux-iio+bounces-12112-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12113-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACEBD9C3AAD
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 10:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4CA9C3AB4
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 10:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 398681F21F16
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 09:16:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36D401F2203B
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 09:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC4C149C4A;
-	Mon, 11 Nov 2024 09:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B5015D5B8;
+	Mon, 11 Nov 2024 09:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UYkK9Nln"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pVRdtczC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EBB170A1A
-	for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 09:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB6F156F28;
+	Mon, 11 Nov 2024 09:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731316553; cv=none; b=FNJ8u+ZxannhoIM/3rKCN4+lJxRZViFuUrNcaryiuJUjrRmvXTlJwWXruiUOD/IHYPZvZnXGogmiVwv1jhgaKbTRFOgZ8OJtxYRFXs6e7q6LEWc7ceJnuQnGZOeRjmtrSgY//6I8rgTUGiNYNTGR1DFxTDkY0x7+sjcTy5Dy2g4=
+	t=1731316647; cv=none; b=ce4gjUSytLmWrPswJFF522+S7IJBhbuUR4pSZo9wXsRH5nDbwgXeKKunO3EyaBlD8GYRBvUHm2bXGze/HlzBS3kmwER53ZFjT3QLIOjTo/317T1PdEcJdNSIh86MbNfGK5/bn8emdsRnjsB4R5HGGaZ2Ro0vOUu4ZoZ9Zr7iW0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731316553; c=relaxed/simple;
-	bh=4SorxWmczYWyGtKRkGL9aWjQEhQUjC9PUa+Uys2aHLM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Ekh/oqGwNQtIuDH8auUNzQzPd5ngq2wThTVa+rgUbauQTkZrP6XVdQUsIQzFnL0T6/pH2vuRfYr5/omIx3IvSUgIVjNm9tupO2FJVKXGpxA8UK5L3sqEeyOUDpHXO0hoodnHnibI8WEj1Z3YmdLkMWrRYwYBJfdR9IkyC2Cczpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UYkK9Nln; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5cf04f75e1aso5223290a12.1
-        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 01:15:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731316549; x=1731921349; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1VCSi35Pnpy+RJV8R2Tk+aJNEVKY/wjSPAZ8KQBt7fA=;
-        b=UYkK9NlnLYtEhQU4IC9WmAVtu9TI7DoFjmYt9SLEV7o3CgB40/x7mqgfnJ0bgYVT6p
-         +97280ccKhZUkUZmLkQ5AcqT2pO9cIearTIkD7YfLVmIlVpG+RaOUJC5pT92kkRuJJ1U
-         hkB+NQb5ceEXqVwskixwTdJz/6iaJQUBvEJ6ermS/Nb8trFak6rk1yYL/eKuPCVFDNL9
-         spUiP886cWn4rF5X5zfNpf7dSjCVsv/RbX1GxpQ4tArBvgN1PKzkKvv6UeyKKbPPe3XF
-         98bkpw890vWdWUujuBbZ47SUUsXdCtnGBhhbhN0oLArJaYexK8MJ5UbuQYiMjQEr/KZP
-         HCjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731316549; x=1731921349;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1VCSi35Pnpy+RJV8R2Tk+aJNEVKY/wjSPAZ8KQBt7fA=;
-        b=Rkqs1hmqI2KXvqAuwPtyJ4OFucoAS1fspxZBiqYoQ5uS1BJdbJRk1NrvSNNGWjf7Ee
-         VD4JmnleLHk5BrOAeJiMw7swHJITDNkWJRvwkJtgESD7CsEdDAWtrP0WMfXbvGcUD4E7
-         oadZKm4tvQ1OdswMjbR9rc0Bi2VfCGUymRB9jSIyzuhunWme0HybTGIaeWi7Ef/yJ8s8
-         KcOFoae25bUrWgdlQtYZVMrQuqx+9RmorIM04ghNNeFGw0BuRXrlpFk7Axb4pGbghbBZ
-         dZYiT0pmbA6R5xBcXCW8F3MtgYvRnDbozQAZEuSJhb7hJCSWv4L51TIcHiFLJAo8kl0P
-         U5OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/J9/ekcqreMBTKvxYD9F2atN/Sz9iNQdMnLLzbjLTlqVCyllpp8aHtflnu47Hp6Lkg9tVsNOdLI8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU5xO8F9iDNtitx5LX8PAPM48qajXEpo1Hd8tBT4dFFDwecI1B
-	jNkBJ+UttudhQWS1JNVNMZlxKwcYRoXT03RxKVAPne/0XPq9PYO7W/locu40OYA=
-X-Google-Smtp-Source: AGHT+IFVeptHZM3VciSUgGtQ56bFk2XkT0Mi7Rva5vLWFJ1y6IwY1Wq4YpuShO2BdrGmAAe9jorzcA==
-X-Received: by 2002:a17:907:2dab:b0:a99:f975:2e6 with SMTP id a640c23a62f3a-a9eeff3772amr1158164366b.35.1731316548829;
-        Mon, 11 Nov 2024 01:15:48 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0a4c210sm569183966b.78.2024.11.11.01.15.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2024 01:15:48 -0800 (PST)
-Date: Mon, 11 Nov 2024 12:15:45 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	Mircea Caprioru <mircea.caprioru@analog.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibe.com>
-Subject: Re: [PATCH 2/2] iio: adc: ad7124: Refuse invalid input specifiers
-Message-ID: <bb25249b-62b8-4d7f-9ef3-cb5e1f8674ba@stanley.mountain>
+	s=arc-20240116; t=1731316647; c=relaxed/simple;
+	bh=bvrXLF4zRL++tSgKdmvsPNLgopd0QtNTW8oHkkCEVUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qxICbOjNF7XEuGXDYbtnMYBO8toRSTDxqrOxamHzyPa7QhMIbH7OSVNjvfthljthkGkKy19X69rPvSI5u+AJJ9Nyc3s5o68OkS5tTWYcWozHYxgimVcdThjMT1rwq4ttCTrszJ+l2m71r+qhgXuvAcy0ppApBOpdX3u2KetilQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pVRdtczC; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lmrAWTJ7L/f63dhTl0exGT6OOFetDyqzZCpjFqde5yw=; b=pVRdtczCr+5BihoWwU8NqsgQAk
+	8ae+PEFj8hwksRwkfOA05E3VkxsHdGY2ZZvX4+pckC/fMuhsO7NPaaCDTdxk+PSFSt+QYEbcqc5oM
+	yct9C5Ef+ezdKG2Mhhfb29NAe3XcJvHqlMZXuVzZxml/AB/oJBn6hbZYXdkgD2/Y8m0Cg7opGHXuO
+	4xrW2QLnITju03ylaETz+c6Twxl6z7H9Vwjp70DbC3+95V2DpskF+RdQUvxUlXQAal6ZNrceMIZRS
+	wvyhmGhStGlmmRalTBN88XhPnX50UjW9M0my8gtqx/5BJ1JUtZSeuSdJCEPneZu8Oidtfi41MTGxn
+	+unIybRQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tAQXa-0000000CZzr-3YJv;
+	Mon, 11 Nov 2024 09:16:59 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E67FD300472; Mon, 11 Nov 2024 10:16:57 +0100 (CET)
+Date: Mon, 11 Nov 2024 10:16:57 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, megi@xff.cz,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, hpa@zytor.com,
+	linux-kernel@vger.kernel.org,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iio: magnetometer: fix if () scoped_guard() formatting
+Message-ID: <20241111091657.GB22801@noisy.programming.kicks-ass.net>
+References: <20241108154258.21411-1-przemyslaw.kitszel@intel.com>
+ <20241108180243.00000c27@huawei.com>
+ <20241109112741.456ce2f9@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241108181813.272593-6-u.kleine-koenig@baylibre.com>
+In-Reply-To: <20241109112741.456ce2f9@jic23-huawei>
 
-Hi Uwe,
+On Sat, Nov 09, 2024 at 11:27:41AM +0000, Jonathan Cameron wrote:
+> On Fri, 8 Nov 2024 18:02:43 +0000
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> 
+> > On Fri,  8 Nov 2024 16:41:27 +0100
+> > Przemek Kitszel <przemyslaw.kitszel@intel.com> wrote:
+> > 
+> > > From: Stephen Rothwell <sfr@canb.auug.org.au>
+> > > 
+> > > Add mising braces after an if condition that contains scoped_guard().
+> > > 
+> > > This style is both preferred and necessary here, to fix warning after
+> > > scoped_guard() change in commit fcc22ac5baf0 ("cleanup: Adjust
+> > > scoped_guard() macros to avoid potential warning") to have if-else inside
+> > > of the macro. Current (no braces) use in af8133j_set_scale() yields
+> > > the following warnings:
+> > > af8133j.c:315:12: warning: suggest explicit braces to avoid ambiguous 'else' [-Wdangling-else]
+> > > af8133j.c:316:3: warning: add explicit braces to avoid dangling else [-Wdangling-else]
+> > > 
+> > > Fixes: fcc22ac5baf0 ("cleanup: Adjust scoped_guard() macros to avoid potential warning")
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > > Closes: https://lore.kernel.org/oe-kbuild-all/202409270848.tTpyEAR7-lkp@intel.com/
+> > > Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> > > Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> > > ---
+> > > I have forgot to add this patch prior to the cited Fixes: commit,
+> > > so Stephen Rothwell had to reinvent it, in order to fix linux-next.
+> > > original posting by Stephen Rothwell:
+> > > https://lore.kernel.org/lkml/20241028165336.7b46ce25@canb.auug.org.au/
+> > > ---
+> > >  drivers/iio/magnetometer/af8133j.c | 3 ++-
+> > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/iio/magnetometer/af8133j.c b/drivers/iio/magnetometer/af8133j.c
+> > > index d81d89af6283..acd291f3e792 100644
+> > > --- a/drivers/iio/magnetometer/af8133j.c
+> > > +++ b/drivers/iio/magnetometer/af8133j.c
+> > > @@ -312,10 +312,11 @@ static int af8133j_set_scale(struct af8133j_data *data,
+> > >  	 * When suspended, just store the new range to data->range to be
+> > >  	 * applied later during power up.
+> > >  	 */
+> > > -	if (!pm_runtime_status_suspended(dev))
+> > > +	if (!pm_runtime_status_suspended(dev)) {  
+> > 
+> > I thought I replied to say don't do it this way. Ah well probably went astray
+> > as I was having some email issues yesterday.
+> > 
+> Also, for the fixes tag to make sense this will need got through the same tree as
+> that rather than IIO which doesn't have that commit yet.
+> 
+> Given timing I'm fine with this version getting picked up and if I care enough
+> I can chase it with a tidy up to the guard() form next cycle.  
+> 
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
 
-kernel test robot noticed the following build warnings:
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Uwe-Kleine-K-nig/iio-adc-ad7124-Don-t-create-more-channels-than-the-hardware-is-capable-of/20241109-022036
-base:   9852d85ec9d492ebef56dc5f229416c925758edc
-patch link:    https://lore.kernel.org/r/20241108181813.272593-6-u.kleine-koenig%40baylibre.com
-patch subject: [PATCH 2/2] iio: adc: ad7124: Refuse invalid input specifiers
-config: i386-randconfig-141-20241109 (https://download.01.org/0day-ci/archive/20241109/202411090908.Ynrg4eS0-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202411090908.Ynrg4eS0-lkp@intel.com/
-
-smatch warnings:
-drivers/iio/adc/ad7124.c:874 ad7124_parse_channel_config() warn: passing zero to 'dev_err_probe'
-
-vim +/dev_err_probe +874 drivers/iio/adc/ad7124.c
-
-a6eaf02b82744b Jonathan Cameron  2024-02-18  824  static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
-a6eaf02b82744b Jonathan Cameron  2024-02-18  825  				       struct device *dev)
-b3af341bbd9662 Stefan Popa       2018-11-13  826  {
-b3af341bbd9662 Stefan Popa       2018-11-13  827  	struct ad7124_state *st = iio_priv(indio_dev);
-7b8d045e497a04 Alexandru Tachici 2021-03-11  828  	struct ad7124_channel_config *cfg;
-7b8d045e497a04 Alexandru Tachici 2021-03-11  829  	struct ad7124_channel *channels;
-b3af341bbd9662 Stefan Popa       2018-11-13  830  	struct iio_chan_spec *chan;
-b3af341bbd9662 Stefan Popa       2018-11-13  831  	unsigned int ain[2], channel = 0, tmp;
-b3af341bbd9662 Stefan Popa       2018-11-13  832  	int ret;
-b3af341bbd9662 Stefan Popa       2018-11-13  833  
-a6eaf02b82744b Jonathan Cameron  2024-02-18  834  	st->num_channels = device_get_child_node_count(dev);
-a6eaf02b82744b Jonathan Cameron  2024-02-18  835  	if (!st->num_channels)
-a6eaf02b82744b Jonathan Cameron  2024-02-18  836  		return dev_err_probe(dev, -ENODEV, "no channel children\n");
-b3af341bbd9662 Stefan Popa       2018-11-13  837  
-b478bd5e22404e Uwe Kleine-König  2024-11-08  838  	if (st->num_channels > AD7124_MAX_CHANNELS) {
-b478bd5e22404e Uwe Kleine-König  2024-11-08  839  		dev_warn(dev, "Limit number of channels to " __stringify(AD7124_MAX_CHANNELS) "\n");
-b478bd5e22404e Uwe Kleine-König  2024-11-08  840  		st->num_channels = AD7124_MAX_CHANNELS;
-b478bd5e22404e Uwe Kleine-König  2024-11-08  841  	}
-b478bd5e22404e Uwe Kleine-König  2024-11-08  842  
-b3af341bbd9662 Stefan Popa       2018-11-13  843  	chan = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
-b3af341bbd9662 Stefan Popa       2018-11-13  844  			    sizeof(*chan), GFP_KERNEL);
-b3af341bbd9662 Stefan Popa       2018-11-13  845  	if (!chan)
-b3af341bbd9662 Stefan Popa       2018-11-13  846  		return -ENOMEM;
-b3af341bbd9662 Stefan Popa       2018-11-13  847  
-7b8d045e497a04 Alexandru Tachici 2021-03-11  848  	channels = devm_kcalloc(indio_dev->dev.parent, st->num_channels, sizeof(*channels),
-7b8d045e497a04 Alexandru Tachici 2021-03-11  849  				GFP_KERNEL);
-7b8d045e497a04 Alexandru Tachici 2021-03-11  850  	if (!channels)
-1478a388f4baaa Mircea Caprioru   2019-06-25  851  		return -ENOMEM;
-1478a388f4baaa Mircea Caprioru   2019-06-25  852  
-b3af341bbd9662 Stefan Popa       2018-11-13  853  	indio_dev->channels = chan;
-b3af341bbd9662 Stefan Popa       2018-11-13  854  	indio_dev->num_channels = st->num_channels;
-7b8d045e497a04 Alexandru Tachici 2021-03-11  855  	st->channels = channels;
-b3af341bbd9662 Stefan Popa       2018-11-13  856  
-a6eaf02b82744b Jonathan Cameron  2024-02-18  857  	device_for_each_child_node_scoped(dev, child) {
-a6eaf02b82744b Jonathan Cameron  2024-02-18  858  		ret = fwnode_property_read_u32(child, "reg", &channel);
-b3af341bbd9662 Stefan Popa       2018-11-13  859  		if (ret)
-a6eaf02b82744b Jonathan Cameron  2024-02-18  860  			return ret;
-b3af341bbd9662 Stefan Popa       2018-11-13  861  
-a6eaf02b82744b Jonathan Cameron  2024-02-18  862  		if (channel >= indio_dev->num_channels)
-a6eaf02b82744b Jonathan Cameron  2024-02-18  863  			return dev_err_probe(dev, -EINVAL,
-f2a772c51206b0 Jonathan Cameron  2021-05-13  864  				"Channel index >= number of channels\n");
-f2a772c51206b0 Jonathan Cameron  2021-05-13  865  
-a6eaf02b82744b Jonathan Cameron  2024-02-18  866  		ret = fwnode_property_read_u32_array(child, "diff-channels",
-b3af341bbd9662 Stefan Popa       2018-11-13  867  						     ain, 2);
-b3af341bbd9662 Stefan Popa       2018-11-13  868  		if (ret)
-a6eaf02b82744b Jonathan Cameron  2024-02-18  869  			return ret;
-b3af341bbd9662 Stefan Popa       2018-11-13  870  
-4112b30ba58b5c Uwe Kleine-König  2024-11-08  871  		if (!ad7124_valid_input_select(ain[0], st->chip_info) ||
-4112b30ba58b5c Uwe Kleine-König  2024-11-08  872  		    !ad7124_valid_input_select(ain[1], st->chip_info))
-4112b30ba58b5c Uwe Kleine-König  2024-11-08  873  			return dev_err_probe(dev, ret,
-
-s/ret/-EINVAL/?
-
-4112b30ba58b5c Uwe Kleine-König  2024-11-08 @874  					     "diff-channels property of %pfwP contains invalid data\n", child);
-4112b30ba58b5c Uwe Kleine-König  2024-11-08  875  
-7b8d045e497a04 Alexandru Tachici 2021-03-11  876  		st->channels[channel].nr = channel;
-7b8d045e497a04 Alexandru Tachici 2021-03-11  877  		st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
-b3af341bbd9662 Stefan Popa       2018-11-13  878  						  AD7124_CHANNEL_AINM(ain[1]);
-7b8d045e497a04 Alexandru Tachici 2021-03-11  879  
-61cbfb5368dd50 Dumitru Ceclan    2024-08-06  880  		cfg = &st->channels[channel].cfg;
-a6eaf02b82744b Jonathan Cameron  2024-02-18  881  		cfg->bipolar = fwnode_property_read_bool(child, "bipolar");
-b3af341bbd9662 Stefan Popa       2018-11-13  882  
-a6eaf02b82744b Jonathan Cameron  2024-02-18  883  		ret = fwnode_property_read_u32(child, "adi,reference-select", &tmp);
-b3af341bbd9662 Stefan Popa       2018-11-13  884  		if (ret)
-7b8d045e497a04 Alexandru Tachici 2021-03-11  885  			cfg->refsel = AD7124_INT_REF;
-b3af341bbd9662 Stefan Popa       2018-11-13  886  		else
-7b8d045e497a04 Alexandru Tachici 2021-03-11  887  			cfg->refsel = tmp;
-b3af341bbd9662 Stefan Popa       2018-11-13  888  
-a6eaf02b82744b Jonathan Cameron  2024-02-18  889  		cfg->buf_positive =
-a6eaf02b82744b Jonathan Cameron  2024-02-18  890  			fwnode_property_read_bool(child, "adi,buffered-positive");
-a6eaf02b82744b Jonathan Cameron  2024-02-18  891  		cfg->buf_negative =
-a6eaf02b82744b Jonathan Cameron  2024-02-18  892  			fwnode_property_read_bool(child, "adi,buffered-negative");
-0eaecea6e4878a Mircea Caprioru   2019-06-25  893  
-d7857e4ee1ba69 Alexandru Tachici 2019-12-20  894  		chan[channel] = ad7124_channel_template;
-d7857e4ee1ba69 Alexandru Tachici 2019-12-20  895  		chan[channel].address = channel;
-d7857e4ee1ba69 Alexandru Tachici 2019-12-20  896  		chan[channel].scan_index = channel;
-d7857e4ee1ba69 Alexandru Tachici 2019-12-20  897  		chan[channel].channel = ain[0];
-d7857e4ee1ba69 Alexandru Tachici 2019-12-20  898  		chan[channel].channel2 = ain[1];
-b3af341bbd9662 Stefan Popa       2018-11-13  899  	}
-b3af341bbd9662 Stefan Popa       2018-11-13  900  
-b3af341bbd9662 Stefan Popa       2018-11-13  901  	return 0;
-b3af341bbd9662 Stefan Popa       2018-11-13  902  }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Thanks, I'll stick it in the locking tree then.
 

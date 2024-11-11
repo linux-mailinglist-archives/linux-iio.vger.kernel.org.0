@@ -1,139 +1,130 @@
-Return-Path: <linux-iio+bounces-12119-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12129-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C5F9C3E0D
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 13:12:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D16C9C40CB
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 15:22:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22B011C219A3
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 12:12:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51504282BDB
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Nov 2024 14:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E02819C55E;
-	Mon, 11 Nov 2024 12:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649951A2645;
+	Mon, 11 Nov 2024 14:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2V1xs4YS"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AFHYuwSH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383CB55C29
-	for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 12:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1271A0737
+	for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 14:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731327143; cv=none; b=mnbU8Ig258UJtetXIWAzhp8OZCaBblnRAF4MPVd6sYfSDy8QsjwZLnUAplzFJOrM6EzO+qCpfM0vK7LZMS1int0gg6uhwebWrSRERe/Pr1YkPdd0l2cY+z/ATKVtZzbAtvtpn5nlFpsVetIjqTnvq2WPdFzOkS91oCNlQRb4Gfc=
+	t=1731334911; cv=none; b=mEC8DnZoDr0LDOS8UyiVuxSwdllwUjYp2c+YZ14jU7VcXsTvNozk4R4MJPrzsiTLpgljFnYwPhsDVBcJF6jU70E+93XgkdihiOP6tTQVBFR1a5s3B+V5lRKhVnM0NKuwTJPMkSxZxe9j+zUU3RumxPTStFt2iNSpDwyqfsf6g3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731327143; c=relaxed/simple;
-	bh=MYPFJ/QHuhRFvZR1gxMo8eXaZCjaRP6tLWd2q3gcNcc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PqK3gvXWe4BpzFF7meJ6wM4nVMzh1FoR3WVdqcLfFgiYQp2flZh3Ry4GaOUlhDiPBY+z6XrTGdHtMlSyUUkueG+mAcWthDjO0J7y0b9ddn55NRem0Y5Gopshq/PaEo+eAz2T7skra59JBYhfcJbr1Nc/kzLs4iraYczzarbQQ+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2V1xs4YS; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1731334911; c=relaxed/simple;
+	bh=sXs4BHvFeo0Y3ulkHWsHHmqqUYuxQyte2TAFTyzb7v0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OWOs3WgsnoJEEsNPt9qkmnoZiERCqZnCIawbUK2bkuoYOiilXdMHNph21Wz7BFIfswR8s3Q/pa8ks60KqgySb/vLLlCfIpYmCelX9GZU/0B5Ho7YmMwKLxMTDVKhorsGADv8N3M9rBNObkiUsFoEKphu4wXGl5SFxaPWRwUBFPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AFHYuwSH; arc=none smtp.client-ip=209.85.210.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-431548bd1b4so37262585e9.3
-        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 04:12:21 -0800 (PST)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7181a8af549so2832284a34.2
+        for <linux-iio@vger.kernel.org>; Mon, 11 Nov 2024 06:21:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731327139; x=1731931939; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xs+3Bmk7/ET8ZIXxUWywxy47jkhQeABRqUPAmW38Cw0=;
-        b=2V1xs4YSfvzgAHTu3ddY7aQXSHINjseTy6sppFujC1yV7TgLUcOG7MybzZkXCItt4E
-         Gfn7bxr1wm9dsHuRJzwXHQ6Wy9z00AzfZufLUUlcOg0X4Ah2J2wWCMUv5UAF9Xu344tU
-         16OfxyzABgAM0zLlqui5OPtHK4B/9vqkCFiEuYDAFM/3qVnUxxw0eLmNsFjvv47xrNzs
-         Dbtl/+vaHbCRRrIGV18ehAG5r7jCttQmozPggvfs0cxqnseFFqt0UMtw+IA+PbuQ+hCh
-         B8femclRdXtoSk6Gvn1LK5rRySN3wGtVNLjhJLsIgJEmZO3aQiPfVsDkOULWofhE+dPf
-         yKEA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731334908; x=1731939708; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HctBMgT84vBY4hzxiEZh7IsHrKp0XhtLMHme3Byg9B4=;
+        b=AFHYuwSHkLOjleYo12O6HpOQ1zq8ctfn8d3wHhdhlREz/FNOVTNRkIAPh8QUP1lTBc
+         IvNTjwsr1bC4N3QamFxcRMzMPpblwO3rQgVSjcYYUyhY5vLylWbioSBAcAPFVtWeMgXG
+         Ro+gyZ0iOAdMVQbdyhU7WG9bStj4Qlj/jBqdBzqcwzHBwLWF1Foiy1Qiyzl0fZMiUimD
+         7kNSh/o3EdjD11iKKTi7S2dO8irH+dW/X9yWnGHpJLRfBlQmEptnytoqac9JM6fOwt6D
+         pkT6dO0JideppueNRZ2fdd1bMLKjZIbeG9LcrmzxqGRxDWBeET9NIwe4EQ7+NkVFlXzT
+         qRmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731327139; x=1731931939;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xs+3Bmk7/ET8ZIXxUWywxy47jkhQeABRqUPAmW38Cw0=;
-        b=pNJBnLo1adWemb330324CRNfyPTsw0nD6CZ/H0pS92NgrhoREOFEpZtW24djdIhdpG
-         Pn7P+iw6gCVRFEIlsBffoBmhHfJ80KZbFtRqPvBEdbYsjmIeEWu6S1NVl81iP5vDtUTQ
-         /8yI60RLH1K648nXBnEJ81P3JRkjUEWwPQD5bkYGdW08X6p3aCBgl27qpXbaJIioaxRN
-         Bxs5YaDneFRcHHI1QNPY+KsjE+1mdnSp+5qdlUmt67BVSacVYKBI/IOSMwvQ/00Ji5Ia
-         AZgz/CihuUMNfMCx0cHte8K6MqwkvJsiWIQ4KY7WaV2bMcqegWI9m/0vtvcfH1VRlPCy
-         YhiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXSFAd1vd7icGgO9NKphO/SM24FpgwtL879GPi+q3/FQhe7p3h6/+rBMFPvnspZrrKsFMnTq4JEnmI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaU6T3r7ysM9XoLYKdANEA0qqWDO3tHdMN2fbLt4J/Hk72h9AX
-	OcUcFk09O3YydWpiqVe8eL5pvqQl+Dl0hDAn8xoyy1l/s3f8fIh69HBHgFyKOcw=
-X-Google-Smtp-Source: AGHT+IFTrCeJsG4pTRHfhvy6GFhZe1enatnsIdLOV+d/7VyKJJXALSMPOSSGn3f7bQZGCXpBbPrFsQ==
-X-Received: by 2002:a05:600c:3b8f:b0:431:5f1b:a7c6 with SMTP id 5b1f17b1804b1-432b751f5edmr101593285e9.30.1731327139457;
-        Mon, 11 Nov 2024 04:12:19 -0800 (PST)
-Received: from localhost (p200300f65f28bb0063ffae39110fa2df.dip0.t-ipconnect.de. [2003:f6:5f28:bb00:63ff:ae39:110f:a2df])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed97cfefsm12671139f8f.26.2024.11.11.04.12.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2024 04:12:18 -0800 (PST)
-Date: Mon, 11 Nov 2024 13:12:17 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: oe-kbuild@lists.linux.dev, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, lkp@intel.com, 
-	oe-kbuild-all@lists.linux.dev, Mircea Caprioru <mircea.caprioru@analog.com>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibe.com>
-Subject: Re: [PATCH 2/2] iio: adc: ad7124: Refuse invalid input specifiers
-Message-ID: <v5ytfwjmimsbfgdq3sb2xg6d2dkllvnv2a7wltwtzt62oqikge@574uazpvjd67>
-References: <20241108181813.272593-6-u.kleine-koenig@baylibre.com>
- <bb25249b-62b8-4d7f-9ef3-cb5e1f8674ba@stanley.mountain>
+        d=1e100.net; s=20230601; t=1731334908; x=1731939708;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HctBMgT84vBY4hzxiEZh7IsHrKp0XhtLMHme3Byg9B4=;
+        b=b+UtGT8rujzWqsx8xir4h1+UAVWy7j9+FapZD0mtbot6r0AfH7naP0f/n+8WDmBx2H
+         EYEsMiRb3h2AGuNB6oSCANhMfxvJcRB0sDKkwf2pmN22SuDGmaLPQUx3HlGZ5k3axiHT
+         Ymg+U7AP/1GQ+B9x4qTWXBvxCO7hBtMk4b955FgEVgP2iGSvnjQYMmW6lcMF/u1HyxSM
+         HWGbbL/bmiyJWo+MXmyQ02ltU28dqSInwl3T9Dk536WwrRoHBf1Qosct6HUQOovec8uQ
+         vXZrwZNGfoef7Zt7TSeTaVWtQtITLdYP/tDa084Ocgu8zOyo2XEsv+koS7NQHybYU62U
+         9FIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3Uy4tLO3MLR+GIUwFlkXXQbgifqi7nFScQUkr9wRl3R/N3tEVnEwxaGfKrQOr643//3anHCNn/O8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpQsEe0YHaIN6cgpcrPV3QRduK8cKbs4383QF7lnqmA5Gm82dr
+	REDX1OnJp3wqTPnXPOuXmyroi9rSBsTd4D31DpIvROZfiFsxsy2F5SACF1eRCXGcYiD+j1Kxfnp
+	G
+X-Google-Smtp-Source: AGHT+IGVzdut7knNu4orGH/0e/98hy5mbsEg8EUQyO8+g5vXJP3AchBYsjwGGywSvzlxSF70zNgyPw==
+X-Received: by 2002:a05:6830:2116:b0:718:e44:6da9 with SMTP id 46e09a7af769-71a1c1d2fa3mr11254324a34.11.1731334908011;
+        Mon, 11 Nov 2024 06:21:48 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71a107ebd43sm2266321a34.6.2024.11.11.06.21.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Nov 2024 06:21:47 -0800 (PST)
+Message-ID: <8636a00f-81e6-4439-9778-abce6e0c931b@baylibre.com>
+Date: Mon, 11 Nov 2024 08:21:45 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fouxnykmbwuimmjy"
-Content-Disposition: inline
-In-Reply-To: <bb25249b-62b8-4d7f-9ef3-cb5e1f8674ba@stanley.mountain>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] iio: adc: ad7124: Don't create more channels than the
+ hardware is capable of
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241108181813.272593-4-u.kleine-koenig@baylibre.com>
+ <20241108181813.272593-5-u.kleine-koenig@baylibre.com>
+ <c94271b1-924b-4de6-b3bb-77e16265bb0d@baylibre.com>
+ <c2mdg4pn5rgjdlwet2gmgqvmym36ttlyg5ag2u62a3qtkdwqce@p45gyz5ghgel>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <c2mdg4pn5rgjdlwet2gmgqvmym36ttlyg5ag2u62a3qtkdwqce@p45gyz5ghgel>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 11/11/24 6:08 AM, Uwe Kleine-König wrote:
+> [dropped Mircea Caprioru from Cc: as their address bounces.]
+> 
+> Hello David,
+> 
+> On Fri, Nov 08, 2024 at 12:52:35PM -0600, David Lechner wrote:
+>> On 11/8/24 12:18 PM, Uwe Kleine-König wrote:
+>>> The ad7124-4 and ad7124-8 both support 16 channel registers. Don't
+>>> accept more (logical) channels from dt than that.
+>>
+>> Why should the devicetree be limited by the number of channel
+>> registers? Channel registers are a resource than can be
+>> dynamically assigned, so it doesn't seem like the devicetree
+>> should be specifying that assignment.
+> 
+> Note the device tree isn't limited as I didn't adapt the binding. It's
+> just that the driver doesn't bind if too many channels are specified.
+> And while your statement about the channels being a dynamic resource is
+> right, currently the driver doesn't cope and allocates resources
+> statically, and happily assumes there is a CHANNEL_16 register if the
+> device tree specifies 17 (or more) logical channels and writes to
+> CONFIG_0 then which very likely results in strange effects.
+> 
+> So as long as the driver doesn't implement this (possible) dynamic
+> mapping to the CHANNEL registers, it's IMHO right to refuse to bind (or
+> alternatively only use the 16 first logical channels).
+> 
+> Best regards
+> Uwe
 
---fouxnykmbwuimmjy
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/2] iio: adc: ad7124: Refuse invalid input specifiers
-MIME-Version: 1.0
-
-[Dropped Mircea Caprioru from Cc: as the analog.com MTA doesn't know
-their address]
-
-Hello Dan,
-
-On Mon, Nov 11, 2024 at 12:15:45PM +0300, Dan Carpenter wrote:
-> 4112b30ba58b5c Uwe Kleine-K=F6nig  2024-11-08  871  		if (!ad7124_valid_i=
-nput_select(ain[0], st->chip_info) ||
-> 4112b30ba58b5c Uwe Kleine-K=F6nig  2024-11-08  872  		    !ad7124_valid_i=
-nput_select(ain[1], st->chip_info))
-> 4112b30ba58b5c Uwe Kleine-K=F6nig  2024-11-08  873  			return dev_err_pro=
-be(dev, ret,
->=20
-> s/ret/-EINVAL/?
->=20
-> 4112b30ba58b5c Uwe Kleine-K=F6nig  2024-11-08 @874  					     "diff-chann=
-els property of %pfwP contains invalid data\n", child);
-
-Indeed. I adapted that in my tree, so will be fixed in v2.
-
-Thanks
-Uwe
-
---fouxnykmbwuimmjy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcx9J4ACgkQj4D7WH0S
-/k4nJQgAlTnkDayqlntyEewP3+b8xai6S8tWGg4oVXcZG2VRF9hJmUZYIislQRT8
-RqFv8/YpMKLVUWklIvFWyCHXhouEd4dwSuJnflIwgTRii4S9yNhhv2l1INDzQqWz
-zNKRfRAeJS/FC8Ju9yICppslJNCUnZiAuD1BiknH4u2aiM0M3TDHwDjS3NY08VFI
-fX5JmGG/UGw7PFOLc+aiTzkOrhpK0Zevx9k4WDPBP7iUZi9Py/bBYYNW+qPLkTn/
-h22Z8nzfFNPrvMlorIh9ETD+ON2GlO/qBmH94/DyLVzcLSnsxNMbxt1RUYXNAavR
-CtGw1AmZTRW6Ldpvo/vDMsAwnU7Sfg==
-=fCAt
------END PGP SIGNATURE-----
-
---fouxnykmbwuimmjy--
+Understood. It would be nice to implement such dynamic allocation
+in the future but as a fix to backport to stable kernels, this makes
+sense.
 

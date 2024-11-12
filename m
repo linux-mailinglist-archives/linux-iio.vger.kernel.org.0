@@ -1,165 +1,187 @@
-Return-Path: <linux-iio+bounces-12175-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12176-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277AD9C5212
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2024 10:32:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CF39C5317
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2024 11:21:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8F99B255B5
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2024 09:30:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 905A4B30D56
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2024 10:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20E820DD56;
-	Tue, 12 Nov 2024 09:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC5E213121;
+	Tue, 12 Nov 2024 10:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QViwrG8G"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Bbc+El5o"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579BF204921;
-	Tue, 12 Nov 2024 09:30:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712AA1F7558
+	for <linux-iio@vger.kernel.org>; Tue, 12 Nov 2024 10:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731403817; cv=none; b=gQhMADPDyPnjpXQGGqNpKX8HD8tDoLCjyb8xZKp03B0QdTzdUTJ88/FSJEKAsr6OGNYRGZ+P9dxkKil+onGEj18QcBCybEBRZsc7yxYLx/gRkT/k+ZtpgrfY91JUDyB9PVg8RzYIIYNnFvO+FbHOaI4N459QmHa0rDMtDDukHTQ=
+	t=1731406559; cv=none; b=rAkMi/590Pe+NOHYIN8SAG0kf+JJcFD7tfH8u5Vj9BHM09vjGToCUpRvv3Ci7j+TxzbFDZ2SbxTn567yaadXVun3j5WoB5h7/KbEUSJdzVqEC4fOcPXMIPBiKEh91i/6Z+2sawmMgTABVVC4zFRtM/yeNgeHUX/TzGhH8n91SKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731403817; c=relaxed/simple;
-	bh=aSZ3eNKeq1xOUIZFdGsrWXMqelkfiGX6RRdMZz+fLyE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s4RlaxCm1hqXC7vgMiPCa2jde9UC+t5eBRMPnlyxJFHU+svwmfbL5YBjhkHLokqtpBY1klvUoWhQX+/8xmC3nqPvfpai0C7VMv4KMunE1Iw1WZzIgLAZlPuq9pyxUKK8EbMGED2qtbhARL2iAkfO1EVa7M56hXs06/jHaYPGosk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QViwrG8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DE4ACC4CECD;
-	Tue, 12 Nov 2024 09:30:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731403816;
-	bh=aSZ3eNKeq1xOUIZFdGsrWXMqelkfiGX6RRdMZz+fLyE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=QViwrG8G+KH5bALFXMyZa3ecubAwFYyaEohO/FjmyVVb2VI5guyIL0r2F0xqbzti7
-	 wBgJKetJkSckaF73TLDg/NXlHJsmnIPTzd4BtkefrAJb8J10QsRmINv8KOJM1PK0NA
-	 SuDQbJxu1R17yjovoKXZGpeoDRE6TcdZacBvfmKlQ3OPtgxQtOd013g63daf/Gposa
-	 UnET4aJWZ7iz7P9CEYX5uyom3xAc99zUsSHAb9qLZNA4j5ycVTlcvVNu7cjPK9s1TE
-	 jpKT/OW2yNPKyovQrzH3zm+VQLH1K2ZipjLW4gnbv91dwKJW+5TOIVgIucdnrh910m
-	 X0j25bGaChVGA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6E78D32D78;
-	Tue, 12 Nov 2024 09:30:16 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Tue, 12 Nov 2024 10:30:10 +0100
-Subject: [PATCH v2] iio: imu: inv_icm42600: fix spi burst write not
- supported
+	s=arc-20240116; t=1731406559; c=relaxed/simple;
+	bh=uGuGiQIlJrIXE4iVMImssRilu1RGQ+ZOnY+Z06vrHoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nb24K13aUeGpAxaTv4NiM2GNWCDPjB44Wb6Qs0jjF8TeylrQ65RM7HfFwjeFQCk47KAK0t/Od4/2+olounSxEQRxaqLEfkerxGKkTZGcAk+nsmkQc3bxrcJ/2owisbekMvjRKf/0jgtUOaP5nWquD9Srw0k1oq1e5cifd1qTqM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Bbc+El5o; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-431695fa98bso42982315e9.3
+        for <linux-iio@vger.kernel.org>; Tue, 12 Nov 2024 02:15:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731406556; x=1732011356; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=obp8yGIldYDVzI0XN70dXZCO2SHc5IgrE0mc+D/CPjg=;
+        b=Bbc+El5oUdB8pUtW5r8ewApdOQ8EcPOc8Y9SArUlAPQB9BN21P6IFSKaH+ezVdOqZZ
+         jvKhoTqtz9QSDzGIInBUA+kPmIfbBj+emxvuDHI2jgle+orpUVPP0QYtMauL6XWmQiQt
+         1nZACWK4ySUYEmm1Hxjj+XM2RgRBbR5CCpPLO/4PzQJ2FHJnRRrCTUk5XBN9qqwThkST
+         Zp0G8v3HxrX/kfRcOAwTm04rU8EH0s+MFa9nOKylb9OYjwIGCJUelw9nPuvgU7zNMD2k
+         xj79uEipbdoS/wt4TnSVJQZOaSGWLih1Z1vvW2dtDo+xjrTpQVBbNmU41zW9xs2Kdwxm
+         VKQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731406556; x=1732011356;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=obp8yGIldYDVzI0XN70dXZCO2SHc5IgrE0mc+D/CPjg=;
+        b=TSDnF+fSehkBqAirIwsyghDWnNE5k6aIHbVbRSuSGR1JdZ6z+b2ho0FKTLGikXM2yt
+         VZi+05AiuQ7abBHYAnbN17To10ChVI/TBn5WobCOUf8mI6oOsbGIyXfdLzR/AtBX49xV
+         3z7Bs/Pgscq4oarLLACAq7p0ajRghvKkVRKHOGvIn6uSJmxZtUgFq6lCmmMfhnAbqq8Z
+         k5eoQHV/5syrUnWWnPPcOE/25uuNQl/s5WckiuEyDITK0tP+5rmu70XF6Q6P61KrCT14
+         gGw+7DhwJUbGcVDcYud/dFsfOtBc+Yo+I+MYEiUjgmrYYobFKKCFE7gjH43IjyQ9KXy5
+         PkRg==
+X-Forwarded-Encrypted: i=1; AJvYcCX1De5Hpr8YtR1Eas7BC1CGtjLM7+vNhLLk0xolHCPnaBlAzmaf80Mttg9OolYK2uJz/8487ouKT4o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8e+jdoDExqwKnEuCXkv/cGVxaMunLTc6wWFyAQajjy8oTwlfv
+	70sNQmn7qjqHCxPCR+Uae07mcQm8YM9Q05eekGwkX/8+zfTB9DgYYBUya7RzKNg=
+X-Google-Smtp-Source: AGHT+IFUtKcOxI9iGKzatyRYf8XbPC5gcQcujb8cjUFmjs/ViAYZu4pW7ViB0cQLuE4H16EQLauy0w==
+X-Received: by 2002:a05:600c:3c8f:b0:431:4e25:fe42 with SMTP id 5b1f17b1804b1-432b751e28fmr122955855e9.32.1731406555816;
+        Tue, 12 Nov 2024 02:15:55 -0800 (PST)
+Received: from localhost (p509159f1.dip0.t-ipconnect.de. [80.145.89.241])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432b05305a4sm205703715e9.5.2024.11.12.02.15.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2024 02:15:55 -0800 (PST)
+Date: Tue, 12 Nov 2024 11:15:54 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Aren <aren@peacevolution.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Kaustabh Chakraborty <kauschluss@disroot.org>, =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <trabarni@gmail.com>, 
+	Ondrej Jirman <megi@xff.cz>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 4/6] iio: light: stk3310: use dev_err_probe where
+ possible
+Message-ID: <4ibd5tgpt3uzbmouqdiiv5pvfxebo5qsmgn3xh6rlb73qevatv@cajznxqnlca3>
+References: <20241102195037.3013934-3-aren@peacevolution.org>
+ <20241102195037.3013934-11-aren@peacevolution.org>
+ <ZyiIcDaANjxwtCz-@smile.fi.intel.com>
+ <m7x526sv5krgt4t2whn5ykyktoz5u7ihsxv3qa5yue3ucbk6lb@37spwsmlcylm>
+ <ZzEPACoblmcQD9yu@surfacebook.localdomain>
+ <xubjmxig4luag27ifnmqmv3x3bvzhwczwvw34kw6tssaa2d24t@ysnqh5e3g7sz>
+ <ZzHSE9Nrf4YySJrq@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241112-inv-icm42600-fix-spi-burst-write-not-supported-v2-1-97690dc03607@tdk.com>
-X-B4-Tracking: v=1; b=H4sIACEgM2cC/52NQQ7CIBBFr9KwdgxgK9WV9zBdtGVqJ6ZAgKKm4
- e5ij+Dy/eS/t7GAnjCwa7Uxj4kCWVNAHio2zr15IJAuzCSXtRBcAZkENC61PHMOE70hOIJh9SH
- Cy1NEMDZCWJ2zPqIGnFC1Wp3UpW9YkTqP5bQH713hmUK0/rP3k/itf6eSAAEt54OUjao1F7eon
- 8fRLqzLOX8BnHrTQOoAAAA=
-X-Change-ID: 20241107-inv-icm42600-fix-spi-burst-write-not-supported-efe78d7379a5
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731403815; l=3521;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=7v9hwAsLUpLcVbsTisYNf2ERfbiuJIYiXvYRPsz8tx0=;
- b=hlq8yXvk4Oc+vucDWRJ3i3I3OlJVXjHjKmsaAEgYaeD6i/+m9S2RotslVeST0sV1EnSRxVOPW
- Z1uRlrfd9VzAGHoTHeQNUK4RLC3zng+++9EXla5uVWddL2S+VWS7BbF
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
-
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-
-Burst write with SPI is not working for all icm42600 chips. It was
-only used for setting user offsets with regmap_bulk_write.
-
-Add specific SPI regmap config for using only single write with SPI.
-
-Fixes: 9f9ff91b775b ("iio: imu: inv_icm42600: add SPI driver for inv_icm42600 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
-Changes in v2:
-- Add new spi specific regmap config instead of editing existing one.
-- Link to v1: https://lore.kernel.org/r/20241107-inv-icm42600-fix-spi-burst-write-not-supported-v1-1-800b22574d01@tdk.com
----
- drivers/iio/imu/inv_icm42600/inv_icm42600.h      |  1 +
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 15 +++++++++++++++
- drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  |  3 ++-
- 3 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-index 3a07e43e4cf154f3107c015c30248330d8e677f8..18787a43477b89db12caee597ab040af5c8f52d5 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -403,6 +403,7 @@ struct inv_icm42600_sensor_state {
- typedef int (*inv_icm42600_bus_setup)(struct inv_icm42600_state *);
- 
- extern const struct regmap_config inv_icm42600_regmap_config;
-+extern const struct regmap_config inv_icm42600_spi_regmap_config;
- extern const struct dev_pm_ops inv_icm42600_pm_ops;
- 
- const struct iio_mount_matrix *
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 93b5d7a3339ccff16b21bf6c40ed7b2311317cf4..834c32cb07f354ab52e69bfeea8f00b6443e8dd9 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -87,6 +87,21 @@ const struct regmap_config inv_icm42600_regmap_config = {
- };
- EXPORT_SYMBOL_NS_GPL(inv_icm42600_regmap_config, IIO_ICM42600);
- 
-+/* define specific regmap for SPI not supporting burst write */
-+const struct regmap_config inv_icm42600_spi_regmap_config = {
-+	.name = "inv_icm42600",
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = 0x4FFF,
-+	.ranges = inv_icm42600_regmap_ranges,
-+	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
-+	.volatile_table = inv_icm42600_regmap_volatile_accesses,
-+	.rd_noinc_table = inv_icm42600_regmap_rd_noinc_accesses,
-+	.cache_type = REGCACHE_RBTREE,
-+	.use_single_write = true,
-+};
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_spi_regmap_config, IIO_ICM42600);
-+
- struct inv_icm42600_hw {
- 	uint8_t whoami;
- 	const char *name;
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-index 3b6d05fce65d544524b25299c6d342af92cfd1e0..deb0cbd8b7fe6fcb562067afaca931c148f6fca6 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-@@ -59,7 +59,8 @@ static int inv_icm42600_probe(struct spi_device *spi)
- 		return -EINVAL;
- 	chip = (uintptr_t)match;
- 
--	regmap = devm_regmap_init_spi(spi, &inv_icm42600_regmap_config);
-+	/* use SPI specific regmap */
-+	regmap = devm_regmap_init_spi(spi, &inv_icm42600_spi_regmap_config);
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
-
----
-base-commit: c9f8285ec18c08fae0de08835eb8e5953339e664
-change-id: 20241107-inv-icm42600-fix-spi-burst-write-not-supported-efe78d7379a5
-
-Best regards,
--- 
-Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mx2qhhffnejmsbkn"
+Content-Disposition: inline
+In-Reply-To: <ZzHSE9Nrf4YySJrq@smile.fi.intel.com>
 
 
+--mx2qhhffnejmsbkn
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 4/6] iio: light: stk3310: use dev_err_probe where
+ possible
+MIME-Version: 1.0
+
+Hello Andy, hello Aren,
+
+On Mon, Nov 11, 2024 at 11:44:51AM +0200, Andy Shevchenko wrote:
+> On Sun, Nov 10, 2024 at 04:34:30PM -0500, Aren wrote:
+> > On Sun, Nov 10, 2024 at 09:52:32PM +0200, Andy Shevchenko wrote:
+> > > Sun, Nov 10, 2024 at 02:14:24PM -0500, Aren kirjoitti:
+>=20
+> You can do it differently
+>=20
+> #define STK3310_REGFIELD(name)							\
+> do {										\
+> 	data->reg_##name =3D							\
+> 		devm_regmap_field_alloc(dev, regmap, stk3310_reg_field_##name);	\
+> 	if (IS_ERR(data->reg_##name))						\
+> 		return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
+> 				     "reg field alloc failed.\n");		\
+> } while (0)
+>=20
+> > #define STK3310_REGFIELD(name) ({						\
+> > 	data->reg_##name =3D devm_regmap_field_alloc(dev, regmap,			\
+> > 						   stk3310_reg_field_##name);   \
+> > 	if (IS_ERR(data->reg_##name))						\
+> > 		return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
+> > 				     "reg field alloc failed\n");		\
+> > })
+>=20
+> I am against unneeded use of GNU extensions.
+>=20
+> > > > replacing "do { } while (0)" with "({ })" and deindenting could make
+> > > > enough room to clean this up the formatting of this macro though.
+> > >=20
+> > > do {} while (0) is C standard, ({}) is not.
+> >=20
+> > ({ }) is used throughout the kernel, and is documented as such[1]. I
+> > don't see a reason to avoid it, if it helps readability.
+>=20
+> I don't see how it makes things better here, and not everybody is familia=
+r with
+> the concept even if it's used in the kernel here and there. Also if a too=
+l is
+> being used in one case it doesn't mean it's suitable for another.
+
+Just to throw in my subjective view here: I don't expect anyone with
+some base level knowledge of C will have doubts about the semantics of
+({ ... }) and compared to that I find do { ... } while (0) less optimal,
+because it's more verbose and when spotting the "do {" part, the
+semantic only gets clear when you also see the "while (0)". Having said
+that I also dislike the "do" starting on column 0, IMHO the RHS of the
+#define should be intended.
+
+So if you ask me, this is not an unneeded use of an extension. The
+extension is used to improve readabilty and I blame the C standard to
+not support this syntax.
+
+While I'm in critics mode: I consider hiding a return in a macro bad
+style.
+
+Best regards
+Uwe
+
+--mx2qhhffnejmsbkn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmczKtcACgkQj4D7WH0S
+/k5IrAf9Egz14wVYaV3DKBPJo8fgsKBghLX7gexCzWL4+0rkjfgtP8gSFaK8OnVY
+8howbIeCxwbCUSEZEtWJU36A5oaLI370Mb24KajDPQZyayedIXqF1UubYE3ZXcrA
+gwbGyho7TkbsUnrXbMhkp5lr7aU6O8JdIedrSqv7FnMxfkVUVkU6Hrai52+r3b3t
+k6uAvR1Yl+OD1XIq5FEeCW5tcoYEQ5rK6apeMXvdkPdg0o6ZKVjAt9vK9NVxPPpW
+2CdM15ron07ikOYiBDin1ZaD3x7FdzVh8z9RiizG5q5a6fPjh5SELLbBMHeGtnaZ
+5cCYi84a0NHhmndqIy6gZYPX4hhDXg==
+=b8YO
+-----END PGP SIGNATURE-----
+
+--mx2qhhffnejmsbkn--
 

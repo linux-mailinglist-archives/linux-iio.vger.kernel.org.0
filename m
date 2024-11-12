@@ -1,103 +1,146 @@
-Return-Path: <linux-iio+bounces-12189-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12192-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B18289C64ED
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 00:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABFA59C6546
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 00:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74A5DB2D14E
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2024 20:02:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B3B6B3C8E3
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Nov 2024 23:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E80219C8C;
-	Tue, 12 Nov 2024 20:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E752B21C180;
+	Tue, 12 Nov 2024 23:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ts/mEbFx"
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="QSjWisTh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EEA212D05
-	for <linux-iio@vger.kernel.org>; Tue, 12 Nov 2024 20:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D886121A71D;
+	Tue, 12 Nov 2024 23:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731441733; cv=none; b=Istr2PPLVdOPINMTCLAUWqpLDBQNcE2HGkUXY5j2AtYk6Hil35QrsA0dgMft/fyNE+8MuLKN7i2sN2z8X2AZN55uyilae/XFN0VLBegGcBFvNoFUT6DV7Oi3TxiSVGubaWlcbJyQtp7Qh0tfc2lR4nO/sOytP4lOrMw8VRzWQVs=
+	t=1731453109; cv=none; b=Yo824P4nSJX26NdVywh7MJQv1DK+pYSTJ2cagofLJt5TP7hGmoRDDOsB2GqUDlORB98hd6T6wGdj0EoB8aUCVnm7bS452/bu3hkT6iwRkPdD495TBKIUlNU1jAYlySAVO69BN2xtYtgaFhtibqMYVmfExH9flcu+hXoftv+BXsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731441733; c=relaxed/simple;
-	bh=DsjL5XWtMu7LOlZcx8scvAGiiIKiZ9tDUiuwStI2eok=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=oZrRd++xsdfsVUBVogHkUjX2Z4S3Tp85vRgvRQbWHzuZ6GgsOhNbom8shLHtNtSmCGU+rquwKsD6Rb6s/+kjowN9SbsK//igQOO2KSl6srFJAkJuTApGuqqPqLq3FEdK1+3O3rEPX5ssuDB2F/Kxu248sfZM/Z+lBHkPVBpJCys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ts/mEbFx; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5ee763f9779so1399836eaf.1
-        for <linux-iio@vger.kernel.org>; Tue, 12 Nov 2024 12:02:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731441730; x=1732046530; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7sig4extPJZ96lJvrKPLyrOLWEJSmKbg3dopfHgQP/c=;
-        b=ts/mEbFxY8PajthwxUh0SHvXAjC9tAF3NkrqRnP0XeLjkumrBKov8OYfg6+Rz76+C3
-         gq2QcSd+T4V905cGYxU1wlMsaXIlTXgXSJT9tcv3nX1BOdhnZQrLpwOIp5C3kvIQhauH
-         Q/Y+bMo/fV9SnWxH3TUiTRetqIUgjnG4Bag9n/iXNNc+gPgqqtW2SR2xb7365Kn1A7bt
-         iiziYyv2LXIw19KIUMRFWPBeqBQ8gv6l8uKtwCfxy6vy8S+jdq7+9CTiVqjuUd5iGyLm
-         ZyPBcQwV0+PABObdLkMVqy5R5sc0MyufZeQpxERWhyRRqCzc7goyPhLDDg2XFMltHhbP
-         HfLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731441730; x=1732046530;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7sig4extPJZ96lJvrKPLyrOLWEJSmKbg3dopfHgQP/c=;
-        b=rhxT56FyFGaB4nuppqCIfrw9e2gc+yZ/Fup1wpASG+O8L/vH62yQe1vIygNPSROCpf
-         H/Niy6MGx8KsBNAHqFkyJtAMim3eXpFPz6SoAU2Qn3fYDYQT4PnKKoqv3GxZHjCEOei1
-         YNrt8BoDakVmcC5ezkhB/zeOrZqv+SMVh1k+WyQ2eTCAdeRTHWHmDXzisaN7fHlPrhVW
-         no1xD7ugkonnBwiz26yf1o+4/ml2Hfztd9hZY0sj8kuR2Oyfnl9GHew7yMcF9KGwxSRx
-         7hcSd7e+6yCS1oj14AzL29a9uNvL5CJWRVg3a4EeqiaHxQVJhF549cmBlzCNNwcgOfD1
-         gBlg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQoUsArqa/isgOyyPyILuYUPwQDwLWCRz2zGFjHXG/1pzzurYYuWOO9UdSIV01REq136BjEZmcrjE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywdwaz5EoChan/edSzOogMp+2FfWs+VCxWexQYektqZEvdtjczV
-	Qy2I8EIF3ar9h6NDlSbco5LPYXSb3puhP8SwhLwNJpQwIpxX+NqarMJiA7AGQG4=
-X-Google-Smtp-Source: AGHT+IHvgnmHiHHXULfY05GGiY7fOLLPMb5a5l/JeZR/daEqHCvkzI6U/0uYYnu+Fc6sEEFJ3gXDJw==
-X-Received: by 2002:a05:6820:4c89:b0:5eb:821c:df23 with SMTP id 006d021491bc7-5ee57b96a9bmr12114816eaf.2.1731441730645;
-        Tue, 12 Nov 2024 12:02:10 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5ee494fb9a2sm2503376eaf.1.2024.11.12.12.02.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Nov 2024 12:02:09 -0800 (PST)
-Message-ID: <4b48ae8e-4eba-4d86-af8b-2b749c53639f@baylibre.com>
-Date: Tue, 12 Nov 2024 14:02:07 -0600
+	s=arc-20240116; t=1731453109; c=relaxed/simple;
+	bh=NmO64Sjewa/+GsTTNydYxbpRHAP/H0Q6gTgckdfbwNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B8t2LILVja1mLC0VJ2zoEKE4vJ6s/yNDI88fxW9JRd2WszGaHxgMDPsPh454Y1XySFqmHJOE3jmTAxm7Q9pQ02HL+TJO4lDMoNPv9cjBOuV2WmP61gE8iLGR+pxHBJUg6iuh/U7zCFPFTHieUF3jx1P1liMKEh4xRUGUI96nNJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=QSjWisTh; arc=none smtp.client-ip=206.189.193.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+	by a.peacevolution.org (Postfix) with ESMTPA id D08794C739;
+	Tue, 12 Nov 2024 23:11:39 +0000 (UTC)
+Date: Tue, 12 Nov 2024 18:11:37 -0500
+From: Aren <aren@peacevolution.org>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Kaustabh Chakraborty <kauschluss@disroot.org>, =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <trabarni@gmail.com>, 
+	Ondrej Jirman <megi@xff.cz>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 4/6] iio: light: stk3310: use dev_err_probe where
+ possible
+Message-ID: <6jwurbs27slfpsredvpxfgwjkurkqvfmzccaxnfgtuh4aks3c6@ciapprv3wsex>
+References: <20241102195037.3013934-3-aren@peacevolution.org>
+ <20241102195037.3013934-11-aren@peacevolution.org>
+ <ZyiIcDaANjxwtCz-@smile.fi.intel.com>
+ <m7x526sv5krgt4t2whn5ykyktoz5u7ihsxv3qa5yue3ucbk6lb@37spwsmlcylm>
+ <ZzEPACoblmcQD9yu@surfacebook.localdomain>
+ <xubjmxig4luag27ifnmqmv3x3bvzhwczwvw34kw6tssaa2d24t@ysnqh5e3g7sz>
+ <ZzHSE9Nrf4YySJrq@smile.fi.intel.com>
+ <4ibd5tgpt3uzbmouqdiiv5pvfxebo5qsmgn3xh6rlb73qevatv@cajznxqnlca3>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 8/8] iio: adc: ad4851: add ad485x driver
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
- robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org
-References: <20241111121203.3699-1-antoniu.miclaus@analog.com>
- <20241111121203.3699-9-antoniu.miclaus@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20241111121203.3699-9-antoniu.miclaus@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4ibd5tgpt3uzbmouqdiiv5pvfxebo5qsmgn3xh6rlb73qevatv@cajznxqnlca3>
+X-Spamd-Bar: /
+Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
+	s=dkim; t=1731453101;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:content-transfer-encoding:in-reply-to:references;
+	bh=/XvnojsbDU2iklE9xJFwgVgRWENV+XinNVMN6pOt4es=;
+	b=QSjWisTh28m3ad1tuS8ksPEWHblcKQJX1GVqDMfbdGFRlCO9UKjCCII5U0UztBmrE6NUW1
+	ajTb4KKLxsSIaHAKj3gbmwqW91BnTF6mZ0TQDRXEPGHJTR0fJFipdfoO1DNQLMvoEaffwy
+	Uz5hZTjJ+fCuSFtKzzlpepmg9SJyEi0=
 
-On 11/11/24 6:12 AM, Antoniu Miclaus wrote:
-> Add support for the AD485X a fully buffered, 8-channel simultaneous
-> sampling, 16/20-bit, 1 MSPS data acquisition system (DAS) with
-> differential, wide common-mode range inputs.
+On Tue, Nov 12, 2024 at 11:15:54AM +0100, Uwe Kleine-König wrote:
+> Hello Andy, hello Aren,
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
-> changes in v6 (implemented most of the review comments in v5):
-What is the plan for addressing the rest of the comments?
+> On Mon, Nov 11, 2024 at 11:44:51AM +0200, Andy Shevchenko wrote:
+> > On Sun, Nov 10, 2024 at 04:34:30PM -0500, Aren wrote:
+> > > On Sun, Nov 10, 2024 at 09:52:32PM +0200, Andy Shevchenko wrote:
+> > > > Sun, Nov 10, 2024 at 02:14:24PM -0500, Aren kirjoitti:
+> > 
+> > You can do it differently
+> > 
+> > #define STK3310_REGFIELD(name)							\
+> > do {										\
+> > 	data->reg_##name =							\
+> > 		devm_regmap_field_alloc(dev, regmap, stk3310_reg_field_##name);	\
+> > 	if (IS_ERR(data->reg_##name))						\
+> > 		return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
+> > 				     "reg field alloc failed.\n");		\
+> > } while (0)
+> > 
+> > > #define STK3310_REGFIELD(name) ({						\
+> > > 	data->reg_##name = devm_regmap_field_alloc(dev, regmap,			\
+> > > 						   stk3310_reg_field_##name);   \
+> > > 	if (IS_ERR(data->reg_##name))						\
+> > > 		return dev_err_probe(dev, PTR_ERR(data->reg_##name),		\
+> > > 				     "reg field alloc failed\n");		\
+> > > })
+> > 
+> > I am against unneeded use of GNU extensions.
+> > 
+> > > > > replacing "do { } while (0)" with "({ })" and deindenting could make
+> > > > > enough room to clean this up the formatting of this macro though.
+> > > > 
+> > > > do {} while (0) is C standard, ({}) is not.
+> > > 
+> > > ({ }) is used throughout the kernel, and is documented as such[1]. I
+> > > don't see a reason to avoid it, if it helps readability.
+> > 
+> > I don't see how it makes things better here, and not everybody is familiar with
+> > the concept even if it's used in the kernel here and there. Also if a tool is
+> > being used in one case it doesn't mean it's suitable for another.
+> 
+> Just to throw in my subjective view here: I don't expect anyone with
+> some base level knowledge of C will have doubts about the semantics of
+> ({ ... }) and compared to that I find do { ... } while (0) less optimal,
+> because it's more verbose and when spotting the "do {" part, the
+> semantic only gets clear when you also see the "while (0)". Having said
+> that I also dislike the "do" starting on column 0, IMHO the RHS of the
+> #define should be intended.
 
-I don't want to keep making the same comments over and over again.
+Thank you, this sums up my opinion on this better than I could have (and
+some bits I hadn't considered).
+
+> So if you ask me, this is not an unneeded use of an extension. The
+> extension is used to improve readabilty and I blame the C standard to
+> not support this syntax.
+> 
+> While I'm in critics mode: I consider hiding a return in a macro bad
+> style.
+
+Yeah... probably worse than any of the formatting options here. I guess
+the proper way would be to use devm_regmap_field_bulk_alloc, but that's
+well outside the scope of this series. Perhaps it would make sense to
+move the macro definition to just before the function it's used in so
+it's at least a little easier to spot?
+
+ - Aren
 

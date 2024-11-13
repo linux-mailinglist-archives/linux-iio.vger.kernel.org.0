@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-12213-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12214-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B90F9C795C
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 17:55:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF50B9C7961
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 17:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 533631F25AD8
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 16:55:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D8411F25C72
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 16:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22FC200C84;
-	Wed, 13 Nov 2024 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFA12022D4;
+	Wed, 13 Nov 2024 16:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ACviE16K"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="E5GH72FM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611AF1E1A28
-	for <linux-iio@vger.kernel.org>; Wed, 13 Nov 2024 16:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC5820101B
+	for <linux-iio@vger.kernel.org>; Wed, 13 Nov 2024 16:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731516930; cv=none; b=EaTN48jwwAu0PRrXQrBisy5jZTHHQfSwPPZk1/zYNKke2vCDqsX+3EzFV4Q3WYTcHqi7lckUd0VDLkH99FNI+h4b0uEXflxLD83guWQ9qIBzarQxsBNP85cai0cHXkQRUWzNNiNktD6acOUU7KNHzEZiUlH7mCNkInonWfFFb1g=
+	t=1731516932; cv=none; b=aLjwASToTRxt5I2fwZdpXKg4B4v6aRbSf6oXkwmtU/mcYD3QTpQ3Y1dDb2BD1LAlIUkFbSrg14a5vRRyvy7ilF0Fa88eum+WeROD58YHeFNxonUAsf11L6hKzqCfFriEcFnJr34aU9ANfON9woabwoSeGCkoQ8f3RjlfSChJ8qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731516930; c=relaxed/simple;
-	bh=FcOHKxBF8nl/v4SIQ/tCUbE1JuAOflWFIy3yGdifeC8=;
+	s=arc-20240116; t=1731516932; c=relaxed/simple;
+	bh=tJhHuhEOPc+XxXPxuHFH6d3Rhg17ntIx28rsYimScsg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YyqXehjYm9Hc7dI8GWK3z/Yx/wnkbvuobSRnt7lNm0u4jya4qXVxGg/adr4gauNAUeY1NrVPIYYP+aX2zKp8OCFzqtsrADnijG39OY76Khd98fEDQvYXO0OVKB3DtSMw0O9awdJxSIHo91tIaGHE5lpap2RJucsnymUl48VaipA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ACviE16K; arc=none smtp.client-ip=209.85.160.54
+	 In-Reply-To:To:Cc; b=RuN6BSE73CN2PTRJo8kjerjg6tsJCMZ6l02rChiSOR7nAmXEAMRO8RbkmC++hRmYLJN8EP1aLd92yqcnBC4WxYPuqJ6ZXIjx+Rnrzr7D7QhH8upXbGM6hnJPMMBNZ/3ZgNObTJ4XHvIuplPEgLY3g7TCTyejtybDXxTpgdRhQ2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=E5GH72FM; arc=none smtp.client-ip=209.85.160.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-288a90e4394so3199949fac.0
-        for <linux-iio@vger.kernel.org>; Wed, 13 Nov 2024 08:55:28 -0800 (PST)
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2887326be3dso3211627fac.1
+        for <linux-iio@vger.kernel.org>; Wed, 13 Nov 2024 08:55:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731516927; x=1732121727; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731516930; x=1732121730; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TSikvYecjE5L7Fz7wq5gaGm5AXMewltD4jATzudM75s=;
-        b=ACviE16KCe48ui6sPB9i/aKwNKj4q6sNYx4AMD3mL1kPjU7SEBvkAee/GmI4fkg6/Z
-         h6b0oP++hm4lTeUzO0P/0fdGPhMJogi2zr4SXPJfG4ajPRsbq+/MG0nxArtZ/CjBThk9
-         a4WJYaXcMQPsYG8t24OP+brte6kju7LTJO4yLsFKSwMJi15THpqEFn8iAFr9mR+PCvZX
-         hQSclRmJW9IsxaDdtOJZj2q6J4O9JZT6Ykq/cPqWaJ15aJUT2OYWoiGZP01gng5GPzhA
-         T0VRxfV//QAeyVSBw8XJISsEVhsqv+YyvTc5ZZ2f+Ke/+ALnteQHeH4e50Dt05pwKMar
-         UjRA==
+        bh=AGwF3u8hl2KH+X74wkxGcK2CGFXP/y9NLjPy/zZ23Ks=;
+        b=E5GH72FMwSBf79vOmhp5MNcWPDDifDOHlOVkhV1ZOyd+Cg35Bxp99bu9/4+I4QYBPT
+         WbQ7wmBVsSGQKOdGcIJf9UhXvrgRj6ujEH5ZZxsRRkpSNxsThkbgAqEn0GYtfHFyiiMy
+         Ero9POUp86nDo2XkMfKwzYlx9IlGhALFhZHgX0d3AISauaSMg0jMpXQIqI5htRj3bMtt
+         L/wihcMC8tRPIkbkB97CY1CYy8sKhTCBUgqNCl+PhaOkogxAdtw8xC0UeJ+lTHU5KxNj
+         aN+n8suf8v8MpcycaoeTUZgsAI2scq7AA7teXl85qa0z9+mIABqelX+h6DRblp/uY6ES
+         UP5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731516927; x=1732121727;
+        d=1e100.net; s=20230601; t=1731516930; x=1732121730;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TSikvYecjE5L7Fz7wq5gaGm5AXMewltD4jATzudM75s=;
-        b=SX6x7Q8Bczi1XD0Lpwr4pCudM7VKJPzRgwyEFdujcETaZkd1PJZAFWkjsW1PoktmDM
-         JmQmeeM+HJc3Rp0y00h3+Q5wL9JVzDa9hHicEJgyLGKgu/gY5oA15gVZ6n4+cPuVL0NU
-         +zOZTAMuYGdYshjG+8hCb5AYxsM26yM78PQi4NXepHr3UTpRAywvzw1lagbe8lYx/D0H
-         jE48sM5dVCTSHSs4e1c7NUO8xn1pRqLfFE8OyByrv0t2Rn11whPhLRa9tp3PpTdzhHa0
-         qA9QdrAK0tvITERvf5D4M0Z7efnuIVAVfJg69DejOla2WZXK6hcH0cELpoPj0euFZ4QZ
-         KpGw==
-X-Forwarded-Encrypted: i=1; AJvYcCV93WbRThjL5FdK3Es5CT9zVMKa1XZFhI0p31FF49tE1R/9A8c9xP7VCa76jBoP5LU5aH+P12P7UhU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCWYDMvxFPJvpVRFgpZnqjZNphLdiF7lFfrOan0LtBsyyZdtCL
-	ZaicCnrJzOVvbxHhKSFnZ3PRoCDGji8iE2ASdaZYF0nNabKHVYU0Gc0xgr+LJkA=
-X-Google-Smtp-Source: AGHT+IFJpZjge+IOMpaNgashhcck+YSg0qirNU1tLokH+1+ASRcY+i1i7QixDL8eiYp4UVv+7gSOuw==
-X-Received: by 2002:a05:6870:899d:b0:284:ff51:58ad with SMTP id 586e51a60fabf-295cd216d11mr7802349fac.27.1731516927381;
-        Wed, 13 Nov 2024 08:55:27 -0800 (PST)
+        bh=AGwF3u8hl2KH+X74wkxGcK2CGFXP/y9NLjPy/zZ23Ks=;
+        b=I+offM74YBD290or6NaGTQUQmqwFoFkj1Cc+80bM7JiEsu/Z0OUxugSpFDbBfLS9vv
+         ggEMELxpP74ZFOXqWd3UlPdfgwHE55a0U9TSl+NuUmWGRHTbk7nDlX6JY+ASWugDxGXY
+         zTjR5ihmSIKbgRMiIi4PmZu32CjfORfBAS35tI35OYkfxtgiFcOmrYmUgaOPbRkim2gF
+         dyvy3KB+LnFJ/P1wHDjUDzTzuKLYKC+4eABtu5qzoIbbwWCC12T2fgYHd+frN9AbqCuw
+         ZLQ0wMGTyjvLE4E9yUGbeKXH8+qz9nMv1wrNGm+t3BwTkWJcJb+MgFHj9I8fNDyo8103
+         9Viw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvWSrEWYgRJYS5xquC2BoSv9Qysabbl4hJG4RD2dEHqyygCZwBO6mrfGxennD72C4YqiSE86pmGyo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/0XDXDhSODkf46c7E9rZA/G1ouVurPyqqG+X+RkXHM315veMd
+	HI/z6hOI6wDgYJVB+hgcLMJ19KGzjOlrMok2arIBXHE/anGJzdsFx/amRrbzbWY=
+X-Google-Smtp-Source: AGHT+IGZTsB2S8+H3+Yo8Y32ji6Fa9pcSs0trVZgwEr27F+OXOgWiSX2di5TeK5mA1VMRkRfPOioLQ==
+X-Received: by 2002:a05:6870:9e0c:b0:288:e7f2:e9f9 with SMTP id 586e51a60fabf-295e8d516a4mr3417291fac.11.1731516930191;
+        Wed, 13 Nov 2024 08:55:30 -0800 (PST)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-295e8fe5c61sm873432fac.23.2024.11.13.08.55.24
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-295e8fe5c61sm873432fac.23.2024.11.13.08.55.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 08:55:26 -0800 (PST)
+        Wed, 13 Nov 2024 08:55:28 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 13 Nov 2024 10:55:19 -0600
-Subject: [PATCH 1/2] iio: adc: ad4695: move dt-bindings header
+Date: Wed, 13 Nov 2024 10:55:20 -0600
+Subject: [PATCH 2/2] dt-bindings: iio: adc: adi,ad4695: change include path
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241113-iio-adc-ad4695-move-dt-bindings-header-v1-1-aba1f0f9b628@baylibre.com>
+Message-Id: <20241113-iio-adc-ad4695-move-dt-bindings-header-v1-2-aba1f0f9b628@baylibre.com>
 References: <20241113-iio-adc-ad4695-move-dt-bindings-header-v1-0-aba1f0f9b628@baylibre.com>
 In-Reply-To: <20241113-iio-adc-ad4695-move-dt-bindings-header-v1-0-aba1f0f9b628@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -91,62 +91,39 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
  devicetree@vger.kernel.org, David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.1
 
-Move the dt-bindings header file to the include/dt-bindings/iio/adc/
-directory. ad4695 is an ADC driver, so it should be in the adc/
-subdirectory for better organization. Previously, it was in the iio/
-subdirectory.
+Change the include path for the adi,ad4695.h header since it has been
+moved to the include/dt-bindings/iio/adc/ directory.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- Documentation/iio/ad4695.rst                   | 2 +-
- MAINTAINERS                                    | 2 +-
- drivers/iio/adc/ad4695.c                       | 2 +-
- include/dt-bindings/iio/{ => adc}/adi,ad4695.h | 0
- 4 files changed, 3 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/iio/ad4695.rst b/Documentation/iio/ad4695.rst
-index 33ed29b7c98a..9ec8bf466c15 100644
---- a/Documentation/iio/ad4695.rst
-+++ b/Documentation/iio/ad4695.rst
-@@ -101,7 +101,7 @@ The macro comes from:
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
+index 310f046e139f..7d2229dee444 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
+@@ -134,8 +134,9 @@ patternProperties:
+         description:
+           Describes the common mode channel for single channels. 0xFF is REFGND
+           and OxFE is COM. Macros are available for these values in
+-          dt-bindings/iio/adi,ad4695.h. Values 1 to 15 correspond to INx inputs.
+-          Only odd numbered INx inputs can be used as common mode channels.
++          dt-bindings/iio/adc/adi,ad4695.h. Values 1 to 15 correspond to INx
++          inputs. Only odd numbered INx inputs can be used as common mode
++          channels.
+         enum: [1, 3, 5, 7, 9, 11, 13, 15, 0xFE, 0xFF]
+         default: 0xFF
  
- .. code-block::
- 
+@@ -209,7 +210,7 @@ unevaluatedProperties: false
+ examples:
+   - |
+     #include <dt-bindings/gpio/gpio.h>
 -    #include <dt-bindings/iio/adi,ad4695.h>
 +    #include <dt-bindings/iio/adc/adi,ad4695.h>
  
- Pairing two INx pins
- ^^^^^^^^^^^^^^^^^^^^
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e69d1632c382..3fd398d6e64f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1268,7 +1268,7 @@ W:	https://ez.analog.com/linux-software-drivers
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
- F:	Documentation/iio/ad4695.rst
- F:	drivers/iio/adc/ad4695.c
--F:	include/dt-bindings/iio/adi,ad4695.h
-+F:	include/dt-bindings/iio/adc/adi,ad4695.h
- 
- ANALOG DEVICES INC AD7091R DRIVER
- M:	Marcelo Schmitt <marcelo.schmitt@analog.com>
-diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
-index 595ec4158e73..3c2c01289fda 100644
---- a/drivers/iio/adc/ad4695.c
-+++ b/drivers/iio/adc/ad4695.c
-@@ -30,7 +30,7 @@
- #include <linux/spi/spi.h>
- #include <linux/units.h>
- 
--#include <dt-bindings/iio/adi,ad4695.h>
-+#include <dt-bindings/iio/adc/adi,ad4695.h>
- 
- /* AD4695 registers */
- #define AD4695_REG_SPI_CONFIG_A				0x0000
-diff --git a/include/dt-bindings/iio/adi,ad4695.h b/include/dt-bindings/iio/adc/adi,ad4695.h
-similarity index 100%
-rename from include/dt-bindings/iio/adi,ad4695.h
-rename to include/dt-bindings/iio/adc/adi,ad4695.h
+     spi {
+         #address-cells = <1>;
 
 -- 
 2.43.0

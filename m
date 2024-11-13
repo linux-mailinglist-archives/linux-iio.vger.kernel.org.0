@@ -1,163 +1,245 @@
-Return-Path: <linux-iio+bounces-12206-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12207-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C60B9C72D6
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 15:10:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1699C76F7
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 16:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D59461F22B02
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 14:10:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C32B9B2513E
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 14:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BC4205AB0;
-	Wed, 13 Nov 2024 14:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7691DE4F6;
+	Wed, 13 Nov 2024 14:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="keAlPRLI"
+	dkim=pass (2048-bit key) header.d=softing.com header.i=@softing.com header.b="u3OqUxts"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from BEUP281CU002.outbound.protection.outlook.com (mail-germanynorthazon11020137.outbound.protection.outlook.com [52.101.169.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600AE205130;
-	Wed, 13 Nov 2024 14:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731506859; cv=none; b=eKlcAUyFrytnbptqDIlFsMoV+Tc45QLsS38/PFQfsTO0iRw3jpZB3ukhsVYYTWZkGTe4AUTZJGJcEGa2g76LfPhpzGmuZXFEnM9uqb6S2dbsVf4TK+Ewk4lzpRnsUM+w35We1wAHW9anCiraD2ACMsR1D0+c9a1p68SQUd2Z8PM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731506859; c=relaxed/simple;
-	bh=zNnPGjj8cVDATyaY+qPd4p2wYuwO7ZSvRgQMEaNOhxI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Ir1btqfagVt5po0NRUxdpR9OROvtKo8bKedfxxTAhgwtFz0ndk45lYyLoNcsBJxlHDdpDVcdEFBn2CcJMqg8NpRVroYeoksJQ/Z9JBVkeGkbdyU2D340ofAlzUFQ8sGMJUfo7O+bD6/Y83ref22dNjxLGfyTGZg0leKtLsGB/II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=keAlPRLI; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ADA1sFa026688;
-	Wed, 13 Nov 2024 14:07:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	bTlZbcBXZZhV1CT3iV9mhmexOPh/n6dgXGtQsEn4Qn0=; b=keAlPRLIUkSpWSXd
-	MVOkhwxLnvwP1dvX7s/3GkcTOK2sPwq8WtEq+VnsNLdpvHXr3Z33pgeXM0GrmpD0
-	giOG9RTtGefAn8rS/poj7wNxRmfkjpWL7Td6sCoJ7ysYGprNqxTf5s7Qwn94/cML
-	q9BazWn9j4MIi5cRaIPFseKLFoAvq4uyS+dB/2ZdgUB/Iu6IBU3rwkwGU5GhzQ4f
-	T6lwRag8jAdjo+EvPXaDPSP0dU0JzlUnQUIb/PxFl4Da/VzcI9f5iLQPDHZzsZEr
-	yyuqn+ixu72O26NWAl6Xj1s7wegt0cVn2jb9R2+qSsZ5Ib7ykeI63xyAnqYagwbI
-	G0ANVA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42vgqqt1xk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Nov 2024 14:07:15 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4ADE7ECF004309
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Nov 2024 14:07:14 GMT
-Received: from [10.217.217.28] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 13 Nov
- 2024 06:07:06 -0800
-Message-ID: <c4ca0a4c-e421-4cf6-b073-8e9019400f4c@quicinc.com>
-Date: Wed, 13 Nov 2024 19:37:06 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA227E575;
+	Wed, 13 Nov 2024 14:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.169.137
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731508877; cv=fail; b=fqDUp5qbnltxiwn0OFb0CNenC6icG3nb6+bla1ZpZglGbFJFlzzodyPMbI0BOlfu5PGXYoPCAQJ7Q8+UlVGXsaMlJv0dQSh1ck7o5LavMUZXdhPVVuEQvf0DJIgtd5KwsnqjF1stKMAGuMfZmG5B34Dt2vr43pNf2i9XHL2hRpw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731508877; c=relaxed/simple;
+	bh=j++X3JYMFjPfKwPSdKAlbBwgkZL1XwYODGx3T6CPjYU=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=un7Q2bKyAHovDvgOb/XafDr3pAQk3G2niZjMUCN0C/CCbjztpZWJ3zuZ/o33T022W2yNZvOP1rwQ/O07V/GgZf4vnMH8oqVRHr4gh69CuJ0XRK5eh4fqdWvvDp2BRX7BWmz92QowJTqLpeA3onoikvBhVZYAETMWg8VG3X4VcyE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Softing.com; spf=pass smtp.mailfrom=Softing.com; dkim=pass (2048-bit key) header.d=softing.com header.i=@softing.com header.b=u3OqUxts; arc=fail smtp.client-ip=52.101.169.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Softing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Softing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ey8FfrHotWqEV+GKAVCDj4wN7tiBYEXMi08g+8SPfdYC8Nmd3KLbATToG9tHA3DY4VIIqk+MworXFJt36jMBXx3vpE8waC9e6N9f+vbeVA2jRlNWTpWkmAmGAmyBp6i4lkXyT9Mv+RHVqKk92Bjjho3cTczZhNe1gh1ZXsZwHZey/kwe8A5RnOdkfO0VHIUgfEq5tS/VFccD4wM/QTr5tEu6CHTIH9Vh1W0o1ifiP5t13u7aQ5Zgr7zd48mh5E164onwiHjvSf4Wun6ZkDHsuQVOrBMVmtt6VcL8DIptEU+4OAlRk87nqzdc/yoSvK1CSKQuU3J21ph4TttVYVYY5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6ID6gxStJ+/ofoae7PXLsLfBiUmrJbcIhAiS6cBLwWM=;
+ b=LMChWhuwqbtrpIPYGVbcnGMGIKn6ez3OpOY7CfWKJXWEN33WAB15ioCNsUQlXGrzTZTslMnLyGp7Fy4V4CWFZGIEVkby671cp+ky7x7rJAvuBMsfUm7vrLrmlBbKfH6Hag1OPuCszbg6nng2EnFIRSo98jOcMZflOoHIDH3XmDz/ANGY0YXvPW6WWgNrke0kUgZBAnjc2xxPoths1ibfr81ZOSBCk0feYCvu+Tmtl40xfW7WT+RqZDZzXwo51Y8AJrnSX5yMt5x/6GklUboKGW0qzZ8Tc9elTnS8OqFrSPJ3V7Fyar+OuqhEo1LPSLy1slCntZ3TFXdqgd5cMtOVHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=softing.com; dmarc=pass action=none header.from=softing.com;
+ dkim=pass header.d=softing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=softing.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6ID6gxStJ+/ofoae7PXLsLfBiUmrJbcIhAiS6cBLwWM=;
+ b=u3OqUxtsFDIW+WUOTEh7vNuA31NTgP/vPJbleXyBgEFzPYsOugAzMAi4g+uVX97t1IpidvsrQKG/WSWp3wm5ZUCQsznQwZ1An4OBP336l4ZUkKcE3Tq5Lp1SwsnxKkdiQUJJ6RPBR94T/Gegf7RJndFPyMjMyKegx0LYcibGuouEUqSfSX4WZgjS5DuegqUADWbJ4EHpCLvo09cia8WHyv4j2s1gP5eakuAlg6Iwlai5yyUHZesnWfsvGspCZbCELo+SHy+ZCkOBs3DWG44Ks2pTqsI1vNsHZmlSu1OtPldscJJDBOQVwst2j44dkcYbUDwpD+vIF+3Kri8kyHDNIA==
+Received: from BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:43::7) by
+ FR4P281MB4149.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:f9::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8158.17; Wed, 13 Nov 2024 14:41:09 +0000
+Received: from BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::8de2:b2ba:4092:939a]) by BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::8de2:b2ba:4092:939a%5]) with mapi id 15.20.8158.013; Wed, 13 Nov 2024
+ 14:41:09 +0000
+From: "Sperling, Tobias" <Tobias.Sperling@Softing.com>
+To: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC: "jic23@kernel.org" <jic23@kernel.org>, "lars@metafoo.de"
+	<lars@metafoo.de>, "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, "Sperling,
+ Tobias" <Tobias.Sperling@Softing.com>
+Subject: [PATCH 1/2] dt-bindings: iio: adc: Introduce ADS7138
+Thread-Topic: [PATCH 1/2] dt-bindings: iio: adc: Introduce ADS7138
+Thread-Index: Ads12IHP2U4PDLQ0TyOYbwP76vIxkw==
+Date: Wed, 13 Nov 2024 14:41:08 +0000
+Message-ID:
+ <BE1P281MB24207662EAC941780807F88BEF5A2@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=Softing.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BE1P281MB2420:EE_|FR4P281MB4149:EE_
+x-ms-office365-filtering-correlation-id: 2bec4047-bd67-4f42-3784-08dd03f13652
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?NnKEWk2B/C1fa5XtQkwL3praDzj+Hlo5zZPY+8pk2R/Uh5AO8RvAUXib6j3I?=
+ =?us-ascii?Q?bAcKLR1NJ5mRH4sLQ4c8ZmqVgxOg3AWN0bD91gUvd2hXXNBQgv0xN3xPNSrH?=
+ =?us-ascii?Q?Mnxkamap7o9g/VnecyBRIlLLSFv2LtKqc3d4OYT5NRNkb1wUGdr5AQrOaXhu?=
+ =?us-ascii?Q?5vNLIj4YiFyv2OoCNLmpWNC4YxoRouOrWYK9e0RY0ZrZj4ePl0YgoY2Im5fE?=
+ =?us-ascii?Q?yAGFGGvf8qMuuq+lrT0MvZ0cKORl/LBJh5PL0l85fEoSadCJ+26bSXCmLg5S?=
+ =?us-ascii?Q?8bpXsuOZgczvvCOo8TNfMYhDvtBGsuOdpd18LLL9xB5ojqfMznq4zg7uEqDl?=
+ =?us-ascii?Q?6v6Zuc6iEvsqUMo1s0WS5Ft6SIJjbqyVLU+3yqsMDSO0O1lMKT2iDzxp1Rwh?=
+ =?us-ascii?Q?pkZWxAB7K8Uwx25KHBpN6FFshjoLBXl631T3clDEY/ePInMIRnOppcvoWVo3?=
+ =?us-ascii?Q?OnVMEexAvLqiz3TBKIqyIfgl3g3Na4ecfG24yYvizY2qpyvDRpV+fqkEddx1?=
+ =?us-ascii?Q?7eAbNKakJ/0mydxnxM6Pn00AHOYFbZ5vHZlASOBxo/LAX1eqfupU0aPdBOwp?=
+ =?us-ascii?Q?h0Fb9eIr5t8LAysj0mpaB3528oFMhdwOxlOnG4M856TOqyxDxsmDPgyeMjs1?=
+ =?us-ascii?Q?UgzV2G4Q8C8wE4XC1aQSr1GrOXXqnScpdU10JuGtQvLuajLmi0p3XhBbGS8d?=
+ =?us-ascii?Q?09PON7fiJhUf+62cdTJiP6dK2sIMXnAoGLfg4tTD5C1y0J7jokL/nYF/gUBf?=
+ =?us-ascii?Q?LVlF3xGdsEVUNRbcb53Per1FekqmM8x5gvaxL2N9L96C/eIiajdXmx/ysNre?=
+ =?us-ascii?Q?+An9bDFmnINGeqqSZLh77eiheUebu58JIVY1Rkx9Uu5Esp73LB6NrIbjkQMC?=
+ =?us-ascii?Q?UwC7us/tH4aQwESnltIlh26UyanR4HLBjKv4cWaVPz2gMJv4xNWCqhOKEsMv?=
+ =?us-ascii?Q?SkHscq6YU4LWhQ1CoBbABlQIiMSfdNCAyKrVlB+vHo9a894DPa2t+tiH7lvj?=
+ =?us-ascii?Q?wgZFRk0HYYxKOar0A67+sKBkIcigIpLZAujIQ8kIoYnMjxy5/k5HErEp4VfO?=
+ =?us-ascii?Q?LkQkRJpgITymzGxOjOFYX/7Y/3XRH3bLxdLg6lM8nzYZgOKdWWgsKMjtAX44?=
+ =?us-ascii?Q?Gc1vIzqCgTnsfSKwHeFRXfYvd5crOEB6vKB8Az8c4n0OfCinF6ABbOoieDPN?=
+ =?us-ascii?Q?I2yB9BUakA+vY2cZUmfM+8APwTb54x01meP3577+pW8uXU2ONw9mkqlpeTfi?=
+ =?us-ascii?Q?r7hGyg9G4Xb/fTQt8fSRBl9cjg22zWtg6frUBStSKvWAG8+D/wmYZWGAck9n?=
+ =?us-ascii?Q?pNWpekyiZTnN6gRqgeXqYPel?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?wIVkPScy+iK86titDdgzSk4Vv1yjifyJtDaATvATRYZ7Mu5SK4DHc2c8cmTi?=
+ =?us-ascii?Q?1KKl6miHyzNDio0HsKRRy3bbeXYxoUw+FBcdbR34F6ANmI08a23qadASGDNK?=
+ =?us-ascii?Q?6nclu8yItc0iAkmF9NTD5+ixzsreZLX/aVzowIS5OZ/rW46SZRXzLBMJpLl2?=
+ =?us-ascii?Q?VdpIl6zIzQYgiVUhT+I4ND/hnq/uUbqdVybNzdPo4CnRUgu12z9ncKQQYt0c?=
+ =?us-ascii?Q?W9Y+m1RaWudUkkUuma7csOyn9uA7Ph0gNRCCVamR/Rc/lmWVrnckVmjzu8va?=
+ =?us-ascii?Q?x8XLD5by3ntx/WhNbtD1PfVdrMclL/jQDB+L3MBANnOobs/5kscwjbYGC8ED?=
+ =?us-ascii?Q?Rprs+UcVkJS2tKfFZKyPYeF59Z/qSGeg2ugb+vM4awx1K5dTZrT6roX2KzZH?=
+ =?us-ascii?Q?iNaQGZ62ONwy2f/mknp1rG3mZ0bZT4A3DGgvX+kwDudkmy6km/wvANq2o6NT?=
+ =?us-ascii?Q?s2ajk7m8dXqC8dmU2c2lV2HYdyOUeFygf8yJYTqI1Sknp2DBcHEavSClVG0F?=
+ =?us-ascii?Q?DrthqDFw3Qi/f/TwpBnduyy815QGKeu7BOAo9RC1lCGFBDYetLYg2lKb7BGe?=
+ =?us-ascii?Q?LWYS0P6VRopalmkBBG1gVS1q132JFQllEoRSlEPlfG3IOY78WG0OL6qpBK1y?=
+ =?us-ascii?Q?DF9q7cT2YX13Z/d6tY1CTqVGI3qACEW1Zh/sKA/ukqBhZ5scmSFDX7t6M/U1?=
+ =?us-ascii?Q?aZKQhSyBD4H4o416oOFWmTBIWGPimuD//Rk+QlWAHvE4xAqykdIR//jQ7hLS?=
+ =?us-ascii?Q?kNlQ3LOvbcA93fkx3w+9Pd91NJZS0k1ZqYrc9Lr5eXt/dQEbnQFLob7LtYtw?=
+ =?us-ascii?Q?WsjVyrv3r3coU4KmiRfot2O/ZzCVgiDZ/iZQfph1V4yp30QUmswQfJehNsQp?=
+ =?us-ascii?Q?brAo2JYtxhaT179fI3hYKgg4ZuuV4Ey3u+kWIrkXveEynFAXmvwgKvXHk5og?=
+ =?us-ascii?Q?Nxt5k/ORhOj1TSkAa6gxjdOrHNt4pzKMi4urLk+2yjrfLwM/He6agaP1Gi3f?=
+ =?us-ascii?Q?22OymwV9xPIWzs4WFRLb4gkdsZXItkHdzPyNhDy99Alc83UvQSNMHsyCraDE?=
+ =?us-ascii?Q?GfEYZSTx4VJivsrqdPmTh3JA7XXruR9JJQZkaoOf2bmfDxocpRlYHFFg5KGj?=
+ =?us-ascii?Q?ELr07ToOzx88+H+PqN0byUXYoudTLMafpOwyo24LYBTW+sOTyp5QYAkcTEON?=
+ =?us-ascii?Q?CoItlhcVHPpSFADqwg+Cq/NIQJHxugRLsbfUNqqkVKfx2zyicE/p015obLP6?=
+ =?us-ascii?Q?fCjwDwyENfNXDOTzrHofBhBMtSUT1ISSBxYFTsP4sznudRSAqq3SGXBuC31t?=
+ =?us-ascii?Q?hMBuOO9oT/ndt5XWKYWPeVh6wZPsHIXDFt/Wws15YIzA5eYqAJTeMt5Z4jWa?=
+ =?us-ascii?Q?TTrVjQNqCdffCXI5Lf7DhVp/9e0qF4WWH9ub6+AXvb21q4Oxfr4NEc/OaDMz?=
+ =?us-ascii?Q?yrRmD0LwNC9qUDkfL7AhVENYA7NgOGTk9Lzj/4Z1JnMAe0QhhjEsb64ONPz0?=
+ =?us-ascii?Q?bHUJ5jdlrUF/Vt2H/XFYA2U35QYx5zlQyhwP81PAmTRfNwV/SDgGElVeM4dc?=
+ =?us-ascii?Q?1rOlUpWJHZCEPghevXeOL1cqHK9mAI3Ql/aEL7Sl?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 0/4] Add support for QCOM SPMI PMIC5 Gen3 ADC
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <agross@kernel.org>, <andersson@kernel.org>,
-        <dmitry.baryshkov@linaro.org>, <konrad.dybcio@linaro.org>,
-        <daniel.lezcano@linaro.org>, <sboyd@kernel.org>,
-        <quic_subbaram@quicinc.com>, <quic_collinsd@quicinc.com>,
-        <quic_amelende@quicinc.com>, <quic_kamalw@quicinc.com>,
-        <amitk@kernel.org>, <lee@kernel.org>, <rafael@kernel.org>,
-        <rui.zhang@intel.com>, <lukasz.luba@arm.com>, <lars@metafoo.de>,
-        <quic_skakitap@quicinc.com>, <neil.armstrong@linaro.org>,
-        <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <cros-qcom-dts-watchers@chromium.org>
-References: <20241030185854.4015348-1-quic_jprakash@quicinc.com>
- <f2c2zxxmsk74rbgbhus7nyrxppwdeq2esgifigt7c326zzlmla@6vdb2rmbjptl>
-Content-Language: en-US
-From: Jishnu Prakash <quic_jprakash@quicinc.com>
-In-Reply-To: <f2c2zxxmsk74rbgbhus7nyrxppwdeq2esgifigt7c326zzlmla@6vdb2rmbjptl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: itwyVWykGu2ojvEzb8yL5r7dt_sfmDfY
-X-Proofpoint-GUID: itwyVWykGu2ojvEzb8yL5r7dt_sfmDfY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1011
- impostorscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
- priorityscore=1501 phishscore=0 malwarescore=0 mlxlogscore=999
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411130120
+X-OriginatorOrg: softing.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2bec4047-bd67-4f42-3784-08dd03f13652
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Nov 2024 14:41:08.9595
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: fe3606fa-d397-4238-9997-68dcd7851f64
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: zSZyF9dL1Rl7IyV5StPXj4AfZUFzsjICk6UUcE7j7bsQsVvoo2usGhYxDLmolLGnVpQ6EsJNwAnNWpBAiX2rMbw/POfzsujO1JPWw1lffw0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR4P281MB4149
 
-Hi Krzysztof,
+From 6a06973e1023ca6a128c8d426b4c87887117c084 Mon Sep 17 00:00:00 2001
+From: Tobias Sperling <tobias.sperling@softing.com>
+Date: Wed, 13 Nov 2024 14:52:49 +0100
+Subject: [PATCH 1/2] dt-bindings: iio: adc: Introduce ADS7138
 
-On 10/31/2024 1:06 PM, Krzysztof Kozlowski wrote:
-> On Thu, Oct 31, 2024 at 12:28:50AM +0530, Jishnu Prakash wrote:
->> PMIC5 Gen3 has a similar ADC architecture to that on PMIC5 Gen2,
->> with all SW communication to ADC going through PMK8550 which
->> communicates with other PMICs through PBS. The major difference is
->> that the register interface used here is that of an SDAM present on
->> PMK8550, rather than a dedicated ADC peripheral. There may be more than one
->> SDAM used for ADC5 Gen3. Each ADC SDAM has eight channels, each of which may
->> be used for either immediate reads (same functionality as previous PMIC5 and
->> PMIC5 Gen2 ADC peripherals) or recurring measurements (same as PMIC5 and PMIC5
->> Gen2 ADC_TM functionality). In this case, we have VADC and ADC_TM functionality
->> combined into the same driver.
->>
->> Patch 1 is a cleanup, to move the QCOM ADC dt-bindings files from
->> dt-bindings/iio to dt-bindings/iio/adc folder, as they are
->> specifically for ADC devices. It also fixes all compilation errors
->> with this change in driver and devicetree files and similar errors
->> in documentation for dtbinding check.
->>
->> Patch 2 adds bindings for ADC5 Gen3 peripheral.
->>
->> Patch 3 adds the main driver for ADC5 Gen3.
->>
->> Patch 4 adds the auxiliary thermal driver which supports the ADC_TM
->> functionality of ADC5 Gen3.
->>
->> Changes since v3:
->> - Updated files affected by adc file path change in /arch/arm folder,
->>   which were missed earlier.
-> 
-> I don't think this was tested afterwards...
+Add documentation for the driver of ADS7128 and ADS7138 12-bit, 8-channel
+analog-to-digital converters. These ADCs have a wide operating range and
+a wide feature set. Communication is based on the I2C interface.
 
-If you are referring to the error found by the bot in my V4 patches 1 and 2, I think the error is invalid.
-In both cases, this is the error:
+Signed-off-by: Tobias Sperling <tobias.sperling@softing.com>
+---
+ .../bindings/iio/adc/ti,ads7138.yaml          | 60 +++++++++++++++++++
+ 1 file changed, 60 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7138.ya=
+ml
 
-    fatal error: dt-bindings/iio/adc/qcom,spmi-vadc.h: No such file or directory
-
-But this file is added in patch 1, through a renaming:
-
-    rename include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h (100%)
-
-I have replied to Rob on the patch 1 mail pointing this out, but I did not get any reply yet.
-I have also tried updating dtschema and running 'make dt_binding_check' again myself and I did not get this error.
-
-If this was some rare error on the bot's side, which may not always happen, I'm thinking of pushing the same patch
-again in the next patch series, as I think there is nothing to fix from my side. Please let me know if you have any other suggestions.
-
-Thanks,
-Jishnu
-
-
-> 
-> Best regards,
-> Krzysztof
-> 
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7138.yaml b/Do=
+cumentation/devicetree/bindings/iio/adc/ti,ads7138.yaml
+new file mode 100644
+index 000000000000..c70ad5747828
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7138.yaml
+@@ -0,0 +1,60 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,ads7138.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments ADS7128/ADS7138 Analog to Digital Converter (ADC)
++
++maintainers:
++  - Tobias Sperling <tobias.sperling@softing.com>
++
++description: |
++  The ADS7128 is 12-Bit, 8-Channel Sampling Analog to Digital Converter (A=
+DC)
++  with an I2C interface.
++
++  Datasheets:
++    https://www.ti.com/product/ADS7128
++    https://www.ti.com/product/ADS7138
++
++properties:
++  compatible:
++    enum:
++      - ti,ads7128
++      - ti,ads7138
++
++  reg:
++    maxItems: 1
++
++  avdd-supply:
++    description:
++      The regulator used as analog supply voltage as well as reference vol=
+tage.
++
++  interrupts:
++    description:
++      Interrupt on ALERT pin, triggers on low level.
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - avdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++
++        adc@10 {
++            compatible =3D "ti,ads7138";
++            reg =3D <0x10>;
++            avdd-supply =3D <&reg_stb_3v3>;
++            interrupt-parent =3D <&gpio2>;
++            interrupts =3D <12 IRQ_TYPE_LEVEL_LOW>;
++        };
++    };
++...
+--=20
+2.34.1
 
 

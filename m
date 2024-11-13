@@ -1,52 +1,75 @@
-Return-Path: <linux-iio+bounces-12224-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12225-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679E99C7CE9
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 21:30:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6C99C7D2D
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 21:53:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73C4AB27D56
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 20:26:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDBD5B2602A
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 20:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67818204F7D;
-	Wed, 13 Nov 2024 20:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEC62064E9;
+	Wed, 13 Nov 2024 20:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mb/eI7hF"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hZjSBke3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A87A189BB3;
-	Wed, 13 Nov 2024 20:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5126A204021
+	for <linux-iio@vger.kernel.org>; Wed, 13 Nov 2024 20:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731529559; cv=none; b=RbLF4seJXvzwAUTY5gSjzNulMVhh+1xez7xeTzcZ7hxIGB3dc51HKWG+bey2gPoIEUFCHwUFQCrCfGYXtFViViCjlNGx5Dg88cI831jCYhsviM/pDaVvpVfl8QaMC3y3NcykMXjhN1jiO5cpSRLyBmc6h+4q7teRSfS/Hz2irtI=
+	t=1731531188; cv=none; b=EpFn1EiBtJYHpRdLEmhOSPeIz7vwdDVfYJBxiAU6pMknNnaujTWN90JZCNWmQ09vQojbaZk1OJ/tecc6zshIq6klMcR1ZD/NbwiQ2ZEgcIkHtyamnfmeXtmumAF9Yj/jg6+6g6FPp2TiNLiyoFM81TxmZSMHMj/hB5FDsoZZb/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731529559; c=relaxed/simple;
-	bh=XVkEg4LZukzwzA4wK7AA/2hvowHA2b6JWNl3VzbY1qs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eo3g5XOzWXwIn55/mjXuzRBZB8e08dgteM+EP5ywg8xeC0ReOfSdiCHCxWXSXlvz/+EAqDbK2dcxWqOAIED9kXj7OfVqa8XBa4TwSvetMmuV1hmvq+lAlBHMSgaFCaMZiGU0jisGJkgVlY6+RsqRwVFaIESCa8v+AHEh9BAc5Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mb/eI7hF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9AD8CC4CEC3;
-	Wed, 13 Nov 2024 20:25:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731529558;
-	bh=XVkEg4LZukzwzA4wK7AA/2hvowHA2b6JWNl3VzbY1qs=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=mb/eI7hF4frCePhnWSmoFVP76+4bKvi7WxqrF2I8bNJ2DUXPMAmaCD6hb2MYmThxH
-	 k05g55jBWXnzxkCq8I0rl00TThqp3JMgla8zqae8+1QzytRktjOPQ8Fx+yUydbHYEz
-	 OEC6cQ7Xoe8TfwxJPUjwVe95l8q3THbeb5u0yX0vBVRRNMukSdKFyQcsMIvJsX3iFm
-	 3e8FYoyFwAl5r8zvWcadI8e0YIDn2nUdsm0Tnta10wA8Sm2r/PaUjkBQu/QYQVI1po
-	 kbheCwYyOduEDRaerLkn5iRGgYK33BcfT1nXNYs3ZL7PD8PtisuVd6pz+pWXadWuIi
-	 P+2ttcoqSoEQQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91889D637AE;
-	Wed, 13 Nov 2024 20:25:58 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Wed, 13 Nov 2024 21:25:45 +0100
-Subject: [PATCH] iio: imu: inv_icm42600: fix timestamps after suspend if
- sensor is on
+	s=arc-20240116; t=1731531188; c=relaxed/simple;
+	bh=DtbTaZaqvsc+KEoZ506Tbq06JxZmBBxce7BnJqH3AAc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DqZJ854m2obaHPUuOUQiN3ghKPhsEhJvQZP0zy1gubXJvRx5z2RzAlYcZUKBspCMyIuWaDMdvZD8iQpkZsCyK6lSK4Et228zRCL1y4FIj+4g1d8henuNUuH6UzzMTfxQ6J5dyK47PzskJ0BovYDnjPCzJYCfWezXAEK8uzOwOt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hZjSBke3; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-460e6d331d6so45789921cf.2
+        for <linux-iio@vger.kernel.org>; Wed, 13 Nov 2024 12:53:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731531184; x=1732135984; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y8TX+6GngybidWgUAxSJBaW9xrYOaSQ8y1fp7VpIsVI=;
+        b=hZjSBke3zM6qChzXail2ZFTedtkXCZgwAH/nhwWBcFrvYGbjCJM54UphQsWe+xuDSg
+         e8PjChXOwtExiq4dsEWJAiXLE/g3ivuVPMV3N8N7I56XW7i6ETkPtyGiFEXat8VOXWSi
+         S1QYOC0bLshS/LefA0Q7rpDQ987+mdkG+J4q2lUkQy6wg15Kb6z3T+mlazL9Gno8CvUW
+         5S2luULlFC7wPp3cuaeZapFn3LjHoYMcMV6D67EoX2w45Un4TX8VcyeuahDrkYlWm+FU
+         CtvfJkpDdWFREaprfilKHBzYycPxsY4ie/GsZfVIQo4S79mpqrQwzjpY1qfLxkQ50q9O
+         mi7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731531184; x=1732135984;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y8TX+6GngybidWgUAxSJBaW9xrYOaSQ8y1fp7VpIsVI=;
+        b=XqLJX1KJQtt8n9UWsSB/g0djajhw6JVdYxAKMZMTOzhir2ph55meeU6JELiJomXDxv
+         XMMLQhiKu/TxEHV1knktLPLPezJlpvZ7TzJTW+kKcO6d/UDzK3sO5dgfiqjf787wzCIj
+         ICj6Da8c4mIpaM/8I+IcQYoQJ80u5s8qyanxTR/arFtQ6icOlJBScUsVofi8g75i2pzX
+         TJDsTRTGjmFksrA2v5dC9uapCySFr8wV9ZDJOc+AE/+r5Tj/ljAdZay8HcqwwSLBtRb6
+         /wgb/PQ4vyTefNdV/usC769ATxzvBeQp9V4SLF4pwPgQv96jUE3lTOdkFAruFKrIWbGF
+         eULg==
+X-Forwarded-Encrypted: i=1; AJvYcCWz9PJGRwU7UtzWCq7j2ClOqf5DiODGzqPhNm83Iz5rxpq3hyHeUyBN1tEriuI6EUhTFW/jIhaj3Cc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yywt3Q4SzJMYBlEx95Jj4DQJ/yJO8WbDoJDSyY9Z16MSxnHB7rw
+	LgkNWimv5JvsJKcxWfR56JQ0qKWoU9luL3kIVBCcxZTU6dJzRasa7xvVkS7zEaM=
+X-Google-Smtp-Source: AGHT+IGDHbpm275dmT0uFp7vyn9Rc4ogj5CY+nOREwoYatFkLfT1ahZRdzhfo/JHlSJiGdsA1FusWQ==
+X-Received: by 2002:a0c:f6c9:0:b0:6d3:a772:fd25 with SMTP id 6a1803df08f44-6d3a772fd43mr211209176d6.21.1731531184261;
+        Wed, 13 Nov 2024 12:53:04 -0800 (PST)
+Received: from [127.0.1.1] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3961df2f5sm88829336d6.2.2024.11.13.12.53.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 12:53:03 -0800 (PST)
+From: Trevor Gamblin <tgamblin@baylibre.com>
+Subject: [PATCH v2 0/3] iio: adc: ad4695: add new regmap callbacks, timing
+ improvements
+Date: Wed, 13 Nov 2024 15:52:57 -0500
+Message-Id: <20241113-tgamblin-ad4695_improvements-v2-0-b6bb7c758fc4@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,78 +78,83 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241113-inv_icm42600-fix-timestamps-after-suspend-v1-1-dfc77c394173@tdk.com>
-X-B4-Tracking: v=1; b=H4sIAEgLNWcC/x2NwQrCMBAFf6Xs2YVsDAr+iojE9FX3kBiysQil/
- 27wODDMbGRoCqPLtFHDqqbvMkAOE6VXLE+wzoPJOx9E5Mha1rumHPzJOV70y10zrMdcjePS0dg
- +VlFmfpwRvCDG4BKNXm0Y/v91ve37DznTSuJ7AAAA
-X-Change-ID: 20241113-inv_icm42600-fix-timestamps-after-suspend-b7e421eaa40c
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731529557; l=1842;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=+tQ9OPlXVb/U7JJzG2A5nQchXayPHGyAcIorXGviVAg=;
- b=sCmRsr4/cO+NzGKXwiE8HMetOoSImgvJtQSIr0Y8XXQZQtaxiApETbdK79AE/3j00YdWcFZjs
- L7nEs9l63s4ChzCaC6wkyTOFE31hgw3QrQR59S+P18fmf0medsGmlo4
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
+X-B4-Tracking: v=1; b=H4sIAKkRNWcC/42NQQ6CMBBFr0JmbQ0doKIr72GIKTDAJLQlLWkkh
+ LtbOYF/9/7ivR0CeaYAj2wHT5EDO5sALxl0k7YjCe4TA+ZYyjSxjtq0M1uh+1LdqzebxbtIhuw
+ axE0XqBWqukMFSbF4Gvhz6l9N4onD6vx21qL8vX+KoxS5UPdaD2UlURXVs9XbzK2na+cMNMdxf
+ AHUHSC7ywAAAA==
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Trevor Gamblin <tgamblin@baylibre.com>
+X-Mailer: b4 0.14.1
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+The AD4695 driver currently operates all SPI reads/writes at the speed
+appropriate for register access, rather than the max rate for the bus.
+Data reads should ideally operate at the latter speed, but making this
+change universally makes it possible for data to be corrupted during use
+and for unexpected behavior to occur on driver subsequent driver
+binds/unbinds. To solve this, introduce custom regmap bus callbacks for
+the driver that explicitly set a lower speed only for these operations.
 
-Currently suspending while sensors are one will result in timestamping
-continuing without gap at resume. It can work with monotonic clock but
-not with other clocks. Fix that by resetting timestamping.
+The first patch in this series is a fix introduced after discovering the
+corresponding issue during testing of the callbacks. This is a timing
+fix that ensures the AD4695 datasheet's timing specs are met, as before
+the busy signal would sometimes fail to toggle again following the end
+of the conversion sequence. Adding an extra delay in the form of a blank
+transfer before every CS deassert in ad4695_buffer_preenable() allows
+this requirement to be met. The patch also makes similar changes in
+ad4695_read_one_sample() (while also tidying that function somewhat) to
+make sure that single reads are still functional with the regmap change.
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+The second patch is an improvement that increases the robustness of the
+exit message in ad4695_exit_conversion_mode(), this time by adding a
+delay before the actual exit command. This helps avoid the possibility
+that the exit message will be read as data, causing corruption on some
+buffered reads.
+
+For additional context, see:
+https://lore.kernel.org/linux-iio/20241028163907.00007e12@Huawei.com/
+
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Changes in v2:
+- Link to v1: https://lore.kernel.org/r/20241111-tgamblin-ad4695_improvements-v1-0-698af4512635@baylibre.com
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 93b5d7a3339ccff16b21bf6c40ed7b2311317cf4..03139e2e4eddbf37e154de2eb486549bc3bdb284 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -814,6 +814,8 @@ static int inv_icm42600_suspend(struct device *dev)
- static int inv_icm42600_resume(struct device *dev)
- {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
-+	struct inv_icm42600_sensor_state *gyro_st = iio_priv(st->indio_gyro);
-+	struct inv_icm42600_sensor_state *accel_st = iio_priv(st->indio_accel);
- 	int ret;
- 
- 	mutex_lock(&st->lock);
-@@ -834,9 +836,12 @@ static int inv_icm42600_resume(struct device *dev)
- 		goto out_unlock;
- 
- 	/* restore FIFO data streaming */
--	if (st->fifo.on)
-+	if (st->fifo.on) {
-+		inv_sensors_timestamp_reset(&gyro_st->ts);
-+		inv_sensors_timestamp_reset(&accel_st->ts);
- 		ret = regmap_write(st->map, INV_ICM42600_REG_FIFO_CONFIG,
- 				   INV_ICM42600_FIFO_CONFIG_STREAM);
-+	}
- 
- out_unlock:
- 	mutex_unlock(&st->lock);
+  [PATCH 1/3]
+  - Fix bugs with transfer timings and sequencing in
+    ad4695_buffer_preenable() and ad4695_read_one_sample() by adjusting
+    xfer structs and simplifying
+  - Add clearer comments explaining why the temperature channel is
+    handled as-is with the advanced sequencer
+  - Add David's Co-Developed-by tag
+
+  [PATCH 2/3]
+  - No change
+
+  [PATCH 3/3]
+  - Fix bug where ad4695_regmap_config was passed twice to
+    devm_regmap_init() in ad4695_probe(), instead of passing
+    ad4695_regmap_config once and ad4695_regmap16_config the second time
 
 ---
-base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
-change-id: 20241113-inv_icm42600-fix-timestamps-after-suspend-b7e421eaa40c
+Trevor Gamblin (3):
+      iio: adc: ad4695: fix buffered read, single sample timings
+      iio: adc: ad4695: make ad4695_exit_conversion_mode() more robust
+      iio: adc: ad4695: add custom regmap bus callbacks
+
+ drivers/iio/adc/Kconfig  |   2 +-
+ drivers/iio/adc/ad4695.c | 208 +++++++++++++++++++++++++++++++++++++----------
+ 2 files changed, 165 insertions(+), 45 deletions(-)
+---
+base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
+change-id: 20241111-tgamblin-ad4695_improvements-7a32a6268c26
 
 Best regards,
 -- 
-Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-
+Trevor Gamblin <tgamblin@baylibre.com>
 
 

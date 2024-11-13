@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-12197-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12198-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE229C6DB2
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 12:21:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1009C6E02
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 12:38:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19CB71F2190A
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 11:21:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E3D4B2E815
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Nov 2024 11:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236491FA279;
-	Wed, 13 Nov 2024 11:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8500B201002;
+	Wed, 13 Nov 2024 11:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GM1JRGqO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DX15IScd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F171200B8F;
-	Wed, 13 Nov 2024 11:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6C31FF5E5;
+	Wed, 13 Nov 2024 11:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731496817; cv=none; b=qmQgkvNQYJ6te9dtSP2xiUe0YJK06kab177WqO3INj0peDq/K2UwbIKyLCh4RpdXCGzadXMMtO9qtKYCCmSOdWDMj1fHx+d9tN+VdgzKXXTOdDvx6SbtW9VUpfE9OWLKgMwaadV1Qbu0Pf1S+KY6cY/BLSxdlxFZ/S276a8Qj6E=
+	t=1731496837; cv=none; b=g7SNV5BAzWwzrSdlMaRShw+MO6ovDe6gwyiEgSW9A3OIoV9py/nts+kROJVrS0B3Wr/snTUWAkqGToIwza2Leim74qELiR3+1ebQdlmfMjvPRwhi9kx5RCTmo5t/Ud4B5YWwiRFDnjUurlTYmfVFeQteOI/z9z+5/xMBpC2+LEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731496817; c=relaxed/simple;
-	bh=os6NKRV3DiBYSPOB+jwd9UanJgfU0jAP2AO4Z1GIi2I=;
+	s=arc-20240116; t=1731496837; c=relaxed/simple;
+	bh=U1n36CoErKiW0PdZw+ayzm0kwFFBLzKR5JG6iNgBoHE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AhWdQBSG49ZaiF2paAPgWdbbDJ9PN3R4tO75Rh9xKSAvzDDGbiZ5mQBUiiuODWucyr5CHvjgtcFZlijMuCwwgzTtedwkn7NKUDtB4T2oJvfuTDvYXHmj18NNXpGSMgg8gvpyuHyAzZYfZDdNKl7TEf5i+9XnrubQGNIZN1I/LHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GM1JRGqO; arc=none smtp.client-ip=209.85.208.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=lHBm0Cah2nrCNmoYEwTfgS8YzCcHD6ezTKo9zlMofpwxGg5zYuXpveJpwwoKvvHwFzo+RZEuf7JtZyuZFHpbLWlgFYBxYU3jgkuI9tvfCI/yKg+pB3XQrIDfvPqPBXbYmgL9XbRLQVbHQbwotK7RdJ90h6q9v0RTLlNGQTASCZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DX15IScd; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2fc96f9c41fso6709441fa.0;
-        Wed, 13 Nov 2024 03:20:16 -0800 (PST)
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-539f84907caso7629708e87.3;
+        Wed, 13 Nov 2024 03:20:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731496814; x=1732101614; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731496833; x=1732101633; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1hbj9OsuVyivUpj0F9cGsgeSME0OksJ9+laGHOnSVXE=;
-        b=GM1JRGqO4uKE1wmXGsOrn8O4nYnyAtHRAOAdpzCTvi5Zn9ado4u89eC5vXHl+5NVDX
-         yE+UoKdcH21gfqSrNTx+Sy0Z5eLHSssSAPIScjZlpXpIIOtZljcA5lPzmyfsnOq8zBLx
-         sgoFouzHi7XMgQ/Wxcjg3ZzbDhSYTtEq9C2jgXASiJRupBdfjUJ0wtV08u5qA8oPnA5M
-         jfF6nlHHl9WmlKtqcQ0EyqED7IA5Z1lzg4TOFeg6KNH1CrbyvoF8RbNyatsLrZnll+Wu
-         NNSerlGiIkEoim13M0kty3KCqudOeafx+wvLlh8VRZ9tsZqgQSfhV1SsX3UukHzMG9sY
-         LjCw==
+        bh=JSAf5erNRaQJKP71Ai70DIwS8n0/VvSIv+3u/yhIIdo=;
+        b=DX15IScd1D9ChYZ2R5TyYdc9EO6bAeFmKfEXUrFJHFS1WQKW1+E3lpFXFKsYTV5e3j
+         pcJbGO/kFulKHSQo6WKCDYBNXoMc0Kwt9hCwwyYm8kkJHJi5CAyToE6fP//gBPf1Z0Me
+         KpudQgNmGX6LCokAfND9CbMUM3S6VSMAsZ3AD5h3+As9sUH3Xd2uORra2YAiD8bCwsfy
+         jGEZsA6eMSuxaqmuwcRv0sSje+x25XWhiVmrThUyUFIf6ettb25JNvpvn71IqsU7EBdX
+         i46DTnH/rHWnen9E6sTnscx1pgMkmif15JZivcv2LXtokLWttLCl1hZWnks5d1XmWo6z
+         P6BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731496814; x=1732101614;
+        d=1e100.net; s=20230601; t=1731496833; x=1732101633;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1hbj9OsuVyivUpj0F9cGsgeSME0OksJ9+laGHOnSVXE=;
-        b=VhgXREUFYUAZ3LqYjAYliX4AEFBi6mt07kKEYnZJtNPnt5G7PgcaMONfEgzM/SJqx0
-         JK11J7wO7opeB4623rieDx8A+3mmxFkEIRBYyw+GIG84tw40ocbxZcvg/ZTuiWcMznlA
-         s0xpUH9PjWIt3MZ/3qf739vD2fNjN0jArp6rrNB/+k2EWmM7Us+L2DF3Utf1w5Vf7cFt
-         AsdoQSQG/wIiSAvTd+dt7cvFk5hZmB67fHqr0xpzWg3ob5rCBVisOk3Ir1NBFooJMXeW
-         WwkGSsMrmoeEtIiXEUc8rSB39MRMDXuwkQYah0an5XfrhN8vRzJvCRPP81EiJ6rAmFKr
-         Rx/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUkhh38Wf0uc1AjVD3+/IoQzRGjXENa+CJcqE1IgM9lhkgf5vHtYIpLjKV7GLmnvfoasn9d9kezrK0l@vger.kernel.org, AJvYcCVwfpVXzxGth9f3V4VO9w074SrT6Lb5mGKTN72dFxZ5RmjSVi50AWQr6GfAndWxdQciJHrDQCjLfosl@vger.kernel.org, AJvYcCWKmxCkwgR3bCyfkur+D+BqkaKwzSiQMWiDLVXz7KhiZvlLuViHRpQRorUMS0k1xcefMo+lYhy1rFsa1pVM@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTsU5dVvm+EOMioiDxOzmb0CY9zGRAwKObe9A4shz1tw21jJ4w
-	qah6eTbpKMwmxvpa6mnp4DKfuOZjWpRLHEK22fijN76Ocz+Dh0JR
-X-Google-Smtp-Source: AGHT+IHXn4iXxA2U9pThQOnrrgVLz1QpNkFzGPtAT6wxdiOH2IWX7M5CPlQrdjoqW45JdSEFgXqZ+Q==
-X-Received: by 2002:a2e:9ac7:0:b0:2fb:5bd1:c293 with SMTP id 38308e7fff4ca-2ff209f4d0amr50833241fa.21.1731496813985;
-        Wed, 13 Nov 2024 03:20:13 -0800 (PST)
+        bh=JSAf5erNRaQJKP71Ai70DIwS8n0/VvSIv+3u/yhIIdo=;
+        b=MKAZCzr54xq4ea4Z/GLd7B5YqW2+fY832VY90qUo7v1xctXAj6xECoMEJVlVwpGBuY
+         8gjF878gb6Tb4lap+8DR0h0UP6q6v7dmnkHPWlBY2RItAJs/fSrsKJjB/AZxkxnJlNTv
+         8EOVI25RDlQ9/VZq8e3WLnNuTFcuKXNQHnVlV6iOACsVLUpb0bWWc9fZouAp3cBbe94E
+         5usoS/00JVIZeBGDa300hBc6vJhx+6dyfsxHCXIwFQ0sJ8cMH+/LbuGCGgc6SRljROcZ
+         grBbmoWCtp0TsuAgBzbkqhT0sLR3/7mdemRTXUDuGa0a3iSIXupFWIg+B4rMRFsS+C85
+         sfLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUcZIAx7raT0yJz++a6pEdYWE6VFg0jC5PtrHKh4xSlp4mIcQdlJwGV1rwPoqsn4JWgihosmsdgfJC5@vger.kernel.org, AJvYcCVVBIZL3qnM6DkNknoU1EQEbgy2OfrfD6cLL/S6+MEcMPZOQm7XM0ZgPqGTz3pzLyxc/oEZaxsQE0tZ@vger.kernel.org, AJvYcCWphGDVBzjOeZwqaLfoRgeakA2DDEiDwGxDD9eMRD8vNynlK+QvKC24EJWTS+V631JEZDL7RrgNhzWV7DSk@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8eWrIKYRILnD9Do2llIrqQEXL7oKLoI6ACwv3+QtrnOl7GLxd
+	Ssuze7AQNogAB0MLu9+gr/XToY/WKqJ4cqlECgiCN5QNtekW1XnD
+X-Google-Smtp-Source: AGHT+IH7JkALubcn0oc/gipIDR5MpOA2xnur135kdnz3s/idRAQt+/kwYNUY0/qT67KWvTTTV4Xkfw==
+X-Received: by 2002:a05:6512:b17:b0:52f:c13f:23d2 with SMTP id 2adb3069b0e04-53d862cae67mr9690920e87.25.1731496833088;
+        Wed, 13 Nov 2024 03:20:33 -0800 (PST)
 Received: from mva-rohm ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ff179d4aa8sm23347541fa.97.2024.11.13.03.20.11
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53d826888dfsm2137157e87.106.2024.11.13.03.20.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 03:20:13 -0800 (PST)
-Date: Wed, 13 Nov 2024 13:20:04 +0200
+        Wed, 13 Nov 2024 03:20:31 -0800 (PST)
+Date: Wed, 13 Nov 2024 13:20:26 +0200
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -77,8 +77,8 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Matti Vaittinen <mazziesaccount@gmail.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/5] iio: accel: kx022a: Use cleanup.h helpers
-Message-ID: <dce7c964f867dfeda8a7930c0144a10391fb1137.1731495937.git.mazziesaccount@gmail.com>
+Subject: [PATCH 3/5] iio: accel: kx022a: Support ICs with different G-ranges
+Message-ID: <75b415b60f6c29bb01766db8b5628cc67bacc940.1731495937.git.mazziesaccount@gmail.com>
 References: <cover.1731495937.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -87,231 +87,163 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="GjcGCwYhJDEM8ck9"
+	protocol="application/pgp-signature"; boundary="9+bX2y3kbdFbdJQH"
 Content-Disposition: inline
 In-Reply-To: <cover.1731495937.git.mazziesaccount@gmail.com>
 
 
---GjcGCwYhJDEM8ck9
+--9+bX2y3kbdFbdJQH
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-A few functions in KX022A need to use mutex for protecting the
-enabling/disabling of the measurement while configurations are being
-made. Some of the functions can be slightly simplified by using the
-__cleanup based scoped mutexes, which allows dropping the goto based
-unlocking at error path.
+The register interface of the ROHM KX134ACR-LBZ accelerometer is almost
+identical to the KX132ACR-LBZ. Main difference between these
+accelerometers is that the KX134ACR-LBZ supports G-ranges +/- 8, 16,
+32 and 64G. All the other sensors supported by the kx022a driver can
+measure +/- 2, 4, 8 and 16G.
 
-Simplify error paths using guard(mutex).
+Prepare supporting the KX134ACR-LBZ with different G-ranges by storing
+a pointer to the scale tables in IC specific structure.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 ---
- drivers/iio/accel/kionix-kx022a.c | 61 ++++++++++++-------------------
- 1 file changed, 23 insertions(+), 38 deletions(-)
+ drivers/iio/accel/kionix-kx022a.c | 32 ++++++++++++++++++++-----------
+ drivers/iio/accel/kionix-kx022a.h |  2 ++
+ 2 files changed, 23 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-k=
 x022a.c
-index 32387819995d..321bb2c35578 100644
+index 321bb2c35578..e2e41dea9d9f 100644
 --- a/drivers/iio/accel/kionix-kx022a.c
 +++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -5,6 +5,7 @@
-  * ROHM/KIONIX accelerometer driver
-  */
-=20
-+#include <linux/cleanup.h>
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/interrupt.h>
-@@ -448,7 +449,7 @@ static void kx022a_reg2scale(unsigned int val, unsigned=
- int *val1,
- 	*val2 =3D kx022a_scale_table[val][1];
+@@ -413,6 +413,8 @@ static int kx022a_read_avail(struct iio_dev *indio_dev,
+ 			     const int **vals, int *type, int *length,
+ 			     long mask)
+ {
++	struct kx022a_data *data =3D iio_priv(indio_dev);
++
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		*vals =3D (const int *)kx022a_accel_samp_freq_table;
+@@ -421,9 +423,8 @@ static int kx022a_read_avail(struct iio_dev *indio_dev,
+ 		*type =3D IIO_VAL_INT_PLUS_MICRO;
+ 		return IIO_AVAIL_LIST;
+ 	case IIO_CHAN_INFO_SCALE:
+-		*vals =3D (const int *)kx022a_scale_table;
+-		*length =3D ARRAY_SIZE(kx022a_scale_table) *
+-			  ARRAY_SIZE(kx022a_scale_table[0]);
++		*vals =3D (const int *)data->chip_info->scale_table;
++		*length =3D data->chip_info->scale_table_size;
+ 		*type =3D IIO_VAL_INT_PLUS_NANO;
+ 		return IIO_AVAIL_LIST;
+ 	default:
+@@ -439,14 +440,14 @@ static void kx022a_reg2freq(unsigned int val,  int *v=
+al1, int *val2)
+ 	*val2 =3D kx022a_accel_samp_freq_table[val & KX022A_MASK_ODR][1];
  }
 =20
--static int kx022a_turn_on_off_unlocked(struct kx022a_data *data, bool on)
-+static int __kx022a_turn_on_off(struct kx022a_data *data, bool on)
+-static void kx022a_reg2scale(unsigned int val, unsigned int *val1,
+-			     unsigned int *val2)
++static void kx022a_reg2scale(struct kx022a_data *data, unsigned int val,
++			     unsigned int *val1, unsigned int *val2)
  {
- 	int ret;
+ 	val &=3D KX022A_MASK_GSEL;
+ 	val >>=3D KX022A_GSEL_SHIFT;
 =20
-@@ -469,7 +470,7 @@ static int kx022a_turn_off_lock(struct kx022a_data *dat=
-a)
- 	int ret;
-=20
- 	mutex_lock(&data->mutex);
--	ret =3D kx022a_turn_on_off_unlocked(data, false);
-+	ret =3D __kx022a_turn_on_off(data, false);
- 	if (ret)
- 		mutex_unlock(&data->mutex);
-=20
-@@ -480,7 +481,7 @@ static int kx022a_turn_on_unlock(struct kx022a_data *da=
-ta)
- {
- 	int ret;
-=20
--	ret =3D kx022a_turn_on_off_unlocked(data, true);
-+	ret =3D __kx022a_turn_on_off(data, true);
- 	mutex_unlock(&data->mutex);
-=20
- 	return ret;
-@@ -912,18 +913,19 @@ static int kx022a_fifo_disable(struct kx022a_data *da=
-ta)
- {
- 	int ret =3D 0;
-=20
--	ret =3D kx022a_turn_off_lock(data);
-+	guard(mutex)(&data->mutex);
-+	ret =3D __kx022a_turn_on_off(data, false);
- 	if (ret)
- 		return ret;
-=20
- 	ret =3D regmap_clear_bits(data->regmap, data->ien_reg, KX022A_MASK_WMI);
- 	if (ret)
--		goto unlock_out;
-+		return ret;
-=20
- 	ret =3D regmap_clear_bits(data->regmap, data->chip_info->buf_cntl2,
- 				KX022A_MASK_BUF_EN);
- 	if (ret)
--		goto unlock_out;
-+		return ret;
-=20
- 	data->state &=3D ~KX022A_STATE_FIFO;
-=20
-@@ -931,12 +933,7 @@ static int kx022a_fifo_disable(struct kx022a_data *dat=
-a)
-=20
- 	kfree(data->fifo_buffer);
-=20
--	return kx022a_turn_on_unlock(data);
--
--unlock_out:
--	mutex_unlock(&data->mutex);
--
--	return ret;
-+	return __kx022a_turn_on_off(data, true);
+-	*val1 =3D kx022a_scale_table[val][0];
+-	*val2 =3D kx022a_scale_table[val][1];
++	*val1 =3D data->chip_info->scale_table[val][0];
++	*val2 =3D data->chip_info->scale_table[val][1];
  }
 =20
- static int kx022a_buffer_predisable(struct iio_dev *idev)
-@@ -959,33 +956,29 @@ static int kx022a_fifo_enable(struct kx022a_data *dat=
-a)
- 	if (!data->fifo_buffer)
- 		return -ENOMEM;
+ static int __kx022a_turn_on_off(struct kx022a_data *data, bool on)
+@@ -544,11 +545,11 @@ static int kx022a_write_raw(struct iio_dev *idev,
+ 		kx022a_turn_on_unlock(data);
+ 		break;
+ 	case IIO_CHAN_INFO_SCALE:
+-		n =3D ARRAY_SIZE(kx022a_scale_table);
++		n =3D data->chip_info->scale_table_size / 2;
 =20
--	ret =3D kx022a_turn_off_lock(data);
-+	guard(mutex)(&data->mutex);
-+	ret =3D __kx022a_turn_on_off(data, false);
- 	if (ret)
- 		return ret;
+ 		while (n-- > 0)
+-			if (val =3D=3D kx022a_scale_table[n][0] &&
+-			    val2 =3D=3D kx022a_scale_table[n][1])
++			if (val =3D=3D data->chip_info->scale_table[n][0] &&
++			    val2 =3D=3D data->chip_info->scale_table[n][1])
+ 				break;
+ 		if (n < 0) {
+ 			ret =3D -EINVAL;
+@@ -643,7 +644,7 @@ static int kx022a_read_raw(struct iio_dev *idev,
+ 		if (ret < 0)
+ 			return ret;
 =20
- 	/* Update watermark to HW */
- 	ret =3D kx022a_fifo_set_wmi(data);
- 	if (ret)
--		goto unlock_out;
-+		return ret;
+-		kx022a_reg2scale(regval, val, val2);
++		kx022a_reg2scale(data, regval, val, val2);
 =20
- 	/* Enable buffer */
- 	ret =3D regmap_set_bits(data->regmap, data->chip_info->buf_cntl2,
- 			      KX022A_MASK_BUF_EN);
- 	if (ret)
--		goto unlock_out;
-+		return ret;
-=20
- 	data->state |=3D KX022A_STATE_FIFO;
- 	ret =3D regmap_set_bits(data->regmap, data->ien_reg,
- 			      KX022A_MASK_WMI);
- 	if (ret)
--		goto unlock_out;
--
--	return kx022a_turn_on_unlock(data);
--
--unlock_out:
--	mutex_unlock(&data->mutex);
-+		return ret;
-=20
--	return ret;
-+	return __kx022a_turn_on_off(data, true);
- }
-=20
- static int kx022a_buffer_postenable(struct iio_dev *idev)
-@@ -1053,7 +1046,7 @@ static irqreturn_t kx022a_irq_thread_handler(int irq,=
- void *private)
- 	struct kx022a_data *data =3D iio_priv(idev);
- 	irqreturn_t ret =3D IRQ_NONE;
-=20
--	mutex_lock(&data->mutex);
-+	guard(mutex)(&data->mutex);
-=20
- 	if (data->trigger_enabled) {
- 		iio_trigger_poll_nested(data->trig);
-@@ -1068,8 +1061,6 @@ static irqreturn_t kx022a_irq_thread_handler(int irq,=
- void *private)
- 			ret =3D IRQ_HANDLED;
+ 		return IIO_VAL_INT_PLUS_NANO;
  	}
-=20
--	mutex_unlock(&data->mutex);
--
- 	return ret;
- }
-=20
-@@ -1079,32 +1070,26 @@ static int kx022a_trigger_set_state(struct iio_trig=
-ger *trig,
- 	struct kx022a_data *data =3D iio_trigger_get_drvdata(trig);
- 	int ret =3D 0;
-=20
--	mutex_lock(&data->mutex);
-+	guard(mutex)(&data->mutex);
-=20
- 	if (data->trigger_enabled =3D=3D state)
--		goto unlock_out;
-+		return 0;
-=20
- 	if (data->state & KX022A_STATE_FIFO) {
- 		dev_warn(data->dev, "Can't set trigger when FIFO enabled\n");
--		ret =3D -EBUSY;
--		goto unlock_out;
-+		return -EBUSY;
- 	}
-=20
--	ret =3D kx022a_turn_on_off_unlocked(data, false);
-+	ret =3D __kx022a_turn_on_off(data, false);
- 	if (ret)
--		goto unlock_out;
-+		return ret;
-=20
- 	data->trigger_enabled =3D state;
- 	ret =3D kx022a_set_drdy_irq(data, state);
- 	if (ret)
--		goto unlock_out;
--
--	ret =3D kx022a_turn_on_off_unlocked(data, true);
--
--unlock_out:
--	mutex_unlock(&data->mutex);
-+		return ret;
-=20
--	return ret;
-+	return __kx022a_turn_on_off(data, true);
- }
-=20
- static const struct iio_trigger_ops kx022a_trigger_ops =3D {
+@@ -1143,6 +1144,9 @@ const struct kx022a_chip_info kx022a_chip_info =3D {
+ 	.regmap_config			=3D &kx022a_regmap_config,
+ 	.channels			=3D kx022a_channels,
+ 	.num_channels			=3D ARRAY_SIZE(kx022a_channels),
++	.scale_table			=3D kx022a_scale_table,
++	.scale_table_size		=3D ARRAY_SIZE(kx022a_scale_table) *
++					  ARRAY_SIZE(kx022a_scale_table[0]),
+ 	.fifo_length			=3D KX022A_FIFO_LENGTH,
+ 	.who				=3D KX022A_REG_WHO,
+ 	.id				=3D KX022A_ID,
+@@ -1168,6 +1172,9 @@ const struct kx022a_chip_info kx132_chip_info =3D {
+ 	.regmap_config		  =3D &kx132_regmap_config,
+ 	.channels		  =3D kx132_channels,
+ 	.num_channels		  =3D ARRAY_SIZE(kx132_channels),
++	.scale_table			=3D kx022a_scale_table,
++	.scale_table_size		=3D ARRAY_SIZE(kx022a_scale_table) *
++					  ARRAY_SIZE(kx022a_scale_table[0]),
+ 	.fifo_length		  =3D KX132_FIFO_LENGTH,
+ 	.who			  =3D KX132_REG_WHO,
+ 	.id			  =3D KX132_ID,
+@@ -1201,6 +1208,9 @@ const struct kx022a_chip_info kx132acr_chip_info =3D {
+ 	.regmap_config			=3D &kx022a_regmap_config,
+ 	.channels			=3D kx022a_channels,
+ 	.num_channels			=3D ARRAY_SIZE(kx022a_channels),
++	.scale_table			=3D kx022a_scale_table,
++	.scale_table_size		=3D ARRAY_SIZE(kx022a_scale_table) *
++					  ARRAY_SIZE(kx022a_scale_table[0]),
+ 	.fifo_length			=3D KX022A_FIFO_LENGTH,
+ 	.who				=3D KX022A_REG_WHO,
+ 	.id				=3D KX132ACR_LBZ_ID,
+diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-k=
+x022a.h
+index 7060438ad88c..36e9d9de8c13 100644
+--- a/drivers/iio/accel/kionix-kx022a.h
++++ b/drivers/iio/accel/kionix-kx022a.h
+@@ -161,6 +161,8 @@ struct kx022a_data;
+ struct kx022a_chip_info {
+ 	const char *name;
+ 	const struct regmap_config *regmap_config;
++	const int (*scale_table)[2];
++	const int scale_table_size;
+ 	const struct iio_chan_spec *channels;
+ 	unsigned int num_channels;
+ 	unsigned int fifo_length;
 --=20
 2.47.0
 
 
---GjcGCwYhJDEM8ck9
+--9+bX2y3kbdFbdJQH
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmc0i2QACgkQeFA3/03a
-ocWwyQf/behc86Myl17GhICK8oxGH3Fe5JrJKgxlv/mjLimNAX0vVYrGH2SInLds
-nuUfr+CTR7kX9gLIPdpb5P6reSKGphrTPTdcfxK6PH7cBV499B6TW6/oq9bW1J+b
-QYpYyDpRfteSifcVFL0mu/U5mLP3eGJukL2aqL89K1cg13qmCAb5zdmi9ryogivg
-bnxA3Ts5uH73Ekxghvqux5zmkQXe4B4cJsWGEEuGbkDD3oNXNgTz/KBJbWwNbRpL
-FlLqIEi0/VX7/dl+h8LLRRTjEQN/YWOfrUU6xcc5WHJujZ/Z4I99rriekghD6mW0
-bHzM0yhdSfdVW3Z7qpxk8Lxi5x1X4Q==
-=AG+k
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmc0i3kACgkQeFA3/03a
+ocVRIAf+OmlAOvznaLnZWbOQ1qDLRRgd6qibeB5bJKlEXUf7npGpmAKhEi9AabGq
+5hE+r2zTaAmJ/5oSGksW1+54GIeOxtjAoefk9xRytWVu9/zITfQxl1CpGlOieHzX
+2FxZtYdlr1hWkkdvpHJBjBFWzUPjW3EdUcewYlkG9sZJShuXmuPOeqr4b6yEEm9c
+Rg6yNZ2eU9Q4nxNP/wwb8afLku8f03OmcCfxHPPjCx48GMzxNoxsXdOgV1TN1QvG
+4J9gnGNaHqCfZTXKUxyJwW1WhOy9m90QG5ype63sMoLbItiVYUD75PVN7uEWqn9b
+d2nk3wIsOop3f/Cpvn7wB7lUqUlxkA==
+=+9hg
 -----END PGP SIGNATURE-----
 
---GjcGCwYhJDEM8ck9--
+--9+bX2y3kbdFbdJQH--
 

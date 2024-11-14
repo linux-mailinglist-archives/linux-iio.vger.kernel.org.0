@@ -1,99 +1,73 @@
-Return-Path: <linux-iio+bounces-12258-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12259-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3D59C8C58
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 15:01:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 301E99C8CEF
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 15:35:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0C691F22AD1
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 14:01:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0EDA1F21C86
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 14:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AFC13A409;
-	Thu, 14 Nov 2024 13:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F9C39FF3;
+	Thu, 14 Nov 2024 14:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PH3EBi4V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HcC/fXbN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191AF3BB24;
-	Thu, 14 Nov 2024 13:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F181C1F60A;
+	Thu, 14 Nov 2024 14:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731592786; cv=none; b=hkjZTW4/0W7TjzQu/byvOuWH0i5HAEvh88dMtn/qOtITsSLgREg+Jwq9NCs/Ot6cJgvrSdlNs97//fM2Rhf5s40kWHj5Nxj4hlqOO+0kSEt1vioY0lNGwhuRD5M2O5kvoWOJ8N0vYMiyFy4a2ufkvBDidDL2eTFz+LoeayPLNUs=
+	t=1731594937; cv=none; b=b5Ex5q6xTdgcC2Ni5hu9gTmXJ2MdxYUL4E/QvVzbC7ZZymzlIQe9Zl+GCThzpBpB+NB9sjHPRoE8aQBCCsncNXX0oGpraEXJMq8z0KXbRD6R0DUHVHTQx2dXxNP3ynd2OYmobuctHODZwlMJnGKjsuLiSwOt1Wh4e5pmIYLQr5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731592786; c=relaxed/simple;
-	bh=st3ZJaTgzg0Q7HS9Zd/0/LvKr8GBoyzIyfkT1MeMkQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ca/zj31mWoa/a38AcOMvFpLwNCM3GoYBPA+g3/ZXHZU0TYBY/azs3qWMG6VoE81lAi0KswRSgRvx96rHqMPDxRst35BD9vaVi1AiDTECxIW+gEvu1wCzwJXxHJHM2/cTXGeV35QDy12DOZQ/oGUgzlLmSHcRQbwBamV3jHbSFpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PH3EBi4V; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cec93719ccso754160a12.2;
-        Thu, 14 Nov 2024 05:59:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731592783; x=1732197583; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=X6eLuWYyfigYmEkgfeOfnEFTkRCPuPKOBVwDODGgCHQ=;
-        b=PH3EBi4VcEXkXtc4TpnaAWS/pxip0SLY6V7JRNFkgERpm70XdXpfAWxpT0b0Q+3xXh
-         oPW7fswQOIRzTkb0u3ToKp5VfMqSeIad9It0VjOR43QrKwUiJTPSISWWOfFFL6HV32wq
-         O/C7o42KoShbpy20Fc76JRqz5R2XQEZc2LXY79yiHP4Koolu/j9a3jHVZrYzUEDKw9+y
-         eFwa71Di54eYyINOsV8nwVgtFdUSCVTwuq84BWXH6HmZbxmig91Y2xiIqI+dX6eakhmJ
-         TQAjh1lLeGelv1yqO0tqh5Igxh0A82zUionhwzbj4D2c1wcSeYf9vx9dvVDHk5m6u4pA
-         rPTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731592783; x=1732197583;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X6eLuWYyfigYmEkgfeOfnEFTkRCPuPKOBVwDODGgCHQ=;
-        b=KyGrk07dqmkRp5ZASLI7Dapw0pQ9fEgOnuwIt/ogabN6e1i1pVQtl6uyi/J1755IAr
-         h+BJhFbRk7OrYzHlZmRf2+KMegRP9O67XVhl/NW+vMEw/EUZ4tmDeOKo32axtzIKgfsu
-         /E+h928JVnXp9WdQOwlh8D3ykYtYZYYSm3cYcmY06/OxHVT6WNjNSLE+hfaqTXMbWSug
-         /XPNUc0oWIez1Lt2fOcObH8HXOZjhBD+B5VeGW/4FdeBGc/DNr+jSzDW9s17CHmHmjcx
-         ppOEphrk2aaDtePCLQ2MT7mX1nRpvBSR9JoNRbRX72F7b3aQCmRxU5XPnhWdcBz6aBlH
-         8c1g==
-X-Forwarded-Encrypted: i=1; AJvYcCUd9NpOOH2kHw0oC7eVuKzXZ+fLt9yhvN+wE84kmXWsUzKXXfSvnRL8ByhX3dnGwjQMIgFFV2vWPHvNJp6L@vger.kernel.org, AJvYcCVfGNzmDNKPcsnJtnSoRlJQriRjO5IxctWouNZm1+Qff4P3batD/THkt0LJy0q+HhW2Bl3lslhJ4JIk@vger.kernel.org, AJvYcCWsDBOEDLAHuCkfasu+q8pPENIijZDuwcobSVwdpPkbBau9k7HQIxOHTNxFpa32LCWh/vnwFEhRNsyI@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlQuJgv3doQrMbJao347hUE4BhBukREUFoPerNg3250JHa+7Tw
-	uwFq//TUghJQ1yih+CAVCmRnb2BFKcVUQAktNCktldcLzw5zlXxU
-X-Google-Smtp-Source: AGHT+IHwYGIEKERhQFxmc9MhQHw4vw4OF1GEeUoqtJTrXpRyP41UFT1nafl6A2SUeeliOrskvr1WXQ==
-X-Received: by 2002:a17:907:2d91:b0:a9a:3dc0:8911 with SMTP id a640c23a62f3a-aa1b1057243mr1006541966b.16.1731592783172;
-        Thu, 14 Nov 2024 05:59:43 -0800 (PST)
-Received: from [10.10.40.97] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20df1c53asm66915966b.15.2024.11.14.05.59.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 05:59:42 -0800 (PST)
-Message-ID: <68f41c2f-3fbe-40bc-a4ec-a6c0ae6862e0@gmail.com>
-Date: Thu, 14 Nov 2024 14:59:41 +0100
+	s=arc-20240116; t=1731594937; c=relaxed/simple;
+	bh=z7tjh4aS3LtuFvx381OwVjVKqDQWbxj9dQ96ffC7VJs=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=MKG9C9TtzolzprW44YIa9VR4HgolfqWGGkvhifpTAK2v/qloAynbEQWnNHLS9OSVYKrwFWh/A4LbvjrsiLVD98r52KU+8qbqtwdwHgSUmaFMmoAiiqtFOv2q/EYSM28ou3/vlel4g3uNEoQu8jet23UwGCqS0F60opQ32d2Yo2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HcC/fXbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434A8C4CECD;
+	Thu, 14 Nov 2024 14:35:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731594936;
+	bh=z7tjh4aS3LtuFvx381OwVjVKqDQWbxj9dQ96ffC7VJs=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=HcC/fXbNTlpvdnE6a/iAT0KwY1GGJzNq6zepkAc7R+jzDU+DAUuw/0JIvUYtGjnuj
+	 qeoNWENjONmR1DOF/QSh9pDJ1uTlJrkf/WH291ZxyQ1u7/5JUo1//aLQ3T/ytx7HeQ
+	 yd0LPLSHXxCU+mu4FWxOOzy8bWD0dwqvY3mab3rpVID8otWvhoWkiMKBwXn8AXz/Sx
+	 O+VfyOgi6xf7ORdqVRr9J+750LwRbg5Vgh5iXryaZONK79+jlJM6BW5KmscrlHVnal
+	 UH/G54HQlb0BrVmEZE9PXVP270696Xw2fSDGpuFNVVXIeupNH15jBT2rolKrSqbx6O
+	 JCgdXjiwGWZ6A==
+Date: Thu, 14 Nov 2024 08:35:34 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: frequency: Add ADF4382
-To: Ciprian Hegbeli <ciprian.hegbeli@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Kim Seer Paller <kimseer.paller@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Kim Seer Paller <kimseer.paller@analog.com>, 
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-iio@vger.kernel.org
+To: Ciprian Hegbeli <ciprian.hegbeli@analog.com>
+In-Reply-To: <20241114130340.7354-2-ciprian.hegbeli@analog.com>
 References: <20241114130340.7354-1-ciprian.hegbeli@analog.com>
  <20241114130340.7354-2-ciprian.hegbeli@analog.com>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20241114130340.7354-2-ciprian.hegbeli@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-Id: <173159493449.4168533.9910621025953686531.robh@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: frequency: Add ADF4382
 
-On 14/11/2024 14:03, Ciprian Hegbeli wrote:
+
+On Thu, 14 Nov 2024 15:03:10 +0200, Ciprian Hegbeli wrote:
 > The ADF4382A is a high performance, ultralow jitter, Frac-N PLL
 > with integrated VCO ideally suited for LO generation for 5G applications
 > or data converter clock applications. The high performance
@@ -108,19 +82,34 @@ On 14/11/2024 14:03, Ciprian Hegbeli wrote:
 > 
 > Signed-off-by: Ciprian Hegbeli <ciprian.hegbeli@analog.com>
 > ---
+>  .../bindings/iio/frequency/adi,adf4382.yaml   | 141 ++++++++++++++++++
+>  1 file changed, 141 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
+> 
 
-...
+My bot found errors running 'make dt_binding_check' on your patch:
 
-> +
-> +  adi,cmos-3v3:
-> +    description:
+yamllint warnings/errors:
 
-A nitpick I overlooked: default.
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.example.dtb: frequency@0: 'adi,charge-pump-current' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/iio/frequency/adi,adf4382.yaml#
 
-> +      Sets the SPI logic to 3.3V, by defautl it uses 1,8V.
-> +    type: boolean
-> +    maxItems: 1
-> +
+doc reference errors (make refcheckdocs):
 
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20241114130340.7354-2-ciprian.hegbeli@analog.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

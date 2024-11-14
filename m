@@ -1,158 +1,277 @@
-Return-Path: <linux-iio+bounces-12249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12248-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF479C89F0
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 13:27:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB569C89C8
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 13:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7420D285ABF
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 12:27:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5AF31F23EC8
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 12:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EB31F9ECD;
-	Thu, 14 Nov 2024 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550871F9A82;
+	Thu, 14 Nov 2024 12:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="V6O1t6xR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J0X3j0xX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mr85p00im-hyfv06021401.me.com (mr85p00im-hyfv06021401.me.com [17.58.23.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5821F9EBD
-	for <linux-iio@vger.kernel.org>; Thu, 14 Nov 2024 12:26:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383531F80CC;
+	Thu, 14 Nov 2024 12:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731587178; cv=none; b=Ir0sJeSsMdezX1+Ty+CLqgETSyr5oh90dWL4Jvt75V/lP233Jzdl2isVba/3E8zLgX5GPvPXgUdIde6eNYRC+DpeamA63RhC2DpOYVoRQw3jSrS8HU7oR1P2+e6FE8oKSYa6bC8Trhf6yMyQeRzrM/4TmrpzTMTpHcQiWXJ1SM8=
+	t=1731586902; cv=none; b=jn+lPCeTBy6qtuMq26LsZaD2gVg+XEyTstwncGZ/QPkSvJPYIZpfvP14Gekybe9qh6D2k8jIX9md7blyDrzuSD3ihIcJKDJsmqiRASEd3TLm/gfxjh8Jxw7zCvISsNaiC4pUBhVeseVk8+JpGX0IMNIflF+qa7nZd4FEsrtkNdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731587178; c=relaxed/simple;
-	bh=TikPXk3LtSqVeGP56dttQXFFCzAKOiP1NSO1WuA7L4U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IvNQGyr4xrzjYvGCsPASyzz61M8uPiNIyYTQEkk4rJ493CY1xwzENbG0yGEbUrBfEIaByv6amVLajGFAOJ7bSZVMdxY30Sh5mvkHt+SppWwVs0o9ZRIFdMExQRI7IHWX5Insb8ffg4kAbKRZNWfHGwtGggA7W/kmJsojrsuv0OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=V6O1t6xR; arc=none smtp.client-ip=17.58.23.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1731587176;
-	bh=DzOhgRULWNgkZ4/fSQp3mEWP69NGu+TazISyLlS+uLA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=V6O1t6xRsCPKRof5QmEuTjv2AUP/YFj55WjZtT/PcSd1eIJAik0pDPLLPrxiuHvQy
-	 nJdcG/2ERIY7mqEJpjOFtGutEvGOktOCKTF7mUo1Abv+/ysglSp6ZdMSKwefMqwBdP
-	 8/nwvx9C24F0TOkL1Qk2FtOb1qscegvtHHZyDtsMQgTCO57UyZo418QQzYAA2BHDls
-	 myRjWC+jojltTTMxQofnRCLAZQUJmTDX3VNVr1P+CnPNDEGuNzoo4vFiUBkYohlbll
-	 yyq+EpHuFTpAgBvmlFjTQ38FBpbW58qnSpiAfxmkXYawdmyZFTfIz5JtusEiPzfWOW
-	 B1Ncy8T9YYS7Q==
-Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-hyfv06021401.me.com (Postfix) with ESMTPSA id DA5763038562;
-	Thu, 14 Nov 2024 12:26:12 +0000 (UTC)
-Message-ID: <ff24d6c8-581d-4dd1-8565-916d3f429ae4@icloud.com>
-Date: Thu, 14 Nov 2024 20:25:59 +0800
+	s=arc-20240116; t=1731586902; c=relaxed/simple;
+	bh=qhLjRTwMSiK1gN/1gAQwpbV/O+5iNG+GVRk0YMFjoLc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=USIisy56SCWaiQMIrSjUuBuVqVqPyJHhp71nsrmoonkUXZf3q1axlCrngSxO6mBDULRaHN0tA3GeMxDR9JPKalj2/Wjvh1DCHFz2ar3AvCSq9vrVttYFxdzQZsfESXyUUa+ccQB3OwiTmJfsz8Ae3urJFXMx2Cfv6unYa591lEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J0X3j0xX; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37d49a7207cso348021f8f.0;
+        Thu, 14 Nov 2024 04:21:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731586898; x=1732191698; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GLjOREoOQmBlhC3DKhm0mq2e1vDsIIepitbl2vA1L6A=;
+        b=J0X3j0xXruw3EuwJKg+nvKpC42Pr6EA4XwDRFHAbmg1UI4d1xTHZdhfPuKW/FdWFgz
+         pQKqT3dbm8aunHqEOwco8O3F32h8o4t27rPUOkUbPCv/w2FilxXDbMC1pbjPEUjR1QVi
+         TxciM6k4BrKkTZQcqSjpW/lztrUVrk/AHYaepcYAFSi2oMQuSAg9A6FY63PM1nrcC+SP
+         /YCaQ+WoGNNarojPvSCKH2NfSjERyAO/1OZItzfKTDdwuYUVlBsE1REtdVx27tDXAMY6
+         dEjowK6Uw7IDuh2Oh+AEOE5O/EyNW0/wKt1pey7I62mLvFkLVdLKMSgn6jghBL42DlLd
+         ImlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731586898; x=1732191698;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GLjOREoOQmBlhC3DKhm0mq2e1vDsIIepitbl2vA1L6A=;
+        b=g5TXj/VROBYDL3wWCB8Jty326NSFIqis7kJG5wj33RGp7r/G1l756NktNDS1tLIjHL
+         9A/xK/Ygd9FoItyG1O2gvZ+uB2xvPasDLf1/Ye86COBQ+KyZvLRHl5tCNb6FuffUZUsc
+         b4ir970Smyr0FtCUsUzZXQUXuYuO9lpO4BDrgfgFvKB/dzFcK0po/QIjKvNJrLf1KpnE
+         WAwpRQg6N0erf1ciicXFqdJWukt65f/TRNEoTHzg6covAN1n2outChdWb8cq9EGgp52w
+         AmEVTKeXDcUZZN1PSnOaNG6RQmCGrA6c18VKtTEn47jJZkUBvG3tVcRz9Z3Y+ZuhQEJE
+         3bTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFtdcvigAD/c0GxJzbjh3PIOdraUTRPgY9IQ1Rwi5Hzl/oot55cxa3Sk4nNisD/f6OyOKkySbfwAwCWTBP@vger.kernel.org, AJvYcCVmBxFbDz86s6psxPXVsrVqWBPxGHbg2z2e8ct5ykuB81pqt/BqtGLIh8lmNF/238xAMmDIVgVH9Aw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXCPJ1lLrprIshE6c9YIOrauscrT/SU6dLnyNdN+3GYb+YzIye
+	iJzftlB8xtyF4IFYEl9Ed38bpvC8hIzO64KvalbDqX9pDm9Jqwhn7aCR+1ZpBJTLaoPS
+X-Google-Smtp-Source: AGHT+IFAntRADJj0A+Cc9AR+vsdBDax2iZ60M05lB3tpTGYieGeiP3siZAXAgF6rVx24csMg3EaVSg==
+X-Received: by 2002:a05:6000:701:b0:37d:39c8:ecca with SMTP id ffacd0b85a97d-38218542e5fmr1578826f8f.55.1731586898339;
+        Thu, 14 Nov 2024 04:21:38 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef02:f400:a23c:697f:16fb:11c5? (p200300f6ef02f400a23c697f16fb11c5.dip0.t-ipconnect.de. [2003:f6:ef02:f400:a23c:697f:16fb:11c5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821adbebe2sm1320715f8f.61.2024.11.14.04.21.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2024 04:21:37 -0800 (PST)
+Message-ID: <b0a9eecb7b83c29aa545ed7717e3a6c2275b5e27.camel@gmail.com>
+Subject: Re: [PATCH] iio: accel: kx022a: Improve reset delay
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+	 <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 14 Nov 2024 13:26:01 +0100
+In-Reply-To: <1410938e-5135-434c-911e-7ba925bafd49@gmail.com>
+References: <ZzWfXbjaDkFnu_Jg@mva-rohm>
+	 <be375e24f74997743743fadf68125e176c23e2df.camel@gmail.com>
+	 <f4cf3437-87ea-4d0f-8dab-890d89f85605@gmail.com>
+	 <1f315c2f3eea86fe4db48f0168660ab4b0b020f1.camel@gmail.com>
+	 <1410938e-5135-434c-911e-7ba925bafd49@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: iio, syfs, devres: devm_kmalloc not aligned to pow2 size argument
-To: Matteo Martelli <matteomartelli3@gmail.com>
-Cc: Marc Gonzalez <marc.w.gonzalez@free.fr>, Peter Rosin <peda@axentia.se>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jonathan Cameron <jic23@kernel.org>, Joe Perches <joe@perches.com>,
- Jens Axboe <axboe@kernel.dk>, Peter Zijlstra <peterz@infradead.org>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-block@vger.kernel.org
-References: <c486a1cf98a8b9ad093270543e8d2007@gmail.com>
- <c6d634d088f77abd956dbd125c26d43d@gmail.com>
- <58d77d45-d052-4431-91de-3912a9c675b5@icloud.com>
- <cf50fd85a836c32bbb828a832e22d2df@gmail.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <cf50fd85a836c32bbb828a832e22d2df@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: lU515d71RXapdvWUtPpjTWOMlMmF7qXE
-X-Proofpoint-GUID: lU515d71RXapdvWUtPpjTWOMlMmF7qXE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-14_04,2024-11-13_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 spamscore=0
- suspectscore=0 malwarescore=0 mlxlogscore=860 clxscore=1015 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2411140098
 
-On 2024/11/14 19:29, Matteo Martelli wrote:
->>>> The address of a chunk allocated with `kmalloc` is aligned to at least
->>>> ARCH_KMALLOC_MINALIGN bytes. For sizes of power of two bytes, the
->>>> alignment is also guaranteed to be at least to the respective size.
->>>>
->>>> To do so I was thinking to try to move the devres metadata after the
->>>> data buffer, so that the latter would directly correspond to pointer
->>>> returned by kmalloc. I then found out that it had been already suggested
->>>> previously to address a memory optimization [2]. Thus I am reporting the
->>>> issue before submitting any patch as some discussions might be helpful
->>>> first.
->>>>
->> no, IMO, that is not good idea absolutely.
-> It’s now quite clear to me that the issue is a rare corner case, and the
-> potential impact of making such a change does not justify it. However,
-> for completeness and future reference, are there any additional reasons
-> why this change is a bad idea?
+On Thu, 2024-11-14 at 13:30 +0200, Matti Vaittinen wrote:
+> On 14/11/2024 12:46, Nuno S=C3=A1 wrote:
+> > On Thu, 2024-11-14 at 11:54 +0200, Matti Vaittinen wrote:
+> > > On 14/11/2024 11:43, Nuno S=C3=A1 wrote:
+> > > > On Thu, 2024-11-14 at 08:57 +0200, Matti Vaittinen wrote:
+> > > > > All the sensors supported by kx022a driver seemed to require some
+> > > > > delay
+> > > > > after software reset to be operational again. More or less a rand=
+om
+> > > > > msleep(1) was added to cause the driver to go to sleep so the sen=
+sor
+> > > > > has
+> > > > > time to become operational again.
+> > > > >=20
+> > > > > Now we have official docuumentation available:
+> > > > > https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Power-=
+on_Procedure_E.pdf
+> > > > > https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Procedur=
+e.pdf
+> > > > > https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_Powe=
+r-on_Procedure_E.pdf
+> > > > >=20
+> > > > > stating the required time is 2 ms.
+> > > > >=20
+> > > > > Due to the nature of the current msleep implementation, the mslee=
+p(1)
+> > > > > is
+> > > > > likely to be sleeping more than 2ms already - but the value "1" i=
+s
+> > > > > misleading in case someone needs to optimize the start time and c=
+hange
+> > > > > the msleep to a more accurate delay. Hence it is better for
+> > > > > "documentation" purposes to use value which actually reflects the
+> > > > > specified 2ms wait time.
+> > > > >=20
+> > > > > Change the value of delay after software reset to match the
+> > > > > specifications and add links to the power-on procedure specificat=
+ions.
+> > > > >=20
+> > > > > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > > > > ---
+> > > > > Sorry for not including this to the KX134ACR-LBZ series I sent
+> > > > > yesterday. It was only half an hour after I had sent the KX134ACR=
+-LBZ
+> > > > > support when I was notified about the existence of the KX022ACR-Z
+> > > > > start-up procedure specification... Hence this lone patch to code
+> > > > > which
+> > > > > I just sent a miscallaneous series for before.
+> > > > >=20
+> > > > > =C2=A0=C2=A0=C2=A0drivers/iio/accel/kionix-kx022a.c | 11 ++++++++=
+---
+> > > > > =C2=A0=C2=A0=C2=A01 file changed, 8 insertions(+), 3 deletions(-)
+> > > > >=20
+> > > > > diff --git a/drivers/iio/accel/kionix-kx022a.c
+> > > > > b/drivers/iio/accel/kionix-
+> > > > > kx022a.c
+> > > > > index 32387819995d..ccabe2e3b130 100644
+> > > > > --- a/drivers/iio/accel/kionix-kx022a.c
+> > > > > +++ b/drivers/iio/accel/kionix-kx022a.c
+> > > > > @@ -1121,10 +1121,15 @@ static int kx022a_chip_init(struct kx022a=
+_data
+> > > > > *data)
+> > > > > =C2=A0=C2=A0=C2=A0		return ret;
+> > > > > =C2=A0=C2=A0=20
+> > > > > =C2=A0=C2=A0=C2=A0	/*
+> > > > > -	 * I've seen I2C read failures if we poll too fast after the
+> > > > > sensor
+> > > > > -	 * reset. Slight delay gives I2C block the time to recover.
+> > > > > +	 * According to the power-on procedure documents, there is
+> > > > > (at
+> > > > > least)
+> > > > > +	 * 2ms delay required after the software reset. This should
+> > > > > be
+> > > > > same
+> > > > > for
+> > > > > +	 * all, KX022ACR-Z, KX132-1211, KX132ACR-LBZ and KX134ACR-
+> > > > > LBZ.
+> > > > > +	 *
+> > > > > +	 *
+> > > > > https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Power-=
+on_Procedure_E.pdf
+> > > > > +	 *
+> > > > > https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Procedur=
+e.pdf
+> > > > > +	 *
+> > > > > https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_Powe=
+r-on_Procedure_E.pdf
+> > > > > =C2=A0=C2=A0=C2=A0	 */
+> > > > > -	msleep(1);
+> > > > > +	msleep(2);
+> > > >=20
+> > > > msleep() is not advisable for something lower than 20ms. Maybe take=
+ the
+> > > > opportunity and change it to fsleep()?
+> > >=20
+> > > Thank you for the suggestion Nuno. I did originally consider using th=
+e
+> > > usleep_range() since the checkpatch knows to warn about msleep with
+> > > small times.
+> > >=20
+> > > However, there should be no rush to power-on the sensor at startup. I=
+t
+> > > usually does not matter if the sleep is 2 or 20 milli seconds, as lon=
+g
+> > > as it is long enough. I wonder if interrupting the system with hrtime=
+rs
+> > > for _all_ smallish delays (when the longer delay would not really hur=
+t)
+> >=20
+> > That's why you have ranges of about 20% (I think) in usleep() so you
+> > minimize
+> > hrtimers interrupts.
+> >=20
+> > Other thing is boot time... Sleeping 20ms instead of 2ms is a huge
+> > difference.
+> > Imagine if everyone thought like this for small sleeps :)?
+>=20
+> I think this is interesting question. My thoughts were along the line=20
+> that, even if small sleeps were extended to longer (where small sleep is=
+=20
+> not a priority), the CPUs would still (especially during the boot up)=20
+> have their hands full. I don't know if we might indeed end up a=20
+> situation where CPUs were idling, waiting for next timer slot.
 
-1)
-as i ever commented, below existing APIs is very suitable for your
-requirements. right ?
-addr = devm_get_free_pages(dev, GFP_KERNEL|__GFP_ZERO, 0);
-devm_free_pages(dev,addr);
+My problem is not the CPU but delaying probing devices as you probe one dev=
+ice
+at time...
 
-2)
-touching existing API which have been used frequently means high risk?
+>=20
+> What comes to boot time, I doubt the CPUs run out of things to do,=20
+> especially when we use the probe_type =3D PROBE_PREFER_ASYNCHRONOUS.
 
-3) if you put the important metadata at the end of the memory block.
-   3.1) it is easy to be destroyed by out of memory access.
-   3.2) the API will be used to allocate memory with various sizes
-        how to seek the tail metadata ?  is it easy to seek it?
-   3.3) if you allocate one page, the size to allocate is page size
-        + meta size, it will waste memory align.
+Yeah, with this, the above does not apply. Still, spending more time in a w=
+orker
+than needed (and 18ms is huge) seems a waste to me.
 
-4) below simple alternative is better than your idea. it keep all
-attributes of original kmalloc(). right ?
+>=20
+>=20
+> > > is a the best design choice. Hence I'd rather keep the msleep when we
+> > > don't need to guarantee delay to be short instead of defaulting to
+> > > hrtimers or even busy-loop when it is not required.
+> > >=20
+> > > Do you think I am mistaken?
+> > >=20
+> >=20
+> > To me this is more about correctness and do what the docs tell us to do=
+ :).
+> > Sure, here you know what you're doing and you don't care if you end up
+> > sleeping
+> > more than 2ms but that's not always the case and code like this allows =
+for
+> > legit
+> > mistakes (if someone just copy paste this for example).
+>=20
+> Right. I just wonder if always requiring stricter wake-up instead of=20
+> allowing things to run uninterrupted is the best role model either?
 
-static int devres_raw_kmalloc_match(struct device *dev, void *res, void *p)
-{
-	void **ptr = res;
-	return *ptr == p;
-}
+Why not :)? If we just need to wait 2ms, why waiting more? I would be very
+surprised if hrtimers are a deal breaker in here. Otherwise, we should remo=
+ve it
+from the docs...
+=20
+>=20
+> > Not a big deal anyways...
+>=20
+> Agree :) But I think this is a spot where I could learn a bit. I will=20
+> gladly switch to the fsleep() if someone explains me relying on hrtimers=
+=20
+> should be preferred also when there is no real need to wake up quicker=
+=20
+> than msleep() allows.
+>=20
 
-static void devres_raw_kmalloc_release(struct device *dev, void *res)
-{
-	void **ptr = res;
-	kfree(*ptr);
-}
+Personally, I think that sleeping more than needed is always a wast and the=
+n it
+comes back to my correctness comment. In here you know what you're doing bu=
+t I
+dunno that switching to hrtimers will do any arm to the device :) and allow=
+s
+proper patterns to be copied.
 
-void *devm_raw_kmalloc(struct device *dev, size_t size, gfp_t gfp)
-{
-	void **ptr;
-	
-	ptr = devres_alloc(devres_raw_kmalloc_release, sizeof(*ptr), GFP_KERNEL);
-	f (!ptr)
-		return NULL;
-	
-	*ptr = kmalloc(size, gfp);
-	if (!*ptr) {
-		devres_free(ptr);
-		return NULL;
-	}
-	devres_add(dev, ptr);
-	return *ptr;
-}
-EXPORT(...)
+- Nuno S=C3=A1
 
-void *devm_raw_kfree(struct device *dev, void *p)
-{
-	devres_release(dev, devres_raw_kmalloc_release,
-devres_raw_kmalloc_match, p);
-}
-EXPORT(...)
 

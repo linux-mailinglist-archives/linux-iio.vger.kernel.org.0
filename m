@@ -1,133 +1,201 @@
-Return-Path: <linux-iio+bounces-12261-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12262-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7841B9C8DB4
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 16:17:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5F19C8FFA
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 17:41:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC171F23FC0
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 15:17:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBB61B2DC59
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 16:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700E65674D;
-	Thu, 14 Nov 2024 15:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400B41547CC;
+	Thu, 14 Nov 2024 16:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R1u6SOaW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b3xY8sln"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83551C68F;
-	Thu, 14 Nov 2024 15:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DC741C65;
+	Thu, 14 Nov 2024 16:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731597424; cv=none; b=CVZljbuqjUOvh/kL1ZVF8RIyUx2rrFJLQPJzY0R3HNc/qq+r3SWuXOlwJc/Opfik918ATp5gpNfc+x2YU44yyGmvuNQ7AjiQb1PuX9ZUQRlHj4An6h0t8ygAr4fkY0ymPcJiyjm56ua44gJpwnOu8ArsepMoMCUUKyJgJv7r6wk=
+	t=1731600603; cv=none; b=oi1qwgzKwHImxo6bwal+QMHJ2weY6L5jCCqAiSdNrZm9S8gYHT4CLiGSCGYeVTL/5TYdWp6ro189rjh8BmdSTkns8e0uhiLhvzFmjFNMQwt04KwRbnAi3nI8d/pUfS92oTsqxbvRFALeFdPxgAIzK37vZXBOjWUQ4ZkGGAHDyNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731597424; c=relaxed/simple;
-	bh=Q53Ic01HLtpIHqWLvJyKZj1a+099VDGe9zfLNq4lzJE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YtRElpJqWoaWR+De611ceOMKn2dISH0D3P9F8Rp/mH3klGDxM1s36rQ6EjcckYL04+nsrU3UXBTahHXY5AcxWktWjAqxQbJ6Ln3ieH7WEKWnzB2uNKHHPmy4f22g2ZxCGgoCAA8NylZ2wfcDElCy7xxs3jb2buPSSdXXwXn+TlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R1u6SOaW; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1731600603; c=relaxed/simple;
+	bh=BuGLPvGNAS66VEU+cW1eUCgQx2RjM0km7Ctu3UwUjTk=;
+	h=Date:Message-ID:From:Subject:To:Cc:In-Reply-To:References; b=mbZ5TH7fp7IkHWbWBhhJGRV6n+5yycGRLmUw3s8EzzgmmON9Qd6Es2E/0qeMaxl+W9JMbuMrV7H20d2SEw5hkuPA+DljZKJT9zJqzCtwI/4eJFilklqjkWnFhPR0B5T1XPE8nLPEGTP1cXCqXc4AV49SrGvG9OU4D88bf8rBZtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b3xY8sln; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7eab7600800so89021a12.1;
-        Thu, 14 Nov 2024 07:17:02 -0800 (PST)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-431688d5127so6990145e9.0;
+        Thu, 14 Nov 2024 08:10:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731597422; x=1732202222; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JotrJzBpOeR2thJqFXFw5L3unIDcudiSGFOlUbzMd08=;
-        b=R1u6SOaWSQbaeeGnUPiCBUxi6IaNplaXrNPT2PJX7UO9xRA6/XGNceEmNOTIGHed+z
-         Kg37c6g65paBVbPjrp7wSs5DN6Ny7bHfdabsxa43URJgjpSEzXfgdKLMxzaF+SllDCF9
-         hgmd4PYXqtIUmLVAR6L7lg5FqL2r7bsOqu+VZ5AAPkXccs7u1WABG0lclfsuyilLR1iC
-         ckqqeP2vixqY2fzofuYWJA7vx13s/aFgMplPjw/sUuq4KQQ2nP1XcWWN8eYrW7hkUX5X
-         U+vq1GPiOLv13ShJ0sdXILavC5O78CjRnVcpfN21B1ymRCnrcaTq/6j/fCPW9wizdF+r
-         S2NQ==
+        d=gmail.com; s=20230601; t=1731600599; x=1732205399; darn=vger.kernel.org;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=heHDM0GhrkLkt6MOJukpciyEuG+VKO+wAC6cQepDlWM=;
+        b=b3xY8slnXRmGCt7XgXOan/hY1Y5wkF52oJr7/DJ03E2vB77XgwJLBjL3xqYyD7XlK7
+         085TiUNp3L4Ui4Cxy1VwTPD/slfh0B0P3pKzArgF9IDQMeJ17fMEVHn2yccAEERugnF1
+         WD3yhNp1o4alBEFVZzDZ00UJdnlXrCm5RHOJDW7M6TKv6+vVtlwWdnAIcW0WdjGXoTnd
+         SquoLMPESRt2RjI90CCLgS/THnoj5wHkELkEM8N4g80T5bHpQU6FctNFsdr3euEEJyUl
+         6zaVE3O3b4JRxsicG6FJ6zjAmVEMaLgLq6vCavHGgmqF/dwjnBEi+RN2NVmrfk86LcwX
+         nggQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731597422; x=1732202222;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1731600599; x=1732205399;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JotrJzBpOeR2thJqFXFw5L3unIDcudiSGFOlUbzMd08=;
-        b=Z4dOlyl9m9JJ7B+2ngivHcwotiGS3Ju8SDiIZsJVCOyRYUPgGCLHoJEmQbYukYyoov
-         5Mu3ImvDK2ovNgUWkF0iDw0xR2Rud7dIVxrToJJamZkvQKb+EV4EsKHIOsw5GnfyyDgb
-         SjsF9nvVkx9ABxb+vlYK212vi6Wkoj4rE7afiC5PEst68wpLsfMfEGJR9JLF5MeBNjGi
-         peW5Vk9re05UNkEb+Yop2n6CcL6cF/TzPh7J1vuGwMTU01TR9D3GK3nyYF2oYwrqaCkE
-         uvC5ArceGHKaQNrdZuZPIjjEvQAG9njnmmNquaPNWmyDKILbipPNgLDeHpy2ejJKp6y1
-         tuVA==
-X-Forwarded-Encrypted: i=1; AJvYcCUaeCCNTtoAch1rGgBH7mFJZVUdQ1qLpzrSyuO2gAh+0a4qFXwnGbLcjFGasnoLUgEtqYNzpSHz0GxoqvOm@vger.kernel.org, AJvYcCUckih6DlUEXj+lUxsOjz4DfMOKqXXp7ZBDqgKcVHhcxbv+XX5Igo+XFphNeoZuLsrx6KW0zGapV0cN@vger.kernel.org, AJvYcCVGSKs62Ik/wn5x23dsySASt5/Biv1VTTUewA6WzZ0EPnD5dE3kYPJCK7gqJ88CjoHrcDP+RgiMEOOm@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBQcj73Gs+Y2zZl9Uqdm8BBYWCICt+kIpUWiUTdDmwnBS7REJB
-	RBnSXsWyfhUgCtDPAAnYqkUjwrCyxULeOnHmv75G2n4Eq57vcFAd
-X-Google-Smtp-Source: AGHT+IFOzdCgJiTSHKh+t6Z6Xi2n3e3XGot6bXk4vTvc/TZ9/DAIaY0+AeU1fVaH8kKFm27vl/aK5A==
-X-Received: by 2002:a05:6a20:8403:b0:1d8:a203:95a4 with SMTP id adf61e73a8af0-1dc2296d9b1mr15461701637.5.1731597422055;
-        Thu, 14 Nov 2024 07:17:02 -0800 (PST)
-Received: from [100.116.227.126] ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f8b36dac83sm1215797a12.14.2024.11.14.07.16.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 07:17:01 -0800 (PST)
-Message-ID: <b59f6933-e1f1-49e9-be61-3e3b4323da87@gmail.com>
-Date: Thu, 14 Nov 2024 23:16:51 +0800
+        bh=heHDM0GhrkLkt6MOJukpciyEuG+VKO+wAC6cQepDlWM=;
+        b=H4HV9XTm1wA7Vit3oDsNcReU2IrctAhtgtPsQ7Lmf5Df5JHQEjhcG/wmh56D9BD0MP
+         nT1E3/j4kpF2NC0od96IsxhywWqCYpYEdGnp0pLQyfRmqtKOAmIHg06dkxldsi17+ffP
+         Ja78ZZLAqmjwPtSxTAKTik3//gu4mTM52+3Ol9Tq2GkIaeKX4Mlz5QEWlpgvY8ccoQ1h
+         NIJDVu6gkPil92iUOiUgq3e5o/J85v8RalLxGjex4yQRG3SEyqShuZkbIv2I67tGoIJb
+         Q330kWSG2ggBfCB+J73stUFLsQS1yLrIH+y4+B6Mc3CpUCI547eWjpyL+Y5S3u1jYgGl
+         RTyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGxflUkGCRLnkXlpW+PLmLK8BpJQrdYNXrKLygpva9d+rXs5qyhr2Po2LSxYcgRTfz2OcfqKtFPdNp@vger.kernel.org, AJvYcCXYjvt0qpfcBBuOmbvQDvkVsrV28th1W/ziHAhzR/o8cPWzFMQKEWxUKAjIJDvinGZ4y2kDDhbvKW/4Aw==@vger.kernel.org, AJvYcCXx8Yy7m6d+OQHNSRG+DTwiOGpte/co2ntFM0SNFkwuaow2uNIeMudHZekQfIIMBnKLFjDEOGxhxPChfaXS@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9DnZwLnogN7h0n6PAnVOWsim92s6o6By8hkIE0QCoc030I9K0
+	q46LE0JZMlq7WEnxqqDHCgmRp7vpUiiE0g8qdrgavE31c3y2WCnh
+X-Google-Smtp-Source: AGHT+IG8mm5jhnULldvW+M+sdL5dGYXgO4+FMJVb7LWQPHSGPF8y3xXtYuD2qDtq5jpjwRl4R9TCaQ==
+X-Received: by 2002:a05:6000:1a88:b0:37d:4d72:dca3 with SMTP id ffacd0b85a97d-381f186fc8cmr21379514f8f.31.1731600599342;
+        Thu, 14 Nov 2024 08:09:59 -0800 (PST)
+Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ae3127bsm1828216f8f.101.2024.11.14.08.09.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2024 08:09:58 -0800 (PST)
+Date: Thu, 14 Nov 2024 17:09:58 +0100
+Message-ID: <b9b7582409247dc088ea2df64af24024@gmail.com>
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Subject: Re: iio, syfs, devres: devm_kmalloc not aligned to pow2 size argument
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Marc Gonzalez <marc.w.gonzalez@free.fr>, Peter Rosin <peda@axentia.se>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Jonathan Cameron <jic23@kernel.org>,
+	Joe Perches <joe@perches.com>, Jens Axboe <axboe@kernel.dk>, Peter Zijlstra
+	<peterz@infradead.org>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-block@vger.kernel.org
+In-Reply-To: <ff24d6c8-581d-4dd1-8565-916d3f429ae4@icloud.com>
+References: <c486a1cf98a8b9ad093270543e8d2007@gmail.com>
+	<c6d634d088f77abd956dbd125c26d43d@gmail.com>
+	<58d77d45-d052-4431-91de-3912a9c675b5@icloud.com>
+	<cf50fd85a836c32bbb828a832e22d2df@gmail.com>
+	<ff24d6c8-581d-4dd1-8565-916d3f429ae4@icloud.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: tyhx,hx9023s: Add performance
- tuning configuration
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, yasin.lee.x@outlook.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241017-add-performance-tuning-configuration-v3-0-e7289791f523@gmail.com>
- <20241017-add-performance-tuning-configuration-v3-1-e7289791f523@gmail.com>
- <20241020140638.127a9dbf@jic23-huawei>
-Content-Language: en-US
-From: Yasin Lee <yasin.lee.x@gmail.com>
-In-Reply-To: <20241020140638.127a9dbf@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+
+On Thu, 14 Nov 2024 20:25:59 +0800, Zijun Hu <zijun_hu@icloud.com> wrote:
+> On 2024/11/14 19:29, Matteo Martelli wrote:
+> >>>> The address of a chunk allocated with `kmalloc` is aligned to at least
+> >>>> ARCH_KMALLOC_MINALIGN bytes. For sizes of power of two bytes, the
+> >>>> alignment is also guaranteed to be at least to the respective size.
+> >>>>
+> >>>> To do so I was thinking to try to move the devres metadata after the
+> >>>> data buffer, so that the latter would directly correspond to pointer
+> >>>> returned by kmalloc. I then found out that it had been already suggested
+> >>>> previously to address a memory optimization [2]. Thus I am reporting the
+> >>>> issue before submitting any patch as some discussions might be helpful
+> >>>> first.
+> >>>>
+> >> no, IMO, that is not good idea absolutely.
+> > It’s now quite clear to me that the issue is a rare corner case, and the
+> > potential impact of making such a change does not justify it. However,
+> > for completeness and future reference, are there any additional reasons
+> > why this change is a bad idea?
+> 
+> 1)
+> as i ever commented, below existing APIs is very suitable for your
+> requirements. right ?
+> addr = devm_get_free_pages(dev, GFP_KERNEL|__GFP_ZERO, 0);
+> devm_free_pages(dev,addr);
+
+Yes, but I was concerned by the possibility that other users assumed by
+mistake that devm_kmalloc() would have provided the same alignment
+guarantees as kmalloc(), so at that point a more generic approach could
+have been worth a consideration. Given that today the issue seems to be
+confined in only one IIO driver it's clearly a corner case and it is
+just a matter of fixing that driver by using kmalloc()+devred_add(), or
+devm_get_free_pages() as you suggested, instead of using devm_kmalloc().
+
+> 
+> 2)
+> touching existing API which have been used frequently means high risk?
+
+Indeed. Same answer for 1) applies here.
+
+> 
+> 3) if you put the important metadata at the end of the memory block.
+>    3.1) it is easy to be destroyed by out of memory access.
+
+This is a good point.
+
+>    3.2) the API will be used to allocate memory with various sizes
+>         how to seek the tail metadata ?  is it easy to seek it?
+
+Apparently yes, but likely very hacky by using ksize(). See
+data2devres() in [2] for an example.
+
+>    3.3) if you allocate one page, the size to allocate is page size
+>         + meta size, it will waste memory align.
+
+I think this is already the case with the current devm_kmalloc().
+
+> 4) below simple alternative is better than your idea. it keep all
+> attributes of original kmalloc(). right ?
+> 
+> static int devres_raw_kmalloc_match(struct device *dev, void *res, void *p)
+> {
+> 	void **ptr = res;
+> 	return *ptr == p;
+> }
+> 
+> static void devres_raw_kmalloc_release(struct device *dev, void *res)
+> {
+> 	void **ptr = res;
+> 	kfree(*ptr);
+> }
+> 
+> void *devm_raw_kmalloc(struct device *dev, size_t size, gfp_t gfp)
+> {
+> 	void **ptr;
+> 	
+> 	ptr = devres_alloc(devres_raw_kmalloc_release, sizeof(*ptr), GFP_KERNEL);
+> 	f (!ptr)
+> 		return NULL;
+> 	
+> 	*ptr = kmalloc(size, gfp);
+> 	if (!*ptr) {
+> 		devres_free(ptr);
+> 		return NULL;
+> 	}
+> 	devres_add(dev, ptr);
+> 	return *ptr;
+> }
+> EXPORT(...)
+> 
+> void *devm_raw_kfree(struct device *dev, void *p)
+> {
+> 	devres_release(dev, devres_raw_kmalloc_release,
+> devres_raw_kmalloc_match, p);
+> }
+> EXPORT(...)
+
+I also considered an alternative to decouple the two allocations of the
+devres metadata and the actual buffer as you suggested here. However, I
+would have preferred avoiding an additional API and applying this
+approach directly within the original devres_kmalloc() if it turned out
+to be necessary. At that point, though, I am not sure which of the two
+approaches would have had less impact.
+
+Thanks for sharing this, it could be useful if a similar discussion
+arises in future.
 
 
-On 10/20/24 21:06, Jonathan Cameron wrote:
-> On Thu, 17 Oct 2024 18:36:44 +0800
-> Yasin Lee <yasin.lee.x@gmail.com> wrote:
->
->> When hardware design introduces significant sensor data noise,
->> performance can be improved by adjusting register settings.
-> Questions inline. Mostly around why these controls belong in DT.
-> What do they have to do with hardware / wiring etc rather than being
-> appropriate for userspace controls.
->
-> So almost all are definite no to being suitable for device tree bindings.
->
-> Jonathan
->
-Hi Jonathan,
-
-Thank you for the suggestions in your recent email. Following your 
-advice, I discussed these configurations in detail with engineers from 
-the HX9023S supplier. Based on their feedback, these settings are not 
-intended to be exposed to end-users. Typically, these configurations are 
-adjusted during the DVT phase of the end product by the supplier to 
-optimize performance, after which they are finalized and not meant to be 
-modified dynamically at the user level.
-
-Given this approach, it seems more appropriate to provide these settings 
-as part of a firmware file, allowing the configuration to be kept 
-internal and managed without user-level access. If this approach aligns 
-with your thoughts, I can prepare and submit a new patch focused on 
-firmware parsing and handling for these configurations.
-
-Thank you again for your valuable guidance, and I look forward to your 
-feedback.
+>>>> [2]: https://lore.kernel.org/all/20191220140655.GN2827@hirez.programming.kicks-ass.net/
 
 Best regards,
-Yasin Lee
-
-
+Matteo Martelli
 

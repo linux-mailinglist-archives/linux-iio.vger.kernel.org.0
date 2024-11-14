@@ -1,172 +1,123 @@
-Return-Path: <linux-iio+bounces-12241-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12242-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331899C8697
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 10:57:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C079C8797
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 11:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDACC1F23DF0
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 09:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12CE81F21058
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 10:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8A21F9A8F;
-	Thu, 14 Nov 2024 09:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351581F7097;
+	Thu, 14 Nov 2024 10:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f93QS6cM"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="ZJukTb2O"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BE71F943F;
-	Thu, 14 Nov 2024 09:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205A11DFE28;
+	Thu, 14 Nov 2024 10:27:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731578081; cv=none; b=WuXYcjvFCAqBuH8bb2dlyJzLwWE8Fgf0obwwHQmxojHEj8v3D1ypaS6/D9/pllUoVNVGIXFh0/S+FS53C3Bb8U/D/Chj2eUzpr9s6LIIhZxUR76XH6mlvNLnJmp76tM7sb04SP2k3+wwclg0NqY1gfstQWdoVAISZed5CyssAEU=
+	t=1731580081; cv=none; b=Ls1vmbP0TtyDpoOjq+hImBS/xIoULjIRb+0yPJFt8I47cF23JtY8xh70SnvOlRs+Kyv8zekhv7ffqvNcJJ/ArqpoWXFmD2KfywMAAnb3UWrnOtqlRl0Tl0iSn4hTU5++vKNxWm9loYP074pezBcyRNHtp7HMJ494Zpa+agf7LUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731578081; c=relaxed/simple;
-	bh=IPpQBdmprs58cfaC6Ih1JMqBBM85BFaBkp/bsB43ZyI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QAiixdEQpR8jU0ZCtApadDp+u9XKwX+mcSMROPXiIDnnYkThexX28E4yeCkjlsmLoxebtkCgX/9lhym6dfnfgdqKMFdGTXdb+NUDbp/+sR+sc6CF8GdihevYyXDWBhQdGUQ4X2S6jQ55W83OVYX94y6QCz2nyT7l4ins3kfm/l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f93QS6cM; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539f6e1f756so353578e87.0;
-        Thu, 14 Nov 2024 01:54:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731578078; x=1732182878; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WbjwQvSI09oTn8d8bmV+CXjrqfJSg3x056AtcnIu3IY=;
-        b=f93QS6cMVs05wgJVS66j8fKqXTv6V9JoOkqmQ7SASXA8LdOKXZU0/5y9OZRXRGX2Iy
-         KlvTactwLJJWTr1rsI8Qipn47JJ/PVMoOIrl/lFBa6/cktoyBU3MukYvL9Xuv6zlShcZ
-         lGoCj37WgSdfm/5+kKdY4UVfRgt2Vn4YeP8PWezQz8gMsMWQo5saBypqHR+fQLgMmbel
-         jNVarK85c/y6ZbLnKWYihd8alOaz9qthHT/ga00fIkqA2aq9Jkdg92WwbBKNdjckWUQ3
-         s+TJn/xW00aIT9kst/osuXmhZCmrUfyqu60StZvCa7zgkauc9Ltkx036S4kf2V6GHlAF
-         bztw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731578078; x=1732182878;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WbjwQvSI09oTn8d8bmV+CXjrqfJSg3x056AtcnIu3IY=;
-        b=j+rqj8dJly7pZwWIudTjzkvdIbyAEwokfrbqJyxkJgGSfiAD9CY/kTB8EKuHmg/LlJ
-         eQoHStEGlrY4Vz6Bihytl3f7I89w3DAsWxRqo/Lu8Ybg6BfcHIxHFFE33gh8H0fXBd5c
-         s6JjzxonOA1HU7jKZ3kWLg3ciKc62HY6Wg26YK5PfyN4GxxOIf6ywWGbq5gMG98DRc/x
-         xP8kysUSIlTBRHQGqpbuuHaRHjWYX2n6/qj7o5zHlo/1/LcUV1AtwuSO7GWSXGV4nua7
-         byW9MMtWkDYiYOLYEIUK5CvWPoMJFC3afcQpGeqllpuQtICdwUX/sOY0UME0VuMuFdhM
-         t0WQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWBqiF78/R5F8MFXSQW4hlei4UwRyP1QImeImuy3zMENBCoKVP2DymVlnfqkHlt2eui5/8+z1GThKM=@vger.kernel.org, AJvYcCXPAfLjpeLtH1YmVs8B4zot96WdyBuF88Qyk4XheSMo6F1Egj2ibzdr3j0qylbMeFxGU8AxYZJef++o2ZBJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPR6fOYzN/G+tPDQ6qunNVHOLFDMHRQXvW9qOWBaJffK96Mm62
-	R/p9YgyHdLCz/PSjtPzEkqQabs9dBXrz2J9YXz7EhOW7AGTdy0Fn5VIb2xq7
-X-Google-Smtp-Source: AGHT+IHMdywmHI/GwsItlI9NB0/xI9K8gaW1U1K4dwX3pO+CHnZH9c5vhIhfADM+Rn9IB8K3vwjDBg==
-X-Received: by 2002:a05:6512:3b83:b0:53d:a86e:42d7 with SMTP id 2adb3069b0e04-53da86e430cmr439825e87.49.1731578077362;
-        Thu, 14 Nov 2024 01:54:37 -0800 (PST)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53da6531042sm126472e87.153.2024.11.14.01.54.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 01:54:35 -0800 (PST)
-Message-ID: <f4cf3437-87ea-4d0f-8dab-890d89f85605@gmail.com>
-Date: Thu, 14 Nov 2024 11:54:33 +0200
+	s=arc-20240116; t=1731580081; c=relaxed/simple;
+	bh=jLJs8CwQOwELsO9XTQy5DE6dRpuwI0PxDLdNbN2siyg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QreCC4+CA11+FaazXNQk52+w1Nuli8PAKwUde8u7pNIHjmIbLLHpt6kqqHi0DOiVjwOfrEB6yqbXX/RybHou1f603B8vt8up1X8+aJ1ub9C2jK/04tr126051cFpuUNe5wjYOpHcG5Uye+ZBKM6rgGos+UyBoKKzhPp/1vBBx94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=ZJukTb2O; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AE5jwNC016652;
+	Thu, 14 Nov 2024 11:27:06 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=selector1; bh=7MbnE8ms6zYSIbpQhA3TMj
+	1iM72Lewm6wm7M7VcisaY=; b=ZJukTb2OEWCMoCvRWZwh75QtRm1O0SCRqkwOzW
+	9wFlBALJ3Zx4vYu+qf+vAh80ujPAak9qvnEr/4MmKVYQbrWrhkktFCPX7rdkQI9i
+	ZQaXem7W53Gu4TWHS1J5feYoCYetyvKo0BZRiEbDPO74ax20dW1Fz1FE3vq1rhFP
+	8Hd4YYSCAJgj+BqoA6oCAN6Gf6gRsf7HcSBg73JEJpY5WD1s6ruz+396KIWjIzzg
+	meWbxokrGYOYZBDyOkSpc24hW3tKi95HEqk2iIM9eK50x0wiDSqfgtbACbbFcyva
+	P8pyjR1pDxsIlXOduJG7szNapmeqpn2FyyF8/z9M3GKMdCAw==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 42syggxh32-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Nov 2024 11:27:06 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id D9E5A4002D;
+	Thu, 14 Nov 2024 11:26:00 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 60E1F23F998;
+	Thu, 14 Nov 2024 11:25:16 +0100 (CET)
+Received: from localhost (10.252.20.241) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Thu, 14 Nov
+ 2024 11:25:16 +0100
+From: Olivier Moysan <olivier.moysan@foss.st.com>
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue
+	<alexandre.torgue@foss.st.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>
+CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] iio: adc: stm32-dfsdm: handle label as an optional property
+Date: Thu, 14 Nov 2024 11:24:59 +0100
+Message-ID: <20241114102459.2497178-1-olivier.moysan@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: accel: kx022a: Improve reset delay
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <ZzWfXbjaDkFnu_Jg@mva-rohm>
- <be375e24f74997743743fadf68125e176c23e2df.camel@gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <be375e24f74997743743fadf68125e176c23e2df.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
 
-On 14/11/2024 11:43, Nuno Sá wrote:
-> On Thu, 2024-11-14 at 08:57 +0200, Matti Vaittinen wrote:
->> All the sensors supported by kx022a driver seemed to require some delay
->> after software reset to be operational again. More or less a random
->> msleep(1) was added to cause the driver to go to sleep so the sensor has
->> time to become operational again.
->>
->> Now we have official docuumentation available:
->> https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Power-on_Procedure_E.pdf
->> https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Procedure.pdf
->> https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_Power-on_Procedure_E.pdf
->>
->> stating the required time is 2 ms.
->>
->> Due to the nature of the current msleep implementation, the msleep(1) is
->> likely to be sleeping more than 2ms already - but the value "1" is
->> misleading in case someone needs to optimize the start time and change
->> the msleep to a more accurate delay. Hence it is better for
->> "documentation" purposes to use value which actually reflects the
->> specified 2ms wait time.
->>
->> Change the value of delay after software reset to match the
->> specifications and add links to the power-on procedure specifications.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> ---
->> Sorry for not including this to the KX134ACR-LBZ series I sent
->> yesterday. It was only half an hour after I had sent the KX134ACR-LBZ
->> support when I was notified about the existence of the KX022ACR-Z
->> start-up procedure specification... Hence this lone patch to code which
->> I just sent a miscallaneous series for before.
->>
->>   drivers/iio/accel/kionix-kx022a.c | 11 ++++++++---
->>   1 file changed, 8 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-
->> kx022a.c
->> index 32387819995d..ccabe2e3b130 100644
->> --- a/drivers/iio/accel/kionix-kx022a.c
->> +++ b/drivers/iio/accel/kionix-kx022a.c
->> @@ -1121,10 +1121,15 @@ static int kx022a_chip_init(struct kx022a_data *data)
->>   		return ret;
->>   
->>   	/*
->> -	 * I've seen I2C read failures if we poll too fast after the sensor
->> -	 * reset. Slight delay gives I2C block the time to recover.
->> +	 * According to the power-on procedure documents, there is (at least)
->> +	 * 2ms delay required after the software reset. This should be same
->> for
->> +	 * all, KX022ACR-Z, KX132-1211, KX132ACR-LBZ and KX134ACR-LBZ.
->> +	 *
->> +	 *
->> https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Power-on_Procedure_E.pdf
->> +	 *
->> https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Procedure.pdf
->> +	 *
->> https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_Power-on_Procedure_E.pdf
->>   	 */
->> -	msleep(1);
->> +	msleep(2);
-> 
-> msleep() is not advisable for something lower than 20ms. Maybe take the
-> opportunity and change it to fsleep()?
+The label property is defined as optional in the DFSDM binding.
+Parse the label property only when it is defined in the device tree.
 
-Thank you for the suggestion Nuno. I did originally consider using the 
-usleep_range() since the checkpatch knows to warn about msleep with 
-small times.
+Fixes: 3208fa0cd919 ("iio: adc: stm32-dfsdm: adopt generic channels bindings")
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+---
+ drivers/iio/adc/stm32-dfsdm-adc.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-However, there should be no rush to power-on the sensor at startup. It 
-usually does not matter if the sleep is 2 or 20 milli seconds, as long 
-as it is long enough. I wonder if interrupting the system with hrtimers 
-for _all_ smallish delays (when the longer delay would not really hurt) 
-is a the best design choice. Hence I'd rather keep the msleep when we 
-don't need to guarantee delay to be short instead of defaulting to 
-hrtimers or even busy-loop when it is not required.
+diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+index 2037f73426d4..e304e3714020 100644
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -691,11 +691,14 @@ static int stm32_dfsdm_generic_channel_parse_of(struct stm32_dfsdm *dfsdm,
+ 		return -EINVAL;
+ 	}
+ 
+-	ret = fwnode_property_read_string(node, "label", &ch->datasheet_name);
+-	if (ret < 0) {
+-		dev_err(&indio_dev->dev,
+-			" Error parsing 'label' for idx %d\n", ch->channel);
+-		return ret;
++	if (fwnode_property_present(node, "label")) {
++		/* label is optional */
++		ret = fwnode_property_read_string(node, "label", &ch->datasheet_name);
++		if (ret < 0) {
++			dev_err(&indio_dev->dev,
++				" Error parsing 'label' for idx %d\n", ch->channel);
++			return ret;
++		}
+ 	}
+ 
+ 	df_ch =  &dfsdm->ch_list[ch->channel];
+-- 
+2.25.1
 
-Do you think I am mistaken?
-
-Yours,
-	-- Matti
 

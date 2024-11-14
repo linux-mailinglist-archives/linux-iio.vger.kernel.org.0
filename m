@@ -1,277 +1,226 @@
-Return-Path: <linux-iio+bounces-12248-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB569C89C8
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 13:21:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD759C8B6C
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 14:05:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5AF31F23EC8
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 12:21:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26863B2D7D5
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 12:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550871F9A82;
-	Thu, 14 Nov 2024 12:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097EC1FB3C0;
+	Thu, 14 Nov 2024 12:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J0X3j0xX"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="aB+wLTsY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2089.outbound.protection.outlook.com [40.107.237.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383531F80CC;
-	Thu, 14 Nov 2024 12:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731586902; cv=none; b=jn+lPCeTBy6qtuMq26LsZaD2gVg+XEyTstwncGZ/QPkSvJPYIZpfvP14Gekybe9qh6D2k8jIX9md7blyDrzuSD3ihIcJKDJsmqiRASEd3TLm/gfxjh8Jxw7zCvISsNaiC4pUBhVeseVk8+JpGX0IMNIflF+qa7nZd4FEsrtkNdQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731586902; c=relaxed/simple;
-	bh=qhLjRTwMSiK1gN/1gAQwpbV/O+5iNG+GVRk0YMFjoLc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=USIisy56SCWaiQMIrSjUuBuVqVqPyJHhp71nsrmoonkUXZf3q1axlCrngSxO6mBDULRaHN0tA3GeMxDR9JPKalj2/Wjvh1DCHFz2ar3AvCSq9vrVttYFxdzQZsfESXyUUa+ccQB3OwiTmJfsz8Ae3urJFXMx2Cfv6unYa591lEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J0X3j0xX; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37d49a7207cso348021f8f.0;
-        Thu, 14 Nov 2024 04:21:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731586898; x=1732191698; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=GLjOREoOQmBlhC3DKhm0mq2e1vDsIIepitbl2vA1L6A=;
-        b=J0X3j0xXruw3EuwJKg+nvKpC42Pr6EA4XwDRFHAbmg1UI4d1xTHZdhfPuKW/FdWFgz
-         pQKqT3dbm8aunHqEOwco8O3F32h8o4t27rPUOkUbPCv/w2FilxXDbMC1pbjPEUjR1QVi
-         TxciM6k4BrKkTZQcqSjpW/lztrUVrk/AHYaepcYAFSi2oMQuSAg9A6FY63PM1nrcC+SP
-         /YCaQ+WoGNNarojPvSCKH2NfSjERyAO/1OZItzfKTDdwuYUVlBsE1REtdVx27tDXAMY6
-         dEjowK6Uw7IDuh2Oh+AEOE5O/EyNW0/wKt1pey7I62mLvFkLVdLKMSgn6jghBL42DlLd
-         ImlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731586898; x=1732191698;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GLjOREoOQmBlhC3DKhm0mq2e1vDsIIepitbl2vA1L6A=;
-        b=g5TXj/VROBYDL3wWCB8Jty326NSFIqis7kJG5wj33RGp7r/G1l756NktNDS1tLIjHL
-         9A/xK/Ygd9FoItyG1O2gvZ+uB2xvPasDLf1/Ye86COBQ+KyZvLRHl5tCNb6FuffUZUsc
-         b4ir970Smyr0FtCUsUzZXQUXuYuO9lpO4BDrgfgFvKB/dzFcK0po/QIjKvNJrLf1KpnE
-         WAwpRQg6N0erf1ciicXFqdJWukt65f/TRNEoTHzg6covAN1n2outChdWb8cq9EGgp52w
-         AmEVTKeXDcUZZN1PSnOaNG6RQmCGrA6c18VKtTEn47jJZkUBvG3tVcRz9Z3Y+ZuhQEJE
-         3bTA==
-X-Forwarded-Encrypted: i=1; AJvYcCVFtdcvigAD/c0GxJzbjh3PIOdraUTRPgY9IQ1Rwi5Hzl/oot55cxa3Sk4nNisD/f6OyOKkySbfwAwCWTBP@vger.kernel.org, AJvYcCVmBxFbDz86s6psxPXVsrVqWBPxGHbg2z2e8ct5ykuB81pqt/BqtGLIh8lmNF/238xAMmDIVgVH9Aw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXCPJ1lLrprIshE6c9YIOrauscrT/SU6dLnyNdN+3GYb+YzIye
-	iJzftlB8xtyF4IFYEl9Ed38bpvC8hIzO64KvalbDqX9pDm9Jqwhn7aCR+1ZpBJTLaoPS
-X-Google-Smtp-Source: AGHT+IFAntRADJj0A+Cc9AR+vsdBDax2iZ60M05lB3tpTGYieGeiP3siZAXAgF6rVx24csMg3EaVSg==
-X-Received: by 2002:a05:6000:701:b0:37d:39c8:ecca with SMTP id ffacd0b85a97d-38218542e5fmr1578826f8f.55.1731586898339;
-        Thu, 14 Nov 2024 04:21:38 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef02:f400:a23c:697f:16fb:11c5? (p200300f6ef02f400a23c697f16fb11c5.dip0.t-ipconnect.de. [2003:f6:ef02:f400:a23c:697f:16fb:11c5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821adbebe2sm1320715f8f.61.2024.11.14.04.21.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 04:21:37 -0800 (PST)
-Message-ID: <b0a9eecb7b83c29aa545ed7717e3a6c2275b5e27.camel@gmail.com>
-Subject: Re: [PATCH] iio: accel: kx022a: Improve reset delay
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
-	 <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 14 Nov 2024 13:26:01 +0100
-In-Reply-To: <1410938e-5135-434c-911e-7ba925bafd49@gmail.com>
-References: <ZzWfXbjaDkFnu_Jg@mva-rohm>
-	 <be375e24f74997743743fadf68125e176c23e2df.camel@gmail.com>
-	 <f4cf3437-87ea-4d0f-8dab-890d89f85605@gmail.com>
-	 <1f315c2f3eea86fe4db48f0168660ab4b0b020f1.camel@gmail.com>
-	 <1410938e-5135-434c-911e-7ba925bafd49@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6F21FB3C5;
+	Thu, 14 Nov 2024 12:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731588740; cv=fail; b=n8wEwtZXb/T/ma+0iZ/fAh25qsLe3bwkwhwgnwGa4vbJFCwLC1glISWZbsJGpe2jCrIwIPdgVdew4X9pjNZJbjTSituo46Em2VE1SkeUSnhlj2G9JGHWhnoogUrPlTLzFJkIbiCr3epuuTEArhEqDkbZr3MxpwGsB91rFa3f+nA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731588740; c=relaxed/simple;
+	bh=Wi2JSPHPlCIcHSGRqkGcX7ESbZgJVDOL7U/ID1WCahc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NURQZQwIjOO1ARvatzedD7gdWTkkGcunvaIpYtGgUucM38IerX8qif6gZojddgslX28BjLrTUDmo/yVc0mVfJIsfyJxP8vXFgMxEO8YX1Th2VVl+5Mu3MO5SnNB7+NN0hJBzf5ycgJUBxD40H2sqMa8pVMkIWOvId2qjxZiL2rE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=aB+wLTsY; arc=fail smtp.client-ip=40.107.237.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wN+iSQ2pEF6emDOKywRgS4Wobd0vYXDumEA2xohYT82+jpTFXh62CFCOMUy2t6m6l6YvfXoN8xx1DaiUzRmrQ5h9T5K2hdQNS674crzODabpwrIIpvmEpYZC2zoHHH1Mbqui0Ed22Hqo9TtQRskggswa8T8D/gsWTtA+j0qvWGlJQpyEtA9v2vDtnvUR3vj1+xe7XNdOqYTLxSq22AENOxugXLVCK7oQ+dpxYYkGRdOv4HVvSK3gvaGS6Wxjpvlpf0ryPkSz59cedtZZNJVQPv33j1bi4JEZ/1sTpLyjt7v1HkkWTCas64GBoTUIKJrCub22csxPCx0pwnJ3PdtMkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Wi2JSPHPlCIcHSGRqkGcX7ESbZgJVDOL7U/ID1WCahc=;
+ b=nRbrkJMq13H9z/b6tgdFt8A5u1zZoEiZV9E/c1nbgTu5WB5uTZV08WL5e8cCuU+5xcE/f5VjYbktIv0Q4R5UK1/m+RcbW6JqOMGU/i/CqCQ9xPew2Dm3CkWHP2qOeDCg3/AFgWPYpj7Y8ouwbRFt0doX5YDjbik59X1x1BpJ1dqZ4HfFr4GVvPiMeRZvT4XMAyTGTG7rjGU+aTL0Z5ptCTBxcLJrJ20OHkTzoVPyDiyNt8WLs58/lZm47F5lPy9bp9YPJ/aIhaUsxQbKkTnJAW0q4kxQkGxSGHT5YPrtzGrBINHzGwah9uQ4sJYiVExXKNhxdyMoQY9RNDVDMjT/Fg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Wi2JSPHPlCIcHSGRqkGcX7ESbZgJVDOL7U/ID1WCahc=;
+ b=aB+wLTsYF+hRxUG4nLZlYpnuSPXUtllmEO5MzO+Sx5ZpDXz1LfghGFqTzmnw+7alAXdJZ0iUyNNJzh9DBP/Y72PCXJfWBl6Hda4WZWpB/Px1yYl1VNkp50sfZzKk2k6Ma0KFLJ8YOktHxXwREb6cHGWuV6JaVq5bATdrVLxowAQQLbfPG1jwIRALddinLElpWhJEPLxtZQYXWFLXs/7O45gtiWC1LNGsKU4HJyKVxKiyIUAmxxtNZgRfQxF4CrL8gWM5+Jn1VN+HpvrpO+K71fJ9mIGF5kbhnXiZ1Fmav7Oe9ImwHMxVnkOMiQfBi2k6DGxHh5fFFNlMdq2wITE/Vg==
+Received: from SN7PR11MB7589.namprd11.prod.outlook.com (2603:10b6:806:34a::14)
+ by MN0PR11MB6208.namprd11.prod.outlook.com (2603:10b6:208:3c4::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.18; Thu, 14 Nov
+ 2024 12:52:12 +0000
+Received: from SN7PR11MB7589.namprd11.prod.outlook.com
+ ([fe80::df51:5691:df7d:9a34]) by SN7PR11MB7589.namprd11.prod.outlook.com
+ ([fe80::df51:5691:df7d:9a34%5]) with mapi id 15.20.8158.013; Thu, 14 Nov 2024
+ 12:52:12 +0000
+From: <Victor.Duicu@microchip.com>
+To: <andy.shevchenko@gmail.com>, <jic23@kernel.org>,
+	<matteomartelli3@gmail.com>, <lars@metafoo.de>
+CC: <Marius.Cristea@microchip.com>, <linux-kernel@vger.kernel.org>,
+	<linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v11] iio: adc: pac1921: Add ACPI support to Microchip
+ pac1921
+Thread-Topic: [PATCH v11] iio: adc: pac1921: Add ACPI support to Microchip
+ pac1921
+Thread-Index: AQHbNnIAmHY7uJINYUWxTZu6VtQ26LK2m/QAgAAfMwA=
+Date: Thu, 14 Nov 2024 12:52:12 +0000
+Message-ID: <faed3b586e1af2d946d3f9b185a94b6ebf0f6f32.camel@microchip.com>
+References: <20241114084702.3499-1-victor.duicu@microchip.com>
+	 <c1b30741bec25e25c6e57389bf45d04f@gmail.com>
+In-Reply-To: <c1b30741bec25e25c6e57389bf45d04f@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN7PR11MB7589:EE_|MN0PR11MB6208:EE_
+x-ms-office365-filtering-correlation-id: 1b9cbb75-1998-49d3-a846-08dd04ab2886
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7589.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?a0dYbmpDNW53Qm4va2FjUDMxa1VKa1QwaVhRWDBnRWptM214RDZpTWVKUGlM?=
+ =?utf-8?B?aURUNTM4Z0FlNE1JR01FSWZYVm5YWW9XbHA2OGZtZzRkNElIOWFWbVA3NFJP?=
+ =?utf-8?B?U0R5Q2RocVB2cDg3cDhEL3B1MzVZSm9yaEU0Zk1SRm13VkxyampzYWVHbGRH?=
+ =?utf-8?B?WWJSSC9Bb0YzS05VckloRDdjaTdubkRlK1RnSXR1YUtvcUw2RGdXQXNPRVox?=
+ =?utf-8?B?RlpBU1llVSt4N09rUERCbmF6L1Z3NnBxWGhHaExvMTREN0szZkRGV0dQaENq?=
+ =?utf-8?B?TzhXQ25tRUZUaElDMGZRL1krTDZpckF3aklvaEZZT0dKWmZwVzU4ZzNMQjRh?=
+ =?utf-8?B?eTV5bU53cjQySFA2NGNMNmRkdFJvMHBCSXd0clZXaVNiZ3VmU1hvODB3QmtH?=
+ =?utf-8?B?QVRXOHpmazk5anBuMVU5eXY3RDFqYkdqcFBTOW1sOERIdkQ3TlY5b2dKTjQ1?=
+ =?utf-8?B?dDI2ZHJ0MmppczU0amlrTnhtNDVLMFVLQysySlR3cUJUZU5aZis0aW9FaE9a?=
+ =?utf-8?B?aTlZeU1UWGczR2picVB2cXJ5N0pOeWNtVjBJbzA2SDA3Z2FnSHd5OXVGYTdr?=
+ =?utf-8?B?NDBobHgyeWoxS2wrRHd5eUJ1NnlVdzFRTlN4YWNsZVBLMmpwV0htL0ZTaEhl?=
+ =?utf-8?B?aVpPa2drMjluSThGRS8rcFRhZjc0TDVnTzZaZEVHd09FSlJiVFplZ2trLzVM?=
+ =?utf-8?B?QkhyMGtkSzVSWCtJbnlMYUJTV3l0MDJkVjhiQUpXN24xc0tFZDVzWnE3Nk9E?=
+ =?utf-8?B?VVlEVHBHVGxMUHhjMkM3ZTJIdXQyWWZ6YWQ3NnNHKzJiNVZnY0xITEd2aEQ0?=
+ =?utf-8?B?UHJKMk5leUV6K01pQmJwUjhDZjVML3RnUDhGSERDcms4NmRqTnA1bHlHSFZq?=
+ =?utf-8?B?NFNsV0tveE5OSUt2TjFaSitPNmUxaWRRand0WE82VmhQSE9oR0g5WmV3S29x?=
+ =?utf-8?B?ZmpxTmdZanpzQnBDM29hQ2orVTl6Si9MTnp3VWpWb2Jib2dxSGJPTjRmMTY0?=
+ =?utf-8?B?VEtlT1ZmMnBUZWZzS21yRTNQa2c2cHpLRTJMM0hqaUVrYlRMSTlVVWhYb1M5?=
+ =?utf-8?B?dUJzRjNRODRRcDNueWhjZit6Y3FpWlZVVUxibGZPOE9TL0hvQnpkcHpWNWhK?=
+ =?utf-8?B?ZVRxNEREWFRrWnBwWUR1R2ZVWUcyai9vQytUWWFOaW54OE00a21LZWRMbEhB?=
+ =?utf-8?B?NkZpWEo1R0c1US9BRFphZFZGSnZZcTYwdmZmakVIOHNwNFFFTVRUSFRCMmIw?=
+ =?utf-8?B?elpXa2RmelJRdzR2VnA2V3lQRmYzNFZqTXlDLy9idHBJaGcwNHBQTVdtWXU1?=
+ =?utf-8?B?YUZSSXZ4RG05OFUzUzg0TGxQeGkxYWlqNnNmazdxNldHc2l3Y1l0UzNPRW5v?=
+ =?utf-8?B?b0h2UmN4aW01SFFQelMrK3ptLzBKdm1mTlNJT1hYV2FXTnBBQXVXZEpOdklV?=
+ =?utf-8?B?R2ZhTjNzT21jd3BBZk8zSUoyS3RRYlhtc1A3SzZudWFzaGY5MEVCNSs5YURp?=
+ =?utf-8?B?NFR2VFVMT0tqQ1lwYUdiYVFUczMzY2M1ZENnN2lVQ0FUOW9hOFNGMHNlMnhz?=
+ =?utf-8?B?NW5EdmtDdjg2U2t6c1BTZlN0YzU2bm1lSjNkZlB1N1E0VkIyd2UzUXc0TEdH?=
+ =?utf-8?B?NFFLUjVrV2tYckhjeWVUMlRVVk5OZUt6R2JMQVlxODUwd0c0UXpkc0EyeGtI?=
+ =?utf-8?B?SjNBcHJCc3F6ZnhCdUFENmFHb29LSVFrV2xiUTllOVRSUXo2cXFwNnJ0c3VQ?=
+ =?utf-8?B?RTFrNTNSRE5MYlRuZjhhZGliWTVmSEtuc3B6QkhtSXlwUm4vYVFwbHAzTHlG?=
+ =?utf-8?Q?JrtMNncGoZDpX7WDjdqdXM89VXhZ/we/9m3q4=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?QWlkeDdKNmVBbEI5ZDRoUXA5aE9uQzFDNkNubTUrbUtjaER1RmdWYjVXZGhF?=
+ =?utf-8?B?OWNOK3N0NDkrM2pQckJ4RjZseHRhM1dIQmNuYVJVMTZlTmxqWGN2RW1rOHBE?=
+ =?utf-8?B?VEFwMWw3enc5ZVNKVm16eS9BTDNjdnF0cC8rcnZuY3k2RVI0bjRadFFmS2xL?=
+ =?utf-8?B?L2V0ZjBVRTZRVWxSelhxRGdWQkl2U1VDUXZEWHo1alJRV3NTUGNsQWRoVHNE?=
+ =?utf-8?B?dFFNQjNlSGlCY09ScnM5Mm1laHN5MGFqK0hrR0dyN1NMRENQRTRFVVJ0Nko1?=
+ =?utf-8?B?MWd5UjNDNnp1WllyQS9TSzRINEh2OWlNeDJ4NlV4amRQVXZyeDIrQjlMZ1Vi?=
+ =?utf-8?B?WkZKVmdnRlNxV3VSeDM5MUxhQ1FsL1RiU3lpU2hlWTZTVFVHck9PYW9MVzB5?=
+ =?utf-8?B?a2dDOFlKMFF0c0JZNHluN3ZLdDZMVUt3cjJxbWs0S2t1UnZ3VUZ3TkVrcjUx?=
+ =?utf-8?B?UFFvT25nRldUYVRmMUhxWmc3VThWbEQvU0daa3VhVUNXY25ZSjJIMjlFU2k3?=
+ =?utf-8?B?d2tJRSt2VmZ6UzVaMzdTN1NGbVI0NmZwYlNTT1hCSkk2bXhuL0lDSXVUWXEy?=
+ =?utf-8?B?Skxjd2d0NlRZeGJiZk03WkZhNCtzUXFucXdOYUV4V1hiR0VrclpFUGlYNVpV?=
+ =?utf-8?B?amJTS1JwMDZQMTlTdkxwNGhueUZOR2N6cHZER2h2VngwMjNLUXJYem85bWtE?=
+ =?utf-8?B?KzR4TXBhYzdsQUVGMFdNWk82QTJjQ01JOWlRRUhtK2hva2U3b3Y5dk15aWps?=
+ =?utf-8?B?NUhlTmFCVGJZOE04Q0FmeVh1VEZWaEZYUUpib2NBVlVWRS9qMXFBeXNyMkxw?=
+ =?utf-8?B?M0pCSGtRODlPbDRBcVQwNU1PVVdyRDlON0VON2NjRnUyeFgvSTNtaXNGaERu?=
+ =?utf-8?B?d1lsWmloTGVBZUgzWU1tOEhzdlBGSGV3TStTL0FmNjljcW1ybVpEeG13dE9k?=
+ =?utf-8?B?YVFPNXRjZkluNnh1bGt3NkZiYlBVTVZjV0JITkdsWVU3ejBiRDdKcHI5THNj?=
+ =?utf-8?B?VUxyN0NDaW94M1RwcU5Uc2VYTmhaNUFkK1l6d3pFbzRxU3FDOGx4RjZacFlw?=
+ =?utf-8?B?ZDhSZ1ROdGMwN2owZnlYbUNvaTVLNlExTEVZY1lIYlp1VkNmK0FUblVubFBL?=
+ =?utf-8?B?Z1MvbzdDY0pxM2xIRVMrNGFyQU12Z1UrVkxVbnJ5K2RBNmVHUloycVh1WHF1?=
+ =?utf-8?B?QXVhckxBTHRiQjdRM2Q1UThYa2lTQ3gxWVBjaEkxWFdmZm5Uem9jNFRvam1W?=
+ =?utf-8?B?M0RZYWllSUdiazNlb2NKVWVrMDZqckNWQlc3V0oxZk9qdy85Z2VCK1l3c2xq?=
+ =?utf-8?B?NFdpM1ROQlJ4K0xaMmlQMFR0VHphejBPeUpyUWZHdnJZTjZxYWxpQUhwR0VY?=
+ =?utf-8?B?Y2FnUkVlc0F1V2JwWVl3NzFQdmZabmhQZWpUVlZ5VVJVRCtLakg0dUpneWx3?=
+ =?utf-8?B?R1UwaDJZU0dmNUlNNnN1anFGYmYzd3cyMzVUZWVFcVc2MjBRRnBmN2doLzB6?=
+ =?utf-8?B?alZCS0dhRUhacTFWczZZSmVOUVJQdWV4ZDNmOVFFayswclZPOFFURzczN1d0?=
+ =?utf-8?B?Nnc1dy8xVjYycEtHZE5nK1hRMzZKWHFlTUxuVUdzWmVNRFF6MHdvRmxXVFJo?=
+ =?utf-8?B?K08zMzFxWGFheGVNbitYUU5DMXhmZ3JtK1RpMkRva0lZTnI3STgzdUY1cnl0?=
+ =?utf-8?B?M2V3QTNGVzdwdE1hTU1DcGtGMG9JN2ZNNGNRbk5sRVhEQi9WTWVoMnNXME5j?=
+ =?utf-8?B?RFhGQlRQMlJpbW52RDVrZjdmd3M5dk9RcEdONnVCL3BTNzBVUFBmSTJ3N1lo?=
+ =?utf-8?B?c2lrdkRaNTFRRkV2N1pvZTVYVEhRdlJTM2psWnIyYy9PQTN2WkNPampIWklE?=
+ =?utf-8?B?Y0ZGb0RRR1B6djJmSm5pMmlmbmFqT1FUaGtKbmNUSWJyTEdxTzZLdStWQ1Ra?=
+ =?utf-8?B?VXV2VmJCTENlcU05blF4ellPbGNiWWxUT1NwT1BjOTJESkpIK0RjOUNiVUt6?=
+ =?utf-8?B?VHF5eW5NdnZuY2xDVjd5eFB4dW1RSE05SS83WUg3emJuejZWMUg5aU95K3Mw?=
+ =?utf-8?B?ekFoRUFKSVNNSlQ0VzNLQjB2d2pDa0dZajJpeHhOUTJEOEd5NlZSM3ptK0xS?=
+ =?utf-8?B?dERlazl1RWRpQWNBSTd3MnFOK3paYzlUOHp5R2JOWVd6V0c1WUNiczEvRWho?=
+ =?utf-8?B?cGc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9C0C716421A96949B4C7A78571AFA40D@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7589.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b9cbb75-1998-49d3-a846-08dd04ab2886
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2024 12:52:12.2266
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: c72DEeHaPi9gtS+6qiXiJMwc3jxF05hh7Jb8iRwB2hvAp4omEjX8p+Ic/+J+LDvPgPwBsPlwPkZKXxXs2HAU23hQzCpLTMsmf3qdjh4qabk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6208
 
-On Thu, 2024-11-14 at 13:30 +0200, Matti Vaittinen wrote:
-> On 14/11/2024 12:46, Nuno S=C3=A1 wrote:
-> > On Thu, 2024-11-14 at 11:54 +0200, Matti Vaittinen wrote:
-> > > On 14/11/2024 11:43, Nuno S=C3=A1 wrote:
-> > > > On Thu, 2024-11-14 at 08:57 +0200, Matti Vaittinen wrote:
-> > > > > All the sensors supported by kx022a driver seemed to require some
-> > > > > delay
-> > > > > after software reset to be operational again. More or less a rand=
-om
-> > > > > msleep(1) was added to cause the driver to go to sleep so the sen=
-sor
-> > > > > has
-> > > > > time to become operational again.
-> > > > >=20
-> > > > > Now we have official docuumentation available:
-> > > > > https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Power-=
-on_Procedure_E.pdf
-> > > > > https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Procedur=
-e.pdf
-> > > > > https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_Powe=
-r-on_Procedure_E.pdf
-> > > > >=20
-> > > > > stating the required time is 2 ms.
-> > > > >=20
-> > > > > Due to the nature of the current msleep implementation, the mslee=
-p(1)
-> > > > > is
-> > > > > likely to be sleeping more than 2ms already - but the value "1" i=
-s
-> > > > > misleading in case someone needs to optimize the start time and c=
-hange
-> > > > > the msleep to a more accurate delay. Hence it is better for
-> > > > > "documentation" purposes to use value which actually reflects the
-> > > > > specified 2ms wait time.
-> > > > >=20
-> > > > > Change the value of delay after software reset to match the
-> > > > > specifications and add links to the power-on procedure specificat=
-ions.
-> > > > >=20
-> > > > > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> > > > > ---
-> > > > > Sorry for not including this to the KX134ACR-LBZ series I sent
-> > > > > yesterday. It was only half an hour after I had sent the KX134ACR=
--LBZ
-> > > > > support when I was notified about the existence of the KX022ACR-Z
-> > > > > start-up procedure specification... Hence this lone patch to code
-> > > > > which
-> > > > > I just sent a miscallaneous series for before.
-> > > > >=20
-> > > > > =C2=A0=C2=A0=C2=A0drivers/iio/accel/kionix-kx022a.c | 11 ++++++++=
----
-> > > > > =C2=A0=C2=A0=C2=A01 file changed, 8 insertions(+), 3 deletions(-)
-> > > > >=20
-> > > > > diff --git a/drivers/iio/accel/kionix-kx022a.c
-> > > > > b/drivers/iio/accel/kionix-
-> > > > > kx022a.c
-> > > > > index 32387819995d..ccabe2e3b130 100644
-> > > > > --- a/drivers/iio/accel/kionix-kx022a.c
-> > > > > +++ b/drivers/iio/accel/kionix-kx022a.c
-> > > > > @@ -1121,10 +1121,15 @@ static int kx022a_chip_init(struct kx022a=
-_data
-> > > > > *data)
-> > > > > =C2=A0=C2=A0=C2=A0		return ret;
-> > > > > =C2=A0=C2=A0=20
-> > > > > =C2=A0=C2=A0=C2=A0	/*
-> > > > > -	 * I've seen I2C read failures if we poll too fast after the
-> > > > > sensor
-> > > > > -	 * reset. Slight delay gives I2C block the time to recover.
-> > > > > +	 * According to the power-on procedure documents, there is
-> > > > > (at
-> > > > > least)
-> > > > > +	 * 2ms delay required after the software reset. This should
-> > > > > be
-> > > > > same
-> > > > > for
-> > > > > +	 * all, KX022ACR-Z, KX132-1211, KX132ACR-LBZ and KX134ACR-
-> > > > > LBZ.
-> > > > > +	 *
-> > > > > +	 *
-> > > > > https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Power-=
-on_Procedure_E.pdf
-> > > > > +	 *
-> > > > > https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Procedur=
-e.pdf
-> > > > > +	 *
-> > > > > https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_Powe=
-r-on_Procedure_E.pdf
-> > > > > =C2=A0=C2=A0=C2=A0	 */
-> > > > > -	msleep(1);
-> > > > > +	msleep(2);
-> > > >=20
-> > > > msleep() is not advisable for something lower than 20ms. Maybe take=
- the
-> > > > opportunity and change it to fsleep()?
-> > >=20
-> > > Thank you for the suggestion Nuno. I did originally consider using th=
-e
-> > > usleep_range() since the checkpatch knows to warn about msleep with
-> > > small times.
-> > >=20
-> > > However, there should be no rush to power-on the sensor at startup. I=
-t
-> > > usually does not matter if the sleep is 2 or 20 milli seconds, as lon=
-g
-> > > as it is long enough. I wonder if interrupting the system with hrtime=
-rs
-> > > for _all_ smallish delays (when the longer delay would not really hur=
-t)
-> >=20
-> > That's why you have ranges of about 20% (I think) in usleep() so you
-> > minimize
-> > hrtimers interrupts.
-> >=20
-> > Other thing is boot time... Sleeping 20ms instead of 2ms is a huge
-> > difference.
-> > Imagine if everyone thought like this for small sleeps :)?
->=20
-> I think this is interesting question. My thoughts were along the line=20
-> that, even if small sleeps were extended to longer (where small sleep is=
-=20
-> not a priority), the CPUs would still (especially during the boot up)=20
-> have their hands full. I don't know if we might indeed end up a=20
-> situation where CPUs were idling, waiting for next timer slot.
-
-My problem is not the CPU but delaying probing devices as you probe one dev=
-ice
-at time...
-
->=20
-> What comes to boot time, I doubt the CPUs run out of things to do,=20
-> especially when we use the probe_type =3D PROBE_PREFER_ASYNCHRONOUS.
-
-Yeah, with this, the above does not apply. Still, spending more time in a w=
-orker
-than needed (and 18ms is huge) seems a waste to me.
-
->=20
->=20
-> > > is a the best design choice. Hence I'd rather keep the msleep when we
-> > > don't need to guarantee delay to be short instead of defaulting to
-> > > hrtimers or even busy-loop when it is not required.
-> > >=20
-> > > Do you think I am mistaken?
-> > >=20
-> >=20
-> > To me this is more about correctness and do what the docs tell us to do=
- :).
-> > Sure, here you know what you're doing and you don't care if you end up
-> > sleeping
-> > more than 2ms but that's not always the case and code like this allows =
-for
-> > legit
-> > mistakes (if someone just copy paste this for example).
->=20
-> Right. I just wonder if always requiring stricter wake-up instead of=20
-> allowing things to run uninterrupted is the best role model either?
-
-Why not :)? If we just need to wait 2ms, why waiting more? I would be very
-surprised if hrtimers are a deal breaker in here. Otherwise, we should remo=
-ve it
-from the docs...
-=20
->=20
-> > Not a big deal anyways...
->=20
-> Agree :) But I think this is a spot where I could learn a bit. I will=20
-> gladly switch to the fsleep() if someone explains me relying on hrtimers=
-=20
-> should be preferred also when there is no real need to wake up quicker=
-=20
-> than msleep() allows.
->=20
-
-Personally, I think that sleeping more than needed is always a wast and the=
-n it
-comes back to my correctness comment. In here you know what you're doing bu=
-t I
-dunno that switching to hrtimers will do any arm to the device :) and allow=
-s
-proper patterns to be copied.
-
-- Nuno S=C3=A1
-
+T24gVGh1LCAyMDI0LTExLTE0IGF0IDEyOjAwICswMTAwLCBNYXR0ZW8gTWFydGVsbGkgd3JvdGU6
+DQo+IEVYVEVSTkFMIEVNQUlMOiBEbyBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50
+cyB1bmxlc3MgeW91DQo+IGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZQ0KPiANCg0KSGkgTWF0dGVv
+LA0KDQo+IE9uIFRodSwgMTQgTm92IDIwMjQgMTA6NDc6MDIgKzAyMDAsIDx2aWN0b3IuZHVpY3VA
+bWljcm9jaGlwLmNvbT4NCj4gd3JvdGU6DQo+ID4gRnJvbTogVmljdG9yIER1aWN1IDx2aWN0b3Iu
+ZHVpY3VAbWljcm9jaGlwLmNvbT4NCj4gPiANCj4gPiBUaGlzIHBhdGNoIGltcGxlbWVudHMgQUNQ
+SSBzdXBwb3J0IHRvIE1pY3JvY2hpcCBwYWMxOTIxLg0KPiA+IFRoZSBkcml2ZXIgY2FuIHJlYWQg
+dGhlIHNodW50IHJlc2lzdG9yIHZhbHVlIGFuZCBsYWJlbCBmcm9tIHRoZQ0KPiA+IEFDUEkgdGFi
+bGUuDQo+ID4gDQo+ID4gUmV2aWV3ZWQtYnk6IEFuZHkgU2hldmNoZW5rbyA8YW5keS5zaGV2Y2hl
+bmtvQGdtYWlsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBWaWN0b3IgRHVpY3UgPHZpY3Rvci5k
+dWljdUBtaWNyb2NoaXAuY29tPg0KPiA+IC0tLQ0KPiA+IA0KDQouLi4uDQoNCj4gPiANCj4gPiAN
+Cj4gPiArI2RlZmluZSBQQUMxOTIxX0FDUElfR0VUX3VPSE1TX1ZBTFPCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgMA0KPiA+ICsjZGVmaW5lIFBBQzE5MjFfQUNQSV9HRVRfTEFCRUzCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAxDQo+ID4gKy8qDQo+ID4gKyAqIFRo
+ZSBtYXhpbXVtIGFjY2VwdGFibGUgc2h1bnQgdmFsdWUgaXMgMjE0Ni45OTk5OTkgT0hNLg0KPiA+
+ICsgKiBUaGlzIHZhbHVlLCB3aGljaCBpcyBiZWxvdyBJTlRfTUFYLCB3YXMgY2hvc2VuIGluIG9y
+ZGVyIHRvDQo+ID4gKyAqIGFsbG93IHRoZSByZWFkaW5ncyBmcm9tIGR0IGFuZCBBQ1BJIHRvIHNo
+YXJlIHRoZSBzYW1lIHJhbmdlDQo+ID4gKyAqIGFuZCB0byBzaW1wbGlmeSB0aGUgY2hlY2tzLg0K
+PiA+ICsgKiBXaXRoIHRoaXMgdmFsdWUgdGhlIG1heGltdW0gY3VycmVudCB0aGF0IGNhbiBiZSBy
+ZWFkIGlzDQo+ID4gKyAqIDAuMVYgLyAyMTQ2Ljk5OTk5OU9ITSA9IDQ2LjU3NiB1QQ0KPiA+ICsg
+KiBJZiB3ZSB1c2UgSU5UX01BWCB0aGUgbWF4aW11bSBjdXJyZW50IHRoYXQgY2FuIGJlIHJlYWQg
+aXMNCj4gPiArICogMC4xViAvIDIxNDcuNDgzNjQ3T0hNID0gNDYuNTY2IHVBDQo+ID4gKyAqIFRo
+ZSByZWxhdGl2ZSBlcnJvciBiZXR3ZWVuIHRoZSB0d28gdmFsdWVzIGlzDQo+ID4gKyAqIHwoNDYu
+NTY2IC0gNDYuNTc2KSAvIDQ2LjU2NnwgKiAxMDAgPSAwLjAyMTQNCj4gPiArICovDQo+ID4gKyNk
+ZWZpbmUgUEFDMTkyMV9NQVhfU0hVTlRfVkFMVUVfdU9ITVPCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgMjE0Njk5OTk5OVVMDQo+ID4gKw0KPiANCj4gSnVzdCBhIG1pbm9yIHBvaW50IGFi
+b3V0IHRoaXM6IGlmIEkgdW5kZXJzdGFuZCBjb3JyZWN0bHkgdGhhdCB2YWx1ZQ0KPiBjb21lcyBm
+cm9tIChJTlRfTUFYIC8gTUlDUk8gLSAxKSAqIE1JQ1JPICsgTUFYX01JQ1JPLiBUaGlzIHdhcyB0
+bw0KPiBzaW1wbGlmeSB0aGUgY2hlY2sgaW4gYSBzaW5nbGUgc3RhdGVtZW50IGluDQo+IHBhYzE5
+MjFfd3JpdGVfc2h1bnRfcmVzaXN0b3IoKQ0KPiB3aGljaCBpcyBjYWxsZWQgd2hlbiB0aGUgc2h1
+bnQgcmVzaXN0b3IgaXMgc2V0IGZyb20gKnN5c2ZzKiAobmVpdGhlcg0KPiBmcm9tIERUIG5vciBB
+Q1BJKS4gSSdtIGZpbmUgd2l0aCB0aGlzIHZhbHVlIGFuZCB0aGUgbmV3IGNoZWNrIGJ1dCBJDQo+
+IGZpbmQNCj4gdGhlIGV4cGxhbmF0aW9uIGNvbW1lbnQgYSBiaXQgY29uZnVzaW5nLiBJZiB5b3Ug
+Y291bGQgY29tZSB1cCB3aXRoIGENCj4gYml0DQo+IG1vcmUgY2xlYXIgZXhwbGFuYXRpb24gYWJv
+dXQgdGhlIHJlYXNvbiBvZiBzdWNoIHZhbHVlIEkgdGhpbmsgaXQNCj4gd291bGQgYmUNCj4gYmV0
+dGVyIG90aGVyd2lzZSBJIGFtIGZpbmUgd2l0aCBpdCBhcyBpdCBpcy4gQWxzbywgbWF5YmUgdXNl
+IHRoZSBmdWxsDQo+IHJvb20NCj4gZm9yIDgwIGNoYXJhY3RlcnMgcGVyIGxpbmUgYW5kIFVPSE1T
+IGluc3RlYWQgb2YgdU9ITVMgdG8gYXZvaWQgbWl4ZWQNCj4gY2FzZSBpZg0KPiB5b3UgYXJlIGdv
+aW5nIHdpdGggYSBuZXcgdmVyc2lvbi4NCg0KV2UgY291bGQgY29tcGxldGVseSByZW1vdmUgdGhl
+IG5lZWQgdG8gdXNlIGEgY29uc3RhbnQgYmVsb3cgSU5UX01BWA0Kd2l0aCB0aGlzIGNoZWNrIGlu
+IHBhYzE5MjFfd3JpdGVfc2h1bnRfcmVzaXN0b3I6DQoNCmlmICgoIXZhbCAmJiAhdmFsX2ZyYWN0
+KSB8fMKgDQooKHZhbCA+PSBJTlRfTUFYIC8gTUlDUk8pICYmICh2YWxfZnJhY3QgPiBJTlRfTUFY
+ICUgTUlDUk8pKSkNCglyZXR1cm4gLUVJTlZBTDsNCg0KRG8geW91IGFncmVlIHdpdGggdGhpcyBh
+cHByb2FjaD8NCkFsc28sIHRoZSB1c2Ugb2YgbWl4ZWQgY2FzZSB3YXMgc3VnZ2VzdGVkIGJ5IEFu
+ZHkgdG8gaW5jcmVhc2UNCnJlYWRhYmlsaXR5Lg0KDQouLi4NCg0KPiANCj4gDQo+IEJlc3QgcmVn
+YXJkcywNCj4gTWF0dGVvIE1hcnRlbGxpDQoNCldpdGggQmVzdCBSZWdhcmRzLA0KRHVpY3UgVmlj
+dG9yDQo=
 

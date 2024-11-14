@@ -1,253 +1,214 @@
-Return-Path: <linux-iio+bounces-12243-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12244-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419EA9C87D6
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 11:40:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFC29C87E4
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 11:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02CC82816A3
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 10:40:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EF2C286B00
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 10:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8424C1F9406;
-	Thu, 14 Nov 2024 10:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5531F80CB;
+	Thu, 14 Nov 2024 10:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="UnoibiHK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Evpnd0XO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9551F9402;
-	Thu, 14 Nov 2024 10:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731580778; cv=fail; b=PyqE6Vf9Pp6Jy02jgeVt0VPSDZ3vE1V5TIUvLmoMfGlSyOnZJXSdlcSA3ianc+HRbmiReahzRstUbPnRYy/PD+Qoy3p2wgSX/zUQDKT1WGcXKpdtjSGr7eGUItLwayZnisZmTbBas6j4Uo1CIYhP8lM2esTYnBeo1QF1a400hqo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731580778; c=relaxed/simple;
-	bh=uWyUOCF3M5xVYMdFknVyPL3CSAlcsbKU6f7wgGF0G50=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=WDb3HqeU8ZfiDUxTYh/kB3lcSPF9SaCCvKPIo1zamJ8XWqPOwG/F1EcYitW0LoAdg77G176Adpm/E50zVe+G09Rv54NKHM4hxjj7bi3XvbwECvyxE9dUX4/LTjnmuyVNzEbH/+JO/wlyg/iv6rHYqvpFVSOmpyfFCM46rzg/kow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=UnoibiHK; arc=fail smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AE8Txmh001391;
-	Thu, 14 Nov 2024 05:39:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=uWyUO
-	CF3M5xVYMdFknVyPL3CSAlcsbKU6f7wgGF0G50=; b=UnoibiHKKCZ5It0fFYFU9
-	RwyGOCfyh/6OanUeZk5a3BSEZgPLSPM4DEulLbPueOwnDE9PjRZkCk/nHmB2WycJ
-	272mh9MK2xCK5FWz5qGTovQU8PnmkPHT1RRMF2id2Y9qSTmBuDnw8BhCZM9lbHiv
-	6zbb/rlr6vYOrQtzorIVxcD5KJGG5x+xEKX799h5OZGnj6dXn/1gvFQf9q+iltAY
-	D8WltVAaUx24l/KMzlD3BgKyYE6SvU6L9FKiH0ux0VYzt9BYECyGRrOd7jJquLC3
-	jH1MdARbo/yA+wmN0m3N6V1TgnSlYrZU/oCCeJONMznrtSM17Drp4Y2c8bbEJMoA
-	g==
-Received: from cy4pr02cu008.outbound.protection.outlook.com (mail-westcentralusazlp17011029.outbound.protection.outlook.com [40.93.6.29])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 42wdrgrqgf-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Nov 2024 05:39:19 -0500 (EST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DAvO/SA7A+dLPIY8hPsptfV2JutcKWi6TNJTNeBx1vmhTYeBFj/A9eYl4u1+HmHZcyGyQyQ9pDAEpzmb4IIMF8KVQdj4C8m5jsgy7iE9G7L/I9P1XWSAJu/Z4rljElZCAKf6yWLIy9CEXfKIfwqIfUtku9IEKOydCvEGz88jVxe69R22ZQ8gLnnK4pahqcYnJj6oEzVAmk3pccrvLljLQCAg/OCeoLvAhLMz/XCf+b2Wg5jwCSJ79Dxi4i8MBlZf3/SOONoXTKVItL83MUeQgH/mIxl6mdQ6NL+2QwY5iJ4UQ9yDLCZvauCZSSL58+PiNUj2FlPZG7nVSrt6qAWDow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uWyUOCF3M5xVYMdFknVyPL3CSAlcsbKU6f7wgGF0G50=;
- b=mNQSCuQ3Ji8Wr2hpajxVuEHTTkCnNiGd+Wz1ZrIFSfDF/2CRoktDAzMUzp1f9muYaamqmiVvfukiNL4ExGCDksG+VfyMqBxr44aJ/2E7caWZmdMPqnbvIzsIo3AfAPl6rXrE9Gbo/GBfy/C8sTSWskcx4IPsckxgZnENFQC/ZcyRB9T54obmYFIvNX2DSbc/I5r7yefcmyPgbf6on8cukaK41qISgP4ESNvFCKVaaAZvtW74W5PQqJyNjFh9qZfW8/seWFWYgOj/ncazMolRi9cruTahARuO2brJ94y69knlSpBj2hDugYpoqoJkWOpIZAV6M9kJvjj7Yt9NpSGkOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-Received: from CY4PR03MB3399.namprd03.prod.outlook.com (2603:10b6:910:57::13)
- by DM6PR03MB5113.namprd03.prod.outlook.com (2603:10b6:5:1f0::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17; Thu, 14 Nov
- 2024 10:39:16 +0000
-Received: from CY4PR03MB3399.namprd03.prod.outlook.com
- ([fe80::6504:9615:dbab:cc17]) by CY4PR03MB3399.namprd03.prod.outlook.com
- ([fe80::6504:9615:dbab:cc17%6]) with mapi id 15.20.8137.018; Thu, 14 Nov 2024
- 10:39:15 +0000
-From: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
-To: David Lechner <dlechner@baylibre.com>,
-        "jic23@kernel.org"
-	<jic23@kernel.org>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "conor+dt@kernel.org" <conor+dt@kernel.org>,
-        "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-pwm@vger.kernel.org"
-	<linux-pwm@vger.kernel.org>
-Subject: RE: [PATCH v6 8/8] iio: adc: ad4851: add ad485x driver
-Thread-Topic: [PATCH v6 8/8] iio: adc: ad4851: add ad485x driver
-Thread-Index: AQHbNDMFlup0uAxPr0GP3n6fJH5kPrK0ExqAgAKHNyA=
-Date: Thu, 14 Nov 2024 10:39:15 +0000
-Message-ID:
- <CY4PR03MB3399FA960416CEC64E1FFF929B5B2@CY4PR03MB3399.namprd03.prod.outlook.com>
-References: <20241111121203.3699-1-antoniu.miclaus@analog.com>
- <20241111121203.3699-9-antoniu.miclaus@analog.com>
- <4b48ae8e-4eba-4d86-af8b-2b749c53639f@baylibre.com>
-In-Reply-To: <4b48ae8e-4eba-4d86-af8b-2b749c53639f@baylibre.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-dg-ref:
- =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jWVcxcFkyeGhkWE5jWVhCd1pHRjBZVnh5YjJGdGFXNW5YREE1WkRnME9X?=
- =?utf-8?B?STJMVE15WkRNdE5HRTBNQzA0TldWbExUWmlPRFJpWVRJNVpUTTFZbHh0YzJk?=
- =?utf-8?B?elhHMXpaeTFoWm1Nd1l6RmlOUzFoTWpjMExURXhaV1l0WVdabE1TMWtORGd4?=
- =?utf-8?B?WkRjMU1EWmtaR1ZjWVcxbExYUmxjM1JjWVdaak1HTXhZamN0WVRJM05DMHhN?=
- =?utf-8?B?V1ZtTFdGbVpURXRaRFE0TVdRM05UQTJaR1JsWW05a2VTNTBlSFFpSUhONlBT?=
- =?utf-8?B?STJPREVpSUhROUlqRXpNemMyTURVME16VXpNRFl3TmpneU1TSWdhRDBpVm5C?=
- =?utf-8?B?SmMwRkplR1JrWkcweU9EbDNOemxqWVRkUGVHRjNWaTh3UFNJZ2FXUTlJaUln?=
- =?utf-8?B?WW13OUlqQWlJR0p2UFNJeElpQmphVDBpWTBGQlFVRkZVa2hWTVZKVFVsVkdU?=
- =?utf-8?B?a05uVlVGQlJXOURRVUZFYkRSQ2NIbG5WR0ppUVdWWGRrMDBOM0poV0dobU5X?=
- =?utf-8?B?RTRlbXAxZEhCbFJqaEVRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVaEJRVUZCUkdGQlVVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVWQlFWRkJRa0ZCUVVGdGFUZEtiVkZCUVVGQlFVRkJRVUZCUVVGQlFVRktO?=
- =?utf-8?B?RUZCUVVKb1FVZFJRV0ZSUW1aQlNFMUJXbEZDYWtGSVZVRmpaMEpzUVVZNFFX?=
- =?utf-8?B?TkJRbmxCUnpoQllXZENiRUZIVFVGa1FVSjZRVVk0UVZwblFtaEJSM2RCWTNk?=
- =?utf-8?B?Q2JFRkdPRUZhWjBKMlFVaE5RV0ZSUWpCQlIydEJaR2RDYkVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUlVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?blFVRkJRVUZCYm1kQlFVRkhSVUZhUVVKd1FVWTRRV04zUW14QlIwMUJaRkZD?=
- =?utf-8?B?ZVVGSFZVRllkMEozUVVoSlFXSjNRbkZCUjFWQldYZENNRUZJVFVGWWQwSXdR?=
- =?utf-8?B?VWRyUVZwUlFubEJSRVZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFWRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkRRVUZCUVVGQlEyVkJRVUZCV1ZGQ2EwRkhhMEZZZDBKNlFV?=
- =?utf-8?B?ZFZRVmwzUWpGQlNFbEJXbEZDWmtGSVFVRmpaMEoyUVVkdlFWcFJRbXBCU0ZG?=
- =?utf-8?B?QlkzZENaa0ZJVVVGaFVVSnNRVWhKUVUxblFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUpCUVVGQlFVRkJRVUZCU1VGQlFVRkJRVUU5UFNJdlBqd3ZiV1Yw?=
- =?utf-8?Q?YT4=3D?=
-x-dg-rorf:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY4PR03MB3399:EE_|DM6PR03MB5113:EE_
-x-ms-office365-filtering-correlation-id: dd61cae7-63e4-45a1-51f9-08dd04989637
-x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?NklPUVNNRlhTOXBIU3BqV0hYWHlpSTk3MmtjKy9rOHVIZUxIU1J6biswUlhV?=
- =?utf-8?B?MEFCWlNRN3VSZGhXclZEcGhNbm1IUTZ0blRIa2lwYVltVDFERUo3TVBxYWtS?=
- =?utf-8?B?aSs1MU4vU3FHR3pOblFYb1g0bnNhR2k0Y01FTFR2Y1ovM2R3YTh6aVF6cWJO?=
- =?utf-8?B?Y2xocG1LVUR1bTJuallQWFY4dndXME9QV2p2ZWhibEJkdTZHQnRyMjZ6ZmJv?=
- =?utf-8?B?S0gvVUt1OWxVMXNPV0h2L1VPSzU4TEg5ZVhLMmg5a0JJN1RlM3lJaDRnbmNM?=
- =?utf-8?B?aFVDNU1zeis4cmsxQzVZS0NRakpWQTFYS2UrQmN1RlU4dVVUUDBoaXRjekFx?=
- =?utf-8?B?V1ltS1BHZWhlbkhqOFpENldpSkUvY1NLcVhSd0hERGlVc0JNTWtoenY3QzZ4?=
- =?utf-8?B?OTdnNDJrdVM2djRFdTJjMUlORVcyekZGNXhzeC9MWVIyS2tDVFVaa2pESWxj?=
- =?utf-8?B?NXFCNGRZUXc2QTJOZ0hRNGVqeFBTUlRCeURteXVqL1lBTDZWQzl3NGFhMUlL?=
- =?utf-8?B?bHpOWXZRZDZUenVMZUxXbU9qRW1kY25PRDBDUnhrTWt0VUVGUyt2RG5xeVdX?=
- =?utf-8?B?dGhBR2xRZEV0VHZ2ZWkvTFYrMGZ2N25aU1V3eWwvRUlXTUlKeW9VSTdlNnRQ?=
- =?utf-8?B?U2Fla1pDVlBWdkJUelIvYVgvWFFqaUlrR2FWOUVQeitTeDNVTzZUSUtPYmMv?=
- =?utf-8?B?OHFGSks0OU1YMG94d0VETk01Ryt2UlRrUGpEclhpdy9hSXVSOHVRaDAvWHFV?=
- =?utf-8?B?bEw1ZkVqeHdIbnhnaWpvZUFhMy9LZmtZYzBLdWdLQzcrQnFjSEZyL3ZFSkR0?=
- =?utf-8?B?OWhOQVZaTHY2a0RwTXdtMmxLT1pWaXhvRkNnaTBnSGc5cnhyUE9ZS1V0VHZm?=
- =?utf-8?B?ZWRRSTZoREI3VHdPK1YyRFJ5d3RKWHNzL3daNGZicWsvTjBOTUV5WC93K280?=
- =?utf-8?B?UDZrTE1Uck5aVFBWcHJwTXNRQUxVT0l1Z0xIemhBQ2k4dzhwdDcyMFZWYkJ2?=
- =?utf-8?B?b3FKNk1Hdzh2RmxXVHRnZERSS2NhMjBEMVdHWnczdzJrNFNVOE0xT0hvRW9p?=
- =?utf-8?B?Nk14TGwya0pYR2dWMHk1cC9oZXRyVGFmUVlGVTFydkhPanR0YmQzblYwTis1?=
- =?utf-8?B?cUxtSGEwSko5TXkwR0drc0taaWtuWEcxRGNXRnRSeHRhcTNlV3paejQ4T1N6?=
- =?utf-8?B?dGVIaGNBdUgxRTF5K0dTanhpaTVobEhpWjNvL3pTZ0VEeHB6V3p0RFQwQWNV?=
- =?utf-8?B?ZCttc21yNzFYNHV3dW5CTlEwMzFIcXdYUUZMU1lraGl2MGpJQS9CeXl0TUFt?=
- =?utf-8?B?Mnc3bmI4b1ZTeHgyeGhBL09ESGNxbFVNWEJzbzNickFUTDlkMmE1QTlMYUxZ?=
- =?utf-8?B?UTNEQjVwNVZzcXpyY0kyQXIyR1IvTlN4MldxK1lKV2xRbkc0RXRua3lSMFhB?=
- =?utf-8?B?Q2dEL01rZnJra1BpaWZRbmFGdnNZanhpVEZzVU1VS2N1Z2l4eUd6YkpnMTJw?=
- =?utf-8?B?ZWZSOGppb2hTYmZNb3ZVZ016YW56bi9lNnhWcVdWTEVEdkFhOHdBQnNLWkZL?=
- =?utf-8?B?K0NlQnNUVGxmTDFyMC9kUXRmN3lTRHJBdWd0MHkxT3dRSk8zY0V0a3hxUTZV?=
- =?utf-8?B?VmxvUlJDZkYzT3RFYXFRRitWME9kU0VjdW1sR2d4VUU4QnZteUNKalVLU3dL?=
- =?utf-8?B?TlJ0RDE2UmYwcExuQkRzY3dXd2ZOYi96eFIreGs2eWsxVFVSbmpETVhCS3dh?=
- =?utf-8?B?dmtoMEpaRytHV0poemU0aHByYVFtbngxMVV3Y2h6L2VpdktRaGx3ak9EYkZR?=
- =?utf-8?Q?jm9RlckGyH39SLsdHIMmWgIS6c+eGaey5krM4=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR03MB3399.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?V1BROFBhYTJKQ1dxS1pQUmdvMm0wQ1NCSVhQRXYxRFFBRnJLUkJPUjd0MUhu?=
- =?utf-8?B?QWoyd0wvaVRjaW0yZ0h4Q3g1RjFSN01TbnpDTnNKR00vdzNwK3FMYjdBWlBk?=
- =?utf-8?B?bVJlSFd0NXV2VTBzcEZGajFrbTArR25vSVFsb1oxQWRsVmMzOForbUgwRnM0?=
- =?utf-8?B?NHVzQnZtVTdBWmdaZjE5RFNhaHNuOW9FVEtqWS9xaXoxaURWVjJJVUhjSDl5?=
- =?utf-8?B?K0o2aCtoc1ZsSkozejJaaHg2QWk4b2E5OWFrZ1pGYmxFb3FsZjRqd05Kd1Z2?=
- =?utf-8?B?VUF4Wm4rcmhPLy9acEYrRVk3Q3Z2Q1FxT2ZRQkd3WllxZnlKUEZqTWF5TXJG?=
- =?utf-8?B?MHRDTlM5VFVGTUp2dUQ5WDhId0J2YWMrOFRkbEJSeFJUTWtGMkdhVHNKdFF1?=
- =?utf-8?B?d1A4TWszcm8xY3ZkNUpCRDJDdG9Wdm1DdmQvTTQ2aGlRVW5zMzJGQTM3c2Jv?=
- =?utf-8?B?Ty9BTDV0akFuK2hPUXFhMXlSbWU5VFhGbEk3Q3pmSk5OQk1hTDFaMkFpZWZQ?=
- =?utf-8?B?dUUyTExIQU1EeWgyWTF6RDVyYi8wdWhqZ0o2dW4yUC9OVHRmV1RtVkQzeGda?=
- =?utf-8?B?YlJ1WFNkeHRlem5adXdXY0wxa2dmRzZ2cGkweFk1TmNZenErSXczeWpNNytH?=
- =?utf-8?B?T3p1SGRxYndUaXgxU1pyOTN1dmkwQWhmU2E1elRjL29QRFNPVVJnMlNxOXZI?=
- =?utf-8?B?YjVvRzl6Q2JSdVJZZWNuNFNzcHgvVitia0hlNzVsZUpTaHNKenRkanZ5dlpy?=
- =?utf-8?B?SU5PZ0pTUzFzMW1oSzI4RDlUa3ZDb2ZXM3VmLzZ1VmQyZkwwQkM5TmhCaDNq?=
- =?utf-8?B?SVRXVmNXaURZZU44djJPOVoxWlFFblNtQ3VTYndaQ0RVTW0vOFp1czY5eXFj?=
- =?utf-8?B?K2tnNDhXWi9uc2ZLaFg1TWhPZXRzbkNvN3ZMNEJYbGJxNWdVNHp3eUgvcHg0?=
- =?utf-8?B?aityUlZyeFNJUThmWEVZcmhBVnVaTkZQbktHWWtpOVBsdExucEJ3VFJnSDNm?=
- =?utf-8?B?V2pyajVpUmpUV1hqYzlkZnJFQW1TQk4yREhpR0s3VDhxMkhmZ0wwcTFoeUlU?=
- =?utf-8?B?c0ViT3kwMThtY1ovbmFtcHFpOHF4UFZKelh6SUFUZFRpdkJhRFhoK0lKd1RZ?=
- =?utf-8?B?QWZhSnlVenR3RERCTTBJS3RJUUFXODg0ZXNQTlFQQ1daR01KQmNLczJ1U0FT?=
- =?utf-8?B?OWhnTVA3K2RqVDZjc0x1UU9pYURJTUFvSTIxeEgrQTYyUEJrbUhFTTJtNXpU?=
- =?utf-8?B?NnQ5QVBOa3lTUy9VS2dHWlVOT09Ca1JSVXM1TXZYZEJBRDAyT3d1cTl0S2VL?=
- =?utf-8?B?eFVRdjVzR2RuWkdMZ212UGJzSW1vTThvUkFncXBpMnpmUkYzMFc4NmZGSEFk?=
- =?utf-8?B?Ym55bFkrNFVxcUhTTGx1elh4TWN1ZFhIUzlDYW81dHJoTVZLazVFVnM0bTZo?=
- =?utf-8?B?TTRYeE9UTDZ5OGlzdDBpSlVEMFJTblFwWXdVa2NqYThTcTNFbGI1d09iT3U0?=
- =?utf-8?B?MEZScSt0aXkxRHRjQVlEWXlaalVvaTRNVXhOZEw1R3FuSHpjS3BEVzhpYVJM?=
- =?utf-8?B?MTl1U2ZYTjJ5RTRUdWEvMUpEWUtXYXp6K3QxQnlLTkVKZkJXMGJmRDVzMWty?=
- =?utf-8?B?MjAyUHp1ZlFJcmYrT2Fsa3BFUnNxZFdsVkZHWHFGWFpUVVBtNVVkdGpCQ1h0?=
- =?utf-8?B?Rjllb2lycHZNY1BZanNKOWZqOG1VNjdHUGRCNW1lUVVnVjIxY1pFYkNDRVhs?=
- =?utf-8?B?RUI5Nmg0MmtOK1o0V0swT0xISDVoTDBsS0RHa25temRKaVZwR05XOEZsRWNC?=
- =?utf-8?B?RHlNWmF4b1JFc05sc21TWmdRUlN6N01wTm5teTV3OFhmeGYvUXlkc3RmMk9K?=
- =?utf-8?B?MThKbXdjTkcvVlovOHFtMkNMVjRtaEVkNCtFRlBIK0NFZWFpSWM4eTlOSE5z?=
- =?utf-8?B?QUFweEFJelFGaGdpQk1NdHVtQlFoOUdFUktvdHIzSDh4Z0RLcFptYnpxOHNp?=
- =?utf-8?B?bys3MUV1WHhQY1pDRzdUSVFpajAzY05mL3Yyc2xxVmIxZXlSRysrS3pldDBt?=
- =?utf-8?B?eFRVanRIM0tHQUQxQUtMVE94RTdxYWtoeUpKbXpOc3d6SWMwTzc5c0Jvc1NB?=
- =?utf-8?Q?p0bx5BU1KP/wgImmoBlbQJ03i?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757191EBFEC;
+	Thu, 14 Nov 2024 10:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731580939; cv=none; b=FL4eyAhwEssvwm1R4IbvYcN5P4kZS2ul0HiOy3xLLeOPxfBHx/TihnDOc/GA7zT/7qjjIEB/MeOZgJ9X059NGLtXzNjTHKBZSIPUcVFiHNcgqN1wJhRafrWsmyfEOxqLerXcfPxAXRv05UDPBAPVj8GL07+xnH0CtceIqg1ZjAE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731580939; c=relaxed/simple;
+	bh=PGEcZZfgDPTJH8mmsQtanqM1GY+462KeUc9qNJMT5ko=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YLlclg33NVPMT6ARr6JVz85Gt8KRRstUKwf5T0WpRE1Ee4+mhUQPVHAwTxxTJF+yM4iqLbmtoqW1eEbR4Mc4sN7asg6q1exD/AM2z4SAF+CB5vvTHxM1nFlj2/XetPDjCcxIU0fFtP1TlugVGvs2UneoUPlEwFPNKsoH9lj+udA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Evpnd0XO; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43152b79d25so4311035e9.1;
+        Thu, 14 Nov 2024 02:42:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731580936; x=1732185736; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+nPHoBUR45jMLntczbv6mDIM+cn4690kH2G9qI3WE9E=;
+        b=Evpnd0XO7UrOkY11BJmZmFE7WFLoCwiwVKiY/qpo3OShHV0mQPJ7QZb36965LGfhdw
+         6WIIPRSYZFUU3Lbxy/BqCWUsmgWJGKQRTz53NH+1zB7XruS9APT8Qkoyoc49lUAgNY8p
+         /tputXUPzIJFNm17yEEUyU7S7Ms2GlwnuHZMSPalzHrYz+rAHqF23y4L8WRmiz0Z/f5t
+         aR1cmIo+dN7F6DeRW4Lymmw2jJ/WHwGaif5vGMkabNzKQRBgeqypdVqBwRFbPLj2+55l
+         iRZ7ni80HcmSvV0bK4Sh8hQwHSoIte8kJFeB6+TU5qgGhnbjkD4QFQK2SxekmTTbdGXg
+         zSFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731580936; x=1732185736;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+nPHoBUR45jMLntczbv6mDIM+cn4690kH2G9qI3WE9E=;
+        b=J8r60EKNdC/JgHYXYwnSGJljmkcrS87dhW618A05sIUyZP+nhDV4uMBG/9aV7LfKJE
+         W8UQlUv1RiPoowxqyUBdl/jK2T4TA7fgYmCoVJ0o+y6/PhC0p2wkNY8v//3SRUN6/KR5
+         shqfuU/QEr7hpWKodd6wbSkS2/WgLbNC8Qt/Jy2EG8tbOlvs3X1oGvooI2xFs8WY1Xej
+         6gNTUdMrxQ6+6osOvkOVj4wh5BcdHzZYTcVWu4zdiHbgU7fN3tcLMUyQpxXvmxCKfuta
+         Cb+sOZ6TPG07+Uj8ZkEL3ow+UwahreD1tEa4KMySYHh0c/C5n2xSmoO+jFnxW1/FIdHf
+         voTA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8B5BYwZmVPOPryLC4Ak7ktjOoBqGmCzmlFCNURkHzWGK8Tv9p1Z/23lUs+DTRFvavo02bLkBvDHg=@vger.kernel.org, AJvYcCXSLBufrcTpNnCrPGE4gJyzknZB++SO6KzyYQvGXLAKN8Oz7yQa+Vdwc2AXZoZcfGOCCx7N42azvoJSzwBa@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuT2yjMIcbwI5KiIKR0Aq9kBiB4idIqcqC+YhnlMnpW6FWICT8
+	Rzi7LVqS9JsAf2MYPmjU5C/et5ymsQAmcXavCKTvvd7PjjjYlum4
+X-Google-Smtp-Source: AGHT+IESM8pd5qb983b1HFGZX+rwbhfIuXObXDAfrT6t6+LTqqSbG/iVNWBUoVajq463Gi4v0GY2bw==
+X-Received: by 2002:a05:600c:1e0f:b0:42c:acb0:ddbd with SMTP id 5b1f17b1804b1-432d4a98359mr54680785e9.7.1731580935574;
+        Thu, 14 Nov 2024 02:42:15 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef02:f400:a23c:697f:16fb:11c5? (p200300f6ef02f400a23c697f16fb11c5.dip0.t-ipconnect.de. [2003:f6:ef02:f400:a23c:697f:16fb:11c5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab80582sm15877405e9.19.2024.11.14.02.42.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2024 02:42:14 -0800 (PST)
+Message-ID: <1f315c2f3eea86fe4db48f0168660ab4b0b020f1.camel@gmail.com>
+Subject: Re: [PATCH] iio: accel: kx022a: Improve reset delay
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+	 <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 14 Nov 2024 11:46:38 +0100
+In-Reply-To: <f4cf3437-87ea-4d0f-8dab-890d89f85605@gmail.com>
+References: <ZzWfXbjaDkFnu_Jg@mva-rohm>
+	 <be375e24f74997743743fadf68125e176c23e2df.camel@gmail.com>
+	 <f4cf3437-87ea-4d0f-8dab-890d89f85605@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR03MB3399.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd61cae7-63e4-45a1-51f9-08dd04989637
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2024 10:39:15.7647
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NrziLTYZgXby0zOyxgDyxEdEnNlolzA8fXsQzJxSU8Vm14CmwpAxar1hO0iL9vwLnlXS6XmEmiFlUAMzC0pBBZqw6DUR4f4kxw9AUskHGM0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5113
-X-Proofpoint-ORIG-GUID: aFCf9Zub8bgQ2AWJORw2x41aGm3BihQN
-X-Proofpoint-GUID: aFCf9Zub8bgQ2AWJORw2x41aGm3BihQN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=724 phishscore=0 malwarescore=0 lowpriorityscore=0
- adultscore=0 impostorscore=0 clxscore=1015 spamscore=0 bulkscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411140082
 
-PiBPbiAxMS8xMS8yNCA2OjEyIEFNLCBBbnRvbml1IE1pY2xhdXMgd3JvdGU6DQo+ID4gQWRkIHN1
-cHBvcnQgZm9yIHRoZSBBRDQ4NVggYSBmdWxseSBidWZmZXJlZCwgOC1jaGFubmVsIHNpbXVsdGFu
-ZW91cw0KPiA+IHNhbXBsaW5nLCAxNi8yMC1iaXQsIDEgTVNQUyBkYXRhIGFjcXVpc2l0aW9uIHN5
-c3RlbSAoREFTKSB3aXRoDQo+ID4gZGlmZmVyZW50aWFsLCB3aWRlIGNvbW1vbi1tb2RlIHJhbmdl
-IGlucHV0cy4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEFudG9uaXUgTWljbGF1cyA8YW50b25p
-dS5taWNsYXVzQGFuYWxvZy5jb20+DQo+ID4gLS0tDQo+ID4gY2hhbmdlcyBpbiB2NiAoaW1wbGVt
-ZW50ZWQgbW9zdCBvZiB0aGUgcmV2aWV3IGNvbW1lbnRzIGluIHY1KToNCj4gV2hhdCBpcyB0aGUg
-cGxhbiBmb3IgYWRkcmVzc2luZyB0aGUgcmVzdCBvZiB0aGUgY29tbWVudHM/DQpGb3IgdGhlIHJl
-c3Qgb2YgdGhlIGNvbW1lbnRzIEkgdGhpbmsgSSByZXBsaWVkIGlubGluZSBpbiB0aGUgcHJldmlv
-dXMgc2VyaWVzLg0KDQo+IEkgZG9uJ3Qgd2FudCB0byBrZWVwIG1ha2luZyB0aGUgc2FtZSBjb21t
-ZW50cyBvdmVyIGFuZCBvdmVyIGFnYWluLg0K
+On Thu, 2024-11-14 at 11:54 +0200, Matti Vaittinen wrote:
+> On 14/11/2024 11:43, Nuno S=C3=A1 wrote:
+> > On Thu, 2024-11-14 at 08:57 +0200, Matti Vaittinen wrote:
+> > > All the sensors supported by kx022a driver seemed to require some del=
+ay
+> > > after software reset to be operational again. More or less a random
+> > > msleep(1) was added to cause the driver to go to sleep so the sensor =
+has
+> > > time to become operational again.
+> > >=20
+> > > Now we have official docuumentation available:
+> > > https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Power-on_P=
+rocedure_E.pdf
+> > > https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Procedure.pd=
+f
+> > > https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_Power-on=
+_Procedure_E.pdf
+> > >=20
+> > > stating the required time is 2 ms.
+> > >=20
+> > > Due to the nature of the current msleep implementation, the msleep(1)=
+ is
+> > > likely to be sleeping more than 2ms already - but the value "1" is
+> > > misleading in case someone needs to optimize the start time and chang=
+e
+> > > the msleep to a more accurate delay. Hence it is better for
+> > > "documentation" purposes to use value which actually reflects the
+> > > specified 2ms wait time.
+> > >=20
+> > > Change the value of delay after software reset to match the
+> > > specifications and add links to the power-on procedure specifications=
+.
+> > >=20
+> > > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > > ---
+> > > Sorry for not including this to the KX134ACR-LBZ series I sent
+> > > yesterday. It was only half an hour after I had sent the KX134ACR-LBZ
+> > > support when I was notified about the existence of the KX022ACR-Z
+> > > start-up procedure specification... Hence this lone patch to code whi=
+ch
+> > > I just sent a miscallaneous series for before.
+> > >=20
+> > > =C2=A0=C2=A0drivers/iio/accel/kionix-kx022a.c | 11 ++++++++---
+> > > =C2=A0=C2=A01 file changed, 8 insertions(+), 3 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/ki=
+onix-
+> > > kx022a.c
+> > > index 32387819995d..ccabe2e3b130 100644
+> > > --- a/drivers/iio/accel/kionix-kx022a.c
+> > > +++ b/drivers/iio/accel/kionix-kx022a.c
+> > > @@ -1121,10 +1121,15 @@ static int kx022a_chip_init(struct kx022a_dat=
+a
+> > > *data)
+> > > =C2=A0=C2=A0		return ret;
+> > > =C2=A0=20
+> > > =C2=A0=C2=A0	/*
+> > > -	 * I've seen I2C read failures if we poll too fast after the
+> > > sensor
+> > > -	 * reset. Slight delay gives I2C block the time to recover.
+> > > +	 * According to the power-on procedure documents, there is (at
+> > > least)
+> > > +	 * 2ms delay required after the software reset. This should be
+> > > same
+> > > for
+> > > +	 * all, KX022ACR-Z, KX132-1211, KX132ACR-LBZ and KX134ACR-LBZ.
+> > > +	 *
+> > > +	 *
+> > > https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Power-on_P=
+rocedure_E.pdf
+> > > +	 *
+> > > https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Procedure.pd=
+f
+> > > +	 *
+> > > https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_Power-on=
+_Procedure_E.pdf
+> > > =C2=A0=C2=A0	 */
+> > > -	msleep(1);
+> > > +	msleep(2);
+> >=20
+> > msleep() is not advisable for something lower than 20ms. Maybe take the
+> > opportunity and change it to fsleep()?
+>=20
+> Thank you for the suggestion Nuno. I did originally consider using the=
+=20
+> usleep_range() since the checkpatch knows to warn about msleep with=20
+> small times.
+>=20
+> However, there should be no rush to power-on the sensor at startup. It=
+=20
+> usually does not matter if the sleep is 2 or 20 milli seconds, as long=
+=20
+> as it is long enough. I wonder if interrupting the system with hrtimers=
+=20
+> for _all_ smallish delays (when the longer delay would not really hurt)
+
+That's why you have ranges of about 20% (I think) in usleep() so you minimi=
+ze
+hrtimers interrupts.
+
+Other thing is boot time... Sleeping 20ms instead of 2ms is a huge differen=
+ce.
+Imagine if everyone thought like this for small sleeps :)?
+
+> is a the best design choice. Hence I'd rather keep the msleep when we=20
+> don't need to guarantee delay to be short instead of defaulting to=20
+> hrtimers or even busy-loop when it is not required.
+>=20
+> Do you think I am mistaken?
+>=20
+
+To me this is more about correctness and do what the docs tell us to do :).
+Sure, here you know what you're doing and you don't care if you end up slee=
+ping
+more than 2ms but that's not always the case and code like this allows for =
+legit
+mistakes (if someone just copy paste this for example).
+
+Not a big deal anyways...
+
+- Nuno S=C3=A1
+
 

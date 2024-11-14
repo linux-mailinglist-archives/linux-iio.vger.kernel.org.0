@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-12257-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12258-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF949C8C21
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 14:49:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3D59C8C58
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 15:01:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 056DD1F22284
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 13:49:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0C691F22AD1
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 14:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF0C208D0;
-	Thu, 14 Nov 2024 13:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AFC13A409;
+	Thu, 14 Nov 2024 13:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cfYGU6BX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PH3EBi4V"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB654A95C;
-	Thu, 14 Nov 2024 13:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191AF3BB24;
+	Thu, 14 Nov 2024 13:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731592187; cv=none; b=oWPa/fRA86Nz9VJcBfA4NWeGO/C22rId01xM2opF6xeJicUA5cd1JqDCe03JmxeC5PiasZ5kYUHbyW4iJW/hA/z6Tjwx5dfHg8QkjjBw40+4olbcGh+Zer1CEMp2Az67TCb8qqhQaLTISaAg0PtVihojAQ8LWjrmUDdTrK9UVHI=
+	t=1731592786; cv=none; b=hkjZTW4/0W7TjzQu/byvOuWH0i5HAEvh88dMtn/qOtITsSLgREg+Jwq9NCs/Ot6cJgvrSdlNs97//fM2Rhf5s40kWHj5Nxj4hlqOO+0kSEt1vioY0lNGwhuRD5M2O5kvoWOJ8N0vYMiyFy4a2ufkvBDidDL2eTFz+LoeayPLNUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731592187; c=relaxed/simple;
-	bh=qTo7CKolt1E4uoCLpV2VbWUachLChgD6RdUPRWDDkos=;
+	s=arc-20240116; t=1731592786; c=relaxed/simple;
+	bh=st3ZJaTgzg0Q7HS9Zd/0/LvKr8GBoyzIyfkT1MeMkQY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=SYVseSstTmx1fja0BsvTdzhHtpV8ujJULmvc9nkTTWDQSSiHA6DnnkHT2wjLOblxxSdOzRqzblBXLKfyq9o7c4sMWQvdCmE2AywTE2/DkzPPDvi4jcS4y1pBhLArnTbhXmdhn5VmTxnJqV+2INrRiTQ+gTqo5gx8fodLVU/GGms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cfYGU6BX; arc=none smtp.client-ip=209.85.208.52
+	 In-Reply-To:Content-Type; b=ca/zj31mWoa/a38AcOMvFpLwNCM3GoYBPA+g3/ZXHZU0TYBY/azs3qWMG6VoE81lAi0KswRSgRvx96rHqMPDxRst35BD9vaVi1AiDTECxIW+gEvu1wCzwJXxHJHM2/cTXGeV35QDy12DOZQ/oGUgzlLmSHcRQbwBamV3jHbSFpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PH3EBi4V; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5cb6ca2a776so1082338a12.0;
-        Thu, 14 Nov 2024 05:49:45 -0800 (PST)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cec93719ccso754160a12.2;
+        Thu, 14 Nov 2024 05:59:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731592184; x=1732196984; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731592783; x=1732197583; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=cgeG6n1ozGjtCnGyPOQPPbX46cvHrRUzjtSnNcbz9o4=;
-        b=cfYGU6BXELAzQ99sUrZC1hC7a5UDllAsv36IGppAyAvqTz3u1t0EhmgThgvZMWAoI2
-         LhyyVsKRuwOqQrTsLP4ScDwevG6Oc0+qQF1WTy2Iqe/e77wOHx8UW6KspRAgEbFPoUfO
-         Fbufopyhrq4UmiyLUllcYkrsIjIakeZeFYzxe0Dj1mY7rHSUsGGFGXQIf/t5fcMxC8J8
-         bhOMc58kzCxuu3NwE3oI6Vtpre/HMe4abmLy66G/TZdHAWUP/8x4NLouJOSR2qFglDdv
-         Ow441Agvqdq+kXn6hXJeePRLO5CtC0Gb0iDFSMR5rP585C5Xw+kyIASLX22Ov68PyCYK
-         bv4g==
+        bh=X6eLuWYyfigYmEkgfeOfnEFTkRCPuPKOBVwDODGgCHQ=;
+        b=PH3EBi4VcEXkXtc4TpnaAWS/pxip0SLY6V7JRNFkgERpm70XdXpfAWxpT0b0Q+3xXh
+         oPW7fswQOIRzTkb0u3ToKp5VfMqSeIad9It0VjOR43QrKwUiJTPSISWWOfFFL6HV32wq
+         O/C7o42KoShbpy20Fc76JRqz5R2XQEZc2LXY79yiHP4Koolu/j9a3jHVZrYzUEDKw9+y
+         eFwa71Di54eYyINOsV8nwVgtFdUSCVTwuq84BWXH6HmZbxmig91Y2xiIqI+dX6eakhmJ
+         TQAjh1lLeGelv1yqO0tqh5Igxh0A82zUionhwzbj4D2c1wcSeYf9vx9dvVDHk5m6u4pA
+         rPTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731592184; x=1732196984;
+        d=1e100.net; s=20230601; t=1731592783; x=1732197583;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cgeG6n1ozGjtCnGyPOQPPbX46cvHrRUzjtSnNcbz9o4=;
-        b=WG0HPSS4pN+7uE9C9Pascr5OKDYsy3bsO+f4La7EAu2uZAllMxZqQvtPL/vpL5fXq+
-         8veGEdA6SnXwgNI3KTglgHdfIqbLFyY1Jk/WWFWm+LsCmYNZ/GaU1204Evg6siA7eMUX
-         yGp5joCcMEl/yfMs4ReS/WMxgHJr7S6qzpJK0FziWef8QUk1kN9HQSryLBWWpLKv7ol0
-         EgLriH/m+4TMWt/rUOMd0hkb3S5/c4GmKx/GofwD11RW1giq2LPsbk1sV3IwflmJ/Rog
-         zY+E/na4/AT4ylOS6HWgw+ezHtHIxdRKKx/RBFH7zaq3RYEIwc4JLKtcjDBmUV/k9tKY
-         TX1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVIyEo/t15ITStn6Bhg1aPXWjPV5AUneKKVWRH73WDAIKlz9xseKogEsyvEZcgTnzyUaOq9i2ygB5im@vger.kernel.org, AJvYcCWC8+iuXpUaQTTrcpNs78LnZavYeYkw475XLmh+mtZQk4L3U8B2QodlDS2z69IFcv3S34OXMLcy8xfN@vger.kernel.org, AJvYcCWGrhxyFtcXyneYRp5utVt9pjz2/HVLsgFS/+d1EfFZ+Qbohyd7h6HTUvld67IYNfS8psguOOkrppGebUXD@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzk1R+moeDiqmhu6Tfw3Pg9KW+zn5Y/06IjQfQHc21vXMyqe7z9
-	aGssai41SXbXsgTYYo0mN7UUerDw8BqhciOhyBGLQHUZshXs0X2xgy143A==
-X-Google-Smtp-Source: AGHT+IFiffkdkgwmQq/XTUWNHqnv90zEwXnpGUeF218xEUTOqrccqRc0R4HbF4cKEeIdkK4w9YvfMw==
-X-Received: by 2002:a05:6402:3509:b0:5cf:3d1b:5ebd with SMTP id 4fb4d7f45d1cf-5cf4f33693fmr8074284a12.3.1731592183814;
-        Thu, 14 Nov 2024 05:49:43 -0800 (PST)
+        bh=X6eLuWYyfigYmEkgfeOfnEFTkRCPuPKOBVwDODGgCHQ=;
+        b=KyGrk07dqmkRp5ZASLI7Dapw0pQ9fEgOnuwIt/ogabN6e1i1pVQtl6uyi/J1755IAr
+         h+BJhFbRk7OrYzHlZmRf2+KMegRP9O67XVhl/NW+vMEw/EUZ4tmDeOKo32axtzIKgfsu
+         /E+h928JVnXp9WdQOwlh8D3ykYtYZYYSm3cYcmY06/OxHVT6WNjNSLE+hfaqTXMbWSug
+         /XPNUc0oWIez1Lt2fOcObH8HXOZjhBD+B5VeGW/4FdeBGc/DNr+jSzDW9s17CHmHmjcx
+         ppOEphrk2aaDtePCLQ2MT7mX1nRpvBSR9JoNRbRX72F7b3aQCmRxU5XPnhWdcBz6aBlH
+         8c1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUd9NpOOH2kHw0oC7eVuKzXZ+fLt9yhvN+wE84kmXWsUzKXXfSvnRL8ByhX3dnGwjQMIgFFV2vWPHvNJp6L@vger.kernel.org, AJvYcCVfGNzmDNKPcsnJtnSoRlJQriRjO5IxctWouNZm1+Qff4P3batD/THkt0LJy0q+HhW2Bl3lslhJ4JIk@vger.kernel.org, AJvYcCWsDBOEDLAHuCkfasu+q8pPENIijZDuwcobSVwdpPkbBau9k7HQIxOHTNxFpa32LCWh/vnwFEhRNsyI@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlQuJgv3doQrMbJao347hUE4BhBukREUFoPerNg3250JHa+7Tw
+	uwFq//TUghJQ1yih+CAVCmRnb2BFKcVUQAktNCktldcLzw5zlXxU
+X-Google-Smtp-Source: AGHT+IHwYGIEKERhQFxmc9MhQHw4vw4OF1GEeUoqtJTrXpRyP41UFT1nafl6A2SUeeliOrskvr1WXQ==
+X-Received: by 2002:a17:907:2d91:b0:a9a:3dc0:8911 with SMTP id a640c23a62f3a-aa1b1057243mr1006541966b.16.1731592783172;
+        Thu, 14 Nov 2024 05:59:43 -0800 (PST)
 Received: from [10.10.40.97] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf79b9fabdsm620106a12.30.2024.11.14.05.49.41
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20df1c53asm66915966b.15.2024.11.14.05.59.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 05:49:43 -0800 (PST)
-Message-ID: <adbcacda-c3c6-452e-9dfe-22d55bfb293e@gmail.com>
-Date: Thu, 14 Nov 2024 14:49:41 +0100
+        Thu, 14 Nov 2024 05:59:42 -0800 (PST)
+Message-ID: <68f41c2f-3fbe-40bc-a4ec-a6c0ae6862e0@gmail.com>
+Date: Thu, 14 Nov 2024 14:59:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -108,166 +108,19 @@ On 14/11/2024 14:03, Ciprian Hegbeli wrote:
 > 
 > Signed-off-by: Ciprian Hegbeli <ciprian.hegbeli@analog.com>
 > ---
->  .../bindings/iio/frequency/adi,adf4382.yaml   | 141 ++++++++++++++++++
->  1 file changed, 141 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
-> new file mode 100644
-> index 000000000000..44a29ac7a2e8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
-> @@ -0,0 +1,141 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/frequency/adi,adf4382.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ADF4382 Microwave Wideband Synthesizer with Integrated VCO
-> +
-> +maintainers:
-> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
-> +  - Ciprian Hegbeli <ciprian.hegbeli@analog.com>
-> +
-> +description: The ADF4382 is a high performance, ultralow jitter, Frac-N PLL with
-> +   integrated VCO ideally suited for LO generation for 5G applications
-> +   or data converter clock applications.
-> +
-> +   https://www.analog.com/en/products/adf4382a.html
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,adf4382
-> +      - adi,adf4382a
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 75000000
-> +
-> +  clocks:
-> +    description: Clock to provide CLKIN reference clock signal.
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    description:
-> +      External clock that provides reference input frequency.
-> +    items:
-> +      - const: ref_clk
-> +
-> +  '#clock-cells':
-> +    const: 0
-> +
-> +  clock-output-names:
-> +    maxItems: 1
-> +
-> +  adi,charge-pump-microamp:
-> +    description:
 
-These lines are a bit over 80 chars, maybe you could rearrange them.
+...
 
-> +      The charge pump current that the external loop filter was designed for.
-> +      If this property is not specified, then the charge pump current is set to the
-> +      default 11100uA. The valid values are listed below. However, if the set value is
-> +      not supported, the driver will look for the closest valid charge pump current.
-> +    anyOf:
-> +      - enum: [790, 990, 1190, 1380, 1590, 1980, 2390, 2790, 3180, 3970, 4770, 5570, 6330, 7910, 9510, 11100]
-> +
-> +  adi,ref-divider:
-> +    description:
-> +      Input divider of the reference frequency, cannot be lower then 1 or
-> +      higher then 63.
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 1
-> +      - maximum: 63
-> +      - default: 1
-> +    maxItems: 1
-> +
-> +  adi,ref-doubler-enable:
-> +    description:
-> +      Enables the doubling of the reference clock.
-> +    type: boolean
-> +    maxItems: 1
-> +
-> +  adi,bleed-word:
-> +    description:
-> +      A small programmable constant charge pump current, known as bleed current,
-> +      can be used to optimize the phase noise and fractional spurious signals
-> +      in fractional mode.
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 4095
-> +      - default: 0
-> +    maxItems: 1
-> +
-> +  adi,power-up-frequency:
-> +    description:
-> +      PLL tunes to the set frequency on probe or defaults to 2,305 GHz.
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint64
-> +      - minimum: 687500000
-> +      - maximum: 22000000000
-> +      - default: 2305000000
-> +    maxItems: 1
-> +
-> +  adi,output-power-value:
-> +    description:
-> +      The output power amplitude level which will be applied for both channels
-> +      at startup.
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 15
-> +      - default: 11
-> +    maxItems: 1
-> +
-> +  adi,spi-3wire-enable:
-> +    description:
-> +      Uses SPI in 3 wire mode, by default is uses 4 wire mode.
-> +    type: boolean
-> +    maxItems: 1
 > +
 > +  adi,cmos-3v3:
 > +    description:
+
+A nitpick I overlooked: default.
+
 > +      Sets the SPI logic to 3.3V, by defautl it uses 1,8V.
 > +    type: boolean
 > +    maxItems: 1
 > +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        frequency@0 {
-> +          compatible = "adi,adf4382";
-> +          reg = <0>;
-> +          spi-max-frequency = <1000000>;
-> +          clocks = <&adf4382_clkin>;
-> +          clock-names = "ref_clk";
-
-Should it not be adi,charge-pump-microamp instead? dt_binding_check
-complains about this.
-
-> +          adi,charge-pump-current = <15>;
-> +          adi,ref-divider = <1>;
-> +        };
-> +    };
-> +...
 
 
-Best regards,
-Javier Carrasco
 

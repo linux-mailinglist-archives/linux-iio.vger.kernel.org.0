@@ -1,167 +1,191 @@
-Return-Path: <linux-iio+bounces-12255-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12256-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5684B9C8BCD
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 14:28:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2D29C8C4C
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 14:59:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1692B283375
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 13:28:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A906B2CA30
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 13:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B815A1FAEF0;
-	Thu, 14 Nov 2024 13:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1010117BA6;
+	Thu, 14 Nov 2024 13:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hODF3/e9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M/1kRAH2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D251F892A;
-	Thu, 14 Nov 2024 13:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41E0F9C0;
+	Thu, 14 Nov 2024 13:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731590873; cv=none; b=JlLNoS4a7+YZQSjGIkAMvW3evRO05eEOM/byQMZf01HJSfCsxqJABDU5yHUfFSGP53VEoOwl7IYikUz6QC2SICVXkcTjJ3L5avVGmt1q8DiQDb3LqSmReIxeUUhDUTcSxOp4fQ+Y9pYbLMTvr7tLL+5ah3wFMKkg5jAbXCz1qIw=
+	t=1731591797; cv=none; b=myvorROfiXWkbBAdvZFaQlGdQW05NDZ78B8Dsn4Ww1S/PUnPVvfNK1nIAdelnWr75rj/0hfMKURFKgcgR8v6L+57HrMX5RsUtDBrWPRbPp1J0PdGHEuztzSKcvjGUaMaHUCDdPOKGse5f6L2d9TknXLuG1zqv+sd4sWdykZmEeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731590873; c=relaxed/simple;
-	bh=ky05wBui/UUMyIppkUyYaFIS9tjMUZWuH8y0o8wOrMk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=hFAnlCant50XkJlqTOFrYilN5yBjv5S35jSCFBSKpH5tn31EVdy7mVg4an+4ur8E+ziOXVlU9pGNe8/aJfGqWGY0Iq+sbPt+Xw24Nx2JeNG4/0amXrMwpa2ierEVCIGjcb5/VEI3niUQqnxfFRRa4lytLxvwhYpEZoKvi8t4cB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hODF3/e9; arc=none smtp.client-ip=209.85.208.49
+	s=arc-20240116; t=1731591797; c=relaxed/simple;
+	bh=xiyLG0ECroEKZHad2vkypCUW44S6boFOl8KsXdXcqgw=;
+	h=Date:Message-ID:From:Subject:To:Cc:In-Reply-To:References; b=Ya1GHsJqfbvWmZ2MKl9x/Ww7VnG9WT2S6WvsEF+Mp4n+GzMlrXgDckrWvy7oxmVXvGR91MpFA7D03WkxkyDOvW3CowrH3qq1uCV576jrP37EncDa6PFeoaIm+3STR26Q3NeTi91lFi8zm0e+erX5H6bPQRY6g0VGM4oXRVO8ydc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M/1kRAH2; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5cecbddb574so775718a12.1;
-        Thu, 14 Nov 2024 05:27:51 -0800 (PST)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3821a905dbcso418225f8f.0;
+        Thu, 14 Nov 2024 05:43:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731590870; x=1732195670; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FxK1pZMle+UL0Q3Fj0BL45qPqGkV4zQA1+MO9PYETzw=;
-        b=hODF3/e9I5z23J2Uiq1kScM6XjPBkmvJG1JVTPfTljhgl9wUrVVuzx3z5EqTeAECGT
-         aY1SkUwUe8FDqZuZ+6s8GDW7RmDUiKiUzaNcWVyyk+q0ANg8EK6sN9EI05m/r+8YEEme
-         OYn2cHSOhfTpK0HF5+1eDQwy55C4n5eRLX6QlKhlzEvms2oseJzrOn8svVFRq6txbG/7
-         seTpfTynWdN5RY/XnjvvA+obm6SmFWVMWpeVnFvhPzeIQty6Ra8sQk/Qq+0WzTPvP0n2
-         6H3JT8pW8x5KfqC3qx3O321NgW9vYKHus/HqqY8PwJ6+8Ef7F/YWqPd1a6cMFTU8XGOY
-         PJKA==
+        d=gmail.com; s=20230601; t=1731591793; x=1732196593; darn=vger.kernel.org;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=yeCEUAXknMD9aScgAG2zWF+lXiTH5mTd/RZzyFiyf5A=;
+        b=M/1kRAH2OokMsSJcJbnLt9RPGO2KuL+76G842OONjFNHjljtqVh3YYOb94Etq1K1OY
+         O3VqRRd7T6bEXiU2DDRgCnJYl0Nln1gd6oGKIdXZSZi259HrPQe+sPQLPYhn9naudUSr
+         Cy3RCgS2b5HmwX4FRAmae23ARozo66zw+tm7pbo5907vK9SjnhdYEnSza8NdovF5/g98
+         KuCif45rU+kBPSxjQ/7VWJ6dZqzNEspn262bUml0kwwUEHVijOW3PYzbBoLIbDVZonDu
+         rKtV1PmH7uCCIOSrWQwB63ZUVsbdl644OkFdv0YAD9q7aF+pLeJpWufBiuvyKGiqhIUu
+         aauw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731590870; x=1732195670;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1731591793; x=1732196593;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FxK1pZMle+UL0Q3Fj0BL45qPqGkV4zQA1+MO9PYETzw=;
-        b=MM+v3fSlyQt7BHt6KUU4admuwwsjzb427eEIyjmmpyrz9smGWUE2lL79Y6N8WY2t1E
-         HCjoc1CWX0k0mA0xf446pRN4u5GNRHjQm3diieLD4N6WPhxVWeg8gw0XKQ2oIX+u07QO
-         JjR/NAQeEqQF3YLY8erdKxkDKHhDAhp0q8xBE34hXQ/u6BS0mhm3MNj8AVUfGDpsiw86
-         0LkqYf+A91zqg2kAdQ9fR/KmGCde7m1lbyQDwFu+C7ClySzef5t+ZqalgRSwjakc0yCA
-         k9rS/yQp1AcEVOe5W8srE0WheYStJkpw5YkzLduO61Atj/iQmz+EG1BWW6bEQPEy4U4J
-         YGOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFJFnBnILh2ie2gNekYjLCGOID5kyTbPrTSxEGBO+Q7TrRWj2qEf2MlIpCK+tzSDb29WPbZhB3iaEv@vger.kernel.org, AJvYcCUsSWOmVm+ESlv3oA9criDYxnnKYhCEy1/3mgbQChlhVXIUbBiasFhXaUsVtLLndQEJr/YO7UQ2uzjNbKRG@vger.kernel.org, AJvYcCXLNc6Sx17V7HBPljQi519hrSlj8FvFJGx8fktmvbQBYL8UsiUaaPLOxDRjLsBWujG2KNBfNCRhCoYN@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxuw5EmCQGGXlXYGaIRswt74rV26uN5zaLCTRFlQJefpy47ayeN
-	vw9WEl/vVee5lA+oh/DBobLyzwfWMJIEf1Oy3ClbmjIVat7IAKIP
-X-Google-Smtp-Source: AGHT+IGHbL+BSPGMqby2mGliTRrC/BuidS4eATyHTzk4jKxlhsmO0wKuLHdVYBDD8P1ndwGH6GhpkA==
-X-Received: by 2002:a05:6402:510f:b0:5ce:af48:c2cc with SMTP id 4fb4d7f45d1cf-5cf0a43fd2cmr21514266a12.27.1731590869797;
-        Thu, 14 Nov 2024 05:27:49 -0800 (PST)
-Received: from [10.10.40.97] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf79a44a9dsm608555a12.0.2024.11.14.05.27.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 05:27:48 -0800 (PST)
-Message-ID: <b56089e4-ee82-4685-9da8-69cfb6471ec0@gmail.com>
-Date: Thu, 14 Nov 2024 14:27:46 +0100
+        bh=yeCEUAXknMD9aScgAG2zWF+lXiTH5mTd/RZzyFiyf5A=;
+        b=Q/zn1N9JAfsUM7WRSKCK4W1nHUSbr8awf2cXoV5+mzg0sVIahbb2yNa+G12w/E37Fj
+         Tfc8k0kFS9X8VIjeKMXXlct1yWd+HaT0+UTgTmlq+by8+sB2y9ahQ7s7Rnn5hSy4hhe7
+         OAqutVcf+ScpK4B1X68mbYdOIQgXLZeavoA9rC6NOhQbsVqFlN18UvynijA5HAXy2kKI
+         p8htm8eWoYcRU/RFcsRQC9c06TqiJpoM+5jq7S7RHS6NM6VAUE2Qn4bzr6oCkn9E/Am5
+         tJhcTtfC/dZ4YimcC6tT42qGcVts/QdCuu3KpXuoD666Q0oGGRV5VeGQb3I7GLt8wUI4
+         2ThQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUoa/M3CfXGIwkUDd5/4Kjkxnzwi2MRzk3fjIHrb2mCbTjYMxRyzTFb6AnI88EOCUXMAGqPMe+uFEk=@vger.kernel.org, AJvYcCVgZsz7qXm/p4bpNtbeB9Bl3sQFmashg3FcaChgOhNeaOdMMXauBPW1CQJzJ41pR00HEjQUfV1j7dVTbKQ3@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB3uqeKXI7UyA+pMs07qeCDEwtH5EX5i476YcfX0syT92YWfB6
+	VapN2qFlHcWep+HowGGWDa9VHRO/J+7Cz43rg+D7HMqbTNLJ2Q2K
+X-Google-Smtp-Source: AGHT+IEdHPDvGyAlTmxeMfbzcd5voQHz6RUMFEDJeW0QTjy11La74kNItnjNU8kiCg5rS7B4r0fe/w==
+X-Received: by 2002:a5d:64c5:0:b0:37d:52e3:e3f0 with SMTP id ffacd0b85a97d-381f1883da1mr22111074f8f.44.1731591792706;
+        Thu, 14 Nov 2024 05:43:12 -0800 (PST)
+Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821adbbc80sm1512804f8f.51.2024.11.14.05.43.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2024 05:43:12 -0800 (PST)
+Date: Thu, 14 Nov 2024 14:43:11 +0100
+Message-ID: <c67cd8be57b54b792430fd56a57a3ee1@gmail.com>
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Subject: Re: [PATCH v11] iio: adc: pac1921: Add ACPI support to Microchip
+ pac1921
+To: Victor.Duicu@microchip.com, andy.shevchenko@gmail.com, jic23@kernel.org,
+	lars@metafoo.de
+Cc: Marius.Cristea@microchip.com, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+In-Reply-To: <faed3b586e1af2d946d3f9b185a94b6ebf0f6f32.camel@microchip.com>
+References: <20241114084702.3499-1-victor.duicu@microchip.com>
+	<c1b30741bec25e25c6e57389bf45d04f@gmail.com>
+	<faed3b586e1af2d946d3f9b185a94b6ebf0f6f32.camel@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: frequency: Add ADF4382
-To: Ciprian Hegbeli <ciprian.hegbeli@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Kim Seer Paller <kimseer.paller@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241114130340.7354-1-ciprian.hegbeli@analog.com>
- <20241114130340.7354-3-ciprian.hegbeli@analog.com>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20241114130340.7354-3-ciprian.hegbeli@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 14/11/2024 14:03, Ciprian Hegbeli wrote:
-> The ADF4382A is a high performance, ultralow jitter, Frac-N PLL
-> with integrated VCO ideally suited for LO generation for 5G applications
-> or data converter clock applications. The high performance
-> PLL has a figure of merit of -239 dBc/Hz, low 1/f Noise and
-> high PFD frequency of 625MHz in integer mode that can achieve
-> ultralow in-band noise and integrated jitter. The ADF4382A can
-> generate frequencies in a fundamental octave range of 11.5 GHz to
-> 21 GHz, thereby eliminating the need for sub-harmonic filters. The
-> divide by 2 and 4 output dividers on the part allow frequencies to
-> be generated from 5.75GHz to 10.5GHz and 2.875GHz to 5.25GHz
-> respectively.
+On Thu, 14 Nov 2024 12:52:12 +0000, <Victor.Duicu@microchip.com> wrote:
+> On Thu, 2024-11-14 at 12:00 +0100, Matteo Martelli wrote:
+> > EXTERNAL EMAIL: Do not click links or open attachments unless you
+> > know the content is safe
+> > 
 > 
-> Signed-off-by: Ciprian Hegbeli <ciprian.hegbeli@analog.com>
-> ---
->  drivers/iio/frequency/Kconfig   |   11 +
->  drivers/iio/frequency/Makefile  |    1 +
->  drivers/iio/frequency/adf4382.c | 1825 +++++++++++++++++++++++++++++++
->  3 files changed, 1837 insertions(+)
->  create mode 100644 drivers/iio/frequency/adf4382.c
+> Hi Matteo,
+> 
+> > On Thu, 14 Nov 2024 10:47:02 +0200, <victor.duicu@microchip.com>
+> > wrote:
+> > > From: Victor Duicu <victor.duicu@microchip.com>
+> > > 
+> > > This patch implements ACPI support to Microchip pac1921.
+> > > The driver can read the shunt resistor value and label from the
+> > > ACPI table.
+> > > 
+> > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
+> > > ---
+> > > 
+> 
+> ....
+> 
+> > > 
+> > > 
+> > > +#define PAC1921_ACPI_GET_uOHMS_VALS             0
+> > > +#define PAC1921_ACPI_GET_LABEL                       1
+> > > +/*
+> > > + * The maximum acceptable shunt value is 2146.999999 OHM.
+> > > + * This value, which is below INT_MAX, was chosen in order to
+> > > + * allow the readings from dt and ACPI to share the same range
+> > > + * and to simplify the checks.
+> > > + * With this value the maximum current that can be read is
+> > > + * 0.1V / 2146.999999OHM = 46.576 uA
+> > > + * If we use INT_MAX the maximum current that can be read is
+> > > + * 0.1V / 2147.483647OHM = 46.566 uA
+> > > + * The relative error between the two values is
+> > > + * |(46.566 - 46.576) / 46.566| * 100 = 0.0214
+> > > + */
+> > > +#define PAC1921_MAX_SHUNT_VALUE_uOHMS                2146999999UL
+> > > +
+> > 
+> > Just a minor point about this: if I understand correctly that value
+> > comes from (INT_MAX / MICRO - 1) * MICRO + MAX_MICRO. This was to
+> > simplify the check in a single statement in
+> > pac1921_write_shunt_resistor()
+> > which is called when the shunt resistor is set from *sysfs* (neither
+> > from DT nor ACPI). I'm fine with this value and the new check but I
+> > find
+> > the explanation comment a bit confusing. If you could come up with a
+> > bit
+> > more clear explanation about the reason of such value I think it
+> > would be
+> > better otherwise I am fine with it as it is. Also, maybe use the full
+> > room
+> > for 80 characters per line and UOHMS instead of uOHMS to avoid mixed
+> > case if
+> > you are going with a new version.
+> 
+> We could completely remove the need to use a constant below INT_MAX
+> with this check in pac1921_write_shunt_resistor:
+> 
+> if ((!val && !val_fract) || 
+> ((val >= INT_MAX / MICRO) && (val_fract > INT_MAX % MICRO)))
+> 	return -EINVAL;
+> 
+> Do you agree with this approach?
 
-...
+Yes, something like this would be clearer to me.
 
-> +static int _adf4382_set_freq(struct adf4382_state *st)
-> +{
-> +	u32 frac2_word = 0;
-> +	u32 mod2_word = 0;
-> +	u64 pfd_freq_hz;
-> +	u32 frac1_word;
-> +	u8 clkout_div;
-> +	u32 read_val;
-> +	u8 dclk_div1;
-> +	u8 int_mode;
-> +	u8 en_bleed;
-> +	u8 ldwin_pw;
-> +	u16 n_int;
-> +	u8 div1;
-> +	u64 tmp;
-> +	u64 vco;
-> +	int ret;
-> +	u8 var;
-> +
-> +	ret = adf4382_pfd_compute(st, &pfd_freq_hz);
-> +	if (ret) {
-> +		dev_err(&st->spi->dev, "PFD frequency is out of range.\n");
-> +		return ret;
-> +	}
-> +
-> +	for (clkout_div = 0; clkout_div <= st->clkout_div_reg_val_max; clkout_div++) {
-> +		tmp =  (1 << clkout_div) * st->freq;
-> +		if (tmp < st->vco_min || tmp > st->vco_max)
-> +			continue;
-> +
-> +		vco = tmp;
-> +		break;
-> +	}
-> +
+Anyway, I think you also need to check for val > INT_MAX / MICRO when
+val_fract is < INT_MAX % MICRO, right?
 
-(At least) LLVM/Clang complains about vco for a good reason: you may use
-it without proper initialization if the for loop does not assign any
-value. I guess you meant it to be initialized to zero in the declaration.
+Also, I think you can remove a couple of parenthesis.
 
-> +	if (vco == 0) {
-> +		dev_err(&st->spi->dev, "Output frequency is out of range.\n");
-> +		ret = -EINVAL;
-> +		return ret;
-> +	}
-> +
+So something like the following maybe (but please double check it):
 
-Best regards,
-Javier Carrasco
+	if ((!val && !val_fract) || val > INT_MAX / MICRO ||
+	   (val == INT_MAX / MICRO && val_fract > INT_MAX % MICRO))
+
+I think that usually it would be better to use pre-computed constants
+instead of run-time divisions for efficiency but since the shunt
+resistor is likely going to be set rarely, I would go for this code for
+better clarity.
+
+
+> Also, the use of mixed case was suggested by Andy to increase
+> readability.
+
+Ah, sorry for missing Andy's comment. I am fine with it if you also find
+it more readable.
+
+> 
+> ...
+> 
+> > 
+> > 
+> > Best regards,
+> > Matteo Martelli
+> 
+> With Best Regards,
+> Duicu Victor
+
+Thanks,
+Matteo Martelli
 

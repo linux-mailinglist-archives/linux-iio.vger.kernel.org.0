@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-12265-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12266-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF2B9C92ED
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 21:08:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB0E9C92F2
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 21:09:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D6F0B24F0E
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 20:08:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08A99B253D8
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 20:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0121A76B7;
-	Thu, 14 Nov 2024 20:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8E01AAE28;
+	Thu, 14 Nov 2024 20:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sr68bQ/W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="puN6Y1ZW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E482BEEDE;
-	Thu, 14 Nov 2024 20:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DD61A9B3A;
+	Thu, 14 Nov 2024 20:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731614896; cv=none; b=Tq+hByc84PTV7NZnMC8W0X3NzIXn74gsX7SismFLahsh7rrLQl50qSqxXVw4brPs/moCHpDZYowytSJo6Ear0/prrxNPBa2hmomtDADXXjVxmWuruqfhXlAi9rMx9K1ZBv7Xq7sTNMDcoCCVM01tdXoXaHxbAbpN+PLmW0BL0mY=
+	t=1731614970; cv=none; b=CwsacVukMuOThUiRi4/QssK4NF3nWyEbxKL5J1CGMeG4u/yf7LcB6hpI4eHQAQwV6zbfXWLSvHZgQSyOLrA3qufnpn/67lK7idOn9MJbgDmTU4+ev0sUadpdo1FhoTWJhwB4QV+GFnKcHiReEAqjB8gGkklPUYGYayUJFsvE6e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731614896; c=relaxed/simple;
-	bh=NzlbnN8BaEoLy9B2Ja8SYEmYIQlp6KJJrgv1nfOktN0=;
+	s=arc-20240116; t=1731614970; c=relaxed/simple;
+	bh=vL97R4gQ83JgU7ayQ6bFXPB0T2AuF7pgvSGStTn43Ik=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SYfw3+oR6yTPBNGkzwhJSs7X2kFhVIwBZSsdeAjBSEL8LDJzSy3ihonLyhmMH3sDtKi9UUH+VQInTKJJ09OHdDC7FooGSf1/2XI8WywsyPupTpMGnT46n+v+YZTHmaeXrSVadzvgTJ/zYryYX25nPt1240ClcLAoz+5sOawCB48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sr68bQ/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3135CC4CECF;
-	Thu, 14 Nov 2024 20:08:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=I9yDtX6fXJY0eQe7bmkVUXGmV6NjG5nGy8ShZGNwkMLwO8OUIUjLvcZBVViK45d2Grd0JeAcNWsyyuhrRSbBUO4N8YiBjtAniiRnRqKlY5uMQsXR68CGbqr7qvqegfP5iovzJk93RaXnMBfmunU5yIct5l21rQafaS6Nfbb/q/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=puN6Y1ZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638FFC4CECD;
+	Thu, 14 Nov 2024 20:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731614895;
-	bh=NzlbnN8BaEoLy9B2Ja8SYEmYIQlp6KJJrgv1nfOktN0=;
+	s=k20201202; t=1731614970;
+	bh=vL97R4gQ83JgU7ayQ6bFXPB0T2AuF7pgvSGStTn43Ik=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sr68bQ/WqOKiEEq+gReLgmOp4xdVPORXObT4ZeqJN5eIYNIz47AD+Rpvs8huoXxj1
-	 RJXgx3iImf8JmGT3sxAQS611SCa1NCfvbaRxSAjovQhfIbjJXpa6ru+BQCvrnVPmx8
-	 33M5ThAYyAASrhCHi8fgMyWh8606W+2LpP40cFQuDgTbgIvaGD96pgwzX1o+0fdSqv
-	 eNJlO7SzDt7NafJo26yWGbL+5dxfmKOegBZgXiJ1lCs7NpUsq9GnPcfFxdO4r4b8ft
-	 KzW1FSCsQDVXtLvdawQEtfkRhsGaf+9zupUOjWJtXPqOCb0l/+58Rj/sfEZd65MpKH
-	 5+LXvbe+s9GCQ==
-Date: Thu, 14 Nov 2024 20:08:10 +0000
+	b=puN6Y1ZWxAgdsaad0SHULrE1k4NjVrnJ5fHQTSSeC/F6q2fujhl3mjaZlIX5s+P2y
+	 50QxoPDwT5M/aL9fMMKO5cy6r1dFLFsxS5rLXUHPdZKmWh7/PGvLJI3zyu7y/inMVl
+	 8Ta50Pxq3yaEaaNBD30txTl5sKdAXtcz/R+ZT8aG83F8wT6AjA0bYu5RJkHWVyOi8N
+	 o0M9fu57daf98sKDBvBBBMDfB/5kbBqGWBsjQkvY7W/OGRVbkt3GyyG1/vFxwd3YHx
+	 e4jUAJnEIFckQ2F1S/jh1zmZ1qCz8zir7T4jwGDik1o338qHnQ6bRa2dydXrLTz070
+	 iqItyU7QHf0hw==
+Date: Thu, 14 Nov 2024 20:09:26 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
+Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Han Xu <han.xu@nxp.com>
-Subject: Re: [PATCH 2/4] dt-bindings: iio: accel: fxls8962af: add compatible
- string 'nxp,fxls8974cf'
-Message-ID: <20241114-avert-overexert-71ef5039ccf5@spud>
-References: <20241113-fxls-v1-0-5e48ff1b1fb8@nxp.com>
- <20241113-fxls-v1-2-5e48ff1b1fb8@nxp.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Add
+ invensense,iam20380 compatible string
+Message-ID: <20241114-penalty-define-6dc0df195885@spud>
+References: <20241113-iam20380-v1-0-cae690c4674d@nxp.com>
+ <20241113-iam20380-v1-1-cae690c4674d@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -63,60 +63,37 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="VkpH5g+Uk9QDYRpI"
+	protocol="application/pgp-signature"; boundary="ENEN3ELixFLWJQZA"
 Content-Disposition: inline
-In-Reply-To: <20241113-fxls-v1-2-5e48ff1b1fb8@nxp.com>
+In-Reply-To: <20241113-iam20380-v1-1-cae690c4674d@nxp.com>
 
 
---VkpH5g+Uk9QDYRpI
+--ENEN3ELixFLWJQZA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 13, 2024 at 12:54:40PM -0500, Frank Li wrote:
+On Wed, Nov 13, 2024 at 11:05:56AM -0500, Frank Li wrote:
 > From: Han Xu <han.xu@nxp.com>
 >=20
-> Add compatible string 'nxp,fxls8974cf' for the NXP FXLS8974CF acceleromet=
-er
-> sensor.
+> Add compatible string "invensense,iam20380" for the Invensense IAM20380
+> sensor. The IAM20380 is similar to the IAM20680, but only supports gyro.
 >=20
 > Signed-off-by: Han Xu <han.xu@nxp.com>
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.y=
-aml b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> index c375ef1bd083f..93985f670aa7b 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-> @@ -15,6 +15,7 @@ description: |
->      https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
->      https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
->      https://www.nxp.com/docs/en/data-sheet/FXLS8967AF.pdf
-> +    https://www.nxp.com/docs/en/data-sheet/FXLS8974CF.pdf
-> =20
->  properties:
->    compatible:
-> @@ -24,6 +25,7 @@ properties:
->        - nxp,fxls8962af
->        - nxp,fxls8964af
->        - nxp,fxls8967af
-> +      - nxp,fxls8974cf
 
-Ditto here.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---VkpH5g+Uk9QDYRpI
+--ENEN3ELixFLWJQZA
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZzZYqgAKCRB4tDGHoIJi
-0nBeAQDdhSLj3wA6hYnXyzpD9ACnUMe6z/v6y6i4KFGTGKhuKwEAvu/rdyFn6a+d
-YDNVotbRfTd5nSaOvH7YOp7jTqJ/zQA=
-=9tIQ
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZzZY9gAKCRB4tDGHoIJi
+0v++APwOLUD/m9Uja9J+s4WwsU4Z4hkRdfZOpvn7YtXysmxEpgD/foqCUSi5/NHC
+2xs59s0e8uqWqmP4HmY28R6xuA5LPgE=
+=ys9Z
 -----END PGP SIGNATURE-----
 
---VkpH5g+Uk9QDYRpI--
+--ENEN3ELixFLWJQZA--
 

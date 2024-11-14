@@ -1,191 +1,273 @@
-Return-Path: <linux-iio+bounces-12256-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12257-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2D29C8C4C
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 14:59:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF949C8C21
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 14:49:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A906B2CA30
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 13:43:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 056DD1F22284
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Nov 2024 13:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1010117BA6;
-	Thu, 14 Nov 2024 13:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF0C208D0;
+	Thu, 14 Nov 2024 13:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M/1kRAH2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cfYGU6BX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41E0F9C0;
-	Thu, 14 Nov 2024 13:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB654A95C;
+	Thu, 14 Nov 2024 13:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731591797; cv=none; b=myvorROfiXWkbBAdvZFaQlGdQW05NDZ78B8Dsn4Ww1S/PUnPVvfNK1nIAdelnWr75rj/0hfMKURFKgcgR8v6L+57HrMX5RsUtDBrWPRbPp1J0PdGHEuztzSKcvjGUaMaHUCDdPOKGse5f6L2d9TknXLuG1zqv+sd4sWdykZmEeQ=
+	t=1731592187; cv=none; b=oWPa/fRA86Nz9VJcBfA4NWeGO/C22rId01xM2opF6xeJicUA5cd1JqDCe03JmxeC5PiasZ5kYUHbyW4iJW/hA/z6Tjwx5dfHg8QkjjBw40+4olbcGh+Zer1CEMp2Az67TCb8qqhQaLTISaAg0PtVihojAQ8LWjrmUDdTrK9UVHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731591797; c=relaxed/simple;
-	bh=xiyLG0ECroEKZHad2vkypCUW44S6boFOl8KsXdXcqgw=;
-	h=Date:Message-ID:From:Subject:To:Cc:In-Reply-To:References; b=Ya1GHsJqfbvWmZ2MKl9x/Ww7VnG9WT2S6WvsEF+Mp4n+GzMlrXgDckrWvy7oxmVXvGR91MpFA7D03WkxkyDOvW3CowrH3qq1uCV576jrP37EncDa6PFeoaIm+3STR26Q3NeTi91lFi8zm0e+erX5H6bPQRY6g0VGM4oXRVO8ydc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M/1kRAH2; arc=none smtp.client-ip=209.85.221.43
+	s=arc-20240116; t=1731592187; c=relaxed/simple;
+	bh=qTo7CKolt1E4uoCLpV2VbWUachLChgD6RdUPRWDDkos=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=SYVseSstTmx1fja0BsvTdzhHtpV8ujJULmvc9nkTTWDQSSiHA6DnnkHT2wjLOblxxSdOzRqzblBXLKfyq9o7c4sMWQvdCmE2AywTE2/DkzPPDvi4jcS4y1pBhLArnTbhXmdhn5VmTxnJqV+2INrRiTQ+gTqo5gx8fodLVU/GGms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cfYGU6BX; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3821a905dbcso418225f8f.0;
-        Thu, 14 Nov 2024 05:43:14 -0800 (PST)
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5cb6ca2a776so1082338a12.0;
+        Thu, 14 Nov 2024 05:49:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731591793; x=1732196593; darn=vger.kernel.org;
-        h=references:in-reply-to:cc:to:subject:from:message-id:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yeCEUAXknMD9aScgAG2zWF+lXiTH5mTd/RZzyFiyf5A=;
-        b=M/1kRAH2OokMsSJcJbnLt9RPGO2KuL+76G842OONjFNHjljtqVh3YYOb94Etq1K1OY
-         O3VqRRd7T6bEXiU2DDRgCnJYl0Nln1gd6oGKIdXZSZi259HrPQe+sPQLPYhn9naudUSr
-         Cy3RCgS2b5HmwX4FRAmae23ARozo66zw+tm7pbo5907vK9SjnhdYEnSza8NdovF5/g98
-         KuCif45rU+kBPSxjQ/7VWJ6dZqzNEspn262bUml0kwwUEHVijOW3PYzbBoLIbDVZonDu
-         rKtV1PmH7uCCIOSrWQwB63ZUVsbdl644OkFdv0YAD9q7aF+pLeJpWufBiuvyKGiqhIUu
-         aauw==
+        d=gmail.com; s=20230601; t=1731592184; x=1732196984; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cgeG6n1ozGjtCnGyPOQPPbX46cvHrRUzjtSnNcbz9o4=;
+        b=cfYGU6BXELAzQ99sUrZC1hC7a5UDllAsv36IGppAyAvqTz3u1t0EhmgThgvZMWAoI2
+         LhyyVsKRuwOqQrTsLP4ScDwevG6Oc0+qQF1WTy2Iqe/e77wOHx8UW6KspRAgEbFPoUfO
+         Fbufopyhrq4UmiyLUllcYkrsIjIakeZeFYzxe0Dj1mY7rHSUsGGFGXQIf/t5fcMxC8J8
+         bhOMc58kzCxuu3NwE3oI6Vtpre/HMe4abmLy66G/TZdHAWUP/8x4NLouJOSR2qFglDdv
+         Ow441Agvqdq+kXn6hXJeePRLO5CtC0Gb0iDFSMR5rP585C5Xw+kyIASLX22Ov68PyCYK
+         bv4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731591793; x=1732196593;
-        h=references:in-reply-to:cc:to:subject:from:message-id:date
+        d=1e100.net; s=20230601; t=1731592184; x=1732196984;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yeCEUAXknMD9aScgAG2zWF+lXiTH5mTd/RZzyFiyf5A=;
-        b=Q/zn1N9JAfsUM7WRSKCK4W1nHUSbr8awf2cXoV5+mzg0sVIahbb2yNa+G12w/E37Fj
-         Tfc8k0kFS9X8VIjeKMXXlct1yWd+HaT0+UTgTmlq+by8+sB2y9ahQ7s7Rnn5hSy4hhe7
-         OAqutVcf+ScpK4B1X68mbYdOIQgXLZeavoA9rC6NOhQbsVqFlN18UvynijA5HAXy2kKI
-         p8htm8eWoYcRU/RFcsRQC9c06TqiJpoM+5jq7S7RHS6NM6VAUE2Qn4bzr6oCkn9E/Am5
-         tJhcTtfC/dZ4YimcC6tT42qGcVts/QdCuu3KpXuoD666Q0oGGRV5VeGQb3I7GLt8wUI4
-         2ThQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUoa/M3CfXGIwkUDd5/4Kjkxnzwi2MRzk3fjIHrb2mCbTjYMxRyzTFb6AnI88EOCUXMAGqPMe+uFEk=@vger.kernel.org, AJvYcCVgZsz7qXm/p4bpNtbeB9Bl3sQFmashg3FcaChgOhNeaOdMMXauBPW1CQJzJ41pR00HEjQUfV1j7dVTbKQ3@vger.kernel.org
-X-Gm-Message-State: AOJu0YxB3uqeKXI7UyA+pMs07qeCDEwtH5EX5i476YcfX0syT92YWfB6
-	VapN2qFlHcWep+HowGGWDa9VHRO/J+7Cz43rg+D7HMqbTNLJ2Q2K
-X-Google-Smtp-Source: AGHT+IEdHPDvGyAlTmxeMfbzcd5voQHz6RUMFEDJeW0QTjy11La74kNItnjNU8kiCg5rS7B4r0fe/w==
-X-Received: by 2002:a5d:64c5:0:b0:37d:52e3:e3f0 with SMTP id ffacd0b85a97d-381f1883da1mr22111074f8f.44.1731591792706;
-        Thu, 14 Nov 2024 05:43:12 -0800 (PST)
-Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821adbbc80sm1512804f8f.51.2024.11.14.05.43.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 05:43:12 -0800 (PST)
-Date: Thu, 14 Nov 2024 14:43:11 +0100
-Message-ID: <c67cd8be57b54b792430fd56a57a3ee1@gmail.com>
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Subject: Re: [PATCH v11] iio: adc: pac1921: Add ACPI support to Microchip
- pac1921
-To: Victor.Duicu@microchip.com, andy.shevchenko@gmail.com, jic23@kernel.org,
-	lars@metafoo.de
-Cc: Marius.Cristea@microchip.com, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-In-Reply-To: <faed3b586e1af2d946d3f9b185a94b6ebf0f6f32.camel@microchip.com>
-References: <20241114084702.3499-1-victor.duicu@microchip.com>
-	<c1b30741bec25e25c6e57389bf45d04f@gmail.com>
-	<faed3b586e1af2d946d3f9b185a94b6ebf0f6f32.camel@microchip.com>
+        bh=cgeG6n1ozGjtCnGyPOQPPbX46cvHrRUzjtSnNcbz9o4=;
+        b=WG0HPSS4pN+7uE9C9Pascr5OKDYsy3bsO+f4La7EAu2uZAllMxZqQvtPL/vpL5fXq+
+         8veGEdA6SnXwgNI3KTglgHdfIqbLFyY1Jk/WWFWm+LsCmYNZ/GaU1204Evg6siA7eMUX
+         yGp5joCcMEl/yfMs4ReS/WMxgHJr7S6qzpJK0FziWef8QUk1kN9HQSryLBWWpLKv7ol0
+         EgLriH/m+4TMWt/rUOMd0hkb3S5/c4GmKx/GofwD11RW1giq2LPsbk1sV3IwflmJ/Rog
+         zY+E/na4/AT4ylOS6HWgw+ezHtHIxdRKKx/RBFH7zaq3RYEIwc4JLKtcjDBmUV/k9tKY
+         TX1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVIyEo/t15ITStn6Bhg1aPXWjPV5AUneKKVWRH73WDAIKlz9xseKogEsyvEZcgTnzyUaOq9i2ygB5im@vger.kernel.org, AJvYcCWC8+iuXpUaQTTrcpNs78LnZavYeYkw475XLmh+mtZQk4L3U8B2QodlDS2z69IFcv3S34OXMLcy8xfN@vger.kernel.org, AJvYcCWGrhxyFtcXyneYRp5utVt9pjz2/HVLsgFS/+d1EfFZ+Qbohyd7h6HTUvld67IYNfS8psguOOkrppGebUXD@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzk1R+moeDiqmhu6Tfw3Pg9KW+zn5Y/06IjQfQHc21vXMyqe7z9
+	aGssai41SXbXsgTYYo0mN7UUerDw8BqhciOhyBGLQHUZshXs0X2xgy143A==
+X-Google-Smtp-Source: AGHT+IFiffkdkgwmQq/XTUWNHqnv90zEwXnpGUeF218xEUTOqrccqRc0R4HbF4cKEeIdkK4w9YvfMw==
+X-Received: by 2002:a05:6402:3509:b0:5cf:3d1b:5ebd with SMTP id 4fb4d7f45d1cf-5cf4f33693fmr8074284a12.3.1731592183814;
+        Thu, 14 Nov 2024 05:49:43 -0800 (PST)
+Received: from [10.10.40.97] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf79b9fabdsm620106a12.30.2024.11.14.05.49.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Nov 2024 05:49:43 -0800 (PST)
+Message-ID: <adbcacda-c3c6-452e-9dfe-22d55bfb293e@gmail.com>
+Date: Thu, 14 Nov 2024 14:49:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: frequency: Add ADF4382
+To: Ciprian Hegbeli <ciprian.hegbeli@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kim Seer Paller <kimseer.paller@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241114130340.7354-1-ciprian.hegbeli@analog.com>
+ <20241114130340.7354-2-ciprian.hegbeli@analog.com>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20241114130340.7354-2-ciprian.hegbeli@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 14 Nov 2024 12:52:12 +0000, <Victor.Duicu@microchip.com> wrote:
-> On Thu, 2024-11-14 at 12:00 +0100, Matteo Martelli wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you
-> > know the content is safe
-> > 
+On 14/11/2024 14:03, Ciprian Hegbeli wrote:
+> The ADF4382A is a high performance, ultralow jitter, Frac-N PLL
+> with integrated VCO ideally suited for LO generation for 5G applications
+> or data converter clock applications. The high performance
+> PLL has a figure of merit of -239 dBc/Hz, low 1/f Noise and
+> high PFD frequency of 625MHz in integer mode that can achieve
+> ultralow in-band noise and integrated jitter. The ADF4382A can
+> generate frequencies in a fundamental octave range of 11.5 GHz to
+> 21 GHz, thereby eliminating the need for sub-harmonic filters. The
+> divide by 2 and 4 output dividers on the part allow frequencies to
+> be generated from 5.75GHz to 10.5GHz and 2.875GHz to 5.25GHz
+> respectively.
 > 
-> Hi Matteo,
+> Signed-off-by: Ciprian Hegbeli <ciprian.hegbeli@analog.com>
+> ---
+>  .../bindings/iio/frequency/adi,adf4382.yaml   | 141 ++++++++++++++++++
+>  1 file changed, 141 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
 > 
-> > On Thu, 14 Nov 2024 10:47:02 +0200, <victor.duicu@microchip.com>
-> > wrote:
-> > > From: Victor Duicu <victor.duicu@microchip.com>
-> > > 
-> > > This patch implements ACPI support to Microchip pac1921.
-> > > The driver can read the shunt resistor value and label from the
-> > > ACPI table.
-> > > 
-> > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > > Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
-> > > ---
-> > > 
-> 
-> ....
-> 
-> > > 
-> > > 
-> > > +#define PAC1921_ACPI_GET_uOHMS_VALS             0
-> > > +#define PAC1921_ACPI_GET_LABEL                       1
-> > > +/*
-> > > + * The maximum acceptable shunt value is 2146.999999 OHM.
-> > > + * This value, which is below INT_MAX, was chosen in order to
-> > > + * allow the readings from dt and ACPI to share the same range
-> > > + * and to simplify the checks.
-> > > + * With this value the maximum current that can be read is
-> > > + * 0.1V / 2146.999999OHM = 46.576 uA
-> > > + * If we use INT_MAX the maximum current that can be read is
-> > > + * 0.1V / 2147.483647OHM = 46.566 uA
-> > > + * The relative error between the two values is
-> > > + * |(46.566 - 46.576) / 46.566| * 100 = 0.0214
-> > > + */
-> > > +#define PAC1921_MAX_SHUNT_VALUE_uOHMS                2146999999UL
-> > > +
-> > 
-> > Just a minor point about this: if I understand correctly that value
-> > comes from (INT_MAX / MICRO - 1) * MICRO + MAX_MICRO. This was to
-> > simplify the check in a single statement in
-> > pac1921_write_shunt_resistor()
-> > which is called when the shunt resistor is set from *sysfs* (neither
-> > from DT nor ACPI). I'm fine with this value and the new check but I
-> > find
-> > the explanation comment a bit confusing. If you could come up with a
-> > bit
-> > more clear explanation about the reason of such value I think it
-> > would be
-> > better otherwise I am fine with it as it is. Also, maybe use the full
-> > room
-> > for 80 characters per line and UOHMS instead of uOHMS to avoid mixed
-> > case if
-> > you are going with a new version.
-> 
-> We could completely remove the need to use a constant below INT_MAX
-> with this check in pac1921_write_shunt_resistor:
-> 
-> if ((!val && !val_fract) || 
-> ((val >= INT_MAX / MICRO) && (val_fract > INT_MAX % MICRO)))
-> 	return -EINVAL;
-> 
-> Do you agree with this approach?
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
+> new file mode 100644
+> index 000000000000..44a29ac7a2e8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
+> @@ -0,0 +1,141 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,adf4382.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ADF4382 Microwave Wideband Synthesizer with Integrated VCO
+> +
+> +maintainers:
+> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +  - Ciprian Hegbeli <ciprian.hegbeli@analog.com>
+> +
+> +description: The ADF4382 is a high performance, ultralow jitter, Frac-N PLL with
+> +   integrated VCO ideally suited for LO generation for 5G applications
+> +   or data converter clock applications.
+> +
+> +   https://www.analog.com/en/products/adf4382a.html
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,adf4382
+> +      - adi,adf4382a
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 75000000
+> +
+> +  clocks:
+> +    description: Clock to provide CLKIN reference clock signal.
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    description:
+> +      External clock that provides reference input frequency.
+> +    items:
+> +      - const: ref_clk
+> +
+> +  '#clock-cells':
+> +    const: 0
+> +
+> +  clock-output-names:
+> +    maxItems: 1
+> +
+> +  adi,charge-pump-microamp:
+> +    description:
 
-Yes, something like this would be clearer to me.
+These lines are a bit over 80 chars, maybe you could rearrange them.
 
-Anyway, I think you also need to check for val > INT_MAX / MICRO when
-val_fract is < INT_MAX % MICRO, right?
+> +      The charge pump current that the external loop filter was designed for.
+> +      If this property is not specified, then the charge pump current is set to the
+> +      default 11100uA. The valid values are listed below. However, if the set value is
+> +      not supported, the driver will look for the closest valid charge pump current.
+> +    anyOf:
+> +      - enum: [790, 990, 1190, 1380, 1590, 1980, 2390, 2790, 3180, 3970, 4770, 5570, 6330, 7910, 9510, 11100]
+> +
+> +  adi,ref-divider:
+> +    description:
+> +      Input divider of the reference frequency, cannot be lower then 1 or
+> +      higher then 63.
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> +      - minimum: 1
+> +      - maximum: 63
+> +      - default: 1
+> +    maxItems: 1
+> +
+> +  adi,ref-doubler-enable:
+> +    description:
+> +      Enables the doubling of the reference clock.
+> +    type: boolean
+> +    maxItems: 1
+> +
+> +  adi,bleed-word:
+> +    description:
+> +      A small programmable constant charge pump current, known as bleed current,
+> +      can be used to optimize the phase noise and fractional spurious signals
+> +      in fractional mode.
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> +      - minimum: 0
+> +      - maximum: 4095
+> +      - default: 0
+> +    maxItems: 1
+> +
+> +  adi,power-up-frequency:
+> +    description:
+> +      PLL tunes to the set frequency on probe or defaults to 2,305 GHz.
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint64
+> +      - minimum: 687500000
+> +      - maximum: 22000000000
+> +      - default: 2305000000
+> +    maxItems: 1
+> +
+> +  adi,output-power-value:
+> +    description:
+> +      The output power amplitude level which will be applied for both channels
+> +      at startup.
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/uint32
+> +      - minimum: 0
+> +      - maximum: 15
+> +      - default: 11
+> +    maxItems: 1
+> +
+> +  adi,spi-3wire-enable:
+> +    description:
+> +      Uses SPI in 3 wire mode, by default is uses 4 wire mode.
+> +    type: boolean
+> +    maxItems: 1
+> +
+> +  adi,cmos-3v3:
+> +    description:
+> +      Sets the SPI logic to 3.3V, by defautl it uses 1,8V.
+> +    type: boolean
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        frequency@0 {
+> +          compatible = "adi,adf4382";
+> +          reg = <0>;
+> +          spi-max-frequency = <1000000>;
+> +          clocks = <&adf4382_clkin>;
+> +          clock-names = "ref_clk";
 
-Also, I think you can remove a couple of parenthesis.
+Should it not be adi,charge-pump-microamp instead? dt_binding_check
+complains about this.
 
-So something like the following maybe (but please double check it):
-
-	if ((!val && !val_fract) || val > INT_MAX / MICRO ||
-	   (val == INT_MAX / MICRO && val_fract > INT_MAX % MICRO))
-
-I think that usually it would be better to use pre-computed constants
-instead of run-time divisions for efficiency but since the shunt
-resistor is likely going to be set rarely, I would go for this code for
-better clarity.
+> +          adi,charge-pump-current = <15>;
+> +          adi,ref-divider = <1>;
+> +        };
+> +    };
+> +...
 
 
-> Also, the use of mixed case was suggested by Andy to increase
-> readability.
-
-Ah, sorry for missing Andy's comment. I am fine with it if you also find
-it more readable.
-
-> 
-> ...
-> 
-> > 
-> > 
-> > Best regards,
-> > Matteo Martelli
-> 
-> With Best Regards,
-> Duicu Victor
-
-Thanks,
-Matteo Martelli
+Best regards,
+Javier Carrasco
 

@@ -1,146 +1,272 @@
-Return-Path: <linux-iio+bounces-12307-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12308-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BBE9CF1FE
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 17:47:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10F69CF333
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 18:45:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DF701F28D74
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 16:47:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1128B2BA61
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 17:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454FA1E2313;
-	Fri, 15 Nov 2024 16:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485C5558BB;
+	Fri, 15 Nov 2024 17:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hagLj4hw"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="plOYrcnm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC9F1E22F6
-	for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 16:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8F31CDA19
+	for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 17:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731689082; cv=none; b=k7yZd5SX6FNVgFeg2p1c73sUq+WdwLkuf67KdKBko3Hxe3bgwLWzA2IumIFkH7HjdfymPWdQI2Erz/QMWJWimYiqIIT/jz1E89ep8rUKWdBQXojSeVugjT4AyzYpztFxNLBMm1oBO/aMvRvvEiKdsPjpqJNCh92N18awJDGF6ao=
+	t=1731690421; cv=none; b=V/jaelISqiGAPTynnQd+RTmTVAv1EfTRqJ4/HfR1Faoc1U6jK+yRpPUD97P7xUnBlNPv5hyXbF6xp79anDcDck2Vcg4FV810z3v12Zem+hH064LtnvjdcUHuDwmC+AoD4P9vJ7NPGParXWv7jyV5vZzTvxKQF1ngjtvL706byxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731689082; c=relaxed/simple;
-	bh=w1FTAecBOFTmyqoMAH2DfbSi1/WWutIqszTuyzR8ob0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s0jDhWcSHsuziRirXyI+NSGRdNQkl70TWUeVSIVwumG3VCO3n8VJSbrz2zX74j7Ix87YJgoh1T7nAS471uQZy65DKuJ+feGZuKZimSnkJOtEMXqgI4jIeevlO6uPZ9DHavR1cWAcqH+hRbdJVgKvTShFqOXD/qcIcEI/K4eTsOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hagLj4hw; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fb559b0b00so17591841fa.0
-        for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 08:44:39 -0800 (PST)
+	s=arc-20240116; t=1731690421; c=relaxed/simple;
+	bh=+RDuJpTH0kSLbsZcI2mfsmnn+f+iKzvdnCnv3CGvCBo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gl7foynJhnJymDjHuQYNW9ZvjF1tBYGhFN0exjMIu4wGRogamRzDvYUwZvShmEQbKiPlNgJEXTJr5BfFzWL1lhrx8jqntYGbmK5sDTVaYqOEu6kCh88o/mwuaZXds7OdFUcwRCJvOZzjUx/HY4TWwCiCFcQTCdM5IcKdoaxQm+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=plOYrcnm; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5ebc9bda8c8so998537eaf.0
+        for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 09:06:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731689078; x=1732293878; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tvSbr212wnBXWgkPqBMZFxm+xf5y5TiTLHopInfDcas=;
-        b=hagLj4hwjBJ6cOEPXcyzU57D7AXQkt4DTrdYQQn7J7uLCTgQWPCebeRWZ7eAdOuk1V
-         YqmBCj7e72NzazEGrmhIulvdZjuqZmCE9MUNv4knJp/1r3/gyu7EW2OWg9Fs9Q15DvAB
-         WLqYBLJgt2C1LsR5+pkkbEM4SbKREWKbXyhvjuUoYn4KycSQj9izrseEHoy1OWlZdwO8
-         sNCj4qsxz2QfIUBJMJCoydyo/ZHd3cllhElRTpdx+Z3e4sSpY3OAN0KBKCCFYexo2kpn
-         siQj6wGdeuXq5YPih8ctDScLwZz1HMt9FFF/te0pjPj5gIceh7/51a4LnYZN764pPLnF
-         dfyw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731690418; x=1732295218; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=C/wkfs5bRvyD0RFgjYc8TbW0xGEDn3+7ZiFHyYcJ/+M=;
+        b=plOYrcnmGbYe9SPIGlvQ570Fv29txoRJkbv408VB5zocsgXZdC62ksSc5VP5nP5i9T
+         109X/uyC/yOrTYErzdk1Q0WtR2o7Mafv81E7ePGTdQlmnS7YN/t+sYIFRKjP8sA/Gs6m
+         sYr9uB4WgZtUeT6HnjqxqtsecBU3zgxm8rb9ZjP8GH0x6rd/rLR5GsnFnCSoHauguduJ
+         cbPsyGyru23r5Q3y/Hte6jVxTvj8xH9k56W4UZCegsKjXh7iZLSU8Um0Vg3YNGunnYSy
+         Skb3FELefnZ7YvS7OP5AHfYaXF6qW5ZvOZXuks8N4ROd0NbNKwzgXh5tWc88tyvtQc6y
+         epoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731689078; x=1732293878;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tvSbr212wnBXWgkPqBMZFxm+xf5y5TiTLHopInfDcas=;
-        b=CKVIVok2WNpy3ubRNhkQuR0P3pU7DnGk340cgktR79rIVAHQAs8WVOKhQ9qd6EU6DM
-         UKUqO/ZvR90q6C+2Jpvltqcz7lw7stBM2jGJAGutwUkjj0HT+g0KpVdfCbCyzMWUJqC0
-         x8aIITE108OOlnyptue3DBJ3ifTjfMm3JklwjFzRorZVK+EOmaULqiG6rRohNe4DKdAs
-         TD08giTXFjOK0enCP9v3ob5FQ9S4QFrCWk0SNQkunhW/csfWNzfSQbURNYwyuIcpJexR
-         uBqtjjB8Rx5QWFR25fasNF2IejH8lh79nlqie4ALlqtxDHw3921gaDxiv4VaozALvqzt
-         5KDg==
-X-Forwarded-Encrypted: i=1; AJvYcCWKkuy5iU8R7dIsJ+3YTuPMBI0K1lbuNC7HpeNa8v80DhfOKZvwCC8tdaRl7/tg52SKpxdXSPft64o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxzki1uq8uwc6dK7+8rDcc9zhl/lqJVDhLmWjf//qNAeMlf9rdV
-	04BOjPJKB2An8WA9ipiEkv9+YHNf1Wlos/IfRjvhwwb+pDywS7QGmB+N3cqKwyg=
-X-Google-Smtp-Source: AGHT+IFgzXgQ4IjxGhewB1vh2xQBTf7ORjLEOV0LXbis36gnE75+Wti65ULJO+Xnk5bUahD0MBiHug==
-X-Received: by 2002:a2e:b8cf:0:b0:2fb:34dc:7beb with SMTP id 38308e7fff4ca-2ff6067407bmr19160471fa.12.1731689078308;
-        Fri, 15 Nov 2024 08:44:38 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ff5988f321sm6038021fa.95.2024.11.15.08.44.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 08:44:37 -0800 (PST)
-Date: Fri, 15 Nov 2024 18:44:34 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Jishnu Prakash <quic_jprakash@quicinc.com>
-Cc: jic23@kernel.org, robh+dt@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org, 
-	konrad.dybcio@linaro.org, daniel.lezcano@linaro.org, sboyd@kernel.org, 
-	quic_subbaram@quicinc.com, quic_collinsd@quicinc.com, quic_amelende@quicinc.com, 
-	quic_kamalw@quicinc.com, amitk@kernel.org, lee@kernel.org, rafael@kernel.org, 
-	rui.zhang@intel.com, lukasz.luba@arm.com, lars@metafoo.de, quic_skakitap@quicinc.com, 
-	neil.armstrong@linaro.org, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	cros-qcom-dts-watchers@chromium.org
-Subject: Re: [PATCH V4 2/4] dt-bindings: iio: adc: Add support for QCOM PMIC5
- Gen3 ADC
-Message-ID: <i7opxhkgukcshdcc7j6ai6jt62egag3jgfiqsghakjhgt2ikg6@eap7l64amcci>
-References: <20241030185854.4015348-1-quic_jprakash@quicinc.com>
- <20241030185854.4015348-3-quic_jprakash@quicinc.com>
- <ag3wqsjdec7ujcba2jpvhzgcbbc5vnyjyes5ljyyf5b4edw7j3@rj23a25wvoyd>
- <ee8f0b70-77a2-4a5e-85c8-715fd02d4437@quicinc.com>
+        d=1e100.net; s=20230601; t=1731690418; x=1732295218;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C/wkfs5bRvyD0RFgjYc8TbW0xGEDn3+7ZiFHyYcJ/+M=;
+        b=oQoWh9DaUhKparOL6i4Q6dg8sCbnef7qoenLHAQ4eorO1ECsVQpAtH48qsfjMoyLsf
+         bdV66ODDaP8J+TPaM3xhP+n5eyPXhrY7WYl8JcyV4lIxX81jVZcRYI8XWK5PW58JF8y+
+         xV4omb5AfVd3qs7gDN0SSAxScc5kWkvgEG1/xRGtDNq4kyM+DUcD9H/vu7Rr79+iauIa
+         FmIokGUq+3R+b+viF8ClXv3009GiE5TMCwP76ISmQjP2KIUMFNPJdHUBrmsOomD6N9V4
+         z44LbFcjhnfm7pv2MknVEvtmc24cZgT9tF+ETQKT4tx9nVqaBCYoI+cTCTGa1IAs3AFe
+         1QFg==
+X-Gm-Message-State: AOJu0YyIH87/mSyrqBcUN0GRlBbBcK0AAV4K9X/0VGyt6Wen0A+atzto
+	DA2EMqU9gsnHZUSPwlacuBuJ+JLRGaVV+8+taRRGwIR1UZmnbiDHPNHejidf2Xg=
+X-Google-Smtp-Source: AGHT+IGtKLmvYpVBqTyibD1ArQBLqbqiDqyVByPpr8CtK4g6Mcr0/WOym3DJvTjErF3xMORO0TtMxw==
+X-Received: by 2002:a05:6870:912b:b0:296:13f4:fb6a with SMTP id 586e51a60fabf-2962e0aee89mr3277619fac.41.1731690417451;
+        Fri, 15 Nov 2024 09:06:57 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29610b59315sm1572232fac.50.2024.11.15.09.06.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Nov 2024 09:06:55 -0800 (PST)
+Message-ID: <0b8a2d07-feea-409f-a850-7ee0c752a949@baylibre.com>
+Date: Fri, 15 Nov 2024 11:06:55 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ee8f0b70-77a2-4a5e-85c8-715fd02d4437@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] dt-bindings: iio: adc: adi,ad4000: Add PulSAR
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, jic23@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1731626099.git.marcelo.schmitt@analog.com>
+ <a155d0d0fb1d9b5eece86099af9b5c0fb76dcac2.1731626099.git.marcelo.schmitt@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <a155d0d0fb1d9b5eece86099af9b5c0fb76dcac2.1731626099.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 13, 2024 at 07:36:13PM +0530, Jishnu Prakash wrote:
-> Hi Dmitry,
+On 11/14/24 5:50 PM, Marcelo Schmitt wrote:
+> Extend the AD4000 series device tree documentation to also describe
+> PulSAR devices.
 > 
-> On 10/31/2024 11:27 PM, Dmitry Baryshkov wrote:
-> > On Thu, Oct 31, 2024 at 12:28:52AM +0530, Jishnu Prakash wrote:
-> >> For the PMIC5-Gen3 type PMICs, ADC peripheral is present in HW for the
-> >> following PMICs: PMK8550, PM8550, PM8550B and PM8550VX PMICs.
-> >>
-> >> It is similar to PMIC5-Gen2, with SW communication to ADCs on all PMICs
-> >> going through PBS(Programmable Boot Sequence) firmware through a single
-> >> register interface. This interface is implemented on an SDAM (Shared
-> >> Direct Access Memory) peripheral on the master PMIC PMK8550 rather
-> >> than a dedicated ADC peripheral.
-> >>
-> >> Add documentation for PMIC5 Gen3 ADC and macro definitions for ADC
-> >> channels and virtual channels (combination of ADC channel number and
-> >> PMIC SID number) per PMIC, to be used by clients of this device.
-> >>
-> >> Co-developed-by: Anjelique Melendez <quic_amelende@quicinc.com>
-> >> Signed-off-by: Anjelique Melendez <quic_amelende@quicinc.com>
-> >> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
-> >> ---
-> >> Changes since v3:
-> >> - Added ADC5 Gen3 documentation changes in existing qcom,spmi-vadc.yaml file
-> >>   instead of adding separate file and updated top-level constraints in documentation
-> >>   file based on discussion with reviewers.
-> > 
-> > I think it has been better, when it was a separate file. Krzysztof asked
-> > for rationale, not for merging it back. Two different things.
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+>  .../bindings/iio/adc/adi,ad4000.yaml          | 115 +++++++++++++++++-
+>  1 file changed, 114 insertions(+), 1 deletion(-)
 > 
-> Actually I made that change in a separate file due to a misunderstanding at that time - 
-> I thought a separate file was the only way to accommodate a change in the top-level 'reg' and 'interrupts'
-> constraints, but I realized later that they could be updated.
-> 
-> From our side, we would prefer to add ADC5 Gen3 documentation in the same file, as it is
-> mostly the same functionality which reuses all the existing properties present in this file.
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> index e413a9d8d2a2..35049071a9de 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> @@ -19,6 +19,21 @@ description: |
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/ad4020-4021-4022.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4001.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4003.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7685.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7686.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7687.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7688.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7690.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7691.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7693.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7694.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7942.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7946.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7980.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7982.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7983.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7984.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7988-1_7988-5.pdf
 
-Export the existing properties and reuse them in the new file. Gen3 (in
-my opinion) changed the hardware too much. Having all the differences
-via conditionals bloats the schema and makes it significantly unreadable
-in my opinion.
+It would be nice to sort these lowest number first.
 
-But please refer to DT maintainers (Rob/Krzysztof/Conor) for the final
-opinion.
+>  
+>  $ref: /schemas/spi/spi-peripheral-props.yaml#
+>  
+> @@ -63,6 +78,38 @@ properties:
+>  
+>        - const: adi,adaq4003
+>  
+> +      - const: adi,ad7946
+> +      - items:
+> +          - enum:
+> +              - adi,ad7942
+> +          - const: adi,ad7946
+> +
+> +      - const: adi,ad7983
+> +      - items:
+> +          - enum:
+> +              - adi,ad7980
+> +              - adi,ad7988-5
+> +              - adi,ad7686
+> +              - adi,ad7685
+> +              - adi,ad7694
+> +              - adi,ad7988-1
+> +          - const: adi,ad7983
+> +
+> +      - const: adi,ad7688
+> +      - items:
+> +          - enum:
+> +              - adi,ad7693
+> +              - adi,ad7687
+> +          - const: adi,ad7688
+> +
+> +      - const: adi,ad7984
+> +      - items:
+> +          - enum:
+> +              - adi,ad7982
+> +              - adi,ad7690
+> +              - adi,ad7691
+> +          - const: adi,ad7984
+> +
 
--- 
-With best wishes
-Dmitry
+IMHO, having fallbacks just makes the bindings harder to use and doesn't
+actually provide any useful benefit.
+
+And with this many chips, it can be easy to overlook a small difference
+in one chips, like ad7694 not having VIO pin, so is it really fallback
+compatible? Easier to just avoid the question and not have fallbacks.
+
+>    reg:
+>      maxItems: 1
+>  
+> @@ -129,10 +176,76 @@ required:
+>    - compatible
+>    - reg
+>    - vdd-supply
+> -  - vio-supply
+>    - ref-supply
+>  
+>  allOf:
+> +  # AD7694 doesn't have a VIO pin
+
+It sounds like using not: could make this if: a lot shorter.
+
+Also, it looks like ad7983 doesn't have the pin either.
+
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - adi,ad4000
+> +              - adi,ad4001
+> +              - adi,ad4002
+> +              - adi,ad4003
+> +              - adi,ad4004
+> +              - adi,ad4005
+> +              - adi,ad4006
+> +              - adi,ad4007
+> +              - adi,ad4008
+> +              - adi,ad4010
+> +              - adi,ad4011
+> +              - adi,ad4020
+> +              - adi,ad4021
+> +              - adi,ad4022
+> +              - adi,adaq4001
+> +              - adi,adaq4003
+> +              - adi,ad7685
+> +              - adi,ad7686
+> +              - adi,ad7687
+> +              - adi,ad7688
+> +              - adi,ad7690
+> +              - adi,ad7691
+> +              - adi,ad7693
+> +              - adi,ad7942
+> +              - adi,ad7946
+> +              - adi,ad7980
+> +              - adi,ad7982
+> +              - adi,ad7983
+> +              - adi,ad7984
+> +              - adi,ad7988-1
+> +              - adi,ad7988-5
+> +    then:
+> +      required:
+> +        - vio-supply
+> +  # Single-channel PulSAR devices have SDI either tied to VIO, GND, or host CS.
+
+To me, the more interesting thing to say here is that the sdi
+option is omitted because these chips don't have a programmable
+register.
+
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - adi,ad7685
+> +              - adi,ad7686
+> +              - adi,ad7687
+> +              - adi,ad7688
+> +              - adi,ad7690
+> +              - adi,ad7691
+> +              - adi,ad7693
+> +              - adi,ad7694
+> +              - adi,ad7942
+> +              - adi,ad7946
+> +              - adi,ad7980
+> +              - adi,ad7982
+> +              - adi,ad7983
+> +              - adi,ad7984
+> +              - adi,ad7988-1
+> +              - adi,ad7988-5
+> +    then:
+> +      properties:
+> +        adi,sdi-pin:
+> +          enum: [ high, low, cs ]
+> +          default: high
+
+For the similar ad7944, Rob suggested that the default should be the equivalent
+of "cs" since that is most like "regular" SPI. So I think it makes sense do the
+same here. (The adi,spi-mode property in the ad7944 binding is named a bit
+different, single = high, chain = low and _property omitted_ (default) = cs)
+
+>    # The configuration register can only be accessed if SDI is connected to MOSI
+>    - if:
+>        required:
+
 

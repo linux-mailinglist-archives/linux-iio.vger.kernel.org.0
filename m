@@ -1,362 +1,295 @@
-Return-Path: <linux-iio+bounces-12304-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12305-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525359CE02E
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 14:37:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042029CE12F
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 15:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 133212827AC
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 13:37:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 884761F22EE0
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 14:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD4C1CDFBD;
-	Fri, 15 Nov 2024 13:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0DB1CEE88;
+	Fri, 15 Nov 2024 14:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="FOY6yYVQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WgLrvYlV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AB71CCEE8;
-	Fri, 15 Nov 2024 13:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49E61B218E;
+	Fri, 15 Nov 2024 14:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731677814; cv=none; b=uyY83qBPSZEbKs7KXCegilPl6VMUVOwlRcfUNNHJ62AfiIeOec1uNKZrCZkC2c1dlPAPoTEeO/o+GOHs+NYdjUvpI2iHCxq4/xTOO5YXOjWATQc1IsmGw3sBtp2YZRdDiiLwl9jGbZOpbGWwjdn6vIDLhuLxb/GdEO/kntNNQH4=
+	t=1731680713; cv=none; b=O0x6SB4X1ScPuKKHEzSrGR48P1KTp9Bb1l2yJE6v8T92MppWOiJIM8SSdCySXhA/vImy60MOWNb7Q1+ww7kH1NAgZdls7APN+PzWpdER1RiB5eRebZ7UDKMffJKkjJIv52oJlTFkGdNcq6fo0/DhGmGGvwvNYBp6PD4ce7Nd0y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731677814; c=relaxed/simple;
-	bh=J7dyRb7/qcbvuE/pNvHgIFBJ73+8RbYwnlABCVYflpE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IBEkP9rQ2LTLtSBpl7OE7N2JPRf1K262oLOfef5KZlRimfTzJX4GxcDdsSBJW8WMg1slA+m9ueLsO9sM98r+45p57Z1DgkTP/tkU6HdsTU106aYW4CA0+Xaei9slIJGl5H8Tl/COnAwdH7HYMbIdhsKmtegCBnn41ChRfmI6A3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=FOY6yYVQ; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1731677811; x=1763213811;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=J7dyRb7/qcbvuE/pNvHgIFBJ73+8RbYwnlABCVYflpE=;
-  b=FOY6yYVQKWK1X7IWxlR5jq46LomuSzwUDKvo8ZAkrhKR+UCYqpePOReQ
-   aSBSLvDxioPDI2puSyuKhA4JfXlPlgqfv2bJTh1YifXnqBcxaySIgWAuC
-   bopATZdEQCAT2eGj9eOd/EvPdFh9Gzvi3iU1fsSu8j8LmSdsy4jBM1Dgw
-   m2G6ZUYQ1FEu/PShxNkSVIK8quZ6eufiYL7U64S2S7fvDmh0zHhDnhELF
-   FS+O3Pf//GPFtjo2Uvhd53JI36Oeg8oebtsUB4Qyglr//ZEfgBr5/9pU+
-   qlzTFrtyxDSr4xVXsQBAPuuPvnxtgzfdOEjRJThruKqB6pIcB2Rl7DW84
-   w==;
-X-CSE-ConnectionGUID: fXaFjTziTIG8BfiYuHBS+Q==
-X-CSE-MsgGUID: JJtQUwhRRYeBojEJ2vvbGQ==
-X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; 
-   d="scan'208";a="201804333"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Nov 2024 06:36:45 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 15 Nov 2024 06:36:04 -0700
-Received: from vduicu-Virtual-Machine.mshome.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Fri, 15 Nov 2024 06:36:01 -0700
-From: <victor.duicu@microchip.com>
-To: <matteomartelli3@gmail.com>, <jic23@kernel.org>, <lars@metafoo.de>,
-	<andy.shevchenko@gmail.com>
-CC: <marius.cristea@microchip.com>, <victor.duicu@microchip.com>,
-	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v13] iio: adc: pac1921: Add ACPI support to Microchip pac1921
-Date: Fri, 15 Nov 2024 15:34:36 +0200
-Message-ID: <20241115133436.13204-1-victor.duicu@microchip.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1731680713; c=relaxed/simple;
+	bh=i0J9YgKrlwFGfJuGRYdXWxMQtfccCScGcb3RUoJTSr8=;
+	h=Date:Message-ID:From:Subject:To:Cc:In-Reply-To:References; b=Yt0JPXNB99ECKc/5kx7U1kx8MbsA5RKeXrvCS4SIpK0Eam6bebs4jpCyZhNWQ6paWfdxA1b3/1tkRv8GlSMF9c2N2h4Teqrs+UGBgm84CyG1jKPRgUMtWoHcgr0ypj7tsyPG3kRrVUJ7dKomdPAh13Nm/iqPEXrCuFwFy/nOJ4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WgLrvYlV; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4315f24a6bbso14790885e9.1;
+        Fri, 15 Nov 2024 06:25:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731680709; x=1732285509; darn=vger.kernel.org;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=huYdQY6mriqKFmtZHIEpj3W9QBUQ/Y1F8VwJADSGD04=;
+        b=WgLrvYlVB5Qgyw0Ly3d8HYkiNOGJ3MkqJcrMiOu2RofFIX8SIzcXlhhRlcUyOHqxde
+         wwZ8o3tWv69m0nqxSnfsMcy1LIxELvMrXR9vbe9Dra9H4TlOR77WAieINjJSvr/+EZmy
+         1e7f3oPOVh2rE7raShCMGVUDJpy2w5ikAGgxj5jvb4UyR7oqXco65EV53MaB+ej8k/OK
+         OfeLomCDmfmAmIRb/AbcQfuncG7yi5bBrAze7mRUHp/bhn1CmBtQz5RkPv6sq7qT9HgT
+         iWKEkSvdWynVl7ny4JThLRDtWmFtZJga/7ftOTeJozMYLh+4hxmCs0Wg+VFjLy8wK/J4
+         px3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731680709; x=1732285509;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=huYdQY6mriqKFmtZHIEpj3W9QBUQ/Y1F8VwJADSGD04=;
+        b=m6fOx5BG5izAujCpFxTZDZizDJfyPEilcLAad4otLmsf0l0ynNVGrEMbhnec5dWPpk
+         g2lDYD7osuXnXsFzH+MKbtswu8J2vpiRGavDkgUCdDo+TrE+WHTGtYKDSfVf0v4ZbqHl
+         6ImsCjPBjG1I9nuJ4xGIZ/MwSPcXeqamiQUwfKDcaK+3eUO8+W8lzO1Dcuil2AbfspnZ
+         /ouRiWWm8anuW5JkFXUNiDTECVALGCSCDXQI2K+hHnsNjimNkzWKpgE/KQhrnR8vcOQV
+         r95vjMmpcf9H7CjhjXAQot9uxtHZO1xyncBC4QhQCpO46OReEq4ky7wnZOjEi2pki8Xq
+         xRRA==
+X-Forwarded-Encrypted: i=1; AJvYcCUI4VB6Ie2sVQ1r3tOcjFFl38ltxs9Gz9x5uf3EDvUrVVutsMVfYM/MY+GCsf9AXgShMPy72ad997E=@vger.kernel.org, AJvYcCUPDNKxc29d5pePq7Vx1ZzwsRH36wbEXjFVxl3nIJf71jE8MgYtMzyFKfzIqBIR6PCg5kmYASNokg8=@vger.kernel.org, AJvYcCXhXhZGln/oc7wwHGRqdYCDSFJ3YmECNf/M5Q7wpeZyWi+ekkWqcetaZ3vRigSKWvZ/N6hcVsnPfi+A6H45@vger.kernel.org, AJvYcCXlawIDMtGtRlBQNvpyqiptg/I/s5OFWEULqdD01pRomqbnPJeJ+pZm9Bp/aH1jUnnkjHUmEH3flHnIew==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaX0dADFLH+AkfEanbLn+rcli5MIO5fbOxqAircisImSkHnCjs
+	7EkAnIJxFrR5qefXQPYINz+JZ4XNMC+FbtcYOBj4mTwxqHpqU5+q
+X-Google-Smtp-Source: AGHT+IFeR2Eue7s/9O+/fjwsUcRKHzKZtQ/Ca+D3UCUrEfMOuXVULfMsSamBMgupClYDWWXIic4iKw==
+X-Received: by 2002:a05:600c:1c97:b0:431:50fa:89c4 with SMTP id 5b1f17b1804b1-432df71c02fmr26239725e9.3.1731680708463;
+        Fri, 15 Nov 2024 06:25:08 -0800 (PST)
+Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dac0aca0sm54961665e9.29.2024.11.15.06.25.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2024 06:25:07 -0800 (PST)
+Date: Fri, 15 Nov 2024 15:25:06 +0100
+Message-ID: <b56ba6a0db195ad44158509f3adb157b@gmail.com>
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Subject: Re: [PATCH v5 2/5] iio: consumers: copy/release available info from
+ producer to fix race
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko
+	<andriy.shevchenko@intel.com>, Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>, Alisa-Dariana Roman
+	<alisa.roman@analog.com>, Christian Eggers <ceggers@arri.de>, Peter Rosin
+	<peda@axentia.se>, Paul Cercueil <paul@crapouillou.net>, Sebastian Reichel
+	<sre@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-pm@vger.kernel.org
+In-Reply-To: <173039799203.1353.4404042832923090619@njaxe.localdomain>
+References: <20241021-iio-read-avail-release-v5-0-b168713fab33@gmail.com>
+	<20241021-iio-read-avail-release-v5-2-b168713fab33@gmail.com>
+	<ZyJHFp6vbQ7deLFs@black.fi.intel.com>
+	<173031260171.39393.109639772708550094@njaxe.localdomain>
+	<20241030203050.5cdf3450@jic23-huawei>
+	<173037398492.12348.265826723028347056@njaxe.localdomain>
+	<20241031143129.0000014e@Huawei.com>
+	<173039799203.1353.4404042832923090619@njaxe.localdomain>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-From: Victor Duicu <victor.duicu@microchip.com>
+On Thu, 31 Oct 2024 19:06:32 +0100, Matteo Martelli <matteomartelli3@gmail.com> wrote:
+> Quoting Jonathan Cameron (2024-10-31 15:31:29)
+> > On Thu, 31 Oct 2024 12:26:24 +0100
+> > Matteo Martelli <matteomartelli3@gmail.com> wrote:
+> > 
+> > > Quoting Jonathan Cameron (2024-10-30 21:30:50)
+> > > > On Wed, 30 Oct 2024 19:23:21 +0100
+> > > > Matteo Martelli <matteomartelli3@gmail.com> wrote:
+> > > >   
+> > > > > Quoting Andy Shevchenko (2024-10-30 15:47:50)  
+> > > > > > On Mon, Oct 21, 2024 at 02:54:15PM +0200, Matteo Martelli wrote:    
+> > > > > > > Consumers need to call the producer's read_avail_release_resource()
+> > > > > > > callback after reading producer's available info. To avoid a race
+> > > > > > > condition with the producer unregistration, change inkern
+> > > > > > > iio_channel_read_avail() so that it copies the available info from the
+> > > > > > > producer and immediately calls its release callback with info_exists
+> > > > > > > locked.
+> > > > > > > 
+> > > > > > > Also, modify the users of iio_read_avail_channel_raw() and
+> > > > > > > iio_read_avail_channel_attribute() to free the copied available buffers
+> > > > > > > after calling these functions. To let users free the copied buffer with
+> > > > > > > a cleanup pattern, also add a iio_read_avail_channel_attr_retvals()
+> > > > > > > consumer helper that is equivalent to iio_read_avail_channel_attribute()
+> > > > > > > but stores the available values in the returned variable.    
+> > > > > > 
+> > > > > > ...
+> > > > > >     
+> > > > > > > +static void dpot_dac_read_avail_release_res(struct iio_dev *indio_dev,
+> > > > > > > +                                         struct iio_chan_spec const *chan,
+> > > > > > > +                                         const int *vals, long mask)
+> > > > > > > +{
+> > > > > > > +     kfree(vals);
+> > > > > > > +}
+> > > > > > > +
+> > > > > > >  static int dpot_dac_write_raw(struct iio_dev *indio_dev,
+> > > > > > >                             struct iio_chan_spec const *chan,
+> > > > > > >                             int val, int val2, long mask)
+> > > > > > > @@ -125,6 +132,7 @@ static int dpot_dac_write_raw(struct iio_dev *indio_dev,
+> > > > > > >  static const struct iio_info dpot_dac_info = {
+> > > > > > >       .read_raw = dpot_dac_read_raw,
+> > > > > > >       .read_avail = dpot_dac_read_avail,
+> > > > > > > +     .read_avail_release_resource = dpot_dac_read_avail_release_res,
+> > > > > > >       .write_raw = dpot_dac_write_raw,
+> > > > > > >  };    
+> > > > > > 
+> > > > > > I have a problem with this approach. The issue is that we allocate
+> > > > > > memory in one place and must clear it in another. This is not well
+> > > > > > designed thingy in my opinion. I was thinking a bit of the solution and
+> > > > > > at least these two comes to my mind:
+> > > > > > 
+> > > > > > 1) having a special callback for .read_avail_with_copy (choose better
+> > > > > > name) that will dump the data to the intermediate buffer and clean it
+> > > > > > after all;
+> > > > > > 
+> > > > > > 2) introduce a new type (or bit there), like IIO_AVAIL_LIST_ALLOC.    
+> > > > > 
+> > > > > Could you elaborate more about these potential solutions? Maybe with some
+> > > > > usage examples?
+> > > > > 
+> > > > > If I get it correctly, in both cases you are suggesting to pass ownership
+> > > > > of the vals buffer to the caller, iio_read_channel_info_avail() in this
+> > > > > case, so that it would take care of freeing the buffer after calling
+> > > > > iio_format_after_*(). We considered this approach during an initial
+> > > > > discussion with Jonathan (see read_avail_ext() in [1]), where he suggested
+> > > > > to let the driver keep the release control through a callback for two
+> > > > > reasons:
+> > > > > 
+> > > > > 1) Apparently it's a bad pattern to pass the buffer ownership to the core,
+> > > > >    maybe Jonathan can elaborate why? The risk I can think of is that the driver
+> > > > >    could still keep the buffer copy in its private data after giving it away,
+> > > > >    resulting in fact in a double ownership. However I think it would be clear
+> > > > >    enough in this case that the copy should be handled by the caller, or maybe
+> > > > >    not?  
+> > > > Mostly the lack of desire to have to copy for the 95% of cases where it's
+> > > > not needed and that it prevents any optimization like you mention.  
+> > > 
+> > > I think the suggestion here is to add an additional .read_avail_with_copy()
+> > > without replacing the original .read_avail(), so all the current drivers that
+> > > use a constant avail list would not be affected. And I think this was the same
+> > > idea for the additional read_avail_ext() or the additional argument for the
+> > > read_avail() we were considering in [1]. So I would think that
+> > > iio_read_channel_info_avail() would do something like the following:
+> > > 
+> > >     if (indio_dev->info->read_avail_with_copy)
+> > >         indio_dev->info->read_avail_with_copy(vals);
+> > >     else
+> > >         indio_dev->info->read_avail(vals);
+> > > 
+> > >     ...
+> > >     iio_format_avail_list(vals);
+> > >     ...
+> > > 
+> > >     if (indio_dev->info->read_avail_with_copy)
+> > >         kfree(vals);
+> > 
+> > Ok, sure that would work, but...
+> > 
+> > I don't really see this as being much less fragile than
+> > the existing solution + in cases that we do have where
+> > only some available are not const we will have to copy them
+> > all.
+> > 
+> > If anything it's more complex than making it a driver problem
+> > to provide the release call however it wants to do it.
+> >  
+> > 
+> > > 
+> > > And the drivers would choose whether to define the read_avail or the
+> > > read_avail_with_copy.
+> > > 
+> > > What I was referring to is that, back then, you mentioned you would have
+> > > preferred to avoid passing ownership of the buffer around:
+> > > 
+> > > > That's a corner case we should think about closing. Would require an indicator
+> > > > to read_avail that the buffer it has been passed is a snapshot that it should
+> > > > free on completion of the string building.  I don't like passing ownership
+> > > > of data around like that, but it is fiddly to do anything else given
+> > > > any simple double buffering is subject to race conditions.  
+> > > 
+> > > I guess there is some other reason other than avoiding the copy when not
+> > > necessary, since by introducing an additional function or argument or return
+> > > type, most of the unnecessary copies would already be avoided right?
+> > 
+> > It's not a strong reason beyond limiting scope of clever design +
+> > the key bit my mind is that the above is not substantially simpler and
+> > reduces our flexibility.
+> > 
+> > > 
+> > > Anyway any of this solutions would still prevent the potential optimizations of
+> > > point 2). It's worth mentioning that those kind of optimizations are currently
+> > > not adopted by any driver.
+> > 
+> > That one indeed not, but mixing dynamic and non dynamic is something
+> > you do in your pac1921 patch.
+> 
+> Good point! I didn't think about it, or more likely I forgot, that with an
+> additional read_avail_with_copy() used as in the example you cannot mix dynamic
+> and non dynamic available lists, thus those drivers that need at least one
+> dynamic available list would always copy all of them as they need to rely to
+> the read_avail_with_copy(). I guess this could be worked around with an
+> additional return argument for the read_avail() or an additional type like the
+> IIO_AVAIL_LIST_ALLOC suggested by Andy to signal the caller it needs to free
+> the list after use. However, I think they would introduce a more invasive
+> change in the current API compared to an additional optional callback, so I
+> agree that the current release callback is still a better option.
+> 
+> > 
+> > Jonathan
+> > 
+> > 
+> > > 
+> > > > 
+> > > > Jonathan  
+> > > > > 
+> > > > > 2) Some driver might want to avoid allocating a new copy of a big table if
+> > > > >    the race does not occur (e.g. with additional checks on buffer access
+> > > > >    code) and thus wouldn't call a free() in the release callback.
+> > > > >   
+> > > > > > 
+> > > > > > In any case it looks fragile and not scalable. I propose to drop this
+> > > > > > and think again.    
+> > > > > 
+> > > > > I see your concerns, I am open to reconsider this in case we come up with
+> > > > > better solution after addressing the points above.
+> > > > >   
+> > > > > > Yes, yes, I'm fully aware about the problem you are trying to solve and
+> > > > > > agree on the report, I think this solution is not good enough.
+> > > > > > 
+> > > > > > -- 
+> > > > > > With Best Regards,
+> > > > > > Andy Shevchenko
+> > > > > >     
+> > > > > 
+> > > > > [1]: https://lore.kernel.org/linux-iio/20240729211100.0d602d6e@jic23-huawei/
+> > > > > 
+> > > > > Best regards,
+> > > > > Matteo Martelli  
+> > > >   
+> > > 
+> > > I hope I've brought a little more clarity to the discussion by providing some
+> > > history instead of making it more confusing.
+> > 
+> > Sure, the code example in particular is useful.
+> > 
+> > Jonathan
+> > 
+> > > 
+> > > Best regards,
+> > > Matteo Martelli
+> > > 
+> > > 
+> > 
+> Best regards,
+> Matteo Martelli
 
-This patch implements ACPI support to Microchip pac1921.
-The driver can read the shunt resistor value and label from the ACPI table.
+Just a friendly reminder this has been sitting for a while, any news or
+additional considerations?
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Acked-by: Matteo Martelli <matteomartelli3@gmail.com>
-Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
----
-
-The patch was tested on minnowboard and sama5.
-
-Differences related to previous versions:
-v13:
-- in pac1921_write_shunt_resistor remove unnecessary parenthesis
-  in the check.
-- in pac1921_probe change if (ret < 0) to if (ret), change
-  !priv->rshunt_uohm to priv->rshunt_uohm == 0 and edit
-  error message to be consistent with Matteo's code. This way
-  unnecessary changes were removed.
-
-v12:
-- in pac1921_match_acpi_device reformat the instructions that
-  were over 80 characters width.
-- remove PAC1921_MAX_SHUNT_VALUE_uOHMS. Now the maximum acceptable value
-  of shunt resistor is INT_MAX. In pac1921_write_shunt_resistor
-  change the shunt check to respect the new limit and to avoid
-  overflow in val * MICRO.
-
-v11:
-- credit Andy Shevchenko for code review.
-
-v10:
-- fix coding style mistakes.
-- add UL to PAC1921_MAX_SHUNT_VALUE_uOHMS.
-- edit comment in pac1921_write_shunt_resistor.
-- in pac1921_probe use is_acpi_device_node instead of
-  ACPI_HANDLE.
-
-v9:
-- put limits.h in sorted order.
-- remove guid_parse and implement GUID_INIT.
-- remove pac1921_shunt_is_valid.
-- change maximum acceptable value of shunt resistor to 2146.999999.
-  This change was made so the readings for dt and ACPI share
-  the same range.
-  With this value the maximum current that can be read is
-  0.1V / 2146.999999 = 46.576 uA
-  If we use INT_MAX the maximum current is
-  0.1V / 2147.483647 = 46.566 uA
-  The relative error between the two is 0.0214, so it is
-  small enough to allow for code simplicity.
-  A shunt value over a few hundred Ohms is quite unusual.
-
-v8:
-- fix multiple coding style errors.
-- in pac1921_match_acpi_device change error type to ENOMEM
-  at label is NULL branch.
-- in pac1921_match_acpi_device when reading label,
-  change accesing method of string.
-- change name of PAC1921_ACPI_GET_UOHMS_VALS to
-  PAC1921_ACPI_GET_uOHMS_VALS.
-- add limits.h in include list.
-- change integer constant in PAC1921_MAX_SHUNT_VALUE_OHMS
-  to INT_MAX / MICRO.
-- change pac1921_shunt_is_invalid to pac1921_shunt_is_valid.
-- in pac1921_match_acpi_device change name of variable rez to status.
-
-v7:
-- in pac1921_shunt_is_invalid remove brackets in return.
-- in pac1921_match_acpi_device and pac1921_parse_of_fw move checking of
-  shunt value and scale calculation to pac1921_probe.
-- in pac1921_match_acpi_device change devm_kmemdup to devm_kstrdup
-  and add label check for NULL.
-- in pac1921_match_acpi_device and pac1921_parse_of_fw remove unnecessary
-  entry arguments. Now indio_dev is the only entry argument.
-- in pac1921_probe, pac1921_match_acpi_device and pac1921_parse_of_fw
-  standardised structure accesing.
-
-v6:
-- set maximum acceptable value of shunt resistor to INT_MAX UOHMS
-  in devicetree, ACPI table and user input.
-- in pac1921_match_acpi_device remove temp variable.
-
-v5:
-- set maximum acceptable value of shunt resistor to 2KOHM in devicetree,
-  ACPI table and user input. The chosen value is lesser than INT_MAX,
-  which is about 2.1KOHM.
-- in pac1921_match_acpi_device and pac1921_parse_of_fw change to only
-  read 32b values for resistor shunt.
-
-v4:
-- change name of pac1921_shunt_is_valid to pac1921_shunt_is_invalid.
-- fix coding style.
-- in pac1921_parse_of_fw change back to device_property_read_u32.
-
-v3:
-- simplify and make inline function pac1921_shunt_is_valid. Make argument u64.
-- fix link to DSM documentation.
-- in pac1921_match_acpi_device and pac1921_parse_of_fw, the shunt value is
-  read as u64.
-- in pac1921_parse_of_fw remove code for reading label value from
-  devicetree.
-- in pac1921_write_shunt_resistor cast the multiply result to u64 in order
-  to fix overflow.
-
-v2:
-- remove name variable from priv. Driver reads label attribute with
-  sysfs.
-- define pac1921_shunt_is_valid function.
-- move default assignments in pac1921_probe to original position.
-- roll back coding style changes.
-- add documentation for DSM(the linked document was used as reference).
-- remove acpi_match_device in pac1921_match_acpi_device.
-- remove unnecessary null assignment and comment.
-- change name of function pac1921_match_of_device to
-  pac1921_parse_of_fw.
-
-v1:
-- initial version for review.
-
- drivers/iio/adc/pac1921.c | 93 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 87 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
-index b0f6727cfe38..9f7b3d58549d 100644
---- a/drivers/iio/adc/pac1921.c
-+++ b/drivers/iio/adc/pac1921.c
-@@ -12,6 +12,7 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
-+#include <linux/limits.h>
- #include <linux/regmap.h>
- #include <linux/units.h>
- 
-@@ -67,6 +68,14 @@ enum pac1921_mxsl {
- #define PAC1921_DEFAULT_DI_GAIN		0 /* 2^(value): 1x gain (HW default) */
- #define PAC1921_DEFAULT_NUM_SAMPLES	0 /* 2^(value): 1 sample (HW default) */
- 
-+#define PAC1921_ACPI_GET_uOHMS_VALS             0
-+#define PAC1921_ACPI_GET_LABEL			1
-+
-+/* f7bb9932-86ee-4516-a236-7a7a742e55cb */
-+static const guid_t pac1921_guid =
-+			GUID_INIT(0xf7bb9932, 0x86ee, 0x4516, 0xa2,
-+				  0x36, 0x7a, 0x7a, 0x74, 0x2e, 0x55, 0xcb);
-+
- /*
-  * Pre-computed scale factors for BUS voltage
-  * format: IIO_VAL_INT_PLUS_NANO
-@@ -782,7 +791,7 @@ static ssize_t pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
- 					    const char *buf, size_t len)
- {
- 	struct pac1921_priv *priv = iio_priv(indio_dev);
--	u64 rshunt_uohm;
-+	u32 rshunt_uohm;
- 	int val, val_fract;
- 	int ret;
- 
-@@ -793,10 +802,17 @@ static ssize_t pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
- 	if (ret)
- 		return ret;
- 
--	rshunt_uohm = val * MICRO + val_fract;
--	if (rshunt_uohm == 0 || rshunt_uohm > INT_MAX)
-+	/*
-+	 * This check validates the shunt is not zero and does not surpass
-+	 * INT_MAX. The check is done before calculating in order to avoid
-+	 * val * MICRO overflowing.
-+	 */
-+	if ((!val && !val_fract) || val > INT_MAX / MICRO ||
-+	    (val == INT_MAX / MICRO && val_fract > INT_MAX % MICRO))
- 		return -EINVAL;
- 
-+	rshunt_uohm = val * MICRO + val_fract;
-+
- 	guard(mutex)(&priv->lock);
- 
- 	priv->rshunt_uohm = rshunt_uohm;
-@@ -1151,6 +1167,61 @@ static void pac1921_regulator_disable(void *data)
- 	regulator_disable(regulator);
- }
- 
-+/*
-+ * Documentation related to the ACPI device definition
-+ * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC193X-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
-+ */
-+static int pac1921_match_acpi_device(struct iio_dev *indio_dev)
-+{
-+	acpi_handle handle;
-+	union acpi_object *status;
-+	char *label;
-+	struct pac1921_priv *priv = iio_priv(indio_dev);
-+	struct device *dev = &priv->client->dev;
-+
-+	handle = ACPI_HANDLE(dev);
-+
-+	status = acpi_evaluate_dsm(handle, &pac1921_guid, 1,
-+				   PAC1921_ACPI_GET_uOHMS_VALS, NULL);
-+	if (!status)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Could not read shunt from ACPI table\n");
-+
-+	priv->rshunt_uohm = status->package.elements[0].integer.value;
-+	ACPI_FREE(status);
-+
-+	status = acpi_evaluate_dsm(handle, &pac1921_guid, 1,
-+				   PAC1921_ACPI_GET_LABEL, NULL);
-+	if (!status)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Could not read label from ACPI table\n");
-+
-+	label = devm_kstrdup(dev, status->package.elements[0].string.pointer,
-+			     GFP_KERNEL);
-+	if (!label)
-+		return -ENOMEM;
-+
-+	indio_dev->label = label;
-+	ACPI_FREE(status);
-+
-+	return 0;
-+}
-+
-+static int pac1921_parse_of_fw(struct iio_dev *indio_dev)
-+{
-+	int ret;
-+	struct pac1921_priv *priv = iio_priv(indio_dev);
-+	struct device *dev = &priv->client->dev;
-+
-+	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-+				       &priv->rshunt_uohm);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "Cannot read shunt resistor property\n");
-+
-+	return 0;
-+}
-+
- static int pac1921_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
-@@ -1179,11 +1250,14 @@ static int pac1921_probe(struct i2c_client *client)
- 	priv->di_gain = PAC1921_DEFAULT_DI_GAIN;
- 	priv->n_samples = PAC1921_DEFAULT_NUM_SAMPLES;
- 
--	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
--				       &priv->rshunt_uohm);
-+	if (is_acpi_device_node(dev->fwnode))
-+		ret = pac1921_match_acpi_device(indio_dev);
-+	else
-+		ret = pac1921_parse_of_fw(indio_dev);
- 	if (ret)
- 		return dev_err_probe(dev, ret,
--				     "Cannot read shunt resistor property\n");
-+				     "Parameter parsing error\n");
-+
- 	if (priv->rshunt_uohm == 0 || priv->rshunt_uohm > INT_MAX)
- 		return dev_err_probe(dev, -EINVAL,
- 				     "Invalid shunt resistor: %u\n",
-@@ -1246,11 +1320,18 @@ static const struct of_device_id pac1921_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, pac1921_of_match);
- 
-+static const struct acpi_device_id pac1921_acpi_match[] = {
-+	{ "MCHP1921" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, pac1921_acpi_match);
-+
- static struct i2c_driver pac1921_driver = {
- 	.driver	 = {
- 		.name = "pac1921",
- 		.pm = pm_sleep_ptr(&pac1921_pm_ops),
- 		.of_match_table = pac1921_of_match,
-+		.acpi_match_table = pac1921_acpi_match,
- 	},
- 	.probe = pac1921_probe,
- 	.id_table = pac1921_id,
-
-base-commit: 20fd1383cd616d61b2a79967da1221dc6cfb8430
--- 
-2.43.0
-
+Best regards,
+Matteo Martelli
 

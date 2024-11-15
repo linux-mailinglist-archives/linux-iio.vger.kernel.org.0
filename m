@@ -1,359 +1,341 @@
-Return-Path: <linux-iio+bounces-12299-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12300-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CF59CDC2B
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 11:09:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 089E29CDC4E
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 11:16:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66D3F28288C
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 10:09:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E778B25ADD
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 10:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6A11B219A;
-	Fri, 15 Nov 2024 10:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF6D18D622;
+	Fri, 15 Nov 2024 10:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="hv95Z99v"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QInaArz0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A3618F2DB;
-	Fri, 15 Nov 2024 10:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93D618D649
+	for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 10:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731665367; cv=none; b=LX5sh29BGvroIO/Ghy+GzObYSnIJ8JXr+CvXnY4fgQal7mZTNYoqkXq9jmbtprKcdeUOQwbV0YwWCZ6J4wnxafGThkeakX/UQU3nbhDA6DhJ8c36cuEWaBpVF3Z89YibMugMUSb55EG8TOk6neJMbpz5YKRTjlTq6H/Vk8hQ5/g=
+	t=1731665779; cv=none; b=ok+V1kcViJSDYO+pExEBXq21IulzywUGKjWfXbo1W2rFulgsVR+MizfGjZ/j7em+oNMOugz7sxFoRiOuDDEkFQBFK6HAlzjKJnsrUkWUph4MqTadgVvKQzMuucAMujyK8ftepNWue3HLshA9a1KIBlbfuW3VfI+YUYhMS1WE8WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731665367; c=relaxed/simple;
-	bh=bklX1Leumt29Umn8WljgSKs2Leh1mh4jfvooG13xk1g=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=acYra24OIL0JET+i10zuJOc6bDKNZwZJ0/glLSfozBGaTznUj8mGip9qmozm1mL5cK1RIPY5x+TJVJo4dFSMU5L5XDEaLauVaiiE/s2AWT6s1LZBVMyjazlp7gUoBmOXc2iLEVj06ftdg1FOjRUpuUvOMZ31BmtDyHZ76QkdVJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=hv95Z99v; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1731665364; x=1763201364;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bklX1Leumt29Umn8WljgSKs2Leh1mh4jfvooG13xk1g=;
-  b=hv95Z99vG0eOVnzj9CHoit/zc33rS4NL9zNYlGBRo9W0E329gZLkCq93
-   pAnENyG167pOtpUxUATfJ7l74R41WNOClIXKyuSvG3UFYN0pCPEWpnFt9
-   Bd5hmjIE3ktUaqlbNaIF8OAZySmWd8X6PwFPemxyScxl9Vp/31xghALOa
-   E6e9++DeW5BtmZhxFiKP4f7Cr75cK2iz2U2BODHAqRoVAvvdp6cxDizHP
-   eXRBl1Wf2Om6XxhHDG+Ci9tjFdBDbCr5odfWbge+J3ToHdSBXT2P7CZyj
-   G55ceVOXVDdbdcILc6JymnKVTBhnZ/D8s1C5c+Ndfq9V0+G4ZNChe9Wib
-   g==;
-X-CSE-ConnectionGUID: 9VSdjyV0RlKKgM7+01qhlg==
-X-CSE-MsgGUID: IsDRzG/qSjq65qOwW6Q/Gg==
-X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; 
-   d="scan'208";a="201798704"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Nov 2024 03:09:23 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 15 Nov 2024 03:08:43 -0700
-Received: from vduicu-Virtual-Machine.mshome.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.35 via Frontend Transport; Fri, 15 Nov 2024 03:08:41 -0700
-From: <victor.duicu@microchip.com>
-To: <matteomartelli3@gmail.com>, <jic23@kernel.org>, <lars@metafoo.de>,
-	<andy.shevchenko@gmail.com>
-CC: <marius.cristea@microchip.com>, <victor.duicu@microchip.com>,
-	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v12] iio: adc: pac1921: Add ACPI support to Microchip pac1921
-Date: Fri, 15 Nov 2024 12:07:56 +0200
-Message-ID: <20241115100756.8923-1-victor.duicu@microchip.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1731665779; c=relaxed/simple;
+	bh=yp8HclMjEgPnVolEt4GDET9NLM2QNAdMe6JwZ3Sr2zA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SW9tOd2mOFiYIrNP/8DHYZLhEfqkVD6G2lEdZs8vR4wrYgBsnvuZ4LlROHqGIIAmcRMAZVE6a18VwHAuFPifjpqvQ/lG+Q6rMsGlayX/pqQJABfqePGV6GseeLsvvHOKdwprg2lWGPfSYFPemUGRulQonJJppdwLLINdqvQmIwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QInaArz0; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-382242cd8bbso527096f8f.1
+        for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 02:16:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731665775; x=1732270575; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CtD858HP6jaD/1nRunNRy5gRnEapf3vAfLlTnOGuNkU=;
+        b=QInaArz0qtSfGhcUXjmiOsmbDh5h7moyhELXziWR4ZjsXMm11pMyzBbnk4p25U4q5/
+         NNHaOPSAWOR9WelbD/M3KhT63PTL0MS7yatL295iDkW1C1e+cZhksYM61OkLq0nexcwl
+         z2c1M9lc1Af4bSuJPLoJXjDopZAy6ymPJOSxsa9FJVMN23jrI37CdJtKOSB/ea1c8HAZ
+         W5YR9dAARAOCT3PujrehKCC7ArATspjktfG3ZJt6LtVZKPY6drqeWJ1mWjAclD7rNpkw
+         eZWnDSALwqNbPvXDKlUgpRzDg85VGEmoLWOxZC0eZ0nAYDoQ8xIJEu9hFhRIB8sJ2h7v
+         y+ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731665775; x=1732270575;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CtD858HP6jaD/1nRunNRy5gRnEapf3vAfLlTnOGuNkU=;
+        b=SCZ60vvulOzrEQtlHbh3huWAFjftsxmTzXR+EcxhyJVUnyjuKTEWfh7IQDBzlrJ+4a
+         19v4xv8j+VBrUurcgn1UoTRNvnujNS6kNGIFJ3RVE5KwEoOW6CxRXUkQSKLNfRi9bJ7D
+         LSY0abpfsjW4iSaLxq1dJEALI/HVpQCaA05KE6veZcNCRIo+3RDUTrYe9X+H5OCKCaWL
+         wl92kufsGX1SpSnwG97XDgHuy2kHcr/rKXCmaFYQO0kGvCu9atkAHrW3HRMrK7p+o9fo
+         6DIKNjhDQgOaOalh09zFJx65GfUG+ZJfspgSaJHCWdSsbcuqOEnKKkMiVJjXcdaYNPYN
+         NjNw==
+X-Gm-Message-State: AOJu0Yx1wfXuUA/kX6L5x8pUjguUQ/31sReh4N8EGschsUCJ1pvh8l6x
+	sCPQ+1uMZ5NlskEyCOLdXxdlCQUlsvr2SryG9/99ZwjrC2r9BrwI/ULuJ6U0g1ZG4aQenJgNKo/
+	S
+X-Google-Smtp-Source: AGHT+IHO2TGu4SfoLBSgE8FWlgZhaCvlXvGpJUAiZbQIUqSGElGzT1pOPOWKIDw/HhHOfVWaQrgInw==
+X-Received: by 2002:adf:e199:0:b0:382:24b1:e76f with SMTP id ffacd0b85a97d-3822590b591mr1515926f8f.2.1731665774748;
+        Fri, 15 Nov 2024 02:16:14 -0800 (PST)
+Received: from [127.0.0.1] (alille-653-1-300-114.w90-1.abo.wanadoo.fr. [90.1.180.114])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3822eb34170sm71116f8f.11.2024.11.15.02.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2024 02:16:14 -0800 (PST)
+From: Guillaume Ranquet <granquet@baylibre.com>
+Date: Fri, 15 Nov 2024 11:12:00 +0100
+Subject: [PATCH] iio: adc: ad7173: add calibration support
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241115-ad411x_calibration-v1-1-5f820dfb5c80@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAG8eN2cC/x2MSwqAMAwFryJZWzD171VEpLZRA6LSigjSuxtcD
+ QPz3guBPFOALnnB082Bj10E0wTsavaFFDtx0JkuELFUxgmf0ZqNJ28uyZW2VZVjja5tGpDh6Wn
+ m5z/thxg/XGh3amQAAAA=
+X-Change-ID: 20241115-ad411x_calibration-2c663171d988
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Guillaume Ranquet <granquet@baylibre.com>
+X-Mailer: b4 0.15-dev
 
-From: Victor Duicu <victor.duicu@microchip.com>
+The ad7173 family of chips has up to four calibration modes.
 
-This patch implements ACPI support to Microchip pac1921.
-The driver can read the shunt resistor value and label from the ACPI table.
+Internal zero scale: removes ADC core offset errors.
+Internal full scale: removes ADC core gain errors.
+System zero scale: reduces offset error to the order of channel noise.
+System full scale: reduces gain error to the order of channel noise.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
+All voltage channels will undergo an internal zero/full scale
+calibration at bootup.
+
+System zero/full scale can be done after bootup using the newly created
+iio interface 'sys_calibration' and 'sys_calibration_mode'
+
+Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
 ---
+Calibration on the ad7173 family is the same as on the ad7192 family of
+chips and mostly uses the ad_sigma_delta common code.
+---
+ drivers/iio/adc/ad7173.c | 123 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 123 insertions(+)
 
-The patch was tested on minnowboard and sama5.
-
-Differences related to previous versions:
-v12:
-- in pac1921_match_acpi_device reformat the instructions that
-  were over 80 characters width.
-- remove PAC1921_MAX_SHUNT_VALUE_uOHMS. Now the maximum acceptable value
-  of shunt resistor is INT_MAX. In pac1921_write_shunt_resistor
-  change the shunt check to respect the new limit and to avoid
-  overflow in val * MICRO.
-
-v11:
-- credit Andy Shevchenko for code review.
-
-v10:
-- fix coding style mistakes.
-- add UL to PAC1921_MAX_SHUNT_VALUE_uOHMS.
-- edit comment in pac1921_write_shunt_resistor.
-- in pac1921_probe use is_acpi_device_node instead of
-  ACPI_HANDLE.
-
-v9:
-- put limits.h in sorted order.
-- remove guid_parse and implement GUID_INIT.
-- remove pac1921_shunt_is_valid.
-- change maximum acceptable value of shunt resistor to 2146.999999.
-  This change was made so the readings for dt and ACPI share
-  the same range.
-  With this value the maximum current that can be read is
-  0.1V / 2146.999999 = 46.576 uA
-  If we use INT_MAX the maximum current is
-  0.1V / 2147.483647 = 46.566 uA
-  The relative error between the two is 0.0214, so it is
-  small enough to allow for code simplicity.
-  A shunt value over a few hundred Ohms is quite unusual.
-
-v8:
-- fix multiple coding style errors.
-- in pac1921_match_acpi_device change error type to ENOMEM
-  at label is NULL branch.
-- in pac1921_match_acpi_device when reading label,
-  change accesing method of string.
-- change name of PAC1921_ACPI_GET_UOHMS_VALS to
-  PAC1921_ACPI_GET_uOHMS_VALS.
-- add limits.h in include list.
-- change integer constant in PAC1921_MAX_SHUNT_VALUE_OHMS
-  to INT_MAX / MICRO.
-- change pac1921_shunt_is_invalid to pac1921_shunt_is_valid.
-- in pac1921_match_acpi_device change name of variable rez to status.
-
-v7:
-- in pac1921_shunt_is_invalid remove brackets in return.
-- in pac1921_match_acpi_device and pac1921_parse_of_fw move checking of
-  shunt value and scale calculation to pac1921_probe.
-- in pac1921_match_acpi_device change devm_kmemdup to devm_kstrdup
-  and add label check for NULL.
-- in pac1921_match_acpi_device and pac1921_parse_of_fw remove unnecessary
-  entry arguments. Now indio_dev is the only entry argument.
-- in pac1921_probe, pac1921_match_acpi_device and pac1921_parse_of_fw
-  standardised structure accesing.
-
-v6:
-- set maximum acceptable value of shunt resistor to INT_MAX UOHMS
-  in devicetree, ACPI table and user input.
-- in pac1921_match_acpi_device remove temp variable.
-
-v5:
-- set maximum acceptable value of shunt resistor to 2KOHM in devicetree,
-  ACPI table and user input. The chosen value is lesser than INT_MAX,
-  which is about 2.1KOHM.
-- in pac1921_match_acpi_device and pac1921_parse_of_fw change to only
-  read 32b values for resistor shunt.
-
-v4:
-- change name of pac1921_shunt_is_valid to pac1921_shunt_is_invalid.
-- fix coding style.
-- in pac1921_parse_of_fw change back to device_property_read_u32.
-
-v3:
-- simplify and make inline function pac1921_shunt_is_valid. Make argument u64.
-- fix link to DSM documentation.
-- in pac1921_match_acpi_device and pac1921_parse_of_fw, the shunt value is
-  read as u64.
-- in pac1921_parse_of_fw remove code for reading label value from
-  devicetree.
-- in pac1921_write_shunt_resistor cast the multiply result to u64 in order
-  to fix overflow.
-
-v2:
-- remove name variable from priv. Driver reads label attribute with
-  sysfs.
-- define pac1921_shunt_is_valid function.
-- move default assignments in pac1921_probe to original position.
-- roll back coding style changes.
-- add documentation for DSM(the linked document was used as reference).
-- remove acpi_match_device in pac1921_match_acpi_device.
-- remove unnecessary null assignment and comment.
-- change name of function pac1921_match_of_device to
-  pac1921_parse_of_fw.
-
-v1:
-- initial version for review.
-
- drivers/iio/adc/pac1921.c | 100 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 90 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
-index b0f6727cfe38..a78ae34057a1 100644
---- a/drivers/iio/adc/pac1921.c
-+++ b/drivers/iio/adc/pac1921.c
-@@ -12,6 +12,7 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
-+#include <linux/limits.h>
- #include <linux/regmap.h>
- #include <linux/units.h>
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index a0fca16c3be07534547a5b914d525d05f7425340..11ff148cb5a315d32485acf04b8d6f7d0fb6e5fa 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -150,6 +150,11 @@
+ #define AD7173_FILTER_ODR0_MASK		GENMASK(5, 0)
+ #define AD7173_MAX_CONFIGS		8
  
-@@ -67,6 +68,14 @@ enum pac1921_mxsl {
- #define PAC1921_DEFAULT_DI_GAIN		0 /* 2^(value): 1x gain (HW default) */
- #define PAC1921_DEFAULT_NUM_SAMPLES	0 /* 2^(value): 1 sample (HW default) */
- 
-+#define PAC1921_ACPI_GET_uOHMS_VALS             0
-+#define PAC1921_ACPI_GET_LABEL			1
++#define AD7173_MODE_CAL_INT_ZERO		0x4 /* Internal Zero-Scale Calibration */
++#define AD7173_MODE_CAL_INT_FULL		0x5 /* Internal Full-Scale Calibration */
++#define AD7173_MODE_CAL_SYS_ZERO		0x6 /* System Zero-Scale Calibration */
++#define AD7173_MODE_CAL_SYS_FULL		0x7 /* System Full-Scale Calibration */
 +
-+/* f7bb9932-86ee-4516-a236-7a7a742e55cb */
-+static const guid_t pac1921_guid =
-+			GUID_INIT(0xf7bb9932, 0x86ee, 0x4516, 0xa2,
-+				  0x36, 0x7a, 0x7a, 0x74, 0x2e, 0x55, 0xcb);
-+
- /*
-  * Pre-computed scale factors for BUS voltage
-  * format: IIO_VAL_INT_PLUS_NANO
-@@ -782,7 +791,7 @@ static ssize_t pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
- 					    const char *buf, size_t len)
- {
- 	struct pac1921_priv *priv = iio_priv(indio_dev);
--	u64 rshunt_uohm;
-+	u32 rshunt_uohm;
- 	int val, val_fract;
- 	int ret;
- 
-@@ -793,10 +802,17 @@ static ssize_t pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
- 	if (ret)
- 		return ret;
- 
--	rshunt_uohm = val * MICRO + val_fract;
--	if (rshunt_uohm == 0 || rshunt_uohm > INT_MAX)
-+	/*
-+	 * This check validates the shunt is not zero and does not surpass
-+	 * INT_MAX. The check is done before calculating in order to avoid
-+	 * val * MICRO overflowing.
-+	 */
-+	if ((!val && !val_fract) || (val > INT_MAX / MICRO) ||
-+	    ((val == INT_MAX / MICRO) && (val_fract > INT_MAX % MICRO)))
- 		return -EINVAL;
- 
-+	rshunt_uohm = val * MICRO + val_fract;
-+
- 	guard(mutex)(&priv->lock);
- 
- 	priv->rshunt_uohm = rshunt_uohm;
-@@ -1151,6 +1167,61 @@ static void pac1921_regulator_disable(void *data)
- 	regulator_disable(regulator);
- }
- 
-+/*
-+ * Documentation related to the ACPI device definition
-+ * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC193X-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
-+ */
-+static int pac1921_match_acpi_device(struct iio_dev *indio_dev)
-+{
-+	acpi_handle handle;
-+	union acpi_object *status;
-+	char *label;
-+	struct pac1921_priv *priv = iio_priv(indio_dev);
-+	struct device *dev = &priv->client->dev;
-+
-+	handle = ACPI_HANDLE(dev);
-+
-+	status = acpi_evaluate_dsm(handle, &pac1921_guid, 1,
-+				   PAC1921_ACPI_GET_uOHMS_VALS, NULL);
-+	if (!status)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Could not read shunt from ACPI table\n");
-+
-+	priv->rshunt_uohm = status->package.elements[0].integer.value;
-+	ACPI_FREE(status);
-+
-+	status = acpi_evaluate_dsm(handle, &pac1921_guid, 1,
-+				   PAC1921_ACPI_GET_LABEL, NULL);
-+	if (!status)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Could not read label from ACPI table\n");
-+
-+	label = devm_kstrdup(dev, status->package.elements[0].string.pointer,
-+			     GFP_KERNEL);
-+	if (!label)
-+		return -ENOMEM;
-+
-+	indio_dev->label = label;
-+	ACPI_FREE(status);
-+
-+	return 0;
-+}
-+
-+static int pac1921_parse_of_fw(struct iio_dev *indio_dev)
-+{
-+	int ret;
-+	struct pac1921_priv *priv = iio_priv(indio_dev);
-+	struct device *dev = &priv->client->dev;
-+
-+	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-+				       &priv->rshunt_uohm);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "Cannot read shunt resistor property\n");
-+
-+	return 0;
-+}
-+
- static int pac1921_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
-@@ -1179,14 +1250,16 @@ static int pac1921_probe(struct i2c_client *client)
- 	priv->di_gain = PAC1921_DEFAULT_DI_GAIN;
- 	priv->n_samples = PAC1921_DEFAULT_NUM_SAMPLES;
- 
--	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
--				       &priv->rshunt_uohm);
--	if (ret)
-+	if (is_acpi_device_node(dev->fwnode))
-+		ret = pac1921_match_acpi_device(indio_dev);
-+	else
-+		ret = pac1921_parse_of_fw(indio_dev);
-+	if (ret < 0)
- 		return dev_err_probe(dev, ret,
--				     "Cannot read shunt resistor property\n");
--	if (priv->rshunt_uohm == 0 || priv->rshunt_uohm > INT_MAX)
--		return dev_err_probe(dev, -EINVAL,
--				     "Invalid shunt resistor: %u\n",
-+				     "Parameter parsing error\n");
-+
-+	if (!priv->rshunt_uohm || priv->rshunt_uohm > INT_MAX)
-+		return dev_err_probe(dev, -EINVAL, "Invalid shunt resistor: %u\n",
- 				     priv->rshunt_uohm);
- 
- 	pac1921_calc_current_scales(priv);
-@@ -1246,11 +1319,18 @@ static const struct of_device_id pac1921_of_match[] = {
+ struct ad7173_device_info {
+ 	const unsigned int *sinc5_data_rates;
+ 	unsigned int num_sinc5_data_rates;
+@@ -175,6 +180,7 @@ struct ad7173_device_info {
+ 	bool has_input_buf;
+ 	bool has_int_ref;
+ 	bool has_ref2;
++	bool has_internal_fs_calibration;
+ 	bool higher_gpio_bits;
+ 	u8 num_gpios;
  };
- MODULE_DEVICE_TABLE(of, pac1921_of_match);
+@@ -215,6 +221,7 @@ struct ad7173_state {
+ 	struct regmap *reg_gpiocon_regmap;
+ 	struct gpio_regmap *gpio_regmap;
+ #endif
++	u8 *syscalib_mode;
+ };
  
-+static const struct acpi_device_id pac1921_acpi_match[] = {
-+	{ "MCHP1921" },
+ static unsigned int ad4115_sinc5_data_rates[] = {
+@@ -272,6 +279,7 @@ static const struct ad7173_device_info ad4111_device_info = {
+ 	.has_input_buf = true,
+ 	.has_current_inputs = true,
+ 	.has_int_ref = true,
++	.has_internal_fs_calibration = true,
+ 	.clock = 2 * HZ_PER_MHZ,
+ 	.sinc5_data_rates = ad7173_sinc5_data_rates,
+ 	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+@@ -291,6 +299,7 @@ static const struct ad7173_device_info ad4112_device_info = {
+ 	.has_input_buf = true,
+ 	.has_current_inputs = true,
+ 	.has_int_ref = true,
++	.has_internal_fs_calibration = true,
+ 	.clock = 2 * HZ_PER_MHZ,
+ 	.sinc5_data_rates = ad7173_sinc5_data_rates,
+ 	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+@@ -326,6 +335,7 @@ static const struct ad7173_device_info ad4114_device_info = {
+ 	.has_temp = true,
+ 	.has_input_buf = true,
+ 	.has_int_ref = true,
++	.has_internal_fs_calibration = true,
+ 	.clock = 2 * HZ_PER_MHZ,
+ 	.sinc5_data_rates = ad7173_sinc5_data_rates,
+ 	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+@@ -343,6 +353,7 @@ static const struct ad7173_device_info ad4115_device_info = {
+ 	.has_temp = true,
+ 	.has_input_buf = true,
+ 	.has_int_ref = true,
++	.has_internal_fs_calibration = true,
+ 	.clock = 8 * HZ_PER_MHZ,
+ 	.sinc5_data_rates = ad4115_sinc5_data_rates,
+ 	.num_sinc5_data_rates = ARRAY_SIZE(ad4115_sinc5_data_rates),
+@@ -360,6 +371,7 @@ static const struct ad7173_device_info ad4116_device_info = {
+ 	.has_temp = true,
+ 	.has_input_buf = true,
+ 	.has_int_ref = true,
++	.has_internal_fs_calibration = true,
+ 	.clock = 4 * HZ_PER_MHZ,
+ 	.sinc5_data_rates = ad4116_sinc5_data_rates,
+ 	.num_sinc5_data_rates = ARRAY_SIZE(ad4116_sinc5_data_rates),
+@@ -505,6 +517,105 @@ static const struct regmap_config ad7173_regmap_config = {
+ 	.read_flag_mask = BIT(6),
+ };
+ 
++enum {
++	AD7173_SYSCALIB_ZERO_SCALE,
++	AD7173_SYSCALIB_FULL_SCALE,
++};
++
++static const char * const ad7173_syscalib_modes[] = {
++	[AD7173_SYSCALIB_ZERO_SCALE] = "zero_scale",
++	[AD7173_SYSCALIB_FULL_SCALE] = "full_scale",
++};
++
++static int ad7173_set_syscalib_mode(struct iio_dev *indio_dev,
++				    const struct iio_chan_spec *chan,
++				    unsigned int mode)
++{
++	struct ad7173_state *st = iio_priv(indio_dev);
++
++	st->syscalib_mode[chan->channel] = mode;
++
++	return 0;
++}
++
++static int ad7173_get_syscalib_mode(struct iio_dev *indio_dev,
++				    const struct iio_chan_spec *chan)
++{
++	struct ad7173_state *st = iio_priv(indio_dev);
++
++	return st->syscalib_mode[chan->channel];
++}
++
++static ssize_t ad7173_write_syscalib(struct iio_dev *indio_dev,
++				     uintptr_t private,
++				     const struct iio_chan_spec *chan,
++				     const char *buf, size_t len)
++{
++	struct ad7173_state *st = iio_priv(indio_dev);
++	bool sys_calib;
++	int ret, mode;
++
++	ret = kstrtobool(buf, &sys_calib);
++	if (ret)
++		return ret;
++
++	mode = st->syscalib_mode[chan->channel];
++	if (sys_calib) {
++		if (mode == AD7173_SYSCALIB_ZERO_SCALE)
++			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_SYS_ZERO,
++					      chan->address);
++		else
++			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_SYS_FULL,
++					      chan->address);
++	}
++
++	return ret ? : len;
++}
++
++static const struct iio_enum ad7173_syscalib_mode_enum = {
++	.items = ad7173_syscalib_modes,
++	.num_items = ARRAY_SIZE(ad7173_syscalib_modes),
++	.set = ad7173_set_syscalib_mode,
++	.get = ad7173_get_syscalib_mode
++};
++
++static const struct iio_chan_spec_ext_info ad7173_calibsys_ext_info[] = {
++	{
++		.name = "sys_calibration",
++		.write = ad7173_write_syscalib,
++		.shared = IIO_SEPARATE,
++	},
++	IIO_ENUM("sys_calibration_mode", IIO_SEPARATE,
++		 &ad7173_syscalib_mode_enum),
++	IIO_ENUM_AVAILABLE("sys_calibration_mode", IIO_SHARED_BY_TYPE,
++			   &ad7173_syscalib_mode_enum),
 +	{ }
 +};
-+MODULE_DEVICE_TABLE(acpi, pac1921_acpi_match);
 +
- static struct i2c_driver pac1921_driver = {
- 	.driver	 = {
- 		.name = "pac1921",
- 		.pm = pm_sleep_ptr(&pac1921_pm_ops),
- 		.of_match_table = pac1921_of_match,
-+		.acpi_match_table = pac1921_acpi_match,
++static int ad7173_calibrate_all(struct ad7173_state *st, struct iio_dev *indio_dev)
++{
++	int ret;
++	int i;
++
++	for (i = 0; i < st->num_channels; i++) {
++		if (indio_dev->channels[i].type != IIO_VOLTAGE)
++			continue;
++
++		ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_ZERO, st->channels[i].ain);
++		if (ret < 0)
++			return ret;
++
++		if (st->info->has_internal_fs_calibration) {
++			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_FULL,
++					      st->channels[i].ain);
++			if (ret < 0)
++				return ret;
++		}
++	}
++
++	return 0;
++}
++
+ static int ad7173_mask_xlate(struct gpio_regmap *gpio, unsigned int base,
+ 			     unsigned int offset, unsigned int *reg,
+ 			     unsigned int *mask)
+@@ -801,6 +912,10 @@ static int ad7173_setup(struct iio_dev *indio_dev)
+ 	if (!st->config_cnts)
+ 		return -ENOMEM;
+ 
++	ret = ad7173_calibrate_all(st, indio_dev);
++	if (ret)
++		return ret;
++
+ 	/* All channels are enabled by default after a reset */
+ 	return ad7173_disable_all(&st->sd);
+ }
+@@ -1023,6 +1138,7 @@ static const struct iio_chan_spec ad7173_channel_template = {
+ 		.storagebits = 32,
+ 		.endianness = IIO_BE,
  	},
- 	.probe = pac1921_probe,
- 	.id_table = pac1921_id,
++	.ext_info = ad7173_calibsys_ext_info,
+ };
+ 
+ static const struct iio_chan_spec ad7173_temp_iio_channel_template = {
+@@ -1213,6 +1329,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 	struct iio_chan_spec *chan_arr, *chan;
+ 	unsigned int ain[AD7173_NO_AINS_PER_CHANNEL], chan_index = 0;
+ 	int ref_sel, ret, num_channels;
++	u8 *calib_mode;
+ 
+ 	num_channels = device_get_child_node_count(dev);
+ 
+@@ -1240,8 +1357,14 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 	if (!chans_st_arr)
+ 		return -ENOMEM;
+ 
++	calib_mode = devm_kcalloc(dev, st->num_channels, sizeof(*st->syscalib_mode),
++				  GFP_KERNEL);
++	if (!calib_mode)
++		return -ENOMEM;
++
+ 	indio_dev->channels = chan_arr;
+ 	st->channels = chans_st_arr;
++	st->syscalib_mode = calib_mode;
+ 
+ 	if (st->info->has_temp) {
+ 		chan_arr[chan_index] = ad7173_temp_iio_channel_template;
 
-base-commit: 20fd1383cd616d61b2a79967da1221dc6cfb8430
+---
+base-commit: 744cf71b8bdfcdd77aaf58395e068b7457634b2c
+change-id: 20241115-ad411x_calibration-2c663171d988
+
+Best regards,
 -- 
-2.43.0
+Guillaume Ranquet <granquet@baylibre.com>
 
 

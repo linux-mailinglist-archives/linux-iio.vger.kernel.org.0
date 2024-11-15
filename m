@@ -1,340 +1,359 @@
-Return-Path: <linux-iio+bounces-12298-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12299-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691589CDA02
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 08:39:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CF59CDC2B
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 11:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20469282B66
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 07:39:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66D3F28288C
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 10:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42CC188917;
-	Fri, 15 Nov 2024 07:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6A11B219A;
+	Fri, 15 Nov 2024 10:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b6UwGWPk"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="hv95Z99v"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C6E185B68;
-	Fri, 15 Nov 2024 07:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A3618F2DB;
+	Fri, 15 Nov 2024 10:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731656385; cv=none; b=Wq6wZNuENv5pFrtg0aHktDF/tREpAIHbyCrAqtA7saiT9t7oc0nisruPyXLHZ/Btackzna4s7D6p7RgtQvaeD4FRLL8T5C5lsK377Ut8aC9s/7XOjG1j84Tdrz2TIqnWlQWvxDBDDkrqg/f31ieUBFOokL02sQ1wLu7KUmpatPY=
+	t=1731665367; cv=none; b=LX5sh29BGvroIO/Ghy+GzObYSnIJ8JXr+CvXnY4fgQal7mZTNYoqkXq9jmbtprKcdeUOQwbV0YwWCZ6J4wnxafGThkeakX/UQU3nbhDA6DhJ8c36cuEWaBpVF3Z89YibMugMUSb55EG8TOk6neJMbpz5YKRTjlTq6H/Vk8hQ5/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731656385; c=relaxed/simple;
-	bh=eH19wIIM4cpxNwTLYT10HiMNgoD11ZBuSgwSdu+FriA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q+zg4oA/tgkBc+k9jRHj4Qun/hAq8XvMuOsU1dvqoLDkiNvsiXxOHSteD50u721g7+KIW86QprS3tPY72prfl0Usoq4myqRDD+2LUT1eEbV447jn3PPQYC/C9zV78m2aDAw7jMljas/DtBOrr1Uo8LGKPoNGxzK2Qs2TJ71r06M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b6UwGWPk; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-431481433bdso3116505e9.3;
-        Thu, 14 Nov 2024 23:39:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731656382; x=1732261182; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HAgmDy/oXRgQTGAgFIge+cgX1/PDJf6qQ6XWMqmqQBE=;
-        b=b6UwGWPkCM1JKpKk9gRQ0TiqZHNLLXY+MMMYZR/JkBq11m1uJfFbFtgcijjjlHgKux
-         lR7wBiOeiM6orYi292Fv0+3nEZWhSN3IDWiRLteaeetdxOwF4H6fEEOHKyo4gK9ZpkB6
-         2DOuXBP26A3ssWBqM6nBPN3F6W7dBbdAqK2TxcDGzhOcM57UFkwh6ro+wk0PZ0lodCmj
-         s/Lyx8ASJOS1K3csFIcmuxjuMQXDkizAFSNf37mdJk/HIQpF4dgLCLN1nMWW5k4RlXV0
-         T6MhSCtpON5WpO5AKbRaHVgVCfbu5KPvTbF88lGV9Q52bg6d2YqGBLTgHVEN7wcd8hwe
-         l61A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731656382; x=1732261182;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HAgmDy/oXRgQTGAgFIge+cgX1/PDJf6qQ6XWMqmqQBE=;
-        b=s7STtNqi4/NU1u9eWIRqXbcXgjgaan4OXItuHx4u5XQDlca9uJhon0i6Re+brhRr0K
-         oBZ+gzvaXhn8e816/R3WpMyzbWztwiZTzZxZdpZDskkkoFJYBZRZfX7yduIp5FKdGpb7
-         qUsucAf6FCe8g/rB5ru2LDHSyMDc4zRceL93zjJA3t/gbM2jLynXR3RldugXus75NDw/
-         tKSp9GWvBCJCHZlqhJFSHmSnzOZixfrIZ3m4rmCzcHTt3rKewqWrcBvz0+9ucbMHReFV
-         4i0BRXKYTmyCuq2V1r75Ru91KaqrJtnbe2Dh40iyQyqrIiRNvFEgJLEnNWCSxa75XiCD
-         uuag==
-X-Forwarded-Encrypted: i=1; AJvYcCXVNh/M7xOZPkw7j/YifgEb4FYNCh9SXqMiz5uuqL89sV12m6gF3/6l9ycd6UMnSgaeT+u0GUsCE1s=@vger.kernel.org, AJvYcCXaBvEcpG9mSBzCZBAlZoqCJXEEJubLsXntDIDC1KtrKPoUjungBSwCSJqnwaStkJ56SsR92ySabcC9FEwm@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz92mQs3oCZfQlnXVw9R0ugDVyK0Qa3IimJKMKu+v10gqvNO64q
-	Uo/prGJqQmfLJozwJxyae08bRJ5PzQDS7orSM2UrGAqonClKQeWS
-X-Google-Smtp-Source: AGHT+IG24xPelIJH9MIOfvENb2P2kpKZ5Nc99Cnb/fLNErLCYcb1yInthdpjt6lfxdDhhWfvVDr9zw==
-X-Received: by 2002:a05:6000:3c4:b0:382:d8c:2dc3 with SMTP id ffacd0b85a97d-3822590f077mr1317924f8f.14.1731656381676;
-        Thu, 14 Nov 2024 23:39:41 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef02:f400:a23c:697f:16fb:11c5? (p200300f6ef02f400a23c697f16fb11c5.dip0.t-ipconnect.de. [2003:f6:ef02:f400:a23c:697f:16fb:11c5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821adbe7f8sm3566970f8f.59.2024.11.14.23.39.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 23:39:41 -0800 (PST)
-Message-ID: <9073554f353273d0aa99a7aebfc5f367cfaa7c1a.camel@gmail.com>
-Subject: Re: [PATCH] iio: accel: kx022a: Improve reset delay
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
-	 <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 15 Nov 2024 08:44:04 +0100
-In-Reply-To: <42461eea-3e6d-4a15-a2fc-fa154163d80a@gmail.com>
-References: <ZzWfXbjaDkFnu_Jg@mva-rohm>
-	 <be375e24f74997743743fadf68125e176c23e2df.camel@gmail.com>
-	 <f4cf3437-87ea-4d0f-8dab-890d89f85605@gmail.com>
-	 <1f315c2f3eea86fe4db48f0168660ab4b0b020f1.camel@gmail.com>
-	 <1410938e-5135-434c-911e-7ba925bafd49@gmail.com>
-	 <b0a9eecb7b83c29aa545ed7717e3a6c2275b5e27.camel@gmail.com>
-	 <42461eea-3e6d-4a15-a2fc-fa154163d80a@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.1 
+	s=arc-20240116; t=1731665367; c=relaxed/simple;
+	bh=bklX1Leumt29Umn8WljgSKs2Leh1mh4jfvooG13xk1g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=acYra24OIL0JET+i10zuJOc6bDKNZwZJ0/glLSfozBGaTznUj8mGip9qmozm1mL5cK1RIPY5x+TJVJo4dFSMU5L5XDEaLauVaiiE/s2AWT6s1LZBVMyjazlp7gUoBmOXc2iLEVj06ftdg1FOjRUpuUvOMZ31BmtDyHZ76QkdVJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=hv95Z99v; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1731665364; x=1763201364;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bklX1Leumt29Umn8WljgSKs2Leh1mh4jfvooG13xk1g=;
+  b=hv95Z99vG0eOVnzj9CHoit/zc33rS4NL9zNYlGBRo9W0E329gZLkCq93
+   pAnENyG167pOtpUxUATfJ7l74R41WNOClIXKyuSvG3UFYN0pCPEWpnFt9
+   Bd5hmjIE3ktUaqlbNaIF8OAZySmWd8X6PwFPemxyScxl9Vp/31xghALOa
+   E6e9++DeW5BtmZhxFiKP4f7Cr75cK2iz2U2BODHAqRoVAvvdp6cxDizHP
+   eXRBl1Wf2Om6XxhHDG+Ci9tjFdBDbCr5odfWbge+J3ToHdSBXT2P7CZyj
+   G55ceVOXVDdbdcILc6JymnKVTBhnZ/D8s1C5c+Ndfq9V0+G4ZNChe9Wib
+   g==;
+X-CSE-ConnectionGUID: 9VSdjyV0RlKKgM7+01qhlg==
+X-CSE-MsgGUID: IsDRzG/qSjq65qOwW6Q/Gg==
+X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; 
+   d="scan'208";a="201798704"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Nov 2024 03:09:23 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 15 Nov 2024 03:08:43 -0700
+Received: from vduicu-Virtual-Machine.mshome.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Fri, 15 Nov 2024 03:08:41 -0700
+From: <victor.duicu@microchip.com>
+To: <matteomartelli3@gmail.com>, <jic23@kernel.org>, <lars@metafoo.de>,
+	<andy.shevchenko@gmail.com>
+CC: <marius.cristea@microchip.com>, <victor.duicu@microchip.com>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v12] iio: adc: pac1921: Add ACPI support to Microchip pac1921
+Date: Fri, 15 Nov 2024 12:07:56 +0200
+Message-ID: <20241115100756.8923-1-victor.duicu@microchip.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Fri, 2024-11-15 at 08:20 +0200, Matti Vaittinen wrote:
-> On 14/11/2024 14:26, Nuno S=C3=A1 wrote:
-> > On Thu, 2024-11-14 at 13:30 +0200, Matti Vaittinen wrote:
-> > > On 14/11/2024 12:46, Nuno S=C3=A1 wrote:
-> > > > On Thu, 2024-11-14 at 11:54 +0200, Matti Vaittinen wrote:
-> > > > > On 14/11/2024 11:43, Nuno S=C3=A1 wrote:
-> > > > > > On Thu, 2024-11-14 at 08:57 +0200, Matti Vaittinen wrote:
-> > > > > > > All the sensors supported by kx022a driver seemed to require =
-some
-> > > > > > > delay
-> > > > > > > after software reset to be operational again. More or less a
-> > > > > > > random
-> > > > > > > msleep(1) was added to cause the driver to go to sleep so the
-> > > > > > > sensor
-> > > > > > > has
-> > > > > > > time to become operational again.
-> > > > > > >=20
-> > > > > > > Now we have official docuumentation available:
-> > > > > > > https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Po=
-wer-on_Procedure_E.pdf
-> > > > > > > https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Proc=
-edure.pdf
-> > > > > > > https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_=
-Power-on_Procedure_E.pdf
-> > > > > > >=20
-> > > > > > > stating the required time is 2 ms.
-> > > > > > >=20
-> > > > > > > Due to the nature of the current msleep implementation, the
-> > > > > > > msleep(1)
-> > > > > > > is
-> > > > > > > likely to be sleeping more than 2ms already - but the value "=
-1" is
-> > > > > > > misleading in case someone needs to optimize the start time a=
-nd
-> > > > > > > change
-> > > > > > > the msleep to a more accurate delay. Hence it is better for
-> > > > > > > "documentation" purposes to use value which actually reflects=
- the
-> > > > > > > specified 2ms wait time.
-> > > > > > >=20
-> > > > > > > Change the value of delay after software reset to match the
-> > > > > > > specifications and add links to the power-on procedure
-> > > > > > > specifications.
-> > > > > > >=20
-> > > > > > > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> > > > > > > ---
-> > > > > > > Sorry for not including this to the KX134ACR-LBZ series I sen=
-t
-> > > > > > > yesterday. It was only half an hour after I had sent the KX13=
-4ACR-
-> > > > > > > LBZ
-> > > > > > > support when I was notified about the existence of the KX022A=
-CR-Z
-> > > > > > > start-up procedure specification... Hence this lone patch to =
-code
-> > > > > > > which
-> > > > > > > I just sent a miscallaneous series for before.
-> > > > > > >=20
-> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0drivers/iio/accel/kionix-kx022a.c | 1=
-1 ++++++++---
-> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A01 file changed, 8 insertions(+), 3 de=
-letions(-)
-> > > > > > >=20
-> > > > > > > diff --git a/drivers/iio/accel/kionix-kx022a.c
-> > > > > > > b/drivers/iio/accel/kionix-
-> > > > > > > kx022a.c
-> > > > > > > index 32387819995d..ccabe2e3b130 100644
-> > > > > > > --- a/drivers/iio/accel/kionix-kx022a.c
-> > > > > > > +++ b/drivers/iio/accel/kionix-kx022a.c
-> > > > > > > @@ -1121,10 +1121,15 @@ static int kx022a_chip_init(struct
-> > > > > > > kx022a_data
-> > > > > > > *data)
-> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0		return ret;
-> > > > > > > =C2=A0=C2=A0=C2=A0=20
-> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0	/*
-> > > > > > > -	 * I've seen I2C read failures if we poll too fast after
-> > > > > > > the
-> > > > > > > sensor
-> > > > > > > -	 * reset. Slight delay gives I2C block the time to
-> > > > > > > recover.
-> > > > > > > +	 * According to the power-on procedure documents, there
-> > > > > > > is
-> > > > > > > (at
-> > > > > > > least)
-> > > > > > > +	 * 2ms delay required after the software reset. This
-> > > > > > > should
-> > > > > > > be
-> > > > > > > same
-> > > > > > > for
-> > > > > > > +	 * all, KX022ACR-Z, KX132-1211, KX132ACR-LBZ and
-> > > > > > > KX134ACR-
-> > > > > > > LBZ.
-> > > > > > > +	 *
-> > > > > > > +	 *
-> > > > > > > https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Po=
-wer-on_Procedure_E.pdf
-> > > > > > > +	 *
-> > > > > > > https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Proc=
-edure.pdf
-> > > > > > > +	 *
-> > > > > > > https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_=
-Power-on_Procedure_E.pdf
-> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0	 */
-> > > > > > > -	msleep(1);
-> > > > > > > +	msleep(2);
-> > > > > >=20
-> > > > > > msleep() is not advisable for something lower than 20ms. Maybe =
-take
-> > > > > > the
-> > > > > > opportunity and change it to fsleep()?
-> > > > >=20
-> > > > > Thank you for the suggestion Nuno. I did originally consider usin=
-g the
-> > > > > usleep_range() since the checkpatch knows to warn about msleep wi=
-th
-> > > > > small times.
-> > > > >=20
-> > > > > However, there should be no rush to power-on the sensor at startu=
-p. It
-> > > > > usually does not matter if the sleep is 2 or 20 milli seconds, as=
- long
-> > > > > as it is long enough. I wonder if interrupting the system with
-> > > > > hrtimers
-> > > > > for _all_ smallish delays (when the longer delay would not really
-> > > > > hurt)
-> > > >=20
-> > > > That's why you have ranges of about 20% (I think) in usleep() so yo=
-u
-> > > > minimize
-> > > > hrtimers interrupts.
-> > > >=20
-> > > > Other thing is boot time... Sleeping 20ms instead of 2ms is a huge
-> > > > difference.
-> > > > Imagine if everyone thought like this for small sleeps :)?
-> > >=20
-> > > I think this is interesting question. My thoughts were along the line
-> > > that, even if small sleeps were extended to longer (where small sleep=
- is
-> > > not a priority), the CPUs would still (especially during the boot up)
-> > > have their hands full. I don't know if we might indeed end up a
-> > > situation where CPUs were idling, waiting for next timer slot.
-> >=20
-> > My problem is not the CPU but delaying probing devices as you probe one
-> > device
-> > at time...
-> >=20
-> > >=20
-> > > What comes to boot time, I doubt the CPUs run out of things to do,
-> > > especially when we use the probe_type =3D PROBE_PREFER_ASYNCHRONOUS.
-> >=20
-> > Yeah, with this, the above does not apply. Still, spending more time in=
- a
-> > worker
-> > than needed (and 18ms is huge) seems a waste to me.
->=20
-> This is likely to be my ignorance, but I don't know what is wasted here.=
-=20
-> (genuine question, not trying to be a smart-ass).
+From: Victor Duicu <victor.duicu@microchip.com>
 
-Well, AFAIK, async probing is using the async.c API which is based on worke=
-rs.
-If you spend (worst case scenario) 18ms more than you need in the handler (=
-and
-18ms is __huge__), it means that worker can't go on and do some other usefu=
-l
-stuff, right?
+This patch implements ACPI support to Microchip pac1921.
+The driver can read the shunt resistor value and label from the ACPI table.
 
->=20
-> > > > > is a the best design choice. Hence I'd rather keep the msleep whe=
-n we
-> > > > > don't need to guarantee delay to be short instead of defaulting t=
-o
-> > > > > hrtimers or even busy-loop when it is not required.
-> > > > >=20
-> > > > > Do you think I am mistaken?
-> > > > >=20
-> > > >=20
-> > > > To me this is more about correctness and do what the docs tell us t=
-o do
-> > > > :).
-> > > > Sure, here you know what you're doing and you don't care if you end=
- up
-> > > > sleeping
-> > > > more than 2ms but that's not always the case and code like this all=
-ows
-> > > > for
-> > > > legit
-> > > > mistakes (if someone just copy paste this for example).
-> > >=20
-> > > Right. I just wonder if always requiring stricter wake-up instead of
-> > > allowing things to run uninterrupted is the best role model either?
-> >=20
-> > Why not :)? If we just need to wait 2ms, why waiting more? I would be v=
-ery
-> > surprised if hrtimers are a deal breaker in here. Otherwise, we should
-> > remove it
-> > from the docs...
->=20
-> Again I may be wrong, but I think each of the interrupts we add, require=
-=20
-> tiny bit of handling - which I thought is more of a waste than sleeping.
->=20
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
+---
 
-Not that it's even every likely that you're not adding a new interrupt
-necessarily. That's the point of the range in usleep(). So that multiple
-handlers can be done in one interrupt.
+The patch was tested on minnowboard and sama5.
 
-> I admit this is all hand-waving as I have no test data to back up my=20
-> pondering. And, I believe you are right that this surely is not a deal=
-=20
-> breaker - but neither do I see adding more interrupts (when not really=
-=20
-> needed) as a good design.
->=20
-> > > > Not a big deal anyways...
-> > >=20
-> > > Agree :) But I think this is a spot where I could learn a bit. I will
-> > > gladly switch to the fsleep() if someone explains me relying on hrtim=
-ers
-> > > should be preferred also when there is no real need to wake up quicke=
-r
-> > > than msleep() allows.
-> > >=20
-> >=20
-> > Personally, I think that sleeping more than needed is always a wast and=
- then
-> > it
-> > comes back to my correctness comment. In here you know what you're doin=
-g but
-> > I
-> > dunno that switching to hrtimers will do any arm to the device :) and a=
-llows
-> > proper patterns to be copied.
->=20
-> I have been thinking that handling the (hrtimer) interrupts generates=20
-> more overhead (waste) than sleeping.
->=20
+Differences related to previous versions:
+v12:
+- in pac1921_match_acpi_device reformat the instructions that
+  were over 80 characters width.
+- remove PAC1921_MAX_SHUNT_VALUE_uOHMS. Now the maximum acceptable value
+  of shunt resistor is INT_MAX. In pac1921_write_shunt_resistor
+  change the shunt check to respect the new limit and to avoid
+  overflow in val * MICRO.
 
-Put it this way... if that was true, I would assume it would be somewhere
-described in the sleeping docs. More, I don't think the rule of thumb would=
- be
-to use hrtirmers for things < 20ms.
+v11:
+- credit Andy Shevchenko for code review.
 
-- Nuno S=C3=A1
+v10:
+- fix coding style mistakes.
+- add UL to PAC1921_MAX_SHUNT_VALUE_uOHMS.
+- edit comment in pac1921_write_shunt_resistor.
+- in pac1921_probe use is_acpi_device_node instead of
+  ACPI_HANDLE.
+
+v9:
+- put limits.h in sorted order.
+- remove guid_parse and implement GUID_INIT.
+- remove pac1921_shunt_is_valid.
+- change maximum acceptable value of shunt resistor to 2146.999999.
+  This change was made so the readings for dt and ACPI share
+  the same range.
+  With this value the maximum current that can be read is
+  0.1V / 2146.999999 = 46.576 uA
+  If we use INT_MAX the maximum current is
+  0.1V / 2147.483647 = 46.566 uA
+  The relative error between the two is 0.0214, so it is
+  small enough to allow for code simplicity.
+  A shunt value over a few hundred Ohms is quite unusual.
+
+v8:
+- fix multiple coding style errors.
+- in pac1921_match_acpi_device change error type to ENOMEM
+  at label is NULL branch.
+- in pac1921_match_acpi_device when reading label,
+  change accesing method of string.
+- change name of PAC1921_ACPI_GET_UOHMS_VALS to
+  PAC1921_ACPI_GET_uOHMS_VALS.
+- add limits.h in include list.
+- change integer constant in PAC1921_MAX_SHUNT_VALUE_OHMS
+  to INT_MAX / MICRO.
+- change pac1921_shunt_is_invalid to pac1921_shunt_is_valid.
+- in pac1921_match_acpi_device change name of variable rez to status.
+
+v7:
+- in pac1921_shunt_is_invalid remove brackets in return.
+- in pac1921_match_acpi_device and pac1921_parse_of_fw move checking of
+  shunt value and scale calculation to pac1921_probe.
+- in pac1921_match_acpi_device change devm_kmemdup to devm_kstrdup
+  and add label check for NULL.
+- in pac1921_match_acpi_device and pac1921_parse_of_fw remove unnecessary
+  entry arguments. Now indio_dev is the only entry argument.
+- in pac1921_probe, pac1921_match_acpi_device and pac1921_parse_of_fw
+  standardised structure accesing.
+
+v6:
+- set maximum acceptable value of shunt resistor to INT_MAX UOHMS
+  in devicetree, ACPI table and user input.
+- in pac1921_match_acpi_device remove temp variable.
+
+v5:
+- set maximum acceptable value of shunt resistor to 2KOHM in devicetree,
+  ACPI table and user input. The chosen value is lesser than INT_MAX,
+  which is about 2.1KOHM.
+- in pac1921_match_acpi_device and pac1921_parse_of_fw change to only
+  read 32b values for resistor shunt.
+
+v4:
+- change name of pac1921_shunt_is_valid to pac1921_shunt_is_invalid.
+- fix coding style.
+- in pac1921_parse_of_fw change back to device_property_read_u32.
+
+v3:
+- simplify and make inline function pac1921_shunt_is_valid. Make argument u64.
+- fix link to DSM documentation.
+- in pac1921_match_acpi_device and pac1921_parse_of_fw, the shunt value is
+  read as u64.
+- in pac1921_parse_of_fw remove code for reading label value from
+  devicetree.
+- in pac1921_write_shunt_resistor cast the multiply result to u64 in order
+  to fix overflow.
+
+v2:
+- remove name variable from priv. Driver reads label attribute with
+  sysfs.
+- define pac1921_shunt_is_valid function.
+- move default assignments in pac1921_probe to original position.
+- roll back coding style changes.
+- add documentation for DSM(the linked document was used as reference).
+- remove acpi_match_device in pac1921_match_acpi_device.
+- remove unnecessary null assignment and comment.
+- change name of function pac1921_match_of_device to
+  pac1921_parse_of_fw.
+
+v1:
+- initial version for review.
+
+ drivers/iio/adc/pac1921.c | 100 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 90 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
+index b0f6727cfe38..a78ae34057a1 100644
+--- a/drivers/iio/adc/pac1921.c
++++ b/drivers/iio/adc/pac1921.c
+@@ -12,6 +12,7 @@
+ #include <linux/iio/iio.h>
+ #include <linux/iio/trigger_consumer.h>
+ #include <linux/iio/triggered_buffer.h>
++#include <linux/limits.h>
+ #include <linux/regmap.h>
+ #include <linux/units.h>
+ 
+@@ -67,6 +68,14 @@ enum pac1921_mxsl {
+ #define PAC1921_DEFAULT_DI_GAIN		0 /* 2^(value): 1x gain (HW default) */
+ #define PAC1921_DEFAULT_NUM_SAMPLES	0 /* 2^(value): 1 sample (HW default) */
+ 
++#define PAC1921_ACPI_GET_uOHMS_VALS             0
++#define PAC1921_ACPI_GET_LABEL			1
++
++/* f7bb9932-86ee-4516-a236-7a7a742e55cb */
++static const guid_t pac1921_guid =
++			GUID_INIT(0xf7bb9932, 0x86ee, 0x4516, 0xa2,
++				  0x36, 0x7a, 0x7a, 0x74, 0x2e, 0x55, 0xcb);
++
+ /*
+  * Pre-computed scale factors for BUS voltage
+  * format: IIO_VAL_INT_PLUS_NANO
+@@ -782,7 +791,7 @@ static ssize_t pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
+ 					    const char *buf, size_t len)
+ {
+ 	struct pac1921_priv *priv = iio_priv(indio_dev);
+-	u64 rshunt_uohm;
++	u32 rshunt_uohm;
+ 	int val, val_fract;
+ 	int ret;
+ 
+@@ -793,10 +802,17 @@ static ssize_t pac1921_write_shunt_resistor(struct iio_dev *indio_dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	rshunt_uohm = val * MICRO + val_fract;
+-	if (rshunt_uohm == 0 || rshunt_uohm > INT_MAX)
++	/*
++	 * This check validates the shunt is not zero and does not surpass
++	 * INT_MAX. The check is done before calculating in order to avoid
++	 * val * MICRO overflowing.
++	 */
++	if ((!val && !val_fract) || (val > INT_MAX / MICRO) ||
++	    ((val == INT_MAX / MICRO) && (val_fract > INT_MAX % MICRO)))
+ 		return -EINVAL;
+ 
++	rshunt_uohm = val * MICRO + val_fract;
++
+ 	guard(mutex)(&priv->lock);
+ 
+ 	priv->rshunt_uohm = rshunt_uohm;
+@@ -1151,6 +1167,61 @@ static void pac1921_regulator_disable(void *data)
+ 	regulator_disable(regulator);
+ }
+ 
++/*
++ * Documentation related to the ACPI device definition
++ * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC193X-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
++ */
++static int pac1921_match_acpi_device(struct iio_dev *indio_dev)
++{
++	acpi_handle handle;
++	union acpi_object *status;
++	char *label;
++	struct pac1921_priv *priv = iio_priv(indio_dev);
++	struct device *dev = &priv->client->dev;
++
++	handle = ACPI_HANDLE(dev);
++
++	status = acpi_evaluate_dsm(handle, &pac1921_guid, 1,
++				   PAC1921_ACPI_GET_uOHMS_VALS, NULL);
++	if (!status)
++		return dev_err_probe(dev, -EINVAL,
++				     "Could not read shunt from ACPI table\n");
++
++	priv->rshunt_uohm = status->package.elements[0].integer.value;
++	ACPI_FREE(status);
++
++	status = acpi_evaluate_dsm(handle, &pac1921_guid, 1,
++				   PAC1921_ACPI_GET_LABEL, NULL);
++	if (!status)
++		return dev_err_probe(dev, -EINVAL,
++				     "Could not read label from ACPI table\n");
++
++	label = devm_kstrdup(dev, status->package.elements[0].string.pointer,
++			     GFP_KERNEL);
++	if (!label)
++		return -ENOMEM;
++
++	indio_dev->label = label;
++	ACPI_FREE(status);
++
++	return 0;
++}
++
++static int pac1921_parse_of_fw(struct iio_dev *indio_dev)
++{
++	int ret;
++	struct pac1921_priv *priv = iio_priv(indio_dev);
++	struct device *dev = &priv->client->dev;
++
++	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
++				       &priv->rshunt_uohm);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "Cannot read shunt resistor property\n");
++
++	return 0;
++}
++
+ static int pac1921_probe(struct i2c_client *client)
+ {
+ 	struct device *dev = &client->dev;
+@@ -1179,14 +1250,16 @@ static int pac1921_probe(struct i2c_client *client)
+ 	priv->di_gain = PAC1921_DEFAULT_DI_GAIN;
+ 	priv->n_samples = PAC1921_DEFAULT_NUM_SAMPLES;
+ 
+-	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
+-				       &priv->rshunt_uohm);
+-	if (ret)
++	if (is_acpi_device_node(dev->fwnode))
++		ret = pac1921_match_acpi_device(indio_dev);
++	else
++		ret = pac1921_parse_of_fw(indio_dev);
++	if (ret < 0)
+ 		return dev_err_probe(dev, ret,
+-				     "Cannot read shunt resistor property\n");
+-	if (priv->rshunt_uohm == 0 || priv->rshunt_uohm > INT_MAX)
+-		return dev_err_probe(dev, -EINVAL,
+-				     "Invalid shunt resistor: %u\n",
++				     "Parameter parsing error\n");
++
++	if (!priv->rshunt_uohm || priv->rshunt_uohm > INT_MAX)
++		return dev_err_probe(dev, -EINVAL, "Invalid shunt resistor: %u\n",
+ 				     priv->rshunt_uohm);
+ 
+ 	pac1921_calc_current_scales(priv);
+@@ -1246,11 +1319,18 @@ static const struct of_device_id pac1921_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, pac1921_of_match);
+ 
++static const struct acpi_device_id pac1921_acpi_match[] = {
++	{ "MCHP1921" },
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, pac1921_acpi_match);
++
+ static struct i2c_driver pac1921_driver = {
+ 	.driver	 = {
+ 		.name = "pac1921",
+ 		.pm = pm_sleep_ptr(&pac1921_pm_ops),
+ 		.of_match_table = pac1921_of_match,
++		.acpi_match_table = pac1921_acpi_match,
+ 	},
+ 	.probe = pac1921_probe,
+ 	.id_table = pac1921_id,
+
+base-commit: 20fd1383cd616d61b2a79967da1221dc6cfb8430
+-- 
+2.43.0
+
 

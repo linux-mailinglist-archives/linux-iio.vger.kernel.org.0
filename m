@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-12300-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12301-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089E29CDC4E
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 11:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5858E9CDCB9
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 11:38:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E778B25ADD
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 10:16:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A10E3B2299F
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 10:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF6D18D622;
-	Fri, 15 Nov 2024 10:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5701118FDCE;
+	Fri, 15 Nov 2024 10:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QInaArz0"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fc3E8n+g"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93D618D649
-	for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 10:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A00116631C
+	for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 10:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731665779; cv=none; b=ok+V1kcViJSDYO+pExEBXq21IulzywUGKjWfXbo1W2rFulgsVR+MizfGjZ/j7em+oNMOugz7sxFoRiOuDDEkFQBFK6HAlzjKJnsrUkWUph4MqTadgVvKQzMuucAMujyK8ftepNWue3HLshA9a1KIBlbfuW3VfI+YUYhMS1WE8WI=
+	t=1731667104; cv=none; b=DdPMTDG3hn2O9yxgFhprXw76XW7nD1OtFbxi0F1JW+w5zl67OmMr4RvHRnZSR1SQ78shDFyJ+LFvu9q7h5oEiJtyxrCsQq8NLPL8ektfTsCerrWs7McUXUQVUC5y5g0a1whu5oNrpEmU24eGTs8sI15OCM1WsCEYJu2pV+mp6qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731665779; c=relaxed/simple;
-	bh=yp8HclMjEgPnVolEt4GDET9NLM2QNAdMe6JwZ3Sr2zA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SW9tOd2mOFiYIrNP/8DHYZLhEfqkVD6G2lEdZs8vR4wrYgBsnvuZ4LlROHqGIIAmcRMAZVE6a18VwHAuFPifjpqvQ/lG+Q6rMsGlayX/pqQJABfqePGV6GseeLsvvHOKdwprg2lWGPfSYFPemUGRulQonJJppdwLLINdqvQmIwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QInaArz0; arc=none smtp.client-ip=209.85.221.49
+	s=arc-20240116; t=1731667104; c=relaxed/simple;
+	bh=a9Ci7wIoNIlUfqDLXVLFA0ucqR7miOS08awJuyxlED0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VTY6pSq4+pf7+iBV7dOJx2JZJkfqw9gJ10V6HrMfZGCZqs8Ikt2Ye1EZ8tivb2c8KfMCNT+c87DI7KSBMP7XSLimuXAq9pn1Efgt1dPTwrwDnuN9J+DUhB5xKgKyI99koNtK24SJ+yjjEodw6ukWvENI4ar0Wp8gVxAzoyty1ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fc3E8n+g; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-382242cd8bbso527096f8f.1
-        for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 02:16:16 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43161c0068bso13340245e9.1
+        for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 02:38:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731665775; x=1732270575; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731667099; x=1732271899; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CtD858HP6jaD/1nRunNRy5gRnEapf3vAfLlTnOGuNkU=;
-        b=QInaArz0qtSfGhcUXjmiOsmbDh5h7moyhELXziWR4ZjsXMm11pMyzBbnk4p25U4q5/
-         NNHaOPSAWOR9WelbD/M3KhT63PTL0MS7yatL295iDkW1C1e+cZhksYM61OkLq0nexcwl
-         z2c1M9lc1Af4bSuJPLoJXjDopZAy6ymPJOSxsa9FJVMN23jrI37CdJtKOSB/ea1c8HAZ
-         W5YR9dAARAOCT3PujrehKCC7ArATspjktfG3ZJt6LtVZKPY6drqeWJ1mWjAclD7rNpkw
-         eZWnDSALwqNbPvXDKlUgpRzDg85VGEmoLWOxZC0eZ0nAYDoQ8xIJEu9hFhRIB8sJ2h7v
-         y+ew==
+        bh=Db1U4jpEK2AiiwKsw/5x+Bw04+ZGyA1cxWkjFENXZLY=;
+        b=fc3E8n+grWl2svRAzrpAUJNn/GNbUUI7nvU1qj3pUwKOpCDm1BAoNACM1IaUK5lOVN
+         SRm13hbPeGLNp2JBEq8SSoEs8Qu4F3e89J7gzey8nNKgLSby+T1zGivhim+f7h9ubxZ+
+         VFp54TkQGDyX6yLQny2/kFn3eGFOSubdochvsdw4MudrNS55FWTPyukv0e+E/WXlRCrX
+         O8qrRfTwt95Ls+FsAxBywz5SAnkci0DPlCi+rcwSDrVeBuQ5RVRBRhzxa70e2Ev8AADu
+         d6MAby1sRIMwk2FZIQ/+ejjnOMPCBGfWFxyqDzoPU6t77JUvE3uzJDxPkxkWna2/Ixs7
+         P2Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731665775; x=1732270575;
+        d=1e100.net; s=20230601; t=1731667099; x=1732271899;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CtD858HP6jaD/1nRunNRy5gRnEapf3vAfLlTnOGuNkU=;
-        b=SCZ60vvulOzrEQtlHbh3huWAFjftsxmTzXR+EcxhyJVUnyjuKTEWfh7IQDBzlrJ+4a
-         19v4xv8j+VBrUurcgn1UoTRNvnujNS6kNGIFJ3RVE5KwEoOW6CxRXUkQSKLNfRi9bJ7D
-         LSY0abpfsjW4iSaLxq1dJEALI/HVpQCaA05KE6veZcNCRIo+3RDUTrYe9X+H5OCKCaWL
-         wl92kufsGX1SpSnwG97XDgHuy2kHcr/rKXCmaFYQO0kGvCu9atkAHrW3HRMrK7p+o9fo
-         6DIKNjhDQgOaOalh09zFJx65GfUG+ZJfspgSaJHCWdSsbcuqOEnKKkMiVJjXcdaYNPYN
-         NjNw==
-X-Gm-Message-State: AOJu0Yx1wfXuUA/kX6L5x8pUjguUQ/31sReh4N8EGschsUCJ1pvh8l6x
-	sCPQ+1uMZ5NlskEyCOLdXxdlCQUlsvr2SryG9/99ZwjrC2r9BrwI/ULuJ6U0g1ZG4aQenJgNKo/
-	S
-X-Google-Smtp-Source: AGHT+IHO2TGu4SfoLBSgE8FWlgZhaCvlXvGpJUAiZbQIUqSGElGzT1pOPOWKIDw/HhHOfVWaQrgInw==
-X-Received: by 2002:adf:e199:0:b0:382:24b1:e76f with SMTP id ffacd0b85a97d-3822590b591mr1515926f8f.2.1731665774748;
-        Fri, 15 Nov 2024 02:16:14 -0800 (PST)
+        bh=Db1U4jpEK2AiiwKsw/5x+Bw04+ZGyA1cxWkjFENXZLY=;
+        b=XjIbCF41ARp4Lr6KsSixdxWuPZ05XuAlTxMme4AOaVxKAFff1Xuh+4bWxHpMyxBuUi
+         FZpLEKA0494WEzSd2TiKII7so2Sw9RxtjMEnPuK86W0N+0AvFeLnnVwN3TZBui0PzN0Q
+         aC1sqPZ41LKwpsi6055Dkhr3OdY+Z6/OvgU5zhElxGGKqTNw1d8l0YIxHj7cUZExkngI
+         Svdy+iZ4thFGWvzpMcsKl4gcfHCeX/Oq3KzYj2XeWlsec40hFHXt0sVY/QNVpHKxxZ8D
+         rZGN9edlqnx1qgrScstaU52Hqa1Oh7sFDooaSQzIoNG8nSdzszy+iswc5IMc0JAT6Hf2
+         k6oA==
+X-Gm-Message-State: AOJu0YxKnUjK7QBU0UBFcFQmj/I2T7F7PaZG9AteKQhXSLrQdxpAwx19
+	KBVPmIe/VNw+Y28sFRedlMrMhCWqKXiuS9wco84bgOi3TQHgRQjaAHXlft9Y8tA=
+X-Google-Smtp-Source: AGHT+IHs4KY4XzxNYlsXM+RtFDckmBr6pGD2/1eyNv2zRG7HjQp0QPampfN4h4i+u1UQn6If4vcBvg==
+X-Received: by 2002:a05:6000:3c6:b0:374:af19:7992 with SMTP id ffacd0b85a97d-38225a42f6dmr1710307f8f.7.1731667099414;
+        Fri, 15 Nov 2024 02:38:19 -0800 (PST)
 Received: from [127.0.0.1] (alille-653-1-300-114.w90-1.abo.wanadoo.fr. [90.1.180.114])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3822eb34170sm71116f8f.11.2024.11.15.02.16.13
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ae1617bsm4084163f8f.72.2024.11.15.02.38.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 02:16:14 -0800 (PST)
+        Fri, 15 Nov 2024 02:38:18 -0800 (PST)
 From: Guillaume Ranquet <granquet@baylibre.com>
-Date: Fri, 15 Nov 2024 11:12:00 +0100
-Subject: [PATCH] iio: adc: ad7173: add calibration support
+Date: Fri, 15 Nov 2024 11:34:19 +0100
+Subject: [PATCH RFC] iio: adc: ad7173: add openwire detection support for
+ single conversions
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,11 +76,12 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241115-ad411x_calibration-v1-1-5f820dfb5c80@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAG8eN2cC/x2MSwqAMAwFryJZWzD171VEpLZRA6LSigjSuxtcD
- QPz3guBPFOALnnB082Bj10E0wTsavaFFDtx0JkuELFUxgmf0ZqNJ28uyZW2VZVjja5tGpDh6Wn
- m5z/thxg/XGh3amQAAAA=
-X-Change-ID: 20241115-ad411x_calibration-2c663171d988
+Message-Id: <20241115-ad4111_openwire-v1-1-db97ac8bf250@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAKojN2cC/1WOywrCMBBFfyXM2kgTDNYiIgh+gFspZdJONGAfJ
+ rVWSv/dtOrC1XDmMmfuAJ6cJQ8JG8BRZ72tqwBiwSC/YnUhbovAICO5EkIojsU0s7qh6mkdcVK
+ qII2x3KwNhKvGkbH9bDzD6XiA9LN0dH8Ee/tNSvIeZ3vCtv/yPsvxZrXDNnThneCCKxPLqDBa5
+ XG01/iaYlrmdbmbXmr0xAOUtk1YRX3Lf0JIx/ENwwlFFOMAAAA=
+X-Change-ID: 20241115-ad4111_openwire-e55deba8297f
 To: Lars-Peter Clausen <lars@metafoo.de>, 
  Michael Hennerich <Michael.Hennerich@analog.com>, 
  Jonathan Cameron <jic23@kernel.org>
@@ -88,251 +89,316 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Guillaume Ranquet <granquet@baylibre.com>
 X-Mailer: b4 0.15-dev
 
-The ad7173 family of chips has up to four calibration modes.
+Some chips of the ad7173 family supports open wire detection.
 
-Internal zero scale: removes ADC core offset errors.
-Internal full scale: removes ADC core gain errors.
-System zero scale: reduces offset error to the order of channel noise.
-System full scale: reduces gain error to the order of channel noise.
-
-All voltage channels will undergo an internal zero/full scale
-calibration at bootup.
-
-System zero/full scale can be done after bootup using the newly created
-iio interface 'sys_calibration' and 'sys_calibration_mode'
+Generate a threshold event whenever an external source is disconnected
+from the system input on single conversions.
 
 Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
 ---
-Calibration on the ad7173 family is the same as on the ad7192 family of
-chips and mostly uses the ad_sigma_delta common code.
+Hi.
+
+This patch adds the openwire detection support for the ad4111 chip.
+
+The openwire detection is done in software and relies on comparing the
+results of two conversions on different channels.
+
+As presented here, the code sends a THRESH Rising event tied to the
+in_voltageX_raw channel on which it happened.
+
+We think this is not correct but we can't seem to find an implementation
+that would be elegant.
+
+The main idea would be to add a specific channel for openwire detection
+but we still would need to have the openwire enablement and threshold
+tied to the voltage channel.
+
+Any thought on this?
+
+Thx,
+Guillaume.
 ---
- drivers/iio/adc/ad7173.c | 123 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 123 insertions(+)
+ drivers/iio/adc/ad7173.c | 152 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 152 insertions(+)
 
 diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index a0fca16c3be07534547a5b914d525d05f7425340..11ff148cb5a315d32485acf04b8d6f7d0fb6e5fa 100644
+index 11ff148cb5a315d32485acf04b8d6f7d0fb6e5fa..f87f002cbd99cfabac2754559b3c6fc0a69f5b70 100644
 --- a/drivers/iio/adc/ad7173.c
 +++ b/drivers/iio/adc/ad7173.c
-@@ -150,6 +150,11 @@
+@@ -35,6 +35,7 @@
+ #include <linux/units.h>
+ 
+ #include <linux/iio/buffer.h>
++#include <linux/iio/events.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/trigger_consumer.h>
+ #include <linux/iio/triggered_buffer.h>
+@@ -102,6 +103,7 @@
+ 
+ #define AD7173_GPIO_PDSW	BIT(14)
+ #define AD7173_GPIO_OP_EN2_3	BIT(13)
++#define AD4111_GPIO_GP_OW_EN	BIT(12)
+ #define AD7173_GPIO_MUX_IO	BIT(12)
+ #define AD7173_GPIO_SYNC_EN	BIT(11)
+ #define AD7173_GPIO_ERR_EN	BIT(10)
+@@ -149,6 +151,7 @@
+ 
  #define AD7173_FILTER_ODR0_MASK		GENMASK(5, 0)
  #define AD7173_MAX_CONFIGS		8
++#define AD4111_OW_DET_THRSH_MV		300
  
-+#define AD7173_MODE_CAL_INT_ZERO		0x4 /* Internal Zero-Scale Calibration */
-+#define AD7173_MODE_CAL_INT_FULL		0x5 /* Internal Full-Scale Calibration */
-+#define AD7173_MODE_CAL_SYS_ZERO		0x6 /* System Zero-Scale Calibration */
-+#define AD7173_MODE_CAL_SYS_FULL		0x7 /* System Full-Scale Calibration */
-+
- struct ad7173_device_info {
- 	const unsigned int *sinc5_data_rates;
- 	unsigned int num_sinc5_data_rates;
-@@ -175,6 +180,7 @@ struct ad7173_device_info {
- 	bool has_input_buf;
+ #define AD7173_MODE_CAL_INT_ZERO		0x4 /* Internal Zero-Scale Calibration */
+ #define AD7173_MODE_CAL_INT_FULL		0x5 /* Internal Full-Scale Calibration */
+@@ -181,11 +184,15 @@ struct ad7173_device_info {
  	bool has_int_ref;
  	bool has_ref2;
-+	bool has_internal_fs_calibration;
+ 	bool has_internal_fs_calibration;
++	bool has_openwire_det;
  	bool higher_gpio_bits;
  	u8 num_gpios;
  };
-@@ -215,6 +221,7 @@ struct ad7173_state {
- 	struct regmap *reg_gpiocon_regmap;
- 	struct gpio_regmap *gpio_regmap;
- #endif
-+	u8 *syscalib_mode;
+ 
+ struct ad7173_channel_config {
++	/* Openwire detection threshold */
++	unsigned int openwire_thrsh_raw;
++	int openwire_comp_chan;
+ 	u8 cfg_slot;
+ 	bool live;
+ 
+@@ -202,6 +209,7 @@ struct ad7173_channel {
+ 	unsigned int chan_reg;
+ 	unsigned int ain;
+ 	struct ad7173_channel_config cfg;
++	bool openwire_det_en;
  };
  
- static unsigned int ad4115_sinc5_data_rates[] = {
-@@ -272,6 +279,7 @@ static const struct ad7173_device_info ad4111_device_info = {
- 	.has_input_buf = true,
+ struct ad7173_state {
+@@ -280,6 +288,7 @@ static const struct ad7173_device_info ad4111_device_info = {
  	.has_current_inputs = true,
  	.has_int_ref = true,
-+	.has_internal_fs_calibration = true,
+ 	.has_internal_fs_calibration = true,
++	.has_openwire_det = true,
  	.clock = 2 * HZ_PER_MHZ,
  	.sinc5_data_rates = ad7173_sinc5_data_rates,
  	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
-@@ -291,6 +299,7 @@ static const struct ad7173_device_info ad4112_device_info = {
- 	.has_input_buf = true,
- 	.has_current_inputs = true,
- 	.has_int_ref = true,
-+	.has_internal_fs_calibration = true,
- 	.clock = 2 * HZ_PER_MHZ,
- 	.sinc5_data_rates = ad7173_sinc5_data_rates,
- 	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
-@@ -326,6 +335,7 @@ static const struct ad7173_device_info ad4114_device_info = {
- 	.has_temp = true,
- 	.has_input_buf = true,
- 	.has_int_ref = true,
-+	.has_internal_fs_calibration = true,
- 	.clock = 2 * HZ_PER_MHZ,
- 	.sinc5_data_rates = ad7173_sinc5_data_rates,
- 	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
-@@ -343,6 +353,7 @@ static const struct ad7173_device_info ad4115_device_info = {
- 	.has_temp = true,
- 	.has_input_buf = true,
- 	.has_int_ref = true,
-+	.has_internal_fs_calibration = true,
- 	.clock = 8 * HZ_PER_MHZ,
- 	.sinc5_data_rates = ad4115_sinc5_data_rates,
- 	.num_sinc5_data_rates = ARRAY_SIZE(ad4115_sinc5_data_rates),
-@@ -360,6 +371,7 @@ static const struct ad7173_device_info ad4116_device_info = {
- 	.has_temp = true,
- 	.has_input_buf = true,
- 	.has_int_ref = true,
-+	.has_internal_fs_calibration = true,
- 	.clock = 4 * HZ_PER_MHZ,
- 	.sinc5_data_rates = ad4116_sinc5_data_rates,
- 	.num_sinc5_data_rates = ARRAY_SIZE(ad4116_sinc5_data_rates),
-@@ -505,6 +517,105 @@ static const struct regmap_config ad7173_regmap_config = {
- 	.read_flag_mask = BIT(6),
- };
+@@ -616,6 +625,59 @@ static int ad7173_calibrate_all(struct ad7173_state *st, struct iio_dev *indio_d
+ 	return 0;
+ }
  
-+enum {
-+	AD7173_SYSCALIB_ZERO_SCALE,
-+	AD7173_SYSCALIB_FULL_SCALE,
++static int openwire_ain_to_channel_pair[][2][2] = {
++	[0] = { {0, 15},  {1, 2}   },
++	[1] = { {1, 2},   {2, 1}   },
++	[2] = { {3, 4},   {5, 6}   },
++	[3] = { {5, 6},   {6, 5}   },
++	[4] = { {7, 8},   {9, 10}  },
++	[5] = { {9, 10},  {10, 9}  },
++	[6] = { {11, 12}, {13, 14} },
++	[7] = { {13, 14}, {14, 13} },
 +};
 +
-+static const char * const ad7173_syscalib_modes[] = {
-+	[AD7173_SYSCALIB_ZERO_SCALE] = "zero_scale",
-+	[AD7173_SYSCALIB_FULL_SCALE] = "full_scale",
-+};
-+
-+static int ad7173_set_syscalib_mode(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    unsigned int mode)
++static void ad4111_openwire_event(struct iio_dev *indio_dev,
++				  const struct iio_chan_spec *chan)
 +{
 +	struct ad7173_state *st = iio_priv(indio_dev);
++	struct ad7173_channel *adchan = &st->channels[chan->address];
++	struct ad7173_channel_config *cfg = &adchan->cfg;
++	int ret, val1, val2;
 +
-+	st->syscalib_mode[chan->channel] = mode;
-+
-+	return 0;
-+}
-+
-+static int ad7173_get_syscalib_mode(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan)
-+{
-+	struct ad7173_state *st = iio_priv(indio_dev);
-+
-+	return st->syscalib_mode[chan->channel];
-+}
-+
-+static ssize_t ad7173_write_syscalib(struct iio_dev *indio_dev,
-+				     uintptr_t private,
-+				     const struct iio_chan_spec *chan,
-+				     const char *buf, size_t len)
-+{
-+	struct ad7173_state *st = iio_priv(indio_dev);
-+	bool sys_calib;
-+	int ret, mode;
-+
-+	ret = kstrtobool(buf, &sys_calib);
++	ret = regmap_set_bits(st->reg_gpiocon_regmap, AD7173_REG_GPIO, AD4111_GPIO_GP_OW_EN);
 +	if (ret)
-+		return ret;
++		return;
 +
-+	mode = st->syscalib_mode[chan->channel];
-+	if (sys_calib) {
-+		if (mode == AD7173_SYSCALIB_ZERO_SCALE)
-+			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_SYS_ZERO,
-+					      chan->address);
-+		else
-+			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_SYS_FULL,
-+					      chan->address);
-+	}
++	adchan->cfg.openwire_comp_chan =
++		openwire_ain_to_channel_pair[chan->channel][chan->differential][0];
 +
-+	return ret ? : len;
-+}
++	ret = ad_sigma_delta_single_conversion(indio_dev, chan, &val1);
++	if (ret < 0)
++		goto out;
 +
-+static const struct iio_enum ad7173_syscalib_mode_enum = {
-+	.items = ad7173_syscalib_modes,
-+	.num_items = ARRAY_SIZE(ad7173_syscalib_modes),
-+	.set = ad7173_set_syscalib_mode,
-+	.get = ad7173_get_syscalib_mode
-+};
++	adchan->cfg.openwire_comp_chan =
++		openwire_ain_to_channel_pair[chan->channel][chan->differential][1];
 +
-+static const struct iio_chan_spec_ext_info ad7173_calibsys_ext_info[] = {
-+	{
-+		.name = "sys_calibration",
-+		.write = ad7173_write_syscalib,
-+		.shared = IIO_SEPARATE,
-+	},
-+	IIO_ENUM("sys_calibration_mode", IIO_SEPARATE,
-+		 &ad7173_syscalib_mode_enum),
-+	IIO_ENUM_AVAILABLE("sys_calibration_mode", IIO_SHARED_BY_TYPE,
-+			   &ad7173_syscalib_mode_enum),
-+	{ }
-+};
++	ret = ad_sigma_delta_single_conversion(indio_dev, chan, &val2);
++	if (ret < 0)
++		goto out;
 +
-+static int ad7173_calibrate_all(struct ad7173_state *st, struct iio_dev *indio_dev)
-+{
-+	int ret;
-+	int i;
++	if (abs(val1 - val2) > cfg->openwire_thrsh_raw)
++		iio_push_event(indio_dev,
++			       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, chan->address,
++						    IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING),
++			       iio_get_time_ns(indio_dev));
++	else
++		iio_push_event(indio_dev,
++			       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, chan->address,
++						    IIO_EV_TYPE_THRESH, IIO_EV_DIR_FALLING),
++			       iio_get_time_ns(indio_dev));
 +
-+	for (i = 0; i < st->num_channels; i++) {
-+		if (indio_dev->channels[i].type != IIO_VOLTAGE)
-+			continue;
-+
-+		ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_ZERO, st->channels[i].ain);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (st->info->has_internal_fs_calibration) {
-+			ret = ad_sd_calibrate(&st->sd, AD7173_MODE_CAL_INT_FULL,
-+					      st->channels[i].ain);
-+			if (ret < 0)
-+				return ret;
-+		}
-+	}
-+
-+	return 0;
++out:
++	adchan->cfg.openwire_comp_chan = -1;
++	regmap_clear_bits(st->reg_gpiocon_regmap, AD7173_REG_GPIO, AD4111_GPIO_GP_OW_EN);
 +}
 +
  static int ad7173_mask_xlate(struct gpio_regmap *gpio, unsigned int base,
  			     unsigned int offset, unsigned int *reg,
  			     unsigned int *mask)
-@@ -801,6 +912,10 @@ static int ad7173_setup(struct iio_dev *indio_dev)
- 	if (!st->config_cnts)
- 		return -ENOMEM;
+@@ -813,6 +875,9 @@ static int ad7173_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
+ 	      FIELD_PREP(AD7173_CH_SETUP_SEL_MASK, st->channels[channel].cfg.cfg_slot) |
+ 	      st->channels[channel].ain;
  
-+	ret = ad7173_calibrate_all(st, indio_dev);
-+	if (ret)
-+		return ret;
++	if (st->channels[channel].cfg.openwire_comp_chan >= 0)
++		channel = st->channels[channel].cfg.openwire_comp_chan;
 +
- 	/* All channels are enabled by default after a reset */
- 	return ad7173_disable_all(&st->sd);
+ 	return ad_sd_write_reg(&st->sd, AD7173_REG_CH(channel), 2, val);
  }
-@@ -1023,6 +1138,7 @@ static const struct iio_chan_spec ad7173_channel_template = {
- 		.storagebits = 32,
- 		.endianness = IIO_BE,
- 	},
-+	.ext_info = ad7173_calibsys_ext_info,
+ 
+@@ -861,6 +926,11 @@ static int ad7173_disable_all(struct ad_sigma_delta *sd)
+ 
+ static int ad7173_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
+ {
++	struct ad7173_state *st = ad_sigma_delta_to_ad7173(sd);
++
++	if (st->channels[chan].cfg.openwire_comp_chan >= 0)
++		chan = st->channels[chan].cfg.openwire_comp_chan;
++
+ 	return ad_sd_write_reg(sd, AD7173_REG_CH(chan), 2, 0);
+ }
+ 
+@@ -968,6 +1038,9 @@ static int ad7173_read_raw(struct iio_dev *indio_dev,
+ 		if (ret < 0)
+ 			return ret;
+ 
++		if (ch->openwire_det_en)
++			ad4111_openwire_event(indio_dev, chan);
++
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 
+@@ -1112,12 +1185,71 @@ static int ad7173_debug_reg_access(struct iio_dev *indio_dev, unsigned int reg,
+ 	return ad_sd_write_reg(&st->sd, reg, reg_size, writeval);
+ }
+ 
++static int ad7173_write_event_config(struct iio_dev *indio_dev,
++				     const struct iio_chan_spec *chan,
++				     enum iio_event_type type,
++				     enum iio_event_direction dir,
++				     int state)
++{
++	struct ad7173_state *st = iio_priv(indio_dev);
++	struct ad7173_channel *adchan = &st->channels[chan->address];
++
++	adchan->openwire_det_en = state;
++
++	return 0;
++}
++
++static int ad7173_write_event_value(struct iio_dev *indio_dev, const struct iio_chan_spec *chan,
++				    enum iio_event_type type, enum iio_event_direction dir,
++				    enum iio_event_info info, int val, int val2)
++{
++	struct ad7173_state *st = iio_priv(indio_dev);
++	struct ad7173_channel *adchan = &st->channels[chan->address];
++
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		adchan->cfg.openwire_thrsh_raw = val;
++		return 0;
++
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7173_read_event_value(struct iio_dev *indio_dev, const struct iio_chan_spec *chan,
++				   enum iio_event_type type, enum iio_event_direction dir,
++				   enum iio_event_info info, int *val, int *val2)
++{
++	struct ad7173_state *st = iio_priv(indio_dev);
++	struct ad7173_channel *adchan = &st->channels[chan->address];
++
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		*val = adchan->cfg.openwire_thrsh_raw;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_event_spec ad4111_events[] = {
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_EITHER,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE),
++		.mask_shared_by_all = BIT(IIO_EV_INFO_ENABLE),
++	},
++};
++
+ static const struct iio_info ad7173_info = {
+ 	.read_raw = &ad7173_read_raw,
+ 	.write_raw = &ad7173_write_raw,
+ 	.debugfs_reg_access = &ad7173_debug_reg_access,
+ 	.validate_trigger = ad_sd_validate_trigger,
+ 	.update_scan_mode = ad7173_update_scan_mode,
++	.write_event_config = ad7173_write_event_config,
++	.write_event_value = ad7173_write_event_value,
++	.read_event_value = ad7173_read_event_value,
  };
  
- static const struct iio_chan_spec ad7173_temp_iio_channel_template = {
-@@ -1213,6 +1329,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 	struct iio_chan_spec *chan_arr, *chan;
- 	unsigned int ain[AD7173_NO_AINS_PER_CHANNEL], chan_index = 0;
- 	int ref_sel, ret, num_channels;
-+	u8 *calib_mode;
+ static const struct iio_scan_type ad4113_scan_type = {
+@@ -1321,6 +1453,15 @@ static int ad7173_validate_reference(struct ad7173_state *st, int ref_sel)
+ 	return 0;
+ }
  
- 	num_channels = device_get_child_node_count(dev);
- 
-@@ -1240,8 +1357,14 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 	if (!chans_st_arr)
- 		return -ENOMEM;
- 
-+	calib_mode = devm_kcalloc(dev, st->num_channels, sizeof(*st->syscalib_mode),
-+				  GFP_KERNEL);
-+	if (!calib_mode)
-+		return -ENOMEM;
++static int ad7173_validate_openwire_ain_inputs(struct ad7173_state *st, bool differential,
++					       unsigned int ain0, unsigned int ain1)
++{
++	if (differential)
++		return (ain0 % 2) ?  (ain0 - 1) == ain1 : (ain0 + 1) == ain1;
 +
- 	indio_dev->channels = chan_arr;
- 	st->channels = chans_st_arr;
-+	st->syscalib_mode = calib_mode;
++	return ain1 == AD4111_VINCOM_INPUT;
++}
++
+ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ {
+ 	struct ad7173_channel *chans_st_arr, *chan_st_priv;
+@@ -1375,6 +1516,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 		chan_st_priv->cfg.bipolar = false;
+ 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+ 		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
++		chan_st_priv->cfg.openwire_comp_chan = -1;
+ 		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
+ 		if (st->info->data_reg_only_16bit)
+ 			chan_arr[chan_index].scan_type = ad4113_scan_type;
+@@ -1442,6 +1584,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 		chan_st_priv->chan_reg = chan_index;
+ 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+ 		chan_st_priv->cfg.odr = 0;
++		chan_st_priv->cfg.openwire_comp_chan = -1;
  
- 	if (st->info->has_temp) {
- 		chan_arr[chan_index] = ad7173_temp_iio_channel_template;
+ 		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
+ 		if (chan_st_priv->cfg.bipolar)
+@@ -1456,6 +1599,15 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 			chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+ 			chan->channel2 = ain[1];
+ 			chan_st_priv->ain = AD7173_CH_ADDRESS(ain[0], ain[1]);
++			if (st->info->has_openwire_det &&
++			    ad7173_validate_openwire_ain_inputs(st, chan->differential, ain[0], ain[1])) {
++				chan->event_spec = ad4111_events;
++				chan->num_event_specs = ARRAY_SIZE(ad4111_events);
++				chan_st_priv->cfg.openwire_thrsh_raw =
++					BIT(chan->scan_type.realbits - !!(chan_st_priv->cfg.bipolar))
++					* AD4111_OW_DET_THRSH_MV
++					/ ad7173_get_ref_voltage_milli(st, chan_st_priv->cfg.ref_sel);
++			}
+ 		}
+ 
+ 		if (st->info->data_reg_only_16bit)
 
 ---
-base-commit: 744cf71b8bdfcdd77aaf58395e068b7457634b2c
-change-id: 20241115-ad411x_calibration-2c663171d988
+base-commit: c849f534b9ea4688304f80f4571af75931dda7c1
+change-id: 20241115-ad4111_openwire-e55deba8297f
+prerequisite-message-id: <20241115-ad411x_calibration-v1-1-5f820dfb5c80@baylibre.com>
+prerequisite-patch-id: 26241903b8fee8c4243e73d11fb2872cd9f52a15
 
 Best regards,
 -- 

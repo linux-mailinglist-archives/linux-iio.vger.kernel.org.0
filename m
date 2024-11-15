@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-12317-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12318-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF759CF5B8
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 21:20:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AA79CF5BD
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 21:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 725FC2837CE
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 20:20:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2615D283B87
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Nov 2024 20:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2821B1E6338;
-	Fri, 15 Nov 2024 20:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590E01E882F;
+	Fri, 15 Nov 2024 20:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Hc2TLK+W"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="k1rg/IUX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F312D1E412A
-	for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 20:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DBE1E5727
+	for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 20:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731701938; cv=none; b=CUZKl9Pjsy3aXklYJxh8ItlHUCS+U5btwJSs7309NFDjCLGB0I98aKrVbFtb121k4veizqls8fXrVlBw+4EM2HK8zgL7TIN9D7wpVA3raHhIhrj6mi7/nymB9q/E3HtLUteYK9KexUGCuZ+Mn97wcFVAxqkNBhV0UOQvkItHGtw=
+	t=1731701941; cv=none; b=kMWDOjqZbZSAMFN9NirIkzLKjatfBhi2enQv+h3W92w/kfrGTvE3VnRl8L/j+sjO6sbmMAMu+9RkiS3Nt8S7jmH8qBjkuICOlTlYiWC0gzIGCLJ+fOnnki8AZ1PTaFg42av6dSR8hcCfBePxLvKuMJzu70dqFcb2GoH5perTuWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731701938; c=relaxed/simple;
-	bh=wsgGx84cWBUtGa7G4wtbH/BWpIo6zEAdmqzXQ6w3/1c=;
+	s=arc-20240116; t=1731701941; c=relaxed/simple;
+	bh=EOrNOpVWi5EnXRP0UHniNwzvlTT9ETmHZWZMFC0dRL4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nq2sM5ML+Czh4TyXeVR7I3MNzaXH3XS+VZ4Icbl6CVKvIm4CDYE3R6p5x5H1K/AGCLvwsivuitk8/YG3rG9WULX+obli/IzRPyNmjz/oAmb4XRY2h/4+rXKuPAwztcLqZhKDOwBfJHw38Xlz0dgh1+6cIvwawwoPkDIKYzP8JCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Hc2TLK+W; arc=none smtp.client-ip=209.85.160.54
+	 In-Reply-To:To:Cc; b=oaFajRRWlsjd1lTPJ7HPTfUH9lTqN30fqS1ok6MzVXwGMxEEa+lU2rAcsBC0y6cijyOB8ClnOoFtQ2FZ9bsl/S6zzkKmN9W5vHolx8zYzKEHSlwFntqSIQAeXoiZMnFpbtlGf7IMY9oer7RUmD3jAY2yGIY5bC5I0htr9/CkuNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=k1rg/IUX; arc=none smtp.client-ip=209.85.161.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-29645a83b1bso364111fac.1
-        for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 12:18:56 -0800 (PST)
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5eb70a779baso1179582eaf.1
+        for <linux-iio@vger.kernel.org>; Fri, 15 Nov 2024 12:18:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731701936; x=1732306736; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731701938; x=1732306738; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3err676nsDhVRmrJ3FZsk1bPZcnOqEf2IqEsHND5yQ8=;
-        b=Hc2TLK+WCyNylftJ1Ghnqidab30k6a4FIErC/STwtwJSYhYIlLKpCKr8YkU0qS25By
-         CGd5WXUj26ThVrYTDKN39NTX3AA4AFT0DwzE7Y+i4O+XgFBJyCyJHl6JdRlMaYfunjgI
-         kAkeN4NWU3T7DXmjHTV+sKA73+RjCFKhoy/oDliAOHuTBpqjuD4RsRKEOANE3079kGdc
-         14Kb5dJb6MkeZ38pimvMKEvbTal92aisGTNF8FLms533xxtKW+iJfbDtw1CiS5E73MvP
-         8yohe8hrel29Kd3ArwbUku/q9CFyK2pVfzAbxjNfCYwMCzUGLLVfCf3f6o44gKxdgvcO
-         MDmQ==
+        bh=t7IS98DAXMrAPkmBeqmORVUNuKNfq4F6AMKjYOvJmjo=;
+        b=k1rg/IUXPQIFLvPDLcEDyAKj8U007qJy/DfuA26fiGdk5FD0ZVt8Po4OtNm8udWu7E
+         II1dY03Zu548P0r62f8RGgt8nzKZCA/ehTpcBRr1k6Ae66YUCv3PLRTV89Fuk6cdGNBN
+         r9IDf7v5rOkh4Y95oPRdx8PfnGpMtZG/sCvNTAcLCUJxLxHxLltAu/5Az8Gq8QwxnXg0
+         MbHsc+O8Il3A0K2lZ99iSZnG9dSKv51Jxt+S61fM7CgjocGp94G3xU3VxUr1RJLyYm3I
+         x8HXN1BJ5AMZYijdfB2xJxNtgxUvZAOXpSIukuUmqpAZZw7AeZX9Md1wx/zL0hKcqlhH
+         FgoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731701936; x=1732306736;
+        d=1e100.net; s=20230601; t=1731701938; x=1732306738;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3err676nsDhVRmrJ3FZsk1bPZcnOqEf2IqEsHND5yQ8=;
-        b=drRQQrpHdd+pHZN61jD+zspLXL5BCODHtgaJ0C19JTUlNMEFHc88vNqVsp0Ycj0/5O
-         Q3vXikfVCXTAA0O3CcKZ9KO74/P+YqxH0B/oHG6jQ2WuosNnHNT2rUGXVeKguCGl/UeM
-         Ope8KPFdHsFMl6QUUQA4jnDoKSwIgAKMJj6RDu4BCe0X4Go6kwCD4DtqsXoz66abXOtO
-         dF48+LH9y3+XLrnjaxqCb7nPYIwHTJ86ZFu4Xn99WcZVpSHGTsCDPGIvjFeRyQCcqe3p
-         HBQZVM0HDuNUcvou8hJ8A/OA7rWOqo3EclzTS7/DFKDF425KJPPWACAPafOyWKeTU4CF
-         qxVg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7Pir8+oCdpAwLz8VHB+YfUSLOVzclb8ruve2anHDxccabvuH87IKO2W0FrojujSDd1X1ifsDOdrA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzngWQhxlU0bPTxX7aprcJiUrSrYjaoYObxa+OrueDxxRBh3+mj
-	lXUJguXjX1fTWiQJ74ojNJwxXsq8klpAvwQYo4frcTyYL5AzKQYeXTu3e1JNkb8=
-X-Google-Smtp-Source: AGHT+IFslhtXy2tcMW9lG2cdKDAvgBpEw3gZ1sN7XsFjpAzVktIDpcBrd6KtQD9GxRg2iyWZ/5Xb+g==
-X-Received: by 2002:a05:6870:7028:b0:287:b9:349 with SMTP id 586e51a60fabf-2962e20d981mr3793513fac.36.1731701935768;
-        Fri, 15 Nov 2024 12:18:55 -0800 (PST)
+        bh=t7IS98DAXMrAPkmBeqmORVUNuKNfq4F6AMKjYOvJmjo=;
+        b=kelT8ITSZihiARRxHuUwVKHp5p9wUTO0iWFCf7LqmTBaTrc/e9P3pfRMC3pr4fHSLW
+         XiByOV0EMesdSWbgeQgiwqjnxt96YnSf1p+759Rp4o4DZoioqJjxXIuZlqXG53MOQDJZ
+         o/NNhLOLOv2XV/DCR6KWO+3rNZHvxf914Z+5ivZ6gJMKm14TVK/lnIBr395rf2Uj/aXN
+         VGvsPpF901GqKX/Bs7dGTWZ9HYh0riFvOFw3CkTEqYb6LIrRMwAxiuJe2yJxp9RVUP85
+         iFUbAoe2EjqvphJceSn+GawvRCJ0qp6Phc3nUoTTRvJNPk7q1IvgU6d/fj287aHVdnUv
+         SuTA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPY+d2gJaxYqXLw+Q/ttJH1lNlcY0mQfpuuPL9OV3/z7uKFJQJZBJ7C88EcrZOiwbDoI8xu00qPkM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo2IZYIUXrd+yiL9IvbLImfMVvg4qyeWT/ijSR8VLMWpPdixRh
+	6ArK5xf8nRWImOB4SBA9IEHgCWxNTsnbyeoCeFRuzqtKA0mIEzIE2nb5sTo4H+w=
+X-Google-Smtp-Source: AGHT+IFHeOlL2szpnhn4w4uUrf+kcWOlOBXXrP/zlahKkvyGqcUo6Oac5nm5vBqKn+mlHYLrAPqrcQ==
+X-Received: by 2002:a05:6820:4c88:b0:5eb:c6ba:783b with SMTP id 006d021491bc7-5eeab29d4a5mr3913047eaf.1.1731701937692;
+        Fri, 15 Nov 2024 12:18:57 -0800 (PST)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71a780ea62esm748978a34.5.2024.11.15.12.18.52
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71a780ea62esm748978a34.5.2024.11.15.12.18.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 12:18:54 -0800 (PST)
+        Fri, 15 Nov 2024 12:18:57 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 15 Nov 2024 14:18:43 -0600
-Subject: [PATCH v5 04/16] spi: dt-bindings: add PWM SPI offload trigger
+Date: Fri, 15 Nov 2024 14:18:44 -0600
+Subject: [PATCH v5 05/16] spi: offload-trigger: add PWM trigger driver
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241115-dlech-mainline-spi-engine-offload-2-v5-4-bea815bd5ea5@baylibre.com>
+Message-Id: <20241115-dlech-mainline-spi-engine-offload-2-v5-5-bea815bd5ea5@baylibre.com>
 References: <20241115-dlech-mainline-spi-engine-offload-2-v5-0-bea815bd5ea5@baylibre.com>
 In-Reply-To: <20241115-dlech-mainline-spi-engine-offload-2-v5-0-bea815bd5ea5@baylibre.com>
 To: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
@@ -94,77 +94,235 @@ Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.1
 
-Add a new binding for using a PWM signal as a trigger for SPI offloads.
+Add a new driver for a generic PWM trigger for SPI offloads.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
 v5 changes:
-* Add MAINTAINERS entry
+* Updated to accommodate changes in other patches in this series.
+* Add MAINTAINERS entry.
 
 v4 changes: new patch in v4
 ---
- .../devicetree/bindings/spi/trigger-pwm.yaml       | 39 ++++++++++++++++++++++
- MAINTAINERS                                        |  1 +
- 2 files changed, 40 insertions(+)
+ MAINTAINERS                           |   1 +
+ drivers/spi/Kconfig                   |  12 +++
+ drivers/spi/Makefile                  |   3 +
+ drivers/spi/spi-offload-trigger-pwm.c | 162 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 178 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/trigger-pwm.yaml b/Documentation/devicetree/bindings/spi/trigger-pwm.yaml
-new file mode 100644
-index 000000000000..987638aa4732
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/trigger-pwm.yaml
-@@ -0,0 +1,39 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/trigger-pwm.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Generic SPI offload trigger using PWM
-+
-+description: Remaps a PWM channel as a trigger source.
-+
-+maintainers:
-+  - David Lechner <dlechner@baylibre.com>
-+
-+$ref: /schemas/spi/trigger-source.yaml#
-+
-+properties:
-+  compatible:
-+    const: trigger-pwm
-+
-+  '#trigger-source-cells':
-+    const: 0
-+
-+  pwms:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - '#trigger-source-cells'
-+  - pwms
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    trigger {
-+        compatible = "trigger-pwm";
-+        #trigger-source-cells = <0>;
-+        pwms = <&pwm 0 1000000 0>;
-+    };
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 91a4a7eb6194..a43532a1edde 100644
+index a43532a1edde..36a40aaa026a 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -22021,6 +22021,7 @@ F:	include/linux/mtd/spi-nor.h
- 
- SPI OFFLOAD
+@@ -22023,6 +22023,7 @@ SPI OFFLOAD
  R:	David Lechner <dlechner@baylibre.com>
-+F:	Documentation/devicetree/bindings/spi/trigger-pwm.yaml
+ F:	Documentation/devicetree/bindings/spi/trigger-pwm.yaml
  F:	Documentation/devicetree/bindings/spi/trigger-source.yaml
++F:	drivers/spi/spi-offload-trigger-pwm.c
  F:	drivers/spi/spi-offload.c
  F:	include/linux/spi/spi-offload.h
+ K:	spi_offload
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index cdc483b0ec5c..867d4b55bef9 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1308,4 +1308,16 @@ endif # SPI_SLAVE
+ config SPI_DYNAMIC
+ 	def_bool ACPI || OF_DYNAMIC || SPI_SLAVE
+ 
++if SPI_OFFLOAD
++
++comment "SPI Offload triggers"
++
++config SPI_OFFLOAD_TRIGGER_PWM
++	tristate "SPI offload trigger using PWM"
++	depends on PWM
++	help
++	  Generic SPI offload trigger implemented using PWM output.
++
++endif # SPI_OFFLOAD
++
+ endif # SPI
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 39025ae5364d..9396d32e1994 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -163,3 +163,6 @@ obj-$(CONFIG_SPI_AMD)			+= spi-amd.o
+ # SPI slave protocol handlers
+ obj-$(CONFIG_SPI_SLAVE_TIME)		+= spi-slave-time.o
+ obj-$(CONFIG_SPI_SLAVE_SYSTEM_CONTROL)	+= spi-slave-system-control.o
++
++# SPI offload triggers
++obj-$(CONFIG_SPI_OFFLOAD_TRIGGER_PWM)	+= spi-offload-trigger-pwm.o
+diff --git a/drivers/spi/spi-offload-trigger-pwm.c b/drivers/spi/spi-offload-trigger-pwm.c
+new file mode 100644
+index 000000000000..7e1b4a80becc
+--- /dev/null
++++ b/drivers/spi/spi-offload-trigger-pwm.c
+@@ -0,0 +1,162 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2024 Analog Devices Inc.
++ * Copyright (C) 2024 BayLibre, SAS
++ *
++ * Generic PWM trigger for SPI offload.
++ */
++
++#include <linux/platform_device.h>
++#include <linux/pwm.h>
++#include <linux/mod_devicetable.h>
++#include <linux/spi/spi-offload.h>
++#include <linux/types.h>
++
++struct spi_offload_trigger_pwm_state {
++	struct device *dev;
++	struct pwm_device *pwm;
++};
++
++static bool spi_offload_trigger_pwm_match(struct spi_offload_trigger *trigger,
++					  enum spi_offload_trigger_type type,
++					  u64 *args, u32 nargs)
++{
++	if (nargs)
++		return false;
++
++	return type == SPI_OFFLOAD_TRIGGER_PERIODIC;
++}
++
++static int spi_offload_trigger_pwm_validate(struct spi_offload_trigger *trigger,
++					    struct spi_offload_trigger_config *config)
++{
++	struct spi_offload_trigger_pwm_state *st = spi_offload_trigger_get_priv(trigger);
++	struct spi_offload_trigger_periodic *periodic = &config->periodic;
++	struct pwm_waveform wf = { };
++	int ret;
++
++	if (config->type != SPI_OFFLOAD_TRIGGER_PERIODIC)
++		return -EINVAL;
++
++	if (!periodic->frequency_hz)
++		return -EINVAL;
++
++	wf.period_length_ns = DIV_ROUND_UP_ULL(NSEC_PER_SEC, periodic->frequency_hz);
++	/* REVISIT: 50% duty-cycle for now - may add config parameter later */
++	wf.duty_length_ns = wf.period_length_ns / 2;
++
++	ret = pwm_round_waveform_might_sleep(st->pwm, &wf);
++	if (ret < 0)
++		return ret;
++
++	periodic->frequency_hz = DIV_ROUND_UP_ULL(NSEC_PER_SEC, wf.period_length_ns);
++
++	return 0;
++}
++
++static int spi_offload_trigger_pwm_enable(struct spi_offload_trigger *trigger,
++					  struct spi_offload_trigger_config *config)
++{
++	struct spi_offload_trigger_pwm_state *st = spi_offload_trigger_get_priv(trigger);
++	struct spi_offload_trigger_periodic *periodic = &config->periodic;
++	struct pwm_waveform wf = { };
++
++	if (config->type != SPI_OFFLOAD_TRIGGER_PERIODIC)
++		return -EINVAL;
++
++	if (!periodic->frequency_hz)
++		return -EINVAL;
++
++	wf.period_length_ns = DIV_ROUND_UP_ULL(NSEC_PER_SEC, periodic->frequency_hz);
++	/* REVISIT: 50% duty-cycle for now - may add config parameter later */
++	wf.duty_length_ns = wf.period_length_ns / 2;
++
++	return pwm_set_waveform_might_sleep(st->pwm, &wf, false);
++}
++
++static void spi_offload_trigger_pwm_disable(struct spi_offload_trigger *trigger)
++{
++	struct spi_offload_trigger_pwm_state *st = spi_offload_trigger_get_priv(trigger);
++	struct pwm_waveform wf;
++	int ret;
++
++	ret = pwm_get_waveform_might_sleep(st->pwm, &wf);
++	if (ret < 0) {
++		dev_err(st->dev, "failed to get waveform: %d\n", ret);
++		return;
++	}
++
++	wf.duty_length_ns = 0;
++
++	ret = pwm_set_waveform_might_sleep(st->pwm, &wf, false);
++	if (ret < 0)
++		dev_err(st->dev, "failed to disable PWM: %d\n", ret);
++}
++
++static const struct spi_offload_trigger_ops spi_offload_trigger_pwm_ops = {
++	.match = spi_offload_trigger_pwm_match,
++	.validate = spi_offload_trigger_pwm_validate,
++	.enable = spi_offload_trigger_pwm_enable,
++	.disable = spi_offload_trigger_pwm_disable,
++};
++
++static void spi_offload_trigger_pwm_release(void *data)
++{
++	pwm_disable(data);
++}
++
++static int spi_offload_trigger_pwm_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct spi_offload_trigger_info info = {
++		.fwnode = dev_fwnode(dev),
++		.ops = &spi_offload_trigger_pwm_ops,
++	};
++	struct spi_offload_trigger_pwm_state *st;
++	struct pwm_state state;
++	int ret;
++
++	st = devm_kzalloc(&pdev->dev, sizeof(*st), GFP_KERNEL);
++	if (!st)
++		return -ENOMEM;
++
++	info.priv = st;
++	st->dev = dev;
++
++	st->pwm = devm_pwm_get(&pdev->dev, NULL);
++	if (IS_ERR(st->pwm))
++		return dev_err_probe(dev, PTR_ERR(st->pwm), "failed to get PWM\n");
++
++	/* init with duty_cycle = 0, output enabled to ensure trigger off */
++	pwm_init_state(st->pwm, &state);
++	state.enabled = true;
++
++	ret = pwm_apply_might_sleep(st->pwm, &state);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "failed to apply PWM state\n");
++
++	ret = devm_add_action_or_reset(dev, spi_offload_trigger_pwm_release, st->pwm);
++	if (ret)
++		return ret;
++
++	return devm_spi_offload_trigger_register(dev, &info);
++}
++
++static const struct of_device_id spi_offload_trigger_pwm_of_match_table[] = {
++	{ .compatible = "trigger-pwm" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, spi_offload_trigger_pwm_of_match_table);
++
++static struct platform_driver spi_offload_trigger_pwm_driver = {
++	.driver = {
++		.name = "trigger-pwm",
++		.of_match_table = spi_offload_trigger_pwm_of_match_table,
++	},
++	.probe = spi_offload_trigger_pwm_probe,
++};
++module_platform_driver(spi_offload_trigger_pwm_driver);
++
++MODULE_AUTHOR("David Lechner <dlechner@baylibre.com>");
++MODULE_DESCRIPTION("Generic PWM trigger");
++MODULE_LICENSE("GPL");
 
 -- 
 2.43.0

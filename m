@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-12343-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12344-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096729D0501
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:28:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76379D0503
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9328BB21AB0
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:28:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42BEC281847
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF0A1DA628;
-	Sun, 17 Nov 2024 18:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFB51DB361;
+	Sun, 17 Nov 2024 18:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xihp/RWu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i6e0xhb8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864761EA73;
-	Sun, 17 Nov 2024 18:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9C5192D97;
+	Sun, 17 Nov 2024 18:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731868097; cv=none; b=b7E/rdRQJboEvejc9DbVpB/AA5OR/HLnt30av8vDWDCuh17wwqMJ4esvlU4y+JXDRLs03x+Y6vaxhJXJ2shgN1owsi/kTiFYW321zqlZ3tmIGUTx1rvSxunasCfLmS/BkpDyWFAu7tjr9Dhgal7K0/M8+BnRRX+9vMLeo7pQu+g=
+	t=1731868097; cv=none; b=KvSUOTTlq36fPk06uoe/1YNyGfeY75LATv0iiT3y9Uhv0Y7FX5p5BaCP5EYlL3+HE+VBb2Gjr01Q3Mo9VpiHx5p32XeiUHG0U5Gc9bZeQk8nwAaD0YN3F+GjRmK80AbDXnSBEGbFoBgJoZD18rLG8FSdisXyhwRepuu+XQcZfBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731868097; c=relaxed/simple;
-	bh=tYa1Z0HutYyF4t+LAAxxv0fRkYPg6GdxMWQHBmzGQWA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LcBRkeEufe/KnGXs3HT5yVk7HVd2wVJfU6hDI4wQfFEqrHcHy4jbWDczJsovU2ADlrXyCmuZtBugWitczhUY5n8Jp/7QT1VMI+ndImLwz1i9AIgRbgH7rS2vlsr8W36l01qT9QPRpPiLxCL1DATuOWxcHa6+24j3J/xAm47fv1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xihp/RWu; arc=none smtp.client-ip=209.85.128.50
+	bh=zC4utrncVmy2RjXFLmrGKa3KsfHnCdq9j5x5pTqoYks=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=mwSqPyO7ct0T0/ZF2j1ejTVxSPGwtvfvVol/PmxvqVk1/oNB/X7n6DeaaQBGRnX0uuW16oFTwRBnrsyifEoD/cHn1z/s0ZU5JZIps1VNsTJz+cQuel4U5PksictBSBQpVnLzrN3yWpr9deYGDYR6IPyxwp1pI+W+C7mXshlQZNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i6e0xhb8; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4315dfa3e0bso2241025e9.0;
-        Sun, 17 Nov 2024 10:28:15 -0800 (PST)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-431506d4f3bso1869395e9.0;
+        Sun, 17 Nov 2024 10:28:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731868094; x=1732472894; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v0yUSeeOvbqs8tHSlx92wZzZTLKipu7boU7UlyhJIHo=;
-        b=Xihp/RWub+p+WU4m4xdaUDHJUzUi/spsitLCquR9QELTRRx/oRmEdyKi4Ju76y0HIK
-         7JKCp5ghSX0ZYMqXTlWepXs45Wrzb78NAq9n18QmaxZWhzFK+kGT1PO1sBhpVeGedVSl
-         rXYjPAZZxK504kFQb8TYONIbQQuJOlnNMdjyMsi9SfkpukyOQzFTJGjqAvfjFnLCVZQW
-         iaQNhYg93QrAR5HWvCPnFLUzw/IPc1jcMA6mx84Fyq9yAvrXNkm7do+h0rYNYjP+fcva
-         UCOEXbzsbLwMGXUvNQNybnlJPBi3ZscTIWgvb45oiDFec+tv1+U42sJbsKuxn3s1tHC+
-         t8qg==
+        d=gmail.com; s=20230601; t=1731868095; x=1732472895; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wWdIbNe2zK4K5n6rJj1IjwHyeU7rCXgoeLdzNBBqx9M=;
+        b=i6e0xhb8WN8PvNYBfvYdbFMwhHfFNvO3MAqb7zBny6kO2NN+aQHsDUM062Nnkx5F9D
+         00YSUeFjaarF39EDexnC+aEdVtph3N54xtb2Jm2FYNCAyPM0DiN/dqehEOYfKgojYVGG
+         P4q4pegi8i9yqTX2KXovnlj4QRMlq6iDvcEvESAzXI97+QDggQPrnR/DxKO/pFA29fG/
+         CBDF0LdKVNOixyi04dgEDwtbUHjUtOOhiqWvgD2Ek0PrZgZDFx5w2a+25efJ9QkwZ09/
+         HMUX/n6mlG507OZeCa3lAu9mrg+z1gpRAU4ZZC6fBNnDyhQiAqUM4rDYTFDGajjAzF1x
+         LmfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731868094; x=1732472894;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v0yUSeeOvbqs8tHSlx92wZzZTLKipu7boU7UlyhJIHo=;
-        b=uc+jJf2kq20KvVPBAxK2AIZr5FfQWctYzxhBrfyU64Kv60niIykLBoKn3RktjX9/AW
-         dGOBGW6HYj2j4cOabN7bdToLN33ZJsy/tG5Rjeuhkusz8qC1sq8F/YVxFrCWdsOHTBL8
-         XS1H1SeAsn2p64dzRetRxoSJ/WhxT1xmGKLLWJCCc4txzEHICMmbZR6YA4DpFIFqC6rx
-         7ARw0aLS/EPKyu+654SD/ZDnt14nkN4IPXSnCdspeQNk/scEGQ8FKi1VQesf+Nevx2Ki
-         2T8DYlR7PLR/LSmnUd3CVQ4jUY7FhxD7iz3htyXkgGmvAPdFmlljR51oMGuqmDkDOVOg
-         7tFA==
-X-Forwarded-Encrypted: i=1; AJvYcCURg15wChXxMYRmt2ObuRaJrtGlmWEa4hmal9ImOsWVA/NHOPvAc4t/iAQQH5Qm+0Ok/sRHGYVD4ZmMGTY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPXB3/jLvyEiIRYC4Vy8ROTKkYg10OEFP55repqlweS+oNqoyh
-	tWansF8i4WbZQ2YUR6OypgUKaOCAbv4td4FPrZBPL/zQ5Smjfb1T
-X-Google-Smtp-Source: AGHT+IEZwmgPFtkP3s1Ya7qUEqRoryXtfa+bGnBKcgd3zgF6RbqcdvoDmOwePjeDEC/PbljwvkATZg==
-X-Received: by 2002:a05:6000:20c7:b0:382:36f1:a14 with SMTP id ffacd0b85a97d-38236f10bb1mr1395953f8f.7.1731868093625;
-        Sun, 17 Nov 2024 10:28:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731868095; x=1732472895;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wWdIbNe2zK4K5n6rJj1IjwHyeU7rCXgoeLdzNBBqx9M=;
+        b=aXEL/egzqwjpiHkFdpJnERqLik3FwKxgoyGNNHTAzhGciV0fv+XYKxG04CROba9ce/
+         oE+kBU/xBtenjrs/Jm3Xp/XS9XVdVjQV6mUYF3Shw1DPs9dHrtBlSUjtCd+hbUpmTmp0
+         GyAv3ZlAYsw7lpoNolDNcYHFt3q2RuMtzBgCNGEwB0jIuNsUD5YdmXRbAPwSSWPfXRt4
+         0SSmEutPXfdFYWvoCmEaZ+7dSbafDDYe3u66wNf3xXbv42WeRAn+42/VmqzREQIlgyUe
+         En2zikwYvQ/9YGRT+IMJ+ziNmupV0yIdppTXc9h27/5FvVcB7WFma2v07aNvb4YSu89P
+         T6qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFwp0lYRo4eoU6dKbiY9bNr5C9GiNs0VmZVkecLtiPWgDcOOL2hrsc8wvu3eNLNVsF7EG0xtDyIxG6pFY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdkQCW9ltOoXPlf3E40hYMyQHK5039+YrYtCnWQpBL00x7Jix6
+	FlTEmazO4QSOULcc+0V7fxV0qFW1rkCDbnHgT3hv3wXvpmnJ3b5p
+X-Google-Smtp-Source: AGHT+IFZSuPt4H7aJw432ypeU7GFKezwcXsxnc4bbaFuG0+EoY5pM+xNG77ehGwKDBv0nq1Ukm3qaw==
+X-Received: by 2002:a5d:5f93:0:b0:37c:c815:a204 with SMTP id ffacd0b85a97d-382258ec38fmr2753762f8f.3.1731868094646;
+        Sun, 17 Nov 2024 10:28:14 -0800 (PST)
 Received: from 5dfbf0f66296.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.12
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 10:28:13 -0800 (PST)
+        Sun, 17 Nov 2024 10:28:14 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -73,10 +75,12 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v2 00/22] iio: accel: adxl345: add FIFO operating with IRQ triggered watermark events
-Date: Sun, 17 Nov 2024 18:26:29 +0000
-Message-Id: <20241117182651.115056-1-l.rubusch@gmail.com>
+Subject: [PATCH v2 01/22] iio: accel: adxl345: fix comment on probe
+Date: Sun, 17 Nov 2024 18:26:30 +0000
+Message-Id: <20241117182651.115056-2-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20241117182651.115056-1-l.rubusch@gmail.com>
+References: <20241117182651.115056-1-l.rubusch@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,64 +89,26 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The adxl345 sensor offers several features. Most of them are based on
-using the hardware FIFO and reacting on events coming in on an interrupt
-line. Add access to configure and read out the FIFO, handling of interrupts
-and configuration and application of the watermark feature on that FIFO.
-
-The series will include the public adxl345.h used also in the
-corresponding older input driver. In brief, the data fields seem to be
-identical when implementing it for IIO, the file is already in public
-include, and to avoid duplication.
-
-The series is meant as base. Implementation of single tap, double tap,
-freefall, activity/inactivity on top is relatively straight forward and
-will be upcoming, as soon as this patch set is stabilized.
-
-The series reverts the data justification mode of the measurements
-(right and left-justified) since it comes in more handy. Further the
-series reverts moving out constant defines to the header file and moves
-them back into the source file. This is kind of embarassing, and
-definitely not on purpose.
-When implementing the features, it became clear what was actually used
-to be in the header. I hope this is still acceptible, for the learning
-curve.
+Fix comment on the probe function. Add covered sensors and fix typo.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
-v1 -> v2: Fix comments according to Documentation/doc-guide/kernel-doc.rst
-          and missing static declaration of function.
----
-Lothar Rubusch (22):
-  iio: accel: adxl345: fix comment on probe
-  iio: accel: adxl345: rename variable data to st
-  iio: accel: adxl345: rename struct adxl34x_state
-  iio: accel: adxl345: rename to adxl34x_channels
-  iio: accel: adxl345: measure right-justified
-  iio: accel: adxl345: add function to switch measuring
-  iio: accel: adxl345: initialize IRQ number
-  iio: accel: adxl345: initialize FIFO delay value for SPI
-  iio: accel: adxl345: unexpose private defines
-  iio: accel: adxl345: set interrupt line to INT1
-  iio: accel: adxl345: import adxl345 general data
-  iio: accel: adxl345: elaborate iio channel definition
-  iio: accel: adxl345: add trigger handler
-  iio: accel: adxl345: read FIFO entries
-  iio: accel: adxl345: reset the FIFO on error
-  iio: accel: adxl345: register trigger ops
-  iio: accel: adxl345: push FIFO data to iio
-  iio: accel: adxl345: start measure at buffer en/disable
-  iio: accel: adxl345: prepare FIFO watermark handling
-  iio: accel: adxl345: use FIFO with watermark IRQ
-  iio: accel: adxl345: sync FIFO reading with sensor
-  iio: accel: adxl345: add debug printout
+ drivers/iio/accel/adxl345_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/iio/accel/adxl345.h      |  34 +-
- drivers/iio/accel/adxl345_core.c | 887 +++++++++++++++++++++++++++++--
- drivers/iio/accel/adxl345_i2c.c  |   2 +-
- drivers/iio/accel/adxl345_spi.c  |  11 +-
- 4 files changed, 845 insertions(+), 89 deletions(-)
-
+diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+index 006ce66c0a..d121caf839 100644
+--- a/drivers/iio/accel/adxl345_core.c
++++ b/drivers/iio/accel/adxl345_core.c
+@@ -170,7 +170,7 @@ static void adxl345_powerdown(void *regmap)
+ 
+ /**
+  * adxl345_core_probe() - probe and setup for the adxl345 accelerometer,
+- *                        also covers the adlx375 accelerometer
++ *                        also covers the adxl375 and adxl346 accelerometer
+  * @dev:	Driver model representation of the device
+  * @regmap:	Regmap instance for the device
+  * @setup:	Setup routine to be executed right before the standard device
 -- 
 2.39.5
 

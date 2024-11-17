@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-12362-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12363-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C419F9D0527
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:33:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4409D0529
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:33:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44DE6B22818
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:32:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8710B22401
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8B51DE3C8;
-	Sun, 17 Nov 2024 18:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9FD1DE89C;
+	Sun, 17 Nov 2024 18:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BImxTpUc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lGw6QPiS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADED1DB546;
-	Sun, 17 Nov 2024 18:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623AB1DE4DA;
+	Sun, 17 Nov 2024 18:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731868118; cv=none; b=XUUShoMHe5yS/v/yTCB+gQ2xqXFSOcSXUIcg2WUVGIXzt1nEu5P+12vNPKtl2SS9NRGJdTaNrD6+FV1Hp+UoP/Ofxl2n8UJjS8NMVC0X1wWFM/jv/L72fSHR7AmLT2XaGqSWcXpVojMpvPI3JWR1yj2Nia7JxZ29P5Ott8JwjZQ=
+	t=1731868120; cv=none; b=f9meixw2RiFVjsnFpPPZcJdt3NO1uC74L8fCz+Kj9i9vgtJLKM6A7xw+OlVRGW56/Dkvk1QQ/Vh2KP/AlzYFyqj1afVBEtV8aa+jd0GXuJ/ZDrgLf75LvA6b79Fx6cdwI3ShV68ER6pLVHswdB2niJU3v8iAQL7ZmEdRUI/PNis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731868118; c=relaxed/simple;
-	bh=FJa+BezbGPvPK7+Lh6efUwtb5l4qmZJ2kHSzKX3W0Cg=;
+	s=arc-20240116; t=1731868120; c=relaxed/simple;
+	bh=6/0DwltEUb1r+bPdI+XsZRMVxWyPtCMYqzrHqPidDLY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LFBMax2hmo5/Qgi6BsqC0epoCzD5Uzze4DHrXIQ7tTRlGK6ohG8NyCvR7uyuU7pU0g3VyRzhx8AhmrAcLNgWm8QuTsgcTSPfkmjdATd07gIjQ1K4ZsT6k9TLVHHAsXC+Q6mV3Tf1isotvzP8VGT2QIxfME8hjZ5KlBWqRZ+HUWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BImxTpUc; arc=none smtp.client-ip=209.85.128.48
+	 MIME-Version; b=C64I8qGMGcAz9I2BCSTA3GLBsydUVlzMi66GefCdEbLO6jiwbMmu9gyishVrgn4Cs3OWpiXDBEwjio22QIpD9y5UTTuWVX5USyCAtOA6/+PVLWevffSRPruRIGm5bRBMRUkS77/16OsU+Wgw/HtMID1wQmt2kBl3R6GDwZicU/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lGw6QPiS; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4315b0bd4ddso3683955e9.3;
-        Sun, 17 Nov 2024 10:28:36 -0800 (PST)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38242100504so60980f8f.1;
+        Sun, 17 Nov 2024 10:28:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731868115; x=1732472915; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731868117; x=1732472917; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AuFWDVSr0TH1qAG16py992MdgJFvQfRVNyd51fPsQGM=;
-        b=BImxTpUcBiQ36g6zfB7GwGrYLaYlK6Pu7h4Zfqa78TX7yUanmx1GM7ZWF9u9Z1AKwH
-         WZ2HbH/4kO6iz6M4mmszm7Q9x+G3O2mxBiGfH/kvcje9hyt2cz2+QtKc7xr82rc74Si4
-         lbdlo7pId6nykk4EjsFuSbgTq2mDbeBvUWsIk3bjLowqW2HLRztHTtw3IjGLXzAhmLSZ
-         Ne2DpNzskEs5yUKTVoHW5zAin2Xfu0OWSWorcJxggm+O0U4vHLtUfrUA2vCkO4Dc5NjN
-         BGFbVtEvRDYctnpL1SQZnSsYyU+yRlCDpP3j1DcFUPRm/DcBNFOdrmyYeFW+xd4uqv8F
-         n/7Q==
+        bh=+0jDVowXCEL7M7LDBhaoZbZ0uKb3vpVkttp/faRKS9w=;
+        b=lGw6QPiSw8Nlab3TqiBOdrxi7hYvkPUiG8WaET1LGM50kctCzd+GEigGw9+2+9k9vI
+         cOIujhFVW8TkSWcz0TRTRgc1CHyYhuPTqQZftAMemt2j/AjXhv6OaUGFz2BOPbEreHEC
+         P9OXkMC8+UHaDuNWe1wfMiYXW3Z26wK8Y4OFfZQ9qBP0ZuUZZMaPzMQJMECywz7ajwLy
+         oH6NrockvEwkM1i96zm4QtAELzjzb7ZbbZ8TWRIix91x/pi5WOayGEx4romGJ9jdDM0M
+         HAdms/nt5pPj+STwOUuKEIcH8axKHmD2VBCyxryGfD8shPyOUBzvdmabOkcy1wkue+m4
+         Uo8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731868115; x=1732472915;
+        d=1e100.net; s=20230601; t=1731868117; x=1732472917;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AuFWDVSr0TH1qAG16py992MdgJFvQfRVNyd51fPsQGM=;
-        b=uELDLnlQsoS/lq6p72MTMrb+RMjPxDi+DoBEsybNyqVcD2Vij3qeBhh7GbYdXjDG7d
-         3yqmg9uEoaJ1BSVL5PiUXMsRNOaOhRjsAotVt0q7jjeIR0kkI9+Vpg65jjN+yLgqPcX/
-         NbGhYXBP9Ym+vObwaEao23icomSiDBF51FFbJQErZMfd9pxlPX2Xi4aSfySO9n8lQkar
-         JaFYe04fCY0fW7ZRqHVc9cjy7/zxgyk9G1auPtxyA8qd21yLStZAU7DRcO8wGhGSY0rz
-         xsec8L1ajy5KysztIybEfgGN0qt46vft8lk+IsV0a/o1YQVA+r8Hogf/YgKlgAgBSMgx
-         zvDg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqmN6DKjNhwAZ2eZjClFl7I9KPkE5H4VPlGT0xduXa0Nr+P2VhJ8PVoBjfaLnYLY+mu9Bimrpqjq8bFHE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRPG3sYQc8jGvl6MDqOABhyO4IvPDvJMr5wO+Fqqj8hOH+YuDo
-	KDAyLEO/1pmzPiI99o69wZzvPl6x/E3m3wNGcOawGeySIfxk1a7Q
-X-Google-Smtp-Source: AGHT+IGmV5mhFROTH/8fZc+TO/kHurvSvIfZfrAaAwWv7OXGY+E7ZcdQp6DrCP6KKhIHJDlVef6Glw==
-X-Received: by 2002:a05:600c:45d4:b0:431:5632:4480 with SMTP id 5b1f17b1804b1-432df793c51mr35023695e9.6.1731868115057;
-        Sun, 17 Nov 2024 10:28:35 -0800 (PST)
+        bh=+0jDVowXCEL7M7LDBhaoZbZ0uKb3vpVkttp/faRKS9w=;
+        b=ZqyjKJYnmf60/F5Eixzez0r8GKFUT6P6lHajpw517BD1Zsnzr5xNfVC6AX8zyJtvf1
+         smxpdpjD0/TTtzludjDd74gYsqktGiSA7F5cWDrt0D/WQkt6G6wnKRqzxkF8j6EyG57s
+         cFN4ammztQa/EairgPFFKg/LQXxG/aFfJ0tl6TB8+Gaoidg/P/Qm1QhtpafDWKlrSkmW
+         lGJ/EzTu0DN1FE5dTzbbUUlQDudmktjZ90fmWmw7fZntJKNwuiT3rChxKdrMzzaj4xM5
+         SDFBSezeZnk70ADBSr2xBQyZEbZFO/S/aaEU8grSfkoTNJ/xRBY04u4OLZwNkolFiEAP
+         V+RA==
+X-Forwarded-Encrypted: i=1; AJvYcCUcr3438M+YVXEMcYpLDgvkbKoILFO0MwzGD5PvnR8ayRpLzHOJm0VuL7Vpu7dzh3YeEUueDfRzWwZDLpw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtdNcDEVAZvYEhDj5sjjAyC0dl8Vw06jzbShz5VMcQeCHxc1sY
+	m2d90Bpa2SFHJwLr95EAXMEzU28blUIIH9nA0aAECjuLNrqW/yeU
+X-Google-Smtp-Source: AGHT+IFPk2sLRl6XUuJUTITQ+rjKOPPRT9AhnCwgKB21M2FrzSP6gkJC4XF45wUN3a9IEq5LJW9p0g==
+X-Received: by 2002:a5d:6c69:0:b0:37d:54d0:1f15 with SMTP id ffacd0b85a97d-38225a04715mr3045657f8f.7.1731868116592;
+        Sun, 17 Nov 2024 10:28:36 -0800 (PST)
 Received: from 5dfbf0f66296.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.34
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 10:28:34 -0800 (PST)
+        Sun, 17 Nov 2024 10:28:36 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -75,9 +75,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v2 19/22] iio: accel: adxl345: prepare FIFO watermark handling
-Date: Sun, 17 Nov 2024 18:26:48 +0000
-Message-Id: <20241117182651.115056-20-l.rubusch@gmail.com>
+Subject: [PATCH v2 20/22] iio: accel: adxl345: use FIFO with watermark IRQ
+Date: Sun, 17 Nov 2024 18:26:49 +0000
+Message-Id: <20241117182651.115056-21-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20241117182651.115056-1-l.rubusch@gmail.com>
 References: <20241117182651.115056-1-l.rubusch@gmail.com>
@@ -89,149 +89,69 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the feature of the adxl345 and related sensors to manage a FIFO in
-stream mode by a watermark level. Provide means to set the watermark
-through the IIO api and sysfs interface.
+Enable the watermark feature of the adxl345 sensor. The feature uses a
+FIFO to be configured by the IIO fifo sysfs handles. The sensor
+configures the FIFO to streaming mode for measurements, or bypass for
+configuration. The sensor issues an interrupt on the configured line to
+signal several signals (data available, overrun or watermark reached).
+The setup allows for extension of further features based on the
+interrupt handler and the FIFO setup.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 94 ++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+ drivers/iio/accel/adxl345_core.c | 39 ++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index b57a123ac9..f7b937fb16 100644
+index f7b937fb16..07c336211f 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -288,6 +288,26 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
- 	return -EINVAL;
- }
+@@ -870,6 +870,45 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 		if (ret)
+ 			return dev_err_probe(dev, ret, "Failed to setup triggered buffer\n");
  
-+static int adxl345_set_watermark(struct iio_dev *indio_dev, unsigned int value)
-+{
-+	struct adxl34x_state *st = iio_priv(indio_dev);
-+	struct adxl34x_platform_data *data = &st->data;
-+	unsigned int fifo_mask = 0x1F;
-+	int ret;
++		dev_dbg(dev, "IRQ: allocating data ready trigger\n");
++		st->trig_dready = devm_iio_trigger_alloc(dev,
++							 "%s-dev%d-dready",
++							 indio_dev->name,
++							 iio_device_id(indio_dev));
++		if (!st->trig_dready)
++			return dev_err_probe(dev, -ENOMEM,
++					     "Failed to setup triggered buffer\n");
++		dev_dbg(dev, "IRQ: allocating data ready trigger ok\n");
 +
-+	if (value > ADXL34x_FIFO_SIZE)
-+		value = ADXL34x_FIFO_SIZE;
-+	pr_debug("%s(): set watermark to 0x%02x\n", __func__, value);
++		st->trig_dready->ops = &adxl34x_trig_dready_ops;
++		dev_dbg(dev, "IRQ: Setting data ready trigger ops ok\n");
 +
-+	ret = regmap_update_bits(st->regmap, ADXL345_REG_FIFO_CTL,
-+				 fifo_mask, value);
-+	if (ret)
-+		return ret;
++		iio_trigger_set_drvdata(st->trig_dready, indio_dev);
++		dev_dbg(dev, "IRQ: Setting up data ready trigger as driver data ok\n");
 +
-+	data->watermark = value;
-+	return 0;
-+}
++		ret = devm_iio_trigger_register(dev, st->trig_dready);
++		if (ret < 0)
++			return dev_err_probe(dev, ret,
++					     "Failed to register dready trigger\n");
++		dev_dbg(dev, "Registering data ready trigger ok\n");
 +
- static int adxl345_write_raw_get_fmt(struct iio_dev *indio_dev,
- 				     struct iio_chan_spec const *chan,
- 				     long mask)
-@@ -335,7 +355,76 @@ static void adxl345_powerdown(void *ptr)
- 	adxl345_set_measure_en(st, false);
- }
++		indio_dev->trig = iio_trigger_get(st->trig_dready);
++
++		dev_dbg(dev, "Requesting threaded IRQ, indio_dev->name '%s'\n",
++			indio_dev->name);
++
++		ret = devm_request_threaded_irq(dev, st->irq,
++						iio_trigger_generic_data_rdy_poll,
++						NULL,
++						IRQF_TRIGGER_RISING | IRQF_ONESHOT,
++						indio_dev->name, st->trig_dready);
++		if (ret < 0)
++			return dev_err_probe(dev, ret, "Failed to request IRQ handler\n");
++		dev_dbg(dev, "Requesting threaded IRQ handler ok\n");
++
++		/* Cleanup */
++		adxl345_empty_fifo(st);
++
+ 	} else { /* Initialization to prepare for FIFO_BYPASS mode (fallback) */
  
-+/* fifo */
-+
-+static ssize_t adxl345_get_fifo_enabled(struct device *dev,
-+					struct device_attribute *attr,
-+					char *buf)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct adxl34x_state *st = iio_priv(indio_dev);
-+	struct adxl34x_platform_data *data = &st->data;
-+
-+	return sysfs_emit(buf, "%d\n", data->fifo_mode);
-+}
-+
-+static ssize_t adxl345_get_fifo_watermark(struct device *dev,
-+					  struct device_attribute *attr,
-+					  char *buf)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct adxl34x_state *st = iio_priv(indio_dev);
-+	struct adxl34x_platform_data *data = &st->data;
-+
-+	return sprintf(buf, "%d\n", data->watermark);
-+}
-+
-+static ssize_t watermark_en_show(struct device *dev,
-+				 struct device_attribute *attr, char *buf)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct adxl34x_state *st = iio_priv(indio_dev);
-+
-+	return sysfs_emit(buf, "%d\n", st->watermark_en);
-+}
-+
-+static ssize_t watermark_en_store(struct device *dev,
-+				  struct device_attribute *attr,
-+				  const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct adxl34x_state *st = iio_priv(indio_dev);
-+	bool val;
-+
-+	if (kstrtobool(buf, &val))
-+		return -EINVAL;
-+	st->watermark_en = val;
-+	return len;
-+}
-+
-+/*
-+ * NB: The buffer/hwfifo_watermark is a read-only entry to display the
-+ * currently set hardware FIFO watermark. First set a value to buffer0/length.
-+ * This allows to configure buffer0/watermark. After enabling buffer0/enable
-+ * the hwfifo_watermark shall show the configured FIFO watermark value.
-+ *
-+ * ref: Documentation/ABI/testing/sysfs-bus-iio
-+ */
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_min, "1");
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_max,
-+			     __stringify(ADXL34x_FIFO_SIZE));
-+static IIO_DEVICE_ATTR(hwfifo_watermark, 0444,
-+		       adxl345_get_fifo_watermark, NULL, 0);
-+static IIO_DEVICE_ATTR(hwfifo_enabled, 0444,
-+		       adxl345_get_fifo_enabled, NULL, 0);
-+
-+static IIO_DEVICE_ATTR_RW(watermark_en, 0);
-+
- static const struct iio_dev_attr *adxl345_fifo_attributes[] = {
-+	&iio_dev_attr_hwfifo_watermark_min,
-+	&iio_dev_attr_hwfifo_watermark_max,
-+	&iio_dev_attr_hwfifo_watermark,
-+	&iio_dev_attr_hwfifo_enabled,
- 	NULL,
- };
- 
-@@ -345,6 +434,7 @@ static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
- 
- static struct attribute *adxl345_attrs[] = {
- 	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
-+	&iio_dev_attr_watermark_en.dev_attr.attr,
- 	NULL
- };
- 
-@@ -664,6 +754,7 @@ static const struct iio_info adxl345_info = {
- 	.read_raw	= adxl345_read_raw,
- 	.write_raw	= adxl345_write_raw,
- 	.write_raw_get_fmt	= adxl345_write_raw_get_fmt,
-+	.hwfifo_set_watermark = adxl345_set_watermark,
- };
- 
- /**
-@@ -721,6 +812,9 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 	/* some reasonable pre-initialization */
- 	st->data.act_axis_control = 0xFF;
- 
-+	/* default is all features turned off */
-+	st->watermark_en = 0;
-+
- 	st->intio = ADXL345_INT1;
- 
- 	indio_dev->name = st->info->name;
+ 		/* The following defaults to 0x00, anyway */
 -- 
 2.39.5
 

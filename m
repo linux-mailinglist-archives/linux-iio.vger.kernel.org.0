@@ -1,77 +1,72 @@
-Return-Path: <linux-iio+bounces-12349-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12350-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3409D050D
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:29:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2D89D050F
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4C4D1F21AB0
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:29:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37D821F21B56
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0461DD0DA;
-	Sun, 17 Nov 2024 18:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1CE1DAC89;
+	Sun, 17 Nov 2024 18:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XUJnB7eE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aCGlbxWI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879A21DC749;
-	Sun, 17 Nov 2024 18:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809EC1DD0C6;
+	Sun, 17 Nov 2024 18:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731868104; cv=none; b=XxlqfOEsIPnNnEZrJA+o3F+sBD89npXCLLCdiF9bTU7wAcKUjv7TKr0JqBb72lQs/EFA2Mbp1SjyNCh3WlXTVKne2EKGo4gHJZfXN2scU9lbdJh3lmFo8tk5eaHC+X2RunbT5gAvkg3RYBuGnpNa4dITJSsrebtF3pKMLDuJdfg=
+	t=1731868105; cv=none; b=hd8CH9HQvRiBNGR6wd1ozh/1dQWtVncz9FaiZN9uvZoNwK8yDGojox7bFpnLJPG5Gme9uX5sTXZ4cw6CUmn7zUjw/tq2Gz6lgfoeas2F8lpqWXm2XXCPJ5FQORrtj1zwL9PZn5VYK9XaBbryguobse/cGjHPWnlYLkPmkLinqi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731868104; c=relaxed/simple;
-	bh=4r1cVkYdRT9ZfGiUI9fHGkVIlyLVh+osJxxDLNbbpVY=;
+	s=arc-20240116; t=1731868105; c=relaxed/simple;
+	bh=Cd2tBZUuICf5FU5hTwdZ9b6RrklaSTv0sQOo6W4hS28=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FfTPJ4hSNJsFBpuLMA0zVl3YNgl0e3Ty1/dKpbD8jUStNHabW+fzJ24auu7wpYh5lnLSUUSVqW/fjyi7fbUG9e5rW/fwg1DZ3BSurLNhz9MoD7nFyMgUkacfyQlmPPu0mEYeH3uRSCX10QXdIj+DOm3qB7yyy2alILLYLOM9388=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XUJnB7eE; arc=none smtp.client-ip=209.85.221.43
+	 MIME-Version; b=OfJ+hjTVRude/KOXK7vTg+SbUTqO3TDVd14p9D9X828YrnOCgcBDN0/fZdmkAcwtR6YtvsnX1DR/5G7NQZMeQI05Nue1aWqPpvUMGVXRRVhmerFbCchVUDygaX7B89A7ajpLlslCzwJec7a4hKM55UsJWI+3vyW5KmRd0J+Kze0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aCGlbxWI; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3823ef92bd0so73305f8f.2;
-        Sun, 17 Nov 2024 10:28:22 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43159469053so1867395e9.2;
+        Sun, 17 Nov 2024 10:28:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731868101; x=1732472901; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731868102; x=1732472902; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PPnUNq9UPYs83FPZhXy9S6/EzgNticedB2U5cxlHgYU=;
-        b=XUJnB7eE+VCanka8OhAIJXYjQkaEZiJvcKM8c55l6TUbJJC/+8pCYAKTouY8W4STvp
-         pT17JZ//i/HA5xWUt1cJX4mb9PsJhRKtI8Ce2171E+fgLOFlYwvl7KcIxJG46Pe0SKLe
-         1LtEF9QXtwqQz+n7nbqKTEJyxrLJovD0aVKOSOWUxUGhQcR+JF+QTeRB+/yLg7uKvnbE
-         pVXU0QhxYT1kmmH16kQ6NPzJKLb39S+jVRQ0+g+4TpBxwR0dQugNAbbzW7RAZdh5IQIy
-         +EZ5pgKRUwavn+M25s7o9knFfNbl0krBdqfyzl2JermF5KnGYlwipMYzFG6Z8zrKA+pq
-         kHuA==
+        bh=2KDSOkAKN9bBRfuUJxFrsniHWtfVPCBalN3GkkFmvHU=;
+        b=aCGlbxWIff6o47n9D8jrg5oRkBwSorKg/rFMwr60O6uLHrSosVspuyrBa6mGhKIN9J
+         GDxwXv1nLeYSl/hFrmzZ9vptMC9E6S7kN9bcfhAbT1PWpMk9rBDOZJAuztmAlajO+J8U
+         HkOEucldiM2LDuxZu585xKVLaxdbVRR9k65oBk4jCfaDF9Cw2KhAT+YeivYRvv811tOH
+         uYzzyzmPCED35aQf8i2DBMe0d0/YP3swv9R0ZivT+BruBq8HPz/glvwrcA1Go6pGcZxq
+         GPA7BPhab8cxXORhxkVDxAHVvp9Qjh6rIRgwcp38LYp74R3vMnIS3YVCpV//B+NWohP5
+         0++g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731868101; x=1732472901;
+        d=1e100.net; s=20230601; t=1731868102; x=1732472902;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PPnUNq9UPYs83FPZhXy9S6/EzgNticedB2U5cxlHgYU=;
-        b=RzrLl7AJ8s0TclQCogInPCDxfJmKUUS+jhGln92sUfaNZsgDfeXjhjbPNWbPf7LM4M
-         eXRqOUE1LpMCK4+9oUCOaMR2cxjW2L+Kt4sOTgYhlbg+OqozwLb3MovZ7/Xf4VdY5iPt
-         WuNlTlrT3P/EO0EvHN2qpoHsGTl04LXzDJxq5r7bZPKknGSCEY7/K6h75rAjenVARL/X
-         MHwAED2x5IZaemkBEfzV56Trs8nxsdhGIBmz2GY5ClT9JgVayv+V5vDi8rREZ3ScTxFE
-         7FSGwY4lENueO9L5CP+yDpymXIJgIwBue0sPclyYVVZ8nQXECaOTH4syeLoVwewEGEbE
-         sc6w==
-X-Forwarded-Encrypted: i=1; AJvYcCV34POV1Pm1I/mTE42K045KTNPEWem3c+o2nQ74TwyN9IQelVp9+Y+GoyMXIjKa0s3zvqs8pVNQcZBoa9k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNl3pOf4RQjpaHmjFwFxOflZ1D8STZmVxO8PZVfzhmLfNcfdhq
-	dbslM/3I91pcd4DFGQLSvDRAsGLwDeFy9q53EZXfDromIH06nwaA
-X-Gm-Gg: ASbGncvzrDJUnx+IhXzU3vpbjq6uvIP9evrNAcvcQwupEe/OhswPWo/tO7HWb8xNfIc
-	jv+cEW26/0IkZtT1bwLi2Esb5pnke5CI1A818NCKVbYdx61jVefLILmvPqyvE0tf+1J83qnD1O2
-	BY3tCbzrggxeMTcw9M8NQfx0LgisPtVwkNSNMZGLveG6woa6TupNFkXaL2kUTJcMWnNyPdlt5Kk
-	vXrdTqVCYNUfcX7a8huDZtknTKZbGjJKmeY3qXtBTGPWldnQbWjKg977haaE1eUSoqK+ZiV74G5
-	7T6nAtA8LmhjKMBCNU1/Wvigeuhe
-X-Google-Smtp-Source: AGHT+IE0aApcftU5GYHT8HfUFdCRHqXn8jqBx0A+4xGFI6fKxnFqpLfCljv8kWP7MYfXTwu4nmIuWw==
-X-Received: by 2002:a05:600c:1c29:b0:42c:aeee:80a with SMTP id 5b1f17b1804b1-432df791c54mr36031325e9.7.1731868100706;
-        Sun, 17 Nov 2024 10:28:20 -0800 (PST)
+        bh=2KDSOkAKN9bBRfuUJxFrsniHWtfVPCBalN3GkkFmvHU=;
+        b=WCGioxBbomKqVyUZKRrzQe+osKy5YNF0aF9fsoQD732TmSu5jt1jNTMGMDGfsIUiaF
+         r8JMJs0P0oYuIF+pXVy/xE/OPgB/6bP5bi/51kFC1CFW9Q5n81MOQMmldxHAd1SWFNgt
+         UjZvgPrgRQvsCmNZdpIH0ygdzD5imk1BaKZF2IdLdi+rp3PRusNCMIPQ+BI1h6XzFVwE
+         q8DvBb50RDirXSdMWb74vVic9mDDqAfzdfaP8d95Tdev4FyEj0PDJ4sXVy6xbdgeCEun
+         p0pZeEXlrDMcNDlWjSO6qRnIfsdhtvghUQa0UTik9pxLmcLljhrA6Wq2EfZdkrQTMrcE
+         iKWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqOr9TdjYk+uBnekP8JmUy151ABeYNih2Wd6kKmA4r/T8johz/zRv1cgYbKAlss0KThSs/pCT3S5vCkHQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaLsWA90vPdAQDLCbS8NJAIPFz8cdKqFlNRnZLZ099BRQRbg+Y
+	rtEH+ngxFhrA6T+JyQLnkrlCFrq/alw+ZK/N/HKvj94vfWPo1BSQ
+X-Google-Smtp-Source: AGHT+IHl2ZvOA71B3I+0fttI5e/0p7cmfj8FDx0YnNMQ+reLKTgTiipO6jeV9z3JbDW1Nn4wpfJZVA==
+X-Received: by 2002:a05:600c:4710:b0:431:558c:d9e9 with SMTP id 5b1f17b1804b1-432df78ac1bmr35727395e9.5.1731868101646;
+        Sun, 17 Nov 2024 10:28:21 -0800 (PST)
 Received: from 5dfbf0f66296.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 10:28:20 -0800 (PST)
+        Sun, 17 Nov 2024 10:28:21 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -80,9 +75,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v2 06/22] iio: accel: adxl345: add function to switch measuring
-Date: Sun, 17 Nov 2024 18:26:35 +0000
-Message-Id: <20241117182651.115056-7-l.rubusch@gmail.com>
+Subject: [PATCH v2 07/22] iio: accel: adxl345: initialize IRQ number
+Date: Sun, 17 Nov 2024 18:26:36 +0000
+Message-Id: <20241117182651.115056-8-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20241117182651.115056-1-l.rubusch@gmail.com>
 References: <20241117182651.115056-1-l.rubusch@gmail.com>
@@ -94,95 +89,109 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace the powerup / powerdown functions by a generic function to put
-the sensor in STANDBY, or MEASURE mode. This is needed for several
-features of the accelerometer. It allows to change e.g. FIFO settings.
+Add the possibility to claim an interrupt and init the state structure
+with interrupt number and interrupt line to use. The adxl345 can use
+two different interrupt lines, mainly to signal FIFO watermark events,
+single or double tap, activity, etc. Hence, having the interrupt line
+available is crucial to implement such features.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 53 ++++++++++++++++++++++----------
- 1 file changed, 37 insertions(+), 16 deletions(-)
+ drivers/iio/accel/adxl345.h      | 1 +
+ drivers/iio/accel/adxl345_core.c | 6 ++++++
+ drivers/iio/accel/adxl345_i2c.c  | 2 +-
+ drivers/iio/accel/adxl345_spi.c  | 8 ++++++--
+ 4 files changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index 926e397678..81688a9eaf 100644
---- a/drivers/iio/accel/adxl345_core.c
-+++ b/drivers/iio/accel/adxl345_core.c
-@@ -138,6 +138,39 @@ static int adxl345_write_raw_get_fmt(struct iio_dev *indio_dev,
- 	}
- }
- 
-+/**
-+ * adxl345_set_measure_en() - Enable and disable measuring.
-+ *
-+ * @st: The device data.
-+ * @en: Enable measurements, else standby mode.
-+ *
-+ * For lowest power operation, standby mode can be used. In standby mode,
-+ * current consumption is supposed to be reduced to 0.1uA (typical). In this
-+ * mode no measurements are made. Placing the device into standby mode
-+ * preserves the contents of FIFO.
-+ *
-+ * Return: Returns 0 if successful, or a negative error value.
-+ */
-+static int adxl345_set_measure_en(struct adxl34x_state *st, bool en)
-+{
-+	unsigned int val = 0;
-+	int ret;
-+
-+	val = (en) ? ADXL345_POWER_CTL_MEASURE : ADXL345_POWER_CTL_STANDBY;
-+	ret = regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
-+	if (ret)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static void adxl345_powerdown(void *ptr)
-+{
-+	struct adxl34x_state *st = ptr;
-+
-+	adxl345_set_measure_en(st, false);
-+}
-+
- static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
- "0.09765625 0.1953125 0.390625 0.78125 1.5625 3.125 6.25 12.5 25 50 100 200 400 800 1600 3200"
- );
-@@ -158,16 +191,6 @@ static const struct iio_info adxl345_info = {
- 	.write_raw_get_fmt	= adxl345_write_raw_get_fmt,
+diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
+index 3d5c8719db..cf4132715c 100644
+--- a/drivers/iio/accel/adxl345.h
++++ b/drivers/iio/accel/adxl345.h
+@@ -62,6 +62,7 @@ struct adxl345_chip_info {
  };
  
--static int adxl345_powerup(void *regmap)
--{
--	return regmap_write(regmap, ADXL345_REG_POWER_CTL, ADXL345_POWER_CTL_MEASURE);
--}
--
--static void adxl345_powerdown(void *regmap)
--{
--	regmap_write(regmap, ADXL345_REG_POWER_CTL, ADXL345_POWER_CTL_STANDBY);
--}
--
- /**
-  * adxl345_core_probe() - probe and setup for the adxl345 accelerometer,
+ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
++		       int irq,
+ 		       int (*setup)(struct device*, struct regmap*));
+ 
+ #endif /* _ADXL345_H_ */
+diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+index 81688a9eaf..902bd3568b 100644
+--- a/drivers/iio/accel/adxl345_core.c
++++ b/drivers/iio/accel/adxl345_core.c
+@@ -11,6 +11,7 @@
+ #include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/units.h>
++#include <linux/interrupt.h>
+ 
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+@@ -18,6 +19,7 @@
+ #include "adxl345.h"
+ 
+ struct adxl34x_state {
++	int irq;
+ 	const struct adxl345_chip_info *info;
+ 	struct regmap *regmap;
+ };
+@@ -196,12 +198,14 @@ static const struct iio_info adxl345_info = {
   *                        also covers the adxl375 and adxl346 accelerometer
-@@ -242,14 +265,12 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 		return dev_err_probe(dev, -ENODEV, "Invalid device ID: %x, expected %x\n",
- 				     regval, ADXL345_DEVID);
+  * @dev:	Driver model representation of the device
+  * @regmap:	Regmap instance for the device
++ * @irq:	Interrupt handling for async usage
+  * @setup:	Setup routine to be executed right before the standard device
+  *		setup
+  *
+  * Return: 0 on success, negative errno on error
+  */
+ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
++		       int irq,
+ 		       int (*setup)(struct device*, struct regmap*))
+ {
+ 	struct adxl34x_state *st;
+@@ -224,6 +228,8 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
  
--	/* Enable measurement mode */
--	ret = adxl345_powerup(st->regmap);
-+	ret = devm_add_action_or_reset(dev, adxl345_powerdown, st);
- 	if (ret < 0)
--		return dev_err_probe(dev, ret, "Failed to enable measurement mode\n");
-+		return dev_err_probe(dev, ret, "Failed to add action or reset\n");
+ 	st = iio_priv(indio_dev);
+ 	st->regmap = regmap;
++
++	st->irq = irq;
+ 	st->info = device_get_match_data(dev);
+ 	if (!st->info)
+ 		return -ENODEV;
+diff --git a/drivers/iio/accel/adxl345_i2c.c b/drivers/iio/accel/adxl345_i2c.c
+index 4065b8f7c8..604b706c29 100644
+--- a/drivers/iio/accel/adxl345_i2c.c
++++ b/drivers/iio/accel/adxl345_i2c.c
+@@ -27,7 +27,7 @@ static int adxl345_i2c_probe(struct i2c_client *client)
+ 	if (IS_ERR(regmap))
+ 		return dev_err_probe(&client->dev, PTR_ERR(regmap), "Error initializing regmap\n");
  
--	ret = devm_add_action_or_reset(dev, adxl345_powerdown, st->regmap);
--	if (ret < 0)
--		return ret;
-+	/* Enable measurement mode */
-+	adxl345_set_measure_en(st, true);
- 
- 	return devm_iio_device_register(dev, indio_dev);
+-	return adxl345_core_probe(&client->dev, regmap, NULL);
++	return adxl345_core_probe(&client->dev, regmap, client->irq, NULL);
  }
+ 
+ static const struct adxl345_chip_info adxl345_i2c_info = {
+diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
+index 61fd9a6f5f..39e7d71e1d 100644
+--- a/drivers/iio/accel/adxl345_spi.c
++++ b/drivers/iio/accel/adxl345_spi.c
+@@ -39,9 +39,13 @@ static int adxl345_spi_probe(struct spi_device *spi)
+ 		return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing regmap\n");
+ 
+ 	if (spi->mode & SPI_3WIRE)
+-		return adxl345_core_probe(&spi->dev, regmap, adxl345_spi_setup);
++		return adxl345_core_probe(&spi->dev, regmap,
++					  spi->irq,
++					  adxl345_spi_setup);
+ 	else
+-		return adxl345_core_probe(&spi->dev, regmap, NULL);
++		return adxl345_core_probe(&spi->dev, regmap,
++					  spi->irq,
++					  NULL);
+ }
+ 
+ static const struct adxl345_chip_info adxl345_spi_info = {
 -- 
 2.39.5
 

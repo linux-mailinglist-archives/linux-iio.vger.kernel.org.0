@@ -1,306 +1,241 @@
-Return-Path: <linux-iio+bounces-12365-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12366-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFCAF9D052D
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:33:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4909D0532
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 901F02823F1
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:33:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75FE62823D1
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699C91DED64;
-	Sun, 17 Nov 2024 18:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB261DAC93;
+	Sun, 17 Nov 2024 18:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FWM8h8r6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MmeZq9g5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652291DE89E;
-	Sun, 17 Nov 2024 18:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5241DAC83;
+	Sun, 17 Nov 2024 18:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731868122; cv=none; b=AYCSeGs0V+HAdp7nnnmqrmHwpURcPpHDCb5y3A7ZVACwqUG/KQiUTuyo877ZF1rPdgwlrRL8X7EWqjeC5w2bjUkisHRrM6jZ8H5fApLjn9V0UDNS0VtlsEkcXDL3NHj88++2hpyXCMjrU5/Zu+HnUJCemd9mic8BGkm1f/Fp7xY=
+	t=1731868570; cv=none; b=G6slznlQ7IDC+Wo14Q+ZJ/1KufDdQf9JBwE8ywtPp0FQPl/22PafUmkPhKbnpC7FtHmumtWUJmHC5LdStvCcVREFWdnLTVGNWSyNDTqPYSfGoyB02ces/s/Hr2RVWrhPSNgp/Ycs28NSDSp/PJ2yI0k1gqo2B1t5KtNGmulS1jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731868122; c=relaxed/simple;
-	bh=6Ty7UcqFwwj0IBvnQHFNDu2DWSapIAHbAbAfG2L6040=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Yot/fPXtF855EuUGuZkcl577qv52g8A23MPBSDHkkOOuFgz3F8hFA2pU8tVzWTEO3wSJKBw7Eq+gn14dmaZHknqhLkCQMCSeemNgXxYHYxLu5zcshjKwe3tkn/N8f8AM9Vk0H0gYKaeDs7anuVUb6J/othF90AhrcozqgxkInjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FWM8h8r6; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38231f84d8fso94689f8f.3;
-        Sun, 17 Nov 2024 10:28:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731868119; x=1732472919; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z7SMjsKTJF3XXwC0PuuMPNue9a73DWC0gkHNPCwn8EQ=;
-        b=FWM8h8r6phdNw/oj0pP8xt+zWBjXgtbdUZFrViVQo4NJIgF74pe+XcgyEFK3L37zg6
-         PTZXUWM7+Z/nGS+/2LQR+BnZYq5fYPTAmc50M/e3wAMfgPCyTA5oYMabBdacvbB2GtBE
-         qImh1eeFaFSeHryKwPnMWL5tG8459As3EYXK9oqhNjrZgf/df4UEhFGJuwirua+a0jrz
-         FAu8e+9tXEBeHn/Umdq8+ZZPkZ/e3wmnj/7cOSb930VXUfVgOH6B2eytqsJQ7LSAwWtx
-         n5xcoOd3O6132jlmPKAagQ6szq3FvnfHdX/ItMooULlAOsjgLuzKIsRsXXMJVdcN1lH2
-         E5FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731868119; x=1732472919;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z7SMjsKTJF3XXwC0PuuMPNue9a73DWC0gkHNPCwn8EQ=;
-        b=BWB4yzLp5iXPv4XOBtkS/uVTWZPa2OeCbHe0qJud5mndgB3qj5mjPYh9wUJa2+4ho6
-         nkG0zg3H47QfQ4Gce1qoBSQ1FLTWIRfyo8KJkIzfTa8eCEk80aCwhrhNgu3n2vCSQ6LE
-         gjlxqXLHz3QQj9HeEPvJ30K4V3LUAF+N4OvBM8EAFm4DSwhBdf/qGZml8w6uAQ5lrexS
-         VrBByIzSOPVU2C9ebU+1MnB5JSQYIJuW++OyF6Le/njZpNtYtQ4hJBSB0jmamsfZ+EIl
-         k8LopkryNtMaxO4FTiod6j4P5oXUI8KVeLckAKg/ZOlJwRZIICHnr8iYkpu/8slrVX/t
-         lSYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWuXCGMAWG4ArYHOeYN6kUYRfUrZ9HGyDISQ15nxpoqdZ270SospKGt+M7fED1EmGb/SxaKrqH1zgqIBOE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLY7GLw3Lm2iumxWt8CxVrSTzXp70yg+KuyqXFYbqGJPmGb8GA
-	IeBYMJ/RiY3d/wnvHKxfpXNZWTAMouVbNhY4pgjYMZJYZ6UsMaD0
-X-Gm-Gg: ASbGncs/tJJ+32HXP6oepRaTnxPsHqNn+537xq1kdhTZu5FgXY3M13yFmNm/OHhIjNt
-	xnag+SSTlJrfHyI8+LLugUaEk41kdKcBRkHZBLaFlg3173xi5sm8xdvtBgLzsZvK7iNTs4l+BIm
-	hvh2e/bxbmij82gaNuvmvFXWC8faCY9DC9ymQzTQ0TazziYAa8WFakSBroF9bM5THI0HSPYDqsb
-	TJe3ZxRPWJt/fM95UMdv491emtcrUAX8xhIw692d0sZBAazxJmE10ulzH9H4ku9uYbDyKF1Smg6
-	xLqPmbScuofTnG4Zx6VbdRlhM4pn
-X-Google-Smtp-Source: AGHT+IEyBBba2byhxuVdMC2GpE3Mg1u1KL7/jzRwgbHm2Q9MfsRkPxNlfOIAUepCyr3VLaD50PKJFg==
-X-Received: by 2002:a5d:47cc:0:b0:37d:3a04:62ec with SMTP id ffacd0b85a97d-38225a3959bmr3630275f8f.8.1731868118589;
-        Sun, 17 Nov 2024 10:28:38 -0800 (PST)
-Received: from 5dfbf0f66296.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 10:28:38 -0800 (PST)
-From: Lothar Rubusch <l.rubusch@gmail.com>
-To: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	eraretuya@gmail.com,
-	l.rubusch@gmail.com
-Subject: [PATCH v2 22/22] iio: accel: adxl345: add debug printout
-Date: Sun, 17 Nov 2024 18:26:51 +0000
-Message-Id: <20241117182651.115056-23-l.rubusch@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241117182651.115056-1-l.rubusch@gmail.com>
-References: <20241117182651.115056-1-l.rubusch@gmail.com>
+	s=arc-20240116; t=1731868570; c=relaxed/simple;
+	bh=0ioLdMkZxydkHixL/mc8uvNwqbZTPJyV3EDH8DzfVz4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mOiurL6Om5oTvAJ35FLN0d0IagmGMne013gfAbvfV6ttdIrh2JlpIv/zPCHcH4IQBqP7I61h2Kxo26y5cTSoSvXSHxMjxTghBI7CsIf+5PytnVIIBQTO/ASxfEH99fk8gyRBh/HV1cr21sEIjc+BaScdn/nFCXfI8HIKcaqWwYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MmeZq9g5; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731868568; x=1763404568;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0ioLdMkZxydkHixL/mc8uvNwqbZTPJyV3EDH8DzfVz4=;
+  b=MmeZq9g505Sg/r3vSYTn2xezvU/WjCvRqdxSd3DPi5/dLNwb65d5nmEt
+   T6qqsqqJXBLqM4gXhEXzH3w27J01cHdU+knRjP40G/5/btfX+IrMwiRUF
+   9uzR5QSElul/QZeIe3ZUt3uM2mtV/33twdnanHBvCCqwuMVlPJ3zl9P04
+   9UyQdMo06wk9q7mE8x5hl/nqEm6XuOyTQPxw7P5c4VDScWzSs+e9IbgGy
+   268I9+D7/Rplx9p7UhibhVO7puvzlZV0PQyzpKqRDRsWRZ3ZvF4xk3AmW
+   QK9sMerhWR9LdQxvFRmYlJuXZiHH4DvCENdfdpQTgAzoO0WVrNmesa1Qt
+   Q==;
+X-CSE-ConnectionGUID: YJRN0Lw7TQOYxvYp9ydkyA==
+X-CSE-MsgGUID: Tgd8cJ8zTsOuuTyu4eUY9w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="49255293"
+X-IronPort-AV: E=Sophos;i="6.12,162,1728975600"; 
+   d="scan'208";a="49255293"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2024 10:36:08 -0800
+X-CSE-ConnectionGUID: oTwMlP9tS2qTiCGnSHNewQ==
+X-CSE-MsgGUID: j77u9Kw+SLycRTb3LJphWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="94064867"
+Received: from lkp-server01.sh.intel.com (HELO 1e3cc1889ffb) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 17 Nov 2024 10:36:06 -0800
+Received: from kbuild by 1e3cc1889ffb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tCk7v-0001zh-1Q;
+	Sun, 17 Nov 2024 18:36:03 +0000
+Date: Mon, 18 Nov 2024 02:35:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>, lars@metafoo.de,
+	Michael.Hennerich@analog.com, jic23@kernel.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, l.rubusch@gmx.ch,
+	Lothar Rubusch <l.rubusch@gmail.com>
+Subject: Re: [PATCH 22/22] iio: accel: adxl345: add debug printout
+Message-ID: <202411180235.gb4VHLRO-lkp@intel.com>
+References: <20241114231002.98595-23-l.rubusch@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241114231002.98595-23-l.rubusch@gmail.com>
 
-Add debug prints to allow to debug the sensor based on dynamic debug.
+Hi Lothar,
 
-Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
----
- drivers/iio/accel/adxl345_core.c | 95 ++++++++++++++++++++++++++++++++
- 1 file changed, 95 insertions(+)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index c79f0f5e3b..8d2166a057 100644
---- a/drivers/iio/accel/adxl345_core.c
-+++ b/drivers/iio/accel/adxl345_core.c
-@@ -26,6 +26,9 @@
- 
- #include "adxl345.h"
- 
-+/* debugging registers */
-+#define DEBUG_ADXL345 0
-+
- /* ADXL345 register map */
- #define ADXL345_REG_DEVID		0x00 /* r    Device ID */
- #define ADXL345_REG_THRESH_TAP	0x1D /* r/w  Tap Threshold */
-@@ -181,6 +184,78 @@ static const struct iio_chan_spec adxl34x_channels[] = {
- 	ADXL34x_CHANNEL(2, chan_z, Z),
- };
- 
-+/*
-+ * Debugging
-+ */
-+
-+__maybe_unused
-+static void adxl345_debug_registers(const char *func, struct adxl34x_state *st)
-+{
-+#if DEBUG_ADXL345 == 1
-+	struct regmap *regmap = st->regmap;
-+	unsigned int regval = 0;
-+
-+	regmap_read(regmap, ADXL345_REG_THRESH_TAP, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_THRESH_TAP\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_DUR, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_DUR\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_LATENT, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_LATENT\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_WINDOW, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_WINDOW\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_ACT_TAP_STATUS, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_ACT_TAP_STATUS\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_POWER_CTL, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_POWER_CTL\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_INT_ENABLE, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_INT_ENABLE\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_INT_MAP, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_INT_MAP\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_INT_SOURCE, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_INT_SOURCE\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_FIFO_CTL, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_FIFO_CTL\n",
-+			func, 0xff & regval);
-+
-+	regmap_read(regmap, ADXL345_REG_FIFO_STATUS, &regval);
-+	pr_debug("%s(): DEBUG - 0x%02X\t- ADXL345_REG_FIFO_STATUS\n",
-+			func, 0xff & regval);
-+# endif
-+}
-+
-+__maybe_unused
-+static void adxl345_debug_fifo(const char *func, s16 *fifo_buf, int entries_line)
-+{
-+#if DEBUG_ADXL345 == 1
-+	s16 xval, yval, zval;
-+
-+	xval = fifo_buf[0 + entries_line];
-+	yval = fifo_buf[1 + entries_line];
-+	zval = fifo_buf[2 + entries_line];
-+
-+	pr_debug("%s(): FIFO[%d] - x=%d, y=%d, z=%d\n",
-+		func, entries_line/3, xval, yval, zval);
-+#endif
-+}
-+
- static int adxl345_set_interrupts(struct adxl34x_state *st)
- {
- 	int ret;
-@@ -528,6 +603,8 @@ static int adxl345_read_fifo_elements(struct adxl34x_state *st, int fifo_entries
- 	size_t count, ndirs = 3;
- 	int i, ret;
- 
-+	pr_debug("%s(): fifo_entries = %d\n", __func__, fifo_entries);
-+
- 	count = 2 * ndirs; /* 2 byte per direction */
- 	for (i = 0; i < fifo_entries; i++) {
- 		ret = regmap_noinc_read(st->regmap, ADXL345_REG_XYZ_BASE,
-@@ -537,6 +614,7 @@ static int adxl345_read_fifo_elements(struct adxl34x_state *st, int fifo_entries
- 			return -EFAULT;
- 		}
- 	}
-+	adxl345_debug_registers(__func__, st);
- 
- 	return 0;
- }
-@@ -656,6 +734,7 @@ static int adxl345_push_fifo_data(struct iio_dev *indio_dev,
- 		if (st->fifo_delay && (fifo_entries > 1))
- 			udelay(3);
- 
-+		adxl345_debug_fifo(__func__, st->fifo_buf, i);
- 		iio_push_to_buffers(indio_dev, &st->fifo_buf[i]);
- 	}
- 
-@@ -683,6 +762,7 @@ static int adxl345_trig_dready(struct iio_trigger *trig, bool state)
- 			 __func__, st->int_map);
- 	}
- 
-+	adxl345_debug_registers(__func__, st);
- 	return 0;
- }
- 
-@@ -713,6 +793,7 @@ static irqreturn_t adxl345_trigger_handler(int irq, void *p)
- 	int fifo_entries;
- 	int ret;
- 
-+	pr_debug("%s(): IRQ caught!\n", __func__);
- 	ret = adxl345_get_status(st, &int_stat);
- 	if (ret < 0)
- 		goto err;
-@@ -747,6 +828,7 @@ static irqreturn_t adxl345_trigger_handler(int irq, void *p)
- 
- 	goto done;
- err:
-+	pr_debug("%s(): error termination\n", __func__);
- 	iio_trigger_notify_done(indio_dev->trig);
- 	adxl345_set_measure_en(st, false);
- 	adxl345_empty_fifo(st);
-@@ -754,6 +836,7 @@ static irqreturn_t adxl345_trigger_handler(int irq, void *p)
- 	return IRQ_NONE;
- 
- done:
-+	pr_debug("%s(): regular termination\n", __func__);
- 	return IRQ_HANDLED;
- }
- 
-@@ -804,6 +887,9 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 	st = iio_priv(indio_dev);
- 	st->regmap = regmap;
- 
-+	dev_dbg(dev, "irq '%d'\n", irq);
-+	if (!irq) /* fall back to bypass mode w/o IRQ */
-+		dev_dbg(dev, "no IRQ, FIFO mode will stay in BYPASS_MODE\n");
- 	st->irq = irq;
- 	st->info = device_get_match_data(dev);
- 	if (!st->info)
-@@ -831,7 +917,11 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 	indio_dev->channels = adxl34x_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(adxl34x_channels);
- 
-+	dev_dbg(dev, "setting up indio_dev ok\n");
-+
- 	if (setup) {
-+		dev_dbg(dev, "setup() was provided\n");
-+
- 		/* Perform optional initial bus specific configuration */
- 		ret = setup(dev, st->regmap);
- 		if (ret)
-@@ -846,6 +936,8 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 					     "Failed to set data range\n");
- 
- 	} else {
-+		dev_dbg(dev, "No setup() provided\n");
-+
- 		/* Enable full-resolution mode (init all data_format bits) */
- 		ret = regmap_write(st->regmap, ADXL345_REG_DATA_FORMAT,
- 				   ADXL345_DATA_FORMAT_FULL_RES);
-@@ -854,6 +946,7 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 					     "Failed to set data range\n");
- 	}
- 
-+	dev_dbg(dev, "Retrieving DEVID\n");
- 	ret = regmap_read(st->regmap, ADXL345_REG_DEVID, &regval);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "Error reading device ID\n");
-@@ -861,7 +954,9 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 	if (regval != ADXL345_DEVID)
- 		return dev_err_probe(dev, -ENODEV, "Invalid device ID: %x, expected %x\n",
- 				     regval, ADXL345_DEVID);
-+	dev_dbg(dev, "Retrieving DEVID ok\n");
- 
-+	dev_dbg(dev, "Registering power down function\n");
- 	ret = devm_add_action_or_reset(dev, adxl345_powerdown, st);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "Failed to add action or reset\n");
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.12-rc7 next-20241115]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Lothar-Rubusch/iio-accel-adxl345-fix-comment-on-probe/20241115-190245
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20241114231002.98595-23-l.rubusch%40gmail.com
+patch subject: [PATCH 22/22] iio: accel: adxl345: add debug printout
+config: x86_64-randconfig-121-20241117 (https://download.01.org/0day-ci/archive/20241118/202411180235.gb4VHLRO-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241118/202411180235.gb4VHLRO-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411180235.gb4VHLRO-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+   drivers/iio/accel/adxl345_core.c:613:6: sparse: sparse: symbol 'adxl345_empty_fifo' was not declared. Should it be static?
+>> drivers/iio/accel/adxl345_core.c:720:46: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected signed short [usertype] *fifo_buf @@     got restricted __le16 * @@
+   drivers/iio/accel/adxl345_core.c:720:46: sparse:     expected signed short [usertype] *fifo_buf
+   drivers/iio/accel/adxl345_core.c:720:46: sparse:     got restricted __le16 *
+
+vim +720 drivers/iio/accel/adxl345_core.c
+
+   606	
+   607	/**
+   608	 * Empty the fifo. This is needed also in case of overflow or error handling.
+   609	 * Read out all remaining elements and reset the fifo_entries counter.
+   610	 *
+   611	 * @st: The instance to the state object of the sensor.
+   612	 */
+ > 613	void adxl345_empty_fifo(struct adxl34x_state *st)
+   614	{
+   615		int regval;
+   616		int fifo_entries;
+   617	
+   618		/* In case the HW is not "clean" just read out remaining elements */
+   619		adxl345_get_fifo_entries(st, &fifo_entries);
+   620		if (fifo_entries > 0)
+   621			adxl345_read_fifo_elements(st, fifo_entries);
+   622	
+   623		/* Reset the INT_SOURCE register by reading the register */
+   624		regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, &regval);
+   625	}
+   626	
+   627	static int adxl345_buffer_postenable(struct iio_dev *indio_dev)
+   628	{
+   629		struct adxl34x_state *st = iio_priv(indio_dev);
+   630		struct adxl34x_platform_data *data = &st->data;
+   631		int ret;
+   632	
+   633		ret = adxl345_set_interrupts(st);
+   634		if (ret)
+   635			return -EINVAL;
+   636	
+   637		/* Default to FIFO mode: STREAM, since it covers the general usage
+   638		 * and does not bypass the FIFO
+   639		 */
+   640		data->fifo_mode = ADXL_FIFO_STREAM;
+   641		adxl345_set_fifo(st);
+   642	
+   643		return 0;
+   644	}
+   645	
+   646	static int adxl345_buffer_predisable(struct iio_dev *indio_dev)
+   647	{
+   648		struct adxl34x_state *st = iio_priv(indio_dev);
+   649		struct adxl34x_platform_data *data = &st->data;
+   650		int ret;
+   651	
+   652		/* Turn off interrupts */
+   653		st->int_map = 0x00;
+   654	
+   655		ret = adxl345_set_interrupts(st);
+   656		if (ret) {
+   657			pr_warn("%s(): Failed to disable INTs\n", __func__);
+   658			return -EINVAL;
+   659		}
+   660	
+   661		/* Set FIFO mode: BYPASS, according to the situation */
+   662		data->fifo_mode = ADXL_FIFO_BYPASS;
+   663		adxl345_set_fifo(st);
+   664	
+   665		return 0;
+   666	}
+   667	
+   668	static const struct iio_buffer_setup_ops adxl345_buffer_ops = {
+   669		.postenable = adxl345_buffer_postenable,
+   670		.predisable = adxl345_buffer_predisable,
+   671	};
+   672	
+   673	static int adxl345_get_status(struct adxl34x_state *st, u8 *int_stat)
+   674	{
+   675		int ret;
+   676		unsigned int regval;
+   677	
+   678		*int_stat = 0;
+   679		ret = regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, &regval);
+   680		if (ret) {
+   681			pr_warn("%s(): Failed to read INT_SOURCE register\n", __func__);
+   682			return -EINVAL;
+   683		}
+   684	
+   685		*int_stat = 0xff & regval;
+   686		pr_debug("%s(): int_stat 0x%02X (INT_SOURCE)\n", __func__, *int_stat);
+   687	
+   688		return 0;
+   689	}
+   690	
+   691	static int adxl345_push_fifo_data(struct iio_dev *indio_dev,
+   692					  u8 status,
+   693					  int fifo_entries)
+   694	{
+   695		struct adxl34x_state *st = iio_priv(indio_dev);
+   696		int ndirs = 3; /* 3 directions */
+   697		int i, ret;
+   698	
+   699		if (fifo_entries <= 0)
+   700			return true;
+   701	
+   702		ret = adxl345_read_fifo_elements(st, fifo_entries);
+   703		if (ret)
+   704			return false;
+   705	
+   706		for (i = 0; i < ndirs * fifo_entries; i += ndirs) {
+   707			/* To ensure that the FIFO has completely popped, there must be at least 5
+   708			 * us between the end of reading the data registers, signified by the
+   709			 * transition to register 0x38 from 0x37 or the CS pin going high, and the
+   710			 * start of new reads of the FIFO or reading the FIFO_STATUS register. For
+   711			 * SPI operation at 1.5 MHz or lower, the register addressing portion of the
+   712			 * transmission is sufficient delay to ensure the FIFO has completely
+   713			 * popped. It is necessary for SPI operation greater than 1.5 MHz to
+   714			 * de-assert the CS pin to ensure a total of 5 us, which is at most 3.4 us
+   715			 * at 5 MHz operation.
+   716			 */
+   717			if (st->fifo_delay && (fifo_entries > 1))
+   718				udelay(3);
+   719	
+ > 720			adxl345_debug_fifo(__func__, st->fifo_buf, i);
+   721			iio_push_to_buffers(indio_dev, &st->fifo_buf[i]);
+   722		}
+   723	
+   724		return true;
+   725	}
+   726	
+
 -- 
-2.39.5
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

@@ -1,138 +1,149 @@
-Return-Path: <linux-iio+bounces-12342-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12343-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB2B9D0490
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 16:50:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096729D0501
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:28:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69E7D1F21675
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 15:50:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9328BB21AB0
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACED31D9A78;
-	Sun, 17 Nov 2024 15:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF0A1DA628;
+	Sun, 17 Nov 2024 18:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IqVMyXXs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xihp/RWu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9694A937;
-	Sun, 17 Nov 2024 15:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864761EA73;
+	Sun, 17 Nov 2024 18:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731858650; cv=none; b=VbY07Hytkic0cYfvJAVKUvKP6E9Dpx7VhHieYkqSZ8bbk+OMru41DFw0HJ0bURkEFfJYv6ZZTL3j3cKWq0fErfKUSiN0HTBEUdSSeuG6osRfGeOAkBZDkCdspiph6t46CdeuZkaDfMqpyn/22giNtgY8/VRMGQHXop7XzUxoSk0=
+	t=1731868097; cv=none; b=b7E/rdRQJboEvejc9DbVpB/AA5OR/HLnt30av8vDWDCuh17wwqMJ4esvlU4y+JXDRLs03x+Y6vaxhJXJ2shgN1owsi/kTiFYW321zqlZ3tmIGUTx1rvSxunasCfLmS/BkpDyWFAu7tjr9Dhgal7K0/M8+BnRRX+9vMLeo7pQu+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731858650; c=relaxed/simple;
-	bh=rTKP8/CP011uFuzkCTsKOQIZpgMpakze64ZAd9/JTvw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nP2wANH50qR/xHwGxMP16SHiBH6VP+NIXubSxokoBF8KXOm3IVLe5LK0CU+I+XuREPpurZefF7kdUqdlOpiIy0W338zzXZXEFbjvlYh0BpJNSi42u27qYP+T8gV8wXqO7AknfKCQYshS+6GdTvSAQ28DzVRMZqKlQZNyKgMebPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IqVMyXXs; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731858649; x=1763394649;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rTKP8/CP011uFuzkCTsKOQIZpgMpakze64ZAd9/JTvw=;
-  b=IqVMyXXssopLMPjNVoCNwyiwi0dPM6rqAunDbV0YFRjje6IgHHcCYGz2
-   AXqGhRPJXLHoIOk9kjCwOQ3+qd9+vJnjCxFPWi3rbglRnAhhZoJMqnE4p
-   n3PP8guqxUxsuSwyDGdq990hwzxDoLOfRhg2xV0C/5qd2D1aASsyU91NN
-   J6VweX3ZUAedS7/PPeznF/FeOCYliuabOMpGlVOrvzsdhpgJwZCjII9WD
-   JbKbiXX0gVkCjRa6TAs37g6GDF/n4nf5o/l+qXvXoIeP6pyrxNdBXY8JJ
-   2zJvsN7vPktvFFYzCy3kxqEej1k7mFh1+Gyej8L4zVHbohqriXEk9/2Go
-   Q==;
-X-CSE-ConnectionGUID: HEqo1eELT7OLFcrl99qbyw==
-X-CSE-MsgGUID: LAKloXoKQy6iEn69fu7Adg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="42337547"
-X-IronPort-AV: E=Sophos;i="6.12,162,1728975600"; 
-   d="scan'208";a="42337547"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2024 07:50:48 -0800
-X-CSE-ConnectionGUID: JLjQqwncTrin7ITpXJlGpQ==
-X-CSE-MsgGUID: k2gpTkHVTUOxK73LXVDuVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,162,1728975600"; 
-   d="scan'208";a="89432164"
-Received: from lkp-server01.sh.intel.com (HELO 1e3cc1889ffb) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 17 Nov 2024 07:50:46 -0800
-Received: from kbuild by 1e3cc1889ffb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tChXv-0001pl-2c;
-	Sun, 17 Nov 2024 15:50:43 +0000
-Date: Sun, 17 Nov 2024 23:49:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lothar Rubusch <l.rubusch@gmail.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, jic23@kernel.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, l.rubusch@gmx.ch,
-	Lothar Rubusch <l.rubusch@gmail.com>
-Subject: Re: [PATCH 15/22] iio: accel: adxl345: reset the FIFO on error
-Message-ID: <202411172311.p8Krv6kq-lkp@intel.com>
-References: <20241114231002.98595-16-l.rubusch@gmail.com>
+	s=arc-20240116; t=1731868097; c=relaxed/simple;
+	bh=tYa1Z0HutYyF4t+LAAxxv0fRkYPg6GdxMWQHBmzGQWA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LcBRkeEufe/KnGXs3HT5yVk7HVd2wVJfU6hDI4wQfFEqrHcHy4jbWDczJsovU2ADlrXyCmuZtBugWitczhUY5n8Jp/7QT1VMI+ndImLwz1i9AIgRbgH7rS2vlsr8W36l01qT9QPRpPiLxCL1DATuOWxcHa6+24j3J/xAm47fv1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xihp/RWu; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4315dfa3e0bso2241025e9.0;
+        Sun, 17 Nov 2024 10:28:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731868094; x=1732472894; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=v0yUSeeOvbqs8tHSlx92wZzZTLKipu7boU7UlyhJIHo=;
+        b=Xihp/RWub+p+WU4m4xdaUDHJUzUi/spsitLCquR9QELTRRx/oRmEdyKi4Ju76y0HIK
+         7JKCp5ghSX0ZYMqXTlWepXs45Wrzb78NAq9n18QmaxZWhzFK+kGT1PO1sBhpVeGedVSl
+         rXYjPAZZxK504kFQb8TYONIbQQuJOlnNMdjyMsi9SfkpukyOQzFTJGjqAvfjFnLCVZQW
+         iaQNhYg93QrAR5HWvCPnFLUzw/IPc1jcMA6mx84Fyq9yAvrXNkm7do+h0rYNYjP+fcva
+         UCOEXbzsbLwMGXUvNQNybnlJPBi3ZscTIWgvb45oiDFec+tv1+U42sJbsKuxn3s1tHC+
+         t8qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731868094; x=1732472894;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v0yUSeeOvbqs8tHSlx92wZzZTLKipu7boU7UlyhJIHo=;
+        b=uc+jJf2kq20KvVPBAxK2AIZr5FfQWctYzxhBrfyU64Kv60niIykLBoKn3RktjX9/AW
+         dGOBGW6HYj2j4cOabN7bdToLN33ZJsy/tG5Rjeuhkusz8qC1sq8F/YVxFrCWdsOHTBL8
+         XS1H1SeAsn2p64dzRetRxoSJ/WhxT1xmGKLLWJCCc4txzEHICMmbZR6YA4DpFIFqC6rx
+         7ARw0aLS/EPKyu+654SD/ZDnt14nkN4IPXSnCdspeQNk/scEGQ8FKi1VQesf+Nevx2Ki
+         2T8DYlR7PLR/LSmnUd3CVQ4jUY7FhxD7iz3htyXkgGmvAPdFmlljR51oMGuqmDkDOVOg
+         7tFA==
+X-Forwarded-Encrypted: i=1; AJvYcCURg15wChXxMYRmt2ObuRaJrtGlmWEa4hmal9ImOsWVA/NHOPvAc4t/iAQQH5Qm+0Ok/sRHGYVD4ZmMGTY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPXB3/jLvyEiIRYC4Vy8ROTKkYg10OEFP55repqlweS+oNqoyh
+	tWansF8i4WbZQ2YUR6OypgUKaOCAbv4td4FPrZBPL/zQ5Smjfb1T
+X-Google-Smtp-Source: AGHT+IEZwmgPFtkP3s1Ya7qUEqRoryXtfa+bGnBKcgd3zgF6RbqcdvoDmOwePjeDEC/PbljwvkATZg==
+X-Received: by 2002:a05:6000:20c7:b0:382:36f1:a14 with SMTP id ffacd0b85a97d-38236f10bb1mr1395953f8f.7.1731868093625;
+        Sun, 17 Nov 2024 10:28:13 -0800 (PST)
+Received: from 5dfbf0f66296.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Nov 2024 10:28:13 -0800 (PST)
+From: Lothar Rubusch <l.rubusch@gmail.com>
+To: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	eraretuya@gmail.com,
+	l.rubusch@gmail.com
+Subject: [PATCH v2 00/22] iio: accel: adxl345: add FIFO operating with IRQ triggered watermark events
+Date: Sun, 17 Nov 2024 18:26:29 +0000
+Message-Id: <20241117182651.115056-1-l.rubusch@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241114231002.98595-16-l.rubusch@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Lothar,
+The adxl345 sensor offers several features. Most of them are based on
+using the hardware FIFO and reacting on events coming in on an interrupt
+line. Add access to configure and read out the FIFO, handling of interrupts
+and configuration and application of the watermark feature on that FIFO.
 
-kernel test robot noticed the following build warnings:
+The series will include the public adxl345.h used also in the
+corresponding older input driver. In brief, the data fields seem to be
+identical when implementing it for IIO, the file is already in public
+include, and to avoid duplication.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.12-rc7 next-20241115]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The series is meant as base. Implementation of single tap, double tap,
+freefall, activity/inactivity on top is relatively straight forward and
+will be upcoming, as soon as this patch set is stabilized.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lothar-Rubusch/iio-accel-adxl345-fix-comment-on-probe/20241115-190245
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20241114231002.98595-16-l.rubusch%40gmail.com
-patch subject: [PATCH 15/22] iio: accel: adxl345: reset the FIFO on error
-config: x86_64-randconfig-121-20241117 (https://download.01.org/0day-ci/archive/20241117/202411172311.p8Krv6kq-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241117/202411172311.p8Krv6kq-lkp@intel.com/reproduce)
+The series reverts the data justification mode of the measurements
+(right and left-justified) since it comes in more handy. Further the
+series reverts moving out constant defines to the header file and moves
+them back into the source file. This is kind of embarassing, and
+definitely not on purpose.
+When implementing the features, it became clear what was actually used
+to be in the header. I hope this is still acceptible, for the learning
+curve.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411172311.p8Krv6kq-lkp@intel.com/
+Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+---
+v1 -> v2: Fix comments according to Documentation/doc-guide/kernel-doc.rst
+          and missing static declaration of function.
+---
+Lothar Rubusch (22):
+  iio: accel: adxl345: fix comment on probe
+  iio: accel: adxl345: rename variable data to st
+  iio: accel: adxl345: rename struct adxl34x_state
+  iio: accel: adxl345: rename to adxl34x_channels
+  iio: accel: adxl345: measure right-justified
+  iio: accel: adxl345: add function to switch measuring
+  iio: accel: adxl345: initialize IRQ number
+  iio: accel: adxl345: initialize FIFO delay value for SPI
+  iio: accel: adxl345: unexpose private defines
+  iio: accel: adxl345: set interrupt line to INT1
+  iio: accel: adxl345: import adxl345 general data
+  iio: accel: adxl345: elaborate iio channel definition
+  iio: accel: adxl345: add trigger handler
+  iio: accel: adxl345: read FIFO entries
+  iio: accel: adxl345: reset the FIFO on error
+  iio: accel: adxl345: register trigger ops
+  iio: accel: adxl345: push FIFO data to iio
+  iio: accel: adxl345: start measure at buffer en/disable
+  iio: accel: adxl345: prepare FIFO watermark handling
+  iio: accel: adxl345: use FIFO with watermark IRQ
+  iio: accel: adxl345: sync FIFO reading with sensor
+  iio: accel: adxl345: add debug printout
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/accel/adxl345_core.c:383:6: sparse: sparse: symbol 'adxl345_empty_fifo' was not declared. Should it be static?
-
-vim +/adxl345_empty_fifo +383 drivers/iio/accel/adxl345_core.c
-
-   376	
-   377	/**
-   378	 * Empty the fifo. This is needed also in case of overflow or error handling.
-   379	 * Read out all remaining elements and reset the fifo_entries counter.
-   380	 *
-   381	 * @st: The instance to the state object of the sensor.
-   382	 */
- > 383	void adxl345_empty_fifo(struct adxl34x_state *st)
-   384	{
-   385		int regval;
-   386		int fifo_entries;
-   387	
-   388		/* In case the HW is not "clean" just read out remaining elements */
-   389		adxl345_get_fifo_entries(st, &fifo_entries);
-   390		if (fifo_entries > 0)
-   391			adxl345_read_fifo_elements(st, fifo_entries);
-   392	
-   393		/* Reset the INT_SOURCE register by reading the register */
-   394		regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, &regval);
-   395	}
-   396	
+ drivers/iio/accel/adxl345.h      |  34 +-
+ drivers/iio/accel/adxl345_core.c | 887 +++++++++++++++++++++++++++++--
+ drivers/iio/accel/adxl345_i2c.c  |   2 +-
+ drivers/iio/accel/adxl345_spi.c  |  11 +-
+ 4 files changed, 845 insertions(+), 89 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.5
+
 

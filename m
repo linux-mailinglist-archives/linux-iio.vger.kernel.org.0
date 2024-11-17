@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-12363-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12364-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4409D0529
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:33:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD6C9D052B
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 19:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8710B22401
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:33:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 769BC1F21C48
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Nov 2024 18:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9FD1DE89C;
-	Sun, 17 Nov 2024 18:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB061DE8B3;
+	Sun, 17 Nov 2024 18:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lGw6QPiS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WNGuLPMm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623AB1DE4DA;
-	Sun, 17 Nov 2024 18:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450411DDC3B;
+	Sun, 17 Nov 2024 18:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731868120; cv=none; b=f9meixw2RiFVjsnFpPPZcJdt3NO1uC74L8fCz+Kj9i9vgtJLKM6A7xw+OlVRGW56/Dkvk1QQ/Vh2KP/AlzYFyqj1afVBEtV8aa+jd0GXuJ/ZDrgLf75LvA6b79Fx6cdwI3ShV68ER6pLVHswdB2niJU3v8iAQL7ZmEdRUI/PNis=
+	t=1731868120; cv=none; b=dhgk9icyYV/uBWmYXMNNSsWjI1aTGm0HQDw2Q+CL8IYZBbVLddgCp7EUd1t5O5hfnzmxuQcm7BmqfFtM1OdLJfdaTpPrMKefde2N1G7X7aym4hA2lT0qU/H4aYSMXtjY/ZCBHR404UorX6eOTbEi8t961/EbB+3tRMBVe90RSKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731868120; c=relaxed/simple;
-	bh=6/0DwltEUb1r+bPdI+XsZRMVxWyPtCMYqzrHqPidDLY=;
+	bh=YLkm6mn91SUYqJEfuee5sOiFr8W1kHKnBkYkooecUUU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C64I8qGMGcAz9I2BCSTA3GLBsydUVlzMi66GefCdEbLO6jiwbMmu9gyishVrgn4Cs3OWpiXDBEwjio22QIpD9y5UTTuWVX5USyCAtOA6/+PVLWevffSRPruRIGm5bRBMRUkS77/16OsU+Wgw/HtMID1wQmt2kBl3R6GDwZicU/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lGw6QPiS; arc=none smtp.client-ip=209.85.221.48
+	 MIME-Version; b=C3AQI681ZLlDSZWq/eswXsf3PImbnza/PhU7otyWUeS26Bo6advaaq4VFscb2oMDWCI4mAXvUrwERWPVsgGJJzIhoeum3tqiMTDykK2LpTgsVORsj6ksrrGqKtp8wCeVvvEoA33kMr3cp9i/sWO8W/GWLHki/yHBD1lGiX4RfdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WNGuLPMm; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38242100504so60980f8f.1;
-        Sun, 17 Nov 2024 10:28:38 -0800 (PST)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3822e64b2d8so110363f8f.2;
+        Sun, 17 Nov 2024 10:28:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731868117; x=1732472917; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731868118; x=1732472918; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+0jDVowXCEL7M7LDBhaoZbZ0uKb3vpVkttp/faRKS9w=;
-        b=lGw6QPiSw8Nlab3TqiBOdrxi7hYvkPUiG8WaET1LGM50kctCzd+GEigGw9+2+9k9vI
-         cOIujhFVW8TkSWcz0TRTRgc1CHyYhuPTqQZftAMemt2j/AjXhv6OaUGFz2BOPbEreHEC
-         P9OXkMC8+UHaDuNWe1wfMiYXW3Z26wK8Y4OFfZQ9qBP0ZuUZZMaPzMQJMECywz7ajwLy
-         oH6NrockvEwkM1i96zm4QtAELzjzb7ZbbZ8TWRIix91x/pi5WOayGEx4romGJ9jdDM0M
-         HAdms/nt5pPj+STwOUuKEIcH8axKHmD2VBCyxryGfD8shPyOUBzvdmabOkcy1wkue+m4
-         Uo8Q==
+        bh=WI7RJ0jF3aLy07BJRiIYtdRjEbCy8KHwX14SXuqyAVQ=;
+        b=WNGuLPMmuEO8Unx9slLX6CG/XfHHbXyO1SgKdpJbts8yn6DdSDcsJ1g6DWMzyKc0hu
+         J98hNKnbC51x1Bc6niCcIxAaXW3x6MOvr3iuatbxl7pJHBpmPUeBO0W0w7cuqwr/0Cn2
+         V00j/CJXpwTqt7cg2D6YuQqQtkMlLFRoU4ntDbSZitekR95quNgVUqmqTA46c6jzZb1X
+         LLt6WUPuvWp4Cp973O4DBVGjbZ1eTmlFzhjAZdG3GUSqXfdH1X4kcXF4qCr1LXkYAdFh
+         ItyjZR3tTKQAGrgJRWH6fbIciA6XF3XKY5tDof+v9BluzPfMNsojyB1bz0Y4Y+mXRHVp
+         pnbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731868117; x=1732472917;
+        d=1e100.net; s=20230601; t=1731868118; x=1732472918;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+0jDVowXCEL7M7LDBhaoZbZ0uKb3vpVkttp/faRKS9w=;
-        b=ZqyjKJYnmf60/F5Eixzez0r8GKFUT6P6lHajpw517BD1Zsnzr5xNfVC6AX8zyJtvf1
-         smxpdpjD0/TTtzludjDd74gYsqktGiSA7F5cWDrt0D/WQkt6G6wnKRqzxkF8j6EyG57s
-         cFN4ammztQa/EairgPFFKg/LQXxG/aFfJ0tl6TB8+Gaoidg/P/Qm1QhtpafDWKlrSkmW
-         lGJ/EzTu0DN1FE5dTzbbUUlQDudmktjZ90fmWmw7fZntJKNwuiT3rChxKdrMzzaj4xM5
-         SDFBSezeZnk70ADBSr2xBQyZEbZFO/S/aaEU8grSfkoTNJ/xRBY04u4OLZwNkolFiEAP
-         V+RA==
-X-Forwarded-Encrypted: i=1; AJvYcCUcr3438M+YVXEMcYpLDgvkbKoILFO0MwzGD5PvnR8ayRpLzHOJm0VuL7Vpu7dzh3YeEUueDfRzWwZDLpw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtdNcDEVAZvYEhDj5sjjAyC0dl8Vw06jzbShz5VMcQeCHxc1sY
-	m2d90Bpa2SFHJwLr95EAXMEzU28blUIIH9nA0aAECjuLNrqW/yeU
-X-Google-Smtp-Source: AGHT+IFPk2sLRl6XUuJUTITQ+rjKOPPRT9AhnCwgKB21M2FrzSP6gkJC4XF45wUN3a9IEq5LJW9p0g==
-X-Received: by 2002:a5d:6c69:0:b0:37d:54d0:1f15 with SMTP id ffacd0b85a97d-38225a04715mr3045657f8f.7.1731868116592;
-        Sun, 17 Nov 2024 10:28:36 -0800 (PST)
+        bh=WI7RJ0jF3aLy07BJRiIYtdRjEbCy8KHwX14SXuqyAVQ=;
+        b=RAmV1jGZLcxZXdpJ4jpFZCxo61BgIeR3vDub3P+HvYbwS/W+Q9Sq6YLYaAAbFkhTw2
+         3WsZJkjxBu5Lnvm2AZtBUQ9MINcmDB0pDn7W/n3NatDCXCDUyvYlWtRqIHSYI2+0ipd7
+         EqiVse2kHvCjaMnDJgrxjd17nJNL8hIFMd6ptUQjYZPdisqL6XCxD/2BcL9LJ0EvBi3F
+         PmgpMDWBmnC9dmRuPRROubutVa6vS/HaG7zHFZsACA2TD02ilYr4/dwINYM19Hkt/Pwe
+         8zPzFJqYHraZ3u3T0By9STmWBXcj2Y69Fu4WM3vck0YPA85EwgkHppN/YIUV6uvTm5ZV
+         ddhA==
+X-Forwarded-Encrypted: i=1; AJvYcCWfIxjN6kVpV/KREHCOpSdO3VJxnpWBIOSWLoLdcHA/4otwAKJeERpY2gyN//1B1FICRYY1tmNxd0mMYS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAVb5saxoQtm+RB2IyLnzEh5vMVEbgMQ0zDE4zX9mgFpmkhCWO
+	fWdxbqoHayu3SE6Ffxr9JzrSer6s3kxIdCXjjHXlgn+TvrMAyBvD
+X-Google-Smtp-Source: AGHT+IHWoki2ndPtcJuR0/9t1Um4iS6pYJkodJ0sK7bAHT5HE9xEPNGHDiab/51eSX3up4nn/7r76Q==
+X-Received: by 2002:a5d:584b:0:b0:382:1c58:579d with SMTP id ffacd0b85a97d-38225a04ac3mr3554543f8f.8.1731868117566;
+        Sun, 17 Nov 2024 10:28:37 -0800 (PST)
 Received: from 5dfbf0f66296.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3823f72441bsm3028137f8f.101.2024.11.17.10.28.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 10:28:36 -0800 (PST)
+        Sun, 17 Nov 2024 10:28:37 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -75,9 +75,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v2 20/22] iio: accel: adxl345: use FIFO with watermark IRQ
-Date: Sun, 17 Nov 2024 18:26:49 +0000
-Message-Id: <20241117182651.115056-21-l.rubusch@gmail.com>
+Subject: [PATCH v2 21/22] iio: accel: adxl345: sync FIFO reading with sensor
+Date: Sun, 17 Nov 2024 18:26:50 +0000
+Message-Id: <20241117182651.115056-22-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20241117182651.115056-1-l.rubusch@gmail.com>
 References: <20241117182651.115056-1-l.rubusch@gmail.com>
@@ -89,69 +89,54 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Enable the watermark feature of the adxl345 sensor. The feature uses a
-FIFO to be configured by the IIO fifo sysfs handles. The sensor
-configures the FIFO to streaming mode for measurements, or bypass for
-configuration. The sensor issues an interrupt on the configured line to
-signal several signals (data available, overrun or watermark reached).
-The setup allows for extension of further features based on the
-interrupt handler and the FIFO setup.
+Pause the measurement while reading fifo values. Initially an interrupt
+is triggered if watermark of the FIFO is reached, or in case of
+OVERRUN. The sensor stays mute until FIFO is cleared and interrupts are
+read. Situations now can arise when the watermark is configured to a
+lower value. While reading the values, new values arrive such that a
+permanent OVERRUN state of the FIFO is reached, i.e. either the FIFO
+never gets emptied entirely because of permanently new arriving
+measurements. No more interrupts will be issued and the setup results
+in OVERRUN. To avoid such situation, stop measuring while solving an
+OVERRUN condition and generally reading FIFO entries.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 39 ++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/iio/accel/adxl345_core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index f7b937fb16..07c336211f 100644
+index 07c336211f..c79f0f5e3b 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -870,6 +870,45 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 		if (ret)
- 			return dev_err_probe(dev, ret, "Failed to setup triggered buffer\n");
+@@ -730,6 +730,11 @@ static irqreturn_t adxl345_trigger_handler(int irq, void *p)
  
-+		dev_dbg(dev, "IRQ: allocating data ready trigger\n");
-+		st->trig_dready = devm_iio_trigger_alloc(dev,
-+							 "%s-dev%d-dready",
-+							 indio_dev->name,
-+							 iio_device_id(indio_dev));
-+		if (!st->trig_dready)
-+			return dev_err_probe(dev, -ENOMEM,
-+					     "Failed to setup triggered buffer\n");
-+		dev_dbg(dev, "IRQ: allocating data ready trigger ok\n");
+ 	if (int_stat & (ADXL345_INT_DATA_READY | ADXL345_INT_WATERMARK)) {
+ 		pr_debug("%s(): WATERMARK or DATA_READY event detected\n", __func__);
 +
-+		st->trig_dready->ops = &adxl34x_trig_dready_ops;
-+		dev_dbg(dev, "IRQ: Setting data ready trigger ops ok\n");
-+
-+		iio_trigger_set_drvdata(st->trig_dready, indio_dev);
-+		dev_dbg(dev, "IRQ: Setting up data ready trigger as driver data ok\n");
-+
-+		ret = devm_iio_trigger_register(dev, st->trig_dready);
-+		if (ret < 0)
-+			return dev_err_probe(dev, ret,
-+					     "Failed to register dready trigger\n");
-+		dev_dbg(dev, "Registering data ready trigger ok\n");
-+
-+		indio_dev->trig = iio_trigger_get(st->trig_dready);
-+
-+		dev_dbg(dev, "Requesting threaded IRQ, indio_dev->name '%s'\n",
-+			indio_dev->name);
-+
-+		ret = devm_request_threaded_irq(dev, st->irq,
-+						iio_trigger_generic_data_rdy_poll,
-+						NULL,
-+						IRQF_TRIGGER_RISING | IRQF_ONESHOT,
-+						indio_dev->name, st->trig_dready);
-+		if (ret < 0)
-+			return dev_err_probe(dev, ret, "Failed to request IRQ handler\n");
-+		dev_dbg(dev, "Requesting threaded IRQ handler ok\n");
-+
-+		/* Cleanup */
-+		adxl345_empty_fifo(st);
-+
- 	} else { /* Initialization to prepare for FIFO_BYPASS mode (fallback) */
++		/* Pause measuring, at low watermarks this would easily brick the
++		 * sensor in permanent OVERRUN state
++		 */
++		adxl345_set_measure_en(st, false);
+ 		if (adxl345_get_fifo_entries(st, &fifo_entries) < 0)
+ 			goto err;
  
- 		/* The following defaults to 0x00, anyway */
+@@ -737,12 +742,15 @@ static irqreturn_t adxl345_trigger_handler(int irq, void *p)
+ 			goto err;
+ 
+ 		iio_trigger_notify_done(indio_dev->trig);
++		adxl345_set_measure_en(st, true);
+ 	}
+ 
+ 	goto done;
+ err:
+ 	iio_trigger_notify_done(indio_dev->trig);
++	adxl345_set_measure_en(st, false);
+ 	adxl345_empty_fifo(st);
++	adxl345_set_measure_en(st, true);
+ 	return IRQ_NONE;
+ 
+ done:
 -- 
 2.39.5
 

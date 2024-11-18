@@ -1,84 +1,83 @@
-Return-Path: <linux-iio+bounces-12375-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12376-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12029D0FCD
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 12:34:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7730F9D0FD6
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 12:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8621F2821E9
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 11:34:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD87EB23719
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 11:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A378198A39;
-	Mon, 18 Nov 2024 11:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D76E198E99;
+	Mon, 18 Nov 2024 11:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJg7+kp6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hXeaD6aC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027D13BBF2;
-	Mon, 18 Nov 2024 11:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8861194A68;
+	Mon, 18 Nov 2024 11:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731929664; cv=none; b=BuaIPXvmaKbo8oqZ/6jBbOioJSuHGxhXNnpkhCoggQO1k8S8lIcfs/WU9HrGKbD5ZChGSAKEvDyBXfPln27sWlTZo9mygeJ7ZkSLh/mLVPGdCBg7WVcQx1ATf6o2Uc3uh/zmKR9O9SuJsGe7pZ2nSTAkoHwvr1hdekbfamSYd84=
+	t=1731929831; cv=none; b=phZ/sOrJL13KBuIKJKHtpMjTpLc4Bxwt2xGOcBc4yOk0Ncjc+7EKUEgcxK/AIJWLZP7bkUnNAmUJl99XypNgZJ6jzirh5LR4hu+INExFROpivx3LJv74/By0Ir/RcHzBCKo5vUVpliZTOrrYPtOhfJXJ6CU4TT0ez6rrKhxItLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731929664; c=relaxed/simple;
-	bh=RdC1LlnbhGN7esaUqZ1ZsXKq0EcLZt7thcJkXxrpVjE=;
+	s=arc-20240116; t=1731929831; c=relaxed/simple;
+	bh=31f63cT9cGr3gLKOMXPNf8G8Rq9837/wowS823QzWgA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zt13ou9yUqrtL542+y7aybQINYDvOi2MFB8hQ3BqUUrwLa7+0KiGryxSGAQqX33Zq9NkZD1t0kQrwGQp55mUiZxi+610jDAI4hMSvADVeAbuY3k79FSLg7FVLkNQ6jy6R/A9M/votyWiH+VEUJ70o2vsk3194XT6x9YB11cPt1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJg7+kp6; arc=none smtp.client-ip=209.85.166.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=N5/DNE9IKSqWw94YqLoxYGRuYPSdpY2eo0dr4Ee7UKanXBl0SG5wIMh0fBPln0J/rdGlAzSe/0equs/ui5Zo0g0bs6jGvKP6hcocat+fGMUuri61bVncg1xsTbBeHVn16wwsiXlScSOw02Pj4Br6NXoKjn2IEqeqwdx1k0npKgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hXeaD6aC; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-3a70315d38dso5421175ab.0;
-        Mon, 18 Nov 2024 03:34:22 -0800 (PST)
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-72483f6e2f3so1379727b3a.1;
+        Mon, 18 Nov 2024 03:37:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731929662; x=1732534462; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731929829; x=1732534629; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xBt+VM3XUf38/2UTMI3czA73IaeQUs1IwdyKg6N5eu4=;
-        b=iJg7+kp6HaQtOXeYJlCN+Q+JioNABTGa/VALHOlfDwRtTAUDyt5GD9Vcc9+g6DfBsb
-         wJKJiy0i0+jSCeWyMDxnCUW3oJOewvz02nlGjyA0CYAQINjGETAH9E/uK7atuK0DvX29
-         hwYaJ3ub6FRc0acVJCybOQMKJr6ay7ddMRYs4En6dimdUmflylPodM8ubn+MQt9qNtsW
-         VNqhZObDcS6ogYmYW+d3QIzp5dhSSGushSKHsDvf00FPWIKW206cZdv01MATOamWITY8
-         c+6u5V1Cb0k5YMrGHJb5IMqk8LJb/S2IC0GaN0LcB64gttTrkmpluOMRRkxK8msoDHyV
-         gWqA==
+        bh=dzasLoJr8T9pHfFmEYMw00zyjyFfURXh+CYiFyGOzCM=;
+        b=hXeaD6aC+cbkNx5EmXP7/Z/cO7XSdqFMCa52lrqNUPsyfe8XcHwNmppBKyFHZN9Qls
+         YjY40MytnHjsYNmLiJD7PCo3LHJH6HqZoGndEzilnmp8mcDhCMitvlXjtAwW0SrgRNfX
+         3mOdVdPK4UDqM4cKowUnfZkyq4nyLaQl56++aFPx1ycl25bEf6UM2FCIDAjAg3DQB1nD
+         ZJJiNBsCuA7lVbWSEt3snp5S1vL9L/1/eGj2zOBs48SY1m+tLvFVk/F2yyTNu5D054q1
+         u+KkM/dEAZaIDkbWzkSTK2ZKlfWIPciS/DtydhkA3IHSCmCas/QFR5AYYJv41oJ+t1Aq
+         +gCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731929662; x=1732534462;
+        d=1e100.net; s=20230601; t=1731929829; x=1732534629;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xBt+VM3XUf38/2UTMI3czA73IaeQUs1IwdyKg6N5eu4=;
-        b=w9chGeiNGENjR8SIQmfcKQHYWXdtrGfGGKSNa/wXQCgahMeTQvgeE74DDDiIs9bAnw
-         Ny5JLMKTF4DeQQ4zec4XdFfFUJcpHrO3QKbyLtu3mseNEPyJC15DdMnLawRIu610NaDB
-         XFIoslwy5behqlsn4sUcwhpz2wf+YmfIzu/MGHkLSSIr33zr3smpt8YYBFcl2JnzjNws
-         TAjoxf5AmIZjNCvrL8jeI3Vy8xKUlnSZ1s/xvlVk9oS4B+xWk0Rj4FMrwNUQ6u8WbWGT
-         ch26/zyBacb7APE5qLdNmlQzDypbtbW+xXYfD9HXVx/evXKF0btSoilDv6npZdnSNRSD
-         enqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUhkFyH0lh97TChTHpc9dq6/maV7t9nKljuuMLOA2T0qcJX5Im3kM+gc+q5puULjoo6BFX9ln8IcA81@vger.kernel.org, AJvYcCUw8Nl79HFZy07jmmNTGFx0AqbR2r6E7tFL62y3N126QWDomjx8o5mBCG8YfFlbDqZ7wCE1jAa7OQ6mC0CD@vger.kernel.org, AJvYcCVLjDBDzdtgaNKT/vAlUckON/IKG0tIZ6YqW9BXWop95y7pb0W+OsfudLf4xIjwU6X5YuKyFNosgx7/@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTT3ehk5BCRuTscuPeRgasjNRJI41PwDPn2prjA6XMY6erziY0
-	M+uSQv6f21zPtWL0nE88SUfsklNL/qClLeyzovar0McmLQM5cJGAZolB/wuB
-X-Google-Smtp-Source: AGHT+IGPLb61oLo5RtwBoYSmDN9uJM1DNkfCadfAXWDi+2vMIybRV5hFOvHZIMgDw69aXWcJH2qtYA==
-X-Received: by 2002:a92:c248:0:b0:3a7:6c5c:9aa4 with SMTP id e9e14a558f8ab-3a76c5c9b34mr18835875ab.12.1731929661993;
-        Mon, 18 Nov 2024 03:34:21 -0800 (PST)
+        bh=dzasLoJr8T9pHfFmEYMw00zyjyFfURXh+CYiFyGOzCM=;
+        b=RIq6hTwwizohVerhv3AgnmQw22Pz961+6/aLb1zNbTTYgVXss9wjgE/gPfpr0oS98W
+         OqewKGqlLt32uj/elIJKCUfXkKBMmhvRWczGaueS5mcsJ7tP6UXE8W65BkXUxVgZAdbN
+         gk+BBaWQk5Z09kq8+bASNvvfY1z3H1HoTRuQSbIyodG6c/Ds4/nVX4fOLmZFwIDDPx5n
+         NheKq5NYTKR3zubRv0h6vnBaP66VnwdesWlWQz21hwUAW2VKAsjZbTlpUP9qnDIgX9vv
+         r1BbI68kZ/ij/GzEGjmLClrEfw8X0R7uKuTi/PexZHf2WXFCnO1Wj4Ij81Bily33PTd5
+         nuAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQg/dkhtGvfGGGjpQ3AgpTXgkHMv4u9j2eEd5xTBm2jMmJ00rjzjvpE+X1MwQyZ1CvnobVyLNpwcnq@vger.kernel.org, AJvYcCURGRybPjVPryTcaFprQ1KmSSUYHi21xdwdJgTEfwqFP3L40wvjFC1kpPTQdkm5sfFbnc17ePSDSjq9e31b@vger.kernel.org, AJvYcCWb/p2GYBlMB2Pmbq0hRDCn0sX2pThS1krgk4wPtilTjmIwUCfsv8mvEe/pFeRm3tnYOrE4kAa/uCj1@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNH5zRwWm578KXR/vJQAnKNMlP2ONCUHSABE+ZasQLo0xJ+JNP
+	Z60DBTA7ICClfql6TLvB7Wo8YGgskeIS7B9OsMIz8bnJvD1wnJpn
+X-Google-Smtp-Source: AGHT+IGM84PYTgxIk9mLFAtLdt1riKMxe4764ItcsKBTDYN/u31EiHZ7+puhc98etps3Gfdinbn34Q==
+X-Received: by 2002:a05:6a00:a0c:b0:71e:5709:2330 with SMTP id d2e1a72fcca58-7246674f4bdmr26728480b3a.7.1731929828855;
+        Mon, 18 Nov 2024 03:37:08 -0800 (PST)
 Received: from localhost ([2804:30c:1618:9800:694b:286f:2b3a:5414])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7f8c1c616a7sm5779706a12.39.2024.11.18.03.34.20
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7247711e005sm5982735b3a.72.2024.11.18.03.37.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2024 03:34:21 -0800 (PST)
-Date: Mon, 18 Nov 2024 08:34:42 -0300
+        Mon, 18 Nov 2024 03:37:08 -0800 (PST)
+Date: Mon, 18 Nov 2024 08:37:30 -0300
 From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
 	Michael.Hennerich@analog.com, jic23@kernel.org, robh@kernel.org,
 	krzk+dt@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] iio: adc: ad4000: Use device specific timing for SPI
- transfers
-Message-ID: <ZzsmUqqyAll9BBCv@debian-BULLSEYE-live-builder-AMD64>
+Subject: Re: [PATCH 4/4] iio: adc: ad4000: Add support for PulSAR devices
+Message-ID: <Zzsm-vwm-gFbiI7w@debian-BULLSEYE-live-builder-AMD64>
 References: <cover.1731626099.git.marcelo.schmitt@analog.com>
- <81370b043de208795738e5679c33de37439c0a2e.1731626099.git.marcelo.schmitt@analog.com>
- <7e302a49-db5a-444d-aae1-3c80ab75b471@baylibre.com>
+ <a2a1bb929a83f5906a9c1fd9ba76889a3682cf95.1731626099.git.marcelo.schmitt@analog.com>
+ <a1852540-eeb4-4d92-a381-185014c828ac@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -87,71 +86,43 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7e302a49-db5a-444d-aae1-3c80ab75b471@baylibre.com>
+In-Reply-To: <a1852540-eeb4-4d92-a381-185014c828ac@baylibre.com>
 
 On 11/15, David Lechner wrote:
 > On 11/14/24 5:51 PM, Marcelo Schmitt wrote:
-> > The SPI transfers for AD4020, AD4021, and AD4022 have slightly different
-> > timing specifications. Use device specific timing constraints to set SPI
-> > transfer parameters.
+> > The AD4000 series and the single-channel PulSAR series of devices have
+> > similar SPI transfer specifications and wiring configurations.
+> > Single-channel PulSAR devices are slower than AD4000, and don't have a
+> > configuration register. That taken into account, single-channel PulSARs can
+> > be supported by the ad4000 driver without any increase in code complexity.
 > > 
 > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 > > ---
-> >  drivers/iio/adc/ad4000.c | 50 ++++++++++++++++++++++++++++++++--------
-> >  1 file changed, 41 insertions(+), 9 deletions(-)
+> >  drivers/iio/adc/ad4000.c | 163 +++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 163 insertions(+)
 > > 
 > > diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
-> > index 21731c4d31ee..68ac77494263 100644
+> > index 68ac77494263..8e31b42534f5 100644
 > > --- a/drivers/iio/adc/ad4000.c
 > > +++ b/drivers/iio/adc/ad4000.c
-> > @@ -35,10 +35,6 @@
-> >  
-> >  #define AD4000_SCALE_OPTIONS		2
-> >  
-> > -#define AD4000_TQUIET1_NS		190
-> > -#define AD4000_TQUIET2_NS		60
-> > -#define AD4000_TCONV_NS			320
-> 
-> We are removing 3 but only adding 2 in the struct below?
-> 
-> If one of these was unused, best to mention it in the commit message.
-
-One of them was unused (AD4000_TQUIET1_NS IRCC).
-Sure, will add a comment about it in the commit body.
-
-> 
-> > -
-> >  #define __AD4000_DIFF_CHANNEL(_sign, _real_bits, _storage_bits, _reg_access)	\
-> >  {										\
-> >  	.type = IIO_VOLTAGE,							\
-> > @@ -122,10 +118,30 @@ static const int ad4000_gains[] = {
-> >  	454, 909, 1000, 1900,
+> > @@ -137,6 +137,41 @@ static const struct ad4000_time_spec ad4020_t_spec = {
+> >  	.t_quiet2_ns = 60,
 > >  };
 > >  
-> > +struct ad4000_time_spec {
-> > +	int t_conv_ns;
-> > +	int t_quiet2_ns;
-> > +};
-> > +
-> > +/*
-> > + * Same timing specifications for all of AD4000, AD4001, ..., AD4008, AD4010,
-> > + * ADAQ4001, and ADAQ4003.
-> > + */
-> > +static const struct ad4000_time_spec ad4000_t_spec = {
-> > +	.t_conv_ns = 320,
-> > +	.t_quiet2_ns = 60,
-> > +};
-> > +
-> > +static const struct ad4000_time_spec ad4020_t_spec = {
-> > +	.t_conv_ns = 350,
-> > +	.t_quiet2_ns = 60,
-> > +};
+> > +/* AD7983, AD7984 */
+> > +static const struct ad4000_time_spec ad7983_t_spec = {
+> > +	.t_conv_ns = 500,
 > 
-> t_quiet2_ns is the same in both cases, so do we actually need to
-> add it here instead of using a common macro? Or if it is for future
-> differences, mention that in the commit message.
+> I'm sure there are diffing opinions on this but I would prefer
+> an explicit .t_quiet2_ns = 0, so we know that it wasn't omitted
+> on accident. Or a group comment to say that these chips don't need
+> any quite time.
+Ack, will set it with a macro.
 
-Okay, will add a macro for setting ad4000_time_spec. My plan is to also add a
-t_quiet1_ns filed which will be needed for offloading support.
-t_quiet1_ns will also differ between AD4000 and AD4020.
+> 
+> In any case...
+> 
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> 
+> 
 

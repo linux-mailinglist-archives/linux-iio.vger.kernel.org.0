@@ -1,207 +1,109 @@
-Return-Path: <linux-iio+bounces-12368-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12369-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574349D0DBD
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 11:06:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE6F9D0DEA
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 11:11:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBC9A1F22C7E
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 10:06:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1E44282D7B
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 10:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F74192D7F;
-	Mon, 18 Nov 2024 10:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0ED1946CD;
+	Mon, 18 Nov 2024 10:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nSPYUiOl"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="XMNzrBc6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD9D823D1
-	for <linux-iio@vger.kernel.org>; Mon, 18 Nov 2024 10:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865A3193432;
+	Mon, 18 Nov 2024 10:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731924381; cv=none; b=lX66fu7m9FfJU6QMV7MmWO2LSDn3JUJWeaElSrDjMIR4WakhCrcF+b9ykUvIOGjj9Pd5H2LvguQL2fh6dpJ0UVUg0AxDBSdlE9Hcm93wfe5ibEwEPmXSlz9mxLol1Wmil925AntZ27+MxbL+LU+wotfcb5lVX/ZifJCuB3Cr7j8=
+	t=1731924635; cv=none; b=YN4gzLW14JyadXo6WH3XCvu8Fp1ofYZVAHy79lonmfsxD1bQeSgR/fwTqpY70TuIMoxFzJNHaLpdr7taMxrwsmQHYoyQcDfYCculcH7bvK5u+6tJ+1H2IPZvbGqrV22sPRkE64yyxnWFvL/9dfPjio+ievLZ0Cj3yv8q2kpLQno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731924381; c=relaxed/simple;
-	bh=osaXyN6BouvX3a3zCIwNrMGR31b+e+AEEftUE3CdIyY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ZzgQZIfjq+cvHdIatoEw7w/IdNNFh9nbQI11RODZCt5zG1r3+NoznS6sLK2Sl1/w5B7tjJPBYRdb2XOxP4bYnMOGxGBazZYaDfTdwh2miYwHNDbhSC+XZ8HC3z+pHEV1FefxQkwDG2aoy2yGblDQV7Cl4CP8yeBFm/X/48Gl/qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nSPYUiOl; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4315df7b43fso34888465e9.0
-        for <linux-iio@vger.kernel.org>; Mon, 18 Nov 2024 02:06:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731924375; x=1732529175; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6XJLItd9ejKzlDHl0N9KDnlBxbviG3QWmhzLzjOLKeM=;
-        b=nSPYUiOlL4Wb4ZyKwlUTl3kjKFjyuqPWhLczl1NnqnIkPf5btazWs5pj0LT3W8BoS/
-         u8c8ke7NaiMCBp6S0mUDVWw+he3H6eam2Z4lQupYsab/RYTL1l2CW6kRP8uWoNCBgiIF
-         xEDewbyOHG017Iv4avdNDcQASzp/z28Tde3znDZD1orJk0dlgYGdBYu/OtydrJvRKBp4
-         +YuHRR8GY7iLhSw2FMKDbx1fNxvQ8CmW5aWt2SHHEB1hIG9arEUOkDvT2Iym9+uzsJHD
-         BVapcyl0Z65TOhtTueJln36qNO8gT66yc82BX6A/F+yQoYiS5uVEpW9gD2EDxkOyBcrc
-         kRCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731924375; x=1732529175;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6XJLItd9ejKzlDHl0N9KDnlBxbviG3QWmhzLzjOLKeM=;
-        b=SceeK7bYT0TM/iTWPWUvoz37GyiUZBCr2BoKIdIKYfy4T9JZ0C3rW7rTtkygZCX16p
-         zBJ6sL5qrvlX3ZCSkaH5I/Ww/cng3TMtiW63Ym5Bd7QrSjfK8aR+XR7RNNSRmprZdgKT
-         6r7OQ3lPfqFxp6Bi9JUDY9sY0WXewJNKWOHqjB5q6YT6mT4f0dsMOFrnK4Owgp5wihZM
-         +NEjmXG/ahkctRK1JHgkoJNDYoIRq6ga70azfWmifW6OKXHwvWSFYi5UZvjLYERofO1S
-         Gu46f8LFC+avs+30HTVeNAxhY0ofqp1EuJg2jCpHASmQro8vmJejAR7RqX2in6E7vEs1
-         VW+A==
-X-Forwarded-Encrypted: i=1; AJvYcCWffZDbhcRNWHbn4Pyrk/BvUNhMLZ7HlDccCMDEaVBInGFNRMg104KvfO0Lg8hVE5/hvSPfct8WDyY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz304RYd6RpLSzi6B4tLKO6P9hTL0M9yLIhYZkIzKni2sskVUsj
-	2yPV2iHrJIMs5zpe2iIjWzd3m3UCqHEsYUkqc23pmiPQaj320PM7WmGDRfOuPbk=
-X-Google-Smtp-Source: AGHT+IGpCz7tiOpQ6i6dlG9gd1pHCo/Wa+oYfLAhSYidRkbPfpBglZLzLG5HnJrxMZAy3ckz5sMtww==
-X-Received: by 2002:a05:600c:4fcf:b0:42c:b995:2100 with SMTP id 5b1f17b1804b1-432df722e4bmr93843775e9.6.1731924374816;
-        Mon, 18 Nov 2024 02:06:14 -0800 (PST)
-Received: from localhost (p509159f1.dip0.t-ipconnect.de. [80.145.89.241])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da298760sm153013935e9.37.2024.11.18.02.06.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2024 02:06:14 -0800 (PST)
-Date: Mon, 18 Nov 2024 11:06:12 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Subject: [GIT PULL] pwm: Changes for 6.13-rc1
-Message-ID: <karzhndxysg5whnrp5pby3ulvmircl76a7dkcbinkdyuyx5flg@6al4vimzwjhc>
+	s=arc-20240116; t=1731924635; c=relaxed/simple;
+	bh=G8RQyr4OGxhyplbDi80Z0G0RmfHSLulpn812PX1WlAc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=LBtMeE+bnl7TfHG+eC+OTh6sPIDNdA36kjoRnF9hiB2b1KfPs7+coeq/GY6eW/srHZP5fJz8InSbIoEN7hnkbKoMKNpN9m0jwWonllE45d/WFT47MmWOqQqgZDOEszQFJ4HKG4ZvGPt1BoifE/jAlwYFmLOUPBsSkExljiM0ubQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=XMNzrBc6; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1731924583; x=1732529383; i=markus.elfring@web.de;
+	bh=G8RQyr4OGxhyplbDi80Z0G0RmfHSLulpn812PX1WlAc=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=XMNzrBc69JsaS3A2HwQJqxGxEOQFRsXHa+IHJlbtOVdCP5laTW3vUUtMp+clDsC2
+	 6jkAZvE9jyot/l4SnJZKFICpk29Xpe+FKduA7KaL8HsITzuoT0/wH5nZ/hQKwMAxF
+	 XvTZLg6kav0pKK3X7/q7HMzpVSmwEbjCTlW4fe6kP3Xwkgldu27vleHCiScUO4ULN
+	 r53bR8sTueuQuZ9GwJFu6W4rD6karH3FskK+TauVaUVK5s11LLSJ5nOnDWtUiJ7zW
+	 HESXdcbeguxPJzRYR2NDVNHil7+WwIgnz1IHPMrC09+qVjA9YP+Of8gwiF9dOGBK+
+	 Ce8G8JotJ3izFEzeDA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.88.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MqqPT-1tYrFW25NR-00kmc9; Mon, 18
+ Nov 2024 11:09:43 +0100
+Message-ID: <ba5e2b95-12d9-490b-b58d-131dedba6446@web.de>
+Date: Mon, 18 Nov 2024 11:08:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="57l3bzelwfcxov3e"
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+To: Charles Han <hanchunchao@inspur.com>, linux-iio@vger.kernel.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>, Jonathan Cameron
+ <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Mike Looijmans <mike.looijmans@topic.nl>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Yu Jiaoliang <yujiaoliang@vivo.com>
+Cc: LKML <linux-kernel@vger.kernel.org>
+References: <20241118090208.14586-1-hanchunchao@inspur.com>
+Subject: Re: [PATCH] iio: adc: ti-ads1298: Add NULL check in ads1298_init()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20241118090208.14586-1-hanchunchao@inspur.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:BHgIA96HuK3bkxuoMLZH5eiWj1cl6oyGDaHp6pWh8DKisYvisct
+ pYUWOz2K8iJ6QGH+5gRmUHshmIDB+H66Eg1PiWkrRckV3ftiBo4Ms/AdwVPUk00CpcJ4UlF
+ eNAciiuYWH7VLbYB/rhPYRmDdM3BVMaIgl5SgNS0iRKYf4ExtOhz6JmxulxfZ5yjDsPDRPe
+ 6sbREXE3Z5D2VSteSpdjA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:W0Z3npiPk9g=;Wv4s8NTLtXqx+SdhbG7dAFW84Cl
+ qx91KCXc8aLcQ8QXXcQ98IK/3iQ/2NMYvEv06J0s864hlX1cCpgrlV3ZzvwveM8KyfGulqsdP
+ NsjI+23Q6hg57pDVLtIgLzW31kCR4FZLpJ04J0eHrnbfZT3qZNB/RPcTW2ziz2g2n/N+szOR+
+ RKe3yeJrhlOhp9q7AeB4qFg7VS0BmNsHkD+Oplz8Po+fFyDIVYQ97g/VRP3lU/tHW1rYEaGMu
+ s1aMCH7d9MdwXtleD7hJTWmQKkyuoTUF5ditde8YccHwREeqKdSCvtzFlx99/m4B71WsVPzte
+ YegjUYkxkQA1DDPVrLyAZ4GQ8hJ6qqgP8cSFHwOxbtC2pY7Nx7fKH8FSIRG2vPd96640yD1Tn
+ ItY3aZmt+96WbppeTUoSO4r3TJARAucxOu2kEZ4ZyOv3EVCq/bKxNOpYPINfzY44Z2ZiLhgsm
+ vO2LNvdMD+LFhYKdl4a3Qay/nh7S1S/DvMpd3r03Hr2yqtJVNc4c33LKN7h7YPRc9fpl8u9/E
+ FacfX1PNnSLJj8CSWpVhiTa60d2hIwE+TgL4j31DGKiFot44FWwRXwS2QkzRE010O1IsUGIe3
+ s8ceS18X7EHqWeRNDneqyg0luOXY8U8fUjwCkWnIrepBi9/rwRIpCWe/YZNeQ+depIOBv5WS4
+ akmCZs2sbRsOzsd00dUnFcPOuEvXWDPIBfOGBgoVfRKNF4HEs8vwx/++eK8Xw/yrQlLkkuzED
+ dUSDDZZvJGd0qITlbJih5imYY/uhxQz5DPD23o74AV6P5dlR9DEpxjjLkYIMGhePHKxJyV6wL
+ gF3U8PSm+0afPhuAFtX43Yctz2BvGPP3Y96cDbQqyhew3T5owEU082xCU9E0U33QAPas9uVdP
+ N75i3zXopUAza11w1aaZTUGIae3rg+rej5i16U3ZWnuN6eTjN5PAYBaV/
+
+> devm_kasprintf() can return a NULL pointer on failure,but this
+> returned value in ads1298_init() is not checked.
+> Add NULL check in ads1298_init(), to handle kernel NULL
+> pointer dereference error.
+
+Another wording suggestion:
+A devm_kasprintf() call can return a null pointer on failure.
+But such a return value was not checked in this function implementation.
+Thus add a corresponding check so that a null pointer dereference
+will be avoided.
 
 
---57l3bzelwfcxov3e
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: [GIT PULL] pwm: Changes for 6.13-rc1
-MIME-Version: 1.0
-
-Hello Linus,
-
-The following changes since commit 517fb4d77c44c7519ae6937329c496894461f416:
-
-  MAINTAINERS: add self as reviewer for AXI PWM GENERATOR (2024-10-25 11:31=
-:17 +0200)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git tags/p=
-wm/for-6.13-rc1
-
-for you to fetch changes up to b2eaa1170e45dc18eb09dcc9abafbe9a7502e960:
-
-  pwm: Assume a disabled PWM to emit a constant inactive output (2024-11-07=
- 12:03:39 +0100)
-
-----------------------------------------------------------------
-pwm: Changes for v6.13-rc1
-
-This pull request prominently contains a new abstraction for PWM
-waveforms that is more expressive that the legacy one. Compared to the
-old abstraction it contains a duty_offset member instead of polarity.
-This new abstraction is already used in an ADC driver merged into the
-iio tree. So I expect you will get a part of this tree also via the iio
-pull request for 6.13-rc1 (tag pwm/duty_offset-for-6.13-rc1).
-
-Otherwise it's the usual collection of fixes, cleanups and dt doc
-updates.
-
-This time around thanks go to Andy Shevchenko, Clark Wang, Conor Dooley,
-David Lechner, Dimitri Fedrau, Frank Li, Jun Li, Kelvin Zhang, Krzysztof
-Kozlowski, Nuno Sa, Shen Lichuan and Trevor Gamblin for code
-contributions, testing and review.
-
-----------------------------------------------------------------
-
-The new API requires changes to the lowlevel drivers. For now there are
-two drivers that are converted to the new API (axi-pwmgen and stm32).
-Converted drivers continue to work with the old API. Drivers not yet
-converted only work with the older API.
-
-Please pull these changes for 6.13-rc1.
-
-Thanks
-Uwe
-
-Andy Shevchenko (1):
-      pwm: core: use device_match_name() instead of strcmp(dev_name(...
-
-Clark Wang (1):
-      pwm: imx27: Workaround of the pwm output bug when decrease the duty c=
-ycle
-
-David Lechner (3):
-      pwm: axi-pwmgen: Rename 0x10 register
-      pwm: axi-pwmgen: Enable FORCE_ALIGN by default
-      pwm: core: export pwm_get_state_hw()
-
-Frank Li (1):
-      pwm: imx27: Use clk_bulk_*() API to simplify clock handling
-
-Kelvin Zhang (1):
-      dt-bindings: pwm: amlogic: Document C3 PWM
-
-Shen Lichuan (1):
-      pwm: atmel-tcb: Use min() macro
-
-Uwe Kleine-K=F6nig (13):
-      pwm: Add more locking
-      pwm: New abstraction for PWM waveforms
-      pwm: Provide new consumer API functions for waveforms
-      pwm: Add tracing for waveform callbacks
-      pwm: axi-pwmgen: Implementation of the waveform callbacks
-      pwm: stm32: Implementation of the waveform callbacks
-      pwm: Reorder symbols in core.c
-      pwm: Add kernel doc for members added to pwm_ops recently
-      pwm: stm32: Fix error checking for a regmap_read() call
-      pwm: axi-pwmgen: Create a dedicated function for getting driver data =
-=66rom a chip
-      Merge tag 'pwm/duty_offset-for-6.13-rc1' of https://git.kernel.org/pu=
-b/scm/linux/kernel/git/ukleinek/linux
-      dt-bindings: pwm: adi,axi-pwmgen: Increase #pwm-cells to 3
-      pwm: Assume a disabled PWM to emit a constant inactive output
-
- .../devicetree/bindings/pwm/adi,axi-pwmgen.yaml    |   4 +-
- .../devicetree/bindings/pwm/pwm-amlogic.yaml       |   1 +
- drivers/pwm/core.c                                 | 885 +++++++++++++++++=
-----
- drivers/pwm/pwm-atmel-tcb.c                        |   4 +-
- drivers/pwm/pwm-axi-pwmgen.c                       | 199 +++--
- drivers/pwm/pwm-imx27.c                            | 161 +++-
- drivers/pwm/pwm-stm32.c                            | 612 +++++++++-----
- include/linux/pwm.h                                |  66 +-
- include/trace/events/pwm.h                         | 134 +++-
- 9 files changed, 1571 insertions(+), 495 deletions(-)
-
-
---57l3bzelwfcxov3e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmc7EZIACgkQj4D7WH0S
-/k6cZwgAoMkjVDFUq9QM8g87/DWUZABFHzVKCIyRCCmql+pxVSnE5xBrG9fNK70Q
-ijkdSDtrRpCWSHBMLm09+Qnb2vkJpyy0fYwMUfgaU0GcE+z9zpgfbu4Z8mY4A59d
-Nj7yfpmYYrusKAZRgUnijI7QC5hC7EJa598qPhZP/D91fm89BlK7y6TJosRzCbpq
-m9xAzXGzQiKq1Z1tX3XzmVn5Mt2KrfXCUjFX75Zk3eKrzOOuWQ804X4g+qynKDuz
-STyRfyrskqfKZOGENAJr/N5G1bT4dDybkBp6Zz1dB7s5TQ0GXnSSA9n8LHl3ojPk
-F1b+lwfWaQqwDS1qjEGU2pHbWUUwxg==
-=R4t8
------END PGP SIGNATURE-----
-
---57l3bzelwfcxov3e--
+Regards,
+Markus
 

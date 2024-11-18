@@ -1,293 +1,116 @@
-Return-Path: <linux-iio+bounces-12388-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12389-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A399D1883
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 19:54:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C119D195D
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 20:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B42EE28245D
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 18:54:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 767A9B232AD
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 19:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4721E1048;
-	Mon, 18 Nov 2024 18:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CF51E5726;
+	Mon, 18 Nov 2024 19:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="hqc1S3We"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HLW1cliL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5411B1494B0;
-	Mon, 18 Nov 2024 18:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844791E5716
+	for <linux-iio@vger.kernel.org>; Mon, 18 Nov 2024 19:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731956067; cv=none; b=u87Y0KiHGAx4A5oVEXoQR+QirSpKi7IEdlzBcsgYy26soLE5SM1i+C43a7aEPJDyRAJYByIrk/omaQWlSckU/tpODqlBoo4rh4/nJ8Rv0JIES6BWcG6xrH0c8NV5EoeeyExvtSf64apPkj/VI5TZpwlV27S+CGZHQ1yf0Cbty7A=
+	t=1731959830; cv=none; b=CqkyPRxuxm/IFeYeK+JsUd4Ua9rr3L3UHA365Eo9o1qLTM7yL3JHzekKWL3eT1CMPumBWugYr+SAUlaBwmyPje9zV6paDtTm31bGnOXlH9K+pV02Y+kEQp6xBCZb3I9Tljj+4RBsHIAJyhcw+faheMqUXrAMlAWw4PyJNsYt6Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731956067; c=relaxed/simple;
-	bh=/H1PV/BMvbHKTb5SX6XHfRjbNzmVKHPWMMhdfwTSBwY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q2BRYGcOp3BjGPyBMcVqpl1/T2dq8plGcYiMrSJvPIDpm3wdRZOcS47ZqenzTT03Mt3j9uT52T/EaL+xzv0ap4N7NyyfdAj9VH5YlDiHeKHg219fIHQQgH5LHGAbKiZsTStMhVEk6W+QOeyQHpspXujdXWii81PX/gmx/ayTpug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=hqc1S3We; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AIEnlBB020192;
-	Mon, 18 Nov 2024 13:54:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=tOpXV
-	wzlbLBsoHKMz1ze+XGt9cfn8hPt2ymMX5qf7WU=; b=hqc1S3WellmQjnzsF5NSX
-	DA/wqCt2R9+1iUC9encRlYpjBJhddWWYlZEcMTKCw06JzLUaDkm99qrbtnju8Gst
-	9WgQTFnEEFi+ZMuQqAA8f9jpIyFOIqyzdl0Eaeovick2qPlDF6xMQ5JD5gw2FFXg
-	l6GDhuBAgVtiwlb6zDIJAr1JsO63OT3bdm76hH4rI0YiV5JqGZ2eXWVuQHlzFooD
-	3EYjkcVOQMjt1ZG99ekgRXPGKezSFyNu6I2YAcFftaCKYAyOqDH2aoWqH0oJ9yyg
-	ALmwFR5vIzs4ARTRNJzISIfY1NblNtVZlM33eSAOYe6giojKHh4nd58HgOFbAg3+
-	Q==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 43025m2fxw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Nov 2024 13:54:10 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4AIIs96k064064
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 18 Nov 2024 13:54:09 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 18 Nov
- 2024 13:54:09 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 18 Nov 2024 13:54:09 -0500
-Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4AIIrsd8010391;
-	Mon, 18 Nov 2024 13:53:56 -0500
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
-To: <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <marcelo.schmitt@analog.com>, <jic23@kernel.org>, <robh@kernel.org>,
-        <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-        <marcelo.schmitt1@gmail.com>
-CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, David Lechner <dlechner@baylibre.com>
-Subject: [PATCH v2 4/4] iio: adc: ad4000: Add support for PulSAR devices
-Date: Mon, 18 Nov 2024 15:53:52 -0300
-Message-ID: <c56511e7629c3eaddefac771aeb34306fcf0d5a7.1731953012.git.marcelo.schmitt@analog.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1731953012.git.marcelo.schmitt@analog.com>
-References: <cover.1731953012.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1731959830; c=relaxed/simple;
+	bh=C3yvYvgaYqHUASV6J8b58Cin5xvUMyMbEuA9GZfTzY8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WoGwLtkF3gUjUGIs84btQJMmKCpwpxbm6yfaJrgwubUwBOZWIzvXpSWjDW6FQTkz2PIs1iWKnMFT+n96znIgoCMcPoROE2oTgue5jxfKxm7ZvOAlXv3PK0/eBvDgTl2W3FIv/UxMBV3A+cEIxc9aNWnIalMqP88Ca8s0TpZ12vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HLW1cliL; arc=none smtp.client-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5ee645cf763so2367277eaf.2
+        for <linux-iio@vger.kernel.org>; Mon, 18 Nov 2024 11:57:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731959826; x=1732564626; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WpUyZvuIqoP+1REy1b0f27OiKQUxfmn+lI7QAkmm/bc=;
+        b=HLW1cliLAleXC0tByReogt14ePO6yc2ynZoDWPcAkapgQPTy4xQI7Aw46W4zeM5x6g
+         AF50e8jJiio8s1LYWBwITxOqBPtVwD0vQ5dR/8ffzwQqaFMGfO6EHnZJWUzkhhBPZfty
+         pE+cpLrXImTHtekUBIaMjVAfSzWdx465TWCas1SZjwkJTzXHWf96JVI0BqErLF85bUhq
+         i0pt8iSAzMTPwqjOj/psvl7H6CljblyaFbuUucqVJuhvYBA4olU7rJH//tQly57T3Sw8
+         y0mL7z/kesy0Krl8Nz+2ZRD/FYubh0HllnITXtqA7V4Ku9L+CYtPc4PiKeMBB4Zh64SE
+         +Ixg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731959826; x=1732564626;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WpUyZvuIqoP+1REy1b0f27OiKQUxfmn+lI7QAkmm/bc=;
+        b=U70hAi9jzE7SnNPnWSioEW+l7M8P19G9ChCJjxM9iI8Riuz/bdM+ylazfvJhOv57JC
+         X9EZdFYQRCR7yU6Lp0PfH9iLFYpyGVvOpRaV+e4tI2PLDmSVzq7wyAdJQipuFLqCccLt
+         /oNEpCr3KSbrLHtZwikSiBKsAYa6M/C2irLMO2naxRxw8PzpDZRTopMYGRrrM0fTYwmP
+         DVdYKmx9XOXjLh7CF0pEZf+lvI+KtBjHhL8RX/y4DtYzbROqoUZ1unM1C69YWou1RmRw
+         vXRuDSOVUaqc8wDNjp+3Jq6f65TS7QbI6zkfWb6YnM0i5W2fUae/a/5Ow1fpIprDwY4p
+         IDrA==
+X-Gm-Message-State: AOJu0Yy+0jZL8I00GV/ABVlJo0XF+jpB3R9U+wjMeD/fvqG/Rj/3aryu
+	ibqTeknzZp8NG9EHeSzAOSybn07iwqyfjtxoqJVpQjGTGa6rVN7lhkzbc1Tl+0Y=
+X-Google-Smtp-Source: AGHT+IHQm8AvqbRlq+Us9nwiXv4QXlkWwfjqJbIZ5ekm5NvDdp7rFZJFhnT0J5xgIqNqiBjstaFupA==
+X-Received: by 2002:a05:6820:4c17:b0:5c4:144b:1ff9 with SMTP id 006d021491bc7-5eeab41f3ecmr10418542eaf.5.1731959826665;
+        Mon, 18 Nov 2024 11:57:06 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5eeabd520c4sm3043554eaf.27.2024.11.18.11.57.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Nov 2024 11:57:05 -0800 (PST)
+Message-ID: <74ae05a9-6fff-4088-a46c-0a68a5b64614@baylibre.com>
+Date: Mon, 18 Nov 2024 13:57:03 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 25OR0Z8ag8UZ-ZvusLGtbjiHPEfKBRTu
-X-Proofpoint-ORIG-GUID: 25OR0Z8ag8UZ-ZvusLGtbjiHPEfKBRTu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=999 lowpriorityscore=0
- clxscore=1015 malwarescore=0 impostorscore=0 adultscore=0 spamscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411180155
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] iio: adc: ad4000: Use device specific timing for
+ SPI transfers
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, jic23@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1731953012.git.marcelo.schmitt@analog.com>
+ <284478615dd32deff29e4e10815cb49fa7d3b5d0.1731953012.git.marcelo.schmitt@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <284478615dd32deff29e4e10815cb49fa7d3b5d0.1731953012.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The ADI PulSAR series of single-channel devices comprises differential and
-pseudo-differential ADCs that don't require any input data from the host
-controller. By not requiring a data input line, PulSAR devices can operate
-with a 3-wire only data bus in some setups.
+On 11/18/24 12:53 PM, Marcelo Schmitt wrote:
+> The SPI transfers for AD4020, AD4021, and AD4022 have slightly different
+> timing specifications. Use device specific timing constraints to set SPI
+> transfer parameters. While tweaking time constraints, remove time related
+> defines including unused AD4000_TQUIET1_NS.
+> 
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
 
-The AD4000 series and the single-channel PulSAR series of devices have
-similar SPI transfer specifications and wiring configurations.
-Single-channel PulSAR devices are slower than AD4000 and don't have a
-configuration register. That taken into account, single-channel PulSARs can
-be supported by the ad4000 driver without any increase in code complexity.
+...
 
-Extend the AD4000 driver to also support single-channel PulSAR devices.
+> +/*
+> + * Same timing specifications for all of AD4000, AD4001, ..., AD4008, AD4010,
+> + * ADAQ4001, and ADAQ4003.
+> + */
+> +static const struct ad4000_time_spec ad4000_t_spec = AD4000_TSPEC(320, 60);
+> +
+> +/* AD4020, AD4021, AD4022 */
+> +static const struct ad4000_time_spec ad4020_t_spec = AD4000_TSPEC(350, 60);
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
----
- drivers/iio/adc/ad4000.c | 141 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 141 insertions(+)
-
-diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
-index 3fa12bcf73aa..38cd98adda8a 100644
---- a/drivers/iio/adc/ad4000.c
-+++ b/drivers/iio/adc/ad4000.c
-@@ -138,6 +138,27 @@ static const struct ad4000_time_spec ad4000_t_spec = AD4000_TSPEC(320, 60);
- /* AD4020, AD4021, AD4022 */
- static const struct ad4000_time_spec ad4020_t_spec = AD4000_TSPEC(350, 60);
- 
-+/* AD7983, AD7984 */
-+static const struct ad4000_time_spec ad7983_t_spec = AD4000_TSPEC(500, 0);
-+
-+/* AD7980, AD7982 */
-+static const struct ad4000_time_spec ad7980_t_spec = AD4000_TSPEC(800, 0);
-+
-+/* AD7946, AD7686, AD7688, AD7988-5, AD7693 */
-+static const struct ad4000_time_spec ad7686_t_spec = AD4000_TSPEC(1600, 0);
-+
-+/* AD7690 */
-+static const struct ad4000_time_spec ad7690_t_spec = AD4000_TSPEC(2100, 0);
-+
-+/* AD7942, AD7685, AD7687 */
-+static const struct ad4000_time_spec ad7687_t_spec = AD4000_TSPEC(3200, 0);
-+
-+/* AD7691 */
-+static const struct ad4000_time_spec ad7691_t_spec = AD4000_TSPEC(3700, 0);
-+
-+/* AD7988-1 */
-+static const struct ad4000_time_spec ad7988_1_t_spec = AD4000_TSPEC(9500, 0);
-+
- struct ad4000_chip_info {
- 	const char *dev_name;
- 	struct iio_chan_spec chan_spec[2];
-@@ -260,6 +281,96 @@ static const struct ad4000_chip_info adaq4003_chip_info = {
- 	.has_hardware_gain = true,
- };
- 
-+static const struct ad4000_chip_info ad7685_chip_info = {
-+	.dev_name = "ad7685",
-+	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 0),
-+	.time_spec = &ad7687_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7686_chip_info = {
-+	.dev_name = "ad7686",
-+	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 0),
-+	.time_spec = &ad7686_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7687_chip_info = {
-+	.dev_name = "ad7687",
-+	.chan_spec = AD4000_DIFF_CHANNELS('s', 16, 0),
-+	.time_spec = &ad7687_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7688_chip_info = {
-+	.dev_name = "ad7688",
-+	.chan_spec = AD4000_DIFF_CHANNELS('s', 16, 0),
-+	.time_spec = &ad7686_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7690_chip_info = {
-+	.dev_name = "ad7690",
-+	.chan_spec = AD4000_DIFF_CHANNELS('s', 18, 0),
-+	.time_spec = &ad7690_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7691_chip_info = {
-+	.dev_name = "ad7691",
-+	.chan_spec = AD4000_DIFF_CHANNELS('s', 18, 0),
-+	.time_spec = &ad7691_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7693_chip_info = {
-+	.dev_name = "ad7693",
-+	.chan_spec = AD4000_DIFF_CHANNELS('s', 16, 0),
-+	.time_spec = &ad7686_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7942_chip_info = {
-+	.dev_name = "ad7942",
-+	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 14, 0),
-+	.time_spec = &ad7687_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7946_chip_info = {
-+	.dev_name = "ad7946",
-+	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 14, 0),
-+	.time_spec = &ad7686_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7980_chip_info = {
-+	.dev_name = "ad7980",
-+	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 0),
-+	.time_spec = &ad7980_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7982_chip_info = {
-+	.dev_name = "ad7982",
-+	.chan_spec = AD4000_DIFF_CHANNELS('s', 18, 0),
-+	.time_spec = &ad7980_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7983_chip_info = {
-+	.dev_name = "ad7983",
-+	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 0),
-+	.time_spec = &ad7983_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7984_chip_info = {
-+	.dev_name = "ad7984",
-+	.chan_spec = AD4000_DIFF_CHANNELS('s', 18, 0),
-+	.time_spec = &ad7983_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7988_1_chip_info = {
-+	.dev_name = "ad7988-1",
-+	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 0),
-+	.time_spec = &ad7988_1_t_spec,
-+};
-+
-+static const struct ad4000_chip_info ad7988_5_chip_info = {
-+	.dev_name = "ad7988-5",
-+	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 0),
-+	.time_spec = &ad7686_t_spec,
-+};
-+
- struct ad4000_state {
- 	struct spi_device *spi;
- 	struct gpio_desc *cnv_gpio;
-@@ -733,6 +844,21 @@ static const struct spi_device_id ad4000_id[] = {
- 	{ "ad4022", (kernel_ulong_t)&ad4022_chip_info },
- 	{ "adaq4001", (kernel_ulong_t)&adaq4001_chip_info },
- 	{ "adaq4003", (kernel_ulong_t)&adaq4003_chip_info },
-+	{ "ad7685", (kernel_ulong_t)&ad7685_chip_info },
-+	{ "ad7686", (kernel_ulong_t)&ad7686_chip_info },
-+	{ "ad7687", (kernel_ulong_t)&ad7687_chip_info },
-+	{ "ad7688", (kernel_ulong_t)&ad7688_chip_info },
-+	{ "ad7690", (kernel_ulong_t)&ad7690_chip_info },
-+	{ "ad7691", (kernel_ulong_t)&ad7691_chip_info },
-+	{ "ad7693", (kernel_ulong_t)&ad7693_chip_info },
-+	{ "ad7942", (kernel_ulong_t)&ad7942_chip_info },
-+	{ "ad7946", (kernel_ulong_t)&ad7946_chip_info },
-+	{ "ad7980", (kernel_ulong_t)&ad7980_chip_info },
-+	{ "ad7982", (kernel_ulong_t)&ad7982_chip_info },
-+	{ "ad7983", (kernel_ulong_t)&ad7983_chip_info },
-+	{ "ad7984", (kernel_ulong_t)&ad7984_chip_info },
-+	{ "ad7988-1", (kernel_ulong_t)&ad7988_1_chip_info },
-+	{ "ad7988-5", (kernel_ulong_t)&ad7988_5_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, ad4000_id);
-@@ -754,6 +880,21 @@ static const struct of_device_id ad4000_of_match[] = {
- 	{ .compatible = "adi,ad4022", .data = &ad4022_chip_info },
- 	{ .compatible = "adi,adaq4001", .data = &adaq4001_chip_info },
- 	{ .compatible = "adi,adaq4003", .data = &adaq4003_chip_info },
-+	{ .compatible = "adi,ad7685", .data = &ad7685_chip_info },
-+	{ .compatible = "adi,ad7686", .data = &ad7686_chip_info },
-+	{ .compatible = "adi,ad7687", .data = &ad7687_chip_info },
-+	{ .compatible = "adi,ad7688", .data = &ad7688_chip_info },
-+	{ .compatible = "adi,ad7690", .data = &ad7690_chip_info },
-+	{ .compatible = "adi,ad7691", .data = &ad7691_chip_info },
-+	{ .compatible = "adi,ad7693", .data = &ad7693_chip_info },
-+	{ .compatible = "adi,ad7942", .data = &ad7942_chip_info },
-+	{ .compatible = "adi,ad7946", .data = &ad7946_chip_info },
-+	{ .compatible = "adi,ad7980", .data = &ad7980_chip_info },
-+	{ .compatible = "adi,ad7982", .data = &ad7982_chip_info },
-+	{ .compatible = "adi,ad7983", .data = &ad7983_chip_info },
-+	{ .compatible = "adi,ad7984", .data = &ad7984_chip_info },
-+	{ .compatible = "adi,ad7988-1", .data = &ad7988_1_chip_info },
-+	{ .compatible = "adi,ad7988-5", .data = &ad7988_5_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, ad4000_of_match);
--- 
-2.45.2
+I actually liked the way you did it in v1 better. This makes it harder to
+see which number is which.
 
 

@@ -1,151 +1,129 @@
-Return-Path: <linux-iio+bounces-12383-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12384-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 961599D1837
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 19:33:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275879D1870
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 19:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C0DD281692
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 18:33:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D64871F234F0
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Nov 2024 18:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310DF1E1023;
-	Mon, 18 Nov 2024 18:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219011E0E01;
+	Mon, 18 Nov 2024 18:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mQJ0sUnk"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="k2p/+hdl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE3D1DEFD6
-	for <linux-iio@vger.kernel.org>; Mon, 18 Nov 2024 18:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1BF13B2B6;
+	Mon, 18 Nov 2024 18:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731954826; cv=none; b=LYWd+v7L+AYBweG831/PNAPRZv4Bi9Pfu8W5ELZZQlmp+8lLXPv/ur9uteMFQ65vErfgin/PJobWdo/E676x8IoCb42iaU/2xlHAFVtIviPSVLOyfZRaslZ3cTUbma9skP35/+AtNn6ji/VVlVJ03aPgX+xFT1IR4WkobFrXUjE=
+	t=1731955978; cv=none; b=fkZ3+Nd7UlAjAghPOqYuV3exLgbDNSHHTVU0qn3i0rdrUyK9D3FBnP5wRoahxlPLsQ2Qncd4pd1owA2LjymDbbCXAOb8jNY+ZiNINF6kSJVIUdGZbndOkIjfckMeVM2NmyFKyGsFeox2ZxRV18IrWvDonGKGAcJMH0f/YHx67qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731954826; c=relaxed/simple;
-	bh=PbL5qU7G89QRGe1mqq27S87ShiVyJjnCIGnqWYBTVYE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dJYiu32L0XdaDqRua1qbm+/7+JII6e0QXdW218O0akSf0wOBm4ex2zxllq0YuWiesGN+gyinYOSqLYW+uv2QTHQ3P/u4ZvJ7DKB0S7HFdFhSw8kUJ+zVFNBt1G89/yZqKlM0apfl9PdrZ2m9oWtOMBKYPMG24TbKilCi19kvVuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mQJ0sUnk; arc=none smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2969dc28dafso531179fac.2
-        for <linux-iio@vger.kernel.org>; Mon, 18 Nov 2024 10:33:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1731954821; x=1732559621; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aneuQOiwaFYBr88lA/0AyLISQzg4VGgde4c28AMLP6Q=;
-        b=mQJ0sUnkYBzditB2hTN1FFUvTpznayKuJyEUOv5bhDcSp04nzcFEZJOKM9YHbA6E5K
-         W4J69OMkCjm2sRbGRiPaZQSVTVo1xWij2gplfecUofmIh/kVeHzoMSmkjb9w6YMZPDeu
-         M9xEJurtMKp0LRwgVAWKijimUv5CRC/jkkSiqIwzgY+sMk/FOxqufyofNys9tnatEMW+
-         sWFVS2DRSS5pctAWgdyGSfqywF+aKo6d+iElKe3z2JyH2Rsf4MOQhPCu982N3XdeGoOl
-         OkUyg6twnFoVeTK9oIR6LTHAicPhXgj8C6AuDU1s8UFLr3hU+cb7QI8Inx7E+v1TBW9c
-         TJMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731954821; x=1732559621;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aneuQOiwaFYBr88lA/0AyLISQzg4VGgde4c28AMLP6Q=;
-        b=JqJR1oyLU0Gk+u4SGQ3Lrf/PrfJ8nyYYx9qD/io+yuGFI/W7KKMxIjdqy1hgSm7cnK
-         v8fffSHPw54OD6naqFiHW9/Ql9pipX605/2CcHSu53zb0iR6I7PO4XlERZne6wZiUt2F
-         zRT21i7ZEDVqUk8qoIf9lGHmpt6psd/So7sTm+GVGB3XQ0MXtLxiaC+E4a0e4psQKJMI
-         rVFhSeGi7LUQwQ6ez+/gCtebJ4NsI13jehPU9VBy4D03hLhIgsJbR1I9yRyJEbUni+Ks
-         WJoHyhkEl84bWkGhYvZZcguGxcggCEV0CTy6qsUbATNOKRfUIFvWsIX8izeF0nJQ6I5s
-         b0IQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW20ATNlC8ExSY1+hVM6LzDknk9TAiUxaRBhybQ3EIuEvgoVpCK6n06dpUOQoADv/RdXf+TQpKbmzE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG3cW6uKN3rIx065y1A5uKJs+L9Wv2Ze2QdW5VDm5/vUPDtpx7
-	ikaP+X83WYhqLZaCKLd15Ci2o0W8pJLjcJXxL0HB8dEeKhJGeQizUrXcJL9AeFk=
-X-Google-Smtp-Source: AGHT+IGAsbhwJF0VOk/JdSVM72aUtGwdsVL9k36/zRYH/9py/W7xVmgcTjrc6OIRRMTekxdNRRCHQw==
-X-Received: by 2002:a05:6870:5d8f:b0:287:7695:6a87 with SMTP id 586e51a60fabf-2962de1a23dmr11493982fac.10.1731954821562;
-        Mon, 18 Nov 2024 10:33:41 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71a780fe329sm2913082a34.25.2024.11.18.10.33.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Nov 2024 10:33:41 -0800 (PST)
-Message-ID: <02e0efcf-99c8-4c42-ae66-925c08a544b8@baylibre.com>
-Date: Mon, 18 Nov 2024 12:33:40 -0600
+	s=arc-20240116; t=1731955978; c=relaxed/simple;
+	bh=duQEEAotLV70IcoaFr6dprg84mehbNkygqcuBqEuhbo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Et408yMW4elrtmqHs2YugecuDvqMKrI6PsgMqiVIGXHyi0D3ReA0lMFhIMFUfdPCTWoZj8FiDeGqC53C+q+2ly9TMgc2V5RB0BzGg5SQQ3cbMr1Uk6+rjDxc372xPUNTgitHmzYo1+qBq6igLdTfk1wBS0/t18rx4qjCEgcRS/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=k2p/+hdl; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AIEnmB2032633;
+	Mon, 18 Nov 2024 13:52:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=xZI9NoipKXj9iBM6ba0DgdRdeoz
+	7eS6G6DeJM34c7PY=; b=k2p/+hdl0ZE6RmdEAddXQzN6DFN41H0KgVQMVw/DhOe
+	VPUVzQkKEzR+N+8Dk5EMm2OZF1F3HGuA0ng60eTuvEEhqqEvApfzZsfU5boHAkXh
+	Tj80v96yb9LpwD5QLg2Sz0RY2spPAqUzOwZ+7HbHTMLFE4bIWHV+ra3dhe3taJEv
+	dCuE5P133qIjMBX4bVNOjAuFkpbg9C26BN305riG3IDrr+uClABo+MaY8znpizfP
+	myGdW48OJ7GGp8bJz6bVdWzVODdTUaRrHphnQLpEWfY+51VBKPnhS5xYoCi8PjD/
+	59F65GWnjXmnSYYaZ3M4DK1fRAwL7GI0X1CEL1WjYpA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 42xs65gea4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Nov 2024 13:52:29 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4AIIqSuK063928
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 18 Nov 2024 13:52:28 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 18 Nov
+ 2024 13:52:28 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 18 Nov 2024 13:52:28 -0500
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4AIIqF3v010365;
+	Mon, 18 Nov 2024 13:52:17 -0500
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <marcelo.schmitt@analog.com>, <jic23@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <marcelo.schmitt1@gmail.com>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 0/4] Timestamp and PulSAR support for ad4000
+Date: Mon, 18 Nov 2024 15:52:11 -0300
+Message-ID: <cover.1731953012.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: iio: adc: adi,ad4000: Add PulSAR
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
- Michael.Hennerich@analog.com, jic23@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1731626099.git.marcelo.schmitt@analog.com>
- <a155d0d0fb1d9b5eece86099af9b5c0fb76dcac2.1731626099.git.marcelo.schmitt@analog.com>
- <0b8a2d07-feea-409f-a850-7ee0c752a949@baylibre.com>
- <Zzsj9_HVBO5wrJv_@debian-BULLSEYE-live-builder-AMD64>
- <ZzuGtvdrD6D06rEp@debian-BULLSEYE-live-builder-AMD64>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <ZzuGtvdrD6D06rEp@debian-BULLSEYE-live-builder-AMD64>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 548YzUTbNVQ3f_Ka9LSBLwWrGjwjs7-J
+X-Proofpoint-ORIG-GUID: 548YzUTbNVQ3f_Ka9LSBLwWrGjwjs7-J
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 bulkscore=0 mlxscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 phishscore=0 impostorscore=0 malwarescore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2409260000 definitions=main-2411180155
 
-On 11/18/24 12:25 PM, Marcelo Schmitt wrote:
-> On 11/18, Marcelo Schmitt wrote:
->> On 11/15, David Lechner wrote:
->>> On 11/14/24 5:50 PM, Marcelo Schmitt wrote:
->>>> Extend the AD4000 series device tree documentation to also describe
->>>> PulSAR devices.
->>>>
->>>> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
->>>> ---
->>>>  .../bindings/iio/adc/adi,ad4000.yaml          | 115 +++++++++++++++++-
->>>>  1 file changed, 114 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
->>>> index e413a9d8d2a2..35049071a9de 100644
->>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
->>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
->>>> @@ -19,6 +19,21 @@ description: |
->>>>      https://www.analog.com/media/en/technical-documentation/data-sheets/ad4020-4021-4022.pdf
->>>>      https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4001.pdf
->>>>      https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4003.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7685.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7686.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7687.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7688.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7690.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7691.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7693.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7694.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7942.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7946.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7980.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7982.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7983.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7984.pdf
->>>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7988-1_7988-5.pdf
->>>
->>> It would be nice to sort these lowest number first.
->>
->> Ack
->>
-> Actually, I didn't get how I'm expected to sort those.
-> Isn't ad4000 < ad7685?
-> Or did you mean to put adaq at the end?
-> 
-> ad4000-4004-4008.pdf
-> ...
-> ad4020-4021-4022.pdf
-> ad7685.pdf
-> ...
-> ad7988-1_7988-5.pdf
-> adaq4001.pdf
-> adaq4003.pdf
-> 
-I think all of the 6s, 8s and 9s were playing tricks on my brain when I wrote that.
-Looking again now, it looks fine to me. Sorry for the noise.
+Complement the ad4000 driver with a timestamp channel, a minor adjust in
+transfer timing, and support for single-channel PulSAR devices.
+
+This series was tested with ADAQ4003, AD7687, and AD7691 on CoraZ7 board.
+
+Link to v1: https://lore.kernel.org/linux-iio/cover.1731626099.git.marcelo.schmitt@analog.com/
+
+Change log v1 -> v2
+- Added Suggested-by and Reviewed-by tags.
+[IIO]
+- Commented the removal of unused AD4000_TQUIET1_NS define in commit body.
+- Made a common macro to assign ad4000_time_spec.
+- Explicitly initialized PulSAR t_quiet2_ns with 0 as those don't need any quiet time.
+- Improved PulSAR support commit description with more context.
+- Dropped support for AD7694.
+[Device tree]
+- Made "cs" the default adi,sdi-pin value for PulSAR devices.
+
+Additional comments in patch number 1.
+
+Marcelo Schmitt (4):
+  dt-bindings: iio: adc: adi,ad4000: Add PulSAR
+  iio: adc: ad4000: Add timestamp channel
+  iio: adc: ad4000: Use device specific timing for SPI transfers
+  iio: adc: ad4000: Add support for PulSAR devices
+
+ .../bindings/iio/adc/adi,ad4000.yaml          |  71 +++++
+ drivers/iio/adc/ad4000.c                      | 290 +++++++++++++++---
+ 2 files changed, 310 insertions(+), 51 deletions(-)
+
+
+base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
+-- 
+2.45.2
+
 

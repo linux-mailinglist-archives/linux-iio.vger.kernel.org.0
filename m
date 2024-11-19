@@ -1,61 +1,64 @@
-Return-Path: <linux-iio+bounces-12407-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12408-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7F29D2834
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Nov 2024 15:32:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC7F9D2B3D
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Nov 2024 17:42:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A89C11F21A94
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Nov 2024 14:32:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7966B30A8E
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Nov 2024 16:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C931CCB4E;
-	Tue, 19 Nov 2024 14:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664351CFED1;
+	Tue, 19 Nov 2024 16:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6XOFGi5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QRdZc9Dz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFDAE57D;
-	Tue, 19 Nov 2024 14:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0118A1CC88B;
+	Tue, 19 Nov 2024 16:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732026761; cv=none; b=UQLHzPNgSIXBK4464vtSN3dKO4b0PRl9gKlbBHw45ERA+CzG4iVQ7RZmiRCLfG7GlbwNyq7KLhyLqBhcKZ4shNXTII1fmqtBCPAsxIeArVM8O7a9Gz8fWQoO9USqiufVj+spk90JdiuDMUBjHLHEeT47WurI3c1/ceUlWJaAxXA=
+	t=1732034253; cv=none; b=CeW9IH1Kfmty+M12K2hgQ2K2oE7w2evGWvUZsLm0fDYJxlYAQ4mPKbrL6Ny3FSnCJ40bRG8hzUA0I7yf2eMrU4rwMsNFZqC4Tv57H8aRYWh9LxLhv8NkcrJsNlJ0txmkrWgdpHuclzSTvEOXvnz/PRbkRJcP4+cp9l4m2kg3ZpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732026761; c=relaxed/simple;
-	bh=Vy/xSgb5FedxmmMMg77kWeYZmEJ5Y6T3eOsGvrKqLlw=;
+	s=arc-20240116; t=1732034253; c=relaxed/simple;
+	bh=sNdvLbL4aOxoLXjKy6ZHtsflibffPE5ejyEc/6CBqQM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MZfDg77ESPDGSTvA1nzVtom8nXTEO0YDbPKtPx0UeGgA0P1Z025Em9HrvswLMmeYWLS8N5N2i3esQNm6amxU8G87WY/2Z7/QVDU6sdVOP/F3XfTd2VEI81JWJAN34poqoScTduNACHHv42okTHHdZGWw4MFlzx6yQSz5W3OGnQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6XOFGi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C643BC4CED0;
-	Tue, 19 Nov 2024 14:32:40 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sw1ka888kP4DhJSDX1sgmVO91EfRmFuufJvkezaSIzFIYzl80hfZ8zb6BFYEfX7zV1/9ICJnNDWkyRTIzMAnuCv86/HvU6d/EUm+UrgOMgp/A6jF1/FGfxjvtgJqwS+dTvZMt9pBn1FOL/7bSLdKZWQjlhtWLz0Dud9LcVO8vE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QRdZc9Dz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F96C4CECF;
+	Tue, 19 Nov 2024 16:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732026761;
-	bh=Vy/xSgb5FedxmmMMg77kWeYZmEJ5Y6T3eOsGvrKqLlw=;
+	s=k20201202; t=1732034252;
+	bh=sNdvLbL4aOxoLXjKy6ZHtsflibffPE5ejyEc/6CBqQM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h6XOFGi5qeg5oj2k+kdbwF+ixh5kgEgjwm8MbIs688ZKhKvHVW3ETGfgFjLrCxyH6
-	 VxnrfjfDTBzNFSVpN7WShHO6a+K6sMAA2Bpps9fNHg0BOdVt7MGtvoGLxzipuX8LVd
-	 keQEoUpoGobxE1RnCmGQTu8pKCCyySbVlrbM88gdEu5pN5fnO7WHvh2qXYmbxSFpOG
-	 tWC1VYB6gvRjSrVFSoGrQ4Ubkv59AebfUn9eyudM19VE4Jmr3NdhH8/Z2B2RXcErkj
-	 ZlVq03BZyfqRGK2C6hOkrzFuj5exaU4dAuJr3fZ3du9UtpQg+gtry64fquF4//KgnA
-	 ppWqcfICOUAeQ==
-Date: Tue, 19 Nov 2024 08:32:39 -0600
+	b=QRdZc9Dzr2TU8yxwhV7GmeRRFrwpeJw7tyrGYfywrJdZPzKMD5ifZ/yBfEJOQBcc8
+	 VdOfu7KUthV+STeNtq65wmAEHjaDVOwjOGGTa36pX5LWnw0hH94lLyjByYFSOpApi/
+	 pW0rrsUQxs+fka+2IqWQg1ja7JBoEg1mYFziLiWFqLfiMGZwH015PAuqniiEj2oZbz
+	 596h8vJHbyiRDeWBHqo6HdLf9KTrvctu5gO9gtTcSdRjFwre5Vd+/uCA0E55mD9U6u
+	 Q1lxeyreOxHp5tav/WXd6WQAKKNz9eJvCbci6lGSLNyib43LglkIqsf50oeHPqWYRH
+	 J4Sn78PFubj+Q==
+Date: Tue, 19 Nov 2024 10:37:31 -0600
 From: Rob Herring <robh@kernel.org>
-To: "Sperling, Tobias" <Tobias.Sperling@softing.com>
-Cc: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"jic23@kernel.org" <jic23@kernel.org>,
-	"lars@metafoo.de" <lars@metafoo.de>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Introduce ADS7138
-Message-ID: <20241119143239.GA1201205-robh@kernel.org>
-References: <BE1P281MB24207662EAC941780807F88BEF5A2@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
- <20241115173657.GA3440948-robh@kernel.org>
- <BE1P281MB24200EE5C1D08DB1C330A51EEF272@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v5 04/16] spi: dt-bindings: add PWM SPI offload trigger
+Message-ID: <20241119163731.GA1769375-robh@kernel.org>
+References: <20241115-dlech-mainline-spi-engine-offload-2-v5-0-bea815bd5ea5@baylibre.com>
+ <20241115-dlech-mainline-spi-engine-offload-2-v5-4-bea815bd5ea5@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -64,109 +67,93 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BE1P281MB24200EE5C1D08DB1C330A51EEF272@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
+In-Reply-To: <20241115-dlech-mainline-spi-engine-offload-2-v5-4-bea815bd5ea5@baylibre.com>
 
-On Mon, Nov 18, 2024 at 01:43:02PM +0000, Sperling, Tobias wrote:
-> > On Wed, Nov 13, 2024 at 02:41:08PM +0000, Sperling, Tobias wrote:
-> > > >From 6a06973e1023ca6a128c8d426b4c87887117c084 Mon Sep 17 00:00:00
-> > 2001
-> > > From: Tobias Sperling <tobias.sperling@softing.com>
-> > > Date: Wed, 13 Nov 2024 14:52:49 +0100
-> > > Subject: [PATCH 1/2] dt-bindings: iio: adc: Introduce ADS7138
-> >
-> > Your patch is corrupted.
+On Fri, Nov 15, 2024 at 02:18:43PM -0600, David Lechner wrote:
+> Add a new binding for using a PWM signal as a trigger for SPI offloads.
 > 
-> Yeah, might look a little different from what you are usually used to see, as
-> I had to copy the patch manually to the mails body. SMTP doesn't work
-> for us unfortunately. Anyway, the patch applies just fine with "git apply",
-> doesn't it for you?
-
-git-apply doesn't apply the commit message. git-am is what you want. It 
-tripped up my scripts, but that seems to because it has line-feed char 
-in Message-ID. It did apply manually running b4.
-
-There's a b4 relay you can use to send if you can't get SMTP to work. 
-Messing with things manually is asking for trouble.
-
-> > > Add documentation for the driver of ADS7128 and ADS7138 12-bit, 8-channel
-> > > analog-to-digital converters. These ADCs have a wide operating range and
-> > > a wide feature set. Communication is based on the I2C interface.
-> > >
-> > > Signed-off-by: Tobias Sperling <tobias.sperling@softing.com>
-> > > ---
-> > >  .../bindings/iio/adc/ti,ads7138.yaml          | 60 +++++++++++++++++++
-> > >  1 file changed, 60 insertions(+)
-> > >  create mode 100644
-> > Documentation/devicetree/bindings/iio/adc/ti,ads7138.yaml
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7138.yaml
-> > b/Documentation/devicetree/bindings/iio/adc/ti,ads7138.yaml
-> > > new file mode 100644
-> > > index 000000000000..c70ad5747828
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7138.yaml
-> > > @@ -0,0 +1,60 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id:
-> > http://devicetree/.
-> > org%2Fschemas%2Fiio%2Fadc%2Fti%2Cads7138.yaml%23&data=05%7C02%7C%
-> > 7Cf943e3cd23dd4c28422608dd059c1cd9%7Cfe3606fad3974238999768dcd7851f
-> > 64%7C1%7C0%7C638672890241515102%7CUnknown%7CTWFpbGZsb3d8eyJFb
-> > XB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpb
-> > CIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=KFK6uoMuDUTlwSRv5jUd%2FQ
-> > mBqKRHIDCq%2Bb1nWhOkZTk%3D&reserved=0
-> > > +$schema:
-> > http://devicetree/.
-> > org%2Fmeta-
-> > schemas%2Fcore.yaml%23&data=05%7C02%7C%7Cf943e3cd23dd4c28422608d
-> > d059c1cd9%7Cfe3606fad3974238999768dcd7851f64%7C1%7C0%7C638672890
-> > 241534499%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOi
-> > IwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%
-> > 7C%7C%7C&sdata=2Dj6PlC%2BzKkjcxWosWYMd9Wnh71dKJZfXx5af85vQf8%3D
-> > &reserved=0
-> > > +
-> > > +title: Texas Instruments ADS7128/ADS7138 Analog to Digital Converter (ADC)
-> > > +
-> > > +maintainers:
-> > > +  - Tobias Sperling <tobias.sperling@softing.com>
-> > > +
-> > > +description: |
-> > > +  The ADS7128 is 12-Bit, 8-Channel Sampling Analog to Digital Converter (ADC)
-> > > +  with an I2C interface.
-> > > +
-> > > +  Datasheets:
-> > > +
-> > https://www.ti.co/
-> > m%2Fproduct%2FADS7128&data=05%7C02%7C%7Cf943e3cd23dd4c28422608d
-> > d059c1cd9%7Cfe3606fad3974238999768dcd7851f64%7C1%7C0%7C638672890
-> > 241551566%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOi
-> > IwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%
-> > 7C%7C%7C&sdata=MtZjBaLGanD7%2BwQJZDc54CWVVkDbUV1jAv9PixBdOxk%3
-> > D&reserved=0
-> > > +
-> > https://www.ti.co/
-> > m%2Fproduct%2FADS7138&data=05%7C02%7C%7Cf943e3cd23dd4c28422608d
-> > d059c1cd9%7Cfe3606fad3974238999768dcd7851f64%7C1%7C0%7C638672890
-> > 241564942%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOi
-> > IwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%
-> > 7C%7C%7C&sdata=DlLY9HTzdOyvooQA%2FCI%2BQJu0REGlwP2mpR%2Bp6M8C
-> > 5yk%3D&reserved=0
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - ti,ads7128
-> > > +      - ti,ads7138
-> >
-> > What's the difference between the 2?
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
 > 
-> The 7128 has some more hardware features like a root-mean-square
-> module and a zero-crossing-detect module. Base functionality and
-> therefore, what's implemented in the driver yet, is the same, however.
+> v5 changes:
+> * Add MAINTAINERS entry
+> 
+> v4 changes: new patch in v4
+> ---
+>  .../devicetree/bindings/spi/trigger-pwm.yaml       | 39 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  1 +
+>  2 files changed, 40 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/trigger-pwm.yaml b/Documentation/devicetree/bindings/spi/trigger-pwm.yaml
+> new file mode 100644
+> index 000000000000..987638aa4732
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/trigger-pwm.yaml
+> @@ -0,0 +1,39 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/spi/trigger-pwm.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Generic SPI offload trigger using PWM
 
-Please put that in the description.
+Not really anything specific to SPI offload here.
 
-Rob
+I think this should be moved to 
+bindings/trigger-source/trigger-pwm.yaml.
+
+
+> +
+> +description: Remaps a PWM channel as a trigger source.
+> +
+> +maintainers:
+> +  - David Lechner <dlechner@baylibre.com>
+> +
+> +$ref: /schemas/spi/trigger-source.yaml#
+
+Including this doesn't really do anything. Will add more detail in its 
+patch.
+
+> +
+> +properties:
+> +  compatible:
+> +    const: trigger-pwm
+> +
+> +  '#trigger-source-cells':
+> +    const: 0
+> +
+> +  pwms:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - '#trigger-source-cells'
+> +  - pwms
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    trigger {
+> +        compatible = "trigger-pwm";
+> +        #trigger-source-cells = <0>;
+> +        pwms = <&pwm 0 1000000 0>;
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 91a4a7eb6194..a43532a1edde 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -22021,6 +22021,7 @@ F:	include/linux/mtd/spi-nor.h
+>  
+>  SPI OFFLOAD
+>  R:	David Lechner <dlechner@baylibre.com>
+> +F:	Documentation/devicetree/bindings/spi/trigger-pwm.yaml
+>  F:	Documentation/devicetree/bindings/spi/trigger-source.yaml
+>  F:	drivers/spi/spi-offload.c
+>  F:	include/linux/spi/spi-offload.h
+> 
+> -- 
+> 2.43.0
+> 
 

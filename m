@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-12416-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12417-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D86A9D2F94
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Nov 2024 21:37:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814CA9D2F96
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Nov 2024 21:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 575971F23C06
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Nov 2024 20:37:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 479BF283A0B
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Nov 2024 20:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5030C1D4336;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE681D47BC;
 	Tue, 19 Nov 2024 20:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiaSzuu/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pf1TptUo"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDE51D415B;
-	Tue, 19 Nov 2024 20:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440AC1D4325;
+	Tue, 19 Nov 2024 20:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732048623; cv=none; b=OpzTR6lNTEhMZTYofjoAppRd0GLRkqcFv2Z6tVyep3h1ulHSDGN3je5062zUrsF7O+NMtFIof2cBA+Gc9XlyAGhnQ9oXIf/xu4IqciJI74XCaIlES9Ez7AJIbMRtX0/nKGYKgkpL8dKOggzYjnUffDIXYDqe+4c4pbMF767RV5o=
+	t=1732048623; cv=none; b=MxWGr9dCWrQiJJWL3VNEFs+/FY7/Da69EceZFFxeKZDaXFg2LhbsnAI/jeiBZA8FZnW/B47dora2ZwXdZ/1JuHsaY/MIxJuTJbiHp69rpd588XFsSsssBt5mQ++SuD2LgFMbqQJbl3gV9xn/3l6I00T9SV8g0dxN/KS9/rR+zKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1732048623; c=relaxed/simple;
-	bh=5ZtJ47OwVXBSoFV+aJ4Xr6HwqQoievLKVIyNMZI/poc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W12hG/a0LywdSNUOWrbZqkBHJjiQF/XuHX+aZ6TQFBsi9hV08G4jux7+rkSA2aM432QReV6Fvld0pE+MzUYLw3PAUJ2PGe7M2garSR3/DTJKFFDDSQge9ZuLEC4p03d/bVNoyxLKra0vKY2CRRnbsW7rp0eHgo/Th7Dvomt+4OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiaSzuu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C62ADC4CED0;
+	bh=i68iW+parOS79i3ESk+0cIwlSL9iGwQ4/QtxIsSnGvc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=uZMmi7+6n0ZeSB3HonHRnuPhk7pry7uGjM/b1sBZj3/NbLqQitG48DgfoJNfyb5GydrC1cngIfYAdzbD43+SRKXB2q5P+ikS7T+IhOe1eS3t8mZNGx6Pbgswvb7x1hjXAlJsTI18qQAk1Hw6VLQL7jAmBBRlN7ebyvitfA9rvkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pf1TptUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E622DC4CED6;
 	Tue, 19 Nov 2024 20:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732048622;
-	bh=5ZtJ47OwVXBSoFV+aJ4Xr6HwqQoievLKVIyNMZI/poc=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=CiaSzuu/fm24QmtXA5MBu4UjvyaGi85oPhg90u/upQ/9nlpJyehwuSUQyS+2tJd43
-	 T7ZtyBrNOchDQsegE4rCFts0N8UmydAdPdOiac3JrFkVzkdfLPwUa6rvstNZ952jhu
-	 a6xkvfExipqrzcrl9c/hWaowQU6PKGfsBoIv2nl+kjgi9vlehDMhuoU7z+nuZA4z/X
-	 +XLlSiMf989mrQZqaXqvPFvetT0FCVk5OHqC6vtXVSwUGKEiuQKiaPunKaHhyePaCV
-	 HYB+HTPTU4tsRhcPF/6FTupC89dJWFTc+YVl7o4Njp0hWm+R8zxxxv3tSJWD6qV9aZ
-	 APrvmOZZ8U9Xw==
+	s=k20201202; t=1732048623;
+	bh=i68iW+parOS79i3ESk+0cIwlSL9iGwQ4/QtxIsSnGvc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=pf1TptUoQSa41NnFTw1MUMhpgu1l8WZT0amACyC4rIxTiG9sPAL4KJGacH6MbU6vC
+	 UpEiy37wptiQai24BCpm7qKRhsKUrsCP8ccmfnF+fKTpc3zdLd3eGPB2TzOIhTpg8M
+	 ecytBfkLvJpL1rSNk0C0sYZWHln8ktvh3vzVDHelbBE+BvvnLPio7rIoreadAnbDPY
+	 e9bLXl3AfNIumgafA7lrp7bCyTnHCCnrUFHwQq3tFC029naGMq2GGn0BYPzrysHhjO
+	 dqGzBS0P+uZMqI4KTbEuQWI6hlRWxI1VDFNVKW3HuGjl3YAXLdNJomdYgMsqpfFVZ6
+	 yclHoiDR2zfsA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA250D6C29A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCB78D6C299;
 	Tue, 19 Nov 2024 20:37:02 +0000 (UTC)
 From: Mikael Gonella-Bolduc via B4 Relay <devnull+mgonellabolduc.dimonoff.com@kernel.org>
-Subject: [PATCH 0/2] Add support for Avago/Broadcom APDS9160
-Date: Tue, 19 Nov 2024 15:36:55 -0500
-Message-Id: <20241119-apds9160-driver-v1-0-fa00675b4ea4@dimonoff.com>
+Date: Tue, 19 Nov 2024 15:36:56 -0500
+Subject: [PATCH 1/2] dt-bindings: iio: light: Add APDS9160 binding
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,10 +55,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOf2PGcC/x3MQQqAIBBA0avIrBMaK6muEi1Ex5qNxQgRiHdPW
- r7F/wUyCVOGVRUQejjzlRqwU+BPlw7SHJrB9GZExEW7O+QFba+D8EOiZ+vjRLMNNEzQqlso8vs
- ft73WD10JX6xhAAAA
-X-Change-ID: 20241119-apds9160-driver-86cf5e86de35
+Message-Id: <20241119-apds9160-driver-v1-1-fa00675b4ea4@dimonoff.com>
+References: <20241119-apds9160-driver-v1-0-fa00675b4ea4@dimonoff.com>
+In-Reply-To: <20241119-apds9160-driver-v1-0-fa00675b4ea4@dimonoff.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -71,11 +70,11 @@ Cc: Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
  Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>, 
  Hugo Villeneuve <hvilleneuve@dimonoff.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732048621; l=926;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732048621; l=1677;
  i=mgonellabolduc@dimonoff.com; s=20241119; h=from:subject:message-id;
- bh=5ZtJ47OwVXBSoFV+aJ4Xr6HwqQoievLKVIyNMZI/poc=;
- b=+ma2BrFzBD30dJSA+R6419ctgdetUJPQudiqX55DnAVS9N7flyeN+0wL/u1JvSjUCbi8q+pqj
- 6PrWSEvetk0C9U/p4dynYYXUO38MIYK7wBAMY8+O/QG3h/CX6/bITkh
+ bh=MyhZj/K793WP3q4NesJzysEVuCCKb6IcZKJIuThoJ/Y=;
+ b=vjNvPdct8qXA1+JHHHHkGD75WVzMdskg5mJkJne7yODyjuOPp4cmXSFLAJ7q7oq9jfrAIYgj/
+ UXBRSVznXPRAPeuyq0UnghbHSeSh/i3U1v8dDg/lWtgwu95G/+0w5hs
 X-Developer-Key: i=mgonellabolduc@dimonoff.com; a=ed25519;
  pk=p4tvPfGPfXRyChsgHc6s7HwB6YBl2JqqcP3BXtoDitE=
 X-Endpoint-Received: by B4 Relay for mgonellabolduc@dimonoff.com/20241119
@@ -83,28 +82,74 @@ X-Endpoint-Received: by B4 Relay for mgonellabolduc@dimonoff.com/20241119
 X-Original-From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 Reply-To: mgonellabolduc@dimonoff.com
 
-APDS9160 is an ALS and proximity sensor.
-https://www.broadcom.com/products/optical-sensors/integrated-ambient-light-and-proximity-sensors/apds-9160-003
+From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+
+Add device tree bindings for APDS9160 driver
 
 Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 ---
-Mikael Gonella-Bolduc (2):
-      dt-bindings: iio: light: Add APDS9160 binding
-      iio: light: Add APDS9160 ALS & Proximity sensor driver
+ .../bindings/iio/light/avago,apds9160.yaml         | 50 ++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
- .../bindings/iio/light/avago,apds9160.yaml         |   50 +
- MAINTAINERS                                        |    7 +
- drivers/iio/light/Kconfig                          |   13 +
- drivers/iio/light/Makefile                         |    1 +
- drivers/iio/light/apds9160.c                       | 1420 ++++++++++++++++++++
- 5 files changed, 1491 insertions(+)
----
-base-commit: adc218676eef25575469234709c2d87185ca223a
-change-id: 20241119-apds9160-driver-86cf5e86de35
+diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9160.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9160.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..12e196b297fe523e4d324156041ef9c6900676eb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/avago,apds9160.yaml
+@@ -0,0 +1,50 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/avago,apds9160.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Broadcom Combined Proximity & Ambient light sensor
++
++maintainers:
++  - Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>
++
++description: |
++  Datasheet: https://docs.broadcom.com/docs/APDS-9160-003-DS
++
++properties:
++  compatible:
++    enum:
++      - avago,apds9160
++      - broadmobi,apds9160
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  vdd-supply: true
++
++additionalProperties: false
++
++required:
++  - compatible
++  - reg
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        apds9160@53 {
++          compatible = "broadmobi,apds9160";
++          reg = <0x53>;
++          interrupts = <29 IRQ_TYPE_EDGE_FALLING>;
++          interrupt-parent = <&pinctrl>;
++        };
++    };
++...
 
-Best regards,
 -- 
-Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+2.34.1
 
 
 

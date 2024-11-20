@@ -1,80 +1,75 @@
-Return-Path: <linux-iio+bounces-12430-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12431-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096F59D437B
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Nov 2024 22:34:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8352B9D437E
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Nov 2024 22:34:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 625642838C8
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Nov 2024 21:34:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42CD81F2262A
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Nov 2024 21:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341EA1BBBF8;
-	Wed, 20 Nov 2024 21:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8681C4A37;
+	Wed, 20 Nov 2024 21:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mlkZjjwZ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wuriinmc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387FC155A34
-	for <linux-iio@vger.kernel.org>; Wed, 20 Nov 2024 21:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957471865E5
+	for <linux-iio@vger.kernel.org>; Wed, 20 Nov 2024 21:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732138443; cv=none; b=NSSVUdddN5SPbWjO9UqRUpyqjs2TRvgbCWJCeJXFfpJYfPcSxrvUa6Yqb0G1cpvmDbaJK2hWg4ywmr3oL+iGop/ckPnFi/mqB7CsCt/5oHPPr/LWZnHwQP1ZKy193sT//evVl1BRSrPf33Uerxa3GEkyz+VZsIeIIiXcIDQuFM4=
+	t=1732138445; cv=none; b=MEGJ3+WDtjGwkY950hbRo4pyD/DC7zbDDZVbITQ8PTpoaSBXzVoszSv5hDRDkFhDOX7aeqMyyiqaoRYeCeFH+RmL9JAWcuxE98Vj3EfL9cqifGovQdCkH1MW6XmZolDsLZKgSIlVCT72psrNrvFPmJENO8BeJIYWuG67ouhD3Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732138443; c=relaxed/simple;
-	bh=0NphIvbmT9wu03y38djVTdhK7nQ08QWJClY6NLJjv9I=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IiP8DkaqBkAUs0H+ElFpdF/k50LOU95bVh1SlNu+artWguiITEkWuUsoOwLp7tit51WSg1sDqIJ5fKH4L/jffit+TN3lal3JIACH1EoLgx1gDKNe2GFWyTRlIreZ3jCr7I5v4vwANyr7M5QpylWsr9XGExe4NddKBSkOujsysj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mlkZjjwZ; arc=none smtp.client-ip=209.85.160.47
+	s=arc-20240116; t=1732138445; c=relaxed/simple;
+	bh=Xl1ucGBXN8Ab5O0eTwCrzfVk4oVpsNxeeYYkgyTO4wY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=iPCZNEKj0TM2urLpUgFvY4P1wl59giTZ4bnqMaqNB/S+vqRg/qEVzKZjKTiUPtk+JNueAjNDXU/mw9u6VUvp7E31VstYvwS1eN06m2fqA96coplbu3nHJd6Z6IMy++sl83k0itslkcFpBeCoZ+mHjx7+ofnW2gjF8pym4ipys1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wuriinmc; arc=none smtp.client-ip=209.85.160.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-296b0d23303so167538fac.2
-        for <linux-iio@vger.kernel.org>; Wed, 20 Nov 2024 13:33:59 -0800 (PST)
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-29666708da7so214594fac.0
+        for <linux-iio@vger.kernel.org>; Wed, 20 Nov 2024 13:34:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732138439; x=1732743239; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sTH3HCDi+7Bluy/uRzD/tWU3FxIXepMjeUa72N+ULm8=;
-        b=mlkZjjwZ2h/lRs+WzX0hGN4EYcbS8UG1RVaaeXhXX7FrHwD9uZGJM3pmVh/iduKH5d
-         Qi2IAQcfZ0cxpZs9+NQ0m/ikEO1aSQlF8lI+RX1Wpq11vJCE+AYByuxe2ZdlOdK5TLzd
-         HN2ASW3MtzwEdXfafrNqNBQ0mKhaWDxHtvG5TGGalg3NzPSjDZnadB7hKdvSkbEvNoJT
-         4GQ0pvRZUZAshXYi/fR/AJ4TPpNrTMBMQbJd1TIY3YxWSTjzbGjFqcOdOoVzCsucOx2k
-         14Uod30nc/Np8W3bBGHfc0GmEY6yzEqYjfsZW7iljY3uUwJ6o6xA28uPsP6itIDy8Aza
-         0c0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732138439; x=1732743239;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732138441; x=1732743241; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sTH3HCDi+7Bluy/uRzD/tWU3FxIXepMjeUa72N+ULm8=;
-        b=N6e9glHNxwSBGuxIkPFYXAAKiZqRa1JJKLAedftYjMgMpboD7OL5rHYSEd7n/ykpHN
-         8FXsXekitMf3LFLIqvFluDr/Rx83oymrraRKjDFAb1c5fC3sKCGAVlnljqDRGQJDVxGq
-         d2ryge3slXDZmao5NSwCNEAGDye/yrcwn74SM8ZO9V20t2DHSBntmufDWXNlkYM53KND
-         RDz30UnCCGT3KqP1sUc75WmYaALeY1UvuANFWdYWKNSJiXXD04SLeB0rLgd7sfZCKDAz
-         0dmPLGpFbGENt5J+XiZxE4ErrK3dWvRo6oOo7Eb8R+odkN80hdD7fKnUK6tEOeFQ5mDF
-         jGHw==
-X-Forwarded-Encrypted: i=1; AJvYcCWP4GZdyAc+ZlP+r45UxeKsWFTf8e2lMe5iXWfNbrolLiOSS2c/REdk0ojo/WuUalU3ppdDO/vLgIk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywmjd0aVU1SziaS/y4e3JO80TfRHv9uX+blsjq2YnnsCm0u3fjJ
-	GfP5AEw5f9fm/0OAkGXbbKj7zoGBRo24K7B+FUMTvDUAXdB0pAg3j89K1tHLOf8=
-X-Gm-Gg: ASbGnctjDAkwvnqg+ABeO7OvzncksxghuA41iIIg1NQntmG63BUljQhZXn9SZNHU7iG
-	CJdkT6/AK9pFjH/D8r3q7l6H1BVDCb4n5e6GddIGgIPogZiRQrElW/I1Bn8o9Nr+xmZQM35qVVK
-	SBBhJgNqOaQvDO35DMhE1lPcCJEm0P2pm/dUrzz5/5bsFMeYgj/KwEpkksuduJBC7QV5KGi+gTB
-	nFBqT7+VtPmviVPCifvqAazo6IKHPfHZBapp6iLmDjcSEI01BETxPZ2JXCk5SNKjIQ2RJf+06Bz
-	D8tYsQ==
-X-Google-Smtp-Source: AGHT+IE1jYWRIFwOGN1GIoXzgvJh/6wxnmL6YNbp8pqTQGHPXV42t86/TGrMPJbbfqesfn4VE5QRlQ==
-X-Received: by 2002:a05:6871:7584:b0:297:3e4:af9 with SMTP id 586e51a60fabf-29703e410e7mr8430fac.15.1732138438982;
-        Wed, 20 Nov 2024 13:33:58 -0800 (PST)
+        bh=VHXzVn+FU8SfAawuWvQ4fvCX8mEpHyw2bPUQ2RW2fhk=;
+        b=wuriinmcL4FcZNRtcRO4HMfannXHXBdtNfM5sk1A+yEvqL32hwpQnxg1uXsUGfhDK0
+         4/fJoz8RyM1gW3KslFzlhpaDmlwuhM+zLh/mTDVnOLfDHZg7+g9gewVtnkjAusqBDWS+
+         zBzuGCqwygjBYUIQ2oDt8o0SFyBNnODAqkl93dwJaGDvhvsnogYuzl85oo7L7S704B0K
+         Jq0LJhZxAd07TvyW638WuAlieOzB4T0nydumlCTJglV2mVV9vN44RkqyYG9gG95kEvuj
+         JNXsfm3XYwJgE01hvfnOdjx4iXIaLTRLhjAGkM3eak887xIdpZdhmNYj4SZDTRIXQsLQ
+         UVBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732138441; x=1732743241;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VHXzVn+FU8SfAawuWvQ4fvCX8mEpHyw2bPUQ2RW2fhk=;
+        b=JWQrUIjlFrsw942ZDYRybc28atAGS6rDfu3470TOOS4MBgq8ZgDkR8l1B9cbPRCM+O
+         xEljvQyT1l6MM3Bp7NopXHh26IXWNUnTp4eFwD2U45jDtDktPb+jGU7y+5+pJ6US0bZe
+         RDFSeGnLdL0YC7LYNN4CXlhGJ16fZEiq7dc4LKPNVX1pzhTAbZtUqniQusWld8+IyHFg
+         rJRyerQamnrYx3lYhOOCOgBu8XezgEoYEB3wxu7+5DWlJFK5CjGf3o18TqUviOYWMBnH
+         yh6OuhAHOWftTFZXtfZKs1vGdQED/EytRU04Tk7+Vp/XGJBVcprsCuiFGUVgi2KzMq+i
+         EWIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXT20tDBvFSNGfD3+G4LHMkg9Po1adbWkIEhh5loaFgJCs5jvT9ovuPsVRlcrDGJp+1rGKvy4R9zww=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9kOd5lD5+h3Zm5++jnl2JkX/1eN7v0rYgFHni9C27OhIGTeOy
+	AxfVklrjMJYQf4GsWoQxPA3w31S8YAw8wUGpgAYRiyWAdCHYjsw08D8kcfpLlgU=
+X-Google-Smtp-Source: AGHT+IGmeO3UOuBcBMbAlPJkDaHTLSKEPkagM4+DYmypgIFQ2jzYAjNyXEq+HRTkEog+qDgqDQQpMw==
+X-Received: by 2002:a05:6870:aa88:b0:277:caf7:3631 with SMTP id 586e51a60fabf-296d9b157bfmr5121861fac.5.1732138441704;
+        Wed, 20 Nov 2024 13:34:01 -0800 (PST)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29651852c27sm4487365fac.2.2024.11.20.13.33.58
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29651852c27sm4487365fac.2.2024.11.20.13.33.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Nov 2024 13:33:58 -0800 (PST)
+        Wed, 20 Nov 2024 13:34:00 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Subject: [PATCH 00/11] iio: use devm_regulator_get_enable_read_voltage
- round 6
-Date: Wed, 20 Nov 2024 15:33:23 -0600
-Message-Id: <20241120-iio-regulator-cleanup-round-6-v1-0-d5a5360f7ec3@baylibre.com>
+Date: Wed, 20 Nov 2024 15:33:24 -0600
+Subject: [PATCH 01/11] iio: dac: ad5624r: fix struct name in doc comment
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,9 +78,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKNVPmcC/x3MSwqAIBAA0KvErBtQ6UdXiRZaUw2ExpgRRHdPW
- r7NeyCSMEXoiweELo4cfIYuC5g261dCnrPBKFNpbRQyBxRa027PIDjtZH06UELyMzbYdk7VjlT
- T6g7ycQgtfP//ML7vB8JpBcxvAAAA
+Message-Id: <20241120-iio-regulator-cleanup-round-6-v1-1-d5a5360f7ec3@baylibre.com>
+References: <20241120-iio-regulator-cleanup-round-6-v1-0-d5a5360f7ec3@baylibre.com>
+In-Reply-To: <20241120-iio-regulator-cleanup-round-6-v1-0-d5a5360f7ec3@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
  Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -94,59 +89,28 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.1
 
-This series includes the last of the low-hanging fruit for converting
-to devm_regulator_get_enable_read_voltage().
+Fix a copy/paste mistake in the struct ad5624r_state doc comment.
 
-By low-hanging fruit, I mean that these are the drivers that read the
-voltage of a regulator in the probe function. If you grep for this, you
-will still find a few that do this, but in those cases, they usually
-have power management where we need a handle to the regulator to power
-things down and back up in suspend/resume. So we can't take advantage of
-this helper function in those cases.
-
-There is another class of drivers that could potentially make use of
-this helper function that I haven't addressed. There are many drivers
-that call regulator_get_voltage() in the IIO_CHAN_INFO_SCALE case of
-the read_raw() callback. In most of these cases we could move the call
-to regulator_get_voltage() to the probe function and store the value in
-the private data structure instead. For those, we would need to be a bit
-careful though to make sure the the intention wasn't to handle a change
-in voltage during operation.
-
-As a bonus, this series also includes a few other minor cleanups to fix
-some copy/paste typos and remove some driver remove() callbacks.
-
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-David Lechner (11):
-      iio: dac: ad5624r: fix struct name in doc comment
-      iio: dac: ad5686: fix struct name in doc comment
-      iio: dac: ad5686: use devm_regulator_get_enable_read_voltage()
-      iio: dac: ad5686: drop driver remove function
-      iio: dac: ad7293: use devm_regulator_get_enable_read_voltage()
-      iio: dac: ad8801: use devm_regulator_get_enable_read_voltage()
-      iio: dac ad8801: drop driver remove function
-      iio: dac: ltc2632: use devm_regulator_get_enable_read_voltage()
-      iio: dac ltc2632: drop driver remove function
-      iio: dac: ltc2688: use devm_regulator_get_enable_read_voltage()
-      iio: dac: max5821: use devm_regulator_get_enable_read_voltage()
+ drivers/iio/dac/ad5624r.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/iio/dac/ad5624r.h    |  2 +-
- drivers/iio/dac/ad5686-spi.c |  6 ----
- drivers/iio/dac/ad5686.c     | 62 ++++++++-------------------------
- drivers/iio/dac/ad5686.h     |  6 +---
- drivers/iio/dac/ad5696-i2c.c |  6 ----
- drivers/iio/dac/ad7293.c     | 66 ++++++------------------------------
- drivers/iio/dac/ad8801.c     | 81 +++++++-------------------------------------
- drivers/iio/dac/ltc2632.c    | 69 +++++++++++--------------------------
- drivers/iio/dac/ltc2688.c    | 44 ++++++------------------
- drivers/iio/dac/max5821.c    | 36 +++-----------------
- 10 files changed, 74 insertions(+), 304 deletions(-)
----
-base-commit: 414c97c966b69e4a6ea7b32970fa166b2f9b9ef0
-change-id: 20241120-iio-regulator-cleanup-round-6-78b05be06718
+diff --git a/drivers/iio/dac/ad5624r.h b/drivers/iio/dac/ad5624r.h
+index 14a439b06eb6..8c2ab6ae855b 100644
+--- a/drivers/iio/dac/ad5624r.h
++++ b/drivers/iio/dac/ad5624r.h
+@@ -41,7 +41,7 @@ struct ad5624r_chip_info {
+ };
+ 
+ /**
+- * struct ad5446_state - driver instance specific data
++ * struct ad5624r_state - driver instance specific data
+  * @indio_dev:		the industrial I/O device
+  * @us:			spi_device
+  * @chip_info:		chip model specific constants, available modes etc
 
-Best regards,
 -- 
-David Lechner <dlechner@baylibre.com>
+2.43.0
 
 

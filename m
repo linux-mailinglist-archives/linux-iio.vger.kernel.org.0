@@ -1,60 +1,61 @@
-Return-Path: <linux-iio+bounces-12421-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12422-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F71C9D4058
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Nov 2024 17:44:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759F19D406C
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Nov 2024 17:46:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9DEEB2804D
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Nov 2024 16:33:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30C73B2F20E
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Nov 2024 16:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12CB147C86;
-	Wed, 20 Nov 2024 16:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32281547F5;
+	Wed, 20 Nov 2024 16:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="lk1KV26W"
+	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="V1dlUR7y"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2063.outbound.protection.outlook.com [40.107.104.63])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2087.outbound.protection.outlook.com [40.107.20.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED90A749C;
-	Wed, 20 Nov 2024 16:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C28D1527B1;
+	Wed, 20 Nov 2024 16:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.87
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732120378; cv=fail; b=ZVDoZ2hEp4OCM1fopkVphNis1DbMrzce1leeUo3u2JEDa2zdL4VVJ190vRqCje3ZusBfsl/hnIgys/Ha13M0Q+WtR/YYigckoOxWLMN9rkcGV38JqdouLVzDxxRo/3Hx494CCF5FKbwWE1g6cMi5fj/yVjZSR7n8wn+U8g7YtcU=
+	t=1732120381; cv=fail; b=EiGnxrImyWgBgT7VJpbXV93ikJWElrwGCztUpBibcNFAXPhWBE+edSaulH8IyvaxRIDaxbmUfpP7/6x3QmpwIofVS/nylI9ik3dOhaqKsGVSE8k5eFxUNU21KTSVtYBI6rosNZ/r4E7zh+L3Rdatpj/9l+tqVW71hoLH+iSxTgQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732120378; c=relaxed/simple;
-	bh=H6LpUDBygfkMS9zp2BVnXSmciA9LasDLca5c8ig273w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XnAkCSTzhVCcdduYJxdg5v2elD8DkRVHNRLCMAcIcxBgphvE0ZMMt8nts1O1cCV01m6uewNdeaTZDdv0R0m6m3kEA4sCtGsqusOTaAPCKtLCz2fj6Zd/IgBGUk+7rziKZiWW0+56uyQrT3qyG/QdE1xxk8HEByvgrwpxB8WrQd0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=lk1KV26W; arc=fail smtp.client-ip=40.107.104.63
+	s=arc-20240116; t=1732120381; c=relaxed/simple;
+	bh=jBW9dRb2Q7fkECKRbwQaBsPqg3TX84ry26Q5ZmRVplo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IYZNXkC+8wm0T5wzbKdzO8/VsHRIwIZYVO6AadQ7Kl0BdT8dvffye5ZAobJ61iM+XEnVdcx4ba0rQW3CbXFXBhy3tY/uPXaBKbplFY0MFPUTS1x1D6e1F4wZ2Nheq54kfds8Jx4i4HXyU84RgayjXAle0ZdpwCEbZo3IZGQMSoY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=V1dlUR7y; arc=fail smtp.client-ip=40.107.20.87
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G/+MRlZdjPB9cFEolVhq6Bv810MQTvjSfpTbSX+kUt5sbEMtullL4fT7HOaNmN7XOcyMUC2pvV/kOHurRVxcWtPT7tQNsYaMJZiYM1fvvFyMBQEZfRfHCbY1rU3udfkabuWB1vUFqlkK016MO0Hc7QhVSyd9UMTPtZpfkQ1tQYNI3AiTVoH65B9XqEj7SdtdNg0tUCPpvdO2YTRBHcEJvkFg9/ObTC+ypqt8qOeZjPTDal7i9hag7dUX9VLVxVu3gyp/SZWu6JaSECIdKDIHzOUOsjnbQhr7sH60uHueP/5+Kud4pq6uFdCIfam8wsPm99lF/p5HLjRLJsNDTBYm2g==
+ b=AZGXu/KZhbnyrYXx/fYIofwPuyO6kDdV1K5X/uJ9AkYl4LcqgpVr7YmuWiS8+FIKRi3dZGYeiZVkRfBiOashVOJkVvQMANQCsWLwo+qZ1suSAv7mS/B7c4W4gTLBGYzsgl/iwPWgDfSQzbp9lShgaZXPGXVWn3Me0nG5vLDYP+jeCHt3epPeQDrVBJCsm+aFAkVYBs5YDioxopYuVLHU6xNNdLxz5MQuWKt6U8FDq+ySPgCIVgp4DkZOwOv7Fukz4gHek9vJdoafZjCzaOdSJ+c+EqNB1WcN1YwtnXyjWcK6agh+qlMrCfWo4SMSdl/3Imf13KrIJ5nenLg/UFYZGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g/LUxddudgeISzy0/DOMEmKHjyTo7AnPg0qCENE8VkI=;
- b=geOooHJFSNbl4WACHlSzYYy7HnshhA5nMxe2o1rBCwgpF9FuOrccQQdoIIH/G7UXzyVzDpjM4Pyqm02AxvcCNms4XNOUkPUejrXHo/xdgecF5HA0MOndpSw023P5UYrNmnLU0cHOJzzjQJP29DhUbMtbcuDmKL8EBRTdWSRFjrwldXz2PMEsYnK7wFSLmziitLiSobDcq7YVjaQk2vPIAZO3ELNaE9nAHgTTKE88SSfhaz20S+lIrEWrS1iPU5203FxIlHMGXaMVv9/+1Ng0BL74t3M4/y/PrSH10uB9fpzz+OragjY8esFhfr+ptg/8/Bc1oiVPEqdgBpx6I5no6w==
+ bh=lb2K3oIaWi5yrqQaC9lyjmZ5eqottKylRr1oLhFtCGc=;
+ b=PYluT0pSee+7G4V968+iKnT/Gdj/tBb6ramWXkeIzIsGZ9ndiTW17GKjVbimRQt0PWkUs1CRiixuk1I8tvAumzmLhCEdiep0E/tW3aKTck13M/rgPzSJs0QOnXke/LIhVa3kR/FJ1JRggoLl6DBJxv3NcE3EQRX7v1L/srV1rRunma5LFWWRIfdIr8rjhkdgy9rkM1wqOPdJj4/gDAwnPV3ww0MmP/TGzr3LVniMtLSiZrruFoE3rXu9lZzNouaPGgv1OWdVDFSlnXo1VlOWDdzxNSzdN7AsJFiWhfu+6SmDY03lZWq75EXAGElX38cwPc0jp5vtaRpNwg66Tx54mA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  195.60.68.100) smtp.rcpttodomain=kernel.org smtp.mailfrom=axis.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g/LUxddudgeISzy0/DOMEmKHjyTo7AnPg0qCENE8VkI=;
- b=lk1KV26WPvLqlA/rIKHOIHTnSZ2s2MHcYzwsFBSPAbHJnZi0XXJMugtfAQaqLJRp5QU4WbxwJ5nYI3a/oFKaGH0YishrUd++B6PUvYKs9oJh1ZeMIPfjxNU8H31NmzcqG8np1qq3aQB/jYUlITwC3eQS+8eLsyF/eXFxYuEB1mw=
-Received: from AM0PR05CA0075.eurprd05.prod.outlook.com (2603:10a6:208:136::15)
- by DB4PR02MB8631.eurprd02.prod.outlook.com (2603:10a6:10:384::21) with
+ bh=lb2K3oIaWi5yrqQaC9lyjmZ5eqottKylRr1oLhFtCGc=;
+ b=V1dlUR7yv8+cxtUFd6i3T2JcQ5Hj41CgBNZI2LylRQnusl6gd0sL11oyCf9dTua56X211IrQYuQpjPfHSZkPKOiDIWxFRkOSuX7aRj0TPtgEot0dKUT7TLfSGI/ASHWFzqgdpYcxs5yhm5zoF/znI+8DFrDxjRSwsOkvPhM8Yps=
+Received: from AM0PR05CA0078.eurprd05.prod.outlook.com (2603:10a6:208:136::18)
+ by DBBPR02MB10602.eurprd02.prod.outlook.com (2603:10a6:10:52f::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Wed, 20 Nov
- 2024 16:32:52 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.19; Wed, 20 Nov
+ 2024 16:32:56 +0000
 Received: from AMS1EPF00000048.eurprd04.prod.outlook.com
- (2603:10a6:208:136:cafe::73) by AM0PR05CA0075.outlook.office365.com
- (2603:10a6:208:136::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.25 via Frontend
- Transport; Wed, 20 Nov 2024 16:32:52 +0000
+ (2603:10a6:208:136:cafe::63) by AM0PR05CA0078.outlook.office365.com
+ (2603:10a6:208:136::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.24 via Frontend
+ Transport; Wed, 20 Nov 2024 16:32:56 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
  smtp.mailfrom=axis.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=axis.com;
@@ -64,30 +65,37 @@ Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
 Received: from mail.axis.com (195.60.68.100) by
  AMS1EPF00000048.mail.protection.outlook.com (10.167.16.132) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8182.16 via Frontend Transport; Wed, 20 Nov 2024 16:32:52 +0000
-Received: from se-mail02w.axis.com (10.20.40.8) by se-mail02w.axis.com
+ 15.20.8182.16 via Frontend Transport; Wed, 20 Nov 2024 16:32:56 +0000
+Received: from SE-MAILARCH01W.axis.com (10.20.40.15) by se-mail02w.axis.com
  (10.20.40.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 20 Nov
- 2024 17:32:51 +0100
-Received: from se-intmail02x.se.axis.com (10.4.0.28) by se-mail02w.axis.com
+ 2024 17:32:53 +0100
+Received: from se-mail02w.axis.com (10.20.40.8) by SE-MAILARCH01W.axis.com
+ (10.20.40.15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 20 Nov
+ 2024 17:32:52 +0100
+Received: from se-intmail01x.se.axis.com (10.4.0.28) by se-mail02w.axis.com
  (10.20.40.8) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Wed, 20 Nov 2024 17:32:51 +0100
+ Transport; Wed, 20 Nov 2024 17:32:52 +0100
 Received: from pc48051-2208.se.axis.com (pc48051-2208.se.axis.com [10.96.59.31])
-	by se-intmail02x.se.axis.com (Postfix) with ESMTP id 5A5A53BB;
-	Wed, 20 Nov 2024 17:32:51 +0100 (CET)
+	by se-intmail01x.se.axis.com (Postfix) with ESMTP id E0D1824B;
+	Wed, 20 Nov 2024 17:32:52 +0100 (CET)
 Received: by pc48051-2208.se.axis.com (Postfix, from userid 21236)
-	id 5655018E1ECB; Wed, 20 Nov 2024 17:32:51 +0100 (CET)
+	id DEE3A18E1ECB; Wed, 20 Nov 2024 17:32:52 +0100 (CET)
 From: Per-Daniel Olsson <perdaniel.olsson@axis.com>
 To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
 	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>
 CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<devicetree@vger.kernel.org>, <rickard.andersson@axis.com>,
-	<kernel@axis.com>, Per-Daniel Olsson <perdaniel.olsson@axis.com>
-Subject: [PATCH v6 0/2] Support for Texas Instruments OPT4060 RGBW Color sensor.
-Date: Wed, 20 Nov 2024 17:32:45 +0100
-Message-ID: <20241120163247.2791600-1-perdaniel.olsson@axis.com>
+	<kernel@axis.com>, Per-Daniel Olsson <perdaniel.olsson@axis.com>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v6 1/2] dt-bindings: iio: light: Document TI OPT4060 RGBW sensor
+Date: Wed, 20 Nov 2024 17:32:46 +0100
+Message-ID: <20241120163247.2791600-2-perdaniel.olsson@axis.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241120163247.2791600-1-perdaniel.olsson@axis.com>
+References: <20241120163247.2791600-1-perdaniel.olsson@axis.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -98,148 +106,118 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS1EPF00000048:EE_|DB4PR02MB8631:EE_
-X-MS-Office365-Filtering-Correlation-Id: a63e5519-e4aa-4629-53e6-08dd0980fab5
+X-MS-TrafficTypeDiagnostic: AMS1EPF00000048:EE_|DBBPR02MB10602:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed567a09-9bdf-4c69-4d50-08dd0980fcf6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/5J//mvhdwnqe1Q26oEe3NnGjqxW9uWw/MhU3lfKEFhcZJH1AMNVwDmcy1q8?=
- =?us-ascii?Q?TE2H9S/rZrQ/KPYHIY8Z8cx18pNWf9zKYn3PGQ4EViRRFxV9+CX5cnlJOIyC?=
- =?us-ascii?Q?u+V40FKbscF82BTZJ2TZ0LsigNBFh9Mm6GHg+2vizsVXlQi8A5c9bpTwLEiX?=
- =?us-ascii?Q?OUXwmRm+m6cpJXuHCxtdeA8+9Ce99gzIqn3O+ki7h/sfox9WTRhUxgzFI0Wd?=
- =?us-ascii?Q?XQshoU1QY7fBy2ygiqD7F0hgA0N4H67VINMtU3CeyWBT8hEKlClY77TAvcEh?=
- =?us-ascii?Q?U26Ug2P+QA5o5cOmppZqtexNl0wcHtnCqt5cqtMFH2msZ4sTtgpROQotYC2F?=
- =?us-ascii?Q?bRic7YvidfIPwmPlfELf1S0wc+pRIplguFnE6cZRjfkFbX2swdCo4/du78Q0?=
- =?us-ascii?Q?jKePswhQutFyNkaPQUU6jI3iRtI8Iy/AKmhI1wtuJiXHdDEEcL7K9LL+9sFB?=
- =?us-ascii?Q?fwIV9EAle0xSnqHiBfOGVxB0DsthuBZrxottXUSpvQTj5YPKkfYTLVGMj9+9?=
- =?us-ascii?Q?fODow9vIrDYtcGikiM6A0XsTIWOKMSbGP1UvE2aQRDSsXl+rYm8TXqNQqDg/?=
- =?us-ascii?Q?w09gJuHs661lWXmHweTjS9cM6+5SxW29i83UDvwcC/GoBfGcbbngtDFijSqi?=
- =?us-ascii?Q?fANd0aojaLr2wNRfWm6p7BxN9i5wPs3Z8mg70CrpbUG7OtDE3lZ0NCobjp0K?=
- =?us-ascii?Q?OhXr9m+mxwC1U3vwdNPGGiiuG2YzjvaGTULo0gnkvlPatC+vJ9wdaIvCVO1g?=
- =?us-ascii?Q?BZmAiWFmjv/2PgKuUsamsVoC8cwCrhOk7h/ZbrDswXhornUW+xSKmIduj4aM?=
- =?us-ascii?Q?f76ObkknK2tFN/qSXFEZoxziJ3ZjB7QN+dKTdlO5EeCNfTiPxu486cbFpZ09?=
- =?us-ascii?Q?NvzjNlrEk0shoo6gM4zPQ0YvQDuvKl8Rf7O7HDpm6BhuE2+PDUxZ+LwHSorg?=
- =?us-ascii?Q?2pH1q8wU4QtK2G6X49Q0bFrEuJuXAOngeFDrTahOa2k2aRp1ErqCRFk6vCLa?=
- =?us-ascii?Q?sHLEEUW2/mi8qeDrvu/nemMC/EA1HM1Cb8AqvherVMvQwvkLYnNv44my8RvQ?=
- =?us-ascii?Q?9g3K983Rx0HmOYfZwbymgJdaTTAs8rsi7jjY2+21Frxrnrc8ySV3NHR1KPVB?=
- =?us-ascii?Q?HmmTr0Y7IEfcz9oEIgRNe572//XemRq+RrqjdC5R7vEajboMfpv8oKIm1Imx?=
- =?us-ascii?Q?lZMxpwKdvRLk0e6kjzvgNfigXzLTtUeYMsVR9ycyIdSvf9CK86MXkFfRv/S0?=
- =?us-ascii?Q?WsMs1Mf87fyXaGFF0zUw9tVKQ67PhifiBOQ4dwy9o94CLssq6cFIWL6a075V?=
- =?us-ascii?Q?z3if94TbFZq++C3wlc0QqhyrQSaWI2jfIX6i/+sJ+nkrNyXvcZmWzamftaTB?=
- =?us-ascii?Q?6TL1hco=3D?=
+	=?us-ascii?Q?sDIha04HMMbJqE9eGZ/0G5R/8nsBa8dBcIX4nT4mYCGRSkJXtDDHTwbroGyK?=
+ =?us-ascii?Q?ORPou7v4uZUzFdyuKqN9I2/OKUGaif9suEdQVn0shmMisj59edembAtV+hyy?=
+ =?us-ascii?Q?B5V4HZ9Zrjwi6FPO1sHanpX7poktGXStIflhKUvb/vAinxJs9TuxmLXUVO5q?=
+ =?us-ascii?Q?xMaXI+OquvjlMiZNWYyTWp7ATYL2Os3LewRgO+AtCMtZ7ADqE3IwZ2QgbzpB?=
+ =?us-ascii?Q?Dd86J7eTT4fMvh9JvoPB2lmyDMzo4gDLOQUEEh6Rj6jJo45L1bnVHUdfDFdJ?=
+ =?us-ascii?Q?tbd+jCBOidbI/kR+3nD9zECTQR/j2Zsd5+8HRsb1vm9AYMjEG34gyVVmcuVm?=
+ =?us-ascii?Q?ftK387MPYrmm39r+um0rASFD9iarR2anEgHSL2JC0w2Ry3LZI1pS3lV+hwyq?=
+ =?us-ascii?Q?9JXBtkHTQVa0mo5kf2/sv2TZPEE3iGuGnnik/2xvvG1aFynmV1C6E2Q/qLvA?=
+ =?us-ascii?Q?LNrN+A5skJamQTS5XbjY0sJUn9/EOANK1G554DOu9gcyE15XzOyCcnnsIehH?=
+ =?us-ascii?Q?1YeJqeJWI/39uOcw015ODGgbJa/YxZYlO5WZBgbIq15atGq57IK7r5X0iFZW?=
+ =?us-ascii?Q?VQgziHbOgqBXdoDdHhLgvYQpqGtMnAO27uL1p5LcGomUdBfVKE1NboS+Cj89?=
+ =?us-ascii?Q?zjthP2QTs0IY1C3qHjkfPJ6heAVnDDm80/DKwPL8Fftxqa5ZwU+s7lNjg0Fx?=
+ =?us-ascii?Q?V4ZtTGK43tSWjjltPtAhLlQ/mHsYl4mBoxVkp+QkkJaw8djN+gtkfR3U7RZV?=
+ =?us-ascii?Q?Sz9Bmye33I1rZ4fUQ5PhyMWHt8IjRJHnx/TQKfsnHDFYygSWz2eBoMp4o1GQ?=
+ =?us-ascii?Q?fALHBIFQ5IOzak3hU1Jk75r+inWBfhd9ZFhg0qRDiXwU2EZkkYFGBaLPAr3O?=
+ =?us-ascii?Q?00pxhnw2ZTE28CPSgCbuNIggngxN4YTK1gYIFW7ecoIUpXCLLeRBlIHakNd5?=
+ =?us-ascii?Q?57/40a1WiRpJ6cTLi2Hu5q4banNXNMgSFtmbi2/7i7cw7xQO+fBXA5rrXdDn?=
+ =?us-ascii?Q?pFWn1bOJAYz13Nlzp0GZJFpU4RtXonL5VtomcSiwGptBGTBp2QTI5+x7YJvA?=
+ =?us-ascii?Q?PkQ27c7NoWZ6E9W6lXmMQq3yLQNyVnAkAH9qS0g2/LZLVfUDwTEIqPIua1DD?=
+ =?us-ascii?Q?ASQj6bt3W2Z6K5lvzh5HKR6kjXq12pGdlYz+1v8bDEXSXJ9IMW+xQnF4o9Ff?=
+ =?us-ascii?Q?+eyhzZPgqndoKVwF5nlsPg7HNikdRRieqM9uFU0sY4Wvjen+NzY/kQ1mSGkY?=
+ =?us-ascii?Q?s9S+9ryt+UcoYZDoy+yzUAa6S29/6aRtiEA18401L+jOlVCtBY2VDFTQYpH8?=
+ =?us-ascii?Q?W5lr7XcRnc8Wu3YCHf74JNbbxTa0fOpHR5/K2+sT+dNtPQyx9umP3EdFhwhz?=
+ =?us-ascii?Q?CdKfdqc=3D?=
 X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
+	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2024 16:32:52.2661
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2024 16:32:56.0473
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a63e5519-e4aa-4629-53e6-08dd0980fab5
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed567a09-9bdf-4c69-4d50-08dd0980fcf6
 X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	AMS1EPF00000048.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB4PR02MB8631
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR02MB10602
 
-This patch series adds support for Texas Instruments OPT4060 RGBW Color sensor
-using the i2c interface.
+Add devicetree bindings for the OPT4060 RGBW color sensor.
 
-The driver exposes raw adc values for red, green, blue and clear. The
-illuminance is exposed as a calculated value in lux, the calculation uses the
-wide spectrum green channel as base. The relative normalized color components
-for red, green and blue are exposed as scaled values. Those values give the
-relative colors independently of the light intensity. Integration time can be
-configured through sysfs as well. The OPT4060 sensor supports both rising and
-falling threshold interrupts. These interrupts are exposed as IIO events. The
-driver also implements an IIO triggered buffer with a trigger for conversion
-ready interrupts.
-
-Changes in v6:
-- Modified the driver to work with any trigger. Verified using iio-trig-sysfs.
-- Fixed return in opt4060_trigger_set_state(...).
-- Break added in opt4060_read_ev_period(...).
-- Struct and variable declaration chnages in opt4060_trigger_handler(...).
-- Events changed to modified and not unmodified.
-- Moved variable declaration from case statement in opt4060_read_event(...), and
-  opt4060_write_event(...), found by test robot.
-- Init_completion() moved to a place related to IRQ.
-- Documentation: Added opt4060.rst with description of calculations.
-- Ducumentation: Added missing _raw parameters in Documentation/ABI/testing/sysfs-bus-iio
-- Link to V5: https://lore.kernel.org/lkml/20241106120036.986755-1-perdaniel.olsson@axis.com/
-
-Changes in v5:
-- Cover letter: Description adapted to new channel and trigger setup.
-- Trigger for threshold removed.
-- Channel setup modified according to email discussion.
-- Switched to aligned_s64 from linux-next.
-- Endianness in buffer changed to IIO_CPU.
-- opt4060_read_raw_value(...) changed to avoid endian issue plus early return.
-- opt4060_read_chan_value(...) split of in several for new channel setup.
-- Improved return values in multiple places.
-- The preenable callback removed, functionality moved to set_state.
-- Irq setup removed from opt4060_irq_thread(...).
-- Flipped logic with early return in opt4060_trigger_one_shot(...).
-- devm_add_action_or_reset(...) moved to after opt4060_load_defaults(...).
-- Documentation: Added sysfs-bus-iio-light-opt4060 with channel descriptions.
-- Added hard coded name indio_dev->name.
-- Modified opt4060_volatile_reg(...) to make test robot happy.
-- Link to V4: https://lore.kernel.org/lkml/20241016213409.3823162-1-perdaniel.olsson@axis.com/
-
-Changes in v4:
-- Fix for a warning found by test robot in opt4060_write_event(...).
-- Correction of early return in opt4060_write_event(...) and opt4060_read_event(...),
-  missed from review of version 2.
-- Correction of timeout for sample conversion.
-- Correction of bug when changing integration time with buffer enabled.
-- Link to V3: https://lore.kernel.org/lkml/20241015143713.2017626-1-perdaniel.olsson@axis.com/
-
-Changes in v3:
-- Cover letter: Removed lux from description.
-- OPT_4060_DRV_NAME define removed.
-- Corrected alignment for struct opt4060_buffer.
-- Added description of the CRC calculation.
-- Cleaned variable declaration in several places.
-- Added a path for the non-irq case in opt4060_read_chan_value(...).
-- Added a description of processed values.
-- Use of regmap_clear_bits in opt4060_power_down(...).
-- Switched to IIO_INTENSITY instead of IIO_LIGHT.
-- Correction of channel index in IIO_UNMOD_EVENT_CODE, found by test robot.
-- Added iio_chan_spec for the non-irq case without events.
-- Fixed braces in a few if-else statements.
-- Refactoring with early returns in a few places to reduce indentation.
-- Replaced for_each_set_bit with iio_for_each_active_channel.
-- Removed various too obvious comments.
-- Fixed various other code style problems.
-- Link to V2: https://lore.kernel.org/lkml/20241005165119.3549472-1-perdaniel.olsson@axis.com/
-
-Changes in v2:
-- dt-bindings: Removed incorrect allOf.
-- dt-bindings: Changed to generic node name.
-- Correction in opt4060_trigger_one_shot(...) for continuous mode.
-- Correction in opt4060_power_down(...), wrong register was read.
-- Corrected usage of active_scan_mask in opt4060_trigger_handler(...).
-- Clean-up of various comments.
-- Link to V1: https://lore.kernel.org/lkml/20241003164932.1162049-1-perdaniel.olsson@axis.com/
-
-Per-Daniel Olsson (2):
-  dt-bindings: iio: light: Document TI OPT4060 RGBW sensor
-  iio: light: Add support for TI OPT4060 color sensor
-
- Documentation/ABI/testing/sysfs-bus-iio       |    4 +
- .../bindings/iio/light/ti,opt4060.yaml        |   51 +
- Documentation/iio/index.rst                   |    1 +
- Documentation/iio/opt4060.rst                 |   52 +
- drivers/iio/light/Kconfig                     |   13 +
- drivers/iio/light/Makefile                    |    1 +
- drivers/iio/light/opt4060.c                   | 1295 +++++++++++++++++
- 7 files changed, 1417 insertions(+)
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Per-Daniel Olsson <perdaniel.olsson@axis.com>
+---
+ .../bindings/iio/light/ti,opt4060.yaml        | 51 +++++++++++++++++++
+ 1 file changed, 51 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/light/ti,opt4060.yaml
- create mode 100644 Documentation/iio/opt4060.rst
- create mode 100644 drivers/iio/light/opt4060.c
 
---
+diff --git a/Documentation/devicetree/bindings/iio/light/ti,opt4060.yaml b/Documentation/devicetree/bindings/iio/light/ti,opt4060.yaml
+new file mode 100644
+index 000000000000..0577e27db1ef
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/ti,opt4060.yaml
+@@ -0,0 +1,51 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/ti,opt4060.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments OPT4060 RGBW Color Sensor
++
++maintainers:
++  - Per-Daniel Olsson <perdaniel.olsson@axis.com>
++
++description:
++  Texas Instrument RGBW high resolution color sensor over I2C.
++  https://www.ti.com/lit/gpn/opt4060
++
++properties:
++  compatible:
++    enum:
++      - ti,opt4060
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  vdd-supply:
++    description: Regulator that provides power to the sensor.
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        light-sensor@44 {
++            compatible = "ti,opt4060";
++            reg = <0x44>;
++            vdd-supply = <&vdd_reg>;
++            interrupt-parent = <&gpio5>;
++            interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
++        };
++    };
++...
+-- 
 2.39.5
 
 

@@ -1,244 +1,413 @@
-Return-Path: <linux-iio+bounces-12462-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12463-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650F89D4AB4
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 11:20:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E36869D4C95
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 13:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2644F281766
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 10:20:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77A98285F07
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 12:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D831D7E4C;
-	Thu, 21 Nov 2024 10:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C73F1D319B;
+	Thu, 21 Nov 2024 12:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DykALw7/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W19JaGFf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE2F1D4324
-	for <linux-iio@vger.kernel.org>; Thu, 21 Nov 2024 10:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1EB1CEAAC;
+	Thu, 21 Nov 2024 12:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732184318; cv=none; b=qmxFTJhxwGf8s9Tlg5G7gTDOhQBXgIolQUZW7Dwh28+oZFdPDWgXktL45Etv1O0QCS1eYmCopYMBMftVXHlhM74gDnksMuD7YIIrHDyxDSLsFo73tUapmGZ7rtHh7oihbv1gW5VLtkn4nuRTvIAzDs/aDB5Hsz3PB0QZHBgfzAc=
+	t=1732191142; cv=none; b=UZE2Ve8/Pf3GTzEYquFDeqR1xqnN40T0C9XU5XKWfCUr8HwQj13VGvfuA8CU0eARzQmSOELH3otiep0AtwU4i+IoqTQyfM/VLvx9e7GOpAO9vvqP9e7Di57cDUB5woCcZ0emT3NRhfGyVSlkRJ04QICjRoCHbmpRbo4xYrS+8E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732184318; c=relaxed/simple;
-	bh=tdpf/A32vha/ko+aQ4RiDlCU44C08sRlPZcE4GA5DLw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kqOAAXJDCEqVbJ5hhcIEWmXhhPW5FpZ4xfdRxR8bDiLHgM/A6SRJDSwR6iFxYFq2bF+Od+rkZ1mszc16OvtrzXKOrHDFTAldkLFUiuj4kHryV1M93elicHM8sluysMT70l5wpsyg5wxLye8oReTh/COBm8FfANd9BWXKoAmdQS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DykALw7/; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-539ee1acb86so722123e87.0
-        for <linux-iio@vger.kernel.org>; Thu, 21 Nov 2024 02:18:35 -0800 (PST)
+	s=arc-20240116; t=1732191142; c=relaxed/simple;
+	bh=6lZJfyn/kHRQnhS0J6EOOfgo9qdHUV3QfefJKYnl1tI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E4Rcqbli7FGaR06wDgyArrYc2h0nCnci9KuxIcO1WGIlbR3COaBer1L21oPO4UvLvZioSeXiugIcfr3ly2Kwlxxl3PPJIOpZu3cmY7bVOGTlC7WTjkgNy4cr+b8irz8nyeOOJ5H3nLuTlvu33KmwG+0cdwH1u4xwX6rghbqwkPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W19JaGFf; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5cf9ef18ae9so3724393a12.1;
+        Thu, 21 Nov 2024 04:12:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732184314; x=1732789114; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oRi3cIGaDlxTwStqxhJi+pjnXvvxLtR6kDzgcy0nvWU=;
-        b=DykALw7/frZ4guuLjcJy3QLI27TsYnjlBF+Rp26TY0HOr++EB8A492iHO1HMMlSuvT
-         ECioZDo0EtB47ArSfNy3Zx5MshJwOPADKbwjk2cbjbAp/desRpNEeZJPBcWMPkonU1T8
-         CbhWyz8VXpbY/rv71T/7rulwOffJfYoj0lG+84JavTWxa5c4ayfPkBYUD2mO82WKryWz
-         KW8wNahBNtUVMRkSLoAtMjOlOKPfqrU27gkSAXTy6igFG+vo+XTHISimcw4SefuRc7M4
-         oJYG+mPGTna0hDTAS6vVWp+F/4Dc/M/VbVbNroocfbl2A4mezBpT8cmOJHcGIPk3PzsP
-         zf2g==
+        d=gmail.com; s=20230601; t=1732191138; x=1732795938; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+F8zuB1/KXMHxiBc/j3bHml8rN9MzuOmzg1mIDkrOEA=;
+        b=W19JaGFfS4EdZN8sihJ1PnsR/5H/smYd8uzqk3axs87OhxSYLbyyiKiXUGJN7kJKeK
+         cBbJ3D8dlWZOFZlbIsWayEisDPGOsrLlmYs8sv/zrEkXWhjQxNo3vPHFPN+2M1JLs05r
+         lvQHwVTlMb+cj72D2ZWqUA4S6KmSAlIScga2LcjOwF0+ENoUsJlmuYngvTTDbXg9QUzp
+         zjO5TgM/6NGqnyvsa+ZwgyCWMd2qsEajPxILAFiSfIWQqI19sovQFWZcNGKmN9OKkSKQ
+         q0wfbfSB9r2wTvHmNrlG0bwop2siIzRHjkUNP9A3qg24PQ1nNber9MyJ4U7G+leXkXU8
+         CXBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732184314; x=1732789114;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oRi3cIGaDlxTwStqxhJi+pjnXvvxLtR6kDzgcy0nvWU=;
-        b=SAU38oSg/acQmKrykp9oZ//g8GPe9Zfusqa2mF8wCLZ7ALkLbHp4GzOMbtSwc8QuCw
-         3bBk1YueYPhJqiJh4iA8CrhEORGNwJsqvChlCccGDaHj400ub2qsfdnYCu5oipOgKliZ
-         vfwoYUUUjSwQ+tbKWHacOPa2ROOw3ufvJIeLyPnnvkNwoWuhrdUPtkpA5M0efAwItGL6
-         pofSH0aYCHU7lvsIYd60BAPcFqWs3FS1yljrteXj67m95qNb9iYOK7PwgxMfqLvZYRo4
-         d3UR/qNPQ3a9d8e+eiMFDg2hnKaSOdhRQJPcMtJsvECYsETJp/w2ixaP2VoYFlABNOZh
-         +Vxw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlUvymAf5zg6BZfjs5xXnMnjrU8Swg3PqCgoM4B9vR2QmJ965MVNiKgpABFrk9XjdWKywy+qwYZCM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yya+NHuKYB+UVFQqipA8Ph4T51qxgDG6hoyWZBJ2DdulhPrBane
-	7f9idB8XK0Zt7eKDBMtH/YByegTniwuS6rQKoBq2MkmM0P+K89QFBjEWs7Wc0Y4=
-X-Google-Smtp-Source: AGHT+IFd0X5sd0gLrWTrdWHzSVGz3bjzzQ0tWK2LA5BLwCGIn3GL8B7rGGMHcyvlWsAO9re9qR5F2w==
-X-Received: by 2002:a05:6512:53c:b0:53d:a309:7fa3 with SMTP id 2adb3069b0e04-53dc1368c75mr2424566e87.41.1732184313217;
-        Thu, 21 Nov 2024 02:18:33 -0800 (PST)
-Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38254910796sm4598065f8f.47.2024.11.21.02.18.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Nov 2024 02:18:32 -0800 (PST)
-From: Guillaume Stols <gstols@baylibre.com>
-Date: Thu, 21 Nov 2024 10:18:31 +0000
-Subject: [PATCH 9/9] iio: adc: ad7606: Add support for writing registers
- when using backend
+        d=1e100.net; s=20230601; t=1732191138; x=1732795938;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+F8zuB1/KXMHxiBc/j3bHml8rN9MzuOmzg1mIDkrOEA=;
+        b=noFjEa2MRwCGWf5O5zOyxfCb8ELL/3OEIFHvsmiTBp3zgd5EwLlojfEqx2jM8w3igQ
+         Y3huAdG26Q1mfBFgc8zlA3mrvjTo8kRw6brThUr5mPhh9iaiBLPUmn7Ti7vURr5/uK4M
+         ulDt4bLKeGc3OEbdKz2jjgIq8lkjIUsR+OUdoRM93jwg+DkjknyaTSd3z26JfMuKyAxH
+         5tZF8X9ZdaUt/I048j0lcUVK3ISI8Ya/zvPcuRRMLfim+32re8mixTVx73vX38NzLM62
+         dSwW0/2Cs0yKpKDxltQQsEf1t1nd45/yBXOP2EGq0jkeLcjXkO/i45Q6/xrvJavwn1Co
+         JVhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhB+wFNDDNxdS4Og+ADIViAm8RBYFvi4LpO72N4PYef9OuDL2xLR4u7AU9HnZu7xSYLpwaOLGpKcTC@vger.kernel.org, AJvYcCWcSAGkgSdoIdXzLpJVp6Hnq2+Fcabah7yxwmS7ktYvXtKEJIpEZnksPueN/+UmTc82CivRk3ioM31ohJKW@vger.kernel.org, AJvYcCWfsl/tmkiODQyZvZq+roFat844+xK2l9XoSqYPE0TdKLAHBimTNelU9CGZm3l43g90qBee5XK5xbMC@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtg4T+uXovxD2JNOC9IcMC7n5BplVwqD8GB5IJErlJOhCYgpPa
+	XgD39z4xsiQcmMg8tzUk95wQGbG1v+tXXc/5jHnvH/vz0eeUFvmM
+X-Google-Smtp-Source: AGHT+IFX25LpafsfOgQKeciNFXNPD4CoElchAGaqtiKyRCcLsdDbU7LqGaAnw4Ee0mmoYyfGgDFQFQ==
+X-Received: by 2002:a17:907:3f02:b0:a99:6265:ed35 with SMTP id a640c23a62f3a-aa4efb8ccefmr324942466b.10.1732191138284;
+        Thu, 21 Nov 2024 04:12:18 -0800 (PST)
+Received: from [10.10.40.97] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa4f4181818sm73858866b.82.2024.11.21.04.12.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Nov 2024 04:12:17 -0800 (PST)
+Message-ID: <a3bd83fb-589e-4814-9595-8f6343ecda83@gmail.com>
+Date: Thu, 21 Nov 2024 13:12:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: light: Add APDS9160 ALS & Proximity sensor
+ driver
+To: mgonellabolduc@dimonoff.com, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>
+References: <20241119-apds9160-driver-v1-0-fa00675b4ea4@dimonoff.com>
+ <20241119-apds9160-driver-v1-2-fa00675b4ea4@dimonoff.com>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20241119-apds9160-driver-v1-2-fa00675b4ea4@dimonoff.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241121-ad7606_add_iio_backend_software_mode-v1-9-8a693a5e3fa9@baylibre.com>
-References: <20241121-ad7606_add_iio_backend_software_mode-v1-0-8a693a5e3fa9@baylibre.com>
-In-Reply-To: <20241121-ad7606_add_iio_backend_software_mode-v1-0-8a693a5e3fa9@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Michael Hennerich <michael.hennerich@analog.com>, 
- devicetree@vger.kernel.org, dlechner@baylibre.com, jstephan@baylibre.com, 
- aardelean@baylibre.com, adureghello@baylibre.com, 
- Guillaume Stols <gstols@baylibre.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732184304; l=4035;
- i=gstols@baylibre.com; s=20240417; h=from:subject:message-id;
- bh=tdpf/A32vha/ko+aQ4RiDlCU44C08sRlPZcE4GA5DLw=;
- b=IG8R0F6BS7ExulQfzVIBxrGS6fS4qof4AM1NKLiCQyCH0n6OvosUfzcczsrHesp1cJt3Lyfo+
- apRxWf5SaiKAiTV14WHE7FXNgmJPpz53QR3HGCdb4Gc/yULdOclYON/
-X-Developer-Key: i=gstols@baylibre.com; a=ed25519;
- pk=XvMm5WHuV67sGYOJZqIYzXndbaJOlNd8Q6li6vnb4Cs=
 
-Adds the logic for effectively enabling the software mode for the
-iio-backend, i.e enabling the software mode channel configuration and
-implementing the register writing functions.
+Hi Mikael,
 
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
----
- drivers/iio/adc/ad7606.h     | 15 ++++++++++++
- drivers/iio/adc/ad7606_par.c | 58 +++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 72 insertions(+), 1 deletion(-)
+a few comments inline to add to what Krzysztof pointed out.
 
-diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-index 74896d9f1929..a54dc110839f 100644
---- a/drivers/iio/adc/ad7606.h
-+++ b/drivers/iio/adc/ad7606.h
-@@ -96,6 +96,21 @@
- 		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),  \
- 		0, 0, 16)
- 
-+#define AD7606_BI_SW_CHANNEL(num)			\
-+	AD760X_CHANNEL(num,				\
-+		/* mask separate */			\
-+		BIT(IIO_CHAN_INFO_SCALE),		\
-+		/* mask type */				\
-+		0,					\
-+		/* mask all */				\
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ) |		\
-+		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-+		/* mask separate available */		\
-+		BIT(IIO_CHAN_INFO_SCALE),		\
-+		/* mask all available */		\
-+		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-+		16)
-+
- struct ad7606_state;
- 
- typedef int (*ad7606_scale_setup_cb_t)(struct iio_dev *indio_dev,
-diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
-index a25182a3daa7..0c1177f436f3 100644
---- a/drivers/iio/adc/ad7606_par.c
-+++ b/drivers/iio/adc/ad7606_par.c
-@@ -13,12 +13,14 @@
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/property.h>
-+#include <linux/pwm.h>
- #include <linux/types.h>
- 
- #include <linux/iio/backend.h>
- #include <linux/iio/iio.h>
- 
- #include "ad7606.h"
-+#include "ad7606_bi.h"
- 
- static const struct iio_chan_spec ad7606b_bi_channels[] = {
- 	AD7606_BI_CHANNEL(0),
-@@ -31,6 +33,17 @@ static const struct iio_chan_spec ad7606b_bi_channels[] = {
- 	AD7606_BI_CHANNEL(7),
- };
- 
-+static const struct iio_chan_spec ad7606b_bi_sw_channels[] = {
-+	AD7606_BI_SW_CHANNEL(0),
-+	AD7606_BI_SW_CHANNEL(1),
-+	AD7606_BI_SW_CHANNEL(2),
-+	AD7606_BI_SW_CHANNEL(3),
-+	AD7606_BI_SW_CHANNEL(4),
-+	AD7606_BI_SW_CHANNEL(5),
-+	AD7606_BI_SW_CHANNEL(6),
-+	AD7606_BI_SW_CHANNEL(7),
-+};
-+
- static int ad7606_bi_update_scan_mode(struct iio_dev *indio_dev, const unsigned long *scan_mask)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
-@@ -70,7 +83,7 @@ static int ad7606_bi_setup_iio_backend(struct device *dev, struct iio_dev *indio
- 	if (ret)
- 		return ret;
- 
--	ret = devm_iio_backend_enable(dev, st->back);
-+	ret = devm_iio_backend_enable(st->dev, st->back);
- 	if (ret)
- 		return ret;
- 
-@@ -86,9 +99,52 @@ static int ad7606_bi_setup_iio_backend(struct device *dev, struct iio_dev *indio
- 	return 0;
- }
- 
-+static int ad7606_bi_reg_read(struct iio_dev *indio_dev, unsigned int addr)
-+{
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+	int val, ret;
-+	struct ad7606_platform_data *pdata =  st->dev->platform_data;
-+
-+	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+		ret = pdata->bus_reg_read(st->back,
-+					addr,
-+					&val);
-+	}
-+	if (ret < 0)
-+		return ret;
-+
-+	return val;
-+}
-+
-+static int ad7606_bi_reg_write(struct iio_dev *indio_dev,
-+			       unsigned int addr,
-+			       unsigned int val)
-+{
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+	struct ad7606_platform_data *pdata =  st->dev->platform_data;
-+	int ret;
-+
-+	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+	ret = pdata->bus_reg_write(st->back,
-+					addr,
-+					val);
-+	}
-+	return ret;
-+}
-+
-+static int ad7606_bi_sw_mode_config(struct iio_dev *indio_dev)
-+{
-+	indio_dev->channels = ad7606b_bi_sw_channels;
-+
-+	return 0;
-+}
-+
- static const struct ad7606_bus_ops ad7606_bi_bops = {
- 	.iio_backend_config = ad7606_bi_setup_iio_backend,
- 	.update_scan_mode = ad7606_bi_update_scan_mode,
-+	.reg_read = ad7606_bi_reg_read,
-+	.reg_write = ad7606_bi_reg_write,
-+	.sw_mode_config = ad7606_bi_sw_mode_config,
- };
- 
- static int ad7606_par16_read_block(struct device *dev,
+On 19/11/2024 21:36, Mikael Gonella-Bolduc via B4 Relay wrote:
+> From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+> 
+> APDS9160 is a combination of ALS and proximity sensors.
+> 
+> This patch add supports for:
+>     - Intensity clear data and illuminance data
+>     - Proximity data
+>     - Gain control, rate control
+>     - Event thresholds
+> 
+> Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+> ---
+>  MAINTAINERS                  |    7 +
+>  drivers/iio/light/Kconfig    |   13 +
+>  drivers/iio/light/Makefile   |    1 +
+>  drivers/iio/light/apds9160.c | 1420 ++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 1441 insertions(+)
+> 
 
--- 
-2.34.1
+...
 
+> +config APDS9160
+> +	tristate "APDS9160 combined als and proximity sensors"
+> +	select REGMAP_I2C
+> +	select IIO_BUFFER
+> +	select IIO_KFIFO_BUF
+> +	depends on I2C
+> +	help
+> +	   Say Y here if you want to build a driver for Broadcom APDS9160
+> +	   combined ambient light and proximity sensor chip.
+> +
+
+You can drop that "If unsure, say N here." as it is not common for such
+drivers in IIO. There are a couple of entries in the whole subsystem
+(not in this Kconfig, though) with this sentence, and some of them could
+be dropped too.
+
+> +	   To compile this driver as a module, choose M here: the
+> +	   module will be called apds9160. If unsure, say N here.
+> +
+>  config APDS9300
+>  	tristate "APDS9300 ambient light sensor"
+>  	depends on I2C
+
+...
+
+
+> +
+> +static int apds9160_write_raw(struct iio_dev *indio_dev,
+> +			      struct iio_chan_spec const *chan, int val,
+> +			      int val2, long mask)
+> +{
+> +	struct apds9160_chip *data = iio_priv(indio_dev);
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_INT_TIME:
+> +		if (val2 != 0)
+> +			return -EINVAL;
+> +		switch (chan->type) {
+> +		case IIO_INTENSITY:
+> +			return apds9160_set_als_int_time(data, val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		if (val2 != 0)
+> +			return -EINVAL;
+> +		switch (chan->type) {
+> +		case IIO_PROXIMITY:
+> +			return apds9160_set_ps_rate(data, val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_HARDWAREGAIN:
+> +		if (val2 != 0)
+> +			return -EINVAL;
+> +		switch (chan->type) {
+> +		case IIO_INTENSITY:
+> +			return apds9160_set_als_gain(data, val);
+> +		case IIO_PROXIMITY:
+> +			return apds9160_set_ps_gain(data, val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_CALIBSCALE:
+> +		if (val2 != 0)
+> +			return -EINVAL;
+> +		switch (chan->type) {
+> +		case IIO_PROXIMITY:
+> +			return apds9160_set_ps_cancellation_level(data, val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		if (val2 != 0)
+> +			return -EINVAL;
+> +		switch (chan->type) {
+> +		case IIO_PROXIMITY:
+> +			return apds9160_set_ps_analog_cancellation(data, val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_RAW:
+> +		if (val2 != 0)
+> +			return -EINVAL;
+> +		switch (chan->type) {
+> +		case IIO_CURRENT:
+> +			return apds9160_set_ps_current(data, val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+
+If you only have a switch with a return in every path, this return 0
+can't be reached.
+
+> +	return 0;
+> +}
+> +
+> +static inline int apds9160_get_thres_reg(const struct iio_chan_spec *chan,
+> +					 enum iio_event_direction dir, u8 *reg)
+> +{
+> +	switch (dir) {
+> +	case IIO_EV_DIR_RISING:
+> +		switch (chan->type) {
+> +		case IIO_PROXIMITY:
+> +			*reg = APDS9160_REG_PS_THRES_HI_LSB;
+> +			break;
+> +		case IIO_INTENSITY:
+> +			*reg = APDS9160_REG_LS_THRES_UP_LSB;
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +		break;
+> +	case IIO_EV_DIR_FALLING:
+> +		switch (chan->type) {
+> +		case IIO_PROXIMITY:
+> +			*reg = APDS9160_REG_PS_THRES_LO_LSB;
+> +			break;
+> +		case IIO_INTENSITY:
+> +			*reg = APDS9160_REG_LS_THRES_LO_LSB;
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int apds9160_read_event(struct iio_dev *indio_dev,
+> +			       const struct iio_chan_spec *chan,
+> +			       enum iio_event_type type,
+> +			       enum iio_event_direction dir,
+> +			       enum iio_event_info info, int *val, int *val2)
+> +{
+> +	u8 reg;
+> +
+> +	int ret = 0;
+> +	struct apds9160_chip *data = iio_priv(indio_dev);
+> +
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
+> +
+> +	ret = apds9160_get_thres_reg(chan, dir, &reg);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (chan->type == IIO_PROXIMITY) {
+> +		__le16 buf;
+> +
+> +		ret = regmap_bulk_read(data->regmap, reg, &buf, 2);
+> +		if (ret < 0)
+> +			return ret;
+> +		*val = le16_to_cpu(buf);
+> +	} else if (chan->type == IIO_INTENSITY) {
+> +		__le32 buf = 0;
+> +
+> +		ret = regmap_bulk_read(data->regmap, reg, &buf, 3);
+> +		if (ret < 0)
+> +			return ret;
+> +		*val = le32_to_cpu(buf);
+
+Missing braces for that else (use them in all arms if you need them in one).
+
+> +	} else
+> +		return -EINVAL;
+> +
+> +	*val2 = 0;
+> +
+> +	return IIO_VAL_INT;
+> +}
+> +
+> +static int apds9160_write_event(struct iio_dev *indio_dev,
+> +				const struct iio_chan_spec *chan,
+> +				enum iio_event_type type,
+> +				enum iio_event_direction dir,
+> +				enum iio_event_info info, int val, int val2)
+> +{
+> +	u8 reg;
+> +	int ret = 0;
+> +	struct apds9160_chip *data = iio_priv(indio_dev);
+> +
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
+> +
+> +	ret = apds9160_get_thres_reg(chan, dir, &reg);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (chan->type == IIO_PROXIMITY) {
+> +		if (val < 0 || val > APDS9160_PS_THRES_MAX)
+> +			return -EINVAL;
+> +		__le16 buf;
+> +
+> +		buf = cpu_to_le16(val);
+> +		ret = regmap_bulk_write(data->regmap, reg, &buf, 2);
+> +		if (ret < 0)
+> +			return ret;
+> +	} else if (chan->type == IIO_INTENSITY) {
+> +		if (val < 0 || val > APDS9160_LS_THRES_MAX)
+> +			return -EINVAL;
+> +		__le32 buf = 0;
+> +
+> +		buf = cpu_to_le32(val);
+> +		ret = regmap_bulk_write(data->regmap, reg, &buf, 3);
+> +		if (ret < 0)
+> +		
+
+Same here.
+
+	return ret;
+> +	} else
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+> +static int apds9160_read_event_config(struct iio_dev *indio_dev,
+> +				      const struct iio_chan_spec *chan,
+> +				      enum iio_event_type type,
+> +				      enum iio_event_direction dir)
+> +{
+> +	struct apds9160_chip *data = iio_priv(indio_dev);
+> +
+> +	switch (chan->type) {
+> +	case IIO_PROXIMITY:
+> +		return data->ps_int;
+> +	case IIO_INTENSITY:
+> +		return data->als_int;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+
+The 'state' argument is now a bool. To avoid issues, please rebase to
+newer branches like linux-next, iio/testing iio/togreg. Otherwise it
+will not compile with that modification. data->ps_int should then become
+a bool too.
+
+> +static int apds9160_write_event_config(struct iio_dev *indio_dev,
+> +				       const struct iio_chan_spec *chan,
+> +				       enum iio_event_type type,
+> +				       enum iio_event_direction dir, int state)
+> +{
+> +	struct apds9160_chip *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	state = !!state;
+> +
+> +	switch (chan->type) {
+> +	case IIO_PROXIMITY:
+> +		if (data->ps_int == state)
+> +			return -EINVAL;
+> +
+> +		ret = regmap_field_write(data->reg_int_ps, state);
+> +		if (ret)
+> +			return ret;
+> +		data->ps_int = state;
+> +		break;
+> +	case IIO_INTENSITY:
+> +		if (data->als_int == state)
+> +			return -EINVAL;
+> +
+> +		ret = regmap_field_write(data->reg_int_als, state);
+> +		if (ret)
+> +			return ret;
+> +		data->als_int = state;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+
+
+Best regards,
+Javier Carrasco
 

@@ -1,66 +1,59 @@
-Return-Path: <linux-iio+bounces-12472-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12473-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D8C49D53A3
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 20:54:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719639D53AB
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 20:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07761B20C86
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 19:54:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3780C282B7F
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 19:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CA91C8315;
-	Thu, 21 Nov 2024 19:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5791C9B7A;
+	Thu, 21 Nov 2024 19:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/AxaY1I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GqRrkQzQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7041C304F;
-	Thu, 21 Nov 2024 19:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27831A9B38;
+	Thu, 21 Nov 2024 19:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732218839; cv=none; b=Pst/haCN713XNHf3fxJ5V2ESwwlT1OO8CEiDntCSdCxf8rk9IFGk+/M7mdgOksK3pODu9283BHt5xC1qD2cO3xK4/lLNGCi/67k/PPaPqaBmEwAoCbJHSdVpdHGG0YKY03zS6TEYtaS3TGgyt3WbXS3GTiujXcJxGguThslfPa8=
+	t=1732218905; cv=none; b=KQraG1/KoEMZL7cqFwPjtbBxLlyboKlU8gEC/psHC+Madu8vIDZYnfwjbBYtxQLCG47/cVhJLmDMrTUbWESdZf2kQkMwax5vYemW/vVMtwtdglKWDojdyUKEpOLCX2+ny+3TESyG67UAIwAS0oacHW682MBH4wq0qSOYgHseInQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732218839; c=relaxed/simple;
-	bh=M0bDefENAtEaYK8veMFJkCk5vN5395Dp38Zqv9BBARg=;
+	s=arc-20240116; t=1732218905; c=relaxed/simple;
+	bh=BLDURJQuaJE6CdUYhXoo882bVGpvfxGv7BbisL0OcQM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C9bJ1kKH4n+wONxyhatDwAiYHJM7C+tVJ563jII+jaPTjsw0t6lUOoO36MnObhBDui6PX236ix9Gjsl5PLTqYcPGDe9xqPoLyDC/PXlo2etmmss9/c9TVQXo98nPRDhE2TePfS0x0U6aEUg6+5NK4OqojJrjFrLDjjisHov4OA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/AxaY1I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74746C4CECC;
-	Thu, 21 Nov 2024 19:53:56 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=uIhDSG6AohJyu44eafdcVnlw2HGOLY1WO+9szX1B97tbyvUM1tL1cn81lRKg6uk6e2mb/ffMkV2ybp6DrSj8lm0LS+XDgB20FexTY6SbgiA4WbUZ5u5eZExw2hdoovqKSn7dJJLNWoYsLJS+NXopQSxrMOOBUdlYDPxrdoSsIUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GqRrkQzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECD1C4CECC;
+	Thu, 21 Nov 2024 19:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732218839;
-	bh=M0bDefENAtEaYK8veMFJkCk5vN5395Dp38Zqv9BBARg=;
+	s=k20201202; t=1732218904;
+	bh=BLDURJQuaJE6CdUYhXoo882bVGpvfxGv7BbisL0OcQM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a/AxaY1INLUobLkQSEV1Ez611w+AQy5xVj0AbvHdEOXKaFgeOjGdsMD8sngA+B/dW
-	 AB5XRl3Ylz9Z8GxNB1ECdionB4txfo9+21LntwaQUyNuiwEupAad8QWTSQZuUIM6qP
-	 t6IWknGGmRx4rkoEYBZZDzQdTnLunZpw2Eftj8UkOBMqxUCOK8q7gHZTkEHcYnNHMV
-	 uy3/owEpXIpDT4Eg6Z/nNd5ok3QTQ0s6UgR540FsrJWzqpQnnFgZDycL/esjXwmDzs
-	 3DgRwa6ufqYEvGRj7rUx2Wbbg+X2rixKEITQerypntxcHeEs4709FRkE27aSf6gbKY
-	 poROz0CXY4bQA==
-Date: Thu, 21 Nov 2024 19:53:53 +0000
+	b=GqRrkQzQzzHdw5i46MMKOcakw7F/5EM7rjjaNI9xAoMLC8SzScIgNd+MG4SbeOyKx
+	 ess/xmVA50JO9vddJxaynSsS5YMgn8x58RiXyeSPbreWW2vdz4uOaB9DnHcPIpaRYg
+	 yjU0XYvfk60tghTYlvjubs6J1uZox7H3p4UWbjXAcD0TVDeRg/Zzly+/+Hns3qUGdd
+	 NCaht+Ai1wW5/Vv74u8Yi5WJE0t7Qqhny9C306cefqQgeF1doJ+WWi6vqkqkHboG+L
+	 3LkZWkOh9aTadS62Ubc6j3xqqMbiY+sxW7lHFJ2TPyYKWL4tQb15K5s9jAu5AQOQhY
+	 Rc3C1GLta6aNQ==
+Date: Thu, 21 Nov 2024 19:55:00 +0000
 From: Conor Dooley <conor@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Guillaume Stols <gstols@baylibre.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
-	Rob Herring <robh@kernel.org>,
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, jstephan@baylibre.com,
-	aardelean@baylibre.com, adureghello@baylibre.com
-Subject: Re: [PATCH 2/9] dt-bindings: iio: dac: adi-axi-adc: Add ad7606
- variant
-Message-ID: <20241121-wackiness-threaten-b53d2a27fbd9@spud>
-References: <20241121-ad7606_add_iio_backend_software_mode-v1-0-8a693a5e3fa9@baylibre.com>
- <20241121-ad7606_add_iio_backend_software_mode-v1-2-8a693a5e3fa9@baylibre.com>
- <49bc9ec4-f252-4903-b5be-1d35ee8d48be@baylibre.com>
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 7/8] dt-bindings: iio: kx022a: Support KX134-1211
+Message-ID: <20241121-broiling-clean-dce6722ae819@spud>
+References: <cover.1732105157.git.mazziesaccount@gmail.com>
+ <8d0ae2f58678f4daf2e24c8f4a8419cd5d225db8.1732105157.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -68,62 +61,37 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="g22nKfEJVAyL8X+l"
+	protocol="application/pgp-signature"; boundary="/MuaecG4mGmdS9GJ"
 Content-Disposition: inline
-In-Reply-To: <49bc9ec4-f252-4903-b5be-1d35ee8d48be@baylibre.com>
+In-Reply-To: <8d0ae2f58678f4daf2e24c8f4a8419cd5d225db8.1732105157.git.mazziesaccount@gmail.com>
 
 
---g22nKfEJVAyL8X+l
+--/MuaecG4mGmdS9GJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 21, 2024 at 10:57:44AM -0600, David Lechner wrote:
-> On 11/21/24 4:18 AM, Guillaume Stols wrote:
-> > A new compatible is added to reflect the specialized version of the HDL
-> > that is not covered by the IIO backend paradigm: We use the parallel
+On Thu, Nov 21, 2024 at 10:21:30AM +0200, Matti Vaittinen wrote:
+> The ROHM KX134-1211 is very similar to KX132-1211. The main difference is
+> supported g-ranges. The KX132-1211 can measure ranges from +/- 2g to
+> +/-16g where the KX134-1211 supports measuring ranges +/- 8g to +/- 64g.
 >=20
-> It still is being used as an IIO backend, so I would leave out the
-> phrase "that is not covered by the IIO backend paradigm".
+> Support the ROHM KX134-1211.
 >=20
-> > interface to write the ADC's registers, and accessing this interface
-> > requires to use ADI_AXI_REG_CONFIG_RD,ADI_AXI_REG_CONFIG_WR and
-> > ADI_AXI_REG_CONFIG_CTRL in a custom fashion.
-> >=20
-> > Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-> > ---
-> >  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml=
- b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> > index e1f450b80db2..43bc0440c678 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> > @@ -17,13 +17,20 @@ description: |
-> >    interface for the actual ADC, while this IP core will interface
-> >    to the data-lines of the ADC and handle the streaming of data into
-> >    memory via DMA.
-> > +  In some cases, the AXI ADC interface is used to perform specialized
-> > +  operation to a particular ADC, e.g access the physical bus through
-> > +  some special register to write ADC registers.
-> > +  In this case, a different compatible is used, and the driver behaves
->=20
-> Quick, delete the word "driver" before Krzysztof sees it. :-p
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
-And also perhaps worth mentioning under the --- line that the x in the
-compatible is not a wildcard, for similar reasons ;)
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---g22nKfEJVAyL8X+l
+--/MuaecG4mGmdS9GJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZz+P0QAKCRB4tDGHoIJi
-0pXGAQCVz8AR9qILOY2+4SlinMtDxnCsNOcoSwEUTO3ICQyBCAD/dUJKqoKfiB0H
-Z55xs2qiCI4e517oaHN6L/d1DT0r5gs=
-=jy8b
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZz+QFAAKCRB4tDGHoIJi
+0k2pAQDVBVILsnR7IF3BVuuOETSeWKryHealsHgshy2M13uIpwEArRFfY8d2uj3d
+j3bC7jrNQ0xQFDOvhs5uLGxh/JWJYwM=
+=07oy
 -----END PGP SIGNATURE-----
 
---g22nKfEJVAyL8X+l--
+--/MuaecG4mGmdS9GJ--
 

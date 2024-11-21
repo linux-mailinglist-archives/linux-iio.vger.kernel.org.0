@@ -1,214 +1,148 @@
-Return-Path: <linux-iio+bounces-12465-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12466-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1F39D4D22
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 13:50:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561FA9D4D6F
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 14:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7D9EB243A8
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 12:50:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 033D61F24DE6
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 13:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17441D79B7;
-	Thu, 21 Nov 2024 12:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FD21D358D;
+	Thu, 21 Nov 2024 13:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVXs3XSI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jEfCjmIq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E0C1C6F76;
-	Thu, 21 Nov 2024 12:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF6B1B0F0C;
+	Thu, 21 Nov 2024 13:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732193429; cv=none; b=CfqQgNkUiHqTW7JEYDIXPswAv7DlDo2E7ER2dZnxcd0GpLawQamCNkiFIabKAQNh/UdkJrJ+gc5Fi+CuvKZeMT5ysOOQJ9pis00jY6ZdM2qQyYGulYFt/+VzGJo5sLZFqYs6S782Eb+P/SmZfwnLRXYTYRotXnXY31J0Jr/mOs0=
+	t=1732194309; cv=none; b=RQURvoPdlR252KHIVRc1I345bi1Opywu75g9I4JWzd2l/qEVuVatiWliyabhy7Hm7SCQC2UQAstXtmWGsa9o3+fA19kgRlOO1NCMI1iQzGRcMc6tolSk/j/SMAhnjpHeFI4ByGLgqf7O9FmCmPIA/9Bd7wD23/frel5r+VjPMvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732193429; c=relaxed/simple;
-	bh=UJTs6Iby7Teh82NJKNMq0ibvSRqmMP0ACIc+OWmnvyI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=XOOYbwmA4j/QeVtDeiZP9+sqXRHlvWK8rMf36tsaIH9p5R/t/ByCdYrTl3p+oX2V5rQJXxLZUkffKnCdTnds9XLMfWoKyrhjjuFg3y3gn9M1ZFfbgCtfjOh9SqZ7V1NAHu9j95/zyu+ruJkB49BEooVC+fn6OICQdpEr0eCpGME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVXs3XSI; arc=none smtp.client-ip=209.85.218.42
+	s=arc-20240116; t=1732194309; c=relaxed/simple;
+	bh=BoS8/uHin5liWNdqMchxpTB9s7NkRLLS3EYdOmq2li8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=IAJ9gsxe2AvVeRtEKeLXDdFikiUKkjsqBW4xTAmPOaSIa0yaYMw97B18nR/Ml8dcMGW0zucihikP4DxuVZsi0bXxSAduuxdn1ncCkqSKajoEemyTlvMRy8zFH9VlWYwm0YkdFgnIvlZLeBgbYRhBI8Jemv5txP7ZoSP0048pYg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jEfCjmIq; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aa2099efdc3so387587466b.1;
-        Thu, 21 Nov 2024 04:50:27 -0800 (PST)
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539e59dadebso1055529e87.0;
+        Thu, 21 Nov 2024 05:05:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732193426; x=1732798226; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=00ZzQwUg353qBQWZiP9XVCQ68X3EQHzTK8nL5Lxuaus=;
-        b=KVXs3XSIfpkF3d+BmCMbL4lhJ2pnrfrJgdKCiHim4JlB5GVYPQz8fHbRurfSbwa1B6
-         7YsA+i7pyEGUXsXAxGHjyw0omlrQEcbmVDNi0wotVdNjcdQr1aU/SlWEfkfblc8HXZv1
-         7wQfuHTplFotjGIV9PhYISWOSHMqOuCWOZBc42GT2XwnKRfs9hEgzkFKBO4T0D2C4oGb
-         Er8KxqEVwURlq2ztq0cLvW4o2P1XR1/tYpHd1m39McTyvtv+qw6Tvu6qrlTMzgBB9HeZ
-         u21jI9OwQCZPeb+8N3BhcxbDquzhGMjQ7o0fnNkPJtX95ItuKzS4lupy1v8zAwPF+t63
-         kX5Q==
+        d=gmail.com; s=20230601; t=1732194305; x=1732799105; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CCQmmnZF3gebIwVU2ozugUU8wkeUvpBfx9H0t+7tamc=;
+        b=jEfCjmIqb+ic2gqcjyNxqy4a9xiGpJ0Hp8ZAo54b0gC4WCRgv/nN0OwbR9/Z38Rp0O
+         amlESQTk6xjb80H8im6r/JsI96nQi5twOf9TMohXqz0ZATcElVFnrDthMMRwvvYvAI0a
+         NyebZNQtpX5f334nL3PLGi6+qpcaYb4uPXAasYf1tOhgepEYU0aIS5CVOmiMVcjZUBeq
+         JZ/EXYY7Da8npvQIKz0JFnizBYbBCeeQx7K1fEH/tXACxtbVIBKhMpl3Ksg/WCK4maGm
+         qbE9gxzYlRWgCRDVx/txqSJyihLf4noYXX/QNVwXlh4I9HH9J7WMaYnu1LxluXd6gIvj
+         bA+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732193426; x=1732798226;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=00ZzQwUg353qBQWZiP9XVCQ68X3EQHzTK8nL5Lxuaus=;
-        b=guzWQaTPSt1Hed6hwGoqrteDK5AUZikVc93WlYRHbuZK/RfLEcrBip6Ccb/JO7a/Md
-         soWCVhiu3kL8sNco4rDPreniVVMWkiwmuSJYdxcH/+NcvwuvkLnds/kJyimiu3cf2vVz
-         bz0OkZV5CoXLPW/jBvpbybDHTBXPwgzKXVJKSMi+jQZc1vG2Ecpie7hHcAsXxUn6ViX0
-         KecBlFBS7/+qz4Fsw++rF+jXDUYosKgQ4TRGQkLURoy6v9QAz86vSVAt1zPgdPvxLa3O
-         okLbTEtefuEHZz4spRJxODnXgxOCxMi8h0e/bpVc47viH4GYBuABNqn6cwn44CixtceS
-         SrqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXvM72qQFdsygXn98mgrM6s3/zREwEq4uCMZcyFwJpl29n2KaNFapyQIgAcbSvPtsgsk2u7LAaNv3Z@vger.kernel.org, AJvYcCX6wEBu9O2pYa7fcbBkYfkezQ+DWRDu58dMSQUxpmJZz76d/SK1lXmtPu/zYiviGFbO0zKvuj5tKcb+Syxz@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPFcXoqS3zafBZrAjkaM9CKqG920wLwe7ZT1kFP22RiPYy5H+j
-	XFSzPVkluAj1CigIGwaQqHR5Ox3PzPbdfSfv5d0mTUdogDjoT9F/KA2U+g==
-X-Gm-Gg: ASbGncvQRnuzVx+wTr7hX4QgGphswiYDWjZEAbagyAdAAC6TDd/q8Uxe0nlFWwBOsPq
-	BJ3ZMJJLoP6VLAkj0OUWmrdGm+dzHsqYr86ZJDy4/YsOZLLuYSmlTShNM9WO4CRon/Xi88/nanH
-	dPmFu2QiSBVB0Rze5fRZF5eTphYMYGstLEmmUMbpRniBX0jeprXmK2ib0CR/R0NjNcp0rn7LdZv
-	02YkFDeZ/eyq0FujrDzgXRi3z4JWaCvkc1buj1jAOPKQQA706EB1/lf4Oyct3VOetOadSlEP1xk
-	Phm5UfWW+cCDsiT0DEoxDok=
-X-Google-Smtp-Source: AGHT+IEWvULmFIT7y7HWMI09rdcpTv1xH1WdU4aympyXmiuuJQne2tXNNQOFkxohTZiBL9Z+PAaLjg==
-X-Received: by 2002:a17:907:703:b0:a9e:85f8:2a49 with SMTP id a640c23a62f3a-aa4ef969d21mr331333466b.8.1732193425934;
-        Thu, 21 Nov 2024 04:50:25 -0800 (PST)
-Received: from localhost (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa4f431b36dsm77509366b.172.2024.11.21.04.50.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Nov 2024 04:50:25 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732194305; x=1732799105;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CCQmmnZF3gebIwVU2ozugUU8wkeUvpBfx9H0t+7tamc=;
+        b=tI684EQET870gltPsLgqAYLNLyGGLyAOj68jWAOfwUI3bYQQKynEC+dQMe/94R1m1Q
+         pcQQXbLDkA//ZupmgN71twMY/dTdKnDh1gFV+fFGUs+bzflhDA1ZSE8ww5bQNkMWmioN
+         GuhF1QAS39qe+cCFnTjRpGsjYxLRnVYtPrOJ5mH3CrF2JxaRTsuBofkv79+2I/+oibZQ
+         t7fC81HT77ZyZAsl9dpSAXLueyan7Zqgj90NhTmpeoVmBsOi7bz4JZgYHUY13hYMreoz
+         aSVTFXVoQBvxP+X5xpYxAIEYPNEW/h5T5L1dlFCwsuyflvs55O5hYksu1CdbKCV995xx
+         uf9A==
+X-Forwarded-Encrypted: i=1; AJvYcCULFjXPqAuwK8jfox7OX5POyB0U5oAFy35h26ZawWkXpXzcI2dzQ8+Tjg9ELIhIcabdGUw6QIlAl2s=@vger.kernel.org, AJvYcCXL9tsYwGfWn208mRpniaF/s7hhJ6TKwCaFC83Pij/2qH0ece8RXyjejRLcrx7lA/vLQynNJhtCeYmy5yyk@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaD04JSuEldOqH21ZWEvzS7jxGYX2WqxiK//Q7SCmowwmArsj4
+	9QJ8+4D2wb5eBSmtpu++Z/fr+9Lp01gygYyVq4Oq8j3hRDdY0zQe
+X-Gm-Gg: ASbGncvcY4yUUgLSrGJQ6XNQtQvCiDZ1Y5qpJf8eojqov6SxlaOut0STdJiSDRVtoTy
+	fbhL7mePTgEe404NXN4R3NeHg5Rma1Zcar/RriTWQ+25YLVfrizyvx0E0RvVGo12KvVw6ep97uq
+	ZZQ59AzMfAbXxxTxj5x8Xobkhn8Vb3kdvkbBFw+dwInlB0q3qn3JpWYdgqL5qorFKn8snMxv6oC
+	F8NNyFo2Zy81XgMavHHOhXrBPpTvrFd0eZn78D1GeXIuAFB3kFD
+X-Google-Smtp-Source: AGHT+IHTYv18lm1PLy18W5Yt8qSmWxkXFYKYAUAvrkIB+Rs3LsU9QMmhUEJPH87iwBAVKEGZM4Wopg==
+X-Received: by 2002:a05:6512:15a9:b0:53d:d137:d7a4 with SMTP id 2adb3069b0e04-53dd137d8a2mr86610e87.53.1732194304808;
+        Thu, 21 Nov 2024 05:05:04 -0800 (PST)
+Received: from mva-rohm ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dbd3edcf2sm981480e87.34.2024.11.21.05.05.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Nov 2024 05:05:03 -0800 (PST)
+Date: Thu, 21 Nov 2024 15:04:53 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] iio: Use __cleanup for a few ROHM sensors
+Message-ID: <cover.1732193263.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="3IiQhOulKrWJowbp"
+Content-Disposition: inline
+
+
+--3IiQhOulKrWJowbp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 Nov 2024 13:50:24 +0100
-Message-Id: <D5RVBLKL19B7.3JUQKEVC5T0HF@gmail.com>
-To: "Per-Daniel Olsson" <perdaniel.olsson@axis.com>, "Jonathan Cameron"
- <jic23@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>
-Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <rickard.andersson@axis.com>,
- <kernel@axis.com>
-Subject: Re: [PATCH v6 2/2] iio: light: Add support for TI OPT4060 color
- sensor
-From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-X-Mailer: aerc 0.18.2
-References: <20241120163247.2791600-1-perdaniel.olsson@axis.com>
- <20241120163247.2791600-3-perdaniel.olsson@axis.com>
-In-Reply-To: <20241120163247.2791600-3-perdaniel.olsson@axis.com>
 
-Hello Per-Daniel,
+Use __cleanup.
 
-A few minor comments inline, LGTM in general.
+The series converts the rest of the ROHM sensors (maintained by me) to
+use guard(mutex). This simplifies the error paths.
 
-On Wed Nov 20, 2024 at 5:32 PM CET, Per-Daniel Olsson wrote:
-> Add support for Texas Instruments OPT4060 RGBW Color sensor.
->
-> Signed-off-by: Per-Daniel Olsson <perdaniel.olsson@axis.com>
+As a note, kx022a accelerometer driver is handled in another series,
+which also adds support for two new accelerometers. I did also patch the
+driver for the BU27008 and BU27010 - but when I was testing the changes
+I found that the BU27008 status is set to "obsolete". I'll try to dig
+some information about the BU27010 and decide if having the driver
+in-tree is still worth the effort, or if I should just send out patches
+to drop it all. Hence patch to rohm-bu27008.c is not included in the
+series. If someone is actually using the BU27008 or BU27010 and wants
+to patch it - feel free to pick
+131315de97ff ("iio: bu27008: simplify using guard(mutex)")
+=66rom
+https://github.com/M-Vaittinen/linux/tree/bu27008-cleanup
 
-...
+---
 
-> + * Function for calculating color components independent of light intens=
-ity. The
-> + * raw values are multiplied by individual factors that correspond to th=
-e
-> + * sensitivity of the different color filters. The returned value is nor=
-malized.
-> + */
-> +static int opt4060_read_chan_scale(struct iio_dev *indio_dev,
-> +				   struct iio_chan_spec const *chan,
-> +				   int *val, int *val2)
-> +{
-> +	struct opt4060_chip *chip =3D iio_priv(indio_dev);
-> +	static const u32 color_factors[] =3D { 24, 10, 13 };
-> +	u32 adc_raw[3], sum =3D 0, rem;
-> +	int ret;
-> +
-> +	ret =3D opt4060_trigger_new_samples(indio_dev);
-> +	if (ret) {
-> +		dev_err(chip->dev, "Failed to trigger new samples.\n");
-> +		return ret;
-> +	}
-> +
-> +	for (int color =3D OPT4060_RED; color <=3D OPT4060_BLUE; color++) {
+Matti Vaittinen (2):
+  iio: bu27034: simplify using guard(mutex)
+  iio: bm1390: simplify using guard(mutex)
 
-Nit: no need for parenthesis around adc_raw[color].
+ drivers/iio/light/rohm-bu27034.c   | 73 ++++++++++------------------
+ drivers/iio/pressure/rohm-bm1390.c | 78 ++++++++++++------------------
+ 2 files changed, 55 insertions(+), 96 deletions(-)
 
-> +		ret =3D opt4060_read_raw_value(chip, indio_dev->channels[color].addres=
-s,
-> +					     &(adc_raw[color]));
-> +		if (ret) {
-> +			dev_err(chip->dev, "Reading raw channel data failed\n");
-> +			return ret;
-> +		}
-> +		adc_raw[color] *=3D color_factors[color];
-> +		sum +=3D adc_raw[color];
-> +	}
-> +	*val =3D div_u64_rem((u64)adc_raw[chan->scan_index], sum, &rem);
-> +	*val2 =3D DIV_U64_ROUND_CLOSEST((u64)(rem * MICRO), sum);
-> +	return IIO_VAL_INT_PLUS_MICRO;
-> +}
-> +
 
-Nit: wrong alignment in the second line of the arguments.
+base-commit: adc218676eef25575469234709c2d87185ca223a
+--=20
+2.47.0
 
-> +static ssize_t opt4060_read_ev_period(struct opt4060_chip *chip, int *va=
-l,
-> +				     int *val2)
-> +{
-> +	int ret, pers, fault_count, int_time;
-> +	u64 uval;
-> +
-> +	int_time =3D opt4060_int_time_reg[chip->int_time][0];
-> +
-> +	ret =3D regmap_read(chip->regmap, OPT4060_CTRL, &fault_count);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	fault_count =3D fault_count & OPT4060_CTRL_FAULT_COUNT_MASK;
-> +	switch (fault_count) {
-> +	case OPT4060_CTRL_FAULT_COUNT_2:
-> +		pers =3D 2;
-> +		break;
-> +	case OPT4060_CTRL_FAULT_COUNT_4:
-> +		pers =3D 4;
-> +		break;
-> +	case OPT4060_CTRL_FAULT_COUNT_8:
-> +		pers =3D 8;
-> +		break;
-> +
-> +	default:
-> +		pers =3D 1;
-> +		break;
-> +	}
-> +
-> +	uval =3D mul_u32_u32(int_time, pers);
-> +	*val =3D div_u64_rem(uval, MICRO, val2);
-> +
-> +	return IIO_VAL_INT_PLUS_MICRO;
-> +}
-> +
 
-Same here.
+--3IiQhOulKrWJowbp
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +static ssize_t opt4060_write_ev_period(struct opt4060_chip *chip, int va=
-l,
-> +				      int val2)
-> +{
+-----BEGIN PGP SIGNATURE-----
 
-Note that state has become a bool, so if a new version of this driver is
-required, please use a newer base (e.g. linux-next, iio/testing) to
-avoid future issues.
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmc/L/EACgkQeFA3/03a
+ocU24Af9ESs1sce3yqeHLWWLg3aetPZ1Ew2fD0r5Pk0TzgAYPSBGY7weNBJw7z1B
+ooOSX6c4cL+dejMfVEUvsyvHLxOhgk+X1Q0K/M5TcqQejWaH0S+3mF2UCzkPJaFP
+j1Mli55cdMtluc+nxF4oIKQ3ipfErWiP79+w0phbS8py/lUCBLLNkTJ6JgdlnXhS
+7m1BKvlUcUVhaPq/YEUuOBmyZyODsrp3GFAc2uDzsOECyCJXQG+nG+dhuR7FSzth
+XjYfCm8Md9l6Jx3NKGTXExN/12wD6bYyyxRGHiCc5oelkakR9F55Djd70teJZE/b
+5iXjxt5P9GuH+Wl2hE3Rv3ivLhYdxA==
+=YARU
+-----END PGP SIGNATURE-----
 
-> +static int opt4060_write_event_config(struct iio_dev *indio_dev,
-> +				      const struct iio_chan_spec *chan,
-> +				      enum iio_event_type type,
-> +				      enum iio_event_direction dir, int state)
-> +{
-> +	int ch_sel, ch_idx =3D chan->scan_index;
-> +	struct opt4060_chip *chip =3D iio_priv(indio_dev);
-> +	int ret;
-
-Best regards,
-Javier Carrasco
+--3IiQhOulKrWJowbp--
 

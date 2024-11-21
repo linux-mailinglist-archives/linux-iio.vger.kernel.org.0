@@ -1,156 +1,185 @@
-Return-Path: <linux-iio+bounces-12470-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12471-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C619D50DD
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 17:45:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B599D5111
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 17:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BC8A283DA3
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 16:45:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50650B297DF
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Nov 2024 16:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5E31A0AF5;
-	Thu, 21 Nov 2024 16:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A931BBBC1;
+	Thu, 21 Nov 2024 16:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SX1dwKv6"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uy7LYOyv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C176F41C79;
-	Thu, 21 Nov 2024 16:44:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D241B1AD5D8
+	for <linux-iio@vger.kernel.org>; Thu, 21 Nov 2024 16:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732207496; cv=none; b=GnoKcf18qN7G+TAf88p/9+RHrSDiIxlt+SpZ+wmsArVw+8qE5EfmH0C5DdsrzxUo880njLeG7S6FjaIEYpc8JVs5CVU08gt76OFKKW5MHZI66N3TlV3Pz+nq5qI9WYYJQpgj5NuInU/W+kFaGOIVdHjGiapzK30EYOoeMiRhIBs=
+	t=1732208272; cv=none; b=RsTLwmHR5m58ya6tjIOtz81Jb+Bbi3m2n2o0AYOmcKs/DzyRhlW5H2EOKEwp1zj+9RxpHHYb8nryRsVa/iXiqxbambty3hBkKORn8OCH0xl2VcS+Y1A6MQ5167PJqGeuFdJg0pSmXZYJCGaB/CzXOIWUB0i/aBJfZe7eH3jYCYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732207496; c=relaxed/simple;
-	bh=JG8GOin1RPGr6lBzi5vNbhQX9ZAXOl1lznBI9WMq6iM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Zk1aDILWAs+FH9amp1Np1XOQvXu0nnm9aPVMAq7peUopgLPOagMz6tnqYcx/ALRD/fQ6bMBb6OgVwRBR2iZ4m6ZMK6JDdYKMsHqUEG1rBADBQ65e8V1YpAskMkU8gPjJqZjjVhI6FAqoLHnVkZuO/5MqG2dqBhhkPVJgird7ERo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SX1dwKv6; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732207495; x=1763743495;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=JG8GOin1RPGr6lBzi5vNbhQX9ZAXOl1lznBI9WMq6iM=;
-  b=SX1dwKv6xWdjxQQaqCHsT4Y1+bmppTsQuPP0zBVVGeJBr7kMLsYqEJoV
-   O+CQw+fA6Y/OyCOAP2wZoR0rCLpDC7jOiP4nJU+V4lvO8GG1tOCa9MXYv
-   RiS7CwDW5EZKaSFehSMCbY7wrNG8D6ZEpKyNC5vSbVLQ75CmI8jKIV3El
-   he2EMaaXpiSTXgzGU6V/JvqLgaIOIuPMc9yYCKTV4TPzMzPA0+iyHD0qZ
-   hviw3UeztyQ4Hb0Sfu6MlWkvK9PFAM75Qa275fEuykCyH+QgdHFvs89pV
-   PlTpS/wWJRbObBtOyGEKK4+eYay1BuhkmYS4zbBQYEypsC2RUq8gGfB5n
-   w==;
-X-CSE-ConnectionGUID: 5LF0sjoHRFqOM3PHSWqMrQ==
-X-CSE-MsgGUID: 888t9XJnSvOR0oNZtPtijw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="32263245"
-X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; 
-   d="scan'208";a="32263245"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2024 08:44:54 -0800
-X-CSE-ConnectionGUID: AbYmCwoOQ1WaInLSQtlp5w==
-X-CSE-MsgGUID: 035BzuBzQh6wXY0wl558Ew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; 
-   d="scan'208";a="90727624"
-Received: from spandruv-desk1.amr.corp.intel.com ([10.125.109.229])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2024 08:44:54 -0800
-Message-ID: <853def565622848427e6e5df8f073465fa52e76c.camel@linux.intel.com>
-Subject: Re: [PATCH] iio: hid-sensor-prox: Fix invalid read_raw for attention
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: Ricardo Ribalda <ribalda@chromium.org>, Jiri Kosina <jikos@kernel.org>, 
- Jonathan Cameron
-	 <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Thu, 21 Nov 2024 08:44:53 -0800
-In-Reply-To: <20241121-fix-processed-v1-1-4fae6770db30@chromium.org>
-References: <20241121-fix-processed-v1-1-4fae6770db30@chromium.org>
-Autocrypt: addr=srinivas.pandruvada@linux.intel.com; prefer-encrypt=mutual;
- keydata=mQGNBGYHNAsBDAC7tv5u9cIsSDvdgBBEDG0/a/nTaC1GXOx5MFNEDL0LWia2p8Asl7igx
- YrB68fyfPNLSIgtCmps0EbRUkPtoN5/HTbAEZeJUTL8Xdoe6sTywf8/6/DMheEUzprE4Qyjt0HheW
- y1JGvdOA0f1lkxCnPXeiiDY4FUqQHr3U6X4FPqfrfGlrMmGvntpKzOTutlQl8eSAprtgZ+zm0Jiwq
- NSiSBOt2SlbkGu9bBYx7mTsrGv+x7x4Ca6/BO9o5dIvwJOcfK/cXC/yxEkr1ajbIUYZFEzQyZQXrT
- GUGn8j3/cXQgVvMYxrh3pGCq9Q0Q6PAwQYhm97ipXa86GcTpP5B2ip9xclPtDW99sihiL8euTWRfS
- TUsEI+1YzCyz5DU32w3WiXr3ITicaMV090tMg9phIZsjfFbnR8hY03n0kRNWWFXi/ch2MsZCCqXIB
- oY/SruNH9Y6mnFKW8HSH762C7On8GXBYJzH6giLGeSsbvis2ZmV/r+LmswwZ6ACcOKLlvvIukAEQE
- AAbQ5U3Jpbml2YXMgUGFuZHJ1dmFkYSA8c3Jpbml2YXMucGFuZHJ1dmFkYUBsaW51eC5pbnRlbC5j
- b20+iQHRBBMBCAA7FiEEdki2SeUi0wlk2xcjOqtdDMJyisMFAmYHNAsCGwMFCwkIBwICIgIGFQoJC
- AsCBBYCAwECHgcCF4AACgkQOqtdDMJyisMobAv+LLYUSKNuWhRN3wS7WocRPCi3tWeBml+qivCwyv
- oZbmE2LcxYFnkcj6YNoS4N1CHJCr7vwefWTzoKTTDYqz3Ma0D0SbR1p/dH0nDgN34y41HpIHf0tx0
- UxGMgOWJAInq3A7/mNkoLQQ3D5siG39X3bh9Ecg0LhMpYwP/AYsd8X1ypCWgo8SE0J/6XX/HXop2a
- ivimve15VklMhyuu2dNWDIyF2cWz6urHV4jmxT/wUGBdq5j87vrJhLXeosueRjGJb8/xzl34iYv08
- wOB0fP+Ox5m0t9N5yZCbcaQug3hSlgp9hittYRgIK4GwZtNO11bOzeCEMk+xFYUoa5V8JWK9/vxrx
- NZEn58vMJ/nxoJzkb++iV7KBtsqErbs5iDwFln/TRJAQDYrtHJKLLFB9BGUDuaBOmFummR70Rbo55
- J9fvUHc2O70qteKOt5A0zv7G8uUdIaaUHrT+VOS7o+MrbPQcSk+bl81L2R7TfWViCmKQ60sD3M90Y
- oOfCQxricddC
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1732208272; c=relaxed/simple;
+	bh=L6sfNfJNYshtDDIz66hyivqjmRS/P+6sJEyGbM1My+I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nfLa9alA1SMjBvNtmlJqnxxuwml3sDJyGzFie+Uhq5Kv3xNlOMdPuAS4/kEtie47JPDWy6Do2AgZ6u/4olAi26oH8pFyOBgPkWIpJc9CHSN+/6bGo+dySQ4GEzhEgVBLy9L7ZK5CwaVDMG3plxfNZNzZAUp59ftopIRoWVde1DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=uy7LYOyv; arc=none smtp.client-ip=209.85.167.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3e786167712so757450b6e.3
+        for <linux-iio@vger.kernel.org>; Thu, 21 Nov 2024 08:57:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732208268; x=1732813068; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OqTESz70WWBrUKHYGVQByHq14bvk7OilAkc6nrXjoQs=;
+        b=uy7LYOyvZ35ZGyOK7M3ZdcSvGdMwIOLm4Z75BQb0VwdENOCMrA4QO5Zjb54rQXOi/w
+         stD+C8od1kLFFXbh/6KMmrIHA4Rr8yOd/u7Q7C6jcCIhe0YIesYrut1UTc3cl8mZI0zx
+         zltZIPfu3dp0tT6ehJoYcra5L2xS5da6Fv6TJfeQ0RA+pPm/6wepw61CpY4LMnq1qoWp
+         /+A19EtsqHKjndHwoTFahs9rpcfHGoXcrr1p2vr2y76s4NJv1Sz5LAgxvb/cONjBn4HY
+         ydrUclU1QYOyN5NljI0vGjpmLRu3a2HKRMPaz9UpnOCzn1TMeoWzFpG7kXPnL988qw5Y
+         jY4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732208268; x=1732813068;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OqTESz70WWBrUKHYGVQByHq14bvk7OilAkc6nrXjoQs=;
+        b=tl783Ek2Jh2cI9crD0O4IqosiLNTeeycWCtJfGo6b1Rfq+7D5cuR3S32kh1rjgH1uP
+         yXhY4NvXy4sAsUyZfXG4zAWCnJOjgvoSoZ3OH+SMm4m1VdGYOWKD0XqHWRmeQ/Cv4RxD
+         J3kYkal9374+Nxq8LDBJwGwlhxs3FaFt4PZ87fCgPqLwD1358AOYi/NzagKm7VDe76QK
+         mz8VDPezVWo1eM60BlLhej4MonXJd9sIjb+v0iu29Ttt4G8KOTM2zl0iAeAWQg4u7cFX
+         BoCOW/N5YUgZllDpEA3sAw6EctyOCSzXKT3JA4n0JbgZ03ax6wbFMzLbHHn4yIuLYiVE
+         9+zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVgeehAqI+bcotBYV4NyMW2wcmNVZJtm4D0Iom9TscYK8GDR2xDGB+Z/7gpPA6O9cqaE+52bJHQlGM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTM2Zn3QI/qLQmuPNRxNRLFnJC0OCNKLER1BPUOBbZmCevOWih
+	dSMW/c4c/vu1ewrNAdAjSRGBdLezFNiXjkeuawTdv1r1RrVMAw+Ejv/S1rl1jpU=
+X-Gm-Gg: ASbGncuq3NiUGdWZjTwVtcs5sNYRuAdF3rZmbHj8OOZdIvFn7CR2MMwt5cytdaDACsE
+	u+0ctYCICK0f1HLses/Vu/DDHdLOxYu9cAcpo+odHcXCkoSBw4Ah4TDYCmvCcPm+QNnCKCozjvZ
+	7svadvmBUCzbWC3Mpx4zv0/yIk3VjMZHgdMqReGCH3Yzslyp6kq7QEcqDyjzQ4VHUIgBT2uFnaQ
+	tBcw8D6vTC4ktZet85jVo3WuVLra5X1mOT4l6dde6IaUgSWsSy+qc2z+101dK5D1yAIj/D9+HRA
+	GnDsBEXPfqo=
+X-Google-Smtp-Source: AGHT+IEDrqpxIwTpy3llyV8pjL/P7SyaO5PEB5kVSSRlqQBu8UkhltpWQJCNIdPR5qmaeArbObqWMQ==
+X-Received: by 2002:a05:6808:d53:b0:3e7:c466:263 with SMTP id 5614622812f47-3e7eb69bc70mr9063787b6e.2.1732208267897;
+        Thu, 21 Nov 2024 08:57:47 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e7bcd93c21sm4767259b6e.47.2024.11.21.08.57.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Nov 2024 08:57:46 -0800 (PST)
+Message-ID: <49bc9ec4-f252-4903-b5be-1d35ee8d48be@baylibre.com>
+Date: Thu, 21 Nov 2024 10:57:44 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/9] dt-bindings: iio: dac: adi-axi-adc: Add ad7606
+ variant
+To: Guillaume Stols <gstols@baylibre.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, jstephan@baylibre.com, aardelean@baylibre.com,
+ adureghello@baylibre.com
+References: <20241121-ad7606_add_iio_backend_software_mode-v1-0-8a693a5e3fa9@baylibre.com>
+ <20241121-ad7606_add_iio_backend_software_mode-v1-2-8a693a5e3fa9@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241121-ad7606_add_iio_backend_software_mode-v1-2-8a693a5e3fa9@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2024-11-21 at 09:16 +0000, Ricardo Ribalda wrote:
-> The attention channel is a IIO_CHAN_INFO_PROCESSED, not a
-> IIO_CHAN_INFO_RAW.
->=20
-> Modify prox_read_raw() to support it.
->=20
-What is the sysfs entry to trigger this IIO_CHAN_INFO_PROCESSED read?
-Don't you have an entry *_raw?
+On 11/21/24 4:18 AM, Guillaume Stols wrote:
+> A new compatible is added to reflect the specialized version of the HDL
+> that is not covered by the IIO backend paradigm: We use the parallel
 
+It still is being used as an IIO backend, so I would leave out the
+phrase "that is not covered by the IIO backend paradigm".
 
-Thanks,
-Srinivas
-
-> Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more
-> channels")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> interface to write the ADC's registers, and accessing this interface
+> requires to use ADI_AXI_REG_CONFIG_RD,ADI_AXI_REG_CONFIG_WR and
+> ADI_AXI_REG_CONFIG_CTRL in a custom fashion.
+> 
+> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 > ---
-> =C2=A0drivers/iio/light/hid-sensor-prox.c | 4 ++--
-> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/light/hid-sensor-prox.c
-> b/drivers/iio/light/hid-sensor-prox.c
-> index e8e7b2999b4c..8e5d0ad13a5f 100644
-> --- a/drivers/iio/light/hid-sensor-prox.c
-> +++ b/drivers/iio/light/hid-sensor-prox.c
-> @@ -94,6 +94,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
-> =C2=A0	*val2 =3D 0;
-> =C2=A0	switch (mask) {
-> =C2=A0	case IIO_CHAN_INFO_RAW:
-> +	case IIO_CHAN_INFO_PROCESSED:
-> =C2=A0		if (chan->scan_index >=3D prox_state->num_channels)
-> =C2=A0			return -EINVAL;
-> =C2=A0		address =3D prox_state->channel2usage[chan-
-> >scan_index];
-> @@ -107,8 +108,7 @@ static int prox_read_raw(struct iio_dev
-> *indio_dev,
-> =C2=A0							=C2=A0=C2=A0
-> report_id,
-> =C2=A0							=C2=A0=C2=A0
-> SENSOR_HUB_SYNC,
-> =C2=A0							=C2=A0=C2=A0 min < 0);
-> -		if (prox_state->channel2usage[chan->scan_index] =3D=3D
-> -		=C2=A0=C2=A0=C2=A0 HID_USAGE_SENSOR_HUMAN_ATTENTION)
-> +		if (mask =3D=3D IIO_CHAN_INFO_PROCESSED)
-> =C2=A0			*val *=3D 100;
-> =C2=A0		hid_sensor_power_state(&prox_state-
-> >common_attributes, false);
-> =C2=A0		ret_type =3D IIO_VAL_INT;
->=20
-> ---
-> base-commit: decc701f41d07481893fdea942c0ac6b226e84cd
-> change-id: 20241121-fix-processed-ed1a95641e64
->=20
-> Best regards,
+>  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> index e1f450b80db2..43bc0440c678 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> @@ -17,13 +17,20 @@ description: |
+>    interface for the actual ADC, while this IP core will interface
+>    to the data-lines of the ADC and handle the streaming of data into
+>    memory via DMA.
+> +  In some cases, the AXI ADC interface is used to perform specialized
+> +  operation to a particular ADC, e.g access the physical bus through
+> +  some special register to write ADC registers.
+> +  In this case, a different compatible is used, and the driver behaves
 
+Quick, delete the word "driver" before Krzysztof sees it. :-p
+
+Joking aside, the devicetree only describes how things are wired up,
+it doesn't care how the driver uses the information. So we avoid
+mentioning anything about drivers in the bindings.
+
+> +  slightly differently according to the special needs.
+>  
+>    https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> +  http://analogdevicesinc.github.io/hdl/library/axi_ad7606x/index.html
+>  
+>  properties:
+>    compatible:
+>      enum:
+>        - adi,axi-adc-10.0.a
+> +      - adi,axi-ad7606x
+>  
+>    reg:
+>      maxItems: 1
+> 
+
+Since this new compatible also provides a bus in addition to the io-backend,
+I think we need some additional bindings to describe the child nodes for the
+ADC devices attached to the bus.
+
+I don't think there are any generic parallel-controller bindings like there
+are for SPI controllers, so we can't $ref: /schemas/spi/spi-controller.yaml#
+like we did for the similar case of adi,axi-ad3552r recently.
+
+But maybe something like this:
+
+properties:
+  ...
+
+  "#address-cells":
+    const: 1
+
+  "#size-cells":
+    const: 0
+
+patternProperties:
+  "^adc@[0-9a-f]+$":
+    type: object
+    additionalProperties: true
+
+    properties:
+      reg:
+        maxItems: 1
+
+    required:
+      - compatible
+      - reg
 

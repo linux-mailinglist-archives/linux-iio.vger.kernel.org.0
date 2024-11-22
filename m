@@ -1,76 +1,80 @@
-Return-Path: <linux-iio+bounces-12507-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12508-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483049D6340
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 18:37:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7219D636B
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 18:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB35DB26445
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:37:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06595B28362
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C490E1DF99B;
-	Fri, 22 Nov 2024 17:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98B91DF99E;
+	Fri, 22 Nov 2024 17:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="eeY1oGmL"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="LiqAoj7f"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF79F1DF96A
-	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 17:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B531DF983
+	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 17:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732297019; cv=none; b=fH2lmt7tX61ChrilLVNmYBbOAjayMNRznLZfMAsS6E/gFsH1ziKIdmZu3kCHrUqyRtiRP+6lpzyHrvjxYEcibVZMnendOMr1QzTefayRddyD79K+SbP+BvyM41qOtkl7WZzdOYpW0CjwzIhLp7FttQiw1WSxiJTkWPwToO7Pagg=
+	t=1732297216; cv=none; b=s0WrNvXlXGkxloDPIHVthyQbCvLU7QyTZEdYrxv1DUTZJCiuWmdeLDGf8fj5jvl/MZ3sdKhiVx9eXjuKZYiJvsIrz+REBcQO9O0/tN5u917CiHoPGJ8O8s7nSvvCQJeueqsfLGgAn9fH6tiK1qlZkZmj2uG8HYVOGTFGbVr+0VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732297019; c=relaxed/simple;
-	bh=LYHv25BlgnNGezmW4hSk8hWrtuIkhqDvhTcO/j2PRUo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=F6JuKTC9qsWc9R5QS/7pg9go0yhY4OavVjSPGPas8oXGpH7OgXrCalpDkT8o1z+ANz3XHTP57N/klpYV7ASeKg0YTwRzMoM3bGU0VQweexmeYESi54pHVAcKUazrHWrOZVk9agYnCFYjD3K94TT5yECjGpkojE8dkqQ6E4avbck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=eeY1oGmL; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7b14f3927ddso135095385a.3
-        for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 09:36:56 -0800 (PST)
+	s=arc-20240116; t=1732297216; c=relaxed/simple;
+	bh=nGDugsEzMYyjVhn/ciMakXTGY0HkUfo5USR3UzBZaCA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=eNUwE0qTyvjzsivY+SiOCe7k/Qxbdn+JeLdtfLzuETK68e3St+fOT+gqesK4144/3a8Swcze9FngvZnU7y3uaWDT7URlA9YxLSkn9ir4oXtgW+0K1iF/hGssEFFoIH2VGn+zmSAWoaN2B6HcAz+Fg+61uGnLjv5iviRh2LLt+2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=LiqAoj7f; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3e6010a3bbfso1329699b6e.2
+        for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 09:40:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1732297016; x=1732901816; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3n7nEmxo8kDo/GdhI+k2+p8juIiYwWmm+yhRX/Vo/Ws=;
-        b=eeY1oGmL5InSHEKcGfB+60P7AqZpquR2VP/BcLbuUw2778i6xxHVSlcehUPPFuVvtL
-         npKdLi5xmZa4SwgHK6yiU8bmpo4ubvhhxwbn4EOFBvSyYT1YbeKUWNF8849wd6CR4IS2
-         bgKaGdHLEWjdehPrIwPMbbpSF4HjLYxx2wEWk=
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732297213; x=1732902013; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=50h61GxOnKL1zzYHFyxBVUOS1MIjlLhbcFhOTWLtMk4=;
+        b=LiqAoj7fHbA6YqYaHDq8tK5++WTTSMzcVZ56t5U12ZnowpXAR+J7WtlY+p0xoWG8oG
+         XjxbQ9/+qnFETBPWzc1/KS0+u/7RhhBDZYRsbDW1XLep6rJNo4kclJTKcQdTAGjYF+dm
+         VKhbXOxsYth7eFG6NPH51A33eMVI14iSAgb+J7k1BcNksIWlvfz2InaITKNG5XL0in7Q
+         xCo9ylg0qnK044X6g1p1bTwANMfGR+1YzEYJENpW3NHslkWIkITBsF6L64q6vRB8O7fd
+         ApMV5q5beupzH5n0GHdmBJwaeUAHZt2bhnyult7rwwqMYXstnHLxdoEt4jY1HG/k4uzK
+         cSXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732297016; x=1732901816;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1732297213; x=1732902013;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3n7nEmxo8kDo/GdhI+k2+p8juIiYwWmm+yhRX/Vo/Ws=;
-        b=jxYsmLqjySIwOVQwxyIPvY9dMeT2HxeKoOvNFlRLj8BxkP1CLxuVzfxvCWrM3j3hgn
-         nLusskkVr/PJeuQBht5BZH6SAWzJf/TeyVIXa3sRgelhpbFFc5qEbRq/B8HZjEJ9vPx9
-         RhF5WdsCbV85rBc8MO/vX+bIVxeC978xDfjsfW1UWixqchXLwJUHC+2gTiu1yhaj+qqs
-         jDaUYF0Rrk7JW5HSPGYjJ54FR8R6wnmoz3apxuUBbfOPh3vg60wgkVLYBM6CH7KKLdnZ
-         lKQmMxVX/oXtEATIwggSPaToYMWZagvzUTXczl9C4ciSHRZ9XKAvdoNnFG28OQcgQkYc
-         wbKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVxwJfR9CN27vZ9pMyPWdnNMM5jvOQkSp9rP9rVAl3nbkYpYu8ys+TOogx6zRNa7H5JSlGk4tM1Nc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkhikKxV1BuKFP0zV0calrqwL2AUuaOJzg9fx84Y8rItx0dyRf
-	erSAhm4H9jIAk+83eIt3qgBmYzGbOURXM5yvLBGLom8VlEgt5kzHmB1JIYuu9A==
-X-Gm-Gg: ASbGncsBOItAyMe2ijMsMk3QRlzrUgJBX669k4lfhqiSjgmumyaFBgr5k0/NWqArBuZ
-	eIUOd0nxm6TKCCTVXYaZdZzKXImNtPDgOOspu3lZ+kD6Rz+KF+Rkj0GK3bWz75x+xUg7qn51jr9
-	yz4iCmq/pK/glWx2QFtvPISSoDB2PYW8p4MEw81DQab8uCD0cO3PHdvOMo7j4Xk8umWWe7OZeuq
-	l5gjoGZ9qBY7o4K6292uNqXM/itUgXwgsGzvLu/Fn1LoIe9enmo7tBaxV6Rp+7jbKb9wPTaiR8n
-	YyimweeS0cUs6zGPIW27JONk
-X-Google-Smtp-Source: AGHT+IEttBBYBx0GyZV8ei3rWb/Bwt7PQPUrxuqdwAxWwX5z/MVNcS8800PxYersM5EOYbVTr56k5Q==
-X-Received: by 2002:a05:620a:4045:b0:7ae:5c67:e19c with SMTP id af79cd13be357-7b5146126c9mr498103685a.55.1732297015932;
-        Fri, 22 Nov 2024 09:36:55 -0800 (PST)
-Received: from denia.c.googlers.com (5.236.236.35.bc.googleusercontent.com. [35.236.236.5])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b513fa4e95sm107451285a.33.2024.11.22.09.36.55
+        bh=50h61GxOnKL1zzYHFyxBVUOS1MIjlLhbcFhOTWLtMk4=;
+        b=aqDyRgFnKH3pracOaOmHTaPJtFj3TNKf9O3xBw+8Bpy+8pIJblb8em4svw5JG8v8S2
+         gBYiYNiE9ttcix0F5GP/HG3jJEuR/XzdNKF3o90HDnQBQgsNk0rIGTufWoVjInSUyKqp
+         msDb5elJGTMREv/11pAZlGy++kr3RCGRtZwvkXnMUfmA6vf13lvINuiyYWbEPmLnEpiy
+         5p4CIxWL31wA+OlsCPok6VTCSHxohMw6vlw/zJfgldq73BsFQq1n11+urEK2hmboZkGE
+         fazyTawTlglTVUiEGgB3aXmiNwBJjrnBWMlcdq8NISnJwYb83yHVEaB19ceU6g//31s8
+         C4ag==
+X-Forwarded-Encrypted: i=1; AJvYcCXbbZBsn/yDIQsulaMAYuwEkWsz87RVVaLKuHw+V0Sq95hDfEuSryHX4/UfaJ8mkrEY2m1qjxgGw9c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfL2qlrSbrkYsBi+bP5melLcCSIrzHspvHXLitySEevhOVQM+2
+	2VgdBtupF/xa3JBNrPcEPSVBJbh/+KxTShKR0aO8dV7MoY9lzr3kTSufzm2FTfq40TRy7x6YujI
+	y
+X-Gm-Gg: ASbGncuk4tGDt3GKx+juQspTriuYGiABtrj198ObHpibBIgoD2pwgyFetw+LrfI5SXs
+	MZhkHviqHVz3aUn/7+MVoVMBWis+d5OwikzTp2pyQ/p6s4V3Dfyt2DSanFmo/2pFtp3qzPWRnF4
+	XP/GCPClYsA5RvQymDpqU2RABv2Q4IO45tfGf+Hu6z6jEVqnZjZiTGmA6tlK+OVtZphK1C9Ghao
+	yGIKvaxnl+XSWv5yO7I5EnnUr3m/k+mDD/5DzKxV3nKcyodSVyfh3J69wOAbzKjZznXxBn+wkSv
+	lUpDNg==
+X-Google-Smtp-Source: AGHT+IE4alabHlRI047UT+eD20FUNGJWTu8qAkN+2f0dKKvzxLm2hJ0MTx09OXWOMHkrJF8SKfiZww==
+X-Received: by 2002:a05:6808:3509:b0:3e6:2169:5a63 with SMTP id 5614622812f47-3e915aa513bmr4539214b6e.31.1732297212852;
+        Fri, 22 Nov 2024 09:40:12 -0800 (PST)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71c0381c976sm494572a34.50.2024.11.22.09.40.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2024 09:36:55 -0800 (PST)
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Fri, 22 Nov 2024 17:36:52 +0000
-Subject: [PATCH v2] iio: hid-sensor-prox: Fix invalid read_raw for
- attention
+        Fri, 22 Nov 2024 09:40:11 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH 0/2] iio: adc: ad7313: fix non-const info struct
+Date: Fri, 22 Nov 2024 11:39:51 -0600
+Message-Id: <20241122-iio-adc-ad7313-fix-non-const-info-struct-v1-0-d05c02324b73@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,53 +82,46 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241122-fix-processed-v2-1-b9f606d3b519@chromium.org>
-X-B4-Tracking: v=1; b=H4sIADPBQGcC/3WMQQ6CMBBFr0Jm7RimVoiuvIdhUdsBZgElUyUa0
- rtb2bt8P/+9DRKrcIJrtYHyKkniXMAcKvCjmwdGCYXB1MYSGcJe3rho9JwSB+RA7nJuLHFjoTi
- LcjnsvXtXeJT0jPrZ8yv91n+llZDQ9o6btq3D41Tf/Khxktd0jDpAl3P+AhUj21itAAAA
-To: Jiri Kosina <jikos@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOfBQGcC/x2NQQrCQAxFr1KyNmBSRcariIs6TTWbRCZjEUrvb
+ nDxFg8e/28Q0lQCrsMGTVYNdUuhwwD1NdlTUOd04COfiJhR1XGaa3IZacRFv2huWN2io9riGL1
+ 9asfCci6PQiIskHPvJhn/r273ff8BJz62AnoAAAA=
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Nuno Sa <nuno.sa@analog.com>, Michael Walle <michael@walle.cc>, 
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Guillaume Ranquet <granquet@baylibre.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.1
 
-The attention channel is a IIO_CHAN_INFO_PROCESSED, not a
-IIO_CHAN_INFO_RAW.
+While working ad7124, Uwe pointed out a bug in the ad7313 driver.
+static struct ad_sigma_delta_info ad7173_sigma_delta_info was not const
+and was being modified during driver probe, which could lead to race
+conditions if two instances of the driver were probed at the same time.
 
-Modify prox_read_raw() to support it.
+I've made an attempt to fix it, but it isn't exactly trivial and I have
+only compile tested it. Guillaume has access to ad4111 hardware, so it
+would be good to get a Tested-by from him to make sure this doesn't
+break anything.
 
-Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more channels")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reported-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
-Changes in v2:
-- Do not change the condition for applying the multiplier.
-- Link to v1: https://lore.kernel.org/r/20241121-fix-processed-v1-1-4fae6770db30@chromium.org
----
- drivers/iio/light/hid-sensor-prox.c | 1 +
- 1 file changed, 1 insertion(+)
+David Lechner (2):
+      iio: adc: ad7313: fix irq number stored in static info struct
+      iio: adc: ad7173: make struct ad_sigma_delta_info ad7173_sigma_delta_info const
 
-diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
-index e8e7b2999b4c..0daa8d365a6c 100644
---- a/drivers/iio/light/hid-sensor-prox.c
-+++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -94,6 +94,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
- 	*val2 = 0;
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
-+	case IIO_CHAN_INFO_PROCESSED:
- 		if (chan->scan_index >= prox_state->num_channels)
- 			return -EINVAL;
- 		address = prox_state->channel2usage[chan->scan_index];
-
+ drivers/iio/adc/ad7173.c               | 476 +++++++++++++++++----------------
+ drivers/iio/adc/ad_sigma_delta.c       |  14 +-
+ include/linux/iio/adc/ad_sigma_delta.h |   5 +-
+ 3 files changed, 264 insertions(+), 231 deletions(-)
 ---
-base-commit: decc701f41d07481893fdea942c0ac6b226e84cd
-change-id: 20241121-fix-processed-ed1a95641e64
+base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
+change-id: 20241122-iio-adc-ad7313-fix-non-const-info-struct-92e59b91ee2e
 
 Best regards,
 -- 
-Ricardo Ribalda <ribalda@chromium.org>
+David Lechner <dlechner@baylibre.com>
 
 

@@ -1,138 +1,143 @@
-Return-Path: <linux-iio+bounces-12492-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12493-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219AD9D611A
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 16:10:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339B89D6127
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 16:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 879822824A8
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 15:10:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B887FB2160C
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 15:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A4B152517;
-	Fri, 22 Nov 2024 15:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50569148FE1;
+	Fri, 22 Nov 2024 15:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QZot2vJs"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Ql+z6/BF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2DC12CD88;
-	Fri, 22 Nov 2024 15:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAA46A009
+	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 15:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732288247; cv=none; b=DFg5A6anZumYwyEsl26Y3F3u95vT+1DyeyMxoFB/r5AZJ/2YqFL8q6G2rRpceDzqYaXJKPy6qhwmUftSXg/lMTqXPazlaPXJ+JKcppxIpkVE11UjvF5jmAr75/aW64uhhQhhwtULtRL/ZEcwjIa+LDT97pKGTd1R7EDwHabiwIw=
+	t=1732288466; cv=none; b=YIlbEpqokepydGoS4pqp550m0qhL1WwxD4PopUnLk5eELkYewKHiIXnNAldhz7J9F1DbOAuj6pYmd3gI8zrvktNhb7eJxUHVknHc01ToyXJ1E8ij5GLus8fjsCk0wgk3Y1RsGshgZeFit0jRrgDotrWoZN6ldLaL4rmfPawlvBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732288247; c=relaxed/simple;
-	bh=O8W8V2v3ggSNRbf/WtoNsYdZzZHeFWKhWoWdKWTGSXM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ax6yFyr0V5CsBbfiraeCuU/n3zAbOoSxNXFQ6CLvEEy/4iB3/Xpq0ETStqQ1JOaMWhrETYNdnX1XUU5ZQJivQ++IVKg3npwTuw8EuFVkMAoZktz3uLBXlyIlh2TEgv463NBnTGhVJ+HMMnc1GOmbby6gXh5U+gSUgdveurJpyYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QZot2vJs; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732288245; x=1763824245;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=O8W8V2v3ggSNRbf/WtoNsYdZzZHeFWKhWoWdKWTGSXM=;
-  b=QZot2vJs4lCCR5vKJV2Hn+waowr3Pj6cpy8IXNapPHOCLsyFXxRh80w4
-   u+xyL0QYu1aOS3ajNlA0G4xwE6wMz4PCGYEKMWBCdGslJ6gco7FjcVo4b
-   fJmdyw04ZXvJk9kAP4n0CttPSok03Ns/Wg2UVp56el1/iMN2/mpnQBmDL
-   i8m9qmdt+3nPD4fygJg1amlv5iFM7mAN8bFpAYRywY4fvV6dxFA+k+BlW
-   2qeXw+1MolrLfKp+np4maLnZiG8Kie6Gp44Vw+LxbpAE5HfjJGYCSiMU8
-   4qN62zdZNyQLZxCptEm9XLt+KLfr1wMSNpu99WkduTaXNXOYbtdbnY1gw
-   g==;
-X-CSE-ConnectionGUID: wgL+AVNbQAy+dPjevW6fsQ==
-X-CSE-MsgGUID: /otq5vtRSV2GI2DmmT9BRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="49963259"
-X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
-   d="scan'208";a="49963259"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 07:10:44 -0800
-X-CSE-ConnectionGUID: SJBTruWmRNS5ScurZDldnw==
-X-CSE-MsgGUID: K2W/b0a/RQ+8fyEru8EmRA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
-   d="scan'208";a="121551606"
-Received: from lkp-server01.sh.intel.com (HELO 8122d2fc1967) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 22 Nov 2024 07:10:40 -0800
-Received: from kbuild by 8122d2fc1967 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tEVIs-00040Z-0f;
-	Fri, 22 Nov 2024 15:10:38 +0000
-Date: Fri, 22 Nov 2024 23:09:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mikael Gonella-Bolduc via B4 Relay <devnull+mgonellabolduc.dimonoff.com@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: Re: [PATCH 2/2] iio: light: Add APDS9160 ALS & Proximity sensor
- driver
-Message-ID: <202411222244.oAiveIHV-lkp@intel.com>
-References: <20241119-apds9160-driver-v1-2-fa00675b4ea4@dimonoff.com>
+	s=arc-20240116; t=1732288466; c=relaxed/simple;
+	bh=O52olxiNLzvwCavQPnCWKjCXgwM4DfuDJpPiYlMQjl0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ef3Zk65U13CS/1bwx2Ffo6AJXSnOE+mVxRV8pOrqROXaqbmDOFepwmh9eJLy4UvGqzQ1i8EPlJ2Mj/Gu5i9b7hQ9RfxUs7dPOD7iTvLwwq4LXwAj/6zS/EViuRC4uPdRXhOX3MCbBWJA6EUxbFG0HB12GCQ9E4wTCuU256JZkwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Ql+z6/BF; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3e5f9712991so1223212b6e.2
+        for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 07:14:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732288462; x=1732893262; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0kYbhDTXa5oXk2p/WNmgQ8jaLJoIT51c3/cNZ/jqLOw=;
+        b=Ql+z6/BFordlYJtqI7PJwASnrsNlImP+HEW5ngrCXHk3rSrUbdNIfv3/gb0+OGSRWA
+         SFXbyODgOZXd0ul+6odDaoWpVBPD9FvFEMZUW57V3whiCtmioreR2YtTcTfvRJ/hGgi+
+         dBBnwzJayoB3i1/NsObLIRgObfq8qVaEUjlhPWuz37aqfEJfb1O/iLunyECCQYrepVT8
+         jEEPH712V8P8Hs9q6Xh09REZpqluvttfzPMejLyafIHpcVsHb0o50txaX0Bvk8vCXGPr
+         7QRSgGNE/WZazOugpv9G9HXYwHJGF9K47WNWGL30WMw9uJaFuEyZpdDwN/FH34KnXdn9
+         VByA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732288462; x=1732893262;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0kYbhDTXa5oXk2p/WNmgQ8jaLJoIT51c3/cNZ/jqLOw=;
+        b=fq6uDAhJaLB/gHf0G53a7BmZEmN0nWLgcI4sTXO+Rn8qeKD8qhDjxy6pzA8ZrltMh1
+         5GCo7gIf9J6XszWwhpaRXnBG64K/T/f8iQixowOEs+4DJda+iOODSmFWYxd5TNOTaNwB
+         1m2eLYndLarna7Y397poanCM3LVlFtvu44r1/OG0cJVZBzN2LgmVQatmfXhfHtjJdieb
+         dM23kRYx7d33OfFQj+1mArTPeQeZ9vHc87/8NlWy6SMTW/yFbL2xnLBcKB4w5HOHRKnd
+         8FsDg1ilec5hu/c2R3jhef/4PKGv0UbYwZekfx2quXMCJ4dnAfd6V+Fu5J+qKDaUL1/a
+         IXNw==
+X-Forwarded-Encrypted: i=1; AJvYcCWbTvjUH0m5PUFOU/YrMlJe04aBgmxleONfh7aigMacvVRtNQ33Xc6IWKLNyYme1IxiKHwAZxbwt4E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/lb/6CiMZeEn3ytBcVxPQt8FGBFq60U4Oy4SByLcpiSGBt8Rg
+	vffV2a7Vt4BI0/IJt/nSlJ6aQpO5u4LKCySalXvk+Slxrzuevtm8NGdpWfdGGPw=
+X-Gm-Gg: ASbGncvbA40kifpOWjdyYNC+rN1uNFMAD+KQRTENZlQ6EID30KXq4gLQ9SivKnww0rn
+	GVCZcCH1yHnGURKaen4kAgrgmJYYmnsAV82LfQIPVP4JNocm/V5TzyEqKpWvTSusZDV3W7SaSBx
+	9/9vLoOnQ0eekefdW7ZFsCTw53KqtjmvVVydt2Xi40DKryJm/6I1ZjW03kcVy1y8WaaCdD/I9vu
+	eZZAcLOYZr+5OG+4pckypwqTRMGAiIpBaAz/fAGTivmInBsqMK8GCC0tz8qxJF1YibC7h1+U2Lm
+	svCpHzZxTuY=
+X-Google-Smtp-Source: AGHT+IHi1rbSajXISZpz552EDve4VmtmCu4DfZDFFolYonGEJ4upZPSFhBmFT5ICL+5rkfSQRI8SeA==
+X-Received: by 2002:a05:6808:14cd:b0:3e3:cf8b:27b3 with SMTP id 5614622812f47-3e9158089cemr3116963b6e.10.1732288461797;
+        Fri, 22 Nov 2024 07:14:21 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e914e8a3b0sm402924b6e.19.2024.11.22.07.14.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Nov 2024 07:14:20 -0800 (PST)
+Message-ID: <afbb5d4d-8715-4544-b372-be23811eebd0@baylibre.com>
+Date: Fri, 22 Nov 2024 09:14:18 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241119-apds9160-driver-v1-2-fa00675b4ea4@dimonoff.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/10] iio: adc: ad7124: Don't create more channels
+ than the driver can handle
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>
+Cc: Alexandru Ardelean <aardelean@baylibre.com>,
+ Alisa-Dariana Roman <alisa.roman@analog.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Dumitru Ceclan <dumitru.ceclan@analog.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com>
+ <20241122113322.242875-13-u.kleine-koenig@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241122113322.242875-13-u.kleine-koenig@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Mikael,
+On 11/22/24 5:33 AM, Uwe Kleine-König wrote:
+> The ad7124-4 and ad7124-8 both support 16 channel registers and assigns
+> each channel defined in dt statically such a register. While the driver
+> could be a bit more clever about this, it currently isn't and specifying
+> more than 16 channels yields broken behaviour. So just refuse to bind in
+> this situation.
 
-kernel test robot noticed the following build warnings:
+The ad7124-4 datasheet I am looking at says that it only has registers
+CONFIG_0 to CONFIG_7, so do we need to limit those chips to 8 channels?
+> 
+> Fixes: b3af341bbd96 ("iio: adc: Add ad7124 support")
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+> ---
+>  drivers/iio/adc/ad7124.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> index 8d94bc2b1cac..5352b26bb391 100644
+> --- a/drivers/iio/adc/ad7124.c
+> +++ b/drivers/iio/adc/ad7124.c
+> @@ -821,6 +821,16 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
+>  	if (!st->num_channels)
+>  		return dev_err_probe(dev, -ENODEV, "no channel children\n");
+>  
+> +	/*
+> +	 * The driver assigns each logical channel defined in the device tree
+> +	 * statically one channel register. So only accept 16 such logical
+> +	 * channels to not treat CONFIG_0 (i.e. the register following
+> +	 * CHANNEL_15) as an additional channel register. The driver could be
+> +	 * improved to lift this limitation.
+> +	 */
+> +	if (st->num_channels > AD7124_MAX_CHANNELS)
+> +		return dev_err_probe(dev, -EINVAL, "Too many channels defined\n");
+> +
+>  	chan = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
+>  			    sizeof(*chan), GFP_KERNEL);
+>  	if (!chan)
 
-[auto build test WARNING on adc218676eef25575469234709c2d87185ca223a]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Mikael-Gonella-Bolduc-via-B4-Relay/dt-bindings-iio-light-Add-APDS9160-binding/20241121-123509
-base:   adc218676eef25575469234709c2d87185ca223a
-patch link:    https://lore.kernel.org/r/20241119-apds9160-driver-v1-2-fa00675b4ea4%40dimonoff.com
-patch subject: [PATCH 2/2] iio: light: Add APDS9160 ALS & Proximity sensor driver
-config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20241122/202411222244.oAiveIHV-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241122/202411222244.oAiveIHV-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411222244.oAiveIHV-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/light/apds9160.c:3: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-    * This file is part of the APDS9160 sensor driver.
->> drivers/iio/light/apds9160.c:565: warning: Function parameter or struct member 'data' not described in 'apds9160_set_ps_cancellation_level'
->> drivers/iio/light/apds9160.c:565: warning: Function parameter or struct member 'val' not described in 'apds9160_set_ps_cancellation_level'
->> drivers/iio/light/apds9160.c:565: warning: expecting prototype for The PS intelligent cancellation level register allows for an on(). Prototype was for apds9160_set_ps_cancellation_level() instead
-   drivers/iio/light/apds9160.c:585: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-    * This parameter determines the cancellation pulse duration in each of the PWM pulse.
-   drivers/iio/light/apds9160.c:609: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
-    * Set the proximity sensor led current
-
-
-vim +3 drivers/iio/light/apds9160.c
-
-   > 3	 * This file is part of the APDS9160 sensor driver.
-     4	 * Chip is combined proximity and ambient light sensor.
-     5	 * Author: Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>
-     6	 */
-     7	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

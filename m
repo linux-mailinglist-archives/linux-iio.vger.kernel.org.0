@@ -1,124 +1,127 @@
-Return-Path: <linux-iio+bounces-12504-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12505-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3434E9D6270
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:39:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BCAF160EAD
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 16:39:37 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5957B1DED76;
-	Fri, 22 Nov 2024 16:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXlH+ds6"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE1D9D6278
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:43:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF35D7E792;
-	Fri, 22 Nov 2024 16:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26776281AE5
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 16:43:22 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869221DEFC6;
+	Fri, 22 Nov 2024 16:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ETeVeqbE"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9138158DA3;
+	Fri, 22 Nov 2024 16:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732293574; cv=none; b=DC3rE9Dw5BuwWUJCGfjIr9SZu63RlfxrsPAIlZ/2zB0TRTfUNPK69t0+joTyntWbhp13FWAB0ZUCkeZg5HaKclxwi/TJYMxsrUpFicLeX0x6pFf7OjBvpQ2xs7+F1cevbrci+/DIquyRBSaiU4I2SPqMKB/ngf0KHLBtbm0TgpQ=
+	t=1732293800; cv=none; b=omu9nXF3Ps4RjSh2q3TghJ2kOGv12mhfc/iKU4ccEfPFuuKWy08tzAW89+eK/ZSyaKhUqVe6yOwJ7KuqYwvhleueKVx1i+hGvyALbas/uW/LphqYybMAuDWDG87+h2m+Tr2NPXJo7X4abN6yE4ZIIiyAsja5sAPB3VBJe6yzGNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732293574; c=relaxed/simple;
-	bh=bVfmMZd++g9VWmMX2EizjlOyv67G/BQQFuNfEa0NLiE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lxyLvIDBWwGNTVVCmjotk45B6BevuNnRiYotr1SS3e8nMclnJYsqx0kqmKrBeHFWViuXHrdvGEiwhGPr6nTXfpMCuJ6sCil1u5SRUXAqvCu2jrM94S+9GZwWcTP//iKBmDMVe2+hp28PeZ4TFPFyG//EML41bzaaV0NK66KrFFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXlH+ds6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1623C4CECE;
-	Fri, 22 Nov 2024 16:39:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732293573;
-	bh=bVfmMZd++g9VWmMX2EizjlOyv67G/BQQFuNfEa0NLiE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JXlH+ds6Bu4vcaxouVy9GHIJMQYhksn+5FEcsZbKwO1qG5QNztSK6Ejo6PzyTPdbl
-	 xPzR6GS/0CyoCC+O6m9Iq0iQl/W+6OHNKSUaxTMFB4aGA6OzTukQDHqlflA0NXysPe
-	 PAQI/8kjW+/XtNdbjEipZhEbBzuK3JoBGhZnOU3C+jWNHonND/cgmJunlqLeXnsaxT
-	 U7+onLtWXO9aMMcX3wJkkj+AmPt5zYAO3b3b0SW9M4rvHHlBs+DsBCC8erIs3gTlTJ
-	 oPI0TPO6JtfDzyFKtoMtWVESP9iQRt5PMh4J+3eHluJnyXJqyLhyAHHNQdwpwUWKWb
-	 na+zzTSqnxuKA==
-Date: Fri, 22 Nov 2024 17:39:30 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Guillaume Stols <gstols@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>, linux-pwm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, aardelean@baylibre.com, 
-	dlechner@baylibre.com, jstephan@baylibre.com, nuno.sa@analog.com, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v5 7/8] iio: adc: ad7606: Add iio-backend support
-Message-ID: <gmv5tncy7xwgbc64na7ib42hdthojsfrusauk4hez5zmc6hh2k@4jfk74vt2gcb>
-References: <20241015-ad7606_add_iio_backend_support-v5-0-654faf1ae08c@baylibre.com>
- <20241015-ad7606_add_iio_backend_support-v5-7-654faf1ae08c@baylibre.com>
+	s=arc-20240116; t=1732293800; c=relaxed/simple;
+	bh=2ZgV7K9XCfWdPmQxMrDFrNeOxtVJ797ePLaSO7UUfp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tx7BhUQmsct1uxRIQ9KybmgOlfu0M6qg+1azgkSaThC4ffN8ZuX3Yvqilpfp3xI7L/Cb9i5o5nYYTwi3hCVztsWl1rGz1mPoY1VjSbMTf76Q/qaQ2AlNiKsDVrb9FNy6Tui7YJzAYw0lFp5gbkoGl0EXntaoNPY3Vd8UxPCgJrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ETeVeqbE; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-7eb0bc007edso1609928a12.3;
+        Fri, 22 Nov 2024 08:43:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732293798; x=1732898598; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nHfCcATJyhA1xM48D/qAWkDdE30ifu/pCsiva9LO/Mw=;
+        b=ETeVeqbEepJLB1udexAwGU6wXH7y9waD00U0TZzDs4yPkG4Kv0MF/oT0+Ehp4RE4Zo
+         sXJX04um2t/tV6IkXU7SAW8KXezD8V42suIqH+UrH6So31eTnL+w3pAnYUYrIL4CQHKN
+         ig0rM6zRMiWKCw0xvMvgt0jj8S2ZlTq2fVeRZ2r0KF/Qop8JzTc4ByJpPjWcDucikrC4
+         rl5kCDNxR4+lD8RDIyCM/lJGxnaWtcU6nwmSkrL94+cOhslvW6f8atCmPLoxtCBb9x3U
+         Op1ZsV1hd18z80+JyrojnhuNpGEC202mey5XDJft3jMXhjokagOQEaGRCSbGoVZ16P2s
+         DC/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732293798; x=1732898598;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nHfCcATJyhA1xM48D/qAWkDdE30ifu/pCsiva9LO/Mw=;
+        b=ZGplrixqeiviQ7PRBt8BNfMlEx3PXtR61Z0TRQxuLoc96FI3HRyQ1o2UFK/wTRslMs
+         0g44h3DeYKWEP8QJJLXuH9KSTFzoMGHfE4RmZu2B4hXZ9DdIzeHpK3vi5U+OtnkZa2HV
+         Kq+1IKbekEnbVJ9Cn13OVJQeA8D1kOUQII4uys7SbeBVzO3Fp6tKGKN5znq+f4zN9b8X
+         ySsiD+ash35COj75morkntCp9eqHjcC9CKgMrgo30ugLE19jPKmc0HNIcsmeIDGG5O2C
+         fD3nBsv611eHO+mDGkyegTwlYENSIAnN2rlmGG+TKs+ohKS5OhznHHiVkbm9Tu5Zuk0A
+         ZXJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUCqGmlBEcAB2DNKnBGyLK/8zmwhslcntXhRALwaxQUWdl1vCsQN8Ahd/H18ZVny1xEblxMxcirkiNrtrOf@vger.kernel.org, AJvYcCUZrsg4ZL7NGVdUnWhzZwNFqyhrc3y40cu9+wEpZzBxfCmucm1PRXUSUhhtf0CAec7XxDYSHTmGtjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaFi6ojIn0nC5SQaCYtKw7tb/7+AgdMvWnYSOx7OVC6k0VMcO2
+	KuHlveWxrtyjeGX5FNOTlFgbXK0Nobegv9kLBbEi7Jj5wJ1SkLRG/1WnmA==
+X-Gm-Gg: ASbGncvQUiy4jS8EkuUqHsgXoV+nFYV/LFtdCz4l9ow3A35PCu1dg05jSpc7174mhOb
+	2GJqjQCEJSyL0L4yRnWJ0KZ4GcQI5jJ9QOGHM6qdjKvJ71tS+CIlMvD51TnqfPgyMsyej8H9t9n
+	YwO4WNu12c5twIgrhaihkLsXD8qVZ3t0ac6zYHLeDKUZvgblqzN7Y4ijK0tnInNWYqqqs9kDd+l
+	AsNu92AJJ3n37aVgaPtL9xRm4ENnQkuFtrHmONPD0XpPfE6iRkDgRoEtwB0w9/L
+X-Google-Smtp-Source: AGHT+IGLUwQtqj1TJs07ST0ijMjbU/7PjnsuaVXgwaQrxxiGA8N61REG7OFQmsAgBafLD4sP8R0O/w==
+X-Received: by 2002:a05:6a20:4310:b0:1db:eb2c:a74 with SMTP id adf61e73a8af0-1e09e409e2emr5439035637.12.1732293798248;
+        Fri, 22 Nov 2024 08:43:18 -0800 (PST)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:1833:e6db:c7dd:9038])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fbcc1e25cesm1856925a12.28.2024.11.22.08.43.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Nov 2024 08:43:17 -0800 (PST)
+From: Fabio Estevam <festevam@gmail.com>
+To: jic23@kernel.org
+Cc: lars@metafoo.de,
+	dmurphy@ti.com,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
+	stable@kernel.org
+Subject: [PATCH] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
+Date: Fri, 22 Nov 2024 13:43:08 -0300
+Message-Id: <20241122164308.390340-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="g6qhxoz5xykc4ajk"
-Content-Disposition: inline
-In-Reply-To: <20241015-ad7606_add_iio_backend_support-v5-7-654faf1ae08c@baylibre.com>
+Content-Transfer-Encoding: 8bit
 
+Using gpiod_set_value() to control the reset GPIO causes some verbose
+warnings during boot when the reset GPIO is controlled by an I2C IO
+expander.
 
---g6qhxoz5xykc4ajk
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v5 7/8] iio: adc: ad7606: Add iio-backend support
-MIME-Version: 1.0
+As the caller can sleep, use the gpiod_set_value_cansleep() variant to
+fix the issue.
 
-On Tue, Oct 15, 2024 at 01:56:20PM +0000, Guillaume Stols wrote:
-> @@ -640,6 +665,14 @@ static int ad7606_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
->  		*val =3D st->oversampling;
->  		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		/*
-> +		 * TODO: return the real frequency intead of the requested one once
-> +		 * pwm_get_state_hw comes upstream.
-> +		 */
-> +		pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
-> +		*val =3D DIV_ROUND_CLOSEST_ULL(NSEC_PER_SEC, cnvst_pwm_state.period);
-> +		return IIO_VAL_INT;
->  	}
->  	return -EINVAL;
->  }
+Tested on a custom i.MX93 board with a ADS124S08 ADC.
 
-Being late to the party as the patch is already applied:
+Cc: <stable@kernel.org>
+Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ drivers/iio/adc/ti-ads124s08.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-ad7606_set_sampling_freq() uses DIV_ROUND_UP_ULL to determine the period
-=66rom freq. So I guess you should a down-rounding div here to calculate
-freq from period.
+diff --git a/drivers/iio/adc/ti-ads124s08.c b/drivers/iio/adc/ti-ads124s08.c
+index 425b48d8986f..f452f57f11c9 100644
+--- a/drivers/iio/adc/ti-ads124s08.c
++++ b/drivers/iio/adc/ti-ads124s08.c
+@@ -183,9 +183,9 @@ static int ads124s_reset(struct iio_dev *indio_dev)
+ 	struct ads124s_private *priv = iio_priv(indio_dev);
+ 
+ 	if (priv->reset_gpio) {
+-		gpiod_set_value(priv->reset_gpio, 0);
++		gpiod_set_value_cansleep(priv->reset_gpio, 0);
+ 		udelay(200);
+-		gpiod_set_value(priv->reset_gpio, 1);
++		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+ 	} else {
+ 		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
+ 	}
+-- 
+2.34.1
 
-Having said that, pwm_get_state_hw() is in mainline and will be included
-in v6.13-rc1.
-
-Best regards
-Uwe
-
---g6qhxoz5xykc4ajk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmdAs78ACgkQj4D7WH0S
-/k5jlAgAirnhx9PpmZaNqFxVmISvdk94dasdcSLa7jDqkiXnNJ0oxpyUVc8lm0N6
-NNMqQZbz66q+mmza4KXN1Oz+TPgQqZApnnp58F6ECUpurA6vgB4anXwBqiN0v8PZ
-/zklo+JiCsfLuu3fkM9raKXBxRQh4xJm7PM7WTK15vzsfJCeMANwixBroV6qYtij
-qj2TqzB1yhXmvt7jk4Wk6saLFPB03OHxEbY1QFFOorBXvx6vatRfTaRKTRf2HT9i
-FAjJsluo4KiVaHYhHJwNebI0BiVzIeYKGcda4qTKoDabKW9Xu6Ikt/v2nOcAvuC9
-z5qCVuQ/q08owpk8L41RdCHFLS5W1g==
-=Cj6w
------END PGP SIGNATURE-----
-
---g6qhxoz5xykc4ajk--
 

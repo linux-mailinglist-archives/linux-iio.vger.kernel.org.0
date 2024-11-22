@@ -1,84 +1,84 @@
-Return-Path: <linux-iio+bounces-12519-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12520-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 846579D64DB
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 21:26:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA6F9D64E5
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 21:31:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02FA616188D
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 20:26:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90823282B92
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 20:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BAE18593A;
-	Fri, 22 Nov 2024 20:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C381714B9;
+	Fri, 22 Nov 2024 20:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AfNUTFx0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T1hvtttw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C1315F40B;
-	Fri, 22 Nov 2024 20:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B1D19BBA;
+	Fri, 22 Nov 2024 20:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732307182; cv=none; b=JZVS+F7d84h26eKQcIUeKk2j8BmQBJzIJUf6+FJeMHhnjdRffJljaiOynRk3tTlSC090poAE0SuaiX5iGr1FJaSnaac6pTVRToOsR/6HtdzjFeDsiKK30PjSo8Meo6RTgx7GGp/CS4TtNJy5y7k9Qig2A37L6VhcB7EM3+hxc2E=
+	t=1732307506; cv=none; b=iEJE5C9jCwGjDgKb0R7mcCeC6q6RRXuDXxFG7m90tbe29v1cIDV1JK0dfRUwYv4kR2FmSsNLRHs4esqFLYczhrZmkuv7rw2BxkAJV1yXAhdoXO7ww0ZGixF8NfXKXOySfq/RQVH8FSsmcFjq8uOnEdsRZQgT2a4UZj0/9ZcK15M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732307182; c=relaxed/simple;
-	bh=E6JvsfuOWkytg/BL08NLWlZySnogq/hNZzUST5r/6io=;
+	s=arc-20240116; t=1732307506; c=relaxed/simple;
+	bh=ziLbRXnJ0wfwY3lRozK7HsbN69rHAIv4Er5fi6E+OYY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eEPSlZz1/YQoTE/hGjdtMlQCyrIJTmQzRpPzOxRkAtJD5HgGOfHGPCtD008lJ2OuovRfuSzR1G0/Dkg2ymENaJ4CIk6AecK88oF38r6X4OvUxZE2XUEZ3DR1EphkvSNe9mxD39UKIxJux8C+WIU+9onWAzGdlRJfjG3REHphWWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AfNUTFx0; arc=none smtp.client-ip=209.85.218.43
+	 To:Cc:Content-Type; b=c8ALR9/CQKuhwbMMPl0bCAkMnCc/87jRuFyZsx499RouZ0XDkzTQireFVmNdUa5jxE3NirCbiiDfxnKJLC0jNs5OX8F3JYjbQIO3812ADmT7CRu0t+ywENcJyVdLXksTNPSNQIXl3LRw4LM7CS72E/Q7YNTBIj8BkWppbxa3QXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T1hvtttw; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aa51bf95ce1so134698066b.3;
-        Fri, 22 Nov 2024 12:26:20 -0800 (PST)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9aa8895facso415163766b.2;
+        Fri, 22 Nov 2024 12:31:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732307179; x=1732911979; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732307503; x=1732912303; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=b6N793zfeIiA128rzFaW0HjuK8FkQ04wBcEMgsJfh9Y=;
-        b=AfNUTFx02vrJfOXk3G6TLxC7byLuKdGDqs0U+7aIKRW5NhSIvNJ5CtOupxIFCb+F5n
-         JZnYgq2uZKJ5mk/rER9ByuvluVNEnX8tNZZheOlE0aPgeYQaUXe+wt/I9Rgxj+n4Vb12
-         cfsA9pr+3eTle90j8I3YGp/pVrYWJJeOaRigkw2d8Bl6WTdFJB7XbJkANRY4/Ax95d0y
-         IAXUZPgVZ7TTyMrdXTcBnzxV+T6y51pnd1bpkKWhxiaLkUSPo3fRY64OSiOBZBCeSCNi
-         ayVrGZy4BCQ+BhqneFVx/7lZmVwnMv5goOxWkAsFHaUJBUQML+nI7PGECvYVeU3GKF7v
-         2s0Q==
+        bh=cmnBXSE8iY0Ad9o08V6iIIwsqy152a2FyVrZuxwevQ8=;
+        b=T1hvtttwpd0R/Vw7Lqumz3HsuJB8XfCSGKxLYVtvLNC2888CtzH9dUo8TLZyjlH8XS
+         /h1R5RNpk/c4IE8l7GTzcC86mpnvJvzSgG5LJVPV3HrOYV/J88VVEFPnFQGu9VWhNIJo
+         bKtyDYblgPR8e73jRk/5pzKlt4qLuETloBzDsVGJuVl/PMJgwM+7O79hnal8sZYPAkOU
+         lLntuMHESl3WSbyAb0stHxleSvsodtXa6HL2b/P2i0Ks2nI0RLgpRFJI3sN9fGLTgIJu
+         +pO8X+NEAotcIx/Oieeb/Hj9Cs4CX3vQsPSxK7AVu2FEaTw7HPCJ93Dc8bl2xAswkxpd
+         1a9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732307179; x=1732911979;
+        d=1e100.net; s=20230601; t=1732307503; x=1732912303;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b6N793zfeIiA128rzFaW0HjuK8FkQ04wBcEMgsJfh9Y=;
-        b=R6ydSEgC9vEfKhNkWN6mwgy5FHSy4rsuyo0e874W2HFLC6dlLYrT5hY4Cvuo+nWHc5
-         OMXD3EJGV/8RxnApnmSfa6NVKwDRRc6z/MgbIoPrxXTQVsSY0ZmS7GHMP21+qgnT4f4d
-         RvRbSLbqkzlRmf826qP+p2lSIzZfhcD/FaQTmcNzMM2UOq4tG1IY5ycoI9nn+1EpeC56
-         9Ry79FH2+YOWadaMt8tZvazKjgj0eVYeur15Xtqe3xGDghaQvSx0M9fbTIw3aw1fZf0u
-         QhjdlVdY1FQosPhKxFFneb596eXlPph2i5Tso2QRLm+WFifQ++0m80vOn07n+slSW95u
-         u4aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX61aNAWVsfatl4TPHtfByj/w8+Z9FnHAebCo7fAohFih/vRuETwR0hyFSmWOx7iIiqkqZKqk6jybTw@vger.kernel.org, AJvYcCXttuG6KbUXeKVQXh6sL/uGbTukAxJcVyvb/BJAKe0NncbvcUg7MeyxY2EtRsd4z78MlJkiCWd1mQYi@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9bWB+NeYnHvdcFv2/hIN/DNtFGvN+Kz2RVTw5PMkw02PCnlGj
-	/6psTvZq/osHnTHx3rorqm9X4XBLzbthWm7l9OeR3J9zqdmZz+YTEJH+36r72ADCXm03G8sgLtE
-	ObZUKoF8vMvIIuKHFrliHiCKLZN8=
-X-Gm-Gg: ASbGncuRzVpaJDDBwLDbvDAl9k2jl8lKwkVUjgTYxsUBVSVC6q6fL3opDOx82U1pP25
-	mEwp5fg//DTqSDdF1phdzfTtdLk47MYs=
-X-Google-Smtp-Source: AGHT+IHNoLErVCnXFDgdXxpjT8Hxew2lejnSXOBqbPpbfeiwp1CBgaKlS8lgj8UOA07IbqTW+Z+quKbnMqhgQiIx19k=
-X-Received: by 2002:a17:906:d511:b0:a9a:76d:e86c with SMTP id
- a640c23a62f3a-aa509d79295mr307958266b.49.1732307179582; Fri, 22 Nov 2024
- 12:26:19 -0800 (PST)
+        bh=cmnBXSE8iY0Ad9o08V6iIIwsqy152a2FyVrZuxwevQ8=;
+        b=mYhD0+KUUpwkxbHBnyLycROXfgTpyOAsyx+WJn3+WIVRWQIfBgH2PWUU5RgWSIfxH3
+         9LAaFcGRbqbo9csDwLhtqEv6TuRY8txFEXBR8IaLdgaDpibKjQaFla6OOT/7klESE9JP
+         g8EOmu+Ysp61UZEK/EoSxSNfdfSUG4Rg0jfzA2mGvE+2W7n61xizH+lW/r9eitApEHw5
+         LLHZnPWSXF7/rlFpfuBzoc9fo8hBQE2NFxxhvabnam6D250K7bIQgplkAOldTTlCHivZ
+         EgCXnbqGFTPUVgsvonMQ5UlPpfgtqGcgNTyW7lNPOCsHE0PHvfb+S7neeZIU8fVZifln
+         NdRg==
+X-Forwarded-Encrypted: i=1; AJvYcCU1n116o84p5rqDHpjFFAITtfcbXzN825J2x8Y3DNixbAAF/x84lazO0zTyqGD4DJQ2t7Kh85kt5lmt@vger.kernel.org, AJvYcCVXS5rSS63iOBRGG0zjpuuu+se6xlbVutTCTvssUGOCWzKmAjfjq899G1QRexl3gmUn4kfad5BwwyRr@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVoE/Jx9Zl6fHpWdpHwcJ2ic7hdgDs3epCBa8wciyFB0FQJBEw
+	5z6YOEWDb3JF5Zg4y6Gz5UxF77vk19thrrRiViNelK1brNhmKBNVuOA3gDPmuAIwnsqibYPwety
+	CMB2pY1mipKrTFsAKH5M6JJczAGD4/6cb
+X-Gm-Gg: ASbGncsgel40mCuupQLb9E148cEFZleW1oYBt6rVoSp5H9VUUfmwvcxm321IYo5YTiM
+	3C8n4lvPLplsd04YmvpcOTSotDHsmA8A=
+X-Google-Smtp-Source: AGHT+IEMX7l3kmvBT5zLl6Dn6D/OfJ6qovwkrG3C4P8rCZkfC8J31ArmeP1T8WC6vX8b4E/O7uBiV1Ud6UQoylRgKok=
+X-Received: by 2002:a17:906:30cb:b0:aa5:2232:c8e4 with SMTP id
+ a640c23a62f3a-aa52232c9b4mr147437366b.11.1732307503336; Fri, 22 Nov 2024
+ 12:31:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com> <20241122113322.242875-21-u.kleine-koenig@baylibre.com>
-In-Reply-To: <20241122113322.242875-21-u.kleine-koenig@baylibre.com>
+References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com> <20241122113322.242875-22-u.kleine-koenig@baylibre.com>
+In-Reply-To: <20241122113322.242875-22-u.kleine-koenig@baylibre.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 22 Nov 2024 22:25:43 +0200
-Message-ID: <CAHp75VfX7Rtx96mY8V_9M+m1y_zwuoz+VGcmoF75YTjoT9NF8g@mail.gmail.com>
-Subject: Re: [PATCH v3 09/10] iio: adc: ad7124: Add error reporting during probe
+Date: Fri, 22 Nov 2024 22:31:07 +0200
+Message-ID: <CAHp75Ve_sD-a-m4pYmKrT=LhajO=F7TG7KM7AsM47J0=ksVgNw@mail.gmail.com>
+Subject: Re: [PATCH v3 10/10] iio: adc: ad7124: Implement temperature measurement
 To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
 	Michael Hennerich <Michael.Hennerich@analog.com>, Alexandru Ardelean <aardelean@baylibre.com>, 
@@ -92,124 +92,88 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, Nov 22, 2024 at 1:34=E2=80=AFPM Uwe Kleine-K=C3=B6nig
 <u.kleine-koenig@baylibre.com> wrote:
 >
-> A driver that silently fails to probe is annoying and hard to debug. So
-> add messages in the error paths of the probe function.
+> If the maximal count of channels the driver supports isn't fully
+> utilized, add an attribute providing the internal temperature.
 
 ...
 
-> +/* Only called during probe, so dev_err_probe() can be used */
+>         case IIO_CHAN_INFO_SCALE:
+> -               mutex_lock(&st->cfgs_lock);
+> +               switch (chan->type) {
+> +               case IIO_VOLTAGE:
+> +                       mutex_lock(&st->cfgs_lock);
 
-It's a harmless comment, but I think dev_err_probe() name is good
-enough to give such a hint.
+Side note 1: cleanup.h at some point?
 
 ...
 
-> +/* Only called during probe, so dev_err_probe() can be used */
+>         case IIO_CHAN_INFO_OFFSET:
+> -               mutex_lock(&st->cfgs_lock);
+> -               if (st->channels[chan->address].cfg.bipolar)
+> -                       *val =3D -(1 << (chan->scan_type.realbits - 1));
+> -               else
+> -                       *val =3D 0;
+> +               switch (chan->type) {
+> +               case IIO_VOLTAGE:
+> +                       mutex_lock(&st->cfgs_lock);
+> +                       if (st->channels[chan->address].cfg.bipolar)
+> +                               *val =3D -(1 << (chan->scan_type.realbits=
+ - 1));
+
+Side note 2: BIT() ?
+
+...
+
+>         case IIO_CHAN_INFO_SAMP_FREQ:
+>                 mutex_lock(&st->cfgs_lock);
+>                 *val =3D st->channels[chan->address].cfg.odr;
+>                 mutex_unlock(&st->cfgs_lock);
+>
+>                 return IIO_VAL_INT;
+> +
+>         case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+>                 mutex_lock(&st->cfgs_lock);
+>                 *val =3D ad7124_get_3db_filter_freq(st, chan->scan_index)=
+;
+>                 mutex_unlock(&st->cfgs_lock);
+>
+>                 return IIO_VAL_INT;
+> +
+
+Seems like stray / unrelated changes. Do you really want to combine
+this with style changing? Usually we either change style first
+followed by featuring, or vice versa.
+
+>         default:
+>                 return -EINVAL;
+>         }
+> @@ -645,6 +685,7 @@ static int ad7124_write_raw(struct iio_dev *indio_dev=
+,
+>
+>                 ad7124_set_channel_odr(st, chan->address, val);
+>                 break;
+> +
+>         case IIO_CHAN_INFO_SCALE:
+>                 if (val !=3D 0) {
+>                         ret =3D -EINVAL;
+> @@ -666,6 +707,7 @@ static int ad7124_write_raw(struct iio_dev *indio_dev=
+,
+>
+>                 st->channels[chan->address].cfg.pga_bits =3D res;
+>                 break;
+> +
+>         case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+>                 if (val2 !=3D 0) {
+>                         ret =3D -EINVAL;
 
 Ditto.
 
 ...
 
->         do {
->                 ret =3D ad_sd_read_reg(&st->sd, AD7124_STATUS, 1, &readva=
-l);
->                 if (ret < 0)
-> -                       return ret;
-> +                       return dev_err_probe(&st->sd.spi->dev, ret, "Erro=
-r reading status register\n");
->
->                 if (!(readval & AD7124_STATUS_POR_FLAG_MSK))
->                         return 0;
+> +       /* Add one for temperature */
+> +       st->num_channels =3D min(num_channels + 1, AD7124_MAX_CHANNELS);
 
->                 usleep_range(100, 2000);
-
-Side note 1: fsleep() ?
-
->         } while (--timeout);
-
-Side note 2: maybe using read_poll_timeout() from iopoll.h makes this
-better looking?
-
-...
-
->  static int ad7124_check_chip_id(struct ad7124_state *st)
-
->         ret =3D ad_sd_read_reg(&st->sd, AD7124_ID, 1, &readval);
->         if (ret < 0)
-> -               return ret;
-> +               return dev_err_probe(&st->sd.spi->dev, ret,
-> +                                    "Failure to read ID register\n");
-
-Why not temporary for the struct device, will be the same LoCs now,
-but might help in the future if more callers will need this parameter.
-
->
->         chip_id =3D AD7124_DEVICE_ID_GET(readval);
->         silicon_rev =3D AD7124_SILICON_REV_GET(readval);
->
-> -       if (chip_id !=3D st->chip_info->chip_id) {
-> -               dev_err(&st->sd.spi->dev,
-> -                       "Chip ID mismatch: expected %u, got %u\n",
-> -                       st->chip_info->chip_id, chip_id);
-> -               return -ENODEV;
-> -       }
-> +       if (chip_id !=3D st->chip_info->chip_id)
-> +               return dev_err_probe(&st->sd.spi->dev, -ENODEV,
-> +                                    "Chip ID mismatch: expected %u, got =
-%u\n",
-> +                                    st->chip_info->chip_id, chip_id);
->
-> -       if (silicon_rev =3D=3D 0) {
-> -               dev_err(&st->sd.spi->dev,
-> -                       "Silicon revision empty. Chip may not be present\=
-n");
-> -               return -ENODEV;
-> -       }
-> +       if (silicon_rev =3D=3D 0)
-> +               return dev_err_probe(&st->sd.spi->dev, -ENODEV,
-> +                                    "Silicon revision empty. Chip may no=
-t be present\n");
->
->         return 0;
->  }
-
-...
-
->         ret =3D ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_c=
-ontrol);
->         if (ret < 0)
-> -               return ret;
-> +               return dev_err_probe(dev, ret, "Failed to setup CONTROL r=
-egister\n");
->
->         return ret;
-
-Side note 3: return 0;
-
-...
-
->         ret =3D ad7124_soft_reset(st);
->         if (ret < 0)
-
-> +               /* ad7124_soft_reset() already emitted an error message *=
-/
-
-To me it looks like an almost useless comment.
-
->                 return ret;
->
->         ret =3D ad7124_check_chip_id(st);
->         if (ret)
-> +               /* ad7124_check_chip_id() already emitted an error messag=
-e */
->                 return ret;
->
->         ret =3D ad7124_setup(st);
->         if (ret < 0)
-> +               /* ad7124_setup() already emitted an error message */
->                 return ret;
-
-Ditto.
+Is the type of both arguments the same?
 
 --=20
 With Best Regards,

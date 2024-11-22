@@ -1,121 +1,145 @@
-Return-Path: <linux-iio+bounces-12511-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12512-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F689D6375
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 18:43:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 618199D639D
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 18:55:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEFCE16171C
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:43:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 253FB282D50
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079221DFD95;
-	Fri, 22 Nov 2024 17:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCBA1DEFF5;
+	Fri, 22 Nov 2024 17:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Ib3eqHXi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NiAnWmxp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AED92FC23
-	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 17:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA00D1DDA32;
+	Fri, 22 Nov 2024 17:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732297373; cv=none; b=bYNyjmgrBIdfVOJnaSI5W39182HBihCgRoZCNMhvGzlKpBEnnK0dTWzUfdc9AeXvf+EI7GNmP1SVnMIhPkM2GEG0n3DPMFkkTsDp03eI6APuSy9ot3HsaXO/sKwk9xCplRSDgCLoNMKadI1JqlQtkXTJqvXVkzjMc4QK/UkkQf8=
+	t=1732298107; cv=none; b=SEI/KW1/PFPmNDWX6/D7XB1vtXZdqyQfkFkk/dt3dtVORjl7AhScn7mvLEeHZWI6y6Z9qbn3/PIPczPg+Azf61QvxxXhyYa9LAIPOMy6ryPiFwzPmtjrH7iX/c7U2+d2onGY9mb78hg3z58E4O0v/SrJj7GFIVsCn4ggYRPWGCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732297373; c=relaxed/simple;
-	bh=eKyvRR8qmIXJGqCoV3OEYHsTxVk2cZZJeAxKAchNSTk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EipAvj5+6J24sDAwm9quLHZ8MOH7sWvlb97pClpGUFW/bNyTnByFC72kXu80S7UpNMQ+f+ppvDJntUxzMUQuXCeVUMRq+CNAUyF/wOB1Fwd627pveLMoRge2mZnzSLk3Or+4ReZ5N262ZXCsUoXw0sZBNTK5nZX0EglXjDeFJNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Ib3eqHXi; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3e606cba08eso1244853b6e.0
-        for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 09:42:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732297371; x=1732902171; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Um2hT3kFq+soHaE5X1XflsUeLzBKxyA/p1C27ZLrq0=;
-        b=Ib3eqHXik6b1jBbYnZAHPMfqaAFNjTDnf3LvwPJ1PWWzaYB5GKmbtEPQSJQ/EYtDaD
-         odzSgzn8I7u5sMGCWHXpCGKIuwI7LQRgmN33zbmeTM6OBqjMlLJuZOZt1UhIKSvjB+MD
-         Z3azWLybrhN048z3KW69kZsLPMKiup3Gia+JvhAEFODQNAnpgf7nqykyU8B/VYUlkuDH
-         r/SE+XPU/YNkoKzq7hBnPCvSrpWc+Auj3NItWGVRM6BhY3ttBt/pt0vVfXLCgvY6lYui
-         uh6WAySU4DUF0LjdC9u4s5DFNtPSm6O4RoTJtNs2k2mh8V36xDyzeM64PJ0cDDk0/amP
-         mCUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732297371; x=1732902171;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3Um2hT3kFq+soHaE5X1XflsUeLzBKxyA/p1C27ZLrq0=;
-        b=Xy+1GDEYQ23+nnNJCwzYST1Lg9hdMPyhKlytz/WVeixL6Ek6NF0hBU4mykYFAkzt/F
-         Hd9HJjYbAD1oFNHJi4oqXmdTlVb/piuh1IkEMWIbo06LudPUINvaAKwwowMZMoOkeD71
-         d8J4FcnNIVUX1vmM+ynPcMQKnEf6XBXJNJm4KBxZ1Z91YjhQd9fMAexIAkNWrrWCKUYK
-         lee+HNcfbrviEvUUbe5pP+Uop0CdrsgExq4QeZJ/S8go9APZ+WU63Q2n5iYzPAQAJYbO
-         5vWss5bJ5o4vAerR8h2pM6kY5Qh8HROCDm5PY0v3KsQkHzQc4FhVZ6N3V/IEh2ptimvD
-         xDXg==
-X-Gm-Message-State: AOJu0Yyxrx2bpjBRn2qmLDnP0LlhxRGqFYIi/khXO+/H/dbuXEdio+BO
-	sYpBmKakBrq1UBa1+NkrHtJaTIJr/Lu2Te3Gy5BpEJQkwSZ36Cc8NTgXsXYp1Dg=
-X-Gm-Gg: ASbGncvvRrVtio+Jy3YJfC2js8HUV8xLfIr9G1xQxJuKEq6+fDKqxsURO79VO4IWc17
-	ZoBMroXnKLcww/tYs1JBNB5K4C2QjWv5S122JfTwfg824oGZPy3UW0a897Fo6fngTwwLAbnsrAL
-	/IpSg1613sUrFjg83A7HIx79DOXpcudsevlmkbQU0Bgam486uV3hfVkL6qqSZDHXrOOXeZwM27H
-	CP1c+6dSUG6iqBTu0Mmp6k3UCRgyi/ERGMCXm0lCCdijfVpO8Gfq7tvMIetB9cdFxqz+jK34z3L
-	msmb2A==
-X-Google-Smtp-Source: AGHT+IF4XKHXIAUncfA5T8WPmI6EvAz8ghg0mf7E8F45FWNwiH6q4kjk7athXN/kygbcQaeReyAz2Q==
-X-Received: by 2002:a05:6808:e8c:b0:3e6:773:c99e with SMTP id 5614622812f47-3e915878247mr3786611b6e.21.1732297371333;
-        Fri, 22 Nov 2024 09:42:51 -0800 (PST)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e914e5ab31sm487450b6e.9.2024.11.22.09.42.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2024 09:42:50 -0800 (PST)
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 22 Nov 2024 11:42:48 -0600
-Subject: [PATCH] iio: adc: ad_sigma_delta: add tab to align irq_line
+	s=arc-20240116; t=1732298107; c=relaxed/simple;
+	bh=STKkSxBnZBNupprEJj1gVChbpHkaOEZEA6Q2Jps8ewg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cwL429v9i6e8HnrKv5DYmtV1wSA0qPFMIs1yFswLwBAN17B/UcvbsDn+mFhVzSp9WWQAj7AAIzqskhwoj+slfwqYvCkyPoAmR046EhGMCXx4iTAFY9QaAQRI0blyaL4rgNC40bda3YivVoohnQNSaJxHEyGPFvs5eddkzMYEzMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NiAnWmxp; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732298106; x=1763834106;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=STKkSxBnZBNupprEJj1gVChbpHkaOEZEA6Q2Jps8ewg=;
+  b=NiAnWmxpOFtIp2NAgpiokfpxQybEtluXoirVYhuq3hq+Vp8FbiVXUdAT
+   +USXegCnszrEjM+Cdml4tcHy10+FTo8D8xm88+I3P/Jl9PGWUd7a9qBYi
+   57S2E7X5va+ZGGLZ26h/BpzT6zs1Glm87py49AXYhhthQdP27v5BuZ+DD
+   dfUJTk1TUJqKJEpNfADctwwzOBh8eWiUSPC2QVau2aKPkP5QjUphn+ZP5
+   mTh4ImTXcg7t+vlS8w1IHNKp7Ui7n9mQI40FgZI0voEnkmYUJtjzJIoft
+   tEByaXJaXFGRBuJKvmHNpDfBHWtLpN1DHUJlJkap1Tzr6r6FWbB8DtBhg
+   Q==;
+X-CSE-ConnectionGUID: DbBGebb5Q/OBf6jf+SEMnQ==
+X-CSE-MsgGUID: EsOTqVTaQTOZSq7PDhDtzw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="43527146"
+X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
+   d="scan'208";a="43527146"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 09:55:05 -0800
+X-CSE-ConnectionGUID: Awva833OQryuc/CBeUvTug==
+X-CSE-MsgGUID: afL7uM5ITfmNpRJmtJqscg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
+   d="scan'208";a="95726262"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.125.110.49])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 09:55:05 -0800
+Message-ID: <d164919c9290ca1410bc21746511799a5c17b94d.camel@linux.intel.com>
+Subject: Re: [PATCH v2] iio: hid-sensor-prox: Fix invalid read_raw for
+ attention
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Ricardo Ribalda <ribalda@chromium.org>, Jiri Kosina <jikos@kernel.org>, 
+ Jonathan Cameron
+	 <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Fri, 22 Nov 2024 09:55:04 -0800
+In-Reply-To: <20241122-fix-processed-v2-1-b9f606d3b519@chromium.org>
+References: <20241122-fix-processed-v2-1-b9f606d3b519@chromium.org>
+Autocrypt: addr=srinivas.pandruvada@linux.intel.com; prefer-encrypt=mutual;
+ keydata=mQGNBGYHNAsBDAC7tv5u9cIsSDvdgBBEDG0/a/nTaC1GXOx5MFNEDL0LWia2p8Asl7igx
+ YrB68fyfPNLSIgtCmps0EbRUkPtoN5/HTbAEZeJUTL8Xdoe6sTywf8/6/DMheEUzprE4Qyjt0HheW
+ y1JGvdOA0f1lkxCnPXeiiDY4FUqQHr3U6X4FPqfrfGlrMmGvntpKzOTutlQl8eSAprtgZ+zm0Jiwq
+ NSiSBOt2SlbkGu9bBYx7mTsrGv+x7x4Ca6/BO9o5dIvwJOcfK/cXC/yxEkr1ajbIUYZFEzQyZQXrT
+ GUGn8j3/cXQgVvMYxrh3pGCq9Q0Q6PAwQYhm97ipXa86GcTpP5B2ip9xclPtDW99sihiL8euTWRfS
+ TUsEI+1YzCyz5DU32w3WiXr3ITicaMV090tMg9phIZsjfFbnR8hY03n0kRNWWFXi/ch2MsZCCqXIB
+ oY/SruNH9Y6mnFKW8HSH762C7On8GXBYJzH6giLGeSsbvis2ZmV/r+LmswwZ6ACcOKLlvvIukAEQE
+ AAbQ5U3Jpbml2YXMgUGFuZHJ1dmFkYSA8c3Jpbml2YXMucGFuZHJ1dmFkYUBsaW51eC5pbnRlbC5j
+ b20+iQHRBBMBCAA7FiEEdki2SeUi0wlk2xcjOqtdDMJyisMFAmYHNAsCGwMFCwkIBwICIgIGFQoJC
+ AsCBBYCAwECHgcCF4AACgkQOqtdDMJyisMobAv+LLYUSKNuWhRN3wS7WocRPCi3tWeBml+qivCwyv
+ oZbmE2LcxYFnkcj6YNoS4N1CHJCr7vwefWTzoKTTDYqz3Ma0D0SbR1p/dH0nDgN34y41HpIHf0tx0
+ UxGMgOWJAInq3A7/mNkoLQQ3D5siG39X3bh9Ecg0LhMpYwP/AYsd8X1ypCWgo8SE0J/6XX/HXop2a
+ ivimve15VklMhyuu2dNWDIyF2cWz6urHV4jmxT/wUGBdq5j87vrJhLXeosueRjGJb8/xzl34iYv08
+ wOB0fP+Ox5m0t9N5yZCbcaQug3hSlgp9hittYRgIK4GwZtNO11bOzeCEMk+xFYUoa5V8JWK9/vxrx
+ NZEn58vMJ/nxoJzkb++iV7KBtsqErbs5iDwFln/TRJAQDYrtHJKLLFB9BGUDuaBOmFummR70Rbo55
+ J9fvUHc2O70qteKOt5A0zv7G8uUdIaaUHrT+VOS7o+MrbPQcSk+bl81L2R7TfWViCmKQ60sD3M90Y
+ oOfCQxricddC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241122-iio-adc-ad_signal_delta-fix-align-v1-1-d0a071d2dc83@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAJfCQGcC/x2NwQqDQAxEf0VyNuBGKbS/UkTSTWoDyyq7IgXx3
- w0e5vDmwcwBVYtphVdzQNHdqi3ZIbQNxB/nWdHEGaijIQQiNFuQJXqmanPmNImmjfFrf+TkDZI
- SPeURu14+4DtrUZf3x3s8zwsWAkg5cwAAAA==
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.1
 
-Align the irq_line field in struct ad_sigma_delta with the other fields.
+On Fri, 2024-11-22 at 17:36 +0000, Ricardo Ribalda wrote:
+> The attention channel is a IIO_CHAN_INFO_PROCESSED, not a
+> IIO_CHAN_INFO_RAW.
+>=20
+> Modify prox_read_raw() to support it.
+>=20
+> Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more
+> channels")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- include/linux/iio/adc/ad_sigma_delta.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
-index f8c1d2505940..1851f8fed3a4 100644
---- a/include/linux/iio/adc/ad_sigma_delta.h
-+++ b/include/linux/iio/adc/ad_sigma_delta.h
-@@ -96,7 +96,7 @@ struct ad_sigma_delta {
- 	unsigned int		active_slots;
- 	unsigned int		current_slot;
- 	unsigned int		num_slots;
--	int		irq_line;
-+	int			irq_line;
- 	bool			status_appended;
- 	/* map slots to channels in order to know what to expect from devices */
- 	unsigned int		*slots;
-
----
-base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
-change-id: 20241122-iio-adc-ad_signal_delta-fix-align-2e229d6c03db
-
-Best regards,
--- 
-David Lechner <dlechner@baylibre.com>
+> ---
+> Changes in v2:
+> - Do not change the condition for applying the multiplier.
+> - Link to v1:
+> https://lore.kernel.org/r/20241121-fix-processed-v1-1-4fae6770db30@chromi=
+um.org
+> ---
+> =C2=A0drivers/iio/light/hid-sensor-prox.c | 1 +
+> =C2=A01 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/iio/light/hid-sensor-prox.c
+> b/drivers/iio/light/hid-sensor-prox.c
+> index e8e7b2999b4c..0daa8d365a6c 100644
+> --- a/drivers/iio/light/hid-sensor-prox.c
+> +++ b/drivers/iio/light/hid-sensor-prox.c
+> @@ -94,6 +94,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
+> =C2=A0	*val2 =3D 0;
+> =C2=A0	switch (mask) {
+> =C2=A0	case IIO_CHAN_INFO_RAW:
+> +	case IIO_CHAN_INFO_PROCESSED:
+> =C2=A0		if (chan->scan_index >=3D prox_state->num_channels)
+> =C2=A0			return -EINVAL;
+> =C2=A0		address =3D prox_state->channel2usage[chan-
+> >scan_index];
+>=20
+> ---
+> base-commit: decc701f41d07481893fdea942c0ac6b226e84cd
+> change-id: 20241121-fix-processed-ed1a95641e64
+>=20
+> Best regards,
 
 
